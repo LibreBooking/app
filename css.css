@@ -1,0 +1,499 @@
+/* Last modified 12-23-05 */
+body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background-color: #F0F0F0;    			
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    color: #333333;
+	font-size: 11px;
+}
+a {
+    color: #104E8B;
+    text-decoration: none;
+}
+a:hover {
+    color: #474747;
+    text-decoration: underline;
+}
+/*
+Common text settings
+*/
+p {
+    font-size: 11px;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+h5 {
+    margin-bottom: 0px;
+	margin-top: 0px;
+    font-size: 12px;
+}
+h4 {
+	font-size: 13px;
+}
+h3 {
+	font-size: 18px;
+	margin-top: 0px;
+}
+table {
+	border-width: 0;
+	font-size: 11px;
+}
+/*
+Error box settings
+*/
+.alert {
+    color: #CC0000;
+	background-color: #FFFFFF;
+    text-align: center;
+	width: 60%;
+	border: solid #8B0000 2px;
+	padding: 5px;
+	margin-bottom: 5px;
+	font-size: 11px;
+}
+/*
+Form text box settings
+*/
+.textbox {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;  
+    color: #36648B;
+    background-color: #FCFCFC;
+}
+/*
+Form button settings
+*/
+.button {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+	border: solid 1px #7C7A7A;
+	color: #36648B;
+	background-color: #E7E7E7;
+}
+
+/*
+Data table head row settings
+*/
+.tableTitle {
+    font-size: 11px;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding-left: 10px; padding-top: 1px; padding-bottom: 1px; padding-right: 5px;
+	background-color: #36648B;
+	height: 20px;
+	vertical-align: middle;
+}
+
+.tableTitle a, .tableTitle a:hover {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+/*
+Welcome message settings
+*/
+.welcomeBack {
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    color: #708090;
+	font-size: 12px;
+}
+/*
+Table border color
+*/
+.tableBorder {
+    background-color: #36648B;
+}
+
+.cpanelCell td {
+    padding: 2px;
+    font-size: 11px;
+}
+
+/*
+Common data cell settings
+*/
+td.cellColor, .cellColor td, .cellColor {
+    padding: 2px;
+    background-color: #FFFFFF;
+    font-size: 11px;
+}
+/*
+Alternating row colors
+*/
+td.cellColor0, .cellColor0 td, .cellColor0, .warningCell0 {
+    padding: 2px;
+    background-color: #FFFFFF;
+    font-size: 11px;
+}
+td.cellColor1, .cellColor1 td, .cellColor1 {
+    padding: 2px;
+	background-color: #F8FAEA;
+    font-size: 11px;
+}
+.warningCell1 {
+    padding: 2px;
+    background-color: #D56060;
+    font-size: 11px;
+}
+/*
+Table data row heading settings
+*/
+td.rowHeaders, .rowHeaders td {
+    color: #333333;
+    background-color: #EDEDED;
+    font-weight: bold;
+    text-align: center;
+    font-size: 11px;
+}
+/*
+Individal time cells for the scheduler
+*/
+td.scheduleTimes, .scheduleTimes td {
+    font-size: 11px;
+    color: #333333;
+    text-align: left;
+    background-color: #EDEDED;
+    padding-left: 2px;
+}
+/*
+Date cell for the scheduler
+*/
+td.scheduleDate, .scheduleDate td, .scheduleDateHeader {
+    font-size: 11px;
+    color: #FFFFFF;
+    background-color: #A2B5CD;
+    text-align: center;
+    padding: 2px;
+}
+
+.scheduleDateHeader {
+	border-bottom: 1px #36648B solid;
+}
+
+td.scheduleDate, td.scheduleDateHeader a {
+	color: #FFFFFF;
+}
+/*
+Resource name cell for the scheduler
+*/
+td.resourceName, td.resourceNameOver {
+    color: #333333;
+    font-size: 11px;
+    background-color: #EDEDED;
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 5px;
+}
+
+td.resourceNameOver {
+    background-color: #FAFAFA;
+}
+/*
+Edit form cell settings
+*/
+td.formNames {
+    font-size: 11px;
+    background-color: #EDEDED;
+    padding-left: 5px;
+}
+/*
+Reserved cell settings for the scheduler
+*/
+td.reservedCell {
+    font-size: 10px;
+    background-color: #B0C4DE;
+}
+td.reservationOver {
+	background-color: #3EBD30;
+}
+/*
+Inactive resource text color
+*/
+.inact {
+    color: #BDBDBD;
+}
+/*
+Color of the outermost border on every page
+*/
+.mainBorder {
+    border: solid 1px #CCCCCC;
+}
+/*
+Background color of main section on every page
+*/
+.mainBkgrdClr {
+    background-color: #FAFAFA;
+}
+/*
+Alert message settings
+*/
+.message {
+	background-color: #FEFEFE;
+	text-align: center;
+	width: 60%;
+	border: solid #E0E0E0 1px;
+	padding: 5px;
+	margin-bottom: 5px;
+	font-size: 11px;
+}
+
+/*
+Summary popup box
+*/
+.summary_div {
+	position: absolute;
+	visibility: hidden;
+	border: solid #686767 1px;
+	padding: 3px;
+	background-color: #E1E1E1;
+	overflow: visible;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+}
+
+/*
+Recurring reservation box
+*/
+.recur_box {
+	background-color: #D0D4E4;
+	color: #282D42;
+	border: solid 1px #8B94B1;
+}
+
+/*
+Calendar settings
+*/
+.monthNameStyle {
+	font-size: 11px;
+	text-align: center;
+}
+.dayBoxStyle {
+	font-size: 10px;
+	background-color: #F0F0F0;
+	text-align: center;
+	width: 25px;
+	height: 25px;
+}
+.currentDayBoxStyle {
+	width: 25px;
+	height: 25px;
+	font-size: 10px;
+	background-color: #FFFFFF;
+	text-align: center;
+}
+.emptyDayStyle {
+	background-color: #D5D8D3;
+}
+.dayNamesStyle {
+	font-size: 11px;
+	text-align: center;
+	height: 25px;
+	background-color: #DDCAF6;
+}
+.navMonthStyle {
+	font-size: 11px;
+	color: #000000;
+}
+.selectBoxStyle {
+	font-size: 11px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+/* Reservation tab select */
+.tab-row td {
+	text-align: center;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	padding-top: 3px;
+	padding-bottom: 2px;
+}
+.tab-row a {
+	text-decoration:none;
+}
+.tab-selected {
+	border-right:solid 1px #CCCCCC;
+	border-top:solid 1px #CCCCCC;
+	border-left:solid 1px #CCCCCC;
+	width:100px;
+	color: #0000ff;
+	height:20px;
+}
+.tab-selected a {
+	color: #000000;
+}
+.tab-not-selected {
+	border:solid 1px #D1D1D1;
+	width:100px;
+	background-color: #EDEDED;
+	border-bottom: solid 1px #CCCCCC;
+}
+.tab-not-selected a {
+	color: #666666;
+}
+.tab-filler {
+	border-bottom:solid 1px #CCCCCC;
+}
+.tab-main {
+	border-right:solid 1px #CCCCCC;
+	border-left:solid 1px #CCCCCC;
+	border-bottom:solid 1px #CCCCCC;
+}
+/*************************************
+
+/** MyCalendar **/
+.MyCalCellColor {
+    padding: 2px;
+    background-color: #FFFFFF;
+    font-size: 11px;
+}
+
+.MyCalCellColorEmpty {
+	background-color: #F0F0F0;
+}
+
+.MyCalDayBox {
+	padding: 2px;
+	background-color: #FFFFFF;
+	font-size: 11px;
+	width: 140px;
+	height: 120px;
+	vertical-align: top;
+}
+
+.MyCalEmptyDayBox {
+	padding: 2px;
+	background-color: #EEEEEE;
+	font-size: 11px;
+	vertical-align: top;
+}
+
+.MyCalCurrentDayBox {
+	padding: 2px;
+	background-color: #FFFFFF;
+	font-size: 11px;
+	vertical-align: top;
+	border: solid 1px #36648B;
+}
+
+.MyCalDateNumber, a.MyCalDateNumber {
+	font-size: 12px;
+}
+
+.MyCalCellColor p, .MyCalDayBox p, .MyCalEmptyDayBox p, .MyCalCurrentDayBox p {
+	margin-bottom: 7px;
+}
+
+div.mycal_div {
+	position: absolute;
+	visibility: hidden;
+	border-top: solid #7C7C7C 1px;
+	border-left: solid #7C7C7C 1px;
+	border-right: solid #6F6F6F 2px;
+	border-bottom: solid #6F6F6F 2px;
+	background-color: #FEFFFE;
+	padding: 3px;
+	overflow: visible;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+	color: #616161;
+}
+
+/* SelectUser colors */
+.SelectUserRowOver, .SelectUserRowOver td, td.SelectUserRowOver {
+	background-color: #D9EAF5;
+	padding: 2px;
+    font-size: 11px;
+	cursor: pointer;
+}
+
+/* Admin row-selected color */
+.adminRowSelected, .adminRowSelected td {
+    padding: 2px;
+    background-color: #D3DBF7;
+    font-size: 11px;
+}
+
+/* Font style for errors and warnings */
+.warningText {
+	color: #FF0000;
+	text-align: center;
+}
+
+/* Admin table to list additional tools for this section */
+.additionalTools, .additionalTools tr {
+	margin-bottom:15px;
+	border: solid 1px #CCCCCC;
+	width: 170px;
+	background-color: #ECECEC;
+}
+
+.additionalToolsHead {
+	border-bottom: solid 1px #CCCCCC;
+	background-color: #E0E0E0;
+}
+
+.messagePositive {
+	color: #FFFFFF;
+	background-color: #329D11;
+	font-size: 13px;
+	font-weight: bold;
+	text-align:center;
+
+}
+
+.messageNegative {
+	color: #FFFFFF;
+	background-color: #751814;
+	font-size: 13px;
+	font-weight: bold;
+	vertical-align:middle;
+	text-align:center;
+}
+
+.messageNegativeBG {
+	background-color: #751814;
+}
+
+.export_menu {
+	display:none;
+	position:absolute;
+	width:100px;
+	height:45px;
+}
+
+.export_menu table {
+	background-color:#999999;
+}
+
+.export_menu td.export_menu_out, td.export_menu_over {
+	padding-left: 10px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+.export_menu td.export_menu_out {
+	background-color: #EDEDED;
+	cursor: default;
+} 
+
+.export_menu, td.export_menu_over {
+	background-color: #FFFFFF;
+	cursor:pointer;
+}
+
+div.textbox, div.blur_textbox {
+	border: solid 1px #666666;
+	padding: 2px;
+}
+
+div.blur_textbox {
+	background-color: #EEEEEE;
+}
