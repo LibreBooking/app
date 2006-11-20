@@ -1,0 +1,12 @@
+**.psd
+**.bak
+test*
+.project
+**.build
+nant.bat
+**/_*.*
+**/tests/**
+**/docs/**
+lib/config
+lib/config/**
+**/configupdate.php
