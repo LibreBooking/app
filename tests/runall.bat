@@ -1,0 +1,1 @@
+c:\php\php -f Suite.php
