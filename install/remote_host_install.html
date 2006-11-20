@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Installing phpScheduleIt on a Remote Host</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<style type="text/css">
+<!--
+body {
+	font-family: "Courier New", Courier, mono;
+	font-size: 12px;
+	background-color: #FFFFFF;
+}
+.title {
+	font-weight: bold;
+	font-size: 16px;
+}
+.heading {
+	font-weight: bold;
+	font-size: 14px;
+}
+-->
+</style>
+</head>
+
+<body>
+<p class="title">Instructions for installing phpScheduleIt on a remote Linux
+host using cPanel</p>
+<p>Please see readme.html for any additional setup instructions.
+  This will only set up the database and will not populate any required fields.</p>
+<p>Connect to your remote host's control panel, cPanel.</p>
+<p class="heading">Adding the database and user</p>
+<ol>
+  <li>Select the MySQL Databases tool</li>
+  <li>Add a new user with username and password of your choice. This will be
+    the username and password used in your phpScheduleIt config file.</li>
+  <li>Create a new database with whatever name you choose. This will be the name
+      of the database in your phpScheduleIt config file. 'phpSchedlueIt' is the
+    recommended database name.</li>
+  <li>Associate the new user with the new database, giving the user permission
+    to SELECT, CREATE, UPDATE, INSERT and DELETE. Click the 'Add User to Db'
+    button.</li>
+</ol>
+<p class="heading">Creating the tables</p>
+<ol>
+  <li>Open phpMyAdmin.</li>
+  <li>Click on the database name that you just created in the left panel.</li>
+  <li>Click the SQL tab at the top of the page.</li>
+  <li>Open install/setup.sql, in your phpScheduleIt directory.</li>
+  <li>Copy all text starting right after the line 'use phpScheduleIt;' and ending
+    at the line just before 'grant select, insert, update, delete' and paste
+    it into the Run SQL textbox.</li>
+  <li>Click the 'Go' button.</li>
+</ol>
+<p>Your database, user and tables are now created. Please make sure that the
+  name of the database and user in your config file match what you just created.
+  Many times, an ISP will prefix your database name or cut is short. Please check
+  the created database name and copy that into your config.php file.</p>
+<p>&nbsp;</p>
+<p class="title">Instructions for installing phpScheduleIt without cPanel</p>
+<p class="heading">Adding the database and user</p>
+<ol>
+  <li>Create a new database with whatever name you choose. This will be the name
+    of the database in your phpScheduleIt config file. 'phpSchedlueIt' is the recommended
+  database name.</li>
+  <li>Create a new user with username and password of your choice. This will
+    be the
+    username and password used in your phpScheduleIt config file. Optionally,
+    you can simply use a current database user, although this is not recommended
+    to
+      give one user control over many databases.</li>
+  <li>Associate the  user with the new database, giving the user permission to
+    CREATE, UPDATE, INSERT and DELETE. Click the 'Add User to Db' button.</li>
+</ol>
+<p class="heading">Creating the tables</p>
+<p>Please follow the instructions for 'Creating the tables' above.</p>
+<p>&nbsp;</p>
+<p class="title">If phpMyAdmin is not available</p>
+<p>In the case that phpMyAdmin is not available, please try using the manual
+  install instructions given in the readme. The tables and indexes that are listed
+  in the setup.sql file need to be duplicated exactly for phpScheduleIt to work.</p>
+<p><br />
+<a href="http://phpscheduleit.sourceforge.net">http://phpscheduleit.sourceforge.net</a> <a href="mailto:lqqkout13@users.sourceforge.net">Nick
+Korbel</a></p>
+<p align="right"> version 1.0.3</p>
+</body>
+</html>
