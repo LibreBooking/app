@@ -1,43 +1,47 @@
 <?php
-include_once('DB.php');
+require_once('../Database/namespace.php');
+require_once('../lib/pear/MDB2.php');
 
 class FakeDBConnection extends IDBConnection
 {
-	var $reader = null;
-	var $isConnected = false;
-	var $_db = null;
+	var $_LastQueryCommand = null;
+	var $_LastExecuteCommand = null;
+	var $_ConnectWasCalled = false;
+	var $_DisconnectWasCalled = false;
 	
-	function FakeDBConnection($results) {
-		parent::IDBConnection(null, null, null, null);
-		$this->_db = new FakePearDB($results);
+	function FakeDBConnection() { }
+	
+	function Connect() { 
+		$this->_ConnectWasCalled = true;
 	}
 	
-	function connect($safeMode = false) { 
-		$this->_db->connect('', '');
+	function Disconnect() { 
+		$this->_DisconnectWasCalled = true;
 	}
-	
-	function disconnect() { }
-	
-	function setCommand($command) { }
-	
-	function addParameter($name, $value) { }
 
-	function &query() { } 
+	function &Query(&$command) { 
+		$this->_LastSqlCommand = &$command;
+	} 
 	
-	function &execute() { }
+	function &Execute() { 
+		$this->_LastExecuteCommand = &$command;
+	}
 }
 
-class FakePearDB extends DB
+class FakePearDB extends MDB2
 {
 	var $dsn = '';
 	var $permcn = false;
 	var $result = null;
 	
-	var $prepareWasCalled = false;
-	var $queryWasCalled = false;
-	var $executeWasCalled = false;
+	var $PrepareHandle = null;
 	
-	function FakePearDB($results) {
+	var $_PrepareWasCalled = false;
+	var $_LastPreparedQuery = '';
+	var $_PrepareAutoDetect = false;
+	var $_PrepareType = -1;
+	
+	function FakePearDB(&$results) {
 		$this->result = $results;
 	}
 	
@@ -46,28 +50,22 @@ class FakePearDB extends DB
 		$this->permcn = $permcn;
 	}
 	
-	function &query($command, $values) {
-		$this->queryWasCalled = true;
-		$this->prepare();
-		return $this->execute($command, $values);
-	}
-	
-	function &execute($command, $values) {
-		$this->executeWasCalled = true;
-		return $this->result;
-	}
-	
-	function prepare() {
-		$this->prepareWasCalled = true;
+	function &prepare($query, $autodetect, $prepareType) {
+		$this->_LastPreparedQuery = $query;
+		$this->_PrepareWasCalled = true;
+		$this->_PrepareAutoDetect = $autodetect;
+		$this->_PrepareType = $prepareType;
+		return $this->PrepareHandle;
 	}
 }
 
-class FakeDBResult extends DB_result
+class FakeDBResult extends MDB2_Result_Common
 {
 	var $rows = array();
 	var $idx = 0;
+	var $_FreeWasCalled = false;
 	
-	function FakeDBResult(&$rows) {
+	function FakeDBResult($rows) {
 		$this->rows = $rows;
 	}
 	
@@ -77,6 +75,27 @@ class FakeDBResult extends DB_result
 	
 	function numRows() {
 		return sizeof($this->rows);
+	}
+	
+	function free() {
+		$this->_FreeWasCalled = true;
+	}
+}
+
+class FakePrepareHandle extends MDB2_Statement_Common
+{
+	var $result = null;
+	var $_ExecuteWasCalled = false;
+	var $_LastExecutedValues = array();
+	
+	function FakePrepareHandle(&$result) {
+		$this->result = $result;
+	}
+	
+	function &execute($values) {
+		$this->_ExecuteWasCalled = true;
+		$this->_LastExecutedValues = $values;
+		return $this->result;
 	}
 }
 

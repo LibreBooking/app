@@ -1,10 +1,9 @@
 <?php
-@define('BASE_DIR', dirname(__FILE__) . '/../..');
-require_once(BASE_DIR . '/lib/Reminder.class.php');
+$basedir = dirname(__FILE__) . '/../..';
+require_once($basedir . '/lib/Reminder.class.php');
 
 class FakeReminder extends Reminder
 {
-
 	function FakeReminder() {
 		$day = date('d');
 		$mon = date('m');
