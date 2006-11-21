@@ -5,21 +5,15 @@
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author David Poole <David.Poole@fccc.edu>
 * @author Richard Cantzler <rmcii@users.sourceforge.net>
-* @version 06-11-06
+* @version 07-08-06
 * @package DBEngine
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt
 * License: GPL, see LICENSE
 */
-/**
-* Base directory of application
-*/
-@define('BASE_DIR', dirname(__FILE__) . '/../..');
 
-/**
-* DBEngine class
-*/
-include_once(BASE_DIR . '/lib/DBEngine.class.php');
+$basedir = dirname(__FILE__) . '/../..';
+include_once($basedir . '/lib/DBEngine.class.php');
 
 class AdminDB extends DBEngine {
 
@@ -131,10 +125,12 @@ class AdminDB extends DBEngine {
 		$vert = CmnFns::get_vert_order();
 
 		// Set up query to get neccessary records ordered by user request first, then logical order
-		$query = 'SELECT rs.*, s.scheduletitle
-			FROM ' . $this->get_table(TBL_RESOURCES) . ' as rs INNER JOIN ' . $this->get_table(TBL_SCHEDULES) . ' as s
-			ON rs.scheduleid=s.scheduleid
-			ORDER BY ' . $order . ' ' . $vert;
+		$query = 'SELECT rs.*, loc.*, s.scheduletitle
+			FROM ' . $this->get_table(TBL_RESOURCES) . ' as rs INNER JOIN ' . 
+			$this->get_table(TBL_SCHEDULES) . ' as s ON rs.scheduleid=s.scheduleid INNER JOIN ' .
+			$this->get_table(TBL_LOCATION_RESOURCES) . ' as locres ON rs.machid=locres.resid INNER JOIN ' .
+			$this->get_table(TBL_LOCATIONS) . ' as loc ON locres.locid=loc.locid ' .
+			'ORDER BY ' . $order . ' ' . $vert;
 
 		$result = $this->db->limitQuery($query, $pager->getOffset(), $pager->getLimit());
 
@@ -154,6 +150,40 @@ class AdminDB extends DBEngine {
 		return $return;
 	}
 
+	/**
+	* Returns an array of all location data
+	* @param Object $pager pager object
+	* @param array $orders order than results should be sorted in
+	* @return array of all resource data
+	*/
+	function get_all_location_data($pager, $orders) {
+		$return = array();
+
+		$order = CmnFns::get_value_order($orders);
+		$vert = CmnFns::get_vert_order();
+
+		// Set up query to get neccessary records ordered by user request first, then logical order
+		$query = 'SELECT *
+			FROM ' . $this->get_table(TBL_LOCATIONS) . ' 
+			ORDER BY ' . $order . ' ' . $vert;
+
+		$result = $this->db->limitQuery($query, $pager->getOffset(), $pager->getLimit());
+
+		$this->check_for_error($result);
+
+		if ($result->numRows() <= 0) {
+			$this->err_msg = translate('No results');
+			return false;
+		}
+
+		while ($rs = $result->fetchRow()) {
+			$return[] = $this->cleanRow($rs);
+		}
+
+		$result->free();
+
+		return $return;
+	}
 
 	/**
 	* Returns the number of records from a given table
@@ -339,10 +369,6 @@ class AdminDB extends DBEngine {
 		$result = $result = $this->db->query('DELETE FROM ' . $this->get_table(TBL_RESERVATIONS) . ' WHERE resid IN (' . $resids . ')');
 		$this->check_for_error($result);
 
-		// Delete reservation/accessory relationship
-		$result = $this->db->query('DELETE FROM ' . $this->get_table(TBL_RESERVATION_RESOURCES) . ' WHERE resid IN (' . $resids . ')');
-		$this->check_for_error($result);
-
 		// Delete all reservations for these schedules
 		//$result = $this->db->query('DELETE r, ru'
 		//						. ' FROM ' . $this->get_table('reservations') . ' r LEFT JOIN ' . $this->get_table('reservation_users') . ' ru '
@@ -384,9 +410,9 @@ class AdminDB extends DBEngine {
 		$inner_join = '';
 		$where = '';
 		$values = array();
-		$group_list = $this->make_in_list($groupids);
-
+				
 		if (!empty($groupids)) {
+			$group_list = $this->make_in_list($groupids);
 			$inner_join = ' INNER JOIN ' . $this->get_table(TBL_USER_GROUPS) . ' ug ON l.memberid = ug.memberid AND ug.groupid IN (' . $group_list . ')';
 		}
 		if (!empty($fname) || !empty($lname) ) {
@@ -413,9 +439,9 @@ class AdminDB extends DBEngine {
 		$inner_join = '';
 		$where = '';
 		$values = array();
-		$group_list = $this->make_in_list($groupids);
 
 		if (!empty($groupids)) {
+			$group_list = $this->make_in_list($groupids);
 			$inner_join = ' INNER JOIN ' . $this->get_table(TBL_USER_GROUPS) . ' ug ON l.memberid = ug.memberid AND ug.groupid IN (' . $group_list . ')';
 		}
 		if (!empty($fname) || !empty($lname) ) {
@@ -463,6 +489,25 @@ class AdminDB extends DBEngine {
 	function get_resource_data($machid) {
 
 		$result = $this->db->getRow('SELECT * FROM ' . $this->get_table(TBL_RESOURCES) . ' WHERE machid=?', array($machid));
+		// Check query
+		$this->check_for_error($result);
+
+		if (count($result) <= 0) {
+			$this->err_msg = translate('No results');
+			return false;
+		}
+
+		return $this->cleanRow($result);
+	}
+
+	/**
+	* Returns an array of data about a location
+	* @param int $locid location id
+	* @return array of data associated with that location
+	*/
+	function get_location_data($locid) {
+
+		$result = $this->db->getRow('SELECT * FROM ' . $this->get_table(TBL_LOCATIONS) . ' WHERE locid=?', array($locid));
 		// Check query
 		$this->check_for_error($result);
 
@@ -532,13 +577,19 @@ class AdminDB extends DBEngine {
 	*/
 	function add_resource($rs) {
 		$values = array();
+//		$relvalues = array();
+		$locvalues = array();
 
 		$id = $this->get_new_id();
 
+		$locvalues[] = $rs['locid'];
+		$locvalues[] = $id;
+		
 		$values[] = $id;
+//		$relvalues[] = $id;
 		$values[] = $rs['scheduleid'];
 		$values[] = $rs['name'];
-		$values[] = $rs['location'];
+//		$relvalues[] = $rs['locid'];
 		$values[] = $rs['rphone'];
 		$values[] = $rs['notes'];
 		$values[] = 'a';
@@ -551,7 +602,10 @@ class AdminDB extends DBEngine {
 		$values[] = $rs['min_notice_time'];
 		$values[] = $rs['max_notice_time'];
 
-		$q = $this->db->prepare('INSERT INTO ' . $this->get_table(TBL_RESOURCES) . ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+		$q = $this->db->prepare('INSERT INTO ' . $this->get_table(TBL_LOCATION_RESOURCES) . ' VALUES(?,?)');
+		$result = $this->db->execute($q, $locvalues);
+		$this->check_for_error($result);
+		$q = $this->db->prepare('INSERT INTO ' . $this->get_table(TBL_RESOURCES) . ' VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
 		$result = $this->db->execute($q, $values);
 		$this->check_for_error($result);
 
@@ -564,7 +618,7 @@ class AdminDB extends DBEngine {
 	*/
 	function edit_resource($rs) {
 		$values = array();
-
+		
 		$sql = 'SELECT scheduleid FROM ' . $this->get_table(TBL_RESOURCES) . ' WHERE machid=?';
 		$old_id = $this->db->getOne($sql, array($rs['machid']));
 		$this->check_for_error($old_id);
@@ -639,6 +693,10 @@ class AdminDB extends DBEngine {
 		// Delete permissions
 		$result = $this->db->query('DELETE FROM ' . $this->get_table(TBL_PERMISSION) . ' WHERE machid IN (' . $rs_list . ')');
 		$this->check_for_error($result);
+		
+		// Delete out of the location_resources table
+		$result = $this->db->query('DELETE FROM ' . $this->get_table(TBL_LOCATION_RESOURCES) . ' WHERE resid IN (' . $rs_list . ')');
+		$this->check_for_error($result);
 	}
 
 	/**
@@ -649,6 +707,96 @@ class AdminDB extends DBEngine {
 	function tog_resource($machid, $status) {
 		$status = ($status == 'a') ? 'u' : 'a';
 		$result = $this->db->query('UPDATE ' . $this->get_table(TBL_RESOURCES) . ' SET status=? WHERE machid=?', array($status, $machid));
+		$this->check_for_error($result);
+	}
+	/**
+	* Inserts a new location into the database
+	* @param array $rs array of location data
+	*/
+	function add_location($rs) {
+		$values = array();
+
+		$id = $this->get_new_id();
+
+		$values[] = $id;
+		$values[] = $rs['street1'];
+		$values[] = $rs['street2'];
+		$values[] = $rs['city'];
+		$values[] = $rs['state'];
+		$values[] = $rs['zip'];
+		$values[] = $rs['country'];
+
+		$q = $this->db->prepare('INSERT INTO ' . $this->get_table(TBL_LOCATIONS) . ' VALUES(?,?,?,?,?,?,?)');
+		$result = $this->db->execute($q, $values);
+		$this->check_for_error($result);
+
+		return $id;
+	}
+
+	/**
+	* Edits location data in database
+	* @param array $rs array of values to edit
+	*/
+	function edit_location($rs) {
+		$values = array();
+		
+		$sql = 'SELECT locid FROM ' . $this->get_table(TBL_LOCATIONS) . ' WHERE locid=?';
+		$old_id = $this->db->getOne($sql, array($rs['locid']));
+		$this->check_for_error($old_id);
+
+		$values[] = $rs['locid'];
+		$values[] = $rs['street1'];
+		$values[] = $rs['street2'];
+		$values[] = $rs['city'];
+		$values[] = $rs['state'];
+		$values[] = $rs['zip'];
+		$values[] = $rs['country'];
+		$values[] = $rs['locid'];
+
+		$sql = 'UPDATE '. $this->get_table(TBL_LOCATIONS) . ' SET '
+				. 'locid=?, street1=?, street2=?, city=?, state=?, zip=?, country=? '
+				. 'WHERE locid=?';
+
+		$q = $this->db->prepare($sql);
+		$result = $this->db->execute($q, $values);
+
+//		if ($old_id != $rs['scheduleid']) {		// Update resources if location changes
+//			$sql = 'UPDATE ' . $this->get_table(TBL_RESERVATIONS) . ' SET scheduleid=? WHERE machid=?';
+//			$result = $this->db->query($sql, array($rs['scheduleid'], $rs['machid']));
+//			$this->check_for_error($result);
+//		}
+	}
+
+	/**
+	* Deletes a list of locations from the database
+	* @param array $rs list of locids to delete
+	*/
+	function del_location($rs) {
+		$rs_list = $this->make_del_list($rs);
+
+		// Select first already associated locations to resources
+		$result = $this->db->query('SELECT locid FROM ' . $this->get_table(TBL_LOCATION_RESOURCES) . ' WHERE locid IN (' . $rs_list . ')');
+		$this->check_for_error($result);
+		$results = array();
+		while ($rs = $result->fetchRow()) {
+			$results[] = $rs['locid'];
+		}
+		
+		$locids = $this->make_del_list($results);
+		
+		// Select only unassociated locations to resources
+		$result = $this->db->query('SELECT locid FROM ' . $this->get_table(TBL_LOCATIONS) . ' WHERE locid NOT IN (' . $locids . ')');
+		$this->check_for_error($result);
+		$results = array();
+		while ($rs = $result->fetchRow()) {
+			$results[] = $rs['locid'];
+		}
+
+		$locids = $this->make_del_list($results);
+		$result->free();
+
+		// Delete out of the locations table
+		$result = $this->db->query('DELETE FROM ' . $this->get_table(TBL_LOCATIONS) . ' WHERE locid IN (' . $locids . ')');
 		$this->check_for_error($result);
 	}
 

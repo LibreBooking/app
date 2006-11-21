@@ -3,7 +3,7 @@
 * DBEngine class
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author Richard Cantzler <rmcii@users.sourceforge.net>
-* @version 08-08-06
+* @version 06-26-06
 * @package DBEngine
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt
@@ -16,13 +16,14 @@ include_once($basedir . '/lib/CmnFns.class.php');
 /**
 * Pear::DB
 */
-if ($GLOBALS['conf']['app']['safeMode']) {
-    ini_set('include_path', ( dirname(__FILE__) . '/pear/' . PATH_SEPARATOR . ini_get('include_path') ));
-    include_once('pear/DB.php');
-}
-else {
-    include_once('DB.php');
-}
+//if ($GLOBALS['conf']['app']['safeMode']) {
+//    ini_set('include_path', ( dirname(__FILE__) . '/pear/' . PATH_SEPARATOR . ini_get('include_path') ));
+    include_once($basedir . '/lib/pear/DB.php');
+	echo 'fix me';
+//}
+//else {
+    //include_once('DB.php');
+//}
 
 /**
 * Provide all database access/manipulation functionality
@@ -69,13 +70,14 @@ class DBEngine {
 
         // Make persistant connection to database
         $db = DB::connect($dsn, true);
-		@$db->setOption('portability', DB_PORTABILITY_ALL);
     
         // If there is an error, print to browser, print to logfile and kill app
         if (DB::isError($db)) {
             die ('Error connecting to database: ' . $db->getMessage() );
         }
         
+		$db->setOption('portability', DB_PORTABILITY_ALL);
+		
         // Set fetch mode to return associatve array
         $db->setFetchMode(DB_FETCHMODE_ASSOC);
     
@@ -211,7 +213,7 @@ class DBEngine {
 			$orders = substr($orders, 0, strlen($orders)-1);
 		}
         
-		$query = 'SELECT res.*, resusers.*, rs.name, rs.location, rs.rphone FROM '
+		$query = 'SELECT res.*, resusers.*, rs.name, rs.rphone FROM '
                     . $this->get_table('reservations') . ' as res INNER JOIN '
                     . $this->get_table('resources') . ' as rs ON rs.machid=res.machid INNER JOIN '
                     . $this->get_table('reservation_users') . ' as resusers ON resusers.resid=res.resid'
@@ -466,10 +468,12 @@ class DBEngine {
     * @param object $result result object of query
     */
     function check_for_error($result) {
-        if (DB::isError($result))
+        if (DB::isError($result)) {
             CmnFns::do_error_box(translate('There was an error executing your query') . '<br />'
-                . $result->getMessage()
+                . $result->getMessage() . ' ' . $result->getDebugInfo()
                 . '<br />' . '<a href="javascript: history.back();">' . translate('Back') . '</a>');
+			CmnFns::write_log($result->getMessage().' '.$result->getDebugInfo());               
+        }               
         return false;
     }
     

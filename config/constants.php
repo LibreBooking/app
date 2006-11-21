@@ -18,6 +18,8 @@ define('TBL_ADDITIONAL_RESOURCES', 'additional_resources');
 define('TBL_ANNOUNCEMENTS', 'announcements');
 define('TBL_ANONYMOUS_USERS', 'anonymous_users');
 define('TBL_GROUPS', 'groups');
+define('TBL_LOCATION_RESOURCES', 'location_resources');
+define('TBL_LOCATIONS', 'locations');
 define('TBL_LOGIN', 'login');
 define('TBL_MUTEX', 'mutex');
 define('TBL_PERMISSION', 'permission');

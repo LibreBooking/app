@@ -443,8 +443,8 @@ class Schedule {
     function move_to_starting_col($rs, $start, $prev, $span, $machid, $ts, $clickable, $color) {
         global $conf;
         $cols = (($start-$prev) / $span) - 1;
-		
-		 print_blank_cols($cols, $prev, $span, $ts, $machid, $this->scheduleid, $this->scheduleType, $clickable, $color);
+
+        print_blank_cols($cols, $prev, $span, $ts, $machid, $this->scheduleid, $this->scheduleType, $clickable, $color);
     }
 
     /**
@@ -460,8 +460,8 @@ class Schedule {
     function finish_row($end, $prev, $span, $machid, $ts, $clickable, $color) {
         global $conf;
         $cols = (($end-$prev) / $span) - 1;
-		
-		print_blank_cols($cols, $prev, $span, $ts, $machid, $this->scheduleid, $this->scheduleType, $clickable, $color);
+
+        print_blank_cols($cols, $prev, $span, $ts, $machid, $this->scheduleid, $this->scheduleType, $clickable, $color);
         print_closing_tr();
     }
 

@@ -233,6 +233,24 @@ function doCreate() {
 							)", 'Creating announcement table'),
 					array ('CREATE INDEX announcements_startdatetime ON announcements(start_datetime)', 'Creating index'),
 					array ('CREATE INDEX announcements_enddatetime ON announcements(end_datetime)', 'Creating index'),
+					// Create locations table
+					array ("CREATE TABLE locations (
+							  locid CHAR(16) NOT NULL PRIMARY KEY,
+							  street1 VARCHAR(100) NOT NULL,
+							  street2 VARCHAR(100),
+							  city VARCHAR(64),
+							  state VARCHAR(10),
+							  zip VARCHAR(6),
+							  country VARCHAR(64)
+							  )", 'Create locations table'),
+					// Create location_resources table
+					array ("CREATE TABLE location_resources (
+							  locid CHAR(16) NOT NULL,
+							  resid CHAR(16) NOT NULL,
+							  PRIMARY KEY(locid, resid)
+							  )", 'Create location_resources table'),
+					array ('CREATE INDEX locres_locid ON location_resources (locid)', 'Creating index'),
+					array ('CREATE INDEX locres_resid ON location_resources (resid)', 'Creating index'),
 					// Create login table
 					array ("CREATE TABLE login (
 							  memberid CHAR(16) NOT NULL PRIMARY KEY,

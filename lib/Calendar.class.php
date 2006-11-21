@@ -17,14 +17,14 @@
 * Extend the class and override any functions to add/change functionality
 *
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 04-08-06
+* @version 08-08-06
 * @package Calendar
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt
 * License: GPL, see LICENSE
 */
 class Calendar {
-	
+
 	var $isPopup = true;
 	var $day;
 	var $month;
@@ -33,7 +33,7 @@ class Calendar {
 	var $daysInMonth;
 	var $weekstart;
 	var $scheduleid = '';
-	
+
 	var $javascript = "changeScheduler(%d,%d,%d,%d,'%s');";
 
     /**
@@ -47,11 +47,11 @@ class Calendar {
 		//$this->setupStyleRules();
 		global $months_full;
 		global $conf;
-		
+
 		$this->isPopup = $isPopup;
 		$this->weekstart = (!is_null($weekstart)) ? $weekstart : $conf['app']['calFirstDay'];
 		$this->day = 1;
-		
+
 		if ($this->isPopup) {
 			if (isset($_POST['month']) && isset($_POST['year'])) {
 				$month = $_POST['month'];
@@ -62,7 +62,7 @@ class Calendar {
 				$month = date('m');
 			}
 		}
-		
+
 		// Go forward or back a year if needed
 		if ($month !== null && $year !== null) {
 			if ($month < 1) {
@@ -80,13 +80,13 @@ class Calendar {
 		}
 
 		$dateTS = mktime(0,0,0,$month,1,$year);
-					
+
 		$this->month = $month;
 		$this->year = $year;
 
         // Number value of the first day of the week of the month
         $this->firstWeekDay = (7 + (date('w', $dateTS) - $this->weekstart)) % 7;
-		
+
         // Number of days in this month
         $this->daysInMonth = date('t', $dateTS);
         // String name of this month
@@ -110,14 +110,14 @@ class Calendar {
     */
     function printCalendar() {
 		$today = getdate(Time::getAdjustedTime(mktime()));
-		
+
 		$this->printCalendarBody($today);
 
 		if ($this->isPopup) {
 			$this->printJumpForm();
 		}
     }
-	
+
 	/**
 	* Prints the calendar body
 	* @param int $today timestamp for todays date
@@ -141,14 +141,14 @@ class Calendar {
         <?php
             // Move to first day of the month
             echo "<tr>";
-			
+
 			for ($day = 0; $day < $this->firstWeekDay; $day++)
                 echo "<td class=\"emptyDayStyle\">&nbsp;</td>";
-			
+
 			// Initialize day
             //$day = $this->firstWeekDay + $this->weekstart;
 			$day += $this->weekstart;
-			
+
 			// Initialize printRow
             $printRow = false;
 
@@ -188,7 +188,7 @@ class Calendar {
         </table>
 		<?php
 	}
-	
+
 	/**
 	* Prints out the form to jump to the next day
 	* @param none
@@ -203,7 +203,7 @@ class Calendar {
         // Set values for prev/next month/year variables
         $nextMonth = $this->month+1;
         $nextYear = $prevYear = $this->year;
-			
+
 		$prevMonth = $this->month-1;
         ?>
         		<td style="width: 33%;" class="navMonthStyle"><a href="javascript: changeDate(<?php echo $prevMonth . ',' . $prevYear?>);"><?php echo "&lt; " . substr($months_full[date('n',mktime(0,0,0,$prevMonth,1,$prevYear))-1],0,3)  ?></a></td>

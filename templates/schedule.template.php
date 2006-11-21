@@ -205,7 +205,7 @@ function print_name_cell($ts, $id, $name, $shown, $is_blackout, $scheduleid, $pe
 */
 function print_blank_cols($cols, $start, $span, $ts, $machid, $scheduleid, $scheduleType, $clickable, $class = '') {
     $is_blackout = intval($scheduleType == BLACKOUT_ONLY);
-	
+
     $js = '';
     for ($i = 0; $i <= $cols; $i++) {
         if ($scheduleType != READ_ONLY && ($clickable || $is_blackout)) {

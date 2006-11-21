@@ -1,44 +1,28 @@
 <?php
 
 class IDbConnection
-{
-	var $dbType = '';
-	var $dbUser = '';
-	var $dbPassword = '';
-	var $hostSpec = '';
-	var $dbNames = array();
-	
-	var $_db = null;
-	var $_connected = false;
-	var $_command = '';
-	var $_params = array();
-	
+{	
 	/**
 	* To be implemented by child
-	* @param string
-	* @param string 
-	* @param string 
-	* @param string 
-	* @param array
 	*/
-	function IDbConnection($dbType, $dbUser, $dbPassword, $hostSpec, $dbNames = array()) { }
+	function IDbConnection($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName)) { }
 	
 	/**
 	* To be implemented by child
 	*/
-	function connect($safeMode = false) { }
+	function Connect($safeMode = false) { }
 	
 	/**
 	* To be implemented by child
 	*/
-	function disconnect() { }
+	function Disconnect() { }
 	
 	/**
 	* To be implemented by child
 	* @param string $command command text to execute
 	* @return none
 	*/
-	function setCommand($command) { }
+	function SetCommand($command) { }
 	
 	/**
 	* To be implemented by child
@@ -46,7 +30,7 @@ class IDbConnection
 	* @param string $value value of the parameter
 	* @return none
 	*/
-	function addParameter($name, $value) { }
+	function AddParameter($name, $value) { }
 
 	/**
 	* To be implemented by child
@@ -54,20 +38,18 @@ class IDbConnection
 	* @param array $paramValues the corresponding values of the parameters
 	* @return IReader
 	*/
-	function &query() { } 
+	function &Query() { } 
 	
 	/**
 	* To be implemented by child
 	* @param array $paramNames the names of the parameters
 	* @param array $paramValues the corresponding values of the parameters
 	*/
-	function &execute() { }
+	function &Execute() { }
 }
 
 class IReader
 {
-	var $result = null;
-	
 	/**
 	* To be implemented by child
 	*/
@@ -77,40 +59,40 @@ class IReader
 	* To be implemented by child
 	* @return array
 	*/
-	function &getRow() { }
+	function &GetRow() { }
 	
 	/**
 	* To be implemented by child
 	* @return int
 	*/
-	function numRows() { }
+	function NumRows() { }
 }
 
 /**
-* Abstract PEAR::DB details
+* Pear::DB implementation
 */
 class PearDbConnection extends IDbConnection
 {
-	var $dbType = '';
-	var $dbUser = '';
-	var $dbPassword = '';
-	var $hostSpec = '';
-	var $dbNames = array();
+	var $_dbType = '';
+	var $_dbUser = '';
+	var $_dbPassword = '';
+	var $_hostSpec = '';
+	var $_dbName = '';
 	
 	var $_db = null;
 	var $_connected = false;
 	var $_command = '';
 	var $_params = array();
 	
-	function PearDbConnection($dbType, $dbUser, $dbPassword, $hostSpec, $dbNames = array()) {
-		$this->dbType = $dbType;
-		$this->dbUser = $dbUser;
-		$this->dbPassword = $dbPassword;
-		$this->hostSpec = $hostSpec;
-		$this->dbNames = $dbNames;
+	function PearDbConnection($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName) {
+		$this->_dbType = $_dbType;
+		$this->_dbUser = $_dbUser;
+		$this->_dbPassword = $_dbPassword;
+		$this->_hostSpec = $_hostSpec;
+		$this->_dbName = $_dbName;
 	}
 	
-	function connect($safeMode = false) {
+	function Connect($safeMode = false) {
 		if ($this->connected) {
 			return;
 		}
@@ -123,7 +105,7 @@ class PearDbConnection extends IDbConnection
 			include_once('DB.php');
 		}
 		
-		$dsn = "$this->dbType://$this->dbUser:$this->dbPassword@$this->hostSpec/{$this->dbNames[0]}";
+		$dsn = "$this->_dbType://$this->_dbUser:$this->_dbPassword@$this->_hostSpec/{$this->_dbName}";
 
         $db = DB::connect($dsn, true);	// Make persistant connection to database
         
@@ -137,55 +119,56 @@ class PearDbConnection extends IDbConnection
         $this->_db = $db;
 	}
 	
-	function disconnect() {
+	function Disconnect() {
 		$this->_db->disconnect();
 	}
 	
-	function setCommand($command) {
+	function SetCommand($command) {
 		$this->_command = preg_replace("/\@[\w\d]+/", '?', $command);
 	}
 	
-	function addParameter($name, $value) {
+	function AddParameter($name, $value) {
 		$this->_params[$name] = $value;
 	}
 	
-	function &query() {
+	function &Query() {
 		$result = $this->_db->query($this->_command, $paramValues);		
 		$this->_checkForError($result);		
 		return new PearReader($result);
 	}
 	
-	function &execute() {
+	function &Execute() {
 		$result = $this->_db->execute($this->_command, $paramValues);		
 		$this->_checkForError($result);		
 		return true;
 	}
 	
 	function _checkForError($result) {
-	  if (DB::isError($result))
-            CmnFns::do_error_box(translate('There was an error executing your query') . '<br />'
-                . $result->getMessage()
-                . '<br />' . '<a href="javascript: history.back();">' . translate('Back') . '</a>');
+		if (DB::isError($result)) {
+            die('There was an error executing your query: ' . $result->getMessage());
+		}
         return false;
 	}
 }
 
 class PearReader extends IReader
 {
+	var $_result = null;
+	
 	/**
 	* Takes a PEAR::DB DB_result object to abstract its methods
 	* @param DB_result $DB_result
 	*/
 	function PearReader(&$DB_result) {
-		$this->result = $DB_result;
+		$this->_result = $DB_result;
 	}
 	
-	function &getRow() {
-		return $this->result->fetchRow();
+	function &GetRow() {
+		return $this->_result->fetchRow();
 	}
 	
-	function numRows() {
-		return $this->result->numRows();
+	function NumRows() {
+		return $this->_result->numRows();
 	}
 }
 ?>

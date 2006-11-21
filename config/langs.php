@@ -309,10 +309,11 @@ function get_language_list() {
 function get_jscalendar_file() {
 	global $languages;
 	global $lang;
+	global $charset;
 	
 	$incomplete_translations = array ('tr');
 	
-	$_file = 'calendar-' . $languages[$lang][2] . '.js';
+	$_file = 'calendar-' . $languages[$lang][2] . ($charset == 'utf-8' ? '-utf8' : '').'.js';
 	$base = dirname(__FILE__) . '/..';
 	if ( (array_search($languages[$lang][2], $incomplete_translations) !== false) || !file_exists("$base/jscalendar/lang/$_file")) {
 		$_file = "calendar-en.js";

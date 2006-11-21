@@ -4,7 +4,7 @@
 *  data and settings in phpScheduleIt
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author David Poole <David.Poole@fccc.edu>
-* @version 07-08-06
+* @version 08-08-06
 * @package Admin
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt
@@ -29,6 +29,7 @@ class Admin {
 					'schedules'	=> array ('Manage Schedules', 'manageSchedules', 'schedules'),
 					'users' 	=> array ('Manage Users', 'manageUsers', 'users'),
 					'resources'	=> array ('Manage Resources', 'manageResources', 'resources'),
+					'locations'	=> array ('Manage Locations', 'manageLocations', 'locations'),
 					'perms'		=> array ('Manage User Training', 'managePerms', 'perms'),
 					'reservations'	=> array ('Manage Reservations', 'manageReservations', 'reservations'),
 					'email'		=> array ('Email Users', 'manageEmail', 'email'),
@@ -90,7 +91,7 @@ class Admin {
 	*/
 	function isUserAllowed() {
 		$allowed = false;
-		
+
 		if ($this->user->get_isadmin()) {
 			$allowed = true;
 		}
@@ -240,12 +241,63 @@ class Admin {
 			$rs = $_SESSION['post'];
 		}
 
+		$locations = $this->db->get_table_data('locations', array('locid', 'street1', 'street2', 'city', 'state', 'zip', 'country'), array('street1'));
 		$scheds = $this->db->get_table_data('schedules', array('scheduleid', 'scheduletitle'), array('scheduletitle'));
 
-		print_resource_edit($rs, $scheds, $edit, $this->pager);
+		print_resource_edit($rs, $locations, $scheds, $edit, $this->pager);
 		unset($_SESSION['post'], $rs);
 	}
 
+
+	/**
+	* Interface for managing locations
+	* Provides an interface for viewing location information,
+	* adding, modifiying and deleting location information
+	* @param none
+	*/
+	function manageLocations() {
+		$this->listLocationsTable();		// List locations and allow deletion
+		$this->editLocationTable();			// Enter/display info about a location
+	}
+
+	/**
+	* Prints out list of current resources
+	* @param none
+	*/
+	function listLocationsTable() {
+		$pager = $this->pager;
+		$num = $this->db->get_num_admin_recs('locations');	// Get number of records
+		$pager->setTotRecords($num);				// Pager method calls
+		$orders = array('street1', 'locid');
+
+		$locations = $this->db->get_all_location_data($pager, $orders);
+
+		print_manage_locations($pager, $locations, $this->db->get_err());	// Print table of locations
+		$pager->printPages();
+	}
+
+	/**
+	* Interface to add or edit location information
+	* @param none
+	* @see printLocationEdit()
+	*/
+	function editLocationTable() {
+		$edit = (isset($_GET['locid']));	// Determine if the form should contain values or be blank
+		$rs = array();
+
+		if ($edit) {						// Validate locid
+			$locid =  trim($_GET['locid']);
+		}
+		if ($edit) {						// If this is an edit, get the location information from database
+			$rs = $this->db->get_location_data($locid);
+		}
+		if (isset($_SESSION['post'])) {
+			$rs = $_SESSION['post'];
+		}
+
+		print_location_edit($rs, $edit, $this->pager);
+		unset($_SESSION['post'], $rs);
+	}
 
 	/**
 	* Interface for managing user training

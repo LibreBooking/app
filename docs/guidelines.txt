@@ -1,0 +1,71 @@
+phpScheduleIt Development Guidelines
+Rev 1.1 DRAFT 2006-02-26
+Nick Korbel
+
+----------------
+- Introduction -
+----------------
+The goal of this document is to help bring new developers up to speed quickly and to make everyone's lives easier for code development by explaining some common tasks and project best practices.  If we all follow this then we'll reduce the overhead in fixing problems down the road.
+
+-------------------------------
+- Setting Up Your Environment -
+-------------------------------
+1) Create a directory named 'phpScheduleIt'
+2) Perform a SVN Checkout with the following settings
+	URL: https://svn.sourceforge.net/svnroot/phpscheduleit
+
+---------------------------
+- Before Writing Any Code -
+---------------------------
+1) Always perform a SVN Update
+2) Resolve any conflicts (if 1 is always performed then this will never happen)
+
+-------------------------------------------
+- After Making Changes/Additions/Removals -
+-------------------------------------------
+1) Always perform a SVN Update
+2) Resolve any conflicts
+3) Add any new files to SVN
+4) Remove any obsolete files from SVN
+5) Commit your changes (Please add a descriptive comment)
+
+-----------------------
+- Resolving Conflicts -
+-----------------------
+There are many good tools available for source code diffing.  I have been a fan of WinMerge, available from SourceForge, but WinDiff is also pretty popular.
+
+It really does not matter what tool you use as long as you use is correctly.  Always resolve any outstanding conflicts before committing your code.
+
+-----------------------
+- Coding Requirements -
+-----------------------
+Add your name to the file header and update the modified date.  The file's creator will always be the first in the list of authors, the last developer to make modifications will always be last in the list.
+
+Any query written must be generic enough to run on any PEAR::DB supported database.  SQL syntax specific to a certain database will be removed from code if committed.
+
+Any HTML/JavaScript written must be portable across both Internet Explorer and Firefox.  Supporting additional browsers is nice, but not required.
+
+Code must be compatible with PHP 4.2+.  Forward compatibility with PHP 5 is going to be a requirement soon.
+
+Never use PHP short tags.  Always open tags with full <?php.
+
+----------------------
+- Coding Suggestions -
+----------------------
+All function names should be first letter lowercase, then each successive word's first letter should be upper case.  For example: thisIsAGoodFunctionName().
+
+Private functions and variables should start with an underscore.  For example: _privateVariable.
+Class names should start with upper case and each successive word's first letter should be upper case.  For example: MyClass.
+
+Make the attempt to keep business logic code out of UI pages.  All business logic should be placed into a function file or, preferably, a class.
+
+Where applicable (ie not in UI dependent code), write PHP_Unit tests to prove your code works.  This reduces the need for tedious UI based testing and has the side effect of early notifications if code changes break expected functionality.
+
+For new or modified database schema changes, add the SQL to handle it in at least install.sql and update.sql
+
+-------------------
+- Version Control -
+-------------------
+Try to commit after making any specific change.  In other words, do not write 5 new features then commit.  Commit after each feature is written.
+
+Use a descriptive comment for each commit.  This keeps other developers aware of what was changed and makes it easier to search the reposiory history.

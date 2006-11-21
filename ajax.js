@@ -50,6 +50,11 @@ function buildKeyValueString(f, keyValue) {
 				keyValue += f.elements[i].name + "=" + f.elements[i].options[o].value + "&";
 			}
 		}
+		else if (f.elements[i].type=="checkbox" && f.elements[i].name.indexOf("[]",0) >= 0){
+			if (f.elements[i].checked) {
+				keyValue += f.elements[i].name + "=" + f.elements[i].value + "&";
+			}
+		}
 		else {
 			keyValue += f.elements[i].name + "=" + f.elements[i].value + "&";
 		}

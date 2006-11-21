@@ -1,0 +1,4 @@
+SELECT rr.resid
+FROM reservation_resources rr
+LEFT JOIN reservations r ON r.resid = rr.resid
+WHERE r.resid IS NULL 

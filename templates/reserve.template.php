@@ -4,7 +4,7 @@
 * No data manipulation is done in this file
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author David Poole <David.Poole@fccc.edu>
-* @version 10-05-06
+* @version 07-08-06
 * @package Templates
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt

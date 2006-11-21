@@ -4,32 +4,32 @@ require_once('DBConnection.class.php');
 
 class Database
 {
-	var $command = '';
-	var $parameters = null;
-	var $connection = null;
+	var $Command = '';
+	var $Parameters = null;
+	var $Connection = null;
 	
 	var $_paramNames = array();
 	var $_values = array();
 
 	function Database(&$dbConnection) {
-		$this->connection = $dbConnection;
-		$this->parameters = new Parameters();
+		$this->Connection = $dbConnection;
+		$this->Parameters = new Parameters();
 	}
 	
-	function setParameters(&$parameters) {
+	function SetParameters(&$parameters) {
 		$this->_paramNames = array();	// Clean out contents
 		$this->_values = array();
 		
-		$this->parameters = $parameters;
+		$this->Parameters = $parameters;
 		
-		for ($i = 0; $i < $this->parameters->count(); $i++) {
-			$p = $this->parameters->items($i);
-			$this->_paramNames[] = $p->name;
-			$this->_values[] = $p->value;
+		for ($i = 0; $i < $this->Parameters->Count(); $i++) {
+			$p = $this->Parameters->Items($i);
+			$this->_paramNames[] = $p->Name;
+			$this->_values[] = $p->Value;
 		}
 	}
 	
-	function setCommand($command) {
+	function SetCommand($command) {
 //		$matches = array();
 //		preg_match_all("/\@[\w\d]+/", $command, $matches);
 //		if (sizeof($matches) > 0) {
@@ -37,11 +37,11 @@ class Database
 //		}
 //		unset($matches);
 		
-		$this->connection->setCommand($command);
+		$this->Connection->SetCommand($command);
 	}
 	
-	function &query() {		
-		return $this->connection->query($this->_paramNames, $this->_values);
+	function &Query() {		
+		return $this->Connection->Query($this->_paramNames, $this->_values);
 	}
 }
 
@@ -52,12 +52,12 @@ class Parameters
 	
 	function Parameters() { }
 	
-	function add(&$parameter) {
+	function Add(&$parameter) {
 		$this->_parameters[] = $parameter;
 		$this->_count++;
 	}
 	
-	function remove(&$parameter) {
+	function Remove(&$parameter) {
 		for ($i = 0; $i < $this->_count; $i++) {
 			if ($this->_parameters[$i] == $parameter) {
 				$this->removeAt($i);
@@ -65,29 +65,29 @@ class Parameters
 		}
 	}
 	
-	function removeAt($index) {
+	function RemoveAt($index) {
 		unset($this->_parameters[$index]);
 		$this->_parameters = array_values($this->_parameters);	// Re-index the array
 		$this->_count--;
 	}
 	
-	function &items($index) {
+	function &Items($index) {
 		return $this->_parameters[$index];
 	}
 	
-	function count() {
+	function Count() {
 		return $this->_count;
 	}
 }
 
 class Parameter
 {
-	var $name = '';
-	var $value = '';
+	var $Name = '';
+	var $Value = '';
 	
 	function Parameter($name = '', $value = '') {
-		$this->name = $name;
-		$this->value = $value;
+		$this->Name = $name;
+		$this->Value = $value;
 	}
 }
 

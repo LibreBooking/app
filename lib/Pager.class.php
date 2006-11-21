@@ -2,7 +2,7 @@
 /**
 * Paging class to iterate through limited recordsets
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 01-28-06
+* @version 08-08-06
 * @package Pager
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt
@@ -24,7 +24,7 @@
 *
 * // Get total # of pages
 * $query = "SELECT COUNT(*) as num FROM table";
-* $result = $db->query($query);    
+* $result = $db->query($query);
 * $rs = $result->fetchRow();
 * $num = $rs['num'];              // # of records
 *
@@ -54,12 +54,12 @@ class Pager {
 	var $tot_pages;
 	var $page_var;
 	var $limit_var;
-	
+
 	// Application variables with user modify option
 	var $limit;
 	var $tot_records;
 	var $print_limit_select = true;
-	
+
 	// User modifiable variables
 	var $prev_link = '&laquo;';
 	var $next_link = '&raquo;';
@@ -72,8 +72,8 @@ class Pager {
 	var $tb_style;
 	var $text_class;
 	var $text_style;
-	
-		
+
+
 	/**
 	* Pager Constructor
 	* Sets up Pager variables and initializes values
@@ -94,15 +94,15 @@ class Pager {
 		$this->limit = $limit;
 		$this->page_var = $page_var;
 		$this->limit_var = $limit_var;
-		
+
 		// Call all system setter functions
 		$this->initCurPage();
 		$this->initLimit();
 		$this->initTotPages();
 		$this->initQueryString();
 	}
-	
-	
+
+
 	/**
 	* Print out the pages as links
 	* Prints out a table of all the pages as links
@@ -128,53 +128,53 @@ class Pager {
 		$p = $this->view_pages;			// How many pages to view
 		$cur_page = $this->cur_page;	// Current page
 		$tot_pages = $this->tot_pages;	// Total pages
-		
+
 		// Open up the HTML table
 		$this->startTable();
 		// Open up cell for page links
 		$this->startPagesCell();
-		
+
 		// Page to start printing bulk of links
 		$start = ($cur_page > $p) ? $cur_page - $p : 1;
 		// Page to end printing bulk of links
 		$end = ($cur_page + $p) < $tot_pages ? $cur_page + $p : $tot_pages;
-		
+
 		// Print 'prev' link
 		$this->printPrev();
-		
+
 		// Print link to first page, if not already there
 		if ($start != 1) {
 			$this->printPage(1);
 		}
-		
+
 		// Print '...' if necessary (with link to center page)
 		if ($cur_page > $p+2) {
 			$this->printLink(ceil( ($start+1)/2 ), '...');
 		}
-		
+
 		// Print links to pages before current page (up to first page)
 		// Print current page
-		// Print links to pages after current page (up to last page)		
+		// Print links to pages after current page (up to last page)
 		for ($pg = $start; $pg <= $end; $pg++) {
 			$this->printPage($pg);
 		}
-				
+
 		// Print '...' if necessary (with link to center page)
 		if ( $cur_page < ($tot_pages - ($p+1)) ) {
 			$this->printLink(ceil( ($tot_pages+$end)/2 ), '...' );
 		}
-		
+
 		// Print link to last page, if not already there
 		if ($end != $tot_pages) {
 			$this->printPage($tot_pages);
 		}
-		
+
 		// Print 'next' link
 		$this->printNext();
-		
+
 		// Print total records
 		$this->printTotal();
-		
+
 		// Close page links cell
 		$this->endPagesCell();
 		// Print out cell with limit jump menu
@@ -182,7 +182,7 @@ class Pager {
 		// Close table
 		$this->endTable();
 	}
-	
+
 	//-----------------------------------------
 	// Application setter functions
 	//-----------------------------------------
@@ -193,7 +193,7 @@ class Pager {
 	function initCurPage() {
 		$this->cur_page = isset($_GET[$this->page_var]) ? intval($_GET[$this->page_var]) : 1;
 	}
-	
+
 	/**
 	* Sets the limit variable if it is passed from querystring
 	* @param none
@@ -204,7 +204,7 @@ class Pager {
 		if (isset($_POST[$this->limit_var]))
 			$this->limit = intval($_POST[$this->limit_var]);
 	}
-	
+
 	/**
 	* Pull page information from query string and set $query_string
 	*
@@ -225,7 +225,7 @@ class Pager {
 		}
 
 	}
-	
+
 	/**
 	* Sets the tot_pages variable
 	*
@@ -238,10 +238,10 @@ class Pager {
 		$this->tot_pages = ceil($this->tot_records/$this->limit);
 	}
 	//===========================================
-	
+
 	//-------------------------------------------
 	// Output functions
-	//-------------------------------------------	
+	//-------------------------------------------
 	/**
 	* Print out link to a page
 	* @param int $p page number to print
@@ -254,7 +254,7 @@ class Pager {
 			$this->printLink($p, $p);
 		}
 	}
-	
+
 	/**
 	* Print 'prev' link, if necessary
 	* @param none
@@ -264,7 +264,7 @@ class Pager {
 		if ($cur_page > 1)
 			$this->printLink($cur_page-1, $this->prev_link);
 	}
-	
+
 	/**
 	* Print 'next' link, if necessary
 	* @param none
@@ -274,7 +274,7 @@ class Pager {
 		if ($cur_page < $this->tot_pages && $this->tot_records > 0)
 			$this->printLink($cur_page+1, $this->next_link);
 	}
-	
+
 	/**
 	* Print out link to a certain page
 	* @param int $page page to link to
@@ -283,7 +283,7 @@ class Pager {
 	function printLink($page, $text) {
 		global $link;
 		global $use_link;
-		
+
 		if ($use_link) {
 			$link->doLink(
 				$_SERVER['PHP_SELF'] . "?$this->page_var=$page&amp;" . $this->query_string . '"',
@@ -300,16 +300,16 @@ class Pager {
 				. $text . '</a> ';
 		}
 	}
-	
+
 	/**
 	* Prints out opening table tag
 	* @param none
 	*/
 	function startTable() {
 		echo "<table align=\"$this->table_align\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"$this->table_width\">\n"
-			. "<tr class=\"$this->text_class\" style=\"$this->text_style\">\n";	
+			. "<tr class=\"$this->text_class\" style=\"$this->text_style\">\n";
 	}
-	
+
 	/**
 	* Begins cell containing page links
 	* @param none
@@ -317,15 +317,15 @@ class Pager {
 	function startPagesCell() {
 		echo '<td>' . translate('Page') . ' ';
 	}
-	
+
 	/**
 	* Closes cell containing page links
 	* @param none
 	*/
 	function endPagesCell() {
 		echo '</td>';
-	} 
-	
+	}
+
 	/**
 	* Prints out cell containing limit jump menu
 	* @param none
@@ -346,7 +346,7 @@ class Pager {
 			. "</form>\n"
 			. "</td>\n";
 	}
-	
+
 	/**
 	* Prints out the closing row and table HTML tags
 	* @param none
@@ -354,7 +354,7 @@ class Pager {
 	function endTable() {
 		echo "</tr>\n</table>\n";
 	}
-	
+
 	/**
 	* Prints out total number of records returned
 	* @param none
@@ -366,10 +366,10 @@ class Pager {
 
 	//--------------------------------------------
 	// User-Modified Setter Functions
-	//--------------------------------------------	
+	//--------------------------------------------
 	/**
 	* Sets the total records for this recordset
-	* 
+	*
 	* - Default setting is 0 (in constructor)
 	*
 	* @param int $tot total number of records
@@ -379,7 +379,7 @@ class Pager {
 		// Call initTotPages again to reset paging
 		$this->initTotPages();
 	}
-	
+
 	/**
 	* Sets the default recordset limit
 	* Note: A limit value set in the querystring
@@ -394,7 +394,7 @@ class Pager {
 		// Call initLimit() to reinitialzie limit
 		$this->initLimit();
 	}
-	
+
 	/**
 	* Sets the text for 'prev' link
 	*
@@ -405,7 +405,7 @@ class Pager {
 	function setPrevLink($text) {
 		$this->prev_link = trim($text);
 	}
-	
+
 	/**
 	* Sets the text for 'next' link
 	*
@@ -416,7 +416,7 @@ class Pager {
 	function setNextLink($text) {
 		$this->next_link = trim($text);
 	}
-		
+
 	/**
 	* Sets the value of view_pages
 	* How many pages to print on either side of
@@ -429,7 +429,7 @@ class Pager {
 	function setViewPages($view_page) {
 		$this->view_pages = intval($view_page);
 	}
-	
+
 	/**
 	* Sets the array of limits
 	* Pass in an array of ints to use
@@ -442,7 +442,7 @@ class Pager {
 	function setLimits($new_limits) {
 		$this->limits = $new_limits;
 	}
-	
+
 	/**
 	* Sets the name of the class to be used for the links
 	*
@@ -453,7 +453,7 @@ class Pager {
 	function setLinkClass($link_class) {
 		$this->link_class = $link_class;
 	}
-	
+
 	/**
 	* Sets the name of the class to be used for the pull down box
 	*
@@ -464,7 +464,7 @@ class Pager {
 	function setTbClass($tb_class) {
 		$this->tb_class = $tb_class;
 	}
-	
+
 	/**
 	* Sets the inline style of the limit jump menu
 	* This setting overrides the tb_class value
@@ -475,7 +475,7 @@ class Pager {
 	function setTbStyle($tb_style) {
 		$this->tb_style = $tb_style;
 	}
-	
+
 	/**
 	* Sets the name of the class to be used for the text
 	*  ie) "Page:" and "Per page:"
@@ -488,7 +488,7 @@ class Pager {
 	function setTextClass($text_class) {
 		$this->text_class = $text_class;
 	}
-	
+
 	/**
 	* Sets the inline style to be used for the text
 	* Should be used to modifiy all paging text font-family, size, etc
@@ -501,7 +501,7 @@ class Pager {
 	function setTextStyle($text_style) {
 		$this->text_style = $text_style;
 	}
-	
+
 	/**
 	* Sets the width of the table bounding the pages/jump box
 	*
@@ -512,7 +512,7 @@ class Pager {
 	function setTableWidth($table_width) {
 		$this->table_width = $table_width;
 	}
-	
+
 	/**
 	* Sets the horizontial alignment of the table bounding the paging
 	*
@@ -523,7 +523,7 @@ class Pager {
 	function setTableAlign($table_align) {
 		$this->table_align = $table_align;
 	}
-	
+
 	/**
 	* Sets the page variable name for the querystring
 	* @param string $page_var page variable name
@@ -531,7 +531,7 @@ class Pager {
 	function setPageVar($page_var) {
 		$this->page_var = $page_var;
 	}
-	
+
 	/**
 	* Sets the limit variable name for the querystring
 	* @param string $limit_var limit variable name
@@ -539,7 +539,7 @@ class Pager {
 	function setLimitVar($limit_var) {
 		$this->limit_var = $limit_var;
 	}
-	
+
 	/**
 	* Sets the print_limit_select variable to decide if we should show the limit select pulldown
 	* @param bool $view_limit_select if we should show the select pulldown or not
@@ -548,10 +548,10 @@ class Pager {
 		$this->print_limit_select = $view_limit_select;
 	}
 	//============================================
-	
+
 	//--------------------------------------------
 	// Getter methods
-	//--------------------------------------------	
+	//--------------------------------------------
 	/**
 	* Returns the recordset offset
 	* @param none
@@ -560,7 +560,7 @@ class Pager {
 	function getOffset() {
 		return $this->limit * $this->cur_page - $this->limit;
 	}
-	
+
 	/**
 	* Returns the total number of pages
 	* @param none
@@ -569,7 +569,7 @@ class Pager {
 	function getTotPages() {
 		return $this->tot_pages;
 	}
-	
+
 	/**
 	* Returns the current page number
 	* @param none
@@ -578,7 +578,7 @@ class Pager {
 	function getPageNum() {
 		return $this->cur_page;
 	}
-	
+
 	/**
 	* Returns the current recordset limit
 	* @param none
@@ -587,7 +587,7 @@ class Pager {
 	function getLimit() {
 		return $this->limit;
 	}
-	
+
 	/**
 	* Returns value of previous link text
 	* @param none
@@ -596,7 +596,7 @@ class Pager {
 	function getPrevLink() {
 		return $this->prev_link;
 	}
-	
+
 	/**
 	* Returns value of next link text
 	* @param none
@@ -605,7 +605,7 @@ class Pager {
 	function getNextLink() {
 		return $this->next_link;
 	}
-	
+
 	/**
 	* Returns the name used for the page querystring variable
 	* @param none
@@ -614,7 +614,7 @@ class Pager {
 	function getPageVar() {
 		return $this->page_var;
 	}
-	
+
 	/**
 	* Returns the name used for the limit querystring variable
 	* @param none
@@ -624,7 +624,7 @@ class Pager {
 		return $this->limit_var;
 	}
 	//===========================================
-	
+
 // End class
 }
 ?>

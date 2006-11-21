@@ -435,6 +435,29 @@ function doUpdate($version) {
 					$update_resources_set_mintime,
 					$alter_schedules_drop_dayoffset
 					);
+
+	$create_locations = array('CREATE TABLE locations (
+							  locid CHAR(16) NOT NULL PRIMARY KEY,
+							  street1 VARCHAR(100) NOT NULL,
+							  street2 VARCHAR(100),
+							  city VARCHAR(64),
+							  state VARCHAR(10),
+							  zip VARCHAR(6),
+							  country VARCHAR(64)
+							  )', 'Create locations table');
+
+	$create_location_resources = array('CREATE TABLE location_resources (
+							  locid CHAR(16) NOT NULL PRIMARY KEY,
+							  resid CHAR(16) NOT NULL PRIMARY KEY
+							  )', 'Create location_resources table');
+							  
+
+							  
+	$version122 = array(
+					$create_locations,
+					$create_location_resources
+					);
+
 	//!#----------------
 
 	//# Must run for all updates
@@ -448,6 +471,9 @@ function doUpdate($version) {
 	}
 	else if ($version = "1.1.0") {
 		$to_run[] = $version120;
+	}
+	else if ($version = "1.2.0") {
+		$to_run[] = $version122;
 	}
 
 	foreach ($to_run as $sqls) {
@@ -508,6 +534,9 @@ function determineVersion() {
 	else if ($num == 14) {
 		$version = "1.2.0";
 	}
+	
+	//TODO - correctly determine v1.2.2! 
+	
 	return $version;
 }
 ?>

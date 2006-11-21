@@ -4,7 +4,7 @@
 *  without actually placing the reservation.
 * The output from this is to be used by an AJAX response handler
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 04-28-06
+* @version 10-28-06
 * @package phpScheduleIt
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt
@@ -95,7 +95,6 @@ else {
 function process_reservation(&$res) {
 	$success = false;
 	global $Class;
-	$is_pending = (isset($_POST['pending']) && $_POST['pending']);
 	
 	if (isset($_POST['start_date'])) {			// Parse the POST-ed starting and ending dates
 		$start_date = eval('return mktime(0,0,0, \'' . str_replace(INTERNAL_DATE_SEPERATOR, '\',\'', $_POST['start_date']) . '\');');
@@ -109,11 +108,11 @@ function process_reservation(&$res) {
 		$res->scheduleid= $_POST['scheduleid'];				//
 		
 		if ($_POST['interval'] != 'none') {		// Check for reservation repeation
-			if ($start_date == $end_date) { 
+			if ($start_date == $end_date) {
+				$res->is_repeat = true;
 				$days = isset($_POST['repeat_day']) ? $_POST['repeat_day'] : NULL;
 				$week_num = isset($_POST['week_number']) ? $_POST['week_number'] : NULL;
 				$repeat = CmnFns::get_repeat_dates($start_date, $_POST['interval'], $days, $_POST['repeat_until'], $_POST['frequency'], $week_num);
-				$res->is_repeat = true;
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 * It will also allow other users to view this reservation.
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author David Poole <David.Poole@fccc.edu>
-* @version 08-08-06
+* @version 07-08-06
 * @package phpScheduleIt
 *
 * Copyright (C) 2003 - 2007 phpScheduleIt
@@ -79,7 +79,7 @@ $t->printHTMLFooter();
 function process_reservation($fn) {
 	$success = false;
 	global $Class;
-	$is_pending = (isset($_POST['pending']) && $_POST['pending']);
+	$is_pending = (isset($_POST['pending']) && $_POST['pending'] && !Auth::isAdmin());
 
 	if (isset($_POST['start_date'])) {			// Parse the POST-ed starting and ending dates
 		$start_date = eval('return mktime(0,0,0, \'' . str_replace(INTERNAL_DATE_SEPERATOR, '\',\'', $_POST['start_date']) . '\');');
@@ -133,12 +133,12 @@ function process_reservation($fn) {
 		$resources_to_add = $util->getAddedItems($orig_resources, $selected_resources);
 		$resources_to_remove = $util->getRemovedItems($orig_resources, $selected_resources);
 
+
 		$res->user 		= new User($_POST['memberid']);
 		$res->start_date= $start_date;
 		$res->end_date 	= $end_date;
 		$res->start		= $_POST['starttime'];
 		$res->end		= $_POST['endtime'];
-
 		$res->summary	= stripslashes($_POST['summary']);
 		$res->allow_participation = (int)isset($_POST['allow_participation']);
 		$res->allow_anon_participation = (int)isset($_POST['allow_anon_participation']);

@@ -41,7 +41,7 @@ session_start();
 // Turn off magic quotes (do not edit!)
 set_magic_quotes_runtime(0);
 
-$conf['app']['version'] = '1.2.4';
+$conf['app']['version'] = '1.2.1';
 
 include_once('constants.php');
 include_once('langs.php');

@@ -323,6 +323,17 @@ function print_lname_links() {
 	}
 }
 
+function format_location_data($location_data) {
+	$formatted_data = $location_data['street1'] .
+		(!empty($location_data['street2']) ? ", " . $location_data['street2'] : "") .
+		(!empty($location_data['city']) ? ", " . $location_data['city'] : "") .
+		(!empty($location_data['state']) ? ", " . $location_data['state'] : "") .
+		(!empty($location_data['zip']) ? ", " . $location_data['zip'] : "") .
+		(!empty($location_data['country']) ? ", " . $location_data['country'] : "");
+
+	return $formatted_data;
+}
+
 /**
 * Prints out list of current resources
 * @param Pager $pager pager object
@@ -366,7 +377,7 @@ print_additional_tools_box( array(
 		$cur = $resources[$i];
         echo "<tr class=\"cellColor" . ($i%2) . "\" align=\"center\" id=\"tr$i\">\n"
             . '<td style="text-align:left">' . $cur['name'] . "</td>\n"
-            . '<td style="text-align:left">' . (isset($cur['location']) ?  $cur['location'] : '&nbsp;') . "</td>\n"
+            . '<td style="text-align:left">' . format_location_data($cur) . "</td>\n"
             . '<td style="text-align:left">' . $cur['scheduletitle'] . "</td>\n"
         	. '<td style="text-align:left">' . (isset($cur['rphone']) ?  $cur['rphone'] : '&nbsp;') . "</td>\n"
             . '<td style="text-align:left">'. (isset($cur['notes']) ?  $cur['notes'] : '&nbsp;') . "</td>\n"
@@ -387,6 +398,65 @@ print_additional_tools_box( array(
 	echo submit_button(translate('Delete'), 'machid') . hidden_fn('delResource') . '</form>';
 }
 
+/**
+* Prints out list of current locations
+* @param Pager $pager pager object
+* @param mixed $locations array of location data
+* @param string $err last database error
+*/
+function print_manage_locations(&$pager, $locations, $err) {
+	global $link;
+	$util = new Utility();
+
+?>
+
+<form name="manageLocation" method="post" action="admin_update.php" onsubmit="return checkAdminForm();">
+<table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
+  <tr>
+    <td class="tableBorder">
+      <table width="100%" border="0" cellspacing="1" cellpadding="0">
+        <tr>
+          <td colspan="8" class="tableTitle">&#8250; <?php echo translate('All Locations')?></td>
+        </tr>
+		<?php echo "
+        <tr class=\"rowHeaders\">
+          <td>" . $link->getLink($_SERVER['PHP_SELF'] . $util->getSortingUrl($_SERVER['QUERY_STRING'], 'street1'), translate('Street1')) . "</td>
+          <td width=\"10%\">" . $link->getLink($_SERVER['PHP_SELF'] . $util->getSortingUrl($_SERVER['QUERY_STRING'], 'street2'), translate('Street2')) . "</td>
+		  <td width=\"10%\">" . $link->getLink($_SERVER['PHP_SELF'] . $util->getSortingUrl($_SERVER['QUERY_STRING'], 'city'), translate('City')) . "</td>
+		  <td width=\"10%\">" . $link->getLink($_SERVER['PHP_SELF'] . $util->getSortingUrl($_SERVER['QUERY_STRING'], 'state'), translate('State')) . "</td>
+		  <td width=\"10%\">" . $link->getLink($_SERVER['PHP_SELF'] . $util->getSortingUrl($_SERVER['QUERY_STRING'], 'zip'), translate('Zip')) . "</td>
+		  <td width=\"10%\">" . $link->getLink($_SERVER['PHP_SELF'] . $util->getSortingUrl($_SERVER['QUERY_STRING'], 'country'), translate('Country')) . "</td>
+          <td width=\"5%\">" . translate('Edit') . "</td>
+          <td width=\"7%\">" . translate('Delete') . "</td>
+        </tr>";
+
+	if (!$locations)
+		echo '<tr class="cellColor0"><td colspan="8" style="text-align: center;">' . $err . '</td></tr>' . "\n";
+
+    for ($i = 0; is_array($locations) && $i < count($locations); $i++) {
+		$cur = $locations[$i];
+        echo "<tr class=\"cellColor" . ($i%2) . "\" align=\"center\" id=\"tr$i\">\n"
+            . '<td style="text-align:left">' . $cur['street1'] . "</td>\n"
+            . '<td style="text-align:left">' . (isset($cur['street2']) ?  $cur['street2'] : '&nbsp;') . "</td>\n"
+            . '<td style="text-align:left">' . (isset($cur['city']) ?  $cur['city'] : '&nbsp;') . "</td>\n"
+        	. '<td style="text-align:left">' . (isset($cur['state']) ?  $cur['state'] : '&nbsp;') . "</td>\n"
+            . '<td style="text-align:left">'. (isset($cur['zip']) ?  $cur['zip'] : '&nbsp;') . "</td>\n"
+            . '<td style="text-align:left">'. (isset($cur['country']) ?  $cur['country'] : '&nbsp;') . "</td>\n"
+            . '<td>' . $link->getLink($_SERVER['PHP_SELF'] . '?' . preg_replace("/&locid=[\d\w]*/", "", $_SERVER['QUERY_STRING']) . '&amp;locid=' . $cur['locid'] . ((strpos($_SERVER['QUERY_STRING'], $pager->getLimitVar())===false) ? '&amp;' . $pager->getLimitVar() . '=' . $pager->getLimit() : ''), translate('Edit'), '', '', translate('Edit data for', array($cur['street1']))) . "</td>\n"
+            . "<td><input type=\"checkbox\" name=\"locid[]\" value=\"" . $cur['locid'] . "\" onclick=\"adminRowClick(this,'tr$i',$i);\" /></td>\n"
+            . "</tr>\n";
+    }
+
+    // Close table
+    ?>
+      </table>
+    </td>
+  </tr>
+</table>
+<br />
+<?php
+	echo submit_button(translate('Delete'), 'locid') . hidden_fn('delLocation') . '</form>';
+}
 
 /**
 * Interface to add or edit resource information
@@ -394,7 +464,7 @@ print_additional_tools_box( array(
 * @param boolean $edit whether this is an edit or not
 * @param object $pager Pager object
 */
-function print_resource_edit($rs, $scheds, $edit, &$pager) {
+function print_resource_edit($rs, $locations, $scheds, $edit, &$pager) {
 	global $conf;
 	$start = 0;
 	$end   = 1440;
@@ -406,13 +476,13 @@ function print_resource_edit($rs, $scheds, $edit, &$pager) {
 		$minM = intval($rs['minres'] % 60);
 		$maxH = intval($rs['maxres'] / 60);
 		$maxM = intval($rs['maxres'] % 60);
-		
+
 		$minNotice = $rs['min_notice_time'];
 		$maxNotice = $rs['max_notice_time'];
 	}
 	else {
 		$maxH = 24;
-		
+
 		$minNotice = 0;
 		$maxNotice = 0;
 	}
@@ -430,7 +500,18 @@ function print_resource_edit($rs, $scheds, $edit, &$pager) {
         </tr>
         <tr>
           <td class="formNames"><?php echo translate('Location')?></td>
-          <td class="cellColor"><input type="text" name="location" class="textbox" value="<?php echo isset($rs['location']) ? $rs['location'] : '' ?>" />
+          <td class="cellColor">
+			<select name="locid" class="textbox">
+				<option value="0"><?php echo translate('None')?></option>
+			<?php
+			if (!empty($locations)) {
+				for ($i = 0; $i < count($locations); $i++) {
+						$optionText = format_location_data($locations[$i]);
+						echo '<option value="' . $locations[$i]['locid'] . '"' . (isset($rs['locid']) && $locations[$i]['locid'] == $rs['locid'] ? ' selected="selected"' : '') . '>' . $optionText . "</option>\n";
+					}
+			}
+			?>
+			</select>
           </td>
         </tr>
         <tr>
@@ -539,6 +620,70 @@ function print_resource_edit($rs, $scheds, $edit, &$pager) {
 		else {
             echo submit_button(translate('Edit Resource'), 'machid') . cancel_button($pager) . hidden_fn('editResource')
 				. '<input type="hidden" name="machid" value="' . $rs['machid'] . '" />' . "\n";
+        	// Unset variables
+			unset($rs);
+		}
+		echo "</form>\n";
+}
+
+/**
+* Interface to add or edit location information
+* @param mixed $rs array of location data
+* @param boolean $edit whether this is an edit or not
+* @param object $pager Pager object
+*/
+function print_location_edit($rs, $edit, &$pager) {
+	global $conf;
+    ?>
+<form name="addLocation" method="post" action="admin_update.php" <?php echo $edit ? "" : "onsubmit=\"return checkAddLocation(this);\"" ?>>
+<table width="100%" border="0" cellspacing="0" cellpadding="1" align="center">
+  <tr>
+    <td class="tableBorder">
+      <table width="100%" border="0" cellspacing="1" cellpadding="0">
+        <tr>
+          <td class="formNames"><?php echo translate('Street1')?></td>
+          <td class="cellColor"><input type="text" name="street1" class="textbox" value="<?php echo isset($rs['street1']) ? $rs['street1'] : '' ?>" />
+          </td>
+        </tr>
+        <tr>
+          <td class="formNames"><?php echo translate('Street2')?></td>
+          <td class="cellColor"><input type="text" name="street2" class="textbox" value="<?php echo isset($rs['street2']) ? $rs['street2'] : '' ?>" />
+          </td>
+        </tr>
+        <tr>
+          <td class="formNames"><?php echo translate('City')?></td>
+          <td class="cellColor"><input type="text" name="city" class="textbox" value="<?php echo isset($rs['city']) ? $rs['city'] : '' ?>" />
+          </td>
+        </tr>
+        <tr>
+          <td class="formNames"><?php echo translate('State')?></td>
+          <td class="cellColor"><input type="text" name="state" class="textbox" value="<?php echo isset($rs['state']) ? $rs['state'] : '' ?>" />
+          </td>
+        </tr>
+        <tr>
+          <td class="formNames"><?php echo translate('Zip')?></td>
+          <td class="cellColor"><input type="text" name="zip" class="textbox" value="<?php echo isset($rs['zip']) ? $rs['zip'] : '' ?>" />
+          </td>
+        </tr>
+        <tr>
+          <td class="formNames"><?php echo translate('Country')?></td>
+          <td class="cellColor"><input type="text" name="country" class="textbox" value="<?php echo isset($rs['country']) ? $rs['country'] : '' ?>" />
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<br />
+<?php
+        // Print out correct buttons
+        if (!$edit) {
+            echo submit_button(translate('Add Location'), 'locid') . hidden_fn('addLocation')
+			. ' <input type="reset" name="reset" value="' . translate('Clear') . '" class="button" />' . "\n";
+        }
+		else {
+            echo submit_button(translate('Edit Location'), 'locid') . cancel_button($pager) . hidden_fn('editLocation')
+				. '<input type="hidden" name="locid" value="' . $rs['locid'] . '" />' . "\n";
         	// Unset variables
 			unset($rs);
 		}

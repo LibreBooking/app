@@ -9,7 +9,7 @@
 * License: GPL, see LICENSE
 */
 
-include_once('interfaces/IEmail.php');
+require_once('interfaces/IEmail.php');
 
 class ReminderEmail extends IEmail
 {

@@ -3,7 +3,7 @@
 * Provide all of the presentation functions for the MyCalendar class
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author Richard Cantzler <rmcii@users.sourceforge.net>
-* @version 08-08-06
+* @version 04-08-06
 * @package Templates
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt
