@@ -1,6 +1,33 @@
 <?php
-require_once('../Database/namespace.php');
-require_once('../lib/pear/MDB2.php');
+require_once('/lib/Database/namespace.php');
+require_once('/lib/pear/MDB2.php');
+
+class FakeDatabase extends Database
+{
+	var $reader;
+	var $_LastCommand;
+	
+	function FakeDatabase()
+	{
+		
+	}
+	
+	function SetReader(&$reader)
+	{
+		$this->reader = $reader;
+	}
+	
+	function &Query(&$command) 
+	{
+		$this->_LastCommand = $command;
+		return $this->reader;
+	}
+	
+	function Execute(&$command) 
+	{
+		$this->_LastCommand = $command;
+	}
+}
 
 class FakeDBConnection extends IDBConnection
 {
@@ -20,11 +47,11 @@ class FakeDBConnection extends IDBConnection
 	}
 
 	function &Query(&$command) { 
-		$this->_LastSqlCommand = &$command;
+		$this->_LastSqlCommand = $command;
 	} 
 	
 	function &Execute() { 
-		$this->_LastExecuteCommand = &$command;
+		$this->_LastExecuteCommand = $command;
 	}
 }
 

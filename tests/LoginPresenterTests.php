@@ -1,6 +1,7 @@
 <?php
 require_once('PHPUnit.php');
 require_once('../Presenters/LoginPresenter.php');
+require_once('../lib/Authorization/namespace.php');
 
 
 class FakeServer extends Server
@@ -145,22 +146,6 @@ class FakeLoginPage extends ILoginPage
 	{
 		$this->_LastRedirect = $url;
 	}
-}
-
-
-class IAuthorization
-{
-	function Validate($username, $password)
-	{
-		die( 'Not implemented' );
-	}
-	
-	function Login($username, $persist)
-	{
-		die( 'Not implemented' );
-	}
-	
-	function Persist()
 }
 
 class FakeAuth extends IAuthorization

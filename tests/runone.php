@@ -3,9 +3,9 @@ $path = ini_get('include_path');
 ini_set('include_path', $path . ';' . 'c:/php/pear/go-pear-bundle');
 require_once('../lib/Timer.class.php');
 
-$tests = array('ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
+$tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
 
-$tests = array('LoginPresenterTests.php');
+$tests = array('AuthorizationTests.php');
 
 $passed = true;
 $totalRun = 0;
