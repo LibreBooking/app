@@ -5,7 +5,7 @@ require_once('../lib/Timer.class.php');
 
 $tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
 
-$tests = array('AuthorizationTests.php');
+$tests = array('DatabaseCommandTests.php', 'AuthorizationTests.php');
 
 $passed = true;
 $totalRun = 0;

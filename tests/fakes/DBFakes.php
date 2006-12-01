@@ -1,15 +1,15 @@
 <?php
-require_once('/lib/Database/namespace.php');
-require_once('/lib/pear/MDB2.php');
+require_once(dirname(__FILE__) . '/../../lib/Database/namespace.php');
+require_once(dirname(__FILE__) . '/../../lib/pear/MDB2.php');
 
 class FakeDatabase extends Database
 {
 	var $reader;
 	var $_LastCommand;
+	var $_Commands = array();
 	
 	function FakeDatabase()
-	{
-		
+	{		
 	}
 	
 	function SetReader(&$reader)
@@ -19,13 +19,20 @@ class FakeDatabase extends Database
 	
 	function &Query(&$command) 
 	{
-		$this->_LastCommand = $command;
+		$this->_LastCommand = $command;		
+		$this->_AddCommand($command);
 		return $this->reader;
 	}
 	
 	function Execute(&$command) 
 	{
 		$this->_LastCommand = $command;
+		$this->_AddCommand($command);
+	}
+	
+	function _AddCommand(&$command)
+	{
+		array_push($this->_Commands, $command);
 	}
 }
 
