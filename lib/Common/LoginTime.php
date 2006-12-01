@@ -3,7 +3,17 @@ class LoginTime
 {
 	var $Now = null;
 	
-	var $_format = '%Y-%m-$d %H:%i%s';
+	var $_format = 'Y-m-d H:is';
+	
+	function LoginTime()
+	{
+		static $tmp;
+		$this->Now =& $tmp;		
+	}
+	
+	function SetNow($value){
+		$this->$Now = &$tmp;
+	}
 	
 	function Now()
 	{

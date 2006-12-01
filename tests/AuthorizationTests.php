@@ -45,14 +45,16 @@ class AuthorizationTests extends PHPUnit_TestCase
 	
 	function testLoginGetsUserDataFromDatabase()
 	{
-		LoginTime::Now = mktime();
+		$time = new LoginTime();
+		$time->Now = mktime();
 		
 		$persist = true;
 		$id = 'someexpectedid';
 		
-		$rows = array(
+		$row = array(
 					$this->cols->USER_ID => $id
 					);
+		$rows = array($row);
 					
 		$reader = new FakeDBResult($rows);
 			
@@ -62,7 +64,7 @@ class AuthorizationTests extends PHPUnit_TestCase
 		$authenticated = $auth->Login(strtolower($this->username), $persist);
 		
 		$command1 = new LoginCommand(strtolower($this->username));
-		$command2 = new UpdateLoginTimeCommand($id, );
+		$command2 = new UpdateLoginTimeCommand($id, $time->Now());
 		
 		$this->assertEquals(2, count($this->db->_Commands));
 		$this->assertEquals($command1, $this->db->_Commands[0]);	

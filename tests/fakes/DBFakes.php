@@ -14,7 +14,7 @@ class FakeDatabase extends Database
 	
 	function SetReader(&$reader)
 	{
-		$this->reader = $reader;
+		$this->reader = &$reader;
 	}
 	
 	function &Query(&$command) 
@@ -99,19 +99,23 @@ class FakeDBResult extends MDB2_Result_Common
 	var $idx = 0;
 	var $_FreeWasCalled = false;
 	
-	function FakeDBResult($rows) {
+	function FakeDBResult(&$rows) {
 		$this->rows = $rows;
 	}
 	
-	function &fetchRow() {
-		return $this->rows[$this->idx++];
+	function &GetRow() {
+		if (sizeof($this->rows) > $this->idx)
+		{
+			return $this->rows[$this->idx++];
+		}
+		return false;
 	}
 	
-	function numRows() {
+	function NumRows() {
 		return sizeof($this->rows);
 	}
 	
-	function free() {
+	function Free() {
 		$this->_FreeWasCalled = true;
 	}
 }

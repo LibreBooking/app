@@ -19,6 +19,12 @@ class IReader
 	* @return int
 	*/
 	function NumRows() { }
+	
+	/**
+	* To be implemented by child
+	* @return void
+	*/
+	function Free() { }
 }
 
 ?>
