@@ -1,5 +1,7 @@
 <?php
-require_once('/lib/Database/namespace.php');
+//$dir = dirname(__FILE__) . '/../..';
+//require_once($dir . '/lib/Database/namespace.php');
+require_once('namespace.php');
 
 class ISqlCommand
 {

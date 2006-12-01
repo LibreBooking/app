@@ -1,5 +1,10 @@
 <?php
-require_once('/lib/Database/Commands/Commands.php');
+//$dir = dirname(__FILE__) . '/../..';
+//require_once($dir . '/lib/Authorization/namespace.php');
+//require_once($dir . '/lib/Database/Commands/Commands.php');
+
+require_once('namespace.php');
+require_once(dirname(__FILE__) . '/../../lib/Database/Commands/namespace.php');
 
 class Authorization extends IAuthorization 
 {
@@ -12,13 +17,15 @@ class Authorization extends IAuthorization
 	
 	function Validate($username, $password)
 	{
-		$command = new AuthorizationCommand(strtolower($username), $password);
-		$this->_db->Query($command);
+		$command = new AuthorizationCommand($username, $password);
+		$reader = $this->_db->Query($command);
+		return $reader->NumRows() > 0;
 	}
 	
 	function Login($username, $persist)
 	{
-		die( 'Not implemented' );
+		$command = new LoginCommand($username);
+		$reader = $this->_db->Query($command);
 	}
 }
 ?>

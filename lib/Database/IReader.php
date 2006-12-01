@@ -1,5 +1,5 @@
 <?php
-require_once('/lib/Database/namespace.php');
+require_once('namespace.php');
 
 class IReader
 {

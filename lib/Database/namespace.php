@@ -1,9 +1,11 @@
 <?php
-require_once('/lib/Database/IDbConnection.php');
-require_once('/lib/Database/ISqlCommand.php');
-require_once('/lib/Database/IReader.php');
-require_once('/lib/Database/Parameter.php');
-require_once('/lib/Database/Parameters.php');
-require_once('/lib/Database/SqlCommand.php');
-require_once('/lib/Database/Database.php');
+//$dir = dirname(__FILE__) . '/../../lib/Database/';
+
+require_once('IDbConnection.php');
+require_once('ISqlCommand.php');
+require_once('IReader.php');
+require_once('Parameter.php');
+require_once('Parameters.php');
+require_once('SqlCommand.php');
+require_once('Database.php');
 ?>
