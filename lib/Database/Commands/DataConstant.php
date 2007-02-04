@@ -17,5 +17,10 @@ class Queries
 class ColumnNames
 {
 	var $USER_ID = 'memberid';
+	var $FIRST_NAME = 'fname';
+	var $LAST_NAME = 'lname';
+	var $IS_ADMIN = 'is_admin';
+	var $TIMEZONE = 'timezone';
+	var $EMAIL = 'email';
 }
 ?>

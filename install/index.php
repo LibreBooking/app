@@ -10,10 +10,10 @@
 * making them database independent.
 *
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 06-17-06
+* @version 01-28-07
 * @package phpScheduleIt
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -218,41 +218,40 @@ function doCreate() {
 	global $db;
 	global $conf;
 
+	$announcements = DBEngine::get_table('announcements');
+	$login = DBEngine::get_table('login');
+	$reservations = DBEngine::get_table('reservations');
+	$resources = DBEngine::get_table('resources');
+	$permission = DBEngine::get_table('permission');
+	$schedule_permission = DBEngine::get_table('schedule_permission');
+	$schedules = DBEngine::get_table('schedules');
+	$reservation_users = DBEngine::get_table('reservation_users');
+	$anonymous_users = DBEngine::get_table('anonymous_users');
+	$additional_resources = DBEngine::get_table('additional_resources');
+	$reservation_resources = DBEngine::get_table('reservation_resources');
+	$mutex = DBEngine::get_table('mutex');
+	$groups = DBEngine::get_table('groups');
+	$user_groups = DBEngine::get_table('user_groups');
+	$reminders = DBEngine::get_table('reminders');
+
 	$sqls = array (
 					// Create new database
-					array ("create database {$conf['db']['dbName']}", 'Creating database'),
+					array ("create database {$conf['db']['dbName']}", "Creating database"),
 					// Select it
-					array ("use {$conf['db']['dbName']}", 'Selecting database'),
+					array ("use {$conf['db']['dbName']}", "Selecting database"),
 					// Create announcement table
-					array( "CREATE TABLE announcements (
+
+					array( "CREATE TABLE $announcements (
 								announcementid CHAR(16) NOT NULL PRIMARY KEY,
 								announcement VARCHAR(255) NOT NULL DEFAULT '',
 								number SMALLINT NOT NULL DEFAULT '0',
 								start_datetime INTEGER,
 								end_datetime INTEGER
-							)", 'Creating announcement table'),
-					array ('CREATE INDEX announcements_startdatetime ON announcements(start_datetime)', 'Creating index'),
-					array ('CREATE INDEX announcements_enddatetime ON announcements(end_datetime)', 'Creating index'),
-					// Create locations table
-					array ("CREATE TABLE locations (
-							  locid CHAR(16) NOT NULL PRIMARY KEY,
-							  street1 VARCHAR(100) NOT NULL,
-							  street2 VARCHAR(100),
-							  city VARCHAR(64),
-							  state VARCHAR(10),
-							  zip VARCHAR(6),
-							  country VARCHAR(64)
-							  )", 'Create locations table'),
-					// Create location_resources table
-					array ("CREATE TABLE location_resources (
-							  locid CHAR(16) NOT NULL,
-							  resid CHAR(16) NOT NULL,
-							  PRIMARY KEY(locid, resid)
-							  )", 'Create location_resources table'),
-					array ('CREATE INDEX locres_locid ON location_resources (locid)', 'Creating index'),
-					array ('CREATE INDEX locres_resid ON location_resources (resid)', 'Creating index'),
+							)", "Creating announcement table"),
+					array ("CREATE INDEX announcements_startdatetime ON $announcements(start_datetime)", 'Creating index'),
+					array ("CREATE INDEX announcements_enddatetime ON $announcements(end_datetime)", 'Creating index'),
 					// Create login table
-					array ("CREATE TABLE login (
+					array ("CREATE TABLE $login (
 							  memberid CHAR(16) NOT NULL PRIMARY KEY,
 							  email VARCHAR(75) NOT NULL,
 							  password CHAR(32) NOT NULL,
@@ -272,11 +271,11 @@ function doCreate() {
 							  timezone FLOAT NOT NULL DEFAULT 0
 							  )", 'Creating login table'),
 					// Create login indexes
-					array ('CREATE INDEX login_email ON login (email)', 'Creating index'),
-					array ('CREATE INDEX login_password ON login (password)', 'Creating index'),
-					array ('CREATE INDEX login_logonname ON login (logon_name)', 'Creating index'),
+					array ("CREATE INDEX login_email ON $login (email)", 'Creating index'),
+					array ("CREATE INDEX login_password ON $login (password)", 'Creating index'),
+					array ("CREATE INDEX login_logonname ON $login (logon_name)", 'Creating index'),
 					// Create reservations table
-					array ('CREATE TABLE reservations (
+					array ("CREATE TABLE $reservations (
 							  resid CHAR(16) NOT NULL PRIMARY KEY,
 							  machid CHAR(16) NOT NULL,
 							  scheduleid CHAR(16) NOT NULL,
@@ -292,21 +291,21 @@ function doCreate() {
 							  summary TEXT,
 							  allow_participation SMALLINT NOT NULL DEFAULT 0,
 							  allow_anon_participation SMALLINT NOT NULL DEFAULT 0
-							  )', 'Creating reservations table'),
+							  )", 'Creating reservations table'),
 					// Create reservations indexes
-					array ('CREATE INDEX res_machid ON reservations (machid)', 'Creating index'),
-					array ('CREATE INDEX res_scheduleid ON reservations (scheduleid)', 'Creating index'),
-					array ('CREATE INDEX reservations_startdate ON reservations (start_date)', 'Creating index'),
-					array ('CREATE INDEX reservations_enddate ON reservations (end_date)', 'Creating index'),
-					array ('CREATE INDEX res_startTime ON reservations (starttime)', 'Creating index'),
-					array ('CREATE INDEX res_endTime ON reservations (endtime)', 'Creating index'),
-					array ('CREATE INDEX res_created ON reservations (created)', 'Creating index'),
-					array ('CREATE INDEX res_modified ON reservations (modified)', 'Creating index'),
-					array ('CREATE INDEX res_parentid ON reservations (parentid)', 'Creating index'),
-					array ('CREATE INDEX res_isblackout ON reservations (is_blackout)', 'Creating index'),
-					array ('CREATE INDEX reservations_pending ON reservations (is_pending)', 'Creating index'),
+					array ("CREATE INDEX res_machid ON $reservations (machid)", 'Creating index'),
+					array ("CREATE INDEX res_scheduleid ON $reservations (scheduleid)", 'Creating index'),
+					array ("CREATE INDEX reservations_startdate ON $reservations (start_date)", 'Creating index'),
+					array ("CREATE INDEX reservations_enddate ON $reservations (end_date)", 'Creating index'),
+					array ("CREATE INDEX res_startTime ON $reservations (starttime)", 'Creating index'),
+					array ("CREATE INDEX res_endTime ON $reservations (endtime)", 'Creating index'),
+					array ("CREATE INDEX res_created ON $reservations (created)", 'Creating index'),
+					array ("CREATE INDEX res_modified ON $reservations (modified)", 'Creating index'),
+					array ("CREATE INDEX res_parentid ON $reservations (parentid)", 'Creating index'),
+					array ("CREATE INDEX res_isblackout ON $reservations (is_blackout)", 'Creating index'),
+					array ("CREATE INDEX reservations_pending ON $reservations (is_pending)", 'Creating index'),
 					// Create resources table
-					array ("CREATE TABLE resources (
+					array ("CREATE TABLE $resources (
 							  machid CHAR(16) NOT NULL PRIMARY KEY,
 							  scheduleid CHAR(16) NOT NULL,
 							  name VARCHAR(75) NOT NULL,
@@ -324,20 +323,20 @@ function doCreate() {
 							  max_notice_time INTEGER
 							  )", 'Creating resources table'),
 					// Create resources indexes
-					array ('CREATE INDEX rs_scheduleid ON resources (scheduleid)', 'Creating index'),
-					array ('CREATE INDEX rs_name ON resources (name)', 'Creating index'),
-					array ('CREATE INDEX rs_status ON resources (status)', 'Creating index'),
+					array ("CREATE INDEX rs_scheduleid ON $resources (scheduleid)", 'Creating index'),
+					array ("CREATE INDEX rs_name ON $resources (name)", 'Creating index'),
+					array ("CREATE INDEX rs_status ON $resources (status)", 'Creating index'),
 					// Create permission table
-					array ('CREATE TABLE permission (
+					array ("CREATE TABLE $permission (
 							  memberid CHAR(16) NOT NULL,
 							  machid CHAR(16) NOT NULL,
 							  PRIMARY KEY(memberid, machid)
-							  )', 'Creating permission table'),
+							  )", 'Creating permission table'),
 					// Create permission indexes
-					array ('CREATE INDEX per_memberid ON permission (memberid)', 'Creating index'),
-					array ('CREATE INDEX per_machid ON permission (machid)', 'Creating index'),
+					array ("CREATE INDEX per_memberid ON $permission (memberid)", 'Creating index'),
+					array ("CREATE INDEX per_machid ON $permission (machid)", 'Creating index'),
 					// Create schedule table
-					array ("CREATE TABLE schedules (
+					array ("CREATE TABLE $schedules (
 							  scheduleid CHAR(16) NOT NULL PRIMARY KEY,
 							  scheduletitle CHAR(75),
 							  daystart INTEGER NOT NULL,
@@ -353,19 +352,19 @@ function doCreate() {
 							  isdefault SMALLINT
 							  )", 'Creating table schedules'),
 					// Create schedule indexes
-					array ('CREATE INDEX sh_hidden ON schedules (ishidden)', 'Creating index'),
-					array ('CREATE INDEX sh_perms ON schedules (usepermissions)', 'Creating index'),
+					array ("CREATE INDEX sh_hidden ON $schedules (ishidden)", 'Creating index'),
+					array ("CREATE INDEX sh_perms ON $schedules (usepermissions)", 'Creating index'),
 					// Create schedule permission tables
-					array ("CREATE TABLE schedule_permission (
+					array ("CREATE TABLE $schedule_permission (
 							  scheduleid CHAR(16) NOT NULL,
 							  memberid CHAR(16) NOT NULL,
 							  PRIMARY KEY(scheduleid, memberid)
 							  )", 'Creating table schedule_permission'),
 					// Create schedule permission indexes
-					array ('CREATE INDEX sp_scheduleid ON schedule_permission (scheduleid)', 'Creating index'),
-					array ('CREATE INDEX sp_memberid ON schedule_permission (memberid)', 'Creating index'),
+					array ("CREATE INDEX sp_scheduleid ON $schedule_permission (scheduleid)", 'Creating index'),
+					array ("CREATE INDEX sp_memberid ON $schedule_permission (memberid)", 'Creating index'),
 					// Create reservation/user association table
-					array ("CREATE TABLE reservation_users (
+					array ("CREATE TABLE $reservation_users (
 							  resid CHAR(16) NOT NULL,
 							  memberid CHAR(16) NOT NULL,
 							  owner SMALLINT,
@@ -376,71 +375,71 @@ function doCreate() {
 							  PRIMARY KEY(resid, memberid)
 							  )", 'Creating table reservation_users'),
 					// Create reservation/user association indexes
-					array ('CREATE INDEX resusers_resid ON reservation_users (resid)', 'Creating index'),
-					array ('CREATE INDEX resusers_memberid ON reservation_users (memberid)', 'Creating index'),
-					array ('CREATE INDEX resusers_owner ON reservation_users (owner)', 'Creating index'),
+					array ("CREATE INDEX resusers_resid ON $reservation_users (resid)", 'Creating index'),
+					array ("CREATE INDEX resusers_memberid ON $reservation_users (memberid)", 'Creating index'),
+					array ("CREATE INDEX resusers_owner ON $reservation_users (owner)", 'Creating index'),
 					// Create anonymous user table
-					array ("CREATE TABLE anonymous_users (
+					array ("CREATE TABLE $anonymous_users (
 							  memberid CHAR(16) NOT NULL PRIMARY KEY,
 							  email VARCHAR(75) NOT NULL,
 							  fname VARCHAR(30) NOT NULL,
 							  lname VARCHAR(30) NOT NULL
 							  )", 'Creating table anonymous_users'),
 					// Create reservation/user association table
-					array ("CREATE TABLE additional_resources (
+					array ("CREATE TABLE $additional_resources (
 							  resourceid CHAR(16) NOT NULL PRIMARY KEY,
 							  name VARCHAR(75) NOT NULL,
 							  status CHAR(1) NOT NULL DEFAULT 'a',
 							  number_available INTEGER NOT NULL DEFAULT -1
 							  )", 'Creating table additional_resources'),
 					// Create reservation/user association indexes
-					array ('CREATE INDEX ar_name ON additional_resources (name)', 'Creating index'),
-					array ('CREATE INDEX ar_status ON additional_resources (status)', 'Creating index'),
+					array ("CREATE INDEX ar_name ON $additional_resources (name)", 'Creating index'),
+					array ("CREATE INDEX ar_status ON $additional_resources (status)", 'Creating index'),
 					// Create reservation_resources table
-					array ("CREATE TABLE reservation_resources (
+					array ("CREATE TABLE $reservation_resources (
 							  resid CHAR(16) NOT NULL,
 							  resourceid CHAR(16) NOT NULL,
 							  owner SMALLINT,
 							  PRIMARY KEY(resid, resourceid)
 							  )", 'Creating table reservation_resources'),
 					// Create reservation_resources indexes
-					array ('CREATE INDEX resresources_resid ON reservation_resources (resid)', 'Creating index'),
-					array ('CREATE INDEX resresources_resourceid ON reservation_resources (resourceid)', 'Creating index'),
-					array ('CREATE INDEX resresources_owner ON reservation_resources (owner)', 'Creating index'),
+					array ("CREATE INDEX resresources_resid ON $reservation_resources (resid)", 'Creating index'),
+					array ("CREATE INDEX resresources_resourceid ON $reservation_resources (resourceid)", 'Creating index'),
+					array ("CREATE INDEX resresources_owner ON $reservation_resources (owner)", 'Creating index'),
 					// Create mutex table (circumvents MySQL limitations)
-					array ("CREATE TABLE mutex (
+					array ("CREATE TABLE $mutex (
 							  i INTEGER NOT NULL PRIMARY KEY
 							  )", 'Creating table mutex'),
 					// Insert needed values
-					array ('INSERT INTO mutex VALUES (0)', 'Insert values'),
-					array ('INSERT INTO mutex VALUES (1)', 'Insert values'),
+					array ("INSERT INTO $mutex VALUES (0)", 'Insert values'),
+					array ("INSERT INTO $mutex VALUES (1)", 'Insert values'),
 					// Create groups table
-					array ("CREATE TABLE groups (
+					array ("CREATE TABLE $groups (
 							  groupid CHAR(16) NOT NULL PRIMARY KEY,
 							  group_name VARCHAR(50) NOT NULL
 							  )", 'Creating table groups'),
 					// Create user/group relationship table
-					array ("CREATE TABLE user_groups (
+					array ("CREATE TABLE $user_groups (
 							  groupid CHAR(16) NOT NULL,
 							  memberid CHAR(50) NOT NULL,
 							  is_admin SMALLINT NOT NULL DEFAULT 0,
 							  PRIMARY KEY(groupid, memberid)
 							  )", 'Creating table user_groups'),
 					// Create user/group relationship indexes
-					array ('CREATE INDEX usergroups_groupid ON user_groups (groupid)', 'Creating index'),
-					array ('CREATE INDEX usergroups_memberid ON user_groups (memberid)', 'Creating index'),
-					array ('CREATE INDEX usergroups_is_admin ON user_groups (is_admin)', 'Creating index'),
+					array ("CREATE INDEX usergroups_groupid ON $user_groups (groupid)", 'Creating index'),
+					array ("CREATE INDEX usergroups_memberid ON $user_groups (memberid)", 'Creating index'),
+					array ("CREATE INDEX usergroups_is_admin ON $user_groups (is_admin)", 'Creating index'),
 					// Create reminders table
-					array ("CREATE TABLE reminders (
+					array ("CREATE TABLE $reminders (
 							  reminderid CHAR(16) NOT NULL PRIMARY KEY,
 							  memberid CHAR(16) NOT NULL,
 							  resid CHAR(16) NOT NULL,
 							  reminder_time BIGINT NOT NULL
 							  )", 'Creating table reminders'),
 					// Create reminders indexes
-					array ('CREATE INDEX reminders_time ON reminders (reminder_time)', 'Creating index'),
-					array ('CREATE INDEX reminders_memberid ON reminders (memberid)', 'Creating index'),
-					array ('CREATE INDEX reminders_resid ON reminders (resid)', 'Creating index'),
+					array ("CREATE INDEX reminders_time ON $reminders (reminder_time)", 'Creating index'),
+					array ("CREATE INDEX reminders_memberid ON $reminders (memberid)", 'Creating index'),
+					array ("CREATE INDEX reminders_resid ON $reminders (resid)", 'Creating index'),
 					// Create database user/permission
 					array ("grant select, insert, update, delete
 							on {$conf['db']['dbName']}.*
@@ -458,10 +457,9 @@ function doCreate() {
 	}
 
 	// Create default schedule
-	$dbe = new DBEngine();
 	echo 'Creating default schedule...';
 	$scheduleid = $dbe->get_new_id();
-	$result = $dbe->db->query('INSERT INTO schedules VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', array($scheduleid,'default',480,1200,30,12,0,7,0,0,1,$conf['app']['adminEmail'],1));
+	$result = $dbe->db->query("INSERT INTO $schedules VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", array($scheduleid,'default',480,1200,30,12,0,7,0,0,1,$conf['app']['adminEmail'],1));
 	check_result($result);
 }
 

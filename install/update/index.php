@@ -3,10 +3,10 @@
 * Update program for phpScheduleIt
 *
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 06-17-06
+* @version 02-01-07
 * @package phpScheduleIt
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -167,7 +167,7 @@ function doLogin() {
 
     // Make connection to database
     $db = DB::connect($dsn);
-	$db->setOption('portability', DB_PORTABILITY_ALL);
+	@$db->setOption('portability', DB_PORTABILITY_ALL);
 
     // If there is an error, print to browser, print to logfile and kill app
     if (DB::isError($db)) {
@@ -217,37 +217,52 @@ function doUpdate($version) {
 	global $db;
 	global $conf;
 
+	$dbe = new DBEngine();
+	$announcements = $dbe->get_table('announcements');
+	$reservations = $dbe->get_table('reservations');
+	$resources = $dbe->get_table('resources');
+	$login = $dbe->get_table('login');
+	$reservation_users = $dbe->get_table('reservation_users');
+	$anonymous_users = $dbe->get_table('anonymous_users');
+	$additional_resources = $dbe->get_table('additional_resources');
+	$reservation_resources = $dbe->get_table('reservation_resources');
+	$mutex = $dbe->get_table('mutex');
+	$schedules = $dbe->get_table('schedules');
+	$groups = $dbe->get_table('groups');
+	$user_groups = $dbe->get_table('user_groups');
+	$reminders = $dbe->get_table('reminders');
+
 	//# Since version 1.1.0
-	$create_announcements = array("CREATE TABLE announcements (
+	$create_announcements = array("CREATE TABLE $announcements (
 									  announcementid CHAR(16) NOT NULL PRIMARY KEY,
 									  announcement CHAR(255) NOT NULL DEFAULT '',
 									  number SMALLINT NOT NULL DEFAULT 0,
 									  start_datetime INT,
   									  end_datetime INT
 									  )", 'Creating announcements table');
-	$create_announcements_sdt_index = array('create index announcements_startdatetime on announcements(start_datetime)', 'Create start_datetime index');
-	$create_announcements_edt_index = array('create index announcements_enddatetime on announcements(end_datetime)', 'Create end_datetime index');
+	$create_announcements_sdt_index = array("create index announcements_startdatetime on $announcements(start_datetime)", 'Create start_datetime index');
+	$create_announcements_edt_index = array("create index announcements_enddatetime on $announcements(end_datetime)", 'Create end_datetime index');
 
-	$alter_reservations_add_ispending = array("ALTER TABLE reservations ADD COLUMN is_pending SMALLINT NOT NULL DEFAULT 0 AFTER is_blackout", 'Add is_pending column');
-	$create_reservations_ispending_index = array("CREATE INDEX reservations_ispending ON reservations (is_pending)", 'Add is_pending index');
-	$alter_resources_add_approval = array("ALTER TABLE resources ADD COLUMN approval SMALLINT", 'Add approval column');
-	$alter_login_add_eapp = array("ALTER TABLE login ADD COLUMN e_app CHAR(1) NOT NULL DEFAULT 'y' AFTER e_del", 'Add e_app column');
+	$alter_reservations_add_ispending = array("ALTER TABLE $reservations ADD COLUMN is_pending SMALLINT NOT NULL DEFAULT 0 AFTER is_blackout", 'Add is_pending column');
+	$create_reservations_ispending_index = array("CREATE INDEX reservations_ispending ON $reservations (is_pending)", 'Add is_pending index');
+	$alter_resources_add_approval = array("ALTER TABLE $resources ADD COLUMN approval SMALLINT", 'Add approval column');
+	$alter_login_add_eapp = array("ALTER TABLE $login ADD COLUMN e_app CHAR(1) NOT NULL DEFAULT 'y' AFTER e_del", 'Add e_app column');
 
-	$alter_login_add_logonname = array("ALTER TABLE login ADD COLUMN logon_name CHAR(30)", 'Add logon_name column');
-	$create_login_logonname_index = array("CREATE INDEX login_logonname ON login (logon_name)", 'Add logon_name index');
+	$alter_login_add_logonname = array("ALTER TABLE $login ADD COLUMN logon_name CHAR(30)", 'Add logon_name column');
+	$create_login_logonname_index = array("CREATE INDEX login_logonname ON $login (logon_name)", 'Add logon_name index');
 
-	$alter_reservations_add_startdate = array("ALTER TABLE reservations ADD COLUMN start_date int NOT NULL DEFAULT 0 AFTER date", 'Add start_date column');
-	$alter_reservations_add_enddate = array("ALTER TABLE reservations ADD COLUMN end_date int NOT NULL DEFAULT 0 AFTER start_date", 'Add end_date column');
-	$create_reservations_index_startdate = array("CREATE INDEX reservations_startdate ON reservations (start_date)", 'Add start_date index');
-	$create_reservations_index_enddate = array("CREATE INDEX reservations_enddate ON reservations (end_date)", 'Add end_date index');
-	$update_reservations_set_startdate = array("UPDATE reservations SET start_date = date", 'Set start_date = date');
-	$update_reservations_set_enddate = array("UPDATE reservations SET end_date = date", 'Set end_date = date');
-	$alter_reservations_drop_date = array("ALTER TABLE reservations DROP COLUMN date", 'Drop date column');
-	$alter_resources_add_allowmulti = array("ALTER TABLE resources ADD COLUMN allow_multi SMALLINT", 'Add allow_multi column');
+	$alter_reservations_add_startdate = array("ALTER TABLE $reservations ADD COLUMN start_date int NOT NULL DEFAULT 0 AFTER date", 'Add start_date column');
+	$alter_reservations_add_enddate = array("ALTER TABLE $reservations ADD COLUMN end_date int NOT NULL DEFAULT 0 AFTER start_date", 'Add end_date column');
+	$create_reservations_index_startdate = array("CREATE INDEX reservations_startdate ON $reservations (start_date)", 'Add start_date index');
+	$create_reservations_index_enddate = array("CREATE INDEX reservations_enddate ON $reservations (end_date)", 'Add end_date index');
+	$update_reservations_set_startdate = array("UPDATE $reservations SET start_date = date", 'Set start_date = date');
+	$update_reservations_set_enddate = array("UPDATE $reservations SET end_date = date", 'Set end_date = date');
+	$alter_reservations_drop_date = array("ALTER TABLE $reservations DROP COLUMN date", 'Drop date column');
+	$alter_resources_add_allowmulti = array("ALTER TABLE $resources ADD COLUMN allow_multi SMALLINT", 'Add allow_multi column');
 
-	$create_reservation_users = array("create table reservation_users (
-									  resid char(16) not null,
-									  memberid char(16) not null,
+	$create_reservation_users = array("CREATE TABLE $reservation_users (
+									  resid CHAR(16) NOT NULL,
+									  memberid CHAR(16) NOT NULL,
 									  owner smallint,
 									  invited smallint,
 									  perm_modify smallint,
@@ -255,13 +270,13 @@ function doUpdate($version) {
 									  accept_code char(16),
 									  primary key(resid, memberid)
 									  )", 'Create reservation_users table');
-	$create_reservationusers_resid_index = array("create index resusers_resid on reservation_users (resid)", 'Create resusers_resid index');
-	$create_reservationusers_memberid_index = array("create index resusers_memberid on reservation_users (memberid)", 'Create resusers_memberid index');
-	$create_reservationusers_owner_index = array("create index resusers_owner on reservation_users (owner)", 'Create resusers_owner index');
-	$migrate_users = array("insert into reservation_users select resid, memberid, 1, 0, 0, 0, null from reservations", 'Migrating users');
-	$alter_reservations_drop_memberid = array("alter table reservations drop column memberid, drop index res_memberid", 'Drop memberid column');
+	$create_reservationusers_resid_index = array("create index resusers_resid on $reservation_users (resid)", 'Create resusers_resid index');
+	$create_reservationusers_memberid_index = array("create index resusers_memberid on $reservation_users (memberid)", 'Create resusers_memberid index');
+	$create_reservationusers_owner_index = array("create index resusers_owner on $reservation_users (owner)", 'Create resusers_owner index');
+	$migrate_users = array("insert into $reservation_users select resid, memberid, 1, 0, 0, 0, null from $reservations", 'Migrating users');
+	$alter_reservations_drop_memberid = array("alter table $reservations drop column memberid, drop index res_memberid", 'Drop memberid column');
 
-	$alter_login_add_isadmin = array("alter table login add column is_admin smallint default 0", 'Create is_admin on login');
+	$alter_login_add_isadmin = array("alter table $login add column is_admin smallint default 0", 'Create is_admin on login');
 
 	// Array of all SQL statements to run to upgrade to version 1.1.0
 	$version110 = array(
@@ -294,97 +309,97 @@ function doUpdate($version) {
 	//!#----------------
 
 	//# Since version 1.2.0
-	$create_resources_max_participants = array('ALTER TABLE resources ADD COLUMN max_participants INTEGER', 'Create column max_participants');
-	$create_reservations_allow_participation = array('ALTER TABLE reservations ADD COLUMN allow_participation smallint not null default 0', 'Create column allow_participation');
-	$create_reservations_allow_anon_participation = array('ALTER TABLE reservations ADD COLUMN allow_anon_participation smallint not null default 0', 'Create column allow_anon_participation');
-	$create_anonymous_users_table = array('CREATE TABLE anonymous_users (
+	$create_resources_max_participants = array("ALTER TABLE $resources ADD COLUMN max_participants INTEGER", 'Create column max_participants');
+	$create_reservations_allow_participation = array("ALTER TABLE $reservations ADD COLUMN allow_participation smallint not null default 0", 'Create column allow_participation');
+	$create_reservations_allow_anon_participation = array("ALTER TABLE $reservations ADD COLUMN allow_anon_participation smallint not null default 0", 'Create column allow_anon_participation');
+	$create_anonymous_users_table = array("CREATE TABLE $anonymous_users (
 											  memberid CHAR(16) NOT NULL PRIMARY KEY,
 											  email VARCHAR(75) NOT NULL,
 											  fname VARCHAR(30) NOT NULL,
 											  lname VARCHAR(30) NOT NULL
-											  )', 'Create anonymous_users table');
+											  )", 'Create anonymous_users table');
 
-	$create_additional_resources = array("CREATE TABLE additional_resources (
+	$create_additional_resources = array("CREATE TABLE $additional_resources (
 											  resourceid CHAR(16) NOT NULL PRIMARY KEY,
 											  name VARCHAR(75) NOT NULL,
 											  status CHAR(1) NOT NULL DEFAULT 'a',
 											  number_available INTEGER NOT NULL DEFAULT -1
 											  )", 'Create additional_resources table');
 
-	$create_ar_name_index = array('CREATE INDEX ar_name ON additional_resources (name)', 'Create index');
-	$create_ar_status_index = array('CREATE INDEX ar_status ON additional_resources (status)', 'Create index');
+	$create_ar_name_index = array("CREATE INDEX ar_name ON $additional_resources (name)", 'Create index');
+	$create_ar_status_index = array("CREATE INDEX ar_status ON $additional_resources (status)", 'Create index');
 
-	$create_reservation_resources = array('CREATE TABLE reservation_resources (
+	$create_reservation_resources = array("CREATE TABLE $reservation_resources (
 											  resid CHAR(16) NOT NULL,
 											  resourceid CHAR(16) NOT NULL,
 											  owner SMALLINT,
 											  PRIMARY KEY(resid, resourceid)
-											  )', 'Create reservation_resources table');
+											  )", 'Create reservation_resources table');
 
-	$create_resresources_resid_index = array('CREATE INDEX resresources_resid ON reservation_resources (resid)', 'Create index');
-	$create_resresources_resourceid_index = array('CREATE INDEX resresources_resourceid ON reservation_resources (resourceid)', 'Create index');
-	$create_resresources_owner_index = array('CREATE INDEX resresources_owner ON reservation_resources (owner)', 'Create index');
+	$create_resresources_resid_index = array("CREATE INDEX resresources_resid ON $reservation_resources (resid)", 'Create index');
+	$create_resresources_resourceid_index = array("CREATE INDEX resresources_resourceid ON $reservation_resources (resourceid)", 'Create index');
+	$create_resresources_owner_index = array("CREATE INDEX resresources_owner ON $reservation_resources (owner)", 'Create index');
 
-	$create_mutex_table = array('CREATE TABLE mutex(
+	$create_mutex_table = array("CREATE TABLE $mutex(
 								  i INTEGER NOT NULL PRIMARY KEY
-								  )', 'Create mutex table');
+								  )", 'Create mutex table');
 
-	$insert_mutex_value0 = array('INSERT INTO mutex VALUES (0)', 'Insert value');
-	$insert_mutex_value1 = array('INSERT INTO mutex VALUES (1)', 'Insert value');
+	$insert_mutex_value0 = array("INSERT INTO $mutex VALUES (0)", 'Insert value');
+	$insert_mutex_value1 = array("INSERT INTO $mutex VALUES (1)", 'Insert value');
 
-	$alter_starttime = array('ALTER TABLE reservations CHANGE startTime starttime INTEGER NOT NULL', 'Alter table');
-	$alter_endtime = array('ALTER TABLE reservations CHANGE endTime endtime INTEGER NOT NULL', 'Alter table');
-	$alter_minres = array('ALTER TABLE resources CHANGE minRes minres INTEGER NOT NULL', 'Alter table');
-	$alter_maxres = array('ALTER TABLE resources CHANGE maxRes maxres INTEGER NOT NULL', 'Alter table');
-	$alter_autoassign = array('ALTER TABLE resources CHANGE autoAssign autoassign SMALLINT', 'Alter table');
+	$alter_starttime = array("ALTER TABLE $reservations CHANGE startTime starttime INTEGER NOT NULL", 'Alter table');
+	$alter_endtime = array("ALTER TABLE $reservations CHANGE endTime endtime INTEGER NOT NULL", 'Alter table');
+	$alter_minres = array("ALTER TABLE $resources CHANGE minRes minres INTEGER NOT NULL", 'Alter table');
+	$alter_maxres = array("ALTER TABLE $resources CHANGE maxRes maxres INTEGER NOT NULL", 'Alter table');
+	$alter_autoassign = array("ALTER TABLE $resources CHANGE autoAssign autoassign SMALLINT", 'Alter table');
 
-	$alter_scheduletitle = array('ALTER TABLE schedules CHANGE scheduleTitle scheduletitle CHAR(75)', 'Alter table');
-	$alter_daystart = array('ALTER TABLE schedules CHANGE dayStart daystart INTEGER NOT NULL', 'Alter table');
-	$alter_dayend = array('ALTER TABLE schedules CHANGE dayEnd dayend INTEGER NOT NULL', 'Alter table');
-	$alter_timespan = array('ALTER TABLE schedules CHANGE timeSpan timespan INTEGER NOT NULL', 'Alter table');
-	$alter_timeformat = array('ALTER TABLE schedules CHANGE timeFormat timeformat INTEGER NOT NULL', 'Alter table');
-	$alter_weekdaystart = array('ALTER TABLE schedules CHANGE weekDayStart weekdaystart INTEGER NOT NULL', 'Alter table');
-	$alter_viewdays = array('ALTER TABLE schedules CHANGE viewDays viewdays INTEGER NOT NULL', 'Alter table');
-	$alter_usepermissions = array('ALTER TABLE schedules CHANGE usePermissions usepermissions SMALLINT', 'Alter table');
-	$alter_ishidden = array('ALTER TABLE schedules CHANGE isHidden ishidden SMALLINT', 'Alter table');
-	$alter_showsummary = array('ALTER TABLE schedules CHANGE showSummary showsummary SMALLINT', 'Alter table');
-	$alter_adminemail = array('ALTER TABLE schedules CHANGE adminEmail adminemail CHAR(75)', 'Alter table');
-	$alter_isdefault = array('ALTER TABLE schedules CHANGE isDefault isdefault SMALLINT', 'Alter table');
+	$alter_scheduletitle = array("ALTER TABLE $schedules CHANGE scheduleTitle scheduletitle CHAR(75)", 'Alter table');
+	$alter_daystart = array("ALTER TABLE $schedules CHANGE dayStart daystart INTEGER NOT NULL", 'Alter table');
+	$alter_dayend = array("ALTER TABLE $schedules CHANGE dayEnd dayend INTEGER NOT NULL", 'Alter table');
+	$alter_timespan = array("ALTER TABLE $schedules CHANGE timeSpan timespan INTEGER NOT NULL", 'Alter table');
+	$alter_timeformat = array("ALTER TABLE $schedules CHANGE timeFormat timeformat INTEGER NOT NULL", 'Alter table');
+	$alter_weekdaystart = array("ALTER TABLE $schedules CHANGE weekDayStart weekdaystart INTEGER NOT NULL", 'Alter table');
+	$alter_viewdays = array("ALTER TABLE $schedules CHANGE viewDays viewdays INTEGER NOT NULL", 'Alter table');
+	$alter_usepermissions = array("ALTER TABLE $schedules CHANGE usePermissions usepermissions SMALLINT", 'Alter table');
+	$alter_ishidden = array("ALTER TABLE $schedules CHANGE isHidden ishidden SMALLINT", 'Alter table');
+	$alter_showsummary = array("ALTER TABLE $schedules CHANGE showSummary showsummary SMALLINT", 'Alter table');
+	$alter_adminemail = array("ALTER TABLE $schedules CHANGE adminEmail adminemail CHAR(75)", 'Alter table');
+	$alter_isdefault = array("ALTER TABLE $schedules CHANGE isDefault isdefault SMALLINT", 'Alter table');
 
-	$create_groups = array('CREATE TABLE groups (
+	$create_groups = array("CREATE TABLE $groups (
 							  groupid CHAR(16) NOT NULL PRIMARY KEY,
 							  group_name VARCHAR(50) NOT NULL
-							  )', 'Create groups table');
+							  )", 'Create groups table');
 
-	$create_user_groups = array('CREATE TABLE user_groups (
+	$create_user_groups = array("CREATE TABLE $user_groups (
 							  groupid CHAR(16) NOT NULL,
 							  memberid CHAR(50) NOT NULL,
 							  is_admin SMALLINT NOT NULL DEFAULT 0,
 							  PRIMARY KEY(groupid, memberid)
-							  )', 'Creating table user_groups');
-	$create_usergroups_groupid_index = array('CREATE INDEX usergroups_groupid ON user_groups (groupid)', 'Create index');
-	$create_usergroups_memberid_index = array('CREATE INDEX usergroups_memberid ON user_groups (memberid)', 'Create index');
-	$create_usergroups_is_admin_index = array('CREATE INDEX usergroups_is_admin ON user_groups (is_admin)', 'Create index');
+							  )", 'Creating table user_groups');
+	$create_usergroups_groupid_index = array("CREATE INDEX usergroups_groupid ON $user_groups (groupid)", 'Create index');
+	$create_usergroups_memberid_index = array("CREATE INDEX usergroups_memberid ON $user_groups (memberid)", 'Create index');
+	$create_usergroups_is_admin_index = array("CREATE INDEX usergroups_is_admin ON $user_groups (is_admin)", 'Create index');
 
-	$create_reminders = array('CREATE TABLE reminders (
+	$create_reminders = array("CREATE TABLE $reminders (
 							  reminderid CHAR(16) NOT NULL PRIMARY KEY,
 							  memberid CHAR(16) NOT NULL,
 							  resid CHAR(16) NOT NULL,
 							  reminder_time BIGINT NOT NULL
-							  )', 'Create reminders table');
+							  )", 'Create reminders table');
 
-	$create_reminders_time_index = array('CREATE INDEX reminders_time ON reminders (reminder_time)', 'Create index');
-	$create_reminders_memberid_index = array('CREATE INDEX reminders_memberid ON reminders (memberid)', 'Create index');
-	$create_reminders_resid_index = array('CREATE INDEX reminders_resid ON reminders (resid)', 'Create index');
+	$create_reminders_time_index = array("CREATE INDEX reminders_time ON $reminders (reminder_time)", 'Create index');
+	$create_reminders_memberid_index = array("CREATE INDEX reminders_memberid ON $reminders (memberid)", 'Create index');
+	$create_reminders_resid_index = array("CREATE INDEX reminders_resid ON $reminders (resid)", 'Create index');
 
-	$alter_login_add_lang = array('ALTER TABLE login ADD COLUMN lang VARCHAR(5)', 'Add lang');
+	$alter_login_add_lang = array("ALTER TABLE $login ADD COLUMN lang VARCHAR(5)", 'Add lang');
 
-	$alter_login_add_timezone = array('ALTER TABLE login ADD COLUMN timezone FLOAT NOT NULL DEFAULT 0', 'Add timezone');
+	$alter_login_add_timezone = array("ALTER TABLE $login ADD COLUMN timezone FLOAT NOT NULL DEFAULT 0", 'Add timezone');
 
-	$alter_resources_add_minnotice = array('ALTER TABLE resources ADD COLUMN min_notice_time INTEGER NOT NULL DEFAULT 0', 'Add min_notice_time');
-	$alter_resources_add_maxnotice = array('ALTER TABLE resources ADD COLUMN max_notice_time INTEGER NOT NULL DEFAULT 0', 'Add max_notice_time');
-	$update_resources_set_mintime = array('UPDATE resources, schedules SET min_notice_time = dayoffset * 24 WHERE resources.scheduleid = schedules.scheduleid AND dayoffset IS NOT NULL', 'Set min_notice_time');
-	$alter_schedules_drop_dayoffset = array('ALTER TABLE schedules DROP COLUMN dayoffset', 'Drop dayoffset');
+	$alter_resources_add_minnotice = array("ALTER TABLE $resources ADD COLUMN min_notice_time INTEGER NOT NULL DEFAULT 0", 'Add min_notice_time');
+	$alter_resources_add_maxnotice = array("ALTER TABLE $resources ADD COLUMN max_notice_time INTEGER NOT NULL DEFAULT 0", 'Add max_notice_time');
+	$update_resources_set_mintime = array("UPDATE $resources r, $schedules s SET min_notice_time = dayoffset * 24 WHERE r.scheduleid = s.scheduleid AND dayoffset IS NOT NULL", 'Set min_notice_time');
+	$alter_schedules_drop_dayoffset = array("ALTER TABLE $schedules DROP COLUMN dayoffset", 'Drop dayoffset');
 
 
 	$version120 = array(
@@ -435,29 +450,6 @@ function doUpdate($version) {
 					$update_resources_set_mintime,
 					$alter_schedules_drop_dayoffset
 					);
-
-	$create_locations = array('CREATE TABLE locations (
-							  locid CHAR(16) NOT NULL PRIMARY KEY,
-							  street1 VARCHAR(100) NOT NULL,
-							  street2 VARCHAR(100),
-							  city VARCHAR(64),
-							  state VARCHAR(10),
-							  zip VARCHAR(6),
-							  country VARCHAR(64)
-							  )', 'Create locations table');
-
-	$create_location_resources = array('CREATE TABLE location_resources (
-							  locid CHAR(16) NOT NULL PRIMARY KEY,
-							  resid CHAR(16) NOT NULL PRIMARY KEY
-							  )', 'Create location_resources table');
-							  
-
-							  
-	$version122 = array(
-					$create_locations,
-					$create_location_resources
-					);
-
 	//!#----------------
 
 	//# Must run for all updates
@@ -471,9 +463,6 @@ function doUpdate($version) {
 	}
 	else if ($version = "1.1.0") {
 		$to_run[] = $version120;
-	}
-	else if ($version = "1.2.0") {
-		$to_run[] = $version122;
 	}
 
 	foreach ($to_run as $sqls) {
@@ -534,9 +523,6 @@ function determineVersion() {
 	else if ($num == 14) {
 		$version = "1.2.0";
 	}
-	
-	//TODO - correctly determine v1.2.2! 
-	
 	return $version;
 }
 ?>

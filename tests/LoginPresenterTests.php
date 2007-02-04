@@ -2,63 +2,9 @@
 require_once('PHPUnit.php');
 require_once('../Presenters/LoginPresenter.php');
 require_once('../lib/Authorization/namespace.php');
+require_once('../Pages/LoginPage.php');
+require_once('fakes/FakeServer.php');
 
-
-class FakeServer extends Server
-{
-	var $Cookies;
-	var $Session;
-	var $Post;
-	var $Get;
-	
-	function FakeServer()
-	{
-	}
-	
-	function SetCookie($cookie)
-	{
-		$this->Cookies[$cookie->Name] = $cookie;
-	}
-	
-	function GetCookie($name)
-	{
-		return $this->Cookies[$name];
-	}
-	
-}
-
-class Cookie
-{
-	var $Name;
-	var $Value;
-	var $Expiration;
-	var $Path;
-	
-	function Cookie($name, $value, $expiration, $path)
-	{
-		$this->Name = $name;
-		$this->Value = $value;
-		$this->Expiration = $expiration;
-		$this->Path = $path;
-	}
-}
-
-class Server
-{
-	function Server()
-	{	
-	}
-	
-	function SetCookie($cookie)
-	{
-		setcookie($cookie->$Name, $cookie->$Value, $cookie->Expiration, $cookie->Path);
-	}
-	
-	function GetCookie($name)
-	{
-		return $_COOKIE[$name];
-	}
-}
 
 class LoginPresenterTests extends PHPUnit_TestCase
 {
@@ -101,22 +47,48 @@ class LoginPresenterTests extends PHPUnit_TestCase
 		$this->assertEquals($this->page->_EmailAddress, $this->auth->_LastLogin);
 		$this->assertEquals($this->page->_PersistLogin, $this->auth->_LastPersist);
 	}
-	
-	function testSuccessfulValidateSetsNeededServerVarsAndRedirects()
+
+	function testSuccessfulValidateCallsRedirectToNormalPageWhenNoRequestedPage()
 	{
-		$id = '12345';
-		$this->auth->_LastLoginId = $id;
 		$this->auth->_ValidateResult = true;
-		
-		$this->page->_PersistLogin = true;
-		
 		$presenter = new LoginPresenter($this->page, $this->server);
 		$presenter->Login($this->auth);
 		
-		$cookie = new Cookie('id', $id, time() + 2592000, '/');
+		$this->assertEquals('ctrlpnl.php', $this->page->_LastRedirect);
+	}
+	
+	function testRedirectsToRequestedPage()
+	{
+		$redirect = 'something.php';
+		$qsKeys = new QueryStringKeys();
+		$this->server->SetQuerystring($qsKeys->REDIRECT, $redirect);
 		
-		//$this->assertEquals("", $this->page->_LastRedirect);		
-		$this->assertEquals($cookie, $this->server->GetCookie('id'));
+		$this->auth->_ValidateResult = true;
+		$presenter = new LoginPresenter($this->page, $this->server);
+		$presenter->Login($this->auth);
+		
+		$this->assertEquals($redirect, $this->page->_LastRedirect);
+	}
+	
+	function testPageLoadCallsPagesPageLoad()
+	{
+		$presenter = new LoginPresenter($this->page, $this->server);
+		$presenter->PageLoad();
+		
+		$this->assertTrue($this->page->_PageLoadWasCalled);
+	}
+	
+	function testPageLoadSetsVariablesCorrectly()
+	{
+		$keys = new ConfigKeys();
+		
+		$config = new Configuration();
+		$config->SetKey($keys->ALLOW_REGISTRATION, 'true');
+		
+		$presenter = new LoginPresenter($this->page, $this->server);
+		$presenter->PageLoad();
+		
+		$this->assertEquals(true, $this->page->getShowRegisterLink());
 	}
 }
 
@@ -126,20 +98,37 @@ class FakeLoginPage extends ILoginPage
 	var $_Password;
 	var $_PersistLogin = false;
 	var $_LastRedirect;
+	var $_ShowRegisterLink;
+	var $_PageLoadWasCalled = false;
 	
-	function get_EmailAddress()
+	function PageLoad()
+	{
+		$this->_PageLoadWasCalled = true;
+	}
+	
+	function getEmailAddress()
 	{ 
 		return $this->_EmailAddress;
 	}
 	
-	function get_Password()
+	function getPassword()
 	{ 
 		return $this->_Password;
 	}
 	
-	function get_PersistLogin()
+	function getPersistLogin()
 	{
 		return $this->_PersistLogin;
+	}
+	
+	function getShowRegisterLink()
+	{
+		return $this->_ShowRegisterLink;
+	}
+	
+	function setShowRegisterLink($value)
+	{
+		$this->_ShowRegisterLink = $value;
 	}
 	
 	function Redirect($url)
@@ -170,11 +159,6 @@ class FakeAuth extends IAuthorization
 		$this->_LastLogin = $username;
 		$this->_LastPersist = $persist;
 		$this->_LastLoginId;
-		
-					if ($this->_page->get_PersistLogin())
-			{
-				$this->_server->SetCookie(new Cookie('id', $id, time() + 2592000, '/'));
-			}
 	}
 }
 ?>

@@ -5,7 +5,8 @@ require_once('../lib/Timer.class.php');
 
 $tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
 
-$tests = array('DatabaseCommandTests.php', 'AuthorizationTests.php');
+$tests = array('DatabaseCommandTests.php', 'AuthorizationTests.php', 'LoginPresenterTests.php');
+$tests = array('ResourcesTests.php');
 
 $passed = true;
 $totalRun = 0;
@@ -38,6 +39,11 @@ for ($i = 0; $i < count($tests); $i++) {
 	$totalRun += intval($suite->testCount());
 	$totalPassed += count($result->passedTests());
 	$totalFailed += intval($result->failureCount());
+	
+	if($result->failureCount() > 0)
+	{
+		break;
+	}
 }
 
 $totalTimer->stop();

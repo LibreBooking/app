@@ -8,7 +8,7 @@
 * @version 07-10-04
 * @package Languages
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 ///////////////////////////////////////////////////////////

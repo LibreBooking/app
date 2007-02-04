@@ -7,7 +7,7 @@
 * @version 06-25-04
 * @package phpScheduleIt
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 /**

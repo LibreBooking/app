@@ -7,7 +7,7 @@
 * @version 04-04-05
 * @package Languages
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 ///////////////////////////////////////////////////////////
@@ -455,8 +455,8 @@ $strings['There was an error executing your query'] = 'Hiba történt a kérés feld
 
 $strings['That cookie seems to be invalid'] = 'A Cookie érvénytelennek tõnik';
 $strings['We could not find that logon in our database.'] = 'Nem található ilyen Elérés az adatbázisban.';	// @since 1.1.0
-$strings['That password did not match the one in our database.'] = 'A megadott Jelszó nem egyezik az adatbázisban szereplõvel.';
-$strings['You can try'] = '<br />Próbálin meg:<br />Regisztrálni egy email címet.<br />Or:<br />Próbáljon belépni újból.';
+$strings['That password did not match the one in our database.'] = 'A megadott Jelszó és/vagy Azonosító nem egyezik az adatbázisban szereplõvel.';
+$strings['You can try'] = '<br />Regisztráljon magát az<br />elõjegyzési rendszerhez,<br />vagy próbáljon meg<br />újból bejelentkezni.';
 $strings['A new user has been added'] = 'Az új Felhasználó bejegyzésre került';
 $strings['You have successfully registered'] = 'Sikeres Regisztráció!';
 $strings['Continue'] = 'Folytatás...';
@@ -492,9 +492,9 @@ $strings['reserved or unavailable'] = 'az %s %s foglalt, vagy nem használható.';
 $strings['Reservation created for'] = 'Vizsgálat létrehozva %s';
 $strings['Reservation modified for'] = 'Vizsgálat módosítva %s';
 $strings['Reservation deleted for'] = 'Vizsgálat törölve %s';
-$strings['created'] = 'létrehozva';
-$strings['modified'] = 'módosítva';
-$strings['deleted'] = 'törölve';
+$strings['created'] = 'létrehozta';
+$strings['modified'] = 'módosította';
+$strings['deleted'] = 'törölte';
 $strings['Reservation #'] = 'Vizsgálat #';
 $strings['Contact'] = 'Kapcsolat';
 $strings['Reservation created'] = 'Vizsgálat létrehozva';
@@ -674,11 +674,11 @@ $strings['You are already invited to this reservation. Please follow participati
 $strings['Additional Tools'] = 'További Eszközök';
 $strings['Create User'] = 'Felhasználó Létrehozása';
 $strings['Check Availability'] = 'Elérhetõség ellenõrzése';
-$strings['Manage Additional Resources'] = 'Kiegészíto Hozzáadása';
+$strings['Manage Additional Resources'] = 'Kiegészítõ Hozzáadása';
 $strings['Number Available'] = 'Számú Elérhetõ';
 $strings['Unlimited'] = 'Korlátlan';
 $strings['Add Additional Resource'] = 'Kiegészítõ Kontingens Hozzáadása';
-$strings['Edit Additional Resource'] = 'Kiegészíto Szerkesztése';
+$strings['Edit Additional Resource'] = 'Kiegészítõ Szerkesztése';
 $strings['Checking'] = 'Ellenõrzés';
 $strings['You did not select anything to delete.'] = 'Nem választott ki semmi törlendõt.';
 $strings['Added Resources'] = 'Hozzáadott Kontingensek';
@@ -702,18 +702,18 @@ $strings['Export'] = 'Exportálás';
 $strings['Select reservations to export'] = 'Válassza ki az exportálni kívánt vizsgálatot';
 $strings['Export Format'] = 'Export formátum';
 $strings['This resource cannot be reserved more than x hours in advance'] = 'Ebbe a kontingensbe nem jegyezhet elõ %s órával korábban';
-$strings['Minimum Booking Notice'] = 'Minimum Booking Notice';
-$strings['Maximum Booking Notice'] = 'Maximum Booking Notice';
+$strings['Minimum Booking Notice'] = 'Legkorábbi Elõjegyzés Értesítõ';
+$strings['Maximum Booking Notice'] = 'Legkésõbbi Elõjegyzés Értesítõ';
 $strings['hours prior to the start time'] = 'órányira a kezdõ idõpontig';
 $strings['hours from the current time'] = 'órányira mostantól';
 $strings['Contains'] = 'Tartalmazza';
 $strings['Begins with'] = 'Kezdõdik';
 $strings['Minimum booking notice is required.'] = 'Minimum elõjegyzési figyelmeztetés szükséges.';
 $strings['Maximum booking notice is required.'] = 'Maximum elõjegyzési figyelmeztetés szükséges.';
-$strings['Accessory Name'] = 'Kiegészíto Neve';
-$strings['Accessories'] = 'Kiegészítok';
-$strings['All Accessories'] = 'Összes Kiegészíto';
-$strings['Added Accessories'] = 'Hozzáadott Kiegészíto(k)';
+$strings['Accessory Name'] = 'Kiegészítõ Neve';
+$strings['Accessories'] = 'Kiegészítõk';
+$strings['All Accessories'] = 'Összes Kiegészítõ';
+$strings['Added Accessories'] = 'Hozzáadott Kiegészítõ(k)';
 // end since 1.2.0
 
 /***

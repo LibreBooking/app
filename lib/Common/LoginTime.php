@@ -11,10 +11,6 @@ class LoginTime
 		$this->Now =& $tmp;		
 	}
 	
-	function SetNow($value){
-		$this->$Now = &$tmp;
-	}
-	
 	function Now()
 	{
 		if (empty($this->Now))

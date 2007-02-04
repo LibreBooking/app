@@ -1,4 +1,4 @@
-# phpScheduleIt 1.2.2 #
+# phpScheduleIt 1.2.0 #
 drop database if exists phpScheduleIt;
 create database phpScheduleIt;
 use phpScheduleIt;
@@ -79,6 +79,7 @@ CREATE TABLE resources (
   machid CHAR(16) NOT NULL PRIMARY KEY,
   scheduleid CHAR(16) NOT NULL,
   name VARCHAR(75) NOT NULL,
+  location VARCHAR(250),
   rphone VARCHAR(16),
   notes TEXT,
   status CHAR(1) NOT NULL DEFAULT 'a',
@@ -229,27 +230,6 @@ CREATE TABLE reminders (
 CREATE INDEX reminders_time ON reminders (reminder_time);
 CREATE INDEX reminders_memberid ON reminders (memberid);
 CREATE INDEX reminders_resid ON reminders (resid);
-
-# Create locations table #
-CREATE TABLE locations (
-  locid CHAR(16) NOT NULL PRIMARY KEY,
-  street1 VARCHAR(100) NOT NULL,
-  street2 VARCHAR(100),
-  city VARCHAR(64),
-  state VARCHAR(10),
-  zip VARCHAR(6),
-  country VARCHAR(64)
-  );
-
-# Create location_resources table #
-CREATE TABLE location_resources (
-  locid CHAR(16) NOT NULL,
-  resid CHAR(16) NOT NULL,
-  PRIMARY KEY(locid, resid)
-  );
-
-CREATE INDEX locres_locid ON location_resources (locid);
-CREATE INDEX locres_resid ON location_resources (resid);
 
 grant select, insert, update, delete
 ON phpScheduleIt.*

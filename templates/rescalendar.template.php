@@ -2,7 +2,7 @@
 /**
 * Provide all of the presentation functions for the ResCalendar class
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 04-08-06
+* @version 10-28-06
 * @package Templates
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt
@@ -22,9 +22,9 @@ $link = CmnFns::getNewLink();
 */
 function print_resource_jump_link($resources, $schedules, $machid, $scheduleid, $datestamp, $type, $isresource) {
 	global $link;
-	$machCount = 0;	
+	$machCount = 0;
 	$date_string = date('m,j,Y', $datestamp);
-	
+
 	echo "<p align=\"center\"><select name=\"resource_select\" class=\"textbox\" onchange=\"javascript:changeResCalendar($date_string, $type, this.options[this.selectedIndex].value);\">";
 	for ($schedule = 0; $schedule < count($schedules); $schedule++) {
 		echo "<option value=\"s|{$schedules[$schedule]['scheduleid']}\"";
@@ -42,7 +42,7 @@ function print_resource_jump_link($resources, $schedules, $machid, $scheduleid, 
 		$link_string = "javascript:window.open('signup.php?view=%d&amp;date=%s&amp;machid=%s','signup','height=700,width=600,toolbar=yes,menubar=yes,scrollbars=yes,resizable=yes');void(0);";
 		$link->doImageLink(sprintf($link_string, MYCALENDARTYPE_SIGNUP, date('m-d-Y',$datestamp), $machid), 'img/signup.gif', translate('Signup View'));
 	}
-	echo '</p>'; 
+	echo '</p>';
 }
 
 /**
@@ -62,7 +62,7 @@ function print_day_resource_reservations($reservations, $datestamp, $days, $sche
 	$col_width = intval(100/($days));
 	$hour_line = array();
 	$date_cells_taken = array();
-	
+
 	$datestamps = array();		// This will store the datestamp for each date on the calendar
 	// Print out a date header for each date in the calendar view
 	echo '<tr><td class="scheduleDateHeader">&nbsp;</td>';
@@ -71,28 +71,28 @@ function print_day_resource_reservations($reservations, $datestamp, $days, $sche
 		echo '<td width="' . $col_width . '%" class="scheduleDateHeader"><a href="schedule.php?scheduleid=' . $scheduleid . '&amp;date=' . sprintf('%d-%d-%d', $date_vars['mon'], $date_vars['mday'], $date_vars['year']) . '">' . translate_date('schedule_daily', $datestamps[$day_count]) . '</a></td>';
 	}
 	echo "</tr>\n";
-	
-	for ($i = 0; $i < count($reservations); $i++) {	
+
+	for ($i = 0; $i < count($reservations); $i++) {
 		$reservations[$i]['starttime'] = Time::getAdjustedMinutes($reservations[$i]['starttime']);
 		$reservations[$i]['endtime'] = Time::getAdjustedMinutes($reservations[$i]['endtime']);
-		
+
 		// If the reservation starts on a day other than the first day shown then just show it at the start time of the first day
 		$day = ($reservations[$i]['start_date'] >= $datestamp) ? round(($reservations[$i]['start_date'] - $datestamp)/SECONDS_IN_DAY) : 0;	// This will tell how many days ahead of the first day this reservation occurs
 		// If the reseravtion ends on a day further from the last day shown, then make the endday equal to the last day
-		$endday = ($reservations[$i]['end_date'] <= $datestamps[$days-1]) ? round(($reservations[$i]['end_date'] - $datestamp)/SECONDS_IN_DAY) : $days-1;	// This will tell how many days ahead of the first day this reservation occurs		
+		$endday = ($reservations[$i]['end_date'] <= $datestamps[$days-1]) ? round(($reservations[$i]['end_date'] - $datestamp)/SECONDS_IN_DAY) : $days-1;	// This will tell how many days ahead of the first day this reservation occurs
 		// Get temporary start and end times for dates that are off the viewable days
 		$starttime = ($reservations[$i]['start_date'] >= $datestamp) ? ($reservations[$i]['starttime']) : $start_time;
 		$endtime = ($reservations[$i]['end_date'] <= $datestamps[$days-1]) ? ($reservations[$i]['endtime']) : $end_time;
 		$hour_line[$starttime][$day] = &$reservations[$i];
-		
-		// If this is a multi day reservation, make sure we populate the $hour_line of the last day/time for this reservation		
+
+		// If this is a multi day reservation, make sure we populate the $hour_line of the last day/time for this reservation
 		if ($day != $endday) {
 			for ($d = $day+1; $d <= $endday; $d++) {
 				if ($datestamps[$d] == $reservations[$i]['end_date']) {
 					// If this is the last day of the reservation, we need to make sure that the end time is late enough to appear on the calendar
 					if ($endtime > $start_time) {
 						$hour_line[$start_time][$d] = &$reservations[$i];
-					}	
+					}
 				}
 				else {
 					$hour_line[$start_time][$d] = &$reservations[$i];
@@ -105,30 +105,30 @@ function print_day_resource_reservations($reservations, $datestamp, $days, $sche
 			// MULTIDAY
 			for ($d = $day; $d <= $endday; $d++) {
 				if ($d == $day) {
-					for ($time = $starttime; $time < $end_time; $time += $time_span) {		
+					for ($time = $starttime; $time < $end_time; $time += $time_span) {
 						$date_cells_taken[$d][$time] = 1;
 					}
 				}
 				else if ($d == $endday) {
-					for ($time = $start_time; $time < $endtime; $time += $time_span) {		
+					for ($time = $start_time; $time < $endtime; $time += $time_span) {
 						$date_cells_taken[$d][$time] = 1;
 					}
 				}
 				else {
-					for ($time = $start_time; $time < $end_time; $time += $time_span) {		
+					for ($time = $start_time; $time < $end_time; $time += $time_span) {
 						$date_cells_taken[$d][$time] = 1;
 					}
 				}
 			}
-		}	
+		}
 		else {
 			// SINGLE DAY
-			for ($time = $starttime; $time < $endtime; $time += $time_span) {		
+			for ($time = $starttime; $time < $endtime; $time += $time_span) {
 				$date_cells_taken[$day][$time] = 1;
 			}
-		}	
+		}
 	}
-	
+
 	// The reservation data is stored in a 2D array of time (x axis) and date (y axis)
 	// This simply loops through all time/date possibilities and prints out the reservation data for each cell
 	for ($time = $start_time; $time < $end_time; $time += $time_span) {
@@ -136,12 +136,12 @@ function print_day_resource_reservations($reservations, $datestamp, $days, $sche
 		for ($date = 0; $date < $days; $date++) {
 			if (isset($hour_line[$time][$date])) {
 				$res = $hour_line[$time][$date];
-				
+
 				if ($is_private) {
 					$res['fname'] = 'Private';
 					$res['lname'] = '';
 				}
-				
+
 				$starttime = $res['starttime'];
 				$endtime = $res['endtime'];
 				// Set temporary start/end times for multiday reservations so that the rowspan is correct
@@ -149,18 +149,18 @@ function print_day_resource_reservations($reservations, $datestamp, $days, $sche
 					if ($res['start_date'] != $datestamps[$date]) {
 						// If the res starts on a day other than today, then make the temp starting time equal to the day start
 						$starttime = $start_time;
-					}						
+					}
 					if ($res['end_date'] != $datestamps[$date]) {
 						// If the res ends on a day other than today, then make the temp ending time equal to the day end
 						$endtime = $end_time;
 					}
 				}
 				$rowspan = intval(($endtime - $starttime)/$time_span);
-				$js = "onmouseover=\"showSummary('details', event, '" . build_reservation_detail_div($res) . "');\" onmouseout=\"hideSummary('details');\" onmousemove=\"moveSummary('details', event);\"";	
+				$js = "onmouseover=\"showSummary('details', event, '" . build_reservation_detail_div($res) . "');\" onmouseout=\"hideSummary('details');\" onmousemove=\"moveSummary('details', event);\"";
 				echo "<td valign=\"top\" class=\"MyCalCellColor\" rowspan=\"$rowspan\" $js>&#8226; ";
 				echo "<a href=\"javascript:reserve('" . RES_TYPE_MODIFY . "','','','{$res['resid']}','{$res['scheduleid']}');\">{$res['fname']} {$res['lname']}</a>";
-				if (isset($res['parentid'])) echo ' <img src="img/recurring.gif" width="15" height="15" alt="' . translate('Recurring') . '" title="' . translate('Recurring') . '"/>';
-				if ($res['start_date'] != $res['end_date']) echo ' <img src="img/multiday.gif" width="8" height="9" alt="' . translate('Multiple Day') . '" title="' . translate('Multiple Day') . '"/>';					
+				if (!empty($res['parentid'])) echo ' <img src="img/recurring.gif" width="15" height="15" alt="' . translate('Recurring') . '" title="' . translate('Recurring') . '"/>';
+				if ($res['start_date'] != $res['end_date']) echo ' <img src="img/multiday.gif" width="8" height="9" alt="' . translate('Multiple Day') . '" title="' . translate('Multiple Day') . '"/>';
 				echo '</td>';
 			}
 			else {
@@ -170,7 +170,7 @@ function print_day_resource_reservations($reservations, $datestamp, $days, $sche
 			}
 		}
 		echo "</tr>\n";			// End the time row
-	}	
+	}
 	echo "</table>\n</td></tr><table>\n";
 }
 
@@ -191,7 +191,7 @@ function print_signup_sheet($reservations, $datestamp, $days, $start_time, $end_
 	$col_width = intval(100/($days));
 	$hour_line = array();
 	$date_cells_taken = array();
-	
+
 	$datestamps = array();		// This will store the datestamp for each date on the calendar
 	// Print out a date header for each date in the calendar view
 	echo '<tr><td>&nbsp;</td>';
@@ -200,86 +200,86 @@ function print_signup_sheet($reservations, $datestamp, $days, $start_time, $end_
 		echo '<td width="' . $col_width . '%" align="center"><b>' . $resource_name . '</b><br/>' . translate_date('schedule_daily', $datestamps[$day_count]) . '</td>';
 	}
 	echo "</tr>\n";
-	
-	for ($i = 0; $i < count($reservations); $i++) {	
+
+	for ($i = 0; $i < count($reservations); $i++) {
 		$reservations[$i]['starttime'] = Time::getAdjustedMinutes($reservations[$i]['starttime']);
 		$reservations[$i]['endtime'] = Time::getAdjustedMinutes($reservations[$i]['endtime']);
-		
+
 		// If the reservation starts on a day other than the first day shown then just show it at the start time of the first day
 		$day = ($reservations[$i]['start_date'] >= $datestamp) ? ($reservations[$i]['start_date'] - $datestamp)/SECONDS_IN_DAY : 0;	// This will tell how many days ahead of the first day this reservation occurs
 		// If the reseravtion ends on a day further from the last day shown, then make the endday equal to the last day
-		$endday = ($reservations[$i]['end_date'] <= $datestamps[$days-1]) ? ($reservations[$i]['end_date'] - $datestamp)/SECONDS_IN_DAY : $days-1;	// This will tell how many days ahead of the first day this reservation occurs		
+		$endday = ($reservations[$i]['end_date'] <= $datestamps[$days-1]) ? ($reservations[$i]['end_date'] - $datestamp)/SECONDS_IN_DAY : $days-1;	// This will tell how many days ahead of the first day this reservation occurs
 		// Get temporary start and end times for dates that are off the viewable days
 		$starttime = ($reservations[$i]['start_date'] >= $datestamp) ? ($reservations[$i]['starttime']) : $start_time;
 		$endtime = ($reservations[$i]['end_date'] <= $datestamps[$days-1]) ? ($reservations[$i]['endtime']) : $end_time;
-		
+
 		$hour_line[$starttime][$day] = &$reservations[$i];
-		
-		// If this is a multi day reservation, make sure we populate the $hour_line of the last day/time for this reservation		
+
+		// If this is a multi day reservation, make sure we populate the $hour_line of the last day/time for this reservation
 		if ($day != $endday) {
 			for ($d = $day+1; $d <= $endday; $d++) {
 				$hour_line[$start_time][$d] = &$reservations[$i];
 			}
 		}
-		
+
 		// Keep an array of the cells that are taken by the rowspan of another reservation
 		if ($day != $endday) {
 			// MULTIDAY
 			for ($d = $day; $d <= $endday; $d++) {
 				if ($d == $day) {
-					for ($time = $starttime; $time < $end_time; $time += $time_span) {		
+					for ($time = $starttime; $time < $end_time; $time += $time_span) {
 						$date_cells_taken[$d][$time] = 1;
 					}
 				}
 				else if ($d == $endday) {
-					for ($time = $start_time; $time < $endtime; $time += $time_span) {		
+					for ($time = $start_time; $time < $endtime; $time += $time_span) {
 						$date_cells_taken[$d][$time] = 1;
 					}
 				}
 				else {
-					for ($time = $start_time; $time < $end_time; $time += $time_span) {		
+					for ($time = $start_time; $time < $end_time; $time += $time_span) {
 						$date_cells_taken[$d][$time] = 1;
 					}
 				}
 			}
-		}	
+		}
 		else {
 			// SINGLE DAY
-			for ($time = $starttime; $time < $endtime; $time += $time_span) {		
+			for ($time = $starttime; $time < $endtime; $time += $time_span) {
 				$date_cells_taken[$day][$time] = 1;
 			}
-		}	
+		}
 	}
-	
+
 	// The reservation data is stored in a 2D array of time (x axis) and date (y axis)
 	// This simply loops through all time/date possibilities and prints out the reservation data for each cell
 	for ($time = $start_time; $time < $end_time; $time += $time_span) {
-		echo '<tr><td valign="top">' . Time::formatTime($time) . '</td>';
+		echo '<tr><td valign="top">' . Time::formatTime($time, false) . '</td>';
 		for ($date = 0; $date < $days; $date++) {
 			if (isset($hour_line[$time][$date])) {
 				$res = $hour_line[$time][$date];
-				
+
 				if ($is_private) {
 					$res['fname'] = 'Private';
 					$res['lname'] = '';
 				}
-				
+
 				$starttime = $res['starttime'];
 				$endtime = $res['endtime'];
 				// Set temporary start/end times for multiday reservations so that the rowspan is correct
 				if ($res['start_date'] != $res['end_date']) {
-					if ($res['start_date'] == $datestamps[$date]) {						
+					if ($res['start_date'] == $datestamps[$date]) {
 						$endtime = $end_time;
 					}
 					else {
-						$starttime = $start_time;						 
+						$starttime = $start_time;
 					}
 				}
 				$rowspan = intval(($endtime - $starttime)/$time_span);
 				echo "<td valign=\"top\" rowspan=\"$rowspan\" class=\"\">&#8226; ";
 				echo "{$res['fname']} {$res['lname']}";
-				if (isset($res['parentid'])) echo ' <img src="img/recurring.gif" width="15" height="15" alt="' . translate('Recurring') . '" title="' . translate('Recurring') . '"/>';
-				if ($res['start_date'] != $res['end_date']) echo ' <img src="img/multiday.gif" width="8" height="9" alt="' . translate('Multiple Day') . '" title="' . translate('Multiple Day') . '"/>';					
+				if (!empty($res['parentid'])) echo ' <img src="img/recurring.gif" width="15" height="15" alt="' . translate('Recurring') . '" title="' . translate('Recurring') . '"/>';
+				if ($res['start_date'] != $res['end_date']) echo ' <img src="img/multiday.gif" width="8" height="9" alt="' . translate('Multiple Day') . '" title="' . translate('Multiple Day') . '"/>';
 				echo '</td>';
 			}
 			else {
@@ -289,7 +289,7 @@ function print_signup_sheet($reservations, $datestamp, $days, $start_time, $end_
 			}
 		}
 		echo "</tr>\n";			// End the time row
-	}	
+	}
 	echo "</table>\n</td></tr><table>\n";
 }
 ?>

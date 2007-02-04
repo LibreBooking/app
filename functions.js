@@ -334,30 +334,41 @@ function showsummary(object, e, text) {
 
     if (e != '') {
         if (isIE()) {
-            x = e.clientX;
+        	x = e.clientX;
             y = e.clientY;
             browserX = document.body.offsetWidth - 25;
-			x += document.body.scrollLeft;			// Adjust for scrolling on IE
+            x += document.body.scrollLeft;			// Adjust for scrolling on IE
     		y += document.body.scrollTop;
         }
         if (!isIE()) {
             x = e.pageX;
             y = e.pageY;
             browserX = window.innerWidth - 35;
-        }
+       }
     }
 	
 	x1 = x + 20;		// Move out of mouse pointer
 	y1 = y + 20;
 	
 	// Keep box from going off screen
-	if (x1 + w > browserX)
+	if (x1 + w > browserX) {
 		x1 = browserX - w;
+	}
     
     myLayer.style.left = parseInt(x1)+ "px";
     myLayer.style.top = parseInt(y1) + "px";
 	myLayer.style.visibility = "visible";
 }
+
+function getAbsolutePosition(element) {
+    var r = { x: element.offsetLeft, y: element.offsetTop };
+    if (element.offsetParent) {
+      var tmp = getAbsolutePosition(element.offsetParent);
+      r.x += tmp.x;
+      r.y += tmp.y;
+    }
+    return r;
+  };
 
 function moveSummary(object, e) {
 
@@ -512,7 +523,7 @@ function clickTab(tabid, panel_to_show) {
 	}
 
 	div_to_display = document.getElementById(panel_to_show);
-	div_to_display.style.display = isIE() ? "inline" : "table";
+	div_to_display.style.display = isIE() ? "block" : "table";
 	divs = document.getElementById("main-tab-panel").getElementsByTagName("div");
 
 	for (i = 0; i < divs.length; i++) {

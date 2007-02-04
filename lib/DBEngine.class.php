@@ -3,10 +3,10 @@
 * DBEngine class
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author Richard Cantzler <rmcii@users.sourceforge.net>
-* @version 06-26-06
+* @version 02-01-07
 * @package DBEngine
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -70,14 +70,15 @@ class DBEngine {
 
         // Make persistant connection to database
         $db = DB::connect($dsn, true);
-    
+
         // If there is an error, print to browser, print to logfile and kill app
-        if (DB::isError($db)) {
+        if (PEAR::isError($db)) {
             die ('Error connecting to database: ' . $db->getMessage() );
         }
-        
-		$db->setOption('portability', DB_PORTABILITY_ALL);
-		
+
+        @$db->setOption('portability', DB_PORTABILITY_ALL);
+
+
         // Set fetch mode to return associatve array
         $db->setFetchMode(DB_FETCHMODE_ASSOC);
     

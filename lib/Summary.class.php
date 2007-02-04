@@ -5,7 +5,7 @@
 * @version 04-06-06
 * @package phpScheduleIt
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -21,15 +21,8 @@ class Summary
 		$this->text = $text;
 	}
 	
-	function toScheduleCell($daySize, $spanSize, $startTime, $endTime) {
+	function toScheduleCell($available_chars = -1) {
 		$summary = $this->EMPTY_SUMMARY;
-		
-		$this->_daySize = $daySize;
-		$this->_spanSize = $spanSize;
-		$this->_startTime = $startTime;
-		$this->_endTime = $endTime;
-		
-		$available_chars = $this->GetAvailableSize();
 		
 		if ($available_chars == -1 || $available_chars > $this->getSize()) {
 			$available_chars = $this->getSize();
@@ -72,21 +65,6 @@ class Summary
 	
 	function isVisible() {
 		return $this->visible && ( strlen($this->text) + strlen($this->user_name) ) > 0;
-	}
-	
-	function GetAvailableSize() {
-		$resLength = $this->_endTime - $this->_startTime;
-		
-		//$totalWidth = 7200;
-		
-		$base = 2;
-		$increment = 3;
-		$multiple = 1440/$this->_daySize;
-		$dayMultiple = $resLength / 60;
-		
-		//$minWidth = $base + ($increment
-		//return $base + ($increment * $multiple)
-		return 0;
 	}
 }
 ?>

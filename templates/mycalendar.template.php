@@ -3,7 +3,7 @@
 * Provide all of the presentation functions for the MyCalendar class
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author Richard Cantzler <rmcii@users.sourceforge.net>
-* @version 04-08-06
+* @version 10-28-06
 * @package Templates
 *
 * Copyright (C) 2003 - 2006 phpScheduleIt
@@ -180,7 +180,7 @@ function print_day_reservations($reservations, $datestamp, $days, $show_owner_ic
 					if ($show_owner_icon) {
 						echo ($res['owner'] == 1) ? ' <img src="img/owner.gif" alt="' . translate('Owner') . '" title="' . translate('Owner') . '"/>' : ' <img src="img/participant.gif" alt="' . translate('Participant') . '" title="' . translate('Participant') . '"/>';
 					}
-					if (isset($res['parentid'])) echo ' <img src="img/recurring.gif" width="15" height="15" alt="' . translate('Recurring') . '" title="' . translate('Recurring') . '"/>';
+					if (!empty($res['parentid'])) echo ' <img src="img/recurring.gif" width="15" height="15" alt="' . translate('Recurring') . '" title="' . translate('Recurring') . '"/>';
 					if ($res['start_date'] != $res['end_date']) echo ' <img src="img/multiday.gif" width="8" height="9" alt="' . translate('Multiple Day') . '" title="' . translate('Multiple Day') . '"/>';
 					echo "</p>\n";
 				}				
@@ -286,7 +286,7 @@ function print_month_reservations($reservations, $datestamp, $fields = array('na
 					if ($ownerParticipantImage) {
 						echo ($res['owner'] == 1) ? ' <img src="img/owner.gif" alt="' . translate('Owner') . '" title="' . translate('Owner') . '"/>' : ' <img src="img/participant.gif" alt="' . translate('Participant') . '" title="' . translate('Participant') . '"/>';
 					}
-					if (isset($res['parentid'])) echo ' <img src="img/recurring.gif" width="15" height="15" alt="' . translate('Recurring') . '" title="' . translate('Recurring') . '"/>';
+					if (!empty($res['parentid'])) echo ' <img src="img/recurring.gif" width="15" height="15" alt="' . translate('Recurring') . '" title="' . translate('Recurring') . '"/>';
 					if ($res['start_date'] != $res['end_date']) echo ' <img src="img/multiday.gif" width="8" height="9" alt="' . translate('Multiple Day') . '" title="' . translate('Multiple Day') . '"/>';
 					echo "</p>\n";
 				}

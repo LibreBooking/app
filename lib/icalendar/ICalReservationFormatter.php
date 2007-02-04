@@ -5,7 +5,7 @@
 * @version 04-29-06
 * @package phpScheduleIt.iCalendar
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 

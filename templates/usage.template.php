@@ -289,7 +289,7 @@ function showForm($min_max, $users, $machs, $schedules) {
 			<td>
 				<input type="radio" name="summarytype" value="anywhere" checked="checked" /><?php echo translate('Contains')?>
 				<input type="radio" name="summarytype" value="beginning" /><?php echo translate('Begins with')?>
-				<input type="text" name="searchsummary" class="textbox" />
+				<input type="text" name="summarysearch" class="textbox" />
 			</td>
 		</tr>
 		  <tr class="cellColor">

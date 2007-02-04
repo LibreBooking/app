@@ -5,11 +5,11 @@
 * @version 03-16-06
 * @package phpScheduleIt
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
-require_once('interfaces/IEmail.php');
+include_once('interfaces/IEmail.php');
 
 class ReminderEmail extends IEmail
 {

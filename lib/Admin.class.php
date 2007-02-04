@@ -4,10 +4,10 @@
 *  data and settings in phpScheduleIt
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author David Poole <David.Poole@fccc.edu>
-* @version 08-08-06
+* @version 01-25-07
 * @package Admin
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -179,7 +179,7 @@ class Admin {
 		if (isset($_GET['groupid'])) {
 			 $groupids = array($_GET['groupid']);
 		}
-		else if ($this->user->is_group_admin()) {
+		else if (!Auth::isAdmin() && $this->user->is_group_admin()) {
 			$groupids = $this->user->get_admin_groups();
 		}
 
@@ -377,7 +377,6 @@ class Admin {
 	function sendMessage() {
 		global $conf;
 		$success = $fail = array();
-		//$isWin32 = strpos(strtolower($_SERVER['SERVER_SOFTWARE']), 'win32');
 
 		$usr = $_SESSION['usr'];
 		$msg = $_SESSION['msg'];
@@ -390,19 +389,18 @@ class Admin {
 		$mailer->From = $to;
 		// If emailAdmin is set to true, put them in cc
 		for ($i = 0; $i < count($usr); $i++) {
-			//if ($isWin32 !== false)
-				$mailer->AddBCC($usr[$i]);
-			//else
-			//	$mailer->AddAddress($usr[$i]);
+			$mailer->AddBCC($usr[$i]);
 		}
 		$mailer->Subject = $sub;
 		$mailer->Body = $msg;
 		$mailer->IsHTML(false);
 
-		if ($mailer->Send())
+		if ($mailer->Send()) {
 			$success = true;
-		else
+		}
+		else {
 			$success = false;
+		}
 
 		print_email_results($sub, $msg, $success);
 		unset($_SESSION['usr'], $_SESSION['msg'], $_SESSION['sub'], $usr, $sub, $msg);
@@ -436,8 +434,9 @@ class Admin {
 			for ($i = 0; $i < count($tables); $i++) {
 				$result = $this->db->db->getRow('select * from ' . $this->db->get_table($tables[$i]));
 				if (count($result) > 0) {
-					foreach ($result as $field => $v)
+					foreach ($result as $field => $v) {
 						$fields[$tables[$i]][] = $field;	// Assignment is done in the loop
+					}
 				}
 			}
 			show_tables($tables, $fields);

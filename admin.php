@@ -6,7 +6,7 @@
 * @version 02-23-06
 * @package Admin
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -30,10 +30,12 @@ if (!$admin->isUserAllowed()) {
 $t->printWelcome();
 $t->startMain();
 
-if (!$admin->is_error())
+if (!$admin->is_error()) {
 	$admin->execute();
-else
+}
+else {
 	CmnFns::do_error_box($admin->get_error_msg());
+}
 
 $t->endMain();
 $t->printHTMLFooter();

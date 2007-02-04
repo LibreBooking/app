@@ -7,7 +7,7 @@
 * @version 05-20-06
 * @package Languages
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -309,11 +309,10 @@ function get_language_list() {
 function get_jscalendar_file() {
 	global $languages;
 	global $lang;
-	global $charset;
 	
 	$incomplete_translations = array ('tr');
 	
-	$_file = 'calendar-' . $languages[$lang][2] . ($charset == 'utf-8' ? '-utf8' : '').'.js';
+	$_file = 'calendar-' . $languages[$lang][2] . '.js';
 	$base = dirname(__FILE__) . '/..';
 	if ( (array_search($languages[$lang][2], $incomplete_translations) !== false) || !file_exists("$base/jscalendar/lang/$_file")) {
 		$_file = "calendar-en.js";

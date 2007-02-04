@@ -7,7 +7,7 @@
 * @version 04-11-06
 * @package phpScheduleIt
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -75,7 +75,7 @@ else {
 $t->endMain();
 
 $timer->stop();
-$timer->printComment();
+$timer->print_comment();
 
 $t->printHTMLFooter();	// Print HTML footer
 

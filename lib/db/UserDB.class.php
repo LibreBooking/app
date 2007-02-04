@@ -6,7 +6,7 @@
 * @version 03-16-06
 * @package DBEngine
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 $basedir = dirname(__FILE__) . '/../..';

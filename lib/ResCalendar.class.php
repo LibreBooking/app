@@ -5,10 +5,10 @@
 *  reservation data in a particular format for a resource
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author Richard Cantzler <rmcii@users.sourceforge.net>
-* @version 04-08-06
+* @version 01-28-07
 * @package phpScheduleIt
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 @define('BASE_DIR', dirname(__FILE__) . '/..');
@@ -148,7 +148,7 @@ class ResCalendar extends MyCalendar {
 					}
 					break;
 				case MYCALENDARTYPE_MONTH :
-					print_month_reservations($this->reservations, $this->firstDate, array('fname', 'lname'), false, $is_private);
+					print_month_reservations($this->reservations, $this->firstDate, array('fname', 'lname'), false, $is_private, $this->scheduleid);
 			}
 			
 			print_details_div();

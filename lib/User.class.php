@@ -3,10 +3,10 @@
 * This file contains the User class for viewing
 *  and manipulating user data
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 05-15-06
+* @version 01-28-07
 * @package phpScheduleIt
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 

@@ -497,3 +497,9 @@ div.textbox, div.blur_textbox {
 div.blur_textbox {
 	background-color: #EEEEEE;
 }
+
+div.inlineSummary{
+	width:100%;
+	overflow:hidden;
+	height:13px;
+}

@@ -4,7 +4,7 @@
 	<head>
 		<title>Introduction to phpScheduleIt</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-		<style type="text/css"> 
+		<style type="text/css">
 		<!-- li { font-size: 12px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; }
 	body { font-family: Verdana, Arial, Helvetica, sans-serif; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px; background-color: #F0F0F0; }
 	p { font-size: 12px; margin-left: 25px; margin-top: 3px; }
@@ -20,7 +20,7 @@
 	</head>
 	<body bgcolor="#ffffff" text="#000000">
 		<h3 align="center"><a name="top" id="top"></a>Welcome to phpScheduleIt</h3>
-		<h5 align="center">Version 1.2.0<br>
+		<h5 align="center">Version 1.2.3<br>
 			<a href="mailto:lqqkout13@users.sourceforge.net">Nick Korbel</a><br>
 			<a href="http://phpscheduleit.sourceforge.net" target="_blank">http://phpscheduleit.sourceforge.net</a></h5>
 		<table width="100%" border="0" cellspacing="0" cellpadding="5" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid"
@@ -28,23 +28,23 @@
 			<tr>
 				<td bgcolor="#fafafa">
 					<h4>Description of General System Functionality</h4>
-					<p>phpScheduleIt was developed for reservation and resource management. This 
-						includes a full user log in and registration system, user profile management, 
+					<p>phpScheduleIt was developed for reservation and resource management. This
+						includes a full user log in and registration system, user profile management,
 						the scheduling/reservation system, and numerous administration tools.</p>
-					<p>The entire system was written using PHP by Nick Korbel. The system uses any PEAR 
-						supported database to store and manage all user, resource and reservation 
-						information. Because of the availability of PHP, this system will run on any 
+					<p>The entire system was written using PHP by Nick Korbel. The system uses any PEAR
+						supported database to store and manage all user, resource and reservation
+						information. Because of the availability of PHP, this system will run on any
 						platform that meets the aforementioned necessary requirements.</p>
-					<p>At the time of writing, the currently supported PEAR databases are: <em>dbase, 
+					<p>At the time of writing, the currently supported PEAR databases are: <em>dbase,
 							fbsql, interbase, informix, msql, mssql, mysql, oci8, odbc, pgsql </em>and<em> sybase</em>
-						(DB style interfaces to LDAP servers and MS ADO (using COM) are also availed 
+						(DB style interfaces to LDAP servers and MS ADO (using COM) are also availed
 						from a separate package).</p>
-					<p>The system is optimized for Internet Explorer 5.5 or greater, Netscape 6.x or 
+					<p>The system is optimized for Internet Explorer 5.5 or greater, Netscape 6.x or
 						greater and Mozilla 1.0 or greater. Netscape 4.7 is <b>not</b> supported.</p>
 					<p>Any questions or bug reports should be directed to Nick Korbel at <a href="mailto:lqqkout13@users.sourceforge.net">
 							lqqkout13@users.sourceforge.net</a></p>
 					<p>This project is in no way associated with <a href="http://www.php.net">PHP</a> or
-						<a href="http://www.pear.php.net">PEAR</a>. The PHP license is included in the 
+						<a href="http://www.pear.php.net">PEAR</a>. The PHP license is included in the
 						lib/pear/ directory.</p>
 					<h4>Requirements</h4>
 					<p>- PHP 4.3 or higher (4.2.x is supported but not recommended)<br>
@@ -52,101 +52,101 @@
 						- PEAR::DB supported database. Compatible databases can be <a href="http://www.pear.php.net/manual/en/package.database.db.intro-dsn.php">
 							found here</a>. <a href="http://www.mysql.com"></a>
 						<br>
-						- End-users need IE5+ or Netscape 6.x+ (Netscape 4.7 or earlier is NOT 
+						- End-users need IE5+ or Netscape 6.x+ (Netscape 4.7 or earlier is NOT
 						supported)</p>
 					<h4>Installation</h4>
 					<p><em>If you are installing on a remotely hosted server, please see <a href="install/remote_host_install.html">
 								Instructions for Installing on a Remote Host</a></em></p>
-					<p>The installation creates all the necessary database tables and inserts a default 
+					<p>The installation creates all the necessary database tables and inserts a default
 						schedule.</p>
-					<p>Installation can be accomplished automatically by using the included setup 
+					<p>Installation can be accomplished automatically by using the included setup
 						script or manually, by following the instructions below.</p>
-					<p>Note: Many of these steps include syntax that may or may not be exclusive to 
+					<p>Note: Many of these steps include syntax that may or may not be exclusive to
 						MySQL. Please consult your database manual for other database syntaxes.</p>
-					<p>1) Verify that the PEAR DB package, a PEAR supported database (<a href="http://pear.php.net/package-info.php?pacid=46" target="_blank">view 
-							currently supported databases</a>) and PHP version 4.2.0 or greater are 
-						installed and properly configured on the destination server. If not, download 
+					<p>1) Verify that the PEAR DB package, a PEAR supported database (<a href="http://pear.php.net/package-info.php?pacid=46" target="_blank">view
+							currently supported databases</a>) and PHP version 4.2.0 or greater are
+						installed and properly configured on the destination server. If not, download
 						and install at least these versions.</p>
-					<p>2) Copy all of the phpScheduleIt files provided into a desired web directory. 
+					<p>2) Copy all of the phpScheduleIt files provided into a desired web directory.
 						Remember this directory because we will need it in the next two steps.</p>
-					<p>3) Rename config/config.new.php to config/config.php and edit the file to be sure it is correct for your web server 
-						set up. Most importantly, make sure that the 'weburi', 'dbType', 'dbUser', 
+					<p>3) Rename config/config.new.php to config/config.php and edit the file to be sure it is correct for your web server
+						set up. Most importantly, make sure that the 'weburi', 'dbType', 'dbUser',
 						'dbPass' and 'dbName' settings are correct.</p>
-					<p>4) Follow the proper set of instructions below for your type of setup. If you 
+					<p>4) Follow the proper set of instructions below for your type of setup. If you
 						are installing on a local machine, the automatic installation is advised.</p>
-					<p>5) After the installation is complete, you must register a user with the email 
-						address set for 'adminemail' in config.php. This will be your administrative 
+					<p>5) After the installation is complete, you must register a user with the email
+						address set for 'adminemail' in config.php. This will be your administrative
 						user.</p>
 					<h5>Remote Installation -</h5>
 					<p>If you are installing on a remote server, please follow the instructions in <em><a href="install/remote_host_install.html">
-								Instructions for Installing on a Remote Host</a></em> before 
-						proceeding. This short document will guide you through creating the database, 
+								Instructions for Installing on a Remote Host</a></em> before
+						proceeding. This short document will guide you through creating the database,
 						tables and database user needed for accessing the data used in phpScheduleIt.</p>
 					<h5><strong>Automatic Installation -</strong></h5>
-					<p>1) Simply run the install script by navigating your browser to 
-						http://yourwebsite.com/path_to_phpscheduleit/install/. You will be asked for 
-						your database password. Note that you do not need to log in as root, but the 
+					<p>1) Simply run the install script by navigating your browser to
+						http://yourwebsite.com/path_to_phpscheduleit/install/. You will be asked for
+						your database password. Note that you do not need to log in as root, but the
 						user needs to have permission to create and drop databases.</p>
-					<p>2) You will receive a confirmation or rejection notice about each command being 
-						executed. If everything goes well, you will receive a final notice that the 
+					<p>2) You will receive a confirmation or rejection notice about each command being
+						executed. If everything goes well, you will receive a final notice that the
 						installation was successful.</p>
-					<p>3) DELETE THE 'INSTALL' DIRECTORY. This is a critical step. If the directory is 
+					<p>3) DELETE THE 'INSTALL' DIRECTORY. This is a critical step. If the directory is
 						left, then anyone is open to destroy your newly created database.</p>
 					<h5><strong>Manual Installation -</strong></h5>
-					<p>1) File preparation: The defaults used in the manual installation will work 
-						correctly, but it is a good idea to change these. If you plan on keeping the 
+					<p>1) File preparation: The defaults used in the manual installation will work
+						correctly, but it is a good idea to change these. If you plan on keeping the
 						defaults, you can skip this step.</p>
-					<p>To change the database name, change the word 'phpScheduleIt' on line 163 in 
-						setup.sql to your new database name. To change the database user name, change 
-						the word 'schedule_user' on line 164 in setup.sql to your new database user 
-						name. To change the user password, change the word 'password' on line 164 to 
+					<p>To change the database name, change the word 'phpScheduleIt' on line 163 in
+						setup.sql to your new database name. To change the database user name, change
+						the word 'schedule_user' on line 164 in setup.sql to your new database user
+						name. To change the user password, change the word 'password' on line 164 to
 						your new user password.</p>
-					<p>2) The initial database must be set up. There is an included setup file for 
-						this. To execute the setup file in mysql, navigate to the MySQL executable 
-						directory (usually /usr/local/mysql/bin) and at the shell prompt type the 
+					<p>2) The initial database must be set up. There is an included setup file for
+						this. To execute the setup file in mysql, navigate to the MySQL executable
+						directory (usually /usr/local/mysql/bin) and at the shell prompt type the
 						following:</p>
 					<p>mysql -u root -p &lt; <b>%path to directory%</b>/install/setup.sql</p>
 					<p>For example: <i>mysql -u root -p &lt; /www/htdocs/phpscheduleit/install/setup.sql</i></p>
-					<p>You will be prompted to enter the root MySQL password at this point. This script 
-						will create the schedule database, the schedule user/password combination and 
+					<p>You will be prompted to enter the root MySQL password at this point. This script
+						will create the schedule database, the schedule user/password combination and
 						grant specific privileges to that user.</p>
 					<p>For syntax for other databases, please consult your manual.</p>
-					<p>3) Verify the installation was successful by bringing up the MySQL Monitor 
-						(typing <i><b>mysql</b></i> at the shell prompt). Please note that all commands 
-						entered in the MySQL Monitor end with a semicolon. At the mysql prompt, type <i><b>show 
-								databases;</b></i>. You will be informed that the database has been 
+					<p>3) Verify the installation was successful by bringing up the MySQL Monitor
+						(typing <i><b>mysql</b></i> at the shell prompt). Please note that all commands
+						entered in the MySQL Monitor end with a semicolon. At the mysql prompt, type <i><b>show
+								databases;</b></i>. You will be informed that the database has been
 						changed.					</p>
-					<p>If the database that you just created is listed, then the installation was 
+					<p>If the database that you just created is listed, then the installation was
 						successful.</p>
 					<p>Type <b><i>quit;</i></b> to exit the MySQL Monitor.</p>
-					<p>4) Open the config.php file and immediately change the administrative login (<span class="code">$conf['app']['adminEmail']</span>) 
+					<p>4) Open the config.php file and immediately change the administrative login (<span class="code">$conf['app']['adminEmail']</span>)
 						from its default to a new desired login.</p>
 					<p>5) If desired, change any other settings in the configuration file.</p>
-					<p>6) DELETE THE 'INSTALL' DIRECTORY. This is a critical step. If the directory is 
+					<p>6) DELETE THE 'INSTALL' DIRECTORY. This is a critical step. If the directory is
 						left, then anyone is open to destroy your newly created database.</p>
 					<h5><strong>Multiple Database Setup -</strong></h5>
-					<p>To set up the system to use multiple databases (for example sharing a login 
-						table), first make sure that the tables that you want to use from a different 
-						database are already running. Next, set up a new version of phpScheduleIt by 
+					<p>To set up the system to use multiple databases (for example sharing a login
+						table), first make sure that the tables that you want to use from a different
+						database are already running. Next, set up a new version of phpScheduleIt by
 						following either the Automatic or Manual Setup instructions above.</p>
-					<p>Next, edit the config/config.php file. Find the 'pk_prefix' field and change it 
+					<p>Next, edit the config/config.php file. Find the 'pk_prefix' field and change it
 						to something that no other instance of the scheduler is using.</p>
-					<p>Now, you will need to edit the lib/DBEngine.class.php file. This is where all 
+					<p>Now, you will need to edit the lib/DBEngine.class.php file. This is where all
 						the database names to be used are defined. In the
 						<span class="code">DBEngine()</span>
 						function, find the line that starts with "<span class="code">$this-&gt;dbs
-        = array (xxxx);</span>" For each additional database that you want to associate with this 
-						version phpScheduleIt, add a comma and then the name of the database, in single 
+        = array (xxxx);</span>" For each additional database that you want to associate with this
+						version phpScheduleIt, add a comma and then the name of the database, in single
 						quotes. For example, to use 2 databases the line would look like this:					</p>
-					<p class="code">$this-&gt;dbs = array ($GLOBALS['conf']['db']['dbName'], 
+					<p class="code">$this-&gt;dbs = array ($GLOBALS['conf']['db']['dbName'],
 						'name_of_database2');</p>
 					<p>Further down, find function
-						<span class="code">define_tables()</span>. This is where the table/database 
-						relationships are defined. For each table, assign a database that it comes 
-						from. This can be done by counting, in order from 0, the number that the 
-						database you want to associate a table to, and typing that between the brackets 
-						on the same line as the table name. For example, to use the default database 
-						for the login table, but 'name_of_database2' for the rest of the tables, your 
+						<span class="code">define_tables()</span>. This is where the table/database
+						relationships are defined. For each table, assign a database that it comes
+						from. This can be done by counting, in order from 0, the number that the
+						database you want to associate a table to, and typing that between the brackets
+						on the same line as the table name. For example, to use the default database
+						for the login table, but 'name_of_database2' for the rest of the tables, your
 						code would look like this:</p>
 					<pre class="code">$this-&gt;table_to_database = array (
    'login'	        =&gt; $this-&gt;dbs[0],
@@ -154,175 +154,177 @@
    'resources'    	=&gt; $this-&gt;dbs[1],
    'permission'		=&gt; $this-&gt;dbs[1]
  );</pre>
-					<p>Be sure that you do not change the table names, only the number between the 
+					<p>Be sure that you do not change the table names, only the number between the
 						brackets.</p>
 					<h4>Upgrading From version 1.1.x</h4>
 					<p><em>If you are installing on a remotely hosted server, please see <a href="install/remote_host_install.html">
 								Instructions for Installing on a Remote Host</a></em></p>
-					<p>Note: A new configuration file is used in this release. Config files from 
+					<p>Note: A new configuration file is used in this release. Config files from
 						earlier versions will not work. Please copy everything in config/config.new.php between the START COPY and END COPY comments. </p>
-					<p>Please refer to the release notes in the install directory for any additional 
+					<p>Please refer to the release notes in the install directory for any additional
 						information.</p>
 					<h5><strong>Web&nbsp;Based&nbsp;Update</strong></h5>
-					<p>1) Simply run the install script by navigating your browser to 
-						http://yourwebsite.com/path_to_phpscheduleit/install/update/. You will be asked 
-						for your database password. Note that you do not need to log in as root, but 
+					<p>1) Simply run the install script by navigating your browser to
+						http://yourwebsite.com/path_to_phpscheduleit/install/update/. You will be asked
+						for your database password. Note that you do not need to log in as root, but
 						the user needs to have permission to create and drop databases.</p>
-					<p>2) You will receive a confirmation or rejection notice about each command being 
-						executed. If everything goes well, you will receive a final notice that the 
+					<p>2) You will receive a confirmation or rejection notice about each command being
+						executed. If everything goes well, you will receive a final notice that the
 						installation was successful.</p>
-					<p>3) DELETE THE 'INSTALL' DIRECTORY. This is a critical step. If the directory is 
+					<p>3) DELETE THE 'INSTALL' DIRECTORY. This is a critical step. If the directory is
 						left, then anyone is open to destroy your newly created database.</p>
 					<h5><strong>Manual Update</strong></h5>
-					<p>To execute the update file in MySQL, navigate to the MySQL executable directory 
+					<p>To execute the update file in MySQL, navigate to the MySQL executable directory
 						(usually /usr/local/mysql/bin) and at the shell prompt type the following:</p>
 					<p>mysql -u root -p &lt; %path to directory%/install/update/update.sql</p>
-					<p>For example: mysql -u root -p &lt; 
+					<p>For example: mysql -u root -p &lt;
 						/www/htdocs/phpscheduleit/install/update/update.sql</p>
-					<p>You will be prompted to enter the root MySQL password at this point. This script 
+					<p>You will be prompted to enter the root MySQL password at this point. This script
 						will update the database to the current schema.</p>
 					<p>For syntax for other databases, please consult your manual.</p>
+					<h4>Upgrading From version 1.2.x</h4>
+					<p>To upgrade from an earlier version of 1.2, simply copy all files in this package over your current phpScheduleIt files. No configuration or database changes were made. </p>
 					<h4>Common Issues</h4>
 					<p><strong>If you are using MySQL 4.1 and above</strong></p>
-					<p>There is a known authentication issue with PHP and MySQL 4.1 and above. When you 
-						are installing phpScheduleIt using MySQL 4.1+, please uncomment line 373 in 
-						install.php (for automatic installation) or uncomment line 166 in setup.sql 
+					<p>There is a known authentication issue with PHP and MySQL 4.1 and above. When you
+						are installing phpScheduleIt using MySQL 4.1+, please uncomment line 373 in
+						install.php (for automatic installation) or uncomment line 166 in setup.sql
 						(for manual installation). This will ensure that authentication works properly.</p>
 					<p><strong>I get a message that says "Cannot find file 'DB.php"</strong></p>
-					<p>Your environment either does not have PEAR installed or is not properly set up 
-						to find the PEAR files. Please see the PEAR documentation 
-						http://www.pear.php.net for instructions on installing PEAR. PEAR should be 
+					<p>Your environment either does not have PEAR installed or is not properly set up
+						to find the PEAR files. Please see the PEAR documentation
+						http://www.pear.php.net for instructions on installing PEAR. PEAR should be
 						included and installed with PHP version 4.2 or greater.</p>
-					<p>Try setting the config.php 'safeMode' variable to 1. This will almost always 
+					<p>Try setting the config.php 'safeMode' variable to 1. This will almost always
 						resolve the issue.</p>
-					<p><strong>I get a message that says "Error connecting to database: DB Error: no such 
+					<p><strong>I get a message that says "Error connecting to database: DB Error: no such
 							database"</strong></p>
-					<p>Most likely the variables are not set correctly in your config file. This is a 
+					<p>Most likely the variables are not set correctly in your config file. This is a
 						simple fix, please see the readme for how to take care of it.</p>
-					<p>If that is not the issue, then it is possible the database was not set up. 
+					<p>If that is not the issue, then it is possible the database was not set up.
 						Please verify that the phpscheduleit database exists.</p>
-					<p><strong>I get a message that says "Warning: unable to create file 
+					<p><strong>I get a message that says "Warning: unable to create file
 							/var/log/phpscheduleitlog.txt"</strong></p>
-					<p>Your server is not set up to allow PHP to create or write to files. This is 
-						commonly a permissions issue and changing permissions for PHP or for the 
+					<p>Your server is not set up to allow PHP to create or write to files. This is
+						commonly a permissions issue and changing permissions for PHP or for the
 						directory that it is trying to write to usually works.</p>
 					<h4>Getting Started</h4>
-					<p>After the system has been successfully installed and set up, create an account 
-						for the administrator. You can do this by navigating to the Login (index.php) 
-						page and clicking the Register link. Be sure to enter the login exactly the 
+					<p>After the system has been successfully installed and set up, create an account
+						for the administrator. You can do this by navigating to the Login (index.php)
+						page and clicking the Register link. Be sure to enter the login exactly the
 						same as it appears in the config.php file's 'adminemail' setting.</p>
-					<p>After the Administrator account has been registered, you need to add resources. 
-						Also, as new users are added, you will need to manage their permissions to 
+					<p>After the Administrator account has been registered, you need to add resources.
+						Also, as new users are added, you will need to manage their permissions to
 						allow them to reserve a resource.</p>
 					<h4>Configuration File</h4>
 					<h5>Application Settings</h5>
 					<p>All of these settings apply to how the application functions.</p>
 					<p class="variable">
 					$conf['app']['weburi']
-					<p>This is the full URL to the base directory of phpScheduleIt (where index.php 
-						resides). For example, if you installed it in htdocs/phpscheduleit, the value 
+					<p>This is the full URL to the base directory of phpScheduleIt (where index.php
+						resides). For example, if you installed it in htdocs/phpscheduleit, the value
 						would be http://www.yoursite.com/phpscheduleit.</p>
 					<p>Please do not include the trailing slash on this value</p>
 					<p class="variable">$conf['app']['adminEmail']</p>
-					<p>This is the email address and login value for the administrator. phpScheduleIt 
-						allows for just one administrative account. Set this value to whatever you want 
-						to use as the administrative login and be sure to register an account with this 
-						value. You cannot log into phpScheduleIt using this address unless you register 
+					<p>This is the email address and login value for the administrator. phpScheduleIt
+						allows for just one administrative account. Set this value to whatever you want
+						to use as the administrative login and be sure to register an account with this
+						value. You cannot log into phpScheduleIt using this address unless you register
 						it.</p>
-					<p>This email address will also be used as the 'from' address for all email contact 
+					<p>This email address will also be used as the 'from' address for all email contact
 						with the users.</p>
 					<p class="variable">$conf['app']['defaultLanguage']</p>
 					<p>
-						The language code for the default language. This must be included in the 
-						language list in langs.php and will be used as the default and if any 
-						translations fail for another language. This language file MUST be in the /lang 
+						The language code for the default language. This must be included in the
+						language list in langs.php and will be used as the default and if any
+						translations fail for another language. This language file MUST be in the /lang
 						directory.</p>
 					<p class="variable">$conf['app']['safeMode']</p>
 					<p>
-						If your web server is running PHP in safe mode. Set this value to 1 if PHP is 
+						If your web server is running PHP in safe mode. Set this value to 1 if PHP is
 						running in safe mode or 0 if it is not.</p>
 					<p class="variable">$conf['app']['timeFormat']</p>
-					<p>This is the format to view the times in. A value of 12 means that dates and 
-						times will be on the 12 hour clock (using am/pm). A value of 24 means that 
+					<p>This is the format to view the times in. A value of 12 means that dates and
+						times will be on the 12 hour clock (using am/pm). A value of 24 means that
 						dates and times will be on the 24 hour clock (no am/pm).</p>
 					<p>Only 12 and 24 are accepted values.</p>
 					<p class="variable">$conf['app']['calFirstDay'] = 0;</p>
-					<p>This is the first day of the week for the small navigational calendars. This 
+					<p>This is the first day of the week for the small navigational calendars. This
 						must be a value between 0-6 (0 = Sunday, 6 = Saturday)</p>
 					<p class="variable">$conf['app']['techEmail']</p>
-					<p>The email address of your technical support. This value will be used to direct 
-						technical email and all bug reports. It is highly recommended to set this value 
-						so that this technical person can help the user or report any questions to the 
+					<p>The email address of your technical support. This value will be used to direct
+						technical email and all bug reports. It is highly recommended to set this value
+						so that this technical person can help the user or report any questions to the
 						project homepage on SourceForge and improve phpScheduleIt.</p>
 					<p class="variable">$conf['app']['ccEmail']</p>
-					<p>This value should contain all email address to CC when a user clicks the 'Email 
+					<p>This value should contain all email address to CC when a user clicks the 'Email
 						Admin' link. To specify multiple email addresses, separate them with commas.</p>
 					<p class="variable">$conf['app']['emailAdmin']</p>
-					<p>This setting toggles whether to send email notifications of reservation and 
+					<p>This setting toggles whether to send email notifications of reservation and
 						registration activity to administrator.</p>
-					<p>The only values this can be are 0 (which means that email will not be sent) and 
+					<p>The only values this can be are 0 (which means that email will not be sent) and
 						1 (which means that email will be sent).</p>
 					<p class="variable">$conf['app']['emailType']</p>
-					<p>This defines how email communications should be sent. In most cases, leaving the 
-						default value of 'mail' will work. The other options are 'smtp' for SMTP, 
+					<p>This defines how email communications should be sent. In most cases, leaving the
+						default value of 'mail' will work. The other options are 'smtp' for SMTP,
 						'sendmail' for sendmail, or 'qmail' for qmail MTA.</p>
 					<p class="variable">$conf['app']['smtpHost']</p>
-					<p>This defines the SMTP email host address. For example, smtp.email.com. You only 
+					<p>This defines the SMTP email host address. For example, smtp.email.com. You only
 						need to set this variable if emailType is SMTP.</p>
 					<p class="variable">$conf['app']['smtpPort']</p>
-					<p>This defines the SMTP port. This is only required if emailType is SMTP and the 
+					<p>This defines the SMTP port. This is only required if emailType is SMTP and the
 						default value should be fine.</p>
 					<p class="variable">$conf['app']['sendmailPath']</p>
-					<p>This defines the path to sendmail on your server. This only needs to be set if 
-						the emailType is 'sendmail' and the default value of '/usr/sbin/sendmail' will 
+					<p>This defines the path to sendmail on your server. This only needs to be set if
+						the emailType is 'sendmail' and the default value of '/usr/sbin/sendmail' will
 						usually work.</p>
 					<p class="variable">$conf['app']['qmailPath']</p>
 					<p>
-						This defines the path to qmail. This only needs to be set if the emailType is 
+						This defines the path to qmail. This only needs to be set if the emailType is
 						'qmail' and the default value of '/var/qmail/bin/sendmail' will usually work.					</p>
 					<p class="variable">$conf['app']['defaultPassword']</p>
-					<p>This value is the default password that is used when the administrator resets a 
-						password for a user. This value is only used if the admin does not enter a new 
+					<p>This value is the default password that is used when the administrator resets a
+						password for a user. This value is only used if the admin does not enter a new
 						password value when resetting a password for a user.</p>
 					<p class="variable">$conf['app']['title']</p>
-					<p>This is the title to use for the application. It will be used as the default 
+					<p>This is the title to use for the application. It will be used as the default
 						title for pages and as the 'From' field in all email contacts.</p>
 					<p class="variable">$conf['app']['use_perms']</p>
-					<p>This setting toggles whether to use permissions or not. Using permissions will 
-						limit who can reserve resources. If permissions are on, only users who have 
-						been given permission to use a resource can reserve it. If permissions are 
-						turned off, anyone will be able to reserve any resource. Permission changes 
-						will still be saved, but they will not become effective until permissions are 
+					<p>This setting toggles whether to use permissions or not. Using permissions will
+						limit who can reserve resources. If permissions are on, only users who have
+						been given permission to use a resource can reserve it. If permissions are
+						turned off, anyone will be able to reserve any resource. Permission changes
+						will still be saved, but they will not become effective until permissions are
 						turned on through the config file.</p>
-					<p>The only values this can be are 0 (which means that permissions will not be 
+					<p>The only values this can be are 0 (which means that permissions will not be
 						used) and 1 (which means that permissions will be used).</p>
 					<p class="variable">$conf['app']['readOnlySummary']</p>
-					<p>This value tells if the read only schedule (available to all users and guests) 
+					<p>This value tells if the read only schedule (available to all users and guests)
 						should show the reservation summaries.</p>
 					<p class="variable">$conf['app']['readOnlyDetails']</p>
-					<p>This value tells if the read only schedule should allow visitors (registered and 
-						non-registered users) to click on the reservation and see the reservation 
+					<p>This value tells if the read only schedule should allow visitors (registered and
+						non-registered users) to click on the reservation and see the reservation
 						details.</p>
-					<p>Please note that this opens up a small security hole in that if this is set, the 
-						login is not required to view reservations and the details are viewable to 
+					<p>Please note that this opens up a small security hole in that if this is set, the
+						login is not required to view reservations and the details are viewable to
 						potentionally anyone.</p>
 					<p class="variable">$conf['app']['use_log']</p>
-					<p>This toggles the activity logging on or off. Logging writes all activity 
+					<p>This toggles the activity logging on or off. Logging writes all activity
 						(registration, reservations, resource data) to a log file of your choice.</p>
-					<p>The only values this can be are 0 (which means that logging will not be used) 
+					<p>The only values this can be are 0 (which means that logging will not be used)
 						and 1 (which means that logging will be used).</p>
 					<p class="variable">$conf['app']['logfile']</p>
-					<p>This value is the directory and file name of the log file to use. If the file 
+					<p>This value is the directory and file name of the log file to use. If the file
 						does not exist, it will be created.</p>
 					<p>Please specify this as /directory/filename.extension.</p>
 					<p class="variable">$conf['app']['useLogonName']</p>
-					<p>This value tells if we should use a logon name for authentication instead of 
-						using the email address. Set this to 1 to use a logon name, 0 to use email 
+					<p>This value tells if we should use a logon name for authentication instead of
+						using the email address. Set this to 1 to use a logon name, 0 to use email
 						address.</p>
-					<p>Notes: A unique email address will still be required. Also, if LDAP is being 
+					<p>Notes: A unique email address will still be required. Also, if LDAP is being
 						used for authenticaion, this will have no effect.</p>
 					<p class="variable">$conf['app']['minPasswordLength']</p>
-					<p>This is the minimum password length that is required for users registering or 
+					<p>This is the minimum password length that is required for users registering or
 						changing their password. It is recommended that this be at least 6.</p>
 					<h5>Database Settings</h5>
 					<p>All of these settings determine the database setup.</p>
@@ -340,102 +342,102 @@
 						ifx -&gt; Informix<br>
 						fbsql -&gt; FrontBase</p>
 					<p class="variable">$conf['db']['dbUser']</p>
-					<p>This value is the database user who has permission to create, alter, modify and 
-						delete data from the tables phpScheduleIt uses. This value is required to 
+					<p>This value is the database user who has permission to create, alter, modify and
+						delete data from the tables phpScheduleIt uses. This value is required to
 						access the tables.</p>
 					<p class="variable">$conf['db']['dbPass']</p>
-					<p>This value is the password for the database user specified in 
+					<p>This value is the password for the database user specified in
 						$conf['db']['dbUser']. This value is required to access the tables.</p>
 					<p class="variable">$conf['db']['dbName']</p>
-					<p>This is the name of the database to be used by phpScheduleIt for storing all 
-						system data. The user specified in $conf['db']['dbUser'] will be given 
+					<p>This is the name of the database to be used by phpScheduleIt for storing all
+						system data. The user specified in $conf['db']['dbUser'] will be given
 						permission to use all tables in this database.</p>
 					<p class="variable">$conf['db']['hostSpec']</p>
-					<p>This is the host setting for your database server. In most cases 'localhost' 
+					<p>This is the host setting for your database server. In most cases 'localhost'
 						will work. Some servers require you to use the loopback address.</p>
 					<p class="variable">$conf['db']['drop_old']</p>
-					<p>This value toggles whether the automatic installation should overwrite any 
-						databases with the same name as $conf['db']['dbName']. Please be very sure 
+					<p>This value toggles whether the automatic installation should overwrite any
+						databases with the same name as $conf['db']['dbName']. Please be very sure
 						about this setting. If you are in doubt, leave it set to 0.</p>
-					<p>The only values this can be are 0 (which means that an existing database with 
-						the same name will not be overwritten) and 1 (which means that the 
+					<p>The only values this can be are 0 (which means that an existing database with
+						the same name will not be overwritten) and 1 (which means that the
 						aforementioned database will be overwritten).</p>
 					<p class="variable">$conf['db']['pk_prefix']</p>
-					<p>This value is the prefix that will be prepended to all primary keys in this 
-						database. This is required if you will be sharing databases between multiple 
-						versions of phpScheduleIt (for example, sharing a login data but having a 
+					<p>This value is the prefix that will be prepended to all primary keys in this
+						database. This is required if you will be sharing databases between multiple
+						versions of phpScheduleIt (for example, sharing a login data but having a
 						different resource data).</p>
-					<p>This setting <strong>must be different</strong> for every instance of 
-						phpScheduleIt that is sharing the same database. 3 characters are recommended. 
+					<p>This setting <strong>must be different</strong> for every instance of
+						phpScheduleIt that is sharing the same database. 3 characters are recommended.
 						Anything over 3 characters will be cut down to use only the first 3.</p>
 					<h5>User Interface Settings</h5>
 					<p>All of these settings change how the application looks and feels.</p>
 					<p class="variable">$conf['ui']['logoImage']</p>
-					<p>This value is the directory and filename of the image to use as the logo. Leave 
+					<p>This value is the directory and filename of the image to use as the logo. Leave
 						this empty if you do not want to use an image.</p>
-					<p>Please specify this as directory/filename.extension. This will be relative to 
+					<p>Please specify this as directory/filename.extension. This will be relative to
 						the root directory of phpScheduleIt</p>
 					<p class="variable">$conf['ui']['welcome']</p>
-					<p>This is the welcome message to show at the login screen. Leave this value blank 
+					<p>This is the welcome message to show at the login screen. Leave this value blank
 						to display no message.</p>
 					<p class="variable">$conf['ui']['my_res']</p>
-					<p>This is the array that stores the color of the reservation block of all 
-						reservations that the current user owns. 'color' defines the standard color of 
-						the block, 'hover' defines the color when the mouse is over the reservation 
-						block, 'text' defines the color of the text printed on the reservation. Please 
+					<p>This is the array that stores the color of the reservation block of all
+						reservations that the current user owns. 'color' defines the standard color of
+						the block, 'hover' defines the color when the mouse is over the reservation
+						block, 'text' defines the color of the text printed on the reservation. Please
 						do not include the hash mark (#) when specifying the colors.</p>
 					<p>To set the colors, add or alter this line.</p>
-					<p class="code">$conf['ui']['my_res'][] = array ('color' =&gt; '5E7FB1', 'hover' 
+					<p class="code">$conf['ui']['my_res'][] = array ('color' =&gt; '5E7FB1', 'hover'
 						=&gt; '799DD3', 'text' =&gt; 'FFFFFF');</p>
 					<p><span class="variable">$conf['ui']['other_res']</span><br>
-						This is the array that stores the color of the reservation block of all 
-						reservations that the current user does not own. 'color' defines the standard 
-						color of the block, 'hover' defines the color when the mouse is over the 
-						reservation block, 'text' defines the color of the text printed on the 
-						reservation. Please do not include the hash mark (#) when specifying the 
+						This is the array that stores the color of the reservation block of all
+						reservations that the current user does not own. 'color' defines the standard
+						color of the block, 'hover' defines the color when the mouse is over the
+						reservation block, 'text' defines the color of the text printed on the
+						reservation. Please do not include the hash mark (#) when specifying the
 						colors.</p>
 					<p>To set the colors, add or alter this line.</p>
-					<p class="code">$conf['ui']['other_res'][] = array ('color' =&gt; 'D2DDEC', 'hover' 
+					<p class="code">$conf['ui']['other_res'][] = array ('color' =&gt; 'D2DDEC', 'hover'
 						=&gt; 'AFBED3', 'text' =&gt; 'FFFFFF');</p>
 					<p><span class="variable">$conf['ui']['my_past_res']</span><br>
-						This is the array that stores the color of the reservation block of all 
-						reservations that the current user owns, but have past. 'color' defines the 
-						standard color of the block, 'hover' defines the color when the mouse is over 
-						the reservation block, 'text' defines the color of the text printed on the 
-						reservation. Please do not include the hash mark (#) when specifying the 
+						This is the array that stores the color of the reservation block of all
+						reservations that the current user owns, but have past. 'color' defines the
+						standard color of the block, 'hover' defines the color when the mouse is over
+						the reservation block, 'text' defines the color of the text printed on the
+						reservation. Please do not include the hash mark (#) when specifying the
 						colors.</p>
 					<p>Please refer to the two variables above this for how to set it properly.</p>
 					<p class="variable">$conf['ui']['other_past_res']</p>
-					<p>This is the array that stores the color of the reservation block of all 
-						reservations that the current user does not own, but have past. 'color' defines 
-						the standard color of the block, 'hover' defines the color when the mouse is 
-						over the reservation block, 'text' defines the color of the text printed on the 
-						reservation. Please do not include the hash mark (#) when specifying the 
+					<p>This is the array that stores the color of the reservation block of all
+						reservations that the current user does not own, but have past. 'color' defines
+						the standard color of the block, 'hover' defines the color when the mouse is
+						over the reservation block, 'text' defines the color of the text printed on the
+						reservation. Please do not include the hash mark (#) when specifying the
 						colors.</p>
 					<p>Please refer to the two variables above this for how to set it properly.</p>
 					<p class="variable">$conf['ui']['positions']</p>
-					<p>This is the available choices to use when a new user is registering for 
-						phpScheduleIt. If you add values to this variable, they will appear in a pull 
-						down menu. If you do not add values then the position field will be a text box 
+					<p>This is the available choices to use when a new user is registering for
+						phpScheduleIt. If you add values to this variable, they will appear in a pull
+						down menu. If you do not add values then the position field will be a text box
 						instead of a pull down menu.</p>
 					<p>To add positions to the pull down menu, add the following line.</p>
 					<p class="code">$conf['ui']['positions'][] = "Position Value";</p>
-					<p>To add more positions, repeat the above line for each position. They will be 
-						displayed in the order you list them. The value cannot be more than 255 
+					<p>To add more positions, repeat the above line for each position. They will be
+						displayed in the order you list them. The value cannot be more than 255
 						characters.</p>
 					<p class="variable">$conf['ui']['institutions']</p>
-					<p>This is the available choices to use when a new user is registering for 
-						phpScheduleIt. If you add values to this variable, they will appear in a pull 
-						down menu. If you do not add values then the institution field will be a text 
+					<p>This is the available choices to use when a new user is registering for
+						phpScheduleIt. If you add values to this variable, they will appear in a pull
+						down menu. If you do not add values then the institution field will be a text
 						box instead of a pull down menu.</p>
 					<p>To add positions to the pull down menu, add the following line.</p>
 					<p class="code">$conf['ui']['institutions'][] = "Institution Value";</p>
-					<p>To add more institutions, repeat the above line for each position. They will be 
-						displayed in the order you list them. The value cannot be more than 100 
+					<p>To add more institutions, repeat the above line for each position. They will be
+						displayed in the order you list them. The value cannot be more than 100
 						characters.</p>
 					<h5>LDAP Settings</h5>
 					<p class="variable">$conf['ldap']['authentication']</p>
-					<p>This sets whether you want to use LDAP authentication or not. The only 
+					<p>This sets whether you want to use LDAP authentication or not. The only
 						acceptable values are true and false.</p>
 					<p class="variable">$conf['ldap']['host']</p>
 					<p>This is your LDAP server's host name. For example,
@@ -444,157 +446,157 @@
 					<p>This is the port that your need to connect to your LDAP server on, usually
 						<span class="code">389</span>.</p>
 					<p class="variable">$conf['ldap']['basedn']</p>
-					<p>LDAP people search base. Set this to where people in your organization are 
+					<p>LDAP people search base. Set this to where people in your organization are
 						stored in LDAP, typically
 						<span class="code">ou=people,o=domain.com</span>.</p>
 					<h4>System Navigation</h4>
-					<p>Entry into the phpScheduleIt system defaults to the login screen. Here a user 
-						can log in or navigate to the registration page. If a user has selected the 
-						"Keep Me Logged In" option, then they will be automatically forwarded to My 
-						Control Panel each time they return to the system (until they manually Log 
-						Out). After a successful login or registration, the user will be automatically 
+					<p>Entry into the phpScheduleIt system defaults to the login screen. Here a user
+						can log in or navigate to the registration page. If a user has selected the
+						"Keep Me Logged In" option, then they will be automatically forwarded to My
+						Control Panel each time they return to the system (until they manually Log
+						Out). After a successful login or registration, the user will be automatically
 						forwarded to My Control Panel.</p>
-					<p>My Control Panel is the "Home Page" for each user. They will be able to view, 
-						modify and delete their upcoming reservations. The list of reservations is 
-						sortable in ascending/descending order based on column name. Here, they will 
-						also be presented with a Quick Links table where they can navigate to the 
-						scheduler, edit their profile/password or log out of the system. Users can 
-						return to My Control Panel from anywhere in the system at any time by clicking 
+					<p>My Control Panel is the "Home Page" for each user. They will be able to view,
+						modify and delete their upcoming reservations. The list of reservations is
+						sortable in ascending/descending order based on column name. Here, they will
+						also be presented with a Quick Links table where they can navigate to the
+						scheduler, edit their profile/password or log out of the system. Users can
+						return to My Control Panel from anywhere in the system at any time by clicking
 						the "My Control Panel" underneath the welcome message.</p>
-					<p>The scheduler is where users book new reservations and edit past ones. Clicking 
-						on a resource's name will bring up a pop-up window where the user can reserve 
-						the resource. If the user selects a time which is already reserved by another 
-						user, the reservation will fail and they will be prompted to try again. Users 
-						CANNOT edit or delete another user's reservation. They will only be allowed to 
-						view it. Also, users cannot book or modify a reservation for a past date, an 
-						inactive resource or a resource that they have not been given permission to 
-						reserve. The administrator has the power to modify or delete any reservation in 
-						the system from both the scheduler and from the admin tool "Manage 
+					<p>The scheduler is where users book new reservations and edit past ones. Clicking
+						on a resource's name will bring up a pop-up window where the user can reserve
+						the resource. If the user selects a time which is already reserved by another
+						user, the reservation will fail and they will be prompted to try again. Users
+						CANNOT edit or delete another user's reservation. They will only be allowed to
+						view it. Also, users cannot book or modify a reservation for a past date, an
+						inactive resource or a resource that they have not been given permission to
+						reserve. The administrator has the power to modify or delete any reservation in
+						the system from both the scheduler and from the admin tool "Manage
 						Reservations".</p>
-					<p>When a user clicks the Quick Link "Edit My Profile Information/Password", they 
-						will be brought to a page resembling the Registration page with all of their 
-						information filled in (except the password). Editing the information will 
-						result in a change in the database. Blank or unchanged fields will not be 
+					<p>When a user clicks the Quick Link "Edit My Profile Information/Password", they
+						will be brought to a page resembling the Registration page with all of their
+						information filled in (except the password). Editing the information will
+						result in a change in the database. Blank or unchanged fields will not be
 						altered in the database.</p>
 					<h4>User Management</h4>
 					<p><i>Warnings:</i></p>
-					<p>When using more that one instance of phpScheduleIt are sharing a database, it is 
-						critical that all data integrity issues are addressed. For example, sharing a 
-						login table but using independent reservation/resource/training tables can 
-						result in compromised data integrity. If a user has reservations committed on 
-						more than one system and they are deleted from the global login table, their 
-						reservations will not be removed unless they are deleted from one of the 
+					<p>When using more that one instance of phpScheduleIt are sharing a database, it is
+						critical that all data integrity issues are addressed. For example, sharing a
+						login table but using independent reservation/resource/training tables can
+						result in compromised data integrity. If a user has reservations committed on
+						more than one system and they are deleted from the global login table, their
+						reservations will not be removed unless they are deleted from one of the
 						secondary instances of the system.</p>
 					<p>There are two main techniques that can be used to resolve this issue:</p>
-					<p>1) The shared data (in this case, the login information) must be removed from a 
-						secondary instance of the application. This secondary instance will be aware of 
-						all databases in the system and will be able to remove all data associated with 
+					<p>1) The shared data (in this case, the login information) must be removed from a
+						secondary instance of the application. This secondary instance will be aware of
+						all databases in the system and will be able to remove all data associated with
 						the data being deleted.</p>
-					<p>2) The "leftover" data can be manually deleted from the system by an 
-						Administrator. In this example, reservations associated with deleted users can 
+					<p>2) The "leftover" data can be manually deleted from the system by an
+						Administrator. In this example, reservations associated with deleted users can
 						be deleted from the scheduler or from the admin tools.</p>
 					<p><i>Notes:</i></p>
 					<p>The initial <i>login</i> table will be empty.</p>
-					<p>All users are required to register upon first use of phpScheduleIt. All fields 
-						in the Registration form are required. Registration will fail if the form is 
-						not completed entirely. Upon successful registration, a unique memberid will be 
+					<p>All users are required to register upon first use of phpScheduleIt. All fields
+						in the Registration form are required. Registration will fail if the form is
+						not completed entirely. Upon successful registration, a unique memberid will be
 						automatically created for each user.</p>
-					<p>Users can edit their personal information at any time by logging in and 
-						selecting the "Edit My Profile Information/Password" option in the Quick Links 
-						table. They will be taken to their personal information page where any of the 
+					<p>Users can edit their personal information at any time by logging in and
+						selecting the "Edit My Profile Information/Password" option in the Quick Links
+						table. They will be taken to their personal information page where any of the
 						fields can be changed.</p>
 					<p><i>Administrative Tool : Manage Users</i></p>
-					<p>The administrator can delete users at any time from the system by selecting the 
-						"Manage Users" option in the Quick Links table. The "Manage Users" tool will 
-						navigate to a page listing all users, sorted alphabetically (by default), 
-						showing a specific number of users at a time. The list of users can be sorted 
-						by ascending/descending order by column name. For each column, clicking on the 
-						minus sign sorts the list in descending order based on that column name, 
-						clicking on the plus sign sorts the list in ascending order based on that 
+					<p>The administrator can delete users at any time from the system by selecting the
+						"Manage Users" option in the Quick Links table. The "Manage Users" tool will
+						navigate to a page listing all users, sorted alphabetically (by default),
+						showing a specific number of users at a time. The list of users can be sorted
+						by ascending/descending order by column name. For each column, clicking on the
+						minus sign sorts the list in descending order based on that column name,
+						clicking on the plus sign sorts the list in ascending order based on that
 						column name. The sorting order will be preserved throughout pages.</p>
-					<p>From this table, you can email a user by clicking their email address, view all 
-						information about this user by clicking the View Info link, manage that user's 
-						training by clicking the Training link, or delete any number of users by 
+					<p>From this table, you can email a user by clicking their email address, view all
+						information about this user by clicking the View Info link, manage that user's
+						training by clicking the Training link, or delete any number of users by
 						checking their delete box.</p>
-					<p>Clicking a users name link for a user will bring up a new window listing all 
+					<p>Clicking a users name link for a user will bring up a new window listing all
 						information about the selected user.</p>
-					<p>Clicking the Reset password link will bring you to a screen that allows you to 
-						reset a password for a user. This should rarely have to be done, because users 
-						have the power to get a new password if one is forgotten. This function resets 
-						the users password to the specified value or to the default value set in the 
-						config file if no value is given on the reset form. No confirmation email will 
+					<p>Clicking the Reset password link will bring you to a screen that allows you to
+						reset a password for a user. This should rarely have to be done, because users
+						have the power to get a new password if one is forgotten. This function resets
+						the users password to the specified value or to the default value set in the
+						config file if no value is given on the reset form. No confirmation email will
 						be sent, so please notify the user after resetting their password.</p>
-					<p>Clicking the Permissions link will navigate to a new window where you can select 
-						which resources a user has or has not been given permission to use. Upon 
-						registration, will only have permission to use resources if auto-assign has 
-						been turned on in the config file. To grant or revoke permission for a user, 
+					<p>Clicking the Permissions link will navigate to a new window where you can select
+						which resources a user has or has not been given permission to use. Upon
+						registration, will only have permission to use resources if auto-assign has
+						been turned on in the config file. To grant or revoke permission for a user,
 						check or uncheck the checkbox for each resource the user is allowed to use.</p>
 					<p>
-						To delete a user, simply check the "Delete User" box for each user who the 
-						administrator wishes to remove and press the "Delete Users" button. The 
-						administrator will be prompted to verify the removal of all selected users and 
-						all of their reservations. After the successful removal of users, the Manage 
-						Users page will be refreshed showing that the changes have been made.<b> Deleting a 
+						To delete a user, simply check the "Delete User" box for each user who the
+						administrator wishes to remove and press the "Delete Users" button. The
+						administrator will be prompted to verify the removal of all selected users and
+						all of their reservations. After the successful removal of users, the Manage
+						Users page will be refreshed showing that the changes have been made.<b> Deleting a
 							user will also delete ALL reservations for that user.</b></p>
 					<h4>Resource Management</h4>
 					<p><i>Notes:</i></p>
 					<p>The initial <i>resources</i> table will be empty.</p>
 					<p><i>Administrative Tool : Manage Resources</i></p>
-					<p>The administrator can delete resources at any time from the system by selecting 
-						the "Manage Resources" option in the Quick Links table. The "Manage Resources" 
-						tool will navigate to a page listing all resources, sorted alphabetically (by 
-						default), showing a specific number of resources at a time. The list of 
-						resources can be sorted by ascending/descending order by column name. For each 
-						column, clicking on the minus sign sorts the list in descending order based on 
-						that column name, clicking on the plus sign sorts the list in ascending order 
-						based on that column name. The sorting order will be preserved throughout 
+					<p>The administrator can delete resources at any time from the system by selecting
+						the "Manage Resources" option in the Quick Links table. The "Manage Resources"
+						tool will navigate to a page listing all resources, sorted alphabetically (by
+						default), showing a specific number of resources at a time. The list of
+						resources can be sorted by ascending/descending order by column name. For each
+						column, clicking on the minus sign sorts the list in descending order based on
+						that column name, clicking on the plus sign sorts the list in ascending order
+						based on that column name. The sorting order will be preserved throughout
 						pages.</p>
-					<p>To add a resource, enter the resource data into the Add Resource table at the 
+					<p>To add a resource, enter the resource data into the Add Resource table at the
 						bottom of the Manage Resources page.					</p>
-					<p>You will need to specify which schedule this resource belongs to. You will also 
-						need to set the minimum and maximum reservation lengths. Users will not be able 
-						to make reservations that are shorter than the minimum or longer than the 
-						maximum. Checking the Auto-Assign Permission checkbox tells phpScheduleIt that 
-						you want all users (current and future) to be given permission to use this 
+					<p>You will need to specify which schedule this resource belongs to. You will also
+						need to set the minimum and maximum reservation lengths. Users will not be able
+						to make reservations that are shorter than the minimum or longer than the
+						maximum. Checking the Auto-Assign Permission checkbox tells phpScheduleIt that
+						you want all users (current and future) to be given permission to use this
 						resource.</p>
-					<p>Press the "Add Resource" button. The resource will be added into the database 
-						with a unique identification number and the Manage Resources page will be 
-						refreshed, showing the new resource. New resources will be set to "Active" by 
+					<p>Press the "Add Resource" button. The resource will be added into the database
+						with a unique identification number and the Manage Resources page will be
+						refreshed, showing the new resource. New resources will be set to "Active" by
 						default.</p>
-					<p>To modify a resource's information, click on the resource's Edit link. The 
-						information will appear in the form below. Any field that is changed will be 
-						updated in the database. Unchanged or empty fields will not be changed in the 
+					<p>To modify a resource's information, click on the resource's Edit link. The
+						information will appear in the form below. Any field that is changed will be
+						updated in the database. Unchanged or empty fields will not be changed in the
 						database.</p>
-					<p>To delete a resource, check the Delete checkbox for each resource the 
-						administrator wishes to delete and press the "Delete Resources" button. The 
-						administrator will be prompted to verify the removal of the selected resources. <b>Deleting 
-							a resource will also delete ALL reservations held for that resource.</b> After 
-						the resources have been removed from the database, the Manage Resources page 
+					<p>To delete a resource, check the Delete checkbox for each resource the
+						administrator wishes to delete and press the "Delete Resources" button. The
+						administrator will be prompted to verify the removal of the selected resources. <b>Deleting
+							a resource will also delete ALL reservations held for that resource.</b> After
+						the resources have been removed from the database, the Manage Resources page
 						will be refreshed, showing the successful removal of the resources.</p>
-					<p>The status column lists each resource's <i>current</i> status. To change a 
-						resource's status, simply click on the link in the "Status" column and the 
-						resource will either be activated or inactivated. Resource status does NOT 
+					<p>The status column lists each resource's <i>current</i> status. To change a
+						resource's status, simply click on the link in the "Status" column and the
+						resource will either be activated or inactivated. Resource status does NOT
 						affect previously made reservations.</p>
-					<p>When adding or modifying a resource, you have the option to select the minimum 
-						and maximum reservation length. Reservations less than the minimum or greater 
-						than the maximum length specified will not be accepted. Setting these values to 
+					<p>When adding or modifying a resource, you have the option to select the minimum
+						and maximum reservation length. Reservations less than the minimum or greater
+						than the maximum length specified will not be accepted. Setting these values to
 						the same time will require that all reservations are of this length.</p>
 					<h4>Reservation Reminders</h4>
-					<P>In order to enable reservation reminder emails, you must add allowed reminder 
+					<P>In order to enable reservation reminder emails, you must add allowed reminder
 						times to your web.config, described above, and add an automated task.</P>
 					<P>Windows Steps</P>
 					<OL>
 						<LI>
 							Add a Scheduled Task to run php.exe send_reminders.php</LI>
 						<LI>
-							Start -&gt; All Programs -&gt; Accessories -&gt; System Tools -&gt; Scheduled 
+							Start -&gt; All Programs -&gt; Accessories -&gt; System Tools -&gt; Scheduled
 							Tasks</LI>
 						<LI>
 							Click Add Scheduled Task</LI>
 						<LI>
 							Click Next</LI>
 						<LI>
-							Click Browse and navigate to the location of php.exe (c:\php\php.exe in most 
+							Click Browse and navigate to the location of php.exe (c:\php\php.exe in most
 							cases)</LI>
 						<LI>
 							Perform this task: Daily at 12:00 AM </LI>
@@ -609,9 +611,9 @@
 						<LI>
 							Click Finish</LI>
 						<LI>
-							Change the Run box to append the full path to send_reminders.php.&nbsp; For 
-							example, if phpScheduleIt is installed at c:\Inetpub\wwwroot\phpScheduleIt, 
-							this value should be c:\php\php.exe 
+							Change the Run box to append the full path to send_reminders.php.&nbsp; For
+							example, if phpScheduleIt is installed at c:\Inetpub\wwwroot\phpScheduleIt,
+							this value should be c:\php\php.exe
 							c:\Inetpub\wwwroot\phpScheduleIt\cmd\send_reminders.php</LI>
 						<LI>
 							Click the Schedule tab and click the Advanced button</LI>
@@ -629,11 +631,11 @@
 				  <p>For more info: <a href="http://en.wikipedia.org/wiki/Cron">http://en.wikipedia.org/wiki/Cron</a></p>
 					<h4>Other Admin Tools</h4>
 					<p>The administrator's Quick Links table is different than all others. <i>Manage Users</i>
-						and <i>Manage Resources</i> have been described already. The rest will be 
-						described now. As a note, the admin tools can only be accessed by a user who 
-						logs in as the administrator. All other users will be locked out of any 
+						and <i>Manage Resources</i> have been described already. The rest will be
+						described now. As a note, the admin tools can only be accessed by a user who
+						logs in as the administrator. All other users will be locked out of any
 						administrative page.</p>
-					<p><em>Manage Schedules</em> allows you to add or edit schedules. Below is a 
+					<p><em>Manage Schedules</em> allows you to add or edit schedules. Below is a
 						description of the schedule properties:<br>
 						Schedule Title: Title of the schedule to appear in links and as a title<br>
 						Day Start: Time of the day to begin allowing reservations<br>
@@ -641,45 +643,45 @@
 						Time Span: Reservation intervals<br>
 						Week Day Start: Day of the week to start the schedule<br>
 						Days To Show: Number of days to show on the schedule at a time<br>
-						Reservation Offset: Number of days in advance a user needs to make a 
+						Reservation Offset: Number of days in advance a user needs to make a
 						reservation<br>
 						Hidden: Whether the schedule can be viewed<br>
 						Show Summary: Whether to show the reservation summaries<br>
 						Admin Email: Email address of the administrator of this schedule</p>
-					<p><i>Manage Reservations</i> will navigate to a page listing all reservations in 
-						the database ordered by increasing date, showing a specific number of 
-						reservations per page. The list of reservations can be sorted by 
-						ascending/descending order by column name. For each column, clicking on the 
-						minus sign sorts the list in descending order based on that column name, 
-						clicking on the plus sign sorts the list in ascending order based on that 
+					<p><i>Manage Reservations</i> will navigate to a page listing all reservations in
+						the database ordered by increasing date, showing a specific number of
+						reservations per page. The list of reservations can be sorted by
+						ascending/descending order by column name. For each column, clicking on the
+						minus sign sorts the list in descending order based on that column name,
+						clicking on the plus sign sorts the list in ascending order based on that
 						column name. The sorting order will be preserved throughout pages.</p>
-					<p>In this table, clicking on the user's name will open a pop-up window with all of 
-						the selected user's information. Clicking on the view, modify, delete links 
-						will open a pop-up window allowing you to view, modify or delete the selected 
+					<p>In this table, clicking on the user's name will open a pop-up window with all of
+						the selected user's information. Clicking on the view, modify, delete links
+						will open a pop-up window allowing you to view, modify or delete the selected
 						reservation.</p>
-					<p><em>Manage Blackout Times</em> brings you to a page set up like the online 
-						scheduler, but allows you to set blackout times (times that are unavailable to 
+					<p><em>Manage Blackout Times</em> brings you to a page set up like the online
+						scheduler, but allows you to set blackout times (times that are unavailable to
 						reserve). Setting blackout times is just like making a reservation.</p>
-					<p><i> Search Scheduled Resource Usage</i> will navigate to a search form which 
-						will allow the administrator to specify certain search criteria. The criteria 
-						is as follows: all or any specific user, all or any specific resource, starting 
-						and ending times and starting and ending dates. By default, the selected 
-						starting and ending times will be the same as what is provided in the 
-						configuration file and the selected starting and ending dates are the lowest 
+					<p><i> Search Scheduled Resource Usage</i> will navigate to a search form which
+						will allow the administrator to specify certain search criteria. The criteria
+						is as follows: all or any specific user, all or any specific resource, starting
+						and ending times and starting and ending dates. By default, the selected
+						starting and ending times will be the same as what is provided in the
+						configuration file and the selected starting and ending dates are the lowest
 						and highest dates currently reserved.</p>
-					<p>After performing the search, the results will be printed out for each 
-						user/resource combination, listed alphabetically. These results are also 
-						available in a text-only format by clicking the "Print these results to a text 
+					<p>After performing the search, the results will be printed out for each
+						user/resource combination, listed alphabetically. These results are also
+						available in a text-only format by clicking the "Print these results to a text
 						file" link at the top of the results page.</p>
-					<p><em>Mass Email Users</em> will navigate to a page where you can send a mass 
-						email to any or all of the registered users. This email can contain HTML tags, 
+					<p><em>Mass Email Users</em> will navigate to a page where you can send a mass
+						email to any or all of the registered users. This email can contain HTML tags,
 						if you wish.</p>
-					<p><em>View System Stats</em> will bring you to a page where many statistics about 
-						almost every aspect of the system are given. Reservation statistics are also 
+					<p><em>View System Stats</em> will bring you to a page where many statistics about
+						almost every aspect of the system are given. Reservation statistics are also
 						graphed out.</p>
 					<h4>Notes</h4>
-					<p>All database manipulation should be done though the Administration Tools, NOT 
-						manually. <i>Manually editing the database can lead to data corruption and render 
+					<p>All database manipulation should be done though the Administration Tools, NOT
+						manually. <i>Manually editing the database can lead to data corruption and render
 							the system unstable or useless.</i></p>
 					<h4>Changelog</h4>
 					<p>Version 1.2.0 (2006-06-12)</p>
@@ -690,7 +692,7 @@
 				      <br />
 					  - Minimum and maximum reservation dates<br />
 					  - Support for user-specific timezones<br />
-					  - 
+					  -
 			         Non-invited users can participate in a reservation<br />
 			         - Non-registered users can participate in a reservation<br />
 			         - Resource specific maximum number of reservation participants<br />
@@ -708,24 +710,24 @@
 						- Reservation approval support<br>
 						- Multiple day reservation support<br>
 						- Reservation invitations<br>
-						- Day/week/month calendar view for personal reservations, schedule 
+						- Day/week/month calendar view for personal reservations, schedule
 						reservations, resource reservations<br>
 						- Signup sheet view for resources<br>
 						- Administrator can place reservations for users, change reservation owner<br>
 						- Clickable time slots for creating new reservations<br>
 						- Multiple administrator support<br>
 						- Update to <a href="pear.php.net" target="_blank">PEAR</a> version 1.82.2.6<br>
-						- New languages: Greek, Portuguese, Portuguese (Brazil), Slovenian, Swedish, 
+						- New languages: Greek, Portuguese, Portuguese (Brazil), Slovenian, Swedish,
 						Turkish</p>
 					<p>Version 1.0.0 (2005-09-12)</p>
 					<p>- Multiple language support was added<br>
 						- PHP safe mode was added to resolve shared PEAR problems<br>
-						- Updated <a href="http://phpmailer.sourceforge.net">PHPMailer</a> to version 
+						- Updated <a href="http://phpmailer.sourceforge.net">PHPMailer</a> to version
 						1.72
 						<br>
 						- Bugfix-Reservationemailbodybug. http://sourceforge.net/tracker/index.php?func=detail&amp;aid=969023&amp;group_id=95547&amp;atid=611778<br>
 						- Bugfix-Monthly calendar navigation bug. http://sourceforge.net/tracker/index.php?func=detail&amp;aid=966476&amp;group_id=95547&amp;atid=611778<br>
-						- 
+						-
 						Bugfix - Reservation modification bug. http://sourceforge.net/tracker/index.php?func=detail&amp;aid=962880&amp;group_id=95547&amp;atid=611778<br>
 						- Bugfix- Userinfo 404bug. http://sourceforge.net/tracker/index.php?func=detail&amp;aid=953562&amp;group_id=95547&amp;atid=611778<br>
 						- Bugfix/patch - Obsoletepermissiondatabug.http://sourceforge.net/tracker/index.php?func=detail&amp;aid=951374&amp;group_id=95547&amp;atid=611778
@@ -734,14 +736,14 @@
 						- Security updates and patches</p>
 					<p>Version 0.9.9 (2005-05-09)</p>
 					<p>- Blackout times have been implemented<br>
-						- Reservation 
-						class bug has been fixed. (See http://sourceforge.net/tracker/index.php?func=detail&amp;aid=902323&amp;group_id=95547&amp;atid=611780 
+						- Reservation
+						class bug has been fixed. (See http://sourceforge.net/tracker/index.php?func=detail&amp;aid=902323&amp;group_id=95547&amp;atid=611780
 						for more info)<br>
-						- Reservation summaries have been added with a configurable option to display 
+						- Reservation summaries have been added with a configurable option to display
 						them on the schedule<br>
 						- Schedule now displays correct days when showing less than 7 at a time<br>
 						- Advanced recurring reservation features added<br>
-						- Read-only version of the schedule can be seen by unregistered or users that 
+						- Read-only version of the schedule can be seen by unregistered or users that
 						are not logged in<br>
 						- Admin has the power to reset a password for a user<br>
 						- Minor UI changes<br>
@@ -750,15 +752,15 @@
 						- Multiple schedules are now supported with a GUI for managing them<br>
 						- Better support for non-MySQL databases<br>
 						- Registration email is now plain-text<br>
-						- Inclusion of <a href="http://phpmailer.sourceforge.net">PHPMailer</a> to send 
+						- Inclusion of <a href="http://phpmailer.sourceforge.net">PHPMailer</a> to send
 						all email communications<br>
-						- A bug that prevented phpScheduleIt from running in BSD environments has been 
+						- A bug that prevented phpScheduleIt from running in BSD environments has been
 						fixed<br>
 						- Option to email users permission changes has been added</p>
 					<p>Version 0.9.3 (2005-01-24)</p>
 					<p>
-						- Auth 
-						classbughasbeenfixed.(Seehttp://sourceforge.net/tracker/index.php?func=detail&amp;aid=869070&amp;group_id=95547&amp;atid=611778 
+						- Auth
+						classbughasbeenfixed.(Seehttp://sourceforge.net/tracker/index.php?func=detail&amp;aid=869070&amp;group_id=95547&amp;atid=611778
 						for more info)<br>
 						- Users can be searched on from the Manage Users admin tool<br>
 						- Users can be browsed by last name<br>
@@ -766,7 +768,7 @@
 						- Recurring reservation code has been revised and is much faster</p>
 					<p>Version 0.9.0 stable (2003-12-28)</p>
 					<p>- reservation time intervals can be managed in the config file<br>
-						- reservation min/max lengths can be managed on a per-resource basis through 
+						- reservation min/max lengths can be managed on a per-resource basis through
 						the resource admin tool
 						<br>
 						- position registration field can be managed in the config file<br>
@@ -774,19 +776,19 @@
 						- 12/24 hour time can be chosen in the config file<br>
 						- $conf['app']['webroot'] changed to $conf['app']['weburi']<br>
 						<br>
-						- fixed bugs in setup files (manual setup had obsolete field, both had 
+						- fixed bugs in setup files (manual setup had obsolete field, both had
 						incorrect 'not null' fields)</p>
 					<p>Version 0.9.0 beta (2003-11-30)</p>
-					<p>- auto-assign permissions to users upon registration option added, allowing the 
+					<p>- auto-assign permissions to users upon registration option added, allowing the
 						user to be automatically given rights to use all resources upon registration<br>
 						- print search results in HTML, text, XML, CSV format<br>
 						- export database data as XML or CSV<br>
 						- fixed bugs in search where old database fields were being used<br>
-						- fixed bug in view user info that would not change users if they had the same 
+						- fixed bug in view user info that would not change users if they had the same
 						name</p>
 					<p>Version 0.7.0 beta (2003-11-25)</p>
-					<p>This is the first public release of phpScheduleIt. There was a good deal changed 
-						and removed from the previous version, including PI information and a lot of 
+					<p>This is the first public release of phpScheduleIt. There was a good deal changed
+						and removed from the previous version, including PI information and a lot of
 						wording changes.</p>
 					<h4>Credits</h4>
 					<p><em>Application Code</em></p>
