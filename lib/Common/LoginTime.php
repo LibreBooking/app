@@ -1,25 +1,19 @@
 <?php
 class LoginTime
 {
-	var $Now = null;
+	public static $Now = null;
 	
-	var $_format = 'Y-m-d H:is';
+	private $_format = 'Y-m-d H:is';
 	
-	function LoginTime()
+	public static function Now()
 	{
-		static $tmp;
-		$this->Now =& $tmp;		
-	}
-	
-	function Now()
-	{
-		if (empty($this->Now))
+		if (empty(self::$Now))
 		{
-			return date($this->_format);
+			return date(self::$_format);
 		}
 		else 
 		{
-			return date($this->_format, $this->Now);
+			return date(self::$_format, self::$Now);
 		}
 	}
 }

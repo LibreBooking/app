@@ -1,20 +1,20 @@
 <?php
 require_once('namespace.php');
 
-class SqlCommand extends ISqlCommand
+class SqlCommand implements ISqlCommand
 {
-	var $Parameters = null;
+	public $Parameters = null;
 		
-	var $_paramNames = array();
-	var $_values = array();
-	var $_query = null;
+	private $_paramNames = array();
+	private $_values = array();
+	private $_query = null;
 	
-	function SqlCommand($query = null) {
+	public function __construct($query = null) {
 		$this->_query = $query;
 		$this->Parameters = new Parameters();
 	}
 	
-	function SetParameters(&$parameters) {
+	public function SetParameters(Parameters &$parameters) {
 		$this->_paramNames = array();	// Clean out contents
 		$this->_values = array();
 		
@@ -27,11 +27,11 @@ class SqlCommand extends ISqlCommand
 		}
 	}
 	
-	function AddParameter(&$parameter) {
+	public function AddParameter(Parameter &$parameter) {
 		$this->Parameters->Add($parameter);
 	}
-	
-	function GetQuery() {
+
+	public function GetQuery() {
 		return $this->_query;
 	}
 }

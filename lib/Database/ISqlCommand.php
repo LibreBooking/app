@@ -1,12 +1,23 @@
 <?php
-//$dir = dirname(__FILE__) . '/../..';
-//require_once($dir . '/lib/Database/namespace.php');
 require_once('namespace.php');
 
-class ISqlCommand
+interface ISqlCommand
 {
-	function SetParameters(&$parameters) { die('Not implemented'); }
-	function AddParameter(&$parameter) { die('Not implemented'); }
-	function GetQuery() { die('Not implemented'); }
+	/**
+	 * Sets the collection of Parameters for the Command
+	 * @param Parameters $parameters
+	 */
+	public function SetParameters(Parameters &$parameters);
+	
+	/**
+	 * Adds a Parameter to the Command
+	 * @param Parameter $parameter
+	 */
+	public function AddParameter(Parameter &$parameter);
+		
+	/**
+	 * @return The currently set Query for the Command
+	 */
+	public function GetQuery();
 }
 ?>

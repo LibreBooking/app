@@ -3,10 +3,10 @@ require_once('namespace.php');
 
 class Parameter
 {
-	var $Name = '';
-	var $Value = '';
+	public $Name = '';
+	public $Value = '';
 	
-	function Parameter($name = '', $value = '') {
+	public function __construct($name = '', $value = '') {
 		$this->Name = $name;
 		$this->Value = $value;
 	}

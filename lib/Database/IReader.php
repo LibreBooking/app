@@ -1,30 +1,13 @@
 <?php
 require_once('namespace.php');
 
-class IReader
+interface IReader
 {
-	/**
-	* To be implemented by child
-	*/
-	function Reader() { }
+	public function &GetRow();
 	
-	/**
-	* To be implemented by child
-	* @return array
-	*/
-	function &GetRow() { }
+	public function NumRows();
 	
-	/**
-	* To be implemented by child
-	* @return int
-	*/
-	function NumRows() { }
-	
-	/**
-	* To be implemented by child
-	* @return void
-	*/
-	function Free() { }
+	public function Free();
 }
 
 ?>

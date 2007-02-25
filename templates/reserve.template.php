@@ -4,10 +4,10 @@
 * No data manipulation is done in this file
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author David Poole <David.Poole@fccc.edu>
-* @version 07-08-06
+* @version 02-17-07
 * @package Templates
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -79,7 +79,9 @@ function print_basic_panel(&$res, &$rs, $is_private) {
 		print_create_modify($res->created, $res->modified);
 	}
 
-	print_summary($res->summary, $res->type);
+	if (!$is_private) {
+		print_summary($res->summary, $res->type);
+	}
 
 	if (!empty($res->parentid) && ($res->type == RES_TYPE_MODIFY || $res->type == RES_TYPE_DELETE || $res->type == RES_TYPE_APPROVE)) {
 		print_recur_checkbox($res->parentid);

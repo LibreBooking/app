@@ -1,29 +1,27 @@
 <?php
 require_once('namespace.php');
 
-class IDbConnection
+interface IDbConnection
 {
 	/**
-	* To be implemented by child
-	*/
-	function Connect() { die('Not implemented'); }
+	 * Connect to the database
+	 */
+	public function Connect();
 	
 	/**
-	* To be implemented by child
-	*/
-	function Disconnect() { die('Not implemented'); }
+	 * Disconnect from the database
+	 */
+	public function Disconnect();
 
 	/**
-	* To be implemented by child
-	* @param Command $command the database Command object to use for the query
-	* @return IReader
-	*/
-	function &Query(&$command) { die('Not implemented'); } 
+	 * @param Command $command the database Command object to use for the query
+	 * @return IReader
+	 */
+	public function &Query(&$command);
 	
 	/**
-	* To be implemented by child
-	* @param Command $command the database Command object to use for the query
-	*/
-	function Execute(&$command) { die('Not implemented'); }
+	 * @param Command $command the database Command object to use for the query
+	 */
+	public function Execute(&$command);
 }
 ?>

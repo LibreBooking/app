@@ -5,39 +5,30 @@ require_once('DataConstant.php');
 
 class AuthorizationCommand extends SqlCommand
 {
-	function AuthorizationCommand($username, $password)
+	public function __construct($username, $password)
 	{
-		$queries = new Queries();
-		$params = new ParameterNames();
-		
-		parent::SqlCommand($queries->VALIDATE_USER);
-		$this->AddParameter(new Parameter($params->USER_NAME, strtolower($username)));
-		$this->AddParameter(new Parameter($params->PASSWORD, $password));		
+		parent::SqlCommand(Queries::VALIDATE_USER);
+		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, strtolower($username)));
+		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));		
 	}
 }
 
 class LoginCommand extends SqlCommand
 {
-	function LoginCommand($username)
+	public function __construct($username)
 	{
-		$queries = new Queries();
-		$params = new ParameterNames();
-		
-		parent::SqlCommand($queries->LOGIN_USER);
-		$this->AddParameter(new Parameter($params->USER_NAME, strtolower($username)));		
+		parent::SqlCommand(Queries::LOGIN_USER);
+		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, strtolower($username)));		
 	}
 }
 
 class UpdateLoginTimeCommand extends SqlCommand
 {
-	function UpdateLoginTimeCommand($userid, $lastlogin)
+	public function __construct($userid, $lastlogin)
 	{
-		$queries = new Queries();
-		$params = new ParameterNames();
-		
-		parent::SqlCommand($queries->UPDATE_LOGINTIME);
-		$this->AddParameter(new Parameter($params->LAST_LOGIN, $lastlogin));
-		$this->AddParameter(new Parameter($params->USER_ID, $userid));		
+		parent::SqlCommand(Queries::UPDATE_LOGINTIME);
+		$this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastlogin));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));		
 	}
 }
 ?>

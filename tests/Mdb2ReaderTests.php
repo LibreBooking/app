@@ -1,11 +1,11 @@
 <?php
 require_once('../Database/Mdb2/namespace.php');
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 
 /// FAKES ///
 require_once('fakes/DBFakes.php');
 
-class Mdb2ReaderTests extends PHPUnit_TestCase
+class Mdb2ReaderTests extends PHPUnit_Framework_TestCase
 {
 	var $fakeDb;
 	var $fakeResult;

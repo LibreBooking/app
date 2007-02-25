@@ -3,13 +3,13 @@ require_once('namespace.php');
 
 class Database
 {
-	var $Connection = null;
+	public $Connection = null;
 
-	function Database(&$dbConnection) {
+	public function _construct(IDbConnection &$dbConnection) {
 		$this->Connection = &$dbConnection;
 	}
 	
-	function &Query(&$command) {
+	public function &Query(ISqlCommand &$command) {
 		$this->Connection->Connect();		
 		$reader = $this->Connection->Query($command);
 		$this->Connection->Disconnect();
@@ -17,7 +17,7 @@ class Database
 		return $reader;
 	}
 	
-	function Execute(&$command) {
+	public function Execute(ISqlCommand &$command) {
 		$this->Connection->Connect();		
 		$this->Connection->Execute($command);
 		$this->Connection->Disconnect();

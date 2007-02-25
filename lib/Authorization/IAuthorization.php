@@ -1,14 +1,8 @@
 <?php
-class IAuthorization
+interface IAuthorization
 {
-	function Validate($username, $password)
-	{
-		die( 'Not implemented' );
-	}
+	public function Validate($username, $password);
 	
-	function Login($username, $persist)
-	{
-		die( 'Not implemented' );
-	}
+	public function Login($username, $persist);
 }
 ?>

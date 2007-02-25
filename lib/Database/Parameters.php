@@ -3,17 +3,17 @@ require_once('namespace.php');
 
 class Parameters
 {
-	var $_parameters = array();
-	var $_count = 0;
+	private $_parameters = array();
+	private $_count = 0;
 	
-	function Parameters() { }
+	public function __construct() { }
 	
-	function Add(&$parameter) {
+	public function Add(Parameter &$parameter) {
 		$this->_parameters[] = &$parameter;
 		$this->_count++;
 	}
 	
-	function Remove(&$parameter) {
+	public function Remove(Parameter &$parameter) {
 		for ($i = 0; $i < $this->_count; $i++) {
 			if ($this->_parameters[$i] == $parameter) {
 				$this->removeAt($i);
@@ -21,17 +21,17 @@ class Parameters
 		}
 	}
 	
-	function RemoveAt($index) {
+	public function RemoveAt($index) {
 		unset($this->_parameters[$index]);
 		$this->_parameters = array_values($this->_parameters);	// Re-index the array
 		$this->_count--;
 	}
 	
-	function &Items($index) {
+	public function &Items($index) {
 		return $this->_parameters[$index];
 	}
 	
-	function Count() {
+	public function Count() {
 		return $this->_count;
 	}
 }

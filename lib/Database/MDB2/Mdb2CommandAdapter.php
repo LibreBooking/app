@@ -1,27 +1,27 @@
 <?php
 require_once('namespace.php');
 
-class Mdb2CommandAdapter extends ISqlCommand
+class Mdb2CommandAdapter implements ISqlCommand
 {
-	var $_values = null;
-	var $_query = null;
+	private $_values = null;
+	private $_query = null;
 	
-	function Mdb2CommandAdapter(&$command) {
+	public function __construct(&$command) {
 		$_values = array();
 		$_query = null;
 		
-		$this->_Convert($command);
+		$this->Convert($command);
 	}
 	
-	function GetValues() {
+	public function GetValues() {
 		return $this->_values;
 	}
 	
-	function GetQuery() {
+	public function GetQuery() {
 		return $this->_query;
 	}
 	
-	function _Convert(&$command) {		
+	private function Convert(&$command) {		
 		for ($p = 0; $p < $command->Parameters->Count(); $p++) {
 			$curParam = $command->Parameters->Items($p);
 			$this->_values[str_replace('@', '', $curParam->Name)] = $curParam->Value;

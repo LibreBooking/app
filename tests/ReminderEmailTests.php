@@ -4,12 +4,12 @@ require_once(BASE_DIR . '/lib/CmnFns.class.php');
 require_once(BASE_DIR . '/lib/ReminderEmail.class.php');
 require_once('fakes/FakeReminder.php');
 require_once('fakes/EmailFakes.php');
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 
-class ReminderEmailTests extends PHPUnit_TestCase
+class ReminderEmailTests extends PHPUnit_Framework_TestCase
 {
  	function ReminderEmailTests($name) {
-       $this->PHPUnit_TestCase($name);
+       $this->PHPUnit_Framework_TestCase($name);
     }
 	
 	function testReminderEmailBuildsMailerCorrectly() {

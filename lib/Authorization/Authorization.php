@@ -2,25 +2,25 @@
 require_once('namespace.php');
 require_once(dirname(__FILE__) . '/../../lib/Database/Commands/namespace.php');
 
-class Authorization extends IAuthorization 
+class Authorization implements IAuthorization 
 {
-	var $_db;
-	var $_server;
+	private $_db;
+	private $_server;
 	
-	function Authorization(&$database, &$server)
+	public function __construct(&$database, &$server)
 	{
 		$this->_db = &$database;
 		$this->_server = &$server;
 	}
 	
-	function Validate($username, $password)
+	public function Validate($username, $password)
 	{
 		$command = new AuthorizationCommand($username, $password);
 		$reader = $this->_db->Query($command);
 		return $reader->NumRows() > 0;
 	}
 	
-	function Login($username, $persist)
+	public function Login($username, $persist)
 	{
 		$names = new ColumnNames();
 		
@@ -38,7 +38,7 @@ class Authorization extends IAuthorization
 		}		
 	}
 	
-	function setUserSession($row)
+	private function setUserSession($row)
 	{
 		$names = new ColumnNames();
 		$ckeys = new ConfigKeys();

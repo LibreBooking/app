@@ -1,5 +1,5 @@
 <?php
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 require_once('PHPUnit/GUI/HTML.php');
 
 $tests = array('ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');

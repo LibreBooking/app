@@ -10,35 +10,35 @@
 */
 
 class Timer {
-	var $name = null;
+	private $name = null;
 	
-	var $s_sec = 0;
-	var $s_msec = 0;
-	var $e_sec = 0;
-	var $e_msec = 0;
-	var $total = 0;
+	private $s_sec = 0;
+	private $s_msec = 0;
+	private $e_sec = 0;
+	private $e_msec = 0;
+	private $total = 0;
 	
-	function Timer($name = 'Timer') {
+	public function __construct($name = 'Timer') {
 		$this->name = $name;
 	}
 	
-	function start() {
+	public function start() {
 		list($this->s_sec, $this->s_msec) = explode(' ', microtime());	// Start execution timer
 	}
 	
-	function stop() {
+	public function stop() {
 		list($this->e_sec, $this->e_msec) = explode(' ', microtime());		// End execution timer
 	}
 	
-	function get_timer_value() {
+	public function get_timer_value() {
 		return ((float)$this->e_sec + (float)$this->e_msec) - ((float)$this->s_sec + (float)$this->s_msec);
 	}
 	
-	function print_comment() {
+	public function print_comment() {
 		echo " <!-- $this->name execution time  " . $this->get_timer_value() . " seconds --> \n";
 	}
 	
-	function toString() {
+	public function toString() {
 		echo $this->get_timer_value() . ' seconds';
 	}
 }

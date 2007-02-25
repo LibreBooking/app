@@ -4,87 +4,89 @@ require_once(dirname(__FILE__) . '/../../lib/pear/MDB2.php');
 
 class FakeDatabase extends Database
 {
-	var $reader;
-	var $_LastCommand;
-	var $_Commands = array();
+	public $reader;
+	public $_LastCommand;
+	public $_Commands = array();
 	
-	function FakeDatabase()
+	public function __construct()
 	{		
 	}
 	
-	function SetReader(&$reader)
+	public function SetReader(&$reader)
 	{
 		$this->reader = &$reader;
 	}
 	
-	function &Query(&$command) 
+	public function &Query(&$command) 
 	{
 		$this->_LastCommand = $command;		
 		$this->_AddCommand($command);
 		return $this->reader;
 	}
 	
-	function Execute(&$command) 
+	public function Execute(&$command) 
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
 	}
 	
-	function _AddCommand(&$command)
+	private function _AddCommand(&$command)
 	{
 		array_push($this->_Commands, $command);
 	}
 }
 
-class FakeDBConnection extends IDBConnection
+class FakeDBConnection implements IDBConnection
 {
-	var $_LastQueryCommand = null;
-	var $_LastExecuteCommand = null;
-	var $_ConnectWasCalled = false;
-	var $_DisconnectWasCalled = false;
+	public $_LastQueryCommand = null;
+	public $_LastExecuteCommand = null;
+	public $_ConnectWasCalled = false;
+	public $_DisconnectWasCalled = false;
 	
-	function FakeDBConnection() { }
+	public function __construct()
+	{		
+	}
 	
-	function Connect() { 
+	public function Connect() { 
 		$this->_ConnectWasCalled = true;
 	}
 	
-	function Disconnect() { 
+	public function Disconnect() { 
 		$this->_DisconnectWasCalled = true;
 	}
 
-	function &Query(&$command) { 
+	public function &Query(&$command) { 
 		$this->_LastSqlCommand = $command;
 	} 
 	
-	function &Execute() { 
+	public function &Execute() { 
 		$this->_LastExecuteCommand = $command;
 	}
 }
 
 class FakePearDB extends MDB2
 {
-	var $dsn = '';
-	var $permcn = false;
-	var $result = null;
+	public $dsn = '';
+	public $permcn = false;
+	public $result = null;
 	
-	var $PrepareHandle = null;
+	public $PrepareHandle = null;
 	
-	var $_PrepareWasCalled = false;
-	var $_LastPreparedQuery = '';
-	var $_PrepareAutoDetect = false;
-	var $_PrepareType = -1;
+	public $_PrepareWasCalled = false;
+	public $_LastPreparedQuery = '';
+	public $_PrepareAutoDetect = false;
+	public $_PrepareType = -1;
 	
-	function FakePearDB(&$results) {
+	public function __construct(&$results) {
 		$this->result = $results;
 	}
 	
-	function connect($dsn, $permcn) {
+	public function connect($dsn, $permcn) {
 		$this->dsn = $dsn;
 		$this->permcn = $permcn;
 	}
 	
-	function &prepare($query, $autodetect, $prepareType) {
+	public function &prepare($query, $autodetect, $prepareType) {
 		$this->_LastPreparedQuery = $query;
 		$this->_PrepareWasCalled = true;
 		$this->_PrepareAutoDetect = $autodetect;
@@ -95,15 +97,15 @@ class FakePearDB extends MDB2
 
 class FakeDBResult extends MDB2_Result_Common
 {
-	var $rows = array();
-	var $idx = 0;
-	var $_FreeWasCalled = false;
+	public $rows = array();
+	public $idx = 0;
+	public $_FreeWasCalled = false;
 	
-	function FakeDBResult(&$rows) {
+	public function __construct(&$rows) {
 		$this->rows = $rows;
 	}
 	
-	function &GetRow() {
+	public function &GetRow() {
 		if (sizeof($this->rows) > $this->idx)
 		{
 			return $this->rows[$this->idx++];
@@ -111,30 +113,29 @@ class FakeDBResult extends MDB2_Result_Common
 		return false;
 	}
 	
-	function NumRows() {
+	public function NumRows() {
 		return sizeof($this->rows);
 	}
 	
-	function Free() {
+	public function Free() {
 		$this->_FreeWasCalled = true;
 	}
 }
 
 class FakePrepareHandle extends MDB2_Statement_Common
 {
-	var $result = null;
-	var $_ExecuteWasCalled = false;
-	var $_LastExecutedValues = array();
+	public $result = null;
+	public $_ExecuteWasCalled = false;
+	public $_LastExecutedValues = array();
 	
-	function FakePrepareHandle(&$result) {
+	public function __construct(&$result) {
 		$this->result = $result;
 	}
 	
-	function &execute($values) {
+	public function &execute($values) {
 		$this->_ExecuteWasCalled = true;
 		$this->_LastExecutedValues = $values;
 		return $this->result;
 	}
 }
-
 ?>

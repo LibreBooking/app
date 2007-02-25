@@ -1,5 +1,5 @@
 <?php
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 require_once('../lib/Authorization/namespace.php');
 require_once('../lib/Common/namespace.php');
 require_once('../lib/Server/namespace.php');
@@ -7,7 +7,7 @@ require_once('../lib/Config/namespace.php');
 require_once('fakes/DBFakes.php');
 require_once('fakes/FakeServer.php');
 
-class AuthorizationTests extends PHPUnit_TestCase
+class AuthorizationTests extends PHPUnit_Framework_TestCase
 {
 	var $cols;
 	var $username;

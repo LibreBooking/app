@@ -1,16 +1,16 @@
 <?php
 
 require_once('../lib/Summary.class.php');
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 
-class SummaryTests extends PHPUnit_TestCase
+class SummaryTests extends PHPUnit_Framework_TestCase
 {
     // contains the object handle of the string class
     var $db = null;
 
     // constructor of the test suite
     function SummaryTests($name) {
-       $this->PHPUnit_TestCase($name);
+       $this->PHPUnit_Framework_TestCase($name);
     }
 	
 	function testSummaryIsCorrectLength() {

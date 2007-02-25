@@ -2,12 +2,12 @@
 @define('BASE_DIR', dirname(__FILE__) . '/..');
 require_once('fakes/FakeReservation.php');
 require_once(BASE_DIR . '/lib/Reminder.class.php');
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 
-class ReminderTests extends PHPUnit_TestCase
+class ReminderTests extends PHPUnit_Framework_TestCase
 {
  	function ReminderTests($name) {
-       $this->PHPUnit_TestCase($name);
+       $this->PHPUnit_Framework_TestCase($name);
     }
 	
 	function testCalculateReminderTimeGetsCorrectValue() {

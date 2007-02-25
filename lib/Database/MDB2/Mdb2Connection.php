@@ -7,18 +7,18 @@ require_once('namespace.php');
 /**
 * Pear::MDB2 implementation
 */
-class Mdb2Connection extends IDbConnection
+class Mdb2Connection implements IDbConnection
 {
-	var $_dbType = '';
-	var $_dbUser = '';
-	var $_dbPassword = '';
-	var $_hostSpec = '';
-	var $_dbName = '';
+	private $_dbType = '';
+	private $_dbUser = '';
+	private $_dbPassword = '';
+	private $_hostSpec = '';
+	private $_dbName = '';
 	
-	var $_db = null;
-	var $_connected = false;
+	private $_db = null;
+	private $_connected = false;
 	
-	function Mdb2Connection($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName) {
+	public function __construct($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName) {
 		$this->_dbType = $_dbType;
 		$this->_dbUser = $_dbUser;
 		$this->_dbPassword = $_dbPassword;
@@ -26,7 +26,7 @@ class Mdb2Connection extends IDbConnection
 		$this->_dbName = $_dbName;
 	}
 	
-	function Connect() {
+	public function Connect() {
 		if ($this->_connected) {
 			return;
 		}
@@ -45,24 +45,24 @@ class Mdb2Connection extends IDbConnection
 		$this->_connected = true;
 	}
 	
-	function Disconnect() {
+	public function Disconnect() {
 		$this->_db->disconnect();
 		$this->_connected = false;
 	}
 	
-	function AddParameter($name, $value) {
+	public function AddParameter($name, $value) {
 		$this->_params[$name] = $value;
 	}
 	
-	function &Query(&$sqlCommand) {
+	public function &Query(&$sqlCommand) {
 		return $this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_RESULT);
 	}
 	
-	function Execute(&$sqlCommand) {
+	public function Execute(&$sqlCommand) {
 		$this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_MANIP);
 	}
 	
-	function &_PrepareAndExecute(&$sqlCommand, $prepareType) {
+	public function &_PrepareAndExecute(&$sqlCommand, $prepareType) {
 		$cmd = new Mdb2CommandAdapter($sqlCommand);
 		
 		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);
@@ -72,30 +72,30 @@ class Mdb2Connection extends IDbConnection
 		return new Mdb2Reader($result);
 	}
 	
-	function _isError($result) {
+	public function _isError($result) {
 		if (MDB2::isError($result)) {
             die('There was an error executing your query: ' . $result->getMessage());
 		}
         return false;
 	}
 		
-	function GetDbType() { 
+	public function GetDbType() { 
 		return $this->_dbType; 
 	}
 	
-	function GetDbUser() { 
+	public function GetDbUser() { 
 		return $this->_dbUser;
 	}
 	
-	function GetDbPassword() { 
+	public function GetDbPassword() { 
 		return $this->_dbPassword;
 	}
 	
-	function GetHostSpec() {
+	public function GetHostSpec() {
 		return $this->_hostSpec;
 	}
 	
-	function GetDbName() { 
+	public function GetDbName() { 
 		return $this->_dbName;
 	}
 }

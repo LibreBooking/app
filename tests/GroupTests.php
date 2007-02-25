@@ -1,5 +1,5 @@
 <?php
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 require_once('/fakes/DBFakes.php');
 require_once('../lib/Group.class.php');
 
@@ -7,24 +7,24 @@ require_once('../lib/Group.class.php');
 ////////////////////////////////////////////
 // TO BE IMPLEMENTED WHEN DB IS REWRITTEN //
 
-class GroupTests extends PHPUnit_TestCase
+class GroupTests extends PHPUnit_Framework_TestCase
 {
     var $db = null;
 
     // constructor of the test suite
     function GroupTests($name) {
-       $this->PHPUnit_TestCase($name);
+       $this->PHPUnit_Framework_TestCase($name);
     }
 
     // called before the test functions will be executed
-    // this function is defined in PHPUnit_TestCase and overwritten
+    // this function is defined in PHPUnit_Framework_TestCase and overwritten
     // here
     function setUp() {
         // create the object instance
     }
 
     // called after the test functions are executed
-    // this function is defined in PHPUnit_TestCase and overwritten
+    // this function is defined in PHPUnit_Framework_TestCase and overwritten
     // here
     function tearDown() {
         // delete your instance

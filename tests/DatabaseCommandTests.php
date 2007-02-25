@@ -1,9 +1,9 @@
 <?php
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 require_once('../lib/Database/Commands/Commands.php');
 require_once('../lib/Common/namespace.php');
 
-class DatabaseCommandTests extends PHPUnit_TestCase
+class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 {
 	var $names;
 	var $queries;

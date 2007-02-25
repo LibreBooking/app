@@ -1,9 +1,9 @@
 <?php
 require_once('fakes/DBFakes.php');
 require_once('../Database/Mdb2/namespace.php');
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 
-class Mdb2CommandAdapterTests extends PHPUnit_TestCase
+class Mdb2CommandAdapterTests extends PHPUnit_Framework_TestCase
 {
 	function testDatabaseQueryLoadsValuesInCorrectOrder() {
 		$name1 = 'paramName1';

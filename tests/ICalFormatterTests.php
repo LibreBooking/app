@@ -1,12 +1,12 @@
 <?php
 require_once('fakes/FakeReservation.php');
 require_once('../lib/icalendar/ICalReservationFormatter.php');
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 
-class ICalFormatterTests extends PHPUnit_TestCase
+class ICalFormatterTests extends PHPUnit_Framework_TestCase
 {
 	function ICalFormatterTests($name) {
-		$this->PHPUnit_TestCase($name);
+		$this->PHPUnit_Framework_TestCase($name);
 	}
 
 	function testFormatSettingsIncludesProperAttributes() {

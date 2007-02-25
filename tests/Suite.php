@@ -1,5 +1,5 @@
 <?php
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 require_once('../lib/Timer.class.php');
 
 $failed = 0;

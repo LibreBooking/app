@@ -3,10 +3,10 @@
 * Provide all of the presentation functions for the MyCalendar class
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
 * @author Richard Cantzler <rmcii@users.sourceforge.net>
-* @version 10-28-06
+* @version 02-17-07
 * @package Templates
 *
-* Copyright (C) 2003 - 2006 phpScheduleIt
+* Copyright (C) 2003 - 2007 phpScheduleIt
 * License: GPL, see LICENSE
 */
 
@@ -125,7 +125,7 @@ function print_view_links($datestamp, $current_view, $addl_params = array(), $ad
 * @param int $days number of days to print out
 * @param bool $is_private if we are in privacy mode and should hide user details
 */
-function print_day_reservations($reservations, $datestamp, $days, $show_owner_icon = true, $is_private = false) {
+function print_day_reservations($reservations, $datestamp, $days, $show_owner_icon = true, $is_private = false, $scheduleid = null) {
 	echo "<table border=\"0\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\"><tr><td class=\"tableBorder\">\n<table border=\"0\" width=\"100%\" cellspacing=\"1\" cellpadding=\"0\">\n";
 	$date_vars = getdate($datestamp);
 	$hour_line = array();
@@ -155,7 +155,7 @@ function print_day_reservations($reservations, $datestamp, $days, $show_owner_ic
 	echo '<tr><td class="scheduleDateHeader">&nbsp;</td>';
 	for ($day_count = 0; $day_count < $days; $day_count++) {
 		$datestamps[$day_count] = mktime(0,0,0, $date_vars['mon'], $date_vars['mday'] + $day_count, $date_vars['year']);
-		echo '<td width="' . $col_width . '%" class="scheduleDateHeader"><a href="schedule.php?date=' . sprintf('%d-%d-%d', $date_vars['mon'], $date_vars['mday'], $date_vars['year']) . '">' . translate_date('schedule_daily', $datestamps[$day_count]) . '</a></td>';
+		echo '<td width="' . $col_width . '%" class="scheduleDateHeader"><a href="schedule.php?date=' . sprintf('%d-%d-%d', $date_vars['mon'], $date_vars['mday'], $date_vars['year']) . '&amp;scheduleid=$scheduleid">' . translate_date('schedule_daily', $datestamps[$day_count]) . '</a></td>';
 	}
 	echo "</tr>\n";
 	
@@ -172,6 +172,7 @@ function print_day_reservations($reservations, $datestamp, $days, $show_owner_ic
 					if ($is_private) {
 						$res['fname'] = 'Private';
 						$res['lname'] = '';
+						$res['summary'] = '';
 					}
 				
 					$js = "onmouseover=\"showsummary('details', event, '" . build_reservation_detail_div($res) . "');\" onmouseout=\"hideSummary('details');\" onmousemove=\"moveSummary('details', event);\"";	
@@ -203,7 +204,7 @@ function print_day_reservations($reservations, $datestamp, $days, $show_owner_ic
 * @param bool $ownerParticipantImage whether to show the owner/participant images
 * @param bool $is_private if we are in privacy mode and should hide user details
 */
-function print_month_reservations($reservations, $datestamp, $fields = array('name'), $ownerParticipantImage = true, $is_private = false) {
+function print_month_reservations($reservations, $datestamp, $fields = array('name'), $ownerParticipantImage = true, $is_private = false, $scheduleid = null) {
 	global $conf;
 	global $days_full;
 	
@@ -265,7 +266,7 @@ function print_month_reservations($reservations, $datestamp, $fields = array('na
 			else {
 				$class = 'MyCalDayBox';
 			}
-			echo "<td class=\"$class\"><p align=\"right\"><a class=\"MyCalDateNumber\" href=\"schedule.php?date={$actualCurrentMonth}-$actualCurrentDay-{$actualCurrentYear}\">$actualCurrentDay</a></p>\n";
+			echo "<td class=\"$class\"><p align=\"right\"><a class=\"MyCalDateNumber\" href=\"schedule.php?date={$actualCurrentMonth}-{$actualCurrentDay}-{$actualCurrentYear}&amp;scheduleid=$scheduleid\">$actualCurrentDay</a></p>\n";
 			$currentDate = mktime(0,0,0,$date_vars['1'], $currentDay, $date_vars['2']);
 			if (isset($reservations_by_date[$currentDate])) {
 				for ($resCount = 0; $resCount < count($reservations_by_date[$currentDate]); $resCount++) {
@@ -274,6 +275,7 @@ function print_month_reservations($reservations, $datestamp, $fields = array('na
 					if ($is_private) {
 						$res['fname'] = 'Private';
 						$res['lname'] = '';
+						$res['summary'] = '';
 					}
 					
 					$js = "onmouseover=\"showsummary('details', event, '" . build_reservation_detail_div($res) . "');\" onmouseout=\"hideSummary('details');\" onmousemove=\"moveSummary('details', event);\"";	

@@ -1,18 +1,17 @@
 <?php
-require_once('PHPUnit.php');
 require_once('../Presenters/LoginPresenter.php');
 require_once('../lib/Authorization/namespace.php');
 require_once('../Pages/LoginPage.php');
+require_once('../lib/Common/namespace.php');
 require_once('fakes/FakeServer.php');
 
-
-class LoginPresenterTests extends PHPUnit_TestCase
+class LoginPresenterTests extends PHPUnit_Framework_TestCase
 {
-	var $auth;
-	var $page;
-	var $server;
+	private $auth;
+	private $page;
+	private $server;
 	
-	function setup()
+	public function setup()
 	{
 		$this->auth = new FakeAuth();		
 		$this->page = new FakeLoginPage();
@@ -23,13 +22,15 @@ class LoginPresenterTests extends PHPUnit_TestCase
 		$this->page->_PersistLogin = true;
 	}
 	
-	function teardown()
+	public function teardown()
 	{
 		$this->auth = null;
 		$this->page = null;
+		$resources =& Resources::GetInstance();
+		$resources = null;
 	}
 	
-	function testLoginCallsAuthValidate() 
+	public function testLoginCallsAuthValidate() 
 	{	
 		$presenter = new LoginPresenter($this->page, $this->server);
 		$presenter->Login($this->auth);
@@ -38,7 +39,7 @@ class LoginPresenterTests extends PHPUnit_TestCase
 		$this->assertEquals($this->page->_Password, $this->auth->_LastPassword);
 	}
 	
-	function testSuccessfulValidateCallsLogin()
+	public function testSuccessfulValidateCallsLogin()
 	{
 		$this->auth->_ValidateResult = true;
 		$presenter = new LoginPresenter($this->page, $this->server);
@@ -48,7 +49,7 @@ class LoginPresenterTests extends PHPUnit_TestCase
 		$this->assertEquals($this->page->_PersistLogin, $this->auth->_LastPersist);
 	}
 
-	function testSuccessfulValidateCallsRedirectToNormalPageWhenNoRequestedPage()
+	public function testSuccessfulValidateCallsRedirectToNormalPageWhenNoRequestedPage()
 	{
 		$this->auth->_ValidateResult = true;
 		$presenter = new LoginPresenter($this->page, $this->server);
@@ -57,11 +58,10 @@ class LoginPresenterTests extends PHPUnit_TestCase
 		$this->assertEquals('ctrlpnl.php', $this->page->_LastRedirect);
 	}
 	
-	function testRedirectsToRequestedPage()
+	public function testRedirectsToRequestedPage()
 	{
 		$redirect = 'something.php';
-		$qsKeys = new QueryStringKeys();
-		$this->server->SetQuerystring($qsKeys->REDIRECT, $redirect);
+		$this->server->SetQuerystring(QueryStringKeys::REDIRECT, $redirect);
 		
 		$this->auth->_ValidateResult = true;
 		$presenter = new LoginPresenter($this->page, $this->server);
@@ -70,83 +70,104 @@ class LoginPresenterTests extends PHPUnit_TestCase
 		$this->assertEquals($redirect, $this->page->_LastRedirect);
 	}
 	
-	function testPageLoadCallsPagesPageLoad()
+	public function testPageLoadSetsVariablesCorrectly()
 	{
-		$presenter = new LoginPresenter($this->page, $this->server);
-		$presenter->PageLoad();
-		
-		$this->assertTrue($this->page->_PageLoadWasCalled);
-	}
-	
-	function testPageLoadSetsVariablesCorrectly()
-	{
-		$keys = new ConfigKeys();
-		
-		$config = new Configuration();
-		$config->SetKey($keys->ALLOW_REGISTRATION, 'true');
+		Configuration::SetKey(ConfigKeys::ALLOW_REGISTRATION, 'true');
 		
 		$presenter = new LoginPresenter($this->page, $this->server);
 		$presenter->PageLoad();
 		
 		$this->assertEquals(true, $this->page->getShowRegisterLink());
 	}
+	
+	public function testPageLoadSetsLanguagesCorrect()
+	{
+		$presenter = new LoginPresenter($this->page, $this->server);
+		$presenter->PageLoad();
+		
+		$resources = Resources::GetInstance();
+		$curLang = 'en_US';
+		$resources->CurrentLanguage = $curLang;
+		
+		$langs = $this->page->_Languages;
+		
+		$this->assertEquals(count($langs), count($resources->AvailableLanguages));
+		for ($i = 0; $i < count($resources->AvailableLanguages); $i++)
+		{
+			$lang = $resources->AvailableLanguages[$i];
+			$this->assertEquals($langs[$lang->LanguageCode], $lang->DisplayName);
+		}
+		//$this->assertEquals($curLang, $this->page->getCurrentLanguage());
+	}
 }
 
-class FakeLoginPage extends ILoginPage
+class FakeLoginPage implements ILoginPage
 {
-	var $_EmailAddress;
-	var $_Password;
-	var $_PersistLogin = false;
-	var $_LastRedirect;
-	var $_ShowRegisterLink;
-	var $_PageLoadWasCalled = false;
+	public $_EmailAddress;
+	public $_Password;
+	public $_PersistLogin = false;
+	public $_LastRedirect;
+	public $_ShowRegisterLink;
+	public $_PageLoadWasCalled = false;
+	public $_Languages = array();
+	//public $_CurrentCode;
 	
-	function PageLoad()
+	public function PageLoad()
 	{
 		$this->_PageLoadWasCalled = true;
 	}
 	
-	function getEmailAddress()
+	public function getEmailAddress()
 	{ 
 		return $this->_EmailAddress;
 	}
 	
-	function getPassword()
+	public function getPassword()
 	{ 
 		return $this->_Password;
 	}
 	
-	function getPersistLogin()
+	public function getPersistLogin()
 	{
 		return $this->_PersistLogin;
 	}
 	
-	function getShowRegisterLink()
+	public function getShowRegisterLink()
 	{
 		return $this->_ShowRegisterLink;
 	}
 	
-	function setShowRegisterLink($value)
+	public function setShowRegisterLink($value)
 	{
 		$this->_ShowRegisterLink = $value;
 	}
 	
-	function Redirect($url)
+	public function Redirect($url)
 	{
 		$this->_LastRedirect = $url;
 	}
+	
+	public function setAvailableLanguages($languages)
+	{
+		$this->_Languages = $languages;
+	}
+	
+	public function getCurrentLanguage()
+	{
+		return $this->_CurrentCode;
+	}
 }
 
-class FakeAuth extends IAuthorization
+class FakeAuth implements IAuthorization
 {
-	var $_LastLogin;
-	var $_LastPassword;
-	var $_LastPersist;
-	var $_LastLoginId;
+	public $_LastLogin;
+	public $_LastPassword;
+	public $_LastPersist;
+	public $_LastLoginId;
 	
-	var $_ValidateResult = false;
+	public $_ValidateResult = false;
 	
-	function Validate($username, $password)
+	public function Validate($username, $password)
 	{
 		$this->_LastLogin = $username;
 		$this->_LastPassword = $password;
@@ -154,7 +175,7 @@ class FakeAuth extends IAuthorization
 		return $this->_ValidateResult;
 	}
 	
-	function Login($username, $persist)
+	public function Login($username, $persist)
 	{
 		$this->_LastLogin = $username;
 		$this->_LastPersist = $persist;

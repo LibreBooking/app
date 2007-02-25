@@ -1,9 +1,9 @@
 <?php
 require_once('../Database/namespace.php');
 require_once('fakes/DBFakes.php');
-require_once('PHPUnit.php');
+require_once('PHPUnit/Framework.php');
 
-class DatabaseTests extends PHPUnit_TestCase
+class DatabaseTests extends PHPUnit_Framework_TestCase
 {
     var $db = null;
     
