@@ -503,3 +503,34 @@ div.inlineSummary{
 	overflow:hidden;
 	height:13px;
 }
+
+.login_table_border
+{
+	background-color: #CCCCCC;
+}
+
+.login_table tr
+{
+	background-color: #FFFFFF;
+}
+
+.login_table #header
+{
+	background-color: #EDEDED;
+}
+
+.login_table #header td
+{
+	border-bottom: solid 1px #CCCCCC;
+}
+
+.login_table #footer
+{
+	background-color: #FAFAFA;
+}
+
+.login_table #footer td
+{
+	border-top: solid 1px #CCCCCC;
+}
+

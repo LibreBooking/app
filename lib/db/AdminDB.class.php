@@ -936,7 +936,7 @@ class AdminDB extends DBEngine {
 		$result = $this->db->execute($q, array($machid));
 		$this->check_for_error($result);
 
-		$sql = 'INSERT INTO ' . $this->get_table(TBL_PERMISSION) . ' (memberid, machid) SELECT memberid, "' . $machid . '" FROM ' . $this->get_table('login');
+		$sql = 'INSERT INTO ' . $this->get_table(TBL_PERMISSION) . ' (memberid, machid) SELECT memberid, " as memberid' . $machid . ' as machid" FROM ' . $this->get_table('login');
 		$q = $this->db->prepare($sql);
 		$result = $this->db->execute($q);
 		$this->check_for_error($result);

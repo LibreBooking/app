@@ -16,9 +16,10 @@ class LoginPresenter
 	public function PageLoad()
 	{
 		$allowRegistration = (bool)Configuration::GetKey(ConfigKeys::ALLOW_REGISTRATION);
+		$useLogonName = (bool)Configuration::GetKey(ConfigKeys::USE_LOGON_NAME);
 		$this->_page->setShowRegisterLink($allowRegistration);
 		$this->_page->setAvailableLanguages($this->GetLanguages());
-		//$this->_page->setCurrentLanguage($this->GetCurrentLanguageCode());
+		$this->_page->setUseLogonName($useLogonName);
 	}
 	
 	public function Login(&$auth)

@@ -16,11 +16,11 @@ include_once($basedir . '/lib/CmnFns.class.php');
 /**
 * Pear::DB
 */
-//if ($GLOBALS['conf']['app']['safeMode']) {
-//    ini_set('include_path', ( dirname(__FILE__) . '/pear/' . PATH_SEPARATOR . ini_get('include_path') ));
-    include_once($basedir . '/lib/pear/DB.php');
+if ($GLOBALS['conf']['app']['safeMode']) {
+    ini_set('include_path', ( dirname(__FILE__) . '/pear/' . PATH_SEPARATOR . ini_get('include_path') ));
+    require_once($basedir . '/lib/pear/DB.php');
 	echo 'fix me';
-//}
+}
 //else {
     //include_once('DB.php');
 //}
@@ -44,7 +44,7 @@ class DBEngine {
     function DBEngine() {
         $this->prefix = $GLOBALS['conf']['db']['pk_prefix'];
         $this->dbs = array ($GLOBALS['conf']['db']['dbName']);
-        
+
         $this->db_connect();
         $this->define_tables();
     }
@@ -69,7 +69,7 @@ class DBEngine {
         $dsn = $conf['db']['dbType'] . '://' . $conf['db']['dbUser'] . ':' . $conf['db']['dbPass'] . '@' . $conf['db']['hostSpec'] . '/' . $this->dbs[0];
 
         // Make persistant connection to database
-        $db = DB::connect($dsn, true);
+        $db = DB::connect($dsn, array('persistent' => true));
 
         // If there is an error, print to browser, print to logfile and kill app
         if (PEAR::isError($db)) {

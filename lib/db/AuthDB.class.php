@@ -183,7 +183,7 @@ class AuthDB extends DBEngine {
 	* @param string $id id of user to auto assign
 	*/
 	function autoassign($id) {
-		$sql = 'INSERT INTO ' . $this->get_table('permission') . ' (memberid, machid) SELECT "' . $id . '", machid FROM ' . $this->get_table('resources') . ' WHERE autoassign=1';
+		$sql = 'INSERT INTO ' . $this->get_table('permission') . ' (memberid, machid) SELECT "' . $id . ' as memberid", machid FROM ' . $this->get_table('resources') . ' WHERE autoassign=1';
 
 		$q = $this->db->prepare($sql);
 		$result = $this->db->execute($q);

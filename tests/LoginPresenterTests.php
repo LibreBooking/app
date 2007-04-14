@@ -73,11 +73,13 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 	public function testPageLoadSetsVariablesCorrectly()
 	{
 		Configuration::SetKey(ConfigKeys::ALLOW_REGISTRATION, 'true');
+		Configuration::SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
 		
 		$presenter = new LoginPresenter($this->page, $this->server);
 		$presenter->PageLoad();
 		
 		$this->assertEquals(true, $this->page->getShowRegisterLink());
+		$this->assertEquals(true, $this->page->getUseLogonName());
 	}
 	
 	public function testPageLoadSetsLanguagesCorrect()
@@ -110,7 +112,7 @@ class FakeLoginPage implements ILoginPage
 	public $_ShowRegisterLink;
 	public $_PageLoadWasCalled = false;
 	public $_Languages = array();
-	//public $_CurrentCode;
+	public $_UseLogonName = false;
 	
 	public function PageLoad()
 	{
@@ -155,6 +157,16 @@ class FakeLoginPage implements ILoginPage
 	public function getCurrentLanguage()
 	{
 		return $this->_CurrentCode;
+	}
+	
+	public function getUseLogonName()
+	{
+		return $this->_UseLogonName;
+	}
+	
+	public function setUseLogonName($value)
+	{
+		$this->_UseLogonName = $value;
 	}
 }
 
