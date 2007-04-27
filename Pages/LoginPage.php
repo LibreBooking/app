@@ -75,7 +75,7 @@ class LoginPage extends Page implements ILoginPage
 	
 	public function DisplayWelcome()
 	{
-		return false;
+		return true;
 	}
 }
 ?>

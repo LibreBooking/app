@@ -1,6 +1,5 @@
 {include file='header.tpl'}
-<div align="left">{html_image src='phpScheduleIt.gif' alt='phpScheduleit' width='' height=''}</div>
-<form name="login" method="post" action="{$SCRIPT_NAME}">
+<form name="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
     <table width="450" border="0" cellspacing="0" cellpadding="1" align="center">
         <tr>
             <td class="login_table_border">

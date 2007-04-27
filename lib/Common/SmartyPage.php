@@ -35,6 +35,7 @@ class SmartyPage extends Smarty
 		$this->register_function('constant', array($this, 'GetConstant'));
 		$this->register_function('html_link', array($this, 'PrintLink'));
 		$this->register_function('html_image', array($this, 'PrintImage'));
+		$this->register_function('control', array($this, 'DisplayControl'));
 	}
 
 	public function PrintLink($params, &$smarty)
@@ -81,6 +82,24 @@ class SmartyPage extends Smarty
 		$imgPath = sprintf('%simg/%s', $this->RootPath, $params['src']);	
 		
 		return "<img src=\"$imgPath\" alt=\"$alt\" width=\"\" height=\"\" />";
+	}
+	
+	public function DisplayControl($params, &$smarty)
+	{
+		$type = $params['type'];
+		require_once("Pages/$type.php");
+		
+		$control = new $type($this);
+		
+		foreach($params as $key => $val)
+		{
+			if ($key != 'type')
+			{
+				$control->Set($key, $val);
+			}
+		}
+		
+		$control->PageLoad();
 	}
 }
 ?>
