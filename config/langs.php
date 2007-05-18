@@ -37,11 +37,12 @@
 *
 *	If you are unsure of your language/dialect codes, please use the following resources -
 *	+ Standard language codes: http://www.unicode.org/unicode/onlinedat/languages.html
-*	+ Standard country codes:  http://www.unicode.org/unicode/onlinedat/countries.html	
+*	+ Standard country codes:  http://www.unicode.org/unicode/onlinedat/countries.html
 */
 
 $languages = array (
 	//'ca'	=> array('ca([-_][[:alpha:]]{2})?|catalan','ca.lang.php', 'ca', 'Catal&agrave;'),
+	'zh_CN' => array('zh([-_]cn)?|chinese', 'zh_CN.lang.php', 'zh', 'Chinese Simplified (&#x7b80;&#x4f53;&#x4e2d;&#x6587;)'),
 	'zh_TW'	=> array('zh([-_]tw)?|chinese', 'zh_TW.lang.php', 'zh', 'Chinese Traditional (&#x6b63;&#x9ad4;&#x4e2d;&#x6587;)'),
 	'cs'	=> array('cs([-_][[:alpha:]]{2})?|czech', 'cs.lang.php', 'cs', 'Czech (&#x010c;esky)'),
 	'de'	=> array('de([-_][[:alpha:]]{2})?|german', 'de.lang.php', 'de', 'Deutsch'),
@@ -64,19 +65,19 @@ $languages = array (
 	'tr'	=> array('fi([-_][[:alpha:]]{2})?|turkish', 'tr.lang.php', 'tr', 'T&uuml;rk&ccedil;e')
 );
 
-// Language files directory	
+// Language files directory
 @define('LANG_DIR', dirname(__FILE__) . '/../lang/');
-	
+
 /**
 * Tries to determine the langauge for this user by
 *  going though all options.
 * @param none
 * @return mixed language if it can be determined, or false if it cannot
-*/ 
+*/
 function determine_language() {
 	global $conf;
 	$lang = false;
-	
+
 	// Set the language
 	if (isset($_GET['lang']) && !empty($_GET['lang'])) {
 		$lang = $_GET['lang'];
@@ -86,24 +87,24 @@ function determine_language() {
 	}
 	else if (isset($_SESSION['lang']) && !empty($_SESSION['lang'])) {
 		$lang = $_SESSION['lang'];
-	}	
+	}
 	else if ($lang = get_browser_lang()) {
-		// Do nothing, it's done in the if	
+		// Do nothing, it's done in the if
 	}
 	else {
 		$lang = $conf['app']['defaultLanguage'];
 	}
-	
+
 	return $lang;
 }
 
 /**
-* Loads the language file 
+* Loads the language file
 * @param none
 */
 function load_language_file($lang) {
 	global $languages;
-	
+
 	// Load the language file
 	if ( is_lang_valid($lang) ) {
 		include_once(get_language_path($lang));
@@ -144,7 +145,7 @@ function get_language_path($lang) {
 */
 function get_browser_lang() {
 	global $languages;
-		
+
 	if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && !empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 		$http_accepted = split(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 		for ($i = 0; $i < count($http_accepted); $i++) {
@@ -152,9 +153,9 @@ function get_browser_lang() {
 				if (eregi($vals[0], $http_accepted[$i]))
 					return $lang;
 			}
-		}	
+		}
 	}
-	
+
 	return false;	// If we get here, it wasnt found
 }
 
@@ -166,14 +167,14 @@ function get_browser_lang() {
 function set_language($lang) {
 	global $languages;
 	global $conf;
-	
+
 	if (!isset($languages[$lang])) {
 		$lang = $conf['app']['defaultLanguage'];
 	}
-	
+
 	@session_start();
 	setlocale(LC_ALL, $lang);
-	setcookie('lang', $lang, time() + 2592000, '/');	
+	setcookie('lang', $lang, time() + 2592000, '/');
 }
 
 /**
@@ -185,19 +186,19 @@ function set_language($lang) {
 */
 function translate($str, $args = array()) {
 	global $strings;
-	
+
 	$return = '';
-	
+
 	if (!isset($strings[$str]) || empty($strings[$str])) {
 		return '?';
 	}
-		
+
 	if (empty($args)) {
 		return $strings[$str];
 	}
 	else {
 		$sprintf_args = '';
-		
+
 		for ($i = 0; $i < count($args); $i++) {
 			$sprintf_args .= "'" . addslashes($args[$i]) . "',";
 		}
@@ -217,24 +218,24 @@ function translate($str, $args = array()) {
 */
 function translate_email($email_index) {
 	global $email;
-	
+
 	$return = '';
 	$args = func_get_args();
 
 	if (!isset($email[$email_index]) || empty($email[$email_index])) {
 		return '?';
 	}
-	
+
 	if (func_num_args() <= 1) {
 		return $email[$email_index];
 	}
 	else {
 		$sprintf_args = '';
-		
+
 		for ($i = 1; $i < count($args); $i++) {
 			$sprintf_args .= "'" . addslashes($args[$i]) . "',";
 		}
-		
+
 		$sprintf_args = substr($sprintf_args, 0, strlen($sprintf_args) - 1);
 		$return = eval('return sprintf("' . str_replace('"','\"',$email[$email_index]) . "\",$sprintf_args);");
 		return $return;
@@ -250,15 +251,15 @@ function translate_date($date_index, $date) {
 	global $dates;
 	global $days_full;
 	global $days_abbr;
-	global $months_abbr;	
+	global $months_abbr;
 	global $months_full;
-	
+
 	if (!isset($dates[$date_index]) || empty($dates[$date_index])) {
 		return '?';
 	}
-	
+
 	$date_format = $dates[$date_index];
-	
+
 	// This takes care of when day/month names are not translated by PHP
 	if (strpos($date_format, '%a') !== false) {
 		$date_format = str_replace('%a', '+d', $date_format);
@@ -276,17 +277,17 @@ function translate_date($date_index, $date) {
 		$date_format = str_replace('%B', '+m', $date_format);
 		$month_name = $months_full[date('n', $date)-1];
 	}
-	
+
 	$return = strftime($date_format, $date);
-	
+
 	if (isset($day_name)) {
 		$return = str_replace('+d', $day_name, $return);
 	}
-	
+
 	if (isset($month_name)) {
 		$return = str_replace('+m', $month_name, $return);
 	}
-	
+
 	return $return;
 }
 
@@ -300,7 +301,7 @@ function get_language_list() {
 	return $languages;
 }
 
-/** 
+/**
 * Determines if the proper jscalendar translation file is available
 * If it is, then that is the file that is used for the jscalendar
 *  if it is not, then we use the english lang file
@@ -309,9 +310,9 @@ function get_language_list() {
 function get_jscalendar_file() {
 	global $languages;
 	global $lang;
-	
+
 	$incomplete_translations = array ('tr');
-	
+
 	$_file = 'calendar-' . $languages[$lang][2] . '.js';
 	$base = dirname(__FILE__) . '/..';
 	if ( (array_search($languages[$lang][2], $incomplete_translations) !== false) || !file_exists("$base/jscalendar/lang/$_file")) {
