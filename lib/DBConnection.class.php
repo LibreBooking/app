@@ -2,69 +2,24 @@
 
 class IDbConnection
 {	
-	/**
-	* To be implemented by child
-	*/
-	function IDbConnection($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName)) { }
-	
-	/**
-	* To be implemented by child
-	*/
 	function Connect($safeMode = false) { }
 	
-	/**
-	* To be implemented by child
-	*/
 	function Disconnect() { }
 	
-	/**
-	* To be implemented by child
-	* @param string $command command text to execute
-	* @return none
-	*/
 	function SetCommand($command) { }
 	
-	/**
-	* To be implemented by child
-	* @param string $name name of the parameter from the command text
-	* @param string $value value of the parameter
-	* @return none
-	*/
 	function AddParameter($name, $value) { }
-
-	/**
-	* To be implemented by child
-	* @param array $paramNames the names of the parameters
-	* @param array $paramValues the corresponding values of the parameters
-	* @return IReader
-	*/
+	
 	function &Query() { } 
 	
-	/**
-	* To be implemented by child
-	* @param array $paramNames the names of the parameters
-	* @param array $paramValues the corresponding values of the parameters
-	*/
 	function &Execute() { }
 }
 
 class IReader
 {
-	/**
-	* To be implemented by child
-	*/
-	function Reader() { }
 	
-	/**
-	* To be implemented by child
-	* @return array
-	*/
 	function &GetRow() { }
 	
-	/**
-	* To be implemented by child
-	* @return int
-	*/
 	function NumRows() { }
 }
 
