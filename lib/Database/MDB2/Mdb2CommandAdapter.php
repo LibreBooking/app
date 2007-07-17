@@ -1,7 +1,7 @@
 <?php
 require_once('namespace.php');
 
-class Mdb2CommandAdapter implements ISqlCommand
+class Mdb2CommandAdapter
 {
 	private $_values = null;
 	private $_query = null;

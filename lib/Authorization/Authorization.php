@@ -7,7 +7,7 @@ class Authorization implements IAuthorization
 	private $db;
 	private $server;
 	
-	public function __construct(IDatabase &$database, Server &$server)
+	public function __construct(Database &$database, Server &$server)
 	{
 		$this->db = &$database;
 		$this->server = &$server;

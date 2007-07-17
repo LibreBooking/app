@@ -20,5 +20,10 @@ class Mdb2Reader implements IReader
 	public function NumRows() {
 		return $this->_result->numRows();
 	}
+	
+	public function Free()
+	{
+		$this->_result->free();
+	}
 }
 ?>

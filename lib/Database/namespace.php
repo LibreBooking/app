@@ -8,4 +8,5 @@ require_once('Parameter.php');
 require_once('Parameters.php');
 require_once('SqlCommand.php');
 require_once('Database.php');
+require_once('DatabaseFactory.php');
 ?>

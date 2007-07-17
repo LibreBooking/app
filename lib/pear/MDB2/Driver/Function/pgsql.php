@@ -39,26 +39,21 @@
 // | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
 // | POSSIBILITY OF SUCH DAMAGE.                                          |
 // +----------------------------------------------------------------------+
-// | Author: Lukas Smith <smith@pooteeweet.org>                           |
+// | Author: Paul Cooper <pgc@ucecom.com>                                 |
 // +----------------------------------------------------------------------+
 //
-// $Id: Common.php,v 1.17 2007/01/12 11:29:12 quipo Exp $
-//
+// $Id: pgsql.php,v 1.9 2006/06/12 21:48:43 lsmith Exp $
+
+require_once 'MDB2/Driver/Function/Common.php';
 
 /**
- * @package  MDB2
- * @category Database
- * @author   Lukas Smith <smith@pooteeweet.org>
- */
-
-/**
- * Base class for the function modules that is extended by each MDB2 driver
+ * MDB2 MySQL driver for the function modules
  *
  * @package MDB2
  * @category Database
- * @author  Lukas Smith <smith@pooteeweet.org>
+ * @author Lukas Smith <smith@pooteeweet.org>
  */
-class MDB2_Driver_Function_Common extends MDB2_Module_Common
+class MDB2_Driver_Function_pgsql extends MDB2_Driver_Function_Common
 {
     // {{{ executeStoredProc()
 
@@ -81,86 +76,10 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
             return $db;
         }
 
-        $error =& $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
-        return $error;
+        $query = 'SELECT * FROM '.$name;
+        $query .= $params ? '('.implode(', ', $params).')' : '()';
+        return $db->query($query, $types, $result_class, $result_wrap_class);
     }
-
-    // }}}
-    // {{{ functionTable()
-
-    /**
-     * return string for internal table used when calling only a function
-     *
-     * @return string for internal table used when calling only a function
-     * @access public
-     */
-    function functionTable()
-    {
-        return '';
-    }
-
-    // }}}
-    // {{{ now()
-
-    /**
-     * Return string to call a variable with the current timestamp inside an SQL statement
-     * There are three special variables for current date and time:
-     * - CURRENT_TIMESTAMP (date and time, TIMESTAMP type)
-     * - CURRENT_DATE (date, DATE type)
-     * - CURRENT_TIME (time, TIME type)
-     *
-     * @return string to call a variable with the current timestamp
-     * @access public
-     */
-    function now($type = 'timestamp')
-    {
-        switch ($type) {
-        case 'time':
-            return 'CURRENT_TIME';
-        case 'date':
-            return 'CURRENT_DATE';
-        case 'timestamp':
-        default:
-            return 'CURRENT_TIMESTAMP';
-        }
-    }
-
-    // }}}
-    // {{{ substring()
-
-    /**
-     * return string to call a function to get a substring inside an SQL statement
-     *
-     * @return string to call a function to get a substring
-     * @access public
-     */
-    function substring($value, $position = 1, $length = null)
-    {
-        if (!is_null($length)) {
-            return "SUBSTRING($value FROM $position FOR $length)";
-        }
-        return "SUBSTRING($value FROM $position)";
-    }
-
-    // }}}
-    // {{{ concat()
-
-    /**
-     * Returns string to concatenate two or more string parameters
-     *
-     * @param string $value1
-     * @param string $value2
-     * @param string $values...
-     * @return string to concatenate two strings
-     * @access public
-     */
-    function concat($value1, $value2)
-    {
-        $args = func_get_args();
-        return "(".implode(' || ', $args).")";
-    }
-
     // }}}
     // {{{ random()
 
@@ -172,58 +91,7 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      */
     function random()
     {
-        return 'RAND()';
-    }
-
-    // }}}
-    // {{{ lower()
-
-    /**
-     * return string to call a function to lower the case of an expression
-     *
-     * @param string $expression
-     * @return return string to lower case of an expression
-     * @access public
-     */
-    function lower($expression)
-    {
-        return "LOWER($expression)";
-    }
-
-    // }}}
-    // {{{ upper()
-
-    /**
-     * return string to call a function to upper the case of an expression
-     *
-     * @param string $expression
-     * @return return string to upper case of an expression
-     * @access public
-     */
-    function upper($expression)
-    {
-        return "UPPER($expression)";
-    }
-
-    // }}}
-    // {{{ guid()
-
-    /**
-     * Returns global unique identifier
-     *
-     * @return string to get global unique identifier
-     * @access public
-     */
-    function guid()
-    {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
-            return $db;
-        }
-
-        $error =& $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
-        return $error;
+        return 'RANDOM()';
     }
 
     // }}}

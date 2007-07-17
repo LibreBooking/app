@@ -58,10 +58,5 @@ class LoginPresenter
 		
 		return $languages;
 	}
-//	
-//	private function GetCurrentLanguageCode()
-//	{
-//		return Resources::GetInstance()->CurrentLanguage;
-//	}
 }
 ?>

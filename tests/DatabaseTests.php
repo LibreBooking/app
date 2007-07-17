@@ -1,5 +1,5 @@
 <?php
-require_once('../Database/namespace.php');
+//require_once(dirname(__FILE__) . '/../Database/IReader.php');
 require_once('fakes/DBFakes.php');
 require_once('PHPUnit/Framework.php');
 
@@ -103,17 +103,19 @@ class DatabaseTests extends PHPUnit_Framework_TestCase
 	}
 	
 	function testConnectAndDisconnectAreCalledForEachQuery() {
+		$SqlCommand = new SqlCommand('query');
 		$cn = new FakeDBConnection();
 		
 		$db = new Database($cn);
 		$db->Query($SqlCommand);
 		
 		$this->assertTrue($cn->_ConnectWasCalled, 'Connect should be called for every query');
-		$this->assertEquals($SqlCommand, $cn->_LastQueryCommand);
+		$this->assertEquals($SqlCommand, $cn->_LastSqlCommand);
 		$this->assertTrue($cn->_DisconnectWasCalled, 'Disonnect should be called for every query');
 	}
 	
 	function testConnectAndDisconnectAreCalledForEachExecute() {
+		$SqlCommand = new SqlCommand('query');
 		$cn = new FakeDBConnection();
 		
 		$db = new Database($cn);

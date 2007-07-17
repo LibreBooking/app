@@ -3,24 +3,22 @@ require_once('namespace.php');
 
 interface IDbConnection
 {
-	/**
-	 * Connect to the database
-	 */
 	public function Connect();
+	public function Disconnect();
 	
 	/**
-	 * Disconnect from the database
-	 */
-	public function Disconnect();
-
-	/**
-	 * @param Command $command the database Command object to use for the query
-	 * @return IReader
+	 * Queries the database and returns an IReader
+	 *
+	 * @param SqlCommand $command
+	 * @return IReader to iterate over
 	 */
 	public function &Query(&$command);
 	
 	/**
-	 * @param Command $command the database Command object to use for the query
+	 * Executes an alter query against the database
+	 *
+	 * @param SqlCommand $command
+	 * @return none
 	 */
 	public function Execute(&$command);
 }

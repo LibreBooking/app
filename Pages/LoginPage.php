@@ -2,6 +2,7 @@
 require_once('Page.php');
 require_once(dirname(__FILE__) . '/../lib/Common/SmartyPage.php');
 require_once(dirname(__FILE__) . '/../lib/Server/namespace.php');
+require_once(dirname(__FILE__) . '/../lib/Authorization/namespace.php');
 
 interface ILoginPage extends IPage
 {
@@ -25,6 +26,7 @@ class LoginPage extends Page implements ILoginPage
 		parent::__construct($title, $server, $smarty);
 		
 		$this->_presenter = new LoginPresenter($this, $server);
+		$this->smarty->assign('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
 	}
 
 	public function PageLoad()
@@ -75,7 +77,17 @@ class LoginPage extends Page implements ILoginPage
 	
 	public function DisplayWelcome()
 	{
-		return true;
+		return false;
+	}
+	
+	public function LoggingIn()
+	{
+		return $this->server->GetForm(Actions::LOGIN);
+	}
+	
+	public function Login()
+	{
+		$this->_presenter->Login(new Authorization(DatabaseFactory::GetDatabase(), $this->server));
 	}
 }
 ?>

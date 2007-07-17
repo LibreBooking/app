@@ -1,6 +1,7 @@
 <?php
 require_once('IPage.php');
 require_once(dirname(__FILE__) . '/../lib/Config/namespace.php');
+require_once(dirname(__FILE__) . '/../lib/Database/MDB2/namespace.php');
 
 class Page implements IPage
 {
@@ -43,7 +44,7 @@ class Page implements IPage
 	
 	public function Redirect($url)
 	{
-
+		header("Location: $url");
 	}
 	
 	public function DisplayWelcome()

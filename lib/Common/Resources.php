@@ -16,8 +16,6 @@ class Resources
 	
 	protected function __construct(Server &$server = null)
 	{	
-
-		
 		$this->Server = &$server;
 		$this->LanguageDirectory = dirname(__FILE__) . '/../../lang/';
 		
@@ -82,7 +80,7 @@ class Resources
 		{
 			$this->LanguageFile = $this->AvailableLanguages[$languageCode]->LanguageFile;			
 			require_once($this->LanguageDirectory . $this->LanguageFile);
-			global $charset;
+			global $charset;			// Defined in the language file
 			$lang = $this->AvailableLanguages[$languageCode];
 			$this->CurrentLanguage = $languageCode;
 			$this->CalendarLanguageFile = $this->GetCalendarLanguageFile();

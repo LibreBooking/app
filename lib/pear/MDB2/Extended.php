@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id: Extended.php,v 1.52 2006/08/18 21:53:43 lsmith Exp $
+// $Id: Extended.php,v 1.58 2007/01/06 21:40:52 quipo Exp $
 
 /**
  * @package  MDB2
@@ -135,8 +135,10 @@ class MDB2_Extended extends MDB2_Module_Common
         if ($mode == MDB2_AUTOQUERY_SELECT) {
             if (is_array($result_types)) {
                 $keys = array_keys($result_types);
+            } elseif (!empty($fields_values)) {
+                $keys = $fields_values;
             } else {
-                $keys = $result_types = array();
+                $keys = array();
             }
         } else {
             $keys = array_keys($fields_values);
@@ -152,7 +154,7 @@ class MDB2_Extended extends MDB2_Module_Common
             if ($mode == MDB2_AUTOQUERY_SELECT) {
                 $result =& $db->query($query, $result_types, $result_class);
             } else {
-                $result =& $db->exec($query);
+                $result = $db->exec($query);
             }
         } else {
             $stmt = $this->autoPrepare($table, $keys, $mode, $where, $types, $result_types);
@@ -196,6 +198,10 @@ class MDB2_Extended extends MDB2_Module_Common
             return $db;
         }
 
+        if ($db->options['quote_identifier']) {
+            $table = $db->quoteIdentifier($table);
+        }
+
         if (!empty($table_fields) && $db->options['quote_identifier']) {
             foreach ($table_fields as $key => $field) {
                 $table_fields[$key] = $db->quoteIdentifier($field);
@@ -233,7 +239,7 @@ class MDB2_Extended extends MDB2_Module_Common
             return $sql;
             break;
         case MDB2_AUTOQUERY_SELECT:
-            $cols = is_array($table_fields) ? implode(', ', $table_fields) : '*';
+            $cols = !empty($table_fields) ? implode(', ', $table_fields) : '*';
             $sql = 'SELECT '.$cols.' FROM '.$table.$where;
             return $sql;
             break;
@@ -525,32 +531,35 @@ class MDB2_Extended extends MDB2_Module_Common
      * columns, a MDB2_ERROR_TRUNCATED error is returned.
      *
      * For example, if the table 'mytable' contains:
-     *
+     * <pre>
      *   ID      TEXT       DATE
      * --------------------------------
      *   1       'one'      944679408
      *   2       'two'      944679408
      *   3       'three'    944679408
-     *
+     * </pre>
      * Then the call getAssoc('SELECT id,text FROM mytable') returns:
+     * <pre>
      *    array(
      *      '1' => 'one',
      *      '2' => 'two',
      *      '3' => 'three',
      *    )
-     *
+     * </pre>
      * ...while the call getAssoc('SELECT id,text,date FROM mytable') returns:
+     * <pre>
      *    array(
      *      '1' => array('one', '944679408'),
      *      '2' => array('two', '944679408'),
      *      '3' => array('three', '944679408')
      *    )
+     * </pre>
      *
      * If the more than one row occurs with the same value in the
      * first column, the last row overwrites all previous ones by
      * default.  Use the $group parameter if you don't want to
      * overwrite like this.  Example:
-     *
+     * <pre>
      * getAssoc('SELECT category,id,name FROM mytable', null, null
      *           MDB2_FETCHMODE_ASSOC, false, true) returns:
      *    array(
@@ -561,6 +570,7 @@ class MDB2_Extended extends MDB2_Module_Common
      *                   array('id' => '6', 'name' => 'number six')
      *             )
      *    )
+     * </pre>
      *
      * Keep in mind that database functions in PHP usually return string
      * values for results regardless of the database's internal type.

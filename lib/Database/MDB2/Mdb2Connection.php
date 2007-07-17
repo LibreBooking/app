@@ -1,5 +1,5 @@
 <?php
-$LOCAL_PEAR = dirname(__FILE__) . '/../../lib/pear/';
+$LOCAL_PEAR = dirname(__FILE__) . '/../../../lib/pear/';
 ini_set('include_path', ($LOCAL_PEAR  . PATH_SEPARATOR . ini_get('include_path') ));
 require_once($LOCAL_PEAR . 'MDB2.php');
 require_once('namespace.php');
@@ -18,7 +18,8 @@ class Mdb2Connection implements IDbConnection
 	private $_db = null;
 	private $_connected = false;
 	
-	public function __construct($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName) {
+	public function __construct($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName) 
+	{
 		$this->_dbType = $_dbType;
 		$this->_dbUser = $_dbUser;
 		$this->_dbPassword = $_dbPassword;
@@ -26,43 +27,57 @@ class Mdb2Connection implements IDbConnection
 		$this->_dbName = $_dbName;
 	}
 	
-	public function Connect() {
-		if ($this->_connected) {
+	public function Connect() 
+	{
+		if ($this->_connected && !is_null($this->_db)) 
+		{
 			return;
 		}
 		
-		$dsn = "$this->_dbType://$this->_dbUser:$this->_dbPassword@$this->_hostSpec/{$this->_dbName}";
-
-        $db = MDB2::connect($dsn, true);	// Make persistant connection to database
+		$dsn = "{$this->_dbType}://{$this->_dbUser}:{$this->_dbPassword}@{$this->_hostSpec}/{$this->_dbName}";
         
-        if (MDB2::isError($db)) {			// If there is an error, print to browser, print to logfile and kill app
-            die ('Error connecting to database: ' . $db->getMessage() );
+		$options = array(
+		    'debug'       => 10,
+		    'portability' => MDB2_PORTABILITY_ALL,
+		    'persistent'  => true
+		);
+		
+		$this->_db =& MDB2::connect($dsn, $options);
+        
+        if (MDB2::isError($this->_db)) 
+        {			
+        	// If there is an error, print to browser, print to logfile and kill app
+            throw new Exception('Error connecting to database: ' . $this->_db->getMessage() );
         }
         
-        $db->setFetchMode(DB_FETCHMODE_ASSOC);	// Set fetch mode to return associatve array
+        //$db->setFetchMode(DB_FETCHMODE_ASSOC);	// Set fetch mode to return associatve array
         
-        $this->_db = $db;
 		$this->_connected = true;
 	}
 	
-	public function Disconnect() {
+	public function Disconnect() 
+	{
 		$this->_db->disconnect();
 		$this->_connected = false;
 	}
 	
-	public function AddParameter($name, $value) {
+	public function AddParameter($name, $value) 
+	{
 		$this->_params[$name] = $value;
 	}
 	
-	public function &Query(&$sqlCommand) {
+	public function &Query(&$sqlCommand) 
+	{
 		return $this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_RESULT);
 	}
 	
-	public function Execute(&$sqlCommand) {
+	public function Execute(&$sqlCommand) 
+	{
 		$this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_MANIP);
 	}
 	
-	public function &_PrepareAndExecute(&$sqlCommand, $prepareType) {
+	public function &_PrepareAndExecute(&$sqlCommand, $prepareType) 
+	{
 		$cmd = new Mdb2CommandAdapter($sqlCommand);
 		
 		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);
@@ -72,30 +87,37 @@ class Mdb2Connection implements IDbConnection
 		return new Mdb2Reader($result);
 	}
 	
-	public function _isError($result) {
-		if (MDB2::isError($result)) {
-            die('There was an error executing your query: ' . $result->getMessage());
+	private function _isError($result) 
+	{
+		if (MDB2::isError($result)) 
+		{
+            throw new Exception('There was an error executing your query: ' . $result->getMessage());
 		}
         return false;
 	}
 		
-	public function GetDbType() { 
+	public function GetDbType() 
+	{ 
 		return $this->_dbType; 
 	}
 	
-	public function GetDbUser() { 
+	public function GetDbUser() 
+	{ 
 		return $this->_dbUser;
 	}
 	
-	public function GetDbPassword() { 
+	public function GetDbPassword() 
+	{ 
 		return $this->_dbPassword;
 	}
 	
-	public function GetHostSpec() {
+	public function GetHostSpec() 
+	{
 		return $this->_hostSpec;
 	}
 	
-	public function GetDbName() { 
+	public function GetDbName() 
+	{ 
 		return $this->_dbName;
 	}
 }

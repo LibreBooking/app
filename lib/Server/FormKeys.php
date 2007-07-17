@@ -11,4 +11,12 @@ class FormKeys
 	const PERSIST_LOGIN = 'persistLogin';
 	const LANGUAGE = 'language';
 }
+
+class Actions
+{
+	private function __construct()
+	{}
+	
+	const LOGIN = 'login';
+}
 ?>

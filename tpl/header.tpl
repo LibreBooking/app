@@ -21,7 +21,7 @@
 		<script type="text/javascript" src="{$Path}jscalendar/calendar-setup.js"></script>
 	</head>
 	<body>
-	{control type="Header" DisplayWelcomeMsg=$DisplayWelcome}
+	{if $DisplayWelcome}{control type="LeaderBoard" DisplayWelcomeMsg=$DisplayWelcome}{/if}
 	<p>&nbsp;</p>
 	<table width="100%" border="0" cellspacing="0" cellpadding="10" style="border: solid #CCCCCC 1px;">
 	  <tr>

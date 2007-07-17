@@ -39,27 +39,25 @@
 // | WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE          |
 // | POSSIBILITY OF SUCH DAMAGE.                                          |
 // +----------------------------------------------------------------------+
-// | Author: Lukas Smith <smith@pooteeweet.org>                           |
+// | Author: Frank M. Kromann <frank@kromann.info>                        |
 // +----------------------------------------------------------------------+
 //
-// $Id: Common.php,v 1.17 2007/01/12 11:29:12 quipo Exp $
+// $Id: mssql.php,v 1.14 2007/01/12 11:29:12 quipo Exp $
 //
 
-/**
- * @package  MDB2
- * @category Database
- * @author   Lukas Smith <smith@pooteeweet.org>
- */
+require_once 'MDB2/Driver/Function/Common.php';
 
+// {{{ class MDB2_Driver_Function_mssql
 /**
- * Base class for the function modules that is extended by each MDB2 driver
+ * MDB2 MSSQL driver for the function modules
  *
  * @package MDB2
  * @category Database
- * @author  Lukas Smith <smith@pooteeweet.org>
+ * @author Lukas Smith <smith@pooteeweet.org>
  */
-class MDB2_Driver_Function_Common extends MDB2_Module_Common
+class MDB2_Driver_Function_mssql extends MDB2_Driver_Function_Common
 {
+     // }}}
     // {{{ executeStoredProc()
 
     /**
@@ -81,23 +79,9 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
             return $db;
         }
 
-        $error =& $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
-        return $error;
-    }
-
-    // }}}
-    // {{{ functionTable()
-
-    /**
-     * return string for internal table used when calling only a function
-     *
-     * @return string for internal table used when calling only a function
-     * @access public
-     */
-    function functionTable()
-    {
-        return '';
+        $query = 'EXECUTE '.$name;
+        $query .= $params ? ' '.implode(', ', $params) : '';
+        return $db->query($query, $types, $result_class, $result_wrap_class);
     }
 
     // }}}
@@ -117,12 +101,10 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
     {
         switch ($type) {
         case 'time':
-            return 'CURRENT_TIME';
         case 'date':
-            return 'CURRENT_DATE';
         case 'timestamp':
         default:
-            return 'CURRENT_TIMESTAMP';
+            return 'GETDATE()';
         }
     }
 
@@ -138,9 +120,9 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
     function substring($value, $position = 1, $length = null)
     {
         if (!is_null($length)) {
-            return "SUBSTRING($value FROM $position FOR $length)";
+            return "SUBSTRING($value, $position, $length)";
         }
-        return "SUBSTRING($value FROM $position)";
+        return "SUBSTRING($value, $position, LEN($value) - $position + 1)";
     }
 
     // }}}
@@ -154,55 +136,11 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      * @param string $values...
      * @return string to concatenate two strings
      * @access public
-     */
+     **/
     function concat($value1, $value2)
     {
         $args = func_get_args();
-        return "(".implode(' || ', $args).")";
-    }
-
-    // }}}
-    // {{{ random()
-
-    /**
-     * return string to call a function to get random value inside an SQL statement
-     *
-     * @return return string to generate float between 0 and 1
-     * @access public
-     */
-    function random()
-    {
-        return 'RAND()';
-    }
-
-    // }}}
-    // {{{ lower()
-
-    /**
-     * return string to call a function to lower the case of an expression
-     *
-     * @param string $expression
-     * @return return string to lower case of an expression
-     * @access public
-     */
-    function lower($expression)
-    {
-        return "LOWER($expression)";
-    }
-
-    // }}}
-    // {{{ upper()
-
-    /**
-     * return string to call a function to upper the case of an expression
-     *
-     * @param string $expression
-     * @return return string to upper case of an expression
-     * @access public
-     */
-    function upper($expression)
-    {
-        return "UPPER($expression)";
+        return "(".implode(' + ', $args).")";
     }
 
     // }}}
@@ -216,16 +154,10 @@ class MDB2_Driver_Function_Common extends MDB2_Module_Common
      */
     function guid()
     {
-        $db =& $this->getDBInstance();
-        if (PEAR::isError($db)) {
-            return $db;
-        }
-
-        $error =& $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
-            'method not implemented', __FUNCTION__);
-        return $error;
+        return 'NEWID()';
     }
 
     // }}}
 }
+// }}}
 ?>

@@ -94,12 +94,10 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 		$langs = $this->page->_Languages;
 		
 		$this->assertEquals(count($langs), count($resources->AvailableLanguages));
-		for ($i = 0; $i < count($resources->AvailableLanguages); $i++)
+		foreach ($resources->AvailableLanguages as $lang)
 		{
-			$lang = $resources->AvailableLanguages[$i];
 			$this->assertEquals($langs[$lang->LanguageCode], $lang->DisplayName);
 		}
-		//$this->assertEquals($curLang, $this->page->getCurrentLanguage());
 	}
 }
 

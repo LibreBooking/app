@@ -42,7 +42,7 @@
 // | Author: Lukas Smith <smith@pooteeweet.org>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id: LOB.php,v 1.33 2006/05/31 14:38:06 lsmith Exp $
+// $Id: LOB.php,v 1.34 2006/10/25 11:52:21 lsmith Exp $
 
 /**
  * @package  MDB2
@@ -213,6 +213,25 @@ class MDB2_LOB
     function stream_seek($offset, $whence)
     {
         return false;
+    }
+    // }}}
+
+    // {{{ stream_stat()
+
+    /**
+     * return information about stream
+     *
+     * @access public
+     */
+    function stream_stat()
+    {
+        if (isset($GLOBALS['_MDB2_databases'][$this->db_index])) {
+            $db =& $GLOBALS['_MDB2_databases'][$this->db_index];
+            return array(
+              'db_index' => $this->db_index,
+              'lob_index' => $this->lob_index,
+            );
+        }
     }
     // }}}
 

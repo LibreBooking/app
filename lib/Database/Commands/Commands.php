@@ -7,7 +7,7 @@ class AuthorizationCommand extends SqlCommand
 {
 	public function __construct($username, $password)
 	{
-		parent::SqlCommand(Queries::VALIDATE_USER);
+		parent::__construct(Queries::VALIDATE_USER);
 		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, strtolower($username)));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));		
 	}
@@ -17,7 +17,7 @@ class LoginCommand extends SqlCommand
 {
 	public function __construct($username)
 	{
-		parent::SqlCommand(Queries::LOGIN_USER);
+		parent::__construct(Queries::LOGIN_USER);
 		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, strtolower($username)));		
 	}
 }
@@ -26,7 +26,7 @@ class UpdateLoginTimeCommand extends SqlCommand
 {
 	public function __construct($userid, $lastlogin)
 	{
-		parent::SqlCommand(Queries::UPDATE_LOGINTIME);
+		parent::__construct(Queries::UPDATE_LOGINTIME);
 		$this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastlogin));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));		
 	}

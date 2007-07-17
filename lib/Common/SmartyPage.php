@@ -87,7 +87,7 @@ class SmartyPage extends Smarty
 	public function DisplayControl($params, &$smarty)
 	{
 		$type = $params['type'];
-		require_once("Pages/$type.php");
+		require_once("Controls/$type.php");
 		
 		$control = new $type($this);
 		
