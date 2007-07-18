@@ -55,7 +55,7 @@ class FakeDBConnection implements IDBConnection
 		$this->_DisconnectWasCalled = true;
 	}
 
-	public function &Query(&$command) {
+	public function Query(&$command) {
 		$this->_LastSqlCommand = $command;
 		return null;
 	}

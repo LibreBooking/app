@@ -52,5 +52,10 @@ class Server
 		}
 		return null;
 	}
+	
+	public function GetUrl()
+	{
+		return urlencode($_SERVER['PHP_SELF']) . '?' . urlencode($_SERVER['QUERY_STRING']);	
+	}
 }
 ?>

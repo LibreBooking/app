@@ -37,7 +37,7 @@ class Mdb2Connection implements IDbConnection
 		$dsn = "{$this->_dbType}://{$this->_dbUser}:{$this->_dbPassword}@{$this->_hostSpec}/{$this->_dbName}";
         
 		$options = array(
-		    'debug'       => 10,
+		    'debug'       => 0,
 		    'portability' => MDB2_PORTABILITY_ALL,
 		    'persistent'  => true
 		);
@@ -50,7 +50,7 @@ class Mdb2Connection implements IDbConnection
             throw new Exception('Error connecting to database: ' . $this->_db->getMessage() );
         }
         
-        //$db->setFetchMode(DB_FETCHMODE_ASSOC);	// Set fetch mode to return associatve array
+        $this->_db->setFetchMode(MDB2_FETCHMODE_ASSOC);	// Set fetch mode to return associatve array
         
 		$this->_connected = true;
 	}
@@ -66,7 +66,7 @@ class Mdb2Connection implements IDbConnection
 		$this->_params[$name] = $value;
 	}
 	
-	public function &Query(&$sqlCommand) 
+	public function Query(&$sqlCommand) 
 	{
 		return $this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_RESULT);
 	}
@@ -76,7 +76,7 @@ class Mdb2Connection implements IDbConnection
 		$this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_MANIP);
 	}
 	
-	public function &_PrepareAndExecute(&$sqlCommand, $prepareType) 
+	public function _PrepareAndExecute(&$sqlCommand, $prepareType) 
 	{
 		$cmd = new Mdb2CommandAdapter($sqlCommand);
 		

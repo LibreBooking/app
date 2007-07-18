@@ -55,7 +55,7 @@
                         <td colspan="2">
 	                        <p align="center">
 	                            <input type="submit" name="{constant echo='Actions::LOGIN'}" value="{translate key='Log In'}" class="button" />
-	                            <input type="hidden" name="resume" value="{$ResumeUrl}" />
+	                            <input type="hidden" name="{constant echo='FormKeys::RESUME'}" value="{$ResumeUrl}" />
 	                        </p>
 	                        {if $ShowRegisterLink} 
 	                        <h4 align="center" style="margin-bottom:1px;">

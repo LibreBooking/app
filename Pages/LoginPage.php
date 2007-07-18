@@ -1,7 +1,5 @@
 <?php
 require_once('Page.php');
-require_once(dirname(__FILE__) . '/../lib/Common/SmartyPage.php');
-require_once(dirname(__FILE__) . '/../lib/Server/namespace.php');
 require_once(dirname(__FILE__) . '/../lib/Authorization/namespace.php');
 
 interface ILoginPage extends IPage
@@ -14,13 +12,15 @@ interface ILoginPage extends IPage
 	public function setAvailableLanguages($languages);
 	public function getCurrentLanguage();
 	public function setUseLogonName($value);
+	public function setResumeUrl($value);
+	public function getResumeUrl();
 }
 
 class LoginPage extends Page implements ILoginPage
 {
 	private $_presenter = null;
 
-	public function __construct(Server &$server = null, SmartyPage $smarty = null)
+	public function __construct(Server &$server, SmartyPage $smarty = null)
 	{
 		$title = sprintf('phpScheduleIt - %s', Resources::GetInstance($server)->GetString('Log In'));
 		parent::__construct($title, $server, $smarty);
@@ -73,6 +73,16 @@ class LoginPage extends Page implements ILoginPage
 	public function setUseLogonName($value)
 	{
 		$this->smarty->assign('UseLogonName', $value);
+	}
+	
+	public function setResumeUrl($value)
+	{
+		$this->smarty->assign('ResumeUrl', $value);
+	}
+	
+	public function getResumeUrl()
+	{
+		return $this->server->GetForm(FormKeys::RESUME);
 	}
 	
 	public function DisplayWelcome()

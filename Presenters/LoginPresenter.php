@@ -33,7 +33,7 @@ class LoginPresenter
 
 	private function _Redirect()
 	{
-		$redirect = $this->_server->GetQuerystring(QueryStringKeys::REDIRECT);
+		$redirect = $this->_page->getResumeUrl();
 		
 		if (!empty($redirect))
 		{
@@ -41,7 +41,7 @@ class LoginPresenter
 		}
 		else
 		{
-			$this->_page->Redirect('ctrlpnl.php');
+			$this->_page->Redirect(Pages::DEFAULT_LOGIN);
 		}
 	}
 	

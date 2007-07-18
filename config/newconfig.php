@@ -10,6 +10,6 @@ $config['use.logon.name'] = true;
 $config['database.type'] = 'mysql';
 $config['database.user'] = 'schedule_user';
 $config['database.password'] = 'password';
-$config['database.hostspec'] = 'localhost';
+$config['database.hostspec'] = '.';
 $config['database.name'] = 'phpScheduleIt';
 ?>

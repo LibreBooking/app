@@ -1,7 +1,4 @@
 <?php
 
-class StaticTest
-{
-	public static $Value = 'not changed';
-}
+$con = mysql_connect('.', 'schedule_user', 'password') or die(mysql_error())
 ?>

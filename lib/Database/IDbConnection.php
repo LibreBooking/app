@@ -12,7 +12,7 @@ interface IDbConnection
 	 * @param SqlCommand $command
 	 * @return IReader to iterate over
 	 */
-	public function &Query(&$command);
+	public function Query(&$command);
 	
 	/**
 	 * Executes an alter query against the database

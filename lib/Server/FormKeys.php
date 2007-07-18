@@ -10,6 +10,7 @@ class FormKeys
 	const PASSWORD = 'password';
 	const PERSIST_LOGIN = 'persistLogin';
 	const LANGUAGE = 'language';
+	const RESUME = 'resume';
 }
 
 class Actions

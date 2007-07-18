@@ -7,6 +7,7 @@ class FakeServer extends Server
 	public $Session = array();
 	public $Post = array();
 	public $Get = array();
+	public $Form = array();
 	
 	public function FakeServer()
 	{
@@ -48,6 +49,21 @@ class FakeServer extends Server
 		{
 			return $this->Get[$name];
 		}
+		return null;
+	}
+	
+	public function SetForm($name, $value)
+	{
+		$this->Form[$name] = $value;
+	}
+	
+	public function GetForm($name)
+	{
+		if (isset($this->Form[$name]))
+		{
+			return $this->Form[$name];
+		}
+		
 		return null;
 	}
 }

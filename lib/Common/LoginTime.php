@@ -3,7 +3,7 @@ class LoginTime
 {
 	public static $Now = null;
 	
-	private $_format = 'Y-m-d H:is';
+	private static $_format = 'Y-m-d H:is';
 	
 	public static function Now()
 	{

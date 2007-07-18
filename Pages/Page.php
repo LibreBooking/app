@@ -1,5 +1,7 @@
 <?php
 require_once('IPage.php');
+require_once(dirname(__FILE__) . '/../lib/Common/SmartyPage.php');
+require_once(dirname(__FILE__) . '/../lib/Server/namespace.php');
 require_once(dirname(__FILE__) . '/../lib/Config/namespace.php');
 require_once(dirname(__FILE__) . '/../lib/Database/MDB2/namespace.php');
 
@@ -51,5 +53,17 @@ class Page implements IPage
 	{
 		return true;
 	}
+	
+	public function IsAuthenticated()
+	{
+		return !is_null($this->server->GetSession(SessionKeys::USER_SESSION));
+	}
+}
+
+class Pages
+{
+	const DEFAULT_LOGIN = 'controlpanel.php';
+	const LOGIN = 'login.php';
+	const CONTROL_PANEL = 'controlpanel.php';
 }
 ?>

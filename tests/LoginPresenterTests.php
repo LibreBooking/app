@@ -55,13 +55,13 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 		$presenter = new LoginPresenter($this->page, $this->server);
 		$presenter->Login($this->auth);
 		
-		$this->assertEquals('ctrlpnl.php', $this->page->_LastRedirect);
+		$this->assertEquals(Pages::DEFAULT_LOGIN, $this->page->_LastRedirect);
 	}
 	
 	public function testRedirectsToRequestedPage()
 	{
-		$redirect = 'something.php';
-		$this->server->SetQuerystring(QueryStringKeys::REDIRECT, $redirect);
+		$redirect = '/someurl/something.php';
+		$this->page->_ResumeUrl = $redirect;
 		
 		$this->auth->_ValidateResult = true;
 		$presenter = new LoginPresenter($this->page, $this->server);
@@ -111,6 +111,7 @@ class FakeLoginPage implements ILoginPage
 	public $_PageLoadWasCalled = false;
 	public $_Languages = array();
 	public $_UseLogonName = false;
+	public $_ResumeUrl;
 	
 	public function PageLoad()
 	{
@@ -165,6 +166,16 @@ class FakeLoginPage implements ILoginPage
 	public function setUseLogonName($value)
 	{
 		$this->_UseLogonName = $value;
+	}
+	
+	public function setResumeUrl($value)
+	{
+		$this->_ResumeUrl = $value;
+	}
+	
+	public function getResumeUrl()
+	{
+		return $this->_ResumeUrl;
 	}
 }
 
