@@ -1,5 +1,5 @@
 <?php
-require_once('../Database/Mdb2/namespace.php');
+require_once('../lib/Database/Mdb2/namespace.php');
 require_once('PHPUnit/Framework.php');
 
 /// FAKES ///
@@ -14,20 +14,20 @@ class Mdb2ConnectionTests extends PHPUnit_Framework_TestCase
 
 	function setUp() {
         $this->cn = new Mdb2Connection(null, null, null, null, null);
-		$this->fakeResult = new FakeDBResult(array());
-		$this->fakeDb = new FakePearDB($this->fakeResult);	
+		$empty = array();
+        $this->fakeResult = new FakeDBResult($empty);
+		$this->fakeDb =& new FakePearDB($this->fakeResult);	
 		$this->fakeHandle = new FakePrepareHandle($this->fakeResult);
 		$this->fakeDb->PrepareHandle =& $this->fakeHandle;
-		$this->cn->_db =& $this->fakeDb;
+		$this->cn->SetDb($this->fakeDb);
     }
 	
 	function tearDown() {
 		$this->cn = null;
-		$this->fakeResult = null;
-		$this->fakeDb = null;
+		$this->fakeResult = null;		
 		$this->fakeHandle = null;
 		$this->fakeDb->PrepareHandle = null;
-		$this->cn->_db = null;
+		$this->fakeDb = null;
 	}
 	
     function testCanCreateConnectionObject() {

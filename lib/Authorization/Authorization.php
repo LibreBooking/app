@@ -29,7 +29,7 @@ class Authorization implements IAuthorization
 		{
 			$userid = $row[ColumnNames::USER_ID];
 			$command = new UpdateLoginTimeCommand($userid, LoginTime::Now());
-			//$this->db->Execute($command);
+			$this->db->Execute($command);
 			
 			$this->SetUserSession($row);
 		}		

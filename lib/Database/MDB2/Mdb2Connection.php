@@ -27,6 +27,11 @@ class Mdb2Connection implements IDbConnection
 		$this->_dbName = $_dbName;
 	}
 	
+	public function SetDb(&$db)
+	{
+		$this->_db =& $db;
+	}
+	
 	public function Connect() 
 	{
 		if ($this->_connected && !is_null($this->_db)) 

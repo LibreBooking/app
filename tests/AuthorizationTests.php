@@ -9,11 +9,9 @@ require_once('fakes/FakeServer.php');
 
 class AuthorizationTests extends PHPUnit_Framework_TestCase
 {
-	var $cols;
 	var $username;
 	var $password;
 	var $db;
-	var $config;
 	var $id;
 	var $fname;
 	var $lname;
@@ -25,8 +23,6 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	
 	function setup()
 	{
-		$this->cols = new ColumnNames();
-		
 		$this->username = 'LoGInName';
 		$this->password = 'password';
 		$this->id = 'someexpectedid';
@@ -36,7 +32,6 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$this->isAdmin = true;
 		$this->timezone = 2;
 		
-		$this->config = new Configuration();
 		$this->db = new FakeDatabase();
 		$this->fakeServer = new FakeServer();	
 	}
@@ -44,7 +39,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	function teardown()
 	{
 		$this->db = null;
-		$this->config->Reset();
+		Configuration::Reset();
 	}
 	
 	function testValidateChecksAgainstDB()
@@ -65,17 +60,17 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	
 	function testLoginGetsUserDataFromDatabase()
 	{
-		$time = new LoginTime();
-		$time->Now = mktime();
+		LoginTime::$Now = time();
 		
-		$reader = new FakeDBResult($this->GetRows());			
+		$rows = $this->GetRows();
+		$reader = new FakeDBResult($rows);			
 		$this->db->SetReader($reader);
 		
 		$auth = new Authorization($this->db, $this->fakeServer);
 		$authenticated = $auth->Login(strtolower($this->username), false);
 		
 		$command1 = new LoginCommand(strtolower($this->username));
-		$command2 = new UpdateLoginTimeCommand($this->id, $time->Now());
+		$command2 = new UpdateLoginTimeCommand($this->id, LoginTime::Now());
 		
 		$this->assertEquals(2, count($this->db->_Commands));
 		$this->assertEquals($command1, $this->db->_Commands[0]);	
@@ -85,12 +80,10 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	function testLoginSetsUserInSession()
 	{
 		$serverTz = -1;
-		$configKeys = new ConfigKeys();
-		$this->config->SetKey($configKeys->SERVER_TIMEZONE, $serverTz);
+		Configuration::SetKey(ConfigKeys::SERVER_TIMEZONE, $serverTz);
 		
 		$timeOffset = $this->timezone - $serverTz;
 		
-		$keys = new SessionKeys();
 		$user = new UserSession($this->id);	
 		$user->FirstName = $this->fname;
 		$user->LastName = $this->lname;
@@ -98,42 +91,42 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$user->IsAdmin = $this->isAdmin;
 		$user->TimeOffset = $timeOffset;
 		
-		$reader = new FakeDBResult($this->GetRows());			
+		$rows = $this->GetRows();		
+		$reader = new FakeDBResult($rows);			
 		$this->db->SetReader($reader);
 		
 		$auth = new Authorization($this->db, $this->fakeServer);
 		$authenticated = $auth->Login(strtolower($this->username), false);
 		
-		$this->assertEquals($user, $this->fakeServer->GetSession($keys->USER_SESSION));
+		$this->assertEquals($user, $this->fakeServer->GetSession(SessionKeys::USER_SESSION));
 	}
 	
 	function testUserIsAdminIfEmailMatchesConfigEmail()
 	{
-		$configKeys = new ConfigKeys();
-		$keys = new SessionKeys();
-		$this->config->SetKey($configKeys->ADMIN_EMAIL, $this->email);
+		Configuration::SetKey(ConfigKeys::ADMIN_EMAIL, $this->email);
 		
 		$this->isAdmin = false;
 		
-		$reader = new FakeDBResult($this->GetRows());			
+		$rows = $this->GetRows();		
+		$reader = new FakeDBResult($rows);				
 		$this->db->SetReader($reader);
 		
 		$auth = new Authorization($this->db, $this->fakeServer);
 		$authenticated = $auth->Login(strtolower($this->username), false);
 		
-		$user = $this->fakeServer->GetSession($keys->USER_SESSION);
+		$user = $this->fakeServer->GetSession(SessionKeys::USER_SESSION);
 		$this->assertTrue($user->IsAdmin);
 	}
 	
 	function GetRows()
 	{
 		$row = array(
-					$this->cols->USER_ID => $this->id,
-					$this->cols->FIRST_NAME => $this->fname,
-					$this->cols->LAST_NAME => $this->lname,
-					$this->cols->EMAIL => $this->email,
-					$this->cols->IS_ADMIN => $this->isAdmin,
-					$this->cols->TIMEZONE => $this->timezone
+					ColumnNames::USER_ID => $this->id,
+					ColumnNames::FIRST_NAME => $this->fname,
+					ColumnNames::LAST_NAME => $this->lname,
+					ColumnNames::EMAIL => $this->email,
+					ColumnNames::IS_ADMIN => $this->isAdmin,
+					ColumnNames::TIMEZONE => $this->timezone
 					);
 		
 		return array($row);

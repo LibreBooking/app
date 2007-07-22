@@ -4,20 +4,7 @@ require_once('../lib/Database/Commands/Commands.php');
 require_once('../lib/Common/namespace.php');
 
 class DatabaseCommandTests extends PHPUnit_Framework_TestCase
-{
-	var $names;
-	var $queries;
-
-	function setup()
-	{
-		$this->names = new ParameterNames();
-		$this->queries = new Queries();
-	}
-	
-	function teardown()
-	{
-	}
-	
+{	
 	function testAuthorizationCommand()
 	{
 		$username = 'loGin';
@@ -25,16 +12,16 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		
 		$command = new AuthorizationCommand($username, $password);
 		
-		$this->assertEquals($this->queries->VALIDATE_USER, $command->GetQuery());
+		$this->assertEquals(Queries::VALIDATE_USER, $command->GetQuery());
 		$this->assertEquals(2, $command->Parameters->Count());
 				
 		$par1 = $command->Parameters->Items(0);
 		$par2 = $command->Parameters->Items(1);
 		
-		$this->assertEquals($this->names->USER_NAME, $par1->Name);
+		$this->assertEquals(ParameterNames::USER_NAME, $par1->Name);
 		$this->assertEquals(strtolower($username), $par1->Value);
 		
-		$this->assertEquals($this->names->PASSWORD, $par2->Name);
+		$this->assertEquals(ParameterNames::PASSWORD, $par2->Name);
 		$this->assertEquals($password, $par2->Value);
 	}
 	
@@ -44,12 +31,12 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 
 		$command = new LoginCommand($username);
 		
-		$this->assertEquals($this->queries->LOGIN_USER, $command->GetQuery());
+		$this->assertEquals(Queries::LOGIN_USER, $command->GetQuery());
 		$this->assertEquals(1, $command->Parameters->Count());
 				
 		$par1 = $command->Parameters->Items(0);
 		
-		$this->assertEquals($this->names->USER_NAME, $par1->Name);
+		$this->assertEquals(ParameterNames::USER_NAME, $par1->Name);
 		$this->assertEquals(strtolower($username), $par1->Value);
 	}
 	
@@ -60,15 +47,15 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		
 		$command = new UpdateLoginTimeCommand($id, $time->Now());
 		
-		$this->assertEquals($this->queries->UPDATE_LOGINTIME, $command->GetQuery());
+		$this->assertEquals(Queries::UPDATE_LOGINTIME, $command->GetQuery());
 		$this->assertEquals(2, $command->Parameters->Count());
 				
 		$par1 = $command->Parameters->Items(0);
 		$par2 = $command->Parameters->Items(1);
 		
-		$this->assertEquals($this->names->LAST_LOGIN, $par1->Name);
+		$this->assertEquals(ParameterNames::LAST_LOGIN, $par1->Name);
 		$this->assertEquals($time->Now(), $par1->Value);		
-		$this->assertEquals($this->names->USER_ID, $par2->Name);
+		$this->assertEquals(ParameterNames::USER_ID, $par2->Name);
 		$this->assertEquals($id, $par2->Value);
 	}
 }

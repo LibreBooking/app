@@ -8,10 +8,9 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Framework.php';
 
 
-$tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
+//$tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
 
-$tests = array('DatabaseCommandTests.php', 'AuthorizationTests.php');
-$tests = array('ResourcesTests.php', 'LoginPresenterTests.php', 'DatabaseTests.php');
+$tests = array('ResourcesTests.php', 'LoginPresenterTests.php', 'DatabaseTests.php', 'DatabaseCommandTests.php', 'AuthorizationTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
 
 $passed = true;
 $totalRun = 0;
