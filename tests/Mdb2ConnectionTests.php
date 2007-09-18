@@ -59,7 +59,7 @@ class Mdb2ConnectionTests extends PHPUnit_Framework_TestCase
 		$expectedCommand = new Mdb2CommandAdapter($command);
 		$expectedResult = new Mdb2Reader($this->fakeResult);		
 		
-		$result =& $this->cn->Query($command);
+		$result = $this->cn->Query($command);
 		
 		$this->assertTrue($this->fakeDb->_PrepareWasCalled, 'Prepare was not called');
 		$this->assertTrue($this->fakeDb->_PrepareAutoDetect, 'Auto detect param types should be on');		

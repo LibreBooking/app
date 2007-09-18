@@ -12,7 +12,7 @@ class FakeDatabase extends Database
 	{
 	}
 
-	public function SetReader(&$reader)
+	public function SetReader(IReader &$reader)
 	{
 		$this->reader = &$reader;
 	}
@@ -107,7 +107,7 @@ class FakeDBResult extends MDB2_Result_Common
 		$this->rows = $rows;
 	}
 
-	public function &GetRow() {
+	public function &fetchRow() {
 		if (sizeof($this->rows) > $this->idx)
 		{
 			return $this->rows[$this->idx++];

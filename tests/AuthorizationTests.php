@@ -45,7 +45,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	function testValidateChecksAgainstDB()
 	{	
 		$rows = array('count' => 1);
-		$reader = new FakeDBResult($rows);
+		$reader = new Mdb2Reader(new FakeDBResult($rows));
 			
 		$this->db->SetReader($reader);
 		
@@ -63,7 +63,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		LoginTime::$Now = time();
 		
 		$rows = $this->GetRows();
-		$reader = new FakeDBResult($rows);			
+		$reader = new Mdb2Reader(new FakeDBResult($rows));			
 		$this->db->SetReader($reader);
 		
 		$auth = new Authorization($this->db, $this->fakeServer);
@@ -92,7 +92,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$user->TimeOffset = $timeOffset;
 		
 		$rows = $this->GetRows();		
-		$reader = new FakeDBResult($rows);			
+		$reader = new Mdb2Reader(new FakeDBResult($rows));			
 		$this->db->SetReader($reader);
 		
 		$auth = new Authorization($this->db, $this->fakeServer);
@@ -108,7 +108,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$this->isAdmin = false;
 		
 		$rows = $this->GetRows();		
-		$reader = new FakeDBResult($rows);				
+		$reader = new Mdb2Reader(new FakeDBResult($rows));				
 		$this->db->SetReader($reader);
 		
 		$auth = new Authorization($this->db, $this->fakeServer);

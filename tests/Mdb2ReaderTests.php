@@ -62,7 +62,7 @@ class Mdb2ReaderTests extends PHPUnit_Framework_TestCase
 		$result = new FakeDBResult($this->createResultRows());
 		$_db = new FakePearDB($result);
 		$_db->PrepareHandle = new FakePrepareHandle($result);
-		$cn->_db = $_db;
+		$cn->SetDb($_db);
 
 		$command = new SqlCommand();
 		$reader = $cn->Query($command);
