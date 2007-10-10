@@ -84,9 +84,10 @@ class Mdb2Connection implements IDbConnection
 	public function _PrepareAndExecute(&$sqlCommand, $prepareType) 
 	{
 		$cmd = new Mdb2CommandAdapter($sqlCommand);
-		
-		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);
-		$result =& $stmt->execute($cmd->GetValues());		
+
+		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);		
+		$result =& $stmt->execute($cmd->GetValues());	
+
 		$this->_isError($result);
 		
 		return new Mdb2Reader($result);

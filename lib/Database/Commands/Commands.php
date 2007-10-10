@@ -28,7 +28,7 @@ class UpdateLoginTimeCommand extends SqlCommand
 	{
 		parent::__construct(Queries::UPDATE_LOGINTIME);
 		$this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastlogin));
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));		
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));	
 	}
 }
 ?>

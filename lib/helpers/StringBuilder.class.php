@@ -1,23 +1,17 @@
 <?php
 
-class StringBuilder {
-	var $_string = '';
+class StringBuilder 
+{
+	private $_string = array();
 	
-	/**
-	* Appends this string onto the end of the full string
-	* @param string $string
-	*/
-	function append($string) {
-		$this->_string .= $string;
+	public function Append($string) 
+	{
+		$this->_string[] = $string;
 	}
-	
-	/**
-	* Returns the full string
-	* @param none
-	* @return the fully appended string
-	*/
-	function toString() {
-		return $this->_string;
+
+	public function ToString() 
+	{
+		return join($this->_string[]);
 	}
 }
 ?>

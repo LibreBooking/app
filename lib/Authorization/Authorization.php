@@ -17,7 +17,8 @@ class Authorization implements IAuthorization
 	{
 		$command = new AuthorizationCommand($username, $password);
 		$reader = $this->db->Query($command);
-		return $reader->NumRows() > 0;
+		$row = $reader->GetRow();
+		return intval($row[ColumnNames::MATCH_COUNT]) > 0;
 	}
 	
 	public function Login($username, $persist)
@@ -25,14 +26,14 @@ class Authorization implements IAuthorization
 		$command = new LoginCommand($username);
 		$reader = $this->db->Query($command);
 		
-		if (($row = $reader->GetRow()) !== false)
+		if ($row = $reader->GetRow())
 		{
 			$userid = $row[ColumnNames::USER_ID];
 			$command = new UpdateLoginTimeCommand($userid, LoginTime::Now());
 			$this->db->Execute($command);
 			
 			$this->SetUserSession($row);
-		}		
+		}	
 	}
 	
 	private function SetUserSession($row)

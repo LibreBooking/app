@@ -44,7 +44,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	
 	function testValidateChecksAgainstDB()
 	{	
-		$rows = array('count' => 1);
+		$rows = array(array(ColumnNames::MATCH_COUNT => 1));
 		$reader = new Mdb2Reader(new FakeDBResult($rows));
 			
 		$this->db->SetReader($reader);

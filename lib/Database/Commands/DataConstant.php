@@ -15,7 +15,7 @@ class Queries
 	private function __construct()
 	{}
 	
-	const VALIDATE_USER = 'SELECT COUNT(*) FROM login WHERE (logon_name = @username OR email = @username) AND password = @password';
+	const VALIDATE_USER = 'SELECT COUNT(*) as matchcount FROM login WHERE (logon_name = @username OR email = @username) AND password = @password';
 	const LOGIN_USER = 'SELECT * FROM login WHERE (logon_name = @username OR email = @username)';
 	const UPDATE_LOGINTIME = 'UPDATE login SET lastlogin = @lastlogin WHERE memberid = @userid';
 }
@@ -31,5 +31,6 @@ class ColumnNames
 	const IS_ADMIN = 'is_admin';
 	const TIMEZONE = 'timezone';
 	const EMAIL = 'email';
+	const MATCH_COUNT = 'matchcount';
 }
 ?>
