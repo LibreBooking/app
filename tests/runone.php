@@ -10,7 +10,7 @@ require_once 'PHPUnit/Framework.php';
 
 //$tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
 
-$tests = array('ResourcesTests.php', 'LoginPresenterTests.php', 'DatabaseTests.php', 'DatabaseCommandTests.php', 'AuthorizationTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
+$tests = array('ResourcesTests.php', 'LoginPresenterTests.php', 'DatabaseTests.php', 'DatabaseCommandTests.php', 'AuthorizationTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php', 'PasswordEncryptionTests.php');
 
 $passed = true;
 $totalRun = 0;

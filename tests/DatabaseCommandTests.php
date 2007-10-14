@@ -8,21 +8,16 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 	function testAuthorizationCommand()
 	{
 		$username = 'loGin';
-		$password = 'password';
 		
-		$command = new AuthorizationCommand($username, $password);
+		$command = new AuthorizationCommand($username);
 		
 		$this->assertEquals(Queries::VALIDATE_USER, $command->GetQuery());
-		$this->assertEquals(2, $command->Parameters->Count());
+		$this->assertEquals(1, $command->Parameters->Count());
 				
 		$par1 = $command->Parameters->Items(0);
-		$par2 = $command->Parameters->Items(1);
 		
 		$this->assertEquals(ParameterNames::USER_NAME, $par1->Name);
 		$this->assertEquals(strtolower($username), $par1->Value);
-		
-		$this->assertEquals(ParameterNames::PASSWORD, $par2->Name);
-		$this->assertEquals($password, $par2->Value);
 	}
 	
 	function testLoginCommand()

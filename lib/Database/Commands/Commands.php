@@ -5,11 +5,10 @@ require_once('DataConstant.php');
 
 class AuthorizationCommand extends SqlCommand
 {
-	public function __construct($username, $password)
+	public function __construct($username)
 	{
 		parent::__construct(Queries::VALIDATE_USER);
-		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, strtolower($username)));
-		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));		
+		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, strtolower($username)));	
 	}
 }
 

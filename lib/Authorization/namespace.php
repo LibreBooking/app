@@ -3,4 +3,5 @@
 require_once('IAuthorization.php');
 require_once('Authorization.php');
 require_once('UserSession.php');
+require_once('PasswordEncryption.php');
 ?>

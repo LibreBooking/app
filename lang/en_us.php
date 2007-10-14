@@ -655,6 +655,10 @@ class en_us extends Language
 		$strings['Added Accessories'] = 'Added Accessories';
 		// end since 1.2.0
 		
+		// Since 2.0
+		$strings['Login Error'] = 'We could not match your username or password';
+		// end Since 2.0
+		
 		$this->Strings = $strings;
 	}
 	

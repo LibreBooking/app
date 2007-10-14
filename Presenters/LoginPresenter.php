@@ -29,6 +29,10 @@ class LoginPresenter
 			$auth->Login($this->_page->getEmailAddress(), $this->_page->getPersistLogin());		
 			$this->_Redirect();
 		}
+		else 
+		{
+			$this->_page->setShowLoginError();
+		}
 	}
 
 	private function _Redirect()

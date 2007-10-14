@@ -14,6 +14,7 @@ interface ILoginPage extends IPage
 	public function setUseLogonName($value);
 	public function setResumeUrl($value);
 	public function getResumeUrl();
+	public function setShowLoginError();
 }
 
 class LoginPage extends Page implements ILoginPage
@@ -98,6 +99,11 @@ class LoginPage extends Page implements ILoginPage
 	public function Login()
 	{
 		$this->_presenter->Login(new Authorization(DatabaseFactory::GetDatabase(), $this->server));
+	}
+	
+	public function setShowLoginError()
+	{
+		$this->smarty->assign('ShowLoginError', true);
 	}
 }
 ?>

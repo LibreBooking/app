@@ -719,6 +719,10 @@ $strings['All Accessories'] = 'All Accessories';
 $strings['Added Accessories'] = 'Added Accessories';
 // end since 1.2.0
 
+// Since 2.0
+$strings['Login Error'] = 'We could not match your username or password';
+// end Since 2.0
+
 /***
   EMAIL MESSAGES
   Please translate these email messages into your language.  You should keep the sprintf (%s) placeholders

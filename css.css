@@ -504,33 +504,46 @@ div.inlineSummary{
 	height:13px;
 }
 
-.login_table_border
+/*********************************************************/
+
+.loginTableBorder
 {
 	background-color: #CCCCCC;
 }
 
-.login_table tr
+.loginTable tr
 {
 	background-color: #FFFFFF;
 }
 
-.login_table #header
+.loginTable #header
 {
 	background-color: #EDEDED;
 }
 
-.login_table #header td
+.loginTable #header td
 {
 	border-bottom: solid 1px #CCCCCC;
 }
 
-.login_table #footer
+.loginTable #footer
 {
 	background-color: #FAFAFA;
 }
 
-.login_table #footer td
+.loginTable #footer td
 {
 	border-top: solid 1px #CCCCCC;
+}
+
+#loginError
+{
+	border: solid 1px #a4381c;
+	margin: 0px auto 15px;
+	background-color: #f5e4df;
+	width: 60%;
+	padding: 6px;
+	font-size: 12px;
+	text-align: center;
 }
 

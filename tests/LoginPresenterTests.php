@@ -98,6 +98,16 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 		{
 			$this->assertEquals($langs[$lang->LanguageCode], $lang->DisplayName);
 		}
+	}	
+		
+	public function testErrorIsDisplayedIfValidationFails()
+	{
+		$this->auth->_ValidateResult = false;
+		$presenter = new LoginPresenter($this->page, $this->server);
+		$presenter->Login($this->auth);
+		
+		$this->assertEquals("", $this->page->_LastRedirect, "Does not redirect if auth fails");
+		$this->assertTrue($this->page->_ShowLoginError, "Should show login error if auth fails");
 	}
 }
 
@@ -111,7 +121,8 @@ class FakeLoginPage implements ILoginPage
 	public $_PageLoadWasCalled = false;
 	public $_Languages = array();
 	public $_UseLogonName = false;
-	public $_ResumeUrl;
+	public $_ResumeUrl = "";
+	public $_ShowLoginError = false;
 	
 	public function PageLoad()
 	{
@@ -176,6 +187,11 @@ class FakeLoginPage implements ILoginPage
 	public function getResumeUrl()
 	{
 		return $this->_ResumeUrl;
+	}
+	
+	public function setShowLoginError()
+	{
+		$this->_ShowLoginError = true;
 	}
 }
 

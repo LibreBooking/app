@@ -1,9 +1,14 @@
 {include file='header.tpl'}
+{if $ShowLoginError}
+	<div id="loginError">
+		{translate key='Login Error'}
+	</div>
+{/if}
 <form name="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
     <table width="450" border="0" cellspacing="0" cellpadding="1" align="center">
         <tr>
-            <td class="login_table_border">
-                <table width="100%" border="0" cellspacing="0" cellpadding="3" class="login_table">
+            <td class="loginTableBorder">
+                <table width="100%" border="0" cellspacing="0" cellpadding="3" class="loginTable">
                     <tr id="header">
                         <td colspan="2">
                             <h5 align="center">{translate key='Log In'}</h5>

@@ -8,8 +8,7 @@ if ($page->LoggingIn())
 {
 	$page->Login();
 }
-else
-{
-	$page->PageLoad();
-}
+
+$page->PageLoad();
+
 ?>

@@ -15,10 +15,20 @@ class Authorization implements IAuthorization
 	
 	public function Validate($username, $password)
 	{
-		$command = new AuthorizationCommand($username, $password);
-		$reader = $this->db->Query($command);
-		$row = $reader->GetRow();
-		return intval($row[ColumnNames::MATCH_COUNT]) > 0;
+		$command = new AuthorizationCommand($username);
+		$reader = $this->db->Query($command);		
+		
+		if ($row = $reader->GetRow())
+		{
+			$userpassword = $row[ColumnNames::PASSWORD];
+			$salt = $row[ColumnNames::SALT];
+			
+			$encryption = new PasswordEncryption();
+			
+			return $userpassword == $encryption->Encrypt($password, $salt);
+		}
+		
+		return false;
 	}
 	
 	public function Login($username, $persist)

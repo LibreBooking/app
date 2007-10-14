@@ -44,7 +44,11 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	
 	function testValidateChecksAgainstDB()
 	{	
-		$rows = array(array(ColumnNames::MATCH_COUNT => 1));
+		$encryption = new PasswordEncryption();
+		$expectedPassword = $encryption->Encrypt($this->password);
+		$salt = $encryption->Salt;
+		
+		$rows = array(array(ColumnNames::PASSWORD => $expectedPassword, ColumnNames::SALT => $salt));
 		$reader = new Mdb2Reader(new FakeDBResult($rows));
 			
 		$this->db->SetReader($reader);
@@ -116,6 +120,13 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		
 		$user = $this->fakeServer->GetSession(SessionKeys::USER_SESSION);
 		$this->assertTrue($user->IsAdmin);
+	}
+	
+	function testToDo()
+	{
+		// TODO
+		//$this->assertEquals("Implement cookie login", "");
+		//$this->assertEquals("Implement password re-hash", "");
 	}
 	
 	function GetRows()
