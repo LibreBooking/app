@@ -53,5 +53,30 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(ParameterNames::USER_ID, $par2->Name);
 		$this->assertEquals($id, $par2->Value);
 	}
+	
+	function testMigratePasswordCommand()
+	{
+		$userid = 1;
+		$password = 'encrypted';
+		$salt = 'salt';
+		
+		$command = new MigratePasswordCommand($userid, $password, $salt);
+		
+		$this->assertEquals(Queries::MIGRATE_PASSWORD, $command->GetQuery());
+		$this->assertEquals(3, $command->Parameters->Count());
+				
+		$par1 = $command->Parameters->Items(0);
+		$par2 = $command->Parameters->Items(1);
+		$par3 = $command->Parameters->Items(2);
+		
+		$this->assertEquals(ParameterNames::USER_ID , $par1->Name);
+		$this->assertEquals($userid, $par1->Value);		
+		
+		$this->assertEquals(ParameterNames::PASSWORD , $par2->Name);
+		$this->assertEquals($password, $par2->Value);
+		
+		$this->assertEquals(ParameterNames::SALT , $par3->Name);
+		$this->assertEquals($salt, $par3->Value);
+	}
 }
 ?>

@@ -1,22 +1,35 @@
 <?php
 require_once('namespace.php');
-require_once(dirname(__FILE__) . '/../../lib/Database/Commands/namespace.php');
+require_once(dirname(__FILE__) . '/../Common/namespace.php');
+require_once(dirname(__FILE__) . '/../Database/Commands/namespace.php');
 
 class Authorization implements IAuthorization 
-{
-	private $db;
-	private $server;
+{	
+	private $passwordValidation = null;
 	
-	public function __construct(Database &$database, Server &$server)
+	public function __construct()
 	{
-		$this->db = &$database;
-		$this->server = &$server;
+	}
+	
+	public function SetValidation(PasswordValidation $validator)
+	{
+		$this->passwordValidation = $validator;
+	}
+	
+	private function GetValidation()
+	{
+		if (isnull($this->passwordValidation))
+		{
+			$this->passwordValidation = new PasswordValidation();
+		}
+		
+		return $this->passwordValidation;
 	}
 	
 	public function Validate($username, $password)
 	{
 		$command = new AuthorizationCommand($username);
-		$reader = $this->db->Query($command);		
+		$reader = ServiceLocator::GetDatabase()->Query($command);		
 		
 		if ($row = $reader->GetRow())
 		{
@@ -34,13 +47,13 @@ class Authorization implements IAuthorization
 	public function Login($username, $persist)
 	{
 		$command = new LoginCommand($username);
-		$reader = $this->db->Query($command);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
 		
 		if ($row = $reader->GetRow())
 		{
 			$userid = $row[ColumnNames::USER_ID];
 			$command = new UpdateLoginTimeCommand($userid, LoginTime::Now());
-			$this->db->Execute($command);
+			ServiceLocator::GetDatabase()->Execute($command);
 			
 			$this->SetUserSession($row);
 		}	
@@ -59,7 +72,7 @@ class Authorization implements IAuthorization
 		$tzOffset = intval($row[ColumnNames::TIMEZONE]) - intval(Configuration::GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$user->TimeOffset = $tzOffset;
 		
-		$this->server->SetSession(SessionKeys::USER_SESSION, $user);
+		ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, $user);
 	}
 }
 ?>

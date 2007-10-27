@@ -30,4 +30,15 @@ class UpdateLoginTimeCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));	
 	}
 }
+
+class MigratePasswordCommand extends SqlCommand 
+{
+	public function __construct($userid, $password, $salt)
+	{
+		parent::__construct(Queries::MIGRATE_PASSWORD);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
+		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
+		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
+	}
+}
 ?>

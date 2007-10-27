@@ -34,26 +34,31 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		
 		$this->db = new FakeDatabase();
 		$this->fakeServer = new FakeServer();	
+		
+		ServiceLocator::SetDatabase($this->db);
+		ServiceLocator::SetServer($this->fakeServer);
+		
 	}
 	
 	function teardown()
 	{
 		$this->db = null;
+		$this->fakeServer = null;
 		Configuration::Reset();
 	}
 	
 	function testValidateChecksAgainstDB()
 	{	
 		$encryption = new PasswordEncryption();
-		$expectedPassword = $encryption->Encrypt($this->password);
-		$salt = $encryption->Salt;
+		$salt = $encryption->Salt();
+		$expectedPassword = $encryption->Encrypt($this->password, $salt);
 		
-		$rows = array(array(ColumnNames::PASSWORD => $expectedPassword, ColumnNames::SALT => $salt));
+		$rows = array(array(ColumnNames::USER_ID => 1, ColumnNames::PASSWORD => $expectedPassword, ColumnNames::SALT => $salt));
 		$reader = new Mdb2Reader(new FakeDBResult($rows));
 			
 		$this->db->SetReader($reader);
 		
-		$auth = new Authorization($this->db, $this->fakeServer);
+		$auth = new Authorization($this->fakeServer);
 		$authenticated = $auth->Validate($this->username, $this->password);
 		
 		$command = new AuthorizationCommand(strtolower($this->username), $this->password);
@@ -70,7 +75,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$reader = new Mdb2Reader(new FakeDBResult($rows));			
 		$this->db->SetReader($reader);
 		
-		$auth = new Authorization($this->db, $this->fakeServer);
+		$auth = new Authorization($this->fakeServer);
 		$authenticated = $auth->Login(strtolower($this->username), false);
 		
 		$command1 = new LoginCommand(strtolower($this->username));
@@ -99,7 +104,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$reader = new Mdb2Reader(new FakeDBResult($rows));			
 		$this->db->SetReader($reader);
 		
-		$auth = new Authorization($this->db, $this->fakeServer);
+		$auth = new Authorization($this->fakeServer);
 		$authenticated = $auth->Login(strtolower($this->username), false);
 		
 		$this->assertEquals($user, $this->fakeServer->GetSession(SessionKeys::USER_SESSION));
@@ -115,12 +120,47 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$reader = new Mdb2Reader(new FakeDBResult($rows));				
 		$this->db->SetReader($reader);
 		
-		$auth = new Authorization($this->db, $this->fakeServer);
+		$auth = new Authorization($this->fakeServer);
 		$authenticated = $auth->Login(strtolower($this->username), false);
 		
 		$user = $this->fakeServer->GetSession(SessionKeys::USER_SESSION);
 		$this->assertTrue($user->IsAdmin);
 	}
+	
+	function testMigratesPasswordWhenSaltIsNotSetButPasswordIsInOldFormat()
+	{
+		$id = 1;
+		$password = 'plaintext';
+	
+		$oldPassword = md5($password);
+		$encryption = new PasswordEncryption();		
+		$expectedPassword = $encryption->Encrypt($password, $encryption->Salt());
+		
+		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => $expectedPassword, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldpassword));
+		$reader = new Mdb2Reader(new FakeDBResult($rows));
+		$this->db->SetReader($reader);
+		
+		$fakeMigrator = new FakeMigrator();
+		
+		$auth = new Authorization();
+		$auth->SetMigration($fakeMigrator);
+		$auth->Validate($username, $password);
+		
+		$this->assertEquals($oldPassword, $fakeMigration->_LastOldPassword, "did not pass correct value for old password");
+		$this->assertEquals($password, $fakeMigration->_PlainText, "did not pass correct value for plain text");
+		$this->assertTrue($fakeMigrator->_MigrateCalled);
+	}
+	
+//	function testCanPersistLogin()
+//	{	
+//		$this->assertEquals(false, true, "Need to get the cookie stuff working");
+//		
+//		$auth = new Authorization();
+//		$auth->Login($username, true);
+//		
+//		$expectedCookie = new Cookie(CookieKeys::PERSIST_LOGIN, $hashedValue, $expiration, $path);
+//		$this->assertEquals($expectedCookie, $this->fakeServer->Cookies[CookieKeys::PERSIST_LOGIN]);
+//	}
 	
 	function testToDo()
 	{

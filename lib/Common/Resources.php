@@ -90,9 +90,9 @@ class Resources
 	
 	private function GetLanguageCode()
 	{
-		if ($this->Server->GetCookie(CookieKeys::COOKIE_LANGUAGE) != null)
+		if ($this->Server->GetCookie(CookieKeys::LANGUAGE) != null)
 		{
-			return $this->Server->GetCookie(CookieKeys::COOKIE_LANGUAGE);
+			return $this->Server->GetCookie(CookieKeys::LANGUAGE);
 		}
 		else
 		{

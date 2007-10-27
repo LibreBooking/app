@@ -4,10 +4,11 @@ class ParameterNames
 	private function __construct()
 	{}
 	
-	const USER_NAME = '@username';
-	const PASSWORD = '@password';
 	const LAST_LOGIN = '@lastlogin';
+	const PASSWORD = '@password';
+	const SALT = '@salt';
 	const USER_ID = '@userid';
+	const USER_NAME = '@username';	
 }
 
 class Queries
@@ -15,9 +16,11 @@ class Queries
 	private function __construct()
 	{}
 	
-	const VALIDATE_USER = 'SELECT userpassword, salt FROM login WHERE (logon_name = @username OR email = @username)';
 	const LOGIN_USER = 'SELECT * FROM login WHERE (logon_name = @username OR email = @username)';
+	const MIGRATE_PASSWORD = 'UPDATE login SET userpassword = @password, password = NULL, salt = @salt WHERE memberid = @userid';
 	const UPDATE_LOGINTIME = 'UPDATE login SET lastlogin = @lastlogin WHERE memberid = @userid';
+	const VALIDATE_USER = 'SELECT userpassword, salt FROM login WHERE (logon_name = @username OR email = @username)';
+	
 }
 
 class ColumnNames
@@ -30,6 +33,7 @@ class ColumnNames
 	const IS_ADMIN = 'is_admin';
 	const LAST_NAME = 'lname';
 	const MATCH_COUNT = 'matchcount';
+	const OLD_PASSWORD = 'password';
 	const PASSWORD = 'userpassword';
 	const TIMEZONE = 'timezone';
 	const SALT = 'salt';

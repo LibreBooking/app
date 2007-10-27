@@ -23,7 +23,7 @@ class ResourcesTests extends PHPUnit_Framework_TestCase
 		$jscalendarFile = 'calendar-en.js';
 		$langFile = 'en_US.lang.php';		
 		$lang = 'en_US';
-		$langCookie = new Cookie(CookieKeys::COOKIE_LANGUAGE, $lang, time(), '/');
+		$langCookie = new Cookie(CookieKeys::LANGUAGE, $lang, time(), '/');
 		
 		$server = new FakeServer();
 		$server->SetCookie($langCookie);

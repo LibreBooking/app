@@ -98,7 +98,7 @@ class LoginPage extends Page implements ILoginPage
 	
 	public function Login()
 	{
-		$this->_presenter->Login(new Authorization(DatabaseFactory::GetDatabase(), $this->server));
+		$this->_presenter->Login(new Authorization($this->server));
 	}
 	
 	public function setShowLoginError()

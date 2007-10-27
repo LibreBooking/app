@@ -6,6 +6,7 @@ class CookieKeys
 	private function __construct()
 	{}
 	
-	const COOKIE_LANGUAGE = 'cookie_language';
+	const LANGUAGE = 'language';
+	const PERSIST_LOGIN = 'persist.login';
 }
 ?>

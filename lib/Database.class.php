@@ -29,14 +29,8 @@ class Database
 		}
 	}
 	
-	function SetCommand($command) {
-//		$matches = array();
-//		preg_match_all("/\@[\w\d]+/", $command, $matches);
-//		if (sizeof($matches) > 0) {
-//			$this->_paramNames = $matches[0];
-//		}
-//		unset($matches);
-		
+	function SetCommand($command) 
+	{
 		$this->Connection->SetCommand($command);
 	}
 	
