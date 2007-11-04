@@ -5,25 +5,25 @@ require_once(dirname(__FILE__) . '/../Database/Commands/namespace.php');
 
 class Authorization implements IAuthorization 
 {	
-	private $passwordValidation = null;
+	private $passwordMigration = null;
 	
 	public function __construct()
 	{
 	}
 	
-	public function SetValidation(PasswordValidation $validator)
+	public function SetMigration(PasswordMigration $migration)
 	{
-		$this->passwordValidation = $validator;
+		$this->passwordMigration = $migration;
 	}
 	
-	private function GetValidation()
+	private function GetMigration()
 	{
-		if (isnull($this->passwordValidation))
+		if (is_null($this->passwordMigration))
 		{
-			$this->passwordValidation = new PasswordValidation();
+			$this->passwordMigration = new PasswordMigration();
 		}
 		
-		return $this->passwordValidation;
+		return $this->passwordMigration;
 	}
 	
 	public function Validate($username, $password)
@@ -33,12 +33,17 @@ class Authorization implements IAuthorization
 		
 		if ($row = $reader->GetRow())
 		{
-			$userpassword = $row[ColumnNames::PASSWORD];
+			$migration = $this->GetMigration();
+			$password = $migration->Create($password, $row[ColumnNames::OLD_PASSWORD], $row[ColumnNames::PASSWORD]);
+			
 			$salt = $row[ColumnNames::SALT];
 			
-			$encryption = new PasswordEncryption();
-			
-			return $userpassword == $encryption->Encrypt($password, $salt);
+			if ($password->Validate($salt))
+			{
+				$password->Migrate($row[ColumnNames::USER_ID]);
+				return true;
+			}
+			return false;
 		}
 		
 		return false;

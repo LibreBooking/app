@@ -21,6 +21,10 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	var $fakeServer;
 	var $timezone;
 	
+	var $auth;
+	var $fakePassword;
+	var $fakeMigration;
+	
 	function setup()
 	{
 		$this->username = 'LoGInName';
@@ -38,6 +42,12 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		ServiceLocator::SetDatabase($this->db);
 		ServiceLocator::SetServer($this->fakeServer);
 		
+		$this->fakePassword = new FakePassword();
+		$this->fakeMigration = new FakeMigration();
+		$this->fakeMigration->_Password = $this->fakePassword;
+                 
+		$this->auth = new Authorization();
+		$this->auth->SetMigration($this->fakeMigration);		
 	}
 	
 	function teardown()
@@ -49,22 +59,16 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	
 	function testValidateChecksAgainstDB()
 	{	
-		$encryption = new PasswordEncryption();
-		$salt = $encryption->Salt();
-		$expectedPassword = $encryption->Encrypt($this->password, $salt);
-		
-		$rows = array(array(ColumnNames::USER_ID => 1, ColumnNames::PASSWORD => $expectedPassword, ColumnNames::SALT => $salt));
+		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldPassword));
 		$reader = new Mdb2Reader(new FakeDBResult($rows));
 			
 		$this->db->SetReader($reader);
 		
-		$auth = new Authorization($this->fakeServer);
-		$authenticated = $auth->Validate($this->username, $this->password);
+		$this->authenticated = $this->auth->Validate($this->username, $this->password);
 		
 		$command = new AuthorizationCommand(strtolower($this->username), $this->password);
 		
 		$this->assertEquals($command, $this->db->_LastCommand);
-		$this->assertTrue($authenticated);
 	}
 	
 	function testLoginGetsUserDataFromDatabase()
@@ -75,8 +79,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$reader = new Mdb2Reader(new FakeDBResult($rows));			
 		$this->db->SetReader($reader);
 		
-		$auth = new Authorization($this->fakeServer);
-		$authenticated = $auth->Login(strtolower($this->username), false);
+		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
 		
 		$command1 = new LoginCommand(strtolower($this->username));
 		$command2 = new UpdateLoginTimeCommand($this->id, LoginTime::Now());
@@ -104,8 +107,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$reader = new Mdb2Reader(new FakeDBResult($rows));			
 		$this->db->SetReader($reader);
 		
-		$auth = new Authorization($this->fakeServer);
-		$authenticated = $auth->Login(strtolower($this->username), false);
+		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
 		
 		$this->assertEquals($user, $this->fakeServer->GetSession(SessionKeys::USER_SESSION));
 	}
@@ -120,43 +122,44 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$reader = new Mdb2Reader(new FakeDBResult($rows));				
 		$this->db->SetReader($reader);
 		
-		$auth = new Authorization($this->fakeServer);
-		$authenticated = $auth->Login(strtolower($this->username), false);
+		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
 		
 		$user = $this->fakeServer->GetSession(SessionKeys::USER_SESSION);
 		$this->assertTrue($user->IsAdmin);
 	}
 	
-	function testMigratesPasswordWhenSaltIsNotSetButPasswordIsInOldFormat()
+	function testMigratesPasswordNewPasswordHasNotBeenSet()
 	{
 		$id = 1;
 		$password = 'plaintext';
 	
 		$oldPassword = md5($password);
-		$encryption = new PasswordEncryption();		
-		$expectedPassword = $encryption->Encrypt($password, $encryption->Salt());
 		
-		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => $expectedPassword, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldpassword));
+		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldPassword));
 		$reader = new Mdb2Reader(new FakeDBResult($rows));
 		$this->db->SetReader($reader);
+
+		$this->fakePassword->_ValidateResult = true;
 		
-		$fakeMigrator = new FakeMigrator();
+		$this->auth->Validate($username, $password);
 		
-		$auth = new Authorization();
-		$auth->SetMigration($fakeMigrator);
-		$auth->Validate($username, $password);
+		$this->assertTrue($this->fakeMigration->_CreateCalled);
+		$this->assertEquals($password, $this->fakeMigration->_LastPlainText);
+		$this->assertEquals($oldPassword, $this->fakeMigration->_LastOldPassword);
+		$this->assertEquals(null, $this->fakeMigration->_LastNewPassword);
 		
-		$this->assertEquals($oldPassword, $fakeMigration->_LastOldPassword, "did not pass correct value for old password");
-		$this->assertEquals($password, $fakeMigration->_PlainText, "did not pass correct value for plain text");
-		$this->assertTrue($fakeMigrator->_MigrateCalled);
+		$this->assertTrue($this->fakePassword->_ValidateCalled);
+		$this->assertTrue($this->fakePassword->_MigrateCalled);
+		$this->assertEquals(null, $this->fakePassword->_LastSalt);
+		$this->assertEquals($id, $this->fakePassword->_LastUserId);
 	}
 	
 //	function testCanPersistLogin()
 //	{	
 //		$this->assertEquals(false, true, "Need to get the cookie stuff working");
 //		
-//		$auth = new Authorization();
-//		$auth->Login($username, true);
+//		$this->auth = new Authorization();
+//		$this->auth->Login($username, true);
 //		
 //		$expectedCookie = new Cookie(CookieKeys::PERSIST_LOGIN, $hashedValue, $expiration, $path);
 //		$this->assertEquals($expectedCookie, $this->fakeServer->Cookies[CookieKeys::PERSIST_LOGIN]);
@@ -183,5 +186,46 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		return array($row);
 	}
 		
+}
+
+class FakeMigration extends PasswordMigration
+{
+	public $_Password;
+	public $_CreateCalled = false;
+	public $_LastOldPassword;
+	public $_LastNewPassword;
+	
+	public function Create($plaintext, $old, $new)
+	{
+		$this->_CreateCalled = true;
+		$this->_LastPlainText = $plaintext;
+		$this->_LastOldPassword = $old;
+		$this->_LastNewPassword = $new;
+		
+		return $this->_Password;
+	}
+}
+
+class FakePassword implements IPassword
+{
+	public $_ValidateCalled = false;
+	public $_MigrateCalled = false;
+	public $_LastSalt;
+	public $_LastUserId;
+	public $_ValidateResult = false;
+	
+	public function Validate($salt)
+	{
+		$this->_ValidateCalled = true;
+		$this->_LastSalt = $salt;
+		
+		return $this->_ValidateResult;
+	}
+	
+	public function Migrate($userid)
+	{
+		$this->_MigrateCalled = true;
+		$this->_LastUserId = $userid;
+	}
 }
 ?>
