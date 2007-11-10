@@ -42,12 +42,12 @@ class MigratePasswordCommand extends SqlCommand
 	}
 }
 
-class CookieLoginCommand extends SqlCommand 
+class CookieLoginCommand extends SqlCommand
 {
 	public function __construct($userid)
 	{
 		parent::__construct(Queries::COOKIE_LOGIN);
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID), $userid);	
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));	
 	}
 }
 ?>

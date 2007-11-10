@@ -2,7 +2,7 @@
 require_once('Pages/LoginPage.php');
 require_once('Presenters/LoginPresenter.php');
 
-$page = new LoginPage(new Server());
+$page = new LoginPage();
 
 if ($page->LoggingIn())
 {

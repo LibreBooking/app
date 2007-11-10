@@ -17,7 +17,7 @@ class Cookie
 		
 		if (is_null($path))
 		{
-			$path = '/';
+			$path = '';
 		}
 		
 		$this->Name = $name;

@@ -42,6 +42,7 @@ class Page implements IPage
 	public function Redirect($url)
 	{
 		header("Location: $url");
+		die();
 	}
 	
 	public function DisplayWelcome()

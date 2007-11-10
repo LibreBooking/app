@@ -87,9 +87,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(1, $command->Parameters->Count());
 				
 		$par1 = $command->Parameters->Items(0);
-		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $userid), $par1);
-		//$this->assertEquals(ParameterNames::USER_ID , $par1->Name);
-		//$this->assertEquals($userid, $par1->Value);		
+		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $userid), $par1);	
 	}
 }
 ?>

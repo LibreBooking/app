@@ -53,7 +53,7 @@
                             </p>
                         </td>
                         <td>
-                            <input type="checkbox" name="setCookie" value="true" />
+                            <input type="checkbox" name="{constant echo='FormKeys::PERSIST_LOGIN'}" value="true" />
                         </td>
                     </tr>
                     <tr id="footer">

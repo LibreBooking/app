@@ -73,7 +73,6 @@ class Authorization implements IAuthorization
 	public function CookieLogin($cookieValue)
 	{
 		$loginCookie = LoginCookie::FromValue($cookieValue);
-		
 		$valid = false;
 		
 		if (!is_null($loginCookie))

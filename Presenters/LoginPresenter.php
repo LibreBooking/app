@@ -15,7 +15,7 @@ class LoginPresenter
 	public function PageLoad()
 	{
 		$loginCookie = ServiceLocator::GetServer()->GetCookie(CookieKeys::PERSIST_LOGIN);
-	
+
 		if ($this->IsCookieLogin($loginCookie))
 		{
 			if ($this->_auth->CookieLogin($loginCookie))
@@ -23,14 +23,12 @@ class LoginPresenter
 				$this->_Redirect();
 			}
 		}
-		else
-		{
-			$allowRegistration = (bool)Configuration::GetKey(ConfigKeys::ALLOW_REGISTRATION);
-			$useLogonName = (bool)Configuration::GetKey(ConfigKeys::USE_LOGON_NAME);
-			$this->_page->setShowRegisterLink($allowRegistration);
-			$this->_page->setAvailableLanguages($this->GetLanguages());
-			$this->_page->setUseLogonName($useLogonName);
-		}
+		$allowRegistration = (bool)Configuration::GetKey(ConfigKeys::ALLOW_REGISTRATION);
+		$useLogonName = (bool)Configuration::GetKey(ConfigKeys::USE_LOGON_NAME);
+		$this->_page->setShowRegisterLink($allowRegistration);
+		$this->_page->setAvailableLanguages($this->GetLanguages());
+		$this->_page->setUseLogonName($useLogonName);
+
 	}
 	
 	public function Login()

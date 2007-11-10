@@ -28,6 +28,7 @@ class LoginPage extends Page implements ILoginPage
 		
 		$this->_presenter = new LoginPresenter($this, new Authorization($this->server));
 		$this->smarty->assign('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
+		$this->smarty->assign('ShowLoginError', false);
 	}
 
 	public function PageLoad()
