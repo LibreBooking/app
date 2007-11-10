@@ -10,17 +10,12 @@ class Page implements IPage
 	protected $smarty = null;
 	protected $server = null;
 	
-	public function __construct($title, Server &$server = null, SmartyPage &$smarty = null, $pageDepth = 0)
+	public function __construct($title, SmartyPage &$smarty = null, $pageDepth = 0)
 	{
 		$path = str_repeat('../', $pageDepth);
 		
-		if (is_null($server))
-		{
-			$server = new Server();
-		}
-		
-		$this->server =& $server;	
-		$resources = Resources::GetInstance($server);
+		$this->server = ServiceLocator::GetServer();
+		$resources = Resources::GetInstance();
 	
 		if (is_null($smarty))
 		{
@@ -29,7 +24,7 @@ class Page implements IPage
 	
 		$this->smarty =& $smarty;
 		
-		$userSession = $server->GetSession(SessionKeys::USER_SESSION);
+		$userSession = ServiceLocator::GetServer()->GetSession(SessionKeys::USER_SESSION);
 		
 		$this->smarty->assign('Charset', $resources->Charset);
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);

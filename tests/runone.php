@@ -20,7 +20,8 @@ $tests = array(
 'Mdb2CommandAdapterTests.php', 
 'Mdb2ConnectionTests.php', 
 'Mdb2ReaderTests.php', 
-'PasswordEncryptionTests.php'
+'PasswordEncryptionTests.php',
+'DateTests.php'
 );
 
 $passed = true;

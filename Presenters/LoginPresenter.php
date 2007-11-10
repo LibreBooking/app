@@ -5,28 +5,39 @@ require_once(dirname(__FILE__) . '/../lib/Common/namespace.php');
 class LoginPresenter
 {
 	private $_page = null;
-	private $_server = null;
 	
-	public function __construct(ILoginPage &$page, Server &$server)
+	public function __construct(ILoginPage &$page, IAuthorization $auth)
 	{
 		$this->_page =& $page;
-		$this->_server =& $server;
+		$this->_auth = $auth;
 	}
 	
 	public function PageLoad()
 	{
-		$allowRegistration = (bool)Configuration::GetKey(ConfigKeys::ALLOW_REGISTRATION);
-		$useLogonName = (bool)Configuration::GetKey(ConfigKeys::USE_LOGON_NAME);
-		$this->_page->setShowRegisterLink($allowRegistration);
-		$this->_page->setAvailableLanguages($this->GetLanguages());
-		$this->_page->setUseLogonName($useLogonName);
+		$loginCookie = ServiceLocator::GetServer()->GetCookie(CookieKeys::PERSIST_LOGIN);
+	
+		if ($this->IsCookieLogin($loginCookie))
+		{
+			if ($this->_auth->CookieLogin($loginCookie))
+			{
+				$this->_Redirect();
+			}
+		}
+		else
+		{
+			$allowRegistration = (bool)Configuration::GetKey(ConfigKeys::ALLOW_REGISTRATION);
+			$useLogonName = (bool)Configuration::GetKey(ConfigKeys::USE_LOGON_NAME);
+			$this->_page->setShowRegisterLink($allowRegistration);
+			$this->_page->setAvailableLanguages($this->GetLanguages());
+			$this->_page->setUseLogonName($useLogonName);
+		}
 	}
 	
-	public function Login(&$auth)
+	public function Login()
 	{
-		if ($auth->Validate($this->_page->getEmailAddress(), $this->_page->getPassword()))
+		if ($this->_auth->Validate($this->_page->getEmailAddress(), $this->_page->getPassword()))
 		{
-			$auth->Login($this->_page->getEmailAddress(), $this->_page->getPersistLogin());		
+			$this->_auth->Login($this->_page->getEmailAddress(), $this->_page->getPersistLogin());		
 			$this->_Redirect();
 		}
 		else 
@@ -61,6 +72,11 @@ class LoginPresenter
 		}
 		
 		return $languages;
+	}
+	
+	private function IsCookieLogin($loginCookie)
+	{
+		return !is_null($loginCookie);
 	}
 }
 ?>

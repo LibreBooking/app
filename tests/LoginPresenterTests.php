@@ -17,6 +17,8 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 		$this->page = new FakeLoginPage();
 		$this->server = new FakeServer();
 		
+		ServiceLocator::SetServer($this->server);
+		
 		$this->page->_EmailAddress = 'nkorbel@phpscheduleit.org';
 		$this->page->_Password = 'somepassword';
 		$this->page->_PersistLogin = true;
@@ -28,12 +30,14 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 		$this->page = null;
 		$resources =& Resources::GetInstance();
 		$resources = null;
+		
+		$this->server = null;
 	}
 	
 	public function testLoginCallsAuthValidate() 
 	{	
-		$presenter = new LoginPresenter($this->page, $this->server);
-		$presenter->Login($this->auth);
+		$presenter = new LoginPresenter($this->page, $this->auth);
+		$presenter->Login();
 		
 		$this->assertEquals($this->page->_EmailAddress, $this->auth->_LastLogin);
 		$this->assertEquals($this->page->_Password, $this->auth->_LastPassword);
@@ -42,8 +46,8 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 	public function testSuccessfulValidateCallsLogin()
 	{
 		$this->auth->_ValidateResult = true;
-		$presenter = new LoginPresenter($this->page, $this->server);
-		$presenter->Login($this->auth);
+		$presenter = new LoginPresenter($this->page, $this->auth);
+		$presenter->Login();
 		
 		$this->assertEquals($this->page->_EmailAddress, $this->auth->_LastLogin);
 		$this->assertEquals($this->page->_PersistLogin, $this->auth->_LastPersist);
@@ -52,8 +56,8 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 	public function testSuccessfulValidateCallsRedirectToNormalPageWhenNoRequestedPage()
 	{
 		$this->auth->_ValidateResult = true;
-		$presenter = new LoginPresenter($this->page, $this->server);
-		$presenter->Login($this->auth);
+		$presenter = new LoginPresenter($this->page, $this->auth);
+		$presenter->Login();
 		
 		$this->assertEquals(Pages::DEFAULT_LOGIN, $this->page->_LastRedirect);
 	}
@@ -64,8 +68,8 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 		$this->page->_ResumeUrl = $redirect;
 		
 		$this->auth->_ValidateResult = true;
-		$presenter = new LoginPresenter($this->page, $this->server);
-		$presenter->Login($this->auth);
+		$presenter = new LoginPresenter($this->page, $this->auth);
+		$presenter->Login();
 		
 		$this->assertEquals($redirect, $this->page->_LastRedirect);
 	}
@@ -75,7 +79,7 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 		Configuration::SetKey(ConfigKeys::ALLOW_REGISTRATION, 'true');
 		Configuration::SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
 		
-		$presenter = new LoginPresenter($this->page, $this->server);
+		$presenter = new LoginPresenter($this->page, $this->auth);
 		$presenter->PageLoad();
 		
 		$this->assertEquals(true, $this->page->getShowRegisterLink());
@@ -84,7 +88,7 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 	
 	public function testPageLoadSetsLanguagesCorrect()
 	{
-		$presenter = new LoginPresenter($this->page, $this->server);
+		$presenter = new LoginPresenter($this->page, $this->auth);
 		$presenter->PageLoad();
 		
 		$resources = Resources::GetInstance();
@@ -103,11 +107,36 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 	public function testErrorIsDisplayedIfValidationFails()
 	{
 		$this->auth->_ValidateResult = false;
-		$presenter = new LoginPresenter($this->page, $this->server);
-		$presenter->Login($this->auth);
+		$presenter = new LoginPresenter($this->page, $this->auth);
+		$presenter->Login();
 		
 		$this->assertEquals("", $this->page->_LastRedirect, "Does not redirect if auth fails");
 		$this->assertTrue($this->page->_ShowLoginError, "Should show login error if auth fails");
+	}
+	
+	public function testAutoLoginIfCookieIsSet()
+	{
+		$this->page->_ResumeUrl = '/autologin/page/whatever.html';
+		$cookie = new Cookie(CookieKeys::PERSIST_LOGIN, "part1|part2");
+		$this->server->SetCookie($cookie);
+		
+		$this->auth->_CookieValidateResult = true;
+		
+		$presenter = new LoginPresenter($this->page, $this->auth);
+		$presenter->PageLoad();
+		
+		$this->assertTrue($this->auth->_CookieLoginCalled, "should try to auto login if persist cookie is set");
+		$this->assertEquals($cookie->Value, $this->auth->_LastLoginCookie);
+		$this->assertEquals($this->page->_ResumeUrl, $this->page->_LastRedirect);
+	}
+	
+	public function testDoesNotAutoLoginIfCookieNotSet()
+	{
+		$this->page->_ResumeUrl = '/autologin/page/whatever.html';	
+		$presenter = new LoginPresenter($this->page, $this->auth);
+		$presenter->PageLoad();
+		
+		$this->assertFalse($this->auth->_CookieLoginCalled, "should not try to auto login without persist cookie");
 	}
 }
 
@@ -201,6 +230,9 @@ class FakeAuth implements IAuthorization
 	public $_LastPassword;
 	public $_LastPersist;
 	public $_LastLoginId;
+	public $_CookieLoginCalled = false;
+	public $_LastLoginCookie;
+	public $_CookieValidateResult = false;
 	
 	public $_ValidateResult = false;
 	
@@ -217,6 +249,14 @@ class FakeAuth implements IAuthorization
 		$this->_LastLogin = $username;
 		$this->_LastPersist = $persist;
 		$this->_LastLoginId;
+	}
+	
+	public function CookieLogin($cookie)
+	{
+		$this->_CookieLoginCalled = true;
+		$this->_LastLoginCookie = $cookie;
+		
+		return $this->_CookieValidateResult;
 	}
 }
 ?>

@@ -61,8 +61,15 @@ class Authorization implements IAuthorization
 			ServiceLocator::GetDatabase()->Execute($command);
 			
 			$this->SetUserSession($row);
+			if ($persist)
+			{
+				$this->SetLoginCookie($row);
+			}
 		}	
 	}
+	
+	public function CookieLogin($cookieValue)
+	{}
 	
 	private function SetUserSession($row)
 	{
@@ -78,6 +85,12 @@ class Authorization implements IAuthorization
 		$user->TimeOffset = $tzOffset;
 		
 		ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, $user);
+	}
+	
+	private function SetLoginCookie($row)
+	{
+		$cookie = new LoginCookie($row[ColumnNames::USER_ID], $row[ColumnNames::LAST_LOGIN ]);
+		ServiceLocator::GetServer()->SetCookie($cookie);
 	}
 }
 ?>

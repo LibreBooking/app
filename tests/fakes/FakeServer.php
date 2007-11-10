@@ -21,7 +21,12 @@ class FakeServer extends Server
 	public function GetCookie($name)
 	{
 		$cookie = $this->Cookies[$name];
-		return $cookie->Value;
+		if (!is_null($cookie))
+		{
+			return $cookie->Value;
+		}
+		
+		return null;
 	}
 	
 	public function SetSession($name, $value)

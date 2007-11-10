@@ -9,30 +9,23 @@ class Resources
 	public $CalendarLanguageFile;
 	public $AvailableLanguages = array();
 	
-	protected $Server;
 	protected $LanguageDirectory;
 	
 	private static $_instance;
 	
-	protected function __construct(Server &$server = null)
+	protected function __construct()
 	{	
-		$this->Server = &$server;
 		$this->LanguageDirectory = dirname(__FILE__) . '/../../lang/';
 		
 		$this->LoadAvailableLanguages();
 		$this->SetCurrentLanguage($this->GetLanguageCode());
 	}
 	
-	public static function &GetInstance(Server &$server = null)
-	{		
-		if (is_null($server))
-		{
-			$server = new Server();
-		}
-				
+	public static function &GetInstance()
+	{					
 		if (is_null(self::$_instance))
 		{
-			self::$_instance = new Resources($server);
+			self::$_instance = new Resources();
 		}
 		
 		return self::$_instance;
@@ -90,9 +83,9 @@ class Resources
 	
 	private function GetLanguageCode()
 	{
-		if ($this->Server->GetCookie(CookieKeys::LANGUAGE) != null)
+		if (ServiceLocator::GetServer()->GetCookie(CookieKeys::LANGUAGE) != null)
 		{
-			return $this->Server->GetCookie(CookieKeys::LANGUAGE);
+			return ServiceLocator::GetServer()->GetCookie(CookieKeys::LANGUAGE);
 		}
 		else
 		{
