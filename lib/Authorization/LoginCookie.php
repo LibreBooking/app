@@ -1,21 +1,27 @@
 <?php
 require_once('namespace.php');
-require_once('../Common/namespace.php');
+require_once(dirname(__FILE__) . '/../Common/namespace.php');
 
 class LoginCookie extends Cookie
 {
+	public $UserID;
+	public $LastLogin;
+	
 	public function __construct($userid, $lastLoginTime)
 	{
+		$this->UserID = $userid;
+		$this->LastLogin = $lastLoginTime;
+		
 		parent::__construct(CookieKeys::PERSIST_LOGIN, sprintf('%s|%s', $userid, $lastLoginTime));
 	}
 	
-	public static function GetUserID($cookieValue)
+	public static function FromValue($cookieValue)
 	{
-		$cookieParts = split('|', $cookieValue);
+		$cookieParts = explode('|', $cookieValue);
 		
-		if ($cookieParts == 2)
+		if (count($cookieParts) == 2)
 		{
-			return $cookieParts[0];
+			return new LoginCookie($cookieParts[0], $cookieParts[1]);
 		}
 		
 		return null;

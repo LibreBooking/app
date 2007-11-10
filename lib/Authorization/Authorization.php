@@ -30,6 +30,7 @@ class Authorization implements IAuthorization
 	{
 		$command = new AuthorizationCommand($username);
 		$reader = ServiceLocator::GetDatabase()->Query($command);		
+		$valid = false;
 		
 		if ($row = $reader->GetRow())
 		{
@@ -41,12 +42,11 @@ class Authorization implements IAuthorization
 			if ($password->Validate($salt))
 			{
 				$password->Migrate($row[ColumnNames::USER_ID]);
-				return true;
+				$valid = true;
 			}
-			return false;
 		}
 		
-		return false;
+		return $valid;
 	}
 	
 	public function Login($username, $persist)
@@ -56,20 +56,39 @@ class Authorization implements IAuthorization
 		
 		if ($row = $reader->GetRow())
 		{
+			$loginTime = LoginTime::Now();
 			$userid = $row[ColumnNames::USER_ID];
-			$command = new UpdateLoginTimeCommand($userid, LoginTime::Now());
+			$command = new UpdateLoginTimeCommand($userid, $loginTime);
 			ServiceLocator::GetDatabase()->Execute($command);
 			
 			$this->SetUserSession($row);
+			
 			if ($persist)
 			{
-				$this->SetLoginCookie($row);
+				$this->SetLoginCookie($userid, $loginTime);
 			}
 		}	
 	}
 	
 	public function CookieLogin($cookieValue)
-	{}
+	{
+		$loginCookie = LoginCookie::FromValue($cookieValue);
+		
+		$valid = false;
+		
+		if (!is_null($loginCookie))
+		{
+			$validEmail = $this->ValidateCookie($loginCookie);
+			$valid = !is_null($validEmail);
+			
+			if ($valid)
+			{
+				$this->Login($validEmail, true);
+			}
+		}
+		
+		return $valid;
+	}
 	
 	private function SetUserSession($row)
 	{
@@ -87,10 +106,23 @@ class Authorization implements IAuthorization
 		ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, $user);
 	}
 	
-	private function SetLoginCookie($row)
+	private function SetLoginCookie($userid, $lastLogin)
 	{
-		$cookie = new LoginCookie($row[ColumnNames::USER_ID], $row[ColumnNames::LAST_LOGIN ]);
+		$cookie = new LoginCookie($userid, $lastLogin);
 		ServiceLocator::GetServer()->SetCookie($cookie);
+	}
+	
+	private function ValidateCookie($loginCookie)
+	{
+		$valid = false;
+		$reader = ServiceLocator::GetDatabase()->Query(new CookieLoginCommand($loginCookie->UserID));
+		
+		if ($row = $reader->GetRow())
+		{
+			$valid = $row[ColumnNames::LAST_LOGIN] == $loginCookie->LastLogin;
+		}
+		
+		return $valid ? $row[ColumnNames::EMAIL] : null;
 	}
 }
 ?>

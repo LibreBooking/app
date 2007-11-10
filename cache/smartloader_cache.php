@@ -7,6 +7,7 @@
 	$GLOBALS['smartloader_classes']['ControlPanelPresenterTests'] = './ControlPanelPresenterTests.php';
 	$GLOBALS['smartloader_classes']['DatabaseCommandTests'] = './DatabaseCommandTests.php';
 	$GLOBALS['smartloader_classes']['DatabaseTests'] = './DatabaseTests.php';
+	$GLOBALS['smartloader_classes']['DateTests'] = './DateTests.php';
 	$GLOBALS['smartloader_classes']['EmailTests'] = './EmailTests.php';
 	$GLOBALS['smartloader_classes']['DBFakes'] = './fakes/DBFakes.php';
 	$GLOBALS['smartloader_classes']['EmailFakes'] = './fakes/EmailFakes.php';

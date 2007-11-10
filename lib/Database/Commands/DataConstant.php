@@ -16,12 +16,25 @@ class Queries
 	private function __construct()
 	{}
 	
+	const COOKIE_LOGIN = 'SELECT userid, lastlogin, email 
+						FROM login 
+						WHERE memberid = @userid';
+	
 	const LOGIN_USER = 'SELECT memberid, email, fname, lname, is_admin, timezone, lastlogin
 						FROM login 
 						WHERE (logon_name = @username OR email = @username)';
-	const MIGRATE_PASSWORD = 'UPDATE login SET userpassword = @password, password = NULL, salt = @salt WHERE memberid = @userid';
-	const UPDATE_LOGINTIME = 'UPDATE login SET lastlogin = @lastlogin WHERE memberid = @userid';
-	const VALIDATE_USER = 'SELECT userpassword, salt FROM login WHERE (logon_name = @username OR email = @username)';
+	
+	const MIGRATE_PASSWORD = 'UPDATE login 
+							SET userpassword = @password, password = NULL, salt = @salt 
+							WHERE memberid = @userid';
+	
+	const UPDATE_LOGINTIME = 'UPDATE login 
+							SET lastlogin = @lastlogin 
+							WHERE memberid = @userid';
+	
+	const VALIDATE_USER = 'SELECT userpassword, salt 
+							FROM login 
+							WHERE (logon_name = @username OR email = @username)';
 	
 }
 

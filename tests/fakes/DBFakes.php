@@ -34,6 +34,12 @@ class FakeDatabase extends Database
 	{
 		array_push($this->_Commands, $command);
 	}
+	
+	public function SetRows($rows)
+	{
+		$reader = new Mdb2Reader(new FakeDBResult($rows));
+		$this->SetReader($reader);
+	}
 }
 
 class FakeDBConnection implements IDBConnection

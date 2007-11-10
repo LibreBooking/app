@@ -78,5 +78,18 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(ParameterNames::SALT , $par3->Name);
 		$this->assertEquals($salt, $par3->Value);
 	}
+	
+	function testCookieLoginCommand()
+	{
+		$command = new CookieLoginCommand($userid);
+		
+		$this->assertEquals(Queries::COOKIE_LOGIN, $command->GetQuery());
+		$this->assertEquals(1, $command->Parameters->Count());
+				
+		$par1 = $command->Parameters->Items(0);
+		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $userid), $par1);
+		//$this->assertEquals(ParameterNames::USER_ID , $par1->Name);
+		//$this->assertEquals($userid, $par1->Value);		
+	}
 }
 ?>

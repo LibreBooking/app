@@ -83,6 +83,10 @@ class Parameter
 		$this->Name = $name;
 		$this->Value = $value;
 	}
+	
+	function _toString()
+	{
+		return sprintf("%s %s", $this->Name, $this->Value);
+	}
 }
-
 ?>

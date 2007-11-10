@@ -62,9 +62,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	function testValidateChecksAgainstDB()
 	{
 		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldPassword));
-		$reader = new Mdb2Reader(new FakeDBResult($rows));
-
-		$this->db->SetReader($reader);
+		$this->db->SetRows($rows);
 
 		$this->authenticated = $this->auth->Validate($this->username, $this->password);
 
@@ -78,8 +76,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		LoginTime::$Now = time();
 
 		$rows = $this->GetRows();
-		$reader = new Mdb2Reader(new FakeDBResult($rows));
-		$this->db->SetReader($reader);
+		$this->db->SetRows($rows);
 
 		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
 
@@ -121,8 +118,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$this->isAdmin = false;
 
 		$rows = $this->GetRows();
-		$reader = new Mdb2Reader(new FakeDBResult($rows));
-		$this->db->SetReader($reader);
+		$this->db->SetRows($rows);
 
 		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
 
@@ -138,8 +134,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$oldPassword = md5($password);
 
 		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldPassword));
-		$reader = new Mdb2Reader(new FakeDBResult($rows));
-		$this->db->SetReader($reader);
+		$this->db->SetRows($rows);
 
 		$this->fakePassword->_ValidateResult = true;
 
@@ -157,27 +152,62 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	}
 
 	function testCanPersistLoginWhenValidLogin()
-	{		
+	{	
+		$now = mktime(10, 11, 12, 1, 2, 2000);	
+		LoginTime::$Now = $now;
 		$rows = $this->GetRows();
-		$reader = new Mdb2Reader(new FakeDBResult($rows));
-		$this->db->SetReader($reader);
+		$this->db->SetRows($rows);
 		
-		$hashedValue = sprintf("%s|%s", $rows[0][ColumnNames::USER_ID], $rows[0][ColumnNames::LAST_LOGIN]);
+		$hashedValue = sprintf("%s|%s", $rows[0][ColumnNames::USER_ID], LoginTime::Now());
 		
 		$this->auth->Login($this->username, true);
 
 		$expectedCookie = new Cookie(CookieKeys::PERSIST_LOGIN, $hashedValue);
-		$this->assertEquals($expectedCookie, $this->fakeServer->Cookies[CookieKeys::PERSIST_LOGIN]);
+		$this->assertEquals($expectedCookie->Value, $this->fakeServer->GetCookie(CookieKeys::PERSIST_LOGIN));
 	}
 	
 	function testCanAutoLoginWithCookie()
 	{
-		$cookie = new LoginCookie('userid', mktime());
-		$this->auth->CookieLogin($cookie->Value);
+		$userid = 'userid';
+		$lastLogin = LoginTime::Now();
+		$email = 'email@address.com';
+		$cookie = new LoginCookie($userid, $lastLogin);		
 		
-		$cookieValidateCommand = new CookieLoginCommand($userid, $logintime);
-		$this->assertEquals($cookieValidateCommand, $this->db->Commands[0]);
-		// if valid, call login with username/persist
+		$rows = array(array(
+					ColumnNames::USER_ID => $userid,
+					ColumnNames::LAST_LOGIN => $lastLogin,
+					ColumnNames::EMAIL => $email
+					));
+		$this->db->SetRows($rows);
+		
+		$valid = $this->auth->CookieLogin($cookie->Value);
+		
+		$cookieValidateCommand = new CookieLoginCommand($userid);
+		$loginCommand = new LoginCommand($email);
+		
+		$this->assertTrue($valid, 'should be valid if cookie matches');
+		$this->assertEquals($cookieValidateCommand, $this->db->_Commands[0]);
+		$this->assertEquals($loginCommand, $this->db->_Commands[1], 'should login if cookie login is valid');
+	}
+	
+	function testDoesNotAutoLoginIfCookieNotValid()
+	{
+		$userid = 'userid';
+		$lastLogin = LoginTime::Now();
+		$email = 'email@address.com';
+		$cookie = new LoginCookie($userid, $lastLogin);		
+		
+		$rows = array(array(
+					ColumnNames::USER_ID => $userid,
+					ColumnNames::LAST_LOGIN => 'not the same thing',
+					ColumnNames::EMAIL => $email
+					));
+		$this->db->SetRows($rows);
+		
+		$valid = $this->auth->CookieLogin($cookie->Value);
+		
+		$this->assertFalse($valid, 'should not be valid if cookie does not match');
+		$this->assertEquals(1, count($this->db->_Commands));
 	}
 
 	function GetRows()

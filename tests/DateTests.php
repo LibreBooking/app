@@ -30,8 +30,8 @@ class DateTests extends PHPUnit_Framework_TestCase
 	
 	public function testCanGetAsDateTime()
 	{
-		$now = new Date(date());
-		$datenow = date();
+		$now = new Date(mktime());
+		$datenow = mktime();
 		
 		$this->assertEquals($datenow, $now->DateTime());
 	}
