@@ -14,15 +14,11 @@
 		<script language="JavaScript" type="text/javascript" src="{$Path}ajax.js"></script>
 		<style type="text/css">
 		@import url({$Path}jscalendar/calendar-blue-custom.css);
-		@import url({$Path}css.css);
+		@import url({$Path}style.css);
 		</style>
 		<script type="text/javascript" src="{$Path}jscalendar/calendar.js"></script>
 		<script type="text/javascript" src="{$Path}jscalendar/lang/{$CalendarJSFile}"></script>
 		<script type="text/javascript" src="{$Path}jscalendar/calendar-setup.js"></script>
 	</head>
 	<body>
-	{if $DisplayWelcome}{control type="LeaderBoard" DisplayWelcomeMsg=$DisplayWelcome}{/if}
-	<p>&nbsp;</p>
-	<table width="100%" border="0" cellspacing="0" cellpadding="10" style="border: solid #CCCCCC 1px;">
-	  <tr>
-		<td bgcolor="#FAFAFA">
+	{control type="LeaderBoard" DisplayWelcomeMsg=$DisplayWelcome}

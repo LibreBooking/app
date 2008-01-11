@@ -11,6 +11,7 @@
 	$GLOBALS['smartloader_classes']['EmailTests'] = './EmailTests.php';
 	$GLOBALS['smartloader_classes']['DBFakes'] = './fakes/DBFakes.php';
 	$GLOBALS['smartloader_classes']['EmailFakes'] = './fakes/EmailFakes.php';
+	$GLOBALS['smartloader_classes']['FakePageBase'] = './fakes/FakePageBase.php';
 	$GLOBALS['smartloader_classes']['FakeReminder'] = './fakes/FakeReminder.php';
 	$GLOBALS['smartloader_classes']['FakeReservation'] = './fakes/FakeReservation.php';
 	$GLOBALS['smartloader_classes']['FakeResource'] = './fakes/FakeResource.php';
@@ -24,6 +25,8 @@
 	$GLOBALS['smartloader_classes']['Mdb2ReaderTests'] = './Mdb2ReaderTests.php';
 	$GLOBALS['smartloader_classes']['PasswordEncryptionTests'] = './PasswordEncryptionTests.php';
 	$GLOBALS['smartloader_classes']['PasswordMigrationTests'] = './PasswordMigrationTests.php';
+	$GLOBALS['smartloader_classes']['RegisterPresenterTests'] = './RegisterPresenterTests.php';
+	$GLOBALS['smartloader_classes']['RegistrationTests'] = './RegistrationTests.php';
 	$GLOBALS['smartloader_classes']['ReminderEmailTests'] = './ReminderEmailTests.php';
 	$GLOBALS['smartloader_classes']['ReminderTests'] = './ReminderTests.php';
 	$GLOBALS['smartloader_classes']['ReservationHelperTests'] = './ReservationHelperTests.php';

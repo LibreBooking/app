@@ -1,15 +1,22 @@
 <?php
-require_once('namespace.php');
-
+/*
+ All dates are stored as GMT
+ */
 class Date
 {
-	private $timestamp;
+	private $date;
 	private $parts;
+	private $timezone;
 	
-	public function __construct($timestamp)
+	public function __construct($timestamp = null, $timezone = 'GMT')
 	{
-		$this->timestamp = $timestamp;
-		$this->parts = getdate($timestamp);	
+		if ($timestamp == null)
+		{
+			$timestamp = time();
+		}
+		$this->timezone = $timezone;
+		$this->date = new DateTime(strtotime($timestamp), new DateTimeZone($this->timezone));
+		$this->parts = date_parse($this->date->format(DATE_W3C));	
 	}
 	
 	public static function Now()
@@ -19,12 +26,24 @@ class Date
 	
 	public function Format($format)
 	{
-		return date($format, $this->timestamp);
+		return $this->date->format($format);
 	}
 	
-	public function DateTime()
+	public function ToTimezone($timezone)
 	{
-		return $this->timestamp;
+		return new Date($this->Timestamp(), $timezone);
+	}
+	
+	public function Timestamp()
+	{
+		return mktime(
+					$this->Hour(), 
+					$this->Minute(), 
+					$this->Second(), 
+					$this->Month(), 
+					$this->Day(), 
+					$this->Year()
+					);
 	}
 	
 	public function AddDays($days)
@@ -39,47 +58,46 @@ class Date
 							);
 			
 		return new Date($timestamp);
-	}
-	
+	}	
 	
 	public function Hour()
 	{
-		return $this->parts['hours'];		
+		return $this->parts['hour'];		
 	}
 	
 	public function Minute()
 	{
-		return $this->parts['minutes'];
+		return $this->parts['minute'];
 	}
 	
 	public function Second()
 	{
-		return $this->parts['seconds'];
+		return $this->parts['second'];
 	}
 	
 	public function Month()
 	{
-		return $this->parts['mon'];
+		return $this->parts['month'];
 	}
 	
 	public function Day()
 	{
-		return $this->parts['mday'];
+		return $this->parts['day'];
 	}
 	
 	public function Year()
 	{
 		return $this->parts['year'];
 	}
-	
-	public function DayOfYear()
-	{
-		return $this->parts['yday'];
-	}
-	
-	public function DayOfWeek()
-	{
-		return $this->parts['wday'];
-	}
+//	
+//	public function DayOfYear()
+//	{
+//		return $this->parts['yday'];
+//	}
+//	
+//	public function DayOfWeek()
+//	{
+//		return $this->parts['wday'];
+//	}
 }
 ?>

@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+@import url(style.css);
+</style>
+</head>
+
+<body>
+<div id="header">
+	<table>
+    	<tr>
+			<td>
+                <h4 class="welcomeBack">{translate key='Welcome Back' args=$UserName}</h4>
+                <p>
+                {html_link href="$Path/index.php?logout=true" key="Log Out"}
+                |
+                {html_link href="$Path/ctrlpnl.php" key="My Control Panel"}
+                </p>
+            </td>
+            <td valign="top">
+                <div align="right">
+                <p>				
+                <?php echo translate_date('header', Time::getAdjustedTime(mktime()));?>
+                </p>
+                <p>
+                {html_link href="javascript: help();" key="Help"}
+                </p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

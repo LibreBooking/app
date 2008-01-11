@@ -1,5 +1,5 @@
 <?php
-require_once('namespace.php');
+//require_once('namespace.php');
 require_once(dirname(__FILE__) . '/../../Smarty/Smarty.class.php');
 require_once(dirname(__FILE__) . '/../Server/namespace.php');
 

@@ -11,6 +11,7 @@ require_once 'PHPUnit/Framework.php';
 //$tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
 
 $tests = array(
+'RegisterPresenterTests.php',
 'PasswordMigrationTests.php',
 'ResourcesTests.php', 
 'LoginPresenterTests.php', 

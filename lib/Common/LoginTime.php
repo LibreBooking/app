@@ -1,4 +1,6 @@
 <?php
+require_once('namespace.php');
+
 class LoginTime
 {
 	public static $Now = null;
@@ -9,7 +11,8 @@ class LoginTime
 	{
 		if (empty(self::$Now))
 		{
-			return date(self::$_format);
+			$date = new Date();
+			return $date->Format(self::$_format);
 		}
 		else 
 		{

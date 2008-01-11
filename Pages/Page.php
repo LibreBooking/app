@@ -28,7 +28,7 @@ class Page implements IPage
 		
 		$this->smarty->assign('Charset', $resources->Charset);
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);
-		$this->smarty->assign('Title', $title);
+		$this->smarty->assign('Title', "phpScheduleIt $title");
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
 		$this->smarty->assign('AllowRss', Configuration::GetKey(ConfigKeys::ALLOW_RSS));
 		$this->smarty->assign('LoggedIn', !is_null($userSession));

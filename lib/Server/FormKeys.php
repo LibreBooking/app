@@ -7,10 +7,16 @@ class FormKeys
 	{}
 	
 	const EMAIL = 'email';
-	const PASSWORD = 'password';
-	const PERSIST_LOGIN = 'persistLogin';
+	const FIRST_NAME = 'firstName';
 	const LANGUAGE = 'language';
+	const LAST_NAME = 'lastName';
+	const LOGIN = 'login';
+	const PASSWORD = 'password';
+	const PASSWORD_CONFIRM = 'passwordConfirm';
+	const PERSIST_LOGIN = 'persistLogin';
+	const PHONE = 'phone';
 	const RESUME = 'resume';
+	const TIMEZONE = 'timezone';
 }
 
 class Actions

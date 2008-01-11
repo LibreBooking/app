@@ -35,7 +35,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$this->lname = 'Name';
 		$this->email = 'my@email.com';
 		$this->isAdmin = true;
-		$this->timezone = 2;
+		$this->timezone = "US/Central";
 		$this->lastLogin = mktime();
 
 		$this->db = new FakeDatabase();
@@ -61,6 +61,9 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 
 	function testValidateChecksAgainstDB()
 	{
+		$id = 10;
+		$oldPassword = 'oldpassword';
+		
 		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldPassword));
 		$this->db->SetRows($rows);
 
@@ -90,17 +93,12 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 
 	function testLoginSetsUserInSession()
 	{
-		$serverTz = -1;
-		Configuration::SetKey(ConfigKeys::SERVER_TIMEZONE, $serverTz);
-
-		$timeOffset = $this->timezone - $serverTz;
-
 		$user = new UserSession($this->id);
 		$user->FirstName = $this->fname;
 		$user->LastName = $this->lname;
 		$user->Email = $this->email;
 		$user->IsAdmin = $this->isAdmin;
-		$user->TimeOffset = $timeOffset;
+		$user->Timezone = $this->timezone;
 
 		$rows = $this->GetRows();
 		$reader = new Mdb2Reader(new FakeDBResult($rows));
@@ -130,6 +128,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	{
 		$id = 1;
 		$password = 'plaintext';
+		$username = 'user';
 
 		$oldPassword = md5($password);
 
@@ -219,7 +218,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 					ColumnNames::LAST_NAME => $this->lname,
 					ColumnNames::EMAIL => $this->email,
 					ColumnNames::IS_ADMIN => $this->isAdmin,
-					ColumnNames::TIMEZONE => $this->timezone
+					ColumnNames::TIMEZONE_NAME => $this->timezone
 					);
 
 		return array($row);

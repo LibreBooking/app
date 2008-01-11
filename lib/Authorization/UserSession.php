@@ -15,7 +15,7 @@ class UserSession
 	public $LastName = '';
 	public $Email = '';
 	public $IsAdmin = false;
-	public $TimeOffset = 0;
+	public $Timezone = '';
 	
 	public function __construct($id)
 	{

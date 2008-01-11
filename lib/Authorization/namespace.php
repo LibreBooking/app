@@ -6,4 +6,6 @@ require_once('UserSession.php');
 require_once('PasswordEncryption.php');
 require_once('Password.php');
 require_once('LoginCookie.php');
+require_once('IRegistration.php');
+require_once('Registration.php');
 ?>

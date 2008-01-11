@@ -1,6 +1,6 @@
 <?php
 //require_once(dirname(__FILE__) . '/../SmartLoader.php');
-require_once('namespace.php');
+//require_once('namespace.php');
 
 class Resources
 {

@@ -98,9 +98,7 @@ class Authorization implements IAuthorization
 		
 		$isAdmin = ($user->Email == Configuration::GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$row[ColumnNames::IS_ADMIN];
 		$user->IsAdmin = $isAdmin;
-		
-		$tzOffset = intval($row[ColumnNames::TIMEZONE]) - intval(Configuration::GetKey(ConfigKeys::SERVER_TIMEZONE));
-		$user->TimeOffset = $tzOffset;
+		$user->Timezone = $row[ColumnNames::TIMEZONE_NAME];
 		
 		ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, $user);
 	}

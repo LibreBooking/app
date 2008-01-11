@@ -50,4 +50,14 @@ class CookieLoginCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));	
 	}
 }
+
+class CheckUserExistanceCommand extends SqlCommand
+{
+	public function __construct($loginName, $emailAddress)
+	{
+		parent::__construct(Queries::CHECK_USER_EXISTANCE);
+		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $loginName));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $emailAddress));	
+	}
+}
 ?>

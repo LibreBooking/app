@@ -1,5 +1,6 @@
 <?php
 require_once('namespace.php');
+require_once(dirname(__FILE__). '/../../lib/Common/namespace.php');
 
 class Cookie
 {
@@ -12,7 +13,10 @@ class Cookie
 	{
 		if (is_null($expiration))
 		{
-			$expiration = Date::Now()->AddDays(30)->DateTime();
+//			$date = new Date();//Date::::Now();
+//			$date->addSpan(new Date_Span(30, '%D'));
+//			$expiration =$date->getDate(DATE_FORMAT_UNIXTIME);
+			$expiration = Date::Now()->AddDays(30)->TimeStamp();
 		}
 		
 		if (is_null($path))
@@ -22,7 +26,7 @@ class Cookie
 		
 		$this->Name = $name;
 		$this->Value = $value;
-		$this->Expiration = $expiration;
+		$this->Expiration = date(DATE_COOKIE, $expiration);
 		$this->Path = $path;
 	}
 	
