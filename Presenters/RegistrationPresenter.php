@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/../lib/Config/namespace.php');
 require_once(dirname(__FILE__) . '/../lib/Common/namespace.php');
-require_once('Validators/EmailValidator.php');
+//require_once(dirname(__FILE__) . '/../lib/Common/Validators/EmailValidator.php');
 //require_once(dirname(__FILE__) . '/../Zend/Date.php');
 
 
@@ -9,15 +9,16 @@ class RegistrationPresenter
 {
 	private $_page;
 	private $_registration;
-	private $_validators;
 	
 	public function __construct(IRegistrationPage $page, IRegistration $registration)
 	{
 		$this->_page = $page;
 		$this->_registration = $registration;
 		
-		// if is post back
-		$this->LoadValidators();
+		if ($page->IsPostBack())
+		{
+			$this->LoadValidators();
+		}
 	}
 	
 	public function PageLoad()
@@ -30,18 +31,7 @@ class RegistrationPresenter
 		}
 		$this->_page->SetTimezones($timezoneValues, $timezoneOutput);
 		$this->_page->SetTimezone(Configuration::GetKey(ConfigKeys::SERVER_TIMEZONE));
-	}
-	
-	public function IsValid()
-	{
-		foreach ($this->_validators as $validator)
-		{
-			if (!$validator->IsValid())
-			{
-				return false;
-			}
-		}
-		return true;
+		$this->_page->SetFirstName(null);
 	}
 	
 	public function Register()
@@ -70,8 +60,10 @@ class RegistrationPresenter
 	
 	private function LoadValidators()
 	{
-		$this->_validators = array();
-		$this->_validators[] = new EmailValidator($this->_page->GetEmail());
+		$this->_page->RegisterValidator('fname', new RequiredValidator($this->_page->GetFirstName()));
+		$this->_page->RegisterValidator('email', new EmailValidator($this->_page->GetEmail()));
+//		$this->_validators = array();
+//		$this->_validators[] = new EmailValidator($this->_page->GetEmail());
 		
 		// add required field validators
 	}

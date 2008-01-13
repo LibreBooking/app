@@ -21,10 +21,10 @@ class LoginPage extends Page implements ILoginPage
 {
 	private $_presenter = null;
 
-	public function __construct(SmartyPage $smarty = null)
+	public function __construct()
 	{
 		$title = sprintf('phpScheduleIt - %s', Resources::GetInstance()->GetString('Log In'));
-		parent::__construct($title, $smarty);
+		parent::__construct($title);
 		
 		$this->_presenter = new LoginPresenter($this, new Authorization());
 		$this->smarty->assign('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));

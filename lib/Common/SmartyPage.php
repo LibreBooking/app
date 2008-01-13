@@ -1,13 +1,16 @@
 <?php
-//require_once('namespace.php');
 require_once(dirname(__FILE__) . '/../../Smarty/Smarty.class.php');
 require_once(dirname(__FILE__) . '/../Server/namespace.php');
-
+require_once(dirname(__FILE__) . '/../External/SmartyValidate/SmartyValidate.class.php');
+require_once('Validators/namespace.php');
 
 class SmartyPage extends Smarty
 {
+	public $Validators;
+		
 	private $Resources = null;
 	private $RootPath = null;
+	private $IsValid = true;
 	
 	public function __construct(Resources &$resources = null, $rootPath = null)
 	{
@@ -36,6 +39,15 @@ class SmartyPage extends Smarty
 		$this->register_function('html_link', array($this, 'PrintLink'));
 		$this->register_function('html_image', array($this, 'PrintImage'));
 		$this->register_function('control', array($this, 'DisplayControl'));
+		$this->register_function('validator', array($this, 'Validator'));
+		
+		$this->Validators = new PageValdiators();
+		
+	}
+		
+	public function IsValid()
+	{
+		return $this->IsValid;
 	}
 
 	public function PrintLink($params, &$smarty)
@@ -101,6 +113,17 @@ class SmartyPage extends Smarty
 		}
 		
 		$control->PageLoad();
+	}
+	
+	public function Validator($params, &$smarty)
+	{
+		$validator = $this->Validators->Get($params['id']);
+		if (!$validator->IsValid())
+		{
+			$this->IsValid = false;
+			return $this->SmartyTranslate(array('key' => $params['key']), $smarty);
+		}
+		return;
 	}
 }
 ?>

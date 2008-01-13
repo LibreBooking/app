@@ -7,9 +7,9 @@ class FormKeys
 	{}
 	
 	const EMAIL = 'email';
-	const FIRST_NAME = 'firstName';
+	const FIRST_NAME = 'fname';
 	const LANGUAGE = 'language';
-	const LAST_NAME = 'lastName';
+	const LAST_NAME = 'lname';
 	const LOGIN = 'login';
 	const PASSWORD = 'password';
 	const PASSWORD_CONFIRM = 'passwordConfirm';
@@ -17,13 +17,5 @@ class FormKeys
 	const PHONE = 'phone';
 	const RESUME = 'resume';
 	const TIMEZONE = 'timezone';
-}
-
-class Actions
-{
-	private function __construct()
-	{}
-	
-	const LOGIN = 'login';
 }
 ?>

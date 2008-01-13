@@ -10,19 +10,14 @@ class Page implements IPage
 	protected $smarty = null;
 	protected $server = null;
 	
-	public function __construct($title, SmartyPage &$smarty = null, $pageDepth = 0)
+	public function __construct($title, $pageDepth = 0)
 	{
 		$path = str_repeat('../', $pageDepth);
 		
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
 	
-		if (is_null($smarty))
-		{
-			$smarty = new SmartyPage($resources, $path);
-		}
-	
-		$this->smarty =& $smarty;
+		$this->smarty =& new SmartyPage($resources, $path);
 		
 		$userSession = ServiceLocator::GetServer()->GetSession(SessionKeys::USER_SESSION);
 		
@@ -53,6 +48,21 @@ class Page implements IPage
 	public function IsAuthenticated()
 	{
 		return !is_null($this->server->GetSession(SessionKeys::USER_SESSION));
+	}
+	
+	public function IsPostBack()
+	{
+		return !empty($_POST);
+	}
+	
+	public function RegisterValidator($validatorId, $validator)
+	{
+		$this->smarty->Validators->Register($validatorId, $validator);
+	}
+	
+	public function IsValid()
+	{
+		return $this->smarty->IsValid();
 	}
 }
 

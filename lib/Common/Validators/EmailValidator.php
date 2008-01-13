@@ -15,4 +15,5 @@ class EmailValidator implements IValidator
 		return eregi("^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$", $this->email);
 	}
 }
+
 ?>

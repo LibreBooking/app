@@ -32,7 +32,7 @@ class RegistrationPage extends Page implements IRegistrationPage
 {
 	public function __construct()
 	{
-		parent::__construct('Registration', $smarty);
+		parent::__construct('Registration');
 		
 		//Modules::Load('Registration')
 		$this->_presenter = new RegistrationPresenter($this, new Registration());			

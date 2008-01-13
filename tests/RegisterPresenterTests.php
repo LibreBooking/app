@@ -64,22 +64,6 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals($numberOfTimezones, count($this->page->_TimezoneOutput));
 	}
 	
-	public function testPresenterValidatesRegistrationFields()
-	{
-		$this->page->SetLoginName($this->login);
-		$this->page->SetEmail('improperemail.com');
-		$this->page->SetFirstName($this->fname);
-		$this->page->SetLastName($this->lname);
-		$this->page->SetPhone($this->phone);
-		$this->page->SetPassword($this->password);
-		$this->page->SetPasswordConfirm($this->confirm);
-		$this->page->SetTimezone($this->timezone);
-		
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg);
-		
-		$this->assertFalse($this->presenter->IsValid());
-	}
-	
 	public function testPresenterRegistersIfAllFieldsAreValid()
 	{		
 		$this->page->SetLoginName($this->login);
@@ -92,6 +76,8 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		$this->page->SetTimezone($this->timezone);
 		
 		$additionalFields = array($this->phone);
+		
+		$this->Page->_IsValid = true;
 		
 		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg);
 		$this->presenter->Register();
