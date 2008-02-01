@@ -5,6 +5,7 @@ class FakePageBase implements IPage
 	public $_RedirectDestination = '';
 	public $_IsPostBack = false;
 	public $_IsValid = true;
+	public $_Validators = array();
 	
 	public function Redirect($destination)
 	{
@@ -20,5 +21,10 @@ class FakePageBase implements IPage
 	public function IsValid()
 	{
 		return $this->_IsValid;
+	}
+	
+	public function RegisterValidator($validatorId, $validator)
+	{
+		$this->_Validators[$validatorId] = $validator;
 	}
 }

@@ -1,8 +1,13 @@
 {include file='header.tpl'}
 <form name="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
 <div>
-{validator id="fname" key="First name is required."}
-{validator id="email" key="First name is required."}
+{validator id="fname" key="FirstNameRequired"}
+{validator id="lname" key="LastNameRequired"}
+{validator id="passwordmatch" key="PwMustMatch"}
+{validator id="passwordcomplexity" key="PwComplexity"}
+{validator id="emailformat" key="ValidEmailRequired"}
+{validator id="uniqueemail" key="UniqueEmailRequired"}
+{validator id="uniqueusername" key="UniqueUsernameRequired"}
 </div>
 
 <input type="text" name="{constant echo='FormKeys::FIRST_NAME'}" class="textbox" value="{$FirstName|escape}" />

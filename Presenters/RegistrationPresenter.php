@@ -61,11 +61,16 @@ class RegistrationPresenter
 	private function LoadValidators()
 	{
 		$this->_page->RegisterValidator('fname', new RequiredValidator($this->_page->GetFirstName()));
-		$this->_page->RegisterValidator('email', new EmailValidator($this->_page->GetEmail()));
-//		$this->_validators = array();
-//		$this->_validators[] = new EmailValidator($this->_page->GetEmail());
+		$this->_page->RegisterValidator('lname', new RequiredValidator($this->_page->GetLastName()));
+		$this->_page->RegisterValidator('passwordmatch', new EqualValidator($this->_page->GetPassword(), $this->_page->GetPasswordConfirm()));
+		$this->_page->RegisterValidator('passwordcomplexity', new RegexValidator($this->_page->GetPassword(), Configuration::GetKey(ConfigKeys::PASSWORD_PATTERN)));
+		$this->_page->RegisterValidator('emailformat', new EmailValidator($this->_page->GetEmail()));
+		$this->_page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->_page->GetEmail()));
 		
-		// add required field validators
+		if (Configuration::GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()))
+		{
+			$this->_page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->_page->GetLoginName()));		
+		}
 	}
 }
 ?>

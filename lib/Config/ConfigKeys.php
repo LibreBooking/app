@@ -11,6 +11,7 @@ class ConfigKeys
 	const VERSION = 'version';
 	const SCRIPT_URL = 'script.url';
 	const USE_LOGON_NAME = 'use.logon.name';
+	const PASSWORD_PATTERN = 'password.pattern';
 	
 	const DATABASE_TYPE = 'database.type';
 	const DATABASE_USER = 'database.user';

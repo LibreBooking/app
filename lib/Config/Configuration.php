@@ -10,16 +10,25 @@ class Configuration
 	{	
 	}
 	
-	public static function GetKey($name)
+	public static function GetKey($name, $converter = null)
 	{
+		$value = null;
+		
 		if (empty(self::$_values[$name]))
 		{
-			return self::_GetKey($name);
+			$value = self::_GetKey($name);
 		}
 		else 
 		{
-			return self::$_values[$name];
+			$value = self::$_values[$name];
 		}
+		
+		if (!is_null($converter))
+		{
+			return $converter->Convert($value);
+		}
+		
+		return $value;
 	}
 	
 	public static function SetKey($name, $value)
@@ -38,4 +47,5 @@ class Configuration
 		return $config[$name];
 	}
 }
+
 ?>

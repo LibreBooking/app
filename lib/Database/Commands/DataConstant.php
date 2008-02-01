@@ -17,6 +17,16 @@ class Queries
 	private function __construct()
 	{}
 	
+	const CHECK_EMAIL = 
+		'SELECT memberid 
+		FROM login
+		WHERE email = @emailaddress';
+		
+	const CHECK_USERNAME = 
+		'SELECT memberid 
+		FROM login
+		WHERE logon_name = @username';
+		
 	const CHECK_USER_EXISTANCE = 
 		'SELECT memberid 
 		FROM login

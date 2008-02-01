@@ -1,8 +1,9 @@
 <?php
 require_once(dirname(__FILE__) . '/../../Smarty/Smarty.class.php');
 require_once(dirname(__FILE__) . '/../Server/namespace.php');
-require_once(dirname(__FILE__) . '/../External/SmartyValidate/SmartyValidate.class.php');
+//require_once(dirname(__FILE__) . '/../External/SmartyValidate/SmartyValidate.class.php');
 require_once('Validators/namespace.php');
+require_once('Converters/namespace.php');
 
 class SmartyPage extends Smarty
 {

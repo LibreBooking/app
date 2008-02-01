@@ -104,5 +104,25 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(new Parameter(ParameterNames::USER_NAME, $username), $command->Parameters->Items(0));
 		$this->assertEquals(new Parameter(ParameterNames::EMAIL_ADDRESS, $email), $command->Parameters->Items(1));
 	}
+	
+	function testCheckEmailCommand()
+	{
+		$email = 'some@email.com';
+		$command = new CheckEmailCommand($email);
+		
+		$this->assertEquals(Queries::CHECK_EMAIL, $command->GetQuery());
+		$this->assertEquals(1, $command->Parameters->Count());		
+		$this->assertEquals(new Parameter(ParameterNames::EMAIL_ADDRESS, $email), $command->Parameters->Items(0));
+	}
+	
+	function testCheckUsernameCommand()
+	{
+		$username = 'username';
+		$command = new CheckUsernameCommand($username);
+		
+		$this->assertEquals(Queries::CHECK_USERNAME, $command->GetQuery());
+		$this->assertEquals(1, $command->Parameters->Count());		
+		$this->assertEquals(new Parameter(ParameterNames::USER_NAME , $username), $command->Parameters->Items(0));
+	}
 }
 ?>

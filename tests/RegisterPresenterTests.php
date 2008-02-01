@@ -66,18 +66,11 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 	
 	public function testPresenterRegistersIfAllFieldsAreValid()
 	{		
-		$this->page->SetLoginName($this->login);
-		$this->page->SetEmail($this->email);
-		$this->page->SetFirstName($this->fname);
-		$this->page->SetLastName($this->lname);
-		$this->page->SetPhone($this->phone);
-		$this->page->SetPassword($this->password);
-		$this->page->SetPasswordConfirm($this->confirm);
-		$this->page->SetTimezone($this->timezone);
+		$this->LoadPageValues();
 		
 		$additionalFields = array($this->phone);
 		
-		$this->Page->_IsValid = true;
+		$this->page->_IsValid = true;
 		
 		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg);
 		$this->presenter->Register();
@@ -91,6 +84,69 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->confirm, $this->fakeReg->_Confirm);
 		$this->assertEquals($this->timezone, $this->fakeReg->_Timezone);
 		$this->assertEquals($additionalFields, $this->fakeReg->_AdditionalFields);
+	}
+	
+	public function testRegistersAllValidators()
+	{
+		$pattern = '/^[^\s]{6,}$/i';
+		Configuration::SetKey(ConfigKeys::PASSWORD_PATTERN, '/^[^\s]{6,}$/i');
+		Configuration::SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
+		
+		$this->LoadPageValues();
+		$this->page->_IsPostBack = true;
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg);
+		
+		$v = $this->page->_Validators;
+		
+		$this->assertEquals(7, count($v));
+		$this->assertEquals($v['fname'], new RequiredValidator($this->fname));
+		$this->assertEquals($v['lname'], new RequiredValidator($this->lname));
+		$this->assertEquals($v['passwordmatch'], new EqualValidator($this->password, $this->confirm));
+		$this->assertEquals($v['passwordcomplexity'], new RegexValidator($this->password, $pattern));
+		$this->assertEquals($v['emailformat'], new EmailValidator($this->email));
+		$this->assertEquals($v['uniqueemail'], new UniqueEmailValidator($this->email));
+		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator($this->login));
+	}
+	
+	public function testDoesNotAddUsernameValidatorIfConfiguredOff()
+	{
+		Configuration::SetKey(ConfigKeys::USE_LOGON_NAME, 'false');
+		$this->LoadPageValues();
+		$this->page->_IsPostBack = true;
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg);
+		
+		$v = $this->page->_Validators;
+		
+		$this->assertEquals(6, count($v));
+		$this->assertFalse(key_exists('uniqueusername', $v));
+	}
+	
+	public function testPasswordComplexity()
+	{
+		$regex = '/^[^\s]{6,}$/i';
+		
+		$valid1 = new RegexValidator('$password$_+123', $regex);
+		$valid2 = new RegexValidator('pas123', $regex);
+		
+		$invalid1 = new RegexValidator('passw', $regex);
+		$invalid2 = new RegexValidator('password123 123', $regex);
+		
+		$this->assertTrue($valid1->IsValid());
+		$this->assertTrue($valid2->IsValid());
+		$this->assertFalse($invalid1->IsValid());
+		$this->assertFalse($invalid2->IsValid(), "spaces are not allowed");
+	}
+	
+	private function LoadPageValues()
+	{
+		$this->page->SetLoginName($this->login);
+		$this->page->SetEmail($this->email);
+		$this->page->SetFirstName($this->fname);
+		$this->page->SetLastName($this->lname);
+		$this->page->SetPhone($this->phone);
+		$this->page->SetPassword($this->password);
+		$this->page->SetPasswordConfirm($this->confirm);
+		$this->page->SetTimezone($this->timezone);
 	}
 }
 

@@ -3,9 +3,9 @@ require_once('Language.php');
 
 class en_us extends Language
 {
-	function en_us()
+	public function __construct()
 	{
-		parent::Language();
+		parent::__construct();
 	}
 	
 	function _LoadDates()
@@ -34,6 +34,16 @@ class en_us extends Language
 	function _LoadStrings()
 	{
 		$strings = array();
+		
+		// new stuff
+		$strings['FirstNameRequired'] = 'First name is required.';
+		$strings['LastNameRequired'] = 'Last name is required.';
+		$strings['PwMustMatch'] = 'Password confirmation must match password.';
+		$strings['PwComplexity'] = 'Password must be at least 6 characters with a combination of letters, numbers and symbols.';
+		$strings['ValidEmailRequired'] = 'A valid email address is required.';
+		$strings['UniqueEmailRequired'] = 'That email address is already registered.';
+		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
+		//
 		
 		/***
 		  STRING TRANSLATIONS
