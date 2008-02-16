@@ -5,6 +5,7 @@ require_once('../lib/Common/namespace.php');
 require_once('../lib/Authorization/namespace.php');
 require_once('fakes/FakeServer.php');
 require_once('fakes/FakePageBase.php');
+require_once('fakes/FakeRegister.php');
 
 class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 {
@@ -12,6 +13,7 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 	private $server;
 	private $presenter;
 	private $fakeReg;
+    private $fakeAuth;
 	
 	private $login = 'testlogin';
 	private $email = 'test@test.com';
@@ -27,22 +29,21 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		$this->page = new FakeRegistrationPage();
 		$this->server = new FakeServer();
 		$this->fakeReg = new FakeRegistration();
+        $this->fakeAuth = new FakeAuth();
 		
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg);
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
 		
 		ServiceLocator::SetServer($this->server);
 	}
 	
 	public function teardown()
 	{
-		$this->auth = null;
 		$this->page = null;
-//		$resources =& Resources::GetInstance();
-//		$resources = null;
+        $this->server = null;
+        $this->fakeReg = null;
+        $this->fakeAuth = null;
 
 		Configuration::Reset();
-		
-		$this->server = null;
 	}
 	
 	public function testSetsSelectedTimezoneToServerDefault()
@@ -68,11 +69,15 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 	{		
 		$this->LoadPageValues();
 		
-		$additionalFields = array($this->phone);
+		$additionalFields = array(
+					'phone' => $this->phone,
+					'instituntion' => '',
+					'position' => ''
+					);
 		
 		$this->page->_IsValid = true;
 		
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg);
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
 		$this->presenter->Register();
 		
 		$this->assertTrue($this->fakeReg->_RegisterCalled);
@@ -81,9 +86,8 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->fname, $this->fakeReg->_First);
 		$this->assertEquals($this->lname, $this->fakeReg->_Last);
 		$this->assertEquals($this->password, $this->fakeReg->_Password);
-		$this->assertEquals($this->confirm, $this->fakeReg->_Confirm);
 		$this->assertEquals($this->timezone, $this->fakeReg->_Timezone);
-		$this->assertEquals($additionalFields, $this->fakeReg->_AdditionalFields);
+		$this->assertEquals($additionalFields['phone'], $this->fakeReg->_AdditionalFields['phone']);
 	}
 	
 	public function testRegistersAllValidators()
@@ -94,7 +98,7 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		
 		$this->LoadPageValues();
 		$this->page->_IsPostBack = true;
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg);
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
 		
 		$v = $this->page->_Validators;
 		
@@ -113,7 +117,7 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		Configuration::SetKey(ConfigKeys::USE_LOGON_NAME, 'false');
 		$this->LoadPageValues();
 		$this->page->_IsPostBack = true;
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg);
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
 		
 		$v = $this->page->_Validators;
 		
@@ -135,6 +139,33 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		$this->assertTrue($valid2->IsValid());
 		$this->assertFalse($invalid1->IsValid());
 		$this->assertFalse($invalid2->IsValid(), "spaces are not allowed");
+	}
+    
+    public function testDoesNotRegisterIfPageIsNotValid()
+    {   
+        $this->page->_IsValid = false;
+        $this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
+        $this->presenter->Register();
+        
+        $this->assertFalse($this->fakeReg->_RegisterCalled);
+        $this->assertFalse($this->fakeAuth->_LoginCalled);      
+    }
+	
+	public function testAuthorizesUserAfterRegister()
+	{
+	    $this->LoadPageValues();		
+		$this->page->_IsValid = true;
+		$this->page->_Email = $this->email;
+		
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
+		$this->presenter->Register();
+		
+		$this->assertTrue($this->fakeReg->_RegisterCalled);
+		$this->assertTrue($this->fakeAuth->_LoginCalled);
+        $this->assertEquals($this->email, $this->fakeAuth->_LastLogin);
+        $this->assertFalse($this->fakeAuth->_LastPersist);
+        
+        $this->assertEquals(Pages::DEFAULT_LOGIN, $this->page->_RedirectDestination);
 	}
 	
 	private function LoadPageValues()
@@ -197,7 +228,17 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	public function SetPhone($phoneNumber)
 	{
 		$this->_PhoneNumber = $phoneNumber;	
-	}	
+	}
+
+	public function SetInstitution($institution)
+	{
+		
+	}
+	
+	public function SetPosition($positon)
+	{
+		
+	}
 	
 	public function SetPassword($password)
 	{
@@ -237,7 +278,17 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	public function GetPhone()
 	{
 		return $this->_PhoneNumber;
-	}	
+	}
+	
+	public function GetInstitution()
+	{
+		return '';
+	}
+	
+	public function GetPosition()
+	{
+		return '';
+	}
 	
 	public function GetPassword()
 	{
@@ -247,46 +298,6 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	public function GetPasswordConfirm()
 	{
 		return $this->_PasswordConfirm;
-	}
-}
-
-class FakeRegistration implements IRegistration
-{
-	public $_RegisterCalled;
-	public $_UserExists;
-	public $_ExistsCalled = false;
-	public $_LastLogin;
-	public $_LastEmail;
-	public $_Login;
-	public $_Email;
-	public $_First;
-	public $_Last;
-	public $_Password;
-	public $_Confirm;
-	public $_Timezone;
-	public $_AdditionalFields;
-	
-	public function Register($login, $email, $firstName, $lastName, $password, $confirm, $timezone, $additionalFields = array())
-	{
-		$this->_RegisterCalled = true;
-		$this->_Login = $login;
-		$this->_Email = $email;
-		$this->_First = $firstName;
-		$this->_Last = $lastName;
-		$this->_Phone = $phone;
-		$this->_Password = $password;
-		$this->_Confirm = $confirm;
-		$this->_Timezone = $timezone;
-		$this->_AdditionalFields = $additionalFields;
-	}
-	
-	public function UserExists($loginName, $emailAddress)
-	{
-		$this->_ExistsCalled = true;
-		$this->_LastLogin = $loginName;
-		$this->_LastEmail = $emailAddress;
-		
-		return $this->_UserExists;
 	}
 }
 ?>

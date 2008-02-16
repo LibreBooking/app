@@ -4,10 +4,17 @@ class ParameterNames
 	private function __construct()
 	{}
 	
-	const EMAIL_ADDRESS = "@emailaddress";
+	const EMAIL_ADDRESS = '@emailaddress';
+	const FIRST_NAME = '@fname';
+	const INSTITUTION = '@institution';
 	const LAST_LOGIN = '@lastlogin';
+	const LAST_NAME = '@lname';
+	const LOGIN = '@loginname';
 	const PASSWORD = '@password';
+	const PHONE = '@phone';
+	const POSITION = '@position';
 	const SALT = '@salt';
+	const TIMEZONE = '@timezone';
 	const USER_ID = '@userid';
 	const USER_NAME = '@username';	
 }
@@ -47,6 +54,13 @@ class Queries
 		SET userpassword = @password, password = '', salt = @salt 
 		WHERE memberid = @userid";
 	
+	const REGISTER_USER = 
+		'INSERT INTO login
+		(email, userpassword, fname, lname, phone, institution, position, login_name, salt, timezonename)
+		VALUES
+		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @loginname, @salt, @timezone)
+		';
+		
 	const UPDATE_LOGINTIME = 
 		'UPDATE login 
 		SET lastlogin = @lastlogin 

@@ -1,7 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/../lib/Config/namespace.php');
 require_once(dirname(__FILE__) . '/../lib/Common/namespace.php');
-//require_once(dirname(__FILE__) . '/../lib/Common/Validators/EmailValidator.php');
 //require_once(dirname(__FILE__) . '/../Zend/Date.php');
 
 
@@ -9,11 +8,13 @@ class RegistrationPresenter
 {
 	private $_page;
 	private $_registration;
+    private $_auth;
 	
-	public function __construct(IRegistrationPage $page, IRegistration $registration)
+	public function __construct(IRegistrationPage $page, IRegistration $registration, IAuthorization $authorization)
 	{
 		$this->_page = $page;
-		$this->_registration = $registration;
+        $this->_registration = $registration;
+		$this->_auth = $authorization;
 		
 		if ($page->IsPostBack())
 		{
@@ -36,17 +37,24 @@ class RegistrationPresenter
 	
 	public function Register()
 	{
-		$additionalFields = array($this->_page->GetPhone());
-		
-		$this->_registration->Register(
-			$this->_page->GetLoginName(), 
-			$this->_page->GetEmail(),
-			$this->_page->GetFirstName(),
-			$this->_page->GetLastName(),
-			$this->_page->GetPassword(),
-			$this->_page->GetPasswordConfirm(),
-			$this->_page->GetTimezone(),
-			$additionalFields);
+	    if ($this->_page->IsValid())
+	    {
+    		$additionalFields = array('phone' => $this->_page->GetPhone(),
+    								'institution' => $this->_page->GetInstitution(),
+    								'position' => $this->_page->GetPosition());
+    		
+    		$this->_registration->Register(
+    			$this->_page->GetLoginName(), 
+    			$this->_page->GetEmail(),
+    			$this->_page->GetFirstName(),
+    			$this->_page->GetLastName(),
+    			$this->_page->GetPassword(),
+    			$this->_page->GetTimezone(),
+    			$additionalFields);
+    			
+    		$this->_auth->Login($this->_page->GetEmail(), false);
+    		$this->_page->Redirect(Pages::DEFAULT_LOGIN);
+	    }
 	}
 	
 	private function FormatOffset($offset)

@@ -78,4 +78,23 @@ class CheckUsernameCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));	
 	}
 }
+
+class RegisterUserCommand extends SqlCommand 
+{
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $phone, $institution, $position)
+	{
+		parent::__construct(Queries::REGISTER_USER);
+			
+		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
+		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
+		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
+		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
+		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
+		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE, $timezone));
+		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
+		$this->AddParameter(new Parameter(ParameterNames::INSTITUTION, $institution));
+		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));	
+	}
+}
 ?>

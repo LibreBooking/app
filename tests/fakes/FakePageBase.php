@@ -9,8 +9,8 @@ class FakePageBase implements IPage
 	
 	public function Redirect($destination)
 	{
-		$this->$_RedirectCalled = true;
-		$this->$_RedirectDestination = $destination;
+		$this->_RedirectCalled = true;
+		$this->_RedirectDestination = $destination;
 	}
 	
 	public function IsPostBack()

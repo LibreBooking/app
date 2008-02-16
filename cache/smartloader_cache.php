@@ -11,7 +11,9 @@
 	$GLOBALS['smartloader_classes']['EmailTests'] = './EmailTests.php';
 	$GLOBALS['smartloader_classes']['DBFakes'] = './fakes/DBFakes.php';
 	$GLOBALS['smartloader_classes']['EmailFakes'] = './fakes/EmailFakes.php';
+	$GLOBALS['smartloader_classes']['FakeAuth'] = './fakes/FakeAuth.php';
 	$GLOBALS['smartloader_classes']['FakePageBase'] = './fakes/FakePageBase.php';
+	$GLOBALS['smartloader_classes']['FakeRegister'] = './fakes/FakeRegister.php';
 	$GLOBALS['smartloader_classes']['FakeReminder'] = './fakes/FakeReminder.php';
 	$GLOBALS['smartloader_classes']['FakeReservation'] = './fakes/FakeReservation.php';
 	$GLOBALS['smartloader_classes']['FakeResource'] = './fakes/FakeResource.php';

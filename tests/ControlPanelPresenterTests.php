@@ -3,6 +3,7 @@ require_once('../Presenters/ControlPanelPresenter.php');
 require_once('../Pages/ControlPanelPage.php');
 require_once('../lib/Common/namespace.php');
 require_once('fakes/FakeServer.php');
+require_once('fakes/FakeAuth.php');
 
 class ControlPanelPresenterTests extends PHPUnit_Framework_TestCase
 {
@@ -108,31 +109,6 @@ class FakeLoginPage implements IControlPanelPage
 	public function getResumeUrl()
 	{
 		return $this->_ResumeUrl;
-	}
-}
-
-class FakeAuth implements IAuthorization
-{
-	public $_LastLogin;
-	public $_LastPassword;
-	public $_LastPersist;
-	public $_LastLoginId;
-	
-	public $_ValidateResult = false;
-	
-	public function Validate($username, $password)
-	{
-		$this->_LastLogin = $username;
-		$this->_LastPassword = $password;
-		
-		return $this->_ValidateResult;
-	}
-	
-	public function Login($username, $persist)
-	{
-		$this->_LastLogin = $username;
-		$this->_LastPersist = $persist;
-		$this->_LastLoginId;
 	}
 }
 ?>

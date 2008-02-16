@@ -65,11 +65,4 @@ class Page implements IPage
 		return $this->smarty->IsValid();
 	}
 }
-
-class Pages
-{
-	const DEFAULT_LOGIN = 'controlpanel.php';
-	const LOGIN = 'login.php';
-	const CONTROL_PANEL = 'controlpanel.php';
-}
 ?>

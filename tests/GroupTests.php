@@ -9,7 +9,7 @@ require_once('../lib/Group.class.php');
 
 class GroupTests extends PHPUnit_Framework_TestCase
 {
-    var $db = null;
+    private $db = null;
 
     // constructor of the test suite
     function GroupTests($name) {

@@ -3,6 +3,7 @@ require_once('PHPUnit/Framework.php');
 require_once('../lib/Authorization/namespace.php');
 require_once('../lib/Common/namespace.php');
 require_once('fakes/DBFakes.php');
+require_once('fakes/FakePasswordEncryption.php');
 
 class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 {
@@ -62,15 +63,4 @@ class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(new MigratePasswordCommand($userid, $encrypted, $salt), $this->_db->_LastCommand, "did not migrate the password");
 	}
 }
-
-class FakePasswordEncryption extends PasswordEncryption
-{
-	public $_Salt = '123';
-	
-	public function Salt()
-	{
-		return $this->_Salt;
-	}
-}
-
 ?>

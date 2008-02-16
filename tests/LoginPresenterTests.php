@@ -4,6 +4,7 @@ require_once('../lib/Authorization/namespace.php');
 require_once('../Pages/LoginPage.php');
 require_once('../lib/Common/namespace.php');
 require_once('fakes/FakeServer.php');
+require_once('fakes/FakeAuth.php');
 
 class LoginPresenterTests extends PHPUnit_Framework_TestCase
 {
@@ -221,42 +222,6 @@ class FakeLoginPage implements ILoginPage
 	public function setShowLoginError()
 	{
 		$this->_ShowLoginError = true;
-	}
-}
-
-class FakeAuth implements IAuthorization
-{
-	public $_LastLogin;
-	public $_LastPassword;
-	public $_LastPersist;
-	public $_LastLoginId;
-	public $_CookieLoginCalled = false;
-	public $_LastLoginCookie;
-	public $_CookieValidateResult = false;
-	
-	public $_ValidateResult = false;
-	
-	public function Validate($username, $password)
-	{
-		$this->_LastLogin = $username;
-		$this->_LastPassword = $password;
-		
-		return $this->_ValidateResult;
-	}
-	
-	public function Login($username, $persist)
-	{
-		$this->_LastLogin = $username;
-		$this->_LastPersist = $persist;
-		$this->_LastLoginId;
-	}
-	
-	public function CookieLogin($cookie)
-	{
-		$this->_CookieLoginCalled = true;
-		$this->_LastLoginCookie = $cookie;
-		
-		return $this->_CookieValidateResult;
 	}
 }
 ?>

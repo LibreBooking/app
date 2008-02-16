@@ -8,6 +8,7 @@ class FormKeys
 	
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
+	const INSTITUTION = 'institution';
 	const LANGUAGE = 'language';
 	const LAST_NAME = 'lname';
 	const LOGIN = 'login';
@@ -15,6 +16,7 @@ class FormKeys
 	const PASSWORD_CONFIRM = 'passwordConfirm';
 	const PERSIST_LOGIN = 'persistLogin';
 	const PHONE = 'phone';
+	const POSITION = 'position';
 	const RESUME = 'resume';
 	const TIMEZONE = 'timezone';
 }

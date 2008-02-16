@@ -15,6 +15,8 @@ interface IRegistrationPage extends IPage
 	public function SetFirstName($firstName);
 	public function SetLastName($lastName);
 	public function SetPhone($phoneNumber);
+	public function SetInstitution($institution);
+	public function SetPosition($position);
 	public function SetPassword($password);
 	public function SetPasswordConfirm($passwordConfirm);
 	
@@ -24,6 +26,8 @@ interface IRegistrationPage extends IPage
 	public function GetFirstName();
 	public function GetLastName();
 	public function GetPhone();
+	public function GetInstitution();
+	public function GetPosition();
 	public function GetPassword();
 	public function GetPasswordConfirm();
 }
@@ -79,7 +83,17 @@ class RegistrationPage extends Page implements IRegistrationPage
 	public function SetPhone($phoneNumber)
 	{
 		$this->smarty->assign('PhoneNumber', $phoneNumber);	
-	}	
+	}
+	
+	public function SetInstitution($institution)
+	{
+		$this->smarty->assign('Institution', $institution);	
+	}
+	
+	public function SetPosition($position)
+	{
+		$this->smarty->assign('Position', $position);	
+	}
 	
 	public function SetPassword($password)
 	{
@@ -119,6 +133,16 @@ class RegistrationPage extends Page implements IRegistrationPage
 	public function GetPhone()
 	{
 		return $this->server->GetForm(FormKeys::PHONE);
+	}
+	
+	public function GetInstitution()
+	{
+		return $this->server->GetForm(FormKeys::INSTITUTION);
+	}
+	
+	public function GetPosition()
+	{
+		return $this->server->GetForm(FormKeys::POSITION);
 	}
 	
 	public function GetPassword()
