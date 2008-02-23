@@ -36,9 +36,6 @@ class RegistrationTests extends PHPUnit_Framework_TestCase
 		$this->db = null;
 		$this->fakeServer = null;
 		$this->registration = null;
-		
-		ServiceLocator::SetDatabase(null);
-		ServiceLocator::SetServer(null);
 	}
 	
 	public function testRegistersUser()
@@ -53,8 +50,8 @@ class RegistrationTests extends PHPUnit_Framework_TestCase
 		
 		$this->assertEquals($command, $this->db->_LastCommand);
 		$this->assertTrue($this->fakeEncryption->_EncryptCalled);
-		$this->assertTrue($this->password, $this->fakeEncryption->_LastPassword);
-		$this->assertTrue($this->fakeEncryption->_Salt, $this->fakeEncryption->_LastSalt);
+		$this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
+		$this->assertEquals($this->fakeEncryption->_Salt, $this->fakeEncryption->_LastSalt);
 	}
 	
 //	public function testChecksIfUserAlreadyRegistered()

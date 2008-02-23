@@ -39,7 +39,7 @@ class RegistrationPage extends Page implements IRegistrationPage
 		parent::__construct('Registration');
 		
 		//Modules::Load('Registration')
-		$this->_presenter = new RegistrationPresenter($this, new Registration());			
+		$this->_presenter = new RegistrationPresenter($this, new Registration(), new Authorization());			
 	}
 	
 	public function PageLoad()

@@ -1,4 +1,6 @@
 <?php
+require_once(dirname(__FILE__) . '/../../Pages/IPage.php');
+
 class FakePageBase implements IPage
 {
 	public $_RedirectCalled = false;

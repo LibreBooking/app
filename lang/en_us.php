@@ -35,6 +35,10 @@ class en_us extends Language
 	{
 		$strings = array();
 		
+		$strings['FirstName'] = 'First Name';
+		$strings['LastName'] = 'Last Name';
+		$strings['Timezone'] = 'Timezone';
+		
 		// new stuff
 		$strings['FirstNameRequired'] = 'First name is required.';
 		$strings['LastNameRequired'] = 'Last name is required.';

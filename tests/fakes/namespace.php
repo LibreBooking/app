@@ -1,0 +1,14 @@
+<?php
+require_once('DBFakes.php');
+require_once('EmailFakes.php');
+require_once('FakeAuth.php');
+require_once('FakePageBase.php');
+require_once('FakePasswordEncryption.php');
+require_once('FakeRegister.php');
+require_once('FakeReminder.php');
+require_once('FakeReservation.php');
+require_once('FakeResource.php');
+require_once('FakeServer.php');
+require_once('FakeSmarty.php');
+require_once('FakeUser.php');
+?>

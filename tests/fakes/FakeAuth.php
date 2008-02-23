@@ -1,4 +1,6 @@
 <?php
+require_once(dirname(__FILE__) . '/../../lib/Authorization/namespace.php');
+
 class FakeAuth implements IAuthorization
 {
 	public $_LastLogin;

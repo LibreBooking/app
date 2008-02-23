@@ -4,6 +4,7 @@ require_once(dirname(__FILE__) . '/../Server/namespace.php');
 //require_once(dirname(__FILE__) . '/../External/SmartyValidate/SmartyValidate.class.php');
 require_once('Validators/namespace.php');
 require_once('Converters/namespace.php');
+require_once('SmartyControls/namespace.php');
 
 class SmartyPage extends Smarty
 {
@@ -41,6 +42,7 @@ class SmartyPage extends Smarty
 		$this->register_function('html_image', array($this, 'PrintImage'));
 		$this->register_function('control', array($this, 'DisplayControl'));
 		$this->register_function('validator', array($this, 'Validator'));
+		$this->register_function('textbox', array($this, 'Textbox'));
 		
 		$this->Validators = new PageValdiators();
 		
@@ -126,5 +128,14 @@ class SmartyPage extends Smarty
 		}
 		return;
 	}
+	
+	public function Textbox($params, &$smarty)
+	{
+		$textbox = new SmartyTextbox($params['name'], $params['class'], $params['value'], $smarty);
+		
+		return $textbox->Html();
+	}
 }
+
+
 ?>

@@ -32,7 +32,9 @@ class RegistrationPresenter
 		}
 		$this->_page->SetTimezones($timezoneValues, $timezoneOutput);
 		$this->_page->SetTimezone(Configuration::GetKey(ConfigKeys::SERVER_TIMEZONE));
-		$this->_page->SetFirstName(null);
+		
+		$this->_page->SetFirstName('from db');
+		//$this->_page->SetLastName(ServiceLocator::GetServer()->GetForm(FormKeys::LAST_NAME));
 	}
 	
 	public function Register()
