@@ -22,3 +22,4 @@
 	</head>
 	<body>
 	{control type="LeaderBoard" DisplayWelcomeMsg=$DisplayWelcome}
+	<div id="content">

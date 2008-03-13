@@ -110,9 +110,12 @@ $dates['header'] = '%A, %B %d, %Y';
 $dates['jumpbox'] = '%m %d %Y';
 
 
+//////////////////////////////////////////////////////////////////////////////
 		$strings['FirstName'] = 'First Name';
 		$strings['LastName'] = 'Last Name';
 		$strings['Timezone'] = 'Timezone';
+		$strings['Username'] = 'Username';
+		$strings['PasswordConfirmation'] = 'Confirm Password';
 		
 		// new stuff
 		$strings['FirstNameRequired'] = 'First name is required.';
@@ -122,7 +125,7 @@ $dates['jumpbox'] = '%m %d %Y';
 		$strings['ValidEmailRequired'] = 'A valid email address is required.';
 		$strings['UniqueEmailRequired'] = 'That email address is already registered.';
 		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
-		//
+//////////////////////////////////////////////////////////////////////////////
 		
 		
 

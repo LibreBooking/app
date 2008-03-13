@@ -19,7 +19,12 @@ class SmartyTextbox
 	{
 		$value = $this->GetValue();
 		
-		return "<input type=\"text\" class=\"{$this->class}\" name=\"{$this->name}\" id=\"{$this->name}\" value=\"$value\" />";
+		return "<input type=\"{$this->GetInputType()}\" class=\"{$this->class}\" name=\"{$this->name}\" id=\"{$this->name}\" value=\"$value\" />";
+	}
+	
+	protected function GetInputType()
+	{
+		return 'text';
 	}
 	
 	private function GetName($formKey)
@@ -55,6 +60,14 @@ class SmartyTextbox
 		}
 		
 		return $value;
+	}
+}
+
+class SmartyPasswordbox extends SmartyTextbox
+{
+	protected function GetInputType()
+	{
+		return 'password';
 	}
 }
 ?>

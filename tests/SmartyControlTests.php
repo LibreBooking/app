@@ -46,11 +46,19 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals($expectedHtml, $textbox->Html());
 	}
 	
-	private function BuildExpectedSmartyTextbox()
+	public function testSmartyTextboxForPassword()
+	{
+		$textbox = new SmartyPasswordbox($this->_formKey, $this->_class, $this->_templateVar, $this->_smarty);
+		$expectedHtml = $this->BuildExpectedSmartyTextbox('password');
+		
+		$this->assertEquals($expectedHtml, $textbox->Html());
+	}
+	
+	private function BuildExpectedSmartyTextbox($type = 'text')
 	{
 		$expectedName = $this->_expectedName;
 		$expectedValue = $this->_expectedValue;
-		return "<input type=\"text\" class=\"{$this->_class}\" name=\"$expectedName\" id=\"$expectedName\" value=\"$expectedValue\" />";			
+		return "<input type=\"$type\" class=\"{$this->_class}\" name=\"$expectedName\" id=\"$expectedName\" value=\"$expectedValue\" />";			
 	}
 }
 

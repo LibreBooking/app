@@ -1,6 +1,6 @@
 /* Last modified 12-23-05 */
 body {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Trebuchet MS, Verdana, Arial, Helvetica, sans-serif;
     background-color: #F0F0F0;    			
     margin-top: 5px;
     margin-right: 5px;
@@ -40,8 +40,8 @@ h3 {
 	margin-top: 0px;
 }
 table {
-	border-width: 0;
-	font-size: 11px;
+	/*border-width: 0;*/
+	/*font-size: 11px;*/
 }
 /*
 Error box settings

@@ -11,7 +11,7 @@ body
 {
 	background-color: #5483a2;
 	border-bottom: #4c5c67 solid 1px;
-	margin-bottom: 50px;
+	margin-bottom: 10px;
 }
 
 #header td
@@ -58,7 +58,6 @@ h3 {
 }
 table {
 	border-width: 0;
-	font-size: 11px;
 }
 /*
 Error box settings
@@ -78,9 +77,10 @@ Form text box settings
 */
 .textbox {
     font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 11px;  
+    font-size: 12px;  
     color: #36648B;
-    background-color: #FCFCFC;
+    padding: 2px 3px;
+    border: solid 1px #aaaaaa;
 }
 /*
 Form button settings
@@ -559,7 +559,7 @@ div.inlineSummary{
 	border-top: solid 1px #CCCCCC;
 }
 
-#loginError
+#loginError, div.error
 {
 	border: solid 1px #a4381c;
 	margin: 0px auto 15px;
@@ -570,3 +570,62 @@ div.inlineSummary{
 	text-align: center;
 }
 
+div.error
+{
+	text-align: left;
+	font-size: 13px;
+}
+
+div.error table
+{
+	width: 100%;
+}
+
+div.error img
+{
+	padding: 0px 10px;
+}
+
+div.error ul
+{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+div.registration
+{
+	font-size: 14px;
+	width: 500px;
+}
+
+div.registrationHeader
+{
+	font-size: 15px;
+	font-weight: bold;
+	background-color: #e2e398; 
+	color: black;
+	padding: 3px 20px;
+
+	border: solid 1px #adae68;
+}
+
+div.registration table
+{
+	margin-bottom: 25px;
+}
+
+div.registration .textbox
+{
+	width: 200px;
+}
+
+div.registration hr
+{
+	height: 1px;
+	color: #aaaaaa;
+}
+
+#content
+{
+	margin: 0px 15px;
+}

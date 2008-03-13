@@ -50,7 +50,17 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 	{
 		$expectedTimezone = "US/Central";
 		Configuration::SetKey(ConfigKeys::SERVER_TIMEZONE, $expectedTimezone);
+		$this->page->_IsPostBack = false;
+		$this->presenter->PageLoad();
 		
+		$this->assertEquals($this->page->_Timezone, $expectedTimezone);
+	}
+	
+	public function testSetsSelectedTimezoneToServerSubmitted()
+	{
+		$expectedTimezone = "US/Eastern";
+		$this->page->SetTimezone($expectedTimezone);
+		$this->page->_IsPostBack = true;
 		$this->presenter->PageLoad();
 		
 		$this->assertEquals($this->page->_Timezone, $expectedTimezone);

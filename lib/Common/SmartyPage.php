@@ -43,6 +43,7 @@ class SmartyPage extends Smarty
 		$this->register_function('control', array($this, 'DisplayControl'));
 		$this->register_function('validator', array($this, 'Validator'));
 		$this->register_function('textbox', array($this, 'Textbox'));
+		$this->register_block('validation_group', array($this, 'ValidationGroup'));
 		
 		$this->Validators = new PageValdiators();
 		
@@ -118,23 +119,55 @@ class SmartyPage extends Smarty
 		$control->PageLoad();
 	}
 	
+	public function ValidationGroup($params, $content, &$smarty, &$repeat)
+	{
+		$class = 'error';
+		
+		if (isset($params['class']))
+		{
+			$class = $params['class'];
+		}
+
+		if (!$repeat)
+		{
+			$actualContent = trim($content);
+			return empty($actualContent) ? '' :
+				"<div class=\"$class\">
+					<table>
+						<tr>
+							<td><img src=\"img/alert.png\" alt=\"Alert\" width=\"60\" height=\"60\" /></td>
+							<td><ul>$actualContent</ul></td>
+						</tr>
+					</table>
+				</div>";
+		}
+		return;
+	}
+	
 	public function Validator($params, &$smarty)
 	{
 		$validator = $this->Validators->Get($params['id']);
 		if (!$validator->IsValid())
 		{
 			$this->IsValid = false;
-			return $this->SmartyTranslate(array('key' => $params['key']), $smarty);
+			return '<li>' . $this->SmartyTranslate(array('key' => $params['key']), $smarty) . '</li>';
 		}
 		return;
 	}
 	
 	public function Textbox($params, &$smarty)
 	{
-		$textbox = new SmartyTextbox($params['name'], $params['class'], $params['value'], $smarty);
-		
+		if (isset($params['type']))
+		{
+			$textbox = new SmartyPasswordbox($params['name'], $params['class'], $params['value'], $smarty);
+		}
+		else
+		{
+			$textbox = new SmartyTextbox($params['name'], $params['class'], $params['value'], $smarty);
+		}
 		return $textbox->Html();
 	}
+
 }
 
 

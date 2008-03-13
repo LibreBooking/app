@@ -13,12 +13,15 @@
 	$GLOBALS['smartloader_classes']['EmailFakes'] = './fakes/EmailFakes.php';
 	$GLOBALS['smartloader_classes']['FakeAuth'] = './fakes/FakeAuth.php';
 	$GLOBALS['smartloader_classes']['FakePageBase'] = './fakes/FakePageBase.php';
+	$GLOBALS['smartloader_classes']['FakePasswordEncryption'] = './fakes/FakePasswordEncryption.php';
 	$GLOBALS['smartloader_classes']['FakeRegister'] = './fakes/FakeRegister.php';
 	$GLOBALS['smartloader_classes']['FakeReminder'] = './fakes/FakeReminder.php';
 	$GLOBALS['smartloader_classes']['FakeReservation'] = './fakes/FakeReservation.php';
 	$GLOBALS['smartloader_classes']['FakeResource'] = './fakes/FakeResource.php';
 	$GLOBALS['smartloader_classes']['FakeServer'] = './fakes/FakeServer.php';
+	$GLOBALS['smartloader_classes']['FakeSmarty'] = './fakes/FakeSmarty.php';
 	$GLOBALS['smartloader_classes']['FakeUser'] = './fakes/FakeUser.php';
+	$GLOBALS['smartloader_classes']['namespace'] = './fakes/namespace.php';
 	$GLOBALS['smartloader_classes']['GroupTests'] = './GroupTests.php';
 	$GLOBALS['smartloader_classes']['ICalFormatterTests'] = './ICalFormatterTests.php';
 	$GLOBALS['smartloader_classes']['LoginPresenterTests'] = './LoginPresenterTests.php';
@@ -36,6 +39,7 @@
 	$GLOBALS['smartloader_classes']['ResourcesTests'] = './ResourcesTests.php';
 	$GLOBALS['smartloader_classes']['runner'] = './runner.php';
 	$GLOBALS['smartloader_classes']['runone'] = './runone.php';
+	$GLOBALS['smartloader_classes']['SmartyControlTests'] = './SmartyControlTests.php';
 	$GLOBALS['smartloader_classes']['Suite'] = './Suite.php';
 	$GLOBALS['smartloader_classes']['SummaryTests'] = './SummaryTests.php';
 	$GLOBALS['smartloader_classes']['UtilityTests'] = './UtilityTests.php';
