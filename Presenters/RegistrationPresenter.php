@@ -24,6 +24,11 @@ class RegistrationPresenter
 	
 	public function PageLoad()
 	{		
+		if ($this->_page->RegisterCLicked())
+		{
+			$this->Register();
+		}
+		
 		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
 		{
 			$timezoneValues[] = $timezone['Name'];			

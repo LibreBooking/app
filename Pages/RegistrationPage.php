@@ -8,6 +8,8 @@ require_once(dirname(__FILE__) . '/../lib/Authorization/namespace.php');
 
 interface IRegistrationPage extends IPage
 {
+	public function RegisterClicked();
+	
 	public function SetTimezones($timezoneValues, $timezoneOutput);
 	public function SetTimezone($timezone);
 	public function SetLoginName($loginName);	
@@ -47,6 +49,11 @@ class RegistrationPage extends Page implements IRegistrationPage
 		$this->_presenter->PageLoad();
 		
 		$this->smarty->display('register.tpl');				
+	}
+	
+	public function RegisterClicked()
+	{
+		return $this->server->GetForm(Actions::REGISTER);
 	}
 	
 	public function SetTimezones($timezoneValues, $timezoneOutput)

@@ -204,6 +204,11 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	public $_Password;
 	public $_PasswordConfirm;
 	
+	public function RegisterClicked()
+	{
+		return false;	
+	}
+	
 	public function SetTimezone($timezone)
 	{
 		$this->_Timezone = $timezone;

@@ -37,10 +37,10 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 	
 	function testUpdateLoginTimeCommand()
 	{
-		$id = 'someid';
+		$userid = 1;
 		$time = new LoginTime();
 		
-		$command = new UpdateLoginTimeCommand($id, $time->Now());
+		$command = new UpdateLoginTimeCommand($userid, $time->Now());
 		
 		$this->assertEquals(Queries::UPDATE_LOGINTIME, $command->GetQuery());
 		$this->assertEquals(2, $command->Parameters->Count());
@@ -51,7 +51,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(ParameterNames::LAST_LOGIN, $par1->Name);
 		$this->assertEquals($time->Now(), $par1->Value);		
 		$this->assertEquals(ParameterNames::USER_ID, $par2->Name);
-		$this->assertEquals($id, $par2->Value);
+		$this->assertEquals($userid, $par2->Value);
 	}
 	
 	function testMigratePasswordCommand()
@@ -153,6 +153,16 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(new Parameter(ParameterNames::PHONE, $phone), $command->Parameters->Items(7));
 		$this->assertEquals(new Parameter(ParameterNames::INSTITUTION, $institution), $command->Parameters->Items(8));
 		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(9));
+	}
+	
+	function testGetUserRoleCommand()
+	{
+		$userid = 123;
+		
+		$command = new GetUserRoleCommand($userid);
+		$this->assertEquals(Queries::GET_USER_ROLES, $command->GetQuery());
+		$this->assertEquals(1, $command->Parameters->Count());		
+		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $userid), $command->Parameters->Items(0));
 	}
 }
 ?>

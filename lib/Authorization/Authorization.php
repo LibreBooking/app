@@ -58,10 +58,13 @@ class Authorization implements IAuthorization
 		{
 			$loginTime = LoginTime::Now();
 			$userid = $row[ColumnNames::USER_ID];
-			$command = new UpdateLoginTimeCommand($userid, $loginTime);
-			ServiceLocator::GetDatabase()->Execute($command);
 			
-			$this->SetUserSession($row);
+			$isAdminRole = $this->IsAdminRole($userid);
+
+			$updateLoginTimeCommand = new UpdateLoginTimeCommand($userid, $loginTime);
+			ServiceLocator::GetDatabase()->Execute($updateLoginTimeCommand);
+			
+			$this->SetUserSession($row, $isAdminRole);
 			
 			if ($persist)
 			{
@@ -89,14 +92,29 @@ class Authorization implements IAuthorization
 		return $valid;
 	}
 	
-	private function SetUserSession($row)
+	private function IsAdminRole($userid)
+	{
+		$isAdminRole = false;
+		
+		$command = new GetUserRoleCommand($userid);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+		
+		if ($row = $reader->GetRow())
+		{
+			$isAdminRole = (bool)$row[ColumnNames::IS_ADMIN];
+		}
+		
+		return $isAdminRole;
+	}
+	
+	private function SetUserSession($row, $isAdminRole)
 	{
 		$user = new UserSession($row[ColumnNames::USER_ID]);
 		$user->Email = $row[ColumnNames::EMAIL];
 		$user->FirstName = $row[ColumnNames::FIRST_NAME];
 		$user->LastName = $row[ColumnNames::LAST_NAME];
 		
-		$isAdmin = ($user->Email == Configuration::GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$row[ColumnNames::IS_ADMIN];
+		$isAdmin = ($user->Email == Configuration::GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$isAdminRole;
 		$user->IsAdmin = $isAdmin;
 		$user->Timezone = $row[ColumnNames::TIMEZONE_NAME];
 		

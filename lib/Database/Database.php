@@ -21,7 +21,7 @@ class Database
 	
 	public function Execute(ISqlCommand &$command) 
 	{
-		$this->Connection->Connect();		
+		$this->Connection->Connect();	
 		$this->Connection->Execute($command);
 		$this->Connection->Disconnect();
 	}

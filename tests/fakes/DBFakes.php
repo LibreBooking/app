@@ -4,24 +4,26 @@ require_once(dirname(__FILE__) . '/../../lib/pear/MDB2.php');
 
 class FakeDatabase extends Database
 {
-	public $reader;
+	public $reader = array();
 	public $_LastCommand;
 	public $_Commands = array();
+	private $readcount; 
 
 	public function __construct()
 	{
+		$this->readcount = 0;
 	}
 
-	public function SetReader(IReader &$reader)
+	public function SetReader($readerCount, IReader &$reader)
 	{
-		$this->reader = &$reader;
+		$this->reader[$readerCount] = &$reader;
 	}
 
 	public function &Query(&$command)
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
-		return $this->reader;
+		return $this->reader[$this->readcount++];
 	}
 
 	public function Execute(&$command)
@@ -37,8 +39,13 @@ class FakeDatabase extends Database
 	
 	public function SetRows($rows)
 	{
+		$this->SetRow(0, $rows);
+	}
+	
+	public function SetRow($readerCount, $rows)
+	{
 		$reader = new Mdb2Reader(new FakeDBResult($rows));
-		$this->SetReader($reader);
+		$this->SetReader($readerCount, $reader);
 	}
 }
 

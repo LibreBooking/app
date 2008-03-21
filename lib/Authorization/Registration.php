@@ -15,6 +15,7 @@ class Registration implements IRegistration
 	
 	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $additionalFields = array())
 	{
+		echo 'register';
 		$salt = $this->_passwordEncryption->Salt();
 		$encryptedPassword = $this->_passwordEncryption->Encrypt($password, $salt);
 		

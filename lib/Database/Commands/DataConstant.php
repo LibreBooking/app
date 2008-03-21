@@ -9,7 +9,6 @@ class ParameterNames
 	const INSTITUTION = '@institution';
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';
-	const LOGIN = '@loginname';
 	const PASSWORD = '@password';
 	const PHONE = '@phone';
 	const POSITION = '@position';
@@ -25,51 +24,56 @@ class Queries
 	{}
 	
 	const CHECK_EMAIL = 
-		'SELECT memberid 
-		FROM login
+		'SELECT userid 
+		FROM account
 		WHERE email = @emailaddress';
 		
 	const CHECK_USERNAME = 
-		'SELECT memberid 
-		FROM login
-		WHERE logon_name = @username';
+		'SELECT userid 
+		FROM account
+		WHERE username = @username';
 		
 	const CHECK_USER_EXISTANCE = 
-		'SELECT memberid 
-		FROM login
-		WHERE logon_name = @username OR email = @emailaddress';
+		'SELECT userid 
+		FROM account
+		WHERE username = @username OR email = @emailaddress';
 		
 	const COOKIE_LOGIN = 
-		'SELECT memberid, lastlogin, email 
-		FROM login 
-		WHERE memberid = @userid';
+		'SELECT userid, lastlogin, email 
+		FROM account 
+		WHERE userid = @userid';
 	
 	const LOGIN_USER = 
-		'SELECT memberid, email, fname, lname, is_admin, timezonename, lastlogin
-		FROM login 
-		WHERE (logon_name = @username OR email = @username)';
+		'SELECT userid, email, fname, lname, timezonename, lastlogin
+		FROM account 
+		WHERE (username = @username OR email = @username)';
 	
 	const MIGRATE_PASSWORD = 
-		"UPDATE login 
-		SET userpassword = @password, password = '', salt = @salt 
-		WHERE memberid = @userid";
+		"UPDATE account 
+		SET userpassword = @password, legacypassword = null, salt = @salt 
+		WHERE userid = @userid";
 	
 	const REGISTER_USER = 
-		'INSERT INTO login
-		(email, userpassword, fname, lname, phone, institution, position, login_name, salt, timezonename)
+		'INSERT INTO account
+		(email, userpassword, fname, lname, phone, institution, positionname, username, salt, timezonename)
 		VALUES
-		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @loginname, @salt, @timezone)
+		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @username, @salt, @timezone)
 		';
 		
 	const UPDATE_LOGINTIME = 
-		'UPDATE login 
+		'UPDATE account 
 		SET lastlogin = @lastlogin 
-		WHERE memberid = @userid';
+		WHERE userid = @userid';
 	
 	const VALIDATE_USER = 
-		'SELECT memberid, userpassword, salt, password
-		FROM login 
-		WHERE (logon_name = @username OR email = @username)';
+		'SELECT userid, userpassword, salt, legacypassword
+		FROM account 
+		WHERE (username = @username OR email = @username)';
+	
+	const GET_USER_ROLES = 
+		'SELECT userid, isadmin 
+		FROM accountrole
+		WHERE (userid = @userid)';
 	
 }
 
@@ -80,14 +84,14 @@ class ColumnNames
 	
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
-	const IS_ADMIN = 'is_admin';
+	const IS_ADMIN = 'isadmin';
 	const LAST_LOGIN = 'lastlogin';
 	const LAST_NAME = 'lname';	
 	const MATCH_COUNT = 'matchcount';
-	const OLD_PASSWORD = 'password';
+	const OLD_PASSWORD = 'legacypassword';
 	const PASSWORD = 'userpassword';
 	const TIMEZONE_NAME = 'timezonename';
 	const SALT = 'salt';
-	const USER_ID = 'memberid';	
+	const USER_ID = 'userid';	
 }
 ?>

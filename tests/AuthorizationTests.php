@@ -30,7 +30,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	{
 		$this->username = 'LoGInName';
 		$this->password = 'password';
-		$this->id = 'someexpectedid';
+		$this->id = 191;
 		$this->fname = 'Test';
 		$this->lname = 'Name';
 		$this->email = 'my@email.com';
@@ -78,17 +78,23 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	{
 		LoginTime::$Now = time();
 
-		$rows = $this->GetRows();
-		$this->db->SetRows($rows);
+		$loginRows = $this->GetRows();
+		$roleRows = array(
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 1)
+			);
+		$this->db->SetRow(0, $loginRows);
+		$this->db->SetRow(1, $roleRows);
 
 		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
 
 		$command1 = new LoginCommand(strtolower($this->username));
-		$command2 = new UpdateLoginTimeCommand($this->id, LoginTime::Now());
+		$command2 = new GetUserRoleCommand($this->id);
+		$command3 = new UpdateLoginTimeCommand($this->id, LoginTime::Now());
 
-		$this->assertEquals(2, count($this->db->_Commands));
+		$this->assertEquals(3, count($this->db->_Commands));
 		$this->assertEquals($command1, $this->db->_Commands[0]);
 		$this->assertEquals($command2, $this->db->_Commands[1]);
+		$this->assertEquals($command3, $this->db->_Commands[2]);
 	}
 
 	function testLoginSetsUserInSession()
@@ -97,12 +103,15 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$user->FirstName = $this->fname;
 		$user->LastName = $this->lname;
 		$user->Email = $this->email;
-		$user->IsAdmin = $this->isAdmin;
+		$user->IsAdmin = true;
 		$user->Timezone = $this->timezone;
 
-		$rows = $this->GetRows();
-		$reader = new Mdb2Reader(new FakeDBResult($rows));
-		$this->db->SetReader($reader);
+		$loginRows = $this->GetRows();
+		$roleRows = array(
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 1)
+			);
+		$this->db->SetRow(0, $loginRows);
+		$this->db->SetRow(1, $roleRows);
 
 		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
 
@@ -113,11 +122,13 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	{
 		Configuration::SetKey(ConfigKeys::ADMIN_EMAIL, $this->email);
 
-		$this->isAdmin = false;
-
-		$rows = $this->GetRows();
-		$this->db->SetRows($rows);
-
+		$loginRows = $this->GetRows();
+		$roleRows = array(
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 0)
+			);
+		$this->db->SetRow(0, $loginRows);
+		$this->db->SetRow(1, $roleRows);
+	
 		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
 
 		$user = $this->fakeServer->GetSession(SessionKeys::USER_SESSION);
@@ -154,10 +165,14 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 	{	
 		$now = mktime(10, 11, 12, 1, 2, 2000);	
 		LoginTime::$Now = $now;
-		$rows = $this->GetRows();
-		$this->db->SetRows($rows);
+		$loginRows = $this->GetRows();
+		$roleRows = array(
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 0)
+			);
+		$this->db->SetRow(0, $loginRows);
+		$this->db->SetRow(1, $roleRows);
 		
-		$hashedValue = sprintf("%s|%s", $rows[0][ColumnNames::USER_ID], LoginTime::Now());
+		$hashedValue = sprintf("%s|%s", $this->id, LoginTime::Now());
 		
 		$this->auth->Login($this->username, true);
 
@@ -177,7 +192,13 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 					ColumnNames::LAST_LOGIN => $lastLogin,
 					ColumnNames::EMAIL => $email
 					));
-		$this->db->SetRows($rows);
+		$this->db->SetRow(0, $rows);
+		$loginRows = $this->GetRows();
+		$roleRows = array(
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 0)
+			);
+		$this->db->SetRow(1, $loginRows);
+		$this->db->SetRow(2, $roleRows);
 		
 		$valid = $this->auth->CookieLogin($cookie->Value);
 		
@@ -217,7 +238,6 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 					ColumnNames::LAST_LOGIN => $this->lastLogin,
 					ColumnNames::LAST_NAME => $this->lname,
 					ColumnNames::EMAIL => $this->email,
-					ColumnNames::IS_ADMIN => $this->isAdmin,
 					ColumnNames::TIMEZONE_NAME => $this->timezone
 					);
 

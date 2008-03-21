@@ -84,8 +84,8 @@ class RegisterUserCommand extends SqlCommand
 	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $phone, $institution, $position)
 	{
 		parent::__construct(Queries::REGISTER_USER);
-			
-		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));
+		
+		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));	
 		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
 		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
 		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
@@ -95,6 +95,16 @@ class RegisterUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
 		$this->AddParameter(new Parameter(ParameterNames::INSTITUTION, $institution));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));	
+	}
+}
+
+class GetUserRoleCommand extends SqlCommand
+{
+	public function __construct($userid)
+	{
+		parent::__construct(Queries::GET_USER_ROLES);
+		
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
 	}
 }
 ?>
