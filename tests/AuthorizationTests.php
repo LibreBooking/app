@@ -1,13 +1,11 @@
 <?php
-require_once('PHPUnit/Framework.php');
-require_once('../lib/Authorization/namespace.php');
-require_once('../lib/Common/namespace.php');
-require_once('../lib/Server/namespace.php');
-require_once('../lib/Config/namespace.php');
-require_once('fakes/DBFakes.php');
-require_once('fakes/FakeServer.php');
+require_once($root . 'lib/Authorization/namespace.php');
+require_once($root . 'lib/Common/namespace.php');
+require_once($root . 'lib/Server/namespace.php');
+require_once($root . 'lib/Config/namespace.php');
 
-class AuthorizationTests extends PHPUnit_Framework_TestCase
+
+class AuthorizationTests extends TestBase
 {
 	var $username;
 	var $password;
@@ -38,11 +36,7 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 		$this->timezone = "US/Central";
 		$this->lastLogin = mktime();
 
-		$this->db = new FakeDatabase();
-		$this->fakeServer = new FakeServer();
-
-		ServiceLocator::SetDatabase($this->db);
-		ServiceLocator::SetServer($this->fakeServer);
+		
 
 		$this->fakePassword = new FakePassword();
 		$this->fakeMigration = new FakeMigration();
@@ -50,14 +44,16 @@ class AuthorizationTests extends PHPUnit_Framework_TestCase
 
 		$this->auth = new Authorization();
 		$this->auth->SetMigration($this->fakeMigration);
+		
+		parent::setup();
 	}
-
-	function teardown()
-	{
-		$this->db = null;
-		$this->fakeServer = null;
-		Configuration::Reset();
-	}
+//
+//	function teardown()
+//	{
+//		$this->db = null;
+//		$this->fakeServer = null;
+//		Configuration::Reset();
+//	}
 
 	function testValidateChecksAgainstDB()
 	{

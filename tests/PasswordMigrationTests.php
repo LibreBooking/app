@@ -1,9 +1,6 @@
 <?php
-require_once('PHPUnit/Framework.php');
-require_once('../lib/Authorization/namespace.php');
-require_once('../lib/Common/namespace.php');
-require_once('fakes/DBFakes.php');
-require_once('fakes/FakePasswordEncryption.php');
+require_once($root . 'lib/Authorization/namespace.php');
+require_once($root . 'lib/Common/namespace.php');
 
 class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 {

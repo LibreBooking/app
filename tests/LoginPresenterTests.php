@@ -1,10 +1,8 @@
 <?php
-require_once('../Presenters/LoginPresenter.php');
-require_once('../lib/Authorization/namespace.php');
-require_once('../Pages/LoginPage.php');
-require_once('../lib/Common/namespace.php');
-require_once('fakes/FakeServer.php');
-require_once('fakes/FakeAuth.php');
+require_once($root . 'Presenters/LoginPresenter.php');
+require_once($root . 'lib/Authorization/namespace.php');
+require_once($root . 'Pages/LoginPage.php');
+require_once($root . 'lib/Common/namespace.php');
 
 class LoginPresenterTests extends PHPUnit_Framework_TestCase
 {

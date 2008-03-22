@@ -1,3 +1,3 @@
 <?php
-require_once('SmartyTextbox.php');
+require_once($root . 'lib/Common/SmartyControls/SmartyTextbox.php');
 ?>

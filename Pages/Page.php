@@ -1,9 +1,9 @@
 <?php
-require_once('IPage.php');
-require_once(dirname(__FILE__) . '/../lib/Common/SmartyPage.php');
-require_once(dirname(__FILE__) . '/../lib/Server/namespace.php');
-require_once(dirname(__FILE__) . '/../lib/Config/namespace.php');
-require_once(dirname(__FILE__) . '/../lib/Database/MDB2/namespace.php');
+require_once($root . 'Pages/IPage.php');
+require_once($root . 'lib/Common/SmartyPage.php');
+require_once($root . 'lib/Server/namespace.php');
+require_once($root . 'lib/Config/namespace.php');
+require_once($root . 'lib/Database/MDB2/namespace.php');
 
 class Page implements IPage
 {

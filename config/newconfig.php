@@ -13,4 +13,6 @@ $config['database.user'] = 'schedule_user';
 $config['database.password'] = 'password';
 $config['database.hostspec'] = '.';
 $config['database.name'] = 'phpScheduleIt';
+
+$plugins['Auth'] = 'Ldap';
 ?>

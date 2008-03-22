@@ -1,7 +1,7 @@
 <?php
-require_once('namespace.php');
-require_once(dirname(__FILE__) . '/../Common/namespace.php');
-require_once(dirname(__FILE__) . '/../Database/Commands/namespace.php');
+require_once($root . 'lib/Authorization/namespace.php');
+require_once($root . 'lib/Common/namespace.php');
+require_once($root . 'lib/Database/Commands/namespace.php');
 
 class Authorization implements IAuthorization 
 {	

@@ -1,6 +1,5 @@
 <?php
-require_once('PHPUnit/Framework.php');
-require_once('../lib/Common/namespace.php');
+require_once($root . 'lib/Common/namespace.php');
 
 class DateTests extends PHPUnit_Framework_TestCase
 {

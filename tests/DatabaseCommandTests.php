@@ -1,7 +1,6 @@
 <?php
-require_once('PHPUnit/Framework.php');
-require_once('../lib/Database/Commands/Commands.php');
-require_once('../lib/Common/namespace.php');
+require_once($root . 'lib/Database/Commands/namespace.php');
+require_once($root . 'lib/Common/namespace.php');
 
 class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 {	

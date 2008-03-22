@@ -1,7 +1,5 @@
 <?php
-require_once('../lib/Authorization/namespace.php');
-require_once('fakes/FakeServer.php');
-require_once('fakes/FakePasswordEncryption.php');
+require_once($root . 'lib/Authorization/namespace.php');
 
 class RegistrationTests extends PHPUnit_Framework_TestCase
 {

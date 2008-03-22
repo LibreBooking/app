@@ -1,7 +1,5 @@
 <?php
-//require_once(dirname(__FILE__) . '/../Database/IReader.php');
-require_once('fakes/DBFakes.php');
-require_once('PHPUnit/Framework.php');
+require_once($root . 'lib/Database/namespace.php');
 
 class DatabaseTests extends PHPUnit_Framework_TestCase
 {

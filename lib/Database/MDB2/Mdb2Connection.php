@@ -1,8 +1,8 @@
 <?php
 $LOCAL_PEAR = dirname(__FILE__) . '/../../../lib/pear/';
 ini_set('include_path', ($LOCAL_PEAR  . PATH_SEPARATOR . ini_get('include_path') ));
-require_once($LOCAL_PEAR . 'MDB2.php');
-require_once('namespace.php');
+require_once($root . 'lib/pear/MDB2.php');
+//require_once('namespace.php');
 
 /**
 * Pear::MDB2 implementation

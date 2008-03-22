@@ -1,6 +1,6 @@
 <?php
-require_once('namespace.php');
-require_once(dirname(__FILE__). '/../../lib/Common/namespace.php');
+//require_once('namespace.php');
+require_once('lib/Common/namespace.php');
 
 class Cookie
 {

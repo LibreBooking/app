@@ -1,8 +1,8 @@
 <?php
-$dir = dirname(__FILE__) . '/../';
-require_once('namespace.php');
-require_once($dir . 'Database/MDB2/namespace.php');
-require_once($dir . 'Config/namespace.php');
+//$dir = dirname(__FILE__) . '/../';
+//require_once('namespace.php');
+require_once($root . 'lib/Database/MDB2/namespace.php');
+require_once($root . 'lib/Config/namespace.php');
 
 class DatabaseFactory
 {

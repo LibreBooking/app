@@ -1,6 +1,6 @@
 <?php
-require_once(dirname(__FILE__) . '/../lib/Config/namespace.php');
-require_once(dirname(__FILE__) . '/../lib/Common/namespace.php');
+require_once($root . 'lib/Config/namespace.php');
+require_once($root . 'lib/Common/namespace.php');
 //require_once(dirname(__FILE__) . '/../Zend/Date.php');
 
 
@@ -47,6 +47,8 @@ class RegistrationPresenter
 	
 	public function Register()
 	{
+		echo 'validation needs to happen before all of this';
+		echo 'valid ' . $this->_page->IsValid();
 	    if ($this->_page->IsValid())
 	    {
     		$additionalFields = array('phone' => $this->_page->GetPhone(),

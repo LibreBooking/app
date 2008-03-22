@@ -1,7 +1,4 @@
 <?php
-//require_once(dirname(__FILE__) . '/../SmartLoader.php');
-//require_once('namespace.php');
-
 class Resources
 {
 	public $CurrentLanguage;
@@ -83,9 +80,10 @@ class Resources
 	
 	private function GetLanguageCode()
 	{
-		if (ServiceLocator::GetServer()->GetCookie(CookieKeys::LANGUAGE) != null)
+		$cookie = ServiceLocator::GetServer()->GetCookie(CookieKeys::LANGUAGE);
+		if ($cookie != null)
 		{
-			return ServiceLocator::GetServer()->GetCookie(CookieKeys::LANGUAGE);
+			return $cookie;
 		}
 		else
 		{

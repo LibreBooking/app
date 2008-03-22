@@ -1,5 +1,5 @@
 <?php
-require_once('IValidator.php');
+//require_once('IValidator.php');
 
 class RequiredValidator implements IValidator
 {

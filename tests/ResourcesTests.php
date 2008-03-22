@@ -1,21 +1,21 @@
 <?php
-require_once(dirname(__FILE__) . '/../lib/SmartLoader.php');
-require_once(dirname(__FILE__) . '/../lib/Common/namespace.php');
-require_once(dirname(__FILE__) . '/../lib/Config/namespace.php');
-require_once('fakes/FakeServer.php');
+require_once($root . 'lib/Common/namespace.php');
+require_once($root . 'lib/Config/namespace.php');
 
-class ResourcesTests extends PHPUnit_Framework_TestCase
+class ResourcesTests extends TestBase
 {
 	private $Resources;
 	
 	public function setUp()
 	{	
+		parent::setup();
 	}
 	
 	public function tearDown()
 	{
 		$this->Resources = null;
 		Configuration::Reset();
+		parent::teardown();
 	}
 	
 	public function testLanguageIsLoadedCorrectlyFromCookie()
@@ -25,10 +25,9 @@ class ResourcesTests extends PHPUnit_Framework_TestCase
 		$lang = 'en_US';
 		$langCookie = new Cookie(CookieKeys::LANGUAGE, $lang, time(), '/');
 		
-		$server = new FakeServer();
-		$server->SetCookie($langCookie);
+		$this->fakeServer->SetCookie($langCookie);
 		
-		$this->Resources = Resources::GetInstance($server);
+		$this->Resources = Resources::GetInstance();
 		
 		$this->assertEquals($lang, $this->Resources->CurrentLanguage);
 		$this->assertEquals($jscalendarFile, $this->Resources->CalendarLanguageFile);
@@ -43,8 +42,7 @@ class ResourcesTests extends PHPUnit_Framework_TestCase
 		
 		Configuration::SetKey(ConfigKeys::LANGUAGE, $lang);
 		
-		$server = new FakeServer();		
-		$this->Resources = Resources::GetInstance($server);
+		$this->Resources = Resources::GetInstance();
 		
 		$this->assertEquals($lang, $this->Resources->CurrentLanguage);
 		$this->assertEquals($jscalendarFile, $this->Resources->CalendarLanguageFile);
@@ -57,9 +55,8 @@ class ResourcesTests extends PHPUnit_Framework_TestCase
 		$langFile = 'es.lang.php';
 		
 		$lang = 'es';
-		$server = new FakeServer();
 		
-		$this->Resources = Resources::GetInstance($server);
+		$this->Resources = Resources::GetInstance();
 		$this->Resources->SetLanguage($lang);
 		
 		$this->assertEquals($lang, $this->Resources->CurrentLanguage);

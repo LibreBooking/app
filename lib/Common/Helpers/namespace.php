@@ -1,3 +1,3 @@
 <?php
-require_once('StringBuilder.php');
+require_once($root . 'lib/Common/Helpers/StringBuilder.php');
 ?>

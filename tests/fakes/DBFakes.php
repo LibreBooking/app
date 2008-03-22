@@ -1,6 +1,6 @@
 <?php
-require_once(dirname(__FILE__) . '/../../lib/Database/namespace.php');
-require_once(dirname(__FILE__) . '/../../lib/pear/MDB2.php');
+require_once($root . 'lib/Database/namespace.php');
+require_once($root . 'lib/pear/MDB2.php');
 
 class FakeDatabase extends Database
 {

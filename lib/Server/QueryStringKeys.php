@@ -1,5 +1,5 @@
 <?php
-require_once('namespace.php');
+//require_once('namespace.php');
 
 class QueryStringKeys
 {

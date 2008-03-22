@@ -1,6 +1,8 @@
 <?php
-require_once(dirname(__FILE__) . '/../Database/namespace.php');
-require_once(dirname(__FILE__) . '/../Server/namespace.php');
+require_once($root . 'lib/Database/namespace.php');
+require_once($root . 'lib/Server/namespace.php');
+//require_once(dirname(__FILE__) . '/../Database/namespace.php');
+//require_once(dirname(__FILE__) . '/../Server/namespace.php');
 
 class ServiceLocator
 {

@@ -1,7 +1,7 @@
 body 
 {
     font-family: Trebuchet MS, Verdana, Arial, Helvetica, sans-serif;
-    background-color: #fafafa;    			
+    background-color: #fefefe;    			
     margin: 0px;
     color: #333333;
 	font-size: 11px;
@@ -11,7 +11,7 @@ body
 {
 	background-color: #5483a2;
 	border-bottom: #4c5c67 solid 1px;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 }
 
 #header td
@@ -595,7 +595,13 @@ div.error ul
 div.registration
 {
 	font-size: 14px;
-	width: 500px;
+	width: 500px;	
+	border: solid 1px #cccccc;
+	background-color: #ffffff;
+	padding: 20px 50px;
+	margin-left:auto;
+	margin-right:auto;
+	
 }
 
 div.registrationHeader
@@ -605,7 +611,6 @@ div.registrationHeader
 	background-color: #e2e398; 
 	color: black;
 	padding: 3px 20px;
-
 	border: solid 1px #adae68;
 }
 
@@ -628,4 +633,11 @@ div.registration hr
 #content
 {
 	margin: 0px 15px;
+}
+
+#shadow
+{
+	width:100%;
+	height:8px;
+	margin-bottom:10px;
 }

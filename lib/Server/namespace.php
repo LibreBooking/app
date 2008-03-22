@@ -1,9 +1,9 @@
 <?php
-require_once('SessionKeys.php');
-require_once('QueryStringKeys.php');
-require_once('FormKeys.php');
-require_once('Actions.php');
-require_once('CookieKeys.php');
-require_once('Cookie.php');
-require_once('Server.php');
+require_once('lib/Server/SessionKeys.php');
+require_once('lib/Server/QueryStringKeys.php');
+require_once('lib/Server/FormKeys.php');
+require_once('lib/Server/Actions.php');
+require_once('lib/Server/CookieKeys.php');
+require_once('lib/Server/Cookie.php');
+require_once('lib/Server/Server.php');
 ?>

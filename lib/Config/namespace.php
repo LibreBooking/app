@@ -1,4 +1,4 @@
 <?php
-require_once('ConfigKeys.php');
-require_once('Configuration.php');
+require_once($root . 'lib/Config/ConfigKeys.php');
+require_once($root . 'lib/Config/Configuration.php');
 ?>

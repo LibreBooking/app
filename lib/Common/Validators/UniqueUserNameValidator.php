@@ -1,5 +1,4 @@
 <?php
-
 class UniqueUserNameValidator implements IValidator
 {
 	private $_username;

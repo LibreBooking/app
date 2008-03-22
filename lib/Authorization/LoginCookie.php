@@ -1,6 +1,5 @@
 <?php
-require_once('namespace.php');
-require_once(dirname(__FILE__) . '/../Common/namespace.php');
+require_once($root . 'lib/Common/namespace.php');
 
 class LoginCookie extends Cookie
 {

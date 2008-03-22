@@ -1,11 +1,11 @@
 <?php
-require_once('../Presenters/RegistrationPresenter.php');
-require_once('../Pages/RegistrationPage.php');
-require_once('../lib/Common/namespace.php');
-require_once('../lib/Authorization/namespace.php');
-require_once('fakes/FakeServer.php');
-require_once('fakes/FakePageBase.php');
-require_once('fakes/FakeRegister.php');
+require_once($root . 'Presenters/RegistrationPresenter.php');
+require_once($root . 'Pages/RegistrationPage.php');
+require_once($root . 'lib/Common/namespace.php');
+require_once($root . 'lib/Authorization/namespace.php');
+require_once($root . 'tests/fakes/FakeServer.php');
+require_once($root . 'tests/fakes/FakePageBase.php');
+require_once($root . 'tests/fakes/FakeRegister.php');
 
 class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 {

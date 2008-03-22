@@ -22,4 +22,5 @@
 	</head>
 	<body>
 	{control type="LeaderBoard" DisplayWelcomeMsg=$DisplayWelcome}
+	<div id="shadow" style="background:url('{$Path}img/shadow.png');"></div>
 	<div id="content">

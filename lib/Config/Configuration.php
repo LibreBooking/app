@@ -1,6 +1,6 @@
 <?php
-require_once('namespace.php');
-require_once(dirname(__FILE__) . '/../../config/newconfig.php');
+//require_once('namespace.php');
+require_once($root . 'config/newconfig.php');
 
 class Configuration
 {

@@ -1,11 +1,10 @@
 <?php
-//$dir = dirname(__FILE__) . '/../../lib/Authorization';
-require_once('IAuthorization.php');
-require_once('Authorization.php');
-require_once('UserSession.php');
-require_once('PasswordEncryption.php');
-require_once('Password.php');
-require_once('LoginCookie.php');
-require_once('IRegistration.php');
-require_once('Registration.php');
+require_once($root . 'lib/Authorization/IAuthorization.php');
+require_once($root . 'lib/Authorization/Authorization.php');
+require_once($root . 'lib/Authorization/UserSession.php');
+require_once($root . 'lib/Authorization/PasswordEncryption.php');
+require_once($root . 'lib/Authorization/Password.php');
+require_once($root . 'lib/Authorization/LoginCookie.php');
+require_once($root . 'lib/Authorization/IRegistration.php');
+require_once($root . 'lib/Authorization/Registration.php');
 ?>

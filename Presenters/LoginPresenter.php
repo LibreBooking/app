@@ -1,6 +1,6 @@
 <?php
-require_once(dirname(__FILE__) . '/../lib/Config/namespace.php');
-require_once(dirname(__FILE__) . '/../lib/Common/namespace.php');
+require_once($root . 'lib/Config/namespace.php');
+require_once($root . 'lib/Common/namespace.php');
 
 class LoginPresenter
 {

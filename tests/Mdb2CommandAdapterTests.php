@@ -1,7 +1,5 @@
 <?php
-require_once('fakes/DBFakes.php');
-require_once(dirname(__FILE__) . '/../lib/Database/Mdb2/namespace.php');
-require_once('PHPUnit/Framework.php');
+require_once($root . 'lib/Database/Mdb2/namespace.php');
 
 class Mdb2CommandAdapterTests extends PHPUnit_Framework_TestCase
 {

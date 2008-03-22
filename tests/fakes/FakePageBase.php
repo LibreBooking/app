@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/../../Pages/IPage.php');
+require_once($root . 'Pages/IPage.php');
 
 class FakePageBase implements IPage
 {

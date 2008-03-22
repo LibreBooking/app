@@ -1,7 +1,7 @@
 <?php
-$dir = dirname(__FILE__) . '/../../..';
-require_once($dir . '/lib/Database/SqlCommand.php');
-require_once('DataConstant.php');
+//$dir = dirname(__FILE__) . '/../../..';
+require_once($root . 'lib/Database/SqlCommand.php');
+//require_once('DataConstant.php');
 
 class AuthorizationCommand extends SqlCommand
 {

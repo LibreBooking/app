@@ -1,6 +1,5 @@
 <?php
-require_once('../lib/Common/SmartyControls/namespace.php');
-require_once('PHPUnit/Framework.php');
+require_once($root . 'lib/Common/SmartyControls/namespace.php');
 
 class SmartyControlTests extends PHPUnit_Framework_TestCase
 {
