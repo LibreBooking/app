@@ -15,6 +15,7 @@ require_once $root . 'tests/TestBase.php';
 $tests = array(
 'LdapTests.php',
 'RegisterPresenterTests.php',
+'ValidatorTests.php',
 'PasswordMigrationTests.php',
 'ResourcesTests.php', 
 'LoginPresenterTests.php', 

@@ -1,10 +1,4 @@
 <?php
-//require_once(dirname(__FILE__) . '/../../Smarty/Smarty.class.php');
-//require_once(dirname(__FILE__) . '/../Server/namespace.php');
-//require_once('Validators/namespace.php');
-//require_once('Converters/namespace.php');
-//require_once('SmartyControls/namespace.php');
-
 require_once($root . 'Smarty/Smarty.class.php');
 require_once($root . 'lib/Server/namespace.php');
 require_once($root . 'lib/Common/Validators/namespace.php');
@@ -56,6 +50,9 @@ class SmartyPage extends Smarty
 		
 	public function IsValid()
 	{
+		$this->Validators->Validate();
+		$this->IsValid = $this->Validators->AreAllValid();
+		
 		return $this->IsValid;
 	}
 
@@ -154,7 +151,6 @@ class SmartyPage extends Smarty
 		$validator = $this->Validators->Get($params['id']);
 		if (!$validator->IsValid())
 		{
-			$this->IsValid = false;
 			return '<li>' . $this->SmartyTranslate(array('key' => $params['key']), $smarty) . '</li>';
 		}
 		return;

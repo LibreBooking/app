@@ -1,7 +1,6 @@
 <?php
-//require_once('IValidator.php');
 
-class RequiredValidator implements IValidator
+class RequiredValidator extends ValidatorBase implements IValidator 
 {
 	private $value;
 	
@@ -10,9 +9,9 @@ class RequiredValidator implements IValidator
 		$this->value = $value;
 	}
 	
-	public function IsValid()
+	public function Validate()
 	{
-		return !empty($this->value);
+		$this->isValid = !empty($this->value);
 	}
 }
 ?>

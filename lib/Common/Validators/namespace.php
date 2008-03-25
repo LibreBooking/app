@@ -1,5 +1,6 @@
 <?php
 require_once($root . 'lib/Common/Validators/IValidator.php');
+require_once($root . 'lib/Common/Validators/ValidatorBase.php');
 require_once($root . 'lib/Common/Validators/PageValidators.php');
 require_once($root . 'lib/Common/Validators/EmailValidator.php');
 require_once($root . 'lib/Common/Validators/RequiredValidator.php');

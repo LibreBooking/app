@@ -1,6 +1,6 @@
 <?php
 
-class UniqueEmailValidator implements IValidator
+class UniqueEmailValidator extends ValidatorBase implements IValidator 
 {
 	private $_email;
 	private $_userid;
@@ -11,16 +11,15 @@ class UniqueEmailValidator implements IValidator
 		$this->_userid = $userid;
 	}
 	
-	public function IsValid()
+	public function Validate()
 	{
+		$this->isValid = true;
 		$results = ServiceLocator::GetDatabase()->Query(new CheckEmailCommand($this->_email));
 		
 		if ($row = $results->GetRow())
 		{
-			return $row[ColumnNames::USER_ID] == $this->_userid;
+			$this->isValid = ($row[ColumnNames::USER_ID] == $this->_userid);
 		}
-		
-		return true;
 	}
 }
 ?>

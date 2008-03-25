@@ -1,7 +1,4 @@
 <?php
-//require_once('PHPUnit/Framework.php');
-//require_once('/tests/fakes/DBFakes.php');
-//require_once('/tests/fakes/FakeServer.php');
 
 class TestBase extends PHPUnit_Framework_TestCase
 {

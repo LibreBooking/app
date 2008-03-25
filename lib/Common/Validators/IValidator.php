@@ -2,8 +2,7 @@
 interface IValidator
 {
 	public function IsValid();
-//	public function GetErrorMessage();
-//	public function GetErrorMessage($resources);
+	public function Validate();
 }
 
 ?>

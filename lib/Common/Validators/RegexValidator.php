@@ -1,5 +1,5 @@
 <?php
-class RegexValidator implements IValidator
+class RegexValidator extends ValidatorBase implements IValidator 
 {
 	public function __construct($value, $regex)
 	{
@@ -7,13 +7,12 @@ class RegexValidator implements IValidator
 		$this->_regex = $regex;
 	}
 	
-	public function IsValid()
+	public function Validate()
 	{
 		if(preg_match($this->_regex, $this->_value))
 		{
-			return true;
+			$this->isValid = true;
 		}
-		return false;
 	}
 }
 ?>

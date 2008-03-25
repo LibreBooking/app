@@ -145,6 +145,11 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		$invalid1 = new RegexValidator('passw', $regex);
 		$invalid2 = new RegexValidator('password123 123', $regex);
 		
+		$valid1->Validate();
+		$valid2->Validate();
+		$invalid1->Validate();
+		$invalid2->Validate();
+		
 		$this->assertTrue($valid1->IsValid());
 		$this->assertTrue($valid2->IsValid());
 		$this->assertFalse($invalid1->IsValid());

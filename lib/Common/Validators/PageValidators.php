@@ -1,13 +1,42 @@
 <?php
-//require_once('IValidator.php');
 
 class PageValdiators
 {
 	private $validators = array();
+	private $isValidated = false;
 	
 	public function Register($id, $validator)
 	{
 		$this->validators[$id] = $validator;
+	}
+	
+	public function Validate()
+	{
+		foreach($this->validators as $validator)
+		{
+			$validator->Validate();
+		}
+		
+		$this->_isValidated = true;
+	}
+	
+	public function AreAllValid()
+	{
+		
+		if (!$this->isValidated)
+		{
+			$this->Validate();
+		}
+		
+		foreach($this->validators as $validator)
+		{
+			if (!$validator->IsValid())
+			{
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	public function Get($id)
@@ -20,11 +49,11 @@ class PageValdiators
 	}
 }
 
-class NullValidator implements IValidator
+class NullValidator extends ValidatorBase implements IValidator 
 {
-	public function IsValid()
+	public function Validate()
 	{
-		return true;
+		$this->isValid = true;
 	}
 }
 ?>

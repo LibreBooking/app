@@ -1,5 +1,5 @@
 <?php
-class EqualValidator implements IValidator
+class EqualValidator extends ValidatorBase implements IValidator 
 {
 	private $_value1;
 	private $_value2;
@@ -10,9 +10,9 @@ class EqualValidator implements IValidator
 		$this->_value2 = $value2;
 	}
 	
-	public function IsValid()
+	public function Validate()
 	{
-		return $this->_value1 == $this->_value2;
+		$this->isValid = ($this->_value1 == $this->_value2);
 	}
 	
 	public function __toString()
