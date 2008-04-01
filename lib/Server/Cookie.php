@@ -1,6 +1,5 @@
-<?php
-//require_once('namespace.php');
-require_once('lib/Common/namespace.php');
+<?php                              
+require_once($root . 'lib/Common/namespace.php');
 
 class Cookie
 {

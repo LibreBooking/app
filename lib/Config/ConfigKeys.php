@@ -18,6 +18,8 @@ class ConfigKeys
 	const DATABASE_PASSWORD = 'database.password';
 	const DATABASE_HOSTSPEC = 'database.hostspec';
 	const DATABASE_NAME = 'database.name';
+	
+	const PLUGIN_AUTH = 'Auth';
 }
 
 ?>

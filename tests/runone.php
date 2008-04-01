@@ -3,6 +3,7 @@ $path = ini_get('include_path');
 ini_set('include_path', $path . ';' . 'C:\PHP\PEAR');
 
 $root = '../';
+//$root = './';
 
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Framework.php';
@@ -13,6 +14,7 @@ require_once $root . 'tests/TestBase.php';
 //$tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
 
 $tests = array(
+'ConfigTests.php',
 'LdapTests.php',
 'RegisterPresenterTests.php',
 'ValidatorTests.php',

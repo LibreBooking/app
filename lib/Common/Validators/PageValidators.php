@@ -21,8 +21,7 @@ class PageValdiators
 	}
 	
 	public function AreAllValid()
-	{
-		
+	{		
 		if (!$this->isValidated)
 		{
 			$this->Validate();

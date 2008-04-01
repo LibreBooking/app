@@ -9,6 +9,7 @@ class RegexValidator extends ValidatorBase implements IValidator
 	
 	public function Validate()
 	{
+		$this->isValid = false;
 		if(preg_match($this->_regex, $this->_value))
 		{
 			$this->isValid = true;

@@ -135,26 +135,6 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 		$this->assertFalse(key_exists('uniqueusername', $v));
 	}
 	
-	public function testPasswordComplexity()
-	{
-		$regex = '/^[^\s]{6,}$/i';
-		
-		$valid1 = new RegexValidator('$password$_+123', $regex);
-		$valid2 = new RegexValidator('pas123', $regex);
-		
-		$invalid1 = new RegexValidator('passw', $regex);
-		$invalid2 = new RegexValidator('password123 123', $regex);
-		
-		$valid1->Validate();
-		$valid2->Validate();
-		$invalid1->Validate();
-		$invalid2->Validate();
-		
-		$this->assertTrue($valid1->IsValid());
-		$this->assertTrue($valid2->IsValid());
-		$this->assertFalse($invalid1->IsValid());
-		$this->assertFalse($invalid2->IsValid(), "spaces are not allowed");
-	}
     
     public function testDoesNotRegisterIfPageIsNotValid()
     {   

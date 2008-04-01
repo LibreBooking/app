@@ -47,9 +47,7 @@ class RegistrationPresenter
 	
 	public function Register()
 	{
-		echo 'validation needs to happen before all of this';
-		echo 'valid ' . $this->_page->IsValid();
-	    if ($this->_page->IsValid())
+		if ($this->_page->IsValid())
 	    {
     		$additionalFields = array('phone' => $this->_page->GetPhone(),
     								'institution' => $this->_page->GetInstitution(),

@@ -2,7 +2,7 @@
 
 abstract class ValidatorBase implements IValidator 
 {
-	protected $isValid = false;
+	protected $isValid = true;
 	
 	public function IsValid()
 	{
