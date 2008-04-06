@@ -11,12 +11,12 @@ class PageValdiators
 	}
 	
 	public function Validate()
-	{
+	{		
 		foreach($this->validators as $validator)
 		{
 			$validator->Validate();
 		}
-		
+
 		$this->_isValidated = true;
 	}
 	

@@ -1,6 +1,4 @@
 <?php
-//require_once('namespace.php');
-
 class ConfigKeys
 {
 	const SERVER_TIMEZONE = 'server.timezone';	
@@ -13,13 +11,19 @@ class ConfigKeys
 	const USE_LOGON_NAME = 'use.logon.name';
 	const PASSWORD_PATTERN = 'password.pattern';
 	
-	const DATABASE_TYPE = 'database.type';
-	const DATABASE_USER = 'database.user';
-	const DATABASE_PASSWORD = 'database.password';
-	const DATABASE_HOSTSPEC = 'database.hostspec';
-	const DATABASE_NAME = 'database.name';
+	const DATABASE_TYPE = 'type';
+	const DATABASE_USER = 'user';
+	const DATABASE_PASSWORD = 'password';
+	const DATABASE_HOSTSPEC = 'hostspec';
+	const DATABASE_NAME = 'name';
 	
 	const PLUGIN_AUTH = 'Auth';
+}
+
+class ConfigSection
+{
+	const DATABASE = 'database';
+	
 }
 
 ?>

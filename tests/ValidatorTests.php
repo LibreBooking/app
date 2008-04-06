@@ -1,5 +1,5 @@
 <?php
-require_once($root . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class ValidatorTests extends TestBase 
 {	

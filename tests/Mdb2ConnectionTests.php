@@ -1,7 +1,7 @@
 <?php
-require_once($root . 'lib/Database/Mdb2/namespace.php');
+require_once(ROOT_DIR . 'lib/Database/Mdb2/namespace.php');
 
-class Mdb2ConnectionTests extends PHPUnit_Framework_TestCase
+class Mdb2ConnectionTests extends TestBase
 {
 	var $fakeDb;
 	var $fakeResult;

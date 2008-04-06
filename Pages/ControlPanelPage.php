@@ -1,5 +1,5 @@
 <?php
-require_once($root . 'Pages/SecurePage.php');
+require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
 class ControlPanelPage extends SecurePage implements IControlPanelPage
 {

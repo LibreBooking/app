@@ -1,6 +1,4 @@
 <?php
-//require_once('namespace.php');
-
 class Database
 {
 	public $Connection = null;
@@ -12,10 +10,10 @@ class Database
 	
 	public function &Query(ISqlCommand &$command) 
 	{
-		$this->Connection->Connect();		
+		$this->Connection->Connect();	
 		$reader = $this->Connection->Query($command);
 		$this->Connection->Disconnect();
-		
+
 		return $reader;
 	}
 	

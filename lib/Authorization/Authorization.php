@@ -1,7 +1,7 @@
 <?php
-require_once($root . 'lib/Authorization/namespace.php');
-require_once($root . 'lib/Common/namespace.php');
-require_once($root . 'lib/Database/Commands/namespace.php');
+require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
 class Authorization implements IAuthorization 
 {	
@@ -114,7 +114,7 @@ class Authorization implements IAuthorization
 		$user->FirstName = $row[ColumnNames::FIRST_NAME];
 		$user->LastName = $row[ColumnNames::LAST_NAME];
 		
-		$isAdmin = ($user->Email == Configuration::GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$isAdminRole;
+		$isAdmin = ($user->Email == Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$isAdminRole;
 		$user->IsAdmin = $isAdmin;
 		$user->Timezone = $row[ColumnNames::TIMEZONE_NAME];
 		

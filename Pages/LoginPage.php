@@ -1,6 +1,6 @@
 <?php
-require_once($root . 'Pages/Page.php');
-require_once($root . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
 
 interface ILoginPage extends IPage
 {

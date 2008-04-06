@@ -1,5 +1,5 @@
 <?php
-require_once($root . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
 
 class FakeAuth implements IAuthorization
 {

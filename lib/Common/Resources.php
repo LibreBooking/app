@@ -87,7 +87,7 @@ class Resources
 		}
 		else
 		{
-			return Configuration::GetKey(ConfigKeys::LANGUAGE);
+			return Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE);
 		}
 	}
 	

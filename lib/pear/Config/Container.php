@@ -17,7 +17,7 @@
 //
 // $Id: Container.php,v 1.41 2006/05/30 06:37:28 aashley Exp $
 
-require_once 'Config.php';
+//require_once 'Config.php';
 
 /**
 * Interface for Config containers
@@ -750,7 +750,7 @@ class Config_Container {
         }
         $includeFile = $GLOBALS['CONFIG_TYPES'][$configType][0];
         $className = $GLOBALS['CONFIG_TYPES'][$configType][1];
-        include_once($includeFile);
+        require_once($includeFile);
 
         $writeMethodName = (version_compare(phpversion(), '5', '<')) ? 'writedatasrc' : 'writeDatasrc';
         if (in_array($writeMethodName, get_class_methods($className))) {

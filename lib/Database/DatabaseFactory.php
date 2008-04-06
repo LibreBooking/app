@@ -1,8 +1,6 @@
 <?php
-//$dir = dirname(__FILE__) . '/../';
-//require_once('namespace.php');
-require_once($root . 'lib/Database/MDB2/namespace.php');
-require_once($root . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Database/MDB2/namespace.php');
+require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 class DatabaseFactory
 {
@@ -11,13 +9,13 @@ class DatabaseFactory
 	public static function GetDatabase()
 	{
 		if (is_null(self::$_instance))
-		{
+		{						
 			self::$_instance = new Database(new Mdb2Connection(
-											Configuration::GetKey(ConfigKeys::DATABASE_TYPE),
-											Configuration::GetKey(ConfigKeys::DATABASE_USER),
-											Configuration::GetKey(ConfigKeys::DATABASE_PASSWORD),
-											Configuration::GetKey(ConfigKeys::DATABASE_HOSTSPEC),
-											Configuration::GetKey(ConfigKeys::DATABASE_NAME)
+											Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_TYPE),
+											Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER),
+											Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_PASSWORD),
+											Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC),
+											Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME)
 											)
 										);
 		}

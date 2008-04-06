@@ -2854,7 +2854,7 @@ class MDB2_Driver_Common extends PEAR
      */
     function &prepare($query, $types = null, $result_types = null, $lobs = array())
     {
-        $is_manip = ($result_types === MDB2_PREPARE_MANIP);
+    	$is_manip = ($result_types === MDB2_PREPARE_MANIP);
         $offset = $this->offset;
         $limit = $this->limit;
         $this->offset = $this->limit = 0;

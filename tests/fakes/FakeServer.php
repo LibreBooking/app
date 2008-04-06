@@ -1,5 +1,5 @@
 <?php
-require_once($root . 'lib/Server/namespace.php');
+require_once(ROOT_DIR . 'lib/Server/namespace.php');
 
 class FakeServer extends Server
 {

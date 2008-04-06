@@ -1,5 +1,5 @@
 <?php
-require_once($root . 'lib/Database/Mdb2/namespace.php');
+require_once(ROOT_DIR . 'lib/Database/Mdb2/namespace.php');
 
 class Mdb2CommandAdapterTests extends PHPUnit_Framework_TestCase
 {

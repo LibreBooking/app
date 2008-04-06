@@ -1,9 +1,9 @@
 <?php
-require_once($root . 'Pages/Page.php');
-require_once($root . 'Presenters/RegistrationPresenter.php');
-require_once($root . 'Zend/Loader.php');
-require_once($root . 'config/timezones.php');
-require_once($root . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'Presenters/RegistrationPresenter.php');
+//require_once(ROOT_DIR . 'Zend/Loader.php');
+require_once(ROOT_DIR . 'config/timezones.php');
+require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
 
 
 interface IRegistrationPage extends IPage

@@ -1,13 +1,10 @@
 <?php
-require_once($root . 'Presenters/RegistrationPresenter.php');
-require_once($root . 'Pages/RegistrationPage.php');
-require_once($root . 'lib/Common/namespace.php');
-require_once($root . 'lib/Authorization/namespace.php');
-require_once($root . 'tests/fakes/FakeServer.php');
-require_once($root . 'tests/fakes/FakePageBase.php');
-require_once($root . 'tests/fakes/FakeRegister.php');
+require_once(ROOT_DIR . 'Presenters/RegistrationPresenter.php');
+require_once(ROOT_DIR . 'Pages/RegistrationPage.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
 
-class RegisterPresenterTests extends PHPUnit_Framework_TestCase
+class RegisterPresenterTests extends TestBase
 {
 	private $page;
 	private $server;
@@ -26,6 +23,8 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 	
 	public function setup()
 	{
+		parent::setup();
+		
 		$this->page = new FakeRegistrationPage();
 		$this->server = new FakeServer();
 		$this->fakeReg = new FakeRegistration();
@@ -38,18 +37,20 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 	
 	public function teardown()
 	{
+		parent::teardown();
+		
 		$this->page = null;
         $this->server = null;
         $this->fakeReg = null;
         $this->fakeAuth = null;
-
-		Configuration::Reset();
 	}
 	
 	public function testSetsSelectedTimezoneToServerDefault()
 	{
 		$expectedTimezone = "US/Central";
-		Configuration::SetKey(ConfigKeys::SERVER_TIMEZONE, $expectedTimezone);
+		
+		$this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, $expectedTimezone);
+		//Configuration::SetKey(ConfigKeys::SERVER_TIMEZONE, $expectedTimezone);
 		$this->page->_IsPostBack = false;
 		$this->presenter->PageLoad();
 		
@@ -103,8 +104,8 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 	public function testRegistersAllValidators()
 	{
 		$pattern = '/^[^\s]{6,}$/i';
-		Configuration::SetKey(ConfigKeys::PASSWORD_PATTERN, '/^[^\s]{6,}$/i');
-		Configuration::SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
+		$this->fakeConfig->SetKey(ConfigKeys::PASSWORD_PATTERN, '/^[^\s]{6,}$/i');
+		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
 		
 		$this->LoadPageValues();
 		$this->page->_IsPostBack = true;
@@ -124,7 +125,7 @@ class RegisterPresenterTests extends PHPUnit_Framework_TestCase
 	
 	public function testDoesNotAddUsernameValidatorIfConfiguredOff()
 	{
-		Configuration::SetKey(ConfigKeys::USE_LOGON_NAME, 'false');
+		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'false');
 		$this->LoadPageValues();
 		$this->page->_IsPostBack = true;
 		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);

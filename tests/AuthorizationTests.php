@@ -1,8 +1,8 @@
 <?php
-require_once($root . 'lib/Authorization/namespace.php');
-require_once($root . 'lib/Common/namespace.php');
-require_once($root . 'lib/Server/namespace.php');
-require_once($root . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Server/namespace.php');
+require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 
 class AuthorizationTests extends TestBase
@@ -34,9 +34,7 @@ class AuthorizationTests extends TestBase
 		$this->email = 'my@email.com';
 		$this->isAdmin = true;
 		$this->timezone = "US/Central";
-		$this->lastLogin = mktime();
-
-		
+		$this->lastLogin = mktime();		
 
 		$this->fakePassword = new FakePassword();
 		$this->fakeMigration = new FakeMigration();
@@ -47,13 +45,6 @@ class AuthorizationTests extends TestBase
 		
 		parent::setup();
 	}
-//
-//	function teardown()
-//	{
-//		$this->db = null;
-//		$this->fakeServer = null;
-//		Configuration::Reset();
-//	}
 
 	function testValidateChecksAgainstDB()
 	{
@@ -116,7 +107,7 @@ class AuthorizationTests extends TestBase
 
 	function testUserIsAdminIfEmailMatchesConfigEmail()
 	{
-		Configuration::SetKey(ConfigKeys::ADMIN_EMAIL, $this->email);
+		$this->fakeConfig->SetKey(ConfigKeys::ADMIN_EMAIL, $this->email);
 
 		$loginRows = $this->GetRows();
 		$roleRows = array(

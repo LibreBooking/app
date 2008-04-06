@@ -2,14 +2,13 @@
 $path = ini_get('include_path');
 ini_set('include_path', $path . ';' . 'C:\PHP\PEAR');
 
-$root = '../';
-//$root = './';
+define('ROOT_DIR', '../');
 
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Framework.php';
-require_once $root . 'lib/Timer.class.php';
-require_once $root . 'tests/fakes/namespace.php';
-require_once $root . 'tests/TestBase.php';
+require_once ROOT_DIR . 'lib/Timer.class.php';
+require_once ROOT_DIR . 'tests/fakes/namespace.php';
+require_once ROOT_DIR . 'tests/TestBase.php';
 
 //$tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
 

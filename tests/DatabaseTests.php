@@ -1,7 +1,7 @@
 <?php
-require_once($root . 'lib/Database/namespace.php');
+require_once(ROOT_DIR . 'lib/Database/namespace.php');
 
-class DatabaseTests extends PHPUnit_Framework_TestCase
+class DatabaseTests extends TestBase
 {
     var $db = null;
     
@@ -74,8 +74,7 @@ class DatabaseTests extends PHPUnit_Framework_TestCase
 
 		$newParam = new Parameter('n3', 'v3');
 		$SqlCommand->AddParameter($newParam);
-		
-		
+				
 		$this->assertNotNull($parameters, 'Parameters object null');
 		$this->assertNotNull($SqlCommand->Parameters, 'SqlCommand::parameters is null');
 		$this->assertEquals(3, $SqlCommand->Parameters->Count());

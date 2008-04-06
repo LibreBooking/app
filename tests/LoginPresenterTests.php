@@ -1,10 +1,10 @@
 <?php
-require_once($root . 'Presenters/LoginPresenter.php');
-require_once($root . 'lib/Authorization/namespace.php');
-require_once($root . 'Pages/LoginPage.php');
-require_once($root . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'Presenters/LoginPresenter.php');
+require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'Pages/LoginPage.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class LoginPresenterTests extends PHPUnit_Framework_TestCase
+class LoginPresenterTests extends TestBase
 {
 	private $auth;
 	private $page;
@@ -12,11 +12,10 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 	
 	public function setup()
 	{
+		parent::setup();
+		
 		$this->auth = new FakeAuth();		
 		$this->page = new FakeLoginPage();
-		$this->server = new FakeServer();
-		
-		ServiceLocator::SetServer($this->server);
 		
 		$this->page->_EmailAddress = 'nkorbel@phpscheduleit.org';
 		$this->page->_Password = 'somepassword';
@@ -25,12 +24,10 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 	
 	public function teardown()
 	{
+		parent::teardown();
+		
 		$this->auth = null;
 		$this->page = null;
-		$resources =& Resources::GetInstance();
-		$resources = null;
-		
-		$this->server = null;
 	}
 	
 	public function testLoginCallsAuthValidate() 
@@ -75,8 +72,8 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 	
 	public function testPageLoadSetsVariablesCorrectly()
 	{
-		Configuration::SetKey(ConfigKeys::ALLOW_REGISTRATION, 'true');
-		Configuration::SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
+		$this->fakeConfig->SetKey(ConfigKeys::ALLOW_REGISTRATION, 'true');
+		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
 		
 		$presenter = new LoginPresenter($this->page, $this->auth);
 		$presenter->PageLoad();
@@ -117,7 +114,7 @@ class LoginPresenterTests extends PHPUnit_Framework_TestCase
 	{
 		$this->page->_ResumeUrl = '/autologin/page/whatever.html';
 		$cookie = new Cookie(CookieKeys::PERSIST_LOGIN, "part1|part2");
-		$this->server->SetCookie($cookie);
+		$this->fakeServer->SetCookie($cookie);
 		
 		$this->auth->_CookieValidateResult = true;
 		

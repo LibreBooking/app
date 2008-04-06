@@ -1,9 +1,9 @@
 <?php
-require_once($root . 'Smarty/Smarty.class.php');
-require_once($root . 'lib/Server/namespace.php');
-require_once($root . 'lib/Common/Validators/namespace.php');
-require_once($root . 'lib/Common/Converters/namespace.php');
-require_once($root . 'lib/Common/SmartyControls/namespace.php');
+require_once(ROOT_DIR . 'Smarty/Smarty.class.php');
+require_once(ROOT_DIR . 'lib/Server/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/Converters/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/SmartyControls/namespace.php');
 
 class SmartyPage extends Smarty
 {
@@ -52,7 +52,7 @@ class SmartyPage extends Smarty
 	{
 		$this->Validators->Validate();
 		$this->IsValid = $this->Validators->AreAllValid();
-		
+
 		return $this->IsValid;
 	}
 

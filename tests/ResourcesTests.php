@@ -1,6 +1,6 @@
 <?php
-require_once($root . 'lib/Common/namespace.php');
-require_once($root . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 class ResourcesTests extends TestBase
 {
@@ -14,7 +14,6 @@ class ResourcesTests extends TestBase
 	public function tearDown()
 	{
 		$this->Resources = null;
-		Configuration::Reset();
 		parent::teardown();
 	}
 	
@@ -40,7 +39,7 @@ class ResourcesTests extends TestBase
 		$langFile = 'en_US.lang.php';		
 		$lang = 'en_US';
 		
-		Configuration::SetKey(ConfigKeys::LANGUAGE, $lang);
+		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
 		
 		$this->Resources = Resources::GetInstance();
 		

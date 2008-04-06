@@ -1,5 +1,5 @@
 <?php
-require_once($root . 'Smarty/Smarty.class.php');
+require_once(ROOT_DIR . 'Smarty/Smarty.class.php');
 
 class FakeSmarty extends Smarty 
 {

@@ -1,9 +1,8 @@
 <?php
-require_once($root . 'lib/Common/namespace.php');
-require_once($root . 'lib/Server/namespace.php');
-require_once($root . 'lib/Config/namespace.php');
-require_once($root . 'plugins/Auth/Ldap/Ldap.php');
-require_once($root . 'lib/pear/Config.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Server/namespace.php');
+require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'plugins/Auth/Ldap/Ldap.php');
 
 class LdapTests extends TestBase 
 {
@@ -19,55 +18,7 @@ class LdapTests extends TestBase
 		$fakeAuth = new FakeAuth();
 		
 		$auth = new Ldap($fakeAuth);
-	}
-	
-	public function testCreateConfiguration()
-	{
-		
-		$config = new Config();
-		
-		$conf = new Config_Container('section', 'settings');
-		
-		$conf_DB = $conf->createSection('database');
-		$dbtype = $conf_DB->createDirective(ConfigKeys::DATABASE_TYPE, 'mysql');
-		$conf_DB->createComment('Type of database', 'before', $dbtype);
-		
-		$conf->createComment('phpScheduleIt database user');
-		$conf_DB->createDirective(ConfigKeys::DATABASE_USER, 'root');
-		$conf_DB->createDirective(ConfigKeys::DATABASE_PASSWORD , 'password');
-		$conf_DB->createDirective(ConfigKeys::DATABASE_HOSTSPEC , 'localhost');
-		$conf_DB->createDirective(ConfigKeys::DATABASE_NAME , 'phpscheduleit');
-		
-		$config->setRoot($conf);
-
-		// write configuration to file
-		$config->writeConfig("test_config.php", "PHPArray");
-		
-		
-		/***********************/
-		
-		$readConfig = new Config();
-		$readContainer = $readConfig->parseConfig(dirname(__FILE__) . "/test_config.php", "PHPArray");
-		
-		$settings = $readContainer->getItem("section", 'settings');
-		$dbsection = $settings->getItem("section", 'database');
-		
-		//echo 'dbsection:   ';
-		//var_dump($dbsection);
-		
-		$configValues = $settings->toArray();
-
-		//var_dump($configValues);
-		
-		$type = $dbsection->getItem("directive", ConfigKeys::DATABASE_TYPE);
-		$type->setContent('new value');
-		
-		$readConfig->writeConfig("test_config.php", "PHPArray");
-		
-		//$this->assertEquals('mysql', $configValues['database'][ConfigKeys::DATABASE_TYPE]);
-		
-	}
-	
+	}	
 	
 	public function testZendLdapConstructionsOptionsCorrectly()
 	{

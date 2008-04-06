@@ -1,6 +1,6 @@
 <?php
-require_once($root . 'lib/Config/namespace.php');
-require_once($root . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class LoginPresenter
 {
@@ -23,8 +23,8 @@ class LoginPresenter
 				$this->_Redirect();
 			}
 		}
-		$allowRegistration = (bool)Configuration::GetKey(ConfigKeys::ALLOW_REGISTRATION);
-		$useLogonName = (bool)Configuration::GetKey(ConfigKeys::USE_LOGON_NAME);
+		$allowRegistration = (bool)Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION);
+		$useLogonName = (bool)Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME);
 		$this->_page->setShowRegisterLink($allowRegistration);
 		$this->_page->setAvailableLanguages($this->GetLanguages());
 		$this->_page->setUseLogonName($useLogonName);

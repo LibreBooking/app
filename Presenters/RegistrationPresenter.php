@@ -1,6 +1,6 @@
 <?php
-require_once($root . 'lib/Config/namespace.php');
-require_once($root . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
 //require_once(dirname(__FILE__) . '/../Zend/Date.php');
 
 
@@ -23,26 +23,28 @@ class RegistrationPresenter
 	}
 	
 	public function PageLoad()
-	{		
-		if ($this->_page->RegisterCLicked())
+	{	
+		if ($this->_page->RegisterClicked())
 		{
 			$this->Register();
 		}
-		
+
 		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
 		{
 			$timezoneValues[] = $timezone['Name'];			
 			$timezoneOutput[] = sprintf('(GMT %s) %s', $this->FormatOffset($timezone['Offset']), $timezone['DisplayName']);
 		
 		}
+				
 		$this->_page->SetTimezones($timezoneValues, $timezoneOutput);
 		
-		$timezone = Configuration::GetKey(ConfigKeys::SERVER_TIMEZONE);
+		$timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
 		if ($this->_page->IsPostBack())
 		{
 			$timezone = $this->_page->GetTimezone();
 		}
 		$this->_page->SetTimezone($timezone);
+
 	}
 	
 	public function Register()
@@ -81,11 +83,11 @@ class RegistrationPresenter
 		$this->_page->RegisterValidator('fname', new RequiredValidator($this->_page->GetFirstName()));
 		$this->_page->RegisterValidator('lname', new RequiredValidator($this->_page->GetLastName()));
 		$this->_page->RegisterValidator('passwordmatch', new EqualValidator($this->_page->GetPassword(), $this->_page->GetPasswordConfirm()));
-		$this->_page->RegisterValidator('passwordcomplexity', new RegexValidator($this->_page->GetPassword(), Configuration::GetKey(ConfigKeys::PASSWORD_PATTERN)));
+		$this->_page->RegisterValidator('passwordcomplexity', new RegexValidator($this->_page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
 		$this->_page->RegisterValidator('emailformat', new EmailValidator($this->_page->GetEmail()));
 		$this->_page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->_page->GetEmail()));
 		
-		if (Configuration::GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()))
+		if (Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()))
 		{
 			$this->_page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->_page->GetLoginName()));		
 		}

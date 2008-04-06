@@ -1,9 +1,9 @@
 <?php
-require_once($root . 'Pages/IPage.php');
-require_once($root . 'lib/Common/SmartyPage.php');
-require_once($root . 'lib/Server/namespace.php');
-require_once($root . 'lib/Config/namespace.php');
-require_once($root . 'lib/Database/MDB2/namespace.php');
+require_once(ROOT_DIR . 'Pages/IPage.php');
+require_once(ROOT_DIR . 'lib/Common/SmartyPage.php');
+require_once(ROOT_DIR . 'lib/Server/namespace.php');
+require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Database/MDB2/namespace.php');
 
 class Page implements IPage
 {
@@ -25,11 +25,11 @@ class Page implements IPage
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);
 		$this->smarty->assign('Title', "phpScheduleIt $title");
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
-		$this->smarty->assign('AllowRss', Configuration::GetKey(ConfigKeys::ALLOW_RSS));
+		$this->smarty->assign('AllowRss', Configuration::Instance()->GetKey(ConfigKeys::ALLOW_RSS));
 		$this->smarty->assign('LoggedIn', !is_null($userSession));
-		$this->smarty->assign('Version', Configuration::GetKey(ConfigKeys::VERSION));
+		$this->smarty->assign('Version', Configuration::Instance()->GetKey(ConfigKeys::VERSION));
 		$this->smarty->assign('Path', $path);
-		$this->smarty->assign('ScriptUrl', Configuration::GetKey(ConfigKeys::SCRIPT_URL));
+		$this->smarty->assign('ScriptUrl', Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL));
 		$this->smarty->assign('UserName', !is_null($userSession) ? $userSession->FirstName : '');
 		$this->smarty->assign('DisplayWelcome', $this->DisplayWelcome());
 	}

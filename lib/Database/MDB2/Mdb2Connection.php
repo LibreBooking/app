@@ -1,8 +1,7 @@
 <?php
 $LOCAL_PEAR = dirname(__FILE__) . '/../../../lib/pear/';
 ini_set('include_path', ($LOCAL_PEAR  . PATH_SEPARATOR . ini_get('include_path') ));
-require_once($root . 'lib/pear/MDB2.php');
-//require_once('namespace.php');
+require_once(ROOT_DIR . 'lib/pear/MDB2.php');
 
 /**
 * Pear::MDB2 implementation
@@ -86,7 +85,6 @@ class Mdb2Connection implements IDbConnection
 		$cmd = new Mdb2CommandAdapter($sqlCommand);
 		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);		
 		$result =& $stmt->execute($cmd->GetValues());	
-
 		$this->_isError($result);
 		
 		return new Mdb2Reader($result);

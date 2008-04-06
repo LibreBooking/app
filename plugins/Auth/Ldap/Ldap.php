@@ -1,7 +1,6 @@
 <?php
-require_once($root . 'lib/Authorization/namespace.php');
-require_once($root . 'plugins/Auth/Ldap/ldap.config.php');
-require_once(dirname(__FILE__) . '/Zend/Auth/Adapter/Ldap.php');
+require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'plugins/Auth/Ldap/ldap.config.php');
 
 class Ldap extends Authorization implements IAuthorization
 {

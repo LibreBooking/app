@@ -1,3 +1,3 @@
 <?php
-require_once($root . 'lib/Common/Helpers/StringBuilder.php');
+require_once(ROOT_DIR . 'lib/Common/Helpers/StringBuilder.php');
 ?>
