@@ -19,7 +19,7 @@
 
 define('PEAR_ROOT', ROOT_DIR . 'lib/pear/');
 
-require_once('PEAR.php');
+require_once(PEAR_ROOT . 'PEAR.php');
 require_once(PEAR_ROOT . 'Config/Container.php');
 
 $GLOBALS['CONFIG_TYPES'] = 

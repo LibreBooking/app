@@ -50,7 +50,6 @@ class RegisterPresenterTests extends TestBase
 		$expectedTimezone = "US/Central";
 		
 		$this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, $expectedTimezone);
-		//Configuration::SetKey(ConfigKeys::SERVER_TIMEZONE, $expectedTimezone);
 		$this->page->_IsPostBack = false;
 		$this->presenter->PageLoad();
 		
