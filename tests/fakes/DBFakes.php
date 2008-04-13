@@ -116,11 +116,13 @@ class FakeDBResult extends MDB2_Result_Common
 	public $idx = 0;
 	public $_FreeWasCalled = false;
 
-	public function __construct(&$rows) {
+	public function __construct(&$rows) 
+	{
 		$this->rows = $rows;
 	}
 
-	public function &fetchRow() {
+	public function fetchRow() 
+	{
 		if (sizeof($this->rows) > $this->idx)
 		{
 			return $this->rows[$this->idx++];

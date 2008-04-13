@@ -2,7 +2,9 @@
 $path = ini_get('include_path');
 ini_set('include_path', $path . ';' . 'C:\PHP\PEAR');
 
-define('ROOT_DIR', '../');
+define('ROOT_DIR', dirname(__FILE__) . '/../');
+
+echo dirname(__FILE__);
 
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Framework.php';

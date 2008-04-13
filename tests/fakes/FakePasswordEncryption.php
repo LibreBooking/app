@@ -15,7 +15,7 @@ class FakePasswordEncryption extends PasswordEncryption
 		$this->_LastPassword = $password;
 		$this->_LastSalt = $salt;
 		
-		return $_Encrypted;
+		return $this->_Encrypted;
 	}
 	
 	public function Salt()

@@ -14,7 +14,7 @@ class Mdb2Reader implements IReader
 		$this->_result = $MDB2_Result;
 	}
 	
-	public function &GetRow() 
+	public function GetRow() 
 	{
 		return $this->_result->fetchRow();
 	}

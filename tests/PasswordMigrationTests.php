@@ -25,6 +25,7 @@ class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 	
 	function testPasswordValidatesWithNewValidationAndDoesNotMigrate()
 	{	
+		$userid = 1;
 		$oldpassword = '';
 		$salt = $this->newEncryption->Salt();		
 		$newpassword = $this->newEncryption->Encrypt($this->plaintext, $salt);		
@@ -36,11 +37,12 @@ class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 		$this->assertTrue($isValid, 'should have validated against the new password');
 		
 		$password->Migrate($userid);
-		$this->assertEquals(0, count($this->db->_Commands));
+		$this->assertEquals(0, count($this->_db->_Commands));
 	}
 	
 	function testOldPasswordValidatesWithOldValidatorAndMigrates()
 	{
+		$userid = 1;
 		$fakeEncryption = new FakePasswordEncryption();
 		$salt = $fakeEncryption->Salt();
 		

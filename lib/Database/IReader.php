@@ -3,7 +3,7 @@
 
 interface IReader
 {
-	public function &GetRow();
+	public function GetRow();
 	
 	public function NumRows();
 	

@@ -22,7 +22,12 @@ class FakeConfig implements IConfiguration
 	
 	public function GetKey($keyName, $converter = null)
 	{		
-		$value = $this->_values[$keyName];
+		$value = null;
+		
+		if (array_key_exists($keyName, $this->_values))
+		{
+			$value = $this->_values[$keyName];
+		}
 		
 		if (!is_null($converter))
 		{

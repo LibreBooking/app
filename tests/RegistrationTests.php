@@ -42,7 +42,7 @@ class RegistrationTests extends PHPUnit_Framework_TestCase
 		
 		$command = new RegisterUserCommand(
 					$this->login, $this->email, $this->fname, $this->lname, 
-					$this->fakeEncryption->_Encrypt, $this->fakeEncryption->_Salt, $this->timezone, 
+					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, 
 					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position']
 					);
 		

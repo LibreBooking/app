@@ -20,10 +20,13 @@ class FakeServer extends Server
 	
 	public function GetCookie($name)
 	{
-		$cookie = $this->Cookies[$name];
-		if (!is_null($cookie))
+		if (array_key_exists($name, $this->Cookies))
 		{
-			return $cookie->Value;
+			$cookie = $this->Cookies[$name];
+			if (!is_null($cookie))
+			{
+				return $cookie->Value;
+			}
 		}
 		
 		return null;
@@ -36,7 +39,7 @@ class FakeServer extends Server
 	
 	public function GetSession($name)
 	{
-		if (isset($this->Session[$name]))
+		if (array_key_exists($name, $this->Session))
 		{
 			return $this->Session[$name];
 		}
