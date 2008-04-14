@@ -15,14 +15,14 @@ interface IConfigurationFile
 
 class Configuration implements IConfiguration
 {
-	private $_configs = array();
+	protected $_configs = array();
 	private static $_instance = null;
 	
 	const SETTINGS = 'settings';
 	const DEFAULT_CONFIG_ID = 'phpscheduleit';
 	const DEFAULT_CONFIG_FILE_PATH = '/config/newconfig.php';
 	
-	private function __construct()
+	protected function __construct()
 	{
 	}
 	
@@ -67,7 +67,7 @@ class Configuration implements IConfiguration
 		return $this->File(self::DEFAULT_CONFIG_ID)->GetKey($keyName, $converter);
 	}
 
-	private function AddConfig($configId, $container, $overwrite)
+	protected function AddConfig($configId, $container, $overwrite)
 	{		
 		if (!$overwrite)
 		{		
@@ -100,7 +100,7 @@ class ConfigurationFile implements IConfigurationFile
 		return $this->Convert($this->_values[$section][$keyName], $converter);
 	}
 	
-	private function Convert($value, $converter)
+	protected function Convert($value, $converter)
 	{
 		if (!is_null($converter))
 		{

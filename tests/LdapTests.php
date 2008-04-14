@@ -1,8 +1,8 @@
 <?php
-require_once(ROOT_DIR . 'lib/Common/namespace.php');
-require_once(ROOT_DIR . 'lib/Server/namespace.php');
-require_once(ROOT_DIR . 'lib/Config/namespace.php');
-require_once(ROOT_DIR . 'plugins/Auth/Ldap/Ldap.php');
+//require_once(ROOT_DIR . 'lib/Common/namespace.php');
+//require_once(ROOT_DIR . 'lib/Server/namespace.php');
+//require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'plugins/Auth/Ldap/namespace.php');
 
 class LdapTests extends TestBase 
 {
@@ -13,80 +13,56 @@ class LdapTests extends TestBase
 		parent::setup();
 	}
 	
-	public function testCanValidateUser()
-	{
-		$fakeAuth = new FakeAuth();
-		
-		$auth = new Ldap($fakeAuth);
-	}	
+//	public function testCanValidateUser()
+//	{
+//		$fakeAuth = new FakeAuth();
+//		
+//		$auth = new Ldap($fakeAuth);
+//	}	
 	
 	public function testZendLdapConstructionsOptionsCorrectly()
 	{
-		$this->markTestIncomplete('This test has not been implemented yet.');
-        
-		$zendLdap = new ZendLdap();	
-		$options = $zendLdap->ConstructOptions();	// do this through relfection to keep the method private
-
-		$server1_host = 'server1host';
-		$server1_port = 'server1port';
-		$server1_useSsl = 'server1useSsl';
-		$server1_username = 'server1username';
-		$server1_password = 'server1password';
-		$server1_bindRequiresDn = 'server1bindRequiresDn';
-		$server1_baseDn = 'server1baseDn';
-		$server1_accountCanonicalForm = 'server1accountCanonicalForm';
-		$server1_accountDomainName = 'server1accountDomainName';
-		$server1_accountDomainNameShort = 'server1accountDomainNameShort';
-		$server1_accountFilterFormat = 'server1accountFilterFormat';
+		$host = 'localhost, localhost.2';
+		$port = '389';
+		$username = 'uname';
+		$password = 'pw';
+		$base = '';
+		$starttls = 'false';
+		$filter = '(objectclass=*)';
+		$scope = 'sub';
+		$version = '';
 		
-		Configuration::SetKey(LdapConfig::HOST, $server1_host);
-		Configuration::SetKey(LdapConfig::PORT, $server1_port);
-		Configuration::SetKey(LdapConfig::USESSL, $server1_useSsl);
-		Configuration::SetKey(LdapConfig::USERNAME, $server1_username);
-		Configuration::SetKey(LdapConfig::PASSWORD, $server1_password);
-		Configuration::SetKey(LdapConfig::BIND_REQUIRES_DN, $server1_bindRequiresDn);
-		Configuration::SetKey(LdapConfig::BASE_DN, $server1_baseDn);
-		Configuration::SetKey(LdapConfig::ACCOUNT_CANONICAL_FORM, $server1_accountCanonicalForm);
-		Configuration::SetKey(LdapConfig::ACCOUNT_DOMAIN_NAME, $server1_accountDomainName);
-		Configuration::SetKey(LdapConfig::ACCOUNT_DOMAIN_NAME_SHORT, $server1_accountDomainNameShort);
-		Configuration::SetKey(LdapConfig::ACCOUNT_FILTER_FORMAT, $server1_accountFilterFormat);
+		$configFile = new FakeConfigFile();
+		$configFile->SetKey(LdapConfig::HOST, $host);
+		$configFile->SetKey(LdapConfig::PORT, $port);
+		$configFile->SetKey(LdapConfig::USERNAME, $username);
+		$configFile->SetKey(LdapConfig::PASSWORD, $password);
+		$configFile->SetKey(LdapConfig::BASE, $base);
+		$configFile->SetKey(LdapConfig::START_TLS, $starttls);
+		$configFile->SetKey(LdapConfig::FILTER, $filter);
+		$configFile->SetKey(LdapConfig::SCOPE, $scope);
+		$configFile->SetKey(LdapConfig::VERSION, $version);
 		
-		$this->assertEquals($server1_host, $options['server1']['host']);
-		$this->assertEquals($server1_port, $options['server1']['port']);
-		$this->assertEquals($server1_useSsl, $options['server1']['useSsl']);
-		$this->assertEquals($server1_username, $options['server1']['username']);
-		$this->assertEquals($server1_password, $options['server1']['bindRequiresDn']);
-		$this->assertEquals($server1_bindRequiresDn, $options['server1']['baseDn']);
-		$this->assertEquals($server1_baseDn, $options['server1']['accountCanonicalForm']);
-		$this->assertEquals($server1_accountCanonicalForm, $options['server1']['accountDomainName']);
-		$this->assertEquals($server1_accountDomainName, $options['server1']['accountDomainName']);
-		$this->assertEquals($server1_accountDomainNameShort, $options['server1']['accountDomainNameShort']);
-		$this->assertEquals($server1_accountFilterFormat, $options['server1']['accountFilterFormat']);
+		$this->fakeConfig->SetFile(LdapConfig::CONFIG_ID, $configFile);
 		
-//host
-//port
-//useSsl
-//username
-//password
-//bindRequiresDn
-//baseDn
-//accountCanonicalForm
-//accountDomainName
-//accountDomainNameShort
-//accountFilterFormat
+		$pearLdap = new PearLdapOptions();	
+		$options = $pearLdap->ConstructOptions();
+		
+		$expectedLdapConfigFile = dirname(ROOT_DIR . 'plugins/Auth/Ldap/PearLdap.php') . '/Ldap.config.php';
+		$this->assertNotNull($this->fakeConfig->_RegisteredFiles[LdapConfig::CONFIG_ID]);
+		$this->assertEquals(array('localhost', 'localhost.2'), $options['host'], "comma seperated values should become array");
+		$this->assertEquals($port, $options['port']);
+		$this->assertEquals($username, $options['binddn']);
+		$this->assertEquals($password, $options['bindpw']);
+		$this->assertFalse(array_key_exists('base', $options), "empty values should not be added to options");
+		$this->assertEquals(false, $options['starttls']);
+		$this->assertEquals($filter, $options['filter']);
+		$this->assertEquals($scope, $options['scope']);
+		$this->assertFalse(array_key_exists('version', $options), "empty values should not be added to options");
 	}
 	
 	function testConfigurationIsAccessable()
 	{
 		//Configuration::Section['Ldap'] = LdapConfiguraiton;
 	}
-}
-
-class ZendLdap
-{
-	public function ConstructOptions()
-	{
-		return array();
-	}
-	
 }

@@ -1,24 +1,39 @@
 <?php
 
-class FakeConfig implements IConfiguration
+class FakeConfig extends Configuration implements IConfiguration
 {
 	public $_RegisteredFiles = array();
-	public $_values = array();
 	
-	public function Register($configFile, $configId)
+	public function Register($configFile, $configId, $overwrite = false)
 	{		
 		$this->_RegisteredFiles[$configId] = $configFile;
 	}
 	
-	public function File($configId)
+	public function __construct()
 	{
-		return $this->_configs[$configId];
+		$this->_configs[self::DEFAULT_CONFIG_ID] = new FakeConfigFile();
 	}
 	
-	public function GetSectionKey($section, $keyName, $converter = null)
-	{	
-		//return $this->File(self::DEFAULT_CONFIG_ID)->GetSectionKey($section, $keyName, $converter);
+	public function SetFile($configId, $file)
+	{
+		$this->_configs[$configId] = $file;
 	}
+	
+	public function SetKey($keyName, $value)
+	{
+		$this->File(self::DEFAULT_CONFIG_ID)->SetKey($keyName, $value);
+	}
+	
+	public function SetSectionKey($section, $keyName, $value)
+	{
+		$this->File(self::DEFAULT_CONFIG_ID)->SetSectionKey($section, $keyName, $value);
+	}
+}
+
+class FakeConfigFile implements IConfigurationFile 
+{
+	public $_values = array();
+	public $_sections = array();
 	
 	public function GetKey($keyName, $converter = null)
 	{		
@@ -29,17 +44,41 @@ class FakeConfig implements IConfiguration
 			$value = $this->_values[$keyName];
 		}
 		
+		return $this->Convert($value, $converter);
+	}
+	
+	public function GetSectionKey($section, $keyName, $converter = null)
+	{
+		$value = null;
+		if (array_key_exists($section, $this->_sections))
+		{
+			if (array_key_exists($keyName, $this->_sections[$section]))
+			{
+				$value = $this->_sections[$section][$keyName];
+			}
+		}
+		
+		return $this->Convert($value, $converter);
+	}
+	
+	public function SetKey($keyName, $value)
+	{
+		$this->_values[$keyName] = $value;
+	}
+	
+	public function SetSectionKey($section, $keyName, $value)
+	{
+		$this->_sections[$section][$keyName] = $value;
+	}
+	
+	protected function Convert($value, $converter)
+	{
 		if (!is_null($converter))
 		{
 			return $converter->Convert($value);
 		}
 		
 		return $value;
-	}
-	
-	public function SetKey($keyName, $value)
-	{
-		$this->_values[$keyName] = $value;
 	}
 }
 

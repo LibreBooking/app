@@ -1,10 +1,11 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
-require_once 'PEAR.php';
-require_once 'Net/LDAP2.php';
-require_once 'Net/LDAP2/Entry.php';
-require_once 'Net/LDAP2/Util.php';
+define('PEAR_ROOT', ROOT_DIR . 'lib/pear/');
+require_once PEAR_ROOT . 'PEAR.php';
+require_once PEAR_ROOT . 'LDAP2.php';
+require_once PEAR_ROOT . 'LDAP2/Entry.php';
+require_once PEAR_ROOT . 'LDAP2/Util.php';
 
 /**
 * LDIF capabilitys for Net_LDAP2, closely taken from PERLs Net::LDAP
