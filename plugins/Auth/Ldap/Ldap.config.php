@@ -3,9 +3,9 @@ $conf['settings']['host'] = 'localhost';
 $conf['settings']['port'] = '389';
 $conf['settings']['username'] = '';
 $conf['settings']['password'] = '';
-$conf['settings']['base'] = '';
-$conf['settings']['starttls'] = 'false';
-$conf['settings']['filter'] = '(objectclass=*)';
-$conf['settings']['scope'] = 'sub';
-$conf['settings']['version'] = '';
+$conf['settings']['basedn'] = 'ou=people,o=domain.com';
+$conf['settings']['version'] = '3';
+$conf['settings']['use.ssl'] = 'false';
+$conf['settings']['account.suffix'] = '';
+$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';
 ?>

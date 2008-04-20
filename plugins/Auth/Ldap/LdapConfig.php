@@ -7,10 +7,13 @@ class LdapConfig
 	const PORT = 'port';	
 	const USERNAME = 'username';	
 	const PASSWORD = 'password';	
-	const BASE = 'base';	
-	const START_TLS = 'starttls';	
-	const FILTER = 'filter';	
-	const SCOPE = 'scope';	
-	const VERSION = 'version';	
+	const BASEDN = 'basedn';	
+	const USE_SSL = 'use.ssl';	
+	const VERSION = 'version';
+	const DOMAIN_CONTROLLERS = 'domain.controllers';
+	const ACCOUNT_SUFFIX = 'account.suffix';
+	const SECTION_AD = 'ad';
+	
+	const RETRY_AGAINST_DATABASE = 'database.auth.when.ldap.user.not.found';
 }
 ?>

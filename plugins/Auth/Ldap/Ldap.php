@@ -2,26 +2,33 @@
 require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
 require_once(ROOT_DIR . 'plugins/Auth/Ldap/ldap.config.php');
 
-class Ldap extends Authorization implements IAuthorization
+class Ldap implements IAuthorization
 {
-	public function __construct($authorization)
+	private $authToDecorate;
+	private $ldap;
+	private $options;
+	
+	public function __construct($authorization, $ldapImplementation, $ldapOptions)
 	{
 		$this->authToDecorate = $authorization; 
+		$this->ldap = $ldapImplementation;
+		$this->options = $ldapOptions;
 	}
 	
 	public function Validate($username, $password)
 	{
-		//require_once 'Zend/Auth/Adapter/Ldap.php';
-		
-		$options = ConstructOptions();
-		$adapter = new Zend_Auth_Adapter_Ldap($options, $username, $password);
-		
-		$result = $auth->authenticate($adapter);
+		$this->ldap->Connect();
+		return $this->ldap->Authenticate($username, $password);
 	}
 	
 	public function Login($username, $persist)
 	{
 		// check for user in db, register if needed
+	}
+	
+	public function CookieLogin($cookieValue)
+	{
+		$this->authToDecorate->CookieLogin($cookieValue);
 	}
 }
 ?>
