@@ -3,10 +3,10 @@ require_once(ROOT_DIR . 'plugins/Auth/Ldap/ILdap.php');
 
 class FakeLdapWrapper implements ILdap
 {
-	public $_ExpectedConnect = false;
+	public $_ExpectedConnect = true;
 	public $_ConnectCalled = true;
 	
-	public $_ExpectedAuthenticate = false;
+	public $_ExpectedAuthenticate = true;
 	public $_AuthenticateCalled = false;
 	public $_LastUsername;
 	public $_LastPassword;

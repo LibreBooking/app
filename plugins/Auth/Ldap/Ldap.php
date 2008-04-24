@@ -8,6 +8,8 @@ class Ldap implements IAuthorization
 	private $ldap;
 	private $options;
 	
+	private $user;
+	
 	public function __construct($authorization, $ldapImplementation, $ldapOptions)
 	{
 		$this->authToDecorate = $authorization; 
@@ -18,7 +20,24 @@ class Ldap implements IAuthorization
 	public function Validate($username, $password)
 	{
 		$this->ldap->Connect();
-		return $this->ldap->Authenticate($username, $password);
+		
+		$this->user = $this->ldap->GetLdapUser($username);
+		
+		$isValid = false;
+		
+		if ($this->user != null)
+		{
+			$isValid = $this->ldap->Authenticate($username, $password);
+		}
+		else
+		{
+			if ($this->options->RetryAgainstDatabase())
+			{
+				$isValid = $this->authToDecorate->Validate($username, $password);
+			}
+		}
+		
+		return $isValid;
 	}
 	
 	public function Login($username, $persist)

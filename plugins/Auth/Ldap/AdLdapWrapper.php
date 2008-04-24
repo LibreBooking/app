@@ -43,7 +43,7 @@ class AdLdapWrapper implements ILdap
 	
 	public function GetLdapUser($username)
 	{
-		$attributes = array( "sn", "givenname", "mail", "telephonenumber", "physicaldeliveryofficename", "title" );
+		$attributes = array( 'sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title' );
 		$entries = $this->ldap->user_info($username, $attributes);
 		
 		if (count($entries) > 0)
