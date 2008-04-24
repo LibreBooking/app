@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'Config/namespace.php');
+require_once(ROOT_DIR . '/lib/Config/namespace.php');
 
 class LdapOptions
 {
@@ -39,10 +39,7 @@ class LdapOptions
 	
 	private function SetOption($key, $value)
 	{
-		if (!empty($value))
-		{
-			$this->_options[$key] = $value;
-		}
+		$this->_options[$key] = $value;
 	}
 	
 	private function GetConfig($keyName, $converter = null)

@@ -17,12 +17,12 @@ class LdapTests extends TestBase
 		$this->fakeLdap = new FakeLdapWrapper();
 		
 		$ldapEntry = array(
-			"sn" => 'user', 
-			"givenname" => 'test', 
-			"mail" => 'ldap@user.com', 
-			"telephonenumber" => '000-000-0000', 
-			"physicaldeliveryofficename" => '', 
-			"title" => '' );
+			"sn" => array('user'), 
+			"givenname" => array('test'), 
+			"mail" => array('ldap@user.com'), 
+			"telephonenumber" => array('000-000-0000'), 
+			"physicaldeliveryofficename" => array(''), 
+			"title" => array('') );
 		
 		$this->ldapUser = new LdapUser($ldapEntry);
 		
@@ -33,6 +33,8 @@ class LdapTests extends TestBase
 	{
 		$this->fakeLdapOptions->_RetryAgainstDatabase = false;
 		$expectedResult = true;
+		$username = 'username';
+		$password = 'password';
 		$this->fakeLdap->_ExpectedAuthenticate = $expectedResult;
 		
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
@@ -47,6 +49,9 @@ class LdapTests extends TestBase
 	
 	public function testNotValidIfCannotFindUser()
 	{
+		$username = 'username';
+		$password = 'password';
+		
 		$this->fakeLdap->_ExpectedLdapUser = null;
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 		$isValid = $auth->Validate($username, $password);
@@ -62,6 +67,9 @@ class LdapTests extends TestBase
 		$expectedResult = false;
 		$this->fakeLdap->_ExpectedAuthenticate = $expectedResult;
 		
+		$username = 'username';
+		$password = 'password';
+		
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 		$isValid = $auth->Validate($username, $password);
 		
@@ -75,6 +83,9 @@ class LdapTests extends TestBase
 		
 		$authResult = true;
 		$this->fakeAuth->_ValidateResult = $authResult;
+		
+		$username = 'username';
+		$password = 'password';
 		
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 		$isValid = $auth->Validate($username, $password);
@@ -120,7 +131,7 @@ class LdapTests extends TestBase
 		$configFile->SetKey(LdapConfig::USERNAME, $username);
 		$configFile->SetKey(LdapConfig::PASSWORD, $password);
 		$configFile->SetKey(LdapConfig::BASEDN, $base);
-		$configFile->SetKey(LdapConfig::USE_SSL, $starttls);
+		$configFile->SetKey(LdapConfig::USE_SSL, $usessl);
 		$configFile->SetKey(LdapConfig::VERSION, $version);
 		$configFile->SetKey(LdapConfig::ACCOUNT_SUFFIX, $accountSuffix);
 		
