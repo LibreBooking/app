@@ -7,6 +7,11 @@ class LdapTests extends TestBase
 	private $fakeLdapOptions;
 	private $fakeLdap;
 	private $ldapUser;
+	private $fakeRegistration;
+	private $encryption;
+	
+	private $username = 'username';
+	private $password = 'password';
 	
 	public function setup()
 	{
@@ -15,6 +20,8 @@ class LdapTests extends TestBase
 		$this->fakeAuth = new FakeAuth();
 		$this->fakeLdapOptions = new FakeLdapOptions();
 		$this->fakeLdap = new FakeLdapWrapper();
+		$this->fakeRegistration = new FakeRegistration();
+		$this->encryption = new FakePasswordEncryption();
 		
 		$ldapEntry = array(
 			"sn" => array('user'), 
@@ -33,28 +40,23 @@ class LdapTests extends TestBase
 	{
 		$this->fakeLdapOptions->_RetryAgainstDatabase = false;
 		$expectedResult = true;
-		$username = 'username';
-		$password = 'password';
 		$this->fakeLdap->_ExpectedAuthenticate = $expectedResult;
 		
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
-		$isValid = $auth->Validate($username, $password);
+		$isValid = $auth->Validate($this->username, $this->password);
 		
 		$this->assertEquals($expectedResult, $isValid);
 		$this->assertTrue($this->fakeLdap->_ConnectCalled);
 		$this->assertTrue($this->fakeLdap->_AuthenticateCalled);
-		$this->assertEquals($username, $this->fakeLdap->_LastUsername);
-		$this->assertEquals($password, $this->fakeLdap->_LastPassword);
+		$this->assertEquals($this->username, $this->fakeLdap->_LastUsername);
+		$this->assertEquals($this->password, $this->fakeLdap->_LastPassword);
 	}
 	
 	public function testNotValidIfCannotFindUser()
 	{
-		$username = 'username';
-		$password = 'password';
-		
 		$this->fakeLdap->_ExpectedLdapUser = null;
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
-		$isValid = $auth->Validate($username, $password);
+		$isValid = $auth->Validate($this->username, $this->password);
 		
 		$this->assertFalse($isValid);
 		$this->assertTrue($this->fakeLdap->_ConnectCalled);
@@ -67,11 +69,8 @@ class LdapTests extends TestBase
 		$expectedResult = false;
 		$this->fakeLdap->_ExpectedAuthenticate = $expectedResult;
 		
-		$username = 'username';
-		$password = 'password';
-		
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
-		$isValid = $auth->Validate($username, $password);
+		$isValid = $auth->Validate($this->username, $this->password);
 		
 		$this->assertEquals($expectedResult, $isValid);
 	}
@@ -84,34 +83,125 @@ class LdapTests extends TestBase
 		$authResult = true;
 		$this->fakeAuth->_ValidateResult = $authResult;
 		
-		$username = 'username';
-		$password = 'password';
-		
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
-		$isValid = $auth->Validate($username, $password);
+		$isValid = $auth->Validate($this->username, $this->password);
 		
 		$this->assertEquals($authResult, $isValid);
 		$this->assertFalse($this->fakeLdap->_AuthenticateCalled);
-		$this->assertEquals($username, $this->fakeAuth->_LastLogin);
-		$this->assertEquals($password, $this->fakeAuth->_LastPassword);
+		$this->assertEquals($this->username, $this->fakeAuth->_LastLogin);
+		$this->assertEquals($this->password, $this->fakeAuth->_LastPassword);
 	}
 	
 	public function testLoginSynchronizesInfoAndCallsAuthLogin()
-	{
-		$this->markTestIncomplete();
-		
+	{	
 		$persist = true;
+		$this->fakeRegistration->_UserExists = true;
+		$encryptedPassword = $this->encryption->_Encrypted;
+		$salt = $this->encryption->_Salt;
+	
+		$email = $this->ldapUser->GetEmail();
+		$fname = $this->ldapUser->GetFirstName();
+		$lname = $this->ldapUser->GetLastName();
+		$phone = $this->ldapUser->GetPhone();
+		$inst = $this->ldapUser->GetInstitution();
+		$title = $this->ldapUser->GetTitle();
+		
+		$expectedCommand = new UpdateUserFromLdapCommand(
+											$this->username,
+											$email,
+											$fname,
+											$lname,
+											$encryptedPassword, 
+											$salt,
+											$phone,
+											$inst,
+											$title);
+											
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);		
+		$auth->SetRegistration($this->fakeRegistration);
+		$auth->SetEncryption($this->encryption);
+		
+		$auth->Validate($this->username, $this->password);
+		$auth->Login($this->username, $persist);
+			
+		
+		$this->assertTrue($this->fakeRegistration->_ExistsCalled);	
+		$this->assertEquals($this->username, $this->fakeRegistration->_LastLogin);
+		$this->assertEquals($this->ldapUser->GetEmail(), $this->fakeRegistration->_LastEmail);
+		
+		$this->assertEquals($expectedCommand, $this->db->_Commands[0]);
+		
+		$this->assertTrue($this->encryption->_EncryptCalled);
+		$this->assertEquals($this->password, $this->encryption->_LastPassword);
+		$this->assertEquals($this->encryption->_Salt, $this->encryption->_LastSalt);
+			
+		$this->assertFalse($this->fakeRegistration->_RegisterCalled);
+		
+		$this->assertEquals($this->username, $this->fakeAuth->_LastLogin);
+		$this->assertEquals($persist, $this->fakeAuth->_LastPersist);
+	}
+	
+	public function testLoginRegistersUserIfDoesNotExistAndCallsAuthLogin()
+	{
+		$persist = false;
+		$this->fakeRegistration->_UserExists = false;
+		$encryptedPassword = $this->encryption->_Encrypted;
+		$salt = $this->encryption->_Salt;
+	
+		$email = $this->ldapUser->GetEmail();
+		$fname = $this->ldapUser->GetFirstName();
+		$lname = $this->ldapUser->GetLastName();
+		$phone = $this->ldapUser->GetPhone();
+		$inst = $this->ldapUser->GetInstitution();
+		$title = $this->ldapUser->GetTitle();
+		$additionalFields = array('phone' => $phone, 'institution' => $inst, 'position' => $title);
+		$timezone = 'US/Central';
+		$this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, $timezone);
+		
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
-		$auth->Validate($username, $password);
+		$auth->SetRegistration($this->fakeRegistration);
+		$auth->SetEncryption($this->encryption);
+		$auth->Validate($this->username, $this->password);
 		
-		$auth->Login($username, $persist);
+		$auth->Login($this->username, $persist);
 		
-		$this->assertEquals(new AuthorizationCommand($username), $this->db->_Commands[0]);
+		$this->assertTrue($this->fakeRegistration->_ExistsCalled);	
+		$this->assertEquals($this->username, $this->fakeRegistration->_LastLogin);
+		$this->assertEquals($this->ldapUser->GetEmail(), $this->fakeRegistration->_LastEmail);
+		
+		$this->assertTrue($this->encryption->_EncryptCalled);
+		$this->assertEquals($this->password, $this->encryption->_LastPassword);
+		$this->assertEquals($this->encryption->_Salt, $this->encryption->_LastSalt);
+			
+		$this->assertTrue($this->fakeRegistration->_RegisterCalled);
+		$this->assertEquals($this->username, $this->fakeRegistration->_Login);
+		$this->assertEquals($email, $this->fakeRegistration->_Email);
+		$this->assertEquals($fname, $this->fakeRegistration->_First);
+		$this->assertEquals($lname, $this->fakeRegistration->_Last);
+		$this->assertEquals($this->password, $this->fakeRegistration->_Password);
+		$this->assertEquals($timezone, $this->fakeRegistration->_Timezone);
+		$this->assertEquals($additionalFields, $this->fakeRegistration->_AdditionalFields);
+		
+		$this->assertEquals($this->username, $this->fakeAuth->_LastLogin);
+		$this->assertEquals($persist, $this->fakeAuth->_LastPersist);
 	}
 	
 	public function testDoesNotSyncIfUserWasNotFoundInLdap()
 	{
-		$this->markTestIncomplete();
+		$persist = false;
+		$this->fakeLdap->_ExpectedLdapUser = null;
+		
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth->Validate($this->username, $this->password);
+		
+		$auth->Login($this->username, $persist);
+		
+		$this->assertFalse($this->fakeRegistration->_ExistsCalled);
+		$this->assertEquals(0, count($this->db->_Commands));
+		$this->assertFalse($this->encryption->_EncryptCalled);
+		$this->assertFalse($this->fakeRegistration->_RegisterCalled);
+		$this->assertEquals($this->username, $this->fakeAuth->_LastLogin);
+		$this->assertEquals($persist, $this->fakeAuth->_LastPersist);
 	}
 	
 	public function testAdLdapConstructsOptionsCorrectly()

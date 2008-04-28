@@ -1,6 +1,4 @@
 <?php
-//require_once('../../lib/Authorization/namespace.php');
-
 class FakePasswordEncryption extends PasswordEncryption
 {
 	public $_Salt = '123';

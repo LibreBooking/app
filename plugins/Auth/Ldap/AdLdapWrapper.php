@@ -3,20 +3,20 @@ require_once(ROOT_DIR . 'plugins/Auth/Ldap/adLdap.php');
 
 class AdLdapWrapper implements ILdap
 {
-	private $config;
+	private $options;
 	private $ldap;
 	
-	public function __construct($config)
+	public function __construct($ldapOptions)
 	{
-		$this->config = $config;
+		$this->options = $ldapOptions;
 	}
 	
 	public function Connect()
 	{
 		$connected = false;
 		$attempts = 0;
-		$hosts = $this->config->Hosts();
-		$options = $this->config->AdLdapOptions();
+		$hosts = $this->options->Hosts();
+		$options = $this->options->AdLdapOptions();
 		
 		while (!$connected && $attempts < count($hosts))
 		{

@@ -2,7 +2,7 @@
 class FakeRegistration implements IRegistration
 {
 	public $_RegisterCalled = false;
-	public $_UserExists;
+	public $_UserExists = true;
 	public $_ExistsCalled = false;
 	public $_LastLogin;
 	public $_LastEmail;

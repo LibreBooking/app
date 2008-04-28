@@ -48,6 +48,11 @@ class Queries
 		FROM account 
 		WHERE (username = @username OR email = @username)';
 	
+	const GET_USER_ROLES = 
+		'SELECT userid, isadmin 
+		FROM accountrole
+		WHERE (userid = @userid)';
+	
 	const MIGRATE_PASSWORD = 
 		"UPDATE account 
 		SET userpassword = @password, legacypassword = null, salt = @salt 
@@ -64,16 +69,26 @@ class Queries
 		'UPDATE account 
 		SET lastlogin = @lastlogin 
 		WHERE userid = @userid';
+		
+	const UPDATE_USER_BY_USERNAME = 
+		'UPDATE account SET 
+			email = @email,
+			userpassword = @password,
+			salt = @salt,
+			fname = @fname,
+			lname = @lname,
+			phone = @phone,
+			institution = @institution,
+			positionname = @position
+		WHERE username = @username
+		';
 	
 	const VALIDATE_USER = 
 		'SELECT userid, userpassword, salt, legacypassword
 		FROM account 
 		WHERE (username = @username OR email = @username)';
 	
-	const GET_USER_ROLES = 
-		'SELECT userid, isadmin 
-		FROM accountrole
-		WHERE (userid = @userid)';
+
 	
 }
 

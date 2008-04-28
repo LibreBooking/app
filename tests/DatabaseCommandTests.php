@@ -163,5 +163,33 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(1, $command->Parameters->Count());		
 		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $userid), $command->Parameters->Items(0));
 	}
+	
+	function testUpdateUserFromLdapCommand()
+	{
+		$username = 'testlogin';
+		$email = 'test@test.com';
+		$fname = 'First';
+		$lname = 'Last';
+		$password = 'password';
+		$salt = '23948';
+		$phone = '123.123.1234';
+		$institution = 'inst';
+		$position = 'pos';
+		
+		$command = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $password, $salt, $phone, $institution, $position);
+		
+		$this->assertEquals(Queries::UPDATE_USER_BY_USERNAME, $command->GetQuery());
+		$this->assertEquals(9, $command->Parameters->Count());		
+		$this->assertEquals(new Parameter(ParameterNames::USER_NAME, $username), $command->Parameters->Items(0));
+		$this->assertEquals(new Parameter(ParameterNames::EMAIL_ADDRESS, $email), $command->Parameters->Items(1));
+		$this->assertEquals(new Parameter(ParameterNames::FIRST_NAME, $fname), $command->Parameters->Items(2));
+		$this->assertEquals(new Parameter(ParameterNames::LAST_NAME, $lname), $command->Parameters->Items(3));
+		$this->assertEquals(new Parameter(ParameterNames::PASSWORD, $password), $command->Parameters->Items(4));
+		$this->assertEquals(new Parameter(ParameterNames::SALT, $salt), $command->Parameters->Items(5));
+		$this->assertEquals(new Parameter(ParameterNames::PHONE, $phone), $command->Parameters->Items(6));
+		$this->assertEquals(new Parameter(ParameterNames::INSTITUTION, $institution), $command->Parameters->Items(7));
+		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(8));
+		
+	}
 }
 ?>
