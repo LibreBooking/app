@@ -26,13 +26,13 @@ class RegisterPresenterTests extends TestBase
 		parent::setup();
 		
 		$this->page = new FakeRegistrationPage();
-		$this->server = new FakeServer();
+		//$this->server = new FakeServer();
 		$this->fakeReg = new FakeRegistration();
         $this->fakeAuth = new FakeAuth();
 		
 		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
 		
-		ServiceLocator::SetServer($this->server);
+		//ServiceLocator::SetServer($this->server);
 	}
 	
 	public function teardown()
@@ -40,9 +40,18 @@ class RegisterPresenterTests extends TestBase
 		parent::teardown();
 		
 		$this->page = null;
-        $this->server = null;
+        //$this->server = null;
         $this->fakeReg = null;
         $this->fakeAuth = null;
+	}
+	
+	public function testSetsIfConfiguredToUseLoginName()
+	{
+		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
+		
+		$this->presenter->PageLoad();
+		
+		$this->assertTrue($this->page->_UseLoginName);
 	}
 	
 	public function testSetsSelectedTimezoneToServerDefault()
@@ -188,10 +197,16 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	public $_PhoneNumber;
 	public $_Password;
 	public $_PasswordConfirm;
+	public $_UseLoginName;
 	
 	public function RegisterClicked()
 	{
 		return false;	
+	}
+	
+	public function SetUseLoginName($useLoginName)
+	{
+		$this->_UseLoginName = $useLoginName;
 	}
 	
 	public function SetTimezone($timezone)

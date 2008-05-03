@@ -18,8 +18,11 @@ class Registration implements IRegistration
 		$salt = $this->_passwordEncryption->Salt();
 		$encryptedPassword = $this->_passwordEncryption->Encrypt($password, $salt);
 		
+		$usingLoginNames = Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter());
+		$usernameToInsert = $usingLoginNames ? $username : $email;
+		
 		$command = new RegisterUserCommand(
-					$username, $email, $firstName, $lastName, 
+					$usernameToInsert, $email, $firstName, $lastName, 
 					$encryptedPassword, $salt, $timezone, 
 					$additionalFields['phone'], $additionalFields['institution'], $additionalFields['position']
 					);

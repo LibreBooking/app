@@ -1,7 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
-//require_once(dirname(__FILE__) . '/../Zend/Date.php');
 
 
 class RegistrationPresenter
@@ -28,23 +27,10 @@ class RegistrationPresenter
 		{
 			$this->Register();
 		}
-
-		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
-		{
-			$timezoneValues[] = $timezone['Name'];			
-			$timezoneOutput[] = sprintf('(GMT %s) %s', $this->FormatOffset($timezone['Offset']), $timezone['DisplayName']);
 		
-		}
-				
-		$this->_page->SetTimezones($timezoneValues, $timezoneOutput);
-		
-		$timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
-		if ($this->_page->IsPostBack())
-		{
-			$timezone = $this->_page->GetTimezone();
-		}
-		$this->_page->SetTimezone($timezone);
+		$this->_page->SetUseLoginName(Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()));
 
+		$this->PopulateTimezones();
 	}
 	
 	public function Register()
@@ -67,6 +53,24 @@ class RegistrationPresenter
     		$this->_auth->Login($this->_page->GetEmail(), false);
     		$this->_page->Redirect(Pages::DEFAULT_LOGIN);
 	    }
+	}
+	
+	private function PopulateTimezones()
+	{
+		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
+		{
+			$timezoneValues[] = $timezone['Name'];			
+			$timezoneOutput[] = sprintf('(GMT %s) %s', $this->FormatOffset($timezone['Offset']), $timezone['DisplayName']);		
+		}
+				
+		$this->_page->SetTimezones($timezoneValues, $timezoneOutput);
+		
+		$timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+		if ($this->_page->IsPostBack())
+		{
+			$timezone = $this->_page->GetTimezone();
+		}
+		$this->_page->SetTimezone($timezone);
 	}
 	
 	private function FormatOffset($offset)

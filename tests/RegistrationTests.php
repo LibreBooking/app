@@ -1,11 +1,9 @@
 <?php
 require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
 
-class RegistrationTests extends PHPUnit_Framework_TestCase
+class RegistrationTests extends TestBase
 {
 	private $registration;
-	private $db;
-	private $fakeServer;
 	private $fakeEncryption;
 	
 	private $login = 'testlogin';
@@ -19,20 +17,17 @@ class RegistrationTests extends PHPUnit_Framework_TestCase
 	
 	public function setUp()
 	{
-		$this->db = new FakeDatabase();
-		$this->fakeServer = new FakeServer();
-		$this->fakeEncryption = new FakePasswordEncryption();
+		parent::setup();
 
-		ServiceLocator::SetDatabase($this->db);
-		ServiceLocator::SetServer($this->fakeServer);
-		
+		$this->fakeEncryption = new FakePasswordEncryption();		
 		$this->registration = new Registration($this->fakeEncryption);
+		
+		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
 	}
 	
 	public function tearDown()
 	{
-		$this->db = null;
-		$this->fakeServer = null;
+		parent::teardown();
 		$this->registration = null;
 	}
 	
@@ -50,6 +45,23 @@ class RegistrationTests extends PHPUnit_Framework_TestCase
 		$this->assertTrue($this->fakeEncryption->_EncryptCalled);
 		$this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
 		$this->assertEquals($this->fakeEncryption->_Salt, $this->fakeEncryption->_LastSalt);
+	}
+	
+	public function testInsertsEmailAddressIntoLoginNameIfNotConfiguredToUseLoginName()
+	{
+		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'false');
+		
+		$expectedLogin = $this->email;
+		$this->login = '';
+		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->additionalFields);
+		
+		$command = new RegisterUserCommand(
+					$expectedLogin, $this->email, $this->fname, $this->lname, 
+					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, 
+					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position']
+					);
+		
+		$this->assertEquals($command, $this->db->_LastCommand);
 	}
 	
 //	public function testChecksIfUserAlreadyRegistered()

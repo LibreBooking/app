@@ -76,9 +76,11 @@
 		<tr>
 			<td>{translate key="Username"}</td>
 		</tr>
+		{if $UseLoginName}
 		<tr>
 			<td>{textbox name="LOGIN" class="textbox" value="Login"}</td>
 		</tr>
+		{/if}
 		<tr>
 			<td>{translate key="Password"}</td>
 		</tr>

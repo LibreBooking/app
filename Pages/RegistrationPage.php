@@ -10,6 +10,8 @@ interface IRegistrationPage extends IPage
 {
 	public function RegisterClicked();
 	
+	public function SetUseLoginName($useLoginName);
+	
 	public function SetTimezones($timezoneValues, $timezoneOutput);
 	public function SetTimezone($timezone);
 	public function SetLoginName($loginName);	
@@ -54,6 +56,11 @@ class RegistrationPage extends Page implements IRegistrationPage
 	public function RegisterClicked()
 	{
 		return $this->server->GetForm(Actions::REGISTER);
+	}
+	
+	public function SetUseLoginName($useLoginName)
+	{
+		$this->smarty->assign('UseLoginName', $useLoginName);	
 	}
 	
 	public function SetTimezones($timezoneValues, $timezoneOutput)
