@@ -188,8 +188,17 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(new Parameter(ParameterNames::SALT, $salt), $command->Parameters->Items(5));
 		$this->assertEquals(new Parameter(ParameterNames::PHONE, $phone), $command->Parameters->Items(6));
 		$this->assertEquals(new Parameter(ParameterNames::INSTITUTION, $institution), $command->Parameters->Items(7));
-		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(8));
+		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(8));		
+	}
+	
+	function testAutoAssignPermissionsCommand()
+	{
+		$id = 101;
 		
+		$command = new AutoAssignPermissionsCommand($id);
+		$this->assertEquals(Queries::AUTO_ASSIGN_PERMISSIONS, $command->GetQuery());
+		$this->assertEquals(1, $command->Parameters->Count());		
+		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $id), $command->Parameters->Items(0));
 	}
 }
 ?>

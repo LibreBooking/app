@@ -1,6 +1,4 @@
 <?php
-//require_once('namespace.php');
-
 class Mdb2Reader implements IReader
 {
 	private $_result = null;

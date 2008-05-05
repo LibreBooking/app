@@ -21,13 +21,15 @@ class Registration implements IRegistration
 		$usingLoginNames = Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter());
 		$usernameToInsert = $usingLoginNames ? $username : $email;
 		
-		$command = new RegisterUserCommand(
+		$registerCommand = new RegisterUserCommand(
 					$usernameToInsert, $email, $firstName, $lastName, 
 					$encryptedPassword, $salt, $timezone, 
 					$additionalFields['phone'], $additionalFields['institution'], $additionalFields['position']
 					);
 					
-		ServiceLocator::GetDatabase()->Execute($command);
+		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);
+		
+		$this->AutoAssignPermissions($userId);
 	}
 	
 	public function UserExists($loginName, $emailAddress)
@@ -41,6 +43,12 @@ class Registration implements IRegistration
 		}
 		
 		return $exists;
+	}
+	
+	private function AutoAssignPermissions($userId)
+	{
+		$autoAssignCommand = new AutoAssignPermissionsCommand($userId);	
+		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
 	}
 }
 ?>

@@ -1,6 +1,4 @@
 <?php
-//require_once('namespace.php');
-
 class SqlCommand implements ISqlCommand
 {
 	public $Parameters = null;

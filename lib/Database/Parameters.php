@@ -1,6 +1,4 @@
 <?php
-//require_once('namespace.php');
-
 class Parameters
 {
 	private $_parameters = array();

@@ -41,7 +41,7 @@ class RegistrationTests extends TestBase
 					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position']
 					);
 		
-		$this->assertEquals($command, $this->db->_LastCommand);
+		$this->assertEquals($command, $this->db->_Commands[0]);
 		$this->assertTrue($this->fakeEncryption->_EncryptCalled);
 		$this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
 		$this->assertEquals($this->fakeEncryption->_Salt, $this->fakeEncryption->_LastSalt);
@@ -61,27 +61,19 @@ class RegistrationTests extends TestBase
 					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position']
 					);
 		
-		$this->assertEquals($command, $this->db->_LastCommand);
+		$this->assertEquals($command, $this->db->_Commands[0]);
 	}
 	
-//	public function testChecksIfUserAlreadyRegistered()
-//	{
-//		$loginName = 'loginname';
-//		$emailAddress = 'email@address';
-//	    
-//		$rows = array(array());
-//		$this->db->SetRows($rows);
-//		
-//		$exists = $this->registration->UserExists($loginName, $emailAddress);
-//		
-//		$this->assertEquals(new CheckUserExistanceCommand($loginName, $emailAddress), $this->db->_LastCommand);
-//		$this->assertFalse($exists);
-//		
-//		$rows = array(array(ColumnNames::USER_ID => 100));
-//		$this->db->SetRows($rows);
-//		
-//		$exists = $this->registration->UserExists($loginName, $emailAddress);
-//		$this->assertTrue($exists);
-//	}
+	public function testAutoAssignsAllResourcesForThisUser()
+	{
+		$expectedUserId = 100;
+		
+		$this->db->_ExpectedInsertId = $expectedUserId;
+		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->additionalFields);
+		
+		$command = new AutoAssignPermissionsCommand($expectedUserId);
+		
+		$this->assertEquals($command, $this->db->_Commands[1]);
+	}
 }
 ?>

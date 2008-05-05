@@ -7,6 +7,7 @@ class FakeDatabase extends Database
 	public $reader = array();
 	public $_LastCommand;
 	public $_Commands = array();
+	public $_ExpectedInsertId = 0;
 	private $readcount; 
 
 	public function __construct()
@@ -30,6 +31,13 @@ class FakeDatabase extends Database
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
+	}
+	
+	public function ExecuteInsert(&$command)
+	{
+		$this->_LastCommand = $command;
+		$this->_AddCommand($command);
+		return $this->_ExpectedInsertId;
 	}
 
 	private function _AddCommand(&$command)
@@ -55,6 +63,8 @@ class FakeDBConnection implements IDBConnection
 	public $_LastExecuteCommand = null;
 	public $_ConnectWasCalled = false;
 	public $_DisconnectWasCalled = false;
+	public $_GetLastInsertIdCalled = false;
+	public $_ExpectedInsertId = 0;
 
 	public function __construct()
 	{
@@ -77,6 +87,12 @@ class FakeDBConnection implements IDBConnection
 	{
 		$this->_LastExecuteCommand = $command;
 	}
+	
+	public function GetLastInsertId()
+	{
+		$this->_GetLastInsertIdCalled = true;
+		return $this->_ExpectedInsertId;
+	}
 }
 
 class FakePearDB extends MDB2
@@ -91,6 +107,9 @@ class FakePearDB extends MDB2
 	public $_LastPreparedQuery = '';
 	public $_PrepareAutoDetect = false;
 	public $_PrepareType = -1;
+	
+	public $_LastInsertId = 10;
+	public $_LastInsertIDCalled = false;
 
 	public function __construct(&$results) {
 		$this->result = $results;
@@ -107,6 +126,12 @@ class FakePearDB extends MDB2
 		$this->_PrepareAutoDetect = $autodetect;
 		$this->_PrepareType = $prepareType;
 		return $this->PrepareHandle;
+	}
+	
+	public function lastInsertID()
+	{
+		$this->_LastInsertIDCalled = true;
+		return $this->_LastInsertId;
 	}
 }
 

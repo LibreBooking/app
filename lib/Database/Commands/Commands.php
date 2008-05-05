@@ -10,6 +10,15 @@ class AuthorizationCommand extends SqlCommand
 	}
 }
 
+class AutoAssignPermissionsCommand extends SqlCommand 
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::AUTO_ASSIGN_PERMISSIONS);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, strtolower($userId)));	
+	}
+}
+
 class CheckEmailCommand extends SqlCommand
 {
 	public function __construct($emailAddress)

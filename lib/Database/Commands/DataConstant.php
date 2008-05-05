@@ -23,6 +23,11 @@ class Queries
 	private function __construct()
 	{}
 	
+	const AUTO_ASSIGN_PERMISSIONS = 
+		'INSERT INTO resource_permission (resourceid, userid) 
+		SELECT resourceid, @userid as userid 
+		FROM resource WHERE autoassign=1';
+	
 	const CHECK_EMAIL = 
 		'SELECT userid 
 		FROM account
@@ -97,6 +102,7 @@ class ColumnNames
 	private function __construct()
 	{}
 	
+	// USER TABLE //
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
 	const IS_ADMIN = 'isadmin';

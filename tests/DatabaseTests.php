@@ -122,5 +122,23 @@ class DatabaseTests extends TestBase
 		$this->assertEquals($SqlCommand, $cn->_LastExecuteCommand);
 		$this->assertTrue($cn->_DisconnectWasCalled, 'Disonnect should be called for every query');
 	}
+	
+	function testGetsIncrementedIdForExecuteInsert()
+	{
+		$expectedInsertId = 10;
+		
+		$SqlCommand = new SqlCommand('query');
+		$cn = new FakeDBConnection();
+		$cn->_ExpectedInsertId = $expectedInsertId;
+		
+		$db = new Database($cn);
+		$actualInsertId = $db->ExecuteInsert($SqlCommand);
+		
+		$this->assertTrue($cn->_ConnectWasCalled, 'Connect should be called for every query');
+		$this->assertEquals($SqlCommand, $cn->_LastExecuteCommand);
+		$this->assertTrue($cn->_GetLastInsertIdCalled);
+		$this->assertEquals($expectedInsertId, $actualInsertId);
+		$this->assertTrue($cn->_DisconnectWasCalled, 'Disonnect should be called for every query');
+	}
 }
 ?>

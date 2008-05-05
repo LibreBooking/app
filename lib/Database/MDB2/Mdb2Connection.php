@@ -80,6 +80,14 @@ class Mdb2Connection implements IDbConnection
 		$this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_MANIP);
 	}
 	
+	public function GetLastInsertId()
+	{
+		$id = $this->_db->lastInsertID();
+		$this->_isError($id);
+		
+		return $id;
+	}
+	
 	public function _PrepareAndExecute(&$sqlCommand, $prepareType) 
 	{
 		$cmd = new Mdb2CommandAdapter($sqlCommand);

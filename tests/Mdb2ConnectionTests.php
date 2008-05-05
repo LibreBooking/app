@@ -8,7 +8,8 @@ class Mdb2ConnectionTests extends TestBase
 	var $cn;
 	var $fakeHandle;
 
-	function setUp() {
+	function setUp() 
+	{
         $this->cn = new Mdb2Connection(null, null, null, null, null);
 		$empty = array();
         $this->fakeResult = new FakeDBResult($empty);
@@ -18,7 +19,8 @@ class Mdb2ConnectionTests extends TestBase
 		$this->cn->SetDb($this->fakeDb);
     }
 	
-	function tearDown() {
+	function tearDown() 
+	{
 		$this->cn = null;
 		$this->fakeResult = null;		
 		$this->fakeHandle = null;
@@ -26,7 +28,8 @@ class Mdb2ConnectionTests extends TestBase
 		$this->fakeDb = null;
 	}
 	
-    function testCanCreateConnectionObject() {
+    function testCanCreateConnectionObject() 
+    {
         $dbType = 'mysql';
 		$dbUser = 'nick';
 		$dbPassword = 'password';
@@ -43,7 +46,8 @@ class Mdb2ConnectionTests extends TestBase
 		$this->assertEquals($dbName, $this->db->Connection->GetDbName());
     }
 
-	function testMdb2ConnectionCallsQueryCorrectly() {
+	function testMdb2ConnectionCallsQueryCorrectly() 
+	{
 		$parameters = new Parameters();		
 		$parameters->Add(new Parameter('1', '1'));
 		
@@ -66,7 +70,8 @@ class Mdb2ConnectionTests extends TestBase
 		$this->assertEquals($expectedResult, $result);
 	}
 	
-	function testMdb2ConnectionCallsExecuteCorrectly() {
+	function testMdb2ConnectionCallsExecuteCorrectly() 
+	{
 		$parameters = new Parameters();		
 		$parameters->Add(new Parameter('1', '1'));
 		
@@ -86,5 +91,16 @@ class Mdb2ConnectionTests extends TestBase
 		$this->assertEquals($expectedCommand->GetValues(), $this->fakeHandle->_LastExecutedValues);
 		$this->assertTrue($this->fakeHandle->_ExecuteWasCalled, 'Execute was not called');
 	}
+	
+	function testMdb2ConnectionCallsGetLastInsertIdCorrectly()
+	{		
+		$expectedLastId = 10;
+		$this->fakeDb->_LastInsertId = $expectedLastId;
+		
+		$actualId = $this->cn->GetLastInsertId();
+		
+		$this->assertTrue($this->fakeDb->_LastInsertIDCalled);
+	}
+
 }
 ?>

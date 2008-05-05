@@ -1,6 +1,4 @@
 <?php
-//require_once('namespace.php');
-
 class Parameter
 {
 	public $Name = null;

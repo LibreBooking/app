@@ -1,6 +1,4 @@
 <?php
-//require_once('namespace.php');
-
 interface IDbConnection
 {
 	public function Connect();
@@ -18,8 +16,13 @@ interface IDbConnection
 	 * Executes an alter query against the database
 	 *
 	 * @param SqlCommand $command
-	 * @return none
+	 * @return void
 	 */
 	public function Execute(&$command);
+	
+	/**
+	 * @return long last auto-increment id inserted for this connection
+	 */
+	public function GetLastInsertId();
 }
 ?>
