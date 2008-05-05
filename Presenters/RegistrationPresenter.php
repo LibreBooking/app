@@ -2,22 +2,45 @@
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-
 class RegistrationPresenter
 {
 	private $_page;
 	private $_registration;
     private $_auth;
 	
-	public function __construct(IRegistrationPage $page, IRegistration $registration, IAuthorization $authorization)
+	public function __construct(IRegistrationPage $page, $registration = null, $authorization = null)
 	{
 		$this->_page = $page;
-        $this->_registration = $registration;
-		$this->_auth = $authorization;
-		
+		$this->SetRegistration($registration);
+		$this->SetAuthorization($authorization);
+				
 		if ($page->IsPostBack())
 		{
 			$this->LoadValidators();
+		}
+	}
+	
+	private function SetRegistration($registration)
+	{
+		if (is_null($registration))
+		{
+			$this->_registration = new Registration();
+		}
+		else
+		{
+			$this->_registration = $registration;
+		}
+	}
+			
+	private function SetAuthorization($authorization)
+	{
+		if (is_null($authorization))
+		{
+			$this->_auth = PluginManager::Instance()->LoadAuth();
+		}
+		else
+		{
+			$this->_auth = $authorization;
 		}
 	}
 	

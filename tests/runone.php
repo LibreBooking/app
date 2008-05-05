@@ -13,9 +13,8 @@ require_once ROOT_DIR . 'tests/data/namespace.php';
 require_once ROOT_DIR . 'tests/fakes/namespace.php';
 require_once ROOT_DIR . 'tests/TestBase.php';
 
-//$tests = array('DatabaseCommandTests.php', 'ConfigTests.php', 'DatabaseTests.php', 'EmailTests.php', 'Mdb2CommandAdapterTests.php', 'Mdb2ConnectionTests.php', 'Mdb2ReaderTests.php');
-
 $tests = array(
+'PluginManagerTests.php',
 'ConfigTests.php',
 'LdapTests.php',
 'RegisterPresenterTests.php',

@@ -6,10 +6,22 @@ class LoginPresenter
 {
 	private $_page = null;
 	
-	public function __construct(ILoginPage &$page, IAuthorization $auth)
+	public function __construct(ILoginPage &$page, $authorization = null)
 	{
 		$this->_page =& $page;
-		$this->_auth = $auth;
+		$this->SetAuthorization($authorization);
+	}
+	
+	private function SetAuthorization($authorization)
+	{
+		if (is_null($authorization))
+		{
+			$this->_auth = PluginManager::Instance()->LoadAuth();
+		}
+		else
+		{
+			$this->_auth = $authorization;
+		}
 	}
 	
 	public function PageLoad()

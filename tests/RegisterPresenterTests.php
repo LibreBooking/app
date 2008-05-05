@@ -26,13 +26,10 @@ class RegisterPresenterTests extends TestBase
 		parent::setup();
 		
 		$this->page = new FakeRegistrationPage();
-		//$this->server = new FakeServer();
 		$this->fakeReg = new FakeRegistration();
         $this->fakeAuth = new FakeAuth();
 		
 		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
-		
-		//ServiceLocator::SetServer($this->server);
 	}
 	
 	public function teardown()
@@ -40,7 +37,6 @@ class RegisterPresenterTests extends TestBase
 		parent::teardown();
 		
 		$this->page = null;
-        //$this->server = null;
         $this->fakeReg = null;
         $this->fakeAuth = null;
 	}
