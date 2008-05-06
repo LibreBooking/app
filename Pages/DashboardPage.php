@@ -1,19 +1,21 @@
 <?php
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
-class ControlPanelPage extends SecurePage implements IControlPanelPage
+class DashboardPage extends SecurePage implements IDashboardPage
 {
-	public function __construct(Server &$server)
+	public function __construct()
 	{
-		parent::__construct('MyControlPanel');
+		parent::__construct('MyDashboard');
+	}
+	
+	public function SetAnnouncements($announcements)
+	{
+		$this->smarty->assign('Announcements', $announcements);	
 	}
 }
 
-interface IControlPanelPage
+interface IDashboardPage
 {
-	public function SetAnnouncements(&$announcements)
-	{
-		
-	}
+	public function SetAnnouncements($announcements);
 }
 ?>

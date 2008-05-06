@@ -4,6 +4,7 @@ class ParameterNames
 	private function __construct()
 	{}
 	
+	const CURRENT_DATE = '@current_date';
 	const EMAIL_ADDRESS = '@emailaddress';
 	const FIRST_NAME = '@fname';
 	const HOMEPAGE_ID = '@homepageid';
@@ -54,6 +55,12 @@ class Queries
 		FROM account 
 		WHERE (username = @username OR email = @username)';
 	
+	const GET_DASHBOARD_ANNOUNCEMENTS =
+		'SELECT announcement_text 
+		FROM announcement
+		WHERE (start_datetime >= @current_date AND end_datetime <= @current_date)
+		ORDER BY order_number DESC';
+		
 	const GET_USER_ROLES = 
 		'SELECT userid, isadmin 
 		FROM accountrole
@@ -103,11 +110,10 @@ class ColumnNames
 	private function __construct()
 	{}
 	
-	// USER TABLE //
+	// ACCOUNT //
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
 	const HOMEPAGE_ID = 'homepageid';
-	const IS_ADMIN = 'isadmin';
 	const LAST_LOGIN = 'lastlogin';
 	const LAST_NAME = 'lname';	
 	const MATCH_COUNT = 'matchcount';
@@ -116,5 +122,12 @@ class ColumnNames
 	const TIMEZONE_NAME = 'timezonename';
 	const SALT = 'salt';
 	const USER_ID = 'userid';	
+	
+	// ACCOUNT_ROLE //
+	const IS_ADMIN = 'isadmin';
+	
+	// ANNOUNCEMENT //
+	const ANNOUNCEMENT_TEXT = 'announcement_text';
+
 }
 ?>

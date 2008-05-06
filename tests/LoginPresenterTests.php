@@ -140,11 +140,6 @@ class LoginPresenterTests extends TestBase
 		
 		$this->assertFalse($this->auth->_CookieLoginCalled, "should not try to auto login without persist cookie");
 	}
-	
-	public function testDoesNotShowRegistrationsLinkIfAllowSelfRegistrationIsOff()
-	{
-		$this->markTestIncomplete('need to check this config value');
-	}
 }
 
 class FakeLoginPage implements ILoginPage

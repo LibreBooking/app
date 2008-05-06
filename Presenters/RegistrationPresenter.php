@@ -46,6 +46,8 @@ class RegistrationPresenter
 	
 	public function PageLoad()
 	{	
+		$this->BounceIfNotAllowingRegistration();
+		
 		if ($this->_page->RegisterClicked())
 		{
 			$this->Register();
@@ -76,8 +78,16 @@ class RegistrationPresenter
     			$additionalFields);
     			
     		$this->_auth->Login($this->_page->GetEmail(), false);
-    		$this->_page->Redirect(Pages::DEFAULT_LOGIN);
+    		$this->_page->Redirect(Pages::UrlFromId($this->_page->GetHomepage()));
 	    }
+	}
+	
+	private function BounceIfNotAllowingRegistration()
+	{
+		if (!Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter()))
+		{
+			$this->_page->Redirect(Pages::LOGIN);
+		}
 	}
 	
 	private function PopulateTimezones()

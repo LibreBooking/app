@@ -8,6 +8,9 @@ class Date
 	private $parts;
 	private $timezone;
 	
+	// Only used for testing
+	private static $_Now = null;
+	
 	public function __construct($timestamp = null, $timezone = 'GMT')
 	{
 		if ($timestamp == null)
@@ -21,6 +24,10 @@ class Date
 	
 	public static function Now()
 	{
+		if (isset(self::$_Now))
+		{
+			return self::$_Now;
+		}
 		return new Date(mktime());
 	}
 	
@@ -32,6 +39,11 @@ class Date
 	public function ToTimezone($timezone)
 	{
 		return new Date($this->Timestamp(), $timezone);
+	}
+	
+	public function ToDatabase()
+	{
+		return $this->Format('Y-m-d H:i:s');
 	}
 	
 	public function Timestamp()
@@ -89,6 +101,22 @@ class Date
 	{
 		return $this->parts['year'];
 	}
+	
+	/**
+	 * Only used for unit testing
+	 */
+	public function _SetNow($datetime)
+	{
+		if (is_null($datetime))
+		{
+			self::$_Now = null;
+		}
+		else
+		{
+			self::$_Now = new Date($datetime);
+		}
+	}
+	
 //	
 //	public function DayOfYear()
 //	{

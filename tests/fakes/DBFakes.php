@@ -52,8 +52,44 @@ class FakeDatabase extends Database
 	
 	public function SetRow($readerCount, $rows)
 	{
-		$reader = new Mdb2Reader(new FakeDBResult($rows));
+		$reader = new FakeReader($rows);
 		$this->SetReader($readerCount, $reader);
+	}
+	
+	public function GetReader($readerCount)
+	{
+		return $this->reader[$readerCount];
+	}
+}
+
+class FakeReader implements IReader 
+{
+	public $rows = array();
+	public $idx = 0;
+	public $_FreeCalled = false;
+
+	public function __construct(&$rows) 
+	{
+		$this->rows = $rows;
+	}
+
+	public function GetRow()
+	{
+		if (sizeof($this->rows) > $this->idx)
+		{
+			return $this->rows[$this->idx++];
+		}
+		return false;
+	}
+
+	public function NumRows() 
+	{
+		return sizeof($this->rows);
+	}
+
+	public function Free() 
+	{
+		$this->_FreeCalled = true;
 	}
 }
 

@@ -56,12 +56,20 @@ class CookieLoginCommand extends SqlCommand
 	}
 }
 
+class GetDashboardAnnouncementsCommand extends SqlCommand 
+{
+	public function __construct($currentDate)
+	{
+		parent::__construct(Queries::GET_DASHBOARD_ANNOUNCEMENTS);
+		$this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate->ToDatabase()));
+	}
+}
+
 class GetUserRoleCommand extends SqlCommand
 {
 	public function __construct($userid)
 	{
-		parent::__construct(Queries::GET_USER_ROLES);
-		
+		parent::__construct(Queries::GET_USER_ROLES);		
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
 	}
 }

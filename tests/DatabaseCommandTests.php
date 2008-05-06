@@ -202,5 +202,15 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(1, $command->Parameters->Count());		
 		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $id), $command->Parameters->Items(0));
 	}
+	
+	function testGetDashboardAnnouncementsCommand()
+	{
+		$now = new Date(mktime());
+		
+		$command = new GetDashboardAnnouncementsCommand($now);
+		$this->assertEquals(Queries::GET_DASHBOARD_ANNOUNCEMENTS, $command->GetQuery());
+		$this->assertEquals(1, $command->Parameters->Count());		
+		$this->assertEquals(new Parameter(ParameterNames::CURRENT_DATE, $now->ToDatabase()), $command->Parameters->Items(0));
+	}
 }
 ?>

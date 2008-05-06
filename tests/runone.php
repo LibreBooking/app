@@ -14,7 +14,7 @@ require_once ROOT_DIR . 'tests/fakes/namespace.php';
 require_once ROOT_DIR . 'tests/TestBase.php';
 
 $tests = array(
-//'DashboardPresenterTests.php',
+'DashboardPresenterTests.php',
 'PluginManagerTests.php',
 'ConfigTests.php',
 'LdapTests.php',

@@ -51,7 +51,8 @@ class Mdb2Connection implements IDbConnection
         if (MDB2::isError($this->_db)) 
         {			
         	// If there is an error, print to browser, print to logfile and kill app
-            throw new Exception('Error connecting to database: ' . $this->_db->getMessage() );
+            throw new Exception('Error connecting to database');
+            // LOG
         }
         
         $this->_db->setFetchMode(MDB2_FETCHMODE_ASSOC);	// Set fetch mode to return associatve array
@@ -102,7 +103,8 @@ class Mdb2Connection implements IDbConnection
 	{
 		if (MDB2::isError($result)) 
 		{
-            throw new Exception('There was an error executing your query: ' . $result->getMessage());
+            throw new Exception('There was an error executing your query');
+           	// LOG: . $result->getMessage()
 		}
         return false;
 	}

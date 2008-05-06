@@ -35,8 +35,9 @@ class LoginPresenter
 				$this->_Redirect();
 			}
 		}
-		$allowRegistration = (bool)Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION);
-		$useLogonName = (bool)Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME);
+		
+		$allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
+		$useLogonName = Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter());
 		$this->_page->setShowRegisterLink($allowRegistration);
 		$this->_page->setAvailableLanguages($this->GetLanguages());
 		$this->_page->setUseLogonName($useLogonName);

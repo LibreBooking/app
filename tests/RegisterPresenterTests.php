@@ -191,6 +191,7 @@ class RegisterPresenterTests extends TestBase
 	    $this->LoadPageValues();		
 		$this->page->_IsValid = true;
 		$this->page->_Email = $this->email;
+		$this->page->_Homepage = 2;
 		
 		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
 		$this->presenter->Register();
@@ -200,12 +201,17 @@ class RegisterPresenterTests extends TestBase
         $this->assertEquals($this->email, $this->fakeAuth->_LastLogin);
         $this->assertFalse($this->fakeAuth->_LastPersist);
         
-        $this->assertEquals(Pages::DEFAULT_LOGIN, $this->page->_RedirectDestination);
+        $this->assertEquals(Pages::UrlFromId(2), $this->page->_RedirectDestination);
 	}
 	
 	public function testRedirectsToLoginIfAllowSelfRegistrationIsOff()
 	{
-		$this->markTestIncomplete('need to check this config value');
+		$this->fakeConfig->SetKey(ConfigKeys::ALLOW_REGISTRATION, 'false');
+		
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
+		$this->presenter->PageLoad();
+		
+		$this->assertEquals(Pages::LOGIN, $this->page->_RedirectDestination);
 	}
 	
 	private function LoadPageValues()
