@@ -20,6 +20,8 @@ class LoginPresenterTests extends TestBase
 		$this->page->_EmailAddress = 'nkorbel@phpscheduleit.org';
 		$this->page->_Password = 'somepassword';
 		$this->page->_PersistLogin = true;
+		
+		$this->fakeServer->SetSession(SessionKeys::USER_SESSION, new UserSession(1));
 	}
 	
 	public function teardown()
@@ -51,11 +53,15 @@ class LoginPresenterTests extends TestBase
 
 	public function testSuccessfulValidateCallsRedirectToNormalPageWhenNoRequestedPage()
 	{
+		$userSession = new UserSession(1);
+		$userSession->HomepageId = 2;
+		
+		$this->fakeServer->SetSession(SessionKeys::USER_SESSION, $userSession);
 		$this->auth->_ValidateResult = true;
 		$presenter = new LoginPresenter($this->page, $this->auth);
 		$presenter->Login();
 		
-		$this->assertEquals(Pages::DEFAULT_LOGIN, $this->page->_LastRedirect);
+		$this->assertEquals(Pages::UrlFromId(2), $this->page->_LastRedirect);
 	}
 	
 	public function testRedirectsToRequestedPage()
@@ -133,6 +139,11 @@ class LoginPresenterTests extends TestBase
 		$presenter->PageLoad();
 		
 		$this->assertFalse($this->auth->_CookieLoginCalled, "should not try to auto login without persist cookie");
+	}
+	
+	public function testDoesNotShowRegistrationsLinkIfAllowSelfRegistrationIsOff()
+	{
+		$this->markTestIncomplete('need to check this config value');
 	}
 }
 

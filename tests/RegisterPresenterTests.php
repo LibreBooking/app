@@ -20,6 +20,7 @@ class RegisterPresenterTests extends TestBase
 	private $password = 'password';
 	private $confirm = 'password';
 	private $timezone = 'US/Eastern';
+	private $homepageId = '1';
 	
 	public function setup()
 	{
@@ -80,6 +81,38 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($numberOfTimezones, count($this->page->_TimezoneOutput));
 	}
 	
+	public function testLoadsAllHomepages()
+	{
+		$pages = Pages::GetAvailablePages();
+		$numberOfPages = count($pages);
+		$this->presenter->PageLoad();
+		
+		$this->assertEquals($numberOfPages, count($this->page->_HomepageValues));
+		$this->assertEquals(1, $this->page->_HomepageValues[0]);
+		$this->assertEquals($numberOfPages, count($this->page->_HomepageOutput));
+		$this->assertEquals($pages[1]['name'], $this->page->_HomepageOutput[0]);
+	}
+	
+	public function testSetsSelectedHomepageToDefault()
+	{
+		$expectedHomepage = 1;
+		
+		$this->page->_IsPostBack = false;
+		$this->presenter->PageLoad();
+		
+		$this->assertEquals($this->page->_Homepage, $expectedHomepage);
+	}
+	
+	public function testSetsSelectedHomepageToServerSubmitted()
+	{
+		$expectedHomepage = 2;
+		$this->page->SetHomepage($expectedHomepage);
+		$this->page->_IsPostBack = true;
+		$this->presenter->PageLoad();
+		
+		$this->assertEquals($this->page->_Homepage, $expectedHomepage);
+	}
+	
 	public function testPresenterRegistersIfAllFieldsAreValid()
 	{		
 		$this->LoadPageValues();
@@ -102,6 +135,8 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($this->lname, $this->fakeReg->_Last);
 		$this->assertEquals($this->password, $this->fakeReg->_Password);
 		$this->assertEquals($this->timezone, $this->fakeReg->_Timezone);
+		$this->assertEquals(intval($this->homepageId), $this->fakeReg->_HomepageId);
+		
 		$this->assertEquals($additionalFields['phone'], $this->fakeReg->_AdditionalFields['phone']);
 	}
 	
@@ -168,6 +203,11 @@ class RegisterPresenterTests extends TestBase
         $this->assertEquals(Pages::DEFAULT_LOGIN, $this->page->_RedirectDestination);
 	}
 	
+	public function testRedirectsToLoginIfAllowSelfRegistrationIsOff()
+	{
+		$this->markTestIncomplete('need to check this config value');
+	}
+	
 	private function LoadPageValues()
 	{
 		$this->page->SetLoginName($this->login);
@@ -178,6 +218,7 @@ class RegisterPresenterTests extends TestBase
 		$this->page->SetPassword($this->password);
 		$this->page->SetPasswordConfirm($this->confirm);
 		$this->page->SetTimezone($this->timezone);
+		$this->page->SetHomepage($this->homepageId);
 	}
 }
 
@@ -186,6 +227,9 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	public $_Timezone;
 	public $_TimezoneValues;
 	public $_TimezoneOutput;
+	public $_HomepageValues;
+	public $_HomepageOutput;
+	public $_Homepage;
 	public $_LoginName;
 	public $_Email;
 	public $_FirstName;
@@ -214,6 +258,17 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	{
 		$this->_TimezoneValues = $timezoneValues;
 		$this->_TimezoneOutput = $timezoneOutput;
+	}
+	
+	public function SetHomepages($hompeageValues, $homepageOutput)
+	{
+		$this->_HomepageValues = $hompeageValues;
+		$this->_HomepageOutput = $homepageOutput;
+	}
+	
+	public function SetHomepage($homepage)
+	{
+		$this->_Homepage = $homepage;
 	}
 		
 	public function SetLoginName($loginName)
@@ -264,6 +319,11 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	public function GetTimezone()
 	{
 		return $this->_Timezone;
+	}
+	
+	public function GetHomepage()
+	{
+		return $this->_Homepage;
 	}
 	
 	public function GetLoginName()

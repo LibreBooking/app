@@ -28,6 +28,11 @@ class Resources
 		return self::$_instance;
 	}
 	
+	public static function SetInstance($instance)
+	{
+		self::$_instance = $instance;
+	}
+	
 	public function SetLanguage($languageCode)
 	{
 		$this->SetCurrentLanguage($languageCode);

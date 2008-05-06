@@ -73,10 +73,10 @@
 	<div class="registrationHeader">Login Information (all fields are required)</div>
 	
 	<table>
+		{if $UseLoginName}
 		<tr>
 			<td>{translate key="Username"}</td>
 		</tr>
-		{if $UseLoginName}
 		<tr>
 			<td>{textbox name="LOGIN" class="textbox" value="Login"}</td>
 		</tr>
@@ -92,6 +92,16 @@
 		</tr>
 		<tr>
 			<td>{textbox type="password" name="PASSWORD_CONFIRM" class="textbox" value="Institution"}</td>
+		</tr>
+		<tr>
+			<td>{translate key="DefaultPage"}</td>
+		</tr>
+		<tr>
+			<td>
+				<select name="{constant echo='FormKeys::DEFAULT_HOMEPAGE'}" class="textbox">
+					{html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}	
+				</select>
+			</td>
 		</tr>
 	</table>
 	

@@ -66,7 +66,8 @@ class LoginPresenter
 		}
 		else
 		{
-			$this->_page->Redirect(Pages::DEFAULT_LOGIN);
+			$defaultId = ServiceLocator::GetServer()->GetSession(SessionKeys::USER_SESSION)->HomepageId;
+			$this->_page->Redirect(Pages::UrlFromId($defaultId));
 		}
 	}
 	

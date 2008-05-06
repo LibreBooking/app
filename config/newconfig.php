@@ -33,5 +33,5 @@ $conf['settings']['database']['user'] = 'schedule_user';
 $conf['settings']['database']['password'] = 'password';
 $conf['settings']['database']['hostspec'] = '.';
 $conf['settings']['database']['name'] = 'phpScheduleIt';
-$conf['settings']['plugins']['Auth'] = 'Ldap';
+$conf['settings']['plugins']['Auth'] = '';
 ?>

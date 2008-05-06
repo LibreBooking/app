@@ -1,7 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Presenters/RegistrationPresenter.php');
-//require_once(ROOT_DIR . 'Zend/Loader.php');
 require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
 
@@ -14,6 +13,8 @@ interface IRegistrationPage extends IPage
 	
 	public function SetTimezones($timezoneValues, $timezoneOutput);
 	public function SetTimezone($timezone);
+	public function SetHomepages($hompeageValues, $homepageOutput);
+	public function SetHomepage($homepage);
 	public function SetLoginName($loginName);	
 	public function SetEmail($email);
 	public function SetFirstName($firstName);
@@ -25,6 +26,7 @@ interface IRegistrationPage extends IPage
 	public function SetPasswordConfirm($passwordConfirm);
 	
 	public function GetTimezone();
+	public function GetHomepage();
 	public function GetLoginName();	
 	public function GetEmail();
 	public function GetFirstName();
@@ -71,6 +73,17 @@ class RegistrationPage extends Page implements IRegistrationPage
 	public function SetTimezone($timezone)
 	{
 		$this->smarty->assign('Timezone', $timezone);	
+	}
+	
+	public function SetHomepages($hompeageValues, $homepageOutput)
+	{
+		$this->smarty->assign('HomepageValues', $hompeageValues);
+		$this->smarty->assign('HomepageOutput', $homepageOutput);
+	}
+	
+	public function SetHomepage($homepage)
+	{
+		$this->smarty->assign('Homepage', $homepage);
 	}
 	
 	public function SetLoginName($loginName)
@@ -121,6 +134,11 @@ class RegistrationPage extends Page implements IRegistrationPage
 	public function GetTimezone()
 	{
 		return $this->server->GetForm(FormKeys::TIMEZONE);
+	}
+	
+	public function GetHomepage()
+	{
+		return $this->server->GetForm(FormKeys::DEFAULT_HOMEPAGE);
 	}
 	
 	public function GetLoginName()

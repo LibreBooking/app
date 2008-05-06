@@ -180,6 +180,7 @@ class LdapTests extends TestBase
 		$this->assertEquals($lname, $this->fakeRegistration->_Last);
 		$this->assertEquals($this->password, $this->fakeRegistration->_Password);
 		$this->assertEquals($timezone, $this->fakeRegistration->_Timezone);
+		$this->assertEquals(Pages::DEFAULT_HOMEPAGE_ID, $this->fakeRegistration->_HomepageId);
 		$this->assertEquals($additionalFields, $this->fakeRegistration->_AdditionalFields);
 		
 		$this->assertEquals($this->username, $this->fakeAuth->_LastLogin);

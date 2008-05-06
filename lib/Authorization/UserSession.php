@@ -16,6 +16,7 @@ class UserSession
 	public $Email = '';
 	public $IsAdmin = false;
 	public $Timezone = '';
+	public $HomepageId = 1;
 	
 	public function __construct($id)
 	{

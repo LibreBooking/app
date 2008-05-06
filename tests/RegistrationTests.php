@@ -14,6 +14,7 @@ class RegistrationTests extends TestBase
 	private $password = 'password';
 	private $confirm = 'password';
 	private $timezone = 'US/Eastern';
+	private $homepageId = 1;
 	
 	public function setUp()
 	{
@@ -33,11 +34,11 @@ class RegistrationTests extends TestBase
 	
 	public function testRegistersUser()
 	{
-		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->additionalFields);
+		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->homepageId, $this->additionalFields);
 		
 		$command = new RegisterUserCommand(
 					$this->login, $this->email, $this->fname, $this->lname, 
-					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, 
+					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->homepageId,
 					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position']
 					);
 		
@@ -53,11 +54,11 @@ class RegistrationTests extends TestBase
 		
 		$expectedLogin = $this->email;
 		$this->login = '';
-		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->additionalFields);
+		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->homepageId, $this->additionalFields);
 		
 		$command = new RegisterUserCommand(
 					$expectedLogin, $this->email, $this->fname, $this->lname, 
-					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, 
+					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->homepageId,
 					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position']
 					);
 		
@@ -69,7 +70,7 @@ class RegistrationTests extends TestBase
 		$expectedUserId = 100;
 		
 		$this->db->_ExpectedInsertId = $expectedUserId;
-		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->additionalFields);
+		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->homepageId, $this->additionalFields);
 		
 		$command = new AutoAssignPermissionsCommand($expectedUserId);
 		

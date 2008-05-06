@@ -1,11 +1,10 @@
 <?php
-//require_once('namespace.php');
-
 class FormKeys
 {
 	private function __construct()
 	{}
 	
+	const DEFAULT_HOMEPAGE = 'defaultHomepage';
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
 	const INSTITUTION = 'institution';

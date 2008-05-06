@@ -6,6 +6,7 @@ class ParameterNames
 	
 	const EMAIL_ADDRESS = '@emailaddress';
 	const FIRST_NAME = '@fname';
+	const HOMEPAGE_ID = '@homepageid';
 	const INSTITUTION = '@institution';
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';
@@ -65,9 +66,9 @@ class Queries
 	
 	const REGISTER_USER = 
 		'INSERT INTO account
-		(email, userpassword, fname, lname, phone, institution, positionname, username, salt, timezonename)
+		(email, userpassword, fname, lname, phone, institution, positionname, username, salt, timezonename, homepageid)
 		VALUES
-		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @username, @salt, @timezone)
+		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @username, @salt, @timezone, @homepageid)
 		';
 		
 	const UPDATE_LOGINTIME = 
@@ -105,6 +106,7 @@ class ColumnNames
 	// USER TABLE //
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
+	const HOMEPAGE_ID = 'homepageid';
 	const IS_ADMIN = 'isadmin';
 	const LAST_LOGIN = 'lastlogin';
 	const LAST_NAME = 'lname';	

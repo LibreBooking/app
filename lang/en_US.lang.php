@@ -125,6 +125,13 @@ $dates['jumpbox'] = '%m %d %Y';
 		$strings['ValidEmailRequired'] = 'A valid email address is required.';
 		$strings['UniqueEmailRequired'] = 'That email address is already registered.';
 		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
+		$strings['Registration'] = 'Registration';
+		$strings['LogIn'] = 'Log In';
+		$strings['MyDashboard'] = 'My Dashboard';
+		$strings['Schedule'] = 'Schedule';
+		$strings['MyCalendar'] = 'My Calendar';
+		$strings['ScheduleCalendar'] = 'Schedule Calendar';
+		$strings['DefaultPage'] = 'Default Homepage';
 //////////////////////////////////////////////////////////////////////////////
 		
 		

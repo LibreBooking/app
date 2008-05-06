@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Pages/IPage.php');
+require_once(ROOT_DIR . 'Pages/Pages.php');
 require_once(ROOT_DIR . 'lib/Common/SmartyPage.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
@@ -10,7 +11,7 @@ class Page implements IPage
 	protected $smarty = null;
 	protected $server = null;
 	
-	public function __construct($title, $pageDepth = 0)
+	public function __construct($titleKey, $pageDepth = 0)
 	{
 		$path = str_repeat('../', $pageDepth);
 		
@@ -23,7 +24,7 @@ class Page implements IPage
 		
 		$this->smarty->assign('Charset', $resources->Charset);
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);
-		$this->smarty->assign('Title', "phpScheduleIt $title");
+		$this->smarty->assign('Title', 'phpScheduleIt - ' . $resources->GetString($titleKey));
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
 		$this->smarty->assign('AllowRss', Configuration::Instance()->GetKey(ConfigKeys::ALLOW_RSS));
 		$this->smarty->assign('LoggedIn', !is_null($userSession));

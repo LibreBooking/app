@@ -136,12 +136,13 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$phone = '123.123.1234';
 		$institution = 'inst';
 		$position = 'pos';
+		$homepageId = 1;
 		
 		$command = new RegisterUserCommand($username, $email, $fname, $lname, $password, $salt, 
-							$timezone, $phone, $institution, $position);
+							$timezone, $homepageId, $phone, $institution, $position);
 		
 		$this->assertEquals(Queries::REGISTER_USER, $command->GetQuery());
-		$this->assertEquals(10, $command->Parameters->Count());		
+		$this->assertEquals(11, $command->Parameters->Count());		
 		$this->assertEquals(new Parameter(ParameterNames::USER_NAME, $username), $command->Parameters->Items(0));
 		$this->assertEquals(new Parameter(ParameterNames::EMAIL_ADDRESS, $email), $command->Parameters->Items(1));
 		$this->assertEquals(new Parameter(ParameterNames::FIRST_NAME, $fname), $command->Parameters->Items(2));
@@ -149,9 +150,10 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(new Parameter(ParameterNames::PASSWORD, $password), $command->Parameters->Items(4));
 		$this->assertEquals(new Parameter(ParameterNames::SALT, $salt), $command->Parameters->Items(5));
 		$this->assertEquals(new Parameter(ParameterNames::TIMEZONE, $timezone), $command->Parameters->Items(6));
-		$this->assertEquals(new Parameter(ParameterNames::PHONE, $phone), $command->Parameters->Items(7));
-		$this->assertEquals(new Parameter(ParameterNames::INSTITUTION, $institution), $command->Parameters->Items(8));
-		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(9));
+		$this->assertEquals(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId), $command->Parameters->Items(7));
+		$this->assertEquals(new Parameter(ParameterNames::PHONE, $phone), $command->Parameters->Items(8));
+		$this->assertEquals(new Parameter(ParameterNames::INSTITUTION, $institution), $command->Parameters->Items(9));
+		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(10));
 	}
 	
 	function testGetUserRoleCommand()

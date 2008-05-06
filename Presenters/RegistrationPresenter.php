@@ -54,6 +54,7 @@ class RegistrationPresenter
 		$this->_page->SetUseLoginName(Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()));
 
 		$this->PopulateTimezones();
+		$this->PopulateHomepages();
 	}
 	
 	public function Register()
@@ -71,6 +72,7 @@ class RegistrationPresenter
     			$this->_page->GetLastName(),
     			$this->_page->GetPassword(),
     			$this->_page->GetTimezone(),
+    			intval($this->_page->GetHomepage()),
     			$additionalFields);
     			
     		$this->_auth->Login($this->_page->GetEmail(), false);
@@ -80,6 +82,9 @@ class RegistrationPresenter
 	
 	private function PopulateTimezones()
 	{
+		$timezoneValues = array();
+		$timezoneOutput = array();
+		
 		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
 		{
 			$timezoneValues[] = $timezone['Name'];			
@@ -93,7 +98,31 @@ class RegistrationPresenter
 		{
 			$timezone = $this->_page->GetTimezone();
 		}
+		
 		$this->_page->SetTimezone($timezone);
+	}
+	
+	private function PopulateHomepages()
+	{
+		$homepageValues = array();
+		$homepageOutput = array();
+		
+		$pages = Pages::GetAvailablePages();
+		foreach($pages as $pageid => $page)
+		{
+			$homepageValues[] = $pageid;
+			$homepageOutput[] = Resources::GetInstance()->GetString($page['name']);
+		}
+		
+		$this->_page->SetHomepages($homepageValues, $homepageOutput);
+		
+		$homepageId = 1;
+		if ($this->_page->IsPostBack())
+		{
+			$homepageId = $this->_page->GetHomepage();
+		}
+		
+		$this->_page->SetHomepage($homepageId);
 	}
 	
 	private function FormatOffset($offset)

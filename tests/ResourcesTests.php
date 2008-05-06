@@ -9,6 +9,7 @@ class ResourcesTests extends TestBase
 	public function setUp()
 	{	
 		parent::setup();
+		Resources::SetInstance(null);
 	}
 	
 	public function tearDown()

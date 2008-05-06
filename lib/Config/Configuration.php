@@ -92,12 +92,20 @@ class ConfigurationFile implements IConfigurationFile
 	
 	public function GetKey($keyName, $converter = null)
 	{		
-		return $this->Convert($this->_values[$keyName], $converter);
+		if (array_key_exists($keyName, $this->_values))
+		{
+			return $this->Convert($this->_values[$keyName], $converter);
+		}
+		return null;
 	}
 	
 	public function GetSectionKey($section, $keyName, $converter = null)
 	{
-		return $this->Convert($this->_values[$section][$keyName], $converter);
+		if (array_key_exists($section, $this->_values) && array_key_exists($keyName, $this->_values[$section]))
+		{
+			return $this->Convert($this->_values[$section][$keyName], $converter);
+		}
+		return null;
 	}
 	
 	protected function Convert($value, $converter)

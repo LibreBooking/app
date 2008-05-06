@@ -150,7 +150,7 @@ class Ldap implements IAuthorization
 		else
 		{
 			$additionalFields = array('phone' => $phone, 'institution' => $inst, 'position' => $title);
-			$registration->Register($username, $email, $fname, $lname, $this->password, Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE), $additionalFields);
+			$registration->Register($username, $email, $fname, $lname, $this->password, Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE), Pages::DEFAULT_HOMEPAGE_ID, $additionalFields);
 		}
 	}
 }

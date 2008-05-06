@@ -7,22 +7,21 @@ require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 class AuthorizationTests extends TestBase
 {
-	var $username;
-	var $password;
-	var $db;
-	var $id;
-	var $fname;
-	var $lname;
-	var $email;
-	var $isAdmin;
-	var $timeOffset;
-	var $fakeServer;
-	var $timezone;
-	var $lastLogin;
+	private $username;
+	private $password;
+	private $id;
+	private $fname;
+	private $lname;
+	private $email;
+	private $isAdmin;
+	private $timeOffset;
+	private $timezone;
+	private $lastLogin;
+	private $homepageId;
 
-	var $auth;
-	var $fakePassword;
-	var $fakeMigration;
+	private $auth;
+	private $fakePassword;
+	private $fakeMigration;
 
 	function setup()
 	{
@@ -34,7 +33,8 @@ class AuthorizationTests extends TestBase
 		$this->email = 'my@email.com';
 		$this->isAdmin = true;
 		$this->timezone = "US/Central";
-		$this->lastLogin = mktime();		
+		$this->lastLogin = mktime();	
+		$this->homepageId = 2;	
 
 		$this->fakePassword = new FakePassword();
 		$this->fakeMigration = new FakeMigration();
@@ -92,6 +92,7 @@ class AuthorizationTests extends TestBase
 		$user->Email = $this->email;
 		$user->IsAdmin = true;
 		$user->Timezone = $this->timezone;
+		$user->HomepageId = $this->homepageId;
 
 		$loginRows = $this->GetRows();
 		$roleRows = array(
@@ -225,7 +226,8 @@ class AuthorizationTests extends TestBase
 					ColumnNames::LAST_LOGIN => $this->lastLogin,
 					ColumnNames::LAST_NAME => $this->lname,
 					ColumnNames::EMAIL => $this->email,
-					ColumnNames::TIMEZONE_NAME => $this->timezone
+					ColumnNames::TIMEZONE_NAME => $this->timezone,
+					ColumnNames::HOMEPAGE_ID => $this->homepageId
 					);
 
 		return array($row);

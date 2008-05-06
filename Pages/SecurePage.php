@@ -5,9 +5,9 @@ require_once(ROOT_DIR . 'lib/Database/MDB2/namespace.php');
 
 class SecurePage extends Page
 {
-	public function __construct($title, Server &$server = null, SmartyPage &$smarty = null, $pageDepth = 0)
+	public function __construct($titleKey, $pageDepth = 0)
 	{
-		parent::__construct($title, $server, $smarty, $pageDepth);
+		parent::__construct($titleKey, $pageDepth);
 			
 		if (!$this->IsAuthenticated())
 		{
