@@ -1,4 +1,5 @@
 <?php
+require_once(ROOT_DIR . 'lib/Server/UserSession.php');
 require_once(ROOT_DIR . 'lib/Server/SessionKeys.php');
 require_once(ROOT_DIR . 'lib/Server/QueryStringKeys.php');
 require_once(ROOT_DIR . 'lib/Server/FormKeys.php');

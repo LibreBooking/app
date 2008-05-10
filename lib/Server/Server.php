@@ -1,6 +1,4 @@
 <?php
-//require_once('namespace.php');
-
 class Server
 {
 	public function __construct()
@@ -23,12 +21,14 @@ class Server
 	
 	public function SetSession($name, $value)
 	{
+		@session_start();
 		$_SESSION[$name] = $value;
 	}
 	
 	public function GetSession($name)
 	{
-		if (isset($_SESISON[$name]))
+		@session_start();
+		if (isset($_SESSION[$name]))
 		{
 			return $_SESSION[$name];
 		}

@@ -1,8 +1,8 @@
 <?php
 define('ROOT_DIR', './');
-require_once(ROOT_DIR . 'Pages/ControlPanelPage.php');
+require_once(ROOT_DIR . 'Pages/DashboardPage.php');
 
-$page = new ControlPanelPage();
+$page = new DashboardPage();
 $page->PageLoad();
 
 ?>

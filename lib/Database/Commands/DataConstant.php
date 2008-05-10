@@ -51,14 +51,14 @@ class Queries
 		WHERE userid = @userid';
 	
 	const LOGIN_USER = 
-		'SELECT userid, email, fname, lname, timezonename, lastlogin
+		'SELECT userid, email, fname, lname, timezonename, lastlogin, homepageid
 		FROM account 
 		WHERE (username = @username OR email = @username)';
 	
 	const GET_DASHBOARD_ANNOUNCEMENTS =
 		'SELECT announcement_text 
 		FROM announcement
-		WHERE (start_datetime >= @current_date AND end_datetime <= @current_date)
+		WHERE (start_datetime <= @current_date AND end_datetime >= @current_date)
 		ORDER BY order_number DESC';
 		
 	const GET_USER_ROLES = 
