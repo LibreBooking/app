@@ -33,6 +33,7 @@ class Page implements IPage
 		$this->smarty->assign('ScriptUrl', Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL));
 		$this->smarty->assign('UserName', !is_null($userSession) ? $userSession->FirstName : '');
 		$this->smarty->assign('DisplayWelcome', $this->DisplayWelcome());
+		$this->smarty->assign('UserId', $userSession->UserId);
 	}
 	
 	public function Redirect($url)

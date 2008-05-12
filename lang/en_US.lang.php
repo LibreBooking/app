@@ -132,6 +132,9 @@ $dates['jumpbox'] = '%m %d %Y';
 		$strings['MyCalendar'] = 'My Calendar';
 		$strings['ScheduleCalendar'] = 'Schedule Calendar';
 		$strings['DefaultPage'] = 'Default Homepage';
+		$strings['ShowHide'] = 'Show/Hide';
+		$strings['Announcements'] = 'Announcements';
+		$strings['NoAnnouncements'] = 'No announcements';
 //////////////////////////////////////////////////////////////////////////////
 		
 		

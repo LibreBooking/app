@@ -1,18 +1,16 @@
 {include file='header.tpl'}
-<table width="100%">
-	<tr>
-		<th>
-			Announcements
-		</th>
-	</tr>
-	<tr>
-		<td>
-			<ul>
-				{foreach from=$Announcements item=each}
-				    <li>{$each}</li>
-				{/foreach}
-			</ul>
-		</td>
-	</tr>
-</table>
+<div class="dashboardBorder">
+	<div id="announcementsHeader" class="dashboardHeader">
+		<a href="javascript:void(0);" onclick="showHideDashboard('announcementsDash')" title="{translate key='ShowHide'}">{translate key="Announcements"}</a>
+	</div>
+	<div id="announcementsDash" style="display:{$AnnouncementsDisplayStyle};">
+		<ul>
+			{foreach from=$Announcements item=each}
+			    <li>{$each}</li>
+			{foreachelse}
+				{translate key="NoAnnouncements"}
+			{/foreach}
+		</ul>
+	</div>
+</div>
 {include file='footer.tpl'}

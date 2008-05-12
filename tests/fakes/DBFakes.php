@@ -13,6 +13,7 @@ class FakeDatabase extends Database
 	public function __construct()
 	{
 		$this->readcount = 0;
+		$this->reader[0] = new FakeReader(array());
 	}
 
 	public function SetReader($readerCount, IReader &$reader)
@@ -24,7 +25,18 @@ class FakeDatabase extends Database
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
-		return $this->reader[$this->readcount++];
+		
+		if (!isset($this->reader[$this->readcount]))
+		{
+			$reader = new FakeReader(array());
+		}
+		else 
+		{
+			$reader = $this->reader[$this->readcount];
+		}
+		
+		$this->readcount++;
+		return $reader;
 	}
 
 	public function Execute(&$command)
@@ -68,7 +80,7 @@ class FakeReader implements IReader
 	public $idx = 0;
 	public $_FreeCalled = false;
 
-	public function __construct(&$rows) 
+	public function __construct($rows) 
 	{
 		$this->rows = $rows;
 	}

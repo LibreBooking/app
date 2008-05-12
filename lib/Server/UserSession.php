@@ -10,7 +10,7 @@ interface IUser
 
 class UserSession
 {
-	private $_id = '';
+	public $UserId = '';
 	public $FirstName = '';
 	public $LastName = '';
 	public $Email = '';
@@ -20,7 +20,7 @@ class UserSession
 	
 	public function __construct($id)
 	{
-		$this->_id = $id;
+		$this->UserId = $id;
 	}
 }
 ?>

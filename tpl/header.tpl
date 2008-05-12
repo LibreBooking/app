@@ -6,12 +6,17 @@
 		<title>{$Title}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset={$Charset}" />
 		{if $AllowRss && $LoggedIn}
-			<link rel="alternate" type="application/rss+xml" title="phpScheduleIt" href="{$ScriptUrl}/rss.php?id={$UserID}/>";
+			<link rel="alternate" type="application/rss+xml" title="phpScheduleIt" href="{$ScriptUrl}/rss.php?id={$UserId}" />
 		{/if}
 		<link rel="shortcut icon" href="favicon.ico"/>
 		<link rel="icon" href="favicon.ico"/>
+		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/prototype.js"></script> 
+		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/scriptaculous.js"></script> 
+		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script> 
+		<!--
 		<script language="JavaScript" type="text/javascript" src="{$Path}functions.js"></script>
 		<script language="JavaScript" type="text/javascript" src="{$Path}ajax.js"></script>
+		-->
 		<style type="text/css">
 		@import url({$Path}jscalendar/calendar-blue-custom.css);
 		@import url({$Path}style.css);

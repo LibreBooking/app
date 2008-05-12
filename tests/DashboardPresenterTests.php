@@ -43,11 +43,31 @@ class DashboardPresenterTests extends TestBase
 		$this->assertEquals(new GetDashboardAnnouncementsCommand($now), $this->db->_Commands[0]);
 		$this->assertEquals($expectedAnnouncements, $this->page->_LastAnnouncements);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
+		$this->assertEquals(DashboardWidgets::ANNOUNCEMENTS, $this->page->_LastAnnouncementId);
 	}
 	
-	public function testNext()
+	public function testSetsAnnouncmentVisiblityFromCookie()
 	{
-		$this->markTestIncomplete();
+		$cookie = new Cookie('dashboard_' . DashboardWidgets::ANNOUNCEMENTS, 'true');
+		
+		$this->fakeServer->SetCookie($cookie);
+		$this->presenter->PageLoad();
+		
+		$this->assertTrue($this->page->_LastAnnouncementVisible);
+		
+		$cookie = new Cookie('dashboard_' . DashboardWidgets::ANNOUNCEMENTS, 'false');
+		
+		$this->fakeServer->SetCookie($cookie);
+		$this->presenter->PageLoad();
+		
+		$this->assertFalse($this->page->_LastAnnouncementVisible);
+	}
+	
+	public function testIsVisibleIfNoCookieExists()
+	{
+		$this->presenter->PageLoad();
+		
+		$this->assertTrue($this->page->_LastAnnouncementVisible);
 	}
 	
 	private function GetAnnouncementRows()
@@ -64,10 +84,18 @@ class DashboardPresenterTests extends TestBase
 class FakeDashboardPage implements IDashboardPage 
 {
 	public $_LastAnnouncements = array();
+	public $_LastAnnouncementVisible = false;
+	public $_LastAnnouncementId;
 	
-	public function SetAnnouncements($announcements)
+	public function SetAnnouncements($announcements, $widgetId)
 	{
 		$this->_LastAnnouncements = $announcements;
+		$this->_LastAnnouncementId = $widgetId;
+	}
+	
+	public function SetAnnouncementsVisible($isVisible)
+	{
+		$this->_LastAnnouncementVisible = $isVisible;
 	}
 }
 
