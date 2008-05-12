@@ -1,9 +1,9 @@
 <?php
-require('Control.php');
+require(ROOT_DIR . '/Controls/Control.php');
 
 class LeaderBoard extends Control
 {
-	public function __construct(SmartyPage $smarty = null)
+	public function __construct(SmartyPage $smarty)
 	{
 		parent::__construct($smarty);
 	}
@@ -11,11 +11,6 @@ class LeaderBoard extends Control
 	public function PageLoad()
 	{
 		$this->smarty->display('LeaderBoard.tpl');		
-	}
-	
-	public function Set($var, $val)
-	{
-		$this->smarty->assign($var, $val);
 	}
 }
 ?>

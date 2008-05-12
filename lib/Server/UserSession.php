@@ -23,4 +23,12 @@ class UserSession
 		$this->UserId = $id;
 	}
 }
+
+class NullUserSession extends UserSession
+{
+	public function __construct()
+	{
+		parent::__construct(0);
+	}
+}
 ?>

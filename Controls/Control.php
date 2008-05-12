@@ -8,6 +8,11 @@ abstract class Control
 		$this->smarty =& $smarty;
 	}
 	
+	public function Set($var, $value)
+	{
+		$this->smarty->assign($var, $value);
+	}
+	
 	abstract function PageLoad();
 }
 ?>

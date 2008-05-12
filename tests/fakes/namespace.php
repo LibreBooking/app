@@ -12,6 +12,7 @@ require_once(ROOT_DIR . 'tests/fakes/FakeLdapOptions.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeLdapOptions.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeLdapWrapper.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeResources.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeAnnouncements.php');
 
 //require_once('EmailFakes.php');
 //require_once('FakeReminder.php');

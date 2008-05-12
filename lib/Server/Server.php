@@ -57,5 +57,17 @@ class Server
 	{
 		return urlencode($_SERVER['PHP_SELF']) . '?' . urlencode($_SERVER['QUERY_STRING']);	
 	}
+	
+	public function GetUserSession()
+	{
+		$userSession = $this->GetSession(SessionKeys::USER_SESSION);
+		
+		if (!empty($userSession))
+		{
+			return $userSession;
+		}
+		
+		return new NullUserSession();
+	}
 }
 ?>

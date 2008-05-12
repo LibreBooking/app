@@ -20,7 +20,7 @@ class Page implements IPage
 	
 		$this->smarty =& new SmartyPage($resources, $path);
 		
-		$userSession = ServiceLocator::GetServer()->GetSession(SessionKeys::USER_SESSION);
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		
 		$this->smarty->assign('Charset', $resources->Charset);
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);

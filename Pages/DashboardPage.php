@@ -15,22 +15,9 @@ class DashboardPage extends SecurePage implements IDashboardPage
 		$this->_presenter->PageLoad();
 		$this->smarty->display('dashboard.tpl');		
 	}
-	
-	public function SetAnnouncements($announcements, $widgetId)
-	{
-		$this->smarty->assign('Announcements', $announcements);	
-		$this->smarty->assign('AnnouncementsId', $widgetId);
-	}
-	
-	public function SetAnnouncementsVisible($isVisible)
-	{
-		$this->smarty->assign('AnnouncementsDisplayStyle', $isVisible ? 'inline' : 'none');
-	}
 }
 
 interface IDashboardPage
 {
-	public function SetAnnouncements($announcements, $widgetId);
-	public function SetAnnouncementsVisible($isVisible);
 }
 ?>
