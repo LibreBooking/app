@@ -42,6 +42,7 @@ class SmartyPage extends Smarty
 		$this->register_function('control', array($this, 'DisplayControl'));
 		$this->register_function('validator', array($this, 'Validator'));
 		$this->register_function('textbox', array($this, 'Textbox'));
+		$this->register_function('object_html_options', array($this, 'HtmlOptions'));
 		$this->register_block('validation_group', array($this, 'ValidationGroup'));
 		
 		$this->Validators = new PageValdiators();
@@ -167,6 +168,24 @@ class SmartyPage extends Smarty
 			$textbox = new SmartyTextbox($params['name'], $params['class'], $params['value'], $smarty);
 		}
 		return $textbox->Html();
+	}
+	
+	public function HtmlOptions($params, &$smarty)
+	{
+		$key = $params['key'];
+		$label = $params['label'];
+		$options = $params['options'];
+		$type = isset($params['type']) ? $params['type'] : 'array';
+		$selected = isset($params['selected']) ? $params['selected'] : '';
+		
+		$builder = new StringBuilder();
+		foreach ($options as $option)
+		{
+			$isselected = ($option->$key() == $selected) ? 'selected="selected"' : '';
+			$builder->Append(sprintf('<option label="%s" value="%s"%s>%s</option>', $option->$label(), $option->$key(), $isselected, $option->$label()));
+		}
+		
+		return $builder->ToString();
 	}
 
 }

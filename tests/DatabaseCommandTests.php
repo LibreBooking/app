@@ -212,5 +212,12 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(1, $command->Parameters->Count());		
 		$this->assertEquals(new Parameter(ParameterNames::CURRENT_DATE, $now->ToDatabase()), $command->Parameters->Items(0));
 	}
+	
+	function testGetAllSchedulesCommand()
+	{
+		$command = new GetAllSchedulesCommand();
+		$this->assertEquals(Queries::GET_ALL_SCHEDULES, $command->GetQuery());
+		$this->assertEquals(0, $command->Parameters->Count());	
+	}
 }
 ?>

@@ -55,6 +55,10 @@ class Queries
 		FROM account 
 		WHERE (username = @username OR email = @username)';
 	
+	const GET_ALL_SCHEDULES = 
+		'SELECT * 
+		FROM schedule';
+		
 	const GET_DASHBOARD_ANNOUNCEMENTS =
 		'SELECT announcement_text 
 		FROM announcement
@@ -128,6 +132,16 @@ class ColumnNames
 	
 	// ANNOUNCEMENT //
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
+	
+	// SCHEDULE //
+	const SCHEDULE_ID = 'scheduleid';
+	const SCHEDULE_NAME = 'name';
+	const SCHEDULE_DEFAULT = 'isdefault';
+	const SCHEDULE_START = 'daystart';
+	const SCHEDULE_END = 'dayend';
+	const SCHEDULE_WEEKDAY_START = 'weekdaystart';
+	const SCHEDULE_ADMIN_ID = 'adminid';
+	const SCHEDULE_DAYS_VISIBLE = 'daysvisible';
 
 }
 ?>

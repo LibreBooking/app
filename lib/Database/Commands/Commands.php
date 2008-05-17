@@ -56,6 +56,14 @@ class CookieLoginCommand extends SqlCommand
 	}
 }
 
+class GetAllSchedulesCommand extends SqlCommand 
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_ALL_SCHEDULES);
+	}
+}
+
 class GetDashboardAnnouncementsCommand extends SqlCommand 
 {
 	public function __construct($currentDate)

@@ -5,7 +5,7 @@ function showHideDashboard(dashboardId)
 	if ($(dashboardId).style.display != "none")
 	{
 		Effect.BlindUp(dashboardId, { duration: 0.5 });
-		var shown = 'false';
+		shown = 'false';
 	}
 	else
 	{
