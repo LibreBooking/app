@@ -1,1 +1,1 @@
-c:\php\php -f Suite.php
+c:\php\php -f runone.php

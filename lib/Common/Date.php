@@ -22,6 +22,15 @@ class Date
 		$this->parts = date_parse($this->date->format(DATE_W3C));	
 	}
 	
+	/**
+	* Creates a new Date object with the given year, month, day, and optional $hour, $minute, $secord and $timezone
+	* @return Date
+	*/
+	public static function Create($year, $month, $day, $hour = 0, $minute = 0, $second = 0, $timezone = 'GMT')
+	{
+		return new Date(mktime($hour, $minute, $second, $month, $day, $year), $timezone);
+	}
+	
 	public static function Now()
 	{
 		if (isset(self::$_Now))
