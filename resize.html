@@ -20,12 +20,18 @@
 /*<![CDATA[*/
                 @import url(style.css);
     /*]]>*/
-	.res
+	.res, .handle
 	{
 		background-color:#eeeeee;
 		border:solid 1px black;
-		float:left;
+		display:table-cell;
+		position:absolute;
+	}
+	.handle
+	{
 		position: relative;
+		margin-right: 0px;
+		display:block;
 	}
     </style>
   </head>
@@ -44,11 +50,19 @@
 		<td></td>
 		<td>
 			<div id="res1" class="res">res 1</div>
-			<div id="res2" class="res">res 2</div>
+			<div id="handle1" class="handle" style="background-color:black;width:5px;"></div>
+			<div id="res2" class="res" style="left:300px;">res 2</div>
 		</td>
     </table>
   	<script type="text/javascript">
-	new Resizable('res1', { snap: [50, 50], constraint: 'horizontal', minWidth: 50, maxWidth: 500 } );
+	new Resizable('res1', 
+	{ 
+		snap: [50, 50], 
+		constraint: 'horizontal', 
+		minWidth: 50, 
+		maxWidth: 500,
+		handle: 'handle1'
+	} );
 	</script>
   </body>
 </html>
