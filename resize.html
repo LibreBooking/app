@@ -20,24 +20,43 @@
 /*<![CDATA[*/
                 @import url(style.css);
     /*]]>*/
-	.res, .handle
+	.res
 	{
 		background-color:#eeeeee;
 		border:solid 1px black;
+		/*
 		display:table-cell;
+		float:left;
+		*/
 		position:absolute;
+		height: 40px;
+
 	}
 	.handle
 	{
-		position: relative;
-		margin-right: 0px;
+		position: absolute;
+		cursor: e-resize;
+		background-color: black;
+		width: 10px;
+		height: 40px;
 		display:block;
+		text-indent: -99999px;
+		right: 0px;
+		top: 0px;
+	}
+	
+	.res span
+	{
+		padding: 0 5px;
+		margin: 0;
+		font-size: 9px;
+		color:#000;
 	}
     </style>
   </head>
   <body>
 
-    <table>
+    <table border="1">
       <tr>
         <th>
           date
@@ -45,22 +64,28 @@
         <td>
           cols
         </td>
-      </tr>
-	  <tr>
-		<td></td>
 		<td>
-			<div id="res1" class="res">res 1</div>
-			<div id="handle1" class="handle" style="background-color:black;width:5px;"></div>
+		</td>
+      </tr>
+	  <tr style="height:40px;">
+		<td></td>
+		<td width="50">
+			<div id="res1" class="res">
+				<span>res 1</span>
+				<div id="handle1" class="handle"></div>
+			</div>
+		</td>
+		<td width="50">
 			<div id="res2" class="res" style="left:300px;">res 2</div>
 		</td>
     </table>
   	<script type="text/javascript">
 	new Resizable('res1', 
 	{ 
-		snap: [50, 50], 
+		snap: [51, 50], 
 		constraint: 'horizontal', 
 		minWidth: 50, 
-		maxWidth: 500,
+		maxWidth: 260,
 		handle: 'handle1'
 	} );
 	</script>
