@@ -22,7 +22,7 @@ include_once($basedir . '/lib/Calendar.class.php');
 include_once($basedir . '/lib/Summary.class.php');
 include_once($basedir . '/templates/schedule.template.php');
 
-class class Schedule
+class Schedule
 {	
 	private $_id;
 	private $_name;

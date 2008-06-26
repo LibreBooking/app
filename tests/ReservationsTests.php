@@ -21,12 +21,14 @@ class ReservationsTests extends TestBase
 	
 	public function testCanGetReservationsWithinDateRange()
 	{
+		$this->markTestIncomplete('need to load reservation data with all reservations');
+		
 		$startDate = Date::Create(2008, 05, 20);
 		$endDate = Date::Create(2008, 05, 25);
 		$scheduleId = 1;
 		
 		//$fakeReservaions = new FakeReservations();
-		$rows = $this->GetReservationRows()//$fakeReservaions->GetRows();
+		$rows = $this->GetReservationRows();//$fakeReservaions->GetRows();
 		$this->db->SetRow(0, $rows);
 		
 		$expected = array();
@@ -46,7 +48,6 @@ class ReservationsTests extends TestBase
 		
 		$loaded = $this->reservations->GetWithin($startDate, $endDate, $scheduleId);
 		
-		$this->markTestIncomplete('need to load reservation data with all reservations');
 		
 		$this->assertEquals(new GetReservationsWithinDateRange($startDate, $endDate, $scheduleId), $this->db->_Commands[0]);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);

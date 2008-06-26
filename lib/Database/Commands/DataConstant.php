@@ -6,6 +6,7 @@ class ParameterNames
 	
 	const CURRENT_DATE = '@current_date';
 	const EMAIL_ADDRESS = '@emailaddress';
+	const END_DATE = '@endDate';
 	const FIRST_NAME = '@fname';
 	const HOMEPAGE_ID = '@homepageid';
 	const INSTITUTION = '@institution';
@@ -15,6 +16,8 @@ class ParameterNames
 	const PHONE = '@phone';
 	const POSITION = '@position';
 	const SALT = '@salt';
+	const SCHEDULE_ID = '@scheduleId';
+	const START_DATE = '@startDate';
 	const TIMEZONE = '@timezone';
 	const USER_ID = '@userid';
 	const USER_NAME = '@username';	
@@ -64,7 +67,10 @@ class Queries
 		FROM announcement
 		WHERE (start_datetime <= @current_date AND end_datetime >= @current_date)
 		ORDER BY order_number DESC';
-		
+
+	const GET_RESERVATIONS_COMMAND =
+		'';
+	
 	const GET_USER_ROLES = 
 		'SELECT userid, isadmin 
 		FROM accountrole
