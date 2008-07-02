@@ -16,7 +16,7 @@ class ParameterNames
 	const PHONE = '@phone';
 	const POSITION = '@position';
 	const SALT = '@salt';
-	const SCHEDULE_ID = '@scheduleId';
+	const SCHEDULE_ID = '@scheduleid';
 	const START_DATE = '@startDate';
 	const TIMEZONE = '@timezone';
 	const USER_ID = '@userid';
@@ -69,7 +69,23 @@ class Queries
 		ORDER BY order_number DESC';
 
 	const GET_RESERVATIONS_COMMAND =
-		'';
+		'SELECT * 
+		FROM reservation r
+		INNER JOIN reservation_user ru ON r.reservationid = ru.reservationid
+		INNER JOIN reservation_resource rr ON r.reservationid = rr.reservationid
+		INNER JOIN resource_schedule rs ON rr.resourceid = rs.resourceid
+		INNER JOIN resource ON rr.resourceid = resource.resourceid
+		INNER JOIN account a ON ru.userid = a.userid
+		WHERE
+		(
+		  (r.start_date BETWEEN @startDate AND @endDate)
+		  OR
+		  (r.end_date BETWEEN @startDate AND @endDate)
+		  OR
+		  (r.start_date <= @startDate AND r.end_date => @endDate)
+		)
+		AND rs.scheduleid = @scheduleid
+		AND resource.isactive = 1';
 	
 	const GET_USER_ROLES = 
 		'SELECT userid, isadmin 
