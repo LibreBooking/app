@@ -85,7 +85,8 @@ class Queries
 		  (r.start_date <= @startDate AND r.end_date => @endDate)
 		)
 		AND rs.scheduleid = @scheduleid
-		AND resource.isactive = 1';
+		AND resource.isactive = 1
+		AND ru.reservation_owner = 1';
 	
 	const GET_USER_ROLES = 
 		'SELECT userid, isadmin 
@@ -145,8 +146,8 @@ class ColumnNames
 	const MATCH_COUNT = 'matchcount';
 	const OLD_PASSWORD = 'legacypassword';
 	const PASSWORD = 'userpassword';
-	const TIMEZONE_NAME = 'timezonename';
 	const SALT = 'salt';
+	const TIMEZONE_NAME = 'timezonename';
 	const USER_ID = 'userid';	
 	
 	// ACCOUNT_ROLE //
@@ -154,6 +155,12 @@ class ColumnNames
 	
 	// ANNOUNCEMENT //
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
+	
+	// RESERVATION_USER //
+	const RESERVATION_OWNER = 'reservation_owner';
+	
+	// RESOURCE //
+	const RESOURCE_ID = 'resourceid';
 	
 	// SCHEDULE //
 	const SCHEDULE_ID = 'scheduleid';
