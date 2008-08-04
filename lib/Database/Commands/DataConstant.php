@@ -156,6 +156,16 @@ class ColumnNames
 	// ANNOUNCEMENT //
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
 	
+	// RESERVATION //
+	const RESERVATION_ID = 'reservationid';
+	const START_DATE = 'start_date';
+	const END_DATE = 'end_date';
+	const START_TIME = 'start_time';
+	const END_TIME = 'end_time';
+	const RESERVATION_TYPE = 'reservation_type';
+	const SUMMARY = 'summary';
+	const PARENT_ID = 'parentid';
+	
 	// RESERVATION_USER //
 	const RESERVATION_OWNER = 'reservation_owner';
 	

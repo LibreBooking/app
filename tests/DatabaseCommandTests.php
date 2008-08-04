@@ -228,9 +228,11 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		
 		$command = new GetReservationsCommand($start, $end, $scheduleId);
 		$this->assertEquals(Queries::GET_RESERVATIONS_COMMAND, $command->GetQuery());
-		$this->assertEquals(new Parameter(ParameterName::START_DATE), $start->ToDatabase());
-		$this->assertEquals(new Parameter(ParameterName::END_DATE), $end->ToDatabase());
-		$this->assertEquals(new Parameter(ParameterName::SCHEDULE_ID), $scheduleId);
+		$p1 = new Parameter(ParameterNames::START_DATE, $start->ToDatabase());
+		$p2 = new Parameter(ParameterNames::END_DATE, $end->ToDatabase());
+		$this->assertEquals($p1, $command->Parameters->Items(0));
+		$this->assertEquals($p2, $command->Parameters->Items(1));
+		$this->assertEquals(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId), $command->Parameters->Items(2));
 	}
 }
 ?>
