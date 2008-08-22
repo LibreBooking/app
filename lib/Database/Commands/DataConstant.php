@@ -69,11 +69,23 @@ class Queries
 		ORDER BY order_number DESC';
 
 	const GET_RESERVATIONS_COMMAND =
-		'SELECT * 
+	 'SELECT
+		  r.reservationid,
+		  r.start_date,
+		  r.end_date,
+		  r.start_time,
+		  r.typeid,
+		  r.statusid,
+		  r.summary,
+		  r.parentid,
+		  rr.resourceid,
+		  a.userid,
+		  a.fname,
+		  a.lname
 		FROM reservation r
 		INNER JOIN reservation_user ru ON r.reservationid = ru.reservationid
 		INNER JOIN reservation_resource rr ON r.reservationid = rr.reservationid
-		INNER JOIN resource_schedule rs ON rr.resourceid = rs.resourceid
+		INNER JOIN schedule_resource sr ON rr.resourceid = sr.resourceid
 		INNER JOIN resource ON rr.resourceid = resource.resourceid
 		INNER JOIN account a ON ru.userid = a.userid
 		WHERE
@@ -82,11 +94,11 @@ class Queries
 		  OR
 		  (r.end_date BETWEEN @startDate AND @endDate)
 		  OR
-		  (r.start_date <= @startDate AND r.end_date => @endDate)
+		  (r.start_date <= @startDate AND r.end_date >= @endDate)
 		)
-		AND rs.scheduleid = @scheduleid
+		AND sr.scheduleid = @scheduleid
 		AND resource.isactive = 1
-		AND ru.reservation_owner = 1';
+		AND ru.levelid = 1;';
 	
 	const GET_USER_ROLES = 
 		'SELECT userid, isadmin 

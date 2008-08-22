@@ -36,6 +36,20 @@ class SchedulePresenterTests extends TestBase
 		$this->assertEquals($schedules->_AllRows, $this->page->_LastSchedules);
 		$this->assertTrue($this->page->_SetSchedulesCalled);
 	}
+	
+	public function testSetsScheduleResources()
+	{
+		$this->markTestIncomplete("working on this");
+		$resources = new FakeResources();
+		
+		$this->presenter->SetResources();
+		
+		$this->presenter->PageLoad();
+		
+		$this->assertTrue($resources->_GetForScheduleCalled);
+		$this->assertEquals($resources->_AllRows, $this->page->_LastSchedules);
+		$this->assertTrue($this->page->_SetResourcesCalled);
+	}
 }
 
 class FakeSchedulePage implements ISchedulePage  

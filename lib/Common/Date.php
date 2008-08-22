@@ -67,6 +67,29 @@ class Date
 					);
 	}
 	
+	/**
+	 * Compares this date to the one passed in
+	 * Returns:
+	 * -1 if this date is less than the passed in date
+	 * 0 if the dates are equal
+	 * 1 if this date is greater than the passed in date
+	 * @param Date $date
+	 * @return int comparison result
+	 */
+	public function Compare(Date $date)
+	{
+		if ($this->Timestamp() < $date->Timestamp())
+		{
+			return -1;
+		}
+		else if ($this->Timestamp() > $date->Timestamp())
+		{
+			return 1;
+		}
+		
+		return 0;
+	}
+	
 	public function AddDays($days)
 	{		
 		$timestamp = mktime(
