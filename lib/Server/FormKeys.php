@@ -17,6 +17,7 @@ class FormKeys
 	const PHONE = 'phone';
 	const POSITION = 'position';
 	const RESUME = 'resume';
+	const SCHEDULE_ID = 'scheduleId';
 	const TIMEZONE = 'timezone';
 }
 ?>

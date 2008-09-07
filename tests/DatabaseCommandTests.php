@@ -234,5 +234,15 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals($p2, $command->Parameters->Items(1));
 		$this->assertEquals(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId), $command->Parameters->Items(2));
 	}
+	
+	public function testGetScheduleResourcesCommand()
+	{
+		$scheduleId = 10;
+		
+		$command = new GetScheduleResourcesCommand($scheduleId);
+		
+		$this->assertEquals(Queries::GET_SCHEDULE_RESOURCES, $command->GetQuery());
+		$this->assertEquals(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId), $command->Parameters->Items(0));
+	}
 }
 ?>

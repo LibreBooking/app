@@ -7,6 +7,9 @@ class ServiceLocator
 	private static $_database = null;
 	private static $_server = null;
 	
+	/**
+	 * @return Database
+	 */
 	public static function GetDatabase()
 	{
 		if (self::$_database == null)
@@ -21,6 +24,9 @@ class ServiceLocator
 		self::$_database = $database;
 	}
 	
+	/**
+	 * @return Server
+	 */
 	public static function GetServer()
 	{
 		if (self::$_server == null)

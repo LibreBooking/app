@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Domain/namespace.php');
+require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 
 class SchedulesTests extends TestBase
 {

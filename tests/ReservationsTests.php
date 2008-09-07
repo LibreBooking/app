@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
+require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Schedule/namespace.php');
 
 class ReservationsTests extends TestBase
@@ -26,7 +27,7 @@ class ReservationsTests extends TestBase
 		$endDate = Date::Create(2008, 05, 25);
 		$scheduleId = 1;
 		
-		$rows = $this->GetReservationRows();
+		$rows = FakeReservations::GetReservationRows();
 		$this->db->SetRow(0, $rows);
 		
 		$expected = array();
@@ -45,7 +46,7 @@ class ReservationsTests extends TestBase
 	
 	public function testCanCreateScheduleReservation()
 	{
-		$rows = $this->GetReservationRows();
+		$rows = FakeReservations::GetReservationRows();
 		
 		$r = $rows[0];
 		$expected = new ScheduleReservation(
@@ -69,52 +70,7 @@ class ReservationsTests extends TestBase
 		$this->assertEquals($expected, $actual);
 	}
 	
-	private function GetReservationRows()
-	{
-		$row1 =  array(ColumnNames::RESERVATION_ID => 1, 
-					ColumnNames::START_DATE => '2008-05-20 00:00:00',
-					ColumnNames::END_DATE => '2008-05-20 00:00:00',
-					ColumnNames::START_TIME => '09:00',
-					ColumnNames::END_TIME => '15:30',
-					ColumnNames::RESERVATION_TYPE => 1,
-					ColumnNames::SUMMARY => 'summary1',
-					ColumnNames::PARENT_ID => null,
-					ColumnNames::RESOURCE_ID => 1,
-					ColumnNames::USER_ID => 1,
-					ColumnNames::FIRST_NAME => 'first',
-					ColumnNames::LAST_NAME => 'last'
-					);
-					
-		$row2 =  array(ColumnNames::RESERVATION_ID => 1, 
-					ColumnNames::START_DATE => '2008-05-20 00:00:00',
-					ColumnNames::END_DATE => '2008-05-20 00:00:00',
-					ColumnNames::START_TIME => '09:00',
-					ColumnNames::END_TIME => '15:30',
-					ColumnNames::RESERVATION_TYPE => 1,
-					ColumnNames::SUMMARY => 'summary1',
-					ColumnNames::PARENT_ID => null,
-					ColumnNames::RESOURCE_ID => 2,
-					ColumnNames::USER_ID => 1,
-					ColumnNames::FIRST_NAME => 'first',
-					ColumnNames::LAST_NAME => 'last'
-					);			
-					
-		$row3 =  array(ColumnNames::RESERVATION_ID => 2, 
-					ColumnNames::START_DATE => '2008-05-22 00:00:00',
-					ColumnNames::END_DATE => '2008-05-24 00:00:00',
-					ColumnNames::START_TIME => '06:00',
-					ColumnNames::END_TIME => '09:30',
-					ColumnNames::RESERVATION_TYPE => 1,
-					ColumnNames::SUMMARY => 'summary2',
-					ColumnNames::PARENT_ID => null,
-					ColumnNames::RESOURCE_ID => 1,
-					ColumnNames::USER_ID => 1,
-					ColumnNames::FIRST_NAME => 'first',
-					ColumnNames::LAST_NAME => 'last'
-					);
-		
-		return array($row1, $row2, $row3);								
-	}
+	
 }
 
 ?>

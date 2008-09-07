@@ -99,6 +99,17 @@ class Queries
 		AND sr.scheduleid = @scheduleid
 		AND resource.isactive = 1
 		AND ru.levelid = 1;';
+	 
+	const GET_SCHEDULE_RESOURCES = 
+		'SELECT 
+			r.* 
+		FROM 
+			resource r 
+		INNER JOIN 
+			schedule_resource sr ON r.resourceid = sr.resourceid 
+		WHERE 
+			sr.scheduleid = @scheduleId AND 
+			r.isactive = 1';
 	
 	const GET_USER_ROLES = 
 		'SELECT userid, isadmin 
@@ -106,9 +117,9 @@ class Queries
 		WHERE (userid = @userid)';
 	
 	const MIGRATE_PASSWORD = 
-		"UPDATE account 
+		'UPDATE account 
 		SET userpassword = @password, legacypassword = null, salt = @salt 
-		WHERE userid = @userid";
+		WHERE userid = @userid';
 	
 	const REGISTER_USER = 
 		'INSERT INTO account
@@ -183,6 +194,18 @@ class ColumnNames
 	
 	// RESOURCE //
 	const RESOURCE_ID = 'resourceid';
+	const RESOURCE_NAME = 'name';
+	const RESOURCE_LOCATION = 'location';
+	const RESOURCE_PHONE = 'phone';
+	const RESOURCE_NOTES = 'notes';
+	const RESOURCE_MINLENGTH = 'max_length';
+	const RESOURCE_MAXLENGTH = 'min_length';
+	const RESOURCE_AUTOASSIGN = 'autoassign';
+	const RESOURCE_REQUIRES_APPROVAL = 'requires_approval';
+	const RESOURCE_ALLOW_MULTIDAY = 'allow_multiple_day_reservations';
+	const RESOURCE_MAX_PARTICIPANTS = 'max_participants';
+	const RESOURCE_MINNOTICE = 'min_notice';
+	const RESOURCE_MAXNOTICE = 'max_notice';
 	
 	// SCHEDULE //
 	const SCHEDULE_ID = 'scheduleid';

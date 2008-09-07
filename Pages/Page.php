@@ -8,7 +8,14 @@ require_once(ROOT_DIR . 'lib/Database/MDB2/namespace.php');
 
 class Page implements IPage
 {
+	/**
+	 * @var SmartyPage
+	 */
 	protected $smarty = null;
+	
+	/**
+	 * @var Server
+	 */
 	protected $server = null;
 	
 	public function __construct($titleKey, $pageDepth = 0)
@@ -47,21 +54,42 @@ class Page implements IPage
 		return true;
 	}
 	
+	/**
+	 * Returns whether or not the user has been authenticated
+	 *
+	 * @return bool
+	 */
 	public function IsAuthenticated()
 	{
 		return !is_null($this->server->GetSession(SessionKeys::USER_SESSION));
 	}
 	
+	/**
+	 * Returns whether or not the page is currently posting back to itself
+	 *
+	 * @return bool
+	 */
 	public function IsPostBack()
 	{
 		return !empty($_POST);
 	}
 	
+	/**
+	 * Registers a Validator with the page
+	 *
+	 * @param unknown_type $validatorId
+	 * @param IValidator $validator
+	 */
 	public function RegisterValidator($validatorId, $validator)
 	{
 		$this->smarty->Validators->Register($validatorId, $validator);
 	}
 	
+	/**
+	 * Whether or not the current page passess all registered validators
+	 *
+	 * @return bool
+	 */
 	public function IsValid()
 	{
 		return $this->smarty->IsValid();

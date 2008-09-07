@@ -142,7 +142,7 @@ class LoginPresenterTests extends TestBase
 	}
 }
 
-class FakeLoginPage implements ILoginPage
+class FakeLoginPage extends FakePageBase implements ILoginPage
 {
 	public $_EmailAddress;
 	public $_Password;

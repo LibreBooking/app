@@ -84,6 +84,15 @@ class GetReservationsCommand extends SqlCommand
 	}
 }
 
+class GetScheduleResourcesCommand extends SqlCommand
+{
+	public function __construct($scheduleId)
+	{
+		parent::__construct(Queries::GET_SCHEDULE_RESOURCES);
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+	}
+}
+
 class GetUserRoleCommand extends SqlCommand
 {
 	public function __construct($userid)

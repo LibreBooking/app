@@ -4,6 +4,9 @@
  */
 class Date
 {
+	/**
+	 * @var DateTime
+	 */
 	private $date;
 	private $parts;
 	private $timezone;
@@ -11,6 +14,14 @@ class Date
 	// Only used for testing
 	private static $_Now = null;
 	
+	/**
+	 * Creates a Date with the provided timestamp and timzone
+	 * Defaults to current time
+	 * Defaults to GMT
+	 *
+	 * @param int $timestamp
+	 * @param string $timezone
+	 */
 	public function __construct($timestamp = null, $timezone = 'GMT')
 	{
 		if ($timestamp == null)
@@ -31,6 +42,11 @@ class Date
 		return new Date(mktime($hour, $minute, $second, $month, $day, $year), $timezone);
 	}
 	
+	/**
+	 * Returns a Date object representing the current date/time
+	 *
+	 * @return Date
+	 */
 	public static function Now()
 	{
 		if (isset(self::$_Now))
@@ -40,21 +56,43 @@ class Date
 		return new Date(mktime());
 	}
 	
+	/**
+	 * Formats the Date with the provided format
+	 *
+	 * @param string $format
+	 * @return string
+	 */
 	public function Format($format)
 	{
 		return $this->date->format($format);
 	}
 	
+	/**
+	 * Returns the Date adjusted into the provided timezone
+	 *
+	 * @param unknown_type $timezone
+	 * @return unknown
+	 */
 	public function ToTimezone($timezone)
 	{
 		return new Date($this->Timestamp(), $timezone);
 	}
 	
+	/**
+	 * Formats the Date into a format that is accepted by the database
+	 *
+	 * @return string
+	 */
 	public function ToDatabase()
 	{
 		return $this->Format('Y-m-d H:i:s');
 	}
 	
+	/**
+	 * Returns the current Date as a timestamp
+	 *
+	 * @return int
+	 */
 	public function Timestamp()
 	{
 		return mktime(
@@ -90,6 +128,10 @@ class Date
 		return 0;
 	}
 	
+	/**
+	 * @param int $days
+	 * @return Date
+	 */
 	public function AddDays($days)
 	{		
 		$timestamp = mktime(

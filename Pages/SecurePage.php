@@ -14,7 +14,6 @@ class SecurePage extends Page
 			$this->Redirect($this->GetResumeUrl());
 			die();
 		}
-	
 	}
 	
 	private function GetResumeUrl()
