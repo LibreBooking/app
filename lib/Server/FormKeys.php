@@ -19,5 +19,10 @@ class FormKeys
 	const RESUME = 'resume';
 	const SCHEDULE_ID = 'scheduleId';
 	const TIMEZONE = 'timezone';
+	
+	public static function Evaluate($formKey)
+	{
+		return eval("return FormKeys::$formKey;");
+	}
 }
 ?>

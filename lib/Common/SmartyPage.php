@@ -44,9 +44,9 @@ class SmartyPage extends Smarty
 		$this->register_function('textbox', array($this, 'Textbox'));
 		$this->register_function('object_html_options', array($this, 'HtmlOptions'));
 		$this->register_block('validation_group', array($this, 'ValidationGroup'));
+		$this->register_function('setfocus', array($this, 'SetFocus'));
 		
 		$this->Validators = new PageValdiators();
-		
 	}
 		
 	public function IsValid()
@@ -159,13 +159,32 @@ class SmartyPage extends Smarty
 	
 	public function Textbox($params, &$smarty)
 	{
+		$class = null;
+		$value = null;
+		$style = null;
+		
+		if (isset($params['class']))
+		{
+			$class = $params['class'];
+		}
+		
+		if (isset($params['value']))
+		{
+			$value = $params['value'];
+		}
+		
+		if (isset($params['style']))
+		{
+			$style = $params['style'];
+		}
+		
 		if (isset($params['type']))
 		{
-			$textbox = new SmartyPasswordbox($params['name'], $params['class'], $params['value'], $smarty);
+			$textbox = new SmartyPasswordbox($params['name'], $class, $value, $style, $smarty);
 		}
 		else
 		{
-			$textbox = new SmartyTextbox($params['name'], $params['class'], $params['value'], $smarty);
+			$textbox = new SmartyTextbox($params['name'], $class, $value, $style, $smarty);
 		}
 		return $textbox->Html();
 	}
@@ -187,8 +206,11 @@ class SmartyPage extends Smarty
 		
 		return $builder->ToString();
 	}
-
+	
+	public function SetFocus($params, &$smarty)
+	{
+		$id = isset($params['key']) ? FormKeys::Evaluate($params['key']) : $params['id'];
+		return "<script type=\"text/javascript\">document.getElementById('$id').focus();</script>";
+	}
 }
-
-
 ?>

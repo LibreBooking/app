@@ -21,7 +21,7 @@
                             </p>
                         </td>
                         <td>
-                            <input type="text" name="email" class="textbox" />
+                        	{textbox name="EMAIL" class="textbox"}
                         </td>
                     </tr>
                     <tr>
@@ -31,7 +31,7 @@
                             </p>
                         </td>
                         <td>
-                            <input type="password" name="password" class="textbox" />
+                        	{textbox name="PASSWORD" class="textbox"}
                         </td>
                     </tr>
                     <tr>
@@ -81,4 +81,5 @@
     <a href="javascript: help();">{translate key='Help'}</a>
     </p>
 </form>
+{setfocus key='EMAIL'}
 {include file='footer.tpl'}
