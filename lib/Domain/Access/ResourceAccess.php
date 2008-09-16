@@ -25,7 +25,7 @@ class ResourceAccess implements IResourceAccess
 		$resources = array();
 		
 		$reader = ServiceLocator::GetDatabase()->Query($command);
-
+		
 		while ($row = $reader->GetRow())
 		{
 			$resources[] = Resource::Create($row);

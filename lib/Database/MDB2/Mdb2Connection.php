@@ -95,13 +95,7 @@ class Mdb2Connection implements IDbConnection
 		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);		
 		$result =& $stmt->execute($cmd->GetValues());	
 		$this->_isError($result);
-		
-		/*
-		echo '<pre>';
-		print_r($stmt);
-		echo "</pre>";
-		*/
-		
+
 		return new Mdb2Reader($result);
 	}
 	
@@ -109,7 +103,7 @@ class Mdb2Connection implements IDbConnection
 	{
 		if (MDB2::isError($result)) 
 		{
-            throw new Exception('There was an error executing your query');
+			throw new Exception('There was an error executing your query');
            	// LOG: . $result->getMessage()
 		}
         return false;
