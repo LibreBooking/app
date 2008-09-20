@@ -11,7 +11,7 @@ $conf['settings']['password.pattern'] = '/^[^\s]{6,}$/i';
 $conf['settings']['database']['type'] = 'mysql';
 $conf['settings']['database']['user'] = 'schedule_user';
 $conf['settings']['database']['password'] = 'password';
-$conf['settings']['database']['hostspec'] = 'localhost';
+$conf['settings']['database']['hostspec'] = '.';
 $conf['settings']['database']['name'] = 'phpScheduleIt';
 $conf['settings']['plugins']['Auth'] = '';
 ?>

@@ -27,6 +27,11 @@ class SchedulePresenterTests extends TestBase
 	
 	public function testPageLoadBindsAllSchedulesAndProperResourcesWhenNotPostingBack()
 	{
+		//TODO: make the SchedulePresenter use a builder to test independent parts
+		
+		$user = new FakeUserSession();
+		$this->fakeServer->SetSession(SessionKeys::USER_SESSION, $user);
+		
 		$schedules = new FakeSchedules();
 		$this->presenter->SetSchedules($schedules);
 		
@@ -39,11 +44,17 @@ class SchedulePresenterTests extends TestBase
 		$this->page->_IsPostBack = false;
 		
 		$startDate = Date::Now();
-		$endDate = Date::Now()->AddDays($schedules->_DefaultDaysVisible);
+		$endDate = $startDate->AddDays($schedules->_DefaultDaysVisible);
 		
+		$expectedDates = array();
+
+		for($dateCount = 0; $dateCount < $schedules->_DefaultDaysVisible; $dateCount++)
+		{
+			$date = $startDate->AddDays($dateCount);
+			$expectedDates[$date->Timestamp()] = $date->ToTimezone($user->Timezone);
+		}
 		
 		$this->presenter->PageLoad();
-		
 		
 		$this->assertTrue($schedules->_GetAllCalled);
 		$this->assertEquals($schedules->_AllRows, $this->page->_LastSchedules);
@@ -61,6 +72,9 @@ class SchedulePresenterTests extends TestBase
 		$this->assertEquals($reservations->_Reservations, $this->page->_LastReservations);
 		$this->assertTrue($this->page->_SetReservationsCalled);
 		
+		$this->assertTrue($this->page->_SetDatesCalled);
+		$this->assertEquals($expectedDates, $this->page->_LastDates);
+		$this->assertEquals($schedules->_DefaultDaysVisible, count($this->page->_LastDates));
 	}
 	
 	public function testPageLoadsDataWhenPostingBack()
@@ -79,10 +93,12 @@ class FakeSchedulePage extends FakePageBase implements ISchedulePage
 	public $_LastSchedules = array();
 	public $_LastResources = array();
 	public $_LastReservations = array();
+	public $_LastDates = array();
 	
 	public $_SetSchedulesCalled = false;
 	public $_SetResourcesCalled = false;
 	public $_SetReservationsCalled = false;
+	public $_SetDatesCalled = false;
 	public $_ScheduleId;
 	
 	public function SetSchedules($schedules)
@@ -106,6 +122,12 @@ class FakeSchedulePage extends FakePageBase implements ISchedulePage
 	public function GetScheduleId()
 	{
 		return $this->_ScheduleId;
+	}
+	
+	public function SetDisplayDates($dates)
+	{
+		$this->_SetDatesCalled = true;
+		$this->_LastDates = $dates;
 	}
 }
 

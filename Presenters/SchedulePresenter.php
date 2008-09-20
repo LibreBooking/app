@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
@@ -85,6 +86,8 @@ class SchedulePresenter
 	
 	public function PageLoad()
 	{
+		//TODO: Use a builder here
+		
 		$schedules = $this->GetSchedules()->GetAll();
 		$this->_page->SetSchedules($schedules);
 		
@@ -94,9 +97,30 @@ class SchedulePresenter
 		$this->_page->SetResources($this->GetResourceAccess()->GetScheduleResources($scheduleId));
 		
 		$startDate = Date::Now();
-		$endDate = Date::Now()->AddDays($schedule->GetDaysVisible());
+		$endDate = $startDate->AddDays($schedule->GetDaysVisible());
+		
+		$dates = $this->GetDisplayDates($startDate, $schedule->GetDaysVisible());
+		$this->_page->SetDisplayDates($dates);
 		
 		$this->_page->SetReservations($this->GetReservationAccess()->GetWithin($startDate, $endDate, $scheduleId));
+	}
+	
+	/**
+	 * @param Date $startDate
+	 * @param int $daysVisible
+	 * @return array[]Date 
+	 */
+	private function GetDisplayDates($startDate, $daysVisible)
+	{
+		$dates = array();
+		$user = ServiceLocator::GetServer()->GetUserSession();
+		for($dateCount = 0; $dateCount < $daysVisible; $dateCount++)
+		{
+			$date = $startDate->AddDays($dateCount);
+			$dates[$date->Timestamp()] = $date->ToTimezone($user->Timezone);
+		}
+		
+		return $dates;
 	}
 	
 	/**

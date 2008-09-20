@@ -3,17 +3,15 @@
 class SmartyTextbox
 {
 	private $name;
-	private $class;
+	private $attributes;
 	private $smartyVariable;
 	private $smarty;
-	private $style;
 	
-	public function __construct($formKey, $class, $smartyVariable, $style, &$smarty)
+	public function __construct($formKey, $smartyVariable, $attributes, &$smarty)
 	{
 		$this->name = $this->GetName($formKey);
-		$this->class = $class;
+		$this->attributes = $attributes;
 		$this->smartyVariable = $smartyVariable;
-		$this->style = $style;
 		$this->smarty = $smarty;
 	}
 	
@@ -22,7 +20,7 @@ class SmartyTextbox
 		$value = $this->GetValue();
 		$style = empty($this->style) ? '' : " style=\"{$this->style}\"";
 		
-		return "<input type=\"{$this->GetInputType()}\" class=\"{$this->class}\" name=\"{$this->name}\" id=\"{$this->name}\" value=\"$value\"$style />";
+		return "<input type=\"{$this->GetInputType()}\" name=\"{$this->name}\" id=\"{$this->name}\" value=\"$value\" $this->attributes />";
 	}
 	
 	protected function GetInputType()

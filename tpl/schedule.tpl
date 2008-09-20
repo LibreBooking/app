@@ -11,11 +11,17 @@
 	</tr>
 {/section}
 
-{foreach from=$Resources item=resource name=resource_loop}
+{foreach from=$DisplayDates item=date name=date_loop}
 	<tr>
-		<td>{$resource->GetName()}</td>
+		<td>{$date->Format('Y-m-d H:i:s')}</td>
 	</tr>
+	{foreach from=$Resources item=resource name=resource_loop}
+		<tr>
+			<td>{$resource->GetName()}</td>
+		</tr>
+	{/foreach}
 {/foreach}
+
 <table>
 
 {include file='footer.tpl'}

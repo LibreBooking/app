@@ -35,6 +35,11 @@ class SchedulePage extends SecurePage implements ISchedulePage
 	{
 		$this->smarty->assign('Reservations', $reservations);
 	}
+	
+	public function SetDisplayDates($dates)
+	{
+		$this->smarty->assign('DisplayDates', $dates);
+	}
 }
 
 interface ISchedulePage
@@ -42,21 +47,21 @@ interface ISchedulePage
 	/**
 	 * Bind schedules to the page
 	 *
-	 * @param array $schedules array of Schedule objects
+	 * @param array[]Schedule $schedules
 	 */
 	public function SetSchedules($schedules);
 	
 	/**
 	 * Bind resources to the page
 	 *
-	 * @param array $resources array of Resource objects
+	 * @param array[]Resource $resources
 	 */
 	public function SetResources($resources);
 	
 	/**
 	 * Bind reservations to the page
 	 *
-	 * @param array $reservations array of ScheduleReservation objects
+	 * @param array[]ScheduleReservation $reservations
 	 */
 	public function SetReservations($reservations);
 	
@@ -65,5 +70,12 @@ interface ISchedulePage
 	 * @return int
 	 */
 	public function GetScheduleId();
+	
+	/**
+	 * Sets the dates to be displayed for the schedule, adjusted for timezone if necessary
+	 *
+	 * @param array[]Date $dates
+	 */
+	public function SetDisplayDates($dates);
 }
 ?>

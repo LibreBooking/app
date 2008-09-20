@@ -28,7 +28,7 @@ class FakeSchedules implements ISchedules
 				ColumnNames::SCHEDULE_END => $this->_DefaultEndTime,
 				ColumnNames::SCHEDULE_WEEKDAY_START => $this->_DefaultDayStart,
 				ColumnNames::SCHEDULE_ADMIN_ID => 1,
-				ColumnNames::SCHEDULE_DAYS_VISIBLE => $this->_DefaultScheduleId
+				ColumnNames::SCHEDULE_DAYS_VISIBLE => $this->_DefaultDaysVisible
 			),
 			array(
 				ColumnNames::SCHEDULE_ID => 2,

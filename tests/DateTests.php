@@ -15,7 +15,7 @@ class DateTests extends PHPUnit_Framework_TestCase
 		$format = 'd m y H:i:s';
 		
 		$now = Date::Now();
-		$datenow = new DateTime(strtotime(time()), $this->tz);
+		$datenow = new DateTime(date(DATE_W3C, time()), $this->tz);
 		
 		$this->assertEquals($datenow->format($format), $now->Format($format));
 	}
@@ -35,11 +35,12 @@ class DateTests extends PHPUnit_Framework_TestCase
 		
 		$now = new Date($rawdate);
 		
-		$twentyDays = new DateTime(strtotime(mktime($hour, $minute, $second, $month, $day + 20, $year)), $this->tz);
+		$dateString = date(DATE_W3C, mktime($hour, $minute, $second, $month, $day + 20, $year));
+		$twentyDays = new DateTime($dateString, $this->tz);
 		
 		$twentyDaysDate = $now->AddDays(20);
 		
-		$this->assertEquals($twentyDays->format($format), $twentyDaysDate->Format($format));		
+		$this->assertEquals($twentyDays->format($format), $twentyDaysDate->Format($format));	
 	}
 	
 	public function testCanGetAsDateTime()
@@ -47,7 +48,7 @@ class DateTests extends PHPUnit_Framework_TestCase
 		$rawdate = mktime();
 		
 		$now = new Date($rawdate);		
-		$datenow = new DateTime(strtotime($rawdate), $this->tz);
+		$datenow = new DateTime(date(DATE_W3C, $rawdate), $this->tz);
 		
 		$parts = date_parse($datenow->format(DATE_W3C));
 		
@@ -70,7 +71,7 @@ class DateTests extends PHPUnit_Framework_TestCase
 		$rawdate = mktime();
 		$now = new Date($rawdate);
 		
-		$datetime = new DateTime(strtotime($rawdate), $this->tz);
+		$datetime = new DateTime(date(DATE_W3C, $rawdate), $this->tz);
 		$datetime->setTimezone(new DateTimeZone('US/Central'));
 		
 		$expected = $datetime->format($format);		

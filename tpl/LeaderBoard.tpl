@@ -1,4 +1,4 @@
-	<table width="100%" border="0" cellspacing="0" cellpadding="0" id="header">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="header">
 	  <tr>
 		<td>
 		  <img src="img/logo.gif" alt="phpScheduleIt"/>
@@ -7,11 +7,11 @@
 		  {if $DisplayWelcome eq 'true'}
 			  <!--<h4 class="welcomeBack">{translate key='Welcome Back' args=$UserName}</h4>--> 
 			  <p>
-				{html_link href="$Path/bookings.php" key="Bookings"}
+				{html_link href="bookings.php" key="Bookings"}
 				|
-				{html_link href="$Path/dashboard.php" key="MyDashboard"}
+				{html_link href="dashboard.php" key="MyDashboard"}
 				|
-				{html_link href="$Path/logout.php" key="Log Out"}
+				{html_link href="logout.php" key="Log Out"}
 			  </p>
 		  {/if}
 		</td>

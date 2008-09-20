@@ -57,6 +57,19 @@ class SmartyPage extends Smarty
 		return $this->IsValid;
 	}
 
+	private function AppendAttributes($params, $knownAttributes)
+	{
+		$extraKeys = array_diff(array_keys($params), $knownAttributes);
+		
+		$attributes = new StringBuilder();
+		foreach($extraKeys as $key)
+		{
+			$attributes->Append("$key=\"{$params[$key]}\"");
+		}
+		
+		return $attributes->ToString();
+	}
+	
 	public function PrintLink($params, &$smarty)
 	{
 		$string = $this->Resources->GetString($params['key']);
@@ -69,7 +82,12 @@ class SmartyPage extends Smarty
 			$title = $this->Resources->GetString($params['title']);
 		}
 		
-		return "<a href=\"{$params['href']}\" title=\"$title\">$string</a>";
+		$href = $this->RootPath . $params['href'];
+		
+		$knownAttributes = array('key', 'title', 'href');
+		$attributes = $this->AppendAttributes($params, $knownAttributes);
+
+		return "<a href=\"$href\" title=\"$title\" $attributes>$string</a>";
 	}
 	
 	public function SmartyTranslate($params, &$smarty) 
@@ -101,7 +119,10 @@ class SmartyPage extends Smarty
 		$height = isset($params['height']) ? $params['height'] : '';
 		$imgPath = sprintf('%simg/%s', $this->RootPath, $params['src']);	
 		
-		return "<img src=\"$imgPath\" alt=\"$alt\" width=\"\" height=\"\" />";
+		$knownAttributes = array('alt', 'width', 'height', 'src');
+		$attributes = $this->AppendAttributes($params, $knownAttributes);
+		
+		return "<img src=\"$imgPath\" alt=\"$alt\" width=\"\" height=\"\" $attributes />";
 	}
 	
 	public function DisplayControl($params, &$smarty)
@@ -178,14 +199,19 @@ class SmartyPage extends Smarty
 			$style = $params['style'];
 		}
 		
+		
+		$knownAttributes = array('value', 'type', 'name');
+		$attributes = $this->AppendAttributes($params, $knownAttributes);
+		
 		if (isset($params['type']))
 		{
-			$textbox = new SmartyPasswordbox($params['name'], $class, $value, $style, $smarty);
+			$textbox = new SmartyPasswordbox($params['name'], $value, $attributes, $smarty);
 		}
 		else
 		{
-			$textbox = new SmartyTextbox($params['name'], $class, $value, $style, $smarty);
+			$textbox = new SmartyTextbox($params['name'], $value, $attributes, $smarty);
 		}
+		
 		return $textbox->Html();
 	}
 	
