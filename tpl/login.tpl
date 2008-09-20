@@ -1,3 +1,4 @@
+{assign var='DisplayWelcome' value='false'}
 {include file='header.tpl'}
 {if $ShowLoginError}
 	<div id="loginError">
@@ -31,7 +32,7 @@
                             </p>
                         </td>
                         <td>
-                        	{textbox name="PASSWORD" class="textbox"}
+                        	{textbox name="PASSWORD" class="textbox" type="password"}
                         </td>
                     </tr>
                     <tr>

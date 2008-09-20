@@ -17,7 +17,7 @@ class SmartyPage extends Smarty
 	{
 		$base = dirname(__FILE__) . '/../../';
 		
-		$this->debugging = true;
+		$this->debugging = false;
 		$this->template_dir = $base . 'tpl';
 		$this->compile_dir = $base . 'tpl_c';
 		$this->config_dir = $base . 'configs';

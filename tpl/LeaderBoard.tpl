@@ -1,15 +1,19 @@
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" id="header">
 	  <tr>
 		<td>
-		  <img src="img/logo.gif"/>
-		  <!--
-		  <h4 class="welcomeBack">{translate key='Welcome Back' args=$UserName}</h4>	  
-		  <p>
-			{html_link href="$Path/index.php?logout=true" key="Log Out"}
-			|
-			{html_link href="$Path/ctrlpnl.php" key="My Control Panel"}
-		  </p>
-		  -->
+		  <img src="img/logo.gif" alt="phpScheduleIt"/>
+		</td>
+		<td style="width:100%;vertical-align:bottom;">
+		  {if $DisplayWelcome eq 'true'}
+			  <!--<h4 class="welcomeBack">{translate key='Welcome Back' args=$UserName}</h4>--> 
+			  <p>
+				{html_link href="$Path/bookings.php" key="Bookings"}
+				|
+				{html_link href="$Path/dashboard.php" key="MyDashboard"}
+				|
+				{html_link href="$Path/logout.php" key="Log Out"}
+			  </p>
+		  {/if}
 		</td>
 		<td>
 		  <div align="right">

@@ -1,3 +1,4 @@
+{assign var='DisplayWelcome' value='false'}
 {include file='header.tpl'}
 
 <form name="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
