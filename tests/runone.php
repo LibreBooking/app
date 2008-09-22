@@ -14,6 +14,7 @@ require_once ROOT_DIR . 'tests/fakes/namespace.php';
 require_once ROOT_DIR . 'tests/TestBase.php';
 
 $tests = array(
+'ScheduleReservationListTests.php',
 'DateTests.php',
 'ResourceTests.php',
 'ReservationsTests.php',

@@ -71,13 +71,22 @@ class DateTests extends PHPUnit_Framework_TestCase
 		$rawdate = mktime();
 		$now = new Date($rawdate);
 		
-		$datetime = new DateTime(date(DATE_W3C, $rawdate), $this->tz);
+		$datetime = new DateTime(date("Y-m-d H:i:s", $rawdate), $this->tz);
 		$datetime->setTimezone(new DateTimeZone('US/Central'));
 		
 		$expected = $datetime->format($format);		
 		$adjusted = $now->ToTimezone("US/Central");
 		
 		$this->assertEquals($expected, $adjusted->Format($format));
+	}
+	
+	public function testDateGetsAdjustedIntoProvidedTimezone()
+	{
+		$rawdate = mktime();
+		$date = new DateTime(date("Y-m-d H:i:s", $rawdate), 'GMT');
+		
+		$this->fail('need to change this to create the time with server timezone by default, then store to db in GMT');
+		
 	}
 }
 ?>

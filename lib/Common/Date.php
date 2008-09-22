@@ -29,7 +29,7 @@ class Date
 			$timestamp = time();
 		}
 		$this->timezone = $timezone;
-		$this->date = new DateTime(date(DATE_W3C, $timestamp), new DateTimeZone($this->timezone));
+		$this->date = new DateTime(date("Y-m-d H:i:s", $timestamp), new DateTimeZone($this->timezone));
 		$this->parts = date_parse($this->date->format(DATE_W3C));	
 	}
 	

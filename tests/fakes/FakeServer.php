@@ -9,8 +9,15 @@ class FakeServer extends Server
 	public $Get = array();
 	public $Form = array();
 	
+	/**
+	 * @var UserSession
+	 */
+	public $UserSession;
+	
 	public function FakeServer()
 	{
+		$this->UserSession = new FakeUserSession();
+		$this->SetSession(SessionKeys::USER_SESSION, $this->UserSession);
 	}
 	
 	public function SetCookie(Cookie $cookie)
