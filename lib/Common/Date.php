@@ -10,28 +10,46 @@ class Date
 	private $date;
 	private $parts;
 	private $timezone;
+    private $timestamp;
+    const SHORT_FORMAT = "Y-m-d H:i:s";
 	
 	// Only used for testing
 	private static $_Now = null;
 	
 	/**
-	 * Creates a Date with the provided timestamp and timzone
+	 * Creates a Date with the provided timestamp and timezone
 	 * Defaults to current time
-	 * Defaults to GMT
+	 * Defaults to server.timezone configuration setting
 	 *
 	 * @param int $timestamp
 	 * @param string $timezone
 	 */
-	public function __construct($timestamp = null, $timezone = 'GMT')
+	public function __construct($timestamp = null, $timezone = null)
 	{
-		if ($timestamp == null)
-		{
-			$timestamp = time();
-		}
-		$this->timezone = $timezone;
-		$this->date = new DateTime(date("Y-m-d H:i:s", $timestamp), new DateTimeZone($this->timezone));
+        $this->InitializeTimestamp($timestamp);
+        $this->InitializeTimezone($timezone);
+                       
+		$this->date = new DateTime(date(Date::SHORT_FORMAT, $this->timestamp), new DateTimeZone($this->timezone));
 		$this->parts = date_parse($this->date->format(DATE_W3C));	
 	}
+    
+    private function InitializeTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;        
+        if ($timestamp == null)
+        {
+            $this->timestamp = time();
+        }
+    }
+    
+    private function InitializeTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+        if ($timezone == null)
+        {
+            $this->timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+        }     
+    }
 	
 	/**
 	* Creates a new Date object with the given year, month, day, and optional $hour, $minute, $secord and $timezone
@@ -43,7 +61,7 @@ class Date
 	}
 	
 	/**
-	 * Returns a Date object representing the current date/time
+	 * Returns a Date object representing the current GMT date/time
 	 *
 	 * @return Date
 	 */
@@ -70,13 +88,28 @@ class Date
 	/**
 	 * Returns the Date adjusted into the provided timezone
 	 *
-	 * @param unknown_type $timezone
-	 * @return unknown
+	 * @param string $timezone
+	 * @return Date
 	 */
 	public function ToTimezone($timezone)
 	{
-		return new Date($this->Timestamp(), $timezone);
+        $date = new DateTime(date(Date::SHORT_FORMAT, $this->timestamp), new DateTimeZone($this->timezone));
+                
+        $date->setTimezone(new DateTimeZone($timezone));
+        $adjustedDate = strtotime($date->format(Date::SHORT_FORMAT));
+
+        return new Date($adjustedDate, $timezone);
 	}
+    
+    /**
+     * Returns the Date adjusted into GMT
+     *
+     * @return Date
+     */
+    public function Gmt()
+    {
+        return $this->ToTimezone('GMT');
+    }
 	
 	/**
 	 * Formats the Date into a format that is accepted by the database
@@ -85,7 +118,7 @@ class Date
 	 */
 	public function ToDatabase()
 	{
-		return $this->Format('Y-m-d H:i:s');
+		return $this->Gmt()->Format('Y-m-d H:i:s');
 	}
 	
 	/**
@@ -143,7 +176,7 @@ class Date
 							$this->Year()
 							);
 			
-		return new Date($timestamp);
+		return new Date($timestamp, $this->timezone);
 	}	
 	
 	public function Hour()

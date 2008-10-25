@@ -12,6 +12,8 @@ class TestBase extends PHPUnit_Framework_TestCase
 		$this->db = new FakeDatabase();
 		$this->fakeServer = new FakeServer();
 		$this->fakeConfig = new FakeConfig();
+        $this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, 'US/Central');
+                
 		$this->fakeResources = new FakeResources();
 		
 		ServiceLocator::SetDatabase($this->db);
