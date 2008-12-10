@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 
-class FakeReservations implements IReservationAccess
+class FakeReservations implements IReservationRepository
 {
 	public $_GetWithinCalled = false;
 	public $_LastStartDate;

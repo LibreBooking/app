@@ -8,3 +8,6 @@ insert into resource (name)
 values ('resource1');
 
 insert into schedule_resource values (1, 1);
+
+insert into reservation (start_date, end_date, start_time, end_time, date_created, allow_participation, allow_anon_participation, typeid, statusid)
+values (now(), now(), '08:30', '12:00', now(), 0, 0, 1, 1);

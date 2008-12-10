@@ -11,7 +11,7 @@ class ReservationsTests extends TestBase
 	{
 		parent::setup();
 		
-		$this->reservations = new Reservations();
+		$this->reservations = new ReservationRepository();
 	}
 	
 	public function teardown()

@@ -1,5 +1,5 @@
 <?php
-class Reservations implements IReservationAccess
+class ReservationRepository implements IReservationRepository
 {
 	public function GetWithin(Date $startDate, Date $endDate, $scheduleId)
 	{
@@ -20,7 +20,7 @@ class Reservations implements IReservationAccess
 	}
 }
 
-interface IReservationAccess
+interface IReservationRepository
 {
 	/**
 	 * Returns all ScheduleReservations within the date range

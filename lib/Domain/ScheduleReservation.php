@@ -3,9 +3,27 @@
 class ScheduleReservation
 {
 	private $_reservationId;
+	
+	/**
+	 * @var Date
+	 */
 	private $_startDate;
+	
+	/**
+	 * @var Date
+	 */
 	private $_endDate;
+	
+	/**
+	 * @var Time
+	 */
 	private $_startTime;
+	
+	const SERVER_TIMEZONE = 'GMT';
+	
+	/**
+	 * @var Time
+	 */
 	private $_endTime;
 	private $_reservationType;
 	private $_summary;
@@ -52,44 +70,68 @@ class ScheduleReservation
 		$this->_reservationId = $value;
 	}
 	
+	/**
+	 * @return Date
+	 */
 	public function GetStartDate()
 	{
 		return $this->_startDate;
 	}
 	
+	/**
+	 * @param string $value
+	 */
 	public function SetStartDate($value)
 	{
-		$this->_startDate = $value;
+		$this->_startDate = Date::Parse($value, ScheduleReservation::SERVER_TIMEZONE);
 	}
 	
+	/**
+	 * @return Date
+	 */
 	public function GetEndDate()
 	{
 		return $this->_endDate;
 	}
 	
+	/**
+	 * @param string $value
+	 */
 	public function SetEndDate($value)
 	{
-		$this->_endDate = $value;
+		$this->_endDate = Date::Parse($value, ScheduleReservation::SERVER_TIMEZONE);
 	}
 	
+	/**
+	 * @return Time
+	 */
 	public function GetStartTime()
 	{
 		return $this->_startTime;
 	}
 	
+	/**
+	 * @param string $value
+	 */
 	public function SetStartTime($value)
 	{
-		$this->_startTime = $value;
+		$this->_startTime = Time::Parse($value, ScheduleReservation::SERVER_TIMEZONE);
 	}
 	
+	/**
+	 * @return Time
+	 */
 	public function GetEndTime()
 	{
 		return $this->_endTime;
 	}
 	
+	/**
+	 * @param string $value
+	 */
 	public function SetEndTime($value)
 	{
-		$this->_endTime = $value;
+		$this->_endTime = Time::Parse($value, ScheduleReservation::SERVER_TIMEZONE);
 	}
 	
 	public function GetReservationType()

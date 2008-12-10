@@ -32,7 +32,7 @@ class ResourceTests extends TestBase
 			$expected[] = Resource::Create($row);
 		}
 		
-		$resourceAccess = new ResourceAccess();
+		$resourceAccess = new ResourceRepository();
 		$resources = $resourceAccess->GetScheduleResources($scheduleId);
 		
 		$this->assertEquals(new GetScheduleResourcesCommand($scheduleId), $this->db->_Commands[0]);

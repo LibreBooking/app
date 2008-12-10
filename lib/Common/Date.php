@@ -1,7 +1,4 @@
 <?php
-/*
- All dates are stored as GMT
- */
 class Date
 {
 	/**
@@ -11,6 +8,7 @@ class Date
 	private $parts;
 	private $timezone;
     private $timestamp;
+    
     const SHORT_FORMAT = "Y-m-d H:i:s";
 	
 	// Only used for testing
@@ -55,9 +53,20 @@ class Date
 	* Creates a new Date object with the given year, month, day, and optional $hour, $minute, $secord and $timezone
 	* @return Date
 	*/
-	public static function Create($year, $month, $day, $hour = 0, $minute = 0, $second = 0, $timezone = 'GMT')
+	public static function Create($year, $month, $day, $hour = 0, $minute = 0, $second = 0, $timezone = null)
 	{
 		return new Date(mktime($hour, $minute, $second, $month, $day, $year), $timezone);
+	}
+	
+	/**
+	* Creates a new Date object from the given string and $timezone
+	* @return Date
+	*/
+	public static function Parse($dateString, $timezone = null)
+	{
+		$parts = getdate(strtotime($dateString));
+    	
+    	return Date::Create($parts['year'], $parts['mon'], $parts['mday'], $parts['hours'], $parts['minutes'], $parts['seconds'], $timezone);
 	}
 	
 	/**
@@ -149,16 +158,29 @@ class Date
 	 */
 	public function Compare(Date $date)
 	{
-		if ($this->Timestamp() < $date->Timestamp())
+		$date2 = $date->ToTimezone($this->timezone);
+		
+		if ($this->Timestamp() < $date2->Timestamp())
 		{
 			return -1;
 		}
-		else if ($this->Timestamp() > $date->Timestamp())
+		else if ($this->Timestamp() > $date2->Timestamp())
 		{
 			return 1;
 		}
 		
 		return 0;
+	}
+	
+	/**
+	 * Compare the 2 dates
+	 *
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function Equals(Date $date)
+	{
+		return $this->Compare($date) == 0;
 	}
 	
 	/**
@@ -224,6 +246,10 @@ class Date
 		}
 	}
 	
+	public function ToString()
+	{
+		return $this->Format('Y-m-d H:i:s');
+	}
 //	
 //	public function DayOfYear()
 //	{

@@ -4,6 +4,9 @@ require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 
 class SchedulePresenterTests extends TestBase
 {
+	/**
+	 * @var SchedulePresenter
+	 */
 	private $presenter;
 	private $page;
 	
@@ -33,13 +36,13 @@ class SchedulePresenterTests extends TestBase
 		$this->fakeServer->SetSession(SessionKeys::USER_SESSION, $user);
 		
 		$schedules = new FakeSchedules();
-		$this->presenter->SetSchedules($schedules);
+		$this->presenter->SetScheduleRepository($schedules);
 		
 		$resources = new FakeResourceAccess();
-		$this->presenter->SetResourceAccess($resources);
+		$this->presenter->SetResourceRepository($resources);
 		
 		$reservations = new FakeReservations();
-		$this->presenter->SetReservationAccess($reservations);
+		$this->presenter->SetReservationRepository($reservations);
 		
 		$this->page->_IsPostBack = false;
 		

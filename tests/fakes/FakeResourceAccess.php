@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 
-class FakeResourceAccess extends ResourceAccess 
+class FakeResourceAccess extends ResourceRepository 
 {
 	public $_GetForScheduleCalled = false;
 	public $_LastScheduleId;

@@ -12,9 +12,9 @@ class SchedulePresenter
 	 */
 	private $_page;
 	
-	private $_schedules;
-	private $_resourceAccess;
-	private $_reservationAccess;
+	private $_scheduleRepository;
+	private $_resourceRepository;
+	private $_reservationRepository;
 	
 	public function __construct(ISchedulePage $page)
 	{
@@ -22,79 +22,79 @@ class SchedulePresenter
 	}
 	
 	/**
-	 * @param Schedules $schedules
+	 * @param ScheduleRepository $scheduleRepository
 	 */
-	public function SetSchedules($schedules)
+	public function SetScheduleRepository($scheduleRepository)
 	{
-		$this->_schedules = $schedules;
+		$this->_scheduleRepository = $scheduleRepository;
 	}
 	
 	/**
-	 * @return Schedules
+	 * @return ScheduleRepository
 	 */
-	private function GetSchedules()
+	private function GetScheduleRepository()
 	{
-		if (is_null($this->_schedules))
+		if (is_null($this->_scheduleRepository))
 		{
-			$this->_schedules = new Schedules();
+			$this->_scheduleRepository = new ScheduleRepository();
 		}
 		
-		return $this->_schedules;
+		return $this->_scheduleRepository;
 	}
 	
 	/**
-	 * @param ResourceAccess $resourceAccess
+	 * @param ResourceRepository $resourceRepository
 	 */
-	public function SetResourceAccess($resourceAccess)
+	public function SetResourceRepository($resourceRepository)
 	{
-		$this->_resourceAccess = $resourceAccess;
+		$this->_resourceRepository = $resourceRepository;
 	}
 	
 	/**
-	 * @return ResourceAccess
+	 * @return ResourceRepository
 	 */
-	private function GetResourceAccess()
+	private function GetResourceRepository()
 	{
-		if (is_null($this->_resourceAccess))
+		if (is_null($this->_resourceRepository))
 		{
-			$this->_resourceAccess = new ResourceAccess();
+			$this->_resourceRepository = new ResourceRepository();
 		}
 		
-		return $this->_resourceAccess;
+		return $this->_resourceRepository;
 	}
 	
 	/**
-	 * @param Reservations $resourceAccess
+	 * @param ReservationsRepository $resourceAccess
 	 */
-	public function SetReservationAccess($reservationAccess)
+	public function SetReservationRepository($reservationRepository)
 	{
-		$this->_reservationAccess = $reservationAccess;
+		$this->_reservationRepository = $reservationRepository;
 	}
 	
 	/**
-	 * @return Reservations
+	 * @return GetReservationRepository
 	 */
-	private function GetReservationAccess()
+	private function GetReservationRepository()
 	{
-		if (is_null($this->_reservationAccess))
+		if (is_null($this->_reservationRepository))
 		{
-			$this->_reservationAccess = new Reservations();
+			$this->_reservationRepository = new ReservationRepository();
 		}
 		
-		return $this->_reservationAccess;
+		return $this->_reservationRepository;
 	}
 	
 	public function PageLoad()
 	{
 		//TODO: Use a builder here
 		
-		$schedules = $this->GetSchedules()->GetAll();
+		$schedules = $this->GetScheduleRepository()->GetAll();
 		$this->_page->SetSchedules($schedules);
 		
 		$schedule = $this->GetCurrentSchedule($schedules);
 		$scheduleId = $schedule->GetId();
 		
-		$this->_page->SetResources($this->GetResourceAccess()->GetScheduleResources($scheduleId));
+		$this->_page->SetResources($this->GetResourceRepository()->GetScheduleResources($scheduleId));
 		
 		$startDate = Date::Now();
 		$endDate = $startDate->AddDays($schedule->GetDaysVisible());
@@ -102,7 +102,7 @@ class SchedulePresenter
 		$dates = $this->GetDisplayDates($startDate, $schedule->GetDaysVisible());
 		$this->_page->SetDisplayDates($dates);
 		
-		$this->_page->SetReservations($this->GetReservationAccess()->GetWithin($startDate, $endDate, $scheduleId));
+		$this->_page->SetReservations($this->GetReservationRepository()->GetWithin($startDate, $endDate, $scheduleId));
 	}
 	
 	/**

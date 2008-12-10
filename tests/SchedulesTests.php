@@ -9,7 +9,7 @@ class SchedulesTests extends TestBase
 	{
 		parent::setup();
 		
-		$this->schedules = new Schedules();
+		$this->schedules = new ScheduleRepository();
 	}
 	
 	public function teardown()

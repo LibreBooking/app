@@ -1,6 +1,6 @@
 <?php
 
-interface ISchedules
+interface IScheduleRepository
 {
 	/**
 	 * Gets all schedules
@@ -9,7 +9,7 @@ interface ISchedules
 	public function GetAll();
 }
 
-class Schedules implements ISchedules 
+class ScheduleRepository implements IScheduleRepository 
 {
 	public function GetAll()
 	{

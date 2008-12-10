@@ -1,6 +1,10 @@
 <?php
 class ReservationFactory
 {
+	/**
+	 * @param array $databaseRow
+	 * @return ScheduleReservation
+	 */
 	public static function CreateForSchedule($databaseRow) 
 	{
 		return new ScheduleReservation(

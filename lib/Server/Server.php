@@ -58,6 +58,9 @@ class Server
 		return urlencode($_SERVER['PHP_SELF']) . '?' . urlencode($_SERVER['QUERY_STRING']);	
 	}
 	
+	/**
+	 * @return UserSession
+	 */
 	public function GetUserSession()
 	{
 		$userSession = $this->GetSession(SessionKeys::USER_SESSION);

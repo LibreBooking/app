@@ -17,6 +17,7 @@ require_once(ROOT_DIR . 'tests/fakes/FakeSchedules.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeResourceAccess.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservations.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeUserSession.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeScheduleReservations.php');
 
 //require_once('EmailFakes.php');
 //require_once('FakeReminder.php');

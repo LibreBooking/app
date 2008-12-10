@@ -158,5 +158,100 @@ class DateTests extends TestBase
         
         $this->assertEquals($expected, $date->ToDatabase());    
     }
+    
+    public function testCanCreateTimeInServerTimezone()
+    {
+    	$hour = 10;
+    	$min = 22;
+    	$sec = 21;
+    	
+    	$time = new Time($hour, $min, $sec);
+    	
+    	$this->assertEquals("$hour:$min:$sec", $time->ToString());
+    	$this->assertEquals($hour, $time->Hour());
+    	$this->assertEquals($min, $time->Minute());
+    	$this->assertEquals($sec, $time->Second());
+    	
+    	$time = new Time($hour, $min);
+    	
+    	$this->assertEquals("$hour:$min:00", $time->ToString());
+    	$this->assertEquals($hour, $time->Hour());
+    	$this->assertEquals($min, $time->Minute());
+    	$this->assertEquals(0, $time->Second());
+    }
+    
+    public function testTimeCreatedInEasternCanBeConvertedToCentral()
+    {
+    	$hour = 10;
+    	$min = 10;
+    	$sec = 10;
+    	
+    	$time = new Time($hour, $min, $sec, 'US/Eastern');
+    	$converted = $time->ToTimezone('US/Central');
+    	
+    	$this->assertEquals($hour - 1, $converted->Hour());
+    	$this->assertEquals($min, $converted->Minute());
+    	$this->assertEquals($sec, $converted->Second());
+    	
+    	$time = new Time(0, $min, $sec, 'US/Eastern');
+    	$converted = $time->ToTimezone('US/Central');
+    	$this->assertEquals(23, $converted->Hour());
+    	
+    	$time = new Time(1, $min, $sec, 'US/Eastern');
+    	$converted = $time->ToTimezone('US/Central');
+    	$this->assertEquals(0, $converted->Hour());
+    }
+    
+    public function testCanParseTimeFromString()
+    {
+    	$time = Time::Parse('10:11:12', 'GMT');
+    	
+    	$this->assertEquals(10, $time->Hour());
+    	$this->assertEquals(11, $time->Minute());
+    	$this->assertEquals(12, $time->Second());
+    	$this->assertEquals('GMT', $time->Timezone());
+    	
+    	$time = Time::Parse('13:11:12', 'GMT');
+    	
+    	$this->assertEquals(13, $time->Hour());
+    	$this->assertEquals(11, $time->Minute());
+    	$this->assertEquals(12, $time->Second());
+    	$this->assertEquals('GMT', $time->Timezone());
+    	
+    	$time = Time::Parse('10:11:12 PM', 'GMT');
+    	
+    	$this->assertEquals(22, $time->Hour());
+    	$this->assertEquals(11, $time->Minute());
+    	$this->assertEquals(12, $time->Second());
+    	$this->assertEquals('GMT', $time->Timezone());
+    	
+    	$time = Time::Parse('10:11:12 AM', 'GMT');
+    	
+    	$this->assertEquals(10, $time->Hour());
+    	$this->assertEquals(11, $time->Minute());
+    	$this->assertEquals(12, $time->Second());
+    	$this->assertEquals('GMT', $time->Timezone());
+    	
+    	$time = Time::Parse('10:11 AM', 'GMT');
+    	
+    	$this->assertEquals(10, $time->Hour());
+    	$this->assertEquals(11, $time->Minute());
+    	$this->assertEquals(00, $time->Second());
+    	$this->assertEquals('GMT', $time->Timezone());
+    }
+    
+    public function testTimesCanBeCompared()
+    {
+    	$early = Time::Parse('10:11');
+    	$late = Time::Parse('12:11');
+    	
+    	$this->assertEquals(-1, $early->Compare($late));
+    	$this->assertEquals(1, $late->Compare($early));
+    	
+    	$early = Time::Parse('10:11', 'CST');
+    	$late = Time::Parse('10:11', 'PST');
+    	
+    	$this->assertEquals(-1, $early->Compare($late));
+    }
 }
 ?>
