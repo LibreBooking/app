@@ -4,32 +4,41 @@ class ScheduleReservationList
 {
 	private $_reservations;
 	private $_layout;
+	private $_layoutDate;
+	
 	private $_layoutItems;
 	
 	private $_reservationsByStartTime = array();
-	private $_layoutByEndTime = array();
-		
+	private $_layoutByEndTime = array();	
 	
-	public function __construct($reservations, IScheduleLayout $layout)
+	private $_midnight;
+	
+	/**
+	 * Enter description here...
+	 *
+	 * @param array $reservations array of ScheduleReservation objects
+	 * @param IScheduleLayout $layout
+	 * @param Date $layoutDate
+	 */
+	public function __construct($reservations, IScheduleLayout $layout, Date $layoutDate)
 	{
 		$this->_reservations = $reservations;
 		$this->_layout = $layout;
+		$this->_layoutDate = $layoutDate;
 		
 		$this->_layoutItems = $this->_layout->GetLayout();
+		$this->_midnight = new Time(0,0,0, $this->_layout->Timezone());
 		
 		$this->IndexReservations();
 		$this->IndexLayout();
 	}
 	
 	/**
-	 * @param IScheduleLayout $layout
-	 * @param Date $layoutDate
 	 * @return array of IReservationSlot
 	 */
-	public function BuildSlots(Date $layoutDate)
+	public function BuildSlots()
 	{
 		$slots = array();
-		$layoutTz = $this->_layout->Timezone();
 		
 		for ($currentIndex = 0; $currentIndex < count($this->_layoutItems); $currentIndex++)
 		{
@@ -39,7 +48,15 @@ class ScheduleReservationList
 			
 			if ($reservation != null)
 			{
-				$endTime = $reservation->GetEndTime()->ToTimezone($layoutTz);
+				if ($this->ReservationEndsOnFutureDate($reservation))
+				{
+					$endTime = $this->_midnight;
+				}
+				else
+				{
+					$endTime = $reservation->GetEndTime();
+				}
+				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
 				
 				$slots[] = new ReservationSlot($layoutItem->Begin(), $this->_layoutItems[$endingPeriodIndex]->End(), ($endingPeriodIndex - $currentIndex) + 1);
@@ -52,7 +69,7 @@ class ScheduleReservationList
 			}
 		}
 		
-		$this->SplitCrossDaySlot($slots);
+		//$this->SplitCrossDaySlot($slots);
 	
 		return $slots;
 	}
@@ -61,10 +78,27 @@ class ScheduleReservationList
 	{
 		foreach ($this->_reservations as $reservation)
 		{
-			$startTime = $reservation->GetStartTime()->ToTimezone($this->_layout->Timezone());
-		
+			if ($this->ReservationStartsOnPastDate($reservation))
+			{
+				$startTime = $this->_midnight;
+			}
+			else 
+			{
+				$startTime = $reservation->GetStartTime();
+			}
+			
 			$this->_reservationsByStartTime[$startTime->ToString()] = $reservation;
 		}
+	}
+	
+	private function ReservationStartsOnPastDate(ScheduleReservation $reservation)
+	{
+		return $reservation->GetStartDate()->Compare($this->_layoutDate) < 0;
+	}
+	
+	private function ReservationEndsOnFutureDate(ScheduleReservation $reservation)
+	{
+		return $reservation->GetEndDate()->Compare($this->_layoutDate) > 0;
 	}
 	
 	private function IndexLayout()

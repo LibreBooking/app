@@ -102,6 +102,11 @@ class Date
 	 */
 	public function ToTimezone($timezone)
 	{
+		if ($this->Timezone() == $timezone)
+		{
+			return $this;
+		}
+		
         $date = new DateTime(date(Date::SHORT_FORMAT, $this->timestamp), new DateTimeZone($this->timezone));
                 
         $date->setTimezone(new DateTimeZone($timezone));
@@ -158,7 +163,11 @@ class Date
 	 */
 	public function Compare(Date $date)
 	{
-		$date2 = $date->ToTimezone($this->timezone);
+		$date2 = $date;
+		if ($date2->Timezone() != $this->Timezone())
+		{
+			$date2 = $date->ToTimezone($this->timezone);
+		}
 		
 		if ($this->Timestamp() < $date2->Timestamp())
 		{
@@ -229,6 +238,11 @@ class Date
 	public function Year()
 	{
 		return $this->parts['year'];
+	}
+	
+	public function Timezone()
+	{
+		return $this->timezone;
 	}
 	
 	/**

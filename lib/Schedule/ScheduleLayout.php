@@ -91,6 +91,10 @@ class ScheduleLayout implements IScheduleLayout
 	}
 }
 
+/**
+ * This class may not be needed
+ *
+ */
 class DatabaseScheduleLayout implements IScheduleLayout
 {
 	private $_baseLayout;
