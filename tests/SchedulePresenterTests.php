@@ -41,7 +41,7 @@ class SchedulePresenterTests extends TestBase
 		$resources = new FakeResourceAccess();
 		$this->presenter->SetResourceRepository($resources);
 		
-		$reservations = new FakeReservations();
+		$reservations = new FakeReservationRepository();
 		$this->presenter->SetReservationRepository($reservations);
 		
 		$this->page->_IsPostBack = false;

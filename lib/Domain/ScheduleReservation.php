@@ -3,7 +3,8 @@
 class ScheduleReservation
 {
 	private $_reservationId;
-	
+	const SERVER_TIMEZONE = 'UTC';
+		
 	/**
 	 * @var Date
 	 */
@@ -18,8 +19,6 @@ class ScheduleReservation
 	 * @var Time
 	 */
 	private $_startTime;
-	
-	const SERVER_TIMEZONE = 'GMT';
 	
 	/**
 	 * @var Time
@@ -36,8 +35,6 @@ class ScheduleReservation
 	public function __construct($reservationId,
 							$startDate,
 							$endDate,
-							$startTime,
-							$endTime,
 							$reservationType,
 							$summary,
 							$parentId,
@@ -49,8 +46,8 @@ class ScheduleReservation
 		$this->SetReservationId($reservationId);
 		$this->SetStartDate($startDate);
 		$this->SetEndDate($endDate);
-		$this->SetStartTime($startTime);
-		$this->SetEndTime($endTime);
+		$this->SetStartTime($startDate);
+		$this->SetEndTime($endDate);
 		$this->SetReservationType($reservationType);
 		$this->SetSummary($summary);
 		$this->SetParentId($parentId);

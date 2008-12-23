@@ -11,8 +11,6 @@ class ReservationFactory
 							$databaseRow[ColumnNames::RESERVATION_ID],
 							$databaseRow[ColumnNames::START_DATE],
 							$databaseRow[ColumnNames::END_DATE],
-							$databaseRow[ColumnNames::START_TIME],
-							$databaseRow[ColumnNames::END_TIME],
 							$databaseRow[ColumnNames::RESERVATION_TYPE],
 							$databaseRow[ColumnNames::SUMMARY],
 							$databaseRow[ColumnNames::PARENT_ID],

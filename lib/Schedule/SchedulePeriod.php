@@ -41,9 +41,9 @@ class SchedulePeriod
 		return true;
 	}
 	
-	public function ToGmt()
+	public function ToUtc()
 	{
-		return new SchedulePeriod($this->_begin->ToGmt(), $this->_end->ToGmt(), $this->_label);	
+		return new SchedulePeriod($this->_begin->ToUtc(), $this->_end->ToUtc(), $this->_label);	
 	}
 	
 	public function ToTimezone($timezone)
@@ -59,9 +59,9 @@ class NonSchedulePeriod extends SchedulePeriod
 		return false;
 	}
 	
-	public function ToGmt()
+	public function ToUtc()
 	{
-		return new NonSchedulePeriod($this->_begin->ToGmt(), $this->_end->ToGmt(), $this->_label);
+		return new NonSchedulePeriod($this->_begin->ToUtc(), $this->_end->ToUtc(), $this->_label);
 	}
 	
 	public function ToTimezone($timezone)

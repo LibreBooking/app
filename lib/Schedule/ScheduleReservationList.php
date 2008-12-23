@@ -14,8 +14,6 @@ class ScheduleReservationList
 	private $_midnight;
 	
 	/**
-	 * Enter description here...
-	 *
 	 * @param array $reservations array of ScheduleReservation objects
 	 * @param IScheduleLayout $layout
 	 * @param Date $layoutDate
@@ -69,7 +67,7 @@ class ScheduleReservationList
 			}
 		}
 		
-		//$this->SplitCrossDaySlot($slots);
+//		$this->SplitCrossDaySlot($slots);
 	
 		return $slots;
 	}
@@ -109,23 +107,23 @@ class ScheduleReservationList
 		}
 	}
 	
-	private function SplitCrossDaySlot(&$slots)
-	{
-		$firstSlot = $slots[0];
-		$lastSlot = $slots[count($slots)-1];
-		$midnight = new Time(0,0,0, $this->_layout->Timezone());
-		
-		if ($lastSlot->End()->Hour() != 0)
-		{
-			$slots[count($slots)-1] = new EmptyReservationSlot($lastSlot->Begin(), $midnight);
-		}
-		
-		if ($firstSlot->Begin()->Hour() != 0)
-		{
-			$newFirstSlot = new EmptyReservationSlot($midnight, $slots[0]->Begin());
-			array_unshift($slots, $newFirstSlot);
-		}
-	}
+//	private function SplitCrossDaySlot(&$slots)
+//	{
+//		$firstSlot = $slots[0];
+//		$lastSlot = $slots[count($slots)-1];
+//		$midnight = new Time(0,0,0, $this->_layout->Timezone());
+//		
+//		if ($lastSlot->End()->Hour() != 0)
+//		{
+//			$slots[count($slots)-1] = new EmptyReservationSlot($lastSlot->Begin(), $midnight);
+//		}
+//		
+//		if ($firstSlot->Begin()->Hour() != 0)
+//		{
+//			$newFirstSlot = new EmptyReservationSlot($midnight, $slots[0]->Begin());
+//			array_unshift($slots, $newFirstSlot);
+//		}
+//	}
 	
 	/**
 	 * @param Time $endingTime
@@ -156,7 +154,6 @@ class ScheduleReservationList
 		}
 		return null;
 	}
-	
 	
 	/**
 	 * @param Time $endingTime

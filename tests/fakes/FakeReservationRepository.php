@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 
-class FakeReservations implements IReservationRepository
+class FakeReservationRepository implements IReservationRepository
 {
 	public $_GetWithinCalled = false;
 	public $_LastStartDate;
@@ -28,8 +28,8 @@ class FakeReservations implements IReservationRepository
 	public function GetReservationRows()
 	{
 		$row1 =  array(ColumnNames::RESERVATION_ID => 1, 
-					ColumnNames::START_DATE => '2008-05-20 00:00:00',
-					ColumnNames::END_DATE => '2008-05-20 00:00:00',
+					ColumnNames::START_DATE => '2008-05-20 09:00:00',
+					ColumnNames::END_DATE => '2008-05-20 15:30:00',
 					ColumnNames::START_TIME => '09:00',
 					ColumnNames::END_TIME => '15:30',
 					ColumnNames::RESERVATION_TYPE => 1,
@@ -42,8 +42,8 @@ class FakeReservations implements IReservationRepository
 					);
 					
 		$row2 =  array(ColumnNames::RESERVATION_ID => 1, 
-					ColumnNames::START_DATE => '2008-05-20 00:00:00',
-					ColumnNames::END_DATE => '2008-05-20 00:00:00',
+					ColumnNames::START_DATE => '2008-05-20 09:00:00',
+					ColumnNames::END_DATE => '2008-05-20 15:30:00',
 					ColumnNames::START_TIME => '09:00',
 					ColumnNames::END_TIME => '15:30',
 					ColumnNames::RESERVATION_TYPE => 1,
@@ -56,8 +56,8 @@ class FakeReservations implements IReservationRepository
 					);			
 					
 		$row3 =  array(ColumnNames::RESERVATION_ID => 2, 
-					ColumnNames::START_DATE => '2008-05-22 00:00:00',
-					ColumnNames::END_DATE => '2008-05-24 00:00:00',
+					ColumnNames::START_DATE => '2008-05-22 06:00:00',
+					ColumnNames::END_DATE => '2008-05-24 09:30:00',
 					ColumnNames::START_TIME => '06:00',
 					ColumnNames::END_TIME => '09:30',
 					ColumnNames::RESERVATION_TYPE => 1,

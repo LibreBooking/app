@@ -9,7 +9,7 @@ class DateTests extends TestBase
 	{
         parent::setup();  
         
-		$this->tz = new DateTimeZone('GMT');
+		$this->tz = new DateTimeZone('UTC');
 	}
 	
 	public function testCanGetNow()
@@ -107,11 +107,11 @@ class DateTests extends TestBase
         $date = new Date($rawdate);
         
         $datetime = new DateTime(date(Date::SHORT_FORMAT, $rawdate));
-        $datetime->setTimezone(new DateTimeZone('GMT'));
+        $datetime->setTimezone(new DateTimeZone('UTC'));
         
         $expected = $datetime->format($format);      
         
-        $this->assertEquals($expected, $date->Gmt()->Format($format));    
+        $this->assertEquals($expected, $date->ToUtc()->Format($format));    
     }
     
     public function testDatePartsAreParsedCorrectly()
@@ -152,7 +152,7 @@ class DateTests extends TestBase
         $date = new Date($rawdate);
         
         $datetime = new DateTime(date(Date::SHORT_FORMAT, $rawdate));
-        $datetime->setTimezone(new DateTimeZone('GMT'));
+        $datetime->setTimezone(new DateTimeZone('UTC'));
         
         $expected = $datetime->format($databaseformat);      
         
@@ -204,40 +204,40 @@ class DateTests extends TestBase
     
     public function testCanParseTimeFromString()
     {
-    	$time = Time::Parse('10:11:12', 'GMT');
+    	$time = Time::Parse('10:11:12', 'UTC');
     	
     	$this->assertEquals(10, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(12, $time->Second());
-    	$this->assertEquals('GMT', $time->Timezone());
+    	$this->assertEquals('UTC', $time->Timezone());
     	
-    	$time = Time::Parse('13:11:12', 'GMT');
+    	$time = Time::Parse('13:11:12', 'UTC');
     	
     	$this->assertEquals(13, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(12, $time->Second());
-    	$this->assertEquals('GMT', $time->Timezone());
+    	$this->assertEquals('UTC', $time->Timezone());
     	
-    	$time = Time::Parse('10:11:12 PM', 'GMT');
+    	$time = Time::Parse('10:11:12 PM', 'UTC');
     	
     	$this->assertEquals(22, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(12, $time->Second());
-    	$this->assertEquals('GMT', $time->Timezone());
+    	$this->assertEquals('UTC', $time->Timezone());
     	
-    	$time = Time::Parse('10:11:12 AM', 'GMT');
+    	$time = Time::Parse('10:11:12 AM', 'UTC');
     	
     	$this->assertEquals(10, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(12, $time->Second());
-    	$this->assertEquals('GMT', $time->Timezone());
+    	$this->assertEquals('UTC', $time->Timezone());
     	
-    	$time = Time::Parse('10:11 AM', 'GMT');
+    	$time = Time::Parse('10:11 AM', 'UTC');
     	
     	$this->assertEquals(10, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(00, $time->Second());
-    	$this->assertEquals('GMT', $time->Timezone());
+    	$this->assertEquals('UTC', $time->Timezone());
     }
     
     public function testTimesCanBeCompared()

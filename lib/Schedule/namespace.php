@@ -6,5 +6,5 @@ require_once(ROOT_DIR . 'lib/Schedule/ScheduleReservationList.php');
 require_once(ROOT_DIR . 'lib/Schedule/IReservationSlot.php');
 require_once(ROOT_DIR . 'lib/Schedule/ReservationSlot.php');
 require_once(ROOT_DIR . 'lib/Schedule/EmptyReservationSlot.php');
-require_once(ROOT_DIR . 'lib/Schedule/ScheduleReservationManager.php');
+require_once(ROOT_DIR . 'lib/Schedule/ReservationListManager.php');
 ?>

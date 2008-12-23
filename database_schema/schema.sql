@@ -1,4 +1,4 @@
--- MySQL dump 10.11
+﻿-- MySQL dump 10.11
 --
 -- Host: localhost    Database: phpscheduleit
 -- ------------------------------------------------------
@@ -79,8 +79,6 @@ CREATE TABLE `reservation` (
   `reservationid` int(10) unsigned NOT NULL auto_increment,
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
-  `start_time` time NOT NULL COMMENT 'needed?',
-  `end_time` time NOT NULL COMMENT 'needed?',
   `date_created` datetime NOT NULL,
   `date_modified` datetime default NULL,
   `summary` text,

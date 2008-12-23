@@ -27,7 +27,7 @@ class ReservationsTests extends TestBase
 		$endDate = Date::Create(2008, 05, 25);
 		$scheduleId = 1;
 		
-		$rows = FakeReservations::GetReservationRows();
+		$rows = FakeReservationRepository::GetReservationRows();
 		$this->db->SetRow(0, $rows);
 		
 		$expected = array();
@@ -46,15 +46,13 @@ class ReservationsTests extends TestBase
 	
 	public function testCanCreateScheduleReservation()
 	{
-		$rows = FakeReservations::GetReservationRows();
+		$rows = FakeReservationRepository::GetReservationRows();
 		
 		$r = $rows[0];
 		$expected = new ScheduleReservation(
 							$r[ColumnNames::RESERVATION_ID],
 							$r[ColumnNames::START_DATE],
 							$r[ColumnNames::END_DATE],
-							$r[ColumnNames::START_TIME],
-							$r[ColumnNames::END_TIME],
 							$r[ColumnNames::RESERVATION_TYPE],
 							$r[ColumnNames::SUMMARY],
 							$r[ColumnNames::PARENT_ID],
@@ -64,13 +62,22 @@ class ReservationsTests extends TestBase
 							$r[ColumnNames::LAST_NAME]
 						);
 		
-		
 		$actual = ReservationFactory::CreateForSchedule($r);
 		
-		$this->assertEquals($expected, $actual);
+		$startTime = Time::Parse($r[ColumnNames::START_DATE], 'UTC');
+		$endTime = Time::Parse($r[ColumnNames::END_DATE], 'UTC');
+		
+		$startDate = Date::Parse($r[ColumnNames::START_DATE], 'UTC');
+		$endDate = Date::Parse($r[ColumnNames::END_DATE], 'UTC');
+		
+		$this->assertEquals($expected, $actual);		
+		
+		$this->assertTrue($startDate->Equals($actual->GetStartDate()));
+		$this->assertTrue($endDate->Equals($actual->GetEndDate()));
+		
+		$this->assertTrue($startTime->Equals($actual->GetStartTime()));
+		$this->assertTrue($endTime->Equals($actual->GetEndTime()));
 	}
-	
-	
 }
 
 ?>

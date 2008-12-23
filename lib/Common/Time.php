@@ -15,6 +15,12 @@ class Time
 		$this->_date = new Date(mktime($hour, $minute, $second), $timezone);
 	}
     
+	 /**
+     * Returns the Time adjusted into the provided timezone
+     *
+     * @param string $timezone
+     * @return Time
+     */
     public function ToTimezone($timezone)
     {
     	$date = $this->_date->ToTimezone($timezone);
@@ -22,9 +28,14 @@ class Time
     	return new Time($date->Hour(), $date->Minute(), $date->Second(), $timezone);
     }
     
-    public function ToGmt()
+    /**
+     * Returns the Time adjusted into UTC
+     *
+     * @return Time
+     */
+    public function ToUtc()
     {
-    	return $this->ToTimezone('GMT');
+    	return $this->ToTimezone('UTC');
     }
     
     /**

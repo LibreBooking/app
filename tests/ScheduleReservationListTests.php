@@ -423,10 +423,10 @@ class ScheduleReservationListTests extends TestBase
 		$time3 = Time::Parse('08:30', $timezone);
 		$time4 = Time::Parse('13:00', $timezone);
 		
-		$time1Gmt = $time1->ToTimezone('GMT');
-		$time2Gmt = $time2->ToTimezone('GMT');
-		$time3Gmt = $time3->ToTimezone('GMT');
-		$time4Gmt = $time4->ToTimezone('GMT');
+		$time1Gmt = $time1->ToUtc();
+		$time2Gmt = $time2->ToUtc();
+		$time3Gmt = $time3->ToUtc();
+		$time4Gmt = $time4->ToUtc();
 		
 		$layout = new ScheduleLayout($timezone);
 		
@@ -439,10 +439,10 @@ class ScheduleReservationListTests extends TestBase
 		$periods = $layoutForDb->GetLayout();
 		
 		$this->assertEquals(5, count($periods));
-		$this->assertEquals(new NonSchedulePeriod(Time::Parse('00:00')->ToTimezone('GMT'), $time1Gmt), $periods[0]);
+		$this->assertEquals(new NonSchedulePeriod(Time::Parse('00:00')->ToUtc(), $time1Gmt), $periods[0]);
 		$this->assertEquals(new SchedulePeriod($time1Gmt, $time2Gmt), $periods[1]);
 		$this->assertEquals(new SchedulePeriod($time2Gmt, $time3Gmt, 'Period 1'), $periods[2]);
 		$this->assertEquals(new SchedulePeriod($time3Gmt, $time4Gmt), $periods[3]);
-		$this->assertEquals(new NonSchedulePeriod($time4Gmt, Time::Parse('00:00')->ToTimezone('GMT')), $periods[4]);
+		$this->assertEquals(new NonSchedulePeriod($time4Gmt, Time::Parse('00:00')->ToUtc()), $periods[4]);
 	}
 }

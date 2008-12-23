@@ -45,18 +45,28 @@ class ScheduleLayout implements IScheduleLayout
 		$this->_periods[] = new NonSchedulePeriod($startTime, $endTime, $label);
 	}
 
+	/**
+	 * @return array of SchedulePeriod
+	 */
 	public function GetLayout()
 	{
 		$layout = $this->_periods;
 		
-		usort($layout, array("ScheduleLayout", "SortBeginTimes"));
+		$this->SortItems($layout);
+//		usort($layout, array("ScheduleLayout", "SortBeginTimes"));
 		
 		return $layout;	
 	}
 	
 	public function Sort()
 	{
-		usort($this->_periods, array("ScheduleLayout", "SortBeginTimes"));
+		$this->SortItems($this->_periods);
+//		usort($this->_periods, array("ScheduleLayout", "SortBeginTimes"));
+	}
+	
+	private function SortItems(&$items)
+	{
+		usort($items, array("ScheduleLayout", "SortBeginTimes"));
 	}
 	
 	/**
@@ -113,7 +123,7 @@ class DatabaseScheduleLayout implements IScheduleLayout
 		
 		for ($i = 0; $i < count($layout); $i++)
 		{
-			$layout[$i] = $layout[$i]->ToGmt();
+			$layout[$i] = $layout[$i]->ToUtc();
 		}
 		
 		return $layout;

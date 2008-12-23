@@ -17,6 +17,16 @@ class FakeSchedules implements IScheduleRepository
 		$this->_AllRows = $this->_GetAllRows();
 	}
 	
+	/**
+	 * @var Schedule
+	 */
+	public static $Schedule1;
+	
+	public static function Initialize()
+	{
+		self::$Schedule1 = new Schedule(1, "schedule 1", true, '09:00', '20:00', 0, 1, 5);
+	}
+	
 	public function GetRows()
 	{
 		return array(

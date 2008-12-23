@@ -104,7 +104,7 @@ class Date
 	{
 		if ($this->Timezone() == $timezone)
 		{
-			return $this;
+			return new Date($this->Timestamp(), $this->Timezone());
 		}
 		
         $date = new DateTime(date(Date::SHORT_FORMAT, $this->timestamp), new DateTimeZone($this->timezone));
@@ -114,15 +114,15 @@ class Date
 
         return new Date($adjustedDate, $timezone);
 	}
-    
+	    
     /**
-     * Returns the Date adjusted into GMT
+     * Returns the Date adjusted into UTC
      *
      * @return Date
      */
-    public function Gmt()
+    public function ToUtc()
     {
-        return $this->ToTimezone('GMT');
+        return $this->ToTimezone('UTC');
     }
 	
 	/**
@@ -132,7 +132,7 @@ class Date
 	 */
 	public function ToDatabase()
 	{
-		return $this->Gmt()->Format('Y-m-d H:i:s');
+		return $this->ToUtc()->Format('Y-m-d H:i:s');
 	}
 	
 	/**
@@ -150,6 +150,16 @@ class Date
 					$this->Day(), 
 					$this->Year()
 					);
+	}
+	
+	/**
+	 * Returns the Time part of the Date
+	 * 
+	 * @return Time
+	 */
+	public function GetTime()
+	{
+		return new Time($this->Hour(), $this->Minute(), $this->Second(), $this->Timezone());
 	}
 	
 	/**
