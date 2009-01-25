@@ -4,24 +4,86 @@ body
     background-color: #fefefe;    			
     margin: 0px;
     color: #333333;
-	font-size: 11px;
+    font-size: 11px;
+    height: 100%;
 }
 
-#header
+#page-header
 {
-	background-color: #5483a2;
+	background-color: #bbb;
 	border-bottom: #4c5c67 solid 1px;
 	margin-bottom: 0px;
 }
 
-#header td
+#page-header td
 {
 	vertical-align: top;
 }
 
-#header a
+#page-header a
 {
 	color: #ffffff;
+}
+
+#page-header #header-banner
+{ 
+    height: 110px; 
+    width: 100%;
+}
+
+#page-header #banner-image
+{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+#page-header #banner-text
+{
+    position: absolute; 
+    color: #ffffff;
+    top: 20px;
+    left: 400px;
+    height: 90px;
+    vertical-align: middle;
+}
+
+#page-header #banner-right
+{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin-right: 10px;
+    color: #fff; 
+    text-align: right;
+    font-weight: bold;
+    width: 200px;
+    height: 110px;
+}
+
+#page-header #banner-welcome
+{
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    color: #fff; 
+    text-align: right;
+}
+
+#page-header span.tab
+{
+    padding: 0px 10px 3px 10px;
+    margin: 2px 3px 1px 3px;
+    vertical-align: middle;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #000000;
+    border-top: 2px solid #000000;
+    border-bottom: 3px solid #000000;
+}
+
+#page-header .subtab a:link, #page-header .subtab a:visited
+{
+    color: #303030;
 }
 
 a 
@@ -29,6 +91,7 @@ a
     color: #104E8B;
     text-decoration: none;
 }
+
 a:hover 
 {
     color: #474747;
@@ -37,26 +100,35 @@ a:hover
 /*
 Common text settings
 */
-p {
+p
+{ 
     font-size: 11px;
     margin-bottom: 2px;
     margin-top: 2px;
     margin-right: 2px;
     margin-left: 2px;
 }
-h5 {
+
+h5
+{ 
     margin-bottom: 0px;
 	margin-top: 0px;
     font-size: 12px;
 }
-h4 {
+
+h4 
+{
 	font-size: 13px;
 }
-h3 {
+
+h3 
+{
 	font-size: 18px;
 	margin-top: 0px;
 }
-.textbox {
+
+.textbox 
+{
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;  
     color: #36648B;
@@ -64,7 +136,8 @@ h3 {
     border: solid 1px #aaaaaa;
 }
 
-.button {
+.button 
+{
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 10px;
     font-weight: bold;
@@ -83,7 +156,7 @@ h3 {
 
 .loginTableBorder
 {
-	background-color: #CCCCCC;
+	background-color: #005EBF;
 }
 
 .loginTable tr
@@ -93,12 +166,13 @@ h3 {
 
 .loginTable #header
 {
-	background-color: #EDEDED;
+	color: #BBBBBB;
+        background: #005EBF url('img/scheduleit-watermark.png') no-repeat right;
 }
 
 .loginTable #header td
 {
-	border-bottom: solid 1px #CCCCCC;
+	border-bottom: solid 1px #005EBF;
 }
 
 .loginTable #footer
@@ -108,7 +182,7 @@ h3 {
 
 .loginTable #footer td
 {
-	border-top: solid 1px #CCCCCC;
+	border-top: solid 1px #005EBF;
 }
 
 #loginError, div.error
@@ -153,15 +227,14 @@ div.registration
 	padding: 20px 50px;
 	margin-left:auto;
 	margin-right:auto;
-	
-}
+}	
 
 div.registrationHeader
 {
 	font-size: 15px;
 	font-weight: bold;
 	background-color: #e2e398; 
-	color: black;
+	color: #000000;
 	padding: 3px 20px;
 	border: solid 1px #adae68;
 }
@@ -185,6 +258,7 @@ div.registration hr
 #content
 {
 	margin: 0px 15px;
+	padding-bottom: 30px; /* make room for the footer on a full page */
 }
 
 #shadow
@@ -208,4 +282,14 @@ div.registration hr
 .dashboardBorder
 {
 	border: solid 1px #588abd;
+}
+
+div.page-footer 
+{
+    background: #66A0BB url('img/scheduleit-watermark.png') no-repeat right;
+    vertical-align: bottom;
+    position: absolute;
+    width: 100%; 
+    bottom: 0px, 
+    left: 0px,
 }

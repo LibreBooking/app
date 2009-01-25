@@ -41,6 +41,46 @@ class Page implements IPage
 		$this->smarty->assign('UserName', !is_null($userSession) ? $userSession->FirstName : '');
 		$this->smarty->assign('DisplayWelcome', $this->DisplayWelcome());
 		$this->smarty->assign('UserId', $userSession->UserId);
+
+
+		// TODO: should this be filled in dynamically from the database, for sure we want to 
+		// have a different one for administrators. Perhaps the value should be minimal until the 
+		// User is Authenticated.
+		// 
+		// This complex array is used to build the tabs and sub tabs... 
+		$this->smarty->assign('Tabs', array(
+				array ( 'id' => "TabOne",
+					'default' => 1,
+					'text' => "Tab One",
+					'peers' => array('TabTwo', 'TabThree'),
+					'subtabs' => array( 
+						array( 'text' => "Sub Tab One-One",   'link' => "#" ),
+						array( 'text' => "Sub Tab One-Two",   'link' => "#" ),
+						array( 'text' => "Sub Tab One-Three", 'link' => "#" )
+					)
+				),
+				array ( 'id' => "TabTwo",
+					'default' => 0,
+					'text' => "Tab Two",
+					'peers' => array('TabOne', 'TabThree'),
+					'subtabs' => array( 
+						array( 'text' => "Sub Tab Two-One",   'link' => "#" ),
+						array( 'text' => "Sub Tab Two-Two",   'link' => "#" ),
+						array( 'text' => "Sub Tab Two-Three", 'link' => "#" )
+					)
+				),
+				array ( 'id' => "TabThree",
+					'default' => 0,
+					'text' => "Tab Three",
+					'peers' => array('TabOne', 'TabTwo'),
+					'subtabs' => array( 
+						array( 'text' => "Sub Tab Three-One",   'link' => "#" ),
+						array( 'text' => "Sub Tab Three-Two",   'link' => "#" ),
+						array( 'text' => "Sub Tab Three-Three", 'link' => "#" )
+					)
+				)
+			));
+
 	}
 	
 	public function Redirect($url)
