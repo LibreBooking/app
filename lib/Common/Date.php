@@ -203,6 +203,43 @@ class Date
 	}
 	
 	/**
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function DateEquals(Date $date)
+	{
+		$date2 = $date;
+		if ($date2->Timezone() != $this->Timezone())
+		{
+			$date2 = $date->ToTimezone($this->timezone);
+		}
+		
+		return ($this->Day() == $date2->Day() && $this->Month() == $date2->Month() && $this->Year() == $date2->Year());
+	}
+	
+	public function DateCompare(Date $date)
+	{
+		$date2 = $date;
+		if ($date2->Timezone() != $this->Timezone())
+		{
+			$date2 = $date->ToTimezone($this->timezone);
+		}
+		
+		$d1 = (int)$this->Format('Ymd');
+		$d2 = (int)$date2->Format('Ymd');
+		
+		if ($d1 > $d2)
+		{
+			return 1;
+		}
+		if ($d1 < $d2)
+		{
+			return -1;
+		}
+		return 0;
+	}
+	
+	/**
 	 * @param int $days
 	 * @return Date
 	 */

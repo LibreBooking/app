@@ -253,5 +253,36 @@ class DateTests extends TestBase
     	
     	$this->assertEquals(-1, $early->Compare($late));
     }
+    
+    public function testCanCompareDateEquality()
+    {
+    	$date1 = Date::Parse('2008-01-01 11:00:00', 'CST');
+    	$date2 = Date::Parse('2008-01-01 11:00:00', 'EST');
+    	
+    	$this->assertTrue($date1->DateEquals($date2));
+    	
+    	$date1 = Date::Parse('2008-01-01 00:00:00', 'CST');
+    	$date2 = Date::Parse('2008-01-01 00:00:00', 'EST');
+    	
+    	$this->assertFalse($date1->DateEquals($date2));
+    }
+    
+    public function testCanCompareDateRelativity() 
+    {
+    	$date1 = Date::Parse('2008-01-01 11:00:00', 'CST');
+    	$date2 = Date::Parse('2008-01-01 11:00:00', 'EST');
+    	
+    	$this->assertEquals(0, $date1->DateCompare($date2));
+    	
+    	$date1 = Date::Parse('2008-01-01 00:00:00', 'CST');
+    	$date2 = Date::Parse('2008-01-01 00:00:00', 'EST');
+    	
+    	$this->assertEquals(1, $date1->DateCompare($date2), 'midnight eastern is 11pm central');
+    	
+    	$date1 = Date::Parse('2008-01-01 00:00:00', 'CST');
+    	$date2 = Date::Parse('2008-01-01 22:00:00', 'PST');
+    	
+    	$this->assertEquals(-1, $date1->DateCompare($date2), 'midnight pacific is 2 am central');
+    }
 }
 ?>

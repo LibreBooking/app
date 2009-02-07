@@ -6,6 +6,7 @@ require_once(ROOT_DIR . 'lib/Common/Resources.php');
 require_once(ROOT_DIR . 'lib/Common/ServiceLocator.php');
 require_once(ROOT_DIR . 'lib/Common/Date.php');
 require_once(ROOT_DIR . 'lib/Common/Time.php');
+require_once(ROOT_DIR . 'lib/Common/DateRange.php');
 require_once(ROOT_DIR . 'lib/Common/GlobalKeys.php');
 require_once(ROOT_DIR . 'lib/Common/PluginManager.php');
 ?>

@@ -30,7 +30,24 @@ class ScheduleLayout implements IScheduleLayout
 	 */
 	public function AppendPeriod(Time $startTime, Time $endTime, $label = null)
 	{
-		$this->_periods[] = new SchedulePeriod($startTime, $endTime, $label);
+		$localStart = $startTime->ToTimezone($this->_timezone);
+		
+		$periodStart = $startTime->ToTimezone($this->_timezone);
+		$periodEnd = $endTime->ToTimezone($this->_timezone);
+		
+		if ($localStart->Hour() < $startTime->Hour())
+		{
+			$periodStart = new Time(0, 0, 0, $startTime->Timezone());
+			$periodEnd = $endTime->ToTimezone($this->_timezone);
+			
+			$otherStart = new Time(24 - abs($localStart->Hour()), 0, 0, $this->_timezone);
+			$otherEnd = new Time(0, 0, 0, $this->_timezone);
+			
+			$this->_periods[] = new SchedulePeriod($otherStart, $otherEnd, '');
+		}
+		
+		//$localEnd = $startTime->ToTimezone($this->_timezone);
+		$this->_periods[] = new SchedulePeriod($periodStart, $periodEnd, $label);
 	}
 	
 	/**
