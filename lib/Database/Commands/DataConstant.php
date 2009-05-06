@@ -21,6 +21,7 @@ class ParameterNames
 	const TIMEZONE = '@timezone';
 	const USER_ID = '@userid';
 	const USER_NAME = '@username';	
+	const USER_STATUS = '@status';
 }
 
 class Queries
@@ -122,10 +123,10 @@ class Queries
 		WHERE userid = @userid';
 	
 	const REGISTER_USER = 
-		'INSERT INTO account
-		(email, userpassword, fname, lname, phone, institution, positionname, username, salt, timezonename, homepageid)
+		'INSERT INTO login
+		(email, userpassword, fname, lname, phone, institution, positionname, username, salt, timezonename, homepageid,status)
 		VALUES
-		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @username, @salt, @timezone, @homepageid)
+		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @username, @salt, @timezone, @homepageid,@status)
 		';
 		
 	const UPDATE_LOGINTIME = 

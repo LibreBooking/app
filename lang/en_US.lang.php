@@ -491,7 +491,11 @@ $strings['That password did not match the one in our database.'] = 'That passwor
 $strings['You can try'] = '<br />You can try:<br />Registering an email address.<br />Or:<br />Try logging in again.';
 $strings['A new user has been added'] = 'A new user has been added';
 $strings['You have successfully registered'] = 'You have successfully registered!';
+$strings['An email has been sent to'] = 'An email has been sent to';
 $strings['Continue'] = 'Continue...';
+$strings['activate'] = 'Please follow the link in that email to activate your account';
+$strings['Activated'] = 'Your profile has been successfully activated. Click here to login';
+$strings['NotActivated'] = 'Your profile has not been activated yet. Activate your profile and then login';
 $strings['Your profile has been successfully updated!'] = 'Your profile has been successfully updated!';
 $strings['Please return to My Control Panel'] = 'Please return to My Control Panel';
 $strings['Valid email address is required.'] = '- Valid email address is required.';
@@ -772,7 +776,8 @@ $email['register'] = "%s, %s \r\n"
 				. "Please log into the scheduler at this location:\r\n"
 				. "%s \r\n\r\n"
 				. "You can find links to the online scheduler and to edit your profile at My Control Panel.\r\n\r\n"
-				. "Please direct any resource or reservation based questions to %s";
+				. "Please direct any resource or reservation based questions to %s \r\n\r\n"
+				. "Please activate your ID by following this link \r\n %s";
 
 // Email message the admin gets after a new user registers
 $email['register_admin'] = "Administrator,\r\n\r\n"

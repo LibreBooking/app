@@ -89,8 +89,9 @@ class AuthDB extends DBEngine {
 		array_push($to_insert, 0);	// is_admin
 		array_push($to_insert, $data['lang']);
 		array_push($to_insert, $data['timezone']);
+		array_push($to_insert, $data['status']);
 
-		$q = $this->db->prepare('INSERT INTO ' . $this->get_table('login') . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+		$q = $this->db->prepare('INSERT INTO ' . $this->get_table('login') . ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)');
 		$result = $this->db->execute($q, $to_insert);
 		$this->check_for_error($result);
 
@@ -138,7 +139,22 @@ class AuthDB extends DBEngine {
 		$this->check_for_error($result);
 	}
 
-
+	function update_user_activate($userid) {
+		$to_insert = array();
+		array_push($to_insert, 'active');
+		$sql = 'UPDATE ' . $this->get_table('login')
+			. ' SET status=?';
+		$q = $this->db->prepare($sql);
+		$result = $this->db->execute($q, $to_insert);
+		$this->check_for_error($result);	
+	}
+	function check_active_account($id) {
+		$result = $this->db->getRow('SELECT status FROM ' . $this->get_table('login') . ' WHERE memberid=?', array($id));
+		if( $result['status'] != 'active' ) 
+			return false;
+		else 
+			return true;
+	}
     /**
 	* Checks to see if User information in DB is synched with LDAP Info
 	* @param string $id user to check

@@ -21,7 +21,7 @@ $curUser = new User(Auth::getCurrentID());
 
 $edit = isset($_GET['edit']) && (bool)$_GET['edit'];
 $id = null;
-
+$hashedMemberId = null;
 if ( isset($_GET['memberid']) && !empty($_GET['memberid']) ) {
 	$id = $_GET['memberid'];
 }
@@ -32,10 +32,16 @@ if ( isset($_SESSION['sessionID']) && !empty($_SESSION['sessionID']) ) {
 		$id = $_SESSION['sessionID'];
 	}
 }
-
+///used for activating
+if ( isset($_GET['activate']) && !empty($_GET['activate']) ) {
+	$hashedMemberId = $_GET['activate'];
+}
+if ( isset($_GET['email']) && !empty($_GET['email']) ) {
+	$memberEmail = $_GET['email'];
+}
+///////////////
 $msg = '';
 $show_form = true;
-
 // Check login status
 if ($edit && !Auth::is_logged_in()) {
 	$auth->print_login_msg(true);
@@ -58,12 +64,18 @@ if ($edit && !isset($_POST['update'])) {
 else {
 	$data = CmnFns::cleanPostVals();
 }
-
-if (isset($_POST['register'])) {	// New registration
+if($hashedMemberId != null){
+	$show_form = false;	
+	$msg = $auth->do_activate_user($hashedMemberId,$memberEmail);
+	
+}
+else if (isset($_POST['register'])) {	// New registration
 	$data['lang'] = determine_language();
+	$data['status'] = "pending";
 	$adminCreated = (Auth::is_logged_in() && Auth::isAdmin());
 	$msg = $auth->do_register_user($data, $adminCreated);
 	$show_form = false;
+	//die();
 }
 else if (isset($_POST['update'])) {	// Update registration
 	$adminUpdate = ( ($curUser->get_id() != $id) && (Auth::isAdmin() || $curUser->is_group_admin(array($id))) );

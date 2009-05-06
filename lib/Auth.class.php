@@ -82,7 +82,7 @@ class Auth {
 	function doLogin($uname, $pass, $cookieVal = null, $isCookie = false, $resume = '', $lang = '') {
 		global $conf;
 		$msg = '';
-
+		$activeAccount = true;
 		if (empty($resume)) $resume = 'ctrlpnl.php';		// Go to control panel by default
 
 		$_SESSION['sessionID'] = null;
@@ -96,9 +96,9 @@ class Auth {
 		$use_logonname = (bool)$conf['app']['useLogonName'];
 
 		$adminemail = strtolower($conf['app']['adminEmail']);
-
-		if ($isCookie !== false) {		// Cookie is set
+		if ($isCookie !== false) {		// Cookie is set			
 			$id = $isCookie;
+			$activeAccount = $this->db->check_active_account($id);
 			if ($this->db->verifyID($id)) {
 				$ok_user = $ok_pass = true;
 			}
@@ -109,9 +109,7 @@ class Auth {
 			}
 		}
 		else {
-
 		  if( $conf['ldap']['authentication'] ) {
-
 		    // Include LDAPEngine class
             include_once('LDAPEngine.class.php');
 
@@ -124,8 +122,9 @@ class Auth {
                 if( $mail ) {
 
                     $id = $this->db->userExists( $mail );
-
+					
                     if( $id ) {
+                    	$activeAccount = $this->db->check_active_account($id);
                         // check if LDAP and local DB are in consistancy.
                         $updates = $ldap->getUserData();
 
@@ -152,29 +151,39 @@ class Auth {
             $ldap->disconnect();
 
 		  }
-		  else {
-			// If we cant find email, set message and flag
-			if ( !$id = $this->db->userExists($uname, $use_logonname) ) {
-				$msg .= translate('We could not find that logon in our database.') . '<br/>';
-				$ok_user = false;
-			}
-			else
-				$ok_user = true;
-
-			// If password is incorrect, set message and flag
-			if ($ok_user && !$this->db->isPassword($uname, $pass, $use_logonname)) {
-				$msg .= translate('That password did not match the one in our database.') . '<br/>';
-				$ok_pass = false;
-			}
-			else
-				$ok_pass = true;
+		  else {		  	
+				// If we cant find email, set message and flag
+				if ( !$id = $this->db->userExists($uname, $use_logonname) ) {
+					$msg .= translate('We could not find that logon in our database.') . '<br/>';
+					$ok_user = false;
+				}
+				else
+					$ok_user = true;
+	
+				// If password is incorrect, set message and flag
+				if ($ok_user && !$this->db->isPassword($uname, $pass, $use_logonname)) {
+					$msg .= translate('That password did not match the one in our database.') . '<br/>';
+					$ok_pass = false;
+				}
+				else
+					$ok_pass = true;
+				if($ok_user) {	// if user exists check for active account
+					$activeAccount = $this->db->check_active_account($id);
+					//echo "######".$activeAccount;
+					if($ok_user && !$activeAccount) { // if the user exists and the account is not active
+				  		$msg = translate('NotActivated'). '<br/>';
+				  		$ok_user = $ok_pass = false;
+				  	}			  	
+				}
+		  	
 		  }
         }
 
 
 		// If the login failed, notify the user and quit the app
 		if (!$ok_user || !$ok_pass) {
-			$msg .= translate('You can try');
+			if($activeAccount)
+				$msg .= translate('You can try');
 			return $msg;
 		}
 		else {
@@ -207,7 +216,9 @@ class Auth {
 			}
 
 			// Send them to the control panel
+			if($activeAccount) {
 			CmnFns::redirect(urldecode($resume));
+			}
 		}
 	}
 
@@ -268,6 +279,7 @@ class Auth {
 
 		// Email user informing about successful registration
 		$subject = $conf['ui']['welcome'];
+		$activationPart = $url."/register.php?activate=".md5($id)."&email=".$data['emailaddress'];
 		$msg = translate_email('register',
 								$data['fname'], $conf['ui']['welcome'],
 								(isset($data['logon_name']) ? $data['logon_name'] : $data['emailaddress']),
@@ -276,15 +288,17 @@ class Auth {
 								$data['institution'],
 								$data['position'],
 								$url,
-								$adminemail);
-
+								$adminemail,
+								$activationPart								
+								);
+		//echo "msg--";						
+		//$msg .= "<br/>Activate your ID using ".$activationLink."<br/>".$data['position'];
 		$mailer->AddAddress($data['emailaddress'], $data['fname'] . ' ' . $data['lname']);
 		$mailer->From = $adminemail;
 		$mailer->FromName = $conf['app']['title'];
 		$mailer->Subject = $subject;
 		$mailer->Body = $msg;
 		$mailer->Send();
-
 		// Email the admin informing about new user
 		if ($conf['app']['emailAdmin']) {
 			$subject = translate('A new user has been added');
@@ -301,7 +315,6 @@ class Auth {
 			$mailer->Body = $msg;
 			$mailer->Send();
 		}
-
 		if (!$adminCreated) {
 				// If the user wants to set a cookie, set it
 				// for their ID and fname.  Expires in 30 days (2592000 seconds)
@@ -326,19 +339,22 @@ class Auth {
 						. ' position- ' . $data['position'], $id);
 
 		if( !$conf['ldap']['authentication'] ) {
-			$url = 'ctrlpnl.php';
+			//$url = 'ctrlpnl.php';
+			$url = 'index.php';
 			if ($adminCreated){
 				$url = 'admin.php?tool=users';
 			}
-			CmnFns::redirect($url, 1, false);
+			//CmnFns::redirect($url, 1, false);
 			$link = CmnFns::getNewLink();
-
-			$this->success = translate('You have successfully registered') . '<br/>' . $link->getLink($url, translate('Continue'));
+			$statusMsg = 'You have successfully registered. An email has been sent to '.$data['emailaddress'];
+			$this->success = translate('You have successfully registered'). ' '.translate('An email has been sent to') .$data['emailaddress']. '<br/>';
+			$this->success .= translate('activate'). '<br/>'.$link->getLink($url, translate('LogIn'));
 		}
 		else {
 			// return DB id from entry created if using LDAP
 			return $id;
 		}
+	//die();	
 	}
 
 	/**
@@ -383,6 +399,15 @@ class Auth {
 		$this->success = translate('Your profile has been successfully updated!') . '<br/>' . $link->getLink($url, translate('Continue'));
 	}
 
+	function do_activate_user($hashedMemberId, $memberEmail) {
+		$link = CmnFns::getNewLink();
+		$url = 'index.php';
+		$this->db->update_user_activate($data['memberid']);
+		$this->success = '<br/>' . $link->getLink($url, translate('Activated'));
+		//$this->success = $link->getLink($url, translate('Your profile has been successfully activated!. Continue'));
+		// Write log file
+		CmnFns::write_log('User Activated. Data provided: memberid- ' . $data['memberid'], $id);
+	}
 
 	/**
 	* Verify that the user entered all data properly
