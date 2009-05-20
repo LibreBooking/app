@@ -62,3 +62,57 @@ echo '<!--Schedule printout time: ' . sprintf('%.16f', $tot) . ' seconds-->';
 // Print HTML footer
 $t->printHTMLFooter();
 ?>
+
+<SCRIPT type="text/javascript" src="./test/jquery.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="./test/jquery.drag.resize.js"></SCRIPT>
+<LINK rel="stylesheet" href="./test/style.css" type="text/css" media="screen" title="">
+
+
+<SCRIPT type="text/javascript">
+var boxSize=118;
+var bookId =0;
+var timeDisp="";
+$(document).ready( function() {
+	$('.resourceName').append('<a class="eventAdder">(add booking)</a>'); 
+	$('.eventAdder').bind("click", function(e){
+		AddEvent(e);
+	});
+	
+
+});
+
+function dragResizeupdated(width, left){
+
+	timeEnd = width/boxSize;
+	timeStart = (left) /  boxSize;
+	
+	var Time = new Date();
+	Time.setHours(24);Time.setMinutes(0);Time.setSeconds(0);
+	
+	Time.setHours(Time.getHours() + timeStart*3);
+	timeStart = Time.getHours();
+	
+
+	timeEnd = timeStart +timeEnd*3;
+
+	$('.timeDisp').html("<i>(From: "+timeStart+" To:"+timeEnd+")</i>");
+}
+
+function AddEvent(e){
+var tooltip ='Booking Id: '+(++bookId);
+var handle = $(e.target).parent();
+var content = $(handle).html();
+var newContent = '<div class="editor">'+
+'<div '+
+'class="block snap-to-grid" style="width:'+boxSize+'px;left:0;">'+tooltip+
+'<div class="timeDisp"></div>'+
+
+'<div class="handle" /><div class="resize" />'+
+'</div></div>';
+$(handle).html(newContent+content); 
+$('.editor').dragResize({grid:boxSize});
+
+
+}
+</SCRIPT>
+
