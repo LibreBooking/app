@@ -25,7 +25,7 @@ class FakeReservationRepository implements IReservationRepository
 		return $this->_Reservations;
 	}
 	
-	public function GetReservationRows()
+	public static function GetReservationRows()
 	{
 		$row1 =  array(ColumnNames::RESERVATION_ID => 1, 
 					ColumnNames::START_DATE => '2008-05-20 09:00:00',
@@ -69,12 +69,16 @@ class FakeReservationRepository implements IReservationRepository
 					ColumnNames::LAST_NAME => 'last'
 					);
 		
-		return array($row1, $row2, $row3);								
+		return array(
+			$row1, 
+			$row2, 
+			$row3
+			);								
 	}
 	
 	private function FillRows()
 	{
-		$rows = $this->GetReservationRows();
+		$rows = self::GetReservationRows();
 		
 		foreach($rows as $row)
 		{

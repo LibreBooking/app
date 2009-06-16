@@ -1,6 +1,14 @@
 <?php
 
-class ScheduleReservationList
+interface IScheduleReservationList
+{
+	/**
+	 * @return array[int]IReservationSlot
+	 */
+	function BuildSlots();
+}
+
+class ScheduleReservationList implements IScheduleReservationList
 {
 	private $_reservations;
 	private $_layout;
@@ -14,7 +22,7 @@ class ScheduleReservationList
 	private $_midnight;
 	
 	/**
-	 * @param array $reservations array of ScheduleReservation objects
+	 * @param array[int]ScheduleReservation $reservations array of ScheduleReservation objects
 	 * @param IScheduleLayout $layout
 	 * @param Date $layoutDate
 	 */
@@ -31,9 +39,6 @@ class ScheduleReservationList
 		$this->IndexLayout();
 	}
 	
-	/**
-	 * @return array of IReservationSlot
-	 */
 	public function BuildSlots()
 	{
 		$slots = array();
@@ -66,8 +71,6 @@ class ScheduleReservationList
 				$slots[] = new EmptyReservationSlot($layoutItem->Begin(), $layoutItem->End());
 			}
 		}
-		
-//		$this->SplitCrossDaySlot($slots);
 	
 		return $slots;
 	}
@@ -106,24 +109,6 @@ class ScheduleReservationList
 			$this->_layoutByEndTime[$this->_layoutItems[$i]->End()->ToString()] = $i;
 		}
 	}
-	
-//	private function SplitCrossDaySlot(&$slots)
-//	{
-//		$firstSlot = $slots[0];
-//		$lastSlot = $slots[count($slots)-1];
-//		$midnight = new Time(0,0,0, $this->_layout->Timezone());
-//		
-//		if ($lastSlot->End()->Hour() != 0)
-//		{
-//			$slots[count($slots)-1] = new EmptyReservationSlot($lastSlot->Begin(), $midnight);
-//		}
-//		
-//		if ($firstSlot->Begin()->Hour() != 0)
-//		{
-//			$newFirstSlot = new EmptyReservationSlot($midnight, $slots[0]->Begin());
-//			array_unshift($slots, $newFirstSlot);
-//		}
-//	}
 	
 	/**
 	 * @param Time $endingTime

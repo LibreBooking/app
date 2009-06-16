@@ -284,5 +284,40 @@ class DateTests extends TestBase
     	
     	$this->assertEquals(-1, $date1->DateCompare($date2), 'midnight pacific is 2 am central');
     }
+    
+	public function testDateIsWithinRange()
+	{
+		$begin = Date::Create(2008, 09, 09, 10, 11, 12, 'UTC');
+		$end = Date::Create(2008, 10, 09, 10, 11, 12, 'UTC');
+		
+		$range = new DateRange($begin, $end);
+		
+		$within = $begin->AddDays(10);
+		$notWithin = $begin->AddDays(-10);
+		$exactStart = $begin;
+		$exactEnd = $end;
+		
+		$this->assertTrue($range->Contains($within));
+		$this->assertTrue($range->Contains($exactStart));
+		$this->assertTrue($range->Contains($exactEnd));
+		$this->assertFalse($range->Contains($notWithin));
+	}
+	
+	public function testDateRangeIsWithinRange()
+	{
+		$begin = Date::Create(2008, 09, 09, 10, 11, 12, 'UTC');
+		$end = Date::Create(2008, 10, 09, 10, 11, 12, 'UTC');
+		
+		$range = new DateRange($begin, $end);
+		
+		$within = new DateRange($begin->AddDays(10), $end->AddDays(-10));
+		$notWithin = new DateRange($begin->AddDays(-10), $end->AddDays(-1));
+		
+		$exact = new DateRange($begin, $end);
+		
+		$this->assertTrue($range->ContainsRange($within));
+		$this->assertTrue($range->ContainsRange($exact));
+		$this->assertFalse($range->ContainsRange($notWithin));
+	}
 }
 ?>

@@ -1,4 +1,15 @@
 <?php
+interface IReservationCoordinator
+{
+	function AddReservation(ScheduleReservation $reservation);
+	
+	/**
+	 * @param string $timezone
+	 * @param DateRange $validDates
+	 * @return IReservationListing
+	 */
+	function Arrange($timezone, DateRange $validDates);
+}
 class ReservationCoordinator
 {
 	private $_reservations = array();

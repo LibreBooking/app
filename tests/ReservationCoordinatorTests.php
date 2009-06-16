@@ -2,7 +2,7 @@
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Schedule/namespace.php');
 
-class ReservationListManagerTests extends TestBase
+class ReservationCoordinatorTests extends TestBase
 {
 	private $res1;
 	private $res2;
@@ -15,7 +15,7 @@ class ReservationListManagerTests extends TestBase
 	public function setup()
 	{
 		parent::setup();
-		FakeSchedules::Initialize();
+		FakeScheduleRepository::Initialize();
 
 		$this->res1 = $this->GetReservation('2008-12-20', '2008-12-20', '08:00', '09:00', 1);
 		$this->res2 = $this->GetReservation('2008-12-20', '2008-12-20', '08:00', '09:00', 1);
@@ -119,113 +119,13 @@ class ReservationListManagerTests extends TestBase
 		$this->assertTrue(Date::Parse('2009-01-04 06:00:00', $cst)->Equals($reservations[19]->DisplayStartDate));
 		$this->assertTrue(Date::Parse('2009-01-04 08:00:00', $cst)->Equals($reservations[19]->DisplayEndDate));
 		
-//		$this->assertTrue(3, $reservationListing->ByDate()->OnDate('')->ForResource(1)->Count());
-//		$this->assertTrue(1, $reservationListing->ByDate()->OnDate('')->ForResource(2)->Count());
+		$this->assertEquals(5, $reservationListing->OnDate('2009-01-01')->Count());
+		$this->assertEquals(4, $reservationListing->OnDate('2009-01-02')->Count());
+		$this->assertEquals(3, $reservationListing->OnDate('2009-01-03')->Count());
+		$this->assertEquals(0, $reservationListing->OnDate('2009-01-12')->Count());
 		
-	}
-	
-	public function testDateIsWithinRange()
-	{
-		$begin = Date::Create(2008, 09, 09, 10, 11, 12, 'UTC');
-		$end = Date::Create(2008, 10, 09, 10, 11, 12, 'UTC');
-		
-		$range = new DateRange($begin, $end);
-		
-		$within = $begin->AddDays(10);
-		$notWithin = $begin->AddDays(-10);
-		$exactStart = $begin;
-		$exactEnd = $end;
-		
-		$this->assertTrue($range->Contains($within));
-		$this->assertTrue($range->Contains($exactStart));
-		$this->assertTrue($range->Contains($exactEnd));
-		$this->assertFalse($range->Contains($notWithin));
-	}
-	
-	public function testDateRangeIsWithinRange()
-	{
-		$begin = Date::Create(2008, 09, 09, 10, 11, 12, 'UTC');
-		$end = Date::Create(2008, 10, 09, 10, 11, 12, 'UTC');
-		
-		$range = new DateRange($begin, $end);
-		
-		$within = new DateRange($begin->AddDays(10), $end->AddDays(-10));
-		$notWithin = new DateRange($begin->AddDays(-10), $end->AddDays(-1));
-		
-		$exact = new DateRange($begin, $end);
-		
-		$this->assertTrue($range->ContainsRange($within));
-		$this->assertTrue($range->ContainsRange($exact));
-		$this->assertFalse($range->ContainsRange($notWithin));
-	}
-	
-//	public function testFoo()
-//	{
-//		$times = array
-//		(
-//			array
-//			(
-//				'start' => Date::Parse('2009-01-01 00:00:00', 'CST'),
-//				'end' => Date::Parse('2009-01-01 01:00:00 AM', 'CST')
-//			),
-//			array
-//			(
-//				'start' => Date::Parse('2009-01-01 01:00:00 AM', 'CST'),
-//				'end' => Date::Parse('2009-01-01 09:00:00 AM', 'CST')
-//			),
-//			array
-//			(
-//				'start' => Date::Parse('2009-01-01 09:00:00 AM', 'CST'),
-//				'end' => Date::Parse('2009-01-01 09:30:00 AM', 'CST')
-//			),
-//			array
-//			(
-//				'start' => Date::Parse('2009-01-01 09:30:00 AM', 'CST'),
-//				'end' => Date::Parse('2009-01-01 06:00:00 PM', 'CST')
-//			),
-//			array
-//			(
-//				'start' => Date::Parse('2009-01-01 06:00:00 PM', 'CST'),
-//				'end' => Date::Parse('2009-01-01 6:30:00 PM', 'CST')
-//			),
-//			array
-//			(
-//				'start' => Date::Parse('2009-01-01 6:30:00 PM', 'CST'),
-//				'end' => Date::Parse('2009-01-02 00:00:00', 'CST')
-//			)
-//		);
-//		
-//		foreach ($times as $time)
-//		{
-//			$cstStart = $time['start']->ToString();
-//			$cstEnd = $time['end']->ToString();
-//			
-//			$gmtStart = $time['start']->ToTimezone('GMT')->ToString();
-//			$gmtEnd = $time['end']->ToTimezone('GMT')->ToString();
-//			
-//			echo "CST start: $cstStart end: $cstEnd \nGMT start: $gmtStart end: $gmtEnd\n\n";
-//		}
-//
-//	}
-
-	public function testManagerPlacesReservationOnEachDayThatItIsScheduledFor()
-	{
-		throw new Exception("#2 - just started working on this, need to figure out how to get reservations onto proper days");
-
-		$schedule = FakeSchedules::$Schedule1;
-
-		$numberOfDaysDisplayed = $schedule->GetDaysVisible();
-
-		$firstDateInUserTimezone = Date::Parse('2008-12-13', 'CST');
-		$firstDateInUtc = $firstDateInUserTimezone->ToUtc();
-		$lastDateInUtc = $firstDateInUtc->AddDays($numberOfDaysDisplayed);
-
-		$manager = new ReservationListManager($this->reservationRepository, $schedule);
-
-		$groups = $manager->BuildReservationGroups();
-
-		$this->assertEquals($numberOfDaysDisplayed, count($groups));
-		$this->assertEquals($numberOfResources, count($groups[0]));
+		$this->assertEquals(3, $reservationListing->OnDate('2009-01-01')->ForResource(1)->Count());
+		$this->assertEquals(0, $reservationListing->OnDate('2009-01-01')->ForResource(10)->Count());
 	}
 	
 	public function testCreatesScheduleLayoutForSpecifiedTimezone()
@@ -264,48 +164,48 @@ class ReservationListManagerTests extends TestBase
 }
 
 
-class TimezoneReservations
-{
-	private $_reservations = array();
-	
-	public function __construct($timezone, $reservations, ReservationCoordinator $coordinator)
-	{
-		$this->_reservations = $reservations;
-	}
-	
-	public function LimitedTo(Date $startDate, Date $endDate)
-	{
-		return new Arrangement($this->_reservations, $this);
-	}
-}
-
-class Arrangement
-{
-	private $_reservations = array();
-	
-	public function __construct($reservations, TimezoneReservations $timezoneReservations)
-	{
-		$this->_reservations = $reservations;
-	}
-	
-	public function Arrange()
-	{
-		foreach ($this->_reservations as $reservation)
-		{
-			
-		}
-		return new ReservationListing($this->_reservations);
-	}
-	
-
-}
-
-class ReservationRowCoordinator
-{
-	public function AdjustToTimezone()
-	{
-
-	}
-}
+//class TimezoneReservations
+//{
+//	private $_reservations = array();
+//	
+//	public function __construct($timezone, $reservations, ReservationCoordinator $coordinator)
+//	{
+//		$this->_reservations = $reservations;
+//	}
+//	
+//	public function LimitedTo(Date $startDate, Date $endDate)
+//	{
+//		return new Arrangement($this->_reservations, $this);
+//	}
+//}
+//
+//class Arrangement
+//{
+//	private $_reservations = array();
+//	
+//	public function __construct($reservations, TimezoneReservations $timezoneReservations)
+//	{
+//		$this->_reservations = $reservations;
+//	}
+//	
+//	public function Arrange()
+//	{
+//		foreach ($this->_reservations as $reservation)
+//		{
+//			
+//		}
+//		return new ReservationListing($this->_reservations);
+//	}
+//	
+//
+//}
+//
+//class ReservationRowCoordinator
+//{
+//	public function AdjustToTimezone()
+//	{
+//
+//	}
+//}
 
 ?>

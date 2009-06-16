@@ -21,7 +21,7 @@ class SchedulesTests extends TestBase
 	
 	public function testCanGetAllSchedules()
 	{
-		$fakeSchedules = new FakeSchedules();
+		$fakeSchedules = new FakeScheduleRepository();
 		
 		
 		$rows = $fakeSchedules->GetRows();

@@ -14,7 +14,11 @@ class SchedulePresenter
 	
 	private $_scheduleRepository;
 	private $_resourceRepository;
-	private $_reservationRepository;
+	
+	/**
+	 * @var IReservationService
+	 */
+	private $_reservationService;
 	
 	public function __construct(ISchedulePage $page)
 	{
@@ -64,24 +68,24 @@ class SchedulePresenter
 	}
 	
 	/**
-	 * @param ReservationsRepository $resourceAccess
+	 * @param IReservationService $reservationService
 	 */
-	public function SetReservationRepository($reservationRepository)
+	public function SetReservationService($reservationService)
 	{
-		$this->_reservationRepository = $reservationRepository;
+		$this->_reservationService = $reservationService;
 	}
 	
 	/**
-	 * @return GetReservationRepository
+	 * @return IReservationService
 	 */
-	private function GetReservationRepository()
+	private function GetReservationService()
 	{
-		if (is_null($this->_reservationRepository))
+		if (is_null($this->_reservationService))
 		{
-			$this->_reservationRepository = new ReservationRepository();
+			$this->_reservationService = new ReservationSerivce();
 		}
 		
-		return $this->_reservationRepository;
+		return $this->_reservationService;
 	}
 	
 	public function PageLoad()
@@ -102,7 +106,7 @@ class SchedulePresenter
 		$dates = $this->GetDisplayDates($startDate, $schedule->GetDaysVisible());
 		$this->_page->SetDisplayDates($dates);
 		
-		$this->_page->SetReservations($this->GetReservationRepository()->GetWithin($startDate, $endDate, $scheduleId));
+		$this->_page->SetReservations($this->GetReservationService()->GetReservations(new DateRange($startDate, $endDate), $scheduleId));
 	}
 	
 	/**
