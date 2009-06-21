@@ -45,6 +45,10 @@ class Resource
 		$this->SetMaxNotice($maxNotice);
 	}
 	
+	/**
+	 * @param array[string] $row
+	 * @return Resource
+	 */
 	public static function Create($row)
 	{
 		return new Resource($row[ColumnNames::RESOURCE_ID],

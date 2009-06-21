@@ -7,7 +7,7 @@ interface IResourceRepository
 	 * Gets all Resources for the given scheduleId
 	 *
 	 * @param int $scheduleId
-	 * @return array of Resource objects
+	 * @return array[int]Resource
 	 */
 	public function GetScheduleResources($scheduleId);
 }

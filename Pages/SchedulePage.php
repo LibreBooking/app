@@ -47,7 +47,7 @@ interface ISchedulePage
 	/**
 	 * Bind schedules to the page
 	 *
-	 * @param array[]Schedule $schedules
+	 * @param array[int]Schedule $schedules
 	 */
 	public function SetSchedules($schedules);
 	
@@ -70,6 +70,11 @@ interface ISchedulePage
 	 * @return int
 	 */
 	public function GetScheduleId();
+	
+	/**
+	 * @param int $scheduleId
+	 */
+	public function SetScheduleId($scheduleId);
 	
 	/**
 	 * Sets the dates to be displayed for the schedule, adjusted for timezone if necessary
