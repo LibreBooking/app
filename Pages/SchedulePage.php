@@ -16,9 +16,19 @@ class SchedulePage extends SecurePage implements ISchedulePage
 		$this->smarty->display('schedule.tpl');		
 	}
 	
+	public function IsPostBack()
+	{
+		return is_null($this->GetScheduleId());
+	}
+	
 	public function GetScheduleId()
 	{
-		return $this->server->GetForm(FormKeys::SCHEDULE_ID);
+		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+	}
+	
+	public function SetScheduleId($scheduleId)
+	{
+		$this->smarty->assign('ScheduleId', $scheduleId);
 	}
 	
 	public function SetSchedules($schedules)
@@ -82,5 +92,10 @@ interface ISchedulePage
 	 * @param array[]Date $dates
 	 */
 	public function SetDisplayDates($dates);
+	
+	/**
+	 * @return bool
+	 */
+	public function IsPostBack();
 }
 ?>

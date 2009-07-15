@@ -1,5 +1,4 @@
 <?php
-//require_once('namespace.php');
 
 class QueryStringKeys
 {
@@ -8,5 +7,6 @@ class QueryStringKeys
 	
 	const REDIRECT = 'redirect';
 	const LANGUAGE = 'lang';
+	const SCHEDULE_ID = 'sid';
 }
 ?>

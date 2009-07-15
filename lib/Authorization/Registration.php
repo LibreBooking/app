@@ -14,18 +14,18 @@ class Registration implements IRegistration
 	}
 	
 	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $homepageId, $additionalFields = array())
-	{echo "#########";
+	{
 		$salt = $this->_passwordEncryption->Salt();
 		$encryptedPassword = $this->_passwordEncryption->Encrypt($password, $salt);
 		
 		$usingLoginNames = Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter());
 		$usernameToInsert = $usingLoginNames ? $username : $email;
-		$status="pending";
 		
 		$registerCommand = new RegisterUserCommand(
 					$usernameToInsert, $email, $firstName, $lastName, 
 					$encryptedPassword, $salt, $timezone, $homepageId, 
-					$additionalFields['phone'], $additionalFields['institution'], $additionalFields['position'],$status
+					$additionalFields['phone'], $additionalFields['institution'], $additionalFields['position'], 
+					AccountStatus::AWAITING_ACTIVATION
 					);
 					
 		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);

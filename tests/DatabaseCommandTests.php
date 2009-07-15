@@ -138,12 +138,13 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$institution = 'inst';
 		$position = 'pos';
 		$homepageId = 1;
+		$status = AccountStatus::AWAITING_ACTIVATION;
 		
 		$command = new RegisterUserCommand($username, $email, $fname, $lname, $password, $salt, 
-							$timezone, $homepageId, $phone, $institution, $position);
+							$timezone, $homepageId, $phone, $institution, $position, $status);
 		
 		$this->assertEquals(Queries::REGISTER_USER, $command->GetQuery());
-		$this->assertEquals(11, $command->Parameters->Count());		
+		$this->assertEquals(12, $command->Parameters->Count());		
 		$this->assertEquals(new Parameter(ParameterNames::USER_NAME, $username), $command->Parameters->Items(0));
 		$this->assertEquals(new Parameter(ParameterNames::EMAIL_ADDRESS, $email), $command->Parameters->Items(1));
 		$this->assertEquals(new Parameter(ParameterNames::FIRST_NAME, $fname), $command->Parameters->Items(2));
@@ -155,6 +156,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(new Parameter(ParameterNames::PHONE, $phone), $command->Parameters->Items(8));
 		$this->assertEquals(new Parameter(ParameterNames::INSTITUTION, $institution), $command->Parameters->Items(9));
 		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(10));
+		$this->assertEquals(new Parameter(ParameterNames::ACCOUNT_STATUS_ID, $status), $command->Parameters->Items(11));
 	}
 	
 	function testGetUserRoleCommand()

@@ -40,7 +40,7 @@ class RegistrationTests extends TestBase
 					$this->login, $this->email, $this->fname, $this->lname, 
 					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->homepageId,
 					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position']
-					);
+					,AccountStatus::AWAITING_ACTIVATION);
 		
 		$this->assertEquals($command, $this->db->_Commands[0]);
 		$this->assertTrue($this->fakeEncryption->_EncryptCalled);
@@ -59,7 +59,8 @@ class RegistrationTests extends TestBase
 		$command = new RegisterUserCommand(
 					$expectedLogin, $this->email, $this->fname, $this->lname, 
 					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->homepageId,
-					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position']
+					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position'],
+					AccountStatus::AWAITING_ACTIVATION
 					);
 		
 		$this->assertEquals($command, $this->db->_Commands[0]);

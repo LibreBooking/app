@@ -36,9 +36,21 @@ CREATE TABLE `account` (
   `legacypassword` varchar(32) default NULL,
   `legacyid` char(16) default NULL,
   `homepageid` tinyint(3) unsigned NOT NULL default '1',
+  `statusid` tinyint(3) unsigned NOT NULL default '1',
   PRIMARY KEY  USING BTREE (`userid`),
   KEY `user_username` (`username`),
   KEY `user_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `account_status`
+--
+
+DROP TABLE IF EXISTS `account_status`;
+CREATE TABLE `account_status` (
+  `statusid` tinyint(3) unsigned NOT NULL auto_increment,
+  `statusdescription` varchar(45) default NULL,
+  PRIMARY KEY  USING BTREE (`accountstatusid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

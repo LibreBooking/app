@@ -4,6 +4,7 @@ class ParameterNames
 	private function __construct()
 	{}
 	
+	const ACCOUNT_STATUS_ID = '@accountstatusid';
 	const CURRENT_DATE = '@current_date';
 	const EMAIL_ADDRESS = '@emailaddress';
 	const END_DATE = '@endDate';
@@ -20,8 +21,7 @@ class ParameterNames
 	const START_DATE = '@startDate';
 	const TIMEZONE = '@timezone';
 	const USER_ID = '@userid';
-	const USER_NAME = '@username';	
-	const USER_STATUS = '@status';
+	const USER_NAME = '@username';
 }
 
 class Queries
@@ -123,10 +123,10 @@ class Queries
 		WHERE userid = @userid';
 	
 	const REGISTER_USER = 
-		'INSERT INTO login
-		(email, userpassword, fname, lname, phone, institution, positionname, username, salt, timezonename, homepageid,status)
+		'INSERT INTO account
+		(email, userpassword, fname, lname, phone, institution, positionname, username, salt, timezonename, homepageid, accountstatusid)
 		VALUES
-		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @username, @salt, @timezone, @homepageid,@status)
+		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @username, @salt, @timezone, @homepageid, @accountstatusid)
 		';
 		
 	const UPDATE_LOGINTIME = 

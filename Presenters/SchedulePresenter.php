@@ -138,15 +138,16 @@ class SchedulePresenter
 		$builder = $this->GetPageBuilder();
 		
 		$currentSchedule = $builder->GetCurrentSchedule($this->_page, $schedules);
+		$activeScheduleId = $currentSchedule->GetId();
 		
-		$builder->BindSchedules($this->_page, $schedules);
+		$builder->BindSchedules($this->_page, $schedules, $activeScheduleId);
 		$scheduleDates = $builder->GetScheduleDates($user, $currentSchedule->GetDaysVisible());
 		$builder->BindDisplayDates($this->_page, $scheduleDates);
 		
 		$resourceRepository = $this->GetResourceRepository();
-		$resources = $resourceRepository->GetScheduleResources($currentSchedule->GetId());
+		$resources = $resourceRepository->GetScheduleResources($activeScheduleId);
 		$reservations = $this->GetReservationService()->GetReservations($scheduleDates, 
-																		$currentSchedule->GetId(), 
+																		$activeScheduleId, 
 																		$user->Timezone);
 				
 		$builder->BindReservations($this->_page, $resources, $reservations, $scheduleDates);
@@ -178,14 +179,14 @@ interface ISchedulePageBuilder
 	 * @param array[int]Schedule $schedules
 	 * @param int $activeScheduleId
 	 */
-	public function BindSchedules($page, $schedules, $activeScheduleId);
+	public function BindSchedules(ISchedulePage $page, $schedules, $activeScheduleId);
 	
 	/**
 	 * @param ISchedulePage $page
 	 * @param array[int]Schedule $schedules
 	 * @return Schedule
 	 */
-	public function GetCurrentSchedule($page, $schedules);
+	public function GetCurrentSchedule(ISchedulePage $page, $schedules);
 	
 	/**
 	 * Returns range of dates to bind in UTC
@@ -207,21 +208,22 @@ interface ISchedulePageBuilder
 	 * @param array[int]ScheduleReservation $reservations
 	 * @param DateRange $bindingDates
 	 */
-	public function BindReservations($page, $resources, $reservations, $bindingDates);
+	public function BindReservations(ISchedulePage $page, $resources, $reservations, $bindingDates);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
 {
-	public function BindSchedules($page, $schedules, $activeScheduleId)
+	public function BindSchedules(ISchedulePage $page, $schedules, $activeScheduleId)
 	{
-		throw new Exception();
+		$page->SetSchedules($schedules);
+		$page->SetScheduleId($activeScheduleId);
 	}
 	
-	public function GetCurrentSchedule($page, $schedules)
+	public function GetCurrentSchedule(ISchedulePage $page, $schedules)
 	{
 		if ($page->IsPostBack())
 		{
-			$schedule = $this->GetSchedule($schedules, $scheduleId);
+			$schedule = $this->GetSchedule($schedules, $page->GetScheduleId());
 		}
 		else
 		{
@@ -241,7 +243,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		throw new Exception();
 	}
 	
-	public function BindReservations($page, $resources, $reservations, $bindingDates)
+	public function BindReservations(ISchedulePage $page, $resources, $reservations, $bindingDates)
 	{
 		throw new Exception();
 	}

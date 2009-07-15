@@ -10,6 +10,11 @@ class SchedulePresenterTests extends TestBase
 	private $presenter;
 	private $page;
 	private $reservationService;
+	
+	private $scheduleId;
+	private $currentSchedule;
+	private $schedules;
+	private $numDaysVisible;
 
 	public function setup()
 	{
@@ -17,12 +22,12 @@ class SchedulePresenterTests extends TestBase
 
 		Date::_SetNow(mktime());
 
-		$this->page = new FakeSchedulePage();
-
-		$this->presenter = new SchedulePresenter($this->page);
+		$this->scheduleId = 1;
+		$this->numDaysVisible = 10;
+		$this->currentSchedule = new Schedule($this->scheduleId, 'default', 1, '08:30', '19:00', 1, 1, $this->numDaysVisible);
+		$otherSchedule = new Schedule(2, 'not default', 0, '08:30', '19:00', 1, 1, $this->numDaysVisible);
 		
-		$this->reservationService = $this->getMock('IReservationService');
-		$this->presenter->SetReservationService($this->reservationService);
+		$this->schedules = array($this->currentSchedule, $otherSchedule);
 	}
 
 	public function teardown()
@@ -35,10 +40,6 @@ class SchedulePresenterTests extends TestBase
 	public function testPageLoadBindsAllSchedulesAndProperResourcesWhenNotPostingBack2()
 	{
 		$user = $this->fakeServer->GetUserSession();
-		$scheduleId = 1;
-		$numDaysVisible = 10;
-		$currentSchedule = new Schedule($scheduleId, 'default', 1, '08:30', '19:00', 1, 1, $numDaysVisible);
-		$schedules = array($currentSchedule);
 		$resources = array();
 		$reservations = array();
 		$bindingDates = new DateRange(Date::Now(), Date::Now());
@@ -57,25 +58,25 @@ class SchedulePresenterTests extends TestBase
 			
 		$scheduleRepository->expects($this->once())
 			->method('GetAll')
-			->will($this->returnValue($schedules));
+			->will($this->returnValue($this->schedules));
 		
 		$pageBuilder->expects($this->once())
 			->method('GetCurrentSchedule')
-			->with($this->equalTo($page), $this->equalTo($schedules))
-			->will($this->returnValue($currentSchedule));
+			->with($this->equalTo($page), $this->equalTo($this->schedules))
+			->will($this->returnValue($this->currentSchedule));
 		
 		$pageBuilder->expects($this->once())
 			->method('BindSchedules')
-			->with($this->equalTo($page), $this->equalTo($schedules), $scheduleId);
+			->with($this->equalTo($page), $this->equalTo($this->schedules), $this->scheduleId);
 		
 		$resourceRepository->expects($this->once())
 			->method('GetScheduleResources')
-			->with($this->equalTo($scheduleId))
+			->with($this->equalTo($this->scheduleId))
 			->will($this->returnValue($resources));
 		
 		$pageBuilder->expects($this->once())
 			->method('GetScheduleDates')
-			->with($this->equalTo($user), $this->equalTo($numDaysVisible))
+			->with($this->equalTo($user), $this->equalTo($this->numDaysVisible))
 			->will($this->returnValue($bindingDates));
 			
 		$pageBuilder->expects($this->once())
@@ -84,7 +85,7 @@ class SchedulePresenterTests extends TestBase
 		
 		$reservationService->expects($this->once())
 			->method('GetReservations')
-			->with($this->equalTo($bindingDates), $this->equalTo($scheduleId), $this->equalTo($user->Timezone))
+			->with($this->equalTo($bindingDates), $this->equalTo($this->scheduleId), $this->equalTo($user->Timezone))
 			->will($this->returnValue($reservations));
 		
 		$pageBuilder->expects($this->once())
@@ -97,24 +98,24 @@ class SchedulePresenterTests extends TestBase
 	
 	public function testScheduleBuilderBindsAllSchedulesAndSetsActive()
 	{
-		throw new Exception('#1');
+		$activeId = 100;
+		
+		$page = $this->getMock('ISchedulePage');
 		
 		$page->expects($this->once())
 			->method('SetSchedules')
-			->with($this->equalTo($schedules));
+			->with($this->equalTo($this->schedules));
 			
 		$page->expects($this->once())
 			->method('SetScheduleId')
 			->with($this->equalTo($activeId));
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$pageBuilder->BindSchedules($page, $schedules, $activeId);
+		$pageBuilder->BindSchedules($page, $this->schedules, $activeId);
 	}
 	
 	public function testScheduleBuilderGetCurrentScheduleReturnsSelectedScheduleOnPostBack()
 	{
-		$this->markTestIncomplete("need to implement");
-		
 		$page = $this->getMock('ISchedulePage');
 		
 		$page->expects($this->once())
@@ -123,17 +124,16 @@ class SchedulePresenterTests extends TestBase
 			
 		$page->expects($this->once())
 			->method('GetScheduleId')
-			->will($this->returnValue($scheduleId));
+			->will($this->returnValue(10));
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules);
-
+		$actual = $pageBuilder->GetCurrentSchedule($page, array());
+		
+		$this->assertEquals(11, $actual);
 	}
 	
-	public function testScheduleBuilderGetCurrentScheduleReturnsDefaultSchedule()
+	public function testScheduleBuilderGetCurrentScheduleReturnsDefaultScheduleWhenInitialLoad()
 	{
-		$this->markTestIncomplete("need to implement");
-		
 		$page = $this->getMock('ISchedulePage');
 		
 		$page->expects($this->once())
@@ -141,62 +141,71 @@ class SchedulePresenterTests extends TestBase
 			->will($this->returnValue(false));
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules);
-
+		$actual = $pageBuilder->GetCurrentSchedule($page, $this->schedules);
+		
+		$this->assertEquals($this->scheduleId, $actual);
 	}
-
-	public function testPageLoadsDataWhenPostingBack()
+	
+	public function testSecurityMessageIsShownIfUserDoesNotHaveAccessToSchedule()
 	{
-		$this->markTestIncomplete("need to handle all the issues with changing schedules/days");
+		throw new Exception("need to implement all security pieces");
+		// schedule security
+		// resource security
+		// need to change data access to only pull schedules, resources with access
 	}
 
 	public function testCorrectDatesAreUsedWhenTheUsersTimezoneIsAheadOrBehindByAWeek()
 	{
 		$this->markTestIncomplete("to do");
 	}
-}
-
-class FakeSchedulePage extends FakePageBase implements ISchedulePage
-{
-	public $_LastSchedules = array();
-	public $_LastResources = array();
-	public $_LastReservations = array();
-	public $_LastDates = array();
-
-	public $_SetSchedulesCalled = false;
-	public $_SetResourcesCalled = false;
-	public $_SetReservationsCalled = false;
-	public $_SetDatesCalled = false;
-	public $_ScheduleId;
-
-	public function SetSchedules($schedules)
+	
+	public function testProvidedStartDateIsUsedIfSpecified()
 	{
-		$this->_LastSchedules = $schedules;
-		$this->_SetSchedulesCalled = true;
-	}
-
-	public function SetResources($resources)
-	{
-		$this->_LastResources = $resources;
-		$this->_SetResourcesCalled = true;
-	}
-
-	public function SetReservations($reservations)
-	{
-		$this->_LastReservations = $reservations;
-		$this->_SetReservationsCalled = true;
-	}
-
-	public function GetScheduleId()
-	{
-		return $this->_ScheduleId;
-	}
-
-	public function SetDisplayDates($dates)
-	{
-		$this->_SetDatesCalled = true;
-		$this->_LastDates = $dates;
+		
 	}
 }
+
+//class FakeSchedulePage extends FakePageBase implements ISchedulePage
+//{
+//	public $_LastSchedules = array();
+//	public $_LastResources = array();
+//	public $_LastReservations = array();
+//	public $_LastDates = array();
+//
+//	public $_SetSchedulesCalled = false;
+//	public $_SetResourcesCalled = false;
+//	public $_SetReservationsCalled = false;
+//	public $_SetDatesCalled = false;
+//	public $_ScheduleId;
+//
+//	public function SetSchedules($this->schedules)
+//	{
+//		$this->_LastSchedules = $this->schedules;
+//		$this->_SetSchedulesCalled = true;
+//	}
+//
+//	public function SetResources($resources)
+//	{
+//		$this->_LastResources = $resources;
+//		$this->_SetResourcesCalled = true;
+//	}
+//
+//	public function SetReservations($reservations)
+//	{
+//		$this->_LastReservations = $reservations;
+//		$this->_SetReservationsCalled = true;
+//	}
+//
+//	public function GetScheduleId()
+//	{
+//		return $this->_ScheduleId;
+//	}
+//
+//	public function SetDisplayDates($dates)
+//	{
+//		$this->_SetDatesCalled = true;
+//		$this->_LastDates = $dates;
+//	}
+//}
 
 ?>

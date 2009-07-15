@@ -124,7 +124,7 @@ class MigratePasswordCommand extends SqlCommand
 
 class RegisterUserCommand extends SqlCommand 
 {
-	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $homepageId, $phone, $institution, $position,$status)
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $homepageId, $phone, $institution, $position, $accountStatusId)
 	{
 		parent::__construct(Queries::REGISTER_USER);
 		
@@ -139,7 +139,7 @@ class RegisterUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
 		$this->AddParameter(new Parameter(ParameterNames::INSTITUTION, $institution));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));	
-		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS, $status));
+		$this->AddParameter(new Parameter(ParameterNames::ACCOUNT_STATUS_ID, $accountStatusId));
 	}
 }
 
