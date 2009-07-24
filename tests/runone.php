@@ -44,6 +44,9 @@ $tests = array(
 'SmartyControlTests.php'
 );
 
+$tests = array(
+'SchedulePresenterTests.php');
+
 $passed = true;
 $totalRun = 0;
 $totalPassed = 0;

@@ -66,5 +66,13 @@ class DateRange
 	{
 		return new DateRange($this->_begin->ToTimezone($timezone), $this->_end->ToTimezone($timezone));
 	}
+	
+	/**
+	 * @return string
+	 */
+	public function ToString()
+	{
+		return "\nBegin: " . $this->_begin->ToString() . " End: " . $this->_end->ToString() . "\n";
+	}
 }
 ?>

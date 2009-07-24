@@ -28,6 +28,11 @@ class FakeConfig extends Configuration implements IConfiguration
 	{
 		$this->File(self::DEFAULT_CONFIG_ID)->SetSectionKey($section, $keyName, $value);
 	}
+	
+	public function SetTimezone($timezone)
+	{
+		$this->SetKey(ConfigKeys::SERVER_TIMEZONE, $timezone);
+	}
 }
 
 class FakeConfigFile implements IConfigurationFile 

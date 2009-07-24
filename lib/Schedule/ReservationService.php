@@ -29,6 +29,8 @@ class ReservationService implements IReservationService
 		}
 		
 		$coordinator->Arrange($timezone, $dateRangeUtc);
+		
+		throw new Exception("not implemented");
 	}
 }
 

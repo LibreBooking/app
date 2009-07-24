@@ -28,7 +28,7 @@ class Date
         $this->InitializeTimezone($timezone);
                        
 		$this->date = new DateTime(date(Date::SHORT_FORMAT, $this->timestamp), new DateTimeZone($this->timezone));
-		$this->parts = date_parse($this->date->format(DATE_W3C));	
+		$this->parts = getdate($timestamp); //date_parse($this->date->format(DATE_W3C));	
 	}
     
     private function InitializeTimestamp($timestamp)
@@ -259,27 +259,27 @@ class Date
 	
 	public function Hour()
 	{
-		return $this->parts['hour'];		
+		return $this->parts['hours'];		
 	}
 	
 	public function Minute()
 	{
-		return $this->parts['minute'];
+		return $this->parts['minutes'];
 	}
 	
 	public function Second()
 	{
-		return $this->parts['second'];
+		return $this->parts['seconds'];
 	}
 	
 	public function Month()
 	{
-		return $this->parts['month'];
+		return $this->parts['mon'];
 	}
 	
 	public function Day()
 	{
-		return $this->parts['day'];
+		return $this->parts['mday'];
 	}
 	
 	public function Year()
@@ -292,18 +292,23 @@ class Date
 		return $this->timezone;
 	}
 	
+	public function Weekday()
+	{
+		return $this->parts['wday'];
+	}
+	
 	/**
 	 * Only used for unit testing
 	 */
-	public function _SetNow($datetime)
+	public function _SetNow($date)
 	{
-		if (is_null($datetime))
+		if (is_null($date))
 		{
 			self::$_Now = null;
 		}
 		else
 		{
-			self::$_Now = new Date($datetime);
+			self::$_Now = $date;
 		}
 	}
 	

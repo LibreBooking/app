@@ -3,7 +3,15 @@
 class TestBase extends PHPUnit_Framework_TestCase
 {
 	public $db;
+	
+	/**
+	 * @var FakeServer
+	 */
 	public $fakeServer;
+	
+	/**
+	 * @var FakeConfig
+	 */
 	public $fakeConfig;
 	public $fakeResources;
 	

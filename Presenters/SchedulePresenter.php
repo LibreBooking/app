@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Schedule/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
@@ -141,7 +142,7 @@ class SchedulePresenter
 		$activeScheduleId = $currentSchedule->GetId();
 		
 		$builder->BindSchedules($this->_page, $schedules, $activeScheduleId);
-		$scheduleDates = $builder->GetScheduleDates($user, $currentSchedule->GetDaysVisible());
+		$scheduleDates = $builder->GetScheduleDates($user, $currentSchedule);
 		$builder->BindDisplayDates($this->_page, $scheduleDates);
 		
 		$resourceRepository = $this->GetResourceRepository();
@@ -176,25 +177,25 @@ interface ISchedulePageBuilder
 {
 	/**
 	 * @param ISchedulePage $page
-	 * @param array[int]Schedule $schedules
+	 * @param array[int]ISchedule $schedules
 	 * @param int $activeScheduleId
 	 */
 	public function BindSchedules(ISchedulePage $page, $schedules, $activeScheduleId);
 	
 	/**
 	 * @param ISchedulePage $page
-	 * @param array[int]Schedule $schedules
-	 * @return Schedule
+	 * @param array[int]ISchedule $schedules
+	 * @return ISchedule
 	 */
 	public function GetCurrentSchedule(ISchedulePage $page, $schedules);
 	
 	/**
 	 * Returns range of dates to bind in UTC
 	 * @param UserSession $user
-	 * @param int $numDaysVisible
+	 * @param ISchedule $schedule
 	 * @return DateRange
 	 */
-	public function GetScheduleDates($user, $numDaysVisible);
+	public function GetScheduleDates($user, ISchedule $schedule);
 	
 	/**
 	 * @param ISchedulePage $page
@@ -233,9 +234,30 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return $schedule;
 	}
 	
-	public function GetScheduleDates($user, $numDaysVisible)
+	public function GetScheduleDates($user, ISchedule $schedule)
 	{
-		throw new Exception();
+		$currentDate = Date::Now();
+		$currentWeekDay = $currentDate->Weekday();
+		$scheduleLength = $schedule->GetDaysVisible();
+		
+		$startDay = $schedule->GetWeekdayStart();
+		
+		// if we are on 3 and we need to start on 6, we need to go back 4 days
+		// if we are on 3 and we need to start on 5, we need to go back 5 days
+		// if we are on 3 and we need to start on 4, we need to go back 6 days
+		// if we are on 3 and we need to start on 3, we need to go back 0 days
+		// if we are on 3 and we need to start on 2, we need to go back 1 days
+		// if we are on 3 and we need to start on 1, we need to go back 2 days
+		// if we are on 3 and we need to start on 0, we need to go back 3 days
+		
+		if ($currentWeekDay < $startDay)
+		{
+			$adjustedDays = ($currentDay - $startDay) - 7;
+		}
+		
+		$startDate = $currentDate->AddDays($currentWeekDay - $startDay);
+		
+		return new DateRange($startDate->ToUtc(), $startDate->AddDays($scheduleLength)->ToUtc());
 	}
 	
 	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange)

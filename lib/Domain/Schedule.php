@@ -1,5 +1,17 @@
 <?php
-class Schedule
+interface ISchedule
+{
+	public function GetId();
+	public function GetName();
+	public function GetIsDefault();
+	public function GetStartTime();
+	public function GetEndTime();
+	public function GetWeekdayStart();
+	public function GetAdminId();
+	public function GetDaysVisible();
+}
+
+class Schedule implements ISchedule
 {	
 	private $_id;
 	private $_name;
@@ -11,7 +23,14 @@ class Schedule
 	private $_daysVisible;
 	
 	public function __construct(
-		$id, $name, $isDefault, $startTime, $endTime, $weekdayStart, $adminId, $daysVisible)
+		$id, 
+		$name, 
+		$isDefault, 
+		$startTime, 
+		$endTime, 
+		$weekdayStart, 
+		$adminId, 
+		$daysVisible)
 	{
 		$this->_id = $id;
 		$this->_name = $name;
