@@ -18,9 +18,9 @@ class ReservationListing implements IReservationListing
 	private $_reservationByResource = array();
 	
 	/**
-	 * @param $startDate Date
-	 * @param $endDate Date
-	 * @param $reservation ScheduleReservation
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param ScheduleReservation $reservation 
 	 */
 	public function Add($startDate, $endDate, $reservation)
 	{
@@ -44,7 +44,7 @@ class ReservationListing implements IReservationListing
 	public function OnDate($date)
 	{
 		$reservationListing = new ReservationListing();
-		$dateKey = Date::Parse($date)->Format('Ymd');
+		$dateKey = $date->Format('Ymd');
 		
 		if (!array_key_exists($dateKey, $this->_reservationByDate))
 		{
@@ -64,7 +64,11 @@ class ReservationListing implements IReservationListing
 	public function ForResource($resourceId)
 	{
 		$reservationListing = new ReservationListing();
-		$reservationListing->_reservations = $this->_reservationByResource[$resourceId];
+		
+		if (array_key_exists($resourceId, $this->_reservationByResource))
+		{
+			$reservationListing->_reservations = $this->_reservationByResource[$resourceId];
+		}
 		
 		return $reservationListing;
 	}

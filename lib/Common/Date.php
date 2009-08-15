@@ -55,7 +55,7 @@ class Date
 	*/
 	public static function Create($year, $month, $day, $hour = 0, $minute = 0, $second = 0, $timezone = null)
 	{
-		return new Date(mktime($hour, $minute, $second, $month, $day, $year), $timezone);
+		return new Date(mktime(intVal($hour), intVal($minute), intVal($second), intVal($month), intVal($day), intVal($year)), $timezone);
 	}
 	
 	/**

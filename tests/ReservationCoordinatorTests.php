@@ -119,13 +119,13 @@ class ReservationCoordinatorTests extends TestBase
 		$this->assertTrue(Date::Parse('2009-01-04 06:00:00', $cst)->Equals($reservations[19]->DisplayStartDate));
 		$this->assertTrue(Date::Parse('2009-01-04 08:00:00', $cst)->Equals($reservations[19]->DisplayEndDate));
 		
-		$this->assertEquals(5, $reservationListing->OnDate('2009-01-01')->Count());
-		$this->assertEquals(4, $reservationListing->OnDate('2009-01-02')->Count());
-		$this->assertEquals(3, $reservationListing->OnDate('2009-01-03')->Count());
-		$this->assertEquals(0, $reservationListing->OnDate('2009-01-12')->Count());
+		$this->assertEquals(5, $reservationListing->OnDate(Date::Parse('2009-01-01'))->Count());
+		$this->assertEquals(4, $reservationListing->OnDate(Date::Parse('2009-01-02'))->Count());
+		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-03'))->Count());
+		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-12'))->Count());
 		
-		$this->assertEquals(3, $reservationListing->OnDate('2009-01-01')->ForResource(1)->Count());
-		$this->assertEquals(0, $reservationListing->OnDate('2009-01-01')->ForResource(10)->Count());
+		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-01'))->ForResource(1)->Count());
+		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-01'))->ForResource(10)->Count());
 	}
 	
 	public function testCreatesScheduleLayoutForSpecifiedTimezone()

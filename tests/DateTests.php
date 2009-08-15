@@ -267,6 +267,19 @@ class DateTests extends TestBase
     	$this->assertFalse($date1->DateEquals($date2));
     }
     
+    public function testCreateBuildsDateObjectCorectly()
+    {
+    	$date = Date::Create(2008, 10, 9, 8, 7, 6, 'CST');
+    	
+    	$this->assertEquals(2008, $date->Year());
+    	$this->assertEquals(10, $date->Month());
+    	$this->assertEquals(9, $date->Day());
+    	$this->assertEquals(8, $date->Hour());
+    	$this->assertEquals(7, $date->Minute());
+    	$this->assertEquals(6, $date->Second());
+    	$this->assertEquals('CST', $date->Timezone());
+    }
+    
     public function testCanCompareDateRelativity() 
     {
     	$date1 = Date::Parse('2008-01-01 11:00:00', 'CST');
@@ -287,8 +300,8 @@ class DateTests extends TestBase
     
 	public function testDateIsWithinRange()
 	{
-		$begin = Date::Create(2008, 09, 09, 10, 11, 12, 'UTC');
-		$end = Date::Create(2008, 10, 09, 10, 11, 12, 'UTC');
+		$begin = Date::Create(2008, 09, 9, 10, 11, 12, 'UTC');
+		$end = Date::Create(2008, 10, 9, 10, 11, 12, 'UTC');
 		
 		$range = new DateRange($begin, $end);
 		
@@ -305,8 +318,8 @@ class DateTests extends TestBase
 	
 	public function testDateRangeIsWithinRange()
 	{
-		$begin = Date::Create(2008, 09, 09, 10, 11, 12, 'UTC');
-		$end = Date::Create(2008, 10, 09, 10, 11, 12, 'UTC');
+		$begin = Date::Create(2008, 9, 9, 10, 11, 12, 'UTC');
+		$end = Date::Create(2008, 10, 9, 10, 11, 12, 'UTC');
 		
 		$range = new DateRange($begin, $end);
 		
@@ -318,6 +331,42 @@ class DateTests extends TestBase
 		$this->assertTrue($range->ContainsRange($within));
 		$this->assertTrue($range->ContainsRange($exact));
 		$this->assertFalse($range->ContainsRange($notWithin));
+	}
+	
+	public function testDateRangeReturnsAllDatesForRangeWithoutTime()
+	{
+		$begin = Date::Create(2008, 9, 9, 10, 11, 12, 'UTC');
+		$end = Date::Create(2008, 9, 12, 10, 11, 12, 'UTC');
+		
+		$range = new DateRange($begin, $end);
+		
+		$expected[] = $begin->GetDate();
+		$expected[] = $begin->AddDays(1)->GetDate();
+		$expected[] = $begin->AddDays(2)->GetDate();
+		$expected[] = $begin->AddDays(3)->GetDate();
+		
+		$actual = $range->Dates();
+		
+//		foreach ($expected as $d)
+//		{
+//			echo $d->ToString();
+//			echo "\n";
+//		}
+//		
+//		echo "\n";
+//		
+//		foreach ($actual as $d)
+//		{
+//			echo $d->ToString();
+//			echo "\n";
+//		}
+		
+		$this->assertEquals($expected, $actual);
+//		$this->assertEquals(count($expected), count($actual));
+//		$this->assertTrue($expected[0]->Equals($actual[0]), "Dates[0] are not equal");
+//		$this->assertTrue($expected[1]->Equals($actual[1]), "Dates[1] are not equal");
+//		$this->assertTrue($expected[2]->Equals($actual[2]), "Dates[2] are not equal");
+//		$this->assertTrue($expected[3]->Equals($actual[3]), "Dates[3] are not equal");
 	}
 }
 ?>

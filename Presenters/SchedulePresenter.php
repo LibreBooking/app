@@ -6,7 +6,12 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 
-class SchedulePresenter
+interface ISchedulePresenter
+{
+	public function PageLoad();
+}
+
+class SchedulePresenter implements ISchedulePresenter
 {
 	/**
 	 * @var ISchedulePage
@@ -117,6 +122,9 @@ class SchedulePresenter
 		$this->_permissionService = $permissionService;
 	}
 	
+	/**
+	 * @return IPermissionService
+	 */
 	public function GetPermissionService()
 	{
 		if (is_null($this->_permissionService))
@@ -127,29 +135,8 @@ class SchedulePresenter
 		
 		return $this->_permissionService;
 	}
-
-//	public function PageLoad()
-//	{
-//		//TODO: Use a builder here
-//		
-//		$schedules = $this->GetScheduleRepository()->GetAll();
-//		$this->_page->SetSchedules($schedules);
-//		
-//		$schedule = $this->GetCurrentSchedule($schedules);
-//		$scheduleId = $schedule->GetId();
-//		
-//		$this->_page->SetResources($this->GetResourceService()->GetScheduleResources($scheduleId));
-//		
-//		$startDate = Date::Now();
-//		$endDate = $startDate->AddDays($schedule->GetDaysVisible());
-//		
-//		$dates = $this->GetDisplayDates($startDate, $schedule->GetDaysVisible());
-//		$this->_page->SetDisplayDates($dates);
-//		
-//		$this->_page->SetReservations($this->GetReservationService()->GetReservations(new DateRange($startDate, $endDate), $scheduleId));
-//	}
 	
-	public function PageLoad2()
+	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
 		$scheduleRepository = $this->GetScheduleRepository();
@@ -161,7 +148,7 @@ class SchedulePresenter
 		$builder->BindSchedules($this->_page, $schedules, $activeScheduleId);
 		
 		$scheduleDates = $builder->GetScheduleDates($user, $currentSchedule, $this->_page);
-		$builder->BindDisplayDates($this->_page, $scheduleDates);
+		$builder->BindDisplayDates($this->_page, $scheduleDates, $user);
 				
 		$layout = $scheduleRepository->GetLayout($activeScheduleId);														
 		
@@ -173,7 +160,7 @@ class SchedulePresenter
 		$resourceService = $this->GetResourceService();
 		$resources = $resourceService->GetScheduleResources($activeScheduleId);
 		
-		$builder->BindLayout($layout);															
+		$builder->BindLayout($this->_page, $layout);															
 		$builder->BindReservations($this->_page, $resources, $reservations);
 	}
 	
@@ -214,18 +201,19 @@ interface ISchedulePageBuilder
 	
 	/**
 	 * Returns range of dates to bind in UTC
-	 * @param UserSession $user
+	 * @param UserSession $userSession
 	 * @param ISchedule $schedule
 	 * @param ISchedulePage $page
 	 * @return DateRange
 	 */
-	public function GetScheduleDates($user, ISchedule $schedule, ISchedulePage $page);
+	public function GetScheduleDates(UserSession $userSession, ISchedule $schedule, ISchedulePage $page);
 	
 	/**
 	 * @param ISchedulePage $page
 	 * @param DateRange $dateRange display dates in UTC
+	 * @param UserSession $user
 	 */
-	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange);
+	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession);
 	
 	/**
 	 * @param ISchedulePage $page
@@ -263,7 +251,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return $schedule;
 	}
 	
-	public function GetScheduleDates($user, ISchedule $schedule, ISchedulePage $page)
+	public function GetScheduleDates(UserSession $user, ISchedule $schedule, ISchedulePage $page)
 	{
 		$userTimezone = $user->Timezone;
 		$selectedDate = $page->GetSelectedDate();
@@ -298,9 +286,9 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return new DateRange($startDate->ToUtc(), $startDate->AddDays($scheduleLength)->ToUtc());
 	}
 	
-	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange)
+	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession)
 	{
-		$page->SetDisplayDates($dateRange);
+		$page->SetDisplayDates($dateRange->ToTimezone($userSession->Timezone));
 	}
 	
 	public function BindReservations(ISchedulePage $page, $resources, IReservationListing $reservations)
@@ -311,7 +299,13 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	
 	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout)
 	{
+		// TODO: This may be better off taking an array of SchedulePeriods
 		$page->SetLayout($layout);
+	}
+	
+	public function BindLayout(ISchedulePage $page, $schedulePeriods)
+	{
+		$page->SetLayout($schedulePeriods);
 	}
 	
 	/**

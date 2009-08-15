@@ -85,7 +85,7 @@ class SchedulePresenterTests extends TestBase
 			
 		$pageBuilder->expects($this->once())
 			->method('BindDisplayDates')
-			->with($this->equalTo($page, $bindingDates));
+			->with($this->equalTo($page), $this->equalTo($bindingDates), $this->equalTo($user));
 		
 		$reservationService->expects($this->once())
 			->method('GetReservations')
@@ -94,13 +94,13 @@ class SchedulePresenterTests extends TestBase
 		
 		$pageBuilder->expects($this->once())
 			->method('BindLayout')
-			->with($this->equalTo($layout));
+			->with($this->equalTo($page), $this->equalTo($layout));
 		
 		$pageBuilder->expects($this->once())
 			->method('BindReservations')
 			->with($this->equalTo($page), $this->equalTo($resources), $this->equalTo($reservations));
 
-		$presenter->PageLoad2();
+		$presenter->PageLoad();
 		
 	}
 	
@@ -404,18 +404,21 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder->BindReservations($page, $resources, $reservations);
 	}
 	
-	public function testBindDisplayDatesSetsDatesOnPage()
+	public function testBindDisplayDatesSetsPageToArrayOfDatesInUserTimezoneForRange()
 	{
+		$user = new UserSession(1);
+		$user->Timezone = 'EST';
 		$page = $this->getMock('ISchedulePage');
 		
-		$displayDates = new DateRange(Date::Now(), Date::Now());
+		$displayRange = new DateRange(Date::Now(), Date::Now()->AddDays(1));
+		$expectedRange = $displayRange->ToTimezone('EST');
 		
 		$page->expects($this->once())
 			->method('SetDisplayDates')
-			->with($this->equalTo($displayDates));
+			->with($this->equalTo($expectedRange));
 			
 		$pageBuilder = new SchedulePageBuilder();
-		$pageBuilder->BindDisplayDates($page, $displayDates);
+		$pageBuilder->BindDisplayDates($page, $displayRange, $user);
 	}
 	
 	public function testBindLayoutSetsLayoutOnPage()
@@ -424,7 +427,7 @@ class SchedulePresenterTests extends TestBase
 		$layout = $this->getMock('IScheduleLayout');
 		
 		$page->expects($this->once())
-			->method('BindLayout')
+			->method('SetLayout')
 			->with($this->equalTo($layout));
 		
 		$pageBuilder = new SchedulePageBuilder();

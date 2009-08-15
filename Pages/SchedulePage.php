@@ -2,12 +2,12 @@
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
 
-class SchedulePage extends SecurePage implements ISchedulePage
+class SchedulePage extends Page implements ISchedulePage
 {
 	public function __construct()
 	{
 		parent::__construct('Schedule');
-		$this->_presenter = new SchedulePresenter($this);
+		$this->_presenter = new MockSchedulePresenter($this);
 	}
 	
 	public function PageLoad()
@@ -18,6 +18,7 @@ class SchedulePage extends SecurePage implements ISchedulePage
 	
 	public function IsPostBack()
 	{
+		// TODO: Is this method needed?
 		return is_null($this->GetScheduleId());
 	}
 	
@@ -51,9 +52,10 @@ class SchedulePage extends SecurePage implements ISchedulePage
 		$this->smarty->assign('Layout', $scheduleLayout);
 	}
 	
-	public function SetDisplayDates($dates)
+	public function SetDisplayDates($dateRange)
 	{
-		$this->smarty->assign('DisplayDates', $dates);
+		$this->smarty->assign('DisplayDates', $dateRange);
+		$this->smarty->assign('BoundDates', $dateRange->Dates());
 	}
 	
 	public function GetSelectedDate()
@@ -87,7 +89,7 @@ interface ISchedulePage
 	
 	/**
 	 * Sets the layout to be used when presenting reservations
-	 * @param array[int]SchedulePeriod
+	 * @param IScheduleLayout
 	 */
 	public function SetLayout($scheduleLayout);
 	

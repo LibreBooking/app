@@ -36,6 +36,17 @@ class SchedulePeriod
 		return $this->_end;
 	}
 	
+	/**
+	 * @return string
+	 */
+	public function Label()
+	{
+		return $this->_label;
+	}
+	
+	/**
+	 * @return bool
+	 */
 	public function IsReservable()
 	{
 		return true;

@@ -5,25 +5,27 @@
 </select>
 
 <table>
-{section loop=$Resources name=test}
-	<tr>
-		<td>{$Resources[test]->GetName()}</td>
-	</tr>
-{/section}
 
-{foreach from=$DisplayDates item=date}
+{foreach from=$BoundDates item=date}
 	<tr>
 		<td>{$date->Format('Y-m-d H:i:s')}</td>
-		{foreach from=$LayoutPeriods item=period}
-			<td colspan="$period->Span()">$period->Label()</td>
+		{foreach from=$Layout->GetLayout() item=period}
+			<td>{$period->Label()}</td>
 		{/foreach}
 	</tr>
 	{foreach from=$Resources item=resource name=resource_loop}
-		{assign var=currentReservations value=$reservations->OnDate($date)->ForResource($resource)}
+		{assign var=crTmp value=$Reservations->OnDate($date)}
+		{assign var=currentReservations value=$crTmp->ForResource($resource->Id)}
 		<tr>
-			<td>{$resource->GetName()}</td>
+			<td>
+				{if $resource->CanAccess}
+					<a href="#" onclick="CreateReservation({$resource->Id}">{$resource->Name}</a>
+				{else}
+					{$resource->Name}
+				{/if}
+			</td>
 			{foreach from=$currentReservations item=reservation}
-				<td colspan="$reservation->Span()">res</td>
+				<td colspan="{$reservation->Span()}">res</td>
 			{/foreach}
 		</tr>
 	{/foreach}

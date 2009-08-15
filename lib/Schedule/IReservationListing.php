@@ -2,6 +2,7 @@
 interface IDateReservationListing extends IResourceReservationListing
 {
 	/**
+	 * @param int $resourceId
 	 * @return IResourceReservationListing
 	 */
 	public function ForResource($resourceId);
@@ -23,7 +24,7 @@ interface IResourceReservationListing
 interface IReservationListing extends IResourceReservationListing
 {
 	/**
-	 * @param $date string
+	 * @param Date $date
 	 * @return IDateReservationListing
 	 */
 	public function OnDate($date);

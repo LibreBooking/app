@@ -60,9 +60,29 @@ class DateRange
 	}
 	
 	/**
+	 * @return array[int]Date
+	 */
+	public function Dates()
+	{
+		$current = $this->_begin->GetDate();
+		$end = $this->_end->GetDate();
+		
+		$dates = array($current);
+		
+		for($day = 0; $current->Compare($end) < 0; $day++)
+		{
+			$current = $current->AddDays(1);
+			$dates[] = $current;
+		}
+		
+		return $dates;
+	}
+	
+	/**
+	 * @param string $timezone
 	 * @return DateRange
 	 */
-	public function ToTimezone(string $timezone)
+	public function ToTimezone($timezone)
 	{
 		return new DateRange($this->_begin->ToTimezone($timezone), $this->_end->ToTimezone($timezone));
 	}
