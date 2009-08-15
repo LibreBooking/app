@@ -1,6 +1,18 @@
 <?php
 
-class Resource
+interface IResource
+{
+	/**
+	 * @return int
+	 */
+	public function GetResourceId();
+	
+	/**
+	 * @return string
+	 */
+	public function GetName();
+}
+class Resource implements IResource
 {
 	private $_resourceId;
 	private $_name;

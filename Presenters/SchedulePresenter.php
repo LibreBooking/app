@@ -14,8 +14,9 @@ class SchedulePresenter
 	private $_page;
 	
 	private $_scheduleRepository;
-	private $_resourceRepository;
+	private $_resourceService;
 	private $_schedulePageBuilder;
+	private $_permissionService;
 	
 	/**
 	 * @var IReservationService
@@ -49,24 +50,24 @@ class SchedulePresenter
 	}
 	
 	/**
-	 * @param IResourceRepository $resourceRepository
+	 * @param IResourceService $resourceService
 	 */
-	public function SetResourceRepository($resourceRepository)
+	public function SetResourceService(IResourceService $resourceService)
 	{
-		$this->_resourceRepository = $resourceRepository;
+		$this->_resourceService = $resourceService;
 	}
 	
 	/**
-	 * @return IResourceRepository
+	 * @return IResourceService
 	 */
-	private function GetResourceRepository()
+	private function GetResourceService()
 	{
-		if (is_null($this->_resourceRepository))
+		if (is_null($this->_resourceService))
 		{
-			$this->_resourceRepository = new ResourceRepository();
+			$this->_resourceService = new ResourceService(new ResourceRepository(), new PermissionService());
 		}
 		
-		return $this->_resourceRepository;
+		return $this->_resourceService;
 	}
 	
 	/**
@@ -111,6 +112,22 @@ class SchedulePresenter
 		return $this->_schedulePageBuilder;
 	}
 	
+	public function SetPermissionService(IPermissionService $permissionService)
+	{
+		$this->_permissionService = $permissionService;
+	}
+	
+	public function GetPermissionService()
+	{
+		if (is_null($this->_permissionService))
+		{
+			$this->_permissionService = null;
+			throw new Exception("not implemented");
+		}
+		
+		return $this->_permissionService;
+	}
+
 //	public function PageLoad()
 //	{
 //		//TODO: Use a builder here
@@ -121,7 +138,7 @@ class SchedulePresenter
 //		$schedule = $this->GetCurrentSchedule($schedules);
 //		$scheduleId = $schedule->GetId();
 //		
-//		$this->_page->SetResources($this->GetResourceRepository()->GetScheduleResources($scheduleId));
+//		$this->_page->SetResources($this->GetResourceService()->GetScheduleResources($scheduleId));
 //		
 //		$startDate = Date::Now();
 //		$endDate = $startDate->AddDays($schedule->GetDaysVisible());
@@ -135,23 +152,29 @@ class SchedulePresenter
 	public function PageLoad2()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		$schedules = $this->GetScheduleRepository()->GetAll();
+		$scheduleRepository = $this->GetScheduleRepository();
+		$schedules = $scheduleRepository->GetAll();
 		$builder = $this->GetPageBuilder();
 		
 		$currentSchedule = $builder->GetCurrentSchedule($this->_page, $schedules);
 		$activeScheduleId = $currentSchedule->GetId();
-		
 		$builder->BindSchedules($this->_page, $schedules, $activeScheduleId);
-		$scheduleDates = $builder->GetScheduleDates($user, $currentSchedule);
-		$builder->BindDisplayDates($this->_page, $scheduleDates);
 		
-		$resourceRepository = $this->GetResourceRepository();
-		$resources = $resourceRepository->GetScheduleResources($activeScheduleId);
+		$scheduleDates = $builder->GetScheduleDates($user, $currentSchedule, $this->_page);
+		$builder->BindDisplayDates($this->_page, $scheduleDates);
+				
+		$layout = $scheduleRepository->GetLayout($activeScheduleId);														
+		
 		$reservations = $this->GetReservationService()->GetReservations($scheduleDates, 
 																		$activeScheduleId, 
-																		$user->Timezone);
-				
-		$builder->BindReservations($this->_page, $resources, $reservations, $scheduleDates);
+																		$user->Timezone,
+																		$layout);
+		
+		$resourceService = $this->GetResourceService();
+		$resources = $resourceService->GetScheduleResources($activeScheduleId);
+		
+		$builder->BindLayout($layout);															
+		$builder->BindReservations($this->_page, $resources, $reservations);
 	}
 	
 	/**
@@ -193,9 +216,10 @@ interface ISchedulePageBuilder
 	 * Returns range of dates to bind in UTC
 	 * @param UserSession $user
 	 * @param ISchedule $schedule
+	 * @param ISchedulePage $page
 	 * @return DateRange
 	 */
-	public function GetScheduleDates($user, ISchedule $schedule);
+	public function GetScheduleDates($user, ISchedule $schedule, ISchedulePage $page);
 	
 	/**
 	 * @param ISchedulePage $page
@@ -205,11 +229,16 @@ interface ISchedulePageBuilder
 	
 	/**
 	 * @param ISchedulePage $page
-	 * @param array[int]Resource $resources
-	 * @param array[int]ScheduleReservation $reservations
-	 * @param DateRange $bindingDates
+	 * @param array[int]ResourceDto $resources
+	 * @param IReservationListing $reservations
 	 */
-	public function BindReservations(ISchedulePage $page, $resources, $reservations, $bindingDates);
+	public function BindReservations(ISchedulePage $page, $resources, IReservationListing $reservations);
+	
+	/**
+	 * @param ISchedulePage $page
+	 * @param IScheduleLayout $layout
+	 */
+	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
@@ -234,40 +263,55 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return $schedule;
 	}
 	
-	public function GetScheduleDates($user, ISchedule $schedule)
+	public function GetScheduleDates($user, ISchedule $schedule, ISchedulePage $page)
 	{
-		$currentDate = Date::Now();
+		$userTimezone = $user->Timezone;
+		$selectedDate = $page->GetSelectedDate();
+		$date = empty($selectedDate) ? Date::Now() : new Date($selectedDate, 'UTC');
+		$currentDate = $date->ToTimezone($userTimezone)->GetDate();
 		$currentWeekDay = $currentDate->Weekday();
 		$scheduleLength = $schedule->GetDaysVisible();
 		
 		$startDay = $schedule->GetWeekdayStart();
 		
-		// if we are on 3 and we need to start on 6, we need to go back 4 days
-		// if we are on 3 and we need to start on 5, we need to go back 5 days
-		// if we are on 3 and we need to start on 4, we need to go back 6 days
-		// if we are on 3 and we need to start on 3, we need to go back 0 days
-		// if we are on 3 and we need to start on 2, we need to go back 1 days
-		// if we are on 3 and we need to start on 1, we need to go back 2 days
-		// if we are on 3 and we need to start on 0, we need to go back 3 days
+		/**
+		 *  Examples
+		 * 
+		 *  if we are on 3 and we need to start on 6, we need to go back 4 days
+		 *  if we are on 3 and we need to start on 5, we need to go back 5 days
+		 *  if we are on 3 and we need to start on 4, we need to go back 6 days
+		 *  if we are on 3 and we need to start on 3, we need to go back 0 days
+		 *  if we are on 3 and we need to start on 2, we need to go back 1 days
+		 *  if we are on 3 and we need to start on 1, we need to go back 2 days
+		 *  if we are on 3 and we need to start on 0, we need to go back 3 days
+		 */	
+		
+		$adjustedDays = ($startDay - $currentWeekDay);
 		
 		if ($currentWeekDay < $startDay)
 		{
-			$adjustedDays = ($currentDay - $startDay) - 7;
+			$adjustedDays = $adjustedDays - 7;
 		}
 		
-		$startDate = $currentDate->AddDays($currentWeekDay - $startDay);
+		$startDate = $currentDate->AddDays($adjustedDays);
 		
 		return new DateRange($startDate->ToUtc(), $startDate->AddDays($scheduleLength)->ToUtc());
 	}
 	
 	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange)
 	{
-		throw new Exception();
+		$page->SetDisplayDates($dateRange);
 	}
 	
-	public function BindReservations(ISchedulePage $page, $resources, $reservations, $bindingDates)
+	public function BindReservations(ISchedulePage $page, $resources, IReservationListing $reservations)
 	{
-		throw new Exception();
+		$page->SetResources($resources);
+		$page->SetReservations($reservations);
+	}
+	
+	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout)
+	{
+		$page->SetLayout($layout);
 	}
 	
 	/**

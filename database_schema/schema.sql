@@ -216,7 +216,21 @@ CREATE TABLE `schedule` (
   `weekdaystart` tinyint(3) unsigned NOT NULL default '0',
   `adminid` bigint(20) unsigned NOT NULL,
   `daysvisible` tinyint(3) unsigned NOT NULL default '7',
+  `layoutid` int(10) unsigned NOT NULL
   PRIMARY KEY  (`scheduleid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `layout`
+--
+
+DROP TABLE IF EXISTS `layout`;
+CREATE TABLE `layout` (
+  `layoutid` int(10) unsigned NOT NULL auto_increment,
+  `label` varchar(50) default NULL,
+  `periodstart` time NOT NULL,
+  `periodend` time NOT NULL,
+  PRIMARY KEY  (`layoutid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

@@ -163,6 +163,16 @@ class Date
 	}
 	
 	/**
+	 * Returns the Date only part of the date.  Hours, Minutes and Seconds will be 0
+	 * 
+	 * @return Date
+	 */
+	public function GetDate()
+	{
+		return Date::Create($this->Year(), $this->Month(), $this->Day(), 0, 0, 0, $this->Timezone());
+	}
+	
+	/**
 	 * Compares this date to the one passed in
 	 * Returns:
 	 * -1 if this date is less than the passed in date
@@ -314,7 +324,7 @@ class Date
 	
 	public function ToString()
 	{
-		return $this->Format('Y-m-d H:i:s');
+		return $this->Format('Y-m-d H:i:s') . ' ' . $this->timezone;
 	}
 //	
 //	public function DayOfYear()

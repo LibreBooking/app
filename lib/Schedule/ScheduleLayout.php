@@ -63,7 +63,7 @@ class ScheduleLayout implements IScheduleLayout
 	}
 
 	/**
-	 * @return array of SchedulePeriod
+	 * @return array[]SchedulePeriod
 	 */
 	public function GetLayout()
 	{

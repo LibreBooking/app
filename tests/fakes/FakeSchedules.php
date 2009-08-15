@@ -80,5 +80,10 @@ class FakeScheduleRepository implements IScheduleRepository
 		$this->_GetAllCalled = true;
 		return $this->_AllRows;
 	}
+	
+	public function GetLayout($scheduleId)
+	{
+		throw new Exception("not implemented");
+	}
 }
 ?>

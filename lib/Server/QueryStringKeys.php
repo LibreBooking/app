@@ -8,5 +8,6 @@ class QueryStringKeys
 	const REDIRECT = 'redirect';
 	const LANGUAGE = 'lang';
 	const SCHEDULE_ID = 'sid';
+	const START_DATE = 'sd';
 }
 ?>

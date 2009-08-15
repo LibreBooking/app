@@ -7,6 +7,12 @@ interface IScheduleRepository
 	 * @return array list of Schedule objects
 	 */
 	public function GetAll();
+	
+	/**
+	 * @param int $scheduleId
+	 * @return IScheduleLayout
+	 */
+	public function GetLayout($scheduleId);
 }
 
 class ScheduleRepository implements IScheduleRepository 
@@ -34,6 +40,11 @@ class ScheduleRepository implements IScheduleRepository
 		$reader->Free();
 		
 		return $schedules;
+	}
+	
+	public function GetLayout($scheduleId)
+	{
+		throw new Exception("not implemented");
 	}
 }
 
