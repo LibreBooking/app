@@ -2,6 +2,7 @@
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'tests/fakes/namespace.php');
 
 class ResourceTests extends TestBase
 {

@@ -19,11 +19,7 @@ class ReservationService implements IReservationService
 		$this->_coordinatorFactory = $coordinatorFactory;
 	}
 		
-	public function GetReservations(
-		DateRange $dateRangeUtc, 
-		$scheduleId, 
-		$targetTimezone, 
-		IScheduleLayout $layout)
+	public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone)
 	{
 		$reservations = $this->_repository->GetWithin($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), $scheduleId);
 		
@@ -34,9 +30,7 @@ class ReservationService implements IReservationService
 			$coordinator->AddReservation($reservation);
 		}
 		
-		$coordinator->Arrange($timezone, $dateRangeUtc);
-		
-		throw new Exception("need to somehow bind reservations to a layout");
+		$coordinator->Arrange($targetTimezone, $dateRangeUtc);
 	}
 }
 
@@ -49,6 +43,6 @@ interface IReservationService
 	 * @param IScheduleLayout the layout to bind the reservations to
 	 * @return IReservationListing
 	 */
-	function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, IScheduleLayout $layout);
+	function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone);
 }
 ?>

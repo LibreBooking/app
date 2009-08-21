@@ -25,12 +25,13 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @param array[int]ScheduleReservation $reservations array of ScheduleReservation objects
 	 * @param IScheduleLayout $layout
 	 * @param Date $layoutDate
+	 * @param string $targetTimezone
 	 */
-	public function __construct($reservations, IScheduleLayout $layout, Date $layoutDate)
+	public function __construct($reservations, IScheduleLayout $layout, Date $layoutDate, $targetTimezone)
 	{
 		$this->_reservations = $reservations;
-		$this->_layout = $layout;
-		$this->_layoutDate = $layoutDate;
+		$this->_layout = $layout->ToTimezone($targetTimezone);
+		$this->_layoutDate = $layoutDate->ToTimezone($targetTimezone);
 		
 		$this->_layoutItems = $this->_layout->GetLayout();
 		$this->_midnight = new Time(0,0,0, $this->_layout->Timezone());

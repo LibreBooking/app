@@ -14,7 +14,7 @@ class ScheduleReservationListTests extends TestBase
 	{
 		parent::setup();
 		
-		$tz = 'GMT';
+		$tz = 'UTC';
 		$dbDate = '2008-11-11';
 		$userTz = 'CST';
 		
@@ -24,7 +24,7 @@ class ScheduleReservationListTests extends TestBase
 		$this->dbDate = $dbDate;
 		$this->date = Date::Parse($dbDate, $tz);
 		
-		$layout = new ScheduleLayout();
+		$layout = new ScheduleLayout($tz);
 		
 		$layout->AppendBlockedPeriod(new Time(0, 0, 0, $tz), new Time(8, 0, 0, $tz));
 		
@@ -44,6 +44,37 @@ class ScheduleReservationListTests extends TestBase
 	public function teardown()
 	{
 		parent::teardown();
+	}
+	
+	function testLayoutIsConvertedToUserTimezoneBeforeSlotsAreCreated()
+	{
+		$userTz = 'CST';
+		$utc = 'UTC';
+		$layout = new ScheduleLayout($utc);
+		$layout->AppendBlockedPeriod(new Time(0, 0, 0, $utc), new Time(1, 0, 0, $utc));
+		$layout->AppendPeriod(new Time(1, 0, 0, $utc), new Time(3, 0, 0, $utc));
+		$layout->AppendBlockedPeriod(new Time(3, 0, 0, $utc), new Time(0, 0, 0, $utc));
+		
+		FakeScheduleReservations::Initialize();
+		$r1 = FakeScheduleReservations::$Reservation1;
+		$r1->SetStartDate($this->dbDate);
+		$r1->SetStartTime('01:00:00');
+		$r1->SetEndDate($this->dbDate);
+		$r1->SetEndTime('03:00:00');
+		
+		$scheduleList = new ScheduleReservationList(array($r1), $layout, $this->date, $userTz);
+		$slots = $scheduleList->BuildSlots();
+		
+		$slot1 = new EmptyReservationSlot(new Time(0,0,0, $userTz), new Time(17,0,0, $userTz));
+		$slot2 = new EmptyReservationSlot(new Time(18,0,0, $userTz), new Time(19,0,0, $userTz));
+		$slot3 = new ReservationSlot(new Time(19,0,0, $userTz), new Time(21,0,0, $userTz), 1);
+		$slot4 = new EmptyReservationSlot(new Time(21,0,0, $userTz), new Time(0,0,0, $userTz));
+		
+		$this->assertEquals(4, count(slots));
+		$this->assertEquals($slot1, $slots[0]);
+		$this->assertEquals($slot2, $slots[1]);
+		$this->assertEquals($slot3, $slots[2]);
+		$this->assertEquals($slot4, $slots[3]);	
 	}
 	
 	function testCanGetReservationSlotsForSingleDay()
@@ -86,7 +117,7 @@ class ScheduleReservationListTests extends TestBase
 //		printf("%s\n", Date::Now()->ToString());
 		
 		$list = new ScheduleReservationList($reservations, $this->testDbLayout, $this->date);
-		$slots = $list->BuildSlots();
+		$slots = $list->BuildSlots($userTz);
 		
 //		printf("%s\n", Date::Now()->ToString());
 		

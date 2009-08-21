@@ -31,8 +31,6 @@ class ReservationServiceTests extends TestBase
 		
 	public function testGetReservationsPullsReservationFromTheRepositoryAndAddsThemToTheCoordinator()
 	{
-		$this->fail("finish this test first");
-		
 		$timezone = 'UTC';
 		$startDate = Date::Now();
 		$endDate = Date::Now();
@@ -85,7 +83,9 @@ class ReservationServiceTests extends TestBase
 			
 		$service = new ReservationService($this->repository, $coordinatorFactory);
 		
-		$service->GetReservations($range, $scheduleId, $timezone);
+		$listing = $service->GetReservations($range, $scheduleId, $timezone);
+		
+		$this->assertEquals($this->reservationListing, $listing);
 	}
 	
 }

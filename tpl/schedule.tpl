@@ -14,8 +14,8 @@
 		{/foreach}
 	</tr>
 	{foreach from=$Resources item=resource name=resource_loop}
-		{assign var=crTmp value=$Reservations->OnDate($date)}
-		{assign var=currentReservations value=$crTmp->ForResource($resource->Id)}
+		{assign var=curResTmp value=$Reservations->OnDate($date)}
+		{assign var=currentReservations value=$curResTmp->ForResource($resource->Id)}
 		<tr>
 			<td>
 				{if $resource->CanAccess}
