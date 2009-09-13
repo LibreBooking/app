@@ -85,6 +85,16 @@ class Time
 	}
 	
 	/**
+	 * Compares this time to the one passed in
+	 * @param Time time
+	 * @return bool if the current object is greater than the one passed in
+	 */
+	public function GreaterThan(Time $end)
+	{
+		return $this->_date->Compare($end->_date) > 0;
+	}
+	
+	/**
 	 * Compare the 2 times
 	 *
 	 * @param Time $time

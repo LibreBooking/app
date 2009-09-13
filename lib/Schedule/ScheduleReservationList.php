@@ -30,7 +30,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	public function __construct($reservations, IScheduleLayout $layout, Date $layoutDate, $targetTimezone)
 	{
 		$this->_reservations = $reservations;
-		$this->_layout = $layout->ToTimezone($targetTimezone);
+		$this->_layout = $layout;
 		$this->_layoutDate = $layoutDate->ToTimezone($targetTimezone);
 		
 		$this->_layoutItems = $this->_layout->GetLayout();

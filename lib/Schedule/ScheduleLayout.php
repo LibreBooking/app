@@ -30,24 +30,7 @@ class ScheduleLayout implements IScheduleLayout
 	 */
 	public function AppendPeriod(Time $startTime, Time $endTime, $label = null)
 	{
-		$localStart = $startTime->ToTimezone($this->_timezone);
-		
-		$periodStart = $startTime->ToTimezone($this->_timezone);
-		$periodEnd = $endTime->ToTimezone($this->_timezone);
-		
-		if ($localStart->Hour() < $startTime->Hour())
-		{
-			$periodStart = new Time(0, 0, 0, $startTime->Timezone());
-			$periodEnd = $endTime->ToTimezone($this->_timezone);
-			
-			$otherStart = new Time(24 - abs($localStart->Hour()), 0, 0, $this->_timezone);
-			$otherEnd = new Time(0, 0, 0, $this->_timezone);
-			
-			$this->_periods[] = new SchedulePeriod($otherStart, $otherEnd, '');
-		}
-		
-		//$localEnd = $startTime->ToTimezone($this->_timezone);
-		$this->_periods[] = new SchedulePeriod($periodStart, $periodEnd, $label);
+		$this->AppendGenericPeriod($startTime, $endTime, $label, 'SchedulePeriod');		
 	}
 	
 	/**
@@ -59,7 +42,55 @@ class ScheduleLayout implements IScheduleLayout
 	 */
 	public function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null)
 	{
-		$this->_periods[] = new NonSchedulePeriod($startTime, $endTime, $label);
+		$this->AppendGenericPeriod($startTime, $endTime, $label, 'NonSchedulePeriod');
+	}
+	
+	private function AppendGenericPeriod(Time $startTime, Time $endTime, $label = null, $periodType)
+	{
+		$localStart = $startTime->ToTimezone($this->_timezone);
+		
+		$periodStart = $startTime->ToTimezone($this->_timezone);
+		$periodEnd = $endTime->ToTimezone($this->_timezone);
+		
+		if ($this->SpansMidnight($periodStart, $periodEnd))
+		{
+			$midnight = new Time(0, 0, 0, $this->_timezone);
+			$localEnd = $periodEnd;
+			
+			//$otherStart = new Time(24 - abs($localStart->Hour()), 0, 0, $this->_timezone);
+			$otherStart = $periodStart;
+			$otherEnd = new Time(0, 0, 0, $this->_timezone);
+			
+			$this->_periods[] = new $periodType($midnight, $localEnd, $label);
+			$this->_periods[] = new $periodType($otherStart, $otherEnd, $label);
+		}
+		else
+		{
+			$this->_periods[] = new $periodType($periodStart, $periodEnd, $label);
+		}
+//		if ($localStart->Hour() < $startTime->Hour())
+//		{
+//			$periodStart = new Time(0, 0, 0, $this->_timezone);
+//			$periodEnd = $endTime->ToTimezone($this->_timezone);
+//			
+//			$otherStart = new Time(24 - abs($localStart->Hour()), 0, 0, $this->_timezone);
+//			$otherEnd = new Time(0, 0, 0, $this->_timezone);
+//			
+//			$this->_periods[] = new $periodType($otherStart, $otherEnd, '');
+//		}
+		
+		//$localEnd = $startTime->ToTimezone($this->_timezone);
+
+	}
+	
+	/**
+	 * @param Time $start
+	 * @param Time $end
+	 * @return bool
+	 */
+	private function SpansMidnight(Time $start, Time $end)
+	{
+		return $start->GreaterThan($end);
 	}
 
 	/**
@@ -70,7 +101,6 @@ class ScheduleLayout implements IScheduleLayout
 		$layout = $this->_periods;
 		
 		$this->SortItems($layout);
-//		usort($layout, array("ScheduleLayout", "SortBeginTimes"));
 		
 		return $layout;	
 	}
@@ -86,21 +116,21 @@ class ScheduleLayout implements IScheduleLayout
 		usort($items, array("ScheduleLayout", "SortBeginTimes"));
 	}
 	
-	/**
-	 * @param string $timezone
-	 * @return ScheduleLayout
-	 */
-	public function ToTimezone($timezone)
-	{
-		$converted = new ScheduleLayout($timezone);
-		foreach($this->_periods as $period)
-		{
-			$converted->AddPeriod($period->ToTimezone($timezone));
-		}
-		
-		$converted->Sort();
-		return $converted;
-	}
+//	/**
+//	 * @param string $timezone
+//	 * @return ScheduleLayout
+//	 */
+//	public function ToTimezone($timezone)
+//	{
+//		$converted = new ScheduleLayout($timezone);
+//		foreach($this->_periods as $period)
+//		{
+//			$converted->AddPeriod($period->ToTimezone($timezone));
+//		}
+//		
+//		//$converted->Sort();
+//		return $converted;
+//	}
 	
 	public function Timezone()
 	{
