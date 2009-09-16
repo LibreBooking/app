@@ -11,6 +11,9 @@ interface IScheduleReservationList
 class ScheduleReservationList implements IScheduleReservationList
 {
 	private $_reservations;
+	/**
+	 * @var IScheduleLayout
+	 */
 	private $_layout;
 	private $_layoutDate;
 	
@@ -20,6 +23,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	private $_layoutByEndTime = array();	
 	
 	private $_midnight;
+	private $_destinationTimezone;
 	
 	/**
 	 * @param array[int]ScheduleReservation $reservations array of ScheduleReservation objects
@@ -32,10 +36,10 @@ class ScheduleReservationList implements IScheduleReservationList
 		$this->_reservations = $reservations;
 		$this->_layout = $layout;
 		$this->_layoutDate = $layoutDate->ToTimezone($targetTimezone);
-		
+		$this->_destinationTimezone = $this->_layout->Timezone();
 		$this->_layoutItems = $this->_layout->GetLayout();
-		$this->_midnight = new Time(0,0,0, $this->_layout->Timezone());
-		
+		$this->_midnight = new Time(0,0,0, $this->_destinationTimezone);
+			
 		$this->IndexReservations();
 		$this->IndexLayout();
 	}
@@ -58,7 +62,7 @@ class ScheduleReservationList implements IScheduleReservationList
 				}
 				else
 				{
-					$endTime = $reservation->GetEndTime();
+					$endTime = $reservation->GetEndTime()->ToTimezone($this->_destinationTimezone);
 				}
 				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
@@ -86,7 +90,7 @@ class ScheduleReservationList implements IScheduleReservationList
 			}
 			else 
 			{
-				$startTime = $reservation->GetStartTime();
+				$startTime = $reservation->GetStartTime()->ToTimezone($this->_destinationTimezone);
 			}
 			
 			$this->_reservationsByStartTime[$startTime->ToString()] = $reservation;
@@ -95,12 +99,12 @@ class ScheduleReservationList implements IScheduleReservationList
 	
 	private function ReservationStartsOnPastDate(ScheduleReservation $reservation)
 	{
-		return $reservation->GetStartDate()->Compare($this->_layoutDate) < 0;
+		return $reservation->GetStartDate()->LessThan($this->_layoutDate);
 	}
 	
 	private function ReservationEndsOnFutureDate(ScheduleReservation $reservation)
 	{
-		return $reservation->GetEndDate()->Compare($this->_layoutDate) > 0;
+		return $reservation->GetEndDate()->GreaterThan($this->_layoutDate);
 	}
 	
 	private function IndexLayout()

@@ -1,6 +1,5 @@
 <?php
-$basedir = dirname(__FILE__) . '/../..';
-require_once($basedir . '/lib/Reminder.class.php');
+require_once(ROOT_DIR . '/lib/Reminder.class.php');
 
 class FakeReminder extends Reminder
 {
@@ -20,6 +19,7 @@ class FakeReminder extends Reminder
 		$this->machid = 'machid';
 		$this->email = 'email@email.com';
 		$this->memberid = 'memberid';
+		$this->timezone = 8;
 	}
 }
 ?>

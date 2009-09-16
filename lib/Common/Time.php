@@ -86,7 +86,7 @@ class Time
 	
 	/**
 	 * Compares this time to the one passed in
-	 * @param Time time
+	 * @param Time $end
 	 * @return bool if the current object is greater than the one passed in
 	 */
 	public function GreaterThan(Time $end)

@@ -2,7 +2,7 @@
 /**
 * Builds and sends the email for reservation reminders
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 03-16-06
+* @version 06-21-08
 * @package phpScheduleIt
 *
 * Copyright (C) 2003 - 2007 phpScheduleIt
@@ -14,7 +14,7 @@ include_once('interfaces/IEmail.php');
 class ReminderEmail extends IEmail
 {
 	var $_mailer = null;
-	
+
 	/**
 	* Builds a reminder email object from a Reminder
 	* @param IMailer $mailer the IMailer object to use for sending the email
@@ -22,40 +22,40 @@ class ReminderEmail extends IEmail
 	function ReminderEmail(&$mailer) {
 		$this->_mailer =& $mailer;
 	}
-	
+
 	function send() {
 		$this->_mailer->Send();
 	}
-	
+
 	function addAddress($address, $name = '') {
 		$this->_mailer->AddAddress($address);
 	}
-	
+
 	function addCC($address, $name = '') {
 		die('Not implemented');
 	}
-	
+
 	function addBCC($address, $name = '') {
 		die('Not implemented');
 	}
-	
+
 	function isHTML($isHtml = false) {
 		$this->_mailer->IsHTML($isHtml);
 	}
-	
+
 	function setFrom($address, $name = '') {
 		$this->_mailer->From = $address;
 		$this->_mailer->FromName = $name;
 	}
-	
+
 	function setSubject($subject) {
 		$this->_mailer->Subject = $subject;
 	}
-	
+
 	function setBody($body) {
 		$this->_mailer->Body = $body;
 	}
-	
+
 	function buildFromReminder($reminder) {
 		$this->addAddress($reminder->email);
 		$this->setFrom($reminder->email);
@@ -63,13 +63,25 @@ class ReminderEmail extends IEmail
 		$this->setBody($this->_buildBody($reminder));
 		$this->isHTML(false);
 	}
-	
+
 	function _buildSubject($reminder) {
-		return translate('Reminder Subject', array($reminder->resource_name, Time::formatDate($reminder->start_date), Time::formatTime($reminder->start_time)));
+		return translate('Reminder Subject',
+			array(
+			$reminder->resource_name,
+			Time::formatDate($reminder->start_date, '', true, $reminder->timezone),
+			Time::formatTime($reminder->start_time, true, $reminder->timezone)
+			)
+		);
 	}
-	
+
 	function _buildBody($reminder) {
-		return translate_email('Reminder Body', $reminder->resource_name, Time::formatDate($reminder->start_date), Time::formatTime($reminder->start_time), Time::formatDate($reminder->end_date), Time::formatTime($reminder->end_time));
+		return translate_email('Reminder Body',
+			$reminder->resource_name,
+			Time::formatDate($reminder->start_date, '', true, $reminder->timezone),
+			Time::formatTime($reminder->start_time, true, $reminder->timezone),
+			Time::formatDate($reminder->end_date, '', true, $reminder->timezone),
+			Time::formatTime($reminder->end_time, true, $reminder->timezone)
+		);
 	}
 }
 ?>

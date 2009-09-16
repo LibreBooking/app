@@ -48,7 +48,7 @@ $tests = array(
 //'SchedulePresenterTests.php',
 'ResourceTests.php',
 'DateTests.php',
-'ScheduleReservationListTests.php',);
+'ScheduleReservationListTests.php');
 
 $passed = true;
 $totalRun = 0;

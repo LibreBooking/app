@@ -202,6 +202,26 @@ class Date
 	}
 	
 	/**
+	 * Compares this date to the one passed in
+	 * @param Date $end
+	 * @return bool if the current object is greater than the one passed in
+	 */
+	public function GreaterThan(Date $end)
+	{
+		return $this->Compare($end) > 0;
+	}
+	
+	/**
+	 * Compares this date to the one passed in
+	 * @param Date $end
+	 * @return bool if the current object is less than the one passed in
+	 */
+	public function LessThan(Date $end)
+	{
+		return $this->Compare($end) < 0;
+	}
+	
+	/**
 	 * Compare the 2 dates
 	 *
 	 * @param Date $date

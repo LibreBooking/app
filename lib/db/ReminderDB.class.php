@@ -2,7 +2,7 @@
 /**
 * Handles all database functions for reminders
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 03-26-06
+* @version 06-21-08
 * @package DBEngine
 *
 * Copyright (C) 2003 - 2007 phpScheduleIt
@@ -17,7 +17,7 @@ include_once($basedir . '/lib/DBEngine.class.php');
 * Provide all access to database to manage reservations
 */
 class ReminderDB extends DBEngine {
-	
+
 	/**
 	* Gets all reminders to load the reminders at or before the given datetime
 	* @param int $max_date a date
@@ -25,11 +25,11 @@ class ReminderDB extends DBEngine {
 	*/
 	function getReminders($max_date) {
 		$return = array();
-		
+
 		$query = 'SELECT
 					rs.resid, rs.starttime, rs.endtime, rs.start_date, rs.end_date,
 					r.name, r.location, r.machid,
-					l.email, l.memberid, l.lang,
+					l.email, l.memberid, l.lang, l.timezone,
 					rem.reminderid
 				FROM ' . $this->get_table(TBL_REMINDERS) . ' rem INNER JOIN '
 				. $this->get_table(TBL_RESERVATIONS) . ' rs ON rem.resid = rs.resid INNER JOIN '
@@ -39,15 +39,15 @@ class ReminderDB extends DBEngine {
 
 		$result = $this->db->query($query, array($max_date));
 		$this->check_for_error($result);
-		
+
 		while ($rs = $result->fetchRow()) {
 			$return[] = $this->_buildReminder($this->cleanRow($rs));
 		}
-		
-		$result->free();	
+
+		$result->free();
 		return $return;
 	}
-	
+
 	/**
 	* Saves a reminder to the database
 	* @param Reminder $reminder the populated reminder object to save
@@ -60,7 +60,7 @@ class ReminderDB extends DBEngine {
 		$result = $this->db->execute($q, $values);
 		$this->check_for_error($result);
 	}
-	
+
 	/**
 	* Updates an existing reminder in the database
 	* @param Reminder $reminder the populated reminder object to save
@@ -72,7 +72,7 @@ class ReminderDB extends DBEngine {
 		$result = $this->db->execute($q, $values);
 		$this->check_for_error($result);
 	}
-	
+
 	/**
 	* Deletes an existing reminder from the database
 	* @param string $memberid member id of the reminder owner
@@ -85,7 +85,7 @@ class ReminderDB extends DBEngine {
 		$result = $this->db->execute($q, $values);
 		$this->check_for_error($result);
 	}
-	
+
 	/**
 	* Builds a Reminder object from the database row
 	* @param array $row row of data to populate the object with
@@ -105,7 +105,8 @@ class ReminderDB extends DBEngine {
 		$reminder->email = $row['email'];
 		$reminder->memberid = $row['memberid'];
 		$reminder->lang = $row['lang'];
-		
+		$reminder->timezone = $row['timezone'];
+
 		return $reminder;
 	}
 }
