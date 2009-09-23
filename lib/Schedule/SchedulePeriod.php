@@ -61,6 +61,11 @@ class SchedulePeriod
 	{
 		return new SchedulePeriod($this->_begin->ToTimezone($timezone), $this->_end->ToTimezone($timezone), $this->_label);	
 	}
+	
+	public function __toString()
+	{
+		return sprintf("Begin: %s End: %s Label: %s", $this->Begin(), $this->End(), $this->Label());
+	}
 }
 
 class NonSchedulePeriod extends SchedulePeriod

@@ -109,5 +109,10 @@ class Time
 	{
 		return sprintf("%d:%02d:%02d", $this->_hour, $this->_minute, $this->_second);
 	}
+	
+	public function __toString() 
+	{
+      return $this->ToString();
+  	}
 }
 ?>

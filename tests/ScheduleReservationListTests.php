@@ -342,7 +342,7 @@ class ScheduleReservationListTests extends TestBase
 		$slots = $list->BuildSlots();
 		$expectedSlots = $this->testDbLayout->GetLayout();
 		
-		$slot1 = new ReservationSlot($expectedSlots[0]->Begin(), $expectedSlots[5]->End(), 6);
+		$slot1 = new ReservationSlot(new Time(0,0,0,$userTz), $expectedSlots[5]->End(), 6);
 		$slot2 = new EmptyReservationSlot($expectedSlots[6]->Begin(), $expectedSlots[6]->End());
 		$slot3 = new ReservationSlot($expectedSlots[7]->Begin(), $expectedSlots[7]->End(), 1);
 		$slot4 = new EmptyReservationSlot($expectedSlots[8]->Begin(), $expectedSlots[8]->End());
@@ -358,8 +358,11 @@ class ScheduleReservationListTests extends TestBase
 		$slot14 = new EmptyReservationSlot($expectedSlots[25]->Begin(), $expectedSlots[25]->End());
 		$slot15 = new EmptyReservationSlot($expectedSlots[26]->Begin(), $expectedSlots[26]->End());
 		$slot16 = new EmptyReservationSlot($expectedSlots[27]->Begin(), $expectedSlots[27]->End());
+		$slot17 = new EmptyReservationSlot($expectedSlots[28]->Begin(), new Time(0,0,0,$userTz));
 		
-		$this->assertEquals(17, count($slots));
+		$expectedNumberOfSlots = count($expectedSlots) - 5 - 7;
+		//echo 'expecting ' . $expectedNumberOfSlots . ' slots';
+		$this->assertEquals($expectedNumberOfSlots, count($slots));
 		
 		$this->assertEquals($slot1, $slots[0]);
 		$this->assertEquals($slot2, $slots[1]);
@@ -377,13 +380,11 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertEquals($slot14, $slots[13]);
 		$this->assertEquals($slot15, $slots[14]);
 		$this->assertEquals($slot16, $slots[15]);
+		$this->assertEquals($slot17, $slots[16]);
 	}
 	
 	public function testReservaionEndingAfterLayoutPeriodAndStartingWithinIsCreatedProperly()
 	{
-		throw new Exception("#1 - the last slot should run until midnight, but it ends when the schedule ends");
-		// other tests may be incorrect as well
-		
 		$tz = $this->tz;
 		$userTz = 'CST';
 		$dbDate = $this->dbDate;
@@ -423,7 +424,7 @@ class ScheduleReservationListTests extends TestBase
 		$slots = $list->BuildSlots();
 		$expectedSlots = $this->testDbLayout->GetLayout();
 		
-		$slot1 = new EmptyReservationSlot($expectedSlots[0]->Begin(), $expectedSlots[0]->End());
+		$slot1 = new EmptyReservationSlot(new Time(0, 0, 0, $userTz), $expectedSlots[0]->End());
 		$slot2 = new EmptyReservationSlot($expectedSlots[1]->Begin(), $expectedSlots[1]->End());
 		$slot3 = new EmptyReservationSlot($expectedSlots[2]->Begin(), $expectedSlots[2]->End());
 		$slot4 = new ReservationSlot($expectedSlots[3]->Begin(), $expectedSlots[5]->End(), 3);
@@ -434,9 +435,9 @@ class ScheduleReservationListTests extends TestBase
 		$slot9 = new EmptyReservationSlot($expectedSlots[10]->Begin(), $expectedSlots[10]->End());
 		$slot10 = new EmptyReservationSlot($expectedSlots[11]->Begin(), $expectedSlots[11]->End());
 		$slot11 = new EmptyReservationSlot($expectedSlots[12]->Begin(), $expectedSlots[12]->End());
-		$slot12 = new ReservationSlot($expectedSlots[13]->Begin(), new Time(0, 0, 0, $userTz), 15);
+		$slot12 = new ReservationSlot($expectedSlots[13]->Begin(), new Time(0, 0, 0, $userTz), 16);
 		
-		$this->assertEquals(13, count($slots));
+		$this->assertEquals(12, count($slots));
 		
 		$this->assertEquals($slot1, $slots[0]);
 		$this->assertEquals($slot2, $slots[1]);
@@ -449,7 +450,7 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertEquals($slot9, $slots[8]);
 		$this->assertEquals($slot10, $slots[9]);
 		$this->assertEquals($slot11, $slots[10]);
-		$this->assertEquals($slot12, $slots[11]);
+		$this->assertEquals($slot12, $slots[11], $slot12 . ' ' . $slots[11]);
 	}
 	
 	public function testReservaionStartingBeforeLayoutPeriodAndEndingAfterLayoutPeriodIsCreatedProperly()
@@ -474,8 +475,9 @@ class ScheduleReservationListTests extends TestBase
 		
 		$list = new ScheduleReservationList($reservations, $this->testDbLayout, $this->date, $userTz);
 		$slots = $list->BuildSlots();
+		$expectedSlots = $this->testDbLayout->GetLayout();
 		
-		$slot1 = new ReservationSlot(new Time(0,0,0, $tz), new Time(0,0,0, $tz), 28);
+		$slot1 = new ReservationSlot(new Time(0,0,0, $userTz), new Time(0,0,0, $userTz), count($expectedSlots));
 		
 		$this->assertEquals(1, count($slots));
 		
@@ -484,12 +486,14 @@ class ScheduleReservationListTests extends TestBase
 	
 	public function testCreatesScheduleLayoutInProperOrder()
 	{	
-		$time1 = Time::Parse('07:00');
-		$time2 = Time::Parse('07:45');
-		$time3 = Time::Parse('08:30');
-		$time4 = Time::Parse('13:00');
+		$tz = 'CST';
 		
-		$layout = new ScheduleLayout();
+		$time1 = Time::Parse('07:00', $tz);
+		$time2 = Time::Parse('07:45', $tz);
+		$time3 = Time::Parse('08:30', $tz);
+		$time4 = Time::Parse('13:00', $tz);
+		
+		$layout = new ScheduleLayout($tz);
 		
 		$layout->AppendPeriod($time1, $time2);
 		$layout->AppendPeriod($time3, $time4);
@@ -498,9 +502,13 @@ class ScheduleReservationListTests extends TestBase
 		$periods = $layout->GetLayout();
 		
 		$this->assertEquals(3, count($periods));
-		$this->assertEquals(new SchedulePeriod($time1, $time2), $periods[0]);
-		$this->assertEquals(new SchedulePeriod($time2, $time3, 'Period 1'), $periods[1]);
-		$this->assertEquals(new SchedulePeriod($time3, $time4), $periods[2]);
+		$period1 = new SchedulePeriod($time1, $time2);
+		$period2 = new SchedulePeriod($time2, $time3, 'Period 1');
+		$period3 = new SchedulePeriod($time3, $time4);
+		
+		$this->assertEquals($period1, $periods[0], $period1 . ' ' . $periods[0]);
+		$this->assertEquals($period2, $periods[1], $period2 . ' ' . $periods[1]);
+		$this->assertEquals($period3, $periods[2]);
 	}
 	
 	public function testCreatingScheduleLayoutForDatabaseConvertsToGmtAndAddsTimesIfNeeded()

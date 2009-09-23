@@ -346,6 +346,11 @@ class Date
 	{
 		return $this->Format('Y-m-d H:i:s') . ' ' . $this->timezone;
 	}
+	
+	public function __toString() 
+	{
+      return $this->ToString();
+  	}
 //	
 //	public function DayOfYear()
 //	{

@@ -56,6 +56,11 @@ class ReservationSlot implements IReservationSlot
 	{
 		return new ReservationSlot($this->Begin()->ToTimezone($timezone), $this->End()->ToTimezone($timezone), $this->PeriodSpan());
 	}
+	
+	public function __toString() 
+	{
+       return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());
+  	}
 }
 
 ?>
