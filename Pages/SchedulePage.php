@@ -7,6 +7,15 @@ class SchedulePage extends Page implements ISchedulePage
 	public function __construct()
 	{
 		parent::__construct('Schedule');
+		
+		$scheduleRepository = new ScheduleRepository();
+		$resourceService = new ResourceService(new ResourceRepository(), new PermissionService());
+		$pageBuilder = new SchedulePageBuilder();
+		$permissionService = new PermissionService();
+		$reservationService = new ReservationService(new ReservationRepository(), new ReservationCoordinatorFactory());
+		$dailyLayoutFactory = new DailyLayoutFactory();
+		$this->_presenter = new SchedulePresenter($this, $scheduleRepository, $resourceService, $pageBuilder, $permissionService, $reservationService, $dailyLayoutFactory);
+		
 		$this->_presenter = new MockSchedulePresenter($this);
 	}
 	
@@ -42,9 +51,9 @@ class SchedulePage extends Page implements ISchedulePage
 		$this->smarty->assign('Resources', $resources);
 	}
 	
-	public function SetReservations($reservations)
+	public function SetDailyLayout($dailyLayout)
 	{
-		$this->smarty->assign('Reservations', $reservations);
+		$this->smarty->assign('DailyLayout', $dailyLayout);
 	}
 	
 	public function SetLayout($scheduleLayout)
@@ -81,11 +90,11 @@ interface ISchedulePage
 	public function SetResources($resources);
 	
 	/**
-	 * Bind reservations to the page
+	 * Bind layout to the page for daily time slot layouts
 	 *
-	 * @param IReservationListing $reservations
+	 * @param IDailyLayout $dailyLayout
 	 */
-	public function SetReservations($reservations);
+	public function SetDailyLayout($dailyLayout);
 	
 	/**
 	 * Sets the layout to be used when presenting reservations

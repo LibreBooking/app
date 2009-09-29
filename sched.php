@@ -20,7 +20,7 @@ class MockSchedulePresenter implements ISchedulePresenter
 		$schedules = array();
 		$this->_page->SetSchedules($schedules);
 		$this->_page->SetDisplayDates(new DateRange(Date::Now(), Date::Now()->AddDays(7)));
-		$this->_page->SetReservations($this->GetReservations());
+		$this->_page->SetDailyLayout($this->GetReservations());
 		$this->_page->SetResources($this->GetResources());
 		$this->_page->SetLayout($this->GetLayout());
 	}
@@ -36,7 +36,7 @@ class MockSchedulePresenter implements ISchedulePresenter
 	
 	private function GetReservations()
 	{
-		return new ReservationListing();
+		return new DailyLayout(new ReservationListing(), $this->GetLayout(), 'CST');
 	}
 	
 	private function GetLayout()

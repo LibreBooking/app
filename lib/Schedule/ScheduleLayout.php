@@ -56,8 +56,7 @@ class ScheduleLayout implements IScheduleLayout
 		{
 			$midnight = new Time(0, 0, 0, $this->_timezone);
 			$localEnd = $periodEnd;
-			
-			//$otherStart = new Time(24 - abs($localStart->Hour()), 0, 0, $this->_timezone);
+
 			$otherStart = $periodStart;
 			$otherEnd = new Time(0, 0, 0, $this->_timezone);
 			
@@ -68,19 +67,6 @@ class ScheduleLayout implements IScheduleLayout
 		{
 			$this->_periods[] = new $periodType($periodStart, $periodEnd, $label);
 		}
-//		if ($localStart->Hour() < $startTime->Hour())
-//		{
-//			$periodStart = new Time(0, 0, 0, $this->_timezone);
-//			$periodEnd = $endTime->ToTimezone($this->_timezone);
-//			
-//			$otherStart = new Time(24 - abs($localStart->Hour()), 0, 0, $this->_timezone);
-//			$otherEnd = new Time(0, 0, 0, $this->_timezone);
-//			
-//			$this->_periods[] = new $periodType($otherStart, $otherEnd, '');
-//		}
-		
-		//$localEnd = $startTime->ToTimezone($this->_timezone);
-
 	}
 	
 	/**
@@ -108,29 +94,12 @@ class ScheduleLayout implements IScheduleLayout
 	public function Sort()
 	{
 		$this->SortItems($this->_periods);
-//		usort($this->_periods, array("ScheduleLayout", "SortBeginTimes"));
 	}
 	
 	private function SortItems(&$items)
 	{
 		usort($items, array("ScheduleLayout", "SortBeginTimes"));
 	}
-	
-//	/**
-//	 * @param string $timezone
-//	 * @return ScheduleLayout
-//	 */
-//	public function ToTimezone($timezone)
-//	{
-//		$converted = new ScheduleLayout($timezone);
-//		foreach($this->_periods as $period)
-//		{
-//			$converted->AddPeriod($period->ToTimezone($timezone));
-//		}
-//		
-//		//$converted->Sort();
-//		return $converted;
-//	}
 	
 	public function Timezone()
 	{

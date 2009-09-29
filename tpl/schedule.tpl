@@ -14,8 +14,12 @@
 		{/foreach}
 	</tr>
 	{foreach from=$Resources item=resource name=resource_loop}
+		{*
 		{assign var=curResTmp value=$Reservations->OnDate($date)}
 		{assign var=currentReservations value=$curResTmp->ForResource($resource->Id)}
+		*}
+		{assign var=resourceId value=$resource->Id}
+		{assign var=currentReservations value=$DailyLayout->GetLayout($date, $resourceId)}
 		<tr>
 			<td>
 				{if $resource->CanAccess}

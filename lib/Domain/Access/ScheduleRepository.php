@@ -10,9 +10,10 @@ interface IScheduleRepository
 	
 	/**
 	 * @param int $scheduleId
+	 * @param string $timezone
 	 * @return IScheduleLayout
 	 */
-	public function GetLayout($scheduleId);
+	public function GetLayout($scheduleId, $timezone);
 }
 
 class ScheduleRepository implements IScheduleRepository 
@@ -42,7 +43,7 @@ class ScheduleRepository implements IScheduleRepository
 		return $schedules;
 	}
 	
-	public function GetLayout($scheduleId)
+	public function GetLayout($scheduleId, $timezone)
 	{
 		throw new Exception("not implemented");
 	}

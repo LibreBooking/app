@@ -3,22 +3,7 @@ require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Schedule/namespace.php');
 
 class ReservationServiceTests extends TestBase
-{
-	/**
-	 * @var IReservationCoordinator 
-	 */
-	private $coordinator;
-	
-	/**
-	 * @var IReservationRepository 
-	 */
-	private $repository;
-	
-	/**
-	 * @var IReservationListing
-	 */
-	private $reservationListing;
-	
+{	
 	public function setup()
 	{
 		parent::setup();
@@ -34,67 +19,58 @@ class ReservationServiceTests extends TestBase
 		$timezone = 'UTC';
 		$startDate = Date::Now();
 		$endDate = Date::Now();
+		$scheduleId = 100;
 		
 		$range = new DateRange($startDate, $endDate);
 		
-		$this->repository = $this->getMock('IReservationRepository');
-				
-		$rows = FakeReservationRepository::GetReservationRows();
-		$row1 = $rows[0];
-		$row2 = $rows[1];
-		$row3 = $rows[2];
+		$repository = $this->getMock('IReservationRepository');
+		$coordinator = $this->getMock('ReservationCoordinator');
+		$reservationListing = $this->getMock('IReservationListing');
+		$coordinatorFactory = $this->getMock('IReservationCoordinatorFactory');
 		
-		$this->repository
+		$rows = FakeReservationRepository::GetReservationRows();
+		$res1 = ReservationFactory::CreateForSchedule($rows[0]);
+		$res2 = ReservationFactory::CreateForSchedule($rows[1]);
+		$res3 = ReservationFactory::CreateForSchedule($rows[2]);
+		
+		$repository
 			->expects($this->once())
 			->method('GetWithin')
 			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($scheduleId))
-			->will($this->returnValue(array($row1, $row2, $row3)));
-		
-		$this->coordinator = $this->getMock('ReservationCoordinator');
-		$coordinatorFactory = $this->getMock('IReservationCoordinatorFactory');
-		
+			->will($this->returnValue(array($res1, $res2, $res3)));
+
 		$coordinatorFactory
 			->expects($this->once())
 			->method('CreateCoordinator')
-			->will($this->returnValue($this->coordinator));
-		
-		$this->coordinator
-			->expects($this->once())
+			->will($this->returnValue($coordinator));
+
+		$coordinator
+			->expects($this->at(0))
 			->method('AddReservation')
 			->with($res1);
-		
-		$this->coordinator
-			->expects($this->once())
+
+		$coordinator
+			->expects($this->at(1))
 			->method('AddReservation')
 			->with($res2);
-			
-		$this->coordinator
-			->expects($this->once())
+						
+		$coordinator
+			->expects($this->at(2))
 			->method('AddReservation')
 			->with($res3);
-			
-		$this->reservationListing = $this->getMock('IReservationListing');
-		
-		$this->coordinator
+
+		$coordinator
 			->expects($this->once())
 			->method('Arrange')
 			->with($this->equalTo($timezone), $this->equalTo($range))
-			->will($this->returnValue($this->reservationListing));
+			->will($this->returnValue($reservationListing));
 			
-		$service = new ReservationService($this->repository, $coordinatorFactory);
+		$service = new ReservationService($repository, $coordinatorFactory);
 		
 		$listing = $service->GetReservations($range, $scheduleId, $timezone);
 		
-		$this->assertEquals($this->reservationListing, $listing);
+		$this->assertEquals($reservationListing, $listing);
 	}
 	
-}
-
-interface IReservationCoordinatorFactory
-{
-	/**
-	 * @return IReservationCoordinator
-	 */
-	function CreateCoordinator();
 }
 ?>

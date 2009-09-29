@@ -12,7 +12,7 @@ class AnnouncementPresenterTests extends TestBase
 	{
 		parent::setup();
 		
-		Date::_SetNow(mktime());
+		Date::_SetNow(new Date(mktime()));
 		
 		$this->page = new FakeAnnouncementsControl();
 		
@@ -24,7 +24,7 @@ class AnnouncementPresenterTests extends TestBase
 	{
 		parent::teardown();
 		
-		Date::_SetNow(null);
+		Date::_ResetNow();
 	}
 	
 	public function testShowsAllAnnouncements()

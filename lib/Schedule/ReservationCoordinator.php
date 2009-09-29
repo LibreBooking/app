@@ -67,4 +67,20 @@ class ReservationCoordinator
 		return $reservationList;
 	}
 }
+
+interface IReservationCoordinatorFactory
+{
+	/**
+	 * @return IReservationCoordinator
+	 */
+	function CreateCoordinator();
+}
+
+class ReservationCoordinatorFactory implements IReservationCoordinatorFactory
+{
+	public function CreateCoordinator()
+	{
+		return new ReservationCoordinator();
+	}
+}
 ?>

@@ -14,6 +14,7 @@ require_once ROOT_DIR . 'tests/fakes/namespace.php';
 require_once ROOT_DIR . 'tests/TestBase.php';
 
 $tests = array(
+'DailyLayoutTests.php',
 'SchedulePresenterTests.php',
 'ReservationServiceTests.php',
 'ReservationCoordinatorTests.php',
@@ -44,11 +45,13 @@ $tests = array(
 'SmartyControlTests.php'
 );
 
+/*
 $tests = array(
-//'SchedulePresenterTests.php',
+'SchedulePresenterTests.php',
 'ResourceTests.php',
 'DateTests.php',
 'ScheduleReservationListTests.php');
+*/
 
 $passed = true;
 $totalRun = 0;

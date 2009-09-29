@@ -329,8 +329,9 @@ class Date
 	
 	/**
 	 * Only used for unit testing
+	 * @param Date $date
 	 */
-	public function _SetNow($date)
+	public function _SetNow(Date $date)
 	{
 		if (is_null($date))
 		{
@@ -340,6 +341,14 @@ class Date
 		{
 			self::$_Now = $date;
 		}
+	}
+	
+	/**
+	 * Only used for unit testing
+	 */
+	public function _ResetNow()
+	{
+		self::$_Now = null;
 	}
 	
 	public function ToString()

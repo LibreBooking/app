@@ -131,15 +131,19 @@ class ReservationCoordinatorTests extends TestBase
 	public function testCreatesScheduleLayoutForSpecifiedTimezone()
 	{
 		$layout = new ScheduleLayout('CST');
-		$layout->AppendPeriod(new Time(0, 0, 0, 'UTC'), new Time(10, 0, 0, 'UTC'));
+		$startUtc = new Time(0, 0, 0, 'UTC');
+		$endUtc = new Time(10, 0, 0, 'UTC');
+		$layout->AppendPeriod($startUtc, $endUtc);
 		
 		$periods = $layout->GetLayout();
 		
 		$this->assertEquals(2, count($periods));
 		
+		
+		
 		$firstBegin = new Time(0,0,0, 'CST');
-		$firstEnd = new Time(4,0,0, 'CST');
-		$secondBegin = new Time(18, 0, 0, 'CST');
+		$firstEnd = $endUtc->ToTimezone('CST');
+		$secondBegin = $startUtc->ToTimezone('CST');
 		$secondEnd = new Time(0, 0, 0, 'CST');
 		
 		$this->assertTrue($firstBegin->Equals($periods[0]->Begin()));

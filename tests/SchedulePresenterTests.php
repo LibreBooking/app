@@ -32,7 +32,7 @@ class SchedulePresenterTests extends TestBase
 	{
 		parent::teardown();
 
-		Date::_SetNow(null);
+		Date::_ResetNow();
 	}
 	
 	public function testPageLoadBindsAllSchedulesAndProperResourcesWhenNotPostingBack2()
@@ -40,20 +40,19 @@ class SchedulePresenterTests extends TestBase
 		$user = $this->fakeServer->GetUserSession();
 		$resources = array();
 		$reservations = $this->getMock('IReservationListing');
+		$layout = $this->getMock('IScheduleLayout');
 		$bindingDates = new DateRange(Date::Now(), Date::Now());
 		
 		$page = $this->getMock('ISchedulePage');
 		$scheduleRepository = $this->getMock('IScheduleRepository');
 		$resourceService = $this->getMock('IResourceService');
-		$reservationService = $this->getMock('IReservationService');
 		$pageBuilder = $this->getMock('ISchedulePageBuilder');
-		$layout = $this->getMock('IScheduleLayout');
+		$permissionService = $this->getMock('IPermissionService');
+		$reservationService = $this->getMock('IReservationService');
+		$dailyLayoutFactory = $this->getMock('IDailyLayoutFactory');
+		$dailyLayout = $this->getMock('IDailyLayout');
 				
-		$presenter = new SchedulePresenter($page);
-		$presenter->SetScheduleRepository($scheduleRepository);
-		$presenter->SetResourceService($resourceService);
-		$presenter->SetReservationService($reservationService);
-		$presenter->SetPageBuilder($pageBuilder);
+		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $permissionService, $reservationService, $dailyLayoutFactory);
 
 		$scheduleRepository->expects($this->once())
 			->method('GetAll')
@@ -89,17 +88,22 @@ class SchedulePresenterTests extends TestBase
 		
 		$reservationService->expects($this->once())
 			->method('GetReservations')
-			->with($this->equalTo($bindingDates), $this->equalTo($this->scheduleId), $this->equalTo($user->Timezone), $this->equalTo($layout))
+			->with($this->equalTo($bindingDates), $this->equalTo($this->scheduleId), $this->equalTo($user->Timezone))
 			->will($this->returnValue($reservations));
 		
 		$pageBuilder->expects($this->once())
 			->method('BindLayout')
 			->with($this->equalTo($page), $this->equalTo($layout));
 		
+		$dailyLayoutFactory->expects($this->once())
+			->method('Create')
+			->with($this->equalTo($reservations), $this->equalTo($layout))
+			->will($this->returnValue($dailyLayout));
+		
 		$pageBuilder->expects($this->once())
 			->method('BindReservations')
-			->with($this->equalTo($page), $this->equalTo($resources), $this->equalTo($reservations));
-
+			->with($this->equalTo($page), $this->equalTo($resources), $this->equalTo($dailyLayout));
+			
 		$presenter->PageLoad();
 		
 	}
@@ -389,7 +393,7 @@ class SchedulePresenterTests extends TestBase
 	public function testBindReservationsSetsReservationsAndResourcesOnPage()
 	{
 		$page = $this->getMock('ISchedulePage');
-		$reservations = $this->getMock('IReservationListing');
+		$dailyLayout = $this->getMock('IDailyLayout');
 		$resources = array();
 		
 		$page->expects($this->once())
@@ -397,11 +401,11 @@ class SchedulePresenterTests extends TestBase
 			->with($this->equalTo($resources));
 			
 		$page->expects($this->once())
-			->method('SetReservations')
-			->with($this->equalTo($reservations));
+			->method('SetDailyLayout')
+			->with($this->equalTo($dailyLayout));
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$pageBuilder->BindReservations($page, $resources, $reservations);
+		$pageBuilder->BindReservations($page, $resources, $dailyLayout);
 	}
 	
 	public function testBindDisplayDatesSetsPageToArrayOfDatesInUserTimezoneForRange()
@@ -435,46 +439,4 @@ class SchedulePresenterTests extends TestBase
 	}
 }
 
-//class FakeSchedulePage extends FakePageBase implements ISchedulePage
-//{
-//	public $_LastSchedules = array();
-//	public $_LastResources = array();
-//	public $_LastReservations = array();
-//	public $_LastDates = array();
-//
-//	public $_SetSchedulesCalled = false;
-//	public $_SetResourcesCalled = false;
-//	public $_SetReservationsCalled = false;
-//	public $_SetDatesCalled = false;
-//	public $_ScheduleId;
-//
-//	public function SetSchedules($this->schedules)
-//	{
-//		$this->_LastSchedules = $this->schedules;
-//		$this->_SetSchedulesCalled = true;
-//	}
-//
-//	public function SetResources($resources)
-//	{
-//		$this->_LastResources = $resources;
-//		$this->_SetResourcesCalled = true;
-//	}
-//
-//	public function SetReservations($reservations)
-//	{
-//		$this->_LastReservations = $reservations;
-//		$this->_SetReservationsCalled = true;
-//	}
-//
-//	public function GetScheduleId()
-//	{
-//		return $this->_ScheduleId;
-//	}
-//
-//	public function SetDisplayDates($dates)
-//	{
-//		$this->_SetDatesCalled = true;
-//		$this->_LastDates = $dates;
-//	}
-//}
 ?>

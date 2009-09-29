@@ -9,7 +9,7 @@ class AnnouncementsTests extends TestBase
 	{
 		parent::setup();
 		
-		Date::_SetNow(mktime());
+		Date::_SetNow(new Date(mktime()));
 		
 		$this->announcements = new Announcements();
 	}
@@ -18,7 +18,7 @@ class AnnouncementsTests extends TestBase
 	{
 		parent::teardown();
 		
-		Date::_SetNow(null);
+		Date::_ResetNow();
 		
 		$this->announcements = null;
 	}
