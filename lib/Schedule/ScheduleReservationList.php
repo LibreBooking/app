@@ -15,7 +15,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @var IScheduleLayout
 	 */
 	private $_layout;
-	private $_layoutDate;
+	private $_layoutDateUtc;
 	
 	private $_layoutItems;
 	
@@ -29,14 +29,13 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @param array[int]ScheduleReservation $reservations array of ScheduleReservation objects
 	 * @param IScheduleLayout $layout
 	 * @param Date $layoutDate
-	 * @param string $targetTimezone
 	 */
-	public function __construct($reservations, IScheduleLayout $layout, Date $layoutDate, $targetTimezone)
+	public function __construct($reservations, IScheduleLayout $layout, Date $layoutDate)
 	{
 		$this->_reservations = $reservations;
 		$this->_layout = $layout;
-		$this->_layoutDate = $layoutDate->ToTimezone($targetTimezone);
 		$this->_destinationTimezone = $this->_layout->Timezone();
+		$this->_layoutDateUtc = $layoutDate->ToTimezone('UTC')->GetDate();
 		$this->_layoutItems = $this->_layout->GetLayout();
 		$this->_midnight = new Time(0,0,0, $this->_destinationTimezone);
 			
@@ -99,12 +98,12 @@ class ScheduleReservationList implements IScheduleReservationList
 	
 	private function ReservationStartsOnPastDate(ScheduleReservation $reservation)
 	{
-		return $reservation->GetStartDate()->LessThan($this->_layoutDate);
+		return $reservation->GetStartDate()->GetDate()->LessThan($this->_layoutDateUtc);
 	}
 	
 	private function ReservationEndsOnFutureDate(ScheduleReservation $reservation)
 	{
-		return $reservation->GetEndDate()->GreaterThan($this->_layoutDate);
+		return $reservation->GetEndDate()->GetDate()->GreaterThan($this->_layoutDateUtc);
 	}
 	
 	private function IndexLayout()

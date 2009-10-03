@@ -19,6 +19,11 @@ interface IReservationSlot
 	public function PeriodSpan();	
 	
 	/**
+	 * @return string
+	 */
+	public function Label();
+	
+	/**
 	 * @param string $timezone
 	 * @return IReservationSlot
 	 */

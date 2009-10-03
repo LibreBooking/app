@@ -4,22 +4,17 @@
     {object_html_options options=$Schedules key="GetId" label="GetName"}
 </select>
 
-<table>
-
 {foreach from=$BoundDates item=date}
+<table style="border-collapse:collapse; border: solid black 1px; width:100%" border="1">
 	<tr>
-		<td>{$date->Format('Y-m-d H:i:s')}</td>
+		<td style="width: 150px;">{$date->Format('Y-m-d')}</td>
 		{foreach from=$Layout->GetLayout() item=period}
 			<td>{$period->Label()}</td>
 		{/foreach}
 	</tr>
 	{foreach from=$Resources item=resource name=resource_loop}
-		{*
-		{assign var=curResTmp value=$Reservations->OnDate($date)}
-		{assign var=currentReservations value=$curResTmp->ForResource($resource->Id)}
-		*}
 		{assign var=resourceId value=$resource->Id}
-		{assign var=currentReservations value=$DailyLayout->GetLayout($date, $resourceId)}
+		{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 		<tr>
 			<td>
 				{if $resource->CanAccess}
@@ -28,13 +23,13 @@
 					{$resource->Name}
 				{/if}
 			</td>
-			{foreach from=$currentReservations item=reservation}
-				<td colspan="{$reservation->Span()}">res</td>
+			{foreach from=$slots item=slot}
+				<td colspan="{$slot->PeriodSpan()}">{$slot->Label()}</td>
 			{/foreach}
 		</tr>
 	{/foreach}
-{/foreach}
-
 </table>
+<br/>
+{/foreach}
 
 {include file='footer.tpl'}

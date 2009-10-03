@@ -9,8 +9,8 @@ class ReservationFactory
 	{
 		return new ScheduleReservation(
 							$databaseRow[ColumnNames::RESERVATION_ID],
-							$databaseRow[ColumnNames::START_DATE],
-							$databaseRow[ColumnNames::END_DATE],
+							Date::Parse($databaseRow[ColumnNames::START_DATE], 'UTC'),
+							Date::Parse($databaseRow[ColumnNames::END_DATE], 'UTC'),
 							$databaseRow[ColumnNames::RESERVATION_TYPE],
 							$databaseRow[ColumnNames::SUMMARY],
 							$databaseRow[ColumnNames::PARENT_ID],

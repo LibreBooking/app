@@ -18,7 +18,6 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
-		//$this->_periodSpan = $periodSpan;
 	}
 	
 	/**
@@ -48,6 +47,11 @@ class EmptyReservationSlot implements IReservationSlot
 	public function ToTimezone($timezone)
 	{
 		return new EmptyReservationSlot($this->Begin()->ToTimezone($timezone), $this->End()->ToTimezone($timezone));
+	}
+	
+	public function Label()
+	{
+		return 'empty';
 	}
 }
 

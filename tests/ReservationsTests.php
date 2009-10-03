@@ -51,8 +51,8 @@ class ReservationsTests extends TestBase
 		$r = $rows[0];
 		$expected = new ScheduleReservation(
 							$r[ColumnNames::RESERVATION_ID],
-							$r[ColumnNames::START_DATE],
-							$r[ColumnNames::END_DATE],
+							Date::Parse($r[ColumnNames::START_DATE], 'UTC'),
+							Date::Parse($r[ColumnNames::END_DATE], 'UTC'),
 							$r[ColumnNames::RESERVATION_TYPE],
 							$r[ColumnNames::SUMMARY],
 							$r[ColumnNames::PARENT_ID],

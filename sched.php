@@ -17,7 +17,8 @@ class MockSchedulePresenter implements ISchedulePresenter
 	
 	public function PageLoad()
 	{
-		$schedules = array();
+		$s1 = new Schedule(1, 'schedule1', true, 0, 0, 0, 0, 0);
+		$schedules = array($s1);
 		$this->_page->SetSchedules($schedules);
 		$this->_page->SetDisplayDates(new DateRange(Date::Now(), Date::Now()->AddDays(7)));
 		$this->_page->SetDailyLayout($this->GetReservations());
@@ -36,18 +37,39 @@ class MockSchedulePresenter implements ISchedulePresenter
 	
 	private function GetReservations()
 	{
-		return new DailyLayout(new ReservationListing(), $this->GetLayout(), 'CST');
+		return new DailyLayout($this->GetReservationListing(), $this->GetLayout(), 'US/Central');
 	}
 	
 	private function GetLayout()
 	{
 		$tz = 'UTC';
-		$layout = new ScheduleLayout($tz);
+		$layout = new ScheduleLayout('US/Central');
 		
 		$layout->AppendPeriod(Time::Parse('5:00', $tz), Time::Parse('15:00', $tz), 'label1');
-		$layout->AppendPeriod(Time::Parse('16:00', $tz), Time::Parse('18:00', $tz), 'label2');
+		$layout->AppendPeriod(Time::Parse('15:00', $tz), Time::Parse('18:00', $tz));
 
 		return $layout;
+	}
+	
+	private function GetReservationListing()
+	{
+		$listing = new ReservationListing();
+		
+		$t1 = Time::Parse('5:00', 'UTC');
+		$t2 = Time::Parse('18:00', 'UTC');
+		$d1 = Date::Parse('2009-10-03' . $t1->ToString(), 'UTC');
+		$d2 = Date::Parse('2009-10-03' . $t2->ToString(), 'UTC');
+		
+		//echo 'res date: ' . $d1 . ' ' . $d2;
+		
+		$res = new ScheduleReservation(1, $d1, $d2, 1, 'some summary', null, 2, 1, 'nick', 'korbel');
+		
+		//echo 'res date: ' . $res->GetStartDate() . ' ' . $d2;
+		
+		$listing->Add($d1->ToTimezone('US/Central'), $d2->ToTimezone('US/Central'), $res);
+		
+		return $listing;
+		
 	}
 }
 

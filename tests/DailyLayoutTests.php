@@ -27,8 +27,8 @@ class DailyLayoutTests extends TestBase
 		$dateListing = $this->getMock('IDateReservationListing');
 		$resourceListing = $this->getMock('IResourceReservationListing');
 		
-		$startDate = Date::Parse('2009-09-02 17:00:00', $targetTimezone);
-		$endDate = Date::Parse('2009-09-02 18:00:00', $targetTimezone);
+		$startDate = Date::Parse('2009-09-02 17:00:00', 'UTC');
+		$endDate = Date::Parse('2009-09-02 18:00:00', 'UTC');
 		$reservation = new ScheduleReservation(1, $startDate, $endDate, 1, 's', null, $resourceId, 100, 'f', 'l');
 		$reservations = array($reservation);		
 
@@ -46,10 +46,10 @@ class DailyLayoutTests extends TestBase
 			->method('Reservations')
 			->will($this->returnValue($reservations));			
 			
-		$layout = new DailyLayout($listing, $scheduleLayout, $targetTimezone);
+		$layout = new DailyLayout($listing, $scheduleLayout);
 		$layoutSlots = $layout->GetLayout($date, $resourceId);
 		
-		$reservationList = new ScheduleReservationList($reservations, $scheduleLayout, $date, $targetTimezone);
+		$reservationList = new ScheduleReservationList($reservations, $scheduleLayout, $date);
 		$expectedSlots = $reservationList->BuildSlots();
 		
 		$this->assertEquals($expectedSlots, $layoutSlots);

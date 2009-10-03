@@ -61,6 +61,11 @@ class ReservationSlot implements IReservationSlot
 	{
        return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());
   	}
+  	
+	public function Label()
+	{
+		return $this->_periodSpan;
+	}
 }
 
 ?>

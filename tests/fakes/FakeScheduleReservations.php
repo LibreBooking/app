@@ -24,10 +24,8 @@ class FakeScheduleReservations
 	public static function Initialize()
 	{
 		self::$Reservation1 = new ScheduleReservation(1, 
-														'2008-11-11', 
-														'2008-11-11', 
-														'06:00:00', 
-														'08:00:00', 
+														Date::Parse('2008-11-11 06:00:00', 'UTC'), 
+														Date::Parse('2008-11-11 08:00:00', 'UTC'), 
 														ReservationTypes::Reservation, 
 														null, 
 														null, 
@@ -36,10 +34,8 @@ class FakeScheduleReservations
 														'f', 
 														'l');
 		self::$Reservation2 = new ScheduleReservation(3, 
-														'2008-11-11', 
-														'2008-11-11', 
-														'08:00:00', 
-														'13:30:00', 
+														Date::Parse('2008-11-11 08:00:00', 'UTC'), 
+														Date::Parse('2008-11-11 13:30:00', 'UTC'), 
 														ReservationTypes::Reservation, 
 														null, 
 														null, 
@@ -48,10 +44,8 @@ class FakeScheduleReservations
 														'f', 
 														'l');
 		self::$Reservation3 = new ScheduleReservation(3, 
-														'2008-11-12', 
-														'2008-11-12', 
-														'06:00:00', 
-														'08:00:00', 
+														Date::Parse('2008-11-12 06:00:00', 'UTC'), 
+														Date::Parse('2008-11-12 18:00:00', 'UTC'), 
 														ReservationTypes::Reservation, 
 														null, 
 														null, 

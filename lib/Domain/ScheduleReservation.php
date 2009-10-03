@@ -33,8 +33,8 @@ class ScheduleReservation
 	private $_lastName;
 	
 	public function __construct($reservationId,
-							$startDate,
-							$endDate,
+							Date $startDate,
+							Date $endDate,
 							$reservationType,
 							$summary,
 							$parentId,
@@ -46,8 +46,8 @@ class ScheduleReservation
 		$this->SetReservationId($reservationId);
 		$this->SetStartDate($startDate);
 		$this->SetEndDate($endDate);
-		$this->SetStartTime($startDate);
-		$this->SetEndTime($endDate);
+		$this->SetStartTime($startDate->GetTime());
+		$this->SetEndTime($endDate->GetTime());
 		$this->SetReservationType($reservationType);
 		$this->SetSummary($summary);
 		$this->SetParentId($parentId);
@@ -76,11 +76,11 @@ class ScheduleReservation
 	}
 	
 	/**
-	 * @param string $value
+	 * @param Date $value
 	 */
-	public function SetStartDate($value)
+	public function SetStartDate(Date $value)
 	{
-		$this->_startDate = Date::Parse($value, ScheduleReservation::SERVER_TIMEZONE);
+		$this->_startDate = $value;
 	}
 	
 	/**
@@ -92,11 +92,11 @@ class ScheduleReservation
 	}
 	
 	/**
-	 * @param string $value
+	 * @param Date $value
 	 */
-	public function SetEndDate($value)
+	public function SetEndDate(Date $value)
 	{
-		$this->_endDate = Date::Parse($value, ScheduleReservation::SERVER_TIMEZONE);
+		$this->_endDate = $value;
 	}
 	
 	/**
@@ -108,11 +108,11 @@ class ScheduleReservation
 	}
 	
 	/**
-	 * @param string $value
+	 * @param Time $value
 	 */
-	public function SetStartTime($value)
+	public function SetStartTime(Time $value)
 	{
-		$this->_startTime = Time::Parse($value, ScheduleReservation::SERVER_TIMEZONE);
+		$this->_startTime = $value;
 	}
 	
 	/**
@@ -124,11 +124,11 @@ class ScheduleReservation
 	}
 	
 	/**
-	 * @param string $value
+	 * @param Time $value
 	 */
-	public function SetEndTime($value)
+	public function SetEndTime(Time $value)
 	{
-		$this->_endTime = Time::Parse($value, ScheduleReservation::SERVER_TIMEZONE);
+		$this->_endTime = $value;
 	}
 	
 	public function GetReservationType()

@@ -3,32 +3,30 @@
 class ReservationListing implements IReservationListing
 {
 	/**
-	 * @var array[int]ReservationListingItem
+	 * @var array[int]ScheduleReservation
 	 */
 	private $_reservations = array();
 	
 	/**
-	 * @var array[int]ReservationListingItem
+	 * @var array[int]ScheduleReservation
 	 */
 	private $_reservationByDate = array();
 	
 	/**
-	 * @var array[int]ReservationListingItem
+	 * @var array[int]ScheduleReservation
 	 */
 	private $_reservationByResource = array();
 	
 	/**
-	 * @param Date $startDate
-	 * @param Date $endDate
+	 * @param Date $startDate starting date/time of reservation in timezone of target listing
+	 * @param Date $endDate ending date/time of reservation in timezone of target listing
 	 * @param ScheduleReservation $reservation 
 	 */
 	public function Add($startDate, $endDate, $reservation)
 	{
-		$rli = new ReservationListingItem($reservation, $startDate, $endDate);
-		
-		$this->_reservations[] = $rli;
-		$this->_reservationByDate[$startDate->Format('Ymd')][] = $rli;
-		$this->_reservationByResource[$reservation->GetResourceId()][] = $rli;
+		$this->_reservations[] = $reservation;
+		$this->_reservationByDate[$startDate->Format('Ymd')][] = $reservation;
+		$this->_reservationByResource[$reservation->GetResourceId()][] = $reservation;
 	}
 	
 	public function Count()
@@ -55,7 +53,7 @@ class ReservationListing implements IReservationListing
 		
 		foreach ($reservationListing->_reservations as $rli)
 		{
-			$reservationListing->_reservationByResource[$rli->Reservation->GetResourceId()][] = $rli;
+			$reservationListing->_reservationByResource[$rli->GetResourceId()][] = $rli;
 		}
 		
 		return $reservationListing;
