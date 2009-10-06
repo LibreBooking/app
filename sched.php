@@ -57,8 +57,9 @@ class MockSchedulePresenter implements ISchedulePresenter
 		
 		$t1 = Time::Parse('5:00', 'UTC');
 		$t2 = Time::Parse('18:00', 'UTC');
-		$d1 = Date::Parse('2009-10-03' . $t1->ToString(), 'UTC');
-		$d2 = Date::Parse('2009-10-03' . $t2->ToString(), 'UTC');
+		$today = Date::Now()->Format('Y-m-d');
+		$d1 = Date::Parse($today . $t1->ToString(), 'UTC');
+		$d2 = Date::Parse($today . $t2->ToString(), 'UTC');
 		
 		//echo 'res date: ' . $d1 . ' ' . $d2;
 		

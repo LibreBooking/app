@@ -10,8 +10,8 @@
 		{/if}
 		<link rel="shortcut icon" href="favicon.ico"/>
 		<link rel="icon" href="favicon.ico"/>
-		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/prototype.js"></script> 
-		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/scriptaculous.js"></script> 
+		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/js/jquery-1.3.2.min.js"></script> 
+		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.7.1.custom.min.js"></script> 
 		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script> 
 		<!--
 		<script language="JavaScript" type="text/javascript" src="{$Path}functions.js"></script>

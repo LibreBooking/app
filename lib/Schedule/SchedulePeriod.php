@@ -17,7 +17,7 @@ class SchedulePeriod
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
-		$this->_label = $label;
+		$this->_label = empty($label) ? $begin : $label;
 	}
 	
 	/**

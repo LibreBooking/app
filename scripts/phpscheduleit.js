@@ -4,12 +4,12 @@ function showHideDashboard(dashboardId)
 	
 	if ($(dashboardId).style.display != "none")
 	{
-		Effect.BlindUp(dashboardId, { duration: 0.5 });
+		$("#" + dashboardId).toggle('blind');
 		shown = 'false';
 	}
 	else
 	{
-		Effect.BlindDown(dashboardId, { duration: 0.5 });
+		$("#" + dashboardId).toggle('blind');
 	}
 	
 	createCookie('dashboard_' + dashboardId, shown, 30);	
