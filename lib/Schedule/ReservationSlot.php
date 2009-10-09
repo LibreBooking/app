@@ -12,6 +12,9 @@ class ReservationSlot implements IReservationSlot
 	 */
 	protected $_end;
 	
+	/**
+	 * @var int
+	 */
 	protected $_periodSpan;
 	
 	/**
@@ -19,10 +22,9 @@ class ReservationSlot implements IReservationSlot
 	 */
 	private $_reservation;
 	
-	public function __construct(Time $begin, Time $end, $periodSpan)
+	public function __construct(Time $begin, Time $end, $periodSpan, $reservation)
 	{
-		//$this->_reservation = $reservation;
-		//$reservation->GetStartTime()->ToTimezone;
+		$this->_reservation = $reservation;
 		$this->_begin = $begin;
 		$this->_end = $end;
 		$this->_periodSpan = $periodSpan;
@@ -64,7 +66,7 @@ class ReservationSlot implements IReservationSlot
   	
 	public function Label()
 	{
-		return $this->_periodSpan;
+		return $this->_reservation->GetFirstName() . ' ' . $this->_reservation->GetLastName();
 	}
 }
 

@@ -17,7 +17,7 @@ class SmartyPage extends Smarty
 	{
 		$base = dirname(__FILE__) . '/../../';
 		
-		$this->debugging = true;
+		$this->debugging = isset($_GET['d']);
 		$this->template_dir = $base . 'tpl';
 		$this->compile_dir = $base . 'tpl_c';
 		$this->config_dir = $base . 'configs';
@@ -128,8 +128,7 @@ class SmartyPage extends Smarty
 	public function DisplayControl($params, &$smarty)
 	{
 		$type = $params['type'];
-		require_once(ROOT_DIR . "/Controls/$type.php");
-		
+		require_once(ROOT_DIR . "Controls/$type.php");
 		$control = new $type($this);
 		
 		foreach($params as $key => $val)

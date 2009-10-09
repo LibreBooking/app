@@ -10,6 +10,7 @@
 		<td style="width: 150px;">{$date->Format('Y-m-d')}</td>
 		{foreach from=$Layout->GetLayout() item=period}
 			<td>{$period->Label()}</td>
+			<!-- pass format in? -->
 		{/foreach}
 	</tr>
 	{foreach from=$Resources item=resource name=resource_loop}
@@ -24,12 +25,12 @@
 				{/if}
 			</td>
 			{foreach from=$slots item=slot}
-				<td colspan="{$slot->PeriodSpan()}">{$slot->Label()}</td>
+				<td colspan="{$slot->PeriodSpan()}">{control type="ScheduleReservationControl" Slot=$slot}</td>
+				
 			{/foreach}
 		</tr>
 	{/foreach}
 </table>
 <br/>
 {/foreach}
-
 {include file='footer.tpl'}

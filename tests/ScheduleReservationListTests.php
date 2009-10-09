@@ -109,7 +109,7 @@ class ScheduleReservationListTests extends TestBase
 		
 		$slot1 = new EmptyReservationSlot(new Time(0,0,0, $userTz), $t1s->ToTimezone($userTz));
 		$slot2 = new EmptyReservationSlot($t1s->ToTimezone($userTz), $t1e->ToTimezone($userTz));
-		$slot3 = new ReservationSlot($t1e->ToTimezone($userTz), $t2e->ToTimezone($userTz), 1);
+		$slot3 = new ReservationSlot($t1e->ToTimezone($userTz), $t2e->ToTimezone($userTz), 1, $r1);
 		$slot4 = new EmptyReservationSlot($t2e->ToTimezone($userTz), new Time(0,0,0, $userTz));
 		
 		$this->assertEquals(4, count($slots));
@@ -168,15 +168,15 @@ class ScheduleReservationListTests extends TestBase
 		$slot1 = new EmptyReservationSlot($expectedSlots[0]->Begin(), $expectedSlots[0]->End());
 		$slot2 = new EmptyReservationSlot($expectedSlots[1]->Begin(), $expectedSlots[1]->End());
 		$slot3 = new EmptyReservationSlot($expectedSlots[2]->Begin(), $expectedSlots[2]->End());
-		$slot4 = new ReservationSlot($expectedSlots[3]->Begin(), $expectedSlots[5]->End(), 3);
+		$slot4 = new ReservationSlot($expectedSlots[3]->Begin(), $expectedSlots[5]->End(), 3, $r1);
 		$slot5 = new EmptyReservationSlot($expectedSlots[6]->Begin(), $expectedSlots[6]->End());
-		$slot6 = new ReservationSlot($expectedSlots[7]->Begin(), $expectedSlots[7]->End(), 1);
+		$slot6 = new ReservationSlot($expectedSlots[7]->Begin(), $expectedSlots[7]->End(), 1, $r2);
 		$slot7 = new EmptyReservationSlot($expectedSlots[8]->Begin(), $expectedSlots[8]->End());
 		$slot8 = new EmptyReservationSlot($expectedSlots[9]->Begin(), $expectedSlots[9]->End());
 		$slot9 = new EmptyReservationSlot($expectedSlots[10]->Begin(), $expectedSlots[10]->End());
 		$slot10 = new EmptyReservationSlot($expectedSlots[11]->Begin(), $expectedSlots[11]->End());
 		$slot11 = new EmptyReservationSlot($expectedSlots[12]->Begin(), $expectedSlots[12]->End());
-		$slot12 = new ReservationSlot($expectedSlots[13]->Begin(), $expectedSlots[20]->End(), 8);
+		$slot12 = new ReservationSlot($expectedSlots[13]->Begin(), $expectedSlots[20]->End(), 8, $r3);
 		$slot13 = new EmptyReservationSlot($expectedSlots[21]->Begin(), $expectedSlots[21]->End());
 		$slot14 = new EmptyReservationSlot($expectedSlots[22]->Begin(), $expectedSlots[22]->End());
 		$slot15 = new EmptyReservationSlot($expectedSlots[23]->Begin(), $expectedSlots[23]->End());
@@ -257,15 +257,15 @@ class ScheduleReservationListTests extends TestBase
 		$slot1 = new EmptyReservationSlot($expectedSlots[0]->Begin(), $expectedSlots[0]->End());
 		$slot2 = new EmptyReservationSlot($expectedSlots[1]->Begin(), $expectedSlots[1]->End());
 		$slot3 = new EmptyReservationSlot($expectedSlots[2]->Begin(), $expectedSlots[2]->End());
-		$slot4 = new ReservationSlot($expectedSlots[3]->Begin(), $expectedSlots[5]->End(), 3);
+		$slot4 = new ReservationSlot($expectedSlots[3]->Begin(), $expectedSlots[5]->End(), 3, $r1);
 		$slot5 = new EmptyReservationSlot($expectedSlots[6]->Begin(), $expectedSlots[6]->End());
-		$slot6 = new ReservationSlot($expectedSlots[7]->Begin(), $expectedSlots[7]->End(), 1);
+		$slot6 = new ReservationSlot($expectedSlots[7]->Begin(), $expectedSlots[7]->End(), 1, $r2);
 		$slot7 = new EmptyReservationSlot($expectedSlots[8]->Begin(), $expectedSlots[8]->End());
 		$slot8 = new EmptyReservationSlot($expectedSlots[9]->Begin(), $expectedSlots[9]->End());
 		$slot9 = new EmptyReservationSlot($expectedSlots[10]->Begin(), $expectedSlots[10]->End());
 		$slot10 = new EmptyReservationSlot($expectedSlots[11]->Begin(), $expectedSlots[11]->End());
 		$slot11 = new EmptyReservationSlot($expectedSlots[12]->Begin(), $expectedSlots[12]->End());
-		$slot12 = new ReservationSlot($expectedSlots[13]->Begin(), $expectedSlots[20]->End(), 8);
+		$slot12 = new ReservationSlot($expectedSlots[13]->Begin(), $expectedSlots[20]->End(), 8, $r3);
 		$slot13 = new EmptyReservationSlot($expectedSlots[21]->Begin(), $expectedSlots[21]->End());
 		$slot14 = new EmptyReservationSlot($expectedSlots[22]->Begin(), $expectedSlots[22]->End());
 		$slot15 = new EmptyReservationSlot($expectedSlots[23]->Begin(), $expectedSlots[23]->End());
@@ -342,15 +342,15 @@ class ScheduleReservationListTests extends TestBase
 		$slots = $list->BuildSlots();
 		$expectedSlots = $this->testDbLayout->GetLayout();
 		
-		$slot1 = new ReservationSlot(new Time(0,0,0,$userTz), $expectedSlots[5]->End(), 6);
+		$slot1 = new ReservationSlot(new Time(0,0,0,$userTz), $expectedSlots[5]->End(), 6, $r1);
 		$slot2 = new EmptyReservationSlot($expectedSlots[6]->Begin(), $expectedSlots[6]->End());
-		$slot3 = new ReservationSlot($expectedSlots[7]->Begin(), $expectedSlots[7]->End(), 1);
+		$slot3 = new ReservationSlot($expectedSlots[7]->Begin(), $expectedSlots[7]->End(), 1, $r2);
 		$slot4 = new EmptyReservationSlot($expectedSlots[8]->Begin(), $expectedSlots[8]->End());
 		$slot5 = new EmptyReservationSlot($expectedSlots[9]->Begin(), $expectedSlots[9]->End());
 		$slot6 = new EmptyReservationSlot($expectedSlots[10]->Begin(), $expectedSlots[10]->End());
 		$slot7 = new EmptyReservationSlot($expectedSlots[11]->Begin(), $expectedSlots[11]->End());
 		$slot8 = new EmptyReservationSlot($expectedSlots[12]->Begin(), $expectedSlots[12]->End());
-		$slot9 = new ReservationSlot($expectedSlots[13]->Begin(), $expectedSlots[20]->End(), 8);
+		$slot9 = new ReservationSlot($expectedSlots[13]->Begin(), $expectedSlots[20]->End(), 8, $r3);
 		$slot10 = new EmptyReservationSlot($expectedSlots[21]->Begin(), $expectedSlots[21]->End());
 		$slot11 = new EmptyReservationSlot($expectedSlots[22]->Begin(), $expectedSlots[22]->End());
 		$slot12 = new EmptyReservationSlot($expectedSlots[23]->Begin(), $expectedSlots[23]->End());
@@ -427,15 +427,15 @@ class ScheduleReservationListTests extends TestBase
 		$slot1 = new EmptyReservationSlot(new Time(0, 0, 0, $userTz), $expectedSlots[0]->End());
 		$slot2 = new EmptyReservationSlot($expectedSlots[1]->Begin(), $expectedSlots[1]->End());
 		$slot3 = new EmptyReservationSlot($expectedSlots[2]->Begin(), $expectedSlots[2]->End());
-		$slot4 = new ReservationSlot($expectedSlots[3]->Begin(), $expectedSlots[5]->End(), 3);
+		$slot4 = new ReservationSlot($expectedSlots[3]->Begin(), $expectedSlots[5]->End(), 3, $r1);
 		$slot5 = new EmptyReservationSlot($expectedSlots[6]->Begin(), $expectedSlots[6]->End());
-		$slot6 = new ReservationSlot($expectedSlots[7]->Begin(), $expectedSlots[7]->End(), 1);
+		$slot6 = new ReservationSlot($expectedSlots[7]->Begin(), $expectedSlots[7]->End(), 1, $r2);
 		$slot7 = new EmptyReservationSlot($expectedSlots[8]->Begin(), $expectedSlots[8]->End());
 		$slot8 = new EmptyReservationSlot($expectedSlots[9]->Begin(), $expectedSlots[9]->End());
 		$slot9 = new EmptyReservationSlot($expectedSlots[10]->Begin(), $expectedSlots[10]->End());
 		$slot10 = new EmptyReservationSlot($expectedSlots[11]->Begin(), $expectedSlots[11]->End());
 		$slot11 = new EmptyReservationSlot($expectedSlots[12]->Begin(), $expectedSlots[12]->End());
-		$slot12 = new ReservationSlot($expectedSlots[13]->Begin(), new Time(0, 0, 0, $userTz), 16);
+		$slot12 = new ReservationSlot($expectedSlots[13]->Begin(), new Time(0, 0, 0, $userTz), 16, $r3);
 		
 		$this->assertEquals(12, count($slots));
 		
@@ -477,7 +477,7 @@ class ScheduleReservationListTests extends TestBase
 		$slots = $list->BuildSlots();
 		$expectedSlots = $this->testDbLayout->GetLayout();
 		
-		$slot1 = new ReservationSlot(new Time(0,0,0, $userTz), new Time(0,0,0, $userTz), count($expectedSlots));
+		$slot1 = new ReservationSlot(new Time(0,0,0, $userTz), new Time(0,0,0, $userTz), count($expectedSlots), $r1);
 		
 		$this->assertEquals(1, count($slots));
 		
@@ -536,7 +536,7 @@ class ScheduleReservationListTests extends TestBase
 		$periods = $layoutForDb->GetLayout();
 		
 		$this->assertEquals(5, count($periods));
-		$this->assertEquals(new NonSchedulePeriod(Time::Parse('00:00')->ToUtc(), $time1Gmt), $periods[0]);
+		$this->assertEquals(new NonSchedulePeriod(Time::Parse('00:00')->ToUtc(), $time1Gmt), $periods[0], $periods[0]);
 		$this->assertEquals(new SchedulePeriod($time1Gmt, $time2Gmt), $periods[1]);
 		$this->assertEquals(new SchedulePeriod($time2Gmt, $time3Gmt, 'Period 1'), $periods[2]);
 		$this->assertEquals(new SchedulePeriod($time3Gmt, $time4Gmt), $periods[3]);

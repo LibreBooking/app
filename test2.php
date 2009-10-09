@@ -1,6 +1,6 @@
 <?php
-require_once('config/timezones.php');
-
-print_r($GLOBALS['APP_TIMEZONES']);
-  
+require_once('lib/Common/SmartyPage.php');
+require_once('Controls/ReservationControl.php');
+$r = new ReservationControl(new SmartyPage());
+$r->PageLoad();
 ?>

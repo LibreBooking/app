@@ -1,6 +1,6 @@
 <?php
-require_once(ROOT_DIR . '/Controls/Control.php');
-require_once(ROOT_DIR . '/Presenters/AnnouncementPresenter.php');
+require_once(ROOT_DIR . 'Controls/Control.php');
+require_once(ROOT_DIR . 'Presenters/AnnouncementPresenter.php');
 
 class AnnouncementsControl extends Control implements IAnnouncementsControl
 {
