@@ -24,6 +24,11 @@ interface IReservationSlot
 	public function Label();
 	
 	/**
+	 * @return bool
+	 */
+	public function IsReservable();
+	
+	/**
 	 * @param string $timezone
 	 * @return IReservationSlot
 	 */

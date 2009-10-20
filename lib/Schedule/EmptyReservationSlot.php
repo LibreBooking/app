@@ -12,12 +12,18 @@ class EmptyReservationSlot implements IReservationSlot
 	 */
 	protected $_end;
 	
+	/**
+	 * @var $_isReservable
+	 */
+	protected $_isReservable;
+	
 	protected $_periodSpan;
 	
-	public function __construct(Time $begin, Time $end)
+	public function __construct(Time $begin, Time $end, $isReservable)
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
+		$this->_isReservable = $isReservable;
 	}
 	
 	/**
@@ -44,14 +50,19 @@ class EmptyReservationSlot implements IReservationSlot
 		return 1;
 	}
 	
-	public function ToTimezone($timezone)
-	{
-		return new EmptyReservationSlot($this->Begin()->ToTimezone($timezone), $this->End()->ToTimezone($timezone));
-	}
-	
 	public function Label()
 	{
 		return 'empty';
+	}
+	
+	public function IsReservable()
+	{
+		return $this->_isReservable;
+	}
+	
+	public function ToTimezone($timezone)
+	{
+		return new EmptyReservationSlot($this->Begin()->ToTimezone($timezone), $this->End()->ToTimezone($timezone));
 	}
 }
 

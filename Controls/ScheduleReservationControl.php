@@ -10,7 +10,7 @@ class ScheduleReservationControl extends Control
 	
 	public function PageLoad()
 	{
-		$this->smarty->display('Reservation.tpl');		
+		$this->smarty->display('ScheduleReservation.tpl');		
 	}
 }
 ?>

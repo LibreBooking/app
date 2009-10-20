@@ -54,6 +54,16 @@ class ReservationSlot implements IReservationSlot
 		return $this->_periodSpan;
 	}
 	
+	public function Label()
+	{
+		return $this->_reservation->GetFirstName() . ' ' . $this->_reservation->GetLastName();
+	}
+	
+	public function IsReservable()
+	{
+		return false;
+	}
+	
 	public function ToTimezone($timezone)
 	{
 		return new ReservationSlot($this->Begin()->ToTimezone($timezone), $this->End()->ToTimezone($timezone), $this->PeriodSpan());
@@ -63,11 +73,6 @@ class ReservationSlot implements IReservationSlot
 	{
        return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());
   	}
-  	
-	public function Label()
-	{
-		return $this->_reservation->GetFirstName() . ' ' . $this->_reservation->GetLastName();
-	}
 }
 
 ?>

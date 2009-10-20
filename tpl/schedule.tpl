@@ -25,8 +25,7 @@
 				{/if}
 			</td>
 			{foreach from=$slots item=slot}
-				<td colspan="{$slot->PeriodSpan()}">{control type="ScheduleReservationControl" Slot=$slot}</td>
-				
+				<td colspan="{$slot->PeriodSpan()}">{control type="ScheduleReservationControl" Slot=$slot}</td>				
 			{/foreach}
 		</tr>
 	{/foreach}
