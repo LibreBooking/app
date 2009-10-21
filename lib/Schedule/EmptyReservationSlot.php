@@ -60,6 +60,11 @@ class EmptyReservationSlot implements IReservationSlot
 		return $this->_isReservable;
 	}
 	
+	public function IsReserved()
+	{
+		return false;
+	}
+	
 	public function ToTimezone($timezone)
 	{
 		return new EmptyReservationSlot($this->Begin()->ToTimezone($timezone), $this->End()->ToTimezone($timezone));

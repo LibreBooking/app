@@ -64,6 +64,11 @@ class ReservationSlot implements IReservationSlot
 		return false;
 	}
 	
+	public function IsReserved()
+	{
+		return true;
+	}
+	
 	public function ToTimezone($timezone)
 	{
 		return new ReservationSlot($this->Begin()->ToTimezone($timezone), $this->End()->ToTimezone($timezone), $this->PeriodSpan());

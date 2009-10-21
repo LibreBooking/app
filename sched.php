@@ -45,7 +45,7 @@ class MockSchedulePresenter implements ISchedulePresenter
 		$tz = 'UTC';
 		$layout = new ScheduleLayout('US/Central');
 		
-		$layout->AppendPeriod(Time::Parse('5:00', $tz), Time::Parse('15:00', $tz), 'label1');
+		$layout->AppendBlockedPeriod(Time::Parse('5:00', $tz), Time::Parse('15:00', $tz), 'label1');
 		$layout->AppendPeriod(Time::Parse('15:00', $tz), Time::Parse('18:00', $tz));
 
 		return $layout;

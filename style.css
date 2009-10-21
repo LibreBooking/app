@@ -290,6 +290,24 @@ div.page-footer
     vertical-align: bottom;
     position: absolute;
     width: 100%; 
-    bottom: 0px, 
+    bottom: 0px,
     left: 0px,
 }
+
+#reservations
+{
+	border-collapse:collapse; 
+	border: solid black 1px; 
+	width:100%;
+}
+
+#reservations tr td
+{
+	border: solid 1px black;
+}
+
+div.unreservable {background-color: red;}
+div.reservable {background-color: green;}
+div.reserved {background-color: white;}
+div.hilite { background-color: yellow; cursor: pointer;}
+div.clicked { background-color: brown;}
