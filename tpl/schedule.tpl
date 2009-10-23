@@ -4,19 +4,18 @@
 <script type="text/javascript">
   $(document).ready(function(){
     
-    $(".clickres").click(function () { 
-      $(this).addClass("clicked"); 
-    });
+    $(".clickres")
+    	.mousedown(
+    		function () { $(this).addClass("clicked"); }
+    	)
+    	.mouseup(
+    		function () { $(this).removeClass("clicked"); }
+    	);
     
     $(".clickres").hover(
-	    function () {
-	      $(this).addClass("hilite");
-	    }, 
-	    function () {
-	      $(this).removeClass("hilite");
-	    }
+	    function () { $(this).addClass("hilite"); }, 
+	    function () { $(this).removeClass("hilite"); }
 	);
-
   });
   </script>
 {/literal}

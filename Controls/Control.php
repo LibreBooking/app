@@ -13,6 +13,11 @@ abstract class Control
 		$this->smarty->assign($var, $value);
 	}
 	
+	protected function Get($var)
+	{
+		return $this->smarty->get_template_vars('Slot');
+	}
+	
 	abstract function PageLoad();
 }
 ?>

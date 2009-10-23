@@ -10,7 +10,23 @@ class ScheduleReservationControl extends Control
 	
 	public function PageLoad()
 	{
-		$this->smarty->display('ScheduleReservation.tpl');		
+		/**
+		 * @var IReservationSlot
+		 */
+		$slot = $this->Get('Slot');
+		
+		if ($slot->IsReservable())
+		{
+			$this->smarty->display('Controls/ScheduleReservation.tpl');
+		}
+		else if($slot->IsReserved())
+		{
+			$this->smarty->display('Controls/ReservedSlot.tpl');
+		}
+		else
+		{
+			$this->smarty->display('Controls/UnreservableSlot.tpl');
+		}
 	}
 }
 ?>
