@@ -1,1 +1,1 @@
-<div class="unreservable">{$slot->Label()}</div>
+<td colspan="{$slot->PeriodSpan()}" class="unreservable">&nbsp;</td>

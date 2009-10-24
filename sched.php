@@ -28,9 +28,9 @@ class MockSchedulePresenter implements ISchedulePresenter
 	
 	private function GetResources()
 	{
-		$resources[] = new ResourceDto(1, 'res1', true);
-		$resources[] = new ResourceDto(2, 'res2', true);
-		$resources[] = new ResourceDto(3, 'res3', false);
+		$resources[] = new ResourceDto(1, 'Meeting Room 1', true);
+		$resources[] = new ResourceDto(2, 'Compuer Lab', true);
+		$resources[] = new ResourceDto(3, 'Cytrometer', false);
 		
 		return $resources;
 	}
@@ -45,8 +45,17 @@ class MockSchedulePresenter implements ISchedulePresenter
 		$tz = 'UTC';
 		$layout = new ScheduleLayout('US/Central');
 		
-		$layout->AppendBlockedPeriod(Time::Parse('5:00', $tz), Time::Parse('15:00', $tz), 'label1');
-		$layout->AppendPeriod(Time::Parse('15:00', $tz), Time::Parse('18:00', $tz));
+		$layout->AppendBlockedPeriod(Time::Parse('0:00', $tz), Time::Parse('1:00', $tz), 'label1');
+		$layout->AppendBlockedPeriod(Time::Parse('1:00', $tz), Time::Parse('2:00', $tz), 'label2');
+		$layout->AppendBlockedPeriod(Time::Parse('2:00', $tz), Time::Parse('3:00', $tz), 'label3');
+		
+		for ($i = 3; $i < 21; $i++)
+		{
+			$layout->AppendPeriod(Time::Parse($i + ":00", $tz), Time::Parse($i+1+ ":00", $tz));
+		}
+		
+		$layout->AppendBlockedPeriod(Time::Parse('22:00', $tz), Time::Parse('23:00', $tz));
+		$layout->AppendBlockedPeriod(Time::Parse('23:00', $tz), Time::Parse('24:00', $tz));
 
 		return $layout;
 	}

@@ -1,1 +1,1 @@
-<div class="reserved clickres" id="get">{$slot->Label()}</div>
+<td colspan="{$slot->PeriodSpan()}" class="reserved clickres" id="{$slot->Id()}">{$slot->Label()}</td>

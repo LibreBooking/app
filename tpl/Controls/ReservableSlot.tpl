@@ -1,0 +1,1 @@
+<td colspan="{$slot->PeriodSpan()}" class="reservable clickres" id="get">&nbsp;</td>

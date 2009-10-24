@@ -1,46 +1,39 @@
-body 
-{
+body {
     font-family: Trebuchet MS, Verdana, Arial, Helvetica, sans-serif;
-    background-color: #fefefe;    			
+    background-color: #fefefe;
     margin: 0px;
     color: #333333;
     font-size: 11px;
     height: 100%;
 }
 
-#page-header
-{
-	background-color: #bbb;
-	border-bottom: #4c5c67 solid 1px;
-	margin-bottom: 0px;
+#page-header {
+    background-color: #bbb;
+    border-bottom: #4c5c67 solid 1px;
+    margin-bottom: 0px;
 }
 
-#page-header td
-{
-	vertical-align: top;
+#page-header td {
+    vertical-align: top;
 }
 
-#page-header a
-{
-	color: #ffffff;
+#page-header a {
+    color: #ffffff;
 }
 
-#page-header #header-banner
-{ 
-    height: 110px; 
+#page-header #header-banner {
+    height: 110px;
     width: 100%;
 }
 
-#page-header #banner-image
-{
+#page-header #banner-image {
     position: absolute;
     top: 10px;
     left: 10px;
 }
 
-#page-header #banner-text
-{
-    position: absolute; 
+#page-header #banner-text {
+    position: absolute;
     color: #ffffff;
     top: 20px;
     left: 400px;
@@ -48,30 +41,27 @@ body
     vertical-align: middle;
 }
 
-#page-header #banner-right
-{
+#page-header #banner-right {
     position: absolute;
     top: 0px;
     right: 0px;
     margin-right: 10px;
-    color: #fff; 
+    color: #fff;
     text-align: right;
     font-weight: bold;
     width: 200px;
     height: 110px;
 }
 
-#page-header #banner-welcome
-{
+#page-header #banner-welcome {
     position: absolute;
     top: 70px;
     right: 10px;
-    color: #fff; 
+    color: #fff;
     text-align: right;
 }
 
-#page-header span.tab
-{
+#page-header span.tab {
     padding: 0px 10px 3px 10px;
     margin: 2px 3px 1px 3px;
     vertical-align: middle;
@@ -81,27 +71,24 @@ body
     border-bottom: 3px solid #000000;
 }
 
-#page-header .subtab a:link, #page-header .subtab a:visited
-{
+#page-header .subtab a:link, #page-header .subtab a:visited {
     color: #303030;
 }
 
-a 
-{
+a {
     color: #104E8B;
     text-decoration: none;
 }
 
-a:hover 
-{
+a:hover {
     color: #474747;
     text-decoration: underline;
 }
+
 /*
-Common text settings
-*/
-p
-{ 
+ Common text settings
+ */
+p {
     font-size: 11px;
     margin-bottom: 2px;
     margin-top: 2px;
@@ -109,205 +96,219 @@ p
     margin-left: 2px;
 }
 
-h5
-{ 
+h5 {
     margin-bottom: 0px;
-	margin-top: 0px;
+    margin-top: 0px;
     font-size: 12px;
 }
 
-h4 
-{
-	font-size: 13px;
+h4 {
+    font-size: 13px;
 }
 
-h3 
-{
-	font-size: 18px;
-	margin-top: 0px;
+h3 {
+    font-size: 18px;
+    margin-top: 0px;
 }
 
-.textbox 
-{
+.textbox {
     font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 12px;  
+    font-size: 12px;
     color: #36648B;
     padding: 2px 3px;
     border: solid 1px #aaaaaa;
 }
 
-.button 
-{
+.button {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 10px;
     font-weight: bold;
-	border: solid 1px #0e3046;
-	color: #ffffff;
-	height: 20px;
-	background: url('img/button_background.gif') repeat;
+    border: solid 1px #0e3046;
+    color: #ffffff;
+    height: 20px;
+    background: url('img/button_background.gif') repeat;
 }
 
-.button:hover
-{
-	background: url('img/button_background_hover.gif') repeat;
+.button:hover {
+    background: url('img/button_background_hover.gif') repeat;
 }
 
 /*********************************************************/
-
-.loginTableBorder
-{
-	background-color: #005EBF;
+.loginTableBorder {
+    background-color: #005EBF;
 }
 
-.loginTable tr
-{
-	background-color: #FFFFFF;
+.loginTable tr {
+    background-color: #FFFFFF;
 }
 
-.loginTable #header
-{
-	color: #BBBBBB;
-        background: #005EBF url('img/scheduleit-watermark.png') no-repeat right;
+.loginTable #header {
+    color: #BBBBBB;
+    background: #005EBF url('img/scheduleit-watermark.png') no-repeat right;
 }
 
-.loginTable #header td
-{
-	border-bottom: solid 1px #005EBF;
+.loginTable #header td {
+    border-bottom: solid 1px #005EBF;
 }
 
-.loginTable #footer
-{
-	background-color: #FAFAFA;
+.loginTable #footer {
+    background-color: #FAFAFA;
 }
 
-.loginTable #footer td
-{
-	border-top: solid 1px #005EBF;
+.loginTable #footer td {
+    border-top: solid 1px #005EBF;
 }
 
-#loginError, div.error
-{
-	border: solid 1px #a4381c;
-	margin: 0px auto 15px;
-	background-color: #f5e4df;
-	width: 60%;
-	padding: 6px;
-	font-size: 12px;
-	text-align: center;
+#loginError, div.error {
+    border: solid 1px #a4381c;
+    margin: 0px auto 15px;
+    background-color: #f5e4df;
+    width: 60%;
+    padding: 6px;
+    font-size: 12px;
+    text-align: center;
 }
 
-div.error
-{
-	text-align: left;
-	font-size: 13px;
+div.error {
+    text-align: left;
+    font-size: 13px;
 }
 
-div.error table
-{
-	width: 100%;
+div.error table {
+    width: 100%;
 }
 
-div.error img
-{
-	padding: 0px 10px;
+div.error img {
+    padding: 0px 10px;
 }
 
-div.error ul
-{
-	margin-top: 0px;
-	margin-bottom: 0px;
+div.error ul {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
-div.registration
-{
-	font-size: 14px;
-	width: 500px;	
-	border: solid 1px #cccccc;
-	background-color: #ffffff;
-	padding: 20px 50px;
-	margin-left:auto;
-	margin-right:auto;
-}	
-
-div.registrationHeader
-{
-	font-size: 15px;
-	font-weight: bold;
-	background-color: #e2e398; 
-	color: #000000;
-	padding: 3px 20px;
-	border: solid 1px #adae68;
+div.registration {
+    font-size: 14px;
+    width: 500px;
+    border: solid 1px #cccccc;
+    background-color: #ffffff;
+    padding: 20px 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-div.registration table
-{
-	margin-bottom: 25px;
+div.registrationHeader {
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #e2e398;
+    color: #000000;
+    padding: 3px 20px;
+    border: solid 1px #adae68;
 }
 
-div.registration .textbox
-{
-	width: 200px;
+div.registration table {
+    margin-bottom: 25px;
 }
 
-div.registration hr
-{
-	height: 1px;
-	color: #aaaaaa;
+div.registration .textbox {
+    width: 200px;
 }
 
-#content
-{
-	margin: 0px 15px;
-	padding-bottom: 30px; /* make room for the footer on a full page */
+div.registration hr {
+    height: 1px;
+    color: #aaaaaa;
 }
 
-#shadow
-{
-	width: 100%;
-	height: 8px;
-	margin-bottom: 10px;
+#content {
+    margin: 0px 15px;
+    padding-bottom: 30px; /* make room for the footer on a full page */
 }
 
-.dashboardHeader
-{
-	background-color: #d7def7;
-	border-bottom: solid 1px #588abd;
-	font-size: 13px;
-	font-weight: bold;
-	padding-left: 10px;
-	color: #588abd;
-	letter-spacing: 1px;
+#shadow {
+    width: 100%;
+    height: 8px;
+    margin-bottom: 10px;
 }
 
-.dashboardBorder
-{
-	border: solid 1px #588abd;
+.dashboardHeader {
+    background-color: #d7def7;
+    border-bottom: solid 1px #588abd;
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 10px;
+    color: #588abd;
+    letter-spacing: 1px;
 }
 
-div.page-footer 
-{
+.dashboardBorder {
+    border: solid 1px #588abd;
+}
+
+div.page-footer {
     background: #66A0BB url('img/scheduleit-watermark.png') no-repeat right;
-    vertical-align: bottom;
-    position: absolute;
-    width: 100%; 
-    bottom: 0px,
-    left: 0px,
+    vertical-align: bottom; 
+    width: 100%;
 }
 
-#reservations
-{
-	border-collapse:collapse; 
-	border: solid black 1px; 
-	width:100%;
+table.reservations {
+    border-collapse: collapse;
+    border: solid #333 1px;
+    width: 100%;
+	font-size:9pt;
 }
 
-#reservations tr td
-{
-	border: solid 1px black;
+table.reservations tr td {
+    border: solid 1px #333;
 }
 
-div.unreservable {background-color: red;}
-div.reservable {background-color: green;}
-div.reserved {background-color: white;}
-div.hilite { background-color: yellow; cursor: pointer;}
-div.clicked { background-color: brown;}
+td.resourcename {
+    padding: 1px 3px;
+	background-color: #eee;
+}
+
+td.resdate {
+    width: 150px;
+    padding: 0px 3px;
+	background-color: #ccc;
+}
+
+td.reslabel {
+    padding-left: 2px;
+	background-color: #ccc;
+}
+
+td.unreservable {
+    background-color: #CF9D9B;
+    color: #fff;
+}
+
+td.reservable {
+    background-color: #FFF;
+    color: #333;
+}
+
+td.reserved {
+    background-color: #408AD2;
+    color: #fff;
+}
+
+td.reserved.hilite {
+    background-color: #679ED2;
+    background-color: #59A8EF;
+}
+
+td.reservable.hilite {
+    background-color: #23BF35;
+}
+
+td.hilite {
+    cursor: pointer;
+}
+
+td.reservable.clicked {
+    background-color: #259433;
+}
+
+td.reserved.clicked {
+    background-color: #1979CF;
+}

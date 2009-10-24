@@ -17,7 +17,7 @@ class ScheduleReservationControl extends Control
 		
 		if ($slot->IsReservable())
 		{
-			$this->smarty->display('Controls/ScheduleReservation.tpl');
+			$this->smarty->display('Controls/ReservableSlot.tpl');
 		}
 		else if($slot->IsReserved())
 		{
