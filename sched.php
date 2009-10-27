@@ -45,17 +45,19 @@ class MockSchedulePresenter implements ISchedulePresenter
 		$tz = 'UTC';
 		$layout = new ScheduleLayout('US/Central');
 		
-		$layout->AppendBlockedPeriod(Time::Parse('0:00', $tz), Time::Parse('1:00', $tz), 'label1');
-		$layout->AppendBlockedPeriod(Time::Parse('1:00', $tz), Time::Parse('2:00', $tz), 'label2');
-		$layout->AppendBlockedPeriod(Time::Parse('2:00', $tz), Time::Parse('3:00', $tz), 'label3');
+		//$layout->AppendBlockedPeriod(Time::Parse('0:00', $tz), Time::Parse('1:00', $tz), 'label1');
+		//$layout->AppendBlockedPeriod(Time::Parse('1:00', $tz), Time::Parse('2:00', $tz), 'label2');
+		//$layout->AppendBlockedPeriod(Time::Parse('2:00', $tz), Time::Parse('3:00', $tz), 'label3');
 		
 		for ($i = 3; $i < 21; $i++)
 		{
-			$layout->AppendPeriod(Time::Parse($i + ":00", $tz), Time::Parse($i+1+ ":00", $tz));
+			$start = $i;
+			$end = $i + 1;
+			$layout->AppendPeriod(Time::Parse("$start:00", $tz), Time::Parse("$end:00", $tz));
 		}
 		
-		$layout->AppendBlockedPeriod(Time::Parse('22:00', $tz), Time::Parse('23:00', $tz));
-		$layout->AppendBlockedPeriod(Time::Parse('23:00', $tz), Time::Parse('24:00', $tz));
+		//$layout->AppendBlockedPeriod(Time::Parse('22:00', $tz), Time::Parse('23:00', $tz));
+		//$layout->AppendBlockedPeriod(Time::Parse('23:00', $tz), Time::Parse('24:00', $tz));
 
 		return $layout;
 	}
@@ -64,7 +66,7 @@ class MockSchedulePresenter implements ISchedulePresenter
 	{
 		$listing = new ReservationListing();
 		
-		$t1 = Time::Parse('5:00', 'UTC');
+		$t1 = Time::Parse('2:00', 'UTC');
 		$t2 = Time::Parse('18:00', 'UTC');
 		$today = Date::Now()->Format('Y-m-d');
 		$d1 = Date::Parse($today . $t1->ToString(), 'UTC');

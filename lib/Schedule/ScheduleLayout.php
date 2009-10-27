@@ -52,9 +52,10 @@ class ScheduleLayout implements IScheduleLayout
 		$periodStart = $startTime->ToTimezone($this->_timezone);
 		$periodEnd = $endTime->ToTimezone($this->_timezone);
 		
-		if ($this->SpansMidnight($periodStart, $periodEnd))
+		$midnight = new Time(0, 0, 0, $this->_timezone);
+		
+		if ($this->SpansMidnight($periodStart, $periodEnd, $midnight))
 		{
-			$midnight = new Time(0, 0, 0, $this->_timezone);
 			$localEnd = $periodEnd;
 
 			$otherStart = $periodStart;
@@ -72,11 +73,12 @@ class ScheduleLayout implements IScheduleLayout
 	/**
 	 * @param Time $start
 	 * @param Time $end
+	 * @param Time $midnight
 	 * @return bool
 	 */
-	private function SpansMidnight(Time $start, Time $end)
+	private function SpansMidnight(Time $start, Time $end, Time $midnight)
 	{
-		return $start->GreaterThan($end);
+		return !$end->Equals($midnight) && $start->GreaterThan($end);
 	}
 
 	/**

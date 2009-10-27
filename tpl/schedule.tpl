@@ -56,17 +56,17 @@
 		});
 	});
 	
-	$(".clickres")
+	$('.clickres')
     	.mousedown(
-    		function () { $(this).addClass("clicked"); }
+    		function () { $(this).addClass('clicked'); }
     	)
     	.mouseup(
-    		function () { $(this).removeClass("clicked"); }
+    		function () { $(this).removeClass('clicked'); }
    	);
     
-	$(".clickres").hover(
-	    function () { $(this).addClass("hilite"); }, 
-	    function () { $(this).removeClass("hilite"); }
+	$('.clickres').hover(
+	    function () { $(this).addClass('hilite'); }, 
+	    function () { $(this).removeClass('hilite'); }
 	);
 
   });
