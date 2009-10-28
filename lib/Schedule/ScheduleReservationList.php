@@ -50,8 +50,12 @@ class ScheduleReservationList implements IScheduleReservationList
 		for ($currentIndex = 0; $currentIndex < count($this->_layoutItems); $currentIndex++)
 		{
 			$layoutItem = $this->_layoutItems[$currentIndex];
-			
 			$reservation = $this->GetReservationStartingAt($layoutItem->Begin());
+			
+			if ($currentIndex == 0 && $reservation == null)
+			{
+				$reservation = $this->GetFirstReservation($layoutItem->Begin());
+			}
 			
 			if ($reservation != null)
 			{
@@ -161,6 +165,35 @@ class ScheduleReservationList implements IScheduleReservationList
 		}
 		
 		return 0;
+	}
+	
+	private function GetFirstReservation(Time $firstSlotBegin)
+	{
+		$possibleFirstReservation = $this->GetReservationStartingAt($firstSlotBegin);
+		
+		if ($possibleFirstReservation != null)
+		{
+			return $possibleFirstReservation;
+		}
+		
+		/*
+		$timeKeys = array_keys($this->_reservationsByStartTime);
+		if (Time::Parse($timeKeys[1])->LessThan($firstSlotBegin))
+		{
+			return $this->_reservationsByStartTime[$timeKeys[0]];
+		}
+		*/
+		
+		foreach ($this->_reservationsByStartTime as $timeKey => $reservation)
+		{
+			if ($reservation->GetStartTime()->ToTimezone($this->_destinationTimezone)->LessThan($firstSlotBegin) && $reservation->GetEndTime()->ToTimezone($this->_destinationTimezone)->GreaterThan($firstSlotBegin))
+			{
+				return $reservation;
+			}
+		}
+		
+		return null;
+
 	}
 }
 ?>

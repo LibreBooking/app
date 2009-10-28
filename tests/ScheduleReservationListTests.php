@@ -464,16 +464,46 @@ class ScheduleReservationListTests extends TestBase
 		FakeScheduleReservations::Initialize();
 		$r1 = FakeScheduleReservations::$Reservation1;
 		$r1->SetStartTime(new Time(0,0,0, $utc));
-		$r1->SetEndTime(new Time(3,0,0, $utc));
+		$r1->SetEndTime(new Time(1,0,0, $utc));
 		$r1->SetStartDate($this->date);
 		$r1->SetEndDate($this->date);
 		
-		$list = new ScheduleReservationList(array($r1), $layout, $this->date);
+		$r2 = FakeScheduleReservations::$Reservation2;
+		$r2->SetStartTime(new Time(1,0,0, $utc));
+		$r2->SetEndTime(new Time(3,0,0, $utc));
+		$r2->SetStartDate($this->date);
+		$r2->SetEndDate($this->date);
+		
+		$list = new ScheduleReservationList(array($r1, $r2), $layout, $this->date);
 		$slots = $list->BuildSlots();
 		
-		$slot1 = new ReservationSlot(new Time(0,0,0, $utc), new Time(3,0,0, $utc), 1, $r1);
+		$slot1 = new ReservationSlot(new Time(2,0,0, $utc), new Time(3,0,0, $utc), 1, $r2);
 		
 		$this->assertEquals(1, count($slots));
 		$this->assertEquals($slot1, $slots[0]);
+	}
+	
+	public function testCanTellIfReservationOccursOnSpecifiedDates()
+	{
+		$startDate = Date::Parse('2009-11-1', 'UTC');
+		$endDate = Date::Parse('2009-11-10', 'UTC');
+		
+		FakeScheduleReservations::Initialize();
+		
+		$reservation = FakeScheduleReservations::$Reservation1;
+		$reservation->SetStartTime(new Time(0,0,0, $utc));
+		$reservation->SetEndTime(new Time(1,0,0, $utc));
+		$reservation->SetStartDate($startDate);
+		$reservation->SetEndDate($endDate);
+		
+		$this->assertTrue($reservation->OccursOn($startDate));
+		$this->assertTrue($reservation->OccursOn($startDate->AddDays(2)));
+		$this->assertTrue($reservation->OccursOn($endDate));
+		
+		$this->assertFalse($reservation->OccursOn($startDate->AddDays(-2)));
+		$this->assertFalse($reservation->OccursOn($endDate->AddDays(2)));
+		
+		$this->assertFalse($reservation->OccursOn($startDate->AddDays(-2)));
+		$this->assertFalse($reservation->OccursOn($endDate->AddDays(2)));
 	}
 }

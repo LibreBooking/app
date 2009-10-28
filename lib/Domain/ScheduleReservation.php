@@ -199,6 +199,11 @@ class ScheduleReservation
 	public function SetLastName($value)
 	{
 		$this->_lastName = $value;
-	}	
+	}
+	
+	public function OccursOn(Date $date)
+	{
+		
+	}
 }
 ?>

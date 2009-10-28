@@ -41,6 +41,8 @@ class ReservationListing implements IReservationListing
 	
 	public function OnDate($date)
 	{
+		throw new Exception("need to ask the reservation if it occurs on this date");
+		
 		$reservationListing = new ReservationListing();
 		$dateKey = $date->Format('Ymd');
 		
