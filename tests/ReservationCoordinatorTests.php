@@ -72,8 +72,8 @@ class ReservationCoordinatorTests extends TestBase
 		$notSplit = $this->GetReservation('2009-01-04 12:00:00', '2009-01-04 14:00:00', 6, 1);
 		// goes to 2009-01-04 06:00:00 -> 2009-01-04 08:00:00 (1 reservation)
 		
-		$startDate = Date::Parse('2008-12-31')->ToTimezone('UTC');	// 2008-12-31 06:00 UTC
-		$endDate = Date::Parse('2009-01-06')->ToTimezone('UTC');	// 2009-01-06 06:00 UTC
+		$startDate = Date::Parse('2008-12-31')->ToUtc();	// 2008-12-31 06:00 UTC
+		$endDate = Date::Parse('2009-01-06')->ToUtc();	// 2009-01-06 06:00 UTC
 		
 		$coordinator = new ReservationCoordinator();
 		
@@ -119,37 +119,37 @@ class ReservationCoordinatorTests extends TestBase
 		//$this->assertTrue(Date::Parse('2009-01-04 06:00:00', $cst)->Equals($reservations[19]->DisplayStartDate));
 		//$this->assertTrue(Date::Parse('2009-01-04 08:00:00', $cst)->Equals($reservations[19]->DisplayEndDate));
 		
-		$this->assertEquals(5, $reservationListing->OnDate(Date::Parse('2009-01-01'))->Count());
-		$this->assertEquals(4, $reservationListing->OnDate(Date::Parse('2009-01-02'))->Count());
-		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-03'))->Count());
-		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-12'))->Count());
+		$this->assertEquals(5, $reservationListing->OnDate(Date::Parse('2009-01-01', 'CST'))->Count());
+		$this->assertEquals(4, $reservationListing->OnDate(Date::Parse('2009-01-02', 'CST'))->Count());
+		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-03', 'CST'))->Count());
+		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-12', 'CST'))->Count());
 		
-		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-01'))->ForResource(1)->Count());
-		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-01'))->ForResource(10)->Count());
+		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-01', 'CST'))->ForResource(1)->Count());
+		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-01', 'CST'))->ForResource(10)->Count());
 	}
 	
-	public function testCreatesScheduleLayoutForSpecifiedTimezone()
+
+	public function testSplitsUtcReservationAcrossCstBoundary()
 	{
-		$layout = new ScheduleLayout('CST');
-		$startUtc = new Time(0, 0, 0, 'UTC');
-		$endUtc = new Time(10, 0, 0, 'UTC');
-		$layout->AppendPeriod($startUtc, $endUtc);
+		$startDate = Date::Parse("2010-10-11 1:00:00", 'UTC');
+		$endDate = Date::Parse("2010-10-11 6:00:00", 'UTC');
 		
-		$periods = $layout->GetLayout();
+		$reservation = new ScheduleReservation(1, $startDate, $endDate, 1, null, null, 1, 1, null, null);
 		
-		$this->assertEquals(2, count($periods));
+		$crd = new ReservationCoordinator();
+		$crd->AddReservation($reservation);
 		
+		$listing = $crd->Arrange('US/Central', new DateRange($reservation->GetStartDate(), $reservation->GetEndDate()));
 		
+		$this->assertEquals(2, count($listing->Reservations()));
 		
-		$firstBegin = new Time(0,0,0, 'CST');
-		$firstEnd = $endUtc->ToTimezone('CST');
-		$secondBegin = $startUtc->ToTimezone('CST');
-		$secondEnd = new Time(0, 0, 0, 'CST');
+		$l1 = $listing->OnDate($startDate->ToTimezone('US/Central'));
+		$reservations = $l1->Reservations();
+		$this->assertEquals($reservation, $reservations[0]);
 		
-		$this->assertTrue($firstBegin->Equals($periods[0]->Begin()));
-		$this->assertTrue($firstEnd->Equals($periods[0]->End()));
-		$this->assertTrue($secondBegin->Equals($periods[1]->Begin()));
-		$this->assertTrue($secondEnd->Equals($periods[1]->End()));
+		$l2 = $listing->OnDate($endDate->ToTimezone('US/Central'));
+		$reservations = $l2->Reservations();
+		$this->assertEquals($reservation, $reservations[0]);
 	}
 
 	/**

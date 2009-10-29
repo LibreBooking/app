@@ -81,6 +81,7 @@ class ScheduleReservation
 	public function SetStartDate(Date $value)
 	{
 		$this->_startDate = $value;
+		$this->_startTime = $value->GetTime();
 	}
 	
 	/**
@@ -97,6 +98,7 @@ class ScheduleReservation
 	public function SetEndDate(Date $value)
 	{
 		$this->_endDate = $value;
+		$this->_endTime = $value->GetTime();
 	}
 	
 	/**
@@ -203,7 +205,8 @@ class ScheduleReservation
 	
 	public function OccursOn(Date $date)
 	{
-		
+		$dr = new DateRange($this->_startDate, $this->_endDate);
+		return $dr->Contains($date);
 	}
 }
 ?>

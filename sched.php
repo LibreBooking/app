@@ -13,6 +13,9 @@ class MockSchedulePresenter implements ISchedulePresenter
 	public function __construct(ISchedulePage $page)
 	{
 		$this->_page = $page;
+		$this->_start = Date::Now();
+		$this->_end = Date::Now()->AddDays(7);
+		$this->_range = new DateRange($this->_start, $this->_end);
 	}
 	
 	public function PageLoad()
@@ -20,7 +23,7 @@ class MockSchedulePresenter implements ISchedulePresenter
 		$s1 = new Schedule(1, 'schedule1', true, 0, 0, 0, 0, 0);
 		$schedules = array($s1);
 		$this->_page->SetSchedules($schedules);
-		$this->_page->SetDisplayDates(new DateRange(Date::Now(), Date::Now()->AddDays(7)));
+		$this->_page->SetDisplayDates($this->_range);
 		$this->_page->SetDailyLayout($this->GetReservations());
 		$this->_page->SetResources($this->GetResources());
 		$this->_page->SetLayout($this->GetLayout());
@@ -64,10 +67,11 @@ class MockSchedulePresenter implements ISchedulePresenter
 	
 	private function GetReservationListing()
 	{
-		$listing = new ReservationListing();
+		
+//		$listing = new ReservationListing();
 		
 		$t1 = Time::Parse('3:00', 'UTC');
-		$t2 = Time::Parse('6:00', 'UTC');
+		$t2 = Time::Parse('4:00', 'UTC');
 		$today = Date::Now()->Format('Y-m-d');
 		$d1 = Date::Parse($today . $t1->ToString(), 'UTC');
 		$d2 = Date::Parse($today . $t2->ToString(), 'UTC');
@@ -78,9 +82,19 @@ class MockSchedulePresenter implements ISchedulePresenter
 		
 		//echo 'res date: ' . $res->GetStartDate() . ' ' . $d2;
 		
-		$listing->Add($d1, $d2, $res);
+//		$listing->Add($d1, $d2, $res);
 		
-		return $listing;
+//		return $listing;
+		
+		$reservationCoordinator = new ReservationCoordinator();
+		$reservationCoordinator->AddReservation($res);
+		
+		
+		$reslist = $reservationCoordinator->Arrange("US/Central", $this->_range);
+		
+		print_r($reslist);
+		
+		return $reslist;
 		
 	}
 }

@@ -119,5 +119,27 @@ class ScheduleLayoutTests extends TestBase
 		$this->assertEquals(new SchedulePeriod($time3Gmt, $time4Gmt), $periods[3]);
 		$this->assertEquals(new NonSchedulePeriod($time4Gmt, Time::Parse('00:00')->ToUtc()), $periods[4]);
 	}
+	
+	public function testCreatesScheduleLayoutForSpecifiedTimezone()
+	{
+		$layout = new ScheduleLayout('CST');
+		$startUtc = new Time(0, 0, 0, 'UTC');
+		$endUtc = new Time(10, 0, 0, 'UTC');
+		$layout->AppendPeriod($startUtc, $endUtc);
+		
+		$periods = $layout->GetLayout();
+		
+		$this->assertEquals(2, count($periods));
+		
+		$firstBegin = new Time(0,0,0, 'CST');
+		$firstEnd = $endUtc->ToTimezone('CST');
+		$secondBegin = $startUtc->ToTimezone('CST');
+		$secondEnd = new Time(0, 0, 0, 'CST');
+		
+		$this->assertTrue($firstBegin->Equals($periods[0]->Begin()));
+		$this->assertTrue($firstEnd->Equals($periods[0]->End()));
+		$this->assertTrue($secondBegin->Equals($periods[1]->Begin()));
+		$this->assertTrue($secondEnd->Equals($periods[1]->End()));
+	}
 }
 ?>

@@ -203,20 +203,20 @@ class ScheduleReservationListTests extends TestBase
 		$r3Start = Time::Parse('14:00:00', $utc);		// 08:00 CST
 		$r3End = Time::Parse('18:05:00', $utc);		// 12:05 CST
 		
-		$r1->SetStartTime($r1Start);
-		$r1->SetEndTime($r1End);
 		$r1->SetStartDate($dbDate);
 		$r1->SetEndDate($dbDate);
+		$r1->SetStartTime($r1Start);
+		$r1->SetEndTime($r1End);
 		
-		$r2->SetStartTime($r2Start);
-		$r2->SetEndTime($r2End);
 		$r2->SetStartDate($dbDate);
 		$r2->SetEndDate($dbDate);
+		$r2->SetStartTime($r2Start);
+		$r2->SetEndTime($r2End);
 		
-		$r3->SetStartTime($r3Start);
-		$r3->SetEndTime($r3End);
 		$r3->SetStartDate($dbDate);
 		$r3->SetEndDate($dbDate);
+		$r3->SetStartTime($r3Start);
+		$r3->SetEndTime($r3End);
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -292,20 +292,20 @@ class ScheduleReservationListTests extends TestBase
 		$r3Start = Time::Parse('14:00:00', $utc);		// 08:00 CST
 		$r3End = Time::Parse('18:05:00', $utc);		// 12:05 CST
 		
-		$r1->SetStartTime($r1Start);
-		$r1->SetEndTime($r1End);
 		$r1->SetStartDate(Date::Parse($dbDate)->AddDays(-1));
 		$r1->SetEndDate($dbDate);
+		$r1->SetStartTime($r1Start);
+		$r1->SetEndTime($r1End);
 		
-		$r2->SetStartTime($r2Start);
-		$r2->SetEndTime($r2End);
 		$r2->SetStartDate($dbDate);
 		$r2->SetEndDate($dbDate);
+		$r2->SetStartTime($r2Start);
+		$r2->SetEndTime($r2End);
 		
-		$r3->SetStartTime($r3Start);
-		$r3->SetEndTime($r3End);
 		$r3->SetStartDate($dbDate);
 		$r3->SetEndDate($dbDate);
+		$r3->SetStartTime($r3Start);
+		$r3->SetEndTime($r3End);
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -374,20 +374,20 @@ class ScheduleReservationListTests extends TestBase
 		$r3Start = Time::Parse('14:00:00', $utc);		// 08:00 CST
 		$r3End = Time::Parse('18:05:00', $utc);		// 12:05 CST
 		
-		$r1->SetStartTime($r1Start);
-		$r1->SetEndTime($r1End);
 		$r1->SetStartDate($dbDate);
 		$r1->SetEndDate($dbDate);
+		$r1->SetStartTime($r1Start);
+		$r1->SetEndTime($r1End);
 		
-		$r2->SetStartTime($r2Start);
-		$r2->SetEndTime($r2End);
 		$r2->SetStartDate($dbDate);
 		$r2->SetEndDate($dbDate);
+		$r2->SetStartTime($r2Start);
+		$r2->SetEndTime($r2End);
 		
-		$r3->SetStartTime($r3Start);
-		$r3->SetEndTime($r3End);
 		$r3->SetStartDate($dbDate);
 		$r3->SetEndDate(Date::Parse($dbDate)->AddDays(2));
+		$r3->SetStartTime($r3Start);
+		$r3->SetEndTime($r3End);
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -435,12 +435,12 @@ class ScheduleReservationListTests extends TestBase
 		$r2 = FakeScheduleReservations::$Reservation2;
 		$r3 = FakeScheduleReservations::$Reservation3;
 		
-		$r1Start = Time::Parse('09:00:00', $utc);		// 03:00 CST
-		$r1End = Time::Parse('10:40:00', $utc);		// 04:40 CST
-		$r1->SetStartTime($r1Start);
-		$r1->SetEndTime($r1End);
-		$r1->SetStartDate(Date::Parse('2008-11-10', $utc));
-		$r1->SetEndDate(Date::Parse('2008-11-14', $utc));
+		//$r1Start = Time::Parse('09:00:00', $utc);		// 03:00 CST
+		//$r1End = Time::Parse('10:40:00', $utc);		// 04:40 CST
+		//$r1->SetStartTime($r1Start);
+		//$r1->SetEndTime($r1End);
+		$r1->SetStartDate(Date::Parse('2008-11-10 09:00:00', $utc));
+		$r1->SetEndDate(Date::Parse('2008-11-14 10:40:00', $utc));
 		
 		$reservations = array($r1);
 		
@@ -485,14 +485,12 @@ class ScheduleReservationListTests extends TestBase
 	
 	public function testCanTellIfReservationOccursOnSpecifiedDates()
 	{
-		$startDate = Date::Parse('2009-11-1', 'UTC');
-		$endDate = Date::Parse('2009-11-10', 'UTC');
+		$startDate = Date::Parse('2009-11-1 0:0:0', 'UTC');
+		$endDate = Date::Parse('2009-11-10 1:0:0', 'UTC');
 		
 		FakeScheduleReservations::Initialize();
 		
 		$reservation = FakeScheduleReservations::$Reservation1;
-		$reservation->SetStartTime(new Time(0,0,0, $utc));
-		$reservation->SetEndTime(new Time(1,0,0, $utc));
 		$reservation->SetStartDate($startDate);
 		$reservation->SetEndDate($endDate);
 		
@@ -505,5 +503,8 @@ class ScheduleReservationListTests extends TestBase
 		
 		$this->assertFalse($reservation->OccursOn($startDate->AddDays(-2)));
 		$this->assertFalse($reservation->OccursOn($endDate->AddDays(2)));
+		
+		$this->assertTrue($reservation->OccursOn($startDate->ToTimezone('US/Central')));
+		$this->assertTrue($reservation->OccursOn($endDate->ToTimezone('US/Central')));
 	}
 }

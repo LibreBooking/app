@@ -18,14 +18,12 @@ class ReservationListing implements IReservationListing
 	private $_reservationByResource = array();
 	
 	/**
-	 * @param Date $startDate starting date/time of reservation in timezone of target listing
-	 * @param Date $endDate ending date/time of reservation in timezone of target listing
 	 * @param ScheduleReservation $reservation 
 	 */
-	public function Add($startDate, $endDate, $reservation)
+	public function Add($reservation)
 	{
 		$this->_reservations[] = $reservation;
-		$this->_reservationByDate[$startDate->Format('Ymd')][] = $reservation;
+		$this->_reservationByDate[$reservation->GetStartDate()->ToUtc()->Format('Ymd')][] = $reservation;
 		$this->_reservationByResource[$reservation->GetResourceId()][] = $reservation;
 	}
 	
@@ -41,10 +39,8 @@ class ReservationListing implements IReservationListing
 	
 	public function OnDate($date)
 	{
-		throw new Exception("need to ask the reservation if it occurs on this date");
-		
 		$reservationListing = new ReservationListing();
-		$dateKey = $date->Format('Ymd');
+		$dateKey = $date->ToUtc()->Format('Ymd');
 		
 		if (!array_key_exists($dateKey, $this->_reservationByDate))
 		{
