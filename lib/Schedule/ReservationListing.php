@@ -18,12 +18,13 @@ class ReservationListing implements IReservationListing
 	private $_reservationByResource = array();
 	
 	/**
+	 * @param Date $dateOccurringOn
 	 * @param ScheduleReservation $reservation 
 	 */
-	public function Add($reservation)
+	public function Add($dateOccurringOn, $reservation)
 	{
 		$this->_reservations[] = $reservation;
-		$this->_reservationByDate[$reservation->GetStartDate()->ToUtc()->Format('Ymd')][] = $reservation;
+		$this->_reservationByDate[$dateOccurringOn->ToUtc()->Format('Ymd')][] = $reservation;
 		$this->_reservationByResource[$reservation->GetResourceId()][] = $reservation;
 	}
 	
