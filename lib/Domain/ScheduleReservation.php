@@ -205,7 +205,7 @@ class ScheduleReservation
 	
 	public function OccursOn(Date $date)
 	{
-		$dr = new DateRange($this->_startDate, $this->_endDate);
+		$dr = new DateRange($this->_startDate->GetDate(), $this->_endDate->GetDate());
 		return $dr->Contains($date);
 	}
 }

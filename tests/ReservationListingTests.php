@@ -15,16 +15,6 @@ class ReservationListingTests extends TestBase
 	public function setup()
 	{
 		parent::setup();
-		FakeScheduleRepository::Initialize();
-
-		$this->res1 = $this->GetReservation('2008-12-20', '2008-12-20', '08:00', '09:00', 1);
-		$this->res2 = $this->GetReservation('2008-12-20', '2008-12-20', '08:00', '09:00', 1);
-		$this->res3 = $this->GetReservation('2008-12-20', '2008-12-20', '08:00', '09:00', 1);
-		$this->res4 = $this->GetReservation('2008-12-20', '2008-12-20', '08:00', '09:00', 1);
-		$this->res5 = $this->GetReservation('2008-12-20', '2008-12-20', '08:00', '09:00', 1);
-
-		$this->reservationRepository = new FakeReservationRepository();
-		$this->reservationRepository->_Reservations = array($this->res1, $this->res2, $this->res3, $this->res4, $this->res5);
 	}
 
 	public function teardown()
@@ -34,18 +24,47 @@ class ReservationListingTests extends TestBase
 	
 	public function testReservationSpanningMultipleDaysIsReturnedOnAllOfThem()
 	{
-		throw new Exception("getting this to work should make the coordinator obsolete");
+		$res1 = $this->GetReservation('2009-10-09 22:00:00', '2009-10-09 23:00:00');
+		// 2009-10-09 17:00:00 - 2009-10-09 18:00:00 CST
+		$res2 = $this->GetReservation('2009-10-10 01:00:00', '2009-10-10 07:00:00');
+		// 2009-10-09 20:00:00 - 2009-10-10 02:00:00 CST
+		$res3 = $this->GetReservation('2009-10-10 10:00:00', '2009-10-13 10:00:00');
+		// 2009-10-10 05:00:00 - 2009-10-13 05:00:00 CST
+		$res4 = $this->GetReservation('2009-10-14 01:00:00', '2009-10-16 01:00:00');
+		// 2009-10-13 20:00:00 - 2009-10-15 20:00:00 CST
+		$res5 = $this->GetReservation('2009-10-13 10:00:00', '2009-10-13 15:00:00');
+		// 2009-10-13 05:00:00 - 2009-10-13 10:00:00 CST
 		
-		$reservationListing = new ReservationListing("UTC");
-		$reservationListing->Add($res1);
-		$reservationListing->Add($res2);
-		$reservationListing->Add($res3);
+		$reservationListing = new ReservationListing("CST");
 		
-		$onFirstDate = $reservationListing->OnDate($date1);
-		$onSecondDate = $reservationListing->OnDate($date2);
+		$reservationListing->Add(null, $res4);
+		$reservationListing->Add(null, $res1);
+		$reservationListing->Add(null, $res3);
+		$reservationListing->Add(null, $res2);
+		$reservationListing->Add(null, $res5);
 		
-		$this->assertEquals($expectedCount1, count($onFirstDate->Reservations()));
-		$this->assertEquals($expectedCount2, count($onSecondDate->Reservations()));
+		$onDate1 = $reservationListing->OnDate(Date::Parse('2009-10-09', 'CST'));
+		$onDate2 = $reservationListing->OnDate(Date::Parse('2009-10-10', 'CST'));
+		$onDate3 = $reservationListing->OnDate(Date::Parse('2009-10-11', 'CST'));
+		$onDate4 = $reservationListing->OnDate(Date::Parse('2009-10-12', 'CST'));
+		$onDate5 = $reservationListing->OnDate(Date::Parse('2009-10-13', 'CST'));
+		$onDate6 = $reservationListing->OnDate(Date::Parse('2009-10-14', 'CST'));
+		$onDate7 = $reservationListing->OnDate(Date::Parse('2009-10-15', 'CST'));
+		$onDate8 = $reservationListing->OnDate(Date::Parse('2009-10-16', 'CST'));
+		
+		$this->assertEquals(2, $onDate1->Count());
+		$this->assertEquals(2, $onDate2->Count());
+		$this->assertEquals(1, $onDate3->Count());
+		$this->assertEquals(1, $onDate4->Count());
+		$this->assertEquals(3, $onDate5->Count());
+		$this->assertEquals(1, $onDate6->Count());
+		$this->assertEquals(1, $onDate7->Count());
+		$this->assertEquals(0, $onDate8->Count());
+	}
+	
+	private function GetReservation($startDateString, $endDateString)
+	{
+		return new ScheduleReservation(1, Date::Parse($startDateString, 'UTC'), Date::Parse($endDateString, 'UTC'), 1, null, null, 1, 1, '', '');
 	}
 }
 ?>
