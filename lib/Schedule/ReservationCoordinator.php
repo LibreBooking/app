@@ -21,7 +21,7 @@ class ReservationCoordinator
 	
 	public function Arrange($timezone, DateRange $validDates)
 	{
-		$listing = new ReservationListing();
+		$listing = new ReservationListing($timezone);
 		
 		foreach ($this->_reservations as $reservation)
 		{

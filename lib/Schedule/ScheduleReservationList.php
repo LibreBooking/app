@@ -35,7 +35,7 @@ class ScheduleReservationList implements IScheduleReservationList
 		$this->_reservations = $reservations;
 		$this->_layout = $layout;
 		$this->_destinationTimezone = $this->_layout->Timezone();
-		$this->_layoutDateUtc = $layoutDate->ToTimezone('UTC')->GetDate();
+		$this->_layoutDateUtc = $layoutDate->ToUtc()->GetDate();
 		$this->_layoutItems = $this->_layout->GetLayout();
 		$this->_midnight = new Time(0,0,0, $this->_destinationTimezone);
 			

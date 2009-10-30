@@ -17,6 +17,16 @@ class ReservationListing implements IReservationListing
 	 */
 	private $_reservationByResource = array();
 	
+	private $_timezone;
+	
+	/**
+	 * @param $timezone string
+	 */
+	public function __construct($timezone)
+	{
+		$this->_timezone = $timezone;
+	}
+	
 	/**
 	 * @param Date $dateOccurringOn
 	 * @param ScheduleReservation $reservation 
@@ -24,7 +34,7 @@ class ReservationListing implements IReservationListing
 	public function Add($dateOccurringOn, $reservation)
 	{
 		$this->_reservations[] = $reservation;
-		$this->_reservationByDate[$dateOccurringOn->ToUtc()->Format('Ymd')][] = $reservation;
+		//$this->_reservationByDate[$dateOccurringOn->ToTimezone($this->_timezone)->Format('Ymd')][] = $reservation;
 		$this->_reservationByResource[$reservation->GetResourceId()][] = $reservation;
 	}
 	
@@ -40,27 +50,37 @@ class ReservationListing implements IReservationListing
 	
 	public function OnDate($date)
 	{
-		$reservationListing = new ReservationListing();
-		$dateKey = $date->ToUtc()->Format('Ymd');
-		
-		if (!array_key_exists($dateKey, $this->_reservationByDate))
+		$reservationListing = new ReservationListing($this->_timezone);
+		foreach ($this->_reservations as $reservation)
 		{
-			return $reservationListing;
-		}		
-		
-		$reservationListing->_reservations = $this->_reservationByDate[$dateKey];
-		
-		foreach ($reservationListing->_reservations as $rli)
-		{
-			$reservationListing->_reservationByResource[$rli->GetResourceId()][] = $rli;
+			if ($reservation->OccursOn($date))
+			{
+				$reservationListing->Add($date, $reservation);
+			}
 		}
 		
 		return $reservationListing;
+//		$reservationListing = new ReservationListing($this->_timezone);
+//		$dateKey = $date->ToTimezone($this->_timezone)->Format('Ymd');
+//		
+//		if (!array_key_exists($dateKey, $this->_reservationByDate))
+//		{
+//			return $reservationListing;
+//		}		
+//		
+//		$reservationListing->_reservations = $this->_reservationByDate[$dateKey];
+//		
+//		foreach ($reservationListing->_reservations as $rli)
+//		{
+//			$reservationListing->_reservationByResource[$rli->GetResourceId()][] = $rli;
+//		}
+//		
+//		return $reservationListing;
 	}
 	
 	public function ForResource($resourceId)
 	{
-		$reservationListing = new ReservationListing();
+		$reservationListing = new ReservationListing($this->_timezone);
 		
 		if (array_key_exists($resourceId, $this->_reservationByResource))
 		{

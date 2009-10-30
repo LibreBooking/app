@@ -32,15 +32,16 @@ class ReservationCoordinatorTests extends TestBase
 		parent::teardown();
 	}
 
-	
 	public function testReservationCoordinatorArrangeSplitsAndLimitsReservationsForGivenRangeAndTimezone()
 	{
+		$cst = 'US/Central';
+				
 		$splitTo2Dates = $this->GetReservation('2009-01-01 01:00:00', '2009-01-01 08:00:00', 1, 1);
 		// goes to 2008-12-31 19:00:00 -> 2009-01-01 02:00:00 (2 reservations)
 		//  2008-12-31 19:00 - 2009-01-01 00:00
 		//  2009-01-01 00:00 - 2009-01-01 02:00
 		
-		$splitTo4Pieces = $this->GetReservation('2009-01-02 05:00:00', '2009-01-05 05:00:00', 2, 2);
+		$splitTo4Pieces = $this->GetReservation('2009-01-02 04:00:00', '2009-01-05 04:00:00', 2, 2);
 		// goes to 2009-01-01 23:00:00 -> 2009-01-04 23:00:00 (4 reservations)
 		//  2009-01-01 23:00 - 2009-01-02 00:00
 		//  2009-01-02 00:00 - 2009-01-03 00:00
@@ -72,8 +73,8 @@ class ReservationCoordinatorTests extends TestBase
 		$notSplit = $this->GetReservation('2009-01-04 12:00:00', '2009-01-04 14:00:00', 6, 1);
 		// goes to 2009-01-04 06:00:00 -> 2009-01-04 08:00:00 (1 reservation)
 		
-		$startDate = Date::Parse('2008-12-31')->ToUtc();	// 2008-12-31 06:00 UTC
-		$endDate = Date::Parse('2009-01-06')->ToUtc();	// 2009-01-06 06:00 UTC
+		$startDate = Date::Parse('2008-12-31', $cst)->ToUtc();		// 2008-12-31 06:00 UTC
+		$endDate = Date::Parse('2009-01-06', $cst)->ToUtc();		// 2009-01-06 06:00 UTC
 		
 		$coordinator = new ReservationCoordinator();
 		
@@ -84,48 +85,33 @@ class ReservationCoordinatorTests extends TestBase
 		$coordinator->AddReservation($splitTo2PiecesOffStart);
 		$coordinator->AddReservation($notSplit);
 		
-		$reservationListing = $coordinator->Arrange('CST', new DateRange($startDate, $endDate));
+		$reservationListing = $coordinator->Arrange($cst, new DateRange($startDate, $endDate));
 				
 		$reservations = $reservationListing->Reservations();
 //		foreach ($reservations as $reservation)
 //		{
 //			printf("\n%s => %s - %s", $reservation->Reservation->GetReservationId(), $reservation->DisplayStartDate->ToString(), $reservation->DisplayEndDate->ToString());
 //		}
-		$cst = 'CST';
 		
 		$this->assertEquals(20, $reservationListing->Count());
 		
-		$this->assertEquals(1, $reservations[0]->GetReservationId());		
-		//$this->assertTrue(Date::Parse('2008-12-31 19:00', $cst)->Equals($reservations[0]->DisplayStartDate));
-		//$this->assertTrue(Date::Parse('2009-01-01 00:00', $cst)->Equals($reservations[0]->DisplayEndDate));
+		$this->assertEquals(1, $reservations[0]->GetReservationId());
 		$this->assertEquals(1, $reservations[1]->GetReservationId());
-		//$this->assertTrue(Date::Parse('2009-01-01 00:00', $cst)->Equals($reservations[1]->DisplayStartDate));
-		//$this->assertTrue(Date::Parse('2009-01-01 02:00', $cst)->Equals($reservations[1]->DisplayEndDate));
 		
-		$this->assertEquals(2, $reservations[2]->GetReservationId());		
-		//$this->assertTrue(Date::Parse('2009-01-01 23:00', $cst)->Equals($reservations[2]->DisplayStartDate));
-		//$this->assertTrue(Date::Parse('2009-01-02 00:00', $cst)->Equals($reservations[2]->DisplayEndDate));
+		$this->assertEquals(2, $reservations[2]->GetReservationId());
 		$this->assertEquals(2, $reservations[3]->GetReservationId());
-		//$this->assertTrue(Date::Parse('2009-01-02 00:00', $cst)->Equals($reservations[3]->DisplayStartDate));
-		//$this->assertTrue(Date::Parse('2009-01-03 00:00', $cst)->Equals($reservations[3]->DisplayEndDate));
-		$this->assertEquals(2, $reservations[4]->GetReservationId());		
-		//$this->assertTrue(Date::Parse('2009-01-03 00:00', $cst)->Equals($reservations[4]->DisplayStartDate));
-		//$this->assertTrue(Date::Parse('2009-01-04 00:00', $cst)->Equals($reservations[4]->DisplayEndDate));
+		$this->assertEquals(2, $reservations[4]->GetReservationId());
 		$this->assertEquals(2, $reservations[5]->GetReservationId());
-		//$this->assertTrue(Date::Parse('2009-01-04 00:00', $cst)->Equals($reservations[5]->DisplayStartDate));
-		//$this->assertTrue(Date::Parse('2009-01-04 23:00', $cst)->Equals($reservations[5]->DisplayEndDate));
 		
-		$this->assertEquals(6, $reservations[19]->GetReservationId());		
-		//$this->assertTrue(Date::Parse('2009-01-04 06:00:00', $cst)->Equals($reservations[19]->DisplayStartDate));
-		//$this->assertTrue(Date::Parse('2009-01-04 08:00:00', $cst)->Equals($reservations[19]->DisplayEndDate));
+		$this->assertEquals(6, $reservations[19]->GetReservationId());
 		
-		$this->assertEquals(5, $reservationListing->OnDate(Date::Parse('2009-01-01', 'CST'))->Count());
-		$this->assertEquals(4, $reservationListing->OnDate(Date::Parse('2009-01-02', 'CST'))->Count());
-		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-03', 'CST'))->Count());
-		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-12', 'CST'))->Count());
+		$this->assertEquals(5, $reservationListing->OnDate(Date::Parse('2009-01-01', $cst))->Count());
+		$this->assertEquals(4, $reservationListing->OnDate(Date::Parse('2009-01-02', $cst))->Count());
+		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-03', $cst))->Count());
+		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-12', $cst))->Count());
 		
-		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-01', 'CST'))->ForResource(1)->Count());
-		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-01', 'CST'))->ForResource(10)->Count());
+		$this->assertEquals(3, $reservationListing->OnDate(Date::Parse('2009-01-01', $cst))->ForResource(1)->Count());
+		$this->assertEquals(0, $reservationListing->OnDate(Date::Parse('2009-01-01', $cst))->ForResource(10)->Count());
 	}
 	
 

@@ -68,7 +68,7 @@ class MockSchedulePresenter implements ISchedulePresenter
 	private function GetReservationListing()
 	{
 		
-//		$listing = new ReservationListing();
+
 		
 		$t1 = Time::Parse('3:00', 'UTC');
 		$t2 = Time::Parse('4:00', 'UTC');
@@ -81,20 +81,20 @@ class MockSchedulePresenter implements ISchedulePresenter
 		$res = new ScheduleReservation(1, $d1, $d2, 1, 'some summary', null, 2, 1, 'nick', 'korbel');
 		
 		//echo 'res date: ' . $res->GetStartDate() . ' ' . $d2;
+		$listing = new ReservationListing("US/Central");
+		$listing->Add($d1, $res);
 		
-//		$listing->Add($d1, $d2, $res);
+		return $listing;
 		
-//		return $listing;
-		
-		$reservationCoordinator = new ReservationCoordinator();
-		$reservationCoordinator->AddReservation($res);
-		
-		
-		$reslist = $reservationCoordinator->Arrange("US/Central", $this->_range);
-		
-		print_r($reslist);
-		
-		return $reslist;
+//		$reservationCoordinator = new ReservationCoordinator();
+//		$reservationCoordinator->AddReservation($res);
+//		
+//		
+//		$reslist = $reservationCoordinator->Arrange("US/Central", $this->_range);
+//		
+//		print_r($reslist);
+//		
+//		return $reslist;
 		
 	}
 }
