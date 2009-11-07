@@ -9,7 +9,7 @@ class AnnouncementsTests extends TestBase
 	{
 		parent::setup();
 		
-		Date::_SetNow(new Date(mktime()));
+		Date::_SetNow(new Date());
 		
 		$this->announcements = new Announcements();
 	}

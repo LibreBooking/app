@@ -58,7 +58,7 @@ class ReservationCoordinator
 			
 			if (!$date->DateEquals($endDate))
 			{
-				$end = Date::Create($date->Year(), $date->Month(), $date->Day() + 1, 0, 0, 0, $startDate->Timezone());
+				$end = Date::Create($date->Year(), $date->Month(), $date->Day(), 0, 0, 0, $startDate->Timezone())->AddDays(1);
 			}
 			
 			$reservationList[] = array ('startDate' => $start, 'endDate' => $end, 'reservation' => $reservation);

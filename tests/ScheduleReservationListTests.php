@@ -510,6 +510,11 @@ class ScheduleReservationListTests extends TestBase
 	
 	public function testReservationShouldOccurOnDateIfTheReservationStartsAtAnyTimeOnThatDate()
 	{
+		$d1 = Date::Parse('2009-10-10 05:00:00', 'UTC');
+		$d2 = Date::Parse('2009-10-10 00:00:00', 'CST');
+		
+		$this->assertEquals($d1->Timestamp(), $d2->Timestamp());
+		
 		$res1 = new ScheduleReservation(1, Date::Parse('2009-10-09 22:00:00', 'UTC'), Date::Parse('2009-10-09 23:00:00', 'UTC'), 1, null, null, 1, 1, null, null);
 		// 2009-10-09 17:00:00 - 2009-10-09 18:00:00 CST
 		

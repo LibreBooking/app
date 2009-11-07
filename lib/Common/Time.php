@@ -1,7 +1,9 @@
 <?php
 class Time
 {
-	private $_time;
+	private $_hour;
+	private $_minute;
+	private $_second;
 	private $_date;
 	private $_timezone;
 	
@@ -12,7 +14,7 @@ class Time
 		$this->_second = is_null($second) ? 0 : $second;
 		$this->_timezone = $timezone;
 
-		$this->_date = new Date(mktime($hour, $minute, $second), $timezone);
+		$this->_date = new Date("$this->_hour:$this->_minute:$this->_second", $timezone);
 	}
     
 	 /**

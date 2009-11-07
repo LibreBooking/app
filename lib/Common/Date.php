@@ -8,6 +8,7 @@ class Date
 	private $parts;
 	private $timezone;
     private $timestamp;
+    private $timestring;
     
     const SHORT_FORMAT = "Y-m-d H:i:s";
 	
@@ -19,27 +20,19 @@ class Date
 	 * Defaults to current time
 	 * Defaults to server.timezone configuration setting
 	 *
-	 * @param int $timestamp
+	 * @param string $timestring
 	 * @param string $timezone
 	 */
-	public function __construct($timestamp = null, $timezone = null)
+	public function __construct($timestring = null, $timezone = null)
 	{
-        $this->InitializeTimestamp($timestamp);
         $this->InitializeTimezone($timezone);
                        
-		$this->date = new DateTime(date(Date::SHORT_FORMAT, $this->timestamp), new DateTimeZone($this->timezone));
-		$this->parts = getdate($timestamp); //date_parse($this->date->format(DATE_W3C));	
+		$this->date = new DateTime($timestring, new DateTimeZone($this->timezone));
+		$this->timestring = $this->date->format(self::SHORT_FORMAT); 
+		$this->timestamp = $this->date->format('U');
+		$this->InitializeParts();
 	}
-    
-    private function InitializeTimestamp($timestamp)
-    {
-        $this->timestamp = $timestamp;        
-        if ($timestamp == null)
-        {
-            $this->timestamp = time();
-        }
-    }
-    
+
     private function InitializeTimezone($timezone)
     {
         $this->timezone = $timezone;
@@ -55,7 +48,7 @@ class Date
 	*/
 	public static function Create($year, $month, $day, $hour = 0, $minute = 0, $second = 0, $timezone = null)
 	{
-		return new Date(mktime(intVal($hour), intVal($minute), intVal($second), intVal($month), intVal($day), intVal($year)), $timezone);
+		return new Date(sprintf('%04d-%02d-%02d %02d:%02d:%02d', $year, $month, $day, $hour, $minute, $second), $timezone);
 	}
 	
 	/**
@@ -64,9 +57,7 @@ class Date
 	*/
 	public static function Parse($dateString, $timezone = null)
 	{
-		$parts = getdate(strtotime($dateString));
-    	
-    	return Date::Create($parts['year'], $parts['mon'], $parts['mday'], $parts['hours'], $parts['minutes'], $parts['seconds'], $timezone);
+		return new Date($dateString, $timezone);
 	}
 	
 	/**
@@ -80,7 +71,8 @@ class Date
 		{
 			return self::$_Now;
 		}
-		return new Date(mktime());
+//		return new Date(mktime());
+		return new Date('now');
 	}
 	
 	/**
@@ -104,13 +96,13 @@ class Date
 	{
 		if ($this->Timezone() == $timezone)
 		{
-			return new Date($this->Timestamp(), $this->Timezone());
+			return new Date($this->timestring, $this->Timezone());
 		}
 		
-        $date = new DateTime(date(Date::SHORT_FORMAT, $this->timestamp), new DateTimeZone($this->timezone));
+        $date = new DateTime($this->timestring, new DateTimeZone($this->timezone));
                 
         $date->setTimezone(new DateTimeZone($timezone));
-        $adjustedDate = strtotime($date->format(Date::SHORT_FORMAT));
+        $adjustedDate = $date->format(Date::SHORT_FORMAT);
 
         return new Date($adjustedDate, $timezone);
 	}
@@ -142,14 +134,7 @@ class Date
 	 */
 	public function Timestamp()
 	{
-		return mktime(
-					$this->Hour(), 
-					$this->Minute(), 
-					$this->Second(), 
-					$this->Month(), 
-					$this->Day(), 
-					$this->Year()
-					);
+		return $this->timestamp;
 	}
 	
 	/**
@@ -275,18 +260,25 @@ class Date
 	 */
 	public function AddDays($days)
 	{		
-		$timestamp = mktime(
-							$this->Hour(), 
-							$this->Minute(), 
-							$this->Second(), 
-							$this->Month(), 
-							$this->Day() + $days, 
-							$this->Year()
-							);
-			
-		return new Date($timestamp, $this->timezone);
+		// can also use DateTime->modify()
+		return new Date($this->Format(self::SHORT_FORMAT) . " +$days days", $this->timezone);
 	}	
 	
+    private function InitializeParts()
+    {
+    	list($date, $time) = explode(' ', $this->Format('w-' . self::SHORT_FORMAT));
+    	list($weekday, $year, $month, $day) = explode("-", $date);
+    	list($hour, $minute, $second) = explode(":", $time);
+    	
+    	$this->parts['hours'] = $hour;
+    	$this->parts['minutes'] = $minute;
+    	$this->parts['seconds'] = $second;
+    	$this->parts['mon'] = $month;
+    	$this->parts['mday'] = $day;
+    	$this->parts['year'] = $year;
+    	$this->parts['wday'] = $weekday;
+    }
+    
 	public function Hour()
 	{
 		return $this->parts['hours'];		
@@ -360,15 +352,5 @@ class Date
 	{
       return $this->ToString();
   	}
-//	
-//	public function DayOfYear()
-//	{
-//		return $this->parts['yday'];
-//	}
-//	
-//	public function DayOfWeek()
-//	{
-//		return $this->parts['wday'];
-//	}
 }
 ?>

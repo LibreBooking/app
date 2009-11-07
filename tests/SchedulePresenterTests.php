@@ -371,7 +371,7 @@ class SchedulePresenterTests extends TestBase
 		
 		$schedulePage->expects($this->once())
 			->method('GetSelectedDate')
-			->will($this->returnValue($selectedDate->Timestamp()));	
+			->will($this->returnValue($selectedDate->Format("Y-m-d")));	
 		
 		$schedule->expects($this->once())
 			->method('GetWeekdayStart')

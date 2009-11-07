@@ -208,7 +208,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 	
 	function testGetDashboardAnnouncementsCommand()
 	{
-		$now = new Date(mktime());
+		$now = new Date();
 		
 		$command = new GetDashboardAnnouncementsCommand($now);
 		$this->assertEquals(Queries::GET_DASHBOARD_ANNOUNCEMENTS, $command->GetQuery());
