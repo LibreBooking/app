@@ -205,8 +205,11 @@ class ScheduleReservation
 	
 	public function OccursOn(Date $date)
 	{
-		$dr = new DateRange($this->_startDate->GetDate(), $this->_endDate->GetDate()->AddDays(1));
-		return $dr->Contains($date);
+		$timezone = $date->Timezone();
+		$beginMidnight = $this->_startDate->ToTimezone($timezone)->GetDate();
+		$endMidnight = $this->_endDate->ToTimezone($timezone)->GetDate()->AddDays(1);
+		
+		return ($beginMidnight->Compare($date) <= 0 && $endMidnight->Compare($date) > 0);
 	}
 }
 ?>

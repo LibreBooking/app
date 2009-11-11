@@ -35,7 +35,8 @@ class DateTests extends TestBase
 		$day = 21;
 		$year = 2007;
 		
-		$now = new Date("$year-$month-$day $hour:$minute:$second");
+		$string = "$year-$month-$day $hour:$minute:$second";
+		$now = new Date($string);
 		
 		$expectedTS = mktime($hour, $minute, $second, $month, $day + 20, $year);
 		

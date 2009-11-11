@@ -149,7 +149,7 @@ class ReservationCoordinatorTests extends TestBase
 	 */
 	private function GetReservation($startDate, $endDate, $reservationId, $resourceId)
 	{
-		return new ScheduleReservation($reservationId, Date::Parse($startDate, 'UTC'), Date::Parse($endDate, 'UTC'), 1, 'summary', null, $resourceId, 1, 'f', 'l');
+		return new ScheduleReservation($reservationId, new Date($startDate, 'UTC'), new Date($endDate, 'UTC'), 1, 'summary', null, $resourceId, 1, 'f', 'l');
 	}
 }
 
