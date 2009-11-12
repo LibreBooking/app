@@ -33,7 +33,7 @@ class FakeScheduleReservations
 														1, 
 														'f', 
 														'l');
-		self::$Reservation2 = new ScheduleReservation(3, 
+		self::$Reservation2 = new ScheduleReservation(2, 
 														Date::Parse('2008-11-11 08:00:00', 'UTC'), 
 														Date::Parse('2008-11-11 13:30:00', 'UTC'), 
 														ReservationTypes::Reservation, 

@@ -21,14 +21,17 @@ class ReservationService implements IReservationService
 	{
 		$reservations = $this->_repository->GetWithin($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), $scheduleId);
 		
-		$coordinator = $this->_coordinatorFactory->CreateCoordinator();
+		$reservationListing = new ReservationListing($targetTimezone);
+		//$coordinator = $this->_coordinatorFactory->CreateCoordinator();
 		
 		foreach ($reservations as $reservation)
 		{
-			$coordinator->AddReservation($reservation);
+			$reservationListing->Add($reservation);
 		}
 		
-		return $coordinator->Arrange($targetTimezone, $dateRangeUtc);
+		return $reservationListing;
+		
+		//return $coordinator->Arrange($targetTimezone, $dateRangeUtc);
 	}
 }
 

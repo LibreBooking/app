@@ -67,9 +67,6 @@ class MockSchedulePresenter implements ISchedulePresenter
 	
 	private function GetReservationListing()
 	{
-		
-
-		
 		$t1 = Time::Parse('3:00', 'UTC');
 		$t2 = Time::Parse('4:00', 'UTC');
 		$today = Date::Now()->Format('Y-m-d');
@@ -82,7 +79,7 @@ class MockSchedulePresenter implements ISchedulePresenter
 		
 		//echo 'res date: ' . $res->GetStartDate() . ' ' . $d2;
 		$listing = new ReservationListing("US/Central");
-		$listing->Add($d1, $res);
+		$listing->Add($res);
 		
 		return $listing;
 		

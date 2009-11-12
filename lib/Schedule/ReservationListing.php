@@ -28,13 +28,11 @@ class ReservationListing implements IReservationListing
 	}
 	
 	/**
-	 * @param Date $dateOccurringOn
 	 * @param ScheduleReservation $reservation 
 	 */
-	public function Add($dateOccurringOn, $reservation)
+	public function Add($reservation)
 	{
 		$this->_reservations[] = $reservation;
-		//$this->_reservationByDate[$dateOccurringOn->ToTimezone($this->_timezone)->Format('Ymd')][] = $reservation;
 		$this->_reservationByResource[$reservation->GetResourceId()][] = $reservation;
 	}
 	
@@ -60,22 +58,6 @@ class ReservationListing implements IReservationListing
 		}
 		
 		return $reservationListing;
-//		$reservationListing = new ReservationListing($this->_timezone);
-//		$dateKey = $date->ToTimezone($this->_timezone)->Format('Ymd');
-//		
-//		if (!array_key_exists($dateKey, $this->_reservationByDate))
-//		{
-//			return $reservationListing;
-//		}		
-//		
-//		$reservationListing->_reservations = $this->_reservationByDate[$dateKey];
-//		
-//		foreach ($reservationListing->_reservations as $rli)
-//		{
-//			$reservationListing->_reservationByResource[$rli->GetResourceId()][] = $rli;
-//		}
-//		
-//		return $reservationListing;
 	}
 	
 	public function ForResource($resourceId)

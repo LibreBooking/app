@@ -463,16 +463,16 @@ class ScheduleReservationListTests extends TestBase
 		
 		FakeScheduleReservations::Initialize();
 		$r1 = FakeScheduleReservations::$Reservation1;
-		$r1->SetStartTime(new Time(0,0,0, $utc));
-		$r1->SetEndTime(new Time(1,0,0, $utc));
 		$r1->SetStartDate($this->date);
 		$r1->SetEndDate($this->date);
+		$r1->SetStartTime(new Time(0,0,0, $utc));
+		$r1->SetEndTime(new Time(1,0,0, $utc));
 		
 		$r2 = FakeScheduleReservations::$Reservation2;
-		$r2->SetStartTime(new Time(1,0,0, $utc));
-		$r2->SetEndTime(new Time(3,0,0, $utc));
 		$r2->SetStartDate($this->date);
 		$r2->SetEndDate($this->date);
+		$r2->SetStartTime(new Time(1,0,0, $utc));
+		$r2->SetEndTime(new Time(3,0,0, $utc));
 		
 		$list = new ScheduleReservationList(array($r1, $r2), $layout, $this->date);
 		$slots = $list->BuildSlots();

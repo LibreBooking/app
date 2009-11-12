@@ -34,7 +34,7 @@ class ReservationCoordinator
 			{
 				if ($validDates->ContainsRange(new DateRange($item['startDate'], $item['endDate'])))
 				{
-					$listing->Add($item['startDate'], $item['reservation']);
+					$listing->Add($item['reservation']);
 				}
 			}
 		}
