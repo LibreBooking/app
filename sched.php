@@ -69,11 +69,11 @@ class MockSchedulePresenter implements ISchedulePresenter
 	{
 		$t1 = Time::Parse('3:00', 'UTC');
 		$t2 = Time::Parse('4:00', 'UTC');
-		$today = Date::Now()->Format('Y-m-d');
-		$d1 = Date::Parse($today . $t1->ToString(), 'UTC');
-		$d2 = Date::Parse($today . $t2->ToString(), 'UTC');
+		$today = Date::Now()->AddDays(1)->Format('Y-m-d');
+		$d1 = Date::Parse($today . ' ' . $t1->ToString(), 'UTC');
+		$d2 = Date::Parse($today . ' ' . $t2->ToString(), 'UTC');
 		
-		//echo 'res date: ' . $d1 . ' ' . $d2;
+		echo 'res date: ' . $d1->ToTimezone('US/Central') . ' ' . $d2->ToTimezone('US/Central');
 		
 		$res = new ScheduleReservation(1, $d1, $d2, 1, 'some summary', null, 2, 1, 'nick', 'korbel');
 		

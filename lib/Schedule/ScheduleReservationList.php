@@ -15,7 +15,8 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @var IScheduleLayout
 	 */
 	private $_layout;
-	private $_layoutDateUtc;
+	private $_layoutDateStart;
+	private $_layoutDateEnd;
 	
 	private $_layoutItems;
 	
@@ -37,7 +38,8 @@ class ScheduleReservationList implements IScheduleReservationList
 		$this->_reservations = $reservations;
 		$this->_layout = $layout;
 		$this->_destinationTimezone = $this->_layout->Timezone();
-		$this->_layoutDateUtc = $layoutDate->ToUtc()->GetDate();
+		$this->_layoutDateStart = $layoutDate->GetDate()->ToUtc();
+		$this->_layoutDateEnd = $this->_layoutDateStart->AddDays(1);
 		$this->_layoutItems = $this->_layout->GetLayout();
 		$this->_midnight = new Time(0,0,0, $this->_destinationTimezone);
 		$this->_firstLayoutTime = new Time(23, 59, 59, $this->_destinationTimezone);
@@ -105,12 +107,12 @@ class ScheduleReservationList implements IScheduleReservationList
 	
 	private function ReservationStartsOnPastDate(ScheduleReservation $reservation)
 	{
-		return $reservation->GetStartDate()->GetDate()->LessThan($this->_layoutDateUtc);
+		return $reservation->GetStartDate()->GetDate()->LessThan($this->_layoutDateStart);
 	}
 	
 	private function ReservationEndsOnFutureDate(ScheduleReservation $reservation)
 	{
-		return $reservation->GetEndDate()->GetDate()->GreaterThan($this->_layoutDateUtc);
+		return $reservation->GetEndDate()->GetDate()->GreaterThan($this->_layoutDateEnd);
 	}
 	
 	private function IndexLayout()
@@ -173,35 +175,6 @@ class ScheduleReservationList implements IScheduleReservationList
 		}
 		
 		return 0;
-	}
-	
-	private function GetFirstReservation(Time $firstSlotBegin)
-	{
-		$possibleFirstReservation = $this->GetReservationStartingAt($firstSlotBegin);
-		
-		if ($possibleFirstReservation != null)
-		{
-			return $possibleFirstReservation;
-		}
-		
-		/*
-		$timeKeys = array_keys($this->_reservationsByStartTime);
-		if (Time::Parse($timeKeys[1])->LessThan($firstSlotBegin))
-		{
-			return $this->_reservationsByStartTime[$timeKeys[0]];
-		}
-		*/
-		
-		foreach ($this->_reservationsByStartTime as $timeKey => $reservation)
-		{
-			if ($reservation->GetStartTime()->ToTimezone($this->_destinationTimezone)->LessThan($firstSlotBegin) && $reservation->GetEndTime()->ToTimezone($this->_destinationTimezone)->GreaterThan($firstSlotBegin))
-			{
-				return $reservation;
-			}
-		}
-		
-		return null;
-
 	}
 }
 ?>

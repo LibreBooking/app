@@ -37,11 +37,11 @@ class ReservationListingTests extends TestBase
 		
 		$reservationListing = new ReservationListing("CST");
 		
-		$reservationListing->Add(null, $res4);
-		$reservationListing->Add(null, $res1);
-		$reservationListing->Add(null, $res3);
-		$reservationListing->Add(null, $res2);
-		$reservationListing->Add(null, $res5);
+		$reservationListing->Add($res4);
+		$reservationListing->Add($res1);
+		$reservationListing->Add($res3);
+		$reservationListing->Add($res2);
+		$reservationListing->Add($res5);
 		
 		$onDate1 = $reservationListing->OnDate(Date::Parse('2009-10-09', 'CST'));
 		$onDate2 = $reservationListing->OnDate(Date::Parse('2009-10-10', 'CST'));

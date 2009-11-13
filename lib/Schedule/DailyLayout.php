@@ -32,7 +32,7 @@ class DailyLayout implements IDailyLayout
 	{
 		$onDate = $this->_reservationListing->OnDate($date);
 		$forResource = $onDate->ForResource($resourceId);
-
+		
 		$list = new ScheduleReservationList($forResource->Reservations(), $this->_scheduleLayout, $date);
 		return $list->BuildSlots();
 	}

@@ -53,7 +53,7 @@ class ReservationListing implements IReservationListing
 		{
 			if ($reservation->OccursOn($date))
 			{
-				$reservationListing->Add($date, $reservation);
+				$reservationListing->Add($reservation);
 			}
 		}
 		
