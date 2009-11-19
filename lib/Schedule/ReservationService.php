@@ -7,22 +7,21 @@ class ReservationService implements IReservationService
 	private $_repository;
 	
 	/**
-	 * @var IReservationCoordinatorFactory
+	 * @var IReservationListingFactory
 	 */
-	private $_coordinatorFactory;
+	private $_listingFactory;
 	
-	public function __construct(IReservationRepository $repository, IReservationCoordinatorFactory $coordinatorFactory)
+	public function __construct(IReservationRepository $repository, IReservationListingFactory $listingFactory)
 	{
 		$this->_repository = $repository;
-		$this->_coordinatorFactory = $coordinatorFactory;
+		$this->_coordinatorFactory = $listingFactory;
 	}
 		
 	public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone)
 	{
 		$reservations = $this->_repository->GetWithin($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), $scheduleId);
 		
-		$reservationListing = new ReservationListing($targetTimezone);
-		//$coordinator = $this->_coordinatorFactory->CreateCoordinator();
+		$reservationListing = $this->_coordinatorFactory->CreateReservationListing($targetTimezone);
 		
 		foreach ($reservations as $reservation)
 		{
@@ -30,8 +29,6 @@ class ReservationService implements IReservationService
 		}
 		
 		return $reservationListing;
-		
-		//return $coordinator->Arrange($targetTimezone, $dateRangeUtc);
 	}
 }
 

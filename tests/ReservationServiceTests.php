@@ -24,9 +24,8 @@ class ReservationServiceTests extends TestBase
 		$range = new DateRange($startDate, $endDate);
 		
 		$repository = $this->getMock('IReservationRepository');
-		$coordinator = $this->getMock('ReservationCoordinator');
-		$reservationListing = $this->getMock('IReservationListing');
-		$coordinatorFactory = $this->getMock('IReservationCoordinatorFactory');
+		$reservationListing = $this->getMock('IMutableReservationListing');
+		$listingFactory = $this->getMock('IReservationListingFactory');
 		
 		$rows = FakeReservationRepository::GetReservationRows();
 		$res1 = ReservationFactory::CreateForSchedule($rows[0]);
@@ -39,33 +38,28 @@ class ReservationServiceTests extends TestBase
 			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($scheduleId))
 			->will($this->returnValue(array($res1, $res2, $res3)));
 
-		$coordinatorFactory
+		$listingFactory
 			->expects($this->once())
-			->method('CreateCoordinator')
-			->will($this->returnValue($coordinator));
+			->method('CreateReservationListing')
+			->with($timezone)
+			->will($this->returnValue($reservationListing));
 
-		$coordinator
+		$reservationListing
 			->expects($this->at(0))
-			->method('AddReservation')
+			->method('Add')
 			->with($res1);
 
-		$coordinator
+		$reservationListing
 			->expects($this->at(1))
-			->method('AddReservation')
+			->method('Add')
 			->with($res2);
 						
-		$coordinator
+		$reservationListing
 			->expects($this->at(2))
-			->method('AddReservation')
+			->method('Add')
 			->with($res3);
-
-		$coordinator
-			->expects($this->once())
-			->method('Arrange')
-			->with($this->equalTo($timezone), $this->equalTo($range))
-			->will($this->returnValue($reservationListing));
 			
-		$service = new ReservationService($repository, $coordinatorFactory);
+		$service = new ReservationService($repository, $listingFactory);
 		
 		$listing = $service->GetReservations($range, $scheduleId, $timezone);
 		

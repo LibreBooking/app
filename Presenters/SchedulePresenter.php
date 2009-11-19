@@ -53,6 +53,7 @@ class SchedulePresenter implements ISchedulePresenter
 		$this->_scheduleRepository = $scheduleRepository;
 		$this->_resourceService = $resourceService;
 		$this->_builder = $schedulePageBuilder;
+		//TODO: Don't think we need the permission service in the presenter
 		$this->_permissionService = $permissionService;
 		$this->_reservationService = $reservationService;
 		$this->_dailyLayoutFactory = $dailyLayoutFactory;
@@ -62,6 +63,8 @@ class SchedulePresenter implements ISchedulePresenter
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
 		$targetTimezone = $user->Timezone;
+		
+		$showInaccessibleResources = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
 		
 		$schedules = $this->_scheduleRepository->GetAll();
 		
@@ -76,7 +79,7 @@ class SchedulePresenter implements ISchedulePresenter
 		
 		$reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone);
 		$dailyLayout = $this->_dailyLayoutFactory->Create($reservationListing, $layout, $targetTimezone);
-		$resources = $this->_resourceService->GetScheduleResources($activeScheduleId);
+		$resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources);
 		
 		$this->_builder->BindLayout($this->_page, $layout);															
 		$this->_builder->BindReservations($this->_page, $resources, $dailyLayout);

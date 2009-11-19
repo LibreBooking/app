@@ -20,7 +20,6 @@ $tests = array(
 'DailyLayoutTests.php',
 'SchedulePresenterTests.php',
 'ReservationServiceTests.php',
-'ReservationCoordinatorTests.php',
 'ScheduleReservationListTests.php',
 'ResourceTests.php',
 'ReservationsTests.php',

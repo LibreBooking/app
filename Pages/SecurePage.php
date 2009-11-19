@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
-require_once(ROOT_DIR . 'lib/Database/MDB2/namespace.php');
+//require_once(ROOT_DIR . 'lib/Database/MDB2/namespace.php');
 
 class SecurePage extends Page
 {

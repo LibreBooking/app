@@ -57,6 +57,11 @@ class ResourceTests extends TestBase
 		$resource4 = new FakeResource(4, 'resource4');
 		$resources = array($resource1, $resource2, $resource3, $resource4);
 
+		$resourceRepository->expects($this->once())
+			->method('GetScheduleResources')
+			->with($this->equalTo($scheduleId))
+			->will($this->returnValue($resources));
+			
 		$permissionService->expects($this->at(0))
 			->method('CanAccessResource')
 			->with($this->equalTo($resource1))
@@ -77,11 +82,6 @@ class ResourceTests extends TestBase
 			->with($this->equalTo($resource4))
 			->will($this->returnValue(false));
 		
-		$resourceRepository->expects($this->once())
-			->method('GetScheduleResources')
-			->with($this->equalTo($scheduleId))
-			->will($this->returnValue($resources));
-
 		$resourceDto1 = new ResourceDto(1, 'resource1', true);
 		$resourceDto2 = new ResourceDto(2, 'resource2', true);
 		$resourceDto3 = new ResourceDto(3, 'resource3', true);
@@ -89,10 +89,37 @@ class ResourceTests extends TestBase
 		
 		$expected = array($resourceDto1, $resourceDto2, $resourceDto3, $resourceDto4);
 		
-		$actual = $resourceService->GetScheduleResources($scheduleId);
+		$actual = $resourceService->GetScheduleResources($scheduleId, true);
 
 		$this->assertEquals($expected, $actual);
 	}	
+	
+	public function testResourcesAreNotReturnedIfNotIncludingInaccessibleResources()
+	{
+		$scheduleId = 100;
+		
+		$permissionService = $this->getMock('IPermissionService');
+		$resourceRepository = $this->getMock('IResourceRepository');
+		
+		$resourceService = new ResourceService($resourceRepository, $permissionService);
+		
+		$resource1 = new FakeResource(1, 'resource1');
+		
+		$resourceRepository->expects($this->once())
+			->method('GetScheduleResources')
+			->with($this->equalTo($scheduleId))
+			->will($this->returnValue(array($resource1)));
+			
+		$permissionService->expects($this->at(0))
+			->method('CanAccessResource')
+			->with($this->equalTo($resource1))
+			->will($this->returnValue(false));
+			
+		$includeInaccessibleResources = false;
+		$actual = $resourceService->GetScheduleResources($scheduleId, $includeInaccessibleResources);
+		
+		$this->assertEquals(0, count($actual));
+	}
 }
 
 ?>

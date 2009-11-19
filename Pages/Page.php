@@ -18,7 +18,7 @@ class Page implements IPage
 	 */
 	protected $server = null;
 	
-	public function __construct($titleKey, $pageDepth = 0)
+	public function __construct($titleKey = '', $pageDepth = 0)
 	{
 		$path = str_repeat('../', $pageDepth);
 		

@@ -11,6 +11,8 @@ class ConfigKeys
 	const USE_LOGON_NAME = 'use.logon.name';
 	const PASSWORD_PATTERN = 'password.pattern';
 	
+	const SCHEDULE_SHOW_INACCESSIBLE_RESOURCES = 'show.inaccessible.resources';
+	
 	const DATABASE_TYPE = 'type';
 	const DATABASE_USER = 'user';
 	const DATABASE_PASSWORD = 'password';
@@ -23,6 +25,7 @@ class ConfigKeys
 class ConfigSection
 {
 	const DATABASE = 'database';
+	const SCHEDULE = 'schedule';
 	
 }
 

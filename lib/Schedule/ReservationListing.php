@@ -1,6 +1,6 @@
 <?php
 
-class ReservationListing implements IReservationListing
+class ReservationListing implements IMutableReservationListing
 {
 	/**
 	 * @var array[int]ScheduleReservation

@@ -8,7 +8,7 @@
 <table class="reservations" border="1" cellpadding="0">
 	<tr>
 		<td class="resdate">{$date->Format('Y-m-d')}</td>
-		{foreach from=$Layout->GetLayout() item=period}
+		{foreach from=$Periods item=period}
 			<td class="reslabel">{$period->Label()}</td>
 			<!-- pass format in? -->
 		{/foreach}
@@ -25,7 +25,7 @@
 				{/if}
 			</td>
 			{foreach from=$slots item=slot}
-				{control type="ScheduleReservationControl" Slot=$slot}				
+				{control type="ScheduleReservationControl" Slot=$slot AccessAllowed=$resource->CanAccess}				
 			{/foreach}
 		</tr>
 	{/foreach}

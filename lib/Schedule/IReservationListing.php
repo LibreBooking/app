@@ -29,4 +29,12 @@ interface IReservationListing extends IResourceReservationListing
 	 */
 	public function OnDate($date);
 }
+
+interface IMutableReservationListing extends IReservationListing
+{
+	/**
+	 * @param ScheduleReservation $reservation 
+	 */
+	public function Add($reservation);
+}
 ?>

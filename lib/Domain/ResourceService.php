@@ -10,7 +10,7 @@ class ResourceService implements IResourceService
 		$this->_permissionService = $permissionService;
 	}
 	
-	public function GetScheduleResources($scheduleId)
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources)
 	{
 		$resourceDtos = array();
 		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
@@ -18,6 +18,12 @@ class ResourceService implements IResourceService
 		foreach ($resources as $resource)
 		{
 			$canAccess = $this->_permissionService->CanAccessResource($resource);
+			
+			if (!$includeInaccessibleResources && !$canAccess)
+			{
+				continue;
+			}
+			
 			$resourceDtos[] = new ResourceDto($resource->GetResourceId(), $resource->GetName(), $canAccess);
 		}
 		
@@ -30,9 +36,10 @@ interface IResourceService
 	/**
 	 * Gets resource list for a schedule
 	 * @param int $scheduleId
+	 * @param bool $includeInaccessibleResources
 	 * @return array[int]ResourceDto
 	 */
-	public function GetScheduleResources($scheduleId);
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources);
 }
 
 class ResourceDto

@@ -12,7 +12,7 @@ class SchedulePage extends Page implements ISchedulePage
 		$resourceService = new ResourceService(new ResourceRepository(), new PermissionService());
 		$pageBuilder = new SchedulePageBuilder();
 		$permissionService = new PermissionService();
-		$reservationService = new ReservationService(new ReservationRepository(), new ReservationCoordinatorFactory());
+		$reservationService = new ReservationService(new ReservationRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
 		$this->_presenter = new SchedulePresenter($this, $scheduleRepository, $resourceService, $pageBuilder, $permissionService, $reservationService, $dailyLayoutFactory);
 		
@@ -56,9 +56,9 @@ class SchedulePage extends Page implements ISchedulePage
 		$this->smarty->assign('DailyLayout', $dailyLayout);
 	}
 	
-	public function SetLayout($scheduleLayout)
+	public function SetLayout($schedulePeriods)
 	{
-		$this->smarty->assign('Layout', $scheduleLayout);
+		$this->smarty->assign('Periods', $schedulePeriods);
 	}
 	
 	public function SetDisplayDates($dateRange)
@@ -97,10 +97,10 @@ interface ISchedulePage
 	public function SetDailyLayout($dailyLayout);
 	
 	/**
-	 * Sets the layout to be used when presenting reservations
-	 * @param IScheduleLayout
+	 * Set the schedule period items to be used when presenting reservations
+	 * @param array[int]ISchedulePeriod
 	 */
-	public function SetLayout($scheduleLayout);
+	public function SetLayout($schedulePeriods);
 	
 	/**
 	 * Returns the currently selected scheduleId

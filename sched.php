@@ -24,9 +24,10 @@ class MockSchedulePresenter implements ISchedulePresenter
 		$schedules = array($s1);
 		$this->_page->SetSchedules($schedules);
 		$this->_page->SetDisplayDates($this->_range);
-		$this->_page->SetDailyLayout($this->GetReservations());
+		$dl = $this->GetReservations();
+		$this->_page->SetDailyLayout($dl);
 		$this->_page->SetResources($this->GetResources());
-		$this->_page->SetLayout($this->GetLayout());
+		$this->_page->SetLayout($this->GetLayout()->GetLayout());
 	}
 	
 	private function GetResources()
@@ -69,30 +70,19 @@ class MockSchedulePresenter implements ISchedulePresenter
 	{
 		$t1 = Time::Parse('3:00', 'UTC');
 		$t2 = Time::Parse('4:00', 'UTC');
-		$today = Date::Now()->AddDays(1)->Format('Y-m-d');
-		$d1 = Date::Parse($today . ' ' . $t1->ToString(), 'UTC');
-		$d2 = Date::Parse($today . ' ' . $t2->ToString(), 'UTC');
+		$today = Date::Now()->AddDays(1);
+		$d1 = Date::Parse($today->Format('Y-m-d') . ' ' . $t1->ToString(), 'UTC');
+		$d2 = Date::Parse($today->Format('Y-m-d') . ' ' . $t2->ToString(), 'UTC');
 		
-		echo 'res date: ' . $d1->ToTimezone('US/Central') . ' ' . $d2->ToTimezone('US/Central');
+		//echo 'res date: ' . $d1->ToTimezone('US/Central') . ' ' . $d2->ToTimezone('US/Central');
 		
-		$res = new ScheduleReservation(1, $d1, $d2, 1, 'some summary', null, 2, 1, 'nick', 'korbel');
+		$res = new ScheduleReservation(1, $d1, $d2, 1, 'some summary', null, 1, 1, 'nick', 'korbel');
 		
 		//echo 'res date: ' . $res->GetStartDate() . ' ' . $d2;
 		$listing = new ReservationListing("US/Central");
 		$listing->Add($res);
 		
-		return $listing;
-		
-//		$reservationCoordinator = new ReservationCoordinator();
-//		$reservationCoordinator->AddReservation($res);
-//		
-//		
-//		$reslist = $reservationCoordinator->Arrange("US/Central", $this->_range);
-//		
-//		print_r($reslist);
-//		
-//		return $reslist;
-		
+		return $listing;		
 	}
 }
 

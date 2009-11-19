@@ -116,14 +116,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	
 	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout)
 	{
-		// TODO: This may be better off taking an array of SchedulePeriods
-		$page->SetLayout($layout);
-	}
-	
-	/*
-	public function BindLayout(ISchedulePage $page, $schedulePeriods)
-	{
-		$page->SetLayout($schedulePeriods);
+		$page->SetLayout($layout->GetLayout());
 	}
 	
 	/**

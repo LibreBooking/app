@@ -15,6 +15,7 @@ class SchedulePresenterTests extends TestBase
 	private $currentSchedule;
 	private $schedules;
 	private $numDaysVisible;
+	private $showInaccessibleResources = 'true';
 
 	public function setup()
 	{
@@ -26,6 +27,7 @@ class SchedulePresenterTests extends TestBase
 		$otherSchedule = new Schedule(2, 'not default', 0, '08:30', '19:00', 1, 1, $this->numDaysVisible);
 		
 		$this->schedules = array($this->currentSchedule, $otherSchedule);
+		$this->fakeConfig->SetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, $this->showInaccessibleResources);
 	}
 
 	public function teardown()
@@ -70,11 +72,11 @@ class SchedulePresenterTests extends TestBase
 		
 		$pageBuilder->expects($this->once())
 			->method('BindSchedules')
-			->with($this->equalTo($page), $this->equalTo($this->schedules), $this->scheduleId);
+			->with($this->equalTo($page), $this->equalTo($this->schedules), $this->equalTo($this->scheduleId));
 		
 		$resourceService->expects($this->once())
 			->method('GetScheduleResources')
-			->with($this->equalTo($this->scheduleId))
+			->with($this->equalTo($this->scheduleId), $this->equalTo((bool)$this->showInaccessibleResources))
 			->will($this->returnValue($resources));
 		
 		$pageBuilder->expects($this->once())
@@ -430,9 +432,15 @@ class SchedulePresenterTests extends TestBase
 		$page = $this->getMock('ISchedulePage');
 		$layout = $this->getMock('IScheduleLayout');
 		
+		$periods = array();
+		
+		$layout->expects($this->once())
+			->method('GetLayout')
+			->will($this->returnValue($periods));
+			
 		$page->expects($this->once())
 			->method('SetLayout')
-			->with($this->equalTo($layout));
+			->with($this->equalTo($periods));
 		
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindLayout($page, $layout);

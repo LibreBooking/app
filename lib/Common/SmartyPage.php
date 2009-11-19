@@ -23,9 +23,7 @@ class SmartyPage extends Smarty
 		$this->config_dir = $base . 'configs';
 		$this->cache_dir = $base . 'cache';
 		
-		//$this->compile_check = true;
-		//$this->force_compile = true;
-		//$this->caching = true;
+		$this->compile_check = true;	// should be set to false in production
 		
 		if (is_null($resources))
 		{
