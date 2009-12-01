@@ -10,5 +10,6 @@ require_once(ROOT_DIR . 'lib/Domain/ScheduleReservation.php');
 require_once(ROOT_DIR . 'lib/Domain/Resource.php');
 require_once(ROOT_DIR . 'lib/Domain/ReservationTypes.php');
 require_once(ROOT_DIR . 'lib/Domain/ResourceService.php');
+require_once(ROOT_DIR . 'lib/Domain/ResourcePermissionStore.php');
 require_once(ROOT_DIR . 'lib/Domain/PermissionService.php');
 ?>
