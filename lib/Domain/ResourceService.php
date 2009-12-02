@@ -2,22 +2,23 @@
 class ResourceService implements IResourceService
 {
 	private $_resourceRepository;
-	private $_permissionService;
 	
-	public function __construct(IResourceRepository $resourceRepository, IPermissionService $permissionService)
+	public function __construct(IResourceRepository $resourceRepository)
 	{
 		$this->_resourceRepository = $resourceRepository;
-		$this->_permissionService = $permissionService;
 	}
 	
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources)
+	/**
+	 * @see IResourceService::GetScheduleResources()
+	 */
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, IPermissionService $permissionService)
 	{
 		$resourceDtos = array();
 		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
 		
 		foreach ($resources as $resource)
 		{
-			$canAccess = $this->_permissionService->CanAccessResource($resource);
+			$canAccess = $permissionService->CanAccessResource($resource);
 			
 			if (!$includeInaccessibleResources && !$canAccess)
 			{
@@ -37,9 +38,10 @@ interface IResourceService
 	 * Gets resource list for a schedule
 	 * @param int $scheduleId
 	 * @param bool $includeInaccessibleResources
+	 * @param IPermissionService $permissionService
 	 * @return array[int]ResourceDto
 	 */
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources);
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, IPermissionService $permissionService);
 }
 
 class ResourceDto

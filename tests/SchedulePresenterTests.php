@@ -40,6 +40,7 @@ class SchedulePresenterTests extends TestBase
 	public function testPageLoadBindsAllSchedulesAndProperResourcesWhenNotPostingBack2()
 	{
 		$user = $this->fakeServer->GetUserSession();
+		$userId = $user->UserId;
 		$resources = array();
 		$reservations = $this->getMock('IReservationListing');
 		$layout = $this->getMock('IScheduleLayout');
@@ -50,11 +51,12 @@ class SchedulePresenterTests extends TestBase
 		$resourceService = $this->getMock('IResourceService');
 		$pageBuilder = $this->getMock('ISchedulePageBuilder');
 		$permissionService = $this->getMock('IPermissionService');
+		$permissionServiceFactory = $this->getMock('IPermissionServiceFactory');
 		$reservationService = $this->getMock('IReservationService');
 		$dailyLayoutFactory = $this->getMock('IDailyLayoutFactory');
 		$dailyLayout = $this->getMock('IDailyLayout');
 				
-		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $permissionService, $reservationService, $dailyLayoutFactory);
+		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $permissionServiceFactory, $reservationService, $dailyLayoutFactory);
 
 		$scheduleRepository->expects($this->once())
 			->method('GetAll')
@@ -74,9 +76,14 @@ class SchedulePresenterTests extends TestBase
 			->method('BindSchedules')
 			->with($this->equalTo($page), $this->equalTo($this->schedules), $this->equalTo($this->scheduleId));
 		
+		$permissionServiceFactory->expects($this->once())
+			->method('GetPermissionService')
+			->with($this->equalTo($userId))
+			->will($this->returnValue($permissionService));
+			
 		$resourceService->expects($this->once())
 			->method('GetScheduleResources')
-			->with($this->equalTo($this->scheduleId), $this->equalTo((bool)$this->showInaccessibleResources))
+			->with($this->equalTo($this->scheduleId), $this->equalTo((bool)$this->showInaccessibleResources), $this->equalTo($permissionService))
 			->will($this->returnValue($resources));
 		
 		$pageBuilder->expects($this->once())

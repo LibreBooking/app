@@ -8,13 +8,13 @@ class SchedulePage extends Page implements ISchedulePage
 	{
 		parent::__construct('Schedule');
 		
+		$permissionServiceFactory = new PermissionServiceFactory();
 		$scheduleRepository = new ScheduleRepository();
-		$resourceService = new ResourceService(new ResourceRepository(), new PermissionService());
+		$resourceService = new ResourceService(new ResourceRepository());
 		$pageBuilder = new SchedulePageBuilder();
-		$permissionService = new PermissionService();
 		$reservationService = new ReservationService(new ReservationRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
-		$this->_presenter = new SchedulePresenter($this, $scheduleRepository, $resourceService, $pageBuilder, $permissionService, $reservationService, $dailyLayoutFactory);
+		$this->_presenter = new SchedulePresenter($this, $scheduleRepository, $resourceService, $pageBuilder, $permissionServiceFactory, $reservationService, $dailyLayoutFactory);
 		
 		$this->_presenter = new MockSchedulePresenter($this);
 	}

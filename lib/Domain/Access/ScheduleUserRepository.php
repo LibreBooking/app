@@ -9,6 +9,17 @@ interface IScheduleUserRepository
 	function GetUser($userId);
 }
 
+class ScheduleUserRepository implements IScheduleUserRepository
+{
+	/**
+	 * @see IScheduleUserRepository::GetUser()
+	 */
+	public function GetUser($userId)
+	{
+		throw new Exception("not implemented");
+	}	
+}
+
 class ScheduleUser
 {
 	private $_userId;

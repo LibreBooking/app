@@ -31,20 +31,29 @@ class SchedulePresenter implements ISchedulePresenter
 	 */
 	private $_builder;
 	/**
-	 * @var IPermissionService
+	 * @var IPermissionServiceFactory
 	 */
-	private $_permissionService;
+	private $_permissionServiceFactory;
 	/**
 	 * @var IReservationService
 	 */
 	private $_reservationService;
 	
+	/**
+	 * @param ISchedulePage $page
+	 * @param IScheduleRepository $scheduleRepository
+	 * @param IResourceService $resourceService
+	 * @param ISchedulePageBuilder $schedulePageBuilder
+	 * @param IPermissionServiceFactory $permissionServiceFactory
+	 * @param IReservationService $reservationService
+	 * @param IDailyLayoutFactory $dailyLayoutFactory
+	 */
 	public function __construct(
 		ISchedulePage $page, 
 		IScheduleRepository $scheduleRepository,
 		IResourceService $resourceService,
 		ISchedulePageBuilder $schedulePageBuilder,
-		IPermissionService $permissionService,
+		IPermissionServiceFactory $permissionServiceFactory,
 		IReservationService $reservationService,
 		IDailyLayoutFactory $dailyLayoutFactory
 	)
@@ -53,8 +62,7 @@ class SchedulePresenter implements ISchedulePresenter
 		$this->_scheduleRepository = $scheduleRepository;
 		$this->_resourceService = $resourceService;
 		$this->_builder = $schedulePageBuilder;
-		//TODO: Don't think we need the permission service in the presenter
-		$this->_permissionService = $permissionService;
+		$this->_permissionServiceFactory = $permissionServiceFactory;
 		$this->_reservationService = $reservationService;
 		$this->_dailyLayoutFactory = $dailyLayoutFactory;
 	}
@@ -79,7 +87,8 @@ class SchedulePresenter implements ISchedulePresenter
 		
 		$reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone);
 		$dailyLayout = $this->_dailyLayoutFactory->Create($reservationListing, $layout, $targetTimezone);
-		$resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources);
+		$permissionService =$this->_permissionServiceFactory->GetPermissionService($user->UserId);
+		$resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources, $permissionService);
 		
 		$this->_builder->BindLayout($this->_page, $layout);															
 		$this->_builder->BindReservations($this->_page, $resources, $dailyLayout);

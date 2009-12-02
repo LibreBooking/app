@@ -18,12 +18,19 @@ class PermissionService implements IPermissionService
 	
 	private $_allowedResourceIds;
 	
+	/**
+	 * @param IResourcePermissionStore $store
+	 * @param int $userId
+	 */
 	public function __construct(IResourcePermissionStore $store, $userId)
 	{
 		$this->_store = $store;
 		$this->_userId = $userId;
 	}
 	
+	/**
+	 * @see IPermissionService::CanAccessResource()
+	 */
 	public function CanAccessResource(IResource $resource)
 	{
 		if ($this->_allowedResourceIds == null)
@@ -32,6 +39,27 @@ class PermissionService implements IPermissionService
 		}
 		
 		return in_array($resource->GetResourceId(), $this->_allowedResourceIds);
+	}
+}
+
+interface IPermissionServiceFactory
+{
+	/**
+	 * @param int $userId
+	 * @return IPermissionService
+	 */
+	function GetPermissionService($userId);
+}
+
+class PermissionServiceFactory implements IPermissionServiceFactory
+{
+	/**
+	 * @see IPermissionServiceFactory::GetPermissionService()
+	 */
+	public function GetPermissionService($userId)
+	{
+		$resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
+		return new PermissionService($resourcePermissionStore, $userId);
 	}
 }
 ?>
