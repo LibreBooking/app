@@ -112,6 +112,21 @@ class Queries
 			sr.scheduleid = @scheduleid AND 
 			r.isactive = 1';
 	
+	const GET_USER_PERMISSIONS = 
+		'SELECT 
+			p.userid, r.resourceid, r.resourcename
+		FROM
+			resource_permission p
+		INNER JOIN
+			resource r ON r.resourceid = p.resourceid
+		WHERE
+			p.userid = @userid';
+	
+	const GET_USER_GROUP_PERMISSIONS = 
+		'SELECT 
+		FROM
+		WHERE';
+	
 	const GET_USER_ROLES = 
 		'SELECT userid, isadmin 
 		FROM accountrole
@@ -179,6 +194,9 @@ class ColumnNames
 	
 	// ANNOUNCEMENT //
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
+	
+	// GROUP //
+	const GROUP_ID = 'groupid';
 	
 	// RESERVATION //
 	const RESERVATION_ID = 'reservationid';

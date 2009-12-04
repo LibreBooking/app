@@ -15,7 +15,7 @@ class AutoAssignPermissionsCommand extends SqlCommand
 	public function __construct($userId)
 	{
 		parent::__construct(Queries::AUTO_ASSIGN_PERMISSIONS);
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, strtolower($userId)));	
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));	
 	}
 }
 
@@ -24,7 +24,7 @@ class CheckEmailCommand extends SqlCommand
 	public function __construct($emailAddress)
 	{
 		parent::__construct(Queries::CHECK_EMAIL);
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $emailAddress));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, strtolower($emailAddress)));	
 	}
 }
 
@@ -140,6 +140,24 @@ class RegisterUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::INSTITUTION, $institution));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));	
 		$this->AddParameter(new Parameter(ParameterNames::ACCOUNT_STATUS_ID, $accountStatusId));
+	}
+}
+
+class SelectUserPermissions extends SqlCommand
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::GET_USER_PERMISSIONS);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));	
+	}
+}
+
+class SelectUserGroupPermissions extends SqlCommand
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::GET_USER_GROUP_PERMISSIONS);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));	
 	}
 }
 
