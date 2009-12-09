@@ -123,9 +123,15 @@ class Queries
 			p.userid = @userid';
 	
 	const GET_USER_GROUP_PERMISSIONS = 
-		'SELECT 
+		'SELECT rgp.groupid, r.resourceid, r.resourcename
 		FROM
-		WHERE';
+			resource_group_permissions rgp
+		INNER JOIN
+			groups g ON rgp.groupid = g.groupid
+		INNER JOIN 
+			account_groups ag ON ag.groupid = g.groupid
+		WHERE
+			ag.userid = @userid';
 	
 	const GET_USER_ROLES = 
 		'SELECT userid, isadmin 

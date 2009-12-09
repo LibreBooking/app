@@ -42,6 +42,13 @@ CREATE TABLE `account` (
   KEY `user_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+DROP TABLE IF EXISTS `phpscheduleit`.`account_groups`;
+CREATE TABLE  `phpscheduleit`.`account_groups` (
+  `userid` int(10) unsigned NOT NULL,
+  `groupid` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`userid`,`groupid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Table structure for table `account_status`
 --
@@ -80,6 +87,13 @@ CREATE TABLE `announcement` (
   PRIMARY KEY  (`announcementid`),
   KEY `announcements_startdatetime` (`start_datetime`),
   KEY `announcements_enddatetime` (`end_datetime`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `phpscheduleit`.`groups`;
+CREATE TABLE  `phpscheduleit`.`groups` (
+  `groupid` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY  (`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -189,6 +203,13 @@ CREATE TABLE `resource` (
   KEY `resource_name` (`name`),
   KEY `resource_autoassign` (`autoassign`),
   KEY `resource_isactive` (`isactive`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `phpscheduleit`.`resource_group_permissions`;
+CREATE TABLE  `phpscheduleit`.`resource_group_permissions` (
+  `resourceid` int(10) unsigned NOT NULL,
+  `groupid` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`resourceid`,`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

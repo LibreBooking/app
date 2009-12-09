@@ -260,7 +260,6 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 	
 	public function testSelectUserGroupPermissionsCommand()
 	{
-		throw new Exception("design group permissions, write the query");
 		$userId = 1;
 		
 		$command = new SelectUserGroupPermissions($userId);
