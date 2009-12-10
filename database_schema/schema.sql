@@ -55,7 +55,7 @@ CREATE TABLE  `phpscheduleit`.`account_groups` (
 
 DROP TABLE IF EXISTS `account_status`;
 CREATE TABLE `account_status` (
-  `statusid` tinyint(3) unsigned NOT NULL auto_increment,
+  `accountstatusid` tinyint(3) unsigned NOT NULL auto_increment,
   `statusdescription` varchar(45) default NULL,
   PRIMARY KEY  USING BTREE (`accountstatusid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -237,7 +237,7 @@ CREATE TABLE `schedule` (
   `weekdaystart` tinyint(3) unsigned NOT NULL default '0',
   `adminid` bigint(20) unsigned NOT NULL,
   `daysvisible` tinyint(3) unsigned NOT NULL default '7',
-  `layoutid` int(10) unsigned NOT NULL
+  `layoutid` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`scheduleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
