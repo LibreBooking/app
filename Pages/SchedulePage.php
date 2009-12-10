@@ -16,7 +16,7 @@ class SchedulePage extends Page implements ISchedulePage
 		$dailyLayoutFactory = new DailyLayoutFactory();
 		$this->_presenter = new SchedulePresenter($this, $scheduleRepository, $resourceService, $pageBuilder, $permissionServiceFactory, $reservationService, $dailyLayoutFactory);
 		
-		$this->_presenter = new MockSchedulePresenter($this);
+		//$this->_presenter = new MockSchedulePresenter($this);
 	}
 	
 	public function PageLoad()

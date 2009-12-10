@@ -19,6 +19,7 @@ class Mdb2Connection implements IDbConnection
 	
 	public function __construct($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName) 
 	{
+		//echo "type: $_dbType user: $_dbUser password: $_dbPassword host: $_hostSpec dbname: $_dbName";
 		$this->_dbType = $_dbType;
 		$this->_dbUser = $_dbUser;
 		$this->_dbPassword = $_dbPassword;
@@ -38,8 +39,12 @@ class Mdb2Connection implements IDbConnection
 			return;
 		}
 		
-		$dsn = "{$this->_dbType}://{$this->_dbUser}:{$this->_dbPassword}@{$this->_hostSpec}/{$this->_dbName}";
-        
+		$dsn = array('phptype'  => $this->_dbType,
+			    'username' => $this->_dbUser,
+			    'password' => $this->_dbPassword,
+			    'hostspec' => $this->_hostSpec,
+			    'database' => $this->_dbName);
+
 		$options = array(
 		    'debug'       => 0,
 		    'portability' => MDB2_PORTABILITY_ALL,
@@ -51,7 +56,7 @@ class Mdb2Connection implements IDbConnection
         if (MDB2::isError($this->_db)) 
         {			
         	// If there is an error, print to browser, print to logfile and kill app
-            throw new Exception('Error connecting to database');
+            throw new Exception("Error connecting to database\nError: " . $this->_db->getMessage() . "\nDebug: " . $this->_db->getDebugInfo());
             // LOG
         }
         
