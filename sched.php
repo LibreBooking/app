@@ -86,6 +86,9 @@ class MockSchedulePresenter implements ISchedulePresenter
 	}
 }
 
+$usersession = new UserSession(1);
+ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, $usersession);
+
 $page = new SchedulePage();
 $page->PageLoad();
 

@@ -246,14 +246,22 @@ CREATE TABLE `schedule` (
 --
 
 DROP TABLE IF EXISTS `layout`;
-CREATE TABLE `layout` (
+CREATE TABLE  `layout` (
   `layoutid` int(10) unsigned NOT NULL auto_increment,
-  `label` varchar(50) default NULL,
-  `periodstart` time NOT NULL,
-  `periodend` time NOT NULL,
+  `name` varchar(50) default NULL,
   PRIMARY KEY  (`layoutid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+DROP TABLE IF EXISTS `layout_period`;
+CREATE TABLE  `layout_period` (
+  `periodid` int(10) unsigned NOT NULL auto_increment,
+  `layoutid` int(10) unsigned NOT NULL,
+  `label` varchar(45) NOT NULL,
+  `starttime` time NOT NULL,
+  `endtime` time NOT NULL,
+  PRIMARY KEY  (`periodid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 --
 -- Table structure for table `schedule_resource`
 --
