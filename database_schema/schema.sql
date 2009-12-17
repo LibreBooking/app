@@ -89,7 +89,7 @@ CREATE TABLE `announcement` (
   KEY `announcements_enddatetime` (`end_datetime`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `phpscheduleit`.`groups`;
+DROP TABLE IF EXISTS `groups`;
 CREATE TABLE  `phpscheduleit`.`groups` (
   `groupid` int(10) unsigned NOT NULL auto_increment,
   `name` varchar(45) NOT NULL,
@@ -205,7 +205,7 @@ CREATE TABLE `resource` (
   KEY `resource_isactive` (`isactive`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `phpscheduleit`.`resource_group_permissions`;
+DROP TABLE IF EXISTS `resource_group_permissions`;
 CREATE TABLE  `phpscheduleit`.`resource_group_permissions` (
   `resourceid` int(10) unsigned NOT NULL,
   `groupid` int(10) unsigned NOT NULL,
@@ -252,14 +252,14 @@ CREATE TABLE  `layout` (
   PRIMARY KEY  (`layoutid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
 DROP TABLE IF EXISTS `layout_period`;
 CREATE TABLE  `layout_period` (
   `periodid` int(10) unsigned NOT NULL auto_increment,
   `layoutid` int(10) unsigned NOT NULL,
-  `label` varchar(45) NOT NULL,
+  `label` varchar(45) default NULL,
   `starttime` time NOT NULL,
   `endtime` time NOT NULL,
+  `periodtypeid` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY  (`periodid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 --

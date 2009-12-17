@@ -51,11 +51,46 @@ class SchedulesTests extends TestBase
 	
 	public function testCanGetLayoutForSchedule()
 	{
-		throw new Exception("Should be the last thing needed to do to get the schedule to render");
+		$layoutRows[] = array(
+						ColumnNames::PERIOD_START => '02:00:00',
+						ColumnNames::PERIOD_END => '03:00:00',
+						ColumnNames::PERIOD_LABEL => 'PERIOD1',
+						ColumnNames::PERIOD_TYPE => PeroidTypes::RESERVABLE,
+						);
+		
+		$layoutRows[] = array(
+						ColumnNames::PERIOD_START => '03:00:00',
+						ColumnNames::PERIOD_END => '04:00:00',
+						ColumnNames::PERIOD_LABEL => 'PERIOD2',
+						ColumnNames::PERIOD_TYPE => PeroidTypes::RESERVABLE,
+						);
+						
+		$layoutRows[] = array(
+						ColumnNames::PERIOD_START => '04:00:00',
+						ColumnNames::PERIOD_END => '10:00:00',
+						ColumnNames::PERIOD_LABEL => 'PERIOD3',
+						ColumnNames::PERIOD_TYPE => PeroidTypes::NONRESERVABLE,
+						);
+		
+		$this->db->SetRows($layoutRows);
+		
 		$scheduleId = 109;
 		$targetTimezone = 'US/Central';
 		
-		$layout = $this->scheduleRepository->GetLayout($scheduleId);
+		$layout = $this->scheduleRepository->GetLayout($scheduleId, $targetTimezone);
+		
+		$this->assertEquals(new GetLayoutCommand($scheduleId), $this->db->_Commands[0]);
+		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
+		
+		$periods = $layout->GetLayout();
+		$this->assertEquals(3, count($periods));
+		
+		$start = new Time(2,0,0, 'UTC');
+		$end = new Time(3,0,0, 'UTC');
+		
+		$period = new SchedulePeriod($start->ToTimezone($targetTimezone), $end->ToTimezone($targetTimezone), 'PERIOD1');
+		$this->assertEquals($period, actual);
+
 	}
 }
 

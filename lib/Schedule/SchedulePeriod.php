@@ -1,4 +1,10 @@
 <?php
+class PeroidTypes
+{
+	const RESERVABLE = 1;
+	const NONRESERVABLE = 2;
+}
+
 class SchedulePeriod
 {
 	/**

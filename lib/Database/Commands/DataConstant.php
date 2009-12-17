@@ -69,6 +69,13 @@ class Queries
 		WHERE (start_datetime <= @current_date AND end_datetime >= @current_date)
 		ORDER BY order_number DESC';
 
+	const GET_SCHEDULE_LAYOUT = 
+		'SELECT l.name, lp.label, lp.starttime, lp.endtime, lp.periodtypeid
+		FROM layout l
+		INNER JOIN layout_period lp ON l.layoutid = lp.layoutid
+		INNER JOIN schedule s ON l.layoutid = s.layoutid
+		WHERE s.scheduleid = @scheduleid';
+	
 	const GET_RESERVATIONS_COMMAND =
 	 'SELECT
 		  r.reservationid,
@@ -203,6 +210,12 @@ class ColumnNames
 	
 	// GROUP //
 	const GROUP_ID = 'groupid';
+	
+	// LAYOUT //
+	const PERIOD_START = 'starttime';
+	const PERIOD_END = 'endtime';
+	const PERIOD_LABEL = 'label';
+	const PERIOD_TYPE = 'periodtypeid';
 	
 	// RESERVATION //
 	const RESERVATION_ID = 'reservationid';

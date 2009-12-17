@@ -73,6 +73,15 @@ class GetDashboardAnnouncementsCommand extends SqlCommand
 	}
 }
 
+class GetLayoutCommand extends SqlCommand
+{
+	public function __construct($scheduleId)
+	{
+		parent::__construct(Queries::GET_SCHEDULE_LAYOUT);
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+	}
+}
+
 class GetReservationsCommand extends SqlCommand
 {
 	public function __construct($startDate, $endDate, $scheduleId)

@@ -43,9 +43,35 @@ class ScheduleRepository implements IScheduleRepository
 		return $schedules;
 	}
 	
+	/**
+	 * @see IScheduleRepository::GetLayout()
+	 */
 	public function GetLayout($scheduleId, $timezone)
 	{
-		throw new Exception("not implemented");
+		$layout = new ScheduleLayout($timezone);
+		
+		$reader = ServiceLocator::GetDatabase()->Query(new GetLayoutCommand($scheduleId));
+
+		while ($row = $reader->GetRow())
+		{
+			$start = Time::Parse($row[ColumnNames::PERIOD_START], 'UTC');
+			$end = Time::Parse($row[ColumnNames::PERIOD_END], 'UTC');
+			$label = $row[ColumnNames::PERIOD_LABEL];
+			$periodType = $row[ColumnNames::PERIOD_TYPE];
+			
+			if ($periodType == PeroidTypes::RESERVABLE)
+			{
+				$layout->AppendPeriod($start, $end, $label);
+			}
+			else
+			{
+				$layout->AppendBlockedPeriod($start, $end, $label);
+			}
+		}
+		
+		$reader->Free();
+
+		return $layout;
 	}
 }
 

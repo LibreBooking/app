@@ -267,5 +267,16 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(Queries::GET_USER_GROUP_PERMISSIONS, $command->GetQuery());
 		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $userId), $command->Parameters->Items(0));
 	}
+	
+	public function testGetLayoutCommand()
+	{
+		$scheduleId = 1;
+		
+		$command = new GetLayoutCommand($scheduleId);
+		
+		$this->assertEquals(Queries::GET_SCHEDULE_LAYOUT, $command->GetQuery());
+		$this->assertEquals(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId), $command->Parameters->Items(0));
+	
+	}
 }
 ?>
