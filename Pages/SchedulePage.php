@@ -28,7 +28,7 @@ class SchedulePage extends Page implements ISchedulePage
 	public function IsPostBack()
 	{
 		// TODO: Is this method needed?
-		return is_null($this->GetScheduleId());
+		return !is_null($this->GetScheduleId());
 	}
 	
 	public function GetScheduleId()

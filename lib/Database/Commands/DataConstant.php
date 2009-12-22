@@ -81,7 +81,6 @@ class Queries
 		  r.reservationid,
 		  r.start_date,
 		  r.end_date,
-		  r.start_time,
 		  r.typeid,
 		  r.statusid,
 		  r.summary,
@@ -121,7 +120,7 @@ class Queries
 	
 	const GET_USER_PERMISSIONS = 
 		'SELECT 
-			p.userid, r.resourceid, r.resourcename
+			p.userid, r.resourceid, r.name
 		FROM
 			resource_permission p
 		INNER JOIN
@@ -130,13 +129,15 @@ class Queries
 			p.userid = @userid';
 	
 	const GET_USER_GROUP_PERMISSIONS = 
-		'SELECT rgp.groupid, r.resourceid, r.resourcename
+		'SELECT rgp.groupid, r.resourceid, r.name
 		FROM
 			resource_group_permissions rgp
 		INNER JOIN
 			groups g ON rgp.groupid = g.groupid
 		INNER JOIN 
 			account_groups ag ON ag.groupid = g.groupid
+		INNER JOIN 
+			resource r ON rgp.resourceid = r.resourceid
 		WHERE
 			ag.userid = @userid';
 	

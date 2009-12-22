@@ -11,13 +11,14 @@ class Database
 	/**
 	 * Queries the database and returns an IReader
 	 *
-	 * @param SqlCommand $command
+	 * @param ISqlCommand $command
 	 * @return IReader to iterate over
 	 */
 	public function &Query(ISqlCommand &$command) 
 	{
 		$this->Connection->Connect();	
-		$reader = $this->Connection->Query($command);
+		//TODO: debug log $command->GetQuery();
+		$reader = $this->Connection->Query($command);		
 		$this->Connection->Disconnect();
 
 		return $reader;
@@ -32,6 +33,7 @@ class Database
 	public function Execute(ISqlCommand &$command) 
 	{
 		$this->Connection->Connect();	
+		//TODO: debug log $command->GetQuery();
 		$this->Connection->Execute($command);
 		$this->Connection->Disconnect();
 	}
@@ -45,6 +47,7 @@ class Database
 	public function ExecuteInsert(ISqlCommand &$command)
 	{
 		$this->Connection->Connect();	
+		//TODO: debug log $command->GetQuery();
 		$this->Connection->Execute($command);
 		$insertedId = $this->Connection->GetLastInsertId();
 		$this->Connection->Disconnect();

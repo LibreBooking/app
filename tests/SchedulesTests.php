@@ -67,7 +67,7 @@ class SchedulesTests extends TestBase
 						
 		$layoutRows[] = array(
 						ColumnNames::PERIOD_START => '04:00:00',
-						ColumnNames::PERIOD_END => '10:00:00',
+						ColumnNames::PERIOD_END => '05:00:00',
 						ColumnNames::PERIOD_LABEL => 'PERIOD3',
 						ColumnNames::PERIOD_TYPE => PeroidTypes::NONRESERVABLE,
 						);
@@ -89,7 +89,7 @@ class SchedulesTests extends TestBase
 		$end = new Time(3,0,0, 'UTC');
 		
 		$period = new SchedulePeriod($start->ToTimezone($targetTimezone), $end->ToTimezone($targetTimezone), 'PERIOD1');
-		$this->assertEquals($period, actual);
+		$this->assertEquals($period, $periods[0]);
 
 	}
 }

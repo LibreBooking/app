@@ -7,7 +7,7 @@ interface IDbConnection
 	/**
 	 * Queries the database and returns an IReader
 	 *
-	 * @param SqlCommand $command
+	 * @param ISqlCommand $command
 	 * @return IReader to iterate over
 	 */
 	public function Query(&$command);
@@ -15,7 +15,7 @@ interface IDbConnection
 	/**
 	 * Executes an alter query against the database
 	 *
-	 * @param SqlCommand $command
+	 * @param ISqlCommand $command
 	 * @return void
 	 */
 	public function Execute(&$command);

@@ -87,6 +87,7 @@ class MockSchedulePresenter implements ISchedulePresenter
 }
 
 $usersession = new UserSession(1);
+$usersession->Timezone = 'US/Central';
 ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, $usersession);
 
 $page = new SchedulePage();

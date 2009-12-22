@@ -75,7 +75,6 @@ class SchedulePresenter implements ISchedulePresenter
 		$showInaccessibleResources = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
 		
 		$schedules = $this->_scheduleRepository->GetAll();
-		
 		$currentSchedule = $this->_builder->GetCurrentSchedule($this->_page, $schedules);
 		$activeScheduleId = $currentSchedule->GetId();
 		$this->_builder->BindSchedules($this->_page, $schedules, $activeScheduleId);

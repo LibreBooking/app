@@ -14,6 +14,9 @@ class Mdb2Connection implements IDbConnection
 	private $_hostSpec = '';
 	private $_dbName = '';
 	
+	/**
+	 * @var MDB2
+	 */
 	private $_db = null;
 	private $_connected = false;
 	
@@ -27,6 +30,9 @@ class Mdb2Connection implements IDbConnection
 		$this->_dbName = $_dbName;
 	}
 	
+	/**
+	 * Just used for testing
+	 */
 	public function SetDb(&$db)
 	{
 		$this->_db =& $db;
@@ -57,7 +63,7 @@ class Mdb2Connection implements IDbConnection
         {			
         	// If there is an error, print to browser, print to logfile and kill app
             throw new Exception("Error connecting to database\nError: " . $this->_db->getMessage() . "\nDebug: " . $this->_db->getDebugInfo());
-            // LOG
+            // TODO: LOG
         }
         
         $this->_db->setFetchMode(MDB2_FETCHMODE_ASSOC);	// Set fetch mode to return associatve array
@@ -99,17 +105,19 @@ class Mdb2Connection implements IDbConnection
 		$cmd = new Mdb2CommandAdapter($sqlCommand);
 		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);		
 		$result =& $stmt->execute($cmd->GetValues());	
-		$this->_isError($result);
+		$this->_isError($result, $cmd);
 
 		return new Mdb2Reader($result);
 	}
 	
-	private function _isError($result) 
+	private function _isError($result, $cmd) 
 	{
 		if (MDB2::isError($result)) 
 		{
-			throw new Exception('There was an error executing your query');
-           	// LOG: . $result->getMessage()
+			echo $cmd->GetQuery();
+			throw new Exception('There was an error executing your query\n' . $result->getMessage());
+		
+           	// TODO: LOG: . $result->getMessage()
 		}
         return false;
 	}
