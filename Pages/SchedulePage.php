@@ -61,6 +61,9 @@ class SchedulePage extends Page implements ISchedulePage
 		$this->smarty->assign('Periods', $schedulePeriods);
 	}
 	
+	/**
+	 * @see ISchedulePage:SetDisplayDates()
+	 */
 	public function SetDisplayDates($dateRange)
 	{
 		$this->smarty->assign('DisplayDates', $dateRange);
@@ -116,7 +119,7 @@ interface ISchedulePage
 	/**
 	 * Sets the dates to be displayed for the schedule, adjusted for timezone if necessary
 	 *
-	 * @param array[int]Date $dates
+	 * @param DateRange $dates
 	 */
 	public function SetDisplayDates($dates);
 	

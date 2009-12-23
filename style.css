@@ -312,3 +312,7 @@ td.reservable.clicked {
 td.reserved.clicked {
     background-color: #1979CF;
 }
+
+select.schedule_list {
+	font-size: 8pt;
+}

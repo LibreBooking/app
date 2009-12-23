@@ -1,8 +1,18 @@
 {include file='header.tpl'}
 
-<select name="type_id">
-    {object_html_options options=$Schedules key="GetId" label="GetName"}
-</select>
+<div style="text-align:center; padding-bottom:15px;">
+	Schedule: <select name="type_id" class="schedule_list">
+	    {object_html_options options=$Schedules key="GetId" label="GetName"}
+	</select>
+</div>
+
+<div style="text-align:center; font-size:12pt;">
+	{assign var=FirstDate value=$DisplayDates->GetBegin()}
+	{assign var=LastDate value=$DisplayDates->GetEnd()}
+	<a href="#">Prev</a> {$FirstDate->Format("m-d-Y")} - {$LastDate->Format("m-d-Y")} <a href="#">Next</a>
+</div>
+
+<div style="height:10px">&nbsp;</div>
 
 {foreach from=$BoundDates item=date}
 <table class="reservations" border="1" cellpadding="0">

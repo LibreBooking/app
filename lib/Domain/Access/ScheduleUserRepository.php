@@ -50,6 +50,7 @@ class ScheduleUserRepository implements IScheduleUserRepository
 			$groupList[$groupId][] = array($resourceId, $resourceName);
 		}
 
+		$groups = array();
 		foreach($groupList as $groupId => $resourceList)
 		{
 			foreach($resourceList as $resourceItem)
