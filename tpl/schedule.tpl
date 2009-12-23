@@ -6,11 +6,15 @@
 	</select>
 </div>
 
+
+<div type="text" id="datepicker"></div>
+
 <div style="text-align:center; font-size:12pt;">
 	{assign var=FirstDate value=$DisplayDates->GetBegin()}
 	{assign var=LastDate value=$DisplayDates->GetEnd()}
 	<a href="#">Prev</a> {$FirstDate->Format("m-d-Y")} - {$LastDate->Format("m-d-Y")} <a href="#">Next</a>
 </div>
+
 
 <div style="height:10px">&nbsp;</div>
 
@@ -78,6 +82,8 @@
 	    function () { $(this).addClass('hilite'); }, 
 	    function () { $(this).removeClass('hilite'); }
 	);
+	
+	$("#datepicker").datepicker();
 
   });
   </script>
