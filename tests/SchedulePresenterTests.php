@@ -74,7 +74,7 @@ class SchedulePresenterTests extends TestBase
 		
 		$pageBuilder->expects($this->once())
 			->method('BindSchedules')
-			->with($this->equalTo($page), $this->equalTo($this->schedules), $this->equalTo($this->scheduleId));
+			->with($this->equalTo($page), $this->equalTo($this->schedules), $this->equalTo($this->currentSchedule));
 		
 		$permissionServiceFactory->expects($this->once())
 			->method('GetPermissionService')
@@ -120,8 +120,18 @@ class SchedulePresenterTests extends TestBase
 	public function testScheduleBuilderBindsAllSchedulesAndSetsActive()
 	{
 		$activeId = 100;
+		$activeName = 'super active';
 		
+		$schedule = $this->getMock('ISchedule');
 		$page = $this->getMock('ISchedulePage');
+		
+		$schedule->expects($this->once())
+			->method('GetId')
+			->will($this->returnValue($activeId));
+			
+		$schedule->expects($this->once())
+			->method('GetName')
+			->will($this->returnValue($activeName));
 		
 		$page->expects($this->once())
 			->method('SetSchedules')
@@ -130,9 +140,13 @@ class SchedulePresenterTests extends TestBase
 		$page->expects($this->once())
 			->method('SetScheduleId')
 			->with($this->equalTo($activeId));
+			
+		$page->expects($this->once())
+			->method('SetScheduleName')
+			->with($this->equalTo($activeName));
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$pageBuilder->BindSchedules($page, $this->schedules, $activeId);
+		$pageBuilder->BindSchedules($page, $this->schedules, $schedule);
 	}
 	
 	public function testScheduleBuilderGetCurrentScheduleReturnsSelectedScheduleOnPostBack()
@@ -204,7 +218,7 @@ class SchedulePresenterTests extends TestBase
 		
 		// previous sunday
 		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, 'CST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible);
+		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);
@@ -246,7 +260,7 @@ class SchedulePresenterTests extends TestBase
 		
 		// previous wednesday
 		$expectedStart = Date::Create(2009, 07, 8, 00, 00, 00, 'CST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible);
+		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);
@@ -288,7 +302,7 @@ class SchedulePresenterTests extends TestBase
 		
 		// sunday of next week
 		$expectedStart = Date::Create(2009, 07, 19, 00, 00, 00, 'EST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible);
+		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);
@@ -330,7 +344,7 @@ class SchedulePresenterTests extends TestBase
 		
 		// previous sunday
 		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, 'PST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible);
+		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);
@@ -361,14 +375,14 @@ class SchedulePresenterTests extends TestBase
 	public function testProvidedStartDateIsUsedIfSpecified()
 	{
 		// saturday
-		$selectedDate = Date::Create(2009, 07, 18, 00, 00, 00, 'UTC');
+		$selectedDate = Date::Create(2009, 07, 18, 00, 00, 00, 'CST');
 		
 		$startDay = 0;
 		$daysVisible = 6;
 		
 		// previous sunday
 		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, 'CST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible);
+		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);

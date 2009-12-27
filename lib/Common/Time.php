@@ -4,17 +4,17 @@ class Time
 	private $_hour;
 	private $_minute;
 	private $_second;
-	private $_date;
-	private $_timezone;
+	public $_date;
 	
 	public function __construct($hour, $minute, $second = null, $timezone = null)
 	{
 		$this->_hour = $hour;
 		$this->_minute = $minute;
 		$this->_second = is_null($second) ? 0 : $second;
-		$this->_timezone = $timezone;
 
-		$this->_date = new Date("$this->_hour:$this->_minute:$this->_second", $timezone);
+		$parts = getdate(strtotime("$this->_hour:$this->_minute:$this->_second"));
+		
+		$this->_date = new Date("{$parts['year']}-{$parts['mon']}-{$parts['mday']} $this->_hour:$this->_minute:$this->_second", $timezone);
 	}
     
 	 /**
@@ -69,7 +69,12 @@ class Time
 	
 	public function Timezone()
 	{
-		return $this->_timezone;
+		return $this->_date->Timezone();
+	}
+	
+	public function Timestamp()
+	{
+		return $this->_date->Timestamp();
 	}
 	
 	/**

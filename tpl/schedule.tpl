@@ -1,19 +1,100 @@
 {include file='header.tpl'}
 
-<div style="text-align:center; padding-bottom:15px;">
-	Schedule: <select name="type_id" class="schedule_list">
-	    {object_html_options options=$Schedules key="GetId" label="GetName"}
-	</select>
-</div>
+{literal}
+<style type="text/css">
+.ui-datepicker
+{
+	margin-left: auto; margin-right: auto;
+}
 
+.schedule_drop
+{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+}
 
-<div type="text" id="datepicker"></div>
+.schedule_drop ul
+{
+	display: block;
+	list-style: none;
+	position:absolute;
+	padding: 0;
+	margin: 0;
+	width: 125px;
+	border: solid 1px black;
+	background-color: white;
+}
 
-<div style="text-align:center; font-size:12pt;">
-	{assign var=FirstDate value=$DisplayDates->GetBegin()}
-	{assign var=LastDate value=$DisplayDates->GetEnd()}
-	<a href="#">Prev</a> {$FirstDate->Format("m-d-Y")} - {$LastDate->Format("m-d-Y")} <a href="#">Next</a>
-</div>
+.schedule_drop ul li
+{
+	font-size: 10pt;
+	padding: 4px;
+	text-align: left;
+}
+
+.schedule_drop a
+{
+	text-decoration: none;
+}
+
+.schedule_drop ul li a
+{
+	color: #666;
+	width: 125px;
+}
+
+.schedule_drop ul li a:hover
+{
+	color: #000;
+}
+
+.schedule_title
+{
+	text-align: center; 
+	padding-bottom: 10px;
+}
+
+.schedule_title span
+{
+	font-size:18pt;
+}
+
+.schedule_dates 
+{
+	text-align: center; 
+	font-size: 14pt; 
+	padding-bottom: 10px;
+}
+</style>
+{/literal}
+
+<table>
+	<tr>
+		<td style="vertical-align:top; width:50%">
+			<div class="schedule_title">
+			<span>{$ScheduleName}</span>
+			<ul class="schedule_drop">
+				<li><a href="javascript: ShowScheduleList();">img: Down arrow</a></li>
+				<ul style="display:none;" id="schedule_list">
+				{foreach from=$Schedules item=schedule}
+					<li><a href="#">{$schedule->GetName()}</a></li>
+				{/foreach}
+				</ul>
+			</ul>
+			</div>
+			<div class="schedule_dates">
+				{assign var=FirstDate value=$DisplayDates->GetBegin()}
+				{assign var=LastDate value=$DisplayDates->GetEnd()}
+				<a href="#" onclick="javascript: ChangeDate(); void(0);">img: Prev arrow</a> {$FirstDate->Format("m-d-Y")} - {$LastDate->Format("m-d-Y")} <a href="#" onclick="javascript: ChangeDate(); void(0);">img: Next arrow</a>
+			</div>
+		</td>
+		<td>
+			<div type="text" id="datepicker"></div>
+		</td>
+	</tr>
+</table>
 
 
 <div style="height:10px">&nbsp;</div>
@@ -21,7 +102,7 @@
 {foreach from=$BoundDates item=date}
 <table class="reservations" border="1" cellpadding="0">
 	<tr>
-		<td class="resdate">{$date->Format('Y-m-d')}</td>
+		<td class="resdate">{$date->Format('l, Y-m-d')}</td>
 		{foreach from=$Periods item=period}
 			<td class="reslabel">{$period->Label()}</td>
 			<!-- pass format in? -->
@@ -33,7 +114,7 @@
 		<tr>
 			<td class="resourcename">
 				{if $resource->CanAccess}
-					<a href="#" onclick="CreateReservation({$resource->Id}">{$resource->Name}</a>
+					<a href="#" onclick="CreateReservation({$resource->Id});">{$resource->Name}</a>
 				{else}
 					{$resource->Name}
 				{/if}
@@ -48,12 +129,12 @@
 {/foreach}
 
 <script type="text/javascript" src="scripts/js/jquery.qtip-1.0.0-rc3.min.js"></script>
-{literal}
 
 <script type="text/javascript">
-  $(document).ready(function(){
+{literal}
+  $(document).ready(function() {
 
-	$('.reserved').each(function(){ 
+	$('.reserved').each(function() { 
 		var resid = $(this).attr('id');
 		
 		$(this).qtip({
@@ -83,10 +164,54 @@
 	    function () { $(this).removeClass('hilite'); }
 	);
 	
-	$("#datepicker").datepicker();
+	$("div:not(#schedule_list)").click(function () {
+	 	$("#schedule_list").hide();
+	 });
 
   });
-  </script>
-{/literal}
+ 
+  function ShowScheduleList()
+  {
+  	$("#schedule_list").toggle();
+  }
+  
+  function dpDateChanged(dateText, inst)
+  {
+  	ChangeDate(inst.selectedYear, inst.selectedMonth+1, inst.selectedDay);
+  }
+  
+  function ChangeDate(year, month, day)
+  {
+  	var url = window.location.href;
+  	var newUrl = window.location.href;
+  	var startDateQuery = "sd=" + year + "-" + month + "-" + day;
+  	
+  	if (url.indexOf("sd=") != -1)
+  	{
+  	 	newUrl = url.replace(/sd=\d{4}-\d{1,2}-\d{1,2}/i, startDateQuery);
+  	}
+  	else if (url.indexOf("?") != -1)
+  	{
+  		newUrl = url + "&" + startDateQuery;
+  	}
+  	else
+  	{
+  		newUrl = url + "?" + startDateQuery;
+  	}
+  	
+  	window.location = newUrl;
+  }
+  
+  {/literal}
+  
+  $("#datepicker").datepicker({ldelim} 
+		 defaultDate: new Date({$FirstDate->Format("Y")}, {$FirstDate->Format("m")-1}, {$FirstDate->Format("d")}),
+		 numberOfMonths: 3,
+		 showButtonPanel: true,
+		 onSelect: dpDateChanged,
+  {rdelim});
+  
+</script>
+
 
 {include file='footer.tpl'}

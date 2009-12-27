@@ -15,8 +15,6 @@ class SchedulePage extends Page implements ISchedulePage
 		$reservationService = new ReservationService(new ReservationRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
 		$this->_presenter = new SchedulePresenter($this, $scheduleRepository, $resourceService, $pageBuilder, $permissionServiceFactory, $reservationService, $dailyLayoutFactory);
-		
-		//$this->_presenter = new MockSchedulePresenter($this);
 	}
 	
 	public function PageLoad()
@@ -39,6 +37,11 @@ class SchedulePage extends Page implements ISchedulePage
 	public function SetScheduleId($scheduleId)
 	{
 		$this->smarty->assign('ScheduleId', $scheduleId);
+	}
+	
+	public function SetScheduleName($scheduleName)
+	{
+		$this->smarty->assign('ScheduleName', $scheduleName);
 	}
 	
 	public function SetSchedules($schedules)
@@ -72,6 +75,7 @@ class SchedulePage extends Page implements ISchedulePage
 	
 	public function GetSelectedDate()
 	{
+		// TODO: Clean date
 		return $this->server->GetQuerystring(QueryStringKeys::START_DATE);
 	}
 }
@@ -115,6 +119,11 @@ interface ISchedulePage
 	 * @param int $scheduleId
 	 */
 	public function SetScheduleId($scheduleId);
+	
+	/**
+	 * @param string $scheduleName
+	 */
+	public function SetScheduleName($scheduleName);
 	
 	/**
 	 * Sets the dates to be displayed for the schedule, adjusted for timezone if necessary

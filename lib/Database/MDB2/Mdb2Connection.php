@@ -110,11 +110,14 @@ class Mdb2Connection implements IDbConnection
 		return new Mdb2Reader($result);
 	}
 	
-	private function _isError($result, $cmd) 
+	private function _isError($result, $cmd = null) 
 	{
 		if (MDB2::isError($result)) 
 		{
-			echo $cmd->GetQuery();
+			if ($cmd != null)
+			{
+				echo $cmd->GetQuery();
+			}
 			throw new Exception('There was an error executing your query\n' . $result->getMessage());
 		
            	// TODO: LOG: . $result->getMessage()

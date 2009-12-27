@@ -1,24 +1,8 @@
-﻿-- MySQL dump 10.11
---
--- Host: localhost    Database: phpscheduleit
--- ------------------------------------------------------
--- Server version	5.0.37-community-nt
+DROP DATABASE IF EXISTS phpscheduleit;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE phpscheduleit;
 
---
--- Table structure for table `account`
---
-
+USE phpscheduleit;
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `userid` int(10) unsigned NOT NULL auto_increment,
@@ -49,10 +33,6 @@ CREATE TABLE  `phpscheduleit`.`account_groups` (
   PRIMARY KEY  (`userid`,`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `account_status`
---
-
 DROP TABLE IF EXISTS `account_status`;
 CREATE TABLE `account_status` (
   `accountstatusid` tinyint(3) unsigned NOT NULL auto_increment,
@@ -60,9 +40,6 @@ CREATE TABLE `account_status` (
   PRIMARY KEY  USING BTREE (`accountstatusid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `accountrole`
---
 
 DROP TABLE IF EXISTS `accountrole`;
 CREATE TABLE `accountrole` (
@@ -72,10 +49,6 @@ CREATE TABLE `accountrole` (
   PRIMARY KEY  (`accountroleid`),
   KEY `accountrole_userid` (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `announcement`
---
 
 DROP TABLE IF EXISTS `announcement`;
 CREATE TABLE `announcement` (
@@ -95,10 +68,6 @@ CREATE TABLE  `phpscheduleit`.`groups` (
   `name` varchar(45) NOT NULL,
   PRIMARY KEY  (`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `reservation`
---
 
 DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE `reservation` (
@@ -121,20 +90,12 @@ CREATE TABLE `reservation` (
   KEY `reservation_statusid` (`statusid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `reservation_resource`
---
-
 DROP TABLE IF EXISTS `reservation_resource`;
 CREATE TABLE `reservation_resource` (
   `reservationid` int(10) unsigned NOT NULL,
   `resourceid` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`reservationid`,`resourceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `reservation_status`
---
 
 DROP TABLE IF EXISTS `reservation_status`;
 CREATE TABLE `reservation_status` (
@@ -143,20 +104,12 @@ CREATE TABLE `reservation_status` (
   PRIMARY KEY  (`statusid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `reservation_type`
---
-
 DROP TABLE IF EXISTS `reservation_type`;
 CREATE TABLE `reservation_type` (
   `typeid` int(10) unsigned NOT NULL auto_increment,
   `type_name` varchar(45) NOT NULL,
   PRIMARY KEY  (`typeid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `reservation_user`
---
 
 DROP TABLE IF EXISTS `reservation_user`;
 CREATE TABLE `reservation_user` (
@@ -167,21 +120,12 @@ CREATE TABLE `reservation_user` (
   KEY `reservation_user_user_level` USING BTREE (`levelid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `reservation_user_level`
---
-
 DROP TABLE IF EXISTS `reservation_user_level`;
 CREATE TABLE `reservation_user_level` (
   `levelid` int(10) unsigned NOT NULL auto_increment,
   `level_name` varchar(45) NOT NULL,
   PRIMARY KEY  (`levelid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `resource`
---
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource` (
   `resourceid` int(10) unsigned NOT NULL auto_increment,
@@ -212,20 +156,12 @@ CREATE TABLE  `phpscheduleit`.`resource_group_permissions` (
   PRIMARY KEY  (`resourceid`,`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `resource_permission`
---
-
 DROP TABLE IF EXISTS `resource_permission`;
 CREATE TABLE `resource_permission` (
   `resourceid` bigint(20) unsigned NOT NULL,
   `userid` bigint(20) unsigned NOT NULL,
   PRIMARY KEY  USING BTREE (`resourceid`,`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `schedule`
---
 
 DROP TABLE IF EXISTS `schedule`;
 CREATE TABLE `schedule` (
@@ -239,12 +175,7 @@ CREATE TABLE `schedule` (
   `daysvisible` tinyint(3) unsigned NOT NULL default '7',
   `layoutid` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`scheduleid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Table structure for table `layout`
---
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 DROP TABLE IF EXISTS `layout`;
 CREATE TABLE  `layout` (
   `layoutid` int(10) unsigned NOT NULL auto_increment,
@@ -262,9 +193,6 @@ CREATE TABLE  `layout_period` (
   `periodtypeid` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY  (`periodid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
---
--- Table structure for table `schedule_resource`
---
 
 DROP TABLE IF EXISTS `schedule_resource`;
 CREATE TABLE `schedule_resource` (
@@ -272,14 +200,3 @@ CREATE TABLE `schedule_resource` (
   `resourceid` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`scheduleid`,`resourceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2008-08-22  4:49:06

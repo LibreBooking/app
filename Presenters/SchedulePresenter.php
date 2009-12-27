@@ -77,7 +77,7 @@ class SchedulePresenter implements ISchedulePresenter
 		$schedules = $this->_scheduleRepository->GetAll();
 		$currentSchedule = $this->_builder->GetCurrentSchedule($this->_page, $schedules);
 		$activeScheduleId = $currentSchedule->GetId();
-		$this->_builder->BindSchedules($this->_page, $schedules, $activeScheduleId);
+		$this->_builder->BindSchedules($this->_page, $schedules, $currentSchedule);
 		
 		$scheduleDates = $this->_builder->GetScheduleDates($user, $currentSchedule, $this->_page);
 		$this->_builder->BindDisplayDates($this->_page, $scheduleDates, $user);

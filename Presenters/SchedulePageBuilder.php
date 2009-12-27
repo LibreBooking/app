@@ -5,9 +5,9 @@ interface ISchedulePageBuilder
 	/**
 	 * @param ISchedulePage $page
 	 * @param array[int]ISchedule $schedules
-	 * @param int $activeScheduleId
+	 * @param ISchedule $currentSchedule
 	 */
-	public function BindSchedules(ISchedulePage $page, $schedules, $activeScheduleId);
+	public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule);
 	
 	/**
 	 * @param ISchedulePage $page
@@ -48,12 +48,19 @@ interface ISchedulePageBuilder
 
 class SchedulePageBuilder implements ISchedulePageBuilder
 {
-	public function BindSchedules(ISchedulePage $page, $schedules, $activeScheduleId)
+	/**
+	 * @see ISchedulePageBuilder::BindSchedules()
+	 */
+	public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule)
 	{
 		$page->SetSchedules($schedules);
-		$page->SetScheduleId($activeScheduleId);
+		$page->SetScheduleId($currentSchedule->GetId());
+		$page->SetScheduleName($currentSchedule->GetName());
 	}
 	
+	/**
+	 * @see ISchedulePageBuilder::GetCurrentSchedule()
+	 */
 	public function GetCurrentSchedule(ISchedulePage $page, $schedules)
 	{
 		if ($page->IsPostBack())
@@ -68,11 +75,14 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return $schedule;
 	}
 	
+	/**
+	 * @see ISchedulePageBuilder::GetScheduleDates()
+	 */
 	public function GetScheduleDates(UserSession $user, ISchedule $schedule, ISchedulePage $page)
 	{
 		$userTimezone = $user->Timezone;
 		$selectedDate = $page->GetSelectedDate();
-		$date = empty($selectedDate) ? Date::Now() : new Date($selectedDate, 'UTC');
+		$date = empty($selectedDate) ? Date::Now() : new Date($selectedDate, $userTimezone);
 		$currentDate = $date->ToTimezone($userTimezone)->GetDate();
 		$currentWeekDay = $currentDate->Weekday();
 		$scheduleLength = $schedule->GetDaysVisible();
@@ -100,20 +110,29 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		
 		$startDate = $currentDate->AddDays($adjustedDays);
 		
-		return new DateRange($startDate->ToUtc(), $startDate->AddDays($scheduleLength)->ToUtc());
+		return new DateRange($startDate->ToUtc(), $startDate->AddDays($scheduleLength - 1)->ToUtc());
 	}
 	
+	/**
+	 * @see ISchedulePageBuilder::BindDisplayDates()
+	 */
 	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession)
 	{
 		$page->SetDisplayDates($dateRange->ToTimezone($userSession->Timezone));
 	}
 	
+	/**
+	 * @see ISchedulePageBuilder::BindReservations()
+	 */
 	public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout)
 	{
 		$page->SetResources($resources);
 		$page->SetDailyLayout($dailyLayout);
 	}
 	
+	/**
+	 * @see ISchedulePageBuilder::BindLayout()
+	 */
 	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout)
 	{
 		$page->SetLayout($layout->GetLayout());

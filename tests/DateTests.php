@@ -258,28 +258,28 @@ class DateTests extends TestBase
     	$this->assertEquals(-1, $early->Compare($late));
     	$this->assertEquals(1, $late->Compare($early));
     	
-    	$early = Time::Parse('10:11', 'CST');
-    	$late = Time::Parse('10:11', 'PST');
-    	
-    	$this->assertEquals(-1, $early->Compare($late));
+    	$early2 = Time::Parse('10:11', 'US/Central');
+    	$late2 = Time::Parse('10:11', 'US/Pacific');
+
+    	$this->assertEquals(-1, $early2->Compare($late2));
     }
     
     public function testCanCompareDateEquality()
     {
-    	$date1 = Date::Parse('2008-01-01 11:00:00', 'CST');
-    	$date2 = Date::Parse('2008-01-01 11:00:00', 'EST');
+    	$date1 = Date::Parse('2008-01-01 11:00:00', 'US/Central');
+    	$date2 = Date::Parse('2008-01-01 11:00:00', 'US/Eastern');
     	
     	$this->assertTrue($date1->DateEquals($date2));
     	
-    	$date1 = Date::Parse('2008-01-01 00:00:00', 'CST');
-    	$date2 = Date::Parse('2008-01-01 00:00:00', 'EST');
+    	$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
+    	$date2 = Date::Parse('2008-01-01 00:00:00', 'US/Eastern');
     	
     	$this->assertFalse($date1->DateEquals($date2));
     }
     
     public function testCreateBuildsDateObjectCorectly()
     {
-    	$date = Date::Create(2008, 10, 9, 8, 7, 6, 'CST');
+    	$date = Date::Create(2008, 10, 9, 8, 7, 6, 'US/Central');
     	
     	$this->assertEquals(2008, $date->Year());
     	$this->assertEquals(10, $date->Month());
@@ -287,23 +287,23 @@ class DateTests extends TestBase
     	$this->assertEquals(8, $date->Hour());
     	$this->assertEquals(7, $date->Minute());
     	$this->assertEquals(6, $date->Second());
-    	$this->assertEquals('CST', $date->Timezone());
+    	$this->assertEquals('US/Central', $date->Timezone());
     }
     
     public function testCanCompareDateRelativity() 
     {
-    	$date1 = Date::Parse('2008-01-01 11:00:00', 'CST');
-    	$date2 = Date::Parse('2008-01-01 11:00:00', 'EST');
+    	$date1 = Date::Parse('2008-01-01 11:00:00', 'US/Central');
+    	$date2 = Date::Parse('2008-01-01 11:00:00', 'US/Eastern');
     	
     	$this->assertEquals(0, $date1->DateCompare($date2));
     	
-    	$date1 = Date::Parse('2008-01-01 00:00:00', 'CST');
-    	$date2 = Date::Parse('2008-01-01 00:00:00', 'EST');
+    	$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
+    	$date2 = Date::Parse('2008-01-01 00:00:00', 'US/Eastern');
     	
     	$this->assertEquals(1, $date1->DateCompare($date2), 'midnight eastern is 11pm central');
     	
-    	$date1 = Date::Parse('2008-01-01 00:00:00', 'CST');
-    	$date2 = Date::Parse('2008-01-01 22:00:00', 'PST');
+    	$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
+    	$date2 = Date::Parse('2008-01-01 22:00:00', 'US/Pacific');
     	
     	$this->assertEquals(-1, $date1->DateCompare($date2), 'midnight pacific is 2 am central');
     }
