@@ -118,7 +118,11 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	 */
 	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession)
 	{
-		$page->SetDisplayDates($dateRange->ToTimezone($userSession->Timezone));
+		$adjustedDateRange = $dateRange->ToTimezone($userSession->Timezone);
+		$page->SetDisplayDates($adjustedDateRange);
+		
+		$startDate = $adjustedDateRange->GetBegin();
+		$page->SetPreviousNextDates($startDate->AddDays(-7), $startDate->AddDays(7));
 	}
 	
 	/**

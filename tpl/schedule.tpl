@@ -87,7 +87,9 @@
 			<div class="schedule_dates">
 				{assign var=FirstDate value=$DisplayDates->GetBegin()}
 				{assign var=LastDate value=$DisplayDates->GetEnd()}
-				<a href="#" onclick="javascript: ChangeDate(); void(0);">img: Prev arrow</a> {$FirstDate->Format("m-d-Y")} - {$LastDate->Format("m-d-Y")} <a href="#" onclick="javascript: ChangeDate(); void(0);">img: Next arrow</a>
+				<a href="#" onclick="javascript: ChangeDate({$PreviousDate->Year()}, {$PreviousDate->Month()}, {$PreviousDate->Day()}); void(0);">img: Prev arrow</a> 
+				{$FirstDate->Format("m-d-Y")} - {$LastDate->Format("m-d-Y")}
+				<a href="#" onclick="javascript: ChangeDate({$NextDate->Year()}, {$NextDate->Month()}, {$NextDate->Day()}); void(0);">img: Next arrow</a>
 			</div>
 		</td>
 		<td>
@@ -205,7 +207,7 @@
   {/literal}
   
   $("#datepicker").datepicker({ldelim} 
-		 defaultDate: new Date({$FirstDate->Format("Y")}, {$FirstDate->Format("m")-1}, {$FirstDate->Format("d")}),
+		 defaultDate: new Date({$FirstDate->Year()}, {$FirstDate->Month()-1}, {$FirstDate->Day()}),
 		 numberOfMonths: 3,
 		 showButtonPanel: true,
 		 onSelect: dpDateChanged,

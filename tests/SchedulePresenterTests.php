@@ -437,12 +437,22 @@ class SchedulePresenterTests extends TestBase
 		$user->Timezone = 'EST';
 		$page = $this->getMock('ISchedulePage');
 		
+		$daysDisplayed = 5;
+		$startWeekday = 1;
+		
 		$displayRange = new DateRange(Date::Now(), Date::Now()->AddDays(1));
 		$expectedRange = $displayRange->ToTimezone('EST');
+		
+		$expectedPrev = $expectedRange->GetBegin()->AddDays(-7);
+		$expectedNext = $expectedRange->GetBegin()->AddDays(7);
 		
 		$page->expects($this->once())
 			->method('SetDisplayDates')
 			->with($this->equalTo($expectedRange));
+		
+		$page->expects($this->once())
+			->method('SetPreviousNextDates')
+			->with($this->equalTo($expectedPrev), $this->equalTo($expectedNext));
 			
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindDisplayDates($page, $displayRange, $user);

@@ -73,6 +73,12 @@ class SchedulePage extends Page implements ISchedulePage
 		$this->smarty->assign('BoundDates', $dateRange->Dates());
 	}
 	
+	public function SetPreviousNextDates($previousDate, $nextDate)
+	{
+		$this->smarty->assign('PreviousDate', $previousDate);
+		$this->smarty->assign('NextDate', $nextDate);
+	}
+	
 	public function GetSelectedDate()
 	{
 		// TODO: Clean date
@@ -131,6 +137,12 @@ interface ISchedulePage
 	 * @param DateRange $dates
 	 */
 	public function SetDisplayDates($dates);
+	
+	/**
+	 * @param Date $previousDate
+	 * @param Date $nextDate
+	 */
+	public function SetPreviousNextDates($previousDate, $nextDate);
 	
 	/**
 	 * @return bool
