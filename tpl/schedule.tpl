@@ -79,7 +79,7 @@
 				<li><a href="javascript: ShowScheduleList();">img: Down arrow</a></li>
 				<ul style="display:none;" id="schedule_list">
 				{foreach from=$Schedules item=schedule}
-					<li><a href="#">{$schedule->GetName()}</a></li>
+					<li><a href="javascript: ChangeSchedule({$schedule->GetId()});">{$schedule->GetName()}</a></li>
 				{/foreach}
 				</ul>
 			</ul>
@@ -87,9 +87,9 @@
 			<div class="schedule_dates">
 				{assign var=FirstDate value=$DisplayDates->GetBegin()}
 				{assign var=LastDate value=$DisplayDates->GetEnd()}
-				<a href="#" onclick="javascript: ChangeDate({$PreviousDate->Year()}, {$PreviousDate->Month()}, {$PreviousDate->Day()}); void(0);">img: Prev arrow</a> 
+				<a href="#" onclick="javascript: ChangeDate({$PreviousDate->Year()}, {$PreviousDate->Month()}, {$PreviousDate->Day()});">img: Prev arrow</a> 
 				{$FirstDate->Format("m-d-Y")} - {$LastDate->Format("m-d-Y")}
-				<a href="#" onclick="javascript: ChangeDate({$NextDate->Year()}, {$NextDate->Month()}, {$NextDate->Day()}); void(0);">img: Next arrow</a>
+				<a href="#" onclick="javascript: ChangeDate({$NextDate->Year()}, {$NextDate->Month()}, {$NextDate->Day()});">img: Next arrow</a>
 			</div>
 		</td>
 		<td>
@@ -184,21 +184,30 @@
   
   function ChangeDate(year, month, day)
   {
+  	RedirectToSelf("sd", /sd=\d{4}-\d{1,2}-\d{1,2}/i, "sd=" + year + "-" + month + "-" + day);
+  }
+  
+  function ChangeSchedule(scheduleId)
+  {
+  	RedirectToSelf("sid", /sid=\d+/i, "sid=" + scheduleId);
+  }
+  
+  function RedirectToSelf(queryStringParam, regexMatch, substitution)
+  {
   	var url = window.location.href;
   	var newUrl = window.location.href;
-  	var startDateQuery = "sd=" + year + "-" + month + "-" + day;
   	
-  	if (url.indexOf("sd=") != -1)
+  	if (url.indexOf(queryStringParam + "=") != -1)
   	{
-  	 	newUrl = url.replace(/sd=\d{4}-\d{1,2}-\d{1,2}/i, startDateQuery);
+  	 	newUrl = url.replace(regexMatch, substitution);
   	}
   	else if (url.indexOf("?") != -1)
   	{
-  		newUrl = url + "&" + startDateQuery;
+  		newUrl = url + "&" + substitution;
   	}
   	else
   	{
-  		newUrl = url + "?" + startDateQuery;
+  		newUrl = url + "?" + substitution;
   	}
   	
   	window.location = newUrl;
@@ -206,14 +215,13 @@
   
   {/literal}
   
-  $("#datepicker").datepicker({ldelim} 
-		 defaultDate: new Date({$FirstDate->Year()}, {$FirstDate->Month()-1}, {$FirstDate->Day()}),
-		 numberOfMonths: 3,
-		 showButtonPanel: true,
-		 onSelect: dpDateChanged,
-  {rdelim});
+  {include file='datepickersetup.tpl' 
+  	ControlId='datepicker' 
+  	DefaultDate=$FirstDate 
+  	NumberOfMonths='3' 
+  	ShowButtonPanel='true' 
+  	OnSelect='dpDateChanged'}
   
 </script>
-
 
 {include file='footer.tpl'}

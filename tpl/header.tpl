@@ -13,18 +13,10 @@
 		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/js/jquery-1.3.2.min.js"></script> 
 		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.7.2.custom.min.js"></script> 
 		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script> 
-		<!--
-		<script language="JavaScript" type="text/javascript" src="{$Path}functions.js"></script>
-		<script language="JavaScript" type="text/javascript" src="{$Path}ajax.js"></script>
-		-->
 		<style type="text/css">
-		@import url({$Path}jscalendar/calendar-blue-custom.css);
-		@import url({$Path}style.css);
-		@import url({$Path}scripts/css/smoothness/jquery-ui-1.7.2.custom.css);
+			@import url({$Path}style.css);
+			@import url({$Path}scripts/css/smoothness/jquery-ui-1.7.2.custom.css);
 		</style>
-		<script type="text/javascript" src="{$Path}jscalendar/calendar.js"></script>
-		<script type="text/javascript" src="{$Path}jscalendar/lang/{$CalendarJSFile}"></script>
-		<script type="text/javascript" src="{$Path}jscalendar/calendar-setup.js"></script>
 	</head>
 	<body>
 	{control type="LeaderBoard" DisplayWelcomeMsg=$DisplayWelcome}
