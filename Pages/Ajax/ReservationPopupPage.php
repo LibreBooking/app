@@ -32,6 +32,8 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 			$this->_presenter->PageLoad();
 		}
 		
+		$this->smarty->assign('ReservationId', $this->GetReservationId());
+		
 		$this->smarty->display('Ajax/respopup.tpl');		
 	}
 	

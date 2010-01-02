@@ -10,7 +10,7 @@ class LeaderBoard extends Control
 	
 	public function PageLoad()
 	{
-		$this->smarty->display('LeaderBoard.tpl');		
+		$this->smarty->display('controls/LeaderBoard.tpl');		
 	}
 }
 ?>

@@ -70,7 +70,7 @@ class ScheduleReservationList implements IScheduleReservationList
 				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
 				
-				$slots[] = new ReservationSlot($layoutItem->Begin(), $this->_layoutItems[$endingPeriodIndex]->End(), ($endingPeriodIndex - $currentIndex) + 1, $reservation);
+				$slots[] = new ReservationSlot($layoutItem->Begin(), $this->_layoutItems[$endingPeriodIndex]->End(), ($endingPeriodIndex - $currentIndex) + 1, $reservation, $this->_layoutDateStart);
 				
 				$currentIndex = $endingPeriodIndex;
 			}

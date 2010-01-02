@@ -47,7 +47,13 @@ class SchedulePeriod
 	 */
 	public function Label()
 	{
-		return empty($this->_label) ? $this->_begin : $this->_label;
+		if (empty($this->_label))
+		{
+			$format = Resources::GetInstance()->GetDateFormat('period_time');
+			
+			return $this->_begin->Format($format);
+		}
+		return $this->_label;
 	}
 	
 	/**

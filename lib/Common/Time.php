@@ -77,6 +77,11 @@ class Time
 		return $this->_date->Timestamp();
 	}
 	
+	public function Format($format)
+	{
+		return $this->_date->Format($format);
+	}
+	
 	/**
 	 * Compares this time to the one passed in
 	 * Returns:

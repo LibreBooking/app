@@ -62,3 +62,9 @@ values (2, 1);
 truncate table reservation;
 insert into reservation (start_date, end_date, date_created, allow_participation, allow_anon_participation, typeid, statusid)
 values (now(), now(), now(), 0, 0, 1, 1);
+
+truncate table reservation_resource;
+insert into reservation_resource values(1,1);
+
+truncate table reservation_resource;
+insert into reservation_resource values(1,1,1);

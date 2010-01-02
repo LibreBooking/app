@@ -1,4 +1,12 @@
 <?php
+interface IResourceLocalization
+{
+	public function GetString($key, $args = array());
+	public function GetDateFormat($key);
+	public function GetDays($key);
+	public function GetMonths($key);
+}
+
 class Resources
 {
 	public $CurrentLanguage;
@@ -19,6 +27,9 @@ class Resources
 		$this->SetCurrentLanguage($this->GetLanguageCode());
 	}
 	
+	/**
+	 * @return IResourceLocalization
+	 */
 	public static function &GetInstance()
 	{					
 		if (is_null(self::$_instance))

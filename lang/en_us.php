@@ -28,6 +28,7 @@ class en_us extends Language
 		$dates['js_general_date'] = 'mm/dd/yy';
 		$dates['general_date'] = 'm/d/Y';
 		$dates['schedule_daily'] = 'l, m/d/Y';
+		$dates['period_time'] = "g:i A";
 		
 		$this->Dates = $dates;
 	}

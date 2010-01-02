@@ -224,7 +224,7 @@ class ColumnNames
 	const END_DATE = 'end_date';
 	const START_TIME = 'start_time';
 	const END_TIME = 'end_time';
-	const RESERVATION_TYPE = 'reservation_type';
+	const RESERVATION_TYPE = 'typeid';
 	const SUMMARY = 'summary';
 	const PARENT_ID = 'parentid';
 	

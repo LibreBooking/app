@@ -1,7 +1,8 @@
 $(document).ready(function() {
 
 	$('.reserved').each(function() { 
-		var resid = $(this).attr('id');
+		var resid = $(this).attr('id').split('|')[0];
+		var pattern = 'td[id^=' + resid + '|]';
 		
 		$(this).qtip({
 		   show: { delay:700 },
@@ -15,6 +16,11 @@ $(document).ready(function() {
 		      method: 'get'
 	   	  }
 		});
+		
+		$(this).hover(
+			function () { $(pattern).addClass('hilite'); }, 
+		    function () { $(pattern).removeClass('hilite'); }
+		);
 	});
 	
 	$('.clickres')
