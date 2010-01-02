@@ -121,6 +121,7 @@ class SchedulePresenterTests extends TestBase
 	{
 		$activeId = 100;
 		$activeName = 'super active';
+		$weekdayStart = 4;
 		
 		$schedule = $this->getMock('ISchedule');
 		$page = $this->getMock('ISchedulePage');
@@ -132,6 +133,10 @@ class SchedulePresenterTests extends TestBase
 		$schedule->expects($this->once())
 			->method('GetName')
 			->will($this->returnValue($activeName));
+			
+		$schedule->expects($this->once())
+			->method('GetWeekdayStart')
+			->will($this->returnValue($weekdayStart));
 		
 		$page->expects($this->once())
 			->method('SetSchedules')
@@ -144,6 +149,10 @@ class SchedulePresenterTests extends TestBase
 		$page->expects($this->once())
 			->method('SetScheduleName')
 			->with($this->equalTo($activeName));
+			
+		$page->expects($this->once())
+			->method('SetFirstWeekday')
+			->with($this->equalTo($weekdayStart));
 		
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindSchedules($page, $this->schedules, $schedule);

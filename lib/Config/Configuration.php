@@ -26,6 +26,9 @@ class Configuration implements IConfiguration
 	{
 	}
 	
+	/**
+	 * @return IConfigurationFile
+	 */
 	public static function Instance()
 	{
 		if (self::$_instance == null)

@@ -14,7 +14,7 @@
 		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.7.2.custom.min.js"></script> 
 		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script> 
 		<style type="text/css">
-			@import url({$Path}style.css);
+			@import url({$Path}css/style.css);
 			@import url({$Path}scripts/css/smoothness/jquery-ui-1.7.2.custom.css);
 		</style>
 	</head>

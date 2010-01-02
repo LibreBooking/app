@@ -1,0 +1,133 @@
+table.reservations {
+    border-collapse: collapse;
+    border: solid #333 1px;
+    width: 100%;
+	font-size:9pt;
+}
+
+table.reservations tr td {
+    border: solid 1px #333;
+}
+
+td.resourcename {
+    padding: 1px 3px;
+	background-color: #eee;
+}
+
+td.resdate {
+    width: 150px;
+    padding: 0px 3px;
+	background-color: #ccc;
+}
+
+td.reslabel {
+    padding-left: 2px;
+	background-color: #ccc;
+}
+
+td.unreservable {
+    background-color: #CF9D9B;
+    color: #fff;
+}
+
+td.reservable {
+    background-color: #FFF;
+    color: #333;
+}
+
+td.reserved {
+    background-color: #408AD2;
+    color: #fff;
+}
+
+td.reserved.hilite {
+    background-color: #679ED2;
+    background-color: #59A8EF;
+}
+
+td.reservable.hilite {
+    background-color: #23BF35;
+}
+
+td.hilite {
+    cursor: pointer;
+}
+
+td.reservable.clicked {
+    background-color: #259433;
+}
+
+td.reserved.clicked {
+    background-color: #1979CF;
+}
+
+select.schedule_list {
+	font-size: 8pt;
+}
+
+
+.schedule_drop
+{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+}
+
+.schedule_drop ul
+{
+	display: block;
+	list-style: none;
+	position:absolute;
+	padding: 0;
+	margin: 0;
+	width: 125px;
+	border: solid 1px black;
+	background-color: white;
+}
+
+.schedule_drop ul li
+{
+	font-size: 10pt;
+	padding: 4px;
+	text-align: left;
+}
+
+.schedule_drop a
+{
+	text-decoration: none;
+}
+
+.schedule_drop ul li a
+{
+	color: #666;
+	width: 125px;
+}
+
+.schedule_drop ul li a:hover
+{
+	color: #000;
+}
+
+.schedule_title
+{
+	text-align: center; 
+	padding-bottom: 10px;
+}
+
+.schedule_title span
+{
+	font-size:18pt;
+}
+
+.schedule_dates 
+{
+	text-align: center; 
+	font-size: 14pt; 
+	padding-bottom: 10px;
+}
+
+.ui-datepicker
+{
+	margin-left: auto; margin-right: auto;
+}

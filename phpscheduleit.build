@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="phpScheduleIt" default="package" basedir=".">
+<project name="phpScheduleIt" default="package">
 	<target name="tests" description="runs all phpUnit tests">
 		<exec program="tests/runall.bat" workingdir="./tests" failonerror="false" resultproperty="testresult" />
 		<if test="${property::get-value('testresult') != '0'}">
@@ -13,7 +13,7 @@
 		<property name="archive_directory" value="F:/Data/sites/phpScheduleIt_archive/${version}"/>
 		<property name="staging" value="../staging"/>
 		<property name="stagingdir" value="${staging}/phpScheduleIt"/>
-		
+
 		<delete dir="${staging}" failonerror="false" />
 		<mkdir dir="${staging}" failonerror="false" />
 		<mkdir dir="${stagingdir}" failonerror="false" />
@@ -25,10 +25,10 @@
 			</fileset>
 		</copy>
 		<copy file="config/config.php" tofile="${stagingdir}/config/config.new.php"/>
-		
+
 		<delete dir="${zipdirectory}" failonerror="false" />
 		<mkdir dir="${zipdirectory}" failonerror="false"/>
-		
+
 		<zip zipfile="${zipdirectory}/${packagename}.zip">
 			<fileset basedir="${staging}">
 				<include name="**/*"/>
@@ -44,16 +44,43 @@
 				<include name="**/*"/>
 			</fileset>
 		</tar>
-		
+
 		<delete dir="${archive_directory}" failonerror="false" />
 		<mkdir dir="${archive_directory}" failonerror="false"/>
-		
+
 		<copy todir="${archive_directory}" includeemptydirs="true">
 			<fileset basedir="${staging}">				
 				<include name="**/*"/>
 			</fileset>
 		</copy>
-		
+
 		<delete dir="${staging}" failonerror="false"/>
+	</target>
+
+	<target name="minify" description="minify javascript and css files">
+		<foreach item="File" property="filename">
+			<in>
+				<items>
+					<include name="**/schedule.js" />
+					<include name="**/phpscheduleit.js" />
+					<include name="**/style.css" />
+				</items>
+			</in>
+			<do>
+				<echo message="Input: ${filename}" />
+				<!-- TODO: rename current to something then overwrite current -->
+				
+				<if test="${string::contains(filename, '.css')}">
+					<property name="outputfile" value="${string::replace(filename, '.css', '-min.css')}" />
+				</if>
+				<if test="${string::contains(filename, '.js')}">
+					<property name="outputfile" value="${string::replace(filename, '.js', '-min.js')}" />
+				</if>
+
+				<echo message="Output: ${outputfile}" />
+
+				<exec program="java" workingdir="../tools/" commandline="-jar yuicompressor-2.4.2.jar --nomunge ${filename} -o ${outputfile}" />
+			</do>
+		</foreach>
 	</target>
 </project>

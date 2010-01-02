@@ -34,6 +34,7 @@ class SmartyPage extends Smarty
 		$this->RootPath = $rootPath;
 		
 		$this->register_function('translate', array($this, 'SmartyTranslate'));
+		$this->register_function('formatdate', array($this, 'FormatDate'));
 		$this->register_function('constant', array($this, 'GetConstant'));
 		$this->register_function('html_link', array($this, 'PrintLink'));
 		$this->register_function('html_image', array($this, 'PrintImage'));
@@ -96,6 +97,21 @@ class SmartyPage extends Smarty
 			return $this->Resources->GetString($params['key'], '');
 		}
 		return $this->Resources->GetString($params['key'], explode(',', $params['args']));
+	}
+	
+	public function FormatDate($params, &$smarty) 
+	{
+		if (isset($params['format']))
+		{
+			return $params['date']->Format($params['format']);
+		}
+		
+		$key = 'general_date';
+		if (isset($params['key']))
+		{
+			$key = $params['key'];
+		}
+		return $params['date']->Format($this->Resources->GetDateFormat($key));
 	}
 	
 	public function GetConstant($params, &$smarty)

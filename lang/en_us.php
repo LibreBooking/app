@@ -23,10 +23,11 @@ class en_us extends Language
 		$dates['schedule_daily'] = '%A,<br/>%m/%d/%Y';
 		// Date on top-right of each page
 		$dates['header'] = '%A, %B %d, %Y';
-		// Jump box format on bottom of the schedule page
-		// This must only include %m %d %Y in the proper order,
-		//  other specifiers will be ignored and will corrupt the jump box 
-		$dates['jumpbox'] = '%m %d %Y';
+		
+		// new stuff
+		$dates['js_general_date'] = 'mm/dd/yy';
+		$dates['general_date'] = 'm/d/Y';
+		$dates['schedule_daily'] = 'l, m/d/Y';
 		
 		$this->Dates = $dates;
 	}
@@ -47,6 +48,7 @@ class en_us extends Language
 		$strings['ValidEmailRequired'] = 'A valid email address is required.';
 		$strings['UniqueEmailRequired'] = 'That email address is already registered.';
 		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
+		$strings['Today'] = 'Today';
 		//
 		
 		/***

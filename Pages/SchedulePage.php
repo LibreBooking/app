@@ -49,6 +49,14 @@ class SchedulePage extends Page implements ISchedulePage
 		$this->smarty->assign('Schedules', $schedules);
 	}
 	
+	/**
+	 * @see ISchedulePage:SetFirstWeekday()
+	 */
+	function SetFirstWeekday($firstWeekday)
+	{
+		$this->smarty->assign('FirstWeekday', $firstWeekday);
+	}
+	
 	public function SetResources($resources)
 	{
 		$this->smarty->assign('Resources', $resources);
@@ -130,6 +138,11 @@ interface ISchedulePage
 	 * @param string $scheduleName
 	 */
 	public function SetScheduleName($scheduleName);
+	
+	/**
+	 * @param int $firstWeekday
+	 */
+	public function SetFirstWeekday($firstWeekday);
 	
 	/**
 	 * Sets the dates to be displayed for the schedule, adjusted for timezone if necessary

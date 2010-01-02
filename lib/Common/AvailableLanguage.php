@@ -11,7 +11,8 @@ class AvailableLanguage
 		$this->LanguageCode = $languageCode;
 		$this->ValidationExpression = $validationExpression;
 		$this->LanguageFile = $languageFile;
-		$this->DisplayName = $displayName;		
+		$this->DisplayName = $displayName;	
+		$this->LanguageClass = str_replace('.php', '', $languageFile);
 	}
 }
 ?>

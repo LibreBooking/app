@@ -20,8 +20,7 @@ class ResourcesTests extends TestBase
 	
 	public function testLanguageIsLoadedCorrectlyFromCookie()
 	{
-		$jscalendarFile = 'calendar-en.js';
-		$langFile = 'en_US.lang.php';		
+		$langFile = 'en_us.php';		
 		$lang = 'en_US';
 		$langCookie = new Cookie(CookieKeys::LANGUAGE, $lang, time(), '/');
 		
@@ -30,14 +29,12 @@ class ResourcesTests extends TestBase
 		$this->Resources = Resources::GetInstance();
 		
 		$this->assertEquals($lang, $this->Resources->CurrentLanguage);
-		$this->assertEquals($jscalendarFile, $this->Resources->CalendarLanguageFile);
 		$this->assertEquals($langFile, $this->Resources->LanguageFile);
 	}
 	
 	public function testDefaultLanguageIsUsedIfCannotLoadFromCookie()
 	{		
-		$jscalendarFile = 'calendar-en.js';
-		$langFile = 'en_US.lang.php';		
+		$langFile = 'en_us.php';		
 		$lang = 'en_US';
 		
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
@@ -45,22 +42,18 @@ class ResourcesTests extends TestBase
 		$this->Resources = Resources::GetInstance();
 		
 		$this->assertEquals($lang, $this->Resources->CurrentLanguage);
-		$this->assertEquals($jscalendarFile, $this->Resources->CalendarLanguageFile);
 		$this->assertEquals($langFile, $this->Resources->LanguageFile);
 	}
 	
 	public function testLanguageIsLoadedCorrectlyWhenSet()
 	{
-		$jscalendarFile = 'calendar-es.js';
-		$langFile = 'es.lang.php';
-		
-		$lang = 'es';
+		$langFile = 'en_us.php';
+		$lang = 'en_US';
 		
 		$this->Resources = Resources::GetInstance();
 		$this->Resources->SetLanguage($lang);
 		
 		$this->assertEquals($lang, $this->Resources->CurrentLanguage);
-		$this->assertEquals($jscalendarFile, $this->Resources->CalendarLanguageFile);
 		$this->assertEquals($langFile, $this->Resources->LanguageFile);
 	}
 }

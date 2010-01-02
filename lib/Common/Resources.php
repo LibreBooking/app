@@ -9,6 +9,7 @@ class Resources
 	protected $LanguageDirectory;
 	
 	private static $_instance;
+	private $_lang;
 	
 	protected function __construct()
 	{	
@@ -40,7 +41,7 @@ class Resources
 	
 	public function GetString($key, $args = array())
 	{
-		global $strings;
+		$strings = $this->_lang->Strings;
 		
 		$return = '';
 		
@@ -69,17 +70,55 @@ class Resources
 		}
 	}
 	
+	public function GetDateFormat($key)
+	{
+		$dates = $this->_lang->Dates;
+		
+		if (!isset($dates[$key]) || empty($dates[$key]))
+		{
+			return '?';
+		}
+		
+		return $dates[$key];
+	}
+	
+	public function GetDays($key)
+	{
+		$days = $this->_lang->Days;
+		
+		if (!isset($days[$key]) || empty($days[$key]))
+		{
+			return '?';
+		}
+		
+		return $days[$key];
+	}
+	
+	public function GetMonths($key)
+	{
+		$months = $this->_lang->Months;
+		
+		if (!isset($months[$key]) || empty($months[$key]))
+		{
+			return '?';
+		}
+		
+		return $months[$key];
+	}
+	
 	private function SetCurrentLanguage($languageCode)
 	{
 		if (isset($this->AvailableLanguages[$languageCode]) && file_exists($this->LanguageDirectory . $this->AvailableLanguages[$languageCode]->LanguageFile))
 		{
-			$this->LanguageFile = $this->AvailableLanguages[$languageCode]->LanguageFile;			
+			$languageSettings = $this->AvailableLanguages[$languageCode];
+			$this->LanguageFile = $languageSettings->LanguageFile;			
+			
 			require_once($this->LanguageDirectory . $this->LanguageFile);
-			global $charset;			// Defined in the language file
-			$lang = $this->AvailableLanguages[$languageCode];
+			
+			$class = $languageSettings->LanguageClass;
+			$this->_lang = new $class;
 			$this->CurrentLanguage = $languageCode;
-			$this->CalendarLanguageFile = $this->GetCalendarLanguageFile();
-			$this->Charset = $charset;	// Set in the language file
+			$this->Charset = $this->_lang->Charset;
 		}
 	}
 	
@@ -103,7 +142,7 @@ class Resources
 			'zh_TW' => new AvailableLanguage('zh_TW', 'zh([-_]tw)?|chinese', 'zh_TW.lang.php', 'Chinese Traditional (&#x6b63;&#x9ad4;&#x4e2d;&#x6587)'),
 			'cs' => new AvailableLanguage('cs', 'cs([-_][[:alpha:]]{2})?|czech', 'cs.lang.php', 'Czech (&#x010c;esky)'),
 			'de' => new AvailableLanguage('de', 'de([-_][[:alpha:]]{2})?|german', 'de.lang.php', 'Deutsch'),
-			'en_US' => new AvailableLanguage('en_US', 'en([-_]us)?|english', 'en_US.lang.php', 'English US'),
+			'en_US' => new AvailableLanguage('en_US', 'en([-_]us)?|english', 'en_us.php', 'English US'),
 			'en_GB' => new AvailableLanguage('en_GB', 'en([-_]gb)?|english', 'en_GB.lang.php', 'English GB'),
 			'es' => new AvailableLanguage('es', 'es([-_][[:alpha:]]{2})?|spanish', 'es.lang.php', 'Espa&ntilde;ol'),
 			'fr' => new AvailableLanguage('fr', 'fr([-_][[:alpha:]]{2})?|french', 'fr.lang.php', 'Fran&ccedil;ais'),

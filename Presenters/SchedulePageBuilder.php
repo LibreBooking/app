@@ -56,6 +56,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		$page->SetSchedules($schedules);
 		$page->SetScheduleId($currentSchedule->GetId());
 		$page->SetScheduleName($currentSchedule->GetName());
+		$page->SetFirstWeekday($currentSchedule->GetWeekdayStart());
 	}
 	
 	/**

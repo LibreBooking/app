@@ -1,15 +1,15 @@
 <?php
-class Language
+abstract class Language
 {
-	var $Charset = 'iso-8859-1';
-	var $Dates = array();
-	var $Strings = array();
-	var $Emails = array();
-	var $Days = array();
-	var $Months = array();
-	var $Letters = array();
+	public $Charset = 'iso-8859-1';
+	public $Dates = array();
+	public $Strings = array();
+	public $Emails = array();
+	public $Days = array();
+	public $Months = array();
+	public $Letters = array();
 
-	function Language()
+	public function __construct()
 	{
 		$this->_LoadDates();
 		$this->_LoadStrings();
@@ -19,34 +19,16 @@ class Language
 		$this->_LoadLetters();
 	}
 	
-	function _LoadDates()
-	{
-		die('Not implemented');
-	}
+	abstract protected function _LoadDates();
 	
-	function _LoadStrings()
-	{
-		die('Not implemented');
-	}
+	abstract protected function _LoadStrings();
 	
-	function _LoadEmails()
-	{
-		die('Not implemented');
-	}
+	abstract protected function _LoadEmails();
 	
-	function _LoadDays()
-	{
-		die('Not implemented');
-	}
+	abstract protected function _LoadDays();
 	
-	function _LoadMonths()
-	{
-		die('Not implemented');
-	}
+	abstract protected function _LoadMonths();
 	
-	function _LoadLetters()
-	{
-		die('Not implemented');
-	}
+	abstract protected function _LoadLetters();
 }
 ?>
