@@ -14,7 +14,7 @@
 {/if}
     </div>
   </div>
-
+{if $DisplayWelcome eq 'true'} 
   <div id="tabs" style="width: 100%; padding: 3px 5% 0px 5%; margin: 3px 0px 4px 0px; vertical-align: bottom; background: #599800; ">
     <p>
     <!-- now tabs row-->
@@ -38,11 +38,11 @@
         >{$tab.text}</span>
 {/foreach}
 
-{if $DisplayWelcome eq 'true'} 
+
         <!-- Need to find out a way to inject onmouseover event script into these links -->
         <span id="bookings-tab" class="tab">{html_link href="bookings.php" key="Bookings"}</span>
         <span id="dashboard-tab" class="tab">{html_link href="dashboard.php" key="MyDashboard"}</span>
-{/if}
+
       </p>
     </div>
     <div id="sub-tabs" style="width: 90%; padding: 3px 5% 0px 5%; height: 25px; color: #fff">
@@ -60,4 +60,5 @@
 {/foreach}
       </p>
   </div>
+  {/if}
 </div> <!--header--> 

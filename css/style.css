@@ -126,11 +126,11 @@ h3 {
     border: solid 1px #0e3046;
     color: #ffffff;
     height: 20px;
-    background: url('img/button_background.gif') repeat;
+    background: url('../img/button_background.gif') repeat;
 }
 
 .button:hover {
-    background: url('img/button_background_hover.gif') repeat;
+    background: url('../img/button_background_hover.gif') repeat;
 }
 
 /*********************************************************/
