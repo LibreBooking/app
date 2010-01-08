@@ -56,134 +56,134 @@ class RegistrationPage extends Page implements IRegistrationPage
 	
 	public function RegisterClicked()
 	{
-		return $this->server->GetForm(Actions::REGISTER);
+		return $this->GetForm(Actions::REGISTER);
 	}
 	
 	public function SetUseLoginName($useLoginName)
 	{
-		$this->smarty->assign('UseLoginName', $useLoginName);	
+		$this->Set('UseLoginName', $useLoginName);	
 	}
 	
 	public function SetTimezones($timezoneValues, $timezoneOutput)
 	{
-		$this->smarty->assign('TimezoneValues', $timezoneValues);
-		$this->smarty->assign('TimezoneOutput', $timezoneOutput);
+		$this->Set('TimezoneValues', $timezoneValues);
+		$this->Set('TimezoneOutput', $timezoneOutput);
 	}
 	
 	public function SetTimezone($timezone)
 	{
-		$this->smarty->assign('Timezone', $timezone);	
+		$this->Set('Timezone', $timezone);	
 	}
 	
 	public function SetHomepages($hompeageValues, $homepageOutput)
 	{
-		$this->smarty->assign('HomepageValues', $hompeageValues);
-		$this->smarty->assign('HomepageOutput', $homepageOutput);
+		$this->Set('HomepageValues', $hompeageValues);
+		$this->Set('HomepageOutput', $homepageOutput);
 	}
 	
 	public function SetHomepage($homepage)
 	{
-		$this->smarty->assign('Homepage', $homepage);
+		$this->Set('Homepage', $homepage);
 	}
 	
 	public function SetLoginName($loginName)
 	{
-		$this->smarty->assign('LoginName', $loginName);	
+		$this->Set('LoginName', $loginName);	
 	}	
 	
 	public function SetEmail($email)
 	{
-		$this->smarty->assign('Email', $email);	
+		$this->Set('Email', $email);	
 	}	
 	
 	public function SetFirstName($firstName)
 	{
-		$this->smarty->assign('FirstName', $firstName);	
+		$this->Set('FirstName', $firstName);	
 	}
 	
 	public function SetLastName($lastName)
 	{
-		$this->smarty->assign('LastName', $lastName);	
+		$this->Set('LastName', $lastName);	
 	}	
 	
 	public function SetPhone($phoneNumber)
 	{
-		$this->smarty->assign('PhoneNumber', $phoneNumber);	
+		$this->Set('PhoneNumber', $phoneNumber);	
 	}
 	
 	public function SetInstitution($institution)
 	{
-		$this->smarty->assign('Institution', $institution);	
+		$this->Set('Institution', $institution);	
 	}
 	
 	public function SetPosition($position)
 	{
-		$this->smarty->assign('Position', $position);	
+		$this->Set('Position', $position);	
 	}
 	
 	public function SetPassword($password)
 	{
-		$this->smarty->assign('Password', $password);	
+		$this->Set('Password', $password);	
 	}	
 	
 	public function SetPasswordConfirm($passwordConfirm)
 	{
-		$this->smarty->assign('PasswordConfirm', $passwordConfirm);	
+		$this->Set('PasswordConfirm', $passwordConfirm);	
 	}
 	
 	public function GetTimezone()
 	{
-		return $this->server->GetForm(FormKeys::TIMEZONE);
+		return $this->GetForm(FormKeys::TIMEZONE);
 	}
 	
 	public function GetHomepage()
 	{
-		return $this->server->GetForm(FormKeys::DEFAULT_HOMEPAGE);
+		return $this->GetForm(FormKeys::DEFAULT_HOMEPAGE);
 	}
 	
 	public function GetLoginName()
 	{
-		return $this->server->GetForm(FormKeys::LOGIN);
+		return $this->GetForm(FormKeys::LOGIN);
 	}
 	
 	public function GetEmail()
 	{
-		return $this->server->GetForm(FormKeys::EMAIL);
+		return $this->GetForm(FormKeys::EMAIL);
 	}
 	
 	public function GetFirstName()
 	{
-		return $this->server->GetForm(FormKeys::FIRST_NAME);
+		return $this->GetForm(FormKeys::FIRST_NAME);
 	}
 	
 	public function GetLastName()
 	{
-		return $this->server->GetForm(FormKeys::LAST_NAME);
+		return $this->GetForm(FormKeys::LAST_NAME);
 	}
 	
 	public function GetPhone()
 	{
-		return $this->server->GetForm(FormKeys::PHONE);
+		return $this->GetForm(FormKeys::PHONE);
 	}
 	
 	public function GetInstitution()
 	{
-		return $this->server->GetForm(FormKeys::INSTITUTION);
+		return $this->GetForm(FormKeys::INSTITUTION);
 	}
 	
 	public function GetPosition()
 	{
-		return $this->server->GetForm(FormKeys::POSITION);
+		return $this->GetForm(FormKeys::POSITION);
 	}
 	
 	public function GetPassword()
 	{
-		return $this->server->GetForm(FormKeys::PASSWORD);
+		return $this->GetForm(FormKeys::PASSWORD);
 	}
 	
 	public function GetPasswordConfirm()
 	{
-		return $this->server->GetForm(FormKeys::PASSWORD_CONFIRM);
+		return $this->GetForm(FormKeys::PASSWORD_CONFIRM);
 	}
 }
 ?>

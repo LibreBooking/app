@@ -134,5 +134,20 @@ class Page implements IPage
 	{
 		return $this->smarty->IsValid();
 	}
+	
+	public function Set($var, $value)
+	{
+		$this->smarty->assign($var, $value);
+	}
+	
+	protected function GetVar($var)
+	{
+		return $this->smarty->get_template_vars($var);
+	}
+	
+	protected function GetForm($var)
+	{
+		return $this->server->GetForm($var);
+	}
 }
 ?>
