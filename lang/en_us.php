@@ -51,6 +51,8 @@ class en_us extends Language
 		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
 		$strings['Today'] = 'Today';
 		$strings['BackToCalendar'] = 'Back to calendar';
+		$strings['BeginDate'] = 'Begin';
+		$strings['EndDate'] = 'End';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

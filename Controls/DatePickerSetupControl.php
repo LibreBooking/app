@@ -10,10 +10,11 @@ class DatePickerSetupControl extends Control
 	
 	public function PageLoad()
 	{
-		SetDefault('DefaultDate', Date::Now());
-		SetDefault('NumberOfMonths', 1);
-		SetDefault('ShowButtonPanel', false);
-		SetDefault('OnSelect', "alert('broken');");		
+		$this->SetDefault('DefaultDate', Date::Now());
+		$this->SetDefault('NumberOfMonths', 1);
+		$this->SetDefault('ShowButtonPanel', 'false');
+		$this->SetDefault('OnSelect', "function() { /* no-op */ }");		
+		$this->SetDefault('FirstDay', 0);		
 		
 		$this->Set('DateFormat', Resources::GetInstance()->GetDateFormat('js_general_date'));
 		$this->Set('DayNamesMin', $this->GetJsDayNames('two'));
