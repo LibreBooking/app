@@ -8,29 +8,65 @@
 <div>
 	Resource 1
 	<a href="#">(Add more)</a>
+	<a href="#">(Add Accessories)</a>
 </div>
 <div>
 	Nick Korbel
+	<a href="#">(Add Participants)</a>
+	<a href="#">(Invite Guests)</a>
 </div>
 <div>
 {translate key='BeginDate'}
 <input type="text" id="BeginDate" class="textbox" style="width:75px" />
-<select class="textbox" id="BeginPeriod" onchange="MaintainPeriodLength();"><option>Period 1</option></select>
+<select class="textbox" id="BeginPeriod" onchange="MaintainPeriodLength();"><option>Period 1 (9:00)</option></select>
 {translate key='EndDate'}
 <input type="text" id="EndDate" class="textbox" style="width:75px" />
-<select class="textbox" id="EndPeriod"><option>Period 2</option></select>
+<select class="textbox" id="EndPeriod"><option>Period 2 (10:00)</option></select>
 </div>
 
 <div>
 	{translate key='Summary'}<br/>
 	<input type="text" id="summary" />
 </div>
+
+<div>
+	Repeat: 
+	<select id="repeatOptions">
+		<option>Does Not Repeat</option>
+		<option>Daily</option>
+		<option>Weekly</option>
+		<option>Monthly</option>
+		<option>Yearly</option>
+	</select>
+	<div id="repeatEveryDiv">
+		Every: {html_options options=$RepeatEveryOptions} <span id="repeatEveryText">days</span>
+	</div>
+	<div id="repeatOnDiv">
+		<input type="checkbox" id="repeatSun" />S
+		<input type="checkbox" id="repeatMon" />M
+		<input type="checkbox" id="repeatTue" />T
+		<input type="checkbox" id="repeatWed" />W
+		<input type="checkbox" id="repeatThu" />T
+		<input type="checkbox" id="repeatFri" />F
+		<input type="checkbox" id="repeatSat" />S
+	</div>
+	<div id="repeatUntilDiv">
+		Until: 
+		<input type="radio" name="repeatEndType" value="none" id="repeatEndNone" />
+		<label for="repeatEndNone">No End</label>
+		<input type="radio" name="repeatEndType" value="until" id="repeatEndUntil" />
+		<label for="repeatEndUntil">Until</label>
+		<input type="text" id="EndRepeat" class="textbox" style="width:75px" />
+	</div>
+</div>
+
 <input type="submit" value="{translate key="Save"}" class="button"></input>
 <input type="button" value="{translate key="Cancel"}" class="button"></input>
 </form>
 
 {control type="DatePickerSetupControl" ControlId="BeginDate"}
 {control type="DatePickerSetupControl" ControlId="EndDate"}
+{control type="DatePickerSetupControl" ControlId="EndRepeat"}
 
 {literal}
 <script type="text/javascript" src="scripts/js/jquery.autogrow.js" />
