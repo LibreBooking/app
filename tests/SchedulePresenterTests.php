@@ -33,8 +33,6 @@ class SchedulePresenterTests extends TestBase
 	public function teardown()
 	{
 		parent::teardown();
-
-		Date::_ResetNow();
 	}
 	
 	public function testPageLoadBindsAllSchedulesAndProperResourcesWhenNotPostingBack2()

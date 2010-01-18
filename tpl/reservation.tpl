@@ -7,13 +7,13 @@
 
 <div>
 	Resource 1
-	<a href="#">(Add more)</a>
-	<a href="#">(Add Accessories)</a>
+	<a href="#">(Add more)</a> // modal popup
+	<a href="#">(Add Accessories)</a> // modal popup
 </div>
 <div>
 	Nick Korbel
-	<a href="#">(Add Participants)</a>
-	<a href="#">(Invite Guests)</a>
+	<a href="#">(Add Participants)</a> // modal popup
+	<a href="#">(Invite Guests)</a> // modal popup
 </div>
 <div>
 {translate key='BeginDate'}
@@ -26,7 +26,7 @@
 
 <div>
 	{translate key='Summary'}<br/>
-	<input type="text" id="summary" />
+	<input type="text" id="summary" /> // auto grow
 </div>
 
 <div>
@@ -39,9 +39,11 @@
 		<option>Yearly</option>
 	</select>
 	<div id="repeatEveryDiv">
+		// show/hide
 		Every: {html_options options=$RepeatEveryOptions} <span id="repeatEveryText">days</span>
 	</div>
 	<div id="repeatOnDiv">
+		// show/hide
 		<input type="checkbox" id="repeatSun" />S
 		<input type="checkbox" id="repeatMon" />M
 		<input type="checkbox" id="repeatTue" />T
@@ -51,6 +53,7 @@
 		<input type="checkbox" id="repeatSat" />S
 	</div>
 	<div id="repeatUntilDiv">
+		// show/hide
 		Until: 
 		<input type="radio" name="repeatEndType" value="none" id="repeatEndNone" />
 		<label for="repeatEndNone">No End</label>
