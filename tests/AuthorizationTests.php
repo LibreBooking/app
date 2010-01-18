@@ -33,7 +33,7 @@ class AuthorizationTests extends TestBase
 		$this->email = 'my@email.com';
 		$this->isAdmin = true;
 		$this->timezone = "US/Central";
-		$this->lastLogin = mktime();	
+		$this->lastLogin = time();	
 		$this->homepageId = 2;	
 
 		$this->fakePassword = new FakePassword();

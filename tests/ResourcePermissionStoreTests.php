@@ -22,7 +22,11 @@ class ResourcePermissionStoreTests extends TestBase
 		$g2 = new ScheduleGroup(200, array($r1, $r4, $r3));
 		$groups = array($g1, $g2);
 		
-		$user = new ScheduleUser($userId, $resources, $groups);
+		$user = $this->getMock('IScheduleUser');
+		
+		$user->expects($this->once())
+			->method('GetAllResources')
+			->will($this->returnValue(array($r1, $r2, $r3, $r4)));
 		
 		$userRepository = $this->getMock('IScheduleUserRepository');
 		

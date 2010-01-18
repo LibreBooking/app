@@ -18,6 +18,9 @@ class ResourceRepository implements IResourceRepository
 	{
 	}
 	
+	/**
+	 * @see IResourceRepository::GetScheduleResources()
+	 */
 	public function GetScheduleResources($scheduleId)
 	{
 		$command = new GetScheduleResourcesCommand($scheduleId);

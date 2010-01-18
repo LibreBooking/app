@@ -4,7 +4,7 @@ interface IScheduleUserRepository
 {
 	/**
 	 * @param $userId
-	 * @return ScheduleUser
+	 * @return IScheduleUser
 	 */
 	function GetUser($userId);
 }
@@ -64,7 +64,31 @@ class ScheduleUserRepository implements IScheduleUserRepository
 	}
 }
 
-class ScheduleUser
+interface IScheduleUser
+{
+	/**
+	 * @return int
+	 */
+	public function Id();
+	
+	/**
+	 *
+	 * @return array[int]ScheduleGroup
+	 */
+	function GetGroups();
+	
+	/**
+	 * @return array[int]ScheduleResource
+	 */
+	function GetResources();
+	
+	/**
+	 * @return array[int]ScheduleResource
+	 */
+	public function GetAllResources();
+}
+
+class ScheduleUser implements IScheduleUser
 {
 	private $_userId;
 	private $_groups;
@@ -83,7 +107,7 @@ class ScheduleUser
 	}
 
 	/**
-	 * @return int
+	 * @see IScheduleUser::Id()
 	 */
 	public function Id()
 	{
@@ -91,20 +115,42 @@ class ScheduleUser
 	}
 
 	/**
-	 *
-	 * @return array[int]ScheduleGroup
+	 * @see IScheduleUser::GetGroups()
 	 */
 	function GetGroups()
 	{
 		return $this->_groups;
 	}
-
+	
 	/**
-	 * @return array[int]ScheduleResource
+	 * @see IScheduleUser::GetResources()
 	 */
 	function GetResources()
 	{
 		return $this->_resources;
+	}
+	
+	/**
+	 * @see IScheduleUser::GetAllResources()
+	 */
+	public function GetAllResources()
+	{
+		$resources = array();
+		
+		foreach($this->GetResources() as $resource)
+		{
+			$resources[] = $resource;
+		}
+		
+		foreach($this->GetGroups() as $group)
+		{
+			foreach ($group->GetResources() as $resource)
+			{
+				$resources[] = $resource;
+			}
+		}
+		
+		return array_unique($resources);
 	}
 }
 
@@ -169,6 +215,12 @@ class ScheduleResource
 	public function Name()
 	{
 		return $this->_name;
+	}
+	
+	public function __toString()
+	{
+		// needed for array_unique
+		return (string)$this->_resourceId;
 	}
 }
 ?>

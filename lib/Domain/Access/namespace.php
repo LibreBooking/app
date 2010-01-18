@@ -7,4 +7,5 @@ require_once(ROOT_DIR . 'lib/Domain/Access/ScheduleRepository.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/ReservationRepository.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/ResourceRepository.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/ScheduleUserRepository.php');
+require_once(ROOT_DIR . 'lib/Domain/Access/UserRepository.php');
 ?>

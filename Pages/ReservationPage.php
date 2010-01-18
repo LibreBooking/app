@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-//require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
+require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
 
 class ReservationPage extends Page implements IReservationPage
 {
@@ -8,18 +8,121 @@ class ReservationPage extends Page implements IReservationPage
 	{
 		parent::__construct('CreateReservation');
 		
-		//$this->_presenter = new SchedulePresenter($this, $scheduleRepository, $resourceService, $pageBuilder, $permissionServiceFactory, $reservationService, $dailyLayoutFactory);
+		$scheduleUserRepository = new ScheduleUserRepository();
+		$scheduleRepository = new ScheduleRepository();
+		$userRepository = new UserRepository();
+		
+		$this->_presenter = new ReservationPresenter(
+			$this, 
+			$scheduleUserRepository, 
+			$scheduleRepository, 
+			$userRepository);
 	}
 	
 	public function PageLoad()
 	{
-		//$this->_presenter->PageLoad();
+		$this->_presenter->PageLoad();
 		$this->smarty->display('reservation.tpl');		
+	}
+	
+	public function GetRequestedResourceId()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+	
+	public function GetRequestedScheduleId()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+	}
+	
+	public function GetRequestedDate()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::RESERVATION_DATE);
+	}
+	
+	public function GetRequestedPeriod()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::PERIOD_ID);	
+	}
+	
+	public function BindPeriods($periods)
+	{
+		$this->Set('Periods', $periods);
+	}
+	
+	public function BindAvailableResources($resources)
+	{
+		$this->Set('AvailableResources', $resources);
+	}
+	
+	public function BindAvailableUsers($users)
+	{
+		$this->Set('AvailableUsers', $users);
+	}
+	
+	public function SetStartDate(Date $startDate)
+	{
+		$this->Set('StartDate', $startDate);
+	}
+	
+	public function SetEndDate(Date $startDate)
+	{
+		$this->Set('EndDate', $startDate);
+	}
+	
+	public function SetStartPeriod($periodId)
+	{
+		$this->Set('StartPeriod', $periodId);
+	}
+	
+	public function SetEndPeriod($periodId)
+	{
+		$this->Set('EndPeriod', $periodId);
+	}
+	
+	public function SetReservationUserName($name)
+	{
+		$this->Set('UserName', $name);
 	}
 }
 
 interface IReservationPage
 {
+	public function GetRequestedResourceId();
 	
+	public function GetRequestedScheduleId();
+	
+	public function GetRequestedDate();
+	
+	public function GetRequestedPeriod();
+	
+	/**
+	 * Set the schedule period items to be used when presenting reservations
+	 * @param array[int]ISchedulePeriod
+	 */
+	public function BindPeriods($periods);
+	
+	/**
+	 * Set the resources that can be reserved by this user
+	 * @param array[int]ScheduleResource
+	 */
+	public function BindAvailableResources($resources);
+	
+	/**
+	 * Set the resources that can be reserved by this user
+	 * @param array[int]ScheduleResource
+	 */
+	public function BindAvailableUsers($resources);
+	
+	public function SetStartDate(Date $startDate);
+	
+	public function SetEndDate(Date $startDate);
+	
+	public function SetStartPeriod($periodId);
+	
+	public function SetEndPeriod($periodId);
+	
+	public function SetReservationUserName($name);
+
 }
 ?>

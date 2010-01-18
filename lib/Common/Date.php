@@ -61,7 +61,7 @@ class Date
 	}
 	
 	/**
-	 * Returns a Date object representing the current GMT date/time
+	 * Returns a Date object representing the current date/time in the server's timezone
 	 *
 	 * @return Date
 	 */
@@ -71,7 +71,7 @@ class Date
 		{
 			return self::$_Now;
 		}
-//		return new Date(mktime());
+
 		return new Date('now');
 	}
 	
@@ -323,7 +323,7 @@ class Date
 	 * Only used for unit testing
 	 * @param Date $date
 	 */
-	public function _SetNow(Date $date)
+	public static function _SetNow(Date $date)
 	{
 		if (is_null($date))
 		{
@@ -338,7 +338,7 @@ class Date
 	/**
 	 * Only used for unit testing
 	 */
-	public function _ResetNow()
+	public static function _ResetNow()
 	{
 		self::$_Now = null;
 	}

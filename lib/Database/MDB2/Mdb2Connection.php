@@ -112,7 +112,7 @@ class Mdb2Connection implements IDbConnection
 	
 	private function _isError($result, $cmd = null) 
 	{
-		if (MDB2::isError($result)) 
+		if (PEAR::isError($result)) 
 		{
 			if ($cmd != null)
 			{

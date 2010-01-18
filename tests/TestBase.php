@@ -16,6 +16,10 @@ class TestBase extends PHPUnit_Framework_TestCase
 	 * @var FakeConfig
 	 */
 	public $fakeConfig;
+	
+	/**
+	 * @var FakeResources
+	 */
 	public $fakeResources;
 	
 	public function setup()

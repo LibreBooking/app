@@ -17,11 +17,23 @@
 </div>
 <div>
 {translate key='BeginDate'}
-<input type="text" id="BeginDate" class="textbox" style="width:75px" />
-<select class="textbox" id="BeginPeriod" onchange="MaintainPeriodLength();"><option>Period 1 (9:00)</option></select>
+<input type="text" id="BeginDate" class="textbox" style="width:75px" value="{formatdate date=$StartDate}"/>
+<select class="textbox" id="BeginPeriod" onchange="MaintainPeriodLength();">
+	{foreach from=$Periods item=period}
+		{if $period->IsReservable()}
+			<option>{$period->Label()}</option>
+		{/if}
+	{/foreach}
+</select>
 {translate key='EndDate'}
-<input type="text" id="EndDate" class="textbox" style="width:75px" />
-<select class="textbox" id="EndPeriod"><option>Period 2 (10:00)</option></select>
+<input type="text" id="EndDate" class="textbox" style="width:75px" value="{formatdate date=$EndDate}" />
+<select class="textbox" id="EndPeriod">
+	{foreach from=$Periods item=period}
+		{if $period->IsReservable()}
+			<option>{$period->Label()}</option>
+		{/if}
+	{/foreach}
+</select>
 </div>
 
 <div>
@@ -67,9 +79,9 @@
 <input type="button" value="{translate key="Cancel"}" class="button"></input>
 </form>
 
-{control type="DatePickerSetupControl" ControlId="BeginDate"}
-{control type="DatePickerSetupControl" ControlId="EndDate"}
-{control type="DatePickerSetupControl" ControlId="EndRepeat"}
+{control type="DatePickerSetupControl" ControlId="BeginDate" DefaultDate=$StartDate}
+{control type="DatePickerSetupControl" ControlId="EndDate" DefaultDate=$EndDate}
+{control type="DatePickerSetupControl" ControlId="EndRepeat" DefaultDate=$StartDate}
 
 {literal}
 <script type="text/javascript" src="scripts/js/jquery.autogrow.js" />

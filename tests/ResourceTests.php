@@ -25,7 +25,8 @@ class ResourceTests extends TestBase
 		$expected = array();
 		$scheduleId = 10;
 		
-		$rows = FakeResourceAccess::GetRows();
+		$ra = new FakeResourceAccess();
+		$rows = $ra->GetRows();
 		$this->db->SetRow(0, $rows);
 		
 		foreach ($rows as $row)

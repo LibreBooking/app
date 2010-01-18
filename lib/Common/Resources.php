@@ -17,6 +17,10 @@ class Resources
 	protected $LanguageDirectory;
 	
 	private static $_instance;
+	
+	/**
+	 * @var Language
+	 */
 	private $_lang;
 	
 	protected function __construct()
@@ -84,7 +88,7 @@ class Resources
 	public function GetDateFormat($key)
 	{
 		$dates = $this->_lang->Dates;
-		
+			
 		if (!isset($dates[$key]) || empty($dates[$key]))
 		{
 			return '?';

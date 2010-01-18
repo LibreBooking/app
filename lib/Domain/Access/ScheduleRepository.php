@@ -1,5 +1,7 @@
 <?php
 
+require_once(ROOT_DIR . 'lib/Domain/ScheduleLayout.php');
+
 interface IScheduleRepository
 {
 	/**
@@ -10,7 +12,7 @@ interface IScheduleRepository
 	
 	/**
 	 * @param int $scheduleId
-	 * @param string $timezone
+	 * @param string $timezone target timezone of layout
 	 * @return IScheduleLayout
 	 */
 	public function GetLayout($scheduleId, $timezone);

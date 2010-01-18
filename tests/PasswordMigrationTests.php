@@ -30,7 +30,8 @@ class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 		$salt = $this->newEncryption->Salt();		
 		$newpassword = $this->newEncryption->Encrypt($this->plaintext, $salt);		
 	
-		$password = PasswordMigration::Create($this->plaintext, $oldpassword, $newpassword);
+		$migration = new PasswordMigration();
+		$password = $migration->Create($this->plaintext, $oldpassword, $newpassword);
 		
 		$isValid = $password->Validate($salt);
 

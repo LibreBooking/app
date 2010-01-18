@@ -12,6 +12,9 @@ class ScheduleLayout implements IScheduleLayout
 	private $_periods = array();
 	private $_timezone;
 	
+	/**
+	 * @param string $timezone target timezone of layout
+	 */
 	public function __construct($timezone = null)
 	{
 		$this->_timezone = $timezone;

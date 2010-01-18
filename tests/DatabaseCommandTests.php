@@ -38,7 +38,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 	{
 		$userid = 1;
 		$time = new LoginTime();
-		LoginTime::$Now = mktime();
+		LoginTime::$Now = time();
 		
 		$command = new UpdateLoginTimeCommand($userid, $time->Now());
 		

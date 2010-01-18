@@ -14,7 +14,8 @@ require_once ROOT_DIR . 'tests/fakes/namespace.php';
 require_once ROOT_DIR . 'tests/TestBase.php';
 
 $tests = array(
-'ReservationPresenterTests.php',
+'Domain/UserRepositoryTests.php',
+'PresenterTests/ReservationPresenterTests.php',
 'ScheduleUserRepositoryTests.php',
 'ResourcePermissionStoreTests.php',
 'PermissionServiceTests.php',
@@ -87,5 +88,8 @@ for ($i = 0; $i < count($tests); $i++)
 PHPUnit_TextUI_TestRunner::run($suite);
 
 $totalTimer->stop();
+
+
+
 
 ?>

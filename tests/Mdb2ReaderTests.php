@@ -47,7 +47,8 @@ class Mdb2ReaderTests extends PHPUnit_Framework_TestCase
 	}
 	
 	function testDatabseReaderNumRowsReturnsCorrectNumberOfRows() {
-		$result = new FakeDBResult($this->createResultRows());		
+		$rows = $this->createResultRows();
+		$result = new FakeDBResult($rows);		
 		$reader = new Mdb2Reader($result);
 		
 		$this->assertEquals(2, $reader->numRows(), 'Number of rows in reader is not correct');
@@ -55,7 +56,8 @@ class Mdb2ReaderTests extends PHPUnit_Framework_TestCase
 	
 	function testDatabaseQueryReturnsValidReader() {
 		$cn = new Mdb2Connection(null, null, null, null, null);
-		$result = new FakeDBResult($this->createResultRows());
+		$rows = $this->createResultRows();
+		$result = new FakeDBResult($rows);	
 		$_db = new FakePearDB($result);
 		$_db->PrepareHandle = new FakePrepareHandle($result);
 		$cn->SetDb($_db);
