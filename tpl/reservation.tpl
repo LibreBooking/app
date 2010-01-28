@@ -11,7 +11,7 @@
 	<a href="#">(Add Accessories)</a> // modal popup
 </div>
 <div>
-	Nick Korbel
+	{$UserName}
 	<a href="#">(Add Participants)</a> // modal popup
 	<a href="#">(Invite Guests)</a> // modal popup
 </div>

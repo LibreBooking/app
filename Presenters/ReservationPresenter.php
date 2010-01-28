@@ -57,15 +57,30 @@ class ReservationPresenter implements IReservationPresenter
 		$this->_page->BindAvailableResources($scheduleUser->GetAllResources());		
 		
 		$users = $this->_userRepository->GetAll();
-		$this->_page->BindAvailableUsers($users);	
+		
+		$reservationUser = new NullUserDto();
+		$reservationResource = null;
+		$availableUsers = array();
+		foreach ($users as $user)
+		{
+			if ($user->Id() != $userId)
+			{
+				$availableUsers[] = $user;
+			}
+			else
+			{
+				$reservationUser = $user;
+			}
+		}
+		
+		$this->_page->BindAvailableUsers($availableUsers);	
 		
 		$startDate = ($requestedStartDate == null) ? Date::Now()->ToTimezone($timezone) : Date::Parse($requestedStartDate, $timezone);
 		$this->_page->SetStartDate($startDate);
 		$this->_page->SetEndDate($startDate);
 		$this->_page->SetStartPeriod($requestedPeriodId);
 		$this->_page->SetEndPeriod($requestedPeriodId);
-		
-
+		$this->_page->SetReservationUserName("{$reservationUser->FirstName()} {$reservationUser->LastName()}");
 	}
 }
 

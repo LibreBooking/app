@@ -54,14 +54,18 @@ class ReservationPresenterTests extends TestBase
 		
 		// DATA
 			// users
-		$userList = array(new UserDto($userId, $firstName, $lastName));
+		$schedUser = new UserDto($userId, $firstName, $lastName);
+		$otherUser = new UserDto(109, 'other', 'user');
+		$userList = array($otherUser, $schedUser);
 		$userRepository = $this->GetMock('IUserRepository');
 		$userRepository->expects($this->once())
 			->method('GetAll')
 			->will($this->returnValue($userList));
 			
 			// resources
-		$resourceList = array(new ScheduleResource(1, 'resource 1'));
+		$schedResource = new ScheduleResource(1, 'resource 1');
+		$otherResource = new ScheduleResource(2, 'resource 2');
+		$resourceList = array($otherResource, $schedResource);
 		$scheduleUser = $this->getMock('IScheduleUser');
 		$scheduleUserRepository = $this->getMock('IScheduleUserRepository');
 		
@@ -91,14 +95,16 @@ class ReservationPresenterTests extends TestBase
 		$page->expects($this->once())
 			->method('BindPeriods')
 			->with($this->equalTo($periods));
-			
+
+		$resourceListWithoutReservationResource = array($otherResource);
 		$page->expects($this->once())
 			->method('BindAvailableResources')
-			->with($this->equalTo($resourceList));
+			->with($this->equalTo($resourceListWithoutReservationResource));
 		
+		$userListWithoutReservationOwner = array($otherUser);
 		$page->expects($this->once())
 			->method('BindAvailableUsers')
-			->with($this->equalTo($userList));
+			->with($this->equalTo($userListWithoutReservationOwner));
 			
 		// SETUP
 		$page->expects($this->once())
@@ -120,6 +126,10 @@ class ReservationPresenterTests extends TestBase
 		$page->expects($this->once())
 			->method('SetReservationUserName')
 			->with($this->equalTo("$firstName $lastName"));
+		
+		$page->expects($this->once())
+			->method('SetReservationResource')
+			->with($this->equalTo($schedResource));	// may want this to be a real object
 		
 		$presenter = new ReservationPresenter($page, $scheduleUserRepository, $scheduleRepository, $userRepository);
 		
