@@ -6,7 +6,7 @@
 <input type="button" value="{translate key="Cancel"}" class="button"></input>
 
 <div>
-	Resource 1
+	{$ResourceName}
 	<a href="#">(Add more)</a> // modal popup
 	<a href="#">(Add Accessories)</a> // modal popup
 </div>

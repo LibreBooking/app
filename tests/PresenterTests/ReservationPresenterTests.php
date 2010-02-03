@@ -63,7 +63,7 @@ class ReservationPresenterTests extends TestBase
 			->will($this->returnValue($userList));
 			
 			// resources
-		$schedResource = new ScheduleResource(1, 'resource 1');
+		$schedResource = new ScheduleResource($resourceId, 'resource 1');
 		$otherResource = new ScheduleResource(2, 'resource 2');
 		$resourceList = array($otherResource, $schedResource);
 		$scheduleUser = $this->getMock('IScheduleUser');

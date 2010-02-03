@@ -84,6 +84,14 @@ class ReservationPage extends Page implements IReservationPage
 	{
 		$this->Set('UserName', $name);
 	}
+	
+	/**
+	 * @see IReservationPage::SetReservationResource()
+	 */
+	public function SetReservationResource($resource)
+	{
+		$this->Set('ResourceName', $resource->Name());
+	}
 }
 
 interface IReservationPage
@@ -114,15 +122,35 @@ interface IReservationPage
 	 */
 	public function BindAvailableUsers($resources);
 	
+	/**
+	 * @param Date $startDate
+	 */
 	public function SetStartDate(Date $startDate);
 	
+	/**
+	 * @param Date $startDate
+	 */
 	public function SetEndDate(Date $startDate);
 	
+	/**
+	 * @param unknown_type $periodId
+	 */
 	public function SetStartPeriod($periodId);
-	
+
+	/**
+	 * @param unknown_type $periodId
+	 */
 	public function SetEndPeriod($periodId);
 	
+	/**
+	 * @param string $name
+	 */
 	public function SetReservationUserName($name);
+	
+	/**
+	 * @param ScheduleResource $resource
+	 */
+	public function SetReservationResource($resource);
 
 }
 ?>

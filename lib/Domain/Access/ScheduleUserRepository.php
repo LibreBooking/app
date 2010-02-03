@@ -85,7 +85,7 @@ interface IScheduleUser
 	/**
 	 * @return array[int]ScheduleResource
 	 */
-	public function GetAllResources();
+	function GetAllResources();
 }
 
 class ScheduleUser implements IScheduleUser
@@ -221,6 +221,14 @@ class ScheduleResource
 	{
 		// needed for array_unique
 		return (string)$this->_resourceId;
+	}
+}
+
+class NullScheduleResource extends ScheduleResource
+{
+	public function __construct()
+	{
+		parent::__construct(0, null);
 	}
 }
 ?>
