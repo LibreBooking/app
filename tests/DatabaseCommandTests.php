@@ -276,7 +276,15 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		
 		$this->assertEquals(Queries::GET_SCHEDULE_LAYOUT, $command->GetQuery());
 		$this->assertEquals(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId), $command->Parameters->Items(0));
+	}
 	
+	public function testGetAllUsersByStatusCommand()
+	{
+		$statusId = AccountStatus::ACTIVE;
+		$command = new GetAllUsersByStatusCommand($statusId);
+		
+		$this->assertEquals(Queries::GET_ALL_USERS_BY_STATUS, $command->GetQuery());
+		$this->assertEquals(new Parameter(ParameterNames::ACCOUNT_STATUS_ID, $statusId), $command->Parameters->Items(0));
 	}
 }
 ?>

@@ -5,5 +5,6 @@ class AccountStatus
 	{}
 	
 	const AWAITING_ACTIVATION = 1;
+	const ACTIVE = 2;
 }
 ?>

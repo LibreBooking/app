@@ -6,7 +6,21 @@ class UserRepository implements IUserRepository
 	 */
 	public function GetAll()
 	{
-		return array();
+		$command = new GetAllUsersByStatusCommand(AccountStatus::ACTIVE);
+
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+		$users = array();
+
+		while ($row = $reader->GetRow())
+		{
+			$users[] = new UserDto(
+								$row[ColumnNames::USER_ID], 
+								$row[ColumnNames::FIRST_NAME],
+								$row[ColumnNames::LAST_NAME]
+								);
+		}
+
+		return $users;
 	}
 }
 

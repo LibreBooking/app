@@ -64,6 +64,15 @@ class GetAllSchedulesCommand extends SqlCommand
 	}
 }
 
+class GetAllUsersByStatusCommand extends SqlCommand
+{
+	public function __construct($accountStatusId)
+	{
+		parent::__construct(Queries::GET_ALL_USERS_BY_STATUS);
+		$this->AddParameter(new Parameter(ParameterNames::ACCOUNT_STATUS_ID, $accountStatusId));
+	}
+}
+
 class GetDashboardAnnouncementsCommand extends SqlCommand 
 {
 	public function __construct($currentDate)

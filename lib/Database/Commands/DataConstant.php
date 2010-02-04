@@ -62,6 +62,11 @@ class Queries
 	const GET_ALL_SCHEDULES = 
 		'SELECT * 
 		FROM schedule';
+	
+	const GET_ALL_USERS_BY_STATUS = 
+		'SELECT userid, fname, lname
+		FROM account
+		WHERE statusid = @accountstatusid';
 		
 	const GET_DASHBOARD_ANNOUNCEMENTS =
 		'SELECT announcement_text 
