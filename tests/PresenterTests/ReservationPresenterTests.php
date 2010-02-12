@@ -7,9 +7,22 @@ class ReservationPresenterTests extends TestBase
 	//TODO: Inject some sort of ReservationPageSetup to populate selected values? 
 	// (INewReservationPage, IExistingReservationPage w/ GetStartDate(), etc)
 	
+	/**
+	 * @var UserSession
+	 */
+	private $_user;
+	
+	/**
+	 * @var int
+	 */
+	private $_userId;
+	
 	public function setup()
 	{
 		parent::setup();
+		
+		$this->_user = $this->fakeServer->UserSession;
+		$this->_userId = $this->_user->UserId;
 	}
 
 	public function teardown()
@@ -19,9 +32,7 @@ class ReservationPresenterTests extends TestBase
 	
 	public function testPageLoadSetsDefaultsForSelectedUserAndResourceAndDate()
 	{
-		$user = $this->fakeServer->UserSession;
-		$userId = $user->UserId;
-		$timezone = $user->Timezone;
+		$timezone = $this->_user->Timezone;
 		
 		$resourceId = 10;
 		$scheduleId = 100;
@@ -54,7 +65,7 @@ class ReservationPresenterTests extends TestBase
 		
 		// DATA
 			// users
-		$schedUser = new UserDto($userId, $firstName, $lastName);
+		$schedUser = new UserDto($this->_userId, $firstName, $lastName);
 		$otherUser = new UserDto(109, 'other', 'user');
 		$userList = array($otherUser, $schedUser);
 		$userRepository = $this->GetMock('IUserRepository');
@@ -71,7 +82,7 @@ class ReservationPresenterTests extends TestBase
 		
 		$scheduleUserRepository->expects($this->once())
 			->method('GetUser')
-			->with($this->equalTo($userId))
+			->with($this->equalTo($this->_userId))
 			->will($this->returnValue($scheduleUser));
 			
 		$scheduleUser->expects($this->once())
@@ -84,7 +95,7 @@ class ReservationPresenterTests extends TestBase
 		$scheduleRepository = $this->getMock('IScheduleRepository');
 		$scheduleRepository->expects($this->once())
 			->method('GetLayout')
-			->with($this->equalTo($scheduleId), $this->equalTo($user->Timezone))
+			->with($this->equalTo($scheduleId), $this->equalTo($this->_user->Timezone))
 			->will($this->returnValue($layout));
 			
 		$layout->expects($this->once())
@@ -133,6 +144,40 @@ class ReservationPresenterTests extends TestBase
 		
 		$presenter = new ReservationPresenter($page, $scheduleUserRepository, $scheduleRepository, $userRepository);
 		
+		$presenter->PageLoad();
+	}
+	
+	public function testRedirectsWithErrorMessageIfUserDoesNotHavePermission()
+	{
+		$this->markTestIncomplete("first thing to do, then handle other error conditions");
+		
+		$resourceId = 123;
+		
+		$permissionServiceFactory = $this->getMock('IPermissionServiceFactory');
+		$permissionService = $this->getMock('IPermissionService');
+
+		$page = $this->getMock('IReservationPage');
+		
+		$page->expects($this->once())
+			->method('GetRequestedResourceId')
+			->will($this->returnValue($resourceId));
+			
+		$permissionServiceFactory->expects($this->once())
+			->method('GetPermissionService')
+			->with($this->equalTo($this->_userId))
+			->will($this->returnValue($permissionService));		
+
+		$permissionService->expects($this->once())
+			->method('CanAccessResource')
+			->with($this->equalTo($resource))
+			->will($this->returnValue(false));
+			
+		$page->expects($this->once())
+			->method('Redirect')
+			->with($this->equalTo($errorPageWithMessageId));
+		
+
+			
 		$presenter->PageLoad();
 	}
 }

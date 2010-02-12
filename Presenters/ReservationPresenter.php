@@ -67,7 +67,6 @@ class ReservationPresenter implements IReservationPresenter
 		$this->_page->SetStartPeriod($requestedPeriodId);
 		$this->_page->SetEndPeriod($requestedPeriodId);
 		$reservationUser = $bindableUserData->ReservationUser;
-		//print_r($reservationUser);
 		$this->_page->SetReservationUserName("{$reservationUser->FirstName()} {$reservationUser->LastName()}");
 		$this->_page->SetReservationResource($bindableResourceData->ReservationResource);
 	}
