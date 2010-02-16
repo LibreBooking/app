@@ -149,9 +149,9 @@ class ReservationPresenterTests extends TestBase
 	
 	public function testRedirectsWithErrorMessageIfUserDoesNotHavePermission()
 	{
-		$this->markTestIncomplete("first thing to do, then handle other error conditions");
-		
 		$resourceId = 123;
+		$redirectUrl = '';
+		$errorPageWithMessageId = sprintf("error.php?%s=%s&%s=%s", QueryStringKeys::MESSAGE_ID, 1, QueryStringKeys::REDIRECT, $redirectUrl);
 		
 		$permissionServiceFactory = $this->getMock('IPermissionServiceFactory');
 		$permissionService = $this->getMock('IPermissionService');
@@ -175,8 +175,6 @@ class ReservationPresenterTests extends TestBase
 		$page->expects($this->once())
 			->method('Redirect')
 			->with($this->equalTo($errorPageWithMessageId));
-		
-
 			
 		$presenter->PageLoad();
 	}

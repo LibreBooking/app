@@ -80,5 +80,12 @@ $(document).ready(function() {
   		newUrl = url + "?" + substitution;
   	}
   	
+  	newUrl = newUrl.replace("#", "");
+  	
   	window.location = newUrl;
+  }
+  
+  function CreateReservation()
+  {
+	  window.location = 'reservation.php';
   }

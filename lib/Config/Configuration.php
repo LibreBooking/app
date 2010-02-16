@@ -11,6 +11,8 @@ interface IConfigurationFile
 {
 	public function GetSectionKey($section, $name, $converter = null);
 	public function GetKey($name, $converter = null);
+	
+	public function GetScriptUrl();
 }
 
 class Configuration implements IConfiguration
@@ -68,6 +70,22 @@ class Configuration implements IConfiguration
 	public function GetKey($keyName, $converter = null)
 	{
 		return $this->File(self::DEFAULT_CONFIG_ID)->GetKey($keyName, $converter);
+	}
+	
+	public function GetScriptUrl()
+	{
+		throw new Exception("finish this");
+		$url = strtolower($this->GetKey(ConfigKeys::SCRIPT_URL));
+		
+		$len = strlen($url);
+
+    	$strEnd = substr('/', strlen($url) - $len);
+
+    	if ($len == $strEnd)
+    	{
+    		$url = 
+    	}
+		return ;
 	}
 
 	protected function AddConfig($configId, $container, $overwrite)

@@ -89,6 +89,18 @@ class Page implements IPage
 		die();
 	}
 	
+	public function GetLastPage()
+	{
+		$referer = getenv("HTTP_REFERER");
+		if (empty($referer))
+		{
+			return "/index.php";
+		}
+		
+		$scriptUrl = strtolower(Configuration::Instance()->GetScriptUrl());
+		return str_replace($scriptUrl, '', strtolower($referer));
+	}
+	
 	public function DisplayWelcome()
 	{
 		return true;
