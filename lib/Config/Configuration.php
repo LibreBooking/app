@@ -74,20 +74,9 @@ class Configuration implements IConfiguration
 	
 	public function GetScriptUrl()
 	{
-		throw new Exception("finish this");
-		$url = strtolower($this->GetKey(ConfigKeys::SCRIPT_URL));
-		
-		$len = strlen($url);
-
-    	$strEnd = substr('/', strlen($url) - $len);
-
-    	if ($len == $strEnd)
-    	{
-    		$url = 
-    	}
-		return ;
+		return $this->File(self::DEFAULT_CONFIG_ID)->GetScriptUrl();
 	}
-
+	
 	protected function AddConfig($configId, $container, $overwrite)
 	{		
 		if (!$overwrite)
@@ -127,6 +116,13 @@ class ConfigurationFile implements IConfigurationFile
 			return $this->Convert($this->_values[$section][$keyName], $converter);
 		}
 		return null;
+	}
+	
+	public function GetScriptUrl()
+	{
+		$url = strtolower($this->GetKey(ConfigKeys::SCRIPT_URL));
+		
+		return rtrim($url, '/');
 	}
 	
 	protected function Convert($value, $converter)
