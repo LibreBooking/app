@@ -34,7 +34,7 @@ class Page implements IPage
 		$this->smarty->assign('Title', 'phpScheduleIt - ' . $resources->GetString($titleKey));
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
 		$this->smarty->assign('AllowRss', Configuration::Instance()->GetKey(ConfigKeys::ALLOW_RSS));
-		$this->smarty->assign('LoggedIn', !is_null($userSession));
+		$this->smarty->assign('LoggedIn', $userSession->IsLoggedIn());
 		$this->smarty->assign('Version', Configuration::Instance()->GetKey(ConfigKeys::VERSION));
 		$this->smarty->assign('Path', $path);
 		$this->smarty->assign('ScriptUrl', Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL));

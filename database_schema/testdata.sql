@@ -67,4 +67,4 @@ truncate table reservation_resource;
 insert into reservation_resource values(1,1);
 
 truncate table reservation_resource;
-insert into reservation_resource values(1,1,1);
+insert into reservation_resource values(1,1);

@@ -53,6 +53,14 @@ class en_us extends Language
 		$strings['BackToCalendar'] = 'Back to calendar';
 		$strings['BeginDate'] = 'Begin';
 		$strings['EndDate'] = 'End';
+		$strings['Username'] = 'Username';
+		$strings['Password'] = 'Password';
+		$strings['PasswordConfirmation'] = 'Confirm Password';
+		$strings['DefaultPage'] = 'Default Homepage';
+		$strings['MyDashboard'] = 'My Dashboard';
+		$strings['MyCalendar'] = 'My Calendar';
+		$strings['ScheduleCalendar'] = 'Schedule Calendar';
+		$strings['Registration'] = 'Registration';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

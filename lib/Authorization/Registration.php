@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'lib/Domain/namespace.php');
+
 class Registration implements IRegistration 
 {
 	private $_passwordEncryption;

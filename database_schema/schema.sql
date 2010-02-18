@@ -26,7 +26,7 @@ CREATE TABLE `account` (
   KEY `user_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `phpscheduleit`.`account_groups`;
+DROP TABLE IF EXISTS `account_groups`;
 CREATE TABLE  `phpscheduleit`.`account_groups` (
   `userid` int(10) unsigned NOT NULL,
   `groupid` int(10) unsigned NOT NULL,

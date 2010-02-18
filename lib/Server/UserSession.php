@@ -22,6 +22,11 @@ class UserSession
 	{
 		$this->UserId = $id;
 	}
+	
+	public function IsLoggedIn()
+	{
+		return true;
+	}
 }
 
 class NullUserSession extends UserSession
@@ -29,6 +34,11 @@ class NullUserSession extends UserSession
 	public function __construct()
 	{
 		parent::__construct(0);
+	}
+	
+	public function IsLoggedIn()
+	{
+		return false;
 	}
 }
 ?>
