@@ -61,6 +61,9 @@ class en_us extends Language
 		$strings['MyCalendar'] = 'My Calendar';
 		$strings['ScheduleCalendar'] = 'Schedule Calendar';
 		$strings['Registration'] = 'Registration';
+		$strings['NoAnnouncements'] = 'There are no announcements';
+		$strings['Announcements'] = 'Announcements';
+		$strings['ShowHide'] = 'Show/Hide';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

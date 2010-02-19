@@ -158,7 +158,7 @@ class Queries
 	
 	const REGISTER_USER = 
 		'INSERT INTO account
-		(email, userpassword, fname, lname, phone, institution, positionname, username, salt, timezonename, homepageid, accountstatusid)
+		(email, userpassword, fname, lname, phone, institution, positionname, username, salt, timezonename, homepageid, statusid)
 		VALUES
 		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @username, @salt, @timezone, @homepageid, @accountstatusid)
 		';
