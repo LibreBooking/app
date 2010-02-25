@@ -39,6 +39,7 @@ class FakeConfigFile implements IConfigurationFile
 {
 	public $_values = array();
 	public $_sections = array();
+	public $_ScriptUrl = '';
 	
 	public function GetKey($keyName, $converter = null)
 	{		
@@ -84,6 +85,11 @@ class FakeConfigFile implements IConfigurationFile
 		}
 		
 		return $value;
+	}
+	
+	public function GetScriptUrl()
+	{
+		return $this->_ScriptUrl;
 	}
 }
 

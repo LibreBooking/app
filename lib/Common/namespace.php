@@ -9,4 +9,5 @@ require_once(ROOT_DIR . 'lib/Common/Time.php');
 require_once(ROOT_DIR . 'lib/Common/DateRange.php');
 require_once(ROOT_DIR . 'lib/Common/GlobalKeys.php');
 require_once(ROOT_DIR . 'lib/Common/PluginManager.php');
+require_once(ROOT_DIR . 'lib/Common/ErrorMessages.php');
 ?>

@@ -27,16 +27,23 @@ class ReservationPresenter implements IReservationPresenter
 	 */
 	private $_userRepository;
 	
+	/**
+	 * @var IPermissionServiceFactory
+	 */
+	private $_permissionServiceFactory;
+	
 	public function __construct(
 		IReservationPage $page, 
 		IScheduleUserRepository $scheduleUserRepository, 
 		IScheduleRepository $scheduleRepository,
-		IUserRepository $userRepository)
+		IUserRepository $userRepository,
+		IPermissionServiceFactory $permissionServiceFactory)
 	{
 		$this->_page = $page;
 		$this->_scheduleUserRepository = $scheduleUserRepository;
 		$this->_scheduleRepository = $scheduleRepository;
 		$this->_userRepository = $userRepository;
+		$this->_permissionServiceFactory = $permissionServiceFactory;
 	}
 	
 	public function PageLoad()
@@ -50,6 +57,12 @@ class ReservationPresenter implements IReservationPresenter
 		$requestedStartDate = $this->_page->GetRequestedDate();
 		$requestedPeriodId = $this->_page->GetRequestedPeriod();
 		
+		if (!$this->UserHasPermission($user, $requestedResourceId))
+		{
+			$this->_page->RedirectToError(ErrorMessages::INSUFFICIENT_PERMISSIONS, $this->_page->GetLastPage());
+			return;
+		}
+			
 		$layout = $this->_scheduleRepository->GetLayout($requestedScheduleId, $timezone);
 		$this->_page->BindPeriods($layout->GetLayout());
 
@@ -69,6 +82,12 @@ class ReservationPresenter implements IReservationPresenter
 		$reservationUser = $bindableUserData->ReservationUser;
 		$this->_page->SetReservationUserName("{$reservationUser->FirstName()} {$reservationUser->LastName()}");
 		$this->_page->SetReservationResource($bindableResourceData->ReservationResource);
+	}
+	
+	private function UserHasPermission(UserSession $user, $resourceId)
+	{
+		$permissionService = $this->_permissionServiceFactory->GetPermissionService($user->UserId);
+		return $permissionService->CanAccessResource(new ReservationResource($resourceId));
 	}
 	
 	private function GetBindableUserData($userId)
@@ -160,4 +179,32 @@ class BindableResourceData
 
 interface IReservationPresenter
 {}
+
+class ReservationResource implements IResource
+{
+	private $_id;
+	
+	public function __construct($resourceId)
+	{
+		$this->_id = $resourceId;
+	}
+	
+	/**
+	 * @see IResource::GetResourceId()
+	 */
+	public function GetResourceId()
+	{
+		return $this->_id;
+	}
+	
+	/**
+	 * This will always be an empty string
+	 * 
+	 * @see IResource::GetName()
+	 */
+	public function GetName()
+	{
+		return "";
+	}
+}
 ?>

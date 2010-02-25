@@ -89,6 +89,12 @@ class Page implements IPage
 		die();
 	}
 	
+	public function RedirectToError($errorMessageId, $lastPage = '')
+	{
+		$errorPageUrl = sprintf("error.php?%s=%s&%s=%s", QueryStringKeys::MESSAGE_ID, $errorMessageId, QueryStringKeys::REDIRECT, $lastPage);
+		$this->Redirect($errorPageUrl);
+	}
+	
 	public function GetLastPage()
 	{
 		$referer = getenv("HTTP_REFERER");

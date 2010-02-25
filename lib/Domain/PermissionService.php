@@ -1,6 +1,11 @@
 <?php
 interface IPermissionService
 {
+	
+	/**
+	 * @param IResource $resource
+	 * @return bool
+	 */
 	public function CanAccessResource(IResource $resource);	
 }
 

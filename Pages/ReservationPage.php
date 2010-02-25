@@ -2,6 +2,66 @@
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
 
+interface IReservationPage extends IPage
+{
+	public function GetRequestedResourceId();
+	
+	public function GetRequestedScheduleId();
+	
+	public function GetRequestedDate();
+	
+	public function GetRequestedPeriod();
+	
+	/**
+	 * Set the schedule period items to be used when presenting reservations
+	 * @param array[int]ISchedulePeriod
+	 */
+	public function BindPeriods($periods);
+	
+	/**
+	 * Set the resources that can be reserved by this user
+	 * @param array[int]ScheduleResource
+	 */
+	public function BindAvailableResources($resources);
+	
+	/**
+	 * Set the resources that can be reserved by this user
+	 * @param array[int]ScheduleResource
+	 */
+	public function BindAvailableUsers($resources);
+	
+	/**
+	 * @param Date $startDate
+	 */
+	public function SetStartDate(Date $startDate);
+	
+	/**
+	 * @param Date $startDate
+	 */
+	public function SetEndDate(Date $startDate);
+	
+	/**
+	 * @param unknown_type $periodId
+	 */
+	public function SetStartPeriod($periodId);
+
+	/**
+	 * @param unknown_type $periodId
+	 */
+	public function SetEndPeriod($periodId);
+	
+	/**
+	 * @param string $name
+	 */
+	public function SetReservationUserName($name);
+	
+	/**
+	 * @param ScheduleResource $resource
+	 */
+	public function SetReservationResource($resource);
+
+}
+
 class ReservationPage extends Page implements IReservationPage
 {
 	public function __construct()
@@ -94,63 +154,5 @@ class ReservationPage extends Page implements IReservationPage
 	}
 }
 
-interface IReservationPage
-{
-	public function GetRequestedResourceId();
-	
-	public function GetRequestedScheduleId();
-	
-	public function GetRequestedDate();
-	
-	public function GetRequestedPeriod();
-	
-	/**
-	 * Set the schedule period items to be used when presenting reservations
-	 * @param array[int]ISchedulePeriod
-	 */
-	public function BindPeriods($periods);
-	
-	/**
-	 * Set the resources that can be reserved by this user
-	 * @param array[int]ScheduleResource
-	 */
-	public function BindAvailableResources($resources);
-	
-	/**
-	 * Set the resources that can be reserved by this user
-	 * @param array[int]ScheduleResource
-	 */
-	public function BindAvailableUsers($resources);
-	
-	/**
-	 * @param Date $startDate
-	 */
-	public function SetStartDate(Date $startDate);
-	
-	/**
-	 * @param Date $startDate
-	 */
-	public function SetEndDate(Date $startDate);
-	
-	/**
-	 * @param unknown_type $periodId
-	 */
-	public function SetStartPeriod($periodId);
 
-	/**
-	 * @param unknown_type $periodId
-	 */
-	public function SetEndPeriod($periodId);
-	
-	/**
-	 * @param string $name
-	 */
-	public function SetReservationUserName($name);
-	
-	/**
-	 * @param ScheduleResource $resource
-	 */
-	public function SetReservationResource($resource);
-
-}
 ?>

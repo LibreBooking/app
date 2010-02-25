@@ -8,11 +8,17 @@ class FakePageBase implements IPage
 	public $_IsPostBack = false;
 	public $_IsValid = true;
 	public $_Validators = array();
+	public $_LastPage = '';
 	
 	public function Redirect($destination)
 	{
 		$this->_RedirectCalled = true;
 		$this->_RedirectDestination = $destination;
+	}
+	
+	public function RedirectToError($errorMessageId, $lastPage = '')
+	{
+		// implement me?
 	}
 	
 	public function IsPostBack()
@@ -28,5 +34,10 @@ class FakePageBase implements IPage
 	public function RegisterValidator($validatorId, $validator)
 	{
 		$this->_Validators[$validatorId] = $validator;
+	}
+	
+	public function GetLastPage()
+	{
+		return $this->_LastPage;
 	}
 }
