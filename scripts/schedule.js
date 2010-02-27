@@ -85,7 +85,7 @@ $(document).ready(function() {
   	window.location = newUrl;
   }
   
-  function CreateReservation()
+  function CreateReservation($resourceId)
   {
 	  window.location = 'reservation.php';
   }

@@ -1,24 +1,40 @@
 <?php 
 class ErrorMessages
 {
+	const UNKNOWN_ERROR = 0;
 	const INSUFFICIENT_PERMISSIONS = 1;
 	
-	private static $resourceKeys = array();
+	private $_resourceKeys = array();
+	private static $_instance;
 		
 	private function __construct()
 	{
-		self::SetKey(ErrorMessages::INSUFFICIENT_PERMISSIONS, 'InsufficientPermissionsError');
+		$this->SetKey(ErrorMessages::INSUFFICIENT_PERMISSIONS, 'InsufficientPermissionsError');
 	}
 	
-	private static function SetKey($errorMessageId, $resourceKey)
+	public static function Instance()
 	{
-		self::$resourceKeys[$errorMessageId] = $resourceKey;
-	
+		if (self::$_instance == null)
+		{
+			self::$_instance = new ErrorMessages();
+		}
+		
+		return self::$_instance;
 	}
 	
-	public static function GetResourceKey($errorMessageId)
+	private function SetKey($errorMessageId, $resourceKey)
 	{
-		return self::$resourceKeys[$errorMessageId];
+		$this->_resourceKeys[$errorMessageId] = $resourceKey;
+	}
+	
+	public function GetResourceKey($errorMessageId)
+	{
+		if (!isset($this->_resourceKeys[$errorMessageId]))
+		{
+			return 'UnknownError';
+		}
+		
+		return $this->_resourceKeys[$errorMessageId];
 	}
 }
 ?>

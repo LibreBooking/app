@@ -1,9 +1,9 @@
 {include file='header.tpl' DisplayWelcome='false'}
-<a href="#">&lt; {translate key="BackToCalendar"}</a><br/>
+<a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>
 <form action="undefined.php" method="post">
 
 <input type="submit" value="{translate key="Save"}" class="button"></input>
-<input type="button" value="{translate key="Cancel"}" class="button"></input>
+<input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 
 <div>
 	{$ResourceName}
@@ -76,7 +76,7 @@
 </div>
 
 <input type="submit" value="{translate key="Save"}" class="button"></input>
-<input type="button" value="{translate key="Cancel"}" class="button"></input>
+<input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 </form>
 
 {control type="DatePickerSetupControl" ControlId="BeginDate" DefaultDate=$StartDate}

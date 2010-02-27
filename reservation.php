@@ -9,6 +9,4 @@ ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, $usersession)
 
 $page = new ReservationPage();
 $page->PageLoad();
-
-echo 'r: ' . $page->GetLastPage();
 ?>

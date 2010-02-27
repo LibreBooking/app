@@ -91,7 +91,7 @@ class Page implements IPage
 	
 	public function RedirectToError($errorMessageId, $lastPage = '')
 	{
-		$errorPageUrl = sprintf("error.php?%s=%s&%s=%s", QueryStringKeys::MESSAGE_ID, $errorMessageId, QueryStringKeys::REDIRECT, $lastPage);
+		$errorPageUrl = sprintf("error.php?%s=%s&%s=%s", QueryStringKeys::MESSAGE_ID, $errorMessageId, QueryStringKeys::REDIRECT, urlencode($lastPage));
 		$this->Redirect($errorPageUrl);
 	}
 	
@@ -100,11 +100,12 @@ class Page implements IPage
 		$referer = getenv("HTTP_REFERER");
 		if (empty($referer))
 		{
-			return "/index.php";
+			return "index.php";
 		}
 		
 		$scriptUrl = strtolower(Configuration::Instance()->GetScriptUrl());
-		return str_replace($scriptUrl, '', strtolower($referer));
+		$page = str_replace($scriptUrl, '', strtolower($referer));
+		return ltrim($page, '/');
 	}
 	
 	public function DisplayWelcome()

@@ -49,7 +49,7 @@
 		<tr>
 			<td class="resourcename">
 				{if $resource->CanAccess}
-					<a href="#" onclick="CreateReservation({$resource->Id}); void(0);">{$resource->Name}</a>
+					<a href="reservation.php?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key="url"}">{$resource->Name}</a>
 				{else}
 					{$resource->Name}
 				{/if}

@@ -71,17 +71,20 @@ class ReservationPage extends Page implements IReservationPage
 		$scheduleUserRepository = new ScheduleUserRepository();
 		$scheduleRepository = new ScheduleRepository();
 		$userRepository = new UserRepository();
+		$permissionServiceFactory = new PermissionServiceFactory();
 		
 		$this->_presenter = new ReservationPresenter(
 			$this, 
 			$scheduleUserRepository, 
 			$scheduleRepository, 
-			$userRepository);
+			$userRepository,
+			$permissionServiceFactory);
 	}
 	
 	public function PageLoad()
 	{
 		$this->_presenter->PageLoad();
+		$this->Set('ReturnUrl', $this->GetLastPage());
 		$this->smarty->display('reservation.tpl');		
 	}
 	

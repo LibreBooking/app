@@ -51,9 +51,9 @@ class ReservationPresenterTests extends TestBase
 		$this->_userRepository = $this->GetMock('IUserRepository');
 				
 		$this->_permissionServiceFactory->expects($this->once())
-		->method('GetPermissionService')
-		->with($this->equalTo($this->_userId))
-		->will($this->returnValue($this->_permissionService));
+			->method('GetPermissionService')
+			->with($this->equalTo($this->_userId))
+			->will($this->returnValue($this->_permissionService));
 	}
 
 	public function teardown()

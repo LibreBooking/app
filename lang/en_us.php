@@ -29,6 +29,7 @@ class en_us extends Language
 		$dates['general_date'] = 'm/d/Y';
 		$dates['schedule_daily'] = 'l, m/d/Y';
 		$dates['period_time'] = "g:i A";
+		$dates['url'] = 'Y-m-d';
 		
 		$this->Dates = $dates;
 	}
@@ -64,6 +65,10 @@ class en_us extends Language
 		$strings['NoAnnouncements'] = 'There are no announcements';
 		$strings['Announcements'] = 'Announcements';
 		$strings['ShowHide'] = 'Show/Hide';
+		$strings['Error'] = 'Error';
+		$strings['ReturnToPreviousPage'] = 'Return to the last page that you were on';
+		$strings['UnknownError'] = 'Unknown Error';
+		$strings['InsufficientPermissionsError'] = 'You do not have permission to access this resource';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';
