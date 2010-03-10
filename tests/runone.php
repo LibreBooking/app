@@ -16,6 +16,8 @@ require_once ROOT_DIR . 'tests/TestBase.php';
 $tests = array(
 'Domain/UserRepositoryTests.php',
 'PresenterTests/ReservationPresenterTests.php',
+'PresenterTests/ReservationInitializationTests.php',
+'PresenterTests/ReservationPreconditionServiceTests.php',
 'ScheduleUserRepositoryTests.php',
 'ResourcePermissionStoreTests.php',
 'PermissionServiceTests.php',
