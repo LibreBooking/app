@@ -38,7 +38,7 @@
 
 <div>
 	{translate key='Summary'}<br/>
-	<input type="text" id="summary" /> // auto grow
+	<textarea id="summary" class="expand50-200" cols="60"></textarea>
 </div>
 
 <div>
@@ -84,10 +84,8 @@
 {control type="DatePickerSetupControl" ControlId="EndRepeat" DefaultDate=$StartDate}
 
 {literal}
-<script type="text/javascript" src="scripts/js/jquery.autogrow.js" />
+<script type="text/javascript" src="scripts/js/jquery.textarea-expander.js" />
 <script type="text/javascript">
-
-$('#summary').autogrow();
 
 function MaintainPeriodLength()
 {

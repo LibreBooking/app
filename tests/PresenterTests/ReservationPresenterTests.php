@@ -35,7 +35,7 @@ class ReservationPresenterTests extends TestBase
 		$reservationPreconditionService = $this->getMock('IReservationPreconditionService');
 		$reservationPreconditionService->expects($this->once())
 			->method('CheckAll')
-			->with($this->equalTo($page));
+			->with($this->equalTo($page), $this->equalTo($this->_user));
 			
 		$reservationInitializerFactory = $this->getMock('IReservationInitializerFactory');
 		$initializer = $this->getMock('IReservationInitializer');

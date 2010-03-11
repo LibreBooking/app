@@ -35,8 +35,8 @@ class ReservationPresenter implements IReservationPresenter
 	
 	public function PageLoad()
 	{
-		/*
 		$user = ServiceLocator::GetServer()->GetUserSession();
+		/*
 		$timezone = $user->Timezone;
 		$userId = $user->UserId;
 		
@@ -46,7 +46,7 @@ class ReservationPresenter implements IReservationPresenter
 		$requestedPeriodId = $this->_page->GetRequestedPeriod();
 		*/
 		
-		$this->_preconditionService->CheckAll($this->_page);
+		$this->_preconditionService->CheckAll($this->_page, $user);
 		$initializer = $this->_initilizationFactory->GetInitializer($this->_page);
 		$initializer->Initialize();
 	}

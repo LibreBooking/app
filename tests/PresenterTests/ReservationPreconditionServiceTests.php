@@ -70,7 +70,7 @@ class ReservationPreconditionServiceTests extends TestBase
 			->with($this->equalTo($errorMessage), $this->equalTo($lastPage));
 			
 		$preconditionService = new ReservationPreconditionService($this->_permissionServiceFactory);
-		$preconditionService->CheckAll($page);
+		$preconditionService->CheckAll($page, $this->_user);
 	}
 	
 }

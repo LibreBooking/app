@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
+require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 
 interface IReservationPage extends IPage
 {
@@ -73,12 +74,13 @@ class ReservationPage extends Page implements IReservationPage
 		$userRepository = new UserRepository();
 		$permissionServiceFactory = new PermissionServiceFactory();
 		
+		$initializationFactory = new ReservationInitializerFactory($scheduleUserRepository, $scheduleRepository, $userRepository);
+		$preconditionService = new ReservationPreconditionService($permissionServiceFactory);
+		
 		$this->_presenter = new ReservationPresenter(
 			$this, 
-			$scheduleUserRepository, 
-			$scheduleRepository, 
-			$userRepository,
-			$permissionServiceFactory);
+			$initializationFactory,
+			$preconditionService);
 	}
 	
 	public function PageLoad()

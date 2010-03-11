@@ -16,7 +16,7 @@ class ReservationPreconditionService implements IReservationPreconditionService
 	/**
 	 * @see IReservationPreconditionService::CheckAll()
 	 */
-	public function CheckAll(IReservationPage $page)
+	public function CheckAll(IReservationPage $page, UserSession $user)
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
 		$requestedResourceId = $page->GetRequestedResourceId();
