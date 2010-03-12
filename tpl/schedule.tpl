@@ -10,10 +10,10 @@
 			<div class="schedule_title">
 			<span>{$ScheduleName}</span>
 			<ul class="schedule_drop">
-				<li><a href="javascript: ShowScheduleList();">img: Down arrow</a></li>
+				<li><a href="#" onclick="ShowScheduleList(); return false;">img: Down arrow</a></li>
 				<ul style="display:none;" id="schedule_list">
 				{foreach from=$Schedules item=schedule}
-					<li><a href="javascript: ChangeSchedule({$schedule->GetId()});">{$schedule->GetName()}</a></li>
+					<li><a href="#" onclick="ChangeSchedule({$schedule->GetId()}); return false;">{$schedule->GetName()}</a></li>
 				{/foreach}
 				</ul>
 			</ul>
@@ -21,9 +21,9 @@
 			<div class="schedule_dates">
 				{assign var=FirstDate value=$DisplayDates->GetBegin()}
 				{assign var=LastDate value=$DisplayDates->GetEnd()}
-				<a href="#" onclick="javascript: ChangeDate({formatdate date=$PreviousDate format="Y, m, d"});">img: Prev arrow</a> 
+				<a href="#" onclick="ChangeDate({formatdate date=$PreviousDate format="Y, m, d"}); return false;">img: Prev arrow</a> 
 				{formatdate date=$FirstDate} - {formatdate date=$LastDate}
-				<a href="#" onclick="javascript: ChangeDate({formatdate date=$NextDate format="Y, m, d"});">img: Next arrow</a>
+				<a href="#" onclick="ChangeDate({formatdate date=$NextDate format="Y, m, d"}); return false;">img: Next arrow</a>
 			</div>
 		</td>
 		<td>

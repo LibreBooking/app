@@ -6,8 +6,8 @@
 <input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 
 <div>
-	{$ResourceName}
-	<a href="#">(Add more)</a> // modal popup
+	<div id="resourceNames" style="display:inline">{$ResourceName}</div>
+	<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(Add more)</a> // modal popup
 	<a href="#">(Add Accessories)</a> // modal popup
 </div>
 <div>
@@ -77,6 +77,16 @@
 
 <input type="submit" value="{translate key="Save"}" class="button"></input>
 <input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
+
+<div id="dialogAddResources" title="Add Resources">
+	<p>Some text that you want to display to the user.</p>
+	{foreach from=$AvailableResources item=resource}
+		<input type="checkbox" name="additionalResources[]" id="additionalResource{$resource->Id()}" value="{$resource->Id()}" /><label for="additionalResource{$resource->Id()}">{$resource->Name()}</label><br/>
+	{/foreach}
+	<button onclick="$('#dialogAddResources').dialog('close')">Add Selected</button>
+	<button id="btnClearAddResources">Cancel</button>
+</div>
+
 </form>
 
 {control type="DatePickerSetupControl" ControlId="BeginDate" DefaultDate=$StartDate}
@@ -84,7 +94,10 @@
 {control type="DatePickerSetupControl" ControlId="EndRepeat" DefaultDate=$StartDate}
 
 {literal}
-<script type="text/javascript" src="scripts/js/jquery.textarea-expander.js" />
+<script type="text/javascript" src="scripts/js/jquery.textarea-expander.js"></script>
+<script type="text/javascript" src="scripts/reservation.js"></script>
+
+
 <script type="text/javascript">
 
 function MaintainPeriodLength()
@@ -93,5 +106,8 @@ function MaintainPeriodLength()
 }
 
 </script>
+
+
 {/literal}
+
 {include file='footer.tpl'}

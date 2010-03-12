@@ -89,7 +89,7 @@ class NewReservationInitializer implements IReservationInitializer
 		return $bindableUserData;
 	}
 	
-	private function GetBindableResourceData($scheduleUser, $requestedResourceId)
+	private function GetBindableResourceData(IScheduleUser $scheduleUser, $requestedResourceId)
 	{
 		$resources = $scheduleUser->GetAllResources();
 		
