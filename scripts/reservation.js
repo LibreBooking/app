@@ -1,29 +1,56 @@
 $(document).ready(function() {
 
-	$("#dialogAddResources").dialog({
-	    bgiframe: true, autoOpen: false, height: 100, modal: true
-	});
-	    
-	$("#btnClearAddResources").click(function(){   
-	    ClearSelected('#dialogAddResources');	
+	$('#dialogAddResources').dialog({
+	    bgiframe: true, autoOpen: false, height: 100, modal: true,
+	    open: function(event, ui) { InitialzeCheckboxes('#dialogAddResources', '#additionalResources'); return true; }
 	});
 	
-	$("#dialogAddResources :checkbox").click(function(){   
-		AddCheckbox(this);
+	$('#btnConfirmAddResources').click(function(){   
+	    AddSelected('#dialogAddResources', '#additionalResources');	
+	});
+	
+	$('#btnClearAddResources').click(function(){   
+		CancelAdd('#dialogAddResources', '#additionalResources');	
 	});
 });
 
-function ClearSelected(dialogBoxId)
+function AddSelected(dialogBoxId, displayDivId)
 {
+	$(displayDivId).empty();
 	
-	$(dialogBox + ":checkbox").change();
-	//alert(dialogBox);
-	//dialogBox.dialog('close');
-
-	//alert(dialogBox);
+	$(dialogBoxId + ' :checked').each(function(){
+		$(displayDivId).append('<p>' + $(this).next().text() + '</p>')
+	});
+	
+	$(dialogBoxId).dialog('close');
 }
 
-function AddCheckbox(box)
+function CancelAdd(dialogBoxId, displayDivId)
 {
-	alert(box);
+	var selectedItems = $.makeArray($(displayDivId + ' p').text());
+	$(dialogBoxId + ' :checked').each(function(){
+		var checkboxText = $(this).next().text();
+		if ($.inArray(checkboxText, selectedItems) < 0)
+		{
+			$(this).removeAttr('checked');
+		}
+	});
+	
+	$(dialogBoxId).dialog('close');
+}
+
+function InitialzeCheckboxes(dialogBoxId, displayDivId)
+{
+	var selectedItems = $.makeArray($(displayDivId + ' p').text());
+	$(dialogBoxId + ' :checkbox').each(function(){
+		var checkboxText = $(this).next().text();
+		if ($.inArray(checkboxText, selectedItems) >= 0)
+		{
+			$(this).attr('checked', 'checked');
+		}
+		else
+		{
+			$(this).removeAttr('checked');
+		}
+	});
 }

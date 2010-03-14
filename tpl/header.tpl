@@ -10,12 +10,12 @@
 		{/if}
 		<link rel="shortcut icon" href="favicon.ico"/>
 		<link rel="icon" href="favicon.ico"/>
-		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/js/jquery-1.3.2.min.js"></script> 
-		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.7.2.custom.min.js"></script> 
+		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/js/jquery-1.4.2.min.js"></script> 
+		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8rc3.custom.min.js"></script> 
 		<script language="JavaScript" type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script> 
 		<style type="text/css">
 			@import url({$Path}css/style.css);
-			@import url({$Path}scripts/css/smoothness/jquery-ui-1.7.2.custom.css);
+			@import url({$Path}scripts/css/smoothness/jquery-ui-1.8rc3.custom.css);
 		</style>
 	</head>
 	<body>

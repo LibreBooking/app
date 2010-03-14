@@ -1,0 +1,10 @@
+#additionalResources
+{
+	display:inline;
+}
+
+#additionalResources p
+{
+	margin:0px;
+	font-style: italic;
+}

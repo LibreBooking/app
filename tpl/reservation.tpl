@@ -1,15 +1,30 @@
 {include file='header.tpl' DisplayWelcome='false'}
+
+<style type="text/css">
+	@import url({$Path}css/reservation.css);
+</style>
+
 <a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>
 <form action="undefined.php" method="post">
 
 <input type="submit" value="{translate key="Save"}" class="button"></input>
 <input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 
-<div>
-	<div id="resourceNames" style="display:inline">{$ResourceName}</div>
-	<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(Add more)</a> // modal popup
-	<a href="#">(Add Accessories)</a> // modal popup
-</div>
+<table cellspacing="0" cellpadding="0">
+	<tr>
+		<td>
+			<div id="resourceNames" style="display:inline">{$ResourceName}</div>
+			<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(Add more)</a>
+		<td>
+		<td>
+		<a href="#">(Add Accessories)</a> // modal popup
+		</td>
+	</tr>
+	<tr>
+		<td><div id="additionalResources"></div></td>
+		<td></td>
+</table>
+
 <div>
 	{$UserName}
 	<a href="#">(Add Participants)</a> // modal popup
@@ -83,7 +98,7 @@
 	{foreach from=$AvailableResources item=resource}
 		<input type="checkbox" name="additionalResources[]" id="additionalResource{$resource->Id()}" value="{$resource->Id()}" /><label for="additionalResource{$resource->Id()}">{$resource->Name()}</label><br/>
 	{/foreach}
-	<button onclick="$('#dialogAddResources').dialog('close')">Add Selected</button>
+	<button id="btnConfirmAddResources" onclick="$('#dialogAddResources').dialog('close')">Add Selected</button>
 	<button id="btnClearAddResources">Cancel</button>
 </div>
 
