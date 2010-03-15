@@ -9,6 +9,9 @@ class PluginManager
 	{
 	}
 	
+	/**
+	 * @return PluginManager
+	 */
 	public static function Instance()
 	{
 		if (is_null(self::$_instance))

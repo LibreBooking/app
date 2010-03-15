@@ -6,6 +6,11 @@ class LoginPresenter
 {
 	private $_page = null;
 	
+	/**
+	 * @var IAuthorization
+	 */
+	private $_auth = null;
+	
 	public function __construct(ILoginPage &$page, $authorization = null)
 	{
 		$this->_page =& $page;

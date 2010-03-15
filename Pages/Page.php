@@ -25,7 +25,7 @@ class Page implements IPage
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
 	
-		$this->smarty =& new SmartyPage($resources, $path);
+		$this->smarty = new SmartyPage($resources, $path);
 		
 		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		

@@ -144,7 +144,7 @@ h3 {
 
 .loginTable #header {
     color: #BBBBBB;
-    background: #005EBF url('img/scheduleit-watermark.png') no-repeat right;
+    background: #005EBF url('../img/scheduleit-watermark.png') no-repeat right;
 }
 
 .loginTable #header td {

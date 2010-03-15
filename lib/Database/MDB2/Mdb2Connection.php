@@ -77,13 +77,14 @@ class Mdb2Connection implements IDbConnection
 		$this->_connected = false;
 	}
 	
-	public function AddParameter($name, $value) 
-	{
-		$this->_params[$name] = $value;
-	}
-	
+//	public function AddParameter($name, $value) 
+//	{
+//		$this->_params[$name] = $value;
+//	}
+//	
 	public function Query(&$sqlCommand) 
 	{
+		throw new Exception("this isn't working on php 5.3");
 		return $this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_RESULT);
 	}
 	
@@ -100,11 +101,17 @@ class Mdb2Connection implements IDbConnection
 		return $id;
 	}
 	
-	public function _PrepareAndExecute(&$sqlCommand, $prepareType) 
+	public function _PrepareAndExecute(ISqlCommand &$sqlCommand, $prepareType) 
 	{
 		$cmd = new Mdb2CommandAdapter($sqlCommand);
 		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);		
 		$result =& $stmt->execute($cmd->GetValues());	
+		
+		print_r($result);
+		$e = MDB2::isError($result);
+		echo '<br/>   error   ' . (int)$e; 
+		echo ($result->numRows());
+		die();
 		$this->_isError($result, $cmd);
 
 		return new Mdb2Reader($result);

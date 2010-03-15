@@ -12,7 +12,7 @@ $conf['settings']['schedule']['show.inaccessible.resources'] = 'true';
 $conf['settings']['database']['type'] = 'mysql';
 $conf['settings']['database']['user'] = 'schedule_user';
 $conf['settings']['database']['password'] = 'password';
-$conf['settings']['database']['hostspec'] = '.';
+$conf['settings']['database']['hostspec'] = 'localhost';
 $conf['settings']['database']['name'] = 'phpscheduleit';
 $conf['settings']['plugins']['Auth'] = '';
 ?>

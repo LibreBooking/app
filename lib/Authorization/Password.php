@@ -8,6 +8,12 @@ interface IPassword
 
 class PasswordMigration
 {		
+	/**
+	 * @param $plaintext
+	 * @param $oldpassword
+	 * @param $newpassword
+	 * @return IPassword
+	 */
 	public function Create($plaintext, $oldpassword, $newpassword)
 	{		
 		if (!empty($oldpassword))
@@ -35,7 +41,8 @@ class Password implements IPassword
 	
 	public function Validate($salt)
 	{
-		return $this->encrypted == $this->Encryption->Encrypt($this->plaintext, $salt);
+		$encrypted = $this->Encryption->Encrypt($this->plaintext, $salt);
+		return $this->encrypted == $encrypted;
 	}
 	
 	public function Migrate($userid)

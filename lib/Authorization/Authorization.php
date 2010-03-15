@@ -31,9 +31,10 @@ class Authorization implements IAuthorization
 		$command = new AuthorizationCommand($username);
 		$reader = ServiceLocator::GetDatabase()->Query($command);		
 		$valid = false;
-		
+
 		if ($row = $reader->GetRow())
 		{
+			die('echo found');
 			$migration = $this->GetMigration();
 			$password = $migration->Create($password, $row[ColumnNames::OLD_PASSWORD], $row[ColumnNames::PASSWORD]);
 			
