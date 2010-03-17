@@ -74,14 +74,10 @@ class Mdb2Connection implements IDbConnection
 	public function Disconnect() 
 	{
 		$this->_db->disconnect();
+		$this->_db = null;
 		$this->_connected = false;
 	}
 	
-//	public function AddParameter($name, $value) 
-//	{
-//		$this->_params[$name] = $value;
-//	}
-//	
 	public function Query(&$sqlCommand) 
 	{
 		throw new Exception("this isn't working on php 5.3");
