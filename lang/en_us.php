@@ -268,7 +268,7 @@ class en_us extends Language
 		$strings['Reset Password for'] = 'Reset Password for %s';
 		$strings['Please edit your profile'] = 'Please edit your profile';
 		$strings['Please register'] = 'Please register';
-		$strings['Keep me logged in'] = 'Keep me logged in <br/>(requires cookies)';
+		$strings['Keep me logged in'] = 'Keep me logged in (requires cookies)';
 		$strings['Edit Profile'] = 'Edit Profile';
 		$strings['Register'] = 'Register';
 		$strings['Please Log In'] = 'Please Log In';
@@ -571,7 +571,7 @@ class en_us extends Language
 		$strings['Valid username is required'] = 'Valid username is required';
 		$strings['That logon name is taken already.'] = 'That logon name is taken already.';
 		$strings['this will be your login'] = '(this will be your login)';
-		$strings['Logon name'] = 'Logon name';
+		$strings['Logon name'] = 'Username';
 		$strings['Your logon name is'] = 'Your logon name is %s';
 		
 		$strings['Start'] = 'Start';
