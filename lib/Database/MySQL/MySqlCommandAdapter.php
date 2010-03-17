@@ -29,14 +29,12 @@ class MySqlCommandAdapter
 		for ($p = 0; $p < $command->Parameters->Count(); $p++) 
 		{
 			$curParam = $command->Parameters->Items($p);
-			//$this->_values[str_replace('@', '', $curParam->Name)] = $curParam->Value;
 			
 			$escapedValue = mysql_real_escape_string($curParam->Value);
-			str_replace($query, $curParam->Name, "\'$escapedValue\'");
+			$query = str_replace($curParam->Name, "'$escapedValue'", $query);
 		}
 		
-		$this->_query = $query + ';';
-		//$this->_query = str_replace('@', ':', $command->GetQuery());
+		$this->_query = $query . ';';
 	}
 }
 ?>

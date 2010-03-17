@@ -27,7 +27,7 @@ class MySqlConnection implements IDbConnection
 		}
 		
 		$this->_db = mysql_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword );
-		mysql_select_db($this->_dbName, $this->_db));
+		mysql_select_db($this->_dbName, $this->_db);
 		
 		if (!$this->_db) 
 		{
@@ -47,7 +47,10 @@ class MySqlConnection implements IDbConnection
 	
 	public function Query(ISqlCommand $sqlCommand) 
 	{
-		$result = mysql_query($sqlCommand->GetQuery());
+		$mysqlCommand = new MySqlCommandAdapter($sqlCommand);
+		
+		//die ($mysqlCommand->GetQuery());
+		$result = mysql_query($mysqlCommand->GetQuery());
 		
 		$this->_handleError($result);
 		
@@ -56,7 +59,8 @@ class MySqlConnection implements IDbConnection
 	
 	public function Execute(ISqlCommand $sqlCommand) 
 	{
-		$result = mysql_query($sqlCommand->GetQuery());
+		$mysqlCommand = new MySqlCommandAdapter($sqlCommand);
+		$result = mysql_query($mysqlCommand->GetQuery());
 		
 		$this->_handleError($result);
 	}

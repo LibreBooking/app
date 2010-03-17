@@ -34,7 +34,6 @@ class Authorization implements IAuthorization
 
 		if ($row = $reader->GetRow())
 		{
-			die('echo found');
 			$migration = $this->GetMigration();
 			$password = $migration->Create($password, $row[ColumnNames::OLD_PASSWORD], $row[ColumnNames::PASSWORD]);
 			

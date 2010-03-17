@@ -387,7 +387,7 @@ class MDB2
             return $err;
         }
 
-        $db = new $class_name();
+        $db =& new $class_name();
         $db->setDSN($dsninfo);
         $err = MDB2::setOptions($db, $options);
         if (PEAR::isError($err)) {
@@ -1882,7 +1882,7 @@ class MDB2_Driver_Common extends PEAR
                     "unable to load module '$module' into property '$property'", __FUNCTION__);
                 return $err;
             }
-            $this->{$property} = new $class_name($this->db_index);
+            $this->{$property} =& new $class_name($this->db_index);
             $this->modules[$module] =& $this->{$property};
             if ($version) {
                 // this will be used in the connect method to determine if the module
@@ -2569,7 +2569,7 @@ class MDB2_Driver_Common extends PEAR
                     'result class does not exist '.$class_name, __FUNCTION__);
                 return $err;
             }
-            $result = new $class_name($this, $result, $limit, $offset);
+            $result =& new $class_name($this, $result, $limit, $offset);
             if (!MDB2::isResultCommon($result)) {
                 $err =& $this->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                     'result class is not extended from MDB2_Result_Common', __FUNCTION__);
@@ -2592,7 +2592,7 @@ class MDB2_Driver_Common extends PEAR
                     'result wrap class does not exist '.$result_wrap_class, __FUNCTION__);
                 return $err;
             }
-            $result = new $result_wrap_class($result, $this->fetchmode);
+            $result =& new $result_wrap_class($result, $this->fetchmode);
         }
         return $result;
     }
@@ -2937,7 +2937,7 @@ class MDB2_Driver_Common extends PEAR
         }
         $class_name = 'MDB2_Statement_'.$this->phptype;
         $statement = null;
-        $obj = new $class_name($this, $statement, $positions, $query, $types, $result_types, $is_manip, $limit, $offset);
+        $obj =& new $class_name($this, $statement, $positions, $query, $types, $result_types, $is_manip, $limit, $offset);
         $this->debug($query, __FUNCTION__, array('is_manip' => $is_manip, 'when' => 'post', 'result' => $obj));
         return $obj;
     }

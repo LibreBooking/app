@@ -78,13 +78,12 @@ class Mdb2Connection implements IDbConnection
 		$this->_connected = false;
 	}
 	
-	public function Query(&$sqlCommand) 
+	public function Query(ISqlCommand $sqlCommand) 
 	{
-		throw new Exception("this isn't working on php 5.3");
 		return $this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_RESULT);
 	}
 	
-	public function Execute(&$sqlCommand) 
+	public function Execute(ISqlCommand $sqlCommand) 
 	{
 		$this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_MANIP);
 	}
@@ -103,7 +102,9 @@ class Mdb2Connection implements IDbConnection
 		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);		
 		$result =& $stmt->execute($cmd->GetValues());	
 		
+		echo "<pre>";
 		print_r($result);
+		echo "</pre>";
 		$e = MDB2::isError($result);
 		echo '<br/>   error   ' . (int)$e; 
 		echo ($result->numRows());
