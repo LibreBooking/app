@@ -24,6 +24,7 @@
         <input type="submit" name="{constant echo='Actions::LOGIN'}" value="{translate key='Log In'}" class="button" tabindex="100" />
         <input type="hidden" name="{constant echo='FormKeys::RESUME'}" value="{$ResumeUrl}" />
 </p>
+</form>
 </div>
 
 <div id="login-links">
@@ -41,7 +42,7 @@
     | 
     <a href="javascript: help();">{translate key='Help'}</a>
 </p>
-</form></div>
+</div>
 
 {setfocus key='EMAIL'}
 

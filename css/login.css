@@ -1,7 +1,7 @@
 * { margin:0; padding:0; }
 
 body {
-        font: 11px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+        font: 11px/13px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
 }
 
 form {
@@ -19,19 +19,6 @@ form {
         -khtml-box-shadow: rgba(200,200,200,1) 0 4px 18px;
         box-shadow: rgba(200,200,200,1) 0 4px 18px;
 }
-
-form .stayloggedin {
-        font-weight: normal;
-        float: left;
-        margin-bottom: 0;
-}
-
-form .stayloggedin label { 
-        font-size: 13px; 
-        line-height: 1.5em; 
-}
-
-form .submit { float:right; }
 
 form p { margin: 0 3px 16px 3px; }
 
@@ -73,13 +60,24 @@ label {
         font-size: 24px;
         width: 97%;
         padding: 3px;
-        margin-top: 2px;
-        margin-right: 6px;
-        margin-bottom: 20px;
+        margin: 2px 6px 20px 0;
         border: 1px solid #e5e5e5;
         background: #fbfbfb;
 	color: #777
 }
+
+form .stayloggedin {
+        font-weight: normal;
+        float: left;
+        margin-bottom: 0;
+}
+
+form .stayloggedin label { 
+        font-size: 13px; 
+        line-height: 1.5em; 
+}
+
+form .submit { float:right; }
 
 #login-links p, h4 {text-align: center;}
 
