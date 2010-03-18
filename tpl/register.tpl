@@ -85,3 +85,4 @@
 </form>
 </div>
 {include file='footer.tpl'}
+{setfocus key='FIRST_NAME'}
