@@ -9,7 +9,6 @@ interface ILoginPage extends IPage
 	public function getPersistLogin();
 	public function getShowRegisterLink();
 	public function setShowRegisterLink($value);
-	public function setAvailableLanguages($languages);
 	public function getCurrentLanguage();
 	public function setUseLogonName($value);
 	public function setResumeUrl($value);
@@ -60,12 +59,7 @@ class LoginPage extends Page implements ILoginPage
 	{
 		$this->smarty->assign('ShowRegisterLink', $value);	
 	}
-	
-	public function setAvailableLanguages($languages)
-	{
-		$this->smarty->assign('Languages', $languages);
-	}
-	
+		
 	public function getCurrentLanguage()
 	{
 		return $this->server->GetForm(FormKeys::LANGUAGE);

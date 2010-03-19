@@ -44,7 +44,6 @@ class LoginPresenter
 		$allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
 		$useLogonName = Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter());
 		$this->_page->setShowRegisterLink($allowRegistration);
-		$this->_page->setAvailableLanguages($this->GetLanguages());
 		$this->_page->setUseLogonName($useLogonName);
 
 	}
@@ -76,21 +75,7 @@ class LoginPresenter
 			$this->_page->Redirect(Pages::UrlFromId($defaultId));
 		}
 	}
-	
-	private function GetLanguages()
-	{		
-		$languages = array();
 		
-		$langs = Resources::GetInstance()->AvailableLanguages;
-		
-		foreach($langs as $lang)
-		{
-			$languages[$lang->LanguageCode] = $lang->DisplayName;
-		}
-		
-		return $languages;
-	}
-	
 	private function IsCookieLogin($loginCookie)
 	{
 		return !is_null($loginCookie);
