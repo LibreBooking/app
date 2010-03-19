@@ -72,6 +72,7 @@ class en_us extends Language
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';
+		$strings['LogIn'] = 'Log In';
 		//
 		
 		/***

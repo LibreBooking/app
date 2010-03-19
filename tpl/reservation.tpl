@@ -58,19 +58,17 @@
 
 <div>
 	Repeat: 
-	<select id="repeatOptions">
-		<option>Does Not Repeat</option>
-		<option>Daily</option>
-		<option>Weekly</option>
-		<option>Monthly</option>
-		<option>Yearly</option>
+	<select id="repeatOptions" onchange="ChangeRepeatOptions(this)">
+		<option value="none">Does Not Repeat</option>
+		<option value="daily">Daily</option>
+		<option value="weekly">Weekly</option>
+		<option value="monthly">Monthly</option>
+		<option value="yearly">Yearly</option>
 	</select>
-	<div id="repeatEveryDiv">
-		// show/hide
+	<div id="repeatEveryDiv" style="display:none;">
 		Every: {html_options options=$RepeatEveryOptions} <span id="repeatEveryText">days</span>
 	</div>
-	<div id="repeatOnDiv">
-		// show/hide
+	<div id="repeatOnWeeklyDiv" style="display:none;">
 		<input type="checkbox" id="repeatSun" />S
 		<input type="checkbox" id="repeatMon" />M
 		<input type="checkbox" id="repeatTue" />T
@@ -79,14 +77,13 @@
 		<input type="checkbox" id="repeatFri" />F
 		<input type="checkbox" id="repeatSat" />S
 	</div>
-	<div id="repeatUntilDiv">
-		// show/hide
+	<div id="repeatOnMonthlyDiv" style="display:none;">
+		<input type="radio" name="repeatMonthlyType" value="dayOfMonth" id="repeatMonthDay" checked="checked" /><label for="repeatMonthDay">day of month</label>
+		<input type="radio" name="repeatMonthlyType" value="dayOfWeek" id="repeatMonthWeek" /><label for="repeatMonthWeek">day of week</label>
+	</div>
+	<div id="repeatUntilDiv" style="display:none;">
 		Until: 
-		<input type="radio" name="repeatEndType" value="none" id="repeatEndNone" />
-		<label for="repeatEndNone">No End</label>
-		<input type="radio" name="repeatEndType" value="until" id="repeatEndUntil" />
-		<label for="repeatEndUntil">Until</label>
-		<input type="text" id="EndRepeat" class="textbox" style="width:75px" />
+		<input type="text" id="EndRepeat" class="textbox" style="width:75px" value="{formatdate date=$StartDate}" />
 	</div>
 </div>
 
@@ -106,7 +103,7 @@
 
 {control type="DatePickerSetupControl" ControlId="BeginDate" DefaultDate=$StartDate}
 {control type="DatePickerSetupControl" ControlId="EndDate" DefaultDate=$EndDate}
-{control type="DatePickerSetupControl" ControlId="EndRepeat" DefaultDate=$StartDate}
+{control type="DatePickerSetupControl" ControlId="EndRepeat" DefaultDate=$EndDate}
 
 {literal}
 <script type="text/javascript" src="scripts/js/jquery.textarea-expander.js"></script>
@@ -118,6 +115,30 @@
 function MaintainPeriodLength()
 {
 	alert('change end period');
+}
+
+function ChangeRepeatOptions(comboBox)
+{
+	if ($(comboBox).val() != 'none')
+	{
+		$('#repeatUntilDiv').show();
+	}
+	else
+	{
+		$('#repeatUntilDiv').hide();
+	}
+	
+	if ($(comboBox).val() == 'daily')
+	{
+		$('#repeatEveryDiv').show();
+		$('#repeatOnMonthlyDiv').hide();
+	}
+	
+	if ($(comboBox).val() == 'monthly')
+	{
+		$('#repeatEveryDiv').show();
+		$('#repeatOnMonthlyDiv').show();
+	}
 }
 
 </script>
