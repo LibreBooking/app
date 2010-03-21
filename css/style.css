@@ -245,7 +245,7 @@ div.registration hr {
 }
 
 div.page-footer {
-    background: #66A0BB url('img/scheduleit-watermark.png') no-repeat right;
+    background: #66A0BB url('../img/scheduleit-watermark.png') no-repeat right;
     vertical-align: bottom; 
     width: 100%;
 }
