@@ -42,4 +42,6 @@ Design philosphies
 	Each page should have a corresponding class in /Pages
 	Each Page class should have a corresponding presenter class in /Presenters
 	
+	Logically related code should be grouped in a directory with a "namespace.php" file, which requires all files in that directory
+	
 	All classes should have good unit test coverage (level of coverage is up to the developer)
