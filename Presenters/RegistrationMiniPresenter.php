@@ -24,7 +24,7 @@ class RegistrationMiniPresenter
 	{
 		if (is_null($registration))
 		{
-			$this->_registration = new Registration();
+			$this->_registration = new RegistrationMini();
 		}
 		else
 		{
@@ -50,27 +50,27 @@ class RegistrationMiniPresenter
 		
 		if ($this->_page->RegisterClicked())
 		{
-			$this->Register();
+			$this->RegisterMini();
 		}
 		
 		$this->_page->SetUseLoginName(Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()));
 
 	}
 	
-	public function Register()
+	public function RegisterMini()
 	{
 		if ($this->_page->IsValid())
 	    {
-	      $reghomepageId = 1;
+	      // TODO fix this in mysql insert $reghomepageId = 1;
 
-    		$this->_registration->Register(
+    		$this->_registration->RegisterMini(
     			$this->_page->GetLoginName(), 
     			$this->_page->GetEmail(),
     			$this->_page->GetFirstName(),
     			$this->_page->GetLastName(),
     			$this->_page->GetPassword(),
-                        date('e'), //TODO this should be set by the admin of the scheduler, not taken from the server
-			$reghomepageId); //TODO this should default to 1, not 0
+                        date('e')); //TODO this should be set by the admin of the scheduler, not taken from the server
+			//$reghomepageId); TODO this should default to 1, not 0 in mysql insert
     			
     		$this->_auth->Login($this->_page->GetEmail(), false);
     		$this->_page->Redirect(Pages::DASHBOARD);

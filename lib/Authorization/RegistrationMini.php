@@ -15,7 +15,7 @@ class RegistrationMini implements IRegistrationMini
 		}
 	}
 	
-	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $homepageId)
+	public function RegisterMini($username, $email, $firstName, $lastName, $password, $timezone)//TODO fix this $homepageId)
 	{
 		$salt = $this->_passwordEncryption->Salt();
 		$encryptedPassword = $this->_passwordEncryption->Encrypt($password, $salt);
@@ -25,7 +25,7 @@ class RegistrationMini implements IRegistrationMini
 		
 		$registerCommand = new RegisterUserCommand(
 					$usernameToInsert, $email, $firstName, $lastName, 
-					$encryptedPassword, $salt, $timezone, $homepageId,
+					$encryptedPassword, $salt, $timezone,//TODO fix this $homepageId,
 					AccountStatus::AWAITING_ACTIVATION
 					);
 					
