@@ -56,7 +56,7 @@
 	<textarea id="summary" class="expand50-200" cols="60"></textarea>
 </div>
 
-<div>
+<div id="repeatDiv">
 	Repeat: 
 	<select id="repeatOptions" onchange="ChangeRepeatOptions(this)">
 		<option value="none">Does Not Repeat</option>
@@ -65,10 +65,14 @@
 		<option value="monthly">Monthly</option>
 		<option value="yearly">Yearly</option>
 	</select>
-	<div id="repeatEveryDiv" style="display:none;">
-		Every: {html_options options=$RepeatEveryOptions} <span id="repeatEveryText">days</span>
+	<div id="repeatEveryDiv" style="display:none;" class="days weeks months years">
+		Every: <select>{html_options options=$RepeatEveryOptions}</select>
+		<span id="repeatEveryDaysText" class="days">days</span>
+		<span id="repeatEveryMonthsText" class="weeks">weeks</span>
+		<span id="repeatEveryWeeksText" class="months">months</span>
+		<span id="repeatEveryYearsText" class="years">years</span>
 	</div>
-	<div id="repeatOnWeeklyDiv" style="display:none;">
+	<div id="repeatOnWeeklyDiv" style="display:none;" class="weeks">
 		<input type="checkbox" id="repeatSun" />S
 		<input type="checkbox" id="repeatMon" />M
 		<input type="checkbox" id="repeatTue" />T
@@ -77,7 +81,7 @@
 		<input type="checkbox" id="repeatFri" />F
 		<input type="checkbox" id="repeatSat" />S
 	</div>
-	<div id="repeatOnMonthlyDiv" style="display:none;">
+	<div id="repeatOnMonthlyDiv" style="display:none;" class="months">
 		<input type="radio" name="repeatMonthlyType" value="dayOfMonth" id="repeatMonthDay" checked="checked" /><label for="repeatMonthDay">day of month</label>
 		<input type="radio" name="repeatMonthlyType" value="dayOfWeek" id="repeatMonthWeek" /><label for="repeatMonthWeek">day of week</label>
 	</div>
@@ -125,20 +129,45 @@ function ChangeRepeatOptions(comboBox)
 	}
 	else
 	{
-		$('#repeatUntilDiv').hide();
+		$('#repeatDiv div[id!=repeatOptions]').hide();
 	}
 	
 	if ($(comboBox).val() == 'daily')
 	{
-		$('#repeatEveryDiv').show();
-		$('#repeatOnMonthlyDiv').hide();
+		$('#repeatDiv .weeks').hide();
+		$('#repeatDiv .months').hide();
+		$('#repeatDiv .years').hide();
+		
+		$('#repeatDiv .days').show();	
+	}
+	
+	if ($(comboBox).val() == 'weekly')
+	{
+		$('#repeatDiv .days').hide();
+		$('#repeatDiv .months').hide();
+		$('#repeatDiv .years').hide();
+		
+		$('#repeatDiv .weeks').show();	
 	}
 	
 	if ($(comboBox).val() == 'monthly')
 	{
-		$('#repeatEveryDiv').show();
-		$('#repeatOnMonthlyDiv').show();
+		$('#repeatDiv .days').hide();
+		$('#repeatDiv .weeks').hide();
+		$('#repeatDiv .years').hide();
+		
+		$('#repeatDiv .months').show();	
 	}
+	
+	if ($(comboBox).val() == 'yearly')
+	{
+		$('#repeatDiv .days').hide();
+		$('#repeatDiv .weeks').hide();
+		$('#repeatDiv .months').hide();
+		
+		$('#repeatDiv .years').show();	
+	}
+	
 }
 
 </script>

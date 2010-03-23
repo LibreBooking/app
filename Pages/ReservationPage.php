@@ -87,6 +87,7 @@ class ReservationPage extends Page implements IReservationPage
 	{
 		$this->_presenter->PageLoad();
 		$this->Set('ReturnUrl', $this->GetLastPage());
+		$this->Set('RepeatEveryOptions', range(1, 20));
 		$this->smarty->display('reservation.tpl');		
 	}
 	
