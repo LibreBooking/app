@@ -161,6 +161,23 @@ class RegisterUserCommand extends SqlCommand
 	}
 }
 
+class RegisterMiniUserCommand extends SqlCommand 
+{
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $accountStatusId)
+	{
+		parent::__construct(Queries::REGISTER_MINI_USER);
+		
+		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
+		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
+		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
+		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
+		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
+		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE, $timezone));
+		$this->AddParameter(new Parameter(ParameterNames::ACCOUNT_STATUS_ID, $accountStatusId));
+	}
+}
+
 class SelectUserPermissions extends SqlCommand
 {
 	public function __construct($userId)

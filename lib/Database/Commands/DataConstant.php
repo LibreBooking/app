@@ -162,7 +162,14 @@ class Queries
 		VALUES
 		(@emailaddress, @password, @fname, @lname, @phone, @institution, @position, @username, @salt, @timezone, @homepageid, @accountstatusid)
 		';
-		
+
+	const REGISTER_MINI_USER = 
+		'INSERT INTO account
+		(email, userpassword, fname, lname, username, salt, timezonename, statusid)
+		VALUES
+		(@emailaddress, @password, @fname, @lname, @username, @salt, @timezone, @accountstatusid)
+		';
+	
 	const UPDATE_LOGINTIME = 
 		'UPDATE account 
 		SET lastlogin = @lastlogin 

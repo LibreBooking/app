@@ -8,9 +8,8 @@ interface IRegistrationMini
 	 * @param string $lastName
 	 * @param string $password unencrypted password
      * @param string $timezone name of timezone
-	 * @param string $homepageId id number of homepage TODO fix this to default to 1 in db
 	 */
-  public function RegisterMini($login, $email, $firstName, $lastName, $password, $timezone);// TODO fix this $homepageId);
+  public function RegisterMini($login, $email, $firstName, $lastName, $password, $timezone);
 	
 	/**
 	 * @param string $loginName

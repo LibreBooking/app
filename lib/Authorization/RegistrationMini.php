@@ -15,7 +15,7 @@ class RegistrationMini implements IRegistrationMini
 		}
 	}
 	
-	public function RegisterMini($username, $email, $firstName, $lastName, $password, $timezone)//TODO fix this $homepageId)
+	public function RegisterMini($username, $email, $firstName, $lastName, $password, $timezone)
 	{
 		$salt = $this->_passwordEncryption->Salt();
 		$encryptedPassword = $this->_passwordEncryption->Encrypt($password, $salt);
@@ -23,9 +23,9 @@ class RegistrationMini implements IRegistrationMini
 		$usingLoginNames = Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter());
 		$usernameToInsert = $usingLoginNames ? $username : $email;
 		
-		$registerCommand = new RegisterUserCommand(
+		$registerCommand = new RegisterMiniUserCommand(
 					$usernameToInsert, $email, $firstName, $lastName, 
-					$encryptedPassword, $salt, $timezone,//TODO fix this $homepageId,
+					$encryptedPassword, $salt, $timezone,
 					AccountStatus::AWAITING_ACTIVATION
 					);
 					
