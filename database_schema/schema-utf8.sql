@@ -10,7 +10,7 @@ USE phpscheduleit2;
 
 DROP TABLE IF EXISTS `announcements`;
 CREATE TABLE `announcements` (
- `announcementid` int(10) unsigned NOT NULL auto_increment,
+ `announcementid` mediumint(8) unsigned NOT NULL auto_increment,
  `announcement_text` text NOT NULL,
  `order_number` smallint(5) unsigned NOT NULL,
  `start_datetime` datetime default NULL,
@@ -24,7 +24,7 @@ CREATE TABLE `announcements` (
 
 DROP TABLE IF EXISTS `long_quotas`;
 CREATE TABLE `long_quotas` (
- `long_quotaid` mediumint(8) unsigned NOT NULL auto_increment,
+ `long_quotaid` smallint(5) unsigned NOT NULL auto_increment,
  `label` varchar(85),
  `max_count` smallint(5) unsigned,
  `max_total_hours` smallint(5) unsigned,
@@ -38,7 +38,7 @@ CREATE TABLE `long_quotas` (
 
 DROP TABLE IF EXISTS `day_quotas`;
 CREATE TABLE `day_quotas` (
- `day_quotaid` mediumint(8) unsigned NOT NULL auto_increment,
+ `day_quotaid` smallint(5) unsigned NOT NULL auto_increment,
  `label` varchar(85),
  `max_total_hours` tinyint(2) unsigned,
  `max_count` tinyint(2) unsigned,
@@ -53,7 +53,7 @@ CREATE TABLE `day_quotas` (
 
 DROP TABLE IF EXISTS `organizations`;
 CREATE TABLE `organizations` (
- `orgid` mediumint(8) unsigned NOT NULL auto_increment,
+ `orgid` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
  PRIMARY KEY (`orgid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
@@ -64,7 +64,7 @@ CREATE TABLE `organizations` (
 
 DROP TABLE IF EXISTS `user_groups`;
 CREATE TABLE `user_groups` (
- `groupid` mediumint(8) unsigned NOT NULL auto_increment,
+ `groupid` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
  PRIMARY KEY (`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
@@ -98,7 +98,7 @@ CREATE TABLE `user_status` (
 
 DROP TABLE IF EXISTS `user_address`;
 CREATE TABLE `user_address` (
- `addressid` mediumint(8) unsigned NOT NULL auto_increment,
+ `addressid` tinyint(2) unsigned NOT NULL auto_increment,
  `address_info` text,
  `address_label` varchar(85),
  PRIMARY KEY (`addressid`)
@@ -110,7 +110,7 @@ CREATE TABLE `user_address` (
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
- `userid` int(10) unsigned NOT NULL auto_increment,
+ `userid` mediumint(8) unsigned NOT NULL auto_increment,
  `username` varchar(85),
  `email` varchar(85) NOT NULL,
  `password` varchar(85) NOT NULL,
@@ -122,11 +122,11 @@ CREATE TABLE `users` (
  `timezone` varchar(85) NOT NULL,
  `lastlogin` datetime,
  `homepageid` tinyint(2) unsigned NOT NULL default '1',
- `organization_id` mediumint(8) unsigned,
- `group_id` mediumint(8) unsigned,
- `address_id` mediumint(8) unsigned,
- `day_quota_id` mediumint(8) unsigned,
- `long_quota_id` mediumint(8) unsigned,
+ `organization_id` smallint(5) unsigned,
+ `group_id` smallint(5) unsigned,
+ `address_id` tinyint(2) unsigned,
+ `day_quota_id` smallint(5) unsigned,
+ `long_quota_id` smallint(5) unsigned,
  `role_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned NOT NULL,
  `legacypassword` varchar(32),
@@ -165,7 +165,7 @@ CREATE TABLE `resource_constraints` (
 
 DROP TABLE IF EXISTS `resources`;
 CREATE TABLE `resources` (
- `resourceid` int(10) unsigned NOT NULL auto_increment,
+ `resourceid` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
  `location` varchar(85),
  `contact_info` varchar(85),
@@ -179,13 +179,13 @@ CREATE TABLE `resources` (
  `autoassign` tinyint(1) unsigned NOT NULL,
  `requires_approval` tinyint(1) unsigned NOT NULL,
  `allow_multiple_day_reservations` tinyint(1) unsigned NOT NULL default '1',
- `max_participants` int(10) unsigned default NULL,
+ `max_participants` mediumint(8) unsigned default NULL,
  `min_notice_time` time default NULL,
  `max_notice_time` time default NULL,
  `legacyid` char(16),
  `constraint_id` smallint(5) unsigned,
- `long_quota_id` mediumint(8) unsigned,
- `day_quota_id` mediumint(8) unsigned,
+ `long_quota_id` smallint(5) unsigned,
+ `day_quota_id` smallint(5) unsigned,
  PRIMARY KEY (`resourceid`),
  INDEX (`constraint_id`),
  FOREIGN KEY (`constraint_id`) REFERENCES resource_constraints(`constraintid`),
@@ -201,8 +201,8 @@ CREATE TABLE `resources` (
 
 DROP TABLE IF EXISTS `user_resource_permissions`;
 CREATE TABLE `user_resource_permissions` (
- `resource_id` int(10) unsigned NOT NULL,
- `user_id` int(10) unsigned NOT NULL,
+ `resource_id` smallint(5) unsigned NOT NULL,
+ `user_id` mediumint(8) unsigned NOT NULL,
  PRIMARY KEY (`resource_id`, `user_id`),
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
@@ -216,8 +216,8 @@ CREATE TABLE `user_resource_permissions` (
 
 DROP TABLE IF EXISTS `group_resource_permissions`;
 CREATE TABLE `group_resource_permissions` (
- `resource_id` int(10) unsigned NOT NULL,
- `group_id` mediumint(8) unsigned NOT NULL,
+ `resource_id` smallint(5) unsigned NOT NULL,
+ `group_id` smallint(5) unsigned NOT NULL,
  PRIMARY KEY (`resource_id`, `group_id`),
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
@@ -231,13 +231,13 @@ CREATE TABLE `group_resource_permissions` (
 
 DROP TABLE IF EXISTS `schedules`;
 CREATE TABLE `schedules` (
- `scheduleid` int(10) unsigned NOT NULL auto_increment,
+ `scheduleid` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
  `isdefault` tinyint(1) unsigned NOT NULL,
  `daystart` date NOT NULL,
  `dayend` date NOT NULL,
  `weekdaystart` tinyint(2) unsigned NOT NULL,
- `admin_id` int(10) unsigned NOT NULL,
+ `admin_id` mediumint(8) unsigned NOT NULL,
  `daysvisible` tinyint(2) unsigned NOT NULL default '7',
  PRIMARY KEY (`scheduleid`),
  INDEX (`admin_id`),
@@ -250,8 +250,8 @@ CREATE TABLE `schedules` (
 
 DROP TABLE IF EXISTS `resource_schedules`;
 CREATE TABLE `resource_schedules` (
- `schedule_id` int(10) unsigned NOT NULL,
- `resource_id` int(10) unsigned NOT NULL,
+ `schedule_id` smallint(5) unsigned NOT NULL,
+ `resource_id` smallint(5) unsigned NOT NULL,
  PRIMARY KEY (`schedule_id`, `resource_id`),
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
@@ -287,7 +287,7 @@ CREATE TABLE `reservation_status` (
 
 DROP TABLE IF EXISTS `time_blocks`;
 CREATE TABLE `time_blocks` (
- `blockid` int(10) unsigned NOT NULL auto_increment,
+ `blockid` tinyint(2) unsigned NOT NULL,
  `label` varchar(85) NOT NULL,
  `start_time` time NOT NULL,
  `end_time` time NOT NULL,
@@ -304,7 +304,7 @@ CREATE TABLE `time_blocks` (
 
 DROP TABLE IF EXISTS `reservations`;
 CREATE TABLE `reservations` (
- `reservationid` int(10) unsigned NOT NULL auto_increment,
+ `reservationid` mediumint(8) unsigned NOT NULL auto_increment,
  `start_date` datetime NOT NULL,
  `end_date` datetime NOT NULL,
  `date_created` datetime NOT NULL,
@@ -313,13 +313,13 @@ CREATE TABLE `reservations` (
  `description` text,
  `allow_participation` tinyint(1) unsigned NOT NULL,
  `allow_anon_participation` tinyint(1) unsigned,
- `user_id` int(10) unsigned NOT NULL,
+ `user_id` mediumint(8) unsigned NOT NULL,
  `role_id` tinyint(2) unsigned,
- `resource_id` int(10) unsigned NOT NULL,
+ `resource_id` smallint(5) unsigned NOT NULL,
  `type_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned,
  `total_cost` dec(7,2),
- `time_block_id` int(10) unsigned,
+ `time_block_id` tinyint(2) unsigned,
  PRIMARY KEY (`reservationid`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) REFERENCES users(`userid`),
