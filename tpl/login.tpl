@@ -1,26 +1,25 @@
 {assign var='DisplayWelcome' value='false'}
 {include file='header.tpl'}
-<link rel="stylesheet" id="login-css" href="../css/login.css" type="text/css" media="all" />
 {if $ShowLoginError}
         <div id="loginError">
                 {translate key='Login Error'}
         </div>
 {/if}
-<div id="login">
+<div id="loginbox">
 
-<form name="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
+<form class="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
 <p>
-        <label>{if $UseLogonName} {translate key='Logon name'} {else} {translate key='Email address'} {/if}<br />
+        <label class="login">{if $UseLogonName} {translate key='Logon name'} {else} {translate key='Email address'} {/if}<br />
         {textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
 </p>
 <p>
-        <label>{translate key='Password'}<br />
+        <label class="login">{translate key='Password'}<br />
         {textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}</label>
 </p>
 <p class="stayloggedin">
-        <label><input type="checkbox" name="{constant echo='FormKeys::PERSIST_LOGIN'}" value="true" tabindex="30" /> {translate key='Keep me logged in'}</label>
+        <label class="login"><input type="checkbox" name="{constant echo='FormKeys::PERSIST_LOGIN'}" value="true" tabindex="30" /> {translate key='Keep me logged in'}</label>
 </p>
-<p class="submit">
+<p class="loginsubmit">
         <input type="submit" name="{constant echo='Actions::LOGIN'}" value="{translate key='Log In'}" class="button" tabindex="100" />
         <input type="hidden" name="{constant echo='FormKeys::RESUME'}" value="{$ResumeUrl}" />
 </p>

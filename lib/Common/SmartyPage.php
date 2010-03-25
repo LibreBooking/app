@@ -63,7 +63,7 @@ class SmartyPage extends Smarty
 		$attributes = new StringBuilder();
 		foreach($extraKeys as $key)
 		{
-			$attributes->Append("$key=\"{$params[$key]}\"");
+			$attributes->Append("$key=\"{$params[$key]}\" ");
 		}
 		
 		return $attributes->ToString();
@@ -195,7 +195,8 @@ class SmartyPage extends Smarty
 	{
 		$class = null;
 		$value = null;
-		$style = null;
+		$size = null;
+		$tabindex = null;
 		
 		if (isset($params['class']))
 		{
@@ -207,11 +208,15 @@ class SmartyPage extends Smarty
 			$value = $params['value'];
 		}
 		
-		if (isset($params['style']))
+		if (isset($params['size']))
 		{
-			$style = $params['style'];
+			$size = $params['size'];
 		}
-		
+
+		if (isset($params['tabindex']))
+		{
+			$tabindex = $params['tabindex'];
+		}		
 		
 		$knownAttributes = array('value', 'type', 'name');
 		$attributes = $this->AppendAttributes($params, $knownAttributes);

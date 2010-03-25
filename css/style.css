@@ -1,9 +1,10 @@
+* { margin:0; padding:0; }
+
 body {
-    font-family: Trebuchet MS, Verdana, Arial, Helvetica, sans-serif;
+    font: 11px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
     background-color: #fefefe;
     margin: 0px;
     color: #333333;
-    font-size: 11px;
     height: 100%;
 }
 
@@ -11,6 +12,10 @@ body {
     background-color: #bbb;
     border-bottom: #4c5c67 solid 1px;
     margin-bottom: 0px;
+ 	width: 100%;
+ 	border: '0';
+ 	padding: '0';
+	background-image: url('../img/scheduleit-header-gradient.png');
 }
 
 #page-header td {
@@ -21,18 +26,18 @@ body {
     color: #ffffff;
 }
 
-#page-header #header-banner {
+#header-banner {
     height: 110px;
     width: 100%;
 }
 
-#page-header #banner-image {
+#banner-image {
     position: absolute;
     top: 10px;
     left: 10px;
 }
 
-#page-header #banner-text {
+#banner-text {
     position: absolute;
     color: #ffffff;
     top: 20px;
@@ -41,7 +46,7 @@ body {
     vertical-align: middle;
 }
 
-#page-header #banner-right {
+#banner-right {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -51,9 +56,11 @@ body {
     font-weight: bold;
     width: 200px;
     height: 110px;
+	background-image:url('../img/scheduleit-watermark.png'); 
+	background-repeat: no-repeat;
 }
 
-#page-header #banner-welcome {
+#banner-welcome {
     position: absolute;
     top: 70px;
     right: 10px;
@@ -69,6 +76,21 @@ body {
     border-right: 2px solid #000000;
     border-top: 2px solid #000000;
     border-bottom: 3px solid #000000;
+}
+
+#tabs {
+	width: 100%;
+	padding: 3px 5% 0px 5%; 
+	margin: 3px 0px 4px 0px; 
+	vertical-align: bottom; 
+	background: #599800; 	
+}
+
+#sub-tabs {
+	width: 90%; 
+	padding: 3px 5% 0px 5%; 
+	height: 25px; 
+	color: #fff;
 }
 
 #page-header .subtab a:link, #page-header .subtab a:visited {
@@ -97,8 +119,6 @@ p {
 }
 
 h5 {
-    margin-bottom: 0px;
-    margin-top: 0px;
     font-size: 12px;
 }
 
@@ -108,11 +128,9 @@ h4 {
 
 h3 {
     font-size: 18px;
-    margin-top: 0px;
 }
 
 .textbox {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 12px;
     color: #36648B;
     padding: 2px 3px;
@@ -228,6 +246,7 @@ div.registration hr {
     width: 100%;
     height: 8px;
     margin-bottom: 10px;
+	background:url('../img/shadow.png');
 }
 
 .dashboardHeader {
@@ -248,4 +267,152 @@ div.page-footer {
     background: #66A0BB url('../img/scheduleit-watermark.png') no-repeat right;
     vertical-align: bottom; 
     width: 100%;
+}
+
+.p-center {
+	text-align: center;
+}
+
+form.login {
+        margin: 0 0 0 8px;
+        padding: 20px 16px 48px 16px;
+        font-weight: normal;
+        -moz-border-radius: 11px;
+        -khtml-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        -moz-box-shadow: rgba(200,200,200,1) 0 4px 18px;
+        -webkit-box-shadow: rgba(200,200,200,1) 0 4px 18px;
+        -khtml-box-shadow: rgba(200,200,200,1) 0 4px 18px;
+        box-shadow: rgba(200,200,200,1) 0 4px 18px;
+}
+
+form p { margin: 0 3px 16px 3px; }
+
+input.button {
+        font: bold 14px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+        padding: 5px 10px;
+        border: none;
+        -moz-border-radius: 13px;
+        -khtml-border-radius: 13px;
+        -webkit-border-radius: 13px;
+        border-radius: 13px;
+        -moz-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+        -webkit-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+        -khtml-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+        box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+        cursor: pointer;
+        text-decoration: none;
+        margin: 0;
+        height: 26px;
+        background: url('../img/button_bg.gif') repeat-x 0 -4px;
+}
+
+input.button:hover {
+        background: url('../img/button_bg_hover.gif') repeat-x 0 -4px;
+}
+
+label.login {
+        color: #666;
+        font-size: 18px;
+}
+
+
+#loginbox {
+        width: 450px;
+        margin: 7em auto 5em;
+}
+
+#loginbox .input {
+        font-size: 24px;
+        width: 97%;
+        padding: 3px;
+        margin: 2px 6px 20px 0;
+        border: 1px solid #e5e5e5;
+        background: #fbfbfb;
+	color: #777
+}
+
+form .stayloggedin {
+        font-weight: normal;
+        float: left;
+        margin-bottom: 0;
+}
+
+form .stayloggedin label { 
+        font-size: 13px; 
+        line-height: 1.5em; 
+}
+
+form .loginsubmit { float:right; }
+
+#login-links p, h4 {text-align: center;}
+
+.page-footer { display:none; }
+
+
+form.register {
+        margin: 0 0 0 8px;
+        padding: 20px 16px 48px 16px;
+        font-weight: normal;
+        -moz-border-radius: 11px;
+        -khtml-border-radius: 11px;
+        -webkit-border-radius: 11px;
+        border-radius: 11px;
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        -moz-box-shadow: rgba(200,200,200,1) 0 4px 18px;
+        -webkit-box-shadow: rgba(200,200,200,1) 0 4px 18px;
+        -khtml-box-shadow: rgba(200,200,200,1) 0 4px 18px;
+        box-shadow: rgba(200,200,200,1) 0 4px 18px;
+}
+
+form .regsubmit { float:left; }
+
+form p { margin-bottom: 12px; }
+
+div.registrationHeader {
+        padding: 5px 15px;
+        border: none;
+        -moz-border-radius: 13px;
+        -khtml-border-radius: 13px;
+        -webkit-border-radius: 13px;
+        border-radius: 13px;
+        -moz-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+        -webkit-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+        -khtml-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+        box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+        text-decoration: none;
+        margin: 0 0 20px 0;
+	height: 1.5em;
+	background: url('../img/button_bg.gif') repeat-x 0 0;
+	color: #fff;
+}
+
+.registrationHeader h3 { 
+        font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+        vertical-align: middle;
+}
+
+label.reg {
+        color: #666;
+        font-size: 18px;
+}
+
+
+#registrationbox {
+        width: 550px;
+        margin: 3em auto 1em;
+}
+
+#registrationbox .input {
+        font-size: 18px;
+        width: 97%;
+        padding: 3px;
+        margin: 2px 0 5px 0;
+        border: 1px solid #e5e5e5;
+        background: #fbfbfb;
+        color: #777;
 }

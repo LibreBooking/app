@@ -1,13 +1,13 @@
-<div id="page-header" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-image: url('{$Path}img/scheduleit-header-gradient.png')">
+<div id="page-header">
   <div id="header-banner" > 
-    <div id="banner-right" style="background-image:url('{$Path}img/scheduleit-watermark.png'); background-repeat: no-repeat;"> 
+    <div id="banner-right"> 
 	<p>{html_link href="javascript: help();" key="Help"}</p>
 {if $LoggedIn eq 'true'} 
         <p> {html_link href="logout.php" key="Log Out"} </p>
 {/if}
     </div>
-    <div id="banner-image" style="position: absolute; top: 10px; left: 10px" ><img src="{$Path}img/scheduleit-brand.png" alt="phpScheduleIt"/></div>
-    <div id="banner-text"  ><h2>javascript fills this in...</h2></div>
+    <div id="banner-image"><img src="{$Path}img/scheduleit-brand.png" alt="phpScheduleIt"/></div>
+    <div id="banner-text"><h2>javascript fills this in...</h2></div>
     <div id="banner-welcome">
 {if $LoggedIn eq 'true'} 
      <h4 class="welcomeBack">{translate key='Welcome Back' args=$UserName}</h4>
@@ -15,7 +15,7 @@
     </div>
   </div>
 {if $DisplayWelcome eq 'true'} 
-  <div id="tabs" style="width: 100%; padding: 3px 5% 0px 5%; margin: 3px 0px 4px 0px; vertical-align: bottom; background: #599800; ">
+  <div id="tabs">
     <p>
     <!-- now tabs row-->
 	{foreach from=$Tabs item="tab"}
@@ -43,7 +43,7 @@
         <span id="dashboard-tab" class="tab">{html_link href="dashboard.php" key="MyDashboard"}</span>
       </p>
     </div>
-    <div id="sub-tabs" style="width: 90%; padding: 3px 5% 0px 5%; height: 25px; color: #fff">
+    <div id="sub-tabs">
       <p>
 		{foreach from=$Tabs item="tab"}
 		  {if $tab.default} 
