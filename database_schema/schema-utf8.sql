@@ -19,6 +19,22 @@ CREATE TABLE `announcements` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
+-- Table structure for table `time_blocks`
+--
+
+DROP TABLE IF EXISTS `time_blocks`;
+CREATE TABLE `time_blocks` (
+ `blockid` tinyint(2) unsigned NOT NULL,
+ `label` varchar(85) NOT NULL,
+ `start_time` time NOT NULL,
+ `end_time` time NOT NULL,
+ `availability_code` tinyint(2) unsigned NOT NULL,
+ `cost_multiplier` numeric(7,2),
+ `constraint_function` text,
+ PRIMARY KEY (`blockid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
 -- Table structure for table `long_quotas`
 --
 
@@ -29,7 +45,10 @@ CREATE TABLE `long_quotas` (
  `max_count` smallint(5) unsigned,
  `max_total_hours` smallint(5) unsigned,
  `quota_window_duration` time,
- PRIMARY KEY (`long_quotaid`)
+ `block_id` tinyint(2) unsigned,
+ PRIMARY KEY (`long_quotaid`),
+ INDEX (`block_id`),
+ FOREIGN KEY (`block_id`) REFERENCES time_blocks(`blockid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -43,7 +62,10 @@ CREATE TABLE `day_quotas` (
  `max_total_hours` tinyint(2) unsigned,
  `max_count` tinyint(2) unsigned,
  `max_continuous` tinyint(2) unsigned,
- PRIMARY KEY (`day_quotaid`)
+ `block_id` tinyint(2) unsigned,
+ PRIMARY KEY (`day_quotaid`),
+ INDEX (`block_id`),
+ FOREIGN KEY (`block_id`) REFERENCES time_blocks(`blockid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 
@@ -280,23 +302,6 @@ CREATE TABLE `reservation_status` (
  `label` varchar(85) NOT NULL,
  PRIMARY KEY (`statusid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `time_blocks`
---
-
-DROP TABLE IF EXISTS `time_blocks`;
-CREATE TABLE `time_blocks` (
- `blockid` tinyint(2) unsigned NOT NULL,
- `label` varchar(85) NOT NULL,
- `start_time` time NOT NULL,
- `end_time` time NOT NULL,
- `availability_code` tinyint(2) unsigned NOT NULL,
- `cost_multiplier` numeric(7,2),
- `constraint_function` text,
- PRIMARY KEY (`blockid`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
 
 --
 -- Table structure for table `reservations`
