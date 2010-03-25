@@ -185,7 +185,7 @@ CREATE TABLE `resources` (
  `legacyid` char(16),
  `constraint_id` smallint(5) unsigned,
  `long_quota_id` mediumint(8) unsigned,
- `constraint_id` mediumint(8) unsigned,
+ `day_quota_id` mediumint(8) unsigned,
  PRIMARY KEY (`resourceid`),
  INDEX (`constraint_id`),
  FOREIGN KEY (`constraint_id`) REFERENCES resource_constraints(`constraintid`),
@@ -196,11 +196,11 @@ CREATE TABLE `resources` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `resource_permissions`
+-- Table structure for table `user_resource_permissions`
 --
 
-DROP TABLE IF EXISTS `resource_permissions`;
-CREATE TABLE `resource_permissions` (
+DROP TABLE IF EXISTS `user_resource_permissions`;
+CREATE TABLE `user_resource_permissions` (
  `resource_id` int(10) unsigned NOT NULL,
  `user_id` int(10) unsigned NOT NULL,
  PRIMARY KEY (`resource_id, user_id`),
@@ -208,6 +208,21 @@ CREATE TABLE `resource_permissions` (
  FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) REFERENCES users(`userid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `group_resource_permissions`
+--
+
+DROP TABLE IF EXISTS `group_resource_permissions`;
+CREATE TABLE `group_resource_permissions` (
+ `resource_id` int(10) unsigned NOT NULL,
+ `group_id` int(10) unsigned NOT NULL,
+ PRIMARY KEY (`resource_id, group_id`),
+ INDEX (`resource_id`),
+ FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
+ INDEX (`group_id`),
+ FOREIGN KEY (`group_id`) REFERENCES groups(`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -235,23 +250,22 @@ CREATE TABLE `schedules` (
 
 DROP TABLE IF EXISTS `resource_schedules`;
 CREATE TABLE `resource_schedules` (
- `resource_scheduleid` int(10) unsigned NOT NULL,
- `scheduleid` int(10) unsigned NOT NULL,
- `resourceid` int(10) unsigned NOT NULL,
- PRIMARY KEY (`resource_scheduleid`),
- INDEX (`scheduleid`),
- FOREIGN KEY (`scheduleid`) REFERENCES schedules(`scheduleid`),
- INDEX (`resourceid`),
- FOREIGN KEY (`resourceid`) REFERENCES resources(`resourceid`)
+ `schedule_id` int(10) unsigned NOT NULL,
+ `resource_id` int(10) unsigned NOT NULL,
+ PRIMARY KEY (`schedule_id, resource_id`),
+ INDEX (`resource_id`),
+ FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
+ INDEX (`schedule_id`),
+ FOREIGN KEY (`schedule_id`) REFERENCES schedules(`scheduleid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `reservation_type`
+-- Table structure for table `reservation_types`
 --
 
-DROP TABLE IF EXISTS `reservation_type`;
-CREATE TABLE `reservation_type` (
- `typeid` int(10) unsigned NOT NULL auto_increment,
+DROP TABLE IF EXISTS `reservation_types`;
+CREATE TABLE `reservation_types` (
+ `typeid` tinyint(2) unsigned NOT NULL auto_increment,
  `label` varchar(85) NOT NULL,
  PRIMARY KEY (`typeid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
@@ -262,7 +276,7 @@ CREATE TABLE `reservation_type` (
 
 DROP TABLE IF EXISTS `reservation_status`;
 CREATE TABLE `reservation_status` (
- `statusid` int(10) unsigned NOT NULL auto_increment,
+ `statusid` tinyint(2) unsigned NOT NULL auto_increment,
  `label` varchar(85) NOT NULL,
  PRIMARY KEY (`statusid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
@@ -302,8 +316,8 @@ CREATE TABLE `reservations` (
  `user_id` int(10) unsigned NOT NULL,
  `role_id` int(10) unsigned NOT NULL,
  `resource_id` int(10) unsigned NOT NULL,
- `type_id` int(10) unsigned,
- `status_id` int(10) unsigned,
+ `type_id` tinyint(2) unsigned,
+ `status_id` tinyint(2) unsigned,
  `total_cost` dec(7,2),
  `time_block_id` int(10) unsigned,
  PRIMARY KEY (`reservationid`),
@@ -314,7 +328,7 @@ CREATE TABLE `reservations` (
  INDEX (`role_id`),
  FOREIGN KEY (`role_id`) REFERENCES user_roles(`roleid`),
  INDEX (`type_id`),
- FOREIGN KEY (`type_id`) REFERENCES reservation_type(`typeid`),
+ FOREIGN KEY (`type_id`) REFERENCES reservation_types(`typeid`),
  INDEX (`status_id`),
  FOREIGN KEY (`status_id`) REFERENCES reservation_status(`statusid`),
  INDEX (`time_block_id`),
