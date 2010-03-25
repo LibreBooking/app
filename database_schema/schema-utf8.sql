@@ -182,11 +182,17 @@ CREATE TABLE `resources` (
  `max_participants` int(10) unsigned default NULL,
  `min_notice_time` time default NULL,
  `max_notice_time` time default NULL,
- `constraintid` smallint(5) unsigned NOT NULL,
  `legacyid` char(16),
+ `constraint_id` smallint(5) unsigned,
+ `long_quota_id` mediumint(8) unsigned,
+ `constraint_id` mediumint(8) unsigned,
  PRIMARY KEY (`resourceid`),
- INDEX (`constraintid`),
- FOREIGN KEY (`constraintid`) REFERENCES resource_constraints(`constraintid`)
+ INDEX (`constraint_id`),
+ FOREIGN KEY (`constraint_id`) REFERENCES resource_constraints(`constraintid`),
+ INDEX (`long_quota_id`),
+ FOREIGN KEY (`long_quota_id`) REFERENCES long_quotas(`long_quotaid`), 
+ INDEX (`day_quota_id`),
+ FOREIGN KEY (`day_quota_id`) REFERENCES day_quotas(`day_quotaid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -195,14 +201,13 @@ CREATE TABLE `resources` (
 
 DROP TABLE IF EXISTS `resource_permissions`;
 CREATE TABLE `resource_permissions` (
- `permissionid` int(10) unsigned NOT NULL auto_increment,
- `resourceid` int(10) unsigned NOT NULL,
- `userid` int(10) unsigned NOT NULL,
- PRIMARY KEY (`permissionid`),
- INDEX (`resourceid`),
- FOREIGN KEY (`resourceid`) REFERENCES resources(`resourceid`),
- INDEX (`userid`),
- FOREIGN KEY (`userid`) REFERENCES users(`userid`)
+ `resource_id` int(10) unsigned NOT NULL,
+ `user_id` int(10) unsigned NOT NULL,
+ PRIMARY KEY (`resource_id, user_id`),
+ INDEX (`resource_id`),
+ FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
+ INDEX (`user_id`),
+ FOREIGN KEY (`user_id`) REFERENCES users(`userid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -217,11 +222,11 @@ CREATE TABLE `schedules` (
  `daystart` date NOT NULL,
  `dayend` date NOT NULL,
  `weekdaystart` tinyint(2) unsigned NOT NULL,
- `adminid` int(10) unsigned NOT NULL,
+ `admin_id` int(10) unsigned NOT NULL,
  `daysvisible` tinyint(2) unsigned NOT NULL default '7',
  PRIMARY KEY (`scheduleid`),
- INDEX (`adminid`),
- FOREIGN KEY (`adminid`) REFERENCES users(`userid`)
+ INDEX (`admin_id`),
+ FOREIGN KEY (`admin_id`) REFERENCES users(`userid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -270,6 +275,9 @@ DROP TABLE IF EXISTS `time_blocks`;
 CREATE TABLE `time_blocks` (
  `blockid` int(10) unsigned NOT NULL auto_increment,
  `label` varchar(85) NOT NULL,
+ `start_time` time NOT NULL,
+ `end_time` time NOT NULL,
+ `availability_code` tinyint(2) unsigned NOT NULL,
  `cost_multiplier` numeric(7,2),
  `constraint_function` text,
  PRIMARY KEY (`blockid`)
@@ -283,8 +291,6 @@ CREATE TABLE `time_blocks` (
 DROP TABLE IF EXISTS `reservations`;
 CREATE TABLE `reservations` (
  `reservationid` int(10) unsigned NOT NULL auto_increment,
- `reserving_user_id` int(10) unsigned NOT NULL,
- `reserved_resource_id` int(10) unsigned NOT NULL,
  `start_date` datetime NOT NULL,
  `end_date` datetime NOT NULL,
  `date_created` datetime NOT NULL,
@@ -293,6 +299,9 @@ CREATE TABLE `reservations` (
  `description` text,
  `allow_participation` tinyint(1) unsigned NOT NULL,
  `allow_anon_participation` tinyint(1) unsigned,
+ `user_id` int(10) unsigned NOT NULL,
+ `role_id` int(10) unsigned NOT NULL,
+ `resource_id` int(10) unsigned NOT NULL,
  `type_id` int(10) unsigned,
  `status_id` int(10) unsigned,
  `total_cost` dec(7,2),
@@ -300,8 +309,10 @@ CREATE TABLE `reservations` (
  PRIMARY KEY (`reservationid`),
  INDEX (`reserving_user_id`),
  FOREIGN KEY (`reserving_user_id`) REFERENCES users(`userid`),
- INDEX (`reserved_resource_id`),
- FOREIGN KEY (`reserved_resource_id`) REFERENCES resources(`resourceid`),
+ INDEX (`resource_id`),
+ FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
+ INDEX (`role_id`),
+ FOREIGN KEY (`role_id`) REFERENCES user_roles(`roleid`),
  INDEX (`type_id`),
  FOREIGN KEY (`type_id`) REFERENCES reservation_type(`typeid`),
  INDEX (`status_id`),
