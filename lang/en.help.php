@@ -69,7 +69,7 @@
           system. At the top of each page (except for the registration and log
           in pages) you will see a welcome message, today's date, and a few links
           -- a &quot;Log Out&quot; link and a &quot;My Control Panel&quot; link
-          underneath the welcome message, and a &quot;Help Me&quot link under
+          underneath the welcome message, and a &quot;Help Me&quot; link under
           the date.</p>
           <p>If a previous user is displayed in the welcome message, click &quot;Log 
           Out&quot; to clear out any cookies they were using and <a href="#logging_in">log 

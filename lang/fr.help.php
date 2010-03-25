@@ -148,7 +148,7 @@
           dans le système de réservation. C'est là que vous pouvez passer en revue, modifier, ou annuler
           vos réservations. Dans &quot;Mon panneau de contrôle&quot; figurent également les <a href="#quick_links">liens rapides</a>
           permettant d'accéder &quot;Allez sur le planificateur en ligne&quot; 
-          &quotModifier mes caractéristiques et/ou mon mot de passe  &quot;
+          &quot;Modifier mes caractéristiques et/ou mon mot de passe  &quot;
           &quot; Gestion de mes adresses électroniques préférées  &quot;
           &quot;  Envoi d'un message électronique à l'administrateur  &quot;
           et une option pour &quot;Quitter&quot; le système.  </p>
@@ -164,7 +164,7 @@
           &quot;Modification&quot; ou &quot;Effacement&quot; à la fin de chaque ligne de réservation. Ces deux 
           options ouvriront une fenêtre ou il vous sera demandé de confirmer votre choix. Cliquer sur la date
           de réservation ouvrira une fenêtre dans laquelle seront visibles les caractéristiques de la réservation.</p>
-         <p> Pour trier vos réservations sur une colonne particulière, cliquer sur le signe &#150 ou le signe + dans 
+         <p> Pour trier vos réservations sur une colonne particulière, cliquer sur le signe &#150; ou le signe + dans 
          l'entête de chaque colonne. Le signe moins triera les réservations en ordre décroissant sur le texte contenu
          par la colonne, le signe plus en ordre croissant.</p>
         <p align="right"><a href="#top">Top</a></p>

@@ -40,7 +40,7 @@
             <li><a href="#language">Välja språk</a></li>
             <li><a href="#manage_profile">Ändra min profil information/l&ouml;senord</a></li>
             <li><a href="#resetting_password">Återställ ett bortglömt lösenord</a></li>
-            <li><a href="#Få hjälp></a></li>
+            <li><a href="#Få hjälp"></a></li>
           </ul>
           <li><a href="#my_control_panel"><b>Startsidan</b></a></li>
           <ul>

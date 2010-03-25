@@ -67,7 +67,7 @@
           Minden oldal tetején (kivéve a regisztrációs és a bejelentkezõ oldalt)
           egy köszöntõ üzenetet talál, az aktuális dátummal és néhány linkkel. 
           A &quot;Kilépés&quot; link és az &quot;Irányító Pult&quot; link 
-          a köszöntõ üzenet alatt, a &quot;Segítség&quot link pedig a napi 
+          a köszöntõ üzenet alatt, a &quot;Segítség&quot; link pedig a napi 
           dátum alatt helyezkedik el.</p> 
           <p>Ha más Felhasználó nevét olvassa a Köszöntõben, klikkeljen a &quot;Kilépés&quot; 
           linkre, amivel érvényteleníti a sütiket, majd kattintson a <a href="#logging_in">Belépés</a>

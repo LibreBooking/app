@@ -1006,7 +1006,8 @@ displayArea : "div_end_date"
 }
 );
 <?php
-	}
-echo '</script>';
+	}?>
+</script>
+<?php 
 }
 ?>

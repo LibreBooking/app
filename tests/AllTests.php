@@ -32,4 +32,4 @@ if (PHPUnit2_MAIN_METHOD == 'AllTests::main') {
     AllTests::main();
 }
 ?>
-?>
+
