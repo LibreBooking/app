@@ -203,7 +203,7 @@ DROP TABLE IF EXISTS `user_resource_permissions`;
 CREATE TABLE `user_resource_permissions` (
  `resource_id` int(10) unsigned NOT NULL,
  `user_id` int(10) unsigned NOT NULL,
- PRIMARY KEY (`resource_id, user_id`),
+ PRIMARY KEY (`resource_id`, `user_id`),
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
  INDEX (`user_id`),
@@ -217,12 +217,12 @@ CREATE TABLE `user_resource_permissions` (
 DROP TABLE IF EXISTS `group_resource_permissions`;
 CREATE TABLE `group_resource_permissions` (
  `resource_id` int(10) unsigned NOT NULL,
- `group_id` int(10) unsigned NOT NULL,
- PRIMARY KEY (`resource_id, group_id`),
+ `group_id` mediumint(8) unsigned NOT NULL,
+ PRIMARY KEY (`resource_id`, `group_id`),
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
  INDEX (`group_id`),
- FOREIGN KEY (`group_id`) REFERENCES groups(`groupid`)
+ FOREIGN KEY (`group_id`) REFERENCES user_groups(`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -252,7 +252,7 @@ DROP TABLE IF EXISTS `resource_schedules`;
 CREATE TABLE `resource_schedules` (
  `schedule_id` int(10) unsigned NOT NULL,
  `resource_id` int(10) unsigned NOT NULL,
- PRIMARY KEY (`schedule_id, resource_id`),
+ PRIMARY KEY (`schedule_id`, `resource_id`),
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
  INDEX (`schedule_id`),
@@ -299,7 +299,7 @@ CREATE TABLE `time_blocks` (
 
 
 --
--- Table structure for table `reservation_info`
+-- Table structure for table `reservations`
 --
 
 DROP TABLE IF EXISTS `reservations`;
@@ -314,15 +314,15 @@ CREATE TABLE `reservations` (
  `allow_participation` tinyint(1) unsigned NOT NULL,
  `allow_anon_participation` tinyint(1) unsigned,
  `user_id` int(10) unsigned NOT NULL,
- `role_id` int(10) unsigned NOT NULL,
+ `role_id` tinyint(2) unsigned,
  `resource_id` int(10) unsigned NOT NULL,
  `type_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned,
  `total_cost` dec(7,2),
  `time_block_id` int(10) unsigned,
  PRIMARY KEY (`reservationid`),
- INDEX (`reserving_user_id`),
- FOREIGN KEY (`reserving_user_id`) REFERENCES users(`userid`),
+ INDEX (`user_id`),
+ FOREIGN KEY (`user_id`) REFERENCES users(`userid`),
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
  INDEX (`role_id`),
