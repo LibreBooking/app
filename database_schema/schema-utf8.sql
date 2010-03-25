@@ -75,8 +75,9 @@ CREATE TABLE `user_groups` (
 
 DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE `user_roles` (
- `roleid` tinyint(2) unsigned NOT NULL default '1',
- `role_name` varchar(85) NOT NULL,
+ `roleid` tinyint(2) unsigned NOT NULL,
+ `role_name` varchar(85),
+ `isadmin` tinyint(1) unsigned,
  PRIMARY KEY (`roleid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -87,7 +88,7 @@ CREATE TABLE `user_roles` (
 DROP TABLE IF EXISTS `user_status`;
 CREATE TABLE `user_status` (
  `statusid` tinyint(2) unsigned NOT NULL,
- `status_description` varchar(85) NOT NULL,
+ `status_description` varchar(85),
  PRIMARY KEY (`statusid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -121,12 +122,12 @@ CREATE TABLE `users` (
  `timezone` varchar(85) NOT NULL,
  `lastlogin` datetime,
  `homepageid` tinyint(2) unsigned NOT NULL default '1',
- `organization_id` mediumint(8) unsigned NOT NULL,
+ `organization_id` mediumint(8) unsigned,
  `group_id` mediumint(8) unsigned,
  `address_id` mediumint(8) unsigned,
  `day_quota_id` mediumint(8) unsigned,
  `long_quota_id` mediumint(8) unsigned,
- `role_id` tinyint(2) unsigned NOT NULL default '1',
+ `role_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned NOT NULL,
  `legacypassword` varchar(32),
  `legacyid` char(16),
