@@ -19,17 +19,33 @@ CREATE TABLE `announcements` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `quotas`
+-- Table structure for table `long_quotas`
 --
 
-DROP TABLE IF EXISTS `quotas`;
-CREATE TABLE `quotas` (
- `quotaid` mediumint(8) unsigned NOT NULL auto_increment,
- `quota_window_count` smallint(5) unsigned,
- `quota_window_hours` smallint(5) unsigned,
+DROP TABLE IF EXISTS `long_quotas`;
+CREATE TABLE `long_quotas` (
+ `long_quotaid` mediumint(8) unsigned NOT NULL auto_increment,
+ `label` varchar(85),
+ `max_count` smallint(5) unsigned,
+ `max_total_hours` smallint(5) unsigned,
  `quota_window_duration` time,
- PRIMARY KEY (`quotaid`)
+ PRIMARY KEY (`long_quotaid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `day_quotas`
+--
+
+DROP TABLE IF EXISTS `day_quotas`;
+CREATE TABLE `day_quotas` (
+ `day_quotaid` mediumint(8) unsigned NOT NULL auto_increment,
+ `label` varchar(85),
+ `max_total_hours` tinyint(2) unsigned,
+ `max_count` tinyint(2) unsigned,
+ `max_continuous` tinyint(2) unsigned,
+ PRIMARY KEY (`day_quotaid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
 
 --
 -- Table structure for table `organizations`
@@ -76,42 +92,59 @@ CREATE TABLE `user_status` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
+-- Table structure for table `user_address`
+--
+
+DROP TABLE IF EXISTS `user_address`;
+CREATE TABLE `user_address` (
+ `addressid` mediumint(8) unsigned NOT NULL auto_increment,
+ `address_info` text,
+ `address_label` varchar(85),
+ PRIMARY KEY (`addressid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
 -- Table structure for table `users`
 --
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
  `userid` int(10) unsigned NOT NULL auto_increment,
- `user_roleid` tinyint(2) unsigned NOT NULL default '1',
- `username` varchar(85) default NULL,
+ `username` varchar(85),
  `email` varchar(85) NOT NULL,
  `password` varchar(85) NOT NULL,
  `salt` varchar(85) NOT NULL,
  `fname` varchar(85) NOT NULL,
  `lname` varchar(85) NOT NULL,
  `phone` varchar(85) default NULL,
- `organizationid` mediumint(8) unsigned NOT NULL,
- `groupid` mediumint(8) unsigned NOT NULL,
- `position` varchar(85) default NULL,
- `address` text default NULL,
+ `position` varchar(85),
  `timezone` varchar(85) NOT NULL,
- `lastlogin` datetime default NULL,
- `legacypassword` varchar(32) default NULL,
- `legacyid` char(16) default NULL,
+ `lastlogin` datetime,
  `homepageid` tinyint(2) unsigned NOT NULL default '1',
- `statusid` tinyint(2) unsigned NOT NULL,
- `quotaid` int(10) unsigned NOT NULL,
+ `organization_id` mediumint(8) unsigned NOT NULL,
+ `group_id` mediumint(8) unsigned,
+ `address_id` mediumint(8) unsigned,
+ `day_quota_id` mediumint(8) unsigned,
+ `long_quota_id` mediumint(8) unsigned,
+ `role_id` tinyint(2) unsigned NOT NULL default '1',
+ `status_id` tinyint(2) unsigned NOT NULL,
+ `legacypassword` varchar(32),
+ `legacyid` char(16),
  PRIMARY KEY (`userid`),
- INDEX (`organizationid`),
- FOREIGN KEY (`organizationid`) REFERENCES organizations(`orgid`),
- INDEX (`groupid`),
- FOREIGN KEY (`groupid`) REFERENCES user_groups(`groupid`),
- INDEX (`statusid`),
- FOREIGN KEY (`statusid`) REFERENCES user_status(`statusid`),
- INDEX (`quotaid`),
- FOREIGN KEY (`quotaid`) REFERENCES quotas(`quotaid`),
- INDEX (`user_roleid`),
- FOREIGN KEY (`user_roleid`) REFERENCES user_roles(`roleid`)
+ INDEX (`organization_id`),
+ FOREIGN KEY (`organization_id`) REFERENCES organizations(`orgid`),
+ INDEX (`group_id`),
+ FOREIGN KEY (`group_id`) REFERENCES user_groups(`groupid`),
+ INDEX (`address_id`),
+ FOREIGN KEY (`address_id`) REFERENCES user_address(`addressid`),
+ INDEX (`day_quota_id`),
+ FOREIGN KEY (`day_quota_id`) REFERENCES day_quotas(`day_quotaid`),
+ INDEX (`long_quota_id`),
+ FOREIGN KEY (`long_quota_id`) REFERENCES long_quotas(`long_quotaid`),
+ INDEX (`role_id`),
+ FOREIGN KEY (`role_id`) REFERENCES user_roles(`roleid`),
+ INDEX (`status_id`),
+ FOREIGN KEY (`status_id`) REFERENCES user_status(`statusid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -121,7 +154,7 @@ CREATE TABLE `users` (
 DROP TABLE IF EXISTS `reservation_type`;
 CREATE TABLE `reservation_type` (
  `typeid` int(10) unsigned NOT NULL auto_increment,
- `type_name` varchar(85) NOT NULL,
+ `label` varchar(85) NOT NULL,
  PRIMARY KEY (`typeid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -132,34 +165,56 @@ CREATE TABLE `reservation_type` (
 DROP TABLE IF EXISTS `reservation_status`;
 CREATE TABLE `reservation_status` (
  `statusid` int(10) unsigned NOT NULL auto_increment,
- `status_name` varchar(85) NOT NULL,
+ `label` varchar(85) NOT NULL,
  PRIMARY KEY (`statusid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `time_blocks`
+--
+
+DROP TABLE IF EXISTS `time_blocks`;
+CREATE TABLE `time_blocks` (
+ `blockid` int(10) unsigned NOT NULL auto_increment,
+ `label` varchar(85) NOT NULL,
+ `cost_multiplier` numeric(7,2),
+ `constraint_function` text,
+ PRIMARY KEY (`blockid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
 
 --
 -- Table structure for table `reservation_info`
 --
 
-DROP TABLE IF EXISTS `reservation_info`;
-CREATE TABLE `reservation_info` (
- `reservation_infoid` int(10) unsigned NOT NULL auto_increment,
- `reserving_userid` int(10) unsigned NOT NULL,
+DROP TABLE IF EXISTS `reservations`;
+CREATE TABLE `reservations` (
+ `reservationid` int(10) unsigned NOT NULL auto_increment,
+ `reserving_user_id` int(10) unsigned NOT NULL,
+ `reserved_resource_id` int(10) unsigned NOT NULL,
  `start_date` datetime NOT NULL,
  `end_date` datetime NOT NULL,
  `date_created` datetime NOT NULL,
- `date_last_modified` datetime default NULL,
- `summary` text,
+ `last_modified` timestamp default NULL,
+ `title` varchar(85) NOT NULL,
+ `description` text,
  `allow_participation` tinyint(1) unsigned NOT NULL,
- `allow_anon_participation` tinyint(1) unsigned NOT NULL,
- `typeid` int(10) unsigned NOT NULL,
- `statusid` int(10) unsigned NOT NULL,
- PRIMARY KEY (`reservation_infoid`),
- INDEX (`reserving_userid`),
- FOREIGN KEY (`reserving_userid`) REFERENCES users(`userid`),
+ `allow_anon_participation` tinyint(1) unsigned,
+ `typeid` int(10) unsigned,
+ `statusid` int(10) unsigned,
+ `total_cost` dec(7,2),
+ `time_block_id` int(10) unsigned,
+ PRIMARY KEY (`reservationid`),
+ INDEX (`reserving_user_id`),
+ FOREIGN KEY (`reserving_user_id`) REFERENCES users(`userid`),
+ INDEX (`reserved_resource_id`),
+ FOREIGN KEY (`reserved_resource_id`) REFERENCES resources(`resourceid`),
  INDEX (`typeid`),
  FOREIGN KEY (`typeid`) REFERENCES reservation_type(`typeid`),
  INDEX (`statusid`),
- FOREIGN KEY (`statusid`) REFERENCES reservation_status(`statusid`)
+ FOREIGN KEY (`statusid`) REFERENCES reservation_status(`statusid`),
+ INDEX (`time_block_id`),
+ FOREIGN KEY (`time_block_id`) REFERENCES time_blocks(`blockid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -181,14 +236,15 @@ DROP TABLE IF EXISTS `resources`;
 CREATE TABLE `resources` (
  `resourceid` int(10) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
- `location` varchar(85) default NULL,
- `contact_info` varchar(85) default NULL,
+ `location` varchar(85),
+ `contact_info` varchar(85),
  `description` text,
  `notes` text,
  `isactive` tinyint(1) unsigned NOT NULL default '1',
  `min_duration` time default NULL,
- `min_time_block` time default NULL,
+ `min_increment` time default NULL,
  `max_duration` time default NULL,
+ `unit_cost` dec(7,2),
  `autoassign` tinyint(1) unsigned NOT NULL,
  `requires_approval` tinyint(1) unsigned NOT NULL,
  `allow_multiple_day_reservations` tinyint(1) unsigned NOT NULL default '1',
@@ -196,26 +252,10 @@ CREATE TABLE `resources` (
  `min_notice_time` time default NULL,
  `max_notice_time` time default NULL,
  `constraintid` smallint(5) unsigned NOT NULL,
- `legacyid` char(16) default NULL,
+ `legacyid` char(16),
  PRIMARY KEY (`resourceid`),
  INDEX (`constraintid`),
  FOREIGN KEY (`constraintid`) REFERENCES resource_constraints(`constraintid`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `reservations`
---
-
-DROP TABLE IF EXISTS `reservations`;
-CREATE TABLE `reservations` (
- `reservation_id` int(10) unsigned NOT NULL auto_increment,
- `reservation_infoid` int(10) unsigned NOT NULL,
- `resourceid` int(10) unsigned NOT NULL,
- PRIMARY KEY (`reservation_id`),
- INDEX (`reservation_infoid`),
- FOREIGN KEY (`reservation_infoid`) REFERENCES reservation_info(`reservation_infoid`),
- INDEX (`resourceid`),
- FOREIGN KEY (`resourceid`) REFERENCES resources(`resourceid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
