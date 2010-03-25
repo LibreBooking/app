@@ -77,7 +77,7 @@ DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE `user_roles` (
  `roleid` tinyint(2) unsigned NOT NULL,
  `role_name` varchar(85),
- `isadmin` tinyint(1) unsigned,
+ `user_level` tinyint(1) unsigned,
  PRIMARY KEY (`roleid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
