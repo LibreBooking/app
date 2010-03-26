@@ -7,7 +7,9 @@ class FormKeys
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
-	const INSTITUTION = 'institution';
+	const ORGANIZATION = 'organization';
+	const GROUP = 'group';
+	const ADDRESS = 'address';
 	const LANGUAGE = 'language';
 	const LAST_NAME = 'lname';
 	const LOGIN = 'login';
