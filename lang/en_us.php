@@ -123,26 +123,6 @@ class en_us extends Language
 		$strings['phpScheduleIt Statistics'] = 'phpScheduleIt Statistics';
 		$strings['User Info'] = 'User Info:';
 		
-		$strings['ResourceName'] = 'Resource name';
-		$strings['ResourceLocation'] = 'Location of resource';
-		$strings['Description'] = 'Description of resource';
-		$strings['ContactInfo'] = 'Contact information for resource';
-		$strings['ResourceNotes'] = 'Additional notes';
-		$strings['IsActive'] = 'Resource is currently available for reservations';
-		$strings['MinDuration'] = 'Minimum duration of reservation';
-		$strings['MinIncrement'] = 'Minimum increment of reservation';
-		$strings['MaxDuration'] = 'Maximum duration of reservation';
-		$strings['UnitCost'] = 'Time unit cost for resource';
-		$strings['AutoAssign'] = 'Assign resource automatically';
-		$strings['RequiresApproval'] = 'Reservation requires approval';
-		$strings['MultidayReservations'] = 'Allow multiple day reservations';
-		$strings['MaxParticipants'] = 'Maximum number of participants';
-		$strings['MinNotice'] = 'Minimum notice time before reservation';
-		$strings['MaxNotice'] = 'Maximum notice time before reservation';
-		$strings['Constraints'] = 'Resource constraints';
-		$strings['LongQuota'] = 'Period quota';
-		$strings['DayQuota'] = 'Daily quota';
-		
 		$strings['Could not determine tool'] = 'Could not determine tool. Please return to My Control Panel and try again later.';
 		$strings['This is only accessable to the administrator'] = 'This is only accessible to the administrator';
 		$strings['Back to My Control Panel'] = 'Back to My Control Panel';
@@ -717,6 +697,31 @@ class en_us extends Language
 		
 		// Since 2.0
 		$strings['Login Error'] = 'We could not match your username or password';
+		
+		$strings['ResourceName'] = 'Resource name';
+		$strings['ResourceLocation'] = 'Location of resource';
+		$strings['Description'] = 'Description of resource';
+		$strings['ContactInfo'] = 'Contact information for resource';
+		$strings['ResourceNotes'] = 'Additional notes';
+		$strings['IsActive'] = 'Resource is currently available for reservations';
+		$strings['MinDuration'] = 'Minimum duration of reservation';
+		$strings['MinIncrement'] = 'Minimum increment of reservation';
+		$strings['MaxDuration'] = 'Maximum duration of reservation';
+		$strings['UnitCost'] = 'Time unit cost for resource';
+		$strings['AutoAssign'] = 'Assign resource automatically';
+		$strings['RequiresApproval'] = 'Reservation requires approval';
+		$strings['MultidayReservations'] = 'Allow multiple day reservations';
+		$strings['MaxParticipants'] = 'Maximum number of participants';
+		$strings['MinNotice'] = 'Minimum notice time before reservation';
+		$strings['MaxNotice'] = 'Maximum notice time before reservation';
+		$strings['Constraints'] = 'Resource constraints';
+		$strings['LongQuota'] = 'Period quota';
+		$strings['DayQuota'] = 'Daily quota';
+		
+		$strings['Address'] = 'Address';
+		$strings['Organization'] = 'Organization';
+		$strings['Group'] = 'Group';
+		
 		// end Since 2.0
 		
 		$this->Strings = $strings;
