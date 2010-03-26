@@ -12,9 +12,8 @@ DROP TABLE IF EXISTS `announcements`;
 CREATE TABLE `announcements` (
  `announcementid` mediumint(8) unsigned NOT NULL auto_increment,
  `announcement_text` text NOT NULL,
- `order_number` smallint(5) unsigned NOT NULL,
- `start_datetime` datetime default NULL,
- `end_datetime` datetime default NULL,
+ `start_datetime` datetime,
+ `end_datetime` datetime,
  PRIMARY KEY (`announcementid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -121,7 +120,7 @@ CREATE TABLE `user_status` (
 DROP TABLE IF EXISTS `user_address`;
 CREATE TABLE `user_address` (
  `addressid` tinyint(2) unsigned NOT NULL auto_increment,
- `address_info` text,
+ `address_info` text NOT NULL,
  `address_label` varchar(85),
  PRIMARY KEY (`addressid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
@@ -137,9 +136,9 @@ CREATE TABLE `users` (
  `email` varchar(85) NOT NULL,
  `password` varchar(85) NOT NULL,
  `salt` varchar(85) NOT NULL,
- `fname` varchar(85) NOT NULL,
- `lname` varchar(85) NOT NULL,
- `phone` varchar(85) default NULL,
+ `fname` varchar(85),
+ `lname` varchar(85),
+ `phone` varchar(85),
  `position` varchar(85),
  `timezone` varchar(85) NOT NULL,
  `lastlogin` datetime,
@@ -194,16 +193,16 @@ CREATE TABLE `resources` (
  `description` text,
  `notes` text,
  `isactive` tinyint(1) unsigned NOT NULL default '1',
- `min_duration` time default NULL,
- `min_increment` time default NULL,
- `max_duration` time default NULL,
+ `min_duration` time,
+ `min_increment` time,
+ `max_duration` time,
  `unit_cost` dec(7,2),
- `autoassign` tinyint(1) unsigned NOT NULL,
+ `autoassign` tinyint(1) unsigned NOT NULL default '1',
  `requires_approval` tinyint(1) unsigned NOT NULL,
  `allow_multiple_day_reservations` tinyint(1) unsigned NOT NULL default '1',
- `max_participants` mediumint(8) unsigned default NULL,
- `min_notice_time` time default NULL,
- `max_notice_time` time default NULL,
+ `max_participants` mediumint(8) unsigned,
+ `min_notice_time` time,
+ `max_notice_time` time,
  `legacyid` char(16),
  `constraint_id` smallint(5) unsigned,
  `long_quota_id` smallint(5) unsigned,
@@ -267,6 +266,21 @@ CREATE TABLE `schedules` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
+-- Table structure for table `schedule_time_blocks`
+--
+
+DROP TABLE IF EXISTS `schedule_time_blocks`;
+CREATE TABLE `schedule_time_blocks` (
+ `block_id` tinyint(2) unsigned NOT NULL,
+ `schedule_id` smallint(5) unsigned NOT NULL,
+ PRIMARY KEY (`schedule_id`, `block_id`),
+ INDEX (`block_id`),
+ FOREIGN KEY (`block_id`) REFERENCES time_blocks(`blockid`),
+ INDEX (`schedule_id`),
+ FOREIGN KEY (`schedule_id`) REFERENCES schedules(`scheduleid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
 -- Table structure for table `resource_schedules`
 --
 
@@ -317,7 +331,7 @@ CREATE TABLE `reservations` (
  `title` varchar(85) NOT NULL,
  `description` text,
  `allow_participation` tinyint(1) unsigned NOT NULL,
- `allow_anon_participation` tinyint(1) unsigned,
+ `allow_anon_participation` tinyint(1) unsigned NOT NULL,
  `user_id` mediumint(8) unsigned NOT NULL,
  `role_id` tinyint(2) unsigned,
  `resource_id` smallint(5) unsigned NOT NULL,
