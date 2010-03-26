@@ -14,8 +14,8 @@ function checkForm(f) {
 		msg+="-Phone number is required\n";
 		errors = true;
 	}
-	if (f.institution.value == "") {
-		msg+="-Institution is required\n";
+	if (f.organization.value == "") {
+		msg+="-Organization is required\n";
 		errors = true;
 	}
 	if ( (f.email.value == "") || ( f.email.value.indexOf('@') == -1) ) {
@@ -43,7 +43,7 @@ function verifyEdit() {
 		errors = true;
 	}
 	if ( (document.register.password.value != "") && (document.register.password.value != document.register.password2.value) ) {
-		msg+=("-Passwords to not match\n");
+		msg+=("-Passwords do not match\n");
 		errors = true;
 	}
 	if (errors) {
