@@ -12,9 +12,21 @@ DROP TABLE IF EXISTS `announcements`;
 CREATE TABLE `announcements` (
  `announcementid` mediumint(8) unsigned NOT NULL auto_increment,
  `announcement_text` text NOT NULL,
+ `order_number` mediumint(8) NOT NULL,
  `start_datetime` datetime,
  `end_datetime` datetime,
  PRIMARY KEY (`announcementid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `time_block_groups`
+--
+
+DROP TABLE IF EXISTS `time_block_groups`;
+CREATE TABLE `time_block_groups` (
+ `block_groupid` tinyint(2) unsigned NOT NULL,
+ `label` varchar(85) NOT NULL,
+ PRIMARY KEY (`block_groupid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -24,13 +36,16 @@ CREATE TABLE `announcements` (
 DROP TABLE IF EXISTS `time_blocks`;
 CREATE TABLE `time_blocks` (
  `blockid` tinyint(2) unsigned NOT NULL,
+ `block_group_id` tinyint(2) unsigned NOT NULL,
  `label` varchar(85) NOT NULL,
  `start_time` time NOT NULL,
  `end_time` time NOT NULL,
  `availability_code` tinyint(2) unsigned NOT NULL,
  `cost_multiplier` numeric(7,2),
  `constraint_function` text,
- PRIMARY KEY (`blockid`)
+ PRIMARY KEY (`blockid`),
+ INDEX (`block_group_id`),
+ FOREIGN KEY (`block_group_id`) REFERENCES time_block_groups(`block_groupid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -80,11 +95,11 @@ CREATE TABLE `organizations` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `user_groups`
+-- Table structure for table `groups`
 --
 
-DROP TABLE IF EXISTS `user_groups`;
-CREATE TABLE `user_groups` (
+DROP TABLE IF EXISTS `groups`;
+CREATE TABLE `groups` (
  `groupid` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
  PRIMARY KEY (`groupid`)
@@ -144,7 +159,6 @@ CREATE TABLE `users` (
  `lastlogin` datetime,
  `homepageid` tinyint(2) unsigned NOT NULL default '1',
  `organization_id` smallint(5) unsigned,
- `group_id` smallint(5) unsigned,
  `address_id` tinyint(2) unsigned,
  `day_quota_id` smallint(5) unsigned,
  `long_quota_id` smallint(5) unsigned,
@@ -155,8 +169,6 @@ CREATE TABLE `users` (
  PRIMARY KEY (`userid`),
  INDEX (`organization_id`),
  FOREIGN KEY (`organization_id`) REFERENCES organizations(`orgid`),
- INDEX (`group_id`),
- FOREIGN KEY (`group_id`) REFERENCES user_groups(`groupid`),
  INDEX (`address_id`),
  FOREIGN KEY (`address_id`) REFERENCES user_address(`addressid`),
  INDEX (`day_quota_id`),
@@ -170,11 +182,26 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `resource_constraints`
+-- Table structure for table `user_groups`
 --
 
-DROP TABLE IF EXISTS `resource_constraints`;
-CREATE TABLE `resource_constraints` (
+DROP TABLE IF EXISTS `user_groups`;
+CREATE TABLE `user_groups` (
+ `group_id` smallint(5) unsigned NOT NULL,
+ `user_id` mediumint(8) unsigned NOT NULL,
+ PRIMARY KEY (`group_id`, `user_id`),
+ INDEX (`group_id`),
+ FOREIGN KEY (`group_id`) REFERENCES groups(`groupid`),
+ INDEX (`user_id`),
+ FOREIGN KEY (`user_id`) REFERENCES users(`userid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `constraint_functions`
+--
+
+DROP TABLE IF EXISTS `constraint_functions`;
+CREATE TABLE `constraint_functions` (
  `constraintid` smallint(5) unsigned NOT NULL,
  `constraint_function` text,
  PRIMARY KEY (`constraintid`)
@@ -204,16 +231,28 @@ CREATE TABLE `resources` (
  `min_notice_time` time,
  `max_notice_time` time,
  `legacyid` char(16),
- `constraint_id` smallint(5) unsigned,
  `long_quota_id` smallint(5) unsigned,
  `day_quota_id` smallint(5) unsigned,
  PRIMARY KEY (`resourceid`),
- INDEX (`constraint_id`),
- FOREIGN KEY (`constraint_id`) REFERENCES resource_constraints(`constraintid`),
  INDEX (`long_quota_id`),
  FOREIGN KEY (`long_quota_id`) REFERENCES long_quotas(`long_quotaid`), 
  INDEX (`day_quota_id`),
  FOREIGN KEY (`day_quota_id`) REFERENCES day_quotas(`day_quotaid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `resource_constraints`
+--
+
+DROP TABLE IF EXISTS `resource_constraints`;
+CREATE TABLE `resource_constraints` (
+ `constraint_id` smallint(5) unsigned,
+ `resource_id` smallint(5) unsigned,
+ PRIMARY KEY (`constraint_id`, `resource_id`),
+ INDEX (`constraint_id`),
+ FOREIGN KEY (`constraint_id`) REFERENCES constraint_functions(`constraintid`),
+ INDEX (`resource_id`),
+ FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -243,7 +282,7 @@ CREATE TABLE `group_resource_permissions` (
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
  INDEX (`group_id`),
- FOREIGN KEY (`group_id`) REFERENCES user_groups(`groupid`)
+ FOREIGN KEY (`group_id`) REFERENCES groups(`groupid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -255,8 +294,6 @@ CREATE TABLE `schedules` (
  `scheduleid` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
  `isdefault` tinyint(1) unsigned NOT NULL,
- `daystart` date NOT NULL,
- `dayend` date NOT NULL,
  `weekdaystart` tinyint(2) unsigned NOT NULL,
  `admin_id` mediumint(8) unsigned NOT NULL,
  `daysvisible` tinyint(2) unsigned NOT NULL default '7',
@@ -266,16 +303,16 @@ CREATE TABLE `schedules` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `schedule_time_blocks`
+-- Table structure for table `schedule_time_block_groups`
 --
 
-DROP TABLE IF EXISTS `schedule_time_blocks`;
-CREATE TABLE `schedule_time_blocks` (
- `block_id` tinyint(2) unsigned NOT NULL,
+DROP TABLE IF EXISTS `schedule_time_block_groups`;
+CREATE TABLE `schedule_time_block_groups` (
+ `block_group_id` tinyint(2) unsigned NOT NULL,
  `schedule_id` smallint(5) unsigned NOT NULL,
- PRIMARY KEY (`schedule_id`, `block_id`),
- INDEX (`block_id`),
- FOREIGN KEY (`block_id`) REFERENCES time_blocks(`blockid`),
+ PRIMARY KEY (`schedule_id`, `block_group_id`),
+ INDEX (`block_group_id`),
+ FOREIGN KEY (`block_group_id`) REFERENCES time_blocks(`blockid`),
  INDEX (`schedule_id`),
  FOREIGN KEY (`schedule_id`) REFERENCES schedules(`scheduleid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
@@ -334,7 +371,6 @@ CREATE TABLE `reservations` (
  `allow_anon_participation` tinyint(1) unsigned NOT NULL,
  `user_id` mediumint(8) unsigned NOT NULL,
  `role_id` tinyint(2) unsigned,
- `resource_id` smallint(5) unsigned NOT NULL,
  `type_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned,
  `total_cost` dec(7,2),
@@ -342,8 +378,6 @@ CREATE TABLE `reservations` (
  PRIMARY KEY (`reservationid`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) REFERENCES users(`userid`),
- INDEX (`resource_id`),
- FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
  INDEX (`role_id`),
  FOREIGN KEY (`role_id`) REFERENCES user_roles(`roleid`),
  INDEX (`type_id`),
@@ -353,3 +387,20 @@ CREATE TABLE `reservations` (
  INDEX (`time_block_id`),
  FOREIGN KEY (`time_block_id`) REFERENCES time_blocks(`blockid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `reservation_resources`
+--
+
+DROP TABLE IF EXISTS `reservation_resources`;
+CREATE TABLE `reservation_resources` (
+ `reservation_id` mediumint(8) unsigned NOT NULL,
+ `resource_id` smallint(5) unsigned NOT NULL,
+ PRIMARY KEY (`reservation_id`, `resource_id`),
+ INDEX (`resource_id`),
+ FOREIGN KEY (`resource_id`) REFERENCES resources(`resourceid`),
+ INDEX (`reservation_id`),
+ FOREIGN KEY (`reservation_id`) REFERENCES reservations(`reservationid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+
