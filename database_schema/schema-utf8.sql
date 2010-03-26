@@ -295,11 +295,23 @@ CREATE TABLE `schedules` (
  `name` varchar(85) NOT NULL,
  `isdefault` tinyint(1) unsigned NOT NULL,
  `weekdaystart` tinyint(2) unsigned NOT NULL,
- `admin_id` mediumint(8) unsigned NOT NULL,
  `daysvisible` tinyint(2) unsigned NOT NULL default '7',
- PRIMARY KEY (`scheduleid`),
- INDEX (`admin_id`),
- FOREIGN KEY (`admin_id`) REFERENCES users(`userid`)
+ PRIMARY KEY (`scheduleid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `schedule_admins`
+--
+
+DROP TABLE IF EXISTS `schedule_admins`;
+CREATE TABLE `schedule_admins` (
+ `user_id` mediumint(8) unsigned NOT NULL,
+ `schedule_id` smallint(5) unsigned NOT NULL,
+ PRIMARY KEY (`schedule_id`, `user_id`),
+ INDEX (`user_id`),
+ FOREIGN KEY (`user_id`) REFERENCES users(`userid`),
+ INDEX (`schedule_id`),
+ FOREIGN KEY (`schedule_id`) REFERENCES schedules(`scheduleid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
