@@ -8,43 +8,43 @@
 
         <div class="resourceHeader"><h3>Resource Management</h3></div>
         <p>
-                <label class="res-req">{translate key="Name"}<br />
-                {textbox name="NAME" class="input" value="ResourceName" size="20" tabindex="10"}
+                <label class="res-req">{translate key="ResourceName"}<br />
+                {textbox name="RESOURCE_NAME" class="input" value="ResourceName" size="20" tabindex="10"}
                 </label>
         </p>
         <p>
-                <label class="res">{translate key="Location"}<br />
-                {textbox name="LOCATION" class="input" value="Location" size="20" tabindex="20"}
+                <label class="res">{translate key="ResourceLocation"}<br />
+                {textbox name="RESOURCE_LOCATION" class="input" value="Location" size="20" tabindex="20"}
+                </label>
+        </p>
+        <p>
+                <label class="res">{translate key="ContactInfo"}<br />
+                {textbox name="CONTACT_INFO" class="input" value="ContactINfo" size="20" tabindex="30"}
                 </label>
         </p>
         <p>
                 <label class="res">{translate key="Description"}<br />
-                {textbox name="DESCRIPTION" class="input" value="Description" size="20" tabindex="30"}
+                {textbox name="DESCRIPTION" class="input" value="Description" size="20" tabindex="40"}
                 </label>
         </p>
         <p>
-                <label class="res">{translate key="Notes"}<br />
-                {textbox name="NOTES" class="input" value="Notes" size="20" tabindex="40"}
+                <label class="res">{translate key="ResourceNotes"}<br />
+                {textbox name="RESOURCE_NOTES" class="input" value="Notes" size="20" tabindex="50"}
                 </label>
         </p>
         <p>
-                <label class="res">{translate key="IsActive"}<br />
-                {textbox name="IS_ACTIVE" class="input" value="IsActive" size="20" tabindex="50"}
-                </label>
-        </p>
-        <p>
-                <label class="res">{translate key="MinDuration"}<br />
+                <label class="res">{translate key="MinDuration"} (HH:MM)<br />
                 {textbox name="MIN_NOTICE" class="input" value="MinDuration" size="20" tabindex="60"}
                 </label>
         </p>
         <p>
-                <label class="res">{translate key="MinIncrement"}<br />
-                {textbox name="MIN_INCREMENT" class="input" value="MinIncrement" size="20" tabindex="70"}
+                <label class="res">{translate key="MaxDuration"} (D HH:MM)<br />
+                {textbox name="MAX_DURATION" class="input" value="MaxDuration" size="20" tabindex="70"}
                 </label>
         </p>
         <p>
-                <label class="res">{translate key="MaxDuration"}<br />
-                {textbox name="MAX_DURATION" class="input" value="MaxDuration" size="20" tabindex="80"}
+                <label class="res">{translate key="MinIncrement"} (HH:MM)<br />
+                {textbox name="MIN_INCREMENT" class="input" value="MinIncrement" size="20" tabindex="80"}
                 </label>
         </p>
         <p>
@@ -53,49 +53,50 @@
                 </label>
         </p>
         <p>
-                <label class="res">{translate key="AutoAssign"}<br />
-                {textbox name="AUTO_ASSIGN" class="input" value="AutoAssign" size="20" tabindex="100"}
-                </label>
-        </p>
-        <p>
-                <label class="res">{translate key="RequiresApproval"}<br />
-                {textbox name="REQUIRES_APPROVAL" class="input" value="RequiresApproval" size="20" tabindex="110"}
-                </label>
-        </p>
-        <p>
-                <label class="res">{translate key="AllowMultipleDayReservations"}<br />
-                {textbox name="MULTIDAY_RESERVATIONS" class="input" value="AllowMultipleDayReservations" size="20" tabindex="120"}
-                </label>
-        </p>
-        <p>
                 <label class="res">{translate key="MaxParticipants"}<br />
-                {textbox name="MAX_PARTICIPANTS" class="input" value="MaxParticipants" size="20" tabindex="130"}
+                {textbox name="MAX_PARTICIPANTS" class="input" value="MaxParticipants" size="20" tabindex="100"}
                 </label>
         </p>
         <p>
-                <label class="res">{translate key="MinNotice"}<br />
-                {textbox name="MIN_NOTICE" class="input" value="MinNotice" size="20" tabindex="140"}
+                <label class="res">{translate key="MinNotice"} (HH:MM)<br />
+                {textbox name="MIN_NOTICE" class="input" value="MinNotice" size="20" tabindex="110"}
                 </label>
         </p>
         <p>
-                <label class="res">{translate key="MaxNotice"}<br />
-                {textbox name="MAX_NOTICE" class="input" value="MaxNotice" size="20" tabindex="150"}
+                <label class="res">{translate key="MaxNotice"} (D HH:MM)<br />
+                {textbox name="MAX_NOTICE" class="input" value="MaxNotice" size="20" tabindex="120"}
                 </label>
         </p>
         <p>
                 <label class="res">{translate key="Constraints"}<br />
-                {textbox name="CONSTRAINTS" class="input" value="Constraints" size="20" tabindex="160"}
+                {textbox name="RESOURCE_CONSTRAINTS" class="input" value="Constraints" size="20" tabindex="130"}
                 </label>
         </p>
         <p>
                 <label class="res">{translate key="LongQuota"}<br />
-                {textbox name="LONG_QUOTA" class="input" value="LongQuota" size="20" tabindex="170"}
+                {textbox name="RESOURCE_LONG_QUOTA" class="input" value="LongQuota" size="20" tabindex="140"}
                 </label>
         </p>
         <p>
                 <label class="res">{translate key="DayQuota"}<br />
-                {textbox name="DAY_QUOTA" class="input" value="DayQuota" size="20" tabindex="180"}
+                {textbox name="RESOURCE_DAY_QUOTA" class="input" value="DayQuota" size="20" tabindex="150"}
                 </label>
+        </p>
+        <p class="res-checkbox">
+		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::MULTIDAY_RESERVATIONS'}" 
+				value="true" tabindex="160" /> {translate key="MultidayReservations"}</label>
+        </p>
+        <p class="res-checkbox">
+		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::AUTO_ASSIGN'}" 
+				value="true" tabindex="170" /> {translate key="AutoAssign"}</label>
+        </p>
+        <p class="res-checkbox">
+		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::REQUIRES_APPROVAL'}" 
+				value="true" tabindex="180" /> {translate key="RequiresApproval"}</label>
+        </p>
+        <p class="res-checkbox">
+		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::IS_ACTIVE'}" 
+				value="true" tabindex="190" /> {translate key="IsActive"}</label>
         </p>
 
         <p class="save">
@@ -103,5 +104,5 @@
         </p>
 </form>
 </div>
-{setfocus key='NAME'}
+{setfocus key='RESOURCE_NAME'}
 {include file='footer.tpl'}

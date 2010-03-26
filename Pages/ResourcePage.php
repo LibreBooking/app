@@ -167,12 +167,12 @@ class ResourcePage extends Page implements IResourcePage
 
 	public function GetResourceName()
 	{
-		return $this->GetForm(FormKeys::NAME);
+		return $this->GetForm(FormKeys::RESOURCE_NAME);
 	}
 	
 	public function GetLocation()
 	{
-		return $this->GetForm(FormKeys::LOCATION);
+		return $this->GetForm(FormKeys::RESOURCE_LOCATION);
 	}
 	
 	public function GetContactInfo()
@@ -187,7 +187,7 @@ class ResourcePage extends Page implements IResourcePage
 	
 	public function GetNotes()
 	{
-		return $this->GetForm(FormKeys::NOTES);
+		return $this->GetForm(FormKeys::RESOURCE_NOTES);
 	}
 	
 	public function GetIsActive()
@@ -247,17 +247,17 @@ class ResourcePage extends Page implements IResourcePage
 	
 	public function GetConstraints()
 	{
-		return $this->GetForm(FormKeys::CONSTRAINTS);
+		return $this->GetForm(FormKeys::RESOURCE_CONSTRAINTS);
 	}
 	
 	public function GetLongQuota()
 	{
-		return $this->GetForm(FormKeys::LONG_QUOTA);
+		return $this->GetForm(FormKeys::RESOURCE_LONG_QUOTA);
 	}
 	
 	public function GetDayQuota()
 	{
-		return $this->GetForm(FormKeys::DAY_QUOTA);
+		return $this->GetForm(FormKeys::RESOURCE_DAY_QUOTA);
 	}
 }
 ?>

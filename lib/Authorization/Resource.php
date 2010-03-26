@@ -7,12 +7,27 @@ class Resource implements IResource
 	{
 		$resourceEditCommand = new ResourceEditCommand(
 					$name, 
-					$additionalFields['phone'],
-					$additionalFields['institution'],
-					$additionalFields['position'], 
+					$additionalFields['location'],
+					$additionalFields['contact_info'],
+					$additionalFields['description'], 
+					$additionalFields['notes'], 
+					$additionalFields['isactive'], 
+					$additionalFields['min_duration'], 
+					$additionalFields['min_increment'], 
+					$additionalFields['max_duration'], 
+					$additionalFields['unit_cost'], 
+					$additionalFields['autoassign'], 
+					$additionalFields['requires_approval'], 
+					$additionalFields['allow_multiple_day_reservations'], 
+					$additionalFields['max_participants'], 
+					$additionalFields['min_notice_time'], 
+					$additionalFields['max_notice_time'], 
+					$additionalFields['constraint_id'], 
+					$additionalFields['long_quota_id'], 
+					$additionalFields['day_quota_id']
 					);
 					
-		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($resourceCommand);
+		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($resourceEditCommand);
 		
 		//$this->AutoAssignPermissions($userId);
 	}

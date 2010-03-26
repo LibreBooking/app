@@ -66,10 +66,10 @@ class GetAllSchedulesCommand extends SqlCommand
 
 class GetAllUsersByStatusCommand extends SqlCommand
 {
-	public function __construct($accountStatusId)
+	public function __construct($userStatusId)
 	{
 		parent::__construct(Queries::GET_ALL_USERS_BY_STATUS);
-		$this->AddParameter(new Parameter(ParameterNames::ACCOUNT_STATUS_ID, $accountStatusId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
 	}
 }
 
@@ -106,7 +106,7 @@ class GetScheduleResourcesCommand extends SqlCommand
 {
 	public function __construct($scheduleId)
 	{
-		parent::__construct(Queries::GET_SCHEDULE_RESOURCES);
+		parent::__construct(Queries::GET_RESOURCE_SCHEDULES);
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
 }
@@ -142,7 +142,7 @@ class MigratePasswordCommand extends SqlCommand
 
 class RegisterUserCommand extends SqlCommand 
 {
-	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $homepageId, $phone, $institution, $position, $accountStatusId)
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $homepageId, $phone, $institution, $position, $userStatusId)
 	{
 		parent::__construct(Queries::REGISTER_USER);
 		
@@ -157,13 +157,13 @@ class RegisterUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
 		$this->AddParameter(new Parameter(ParameterNames::INSTITUTION, $institution));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));	
-		$this->AddParameter(new Parameter(ParameterNames::ACCOUNT_STATUS_ID, $accountStatusId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
 	}
 }
 
 class RegisterMiniUserCommand extends SqlCommand 
 {
-	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $accountStatusId)
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $userStatusId, $userRoleId)
 	{
 		parent::__construct(Queries::REGISTER_MINI_USER);
 		
@@ -174,7 +174,39 @@ class RegisterMiniUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
 		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
 		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE, $timezone));
-		$this->AddParameter(new Parameter(ParameterNames::ACCOUNT_STATUS_ID, $accountStatusId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ROLE_ID, $userRoleId));
+	}
+}
+
+class ResourceEditCommand extends SqlCommand 
+{
+	public function __construct($name, $location, $contact_info, $description, $notes, $isactive, 
+								$min_duration, $min_increment, $max_duration, $unit_cost, $autoassign, 
+								$requires_approval, $allow_multiple_day_reservations, $max_participants, 
+								$min_notice_time, $max_notice_time)//, $constraint_id, $long_quota_id, $day_quota_id)
+	{
+		parent::__construct(Queries::EDIT_RESOURCE);
+		
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NAME, $name));	
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LOCATION, $location));
+		$this->AddParameter(new Parameter(ParameterNames::CONTACT_INFO, $contact_info));
+		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NOTES, $notes));
+		$this->AddParameter(new Parameter(ParameterNames::IS_ACTIVE, $isactive));
+		$this->AddParameter(new Parameter(ParameterNames::MIN_DURATION, $min_duration));
+		$this->AddParameter(new Parameter(ParameterNames::MIN_INCREMENT, $min_increment));
+		$this->AddParameter(new Parameter(ParameterNames::MAX_DURATION, $max_duration));
+		$this->AddParameter(new Parameter(ParameterNames::UNIT_COST, $unit_cost));
+		$this->AddParameter(new Parameter(ParameterNames::AUTO_ASSIGN, $autoassign));
+		$this->AddParameter(new Parameter(ParameterNames::REQUIRES_APPROVAL, $requires_approval));
+		$this->AddParameter(new Parameter(ParameterNames::MULTIDAY_RESERVATIONS, $allow_multiple_day_reservations));
+		$this->AddParameter(new Parameter(ParameterNames::MAX_PARTICIPANTS, $max_participants));
+		$this->AddParameter(new Parameter(ParameterNames::MIN_NOTICE, $min_notice_time));
+		$this->AddParameter(new Parameter(ParameterNames::MAX_NOTICE, $max_notice_time));
+		/*$this->AddParameter(new Parameter(ParameterNames::RESOURCE_CONSTRAINTS, $constraint_id));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LONG_QUOTA, $long_quota_id));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_DAY_QUOTA, $day_quota_id));*/
 	}
 }
 
@@ -182,7 +214,7 @@ class SelectUserPermissions extends SqlCommand
 {
 	public function __construct($userId)
 	{
-		parent::__construct(Queries::GET_USER_PERMISSIONS);
+		parent::__construct(Queries::GET_USER_RESOURCE_PERMISSIONS);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));	
 	}
 }
@@ -191,7 +223,7 @@ class SelectUserGroupPermissions extends SqlCommand
 {
 	public function __construct($userId)
 	{
-		parent::__construct(Queries::GET_USER_GROUP_PERMISSIONS);
+		parent::__construct(Queries::GET_GROUP_RESOURCE_PERMISSIONS);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));	
 	}
 }

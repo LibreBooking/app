@@ -7,5 +7,6 @@ class Actions
 	
 	const LOGIN = 'login';
 	const REGISTER = 'register';
+	const SAVE = 'save';
 }
 ?>
