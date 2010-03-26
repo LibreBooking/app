@@ -422,7 +422,7 @@ label.reg, .res {
         font-size: 18px;
 }
 
-label.res-req {
+label.res-req, .reg-req {
         color: #700;
         font-size: 18px;
 }
