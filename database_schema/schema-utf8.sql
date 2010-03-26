@@ -113,7 +113,7 @@ DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE `user_roles` (
  `roleid` tinyint(2) unsigned NOT NULL,
  `role_name` varchar(85),
- `user_level` tinyint(1) unsigned,
+ `user_level` tinyint(2) unsigned,
  PRIMARY KEY (`roleid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -158,6 +158,8 @@ CREATE TABLE `users` (
  `timezone` varchar(85) NOT NULL,
  `lastlogin` datetime,
  `homepageid` tinyint(2) unsigned NOT NULL default '1',
+ `date_created` datetime NOT NULL,
+ `last_modified` timestamp,
  `organization_id` smallint(5) unsigned,
  `address_id` tinyint(2) unsigned,
  `day_quota_id` smallint(5) unsigned,
@@ -382,7 +384,6 @@ CREATE TABLE `reservations` (
  `allow_participation` tinyint(1) unsigned NOT NULL,
  `allow_anon_participation` tinyint(1) unsigned NOT NULL,
  `user_id` mediumint(8) unsigned NOT NULL,
- `role_id` tinyint(2) unsigned,
  `type_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned,
  `total_cost` dec(7,2),
@@ -390,8 +391,6 @@ CREATE TABLE `reservations` (
  PRIMARY KEY (`reservationid`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) REFERENCES users(`userid`),
- INDEX (`role_id`),
- FOREIGN KEY (`role_id`) REFERENCES user_roles(`roleid`),
  INDEX (`type_id`),
  FOREIGN KEY (`type_id`) REFERENCES reservation_types(`typeid`),
  INDEX (`status_id`),
