@@ -92,15 +92,15 @@ class Queries
 		'SELECT announcement_text 
 		FROM announcements
 		WHERE (start_datetime <= @current_date AND end_datetime >= @current_date)
-		ORDER BY start_datetime DESC';
+		ORDER BY order_number DESC';
 
-	const GET_SCHEDULE_TIME_BLOCKS = 
+	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
 		'SELECT 
-			tb.label, tb.starttime, tb.endtime, tb.availability_code
+			tbg.label, tb.starttime, tb.endtime, tb.availability_code
 		FROM 
-			time_blocks tb, schedule_time_blocks stb
+			time_blocks tb, time_block_groups tbg, schedule_time_block_groups stbg
 		WHERE 
-			tb.blockid = stb.block_id AND stb.scheduleid = @scheduleid';
+			tbg.block_id = tb.blockid AND tbg.block_groupid = stbg.block_group_id AND stbg.scheduleid = @scheduleid';
 	
 	const GET_RESERVATIONS_COMMAND =
 	 'SELECT
@@ -149,10 +149,9 @@ class Queries
 		'SELECT 
 			grp.group_id, r.resourceid, r.name
 		FROM
-			group_resource_permissions grp, resources r, user_groups ug, users u
+			group_resource_permissions grp, resources r, user_groups ug
 		WHERE
-			u.userid = @userid AND u.group_id = ug.groupid AND ug.groupid = grp.group_id
-			AND grp.resource_id = r.resourceid';
+			ug.userid = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resourceid';
 	
 	const GET_USER_ROLES = 
 		'SELECT 
