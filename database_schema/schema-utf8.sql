@@ -408,7 +408,7 @@ DROP TABLE IF EXISTS `reservation_time_blocks`;
 CREATE TABLE `reservation_time_blocks` (
  `reservation_id` mediumint(8) unsigned NOT NULL,
  `block_id` tinyint(2) unsigned NOT NULL,
- PRIMARY KEY (`reservation_id`, `resource_id`),
+ PRIMARY KEY (`reservation_id`, `block_id`),
  INDEX (`block_id`),
  FOREIGN KEY (`block_id`) REFERENCES time_blocks(`blockid`),
  INDEX (`reservation_id`),
