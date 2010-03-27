@@ -24,7 +24,7 @@ class ResourcePresenter
 	{
 		if (is_null($resource))
 		{
-			$this->_resource = new Resource();
+			$this->_resource = new AddResource();
 		}
 		else
 		{
@@ -52,7 +52,7 @@ class ResourcePresenter
 		}
 	}
 	
-	public function Resource()
+	public function AddResource()
 	{
 		if ($this->_page->IsValid())
 	    {
@@ -67,7 +67,7 @@ class ResourcePresenter
 									  'unit_cost' => $this->_page->GetUnitCost(),
 									  'autoassign' => $this->_page->GetAutoAssign(),
 									  'requires_approval' => $this->_page->GetRequiresApproval(),
-									  'allow_multiple_day_reservations' => $this->_page->GetAllowMultipleDayReservations(),
+									  'allow_multiday' => $this->_page->GetAllowMultiday(),
 									  'max_participants' => $this->_page->GetMaxParticipants(),
 									  'min_notice_time' => $this->_page->GetMinNotice(),
 									  'max_notice_time' => $this->_page->GetMaxNotice(),
@@ -75,7 +75,7 @@ class ResourcePresenter
 									  'long_quota_id' => $this->_page->GetLongQuota(),
 									  'day_quota_id' => $this->_page->GetDayQuota());
     		
-    		$this->_resource->Resource(
+    		$this->_resource->AddResource(
     			$this->_page->GetResourceName(), 
     			$additionalFields);
     			
