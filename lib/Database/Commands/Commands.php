@@ -6,7 +6,7 @@ class AuthorizationCommand extends SqlCommand
 	public function __construct($username)
 	{
 		parent::__construct(Queries::VALIDATE_USER);
-		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, strtolower($username)));	
+		$this->AddParameter(new Parameter(ParameterNames::USERNAME, strtolower($username)));	
 	}
 }
 
@@ -24,7 +24,7 @@ class CheckEmailCommand extends SqlCommand
 	public function __construct($emailAddress)
 	{
 		parent::__construct(Queries::CHECK_EMAIL);
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, strtolower($emailAddress)));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL, strtolower($emailAddress)));	
 	}
 }
 
@@ -33,8 +33,8 @@ class CheckUserExistanceCommand extends SqlCommand
 	public function __construct($username, $emailAddress)
 	{
 		parent::__construct(Queries::CHECK_USER_EXISTANCE);
-		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));	
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $emailAddress));	
+		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL, $emailAddress));	
 	}
 }
 
@@ -43,7 +43,7 @@ class CheckUsernameCommand extends SqlCommand
 	public function __construct($username)
 	{
 		parent::__construct(Queries::CHECK_USERNAME);
-		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));	
+		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
 	}
 }
 
@@ -96,8 +96,8 @@ class GetReservationsCommand extends SqlCommand
 	public function __construct($startDate, $endDate, $scheduleId)
 	{
 		parent::__construct(Queries::GET_RESERVATIONS_COMMAND);
-		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
-		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_START, $startDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_END, $endDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
 }
@@ -125,7 +125,7 @@ class LoginCommand extends SqlCommand
 	public function __construct($username)
 	{
 		parent::__construct(Queries::LOGIN_USER);
-		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, strtolower($username)));		
+		$this->AddParameter(new Parameter(ParameterNames::USERNAME, strtolower($username)));		
 	}
 }
 
@@ -146,8 +146,8 @@ class RegisterUserCommand extends SqlCommand
 	{
 		parent::__construct(Queries::REGISTER_USER);
 		
-		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));	
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
+		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
 		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
 		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
@@ -167,13 +167,13 @@ class RegisterMiniUserCommand extends SqlCommand
 	{
 		parent::__construct(Queries::REGISTER_MINI_USER);
 		
-		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));	
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
+		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
 		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
 		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
 		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
-		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE, $timezone));
+		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezone));
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ROLE_ID, $userRoleId));
 	}
@@ -183,27 +183,27 @@ class ResourceEditCommand extends SqlCommand
 {
 	public function __construct($name, $location, $contact_info, $description, $notes, $isactive, 
 								$min_duration, $min_increment, $max_duration, $unit_cost, $autoassign, 
-								$requires_approval, $allow_multiple_day_reservations, $max_participants, 
+								$requires_approval, $allow_multiday, $max_participants, 
 								$min_notice_time, $max_notice_time)//, $long_quota_id, $day_quota_id)
 	{
 		parent::__construct(Queries::EDIT_RESOURCE);
 		
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NAME, $name));	
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LOCATION, $location));
-		$this->AddParameter(new Parameter(ParameterNames::CONTACT_INFO, $contact_info));
-		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_CONTACT, $contact_info));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_DESCRIPTION, $description));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NOTES, $notes));
 		$this->AddParameter(new Parameter(ParameterNames::IS_ACTIVE, $isactive));
-		$this->AddParameter(new Parameter(ParameterNames::MIN_DURATION, $min_duration));
-		$this->AddParameter(new Parameter(ParameterNames::MIN_INCREMENT, $min_increment));
-		$this->AddParameter(new Parameter(ParameterNames::MAX_DURATION, $max_duration));
-		$this->AddParameter(new Parameter(ParameterNames::UNIT_COST, $unit_cost));
-		$this->AddParameter(new Parameter(ParameterNames::AUTO_ASSIGN, $autoassign));
-		$this->AddParameter(new Parameter(ParameterNames::REQUIRES_APPROVAL, $requires_approval));
-		$this->AddParameter(new Parameter(ParameterNames::MULTIDAY_RESERVATIONS, $allow_multiple_day_reservations));
-		$this->AddParameter(new Parameter(ParameterNames::MAX_PARTICIPANTS, $max_participants));
-		$this->AddParameter(new Parameter(ParameterNames::MIN_NOTICE, $min_notice_time));
-		$this->AddParameter(new Parameter(ParameterNames::MAX_NOTICE, $max_notice_time));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINDURATION, $min_duration));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MININCREMENT, $min_increment));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXDURATION, $max_duration));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_COST, $unit_cost));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_AUTOASSIGN, $autoassign));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_REQUIRES_APPROVAL, $requires_approval));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_MULTIDAY, $allow_multiday));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $max_participants));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $min_notice_time));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $max_notice_time));
 		/*$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LONG_QUOTA, $long_quota_id));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_DAY_QUOTA, $day_quota_id));*/
 	}
@@ -242,8 +242,8 @@ class UpdateUserFromLdapCommand extends SqlCommand
 	public function __construct($username, $email, $fname, $lname, $password, $salt, $phone, $institution, $position)
 	{
 		parent::__construct(Queries::UPDATE_USER_BY_USERNAME);
-		$this->AddParameter(new Parameter(ParameterNames::USER_NAME, $username));	
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
+		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
 		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
 		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));

@@ -13,3 +13,5 @@ insert into addresses values (1, 'home', 'home street, city, state and country')
 insert into user_addresses values (1,1);
 insert into reservation_types values (2, 'Down Time');
 insert into reservation_statuses values (2, 'Pending'),(3,'Approved'),(4,'Rejected');	
+insert into schedules (scheduleid, name) values (1, 'default');
+insert into schedule_time_block_groups values (1,2);

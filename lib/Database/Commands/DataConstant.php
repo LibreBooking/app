@@ -12,6 +12,7 @@ class ParameterNames
 	const FIRST_NAME = '@fname';
 	const HOMEPAGE_ID = '@homepageid';
 	const ORGANIZATION = '@organization';
+	const GROUP = '@group';
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';
 	const PASSWORD = '@password';
@@ -20,7 +21,7 @@ class ParameterNames
 	const SALT = '@salt';
 	const SCHEDULE_ID = '@scheduleid';
 	const START_DATE = '@startDate';
-	const TIMEZONE = '@timezone';
+	const TIMEZONE_NAME = '@timezone';
 	const USER_ID = '@userid';
 	const USER_NAME = '@username';
 	const RESOURCE_NAME = '@resource_name';	
@@ -35,7 +36,7 @@ class ParameterNames
 	const UNIT_COST = '@unit_cost';
 	const AUTO_ASSIGN = '@autoassign';
 	const REQUIRES_APPROVAL = '@requires_approval';
-	const MULTIDAY_RESERVATIONS = '@allow_multiple_day_reservations';
+	const MULTIDAY_RESERVATIONS = '@allow_multiday_reservations';
 	const MAX_PARTICIPANTS = '@max_participants';
 	const MIN_NOTICE = '@min_notice_time';
 	const MAX_NOTICE = '@max_notice_time';
@@ -50,9 +51,14 @@ class Queries
 	{}
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
-		'INSERT INTO user_resource_permissions (resource_id, user_id) 
-		SELECT resourceid as resource_id, @userid as user_id 
-		FROM resources WHERE autoassign=1';
+		'INSERT INTO 
+			user_resource_permissions (user_id, resource_id) 
+		SELECT 
+			@userid as user_id, resourceid as resource_id 
+		FROM 
+			resources
+		WHERE 
+			autoassign=1';
 	
 	const CHECK_EMAIL = 
 		'SELECT userid 
@@ -67,7 +73,7 @@ class Queries
 	const CHECK_USER_EXISTANCE = 
 		'SELECT userid 
 		FROM users
-		WHERE username = @username OR email = @email';
+		WHERE (username = @username OR email = @email)';
 		
 	const COOKIE_LOGIN = 
 		'SELECT userid, lastlogin, email 
@@ -92,16 +98,18 @@ class Queries
 		'SELECT announcement_text 
 		FROM announcements
 		WHERE (start_datetime <= @current_date AND end_datetime >= @current_date)
-		ORDER BY order_number DESC';
+		ORDER BY priority DESC';
 
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
 		'SELECT 
-			tbg.label, tb.starttime, tb.endtime, tb.availability_code
+			tbg.label, tb.label, tbu.start_time, tbu.end_time, tb.availability_code
 		FROM 
-			time_blocks tb, time_block_groups tbg, schedule_time_block_groups stbg
+			time_blocks tb, time_block_uses tbu, time_block_groups tbg, schedule_time_block_groups stbg
 		WHERE 
-			tbg.block_id = tb.blockid AND tbg.block_groupid = stbg.block_group_id AND stbg.scheduleid = @scheduleid';
+			tbu.block_id = tb.blockid AND tbu.block_group_id = stbg.block_group_id AND 
+			tbu.block_group_id = tbg.block_groupid AND stbg.schedule_id = @scheduleid ORDER BY tbu.start_time';
 	
+	//This is more like a GET_ADMIN_RESERVATIONS_COMMAND, because we check the user_roles.user_level to be '1', which is by default the admin level
 	const GET_RESERVATIONS_COMMAND =
 	 'SELECT
 		  r.reservationid,
@@ -110,15 +118,15 @@ class Queries
 		  r.type_id,
 		  r.status_id,
 		  r.description,
-		  rr.resourceid,
+		  rs.resourceid,
 		  u.userid,
 		  u.fname,
 		  u.lname
 		FROM 
-			reservations r, resources rr, users u, resource_schedules rs, schedules s, user_roles ur
+			reservations r, users u, resource_schedules rs, schedules s, user_roles ur
 		WHERE 
-			r.user_id = u.userid AND r.resource_id = rr.resourceid AND u.role_id = ur.roleid AND
-			rs.resource_id = rr.resourceid AND rs.schedule_id = @scheduleid AND
+			r.user_id = u.userid AND r.resource_id = rs.resourceid AND u.role_id = ur.roleid AND
+			rs.schedule_id = @scheduleid AND
 			(
 		  		(r.start_date BETWEEN @startDate AND @endDate)
 		  		OR
@@ -126,7 +134,7 @@ class Queries
 		  		OR
 		  		(r.start_date <= @startDate AND r.end_date >= @endDate)
 			)
-			AND r.isactive = 1 AND ur.user-level = 1';
+			AND r.isactive = 1 AND ur.user_level = 1';
 	 
 	const GET_RESOURCE_SCHEDULES = 
 		'SELECT 
@@ -157,9 +165,9 @@ class Queries
 		'SELECT 
 			userid, user_level 
 		FROM 
-			user_roles, users
+			user_roles ur, users u
 		WHERE 
-			users.userid = @userid AND user_roles.roleid = users.role_id';
+			u.userid = @userid AND ur.roleid = u.role_id';
 	
 	const MIGRATE_PASSWORD = 
 		'UPDATE 
@@ -186,11 +194,11 @@ class Queries
 	const EDIT_RESOURCE = 
 		'INSERT INTO 
 			resources (name, location, contact_info, description, notes, isactive, min_duration, min_increment, 
-					   max_duration, unit_cost, autoassign, requires_approval, allow_multiple_day_reservations, 
+					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations, 
 					   max_participants, min_notice_time, max_notice_time)
 		VALUES
 			(@resource_name, @location, @contact_info, @description, @resource_notes, @isactive, @min_duration, @min_increment, 
-			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiple_day_reservations,
+			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiday_reservations,
 		     @max_participants, @min_notice_time, @max_notice_time)
 		';
 	
@@ -232,43 +240,63 @@ class ColumnNames
 	{}
 	
 	// USERS //
+	const USER_ID = 'userid';	
+	const USERNAME = 'username';	
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
+	const LAST_NAME = 'lname';	
+	const PASSWORD = 'password';
+	const OLD_PASSWORD = 'legacypassword';
+	const USER_CREATED = 'date_created';
+	const USER_MODIFIED = 'last_modified';
+	const ROLE_ID = 'role_id';
+	const USER_STATUS_ID = 'status_id';
 	const HOMEPAGE_ID = 'homepageid';
 	const LAST_LOGIN = 'lastlogin';
-	const LAST_NAME = 'lname';	
-	const MATCH_COUNT = 'matchcount';
-	const OLD_PASSWORD = 'legacypassword';
-	const PASSWORD = 'password';
-	const SALT = 'salt';
 	const TIMEZONE_NAME = 'timezone';
-	const USER_ID = 'userid';	
+	const SALT = 'salt';
+
+	// USER_ORGANIZATIONS //
+	const ORGANIZATION_ID = 'organization_id';
+
+	// USER_ADDRESSES //
+	const ADDRESS_ID = 'address_id';
+
+	// USER_LONG_QUOTAS //
+	const USER_LQUOTA_ID = 'long_quota_id';
+
+	// USER_DAY_QUOTAS //
+	const USER_DQUOTA_ID = 'day_quota_id';
 	
-	// ACCOUNT_ROLE //
-	const IS_ADMIN = 'isadmin';
+	// USER_ROLES //
+	const USER_LEVEL = 'user_level';
 	
-	// ANNOUNCEMENT //
+	// ANNOUNCEMENTS //
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
 	
-	// GROUP //
+	// GROUPS //
 	const GROUP_ID = 'groupid';
 	
-	// LAYOUT //
-	const PERIOD_START = 'starttime';
-	const PERIOD_END = 'endtime';
-	const PERIOD_LABEL = 'label';
-	const PERIOD_TYPE = 'periodtypeid';
-	
+	// TIME BLOCKS //
+	const BLOCK_LABEL = 'label';
+	const BLOCK_CODE = 'availability_code';
+
+	// TIME BLOCK USES //
+	const BLOCK_START = 'start_time';
+	const BLOCK_END = 'end_time';	
+
 	// RESERVATION //
 	const RESERVATION_ID = 'reservationid';
-	const RESERVING_USER = 'reserving_user_id';
-	const RESERVED_RESOURCE = 'reserved_resource_id';
-	const START_DATE = 'start_date';
-	const END_DATE = 'end_date';
-	const START_TIME = 'start_time';
-	const END_TIME = 'end_time';
+	const RESERVATION_USER = 'user_id';
+	const RESERVATION_GROUP = 'group_id';
+	const RESERVATION_START = 'start_date';
+	const RESERVATION_END = 'end_date';
+	const RESERVATION_CREATED = 'date_created';
+	const RESERVATION_MODIFIED = 'last_modified';
 	const RESERVATION_TYPE = 'type_id';
 	const RESERVATION_TITLE = 'title';
+	const RESERVATION_DESCRIPTION = 'description';
+	const RESERVATION_COST = 'total_cost';
 	
 	// RESERVATION_USER //
 	const RESERVATION_OWNER = 'reservation_owner';
@@ -286,7 +314,7 @@ class ColumnNames
 	const RESOURCE_COST = 'unit_cost';
 	const RESOURCE_AUTOASSIGN = 'autoassign';
 	const RESOURCE_REQUIRES_APPROVAL = 'requires_approval';
-	const RESOURCE_ALLOW_MULTIDAY = 'allow_multiple_day_reservations';
+	const RESOURCE_ALLOW_MULTIDAY = 'allow_multiday_reservations';
 	const RESOURCE_MAX_PARTICIPANTS = 'max_participants';
 	const RESOURCE_MINNOTICE = 'min_notice_time';
 	const RESOURCE_MAXNOTICE = 'max_notice_time';
@@ -295,10 +323,7 @@ class ColumnNames
 	const SCHEDULE_ID = 'scheduleid';
 	const SCHEDULE_NAME = 'name';
 	const SCHEDULE_DEFAULT = 'isdefault';
-	const SCHEDULE_START = 'daystart';
-	const SCHEDULE_END = 'dayend';
 	const SCHEDULE_WEEKDAY_START = 'weekdaystart';
-	const SCHEDULE_ADMIN_ID = 'admin_id';
 	const SCHEDULE_DAYS_VISIBLE = 'daysvisible';
 
 }
