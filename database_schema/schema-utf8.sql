@@ -11,7 +11,8 @@ USE phpscheduleit2;
 DROP TABLE IF EXISTS `announcements`;
 CREATE TABLE `announcements` (
  `announcementid` mediumint(8) unsigned NOT NULL auto_increment,
- `announcement_text` text NOT NULL,
+ `title` varchar(85) NOT NULL,
+ `announcement_text` text,
  `order_number` mediumint(8) NOT NULL,
  `start_datetime` datetime,
  `end_datetime` datetime,
@@ -113,7 +114,7 @@ DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE `user_roles` (
  `roleid` tinyint(2) unsigned NOT NULL,
  `role_name` varchar(85),
- `user_level` tinyint(2) unsigned,
+ `user_level` tinyint(1) unsigned,
  PRIMARY KEY (`roleid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -384,19 +385,34 @@ CREATE TABLE `reservations` (
  `allow_participation` tinyint(1) unsigned NOT NULL,
  `allow_anon_participation` tinyint(1) unsigned NOT NULL,
  `user_id` mediumint(8) unsigned NOT NULL,
+ `group_id` smallint(5) unsigned,
  `type_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned,
  `total_cost` dec(7,2),
- `time_block_id` tinyint(2) unsigned,
  PRIMARY KEY (`reservationid`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) REFERENCES users(`userid`),
+ INDEX (`group_id`),
+ FOREIGN KEY (`group_id`) REFERENCES groups(`groupid`),
  INDEX (`type_id`),
  FOREIGN KEY (`type_id`) REFERENCES reservation_types(`typeid`),
  INDEX (`status_id`),
- FOREIGN KEY (`status_id`) REFERENCES reservation_status(`statusid`),
- INDEX (`time_block_id`),
- FOREIGN KEY (`time_block_id`) REFERENCES time_blocks(`blockid`)
+ FOREIGN KEY (`status_id`) REFERENCES reservation_status(`statusid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `reservation_time_blocks`
+--
+
+DROP TABLE IF EXISTS `reservation_time_blocks`;
+CREATE TABLE `reservation_time_blocks` (
+ `reservation_id` mediumint(8) unsigned NOT NULL,
+ `block_id` tinyint(2) unsigned NOT NULL,
+ PRIMARY KEY (`reservation_id`, `resource_id`),
+ INDEX (`block_id`),
+ FOREIGN KEY (`block_id`) REFERENCES time_blocks(`blockid`),
+ INDEX (`reservation_id`),
+ FOREIGN KEY (`reservation_id`) REFERENCES reservations(`reservationid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -413,5 +429,3 @@ CREATE TABLE `reservation_resources` (
  INDEX (`reservation_id`),
  FOREIGN KEY (`reservation_id`) REFERENCES reservations(`reservationid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
-
