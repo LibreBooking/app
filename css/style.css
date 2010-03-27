@@ -394,25 +394,7 @@ div.registrationHeader, .resourceHeader {
 	color: #fff;
 }
 
-div.resourceHeader {
-        padding: 5px 15px;
-        border: none;
-        -moz-border-radius: 13px;
-        -khtml-border-radius: 13px;
-        -webkit-border-radius: 13px;
-        border-radius: 13px;
-        -moz-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        -webkit-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        -khtml-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        text-decoration: none;
-        margin: 0 0 20px 0;
-	height: 1.5em;
-	background: url('../img/button_bg.gif') repeat-x 0 0;
-	color: #fff;
-}
-
-.registrationHeader, resourceHeader h3 { 
+.registrationHeader, .resourceHeader h3 { 
         font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
         vertical-align: middle;
 }
