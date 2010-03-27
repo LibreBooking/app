@@ -20,13 +20,10 @@ interface IResourcePage extends IPage
 	public function SetUnitCost($unitCost);
 	public function SetAutoAssign($autoAssign);
 	public function SetRequiresApproval($requiresApproval);
-	public function SetAllowMultipleDayReservations($multidayReservations);
+	public function SetAllowMultiday($allowMultiday);
 	public function SetMaxParticipants($maxParticipants);
 	public function SetMinNotice($minNotice);
 	public function SetMaxNotice($maxNotice);
-	public function SetConstraints($constraints);
-	public function SetLongQuota($longQuota);
-	public function SetDayQuota($dayQuota);
 	
 	public function GetResourceName();
 	public function GetLocation();
@@ -40,13 +37,10 @@ interface IResourcePage extends IPage
 	public function GetUnitCost();
 	public function GetAutoAssign();
 	public function GetRequiresApproval();
-	public function GetAllowMultipleDayReservations();
+	public function GetAllowMultiday();
 	public function GetMaxParticipants();
 	public function GetMinNotice();
 	public function GetMaxNotice();
-	public function GetConstraints();
-	public function GetLongQuota();
-	public function GetDayQuota();
 }
 
 class ResourcePage extends Page implements IResourcePage
@@ -130,9 +124,9 @@ class ResourcePage extends Page implements IResourcePage
 		$this->Set('RequiresApproval', $requiresApproval);	
 	}
 
-	public function SetAllowMultipleDayReservations($multidayReservations)
+	public function SetAllowMultiday($allowMultiday)
 	{
-		$this->Set('AllowMultipleDayReservations', $multidayReservations);	
+		$this->Set('AllowMultiday', $allowMultiday);	
 	}
 
 	public function SetMaxParticipants($maxParticipants)
@@ -148,21 +142,6 @@ class ResourcePage extends Page implements IResourcePage
 	public function SetMaxNotice($maxNotice)
 	{
 		$this->Set('MaximumNotice', $maxNotice);	
-	}
-
-	public function SetConstraints($constraints)
-	{
-		$this->Set('Constraints', $constraints);	
-	}
-
-	public function SetLongQuota($longQuota)
-	{
-		$this->Set('LongQuota', $longQuota);	
-	}
-
-	public function SetDayQuota($dayQuota)
-	{
-		$this->Set('DayQuota', $dayQuota);	
 	}
 
 	public function GetResourceName()
@@ -225,9 +204,9 @@ class ResourcePage extends Page implements IResourcePage
 		return $this->GetForm(FormKeys::REQUIRES_APPROVAL);
 	}
 	
-	public function GetAllowMultipleDayReservations()
+	public function GetAllowMultiday()
 	{
-		return $this->GetForm(FormKeys::MULTIDAY_RESERVATIONS);
+		return $this->GetForm(FormKeys::ALLOW_MULTIDAY);
 	}
 	
 	public function GetMaxParticipants()
@@ -243,21 +222,6 @@ class ResourcePage extends Page implements IResourcePage
 	public function GetMaxNotice()
 	{
 		return $this->GetForm(FormKeys::MAX_NOTICE);
-	}
-	
-	public function GetConstraints()
-	{
-		return $this->GetForm(FormKeys::RESOURCE_CONSTRAINTS);
-	}
-	
-	public function GetLongQuota()
-	{
-		return $this->GetForm(FormKeys::RESOURCE_LONG_QUOTA);
-	}
-	
-	public function GetDayQuota()
-	{
-		return $this->GetForm(FormKeys::RESOURCE_DAY_QUOTA);
 	}
 }
 ?>

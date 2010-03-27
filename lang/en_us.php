@@ -710,7 +710,7 @@ class en_us extends Language
 		$strings['UnitCost'] = 'Time unit cost for resource';
 		$strings['AutoAssign'] = 'Assign resource automatically';
 		$strings['RequiresApproval'] = 'Reservation requires approval';
-		$strings['MultidayReservations'] = 'Allow multiple day reservations';
+		$strings['AllowMultiday'] = 'Allow multiple day reservations';
 		$strings['MaxParticipants'] = 'Maximum number of participants';
 		$strings['MinNotice'] = 'Minimum notice time before reservation';
 		$strings['MaxNotice'] = 'Maximum notice time before reservation';

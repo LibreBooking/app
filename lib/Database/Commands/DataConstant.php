@@ -23,7 +23,7 @@ class ParameterNames
 	const START_DATE = '@startDate';
 	const TIMEZONE_NAME = '@timezone';
 	const USER_ID = '@userid';
-	const USER_NAME = '@username';
+	const USERNAME = '@username';
 	const RESOURCE_NAME = '@resource_name';	
 	const RESOURCE_LOCATION = '@location';
 	const RESOURCE_CONTACT = '@contact_info';
@@ -40,9 +40,6 @@ class ParameterNames
 	const RESOURCE_MAX_PARTICIPANTS = '@max_participants';
 	const RESOURCE_MINNOTICE = '@min_notice_time';
 	const RESOURCE_MAXNOTICE = '@max_notice_time';
-	const RESOURCE_CONSTRAINTS = '@resource_constraint_id';
-	const RESOURCE_LONG_QUOTA = '@resource_long_quota_id';
-	const RESOURCE_DAY_QUOTA = '@resource_day_quota_id';
 }
 
 class Queries
@@ -191,7 +188,7 @@ class Queries
 			(@email, @password, @fname, @lname, @username, @salt, @timezone, @user_statusid, @user_roleid)
 		';
 
-	const EDIT_RESOURCE = 
+	const ADD_RESOURCE = 
 		'INSERT INTO 
 			resources (name, location, contact_info, description, notes, isactive, min_duration, min_increment, 
 					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations, 

@@ -184,9 +184,9 @@ class ResourceEditCommand extends SqlCommand
 	public function __construct($name, $location, $contact_info, $description, $notes, $isactive, 
 								$min_duration, $min_increment, $max_duration, $unit_cost, $autoassign, 
 								$requires_approval, $allow_multiday, $max_participants, 
-								$min_notice_time, $max_notice_time)//, $long_quota_id, $day_quota_id)
+								$min_notice_time, $max_notice_time)
 	{
-		parent::__construct(Queries::EDIT_RESOURCE);
+		parent::__construct(Queries::ADD_RESOURCE);
 		
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NAME, $name));	
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LOCATION, $location));
@@ -204,8 +204,6 @@ class ResourceEditCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $max_participants));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $min_notice_time));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $max_notice_time));
-		/*$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LONG_QUOTA, $long_quota_id));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_DAY_QUOTA, $day_quota_id));*/
 	}
 }
 

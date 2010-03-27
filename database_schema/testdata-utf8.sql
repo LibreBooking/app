@@ -15,3 +15,4 @@ insert into reservation_types values (2, 'Down Time');
 insert into reservation_statuses values (2, 'Pending'),(3,'Approved'),(4,'Rejected');	
 insert into schedules (scheduleid, name) values (1, 'default');
 insert into schedule_time_block_groups values (1,2);
+insert into user_resource_permissions values (1,1),(1,2),(2,1),(2,2);

@@ -24,7 +24,7 @@ class ResourcePresenter
 	{
 		if (is_null($resource))
 		{
-			$this->_resource = new AddResource();
+			$this->_resource = new AddResource(1); //wtf does this 1 help? It removes the warning...
 		}
 		else
 		{
@@ -48,7 +48,7 @@ class ResourcePresenter
 	{			
 		if ($this->_page->SaveClicked())
 		{
-			$this->Resource();
+			$this->AddResource();
 		}
 	}
 	
@@ -70,10 +70,7 @@ class ResourcePresenter
 									  'allow_multiday' => $this->_page->GetAllowMultiday(),
 									  'max_participants' => $this->_page->GetMaxParticipants(),
 									  'min_notice_time' => $this->_page->GetMinNotice(),
-									  'max_notice_time' => $this->_page->GetMaxNotice(),
-									  'constraint_id' => $this->_page->GetConstraints(),
-									  'long_quota_id' => $this->_page->GetLongQuota(),
-									  'day_quota_id' => $this->_page->GetDayQuota());
+									  'max_notice_time' => $this->_page->GetMaxNotice());
     		
     		$this->_resource->AddResource(
     			$this->_page->GetResourceName(), 

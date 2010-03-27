@@ -101,7 +101,7 @@ class Authorization implements IAuthorization
 		
 		if ($row = $reader->GetRow())
 		{
-			$isAdminRole = (bool)$row[ColumnNames::IS_ADMIN];
+			$isAdminRole = (bool)$row[ColumnNames::USER_LEVEL];
 		}
 		
 		return $isAdminRole;

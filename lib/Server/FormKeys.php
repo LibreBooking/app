@@ -25,7 +25,7 @@ class FormKeys
 	const RESOURCE_LOCATION = 'location';
 	const CONTACT_INFO = 'contactInfo';
 	const DESCRIPTION = 'description';
-	const RESOURCE_NOTES = 'resoNotes';
+	const RESOURCE_NOTES = 'resourceNotes';
 	const IS_ACTIVE = 'isactive';
 	const MIN_DURATION = 'minDuration';
 	const MIN_INCREMENT = 'minIncrement';
@@ -33,13 +33,10 @@ class FormKeys
 	const UNIT_COST = 'unitCost';
 	const AUTO_ASSIGN = 'autoAssign';
 	const REQUIRES_APPROVAL = 'requiresApproval';
-	const MULTIDAY_RESERVATIONS = 'multidayReservations';
+	const ALLOW_MULTIDAY = 'allowMultiday';
 	const MAX_PARTICIPANTS = 'maxParticipants';
 	const MIN_NOTICE = 'minNotice';
 	const MAX_NOTICE = 'maxNotice';
-	const RESOURCE_CONSTRAINTS = 'resourceConstraintId';
-	const RESOURCE_LONG_QUOTA = 'resourceLongQuotaId';
-	const RESOURCE_DAY_QUOTA = 'resourceDayQuotaId';
 	
 	
 	public static function Evaluate($formKey)

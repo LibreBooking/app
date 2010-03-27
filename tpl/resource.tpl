@@ -58,7 +58,7 @@
                 </label>
         </p>
         <p>
-                <label class="res">{translate key="MinNotice"} (HH:MM)<br />
+                <label class="res">{translate key="MinNotice"} (D HH:MM)<br />
                 {textbox name="MIN_NOTICE" class="input" value="MinNotice" size="20" tabindex="110"}
                 </label>
         </p>
@@ -67,24 +67,9 @@
                 {textbox name="MAX_NOTICE" class="input" value="MaxNotice" size="20" tabindex="120"}
                 </label>
         </p>
-        <p>
-                <label class="res">{translate key="Constraints"}<br />
-                {textbox name="RESOURCE_CONSTRAINTS" class="input" value="Constraints" size="20" tabindex="130"}
-                </label>
-        </p>
-        <p>
-                <label class="res">{translate key="LongQuota"}<br />
-                {textbox name="RESOURCE_LONG_QUOTA" class="input" value="LongQuota" size="20" tabindex="140"}
-                </label>
-        </p>
-        <p>
-                <label class="res">{translate key="DayQuota"}<br />
-                {textbox name="RESOURCE_DAY_QUOTA" class="input" value="DayQuota" size="20" tabindex="150"}
-                </label>
-        </p>
         <p class="res-checkbox">
-		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::MULTIDAY_RESERVATIONS'}" 
-				value="true" tabindex="160" /> {translate key="MultidayReservations"}</label>
+		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::ALLOW_MULTIDAY'}" 
+				value="true" tabindex="160" /> {translate key="AllowMultiday"}</label>
         </p>
         <p class="res-checkbox">
 		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::AUTO_ASSIGN'}" 

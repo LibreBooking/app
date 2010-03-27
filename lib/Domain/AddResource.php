@@ -30,8 +30,6 @@ class AddResource implements IAddResource
 		$additionalFields['max_participants'] = '';
 		$additionalFields['min_notice_time'] = '';
 		$additionalFields['max_notice_time'] = '';
-		$additionalFields['long_quota_id'] = '';
-		$additionalFields['day_quota_id'] = '';
 		
 		$resourceEditCommand = new ResourceEditCommand(
 					$name, 
@@ -49,20 +47,18 @@ class AddResource implements IAddResource
 					$additionalFields['allow_multiday'], 
 					$additionalFields['max_participants'], 
 					$additionalFields['min_notice_time'], 
-					$additionalFields['max_notice_time'], 
-					$additionalFields['long_quota_id'], 
-					$additionalFields['day_quota_id']
+					$additionalFields['max_notice_time'] 
 					);
 					
 		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($resourceEditCommand);
 		
-		//$this->AutoAssignPermissions($userId);
+		/*$this->AutoAssignPermissions($userId);
 	}
 		
-/*	private function AutoAssignPermissions($userId)
+	private function AutoAssignPermissions($userId)
 	{
 		$autoAssignCommand = new AutoAssignPermissionsCommand($userId);	
-		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
-	}*/
+		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);*/
+	}
 }
 ?>
