@@ -404,14 +404,39 @@ label.reg, .res {
         font-size: 18px;
 }
 
+label.reg-box, .res-box {
+        color: #666;
+        font-size: 18px;
+		height: 50px;
+}
+
 label.res-req, .reg-req {
-        color: #700;
+        color: #a00;
         font-size: 18px;
 }
 
-#registrationbox, #resourcebox {
+#registrationbox {
         width: 550px;
         margin: 3em auto 1em;
+}
+
+#resourcebox {
+	width: 70%;
+	margin: 3em auto 1em;
+}
+
+#resourcebox-leftcolumn {
+	width: 49%;
+	float: left;
+}
+ 
+#resourcebox-rightcolumn {
+	width: 49%;
+	float: right;	
+}
+
+#resourcebox-footer {
+	clear: both;
 }
 
 #registrationbox .input {

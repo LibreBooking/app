@@ -57,20 +57,20 @@ class ResourcePresenter
 		if ($this->_page->IsValid())
 	    {
     		$additionalFields = array('location' => $this->_page->GetLocation(),
-									  'contact_info' => $this->_page->GetContactInfo(),
+									  'contactInfo' => $this->_page->GetContactInfo(),
 									  'description' => $this->_page->GetDescription(),
 									  'notes' => $this->_page->GetNotes(),
-									  'isactive' => $this->_page->GetIsActive(),
-									  'min_duration' => $this->_page->GetMinDuration(),
-									  'min_increment' => $this->_page->GetMinIncrement(),
-    								  'max_duration' => $this->_page->GetMaxDuration(),
-									  'unit_cost' => $this->_page->GetUnitCost(),
-									  'autoassign' => $this->_page->GetAutoAssign(),
-									  'requires_approval' => $this->_page->GetRequiresApproval(),
-									  'allow_multiday' => $this->_page->GetAllowMultiday(),
-									  'max_participants' => $this->_page->GetMaxParticipants(),
-									  'min_notice_time' => $this->_page->GetMinNotice(),
-									  'max_notice_time' => $this->_page->GetMaxNotice());
+									  'isActive' => $this->_page->GetIsActive(),
+									  'minDuration' => $this->_page->GetMinDuration(),
+									  'minIncrement' => $this->_page->GetMinIncrement(),
+    								  'maxDuration' => $this->_page->GetMaxDuration(),
+									  'unitCost' => $this->_page->GetUnitCost(),
+									  'autoAssign' => $this->_page->GetAutoAssign(),
+									  'requiresApproval' => $this->_page->GetRequiresApproval(),
+									  'allowMultiday' => $this->_page->GetAllowMultiday(),
+									  'maxParticipants' => $this->_page->GetMaxParticipants(),
+									  'minNotice' => $this->_page->GetMinNotice(),
+									  'maxNotice' => $this->_page->GetMaxNotice());
     		
     		$this->_resource->AddResource(
     			$this->_page->GetResourceName(), 

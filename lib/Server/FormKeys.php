@@ -22,10 +22,10 @@ class FormKeys
 	const SCHEDULE_ID = 'scheduleId';
 	const TIMEZONE = 'timezone';
 	const RESOURCE_NAME = 'resourceName';	
-	const RESOURCE_LOCATION = 'location';
+	const LOCATION = 'location';
 	const CONTACT_INFO = 'contactInfo';
 	const DESCRIPTION = 'description';
-	const RESOURCE_NOTES = 'resourceNotes';
+	const NOTES = 'notes';
 	const IS_ACTIVE = 'isactive';
 	const MIN_DURATION = 'minDuration';
 	const MIN_INCREMENT = 'minIncrement';
