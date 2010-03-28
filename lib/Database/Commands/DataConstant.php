@@ -156,7 +156,7 @@ class Queries
 		FROM
 			group_resource_permissions grp, resources r, user_groups ug
 		WHERE
-			ug.userid = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resourceid';
+			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resourceid';
 	
 	const GET_USER_ROLES = 
 		'SELECT 

@@ -43,8 +43,8 @@
 
         <div class="registrationHeader"><h3>Optional Fields</h3></div>
         <p>
-                <label class="reg">{translate key="Institution"}<br />
-                {textbox name="INSTITUTION" class="input" value="Institution" size="20" tabindex="60"}
+                <label class="reg">{translate key="Organization"}<br />
+                {textbox name="ORGANIZATION" class="input" value="Organization" size="20" tabindex="60"}
                 </label>
         </p>
         <p>

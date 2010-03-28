@@ -346,9 +346,7 @@ form .stayloggedin label {
         line-height: 1.5em; 
 }
 
-form .res-checkbox input {
-	vertical-align: middle;
-}
+form .res-checkbox input { vertical-align: middle; }
 form .loginsubmit, .save { float:right; }
 
 #login-links p, h4 {text-align: center;}
@@ -376,6 +374,11 @@ form .regsubmit { float:left; }
 
 form p { margin-bottom: 12px; }
 
+form li { 
+	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif; 
+	color: #666;
+}
+
 div.registrationHeader, .resourceHeader {
         padding: 5px 15px;
         border: none;
@@ -399,20 +402,15 @@ div.registrationHeader, .resourceHeader {
         vertical-align: middle;
 }
 
-label.reg, .res {
-        color: #666;
-        font-size: 18px;
+ul.no-style {
+	list-style-type: none;
 }
 
-label.reg-box, .res-box {
-        color: #666;
-        font-size: 18px;
-		height: 50px;
-}
+li.res-req, .reg-req { color: #a00; }
 
-label.res-req, .reg-req {
-        color: #a00;
-        font-size: 18px;
+label.res, .reg {
+	font-size: 18px;
+	color: #666;
 }
 
 #registrationbox {
@@ -421,23 +419,21 @@ label.res-req, .reg-req {
 }
 
 #resourcebox {
-	width: 70%;
+	width: 880px;
 	margin: 3em auto 1em;
 }
 
 #resourcebox-leftcolumn {
-	width: 49%;
+	width: 45%;
 	float: left;
 }
  
 #resourcebox-rightcolumn {
-	width: 49%;
+	width: 53%;
 	float: right;	
 }
 
-#resourcebox-footer {
-	clear: both;
-}
+#resourcebox-footer { clear: both; }
 
 #registrationbox .input {
         font-size: 18px;
@@ -451,10 +447,21 @@ label.res-req, .reg-req {
 
 #resourcebox .input {
         font-size: 18px;
-        width: 97%;
+        width: 98%;
         padding: 3px;
-        margin: 2px 0 5px 0;
+        margin: 4px 0 8px 0;
         border: 1px solid #e5e5e5;
+        background: #fbfbfb;
+        color: #777;
+}
+
+#resourcebox .res-inline .input {
+        font-size: 18px;
+        width: 75px;
+		text-align: right;
+		float: right;
+		margin: 0;
+		border: 1px solid #e5e5e5;
         background: #fbfbfb;
         color: #777;
 }
