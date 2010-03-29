@@ -64,12 +64,12 @@
                 </label>
         	</li>
         	<li class="res">
-                <label class="res">{translate key="MinNotice"} (D HH:MM)<br />
+                <label class="res">{translate key="MinNotice"} (D HH:MM {translate key="Before"})<br />
                 {textbox name="MIN_NOTICE" class="input" value="minNotice" tabindex="110"}
                 </label>
         	</li>
         	<li class="res">
-                <label class="res">{translate key="MaxNotice"} (D HH:MM)<br />
+                <label class="res">{translate key="MaxNotice"} (D HH:MM {translate key="Before"})<br />
                 {textbox name="MAX_NOTICE" class="input" value="maxNotice" tabindex="120"}
                 </label>
         	</li>
