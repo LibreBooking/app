@@ -703,20 +703,21 @@ class en_us extends Language
 		$strings['Description'] = 'Description of resource';
 		$strings['ContactInfo'] = 'Contact information for resource';
 		$strings['ResourceNotes'] = 'Additional notes';
-		$strings['IsActive'] = 'Resource is currently available for reservations';
+		$strings['IsActive'] = 'Resource is available for reservations';
 		$strings['MinDuration'] = 'Minimum duration of reservation';
 		$strings['MinIncrement'] = 'Minimum increment of reservation';
 		$strings['MaxDuration'] = 'Maximum duration of reservation';
-		$strings['UnitCost'] = 'Time unit cost for resource';
+		$strings['UnitCost'] = 'Hourly charge for use of resource';
 		$strings['AutoAssign'] = 'Assign resource automatically';
 		$strings['RequiresApproval'] = 'Reservation requires approval';
 		$strings['AllowMultiday'] = 'Allow multiple day reservations';
 		$strings['MaxParticipants'] = 'Maximum number of participants';
-		$strings['MinNotice'] = 'Minimum notice time before reservation';
-		$strings['MaxNotice'] = 'Maximum notice time before reservation';
+		$strings['MinNotice'] = 'Latest possible reservation';
+		$strings['MaxNotice'] = 'Earliest possible reservation';
 		$strings['Constraints'] = 'Resource constraints';
 		$strings['LongQuota'] = 'Period quota';
 		$strings['DayQuota'] = 'Daily quota';
+		$strings['Before'] = 'before';
 		
 		$strings['Address'] = 'Address';
 		$strings['Organization'] = 'Organization';

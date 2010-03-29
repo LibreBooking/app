@@ -408,6 +408,11 @@ ul.no-style {
 
 li.res-req, .reg-req { color: #a00; }
 
+label.res-req, .reg-req {
+	font-size: 18px;
+	color: #a00;
+}
+
 label.res, .reg {
 	font-size: 18px;
 	color: #666;
@@ -419,17 +424,17 @@ label.res, .reg {
 }
 
 #resourcebox {
-	width: 880px;
+	width: 850px;
 	margin: 3em auto 1em;
 }
 
 #resourcebox-leftcolumn {
-	width: 45%;
+	width: 47%;
 	float: left;
 }
  
 #resourcebox-rightcolumn {
-	width: 53%;
+	width: 51%;
 	float: right;	
 }
 
@@ -451,17 +456,6 @@ label.res, .reg {
         padding: 3px;
         margin: 4px 0 8px 0;
         border: 1px solid #e5e5e5;
-        background: #fbfbfb;
-        color: #777;
-}
-
-#resourcebox .res-inline .input {
-        font-size: 18px;
-        width: 75px;
-		text-align: right;
-		float: right;
-		margin: 0;
-		border: 1px solid #e5e5e5;
         background: #fbfbfb;
         color: #777;
 }
