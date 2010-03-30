@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS phpscheduleit2;
+﻿DROP DATABASE IF EXISTS phpscheduleit2;
 
 CREATE DATABASE phpscheduleit2;
 
@@ -209,7 +209,7 @@ CREATE TABLE `users` (
  `homepageid` tinyint(2) unsigned NOT NULL default '1',
  `date_created` datetime NOT NULL,
  `last_modified` timestamp,
- `role_id` tinyint(2) unsigned NOT NULL,
+ `role_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned NOT NULL,
  `legacyid` char(16),
  `legacypassword` varchar(32),

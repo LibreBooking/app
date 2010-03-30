@@ -200,3 +200,7 @@ CREATE TABLE `schedule_resource` (
   `resourceid` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`scheduleid`,`resourceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+grant select, insert, update, delete
+ON phpScheduleIt.*
+to schedule_user@localhost identified by 'password';
