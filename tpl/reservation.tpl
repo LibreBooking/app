@@ -57,36 +57,36 @@
 </div>
 
 <div id="repeatDiv">
-	Repeat: 
+	{translate key="RepeatPrompt"}
 	<select id="repeatOptions" onchange="ChangeRepeatOptions(this)">
-		<option value="none">Does Not Repeat</option>
-		<option value="daily">Daily</option>
-		<option value="weekly">Weekly</option>
-		<option value="monthly">Monthly</option>
-		<option value="yearly">Yearly</option>
+		<option value="none">{translate key="DoesNotRepeat"}</option>
+		<option value="daily">{translate key="Daily"}</option>
+		<option value="weekly">{translate key="Weekly"}</option>
+		<option value="monthly">{translate key="Monthly"}</option>
+		<option value="yearly">{translate key="Yearly"}</option>
 	</select>
 	<div id="repeatEveryDiv" style="display:none;" class="days weeks months years">
-		Every: <select>{html_options options=$RepeatEveryOptions}</select>
-		<span id="repeatEveryDaysText" class="days">days</span>
-		<span id="repeatEveryMonthsText" class="weeks">weeks</span>
-		<span id="repeatEveryWeeksText" class="months">months</span>
-		<span id="repeatEveryYearsText" class="years">years</span>
+		{translate key="RepeatEveryPrompt"} <select>{html_options options=$RepeatEveryOptions}</select>
+		<span class="days">{translate key="days"}</span>
+		<span class="weeks">{translate key="weeks"}</span>
+		<span class="months">{translate key="months"}</span>
+		<span class="years">{translate key="years"}</span>
 	</div>
 	<div id="repeatOnWeeklyDiv" style="display:none;" class="weeks">
-		<input type="checkbox" id="repeatSun" />S
-		<input type="checkbox" id="repeatMon" />M
-		<input type="checkbox" id="repeatTue" />T
-		<input type="checkbox" id="repeatWed" />W
-		<input type="checkbox" id="repeatThu" />T
-		<input type="checkbox" id="repeatFri" />F
-		<input type="checkbox" id="repeatSat" />S
+		{translate key="RepeatDaysPrompt"} <input type="checkbox" id="repeatSun" />{translate key="DaySundaySingle"}
+		<input type="checkbox" id="repeatMon" />{translate key="DayMondaySingle"}
+		<input type="checkbox" id="repeatTue" />{translate key="DayTuesdaySingle"}
+		<input type="checkbox" id="repeatWed" />{translate key="DayWednesdaySingle"}
+		<input type="checkbox" id="repeatThu" />{translate key="DayThursdaySingle"}
+		<input type="checkbox" id="repeatFri" />{translate key="DayFridaySingle"}
+		<input type="checkbox" id="repeatSat" />{translate key="DaySaturdaySingle"}
 	</div>
 	<div id="repeatOnMonthlyDiv" style="display:none;" class="months">
-		<input type="radio" name="repeatMonthlyType" value="dayOfMonth" id="repeatMonthDay" checked="checked" /><label for="repeatMonthDay">day of month</label>
-		<input type="radio" name="repeatMonthlyType" value="dayOfWeek" id="repeatMonthWeek" /><label for="repeatMonthWeek">day of week</label>
+		<input type="radio" name="repeatMonthlyType" value="dayOfMonth" id="repeatMonthDay" checked="checked" /><label for="repeatMonthDay">{translate key="repeatDayOfMonth"}</label>
+		<input type="radio" name="repeatMonthlyType" value="dayOfWeek" id="repeatMonthWeek" /><label for="repeatMonthWeek">{translate key="repeatDayOfWeek"}</label>
 	</div>
 	<div id="repeatUntilDiv" style="display:none;">
-		Until: 
+		{translate key="RepeatUntilPrompt"} 
 		<input type="text" id="EndRepeat" class="textbox" style="width:75px" value="{formatdate date=$StartDate}" />
 	</div>
 </div>

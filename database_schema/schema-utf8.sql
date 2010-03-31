@@ -41,29 +41,10 @@ CREATE TABLE `time_blocks` (
  `availability_code` tinyint(2) unsigned NOT NULL,
  `cost_multiplier` numeric(7,2),
  `constraint_function` text,
- PRIMARY KEY (`blockid`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `time_block_uses`
---
-
-DROP TABLE IF EXISTS `time_block_uses`;
-CREATE TABLE `time_block_uses` (
- `useid` smallint(5) unsigned NOT NULL auto_increment,
- `block_id` tinyint(2) unsigned NOT NULL,
  `block_group_id` tinyint(2) unsigned NOT NULL,
  `start_time` time NOT NULL,
  `end_time` time NOT NULL,
- PRIMARY KEY (`useid`),
- INDEX (`block_id`),
- FOREIGN KEY (`block_id`) 
-	REFERENCES time_blocks(`blockid`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`block_group_id`),
- FOREIGN KEY (`block_group_id`) 
-	REFERENCES time_block_groups(`block_groupid`)
-	ON UPDATE CASCADE ON DELETE CASCADE
+ PRIMARY KEY (`blockid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --

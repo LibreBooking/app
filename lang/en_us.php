@@ -69,10 +69,43 @@ class en_us extends Language
 		$strings['ReturnToPreviousPage'] = 'Return to the last page that you were on';
 		$strings['UnknownError'] = 'Unknown Error';
 		$strings['InsufficientPermissionsError'] = 'You do not have permission to access this resource';
+		$strings['DoesNotRepeat'] = 'Does Not Repeat';
+		$strings['Daily'] = 'Daily';
+		$strings['Weekly'] = 'Weekly';
+		$strings['Monthly'] = 'Monthly';
+		$strings['Yearly'] = 'Yearly';
+		$strings['RepeatPrompt'] = 'Repeat:';
+		$strings['days'] = 'days';
+		$strings['weeks'] = 'weeks';
+		$strings['months'] = 'months';
+		$strings['years'] = 'years';
+		$strings['repeatDayOfMonth'] = 'day of month';
+		$strings['repeatDayOfWeek'] = 'day of week';
+		$strings['RepeatUntilPrompt'] = 'Until:';
+		$strings['RepeatEveryPrompt'] = 'Every:';
+		$strings['RepeatDaysPrompt'] = 'On:';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';
 		$strings['LogIn'] = 'Log In';
+		//
+		
+		// Day representations
+		$strings['DaySundaySingle'] = 'S';
+		$strings['DayMondaySingle'] = 'M';
+		$strings['DayTuesdaySingle'] = 'T';
+		$strings['DayWednesdaySingle'] = 'W';
+		$strings['DayThursdaySingle'] = 'T';
+		$strings['DayFridaySingle'] = 'F';
+		$strings['DaySaturdaySingle'] = 'S';
+		
+		$strings['DaySundayAbbr'] = 'Sun';
+		$strings['DayMondayAbbr'] = 'Mon';
+		$strings['DayTuesdayAbbr'] = 'Tue';
+		$strings['DayWednesdayAbbr'] = 'Wed';
+		$strings['DayThursdayAbbr'] = 'Thu';
+		$strings['DayFridayAbbr'] = 'Fri';
+		$strings['DaySaturdayAbbr'] = 'Sat';
 		//
 		
 		/***

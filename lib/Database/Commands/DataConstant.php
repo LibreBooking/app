@@ -99,14 +99,16 @@ class Queries
 
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
 		'SELECT 
-			tbg.label, tb.label, tbu.start_time, tbu.end_time, tb.availability_code
+			tbg.label, tb.label, tb.start_time, tb.end_time, tb.availability_code
 		FROM 
-			time_blocks tb, time_block_uses tbu, time_block_groups tbg, schedule_time_block_groups stbg
+			time_blocks tb, time_block_groups tbg, schedule_time_block_groups stbg
 		WHERE 
-			tbu.block_id = tb.blockid AND tbu.block_group_id = stbg.block_group_id AND 
-			tbu.block_group_id = tbg.block_groupid AND stbg.schedule_id = @scheduleid ORDER BY tbu.start_time';
+			tbg.block_group_id = stbg.block_group_id AND 
+			tb.block_group_id = tbg.block_groupid AND
+			stbg.schedule_id = @scheduleid 
+		ORDER BY tb.start_time';
 	
-	//This is more like a GET_ADMIN_RESERVATIONS_COMMAND, because we check the user_roles.user_level to be '1', which is by default the admin level
+	// TODO: Pass in "Deleted" status ID
 	const GET_RESERVATIONS_COMMAND =
 	 'SELECT
 		  r.reservationid,
@@ -115,14 +117,14 @@ class Queries
 		  r.type_id,
 		  r.status_id,
 		  r.description,
-		  rs.resourceid,
+		  rs.resource_id,
 		  u.userid,
 		  u.fname,
 		  u.lname
 		FROM 
-			reservations r, users u, resource_schedules rs, schedules s, user_roles ur
+			reservations r, users u, resource_schedules rs, schedules s, user_roles ur, reservation_resources rr
 		WHERE 
-			r.user_id = u.userid AND r.resource_id = rs.resourceid AND u.role_id = ur.roleid AND
+			r.user_id = u.userid AND rr.resource_id = rs.resource_id AND u.role_id = ur.roleid AND
 			rs.schedule_id = @scheduleid AND
 			(
 		  		(r.start_date BETWEEN @startDate AND @endDate)
@@ -131,7 +133,7 @@ class Queries
 		  		OR
 		  		(r.start_date <= @startDate AND r.end_date >= @endDate)
 			)
-			AND r.isactive = 1 AND ur.user_level = 1';
+			AND r.status_id <> 2';
 	 
 	const GET_RESOURCE_SCHEDULES = 
 		'SELECT 

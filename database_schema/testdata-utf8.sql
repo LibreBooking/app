@@ -15,13 +15,13 @@ insert into user_roles values (1,'basic user',0),(3,'group admin',2),(4,'sysadmi
 insert into user_statuses (statusid, description) select 1, 'active' from user_statuses where not exists (select 1 from user_statuses where statusid = 1);
 
 truncate table time_block_groups;
-insert into time_block_groups values (2, 'Business Day'),(3, 'Weekend Day');
+insert into time_block_groups values (2, 'Business Day');
 
 truncate table time_blocks;
-insert into time_blocks (blockid, label, availability_code) values (2, 'Prime Time', 0),(3, 'Off Hours', 0);
+insert into time_blocks (blockid, label, availability_code) values (2, 'Prime Time', 1),(3, 'Off Hours', 1);
 
 truncate table time_block_uses;
-insert into time_block_uses (block_id, block_group_id, start_time, end_time) values (2, 2, '12:00', '16:59'),(3, 2, '17:00', '23:59'),(3, 2, '00:00', '11:59'),(3,3, '00:00', '23:59');
+insert into time_block_uses (block_id, block_group_id, start_time, end_time) values (2, 2, '00:00', '12:00'),(2, 2, '12:00', '17:00'),(2, 2, '17:00', '00:00');
 
 truncate table organizations;
 insert into organizations values (2, 'Other Organization');
@@ -49,3 +49,6 @@ insert into schedule_time_block_groups values (1,2);
 
 truncate table user_resource_permissions;
 insert into user_resource_permissions values (1,1),(1,2),(2,1),(2,2);
+
+truncate table resource_schedules;
+insert into resource_schedules values(1, 1), (2, 1);
