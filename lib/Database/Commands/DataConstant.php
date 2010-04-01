@@ -4,42 +4,42 @@ class ParameterNames
 	private function __construct()
 	{}
 	
-	const USER_STATUS_ID = '@user_statusid';
-	const USER_ROLE_ID = '@user_roleid';
 	const CURRENT_DATE = '@current_date';
 	const EMAIL_ADDRESS = '@email';
 	const END_DATE = '@endDate';
 	const FIRST_NAME = '@fname';
 	const HOMEPAGE_ID = '@homepageid';
-	const ORGANIZATION = '@organization';
 	const GROUP = '@group';
+	const IS_ACTIVE = '@isactive';
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';
+	const ORGANIZATION = '@organization';
 	const PASSWORD = '@password';
 	const PHONE = '@phone';
 	const POSITION = '@position';
+	const RESOURCE_ALLOW_MULTIDAY = '@allow_multiday_reservations';
+	const RESOURCE_AUTOASSIGN = '@autoassign';
+	const RESOURCE_CONTACT = '@contact_info';
+	const RESOURCE_COST = '@unit_cost';
+	const RESOURCE_DESCRIPTION = '@description';
+	const RESOURCE_LOCATION = '@location';
+	const RESOURCE_MAX_PARTICIPANTS = '@max_participants';
+	const RESOURCE_MAXDURATION = '@max_duration';
+	const RESOURCE_MAXNOTICE = '@max_notice_time';
+	const RESOURCE_MINDURATION = '@min_duration';
+	const RESOURCE_MININCREMENT = '@min_increment';
+	const RESOURCE_MINNOTICE = '@min_notice_time';
+	const RESOURCE_NAME = '@resource_name';	
+	const RESOURCE_NOTES = '@resource_notes';
+	const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';
 	const SALT = '@salt';
 	const SCHEDULE_ID = '@scheduleid';
 	const START_DATE = '@startDate';
 	const TIMEZONE_NAME = '@timezone';
 	const USER_ID = '@userid';
-	const USERNAME = '@username';
-	const RESOURCE_NAME = '@resource_name';	
-	const RESOURCE_LOCATION = '@location';
-	const RESOURCE_CONTACT = '@contact_info';
-	const RESOURCE_DESCRIPTION = '@description';
-	const RESOURCE_NOTES = '@resource_notes';
-	const IS_ACTIVE = '@isactive';
-	const RESOURCE_MINDURATION = '@min_duration';
-	const RESOURCE_MININCREMENT = '@min_increment';
-	const RESOURCE_MAXDURATION = '@max_duration';
-	const RESOURCE_COST = '@unit_cost';
-	const RESOURCE_AUTOASSIGN = '@autoassign';
-	const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';
-	const RESOURCE_ALLOW_MULTIDAY = '@allow_multiday_reservations';
-	const RESOURCE_MAX_PARTICIPANTS = '@max_participants';
-	const RESOURCE_MINNOTICE = '@min_notice_time';
-	const RESOURCE_MAXNOTICE = '@max_notice_time';
+	const USER_ROLE_ID = '@user_roleid';
+	const USER_STATUS_ID = '@user_statusid';
+	const USERNAME = '@username';	
 }
 
 class Queries
@@ -99,11 +99,11 @@ class Queries
 
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
 		'SELECT 
-			tbg.label, tb.label, tb.start_time, tb.end_time, tb.availability_code
+			tb.label, tb.start_time, tb.end_time, tb.availability_code
 		FROM 
 			time_blocks tb, time_block_groups tbg, schedule_time_block_groups stbg
 		WHERE 
-			tbg.block_group_id = stbg.block_group_id AND 
+			tbg.block_groupid = stbg.block_group_id AND 
 			tb.block_group_id = tbg.block_groupid AND
 			stbg.schedule_id = @scheduleid 
 		ORDER BY tb.start_time';
@@ -135,7 +135,7 @@ class Queries
 			)
 			AND r.status_id <> 2';
 	 
-	const GET_RESOURCE_SCHEDULES = 
+	const GET_SCHEDULE_RESOURCES = 
 		'SELECT 
 			r.*
 		FROM 
@@ -296,6 +296,7 @@ class ColumnNames
 	const RESERVATION_TITLE = 'title';
 	const RESERVATION_DESCRIPTION = 'description';
 	const RESERVATION_COST = 'total_cost';
+	const RESERVATION_PARENT_ID = 'parent_id';
 	
 	// RESERVATION_USER //
 	const RESERVATION_OWNER = 'reservation_owner';

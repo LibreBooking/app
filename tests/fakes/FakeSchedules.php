@@ -34,20 +34,14 @@ class FakeScheduleRepository implements IScheduleRepository
 				ColumnNames::SCHEDULE_ID => $this->_DefaultScheduleId,
 				ColumnNames::SCHEDULE_NAME => 'schedule 1',
 				ColumnNames::SCHEDULE_DEFAULT => 1,
-				ColumnNames::SCHEDULE_START => $this->_DefaultStartTime,
-				ColumnNames::SCHEDULE_END => $this->_DefaultEndTime,
 				ColumnNames::SCHEDULE_WEEKDAY_START => $this->_DefaultDayStart,
-				ColumnNames::SCHEDULE_ADMIN_ID => 1,
 				ColumnNames::SCHEDULE_DAYS_VISIBLE => $this->_DefaultDaysVisible
 			),
 			array(
 				ColumnNames::SCHEDULE_ID => 2,
 				ColumnNames::SCHEDULE_NAME => 'schedule 2',
 				ColumnNames::SCHEDULE_DEFAULT => 0,
-				ColumnNames::SCHEDULE_START => '08:00',
-				ColumnNames::SCHEDULE_END => '12:00',
 				ColumnNames::SCHEDULE_WEEKDAY_START => 0,
-				ColumnNames::SCHEDULE_ADMIN_ID => 2,
 				ColumnNames::SCHEDULE_DAYS_VISIBLE => 5
 			)
 		);
@@ -64,10 +58,7 @@ class FakeScheduleRepository implements IScheduleRepository
 							$item[ColumnNames::SCHEDULE_ID],
 							$item[ColumnNames::SCHEDULE_NAME],
 							$item[ColumnNames::SCHEDULE_DEFAULT],
-							$item[ColumnNames::SCHEDULE_START],
-							$item[ColumnNames::SCHEDULE_END],
 							$item[ColumnNames::SCHEDULE_WEEKDAY_START],
-							$item[ColumnNames::SCHEDULE_ADMIN_ID],
 							$item[ColumnNames::SCHEDULE_DAYS_VISIBLE]
 						);
 		}

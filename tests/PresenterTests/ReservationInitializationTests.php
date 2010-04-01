@@ -157,5 +157,10 @@ class ReservationInitializationTests extends TestBase
 
 		$initializer->Initialize();
 	}
+	
+	public function testPeriodsWorkWhenPeriodCrossesDayBoundary()
+	{
+		$this->markTestIncomplete('need to figure this out');
+	}
 }
 ?>

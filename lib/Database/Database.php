@@ -30,7 +30,7 @@ class Database
 	 * @param SqlCommand $command
 	 * @return void
 	 */
-	public function Execute(ISqlCommand &$command) 
+	public function Execute(ISqlCommand $command) 
 	{
 		$this->Connection->Connect();	
 		//TODO: debug log $command->GetQuery();
@@ -44,7 +44,7 @@ class Database
 	 * @param SqlCommand $command
 	 * @return long last id inserted for this connection
 	 */
-	public function ExecuteInsert(ISqlCommand &$command)
+	public function ExecuteInsert(ISqlCommand $command)
 	{
 		$this->Connection->Connect();	
 		//TODO: debug log $command->GetQuery();

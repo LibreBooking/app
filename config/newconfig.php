@@ -1,5 +1,5 @@
 <?php
-$conf['settings']['server.timezone'] = 'Europe/Helsinki';
+$conf['settings']['server.timezone'] = 'US/Central';
 $conf['settings']['allow.self.registration'] = 'true';
 $conf['settings']['admin.email'] = 'jaani@helvet.fi';
 $conf['settings']['default.language'] = 'en_US';

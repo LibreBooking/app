@@ -52,7 +52,7 @@ class CheckEmailCommand extends SqlCommand
 	public function __construct($emailAddress)
 	{
 		parent::__construct(Queries::CHECK_EMAIL);
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL, strtolower($emailAddress)));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, strtolower($emailAddress)));	
 	}
 }
 
@@ -62,7 +62,7 @@ class CheckUserExistanceCommand extends SqlCommand
 	{
 		parent::__construct(Queries::CHECK_USER_EXISTANCE);
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL, $emailAddress));	
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $emailAddress));	
 	}
 }
 
@@ -134,7 +134,7 @@ class GetScheduleResourcesCommand extends SqlCommand
 {
 	public function __construct($scheduleId)
 	{
-		parent::__construct(Queries::GET_RESOURCE_SCHEDULES);
+		parent::__construct(Queries::GET_SCHEDULE_RESOURCES);
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
 }
@@ -175,15 +175,15 @@ class RegisterUserCommand extends SqlCommand
 		parent::__construct(Queries::REGISTER_USER);
 		
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
 		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
 		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
 		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
-		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE, $timezone));
+		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezone));
 		$this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId));
 		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
-		$this->AddParameter(new Parameter(ParameterNames::INSTITUTION, $institution));
+		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $institution));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));	
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
 	}
@@ -196,7 +196,7 @@ class RegisterMiniUserCommand extends SqlCommand
 		parent::__construct(Queries::REGISTER_MINI_USER);
 		
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
 		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
 		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
@@ -237,17 +237,17 @@ class UpdateLoginTimeCommand extends SqlCommand
 
 class UpdateUserFromLdapCommand extends SqlCommand 
 {
-	public function __construct($username, $email, $fname, $lname, $password, $salt, $phone, $institution, $position)
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $phone, $organization, $position)
 	{
 		parent::__construct(Queries::UPDATE_USER_BY_USERNAME);
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
-		$this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
 		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
 		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
 		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
 		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
-		$this->AddParameter(new Parameter(ParameterNames::INSTITUTION, $institution));
+		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));
 	}
 }

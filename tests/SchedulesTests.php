@@ -34,10 +34,7 @@ class SchedulesTests extends TestBase
 							$item[ColumnNames::SCHEDULE_ID],
 							$item[ColumnNames::SCHEDULE_NAME],
 							$item[ColumnNames::SCHEDULE_DEFAULT],
-							$item[ColumnNames::SCHEDULE_START],
-							$item[ColumnNames::SCHEDULE_END],
 							$item[ColumnNames::SCHEDULE_WEEKDAY_START],
-							$item[ColumnNames::SCHEDULE_ADMIN_ID],
 							$item[ColumnNames::SCHEDULE_DAYS_VISIBLE]
 						);
 		}
@@ -52,24 +49,24 @@ class SchedulesTests extends TestBase
 	public function testCanGetLayoutForSchedule()
 	{
 		$layoutRows[] = array(
-						ColumnNames::PERIOD_START => '02:00:00',
-						ColumnNames::PERIOD_END => '03:00:00',
-						ColumnNames::PERIOD_LABEL => 'PERIOD1',
-						ColumnNames::PERIOD_TYPE => PeroidTypes::RESERVABLE,
+						ColumnNames::BLOCK_START => '02:00:00',
+						ColumnNames::BLOCK_END => '03:00:00',
+						ColumnNames::BLOCK_LABEL => 'PERIOD1',
+						ColumnNames::BLOCK_CODE => PeroidTypes::RESERVABLE,
 						);
 		
 		$layoutRows[] = array(
-						ColumnNames::PERIOD_START => '03:00:00',
-						ColumnNames::PERIOD_END => '04:00:00',
-						ColumnNames::PERIOD_LABEL => 'PERIOD2',
-						ColumnNames::PERIOD_TYPE => PeroidTypes::RESERVABLE,
+						ColumnNames::BLOCK_START => '03:00:00',
+						ColumnNames::BLOCK_END => '04:00:00',
+						ColumnNames::BLOCK_LABEL => 'PERIOD2',
+						ColumnNames::BLOCK_CODE => PeroidTypes::RESERVABLE,
 						);
 						
 		$layoutRows[] = array(
-						ColumnNames::PERIOD_START => '04:00:00',
-						ColumnNames::PERIOD_END => '05:00:00',
-						ColumnNames::PERIOD_LABEL => 'PERIOD3',
-						ColumnNames::PERIOD_TYPE => PeroidTypes::NONRESERVABLE,
+						ColumnNames::BLOCK_START => '04:00:00',
+						ColumnNames::BLOCK_END => '05:00:00',
+						ColumnNames::BLOCK_LABEL => 'PERIOD3',
+						ColumnNames::BLOCK_CODE => PeroidTypes::NONRESERVABLE,
 						);
 		
 		$this->db->SetRows($layoutRows);

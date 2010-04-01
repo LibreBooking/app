@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
-require_once(ROOT_DIR . 'lib/pear/MDB2.php');
+//require_once(ROOT_DIR . 'lib/pear/MDB2.php');
 
 class FakeDatabase extends Database
 {
@@ -21,7 +21,7 @@ class FakeDatabase extends Database
 		$this->reader[$readerCount] = &$reader;
 	}
 
-	public function &Query(&$command)
+	public function &Query(ISqlCommand &$command) 
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
@@ -39,13 +39,13 @@ class FakeDatabase extends Database
 		return $reader;
 	}
 
-	public function Execute(&$command)
+	public function Execute(ISqlCommand &$command) 
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
 	}
 	
-	public function ExecuteInsert(&$command)
+	public function ExecuteInsert(ISqlCommand &$command)
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
@@ -118,20 +118,23 @@ class FakeDBConnection implements IDBConnection
 	{
 	}
 
-	public function Connect() {
+	public function Connect() 
+	{
 		$this->_ConnectWasCalled = true;
 	}
 
-	public function Disconnect() {
+	public function Disconnect() 
+	{
 		$this->_DisconnectWasCalled = true;
 	}
 
-	public function Query(&$command) {
+	public function Query(ISqlCommand $command)
+	{
 		$this->_LastSqlCommand = $command;
 		return null;
 	}
 
-	public function Execute(&$command)
+	public function Execute(ISqlCommand $command) 
 	{
 		$this->_LastExecuteCommand = $command;
 	}
@@ -143,6 +146,7 @@ class FakeDBConnection implements IDBConnection
 	}
 }
 
+/*
 class FakePearDB extends MDB2
 {
 	public $dsn = '';
@@ -228,4 +232,5 @@ class FakePrepareHandle extends MDB2_Statement_Common
 		return $this->result;
 	}
 }
+*/
 ?>

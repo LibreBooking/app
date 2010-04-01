@@ -51,11 +51,11 @@ class ReservationsTests extends TestBase
 		$r = $rows[0];
 		$expected = new ScheduleReservation(
 							$r[ColumnNames::RESERVATION_ID],
-							Date::Parse($r[ColumnNames::START_DATE], 'UTC'),
-							Date::Parse($r[ColumnNames::END_DATE], 'UTC'),
+							Date::Parse($r[ColumnNames::RESERVATION_START], 'UTC'),
+							Date::Parse($r[ColumnNames::RESERVATION_END], 'UTC'),
 							$r[ColumnNames::RESERVATION_TYPE],
-							$r[ColumnNames::SUMMARY],
-							$r[ColumnNames::PARENT_ID],
+							$r[ColumnNames::RESERVATION_DESCRIPTION],
+							$r[ColumnNames::RESERVATION_PARENT_ID],
 							$r[ColumnNames::RESOURCE_ID],
 							$r[ColumnNames::USER_ID],
 							$r[ColumnNames::FIRST_NAME],
@@ -64,11 +64,11 @@ class ReservationsTests extends TestBase
 		
 		$actual = ReservationFactory::CreateForSchedule($r);
 		
-		$startTime = Time::Parse($r[ColumnNames::START_DATE], 'UTC');
-		$endTime = Time::Parse($r[ColumnNames::END_DATE], 'UTC');
+		$startTime = Time::Parse($r[ColumnNames::RESERVATION_START], 'UTC');
+		$endTime = Time::Parse($r[ColumnNames::RESERVATION_END], 'UTC');
 		
-		$startDate = Date::Parse($r[ColumnNames::START_DATE], 'UTC');
-		$endDate = Date::Parse($r[ColumnNames::END_DATE], 'UTC');
+		$startDate = Date::Parse($r[ColumnNames::RESERVATION_START], 'UTC');
+		$endDate = Date::Parse($r[ColumnNames::RESERVATION_END], 'UTC');
 		
 		$this->assertEquals($expected, $actual);		
 		
