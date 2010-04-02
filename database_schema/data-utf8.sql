@@ -1,5 +1,5 @@
 insert into user_statuses values (1, 'default');
-insert into user_roles values (1, 'admin', 1);
+insert into roles values (1, 'admin', 1);
 insert into long_quotas (long_quotaid, label) values (1, 'default long quota');
 insert into day_quotas (day_quotaid, label) values (1, 'default day quota');
 insert into constraint_functions values (1, '');

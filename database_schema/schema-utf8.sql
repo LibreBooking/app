@@ -136,11 +136,11 @@ CREATE TABLE `groups` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `user_roles`
+-- Table structure for table `roles`
 --
 
-DROP TABLE IF EXISTS `user_roles`;
-CREATE TABLE `user_roles` (
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
  `roleid` tinyint(2) unsigned NOT NULL,
  `name` varchar(85),
  `user_level` tinyint(1) unsigned,
@@ -199,28 +199,23 @@ CREATE TABLE `registration_form_settings` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
  `userid` mediumint(8) unsigned NOT NULL auto_increment,
+ `fname` varchar(85),
+ `lname` varchar(85),
  `username` varchar(85),
  `email` varchar(85) NOT NULL,
  `password` varchar(85) NOT NULL,
  `salt` varchar(85) NOT NULL,
- `fname` varchar(85),
- `lname` varchar(85),
- `phone` varchar(85),
  `position` varchar(85),
+ `phone` varchar(85),
  `timezone` varchar(85) NOT NULL,
- `lastlogin` datetime,
  `homepageid` tinyint(2) unsigned NOT NULL default '1',
  `date_created` datetime NOT NULL,
  `last_modified` timestamp,
- `role_id` tinyint(2) unsigned,
+ `lastlogin` datetime,
  `status_id` tinyint(2) unsigned NOT NULL,
  `legacyid` char(16),
  `legacypassword` varchar(32),
  PRIMARY KEY (`userid`),
- INDEX (`role_id`),
- FOREIGN KEY (`role_id`) 
-	REFERENCES user_roles(`roleid`)
-	ON UPDATE CASCADE ON DELETE RESTRICT,
  INDEX (`status_id`),
  FOREIGN KEY (`status_id`) 
 	REFERENCES user_statuses(`statusid`)
@@ -252,8 +247,8 @@ CREATE TABLE `user_organizations` (
 
 DROP TABLE IF EXISTS `user_groups`;
 CREATE TABLE `user_groups` (
- `group_id` smallint(5) unsigned NOT NULL,
  `user_id` mediumint(8) unsigned NOT NULL,
+ `role_id` tinyint(2) unsigned,
  PRIMARY KEY (`group_id`, `user_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
@@ -262,6 +257,25 @@ CREATE TABLE `user_groups` (
  INDEX (`group_id`),
  FOREIGN KEY (`group_id`) 
 	REFERENCES groups(`groupid`)
+	ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `user_roles`
+--
+
+DROP TABLE IF EXISTS `user_roles`;
+CREATE TABLE `user_roles` (
+ `user_id` mediumint(8) unsigned NOT NULL,
+ `role_id` tinyint(2) unsigned NOT NULL,
+ PRIMARY KEY (`user_id`, `role_id`),
+ INDEX (`user_id`),
+ FOREIGN KEY (`user_id`) 
+	REFERENCES users(`userid`)
+	ON UPDATE CASCADE ON DELETE CASCADE,
+ INDEX (`role_id`),
+ FOREIGN KEY (`role_id`) 
+	REFERENCES roles(`roleid`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 

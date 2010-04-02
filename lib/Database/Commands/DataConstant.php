@@ -134,9 +134,9 @@ class Queries
 		  u.fname,
 		  u.lname
 		FROM 
-			reservations r, users u, resource_schedules rs, schedules s, user_roles ur, reservation_resources rr
+			reservations r, users u, resource_schedules rs, schedules s, reservation_resources rr
 		WHERE 
-			r.user_id = u.userid AND rr.resource_id = rs.resource_id AND u.role_id = ur.roleid AND
+			r.user_id = u.userid AND rr.resource_id = rs.resource_id AND 
 			rs.schedule_id = @scheduleid AND
 			(
 		  		(r.start_date BETWEEN @startDate AND @endDate)
@@ -174,11 +174,11 @@ class Queries
 	
 	const GET_USER_ROLES = 
 		'SELECT 
-			userid, user_level 
+			user_id, user_level 
 		FROM 
-			user_roles ur, users u
+			roles r, user_roles ur
 		WHERE 
-			u.userid = @userid AND ur.roleid = u.role_id';
+			ur.user_id = @userid AND r.roleid = ur.role_id';
 	
 	const MIGRATE_PASSWORD = 
 		'UPDATE 
@@ -289,7 +289,7 @@ class ColumnNames
 	// USER_DAY_QUOTAS //
 	const USER_DQUOTA_ID = 'day_quota_id';
 	
-	// USER_ROLES //
+	// ROLES //
 	const USER_LEVEL = 'user_level';
 	
 	// ANNOUNCEMENTS //
