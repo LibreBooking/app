@@ -14,24 +14,24 @@
                 {textbox name="RESOURCE_NAME" class="input" value="resourceName" tabindex="10"}
                 </label>
         	</li>
-        	<li class="res">
-                <label>{translate key="ResourceLocation"}<br />
-	                <textarea name="{constant echo='FormKeys::LOCATION'}" class="input-area" value="location" rows="2" tabindex="20"></textarea>
-                </label>
-        	</li>
         	<li class="res-box-s">
-                <label>{translate key="ContactInfo"}<br />
-	                <textarea name="{constant echo='FormKeys::CONTACT_INFO'}" class="input-area" value="contact_info" rows="3" tabindex="30"></textarea>
+                <label>{translate key="ResourceLocation"}<br />
+	                <textarea name="{constant echo='FormKeys::LOCATION'}" class="input-area" rows="2" cols="52" tabindex="20"></textarea>
                 </label>
         	</li>
         	<li class="res-box-m">
-                <label>{translate key="Description"}<br />
-	                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-area" value="description" rows="4" tabindex="40"></textarea>
+                <label>{translate key="ContactInfo"}<br />
+	                <textarea name="{constant echo='FormKeys::CONTACT_INFO'}" class="input-area" rows="3" cols="52" tabindex="30"></textarea>
                 </label>
         	</li>
-			<li class="res-box-l">
+        	<li class="res-box-l">
+                <label>{translate key="Description"}<br />
+	                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-area" rows="4" cols="52" tabindex="40"></textarea>
+                </label>
+        	</li>
+			<li class="res-box-xl">
                 <label>{translate key="ResourceNotes"}<br />
-                	<textarea name="{constant echo='FormKeys::NOTES'}" class="input-area" value="notes" rows="6" tabindex="50"></textarea>
+                	<textarea name="{constant echo='FormKeys::NOTES'}" class="input-area" rows="6" cols="52" tabindex="50"></textarea>
                 </label>
         	</li>
         </ul>
