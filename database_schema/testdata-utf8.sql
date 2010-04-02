@@ -15,7 +15,7 @@ truncate table roles;
 insert into roles values (1,'default admin',0),(2,'basic user',0),(3,'group admin',2),(4,'sysadmin',9);
 
 truncate table user_roles;
-insert into user_roles values (1, 1),(2, 1)
+insert into user_roles values (1, 1),(2, 1);
 
 truncate table time_block_groups;
 insert into time_block_groups values (1, 'Business Day');
