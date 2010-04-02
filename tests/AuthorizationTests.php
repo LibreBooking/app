@@ -67,7 +67,7 @@ class AuthorizationTests extends TestBase
 
 		$loginRows = $this->GetRows();
 		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 1)
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 1)
 			);
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
@@ -91,12 +91,13 @@ class AuthorizationTests extends TestBase
 		$user->LastName = $this->lname;
 		$user->Email = $this->email;
 		$user->IsAdmin = true;
+		$user->RoleLevel = 1;
 		$user->Timezone = $this->timezone;
 		$user->HomepageId = $this->homepageId;
 
 		$loginRows = $this->GetRows();
 		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 1)
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 1)
 			);
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
@@ -112,7 +113,7 @@ class AuthorizationTests extends TestBase
 
 		$loginRows = $this->GetRows();
 		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 0)
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 0)
 			);
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
@@ -155,7 +156,7 @@ class AuthorizationTests extends TestBase
 		LoginTime::$Now = $now;
 		$loginRows = $this->GetRows();
 		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 0)
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 0)
 			);
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
@@ -183,7 +184,7 @@ class AuthorizationTests extends TestBase
 		$this->db->SetRow(0, $rows);
 		$loginRows = $this->GetRows();
 		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::IS_ADMIN => 0)
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 0)
 			);
 		$this->db->SetRow(1, $loginRows);
 		$this->db->SetRow(2, $roleRows);

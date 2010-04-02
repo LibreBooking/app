@@ -45,9 +45,9 @@ $tests = array(
 'DatabaseTests.php',
 'DatabaseCommandTests.php',
 'AuthorizationTests.php',
-'Mdb2CommandAdapterTests.php',
-'Mdb2ConnectionTests.php',
-'Mdb2ReaderTests.php',
+//'Mdb2CommandAdapterTests.php',
+//'Mdb2ConnectionTests.php',
+//'Mdb2ReaderTests.php',
 'PasswordEncryptionTests.php',
 'RegistrationTests.php',
 'SmartyControlTests.php'
