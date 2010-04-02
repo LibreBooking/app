@@ -756,6 +756,15 @@ class en_us extends Language
 		$strings['Organization'] = 'Organization';
 		$strings['Group'] = 'Group';
 		
+		$strings['RadioRequired'] = 'Required';
+		$strings['RadioOptional'] = 'Optional';
+		$strings['RadioRemoved'] = 'Removed';
+		$strings['PasswordAndConfirmation'] = 'Password and password confirmation';
+		$strings['Homepage'] = 'Default homepage selection';
+		$strings['FormFields'] = 'Form fields';
+		$strings['OrganizationSelection'] = 'Organization selection';
+		$strings['TimezoneSelection'] = 'Timezone selection';
+						
 		// end Since 2.0
 		
 		$this->Strings = $strings;

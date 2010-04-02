@@ -152,31 +152,6 @@ h3 {
 }
 
 /*********************************************************/
-.loginTableBorder {
-    background-color: #005EBF;
-}
-
-.loginTable tr {
-    background-color: #FFFFFF;
-}
-
-.loginTable #header {
-    color: #BBBBBB;
-    background: #005EBF url('../img/scheduleit-watermark.png') no-repeat right;
-}
-
-.loginTable #header td {
-    border-bottom: solid 1px #005EBF;
-}
-
-.loginTable #footer {
-    background-color: #FAFAFA;
-}
-
-.loginTable #footer td {
-    border-top: solid 1px #005EBF;
-}
-
 #loginError, div.error {
     border: solid 1px #a4381c;
     margin: 0px auto 15px;
@@ -203,38 +178,6 @@ div.error img {
 div.error ul {
     margin-top: 0px;
     margin-bottom: 0px;
-}
-
-div.registration {
-    font-size: 14px;
-    width: 500px;
-    border: solid 1px #cccccc;
-    background-color: #ffffff;
-    padding: 20px 50px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-div.registrationHeader, .resourceHeader {
-    font-size: 15px;
-    font-weight: bold;
-    background-color: #e2e398;
-    color: #000000;
-    padding: 3px 20px;
-    border: solid 1px #adae68;
-}
-
-div.registration table {
-    margin-bottom: 25px;
-}
-
-div.registration .textbox {
-    width: 200px;
-}
-
-div.registration hr {
-    height: 1px;
-    color: #aaaaaa;
 }
 
 #content {
@@ -326,35 +269,36 @@ label.login {
 }
 
 #loginbox .input {
-        font-size: 24px;
-        width: 97%;
-        padding: 3px;
-        margin: 2px 6px 20px 0;
-        border: 1px solid #e5e5e5;
-        background: #fbfbfb;
+	font-size: 24px;
+	width: 97%;
+	padding: 3px;
+	margin: 2px 6px 20px 0;
+	border: 1px solid #e5e5e5;	
+	background: #fbfbfb;
 	color: #777
 }
 
 form .stayloggedin {
-        font-weight: normal;
-        float: left;
-        margin-bottom: 0;
+	font-weight: normal;
+	float: left;
+	margin-bottom: 0;
 }
 
 form .stayloggedin label { 
-        font-size: 13px; 
-        line-height: 1.5em; 
+	font-size: 13px; 
+	line-height: 1.5em; 
 }
 
-form .res-checkbox input { vertical-align: middle; }
-form .loginsubmit, .save { float:right; }
+form.res-checkbox input { vertical-align: middle; }
+
+p.loginsubmit, p.save, p.reg-adminsubmit { float:right; }
 
 #login-links p, h4 {text-align: center;}
 
 .page-footer { display:none; }
 
 
-form.register, .resource {
+form.register, form.resource, form.reg-admin {
         margin: 0 0 0 8px;
         padding: 20px 16px 48px 16px;
         font-weight: normal;
@@ -370,7 +314,7 @@ form.register, .resource {
         box-shadow: rgba(200,200,200,1) 0 4px 18px;
 }
 
-form .regsubmit { float:left; }
+p.regsubmit { float:left; }
 
 form p { margin-bottom: 12px; }
 
@@ -379,27 +323,27 @@ form li {
 	color: #666;
 }
 
-div.registrationHeader, .resourceHeader {
-        padding: 5px 15px;
-        border: none;
-        -moz-border-radius: 13px;
-        -khtml-border-radius: 13px;
-        -webkit-border-radius: 13px;
-        border-radius: 13px;
-        -moz-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        -webkit-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        -khtml-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        text-decoration: none;
-        margin: 0 0 20px 0;
-	height: 1.5em;
+div.registrationHeader, div.resourceHeader, div.reg-adminHeader {
+	padding: 5px 15px;
+	border: none;
+	-moz-border-radius: 13px;
+	-khtml-border-radius: 13px;
+	-webkit-border-radius: 13px;
+	border-radius: 13px;
+	-moz-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+	-webkit-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+	-khtml-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+	box-shadow: rgba(200,200,200,1) 3px 3px 10px;
+	text-decoration: none;
+	margin: 0 0 20px 0;
+	height: 2em;
 	background: url('../img/button_bg.gif') repeat-x 0 0;
 	color: #fff;
 }
 
-.registrationHeader, .resourceHeader h3 { 
-        font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-        vertical-align: middle;
+div.registrationHeader h3, div.resourceHeader h3, div.reg-adminHeader h3 { 
+	font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	vertical-align: middle;
 }
 
 ul.no-style {
@@ -428,6 +372,11 @@ label.res, .reg {
 	margin: 3em auto 1em;
 }
 
+#reg-adminbox {
+	width: 750px;
+	margin: 3em auto 1em;
+}
+
 #resourcebox-leftcolumn {
 	width: 47%;
 	float: left;
@@ -439,6 +388,8 @@ label.res, .reg {
 }
 
 #resourcebox-footer { clear: both; }
+
+#reg-adminbox-footer { margin: 10px 0;}
 
 #registrationbox .input {
         font-size: 18px;
@@ -468,4 +419,43 @@ textarea.input-area {
     border: 1px solid #e5e5e5;
     background: #fbfbfb;
     color: #777;	
+}
+
+td.center {
+	text-align: center;
+}
+
+table.reg-admin {
+	border-collapse: collapse;
+}
+
+table.reg-admin td {
+	padding: 3px;
+}
+
+th {
+    vertical-align: middle;	
+    color: #777;
+	border-bottom: 2px solid #aaa;
+	padding: 0 0 3px 0;
+}
+
+th.admin-fieldHeading {
+    font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 400px;
+	text-align: left;
+}
+
+th.admin-radio {
+    font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 100px;
+}
+
+td.admin-fieldName {
+    font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+    color: #777;	
+}
+
+tr.admin-lastline {
+	border-bottom: 2px solid #aaa;
 }

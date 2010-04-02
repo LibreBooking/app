@@ -40,6 +40,18 @@ class ParameterNames
 	const USER_ROLE_ID = '@user_roleid';
 	const USER_STATUS_ID = '@user_statusid';
 	const USERNAME = '@username';	
+	const FIRST_NAME_SETTING = '@fname_setting';
+	const LAST_NAME_SETTING = '@$lname_setting';
+	const USERNAME_SETTING = '@username_setting';	
+	const EMAIL_ADDRESS_SETTING = '@email_setting';
+	const PASSWORD_SETTING = '@password_setting';
+	const ORGANIZATION_SELECTION_SETTING = '@password_setting';
+	const GROUP_SETTING = '@password_setting';
+	const POSITION_SETTING = '@password_setting';
+	const ADDRESS_SETTING = '@password_setting';
+	const PHONE_SETTING = '@password_setting';
+	const HOMEPAGE_SELECTION_SETTING = '@password_setting';
+	const TIMEZONE_SELECTION_SETTING = '@timezone_setting';	
 }
 
 class Queries
@@ -175,13 +187,9 @@ class Queries
 			password = @password, legacypassword = null, salt = @salt 
 		WHERE 
 			userid = @userid';
-	
-	const REGISTER_USER = 
-		'INSERT INTO 
-			users (email, password, fname, lname, phone, organization_id, position, username, salt, timezone, homepageid, status_id)
-		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @homepageid, @user_statusid)
-		';
+
+	const REGISTER_FORM_SETTINGS = 
+		'select * from users'; //TODO make a table to hold these settings and then make a query to modify them
 
 	const REGISTER_MINI_USER = 
 		'INSERT INTO 
@@ -189,6 +197,14 @@ class Queries
 		VALUES
 			(@email, @password, @fname, @lname, @username, @salt, @timezone, @user_statusid, @user_roleid)
 		';
+
+	const REGISTER_USER = 
+		'INSERT INTO 
+			users (email, password, fname, lname, phone, organization_id, position, username, salt, timezone, homepageid, status_id)
+		VALUES
+			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @homepageid, @user_statusid)
+		';
+
 
 	const ADD_RESOURCE = 
 		'INSERT INTO 

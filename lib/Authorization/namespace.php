@@ -8,4 +8,5 @@ require_once(ROOT_DIR . 'lib/Authorization/IRegistration.php');
 require_once(ROOT_DIR . 'lib/Authorization/Registration.php');
 require_once(ROOT_DIR . 'lib/Authorization/IRegistrationMini.php');
 require_once(ROOT_DIR . 'lib/Authorization/RegistrationMini.php');
+require_once(ROOT_DIR . 'lib/Authorization/RegistrationAdmin.php');
 ?>
