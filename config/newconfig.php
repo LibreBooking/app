@@ -1,7 +1,7 @@
 <?php
 $conf['settings']['server.timezone'] = 'US/Central';
 $conf['settings']['allow.self.registration'] = 'true';
-$conf['settings']['admin.email'] = 'jaani@helvet.fi';
+$conf['settings']['admin.email'] = 'admin@example.com';
 $conf['settings']['default.language'] = 'en_US';
 $conf['settings']['allow.rss'] = 'true';
 $conf['settings']['version'] = '2.0.0';

@@ -602,3 +602,5 @@ CREATE TABLE `reservation_resources` (
 	REFERENCES reservations(`reservationid`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+GRANT ALL on phpscheduleit2.* to 'schedule_user'@'localhost' identified by 'password';
