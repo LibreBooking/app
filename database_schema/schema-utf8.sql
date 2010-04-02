@@ -171,6 +171,28 @@ CREATE TABLE `addresses` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
+-- Table structure for table `registration_form_settings`
+--
+
+DROP TABLE IF EXISTS `registration_form_settings`;
+CREATE TABLE `registration_form_settings` (
+ `formid` mediumint(8) unsigned NOT NULL auto_increment,
+ `fname_setting` tinyint(1) NOT NULL default '1',
+ `lname_setting` tinyint(1) NOT NULL default '1',
+ `username_setting` tinyint(1) NOT NULL default '1',
+ `email_setting` tinyint(1) NOT NULL default '1',
+ `password_setting` tinyint(1) NOT NULL default '1',
+ `organization_setting` tinyint(1) NOT NULL default '2',
+ `group_setting` tinyint(1) NOT NULL default '2',
+ `position_setting` tinyint(1) NOT NULL default '2',
+ `address_setting` tinyint(1) NOT NULL default '2',
+ `phone_setting` tinyint(1) NOT NULL default '2',
+ `homepage_setting`  tinyint(1) NOT NULL default '2',
+ `timezone_setting` tinyint(1) NOT NULL default '3',
+ PRIMARY KEY (`formid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
 -- Table structure for table `users`
 --
 

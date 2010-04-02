@@ -41,16 +41,16 @@ class ParameterNames
 	const USER_STATUS_ID = '@user_statusid';
 	const USERNAME = '@username';	
 	const FIRST_NAME_SETTING = '@fname_setting';
-	const LAST_NAME_SETTING = '@$lname_setting';
+	const LAST_NAME_SETTING = '@lname_setting';
 	const USERNAME_SETTING = '@username_setting';	
 	const EMAIL_ADDRESS_SETTING = '@email_setting';
 	const PASSWORD_SETTING = '@password_setting';
-	const ORGANIZATION_SELECTION_SETTING = '@password_setting';
-	const GROUP_SETTING = '@password_setting';
-	const POSITION_SETTING = '@password_setting';
-	const ADDRESS_SETTING = '@password_setting';
-	const PHONE_SETTING = '@password_setting';
-	const HOMEPAGE_SELECTION_SETTING = '@password_setting';
+	const ORGANIZATION_SELECTION_SETTING = '@organization_setting';
+	const GROUP_SETTING = '@group_setting';
+	const POSITION_SETTING = '@position_setting';
+	const ADDRESS_SETTING = '@address_setting';
+	const PHONE_SETTING = '@phone_setting';
+	const HOMEPAGE_SELECTION_SETTING = '@homepage_setting';
 	const TIMEZONE_SELECTION_SETTING = '@timezone_setting';	
 }
 
@@ -189,7 +189,13 @@ class Queries
 			userid = @userid';
 
 	const REGISTER_FORM_SETTINGS = 
-		'select * from users'; //TODO make a table to hold these settings and then make a query to modify them
+		'INSERT INTO
+			registration_form_settings (fname_setting, lname_setting, username_setting, email_setting, password_setting, 
+			organization_setting, group_setting, position_setting, address_setting, phone_setting, homepage_setting, timezone_setting)	
+		VALUES
+			(@fname_setting, @lname_setting, @username_setting, @email_setting, @password_setting, @organization_setting, 
+			 @group_setting, @position_setting, @address_setting, @phone_setting, @homepage_setting, @timezone_setting)
+		';
 
 	const REGISTER_MINI_USER = 
 		'INSERT INTO 

@@ -179,12 +179,12 @@ class RegisterFormSettingsCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME_SETTING, $username));	
 		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS_SETTING, $email));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD_SETTING, $password));
-		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION_SELECTION_SETTING, $password));
-		$this->AddParameter(new Parameter(ParameterNames::GROUP_SETTING, $password));
-		$this->AddParameter(new Parameter(ParameterNames::POSITION_SETTING, $password));
-		$this->AddParameter(new Parameter(ParameterNames::ADDRESS_SETTING, $password));
-		$this->AddParameter(new Parameter(ParameterNames::PHONE_SETTING, $password));
-		$this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_SELECTION_SETTING, $password));
+		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION_SELECTION_SETTING, $organization));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_SETTING, $group));
+		$this->AddParameter(new Parameter(ParameterNames::POSITION_SETTING, $position));
+		$this->AddParameter(new Parameter(ParameterNames::ADDRESS_SETTING, $address));
+		$this->AddParameter(new Parameter(ParameterNames::PHONE_SETTING, $phone));
+		$this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_SELECTION_SETTING, $homepage));
 		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE_SELECTION_SETTING, $timezone));
 	}
 }
