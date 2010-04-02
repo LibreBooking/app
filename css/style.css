@@ -459,3 +459,13 @@ label.res, .reg {
         background: #fbfbfb;
         color: #777;
 }
+
+textarea.input-area {
+    font-size: 18px;
+    width: 98%;
+    padding: 3px;
+    margin: 2px 0 5px 0;
+    border: 1px solid #e5e5e5;
+    background: #fbfbfb;
+    color: #777;	
+}

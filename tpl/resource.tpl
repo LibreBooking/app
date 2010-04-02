@@ -16,38 +16,38 @@
         	</li>
         	<li class="res">
                 <label>{translate key="ResourceLocation"}<br />
-                {textbox name="LOCATION" class="input" value="location" tabindex="20"}
+	                <textarea name="{constant echo='FormKeys::LOCATION'}" class="input-area" value="location" rows="2" tabindex="20"></textarea>
                 </label>
         	</li>
-        	<li class="res">
+        	<li class="res-box-s">
                 <label>{translate key="ContactInfo"}<br />
-                {textbox name="CONTACT_INFO" class="input" value="contactInfo" tabindex="30"}
+	                <textarea name="{constant echo='FormKeys::CONTACT_INFO'}" class="input-area" value="contact_info" rows="3" tabindex="30"></textarea>
                 </label>
         	</li>
-        	<li class="res">
+        	<li class="res-box-m">
                 <label>{translate key="Description"}<br />
-                {textbox name="DESCRIPTION" class="input" value="description" tabindex="40"}
+	                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-area" value="description" rows="4" tabindex="40"></textarea>
                 </label>
         	</li>
-			<li class="res">
-                <label>{translate key="UnitCost"}
-                {textbox name="UNIT_COST" class="input" value="unitCost" tabindex="50"}
-                </label>
-        	</li>
-        	<li class="res">
-                <label>{translate key="MaxParticipants"}
-                {textbox name="MAX_PARTICIPANTS" class="input" value="maxParticipants" tabindex="60"}
-                </label>
-        	</li>
-			<li class="res-box">
+			<li class="res-box-l">
                 <label>{translate key="ResourceNotes"}<br />
-                {textbox name="NOTES" class="input" value="notes" tabindex="70"}
+                	<textarea name="{constant echo='FormKeys::NOTES'}" class="input-area" value="notes" rows="6" tabindex="50"></textarea>
                 </label>
         	</li>
         </ul>
 	</div>
 	<div id="resourcebox-rightcolumn">
 		<ul class="no-style">
+			<li class="res">
+                <label>{translate key="UnitCost"}
+                {textbox name="UNIT_COST" class="input" value="unitCost" tabindex="60"}
+                </label>
+        	</li>
+        	<li class="res">
+                <label>{translate key="MaxParticipants"}
+                {textbox name="MAX_PARTICIPANTS" class="input" value="maxParticipants" tabindex="70"}
+                </label>
+        	</li>
 			<li class="res">
                 <label class="res">{translate key="MinDuration"} (HH:MM)<br />
                 {textbox name="MIN_DURATION" class="input" value="minDuration" tabindex="80"}
@@ -64,30 +64,30 @@
                 </label>
         	</li>
         	<li class="res">
-                <label class="res">{translate key="MinNotice"} (D HH:MM {translate key="Before"})<br />
-                {textbox name="MIN_NOTICE" class="input" value="minNotice" tabindex="110"}
+                <label class="res">{translate key="MaxNotice"} (D HH:MM {translate key="Before"})<br />
+                {textbox name="MAX_NOTICE" class="input" value="maxNotice" tabindex="110"}
                 </label>
         	</li>
         	<li class="res">
-                <label class="res">{translate key="MaxNotice"} (D HH:MM {translate key="Before"})<br />
-                {textbox name="MAX_NOTICE" class="input" value="maxNotice" tabindex="120"}
+                <label class="res">{translate key="MinNotice"} (D HH:MM {translate key="Before"})<br />
+                {textbox name="MIN_NOTICE" class="input" value="minNotice" tabindex="120"}
                 </label>
         	</li>
         	<li class="res-checkbox">
 		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::ALLOW_MULTIDAY'}" 
-				value="true" tabindex="160" /> {translate key="AllowMultiday"}</label>
+				checked="checked" tabindex="160" /> {translate key="AllowMultiday"}</label>
         	</li>
         	<li class="res-checkbox">
 		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::AUTO_ASSIGN'}" 
-				value="true" tabindex="170" /> {translate key="AutoAssign"}</label>
+				checked="checked" tabindex="170" /> {translate key="AutoAssign"}</label>
         	</li>
         	<li class="res-checkbox">
 		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::REQUIRES_APPROVAL'}" 
-				value="true" tabindex="180" /> {translate key="RequiresApproval"}</label>
+				tabindex="180" /> {translate key="RequiresApproval"}</label>
         	</li>
         	<li class="res-checkbox">
 		       <label class="res"><input type="checkbox" name="{constant echo='FormKeys::IS_ACTIVE'}" 
-				value="true" tabindex="190" /> {translate key="IsActive"}</label>
+				checked="checked" tabindex="190" /> {translate key="IsActive"}</label>
         	</li>
     	</ul>
 	</div>
