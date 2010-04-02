@@ -37,6 +37,7 @@ class FormKeys
 	const MAX_PARTICIPANTS = 'maxParticipants';
 	const MIN_NOTICE = 'minNotice';
 	const MAX_NOTICE = 'maxNotice';
+	const USERNAME = 'username';
 	
 	
 	public static function Evaluate($formKey)
