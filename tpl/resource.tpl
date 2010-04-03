@@ -1,4 +1,4 @@
-{include file='header.tpl' DisplayWelcome='false'}
+{include file='globalheader.tpl'}
 <div id="resourcebox">
 <form class="resource" method="post" action="{$smarty.server.SCRIPT_NAME}">
 
@@ -99,4 +99,4 @@
 </form>
 </div>
 {setfocus key='RESOURCE_NAME'}
-{include file='footer.tpl'}
+{include file='globalfooter.tpl'}
