@@ -463,7 +463,7 @@ tr.admin-lastline {
 
 /* Global header navigation, work in progress */
 
-.menu .menu, .menubar .menu {visibility:hidden;position:absolute;top:-10000px;left:-10000px}
+.menu .menu, .menubar .menu {visibility:hidden;position:absolute;top:56px;}
 .menubar li,.menu li{list-style-type:none}
 .menubar ul,.menu ul,.menubar li,.menu li,.menu h6,.menubar h6{margin:0;padding:0}
 .menubar ul{*zoom:1}
@@ -476,93 +476,85 @@ tr.admin-lastline {
 #wrapper{min-width:950px}
 
 .menubar {
-	visibility:visible;
-	position:static;
-	font-size:110%;
-	line-height:2;
-	*line-height:1.9;
+        visibility:visible;
+        position:static;
+        font-size:110%;
+        line-height:2;
+        *line-height:1.9;
 }
 
 .menuitem {
-	color: #fff;
-	margin: 0 2px 0 0;
-	list-style-type: none;
+        color: #fff;
+        margin: 0 2px 0 0;
+        list-style-type: none;
 }
 
-/*.menu .bd {
-	border:solid 1px #808080;
-	background-color:#fff;
-}*/
-
 .menu ul {
-	padding:3px 0;
-	border-width:1px 0 0 0;
-	border-color:#ccc;
-	border-style:solid;
+        padding:3px 0;
+        border-width:1px 0 0 0;
+        border-color:#ccc;
+        border-style:solid;
 }
 
 .menu ul.first { border-width:0; }
 
 #wrapper {
-	background-image: none;
-	background-position: 50% -20px;
-	background-repeat: no-repeat;
+        background-image: none;
+        background-position: 50% -20px;
+        background-repeat: no-repeat;
 }
 
 #header {
-	width: 900px;
-	margin:0 15px;
-	background: url(/img/header-bg.png) bottom left no-repeat;
-	height:56px;
-	font-family:verdana;
+        width: 900px;
+        margin:0 15px;
+        background: url(/img/header-bg.png) bottom left no-repeat;
+        height: 56px;
 }
 
-#nav-main { float:right; padding-right: 150px; }
+#nav-main { float:right; padding-right: 170px; }
 #nav-main ul{ float:left; z-index:99; left:auto; }
 #nav-main ul, #nav-main ul li { height:56px; background:none; position:relative; }
 #nav-main ul {
-	background: transparent url(/img/menubar-divider.png) top left no-repeat;
-	padding-left:2px;
+        background: transparent url(/img/menubar-divider.png) top left no-repeat;
+        padding-left: 2px;
 }
-#nav-main ul li a, #nav-main ul li span{
-	padding:20px 20px 0 20px;
-	height:35px;
-	display:block;
-	float:left;
-	font-weight:bold;
-	font-size:95%;
-	color:#fff;
-	background:transparent url(/img/menubar-divider.png) top right no-repeat;
+#nav-main ul li a {
+        padding:20px 20px 0 20px;
+        height:35px;
+        display:block;
+        float:left;
+        font-weight:bold;
+        font-size:95%;
+        color:#fff;
+        background:transparent url(/img/menubar-divider.png) top right no-repeat;
 }
 #nav-main ul li a:link, #nav-main ul li a:visited {
-	color:#fff;
-	text-decoration:none;
+        color:#fff;
+        text-decoration:none;
 }
 #nav-main ul li span, #nav-main ul li a:hover, #nav-main ul li a:active {
-	color:#fff;
-	background:#31526f url(/img/header-menu-bg.png) top right no-repeat;
+        color:#fff;
+        background:#31526f url(/img/header-menu-bg.png) top right no-repeat;
 }
 #nav-main ul ul, #nav-main ul ul li { height:auto; border:0; }
+
 #nav-main ul ul {
-	border-top:0;
-	background:url(/img/header-menu-bg.png) bottom left no-repeat;
-	padding:8px 0;
-	width:190px;
+        background:url(/img/header-menu-bg.png) bottom left no-repeat;
+        padding:8px 0;
+        width:190px;
 }
 
-#nav-main ul li ul li a, #nav-main ul li ul li a:link, #nav-main ul li ul li a:visited, #nav-main ul li ul li span {
-	padding: 4px 20px;
-	margin: 0 1px 1px 1px;
-	height: auto;
-	float: none;
-	display: block;
-	font-size: 85%;
-	font-weight: normal;
-	border: 0;
-	background-image: none;
-	position: relative;
+#nav-main ul li ul li a, #nav-main ul li ul li a:link, #nav-main ul li ul li a:visited {
+        padding: 4px 20px;
+        margin: 0 1px 1px 1px;
+        height: auto;
+        float: none;
+        display: block;
+        font-size: 85%;
+        font-weight: normal;
+        border: 0;
+        background-image: none;
+        position: relative;
 }
 
 #nav-main ul li ul li a:hover, #nav-main ul li ul li a:active { background:#3d5b74 }
-
-
