@@ -14,11 +14,10 @@ class UserSession
 	public $FirstName = '';
 	public $LastName = '';
 	public $Email = '';
-	// TODO: Remove this property in favor of role level
+	// TODO: Remove this property in favor of roles
 	public $IsAdmin = false;
 	public $Timezone = '';
 	public $HomepageId = 1;
-	public $RoleLevel = 0;
 	
 	public function __construct($id)
 	{

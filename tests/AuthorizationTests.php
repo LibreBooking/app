@@ -91,7 +91,6 @@ class AuthorizationTests extends TestBase
 		$user->LastName = $this->lname;
 		$user->Email = $this->email;
 		$user->IsAdmin = true;
-		$user->RoleLevel = 1;
 		$user->Timezone = $this->timezone;
 		$user->HomepageId = $this->homepageId;
 

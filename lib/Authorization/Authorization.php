@@ -99,9 +99,12 @@ class Authorization implements IAuthorization
 		$command = new GetUserRoleCommand($userid);
 		$reader = ServiceLocator::GetDatabase()->Query($command);
 		
-		if ($row = $reader->GetRow())
+		while ($row = $reader->GetRow())
 		{
-			$isAdminRole = (bool)$row[ColumnNames::USER_LEVEL];
+			if ($isAdminRole == false)
+			{
+				$isAdminRole = (bool)$row[ColumnNames::USER_LEVEL];
+			}
 		}
 		
 		return $isAdminRole;
@@ -115,7 +118,6 @@ class Authorization implements IAuthorization
 		$user->LastName = $row[ColumnNames::LAST_NAME];
 		$user->Timezone = $row[ColumnNames::TIMEZONE_NAME];
 		$user->HomepageId = $row[ColumnNames::HOMEPAGE_ID];
-		$user->RoleLevel = $row[ColumnNames::USER_LEVEL];
 		
 		$isAdmin = ($user->Email == Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$isAdminRole;
 		$user->IsAdmin = $isAdmin;
