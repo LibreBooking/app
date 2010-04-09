@@ -511,7 +511,7 @@ tr.admin-lastline {
         height: 56px;
 }
 
-#nav-main { float:right; padding-right: 170px; }
+#nav-main { float:right; padding-right: 120px; }
 #nav-main ul{ float:left; z-index:99; left:auto; }
 #nav-main ul, #nav-main ul li { height:56px; background:none; position:relative; }
 #nav-main ul {
