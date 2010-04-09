@@ -37,7 +37,7 @@
 				<li id="users" class="menubaritem" onmouseover="mopen('submenu2')" onmouseout="mclosetimer()"><a href="/user-admin.php">Users</a>
 			     	<div class="menu" id="submenu2" onmouseover="mcancelclosetimer()">
 			          		<ul>
-								<li class="menuitem"><a href="/user.php">Add new user</a></li>
+								<li class="menuitem"><a href="/reg-mini.php">Add new user</a></li>
 								<li class="menuitem"><a href="/user.php">View user list</a></li>
 								<li class="menuitem"><a href="/user.php">View/Edit user details</a></li>
 								<li class="menuitem"><a href="/user.php">Delete users</a></li>
@@ -57,10 +57,10 @@
 				<li id="reservations" class="menubaritem" onmouseover="mopen('submenu4')" onmouseout="mclosetimer()"><a href="/reservation.php">Reservations</a>
 			      	<div class="menu" id="submenu4" onmouseover="mcancelclosetimer()">
 			          		<ul>
-								<li class="menuitem"><a href="/a/">Create new reservation</a></li>
-								<li class="menuitem"><a href="/b/">View/Edit my reservations</a></li>
-								<li class="menuitem"><a href="/b/">View/Edit group reservations</a></li>
-								<li class="menuitem"><a href="/b/">Delete reservations</a></li>
+								<li class="menuitem"><a href="/reservation.php?rid=1">Create new reservation</a></li>
+								<li class="menuitem"><a href="/reservation.php?rid=1">View/Edit my reservations</a></li>
+								<li class="menuitem"><a href="/reservation.php?rid=1">View/Edit group reservations</a></li>
+								<li class="menuitem"><a href="/reservation.php?rid=1">Delete reservations</a></li>
 							</ul>
 			      	</div>
 			  	</li>

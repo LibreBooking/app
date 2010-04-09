@@ -1,5 +1,5 @@
-{include file='header.tpl'}
+{include file='globalheader.tpl'}
 
 {control type="AnnouncementsControl"}
 
-{include file='footer.tpl'}
+{include file='globalfooter.tpl'}

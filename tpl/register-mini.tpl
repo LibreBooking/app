@@ -1,4 +1,4 @@
-{include file='header.tpl' DisplayWelcome='false'}
+{include file='globalheader.tpl' DisplayWelcome='false'}
 <div id="registrationbox">
 <form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
 
@@ -54,4 +54,4 @@
 </div>
 {setfocus key='FIRST_NAME'}
 
-{include file='footer.tpl'}
+{include file='globalfooter.tpl'}

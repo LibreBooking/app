@@ -1,4 +1,4 @@
-{include file='header.tpl'}
+{include file='globalheader.tpl'}
 
 <style type="text/css">
 	@import url({$Path}css/schedule.css);
@@ -74,4 +74,4 @@
   	OnSelect='dpDateChanged'
   	FirstDay=$FirstWeekday}
 
-{include file='footer.tpl'}
+{include file='globalfooter.tpl'}

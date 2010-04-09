@@ -1,4 +1,4 @@
-{include file='header.tpl' DisplayWelcome='false'}
+{include file='globalheader.tpl' DisplayWelcome='false'}
 
 <style type="text/css">
 	@import url({$Path}css/reservation.css);
@@ -175,4 +175,4 @@ function ChangeRepeatOptions(comboBox)
 
 {/literal}
 
-{include file='footer.tpl'}
+{include file='globalfooter.tpl'}
