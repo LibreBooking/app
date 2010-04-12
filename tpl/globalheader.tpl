@@ -28,7 +28,7 @@
 		  <div class="bd">
 		    <ul class="first">
 				<li id="dashboard" class="menubaritem" onmouseover="mopen('submenu1')" onmouseout="mclosetimer()"><a id="a1" href="/dashboard.php">Dashboard</a>
-			     	<!--><div class="menu" id="submenu1" onmouseover="mcancelclosetimer()">
+			     	<!--<div class="menu" id="submenu1" onmouseover="mcancelclosetimer()">
 			         	<ul>
 							<li class="menuitem"><a href="/a/">Subitem A</a></li>
 						</ul>
