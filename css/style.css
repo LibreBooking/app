@@ -138,9 +138,7 @@ h3 {
 }
 
 .button {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 10px;
-    font-weight: bold;
+    font: bold 10px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
     border: solid 1px #0e3046;
     color: #ffffff;
     height: 20px;
@@ -291,7 +289,7 @@ form .stayloggedin label {
 
 form.res-checkbox input { vertical-align: middle; }
 
-p.loginsubmit, p.save, p.reg-adminsubmit { float:right; }
+p.loginsubmit, p.save, p.reg-adminsubmit, p.reporting-submit { float:right; }
 
 #login-links p, h4 {text-align: center;}
 
@@ -407,7 +405,7 @@ label.res, .reg {
 }
 
 #resourcebox .input {
-        font-size: 18px;
+    	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
         width: 98%;
         padding: 3px;
         margin: 4px 0 8px 0;
@@ -417,7 +415,7 @@ label.res, .reg {
 }
 
 textarea.input-area {
-    font-size: 18px;
+    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
     width: 98%;
     padding: 3px;
     margin: 2px 0 5px 0;
@@ -489,9 +487,13 @@ tr.admin-lastline {
 .menubar {
         visibility:visible;
         position:static;
-        font-size:110%;
+        font-size:130%;
         line-height:2;
         *line-height:1.9;
+}
+
+.menu {
+	font-size: 110%;
 }
 
 .menuitem {
@@ -522,7 +524,7 @@ tr.admin-lastline {
         height: 56px;
 }
 
-#nav-main { float:right; padding-right: 120px; }
+#nav-main { float:right; padding-right: 100px; }
 #nav-main ul{ float:left; z-index:99; left:auto; }
 #nav-main ul, #nav-main ul li { height:56px; background:none; position:relative; }
 #nav-main ul {
@@ -551,7 +553,7 @@ tr.admin-lastline {
 
 #nav-main ul ul {
         background:url(/img/header-menu-bg.png) bottom left no-repeat;
-        padding:8px 0;
+        padding:5px 0;
         width:190px;
 }
 

@@ -760,6 +760,9 @@ class en_us extends Language
 		$strings['RadioOptional'] = 'Optional';
 		$strings['RadioRemoved'] = 'Removed';
 		$strings['GetReport'] = 'Get Report';
+		$strings['ReportStartTime'] = 'Report start time';
+		$strings['ReportEndTime'] = 'Report end time';
+		$strings['GetReport'] = 'Get Report';
 		$strings['Included'] = 'Included on report';
 
 		$strings['PasswordAndConfirmation'] = 'Password and password confirmation';

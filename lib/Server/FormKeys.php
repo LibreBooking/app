@@ -38,6 +38,9 @@ class FormKeys
 	const MIN_NOTICE = 'minNotice';
 	const MAX_NOTICE = 'maxNotice';
 	const USERNAME = 'username';
+	const RESOURCE = 'resource';
+	const REPORT_START = 'reportStart';
+	const REPORT_END = 'reportEnd';
 	
 	
 	public static function Evaluate($formKey)

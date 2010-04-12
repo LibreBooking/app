@@ -25,12 +25,24 @@
 				<td class="center"><input type="checkbox" class="admin-radio" name="{constant echo='FormKeys::USERNAME'}" value="1" checked="checked" tabindex="11" /></td>
 			</tr>
 			<tr>
-				<td class="admin-fieldName">{translate key="OrganizationSelection"}</td>
+				<td class="admin-fieldName">{translate key="Organization"}</td>
 				<td class="center"><input type="checkbox" class="admin-radio" name="{constant echo='FormKeys::ORGANIZATION'}" value="1" checked="checked" tabindex="11" /></td>
 			</tr>
 			<tr>
 				<td class="admin-fieldName">{translate key="Group"}</td>
 				<td class="center"><input type="checkbox" class="admin-radio" name="{constant echo='FormKeys::GROUP'}" value="1" checked="checked" tabindex="11" /></td>
+			</tr>
+			<tr>
+				<td class="admin-fieldName">{translate key="Resource"}</td>
+				<td class="center"><input type="checkbox" class="admin-radio" name="{constant echo='FormKeys::RESOURCE'}" value="1" checked="checked" tabindex="11" /></td>
+			</tr>
+			<tr>
+				<td class="admin-fieldName">{translate key="ReportStartTime"}</td>
+				<td class="center"><input type="checkbox" class="admin-radio" name="{constant echo='FormKeys::REPORT_START'}" value="1" checked="checked" tabindex="11" /></td>
+			</tr>
+			<tr>
+				<td class="admin-fieldName">{translate key="ReportEndTime"}</td>
+				<td class="center"><input type="checkbox" class="admin-radio" name="{constant echo='FormKeys::REPORT_END'}" value="1" checked="checked" tabindex="11" /></td>
 			</tr>
 		</table>
 	</div>

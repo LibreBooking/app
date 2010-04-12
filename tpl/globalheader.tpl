@@ -39,7 +39,7 @@
 			          		<ul>
 								<li class="menuitem"><a href="/reg-mini.php">Add new user</a></li>
 								<li class="menuitem"><a href="/user.php">View user list</a></li>
-								<li class="menuitem"><a href="/user.php">View/Edit user details</a></li>
+								<li class="menuitem"><a href="/user.php">Edit user details</a></li>
 								<li class="menuitem"><a href="/user.php">Delete users</a></li>
 							</ul>
 			      	</div>
@@ -49,7 +49,7 @@
 			          	<ul>
 							<li class="menuitem"><a href="/resource.php">Add new resourse</a></li>
 							<li class="menuitem"><a href="/resource.php">View resource list</a></li>
-							<li class="menuitem"><a href="/resource.php">View/Edit resource details</a></li>
+							<li class="menuitem"><a href="/resource.php">Edit resource details</a></li>
 							<li class="menuitem"><a href="/resource.php">Delete resources</a></li>
 						</ul>
 			      	</div>
@@ -58,8 +58,8 @@
 			      	<div class="menu" id="submenu4" onmouseover="mcancelclosetimer()">
 			          		<ul>
 								<li class="menuitem"><a href="/reservation.php?rid=1">Create new reservation</a></li>
-								<li class="menuitem"><a href="/reservation.php?rid=1">View/Edit my reservations</a></li>
-								<li class="menuitem"><a href="/reservation.php?rid=1">View/Edit group reservations</a></li>
+								<li class="menuitem"><a href="/reservation.php?rid=1">Edit my reservations</a></li>
+								<li class="menuitem"><a href="/reservation.php?rid=1">Edit group reservations</a></li>
 								<li class="menuitem"><a href="/reservation.php?rid=1">Delete reservations</a></li>
 							</ul>
 			      	</div>
@@ -87,7 +87,7 @@
 				<li id="settings" class="menubaritem" onmouseover="mopen('submenu7')" onmouseout="mclosetimer()"><a href="/settings.php">Settings</a>
 			      	<div class="menu" id="submenu7" onmouseover="mcancelclosetimer()">
 			          		<ul>
-								<li class="menuitem"><a href="/user-settings.php">View/Edit my settings</a></li>
+								<li class="menuitem"><a href="/user-settings.php">Edit my settings</a></li>
 								<li class="menuitem"><a href="/user-admin.php">Edit user settings</a></li>
 								<li class="menuitem"><a href="/resource-admin.php">Edit resource settings</a></li>
 								<li class="menuitem"><a href="/schedule-admin.php">Edit scheduling settings</a></li>
