@@ -79,8 +79,8 @@
 				<li id="reports" class="menubaritem" onmouseover="mopen('submenu6')" onmouseout="mclosetimer()"><a href="/resource.php">Reports</a>
 			     	<div class="menu" id="submenu6" onmouseover="mcancelclosetimer()">
 			          	<ul>
-							<li class="menuitem"><a href="/report.php">Create new report</a></li>
-							<li class="menuitem"><a href="/report.php">View report history</a></li>
+							<li class="menuitem"><a href="/reports.php">Create new report</a></li>
+							<li class="menuitem"><a href="/reports.php">View report history</a></li>
 						</ul>
 			      	</div>
 				</li>

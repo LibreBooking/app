@@ -323,7 +323,7 @@ form li {
 	color: #666;
 }
 
-div.registrationHeader, div.resourceHeader, div.reg-adminHeader {
+div.registrationHeader, div.resourceHeader, div.reg-adminHeader, div.reportingHeader {
 	padding: 5px 15px;
 	border: none;
 	-moz-border-radius: 13px;
@@ -341,7 +341,7 @@ div.registrationHeader, div.resourceHeader, div.reg-adminHeader {
 	color: #fff;
 }
 
-div.registrationHeader h3, div.resourceHeader h3, div.reg-adminHeader h3 { 
+div.registrationHeader h3, div.resourceHeader h3, div.reg-adminHeader h3, div.reportingHeader h3 { 
 	font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
 	vertical-align: middle;
 }
@@ -377,6 +377,11 @@ label.res, .reg {
 	margin: 3em auto 1em;
 }
 
+#reportingbox {
+	width: 750px;
+	margin: 3em auto 1em;
+}
+
 #resourcebox-leftcolumn {
 	width: 47%;
 	float: left;
@@ -389,7 +394,7 @@ label.res, .reg {
 
 #resourcebox-footer { clear: both; }
 
-#reg-adminbox-footer { margin: 10px 0;}
+#reg-adminbox-footer, #reporting-footer { margin: 10px 0;}
 
 #registrationbox .input {
         font-size: 18px;
@@ -450,6 +455,12 @@ th.admin-fieldHeading {
 th.admin-radio {
     font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
 	width: 100px;
+}
+
+th.reporting {
+    font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 150px;
+	text-align: center;
 }
 
 td.admin-fieldName {

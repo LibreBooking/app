@@ -228,6 +228,20 @@ class RegisterUserCommand extends SqlCommand
 	}
 }
 
+class ReportingCommand extends SqlCommand 
+{
+	public function __construct($fname, $lname, $username, $organization, $group)
+	{
+		parent::__construct(Queries::GET_REPORT);
+		
+		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME, $fname));
+		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME, $lname));
+		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));	
+		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP, $group));	
+	}
+}
+
 class SelectUserPermissions extends SqlCommand
 {
 	public function __construct($userId)

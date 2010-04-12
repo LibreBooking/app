@@ -8,5 +8,6 @@ class Actions
 	const LOGIN = 'login';
 	const REGISTER = 'register';
 	const SAVE = 'save';
+	const GET_REPORT = 'get_report';
 }
 ?>

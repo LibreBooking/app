@@ -759,6 +759,9 @@ class en_us extends Language
 		$strings['RadioRequired'] = 'Required';
 		$strings['RadioOptional'] = 'Optional';
 		$strings['RadioRemoved'] = 'Removed';
+		$strings['GetReport'] = 'Get Report';
+		$strings['Included'] = 'Included on report';
+
 		$strings['PasswordAndConfirmation'] = 'Password and password confirmation';
 		$strings['Homepage'] = 'Default homepage selection';
 		$strings['FormFields'] = 'Form fields';
