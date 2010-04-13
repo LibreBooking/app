@@ -30,7 +30,9 @@
 
 				$('#calendar').fullCalendar({
 					theme: true,
-					firstDay: 1,
+					axisFormat: 'H:mm', //24 hour clock in day view
+					allDaySlot: false, //All day slot not visible
+					firstDay: 1, //Week starts with Monday
 					header: {
 						left: 'prev,next today',
 						center: 'title',
@@ -39,8 +41,8 @@
 					editable: true,
 					events: [
 						{
-							title: 'All Day Event',
-							start: new Date(y, m, 1)
+						//	title: 'All Day Event',
+						//	start: new Date(y, m, 1)
 						},
 						{
 							title: 'Long Event',
@@ -84,6 +86,7 @@
 						}
 					]
 				});
+				timeFormat: 'HH(:mm)' // uppercase H for 24-hour clock
 
 			});
 

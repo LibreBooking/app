@@ -112,7 +112,7 @@ div.error ul {
 
 #content {
     margin: 0px 15px;
-    padding-bottom: 30px; /* make room for the footer on a full page */
+    padding: 0; 
 }
 
 .dashboardHeader {
