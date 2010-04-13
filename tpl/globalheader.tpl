@@ -33,6 +33,14 @@
 					axisFormat: 'H:mm', //24 hour clock in day view
 					allDaySlot: false, //All day slot not visible
 					firstDay: 1, //Week starts with Monday
+					timeFormat: 
+					{
+					    // for agendaWeek and agendaDay
+					    agenda: 'H:mm{ - H:mm}', // 15:30 - 16:30
+
+					    // for all other views
+					    '': 'H(:mm)'            // 5:30
+					},
 					header: {
 						left: 'prev,next today',
 						center: 'title',
@@ -41,8 +49,10 @@
 					editable: true,
 					events: [
 						{
-						//	title: 'All Day Event',
-						//	start: new Date(y, m, 1)
+							title: 'All Day Event',
+							start: new Date(y, m, d, 0,0),
+							end: new Date(y, m, d, 24,0),
+							allDay: false
 						},
 						{
 							title: 'Long Event',
@@ -53,17 +63,20 @@
 							id: 999,
 							title: 'Repeating Event',
 							start: new Date(y, m, d-3, 16, 0),
+							end: new Date(y, m, d-3, 17, 0),
 							allDay: false
 						},
 						{
 							id: 999,
 							title: 'Repeating Event',
 							start: new Date(y, m, d+4, 16, 0),
+							end: new Date(y, m, d+4, 17, 0),
 							allDay: false
 						},
 						{
 							title: 'Meeting',
 							start: new Date(y, m, d, 10, 30),
+							end: new Date(y, m, d, 12, 30),
 							allDay: false
 						},
 						{
@@ -86,8 +99,6 @@
 						}
 					]
 				});
-				timeFormat: 'HH(:mm)' // uppercase H for 24-hour clock
-
 			});
 
 		</script>{/literal}
