@@ -18,56 +18,6 @@ body {
 	background-image: url('../img/scheduleit-header-gradient.png');
 }
 
-#page-header td {
-    vertical-align: top;
-}
-
-#page-header a {
-    color: #ffffff;
-}
-
-#header-banner {
-    height: 110px;
-    width: 100%;
-}
-
-#banner-image {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
-
-#banner-text {
-    position: absolute;
-    color: #ffffff;
-    top: 20px;
-    left: 400px;
-    height: 90px;
-    vertical-align: middle;
-}
-
-#banner-right {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    margin-right: 10px;
-    color: #fff;
-    text-align: right;
-    font-weight: bold;
-    width: 200px;
-    height: 110px;
-	background-image:url('../img/scheduleit-watermark.png'); 
-	background-repeat: no-repeat;
-}
-
-#banner-welcome {
-    position: absolute;
-    top: 70px;
-    right: 10px;
-    color: #fff;
-    text-align: right;
-}
-
 #page-header span.tab {
     padding: 0px 10px 3px 10px;
     margin: 2px 3px 1px 3px;
@@ -78,25 +28,7 @@ body {
     border-bottom: 3px solid #000000;
 }
 
-#tabs {
-	width: 100%;
-	padding: 3px 5% 0px 5%; 
-	margin: 3px 0px 4px 0px; 
-	vertical-align: bottom; 
-	background: #599800; 	
-}
-
-#sub-tabs {
-	width: 90%; 
-	padding: 3px 5% 0px 5%; 
-	height: 25px; 
-	color: #fff;
-}
-
-#page-header .subtab a:link, #page-header .subtab a:visited {
-    color: #303030;
-}
-
+/*
 a {
     color: #104E8B;
     text-decoration: none;
@@ -107,9 +39,8 @@ a:hover {
     text-decoration: underline;
 }
 
-/*
- Common text settings
- */
+/* Common text settings
+ 
 p {
     font-size: 11px;
     margin-bottom: 2px;
@@ -129,6 +60,7 @@ h4 {
 h3 {
     font-size: 18px;
 }
+*/
 
 .textbox {
     font-size: 12px;
@@ -181,13 +113,6 @@ div.error ul {
 #content {
     margin: 0px 15px;
     padding-bottom: 30px; /* make room for the footer on a full page */
-}
-
-#shadow {
-    width: 100%;
-    height: 8px;
-    margin-bottom: 10px;
-	background:url('../img/shadow.png');
 }
 
 .dashboardHeader {
@@ -291,7 +216,7 @@ form.res-checkbox input { vertical-align: middle; }
 
 p.loginsubmit, p.save, p.reg-adminsubmit, p.reporting-submit { float:right; }
 
-#login-links p, h4 {text-align: center;}
+#login-links p, #login-links h4 {text-align: center;}
 
 .page-footer { display:none; }
 
@@ -348,21 +273,21 @@ ul.no-style {
 	list-style-type: none;
 }
 
-li.res-req, .reg-req { color: #a00; }
+li.res-req, li.reg-req { color: #a00; }
 
-label.res-req, .reg-req {
+label.res-req, label.reg-req {
 	font-size: 18px;
 	color: #a00;
 }
 
-label.res, .reg {
+label.res, label.reg {
 	font-size: 18px;
 	color: #666;
 }
 
 #registrationbox {
-        width: 550px;
-        margin: 3em auto 1em;
+	width: 550px;
+	margin: 3em auto 1em;
 }
 
 #resourcebox {
@@ -437,7 +362,7 @@ table.reg-admin td {
 	padding: 3px;
 }
 
-th {
+th.admin-radio {
     vertical-align: middle;	
     color: #777;
 	border-bottom: 2px solid #aaa;
@@ -480,9 +405,9 @@ tr.admin-lastline {
 .menubar>.bd>ul:after{content:".";display:block;clear:both;visibility:hidden;height:0;line-height:0}
 .menubaritem{float:left}
 #nav-access{display:none}
-#doc{width:950px;margin:auto;text-align:left;position:relative;z-index:1}
+#doc{width:900px;margin:auto;text-align:left;position:relative;z-index:1}
 #doc:after{content:".";display:block;height:0;clear:both;visibility:hidden}
-#wrapper{min-width:950px}
+#wrapper{min-width:900px}
 
 .menubar {
         visibility:visible;
@@ -510,12 +435,6 @@ tr.admin-lastline {
 }
 
 .menu ul.first { border-width:0; }
-
-#wrapper {
-        background-image: none;
-        background-position: 50% -20px;
-        background-repeat: no-repeat;
-}
 
 #header {
         width: 900px;
