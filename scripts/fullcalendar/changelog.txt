@@ -1,0 +1,206 @@
+
+version 1.4.5 (2/21/09)
+	- lazyFetching option, which can force the calendar to fetch events on every view/date change
+	- scroll state of agenda views are preserved when switching back to view
+	- bugfixes
+		- calling methods on an uninitialized fullcalendar throws error
+		- IE6/7 bug where an entire view becomes invisible (issue 320)
+		- error when rendering a hidden calendar (in jquery ui tabs for example) in IE (issue 340)
+		- interconnected bugs related to calendar resizing and scrollbars
+			- when switching views or clicking prev/next, calendar would "blink" (issue 333)
+			- liquid-width calendar's events shifted (depending on initial height of browser) (issue 341)
+			- more robust underlying algorithm for calendar resizing
+
+version 1.4.4 (2/3/10)
+	- optimized event rendering in all views (events render in 1/10 the time)
+	- gotoDate() does not force the calendar to unnecessarily rerender
+	- render() method now correctly readjusts height
+
+version 1.4.3 (12/22/09)
+	- added destroy method
+	- Google Calendar event pages respect currentTimezone
+	- caching now handled by jQuery's ajax	
+	- protection from setting aspectRatio to zero
+	- bugfixes
+		- parseISO8601 and DST caused certain events to display day before
+		- button positioning problem in IE6
+		- ajax event source removed after recently being added, events still displayed
+		- event not displayed when end is an empty string
+		- dynamically setting calendar height when no events have been fetched, throws error
+
+version 1.4.2 (12/02/09)
+	- eventAfterRender trigger
+	- getDate & getView methods
+	- height & contentHeight options (explicitly sets the pixel height)
+	- minTime & maxTime options (restricts shown hours in agenda view)
+	- getters [for all options] and setters [for height, contentHeight, and aspectRatio ONLY! stay tuned..]
+	- render method now readjusts calendar's size
+	- bugfixes
+		- lightbox scripts that use iframes (like fancybox)
+		- day-of-week classNames were off when firstDay=1
+		- guaranteed space on right side of agenda events (even when stacked)
+		- accepts ISO8601 dates with a space (instead of 'T')
+
+version 1.4.1 (10/31/09)
+	- can exclude weekends with new 'weekends' option
+	- gcal feed 'currentTimezone' option
+	- bugfixes
+		- year/month/date option sometimes wouldn't set correctly (depending on current date)
+		- daylight savings issue caused agenda views to start at 1am (for BST users)
+	- cleanup of gcal.js code
+
+version 1.4 (10/19/09)
+	- agendaWeek and agendaDay views
+	- added some options for agenda views:
+		- allDaySlot
+		- allDayText
+		- firstHour
+		- slotMinutes
+		- defaultEventMinutes
+		- axisFormat
+	- modified some existing options/triggers to work with agenda views:
+		- dragOpacity and timeFormat can now accept a "View Hash" (a new concept)
+		- dayClick now has an allDay parameter
+		- eventDrop now has an an allDay parameter
+		  (this will affect those who use revertFunc, adjust parameter list)
+	- added 'prevYear' and 'nextYear' for buttons in header
+	- minor change for theme users, ui-state-hover not applied to active/inactive buttons
+	- added event-color-changing example in docs
+	- better defaults for right-to-left themed button icons
+
+version 1.3.2 (10/13/09)
+	- Bugfixes (please upgrade from 1.3.1!)
+		- squashed potential infinite loop when addMonths and addDays
+		  is called with an invalid date
+		- $.fullCalendar.parseDate() now correctly parses IETF format
+		- when switching views, the 'today' button sticks inactive, fixed
+	- gotoDate now can accept a single Date argument
+	- documentation for changes in 1.3.1 and 1.3.2 now on website
+
+version 1.3.1 (9/30/09)
+	- Important Bugfixes (please upgrade from 1.3!)
+		- When current date was late in the month, for long months, and prev/next buttons
+		  were clicked in month-view, some months would be skipped/repeated
+		- In certain time zones, daylight savings time would cause certain days
+		  to be misnumbered in month-view
+	- Subtle change in way week interval is chosen when switching from month to basicWeek/basicDay view
+	- Added 'allDayDefault' option
+	- Added 'changeView' and 'render' methods
+
+version 1.3 (9/21/09)
+	- different 'views': month/basicWeek/basicDay
+	- more flexible 'header' system for buttons
+	- themable by jQuery UI themes
+	- resizable events (require jQuery UI resizable plugin)
+	- rescoped & rewritten CSS, enhanced default look
+	- cleaner css & rendering techniques for right-to-left
+	- reworked options & API to support multiple views / be consistent with jQuery UI
+	- refactoring of entire codebase
+		- broken into different JS & CSS files, assembled w/ build scripts
+		- new test suite for new features, uses firebug-lite
+	- refactored docs
+	- Options
+		+ date
+		+ defaultView
+		+ aspectRatio
+		+ disableResizing
+		+ monthNames      (use instead of $.fullCalendar.monthNames)
+		+ monthNamesShort (use instead of $.fullCalendar.monthAbbrevs)
+		+ dayNames        (use instead of $.fullCalendar.dayNames)
+		+ dayNamesShort   (use instead of $.fullCalendar.dayAbbrevs)
+		+ theme
+		+ buttonText
+		+ buttonIcons
+		x draggable           -> editable/disableDragging
+		x fixedWeeks          -> weekMode
+		x abbrevDayHeadings   -> columnFormat
+		x buttons/title       -> header
+		x eventDragOpacity    -> dragOpacity
+		x eventRevertDuration -> dragRevertDuration
+		x weekStart           -> firstDay
+		x rightToLeft         -> isRTL
+		x showTime (use 'allDay' CalEvent property instead)
+	- Triggered Actions
+		+ eventResizeStart
+		+ eventResizeStop
+		+ eventResize
+		x monthDisplay -> viewDisplay
+		x resize       -> windowResize
+		'eventDrop' params changed, can revert if ajax cuts out
+	- CalEvent Properties
+		x showTime  -> allDay
+		x draggable -> editable
+		'end' is now INCLUSIVE when allDay=true
+		'url' now produces a real <a> tag, more native clicking/tab behavior
+	- Methods:
+		+ renderEvent
+		x prevMonth         -> prev
+		x nextMonth         -> next
+		x prevYear/nextYear -> moveDate
+		x refresh           -> rerenderEvents/refetchEvents
+		x removeEvent       -> removeEvents
+		x getEventsByID     -> clientEvents
+	- Utilities:
+		'formatDate' format string completely changed (inspired by jQuery UI datepicker + datejs)
+		'formatDates' added to support date-ranges
+	- Google Calendar Options:
+		x draggable -> editable
+	- Bugfixes
+		- gcal extension fetched 25 results max, now fetches all
+
+version 1.2.1 (6/29/09)
+	- bugfixes
+		- allows and corrects invalid end dates for events
+		- doesn't throw an error in IE while rendering when display:none
+		- fixed 'loading' callback when used w/ multiple addEventSource calls
+		- gcal className can now be an array
+
+version 1.2 (5/31/09)
+	- expanded API
+		- 'className' CalEvent attribute
+		- 'source' CalEvent attribute
+		- dynamically get/add/remove/update events of current month
+		- locale improvements: change month/day name text
+		- better date formatting ($.fullCalendar.formatDate)
+		- multiple 'event sources' allowed
+			- dynamically add/remove event sources
+	- options for prevYear and nextYear buttons
+	- docs have been reworked (include addition of Google Calendar docs)
+	- changed behavior of parseDate for number strings
+	  (now interpets as unix timestamp, not MS times)
+	- bugfixes
+		- rightToLeft month start bug
+		- off-by-one errors with month formatting commands
+		- events from previous months sticking when clicking prev/next quickly
+	- Google Calendar API changed to work w/ multiple event sources
+		- can also provide 'className' and 'draggable' options
+	- date utilties moved from $ to $.fullCalendar
+	- more documentation in source code
+	- minified version of fullcalendar.js
+	- test suit (available from svn)
+	- top buttons now use <button> w/ an inner <span> for better css cusomization
+		- thus CSS has changed. IF UPGRADING FROM PREVIOUS VERSIONS,
+		  UPGRADE YOUR FULLCALENDAR.CSS FILE!!!
+
+version 1.1 (5/10/09)
+	- Added the following options:
+		- weekStart
+		- rightToLeft
+		- titleFormat
+		- timeFormat
+		- cacheParam
+		- resize
+	- Fixed rendering bugs
+		- Opera 9.25 (events placement & window resizing)
+		- IE6 (window resizing)
+	- Optimized window resizing for ALL browsers
+	- Events on same day now sorted by start time (but first by timespan)
+	- Correct z-index when dragging
+	- Dragging contained in overflow DIV for IE6
+	- Modified fullcalendar.css
+		- for right-to-left support
+		- for variable start-of-week
+		- for IE6 resizing bug
+		- for THEAD and TBODY (in 1.0, just used TBODY, restructured in 1.1)
+		- IF UPGRADING FROM FULLCALENDAR 1.0, YOU MUST UPGRADE FULLCALENDAR.CSS
+		  !!!!!!!!!!!
