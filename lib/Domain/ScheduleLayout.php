@@ -48,7 +48,7 @@ class ScheduleLayout implements IScheduleLayout
 		$this->AppendGenericPeriod($startTime, $endTime, $label, 'NonSchedulePeriod');
 	}
 	
-	private function AppendGenericPeriod(Time $startTime, Time $endTime, $label = null, $periodType)
+	protected function AppendGenericPeriod(Time $startTime, Time $endTime, $label = null, $periodType)
 	{
 		$localStart = $startTime->ToTimezone($this->_timezone);
 		
@@ -79,7 +79,7 @@ class ScheduleLayout implements IScheduleLayout
 	 * @param Time $midnight
 	 * @return bool
 	 */
-	private function SpansMidnight(Time $start, Time $end, Time $midnight)
+	protected function SpansMidnight(Time $start, Time $end, Time $midnight)
 	{
 		return !$end->Equals($midnight) && $start->GreaterThan($end);
 	}
@@ -101,7 +101,7 @@ class ScheduleLayout implements IScheduleLayout
 		$this->SortItems($this->_periods);
 	}
 	
-	private function SortItems(&$items)
+	protected function SortItems(&$items)
 	{
 		usort($items, array("ScheduleLayout", "SortBeginTimes"));
 	}
@@ -111,7 +111,7 @@ class ScheduleLayout implements IScheduleLayout
 		return $this->_timezone;
 	}
 	
-	private function AddPeriod(SchedulePeriod $period)
+	protected function AddPeriod(SchedulePeriod $period)
 	{
 		$this->_periods[] = $period;
 	}
@@ -166,6 +166,14 @@ class DatabaseScheduleLayout implements IScheduleLayout
 		{
 			$layout[] = new NonSchedulePeriod($layout[count($layout)-1]->End(), $midnight);
 		}
+	}
+}
+
+class ReservationLayout extends ScheduleLayout implements IScheduleLayout
+{
+	protected function SpansMidnight(Time $start, Time $end, Time $midnight)
+	{
+		return false;
 	}
 }
 ?>

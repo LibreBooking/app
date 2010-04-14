@@ -168,5 +168,10 @@ class Page implements IPage
 	{
 		return $this->server->GetForm($var);
 	}
+	
+	protected function GetQuerystring($key)
+	{
+		return $this->server->GetQuerystring($key);
+	}
 }
 ?>

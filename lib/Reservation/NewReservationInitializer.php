@@ -47,7 +47,7 @@ class NewReservationInitializer implements IReservationInitializer
 		$requestedStartDate = $this->_page->GetRequestedDate();
 		$requestedPeriodId = $this->_page->GetRequestedPeriod();
 		
-		$layout = $this->_scheduleRepository->GetLayout($requestedScheduleId, $timezone);
+		$layout = $this->_scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
 		$this->_page->BindPeriods($layout->GetLayout());
 
 		$scheduleUser = $this->_scheduleUserRepository->GetUser($userId);

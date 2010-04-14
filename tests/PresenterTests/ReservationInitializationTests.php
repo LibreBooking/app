@@ -44,6 +44,8 @@ class ReservationInitializationTests extends TestBase
 	
 	public function testInitializeSetsDefaultsForSelectedUserAndResourceAndDate()
 	{
+		echo 'ehhh';
+		
 		$timezone = $this->_user->Timezone;
 
 		$resourceId = 10;
@@ -106,7 +108,7 @@ class ReservationInitializationTests extends TestBase
 
 		$this->_scheduleRepository->expects($this->once())
 			->method('GetLayout')
-			->with($this->equalTo($scheduleId), $this->equalTo($this->_user->Timezone))
+			->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($this->_user->Timezone)))
 			->will($this->returnValue($layout));
 			
 		$layout->expects($this->once())

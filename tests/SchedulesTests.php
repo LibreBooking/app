@@ -22,8 +22,7 @@ class SchedulesTests extends TestBase
 	public function testCanGetAllSchedules()
 	{
 		$fakeSchedules = new FakeScheduleRepository();
-		
-		
+				
 		$rows = $fakeSchedules->GetRows();
 		$this->db->SetRow(0, $rows);
 		
@@ -74,7 +73,14 @@ class SchedulesTests extends TestBase
 		$scheduleId = 109;
 		$targetTimezone = 'US/Central';
 		
-		$layout = $this->scheduleRepository->GetLayout($scheduleId, $targetTimezone);
+		$layoutFactory = $this->getMock('ILayoutFactory');
+		$expectedLayout = new ScheduleLayout($targetTimezone);
+		
+		$layoutFactory->expects($this->once())
+			->method('CreateLayout')
+			->will($this->returnValue($expectedLayout));
+		
+		$layout = $this->scheduleRepository->GetLayout($scheduleId, $layoutFactory);
 		
 		$this->assertEquals(new GetLayoutCommand($scheduleId), $this->db->_Commands[0]);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);

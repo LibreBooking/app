@@ -62,7 +62,7 @@ class SchedulePresenterTests extends TestBase
 		
 		$scheduleRepository->expects($this->once())
 			->method('GetLayout')
-			->with($this->equalTo($this->scheduleId))
+			->with($this->equalTo($this->scheduleId), $this->equalTo(new ScheduleLayoutFactory($user->Timezone)))
 			->will($this->returnValue($layout));
 		
 		$pageBuilder->expects($this->once())

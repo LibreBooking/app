@@ -12,10 +12,60 @@ interface IScheduleRepository
 
 	/**
 	 * @param int $scheduleId
-	 * @param string $timezone target timezone of layout
+	 * @param ILayoutFactory $layoutFactory factory to use to create the schedule layout
 	 * @return IScheduleLayout
 	 */
-	public function GetLayout($scheduleId, $timezone);
+	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory);
+}
+
+interface ILayoutFactory 
+{
+	/**
+	 * @return IScheduleLayout
+	 */
+	public function CreateLayout();
+}
+
+class ScheduleLayoutFactory implements ILayoutFactory
+{
+	private $_targetTimezone;
+	
+	/**
+	 * @param string $targetTimezone target timezone of layout
+	 */
+	public function __construct($targetTimezone)
+	{
+		$this->_targetTimezone = $targetTimezone;
+	}
+	
+	/**
+	 * @see ILayoutFactory::CreateLayout()
+	 */
+	public function CreateLayout()
+	{
+		return new ScheduleLayout($this->_targetTimezone);
+	}
+}
+
+class ReservationLayoutFactory implements ILayoutFactory
+{
+	private $_targetTimezone;
+	
+	/**
+	 * @param string $targetTimezone target timezone of layout
+	 */
+	public function __construct($targetTimezone)
+	{
+		$this->_targetTimezone = $targetTimezone;
+	}
+	
+	/**
+	 * @see ILayoutFactory::CreateLayout()
+	 */
+	public function CreateLayout()
+	{
+		return new ReservationLayout($this->_targetTimezone);
+	}
 }
 
 class ScheduleRepository implements IScheduleRepository
@@ -45,9 +95,9 @@ class ScheduleRepository implements IScheduleRepository
 	/**
 	 * @see IScheduleRepository::GetLayout()
 	 */
-	public function GetLayout($scheduleId, $timezone)
+	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
 	{
-		$layout = new ScheduleLayout($timezone);
+		$layout = $layoutFactory->CreateLayout();
 
 		$reader = ServiceLocator::GetDatabase()->Query(new GetLayoutCommand($scheduleId));
 

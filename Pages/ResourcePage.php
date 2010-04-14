@@ -1,12 +1,12 @@
 <?php
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Presenters/ResourcePresenter.php');
-require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
-
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 interface IResourcePage extends IPage
 {
 	public function SaveClicked();
+	public function IsEditingResource();
 		
 	public function SetResourceName($resourceName);
 	public function SetLocation($location);
@@ -25,6 +25,7 @@ interface IResourcePage extends IPage
 	public function SetMinNotice($minNotice);
 	public function SetMaxNotice($maxNotice);
 	
+	public function GetResourceId();
 	public function GetResourceName();
 	public function GetLocation();
 	public function GetContactInfo();
@@ -49,7 +50,7 @@ class ResourcePage extends Page implements IResourcePage
 	{
 		parent::__construct('Resource');
 		
-		$this->_presenter = new ResourcePresenter($this);			
+		$this->_presenter = new ResourcePresenter($this, new ResourceRepository());			
 	}
 	
 	public function PageLoad()
@@ -62,6 +63,11 @@ class ResourcePage extends Page implements IResourcePage
 	public function SaveClicked()
 	{
 		return $this->GetForm(Actions::SAVE);
+	}
+	
+	public function IsEditingResource()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID) != null;
 	}
 
 	public function SetResourceName($resourceName)
@@ -142,6 +148,11 @@ class ResourcePage extends Page implements IResourcePage
 	public function SetMaxNotice($maxNotice)
 	{
 		$this->Set('MaximumNotice', $maxNotice);	
+	}
+	
+	public function GetResourceId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
 
 	public function GetResourceName()
