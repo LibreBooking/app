@@ -44,8 +44,6 @@ class ReservationInitializationTests extends TestBase
 	
 	public function testInitializeSetsDefaultsForSelectedUserAndResourceAndDate()
 	{
-		echo 'ehhh';
-		
 		$timezone = $this->_user->Timezone;
 
 		$resourceId = 10;
@@ -158,11 +156,6 @@ class ReservationInitializationTests extends TestBase
 		$initializer = new NewReservationInitializer($page, $this->_scheduleUserRepository, $this->_scheduleRepository, $this->_userRepository);
 
 		$initializer->Initialize();
-	}
-	
-	public function testPeriodsWorkWhenPeriodCrossesDayBoundary()
-	{
-		$this->markTestIncomplete('need to figure this out');
 	}
 }
 ?>

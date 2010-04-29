@@ -31,6 +31,7 @@
 	<a href="#">(Invite Guests)</a> // modal popup
 </div>
 <div>
+this needs to be changed to handle cross-day reservations
 {translate key='BeginDate'}
 <input type="text" id="BeginDate" class="textbox" style="width:75px" value="{formatdate date=$StartDate}"/>
 <select class="textbox" id="BeginPeriod" onchange="MaintainPeriodLength();">
