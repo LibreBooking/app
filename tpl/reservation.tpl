@@ -45,9 +45,10 @@ this needs to be changed to handle cross-day reservations
 <input type="text" id="EndDate" class="textbox" style="width:75px" value="{formatdate date=$EndDate}" />
 <select class="textbox" id="EndPeriod">
 	{foreach from=$Periods item=period}
-		{if $period->IsReservable()}
+		{if $previous ne '' and $previous->IsReservable()}
 			<option>{$period->Label()}</option>
 		{/if}
+		{assign var=previous value=$period}
 	{/foreach}
 </select>
 </div>

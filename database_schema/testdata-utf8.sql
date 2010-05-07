@@ -22,9 +22,11 @@ insert into time_block_groups values (1, 'Business Day');
 
 truncate table time_blocks;
 insert into time_blocks (blockid, label, availability_code, block_group_id, start_time, end_time) values
-(1, '', 1, 1, '00:00', '6:00'),
-(2, '', 1, 1, '06:00', '12:00'),
-(3, '', 1, 1, '12:00', '00:00');
+(1, '', 1, 1, '00:00', '06:00'),
+(2, '', 1, 1, '06:00', '08:00'),
+(3, '', 2, 1, '08:00', '12:00'),
+(4, '', 1, 1, '12:00', '18:00'),
+(5, '', 1, 1, '18:00', '00:00');
 
 truncate table organizations;
 insert into organizations values (1, 'Default Organization'),(2, 'Other Organization');
