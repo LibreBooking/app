@@ -37,7 +37,7 @@
 <p class="login_links">
     <a href="sched.php">{translate key='View Schedule'}</a>
     | 
-    <a href="forgot_pwd.php">{translate key='I Forgot My Password'}</a>
+    <a href="forgot.php">{translate key='I Forgot My Password'}</a>
     | 
     <a href="javascript: help();">{translate key='Help'}</a>
 </p>
