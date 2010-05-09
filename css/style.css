@@ -139,7 +139,7 @@ div.page-footer {
 	text-align: center;
 }
 
-form.login {
+form.login, form.forgot {
         margin: 0 0 0 8px;
         padding: 20px 16px 48px 16px;
         font-weight: normal;
@@ -180,18 +180,17 @@ input.button:hover {
         background: url('../img/button_bg_hover.gif') repeat-x 0 -4px;
 }
 
-label.login {
+label.login, label.forgot {
         color: #666;
         font-size: 18px;
 }
-
 
 #loginbox {
         width: 450px;
         margin: 7em auto 5em;
 }
 
-#loginbox .input {
+#loginbox .input, #forgotbox .input {
 	font-size: 24px;
 	width: 97%;
 	padding: 3px;
@@ -214,7 +213,7 @@ form .stayloggedin label {
 
 form.res-checkbox input { vertical-align: middle; }
 
-p.loginsubmit, p.save, p.reg-adminsubmit, p.reporting-submit { float:right; }
+p.loginsubmit, p.save, p.reg-adminsubmit, p.reporting-submit, p.resetpassword { float:right; }
 
 #login-links p, #login-links h4 {text-align: center;}
 
@@ -246,7 +245,7 @@ form li {
 	color: #666;
 }
 
-div.registrationHeader, div.resourceHeader, div.reg-adminHeader, div.reportingHeader {
+div.registrationHeader, div.resourceHeader, div.reg-adminHeader, div.reportingHeader, div.forgot_pwdHeader {
 	padding: 5px 15px;
 	border: none;
 	-moz-border-radius: 13px;
@@ -264,9 +263,13 @@ div.registrationHeader, div.resourceHeader, div.reg-adminHeader, div.reportingHe
 	color: #fff;
 }
 
-div.registrationHeader h3, div.resourceHeader h3, div.reg-adminHeader h3, div.reportingHeader h3 { 
+div.registrationHeader h3, div.resourceHeader h3, div.reg-adminHeader h3, div.reportingHeader h3, div.forgot_pwdHeader h3 { 
 	font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
 	vertical-align: middle;
+}
+
+p.forgot {
+	font: 14px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;	
 }
 
 ul.no-style {
@@ -285,7 +288,7 @@ label.res, label.reg {
 	color: #666;
 }
 
-#registrationbox {
+#registrationbox, #forgotbox {
 	width: 550px;
 	margin: 3em auto 1em;
 }

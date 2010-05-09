@@ -9,5 +9,6 @@ class Actions
 	const REGISTER = 'register';
 	const SAVE = 'save';
 	const GET_REPORT = 'get_report';
+	const RESET = 'reset';
 }
 ?>
