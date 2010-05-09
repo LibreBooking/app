@@ -1,5 +1,5 @@
 {assign var='DisplayWelcome' value='false'}
-{include file='header.tpl'}
+{include file='loginheader.tpl'}
 {if $ShowLoginError}
         <div id="loginError">
                 {translate key='Login Error'}
