@@ -61,10 +61,16 @@ interface IReservationPage extends IPage
 	 */
 	public function SetReservationResource($resource);
 
+	/**
+	 * @param bool $shouldDisplay
+	 */
+	public function SetDisplaySaved($shouldDisplay);
 }
 
 class ReservationPage extends Page implements IReservationPage
 {
+	private $_displaySaveMessage = false;
+	
 	public function __construct()
 	{
 		parent::__construct('CreateReservation');
@@ -88,7 +94,15 @@ class ReservationPage extends Page implements IReservationPage
 		$this->_presenter->PageLoad();
 		$this->Set('ReturnUrl', $this->GetLastPage());
 		$this->Set('RepeatEveryOptions', range(1, 20));
-		$this->smarty->display('reservation.tpl');		
+		
+		if ($this->_displaySaveMessage)
+		{
+			$this->smarty->display('reservation_saved.tpl');
+		}
+		else
+		{
+			$this->smarty->display('reservation.tpl');		
+		}
 	}
 	
 	public function GetRequestedResourceId()
@@ -158,7 +172,10 @@ class ReservationPage extends Page implements IReservationPage
 	{
 		$this->Set('ResourceName', $resource->Name());
 	}
+	
+	public function SetDisplaySaved($shouldDisplay)
+	{
+		$this->_displaySaveMessage = true;
+	}
 }
-
-
 ?>

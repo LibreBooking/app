@@ -5,7 +5,7 @@
 </style>
 
 <a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>
-<form action="undefined.php" method="post">
+<form action="{$SCRIPT_NAME}"" method="post">
 
 <input type="submit" value="{translate key="Save"}" class="button"></input>
 <input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
@@ -15,7 +15,7 @@
 		<td>
 			<div id="resourceNames" style="display:inline">{$ResourceName}</div>
 			<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(Add more)</a>
-		<td>
+		</td>
 		<td>
 		<a href="#">(Add Accessories)</a> // modal popup
 		</td>
@@ -34,7 +34,7 @@
 this needs to be changed to handle cross-day reservations
 {translate key='BeginDate'}
 <input type="text" id="BeginDate" class="textbox" style="width:75px" value="{formatdate date=$StartDate}"/>
-<select class="textbox" id="BeginPeriod" onchange="MaintainPeriodLength();">
+<select class="textbox" id="BeginPeriod">
 	{foreach from=$Periods item=period}
 		{if $period->IsReservable()}
 			<option>{$period->Label()}</option>
@@ -115,13 +115,14 @@ this needs to be changed to handle cross-day reservations
 <script type="text/javascript" src="scripts/js/jquery.textarea-expander.js"></script>
 <script type="text/javascript" src="scripts/reservation.js"></script>
 
-
 <script type="text/javascript">
 
-function MaintainPeriodLength()
-{
-	alert('change end period');
-}
+$(document).ready(function() {
+	$('#BeginPeriod').change(function() {
+		// handle date change if start time > end time
+		// handle end period change if end hasn't been set
+	});
+});
 
 function ChangeRepeatOptions(comboBox)
 {
