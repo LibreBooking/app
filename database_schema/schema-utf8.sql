@@ -348,6 +348,17 @@ CREATE TABLE `constraint_functions` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
+-- Table structure for table `resource_types`
+--
+
+DROP TABLE IF EXISTS `resource_types`;
+CREATE TABLE `resource_types` (
+ `typeid` tinyint(2) unsigned NOT NULL auto_increment,
+ `label` varchar(85) NOT NULL,
+ PRIMARY KEY (`typeid`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
 -- Table structure for table `resources`
 --
 
@@ -355,6 +366,7 @@ DROP TABLE IF EXISTS `resources`;
 CREATE TABLE `resources` (
  `resourceid` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
+ `type_id` tinyint(2) unsigned,
  `location` varchar(85),
  `contact_info` varchar(85),
  `description` text,
@@ -371,7 +383,11 @@ CREATE TABLE `resources` (
  `min_notice_time` time,
  `max_notice_time` time,
  `legacyid` char(16),
- PRIMARY KEY (`resourceid`)
+ PRIMARY KEY (`resourceid`),
+ INDEX (`type_id`),
+ FOREIGN KEY (`type_id`) 
+	REFERENCES resource_types(`typeid`)
+	ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --

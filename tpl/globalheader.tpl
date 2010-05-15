@@ -123,32 +123,31 @@
 						</ul>
 			      	</div>-->
 				</li>
-				<li class="menubaritem" onmouseover="mopen('submenu2')" onmouseout="mclosetimer()"><a href="/user-admin.php">Users</a>
+				<li class="menubaritem" onmouseover="mopen('submenu2')" onmouseout="mclosetimer()"><a href="/user-list.php">Users</a>
 			     	<div class="menu" id="submenu2" onmouseover="mcancelclosetimer()">
 			          		<ul>
-								<li class="menuitem"><a href="/reg-mini.php">Add new user</a></li>
-								<li class="menuitem"><a href="/user.php">View user list</a></li>
+								<li class="menuitem"><a href="/reg-mini.php">Add user</a></li>
 								<li class="menuitem"><a href="/user.php">Edit user details</a></li>
 								<li class="menuitem"><a href="/user.php">Delete users</a></li>
 							</ul>
 			      	</div>
 				</li>
-				<li class="menubaritem" onmouseover="mopen('submenu3')" onmouseout="mclosetimer()"><a href="/resource.php">Resources</a>
+				<li class="menubaritem" onmouseover="mopen('submenu3')" onmouseout="mclosetimer()"><a href="/resource-list.php">Resources</a>
 			     	<div class="menu" id="submenu3" onmouseover="mcancelclosetimer()">
 			          	<ul>
-							<li class="menuitem"><a href="/resource.php">Add new resourse</a></li>
-							<li class="menuitem"><a href="/resource.php">View resource list</a></li>
+							<li class="menuitem"><a href="/resource.php">Add resource</a></li>
 							<li class="menuitem"><a href="/resource.php">Edit resource details</a></li>
 							<li class="menuitem"><a href="/resource.php">Delete resources</a></li>
 						</ul>
 			      	</div>
 				</li>
-				<li class="menubaritem" onmouseover="mopen('submenu4')" onmouseout="mclosetimer()"><a href="/reservation.php">Reservations</a>
+				<li class="menubaritem" onmouseover="mopen('submenu4')" onmouseout="mclosetimer()"><a href="/reservation.php?rid=1">Reservations</a>
 			      	<div class="menu" id="submenu4" onmouseover="mcancelclosetimer()">
 			          		<ul>
-								<li class="menuitem"><a href="/reservation.php?rid=1">Create new reservation</a></li>
+								<li class="menuitem"><a href="/reservation.php?rid=1">New reservation</a></li>
 								<li class="menuitem"><a href="/reservation.php?rid=1">Edit my reservations</a></li>
 								<li class="menuitem"><a href="/reservation.php?rid=1">Edit group reservations</a></li>
+								<li class="menuitem"><a href="/reservation.php?rid=1">Edit all reservations</a></li>
 								<li class="menuitem"><a href="/reservation.php?rid=1">Delete reservations</a></li>
 							</ul>
 			      	</div>
@@ -156,31 +155,32 @@
 				<li class="menubaritem" onmouseover="mopen('submenu5')" onmouseout="mclosetimer()"><a href="/calendar.php">Calendar</a>
 			      	<div class="menu" id="submenu5" onmouseover="mcancelclosetimer()">
 			          		<ul>
-								<li class="menuitem"><a href="/calendar.php">Resource 1</a></li>
-								<li class="menuitem"><a href="/calendar.php">Resource 2</a></li>
-								<li class="menuitem"><a href="/calendar.php">Resource 3</a></li>
-								<li class="menuitem"><a href="/calendar.php">Resource 4</a></li>
-								<li class="menuitem"><a href="/calendar.php">Resource 5</a></li>
+								<li class="menuitem"><a href="/calendar.php?uid=1">My calendar</a></li>
 								<li class="menuitem"><a href="/calendar.php">All resources</a></li>
+								<li class="separator"><hr /></li>
+								<li class="menuitem"><a href="/calendar.php?rid=1">Resource 1</a></li>
+								<li class="menuitem"><a href="/calendar.php?rid=2">Resource 2</a></li>
+								<li class="menuitem"><a href="/calendar.php?rid=3">Resource 3</a></li>
+								<li class="menuitem"><a href="/calendar.php?rid=4">Resource 4</a></li>
+								<li class="menuitem"><a href="/calendar.php?rid=5">Resource 5</a></li>
 							</ul>
 			      	</div>
 			  	</li>
-				<li class="menubaritem" onmouseover="mopen('submenu6')" onmouseout="mclosetimer()"><a href="/resource.php">Reports</a>
+				<li class="menubaritem" onmouseover="mopen('submenu6')" onmouseout="mclosetimer()"><a href="/reports.php">Reports</a>
 			     	<div class="menu" id="submenu6" onmouseover="mcancelclosetimer()">
 			          	<ul>
-							<li class="menuitem"><a href="/reports.php">Create new report</a></li>
-							<li class="menuitem"><a href="/reports.php">View report history</a></li>
+							<li class="menuitem"><a href="/reports.php">New report</a></li>
+							<li class="menuitem"><a href="/report-history.php">Report history</a></li>
 						</ul>
 			      	</div>
 				</li>
 				<li class="menubaritem" onmouseover="mopen('submenu7')" onmouseout="mclosetimer()"><a href="/settings.php">Settings</a>
 			      	<div class="menu" id="submenu7" onmouseover="mcancelclosetimer()">
 			          		<ul>
-								<li class="menuitem"><a href="/user-settings.php">Edit my settings</a></li>
-								<li class="menuitem"><a href="/user-admin.php">Edit user settings</a></li>
-								<li class="menuitem"><a href="/resource-admin.php">Edit resource settings</a></li>
-								<li class="menuitem"><a href="/schedule-admin.php">Edit scheduling settings</a></li>
-								<li class="menuitem"><a href="/reg-admin.php">Edit registration settings</a></li>
+								<li class="menuitem"><a href="/user-admin.php">User settings</a></li>
+								<li class="menuitem"><a href="/resource-admin.php">Resource settings</a></li>
+								<li class="menuitem"><a href="/schedule-admin.php">Scheduling settings</a></li>
+								<li class="menuitem"><a href="/reg-admin.php">Registration settings</a></li>
 							</ul>
 			      	</div>
 			    </li>

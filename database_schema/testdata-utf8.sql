@@ -1,7 +1,10 @@
 ﻿use phpscheduleit2;
 
+truncate table resource_types;
+insert into resource_types values (1, 'default');
+
 truncate table resources;
-insert into resources (name, requires_approval) values ('resource1', 0),('resource2', 0);
+insert into resources (name, type_id, requires_approval) values ('resource1', 1, 0),('resource2', 1, 0);
 
 #insert into user_statuses (statusid, description) values (1, 'active');
 
