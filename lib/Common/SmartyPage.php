@@ -44,6 +44,7 @@ class SmartyPage extends Smarty
 		$this->register_function('object_html_options', array($this, 'HtmlOptions'));
 		$this->register_block('validation_group', array($this, 'ValidationGroup'));
 		$this->register_function('setfocus', array($this, 'SetFocus'));
+		$this->register_function('formname', array($this, 'GetFormName'));
 		
 		$this->Validators = new PageValdiators();
 	}
@@ -197,6 +198,7 @@ class SmartyPage extends Smarty
 		$value = null;
 		$size = null;
 		$tabindex = null;
+		$type = null;
 		
 		if (isset($params['class']))
 		{
@@ -216,12 +218,17 @@ class SmartyPage extends Smarty
 		if (isset($params['tabindex']))
 		{
 			$tabindex = $params['tabindex'];
-		}		
+		}
+
+		if (isset($params['type']))
+		{
+			$type = strtolower($params['type']);
+		}
 		
 		$knownAttributes = array('value', 'type', 'name');
 		$attributes = $this->AppendAttributes($params, $knownAttributes);
 		
-		if (isset($params['type']))
+		if ($type == 'password')
 		{
 			$textbox = new SmartyPasswordbox($params['name'], $value, $attributes, $smarty);
 		}
@@ -255,6 +262,17 @@ class SmartyPage extends Smarty
 	{
 		$id = isset($params['key']) ? FormKeys::Evaluate($params['key']) : $params['id'];
 		return "<script type=\"text/javascript\">document.getElementById('$id').focus();</script>";
+	}
+	
+	public function GetFormName($params, &$smarty)
+	{
+		$append = '';
+		
+		if (isset($params['multi']))
+		{
+			$append = '[]';
+		}
+		return 'name="' . FormKeys::Evaluate($params['key']) . $append . '"';
 	}
 }
 ?>

@@ -4,6 +4,23 @@ class FormKeys
 	private function __construct()
 	{}
 	
+	const BEGIN_DATE = "beginDate";
+	const BEGIN_PERIOD = "beginPeriod";
+	const END_DATE = "endDate";
+	const END_PERIOD = "endPeriod";
+	const SUMMARY = "summary";
+	const REPEAT_OPTIONS = "repeatOptions";
+	const REPEAT_EVERY = "repeatEvery";
+	const REPEAT_SUNDAY = "repeatSunday";
+	const REPEAT_MONDAY = "repeatMonday";
+	const REPEAT_TUESDAY = "repeatTuesday";
+	const REPEAT_WEDNESDAY = "repeatWednesday";
+	const REPEAT_THURSDAY = "repeatThursday";
+	const REPEAT_FRIDAY = "repeatFriday";
+	const REPEAT_SATURDAY = "repeatSaturday";
+	const REPEAT_MONTHLY_TYPE = "repeatMonthlyType";
+	const END_REPEAT_DATE = "endRepeatDate";
+	
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
@@ -41,11 +58,13 @@ class FormKeys
 	const RESOURCE = 'resource';
 	const REPORT_START = 'reportStart';
 	const REPORT_END = 'reportEnd';
+	const ADDITIONAL_RESOURCES = 'additionalResources';
 	
 	
 	public static function Evaluate($formKey)
 	{
-		return eval("return FormKeys::$formKey;");
+		$key = strtoupper($formKey);
+		return eval("return FormKeys::$key;");
 	}
 }
 ?>

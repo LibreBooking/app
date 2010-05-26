@@ -12,6 +12,16 @@ $(document).ready(function() {
 	$('#btnClearAddResources').click(function(){   
 		CancelAdd('#dialogAddResources', '#additionalResources');	
 	});
+	
+	$('#output1').dialog({
+	    autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
+	    minHeight: 400, minWidth: 700, width: 700,
+	    open: function(event, ui) { $(".ui-dialog-titlebar").hide(); }
+	});
+	
+	$('.save').click(function(){
+		$('#output1').dialog('open');
+	});
 });
 
 function AddSelected(dialogBoxId, displayDivId)
@@ -19,7 +29,7 @@ function AddSelected(dialogBoxId, displayDivId)
 	$(displayDivId).empty();
 	
 	$(dialogBoxId + ' :checked').each(function(){
-		$(displayDivId).append('<p>' + $(this).next().text() + '</p>')
+		$(displayDivId).append('<p>' + $(this).next().text() + ' <input type="hidden" name="additionalResources[]" value="' + $(this).val() + '"/></p>')
 	});
 	
 	$(dialogBoxId).dialog('close');
