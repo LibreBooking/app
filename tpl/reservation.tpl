@@ -5,11 +5,11 @@
 </style>
 
 <a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>
-<form id="reservationForm" action="savetest.php" method="post">
+<form id="reservationForm" action="ajax/reservation_save.php" method="post">
 
 <div>
-	<input type="submit" value="{translate key="Save"}" class="button save"></input>
-	<input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
+	<input type="submit" value="{translate key='Save'}" class="button save"></input>
+	<input type="button" value="{translate key='Cancel'}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 </div>
 <table cellspacing="0" cellpadding="0">
 	<tr>
@@ -101,21 +101,21 @@ this needs to be changed to handle cross-day reservations
 	<input type="submit" value="{translate key="Save"}" class="button save"></input>
 	<input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 </div>
+</form>
 
-<div id="dialogAddResources" title="Add Resources">
+<div id="dialogAddResources" title="Add Resources" style="display:none;">
 	<p>Some text that you want to display to the user.</p>
 	{foreach from=$AvailableResources item=resource}
 		<input type="checkbox" id="additionalResource{$resource->Id()}" value="{$resource->Id()}" /><label for="additionalResource{$resource->Id()}">{$resource->Name()}</label><br/>
 	{/foreach}
-	<button id="btnConfirmAddResources" onclick="$('#dialogAddResources').dialog('close')">Add Selected</button>
+	<button id="btnConfirmAddResources" onclick="AddResources('{constant echo=FormKeys::ADDITIONAL_RESOURCES}')">Add Selected</button>
 	<button id="btnClearAddResources">Cancel</button>
 </div>
 
-<div id="output1" style="display:none;">
+<div id="dialogSave" style="display:none;">
 	<div id="creatingNotifiation" style="position:relative; top:170px; font-size:16pt;text-align:center;">Creating reservation...<br/><img src="{$RootPath}/img/reservation_submitting.gif" alt="Creating reservation"/></div>
 	<div id="result" style="display:none;"></div>
 </div>
-</form>
 
 {control type="DatePickerSetupControl" ControlId="BeginDate" DefaultDate=$StartDate}
 {control type="DatePickerSetupControl" ControlId="EndDate" DefaultDate=$EndDate}

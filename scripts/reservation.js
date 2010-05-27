@@ -1,35 +1,41 @@
 $(document).ready(function() {
 
 	$('#dialogAddResources').dialog({
-	    bgiframe: true, autoOpen: false, height: 100, modal: true,
+	    bgiframe: true, autoOpen: false, 
+	    height: 300, modal: true,
 	    open: function(event, ui) { InitialzeCheckboxes('#dialogAddResources', '#additionalResources'); return true; }
-	});
-	
-	$('#btnConfirmAddResources').click(function(){   
-	    AddSelected('#dialogAddResources', '#additionalResources');	
 	});
 	
 	$('#btnClearAddResources').click(function(){   
 		CancelAdd('#dialogAddResources', '#additionalResources');	
 	});
 	
-	$('#output1').dialog({
+	$('#dialogSave').dialog({
 	    autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
 	    minHeight: 400, minWidth: 700, width: 700,
-	    open: function(event, ui) { $(".ui-dialog-titlebar").hide(); }
+	    open: function(event, ui) {  $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar").hide(); }
 	});
 	
 	$('.save').click(function(){
-		$('#output1').dialog('open');
+		$('#dialogSave').dialog('open');
 	});
+	
 });
 
-function AddSelected(dialogBoxId, displayDivId)
+function AddResources(inputId)
+{
+	AddSelected('#dialogAddResources', '#additionalResources', inputId);
+	$('#dialogAddResources').dialog('close');
+}
+
+function AddSelected(dialogBoxId, displayDivId, inputId)
 {
 	$(displayDivId).empty();
 	
 	$(dialogBoxId + ' :checked').each(function(){
-		$(displayDivId).append('<p>' + $(this).next().text() + ' <input type="hidden" name="additionalResources[]" value="' + $(this).val() + '"/></p>')
+		$(displayDivId)
+			.append('<p>' + $(this).next().text() + '</p>')
+			.append('<input type="hidden" name="' + inputId + '[]" value="' + $(this).val() + '"/>')
 	});
 	
 	$(dialogBoxId).dialog('close');
@@ -63,4 +69,9 @@ function InitialzeCheckboxes(dialogBoxId, displayDivId)
 			$(this).removeAttr('checked');
 		}
 	});
+}
+
+function CloseSaveDialog()
+{
+	$('#dialogSave').dialog('close');
 }

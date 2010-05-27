@@ -1,8 +1,4 @@
 <?php 
-sleep(1);
-
-echo $_POST['additionalResources'];
-
 print_r($_POST);
 
 ?>

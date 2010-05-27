@@ -15,8 +15,6 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 		parent::__construct();
 		
 		$this->_presenter = new ReservationPopupPresenter($this, new ReservationRepository());
-		
-		
 	}
 	
 	public function PageLoad()
