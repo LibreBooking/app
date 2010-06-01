@@ -220,7 +220,7 @@ p.loginsubmit, p.save, p.reg-adminsubmit, p.reporting-submit, p.resetpassword { 
 .page-footer { display:none; }
 
 
-form.register, form.resource, form.reg-admin {
+form.register, form.resource, form.reg-admin, #reservationForm {
         margin: 0 0 0 8px;
         padding: 20px 16px 48px 16px;
         font-weight: normal;
@@ -245,7 +245,7 @@ form li {
 	color: #666;
 }
 
-div.registrationHeader, div.resourceHeader, div.reg-adminHeader, div.reportingHeader, div.forgot_pwdHeader {
+div.registrationHeader, div.resourceHeader, div.reg-adminHeader, div.reportingHeader, div.forgot_pwdHeader, .reservationHeader {
 	padding: 5px 15px;
 	border: none;
 	-moz-border-radius: 13px;
@@ -263,7 +263,7 @@ div.registrationHeader, div.resourceHeader, div.reg-adminHeader, div.reportingHe
 	color: #fff;
 }
 
-div.registrationHeader h3, div.resourceHeader h3, div.reg-adminHeader h3, div.reportingHeader h3, div.forgot_pwdHeader h3 { 
+.registrationHeader h3, .resourceHeader h3, .reg-adminHeader h3, .reportingHeader h3, .forgot_pwdHeader h3, .reservationHeader h3 { 
 	font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
 	vertical-align: middle;
 }
@@ -276,9 +276,9 @@ ul.no-style {
 	list-style-type: none;
 }
 
-li.res-req, li.reg-req { color: #a00; }
+li.res-req, li.reg-req, .rsv-req { color: #a00; }
 
-label.res-req, label.reg-req {
+label.res-req, label.reg-req, .rsv-req {
 	font-size: 18px;
 	color: #a00;
 }
@@ -298,12 +298,7 @@ label.res, label.reg {
 	margin: 3em auto 1em;
 }
 
-#reg-adminbox {
-	width: 750px;
-	margin: 3em auto 1em;
-}
-
-#reportingbox {
+#reg-adminbox, #reportingbox, #reservationbox {
 	width: 750px;
 	margin: 3em auto 1em;
 }
@@ -322,7 +317,7 @@ label.res, label.reg {
 
 #reg-adminbox-footer, #reporting-footer { margin: 10px 0;}
 
-#registrationbox .input {
+#registrationbox .input, #reservationbox .input {
         font-size: 18px;
         width: 97%;
         padding: 3px;
@@ -332,6 +327,15 @@ label.res, label.reg {
         color: #777;
 }
 
+#reservationbox .input {
+        font-size: 18px;
+        width: 98%;
+        padding: 3px;
+        margin: 2px 0 5px 0;
+        border: 1px solid #e5e5e5;
+        background: #fbfbfb;
+        color: #777;
+}
 #resourcebox .input {
     	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
         width: 98%;
@@ -480,16 +484,71 @@ tr.admin-lastline {
 }
 
 #nav-main ul li ul li a, #nav-main ul li ul li a:link, #nav-main ul li ul li a:visited {
-        padding: 4px 20px;
-        margin: 0 1px 1px 1px;
-        height: auto;
-        float: none;
-        display: block;
-        font-size: 85%;
-        font-weight: normal;
-        border: 0;
-        background-image: none;
-        position: relative;
+	padding: 4px 20px;
+	margin: 0 1px 1px 1px;
+	height: auto;
+	float: none;
+	display: block;
+	font-size: 85%;
+	font-weight: normal;
+	border: 0;
+	background-image: none;
+	position: relative;
 }
 
 #nav-main ul li ul li a:hover, #nav-main ul li ul li a:active { background:#3d5b74 }
+
+.rsv-checkbox h4 {
+	display: inline;
+    padding: 0 20px 0 5px;
+	
+}
+
+.rsv-checkbox input { margin: 0 0 0 3px;}
+
+.rsv-checkbox {
+	padding: 0 0 10px 0;
+}
+
+.pulldown {
+    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+    width: 91%;
+    padding: 3px;
+    margin: 2px 0 5px 0;
+    border: 1px solid #e5e5e5;
+    background: #fbfbfb;
+    color: #777;
+}
+
+textarea.input-areashow {
+    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+    width: 98%;
+    padding: 3px;
+    margin: 2px 0 5px 0;
+    border: 1px solid #e5e5e5;
+    background: #fbfbfb;
+    color: #777;
+}
+
+.inline {display:inline;}
+
+.dateinput {
+    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+    width: 100px;
+    padding: 3px;
+    margin: 2px 0 5px 0;
+    border: 1px solid #e5e5e5;
+    background: #fbfbfb;
+    color: #777;
+	text-align: center;
+}
+
+.repeatDiv select {
+    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+    width: 100px;
+    padding: 3px;
+    margin: 2px 0 5px 0;
+    border: 1px solid #e5e5e5;
+    background: #fbfbfb;
+    color: #777;
+}

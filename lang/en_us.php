@@ -733,7 +733,7 @@ class en_us extends Language
 		
 		$strings['ResourceName'] = 'Resource name';
 		$strings['ResourceLocation'] = 'Location of resource';
-		$strings['Description'] = 'Description of resource';
+		$strings['ResourceDescription'] = 'Description of resource';
 		$strings['ContactInfo'] = 'Contact information for resource';
 		$strings['ResourceNotes'] = 'Additional notes';
 		$strings['IsActive'] = 'Resource is available for reservations';
@@ -770,7 +770,21 @@ class en_us extends Language
 		$strings['FormFields'] = 'Form fields';
 		$strings['OrganizationSelection'] = 'Organization selection';
 		$strings['TimezoneSelection'] = 'Timezone selection';
-						
+
+		// reservation page
+		$strings['ReservationTitle'] = 'Title of reservation';
+		$strings['ReservationDescription'] = 'Description of reservation';
+		$strings['ResourceList'] = 'Resource(s) to be reserved';
+		$strings['Add'] = 'Add';
+		$strings['ParticipantList'] = 'Participants';
+		$strings['InvitationList'] = 'Invitations';
+
+		// new pages						
+		$strings['Reporting'] = 'Reporting';
+		$strings['Calendar'] = 'Calendar';
+		$strings['RegistrationAdmin'] = 'Registration form settings';
+		$strings['RegistrationMini'] = 'Registration';
+		
 		// end Since 2.0
 		
 		$this->Strings = $strings;

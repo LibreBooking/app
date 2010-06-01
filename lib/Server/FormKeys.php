@@ -20,6 +20,10 @@ class FormKeys
 	const REPEAT_SATURDAY = "repeatSaturday";
 	const REPEAT_MONTHLY_TYPE = "repeatMonthlyType";
 	const END_REPEAT_DATE = "endRepeatDate";
+	const RESERVATION_TITLE = "reservationTitle";
+	const PARTICIPANT_LIST = "participantList";
+	const INVITATION_LIST = "invitationList";
+
 	
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';
 	const EMAIL = 'email';

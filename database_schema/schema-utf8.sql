@@ -391,6 +391,23 @@ CREATE TABLE `resources` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
+-- Table structure for table `resource_options`
+--
+
+DROP TABLE IF EXISTS `resource_options`;
+CREATE TABLE `resource_options` (
+ `resource_id` smallint(5) unsigned NOT NULL,
+ `option_id` smallint(5) unsigned NOT NULL,
+ `name` varchar(85) NOT NULL,
+ `description` text,
+ PRIMARY KEY (`resource_id`, `option_id`),
+ INDEX (`resource_id`),
+ FOREIGN KEY (`resource_id`) 
+	REFERENCES resources(`resourceid`)
+	ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
 -- Table structure for table `resource_day_quotas`
 --
 
