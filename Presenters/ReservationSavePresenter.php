@@ -19,7 +19,37 @@ class ReservationSavePresenter
 	
 	public function PageLoad()
 	{
-		$this->_page->ReservationSavedSuccessfully = true;
+		$this->_page->SetSaveSuccessfulMessage(true);
+	}
+}
+
+interface IReservationValidationResult
+{
+	/**
+	 * @return bool
+	 */
+	public function CanBeSaved();
+	
+	public function GetErrors();
+	
+	public function GetWarnings(); 
+}
+
+class ReservationValidResult implements IReservationValidationResult
+{
+	public function CanBeSaved()
+	{
+		return true;
+	}
+	
+	public function GetErrors()
+	{
+		throw new Exception("Not implemented");
+	}
+	
+	public function GetWarnings()
+	{
+		throw new Exception("Not implemented");
 	}
 }
 ?>

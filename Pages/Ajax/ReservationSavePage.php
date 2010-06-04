@@ -9,6 +9,11 @@ class ReservationSavePage extends Page implements IReservationSavePage
 	 */
 	private $_presenter;
 	
+	/**
+	 * @var bool
+	 */
+	private $_reservationSavedSuccessfully = false;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -21,7 +26,7 @@ class ReservationSavePage extends Page implements IReservationSavePage
 		$this->_presenter->PageLoad();
 		
 		// do we want a save/update/deleted successful?
-		if ($this->ReservationSavedSuccessfully)
+		if ($this->_reservationSavedSuccessfully)
 		{
 			$this->smarty->display('Ajax/reservation/savesuccessful.tpl');
 		}
@@ -30,8 +35,18 @@ class ReservationSavePage extends Page implements IReservationSavePage
 			$this->smarty->display('Ajax/reservation/savefailed.tpl');
 		}
 	}
+	
+	public function SetSaveSuccessfulMessage($succeeded)
+	{
+		$this->_reservationSavedSuccessfully = $succeeded;
+	}
 }
 
 interface IReservationSavePage
-{}
+{
+	/**
+	 * @param bool $succeeded
+	 */
+	public function SetSaveSuccessfulMessage($succeeded);
+}
 ?>
