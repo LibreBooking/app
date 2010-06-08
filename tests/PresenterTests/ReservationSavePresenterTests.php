@@ -35,8 +35,10 @@ class ReservationSavePresenterTests extends TestBase
 		parent::teardown();
 	}
 	
-	public function testSaveChecksBasicInformationAndPermissionAndAvailabilityAndOtherProvidedChecks()
+	public function testSaveCreatesReservation_AndValidates_AndPersists_AndNotifies_AndPresentsResultOnPage()
 	{
+		throw Exception("should there be one presenter per action?");
+		
 		$validationFactory = $this->getMock('IReservationValidationFactory');
 		$validationService = $this->getMock('IReservationValidationService');
 		$validationResult = new ReservationValidResult();
@@ -44,19 +46,35 @@ class ReservationSavePresenterTests extends TestBase
 		$notificationFactory = $this->getMock('IReservationNotificationFactory');
 		$notificationService = $this->getMock('IReservationNotificationService');
 		
+		$persistenceFactory->expects($this->once())
+			->method('Create')
+			->with($this->equalTo(ReservationAction::Create))
+			->will($this->returnValue($persistenceService));
+	
+		$persistenceService->expects($this->once())
+			->method('Load')
+			->with($this->equalTo($reservationId))
+			->will($this->returnValue($reservation));
+		
 		$validationFactory->expects($this->once())
 			->method('Create')
-			->with($this->equalTo('createNew'))
+			->with($this->equalTo(ReservationAction::Create))
 			->will($this->returnValue($validationService));
 		
 		$validationService->expects($this->once())
 			->method('Validate')
 			->with($this->equalTo($reservation))
 			->will($this->returnValue($validationResult));
-			
+		
+		// apply updates
+		
+		$persistenceService->expects($this->once())
+			->method('Update')
+			->with($this->equalTo($reservation));
+		
 		$notificationFactory->expects($this->once())
 			->method('Create')
-			->with($this->equalTo('createNew'))
+			->with($this->equalTo(ReservationAction::Create))
 			->will($this->returnValue($notificationService));
 			
 		$notificationService->expects($this->once())
@@ -66,6 +84,10 @@ class ReservationSavePresenterTests extends TestBase
 		$this->_page->expects($this->once())
 			->method('SetSaveSuccessfulMessage')
 			->with($this->equalTo(true));
+			
+		$this->_page->expects($this->once())
+			->method('ShowWarnings')
+			->with($this->equalTo($validationResult->GetWarnings()));
 						
 		$presenter = new ReservationSavePresenter($page);
 		$presenter->PageLoad();	

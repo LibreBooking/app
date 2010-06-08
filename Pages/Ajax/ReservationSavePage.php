@@ -40,6 +40,16 @@ class ReservationSavePage extends Page implements IReservationSavePage
 	{
 		$this->_reservationSavedSuccessfully = $succeeded;
 	}
+	
+	public function ShowErrors($errors)
+	{
+		// set errors variable
+	}
+	
+	public function ShowWarnings($warnings)
+	{
+		// set warnings variable
+	}
 }
 
 interface IReservationSavePage
@@ -48,5 +58,15 @@ interface IReservationSavePage
 	 * @param bool $succeeded
 	 */
 	public function SetSaveSuccessfulMessage($succeeded);
+	
+	/**
+	 * @param array[int]string $errors
+	 */
+	public function ShowErrors($errors);
+	
+	/**
+	 * @param array[int]string $warnings
+	 */
+	public function ShowWarnings($warnings);
 }
 ?>
