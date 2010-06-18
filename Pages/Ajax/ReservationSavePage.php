@@ -50,10 +50,20 @@ class ReservationSavePage extends Page implements IReservationSavePage
 	{
 		// set warnings variable
 	}
+	
+	public function GetReservationId()
+	{
+		return $this->server->GetForm(FormKeys::RESERVATION_ID);
+	}
 }
 
 interface IReservationSavePage
 {
+	/**
+	 * @return int
+	 */
+	public function GetReservationId();
+	
 	/**
 	 * @param bool $succeeded
 	 */

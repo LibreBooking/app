@@ -13,6 +13,11 @@ class ReservationSavePresenter
 	private $_page;
 	
 	/**
+	 * @var IReservationPersistenceFactory
+	 */
+	private $_persistenceFactory;
+	
+	/**
 	 * @var IReservationValidationFactory
 	 */
 	private $_validationFactory;
@@ -24,6 +29,7 @@ class ReservationSavePresenter
 	
 	public function __construct(
 		IReservationSavePage $page, 
+		IReservationPersistenceFactory $persistenceFactory,
 		IReservationValidationFactory $validationFactory,
 		IReservationNotificationFactory $notificationFactory)
 	{
@@ -34,17 +40,42 @@ class ReservationSavePresenter
 	
 	public function PageLoad()
 	{
-		$reservation = GetReservation();
+		$action = ReservationAction::Create;
+		$reservationId = $this->_page->GetReservationId();
+			
+		$persistenceService = $this->_persistenceFactory->Create($action);
+		$reservation = $persistenceService->Load($reservationId);
 		
-		$validationService = $this->_validationFactory->Create(ReservationAction::Create);
+		// user, resource, start, end, repeat options, title, description
+		// additional resources, accessories, participants, invitations
+		// reminder
+			
+		$reservation->Update(
+			$userId, 
+			$resourceId, 
+			$title,
+			$description);
+			
+		$reservation->UpdateDuration($startDate, $startPeriod, $endDate, $endPeriod);
+		
+		$reservation->Repeats($repeatOptions);
+		
+		$reservation->AddResource();
+		$reservation->AddAccessory();
+		$reservation->AddParticipant();
+		
+		$reservation->RemoveResource();
+		$reservation->RemoveAccessory();
+		$reservation->RemoveParticipant();
+		
+		$validationService = $this->_validationFactory->Create($action);
 		$validationResult = $validationService->Validate($reservation);
 		
 		if ($validationResult->CanBeSaved())
 		{
-			ApplyReservationUpdates();
-			SaveReservation();
+			$persistenceService->Persist($reservation);
 			
-			$notificationService = $this->_notificationFactory->Create(ReservationAction::Create);
+			$notificationService = $this->_notificationFactory->Create($action);
 			$notificationService->Notify($reservation);
 			
 			$this->_page->SetSaveSuccessfulMessage(true);
@@ -56,6 +87,21 @@ class ReservationSavePresenter
 		
 		$this->_page->ShowWarnings($validationResult->GetWarnings());
 	}
+}
+
+interface IReservationPersistenceFactory
+{
+	/**
+	 * @param ReservationAction $reservationAction
+	 * @return IReservationPersistenceService
+	 */
+	function Create($reservationAction);
+}
+
+interface IReservationPersistenceService
+{
+	function Load($reservationId);
+	function Persist($reservation);
 }
 
 interface IReservationValidationFactory

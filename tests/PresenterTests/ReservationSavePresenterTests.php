@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Presenters/ReservationSavePresenter.php');
-require_once(ROOT_DIR . 'Pages/ReservationSavePage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 
 class ReservationSavePresenterTests extends TestBase
@@ -37,7 +37,10 @@ class ReservationSavePresenterTests extends TestBase
 	
 	public function testSaveCreatesReservation_AndValidates_AndPersists_AndNotifies_AndPresentsResultOnPage()
 	{
-		throw Exception("should there be one presenter per action?");
+		throw new Exception('come back after Reservation is done');
+		$persistenceFactory = $this->getMock('IReservationPersistenceFactory');
+		$persistenceService = $this->getMock('IReservationPersistenceService');
+		$reservation = $this->getMock('IReservation');
 		
 		$validationFactory = $this->getMock('IReservationValidationFactory');
 		$validationService = $this->getMock('IReservationValidationService');
@@ -45,15 +48,19 @@ class ReservationSavePresenterTests extends TestBase
 		
 		$notificationFactory = $this->getMock('IReservationNotificationFactory');
 		$notificationService = $this->getMock('IReservationNotificationService');
-		
+				
 		$persistenceFactory->expects($this->once())
 			->method('Create')
 			->with($this->equalTo(ReservationAction::Create))
 			->will($this->returnValue($persistenceService));
 	
+		$this->_page->expects($this->once())
+			->method('GetReservationId')
+			->will($this->returnValue(null));
+			
 		$persistenceService->expects($this->once())
 			->method('Load')
-			->with($this->equalTo($reservationId))
+			->with($this->equalTo(null))
 			->will($this->returnValue($reservation));
 		
 		$validationFactory->expects($this->once())
@@ -69,7 +76,7 @@ class ReservationSavePresenterTests extends TestBase
 		// apply updates
 		
 		$persistenceService->expects($this->once())
-			->method('Update')
+			->method('Persist')
 			->with($this->equalTo($reservation));
 		
 		$notificationFactory->expects($this->once())
@@ -89,7 +96,7 @@ class ReservationSavePresenterTests extends TestBase
 			->method('ShowWarnings')
 			->with($this->equalTo($validationResult->GetWarnings()));
 						
-		$presenter = new ReservationSavePresenter($page);
+		$presenter = new ReservationSavePresenter($page, $persistenceFactory, $validationFactory, $notificationFactory);
 		$presenter->PageLoad();	
 	}
 }

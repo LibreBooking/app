@@ -4,25 +4,26 @@ class FormKeys
 	private function __construct()
 	{}
 	
-	const BEGIN_DATE = "beginDate";
-	const BEGIN_PERIOD = "beginPeriod";
-	const END_DATE = "endDate";
-	const END_PERIOD = "endPeriod";
-	const SUMMARY = "summary";
-	const REPEAT_OPTIONS = "repeatOptions";
-	const REPEAT_EVERY = "repeatEvery";
-	const REPEAT_SUNDAY = "repeatSunday";
-	const REPEAT_MONDAY = "repeatMonday";
-	const REPEAT_TUESDAY = "repeatTuesday";
-	const REPEAT_WEDNESDAY = "repeatWednesday";
-	const REPEAT_THURSDAY = "repeatThursday";
-	const REPEAT_FRIDAY = "repeatFriday";
-	const REPEAT_SATURDAY = "repeatSaturday";
-	const REPEAT_MONTHLY_TYPE = "repeatMonthlyType";
-	const END_REPEAT_DATE = "endRepeatDate";
-	const RESERVATION_TITLE = "reservationTitle";
-	const PARTICIPANT_LIST = "participantList";
-	const INVITATION_LIST = "invitationList";
+	const BEGIN_DATE = 'beginDate';
+	const BEGIN_PERIOD = 'beginPeriod';
+	const END_DATE = 'endDate';
+	const END_PERIOD = 'endPeriod';
+	const END_REPEAT_DATE = 'endRepeatDate';
+	const INVITATION_LIST = 'invitationList';
+	const PARTICIPANT_LIST = 'participantList';
+	const REPEAT_OPTIONS = 'repeatOptions';
+	const REPEAT_EVERY = 'repeatEvery';
+	const REPEAT_SUNDAY = 'repeatSunday';
+	const REPEAT_MONDAY = 'repeatMonday';
+	const REPEAT_TUESDAY = 'repeatTuesday';
+	const REPEAT_WEDNESDAY = 'repeatWednesday';
+	const REPEAT_THURSDAY = 'repeatThursday';
+	const REPEAT_FRIDAY = 'repeatFriday';
+	const REPEAT_SATURDAY = 'repeatSaturday';
+	const REPEAT_MONTHLY_TYPE = 'repeatMonthlyType';
+	const RESERVATION_ID = 'reservationId';
+	const RESERVATION_TITLE = 'reservationTitle';
+	const SUMMARY = 'summary';
 
 	
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';

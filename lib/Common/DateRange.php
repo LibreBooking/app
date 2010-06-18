@@ -18,11 +18,14 @@ class DateRange
 	}
 
 	/**
+	 * @param string $beginString
+	 * @param string $endString
+	 * @param string $timezoneString
 	 * @return DateRange
 	 */
-	public static function Create(string $begin, string $end, string $timezone)
+	public static function Create($beginString, $endString, $timezoneString)
 	{
-		return new DateRange(Date::Parse($begin, $timezone), Date::Parse($end, $timezone));
+		return new DateRange(Date::Parse($beginString, $timezoneString), Date::Parse($endString, $timezoneString));
 	}
 
 	/**

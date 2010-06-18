@@ -57,7 +57,7 @@
 				<select class="textbox" id="BeginPeriod" {formname key=BEGIN_PERIOD}>
 					{foreach from=$Periods item=period}
 						{if $period->IsReservable()}
-							<option>{$period->Label()}</option>
+							<option value="{formatdate date=$period->Begin()}">{$period->Label()}</option>
 						{/if}
 					{/foreach}
 				</select>-->
@@ -70,7 +70,7 @@
 				<select class="textbox" id="EndPeriod" {formname key=END_PERIOD}>
 					{foreach from=$Periods item=period}
 						{if $previous ne '' and $previous->IsReservable()}
-							<option>{$period->Label()}</option>
+							<option value="{$period->Begin()}">{$period->Label()}</option>
 						{/if}
 						{assign var=previous value=$period}
 					{/foreach}
