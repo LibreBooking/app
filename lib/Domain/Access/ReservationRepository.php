@@ -31,6 +31,7 @@ interface IReservationRepository
 	 * @return array of ScheduleReservation
 	 */
 	public function GetWithin(Date $startDate, Date $endDate, $scheduleId);
-}
 
+	public function Add(Reservation $reservation);
+}
 ?>

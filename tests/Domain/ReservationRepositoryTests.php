@@ -5,20 +5,23 @@ require_once(ROOT_DIR . 'lib/Schedule/namespace.php');
 
 class ReservationsTests extends TestBase
 {
-	private $reservations;
+	/**
+	 * @var ReservationRepository
+	 */
+	private $repository;
 	
 	public function setup()
 	{
 		parent::setup();
 		
-		$this->reservations = new ReservationRepository();
+		$this->repository = new ReservationRepository();
 	}
 	
 	public function teardown()
 	{
 		parent::teardown();
 		
-		$this->reservations = null;
+		$this->repository = null;
 	}
 	
 	public function testCanGetReservationsWithinDateRange()
@@ -36,7 +39,7 @@ class ReservationsTests extends TestBase
 			$expected[] = ReservationFactory::CreateForSchedule($item);
 		}
 
-		$loaded = $this->reservations->GetWithin($startDate, $endDate, $scheduleId);		
+		$loaded = $this->repository->GetWithin($startDate, $endDate, $scheduleId);		
 		
 		$this->assertEquals(new GetReservationsCommand($startDate, $endDate, $scheduleId), $this->db->_Commands[0]);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
@@ -77,6 +80,42 @@ class ReservationsTests extends TestBase
 		
 		$this->assertTrue($startTime->Equals($actual->GetStartTime()));
 		$this->assertTrue($endTime->Equals($actual->GetEndTime()));
+	}
+
+	public function testAddReservationWithOneUserAndOneResource()
+	{
+		$reservationId = 428;
+		$userId = 232;
+		$resourceId = 10978;
+		$title = 'title';
+		$description = 'description';
+		$startCst = '2010-02-15 16:30';
+		$endCst = '2010-02-16 17:00';
+		$duration = DateRange::Create($startCst, $endCst, 'CST');
+
+		$startUtc = Date::Parse($startCst, 'CST')->ToUtc();
+		$endUtc = Date::Parse($endCst, 'CST')->ToUtc();
+		
+		$dateCreatedUtc = Date::Parse('2010-01-01 12:14:16', 'UTC');
+		Date::_SetNow($dateCreatedUtc);
+		
+		$this->db->_ExpectedInsertId = $reservationId;
+		
+		$reservation = new Reservation();
+		$reservation->Update($userId, $resourceId, $title, $description);
+		$reservation->UpdateDuration($duration);
+		
+		$this->repository->Add($reservation);
+		
+		$insertReservation = new InsertReservationCommand($startUtc, $endUtc, $dateCreatedUtc, $title, $description);
+		$insertReservationResource = new InsertReservationResourceCommand($reservationId, $resourceId);
+		$insertReservationUser = new InsertReservationUserCommand($reservationId, $userId, $levelId);
+		
+		$this->assertEquals($insertReservationCommand, $this->db->_Commands[0]);
+		$this->assertEquals($insertReservationResource, $this->db->_Commands[1]);
+		$this->assertEquals($insertReservationUser, $this->db->_Commands[2]);
+		
+		$this->assertEquals(3, count($this->db->_Commands));
 	}
 }
 

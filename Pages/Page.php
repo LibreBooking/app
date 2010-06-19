@@ -4,7 +4,6 @@ require_once(ROOT_DIR . 'Pages/Pages.php');
 require_once(ROOT_DIR . 'lib/Common/SmartyPage.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
-require_once(ROOT_DIR . 'lib/Database/MDB2/namespace.php');
 
 class Page implements IPage
 {
