@@ -125,11 +125,22 @@ interface IReservationPersistenceService
 	 * @return Reservation
 	 */
 	function Load($reservationId);
+
 	function Persist($reservation);
 }
 
 class AddReservationPersistenceService implements IReservationPersistenceService 
 {
+	/**
+	 * @var IReservationRepository
+	 */
+	private $_repository;
+	
+	public function __construct(IReservationRepository $repository)
+	{
+		$this->_repository = $repository;
+	}
+	
 	public function Load($reservationId)
 	{
 		return new Reservation();
@@ -137,7 +148,7 @@ class AddReservationPersistenceService implements IReservationPersistenceService
 	
 	public function Persist($reservation)
 	{
-		throw new Exception('not impelemented');
+		$this->_repository->Add($reservation);
 	}
 }
 

@@ -35,7 +35,7 @@ class ReservationSavePresenterTests extends TestBase
 		parent::teardown();
 	}
 	
-	public function testSaveCreatesReservation_AndValidates_AndPersists_AndNotifies_AndPresentsResultOnPage()
+	public function testSaveWithMinimalData()
 	{
 		$userId = 120;
 		$resourceId = 329;

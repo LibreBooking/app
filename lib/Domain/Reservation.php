@@ -81,6 +81,20 @@ class Reservation
 		return $this->_endDate;
 	}
 	
+	private $_repeatOptions;
+	
+	public function RepeatOptions()
+	{
+		return $this->_repeatOptions;
+	}
+	
+	private $_repeatedDates;
+	
+	public function RepeatedDates()
+	{
+		return $this->_repeatedDates;
+	}
+	
 	/**
 	 * @param int $userId
 	 * @param int $resourceId
@@ -102,6 +116,70 @@ class Reservation
 	{
 		$this->_startDate = $duration->GetBegin()->ToUtc();
 		$this->_endDate = $duration->GetEnd()->ToUtc();
+	}
+	
+	public function Repeats(IRepeatOptions $repeatOptions)
+	{
+		$this->_repeatOptions = $repeatOptions;
+		$this->_repeatedDates = $repeatOptions->GetDates();
+	}
+}
+
+interface IRepeatOptions
+{
+	function GetDates();
+}
+
+class NoRepetion implements IRepeatOptions
+{
+	public function GetDates()
+	{
+		return array();
+	}
+}
+
+class DailyRepeat implements IRepeatOptions
+{
+	/**
+	 * @var int
+	 */
+	private $_interval;
+	
+	/**
+	 * @var Date
+	 */
+	private $_terminiationDate;
+	
+	/**
+	 * @var DateRange
+	 */
+	private $_duration;
+	
+	public function __construct($interval, $terminiationDate, $duration)
+	{
+		$this->_interval = $interval;
+		$this->_terminiationDate = $terminiationDate;
+		
+		$this->_duration = $duration;
+	}
+	
+	public function GetDates()
+	{
+		$dates = array();
+		$startDate = $this->_duration->GetBegin()->AddDays($this->_interval);
+		$endDate = $this->_duration->GetEnd()->AddDays($this->_interval);
+
+//		$startDate = $reservation->StartDate()->AddDays($this->_interval);
+//		$endDate = $reservation->EndDate()->AddDays($this->_interval);
+		
+		while ($startDate->Compare($this->_terminiationDate) <= 0)
+		{
+			$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
+			$startDate = $startDate->AddDays($this->_interval);
+			$endDate = $endDate->AddDays($this->_interval);
+		}
+		
+		return $dates;
 	}
 }
 ?>

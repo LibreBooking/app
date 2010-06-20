@@ -82,12 +82,29 @@ class DateRange
 	}
 	
 	/**
+	 * @param DateRange $otherRange
+	 * @return bool
+	 */
+	public function Equals(DateRange $otherRange)
+	{
+		return $this->_begin->Equals($otherRange->GetBegin()) && $this->_end->Equals($otherRange->GetEnd());
+	}
+	
+	/**
 	 * @param string $timezone
 	 * @return DateRange
 	 */
 	public function ToTimezone($timezone)
 	{
 		return new DateRange($this->_begin->ToTimezone($timezone), $this->_end->ToTimezone($timezone));
+	}
+	
+	/**
+	 * @return DateRange
+	 */
+	public function ToUtc()
+	{
+		return new DateRange($this->_begin->ToUtc(), $this->_end->ToUtc());
 	}
 	
 	/**
