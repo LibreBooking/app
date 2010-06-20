@@ -3,7 +3,7 @@ require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Schedule/namespace.php');
 
-class ReservationsTests extends TestBase
+class ReservationRepositoryTests extends TestBase
 {
 	/**
 	 * @var ReservationRepository
@@ -92,7 +92,8 @@ class ReservationsTests extends TestBase
 		$startCst = '2010-02-15 16:30';
 		$endCst = '2010-02-16 17:00';
 		$duration = DateRange::Create($startCst, $endCst, 'CST');
-
+		$levelId = ReservationUserLevel::OWNER;
+		
 		$startUtc = Date::Parse($startCst, 'CST')->ToUtc();
 		$endUtc = Date::Parse($endCst, 'CST')->ToUtc();
 		
@@ -107,11 +108,11 @@ class ReservationsTests extends TestBase
 		
 		$this->repository->Add($reservation);
 		
-		$insertReservation = new InsertReservationCommand($startUtc, $endUtc, $dateCreatedUtc, $title, $description);
-		$insertReservationResource = new InsertReservationResourceCommand($reservationId, $resourceId);
-		$insertReservationUser = new InsertReservationUserCommand($reservationId, $userId, $levelId);
+		$insertReservation = new AddReservationCommand($startUtc, $endUtc, $dateCreatedUtc, $title, $description);
+		$insertReservationResource = new AddReservationResourceCommand($reservationId, $resourceId);
+		$insertReservationUser = new AddReservationUserCommand($reservationId, $userId, $levelId);
 		
-		$this->assertEquals($insertReservationCommand, $this->db->_Commands[0]);
+		$this->assertEquals($insertReservation, $this->db->_Commands[0]);
 		$this->assertEquals($insertReservationResource, $this->db->_Commands[1]);
 		$this->assertEquals($insertReservationUser, $this->db->_Commands[2]);
 		

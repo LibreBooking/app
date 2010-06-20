@@ -18,6 +18,29 @@ class ReservationRepository implements IReservationRepository
 		
 		return $reservations;
 	}
+	
+	public function Add(Reservation $reservation)
+	{
+		$insertReservation = new AddReservationCommand(
+										$reservation->StartDate()->ToUtc(), 
+										$reservation->EndDate()->ToUtc(), 
+										Date::Now()->ToUtc(), 
+										$reservation->Title(), 
+										$reservation->Description());
+		
+		$reservationId = ServiceLocator::GetDatabase()->ExecuteInsert($insertReservation);
+		
+		$insertReservationResource = new AddReservationResourceCommand($reservationId, $reservation->ResourceId());
+		
+		ServiceLocator::GetDatabase()->Execute($insertReservationResource);
+		
+		$insertReservationUser = new AddReservationUserCommand(
+										$reservationId, 
+										$reservation->UserId(), 
+										ReservationUserLevel::OWNER);
+		
+		ServiceLocator::GetDatabase()->Execute($insertReservationUser);
+	}
 }
 
 interface IReservationRepository

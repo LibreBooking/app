@@ -4,6 +4,9 @@ require_once(ROOT_DIR . 'lib/Server/namespace.php');
 
 class ServiceLocator
 {
+	/**
+	 * @var Database
+	 */
 	private static $_database = null;
 	private static $_server = null;
 	

@@ -25,6 +25,9 @@ class FakeReservationRepository implements IReservationRepository
 		return $this->_Reservations;
 	}
 	
+	public function Add(Reservation $reservation)
+	{}
+	
 	public static function GetReservationRows()
 	{
 		$row1 =  array(ColumnNames::RESERVATION_ID => 1, 

@@ -37,10 +37,22 @@ class ReservationSavePresenterTests extends TestBase
 	
 	public function testSaveCreatesReservation_AndValidates_AndPersists_AndNotifies_AndPresentsResultOnPage()
 	{
-		throw new Exception('come back after Reservation is done');
+		$userId = 120;
+		$resourceId = 329;
+		$title = 'title';
+		$description = 'description';
+		
+		$startDate = '2010-04-10';
+		$endDate = '2010-04-11';
+		$startTime = '12:30';
+		$endTime = '15:30';
+		$timezone = $this->_user->Timezone;
+		
+		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
+		
 		$persistenceFactory = $this->getMock('IReservationPersistenceFactory');
 		$persistenceService = $this->getMock('IReservationPersistenceService');
-		$reservation = $this->getMock('IReservation');
+		$reservation = $this->getMock('Reservation');
 		
 		$validationFactory = $this->getMock('IReservationValidationFactory');
 		$validationService = $this->getMock('IReservationValidationService');
@@ -58,11 +70,51 @@ class ReservationSavePresenterTests extends TestBase
 			->method('GetReservationId')
 			->will($this->returnValue(null));
 			
+		$this->_page->expects($this->once())
+			->method('GetUserId')
+			->will($this->returnValue($userId));
+			
+		$this->_page->expects($this->once())
+			->method('GetResourceId')
+			->will($this->returnValue($resourceId));
+			
+		$this->_page->expects($this->once())
+			->method('GetTitle')
+			->will($this->returnValue($title));
+			
+		$this->_page->expects($this->once())
+			->method('GetDescription')
+			->will($this->returnValue($description));
+		
+		$this->_page->expects($this->once())
+			->method('GetStartDate')
+			->will($this->returnValue($startDate));
+		
+		$this->_page->expects($this->once())
+			->method('GetStartTime')
+			->will($this->returnValue($startTime));
+			
+		$this->_page->expects($this->once())
+			->method('GetEndDate')
+			->will($this->returnValue($endDate));
+		
+		$this->_page->expects($this->once())
+			->method('GetEndTime')
+			->will($this->returnValue($endTime));
+			
 		$persistenceService->expects($this->once())
 			->method('Load')
 			->with($this->equalTo(null))
 			->will($this->returnValue($reservation));
 		
+		$reservation->expects($this->once())
+			->method('Update')
+			->with($this->equalTo($userId), $this->equalTo($resourceId), $this->equalTo($title), $this->equalTo($description));
+		
+		$reservation->expects($this->once())
+			->method('UpdateDuration')
+			->with($this->equalTo($duration));
+			
 		$validationFactory->expects($this->once())
 			->method('Create')
 			->with($this->equalTo(ReservationAction::Create))
@@ -72,8 +124,6 @@ class ReservationSavePresenterTests extends TestBase
 			->method('Validate')
 			->with($this->equalTo($reservation))
 			->will($this->returnValue($validationResult));
-		
-		// apply updates
 		
 		$persistenceService->expects($this->once())
 			->method('Persist')
@@ -96,7 +146,7 @@ class ReservationSavePresenterTests extends TestBase
 			->method('ShowWarnings')
 			->with($this->equalTo($validationResult->GetWarnings()));
 						
-		$presenter = new ReservationSavePresenter($page, $persistenceFactory, $validationFactory, $notificationFactory);
+		$presenter = new ReservationSavePresenter($this->_page, $persistenceFactory, $validationFactory, $notificationFactory);
 		$presenter->PageLoad();	
 	}
 }

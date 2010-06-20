@@ -34,6 +34,7 @@ class ReservationSavePresenter
 		IReservationNotificationFactory $notificationFactory)
 	{
 		$this->_page = $page;
+		$this->_persistenceFactory = $persistenceFactory;
 		$this->_validationFactory = $validationFactory;
 		$this->_notificationFactory = $notificationFactory;
 	}
@@ -45,28 +46,40 @@ class ReservationSavePresenter
 			
 		$persistenceService = $this->_persistenceFactory->Create($action);
 		$reservation = $persistenceService->Load($reservationId);
-		
+
 		// user, resource, start, end, repeat options, title, description
 		// additional resources, accessories, participants, invitations
 		// reminder
-			
+
+		$userId = $this->_page->GetUserId();
+		$resourceId = $this->_page->GetResourceId();
+		$title = $this->_page->GetTitle();
+		$description = $this->_page->GetDescription();
+		
 		$reservation->Update(
 			$userId, 
 			$resourceId, 
 			$title,
 			$description);
-			
-		$reservation->UpdateDuration($startDate, $startPeriod, $endDate, $endPeriod);
 		
-		$reservation->Repeats($repeatOptions);
+		$startDate = $this->_page->GetStartDate();
+		$startTime = $this->_page->GetStartTime();
+		$endDate = $this->_page->GetEndDate();
+		$endTime = $this->_page->GetEndTime();
 		
-		$reservation->AddResource();
-		$reservation->AddAccessory();
-		$reservation->AddParticipant();
+		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
+		$reservation->UpdateDuration($duration);
 		
-		$reservation->RemoveResource();
-		$reservation->RemoveAccessory();
-		$reservation->RemoveParticipant();
+//		$reservation->Repeats($repeatOptions);
+//		
+//		$reservation->AddResource();
+//		$reservation->AddAccessory();
+//		$reservation->AddParticipant();
+//		
+//		$reservation->RemoveResource();
+//		$reservation->RemoveAccessory();
+//		$reservation->RemoveParticipant();
 		
 		$validationService = $this->_validationFactory->Create($action);
 		$validationResult = $validationService->Validate($reservation);
@@ -98,10 +111,34 @@ interface IReservationPersistenceFactory
 	function Create($reservationAction);
 }
 
+class ReservationPersistenceFactory implements IReservationPersistenceFactory 
+{
+	public function Create($reservationAction)
+	{
+		return new AddReservationPersistenceService();
+	}
+}
+
 interface IReservationPersistenceService
 {
+	/**
+	 * @return Reservation
+	 */
 	function Load($reservationId);
 	function Persist($reservation);
+}
+
+class AddReservationPersistenceService implements IReservationPersistenceService 
+{
+	public function Load($reservationId)
+	{
+		return new Reservation();
+	}
+	
+	public function Persist($reservation)
+	{
+		throw new Exception('not impelemented');
+	}
 }
 
 interface IReservationValidationFactory
@@ -113,6 +150,14 @@ interface IReservationValidationFactory
 	function Create($reservationAction);
 }
 
+class ReservationValidationFactory implements IReservationValidationFactory
+{
+	public function Create($reservationAction)
+	{
+		return new AddReservationValidationService();
+	}
+}
+
 interface IReservationValidationService
 {
 	/**
@@ -120,6 +165,14 @@ interface IReservationValidationService
 	 * @return IReservationValidationResult
 	 */
 	function Validate($reservation);
+}
+
+class AddReservationValidationService implements IReservationValidationService
+{
+	public function Validate($reservation)
+	{
+		throw new Exception('not implemented');
+	}
 }
 
 interface IReservationNotificationFactory
@@ -131,12 +184,28 @@ interface IReservationNotificationFactory
 	function Create($reservationAction);
 }
 
+class ReservationNotificationFactory implements IReservationNotificationFactory
+{
+	public function Create($reservationAction)
+	{
+		return new AddReservationNotificationService();
+	}
+}
+
 interface IReservationNotificationService
 {
 	/**
 	 * @param $reservation
 	 */
 	function Notify($reservation);
+}
+
+class AddReservationNotificationService implements IReservationNotificationService 
+{
+	public function Notify($reservation)
+	{
+		throw new Exception('not impelemented');
+	}
 }
 
 interface IReservationValidationResult

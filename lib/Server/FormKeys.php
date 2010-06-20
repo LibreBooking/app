@@ -23,8 +23,9 @@ class FormKeys
 	const REPEAT_MONTHLY_TYPE = 'repeatMonthlyType';
 	const RESERVATION_ID = 'reservationId';
 	const RESERVATION_TITLE = 'reservationTitle';
+	const RESOURCE_ID = 'resourceId';
 	const SUMMARY = 'summary';
-
+	const USER_ID = 'userId';
 	
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';
 	const EMAIL = 'email';

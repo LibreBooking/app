@@ -1,6 +1,43 @@
 <?php
 require_once(ROOT_DIR . 'lib/Database/SqlCommand.php');
 
+class AddReservationCommand extends SqlCommand
+{
+	public function __construct(Date $startDateUtc, Date $endDateUtc, Date $dateCreatedUtc, $title, $description)
+	{
+		parent::__construct(Queries::ADD_RESERVATION);
+		
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDateUtc->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDateUtc->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, $dateCreatedUtc->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));	
+		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));	
+	}
+}
+
+class AddReservationResourceCommand extends SqlCommand
+{
+	public function __construct($reservationId, $resourceId)
+	{
+		parent::__construct(Queries::ADD_RESERVATION_RESOURCE);
+		
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
+class AddReservationUserCommand extends SqlCommand
+{
+	public function __construct($reservationId, $userId, $levelId)
+	{
+		parent::__construct(Queries::ADD_RESERVATION_USER);
+		
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $levelId));
+	}
+}
+
 class AddResourceCommand extends SqlCommand 
 {
 	public function __construct($name, $location, $contact_info, $description, $notes, $isactive, 

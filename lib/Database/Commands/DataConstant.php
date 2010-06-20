@@ -5,8 +5,10 @@ class ParameterNames
 	{}
 	
 	const CURRENT_DATE = '@current_date';
-	const EMAIL_ADDRESS = '@email';
+	const DATE_CREATED = '@dateCreated';
+	const DESCRIPTION = '@description';
 	const END_DATE = '@endDate';
+	const EMAIL_ADDRESS = '@email';
 	const FIRST_NAME = '@fname';
 	const HOMEPAGE_ID = '@homepageid';
 	const GROUP = '@group';
@@ -17,6 +19,11 @@ class ParameterNames
 	const PASSWORD = '@password';
 	const PHONE = '@phone';
 	const POSITION = '@position';
+
+	const RESERVATION_ID = '@reservationid';
+	const RESERVATION_USER_LEVEL_ID = '@levelid';
+	
+	const RESOURCE_ID = '@resourceid';
 	const RESOURCE_ALLOW_MULTIDAY = '@allow_multiday_reservations';
 	const RESOURCE_AUTOASSIGN = '@autoassign';
 	const RESOURCE_CONTACT = '@contact_info';
@@ -32,10 +39,13 @@ class ParameterNames
 	const RESOURCE_NAME = '@resource_name';	
 	const RESOURCE_NOTES = '@resource_notes';
 	const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';
+	
+	
 	const SALT = '@salt';
 	const SCHEDULE_ID = '@scheduleid';
 	const START_DATE = '@startDate';
 	const TIMEZONE_NAME = '@timezone';
+	const TITLE = '@title';
 	const USER_ID = '@userid';
 	const USER_ROLE_ID = '@user_roleid';
 	const USER_STATUS_ID = '@user_statusid';
@@ -58,6 +68,21 @@ class Queries
 {
 	private function __construct()
 	{}
+	
+	const ADD_RESERVATION = 
+		'INSERT INTO 
+			reservations (start_date, end_date, date_created, title, description)
+		VALUES (@startDate, @endDate, @dateCreated, @title, @description)';
+	
+	const ADD_RESERVATION_RESOURCE =
+		'INSERT INTO
+			reservation_resources (reservation_id, resource_id)
+		VALUES (@reservationid, $resourceid)';	
+	
+	const ADD_RESERVATION_USER  = 
+		'INSERT INTO
+			reservation_users (reservation_id, user_id, level_id)
+		VALUES (@reservationid, @userid, @levelid)';
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
 		'INSERT INTO 

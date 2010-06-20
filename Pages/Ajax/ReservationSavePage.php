@@ -53,7 +53,47 @@ class ReservationSavePage extends Page implements IReservationSavePage
 	
 	public function GetReservationId()
 	{
-		return $this->server->GetForm(FormKeys::RESERVATION_ID);
+		return $this->GetForm(FormKeys::RESERVATION_ID);
+	}
+	
+	public function GetUserId()
+	{
+		return $this->GetForm(FormKeys::USER_ID);
+	}
+	
+	public function GetResourceId()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_ID);
+	}
+	
+	public function GetTitle()
+	{
+		return $this->GetForm(FormKeys::RESERVATION_TITLE);
+	}
+	
+	public function GetDescription()
+	{
+		return $this->GetForm(FormKeys::DESCRIPTION);
+	}
+	
+	public function GetStartDate()
+	{
+		return $this->GetForm(FormKeys::BEGIN_DATE);
+	}
+	
+	public function GetEndDate()
+	{
+		return $this->GetForm(FormKeys::END_DATE);
+	}
+	
+	public function GetStartTime()
+	{
+		return $this->GetForm(FormKeys::BEGIN_PERIOD);
+	}
+	
+	public function GetEndTime()
+	{
+		return $this->GetForm(FormKeys::END_PERIOD);
 	}
 }
 
@@ -63,6 +103,15 @@ interface IReservationSavePage
 	 * @return int
 	 */
 	public function GetReservationId();
+	
+	public function GetUserId();
+	public function GetResourceId();
+	public function GetTitle();
+	public function GetDescription();
+	public function GetStartDate();
+	public function GetEndDate();
+	public function GetStartTime();
+	public function GetEndTime();
 	
 	/**
 	 * @param bool $succeeded
