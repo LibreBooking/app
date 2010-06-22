@@ -10,72 +10,45 @@
 	<div class="reservationHeader"><h3>Create a reservation</h3></div>
 	<div>
 		<ul class="no-style">
-        	<li class="rsv-checkbox">
+        	<li class="inline">
 		    	<label>{translate key="ResourceList"}<br />
+		    		<div id="resourceNames" style="display:inline">{$ResourceName}</div>
+					<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(Add/Change)</a>
+					<div id="additionalResources" />
+					<!--
 					<input type="checkbox" name="{$ResourceName}" checked="checked" tabindex="10" /> <h4 class="resourcename">{$ResourceName}</h4>
 					<input type="checkbox" name="{$ResourceName}" tabindex="11" /> <h4 class="resourcename">{$ResourceName}</h4>
 					<input type="checkbox" name="{$ResourceName}" tabindex="12" /> <h4 class="resourcename">{$ResourceName}</h4>
+					-->
 				</label>
 				<!-- Instead of $ResourceName there should be something like $ResourceId[0], $ResourceId[1], etc. in the input name field 
 				 	and $ResourceNames[0], $ResourceNames[1] etc. in the h4 heading text. -->
         	</li>
-			<li class="rsv-req">
-                <label>{translate key="ReservationTitle"}<br />
-                {textbox name="RESERVATION_TITLE" class="input" value="reservationTitle" tabindex="100"}
-                </label>
-        	</li>
-        	<li class="rsv-box-l">
-                <label>{translate key="ReservationDescription"}<br />
-	                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-area" rows="2" cols="52" tabindex="110"></textarea>
-                </label>
-        	</li>
-			<li class="rsv-pulldown">
-                <label>{translate key="ParticipantList"}<br />
-                        <select name="{constant echo='FormKeys::PARTICIPANT_LIST'}" class="pulldown" tabindex="120">
-                                {html_options values=$ParticipantListValues output=$ParticipantListOutput}
-                        </select>
-				<input type="button" value="{translate key="Add"}" class="button" tabindex="130"></input>
-				</label>
-                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-areashow" rows="3" cols="52" tabindex="140"></textarea>
-        	</li>
-			<!-- The selected participants should be printed here, above the Invitation list pulldown -->
-			<li class="rsv-pulldown">
-                <label>{translate key="InvitationList"}<br />
-                        <select name="{constant echo='FormKeys::INVITATION_LIST'}" class="pulldown" tabindex="150">
-                                {html_options values=$InvitationListValues output=$InvitationListOutput}
-                        </select>
-				<input type="button" value="{translate key="Add"}" class="button" tabindex="160"></input>
-				</label>
-                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-areashow" rows="3" cols="52" tabindex="170"></textarea>
-        	</li>
-			<!-- The invited users should be printed here above the X -->
-			<li class="inline">
+        	<li>
 				<!--this needs to be changed to handle cross-day reservations-->
 				<label>{translate key='BeginDate'} 
 				<input type="text" id="BeginDate" {formname key=BEGIN_DATE} class="dateinput" value="{formatdate date=$StartDate}"/>
-				<!-- This doesn't do anything yet, so it's hidden to avoid confusion.
-				<select class="textbox" id="BeginPeriod" {formname key=BEGIN_PERIOD}>
+				</label>
+				<select id="BeginPeriod" {formname key=BEGIN_PERIOD}>
 					{foreach from=$Periods item=period}
 						{if $period->IsReservable()}
-							<option value="{formatdate date=$period->Begin()}">{$period->Label()}</option>
+							<option value="{$period->Begin()}">{$period->Label()}</option>
 						{/if}
 					{/foreach}
-				</select>-->
-				</label>
+				</select>
 			</li>
-			<li class="inline">
+			<li>
 				<label>{translate key='EndDate'}
 				<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput" value="{formatdate date=$EndDate}" />
-				<!-- This doesn't do anything yet, so it's hidden to avoid confusion.
-				<select class="textbox" id="EndPeriod" {formname key=END_PERIOD}>
+				</label>
+				<select id="EndPeriod" {formname key=END_PERIOD}>
 					{foreach from=$Periods item=period}
 						{if $previous ne '' and $previous->IsReservable()}
 							<option value="{$period->Begin()}">{$period->Label()}</option>
 						{/if}
 						{assign var=previous value=$period}
 					{/foreach}
-				</select> -->
-				</label>
+				</select>
 			</li>
 			<li>
 				<div id="repeatDiv">
@@ -117,6 +90,37 @@
 				</div>
 			</div>
 			</li>
+			<li class="rsv-req">
+                <label>{translate key="ReservationTitle"}<br />
+                {textbox name="RESERVATION_TITLE" class="input" value="reservationTitle" tabindex="100"}
+                </label>
+        	</li>
+        	<li class="rsv-box-l">
+                <label>{translate key="ReservationDescription"}<br />
+	                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-area" rows="2" cols="52" tabindex="110"></textarea>
+                </label>
+        	</li>
+			<li class="rsv-pulldown">
+                <label>{translate key="ParticipantList"}<br />
+                        <select name="{constant echo='FormKeys::PARTICIPANT_LIST'}" class="pulldown" tabindex="120">
+                                {html_options values=$ParticipantListValues output=$ParticipantListOutput}
+                        </select>
+				<input type="button" value="{translate key="Add"}" class="button" tabindex="130"></input>
+				</label>
+                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-areashow" rows="3" cols="52" tabindex="140"></textarea>
+        	</li>
+			<!-- The selected participants should be printed here, above the Invitation list pulldown -->
+			<li class="rsv-pulldown">
+                <label>{translate key="InvitationList"}<br />
+                        <select name="{constant echo='FormKeys::INVITATION_LIST'}" class="pulldown" tabindex="150">
+                                {html_options values=$InvitationListValues output=$InvitationListOutput}
+                        </select>
+				<input type="button" value="{translate key="Add"}" class="button" tabindex="160"></input>
+				</label>
+                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-areashow" rows="3" cols="52" tabindex="170"></textarea>
+        	</li>
+			<!-- The invited users should be printed here above the X -->
+			
         </ul>
 	</div>
 <!-->

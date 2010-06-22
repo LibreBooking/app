@@ -18,7 +18,11 @@ class ReservationSavePage extends Page implements IReservationSavePage
 	{
 		parent::__construct();
 		
-		$this->_presenter = new ReservationSavePresenter($this);
+		$this->_presenter = new ReservationSavePresenter(
+														$this, 
+														new ReservationPersistenceFactory(),
+														new ReservationValidationFactory(),
+														new ReservationNotificationFactory());
 	}
 	
 	public function PageLoad()
