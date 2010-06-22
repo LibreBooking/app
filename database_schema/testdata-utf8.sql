@@ -56,7 +56,7 @@ truncate table schedule_time_block_groups;
 insert into schedule_time_block_groups values (1,1);
 
 truncate table user_resource_permissions;
-insert into user_resource_permissions values (1,1),(1,2),(2,1),(2,2);
+insert into user_resource_permissions values (1,1,1),(1,2,1),(2,1,1),(2,2,1);
 
 truncate table resource_schedules;
 insert into resource_schedules values(1, 1), (2, 1);

@@ -472,6 +472,7 @@ DROP TABLE IF EXISTS `user_resource_permissions`;
 CREATE TABLE `user_resource_permissions` (
  `user_id` mediumint(8) unsigned NOT NULL,
  `resource_id` smallint(5) unsigned NOT NULL,
+ `permission_id` tinyint(2) unsigned NOT NULL default '1',
  PRIMARY KEY (`user_id`, `resource_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
@@ -610,20 +611,10 @@ CREATE TABLE `reservations` (
  `description` text,
  `allow_participation` tinyint(1) unsigned NOT NULL,
  `allow_anon_participation` tinyint(1) unsigned NOT NULL,
- `user_id` mediumint(8) unsigned NOT NULL,
- `group_id` smallint(5) unsigned,
  `type_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned,
  `total_cost` dec(7,2),
  PRIMARY KEY (`reservationid`),
- INDEX (`user_id`),
- FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`group_id`),
- FOREIGN KEY (`group_id`) 
-	REFERENCES groups(`groupid`)
-	ON UPDATE CASCADE ON DELETE SET NULL,
  INDEX (`type_id`),
  FOREIGN KEY (`type_id`) 
 	REFERENCES reservation_types(`typeid`)
@@ -634,6 +625,25 @@ CREATE TABLE `reservations` (
 	ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
+--
+-- Table structure for table `reservation_users`
+--
+
+DROP TABLE IF EXISTS `reservation_users`;
+CREATE TABLE `reservation_users` (
+ `reservation_id` mediumint(8) unsigned NOT NULL auto_increment,
+ `user_id` mediumint(8) unsigned NOT NULL,
+ PRIMARY KEY (`reservation_id`, `user_id`),
+ INDEX (`reservation_id`),
+ FOREIGN KEY (`reservation_id`) 
+	REFERENCES reservations(`reservationid`)
+	ON UPDATE CASCADE ON DELETE CASCADE,
+ INDEX (`user_id`),
+ FOREIGN KEY (`user_id`) 
+	REFERENCES users(`userid`)
+	ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+	
 --
 -- Table structure for table `reservation_time_blocks`
 --
