@@ -59,6 +59,11 @@ class UserDto
 	{
 		return $this->_lastName;
 	}
+	
+	public function FullName()
+	{
+		return $this->FirstName() . ' ' . $this->LastName();
+	}
 }
 
 class NullUserDto extends UserDto
@@ -66,6 +71,11 @@ class NullUserDto extends UserDto
 	public function __construct()
 	{
 		parent::__construct(0, null, null);
+	}
+	
+	public function FullName()
+	{
+		return null;
 	}
 }
 ?>

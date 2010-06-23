@@ -182,6 +182,7 @@ class AddReservationValidationService implements IReservationValidationService
 {
 	public function Validate($reservation)
 	{
+		return new ReservationValidResult();
 		throw new Exception('not implemented');
 	}
 }

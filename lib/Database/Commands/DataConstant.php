@@ -71,18 +71,18 @@ class Queries
 	
 	const ADD_RESERVATION = 
 		'INSERT INTO 
-			reservations (start_date, end_date, date_created, title, description)
-		VALUES (@startDate, @endDate, @dateCreated, @title, @description)';
+			reservations (start_date, end_date, date_created, title, description, allow_participation, allow_anon_participation)
+		VALUES (@startDate, @endDate, @dateCreated, @title, @description, false, false)';
 	
 	const ADD_RESERVATION_RESOURCE =
 		'INSERT INTO
 			reservation_resources (reservation_id, resource_id)
-		VALUES (@reservationid, $resourceid)';	
+		VALUES (@reservationid, @resourceid)';	
 	
 	const ADD_RESERVATION_USER  = 
 		'INSERT INTO
-			reservation_users (reservation_id, user_id, level_id)
-		VALUES (@reservationid, @userid, @levelid)';
+			reservation_users (reservation_id, user_id)
+		VALUES (@reservationid, @userid)';
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
 		'INSERT INTO 

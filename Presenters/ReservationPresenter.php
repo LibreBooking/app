@@ -29,25 +29,16 @@ class ReservationPresenter implements IReservationPresenter
 		IReservationPreconditionService $precondtionService)
 	{
 		$this->_page = $page;
-		$this->_initilizationFactory = $initializationFactory;
+		$this->_initializationFactory = $initializationFactory;
 		$this->_preconditionService = $precondtionService;
 	}
 	
 	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		/*
-		$timezone = $user->Timezone;
-		$userId = $user->UserId;
-		
-		$requestedResourceId = $this->_page->GetRequestedResourceId();
-		$requestedScheduleId = $this->_page->GetRequestedScheduleId();
-		$requestedStartDate = $this->_page->GetRequestedDate();
-		$requestedPeriodId = $this->_page->GetRequestedPeriod();
-		*/
 		
 		$this->_preconditionService->CheckAll($this->_page, $user);
-		$initializer = $this->_initilizationFactory->GetInitializer($this->_page);
+		$initializer = $this->_initializationFactory->GetInitializer($this->_page);
 		$initializer->Initialize();
 	}
 }

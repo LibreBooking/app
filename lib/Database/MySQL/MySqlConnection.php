@@ -74,9 +74,9 @@ class MySqlConnection implements IDbConnection
 	{
 		if (!$result) 
 		{
-			if ($cmd != null)
+			if ($sqlCommand != null)
 			{
-				echo $cmd->GetQuery();
+				echo $sqlCommand->GetQuery();
 			}
 			throw new Exception('There was an error executing your query\n' .  mysql_error());
 		

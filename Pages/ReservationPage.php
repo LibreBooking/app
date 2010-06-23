@@ -52,9 +52,9 @@ interface IReservationPage extends IPage
 	public function SetEndPeriod($periodId);
 	
 	/**
-	 * @param string $name
+	 * @param UserDto $user
 	 */
-	public function SetReservationUserName($name);
+	public function SetReservationUser($user);
 	
 	/**
 	 * @param ScheduleResource $resource
@@ -160,9 +160,10 @@ class ReservationPage extends Page implements IReservationPage
 		$this->Set('EndPeriod', $periodId);
 	}
 	
-	public function SetReservationUserName($name)
+	public function SetReservationUser($user)
 	{
-		$this->Set('UserName', $name);
+		$this->Set('UserName', $user->FullName());
+		$this->Set('UserId', $user->Id());
 	}
 	
 	/**
@@ -171,6 +172,7 @@ class ReservationPage extends Page implements IReservationPage
 	public function SetReservationResource($resource)
 	{
 		$this->Set('ResourceName', $resource->Name());
+		$this->Set('ResourceId', $resource->Id());
 	}
 	
 	public function SetDisplaySaved($shouldDisplay)

@@ -10,9 +10,14 @@
 	<div class="reservationHeader"><h3>Create a reservation</h3></div>
 	<div>
 		<ul class="no-style">
+			<li>
+				{$UserName} <input type="hidden" {formname key=USER_ID} value="{$UserId}" />
+			</li>
+		</ul>
+		<ul class="no-style">
         	<li class="inline">
 		    	<label>{translate key="ResourceList"}<br />
-		    		<div id="resourceNames" style="display:inline">{$ResourceName}</div>
+		    		<div id="resourceNames" style="display:inline">{$ResourceName} <input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}" /></div>
 					<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(Add/Change)</a>
 					<div id="additionalResources" />
 					<!--

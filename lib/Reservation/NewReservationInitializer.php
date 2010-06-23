@@ -64,7 +64,7 @@ class NewReservationInitializer implements IReservationInitializer
 		$this->_page->SetStartPeriod($requestedPeriodId);
 		$this->_page->SetEndPeriod($requestedPeriodId);
 		$reservationUser = $bindableUserData->ReservationUser;
-		$this->_page->SetReservationUserName("{$reservationUser->FirstName()} {$reservationUser->LastName()}");
+		$this->_page->SetReservationUser($reservationUser);
 		$this->_page->SetReservationResource($bindableResourceData->ReservationResource);
 	}
 	
