@@ -46,26 +46,31 @@ class RepeatOptionsTests extends TestBase
 	
 	public function testWeeklyRepeatCreatesRecurranceOnSpecifiedDaysEveryIntervalUntilEndAcrossDST()
 	{
-		$reservationStart = Date::Parse('2010-02-12 08:30', 'CST');
-		$reservationEnd = Date::Parse('2010-02-12 10:30', 'CST');
+		$timezone = 'EST';
+		$reservationStart = Date::Parse('2010-02-11 08:30', $timezone);
+		$reservationEnd = Date::Parse('2010-02-11 10:30', $timezone);
 		$duration = new DateRange($reservationStart, $reservationEnd);
 		
 		$interval = 2;
-		$terminiationDate = Date::Parse('2010-04-02', 'CST');
-		
-		throw new Exception('working on it');
-		
-		// maybe figure out the day of week difference from first date for each repeat day, the create the ranges per day?
+		$terminiationDate = Date::Parse('2010-04-01', $timezone);
+		$daysOfWeek = array(1, 3, 5);
 		
 		$repeatOptions = new WeeklyRepeat($interval, $terminiationDate, $duration, $daysOfWeek);
 		$repeatedDates = $repeatOptions->GetDates();
 		
-		$totalDates = 0;
-		$firstDate = null;;
-		$lastDate = null;;
+		$totalDates = 10;
+		$firstDate = DateRange::Create('2010-02-12 08:30', '2010-02-12 10:30', $timezone);
+		$secondDate = DateRange::Create('2010-02-22 08:30', '2010-02-22 10:30', $timezone);
+		$thirdDate = DateRange::Create('2010-02-24 08:30', '2010-02-24 10:30', $timezone);
+		$forthDate = DateRange::Create('2010-02-26 08:30', '2010-02-26 10:30', $timezone);
+		$lastDate = DateRange::Create('2010-03-26 08:30', '2010-03-26 10:30', $timezone);
+		
 		
 		$this->assertEquals($totalDates, count($repeatedDates));
 		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
+		$this->assertTrue($secondDate->Equals($repeatedDates[1]), $secondDate->ToString() . ' ' . $repeatedDates[1]->ToString());
+		$this->assertTrue($thirdDate->Equals($repeatedDates[2]), $thirdDate->ToString() . ' ' . $repeatedDates[2]->ToString());
+		$this->assertTrue($forthDate->Equals($repeatedDates[3]), $forthDate->ToString() . ' ' . $repeatedDates[3]->ToString());
 		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
 	}
 }

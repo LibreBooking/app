@@ -146,8 +146,8 @@ class ReservationInitializationTests extends TestBase
 			->with($this->equalTo($periodId));
 
 		$page->expects($this->once())
-			->method('SetReservationUserName')
-			->with($this->equalTo("$firstName $lastName"));
+			->method('SetReservationUser')
+			->with($this->equalTo($schedUser));
 
 		$page->expects($this->once())
 			->method('SetReservationResource')
