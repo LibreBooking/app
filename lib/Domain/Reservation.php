@@ -169,9 +169,6 @@ class DailyRepeat implements IRepeatOptions
 		$startDate = $this->_duration->GetBegin()->AddDays($this->_interval);
 		$endDate = $this->_duration->GetEnd()->AddDays($this->_interval);
 
-//		$startDate = $reservation->StartDate()->AddDays($this->_interval);
-//		$endDate = $reservation->EndDate()->AddDays($this->_interval);
-		
 		while ($startDate->Compare($this->_terminiationDate) <= 0)
 		{
 			$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
@@ -234,77 +231,100 @@ class WeeklyRepeat implements IRepeatOptions
 			}
 		}
 		
-//		$startDate = $startDate->AddDays($daysUntilFirstInterval);
-//		$endDate = $endDate->AddDays($daysUntilFirstInterval);
+		$rawStart =  $this->_duration->GetBegin();
+		$rawEnd =  $this->_duration->GetEnd();
 		
-		//$intervalAdjustment = "+{$this->_interval} weeks monday";
-		//$s = strtotime("+1 weeks monday", $startDate->Timestamp());
-		//$d = date('Y-m-d H:i:s', $s);
-		//$startDate = new Date(date('Y-m-d H:i:s', $s), $startDate->Timezone());
-		
-		$days = array (0 => 'sunday', 1 => 'monday', 2 => 'tuesday', 3 => 'wednesday', 4 => 'thursday', 5=> 'friday', 6 => 'saturday');
-				
-		$baseStart = $this->_duration->GetBegin();
-		$baseEnd = $this->_duration->GetEnd();
-		$intervalIteration = 1;
+		$week = 1;
 		
 		while ($startDate->Compare($this->_terminiationDate) <= 0)
 		{
-			$interval = $this->_interval * $intervalIteration;
+			$weekOffset = (7 * $this->_interval * $week);
 			
-			$intervalAdjustment = "+$interval weeks {$days[$this->_daysOfWeek[0]]}";
-			$s = strtotime($intervalAdjustment, $baseStart->Timestamp());
-			$e = strtotime($intervalAdjustment, $baseEnd->Timestamp());
-			
-			$startDate = new Date(date('Y-m-d H:i:s', $s), $baseStart->Timezone());
-			$endDate = new Date(date('Y-m-d H:i:s', $e), $baseEnd->Timezone());
-			
-			if (($startDate->Compare($this->_terminiationDate) <= 0))
+			for ($day = 0; $day < count($this->_daysOfWeek); $day++)
 			{
-				$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
-			}
+				$intervalOffset = $weekOffset + ($this->_daysOfWeek[$day] - $startWeekday);
+				$startDate = $rawStart->AddDays($intervalOffset);
+				$endDate = $rawEnd->AddDays($intervalOffset);
 			
-			for ($day = 1; $day < count($this->_daysOfWeek); $day++)
-			{
-				$intervalAdjustment = "+$interval weeks {$days[$day]}";
-				$s = strtotime($intervalAdjustment, $baseStart->Timestamp());
-				$e = strtotime($intervalAdjustment, $baseEnd->Timestamp());
-				
-				$startDate = new Date(date('Y-m-d H:i:s', $s), $baseStart->Timezone());
-				$endDate = new Date(date('Y-m-d H:i:s', $e), $baseEnd->Timezone());
-				
 				if ($startDate->Compare($this->_terminiationDate) <= 0)
 				{
 					$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
 				}
-			
 			}
 			
-			$intervalIteration++;
-			
-//			$iterationAdjustment = (7 * $this->_interval * $intervalIteration);
-//			$startDate = new Date($baseDate->Timestamp());
-//			$endDate = $startDate->AddDays($iterationAdjustment);
-//			
-//			foreach ($this->_daysOfWeek as $weekday)
-//			{
-//				$dayAdjustment = $weekday - $startWeekday - 1;
-//				$startDate = $startDate->AddDays($dayAdjustment);
-//				$endDate = $endDate->AddDays($dayAdjustment);
-//					
-//				if ($startDate->Compare($this->_terminiationDate) <= 0)
-//				{
-//					$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
-//				}
-//				
-//			}
-//			$intervalIteration++;
-//			$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
-//			$startDate = $startDate->AddDays($this->_interval);
-//			$endDate = $endDate->AddDays($this->_interval);
+			$week++;
 		}
 
 		return $dates;
+	}
+}
+
+class DayOfMonthRepeat implements IRepeatOptions
+{
+	/**
+	 * @var int
+	 */
+	private $_interval;
+	
+	/**
+	 * @var Date
+	 */
+	private $_terminiationDate;
+	
+	/**
+	 * @var DateRange
+	 */
+	private $_duration;
+	
+	public function __construct($interval, $terminiationDate, $duration)
+	{
+		$this->_interval = $interval;
+		$this->_terminiationDate = $terminiationDate;
+		
+		$this->_duration = $duration;
+	}
+	
+	public function GetDates()
+	{
+		$dates = array();
+		
+		$startDate = $this->_duration->GetBegin();
+		$endDate = $this->_duration->GetEnd();
+
+		$rawStart = $this->_duration->GetBegin();
+		$rawEnd = $this->_duration->GetEnd();
+		
+		$monthsFromStart = 0;
+		while ($startDate->Compare($this->_terminiationDate) <= 0)
+		{
+			if ($this->DayExistsInNextMonth($rawStart, $monthsFromStart))
+			{
+				$startDate = $this->GetNextMonth($rawStart, $monthsFromStart);
+				$endDate = $this->GetNextMonth($rawEnd, $monthsFromStart);
+				$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
+			}
+			$monthsFromStart++;
+		}
+		
+		return $dates;
+	}
+	
+	private function DayExistsInNextMonth($date, $monthsFromStart)
+	{
+		$d = strtotime("+$monthsFromStart month last day", $date->Timestamp());
+		return $date->Day() <= date('t', $d);
+	}
+	
+	/**
+	 * @var Date $date
+	 * @return Date
+	 */
+	private function GetNextMonth($date, $monthsFromStart)
+	{
+		$d = date(strtotime("+$monthsFromStart month", $date->Timestamp()));
+		$dateAlone = date('Y-m-d', $d);
+		
+		return new Date($dateAlone . ' ' . $date->Format('H:i:s', $date->Timestamp()), $date->Timezone());
 	}
 }
 ?>

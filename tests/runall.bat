@@ -1,1 +1,1 @@
-c:\php\php -f runone.php
+c:\php\php -f C:\PHP\phpunit runone.php
