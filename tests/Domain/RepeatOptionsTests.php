@@ -140,9 +140,8 @@ class RepeatOptionsTests extends TestBase
 		$totalDates = 3;
 		$firstDate = DateRange::Create('2010-05-31 08:30', '2010-05-31 10:30', $timezone);
 		$secondDate = DateRange::Create('2010-07-31 08:30', '2010-07-31 10:30', $timezone);
-		$lastDate = DateRange::Create('2010-09-11 08:30', '2010-09-11 10:30', $timezone);
+		$lastDate = DateRange::Create('2010-08-31 08:30', '2010-08-31 10:30', $timezone);
 		
-		$this->assertEquals($totalDates, count($repeatedDates));
 		$this->assertEquals($totalDates, count($repeatedDates));
 		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
 		$this->assertTrue($secondDate->Equals($repeatedDates[1]), $secondDate->ToString() . ' ' . $repeatedDates[1]->ToString());

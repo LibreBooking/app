@@ -294,14 +294,18 @@ class DayOfMonthRepeat implements IRepeatOptions
 		$rawStart = $this->_duration->GetBegin();
 		$rawEnd = $this->_duration->GetEnd();
 		
-		$monthsFromStart = 0;
+		$monthsFromStart = 1;
 		while ($startDate->Compare($this->_terminiationDate) <= 0)
 		{
-			if ($this->DayExistsInNextMonth($rawStart, $monthsFromStart))
+			$monthAdjustment = $monthsFromStart * $this->_interval;
+			if ($this->DayExistsInNextMonth($rawStart, $monthAdjustment))
 			{
-				$startDate = $this->GetNextMonth($rawStart, $monthsFromStart);
-				$endDate = $this->GetNextMonth($rawEnd, $monthsFromStart);
-				$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
+				$startDate = $this->GetNextMonth($rawStart, $monthAdjustment);
+				$endDate = $this->GetNextMonth($rawEnd, $monthAdjustment);
+				if ($startDate->Compare($this->_terminiationDate) <= 0)
+				{
+					$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
+				}
 			}
 			$monthsFromStart++;
 		}
@@ -311,8 +315,11 @@ class DayOfMonthRepeat implements IRepeatOptions
 	
 	private function DayExistsInNextMonth($date, $monthsFromStart)
 	{
-		$d = strtotime("+$monthsFromStart month last day", $date->Timestamp());
-		return $date->Day() <= date('t', $d);
+		$nextMonth = Date::Create($date->Year(), $date->Month() + $monthsFromStart, 1, 0, 0, 0, $date->Timezone());
+		
+		//$d = strtotime("+$monthsFromStart month last day", $date->Timestamp());
+		$daysInMonth = $nextMonth->Format('t');
+		return $date->Day() <= $daysInMonth;//date('t', $d);
 	}
 	
 	/**
@@ -321,10 +328,12 @@ class DayOfMonthRepeat implements IRepeatOptions
 	 */
 	private function GetNextMonth($date, $monthsFromStart)
 	{
-		$d = date(strtotime("+$monthsFromStart month", $date->Timestamp()));
-		$dateAlone = date('Y-m-d', $d);
-		
-		return new Date($dateAlone . ' ' . $date->Format('H:i:s', $date->Timestamp()), $date->Timezone());
+		return Date::Create($date->Year(), $date->Month() + $monthsFromStart, $date->Day(), $date->Hour(), $date->Minute(), $date->Second(), $date->Timezone());
+		 
+//		$d = date(strtotime("+$monthsFromStart month", $date->Timestamp()));
+//		$dateAlone = date('Y-m-d', $d);
+//		
+//		return new Date($dateAlone . ' ' . $date->Format('H:i:s', $date->Timestamp()), $date->Timezone());
 	}
 }
 ?>
