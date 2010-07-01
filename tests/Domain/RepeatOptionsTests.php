@@ -147,5 +147,53 @@ class RepeatOptionsTests extends TestBase
 		$this->assertTrue($secondDate->Equals($repeatedDates[1]), $secondDate->ToString() . ' ' . $repeatedDates[1]->ToString());
 		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
 	}
+	
+	public function testMontlyRepeatDayOfWeekWhenWeekIsInAllMonths()
+	{
+		//http://www.timeanddate.com/calendar/
+		$timezone = 'EST';
+		$reservationStart = Date::Parse('2010-03-01 08:30', $timezone); // first monday
+		$reservationEnd = Date::Parse('2010-03-01 10:30', $timezone);
+		$duration = new DateRange($reservationStart, $reservationEnd);
+		
+		$interval = 1;
+		$terminiationDate = Date::Parse('2010-10-01', $timezone);
+		
+		$repeatOptions = new WeekDayOfMonthRepeat($interval, $terminiationDate, $duration);
+		$repeatedDates = $repeatOptions->GetDates();
+	
+		$totalDates = 6;
+		$firstDate = DateRange::Create('2010-04-05 08:30', '2010-04-05 10:30', $timezone);
+		$secondDate = DateRange::Create('2010-05-03 08:30', '2010-05-03 10:30', $timezone);
+		$lastDate = DateRange::Create('2010-09-06 08:30', '2010-09-06 10:30', $timezone);
+		
+		$this->assertEquals($totalDates, count($repeatedDates));
+		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
+		$this->assertTrue($secondDate->Equals($repeatedDates[1]), $secondDate->ToString() . ' ' . $repeatedDates[1]->ToString());
+		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
+	}
+	
+	public function testMontlyRepeatDayOfWeekWhenWeekIsNotInAllMonths()
+	{
+		//http://www.timeanddate.com/calendar/
+		$timezone = 'EST';
+		$reservationStart = Date::Parse('2010-03-31 08:30', $timezone); // fifth wednesday
+		$reservationEnd = Date::Parse('2010-03-31 10:30', $timezone);
+		$duration = new DateRange($reservationStart, $reservationEnd);
+		
+		$interval = 1;
+		$terminiationDate = Date::Parse('2010-10-01', $timezone);
+		
+		$repeatOptions = new WeekDayOfMonthRepeat($interval, $terminiationDate, $duration);
+		$repeatedDates = $repeatOptions->GetDates();
+	
+		$totalDates = 2;
+		$firstDate = DateRange::Create('2010-06-30 08:30', '2010-06-30 10:30', $timezone);
+		$lastDate = DateRange::Create('2010-09-29 08:30', '2010-09-29 10:30', $timezone);
+		
+		$this->assertEquals($totalDates, count($repeatedDates));
+		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
+		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
+	}
 }
 ?>

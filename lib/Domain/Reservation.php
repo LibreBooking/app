@@ -317,9 +317,8 @@ class DayOfMonthRepeat implements IRepeatOptions
 	{
 		$nextMonth = Date::Create($date->Year(), $date->Month() + $monthsFromStart, 1, 0, 0, 0, $date->Timezone());
 		
-		//$d = strtotime("+$monthsFromStart month last day", $date->Timestamp());
 		$daysInMonth = $nextMonth->Format('t');
-		return $date->Day() <= $daysInMonth;//date('t', $d);
+		return $date->Day() <= $daysInMonth;
 	}
 	
 	/**
@@ -329,11 +328,108 @@ class DayOfMonthRepeat implements IRepeatOptions
 	private function GetNextMonth($date, $monthsFromStart)
 	{
 		return Date::Create($date->Year(), $date->Month() + $monthsFromStart, $date->Day(), $date->Hour(), $date->Minute(), $date->Second(), $date->Timezone());
-		 
-//		$d = date(strtotime("+$monthsFromStart month", $date->Timestamp()));
-//		$dateAlone = date('Y-m-d', $d);
-//		
-//		return new Date($dateAlone . ' ' . $date->Format('H:i:s', $date->Timestamp()), $date->Timezone());
+	}
+}
+
+class WeekDayOfMonthRepeat implements IRepeatOptions
+{
+	/**
+	 * @var int
+	 */
+	private $_interval;
+	
+	/**
+	 * @var Date
+	 */
+	private $_terminiationDate;
+	
+	/**
+	 * @var DateRange
+	 */
+	private $_duration;
+	
+	public function __construct($interval, $terminiationDate, $duration)
+	{
+		$this->_interval = $interval;
+		$this->_terminiationDate = $terminiationDate;
+		
+		$this->_duration = $duration;
+	}
+	
+	public function GetDates()
+	{
+		$dates = array();
+		
+		// TODO: Move this into the constructor
+		$durationStart = $this->_duration->GetBegin();
+		$firstWeekdayOfMonth = date('w', mktime(0, 0, 0, $durationStart->Month(), 1, $durationStart->Year()));
+		$dayOfWeek = $durationStart->Weekday();
+		$startMonth = $durationStart->Month();
+		$startYear = $durationStart->Year();
+		
+		$week = $this->GetWeekNumber($durationStart, $firstWeekdayOfMonth);
+			
+		$type = array (1 => 'first', 2 => 'second', 3 => 'third', 4 => 'fourth', 5 => 'fifth');
+		$day = array(0 => 'sunday', 1 => 'monday', 2 => 'tuesday', 3 => 'wednesday', 4 => 'thursday', 5 => 'friday', 6 => 'saturday');
+		
+		$startDate = $this->_duration->GetBegin();
+		$endDate = $this->_duration->GetEnd();
+		
+		$monthsFromStart = 1;
+		while ($startDate->Compare($this->_terminiationDate) <= 0)
+		{
+			$monthAdjustment = $startMonth + $monthsFromStart * $this->_interval;
+			$month = $monthAdjustment % 12;
+			$year = $startYear + floor($monthAdjustment/12);
+			
+			$weekNumber = $this->GetWeekNumberOfMonth($week, $month, $year, $dayOfWeek);
+
+			$dayOfMonth = strtotime("{$type[$weekNumber]} {$day[$dayOfWeek]} $year-$month");
+			$calculatedDate =  date('Y-m-d', $dayOfMonth);
+			$calculatedMonth = explode('-', $calculatedDate);
+			
+			$startDateString = $calculatedDate . " {$startDate->Hour()}:{$startDate->Minute()}:{$startDate->Second()}";
+			$startDate = Date::Parse($startDateString, $startDate->Timezone());
+				
+			if ($month == $calculatedMonth[1])
+			{
+				if ($startDate->Compare($this->_terminiationDate) <= 0)
+				{
+					$endDateString =  $calculatedDate . " {$endDate->Hour()}:{$endDate->Minute()}:{$endDate->Second()}";
+					$endDate = Date::Parse($endDateString, $endDate->Timezone());
+			
+					$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
+				}
+			}
+
+			$monthsFromStart++;
+		}
+		
+		return $dates;
+	}
+	
+	private function GetWeekNumber(Date $firstDate, $firstWeekdayOfMonth)
+	{
+		$week = ceil($firstDate->Day()/7);
+		if ($firstWeekdayOfMonth > $firstDate->Weekday())
+		{
+			$week++;
+		}
+		
+		return $week;
+	}
+	
+	private function GetWeekNumberOfMonth($week, $month, $year, $desiredDayOfWeek)
+	{
+		$firstWeekdayOfMonth = date('w', mktime(0, 0, 0, $month, 1, $year));
+	
+		$weekNumber = $week;
+		if ($firstWeekdayOfMonth == $desiredDayOfWeek)
+		{
+			$weekNumber--;
+		}
+		
+		return $weekNumber;
 	}
 }
 ?>
