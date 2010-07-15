@@ -71,7 +71,8 @@ class ReservationSavePresenter
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		$reservation->UpdateDuration($duration);
 		
-//		$reservation->Repeats($repeatOptions);
+		$repeatOptions = $this->_page->GetRepeatOptions($duration);
+		$reservation->Repeats($repeatOptions);
 //		
 //		$reservation->AddResource();
 //		$reservation->AddAccessory();
@@ -99,6 +100,23 @@ class ReservationSavePresenter
 		}
 		
 		$this->_page->ShowWarnings($validationResult->GetWarnings());
+	}
+	
+	/**
+	 * @param DateRange $intialReservationDates
+	 * @return IRepeatOptions
+	 */
+	public function GetRepeatOptions($intialReservationDates)
+	{
+		$factory = new RepeatOptionsFactory();
+		
+		$repeatType = $this->_page->GetRepeatType();
+		$interval = $this->_page->GetRepeatInterval();
+		$weekdays = $this->_page->GetRepeatWeekdays();
+		$monthlyType = $this->_page->GetRepeatMonthlyType();
+		$terminationDate = Date::Parse($this->_page->GetRepeatTerminationDate(), $intialReservationDates->Timezone());
+		
+		return $factory->Create($repeatType, $interval, $terminationDate, $initialReservationDates, $weekdays, $monthlyType);
 	}
 }
 

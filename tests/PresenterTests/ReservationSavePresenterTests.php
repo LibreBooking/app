@@ -52,7 +52,9 @@ class ReservationSavePresenterTests extends TestBase
 		
 		$persistenceFactory = $this->getMock('IReservationPersistenceFactory');
 		$persistenceService = $this->getMock('IReservationPersistenceService');
+		
 		$reservation = $this->getMock('Reservation');
+		$repeatOptions = $this->getMock('IRepeatOptions');
 		
 		$validationFactory = $this->getMock('IReservationValidationFactory');
 		$validationService = $this->getMock('IReservationValidationService');
@@ -114,6 +116,14 @@ class ReservationSavePresenterTests extends TestBase
 		$reservation->expects($this->once())
 			->method('UpdateDuration')
 			->with($this->equalTo($duration));
+		
+		$this->_page->expects($this->once())
+			->method('GetRepeatOptions')
+			->will($this->returnValue($repeatOptions));
+			
+		$reservation->expects($this->once())
+			->method('Repeats')
+			->with($this->equalTo($repeatOptions));
 			
 		$validationFactory->expects($this->once())
 			->method('Create')

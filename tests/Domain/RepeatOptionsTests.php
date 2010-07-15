@@ -148,7 +148,7 @@ class RepeatOptionsTests extends TestBase
 		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
 	}
 	
-	public function testMontlyRepeatDayOfWeekWhenWeekIsInAllMonths()
+	public function testMonthlyRepeatDayOfWeekWhenWeekIsInAllMonths()
 	{
 		//http://www.timeanddate.com/calendar/
 		$timezone = 'EST';
@@ -173,7 +173,7 @@ class RepeatOptionsTests extends TestBase
 		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
 	}
 	
-	public function testMontlyRepeatDayOfWeekWhenWeekIsNotInAllMonths()
+	public function testMonthlyRepeatDayOfWeekWhenWeekIsNotInAllMonths()
 	{
 		//http://www.timeanddate.com/calendar/
 		$timezone = 'EST';
@@ -194,6 +194,79 @@ class RepeatOptionsTests extends TestBase
 		$this->assertEquals($totalDates, count($repeatedDates));
 		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
 		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
+	}	
+	
+	public function testYearlyRepeat()
+	{
+		$timezone = 'EST';
+		$reservationStart = Date::Parse('2010-03-31 08:30', $timezone); // fifth wednesday
+		$reservationEnd = Date::Parse('2010-03-31 10:30', $timezone);
+		$duration = new DateRange($reservationStart, $reservationEnd);
+		
+		$interval = 2;
+		$terminiationDate = Date::Parse('2016-03-30', $timezone);
+		
+		$repeatOptions = new YearlyRepeat($interval, $terminiationDate, $duration);
+		$repeatedDates = $repeatOptions->GetDates();
+	
+		$totalDates = 2;
+		$firstDate = DateRange::Create('2012-03-31 08:30', '2012-03-31 10:30', $timezone);
+		$lastDate = DateRange::Create('2014-03-31 08:30', '2014-03-31 10:30', $timezone);
+		
+		$this->assertEquals($totalDates, count($repeatedDates));
+		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
+		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
+	
+	}
+	
+	public function testFactoryCreatesDailyRepeatOptions()
+	{
+		$factory = new RepeatOptionsFactory();
+		$options = $factory->Create('daily', 1, null, null, null, null);
+		
+		$this->assertType('DailyRepeat', $options);
+	}
+	
+	public function testFactoryCreatesWeeklyRepeatOptions()
+	{
+		$factory = new RepeatOptionsFactory();
+		$options = $factory->Create('weekly', 1, null, null, array(), null);
+		
+		$this->assertType('WeeklyRepeat', $options);
+	}
+	
+	public function testFactoryCreatesDayOfMonthRepeatOptions()
+	{
+		$intial = DateRange::Create('2010-01-01', '2010-01-01', 'cst');
+		$factory = new RepeatOptionsFactory();
+		$options = $factory->Create('monthly', 1, null, $intial, null, 'dayOfMonth');
+		
+		$this->assertType('DayOfMonthRepeat', $options);
+	}
+	
+	public function testFactoryCreatesWeekDayOfMonthRepeatOptions()
+	{
+		$intial = DateRange::Create('2010-01-01', '2010-01-01', 'cst');
+		$factory = new RepeatOptionsFactory();
+		$options = $factory->Create('monthly', 1, null, $intial, null, null);
+		
+		$this->assertType('WeekDayOfMonthRepeat', $options);
+	}
+	
+	public function testFactoryCreatesYearlyRepeatOptions()
+	{
+		$factory = new RepeatOptionsFactory();
+		$options = $factory->Create('yearly', 1, null, null, null, null);
+		
+		$this->assertType('YearlyRepeat', $options);
+	}
+	
+	public function testFactoryCreatesNoRepeatOptions()
+	{
+		$factory = new RepeatOptionsFactory();
+		$options = $factory->Create('none', 1, null, null, null, null);
+		
+		$this->assertType('NoRepetion', $options);
 	}
 }
 ?>

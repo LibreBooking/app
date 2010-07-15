@@ -99,6 +99,81 @@ class ReservationSavePage extends Page implements IReservationSavePage
 	{
 		return $this->GetForm(FormKeys::END_PERIOD);
 	}
+
+	
+	public function GetRepeatOptions($initialReservationDates)
+	{
+		return $this->_presenter->GetRepeatOptions($initialReservationDates);
+	}
+	
+	public function GetRepeatType()
+	{
+		return $this->GetForm(FormKeys::REPEAT_OPTIONS);
+	}
+	
+	public function GetRepeatInterval()
+	{
+		return $this->GetForm(FormKeys::REPEAT_EVERY);
+	}
+	
+	public function GetRepeatWeekdays()
+	{
+		$days = array();
+		
+		$sun = $this->GetForm(FormKeys::REPEAT_SUNDAY);
+		if (!empty($sun))
+		{
+			$days[] = 0;
+		}
+		
+		$mon = $this->GetForm(FormKeys::REPEAT_MONDAY);
+		if (!empty($mon))
+		{
+			$days[] = 1;
+		}
+		
+		$tue = $this->GetForm(FormKeys::REPEAT_TUESDAY);
+		if (!empty($tue))
+		{
+			$days[] = 2;
+		}
+		
+		$wed = $this->GetForm(FormKeys::REPEAT_WEDNESDAY);
+		if (!empty($wed))
+		{
+			$days[] = 3;
+		}
+		
+		$thu = $this->GetForm(FormKeys::REPEAT_THURSDAY);
+		if (!empty($thu))
+		{
+			$days[] = 4;
+		}
+		
+		$fri = $this->GetForm(FormKeys::REPEAT_FRIDAY);
+		if (!empty($fri))
+		{
+			$days[] = 5;
+		}
+		
+		$sat = $this->GetForm(FormKeys::REPEAT_SATURDAY);
+		if (!empty($sat))
+		{
+			$days[] = 6;
+		}
+		
+		return $days;
+	}
+	
+	public function GetRepeatMonthlyType()
+	{
+		return $this->GetForm(FormKeys::REPEAT_MONTHLY_TYPE);
+	}
+	
+	public function GetRepeatTerminationDate()
+	{
+		return $this->GetForm(FormKeys::END_REPEAT_DATE);
+	}
 }
 
 interface IReservationSavePage
@@ -116,6 +191,18 @@ interface IReservationSavePage
 	public function GetEndDate();
 	public function GetStartTime();
 	public function GetEndTime();
+	
+	public function GetRepeatType();
+	public function GetRepeatInterval();
+	public function GetRepeatWeekdays();
+	public function GetRepeatMonthlyType();
+	public function GetRepeatTerminationDate();
+	
+	/**
+	 * @param DateRange $initialReservationDates
+	 * @return IRepeatOptions
+	 */
+	public function GetRepeatOptions($initialReservationDates);
 	
 	/**
 	 * @param bool $succeeded
