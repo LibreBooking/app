@@ -11,6 +11,10 @@ class DateRange
 	 */
 	private $_end;
 
+	/**
+	 * @param Date $begin
+	 * @param Date $end
+	 */
 	public function __construct(Date $begin, Date $end)
 	{
 		$this->_begin = $begin;

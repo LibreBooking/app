@@ -118,6 +118,33 @@ class ReservationRepositoryTests extends TestBase
 		
 		$this->assertEquals(3, count($this->db->_Commands));
 	}
+	
+	public function testRepeatedDatesAreSaved()
+	{
+		$reservationId = 918;
+		
+		$dates[] = new DateRange($startUtc1, $endUtc1, $timezone);
+		$dates[] = new DateRange($startUtc2, $endUtc2, $timezone);
+		$dates[] = new DateRange($startUtc3, $endUtc3, $timezone);
+		
+		$repeats = $this->getMock('IRepeatOptions');
+		$repeats->expects($this->once())
+			->method('GetDates')
+			->will($this->returnValue($dates));
+
+		$reservation = new Reservation();
+		$reservation->Repeats($repeats);
+		
+		$this->db->_ExpectedInsertId = $reservationId;
+		
+		$this->repository->Add($reservation);
+		
+		$insertRepeatDate1 = AddReservationRepeatDate($reservationId, $startUtc1, $endUtc1);
+		$insertRepeatDate2 = AddReservationRepeatDate($reservationId, $startUtc2, $endUtc2);
+		$insertRepeatDate3 = AddReservationRepeatDate($reservationId, $startUtc3, $endUtc3);
+		
+		$this->assertEquals($insertRepeatDate1, $this->db->_Commands);
+	}
 }
 
 ?>

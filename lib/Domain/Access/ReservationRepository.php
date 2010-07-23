@@ -40,6 +40,11 @@ class ReservationRepository implements IReservationRepository
 										ReservationUserLevel::OWNER);
 		
 		ServiceLocator::GetDatabase()->Execute($insertReservationUser);
+		
+		foreach($reservation->RepeatedDates() as $date)
+		{
+			
+		}
 	}
 }
 

@@ -144,6 +144,9 @@ interface IReservationPersistenceService
 	 */
 	function Load($reservationId);
 
+	/**
+	 * @param Reservation $reservation
+	 */
 	function Persist($reservation);
 }
 
