@@ -6,7 +6,7 @@ class Reservation
 	/**
 	 * @var int
 	 */
-	private $_userId;
+	protected $_userId;
 
 	/**
 	 * @return int
@@ -19,7 +19,7 @@ class Reservation
 	/**
 	 * @var int
 	 */
-	private $_resourceId;
+	protected $_resourceId;
 
 	/**
 	 * @return int
@@ -32,7 +32,7 @@ class Reservation
 	/**
 	 * @var string
 	 */
-	private $_title;
+	protected $_title;
 
 	/**
 	 * @return string
@@ -45,7 +45,7 @@ class Reservation
 	/**
 	 * @var string
 	 */
-	private $_description;
+	protected $_description;
 
 	/**
 	 * @return string
@@ -58,7 +58,7 @@ class Reservation
 	/**
 	 * @var Date
 	 */
-	private $_startDate;
+	protected $_startDate;
 	
 	/**
 	 * @return Date
@@ -71,7 +71,7 @@ class Reservation
 	/**
 	 * @var Date
 	 */
-	private $_endDate;
+	protected $_endDate;
 	
 	/**
 	 * @return Date
@@ -81,18 +81,26 @@ class Reservation
 		return $this->_endDate;
 	}
 	
-	private $_repeatOptions;
+	protected $_repeatOptions;
 	
+	/**
+	 * @return IRepeatOptions
+	 */
 	public function RepeatOptions()
 	{
 		return $this->_repeatOptions;
 	}
 	
-	private $_repeatedDates;
+	protected $_repeatedDates = array();
 	
 	public function RepeatedDates()
 	{
 		return $this->_repeatedDates;
+	}
+	
+	public function __construct()
+	{
+		$this->_repeatOptions = new NoRepetion();
 	}
 	
 	/**

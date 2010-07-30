@@ -106,9 +106,13 @@ class ReservationRepositoryTests extends TestBase
 		$reservation->Update($userId, $resourceId, $title, $description);
 		$reservation->UpdateDuration($duration);
 		
+		$repeatOptions = new NoRepetion();
+		$repeatType = $repeatOptions->RepeatType();
+		$repeatOptionsString = $repeatOptions->ConfigurationString();
+
 		$this->repository->Add($reservation);
 		
-		$insertReservation = new AddReservationCommand($startUtc, $endUtc, $dateCreatedUtc, $title, $description);
+		$insertReservation = new AddReservationCommand($startUtc, $endUtc, $dateCreatedUtc, $title, $description, $repeatType, $repeatOptionsString);
 		$insertReservationResource = new AddReservationResourceCommand($reservationId, $resourceId);
 		$insertReservationUser = new AddReservationUserCommand($reservationId, $userId, $levelId);
 		
@@ -122,6 +126,14 @@ class ReservationRepositoryTests extends TestBase
 	public function testRepeatedDatesAreSaved()
 	{
 		$reservationId = 918;
+		$timezone = 'UTC';
+		
+		$startUtc1 = Date::Parse('2010-02-03', $timezone);
+		$startUtc2 = Date::Parse('2010-02-04', $timezone);
+		$startUtc3 = Date::Parse('2010-02-05', $timezone);
+		$endUtc1 = Date::Parse('2010-02-06', $timezone);
+		$endUtc2 = Date::Parse('2010-02-07', $timezone);
+		$endUtc3 = Date::Parse('2010-02-08', $timezone);
 		
 		$dates[] = new DateRange($startUtc1, $endUtc1, $timezone);
 		$dates[] = new DateRange($startUtc2, $endUtc2, $timezone);
@@ -132,18 +144,30 @@ class ReservationRepositoryTests extends TestBase
 			->method('GetDates')
 			->will($this->returnValue($dates));
 
-		$reservation = new Reservation();
+		$reservation = new TestReservation();
 		$reservation->Repeats($repeats);
 		
 		$this->db->_ExpectedInsertId = $reservationId;
 		
 		$this->repository->Add($reservation);
 		
-		$insertRepeatDate1 = AddReservationRepeatDate($reservationId, $startUtc1, $endUtc1);
-		$insertRepeatDate2 = AddReservationRepeatDate($reservationId, $startUtc2, $endUtc2);
-		$insertRepeatDate3 = AddReservationRepeatDate($reservationId, $startUtc3, $endUtc3);
+		$insertRepeatDate1 = new AddReservationRepeatDateCommand($reservationId, $startUtc1->ToUtc(), $endUtc1->ToUtc());
+		$insertRepeatDate2 = new AddReservationRepeatDateCommand($reservationId, $startUtc2->ToUtc(), $endUtc2->ToUtc());
+		$insertRepeatDate3 = new AddReservationRepeatDateCommand($reservationId, $startUtc3->ToUtc(), $endUtc3->ToUtc());
 		
-		$this->assertEquals($insertRepeatDate1, $this->db->_Commands);
+		$this->assertTrue(in_array($insertRepeatDate1, $this->db->_Commands));
+		$this->assertTrue(in_array($insertRepeatDate2, $this->db->_Commands));
+		$this->assertTrue(in_array($insertRepeatDate3, $this->db->_Commands));
+	}
+}
+
+class TestReservation extends Reservation
+{
+	public function __construct()
+	{
+		$this->_startDate = Date::Now();
+		$this->_endDate = Date::Now();
+		parent::__construct();
 	}
 }
 

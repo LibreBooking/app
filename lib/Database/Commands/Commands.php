@@ -3,7 +3,13 @@ require_once(ROOT_DIR . 'lib/Database/SqlCommand.php');
 
 class AddReservationCommand extends SqlCommand
 {
-	public function __construct(Date $startDateUtc, Date $endDateUtc, Date $dateCreatedUtc, $title, $description)
+	public function __construct(Date $startDateUtc, 
+								Date $endDateUtc, 
+								Date $dateCreatedUtc, 
+								$title, 
+								$description, 
+								$repeatType,
+								$repeatOptions)
 	{
 		parent::__construct(Queries::ADD_RESERVATION);
 		
@@ -12,6 +18,20 @@ class AddReservationCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, $dateCreatedUtc->ToDatabase()));	
 		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));	
 		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));	
+		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
+		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));	
+	}
+}
+
+class AddReservationRepeatDateCommand extends SqlCommand
+{
+	public function __construct($reservationId, Date $startDateUtc, Date $endDateUtc)
+	{
+		parent::__construct(Queries::ADD_RESERVATION_REPEAT_DATE);
+		
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));	
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDateUtc->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDateUtc->ToDatabase()));	
 	}
 }
 

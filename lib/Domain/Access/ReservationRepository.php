@@ -26,7 +26,9 @@ class ReservationRepository implements IReservationRepository
 										$reservation->EndDate()->ToUtc(), 
 										Date::Now()->ToUtc(), 
 										$reservation->Title(), 
-										$reservation->Description());
+										$reservation->Description(),
+										$reservation->RepeatOptions()->RepeatType(),
+										$reservation->RepeatOptions()->ConfigurationString());
 		
 		$reservationId = ServiceLocator::GetDatabase()->ExecuteInsert($insertReservation);
 		
@@ -43,7 +45,8 @@ class ReservationRepository implements IReservationRepository
 		
 		foreach($reservation->RepeatedDates() as $date)
 		{
-			
+			$insertRepeatedDate = new AddReservationRepeatDateCommand($reservationId, $date->GetBegin()->ToUtc(), $date->GetEnd()->ToUtc());
+			ServiceLocator::GetDatabase()->Execute($insertRepeatedDate);
 		}
 	}
 }

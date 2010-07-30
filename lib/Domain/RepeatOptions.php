@@ -4,6 +4,19 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 interface IRepeatOptions
 {
 	function GetDates();
+	
+	function ConfigurationString();
+	
+	function RepeatType();
+}
+
+class RepeatType
+{
+	const None = 'none';
+	const Daily = 'daily';
+	const Weekly = 'weekly';
+	const Monthly = 'monthly';
+	const Yearly = 'yearly';
 }
 
 class NoRepetion implements IRepeatOptions
@@ -11,6 +24,16 @@ class NoRepetion implements IRepeatOptions
 	public function GetDates()
 	{
 		return array();
+	}
+	
+	public function RepeatType()
+	{
+		return RepeatType::None;
+	}
+	
+	public function ConfigurationString() 
+	{
+		return '';
 	}
 }
 
@@ -31,6 +54,11 @@ class DailyRepeat implements IRepeatOptions
 	 */
 	private $_duration;
 	
+	/**
+	 * @param int $interval
+	 * @param Date $terminiationDate
+	 * @param DateRange $duration
+	 */
 	public function __construct($interval, $terminiationDate, $duration)
 	{
 		$this->_interval = $interval;
@@ -53,6 +81,16 @@ class DailyRepeat implements IRepeatOptions
 		}
 		
 		return $dates;
+	}
+	
+	public function RepeatType()
+	{
+		return RepeatType::Weekly;
+	}
+	
+	public function ConfigurationString() 
+	{
+		return sprintf("interval:%s", $this->_interval);
 	}
 }
 	
@@ -78,6 +116,12 @@ class WeeklyRepeat implements IRepeatOptions
 	 */
 	private $_daysOfWeek;
 	
+	/**
+	 * @param int $interval
+	 * @param Date $terminiationDate
+	 * @param DateRange $duration
+	 * @param array $daysOfWeek
+	 */
 	public function __construct($interval, $terminiationDate, $duration, $daysOfWeek)
 	{
 		$this->_interval = $interval;
@@ -133,6 +177,16 @@ class WeeklyRepeat implements IRepeatOptions
 
 		return $dates;
 	}
+	
+	public function RepeatType()
+	{
+		return RepeatType::Monthly;
+	}
+	
+	public function ConfigurationString() 
+	{
+		return sprintf("interval:%s|days:%s", $this->_interval, implode(',', $this->_daysOfWeek));
+	}
 }
 
 class DayOfMonthRepeat implements IRepeatOptions
@@ -152,6 +206,11 @@ class DayOfMonthRepeat implements IRepeatOptions
 	 */
 	private $_duration;
 	
+	/**
+	 * @param int $interval
+	 * @param Date $terminiationDate
+	 * @param DateRange $duration
+	 */
 	public function __construct($interval, $terminiationDate, $duration)
 	{
 		$this->_interval = $interval;
@@ -187,6 +246,16 @@ class DayOfMonthRepeat implements IRepeatOptions
 		}
 		
 		return $dates;
+	}
+	
+	public function RepeatType()
+	{
+		return RepeatType::Monthly;
+	}
+	
+	public function ConfigurationString() 
+	{
+		return sprintf("interval:%s|type:%s", $this->_interval, 'repeatMonthDay');
 	}
 	
 	private function DayExistsInNextMonth($date, $monthsFromStart)
@@ -232,6 +301,11 @@ class WeekDayOfMonthRepeat implements IRepeatOptions
 	private $_startYear;
 	private $_weekNumber;
 	
+	/**
+	 * @param int $interval
+	 * @param Date $terminiationDate
+	 * @param DateRange $duration
+	 */
 	public function __construct($interval, $terminiationDate, $duration)
 	{
 		$this->_interval = $interval;
@@ -287,6 +361,16 @@ class WeekDayOfMonthRepeat implements IRepeatOptions
 		return $dates;
 	}
 	
+	public function RepeatType()
+	{
+		return RepeatType::Monthly;
+	}
+	
+	public function ConfigurationString() 
+	{
+		return sprintf("interval:%s|type:%s", $this->_interval, 'repeatMonthWeek');
+	}
+	
 	private function GetWeekNumber(Date $firstDate, $firstWeekdayOfMonth)
 	{
 		$week = ceil($firstDate->Day()/7);
@@ -329,6 +413,11 @@ class YearlyRepeat implements IRepeatOptions
 	 */
 	private $_duration;
 	
+	/**
+	 * @param int $interval
+	 * @param Date $terminiationDate
+	 * @param DateRange $duration
+	 */
 	public function __construct($interval, $terminiationDate, $duration)
 	{
 		$this->_interval = $interval;
@@ -365,29 +454,45 @@ class YearlyRepeat implements IRepeatOptions
 		
 		return $dates;
 	}
+	
+	public function RepeatType()
+	{
+		return RepeatType::Yearly;
+	}
+	
+	public function ConfigurationString() 
+	{
+		return sprintf("interval:%s", $this->_interval);
+	}
 }
 
 class RepeatOptionsFactory
 {
 	/**
+	 * @param string $repeatType must be option in RepeatType enum
+	 * @param int $interval
+	 * @param Date $terminationDate
+	 * @param DateRange $initialReservationDates
+	 * @param array $weekdays
+	 * @param string $monthlyType
 	 * @return IRepeatOptions
 	 */
 	public function Create($repeatType, $interval, $terminationDate, $initialReservationDates, $weekdays, $monthlyType)
 	{
 		switch ($repeatType)
 		{
-			case "daily" : 
+			case RepeatType::Daily : 
 				return new DailyRepeat($interval, $terminationDate, $initialReservationDates);
 				
-			case "weekly" : 
+			case RepeatType::Weekly : 
 				return new WeeklyRepeat($interval, $terminationDate, $initialReservationDates, $weekdays);
 				
-			case "monthly" : 
+			case RepeatType::Monthly : 
 				return ($monthlyType == "dayOfMonth") ? 
 					new DayOfMonthRepeat($interval, $terminationDate, $initialReservationDates) : 
 					new WeekDayOfMonthRepeat($interval, $terminationDate, $initialReservationDates);
 					
-			case "yearly" : 
+			case RepeatType::Yearly : 
 				return new YearlyRepeat($interval, $terminationDate, $initialReservationDates);
 		}
 		

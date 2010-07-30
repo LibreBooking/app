@@ -52,5 +52,10 @@ class SqlCommand implements ISqlCommand
 		
 		return $builder->toString();
 	}
+	
+	public function __toString()
+	{
+		return $this->ToString();
+	}
 }
 ?>

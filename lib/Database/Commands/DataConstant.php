@@ -20,6 +20,9 @@ class ParameterNames
 	const PHONE = '@phone';
 	const POSITION = '@position';
 
+	const REPEAT_OPTIONS = '@repeatOptions';
+	const REPEAT_TYPE = '@repeatType';
+	
 	const RESERVATION_ID = '@reservationid';
 	const RESERVATION_USER_LEVEL_ID = '@levelid';
 	
@@ -71,8 +74,13 @@ class Queries
 	
 	const ADD_RESERVATION = 
 		'INSERT INTO 
-			reservations (start_date, end_date, date_created, title, description, allow_participation, allow_anon_participation)
-		VALUES (@startDate, @endDate, @dateCreated, @title, @description, false, false)';
+			reservations (start_date, end_date, date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options)
+		VALUES (@startDate, @endDate, @dateCreated, @title, @description, false, false, @repeatType, @repeatOptions)';
+	
+	const ADD_RESERVATION_REPEAT_DATE = 
+		'INSERT INTO
+			reservation_repeat_dates (reservation_id, start_date, end_date)
+		VALUES (@reservationid, @startDate, @endDate)';
 	
 	const ADD_RESERVATION_RESOURCE =
 		'INSERT INTO
