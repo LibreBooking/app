@@ -2,6 +2,7 @@
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 
@@ -73,8 +74,13 @@ class ReservationSavePresenter
 		
 		$repeatOptions = $this->_page->GetRepeatOptions($duration);
 		$reservation->Repeats($repeatOptions);
-//		
-//		$reservation->AddResource();
+		
+		$resourceIds = $this->_page->GetResources();
+		foreach ($resourceIds as $resourceId)
+		{
+			$reservation->AddResource($resourceId);
+		}
+
 //		$reservation->AddAccessory();
 //		$reservation->AddParticipant();
 //		
@@ -96,17 +102,17 @@ class ReservationSavePresenter
 		}
 		else
 		{
-			//TODO 
+			$this->_page->ShowErrors($validationResult->GetErrors());
 		}
 		
 		$this->_page->ShowWarnings($validationResult->GetWarnings());
 	}
 	
 	/**
-	 * @param DateRange $intialReservationDates
+	 * @param DateRange $initialReservationDates
 	 * @return IRepeatOptions
 	 */
-	public function GetRepeatOptions($intialReservationDates)
+	public function GetRepeatOptions($initialReservationDates)
 	{
 		$factory = new RepeatOptionsFactory();
 		
@@ -114,7 +120,7 @@ class ReservationSavePresenter
 		$interval = $this->_page->GetRepeatInterval();
 		$weekdays = $this->_page->GetRepeatWeekdays();
 		$monthlyType = $this->_page->GetRepeatMonthlyType();
-		$terminationDate = Date::Parse($this->_page->GetRepeatTerminationDate(), $intialReservationDates->Timezone());
+		$terminationDate = Date::Parse($this->_page->GetRepeatTerminationDate(), $initialReservationDates->GetBegin()->Timezone());
 		
 		return $factory->Create($repeatType, $interval, $terminationDate, $initialReservationDates, $weekdays, $monthlyType);
 	}
@@ -173,50 +179,6 @@ class AddReservationPersistenceService implements IReservationPersistenceService
 	}
 }
 
-interface IReservationValidationFactory
-{
-	/**
-	 * @param ReservationAction $reservationAction
-	 * @return IReservationValidationService
-	 */
-	function Create($reservationAction);
-}
-
-class ReservationValidationFactory implements IReservationValidationFactory
-{
-	public function Create($reservationAction)
-	{
-		return new AddReservationValidationService();
-	}
-}
-
-interface IReservationValidationService
-{
-	/**
-	 * @param $reservation
-	 * @return IReservationValidationResult
-	 */
-	function Validate($reservation);
-}
-
-class AddReservationValidationService implements IReservationValidationService
-{
-	public function Validate($reservation)
-	{
-		return new ReservationValidResult();
-		throw new Exception('not implemented');
-	}
-}
-
-interface IReservationNotificationFactory
-{
-	/**
-	 * @param ReservationAction $reservationAction
-	 * @return IReservationNotificationService
-	 */
-	function Create($reservationAction);
-}
-
 class ReservationNotificationFactory implements IReservationNotificationFactory
 {
 	public function Create($reservationAction)
@@ -241,55 +203,9 @@ class AddReservationNotificationService implements IReservationNotificationServi
 	}
 }
 
-interface IReservationValidationResult
-{
-	/**
-	 * @return bool
-	 */
-	public function CanBeSaved();
-	
-	/**
-	 * @return array[int]string
-	 */
-	public function GetErrors();
-	
-	/**
-	 * @return array[int]string
-	 */
-	public function GetWarnings(); 
-}
-
 class ReservationAction
 {
 	const Create = 'create';
 }
 
-class ReservationValidResult implements IReservationValidationResult
-{
-	private $_canBeSaved;
-	private $_errors;
-	private $_warnings;
-	
-	public function __construct($canBeSaved = true, $errors = null, $warnings = null)
-	{
-		$this->_canBeSaved = $canBeSaved;
-		$this->_errors = $errors == null ? array() : $errors;
-		$this->_warnings = $warnings == null ? array() : $warnings;
-	}
-	
-	public function CanBeSaved()
-	{
-		return $this->_canBeSaved;
-	}
-	
-	public function GetErrors()
-	{
-		return $this->_errors;
-	}
-	
-	public function GetWarnings()
-	{
-		return $this->_warnings;
-	}
-}
 ?>

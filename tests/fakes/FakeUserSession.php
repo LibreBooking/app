@@ -2,9 +2,9 @@
 
 class FakeUserSession extends UserSession 
 {
-	public function __construct($isAdmin = false, $timezone = 'US/Eastern')
+	public function __construct($isAdmin = false, $timezone = 'US/Eastern', $userId = 1)
 	{
-		parent::__construct(1);
+		parent::__construct($userId);
 		
 		$this->FirstName = 'first';
 		$this->LastName = 'last';

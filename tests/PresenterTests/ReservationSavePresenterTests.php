@@ -48,6 +48,8 @@ class ReservationSavePresenterTests extends TestBase
 		$endTime = '15:30';
 		$timezone = $this->_user->Timezone;
 		
+		$additionalResources = array(1, 2);
+		
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
 		$persistenceFactory = $this->getMock('IReservationPersistenceFactory');
@@ -103,6 +105,10 @@ class ReservationSavePresenterTests extends TestBase
 		$this->_page->expects($this->once())
 			->method('GetEndTime')
 			->will($this->returnValue($endTime));
+			
+		$this->_page->expects($this->once())
+			->method('GetResources')
+			->will($this->returnValue($additionalResources));
 			
 		$persistenceService->expects($this->once())
 			->method('Load')

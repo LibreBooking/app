@@ -93,9 +93,22 @@ class Reservation
 	
 	protected $_repeatedDates = array();
 	
+	/**
+	 * @return array of Date
+	 */
 	public function RepeatedDates()
 	{
 		return $this->_repeatedDates;
+	}
+	
+	protected $_resources = array();
+	
+	/**
+	 * @return array of int
+	 */
+	public function Resources()
+	{
+		return $this->_resources;
 	}
 	
 	public function __construct()
@@ -126,10 +139,18 @@ class Reservation
 		$this->_endDate = $duration->GetEnd()->ToUtc();
 	}
 	
+	/**
+	 * @param IRepeatOptions $repeatOptions
+	 */
 	public function Repeats(IRepeatOptions $repeatOptions)
 	{
 		$this->_repeatOptions = $repeatOptions;
 		$this->_repeatedDates = $repeatOptions->GetDates();
+	}
+	
+	public function AddResource($resourceId)
+	{
+		$this->_resources[] = $resourceId;
 	}
 }
 

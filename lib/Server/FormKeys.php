@@ -4,6 +4,7 @@ class FormKeys
 	private function __construct()
 	{}
 	
+	const ADDITIONAL_RESOURCES = 'additionalResources';
 	const BEGIN_DATE = 'beginDate';
 	const BEGIN_PERIOD = 'beginPeriod';
 	const END_DATE = 'endDate';
@@ -64,7 +65,6 @@ class FormKeys
 	const RESOURCE = 'resource';
 	const REPORT_START = 'reportStart';
 	const REPORT_END = 'reportEnd';
-	const ADDITIONAL_RESOURCES = 'additionalResources';
 	
 	
 	public static function Evaluate($formKey)

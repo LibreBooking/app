@@ -81,5 +81,10 @@ class FakeServer extends Server
 		
 		return null;
 	}
+	
+	public function GetUserSession()
+	{
+		return $this->UserSession;
+	}
 }
 ?>

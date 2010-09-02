@@ -12,6 +12,7 @@ interface IResource
 	 */
 	public function GetName();
 }
+
 class Resource implements IResource
 {
 	private $_resourceId;

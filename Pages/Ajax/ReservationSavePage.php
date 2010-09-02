@@ -47,7 +47,7 @@ class ReservationSavePage extends Page implements IReservationSavePage
 	
 	public function ShowErrors($errors)
 	{
-		// set errors variable
+		$this->Set('Errors', $errors);
 	}
 	
 	public function ShowWarnings($warnings)
@@ -99,8 +99,16 @@ class ReservationSavePage extends Page implements IReservationSavePage
 	{
 		return $this->GetForm(FormKeys::END_PERIOD);
 	}
-
 	
+	public function GetResources()
+	{
+		$resources =  $this->GetForm(FormKeys::ADDITIONAL_RESOURCES);
+		if (is_null($resources))
+		{
+			return array();
+		}
+	}
+
 	public function GetRepeatOptions($initialReservationDates)
 	{
 		return $this->_presenter->GetRepeatOptions($initialReservationDates);
@@ -191,6 +199,7 @@ interface IReservationSavePage
 	public function GetEndDate();
 	public function GetStartTime();
 	public function GetEndTime();
+	public function GetResources();
 	
 	public function GetRepeatType();
 	public function GetRepeatInterval();

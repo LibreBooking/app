@@ -84,6 +84,7 @@ class en_us extends Language
 		$strings['RepeatUntilPrompt'] = 'Until:';
 		$strings['RepeatEveryPrompt'] = 'Every:';
 		$strings['RepeatDaysPrompt'] = 'On:';
+		$strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

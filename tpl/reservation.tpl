@@ -160,7 +160,7 @@
 <div id="dialogAddResources" title="Add Resources" style="display:none;">
 	<p>Some text that you want to display to the user.</p>
 	{foreach from=$AvailableResources item=resource}
-		<input type="checkbox" id="additionalResource{$resource->Id()}" value="{$resource->Id()}" /><label for="additionalResource{$resource->Id()}">{$resource->Name()}</label><br/>
+		<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true}  id="additionalResource{$resource->Id()}" value="{$resource->Id()}" /><label for="additionalResource{$resource->Id()}">{$resource->Name()}</label><br/>
 	{/foreach}
 	<button id="btnConfirmAddResources" onclick="AddResources('{constant echo=FormKeys::ADDITIONAL_RESOURCES}')">Add Selected</button>
 	<button id="btnClearAddResources">Cancel</button>
