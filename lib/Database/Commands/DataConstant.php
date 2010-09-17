@@ -170,7 +170,7 @@ class Queries
 			reservations r, users u, resource_schedules rs, schedules s, reservation_resources rr
 		WHERE 
 			r.user_id = u.userid AND rr.resource_id = rs.resource_id AND 
-			rs.schedule_id = @scheduleid AND
+			(rs.schedule_id = @scheduleid OR @scheduleid = -1) AND
 			(
 		  		(r.start_date BETWEEN @startDate AND @endDate)
 		  		OR

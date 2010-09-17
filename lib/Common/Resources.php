@@ -7,6 +7,11 @@ interface IResourceLocalization
 	public function GetMonths($key);
 }
 
+class ResourceKeys
+{
+	const DATE_GENERAL = 'general_date';
+}
+
 class Resources
 {
 	public $CurrentLanguage;

@@ -1,7 +1,9 @@
 <?php
 class ReservationRepository implements IReservationRepository
 {
-	public function GetWithin(Date $startDate, Date $endDate, $scheduleId)
+	const ALL_SCHEDULES = -1;
+	
+	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES)
 	{
 		$command = new GetReservationsCommand($startDate, $endDate, $scheduleId);
 		
@@ -58,10 +60,10 @@ interface IReservationRepository
 	 *
 	 * @param Date $startDate
 	 * @param Date $endDate
-	 * @param int $scheduleId
+	 * @param int $scheduleId (defaults to all schedules
 	 * @return array of ScheduleReservation
 	 */
-	public function GetWithin(Date $startDate, Date $endDate, $scheduleId);
+	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES);
 
 	public function Add(Reservation $reservation);
 }

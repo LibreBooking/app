@@ -17,7 +17,7 @@ class PermissionValidationRule implements IReservationValidationRule
 	/**
 	 * @see IReservationValidationRule::Validate()
 	 */
-	function Validate($reservation)
+	public function Validate($reservation)
 	{
 		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		if ($userSession->IsAdmin)

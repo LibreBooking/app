@@ -3,6 +3,11 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 interface IRepeatOptions
 {
+	/**
+	 * Gets array of DateRange objects
+	 * 
+	 * @return array[int]DateRange
+	 */
 	function GetDates();
 	
 	function ConfigurationString();

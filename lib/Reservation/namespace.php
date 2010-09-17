@@ -13,6 +13,7 @@ require_once(ROOT_DIR . 'lib/Reservation/IReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Reservation/AddReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Reservation/NewReservationInitializer.php');
 require_once(ROOT_DIR . 'lib/Reservation/PermissionValidationRule.php');
+require_once(ROOT_DIR . 'lib/Reservation/ResourceAvailabilityRule.php');
 require_once(ROOT_DIR . 'lib/Reservation/ReservationInitializerFactory.php');
 require_once(ROOT_DIR . 'lib/Reservation/ReservationPreconditionService.php');
 require_once(ROOT_DIR . 'lib/Reservation/ReservationResource.php');

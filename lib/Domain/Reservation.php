@@ -94,7 +94,7 @@ class Reservation
 	protected $_repeatedDates = array();
 	
 	/**
-	 * @return array of Date
+	 * @return array of DateRange
 	 */
 	public function RepeatedDates()
 	{

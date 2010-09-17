@@ -8,19 +8,23 @@ class FakeReservationRepository implements IReservationRepository
 	public $_LastEndDate;
 	public $_LastScheduleId;
 	public $_Reservations = array();
+	public $_StartDates = array();
+	public $_EndDates = array();
 	
 	public function __construct()
 	{
 		$this->FillRows(); 
 	}
 	
-	public function GetWithin(Date $startDate, Date $endDate, $scheduleId)
+	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES)
 	{
 		$this->_GetWithinCalled = true;
 		$this->_LastStartDate = $startDate;
 		$this->_LastEndDate = $endDate;
 		$this->_LastScheduleId = $scheduleId;
 		
+		$this->_StartDates[] = $startDate;
+		$this->_EndDates[] = $endDate;
 		
 		return $this->_Reservations;
 	}
