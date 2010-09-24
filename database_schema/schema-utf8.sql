@@ -614,6 +614,8 @@ CREATE TABLE `reservations` (
  `type_id` tinyint(2) unsigned,
  `status_id` tinyint(2) unsigned,
  `total_cost` dec(7,2),
+ `repeat_type` varchar(10),
+ `repeat_options` varchar(50),
  PRIMARY KEY (`reservationid`),
  INDEX (`type_id`),
  FOREIGN KEY (`type_id`) 

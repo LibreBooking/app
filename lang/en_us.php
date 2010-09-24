@@ -86,6 +86,7 @@ class en_us extends Language
 		$strings['RepeatDaysPrompt'] = 'On:';
 		$strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources';
 		$strings['ConflictingReservationDates'] = 'There are conflicting reservations on the following dates:';
+		$strings['StartDateBeforeEndDateRule'] = 'The start date must be before the end date';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

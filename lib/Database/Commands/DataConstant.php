@@ -167,9 +167,11 @@ class Queries
 		  u.fname,
 		  u.lname
 		FROM 
-			reservations r, users u, resource_schedules rs, schedules s, reservation_resources rr
+			reservations r, reservation_users ru, users u, resource_schedules rs, schedules s, reservation_resources rr
 		WHERE 
-			r.user_id = u.userid AND rr.resource_id = rs.resource_id AND 
+			r.reservationid = ru.reservation_id AND 
+			ru.user_id = userid AND 
+			rr.resource_id = rs.resource_id AND 
 			(rs.schedule_id = @scheduleid OR @scheduleid = -1) AND
 			(
 		  		(r.start_date BETWEEN @startDate AND @endDate)
