@@ -1,8 +1,14 @@
 <?php
 class AddReservationValidationService implements IReservationValidationService
 {
+	/**
+	 * @var IReservationValidationRule[]
+	 */
 	private $_validationRules;
 	
+	/**
+	 * @param IReservationValidationRule[] $validationRules
+	 */
 	public function __construct($validationRules)
 	{
 		$this->_validationRules = $validationRules;	
