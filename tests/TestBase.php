@@ -22,10 +22,16 @@ class TestBase extends PHPUnit_Framework_TestCase
 	 */
 	public $fakeResources;
 	
+	/**
+	 * @var FakeEmailService
+	 */
+	public $fakeEmailService;
+	
 	public function setup()
 	{
 		$this->db = new FakeDatabase();
 		$this->fakeServer = new FakeServer();
+		$this->fakeEmailService = new FakeEmailService();
 		$this->fakeConfig = new FakeConfig();
         $this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, 'US/Central');
                 
@@ -33,6 +39,7 @@ class TestBase extends PHPUnit_Framework_TestCase
 		
 		ServiceLocator::SetDatabase($this->db);
 		ServiceLocator::SetServer($this->fakeServer);
+		ServiceLocator::SetEmailService($this->fakeEmailService);
 		Configuration::SetInstance($this->fakeConfig);
 		Resources::SetInstance($this->fakeResources);
 	}

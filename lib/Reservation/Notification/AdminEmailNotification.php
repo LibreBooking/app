@@ -1,6 +1,5 @@
 <?php
-
-class OwnerEmailNotificaiton implements IReservationNotification 
+class AdminEmailNotificaiton implements IReservationNotification 
 {
 	/**
 	 * @var IUserRepository

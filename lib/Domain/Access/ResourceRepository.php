@@ -27,8 +27,14 @@ interface IResourceRepository
 
 class ResourceRepository implements IResourceRepository
 {
+	/**
+	 * @var DomainCache
+	 */
+	private $_cache;
+	
 	public function __construct() 
 	{
+		$this->_cache = new DomainCache();
 	}
 	
 	/**
@@ -59,7 +65,14 @@ class ResourceRepository implements IResourceRepository
 	{
 		//TODO: Implement for real
 		
-		return new Resource();
+		$resource = new Resource();
+		if (!$this->_cache->Exists($resourceId))
+		{
+			$resource = null;// pull+build
+			$this->_cache->Add($resourceId, $resource);
+		}
+		
+		return $this->_cache->Get($resourceId);
 	}
 	
 	/**

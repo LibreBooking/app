@@ -15,4 +15,5 @@ $conf['settings']['database']['password'] = 'password';
 $conf['settings']['database']['hostspec'] = 'localhost';
 $conf['settings']['database']['name'] = 'phpscheduleit2';
 $conf['settings']['plugins']['Auth'] = '';
+$conf['settings']['reservation']['notify.created'] = 'true';
 ?>

@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
+require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
 class ServiceLocator
 {
@@ -8,7 +9,16 @@ class ServiceLocator
 	 * @var Database
 	 */
 	private static $_database = null;
+	
+	/**
+	 * @var Server
+	 */
 	private static $_server = null;
+	
+	/**
+	 * @var IEmailService
+	 */
+	private static $_emailSerivce = null;
 	
 	/**
 	 * @return Database
@@ -42,6 +52,20 @@ class ServiceLocator
 	public static function SetServer(Server $server)
 	{
 		self::$_server = $server;
+	}
+	
+	public static function GetEmailService()
+	{
+		if (self::$_emailSerivce == null)
+		{
+			self::$_emailSerivce = new EmailService();
+		}
+		return self::$_emailSerivce;
+	}
+	
+	public static function SetEmailService(IEmailService $emailService)
+	{
+		self::$_emailSerivce = $emailService;	
 	}
 }
 ?>

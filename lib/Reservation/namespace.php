@@ -18,4 +18,6 @@ require_once(ROOT_DIR . 'lib/Reservation/ReservationInitializerFactory.php');
 require_once(ROOT_DIR . 'lib/Reservation/ReservationPreconditionService.php');
 require_once(ROOT_DIR . 'lib/Reservation/ReservationResource.php');
 
+require_once(ROOT_DIR . 'lib/Reservation/ReservationEvents.php');
+
 ?>

@@ -20,13 +20,15 @@ class ConfigKeys
 	const DATABASE_NAME = 'name';
 	
 	const PLUGIN_AUTH = 'Auth';
+	
+	const RESERVATION_NOTIFY_CREATED = 'notify.created';
 }
 
 class ConfigSection
 {
 	const DATABASE = 'database';
 	const SCHEDULE = 'schedule';
-	
+	const RESERVATION = 'reservation';
 }
 
 ?>

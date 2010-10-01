@@ -2,6 +2,16 @@
 class UserRepository implements IUserRepository 
 {
 	/**
+	 * @var DomainCache
+	 */
+	private $_cache;
+	
+	public function __construct()
+	{
+		$this->_cache = new DomainCache();
+	}
+	
+	/**
 	 * @see IUserRepository:GetAll()
 	 */
 	public function GetAll()
@@ -22,6 +32,23 @@ class UserRepository implements IUserRepository
 
 		return $users;
 	}
+	
+	/**
+	 * @see IUserRepository::LoadById()
+	 */
+	public function LoadById($userId)
+	{
+		//TODO: Implement for real
+		
+		$user = new User();
+		if (!$this->_cache->Exists($userId))
+		{
+			$user = null;// pull+build
+			$this->_cache->Add($userId, $user);
+		}
+		
+		return $this->_cache->Get($userId);
+	}
 }
 
 interface IUserRepository
@@ -30,6 +57,12 @@ interface IUserRepository
 	 * @return array[int]UserDto
 	 */
 	public function GetAll();
+	
+	/**
+	 * @param int $userId
+	 * @return User
+	 */
+	public function LoadById($userId);
 }
 
 class UserDto
