@@ -16,9 +16,9 @@ class UserRepositoryTests extends TestBase
 	{
 		$userRows = array
 		(
-			array(ColumnNames::USER_ID => 1, ColumnNames::FIRST_NAME => "f1", ColumnNames::LAST_NAME => 'l1'),
-			array(ColumnNames::USER_ID => 2, ColumnNames::FIRST_NAME => "f2", ColumnNames::LAST_NAME => 'l2'),
-			array(ColumnNames::USER_ID => 3, ColumnNames::FIRST_NAME => "f3", ColumnNames::LAST_NAME => 'l3'),
+			array(ColumnNames::USER_ID => 1, ColumnNames::FIRST_NAME => "f1", ColumnNames::LAST_NAME => 'l1', ColumnNames::EMAIL => 'e1'),
+			array(ColumnNames::USER_ID => 2, ColumnNames::FIRST_NAME => "f2", ColumnNames::LAST_NAME => 'l2', ColumnNames::EMAIL => 'e2'),
+			array(ColumnNames::USER_ID => 3, ColumnNames::FIRST_NAME => "f3", ColumnNames::LAST_NAME => 'l3', ColumnNames::EMAIL => 'e3'),
 		);
 		
 		$this->db->SetRows($userRows);
@@ -26,9 +26,9 @@ class UserRepositoryTests extends TestBase
 		$userRepository = new UserRepository();
 		$users = $userRepository->GetAll();
 		
-		$user1 = new UserDto(1, "f1", "l1");
-		$user2 = new UserDto(2, "f2", "l2");
-		$user3 = new UserDto(3, "f3", "l3");
+		$user1 = new UserDto(1, "f1", "l1", "e1");
+		$user2 = new UserDto(2, "f2", "l2", "e2");
+		$user3 = new UserDto(3, "f3", "l3", "e3");
 		
 		$getAllUsersCommand = new GetAllUsersByStatusCommand(AccountStatus::ACTIVE);
 		

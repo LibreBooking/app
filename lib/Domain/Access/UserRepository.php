@@ -26,7 +26,8 @@ class UserRepository implements IUserRepository
 			$users[] = new UserDto(
 								$row[ColumnNames::USER_ID], 
 								$row[ColumnNames::FIRST_NAME],
-								$row[ColumnNames::LAST_NAME]
+								$row[ColumnNames::LAST_NAME], 
+								$row[ColumnNames::EMAIL]
 								);
 		}
 
@@ -49,6 +50,16 @@ class UserRepository implements IUserRepository
 		
 		return $this->_cache->Get($userId);
 	}
+	
+	/**
+	 * @see IUserRepository::GetResourceAdmins()
+	 */
+	public function GetResourceAdmins($resourceId)
+	{
+		//TODO: Implement for real
+		
+		return array();
+	}
 }
 
 interface IUserRepository
@@ -63,6 +74,12 @@ interface IUserRepository
 	 * @return User
 	 */
 	public function LoadById($userId);
+	
+	/**
+	 * @param int $resourceId
+	 * @return UserDto[]
+	 */
+	function GetResourceAdmins($resourceId);
 }
 
 class UserDto
@@ -70,12 +87,14 @@ class UserDto
 	private $_userId;
 	private $_firstName;
 	private $_lastName;
+	private $_emailAddress;
 	
-	public function __construct($userId, $firstName, $lastName)
+	public function __construct($userId, $firstName, $lastName, $emailAddress)
 	{
 		$this->_userId = $userId;
 		$this->_firstName = $firstName;
 		$this->_lastName = $lastName;
+		$this->_emailAddress = $emailAddress;
 	}
 	
 	public function Id()
@@ -97,13 +116,18 @@ class UserDto
 	{
 		return $this->FirstName() . ' ' . $this->LastName();
 	}
+	
+	public function EmailAddress()
+	{
+		return $this->_emailAddress;
+	}
 }
 
 class NullUserDto extends UserDto
 {
 	public function __construct()
 	{
-		parent::__construct(0, null, null);
+		parent::__construct(0, null, null, null);
 	}
 	
 	public function FullName()

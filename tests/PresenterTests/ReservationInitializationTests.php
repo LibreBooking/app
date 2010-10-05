@@ -77,8 +77,8 @@ class ReservationInitializationTests extends TestBase
 			
 		// DATA
 		// users
-		$schedUser = new UserDto($this->_userId, $firstName, $lastName);
-		$otherUser = new UserDto(109, 'other', 'user');
+		$schedUser = new UserDto($this->_userId, $firstName, $lastName, 'email');
+		$otherUser = new UserDto(109, 'other', 'user', 'email');
 		$userList = array($otherUser, $schedUser);
 
 		$this->_userRepository->expects($this->once())

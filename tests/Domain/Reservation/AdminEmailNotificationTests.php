@@ -26,7 +26,10 @@ class AdminEmailNotificationTests extends TestBase
 		$reservation->Update($ownerId, $resourceId, null, null);
 		
 		$user = $this->getMock('User');
-		$admin = $this->getMock('User');
+		$admin1 = $this->getMock('User');
+		$admin2 = $this->getMock('User');
+		$admins = array($admin1, $admin2);
+		
 		$resource = new FakeResource($resourceId, 'name');
 			
 		$userRepo = $this->getMock('IUserRepository');
@@ -36,9 +39,9 @@ class AdminEmailNotificationTests extends TestBase
 			->will($this->returnValue($user));
 		
 		$userRepo->expects($this->once())
-			->method('LoadById')
-			->with($this->equalTo($adminId))
-			->will($this->returnValue($admin));
+			->method('GetResourceAdmins')
+			->with($this->equalTo($resourceId))
+			->will($this->returnValue($admins));
 			
 		$resourceRepo = $this->getMock('IResourceRepository');
 		$resourceRepo->expects($this->once())
@@ -49,10 +52,22 @@ class AdminEmailNotificationTests extends TestBase
 		$notification = new AdminEmailNotificaiton($userRepo, $resourceRepo);
 		$notification->Notify($reservation);
 		
-		$expectedMessage = new ReservationCreatedEmail($user, $reservation, $resource);
+		$expectedMessage = new ReservationCreatedEmailAdmin($admins, $user, $reservation, $resource);
 		
 		$lastMessage = $this->fakeEmailService->_LastMessage;
 		$this->assertEquals($expectedMessage, $lastMessage);
+	}
+	
+	public function testNothingSentIfConfiguredOff()
+	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, 
+										ConfigKeys::RESERVATION_NOTIFY_CREATED, 
+										'false');
+										
+		$notification = new AdminEmailNotificaiton($this->getMock('IUserRepository'), $this->getMock('IResourceRepository'));
+		$notification->Notify(new Reservation());
+		
+		$this->assertEquals(0, count($this->fakeEmailService->_Messages));
 	}
 }
 ?>

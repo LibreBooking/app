@@ -132,7 +132,7 @@ class Queries
 		FROM schedules';
 	
 	const GET_ALL_USERS_BY_STATUS = 
-		'SELECT userid, fname, lname
+		'SELECT userid, fname, lname, email
 		FROM users
 		WHERE status_id = @user_statusid';
 		

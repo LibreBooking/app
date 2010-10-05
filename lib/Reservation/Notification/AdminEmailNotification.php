@@ -26,14 +26,17 @@ class AdminEmailNotificaiton implements IReservationNotification
 	 */
 	public function Notify($reservation)
 	{
-		$owner = $this->_userRepo->LoadById($reservation->UserId());
-		if ($owner->WantsEventEmail(ReservationEvent::Created))
+		if (!Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_NOTIFY_CREATED, new BooleanConverter()))
 		{
-			$resource = $this->_resourceRepo->LoadById($reservation->ResourceId());
-			
-			$message = new ReservationCreatedEmail($owner, $reservation, $resource);
-			ServiceLocator::GetEmailService()->Send($message);
+			return;
 		}
+		
+		$admins = $this->_userRepo->GetResourceAdmins($reservation->ResourceId());
+		$owner = $this->_userRepo->LoadById($reservation->UserId());
+		$resource = $this->_resourceRepo->LoadById($reservation->ResourceId());
+			
+		$message = new ReservationCreatedEmailAdmin($admins, $owner, $reservation, $resource);
+		ServiceLocator::GetEmailService()->Send($message);
 	}
 }
 ?>
