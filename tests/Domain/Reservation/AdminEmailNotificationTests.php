@@ -52,10 +52,13 @@ class AdminEmailNotificationTests extends TestBase
 		$notification = new AdminEmailNotificaiton($userRepo, $resourceRepo);
 		$notification->Notify($reservation);
 		
-		$expectedMessage = new ReservationCreatedEmailAdmin($admins, $user, $reservation, $resource);
+		$expectedMessage1 = new ReservationCreatedEmailAdmin($admin1, $user, $reservation, $resource);
+		$expectedMessage2 = new ReservationCreatedEmailAdmin($admin2, $user, $reservation, $resource);
 		
-		$lastMessage = $this->fakeEmailService->_LastMessage;
-		$this->assertEquals($expectedMessage, $lastMessage);
+		$this->assertEquals(count($admins), count($this->fakeEmailService->_Messages));
+		
+		$this->assertEquals($expectedMessage1, $this->fakeEmailService->_Messages[0]);
+		$this->assertEquals($expectedMessage2, $this->fakeEmailService->_Messages[1]);
 	}
 	
 	public function testNothingSentIfConfiguredOff()

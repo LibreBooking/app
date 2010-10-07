@@ -57,7 +57,7 @@ class UserRepository implements IUserRepository
 	public function GetResourceAdmins($resourceId)
 	{
 		//TODO: Implement for real
-		
+		// needs first name, last name, email, language, timezone
 		return array();
 	}
 }

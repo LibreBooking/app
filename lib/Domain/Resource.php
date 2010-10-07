@@ -29,7 +29,7 @@ class Resource implements IResource
 	private $_minNotice;
 	private $_maxNotice;
 	
-	private function __construct($resourceId,
+	public function __construct($resourceId,
 								$name,
 								$location,
 								$phone,

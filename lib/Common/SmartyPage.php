@@ -33,6 +33,11 @@ class SmartyPage extends Smarty
 		$this->Resources =& $resources;
 		$this->RootPath = $rootPath;
 		
+		$this->RegisterFunctions();
+	}
+	
+	protected function RegisterFunctions()
+	{
 		$this->register_function('translate', array($this, 'SmartyTranslate'));
 		$this->register_function('formatdate', array($this, 'FormatDate'));
 		$this->register_function('constant', array($this, 'GetConstant'));

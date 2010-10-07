@@ -35,8 +35,11 @@ class AdminEmailNotificaiton implements IReservationNotification
 		$owner = $this->_userRepo->LoadById($reservation->UserId());
 		$resource = $this->_resourceRepo->LoadById($reservation->ResourceId());
 			
-		$message = new ReservationCreatedEmailAdmin($admins, $owner, $reservation, $resource);
-		ServiceLocator::GetEmailService()->Send($message);
+		foreach ($admins as $admin)
+		{
+			$message = new ReservationCreatedEmailAdmin($admin, $owner, $reservation, $resource);
+			ServiceLocator::GetEmailService()->Send($message);
+		}
 	}
 }
 ?>
