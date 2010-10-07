@@ -3,6 +3,8 @@ require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 
 class RepeatOptionsTests extends TestBase
 {
+	//http://www.timeanddate.com/calendar/
+	
 	public function setup()
 	{
 		parent::setup();
@@ -117,7 +119,6 @@ class RepeatOptionsTests extends TestBase
 		$secondDate = DateRange::Create('2010-04-11 08:30', '2010-04-11 10:30', $timezone);
 		$lastDate = DateRange::Create('2010-09-11 08:30', '2010-09-11 10:30', $timezone);
 		
-		$this->assertEquals($totalDates, count($repeatedDates));
 		$this->assertEquals($totalDates, count($repeatedDates));
 		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
 		$this->assertTrue($secondDate->Equals($repeatedDates[1]), $secondDate->ToString() . ' ' . $repeatedDates[1]->ToString());

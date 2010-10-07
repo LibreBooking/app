@@ -265,7 +265,8 @@ class DayOfMonthRepeat implements IRepeatOptions
 	
 	private function DayExistsInNextMonth($date, $monthsFromStart)
 	{
-		$nextMonth = $this->GetNextMonth($date, $monthsFromStart);
+		$dateToCheck = Date::Create($date->Year(), $date->Month(), 1, 0, 0, 0, $date->Timezone());
+		$nextMonth = $this->GetNextMonth($dateToCheck, $monthsFromStart);
 		
 		$daysInMonth = $nextMonth->Format('t');
 		return $date->Day() <= $daysInMonth;
@@ -277,10 +278,16 @@ class DayOfMonthRepeat implements IRepeatOptions
 	 */
 	private function GetNextMonth($date, $monthsFromStart)
 	{
+		$yearOffset = 0;
 		$computedMonth = $date->Month() + $monthsFromStart;
-		$yearOffset = (int)$computedMonth/12;
-		$month = $computedMonth % 12 + 1;
+		$month = $computedMonth;
 		
+		if ($computedMonth > 12)
+		{	
+			$yearOffset = (int)$computedMonth/12;
+			$month = $computedMonth % 12 + 1;
+		}
+
 		return Date::Create($date->Year() + $yearOffset, $month, $date->Day(), $date->Hour(), $date->Minute(), $date->Second(), $date->Timezone());
 	}
 }
