@@ -1,0 +1,32 @@
+=======================
+Creating an Auth plugin
+=======================
+
+phpScheduleIt was designed to make authorization pluggable so that new credential stores can be without changes to the phpScheduleIt source code.  phpScheduleIt ships with an LDAP authorization plugin.  This should serve as a good example because it is sufficiently complex and covers a typical scenario.
+
+To create a new Auth plugin:
+
+- Create a new folder with the name of your plugin within /plugins/Auth
+- Create a PHP source file with the same folder name within this folder.  For example, /plugins/Auth/Ldap contains Ldap.php
+	This source file is what will be called during the authorization process.
+- Within this source file, require the Authorization namespace and implement the IAuthorization interface
+	<?php
+	require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+	class Ldap implements IAuthorization { ... }
+	?>
+- In the phpScheduleIt configuration file, set $conf['settings']['plugins']['Auth'] to the folder name.  For example, $conf['settings']['plugins']['Auth'] = 'Ldap';
+
+This class is intended to decorate an IAuthorization instance, so in most cases you would want to create a new Authorization() class in the constructor if one isn't supplied as a parameter.  This class must support parameterless instantiation. 
+
+There are three methods which need to be implemented:
+
+Validate() accepts $username and $password as parameters.  
+This method should go to the credential store and validate that this user has proper access.  
+This method returns true or false depending on if the user is authorized or not.
+
+Login() accepts $username and $persist as parameters.  
+This method is only called if the result of Validate() was true.  Typically, this method would synchronize data between the source store and phpScheduleIt, although this is not required if the user account data already exists in phpScheduleIt.  If synchronization is necessary, the account should be registered if it does not exist or updated if it does.  The Ldap plugin illustrates how to accomplish this.
+The Login method should always call to the decorated Authorization classes Login() method.  This ensures that any functionality required by phpScheduleIt is executed.
+
+CookieLogin() accepts $cookieValue as a parameter.
+This method will typically delegate directly to the decorated Authorization class.  The intent of this method is to support persistent signon through cookies.  This can be overridden with a no-op to suppress this behavior.

@@ -4,13 +4,33 @@ require_once(ROOT_DIR . 'plugins/Auth/Ldap/ldap.config.php');
 
 /**
  * Provides LDAP authentication/synchronization for phpScheduleit
+ * @see IAuthorization
  */
 class Ldap implements IAuthorization
 {
+	/**
+	 * @var IAuthorization
+	 */
 	private $authToDecorate;
+	
+	/**
+	 * @var AdLdapWrapper
+	 */
 	private $ldap;
+	
+	/**
+	 * @var LdapOptions
+	 */
 	private $options;
+	
+	/**
+	 * @var IRegistration
+	 */
 	private $_registration;
+	
+	/**
+	 * @var PasswordEncryption
+	 */
 	private $_encryption;
 	
 	private $user;
@@ -73,6 +93,9 @@ class Ldap implements IAuthorization
 		}
 	}
 	
+	/**
+	 * @see IAuthorization::Validate()
+	 */
 	public function Validate($username, $password)
 	{
 		$this->password = $password;
@@ -98,6 +121,9 @@ class Ldap implements IAuthorization
 		return $isValid;
 	}
 	
+	/**
+	 * @see IAuthorization::Login()
+	 */
 	public function Login($username, $persist)
 	{
 		if ($this->LdapUserExists())
@@ -108,6 +134,9 @@ class Ldap implements IAuthorization
 		$this->authToDecorate->Login($username, $persist);
 	}
 	
+	/**
+	 * @see IAuthorization::CookieLogin()
+	 */
 	public function CookieLogin($cookieValue)
 	{
 		$this->authToDecorate->CookieLogin($cookieValue);
