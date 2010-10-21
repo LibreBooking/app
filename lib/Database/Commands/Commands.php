@@ -9,7 +9,8 @@ class AddReservationCommand extends SqlCommand
 								$title, 
 								$description, 
 								$repeatType,
-								$repeatOptions)
+								$repeatOptions,
+								$referenceNumber)
 	{
 		parent::__construct(Queries::ADD_RESERVATION);
 		
@@ -20,6 +21,7 @@ class AddReservationCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));	
+		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));	
 	}
 }
 

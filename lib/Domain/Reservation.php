@@ -4,6 +4,19 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 class Reservation
 {
 	/**
+	 * @var string
+	 */
+	protected $_referenceNumber;
+	
+	/**
+	 * @return string
+	 */
+	public function ReferenceNumber()
+	{
+		return $this->_referenceNumber;
+	}
+	
+	/**
 	 * @var int
 	 */
 	protected $_userId;
@@ -114,6 +127,7 @@ class Reservation
 	public function __construct()
 	{
 		$this->_repeatOptions = new NoRepetion();
+		$this->_referenceNumber = uniqid();
 	}
 	
 	/**

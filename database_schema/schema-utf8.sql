@@ -616,6 +616,7 @@ CREATE TABLE `reservations` (
  `total_cost` dec(7,2),
  `repeat_type` varchar(10),
  `repeat_options` varchar(50),
+ `reference_number` varchar(50) NOT NULL,
  PRIMARY KEY (`reservationid`),
  INDEX (`type_id`),
  FOREIGN KEY (`type_id`) 
@@ -624,7 +625,10 @@ CREATE TABLE `reservations` (
  INDEX (`status_id`),
  FOREIGN KEY (`status_id`) 
 	REFERENCES reservation_statuses(`statusid`)
-	ON UPDATE CASCADE ON DELETE SET NULL
+	ON UPDATE CASCADE ON DELETE SET NULL,
+ INDEX (`start_date`),
+ INDEX (`end_date`),
+ INDEX (`reference_number`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --

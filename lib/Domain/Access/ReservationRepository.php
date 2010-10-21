@@ -30,7 +30,8 @@ class ReservationRepository implements IReservationRepository
 										$reservation->Title(), 
 										$reservation->Description(),
 										$reservation->RepeatOptions()->RepeatType(),
-										$reservation->RepeatOptions()->ConfigurationString());
+										$reservation->RepeatOptions()->ConfigurationString(),
+										$reservation->ReferenceNumber());
 		
 		$reservationId = ServiceLocator::GetDatabase()->ExecuteInsert($insertReservation);
 		

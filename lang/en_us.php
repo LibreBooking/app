@@ -30,6 +30,7 @@ class en_us extends Language
 		$dates['schedule_daily'] = 'l, m/d/Y';
 		$dates['period_time'] = "g:i A";
 		$dates['url'] = 'Y-m-d';
+		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		
 		$this->Dates = $dates;
 	}
