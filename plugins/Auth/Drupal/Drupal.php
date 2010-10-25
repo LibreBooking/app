@@ -1,9 +1,11 @@
 <?php
+require_once('/Drupal.config.php');
 require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+
 
 class Drupal implements IAuthorization
 {
-	/**
+    /**
 	 * @var IAuthorization
 	 */
 	private $authToDecorate;
@@ -44,8 +46,27 @@ class Drupal implements IAuthorization
 	*/
 	public function Validate($username, $password)
 	{
-		// Auth against Drupal
-		// Optionally auth against phpScheduleIt
+	   $isValid = false;
+	   // Auth against Drupal
+       // Make Drupal PHP' s current directory.
+       chdir(DRUPAL_DIRECTORY);
+       
+       // Bootstrap Drupal up through the database phase so that we can query it
+       include_once(DRUPAL_DIRECTORY . '/includes/bootstrap.inc');
+       drupal_bootstrap(DRUPAL_BOOTSTRAP_DATABASE);
+        
+       //Query the database to see if this user is valid
+       $result = db_result(db_query('SELECT uid FROM {users} WHERE uid = %d', $username));
+        
+       if($result)
+       {//If that user exists, check to see if the password is correct
+           $result = db_result(db_query('SELECT pass FROM {users} WHERE uid = %d', $username));
+           if(md5($password) == $result)
+                $isValid = true;
+       }
+        
+        //TODO: Optionally auth against phpScheduleIt.
+        //MPinnegar - I don't think we should auth against phpSched. Shouldn't we be authorizing exclusively against the Drupal install?
 		return $isValid;
 	}
 	
@@ -56,7 +77,10 @@ class Drupal implements IAuthorization
 	public function Login($username, $persist)
 	{
 		// Synchronize account information from Drupal
-		
+            //The only thing Drupal really has is the user's e-mail address. Could syncronize that?
+        
+        //MPinnegar - I assume I don't do anything with persist, that's only used by another wrapper?
+        
 		// Always call decorated Authorization so proper phpScheduleIt functionality is executed
 		$this->authToDecorate->Login($username, $persist);
 	}
@@ -67,7 +91,7 @@ class Drupal implements IAuthorization
 	public function CookieLogin($cookieValue)
 	{
 		// Do anything Drupal-specific
-		
+		  //MPinnegar - I don't think we need to do anything specific to Drupal? It shouldn't care about cookies set by phpScheduleIt
 		// Always call decorated Authorization so proper phpScheduleIt functionality is executed
 		$this->authToDecorate->CookieLogin(cookieValue);
 	}
