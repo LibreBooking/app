@@ -15,7 +15,7 @@ class RegistrationMini implements IRegistrationMini
 		}
 	}
 	
-	public function RegisterMini($username, $email, $firstName, $lastName, $password, $timezone)
+	public function RegisterMini($username, $email, $firstName, $lastName, $password, $timezone, $language)
 	{
 		$roleid = 1; //TODO get this from somewhere intelligent
 		$salt = $this->_passwordEncryption->Salt();

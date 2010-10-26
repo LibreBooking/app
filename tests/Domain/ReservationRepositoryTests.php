@@ -109,10 +109,11 @@ class ReservationRepositoryTests extends TestBase
 		$repeatOptions = new NoRepetion();
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatOptionsString = $repeatOptions->ConfigurationString();
-
+		$referenceNumber = $reservation->ReferenceNumber();
+		
 		$this->repository->Add($reservation);
 		
-		$insertReservation = new AddReservationCommand($startUtc, $endUtc, $dateCreatedUtc, $title, $description, $repeatType, $repeatOptionsString);
+		$insertReservation = new AddReservationCommand($startUtc, $endUtc, $dateCreatedUtc, $title, $description, $repeatType, $repeatOptionsString, $referenceNumber);
 		$insertReservationResource = new AddReservationResourceCommand($reservationId, $resourceId);
 		$insertReservationUser = new AddReservationUserCommand($reservationId, $userId, $levelId);
 		

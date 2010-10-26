@@ -8,8 +8,9 @@ interface IRegistrationMini
 	 * @param string $lastName
 	 * @param string $password unencrypted password
      * @param string $timezone name of timezone
+     * @param string $language preferred language code
 	 */
-  public function RegisterMini($login, $email, $firstName, $lastName, $password, $timezone);
+  public function RegisterMini($login, $email, $firstName, $lastName, $password, $timezone, $language);
 	
 	/**
 	 * @param string $loginName

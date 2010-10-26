@@ -50,6 +50,7 @@ class ParameterNames
 	const SCHEDULE_ID = '@scheduleid';
 	const START_DATE = '@startDate';
 	const TIMEZONE_NAME = '@timezone';
+	const LANGUAGE = '@language';
 	const TITLE = '@title';
 	const USER_ID = '@userid';
 	const USER_ROLE_ID = '@user_roleid';
@@ -209,6 +210,14 @@ class Queries
 		WHERE
 			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resourceid';
 	
+	const GET_USER_BY_ID = 
+		'SELECT
+			SELECT email, fname, lname, timezone, language, position, phone, homepageid, status_id
+		FROM
+			users
+		WHERE
+			user_id = @userid';
+	
 	const GET_USER_ROLES = 
 		'SELECT 
 			user_id, user_level 
@@ -243,9 +252,9 @@ class Queries
 
 	const REGISTER_USER = 
 		'INSERT INTO 
-			users (email, password, fname, lname, phone, organization_id, position, username, salt, timezone, homepageid, status_id)
+			users (email, password, fname, lname, phone, organization_id, position, username, salt, timezone, language, homepageid, status_id)
 		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @homepageid, @user_statusid)
+			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid)
 		';
 
 

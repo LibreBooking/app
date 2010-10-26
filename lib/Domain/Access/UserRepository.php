@@ -39,13 +39,19 @@ class UserRepository implements IUserRepository
 	 */
 	public function LoadById($userId)
 	{
-		//TODO: Implement for real
-		
 		$user = new User();
+		
 		if (!$this->_cache->Exists($userId))
 		{
-			$user = null;// pull+build
-			$this->_cache->Add($userId, $user);
+			$command = new GetUserByIdCommand($userId);
+
+			$reader = ServiceLocator::GetDatabase()->Query($command);
+	
+			if ($row = $reader->GetRow())
+			{
+				$user = User::FromRow($row);
+				$this->_cache->Add($userId, $user);
+			}
 		}
 		
 		return $this->_cache->Get($userId);

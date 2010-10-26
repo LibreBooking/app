@@ -74,6 +74,7 @@ class RegistrationPresenter
     			$this->_page->GetLastName(),
     			$this->_page->GetPassword(),
     			$this->_page->GetTimezone(),
+    			Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
     			intval($this->_page->GetHomepage()),
     			$additionalFields);
     			

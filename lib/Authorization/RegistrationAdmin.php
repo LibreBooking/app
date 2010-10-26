@@ -16,8 +16,9 @@ interface IRegistrationAdmin
 	 * @param string $phone setting
 	 * @param string $homepage selection setting
      * @param string $timezone selection setting
+     * @param string $language preferred language code
 	 */
-  public function RegisterAdmin($firstName, $lastName, $username, $email, $password, $organization, $group, $position, $address, $phone, $homepage, $timezone);
+  public function RegisterAdmin($firstName, $lastName, $username, $email, $password, $organization, $group, $position, $address, $phone, $homepage, $timezone, $language);
 	
 }
 
@@ -35,13 +36,12 @@ class RegistrationAdmin implements IRegistrationAdmin
 		}
 	}
 	
-	public function RegisterAdmin($firstName, $lastName, $username, $email, $password, $organization, $group, $position, $address, $phone, $homepage, $timezone)
+	public function RegisterAdmin($firstName, $lastName, $username, $email, $password, $organization, $group, $position, $address, $phone, $homepage, $timezone, $langauge)
 	{
-				
 		$formSettingsCommand = new RegisterFormSettingsCommand(
 					$firstName, $lastName, $username, $email, $password, 
 					$organization, $group, $position, $address, $phone, 
-					$homepage, $timezone 
+					$homepage, $timezone, $language
 					);
 					
 		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($formSettingsCommand);

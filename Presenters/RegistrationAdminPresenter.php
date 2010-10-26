@@ -70,7 +70,8 @@ class RegistrationAdminPresenter
     			$this->_page->GetAddress(),
     			$this->_page->GetPhone(),
     			$this->_page->GetHomepage(),
-                date('e')); // = timezone, TODO this should be set by the admin of the scheduler, not taken from the server
+                date('e'),
+                Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE)); // = timezone, TODO this should be set by the admin of the scheduler, not taken from the server
 				
     		$this->_page->Redirect(Pages::DASHBOARD);
 	    }

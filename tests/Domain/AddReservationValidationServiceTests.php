@@ -71,7 +71,6 @@ class AddReservationValidationServiceTests extends TestBase
 		
 		$vs = new AddReservationValidationService($rules);
 		
-		$reservation = new Reservation();
 		$result = $vs->Validate($reservation);
 		
 		$this->assertEquals(false, $result->CanBeSaved());

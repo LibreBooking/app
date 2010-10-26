@@ -10,9 +10,9 @@
 	Description: {$Description}<br/>
 	
 	{if count($RepeatDates) gt 0}
-	<br/>
-	Your reservation was repeated on the following dates:
-	<br/>
+		<br/>
+		Your reservation was repeated on the following dates:
+		<br/>
 	{/if}
 	
 	{foreach from=$RepeatDates item=date name=dates}

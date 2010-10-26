@@ -68,7 +68,8 @@ class RegistrationMiniPresenter
     			$this->_page->GetFirstName(),
     			$this->_page->GetLastName(),
     			$this->_page->GetPassword(),
-                date('e')); //TODO this should be set by the admin of the scheduler, not taken from the server
+                date('e'),
+                Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE)); //TODO this should be set by the admin of the scheduler, not taken from the server
 				
     		$this->_auth->Login($this->_page->GetEmail(), false);
     		$this->_page->Redirect(Pages::DASHBOARD);

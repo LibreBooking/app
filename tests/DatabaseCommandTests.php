@@ -134,6 +134,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$password = 'password';
 		$salt = '23948';
 		$timezone = 'US/Eastern';
+		$language = 'en_US';
 		$phone = '123.123.1234';
 		$institution = 'inst';
 		$position = 'pos';
@@ -141,10 +142,10 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$status = AccountStatus::AWAITING_ACTIVATION;
 		
 		$command = new RegisterUserCommand($username, $email, $fname, $lname, $password, $salt, 
-							$timezone, $homepageId, $phone, $institution, $position, $status);
+							$timezone, $language, $homepageId, $phone, $institution, $position, $status);
 		
 		$this->assertEquals(Queries::REGISTER_USER, $command->GetQuery());
-		$this->assertEquals(12, $command->Parameters->Count());		
+		$this->assertEquals(13, $command->Parameters->Count());		
 		$this->assertEquals(new Parameter(ParameterNames::USERNAME, $username), $command->Parameters->Items(0));
 		$this->assertEquals(new Parameter(ParameterNames::EMAIL_ADDRESS, $email), $command->Parameters->Items(1));
 		$this->assertEquals(new Parameter(ParameterNames::FIRST_NAME, $fname), $command->Parameters->Items(2));
@@ -152,11 +153,12 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(new Parameter(ParameterNames::PASSWORD, $password), $command->Parameters->Items(4));
 		$this->assertEquals(new Parameter(ParameterNames::SALT, $salt), $command->Parameters->Items(5));
 		$this->assertEquals(new Parameter(ParameterNames::TIMEZONE_NAME, $timezone), $command->Parameters->Items(6));
-		$this->assertEquals(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId), $command->Parameters->Items(7));
-		$this->assertEquals(new Parameter(ParameterNames::PHONE, $phone), $command->Parameters->Items(8));
-		$this->assertEquals(new Parameter(ParameterNames::ORGANIZATION, $institution), $command->Parameters->Items(9));
-		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(10));
-		$this->assertEquals(new Parameter(ParameterNames::USER_STATUS_ID, $status), $command->Parameters->Items(11));
+		$this->assertEquals(new Parameter(ParameterNames::LANGUAGE, $language), $command->Parameters->Items(7));
+		$this->assertEquals(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId), $command->Parameters->Items(8));
+		$this->assertEquals(new Parameter(ParameterNames::PHONE, $phone), $command->Parameters->Items(9));
+		$this->assertEquals(new Parameter(ParameterNames::ORGANIZATION, $institution), $command->Parameters->Items(10));
+		$this->assertEquals(new Parameter(ParameterNames::POSITION, $position), $command->Parameters->Items(11));
+		$this->assertEquals(new Parameter(ParameterNames::USER_STATUS_ID, $status), $command->Parameters->Items(12));
 	}
 	
 	function testGetUserRoleCommand()

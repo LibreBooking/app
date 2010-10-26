@@ -39,5 +39,50 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals(1, count($this->db->_Commands));
 		$this->assertEquals($getAllUsersCommand, $this->db->_Commands[0]);
 	}
+	
+	public function testLoadsUserFromDatabaseIfNotInCache()
+	{
+		$userId = 982;
+		$loadByIdCommand = new GetUserByIdCommand($userId);
+		
+		$rows = $this->GetUserRow();
+		$this->db->SetRows($rows);
+		
+		$row = $rows[0];
+		
+		$userRepository = new UserRepository();
+		$user = $userRepository->LoadById($userId);
+		
+		$this->assertEquals(1, count($this->db->_Commands));
+		$this->assertEquals($loadByIdCommand, $this->db->_Commands[0]);
+		
+		$this->assertEquals($row[ColumnNames::FIRST_NAME], $user->FirstName());
+	}
+	
+	public function testLoadsUserFromCacheIfAlreadyLoadedFromDatabase()
+	{
+		$userId = 1;
+		
+		$row = $this->GetUserRow();
+		$this->db->SetRows($row);
+		
+		$userRepository = new UserRepository();
+		$user = $userRepository->LoadById($userId);
+		
+		$user = $userRepository->LoadById($userId); // 2nd call should load from cache
+		
+		$this->assertEquals(1, count($this->db->_Commands));
+
+	}
+	
+	private function GetUserRow()
+	{
+		$row = array
+		(
+			array(ColumnNames::FIRST_NAME => 'first')
+		);
+		
+		return $row;
+	}
 }
 ?>

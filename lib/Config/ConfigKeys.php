@@ -1,15 +1,15 @@
 <?php
 class ConfigKeys
 {
-	const SERVER_TIMEZONE = 'server.timezone';	
-	const ALLOW_REGISTRATION = 'allow.self.registration';
 	const ADMIN_EMAIL = 'admin.email';
-	const LANGUAGE = 'default.language';
+	const ALLOW_REGISTRATION = 'allow.self.registration';
 	const ALLOW_RSS = 'allow.rss';
-	const VERSION = 'version';
-	const SCRIPT_URL = 'script.url';
-	const USE_LOGON_NAME = 'use.logon.name';
+	const LANGUAGE = 'default.language';
 	const PASSWORD_PATTERN = 'password.pattern';
+	const SCRIPT_URL = 'script.url';
+	const SERVER_TIMEZONE = 'server.timezone';	
+	const USE_LOGON_NAME = 'use.logon.name';
+	const VERSION = 'version';
 	
 	const SCHEDULE_SHOW_INACCESSIBLE_RESOURCES = 'show.inaccessible.resources';
 	

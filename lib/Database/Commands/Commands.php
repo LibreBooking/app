@@ -198,6 +198,15 @@ class GetScheduleResourcesCommand extends SqlCommand
 	}
 }
 
+class GetUserByIdCommand extends SqlCommand
+{
+	public function __construct($userid)
+	{
+		parent::__construct(Queries::GET_USER_BY_ID);		
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
+	}
+}
+
 class GetUserRoleCommand extends SqlCommand
 {
 	public function __construct($userid)
@@ -250,7 +259,7 @@ class RegisterFormSettingsCommand extends SqlCommand
 
 class RegisterMiniUserCommand extends SqlCommand 
 {
-	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $userStatusId, $userRoleId)
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $userStatusId, $userRoleId, $language)
 	{
 		parent::__construct(Queries::REGISTER_MINI_USER);
 		
@@ -261,6 +270,7 @@ class RegisterMiniUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
 		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
 		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezone));
+		$this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ROLE_ID, $userRoleId));
 	}
@@ -268,7 +278,7 @@ class RegisterMiniUserCommand extends SqlCommand
 
 class RegisterUserCommand extends SqlCommand 
 {
-	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $homepageId, $phone, $institution, $position, $userStatusId)
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId, $phone, $institution, $position, $userStatusId)
 	{
 		parent::__construct(Queries::REGISTER_USER);
 		
@@ -279,6 +289,7 @@ class RegisterUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
 		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
 		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezone));
+		$this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
 		$this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId));
 		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
 		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $institution));

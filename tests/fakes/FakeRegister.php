@@ -15,7 +15,7 @@ class FakeRegistration implements IRegistration
 	public $_AdditionalFields;
 	public $_HomepageId;
 	
-	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $homepageId, $additionalFields = array())
+	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array())
 	{
 		$this->_RegisterCalled = true;
 		$this->_Login = $login;

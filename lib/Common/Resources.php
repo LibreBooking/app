@@ -18,6 +18,7 @@ class Resources
 	public $LanguageFile;
 	public $CalendarLanguageFile;
 	public $AvailableLanguages = array();
+	public $Charset;
 	
 	protected $LanguageDirectory;
 	

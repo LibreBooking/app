@@ -15,7 +15,7 @@ class Registration implements IRegistration
 		}
 	}
 	
-	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $homepageId, $additionalFields = array())
+	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array())
 	{
 		$salt = $this->_passwordEncryption->Salt();
 		$encryptedPassword = $this->_passwordEncryption->Encrypt($password, $salt);
@@ -25,7 +25,7 @@ class Registration implements IRegistration
 		
 		$registerCommand = new RegisterUserCommand(
 					$usernameToInsert, $email, $firstName, $lastName, 
-					$encryptedPassword, $salt, $timezone, $homepageId, 
+					$encryptedPassword, $salt, $timezone, $language, $homepageId, 
 					$additionalFields['phone'], $additionalFields['institution'], $additionalFields['position'], 
 					AccountStatus::AWAITING_ACTIVATION
 					);
