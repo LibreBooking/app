@@ -26,7 +26,7 @@ class OwnerEmailNotificationTests extends TestBase
 		
 		$user->expects($this->once())
 			->method('WantsEventEmail')
-			->with($this->equalTo(ReservationEvent::Created))
+			->with($this->equalTo(new ReservationCreatedEvent()))
 			->will($this->returnValue(true));
 			
 		$userRepo = $this->getMock('IUserRepository');

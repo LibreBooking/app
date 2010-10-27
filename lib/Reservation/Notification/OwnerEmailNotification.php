@@ -28,7 +28,7 @@ class OwnerEmailNotificaiton implements IReservationNotification
 	public function Notify($reservation)
 	{
 		$owner = $this->_userRepo->LoadById($reservation->UserId());
-		if ($owner->WantsEventEmail(ReservationEvent::Created))
+		if ($owner->WantsEventEmail(new ReservationCreatedEvent()))
 		{
 			$resource = $this->_resourceRepo->LoadById($reservation->ResourceId());
 			

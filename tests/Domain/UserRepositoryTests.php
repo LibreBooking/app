@@ -44,35 +44,43 @@ class UserRepositoryTests extends TestBase
 	{
 		$userId = 982;
 		$loadByIdCommand = new GetUserByIdCommand($userId);
+		$loadEmailPreferencesCommand = new GetUserEmailPreferencesCommand($userId);
 		
-		$rows = $this->GetUserRow();
-		$this->db->SetRows($rows);
+		$userRows = $this->GetUserRow();
+		$emailPrefRows = $this->GetEmailPrefRows();
 		
-		$row = $rows[0];
+		$this->db->SetRow(0, $emailPrefRows);
+		$this->db->SetRow(1, $userRows);
+
+		$row = $userRows[0];
 		
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 		
-		$this->assertEquals(1, count($this->db->_Commands));
-		$this->assertEquals($loadByIdCommand, $this->db->_Commands[0]);
-		
+		$this->assertEquals(2, count($this->db->_Commands));
+		$this->assertEquals($loadEmailPreferencesCommand, $this->db->_Commands[0]);		
+		$this->assertEquals($loadByIdCommand, $this->db->_Commands[1]);
+
 		$this->assertEquals($row[ColumnNames::FIRST_NAME], $user->FirstName());
+		$this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
 	}
 	
 	public function testLoadsUserFromCacheIfAlreadyLoadedFromDatabase()
 	{
 		$userId = 1;
 		
-		$row = $this->GetUserRow();
-		$this->db->SetRows($row);
+		$row = $this->GetUserRow();		
+		$emailPrefRows = $this->GetEmailPrefRows();
+		
+		$this->db->SetRow(0, $emailPrefRows);
+		$this->db->SetRow(1, $row);
 		
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 		
 		$user = $userRepository->LoadById($userId); // 2nd call should load from cache
 		
-		$this->assertEquals(1, count($this->db->_Commands));
-
+		$this->assertEquals(2, count($this->db->_Commands));
 	}
 	
 	private function GetUserRow()
@@ -80,6 +88,17 @@ class UserRepositoryTests extends TestBase
 		$row = array
 		(
 			array(ColumnNames::FIRST_NAME => 'first')
+		);
+		
+		return $row;
+	}
+	
+	private function GetEmailPrefRows()
+	{
+		$row = array
+		(
+			array(ColumnNames::EVENT_CATEGORY => 'reservation', ColumnNames::EVENT_TYPE => ReservationEvent::Created),
+			array(ColumnNames::EVENT_CATEGORY => 'reservation', ColumnNames::EVENT_TYPE => ReservationEvent::Modified),
 		);
 		
 		return $row;

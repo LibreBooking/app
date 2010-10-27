@@ -689,4 +689,16 @@ CREATE TABLE `reservation_resources` (
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
+--
+-- Table structure for table `user_email_preferences`
+--
+
+DROP TABLE IF EXISTS `user_email_preferences`;
+CREATE TABLE `user_email_preferences` (
+  `userid` mediumint(8) unsigned NOT NULL,
+  `event_category` varchar(45) NOT NULL,
+  `event_type` varchar(45) NOT NULL,
+  KEY `userid` (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 GRANT ALL on phpscheduleit2.* to 'schedule_user'@'localhost' identified by 'password';

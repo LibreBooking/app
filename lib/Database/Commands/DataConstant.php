@@ -212,11 +212,19 @@ class Queries
 	
 	const GET_USER_BY_ID = 
 		'SELECT
-			SELECT email, fname, lname, timezone, language, position, phone, homepageid, status_id
+			email, fname, lname, timezone, language, position, phone, homepageid, status_id
 		FROM
 			users
 		WHERE
-			user_id = @userid';
+			userid = @userid';
+	
+	const GET_USER_EMAIL_PREFERENCES =
+		'SELECT 
+			*
+		FROM
+			user_email_preferences
+		WHERE
+			userid = @userid';
 	
 	const GET_USER_ROLES = 
 		'SELECT 
@@ -393,6 +401,10 @@ class ColumnNames
 	const SCHEDULE_DEFAULT = 'isdefault';
 	const SCHEDULE_WEEKDAY_START = 'weekdaystart';
 	const SCHEDULE_DAYS_VISIBLE = 'daysvisible';
+	
+	// EMAIL PREFERENCES //
+	const EVENT_CATEGORY = 'event_category';
+	const EVENT_TYPE= 'event_type';
 
 }
 ?>

@@ -207,6 +207,15 @@ class GetUserByIdCommand extends SqlCommand
 	}
 }
 
+class GetUserEmailPreferencesCommand extends SqlCommand
+{
+	public function __construct($userid)
+	{
+		parent::__construct(Queries::GET_USER_EMAIL_PREFERENCES);		
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
+	}
+}
+
 class GetUserRoleCommand extends SqlCommand
 {
 	public function __construct($userid)

@@ -43,18 +43,35 @@ class UserRepository implements IUserRepository
 		
 		if (!$this->_cache->Exists($userId))
 		{
+			$emailPreferences = $this->LoadEmailPreferences($userId);
+			
 			$command = new GetUserByIdCommand($userId);
 
 			$reader = ServiceLocator::GetDatabase()->Query($command);
 	
 			if ($row = $reader->GetRow())
 			{
-				$user = User::FromRow($row);
+				$user = User::FromRow($row, $emailPreferences);
 				$this->_cache->Add($userId, $user);
-			}
+			}		
 		}
 		
 		return $this->_cache->Get($userId);
+	}
+	
+	public function LoadEmailPreferences($userId)
+	{
+		$emailPreferences = new EmailPreferences();
+			
+		$command = new GetUserEmailPreferencesCommand($userId);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		while ($row = $reader->GetRow())
+		{
+			$emailPreferences->Add($row[ColumnNames::EVENT_CATEGORY], $row[ColumnNames::EVENT_TYPE]);
+		}
+		
+		return $emailPreferences;
 	}
 	
 	/**
@@ -140,5 +157,32 @@ class NullUserDto extends UserDto
 	{
 		return null;
 	}
+}
+
+class EmailPreferences implements IEmailPreferences
+{
+	private $preferences = array();
+	
+	public function Add($eventCategory, $eventType)
+	{
+		$key = $this->ToKey($eventCategory, $eventType);
+		$this->preferences[$key] = true;
+	}
+	
+	public function Exists($eventCategory, $eventType)
+	{
+		$key = $this->ToKey($eventCategory, $eventType);
+		return isset($this->preferences[$key]);
+	}
+	
+	private function ToKey($eventCategory, $eventType)
+	{
+		return $eventCategory . '|' . $eventType;
+	}
+}
+
+interface IEmailPreferences
+{
+	function Exists($eventCategory, $eventType);
 }
 ?>
