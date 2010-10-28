@@ -329,6 +329,7 @@ class ColumnNames
 	const HOMEPAGE_ID = 'homepageid';
 	const LAST_LOGIN = 'lastlogin';
 	const TIMEZONE_NAME = 'timezone';
+	const LANGUAGE_CODE = 'language';
 	const SALT = 'salt';
 
 	// USER_ORGANIZATIONS //

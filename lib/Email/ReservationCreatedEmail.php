@@ -18,12 +18,16 @@ class ReservationCreatedEmail implements IEmailMessage
 	 */
 	private $primaryResource;
 	
+	private $timezone;
+	
 	public function __construct(User $reservationOwner, Reservation $reservation, IResource $primaryResource)
 	{
-		$this->email = new SmartyEmail();
+		$this->email = new SmartyEmail($reservationOwner->Language());
 		$this->reservationOwner = $reservationOwner;
 		$this->reservation = $reservation;
 		$this->resource = $primaryResource;
+		
+		$this->timezone = $reservationOwner->Timezone();
 	}
 	
 	private function Set($var, $value)
@@ -32,13 +36,9 @@ class ReservationCreatedEmail implements IEmailMessage
 	}
 	
 	private function PopulateTemplate()
-	{
-		//$lang = $reservationOwner->Language();
-		//$timezone = $reservationOwner->Timezone();
-		$timezone = 'US/Central';
-		
-		$this->Set('StartDate', $this->reservation->StartDate()->ToTimezone($timezone));
-		$this->Set('EndDate', $this->reservation->EndDate()->ToTimezone($timezone));
+	{	
+		$this->Set('StartDate', $this->reservation->StartDate()->ToTimezone($this->timezone));
+		$this->Set('EndDate', $this->reservation->EndDate()->ToTimezone($this->timezone));
 		
 		$this->Set('Title', $this->reservation->Title());
 		$this->Set('Description', $this->reservation->Description());
@@ -46,7 +46,7 @@ class ReservationCreatedEmail implements IEmailMessage
 		$repeatDates = array();
 		foreach ($this->reservation->RepeatedDates() as $repeated)
 		{
-			$repeatDates[] = $repeated->GetBegin()->ToTimezone($timezone);
+			$repeatDates[] = $repeated->GetBegin()->ToTimezone($this->timezone);
 		}
 		$this->Set('RepeatDates', $repeatDates);
 		$this->Set('ReservationUrl', "reservation.php?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $this->reservation->ReferenceNumber());
@@ -55,7 +55,7 @@ class ReservationCreatedEmail implements IEmailMessage
 	public function Body()
 	{
 		$this->PopulateTemplate();
-		return $this->email->fetch("en_us/ReservationCreated.tpl"); 
+		return $this->email->FetchTemplate("ReservationCreated.tpl"); 
 	}
 }
 ?>

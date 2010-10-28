@@ -13,6 +13,11 @@ $reservation->UpdateDuration(new DateRange($start, $end));
 
 $reservation->Repeats(new DayOfMonthRepeat(1, $end->AddDays(100), new DateRange($start, $end)));
 
-$email = new ReservationCreatedEmail(new User(), $reservation, new FakeResource(1, 'name'));
+$user = new FakeUser();
+$user->SetLanguage('en_gb');
+
+$email = new ReservationCreatedEmail($user, $reservation, new FakeResource(1, 'name'));
 echo $email->Body();
+
+
 ?>

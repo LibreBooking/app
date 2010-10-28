@@ -9,8 +9,8 @@ class SmartyPage extends Smarty
 {
 	public $Validators;
 		
-	private $Resources = null;
-	private $RootPath = null;
+	protected $Resources = null;
+	protected $RootPath = null;
 	private $IsValid = true;
 	
 	public function __construct(Resources &$resources = null, $rootPath = null)
