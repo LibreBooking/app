@@ -5,6 +5,7 @@ require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Converters/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/SmartyControls/namespace.php');
 
+
 class SmartyPage extends Smarty
 {
 	public $Validators;

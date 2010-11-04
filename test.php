@@ -1,24 +1,8 @@
-<?xml version="1.0"?>
-<configdata>
-    <production>
-        <webhost>www.example.com</webhost>
-        <database>
-            <adapter>pdo_mysql</adapter>
-            <params>
-                <host>db.example.com</host>
-                <username>dbuser</username>
-                <password>secret</password>
-                <dbname>dbname</dbname>
-            </params>
-        </database>
-    </production>
-    <staging extends="production">
-        <database>
-            <params>
-                <host>dev.example.com</host>
-                <username>devuser</username>
-                <password>devsecret</password>
-            </params>
-        </database>
-    </staging>
-</configdata>
+<?php
+define('ROOT_DIR', './');
+
+require_once(ROOT_DIR . 'lib/Common/Logging/Log.php');
+
+Log::GetInstance()->Debug('wtf');
+
+?>

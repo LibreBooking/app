@@ -16,4 +16,11 @@ $conf['settings']['database']['hostspec'] = 'localhost';
 $conf['settings']['database']['name'] = 'phpscheduleit2';
 $conf['settings']['plugins']['Auth'] = '';
 $conf['settings']['reservation']['notify.created'] = 'true';
+$conf['settings']['phpmailer']['mailer'] = 'mail';
+$conf['settings']['phpmailer']['smtp.host'] = '';
+$conf['settings']['phpmailer']['smtp.port'] = '';
+$conf['settings']['phpmailer']['smtp.secure'] = '';
+$conf['settings']['phpmailer']['smtp.auth'] = '';
+$conf['settings']['phpmailer']['smtp.username'] = '';
+$conf['settings']['phpmailer']['smtp.password'] = '';
 ?>

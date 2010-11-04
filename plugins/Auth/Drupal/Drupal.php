@@ -95,6 +95,22 @@ class Drupal implements IAuthorization
 		// Always call decorated Authorization so proper phpScheduleIt functionality is executed
 		$this->authToDecorate->CookieLogin(cookieValue);
 	}
+	
+	/**
+	 * @see IAuthorization::AreCredentialsKnown()
+	 */
+	public function AreCredentialsKnown()
+	{
+		return false;
+	}
+	
+	/**
+	 * @see IAuthorization::HandleLoginFailure()
+	 */
+	public function HandleLoginFailure(ILoginPage $loginPage)
+	{
+		$this->authToDecorate->HandleLoginFailure($loginPage);
+	}
 }
 
 ?>

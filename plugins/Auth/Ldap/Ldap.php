@@ -142,6 +142,22 @@ class Ldap implements IAuthorization
 		$this->authToDecorate->CookieLogin($cookieValue);
 	}
 	
+	/**
+	 * @see IAuthorization::AreCredentialsKnown()
+	 */
+	public function AreCredentialsKnown()
+	{
+		return false;
+	}
+	
+	/**
+	 * @see IAuthorization::HandleLoginFailure()
+	 */
+	public function HandleLoginFailure(ILoginPage $loginPage)
+	{
+		$this->authToDecorate->HandleLoginFailure($loginPage);
+	}
+	
 	private function LdapUserExists()
 	{
 		return $this->user != null;

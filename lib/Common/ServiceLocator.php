@@ -1,8 +1,4 @@
 <?php
-require_once(ROOT_DIR . 'lib/Database/namespace.php');
-require_once(ROOT_DIR . 'lib/Server/namespace.php');
-require_once(ROOT_DIR . 'lib/Email/namespace.php');
-
 class ServiceLocator
 {
 	/**
@@ -25,6 +21,8 @@ class ServiceLocator
 	 */
 	public static function GetDatabase()
 	{
+		require_once(ROOT_DIR . 'lib/Database/namespace.php');
+		
 		if (self::$_database == null)
 		{
 			self::$_database = DatabaseFactory::GetDatabase();
@@ -42,6 +40,8 @@ class ServiceLocator
 	 */
 	public static function GetServer()
 	{
+		require_once(ROOT_DIR . 'lib/Server/namespace.php');
+		
 		if (self::$_server == null)
 		{
 			self::$_server = new Server();
@@ -56,6 +56,8 @@ class ServiceLocator
 	
 	public static function GetEmailService()
 	{
+		require_once(ROOT_DIR . 'lib/Email/namespace.php');
+		
 		if (self::$_emailSerivce == null)
 		{
 			self::$_emailSerivce = new EmailService();

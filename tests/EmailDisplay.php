@@ -4,6 +4,7 @@ require_once(ROOT_DIR . "lib/Email/namespace.php");
 require_once(ROOT_DIR . "lib/Domain/namespace.php");
 require_once(ROOT_DIR . "tests/fakes/namespace.php");
 
+
 $start = Date::Parse('2010-10-05 03:30:00', 'UTC');
 $end = Date::Parse('2010-10-06 13:30:00', 'UTC');
 

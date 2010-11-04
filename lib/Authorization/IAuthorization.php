@@ -15,5 +15,15 @@ interface IAuthorization
 	 * @return void
 	 */
 	public function CookieLogin($cookieValue);
+	
+	/**
+	 * @return bool
+	 */
+	public function AreCredentialsKnown();
+	
+	/**
+	 * @return void
+	 */
+	public function HandleLoginFailure(ILoginPage $loginPage);
 }
 ?>

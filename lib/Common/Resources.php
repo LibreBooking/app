@@ -50,7 +50,6 @@ class Resources
 	{					
 		if (is_null(self::$_instance))
 		{
-			echo 'null';
 			self::$_instance = Resources::Create();
 		}
 		

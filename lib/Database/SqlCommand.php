@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'lib/Database/ISqlCommand.php');
+
 class SqlCommand implements ISqlCommand
 {
 	public $Parameters = null;

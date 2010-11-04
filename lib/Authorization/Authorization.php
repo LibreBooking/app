@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
 class Authorization implements IAuthorization 
@@ -26,8 +27,13 @@ class Authorization implements IAuthorization
 		return $this->passwordMigration;
 	}
 	
+	/**
+	 * @see IAuthorization::Validate()
+	 */
 	public function Validate($username, $password)
 	{
+		Log::Debug('Trying to log in as: %s', $username);
+		
 		$command = new AuthorizationCommand($username);
 		$reader = ServiceLocator::GetDatabase()->Query($command);		
 		$valid = false;
@@ -49,6 +55,9 @@ class Authorization implements IAuthorization
 		return $valid;
 	}
 	
+	/**
+	 * @see IAuthorization::Login()
+	 */
 	public function Login($username, $persist)
 	{
 		$command = new LoginCommand($username);
@@ -73,6 +82,9 @@ class Authorization implements IAuthorization
 		}	
 	}
 	
+	/**
+	 * @see IAuthorization::CookieLogin()
+	 */
 	public function CookieLogin($cookieValue)
 	{
 		$loginCookie = LoginCookie::FromValue($cookieValue);
@@ -90,6 +102,22 @@ class Authorization implements IAuthorization
 		}
 		
 		return $valid;
+	}
+	
+	/**
+	 * @see IAuthorization::AreCredentialsKnown()
+	 */
+	public function AreCredentialsKnown()
+	{
+		return false;
+	}
+	
+	/**
+	 * @see IAuthorization::HandleLoginFailure()
+	 */
+	public function HandleLoginFailure(ILoginPage $loginPage)
+	{
+		$loginPage->setShowLoginError();
 	}
 	
 	private function IsAdminRole($userid)

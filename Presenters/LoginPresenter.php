@@ -31,6 +31,11 @@ class LoginPresenter
 	
 	public function PageLoad()
 	{
+		if ($this->_auth->AreCredentialsKnown())
+		{
+			$this->Login();
+		}
+		
 		$loginCookie = ServiceLocator::GetServer()->GetCookie(CookieKeys::PERSIST_LOGIN);
 
 		if ($this->IsCookieLogin($loginCookie))
@@ -57,6 +62,7 @@ class LoginPresenter
 		}
 		else 
 		{
+			$this->_auth->HandleLoginFailure($this->_page);
 			$this->_page->setShowLoginError();
 		}
 	}

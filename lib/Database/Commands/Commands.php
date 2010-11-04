@@ -1,15 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Database/SqlCommand.php');
 
-class GetLayoutCommand extends SqlCommand
-{
-	public function __construct($scheduleId)
-	{
-		parent::__construct(Queries::GET_SCHEDULE_TIME_BLOCK_GROUPS);
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
-	}
-}
-
 //MPinnegar
 //TO-DO: Move this into alphabetical order
 class GetAllReservationsByUserCommand /*Give it a very literal name describing what the command is going to do*/extends SqlCommand
