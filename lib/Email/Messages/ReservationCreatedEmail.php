@@ -1,8 +1,7 @@
 <?php
-class ReservationCreatedEmail implements IEmailMessage
+
+class ReservationCreatedEmail extends EmailMessage
 {
-	private $email;
-	
 	/**
 	 * @var User
 	 */
@@ -22,17 +21,12 @@ class ReservationCreatedEmail implements IEmailMessage
 	
 	public function __construct(User $reservationOwner, Reservation $reservation, IResource $primaryResource)
 	{
-		$this->email = new SmartyEmail($reservationOwner->Language());
+		parent::__construct($reservationOwner->Language());
+		
 		$this->reservationOwner = $reservationOwner;
 		$this->reservation = $reservation;
 		$this->resource = $primaryResource;
-		
 		$this->timezone = $reservationOwner->Timezone();
-	}
-	
-	private function Set($var, $value)
-	{
-		$this->email->assign($var, $value);
 	}
 	
 	private function PopulateTemplate()
@@ -52,10 +46,23 @@ class ReservationCreatedEmail implements IEmailMessage
 		$this->Set('ReservationUrl', "reservation.php?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $this->reservation->ReferenceNumber());
 	}
 	
+	public function To()
+	{
+		$address = $this->reservationOwner->EmailAddress();
+		$name = $this->reservationOwner->FullName();
+		
+		return array(new EmailAddress($address, $name));
+	}
+	
+	public function Subject()
+	{
+		return $this->Translate('ReservationCreatedSubject');
+	}
+	
 	public function Body()
 	{
 		$this->PopulateTemplate();
-		return $this->email->FetchTemplate("ReservationCreated.tpl"); 
+		return $this->FetchTemplate("ReservationCreated.tpl"); 
 	}
 }
 ?>

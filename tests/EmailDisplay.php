@@ -1,6 +1,7 @@
 <?php
 define('ROOT_DIR', dirname(__FILE__) . '/../');
 require_once(ROOT_DIR . "lib/Email/namespace.php");
+require_once(ROOT_DIR . "lib/Email/Messages/ReservationCreatedEmail.php");
 require_once(ROOT_DIR . "lib/Domain/namespace.php");
 require_once(ROOT_DIR . "tests/fakes/namespace.php");
 
@@ -20,5 +21,7 @@ $user->SetLanguage('en_gb');
 $email = new ReservationCreatedEmail($user, $reservation, new FakeResource(1, 'name'));
 echo $email->Body();
 
+$emailService = new EmailService();
+$emailService->Send($email);
 
 ?>

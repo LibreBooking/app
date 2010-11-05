@@ -20,6 +20,11 @@ class User
 		return $this->lastName;
 	}
 	
+	public function FullName()
+	{
+		return $this->FirstName() . ' ' . $this->LastName();
+	}
+	
 	protected $emailAddress;
 	
 	public function EmailAddress()

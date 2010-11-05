@@ -36,5 +36,15 @@ class FakeAuth implements IAuthorization
 		
 		return $this->_CookieValidateResult;
 	}
+	
+	public function AreCredentialsKnown()
+	{
+		return true;
+	}
+	
+	public function HandleLoginFailure(ILoginPage $loginPage)
+	{
+		
+	}
 }
 ?>

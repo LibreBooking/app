@@ -43,5 +43,16 @@ class Log
 		$log = vsprintf(array_shift($args), array_values($args));
 		self::GetInstance()->logger->debug($log);
 	}
+	
+	/**
+	 * @param string $message
+	 * @param mixed $args
+	 */
+	public static function Error($message, $args = array())
+	{
+		$args = func_get_args();
+		$log = vsprintf(array_shift($args), array_values($args));
+		self::GetInstance()->logger->error($log);
+	}
 }
 ?>

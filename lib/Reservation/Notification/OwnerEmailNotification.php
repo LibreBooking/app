@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
 
 class OwnerEmailNotificaiton implements IReservationNotification 
 {

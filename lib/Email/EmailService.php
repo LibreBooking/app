@@ -29,13 +29,41 @@ class EmailService implements IEmailService
 	
 	public function Send(IEmailMessage $emailMessage)
 	{
-		// charset
-		// subject
-		// body
-		// to list
-		// from
-		// cc list
-		throw Exception('not implemented');
+		$this->phpMailer->CharSet = $emailMessage->Charset();
+		$this->phpMailer->Subject = $emailMessage->Subject();
+		$this->phpMailer->Body = $emailMessage->Body();
+		
+		$from = $emailMessage->From();
+		$this->phpMailer->SetFrom($from->Address(), $from->Name());
+		
+		$replyTo = $emailMessage->ReplyTo();
+		$this->phpMailer->AddReplyTo($replyTo->Address(), $replyTo->Name());
+		
+		$to = $emailMessage->To();
+		$toAddresses = new StringBuilder();
+		foreach ($to as $address)
+		{
+			$toAddresses->Append($address->Address());
+			$this->phpMailer->AddAddress($address->Address(), $address->Name());
+		}
+
+		$cc = $emailMessage->CC();
+		foreach ($cc as $address)
+		{
+			$this->phpMailer->AddCC($address->Address(), $address->Name());
+		}
+		
+		$bcc = $emailMessage->BCC();
+		foreach ($bcc as $address)
+		{
+			$this->phpMailer->AddBCC($address->Address(), $address->Name());
+		}
+		
+		Log::Debug('Sending %s email to: %s from: %s', get_class($emailMessage), $toAddresses->ToString(), $from->Address());
+		
+		$success = $this->phpMailer->Send();
+		
+		Log::Debug('Send success: %d. %s', $success, $this->phpMailer->ErrorInfo);
 	}
 	
 	private function Config($key)

@@ -7,6 +7,11 @@ class FakeUser extends User
 		$this->language = 'en_us';
 	}
 	
+	public function EmailAddress()
+	{
+		return 'test@test.com';
+	}
+	
 	public function SetLanguage($language)
 	{
 		$this->language = $language;

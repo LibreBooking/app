@@ -84,11 +84,11 @@ h3 {
 /*********************************************************/
 #loginError, div.error {
     border: solid 1px #a4381c;
-    margin: 0px auto 15px;
+    margin: 20px auto 5px;
     background-color: #f5e4df;
     width: 60%;
     padding: 6px;
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
 }
 
@@ -127,6 +127,8 @@ div.error ul {
 
 .dashboardBorder {
     border: solid 1px #588abd;
+    margin-top: 15px;
+    width:100%;
 }
 
 div.page-footer {

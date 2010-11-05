@@ -110,6 +110,9 @@ class en_us extends Language
 		$strings['DayThursdayAbbr'] = 'Thu';
 		$strings['DayFridayAbbr'] = 'Fri';
 		$strings['DaySaturdayAbbr'] = 'Sat';
+		
+		// Email Subjects
+		$strings['ReservationCreatedSubject'] = 'Your reservation was created';
 		//
 		
 		/***

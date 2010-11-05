@@ -40,6 +40,7 @@ class Authorization implements IAuthorization
 
 		if ($row = $reader->GetRow())
 		{
+			Log::Debug('User was found: %s', $username);
 			$migration = $this->GetMigration();
 			$password = $migration->Create($password, $row[ColumnNames::OLD_PASSWORD], $row[ColumnNames::PASSWORD]);
 			
@@ -52,6 +53,7 @@ class Authorization implements IAuthorization
 			}
 		}
 		
+		Log::Debug('User: %s, was validated: %s', $username, $valid);
 		return $valid;
 	}
 	
@@ -60,6 +62,8 @@ class Authorization implements IAuthorization
 	 */
 	public function Login($username, $persist)
 	{
+		Log::Debug('Logging in with user: %s, persist: %s', $username, $persist);
+		
 		$command = new LoginCommand($username);
 		$reader = ServiceLocator::GetDatabase()->Query($command);
 		
