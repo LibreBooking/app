@@ -208,7 +208,7 @@ CREATE TABLE `users` (
  `position` varchar(85),
  `phone` varchar(85),
  `timezone` varchar(85) NOT NULL,
- `language` VARCHAR(10) NOT NULL
+ `language` VARCHAR(10) NOT NULL,
  `homepageid` tinyint(2) unsigned NOT NULL default '1',
  `date_created` datetime NOT NULL,
  `last_modified` timestamp,
