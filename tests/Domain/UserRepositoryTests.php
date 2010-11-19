@@ -14,11 +14,14 @@ class UserRepositoryTests extends TestBase
 	
 	public function testGetAllUsersReturnsAllActiveUsers()
 	{
+		$timezone = 'UTC';
+		$language = 'en_us';
+		
 		$userRows = array
 		(
-			array(ColumnNames::USER_ID => 1, ColumnNames::FIRST_NAME => "f1", ColumnNames::LAST_NAME => 'l1', ColumnNames::EMAIL => 'e1'),
-			array(ColumnNames::USER_ID => 2, ColumnNames::FIRST_NAME => "f2", ColumnNames::LAST_NAME => 'l2', ColumnNames::EMAIL => 'e2'),
-			array(ColumnNames::USER_ID => 3, ColumnNames::FIRST_NAME => "f3", ColumnNames::LAST_NAME => 'l3', ColumnNames::EMAIL => 'e3'),
+			array(ColumnNames::USER_ID => 1, ColumnNames::FIRST_NAME => "f1", ColumnNames::LAST_NAME => 'l1', ColumnNames::EMAIL => 'e1', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
+			array(ColumnNames::USER_ID => 2, ColumnNames::FIRST_NAME => "f2", ColumnNames::LAST_NAME => 'l2', ColumnNames::EMAIL => 'e2', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
+			array(ColumnNames::USER_ID => 3, ColumnNames::FIRST_NAME => "f3", ColumnNames::LAST_NAME => 'l3', ColumnNames::EMAIL => 'e3', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
 		);
 		
 		$this->db->SetRows($userRows);
@@ -26,9 +29,9 @@ class UserRepositoryTests extends TestBase
 		$userRepository = new UserRepository();
 		$users = $userRepository->GetAll();
 		
-		$user1 = new UserDto(1, "f1", "l1", "e1");
-		$user2 = new UserDto(2, "f2", "l2", "e2");
-		$user3 = new UserDto(3, "f3", "l3", "e3");
+		$user1 = new UserDto(1, "f1", "l1", "e1", $timezone, $language);
+		$user2 = new UserDto(2, "f2", "l2", "e2", $timezone, $language);
+		$user3 = new UserDto(3, "f3", "l3", "e3", $timezone, $language);
 		
 		$getAllUsersCommand = new GetAllUsersByStatusCommand(AccountStatus::ACTIVE);
 		
@@ -87,7 +90,13 @@ class UserRepositoryTests extends TestBase
 	{
 		$row = array
 		(
-			array(ColumnNames::FIRST_NAME => 'first')
+			array(
+				ColumnNames::FIRST_NAME => 'first', 
+				ColumnNames::LAST_NAME => 'last',
+				ColumnNames::EMAIL => 'email',
+				ColumnNames::LANGUAGE_CODE => 'en_us',
+				ColumnNames::TIMEZONE_NAME => 'UTC',
+			)
 		);
 		
 		return $row;

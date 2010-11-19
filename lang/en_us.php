@@ -113,6 +113,7 @@ class en_us extends Language
 		
 		// Email Subjects
 		$strings['ReservationCreatedSubject'] = 'Your reservation was created';
+		$strings['ReservationCreatedAdminSubject'] = 'A reservation was created';
 		//
 		
 		/***

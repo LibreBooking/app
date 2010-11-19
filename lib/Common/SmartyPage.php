@@ -3,6 +3,7 @@ require_once(ROOT_DIR . 'Smarty/Smarty.class.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Converters/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/SmartyControls/namespace.php');
 
 
@@ -10,7 +11,11 @@ class SmartyPage extends Smarty
 {
 	public $Validators;
 		
+	/**
+	 * @var Resources
+	 */
 	protected $Resources = null;
+	
 	protected $RootPath = null;
 	private $IsValid = true;
 	

@@ -1,7 +1,7 @@
 <?php 
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 
-class ReservationPreconditionService implements IReservationPreconditionService
+class NewReservationPreconditionService implements INewReservationPreconditionService
 {
 	/**
 	 * @var IPermissionServiceFactory
@@ -14,11 +14,10 @@ class ReservationPreconditionService implements IReservationPreconditionService
 	}
 	
 	/**
-	 * @see IReservationPreconditionService::CheckAll()
+	 * @see INewReservationPreconditionService::CheckAll()
 	 */
-	public function CheckAll(IReservationPage $page, UserSession $user)
+	public function CheckAll(INewReservationPage $page, UserSession $user)
 	{
-		$user = ServiceLocator::GetServer()->GetUserSession();
 		$requestedResourceId = $page->GetRequestedResourceId();
 		
 		if (!$this->UserHasPermission($user, $requestedResourceId))
@@ -33,5 +32,9 @@ class ReservationPreconditionService implements IReservationPreconditionService
 		$permissionService = $this->_permissionServiceFactory->GetPermissionService($user->UserId);
 		return $permissionService->CanAccessResource(new ReservationResource($resourceId));
 	}
+}
+
+abstract class ReservationPreconditionService implements IReservationPreconditionService
+{
 }
 ?>

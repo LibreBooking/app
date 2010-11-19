@@ -21,7 +21,7 @@ class ResourcesTests extends TestBase
 	public function testLanguageIsLoadedCorrectlyFromCookie()
 	{
 		$langFile = 'en_us.php';		
-		$lang = 'en_US';
+		$lang = 'en_us';
 		$langCookie = new Cookie(CookieKeys::LANGUAGE, $lang, time(), '/');
 		
 		$this->fakeServer->SetCookie($langCookie);
@@ -35,7 +35,7 @@ class ResourcesTests extends TestBase
 	public function testDefaultLanguageIsUsedIfCannotLoadFromCookie()
 	{		
 		$langFile = 'en_us.php';		
-		$lang = 'en_US';
+		$lang = 'en_us';
 		
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
 		
@@ -48,7 +48,7 @@ class ResourcesTests extends TestBase
 	public function testLanguageIsLoadedCorrectlyWhenSet()
 	{
 		$langFile = 'en_us.php';
-		$lang = 'en_US';
+		$lang = 'en_us';
 		
 		$this->Resources = Resources::GetInstance();
 		$this->Resources->SetLanguage($lang);

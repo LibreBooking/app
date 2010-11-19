@@ -61,7 +61,14 @@ class EmailService implements IEmailService
 		
 		Log::Debug('Sending %s email to: %s from: %s', get_class($emailMessage), $toAddresses->ToString(), $from->Address());
 		
-		$success = $this->phpMailer->Send();
+		try
+		{
+			$success = $this->phpMailer->Send();
+		}
+		catch(Exception $ex)
+		{
+			Log::Debug('Failed sending email.', $ex);
+		}
 		
 		Log::Debug('Send success: %d. %s', $success, $this->phpMailer->ErrorInfo);
 	}

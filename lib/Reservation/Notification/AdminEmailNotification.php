@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmailAdmin.php');
+
 class AdminEmailNotificaiton implements IReservationNotification 
 {
 	/**

@@ -41,9 +41,9 @@ class SmartyEmail extends SmartyPage
 		return $this->fetch($this->Resources->CurrentLanguage . "/" . $templateName);
 	}
 	
-	public function Translate($key)
+	public function Translate($key, $args = array())
 	{
-		return $this->Resources->GetString($key);
+		return $this->Resources->GetString($key, $args);
 	}
 }
 ?>

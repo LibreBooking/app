@@ -66,6 +66,12 @@ interface IReservationRepository
 	 */
 	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES);
 
+	/**
+	 * Insert a new reservation
+	 * 
+	 * @param Reservation $reservation
+	 * @return void
+	 */
 	public function Add(Reservation $reservation);
 }
 ?>

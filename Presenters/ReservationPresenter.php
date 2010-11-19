@@ -6,39 +6,56 @@ require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 
-class ReservationPresenter implements IReservationPresenter
+abstract class ReservationPresenterBase implements IReservationPresenter
 {
 	/**
 	 * @var IReservationPage
 	 */
-	private $_page;
+	protected $basePage;
 	
 	/**
 	 * @var IReservationInitializerFactory
 	 */
-	private $_initilizationFactory;
+	protected $initilizationFactory;
 	
 	/**
 	 * @var IReservationPreconditionService
 	 */
-	private $_precondtionService;
+	protected $precondtionService;
 	
-	public function __construct(
-		IReservationPage $page, 
-		IReservationInitializerFactory $initializationFactory,
-		IReservationPreconditionService $precondtionService)
+	protected function __construct(IReservationPage $page)
 	{
+		$this->basePage = $page;
+	}
+	
+	public abstract function PageLoad();
+}
+
+class ReservationPresenter extends ReservationPresenterBase
+{
+	/**
+	 * @var INewReservationPage
+	 */
+	private $_page;
+
+	public function __construct(
+		INewReservationPage $page, 
+		IReservationInitializerFactory $initializationFactory,
+		INewReservationPreconditionService $precondtionService)
+	{
+		parent::__construct($page, $initializationFactory, $precondtionService);
+		
 		$this->_page = $page;
-		$this->_initializationFactory = $initializationFactory;
-		$this->_preconditionService = $precondtionService;
+		$this->initializationFactory = $initializationFactory;
+		$this->preconditionService = $precondtionService;
 	}
 	
 	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		
-		$this->_preconditionService->CheckAll($this->_page, $user);
-		$initializer = $this->_initializationFactory->GetInitializer($this->_page);
+
+		$this->preconditionService->CheckAll($this->_page, $user);
+		$initializer = $this->initializationFactory->GetInitializer($this->_page);
 		$initializer->Initialize();
 	}
 }

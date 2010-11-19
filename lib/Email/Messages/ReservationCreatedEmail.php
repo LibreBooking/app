@@ -29,6 +29,34 @@ class ReservationCreatedEmail extends EmailMessage
 		$this->timezone = $reservationOwner->Timezone();
 	}
 	
+	/**
+	 * @see IEmailMessage::To()
+	 */
+	public function To()
+	{
+		$address = $this->reservationOwner->EmailAddress();
+		$name = $this->reservationOwner->FullName();
+		
+		return array(new EmailAddress($address, $name));
+	}
+	
+	/**
+	 * @see IEmailMessage::Subject()
+	 */
+	public function Subject()
+	{
+		return $this->Translate('ReservationCreatedSubject');
+	}
+	
+	/**
+	 * @see IEmailMessage::Body()
+	 */
+	public function Body()
+	{
+		$this->PopulateTemplate();
+		return $this->FetchTemplate("ReservationCreated.tpl"); 
+	}
+	
 	private function PopulateTemplate()
 	{	
 		$this->Set('StartDate', $this->reservation->StartDate()->ToTimezone($this->timezone));
@@ -44,25 +72,6 @@ class ReservationCreatedEmail extends EmailMessage
 		}
 		$this->Set('RepeatDates', $repeatDates);
 		$this->Set('ReservationUrl', "reservation.php?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $this->reservation->ReferenceNumber());
-	}
-	
-	public function To()
-	{
-		$address = $this->reservationOwner->EmailAddress();
-		$name = $this->reservationOwner->FullName();
-		
-		return array(new EmailAddress($address, $name));
-	}
-	
-	public function Subject()
-	{
-		return $this->Translate('ReservationCreatedSubject');
-	}
-	
-	public function Body()
-	{
-		$this->PopulateTemplate();
-		return $this->FetchTemplate("ReservationCreated.tpl"); 
 	}
 }
 ?>

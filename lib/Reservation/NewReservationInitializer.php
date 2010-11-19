@@ -1,27 +1,27 @@
 <?php 
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 
-class NewReservationInitializer implements IReservationInitializer
+abstract class ReservationInitializerBase implements IReservationInitializer
 {
 	/**
 	 * @var IReservationPage
 	 */
-	private $_page;
+	protected $basePage;
 	
 	/**
 	 * @var IScheduleUserRepository
 	 */
-	private $_scheduleUserRepository;
+	protected $scheduleUserRepository;
 	
 	/**
 	 * @var IScheduleRepository
 	 */
-	private $_scheduleRepository;
+	protected $scheduleRepository;
 	
 	/**
 	 * @var IUserRepository
 	 */
-	private $_userRepository;
+	protected $userRepository;
 	
 	public function __construct(
 		IReservationPage $page, 
@@ -30,47 +30,52 @@ class NewReservationInitializer implements IReservationInitializer
 		IUserRepository $userRepository
 		)
 	{
-		$this->_page = $page;
-		$this->_scheduleUserRepository = $scheduleUserRepository;
-		$this->_scheduleRepository = $scheduleRepository;
-		$this->_userRepository = $userRepository;
+		$this->basePage = $page;
+		$this->scheduleUserRepository = $scheduleUserRepository;
+		$this->scheduleRepository = $scheduleRepository;
+		$this->userRepository = $userRepository;
 	}
 	
 	public function Initialize()
 	{
-		$user = ServiceLocator::GetServer()->GetUserSession();
-		$timezone = $user->Timezone;
-		$userId = $user->UserId;
+		$requestedResourceId = $this->GetResourceId();
+		$requestedScheduleId = $this->GetScheduleId();
+		$requestedStartDate = $this->GetStartDate();
+		$requestedPeriodId = $this->GetPeriodId();
+		$userId = $this->GetOwnerId();
+		$timezone = $this->GetTimezone();
 		
-		$requestedResourceId = $this->_page->GetRequestedResourceId();
-		$requestedScheduleId = $this->_page->GetRequestedScheduleId();
-		$requestedStartDate = $this->_page->GetRequestedDate();
-		$requestedPeriodId = $this->_page->GetRequestedPeriod();
-		
-		$layout = $this->_scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
-		$this->_page->BindPeriods($layout->GetLayout());
+		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
+		$this->basePage->BindPeriods($layout->GetLayout());
 
-		$scheduleUser = $this->_scheduleUserRepository->GetUser($userId);
+		$scheduleUser = $this->scheduleUserRepository->GetUser($userId);
 		
 		$bindableResourceData = $this->GetBindableResourceData($scheduleUser, $requestedResourceId);
 		$bindableUserData = $this->GetBindableUserData($userId);
 		
-		$this->_page->BindAvailableUsers($bindableUserData->AvailableUsers);	
-		$this->_page->BindAvailableResources($bindableResourceData->AvailableResources);		
+		$this->basePage->BindAvailableUsers($bindableUserData->AvailableUsers);	
+		$this->basePage->BindAvailableResources($bindableResourceData->AvailableResources);		
 		
 		$startDate = ($requestedStartDate == null) ? Date::Now()->ToTimezone($timezone) : Date::Parse($requestedStartDate, $timezone);
-		$this->_page->SetStartDate($startDate);
-		$this->_page->SetEndDate($startDate);
-		$this->_page->SetStartPeriod($requestedPeriodId);
-		$this->_page->SetEndPeriod($requestedPeriodId);
+		$this->basePage->SetStartDate($startDate);
+		$this->basePage->SetEndDate($startDate);
+		$this->basePage->SetStartPeriod($requestedPeriodId);
+		$this->basePage->SetEndPeriod($requestedPeriodId);
 		$reservationUser = $bindableUserData->ReservationUser;
-		$this->_page->SetReservationUser($reservationUser);
-		$this->_page->SetReservationResource($bindableResourceData->ReservationResource);
+		$this->basePage->SetReservationUser($reservationUser);
+		$this->basePage->SetReservationResource($bindableResourceData->ReservationResource);
 	}
+	
+	protected abstract function GetResourceId();
+	protected abstract function GetScheduleId();
+	protected abstract function GetStartDate();
+	protected abstract function GetPeriodId();
+	protected abstract function GetOwnerId();
+	protected abstract function GetTimezone();
 	
 	private function GetBindableUserData($userId)
 	{
-		$users = $this->_userRepository->GetAll();	
+		$users = $this->userRepository->GetAll();	
 
 		$bindableUserData = new BindableUserData();
 
@@ -108,6 +113,127 @@ class NewReservationInitializer implements IReservationInitializer
 		}
 		
 		return $bindableResourceData;
+	}
+}
+
+class ExistingReservationInitializer extends ReservationInitializerBase
+{
+	/**
+	 * @var IExistingReservationPage
+	 */
+	private $page;
+	
+	public function __construct(
+		IExistingReservationPage $page, 
+		IScheduleUserRepository $scheduleUserRepository,
+		IScheduleRepository $scheduleRepository,
+		IUserRepository $userRepository,
+		IReservationViewRepository $reservationViewRepository
+		)
+	{
+		$this->page = $page;
+		$this->reservationViewRepoistory = $reservationViewRepository;
+		
+		parent::__construct(
+						$page, 
+						$scheduleUserRepository, 
+						$scheduleRepository, 
+						$userRepository);
+	}
+	
+	public function Initialize()
+	{
+		
+		parent::Initialize();
+	}
+	
+	protected function GetOwnerId()
+	{
+		throw new Exception('not implemented');
+	}
+	
+	protected function GetResourceId()
+	{
+		throw new Exception('not implemented');
+	}
+	
+	protected function GetScheduleId()
+	{
+		throw new Exception('not implemented');
+	}
+	
+	protected function GetStartDate()
+	{
+		throw new Exception('not implemented');
+	}
+	
+	protected function GetPeriodId()
+	{
+		throw new Exception('not implemented');
+	}
+	
+	protected function GetTimezone()
+	{
+		throw new Exception('not implemented');
+	}
+}
+
+class NewReservationInitializer extends ReservationInitializerBase
+{	
+	/**
+	 * @var INewReservationPage
+	 */
+	private $_page;
+	
+	public function __construct(
+		INewReservationPage $page, 
+		IScheduleUserRepository $scheduleUserRepository,
+		IScheduleRepository $scheduleRepository,
+		IUserRepository $userRepository
+		)
+	{
+		$this->_page = $page;
+		
+		parent::__construct(
+						$page, 
+						$scheduleUserRepository, 
+						$scheduleRepository, 
+						$userRepository);
+	}
+	
+	public function Initialize()
+	{
+		parent::Initialize();
+	}
+	
+	protected function GetOwnerId()
+	{
+		return ServiceLocator::GetServer()->GetUserSession()->UserId;
+	}
+	
+	protected function GetResourceId()
+	{
+		return $this->_page->GetRequestedResourceId();
+	}
+	
+	protected function GetScheduleId()
+	{
+		return $this->_page->GetRequestedScheduleId();
+	}
+	
+	protected function GetStartDate()
+	{
+		return $this->_page->GetRequestedDate();
+	}
+	
+	protected function GetPeriodId()
+	{
+		return $this->_page->GetRequestedPeriod();
+	}
+	
+	protected function GetTimezone()
+	{
+		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
 	}
 }
 

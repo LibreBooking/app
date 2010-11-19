@@ -27,7 +27,9 @@ class UserRepository implements IUserRepository
 								$row[ColumnNames::USER_ID], 
 								$row[ColumnNames::FIRST_NAME],
 								$row[ColumnNames::LAST_NAME], 
-								$row[ColumnNames::EMAIL]
+								$row[ColumnNames::EMAIL],
+								$row[ColumnNames::TIMEZONE_NAME],
+								$row[ColumnNames::LANGUAGE_CODE]
 								);
 		}
 
@@ -107,32 +109,36 @@ interface IUserRepository
 
 class UserDto
 {
-	private $_userId;
-	private $_firstName;
-	private $_lastName;
-	private $_emailAddress;
+	private $userId;
+	private $firstName;
+	private $lastName;
+	private $emailAddress;
+	private $timezone;
+	private $languageCode;
 	
-	public function __construct($userId, $firstName, $lastName, $emailAddress)
+	public function __construct($userId, $firstName, $lastName, $emailAddress, $timezone = null, $languageCode = null)
 	{
-		$this->_userId = $userId;
-		$this->_firstName = $firstName;
-		$this->_lastName = $lastName;
-		$this->_emailAddress = $emailAddress;
+		$this->userId = $userId;
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
+		$this->emailAddress = $emailAddress;
+		$this->timezone = $timezone;
+		$this->languageCode = $languageCode;		
 	}
 	
 	public function Id()
 	{
-		return $this->_userId;
+		return $this->userId;
 	}
 	
 	public function FirstName()
 	{
-		return $this->_firstName;
+		return $this->firstName;
 	}
 	
 	public function LastName()
 	{
-		return $this->_lastName;
+		return $this->lastName;
 	}
 	
 	public function FullName()
@@ -142,7 +148,17 @@ class UserDto
 	
 	public function EmailAddress()
 	{
-		return $this->_emailAddress;
+		return $this->emailAddress;
+	}
+	
+	public function Timezone()
+	{
+		return $this->timezone;
+	}
+	
+	public function Language()
+	{
+		return $this->language;
 	}
 }
 
@@ -150,7 +166,7 @@ class NullUserDto extends UserDto
 {
 	public function __construct()
 	{
-		parent::__construct(0, null, null, null);
+		parent::__construct(0, null, null, null, null, null);
 	}
 	
 	public function FullName()

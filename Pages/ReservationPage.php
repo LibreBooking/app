@@ -5,14 +5,6 @@ require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 
 interface IReservationPage extends IPage
 {
-	public function GetRequestedResourceId();
-	
-	public function GetRequestedScheduleId();
-	
-	public function GetRequestedDate();
-	
-	public function GetRequestedPeriod();
-	
 	/**
 	 * Set the schedule period items to be used when presenting reservations
 	 * @param array[int]ISchedulePeriod
@@ -67,62 +59,88 @@ interface IReservationPage extends IPage
 	public function SetDisplaySaved($shouldDisplay);
 }
 
-class ReservationPage extends Page implements IReservationPage
+interface INewReservationPage extends IReservationPage
+{
+	public function GetRequestedResourceId();
+	
+	public function GetRequestedScheduleId();
+	
+	public function GetRequestedDate();
+	
+	public function GetRequestedPeriod();
+}
+
+interface IExistingReservationPage extends IReservationPage
+{
+	
+}
+
+abstract class ReservationPage extends Page implements IReservationPage
 {
 	private $_displaySaveMessage = false;
+	protected $presenter;
 	
-	public function __construct()
+	/**
+	 * @var ScheduleUserRepository
+	 */
+	protected $scheduleUserRepository;
+	
+	/**
+	 * @var ScheduleRepository
+	 */
+	protected $scheduleRepository;
+	
+	/**
+	 * @var UserRepository
+	 */
+	protected $userRepository;
+	
+	/**
+	 * @var PermissionServiceFactory
+	 */
+	protected $permissionServiceFactory;
+	
+	protected function __construct($title)
 	{
-		parent::__construct('CreateReservation');
+		parent::__construct($title);
 		
-		$scheduleUserRepository = new ScheduleUserRepository();
-		$scheduleRepository = new ScheduleRepository();
-		$userRepository = new UserRepository();
-		$permissionServiceFactory = new PermissionServiceFactory();
+		$this->scheduleUserRepository = new ScheduleUserRepository();
+		$this->scheduleRepository = new ScheduleRepository();
+		$this->userRepository = new UserRepository();
+		$this->permissionServiceFactory = new PermissionServiceFactory();
 		
-		$initializationFactory = new ReservationInitializerFactory($scheduleUserRepository, $scheduleRepository, $userRepository);
-		$preconditionService = new ReservationPreconditionService($permissionServiceFactory);
-		
-		$this->_presenter = new ReservationPresenter(
-			$this, 
-			$initializationFactory,
-			$preconditionService);
+		$this->presenter = $this->GetPresenter();
 	}
 	
+	/**
+	 * @return IReservationPresenter
+	 */
+	protected abstract function GetPresenter();
+	
+	/**
+	 * @return string
+	 */
+	protected abstract function GetSavedTemplateName();
+	
+	/**
+	 * @return string
+	 */
+	protected abstract function GetTemplateName();
+		
 	public function PageLoad()
 	{
-		$this->_presenter->PageLoad();
+		$this->presenter->PageLoad();
 		$this->Set('ReturnUrl', $this->GetLastPage());
 		$this->Set('RepeatEveryOptions', range(1, 20));
 		
 		if ($this->_displaySaveMessage)
 		{
-			$this->smarty->display('reservation_saved.tpl');
+			$this->smarty->display($this->GetSavedTemplateName());
 		}
 		else
 		{
-			$this->smarty->display('reservation.tpl');		
+			$this->smarty->display($this->GetTemplateName());		
 		}
-	}
-	
-	public function GetRequestedResourceId()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);
-	}
-	
-	public function GetRequestedScheduleId()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
-	}
-	
-	public function GetRequestedDate()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::RESERVATION_DATE);
-	}
-	
-	public function GetRequestedPeriod()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::PERIOD_ID);	
 	}
 	
 	public function BindPeriods($periods)
@@ -152,6 +170,7 @@ class ReservationPage extends Page implements IReservationPage
 	
 	public function SetStartPeriod($periodId)
 	{
+		throw new NotImplemented('does not do anything right now, need to implement');
 		$this->Set('StartPeriod', $periodId);
 	}
 	
@@ -178,6 +197,82 @@ class ReservationPage extends Page implements IReservationPage
 	public function SetDisplaySaved($shouldDisplay)
 	{
 		$this->_displaySaveMessage = true;
+	}
+}
+
+class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
+{
+	public function __construct()
+	{
+		parent::__construct('EditReservation');
+	}
+	
+	protected function GetPresenter()
+	{
+		return null;
+//		new ReservationPresenter(
+//			$this, 
+//			$initializationFactory,
+//			$preconditionService);
+	}
+	
+	protected function GetSavedTemplateName()
+	{
+		return 'reservation_saved.tpl';
+	}
+
+	protected function GetTemplateName()
+	{
+		return 'reservation.tpl';
+	}
+}
+
+class NewReservationPage extends ReservationPage implements INewReservationPage
+{
+	public function __construct()
+	{
+		parent::__construct('CreateReservation');
+	}
+	
+	protected function GetPresenter()
+	{
+		$initializationFactory = new ReservationInitializerFactory($this->scheduleUserRepository, $this->scheduleRepository, $this->userRepository);
+		$preconditionService = new NewReservationPreconditionService($this->permissionServiceFactory);
+		
+		return new ReservationPresenter(
+			$this, 
+			$initializationFactory,
+			$preconditionService);
+	}
+	
+	protected function GetSavedTemplateName()
+	{
+		return 'reservation_saved.tpl';
+	}
+
+	protected function GetTemplateName()
+	{
+		return 'reservation.tpl';
+	}
+	
+	public function GetRequestedResourceId()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+	
+	public function GetRequestedScheduleId()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+	}
+	
+	public function GetRequestedDate()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::RESERVATION_DATE);
+	}
+	
+	public function GetRequestedPeriod()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::PERIOD_ID);	
 	}
 }
 ?>

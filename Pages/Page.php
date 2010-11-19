@@ -1,11 +1,11 @@
 <?php
 require_once(ROOT_DIR . 'Pages/IPage.php');
 require_once(ROOT_DIR . 'Pages/Pages.php');
-require_once(ROOT_DIR . 'lib/Common/SmartyPage.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
-class Page implements IPage
+abstract class Page implements IPage
 {
 	/**
 	 * @var SmartyPage
@@ -17,7 +17,7 @@ class Page implements IPage
 	 */
 	protected $server = null;
 	
-	public function __construct($titleKey = '', $pageDepth = 0)
+	protected function __construct($titleKey = '', $pageDepth = 0)
 	{
 		$path = str_repeat('../', $pageDepth);
 		

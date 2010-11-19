@@ -2,7 +2,7 @@
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 
-class ReservationPreconditionServiceTests extends TestBase
+class NewReservationPreconditionServiceTests extends TestBase
 {
 	/**
 	 * @var UserSession
@@ -42,7 +42,7 @@ class ReservationPreconditionServiceTests extends TestBase
 		$lastPage = 'last/page.php?a=b&c=d';
 		$errorMessage = ErrorMessages::INSUFFICIENT_PERMISSIONS;
 		
-		$page = $this->getMock('IReservationPage');
+		$page = $this->getMock('INewReservationPage');
 
 		$page->expects($this->once())
 			->method('GetRequestedResourceId')
@@ -69,7 +69,7 @@ class ReservationPreconditionServiceTests extends TestBase
 			->method('RedirectToError')
 			->with($this->equalTo($errorMessage), $this->equalTo($lastPage));
 			
-		$preconditionService = new ReservationPreconditionService($this->_permissionServiceFactory);
+		$preconditionService = new NewReservationPreconditionService($this->_permissionServiceFactory);
 		$preconditionService->CheckAll($page, $this->_user);
 	}
 	

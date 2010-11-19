@@ -3,7 +3,7 @@ require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 
-class ReservationPresenterTests extends TestBase
+class NewReservationPresenterTests extends TestBase
 {
 	/**
 	 * @var UserSession
@@ -30,9 +30,9 @@ class ReservationPresenterTests extends TestBase
 	
 	public function testPageLoadValidatesAllPreconditionsAndGetsReservationInitializerAndInitializes()
 	{
-		$page = $this->getMock('IReservationPage');
+		$page = $this->getMock('INewReservationPage');
 		
-		$reservationPreconditionService = $this->getMock('IReservationPreconditionService');
+		$reservationPreconditionService = $this->getMock('INewReservationPreconditionService');
 		$reservationPreconditionService->expects($this->once())
 			->method('CheckAll')
 			->with($this->equalTo($page), $this->equalTo($this->_user));
