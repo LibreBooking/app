@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'lib/Email/namespace.php');
+
 class ReservationCreatedEmailAdmin extends EmailMessage
 {
 	/**

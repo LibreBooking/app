@@ -1,6 +1,4 @@
 <?php
-require_once(ROOT_DIR . 'lib/Domain/namespace.php');
-
 require_once(ROOT_DIR . 'lib/Reservation/IReservationInitializer.php');
 require_once(ROOT_DIR . 'lib/Reservation/IReservationInitializerFactory.php');
 require_once(ROOT_DIR . 'lib/Reservation/IReservationPreconditionService.php');

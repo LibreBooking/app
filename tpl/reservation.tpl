@@ -161,7 +161,7 @@
 	<p>Some text that you want to display to the user.</p>
 	{foreach from=$AvailableResources item=resource}
 		{assign var='checked' value=''}
-		{if in_array($resource->Id(), $AdditionalResourceIds)}
+		{if is_array($AdditionalResourceIds) && in_array($resource->Id(), $AdditionalResourceIds)}
 			{assign var='checked' value='checked="checked"'}	
 		{/if}
 		

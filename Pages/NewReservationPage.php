@@ -1,5 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
+require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
 
 interface INewReservationPage extends IReservationPage
 {
@@ -57,8 +59,8 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		$dateTime = new DateTime($dateTimeString);
 		$dateString = $dateTime->format(Date::SHORT_FORMAT);
 		$timezone = $dateTime->getTimezone()->getName();
-		
-		return new Date($dateTime->format($format), $timezone);
+
+		return new Date($dateString, $timezone);
 	}
 }
 ?>

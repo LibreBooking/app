@@ -1,14 +1,13 @@
 <?php 
 define('ROOT_DIR', './');
 
-require_once(ROOT_DIR . '/Pages/ReservationPage.php');
+require_once(ROOT_DIR . '/Pages/NewReservationPage.php');
+require_once(ROOT_DIR . '/Pages/ExistingReservationPage.php');
 
 $usersession = new UserSession(1);
-$usersession->Timezone = 'US/Central';
-//$usersession->Timezone = 'UTC';
-ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, $usersession);
-
+$usersession->Timezone = 'America/Chicago';
 $server = ServiceLocator::GetServer();
+$server->SetSession(SessionKeys::USER_SESSION, $usersession);
 
 $page = new NewReservationPage();
 

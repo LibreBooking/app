@@ -3,6 +3,8 @@ require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Reservation/Validation/namespace.php');
+require_once(ROOT_DIR . 'lib/Reservation/Notification/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 
