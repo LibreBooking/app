@@ -20,6 +20,8 @@ $(document).ready(function() {
 		$('#dialogSave').dialog('open');
 	});
 	
+	$('btnConfirmAddResources').click();
+	
 });
 
 function AddResources(inputId)

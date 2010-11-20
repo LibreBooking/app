@@ -98,8 +98,8 @@ class RegistrationPresenter
 		
 		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
 		{
-			$timezoneValues[] = $timezone['Name'];			
-			$timezoneOutput[] = sprintf('(GMT %s) %s', $this->FormatOffset($timezone['Offset']), $timezone['DisplayName']);		
+			$timezoneValues[] = $timezone;			
+			$timezoneOutput[] = $timezone;		
 		}
 				
 		$this->_page->SetTimezones($timezoneValues, $timezoneOutput);

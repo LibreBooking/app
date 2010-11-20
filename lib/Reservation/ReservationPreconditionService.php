@@ -1,5 +1,6 @@
 <?php 
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
+require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
 
 class NewReservationPreconditionService implements INewReservationPreconditionService
 {

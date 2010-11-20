@@ -17,7 +17,9 @@ class Database
 	public function &Query(ISqlCommand &$command) 
 	{
 		$this->Connection->Connect();	
-		//TODO: debug log $command->GetQuery();
+		
+		Log::Debug('Database::Query %s', $command->GetQuery());
+		
 		$reader = $this->Connection->Query($command);		
 		$this->Connection->Disconnect();
 
@@ -33,7 +35,9 @@ class Database
 	public function Execute(ISqlCommand $command) 
 	{
 		$this->Connection->Connect();	
-		//TODO: debug log $command->GetQuery();
+		
+		Log::Debug('Database::Execute %s', $command->GetQuery());
+		
 		$this->Connection->Execute($command);
 		$this->Connection->Disconnect();
 	}
@@ -47,7 +51,9 @@ class Database
 	public function ExecuteInsert(ISqlCommand $command)
 	{
 		$this->Connection->Connect();	
-		//TODO: debug log $command->GetQuery();
+		
+		Log::Debug('Database::ExecuteInsert %s', $command->GetQuery());
+		
 		$this->Connection->Execute($command);
 		$insertedId = $this->Connection->GetLastInsertId();
 		$this->Connection->Disconnect();
@@ -55,5 +61,4 @@ class Database
 		return $insertedId;
 	}
 }
-
 ?>

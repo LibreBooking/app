@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Reservation/Notification/namespace.php');
 
 class AdminEmailNotificationTests extends TestBase
 {

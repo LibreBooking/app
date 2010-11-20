@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Reservation/Validation/namespace.php');
 
 class PermissionValidationRuleTests extends TestBase
 {

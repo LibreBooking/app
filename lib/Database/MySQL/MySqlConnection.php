@@ -32,7 +32,7 @@ class MySqlConnection implements IDbConnection
 		if (!$this->_db) 
 		{
 			throw new Exception("Error connecting to database\nError: " . mysql_error());
-			// TODO: LOG
+			Log::Error("Error connecting to database\n%s",  mysql_error());
 		}
         
 		$this->_connected = true;
@@ -80,7 +80,7 @@ class MySqlConnection implements IDbConnection
 			}
 			throw new Exception('There was an error executing your query\n' .  mysql_error());
 		
-           	// TODO: LOG: . $result->getMessage()
+           	Log::Error("Error executing MySQL query %s",  mysql_error());
 		}
         return false;
 	}

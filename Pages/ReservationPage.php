@@ -1,7 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
-require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 
 interface IReservationPage extends IPage
 {
@@ -34,16 +33,6 @@ interface IReservationPage extends IPage
 	public function SetEndDate(Date $startDate);
 	
 	/**
-	 * @param unknown_type $periodId
-	 */
-	public function SetStartPeriod($periodId);
-
-	/**
-	 * @param unknown_type $periodId
-	 */
-	public function SetEndPeriod($periodId);
-	
-	/**
 	 * @param UserDto $user
 	 */
 	public function SetReservationUser($user);
@@ -59,25 +48,10 @@ interface IReservationPage extends IPage
 	public function SetDisplaySaved($shouldDisplay);
 }
 
-interface INewReservationPage extends IReservationPage
-{
-	public function GetRequestedResourceId();
-	
-	public function GetRequestedScheduleId();
-	
-	public function GetRequestedDate();
-	
-	public function GetRequestedPeriod();
-}
-
-interface IExistingReservationPage extends IReservationPage
-{
-	
-}
-
 abstract class ReservationPage extends Page implements IReservationPage
 {
 	private $_displaySaveMessage = false;
+	
 	protected $presenter;
 	
 	/**
@@ -168,17 +142,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('EndDate', $startDate);
 	}
 	
-	public function SetStartPeriod($periodId)
-	{
-		throw new NotImplemented('does not do anything right now, need to implement');
-		$this->Set('StartPeriod', $periodId);
-	}
-	
-	public function SetEndPeriod($periodId)
-	{
-		$this->Set('EndPeriod', $periodId);
-	}
-	
 	public function SetReservationUser($user)
 	{
 		$this->Set('UserName', $user->FullName());
@@ -197,82 +160,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function SetDisplaySaved($shouldDisplay)
 	{
 		$this->_displaySaveMessage = true;
-	}
-}
-
-class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
-{
-	public function __construct()
-	{
-		parent::__construct('EditReservation');
-	}
-	
-	protected function GetPresenter()
-	{
-		return null;
-//		new ReservationPresenter(
-//			$this, 
-//			$initializationFactory,
-//			$preconditionService);
-	}
-	
-	protected function GetSavedTemplateName()
-	{
-		return 'reservation_saved.tpl';
-	}
-
-	protected function GetTemplateName()
-	{
-		return 'reservation.tpl';
-	}
-}
-
-class NewReservationPage extends ReservationPage implements INewReservationPage
-{
-	public function __construct()
-	{
-		parent::__construct('CreateReservation');
-	}
-	
-	protected function GetPresenter()
-	{
-		$initializationFactory = new ReservationInitializerFactory($this->scheduleUserRepository, $this->scheduleRepository, $this->userRepository);
-		$preconditionService = new NewReservationPreconditionService($this->permissionServiceFactory);
-		
-		return new ReservationPresenter(
-			$this, 
-			$initializationFactory,
-			$preconditionService);
-	}
-	
-	protected function GetSavedTemplateName()
-	{
-		return 'reservation_saved.tpl';
-	}
-
-	protected function GetTemplateName()
-	{
-		return 'reservation.tpl';
-	}
-	
-	public function GetRequestedResourceId()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);
-	}
-	
-	public function GetRequestedScheduleId()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
-	}
-	
-	public function GetRequestedDate()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::RESERVATION_DATE);
-	}
-	
-	public function GetRequestedPeriod()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::PERIOD_ID);	
 	}
 }
 ?>

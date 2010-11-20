@@ -1,6 +1,13 @@
 <?php 
+require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
+require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
+require_once(ROOT_DIR . 'Pages/ExistingReservationPage.php');
+
+require_once(ROOT_DIR . 'lib/Reservation/ExistingReservationInitializer.php');
+require_once(ROOT_DIR . 'lib/Reservation/NewReservationInitializer.php');
 
 class ReservationInitializationTests extends TestBase
 {
@@ -48,14 +55,13 @@ class ReservationInitializationTests extends TestBase
 
 		$resourceId = 10;
 		$scheduleId = 100;
-		$dateInUserTimezone = '2010-01-01';
+		$dateInUserTimezone = Date::Parse('2010-01-01', $timezone);
 		$periodId = 1;
 
 		$firstName = 'fname';
 		$lastName = 'lastName';
 
 		$expectedStartDate = Date::Parse($dateInUserTimezone, $timezone);
-		$expectedEndDate = Date::Parse($dateInUserTimezone, $timezone);
 
 		$page = $this->getMock('INewReservationPage');
 
@@ -67,13 +73,9 @@ class ReservationInitializationTests extends TestBase
 			->method('GetRequestedScheduleId')
 			->will($this->returnValue($scheduleId));
 
-		$page->expects($this->once())
+		$page->expects($this->any())
 			->method('GetRequestedDate')
 			->will($this->returnValue($dateInUserTimezone));
-			
-		$page->expects($this->once())
-			->method('GetRequestedPeriod')
-			->will($this->returnValue($periodId));
 			
 		// DATA
 		// users
@@ -135,15 +137,7 @@ class ReservationInitializationTests extends TestBase
 
 		$page->expects($this->once())
 			->method('SetEndDate')
-			->with($this->equalTo($expectedEndDate));
-
-		$page->expects($this->once())
-			->method('SetStartPeriod')
-			->with($this->equalTo($periodId));
-
-		$page->expects($this->once())
-			->method('SetEndPeriod')
-			->with($this->equalTo($periodId));
+			->with($this->equalTo($expectedStartDate));
 
 		$page->expects($this->once())
 			->method('SetReservationUser')
@@ -168,7 +162,10 @@ class ReservationInitializationTests extends TestBase
 		$startDateUtc = '2010-01-01 10:11:12';
 		$endDateUtc = '2010-01-02 10:11:12';
 		$ownerId = 987;
-		$periodId = 1;
+		$additionalResourceIds = array (10, 20, 30);	
+		$participantIds = array (11, 22, 33);
+		$title = 'title';
+		$description = 'description';
 
 		$firstName = 'fname';
 		$lastName = 'lastName';
@@ -186,19 +183,23 @@ class ReservationInitializationTests extends TestBase
 		$reservationView->OwnerId = $ownerId;
 		$reservationView->OwnerFirstName = $firstName;
 		$reservationView->OwnerLastName = $lastName;
+		$reservationView->AdditionalResourceIds = $additionalResourceIds;
+		$reservationView->ParticipantIds = $participantIds;
+		$reservationView->Title = $title;
+		$reservationView->Description = $description;
 		
 		$reservationViewRepository = $this->getMock('IReservationViewRepository');
 		$page = $this->getMock('IExistingReservationPage');
 		
 		// DATA
 		// reservation
-		$this->reservationViewRepository->expects($this->once())
+		$reservationViewRepository->expects($this->once())
 			->method('GetReservationForEditing')
 			->with($referenceNumber)
 			->will($this->returnValue($reservationView));
 			
 		// users
-		$schedUser = new UserDto($this->_userId, $firstName, $lastName, 'email');
+		$schedUser = new UserDto($ownerId, $firstName, $lastName, 'email');
 		$otherUser = new UserDto(109, 'other', 'user', 'email');
 		$userList = array($otherUser, $schedUser);
 
@@ -214,7 +215,7 @@ class ReservationInitializationTests extends TestBase
 
 		$this->_scheduleUserRepository->expects($this->once())
 			->method('GetUser')
-			->with($this->equalTo($this->_userId))
+			->with($this->equalTo($ownerId))
 			->will($this->returnValue($scheduleUser));
 			
 		$scheduleUser->expects($this->once())
@@ -227,7 +228,7 @@ class ReservationInitializationTests extends TestBase
 
 		$this->_scheduleRepository->expects($this->once())
 			->method('GetLayout')
-			->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($this->_user->Timezone)))
+			->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
 			->will($this->returnValue($layout));
 			
 		$layout->expects($this->once())
@@ -251,7 +252,7 @@ class ReservationInitializationTests extends TestBase
 		
 		// Reservation Data
 		$page->expects($this->once())
-			->method('GetReservationReferenceNumber')
+			->method('GetReferenceNumber')
 			->will($this->returnValue($referenceNumber));
 		
 		$page->expects($this->once())
@@ -280,25 +281,17 @@ class ReservationInitializationTests extends TestBase
 		
 		$page->expects($this->once())
 			->method('SetStartDate')
-			->with($this->equalTo($expectedStartDate));
+			->with($this->equalTo($expectedStartDate->ToTimezone($timezone)));
 
 		$page->expects($this->once())
 			->method('SetEndDate')
-			->with($this->equalTo($expectedEndDate));
-
-		$page->expects($this->once())
-			->method('SetStartPeriod')
-			->with($this->equalTo($periodId));
-
-		$page->expects($this->once())
-			->method('SetEndPeriod')
-			->with($this->equalTo($periodId));
+			->with($this->equalTo($expectedEndDate->ToTimezone($timezone)));
 			
-		$initializer = new ExistingReservationIntializer(
+		$initializer = new ExistingReservationInitializer(
 			$page, 
-			$this->scheduleUserRepository, 
-			$this->scheduleRepository, 
-			$this->userRepository,
+			$this->_scheduleUserRepository, 
+			$this->_scheduleRepository, 
+			$this->_userRepository,
 			$reservationViewRepository);
 			
 		$initializer->Initialize();

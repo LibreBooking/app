@@ -1,8 +1,9 @@
 <?php
 define('ROOT_DIR', './');
 
-require_once(ROOT_DIR . 'lib/Common/Logging/Log.php');
-
-Log::GetInstance()->Debug('wtf');
+foreach (DateTimeZone::listIdentifiers() as $tz)
+{
+	echo "AddTimezone('$tz');<br/>";
+}
 
 ?>
