@@ -19,6 +19,7 @@ $tests = array(
 'Domain/PermissionValidationRuleTests.php',
 'Domain/ResourceAvailabilityRuleTests.php',
 'Domain/AddReservationValidationServiceTests.php',
+'PresenterTests/EditReservationPresenterTests.php',
 'PresenterTests/ReservationSavePresenterTests.php',
 'Domain/RepeatOptionsTests.php',
 'Domain/ReservationTests.php',

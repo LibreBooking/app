@@ -10,25 +10,21 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	private $page;
 	
 	/**
-	 * @var IReservationViewRepository
-	 */
-	private $reservationViewRepoistory;
-	
-	/**
-	 * @var ReservationView
+	 * @var ReservationView 
 	 */
 	private $reservationView;
+	
 	
 	public function __construct(
 		IExistingReservationPage $page, 
 		IScheduleUserRepository $scheduleUserRepository,
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
-		IReservationViewRepository $reservationViewRepository
+		ReservationView $reservationView
 		)
 	{
 		$this->page = $page;
-		$this->reservationViewRepoistory = $reservationViewRepository;
+		$this->reservationView = $reservationView;
 		
 		parent::__construct(
 						$page, 
@@ -39,7 +35,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	
 	public function Initialize()
 	{
-		$this->reservationView = $this->reservationViewRepoistory->GetReservationForEditing($this->page->GetReferenceNumber());
+		$this->reservationView = $reservationView;
 		
 		parent::Initialize();
 		

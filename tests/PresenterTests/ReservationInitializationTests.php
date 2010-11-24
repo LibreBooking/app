@@ -157,6 +157,7 @@ class ReservationInitializationTests extends TestBase
 		$referenceNumber = '1234';
 		$timezone = $this->_user->Timezone;
 
+		$reservationId = 928;
 		$resourceId = 10;
 		$scheduleId = 100;
 		$startDateUtc = '2010-01-01 10:11:12';
@@ -188,16 +189,9 @@ class ReservationInitializationTests extends TestBase
 		$reservationView->Title = $title;
 		$reservationView->Description = $description;
 		
-		$reservationViewRepository = $this->getMock('IReservationViewRepository');
 		$page = $this->getMock('IExistingReservationPage');
 		
-		// DATA
-		// reservation
-		$reservationViewRepository->expects($this->once())
-			->method('GetReservationForEditing')
-			->with($referenceNumber)
-			->will($this->returnValue($reservationView));
-			
+		// DATA			
 		// users
 		$schedUser = new UserDto($ownerId, $firstName, $lastName, 'email');
 		$otherUser = new UserDto(109, 'other', 'user', 'email');
@@ -292,7 +286,7 @@ class ReservationInitializationTests extends TestBase
 			$this->_scheduleUserRepository, 
 			$this->_scheduleRepository, 
 			$this->_userRepository,
-			$reservationViewRepository);
+			$reservationView);
 			
 		$initializer->Initialize();
 	}

@@ -35,6 +35,12 @@ class NewReservationPreconditionService implements INewReservationPreconditionSe
 	}
 }
 
+class EditReservationPreconditionService
+{
+	public function CheckAll(IExistingReservationPage $page, UserSession $user, ReservationView $reservationView)
+	{}
+}
+
 abstract class ReservationPreconditionService implements IReservationPreconditionService
 {
 }

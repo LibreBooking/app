@@ -35,11 +35,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	
 	protected function GetPresenter()
 	{
-		return null;
-//		new ReservationPresenter(
-//			$this, 
-//			$initializationFactory,
-//			$preconditionService);
+		return new EditReservationPresenter();
 	}
 	
 	protected function GetSavedTemplateName()
