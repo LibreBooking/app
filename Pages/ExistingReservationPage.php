@@ -35,12 +35,14 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	
 	protected function GetPresenter()
 	{
-		return new EditReservationPresenter();
-	}
-	
-	protected function GetSavedTemplateName()
-	{
-		return 'reservation_saved.tpl';
+		$initializationFactory = new ReservationInitializerFactory($this->scheduleUserRepository, $this->scheduleRepository, $this->userRepository);
+		$preconditionService = new EditReservationPreconditionService($this->permissionServiceFactory);
+		$reservationViewRepository = new ReservationViewRepository();
+		
+		return new EditReservationPresenter($this,
+										 $initializationFactory,
+										 $preconditionService,
+										 $reservationViewRepository);
 	}
 
 	protected function GetTemplateName()

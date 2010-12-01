@@ -3,7 +3,13 @@ class ReservationNotificationFactory implements IReservationNotificationFactory
 {
 	public function Create($reservationAction)
 	{
-		return new AddReservationNotificationService();
+		$userRepo = new UserRepository();
+		$resourceRepo = new ResourceRepository();
+		
+		$notifications[] = new OwnerEmailNotificaiton($userRepo, $resourceRepo);
+		$notifications[] = new AdminEmailNotificaiton($userRepo, $resourceRepo);
+		
+		return new AddReservationNotificationService($notifications);
 	}
 }
 ?>

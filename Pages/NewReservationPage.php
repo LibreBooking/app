@@ -32,11 +32,6 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 			$initializationFactory,
 			$preconditionService);
 	}
-	
-	protected function GetSavedTemplateName()
-	{
-		return 'reservation_saved.tpl';
-	}
 
 	protected function GetTemplateName()
 	{

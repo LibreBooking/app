@@ -89,7 +89,7 @@ class EditReservationPresenter extends ReservationPresenterBase
 		$this->page = $page;
 		$this->initializationFactory = $initializationFactory;
 		$this->preconditionService = $precondtionService;
-		$this->reservationViewRepository = $precondtionService;
+		$this->reservationViewRepository = $reservationViewRepository;
 	}
 	
 	public function PageLoad()

@@ -63,12 +63,19 @@ class ResourceRepository implements IResourceRepository
 	 */
 	public function LoadById($resourceId)
 	{
-		//TODO: Implement for real
-		
-		$resource = new Resource();
 		if (!$this->_cache->Exists($resourceId))
 		{
-			$resource = null;// pull+build
+			$command = new GetResourceByIdCommand($resourceId);
+	
+			$reader = ServiceLocator::GetDatabase()->Query($command);
+			
+			if ($row = $reader->GetRow())
+			{
+				$resource = Resource::Create($row);
+			}
+			
+			$reader->Free();
+			
 			$this->_cache->Add($resourceId, $resource);
 		}
 		

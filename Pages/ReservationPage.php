@@ -41,17 +41,10 @@ interface IReservationPage extends IPage
 	 * @param ScheduleResource $resource
 	 */
 	public function SetReservationResource($resource);
-
-	/**
-	 * @param bool $shouldDisplay
-	 */
-	public function SetDisplaySaved($shouldDisplay);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
 {
-	private $_displaySaveMessage = false;
-	
 	protected $presenter;
 	
 	/**
@@ -94,11 +87,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 	/**
 	 * @return string
 	 */
-	protected abstract function GetSavedTemplateName();
-	
-	/**
-	 * @return string
-	 */
 	protected abstract function GetTemplateName();
 		
 	public function PageLoad()
@@ -107,14 +95,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('ReturnUrl', $this->GetLastPage());
 		$this->Set('RepeatEveryOptions', range(1, 20));
 		
-		if ($this->_displaySaveMessage)
-		{
-			$this->smarty->display($this->GetSavedTemplateName());
-		}
-		else
-		{
-			$this->smarty->display($this->GetTemplateName());		
-		}
+		$this->smarty->display($this->GetTemplateName());		
 	}
 	
 	public function BindPeriods($periods)
@@ -155,11 +136,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 	{
 		$this->Set('ResourceName', $resource->Name());
 		$this->Set('ResourceId', $resource->Id());
-	}
-	
-	public function SetDisplaySaved($shouldDisplay)
-	{
-		$this->_displaySaveMessage = true;
 	}
 }
 ?>

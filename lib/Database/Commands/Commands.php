@@ -97,7 +97,7 @@ class AddResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_COST, $unit_cost));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_AUTOASSIGN, $autoassign));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_REQUIRES_APPROVAL, $requires_approval));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_MULTIDAY, $allow_multiday));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURE_ALLOW_MULTIDAY, $allow_multiday));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $max_participants));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $min_notice_time));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $max_notice_time));
@@ -194,6 +194,33 @@ class GetLayoutCommand extends SqlCommand
 	}
 }
 
+class GetReservationForEditingCommand extends SqlCommand
+{
+	public function __construct($referenceNumber)
+	{
+		parent::__construct(Queries::GET_RESERVATION_FOR_EDITING);
+		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));
+	}
+}
+
+class GetReservationParticipantsCommand extends SqlCommand
+{
+	public function __construct($reservationId)
+	{
+		parent::__construct(Queries::GET_RESERVATION_PARTICIPANTS);
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
+	}
+}
+
+class GetReservationResourcesCommand extends SqlCommand
+{
+	public function __construct($reservationId)
+	{
+		parent::__construct(Queries::GET_RESERVATION_RESOURCES);
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
+	}
+}
+
 class GetReservationsCommand extends SqlCommand
 {
 	public function __construct($startDate, $endDate, $scheduleId)
@@ -204,6 +231,16 @@ class GetReservationsCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
 }
+
+class GetResourceByIdCommand extends SqlCommand
+{
+	public function __construct($resourceId)
+	{
+		parent::__construct(Queries::GET_RESOURCE_BY_ID);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
 
 class GetScheduleResourcesCommand extends SqlCommand
 {

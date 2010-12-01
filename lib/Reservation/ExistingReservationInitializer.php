@@ -35,8 +35,6 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	
 	public function Initialize()
 	{
-		$this->reservationView = $reservationView;
-		
 		parent::Initialize();
 		
 		$this->page->SetAdditionalResources($this->reservationView->AdditionalResourceIds);

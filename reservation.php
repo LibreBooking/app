@@ -9,11 +9,14 @@ $usersession->Timezone = 'America/Chicago';
 $server = ServiceLocator::GetServer();
 $server->SetSession(SessionKeys::USER_SESSION, $usersession);
 
-$page = new NewReservationPage();
 
 if (!is_null($server->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER)))
 {
 	$page = new ExistingReservationPage();
+}
+else
+{
+	$page = new NewReservationPage();
 }
 
 $page->PageLoad();

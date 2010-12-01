@@ -161,16 +161,49 @@ class Queries
 		WHERE (start_datetime <= @current_date AND end_datetime >= @current_date)
 		ORDER BY priority DESC';
 
-	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
+	const GET_GROUP_RESOURCE_PERMISSIONS = 
 		'SELECT 
-			tb.label, tb.start_time, tb.end_time, tb.availability_code
+			grp.group_id, r.resourceid, r.name
+		FROM
+			group_resource_permissions grp, resources r, user_groups ug
+		WHERE
+			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resourceid';
+	
+		
+	const GET_RESOURCE_BY_ID = 
+		'SELECT 
+			r.*
 		FROM 
-			time_blocks tb, time_block_groups tbg, schedule_time_block_groups stbg
+			resources r
+		WHERE
+			r.isactive = 1';
+	
+	const GET_RESERVATION_FOR_EDITING = 
+		'SELECT 
+			* 
+		FROM
+			reservations
 		WHERE 
-			tbg.block_groupid = stbg.block_group_id AND 
-			tb.block_group_id = tbg.block_groupid AND
-			stbg.schedule_id = @scheduleid 
-		ORDER BY tb.start_time';
+			referenceNumber = @referenceNumber
+		AND	
+			status_id <> 2
+		';
+	
+	const GET_RESERVATION_PARTICIPANTS =
+		'SELECT
+			*
+		FROM
+			reservation_users
+		WHERE
+			reservation_id = @reservationId';
+	
+	const GET_RESERVATION_RESOURCES =
+		'SELECT
+			*
+		FROM
+			reservation_resources
+		WHERE
+			reservation_id = @reservationId';
 	
 	// TODO: Pass in "Deleted" status ID
 	const GET_RESERVATIONS_COMMAND =
@@ -200,7 +233,18 @@ class Queries
 		  		(r.start_date <= @startDate AND r.end_date >= @endDate)
 			)
 			AND r.status_id <> 2';
-	 
+	
+	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
+		'SELECT 
+			tb.label, tb.start_time, tb.end_time, tb.availability_code
+		FROM 
+			time_blocks tb, time_block_groups tbg, schedule_time_block_groups stbg
+		WHERE 
+			tbg.block_groupid = stbg.block_group_id AND 
+			tb.block_group_id = tbg.block_groupid AND
+			stbg.schedule_id = @scheduleid 
+		ORDER BY tb.start_time';
+	
 	const GET_SCHEDULE_RESOURCES = 
 		'SELECT 
 			r.*
@@ -209,22 +253,6 @@ class Queries
 		WHERE 
 			r.resourceid = rs.resource_id AND rs.schedule_id = @scheduleid AND
 			r.isactive = 1';
-	
-	const GET_USER_RESOURCE_PERMISSIONS = 
-		'SELECT 
-			urp.user_id, r.resourceid, r.name
-		FROM
-			user_resource_permissions urp, resources r
-		WHERE
-			urp.user_id = @userid AND r.resourceid = urp.resource_id';
-	
-	const GET_GROUP_RESOURCE_PERMISSIONS = 
-		'SELECT 
-			grp.group_id, r.resourceid, r.name
-		FROM
-			group_resource_permissions grp, resources r, user_groups ug
-		WHERE
-			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resourceid';
 	
 	const GET_USER_BY_ID = 
 		'SELECT
@@ -242,6 +270,14 @@ class Queries
 		WHERE
 			userid = @userid';
 	
+	const GET_USER_RESOURCE_PERMISSIONS = 
+		'SELECT 
+			urp.user_id, r.resourceid, r.name
+		FROM
+			user_resource_permissions urp, resources r
+		WHERE
+			urp.user_id = @userid AND r.resourceid = urp.resource_id';
+		
 	const GET_USER_ROLES = 
 		'SELECT 
 			user_id, user_level 
@@ -390,6 +426,7 @@ class ColumnNames
 	const RESERVATION_DESCRIPTION = 'description';
 	const RESERVATION_COST = 'total_cost';
 	const RESERVATION_PARENT_ID = 'parent_id';
+	const REFERENCE_NUMBER = 'reference_number';
 	
 	// RESERVATION_USER //
 	const RESERVATION_OWNER = 'reservation_owner';

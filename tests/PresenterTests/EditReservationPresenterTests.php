@@ -29,7 +29,7 @@ class EditReservationPresenterTests extends TestBase
 	private $initializerFactory;
 	
 	/**
-	 * @var ExistingReservationInitializer
+	 * @var IReservationInitializer
 	 */
 	private $initializer;
 	
@@ -46,7 +46,7 @@ class EditReservationPresenterTests extends TestBase
 		$this->userRepository = $this->getMock('IUserRepository');
 		
 		$this->initializerFactory = $this->getMock('IReservationInitializerFactory');
-		$this->initializer = $this->getMock('ExistingReservationInitializer');
+		$this->initializer = $this->getMock('IReservationInitializer');
 		
 		$this->preconditionService = $this->getMock('EditReservationPreconditionService');
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
@@ -60,10 +60,11 @@ class EditReservationPresenterTests extends TestBase
 	public function testPullsReservationViewFromRepository()
 	{
 		$referenceNumber = '1234';
-		$timezone = $this->_user->Timezone;
+		$timezone = $this->user->Timezone;
 
 		$resourceId = 10;
 		$scheduleId = 100;
+		$reservationId = 298;
 		$startDateUtc = '2010-01-01 10:11:12';
 		$endDateUtc = '2010-01-02 10:11:12';
 		$ownerId = 987;
@@ -106,13 +107,13 @@ class EditReservationPresenterTests extends TestBase
 			->method('CheckAll')
 			->with($this->page, $this->user, $reservationView);
 			
-		$this->initialzerFactory->expects($this->once())
+		$this->initializerFactory->expects($this->once())
 			->method('GetInitializer')
 			->with($this->equalTo($this->page), $this->equalTo($reservationView))
 			->will($this->returnValue($this->initializer));
 			
-		$this->initialzer->expects($this->once())
-			->method('Initialze');
+		$this->initializer->expects($this->once())
+			->method('Initialize');
 			
 		$presenter = new EditReservationPresenter($this->page, $this->initializerFactory, $this->preconditionService, $this->reservationViewRepository);
 		

@@ -128,6 +128,15 @@ class Date
 	}
 	
 	/**
+	 * @param string $databaseValue
+	 * @return Date
+	 */
+	public static function FromDatabase($databaseValue)
+	{
+		return new Date($databaseValue, 'UTC');
+	}
+	
+	/**
 	 * Returns the current Date as a timestamp
 	 *
 	 * @return int

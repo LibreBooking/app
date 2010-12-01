@@ -2,7 +2,7 @@
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/ReservationSavePresenter.php');
 
-class ReservationSavePage extends Page implements IReservationSavePage
+class ReservationSavePage extends SecurePage implements IReservationSavePage
 {
 	/**
 	 * @var ReservationSavePresenter

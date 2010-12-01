@@ -245,9 +245,6 @@ class ReservationInitializationTests extends TestBase
 			->with($this->equalTo($userListWithoutReservationOwner));
 		
 		// Reservation Data
-		$page->expects($this->once())
-			->method('GetReferenceNumber')
-			->will($this->returnValue($referenceNumber));
 		
 		$page->expects($this->once())
 			->method('SetReservationUser')

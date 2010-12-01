@@ -38,7 +38,9 @@ class NewReservationPreconditionService implements INewReservationPreconditionSe
 class EditReservationPreconditionService
 {
 	public function CheckAll(IExistingReservationPage $page, UserSession $user, ReservationView $reservationView)
-	{}
+	{
+		// TODO: Handle if reservation is not found
+	}
 }
 
 abstract class ReservationPreconditionService implements IReservationPreconditionService

@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 class SecurePage extends Page
 {
-	public function __construct($titleKey, $pageDepth = 0)
+	public function __construct($titleKey = '', $pageDepth = 0)
 	{
 		parent::__construct($titleKey, $pageDepth);
 			
