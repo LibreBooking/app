@@ -1,9 +1,7 @@
 ﻿use phpscheduleit2;
 
 truncate table resources;
-truncate table resource_types;
 truncate table users;
-truncate table user_statuses;
 truncate table roles;
 truncate table user_roles;
 truncate table time_block_groups;
@@ -12,10 +10,8 @@ truncate table organizations;
 truncate table groups;
 truncate table addresses;
 
-insert into resource_types values (1, 'default');
 insert into resources (name, type_id, requires_approval) values ('resource1', 1, 0),('resource2', 1, 0);
 
-insert into user_statuses (statusid, description) values (1, 'active');
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language)
 	values ('Nick', 'Korbel', 'nkorbel@gmail.com', 'nkorbel', '7b6aec38ff9b7650d64d0374194307bdde711425', '3b3dbb9b', 'America/Chicago', '2008-09-16 01:59:00', 1, now(), 'en_us');
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language)
@@ -44,12 +40,6 @@ insert into addresses values (1, 'home', 'home street, city, state and country')
 
 truncate table user_addresses;
 insert into user_addresses values (1, 1);
-
-truncate table reservation_types;
-insert into reservation_types values (1, 'default'),(2, 'Down Time');
-
-truncate table reservation_statuses;
-insert into reservation_statuses values (1, 'Pending'),(2,'Approved'),(3,'Rejected');
 
 truncate table schedules;
 insert into schedules (scheduleid, name, isdefault, weekdaystart) values (1, 'default', 1, 0);

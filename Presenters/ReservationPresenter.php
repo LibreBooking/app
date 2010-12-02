@@ -54,7 +54,7 @@ class ReservationPresenter extends ReservationPresenterBase
 		$user = ServiceLocator::GetServer()->GetUserSession();
 
 		$this->preconditionService->CheckAll($this->_page, $user);
-		$initializer = $this->initializationFactory->GetInitializer($this->_page);
+		$initializer = $this->initializationFactory->GetNewInitializer($this->_page);
 		$initializer->Initialize();
 	}
 }
@@ -66,6 +66,9 @@ class EditReservationPresenter extends ReservationPresenterBase
 	 */
 	private $page;
 	
+	/**
+	 * @var IReservationInitializerFactory
+	 */
 	private $initializationFactory;
 	
 	/**
@@ -100,7 +103,7 @@ class EditReservationPresenter extends ReservationPresenterBase
 		$reservationView = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
 		
 		$this->preconditionService->CheckAll($this->page, $user, $reservationView);
-		$initializer = $this->initializationFactory->GetInitializer($this->page, $reservationView);
+		$initializer = $this->initializationFactory->GetExisitingInitializer($this->page, $reservationView);
 		$initializer->Initialize();
 	}
 }

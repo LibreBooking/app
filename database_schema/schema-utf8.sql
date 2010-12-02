@@ -1,4 +1,4 @@
-﻿DROP DATABASE IF EXISTS phpscheduleit2;
+DROP DATABASE IF EXISTS phpscheduleit2;
 
 CREATE DATABASE phpscheduleit2;
 
@@ -153,9 +153,9 @@ CREATE TABLE `roles` (
 
 DROP TABLE IF EXISTS `user_statuses`;
 CREATE TABLE `user_statuses` (
- `statusid` tinyint(2) unsigned NOT NULL,
+ `status_id` tinyint(2) unsigned NOT NULL,
  `description` varchar(85),
- PRIMARY KEY (`statusid`)
+ PRIMARY KEY (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -198,7 +198,7 @@ CREATE TABLE `registration_form_settings` (
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
- `userid` mediumint(8) unsigned NOT NULL auto_increment,
+ `user_id` mediumint(8) unsigned NOT NULL auto_increment,
  `fname` varchar(85),
  `lname` varchar(85),
  `username` varchar(85),
@@ -216,10 +216,10 @@ CREATE TABLE `users` (
  `status_id` tinyint(2) unsigned NOT NULL,
  `legacyid` char(16),
  `legacypassword` varchar(32),
- PRIMARY KEY (`userid`),
+ PRIMARY KEY (`user_id`),
  INDEX (`status_id`),
  FOREIGN KEY (`status_id`) 
-	REFERENCES user_statuses(`statusid`)
+	REFERENCES user_statuses(`status_id`)
 	ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -234,7 +234,7 @@ CREATE TABLE `user_organizations` (
  PRIMARY KEY (`user_id`, `organization_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
+	REFERENCES users(`user_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`organization_id`),
  FOREIGN KEY (`organization_id`) 
@@ -253,7 +253,7 @@ CREATE TABLE `user_groups` (
  PRIMARY KEY (`group_id`, `user_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
+	REFERENCES users(`user_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`group_id`),
  FOREIGN KEY (`group_id`) 
@@ -272,7 +272,7 @@ CREATE TABLE `user_roles` (
  PRIMARY KEY (`user_id`, `role_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
+	REFERENCES users(`user_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`role_id`),
  FOREIGN KEY (`role_id`) 
@@ -291,7 +291,7 @@ CREATE TABLE `user_addresses` (
  PRIMARY KEY (`user_id`, `address_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
+	REFERENCES users(`user_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`address_id`),
  FOREIGN KEY (`address_id`) 
@@ -310,7 +310,7 @@ CREATE TABLE `user_day_quotas` (
  PRIMARY KEY (`user_id`, `day_quota_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
+	REFERENCES users(`user_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`day_quota_id`),
  FOREIGN KEY (`day_quota_id`) 
@@ -329,7 +329,7 @@ CREATE TABLE `user_long_quotas` (
  PRIMARY KEY (`user_id`, `long_quota_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
+	REFERENCES users(`user_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`long_quota_id`),
  FOREIGN KEY (`long_quota_id`) 
@@ -354,9 +354,9 @@ CREATE TABLE `constraint_functions` (
 
 DROP TABLE IF EXISTS `resource_types`;
 CREATE TABLE `resource_types` (
- `typeid` tinyint(2) unsigned NOT NULL auto_increment,
+ `type_id` tinyint(2) unsigned NOT NULL,
  `label` varchar(85) NOT NULL,
- PRIMARY KEY (`typeid`)
+ PRIMARY KEY (`type_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -387,7 +387,7 @@ CREATE TABLE `resources` (
  PRIMARY KEY (`resourceid`),
  INDEX (`type_id`),
  FOREIGN KEY (`type_id`) 
-	REFERENCES resource_types(`typeid`)
+	REFERENCES resource_types(`type_id`)
 	ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -477,7 +477,7 @@ CREATE TABLE `user_resource_permissions` (
  PRIMARY KEY (`user_id`, `resource_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
+	REFERENCES users(`user_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) 
@@ -533,7 +533,7 @@ CREATE TABLE `schedule_admins` (
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
+	REFERENCES users(`user_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -581,9 +581,9 @@ CREATE TABLE `resource_schedules` (
 
 DROP TABLE IF EXISTS `reservation_types`;
 CREATE TABLE `reservation_types` (
- `typeid` tinyint(2) unsigned NOT NULL auto_increment,
+ `type_id` tinyint(2) unsigned NOT NULL,
  `label` varchar(85) NOT NULL,
- PRIMARY KEY (`typeid`)
+ PRIMARY KEY (`type_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -592,9 +592,9 @@ CREATE TABLE `reservation_types` (
 
 DROP TABLE IF EXISTS `reservation_statuses`;
 CREATE TABLE `reservation_statuses` (
- `statusid` tinyint(2) unsigned NOT NULL auto_increment,
+ `status_id` tinyint(2) unsigned NOT NULL,
  `label` varchar(85) NOT NULL,
- PRIMARY KEY (`statusid`)
+ PRIMARY KEY (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -603,7 +603,7 @@ CREATE TABLE `reservation_statuses` (
 
 DROP TABLE IF EXISTS `reservations`;
 CREATE TABLE `reservations` (
- `reservationid` mediumint(8) unsigned NOT NULL auto_increment,
+ `reservation_id` mediumint(8) unsigned NOT NULL auto_increment,
  `start_date` datetime NOT NULL,
  `end_date` datetime NOT NULL,
  `date_created` datetime NOT NULL,
@@ -612,21 +612,21 @@ CREATE TABLE `reservations` (
  `description` text,
  `allow_participation` tinyint(1) unsigned NOT NULL,
  `allow_anon_participation` tinyint(1) unsigned NOT NULL,
- `type_id` tinyint(2) unsigned,
- `status_id` tinyint(2) unsigned,
+ `type_id` tinyint(2) unsigned NOT NULL,
+ `status_id` tinyint(2) unsigned NOT NULL,
  `total_cost` dec(7,2),
  `repeat_type` varchar(10),
  `repeat_options` varchar(50),
  `reference_number` varchar(50) NOT NULL,
- PRIMARY KEY (`reservationid`),
+ PRIMARY KEY (`reservation_id`),
  INDEX (`type_id`),
- FOREIGN KEY (`type_id`) 
-	REFERENCES reservation_types(`typeid`)
-	ON UPDATE CASCADE ON DELETE SET NULL,
+FOREIGN KEY (`type_id`) 
+	REFERENCES reservation_types(`type_id`)
+	ON UPDATE CASCADE ON DELETE RESTRICT,
  INDEX (`status_id`),
- FOREIGN KEY (`status_id`) 
-	REFERENCES reservation_statuses(`statusid`)
-	ON UPDATE CASCADE ON DELETE SET NULL,
+FOREIGN KEY (`status_id`) 
+	REFERENCES reservation_statuses(`status_id`)
+	ON UPDATE CASCADE ON DELETE RESTRICT,
  INDEX (`start_date`),
  INDEX (`end_date`),
  INDEX (`reference_number`)
@@ -638,18 +638,16 @@ CREATE TABLE `reservations` (
 
 DROP TABLE IF EXISTS `reservation_users`;
 CREATE TABLE `reservation_users` (
- `reservation_id` mediumint(8) unsigned NOT NULL auto_increment,
- `user_id` mediumint(8) unsigned NOT NULL,
- PRIMARY KEY (`reservation_id`, `user_id`),
- INDEX (`reservation_id`),
- FOREIGN KEY (`reservation_id`) 
-	REFERENCES reservations(`reservationid`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`user_id`),
- FOREIGN KEY (`user_id`) 
-	REFERENCES users(`userid`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+  `reservation_id` mediumint(8) unsigned NOT NULL,
+  `user_id` mediumint(8) unsigned NOT NULL,
+  `reservation_user_level` tinyint(2) unsigned NOT NULL,
+  PRIMARY KEY  (`reservation_id`,`user_id`),
+  KEY `reservation_id` (`reservation_id`),
+  KEY `user_id` (`user_id`),
+  KEY `reservation_user_level` (`reservation_user_level`),
+  FOREIGN KEY (`reservation_id`) REFERENCES `reservations` (`reservation_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 	
 --
 -- Table structure for table `reservation_time_blocks`
@@ -662,7 +660,7 @@ CREATE TABLE `reservation_time_blocks` (
  PRIMARY KEY (`reservation_id`, `block_id`),
  INDEX (`reservation_id`),
  FOREIGN KEY (`reservation_id`) 
-	REFERENCES reservations(`reservationid`)
+	REFERENCES reservations(`reservation_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`block_id`),
  FOREIGN KEY (`block_id`) 
@@ -685,7 +683,7 @@ CREATE TABLE `reservation_resources` (
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`reservation_id`),
  FOREIGN KEY (`reservation_id`) 
-	REFERENCES reservations(`reservationid`)
+	REFERENCES reservations(`reservation_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -695,10 +693,10 @@ CREATE TABLE `reservation_resources` (
 
 DROP TABLE IF EXISTS `user_email_preferences`;
 CREATE TABLE `user_email_preferences` (
-  `userid` mediumint(8) unsigned NOT NULL,
+  `user_id` mediumint(8) unsigned NOT NULL,
   `event_category` varchar(45) NOT NULL,
   `event_type` varchar(45) NOT NULL,
-  KEY `userid` (`userid`)
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 GRANT ALL on phpscheduleit2.* to 'schedule_user'@'localhost' identified by 'password';

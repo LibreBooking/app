@@ -97,7 +97,7 @@
 			</li>
 			<li class="rsv-req">
                 <label>{translate key="ReservationTitle"}<br />
-                {textbox name="RESERVATION_TITLE" class="input" value="reservationTitle" tabindex="100"}
+                {textbox name="RESERVATION_TITLE" class="input" value="reservationTitle" tabindex="100" value="$Title"}
                 </label>
         	</li>
         	<li class="rsv-box-l">

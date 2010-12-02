@@ -1,1 +1,0 @@
-insert into reservation_user_level (level_name) values ('owner');

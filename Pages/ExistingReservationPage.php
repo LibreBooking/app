@@ -67,6 +67,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	
 	public function SetTitle($title)
 	{
+		echo 'title '. $title;
 		$this->Set('Title', $title);
 	}
 	

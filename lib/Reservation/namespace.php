@@ -9,6 +9,7 @@ require_once(ROOT_DIR . 'lib/Reservation/IReservationPersistenceFactory.php');
 require_once(ROOT_DIR . 'lib/Reservation/ReservationPersistenceFactory.php');
 require_once(ROOT_DIR . 'lib/Reservation/AddReservationPersistenceService.php');
 require_once(ROOT_DIR . 'lib/Reservation/NewReservationInitializer.php');
+require_once(ROOT_DIR . 'lib/Reservation/ExistingReservationInitializer.php');
 
 require_once(ROOT_DIR . 'lib/Reservation/ReservationInitializerFactory.php');
 require_once(ROOT_DIR . 'lib/Reservation/ReservationPreconditionService.php');

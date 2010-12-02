@@ -89,7 +89,7 @@ class Queries
 	FROM
 		reservation_users JOIN reservations
 	WHERE
-		(@userid = reservation_users.user_id AND reservation_users.reservation_id = reservations.reservationid)';
+		(@userid = reservation_users.user_id AND reservation_users.reservation_id = reservations.reservation_id)';
 	
 	const ADD_RESERVATION = 
 		'INSERT INTO 
@@ -108,8 +108,8 @@ class Queries
 	
 	const ADD_RESERVATION_USER  = 
 		'INSERT INTO
-			reservation_users (reservation_id, user_id)
-		VALUES (@reservationid, @userid)';
+			reservation_users (reservation_id, user_id, reservation_user_level)
+		VALUES (@reservationid, @userid, @levelid)';
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
 		'INSERT INTO 
@@ -122,27 +122,27 @@ class Queries
 			autoassign=1';
 	
 	const CHECK_EMAIL = 
-		'SELECT userid 
+		'SELECT user_id 
 		FROM users
 		WHERE email = @email';
 		
 	const CHECK_USERNAME = 
-		'SELECT userid 
+		'SELECT user_id 
 		FROM users
 		WHERE username = @username';
 		
 	const CHECK_USER_EXISTANCE = 
-		'SELECT userid 
+		'SELECT user_id 
 		FROM users
 		WHERE (username = @username OR email = @email)';
 		
 	const COOKIE_LOGIN = 
-		'SELECT userid, lastlogin, email 
+		'SELECT user_id, lastlogin, email 
 		FROM users 
-		WHERE userid = @userid';
+		WHERE user_id = @userid';
 	
 	const LOGIN_USER = 
-		'SELECT userid, email, fname, lname, timezone, lastlogin, homepageid
+		'SELECT user_id, email, fname, lname, timezone, lastlogin, homepageid
 		FROM users 
 		WHERE (username = @username OR email = @username)';
 	
@@ -151,7 +151,7 @@ class Queries
 		FROM schedules';
 	
 	const GET_ALL_USERS_BY_STATUS = 
-		'SELECT userid, fname, lname, email, timezone, language
+		'SELECT user_id, fname, lname, email, timezone, language
 		FROM users
 		WHERE status_id = @user_statusid';
 		
@@ -182,11 +182,17 @@ class Queries
 		'SELECT 
 			* 
 		FROM
-			reservations
+			reservations r 
+		INNER JOIN
+			reservation_users ru 
+		ON 
+			r.reservation_id = ru.reservation_id
 		WHERE 
-			referenceNumber = @referenceNumber
+			reference_number = @referenceNumber
 		AND	
-			status_id <> 2
+			status_id IN (1,2)
+		AND
+			ru.reservation_user_level = 1
 		';
 	
 	const GET_RESERVATION_PARTICIPANTS =
@@ -208,21 +214,21 @@ class Queries
 	// TODO: Pass in "Deleted" status ID
 	const GET_RESERVATIONS_COMMAND =
 	 'SELECT
-		  r.reservationid,
+		  r.reservation_id,
 		  r.start_date,
 		  r.end_date,
 		  r.type_id,
 		  r.status_id,
 		  r.description,
 		  rs.resource_id,
-		  u.userid,
+		  u.user_id,
 		  u.fname,
 		  u.lname
 		FROM 
 			reservations r, reservation_users ru, users u, resource_schedules rs, schedules s, reservation_resources rr
 		WHERE 
-			r.reservationid = ru.reservation_id AND 
-			ru.user_id = userid AND 
+			r.reservation_id = ru.reservation_id AND 
+			ru.user_id = user_id AND 
 			rr.resource_id = rs.resource_id AND 
 			(rs.schedule_id = @scheduleid OR @scheduleid = -1) AND
 			(
@@ -232,7 +238,7 @@ class Queries
 		  		OR
 		  		(r.start_date <= @startDate AND r.end_date >= @endDate)
 			)
-			AND r.status_id <> 2';
+			AND r.status_id is null or r.status_id <> 2';
 	
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
 		'SELECT 
@@ -260,7 +266,7 @@ class Queries
 		FROM
 			users
 		WHERE
-			userid = @userid';
+			user_id = @userid';
 	
 	const GET_USER_EMAIL_PREFERENCES =
 		'SELECT 
@@ -268,7 +274,7 @@ class Queries
 		FROM
 			user_email_preferences
 		WHERE
-			userid = @userid';
+			user_id = @userid';
 	
 	const GET_USER_RESOURCE_PERMISSIONS = 
 		'SELECT 
@@ -292,7 +298,7 @@ class Queries
 		SET 
 			password = @password, legacypassword = null, salt = @salt 
 		WHERE 
-			userid = @userid';
+			user_id = @userid';
 
 	const REGISTER_FORM_SETTINGS = 
 		'INSERT INTO
@@ -335,7 +341,7 @@ class Queries
 		SET 
 			lastlogin = @lastlogin 
 		WHERE 
-			userid = @userid';
+			user_id = @userid';
 		
 	const UPDATE_USER_BY_USERNAME = 
 		'UPDATE 
@@ -353,7 +359,7 @@ class Queries
 			username = @username';
 	
 	const VALIDATE_USER = 
-		'SELECT userid, password, salt, legacypassword
+		'SELECT user_id, password, salt, legacypassword
 		FROM users 
 		WHERE (username = @username OR email = @username)';
 	
@@ -367,7 +373,7 @@ class ColumnNames
 	{}
 	
 	// USERS //
-	const USER_ID = 'userid';	
+	const USER_ID = 'user_id';	
 	const USERNAME = 'username';	
 	const EMAIL = 'email';
 	const FIRST_NAME = 'fname';
@@ -414,7 +420,7 @@ class ColumnNames
 	const BLOCK_END = 'end_time';	
 
 	// RESERVATION //
-	const RESERVATION_ID = 'reservationid';
+	const RESERVATION_ID = 'reservation_id';
 	const RESERVATION_USER = 'user_id';
 	const RESERVATION_GROUP = 'group_id';
 	const RESERVATION_START = 'start_date';

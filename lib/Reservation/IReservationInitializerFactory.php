@@ -3,10 +3,17 @@
 interface IReservationInitializerFactory
 {
 	/**
-	 * @param IReservationPage $page
+	 * @param INewReservationPage $page
 	 * @return IReservationInitializer
 	 */
-	public function GetInitializer(IReservationPage $page);
+	public function GetNewInitializer(INewReservationPage $page);
+
+	/**
+	 * @param IExistingReservationPage $page
+	 * @param ReservationView $reservationView
+	 * @return IReservationInitializer
+	 */
+	public function GetExisitingInitializer(IExistingReservationPage $page, ReservationView $reservationView);
 }
 
 ?>

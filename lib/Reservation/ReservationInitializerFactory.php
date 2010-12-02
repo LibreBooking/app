@@ -27,15 +27,21 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 		$this->_userRepository = $userRepository;
 	}
 	
-	/**
-	 * @see IReservationInitializerFactory::GetInitializer()
-	 */
-	public function GetInitializer(IReservationPage $page)
+	public function GetNewInitializer(INewReservationPage $page)
 	{
 		return new NewReservationInitializer($page, 
 			$this->_scheduleUserRepository, 
 			$this->_scheduleRepository,
 			$this->_userRepository);
+	}
+	
+	public function GetExisitingInitializer(IExistingReservationPage $page, ReservationView $reservationView)
+	{
+		return new ExistingReservationInitializer($page,
+			$this->_scheduleUserRepository, 
+			$this->_scheduleRepository,
+			$this->_userRepository,
+			$reservationView);
 	}
 }
 
