@@ -26,7 +26,11 @@ class AddReservationCommand extends SqlCommand
 								$description, 
 								$repeatType,
 								$repeatOptions,
-								$referenceNumber)
+								$referenceNumber,
+								$scheduleId,
+								$reservationTypeId,
+								$statusId
+								)
 	{
 		parent::__construct(Queries::ADD_RESERVATION);
 		
@@ -38,6 +42,9 @@ class AddReservationCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));	
 		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));	
+		$this->AddParameter(new Parameter(ParameterNames::TYPE_ID, $reservationTypeId));	
+		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));	
 	}
 }
 
@@ -55,12 +62,13 @@ class AddReservationRepeatDateCommand extends SqlCommand
 
 class AddReservationResourceCommand extends SqlCommand
 {
-	public function __construct($reservationId, $resourceId)
+	public function __construct($reservationId, $resourceId, $resourceLevelId)
 	{
 		parent::__construct(Queries::ADD_RESERVATION_RESOURCE);
 		
 		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LEVEL_ID, $resourceLevelId));
 	}
 }
 
@@ -200,6 +208,8 @@ class GetReservationForEditingCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_RESERVATION_FOR_EDITING);
 		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, ReservationUserLevel::OWNER));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LEVEL_ID, ResourceLevel::Primary));
 	}
 }
 

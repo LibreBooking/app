@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'lib/Domain/ReservationFactory.php');
+
 class ReservationRepository implements IReservationRepository
 {
 	const ALL_SCHEDULES = -1;
@@ -31,12 +33,18 @@ class ReservationRepository implements IReservationRepository
 										$reservation->Description(),
 										$reservation->RepeatOptions()->RepeatType(),
 										$reservation->RepeatOptions()->ConfigurationString(),
-										$reservation->ReferenceNumber());
+										$reservation->ReferenceNumber(),
+										$reservation->ScheduleId(),
+										ReservationTypes::Reservation,
+										ReservationStatus::Created);
 		
 		$reservationId = ServiceLocator::GetDatabase()->ExecuteInsert($insertReservation);
 		
-		$insertReservationResource = new AddReservationResourceCommand($reservationId, $reservation->ResourceId());
-		
+		$insertReservationResource = new AddReservationResourceCommand(
+										$reservationId, 
+										$reservation->ResourceId(),
+										ResourceLevel::Primary);
+					
 		ServiceLocator::GetDatabase()->Execute($insertReservationResource);
 		
 		$insertReservationUser = new AddReservationUserCommand(
@@ -48,7 +56,10 @@ class ReservationRepository implements IReservationRepository
 		
 		foreach($reservation->RepeatedDates() as $date)
 		{
-			$insertRepeatedDate = new AddReservationRepeatDateCommand($reservationId, $date->GetBegin()->ToUtc(), $date->GetEnd()->ToUtc());
+			$insertRepeatedDate = new AddReservationRepeatDateCommand(
+									$reservationId, 
+									$date->GetBegin(), 
+									$date->GetEnd());
 			ServiceLocator::GetDatabase()->Execute($insertRepeatedDate);
 		}
 	}

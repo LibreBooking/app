@@ -24,9 +24,9 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->Description = $row[ColumnNames::RESERVATION_DESCRIPTION];
 			$reservationView->EndDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
 			$reservationView->OwnerId = $row[ColumnNames::USER_ID];
+			$reservationView->ResourceId = $row[ColumnNames::RESOURCE_ID];
 			$reservationView->ReferenceNumber = $row[ColumnNames::REFERENCE_NUMBER];
 			$reservationView->ReservationId = $row[ColumnNames::RESERVATION_ID];
-			$reservationView->ResourceId = $row[ColumnNames::RESOURCE_ID];
 			$reservationView->ScheduleId = $row[ColumnNames::SCHEDULE_ID];
 			$reservationView->StartDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$reservationView->Title = $row[ColumnNames::RESERVATION_TITLE];	
@@ -36,6 +36,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			
 			$reservationView->AdditionalResourceIds = $resources;
 			$reservationView->ParticipantIds = $participants;
+			
 		}
 		
 		return $reservationView;

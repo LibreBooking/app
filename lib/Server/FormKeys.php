@@ -48,7 +48,7 @@ class FormKeys
 	const RESOURCE_NAME = 'resourceName';	
 	const LOCATION = 'location';
 	const CONTACT_INFO = 'contactInfo';
-	const DESCRIPTION = 'description';
+	const DESCRIPTION = 'reservationDescription';
 	const NOTES = 'notes';
 	const IS_ACTIVE = 'isactive';
 	const MIN_DURATION = 'minDuration';

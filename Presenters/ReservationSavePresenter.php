@@ -56,12 +56,14 @@ class ReservationSavePresenter
 
 		$userId = $this->_page->GetUserId();
 		$resourceId = $this->_page->GetResourceId();
+		$scheduleId = $this->_page->GetScheduleId();
 		$title = $this->_page->GetTitle();
 		$description = $this->_page->GetDescription();
-		
+
 		$reservation->Update(
 			$userId, 
 			$resourceId, 
+			$scheduleId,
 			$title,
 			$description);
 		

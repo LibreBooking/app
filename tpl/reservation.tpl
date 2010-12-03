@@ -17,7 +17,10 @@
 		<ul class="no-style">
         	<li class="inline">
 		    	<label>{translate key="ResourceList"}<br />
-		    		<div id="resourceNames" style="display:inline">{$ResourceName} <input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}" /></div>
+		    		<div id="resourceNames" style="display:inline">{$ResourceName} 
+			    		<input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}" />
+			    		<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}" />
+		    		</div>
 					<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(Add/Change)</a>
 					<div id="additionalResources" />
 					<!--
@@ -97,12 +100,12 @@
 			</li>
 			<li class="rsv-req">
                 <label>{translate key="ReservationTitle"}<br />
-                {textbox name="RESERVATION_TITLE" class="input" value="reservationTitle" tabindex="100" value="$Title"}
+                {textbox name="RESERVATION_TITLE" class="input" tabindex="100" value="ReservationTitle"}
                 </label>
         	</li>
         	<li class="rsv-box-l">
                 <label>{translate key="ReservationDescription"}<br />
-	                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-area" rows="2" cols="52" tabindex="110"></textarea>
+	                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-area" rows="2" cols="52" tabindex="110">{$Description}</textarea>
                 </label>
         	</li>
 			<li class="rsv-pulldown">
@@ -112,7 +115,7 @@
                         </select>
 				<input type="button" value="{translate key="Add"}" class="button" tabindex="130"></input>
 				</label>
-                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-areashow" rows="3" cols="52" tabindex="140"></textarea>
+                
         	</li>
 			<!-- The selected participants should be printed here, above the Invitation list pulldown -->
 			<li class="rsv-pulldown">
@@ -122,7 +125,7 @@
                         </select>
 				<input type="button" value="{translate key="Add"}" class="button" tabindex="160"></input>
 				</label>
-                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-areashow" rows="3" cols="52" tabindex="170"></textarea>
+               
         	</li>
 			<!-- The invited users should be printed here above the X -->
 			

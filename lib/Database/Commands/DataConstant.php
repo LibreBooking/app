@@ -44,12 +44,15 @@ class ParameterNames
 	const RESOURCE_NAME = '@resource_name';	
 	const RESOURCE_NOTES = '@resource_notes';
 	const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';
+	const RESOURCE_LEVEL_ID = "@resourceLevelId";
 	
 	
 	const SALT = '@salt';
 	const SCHEDULE_ID = '@scheduleid';
 	const START_DATE = '@startDate';
+	const STATUS_ID = '@statusid';
 	const TIMEZONE_NAME = '@timezone';
+	const TYPE_ID = '@typeid';
 	const LANGUAGE = '@language';
 	const TITLE = '@title';
 	const USER_ID = '@userid';
@@ -93,8 +96,8 @@ class Queries
 	
 	const ADD_RESERVATION = 
 		'INSERT INTO 
-			reservations (start_date, end_date, date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, reference_number)
-		VALUES (@startDate, @endDate, @dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @referenceNumber)';
+			reservations (start_date, end_date, date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, reference_number, schedule_id, type_id, status_id)
+		VALUES (@startDate, @endDate, @dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @referenceNumber, @scheduleid, @typeid, @statusid)';
 	
 	const ADD_RESERVATION_REPEAT_DATE = 
 		'INSERT INTO
@@ -103,8 +106,8 @@ class Queries
 	
 	const ADD_RESERVATION_RESOURCE =
 		'INSERT INTO
-			reservation_resources (reservation_id, resource_id)
-		VALUES (@reservationid, @resourceid)';	
+			reservation_resources (reservation_id, resource_id, resource_level_id)
+		VALUES (@reservationid, @resourceid, @resourceLevelId)';	
 	
 	const ADD_RESERVATION_USER  = 
 		'INSERT INTO
@@ -115,7 +118,7 @@ class Queries
 		'INSERT INTO 
 			user_resource_permissions (user_id, resource_id) 
 		SELECT 
-			@userid as user_id, resourceid as resource_id 
+			@userid as user_id, resource_id 
 		FROM 
 			resources
 		WHERE 
@@ -163,11 +166,11 @@ class Queries
 
 	const GET_GROUP_RESOURCE_PERMISSIONS = 
 		'SELECT 
-			grp.group_id, r.resourceid, r.name
+			grp.group_id, r.resource_id, r.name
 		FROM
 			group_resource_permissions grp, resources r, user_groups ug
 		WHERE
-			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resourceid';
+			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resource_id';
 	
 		
 	const GET_RESOURCE_BY_ID = 
@@ -186,14 +189,19 @@ class Queries
 		INNER JOIN
 			reservation_users ru 
 		ON 
-			r.reservation_id = ru.reservation_id
+			r.reservation_id = ru.reservation_id 
+		AND
+			ru.reservation_user_level = @levelid
+		INNER JOIN
+			reservation_resources rr
+		ON
+			r.reservation_id = rr.reservation_id
+		AND 
+			rr.resource_level_id = @resourceLevelId
 		WHERE 
 			reference_number = @referenceNumber
 		AND	
-			status_id IN (1,2)
-		AND
-			ru.reservation_user_level = 1
-		';
+			status_id IN (1,2)';
 	
 	const GET_RESERVATION_PARTICIPANTS =
 		'SELECT
@@ -228,9 +236,9 @@ class Queries
 			reservations r, reservation_users ru, users u, resource_schedules rs, schedules s, reservation_resources rr
 		WHERE 
 			r.reservation_id = ru.reservation_id AND 
-			ru.user_id = user_id AND 
+			ru.user_id = u.user_id AND 
 			rr.resource_id = rs.resource_id AND 
-			(rs.schedule_id = @scheduleid OR @scheduleid = -1) AND
+			(rs.schedule_id = @schedule_id OR @scheduleid = -1) AND
 			(
 		  		(r.start_date BETWEEN @startDate AND @endDate)
 		  		OR
@@ -238,7 +246,7 @@ class Queries
 		  		OR
 		  		(r.start_date <= @startDate AND r.end_date >= @endDate)
 			)
-			AND r.status_id is null or r.status_id <> 2';
+			AND r.status_id <> 2';
 	
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
 		'SELECT 
@@ -257,7 +265,7 @@ class Queries
 		FROM 
 			resources r, resource_schedules rs 
 		WHERE 
-			r.resourceid = rs.resource_id AND rs.schedule_id = @scheduleid AND
+			r.resource_id = rs.resource_id AND rs.schedule_id = @scheduleid AND
 			r.isactive = 1';
 	
 	const GET_USER_BY_ID = 
@@ -278,11 +286,11 @@ class Queries
 	
 	const GET_USER_RESOURCE_PERMISSIONS = 
 		'SELECT 
-			urp.user_id, r.resourceid, r.name
+			urp.user_id, r.resource_id, r.name
 		FROM
 			user_resource_permissions urp, resources r
 		WHERE
-			urp.user_id = @userid AND r.resourceid = urp.resource_id';
+			urp.user_id = @userid AND r.resource_id = urp.resource_id';
 		
 	const GET_USER_ROLES = 
 		'SELECT 
@@ -438,7 +446,7 @@ class ColumnNames
 	const RESERVATION_OWNER = 'reservation_owner';
 	
 	// RESOURCE //
-	const RESOURCE_ID = 'resourceid';
+	const RESOURCE_ID = 'resource_id';
 	const RESOURCE_NAME = 'name';
 	const RESOURCE_LOCATION = 'location';
 	const RESOURCE_CONTACT = 'contact_info';
@@ -456,7 +464,7 @@ class ColumnNames
 	const RESOURCE_MAXNOTICE = 'max_notice_time';
 	
 	// SCHEDULE //
-	const SCHEDULE_ID = 'scheduleid';
+	const SCHEDULE_ID = 'schedule_id';
 	const SCHEDULE_NAME = 'name';
 	const SCHEDULE_DEFAULT = 'isdefault';
 	const SCHEDULE_WEEKDAY_START = 'weekdaystart';

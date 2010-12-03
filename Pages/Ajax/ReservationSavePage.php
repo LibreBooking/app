@@ -70,6 +70,11 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		return $this->GetForm(FormKeys::RESOURCE_ID);
 	}
 	
+	public function GetScheduleId()
+	{
+		return $this->GetForm(FormKeys::SCHEDULE_ID);
+	}
+	
 	public function GetTitle()
 	{
 		return $this->GetForm(FormKeys::RESERVATION_TITLE);
@@ -193,6 +198,7 @@ interface IReservationSavePage
 	
 	public function GetUserId();
 	public function GetResourceId();
+	public function GetScheduleId();
 	public function GetTitle();
 	public function GetDescription();
 	public function GetStartDate();

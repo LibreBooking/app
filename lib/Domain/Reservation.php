@@ -41,6 +41,19 @@ class Reservation
 	{
 		return $this->_resourceId;
 	}
+	
+	/**
+	 * @var int
+	 */
+	protected $_scheduleId;
+	
+	/**
+	 * @return int
+	 */
+	public function ScheduleId()
+	{
+		return $this->_scheduleId;
+	}
 
 	/**
 	 * @var string
@@ -133,13 +146,15 @@ class Reservation
 	/**
 	 * @param int $userId
 	 * @param int $resourceId
+	 * @param int $scheduleId
 	 * @param string $title
 	 * @param string $description
 	 */
-	public function Update($userId, $resourceId, $title, $description)
+	public function Update($userId, $resourceId, $scheduleId, $title, $description)
 	{
 		$this->_userId = $userId;
 		$this->_resourceId = $resourceId;
+		$this->_scheduleId = $scheduleId;
 		$this->_title = $title;
 		$this->_description = $description;
 	}

@@ -5,6 +5,8 @@ require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
 require_once(ROOT_DIR . 'lib/Domain/Values/AccountStatus.php');
 require_once(ROOT_DIR . 'lib/Domain/Values/ReservationUserLevel.php');
+require_once(ROOT_DIR . 'lib/Domain/Values/ReservationStatus.php');
+require_once(ROOT_DIR . 'lib/Domain/Values/ResourceLevel.php');
 
 require_once(ROOT_DIR . 'lib/Domain/Announcements.php');
 require_once(ROOT_DIR . 'lib/Domain/Schedule.php');

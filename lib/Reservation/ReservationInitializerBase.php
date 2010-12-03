@@ -73,6 +73,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$reservationUser = $bindableUserData->ReservationUser;
 		$this->basePage->SetReservationUser($reservationUser);
 		$this->basePage->SetReservationResource($bindableResourceData->ReservationResource);
+		$this->basePage->SetScheduleId($requestedScheduleId);
 	}
 	
 	protected abstract function GetResourceId();

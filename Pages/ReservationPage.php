@@ -41,6 +41,11 @@ interface IReservationPage extends IPage
 	 * @param ScheduleResource $resource
 	 */
 	public function SetReservationResource($resource);
+	
+	/**
+	 * @param int $scheduleId
+	 */
+	function SetScheduleId($scheduleId);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -136,6 +141,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 	{
 		$this->Set('ResourceName', $resource->Name());
 		$this->Set('ResourceId', $resource->Id());
+	}
+	
+	public function SetScheduleId($scheduleId)
+	{
+		$this->Set('ScheduleId', $scheduleId);
 	}
 }
 ?>

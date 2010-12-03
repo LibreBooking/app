@@ -1,4 +1,4 @@
-﻿use phpscheduleit2;
+use phpscheduleit2;
 
 truncate table resources;
 truncate table users;
@@ -9,6 +9,7 @@ truncate table time_blocks;
 truncate table organizations;
 truncate table groups;
 truncate table addresses;
+
 
 insert into resources (name, type_id, requires_approval) values ('resource1', 1, 0),('resource2', 1, 0);
 
