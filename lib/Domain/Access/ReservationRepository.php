@@ -47,6 +47,16 @@ class ReservationRepository implements IReservationRepository
 					
 		ServiceLocator::GetDatabase()->Execute($insertReservationResource);
 		
+		foreach($reservation->Resources() as $resourceId)
+		{
+			$insertReservationResource = new AddReservationResourceCommand(
+										$reservationId, 
+										$resourceId,
+										ResourceLevel::Additional);
+					
+			ServiceLocator::GetDatabase()->Execute($insertReservationResource);
+		}
+		
 		$insertReservationUser = new AddReservationUserCommand(
 										$reservationId, 
 										$reservation->UserId(), 

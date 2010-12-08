@@ -48,7 +48,7 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::SCHEDULE_ID => $scheduleId,
 			ColumnNames::RESERVATION_START => $startDate->ToDatabase(),
 			ColumnNames::RESERVATION_END => $endDate->ToDatabase(),
-			ColumnNames::RESERVATION_OWNER => $ownerId,
+			ColumnNames::USER_ID => $ownerId,
 			ColumnNames::RESERVATION_TITLE => $title,
 			ColumnNames::RESERVATION_DESCRIPTION => $description,
 			 );

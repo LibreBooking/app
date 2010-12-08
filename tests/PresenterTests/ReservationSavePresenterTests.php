@@ -39,6 +39,7 @@ class ReservationSavePresenterTests extends TestBase
 	{
 		$userId = 120;
 		$resourceId = 329;
+		$scheduleId = 229;
 		$title = 'title';
 		$description = 'description';
 		
@@ -83,6 +84,10 @@ class ReservationSavePresenterTests extends TestBase
 			->will($this->returnValue($resourceId));
 			
 		$this->_page->expects($this->once())
+			->method('GetScheduleId')
+			->will($this->returnValue($scheduleId));
+			
+		$this->_page->expects($this->once())
 			->method('GetTitle')
 			->will($this->returnValue($title));
 			
@@ -117,7 +122,11 @@ class ReservationSavePresenterTests extends TestBase
 		
 		$reservation->expects($this->once())
 			->method('Update')
-			->with($this->equalTo($userId), $this->equalTo($resourceId), $this->equalTo($title), $this->equalTo($description));
+			->with($this->equalTo($userId), 
+					$this->equalTo($resourceId), 
+					$this->equalTo($scheduleId), 
+					$this->equalTo($title), 
+					$this->equalTo($description));
 		
 		$reservation->expects($this->once())
 			->method('UpdateDuration')

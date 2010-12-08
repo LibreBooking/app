@@ -77,7 +77,7 @@ class DailyRepeat implements IRepeatOptions
 		$dates = array();
 		$startDate = $this->_duration->GetBegin()->AddDays($this->_interval);
 		$endDate = $this->_duration->GetEnd()->AddDays($this->_interval);
-
+		
 		while ($startDate->Compare($this->_terminiationDate) <= 0)
 		{
 			$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());

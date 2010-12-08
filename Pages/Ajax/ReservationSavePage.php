@@ -107,11 +107,18 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	
 	public function GetResources()
 	{
-		$resources =  $this->GetForm(FormKeys::ADDITIONAL_RESOURCES);
+		$resources =  $this->GetForm(FormKeys::ADDITIONAL_RESOURCES);		
 		if (is_null($resources))
 		{
 			return array();
 		}
+		
+		if (!is_array($resources))
+		{
+			return array($resources);
+		}
+		
+		return $resources;
 	}
 
 	public function GetRepeatOptions($initialReservationDates)

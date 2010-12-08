@@ -20,6 +20,19 @@ class NewReservationPreconditionService implements INewReservationPreconditionSe
 	public function CheckAll(INewReservationPage $page, UserSession $user)
 	{
 		$requestedResourceId = $page->GetRequestedResourceId();
+		$requestedScheduleId = $page->GetRequestedScheduleId();
+
+		if (empty($requestedResourceId))
+		{
+			$page->RedirectToError(ErrorMessages::MISSING_RESOURCE, $page->GetLastPage());
+			return;
+		}
+		
+		if (empty($requestedScheduleId))
+		{
+			$page->RedirectToError(ErrorMessages::MISSING_SCHEDULE, $page->GetLastPage());
+			return;
+		}
 		
 		if (!$this->UserHasPermission($user, $requestedResourceId))
 		{

@@ -231,13 +231,24 @@ class Queries
 		  rs.resource_id,
 		  u.user_id,
 		  u.fname,
-		  u.lname
+		  u.lname,
+		  rd.start_date as repeat_start,
+		  rd.end_date as repeat_end
 		FROM 
-			reservations r, reservation_users ru, users u, resource_schedules rs, schedules s, reservation_resources rr
+			reservations r
+		INNER JOIN 
+			reservation_users ru ON r.reservation_id = ru.reservation_id
+		INNER JOIN 
+			users u ON ru.user_id = u.user_id
+		INNER JOIN 
+			reservation_resources rr ON rr.reservation_id = r.reservation_id
+		INNER JOIN 
+			resource_schedules rs ON rs.resource_id = rr.resource_id	
+		LEFT JOIN 
+			reservation_repeat_dates rd ON (rd.reservation_id = r.reservation_id)			
 		WHERE 
-			r.reservation_id = ru.reservation_id AND 
-			ru.user_id = u.user_id AND 
-			rr.resource_id = rs.resource_id AND 
+			ru.reservation_user_level = 1 AND
+			
 			(rs.schedule_id = @schedule_id OR @scheduleid = -1) AND
 			(
 		  		(r.start_date BETWEEN @startDate AND @endDate)
@@ -245,6 +256,13 @@ class Queries
 		  		(r.end_date BETWEEN @startDate AND @endDate)
 		  		OR
 		  		(r.start_date <= @startDate AND r.end_date >= @endDate)
+		  		
+		  		OR
+		  		(rd.start_date BETWEEN @startDate AND @endDate)
+		  		OR
+		  		(rd.end_date BETWEEN @startDate AND @endDate)
+		  		OR
+		  		(rd.start_date <= @startDate AND rd.end_date >= @endDate)
 			)
 			AND r.status_id <> 2';
 	
@@ -473,6 +491,11 @@ class ColumnNames
 	// EMAIL PREFERENCES //
 	const EVENT_CATEGORY = 'event_category';
 	const EVENT_TYPE= 'event_type';
+	
+	const REPEAT_START = 'repeat_start';
+	const REPEAT_END = 'repeat_end';
+	
+	
 
 }
 ?>

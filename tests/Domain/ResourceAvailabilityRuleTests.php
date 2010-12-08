@@ -20,7 +20,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$endDate = Date::Parse('2010-04-05', 'UTC');
 		
 		$reservation = new Reservation();
-		$reservation->Update(1, 100, null, null);
+		$reservation->Update(1, 100, null, null, null);
 		$reservation->UpdateDuration(new DateRange($startDate, $endDate));
 		$reservation->AddResource(101);
 		$reservation->AddResource(102);
@@ -47,7 +47,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$resourceId = 100;
 		
 		$reservation = new Reservation();
-		$reservation->Update(1, $resourceId, null, null);
+		$reservation->Update(1, $resourceId, null, null, null);
 		$reservation->UpdateDuration(new DateRange($startDate, $endDate));
 		
 		$startConflict1 = Date::Parse('2010-04-04', 'UTC');
@@ -81,7 +81,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$additionalResourceId = 1;
 		
 		$reservation = new Reservation();
-		$reservation->Update(1, 100, null, null);
+		$reservation->Update(1, 100, null, null, null);
 		$reservation->UpdateDuration(new DateRange($startDate, $endDate));
 		$reservation->AddResource($additionalResourceId);
 		

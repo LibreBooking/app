@@ -120,7 +120,7 @@ class Reservation
 	protected $_repeatedDates = array();
 	
 	/**
-	 * @return array of DateRange
+	 * @return DateRange[]
 	 */
 	public function RepeatedDates()
 	{
@@ -130,7 +130,7 @@ class Reservation
 	protected $_resources = array();
 	
 	/**
-	 * @return array of int
+	 * @return int[]
 	 */
 	public function Resources()
 	{

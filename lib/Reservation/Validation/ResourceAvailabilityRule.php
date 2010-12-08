@@ -16,6 +16,8 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 	public function Validate($reservation)
 	{
 		$conflicts = array();
+		$conflictingIds = array();
+		
 		$reservationResources = $reservation->Resources();
 		$reservationResources[] = $reservation->ResourceId();
 		
@@ -25,11 +27,14 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		foreach ($dates as $date)
 		{
 			$reservations = $this->_repository->GetWithin($date->GetBegin(), $date->GetEnd());
-		
+			
 			foreach ($reservations as $scheduleReservation)
 			{
-				if (false !== array_search($scheduleReservation->GetResourceId(), $reservationResources))
+				$reservationId = $scheduleReservation->GetReservationId();
+				
+				if (!array_key_exists($reservationId, $conflictingIds) && false !== array_search($scheduleReservation->GetResourceId(), $reservationResources))
 				{
+					$conflictingIds[$reservationId] = true;
 					array_push($conflicts, $scheduleReservation);
 				}
 			}

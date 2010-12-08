@@ -24,7 +24,7 @@ class AdminEmailNotificationTests extends TestBase
 										'true');
 		
 		$reservation = new Reservation();
-		$reservation->Update($ownerId, $resourceId, null, null);
+		$reservation->Update($ownerId, $resourceId, null, null, null);
 		
 		$user = $this->getMock('User');
 		$admin1 = $this->getMock('User');

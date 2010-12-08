@@ -28,7 +28,7 @@ class PermissionValidationRuleTests extends TestBase
 		$resource1 = new ReservationResource($resourceId1);
 		
 		$reservation = new Reservation();
-		$reservation->Update($userId, $resourceId, null, null);
+		$reservation->Update($userId, $resourceId, null, null, null);
 		$reservation->AddResource($resourceId1);
 		$reservation->AddResource($resourceId2);
 		

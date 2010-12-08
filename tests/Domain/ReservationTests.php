@@ -17,6 +17,7 @@ class ReservationTests extends TestBase
 	{
 		$userId = 32;
 		$resourceId = 10;
+		$scheduleId = 19;
 		$title = 'Title';
 		$description = 'some long decription';
 		
@@ -36,12 +37,13 @@ class ReservationTests extends TestBase
 			->will($this->returnValue($repeatDates));
 			
 		$reservation = new Reservation();
-		$reservation->Update($userId, $resourceId, $title, $description);
+		$reservation->Update($userId, $resourceId, $scheduleId, $title, $description);
 		$reservation->UpdateDuration($dateRange);
 		$reservation->Repeats($repeatOptions);
 		
 		$this->assertEquals($userId, $reservation->UserId());
 		$this->assertEquals($resourceId, $reservation->ResourceId());
+		$this->assertEquals($scheduleId, $reservation->ScheduleId());
 		$this->assertEquals($title, $reservation->Title());
 		$this->assertEquals($description, $reservation->Description());
 		$this->assertEquals($startDateUtc, $reservation->StartDate());

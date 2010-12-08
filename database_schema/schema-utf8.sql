@@ -687,6 +687,23 @@ CREATE TABLE `reservation_resources` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
+-- Table structure for table `reservation_repeat_dates`
+--
+
+CREATE TABLE `reservation_repeat_dates` (
+  `reservation_id` MEDIUMINT(8) UNSIGNED NOT NULL,
+  `start_date` DATETIME NOT NULL,
+  `end_date` DATETIME NOT NULL,
+  PRIMARY KEY (`reservation_id`),
+  INDEX `start_date`(`start_date`),
+  INDEX `end_date`(`end_date`),
+  CONSTRAINT `FK_reservation_repeat_dates_reservations` FOREIGN KEY `FK_reservation_repeat_dates_reservations` (`reservation_id`)
+    REFERENCES `reservations` (`reservation_id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT
+)
+
+--
 -- Table structure for table `user_email_preferences`
 --
 

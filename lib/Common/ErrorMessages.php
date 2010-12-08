@@ -3,6 +3,8 @@ class ErrorMessages
 {
 	const UNKNOWN_ERROR = 0;
 	const INSUFFICIENT_PERMISSIONS = 1;
+	const MISSING_RESOURCE = 2;
+	const MISSING_SCHEDULE = 3;
 	
 	private $_resourceKeys = array();
 	private static $_instance;
@@ -10,6 +12,8 @@ class ErrorMessages
 	private function __construct()
 	{
 		$this->SetKey(ErrorMessages::INSUFFICIENT_PERMISSIONS, 'InsufficientPermissionsError');
+		$this->SetKey(ErrorMessages::MISSING_RESOURCE, 'MissingReservationResourceError');
+		$this->SetKey(ErrorMessages::MISSING_SCHEDULE, 'MissingReservationScheduleError');
 	}
 	
 	public static function Instance()

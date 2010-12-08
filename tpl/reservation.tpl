@@ -70,7 +70,7 @@
 				</select>
 				<div id="repeatEveryDiv" style="display:none;" class="days weeks months years">
 					<label>{translate key="RepeatEveryPrompt"}</label>
-					<select {formname key=repeat_every}>{html_options options=$RepeatEveryOptions}</select>
+					<select {formname key=repeat_every}>{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}</select>
 					<span class="days">{translate key="days"}</span>
 					<span class="weeks">{translate key="weeks"}</span>
 					<span class="months">{translate key="months"}</span>

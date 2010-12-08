@@ -41,7 +41,7 @@ class NewReservationPresenterTests extends TestBase
 		$initializer = $this->getMock('IReservationInitializer');
 		
 		$reservationInitializerFactory->expects($this->once())
-			->method('GetInitializer')
+			->method('GetNewInitializer')
 			->with($this->equalTo($page))
 			->will($this->returnValue($initializer));
 		

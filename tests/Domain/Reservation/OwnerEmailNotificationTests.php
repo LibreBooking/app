@@ -19,7 +19,7 @@ class OwnerEmailNotificationTests extends TestBase
 		$resourceId = 200;
 
 		$reservation = new Reservation();
-		$reservation->Update($ownerId, $resourceId, null, null);
+		$reservation->Update($ownerId, $resourceId, null, null, null);
 
 		$user = $this->getMock('User');
 		$resource = new FakeResource($resourceId, 'name');

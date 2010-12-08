@@ -87,6 +87,7 @@ class ReservationRepositoryTests extends TestBase
 		$reservationId = 428;
 		$userId = 232;
 		$resourceId = 10978;
+		$scheduleId = 123;
 		$title = 'title';
 		$description = 'description';
 		$startCst = '2010-02-15 16:30';
@@ -103,7 +104,7 @@ class ReservationRepositoryTests extends TestBase
 		$this->db->_ExpectedInsertId = $reservationId;
 		
 		$reservation = new Reservation();
-		$reservation->Update($userId, $resourceId, $title, $description);
+		$reservation->Update($userId, $resourceId, $scheduleId, $title, $description);
 		$reservation->UpdateDuration($duration);
 		
 		$repeatOptions = new NoRepetion();
@@ -113,8 +114,24 @@ class ReservationRepositoryTests extends TestBase
 		
 		$this->repository->Add($reservation);
 		
-		$insertReservation = new AddReservationCommand($startUtc, $endUtc, $dateCreatedUtc, $title, $description, $repeatType, $repeatOptionsString, $referenceNumber);
-		$insertReservationResource = new AddReservationResourceCommand($reservationId, $resourceId);
+		$insertReservation = new AddReservationCommand(
+				$startUtc, 
+				$endUtc, 
+				$dateCreatedUtc, 
+				$title, 
+				$description, 
+				$repeatType, 
+				$repeatOptionsString, 
+				$referenceNumber, 
+				$scheduleId, 
+				ReservationTypes::Reservation,
+				ReservationStatus::Created);
+		
+		$insertReservationResource = new AddReservationResourceCommand(
+				$reservationId, 
+				$resourceId, 
+				ResourceLevel::Primary);
+		
 		$insertReservationUser = new AddReservationUserCommand($reservationId, $userId, $levelId);
 		
 		$this->assertEquals($insertReservation, $this->db->_Commands[0]);
@@ -159,6 +176,27 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue(in_array($insertRepeatDate1, $this->db->_Commands));
 		$this->assertTrue(in_array($insertRepeatDate2, $this->db->_Commands));
 		$this->assertTrue(in_array($insertRepeatDate3, $this->db->_Commands));
+	}
+	
+	public function testCanAddAdditionalResources()
+	{
+		$reservationId = 999;
+		$id1 = 1;
+		$id2 = 2;
+		
+		$reservation = new TestReservation();
+		$reservation->AddResource($id1);
+		$reservation->AddResource($id2);
+		
+		$this->db->_ExpectedInsertId = $reservationId;
+				
+		$this->repository->Add($reservation);
+		
+		$insertResource1 = new AddReservationResourceCommand($reservationId, $id1, ResourceLevel::Additional);
+		$insertResource2 = new AddReservationResourceCommand($reservationId, $id2, ResourceLevel::Additional);
+		
+		$this->assertTrue(in_array($insertResource1, $this->db->_Commands));
+		$this->assertTrue(in_array($insertResource2, $this->db->_Commands));
 	}
 }
 
