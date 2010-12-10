@@ -45,11 +45,14 @@ class NewReservationPreconditionServiceTests extends TestBase
 		$page = $this->getMock('INewReservationPage');
 
 		$page->expects($this->once())
+			->method('GetRequestedScheduleId')
+			->will($this->returnValue(1));
+			
+		$page->expects($this->once())
 			->method('GetRequestedResourceId')
 			->will($this->returnValue($resourceId));
 
 		$permissionService = $this->getMock('IPermissionService');
-		
 			
 		$this->_permissionServiceFactory->expects($this->once())
 			->method('GetPermissionService')
@@ -69,6 +72,60 @@ class NewReservationPreconditionServiceTests extends TestBase
 			->method('RedirectToError')
 			->with($this->equalTo($errorMessage), $this->equalTo($lastPage));
 			
+		$preconditionService = new NewReservationPreconditionService($this->_permissionServiceFactory);
+		$preconditionService->CheckAll($page, $this->_user);
+	}
+	
+	public function testBouncesWhenNoScheduleIdProvided()
+	{
+		$lastPage = 'last/page.php?a=b&c=d';
+		$errorMessage = ErrorMessages::MISSING_SCHEDULE;
+		
+		$page = $this->getMock('INewReservationPage');
+
+		$page->expects($this->once())
+			->method('GetRequestedResourceId')
+			->will($this->returnValue(1));
+			
+		$page->expects($this->once())
+			->method('GetRequestedScheduleId')
+			->will($this->returnValue(null));
+			
+		$page->expects($this->once())
+			->method('GetLastPage')
+			->will($this->returnValue($lastPage));
+			
+		$page->expects($this->once())
+			->method('RedirectToError')
+			->with($this->equalTo($errorMessage), $this->equalTo($lastPage));
+		
+		$preconditionService = new NewReservationPreconditionService($this->_permissionServiceFactory);
+		$preconditionService->CheckAll($page, $this->_user);
+	}
+	
+	public function testBouncesWhenNoResourceIdProvided()
+	{
+		$lastPage = 'last/page.php?a=b&c=d';
+		$errorMessage = ErrorMessages::MISSING_RESOURCE;
+		
+		$page = $this->getMock('INewReservationPage');
+
+		$page->expects($this->once())
+			->method('GetRequestedScheduleId')
+			->will($this->returnValue(1));
+			
+		$page->expects($this->once())
+			->method('GetRequestedResourceId')
+			->will($this->returnValue(null));
+			
+		$page->expects($this->once())
+			->method('GetLastPage')
+			->will($this->returnValue($lastPage));
+			
+		$page->expects($this->once())
+			->method('RedirectToError')
+			->with($this->equalTo($errorMessage), $this->equalTo($lastPage));
+		
 		$preconditionService = new NewReservationPreconditionService($this->_permissionServiceFactory);
 		$preconditionService->CheckAll($page, $this->_user);
 	}

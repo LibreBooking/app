@@ -1,4 +1,4 @@
-use phpscheduleit2;
+﻿use phpscheduleit2;
 
 truncate table resources;
 truncate table users;
@@ -43,7 +43,7 @@ truncate table user_addresses;
 insert into user_addresses values (1, 1);
 
 truncate table schedules;
-insert into schedules (scheduleid, name, isdefault, weekdaystart) values (1, 'default', 1, 0);
+insert into schedules (schedule_id, name, isdefault, weekdaystart) values (1, 'default', 1, 0);
 
 truncate table schedule_time_block_groups;
 insert into schedule_time_block_groups values (1,1);

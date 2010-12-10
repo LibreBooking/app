@@ -39,11 +39,12 @@ class FakeReservationRepository implements IReservationRepository
 					ColumnNames::RESERVATION_END => '2008-05-20 15:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,
 					ColumnNames::RESERVATION_DESCRIPTION => 'summary1',
-					ColumnNames::RESERVATION_PARENT_ID => null,
 					ColumnNames::RESOURCE_ID => 1,
 					ColumnNames::USER_ID => 1,
 					ColumnNames::FIRST_NAME => 'first',
-					ColumnNames::LAST_NAME => 'last'
+					ColumnNames::LAST_NAME => 'last',
+					ColumnNames::REPEAT_START => null,
+					ColumnNames::REPEAT_END => null
 					);
 					
 		$row2 =  array(ColumnNames::RESERVATION_ID => 1, 
@@ -55,7 +56,9 @@ class FakeReservationRepository implements IReservationRepository
 					ColumnNames::RESOURCE_ID => 2,
 					ColumnNames::USER_ID => 1,
 					ColumnNames::FIRST_NAME => 'first',
-					ColumnNames::LAST_NAME => 'last'
+					ColumnNames::LAST_NAME => 'last',
+					ColumnNames::REPEAT_START => null,
+					ColumnNames::REPEAT_END => null
 					);			
 					
 		$row3 =  array(ColumnNames::RESERVATION_ID => 2, 
@@ -67,7 +70,9 @@ class FakeReservationRepository implements IReservationRepository
 					ColumnNames::RESOURCE_ID => 1,
 					ColumnNames::USER_ID => 1,
 					ColumnNames::FIRST_NAME => 'first',
-					ColumnNames::LAST_NAME => 'last'
+					ColumnNames::LAST_NAME => 'last',
+					ColumnNames::REPEAT_START => null,
+					ColumnNames::REPEAT_END => null
 					);
 		
 		return array(

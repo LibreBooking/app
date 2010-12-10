@@ -6,9 +6,15 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 	 */
 	private $_repository; 
 	
-	public function __construct(IReservationRepository $repository)
+	/**
+	 * @var string
+	 */
+	private $_timezone;
+	
+	public function __construct(IReservationRepository $repository, $timezone)
 	{
 		$this->_repository = $repository;
+		$this->_timezone = $timezone;
 	}
 	/**
 	 * @see IReservationValidationRule::Validate()
@@ -30,11 +36,8 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 			
 			foreach ($reservations as $scheduleReservation)
 			{
-				$reservationId = $scheduleReservation->GetReservationId();
-				
-				if (!array_key_exists($reservationId, $conflictingIds) && false !== array_search($scheduleReservation->GetResourceId(), $reservationResources))
+				if (false !== array_search($scheduleReservation->GetResourceId(), $reservationResources))
 				{
-					$conflictingIds[$reservationId] = true;
 					array_push($conflicts, $scheduleReservation);
 				}
 			}
@@ -58,9 +61,18 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		$errorString->Append("\n");
 		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
 		
+		$dates = array();
 		foreach($conflicts as $conflict)
 		{
-			$errorString->Append($conflict->GetStartDate()->Format($format));
+			$dates[] = $conflict->GetStartDate()->ToTimezone($this->_timezone)->Format($format);
+		}
+		
+		$uniqueDates = array_unique($dates);
+		sort($uniqueDates);
+		
+		foreach ($uniqueDates as $date)
+		{
+			$errorString->Append($date);
 			$errorString->Append("\n");
 		}
 		

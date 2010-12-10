@@ -45,6 +45,11 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		$this->_reservationSavedSuccessfully = $succeeded;
 	}
 	
+	public function SetReferenceNumber($referenceNumber)
+	{
+		$this->Set('ReferenceNumber', $referenceNumber);
+	}
+	
 	public function ShowErrors($errors)
 	{
 		$this->Set('Errors', $errors);
@@ -230,6 +235,11 @@ interface IReservationSavePage
 	 * @param bool $succeeded
 	 */
 	public function SetSaveSuccessfulMessage($succeeded);
+	
+	/**
+	 * @param string $referenceNumber
+	 */
+	public function SetReferenceNumber($referenceNumber);
 	
 	/**
 	 * @param array[int]string $errors

@@ -102,6 +102,7 @@ class ReservationSavePresenter
 			$notificationService = $this->_notificationFactory->Create($action);
 			$notificationService->Notify($reservation);
 			
+			$this->_page->SetReferenceNumber($reservation->ReferenceNumber());
 			$this->_page->SetSaveSuccessfulMessage(true);
 		}
 		else
