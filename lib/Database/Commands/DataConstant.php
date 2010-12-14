@@ -219,6 +219,77 @@ class Queries
 		WHERE
 			reservation_id = @reservationId';
 	
+	/*
+	 * SELECT 
+r.reservation_id,
+r.start_date,
+r.end_date,
+r.type_id,
+r.status_id,
+r.description,
+rs.resource_id,
+u.user_id,
+u.fname,
+u.lname
+FROM
+(
+	SELECT
+		r.reservation_id,
+		r.start_date,
+		r.end_date,
+		r.type_id,
+		r.status_id,
+		r.description		 
+	FROM 
+		reservations r
+	WHERE 
+		r.status_id <> 2	
+		AND
+		(
+			(r.start_date >= '2010-11-17 06:00:00' AND r.start_date <= '2010-11-17 08:00:00')
+			 OR
+			 (r.end_date >= '2010-11-17 06:00:00' AND r.end_date <= '2010-11-17 08:00:00')
+			 OR
+			 (r.start_date <= '2010-11-17 06:00:00' AND r.end_date >= '2010-11-17 08:00:00')
+		)
+
+	UNION
+
+	SELECT 
+		r.reservation_id,
+		rr.start_date,
+		rr.end_date,
+		r.type_id,
+		r.status_id,
+		r.description		
+	FROM
+		reservations r
+	INNER JOIN 
+		reservation_repeat_dates rr ON r.reservation_id = rr.reservation_id
+	WHERE
+		r.status_id <> 2	
+		AND
+		(
+			(rr.start_date >= '2010-11-17 06:00:00' AND rr.start_date <= '2010-11-17 08:00:00')
+			OR
+			(rr.end_date >= '2010-11-17 06:00:00' AND rr.end_date <= '2010-11-17 08:00:00')
+			OR
+			(rr.start_date <= '2010-11-17 06:00:00' AND rr.end_date >= '2010-11-17 08:00:00')
+		)
+) 
+r
+INNER JOIN 
+			reservation_users ru ON r.reservation_id = ru.reservation_id
+		INNER JOIN 
+			users u ON ru.user_id = u.user_id
+		INNER JOIN 
+			reservation_resources rr ON rr.reservation_id = r.reservation_id
+		INNER JOIN 
+			resource_schedules rs ON rs.resource_id = rr.resource_id
+WHERE 
+			ru.reservation_user_level = 1 AND
+			(rs.schedule_id = @scheduleid OR @scheduleid = -1)
+	 */
 	// TODO: Pass in "Deleted" status ID
 	const GET_RESERVATIONS_COMMAND =
 	 'SELECT
@@ -245,26 +316,27 @@ class Queries
 		INNER JOIN 
 			resource_schedules rs ON rs.resource_id = rr.resource_id	
 		LEFT JOIN 
-			reservation_repeat_dates rd ON (rd.reservation_id = r.reservation_id)
-			AND 
-			(
-				(rd.start_date >= @startDate AND rd.start_date <= @endDate)
-		  		OR
-		  		(rd.end_date >= @startDate @startDate AND rd.end_date <= @endDate)
-		  		OR
-		  		(rd.start_date <= @startDate AND rd.end_date >= @endDate)
-		  	)			
+			reservation_repeat_dates rd ON (rd.reservation_id = r.reservation_id)			
 		WHERE 
 			ru.reservation_user_level = 1 AND
 			
-			(rs.schedule_id = @schedule_id OR @scheduleid = -1) AND
+			(rs.schedule_id = @scheduleid OR @scheduleid = -1) AND
 			(
 		  		(r.start_date >= @startDate AND r.start_date <= @endDate)
 		  		OR
-		  		(r.end_date >= @startDate @startDate AND r.end_date <= @endDate)
+		  		(r.end_date >= @startDate AND r.end_date <= @endDate)
 		  		OR
-		  		(r.start_date <= @startDate AND r.end_date >= @endDate)		  		
+		  		(r.start_date <= @startDate AND r.end_date >= @endDate)
+		  		OR 
+				(
+				(rd.start_date >= @startDate AND rd.start_date <= @endDate)
+		  		OR
+		  		(rd.end_date >= @startDate AND rd.end_date <= @endDate)
+		  		OR
+		  		(rd.start_date <= @startDate AND rd.end_date >= @endDate)
+		  		)  		
 			)
+			
 			AND r.status_id <> 2';
 	
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 

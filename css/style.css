@@ -15,7 +15,7 @@ body {
  	width: 100%;
  	border: '0';
  	padding: '0';
-	background-image: url('../img/scheduleit-header-gradient.png');
+	background-image: url(../img/scheduleit-header-gradient.png);
 }
 
 #page-header span.tab {
@@ -74,11 +74,11 @@ h3 {
     border: solid 1px #0e3046;
     color: #ffffff;
     height: 20px;
-    background: url('../img/button_background.gif') repeat;
+    background: url(../img/button_background.gif) repeat;
 }
 
 .button:hover {
-    background: url('../img/button_background_hover.gif') repeat;
+    background: url(../img/button_background_hover.gif) repeat;
 }
 
 /*********************************************************/
@@ -132,7 +132,7 @@ div.error ul {
 }
 
 div.page-footer {
-    background: #66A0BB url('../img/scheduleit-watermark.png') no-repeat right;
+    background: #66A0BB url(../img/scheduleit-watermark.png) no-repeat right;
     vertical-align: bottom; 
     width: 100%;
 }
@@ -448,7 +448,7 @@ tr.admin-lastline {
 #header {
         width: 900px;
         margin:0 15px;
-        background: url(/img/header-bg.png) bottom left no-repeat;
+        background: url(../img/header-bg.png) bottom left no-repeat;
         height: 56px;
 }
 
@@ -456,7 +456,7 @@ tr.admin-lastline {
 #nav-main ul{ float:left; z-index:99; left:auto; }
 #nav-main ul, #nav-main ul li { height:56px; background:none; position:relative; }
 #nav-main ul {
-        background: transparent url(/img/menubar-divider.png) top left no-repeat;
+        background: transparent url(../img/menubar-divider.png) top left no-repeat;
         padding-left: 2px;
 }
 #nav-main ul li a {
@@ -467,7 +467,7 @@ tr.admin-lastline {
         font-weight:bold;
         font-size:95%;
         color:#fff;
-        background:transparent url(/img/menubar-divider.png) top right no-repeat;
+        background:transparent url(../img/menubar-divider.png) top right no-repeat;
 }
 #nav-main ul li a:link, #nav-main ul li a:visited {
         color:#fff;
@@ -475,12 +475,12 @@ tr.admin-lastline {
 }
 #nav-main ul li span, #nav-main ul li a:hover, #nav-main ul li a:active {
         color:#fff;
-        background:#31526f url(/img/header-menu-bg.png) top right no-repeat;
+        background:#31526f url(../img/header-menu-bg.png) top right no-repeat;
 }
 #nav-main ul ul, #nav-main ul ul li { height:auto; border:0; }
 
 #nav-main ul ul {
-        background:url(/img/header-menu-bg.png) bottom left no-repeat;
+        background:url(../img/header-menu-bg.png) bottom left no-repeat;
         padding:5px 0;
         width:190px;
 }
