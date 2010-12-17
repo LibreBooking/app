@@ -7,13 +7,9 @@ class ReservationFactory
 	 */
 	public static function CreateForSchedule($databaseRow) 
 	{
-		$startDate = !empty($databaseRow[ColumnNames::REPEAT_START]) ?
-			$databaseRow[ColumnNames::REPEAT_START] :
-			$databaseRow[ColumnNames::RESERVATION_START];
+		$startDate = $databaseRow[ColumnNames::RESERVATION_START];
 			
-		$endDate = !empty($databaseRow[ColumnNames::REPEAT_END]) ?
-			$databaseRow[ColumnNames::REPEAT_END] :
-			$databaseRow[ColumnNames::RESERVATION_END];
+		$endDate = $databaseRow[ColumnNames::RESERVATION_END];
 		
 		return new ScheduleReservation(
 							$databaseRow[ColumnNames::RESERVATION_ID],

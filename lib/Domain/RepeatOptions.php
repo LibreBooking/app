@@ -15,6 +15,40 @@ interface IRepeatOptions
 	function RepeatType();
 }
 
+abstract class RepeatOptionsAbstract implements IRepeatOptions
+{		
+	/**
+	 * @var int
+	 */
+	protected $_interval;
+	
+	/**
+	 * @var Date
+	 */
+	protected $_terminiationDate;
+	
+	/**
+	 * @var DateRange
+	 */
+	protected $_duration;
+	
+	/**
+	 * @param int $interval
+	 * @param Date $terminiationDate
+	 * @param DateRange $duration
+	 */
+	protected function __construct($interval, $terminiationDate, $duration)
+	{
+		$this->_interval = $interval;
+		$this->_terminiationDate = $terminiationDate;
+		$this->_duration = $duration;
+	}
+	
+	public function ConfigurationString() 
+	{
+		return sprintf("interval=%s|termination=%s", $this->_interval, $this->_terminiationDate->ToUTC()->Timestamp());
+	}
+}
 class RepeatType
 {
 	const None = 'none';
@@ -42,23 +76,8 @@ class NoRepetion implements IRepeatOptions
 	}
 }
 
-class DailyRepeat implements IRepeatOptions
+class DailyRepeat extends RepeatOptionsAbstract
 {
-	/**
-	 * @var int
-	 */
-	private $_interval;
-	
-	/**
-	 * @var Date
-	 */
-	private $_terminiationDate;
-	
-	/**
-	 * @var DateRange
-	 */
-	private $_duration;
-	
 	/**
 	 * @param int $interval
 	 * @param Date $terminiationDate
@@ -66,10 +85,7 @@ class DailyRepeat implements IRepeatOptions
 	 */
 	public function __construct($interval, $terminiationDate, $duration)
 	{
-		$this->_interval = $interval;
-		$this->_terminiationDate = $terminiationDate;
-		
-		$this->_duration = $duration;
+		parent::__construct($interval, $terminiationDate, $duration);
 	}
 	
 	public function GetDates()
@@ -92,30 +108,10 @@ class DailyRepeat implements IRepeatOptions
 	{
 		return RepeatType::Weekly;
 	}
-	
-	public function ConfigurationString() 
-	{
-		return sprintf("interval:%s", $this->_interval);
-	}
 }
 	
-class WeeklyRepeat implements IRepeatOptions
+class WeeklyRepeat extends RepeatOptionsAbstract
 {
-	/**
-	 * @var int
-	 */
-	private $_interval;
-	
-	/**
-	 * @var Date
-	 */
-	private $_terminiationDate;
-	
-	/**
-	 * @var DateRange
-	 */
-	private $_duration;
-	
 	/**
 	 * @var array
 	 */
@@ -129,10 +125,8 @@ class WeeklyRepeat implements IRepeatOptions
 	 */
 	public function __construct($interval, $terminiationDate, $duration, $daysOfWeek)
 	{
-		$this->_interval = $interval;
-		$this->_terminiationDate = $terminiationDate;
+		parent::__construct($interval, $terminiationDate, $duration);
 		
-		$this->_duration = $duration;
 		$this->_daysOfWeek = $daysOfWeek;
 		sort($this->_daysOfWeek);
 	}
@@ -190,27 +184,13 @@ class WeeklyRepeat implements IRepeatOptions
 	
 	public function ConfigurationString() 
 	{
-		return sprintf("interval:%s|days:%s", $this->_interval, implode(',', $this->_daysOfWeek));
+		$config = parent::ConfigurationString();
+		return sprintf("%s|days=%s", $config, implode(',', $this->_daysOfWeek));
 	}
 }
 
-class DayOfMonthRepeat implements IRepeatOptions
+class DayOfMonthRepeat extends RepeatOptionsAbstract
 {
-	/**
-	 * @var int
-	 */
-	private $_interval;
-	
-	/**
-	 * @var Date
-	 */
-	private $_terminiationDate;
-	
-	/**
-	 * @var DateRange
-	 */
-	private $_duration;
-	
 	/**
 	 * @param int $interval
 	 * @param Date $terminiationDate
@@ -218,10 +198,7 @@ class DayOfMonthRepeat implements IRepeatOptions
 	 */
 	public function __construct($interval, $terminiationDate, $duration)
 	{
-		$this->_interval = $interval;
-		$this->_terminiationDate = $terminiationDate;
-		
-		$this->_duration = $duration;
+		parent::__construct($interval, $terminiationDate, $duration);
 	}
 	
 	public function GetDates()
@@ -260,7 +237,8 @@ class DayOfMonthRepeat implements IRepeatOptions
 	
 	public function ConfigurationString() 
 	{
-		return sprintf("interval:%s|type:%s", $this->_interval, 'repeatMonthDay');
+		$config = parent::ConfigurationString();
+		return sprintf("%s|type=%s", $config, 'repeatMonthDay');
 	}
 	
 	private function DayExistsInNextMonth($date, $monthsFromStart)
@@ -292,23 +270,8 @@ class DayOfMonthRepeat implements IRepeatOptions
 	}
 }
 
-class WeekDayOfMonthRepeat implements IRepeatOptions
-{
-	/**
-	 * @var int
-	 */
-	private $_interval;
-	
-	/**
-	 * @var Date
-	 */
-	private $_terminiationDate;
-	
-	/**
-	 * @var DateRange
-	 */
-	private $_duration;
-	
+class WeekDayOfMonthRepeat extends RepeatOptionsAbstract
+{	
 	private $_typeList = array (1 => 'first', 2 => 'second', 3 => 'third', 4 => 'fourth', 5 => 'fifth');
 	private $_dayList = array(0 => 'sunday', 1 => 'monday', 2 => 'tuesday', 3 => 'wednesday', 4 => 'thursday', 5 => 'friday', 6 => 'saturday');
 	
@@ -324,9 +287,7 @@ class WeekDayOfMonthRepeat implements IRepeatOptions
 	 */
 	public function __construct($interval, $terminiationDate, $duration)
 	{
-		$this->_interval = $interval;
-		$this->_terminiationDate = $terminiationDate;		
-		$this->_duration = $duration;
+		parent::__construct($interval, $terminiationDate, $duration);
 		
 		$durationStart = $this->_duration->GetBegin();
 		$firstWeekdayOfMonth = date('w', mktime(0, 0, 0, $durationStart->Month(), 1, $durationStart->Year()));
@@ -384,7 +345,8 @@ class WeekDayOfMonthRepeat implements IRepeatOptions
 	
 	public function ConfigurationString() 
 	{
-		return sprintf("interval:%s|type:%s", $this->_interval, 'repeatMonthWeek');
+		$config = parent::ConfigurationString();
+		return sprintf("%s|type=%s", $config, 'repeatMonthWeek');
 	}
 	
 	private function GetWeekNumber(Date $firstDate, $firstWeekdayOfMonth)
@@ -412,23 +374,8 @@ class WeekDayOfMonthRepeat implements IRepeatOptions
 	}
 }
 
-class YearlyRepeat implements IRepeatOptions
+class YearlyRepeat extends RepeatOptionsAbstract
 {
-/**
-	 * @var int
-	 */
-	private $_interval;
-	
-	/**
-	 * @var Date
-	 */
-	private $_terminiationDate;
-	
-	/**
-	 * @var DateRange
-	 */
-	private $_duration;
-	
 	/**
 	 * @param int $interval
 	 * @param Date $terminiationDate
@@ -436,10 +383,7 @@ class YearlyRepeat implements IRepeatOptions
 	 */
 	public function __construct($interval, $terminiationDate, $duration)
 	{
-		$this->_interval = $interval;
-		$this->_terminiationDate = $terminiationDate;
-		
-		$this->_duration = $duration;
+		parent::__construct($interval, $terminiationDate, $duration);
 	}
 	
 	public function GetDates()
@@ -475,11 +419,6 @@ class YearlyRepeat implements IRepeatOptions
 	{
 		return RepeatType::Yearly;
 	}
-	
-	public function ConfigurationString() 
-	{
-		return sprintf("interval:%s", $this->_interval);
-	}
 }
 
 class RepeatOptionsFactory
@@ -513,6 +452,80 @@ class RepeatOptionsFactory
 		}
 		
 		return new NoRepetion();
+	}
+	
+	
+}
+
+class RepeatConfiguration
+{
+	/**
+	 * @var string
+	 */
+	public $Type;
+	
+	/**
+	 * @var string
+	 */
+	public $Interval;
+	
+	/**
+	 * @var Date
+	 */
+	public $TerminationDate;
+	
+	/**
+	 * @param string $repeatType
+	 * @param string $configurationString
+	 * @return RepeatConfiguration
+	 */
+	public static function Create($repeatType, $configurationString)
+	{
+		$allparts = explode('|', $configurationString);
+		$configParts = array();
+		
+		if (!empty($allparts[0]))
+		{
+			foreach($allparts as $part)
+			{
+				$keyValue = explode('=', $part);
+				
+				if (!empty($keyValue[0]))
+				{
+					$configParts[$keyValue[0]] = $keyValue[1];
+				}
+			}
+		}
+		
+		$config = new RepeatConfiguration();
+		$config->Type = $repeatType;
+		
+		$config->Interval = self::Get($configParts, 'interval');
+		$config->SetTerminationDate(self::Get($configParts, 'termination'));
+
+		return $config;
+	}
+	
+	protected function __construct()
+	{}
+	
+	private function Get($array, $key)
+	{
+		if (isset($array[$key]))
+		{
+			return $array[$key];
+		}
+		
+		return null;
+	}
+	
+	private function SetTerminationDate($terminationDateString)
+	{
+		echo "blah = $terminationDateString";
+		if (!empty($terminationDateString))
+		{
+			$this->TerminiationDate = Date::FromDatabase($terminationDateString);
+		}
 	}
 }
 ?>

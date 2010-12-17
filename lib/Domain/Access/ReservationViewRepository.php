@@ -30,6 +30,11 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->ScheduleId = $row[ColumnNames::SCHEDULE_ID];
 			$reservationView->StartDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$reservationView->Title = $row[ColumnNames::RESERVATION_TITLE];	
+			
+			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
+			
+			$reservationView->RepeatType = $repeatConfig->Type;
+			$reservationView->RepeatInterval = $repeatConfig->Interval;	
 		
 			$resources = $this->GetResources($reservationView->ReservationId);
 			$participants = $this->GetParticipants($reservationView->ReservationId);
@@ -107,6 +112,8 @@ class ReservationView
 	public $OwnerId;
 	public $Title;
 	public $Description;
+	public $RepeatType;
+	public $RepeatInterval;
 	
 	public $AdditionalResourceIds = array();
 	public $ParticipantIds = array();

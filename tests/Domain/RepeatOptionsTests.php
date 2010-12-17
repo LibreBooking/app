@@ -269,5 +269,26 @@ class RepeatOptionsTests extends TestBase
 		
 		$this->assertType('NoRepetion', $options);
 	}
+	
+	public function testConfigurationStringCanBeDeserialized()
+	{
+		$terminationDate = Date::Parse('2010-12-12 01:06:07', 'UTC');
+		$dateString = $terminationDate->ToDatabase();
+		
+		// none
+		$config = RepeatConfiguration::Create(RepeatType::None, '');
+		$this->assertEquals(RepeatType::None, $config->Type);
+		
+		// daily
+		$config = RepeatConfiguration::Create(RepeatType::Daily, "interval=10|termination=$dateString");
+		$this->assertEquals(RepeatType::Daily, $config->Type);
+		$this->assertEquals(10, $config->Interval);
+		$this->assertEquals($terminationDate, $config->TerminationDate);
+		
+		// weekly
+		$config = RepeatConfiguration::Create(RepeatType::Weekly, "interval=100|termination=$dateString");
+		$this->assertEquals(RepeatType::Weekly, $config->Type);
+		$this->assertEquals($terminationDate, $config->TerminationDate);
+	}
 }
 ?>

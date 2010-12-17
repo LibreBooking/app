@@ -3,19 +3,41 @@ $(document).ready(function() {
 	$('.reserved').each(function() { 
 		var resid = $(this).attr('id').split('|')[0];
 		var pattern = 'td[id^=' + resid + '|]';
-		
+
 		$(this).qtip({
-		   show: { delay:700 },
-		   hide: 'mouseout',
-		   position: { corner: { target: 'topLeft', tooltip: 'bottomLeft'}, adjust: {screen:true, y:-5} } ,
-		   style: { padding: 10, name: 'cream' },
-		   content: 
-		   {
-		      url: 'respopup.php',
-		      data: { id: resid },
-		      method: 'get'
-	   	  }
+			text: 'Loading...',
+			position: 
+			{
+			      my: 'top left',  
+			      at: 'bottom left',
+			      target: $(this)
+			}
+
+			content:
+			{
+				text: 'something'
+//				ajax: {
+//			         url: 'respopup.php',
+//			         type: 'GET',
+//			         data: { id: resid },
+//			         dataType: 'html'
+//		      	}
+			}
+
+
 		});
+//		$(this).qtip({
+//		   show: { delay:700 },
+//		   hide: 'mouseout',
+//		   position: { corner: { target: 'topLeft', tooltip: 'bottomLeft'}, adjust: {screen:true, y:-5} } ,
+//		   style: { padding: 10, name: 'cream' },
+//		   content: 
+//		   {
+//		      url: 'respopup.php',
+//		      data: { id: resid },
+//		      method: 'get'
+//	   	  }
+//		});
 		
 		$(this).hover(
 			function () { $(pattern).addClass('hilite'); }, 

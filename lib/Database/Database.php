@@ -18,7 +18,7 @@ class Database
 	{
 		$this->Connection->Connect();	
 		
-		Log::Debug('Database::Query %s', $command->GetQuery());
+		//Log::Debug('Database::Query %s', $command->GetQuery());
 		
 		$reader = $this->Connection->Query($command);		
 		$this->Connection->Disconnect();
@@ -36,7 +36,7 @@ class Database
 	{
 		$this->Connection->Connect();	
 		
-		Log::Debug('Database::Execute %s', $command->GetQuery());
+		//Log::Debug('Database::Execute %s', $command->GetQuery());
 		
 		$this->Connection->Execute($command);
 		$this->Connection->Disconnect();
@@ -52,7 +52,7 @@ class Database
 	{
 		$this->Connection->Connect();	
 		
-		Log::Debug('Database::ExecuteInsert %s', $command->GetQuery());
+		//Log::Debug('Database::ExecuteInsert %s', $command->GetQuery());
 		
 		$this->Connection->Execute($command);
 		$insertedId = $this->Connection->GetLastInsertId();

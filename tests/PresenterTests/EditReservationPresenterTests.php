@@ -93,6 +93,11 @@ class EditReservationPresenterTests extends TestBase
 		$reservationView->ParticipantIds = $participantIds;
 		$reservationView->Title = $title;
 		$reservationView->Description = $description;
+		$reservationView->RepeatType = 'daily';
+		$reservationView->RepeatInterval = 2;
+		$reservationView->RepeatWeekdays = array(1, 2, 3);
+		$reservationView->RepeatMonthlyType = 'dayOfMonth';
+		$reservationView->RepeatTerminationDate = Date::Parse('2010-01-04', 'UTC');
 		
 		$this->page->expects($this->once())
 			->method('GetReferenceNumber')

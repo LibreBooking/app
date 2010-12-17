@@ -133,7 +133,7 @@ class Date
 	 */
 	public static function FromDatabase($databaseValue)
 	{
-		return new Date($databaseValue, 'UTC');
+		return Date::Parse($databaseValue, 'UTC');
 	}
 	
 	/**

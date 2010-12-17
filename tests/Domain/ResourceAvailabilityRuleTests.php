@@ -34,7 +34,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 			->with($this->equalTo($startDate), $this->equalTo($endDate))
 			->will($this->returnValue(array($scheduleReservation)));
 			
-		$rule = new ResourceAvailabilityRule($reservationRepository);
+		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
 		$result = $rule->Validate($reservation);
 		
 		$this->assertTrue($result->IsValid());
@@ -68,7 +68,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 			->with($this->equalTo($startDate), $this->equalTo($endDate))
 			->will($this->returnValue($reservations));
 			
-		$rule = new ResourceAvailabilityRule($reservationRepository);
+		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
 		$result = $rule->Validate($reservation);
 		
 		$this->assertFalse($result->IsValid());
@@ -103,7 +103,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 			->with($this->equalTo($startDate), $this->equalTo($endDate))
 			->will($this->returnValue($reservations));
 			
-		$rule = new ResourceAvailabilityRule($reservationRepository);
+		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
 		$result = $rule->Validate($reservation);
 		
 		$this->assertFalse($result->IsValid());
@@ -128,7 +128,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		
 		$reservationRepository = new FakeReservationRepository();
 		
-		$rule = new ResourceAvailabilityRule($reservationRepository);
+		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
 		$result = $rule->Validate($reservation);
 		
 		$this->assertEquals(3, count($reservationRepository->_StartDates));

@@ -11,101 +11,13 @@
 		{/if}
 		<link rel="shortcut icon" href="favicon.ico"/>
 		<link rel="icon" href="favicon.ico"/>
-		<script type="text/javascript" src="{$Path}scripts/js/jquery-1.4.2.min.js"></script> 
-		<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.1.custom.min.js"></script> 
+		<script type="text/javascript" src="{$Path}scripts/js/jquery-1.4.4.min.js"></script> 
+		<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.7.custom.min.js"></script> 
 		<script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script> 
 		<script type="text/javascript" src="{$Path}scripts/menubar.js"></script>
-		<!-- FullCalendar content begins-->
-		<link rel='stylesheet' type='text/css' href='{$Path}scripts/fullcalendar/fullcalendar.css' />
-		<script type='text/javascript' src='{$Path}scripts/fullcalendar/jquery.js'></script>
-		<script type='text/javascript' src='{$Path}scripts/fullcalendar/fullcalendar.js'></script>
-		{literal}<script type='text/javascript'>
-
-			$(document).ready(function() {
-
-				var date = new Date();
-				var d = date.getDate();
-				var m = date.getMonth();
-				var y = date.getFullYear();
-
-				$('#calendar').fullCalendar({
-					theme: true,
-					axisFormat: 'H:mm', //24 hour clock in day view
-					allDaySlot: false, //All day slot not visible
-					firstDay: 1, //Week starts with Monday
-					timeFormat: 
-					{
-					    // for agendaWeek and agendaDay
-					    agenda: 'H:mm{ - H:mm}', // 15:30 - 16:30
-
-					    // for all other views
-					    '': 'H(:mm)'            // 5:30
-					},
-					header: {
-						left: 'prev,next today',
-						center: 'title',
-						right: 'month,agendaWeek,agendaDay'
-					},
-					editable: true,
-					events: [
-						{
-							title: 'All Day Event',
-							start: new Date(y, m, d, 0,0),
-							end: new Date(y, m, d, 24,0),
-							allDay: false
-						},
-						{
-							title: 'Long Event',
-							start: new Date(y, m, d-5),
-							end: new Date(y, m, d-2)
-						},
-						{
-							id: 999,
-							title: 'Repeating Event',
-							start: new Date(y, m, d-3, 16, 0),
-							end: new Date(y, m, d-3, 17, 0),
-							allDay: false
-						},
-						{
-							id: 999,
-							title: 'Repeating Event',
-							start: new Date(y, m, d+4, 16, 0),
-							end: new Date(y, m, d+4, 17, 0),
-							allDay: false
-						},
-						{
-							title: 'Meeting',
-							start: new Date(y, m, d, 10, 30),
-							end: new Date(y, m, d, 12, 30),
-							allDay: false
-						},
-						{
-							title: 'Lunch',
-							start: new Date(y, m, d, 12, 0),
-							end: new Date(y, m, d, 14, 0),
-							allDay: false
-						},
-						{
-							title: 'Birthday Party',
-							start: new Date(y, m, d+1, 19, 0),
-							end: new Date(y, m, d+1, 22, 30),
-							allDay: false
-						},
-						{
-							title: 'Click for Google',
-							start: new Date(y, m, 28),
-							end: new Date(y, m, 29),
-							url: 'http://google.com/'
-						}
-					]
-				});
-			});
-
-		</script>{/literal}
-		<!-- FullCalendar content ends-->
 		<style type="text/css">
 			@import url({$Path}css/style.css);
-			@import url({$Path}scripts/css/smoothness/jquery-ui-1.8rc3.custom.css);
+			@import url({$Path}scripts/css/smoothness/jquery-ui-1.8.7.custom.css);
 		</style>
 	</head>
 	<body>

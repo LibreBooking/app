@@ -2,6 +2,7 @@
 
 <style type="text/css">
 	@import url({$Path}css/schedule.css);
+	@import url({$Path}css/jquery.qtip.css);
 </style>
 
 <table>
@@ -63,7 +64,7 @@
 <br/>
 {/foreach}
 
-<script type="text/javascript" src="scripts/js/jquery.qtip-1.0.0-rc3.min.js"></script>
+<script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="scripts/schedule.js"></script>
  
 {control type="DatePickerSetupControl"
