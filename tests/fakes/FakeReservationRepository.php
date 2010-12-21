@@ -1,36 +1,14 @@
 <?php
 require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
 
-class FakeReservationRepository implements IReservationRepository
+class FakeReservationRepository
 {
-	public $_GetWithinCalled = false;
-	public $_LastStartDate;
-	public $_LastEndDate;
-	public $_LastScheduleId;
 	public $_Reservations = array();
-	public $_StartDates = array();
-	public $_EndDates = array();
 	
 	public function __construct()
 	{
 		$this->FillRows(); 
 	}
-	
-	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES)
-	{
-		$this->_GetWithinCalled = true;
-		$this->_LastStartDate = $startDate;
-		$this->_LastEndDate = $endDate;
-		$this->_LastScheduleId = $scheduleId;
-		
-		$this->_StartDates[] = $startDate;
-		$this->_EndDates[] = $endDate;
-		
-		return $this->_Reservations;
-	}
-	
-	public function Add(Reservation $reservation)
-	{}
 	
 	public static function GetReservationRows()
 	{

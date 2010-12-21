@@ -177,10 +177,23 @@ class Reservation
 		$this->_repeatedDates = $repeatOptions->GetDates();
 	}
 	
+	/**
+	 * @param int $resourceId
+	 */
 	public function AddResource($resourceId)
 	{
 		$this->_resources[] = $resourceId;
 	}
 }
 
+class ExistingReservation extends Reservation
+{
+	/**
+	 * @param string $referenceNumber
+	 */
+	public function SetReferenceNumber($referenceNumber)
+	{
+		$this->_referenceNumber = $referenceNumber;
+	}
+}
 ?>

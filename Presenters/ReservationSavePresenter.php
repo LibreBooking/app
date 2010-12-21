@@ -3,6 +3,7 @@ require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Reservation/Persistence/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/Validation/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/Notification/namespace.php');
 require_once(ROOT_DIR . 'lib/Domain/namespace.php');
@@ -89,7 +90,7 @@ class ReservationSavePresenter
 	}
 	
 	/**
-	 * @param $reservation Reservation
+	 * @param Reservation $reservation
 	 */
 	public function HandleReservation($reservation)
 	{		

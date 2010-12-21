@@ -126,12 +126,15 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservation->UpdateDuration($reservationDates);
 		$reservation->Repeats($twoRepetitions);
 		
-		$reservationRepository = new FakeReservationRepository();
+		$reservationRepository = $this->getMock('IReservationRepository');
+		
+		$reservationRepository->expects($this->exactly(1 + count($repeatDates)))
+			->method('GetWithin')
+			->with($this->anything(), $this->anything())
+			->will($this->returnValue(array()));
 		
 		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
 		$result = $rule->Validate($reservation);
-		
-		$this->assertEquals(3, count($reservationRepository->_StartDates));
 	}
 }
 

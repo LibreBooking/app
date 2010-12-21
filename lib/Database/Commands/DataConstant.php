@@ -181,6 +181,14 @@ class Queries
 		WHERE
 			r.isactive = 1';
 	
+	const GET_RESERVATION_BY_ID =
+		'SELECT
+			*
+		FROM
+			reservations r
+		WHERE
+			r.reservation_id = @reservationId';
+	
 	const GET_RESERVATION_FOR_EDITING = 
 		'SELECT 
 			* 
@@ -491,6 +499,7 @@ class ColumnNames
 	
 	// RESERVATION_USER //
 	const RESERVATION_OWNER = 'reservation_owner';
+	const RESERVATION_USER_LEVEL = 'reservation_user_level';
 	
 	// RESOURCE //
 	const RESOURCE_ID = 'resource_id';
@@ -509,6 +518,9 @@ class ColumnNames
 	const RESOURCE_MAX_PARTICIPANTS = 'max_participants';
 	const RESOURCE_MINNOTICE = 'min_notice_time';
 	const RESOURCE_MAXNOTICE = 'max_notice_time';
+
+	// RESERVATION RESOURCES
+	const RESOURCE_LEVEL_ID = 'resource_level_id';
 	
 	// SCHEDULE //
 	const SCHEDULE_ID = 'schedule_id';

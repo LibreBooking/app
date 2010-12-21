@@ -86,7 +86,7 @@ class DailyRepeat extends RepeatOptionsAbstract
 {
 	/**
 	 * @param int $interval
-	 * @param Date $TerminationDate
+	 * @param Date $terminationDate
 	 * @param DateRange $duration
 	 */
 	public function __construct($interval, $terminationDate, $duration)
@@ -125,7 +125,7 @@ class WeeklyRepeat extends RepeatOptionsAbstract
 	
 	/**
 	 * @param int $interval
-	 * @param Date $TerminationDate
+	 * @param Date $terminationDate
 	 * @param DateRange $duration
 	 * @param array $daysOfWeek
 	 */
@@ -199,7 +199,7 @@ class DayOfMonthRepeat extends RepeatOptionsAbstract
 {
 	/**
 	 * @param int $interval
-	 * @param Date $TerminationDate
+	 * @param Date $terminationDate
 	 * @param DateRange $duration
 	 */
 	public function __construct($interval, $terminationDate, $duration)
@@ -283,7 +283,7 @@ class WeekDayOfMonthRepeat extends RepeatOptionsAbstract
 	
 	/**
 	 * @param int $interval
-	 * @param Date $TerminationDate
+	 * @param Date $terminationDate
 	 * @param DateRange $duration
 	 */
 	public function __construct($interval, $terminationDate, $duration)
@@ -379,7 +379,7 @@ class YearlyRepeat extends RepeatOptionsAbstract
 {
 	/**
 	 * @param int $interval
-	 * @param Date $TerminationDate
+	 * @param Date $terminationDate
 	 * @param DateRange $duration
 	 */
 	public function __construct($interval, $terminationDate, $duration)

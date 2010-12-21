@@ -1,6 +1,9 @@
 <?php
 class Database
 {
+	/**
+	 * @var IDbConnection
+	 */
 	public $Connection = null;
 
 	public function __construct(IDbConnection &$dbConnection) 

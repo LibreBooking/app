@@ -198,6 +198,180 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue(in_array($insertResource1, $this->db->_Commands));
 		$this->assertTrue(in_array($insertResource2, $this->db->_Commands));
 	}
+	
+	public function testLoadByIdFullyHydratesReservationObject()
+	{
+		$referenceNumber = 'refnum';
+		$userId = 10;
+		$resourceId = 100;
+		$scheduleId = 1000;
+		$title = 'title';
+		$description = 'description';
+		$resourceId1 = 99;
+		$resourceId2 = 999;
+		$begin = '2010-01-05 12:30:00';
+		$end = '2010-01-05 18:30:00';
+		$duration = DateRange::Create($begin, $end, 'UTC');
+		$interval = 3;
+		$repeatType = RepeatType::Daily;
+		$terminiationDateString = '2010-01-20 12:30:00'; 
+		$terminationDate = Date::FromDatabase($terminiationDateString);
+		$repeatOptions = new DailyRepeat($interval, $terminationDate, $duration);
+		
+		$expected = new ExistingReservation();
+		$expected->SetReferenceNumber($referenceNumber);
+		$expected->Update($userId, $resourceId, $scheduleId, $title, $description);
+		$expected->AddResource($resourceId1);
+		$expected->AddResource($resourceId2);
+		$expected->UpdateDuration($duration);
+		$expected->Repeats($repeatOptions);
+		
+		$reservationRow = new ReservationRow(
+			$reservationId,
+			$begin,
+			$end,
+			$title,
+			$description,
+			$repeatType,
+			$repeatOptions->ConfigurationString(),
+			$referenceNumber,
+			$scheduleId
+			);
+			
+		$reservationResourceRow = new ReservationResourceRow($reservationId);
+		$reservationResourceRow
+			->WithPrimary($resourceId)
+			->WithAdditional($resourceId1)
+			->WithAdditional($resourceId2);
+			
+		$reservationUserRow = new ReservationUserRow($reservationId);
+		$reservationUserRow
+			->WithOwner($userId);
+		
+		$this->db->SetRow(0, $reservationRow->Rows());
+		$this->db->SetRow(1, $reservationResourceRow->Rows());
+		$this->db->SetRow(2, $reservationUserRow->Rows());
+		
+		$reservationId = 1;
+		$actualReservation = $this->repository->LoadById($reservationId);
+		
+		$this->assertEquals($expected, $actualReservation);
+		
+		$getReservation = new GetReservationByIdCommand($reservationId);
+		$getResources = new GetReservationResourcesCommand($reservationId);
+		$getParticipants = new GetReservationParticipantsCommand($reservationId);
+		
+		$this->assertTrue(in_array($getReservation, $this->db->_Commands));
+		$this->assertTrue(in_array($getResources, $this->db->_Commands));
+		$this->assertTrue(in_array($getParticipants, $this->db->_Commands));
+	}
+	
+	public function testUpdateSavesChangedReservationData()
+	{
+		$reservation = new Reservation();
+		
+		$this->repository->Update($reservation);
+		$this->markTestIncomplete('This test has not been implemented yet.');
+	}
+}
+
+
+class ReservationRow
+{
+	private $row = array();
+	
+	public function Rows()
+	{
+		return array($this->row);
+	}
+	
+	public function __construct(
+		$reservationId, 
+		$startDate, 
+		$endDate,
+		$title,
+		$description,
+		$repeatType,
+		$repeatOptions,
+		$referenceNumber,
+		$scheduleId)
+	{
+		$this->row =  array(
+			ColumnNames::RESERVATION_ID => $reservationId,
+			ColumnNames::RESERVATION_START => $startDate,
+			ColumnNames::RESERVATION_END => $endDate,
+			'date_created' => '2010-12-20 20:15:20',
+			'last_modified' => '2010-12-20 14:15:20',
+			'title' => $title,
+			'description' => $description,
+			'type_id' => ReservationTypes::Reservation,
+			'status_id' => ReservationStatus::Created,
+			'repeat_type' => $repeatType,
+			'repeat_options' => $repeatOptions,
+			'reference_number' => $referenceNumber,
+			'schedule_id' => $scheduleId
+		);
+	}
+}
+
+class ReservationResourceRow
+{
+	private $reservationId;
+	private $rows = array();
+	
+	public function Rows()
+	{
+		return $this->rows;
+	}
+	
+	public function __construct($reservationId)
+	{
+		$this->reservationId = $reservationId;
+	}
+	
+	public function WithPrimary($resourceId)
+	{
+		$this->AddRow($resourceId, ResourceLevel::Primary);
+		return $this;
+	}
+	
+	public function WithAdditional($resourceId)
+	{
+		$this->AddRow($resourceId, ResourceLevel::Additional);
+		return $this;
+	}
+	
+	private function AddRow($resourceId, $levelId)
+	{
+		$this->rows[] = array(ColumnNames::RESERVATION_ID => $this->reservationId, ColumnNames::RESOURCE_ID => $resourceId, ColumnNames::RESOURCE_LEVEL_ID => $levelId);
+	}
+}
+
+class ReservationUserRow
+{
+	private $reservationId;
+	private $rows = array();
+	
+	public function Rows()
+	{
+		return $this->rows;
+	}
+	
+	public function __construct($reservationId)
+	{
+		$this->reservationId = $reservationId;
+	}
+	
+	public function WithOwner($userId)
+	{
+		$this->AddRow($userId, ReservationUserLevel::OWNER);
+		return $this;
+	}
+	
+	private function AddRow($userId, $levelId)
+	{
+		$this->rows[] = array(ColumnNames::RESERVATION_ID => $this->reservationId, ColumnNames::USER_ID => $userId, ColumnNames::RESERVATION_USER_LEVEL => $levelId);
+	}
 }
 
 class TestReservation extends Reservation
