@@ -42,16 +42,22 @@ class ReservationSavePresenter
 		$this->_notificationFactory = $notificationFactory;
 	}
 	
-	public function PageLoad()
+	public function BuildReservation()
 	{
-		$action = ReservationAction::Create;
-		$reservationId = $this->_page->GetReservationId();
-			
+//		$reservation->AddAccessory();
+//		$reservation->AddParticipant();
+//		
+//		$reservation->RemoveResource();
+//		$reservation->RemoveAccessory();
+//		$reservation->RemoveParticipant();
+
+		$action = $this->_page->GetReservationAction();
+		
+		$reservationId = $this->_page->GetReservationId();	
 		$persistenceService = $this->_persistenceFactory->Create($action);
 		$reservation = $persistenceService->Load($reservationId);
-
-		// user, resource, start, end, repeat options, title, description
-		// additional resources, accessories, participants, invitations
+		
+		// accessories?, participants, invitations
 		// reminder
 
 		$userId = $this->_page->GetUserId();
@@ -67,13 +73,7 @@ class ReservationSavePresenter
 			$title,
 			$description);
 		
-		$startDate = $this->_page->GetStartDate();
-		$startTime = $this->_page->GetStartTime();
-		$endDate = $this->_page->GetEndDate();
-		$endTime = $this->_page->GetEndTime();
-		
-		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
-		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
+		$duration = $this->GetReservationDuration();
 		$reservation->UpdateDuration($duration);
 		
 		$repeatOptions = $this->_page->GetRepeatOptions($duration);
@@ -84,19 +84,23 @@ class ReservationSavePresenter
 		{
 			$reservation->AddResource($resourceId);
 		}
-
-//		$reservation->AddAccessory();
-//		$reservation->AddParticipant();
-//		
-//		$reservation->RemoveResource();
-//		$reservation->RemoveAccessory();
-//		$reservation->RemoveParticipant();
+		
+		return $reservation;
+	}
+	
+	/**
+	 * @param $reservation Reservation
+	 */
+	public function HandleReservation($reservation)
+	{		
+		$action = $this->_page->GetReservationAction();
 		
 		$validationService = $this->_validationFactory->Create($action);
 		$validationResult = $validationService->Validate($reservation);
 		
 		if ($validationResult->CanBeSaved())
 		{
+			$persistenceService = $this->_persistenceFactory->Create($action);
 			$persistenceService->Persist($reservation);
 			
 			$notificationService = $this->_notificationFactory->Create($action);
@@ -107,10 +111,33 @@ class ReservationSavePresenter
 		}
 		else
 		{
+			$this->_page->SetSaveSuccessfulMessage(false);
 			$this->_page->ShowErrors($validationResult->GetErrors());
 		}
 		
 		$this->_page->ShowWarnings($validationResult->GetWarnings());
+	}
+	
+	/**
+	 * @return Reservation
+	 */
+	private function GetReservation($action)
+	{
+		
+	}
+	
+	/**
+	 * @return DateRange
+	 */
+	private function GetReservationDuration()
+	{
+		$startDate = $this->_page->GetStartDate();
+		$startTime = $this->_page->GetStartTime();
+		$endDate = $this->_page->GetEndDate();
+		$endTime = $this->_page->GetEndTime();
+		
+		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 	}
 	
 	/**
@@ -130,10 +157,4 @@ class ReservationSavePresenter
 		return $factory->Create($repeatType, $interval, $terminationDate, $initialReservationDates, $weekdays, $monthlyType);
 	}
 }
-
-class ReservationAction
-{
-	const Create = 'create';
-}
-
 ?>

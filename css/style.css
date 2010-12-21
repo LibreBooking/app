@@ -132,9 +132,15 @@ div.error ul {
 }
 
 div.page-footer {
-    background: #66A0BB url(../img/scheduleit-watermark.png) no-repeat right;
+    color: #aaa;
     vertical-align: bottom; 
     width: 100%;
+    text-align:center;
+}
+
+.page-footer a, page-footer a:visited
+{
+	color: #588abd;
 }
 
 .p-center {
@@ -218,9 +224,6 @@ form.res-checkbox input { vertical-align: middle; }
 p.loginsubmit, p.save, p.reg-adminsubmit, p.reporting-submit, p.resetpassword { float:right; }
 
 #login-links p, #login-links h4 {text-align: center;}
-
-.page-footer { display:none; }
-
 
 form.register, form.resource, form.reg-admin, #reservationForm {
         margin: 0 0 0 8px;

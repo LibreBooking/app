@@ -38,6 +38,11 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		return 'reservation.tpl';
 	}
 	
+	protected function GetReservationHeaderKey()
+	{
+		return 'CreateReservationHeading';
+	}
+	
 	public function GetRequestedResourceId()
 	{
 		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);

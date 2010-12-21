@@ -274,20 +274,46 @@ class RepeatOptionsTests extends TestBase
 	{
 		$terminationDate = Date::Parse('2010-12-12 01:06:07', 'UTC');
 		$dateString = $terminationDate->ToDatabase();
+		$interval = 10;
 		
 		// none
 		$config = RepeatConfiguration::Create(RepeatType::None, '');
 		$this->assertEquals(RepeatType::None, $config->Type);
 		
 		// daily
-		$config = RepeatConfiguration::Create(RepeatType::Daily, "interval=10|termination=$dateString");
+		$daily = new DailyRepeat($interval, $terminationDate, null);
+		$config = RepeatConfiguration::Create($daily->RepeatType(), $daily->ConfigurationString());
 		$this->assertEquals(RepeatType::Daily, $config->Type);
 		$this->assertEquals(10, $config->Interval);
 		$this->assertEquals($terminationDate, $config->TerminationDate);
 		
 		// weekly
-		$config = RepeatConfiguration::Create(RepeatType::Weekly, "interval=100|termination=$dateString");
+		$weekdays = array(1, 3, 4, 5);
+		$weekly = new WeeklyRepeat($interval, $terminationDate, null, $weekdays);
+		$config = RepeatConfiguration::Create($weekly->RepeatType(), $weekly->ConfigurationString());
 		$this->assertEquals(RepeatType::Weekly, $config->Type);
+		$this->assertEquals($terminationDate, $config->TerminationDate);
+		$this->assertEquals($weekdays, $config->Weekdays);
+		
+		// day of month
+		$dayOfMonth = new DayOfMonthRepeat($interval, $terminationDate, null);
+		$config = RepeatConfiguration::Create($dayOfMonth->RepeatType(), $dayOfMonth->ConfigurationString());
+		$this->assertEquals(RepeatType::Monthly, $config->Type);
+		$this->assertEquals($terminationDate, $config->TerminationDate);
+		$this->assertEquals(RepeatMonthlyType::DayOfMonth, $config->MonthlyType);
+		
+		// weekday of month
+		$weekOfMonth = new WeekDayOfMonthRepeat($interval, $terminationDate, null);
+		$config = RepeatConfiguration::Create($weekOfMonth->RepeatType(), $weekOfMonth->ConfigurationString());
+		$this->assertEquals(RepeatType::Monthly, $config->Type);
+		$this->assertEquals($terminationDate, $config->TerminationDate);
+		$this->assertEquals(RepeatMonthlyType::DayOfWeek, $config->MonthlyType);
+		
+		// yearly
+		$yearly = new YearlyRepeat($interval, $terminationDate, null);
+		$config = RepeatConfiguration::Create($yearly->RepeatType(), $yearly->ConfigurationString());
+		$this->assertEquals(RepeatType::Yearly, $config->Type);
+		$this->assertEquals(10, $config->Interval);
 		$this->assertEquals($terminationDate, $config->TerminationDate);
 	}
 }

@@ -1,10 +1,15 @@
 <?php
-class ReservationValidResult implements IReservationValidationResult
+class ReservationValidationResult implements IReservationValidationResult
 {
 	private $_canBeSaved;
 	private $_errors;
 	private $_warnings;
 	
+	/**
+	 * @param $canBeSaved bool
+	 * @param $errors string[]
+	 * @param $warnings string[]
+	 */
 	public function __construct($canBeSaved = true, $errors = null, $warnings = null)
 	{
 		$this->_canBeSaved = $canBeSaved;

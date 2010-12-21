@@ -6,8 +6,8 @@ define('ROOT_DIR', dirname(__FILE__) . '/../');
 
 //echo dirname(__FILE__);
 
-require_once 'PHPUnit/TextUI/TestRunner.php';
-//require_once 'PHPUnit/Framework.php';
+//require_once 'PHPUnit/TextUI/TestRunner.php';
+require_once 'PHPUnit/Autoload.php';
 require_once ROOT_DIR . 'lib/Timer.class.php';
 require_once ROOT_DIR . 'tests/data/namespace.php';
 require_once ROOT_DIR . 'tests/fakes/namespace.php';

@@ -25,11 +25,11 @@ class AddReservationValidationService implements IReservationValidationService
 			
 			if (!$result->IsValid())
 			{
-				return new ReservationValidResult(false, array($result->ErrorMessage()));
+				return new ReservationValidationResult(false, array($result->ErrorMessage()));
 			}
 		}
 		
-		return new ReservationValidResult();
+		return new ReservationValidationResult();
 	}
 }
 ?>

@@ -170,6 +170,12 @@ class ReservationInitializationTests extends TestBase
 
 		$firstName = 'fname';
 		$lastName = 'lastName';
+		
+		$repeatType = RepeatType::Monthly;
+		$repeatInterval = 2;
+		$repeatWeekdays = array(1, 2, 3);
+		$repeatMonthlyType = 'dayOfMonth';
+		$repeatTerminationDate = Date::Parse('2010-01-04', 'UTC');
 
 		$expectedStartDate = Date::Parse($startDateUtc, 'UTC');
 		$expectedEndDate = Date::Parse($endDateUtc, 'UTC');	
@@ -188,6 +194,11 @@ class ReservationInitializationTests extends TestBase
 		$reservationView->ParticipantIds = $participantIds;
 		$reservationView->Title = $title;
 		$reservationView->Description = $description;
+		$reservationView->RepeatType = $repeatType;
+		$reservationView->RepeatInterval = $repeatInterval;
+		$reservationView->RepeatWeekdays = $repeatWeekdays;
+		$reservationView->RepeatMonthlyType = $repeatMonthlyType;
+		$reservationView->RepeatTerminationDate = $repeatTerminationDate;
 		
 		$page = $this->getMock('IExistingReservationPage');
 		
@@ -277,6 +288,26 @@ class ReservationInitializationTests extends TestBase
 		$page->expects($this->once())
 			->method('SetEndDate')
 			->with($this->equalTo($expectedEndDate->ToTimezone($timezone)));
+			
+		$page->expects($this->once())
+			->method('SetRepeatType')
+			->with($this->equalTo($repeatType));
+			
+		$page->expects($this->once())
+			->method('SetRepeatInterval')
+			->with($this->equalTo($repeatInterval));
+			
+		$page->expects($this->once())
+			->method('SetRepeatMonthlyType')
+			->with($this->equalTo($repeatMonthlyType));
+			
+		$page->expects($this->once())
+			->method('SetRepeatTerminationDate')
+			->with($this->equalTo($repeatTerminationDate->ToTimezone($timezone)));
+		
+		$page->expects($this->once())
+			->method('SetRepeatWeekdays')
+			->with($this->equalTo($repeatWeekdays));
 			
 		$initializer = new ExistingReservationInitializer(
 			$page, 

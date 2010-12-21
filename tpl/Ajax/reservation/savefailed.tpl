@@ -5,4 +5,4 @@ Save Failed
 {/foreach}
 </ul>
 
-<a href="javascript: CloseSaveDialog(); void(0);">Close</a>
+<input type="button" id="btnSaveFailed" value="{translate key='CorrectErrors'}" class="button" />

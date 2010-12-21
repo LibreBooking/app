@@ -88,9 +88,13 @@ class en_us extends Language
 		$strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources';
 		$strings['ConflictingReservationDates'] = 'There are conflicting reservations on the following dates:';
 		$strings['StartDateBeforeEndDateRule'] = 'The start date must be before the end date';
+		$strings['CreateReservationHeading'] = 'Create a new reservation';
+		$strings['EditReservationHeading'] = 'Editing reservation %s';
+		$strings['CorrectErrors'] = 'Correct Errors';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';
+		$strings['EditReservation'] = 'Editing Reservation';
 		$strings['LogIn'] = 'Log In';
 		//
 		

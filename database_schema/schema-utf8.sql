@@ -697,7 +697,10 @@ CREATE TABLE  `reservation_repeat_dates` (
   KEY `reservation_id` (`reservation_id`),
   KEY `start_date` (`start_date`),
   KEY `end_date` (`end_date`),
-  CONSTRAINT `FK_reservation_repeat_dates_reservations` FOREIGN KEY (`reservation_id`) REFERENCES `reservations` (`reservation_id`)
+  CONSTRAINT `FK_reservation_repeat_dates_reservations` 
+  FOREIGN KEY (`reservation_id`) 
+	REFERENCES `reservations` (`reservation_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

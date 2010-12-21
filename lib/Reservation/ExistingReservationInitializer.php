@@ -41,6 +41,18 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		$this->page->SetParticipants($this->reservationView->ParticipantIds);
 		$this->page->SetTitle($this->reservationView->Title);
 		$this->page->SetDescription($this->reservationView->Description);
+		$this->page->SetReferenceNumber($this->reservationView->ReferenceNumber);
+		$this->page->SetReservationId($this->reservationView->ReservationId);
+		$this->page->SetReservationAction(ReservationAction::Update);
+		
+		$this->page->SetRepeatType($this->reservationView->RepeatType);
+		$this->page->SetRepeatInterval($this->reservationView->RepeatInterval);
+		$this->page->SetRepeatMonthlyType($this->reservationView->RepeatMonthlyType);
+		if ($this->reservationView->RepeatTerminationDate != null)
+		{
+			$this->page->SetRepeatTerminationDate($this->reservationView->RepeatTerminationDate->ToTimezone($this->GetTimezone()));
+		}
+		$this->page->SetRepeatWeekdays($this->reservationView->RepeatWeekdays);
 	}
 	
 	protected function GetOwnerId()

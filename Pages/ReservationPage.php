@@ -8,39 +8,44 @@ interface IReservationPage extends IPage
 	 * Set the schedule period items to be used when presenting reservations
 	 * @param array[int]ISchedulePeriod
 	 */
-	public function BindPeriods($periods);
+	function BindPeriods($periods);
 	
 	/**
 	 * Set the resources that can be reserved by this user
 	 * @param array[int]ScheduleResource
 	 */
-	public function BindAvailableResources($resources);
+	function BindAvailableResources($resources);
 	
 	/**
 	 * Set the resources that can be reserved by this user
 	 * @param array[int]ScheduleResource
 	 */
-	public function BindAvailableUsers($resources);
+	function BindAvailableUsers($resources);
 	
 	/**
 	 * @param Date $startDate
 	 */
-	public function SetStartDate(Date $startDate);
+	function SetStartDate(Date $startDate);
 	
 	/**
 	 * @param Date $startDate
 	 */
-	public function SetEndDate(Date $startDate);
+	function SetEndDate(Date $startDate);
 	
 	/**
 	 * @param UserDto $user
 	 */
-	public function SetReservationUser($user);
+	function SetReservationUser($user);
 	
 	/**
 	 * @param ScheduleResource $resource
 	 */
-	public function SetReservationResource($resource);
+	function SetReservationResource($resource);
+	
+	/**
+	 * @param $reservationAction string
+	 */
+	function SetReservationAction($reservationAction);
 	
 	/**
 	 * @param int $scheduleId
@@ -93,12 +98,18 @@ abstract class ReservationPage extends Page implements IReservationPage
 	 * @return string
 	 */
 	protected abstract function GetTemplateName();
+	
+	/**
+	 * @return string
+	 */
+	protected abstract function GetReservationHeaderKey();
 		
 	public function PageLoad()
 	{
 		$this->presenter->PageLoad();
 		$this->Set('ReturnUrl', $this->GetLastPage());
 		$this->Set('RepeatEveryOptions', range(1, 20));
+		$this->Set('ReservationHeaderKey', $this->GetReservationHeaderKey());
 		
 		$this->smarty->display($this->GetTemplateName());		
 	}
@@ -121,6 +132,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function SetStartDate(Date $startDate)
 	{
 		$this->Set('StartDate', $startDate);
+		$this->SetRepeatTerminationDate($startDate);
 	}
 	
 	public function SetEndDate(Date $startDate)
@@ -146,6 +158,16 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function SetScheduleId($scheduleId)
 	{
 		$this->Set('ScheduleId', $scheduleId);
+	}
+	
+	public function SetRepeatTerminationDate($repeatTerminationDate)
+	{
+		$this->Set('RepeatTerminationDate', $repeatTerminationDate);
+	}
+
+	public function SetReservationAction($reservationAction)
+	{
+		$this->Set('ReservationAction', $reservationAction);
 	}
 }
 ?>

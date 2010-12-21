@@ -8,170 +8,341 @@ class ReservationSavePresenterTests extends TestBase
 	/**
 	 * @var UserSession
 	 */
-	private $_user;
+	private $user;
 
 	/**
 	 * @var int
 	 */
-	private $_userId;
-	
+	private $userId;
+
 	/**
 	 * @var IReservationSavePage
 	 */
-	private $_page;
+	private $page;
+	
+	/**
+	 * @var ReservationSavePresenter
+	 */
+	private $presenter;
 
+	/**
+	 * @var IReservationPersistenceFactory
+	 */
+	private $persistenceFactory;
+
+	/**
+	 * @var IReservationPersistenceService
+	 */
+	private $persistenceService;
+
+	/**
+	 * @var IReservationValidationFactory
+	 */
+	private $validationFactory;
+	
+	/**
+	 * @var IReservationValidationService
+	 */
+	private $validationService;
+
+	/**
+	 * @var IReservationNotificationFactory
+	 */
+	private $notificationFactory;
+	
+	/**
+	 * @var IReservationNotificationService
+	 */
+	private $notificationService;
+	
 	public function setup()
 	{
 		parent::setup();
 
-		$this->_user = $this->fakeServer->UserSession;
-		$this->_userId = $this->_user->UserId;
+		$this->user = $this->fakeServer->UserSession;
+		$this->userId = $this->user->UserId;
+
+		$this->page = new FakeReservationSavePage();
+
+		$this->persistenceFactory = $this->getMock('IReservationPersistenceFactory');
+		$this->persistenceService = $this->getMock('IReservationPersistenceService');
+
+		$this->validationFactory = $this->getMock('IReservationValidationFactory');
+		$this->validationService = $this->getMock('IReservationValidationService');
 		
-		$this->_page = $this->getMock('IReservationSavePage');
+		$this->notificationFactory = $this->getMock('IReservationNotificationFactory');
+		$this->notificationService = $this->getMock('IReservationNotificationService');
+		
+		$this->presenter = new ReservationSavePresenter($this->page, $this->persistenceFactory, $this->validationFactory, $this->notificationFactory);
 	}
 
 	public function teardown()
 	{
 		parent::teardown();
 	}
-	
-	public function testSaveWithMinimalData()
+
+	public function testBuildingWhenCreationBuildsReservationFromPageData()
 	{
-		$userId = 120;
-		$resourceId = 329;
-		$scheduleId = 229;
-		$title = 'title';
-		$description = 'description';
+		$timezone = $this->user->Timezone;
 		
-		$startDate = '2010-04-10';
-		$endDate = '2010-04-11';
-		$startTime = '12:30';
-		$endTime = '15:30';
-		$timezone = $this->_user->Timezone;
-		
-		$additionalResources = array(1, 2);
+		$userId = $this->page->GetUserId();
+		$resourceId = $this->page->GetResourceId();
+		$scheduleId = $this->page->GetScheduleId();
+		$title = $this->page->GetTitle();
+		$description = $this->page->GetDescription();
+
+		$startDate = $this->page->GetStartDate();
+		$endDate = $this->page->GetEndDate();
+		$startTime = $this->page->GetStartTime();
+		$endTime = $this->page->GetEndTime();
+		$additionalResources = $this->page->GetResources();
+
+		$reservationAction = $this->page->GetReservationAction();
+		$repeatOptions = $this->page->GetRepeatOptions(null);
 		
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
-		$persistenceFactory = $this->getMock('IReservationPersistenceFactory');
-		$persistenceService = $this->getMock('IReservationPersistenceService');
-		
 		$reservation = $this->getMock('Reservation');
-		$repeatOptions = $this->getMock('IRepeatOptions');
 		
-		$validationFactory = $this->getMock('IReservationValidationFactory');
-		$validationService = $this->getMock('IReservationValidationService');
-		$validationResult = new ReservationValidResult();
-		
-		$notificationFactory = $this->getMock('IReservationNotificationFactory');
-		$notificationService = $this->getMock('IReservationNotificationService');
-				
-		$persistenceFactory->expects($this->once())
+		$this->persistenceFactory->expects($this->once())
 			->method('Create')
-			->with($this->equalTo(ReservationAction::Create))
-			->will($this->returnValue($persistenceService));
-	
-		$this->_page->expects($this->once())
-			->method('GetReservationId')
-			->will($this->returnValue(null));
-			
-		$this->_page->expects($this->once())
-			->method('GetUserId')
-			->will($this->returnValue($userId));
-			
-		$this->_page->expects($this->once())
-			->method('GetResourceId')
-			->will($this->returnValue($resourceId));
-			
-		$this->_page->expects($this->once())
-			->method('GetScheduleId')
-			->will($this->returnValue($scheduleId));
-			
-		$this->_page->expects($this->once())
-			->method('GetTitle')
-			->will($this->returnValue($title));
-			
-		$this->_page->expects($this->once())
-			->method('GetDescription')
-			->will($this->returnValue($description));
-		
-		$this->_page->expects($this->once())
-			->method('GetStartDate')
-			->will($this->returnValue($startDate));
-		
-		$this->_page->expects($this->once())
-			->method('GetStartTime')
-			->will($this->returnValue($startTime));
-			
-		$this->_page->expects($this->once())
-			->method('GetEndDate')
-			->will($this->returnValue($endDate));
-		
-		$this->_page->expects($this->once())
-			->method('GetEndTime')
-			->will($this->returnValue($endTime));
-			
-		$this->_page->expects($this->once())
-			->method('GetResources')
-			->will($this->returnValue($additionalResources));
-			
-		$persistenceService->expects($this->once())
+			->with($this->equalTo($reservationAction))
+			->will($this->returnValue($this->persistenceService));
+
+		$this->persistenceService->expects($this->once())
 			->method('Load')
 			->with($this->equalTo(null))
 			->will($this->returnValue($reservation));
-		
+
 		$reservation->expects($this->once())
 			->method('Update')
-			->with($this->equalTo($userId), 
-					$this->equalTo($resourceId), 
-					$this->equalTo($scheduleId), 
-					$this->equalTo($title), 
+			->with( $this->equalTo($userId),
+					$this->equalTo($resourceId),
+					$this->equalTo($scheduleId),
+					$this->equalTo($title),
 					$this->equalTo($description));
-		
+
 		$reservation->expects($this->once())
 			->method('UpdateDuration')
 			->with($this->equalTo($duration));
-		
-		$this->_page->expects($this->once())
-			->method('GetRepeatOptions')
-			->will($this->returnValue($repeatOptions));
-			
+				
 		$reservation->expects($this->once())
 			->method('Repeats')
 			->with($this->equalTo($repeatOptions));
-			
-		$validationFactory->expects($this->once())
-			->method('Create')
-			->with($this->equalTo(ReservationAction::Create))
-			->will($this->returnValue($validationService));
+
+		$actualReservation = $this->presenter->BuildReservation();
 		
-		$validationService->expects($this->once())
+		$this->assertEquals($reservation, $actualReservation);
+	}
+
+	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistanceAndNotification()
+	{
+		$action = $this->page->GetReservationAction();
+		
+		$reservation = $this->getMock('Reservation');
+		$validationResult = new ReservationValidationResult();
+			
+		$this->validationFactory->expects($this->once())
+			->method('Create')
+			->with($this->equalTo($action))
+			->will($this->returnValue($this->validationService));
+
+		$this->validationService->expects($this->once())
+			->method('Validate')
+			->with($this->equalTo($reservation))
+			->will($this->returnValue($validationResult));
+
+		$this->persistenceFactory->expects($this->once())
+			->method('Create')
+			->with($this->equalTo($action))
+			->will($this->returnValue($this->persistenceService));
+			
+		$this->persistenceService->expects($this->once())
+			->method('Persist')
+			->with($this->equalTo($reservation));
+
+		$this->notificationFactory->expects($this->once())
+			->method('Create')
+			->with($this->equalTo($action))
+			->will($this->returnValue($this->notificationService));
+			
+		$this->notificationService->expects($this->once())
+			->method('Notify')
+			->with($this->equalTo($reservation));
+
+		$this->presenter->HandleReservation($reservation);
+		
+		$this->assertEquals(true, $this->page->saveSuccessful);
+		$this->assertEquals($validationResult->GetWarnings(), $this->page->warnings);
+	}
+	
+	public function testPreventsPersistenceAndNotificationAndShowsFailedMessageWhenValidationFails()
+	{
+		$errorMessage1 = 'e1';
+		$errorMessage2 = 'e2';
+		$errors = array($errorMessage1, $errorMessage2);
+		$action = $this->page->GetReservationAction();
+		
+		$reservation = $this->getMock('Reservation');
+		$validationResult = new ReservationValidationResult(false, $errors);	
+		
+		$this->validationFactory->expects($this->once())
+			->method('Create')
+			->with($this->equalTo($action))
+			->will($this->returnValue($this->validationService));
+
+		$this->validationService->expects($this->once())
 			->method('Validate')
 			->with($this->equalTo($reservation))
 			->will($this->returnValue($validationResult));
 		
-		$persistenceService->expects($this->once())
-			->method('Persist')
-			->with($this->equalTo($reservation));
+		$this->persistenceFactory->expects($this->never())
+			->method('Create');
+
+		$this->notificationFactory->expects($this->never())
+			->method('Create');
+					
+		$this->presenter->HandleReservation($reservation);
 		
-		$notificationFactory->expects($this->once())
-			->method('Create')
-			->with($this->equalTo(ReservationAction::Create))
-			->will($this->returnValue($notificationService));
-			
-		$notificationService->expects($this->once())
-			->method('Notify')
-			->with($this->equalTo($reservation));	
-			
-		$this->_page->expects($this->once())
-			->method('SetSaveSuccessfulMessage')
-			->with($this->equalTo(true));
-			
-		$this->_page->expects($this->once())
-			->method('ShowWarnings')
-			->with($this->equalTo($validationResult->GetWarnings()));
-						
-		$presenter = new ReservationSavePresenter($this->_page, $persistenceFactory, $validationFactory, $notificationFactory);
-		$presenter->PageLoad();	
+		$this->assertEquals(false, $this->page->saveSuccessful);
+		$this->assertEquals($errors, $this->page->errors);
+	}
+}
+
+class FakeReservationSavePage implements IReservationSavePage
+{
+	public $action = ReservationAction::Create;
+	public $reservationId = 100;
+	public $userId = 110;
+	public $resourceId = 120;
+	public $scheduleId = 123;
+	public $title = 'title';
+	public $description = 'description';
+	public $startDate = '2010-01-01';
+	public $endDate = '2010-01-02';
+	public $startTime = '05:30';
+	public $endTime = '04:00';
+	public $resourceIds = array(11, 22);
+	public $repeatType = RepeatType::Daily;
+	public $repeatInterval = 2;
+	public $repeatWeekdays = array(0, 1, 2);
+	public $repeatMonthlyType = RepeatMonthlyType::DayOfMonth;
+	public $repeatTerminationDate = '2010-10-10';
+	public $repeatOptions;
+	public $saveSuccessful = false;
+	public $errors = array();
+	public $warnings = array();
+	
+	public function __construct()
+	{
+		$this->repeatOptions = new NoRepetion();
+	}
+	
+	public function GetReservationAction()
+	{
+		return $this->action;
+	}
+
+	public function GetReservationId()
+	{
+		return $this->reservationid;
+	}
+	
+	public function GetUserId()
+	{
+		return $this->userId;
+	}
+	
+	public function GetResourceId()
+	{
+		return $this->resourceId;
+	}
+	
+	public function GetScheduleId()
+	{
+		return $this->scheduleId;
+	}
+	
+	public function GetTitle()
+	{
+		return $this->title;
+	}
+	
+	public function GetDescription()
+	{
+		return $this->description;
+	}
+	
+	public function GetStartDate()
+	{
+		return $this->startDate;
+	}
+	
+	public function GetEndDate()
+	{
+		return $this->endDate;
+	}
+	
+	public function GetStartTime()
+	{
+		return $this->startTime;
+	}
+	
+	public function GetEndTime()
+	{
+		return $this->endTime;
+	}
+	
+	public function GetResources()
+	{
+		return $this->resourceIds;
+	}
+	
+	public function GetRepeatType()
+	{
+		return $this->repeatType;
+	}
+	
+	public function GetRepeatInterval()
+	{
+		return $this->repeatInterval;
+	}
+	
+	public function GetRepeatWeekdays()
+	{
+		return $this->repeatWeekdays;
+	}
+	
+	public function GetRepeatMonthlyType()
+	{
+		return $this->repeatMonthlyType;
+	}
+	
+	public function GetRepeatTerminationDate()
+	{
+		return $this->repeatTerminationDate;
+	}
+
+	public function GetRepeatOptions($initialReservationDates)
+	{
+		return $this->repeatOptions;
+	}
+	
+	public function SetSaveSuccessfulMessage($succeeded)
+	{
+		$this->saveSuccessful = $succeeded;
+	}
+	
+	public function SetReferenceNumber($referenceNumber)
+	{}
+	
+	public function ShowErrors($errors)
+	{
+		$this->errors = $errors;
+	}
+	
+	public function ShowWarnings($warnings)
+	{
+		$this->warnings = $warnings;
 	}
 }

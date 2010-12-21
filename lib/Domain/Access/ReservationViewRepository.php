@@ -35,13 +35,15 @@ class ReservationViewRepository implements IReservationViewRepository
 			
 			$reservationView->RepeatType = $repeatConfig->Type;
 			$reservationView->RepeatInterval = $repeatConfig->Interval;	
+			$reservationView->RepeatWeekdays = $repeatConfig->Weekdays;	
+			$reservationView->RepeatMonthlyType = $repeatConfig->MonthlyType;	
+			$reservationView->RepeatTerminationDate = $repeatConfig->TerminationDate;	
 		
 			$resources = $this->GetResources($reservationView->ReservationId);
 			$participants = $this->GetParticipants($reservationView->ReservationId);
 			
 			$reservationView->AdditionalResourceIds = $resources;
 			$reservationView->ParticipantIds = $participants;
-			
 		}
 		
 		return $reservationView;
@@ -114,6 +116,12 @@ class ReservationView
 	public $Description;
 	public $RepeatType;
 	public $RepeatInterval;
+	public $RepeatWeekdays;
+	public $RepeatMonthlyType;	
+	/**
+	 * @var Date
+	 */
+	public $RepeatTerminationDate;
 	
 	public $AdditionalResourceIds = array();
 	public $ParticipantIds = array();

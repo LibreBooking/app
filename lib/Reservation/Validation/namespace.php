@@ -9,7 +9,7 @@ require_once(ROOT_DIR . 'lib/Reservation/Validation/ReservationDateTimeRule.php'
 require_once(ROOT_DIR . 'lib/Reservation/Validation/PermissionValidationRule.php');
 require_once(ROOT_DIR . 'lib/Reservation/Validation/ReservationRuleResult.php');
 require_once(ROOT_DIR . 'lib/Reservation/Validation/ReservationValidationFactory.php');
-require_once(ROOT_DIR . 'lib/Reservation/Validation/ReservationValidResult.php');
+require_once(ROOT_DIR . 'lib/Reservation/Validation/ReservationValidationResult.php');
 require_once(ROOT_DIR . 'lib/Reservation/Validation/AddReservationValidationService.php');
 
 ?>

@@ -24,6 +24,41 @@ interface IExistingReservationPage extends IReservationPage
      * @param $description string
 	 */
 	function SetDescription($description);
+	
+	/**
+	 * @param $repeatType string
+	 */
+	function SetRepeatType($repeatType);
+	
+	/**
+	 * @param $repeatInterval string
+	 */
+	function SetRepeatInterval($repeatInterval);
+	
+	/**
+	 * @param $repeatMonthlyType string
+	 */
+	function SetRepeatMonthlyType($repeatMonthlyType);
+	
+	/**
+	 * @param $repeatTerminationDate Date
+	 */
+	function SetRepeatTerminationDate($repeatTerminationDate);
+	
+	/**
+	 * @param $repeatWeekdays int[]
+	 */
+	function SetRepeatWeekdays($repeatWeekdays);
+	
+	/**
+	 * @param $referenceNumber string
+	 */
+	function SetReferenceNumber($referenceNumber);
+
+	/**
+	 * @param $reservationId int
+	 */
+	function SetReservationId($reservationId);
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
@@ -31,6 +66,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	public function __construct()
 	{
 		parent::__construct('EditReservation');
+	}
+	
+	public function PageLoad()
+	{
+		parent::PageLoad();
 	}
 	
 	protected function GetPresenter()
@@ -48,6 +88,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	protected function GetTemplateName()
 	{
 		return 'reservation.tpl';
+	}
+	
+	protected function GetReservationHeaderKey()
+	{
+		return 'EditReservationHeading';
 	}
 	
 	public function GetReferenceNumber()
@@ -73,6 +118,36 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	public function SetDescription($description)
 	{
 		$this->Set('Description', $description);
+	}
+	
+	public function SetRepeatType($repeatType)
+	{
+		$this->Set('RepeatType', $repeatType);
+	}
+	
+	public function SetRepeatInterval($repeatInterval)
+	{
+		$this->Set('RepeatInterval', $repeatInterval);
+	}
+	
+	public function SetRepeatMonthlyType($repeatMonthlyType)
+	{
+		$this->Set('RepeatMonthlyType', $repeatMonthlyType);
+	}
+	
+	public function SetRepeatWeekdays($repeatWeekdays)
+	{
+		$this->Set('RepeatWeekdays', $repeatWeekdays);
+	}
+	
+	public function SetReferenceNumber($referenceNumber)
+	{
+		$this->Set('ReferenceNumber', $referenceNumber);
+	}
+	
+	function SetReservationId($reservationId)
+	{
+		$this->Set('ReservationId', $reservationId);
 	}
 	
 }

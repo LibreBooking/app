@@ -27,8 +27,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	
 	public function PageLoad()
 	{
-		$this->_presenter->PageLoad();
-		
+		$reservation = $this->_presenter->BuildReservation();
+
 		// do we want a save/update/deleted successful?
 		if ($this->_reservationSavedSuccessfully)
 		{
@@ -58,6 +58,11 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function ShowWarnings($warnings)
 	{
 		// set warnings variable
+	}
+	
+	public function GetReservationAction()
+	{
+		return $this->GetForm(FormKeys::RESERVATION_ACTION);
 	}
 	
 	public function GetReservationId()
@@ -203,6 +208,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 
 interface IReservationSavePage
 {
+	function GetReservationAction();
+	
 	/**
 	 * @return int
 	 */
@@ -211,14 +218,45 @@ interface IReservationSavePage
 	public function GetUserId();
 	public function GetResourceId();
 	public function GetScheduleId();
+	
+	/**
+	 * @return string
+	 */
 	public function GetTitle();
+	
+	/**
+	 * @return string
+	 */
 	public function GetDescription();
+	
+	/**
+	 * @return string
+	 */
 	public function GetStartDate();
+	
+	/**
+	 * @return string
+	 */
 	public function GetEndDate();
+	
+	/**
+	 * @return string
+	 */
 	public function GetStartTime();
+	
+	/**
+	 * @return string
+	 */
 	public function GetEndTime();
+	
+	/**
+	 * @return int[]
+	 */
 	public function GetResources();
 	
+	/**
+	 * @return string
+	 */
 	public function GetRepeatType();
 	public function GetRepeatInterval();
 	public function GetRepeatWeekdays();
