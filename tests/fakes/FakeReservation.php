@@ -4,7 +4,7 @@ require_once($BASE_DIR . '/lib/Reservation.class.php');
 require_once('FakeResource.php');
 require_once('FakeUser.php');
 
-class FakeReservation extends Reservation
+class FakeReservation extends ReservationSeries
 {
 	var $id 		= 'fakeresid';
 	var $start_date	= null;

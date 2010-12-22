@@ -9,7 +9,7 @@ require_once(ROOT_DIR . "tests/fakes/namespace.php");
 $start = Date::Parse('2010-10-05 03:30:00', 'UTC');
 $end = Date::Parse('2010-10-06 13:30:00', 'UTC');
 
-$reservation = new Reservation();
+$reservation = new ReservationSeries();
 $reservation->Update(1, 1, 'crazy title', 'super description');
 $reservation->UpdateDuration(new DateRange($start, $end));
 

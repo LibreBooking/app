@@ -172,7 +172,10 @@
 </div>
 
 <div id="dialogSave" style="display:none;">
-	<div id="creatingNotifiation" style="position:relative; top:170px; font-size:16pt;text-align:center;">Creating reservation...<br/><img src="{$RootPath}/img/reservation_submitting.gif" alt="Creating reservation"/></div>
+	<div id="creatingNotifiation" style="position:relative; top:170px; font-size:16pt;text-align:center;">
+		Creating reservation...<br/>
+		<img src="{$Path}img/reservation_submitting.gif" alt="Creating reservation"/>
+	</div>
 	<div id="result" style="display:none;"></div>
 </div>
 <!-- reservationbox ends -->

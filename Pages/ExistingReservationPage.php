@@ -95,6 +95,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 		return 'EditReservationHeading';
 	}
 	
+	protected function GetReservationAction()
+	{
+		return ReservationAction::Update;
+	}
+	
 	public function GetReferenceNumber()
 	{
 		return $this->server->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER); 

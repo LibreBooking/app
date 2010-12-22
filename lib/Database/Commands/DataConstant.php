@@ -25,7 +25,7 @@ class ParameterNames
 	const REPEAT_OPTIONS = '@repeatOptions';
 	const REPEAT_TYPE = '@repeatType';
 	
-	const RESERVATION_ID = '@reservationid';
+	const RESERVATION_INSTANCE_ID = '@reservationid';
 	const RESERVATION_USER_LEVEL_ID = '@levelid';
 	
 	const RESOURCE_ID = '@resourceid';
@@ -49,6 +49,7 @@ class ParameterNames
 	
 	const SALT = '@salt';
 	const SCHEDULE_ID = '@scheduleid';
+	const SERIES_ID = '@seriesid';
 	const START_DATE = '@startDate';
 	const STATUS_ID = '@statusid';
 	const TIMEZONE_NAME = '@timezone';
@@ -87,32 +88,32 @@ class Queries
     //The below constants will be used inside of Commands.php in the style of "parent::__construct(Queries::GET_ALL_RESERVATIONS_BY_USER)"
     //I am lame, and have not actually tested this. I need to populate my database and give this one a whirl. However, running it on the empty database was successful, so there aren't any simple syntax errors :)   
 	const GET_ALL_RESERVATIONS_BY_USER = 
-	'SELECT
-		reservations.*
-	FROM
-		reservation_users JOIN reservations
-	WHERE
-		(@userid = reservation_users.user_id AND reservation_users.reservation_id = reservations.reservation_id)';
+		'SELECT
+			reservation_series.*
+		FROM
+			reservation_users JOIN reservation_series
+		WHERE
+			(@userid = reservation_users.user_id AND reservation_users.series_id = reservation_series.series_id)';
 	
 	const ADD_RESERVATION = 
 		'INSERT INTO 
-			reservations (start_date, end_date, date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, reference_number, schedule_id, type_id, status_id)
-		VALUES (@startDate, @endDate, @dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @referenceNumber, @scheduleid, @typeid, @statusid)';
-	
-	const ADD_RESERVATION_REPEAT_DATE = 
-		'INSERT INTO
-			reservation_repeat_dates (reservation_id, start_date, end_date)
-		VALUES (@reservationid, @startDate, @endDate)';
+			reservation_instances (start_date, end_date, reference_number, series_id)
+		VALUES (@startDate, @endDate, @referenceNumber, @seriesid)';
 	
 	const ADD_RESERVATION_RESOURCE =
 		'INSERT INTO
-			reservation_resources (reservation_id, resource_id, resource_level_id)
-		VALUES (@reservationid, @resourceid, @resourceLevelId)';	
+			reservation_resources (series_id, resource_id, resource_level_id)
+		VALUES (@seriesid, @resourceid, @resourceLevelId)';	
+	
+	const ADD_RESERVATION_SERIES = 
+		'INSERT INTO 
+			reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, schedule_id, type_id, status_id)
+		VALUES (@dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @scheduleid, @typeid, @statusid)';
 	
 	const ADD_RESERVATION_USER  = 
 		'INSERT INTO
-			reservation_users (reservation_id, user_id, reservation_user_level)
-		VALUES (@reservationid, @userid, @levelid)';
+			reservation_users (series_id, user_id, reservation_user_level)
+		VALUES (@seriesid, @userid, @levelid)';
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
 		'INSERT INTO 
@@ -185,31 +186,34 @@ class Queries
 		'SELECT
 			*
 		FROM
-			reservations r
+			reservation_series r
 		WHERE
-			r.reservation_id = @reservationId';
+			r.series_id = @reservationId AND
+			status_id <> 2';
 	
 	const GET_RESERVATION_FOR_EDITING = 
 		'SELECT 
 			* 
 		FROM
-			reservations r 
+			reservation_instances ri
+		INNER JOIN
+			reservation_series r ON r.series_id = ri.series_id
 		INNER JOIN
 			reservation_users ru 
 		ON 
-			r.reservation_id = ru.reservation_id 
+			r.series_id = ru.series_id 
 		AND
 			ru.reservation_user_level = @levelid
 		INNER JOIN
 			reservation_resources rr
 		ON
-			r.reservation_id = rr.reservation_id
+			r.series_id = rr.series_id
 		AND 
 			rr.resource_level_id = @resourceLevelId
 		WHERE 
 			reference_number = @referenceNumber
 		AND	
-			status_id IN (1,2)';
+			status_id <> 2';
 	
 	const GET_RESERVATION_PARTICIPANTS =
 		'SELECT
@@ -217,7 +221,7 @@ class Queries
 		FROM
 			reservation_users
 		WHERE
-			reservation_id = @reservationId';
+			series_id = @reservationId';
 	
 	const GET_RESERVATION_RESOURCES =
 		'SELECT
@@ -225,81 +229,46 @@ class Queries
 		FROM
 			reservation_resources
 		WHERE
-			reservation_id = @reservationId';
+			series_id = @reservationId';
 	
-	/*
-	 * 
-	 */
 	// TODO: Pass in "Deleted" status ID
 	const GET_RESERVATIONS_COMMAND =
 	 'SELECT 
-		r.reservation_id,
-		r.start_date,
-		r.end_date,
+		ri.reservation_instance_id,
+		ri.start_date,
+		ri.end_date,
 		r.type_id,
 		r.status_id,
 		r.description,
 		rs.resource_id,
 		u.user_id,
 		u.fname,
-		u.lname
-	FROM
-	(
-		SELECT
-			r.reservation_id,
-			r.start_date,
-			r.end_date,
-			r.type_id,
-			r.status_id,
-			r.description		 
-		FROM 
-			reservations r
-		WHERE 
-			r.status_id <> 2	
-			AND
-			(
-				(r.start_date >= @startDate AND r.start_date <= @endDate)
-				 OR
-				 (r.end_date >= @startDate AND r.end_date <= @endDate)
-				 OR
-				 (r.start_date <= @startDate AND r.end_date >= @endDate)
-			)
-	
-		UNION
-
-		SELECT 
-			r.reservation_id,
-			rr.start_date,
-			rr.end_date,
-			r.type_id,
-			r.status_id,
-			r.description		
-		FROM
-			reservations r
-		INNER JOIN 
-			reservation_repeat_dates rr ON r.reservation_id = rr.reservation_id
-		WHERE
-			r.status_id <> 2	
-			AND
-			(
-				(rr.start_date >= @startDate AND rr.start_date <= @endDate)
-				OR
-				(rr.end_date >= @startDate AND rr.end_date <= @endDate)
-				OR
-				(rr.start_date <= @startDate AND rr.end_date >= @endDate)
-			)
-	) r
+		u.lname,
+		r.series_id,
+		ri.reference_number
+	FROM 
+		reservation_instances ri
+	INNER JOIN
+		reservation_series r
 	INNER JOIN 
-		reservation_users ru ON r.reservation_id = ru.reservation_id
+		reservation_users ru ON r.series_id = ru.series_id
 	INNER JOIN 
 		users u ON ru.user_id = u.user_id
 	INNER JOIN 
-		reservation_resources rr ON rr.reservation_id = r.reservation_id
+		reservation_resources rr ON rr.series_id = r.series_id
 	INNER JOIN 
 		resource_schedules rs ON rs.resource_id = rr.resource_id
 	WHERE 
+		r.status_id <> 2 AND
 		ru.reservation_user_level = 1 AND
-		(rs.schedule_id = @scheduleid OR @scheduleid = -1)';
+		(rs.schedule_id = @scheduleid OR @scheduleid = -1) AND	
+		(
+			(ri.start_date >= @startDate AND ri.start_date <= @endDate)
+			OR
+			(ri.end_date >= @startDate AND ri.end_date <= @endDate)
+			OR
+			(ri.start_date <= @startDate AND ri.end_date >= @endDate)
+		)';
 	
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
 		'SELECT 
@@ -318,7 +287,8 @@ class Queries
 		FROM 
 			resources r, resource_schedules rs 
 		WHERE 
-			r.resource_id = rs.resource_id AND rs.schedule_id = @scheduleid AND
+			r.resource_id = rs.resource_id AND 
+			rs.schedule_id = @scheduleid AND
 			r.isactive = 1';
 	
 	const GET_USER_BY_ID = 
@@ -423,9 +393,6 @@ class Queries
 		'SELECT user_id, password, salt, legacypassword
 		FROM users 
 		WHERE (username = @username OR email = @username)';
-	
-
-	
 }
 
 class ColumnNames
@@ -480,22 +447,26 @@ class ColumnNames
 	const BLOCK_START = 'start_time';
 	const BLOCK_END = 'end_time';	
 
-	// RESERVATION //
-	const RESERVATION_ID = 'reservation_id';
+	// RESERVATION SERIES //	
 	const RESERVATION_USER = 'user_id';
 	const RESERVATION_GROUP = 'group_id';
-	const RESERVATION_START = 'start_date';
-	const RESERVATION_END = 'end_date';
 	const RESERVATION_CREATED = 'date_created';
 	const RESERVATION_MODIFIED = 'last_modified';
 	const RESERVATION_TYPE = 'type_id';
 	const RESERVATION_TITLE = 'title';
 	const RESERVATION_DESCRIPTION = 'description';
 	const RESERVATION_COST = 'total_cost';
-	const RESERVATION_PARENT_ID = 'parent_id';
-	const REFERENCE_NUMBER = 'reference_number';
+	const RESERVATION_PARENT_ID = 'parent_id';	
 	const REPEAT_TYPE = 'repeat_type';
 	const REPEAT_OPTIONS = 'repeat_options';
+	const RESERVATION_STATUS = 'status_id';
+	const SERIES_ID = 'series_id';
+	
+	// RESERVATION_INSTANCE //
+	const RESERVATION_INSTANCE_ID = 'reservation_instance_id';
+	const RESERVATION_START = 'start_date';
+	const RESERVATION_END = 'end_date';
+	const REFERENCE_NUMBER = 'reference_number';
 	
 	// RESERVATION_USER //
 	const RESERVATION_OWNER = 'reservation_owner';

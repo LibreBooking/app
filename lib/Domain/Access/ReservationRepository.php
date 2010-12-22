@@ -23,54 +23,58 @@ class ReservationRepository implements IReservationRepository
 		return $reservations;
 	}
 	
-	public function Add(Reservation $reservation)
+	public function Add(ReservationSeries $reservationSeries)
 	{
-		$insertReservation = new AddReservationCommand(
-										$reservation->StartDate()->ToUtc(), 
-										$reservation->EndDate()->ToUtc(), 
-										Date::Now()->ToUtc(), 
-										$reservation->Title(), 
-										$reservation->Description(),
-										$reservation->RepeatOptions()->RepeatType(),
-										$reservation->RepeatOptions()->ConfigurationString(),
-										$reservation->ReferenceNumber(),
-										$reservation->ScheduleId(),
-										ReservationTypes::Reservation,
-										ReservationStatus::Created);
+		$database = ServiceLocator::GetDatabase();
 		
-		$reservationId = ServiceLocator::GetDatabase()->ExecuteInsert($insertReservation);
+		$insertReservationSeries = new AddReservationSeriesCommand(
+									Date::Now(), 
+									$reservationSeries->Title(), 
+									$reservationSeries->Description(),
+									$reservationSeries->RepeatOptions()->RepeatType(),
+									$reservationSeries->RepeatOptions()->ConfigurationString(),
+									$reservationSeries->ScheduleId(),
+									ReservationTypes::Reservation,
+									ReservationStatus::Created,
+									$reservationSeriesId);
+									
+		$reservationSeriesId = $database->ExecuteInsert($insertReservationSeries);
 		
 		$insertReservationResource = new AddReservationResourceCommand(
-										$reservationId, 
-										$reservation->ResourceId(),
-										ResourceLevel::Primary);
+											$reservationSeriesId, 
+											$reservationSeries->ResourceId(),
+											ResourceLevel::Primary);
 					
-		ServiceLocator::GetDatabase()->Execute($insertReservationResource);
+		$database->Execute($insertReservationResource);
 		
-		foreach($reservation->Resources() as $resourceId)
+		foreach($reservationSeries->Resources() as $resourceId)
 		{
 			$insertReservationResource = new AddReservationResourceCommand(
-										$reservationId, 
+										$reservationSeriesId, 
 										$resourceId,
 										ResourceLevel::Additional);
 					
-			ServiceLocator::GetDatabase()->Execute($insertReservationResource);
+			$database->Execute($insertReservationResource);
 		}
 		
 		$insertReservationUser = new AddReservationUserCommand(
-										$reservationId, 
-										$reservation->UserId(), 
+										$reservationSeriesId, 
+										$reservationSeries->UserId(), 
 										ReservationUserLevel::OWNER);
 		
-		ServiceLocator::GetDatabase()->Execute($insertReservationUser);
+		$database->Execute($insertReservationUser);
 		
-		foreach($reservation->RepeatedDates() as $date)
+		$instances = $reservationSeries->Instances();
+			
+		foreach($instances as $reservation)
 		{
-			$insertRepeatedDate = new AddReservationRepeatDateCommand(
-									$reservationId, 
-									$date->GetBegin(), 
-									$date->GetEnd());
-			ServiceLocator::GetDatabase()->Execute($insertRepeatedDate);
+			$insertReservation = new AddReservationCommand(
+								$reservation->StartDate(), 
+								$reservation->EndDate(), 
+								$reservation->ReferenceNumber(),
+								$reservationSeriesId);
+			
+			$reservationId = $database->ExecuteInsert($insertReservation);
 		}
 	}
 	
@@ -105,7 +109,9 @@ class ReservationRepository implements IReservationRepository
 			$duration = new DateRange($startDate, $endDate);
 			$repeatOptions = $this->BuildRepeatOptions($repeatType, $configurationString, $duration);
 			
+			$reservation->SetReservationId($row[ColumnNames::RESERVATION_INSTANCE_ID]);
 			$reservation->SetReferenceNumber($row[ColumnNames::REFERENCE_NUMBER]);
+			$reservation->IsPartOfSeries($row[ColumnNames::SERIES_ID]);
 			$reservation->UpdateDuration($duration);
 			$reservation->Repeats($repeatOptions);
 		}
@@ -140,7 +146,7 @@ class ReservationRepository implements IReservationRepository
 		return $reservation;
 	}
 	
-	public function Update(Reservation $reservation)
+	public function Update(ReservationSeries $reservation)
 	{
 		throw new Exception('Not Implemented');
 	}
@@ -168,10 +174,10 @@ interface IReservationRepository
 	/**
 	 * Insert a new reservation
 	 * 
-	 * @param Reservation $reservation
+	 * @param ReservationSeries $reservation
 	 * @return void
 	 */
-	public function Add(Reservation $reservation);
+	public function Add(ReservationSeries $reservation);
 	
 	/**
 	 * Return an existing reservation
@@ -184,10 +190,10 @@ interface IReservationRepository
 	/**
 	 * Update an existing reservation
 	 * 
-	 * @param Reservation $reservation
+	 * @param ReservationSeries $reservation
 	 * @return void
 	 */
-	public function Update(Reservation $reservation);
+	public function Update(ReservationSeries $reservation);
 	
 }
 ?>

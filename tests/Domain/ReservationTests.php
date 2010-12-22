@@ -13,7 +13,7 @@ class ReservationTests extends TestBase
 		parent::teardown();
 	}
 
-	public function testUpdatingANewReservation()
+	public function testCreatingNewSeriesSetsAllSharedDataAndCreatesInstances()
 	{
 		$userId = 32;
 		$resourceId = 10;
@@ -28,27 +28,50 @@ class ReservationTests extends TestBase
 		$endDateUtc = Date::Parse($endDateCst, 'CST')->ToUtc();
 		
 		$dateRange = DateRange::Create($startDateCst, $endDateCst, 'CST');
+		$repeatedDate = DateRange::Create('2010-01-01', '2010-01-02', 'UTC');
 		
 		$repeatOptions = $this->getMock('IRepeatOptions');
-		$repeatDates = array();
+		$repeatDates = array($repeatedDate);
 		
 		$repeatOptions->expects($this->once())
 			->method('GetDates')
 			->will($this->returnValue($repeatDates));
 			
-		$reservation = new Reservation();
-		$reservation->Update($userId, $resourceId, $scheduleId, $title, $description);
-		$reservation->UpdateDuration($dateRange);
-		$reservation->Repeats($repeatOptions);
+		$series = new ReservationSeries();
+		$series->Update($userId, $resourceId, $scheduleId, $title, $description);
+		$series->UpdateDuration($dateRange);
+		$series->Repeats($repeatOptions);
 		
-		$this->assertEquals($userId, $reservation->UserId());
-		$this->assertEquals($resourceId, $reservation->ResourceId());
-		$this->assertEquals($scheduleId, $reservation->ScheduleId());
-		$this->assertEquals($title, $reservation->Title());
-		$this->assertEquals($description, $reservation->Description());
-		$this->assertEquals($startDateUtc, $reservation->StartDate());
-		$this->assertEquals($endDateUtc, $reservation->EndDate());
-		$this->assertEquals($repeatDates, $reservation->RepeatedDates());
-		$this->assertEquals($repeatOptions, $reservation->RepeatOptions());
+		$this->assertEquals($userId, $series->UserId());
+		$this->assertEquals($resourceId, $series->ResourceId());
+		$this->assertEquals($scheduleId, $series->ScheduleId());
+		$this->assertEquals($title, $series->Title());
+		$this->assertEquals($description, $series->Description());
+		$this->assertTrue($series->IsRecurring());
+		$this->assertEquals($repeatOptions, $series->RepeatOptions());
+		
+		$instances = array_values($series->Instances());
+		
+		$this->assertEquals(count($repeatDates) + 1, count($instances), "should have original plus instances");
+		$this->assertTrue($startDateUtc->Equals($instances[0]->StartDate()));
+		$this->assertTrue($endDateUtc->Equals($instances[0]->EndDate()));
+		
+		$this->assertTrue($repeatedDate->GetBegin()->Equals($instances[1]->StartDate()));
+		$this->assertTrue($repeatedDate->GetEnd()->Equals($instances[1]->EndDate()));
+	}
+	
+	public function testCanGetSpecificInstanceByDate()
+	{
+		$startDate = Date::Parse('2010-02-02 12:15', 'UTC');
+		$endDate = $startDate->AddDays(1);
+		$dateRange = new DateRange($startDate, $endDate);
+		
+		$series = new ReservationSeries();
+		$series->UpdateDuration($dateRange);
+		
+		$instance = $series->GetInstance($startDate);
+		
+		$this->assertEquals($startDate, $instance->StartDate());
+		$this->assertEquals($endDate, $instance->EndDate());
 	}
 }

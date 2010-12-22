@@ -12,7 +12,7 @@ class ReservationFactory
 		$endDate = $databaseRow[ColumnNames::RESERVATION_END];
 		
 		return new ScheduleReservation(
-							$databaseRow[ColumnNames::RESERVATION_ID],
+							$databaseRow[ColumnNames::RESERVATION_INSTANCE_ID],
 							Date::Parse($startDate, 'UTC'),
 							Date::Parse($endDate, 'UTC'),
 							$databaseRow[ColumnNames::RESERVATION_TYPE],

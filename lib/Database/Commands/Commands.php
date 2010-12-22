@@ -17,68 +17,65 @@ class GetAllReservationsByUserCommand /*Give it a very literal name describing w
     }
 }
 
-class AddReservationCommand extends SqlCommand
+class AddReservationSeriesCommand extends SqlCommand
 {
-	public function __construct(Date $startDateUtc, 
-								Date $endDateUtc, 
-								Date $dateCreatedUtc, 
+	public function __construct(Date $dateCreatedUtc, 
 								$title, 
 								$description, 
 								$repeatType,
 								$repeatOptions,
-								$referenceNumber,
 								$scheduleId,
 								$reservationTypeId,
 								$statusId
 								)
 	{
-		parent::__construct(Queries::ADD_RESERVATION);
+		parent::__construct(Queries::ADD_RESERVATION_SERIES);	
 		
-		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDateUtc->ToDatabase()));	
-		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDateUtc->ToDatabase()));	
 		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, $dateCreatedUtc->ToDatabase()));	
 		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));	
 		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));	
-		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));	
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));	
 		$this->AddParameter(new Parameter(ParameterNames::TYPE_ID, $reservationTypeId));	
 		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));	
 	}
 }
 
-class AddReservationRepeatDateCommand extends SqlCommand
-{
-	public function __construct($reservationId, Date $startDateUtc, Date $endDateUtc)
-	{
-		parent::__construct(Queries::ADD_RESERVATION_REPEAT_DATE);
-		
-		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));	
-		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDateUtc->ToDatabase()));	
-		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDateUtc->ToDatabase()));	
-	}
-}
-
 class AddReservationResourceCommand extends SqlCommand
 {
-	public function __construct($reservationId, $resourceId, $resourceLevelId)
+	public function __construct($seriesId, $resourceId, $resourceLevelId)
 	{
 		parent::__construct(Queries::ADD_RESERVATION_RESOURCE);
 		
-		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LEVEL_ID, $resourceLevelId));
 	}
 }
 
+class AddReservationCommand extends SqlCommand
+{
+	public function __construct(Date $startDateUtc, 
+								Date $endDateUtc,
+								$referenceNumber,
+								$seriesId)
+	{
+		parent::__construct(Queries::ADD_RESERVATION);
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDateUtc->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDateUtc->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));		
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));	
+	}
+}
+
 class AddReservationUserCommand extends SqlCommand
 {
-	public function __construct($reservationId, $userId, $levelId)
+	public function __construct($seriesId, $userId, $levelId)
 	{
 		parent::__construct(Queries::ADD_RESERVATION_USER);
 		
-		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $levelId));
 	}
@@ -218,7 +215,7 @@ class GetReservationParticipantsCommand extends SqlCommand
 	public function __construct($reservationId)
 	{
 		parent::__construct(Queries::GET_RESERVATION_PARTICIPANTS);
-		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $reservationId));
 	}
 }
 
@@ -227,7 +224,7 @@ class GetReservationResourcesCommand extends SqlCommand
 	public function __construct($reservationId)
 	{
 		parent::__construct(Queries::GET_RESERVATION_RESOURCES);
-		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $reservationId));
 	}
 }
 
@@ -247,7 +244,7 @@ class GetReservationByIdCommand extends SqlCommand
 	public function __construct($reservationId)
 	{
 		parent::__construct(Queries::GET_RESERVATION_BY_ID);
-		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_ID, $reservationId));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $reservationId));
 	}
 }
 

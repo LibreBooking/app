@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
+// TODO: Need a way to unit test this
 class ReservationCreatedEmail extends EmailMessage
 {
 	/**
@@ -9,9 +10,9 @@ class ReservationCreatedEmail extends EmailMessage
 	private $reservationOwner;
 	
 	/**
-	 * @var Reservation
+	 * @var ReservationSeries
 	 */
-	private $reservation;
+	private $reservationSeries;
 	
 	/**
 	 * @var IResource
@@ -20,12 +21,12 @@ class ReservationCreatedEmail extends EmailMessage
 	
 	private $timezone;
 	
-	public function __construct(User $reservationOwner, Reservation $reservation, IResource $primaryResource)
+	public function __construct(User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource)
 	{
 		parent::__construct($reservationOwner->Language());
 		
 		$this->reservationOwner = $reservationOwner;
-		$this->reservation = $reservation;
+		$this->reservationSeries = $reservationSeries;
 		$this->resource = $primaryResource;
 		$this->timezone = $reservationOwner->Timezone();
 	}
@@ -60,19 +61,20 @@ class ReservationCreatedEmail extends EmailMessage
 	
 	private function PopulateTemplate()
 	{	
-		$this->Set('StartDate', $this->reservation->StartDate()->ToTimezone($this->timezone));
-		$this->Set('EndDate', $this->reservation->EndDate()->ToTimezone($this->timezone));
+		$currentInstance = $this->reservationSeries->CurrentInstance();
+		$this->Set('StartDate', $currentInstanceStartDate()->ToTimezone($this->timezone));
+		$this->Set('EndDate', $currentInstanceEndDate()->ToTimezone($this->timezone));
 		
-		$this->Set('Title', $this->reservation->Title());
-		$this->Set('Description', $this->reservation->Description());
+		$this->Set('Title', $this->reservationSeries->Title());
+		$this->Set('Description', $this->reservationSeries->Description());
 		
 		$repeatDates = array();
-		foreach ($this->reservation->RepeatedDates() as $repeated)
+		foreach ($this->reservationSeries->Instances() as $repeated)
 		{
 			$repeatDates[] = $repeated->GetBegin()->ToTimezone($this->timezone);
 		}
 		$this->Set('RepeatDates', $repeatDates);
-		$this->Set('ReservationUrl', "reservation.php?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $this->reservation->ReferenceNumber());
+		$this->Set('ReservationUrl', "reservation.php?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $currentInstance->ReferenceNumber());
 	}
 }
 ?>

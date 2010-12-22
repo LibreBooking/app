@@ -44,7 +44,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$getParticpants = new GetReservationParticipantsCommand($reservationId);
 
 		$reservationRow = array(
-			ColumnNames::RESERVATION_ID => $reservationId,
+			ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
 			ColumnNames::RESOURCE_ID => $resourceId,
 			ColumnNames::SCHEDULE_ID => $scheduleId,
@@ -58,13 +58,13 @@ class ReservationViewRepositoryTests extends TestBase
 		);
 		
 		$resourceRows = array(
-			array(ColumnNames::RESERVATION_ID => $reservationId, ColumnNames::RESOURCE_ID => $resourceId1),
-			array(ColumnNames::RESERVATION_ID => $reservationId, ColumnNames::RESOURCE_ID => $resourceId2)
+			array(ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, ColumnNames::RESOURCE_ID => $resourceId1),
+			array(ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, ColumnNames::RESOURCE_ID => $resourceId2)
 			);
 			
 		$participantRows = array(
-			array(ColumnNames::RESERVATION_ID => $reservationId, ColumnNames::USER_ID => $userId1),
-			array(ColumnNames::RESERVATION_ID => $reservationId, ColumnNames::USER_ID => $userId2)
+			array(ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, ColumnNames::USER_ID => $userId1),
+			array(ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, ColumnNames::USER_ID => $userId2)
 			);
 		
 		$this->db->SetRow(0, array($reservationRow));

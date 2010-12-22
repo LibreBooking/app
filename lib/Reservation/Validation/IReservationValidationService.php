@@ -2,7 +2,7 @@
 interface IReservationValidationService
 {
 	/**
-	 * @param $reservation
+	 * @param ReservationSeries $reservation
 	 * @return IReservationValidationResult
 	 */
 	function Validate($reservation);

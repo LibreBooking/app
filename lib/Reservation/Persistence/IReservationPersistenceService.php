@@ -2,12 +2,12 @@
 interface IReservationPersistenceService
 {
 	/**
-	 * @return Reservation
+	 * @return ReservationSeries
 	 */
 	function Load($reservationId);
 
 	/**
-	 * @param Reservation $reservation
+	 * @param ReservationSeries $reservation
 	 */
 	function Persist($reservation);
 }

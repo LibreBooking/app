@@ -2,9 +2,9 @@
 interface IReservationValidationRule
 {
 	/**
-	 * @param Reservation $reservation
+	 * @param ReservationSeries $reservationSeries
 	 * @return ReservationRuleResult
 	 */
-	function Validate($reservation);
+	function Validate($reservationSeries);
 }
 ?>

@@ -31,6 +31,11 @@ class ReservationSavePresenter
 	 */
 	private $_notificationFactory;
 	
+	/**
+	 * @var DateRange
+	 */
+	private $duration;
+	
 	public function __construct(
 		IReservationSavePage $page, 
 		IReservationPersistenceFactory $persistenceFactory,
@@ -53,10 +58,9 @@ class ReservationSavePresenter
 //		$reservation->RemoveParticipant();
 
 		$action = $this->_page->GetReservationAction();
-		
 		$reservationId = $this->_page->GetReservationId();	
 		$persistenceService = $this->_persistenceFactory->Create($action);
-		$reservation = $persistenceService->Load($reservationId);
+		$reservationSeries = $persistenceService->Load($reservationId);
 		
 		// accessories?, participants, invitations
 		// reminder
@@ -67,7 +71,7 @@ class ReservationSavePresenter
 		$title = $this->_page->GetTitle();
 		$description = $this->_page->GetDescription();
 
-		$reservation->Update(
+		$reservationSeries->Update(
 			$userId, 
 			$resourceId, 
 			$scheduleId,
@@ -75,39 +79,50 @@ class ReservationSavePresenter
 			$description);
 		
 		$duration = $this->GetReservationDuration();
-		$reservation->UpdateDuration($duration);
+		$reservationSeries->UpdateDuration($duration);
 		
 		$repeatOptions = $this->_page->GetRepeatOptions($duration);
-		$reservation->Repeats($repeatOptions);
+		$reservationSeries->Repeats($repeatOptions);
 		
 		$resourceIds = $this->_page->GetResources();
 		foreach ($resourceIds as $resourceId)
 		{
-			$reservation->AddResource($resourceId);
+			$reservationSeries->AddResource($resourceId);
 		}
 		
-		return $reservation;
+		return $reservationSeries;
 	}
 	
 	/**
-	 * @param Reservation $reservation
+	 * @param ReservationSeries $reservationSeries
 	 */
-	public function HandleReservation($reservation)
+	public function HandleReservation($reservationSeries)
 	{		
 		$action = $this->_page->GetReservationAction();
 		
 		$validationService = $this->_validationFactory->Create($action);
-		$validationResult = $validationService->Validate($reservation);
+		$validationResult = $validationService->Validate($reservationSeries);
 		
 		if ($validationResult->CanBeSaved())
 		{
 			$persistenceService = $this->_persistenceFactory->Create($action);
-			$persistenceService->Persist($reservation);
+			
+			try 
+			{
+				$persistenceService->Persist($reservationSeries);
+			}
+			catch (Exception $ex)
+			{
+				Log::Error('Error saving reservation: %s', $ex);
+				throw($ex);
+			}
 			
 			$notificationService = $this->_notificationFactory->Create($action);
-			$notificationService->Notify($reservation);
+			$notificationService->Notify($reservationSeries);
 			
-			$this->_page->SetReferenceNumber($reservation->ReferenceNumber());
+			$duration = $this->GetReservationDuration();
+			
+			$this->_page->SetReferenceNumber($reservationSeries->GetInstance($duration->GetBegin())->ReferenceNumber());
 			$this->_page->SetSaveSuccessfulMessage(true);
 		}
 		else
@@ -120,25 +135,22 @@ class ReservationSavePresenter
 	}
 	
 	/**
-	 * @return Reservation
-	 */
-	private function GetReservation($action)
-	{
-		
-	}
-	
-	/**
 	 * @return DateRange
 	 */
 	private function GetReservationDuration()
 	{
-		$startDate = $this->_page->GetStartDate();
-		$startTime = $this->_page->GetStartTime();
-		$endDate = $this->_page->GetEndDate();
-		$endTime = $this->_page->GetEndTime();
+		if ($this->duration == null)
+		{
+			$startDate = $this->_page->GetStartDate();
+			$startTime = $this->_page->GetStartTime();
+			$endDate = $this->_page->GetEndDate();
+			$endTime = $this->_page->GetEndTime();
+			
+			$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+			$this->duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
+		}
 		
-		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
-		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
+		return $this->duration;
 	}
 	
 	/**

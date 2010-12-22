@@ -23,7 +23,7 @@ class AdminEmailNotificationTests extends TestBase
 										ConfigKeys::RESERVATION_NOTIFY_CREATED, 
 										'true');
 		
-		$reservation = new Reservation();
+		$reservation = new ReservationSeries();
 		$reservation->Update($ownerId, $resourceId, null, null, null);
 		
 		$user = $this->getMock('User');
@@ -69,7 +69,7 @@ class AdminEmailNotificationTests extends TestBase
 										'false');
 										
 		$notification = new AdminEmailNotificaiton($this->getMock('IUserRepository'), $this->getMock('IResourceRepository'));
-		$notification->Notify(new Reservation());
+		$notification->Notify(new ReservationSeries());
 		
 		$this->assertEquals(0, count($this->fakeEmailService->_Messages));
 	}

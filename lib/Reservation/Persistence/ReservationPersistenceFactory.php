@@ -27,7 +27,7 @@ class ReservationPersistenceFactory implements IReservationPersistenceFactory
 	private function AddCachedService($reservationAction)
 	{
 		$createMethod = $this->creationStrategies[$reservationAction];
-		$this->services[$reservationAction] = $this->{$createMethod}();
+		$this->services[$reservationAction] = $this->$createMethod();
 	}
 	
 	private function CreateAddService()

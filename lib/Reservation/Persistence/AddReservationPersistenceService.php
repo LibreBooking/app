@@ -13,7 +13,7 @@ class AddReservationPersistenceService implements IReservationPersistenceService
 	
 	public function Load($reservationId)
 	{
-		return new Reservation();
+		return new ReservationSeries();
 	}
 	
 	public function Persist($reservation)

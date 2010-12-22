@@ -6,16 +6,53 @@ class Reservation
 	/**
 	 * @var string
 	 */
-	protected $_referenceNumber;
+	protected $referenceNumber;
 	
 	/**
 	 * @return string
 	 */
 	public function ReferenceNumber()
 	{
-		return $this->_referenceNumber;
+		return $this->referenceNumber;
 	}
 	
+	/**
+	 * @var Date
+	 */
+	protected $startDate;
+	
+	/**
+	 * @return Date
+	 */
+	public function StartDate()
+	{
+		return $this->startDate;
+	}
+	
+	/**
+	 * @var Date
+	 */
+	protected $endDate;
+	
+	/**
+	 * @return Date
+	 */
+	public function EndDate()
+	{
+		return $this->endDate;
+	}
+	
+	public function __construct(ReservationSeries $reservationSeries, DateRange $reservationDate)
+	{
+		$this->referenceNumber = uniqid();
+		$this->series = $reservationSeries;
+		$this->startDate = $reservationDate->GetBegin();
+		$this->endDate = $reservationDate->GetEnd();
+	}
+}
+
+class ReservationSeries
+{
 	/**
 	 * @var int
 	 */
@@ -80,32 +117,6 @@ class Reservation
 	{
 		return $this->_description;
 	}
-
-	/**
-	 * @var Date
-	 */
-	protected $_startDate;
-	
-	/**
-	 * @return Date
-	 */
-	public function StartDate()
-	{
-		return $this->_startDate;
-	}
-	
-	/**
-	 * @var Date
-	 */
-	protected $_endDate;
-	
-	/**
-	 * @return Date
-	 */
-	public function EndDate()
-	{
-		return $this->_endDate;
-	}
 	
 	protected $_repeatOptions;
 	
@@ -137,10 +148,24 @@ class Reservation
 		return $this->_resources;
 	}
 	
+	protected $instances = array();
+	
+	/**
+	 * @return Reservation[]
+	 */
+	public function Instances()
+	{
+		return $this->instances;
+	}
+	
+	/**
+	 * @var Date
+	 */
+	private $currentInstanceDate;
+	
 	public function __construct()
 	{
-		$this->_repeatOptions = new NoRepetion();
-		$this->_referenceNumber = uniqid();
+		$this->_repeatOptions = new NoRepetion();		
 	}
 	
 	/**
@@ -160,12 +185,12 @@ class Reservation
 	}
 
 	/**
-	 * @param DateRange $duration
+	 * @param DateRange $reservationDate
 	 */
-	public function UpdateDuration(DateRange $duration)
+	public function UpdateDuration(DateRange $reservationDate)
 	{
-		$this->_startDate = $duration->GetBegin()->ToUtc();
-		$this->_endDate = $duration->GetEnd()->ToUtc();
+		$this->currentInstanceDate = $reservationDate->GetBegin();
+		$this->AddInstance($reservationDate);
 	}
 	
 	/**
@@ -174,7 +199,17 @@ class Reservation
 	public function Repeats(IRepeatOptions $repeatOptions)
 	{
 		$this->_repeatOptions = $repeatOptions;
-		$this->_repeatedDates = $repeatOptions->GetDates();
+		
+		$dates = $repeatOptions->GetDates();
+		foreach ($dates as $date)
+		{
+			$this->AddInstance($date);
+		}
+	}
+	
+	private function AddInstance(DateRange $reservationDate)
+	{
+		$this->instances[$reservationDate->GetBegin()->Timestamp()] = new Reservation($this, $reservationDate);
 	}
 	
 	/**
@@ -184,16 +219,54 @@ class Reservation
 	{
 		$this->_resources[] = $resourceId;
 	}
+	
+	/**
+	 * @return bool
+	 */
+	public function IsRecurring()
+	{
+		return count($this->instances) > 1;
+	}
+	
+	/**
+	 * @param Date $startDate
+	 * @return Reservation
+	 */
+	public function GetInstance(Date $startDate)
+	{
+		return $this->instances[$startDate->Timestamp()];
+	}
+	
+	/**
+	 * @return Reservation
+	 */
+	public function CurrentInstance()
+	{
+		return $this->GetInstance($this->currentInstanceDate);
+	}
 }
 
-class ExistingReservation extends Reservation
+class ExistingReservation extends ReservationSeries
 {
+	private $_reservationId;
+	private $_seriesId;
+	
 	/**
 	 * @param string $referenceNumber
 	 */
 	public function SetReferenceNumber($referenceNumber)
 	{
 		$this->_referenceNumber = $referenceNumber;
+	}
+	
+	public function SetReservationId($reservationId)
+	{
+		$this->_reservationId = $reservationId;
+	}
+	
+	public function IsPartOfSeries($seriesId)
+	{
+		$this->_seriesId = $seriesId;
 	}
 }
 ?>

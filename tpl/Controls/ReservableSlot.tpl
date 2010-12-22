@@ -1,1 +1,1 @@
-<td colspan="{$slot->PeriodSpan()}" class="reservable clickres">&nbsp;</td>
+<td colspan="{$slot->PeriodSpan()}" class="reservable clickres slot">&nbsp;</td>

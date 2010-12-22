@@ -12,7 +12,7 @@ class FakeReservationRepository
 	
 	public static function GetReservationRows()
 	{
-		$row1 =  array(ColumnNames::RESERVATION_ID => 1, 
+		$row1 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 1, 
 					ColumnNames::RESERVATION_START => '2008-05-20 09:00:00',
 					ColumnNames::RESERVATION_END => '2008-05-20 15:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,
@@ -25,7 +25,7 @@ class FakeReservationRepository
 					ColumnNames::REPEAT_END => null
 					);
 					
-		$row2 =  array(ColumnNames::RESERVATION_ID => 1, 
+		$row2 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 1, 
 					ColumnNames::RESERVATION_START => '2008-05-20 09:00:00',
 					ColumnNames::RESERVATION_END => '2008-05-20 15:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,
@@ -39,7 +39,7 @@ class FakeReservationRepository
 					ColumnNames::REPEAT_END => null
 					);			
 					
-		$row3 =  array(ColumnNames::RESERVATION_ID => 2, 
+		$row3 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 2, 
 					ColumnNames::RESERVATION_START => '2008-05-22 06:00:00',
 					ColumnNames::RESERVATION_END => '2008-05-24 09:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,

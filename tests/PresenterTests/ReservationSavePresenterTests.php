@@ -102,7 +102,7 @@ class ReservationSavePresenterTests extends TestBase
 		
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
-		$reservation = $this->getMock('Reservation');
+		$reservation = $this->getMock('ReservationSeries');
 		
 		$this->persistenceFactory->expects($this->once())
 			->method('Create')
@@ -139,7 +139,8 @@ class ReservationSavePresenterTests extends TestBase
 	{
 		$action = $this->page->GetReservationAction();
 		
-		$reservation = $this->getMock('Reservation');
+		$reservation = $this->getMock('ReservationSeries');
+		$instance = new Reservation($reservation, NullDateRange::Instance());
 		$validationResult = new ReservationValidationResult();
 			
 		$this->validationFactory->expects($this->once())
@@ -170,6 +171,11 @@ class ReservationSavePresenterTests extends TestBase
 			->method('Notify')
 			->with($this->equalTo($reservation));
 
+		$reservation->expects($this->once())
+			->method('GetInstance')
+			->with($this->anything())
+			->will($this->returnValue($instance));
+			
 		$this->presenter->HandleReservation($reservation);
 		
 		$this->assertEquals(true, $this->page->saveSuccessful);
@@ -183,7 +189,7 @@ class ReservationSavePresenterTests extends TestBase
 		$errors = array($errorMessage1, $errorMessage2);
 		$action = $this->page->GetReservationAction();
 		
-		$reservation = $this->getMock('Reservation');
+		$reservation = new ReservationSeries();
 		$validationResult = new ReservationValidationResult(false, $errors);	
 		
 		$this->validationFactory->expects($this->once())

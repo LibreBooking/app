@@ -41,12 +41,7 @@ interface IReservationPage extends IPage
 	 * @param ScheduleResource $resource
 	 */
 	function SetReservationResource($resource);
-	
-	/**
-	 * @param $reservationAction string
-	 */
-	function SetReservationAction($reservationAction);
-	
+
 	/**
 	 * @param int $scheduleId
 	 */
@@ -103,6 +98,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 	 * @return string
 	 */
 	protected abstract function GetReservationHeaderKey();
+	
+	/**
+	 * @return string
+	 */
+	protected abstract function GetReservationAction();
 		
 	public function PageLoad()
 	{
@@ -110,6 +110,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('ReturnUrl', $this->GetLastPage());
 		$this->Set('RepeatEveryOptions', range(1, 20));
 		$this->Set('ReservationHeaderKey', $this->GetReservationHeaderKey());
+		$this->Set('ReservationAction', $this->GetReservationAction());
 		
 		$this->smarty->display($this->GetTemplateName());		
 	}
@@ -163,11 +164,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function SetRepeatTerminationDate($repeatTerminationDate)
 	{
 		$this->Set('RepeatTerminationDate', $repeatTerminationDate);
-	}
-
-	public function SetReservationAction($reservationAction)
-	{
-		$this->Set('ReservationAction', $reservationAction);
 	}
 }
 ?>

@@ -5,44 +5,34 @@ $(document).ready(function() {
 		var pattern = 'td[id^=' + resid + '|]';
 
 		$(this).qtip({
-			text: 'Loading...',
 			position: 
 			{
-			      my: 'top left',  
-			      at: 'bottom left',
+			      my: 'bottom left',  
+			      at: 'top left',
 			      target: $(this)
-			}
+			},
 
 			content:
 			{
-				text: 'something'
-//				ajax: {
-//			         url: 'respopup.php',
-//			         type: 'GET',
-//			         data: { id: resid },
-//			         dataType: 'html'
-//		      	}
+				text: 'Loading...',
+				ajax: 
+				{
+			         url: 'respopup.php',
+			         type: 'GET',
+			         data: { id: resid },
+			         dataType: 'html'
+		      	}
 			}
-
-
 		});
-//		$(this).qtip({
-//		   show: { delay:700 },
-//		   hide: 'mouseout',
-//		   position: { corner: { target: 'topLeft', tooltip: 'bottomLeft'}, adjust: {screen:true, y:-5} } ,
-//		   style: { padding: 10, name: 'cream' },
-//		   content: 
-//		   {
-//		      url: 'respopup.php',
-//		      data: { id: resid },
-//		      method: 'get'
-//	   	  }
-//		});
 		
 		$(this).hover(
 			function () { $(pattern).addClass('hilite'); }, 
 		    function () { $(pattern).removeClass('hilite'); }
 		);
+		
+		$(this).click(function() {
+			alert('redirect to resid' + resid);
+		});
 	});
 	
 	$('.clickres')
@@ -61,7 +51,6 @@ $(document).ready(function() {
 	$("div:not(#schedule_list)").click(function () {
 	 	$("#schedule_list").hide();
 	 });
-
   });
  
   function ShowScheduleList()

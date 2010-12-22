@@ -17,6 +17,7 @@ $tests = array(
 'Domain/Reservation/ReservationViewRepositoryTests.php',
 'Domain/Reservation/AdminEmailNotificationTests.php',
 'Domain/Reservation/OwnerEmailNotificationTests.php',
+'Domain/Reservation/ReservationDateTimeRuleTests.php',
 'Domain/PermissionValidationRuleTests.php',
 'Domain/ResourceAvailabilityRuleTests.php',
 'Domain/AddReservationValidationServiceTests.php',

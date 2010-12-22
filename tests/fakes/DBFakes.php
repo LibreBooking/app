@@ -8,11 +8,15 @@ class FakeDatabase extends Database
 	public $_LastCommand;
 	public $_Commands = array();
 	public $_ExpectedInsertId = 0;
+	public $_ExpectedInsertIds = array();
 	private $readcount; 
+	private $executeInsertCount; 
 
 	public function __construct()
 	{
 		$this->readcount = 0;
+		$this->executeInsertCount = 0;
+		
 		$this->reader[0] = new FakeReader(array());
 	}
 
@@ -49,7 +53,15 @@ class FakeDatabase extends Database
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
-		return $this->_ExpectedInsertId;
+		
+		$expectedId =  $this->_ExpectedInsertId;
+		if (isset($this->_ExpectedInsertIds[$this->executeInsertCount]))
+		{
+			$expectedId = $this->_ExpectedInsertIds[$this->executeInsertCount];
+		}
+		
+		$this->executeInsertCount++;
+		return $expectedId;
 	}
 
 	private function _AddCommand(&$command)

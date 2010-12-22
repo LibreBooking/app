@@ -43,6 +43,11 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		return 'CreateReservationHeading';
 	}
 	
+	protected function GetReservationAction()
+	{
+		return ReservationAction::Create;
+	}
+	
 	public function GetRequestedResourceId()
 	{
 		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);

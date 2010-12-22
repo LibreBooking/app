@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
+// TODO: Need a way to unit test this
 class ReservationCreatedEmailAdmin extends EmailMessage
 {
 	/**
@@ -14,9 +15,9 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	private $reservationOwner;
 	
 	/**
-	 * @var Reservation
+	 * @var ReservationSeries
 	 */
-	private $reservation;
+	private $reservationSeries;
 	
 	/**
 	 * @var IResource
@@ -26,16 +27,16 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	/**
 	 * @param UserDto $adminDto
 	 * @param User $reservationOwner
-	 * @param Reservation $reservation
+	 * @param ReservationSeries $reservationSeries
 	 * @param IResource $primaryResource
 	 */
-	public function __construct($adminDto, User $reservationOwner, Reservation $reservation, IResource $primaryResource)
+	public function __construct($adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource)
 	{
 		parent::__construct($adminDto->Language());
 		
 		$this->adminDto = $adminDto;
 		$this->reservationOwner = $reservationOwner;
-		$this->reservation = $reservation;
+		$this->reservationSeries = $reservationSeries;
 		$this->resource = $primaryResource;
 		$this->timezone = $adminDto->Timezone();
 	}
@@ -72,19 +73,21 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	{	
 		$this->Set('UserName', $this->reservationOwner->FullName());
 		
-		$this->Set('StartDate', $this->reservation->StartDate()->ToTimezone($this->timezone));
-		$this->Set('EndDate', $this->reservation->EndDate()->ToTimezone($this->timezone));
+		$currentInstance = $this->reservationSeries->CurrentInstance();
 		
-		$this->Set('Title', $this->reservation->Title());
-		$this->Set('Description', $this->reservation->Description());
+		$this->Set('StartDate', $currentInstance->StartDate()->ToTimezone($this->timezone));
+		$this->Set('EndDate', $currentInstance->EndDate()->ToTimezone($this->timezone));
+		
+		$this->Set('Title', $this->reservationSeries->Title());
+		$this->Set('Description', $this->reservationSeries->Description());
 		
 		$repeatDates = array();
-		foreach ($this->reservation->RepeatedDates() as $repeated)
+		foreach ($this->reservationSeries->Instances() as $repeated)
 		{
-			$repeatDates[] = $repeated->GetBegin()->ToTimezone($this->timezone);
+			$repeatDates[] = $repeated->StartDate->ToTimezone($this->timezone);
 		}
 		$this->Set('RepeatDates', $repeatDates);
-		$this->Set('ReservationUrl', "reservation.php?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $this->reservation->ReferenceNumber());
+		$this->Set('ReservationUrl', "reservation.php?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $currentInstance->ReferenceNumber());
 	}
 }
 ?>

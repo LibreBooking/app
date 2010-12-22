@@ -1,1 +1,1 @@
-<td colspan="{$slot->PeriodSpan()}" class="restricted">&nbsp;</td>
+<td colspan="{$slot->PeriodSpan()}" class="restricted slot">&nbsp;</td>

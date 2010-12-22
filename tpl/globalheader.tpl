@@ -32,12 +32,8 @@
 			<div id="nav-main" class="menubar menubarnav">
 				<div class="bd">
 					<ul class="first">
-						<li class="menubaritem" onmouseover="mopen('submenu1')"
-							onmouseout="mclosetimer()"><a href="/dashboard.php">Dashboard</a> <!--<div class="menu" id="submenu1" onmouseover="mcancelclosetimer()">
-								         	<ul>
-												<li class="menuitem"><a href="/a/">Subitem A</a></li>
-											</ul>
-								      	</div>--></li>
+						<li class="menubaritem" onmouseover="mopen('submenu1')" onmouseout="mclosetimer()">
+							<a href="dashboard.php">Dashboard</a></li>
 						<li class="menubaritem" onmouseover="mopen('submenu2')"
 							onmouseout="mclosetimer()"><a href="/user-list.php">Users</a>
 						<div class="menu" id="submenu2" onmouseover="mcancelclosetimer()">
@@ -75,7 +71,7 @@
 						</div>
 						</li>
 						<li class="menubaritem" onmouseover="mopen('submenu5')"
-							onmouseout="mclosetimer()"><a href="/calendar.php">Calendar</a>
+							onmouseout="mclosetimer()"><a href="sched.php">Calendar</a>
 						<div class="menu" id="submenu5" onmouseover="mcancelclosetimer()">
 						<ul>
 							<li class="menuitem"><a href="/calendar.php?uid=1">My calendar</a></li>

@@ -36,7 +36,7 @@
 <div style="height:10px">&nbsp;</div>
 
 {foreach from=$BoundDates item=date}
-<table class="reservations" border="1" cellpadding="0">
+<table class="reservations" border="1" cellpadding="0" width="100%">
 	<tr>
 		<td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
 		{foreach from=$Periods item=period}

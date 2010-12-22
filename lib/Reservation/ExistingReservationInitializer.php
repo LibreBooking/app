@@ -43,7 +43,6 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		$this->page->SetDescription($this->reservationView->Description);
 		$this->page->SetReferenceNumber($this->reservationView->ReferenceNumber);
 		$this->page->SetReservationId($this->reservationView->ReservationId);
-		$this->page->SetReservationAction(ReservationAction::Update);
 		
 		$this->page->SetRepeatType($this->reservationView->RepeatType);
 		$this->page->SetRepeatInterval($this->reservationView->RepeatInterval);

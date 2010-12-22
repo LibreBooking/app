@@ -598,13 +598,11 @@ CREATE TABLE `reservation_statuses` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `reservations`
+-- Table structure for table `reservation_series`
 --
-DROP TABLE IF EXISTS `reservations`;
-CREATE TABLE  `reservations` (
-  `reservation_id` mediumint(8) unsigned NOT NULL auto_increment,
-  `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
+DROP TABLE IF EXISTS `reservation_series`;
+CREATE TABLE  `reservation_series` (
+  `series_id` mediumint(8) unsigned NOT NULL auto_increment,
   `date_created` datetime NOT NULL,
   `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `title` varchar(85) NOT NULL,
@@ -616,19 +614,34 @@ CREATE TABLE  `reservations` (
   `total_cost` decimal(7,2) default NULL,
   `repeat_type` varchar(10) default NULL,
   `repeat_options` varchar(50) default NULL,
-  `reference_number` varchar(50) NOT NULL,
-  `schedule_id` smallint(5) unsigned NOT NULL,
-  PRIMARY KEY  (`reservation_id`),
+  `schedule_id` smallint(5) unsigned NOT NULL, 
+  PRIMARY KEY  (`series_id`),
   KEY `type_id` (`type_id`),
   KEY `status_id` (`status_id`),
-  KEY `start_date` (`start_date`),
-  KEY `end_date` (`end_date`),
-  KEY `reference_number` (`reference_number`),
   KEY `reservations_schedule` (`schedule_id`),
   CONSTRAINT `reservations_type` FOREIGN KEY (`type_id`) REFERENCES `reservation_types` (`type_id`) ON UPDATE CASCADE,
   CONSTRAINT `reservations_status` FOREIGN KEY (`status_id`) REFERENCES `reservation_statuses` (`status_id`) ON UPDATE CASCADE,
   CONSTRAINT `reservations_schedule` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`schedule_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `reservation_instances`
+--
+
+DROP TABLE IF EXISTS `reservation_instances`;
+CREATE TABLE  `reservation_instances` (
+  `reservation_instance_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime NOT NULL,
+  `reference_number` varchar(50) NOT NULL,
+  `series_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY  (`reservation_instance_id`),
+  KEY `start_date` (`start_date`),
+  KEY `end_date` (`end_date`),
+  KEY `reference_number` (`reference_number`),
+  KEY `series_id` (`series_id`),
+  CONSTRAINT `reservations_series` FOREIGN KEY (`series_id`) REFERENCES `reservation_series` (`series_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `reservation_users`
@@ -636,16 +649,16 @@ CREATE TABLE  `reservations` (
 
 DROP TABLE IF EXISTS `reservation_users`;
 CREATE TABLE `reservation_users` (
-  `reservation_id` mediumint(8) unsigned NOT NULL,
+  `series_id` mediumint(8) unsigned NOT NULL,
   `user_id` mediumint(8) unsigned NOT NULL,
   `reservation_user_level` tinyint(2) unsigned NOT NULL,
-  PRIMARY KEY  (`reservation_id`,`user_id`),
-  KEY `reservation_id` (`reservation_id`),
+  PRIMARY KEY  (`series_id`,`user_id`),
+  KEY `series_id` (`series_id`),
   KEY `user_id` (`user_id`),
   KEY `reservation_user_level` (`reservation_user_level`),
-  FOREIGN KEY (`reservation_id`) REFERENCES `reservations` (`reservation_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`series_id`) REFERENCES `reservation_series` (`series_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 	
 --
 -- Table structure for table `reservation_time_blocks`
@@ -653,12 +666,12 @@ CREATE TABLE `reservation_users` (
 
 DROP TABLE IF EXISTS `reservation_time_blocks`;
 CREATE TABLE `reservation_time_blocks` (
- `reservation_id` mediumint(8) unsigned NOT NULL,
+ `series_id` mediumint(8) unsigned NOT NULL,
  `block_id` tinyint(2) unsigned NOT NULL,
- PRIMARY KEY (`reservation_id`, `block_id`),
- INDEX (`reservation_id`),
- FOREIGN KEY (`reservation_id`) 
-	REFERENCES reservations(`reservation_id`)
+ PRIMARY KEY (`series_id`, `block_id`),
+ INDEX (`series_id`),
+ FOREIGN KEY (`series_id`) 
+	REFERENCES reservation_series(`series_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`block_id`),
  FOREIGN KEY (`block_id`) 
@@ -672,36 +685,19 @@ CREATE TABLE `reservation_time_blocks` (
 
 DROP TABLE IF EXISTS `reservation_resources`;
 CREATE TABLE `reservation_resources` (
- `reservation_id` mediumint(8) unsigned NOT NULL,
+ `series_id` mediumint(8) unsigned NOT NULL,
  `resource_id` smallint(5) unsigned NOT NULL,
  `resource_level_id` tinyint(2) unsigned NOT NULL,
- PRIMARY KEY (`reservation_id`, `resource_id`),
+ PRIMARY KEY (`series_id`, `resource_id`),
  INDEX (`resource_id`),
  FOREIGN KEY (`resource_id`) 
 	REFERENCES resources(`resource_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`reservation_id`),
- FOREIGN KEY (`reservation_id`) 
-	REFERENCES reservations(`reservation_id`)
+ INDEX (`series_id`),
+ FOREIGN KEY (`series_id`) 
+	REFERENCES reservation_series(`series_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `reservation_repeat_dates`
---
-
-CREATE TABLE  `reservation_repeat_dates` (
-  `reservation_id` mediumint(8) unsigned NOT NULL,
-  `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
-  KEY `reservation_id` (`reservation_id`),
-  KEY `start_date` (`start_date`),
-  KEY `end_date` (`end_date`),
-  CONSTRAINT `FK_reservation_repeat_dates_reservations` 
-  FOREIGN KEY (`reservation_id`) 
-	REFERENCES `reservations` (`reservation_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `user_email_preferences`

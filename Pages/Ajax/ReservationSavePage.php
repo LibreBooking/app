@@ -28,6 +28,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function PageLoad()
 	{
 		$reservation = $this->_presenter->BuildReservation();
+		$this->_presenter->HandleReservation($reservation);
 
 		// do we want a save/update/deleted successful?
 		if ($this->_reservationSavedSuccessfully)

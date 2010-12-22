@@ -15,7 +15,7 @@ class AddReservationValidationServiceTests extends TestBase
 	
 	public function testValidatesAgainstAllRules()
 	{
-		$reservation = new Reservation();
+		$reservation = new ReservationSeries();
 		$validResult = new ReservationRuleResult(true);
 		
 		$rule1 = $this->getMock('IReservationValidationRule');
@@ -49,7 +49,7 @@ class AddReservationValidationServiceTests extends TestBase
 	
 	public function testValidatesStopsAfterFirstBrokenRule()
 	{
-		$reservation = new Reservation();
+		$reservation = new ReservationSeries();
 		
 		$rule1 = $this->getMock('IReservationValidationRule');
 		$rule2 = $this->getMock('IReservationValidationRule');

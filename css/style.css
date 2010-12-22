@@ -417,7 +417,7 @@ tr.admin-lastline {
 .menubar>.bd>ul:after{content:".";display:block;clear:both;visibility:hidden;height:0;line-height:0}
 .menubaritem{float:left}
 #nav-access{display:none}
-#doc{width:900px;margin:auto;text-align:left;position:relative;z-index:1}
+#doc{min-width:900px;margin:auto;text-align:left;position:relative;z-index:1}
 #doc:after{content:".";display:block;height:0;clear:both;visibility:hidden}
 #wrapper{min-width:900px}
 
@@ -450,7 +450,7 @@ tr.admin-lastline {
 
 #header {
         width: 900px;
-        margin:0 15px;
+        margin:0 auto;
         background: url(../img/header-bg.png) bottom left no-repeat;
         height: 56px;
 }
@@ -556,4 +556,10 @@ textarea.input-areashow {
     border: 1px solid #e5e5e5;
     background: #fbfbfb;
     color: #777;
+}
+
+.slot
+{
+	min-width:1px;
+	max-width:1px;
 }
