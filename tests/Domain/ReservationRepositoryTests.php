@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-require_once(ROOT_DIR . 'lib/Schedule/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class ReservationRepositoryTests extends TestBase
 {

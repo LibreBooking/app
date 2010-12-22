@@ -1,6 +1,6 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
-require_once(ROOT_DIR . 'lib/Reservation/ReservationInitializerBase.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationInitializerBase.php');
 
 class NewReservationInitializer extends ReservationInitializerBase
 {	

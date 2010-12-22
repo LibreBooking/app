@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Domain/namespace.php');
-require_once(ROOT_DIR . 'lib/Schedule/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class ScheduleLayoutTests extends TestBase
 {

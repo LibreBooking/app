@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Presenters/LoginPresenter.php');
-require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 require_once(ROOT_DIR . 'Pages/LoginPage.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 

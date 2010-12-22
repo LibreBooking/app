@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
-require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class NewReservationPresenterTests extends TestBase
 {

@@ -2,10 +2,10 @@
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
-require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
-require_once(ROOT_DIR . 'lib/Reservation/Persistence/namespace.php');
-require_once(ROOT_DIR . 'lib/Reservation/Validation/namespace.php');
-require_once(ROOT_DIR . 'lib/Reservation/Notification/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 

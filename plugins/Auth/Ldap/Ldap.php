@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 require_once(ROOT_DIR . 'plugins/Auth/Ldap/ldap.config.php');
 
 /**

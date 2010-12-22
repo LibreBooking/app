@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Pages/Page.php');
-require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
 interface IForgotPwdPage extends IPage
 {

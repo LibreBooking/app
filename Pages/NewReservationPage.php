@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
-require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
 
 interface INewReservationPage extends IReservationPage

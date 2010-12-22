@@ -34,7 +34,7 @@ class PluginManager
 	 */
 	public function LoadAuth()
 	{
-		require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+		require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 		
 		$authPlugin = Configuration::Instance()->GetKey(ConfigKeys::PLUGIN_AUTH);
 		$pluginFile = ROOT_DIR . "plugins/Auth/$authPlugin/$authPlugin.php";

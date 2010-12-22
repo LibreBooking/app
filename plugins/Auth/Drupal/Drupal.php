@@ -1,6 +1,6 @@
 <?php
 require_once('/Drupal.config.php');
-require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
 
 class Drupal implements IAuthorization

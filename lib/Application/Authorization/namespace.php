@@ -1,13 +1,13 @@
 <?php
-require_once(ROOT_DIR . 'lib/Authorization/IAuthorization.php');
-require_once(ROOT_DIR . 'lib/Authorization/Authorization.php');
-require_once(ROOT_DIR . 'lib/Authorization/PasswordEncryption.php');
-require_once(ROOT_DIR . 'lib/Authorization/Password.php');
-require_once(ROOT_DIR . 'lib/Authorization/LoginCookie.php');
-require_once(ROOT_DIR . 'lib/Authorization/IRegistration.php');
-require_once(ROOT_DIR . 'lib/Authorization/Registration.php');
-require_once(ROOT_DIR . 'lib/Authorization/IRegistrationMini.php');
-require_once(ROOT_DIR . 'lib/Authorization/RegistrationMini.php');
-require_once(ROOT_DIR . 'lib/Authorization/RegistrationAdmin.php');
-require_once(ROOT_DIR . 'lib/Authorization/Reporting.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/IAuthorization.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/Authorization.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/PasswordEncryption.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/Password.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/LoginCookie.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/IRegistration.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/Registration.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/IRegistrationMini.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/RegistrationMini.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/RegistrationAdmin.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/Reporting.php');
 ?>

@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Presenters/ReservationSavePresenter.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
-require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class ReservationSavePresenterTests extends TestBase
 {

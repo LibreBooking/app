@@ -2,7 +2,7 @@
 require_once(ROOT_DIR . 'Presenters/RegistrationPresenter.php');
 require_once(ROOT_DIR . 'Pages/RegistrationPage.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
-require_once(ROOT_DIR . 'lib/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
 class RegisterPresenterTests extends TestBase
 {

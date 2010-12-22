@@ -1,5 +1,5 @@
 <?php 
-require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 
 class NewReservationPreconditionServiceTests extends TestBase
