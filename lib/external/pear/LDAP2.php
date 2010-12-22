@@ -20,7 +20,7 @@
 /**
 * Package includes.
 */
-define('PEAR_ROOT', ROOT_DIR . 'lib/pear/');
+define('PEAR_ROOT', ROOT_DIR . 'lib/external/pear/');
 require_once PEAR_ROOT . 'PEAR.php';
 require_once PEAR_ROOT . 'LDAP2/RootDSE.php';
 require_once PEAR_ROOT . 'LDAP2/Schema.php';

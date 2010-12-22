@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Domain/namespace.php');
+require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Schedule/namespace.php');
 
 class ScheduleBindingTests extends TestBase

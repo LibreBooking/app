@@ -6,8 +6,8 @@ require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/Persistence/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/Validation/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/Notification/namespace.php');
-require_once(ROOT_DIR . 'lib/Domain/namespace.php');
-require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'Domain/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class ReservationSavePresenter
 {

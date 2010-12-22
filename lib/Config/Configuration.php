@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/pear/Config.php');
+require_once(ROOT_DIR . 'lib/external/pear/Config.php');
 
 interface IConfiguration extends IConfigurationFile
 {

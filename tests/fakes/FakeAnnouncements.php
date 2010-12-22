@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Domain/Announcements.php');
+require_once(ROOT_DIR . 'Domain/Announcements.php');
 
 class FakeAnnouncements implements IAnnouncements
 {

@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Domain/Resource.php');
+require_once(ROOT_DIR . 'Domain/Resource.php');
 
 interface IResourceRepository
 {

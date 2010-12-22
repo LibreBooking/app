@@ -1,7 +1,7 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
-require_once(ROOT_DIR . 'lib/Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class ReservationPopupPage extends Page implements IReservationPopupPage
 {

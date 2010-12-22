@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Presenters/DashboardPresenterBase.php');
-require_once(ROOT_DIR . 'lib/Domain/Announcements.php');
+require_once(ROOT_DIR . 'Domain/Announcements.php');
 
 class AnnouncementPresenter extends DashboardPresenterBase
 {

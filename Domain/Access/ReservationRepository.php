@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Domain/ReservationFactory.php');
+require_once(ROOT_DIR . 'Domain/ReservationFactory.php');
 
 class ReservationRepository implements IReservationRepository
 {

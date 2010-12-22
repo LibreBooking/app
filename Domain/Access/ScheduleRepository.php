@@ -1,6 +1,6 @@
 <?php
 
-require_once(ROOT_DIR . 'lib/Domain/ScheduleLayout.php');
+require_once(ROOT_DIR . 'Domain/ScheduleLayout.php');
 
 interface IScheduleRepository
 {

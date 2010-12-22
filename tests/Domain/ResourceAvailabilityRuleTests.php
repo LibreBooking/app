@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Domain/namespace.php');
+require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Reservation/namespace.php');
 
 class ResourceAvailabilityRuleTests extends TestBase
