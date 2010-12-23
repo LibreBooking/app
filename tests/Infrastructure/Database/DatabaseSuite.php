@@ -1,16 +1,16 @@
 <?php 
 require_once(ROOT_DIR . 'tests/AllTests.php');
 
-class PresenterSuite
+class DatabaseSuite
 {
 	public static function suite()
     {
-    	return TestHelper::GetSuite('tests/PresenterTests', array('PresenterSuite', 'IsIgnored'));
+    	return TestHelper::GetSuite('tests/Infrastructure/Database', array('DatabaseSuite', "IsIgnored"));
     }
     
     public static function IsIgnored($fileName)
     {
-    	return strpos($fileName, 'Dashboard') == 0;
+    	return strstr($fileName, 'Mdb2');
     }
 }
 ?>

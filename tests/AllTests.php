@@ -9,6 +9,7 @@ require_once(ROOT_DIR . 'tests/TestBase.php');
 require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 
 require_once(ROOT_DIR . 'tests/PresenterTests/PresenterSuite.php');
+require_once(ROOT_DIR . 'tests/Infrastructure/Database/DatabaseSuite.php');
 
 class AllTests
 {
@@ -17,6 +18,7 @@ class AllTests
         $suite = new PHPUnit_Framework_TestSuite();
  
         $suite->addTest(PresenterSuite::suite());
+        $suite->addTest(DatabaseSuite::suite());
 
         return $suite;
     }
@@ -24,24 +26,22 @@ class AllTests
 
 class TestHelper
 {
-	public static function GetSuite($relativePath)
+	public static function GetSuite($relativePath, $ignoreCallback = array())
 	{
 		$testDirectory = ROOT_DIR . $relativePath;
-    	$tests = TestHelper::GetTests($testDirectory);
+    	$tests = TestHelper::GetTests($testDirectory, $ignoreCallback);
         
-    	foreach($tests as $test)
-    	{
-    		require_once("$testDirectory/" . $test->FileName);
-    	}
-    	
     	$suite = new PHPUnit_Framework_TestSuite();
  
-       	$suite->addTestSuite($test->TestName);
-
+    	foreach($tests as $test)
+    	{
+    		$test->AddToSuite($suite, $testDirectory);	
+    	}
+  
         return $suite;
 	}
 	
-	public static function GetTests($directory)
+	public static function GetTests($directory, $ignoreCallback)
 	{
 		$tests = array();
 		
@@ -49,7 +49,7 @@ class TestHelper
 		{
 	        while (($file = readdir($dh)) !== false) 
 	        {
-	        	if (self::endsWith($file, "Tests.php"))
+	        	if (!self::Ignored($file, $ignoreCallback) && self::endsWith($file, "Tests.php"))
 	        	{
 	       			 $tests[] = new UnitTest($file);
 	        	}
@@ -60,6 +60,14 @@ class TestHelper
 	    return $tests;
 	}
 	
+	private static function Ignored($fileName, $ignoreCallback)
+	{
+		if (empty($ignoreCallback))
+		{
+			return false;
+		}
+		return call_user_func($ignoreCallback, $fileName);
+	}
 	
 	private static function endsWith($haystack, $needle)
 	{
@@ -81,6 +89,12 @@ class UnitTest
 		
 		$pathinfo = pathinfo($fileName);
 		$this->TestName = $pathinfo['filename'];
+	}
+	
+	public function AddToSuite($suite, $testDirectory)
+	{
+		require_once("$testDirectory/" . $this->FileName);
+		$suite->addTestSuite($this->TestName);
 	}
 }
 ?>

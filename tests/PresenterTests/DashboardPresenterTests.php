@@ -24,7 +24,6 @@ class DashboardPresenterTests extends TestBase
 		
 		Date::_SetNow(null);
 	}
-
 }
 
 class FakeDashboardPage implements IDashboardPage 
