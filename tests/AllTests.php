@@ -10,6 +10,8 @@ require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 
 require_once(ROOT_DIR . 'tests/PresenterTests/PresenterSuite.php');
 require_once(ROOT_DIR . 'tests/Infrastructure/Database/DatabaseSuite.php');
+require_once(ROOT_DIR . 'tests/Infrastructure/Common/CommonSuite.php');
+require_once(ROOT_DIR . 'tests/Application/Authorization/AuthorizationSuite.php');
 
 class AllTests
 {
@@ -18,6 +20,7 @@ class AllTests
         $suite = new PHPUnit_Framework_TestSuite();
  
         $suite->addTest(PresenterSuite::suite());
+        $suite->addTest(DatabaseSuite::suite());
         $suite->addTest(DatabaseSuite::suite());
 
         return $suite;
