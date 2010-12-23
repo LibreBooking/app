@@ -12,6 +12,7 @@ require_once(ROOT_DIR . 'tests/PresenterTests/PresenterSuite.php');
 require_once(ROOT_DIR . 'tests/Infrastructure/Database/DatabaseSuite.php');
 require_once(ROOT_DIR . 'tests/Infrastructure/Common/CommonSuite.php');
 require_once(ROOT_DIR . 'tests/Application/Authorization/AuthorizationSuite.php');
+require_once(ROOT_DIR . 'tests/Application/Schedule/ScheduleSuite.php');
 
 class AllTests
 {
@@ -21,7 +22,9 @@ class AllTests
  
         $suite->addTest(PresenterSuite::suite());
         $suite->addTest(DatabaseSuite::suite());
-        $suite->addTest(DatabaseSuite::suite());
+        $suite->addTest(CommonSuite::suite());
+        $suite->addTest(AuthorizationSuite::suite());
+        $suite->addTest(ScheduleSuite::suite());
 
         return $suite;
     }
