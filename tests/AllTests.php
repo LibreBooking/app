@@ -31,7 +31,8 @@ class AllTests
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite();
-                
+
+        //TODO: Dynamically add all suites under the test directory and subdirectories
         $suite->addTest(Application_Authorization_Suite::suite());
         $suite->addTest(Application_Schedule_Suite::suite());
         $suite->addTest(Application_Reservation_Suite::suite());
