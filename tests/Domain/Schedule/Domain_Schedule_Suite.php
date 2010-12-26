@@ -1,16 +1,16 @@
 <?php 
 require_once(ROOT_DIR . 'tests/AllTests.php');
 
-class DatabaseSuite
+class Domain_Schedule_Suite
 {
 	public static function suite()
     {
-    	return TestHelper::GetSuite('tests/Infrastructure/Database', array('DatabaseSuite', "IsIgnored"));
+    	return TestHelper::GetSuite('tests/Domain/Schedule', array(__CLASS__, "IsIgnored"));
     }
     
     public static function IsIgnored($fileName)
     {
-    	return strstr($fileName, 'Mdb2');
+    	return false;
     }
 }
 ?>
