@@ -5,7 +5,7 @@ class Infrastructure_Database_Suite
 {
 	public static function suite()
     {
-    	return TestHelper::GetSuite('tests/Infrastructure/Database', array('DatabaseSuite', "IsIgnored"));
+    	return TestHelper::GetSuite('tests/Infrastructure/Database', array(__CLASS__, "IsIgnored"));
     }
     
     public static function IsIgnored($fileName)

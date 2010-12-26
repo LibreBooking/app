@@ -18,21 +18,18 @@ require_once(ROOT_DIR . 'tests/Domain/Resource/Domain_Resource_Suite.php');
 require_once(ROOT_DIR . 'tests/Domain/Schedule/Domain_Schedule_Suite.php');
 require_once(ROOT_DIR . 'tests/Domain/User/Domain_User_Suite.php');
 
-require_once(ROOT_DIR . 'tests/Infrastructure/Database/Infrastructure_Database_Suite.php');
 require_once(ROOT_DIR . 'tests/Infrastructure/Common/Infrastructure_Common_Suite.php');
+require_once(ROOT_DIR . 'tests/Infrastructure/Config/Infrastructure_Config_Suite.php');
+require_once(ROOT_DIR . 'tests/Infrastructure/Database/Infrastructure_Database_Suite.php');
 
-require_once(ROOT_DIR . 'tests/Presenters/PresenterSuite.php');
+require_once(ROOT_DIR . 'tests/Presenters/Presenters_Suite.php');
 
 class AllTests
 {
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite();
- 
-        $suite->addTest(PresenterSuite::suite());
-        $suite->addTest(DatabaseSuite::suite());
-        $suite->addTest(CommonSuite::suite());
-        
+                
         $suite->addTest(Application_Authorization_Suite::suite());
         $suite->addTest(Application_Schedule_Suite::suite());
         $suite->addTest(Application_Reservation_Suite::suite());
@@ -42,6 +39,12 @@ class AllTests
         $suite->addTest(Domain_Resource_Suite::suite());
         $suite->addTest(Domain_Schedule_Suite::suite());
         $suite->addTest(Domain_User_Suite::suite());
+        
+        $suite->addTest(Infrastructure_Common_Suite::suite());
+        $suite->addTest(Infrastructure_Config_Suite::suite());
+        $suite->addTest(Infrastructure_Database_Suite::suite());
+        
+        $suite->addTest(Presenters_Suite::suite());
 
         return $suite;
     }
