@@ -22,6 +22,8 @@ require_once(ROOT_DIR . 'tests/Infrastructure/Common/Infrastructure_Common_Suite
 require_once(ROOT_DIR . 'tests/Infrastructure/Config/Infrastructure_Config_Suite.php');
 require_once(ROOT_DIR . 'tests/Infrastructure/Database/Infrastructure_Database_Suite.php');
 
+require_once(ROOT_DIR . 'tests/Plugins/Auth/Ldap/Plugins_Auth_Ldap_Suite.php');
+
 require_once(ROOT_DIR . 'tests/Presenters/Presenters_Suite.php');
 
 class AllTests
@@ -43,6 +45,8 @@ class AllTests
         $suite->addTest(Infrastructure_Common_Suite::suite());
         $suite->addTest(Infrastructure_Config_Suite::suite());
         $suite->addTest(Infrastructure_Database_Suite::suite());
+        
+        $suite->addTest(Plugins_Auth_Ldap_Suite::suite());
         
         $suite->addTest(Presenters_Suite::suite());
 
