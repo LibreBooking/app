@@ -211,7 +211,7 @@ class ReservationRepositoryTests extends TestBase
 	
 	public function testCanAddAdditionalResources()
 	{
-		$reservationId = 999;
+		$seriesId = 999;
 		$id1 = 1;
 		$id2 = 2;
 		

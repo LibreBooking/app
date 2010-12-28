@@ -205,6 +205,11 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		return $this->GetForm(FormKeys::END_REPEAT_DATE);
 	}
+	
+	public function GetSeriesUpdateScope()
+	{
+		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
+	}
 }
 
 interface IReservationSavePage
@@ -269,6 +274,11 @@ interface IReservationSavePage
 	 * @return IRepeatOptions
 	 */
 	public function GetRepeatOptions($initialReservationDates);
+	
+	/**
+	 * @return SeriesUpdateScope
+	 */
+	public function GetSeriesUpdateScope();
 	
 	/**
 	 * @param bool $succeeded

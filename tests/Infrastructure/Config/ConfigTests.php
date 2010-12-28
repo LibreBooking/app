@@ -12,7 +12,7 @@ class ConfigTests extends TestBase
 	
 	function testConfigLoadsAllValues() 
 	{
-		Configuration::Instance()->Register(dirname(__FILE__) . '/data/test_config.php', Configuration::DEFAULT_CONFIG_ID, true);
+		Configuration::Instance()->Register(ROOT_DIR . 'tests/data/test_config.php', Configuration::DEFAULT_CONFIG_ID, true);
 		
 		$this->assertEquals('US/Central', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->assertEquals(true, Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter()));
@@ -23,8 +23,8 @@ class ConfigTests extends TestBase
 	
 	function testRegistersMultipleConfigFiles()
 	{
-		Configuration::Instance()->Register(dirname(__FILE__) . '/data/test_config.php', Configuration::DEFAULT_CONFIG_ID, true);
-		Configuration::Instance()->Register(dirname(__FILE__) . '/data/test_plugin_config.php', 'LDAP');
+		Configuration::Instance()->Register(ROOT_DIR . 'tests/data/test_config.php', Configuration::DEFAULT_CONFIG_ID, true);
+		Configuration::Instance()->Register(ROOT_DIR . 'tests/data/test_plugin_config.php', 'LDAP');
 		
 		$this->assertEquals('US/Central', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->assertEquals('value1', Configuration::Instance()->File('LDAP')->GetKey('key'));

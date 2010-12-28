@@ -90,6 +90,9 @@ class ReservationSavePresenter
 			$reservationSeries->AddResource($resourceId);
 		}
 		
+		$seriesUpdateScope = $this->_page->GetSeriesUpdateScope();
+		$reservationSeries->ApplyChangesTo($seriesUpdateScope);
+		
 		return $reservationSeries;
 	}
 	

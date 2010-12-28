@@ -221,6 +221,14 @@ class ReservationSeries
 	}
 	
 	/**
+	 * @param SeriesUpdateScope $seriesUpdateScope
+	 */
+	public function ApplyChangesTo($seriesUpdateScope)
+	{
+		throw new Exception('not implemented');
+	}
+	
+	/**
 	 * @return bool
 	 */
 	public function IsRecurring()

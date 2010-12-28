@@ -225,7 +225,7 @@ class RepeatOptionsTests extends TestBase
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create('daily', 1, null, null, null, null);
 		
-		$this->assertType('DailyRepeat', $options);
+		$this->assertInstanceOf('DailyRepeat', $options);
 	}
 	
 	public function testFactoryCreatesWeeklyRepeatOptions()
@@ -233,7 +233,7 @@ class RepeatOptionsTests extends TestBase
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create('weekly', 1, null, null, array(), null);
 		
-		$this->assertType('WeeklyRepeat', $options);
+		$this->assertInstanceOf('WeeklyRepeat', $options);
 	}
 	
 	public function testFactoryCreatesDayOfMonthRepeatOptions()
@@ -242,7 +242,7 @@ class RepeatOptionsTests extends TestBase
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create('monthly', 1, null, $intial, null, 'dayOfMonth');
 		
-		$this->assertType('DayOfMonthRepeat', $options);
+		$this->assertInstanceOf('DayOfMonthRepeat', $options);
 	}
 	
 	public function testFactoryCreatesWeekDayOfMonthRepeatOptions()
@@ -251,7 +251,7 @@ class RepeatOptionsTests extends TestBase
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create('monthly', 1, null, $intial, null, null);
 		
-		$this->assertType('WeekDayOfMonthRepeat', $options);
+		$this->assertInstanceOf('WeekDayOfMonthRepeat', $options);
 	}
 	
 	public function testFactoryCreatesYearlyRepeatOptions()
@@ -259,7 +259,7 @@ class RepeatOptionsTests extends TestBase
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create('yearly', 1, null, null, null, null);
 		
-		$this->assertType('YearlyRepeat', $options);
+		$this->assertInstanceOf('YearlyRepeat', $options);
 	}
 	
 	public function testFactoryCreatesNoRepeatOptions()
@@ -267,7 +267,7 @@ class RepeatOptionsTests extends TestBase
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create('none', 1, null, null, null, null);
 		
-		$this->assertType('NoRepetion', $options);
+		$this->assertInstanceOf('NoRepetion', $options);
 	}
 	
 	public function testConfigurationStringCanBeDeserialized()

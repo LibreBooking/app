@@ -99,6 +99,7 @@ class ReservationSavePresenterTests extends TestBase
 
 		$reservationAction = $this->page->GetReservationAction();
 		$repeatOptions = $this->page->GetRepeatOptions(null);
+		$seriesUpdateScope = $this->page->GetSeriesUpdateScope();
 		
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
@@ -129,6 +130,10 @@ class ReservationSavePresenterTests extends TestBase
 		$reservation->expects($this->once())
 			->method('Repeats')
 			->with($this->equalTo($repeatOptions));
+		
+		$reservation->expects($this->once())
+			->method('ApplyChangesTo')
+			->with($this->equalTo($seriesUpdateScope));
 
 		$actualReservation = $this->presenter->BuildReservation();
 		
@@ -332,6 +337,11 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetRepeatOptions($initialReservationDates)
 	{
 		return $this->repeatOptions;
+	}
+	
+	public function GetSeriesUpdateScope()
+	{
+		return SeriesUpdateScope::ThisInstance;
 	}
 	
 	public function SetSaveSuccessfulMessage($succeeded)
