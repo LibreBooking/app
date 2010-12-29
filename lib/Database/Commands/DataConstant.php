@@ -186,9 +186,11 @@ class Queries
 		'SELECT
 			*
 		FROM
-			reservation_series r
+			reservation r
+		INNER JOIN	
+			reservation_series rs on r.series_id = rs.series_id
 		WHERE
-			r.series_id = @reservationId AND
+			r.reservation_id = @reservationId
 			status_id <> 2';
 	
 	const GET_RESERVATION_FOR_EDITING = 

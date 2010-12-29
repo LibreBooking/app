@@ -176,7 +176,7 @@ class ReservationRepositoryTests extends TestBase
 			->method('GetDates')
 			->will($this->returnValue($dates));
 
-		$reservation = new TestReservation();
+		$reservation = new ReservationSeries();
 		$reservation->Repeats($repeats);
 		
 		$this->db->_ExpectedInsertIds[0] = $reservationSeriesId;
@@ -215,7 +215,7 @@ class ReservationRepositoryTests extends TestBase
 		$id1 = 1;
 		$id2 = 2;
 		
-		$reservation = new TestReservation();
+		$reservation = new ReservationSeries();
 		$reservation->AddResource($id1);
 		$reservation->AddResource($id2);
 		
@@ -232,7 +232,6 @@ class ReservationRepositoryTests extends TestBase
 	
 	public function testLoadByIdFullyHydratesReservationSeriesObject()
 	{
-		$this->markTestIncomplete('need to refactor this a lot to get into series structure');
 		$seriesId = 10;
 		$reservationId = 1;
 		$referenceNumber = 'refnum';
@@ -252,15 +251,21 @@ class ReservationRepositoryTests extends TestBase
 		$terminationDate = Date::FromDatabase($terminiationDateString);
 		$repeatOptions = new DailyRepeat($interval, $terminationDate, $duration);
 		
-		$expected = new ExistingReservation();
-		$expected->IsPartOfSeries($seriesId);
-		$expected->SetReferenceNumber($referenceNumber);
-		$expected->SetReservationId($reservationId);
-		$expected->Update($userId, $resourceId, $scheduleId, $title, $description);
-		$expected->AddResource($resourceId1);
-		$expected->AddResource($resourceId2);
-		$expected->UpdateDuration($duration);
-		$expected->Repeats($repeatOptions);
+		$expected = new ExistingReservationSeries();
+		$expected->WithOwner($userId);
+		$expected->WithPrimaryResource($resourceId);
+		$expected->WithSchedule($scheduleId);
+		$expected->WithTitle($title);
+		$expected->WithDescription($description);
+		$expected->WithResource($resourceId1);
+		$expected->WithResource($resourceId2);
+		$expected->WithRepeatOptions($repeatOptions);
+			
+		$expectedInstance = new Reservation($expected, $duration);
+		$expectedInstance->SetReferenceNumber($referenceNumber);
+		$expectedInstance->SetReservationId($reservationId);
+		
+		$expected->WithCurrentInstance($expectedInstance);
 		
 		$reservationRow = new ReservationRow(
 			$reservationId,
@@ -302,56 +307,27 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue(in_array($getParticipants, $this->db->_Commands));
 	}
 	
-	public function testUpdateSavesChangedReservationData()
+	public function testUpdatingSharedInformationForWholeSeriesJustUpdatesSeriesTable()
 	{
 		$this->markTestIncomplete('This test has not been implemented yet.');
 		
-		$reservationId = 1;
 		$userId = 10;
-		$resourceId = 100;
-		$scheduleId = 1000;
-		$title = 'title';
-		$description = 'description';
-		$resourceId1 = 99;
-		$resourceId2 = 999;
-		$begin = '2010-01-05 12:30:00';
-		$end = '2010-01-05 18:30:00';
-		$duration = DateRange::Create($begin, $end, 'UTC');
-		$interval = 3;
-		$repeatType = RepeatType::Daily;
-		$terminiationDateString = '2010-01-20 12:30:00'; 
-		$terminationDate = Date::FromDatabase($terminiationDateString);
-		$repeatOptions = new DailyRepeat($interval, $terminationDate, $duration);
+		$resourceId = 11;
+		$scheduleId = 12;
+		$title = "new title";
+		$description = "new description";
 		
-		$expected = new ExistingReservation();
-		$expected->SetReservationId($reservationId);;
-		$expected->Update($userId, $resourceId, $scheduleId, $title, $description);
-		$expected->AddResource($resourceId1);
-		$expected->AddResource($resourceId2);
-		$expected->UpdateDuration($duration);
-		$expected->Repeats($repeatOptions);	
+		$builder = new ExisitingReservationSeriesBuilder();
 		
-		$updateReservation = new UpdateReservationCommand(
-										$reservation->StartDate(), 
-										$reservation->EndDate(), 
-										Date::Now(), 
-										$reservation->Title(), 
-										$reservation->Description(),
-										$reservation->RepeatOptions()->RepeatType(),
-										$reservation->RepeatOptions()->ConfigurationString(),
-										$reservation->ReferenceNumber(),
-										$reservation->ScheduleId(),
-										ReservationTypes::Reservation,
-										ReservationStatus::Created);
+		$existingReservation = $builder->Build();
+
+		$existingReservation->Update($userId, $resourceId, $scheduleId, $title, $description);
 		
-		$addResourceCommand = new AddReservationResourceCommand($reservationId, $resourceId, ResourceLevel::Additional);										
-		$deleteResourceCommand = new DeleteReservationResourceCommand($reservationId, $resourceId);										
-		$deleteResourceCommand = new DeleteReservationResourceCommand($reservationId, $resourceId);										
-		
-		// TODO: need to modify repeated date or reservation itself
-		$this->markTestIncomplete('no idea how to do this');
 		$this->repository->Update($reservation);
 		
+		$updateSeriesCommand = new UpdateReservationSeries($seriesId, $userId, $resourceId, $scheduleId, $title, $description);
+		$this->assertEquals(1, count($this->db->_Commands));
+		$this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
 	}
 	
 	public function testAlteringReservationInstanceCreatesNewSeries()
@@ -467,11 +443,29 @@ class ReservationUserRow
 	}
 }
 
-class TestReservation extends ReservationSeries
+class ExisitingReservationSeriesBuilder
 {
 	public function __construct()
 	{
-		parent::__construct();
+		$series = new ExistingReservationSeries();
+		$series->WithCurrentInstance(new Reservation($series, new DateRange(Date::Now(), Date::Now())));
+		$series->WithDescription('description');
+		$series->WithOwner(1);
+		$series->WithPrimaryResource(2);
+		$series->WithRepeatOptions(new NoRepeat());
+		$series->WithResource(3);
+		$series->WithSchedule(4);
+		$series->WithTitle('title');
+		
+		$this->series = $series;
+	}
+	
+	/**
+	 * @return ExistingReservationSeries
+	 */
+	public function Build()
+	{
+		return $this->series;
 	}
 }
 

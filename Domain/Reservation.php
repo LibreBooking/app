@@ -49,6 +49,16 @@ class Reservation
 		$this->startDate = $reservationDate->GetBegin();
 		$this->endDate = $reservationDate->GetEnd();
 	}
+	
+	public function SetReservationId($reservationId)
+	{
+		$this->reservationId = $reservationId;
+	}
+	
+	public function SetReferenceNumber($referenceNumber)
+	{
+		$this->referenceNumber = $referenceNumber;
+	}
 }
 
 class ReservationSeries
@@ -161,7 +171,7 @@ class ReservationSeries
 	/**
 	 * @var Date
 	 */
-	private $currentInstanceDate;
+	protected $currentInstanceDate;
 	
 	public function __construct()
 	{
@@ -190,7 +200,7 @@ class ReservationSeries
 	public function UpdateDuration(DateRange $reservationDate)
 	{
 		$this->currentInstanceDate = $reservationDate->GetBegin();
-		$this->AddInstance($reservationDate);
+		$this->AddNewInstance($reservationDate);
 	}
 	
 	/**
@@ -203,13 +213,18 @@ class ReservationSeries
 		$dates = $repeatOptions->GetDates();
 		foreach ($dates as $date)
 		{
-			$this->AddInstance($date);
+			$this->AddNewInstance($date);
 		}
 	}
 	
-	private function AddInstance(DateRange $reservationDate)
+	protected function AddNewInstance(DateRange $reservationDate)
 	{
-		$this->instances[$reservationDate->GetBegin()->Timestamp()] = new Reservation($this, $reservationDate);
+		$this->AddInstance(new Reservation($this, $reservationDate));
+	}
+	
+	protected function AddInstance(Reservation $reservation)
+	{
+		$this->instances[$reservation->StartDate()->Timestamp()] = $reservation;
 	}
 	
 	/**
@@ -254,27 +269,47 @@ class ReservationSeries
 	}
 }
 
-class ExistingReservation extends ReservationSeries
+class ExistingReservationSeries extends ReservationSeries
 {
-	private $_reservationId;
-	private $_seriesId;
-	
-	/**
-	 * @param string $referenceNumber
-	 */
-	public function SetReferenceNumber($referenceNumber)
+	public function WithOwner($userId)
 	{
-		$this->_referenceNumber = $referenceNumber;
+		$this->_userId = $userId;
 	}
 	
-	public function SetReservationId($reservationId)
+	public function WithPrimaryResource($resourceId)
 	{
-		$this->_reservationId = $reservationId;
+		$this->_resourceId = $resourceId;
 	}
 	
-	public function IsPartOfSeries($seriesId)
+	public function WithSchedule($scheduleId)
 	{
-		$this->_seriesId = $seriesId;
+		$this->_scheduleId = $scheduleId;
+	}
+	
+	public function WithTitle($title)
+	{
+		$this->_title = $title;
+	}
+	
+	public function WithDescription($description)
+	{
+		$this->_description = $description;
+	}
+	
+	public function WithResource($resourceId)
+	{
+		$this->AddResource($resourceId);
+	}
+	
+	public function WithRepeatOptions(IRepeatOptions $repeatOptions)
+	{
+		$this->_repeatOptions = $repeatOptions;
+	}
+	
+	public function WithCurrentInstance(Reservation $reservation)
+	{
+		$this->AddInstance($reservation);
+		$this->currentInstanceDate = $reservation->StartDate();
 	}
 }
 ?>

@@ -94,9 +94,8 @@ class ReservationRepository implements IReservationRepository
 		$ownerId = -1;
 		$primaryResourceId = -1;
 		
-		$reservation = new ExistingReservation();
-		
-		while ($row = $reader->GetRow())
+		$series = new ExistingReservationSeries();
+		if ($row = $reader->GetRow())
 		{	
 			$startDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
@@ -106,14 +105,15 @@ class ReservationRepository implements IReservationRepository
 			$repeatType = $row[ColumnNames::REPEAT_TYPE];
 			$configurationString = $row[ColumnNames::REPEAT_OPTIONS];
 			
-			$duration = new DateRange($startDate, $endDate);
-			$repeatOptions = $this->BuildRepeatOptions($repeatType, $configurationString, $duration);
+			$duration = new DateRange($startDate, $endDate);		
 			
-			$reservation->SetReservationId($row[ColumnNames::RESERVATION_INSTANCE_ID]);
-			$reservation->SetReferenceNumber($row[ColumnNames::REFERENCE_NUMBER]);
-			$reservation->IsPartOfSeries($row[ColumnNames::SERIES_ID]);
-			$reservation->UpdateDuration($duration);
-			$reservation->Repeats($repeatOptions);
+			$repeatOptions = $this->BuildRepeatOptions($repeatType, $configurationString, $duration);
+			$series->WithRepeatOptions($repeatOptions);
+			
+
+			$instance = new Reservation($series, $duration);
+			$instance->SetReservationId($row[ColumnNames::RESERVATION_INSTANCE_ID]);
+			$instance->SetReferenceNumber($row[ColumnNames::REFERENCE_NUMBER]);			
 		}
 		
 		$reader = ServiceLocator::GetDatabase()->Query($getResourcesCommand);
@@ -126,7 +126,7 @@ class ReservationRepository implements IReservationRepository
 			}
 			else
 			{
-				$reservation->AddResource($resourceId);
+				$series->WithResource($resourceId);
 			}
 		}
 		
@@ -141,9 +141,14 @@ class ReservationRepository implements IReservationRepository
 			// TODO:  Add to participant list
 		}
 		
-		$reservation->Update($ownerId, $primaryResourceId, $scheduleId, $title, $description);
+		$series->WithCurrentInstance($instance);
+		$series->WithOwner($ownerId);
+		$series->WithPrimaryResource($primaryResourceId);
+		$series->WithSchedule($scheduleId);
+		$series->WithTitle($title);
+		$series->WithDescription($description);
 		
-		return $reservation;
+		return $series;
 	}
 	
 	public function Update(ReservationSeries $reservation)
