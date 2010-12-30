@@ -13,7 +13,7 @@ $reservation = new ReservationSeries();
 $reservation->Update(1, 1, 'crazy title', 'super description');
 $reservation->UpdateDuration(new DateRange($start, $end));
 
-$reservation->Repeats(new DayOfMonthRepeat(1, $end->AddDays(100), new DateRange($start, $end)));
+$reservation->Repeats(new RepeatDayOfMonth(1, $end->AddDays(100), new DateRange($start, $end)));
 
 $user = new FakeUser();
 $user->SetLanguage('en_gb');

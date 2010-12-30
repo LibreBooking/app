@@ -78,6 +78,23 @@ class ReservationRepository implements IReservationRepository
 		}
 	}
 	
+	public function Update(ExistingReservationSeries $reservationSeries)
+	{
+		$database = ServiceLocator::GetDatabase();
+		
+		$updateSeries = new UpdateReservationSeriesCommand(
+									$reservationSeries->SeriesId(),
+									$reservationSeries->Title(), 
+									$reservationSeries->Description(),
+									$reservationSeries->RepeatOptions()->RepeatType(),
+									$reservationSeries->RepeatOptions()->ConfigurationString(),
+									$reservationSeries->ScheduleId(),
+									Date::Now()
+									);
+									
+		$database->Execute($updateSeries);
+	}
+	
 	public function LoadById($reservationId)
 	{
 		$getReservationCommand = new GetReservationByIdCommand($reservationId);
@@ -97,23 +114,32 @@ class ReservationRepository implements IReservationRepository
 		$series = new ExistingReservationSeries();
 		if ($row = $reader->GetRow())
 		{	
+			$seriesId = $row[ColumnNames::SERIES_ID];
+			
 			$startDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
+			$duration = new DateRange($startDate, $endDate);		
+			
 			$scheduleId = $row[ColumnNames::SCHEDULE_ID];
 			$title = $row[ColumnNames::RESERVATION_TITLE];
 			$description = $row[ColumnNames::RESERVATION_DESCRIPTION];
-			$repeatType = $row[ColumnNames::REPEAT_TYPE];
-			$configurationString = $row[ColumnNames::REPEAT_OPTIONS];
 			
-			$duration = new DateRange($startDate, $endDate);		
+			$repeatType = $row[ColumnNames::REPEAT_TYPE];
+			$configurationString = $row[ColumnNames::REPEAT_OPTIONS];			
 			
 			$repeatOptions = $this->BuildRepeatOptions($repeatType, $configurationString, $duration);
 			$series->WithRepeatOptions($repeatOptions);
-			
 
+			$series->WithId($seriesId);
+			$series->WithSchedule($scheduleId);
+			$series->WithTitle($title);
+			$series->WithDescription($description);
+		
 			$instance = new Reservation($series, $duration);
 			$instance->SetReservationId($row[ColumnNames::RESERVATION_INSTANCE_ID]);
-			$instance->SetReferenceNumber($row[ColumnNames::REFERENCE_NUMBER]);			
+			$instance->SetReferenceNumber($row[ColumnNames::REFERENCE_NUMBER]);	
+
+			$series->WithCurrentInstance($instance);
 		}
 		
 		$reader = ServiceLocator::GetDatabase()->Query($getResourcesCommand);
@@ -122,7 +148,7 @@ class ReservationRepository implements IReservationRepository
 			$resourceId = $row[ColumnNames::RESOURCE_ID];
 			if ($row[ColumnNames::RESOURCE_LEVEL_ID] == ResourceLevel::Primary)
 			{
-				$primaryResourceId = $resourceId;
+				$series->WithPrimaryResource($resourceId);
 			}
 			else
 			{
@@ -136,24 +162,12 @@ class ReservationRepository implements IReservationRepository
 			$userId = $row[ColumnNames::USER_ID];
 			if ($row[ColumnNames::RESERVATION_USER_LEVEL] == ReservationUserLevel::OWNER)
 			{
-				$ownerId = $userId;
+				$series->WithOwner($userId);
 			}
 			// TODO:  Add to participant list
 		}
-		
-		$series->WithCurrentInstance($instance);
-		$series->WithOwner($ownerId);
-		$series->WithPrimaryResource($primaryResourceId);
-		$series->WithSchedule($scheduleId);
-		$series->WithTitle($title);
-		$series->WithDescription($description);
-		
+
 		return $series;
-	}
-	
-	public function Update(ReservationSeries $reservation)
-	{
-		throw new Exception('Not Implemented');
 	}
 	
 	private function BuildRepeatOptions($repeatType, $configurationString, $duration)
@@ -185,20 +199,20 @@ interface IReservationRepository
 	public function Add(ReservationSeries $reservation);
 	
 	/**
-	 * Return an existing reservation
+	 * Return an existing reservation series
 	 * 
 	 * @param int $reservationId
-	 * @return Reservation or null if no reservation found
+	 * @return ReservationSeries or null if no reservation found
 	 */
 	public function LoadById($reservationId);
 	
 	/**
 	 * Update an existing reservation
 	 * 
-	 * @param ReservationSeries $reservation
+	 * @param ExistingReservationSeries $reservation
 	 * @return void
 	 */
-	public function Update(ReservationSeries $reservation);
+	public function Update(ExistingReservationSeries $reservation);
 	
 }
 ?>

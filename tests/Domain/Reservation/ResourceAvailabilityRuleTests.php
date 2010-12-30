@@ -115,7 +115,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$start = Date::Parse('2010-01-01');
 		$end = Date::Parse('2010-01-02');
 		$reservationDates = new DateRange($start, $end);
-		$twoRepetitions = new WeeklyRepeat(1, 
+		$twoRepetitions = new RepeatWeekly(1, 
 						$start->AddDays(14), 
 						$reservationDates, 
 						array($start->Weekday()));

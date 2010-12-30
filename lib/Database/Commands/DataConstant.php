@@ -6,6 +6,7 @@ class ParameterNames
 	
 	const CURRENT_DATE = '@current_date';
 	const DATE_CREATED = '@dateCreated';
+	const DATE_MODIFIED = '@dateModified';
 	const DESCRIPTION = '@description';
 	const END_DATE = '@endDate';
 	const EMAIL_ADDRESS = '@email';
@@ -376,6 +377,19 @@ class Queries
 		WHERE 
 			user_id = @userid';
 		
+	const UPDATE_RESERVATION_SERIES = 
+		'UPDATE
+			reservation_series
+		SET
+			last_modified = @dateModified, 
+			title = @title, 
+			description = @description, 
+			repeat_type = @repeatType, 
+			repeat_options = @repeatOptions, 
+			schedule_id = @scheduleid
+		WHERE
+			series_id = @seriesId';
+	
 	const UPDATE_USER_BY_USERNAME = 
 		'UPDATE 
 			users 

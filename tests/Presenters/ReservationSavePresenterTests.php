@@ -246,7 +246,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	
 	public function __construct()
 	{
-		$this->repeatOptions = new NoRepetion();
+		$this->repeatOptions = new RepeatNone();
 	}
 	
 	public function GetReservationAction()

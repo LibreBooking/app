@@ -418,6 +418,30 @@ class UpdateLoginTimeCommand extends SqlCommand
 	}
 }
 
+class UpdateReservationSeriesCommand extends SqlCommand
+{
+	public function __construct($seriesId,
+								$title, 
+								$description, 
+								$repeatType,
+								$repeatOptions,
+								$scheduleId,
+								Date $dateModified								
+								)
+	{
+		parent::__construct(Queries::UPDATE_RESERVATION_SERIES);	
+		
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));	
+		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));	
+		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
+		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $dateModified->ToDatabase()));	
+		
+	}
+}
+
 class UpdateUserFromLdapCommand extends SqlCommand 
 {
 	public function __construct($username, $email, $fname, $lname, $password, $salt, $phone, $organization, $position)

@@ -64,7 +64,7 @@ class RepeatMonthlyType
 	const DayOfWeek = 'dayOfWeek';
 }
 
-class NoRepetion implements IRepeatOptions
+class RepeatNone implements IRepeatOptions
 {
 	public function GetDates()
 	{
@@ -82,7 +82,7 @@ class NoRepetion implements IRepeatOptions
 	}
 }
 
-class DailyRepeat extends RepeatOptionsAbstract
+class RepeatDaily extends RepeatOptionsAbstract
 {
 	/**
 	 * @param int $interval
@@ -116,7 +116,7 @@ class DailyRepeat extends RepeatOptionsAbstract
 	}
 }
 	
-class WeeklyRepeat extends RepeatOptionsAbstract
+class RepeatWeekly extends RepeatOptionsAbstract
 {
 	/**
 	 * @var array
@@ -195,7 +195,7 @@ class WeeklyRepeat extends RepeatOptionsAbstract
 	}
 }
 
-class DayOfMonthRepeat extends RepeatOptionsAbstract
+class RepeatDayOfMonth extends RepeatOptionsAbstract
 {
 	/**
 	 * @param int $interval
@@ -276,7 +276,7 @@ class DayOfMonthRepeat extends RepeatOptionsAbstract
 	}
 }
 
-class WeekDayOfMonthRepeat extends RepeatOptionsAbstract
+class RepeatWeekDayOfMonth extends RepeatOptionsAbstract
 {	
 	private $_typeList = array (1 => 'first', 2 => 'second', 3 => 'third', 4 => 'fourth', 5 => 'fifth');
 	private $_dayList = array(0 => 'sunday', 1 => 'monday', 2 => 'tuesday', 3 => 'wednesday', 4 => 'thursday', 5 => 'friday', 6 => 'saturday');
@@ -375,7 +375,7 @@ class WeekDayOfMonthRepeat extends RepeatOptionsAbstract
 	}
 }
 
-class YearlyRepeat extends RepeatOptionsAbstract
+class RepeatYearly extends RepeatOptionsAbstract
 {
 	/**
 	 * @param int $interval
@@ -438,21 +438,21 @@ class RepeatOptionsFactory
 		switch ($repeatType)
 		{
 			case RepeatType::Daily : 
-				return new DailyRepeat($interval, $terminationDate, $initialReservationDates);
+				return new RepeatDaily($interval, $terminationDate, $initialReservationDates);
 				
 			case RepeatType::Weekly : 
-				return new WeeklyRepeat($interval, $terminationDate, $initialReservationDates, $weekdays);
+				return new RepeatWeekly($interval, $terminationDate, $initialReservationDates, $weekdays);
 				
 			case RepeatType::Monthly : 
 				return ($monthlyType == RepeatMonthlyType::DayOfMonth) ? 
-					new DayOfMonthRepeat($interval, $terminationDate, $initialReservationDates) : 
-					new WeekDayOfMonthRepeat($interval, $terminationDate, $initialReservationDates);
+					new RepeatDayOfMonth($interval, $terminationDate, $initialReservationDates) : 
+					new RepeatWeekDayOfMonth($interval, $terminationDate, $initialReservationDates);
 					
 			case RepeatType::Yearly : 
-				return new YearlyRepeat($interval, $terminationDate, $initialReservationDates);
+				return new RepeatYearly($interval, $terminationDate, $initialReservationDates);
 		}
 		
-		return new NoRepetion();
+		return new RepeatNone();
 	}
 }
 

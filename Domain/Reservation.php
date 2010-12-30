@@ -42,6 +42,11 @@ class Reservation
 		return $this->endDate;
 	}
 	
+	/**
+	 * @var ReservationSeries
+	 */
+	public $series;
+	
 	public function __construct(ReservationSeries $reservationSeries, DateRange $reservationDate)
 	{
 		$this->referenceNumber = uniqid();
@@ -173,9 +178,11 @@ class ReservationSeries
 	 */
 	protected $currentInstanceDate;
 	
+	protected $seriesUpdateScope;
+	
 	public function __construct()
 	{
-		$this->_repeatOptions = new NoRepetion();		
+		$this->_repeatOptions = new RepeatNone();		
 	}
 	
 	/**
@@ -240,7 +247,7 @@ class ReservationSeries
 	 */
 	public function ApplyChangesTo($seriesUpdateScope)
 	{
-		throw new Exception('not implemented');
+		$this->seriesUpdateScope = $seriesUpdateScope;
 	}
 	
 	/**
@@ -271,6 +278,21 @@ class ReservationSeries
 
 class ExistingReservationSeries extends ReservationSeries
 {
+	/**
+	 * @var int
+	 */
+	private $_seriesId;
+	
+	public function SeriesId()
+	{
+		return $this->_seriesId;
+	}
+	
+	public function WithId($seriesId)
+	{
+		$this->_seriesId = $seriesId;
+	}
+	
 	public function WithOwner($userId)
 	{
 		$this->_userId = $userId;

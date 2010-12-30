@@ -109,7 +109,7 @@ class ReservationRepositoryTests extends TestBase
 		$reservation->Update($userId, $resourceId, $scheduleId, $title, $description);
 		$reservation->UpdateDuration($duration);
 		
-		$repeatOptions = new NoRepetion();
+		$repeatOptions = new RepeatNone();
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatOptionsString = $repeatOptions->ConfigurationString();
 		$referenceNumber = $reservation->GetInstance($duration->GetBegin())->ReferenceNumber();
@@ -249,9 +249,10 @@ class ReservationRepositoryTests extends TestBase
 		$repeatType = RepeatType::Daily;
 		$terminiationDateString = '2010-01-20 12:30:00'; 
 		$terminationDate = Date::FromDatabase($terminiationDateString);
-		$repeatOptions = new DailyRepeat($interval, $terminationDate, $duration);
+		$repeatOptions = new RepeatDaily($interval, $terminationDate, $duration);
 		
 		$expected = new ExistingReservationSeries();
+		$expected->WithId($seriesId);
 		$expected->WithOwner($userId);
 		$expected->WithPrimaryResource($resourceId);
 		$expected->WithSchedule($scheduleId);
@@ -307,10 +308,8 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue(in_array($getParticipants, $this->db->_Commands));
 	}
 	
-	public function testUpdatingSharedInformationForWholeSeriesJustUpdatesSeriesTable()
+	public function testChangingOnlySharedInformationForFullSeriesJustUpdatesSeriesTable()
 	{
-		$this->markTestIncomplete('This test has not been implemented yet.');
-		
 		$userId = 10;
 		$resourceId = 11;
 		$scheduleId = 12;
@@ -319,13 +318,26 @@ class ReservationRepositoryTests extends TestBase
 		
 		$builder = new ExisitingReservationSeriesBuilder();
 		
+		//$builder->WithCurrentInstance()
 		$existingReservation = $builder->Build();
-
+		
 		$existingReservation->Update($userId, $resourceId, $scheduleId, $title, $description);
+		$repeatType = $existingReservation->RepeatOptions()->RepeatType();
+		$options = $existingReservation->RepeatOptions()->ConfigurationString();
+		//$existingReservation->UpdateDuration()
+		$existingReservation->ApplyChangesTo(SeriesUpdateScope::FullSeries);
 		
-		$this->repository->Update($reservation);
+//		$commands = $exisitingReservation->GetCommands();
+//		
+//		UpdateSeries();
+//		AddResourceToSeries();
+//		RemoveResourceFromSeries();
+//		
+//		CreateSeries();
 		
-		$updateSeriesCommand = new UpdateReservationSeries($seriesId, $userId, $resourceId, $scheduleId, $title, $description);
+		$this->repository->Update($existingReservation);
+		
+		$updateSeriesCommand = new UpdateReservationSeriesCommand($existingReservation->SeriesId(), $title, $description, $repeatType, $options, $scheduleId, Date::Now());
 		$this->assertEquals(1, count($this->db->_Commands));
 		$this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
 	}
@@ -445,6 +457,11 @@ class ReservationUserRow
 
 class ExisitingReservationSeriesBuilder
 {
+	/**
+	 * @var ExistingReservationSeries
+	 */
+	private $series;
+	
 	public function __construct()
 	{
 		$series = new ExistingReservationSeries();
@@ -452,12 +469,22 @@ class ExisitingReservationSeriesBuilder
 		$series->WithDescription('description');
 		$series->WithOwner(1);
 		$series->WithPrimaryResource(2);
-		$series->WithRepeatOptions(new NoRepeat());
+		$series->WithRepeatOptions(new RepeatNone());
 		$series->WithResource(3);
 		$series->WithSchedule(4);
 		$series->WithTitle('title');
 		
 		$this->series = $series;
+	}
+	
+	/**
+	 * @param Reservation $reservation
+	 * @return ExisitingReservationSeriesBuilder
+	 */
+	public function WithCurrentInstance($reservation)
+	{
+		$this->series->WithCurrentInstance($reservation);
+		return $this;
 	}
 	
 	/**
