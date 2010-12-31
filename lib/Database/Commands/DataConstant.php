@@ -5,18 +5,28 @@ class ParameterNames
 	{}
 	
 	const CURRENT_DATE = '@current_date';
+	const CURRENT_SERIES_ID = '@currentSeriesId';
+	
 	const DATE_CREATED = '@dateCreated';
 	const DATE_MODIFIED = '@dateModified';
 	const DESCRIPTION = '@description';
+	
 	const END_DATE = '@endDate';
 	const EMAIL_ADDRESS = '@email';
+	
 	const FIRST_NAME = '@fname';
-	const HOMEPAGE_ID = '@homepageid';
+	
 	const GROUP = '@group';
+		
+	const HOMEPAGE_ID = '@homepageid';
+
 	const IS_ACTIVE = '@isactive';
+	
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';
+	
 	const ORGANIZATION = '@organization';
+	
 	const PASSWORD = '@password';
 	const PHONE = '@phone';
 	const POSITION = '@position';
@@ -376,7 +386,26 @@ class Queries
 			lastlogin = @lastlogin 
 		WHERE 
 			user_id = @userid';
-		
+
+	const UPDATE_FUTURE_RESERVATION_INSTANCES =
+		'UPDATE 
+			reservation_instances
+		SET
+			series_id = @seriesId
+		WHERE
+			series_id = @currentSeriesId AND
+			start_date >= (SELECT start_date FROM reservation_instances WHERE reference_number = @referenceNumber)';
+	
+	const UPDATE_RESERVATION_INSTANCE = 
+		'UPDATE
+			reservation_instances
+		SET
+			series_id = @seriesId,
+			start_date = @startDate,
+			end_date = @endDate
+		WHERE
+			reference_number = @referenceNumber';
+	
 	const UPDATE_RESERVATION_SERIES = 
 		'UPDATE
 			reservation_series

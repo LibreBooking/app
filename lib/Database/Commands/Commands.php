@@ -418,6 +418,34 @@ class UpdateLoginTimeCommand extends SqlCommand
 	}
 }
 
+class UpdateFutureReservationsCommand extends SqlCommand
+{
+	public function __construct($referenceNumber, $newSeriesId, $currentSeriesId)
+	{
+		parent::__construct(Queries::UPDATE_FUTURE_RESERVATION_INSTANCES);	
+		
+		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $currentSeriesId));
+		$this->AddParameter(new Parameter(ParameterNames::CURRENT_SERIES_ID, $currentSeriesId));
+	}
+}
+
+class UpdateReservationCommand extends SqlCommand
+{
+	public function __construct($referenceNumber,
+								$seriesId,
+								Date $startDate, 
+								Date $endDate)
+	{
+		parent::__construct(Queries::UPDATE_RESERVATION_INSTANCE);	
+		
+		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+	}
+}
+
 class UpdateReservationSeriesCommand extends SqlCommand
 {
 	public function __construct($seriesId,

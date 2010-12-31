@@ -318,22 +318,12 @@ class ReservationRepositoryTests extends TestBase
 		
 		$builder = new ExisitingReservationSeriesBuilder();
 		
-		//$builder->WithCurrentInstance()
 		$existingReservation = $builder->Build();
 		
 		$existingReservation->Update($userId, $resourceId, $scheduleId, $title, $description);
 		$repeatType = $existingReservation->RepeatOptions()->RepeatType();
 		$options = $existingReservation->RepeatOptions()->ConfigurationString();
-		//$existingReservation->UpdateDuration()
 		$existingReservation->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-		
-//		$commands = $exisitingReservation->GetCommands();
-//		
-//		UpdateSeries();
-//		AddResourceToSeries();
-//		RemoveResourceFromSeries();
-//		
-//		CreateSeries();
 		
 		$this->repository->Update($existingReservation);
 		
@@ -341,19 +331,92 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertEquals(1, count($this->db->_Commands));
 		$this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
 	}
-	
-	public function testAlteringReservationInstanceCreatesNewSeries()
+
+	public function testAlteringReservationInstanceCreatesNewSeriesAndRemovesRepeat()
 	{
+		$seriesId = 10909;
+		$userId = 10;
+		$resourceId = 11;
+		$scheduleId = 12;
+		$title = "new title";
+		$description = "new description";
 		
-	}
-	
-	public function testAlteringSeriesLeavesSeriesIntact()
-	{
+		$builder = new ExisitingReservationSeriesBuilder();
 		
+		$existingReservation = $builder->Build();
+		$existingReservation->Repeats(new RepeatDaily(1, Date::Now(), new TestDateRange()));
+		
+		$existingReservation->Update($userId, $resourceId, $scheduleId, $title, $description);
+		$expectedRepeat = new RepeatNone();
+		
+		$existingReservation->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
+			
+		$currentReservation = $existingReservation->CurrentInstance();
+		
+		$this->db->_ExpectedInsertId = $seriesId;
+		
+		$this->repository->Update($existingReservation);
+		
+		$addNewSeriesCommand = new AddReservationSeriesCommand(
+									Date::Now(), 
+									$title, 
+									$description, 
+									$expectedRepeat->RepeatType(), 
+									$expectedRepeat->ConfigurationString(), 
+									$scheduleId,
+									ReservationTypes::Reservation,
+									ReservationStatus::Created);
+		
+		$updateReservationCommand = new UpdateReservationCommand($currentReservation->ReferenceNumber(), $seriesId, $currentReservation->StartDate(), $currentReservation->EndDate());
+		
+		$this->assertTrue(in_array($addNewSeriesCommand, $this->db->_Commands));
+		$this->assertTrue(in_array($updateReservationCommand, $this->db->_Commands));
 	}
 	
 	public function testAlteringFutureInstancesCreatesNewSeriesAnMovesExistingReservationsThere()
-	{}
+	{
+		$existingSeriesId = 10909;
+		$newSeriesId = 10910;
+		$userId = 10;
+		$resourceId = 11;
+		$scheduleId = 12;
+		$title = "new title";
+		$description = "new description";
+		
+		$builder = new ExisitingReservationSeriesBuilder();
+
+		$existingReservation = $builder->Build();
+		$existingReservation->WithId($existingSeriesId);
+		$expectedRepeat = new RepeatDaily(1, Date::Now(), new TestDateRange());
+		
+		$existingReservation->Repeats($expectedRepeat);
+		$existingReservation->Update($userId, $resourceId, $scheduleId, $title, $description);
+		$existingReservation->ApplyChangesTo(SeriesUpdateScope::FutureInstances);
+			
+		$currentReservation = $existingReservation->CurrentInstance();
+		
+		$this->db->_ExpectedInsertId = $newSeriesId;
+		
+		$this->repository->Update($existingReservation);
+		
+		$addNewSeriesCommand = new AddReservationSeriesCommand(
+									Date::Now(), 
+									$title, 
+									$description, 
+									$expectedRepeat->RepeatType(), 
+									$expectedRepeat->ConfigurationString(), 
+									$scheduleId,
+									ReservationTypes::Reservation,
+									ReservationStatus::Created);
+		
+		$updateReservationCommand = new UpdateFutureReservationsCommand(
+									$currentReservation->ReferenceNumber(), 
+									$newSeriesId,
+									$existingSeriesId);
+		
+		$this->assertEquals($addNewSeriesCommand, $this->db->_Commands[0]);
+		$this->assertTrue(in_array($updateReservationCommand, $this->db->_Commands));
+	}
 }
 
 
@@ -493,6 +556,14 @@ class ExisitingReservationSeriesBuilder
 	public function Build()
 	{
 		return $this->series;
+	}
+}
+
+class TestDateRange extends DateRange
+{
+	public function __construct()
+	{
+		parent::__construct(Date::Now(), Date::Now());
 	}
 }
 

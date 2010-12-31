@@ -66,7 +66,25 @@ class Reservation
 	}
 }
 
-class ReservationSeries
+interface ISeriesDistinction
+{
+	/**
+	 * @return Reservation[]
+	 */
+	function SeriesInstances();
+	
+	/**
+	 * @return IRepeatOptions
+	 */
+	function SeriesRepeatOptions();
+	
+	/**
+	 * @return Reservation
+	 */
+	function CurrentInstance();
+}
+
+class ReservationSeries implements ISeriesDistinction
 {
 	/**
 	 * @var int
@@ -140,17 +158,12 @@ class ReservationSeries
 	 */
 	public function RepeatOptions()
 	{
-		return $this->_repeatOptions;
+		return $this->seriesUpdateStrategy->RepeatOptions();
 	}
 	
-	protected $_repeatedDates = array();
-	
-	/**
-	 * @return DateRange[]
-	 */
-	public function RepeatedDates()
+	public function SeriesRepeatOptions()
 	{
-		return $this->_repeatedDates;
+		return $this->_repeatOptions;
 	}
 	
 	protected $_resources = array();
@@ -170,6 +183,11 @@ class ReservationSeries
 	 */
 	public function Instances()
 	{
+		return $this->seriesUpdateStrategy->Instances();	
+	}
+	
+	public function SeriesInstances()
+	{
 		return $this->instances;
 	}
 	
@@ -178,11 +196,15 @@ class ReservationSeries
 	 */
 	protected $currentInstanceDate;
 	
-	protected $seriesUpdateScope;
+	/**
+	 * @var ISeriesUpdateScope
+	 */
+	protected $seriesUpdateStrategy;
 	
 	public function __construct()
 	{
-		$this->_repeatOptions = new RepeatNone();		
+		$this->_repeatOptions = new RepeatNone();
+		$this->ApplyChangesTo(SeriesUpdateScope::FullSeries);	
 	}
 	
 	/**
@@ -247,7 +269,8 @@ class ReservationSeries
 	 */
 	public function ApplyChangesTo($seriesUpdateScope)
 	{
-		$this->seriesUpdateScope = $seriesUpdateScope;
+		$this->seriesUpdateStrategy = SeriesUpdateScope::CreateStrategy($seriesUpdateScope, $this);
+		//$this->seriesUpdateScope = $seriesUpdateScope;
 	}
 	
 	/**
@@ -255,7 +278,7 @@ class ReservationSeries
 	 */
 	public function IsRecurring()
 	{
-		return count($this->instances) > 1;
+		return $this->RepeatOptions()->RepeatType() != RepeatType::None;
 	}
 	
 	/**
@@ -332,6 +355,11 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		$this->AddInstance($reservation);
 		$this->currentInstanceDate = $reservation->StartDate();
+	}
+	
+	public function RequiresNewSeries()
+	{
+		return $this->seriesUpdateStrategy->RequiresNewSeries();
 	}
 }
 ?>

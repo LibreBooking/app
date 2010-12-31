@@ -152,7 +152,7 @@
 <input type="hidden" {formname key=reservation_action} value="{$ReservationAction}" />
 <div>
 	<input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
-	<input type="submit" value="{translate key="Save"}" class="button save"></input>
+	<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key="Save"}" class="button save"></input>
 </div>
 </form>
 

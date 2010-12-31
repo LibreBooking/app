@@ -27,6 +27,75 @@ class ReservationRepository implements IReservationRepository
 	{
 		$database = ServiceLocator::GetDatabase();
 		
+		$reservationSeriesId = $this->InsertSeries($reservationSeries);
+		
+		$instances = $reservationSeries->Instances();
+			
+		foreach($instances as $reservation)
+		{
+			$insertReservation = new AddReservationCommand(
+								$reservation->StartDate(), 
+								$reservation->EndDate(), 
+								$reservation->ReferenceNumber(),
+								$reservationSeriesId);
+			
+			$reservationId = $database->ExecuteInsert($insertReservation);
+		}
+	}
+
+	public function Update(ExistingReservationSeries $reservationSeries)
+	{
+		$database = ServiceLocator::GetDatabase();
+		
+		if ($reservationSeries->RequiresNewSeries())
+		{
+			$newSeriesId = $this->InsertSeries($reservationSeries);
+
+			$instance = $reservationSeries->CurrentInstance();
+			
+			if ($reservationSeries->IsRecurring())
+			{
+				$updateReservationCommand = new UpdateFutureReservationsCommand(
+									$instance->ReferenceNumber(),
+									$newSeriesId,
+									$reservationSeries->SeriesId());
+			}
+			else
+			{
+				$updateReservationCommand = new UpdateReservationCommand(
+									$instance->ReferenceNumber(),
+									$newSeriesId,
+									$instance->StartDate(),
+									$instance->EndDate());
+			}
+			
+			$database->Execute($updateReservationCommand);
+		}
+		else
+		{
+			$updateSeries = new UpdateReservationSeriesCommand(
+										$reservationSeries->SeriesId(),
+										$reservationSeries->Title(), 
+										$reservationSeries->Description(),
+										$reservationSeries->RepeatOptions()->RepeatType(),
+										$reservationSeries->RepeatOptions()->ConfigurationString(),
+										$reservationSeries->ScheduleId(),
+										Date::Now()
+										);
+										
+			$database->Execute($updateSeries);
+		}
+	}
+	
+	
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 * @return int newly created series_id
+	 */
+	private function InsertSeries(ReservationSeries $reservationSeries)
+	{
+		$database = ServiceLocator::GetDatabase();
+		
 		$insertReservationSeries = new AddReservationSeriesCommand(
 									Date::Now(), 
 									$reservationSeries->Title(), 
@@ -63,36 +132,8 @@ class ReservationRepository implements IReservationRepository
 										ReservationUserLevel::OWNER);
 		
 		$database->Execute($insertReservationUser);
-		
-		$instances = $reservationSeries->Instances();
-			
-		foreach($instances as $reservation)
-		{
-			$insertReservation = new AddReservationCommand(
-								$reservation->StartDate(), 
-								$reservation->EndDate(), 
-								$reservation->ReferenceNumber(),
-								$reservationSeriesId);
-			
-			$reservationId = $database->ExecuteInsert($insertReservation);
-		}
-	}
-	
-	public function Update(ExistingReservationSeries $reservationSeries)
-	{
-		$database = ServiceLocator::GetDatabase();
-		
-		$updateSeries = new UpdateReservationSeriesCommand(
-									$reservationSeries->SeriesId(),
-									$reservationSeries->Title(), 
-									$reservationSeries->Description(),
-									$reservationSeries->RepeatOptions()->RepeatType(),
-									$reservationSeries->RepeatOptions()->ConfigurationString(),
-									$reservationSeries->ScheduleId(),
-									Date::Now()
-									);
-									
-		$database->Execute($updateSeries);
+
+		return $reservationSeriesId;
 	}
 	
 	public function LoadById($reservationId)
