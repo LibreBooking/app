@@ -28,10 +28,10 @@
         	</li>
         	<li>
 				<!--this needs to be changed to handle cross-day reservations-->
-				<label>{translate key='BeginDate'} 
+				<label>{translate key='BeginDate'}
 				<input type="text" id="BeginDate" {formname key=BEGIN_DATE} class="dateinput" value="{formatdate date=$StartDate}"/>
 				</label>
-				<select id="BeginPeriod" {formname key=BEGIN_PERIOD}>
+				<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown" style="width:150px">
 					{foreach from=$Periods item=period}
 						{if $period->IsReservable()}
 							<option value="{$period->Begin()}">{$period->Label()}</option>
@@ -43,7 +43,7 @@
 				<label>{translate key='EndDate'}
 				<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput" value="{formatdate date=$EndDate}" />
 				</label>
-				<select id="EndPeriod" {formname key=END_PERIOD}>
+				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
 					{foreach from=$Periods item=period}
 						{if $previous ne '' and $previous->IsReservable()}
 							<option value="{$period->Begin()}">{$period->Label()}</option>
@@ -55,7 +55,7 @@
 			<li>
 				<div id="repeatDiv">
 					<label>{translate key="RepeatPrompt"}</label>
-					<select id="repeatOptions" {formname key=repeat_options}>
+					<select id="repeatOptions" {formname key=repeat_options} class="pulldown" style="width:250px">
 						<option value="none">{translate key="DoesNotRepeat"}</option>
 						<option value="daily">{translate key="Daily"}</option>
 						<option value="weekly">{translate key="Weekly"}</option>
@@ -64,7 +64,7 @@
 					</select>
 					<div id="repeatEveryDiv" style="display:none;" class="days weeks months years">
 						<label>{translate key="RepeatEveryPrompt"}</label>
-						<select {formname key=repeat_every}>{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}</select>
+						<select {formname key=repeat_every} class="pulldown" style="width:55px">{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}</select>
 						<span class="days">{translate key="days"}</span>
 						<span class="weeks">{translate key="weeks"}</span>
 						<span class="months">{translate key="months"}</span>
@@ -163,16 +163,20 @@
 </form>
 
 <div id="dialogAddResources" title="Add Resources" style="display:none;">
-	<p>Some text that you want to display to the user.</p>
+
 	{foreach from=$AvailableResources item=resource}
 		{assign var='checked' value=''}
 		{if is_array($AdditionalResourceIds) && in_array($resource->Id(), $AdditionalResourceIds)}
 			{assign var='checked' value='checked="checked"'}	
 		{/if}
 		
-		<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id()}" value="{$resource->Id()}" {$checked} /><label for="additionalResource{$resource->Id()}">{$resource->Name()}</label><br/>
+		<p>
+			<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id()}" value="{$resource->Id()}" {$checked} /> 
+			<label for="additionalResource{$resource->Id()}">{$resource->Name()}</label>
+		</p>
 		
 	{/foreach}
+	<br/>
 	<button id="btnConfirmAddResources">Add Selected</button>
 	<button id="btnClearAddResources">Cancel</button>
 </div>
