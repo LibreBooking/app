@@ -91,6 +91,10 @@ class en_us extends Language
 		$strings['CreateReservationHeading'] = 'Create a new reservation';
 		$strings['EditReservationHeading'] = 'Editing reservation %s';
 		$strings['CorrectErrors'] = 'Correct Errors';
+		$strings['Create'] = 'Create';
+		$strings['ThisInstance'] = 'Only This Instance';
+		$strings['AllInstances'] = 'All Series Instances';
+		$strings['FutureInstances'] = 'Future Series Instances';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

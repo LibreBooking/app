@@ -107,7 +107,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function PageLoad()
 	{
 		$this->presenter->PageLoad();
-		$this->Set('ReturnUrl', $this->GetLastPage());
+		$this->Set('ReturnUrl', $this->GetLastPage(Pages::SCHEDULE));
 		$this->Set('RepeatEveryOptions', range(1, 20));
 		$this->Set('ReservationHeaderKey', $this->GetReservationHeaderKey());
 		$this->Set('ReservationAction', $this->GetReservationAction());

@@ -37,7 +37,7 @@ class ReservationPersistenceFactory implements IReservationPersistenceFactory
 	
 	private function CreateUpdateService()
 	{
-		return UpdateReservationPersistenceService(new ReservationRepository());
+		return new UpdateReservationPersistenceService(new ReservationRepository());
 	}
 }
 ?>

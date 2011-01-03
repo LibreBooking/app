@@ -1,57 +1,63 @@
-$(document).ready(function() {
+function Schedule(opts)
+{
+	var options = opts;
+	
+	Schedule.prototype.init = function()
+	{
+		$('.reserved').each(function() { 
+			var resid = $(this).attr('id').split('|')[0];
+			var pattern = 'td[id^=' + resid + '|]';
 
-	$('.reserved').each(function() { 
-		var resid = $(this).attr('id').split('|')[0];
-		var pattern = 'td[id^=' + resid + '|]';
-
-		$(this).qtip({
-			position: 
-			{
-			      my: 'bottom left',  
-			      at: 'top left',
-			      target: $(this)
-			},
-
-			content:
-			{
-				text: 'Loading...',
-				ajax: 
+			$(this).qtip({
+				position: 
 				{
-			         url: 'respopup.php',
-			         type: 'GET',
-			         data: { id: resid },
-			         dataType: 'html'
-		      	}
-			}
+				      my: 'bottom left',  
+				      at: 'top left',
+				      target: $(this)
+				},
+
+				content:
+				{
+					text: 'Loading...',
+					ajax: 
+					{
+				         url: 'respopup.php',
+				         type: 'GET',
+				         data: { id: resid },
+				         dataType: 'html'
+			      	}
+				}
+			});
+			
+			$(this).hover(
+				function () { $(pattern).addClass('hilite'); }, 
+			    function () { $(pattern).removeClass('hilite'); }
+			);
+			
+			$(this).click(function() {
+				var reservationUrl = options.reservationUrlTemplate.replace("[referenceNumber]", resid);
+				window.location = reservationUrl;
+			});
 		});
 		
-		$(this).hover(
-			function () { $(pattern).addClass('hilite'); }, 
-		    function () { $(pattern).removeClass('hilite'); }
+		$('.clickres')
+	    	.mousedown(
+	    		function () { $(this).addClass('clicked'); }
+	    	)
+	    	.mouseup(
+	    		function () { $(this).removeClass('clicked'); }
+	   	);
+	    
+		$('.clickres').hover(
+		    function () { $(this).addClass('hilite'); }, 
+		    function () { $(this).removeClass('hilite'); }
 		);
 		
-		$(this).click(function() {
-			alert('redirect to resid' + resid);
-		});
-	});
-	
-	$('.clickres')
-    	.mousedown(
-    		function () { $(this).addClass('clicked'); }
-    	)
-    	.mouseup(
-    		function () { $(this).removeClass('clicked'); }
-   	);
-    
-	$('.clickres').hover(
-	    function () { $(this).addClass('hilite'); }, 
-	    function () { $(this).removeClass('hilite'); }
-	);
-	
-	$("div:not(#schedule_list)").click(function () {
-	 	$("#schedule_list").hide();
-	 });
-  });
+		$("div:not(#schedule_list)").click(function () {
+		 	$("#schedule_list").hide();
+		 });
+	}
+}
  
   function ShowScheduleList()
   {

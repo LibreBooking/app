@@ -76,7 +76,7 @@ class ReservationSlot implements IReservationSlot
 	
 	public function Id()
 	{ 
-		return $this->_reservation->GetReservationId();	
+		return $this->_reservation->GetReferenceNumber();	
 	}
 	
 	public function __toString() 

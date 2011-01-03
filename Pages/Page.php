@@ -99,12 +99,12 @@ abstract class Page implements IPage
 		$this->Redirect($errorPageUrl);
 	}
 	
-	public function GetLastPage()
+	public function GetLastPage($defaultPage = '')
 	{
 		$referer = getenv("HTTP_REFERER");
 		if (empty($referer))
 		{
-			return "index.php";
+			return empty($defaultPage) ? Pages::LOGIN : $defaultPage;
 		}
 		
 		$scriptUrl = strtolower(Configuration::Instance()->GetScriptUrl());

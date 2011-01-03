@@ -31,6 +31,7 @@ class ScheduleReservation
 	private $_userId;
 	private $_firstName;
 	private $_lastName;
+	private $_referenceNumber;
 	
 	public function __construct($reservationId,
 							Date $startDate,
@@ -41,7 +42,8 @@ class ScheduleReservation
 							$resourceId,
 							$userId,
 							$firstName,
-							$lastName)
+							$lastName,
+							$referenceNumber)
 	{
 		$this->SetReservationId($reservationId);
 		$this->SetStartDate($startDate);
@@ -55,6 +57,7 @@ class ScheduleReservation
 		$this->SetUserId($userId);
 		$this->SetFirstName($firstName);
 		$this->SetLastName($lastName);
+		$this->SetReferenceNumber($referenceNumber);
 	}
 	
 	public function GetReservationId()
@@ -201,6 +204,16 @@ class ScheduleReservation
 	public function SetLastName($value)
 	{
 		$this->_lastName = $value;
+	}
+	
+	public function SetReferenceNumber($referenceNumber)
+	{
+		$this->_referenceNumber = $referenceNumber;
+	}
+	
+	public function GetReferenceNumber()
+	{
+		return $this->_referenceNumber;
 	}
 	
 	public function OccursOn(Date $date)

@@ -66,6 +66,23 @@
 
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="scripts/schedule.js"></script>
+
+<script type="text/javascript">
+
+var _reservationUrlTemplate = "{constant echo=Pages::RESERVATION}?{constant echo=QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]";
+
+{literal}
+$(document).ready(function() {
+
+	var scheduleOpts = {
+		reservationUrlTemplate: _reservationUrlTemplate
+	};
+
+	var schedule = new Schedule(scheduleOpts);
+	schedule.init();   
+});
+{/literal}
+</script>
  
 {control type="DatePickerSetupControl"
   	ControlId='datepicker' 

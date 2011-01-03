@@ -21,7 +21,8 @@ class ReservationFactory
 							$databaseRow[ColumnNames::RESOURCE_ID],
 							$databaseRow[ColumnNames::USER_ID],
 							$databaseRow[ColumnNames::FIRST_NAME],
-							$databaseRow[ColumnNames::LAST_NAME]
+							$databaseRow[ColumnNames::LAST_NAME],
+							$databaseRow[ColumnNames::REFERENCE_NUMBER]
 						);
 	}
 }

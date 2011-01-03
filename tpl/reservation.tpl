@@ -151,8 +151,14 @@
 <input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" />
 <input type="hidden" {formname key=reservation_action} value="{$ReservationAction}" />
 <div>
-	<input type="button" value="{translate key="Cancel"}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
-	<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key="Save"}" class="button save"></input>
+	<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='Create'}" class="button save"></input>
+	
+	<h4>Apply Updates To:</h4>
+	<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='ThisInstance'}" class="button save"></input>
+	<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='AllInstances'}" class="button save"></input>
+	<!--  <input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='FutureInstances'}" class="button save"></input>-->
+	
+	<input type="button" value="{translate key='Cancel'}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 </div>
 </form>
 

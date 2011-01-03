@@ -91,7 +91,11 @@ class ReservationSavePresenter
 		}
 		
 		$seriesUpdateScope = $this->_page->GetSeriesUpdateScope();
-		$reservationSeries->ApplyChangesTo($seriesUpdateScope);
+		
+		if ($action == ReservationAction::Update)
+		{
+			$reservationSeries->ApplyChangesTo($seriesUpdateScope);
+		}
 		
 		return $reservationSeries;
 	}
