@@ -87,12 +87,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 
 	protected function GetTemplateName()
 	{
-		return 'reservation.tpl';
-	}
-	
-	protected function GetReservationHeaderKey()
-	{
-		return 'EditReservationHeading';
+		return 'Reservation/edit.tpl';
 	}
 	
 	protected function GetReservationAction()

@@ -61,7 +61,7 @@ class SmartyTextbox
 		
 		if (!empty($this->smartyVariable))
 		{
-			$var = $this->smarty->get_template_vars($this->smartyVariable);
+			$var = $this->smarty->getTemplateVars($this->smartyVariable);
 			if (!empty($var))
 			{
 				$value = $var;

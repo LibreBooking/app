@@ -1,5 +1,4 @@
 {include file='globalheader.tpl' DisplayWelcome='false'}
-
 <style type="text/css">
 	@import url({$Path}css/reservation.css);
 </style>
@@ -8,7 +7,7 @@
 
 <form id="reservationForm" action="ajax/reservation_save.php" method="post">
 	<div class="reservationHeader">
-		<h3>{translate key=$ReservationHeaderKey args=$ReferenceNumber}</h3>
+		<h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
 	</div>
 	<div>
 		<ul class="no-style">
@@ -64,7 +63,9 @@
 					</select>
 					<div id="repeatEveryDiv" style="display:none;" class="days weeks months years">
 						<label>{translate key="RepeatEveryPrompt"}</label>
-						<select {formname key=repeat_every} class="pulldown" style="width:55px">{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}</select>
+						<select {formname key=repeat_every} class="pulldown" style="width:55px">
+							{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}
+						</select>
 						<span class="days">{translate key="days"}</span>
 						<span class="weeks">{translate key="weeks"}</span>
 						<span class="months">{translate key="months"}</span>
@@ -81,9 +82,9 @@
 						<input type="checkbox" id="repeatDay6" {formname key=repeat_saturday} />{translate key="DaySaturdaySingle"}
 					</div>
 					<div id="repeatOnMonthlyDiv" style="display:none;" class="months">
-						<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{constant echo='RepeatMonthlyType::DayOfMonth'}" id="repeatMonthDay" checked="checked" />
+						<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfMonth}" id="repeatMonthDay" checked="checked" />
 						<label for="repeatMonthDay">{translate key="repeatDayOfMonth"}</label>
-						<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{constant echo='RepeatMonthlyType::DayOfWeek'}" id="repeatMonthWeek" />
+						<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfWeek}" id="repeatMonthWeek" />
 						<label for="repeatMonthWeek">{translate key="repeatDayOfWeek"}</label>
 					</div>
 					<div id="repeatUntilDiv" style="display:none;">
@@ -99,12 +100,12 @@
         	</li>
         	<li class="rsv-box-l">
                 <label>{translate key="ReservationDescription"}<br />
-	                <textarea name="{constant echo='FormKeys::DESCRIPTION'}" class="input-area" rows="2" cols="52" tabindex="110">{$Description}</textarea>
+	                <textarea name="{FormKeys::DESCRIPTION}" class="input-area" rows="2" cols="52" tabindex="110">{$Description}</textarea>
                 </label>
         	</li>
 			<li class="rsv-pulldown">
                 <label>{translate key="ParticipantList"}<br />
-                        <select name="{constant echo='FormKeys::PARTICIPANT_LIST'}" class="pulldown" tabindex="120">
+                        <select name="{FormKeys::PARTICIPANT_LIST}" class="pulldown" tabindex="120">
                                 {html_options values=$ParticipantListValues output=$ParticipantListOutput}
                         </select>
 				<input type="button" value="{translate key="Add"}" class="button" tabindex="130"></input>
@@ -114,7 +115,7 @@
 			<!-- The selected participants should be printed here, above the Invitation list pulldown -->
 			<li class="rsv-pulldown">
                 <label>{translate key="InvitationList"}<br />
-                        <select name="{constant echo='FormKeys::INVITATION_LIST'}" class="pulldown" tabindex="150">
+                        <select name="{FormKeys::INVITATION_LIST}" class="pulldown" tabindex="150">
                                 {html_options values=$InvitationListValues output=$InvitationListOutput}
                         </select>
 				<input type="button" value="{translate key="Add"}" class="button" tabindex="160"></input>
@@ -151,13 +152,7 @@
 <input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" />
 <input type="hidden" {formname key=reservation_action} value="{$ReservationAction}" />
 <div>
-	<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='Create'}" class="button save"></input>
-	
-	<h4>Apply Updates To:</h4>
-	<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='ThisInstance'}" class="button save"></input>
-	<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='AllInstances'}" class="button save"></input>
-	<!--  <input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='FutureInstances'}" class="button save"></input>-->
-	
+	{block name="submitButtons"}<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='Create'}" class="button save"></input>{/block}
 	<input type="button" value="{translate key='Cancel'}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 </div>
 </form>
@@ -201,14 +196,7 @@
 <script type="text/javascript" src="scripts/js/jquery.form-2.43.js"></script>
 
 <script type="text/javascript">
-var _additionalResourceId = '{constant echo=FormKeys::ADDITIONAL_RESOURCES}';
-var _repeatType = '{$RepeatType}';
-var _repeatInterval = '{$RepeatInterval}';
-var _repeatMonthlyType = '{$RepeatMonthlyType}';
-var _repeatWeekdays = "[{foreach from=$RepeatWeekdays item=day}$day,{/foreach}]";
-var _returnUrl = "{$ReturnUrl}";
 
-{literal}
 $(document).ready(function() {
 	$('#BeginPeriod').change(function() {
 		// handle date change if start time > end time
@@ -216,12 +204,12 @@ $(document).ready(function() {
 	});
 
 	var reservationOpts = {
-		additionalResourceElementId: _additionalResourceId,
-		repeatType: _repeatType,
-		repeatInterval: _repeatInterval,
-		repeatMonthlyType: _repeatMonthlyType,
-		repeatWeekdays: _repeatWeekdays,
-		returnUrl: _returnUrl,
+		additionalResourceElementId: '{FormKeys::ADDITIONAL_RESOURCES}',
+		repeatType: '{$RepeatType}',
+		repeatInterval: '{$RepeatInterval}',
+		repeatMonthlyType: '{$RepeatMonthlyType}',
+		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}$day,{/foreach}],
+		returnUrl: '{$ReturnUrl}',
 	};
 
 	var reservation = new Reservation(reservationOpts);
@@ -264,8 +252,6 @@ function showResponse(responseText, statusText, xhr, $form)  {
     $('#creatingNotifiation').hide();
     $('#result').show();
 }
-
-{/literal}
 
 </script>
 

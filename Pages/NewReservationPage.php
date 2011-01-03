@@ -38,11 +38,6 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		return 'reservation.tpl';
 	}
 	
-	protected function GetReservationHeaderKey()
-	{
-		return 'CreateReservationHeading';
-	}
-	
 	protected function GetReservationAction()
 	{
 		return ReservationAction::Create;

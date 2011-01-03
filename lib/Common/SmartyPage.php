@@ -1,11 +1,12 @@
 <?php
+define('SMARTY_DIR', ROOT_DIR . 'lib/external/Smarty/');
+
 require_once(ROOT_DIR . 'lib/external/Smarty/Smarty.class.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Converters/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/SmartyControls/namespace.php');
-
 
 class SmartyPage extends Smarty
 {
@@ -28,6 +29,7 @@ class SmartyPage extends Smarty
 		$this->compile_dir = $base . 'tpl_c';
 		$this->config_dir = $base . 'configs';
 		$this->cache_dir = $base . 'cache';
+		$this->plugins_dir = SMARTY_DIR . '/plugins/';
 		
 		$this->compile_check = true;	// should be set to false in production
 		
@@ -44,18 +46,18 @@ class SmartyPage extends Smarty
 	
 	protected function RegisterFunctions()
 	{
-		$this->register_function('translate', array($this, 'SmartyTranslate'));
-		$this->register_function('formatdate', array($this, 'FormatDate'));
-		$this->register_function('constant', array($this, 'GetConstant'));
-		$this->register_function('html_link', array($this, 'PrintLink'));
-		$this->register_function('html_image', array($this, 'PrintImage'));
-		$this->register_function('control', array($this, 'DisplayControl'));
-		$this->register_function('validator', array($this, 'Validator'));
-		$this->register_function('textbox', array($this, 'Textbox'));
-		$this->register_function('object_html_options', array($this, 'HtmlOptions'));
-		$this->register_block('validation_group', array($this, 'ValidationGroup'));
-		$this->register_function('setfocus', array($this, 'SetFocus'));
-		$this->register_function('formname', array($this, 'GetFormName'));
+		$this->registerPlugin('function', 'translate', array($this, 'SmartyTranslate'));
+		$this->registerPlugin('function', 'formatdate', array($this, 'FormatDate'));
+//		$this->registerPlugin('function', 'constant', array($this, 'GetConstant'));
+		$this->registerPlugin('function', 'html_link', array($this, 'PrintLink'));
+		$this->registerPlugin('function', 'html_image', array($this, 'PrintImage'));
+		$this->registerPlugin('function', 'control', array($this, 'DisplayControl'));
+		$this->registerPlugin('function', 'validator', array($this, 'Validator'));
+		$this->registerPlugin('function', 'textbox', array($this, 'Textbox'));
+		$this->registerPlugin('function', 'object_html_options', array($this, 'ObjectHtmlOptions'));
+		$this->registerPlugin('block', 'validation_group', array($this, 'ValidationGroup'));
+		$this->registerPlugin('function', 'setfocus', array($this, 'SetFocus'));
+		$this->registerPlugin('function', 'formname', array($this, 'GetFormName'));
 		
 		$this->Validators = new PageValdiators();
 	}
@@ -126,17 +128,17 @@ class SmartyPage extends Smarty
 		return $params['date']->Format($this->Resources->GetDateFormat($key));
 	}
 	
-	public function GetConstant($params, &$smarty)
-	{
-		if (defined($params['echo'])) 
-		{
-			return eval('return ' . $params['echo'] . ';');
-		}
-		else
-		{
-			throw new Exception(sprintf('Constant %s is not defined', $params['echo']));	
-		}
-	}
+//	public function GetConstant($params, &$smarty)
+//	{
+//		if (defined($params['echo'])) 
+//		{
+//			return eval('return ' . $params['echo'] . ';');
+//		}
+//		else
+//		{
+//			throw new Exception(sprintf('Constant %s is not defined', $params['echo']));	
+//		}
+//	}
 	
 	public function PrintImage($params, &$smarty)
 	{
@@ -251,7 +253,7 @@ class SmartyPage extends Smarty
 		return $textbox->Html();
 	}
 	
-	public function HtmlOptions($params, &$smarty)
+	public function ObjectHtmlOptions($params, &$smarty)
 	{
 		$key = $params['key'];
 		$label = $params['label'];

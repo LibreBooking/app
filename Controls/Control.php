@@ -15,7 +15,7 @@ abstract class Control
 	
 	protected function Get($var)
 	{
-		return $this->smarty->get_template_vars($var);
+		return $this->smarty->getTemplateVars($var);
 	}
 	
 	abstract function PageLoad();

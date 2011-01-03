@@ -97,11 +97,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 	/**
 	 * @return string
 	 */
-	protected abstract function GetReservationHeaderKey();
-	
-	/**
-	 * @return string
-	 */
 	protected abstract function GetReservationAction();
 		
 	public function PageLoad()
@@ -109,7 +104,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->presenter->PageLoad();
 		$this->Set('ReturnUrl', $this->GetLastPage(Pages::SCHEDULE));
 		$this->Set('RepeatEveryOptions', range(1, 20));
-		$this->Set('ReservationHeaderKey', $this->GetReservationHeaderKey());
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		
 		$this->smarty->display($this->GetTemplateName());		

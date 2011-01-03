@@ -165,7 +165,7 @@ abstract class Page implements IPage
 	
 	protected function GetVar($var)
 	{
-		return $this->smarty->get_template_vars($var);
+		return $this->smarty->getTemplateVars($var);
 	}
 	
 	protected function GetForm($var)
