@@ -197,11 +197,11 @@ class Queries
 		'SELECT
 			*
 		FROM
-			reservation r
+			reservation_instances r
 		INNER JOIN	
 			reservation_series rs on r.series_id = rs.series_id
 		WHERE
-			r.reservation_id = @reservationId
+			r.reservation_instance_id = @reservationid AND
 			status_id <> 2';
 	
 	const GET_RESERVATION_FOR_EDITING = 
@@ -234,7 +234,7 @@ class Queries
 		FROM
 			reservation_users
 		WHERE
-			series_id = @reservationId';
+			series_id = @reservationid';
 	
 	const GET_RESERVATION_RESOURCES =
 		'SELECT
@@ -242,7 +242,7 @@ class Queries
 		FROM
 			reservation_resources
 		WHERE
-			series_id = @reservationId';
+			series_id = @seriesid';
 	
 	// TODO: Pass in "Deleted" status ID
 	const GET_RESERVATIONS_COMMAND =

@@ -139,13 +139,13 @@ class ReservationRepository implements IReservationRepository
 	public function LoadById($reservationId)
 	{
 		$getReservationCommand = new GetReservationByIdCommand($reservationId);
-		$getResourcesCommand = new GetReservationResourcesCommand($reservationId);
-		$getParticipantsCommand = new GetReservationParticipantsCommand($reservationId);
-		
+	
 		$reader = ServiceLocator::GetDatabase()->Query($getReservationCommand);
 		
 		if ($reader->NumRows() != 1)
 		{
+			echo 'num ' . $reader->NumRows();
+			Log::Debug("LoadById() - Reservation not found. ID: %s", $reservationId);
 			return null;
 		}
 		
@@ -183,6 +183,7 @@ class ReservationRepository implements IReservationRepository
 			$series->WithCurrentInstance($instance);
 		}
 		
+		$getResourcesCommand = new GetReservationResourcesCommand($seriesId);
 		$reader = ServiceLocator::GetDatabase()->Query($getResourcesCommand);
 		while ($row = $reader->GetRow())
 		{
@@ -196,6 +197,8 @@ class ReservationRepository implements IReservationRepository
 				$series->WithResource($resourceId);
 			}
 		}
+		
+		$getParticipantsCommand = new GetReservationParticipantsCommand($reservationId);
 		
 		$reader = ServiceLocator::GetDatabase()->Query($getParticipantsCommand);
 		while ($row = $reader->GetRow())

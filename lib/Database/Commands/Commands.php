@@ -221,10 +221,10 @@ class GetReservationParticipantsCommand extends SqlCommand
 
 class GetReservationResourcesCommand extends SqlCommand
 {
-	public function __construct($reservationId)
+	public function __construct($seriesId)
 	{
 		parent::__construct(Queries::GET_RESERVATION_RESOURCES);
-		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $reservationId));
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
 	}
 }
 

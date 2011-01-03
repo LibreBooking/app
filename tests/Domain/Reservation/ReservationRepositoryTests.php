@@ -62,7 +62,8 @@ class ReservationRepositoryTests extends TestBase
 							$r[ColumnNames::RESOURCE_ID],
 							$r[ColumnNames::USER_ID],
 							$r[ColumnNames::FIRST_NAME],
-							$r[ColumnNames::LAST_NAME]
+							$r[ColumnNames::LAST_NAME],
+							$r[ColumnNames::REFERENCE_NUMBER]
 						);
 		
 		$actual = ReservationFactory::CreateForSchedule($r);
@@ -300,7 +301,7 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertEquals($expected, $actualReservation);
 		
 		$getReservation = new GetReservationByIdCommand($reservationId);
-		$getResources = new GetReservationResourcesCommand($reservationId);
+		$getResources = new GetReservationResourcesCommand($seriesId);
 		$getParticipants = new GetReservationParticipantsCommand($reservationId);
 		
 		$this->assertTrue(in_array($getReservation, $this->db->_Commands));

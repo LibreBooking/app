@@ -29,7 +29,7 @@ class DailyLayoutTests extends TestBase
 		
 		$startDate = Date::Parse('2009-09-02 17:00:00', 'UTC');
 		$endDate = Date::Parse('2009-09-02 18:00:00', 'UTC');
-		$reservation = new ScheduleReservation(1, $startDate, $endDate, 1, 's', null, $resourceId, 100, 'f', 'l');
+		$reservation = new ScheduleReservation(1, $startDate, $endDate, 1, 's', null, $resourceId, 100, 'f', 'l', 'rn');
 		$reservations = array($reservation);		
 
 		$listing->expects($this->once())

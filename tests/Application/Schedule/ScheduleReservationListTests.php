@@ -515,7 +515,7 @@ class ScheduleReservationListTests extends TestBase
 		
 		$this->assertEquals($d1->Timestamp(), $d2->Timestamp());
 		
-		$res1 = new ScheduleReservation(1, Date::Parse('2009-10-09 22:00:00', 'UTC'), Date::Parse('2009-10-09 23:00:00', 'UTC'), 1, null, null, 1, 1, null, null);
+		$res1 = new ScheduleReservation(1, Date::Parse('2009-10-09 22:00:00', 'UTC'), Date::Parse('2009-10-09 23:00:00', 'UTC'), 1, null, null, 1, 1, null, null, null);
 		// 2009-10-09 17:00:00 - 2009-10-09 18:00:00 CST
 		
 		$this->assertTrue($res1->OccursOn(Date::Parse('2009-10-09', 'CST')));
@@ -529,7 +529,7 @@ class ScheduleReservationListTests extends TestBase
 		$d1Cst = $d1->ToTimezone('CST');
 		$d2Cst = $d2->ToTimezone('CST');
 		
-		$res1 = new ScheduleReservation(1, $d1, $d2, 1, null, null, 1, 1, null, null);
+		$res1 = new ScheduleReservation(1, $d1, $d2, 1, null, null, 1, 1, null, null, null);
 		
 		$this->assertFalse($res1->OccursOn(Date::Parse('2009-10-10', 'CST')));
 	}

@@ -64,7 +64,7 @@ class ReservationListingTests extends TestBase
 	
 	private function GetReservation($startDateString, $endDateString)
 	{
-		return new ScheduleReservation(1, Date::Parse($startDateString, 'UTC'), Date::Parse($endDateString, 'UTC'), 1, null, null, 1, 1, '', '');
+		return new ScheduleReservation(1, Date::Parse($startDateString, 'UTC'), Date::Parse($endDateString, 'UTC'), 1, null, null, 1, 1, '', '', '');
 	}
 }
 ?>
