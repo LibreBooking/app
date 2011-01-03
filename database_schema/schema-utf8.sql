@@ -640,7 +640,7 @@ CREATE TABLE  `reservation_instances` (
   KEY `end_date` (`end_date`),
   KEY `reference_number` (`reference_number`),
   KEY `series_id` (`series_id`),
-  CONSTRAINT `reservations_series` FOREIGN KEY (`series_id`) REFERENCES `reservation_series` (`series_id`) ON DELETE CASCADE,
+  CONSTRAINT `reservations_series` FOREIGN KEY (`series_id`) REFERENCES `reservation_series` (`series_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
