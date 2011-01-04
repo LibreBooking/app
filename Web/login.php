@@ -1,5 +1,5 @@
 <?php
-define('ROOT_DIR', './');
+define('ROOT_DIR', '../');
 
 require_once(ROOT_DIR . 'Pages/LoginPage.php');
 require_once(ROOT_DIR . 'Presenters/LoginPresenter.php');
