@@ -21,7 +21,7 @@ function Schedule(opts)
 					text: 'Loading...',
 					ajax: 
 					{
-				         url: options.summaryPopupUrl
+				         url: options.summaryPopupUrl,
 				         type: 'GET',
 				         data: { id: resid },
 				         dataType: 'html'

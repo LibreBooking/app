@@ -16,7 +16,7 @@ class ReservationPersistenceFactory implements IReservationPersistenceFactory
 	 */
 	public function Create($reservationAction)
 	{
-		if (!array_key_exists($reservationActionm, $this->services))
+		if (!array_key_exists($reservationAction, $this->services))
 		{
 			$this->AddCachedService($reservationAction);
 		}

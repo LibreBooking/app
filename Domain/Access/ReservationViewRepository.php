@@ -30,6 +30,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->ScheduleId = $row[ColumnNames::SCHEDULE_ID];
 			$reservationView->StartDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$reservationView->Title = $row[ColumnNames::RESERVATION_TITLE];	
+			$reservationView->SeriesId = $row[ColumnNames::SERIES_ID];	
 			
 			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
 			
@@ -39,7 +40,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->RepeatMonthlyType = $repeatConfig->MonthlyType;	
 			$reservationView->RepeatTerminationDate = $repeatConfig->TerminationDate;	
 		
-			$resources = $this->GetResources($reservationView->ReservationId);
+			$resources = $this->GetResources($reservationView->SeriesId);
 			$participants = $this->GetParticipants($reservationView->ReservationId);
 			
 			$reservationView->AdditionalResourceIds = $resources;
@@ -49,11 +50,11 @@ class ReservationViewRepository implements IReservationViewRepository
 		return $reservationView;
 	}
 	
-	private function GetResources($reservationId)
+	private function GetResources($seriesId)
 	{
 		$resources = array();
 		
-		$getResources = new GetReservationResourcesCommand($reservationId);
+		$getResources = new GetReservationResourcesCommand($seriesId);
 		
 		$result = ServiceLocator::GetDatabase()->Query($getResources);
 		
@@ -61,7 +62,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		{
 			$resources[] = $row[ColumnNames::RESOURCE_ID];
 		}
-		
+
 		return $resources;
 	}
 	
@@ -106,6 +107,7 @@ class NullReservationView extends ReservationView
 class ReservationView
 {
 	public $ReservationId;
+	public $SeriesId;
 	public $ReferenceNumber;
 	public $ResourceId;
 	public $ScheduleId;

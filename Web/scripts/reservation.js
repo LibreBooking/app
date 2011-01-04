@@ -28,7 +28,7 @@ function Reservation(opts)
 			AddResources();
 		});
 		
-		$('btnConfirmAddResources').click();
+		$('#btnConfirmAddResources').click();
 		
 		$('#repeatOptions').change(function() { 
 			ChangeRepeatOptions($(this));

@@ -18,7 +18,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		parent::__construct();
 		
-		die('dude ' . $this->server->GetForm(FormKeys::SERIES_UPDATE_SCOPE));
+		//('dude ' . $this->server->GetForm(FormKeys::SERIES_UPDATE_SCOPE));
 		$this->_presenter = new ReservationSavePresenter(
 														$this, 
 														new ReservationPersistenceFactory(),
