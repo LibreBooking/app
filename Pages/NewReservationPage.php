@@ -35,7 +35,7 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 
 	protected function GetTemplateName()
 	{
-		return 'Reservation/reservation.tpl';
+		return 'Reservation/create.tpl';
 	}
 	
 	protected function GetReservationAction()

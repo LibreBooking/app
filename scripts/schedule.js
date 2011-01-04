@@ -26,7 +26,13 @@ function Schedule(opts)
 				         data: { id: resid },
 				         dataType: 'html'
 			      	}
+				},
+				
+				show: 
+				{
+					delay: 700
 				}
+
 			});
 			
 			$(this).hover(
