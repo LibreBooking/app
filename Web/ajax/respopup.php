@@ -1,5 +1,5 @@
 <?php
-define('ROOT_DIR', '../');
+define('ROOT_DIR', '../../');
 
 require(ROOT_DIR . 'Pages/Ajax/ReservationPopupPage.php');
 

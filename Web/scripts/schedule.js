@@ -21,7 +21,7 @@ function Schedule(opts)
 					text: 'Loading...',
 					ajax: 
 					{
-				         url: 'respopup.php',
+				         url: options.summaryPopupUrl
 				         type: 'GET',
 				         data: { id: resid },
 				         dataType: 'html'

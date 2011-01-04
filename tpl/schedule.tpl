@@ -71,7 +71,8 @@
 $(document).ready(function() {
 
 	var scheduleOpts = {
-		reservationUrlTemplate: "{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]"
+		reservationUrlTemplate: "{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
+		summaryPopupUrl: "ajax/respopup.php"
 	};
 
 	var schedule = new Schedule(scheduleOpts);
