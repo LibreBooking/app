@@ -151,8 +151,11 @@
 <input type="hidden" {formname key=reservation_id} value="{$ReservationId}" />
 <input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" />
 <input type="hidden" {formname key=reservation_action} value="{$ReservationAction}" />
+<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}" />
 <div>
-	{block name="submitButtons"}<input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='Create'}" class="button save"></input>{/block}
+	{block name="submitButtons"}
+		<input type="submit" id="btnCreate" value="{translate key='Create'}" class="button save"></input>
+	{/block}
 	<input type="button" value="{translate key='Cancel'}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 </div>
 </form>
@@ -203,6 +206,10 @@ $(document).ready(function() {
 		// handle end period change if end hasn't been set
 	});
 
+	var scopeOptions = {
+		instance: '{SeriesUpdateScope::ThisInstance}'
+	};
+	
 	var reservationOpts = {
 		additionalResourceElementId: '{FormKeys::ADDITIONAL_RESOURCES}',
 		repeatType: '{$RepeatType}',
@@ -210,6 +217,7 @@ $(document).ready(function() {
 		repeatMonthlyType: '{$RepeatMonthlyType}',
 		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}$day,{/foreach}],
 		returnUrl: '{$ReturnUrl}',
+		scopeOpts: scopeOptions,
 	};
 
 	var reservation = new Reservation(reservationOpts);

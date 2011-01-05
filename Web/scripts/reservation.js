@@ -35,6 +35,10 @@ function Reservation(opts)
 		});
 		
 		InitializeRepeatOptions();
+		
+		$('#btnUpdateThisInstance').click(function() {
+			ChangeUpdateScope(options.scopeOpts.instance);
+		});
 	}
 	
 	// pre-submit callback 
@@ -140,6 +144,11 @@ function Reservation(opts)
     	}
 	}
 
+	var ChangeUpdateScope = function(updateScopeValue)
+	{
+		$('#hdnSeriesUpdateScope').val(updateScopeValue);
+	};
+	
 	var InitialzeCheckboxes = function(dialogBoxId, displayDivId)
 	{
 		var selectedItems = $.makeArray($(displayDivId + ' p').text());
