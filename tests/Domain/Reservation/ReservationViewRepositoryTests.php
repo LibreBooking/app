@@ -32,6 +32,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$description = 'de';
 		$repeatType = RepeatType::Yearly;
 		$repeatOptions = 'interval=5';
+		$seriesId = 1000;
 		
 		$resourceId1 = 88;
 		$resourceId2 = 99;
@@ -40,7 +41,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$userId2 = 97;
 		
 		$getReservationForEditingCommand = new GetReservationForEditingCommand($referenceNumber);
-		$getReservationResources = new GetReservationResourcesCommand($reservationId);
+		$getReservationResources = new GetReservationResourcesCommand($seriesId);
 		$getParticpants = new GetReservationParticipantsCommand($reservationId);
 
 		$reservationRow = array(
@@ -55,6 +56,7 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESERVATION_DESCRIPTION => $description,
 			ColumnNames::REPEAT_TYPE => $repeatType,
 			ColumnNames::REPEAT_OPTIONS => $repeatOptions,
+			ColumnNames::SERIES_ID => $seriesId,
 		);
 		
 		$resourceRows = array(
@@ -94,6 +96,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->Title = $title;
 		$expectedView->RepeatType = $repeatType;
 		$expectedView->RepeatInterval = 5;
+		$expectedView->SeriesId = $seriesId;
 		
 		$this->assertEquals($expectedView, $reservationView);
 	}

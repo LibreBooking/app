@@ -20,7 +20,7 @@ class RepeatOptionsTests extends TestBase
 		$duration = DateRange::Create('2010-01-12', '2010-02-12', 'UTC');
 
 		$repeatOptions = new RepeatNone();
-		$repeatedDates = $repeatOptions->GetDates();
+		$repeatedDates = $repeatOptions->GetDates($duration);
 		
 		$this->assertEquals(0, count($repeatedDates));
 	}
@@ -34,8 +34,8 @@ class RepeatOptionsTests extends TestBase
 		$interval = 2;
 		$terminiationDate = Date::Parse('2010-04-02', 'CST');
 		
-		$repeatOptions = new RepeatDaily($interval, $terminiationDate, $duration);
-		$repeatedDates = $repeatOptions->GetDates();
+		$repeatOptions = new RepeatDaily($interval, $terminiationDate);
+		$repeatedDates = $repeatOptions->GetDates($duration);
 		
 		$totalDates = 8 + 15 + 1;
 		$firstDate = DateRange::Create('2010-02-14 08:30', '2010-02-14 10:30', 'CST');
@@ -57,8 +57,8 @@ class RepeatOptionsTests extends TestBase
 		$terminiationDate = Date::Parse('2010-04-01', $timezone);
 		$daysOfWeek = array(1, 3, 5);
 		
-		$repeatOptions = new RepeatWeekly($interval, $terminiationDate, $duration, $daysOfWeek);
-		$repeatedDates = $repeatOptions->GetDates();
+		$repeatOptions = new RepeatWeekly($interval, $terminiationDate, $daysOfWeek);
+		$repeatedDates = $repeatOptions->GetDates($duration);
 		
 		$totalDates = 10;
 		$firstDate = DateRange::Create('2010-02-12 08:30', '2010-02-12 10:30', $timezone);
@@ -87,8 +87,8 @@ class RepeatOptionsTests extends TestBase
 		$terminiationDate = Date::Parse('2010-04-01', $timezone);
 		$daysOfWeek = array(3);
 		
-		$repeatOptions = new RepeatWeekly($interval, $terminiationDate, $duration, $daysOfWeek);
-		$repeatedDates = $repeatOptions->GetDates();
+		$repeatOptions = new RepeatWeekly($interval, $terminiationDate, $daysOfWeek);
+		$repeatedDates = $repeatOptions->GetDates($duration);
 		
 		$totalDates = 7;
 		$firstDate = DateRange::Create('2010-02-17 08:30', '2010-02-17 10:30', $timezone);
@@ -111,8 +111,8 @@ class RepeatOptionsTests extends TestBase
 		$interval = 1;
 		$terminiationDate = Date::Parse('2010-10-01', $timezone);
 		
-		$repeatOptions = new RepeatDayOfMonth($interval, $terminiationDate, $duration);
-		$repeatedDates = $repeatOptions->GetDates();
+		$repeatOptions = new RepeatDayOfMonth($interval, $terminiationDate);
+		$repeatedDates = $repeatOptions->GetDates($duration);
 		
 		$totalDates = 7;
 		$firstDate = DateRange::Create('2010-03-11 08:30', '2010-03-11 10:30', $timezone);
@@ -135,8 +135,8 @@ class RepeatOptionsTests extends TestBase
 		$interval = 1;
 		$terminiationDate = Date::Parse('2010-10-01', $timezone);
 		
-		$repeatOptions = new RepeatDayOfMonth($interval, $terminiationDate, $duration);
-		$repeatedDates = $repeatOptions->GetDates();
+		$repeatOptions = new RepeatDayOfMonth($interval, $terminiationDate);
+		$repeatedDates = $repeatOptions->GetDates($duration);
 		
 		$totalDates = 3;
 		$firstDate = DateRange::Create('2010-05-31 08:30', '2010-05-31 10:30', $timezone);
@@ -160,8 +160,8 @@ class RepeatOptionsTests extends TestBase
 		$interval = 1;
 		$terminiationDate = Date::Parse('2010-10-01', $timezone);
 		
-		$repeatOptions = new RepeatWeekDayOfMonth($interval, $terminiationDate, $duration);
-		$repeatedDates = $repeatOptions->GetDates();
+		$repeatOptions = new RepeatWeekDayOfMonth($interval, $terminiationDate);
+		$repeatedDates = $repeatOptions->GetDates($duration);
 	
 		$totalDates = 6;
 		$firstDate = DateRange::Create('2010-04-05 08:30', '2010-04-05 10:30', $timezone);
@@ -185,8 +185,8 @@ class RepeatOptionsTests extends TestBase
 		$interval = 1;
 		$terminiationDate = Date::Parse('2010-10-01', $timezone);
 		
-		$repeatOptions = new RepeatWeekDayOfMonth($interval, $terminiationDate, $duration);
-		$repeatedDates = $repeatOptions->GetDates();
+		$repeatOptions = new RepeatWeekDayOfMonth($interval, $terminiationDate);
+		$repeatedDates = $repeatOptions->GetDates($duration);
 	
 		$totalDates = 2;
 		$firstDate = DateRange::Create('2010-06-30 08:30', '2010-06-30 10:30', $timezone);
@@ -207,8 +207,8 @@ class RepeatOptionsTests extends TestBase
 		$interval = 2;
 		$terminiationDate = Date::Parse('2016-03-30', $timezone);
 		
-		$repeatOptions = new RepeatYearly($interval, $terminiationDate, $duration);
-		$repeatedDates = $repeatOptions->GetDates();
+		$repeatOptions = new RepeatYearly($interval, $terminiationDate);
+		$repeatedDates = $repeatOptions->GetDates($duration);
 	
 		$totalDates = 2;
 		$firstDate = DateRange::Create('2012-03-31 08:30', '2012-03-31 10:30', $timezone);
@@ -223,7 +223,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesRepeatDailyOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('daily', 1, null, null, null, null);
+		$options = $factory->Create('daily', 1, null, null, null);
 		
 		$this->assertInstanceOf('RepeatDaily', $options);
 	}
@@ -231,7 +231,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesRepeatWeeklyOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('weekly', 1, null, null, array(), null);
+		$options = $factory->Create('weekly', 1, null, array(), null);
 		
 		$this->assertInstanceOf('RepeatWeekly', $options);
 	}
@@ -240,7 +240,7 @@ class RepeatOptionsTests extends TestBase
 	{
 		$intial = DateRange::Create('2010-01-01', '2010-01-01', 'cst');
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('monthly', 1, null, $intial, null, 'dayOfMonth');
+		$options = $factory->Create('monthly', 1, null, null, 'dayOfMonth');
 		
 		$this->assertInstanceOf('RepeatDayOfMonth', $options);
 	}
@@ -249,7 +249,7 @@ class RepeatOptionsTests extends TestBase
 	{
 		$intial = DateRange::Create('2010-01-01', '2010-01-01', 'cst');
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('monthly', 1, null, $intial, null, null);
+		$options = $factory->Create('monthly', 1, null, null, null);
 		
 		$this->assertInstanceOf('RepeatWeekDayOfMonth', $options);
 	}
@@ -257,7 +257,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesYearlyRepeatOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('yearly', 1, null, null, null, null);
+		$options = $factory->Create('yearly', 1, null, null, null);
 		
 		$this->assertInstanceOf('RepeatYearly', $options);
 	}
@@ -265,7 +265,7 @@ class RepeatOptionsTests extends TestBase
 	public function testFactoryCreatesNoRepeatOptions()
 	{
 		$factory = new RepeatOptionsFactory();
-		$options = $factory->Create('none', 1, null, null, null, null);
+		$options = $factory->Create('none', 1, null, null, null);
 		
 		$this->assertInstanceOf('RepeatNone', $options);
 	}
@@ -281,7 +281,7 @@ class RepeatOptionsTests extends TestBase
 		$this->assertEquals(RepeatType::None, $config->Type);
 		
 		// daily
-		$daily = new RepeatDaily($interval, $terminationDate, null);
+		$daily = new RepeatDaily($interval, $terminationDate);
 		$config = RepeatConfiguration::Create($daily->RepeatType(), $daily->ConfigurationString());
 		$this->assertEquals(RepeatType::Daily, $config->Type);
 		$this->assertEquals(10, $config->Interval);
@@ -289,28 +289,28 @@ class RepeatOptionsTests extends TestBase
 		
 		// weekly
 		$weekdays = array(1, 3, 4, 5);
-		$weekly = new RepeatWeekly($interval, $terminationDate, null, $weekdays);
+		$weekly = new RepeatWeekly($interval, $terminationDate, $weekdays);
 		$config = RepeatConfiguration::Create($weekly->RepeatType(), $weekly->ConfigurationString());
 		$this->assertEquals(RepeatType::Weekly, $config->Type);
 		$this->assertEquals($terminationDate, $config->TerminationDate);
 		$this->assertEquals($weekdays, $config->Weekdays);
 		
 		// day of month
-		$dayOfMonth = new RepeatDayOfMonth($interval, $terminationDate, null);
+		$dayOfMonth = new RepeatDayOfMonth($interval, $terminationDate);
 		$config = RepeatConfiguration::Create($dayOfMonth->RepeatType(), $dayOfMonth->ConfigurationString());
 		$this->assertEquals(RepeatType::Monthly, $config->Type);
 		$this->assertEquals($terminationDate, $config->TerminationDate);
 		$this->assertEquals(RepeatMonthlyType::DayOfMonth, $config->MonthlyType);
 		
 		// weekday of month
-		$weekOfMonth = new RepeatWeekDayOfMonth($interval, $terminationDate, null);
+		$weekOfMonth = new RepeatWeekDayOfMonth($interval, $terminationDate);
 		$config = RepeatConfiguration::Create($weekOfMonth->RepeatType(), $weekOfMonth->ConfigurationString());
 		$this->assertEquals(RepeatType::Monthly, $config->Type);
 		$this->assertEquals($terminationDate, $config->TerminationDate);
 		$this->assertEquals(RepeatMonthlyType::DayOfWeek, $config->MonthlyType);
 		
 		// yearly
-		$yearly = new RepeatYearly($interval, $terminationDate, null);
+		$yearly = new RepeatYearly($interval, $terminationDate);
 		$config = RepeatConfiguration::Create($yearly->RepeatType(), $yearly->ConfigurationString());
 		$this->assertEquals(RepeatType::Yearly, $config->Type);
 		$this->assertEquals(10, $config->Interval);

@@ -42,6 +42,11 @@ class Reservation
 		return $this->endDate;
 	}
 	
+	public function Duration()
+	{
+		return new DateRange($this->StartDate(), $this->EndDate());
+	}
+	
 	/**
 	 * @var ReservationSeries
 	 */
@@ -207,6 +212,18 @@ class ReservationSeries implements ISeriesDistinction
 		$this->ApplyChangesTo(SeriesUpdateScope::FullSeries);	
 	}
 	
+	public static function Create(
+								$userId, 
+								$resourceId, 
+								$scheduleId, 
+								$title, 
+								$description, 
+								$duration, 
+								$repeatOptions)
+	{
+		throw new Exception('not implemented');
+	}
+	
 	/**
 	 * @param int $userId
 	 * @param int $resourceId
@@ -237,6 +254,7 @@ class ReservationSeries implements ISeriesDistinction
 	 */
 	public function Repeats(IRepeatOptions $repeatOptions)
 	{
+		throw new Exception("need to get this to work.  pass required stuff on constructor");
 		$this->_repeatOptions = $repeatOptions;
 		
 		$dates = $repeatOptions->GetDates();

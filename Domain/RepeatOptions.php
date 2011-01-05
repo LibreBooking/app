@@ -6,9 +6,10 @@ interface IRepeatOptions
 	/**
 	 * Gets array of DateRange objects
 	 * 
+	 * @param DateRange $startingDates
 	 * @return array[int]DateRange
 	 */
-	function GetDates();
+	function GetDates(DateRange $startingDates);
 	
 	function ConfigurationString();
 	
@@ -28,20 +29,13 @@ abstract class RepeatOptionsAbstract implements IRepeatOptions
 	protected $_terminationDate;
 	
 	/**
-	 * @var DateRange
-	 */
-	protected $_duration;
-	
-	/**
 	 * @param int $interval
 	 * @param Date $TerminationDate
-	 * @param DateRange $duration
 	 */
-	protected function __construct($interval, $terminationDate, $duration)
+	protected function __construct($interval, $terminationDate)
 	{
 		$this->_interval = $interval;
 		$this->_terminationDate = $terminationDate;
-		$this->_duration = $duration;
 	}
 	
 	public function ConfigurationString() 
@@ -49,6 +43,7 @@ abstract class RepeatOptionsAbstract implements IRepeatOptions
 		return sprintf("interval=%s|termination=%s", $this->_interval, $this->_terminationDate->ToDatabase());
 	}
 }
+
 class RepeatType
 {
 	const None = 'none';
@@ -66,7 +61,7 @@ class RepeatMonthlyType
 
 class RepeatNone implements IRepeatOptions
 {
-	public function GetDates()
+	public function GetDates(DateRange $startingDate)
 	{
 		return array();
 	}
@@ -87,18 +82,17 @@ class RepeatDaily extends RepeatOptionsAbstract
 	/**
 	 * @param int $interval
 	 * @param Date $terminationDate
-	 * @param DateRange $duration
 	 */
-	public function __construct($interval, $terminationDate, $duration)
+	public function __construct($interval, $terminationDate)
 	{
-		parent::__construct($interval, $terminationDate, $duration);
+		parent::__construct($interval, $terminationDate);
 	}
 	
-	public function GetDates()
+	public function GetDates(DateRange $startingRange)
 	{
 		$dates = array();
-		$startDate = $this->_duration->GetBegin()->AddDays($this->_interval);
-		$endDate = $this->_duration->GetEnd()->AddDays($this->_interval);
+		$startDate = $startingRange->GetBegin()->AddDays($this->_interval);
+		$endDate = $startingRange->GetEnd()->AddDays($this->_interval);
 		
 		while ($startDate->Compare($this->_terminationDate) <= 0)
 		{
@@ -126,23 +120,22 @@ class RepeatWeekly extends RepeatOptionsAbstract
 	/**
 	 * @param int $interval
 	 * @param Date $terminationDate
-	 * @param DateRange $duration
 	 * @param array $daysOfWeek
 	 */
-	public function __construct($interval, $terminationDate, $duration, $daysOfWeek)
+	public function __construct($interval, $terminationDate, $daysOfWeek)
 	{
-		parent::__construct($interval, $terminationDate, $duration);
+		parent::__construct($interval, $terminationDate);
 		
 		$this->_daysOfWeek = $daysOfWeek;
 		sort($this->_daysOfWeek);
 	}
 	
-	public function GetDates()
+	public function GetDates(DateRange $startingRange)
 	{
 		$dates = array();
 		
-		$startDate = $this->_duration->GetBegin();
-		$endDate = $this->_duration->GetEnd();
+		$startDate = $startingRange->GetBegin();
+		$endDate = $startingRange->GetEnd();
 		
 		$startWeekday = $startDate->Weekday();
 		foreach ($this->_daysOfWeek as $weekday)
@@ -156,8 +149,8 @@ class RepeatWeekly extends RepeatOptionsAbstract
 			}
 		}
 		
-		$rawStart =  $this->_duration->GetBegin();
-		$rawEnd =  $this->_duration->GetEnd();
+		$rawStart =  $startingRange->GetBegin();
+		$rawEnd =  $startingRange->GetEnd();
 		
 		$week = 1;
 		
@@ -200,22 +193,21 @@ class RepeatDayOfMonth extends RepeatOptionsAbstract
 	/**
 	 * @param int $interval
 	 * @param Date $terminationDate
-	 * @param DateRange $duration
 	 */
-	public function __construct($interval, $terminationDate, $duration)
+	public function __construct($interval, $terminationDate)
 	{
-		parent::__construct($interval, $terminationDate, $duration);
+		parent::__construct($interval, $terminationDate);
 	}
 	
-	public function GetDates()
+	public function GetDates(DateRange $startingRange)
 	{
 		$dates = array();
 		
-		$startDate = $this->_duration->GetBegin();
-		$endDate = $this->_duration->GetEnd();
+		$startDate = $startingRange->GetBegin();
+		$endDate = $startingRange->GetEnd();
 
-		$rawStart = $this->_duration->GetBegin();
-		$rawEnd = $this->_duration->GetEnd();
+		$rawStart = $startingRange->GetBegin();
+		$rawEnd = $startingRange->GetEnd();
 		
 		$monthsFromStart = 1;
 		while ($startDate->Compare($this->_terminationDate) <= 0)
@@ -284,21 +276,20 @@ class RepeatWeekDayOfMonth extends RepeatOptionsAbstract
 	/**
 	 * @param int $interval
 	 * @param Date $terminationDate
-	 * @param DateRange $duration
 	 */
-	public function __construct($interval, $terminationDate, $duration)
+	public function __construct($interval, $terminationDate)
 	{
-		parent::__construct($interval, $terminationDate, $duration);
+		parent::__construct($interval, $terminationDate);
 	}
 	
-	public function GetDates()
+	public function GetDates(DateRange $startingRange)
 	{
 		$dates = array();
 		
-		$startDate = $this->_duration->GetBegin();
-		$endDate = $this->_duration->GetEnd();
+		$startDate = $startingRange->GetBegin();
+		$endDate = $startingRange->GetEnd();
 		
-		$durationStart = $this->_duration->GetBegin();
+		$durationStart = $startingRange->GetBegin();
 		$firstWeekdayOfMonth = date('w', mktime(0, 0, 0, $durationStart->Month(), 1, $durationStart->Year()));
 		
 		$weekNumber = $this->GetWeekNumber($durationStart, $firstWeekdayOfMonth);
@@ -380,18 +371,17 @@ class RepeatYearly extends RepeatOptionsAbstract
 	/**
 	 * @param int $interval
 	 * @param Date $terminationDate
-	 * @param DateRange $duration
 	 */
-	public function __construct($interval, $terminationDate, $duration)
+	public function __construct($interval, $terminationDate)
 	{
-		parent::__construct($interval, $terminationDate, $duration);
+		parent::__construct($interval, $terminationDate);
 	}
 	
-	public function GetDates()
+	public function GetDates(DateRange $startingRange)
 	{
 		$dates = array();
-		$begin = $this->_duration->GetBegin();		
-		$end = $this->_duration->GetEnd();
+		$begin = $startingRange->GetBegin();		
+		$end = $startingRange->GetEnd();
 		
 		$nextStartYear = $begin->Year();
 		$nextEndYear = $end->Year();
@@ -428,28 +418,27 @@ class RepeatOptionsFactory
 	 * @param string $repeatType must be option in RepeatType enum
 	 * @param int $interval
 	 * @param Date $terminationDate
-	 * @param DateRange $initialReservationDates
 	 * @param array $weekdays
 	 * @param string $monthlyType
 	 * @return IRepeatOptions
 	 */
-	public function Create($repeatType, $interval, $terminationDate, $initialReservationDates, $weekdays, $monthlyType)
+	public function Create($repeatType, $interval, $terminationDate, $weekdays, $monthlyType)
 	{
 		switch ($repeatType)
 		{
 			case RepeatType::Daily : 
-				return new RepeatDaily($interval, $terminationDate, $initialReservationDates);
+				return new RepeatDaily($interval, $terminationDate);
 				
 			case RepeatType::Weekly : 
-				return new RepeatWeekly($interval, $terminationDate, $initialReservationDates, $weekdays);
+				return new RepeatWeekly($interval, $terminationDate, $weekdays);
 				
 			case RepeatType::Monthly : 
 				return ($monthlyType == RepeatMonthlyType::DayOfMonth) ? 
-					new RepeatDayOfMonth($interval, $terminationDate, $initialReservationDates) : 
-					new RepeatWeekDayOfMonth($interval, $terminationDate, $initialReservationDates);
+					new RepeatDayOfMonth($interval, $terminationDate) : 
+					new RepeatWeekDayOfMonth($interval, $terminationDate);
 					
 			case RepeatType::Yearly : 
-				return new RepeatYearly($interval, $terminationDate, $initialReservationDates);
+				return new RepeatYearly($interval, $terminationDate);
 		}
 		
 		return new RepeatNone();

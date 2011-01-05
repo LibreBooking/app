@@ -29,11 +29,11 @@ class SmartyEmail extends SmartyPage
 	
 	protected function RegisterFunctions()
 	{
-		$this->register_function('translate', array($this, 'SmartyTranslate'));
-		$this->register_function('formatdate', array($this, 'FormatDate'));
-		$this->register_function('constant', array($this, 'GetConstant'));
-		$this->register_function('html_link', array($this, 'PrintLink'));
-		$this->register_function('html_image', array($this, 'PrintImage'));
+		$this->registerPlugin('function', 'translate', array($this, 'SmartyTranslate'));
+		$this->registerPlugin('function', 'formatdate', array($this, 'FormatDate'));
+		$this->registerPlugin('function', 'constant', array($this, 'GetConstant'));
+		$this->registerPlugin('function', 'html_link', array($this, 'PrintLink'));
+		$this->registerPlugin('function', 'html_image', array($this, 'PrintImage'));
 	}
 	
 	public function FetchTemplate($templateName)

@@ -65,6 +65,8 @@ class ReservationSavePresenter
 		// accessories?, participants, invitations
 		// reminder
 
+		$reservationSeries = ReservationSeries::Create();
+		
 		$userId = $this->_page->GetUserId();
 		$resourceId = $this->_page->GetResourceId();
 		$scheduleId = $this->_page->GetScheduleId();
@@ -160,21 +162,21 @@ class ReservationSavePresenter
 		return $this->duration;
 	}
 	
-	/**
-	 * @param DateRange $initialReservationDates
+	/**s
 	 * @return IRepeatOptions
 	 */
-	public function GetRepeatOptions($initialReservationDates)
+	public function GetRepeatOptions()
 	{
+		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 		$factory = new RepeatOptionsFactory();
 		
 		$repeatType = $this->_page->GetRepeatType();
 		$interval = $this->_page->GetRepeatInterval();
 		$weekdays = $this->_page->GetRepeatWeekdays();
 		$monthlyType = $this->_page->GetRepeatMonthlyType();
-		$terminationDate = Date::Parse($this->_page->GetRepeatTerminationDate(), $initialReservationDates->GetBegin()->Timezone());
+		$terminationDate = Date::Parse($this->_page->GetRepeatTerminationDate(), $timezone);
 		
-		return $factory->Create($repeatType, $interval, $terminationDate, $initialReservationDates, $weekdays, $monthlyType);
+		return $factory->Create($repeatType, $interval, $terminationDate, $weekdays, $monthlyType);
 	}
 }
 ?>

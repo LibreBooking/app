@@ -133,9 +133,9 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		return $resources;
 	}
 
-	public function GetRepeatOptions($initialReservationDates)
+	public function GetRepeatOptions()
 	{
-		return $this->_presenter->GetRepeatOptions($initialReservationDates);
+		return $this->_presenter->GetRepeatOptions();
 	}
 	
 	public function GetRepeatType()
@@ -271,10 +271,9 @@ interface IReservationSavePage
 	public function GetRepeatTerminationDate();
 	
 	/**
-	 * @param DateRange $initialReservationDates
 	 * @return IRepeatOptions
 	 */
-	public function GetRepeatOptions($initialReservationDates);
+	public function GetRepeatOptions();
 	
 	/**
 	 * @return SeriesUpdateScope

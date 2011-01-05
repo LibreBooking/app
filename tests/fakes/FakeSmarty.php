@@ -6,7 +6,7 @@ class FakeSmarty extends Smarty
 	public $_LastVar;
 	public $_Value;
 	
-	function get_template_vars($varname)
+	function getTemplateVars($varname)
 	{
 		$this->_LastVar = $varname;
 		

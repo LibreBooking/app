@@ -117,10 +117,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservationDates = new DateRange($start, $end);
 		$twoRepetitions = new RepeatWeekly(1, 
 						$start->AddDays(14), 
-						$reservationDates, 
 						array($start->Weekday()));
 		
-		$repeatDates = $twoRepetitions->GetDates();
+		$repeatDates = $twoRepetitions->GetDates($reservationDates);
 		
 		$reservation = new ReservationSeries();
 		$reservation->UpdateDuration($reservationDates);

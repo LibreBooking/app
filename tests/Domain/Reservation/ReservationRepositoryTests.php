@@ -2,6 +2,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+require_once(ROOT_DIR . 'tests/Domain/Reservation/ExistingReservationSeriesBuilder.php');
 
 class ReservationRepositoryTests extends TestBase
 {
@@ -317,7 +318,7 @@ class ReservationRepositoryTests extends TestBase
 		$title = "new title";
 		$description = "new description";
 		
-		$builder = new ExisitingReservationSeriesBuilder();
+		$builder = new ExistingReservationSeriesBuilder();
 		
 		$existingReservation = $builder->Build();
 		
@@ -342,7 +343,7 @@ class ReservationRepositoryTests extends TestBase
 		$title = "new title";
 		$description = "new description";
 		
-		$builder = new ExisitingReservationSeriesBuilder();
+		$builder = new ExistingReservationSeriesBuilder();
 		
 		$existingReservation = $builder->Build();
 		$existingReservation->Repeats(new RepeatDaily(1, Date::Now(), new TestDateRange()));
@@ -376,6 +377,8 @@ class ReservationRepositoryTests extends TestBase
 	
 	public function testAlteringFutureInstancesCreatesNewSeriesAnMovesExistingReservationsThere()
 	{
+		$this->markTestIncomplete('not sure if this is needed just yet');
+		
 		$existingSeriesId = 10909;
 		$newSeriesId = 10910;
 		$userId = 10;
@@ -384,7 +387,7 @@ class ReservationRepositoryTests extends TestBase
 		$title = "new title";
 		$description = "new description";
 		
-		$builder = new ExisitingReservationSeriesBuilder();
+		$builder = new ExistingReservationSeriesBuilder();
 
 		$existingReservation = $builder->Build();
 		$existingReservation->WithId($existingSeriesId);
@@ -518,54 +521,4 @@ class ReservationUserRow
 		$this->rows[] = array(ColumnNames::SERIES_ID => $this->seriesId, ColumnNames::USER_ID => $userId, ColumnNames::RESERVATION_USER_LEVEL => $levelId);
 	}
 }
-
-class ExisitingReservationSeriesBuilder
-{
-	/**
-	 * @var ExistingReservationSeries
-	 */
-	private $series;
-	
-	public function __construct()
-	{
-		$series = new ExistingReservationSeries();
-		$series->WithCurrentInstance(new Reservation($series, new DateRange(Date::Now(), Date::Now())));
-		$series->WithDescription('description');
-		$series->WithOwner(1);
-		$series->WithPrimaryResource(2);
-		$series->WithRepeatOptions(new RepeatNone());
-		$series->WithResource(3);
-		$series->WithSchedule(4);
-		$series->WithTitle('title');
-		
-		$this->series = $series;
-	}
-	
-	/**
-	 * @param Reservation $reservation
-	 * @return ExisitingReservationSeriesBuilder
-	 */
-	public function WithCurrentInstance($reservation)
-	{
-		$this->series->WithCurrentInstance($reservation);
-		return $this;
-	}
-	
-	/**
-	 * @return ExistingReservationSeries
-	 */
-	public function Build()
-	{
-		return $this->series;
-	}
-}
-
-class TestDateRange extends DateRange
-{
-	public function __construct()
-	{
-		parent::__construct(Date::Now(), Date::Now());
-	}
-}
-
 ?>
