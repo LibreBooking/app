@@ -3,6 +3,7 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'tests/Domain/Reservation/ExistingReservationSeriesBuilder.php');
+require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class ReservationRepositoryTests extends TestBase
 {
@@ -97,6 +98,7 @@ class ReservationRepositoryTests extends TestBase
 		$endCst = '2010-02-16 17:00';
 		$duration = DateRange::Create($startCst, $endCst, 'CST');
 		$levelId = ReservationUserLevel::OWNER;
+		$repeatOptions = new RepeatNone();
 		
 		$startUtc = Date::Parse($startCst, 'CST')->ToUtc();
 		$endUtc = Date::Parse($endCst, 'CST')->ToUtc();
@@ -107,11 +109,15 @@ class ReservationRepositoryTests extends TestBase
 		$this->db->_ExpectedInsertIds[0] = $seriesId;
 		$this->db->_ExpectedInsertIds[1] = $reservationId;
 		
-		$reservation = new ReservationSeries();
-		$reservation->Update($userId, $resourceId, $scheduleId, $title, $description);
-		$reservation->UpdateDuration($duration);
+		$reservation = ReservationSeries::Create(
+									$userId, 
+									$resourceId, 
+									$scheduleId, 
+									$title, 
+									$description, 
+									$duration,
+									$repeatOptions);
 		
-		$repeatOptions = new RepeatNone();
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatOptionsString = $repeatOptions->ConfigurationString();
 		$referenceNumber = $reservation->GetInstance($duration->GetBegin())->ReferenceNumber();
@@ -173,14 +179,17 @@ class ReservationRepositoryTests extends TestBase
 		$dates[] = new DateRange($startUtc2, $endUtc2, $timezone);
 		$dates[] = new DateRange($startUtc3, $endUtc3, $timezone);
 		
+		$duration = new TestDateRange();
+		
 		$repeats = $this->getMock('IRepeatOptions');
+	
 		$repeats->expects($this->once())
 			->method('GetDates')
+			->with($this->anything())
 			->will($this->returnValue($dates));
+			
+		$reservation = ReservationSeries::Create(1, 1, 1, null, null, $duration, $repeats);
 
-		$reservation = new ReservationSeries();
-		$reservation->Repeats($repeats);
-		
 		$this->db->_ExpectedInsertIds[0] = $reservationSeriesId;
 		$this->db->_ExpectedInsertIds[1] = $reservationId;
 		$this->db->_ExpectedInsertIds[2] = $repeatId1;
@@ -217,7 +226,7 @@ class ReservationRepositoryTests extends TestBase
 		$id1 = 1;
 		$id2 = 2;
 		
-		$reservation = new ReservationSeries();
+		$reservation = new TestReservationSeries();
 		$reservation->AddResource($id1);
 		$reservation->AddResource($id2);
 		
@@ -346,7 +355,7 @@ class ReservationRepositoryTests extends TestBase
 		$builder = new ExistingReservationSeriesBuilder();
 		
 		$existingReservation = $builder->Build();
-		$existingReservation->Repeats(new RepeatDaily(1, Date::Now(), new TestDateRange()));
+		$existingReservation->WithRepeatOptions(new RepeatDaily(1, Date::Now(), new TestDateRange()));
 		
 		$existingReservation->Update($userId, $resourceId, $scheduleId, $title, $description);
 		$expectedRepeat = new RepeatNone();

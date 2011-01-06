@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
+require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class ReservationDateTimeRuleTests extends TestBase
 {
@@ -10,8 +11,8 @@ class ReservationDateTimeRuleTests extends TestBase
 		
 		$reservationDate = new DateRange($start, $start->AddDays(-1));
 		
-		$reservationSeries = new ReservationSeries();
-		$reservationSeries->UpdateDuration($reservationDate);
+		$reservationSeries = new TestReservationSeries();
+		$reservationSeries->WithDuration($reservationDate);
 		
 		$rule = new ReservationDateTimeRule();
 		

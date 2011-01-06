@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
+require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class ResourceAvailabilityRuleTests extends TestBase
 {
@@ -19,9 +20,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$startDate = Date::Parse('2010-04-04', 'UTC');
 		$endDate = Date::Parse('2010-04-05', 'UTC');
 		
-		$reservation = new ReservationSeries();
-		$reservation->Update(1, 100, null, null, null);
-		$reservation->UpdateDuration(new DateRange($startDate, $endDate));
+		$reservation = new TestReservationSeries();
+		$reservation->WithResourceId(100);
+		$reservation->WithDuration(new DateRange($startDate, $endDate));
 		$reservation->AddResource(101);
 		$reservation->AddResource(102);
 
@@ -46,9 +47,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$endDate = Date::Parse('2010-04-05', 'UTC');
 		$resourceId = 100;
 		
-		$reservation = new ReservationSeries();
-		$reservation->Update(1, $resourceId, null, null, null);
-		$reservation->UpdateDuration(new DateRange($startDate, $endDate));
+		$reservation = new TestReservationSeries();
+		$reservation->WithResourceId($resourceId);
+		$reservation->WithDuration(new DateRange($startDate, $endDate));
 		
 		$startConflict1 = Date::Parse('2010-04-04', 'UTC');
 		$endConflict1 = Date::Parse('2010-04-08', 'UTC');
@@ -80,9 +81,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$endDate = Date::Parse('2010-04-05', 'UTC');
 		$additionalResourceId = 1;
 		
-		$reservation = new ReservationSeries();
-		$reservation->Update(1, 100, null, null, null);
-		$reservation->UpdateDuration(new DateRange($startDate, $endDate));
+		$reservation = new TestReservationSeries();
+		$reservation->WithResourceId(100);
+		$reservation->WithDuration(new DateRange($startDate, $endDate));
 		$reservation->AddResource($additionalResourceId);
 		
 		$startConflict1 = Date::Parse('2010-04-04', 'UTC');
@@ -121,9 +122,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		
 		$repeatDates = $twoRepetitions->GetDates($reservationDates);
 		
-		$reservation = new ReservationSeries();
-		$reservation->UpdateDuration($reservationDates);
-		$reservation->Repeats($twoRepetitions);
+		$reservation = new TestReservationSeries();
+		$reservation->WithDuration($reservationDates);
+		$reservation->WithRepeatOptions($twoRepetitions);
 		
 		$reservationRepository = $this->getMock('IReservationRepository');
 		

@@ -206,22 +206,10 @@ class ReservationSeries implements ISeriesDistinction
 	 */
 	protected $seriesUpdateStrategy;
 	
-	public function __construct()
+	protected function __construct()
 	{
 		$this->_repeatOptions = new RepeatNone();
 		$this->ApplyChangesTo(SeriesUpdateScope::FullSeries);	
-	}
-	
-	public static function Create(
-								$userId, 
-								$resourceId, 
-								$scheduleId, 
-								$title, 
-								$description, 
-								$duration, 
-								$repeatOptions)
-	{
-		throw new Exception('not implemented');
 	}
 	
 	/**
@@ -230,20 +218,36 @@ class ReservationSeries implements ISeriesDistinction
 	 * @param int $scheduleId
 	 * @param string $title
 	 * @param string $description
+	 * @param DateRange $reservationDate
+	 * @param IRepeatOptions $repeatOptions
+	 * @return ReservationSeries
 	 */
-	public function Update($userId, $resourceId, $scheduleId, $title, $description)
+	public static function Create(
+								$userId, 
+								$resourceId, 
+								$scheduleId, 
+								$title, 
+								$description, 
+								$reservationDate, 
+								$repeatOptions)
 	{
-		$this->_userId = $userId;
-		$this->_resourceId = $resourceId;
-		$this->_scheduleId = $scheduleId;
-		$this->_title = $title;
-		$this->_description = $description;
+		
+		$series = new ReservationSeries();
+		$series->_userId = $userId;
+		$series->_resourceId = $resourceId;
+		$series->_scheduleId = $scheduleId;
+		$series->_title = $title;
+		$series->_description = $description;
+		$series->UpdateDuration($reservationDate);
+		$series->Repeats($repeatOptions);
+		
+		return $series;
 	}
 
 	/**
 	 * @param DateRange $reservationDate
 	 */
-	public function UpdateDuration(DateRange $reservationDate)
+	protected function UpdateDuration(DateRange $reservationDate)
 	{
 		$this->currentInstanceDate = $reservationDate->GetBegin();
 		$this->AddNewInstance($reservationDate);
@@ -252,12 +256,17 @@ class ReservationSeries implements ISeriesDistinction
 	/**
 	 * @param IRepeatOptions $repeatOptions
 	 */
-	public function Repeats(IRepeatOptions $repeatOptions)
+	protected function Repeats(IRepeatOptions $repeatOptions)
 	{
-		throw new Exception("need to get this to work.  pass required stuff on constructor");
 		$this->_repeatOptions = $repeatOptions;
 		
-		$dates = $repeatOptions->GetDates();
+		$dates = $repeatOptions->GetDates($this->CurrentInstance()->Duration());
+		
+		if (empty($dates))
+		{
+			return;
+		}
+		
 		foreach ($dates as $date)
 		{
 			$this->AddNewInstance($date);
@@ -319,6 +328,11 @@ class ReservationSeries implements ISeriesDistinction
 
 class ExistingReservationSeries extends ReservationSeries
 {
+	public function __construct()
+	{
+		parent::__construct();
+	}
+	
 	/**
 	 * @var int
 	 */
@@ -378,6 +392,22 @@ class ExistingReservationSeries extends ReservationSeries
 	public function RequiresNewSeries()
 	{
 		return $this->seriesUpdateStrategy->RequiresNewSeries();
+	}
+	
+	/**
+	 * @param int $userId
+	 * @param int $resourceId
+	 * @param int $scheduleId
+	 * @param string $title
+	 * @param string $description
+	 */
+	public function Update($userId, $resourceId, $scheduleId, $title, $description)
+	{
+		$this->_userId = $userId;
+		$this->_resourceId = $resourceId;
+		$this->_scheduleId = $scheduleId;
+		$this->_title = $title;
+		$this->_description = $description;
 	}
 }
 ?>

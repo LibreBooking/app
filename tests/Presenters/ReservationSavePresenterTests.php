@@ -83,6 +83,7 @@ class ReservationSavePresenterTests extends TestBase
 
 	public function testBuildingWhenCreationBuildsReservationFromPageData()
 	{
+		throw new Exception("change this presenter to be custom to create/update/delete");
 		$timezone = $this->user->Timezone;
 		
 		$userId = $this->page->GetUserId();

@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Domain/namespace.php');
+require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class AddReservationValidationServiceTests extends TestBase
 {
@@ -15,7 +16,7 @@ class AddReservationValidationServiceTests extends TestBase
 	
 	public function testValidatesAgainstAllRules()
 	{
-		$reservation = new ReservationSeries();
+		$reservation = new TestReservationSeries();
 		$validResult = new ReservationRuleResult(true);
 		
 		$rule1 = $this->getMock('IReservationValidationRule');
@@ -49,7 +50,7 @@ class AddReservationValidationServiceTests extends TestBase
 	
 	public function testValidatesStopsAfterFirstBrokenRule()
 	{
-		$reservation = new ReservationSeries();
+		$reservation = new TestReservationSeries();
 		
 		$rule1 = $this->getMock('IReservationValidationRule');
 		$rule2 = $this->getMock('IReservationValidationRule');

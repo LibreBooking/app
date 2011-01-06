@@ -11,11 +11,6 @@ class AddReservationPersistenceService implements IReservationPersistenceService
 		$this->_repository = $repository;
 	}
 	
-	public function Load($reservationId)
-	{
-		return new ReservationSeries();
-	}
-	
 	public function Persist($reservation)
 	{
 		$this->_repository->Add($reservation);

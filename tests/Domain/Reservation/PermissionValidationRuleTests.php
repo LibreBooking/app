@@ -2,6 +2,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
+require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class PermissionValidationRuleTests extends TestBase
 {
@@ -27,8 +28,9 @@ class PermissionValidationRuleTests extends TestBase
 		$resource = new ReservationResource($resourceId);
 		$resource1 = new ReservationResource($resourceId1);
 		
-		$reservation = new ReservationSeries();
-		$reservation->Update($userId, $resourceId, null, null, null);
+		$reservation = new TestReservationSeries();
+		$reservation->WithOwnerId($userId);
+		$reservation->WithResourceId($resourceId);
 		$reservation->AddResource($resourceId1);
 		$reservation->AddResource($resourceId2);
 		

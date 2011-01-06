@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
+require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class OwnerEmailNotificationTests extends TestBase
 {
@@ -18,8 +19,9 @@ class OwnerEmailNotificationTests extends TestBase
 		$ownerId = 100;
 		$resourceId = 200;
 
-		$reservation = new ReservationSeries();
-		$reservation->Update($ownerId, $resourceId, null, null, null);
+		$reservation = new TestReservationSeries();
+		$reservation->WithOwnerId($ownerId);
+		$reservation->WithResourceId($resourceId);
 
 		$user = $this->getMock('User');
 		$resource = new FakeResource($resourceId, 'name');
