@@ -64,16 +64,16 @@ class ReservationSavePresenterTests extends TestBase
 
 		$this->page = new FakeReservationSavePage();
 
-		$this->persistenceFactory = $this->getMock('IReservationPersistenceFactory');
+		//$this->persistenceFactory = $this->getMock('IReservationPersistenceFactory');
 		$this->persistenceService = $this->getMock('IReservationPersistenceService');
 
-		$this->validationFactory = $this->getMock('IReservationValidationFactory');
+		//$this->validationFactory = $this->getMock('IReservationValidationFactory');
 		$this->validationService = $this->getMock('IReservationValidationService');
 		
-		$this->notificationFactory = $this->getMock('IReservationNotificationFactory');
+		//$this->notificationFactory = $this->getMock('IReservationNotificationFactory');
 		$this->notificationService = $this->getMock('IReservationNotificationService');
 		
-		$this->presenter = new ReservationSavePresenter($this->page, $this->persistenceFactory, $this->validationFactory, $this->notificationFactory);
+		$this->presenter = new ReservationSavePresenter($this->page, $this->persistenceService, $this->validationService, $this->notificationService);
 	}
 
 	public function teardown()
@@ -83,7 +83,6 @@ class ReservationSavePresenterTests extends TestBase
 
 	public function testBuildingWhenCreationBuildsReservationFromPageData()
 	{
-		throw new Exception("change this presenter to be custom to create/update/delete");
 		$timezone = $this->user->Timezone;
 		
 		$userId = $this->page->GetUserId();
@@ -98,98 +97,74 @@ class ReservationSavePresenterTests extends TestBase
 		$endTime = $this->page->GetEndTime();
 		$additionalResources = $this->page->GetResources();
 
-		$reservationAction = $this->page->GetReservationAction();
-		$repeatOptions = $this->page->GetRepeatOptions(null);
-		$seriesUpdateScope = $this->page->GetSeriesUpdateScope();
+		$repeatOptions = $this->page->GetRepeatOptions();
 		
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
-		$reservation = $this->getMock('ReservationSeries');
+		$expected = ReservationSeries::Create($userId, $resourceId, $scheduleId, $title, $description, $duration, $repeatOptions);
+		$expected->AddResource($additionalResources[0]);
+		$expected->AddResource($additionalResources[1]);
 		
-		$this->persistenceFactory->expects($this->once())
-			->method('Create')
-			->with($this->equalTo($reservationAction))
-			->will($this->returnValue($this->persistenceService));
-
-		$this->persistenceService->expects($this->once())
-			->method('Load')
-			->with($this->equalTo(null))
-			->will($this->returnValue($reservation));
-
-		$reservation->expects($this->once())
-			->method('Update')
-			->with( $this->equalTo($userId),
-					$this->equalTo($resourceId),
-					$this->equalTo($scheduleId),
-					$this->equalTo($title),
-					$this->equalTo($description));
-
-		$reservation->expects($this->once())
-			->method('UpdateDuration')
-			->with($this->equalTo($duration));
-				
-		$reservation->expects($this->once())
-			->method('Repeats')
-			->with($this->equalTo($repeatOptions));
-		
-		$reservation->expects($this->once())
-			->method('ApplyChangesTo')
-			->with($this->equalTo($seriesUpdateScope));
-
 		$actualReservation = $this->presenter->BuildReservation();
 		
-		$this->assertEquals($reservation, $actualReservation);
+		$this->assertEquals($userId, $actualReservation->UserId());
+		$this->assertEquals($resourceId, $actualReservation->ResourceId());
+		$this->assertEquals($scheduleId, $actualReservation->ScheduleId());
+		$this->assertEquals($title, $actualReservation->Title());
+		$this->assertEquals($description, $actualReservation->Description());
+		$this->assertEquals($duration, $actualReservation->CurrentInstance()->Duration());
+		$this->assertEquals($repeatOptions, $actualReservation->RepeatOptions());
 	}
 
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistanceAndNotification()
 	{
-		$action = $this->page->GetReservationAction();
-		
-		$reservation = $this->getMock('ReservationSeries');
-		$instance = new Reservation($reservation, NullDateRange::Instance());
+		$series = new TestReservationSeries();
+		$instance = new Reservation($series, NullDateRange::Instance());
+		$series->WithCurrentInstance($instance);
 		$validationResult = new ReservationValidationResult();
 			
-		$this->validationFactory->expects($this->once())
-			->method('Create')
-			->with($this->equalTo($action))
-			->will($this->returnValue($this->validationService));
+//		$this->validationFactory->expects($this->once())
+//			->method('Create')
+//			->with($this->equalTo($action))
+//			->will($this->returnValue($this->validationService));
 
 		$this->validationService->expects($this->once())
 			->method('Validate')
-			->with($this->equalTo($reservation))
+			->with($this->equalTo($series))
 			->will($this->returnValue($validationResult));
 
-		$this->persistenceFactory->expects($this->once())
-			->method('Create')
-			->with($this->equalTo($action))
-			->will($this->returnValue($this->persistenceService));
-			
+//		$this->persistenceFactory->expects($this->once())
+//			->method('Create')
+//			->with($this->equalTo($action))
+//			->will($this->returnValue($this->persistenceService));
+//			
 		$this->persistenceService->expects($this->once())
 			->method('Persist')
-			->with($this->equalTo($reservation));
+			->with($this->equalTo($series));
 
-		$this->notificationFactory->expects($this->once())
-			->method('Create')
-			->with($this->equalTo($action))
-			->will($this->returnValue($this->notificationService));
-			
+//		$this->notificationFactory->expects($this->once())
+//			->method('Create')
+//			->with($this->equalTo($action))
+//			->will($this->returnValue($this->notificationService));
+//			
 		$this->notificationService->expects($this->once())
 			->method('Notify')
-			->with($this->equalTo($reservation));
+			->with($this->equalTo($series));
 
-		$reservation->expects($this->once())
-			->method('GetInstance')
-			->with($this->anything())
-			->will($this->returnValue($instance));
+//		$series->expects($this->once())
+//			->method('CurrentInstance')
+//			->will($this->returnValue($instance));
 			
-		$this->presenter->HandleReservation($reservation);
+		$this->presenter->HandleReservation($series);
 		
 		$this->assertEquals(true, $this->page->saveSuccessful);
 		$this->assertEquals($validationResult->GetWarnings(), $this->page->warnings);
+		$this->assertEquals($instance->ReferenceNumber(), $this->page->referenceNumber);
 	}
 	
 	public function testPreventsPersistenceAndNotificationAndShowsFailedMessageWhenValidationFails()
 	{
+		throw new Exception("change this presenter to be custom to create/update/delete");
 		$errorMessage1 = 'e1';
 		$errorMessage2 = 'e2';
 		$errors = array($errorMessage1, $errorMessage2);
@@ -244,6 +219,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $saveSuccessful = false;
 	public $errors = array();
 	public $warnings = array();
+	public $referenceNumber;
 	
 	public function __construct()
 	{
@@ -335,7 +311,7 @@ class FakeReservationSavePage implements IReservationSavePage
 		return $this->repeatTerminationDate;
 	}
 
-	public function GetRepeatOptions($initialReservationDates)
+	public function GetRepeatOptions()
 	{
 		return $this->repeatOptions;
 	}
@@ -351,7 +327,9 @@ class FakeReservationSavePage implements IReservationSavePage
 	}
 	
 	public function SetReferenceNumber($referenceNumber)
-	{}
+	{
+		$this->referenceNumber = $referenceNumber;
+	}
 	
 	public function ShowErrors($errors)
 	{

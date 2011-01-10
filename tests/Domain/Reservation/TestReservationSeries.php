@@ -27,5 +27,11 @@ class TestReservationSeries extends ReservationSeries
 	{
 		$this->Repeats($repeatOptions);
 	}
+	
+	public function WithCurrentInstance(Reservation $currentInstance)
+	{
+		$this->currentInstanceDate = $currentInstance->StartDate();
+		$this->AddInstance($currentInstance);
+	}
 }
 ?>

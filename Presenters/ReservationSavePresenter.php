@@ -17,19 +17,19 @@ class ReservationSavePresenter
 	private $_page;
 	
 	/**
-	 * @var IReservationPersistenceFactory
+	 * @var IReservationPersistenceService
 	 */
-	private $_persistenceFactory;
+	private $_persistenceService;
 	
 	/**
-	 * @var IReservationValidationFactory
+	 * @var IReservationValidationService
 	 */
-	private $_validationFactory;
+	private $_validationService;
 	
 	/**
-	 * @var IReservationNotificationFactory
+	 * @var IReservationNotificationService
 	 */
-	private $_notificationFactory;
+	private $_notificationService;
 	
 	/**
 	 * @var DateRange
@@ -38,67 +38,40 @@ class ReservationSavePresenter
 	
 	public function __construct(
 		IReservationSavePage $page, 
-		IReservationPersistenceFactory $persistenceFactory,
-		IReservationValidationFactory $validationFactory,
-		IReservationNotificationFactory $notificationFactory)
+		IReservationPersistenceService $persistenceService,
+		IReservationValidationService $validationService,
+		IReservationNotificationService $notificationService)
 	{
 		$this->_page = $page;
-		$this->_persistenceFactory = $persistenceFactory;
-		$this->_validationFactory = $validationFactory;
-		$this->_notificationFactory = $notificationFactory;
+		$this->_persistenceService = $persistenceService;
+		$this->_validationService = $validationService;
+		$this->_notificationService = $notificationService;
 	}
 	
 	public function BuildReservation()
 	{
-//		$reservation->AddAccessory();
-//		$reservation->AddParticipant();
-//		
-//		$reservation->RemoveResource();
-//		$reservation->RemoveAccessory();
-//		$reservation->RemoveParticipant();
+		// $reservation->AddAccessory();
+		// $reservation->AddParticipant();
 
-		$action = $this->_page->GetReservationAction();
-		$reservationId = $this->_page->GetReservationId();	
-		$persistenceService = $this->_persistenceFactory->Create($action);
-		$reservationSeries = $persistenceService->Load($reservationId);
-		
 		// accessories?, participants, invitations
 		// reminder
-
-		$reservationSeries = ReservationSeries::Create();
 		
 		$userId = $this->_page->GetUserId();
 		$resourceId = $this->_page->GetResourceId();
 		$scheduleId = $this->_page->GetScheduleId();
 		$title = $this->_page->GetTitle();
 		$description = $this->_page->GetDescription();
-
-		$reservationSeries->Update(
-			$userId, 
-			$resourceId, 
-			$scheduleId,
-			$title,
-			$description);
-		
+		$repeatOptions = $this->_page->GetRepeatOptions();
 		$duration = $this->GetReservationDuration();
-		$reservationSeries->UpdateDuration($duration);
 		
-		$repeatOptions = $this->_page->GetRepeatOptions($duration);
-		$reservationSeries->Repeats($repeatOptions);
+		$reservationSeries = ReservationSeries::Create($userId, $resourceId, $scheduleId, $title, $description, $duration, $repeatOptions);
 		
 		$resourceIds = $this->_page->GetResources();
 		foreach ($resourceIds as $resourceId)
 		{
 			$reservationSeries->AddResource($resourceId);
 		}
-		
-		$seriesUpdateScope = $this->_page->GetSeriesUpdateScope();
-		
-		if ($action == ReservationAction::Update)
-		{
-			$reservationSeries->ApplyChangesTo($seriesUpdateScope);
-		}
-		
+				
 		return $reservationSeries;
 	}
 	
@@ -107,18 +80,13 @@ class ReservationSavePresenter
 	 */
 	public function HandleReservation($reservationSeries)
 	{		
-		$action = $this->_page->GetReservationAction();
-		
-		$validationService = $this->_validationFactory->Create($action);
-		$validationResult = $validationService->Validate($reservationSeries);
+		$validationResult = $this->_validationService->Validate($reservationSeries);
 		
 		if ($validationResult->CanBeSaved())
 		{
-			$persistenceService = $this->_persistenceFactory->Create($action);
-			
 			try 
 			{
-				$persistenceService->Persist($reservationSeries);
+				$this->_persistenceService->Persist($reservationSeries);
 			}
 			catch (Exception $ex)
 			{
@@ -126,12 +94,9 @@ class ReservationSavePresenter
 				throw($ex);
 			}
 			
-			$notificationService = $this->_notificationFactory->Create($action);
-			$notificationService->Notify($reservationSeries);
+			$this->_notificationService->Notify($reservationSeries);
 			
-			$duration = $this->GetReservationDuration();
-			
-			$this->_page->SetReferenceNumber($reservationSeries->GetInstance($duration->GetBegin())->ReferenceNumber());
+			$this->_page->SetReferenceNumber($reservationSeries->CurrentInstance()->ReferenceNumber());
 			$this->_page->SetSaveSuccessfulMessage(true);
 		}
 		else

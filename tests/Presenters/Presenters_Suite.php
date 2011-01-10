@@ -10,7 +10,7 @@ class Presenters_Suite
     
     public static function IsIgnored($fileName)
     {
-    	return strpos($fileName, 'Dashboard') == 0;
+    	return strpos($fileName, 'Dashboard') === 0;
     }
 }
 ?>

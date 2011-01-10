@@ -57,6 +57,8 @@ class AllTests
 
 class TestHelper
 {
+	public static $Debug = false;
+	
 	public static function GetSuite($relativePath, $ignoreCallback = array())
 	{
 		$testDirectory = ROOT_DIR . $relativePath;
@@ -82,7 +84,19 @@ class TestHelper
 	        {
 	        	if (!self::Ignored($file, $ignoreCallback) && self::endsWith($file, "Tests.php"))
 	        	{
-	       			 $tests[] = new UnitTest($file);
+	        		
+	        		$tests[] = new UnitTest($file);
+	        		if (self::$Debug)
+	        		{
+	  					echo "Adding $file\n";	       			 	
+	        		}
+	        	}
+	        	else 
+	        	{
+	        		if (self::$Debug)
+	        		{
+	  					echo "Ignored $file\n";	       			 	
+	        		}
 	        	}
 	        }
 	        closedir($dh);
