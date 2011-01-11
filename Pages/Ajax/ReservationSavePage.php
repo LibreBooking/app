@@ -18,7 +18,6 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		parent::__construct();
 		
-		//die('dude ' . $this->server->GetForm(FormKeys::SERIES_UPDATE_SCOPE));
 		$this->_presenter = new ReservationSavePresenter(
 														$this, 
 														new ReservationPersistenceFactory(),
@@ -213,15 +212,21 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	}
 }
 
-interface IReservationSavePage
+interface IReservationUpdatePage extends IReservationSavePage
 {
-	function GetReservationAction();
-	
 	/**
 	 * @return int
 	 */
 	public function GetReservationId();
 	
+	/**
+	 * @return SeriesUpdateScope
+	 */
+	public function GetSeriesUpdateScope();
+}
+
+interface IReservationSavePage
+{
 	public function GetUserId();
 	public function GetResourceId();
 	public function GetScheduleId();
@@ -274,11 +279,6 @@ interface IReservationSavePage
 	 * @return IRepeatOptions
 	 */
 	public function GetRepeatOptions();
-	
-	/**
-	 * @return SeriesUpdateScope
-	 */
-	public function GetSeriesUpdateScope();
 	
 	/**
 	 * @param bool $succeeded

@@ -31,11 +31,6 @@ class ReservationSavePresenter
 	 */
 	private $_notificationService;
 	
-	/**
-	 * @var DateRange
-	 */
-	private $duration;
-	
 	public function __construct(
 		IReservationSavePage $page, 
 		IReservationPersistenceService $persistenceService,
@@ -113,18 +108,13 @@ class ReservationSavePresenter
 	 */
 	private function GetReservationDuration()
 	{
-		if ($this->duration == null)
-		{
-			$startDate = $this->_page->GetStartDate();
-			$startTime = $this->_page->GetStartTime();
-			$endDate = $this->_page->GetEndDate();
-			$endTime = $this->_page->GetEndTime();
-			
-			$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
-			$this->duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
-		}
+		$startDate = $this->_page->GetStartDate();
+		$startTime = $this->_page->GetStartTime();
+		$endDate = $this->_page->GetEndDate();
+		$endTime = $this->_page->GetEndTime();
 		
-		return $this->duration;
+		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 	}
 	
 	/**s

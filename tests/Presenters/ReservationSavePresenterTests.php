@@ -64,13 +64,8 @@ class ReservationSavePresenterTests extends TestBase
 
 		$this->page = new FakeReservationSavePage();
 
-		//$this->persistenceFactory = $this->getMock('IReservationPersistenceFactory');
 		$this->persistenceService = $this->getMock('IReservationPersistenceService');
-
-		//$this->validationFactory = $this->getMock('IReservationValidationFactory');
 		$this->validationService = $this->getMock('IReservationValidationService');
-		
-		//$this->notificationFactory = $this->getMock('IReservationNotificationFactory');
 		$this->notificationService = $this->getMock('IReservationNotificationService');
 		
 		$this->presenter = new ReservationSavePresenter($this->page, $this->persistenceService, $this->validationService, $this->notificationService);
@@ -122,39 +117,20 @@ class ReservationSavePresenterTests extends TestBase
 		$instance = new Reservation($series, NullDateRange::Instance());
 		$series->WithCurrentInstance($instance);
 		$validationResult = new ReservationValidationResult();
-			
-//		$this->validationFactory->expects($this->once())
-//			->method('Create')
-//			->with($this->equalTo($action))
-//			->will($this->returnValue($this->validationService));
 
 		$this->validationService->expects($this->once())
 			->method('Validate')
 			->with($this->equalTo($series))
 			->will($this->returnValue($validationResult));
 
-//		$this->persistenceFactory->expects($this->once())
-//			->method('Create')
-//			->with($this->equalTo($action))
-//			->will($this->returnValue($this->persistenceService));
-//			
 		$this->persistenceService->expects($this->once())
 			->method('Persist')
 			->with($this->equalTo($series));
-
-//		$this->notificationFactory->expects($this->once())
-//			->method('Create')
-//			->with($this->equalTo($action))
-//			->will($this->returnValue($this->notificationService));
-//			
+			
 		$this->notificationService->expects($this->once())
 			->method('Notify')
 			->with($this->equalTo($series));
 
-//		$series->expects($this->once())
-//			->method('CurrentInstance')
-//			->will($this->returnValue($instance));
-			
 		$this->presenter->HandleReservation($series);
 		
 		$this->assertEquals(true, $this->page->saveSuccessful);
@@ -164,30 +140,23 @@ class ReservationSavePresenterTests extends TestBase
 	
 	public function testPreventsPersistenceAndNotificationAndShowsFailedMessageWhenValidationFails()
 	{
-		throw new Exception("change this presenter to be custom to create/update/delete");
 		$errorMessage1 = 'e1';
 		$errorMessage2 = 'e2';
 		$errors = array($errorMessage1, $errorMessage2);
-		$action = $this->page->GetReservationAction();
 		
-		$reservation = new ReservationSeries();
-		$validationResult = new ReservationValidationResult(false, $errors);	
-		
-		$this->validationFactory->expects($this->once())
-			->method('Create')
-			->with($this->equalTo($action))
-			->will($this->returnValue($this->validationService));
+		$reservation = new TestReservationSeries();
+		$validationResult = new ReservationValidationResult(false, $errors);
 
 		$this->validationService->expects($this->once())
 			->method('Validate')
 			->with($this->equalTo($reservation))
 			->will($this->returnValue($validationResult));
 		
-		$this->persistenceFactory->expects($this->never())
-			->method('Create');
+		$this->persistenceService->expects($this->never())
+			->method('Persist');
 
-		$this->notificationFactory->expects($this->never())
-			->method('Create');
+		$this->notificationService->expects($this->never())
+			->method('Notify');
 					
 		$this->presenter->HandleReservation($reservation);
 		
@@ -198,8 +167,6 @@ class ReservationSavePresenterTests extends TestBase
 
 class FakeReservationSavePage implements IReservationSavePage
 {
-	public $action = ReservationAction::Create;
-	public $reservationId = 100;
 	public $userId = 110;
 	public $resourceId = 120;
 	public $scheduleId = 123;
@@ -224,16 +191,6 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function __construct()
 	{
 		$this->repeatOptions = new RepeatNone();
-	}
-	
-	public function GetReservationAction()
-	{
-		return $this->action;
-	}
-
-	public function GetReservationId()
-	{
-		return $this->reservationid;
 	}
 	
 	public function GetUserId()
@@ -314,11 +271,6 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetRepeatOptions()
 	{
 		return $this->repeatOptions;
-	}
-	
-	public function GetSeriesUpdateScope()
-	{
-		return SeriesUpdateScope::ThisInstance;
 	}
 	
 	public function SetSaveSuccessfulMessage($succeeded)
