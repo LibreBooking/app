@@ -8,18 +8,18 @@ class SeriesUpdateScope
 	const FullSeries = 'full';
 	const FutureInstances = 'future';
 	
-	public static function CreateStrategy($seriesUpdateScope, $reservationSeries)
+	public static function CreateStrategy($seriesUpdateScope)
 	{
 		switch ($seriesUpdateScope)
 		{
 			case SeriesUpdateScope::ThisInstance :
-				return new SeriesUpdateScope_Instance($reservationSeries);
+				return new SeriesUpdateScope_Instance();
 				break;
 			case SeriesUpdateScope::FullSeries :
-				return new SeriesUpdateScope_Full($reservationSeries);
+				return new SeriesUpdateScope_Full();
 				break;
 			case SeriesUpdateScope::FutureInstances :
-				return new SeriesUpdateScope_Future($reservationSeries);
+				return new SeriesUpdateScope_Future();
 				break;
 			default :
 				return new NullSeriesUpdateScope();
@@ -55,7 +55,7 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 	/**
 	 * @param ISeriesDistinction $reservationSeries
 	 */
-	protected function __construct($reservationSeries)
+	protected function __construct()
 	{
 		$this->series = $reservationSeries;
 	}
@@ -63,9 +63,9 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 
 class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 {
-	public function __construct($reservationSeries)
+	public function __construct()
 	{
-		parent::__construct($reservationSeries);
+		parent::__construct();
 	} 
 	
 	public function RepeatOptions()
@@ -86,9 +86,9 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 
 class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 {
-	public function __construct($reservationSeries)
+	public function __construct()
 	{
-		parent::__construct($reservationSeries);
+		parent::__construct();
 	} 
 	
 	public function RepeatOptions()
@@ -109,9 +109,9 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 
 class SeriesUpdateScope_Future extends SeriesUpdateScopeBase
 {
-	public function __construct($reservationSeries)
+	public function __construct()
 	{
-		parent::__construct($reservationSeries);
+		parent::__construct();
 	} 
 	
 	public function RepeatOptions()

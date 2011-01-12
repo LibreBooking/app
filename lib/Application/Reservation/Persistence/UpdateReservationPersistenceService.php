@@ -1,5 +1,5 @@
 <?php
-class UpdateReservationPersistenceService implements IReservationPersistenceService 
+class UpdateReservationPersistenceService implements IUpdateReservationPersistenceService
 {
 	/**
 	 * @var IReservationRepository
@@ -11,14 +11,27 @@ class UpdateReservationPersistenceService implements IReservationPersistenceServ
 		$this->_repository = $repository;
 	}
 	
-	public function Load($reservationId)
+	public function LoadByInstanceId($reservationInstanceId)
 	{
-		return $this->_repository->LoadById($reservationId);
+		return $this->_repository->LoadById($reservationInstanceId);
 	}
 	
-	public function Persist($reservation)
+	public function Persist($existingReservationSeries)
 	{
-		$this->_repository->Update($reservation);
+		$this->_repository->Update($existingReservationSeries);
 	}
+}
+
+interface IUpdateReservationPersistenceService
+{
+	/**
+	 * @return ExistingReservationSeries
+	 */
+	function LoadByInstanceId($reservationInstanceId);
+	
+	/**
+	 * @param ExistingReservationSeries $existingReservationSeries
+	 */
+	function Persist($existingReservationSeries);
 }
 ?>

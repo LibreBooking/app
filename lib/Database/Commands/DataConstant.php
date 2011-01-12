@@ -414,8 +414,7 @@ class Queries
 			title = @title, 
 			description = @description, 
 			repeat_type = @repeatType, 
-			repeat_options = @repeatOptions, 
-			schedule_id = @scheduleid
+			repeat_options = @repeatOptions
 		WHERE
 			series_id = @seriesId';
 	

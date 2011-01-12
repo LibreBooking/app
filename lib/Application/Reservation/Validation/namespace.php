@@ -11,5 +11,6 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationRuleR
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValidationFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValidationResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AddReservationValidationService.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/UpdateReservationValidationService.php');
 
 ?>

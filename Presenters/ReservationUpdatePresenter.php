@@ -4,33 +4,90 @@ class ReservationUpdatePresenter
 	/**
 	 * @var IReservationUpdatePage
 	 */
-	private $_page;
+	private $page;
 	
 	/**
-	 * @var IReservationUpdatePersistenceService
+	 * @var IUpdateReservationPersistenceService
 	 */
-	private $_persistenceService;
+	private $persistenceService;
 	
 	/**
-	 * @var IReservationValidationService
+	 * @var IUpdateReservationValidationService
 	 */
-	private $_validationService;
+	private $validationService;
 	
 	/**
-	 * @var IReservationNotificationService
+	 * @var IUpdateReservationNotificationService
 	 */
-	private $_notificationService;
+	private $notificationService;
 	
 	public function __construct(
 		IReservationUpdatePage $page, 
-		IReservationUpdatePersistenceService $persistenceService,
-		IReservationUpdateValidationService $validationService,
-		IReservationUpdateNotificationService $notificationService)
+		IUpdateReservationPersistenceService $persistenceService,
+		IUpdateReservationValidationService $validationService,
+		IUpdateReservationNotificationService $notificationService)
 	{
-		$this->_page = $page;
-		$this->_persistenceService = $persistenceService;
-		$this->_validationService = $validationService;
-		$this->_notificationService = $notificationService;
+		$this->page = $page;
+		$this->persistenceService = $persistenceService;
+		$this->validationService = $validationService;
+		$this->notificationService = $notificationService;
+	}
+	
+	/**
+	 * @return ExisitingReservationSeries 
+	 */
+	public function BuildReservation()
+	{
+		$instanceId = $this->page->GetReservationId();
+		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
+		
+		$existingSeries->Update(
+			$this->page->GetUserId(), 
+			$this->page->GetResourceId(), 
+			$this->page->GetTitle(), 
+			$this->page->GetDescription());
+		
+		$existingSeries->Repeats($this->page->GetRepeatOptions());
+		
+		foreach ($this->page->GetResources() as $resourceId)
+		{
+			$existingSeries->AddResource($resourceId);
+		}
+		
+		return $existingSeries;
+	}
+	
+	/**
+	 * @param ExistingReservationSeries $reservationSeries
+	 */
+	public function HandleReservation($reservationSeries)
+	{		
+		$validationResult = $this->validationService->Validate($reservationSeries);
+		
+		if ($validationResult->CanBeSaved())
+		{
+			try 
+			{
+				$this->persistenceService->Persist($reservationSeries);
+			}
+			catch (Exception $ex)
+			{
+				Log::Error('Error saving reservation: %s', $ex);
+				throw($ex);
+			}
+			
+			$this->notificationService->Notify($reservationSeries);
+			
+			$this->page->SetReferenceNumber($reservationSeries->CurrentInstance()->ReferenceNumber());
+			$this->page->SetSaveSuccessfulMessage(true);
+		}
+		else
+		{
+			$this->page->SetSaveSuccessfulMessage(false);
+			$this->page->ShowErrors($validationResult->GetErrors());
+		}
+		
+		$this->page->ShowWarnings($validationResult->GetWarnings());
 	}
 }
 ?>

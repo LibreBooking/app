@@ -79,7 +79,6 @@ class ReservationRepository implements IReservationRepository
 										$reservationSeries->Description(),
 										$reservationSeries->RepeatOptions()->RepeatType(),
 										$reservationSeries->RepeatOptions()->ConfigurationString(),
-										$reservationSeries->ScheduleId(),
 										Date::Now()
 										);
 										
@@ -245,18 +244,18 @@ interface IReservationRepository
 	/**
 	 * Return an existing reservation series
 	 * 
-	 * @param int $reservationId
-	 * @return ReservationSeries or null if no reservation found
+	 * @param int $reservationInstanceId
+	 * @return ExistingReservationSeries or null if no reservation found
 	 */
-	public function LoadById($reservationId);
+	public function LoadById($reservationInstanceId);
 	
 	/**
 	 * Update an existing reservation
 	 * 
-	 * @param ExistingReservationSeries $reservation
+	 * @param ExistingReservationSeries $existingReservationSeries
 	 * @return void
 	 */
-	public function Update(ExistingReservationSeries $reservation);
+	public function Update(ExistingReservationSeries $existingReservationSeries);
 	
 }
 ?>

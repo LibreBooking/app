@@ -16,6 +16,8 @@ require_once(ROOT_DIR . 'Domain/PermissionService.php');
 require_once(ROOT_DIR . 'Domain/SchedulePeriod.php');
 require_once(ROOT_DIR . 'Domain/ScheduleLayout.php');
 require_once(ROOT_DIR . 'Domain/Reservation.php');
+require_once(ROOT_DIR . 'Domain/ReservationSeries.php');
+require_once(ROOT_DIR . 'Domain/ExistingReservationSeries.php');
 require_once(ROOT_DIR . 'Domain/RepeatOptions.php');
 require_once(ROOT_DIR . 'Domain/User.php');
 ?>

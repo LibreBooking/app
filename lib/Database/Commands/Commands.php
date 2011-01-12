@@ -453,7 +453,6 @@ class UpdateReservationSeriesCommand extends SqlCommand
 								$description, 
 								$repeatType,
 								$repeatOptions,
-								$scheduleId,
 								Date $dateModified								
 								)
 	{
@@ -463,8 +462,7 @@ class UpdateReservationSeriesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));	
 		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
-		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));	
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));
 		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $dateModified->ToDatabase()));	
 		
 	}
