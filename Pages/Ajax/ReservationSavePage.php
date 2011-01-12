@@ -2,6 +2,83 @@
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/ReservationSavePresenter.php');
 
+
+interface IReservationSavePage
+{
+	public function GetUserId();
+	public function GetResourceId();
+	public function GetScheduleId();
+	
+	/**
+	 * @return string
+	 */
+	public function GetTitle();
+	
+	/**
+	 * @return string
+	 */
+	public function GetDescription();
+	
+	/**
+	 * @return string
+	 */
+	public function GetStartDate();
+	
+	/**
+	 * @return string
+	 */
+	public function GetEndDate();
+	
+	/**
+	 * @return string
+	 */
+	public function GetStartTime();
+	
+	/**
+	 * @return string
+	 */
+	public function GetEndTime();
+	
+	/**
+	 * @return int[]
+	 */
+	public function GetResources();
+	
+	/**
+	 * @return string
+	 */
+	public function GetRepeatType();
+	public function GetRepeatInterval();
+	public function GetRepeatWeekdays();
+	public function GetRepeatMonthlyType();
+	public function GetRepeatTerminationDate();
+	
+	/**
+	 * @return IRepeatOptions
+	 */
+	public function GetRepeatOptions();
+	
+	/**
+	 * @param bool $succeeded
+	 */
+	public function SetSaveSuccessfulMessage($succeeded);
+	
+	/**
+	 * @param string $referenceNumber
+	 */
+	public function SetReferenceNumber($referenceNumber);
+	
+	/**
+	 * @param array[int]string $errors
+	 */
+	public function ShowErrors($errors);
+	
+	/**
+	 * @param array[int]string $warnings
+	 */
+	public function ShowWarnings($warnings);
+}
+
 class ReservationSavePage extends SecurePage implements IReservationSavePage
 {
 	/**
@@ -216,81 +293,5 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
 	}
-}
-
-interface IReservationSavePage
-{
-	public function GetUserId();
-	public function GetResourceId();
-	public function GetScheduleId();
-	
-	/**
-	 * @return string
-	 */
-	public function GetTitle();
-	
-	/**
-	 * @return string
-	 */
-	public function GetDescription();
-	
-	/**
-	 * @return string
-	 */
-	public function GetStartDate();
-	
-	/**
-	 * @return string
-	 */
-	public function GetEndDate();
-	
-	/**
-	 * @return string
-	 */
-	public function GetStartTime();
-	
-	/**
-	 * @return string
-	 */
-	public function GetEndTime();
-	
-	/**
-	 * @return int[]
-	 */
-	public function GetResources();
-	
-	/**
-	 * @return string
-	 */
-	public function GetRepeatType();
-	public function GetRepeatInterval();
-	public function GetRepeatWeekdays();
-	public function GetRepeatMonthlyType();
-	public function GetRepeatTerminationDate();
-	
-	/**
-	 * @return IRepeatOptions
-	 */
-	public function GetRepeatOptions();
-	
-	/**
-	 * @param bool $succeeded
-	 */
-	public function SetSaveSuccessfulMessage($succeeded);
-	
-	/**
-	 * @param string $referenceNumber
-	 */
-	public function SetReferenceNumber($referenceNumber);
-	
-	/**
-	 * @param array[int]string $errors
-	 */
-	public function ShowErrors($errors);
-	
-	/**
-	 * @param array[int]string $warnings
-	 */
-	public function ShowWarnings($warnings);
 }
 ?>

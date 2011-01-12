@@ -269,8 +269,9 @@ class Date
 	 */
 	public function AddDays($days)
 	{		
+		echo 'days' . $days;
 		// can also use DateTime->modify()
-		return new Date($this->Format(self::SHORT_FORMAT) . " +$days days", $this->timezone);
+		return new Date($this->Format(self::SHORT_FORMAT) . " +" . $days . " days", $this->timezone);
 	}	
 	
     private function InitializeParts()

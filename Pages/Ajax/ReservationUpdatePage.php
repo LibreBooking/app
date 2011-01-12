@@ -2,6 +2,19 @@
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
 require_once(ROOT_DIR . 'Presenters/ReservationUpdatePresenter.php');
 
+interface IReservationUpdatePage extends IReservationSavePage
+{
+	/**
+	 * @return int
+	 */
+	public function GetReservationId();
+	
+	/**
+	 * @return SeriesUpdateScope
+	 */
+	public function GetSeriesUpdateScope();
+}
+
 class ReservationUpdatePage extends ReservationSavePage implements IReservationUpdatePage
 {
 	/**
@@ -76,18 +89,5 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 	{
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
 	}
-}
-
-interface IReservationUpdatePage extends IReservationSavePage
-{
-	/**
-	 * @return int
-	 */
-	public function GetReservationId();
-	
-	/**
-	 * @return SeriesUpdateScope
-	 */
-	public function GetSeriesUpdateScope();
 }
 ?>

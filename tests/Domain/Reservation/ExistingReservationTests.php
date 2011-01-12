@@ -16,7 +16,7 @@ class ExistingReservationTests extends TestBase
 	
 	public function testWhenApplyingUpdatesToSingleInstanceSeries()
 	{
-		$this->markTestIncomplete("come back to this after reservation series is refactored");
+		throw new Exception('working on this');
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
 		$series->WithRepeatOptions(new RepeatNone());
@@ -24,19 +24,19 @@ class ExistingReservationTests extends TestBase
 		$currentInstance = $series->CurrentInstance();
 		
 		$repeatDaily = new RepeatDaily(
-								$interval, 
+								1, 
 								Date::Now()->AddDays(10), 
 								$currentInstance->Duration());
-		
+
 		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);	
-		$series->UpdateDuration();
-		$series->Update($userId, $resourceId, $scheduleId, $title, $description);
+		$series->Update($userId, $resourceId, $title, $description);
 		$series->Repeats($repeatDaily);
 		
 		$instances = $series->Instances();
 		
-		$this->assertEquals(11, count($instances));
+		$this->assertEquals(11, count($instances), "existing plus repeated dates");
 		$updates = $series->GetUpdates();
+		
 		
 		// alter series
 		// 
