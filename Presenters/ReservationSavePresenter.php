@@ -62,6 +62,7 @@ class ReservationSavePresenter
 		$reservationSeries = ReservationSeries::Create($userId, $resourceId, $scheduleId, $title, $description, $duration, $repeatOptions);
 		
 		$resourceIds = $this->_page->GetResources();
+		
 		foreach ($resourceIds as $resourceId)
 		{
 			$reservationSeries->AddResource($resourceId);

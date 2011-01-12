@@ -257,22 +257,21 @@ class Queries
 		u.user_id,
 		u.fname,
 		u.lname,
-		r.series_id,
+		ri.series_id,
 		ri.reference_number
 	FROM 
 		reservation_instances ri
 	INNER JOIN
-		reservation_series r
+		reservation_series r ON ri.series_id = r.series_id AND r.status_id <> 2
 	INNER JOIN 
-		reservation_users ru ON r.series_id = ru.series_id
+		reservation_users ru ON ri.series_id = ru.series_id
 	INNER JOIN 
 		users u ON ru.user_id = u.user_id
 	INNER JOIN 
-		reservation_resources rr ON rr.series_id = r.series_id
+		reservation_resources rr ON rr.series_id = ri.series_id
 	INNER JOIN 
 		resource_schedules rs ON rs.resource_id = rr.resource_id
 	WHERE 
-		r.status_id <> 2 AND
 		ru.reservation_user_level = 1 AND
 		(rs.schedule_id = @scheduleid OR @scheduleid = -1) AND	
 		(

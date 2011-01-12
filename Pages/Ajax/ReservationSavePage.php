@@ -18,11 +18,18 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		parent::__construct();
 		
+		$persistenceFactory = new ReservationPersistenceFactory();
+		$validationFactory = new ReservationValidationFactory();
+		$notificationFactory = new ReservationNotificationFactory();
+
+		$updateAction = ReservationAction::Create;
+		
 		$this->_presenter = new ReservationSavePresenter(
 														$this, 
-														new ReservationPersistenceFactory(),
-														new ReservationValidationFactory(),
-														new ReservationNotificationFactory());
+														$persistenceFactory->Create($updateAction),
+														$validationFactory->Create($updateAction),
+														$notificationFactory->Create($updateAction)
+														);
 	}
 	
 	public function PageLoad()
@@ -30,7 +37,6 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		$reservation = $this->_presenter->BuildReservation();
 		$this->_presenter->HandleReservation($reservation);
 
-		// do we want a save/update/deleted successful?
 		if ($this->_reservationSavedSuccessfully)
 		{
 			$this->smarty->display('Ajax/reservation/savesuccessful.tpl');
@@ -210,19 +216,6 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
 	}
-}
-
-interface IReservationUpdatePage extends IReservationSavePage
-{
-	/**
-	 * @return int
-	 */
-	public function GetReservationId();
-	
-	/**
-	 * @return SeriesUpdateScope
-	 */
-	public function GetSeriesUpdateScope();
 }
 
 interface IReservationSavePage

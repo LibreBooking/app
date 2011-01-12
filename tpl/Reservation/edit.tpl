@@ -10,3 +10,9 @@
 <input type="submit" id="btnUpdateAllInstances" value="{translate key='AllInstances'}" class="button save"></input>
 <!--  <input type="submit" {formname key=SERIES_UPDATE_SCOPE} value="{translate key='FutureInstances'}" class="button save"></input>-->	
 {/block}
+
+{block name="ajaxMessage"}
+Updating reservation...<br/>
+{/block}
+
+{block name="submitUrl"}"ajax/reservation_update.php"{/block}

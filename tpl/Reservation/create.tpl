@@ -5,7 +5,7 @@
 <a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>
 <div id="reservationbox">
 
-<form id="reservationForm" action="ajax/reservation_save.php" method="post">
+<form id="reservationForm" method="post">
 	<div class="reservationHeader">
 		<h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
 	</div>
@@ -181,7 +181,9 @@
 
 <div id="dialogSave" style="display:none;">
 	<div id="creatingNotifiation" style="position:relative; top:170px; font-size:16pt;text-align:center;">
-		Creating reservation...<br/>
+		{block name="ajaxMessage"}
+			Creating reservation...<br/>
+		{/block}
 		<img src="{$Path}img/reservation_submitting.gif" alt="Creating reservation"/>
 	</div>
 	<div id="result" style="display:none;"></div>
@@ -224,12 +226,12 @@ $(document).ready(function() {
 	reservation.init();
 	
 	var options = { 
-        target:        '#result',   // target element(s) to be updated with server response
-        beforeSubmit:  reservation.preSubmit,  // pre-submit callback 
-        success:       reservation.showResponse  // post-submit callback 
- 
-        // other available options: 
-        //url:       url         // override for form's 'action' attribute 
+        target: '#result',   // target element(s) to be updated with server response
+        beforeSubmit: reservation.preSubmit,  // pre-submit callback 
+        success: reservation.showResponse,  // post-submit callback 
+ 		url: {block name="submitUrl"}"ajax/reservation_save.php"{/block}
+
+ 	    // other available options: 
         //type:      type        // 'get' or 'post', override for form's 'method' attribute 
         //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
         //clearForm: true        // clear all form fields after successful submit 

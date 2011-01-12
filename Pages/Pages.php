@@ -6,7 +6,7 @@ class Pages
 	const DEFAULT_LOGIN = 'dashboard.php';
 	const LOGIN = 'login.php';
 	const DASHBOARD = 'dashboard.php';
-	const SCHEDULE = 'sched.php';
+	const SCHEDULE = 'schedule.php';
 	const MY_CALENDAR = 'mycalendar.php';
 	const SCHEDULE_CALENDAR = 'schedulecalendar.php';
 	const RESERVATION = 'reservation.php';
