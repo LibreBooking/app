@@ -57,7 +57,6 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 	 */
 	protected function __construct()
 	{
-		$this->series = $reservationSeries;
 	}
 }
 

@@ -11,7 +11,9 @@ class ExistingReservationSeries extends ReservationSeries
 	/**
 	 * @var ISeriesUpdateScope
 	 */
-	protected $seriesUpdateStrategy;	
+	protected $seriesUpdateStrategy;
+	
+	protected $events = array();
 	
 	public function __construct()
 	{
@@ -135,6 +137,31 @@ class ExistingReservationSeries extends ReservationSeries
 	public function Repeats(IRepeatOptions $repeatOptions)
 	{
 		parent::Repeats($repeatOptions);
+	}
+	
+	protected function AddNewInstance(DateRange $reservationDate)
+	{
+		parent::AddNewInstance($reservationDate);
+		
+		$this->AddEvent(new InstanceAddedEvent($this->GetInstance($reservationDate->GetBegin())));
+	}
+	
+	public function GetEvents()
+	{
+		return $this->events;
+	}
+	
+	protected function AddEvent($event)
+	{
+		$this->events[] = $event;
+	}
+}
+
+class InstanceAddedEvent
+{
+	public function __construct(Reservation $reservationInstance)
+	{
+		$this->instance = $reservationInstance;
 	}
 }
 ?>

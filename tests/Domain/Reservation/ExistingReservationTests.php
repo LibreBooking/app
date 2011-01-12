@@ -16,7 +16,6 @@ class ExistingReservationTests extends TestBase
 	
 	public function testWhenApplyingUpdatesToSingleInstanceSeries()
 	{
-		throw new Exception('working on this');
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
 		$series->WithRepeatOptions(new RepeatNone());
@@ -28,18 +27,79 @@ class ExistingReservationTests extends TestBase
 								Date::Now()->AddDays(10), 
 								$currentInstance->Duration());
 
-		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);	
-		$series->Update($userId, $resourceId, $title, $description);
 		$series->Repeats($repeatDaily);
+		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
 		
+		$userId = 109;
+		$resourceId = 209;
+		$title = "new title here";
+		$description = "new description here";
+		$series->Update($userId, $resourceId, $title, $description);
+
 		$instances = $series->Instances();
 		
 		$this->assertEquals(11, count($instances), "existing plus repeated dates");
-		$updates = $series->GetUpdates();
 		
+		$events = $series->GetEvents();
 		
-		// alter series
-		// 
+		foreach ($instances as $instance)
+		{
+			if ($instance == $currentInstance)
+			{
+				continue;
+			}
+			
+			$instanceAddedEvent = new InstanceAddedEvent($instance);
+			$this->assertTrue(in_array($instanceAddedEvent, $events), "missing ref num {$instance->ReferenceNumber()}");
+		}
+	}
+	
+	public function testWhenApplyingUpdatesToFutureInstancesSeries()
+	{
+		throw new Exception('working on this one');
+		
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->Build();
+		$series->With(new RepeatNone());
+		
+		$currentInstance = $series->CurrentInstance();
+		
+		$repeatDaily = new RepeatDaily(
+								1, 
+								Date::Now()->AddDays(10), 
+								$currentInstance->Duration());
+
+		$series->Repeats($repeatDaily);
+		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
+		
+		$userId = 109;
+		$resourceId = 209;
+		$title = "new title here";
+		$description = "new description here";
+		$series->Update($userId, $resourceId, $title, $description);
+
+		$instances = $series->Instances();
+		
+		$this->assertEquals(11, count($instances), "existing plus repeated dates");
+		
+		$events = $series->GetEvents();
+		
+		// remove all future events
+		$instanceRemovedEvent = new InstanceRemovedEvent($instance);
+		
+		// recreate all future events
+		
+					
+		foreach ($instances as $instance)
+		{
+			if ($instance == $currentInstance)
+			{
+				continue;
+			}
+			
+			$instanceAddedEvent = new InstanceAddedEvent($instance);
+			$this->assertTrue(in_array($instanceAddedEvent, $events), "missing ref num {$instance->ReferenceNumber()}");
+		}
 	}
 }
 ?>
