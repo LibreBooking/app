@@ -31,12 +31,29 @@ class ExistingReservationSeriesBuilder
 		return $this;
 	}
 	
+	public function WithSeriesInstances($reservations)
+	{
+		foreach ($reservations as $reservation)
+		{
+			$this->series->AddInstance($reservation);
+		}
+	}
+	
 	/**
 	 * @return ExistingReservationSeries
 	 */
 	public function Build()
 	{
 		return $this->series;
+	}
+}
+
+class TestReservation extends Reservation
+{
+	public function __construct($referenceNumber, $reservationDate)
+	{
+		$this->SetReferenceNumber($referenceNumber);
+		$this->SetReservationDate($reservationDate);
 	}
 }
 ?>

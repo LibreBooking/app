@@ -112,6 +112,15 @@ class DateRange
 	}
 	
 	/**
+	 * @param int $days
+	 * @return DateRange
+	 */
+	public function AddDays($days)
+	{
+		return new DateRange($this->_begin->AddDays($days), $this->_end->AddDays($days));
+	}
+	
+	/**
 	 * @return string
 	 */
 	public function ToString()

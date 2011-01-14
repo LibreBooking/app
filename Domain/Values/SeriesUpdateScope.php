@@ -35,14 +35,20 @@ interface ISeriesUpdateScope
 	function RepeatOptions();
 	
 	/**
+	 * @param ExistingReservationSeries $series
 	 * @return Reservation[]
 	 */
-	function Instances();
+	function Instances($series);
 	
 	/**
 	 * @return bool
 	 */
 	function RequiresNewSeries();
+	
+	/**
+	 * @param ExistingReservationSeries $series
+	 */
+	function GetEvents($series);
 }
 
 abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
@@ -72,14 +78,19 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 		return new RepeatNone();
 	}
 	
-	public function Instances()
+	public function Instances($series)
 	{
-		return array($this->series->CurrentInstance());
+		return array($series->CurrentInstance());
 	}
 	
 	public function RequiresNewSeries()
 	{
 		return true;
+	}
+	
+	public function GetEvents($series)
+	{
+		return array();
 	}
 }
 
@@ -104,6 +115,11 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 	{
 		return false;
 	}
+	
+	public function GetEvents($series)
+	{
+		return array();
+	}
 }
 
 class SeriesUpdateScope_Future extends SeriesUpdateScopeBase
@@ -121,6 +137,28 @@ class SeriesUpdateScope_Future extends SeriesUpdateScopeBase
 	public function Instances()
 	{
 		return $this->series->SeriesInstances();
+	}
+	
+	/**
+	 * @param ExistingReservationSeries $series
+	 */
+	public function GetEvents($series)
+	{
+		$events = array();
+		
+		$currentInstance = $series->CurrentInstance();
+		
+		$events[] = new SeriesBranchedEvent($series);
+		
+		foreach ($series->Instances() as $instance)
+		{
+			if ($instance->StartDate()->GreaterThan($currentInstance))
+			{
+				$events[] = new InstanceRemovedEvent($instance);
+			}
+		}
+		
+		return $events;
 	}
 	
 	public function RequiresNewSeries()
@@ -144,6 +182,11 @@ class NullSeriesUpdateScope implements ISeriesUpdateScope
 	public function RequiresNewSeries()
 	{
 		return false;
+	}
+	
+	public function GetEvents($series)
+	{
+		return array();
 	}
 }
 ?>

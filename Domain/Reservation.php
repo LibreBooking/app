@@ -54,10 +54,10 @@ class Reservation
 	
 	public function __construct(ReservationSeries $reservationSeries, DateRange $reservationDate)
 	{
-		$this->referenceNumber = uniqid();
 		$this->series = $reservationSeries;
-		$this->startDate = $reservationDate->GetBegin();
-		$this->endDate = $reservationDate->GetEnd();
+		
+		$this->SetReferenceNumber(uniqid());
+		$this->SetReservationDate($reservationDate);
 	}
 	
 	public function SetReservationId($reservationId)
@@ -68,6 +68,12 @@ class Reservation
 	public function SetReferenceNumber($referenceNumber)
 	{
 		$this->referenceNumber = $referenceNumber;
+	}
+	
+	public function SetReservationDate(DateRange $reservationDate)
+	{
+		$this->startDate = $reservationDate->GetBegin();
+		$this->endDate = $reservationDate->GetEnd();
 	}
 }
 

@@ -104,6 +104,22 @@ class ExistingReservationSeries extends ReservationSeries
 		$this->currentInstanceDate = $reservation->StartDate();
 	}
 	
+	/**
+	 * @internal
+	 */
+	public function WithInstance(Reservation $reservation)
+	{
+		$this->AddInstance($reservation);
+	}
+	
+	/**
+	 * @internal
+	 */
+	public function RemoveInstance(Reservation $reservation)
+	{
+		unset($this->instances[$reservation->StartDate()->Timestamp()]);
+	}
+	
 	public function RequiresNewSeries()
 	{
 		return $this->seriesUpdateStrategy->RequiresNewSeries();
@@ -148,7 +164,13 @@ class ExistingReservationSeries extends ReservationSeries
 	
 	public function GetEvents()
 	{
+		//$updateEvents = $this->seriesUpdateStrategy->GetEvents($this);
 		return $this->events;
+	}
+	
+	public function Instances()
+	{
+		return $this->seriesUpdateStrategy->Instances($this);
 	}
 	
 	protected function AddEvent($event)
@@ -162,6 +184,22 @@ class InstanceAddedEvent
 	public function __construct(Reservation $reservationInstance)
 	{
 		$this->instance = $reservationInstance;
+	}
+}
+
+class InstanceRemovedEvent
+{
+	public function __construct(Reservation $reservationInstance)
+	{
+		$this->instance = $reservationInstance;
+	}
+}
+
+class SeriesBranchedEvent
+{
+	public function __construct(ReservationSeries $series)
+	{
+		$this->series = $series;
 	}
 }
 ?>
