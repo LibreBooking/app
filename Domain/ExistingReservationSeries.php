@@ -124,6 +124,11 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function RemoveInstance(Reservation $reservation)
 	{
+		if ($reservation == $this->CurrentInstance())
+		{
+			return; // never remove the current instance
+		}
+		
 		unset($this->instances[$reservation->StartDate()->Timestamp()]);
 		
 		$this->AddEvent(new InstanceRemovedEvent($reservation));
@@ -175,9 +180,7 @@ class ExistingReservationSeries extends ReservationSeries
 			// delete all future reservation instances
 			foreach ($this->instances as $instance)
 			{
-				if ($instance != $this->CurrentInstance() && 
-					$instance->StartDate()->GreaterThan($earliestDateToKeep)
-					)
+				if ($instance->StartDate()->GreaterThan($earliestDateToKeep))
 				{
 					$this->RemoveInstance($instance);
 				}

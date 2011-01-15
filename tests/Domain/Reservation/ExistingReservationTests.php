@@ -94,7 +94,7 @@ class ExistingReservationTests extends TestBase
 		
 		// remove all future events
 		$instanceRemovedEvent1 = new InstanceRemovedEvent($futureReservation1);
-		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation1);
+		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation2);
 		$seriesBranchedEvent = new SeriesBranchedEvent($series);
 		
 		$this->assertTrue(in_array($instanceRemovedEvent1, $events), "missing ref {$futureReservation1->ReferenceNumber()}");
@@ -204,8 +204,7 @@ class ExistingReservationTests extends TestBase
 		
 		// remove all future events
 		$instanceRemovedEvent1 = new InstanceRemovedEvent($futureReservation1);
-		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation1);
-		$seriesBranchedEvent = new SeriesBranchedEvent($series);
+		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation2);
 		
 		$this->assertTrue(in_array($instanceRemovedEvent1, $events), "missing ref {$futureReservation1->ReferenceNumber()}");
 		$this->assertTrue(in_array($instanceRemovedEvent2, $events), "missing ref {$futureReservation2->ReferenceNumber()}");
