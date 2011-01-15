@@ -162,6 +162,11 @@ class ExistingReservationSeries extends ReservationSeries
 		{
 			$this->seriesUpdateStrategy = SeriesUpdateScope::CreateStrategy($seriesUpdateScope);
 		}
+		
+		if ($this->seriesUpdateStrategy->RequiresNewSeries())
+		{
+			$this->AddEvent(new SeriesBranchedEvent($this));
+		}
 	}
 	
 	private function WasNotOrignallyRecurring()
@@ -199,12 +204,7 @@ class ExistingReservationSeries extends ReservationSeries
 	}
 	
 	public function GetEvents()
-	{
-		if ($this->seriesUpdateStrategy->RequiresNewSeries())
-		{
-			$this->AddEvent(new SeriesBranchedEvent($this));
-		}
-		
+	{		
 		return $this->events;
 	}
 	
