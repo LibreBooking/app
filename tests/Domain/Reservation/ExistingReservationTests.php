@@ -17,8 +17,8 @@ class ExistingReservationTests extends TestBase
 	public function testWhenApplyingUpdatesToSingleInstanceSeries()
 	{
 		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithRepeatOptions(new RepeatNone());
 		$series = $builder->Build();
-		$series->WithRepeatOptions(new RepeatNone());
 		
 		$currentInstance = $series->CurrentInstance();
 		
@@ -62,35 +62,29 @@ class ExistingReservationTests extends TestBase
 		$currentRef = 'current';
 		$currentInstance = new TestReservation($currentRef, $currentSeriesDate);
 		
-		$newRef1 = 'new1';
-		$newDates1 = $currentSeriesDate->AddDays(1);
-		$newReservation1 = new TestReservation($newRef1, $newDates1);
+		$futureRef1 = 'new1';
+		$futureDates1 = $currentSeriesDate->AddDays(1);
+		$futureReservation1 = new TestReservation($futureRef1, $futureDates1);
 		
-		$newRef2 = 'new2';
-		$newDates2 = $currentSeriesDate->AddDays(10);
-		$newReservation2 = new TestReservation($newRef2, $newDates2);
+		$futureRef2 = 'new2';
+		$futureDates2 = $currentSeriesDate->AddDays(10);
+		$futureReservation2 = new TestReservation($futureRef2, $futureDates2);
 		
 		$currentRepeatOptions = new RepeatDaily(1, $currentSeriesDate->AddDays(50)->GetBegin());
 		
 		$repeatDaily = new RepeatDaily(1, $currentSeriesDate->AddDays(10)->GetBegin());
 
-		$userId = 109;
-		$resourceId = 209;
-		$title = "new title here";
-		$description = "new description here";
-		
 		$builder = new ExistingReservationSeriesBuilder();
-		$series = $builder->Build();
-		// existing state
-		$series->WithRepeatOptions($currentRepeatOptions);
-		$series->WithInstance($oldReservation);
-		$series->WithInstance($currentInstance);
-		$series->WithInstance($newReservation1);
-		$series->WithCurrentInstance($currentInstance);
+		$builder->WithRepeatOptions($currentRepeatOptions);
+		$builder->WithInstance($oldReservation);
+		$builder->WithInstance($currentInstance);
+		$builder->WithInstance($futureReservation1);
+		$builder->WithInstance($futureReservation2);
+		$builder->WithCurrentInstance($currentInstance);
+		$series = $builder->Build();		
 		// updates
 		$series->ApplyChangesTo(SeriesUpdateScope::FutureInstances);
 		$series->Repeats($repeatDaily);
-		$series->Update($userId, $resourceId, $title, $description);
 
 		$instances = $series->Instances();
 		
@@ -99,12 +93,12 @@ class ExistingReservationTests extends TestBase
 		$events = $series->GetEvents();
 		
 		// remove all future events
-		$instanceRemovedEvent1 = new InstanceRemovedEvent($newReservation1);
-		$instanceRemovedEvent2 = new InstanceRemovedEvent($newReservation1);
+		$instanceRemovedEvent1 = new InstanceRemovedEvent($futureReservation1);
+		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation1);
 		$seriesBranchedEvent = new SeriesBranchedEvent($series);
 		
-		$this->assertTrue(in_array($instanceRemovedEvent1, $events), "missing ref {$newReservation1->ReferenceNumber()}");
-		$this->assertTrue(in_array($instanceRemovedEvent2, $events), "missing ref {$newReservation2->ReferenceNumber()}");
+		$this->assertTrue(in_array($instanceRemovedEvent1, $events), "missing ref {$futureReservation1->ReferenceNumber()}");
+		$this->assertTrue(in_array($instanceRemovedEvent2, $events), "missing ref {$futureReservation2->ReferenceNumber()}");
 		$this->assertTrue(in_array($seriesBranchedEvent, $events), "should have been branched");
 		
 		// recreate all future events
@@ -122,7 +116,7 @@ class ExistingReservationTests extends TestBase
 	
 	public function testWhenApplyingSimpleUpdatesToFutureInstancesSeries()
 	{
-		$currentSeriesDate = DateRange::Create('2010-01-01 08:30:00', '2010-01-01 12:30:00', 'UTC');
+		$currentSeriesDate = new DateRange(Date::Now(), Date::Now());
 
 		$oldRef = 'old';
 		$oldDates = $currentSeriesDate->AddDays(-1);
@@ -131,37 +125,31 @@ class ExistingReservationTests extends TestBase
 		$currentRef = 'current';
 		$currentInstance = new TestReservation($currentRef, $currentSeriesDate);
 		
-		$newRef1 = 'new1';
-		$newDates1 = $currentSeriesDate->AddDays(1);
-		$newReservation1 = new TestReservation($newRef1, $newDates1);
+		$futureRef1 = 'new1';
+		$futureDates1 = $currentSeriesDate->AddDays(1);
+		$futureReservation1 = new TestReservation($futureRef1, $futureDates1);
 		
-		$newRef2 = 'new2';
-		$newDates2 = $currentSeriesDate->AddDays(10);
-		$newReservation2 = new TestReservation($newRef2, $newDates2);
+		$futureRef2 = 'new2';
+		$futureDates2 = $currentSeriesDate->AddDays(10);
+		$futureReservation2 = new TestReservation($futureRef2, $futureDates2);
 		
 		$currentRepeatOptions = new RepeatDaily(1, $currentSeriesDate->AddDays(50)->GetBegin());
 
-		$userId = 109;
-		$resourceId = 209;
-		$title = "new title here";
-		$description = "new description here";
-		
 		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($currentInstance);
+		$builder->WithRepeatOptions($currentRepeatOptions);
+		$builder->WithInstance($oldReservation);
+		$builder->WithInstance($currentInstance);
+		$builder->WithInstance($futureReservation1);
+		$builder->WithInstance($futureReservation2);
 		$series = $builder->Build();
-		// existing state
-		$series->WithRepeatOptions($currentRepeatOptions);
-		$series->WithInstance($oldReservation);
-		$series->WithInstance($currentInstance);
-		$series->WithInstance($newReservation1);
-		$series->WithCurrentInstance($currentInstance);
 		// updates
 		$series->ApplyChangesTo(SeriesUpdateScope::FutureInstances);
 		$series->Repeats($currentRepeatOptions);
-		$series->Update($userId, $resourceId, $title, $description);
 
 		$instances = $series->Instances();
 		
-		$this->assertEquals(3, count($instances), "should only be existing, future instances");
+		$this->assertEquals(3, count($instances), "should only be existing and future instances");
 		
 		$events = $series->GetEvents();
 		
@@ -169,6 +157,70 @@ class ExistingReservationTests extends TestBase
 		$seriesBranchedEvent = new SeriesBranchedEvent($series);
 		$this->assertEquals(1, count($events));
 		$this->assertTrue(in_array($seriesBranchedEvent, $events), "should have been branched");
+	}
+	
+	public function testWhenApplyingRecurranceUpdatesToFullSeries()
+	{
+		$today = new DateRange(Date::Now(), Date::Now());
+		
+		$currentSeriesDate = $today->AddDays(5);
+
+		$oldRef = 'old';
+		$oldDates = $today->AddDays(-1);
+		$oldReservation = new TestReservation($oldRef, $oldDates);
+		
+		$currentRef = 'current';
+		$currentInstance = new TestReservation($currentRef, $currentSeriesDate);
+		
+		$futureRef1 = 'new1';
+		$futureDates1 = $today->AddDays(1);
+		$futureReservation1 = new TestReservation($futureRef1, $futureDates1);
+		
+		$futureRef2 = 'new2';
+		$futureDates2 = $today->AddDays(10);
+		$futureReservation2 = new TestReservation($futureRef2, $futureDates2);
+		
+		$currentRepeatOptions = new RepeatDaily(1, $currentSeriesDate->AddDays(50)->GetBegin());
+		
+		$repeatDaily = new RepeatDaily(1, $currentSeriesDate->AddDays(10)->GetBegin());
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithRepeatOptions($currentRepeatOptions);
+		$builder->WithInstance($oldReservation);
+		$builder->WithInstance($currentInstance);
+		$builder->WithInstance($futureReservation1);
+		$builder->WithInstance($futureReservation2);
+		$builder->WithCurrentInstance($currentInstance);
+		$series = $builder->Build();
+		// updates
+		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+		$series->Repeats($repeatDaily);
+
+		$instances = $series->Instances();
+		
+		$this->assertEquals(11, count($instances), "1 existing, 10 repeated dates");
+		
+		$events = $series->GetEvents();
+		
+		// remove all future events
+		$instanceRemovedEvent1 = new InstanceRemovedEvent($futureReservation1);
+		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation1);
+		$seriesBranchedEvent = new SeriesBranchedEvent($series);
+		
+		$this->assertTrue(in_array($instanceRemovedEvent1, $events), "missing ref {$futureReservation1->ReferenceNumber()}");
+		$this->assertTrue(in_array($instanceRemovedEvent2, $events), "missing ref {$futureReservation2->ReferenceNumber()}");
+
+		// recreate all future events
+		foreach ($instances as $instance)
+		{
+			if ($instance == $currentInstance)
+			{
+				continue;
+			}
+			
+			$instanceAddedEvent = new InstanceAddedEvent($instance);
+			$this->assertTrue(in_array($instanceAddedEvent, $events), "missing ref num {$instance->ReferenceNumber()}");
+		}
 	}
 }
 ?>

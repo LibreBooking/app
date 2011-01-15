@@ -79,6 +79,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$existingSeries = $this->presenter->BuildReservation();
 		
 		$this->assertEquals($seriesId, $existingSeries->SeriesId());
+		$this->assertEquals($this->page->seriesUpdateScope, $existingSeries->SeriesUpdateScope());
 		$this->assertEquals($this->page->title, $existingSeries->Title());
 		$this->assertEquals($this->page->description, $existingSeries->Description());
 		$this->assertEquals($this->page->userId, $existingSeries->UserId());

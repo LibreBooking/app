@@ -6,14 +6,29 @@ class ExistingReservationSeriesBuilder
 	 */
 	private $series;
 	
+	/**
+	 * @var Reservation
+	 */
+	private $currentInstance;
+	
+	/**
+	 * @var IRepeatOptions
+	 */
+	private $repeatOptions;
+	
+	private $instances;
+	
 	public function __construct()
 	{
 		$series = new ExistingReservationSeries();
-		$series->WithCurrentInstance(new Reservation($series, new DateRange(Date::Now(), Date::Now())));
+		
+		$this->currentInstance = new Reservation($series, new DateRange(Date::Now(), Date::Now()));
+		$this->repeatOptions = new RepeatNone();
+		$this->instances = array();
+		
 		$series->WithDescription('description');
 		$series->WithOwner(1);
-		$series->WithPrimaryResource(2);
-		$series->WithRepeatOptions(new RepeatNone());
+		$series->WithPrimaryResource(2);	
 		$series->WithResource(3);
 		$series->WithSchedule(4);
 		$series->WithTitle('title');
@@ -27,7 +42,8 @@ class ExistingReservationSeriesBuilder
 	 */
 	public function WithCurrentInstance($reservation)
 	{
-		$this->series->WithCurrentInstance($reservation);
+		$this->currentInstance = $reservation;
+		
 		return $this;
 	}
 	
@@ -39,11 +55,31 @@ class ExistingReservationSeriesBuilder
 		}
 	}
 	
+	public function WithRepeatOptions(IRepeatOptions $repeatOptions)
+	{
+		$this->repeatOptions = $repeatOptions;
+		
+		return $this;
+	}
+	
+	public function WithInstance($reservation)
+	{
+		$this->instances[] = $reservation;
+	}
+	
 	/**
 	 * @return ExistingReservationSeries
 	 */
 	public function Build()
 	{
+		$this->series->WithCurrentInstance($this->currentInstance);
+		$this->series->WithRepeatOptions($this->repeatOptions);
+		
+		foreach ($this->instances as $reservation)
+		{
+			$this->series->WithInstance($reservation);
+		}
+		
 		return $this->series;
 	}
 }

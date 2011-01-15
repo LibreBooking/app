@@ -40,6 +40,7 @@ class ReservationUpdatePresenter
 	{
 		$instanceId = $this->page->GetReservationId();
 		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
+		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
 		
 		$existingSeries->Update(
 			$this->page->GetUserId(), 

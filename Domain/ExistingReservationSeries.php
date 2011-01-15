@@ -26,9 +26,9 @@ class ExistingReservationSeries extends ReservationSeries
 		return $this->seriesId;
 	}
 	
-	public function SeriesRepeatOptions()
+	public function SeriesUpdateScope()
 	{
-		return $this->_repeatOptions;
+		return $this->seriesUpdateStrategy->GetScope();
 	}
 	
 	/**
@@ -171,10 +171,13 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		if (!$repeatOptions->Equals($this->_repeatOptions))
 		{
+			$earliestDateToKeep = $this->seriesUpdateStrategy->EarliestDateToKeep($this);
 			// delete all future reservation instances
 			foreach ($this->instances as $instance)
 			{
-				if ($instance->StartDate()->GreaterThan($this->CurrentInstance()->StartDate()))
+				if ($instance != $this->CurrentInstance() && 
+					$instance->StartDate()->GreaterThan($earliestDateToKeep)
+					)
 				{
 					$this->RemoveInstance($instance);
 				}

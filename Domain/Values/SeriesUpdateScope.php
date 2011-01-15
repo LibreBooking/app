@@ -22,18 +22,13 @@ class SeriesUpdateScope
 				return new SeriesUpdateScope_Future();
 				break;
 			default :
-				return new NullSeriesUpdateScope();
+				throw new Exception('Unknown seriesUpdateScope requested');
 		}
 	}
 }
 
 interface ISeriesUpdateScope
 {
-	/**
-	 * @return IRepeatOptions
-	 */
-	function RepeatOptions();
-	
 	/**
 	 * @param ExistingReservationSeries $series
 	 * @return Reservation[]
@@ -45,10 +40,12 @@ interface ISeriesUpdateScope
 	 */
 	function RequiresNewSeries();
 	
+	function GetScope();
+	
 	/**
 	 * @param ExistingReservationSeries $series
 	 */
-	function ApplyChanges($series);
+	function EarliestDateToKeep($series);
 }
 
 abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
@@ -64,6 +61,21 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 	protected function __construct()
 	{
 	}
+	
+	protected function AllInstancesGreaterThan($series, $compareDate)
+	{
+		$instances = array();
+		
+		foreach ($series->_Instances() as $instance)
+		{
+			if ($instance->StartDate()->Compare($compareDate) >= 0)
+			{
+				$instances[] = $instance;
+			}
+		}
+		
+		return $instances;
+	}
 }
 
 class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
@@ -71,16 +83,15 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 	public function __construct()
 	{
 		parent::__construct();
-	} 
+	}
 	
-	public function RepeatOptions()
+	public function GetScope()
 	{
-		return new RepeatNone();
+		return SeriesUpdateScope::ThisInstance;
 	}
 	
 	public function Instances($series)
 	{
-		
 		return array($series->CurrentInstance());
 	}
 	
@@ -89,9 +100,9 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 		return true;
 	}
 	
-	public function ApplyChanges($series)
+	public function EarliestDateToKeep($series)
 	{
-		return array();
+		return $series->CurrentInstance()->StartDate();
 	}
 }
 
@@ -102,24 +113,24 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 		parent::__construct();
 	} 
 	
-	public function RepeatOptions()
+	public function GetScope()
 	{
-		return $this->series->SeriesRepeatOptions();
+		return SeriesUpdateScope::FullSeries;
 	}
-	
+
 	public function Instances($series)
 	{
-		return $series->_Instances();
+		return $this->AllInstancesGreaterThan($series, $this->EarliestDateToKeep($series));
+	}
+	
+	public function EarliestDateToKeep($series)
+	{
+		return Date::Now();
 	}
 	
 	public function RequiresNewSeries()
 	{
 		return false;
-	}
-	
-	public function ApplyChanges($series)
-	{
-		return array();
 	}
 }
 
@@ -130,70 +141,24 @@ class SeriesUpdateScope_Future extends SeriesUpdateScopeBase
 		parent::__construct();
 	} 
 	
-	public function RepeatOptions()
+	public function GetScope()
 	{
-		return $this->series->SeriesRepeatOptions();
+		return SeriesUpdateScope::FutureInstances;
 	}
-	
+
 	public function Instances($series)
 	{
-		$currentInstance = $series->CurrentInstance();
-		$instances = array($currentInstance);
-		
-		foreach ($series->_Instances() as $instance)
-		{
-			if ($instance->StartDate()->GreaterThan($currentInstance->StartDate()))
-			{
-				$instances[] = $instance;
-			}
-		}
-		
-		return $instances;
+		return $this->AllInstancesGreaterThan($series, $this->EarliestDateToKeep($series));
 	}
 	
-	/**
-	 * @param ExistingReservationSeries $series
-	 */
-	public function ApplyChanges($series)
+	public function EarliestDateToKeep($series)
 	{
-		$currentInstance = $series->CurrentInstance();
-		
-		// old instances will not transfer
-		foreach ($series->Instances() as $instance)
-		{
-			if ($instance->StartDate()->LessThan($currentInstance->StartDate()))
-			{
-				$series->RemoveInstance($instance);
-			}
-		}
+		return $series->CurrentInstance()->StartDate();
 	}
 	
 	public function RequiresNewSeries()
 	{
 		return true;
-	}
-}
-
-class NullSeriesUpdateScope implements ISeriesUpdateScope
-{
-	public function RepeatOptions()
-	{
-		return new RepeatNone();
-	}
-	
-	public function Instances($series)
-	{
-		return array();
-	}
-	
-	public function RequiresNewSeries()
-	{
-		return false;
-	}
-	
-	public function ApplyChanges($series)
-	{
-		return array();
 	}
 }
 ?>
