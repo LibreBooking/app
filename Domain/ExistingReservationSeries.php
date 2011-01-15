@@ -88,10 +88,17 @@ class ExistingReservationSeries extends ReservationSeries
 	}
 	
 	/**
+	 * @var IRepeatOptions
+	 * @internal
+	 */
+	private $_originalRepeatOptions;
+	
+	/**
 	 * @internal
 	 */
 	public function WithRepeatOptions(IRepeatOptions $repeatOptions)
 	{
+		$this->_originalRepeatOptions = $repeatOptions;
 		$this->_repeatOptions = $repeatOptions;
 	}
 
@@ -118,6 +125,8 @@ class ExistingReservationSeries extends ReservationSeries
 	public function RemoveInstance(Reservation $reservation)
 	{
 		unset($this->instances[$reservation->StartDate()->Timestamp()]);
+		
+		$this->AddEvent(new InstanceRemovedEvent($reservation));
 	}
 	
 	public function RequiresNewSeries()
@@ -144,7 +153,15 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function ApplyChangesTo($seriesUpdateScope)
 	{
-		$this->seriesUpdateStrategy = SeriesUpdateScope::CreateStrategy($seriesUpdateScope);
+		if ($this->WasNotOrignallyRecurring())
+		{
+			$this->seriesUpdateStrategy = SeriesUpdateScope::CreateStrategy($seriesUpdateScope);
+		}
+	}
+	
+	private function WasNotOrignallyRecurring()
+	{
+		return $this->_originalRepeatOptions == null || !$this->_originalRepeatOptions->Equals(new RepeatNone());
 	}
 	
 	/**
@@ -152,7 +169,20 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function Repeats(IRepeatOptions $repeatOptions)
 	{
-		parent::Repeats($repeatOptions);
+		if (!$repeatOptions->Equals($this->_repeatOptions))
+		{
+			// delete all future reservation instances
+			foreach ($this->instances as $instance)
+			{
+				if ($instance->StartDate()->GreaterThan($this->CurrentInstance()->StartDate()))
+				{
+					$this->RemoveInstance($instance);
+				}
+			}
+			
+			// create all future instances
+			parent::Repeats($repeatOptions);
+		}
 	}
 	
 	protected function AddNewInstance(DateRange $reservationDate)
@@ -164,13 +194,25 @@ class ExistingReservationSeries extends ReservationSeries
 	
 	public function GetEvents()
 	{
-		//$updateEvents = $this->seriesUpdateStrategy->GetEvents($this);
+		if ($this->seriesUpdateStrategy->RequiresNewSeries())
+		{
+			$this->AddEvent(new SeriesBranchedEvent($this));
+		}
+		
 		return $this->events;
 	}
 	
 	public function Instances()
 	{
 		return $this->seriesUpdateStrategy->Instances($this);
+	}
+	
+	/**
+	 * @internal
+	 */
+	public function _Instances()
+	{
+		return $this->instances;
 	}
 	
 	protected function AddEvent($event)

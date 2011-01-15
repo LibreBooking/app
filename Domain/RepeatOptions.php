@@ -14,6 +14,8 @@ interface IRepeatOptions
 	function ConfigurationString();
 	
 	function RepeatType();
+	
+	function Equals(IRepeatOptions $repeatOptions);
 }
 
 abstract class RepeatOptionsAbstract implements IRepeatOptions
@@ -30,7 +32,7 @@ abstract class RepeatOptionsAbstract implements IRepeatOptions
 	
 	/**
 	 * @param int $interval
-	 * @param Date $TerminationDate
+	 * @param Date $terminationDate
 	 */
 	protected function __construct($interval, $terminationDate)
 	{
@@ -41,6 +43,11 @@ abstract class RepeatOptionsAbstract implements IRepeatOptions
 	public function ConfigurationString() 
 	{
 		return sprintf("interval=%s|termination=%s", $this->_interval, $this->_terminationDate->ToDatabase());
+	}
+	
+	public function Equals(IRepeatOptions $repeatOptions)
+	{
+		return $this->ConfigurationString() == $repeatOptions->ConfigurationString();
 	}
 }
 
@@ -74,6 +81,11 @@ class RepeatNone implements IRepeatOptions
 	public function ConfigurationString() 
 	{
 		return '';
+	}
+	
+	public function Equals(IRepeatOptions $repeatOptions)
+	{
+		return get_class($this) == get_class($repeatOptions);
 	}
 }
 

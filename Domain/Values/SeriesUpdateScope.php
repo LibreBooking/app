@@ -48,7 +48,7 @@ interface ISeriesUpdateScope
 	/**
 	 * @param ExistingReservationSeries $series
 	 */
-	function GetEvents($series);
+	function ApplyChanges($series);
 }
 
 abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
@@ -80,6 +80,7 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 	
 	public function Instances($series)
 	{
+		
 		return array($series->CurrentInstance());
 	}
 	
@@ -88,7 +89,7 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 		return true;
 	}
 	
-	public function GetEvents($series)
+	public function ApplyChanges($series)
 	{
 		return array();
 	}
@@ -106,9 +107,9 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 		return $this->series->SeriesRepeatOptions();
 	}
 	
-	public function Instances()
+	public function Instances($series)
 	{
-		return $this->series->SeriesInstances();
+		return $series->_Instances();
 	}
 	
 	public function RequiresNewSeries()
@@ -116,7 +117,7 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 		return false;
 	}
 	
-	public function GetEvents($series)
+	public function ApplyChanges($series)
 	{
 		return array();
 	}
@@ -134,31 +135,37 @@ class SeriesUpdateScope_Future extends SeriesUpdateScopeBase
 		return $this->series->SeriesRepeatOptions();
 	}
 	
-	public function Instances()
+	public function Instances($series)
 	{
-		return $this->series->SeriesInstances();
+		$currentInstance = $series->CurrentInstance();
+		$instances = array($currentInstance);
+		
+		foreach ($series->_Instances() as $instance)
+		{
+			if ($instance->StartDate()->GreaterThan($currentInstance->StartDate()))
+			{
+				$instances[] = $instance;
+			}
+		}
+		
+		return $instances;
 	}
 	
 	/**
 	 * @param ExistingReservationSeries $series
 	 */
-	public function GetEvents($series)
+	public function ApplyChanges($series)
 	{
-		$events = array();
-		
 		$currentInstance = $series->CurrentInstance();
 		
-		$events[] = new SeriesBranchedEvent($series);
-		
+		// old instances will not transfer
 		foreach ($series->Instances() as $instance)
 		{
-			if ($instance->StartDate()->GreaterThan($currentInstance))
+			if ($instance->StartDate()->LessThan($currentInstance->StartDate()))
 			{
-				$events[] = new InstanceRemovedEvent($instance);
+				$series->RemoveInstance($instance);
 			}
 		}
-		
-		return $events;
 	}
 	
 	public function RequiresNewSeries()
@@ -174,7 +181,7 @@ class NullSeriesUpdateScope implements ISeriesUpdateScope
 		return new RepeatNone();
 	}
 	
-	public function Instances()
+	public function Instances($series)
 	{
 		return array();
 	}
@@ -184,7 +191,7 @@ class NullSeriesUpdateScope implements ISeriesUpdateScope
 		return false;
 	}
 	
-	public function GetEvents($series)
+	public function ApplyChanges($series)
 	{
 		return array();
 	}
