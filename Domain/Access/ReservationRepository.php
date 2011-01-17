@@ -54,6 +54,7 @@ class ReservationRepository implements IReservationRepository
 
 			$instance = $reservationSeries->CurrentInstance();
 			
+			// move all instances
 			$updateReservationCommand = new UpdateReservationCommand(
 									$instance->ReferenceNumber(),
 									$newSeriesId,
@@ -75,6 +76,9 @@ class ReservationRepository implements IReservationRepository
 										
 			$database->Execute($updateSeries);
 		}
+		
+		// delete removed instances
+		// add new instances
 	}
 	
 	
