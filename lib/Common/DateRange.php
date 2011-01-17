@@ -127,6 +127,11 @@ class DateRange
 	{
 		return "\nBegin: " . $this->_begin->ToString() . " End: " . $this->_end->ToString() . "\n";
 	}
+	
+	public function __toString()
+	{
+		return $this->ToString();
+	}
 }
 
 class NullDateRange extends DateRange

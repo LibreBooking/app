@@ -245,7 +245,7 @@ class ReservationRepositoryTests extends TestBase
 	{
 		$seriesId = 10;
 		$reservationId = 1;
-		$referenceNumber = 'refnum';
+		$referenceNumber = 'currentInstanceRefNum';
 		$userId = 10;
 		$resourceId = 100;
 		$scheduleId = 1000;
@@ -260,7 +260,7 @@ class ReservationRepositoryTests extends TestBase
 		$repeatType = RepeatType::Daily;
 		$terminiationDateString = '2010-01-20 12:30:00'; 
 		$terminationDate = Date::FromDatabase($terminiationDateString);
-		$repeatOptions = new RepeatDaily($interval, $terminationDate, $duration);
+		$repeatOptions = new RepeatDaily($interval, $terminationDate);
 		
 		$expected = new ExistingReservationSeries();
 		$expected->WithId($seriesId);
@@ -272,13 +272,20 @@ class ReservationRepositoryTests extends TestBase
 		$expected->WithResource($resourceId1);
 		$expected->WithResource($resourceId2);
 		$expected->WithRepeatOptions($repeatOptions);
+		$instance1 = new Reservation($expected, $duration->AddDays(10));
+		$instance1->SetReferenceNumber('instance1');
+		$instance1->SetReservationId(909);
+		$instance2 = new Reservation($expected, $duration->AddDays(20));
+		$instance2->SetReferenceNumber('instance2');
+		$instance2->SetReservationId(1909);
+		$expected->WithInstance($instance1);
+		$expected->WithInstance($instance2);
 			
 		$expectedInstance = new Reservation($expected, $duration);
 		$expectedInstance->SetReferenceNumber($referenceNumber);
 		$expectedInstance->SetReservationId($reservationId);
-		
 		$expected->WithCurrentInstance($expectedInstance);
-		
+
 		$reservationRow = new ReservationRow(
 			$reservationId,
 			$begin,
@@ -292,6 +299,12 @@ class ReservationRepositoryTests extends TestBase
 			$seriesId
 			);
 			
+		$reservationInstanceRow = new ReservationInstanceRow($seriesId);
+		$reservationInstanceRow
+			->WithInstance($instance1->ReservationId(), $instance1->ReferenceNumber(), $instance1->Duration())
+			->WithInstance($instance2->ReservationId(), $instance2->ReferenceNumber(), $instance2->Duration())
+			->WithInstance($reservationId, $expectedInstance->ReferenceNumber(), $expectedInstance->Duration());
+			
 		$reservationResourceRow = new ReservationResourceRow($reservationId);
 		$reservationResourceRow
 			->WithPrimary($resourceId)
@@ -303,18 +316,21 @@ class ReservationRepositoryTests extends TestBase
 			->WithOwner($userId);
 		
 		$this->db->SetRow(0, $reservationRow->Rows());
-		$this->db->SetRow(1, $reservationResourceRow->Rows());
-		$this->db->SetRow(2, $reservationUserRow->Rows());
+		$this->db->SetRow(1, $reservationInstanceRow->Rows());
+		$this->db->SetRow(2, $reservationResourceRow->Rows());
+		$this->db->SetRow(3, $reservationUserRow->Rows());
 		
 		$actualReservation = $this->repository->LoadById($reservationId);
 		
 		$this->assertEquals($expected, $actualReservation);
 		
 		$getReservation = new GetReservationByIdCommand($reservationId);
+		$getInstances = new GetReservationSeriesInstances($seriesId);
 		$getResources = new GetReservationResourcesCommand($seriesId);
 		$getParticipants = new GetReservationParticipantsCommand($reservationId);
 		
 		$this->assertTrue(in_array($getReservation, $this->db->_Commands));
+		$this->assertTrue(in_array($getInstances, $this->db->_Commands));
 		$this->assertTrue(in_array($getResources, $this->db->_Commands));
 		$this->assertTrue(in_array($getParticipants, $this->db->_Commands));
 	}
@@ -471,6 +487,40 @@ class ReservationRow
 			ColumnNames::SCHEDULE_ID => $scheduleId,
 			ColumnNames::SERIES_ID => $seriesId
 		);
+	}
+}
+
+class ReservationInstanceRow
+{
+	private $seriesId;
+	private $rows = array();
+	
+	public function Rows()
+	{
+		return $this->rows;
+	}
+	
+	public function __construct($seriesId)
+	{
+		$this->seriesId = $seriesId;
+	}
+	
+	/**
+	 * @param int $instanceId
+	 * @param string $referenceNum
+	 * @param DateRange $duration
+	 */
+	public function WithInstance($instanceId, $referenceNum, $duration)
+	{
+		$this->rows[] = array(
+			ColumnNames::SERIES_ID => $this->seriesId, 
+			ColumnNames::RESERVATION_INSTANCE_ID => $instanceId, 
+			ColumnNames::REFERENCE_NUMBER => $referenceNum, 
+			ColumnNames::RESERVATION_START => $duration->GetBegin()->ToDatabase(),
+			ColumnNames::RESERVATION_END => $duration->GetEnd()->ToDatabase(),
+			);
+		
+		return $this;
 	}
 }
 

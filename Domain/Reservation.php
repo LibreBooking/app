@@ -47,6 +47,13 @@ class Reservation
 		return new DateRange($this->StartDate(), $this->EndDate());
 	}
 	
+	protected $reservationId;
+	
+	public function ReservationId()
+	{
+		return $this->reservationId;
+	}
+	
 	/**
 	 * @var ReservationSeries
 	 */

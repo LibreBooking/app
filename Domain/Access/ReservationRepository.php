@@ -143,7 +143,6 @@ class ReservationRepository implements IReservationRepository
 		
 		if ($reader->NumRows() != 1)
 		{
-			echo 'num ' . $reader->NumRows();
 			Log::Debug("LoadById() - Reservation not found. ID: %s", $reservationId);
 			return null;
 		}
@@ -155,11 +154,6 @@ class ReservationRepository implements IReservationRepository
 		if ($row = $reader->GetRow())
 		{	
 			$seriesId = $row[ColumnNames::SERIES_ID];
-			
-			$startDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
-			$endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
-			$duration = new DateRange($startDate, $endDate);		
-			
 			$scheduleId = $row[ColumnNames::SCHEDULE_ID];
 			$title = $row[ColumnNames::RESERVATION_TITLE];
 			$description = $row[ColumnNames::RESERVATION_DESCRIPTION];
@@ -167,7 +161,7 @@ class ReservationRepository implements IReservationRepository
 			$repeatType = $row[ColumnNames::REPEAT_TYPE];
 			$configurationString = $row[ColumnNames::REPEAT_OPTIONS];			
 			
-			$repeatOptions = $this->BuildRepeatOptions($repeatType, $configurationString, $duration);
+			$repeatOptions = $this->BuildRepeatOptions($repeatType, $configurationString);
 			$series->WithRepeatOptions($repeatOptions);
 
 			$series->WithId($seriesId);
@@ -175,6 +169,10 @@ class ReservationRepository implements IReservationRepository
 			$series->WithTitle($title);
 			$series->WithDescription($description);
 		
+			$startDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
+			$endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
+			$duration = new DateRange($startDate, $endDate);		
+			
 			$instance = new Reservation($series, $duration);
 			$instance->SetReservationId($row[ColumnNames::RESERVATION_INSTANCE_ID]);
 			$instance->SetReferenceNumber($row[ColumnNames::REFERENCE_NUMBER]);	
@@ -182,6 +180,20 @@ class ReservationRepository implements IReservationRepository
 			$series->WithCurrentInstance($instance);
 		}
 		
+		// get all series instances
+		$getInstancesCommand = new GetReservationSeriesInstances($seriesId);
+		$reader = ServiceLocator::GetDatabase()->Query($getInstancesCommand);
+		while ($row = $reader->GetRow())
+		{
+			$start = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
+			$end = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
+			$reservation = new Reservation($series, new DateRange($start, $end));
+			$reservation->SetReferenceNumber($row[ColumnNames::REFERENCE_NUMBER]);
+			$reservation->SetReservationId($row[ColumnNames::RESERVATION_INSTANCE_ID]);
+			$series->WithInstance($reservation);
+		}
+		
+		// get all reservation resources
 		$getResourcesCommand = new GetReservationResourcesCommand($seriesId);
 		$reader = ServiceLocator::GetDatabase()->Query($getResourcesCommand);
 		while ($row = $reader->GetRow())
@@ -213,11 +225,11 @@ class ReservationRepository implements IReservationRepository
 		return $series;
 	}
 	
-	private function BuildRepeatOptions($repeatType, $configurationString, $duration)
+	private function BuildRepeatOptions($repeatType, $configurationString)
 	{
 		$configuration = RepeatConfiguration::Create($repeatType, $configurationString);
 		$factory = new RepeatOptionsFactory();
-		return $factory->Create($repeatType, $configuration->Interval, $configuration->TerminationDate, $duration, $configuration->Weekdays, $configuration->MonthlyType);
+		return $factory->Create($repeatType, $configuration->Interval, $configuration->TerminationDate, $configuration->Weekdays, $configuration->MonthlyType);
 	}
 }
 

@@ -176,7 +176,8 @@ class ReservationSeries
 	
 	protected function AddInstance(Reservation $reservation)
 	{
-		$this->instances[$reservation->StartDate()->Timestamp()] = $reservation;
+		$key = $reservation->StartDate()->Timestamp();
+		$this->instances[$key] = $reservation;
 	}
 	
 	/**

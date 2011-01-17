@@ -244,6 +244,14 @@ class Queries
 		WHERE
 			series_id = @seriesid';
 	
+	const GET_RESERVATION_SERIES_INSTANCES =
+		'SELECT 
+			*
+		FROM
+			reservation_instances
+		WHERE 
+			series_id = @seriesid';
+	
 	// TODO: Pass in "Deleted" status ID
 	const GET_RESERVATIONS_COMMAND =
 	 'SELECT 
