@@ -46,6 +46,7 @@ class ReservationRepository implements IReservationRepository
 	public function Update(ExistingReservationSeries $reservationSeries)
 	{
 		$database = ServiceLocator::GetDatabase();
+		$events = $reservationSeries->GetEvents();
 		
 		if ($reservationSeries->RequiresNewSeries())
 		{
@@ -53,21 +54,11 @@ class ReservationRepository implements IReservationRepository
 
 			$instance = $reservationSeries->CurrentInstance();
 			
-			if ($reservationSeries->IsRecurring())
-			{
-				$updateReservationCommand = new UpdateFutureReservationsCommand(
-									$instance->ReferenceNumber(),
-									$newSeriesId,
-									$reservationSeries->SeriesId());
-			}
-			else
-			{
-				$updateReservationCommand = new UpdateReservationCommand(
+			$updateReservationCommand = new UpdateReservationCommand(
 									$instance->ReferenceNumber(),
 									$newSeriesId,
 									$instance->StartDate(),
 									$instance->EndDate());
-			}
 			
 			$database->Execute($updateReservationCommand);
 		}

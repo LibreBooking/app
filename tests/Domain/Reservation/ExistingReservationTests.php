@@ -16,6 +16,7 @@ class ExistingReservationTests extends TestBase
 	
 	public function testWhenApplyingRecurrenceUpdatesToSingleInstanceSeries()
 	{
+		$this->markTestIncomplete("im not sure this is a valid scenario");
 		$repeatDaily = new RepeatDaily(1, Date::Now()->AddDays(10));
 		
 		$builder = new ExistingReservationSeriesBuilder();
@@ -81,6 +82,7 @@ class ExistingReservationTests extends TestBase
 		$seriesBranchedEvent = new SeriesBranchedEvent($series);
 		$this->assertEquals(1, count($events));
 		$this->assertEquals($seriesBranchedEvent, $events[0], "should have been branched");
+		$this->assertEquals(new RepeatNone(), $series->RepeatOptions(), "repeat options should be cleared for new instance");
 	}
 	
 	public function testWhenApplyingRecurrenceUpdatesToFutureInstancesSeries()
@@ -120,6 +122,7 @@ class ExistingReservationTests extends TestBase
 		
 		$events = $series->GetEvents();
 		
+		$this->assertEquals(13, count($events), "1 branched, 10 created, 2 removed");
 		// remove all future events
 		$instanceRemovedEvent1 = new InstanceRemovedEvent($futureReservation1);
 		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation2);

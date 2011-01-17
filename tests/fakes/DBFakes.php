@@ -84,6 +84,21 @@ class FakeDatabase extends Database
 	{
 		return $this->reader[$readerCount];
 	}
+	
+	public function GetCommandsOfType($type)
+	{
+		$commands = array();
+		
+		foreach($this->_Commands as $command)
+		{
+			if (get_class($command) == $type)
+			{
+				$commands[] = $command;
+			}
+		}
+		
+		return $commands;
+	}
 }
 
 class FakeReader implements IReader 

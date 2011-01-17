@@ -158,7 +158,7 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function ApplyChangesTo($seriesUpdateScope)
 	{
-		if ($this->WasNotOrignallyRecurring())
+		//if ($this->WasOrignallyNotRecurring())
 		{
 			$this->seriesUpdateStrategy = SeriesUpdateScope::CreateStrategy($seriesUpdateScope);
 		}
@@ -166,11 +166,14 @@ class ExistingReservationSeries extends ReservationSeries
 		if ($this->seriesUpdateStrategy->RequiresNewSeries())
 		{
 			$this->AddEvent(new SeriesBranchedEvent($this));
+			//$this->AddEvent(new InstanceMovedEvent())
+			$this->Repeats($this->seriesUpdateStrategy->GetRepeatOptions($this));
 		}
 	}
 	
-	private function WasNotOrignallyRecurring()
+	private function WasOrignallyNotRecurring()
 	{
+		// no idea if this is needed
 		return $this->_originalRepeatOptions == null || !$this->_originalRepeatOptions->Equals(new RepeatNone());
 	}
 	
@@ -179,13 +182,12 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function Repeats(IRepeatOptions $repeatOptions)
 	{
-		if (!$repeatOptions->Equals($this->_repeatOptions))
+		if ($this->seriesUpdateStrategy->CanChangeRepeatTo($this, $repeatOptions))
 		{
-			$earliestDateToKeep = $this->seriesUpdateStrategy->EarliestDateToKeep($this);
-			// delete all future reservation instances
 			foreach ($this->instances as $instance)
 			{
-				if ($instance->StartDate()->GreaterThan($earliestDateToKeep))
+				// delete all reservation instances which will be replaced
+				if ($this->seriesUpdateStrategy->ShouldInstanceBeRemoved($this, $instance))
 				{
 					$this->RemoveInstance($instance);
 				}

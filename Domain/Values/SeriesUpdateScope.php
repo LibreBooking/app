@@ -40,12 +40,30 @@ interface ISeriesUpdateScope
 	 */
 	function RequiresNewSeries();
 	
+	/**
+	 * @return string
+	 */
 	function GetScope();
 	
 	/**
 	 * @param ExistingReservationSeries $series
+	 * @return IRepeatOptions
 	 */
-	function EarliestDateToKeep($series);
+	function GetRepeatOptions($series);
+	
+	/**
+	 * @param ExistingReservationSeries $series
+	 * @param IRepeatOptions $repeatOptions
+	 * @return bool
+	 */
+	function CanChangeRepeatTo($series, $repeatOptions);
+	
+	/**
+	 * @param ExistingReservationSeries $series
+	 * @param Reservation $instance
+	 * @return bool
+	 */
+	function ShouldInstanceBeRemoved($series, $instance);
 }
 
 abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
@@ -76,6 +94,23 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 		
 		return $instances;
 	}
+	
+	protected abstract function EarliestDateToKeep($series);
+	
+	public function GetRepeatOptions($series)
+	{
+		return $series->RepeatOptions();
+	}
+	
+	public function CanChangeRepeatTo($series, $targetRepeatOptions)
+	{
+		return !$targetRepeatOptions->Equals($series->RepeatOptions());
+	}
+	
+	public function ShouldInstanceBeRemoved($series, $instance)
+	{
+		return $instance->StartDate()->GreaterThan($this->EarliestDateToKeep($series));
+	}
 }
 
 class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
@@ -103,6 +138,21 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 	public function EarliestDateToKeep($series)
 	{
 		return $series->CurrentInstance()->StartDate();
+	}
+	
+	public function GetRepeatOptions($series)
+	{
+		return new RepeatNone();
+	}
+	
+	public function CanChangeRepeatTo($series, $targetRepeatOptions)
+	{
+		return $targetRepeatOptions->Equals(new RepeatNone());
+	}
+	
+	public function ShouldInstanceBeRemoved($series, $instance)
+	{
+		return false;
 	}
 }
 

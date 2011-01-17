@@ -2,7 +2,7 @@
 class ExistingReservationSeriesBuilder
 {
 	/**
-	 * @var ExistingReservationSeries
+	 * @var TestHelperExistingReservationSeries
 	 */
 	private $series;
 	
@@ -17,14 +17,18 @@ class ExistingReservationSeriesBuilder
 	private $repeatOptions;
 	
 	private $instances;
+	private $events;
+	
+	private $requiresNewSeries = false;
 	
 	public function __construct()
 	{
-		$series = new ExistingReservationSeries();
+		$series = new TestHelperExistingReservationSeries();
 		
 		$this->currentInstance = new Reservation($series, new DateRange(Date::Now(), Date::Now()));
 		$this->repeatOptions = new RepeatNone();
 		$this->instances = array();
+		$this->events = array();
 		
 		$series->WithDescription('description');
 		$series->WithOwner(1);
@@ -46,15 +50,7 @@ class ExistingReservationSeriesBuilder
 		
 		return $this;
 	}
-	
-	public function WithSeriesInstances($reservations)
-	{
-		foreach ($reservations as $reservation)
-		{
-			$this->series->AddInstance($reservation);
-		}
-	}
-	
+
 	public function WithRepeatOptions(IRepeatOptions $repeatOptions)
 	{
 		$this->repeatOptions = $repeatOptions;
@@ -65,6 +61,16 @@ class ExistingReservationSeriesBuilder
 	public function WithInstance($reservation)
 	{
 		$this->instances[] = $reservation;
+	}
+	
+	public function WithEvent($event)
+	{
+		$this->events[] = $event;
+	}
+	
+	public function WithRequiresNewSeries($requiresNewSeries)
+	{
+		$this->requiresNewSeries = $requiresNewSeries;
 	}
 	
 	/**
@@ -80,7 +86,34 @@ class ExistingReservationSeriesBuilder
 			$this->series->WithInstance($reservation);
 		}
 		
+		foreach ($this->events as $event)
+		{
+			$this->series->AddEvent($event);
+		}
+		
+		$this->series->SetRequiresNewSeries($this->requiresNewSeries);
+		
 		return $this->series;
+	}
+}
+
+class TestHelperExistingReservationSeries extends ExistingReservationSeries
+{
+	public $requiresNewSeries = false;
+	
+	public function AddEvent($event)
+	{
+		parent::AddEvent($event);
+	}
+	
+	public function SetRequiresNewSeries($requiresNewSeries)
+	{
+		$this->requiresNewSeries = $requiresNewSeries;
+	}
+	
+	public function RequiresNewSeries()
+	{
+		return $this->requiresNewSeries;
 	}
 }
 

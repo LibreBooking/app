@@ -343,49 +343,52 @@ class ReservationRepositoryTests extends TestBase
 		$description = "new description";
 		
 		$builder = new ExistingReservationSeriesBuilder();
-		
 		$existingReservation = $builder->Build();
 		
 		$existingReservation->Update($userId, $resourceId, $title, $description);
-		$repeatType = $existingReservation->RepeatOptions()->RepeatType();
-		$options = $existingReservation->RepeatOptions()->ConfigurationString();
-		$existingReservation->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+		$repeatOptions = $existingReservation->RepeatOptions();
+		$repeatType = $repeatOptions->RepeatType();
+		$repeatConfiguration = $repeatOptions->ConfigurationString();
 		
 		$this->repository->Update($existingReservation);
 		
-		$updateSeriesCommand = new UpdateReservationSeriesCommand($existingReservation->SeriesId(), $title, $description, $repeatType, $options, Date::Now());
+		$updateSeriesCommand = new UpdateReservationSeriesCommand(
+			$existingReservation->SeriesId(), 
+			$title, 
+			$description, 
+			$repeatType, 
+			$repeatConfiguration, 
+			Date::Now());
 		$this->assertEquals(1, count($this->db->_Commands));
 		$this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
 	}
 
-	public function testAlteringReservationInstanceCreatesNewSeriesAndRemovesRepeat()
+	public function testBranchedSingleInstance()
 	{
-		$this->markTestIncomplete('the repo test probably knows too much about the details');
 		$seriesId = 10909;
 		$userId = 10;
 		$resourceId = 11;
 		$scheduleId = 12;
 		$title = "new title";
 		$description = "new description";
+		$expectedRepeat = new RepeatNone();
+
+		$currentReservation = new TestReservation($referenceNumber, new TestDateRange());
 		
 		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithRequiresNewSeries(true);
+		$builder->WithRepeatOptions($expectedRepeat);
+		$builder->WithCurrentInstance($currentReservation);
 		
-		$existingReservation = $builder->Build();
-		$currentReservation = new Reservation($existingReservation, NullDateRange::Instance());
-		$existingReservation->WithRepeatOptions(new RepeatDaily(1, Date::Now(), new TestDateRange()));
-		$existingReservation->WithSchedule($scheduleId);
-		$existingReservation->WithCurrentInstance($currentReservation);
-		
+		$existingReservation = $builder->Build();		
 		$existingReservation->Update($userId, $resourceId, $title, $description);
-		$expectedRepeat = new RepeatNone();
+		$existingReservation->WithSchedule($scheduleId);
 		
-		$existingReservation->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
-
 		
 		$this->db->_ExpectedInsertId = $seriesId;
 		
 		$this->repository->Update($existingReservation);
-		
+			
 		$addNewSeriesCommand = new AddReservationSeriesCommand(
 									Date::Now(), 
 									$title, 
@@ -397,7 +400,7 @@ class ReservationRepositoryTests extends TestBase
 									ReservationStatus::Created);
 		
 		$updateReservationCommand = new UpdateReservationCommand($currentReservation->ReferenceNumber(), $seriesId, $currentReservation->StartDate(), $currentReservation->EndDate());
-		
+
 		$this->assertTrue(in_array($addNewSeriesCommand, $this->db->_Commands));
 		$this->assertTrue(in_array($updateReservationCommand, $this->db->_Commands));
 	}
