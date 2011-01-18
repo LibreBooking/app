@@ -372,6 +372,7 @@ class ReservationRepositoryTests extends TestBase
 		$title = "new title";
 		$description = "new description";
 		$expectedRepeat = new RepeatNone();
+		$referenceNumber = 'ref number current';
 
 		$currentReservation = new TestReservation($referenceNumber, new TestDateRange());
 		

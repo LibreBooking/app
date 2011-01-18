@@ -14,34 +14,6 @@ class ExistingReservationTests extends TestBase
 		parent::teardown();
 	}
 	
-	public function testWhenApplyingRecurrenceUpdatesToSingleInstanceSeries()
-	{
-		$this->markTestIncomplete("im not sure this is a valid scenario");
-		$repeatDaily = new RepeatDaily(1, Date::Now()->AddDays(10));
-		
-		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithRepeatOptions(new RepeatNone());
-		$series = $builder->Build();
-		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
-		$series->Repeats($repeatDaily);
-
-		$instances = $series->Instances();
-		$this->assertEquals(11, count($instances), "existing plus repeated dates");
-
-		$currentInstance = $series->CurrentInstance();
-		$events = $series->GetEvents();
-		foreach ($instances as $instance)
-		{
-			if ($instance == $currentInstance)
-			{
-				continue;
-			}
-			
-			$instanceAddedEvent = new InstanceAddedEvent($instance);
-			$this->assertTrue(in_array($instanceAddedEvent, $events), "missing ref num {$instance->ReferenceNumber()}");
-		}
-	}
-	
 	public function testWhenApplyingSimpleUpdatesToSingleInstance()
 	{
 		$currentSeriesDate = new DateRange(Date::Now(), Date::Now());
@@ -80,6 +52,7 @@ class ExistingReservationTests extends TestBase
 		
 		// remove all future events
 		$seriesBranchedEvent = new SeriesBranchedEvent($series);
+		$this->assertTrue($series->RequiresNewSeries(), "should require new series if this instance in a series is altered");
 		$this->assertEquals(1, count($events));
 		$this->assertEquals($seriesBranchedEvent, $events[0], "should have been branched");
 		$this->assertEquals(new RepeatNone(), $series->RepeatOptions(), "repeat options should be cleared for new instance");
