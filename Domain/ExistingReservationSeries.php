@@ -26,6 +26,11 @@ class ExistingReservationSeries extends ReservationSeries
 		return $this->seriesId;
 	}
 	
+	public function SetSeriesId($seriesId)
+	{
+		$this->seriesId = $seriesId;
+	}
+	
 	public function SeriesUpdateScope()
 	{
 		return $this->seriesUpdateStrategy->GetScope();
@@ -231,6 +236,19 @@ class ExistingReservationSeries extends ReservationSeries
 
 class InstanceAddedEvent
 {
+	/**
+     * @var Reservation
+	 */
+	private $instance;
+	
+	/**
+	 * @return Reservation
+	 */
+	public function Instance()
+	{
+		return $this->instance;
+	}
+	
 	public function __construct(Reservation $reservationInstance)
 	{
 		$this->instance = $reservationInstance;
@@ -239,6 +257,19 @@ class InstanceAddedEvent
 
 class InstanceRemovedEvent
 {
+	/**
+     * @var Reservation
+	 */
+	private $instance;
+	
+	/**
+	 * @return Reservation
+	 */
+	public function Instance()
+	{
+		return $this->instance;
+	}
+	
 	public function __construct(Reservation $reservationInstance)
 	{
 		$this->instance = $reservationInstance;

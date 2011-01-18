@@ -374,6 +374,11 @@ class Queries
 			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid)
 		';
 
+	const REMOVE_RESERVATION_INSTANCE = 
+		'DELETE 
+			reservation_instances
+		WHERE
+			reference_number = @referenceNumber';
 
 	const ADD_RESOURCE = 
 		'INSERT INTO 

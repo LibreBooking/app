@@ -4,7 +4,7 @@ class ExistingReservationSeriesBuilder
 	/**
 	 * @var TestHelperExistingReservationSeries
 	 */
-	private $series;
+	public $series;
 	
 	/**
 	 * @var Reservation
@@ -23,7 +23,7 @@ class ExistingReservationSeriesBuilder
 	
 	public function __construct()
 	{
-		$series = new TestHelperExistingReservationSeries();
+		$series = new ExistingReservationSeries();
 		
 		$this->currentInstance = new Reservation($series, new DateRange(Date::Now(), Date::Now()));
 		$this->repeatOptions = new RepeatNone();
@@ -90,7 +90,17 @@ class ExistingReservationSeriesBuilder
 		{
 			$this->series->AddEvent($event);
 		}
-		
+
+		return $this->series;
+	}
+	
+	/**
+	 * @return TestHelperExistingReservationSeries
+	 */
+	public function BuildTestVersion()
+	{
+		$this->series = new TestHelperExistingReservationSeries();
+		$this->Build();		
 		$this->series->SetRequiresNewSeries($this->requiresNewSeries);
 		
 		return $this->series;
@@ -114,6 +124,11 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 	public function RequiresNewSeries()
 	{
 		return $this->requiresNewSeries;
+	}
+	
+	public function Instances()
+	{
+		return $this->instances;
 	}
 }
 

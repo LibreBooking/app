@@ -51,17 +51,19 @@ class ReservationRepository implements IReservationRepository
 		if ($reservationSeries->RequiresNewSeries())
 		{
 			$newSeriesId = $this->InsertSeries($reservationSeries);
-
-			$instance = $reservationSeries->CurrentInstance();
 			
-			// move all instances
-			$updateReservationCommand = new UpdateReservationCommand(
-									$instance->ReferenceNumber(),
-									$newSeriesId,
-									$instance->StartDate(),
-									$instance->EndDate());
+			$reservationSeries->SetSeriesId($newSeriesId);
 			
-			$database->Execute($updateReservationCommand);
+			foreach ($reservationSeries->Instances() as $instance)
+			{
+				$updateReservationCommand = new UpdateReservationCommand(
+										$instance->ReferenceNumber(),
+										$newSeriesId,
+										$instance->StartDate(),
+										$instance->EndDate());
+				
+				$database->Execute($updateReservationCommand);
+			}
 		}
 		else
 		{
@@ -77,8 +79,31 @@ class ReservationRepository implements IReservationRepository
 			$database->Execute($updateSeries);
 		}
 		
-		// delete removed instances
-		// add new instances
+		foreach ($events as $event)
+		{
+			$command = null;
+			$eventType = get_class($event);
+			if ($eventType == 'InstanceAddedEvent')
+			{
+				// add new instances
+				$reservation = $event->Instance();
+				$command = new AddReservationCommand(
+							$reservation->StartDate(),
+							$reservation->EndDate(),
+							$reservation->ReferenceNumber(),
+							$reservationSeries->SeriesId());
+			}
+			else if ($eventType == 'InstanceRemovedEvent')
+			{
+				// delete removed instances
+				$command = new RemoveReservationCommand($event->Instance()->ReferenceNumber());
+			}
+			
+			if ($command != null)
+			{
+				$database->Execute($command);
+			}
+		}
 	}
 	
 	

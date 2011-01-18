@@ -380,7 +380,7 @@ class ReservationRepositoryTests extends TestBase
 		$builder->WithRepeatOptions($expectedRepeat);
 		$builder->WithCurrentInstance($currentReservation);
 		
-		$existingReservation = $builder->Build();		
+		$existingReservation = $builder->BuildTestVersion();		
 		$existingReservation->Update($userId, $resourceId, $title, $description);
 		$existingReservation->WithSchedule($scheduleId);
 		
@@ -399,16 +399,14 @@ class ReservationRepositoryTests extends TestBase
 									ReservationTypes::Reservation,
 									ReservationStatus::Created);
 		
-		$updateReservationCommand = new UpdateReservationCommand($currentReservation->ReferenceNumber(), $seriesId, $currentReservation->StartDate(), $currentReservation->EndDate());
+		$updateReservationCommand = $this->GetUpdateReservationCommand($seriesId, $currentReservation);
 
 		$this->assertTrue(in_array($addNewSeriesCommand, $this->db->_Commands));
 		$this->assertTrue(in_array($updateReservationCommand, $this->db->_Commands));
 	}
 	
-	public function testAlteringFutureInstancesCreatesNewSeriesAnMovesExistingReservationsThere()
+	public function testBranchedWithMovedAndAddedAndRemovedInstances()
 	{
-		$this->markTestIncomplete('not sure if this is needed just yet');
-		
 		$existingSeriesId = 10909;
 		$newSeriesId = 10910;
 		$userId = 10;
@@ -417,18 +415,31 @@ class ReservationRepositoryTests extends TestBase
 		$title = "new title";
 		$description = "new description";
 		
-		$builder = new ExistingReservationSeriesBuilder();
-
-		$existingReservation = $builder->Build();
-		$existingReservation->WithId($existingSeriesId);
-		$existingReservation->WithSchedule($scheduleId);
-		$expectedRepeat = new RepeatDaily(1, Date::Now(), new TestDateRange());
+		$dateRange = DateRange::Create('2010-01-10 05:30:00', '2010-01-10 08:30:00', 'UTC');
+		$existingInstance1 = new TestReservation('123', $dateRange->AddDays(1));
+		$existingInstance2 = new TestReservation('223', $dateRange->AddDays(2));
+		$newInstance1 = new TestReservation('323', $dateRange->AddDays(3));
+		$newInstance2 = new TestReservation('423', $dateRange->AddDays(4));
+		$removedInstance1 = new TestReservation('523', $dateRange->AddDays(5));
+		$removedInstance2 = new TestReservation('623', $dateRange->AddDays(6));
+		$currentInstance = new TestReservation('999', $dateRange);
 		
-		$existingReservation->Repeats($expectedRepeat);
-		$existingReservation->Update($userId, $resourceId, $title, $description);
-		$existingReservation->ApplyChangesTo(SeriesUpdateScope::FutureInstances);
-			
-		$currentReservation = $existingReservation->CurrentInstance();
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithEvent(new InstanceAddedEvent($newInstance1));
+		$builder->WithEvent(new InstanceAddedEvent($newInstance2));
+		$builder->WithEvent(new InstanceRemovedEvent($removedInstance1));
+		$builder->WithEvent(new InstanceRemovedEvent($removedInstance2));
+		$builder->WithEvent(new SeriesBranchedEvent($builder->series));
+		$builder->WithRequiresNewSeries(true);
+		$builder->WithInstance($existingInstance1);
+		$builder->WithInstance($existingInstance2);
+		$builder->WithCurrentInstance($currentInstance);
+		
+		$existingReservation = $builder->BuildTestVersion();
+		$existingReservation->Update($userId, $resourceId, $title, $description);		
+		$existingReservation->WithSchedule($scheduleId);
+		
+		$expectedRepeat = $existingReservation->RepeatOptions();
 		
 		$this->db->_ExpectedInsertId = $newSeriesId;
 		
@@ -444,13 +455,48 @@ class ReservationRepositoryTests extends TestBase
 									ReservationTypes::Reservation,
 									ReservationStatus::Created);
 		
-		$updateReservationCommand = new UpdateFutureReservationsCommand(
-									$currentReservation->ReferenceNumber(), 
-									$newSeriesId,
-									$existingSeriesId);
+		$updateReservationCommand1 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance1);
+		$updateReservationCommand2 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance2);
+		$updateReservationCommand3 = $this->GetUpdateReservationCommand($newSeriesId, $currentInstance);
+		
+		$addReservationCommand1 = $this->GetAddReservationCommand($newSeriesId, $newInstance1);
+		$addReservationCommand2 = $this->GetAddReservationCommand($newSeriesId, $newInstance2);
+		
+		$removeReservationCommand1 = new RemoveReservationCommand($removedInstance1->ReferenceNumber());
+		$removeReservationCommand2 = new RemoveReservationCommand($removedInstance2->ReferenceNumber());
 		
 		$this->assertEquals($addNewSeriesCommand, $this->db->_Commands[0]);
-		$this->assertTrue(in_array($updateReservationCommand, $this->db->_Commands));
+		
+		$commands = $this->db->GetCommandsOfType('UpdateReservationCommand');
+		$this->assertEquals(3, count($commands));
+		
+		$this->assertTrue(in_array($updateReservationCommand1, $this->db->_Commands));
+		$this->assertTrue(in_array($updateReservationCommand2, $this->db->_Commands));
+		$this->assertTrue(in_array($updateReservationCommand3, $this->db->_Commands));
+		
+		$this->assertTrue(in_array($addReservationCommand1, $this->db->_Commands));
+		$this->assertTrue(in_array($addReservationCommand2, $this->db->_Commands));
+		
+		$this->assertTrue(in_array($removeReservationCommand1, $this->db->_Commands));
+		$this->assertTrue(in_array($removeReservationCommand2, $this->db->_Commands));
+	}
+	
+	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
+	{
+		return new UpdateReservationCommand(
+									$expectedInstance->ReferenceNumber(), 
+									$expectedSeriesId,
+									$expectedInstance->StartDate(),
+									$expectedInstance->EndDate());
+	}
+	
+	private function GetAddReservationCommand($expectedSeriesId, Reservation $expectedInstance)
+	{
+		return new AddReservationCommand(
+								$expectedInstance->StartDate(), 
+								$expectedInstance->EndDate(),
+								$expectedInstance->ReferenceNumber(), 
+								$expectedSeriesId);
 	}
 }
 
