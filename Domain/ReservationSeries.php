@@ -169,6 +169,12 @@ class ReservationSeries
 		}
 	}
 	
+	protected function InstanceExists(DateRange $reservationDate)
+	{
+		$key = $reservationDate->GetBegin()->Timestamp();
+		return isset($this->instances[$key]);
+	}
+	
 	protected function AddNewInstance(DateRange $reservationDate)
 	{
 		$this->AddInstance(new Reservation($this, $reservationDate));

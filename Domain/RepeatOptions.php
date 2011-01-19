@@ -16,6 +16,10 @@ interface IRepeatOptions
 	function RepeatType();
 	
 	function Equals(IRepeatOptions $repeatOptions);
+	
+	function HasSameConfigurationAs(IRepeatOptions $repeatOptions);
+	
+	function TerminationDate();
 }
 
 abstract class RepeatOptionsAbstract implements IRepeatOptions
@@ -29,6 +33,14 @@ abstract class RepeatOptionsAbstract implements IRepeatOptions
 	 * @var Date
 	 */
 	protected $_terminationDate;
+	
+	/**
+	 * @return Date
+	 */
+	public function TerminationDate()
+	{
+		return $this->_terminationDate;
+	}
 	
 	/**
 	 * @param int $interval
@@ -48,6 +60,12 @@ abstract class RepeatOptionsAbstract implements IRepeatOptions
 	public function Equals(IRepeatOptions $repeatOptions)
 	{
 		return $this->ConfigurationString() == $repeatOptions->ConfigurationString();
+	}
+	
+	public function HasSameConfigurationAs(IRepeatOptions $repeatOptions)
+	{
+		return get_class($this) == get_class($repeatOptions) &&
+				$this->_interval == $repeatOptions->_interval;
 	}
 }
 
@@ -86,6 +104,16 @@ class RepeatNone implements IRepeatOptions
 	public function Equals(IRepeatOptions $repeatOptions)
 	{
 		return get_class($this) == get_class($repeatOptions);
+	}
+	
+	public function HasSameConfigurationAs(IRepeatOptions $repeatOptions)
+	{
+		return $this->Equals($repeatOptions);
+	}
+	
+	public function TerminationDate()
+	{
+		return Date::Now();
 	}
 }
 
@@ -197,6 +225,12 @@ class RepeatWeekly extends RepeatOptionsAbstract
 	{
 		$config = parent::ConfigurationString();
 		return sprintf("%s|days=%s", $config, implode(',', $this->_daysOfWeek));
+	}
+	
+	public function HasSameConfigurationAs(IRepeatOptions $repeatOptions)
+	{
+		return parent::HasSameConfigurationAs($repeatOptions) &&
+			$this->_daysOfWeek == $repeatOptions->_daysOfWeek;
 	}
 }
 

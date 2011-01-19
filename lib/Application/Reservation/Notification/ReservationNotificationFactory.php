@@ -3,6 +3,11 @@ class ReservationNotificationFactory implements IReservationNotificationFactory
 {
 	public function Create($reservationAction)
 	{
+		if ($reservationAction == ReservationAction::Update)
+		{
+			return new UpdateReservationNotificationService();
+		}
+
 		$userRepo = new UserRepository();
 		$resourceRepo = new ResourceRepository();
 		

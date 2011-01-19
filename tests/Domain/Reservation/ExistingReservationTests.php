@@ -162,21 +162,20 @@ class ExistingReservationTests extends TestBase
 	public function testWhenApplyingRecurrenceUpdatesToFullSeries()
 	{
 		$today = new DateRange(Date::Now(), Date::Now());
-		
-		$currentSeriesDate = $today->AddDays(5);
 
 		$oldDates = $today->AddDays(-1);
 		$oldReservation = new TestReservation('old', $oldDates);
-		
+				
+		$currentSeriesDate = $today->AddDays(5);
 		$currentInstance = new TestReservation('current', $currentSeriesDate);
 		
 		$futureDates1 = $today->AddDays(1);
-		$futureReservation1 = new TestReservation('new1', $futureDates1);
+		$afterTodayButBeforeCurrent = new TestReservation('new1', $futureDates1);
 		
 		$futureDates2 = $today->AddDays(10);
-		$futureReservation2 = new TestReservation('new2', $futureDates2);
+		$afterCurrent = new TestReservation('new2', $futureDates2);
 		
-		$currentRepeatOptions = new RepeatDaily(1, $currentSeriesDate->AddDays(50)->GetBegin());
+		$currentRepeatOptions = new RepeatYearly(1, $currentSeriesDate->AddDays(400)->GetBegin());
 		
 		$repeatDaily = new RepeatDaily(1, $currentSeriesDate->AddDays(10)->GetBegin());
 
@@ -184,8 +183,8 @@ class ExistingReservationTests extends TestBase
 		$builder->WithRepeatOptions($currentRepeatOptions);
 		$builder->WithInstance($oldReservation);
 		$builder->WithInstance($currentInstance);
-		$builder->WithInstance($futureReservation1);
-		$builder->WithInstance($futureReservation2);
+		$builder->WithInstance($afterTodayButBeforeCurrent);
+		$builder->WithInstance($afterCurrent);
 		$builder->WithCurrentInstance($currentInstance);
 		$series = $builder->Build();
 		// updates
@@ -194,16 +193,18 @@ class ExistingReservationTests extends TestBase
 
 		$instances = $series->Instances();
 		
-		$this->assertEquals(11, count($instances), "1 existing, 10 repeated dates");
+		$this->assertEquals(11, count($instances), "1 old, 1 current, 10 repeated dates");
+		$this->assertTrue(in_array($currentInstance, $instances));
 		
 		$events = $series->GetEvents();
 		
+		$this->assertEquals(12, count($events), "2 removals, 10 adds");
 		// remove all future events
-		$instanceRemovedEvent1 = new InstanceRemovedEvent($futureReservation1);
-		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation2);
+		$instanceRemovedEvent1 = new InstanceRemovedEvent($afterTodayButBeforeCurrent);
+		$instanceRemovedEvent2 = new InstanceRemovedEvent($afterCurrent);
 		
-		$this->assertTrue(in_array($instanceRemovedEvent1, $events), "missing ref {$futureReservation1->ReferenceNumber()}");
-		$this->assertTrue(in_array($instanceRemovedEvent2, $events), "missing ref {$futureReservation2->ReferenceNumber()}");
+		$this->assertTrue(in_array($instanceRemovedEvent1, $events), "missing ref {$afterTodayButBeforeCurrent->ReferenceNumber()}");
+		$this->assertTrue(in_array($instanceRemovedEvent2, $events), "missing ref {$afterCurrent->ReferenceNumber()}");
 
 		// recreate all future events
 		foreach ($instances as $instance)
@@ -216,6 +217,61 @@ class ExistingReservationTests extends TestBase
 			$instanceAddedEvent = new InstanceAddedEvent($instance);
 			$this->assertTrue(in_array($instanceAddedEvent, $events), "missing ref num {$instance->ReferenceNumber()}");
 		}
+	}
+	
+	public function testWhenExtendingEndDateOfRepeatOptionsOnFullSeries()
+	{
+		$currentSeriesDate = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1));
+		$currentInstance = new TestReservation('current', $currentSeriesDate);
+		$futureInstance = new TestReservation('future', $currentSeriesDate->AddDays(1));
+		$repeatDaily = new RepeatDaily(1, $currentSeriesDate->AddDays(10)->GetBegin());
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithRepeatOptions($repeatDaily);
+		$builder->WithInstance(new TestReservation('past', $currentSeriesDate->AddDays(-1)));
+		$builder->WithInstance($currentInstance);
+		$builder->WithInstance($futureInstance);
+		$builder->WithCurrentInstance($currentInstance);
+		
+		$series = $builder->Build();
+		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+		$series->Repeats(new RepeatDaily(1, $currentSeriesDate->AddDays(20)->GetBegin()));
+		
+		$instances = $series->Instances();
+		$this->assertEquals(22, count($instances), "1 past, 1 current, 20 future (including existing instance)");
+		$this->assertTrue(in_array($currentInstance, $instances), "current should not have been altered");
+		$this->assertTrue(in_array($futureInstance, $instances), "existing future should not have been altered");
+		
+		$events = $series->GetEvents();
+		$this->assertEquals(19, count($events), "should have nothing other than new instance created events");
+	}
+	
+	public function testWhenReducingEndDateOfRepeatOptionsOnFullSeries()
+	{
+		$currentSeriesDate = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1));
+		$currentInstance = new TestReservation('current', $currentSeriesDate);
+		$futureInstance = new TestReservation('future', $currentSeriesDate->AddDays(20));
+		$repeatDaily = new RepeatDaily(1, $currentSeriesDate->AddDays(10)->GetBegin());
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithRepeatOptions($repeatDaily);
+		$builder->WithInstance(new TestReservation('past', $currentSeriesDate->AddDays(-1)));
+		$builder->WithInstance($currentInstance);
+		$builder->WithInstance($futureInstance);
+		$builder->WithCurrentInstance($currentInstance);
+		
+		$series = $builder->Build();
+		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+		$series->Repeats(new RepeatDaily(1, $currentSeriesDate->AddDays(19)->GetBegin()));
+		
+		$instances = $series->Instances();
+		$this->assertEquals(21, count($instances), "1 past, 1 current, 19 future (including existing instance)");
+		$this->assertTrue(in_array($currentInstance, $instances), "current should not have been altered");
+		$this->assertFalse(in_array($futureInstance, $instances), "existing future should not have been altered");
+		
+		$events = $series->GetEvents();
+		$this->assertEquals(20, count($events), "19 created, 1 deleted");
+		$this->assertTrue(in_array(new InstanceRemovedEvent($futureInstance), $events));
 	}
 	
 	public function testWhenApplyingSimpleUpdatesToFullSeries()

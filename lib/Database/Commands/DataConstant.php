@@ -375,7 +375,7 @@ class Queries
 		';
 
 	const REMOVE_RESERVATION_INSTANCE = 
-		'DELETE 
+		'DELETE FROM
 			reservation_instances
 		WHERE
 			reference_number = @referenceNumber';
@@ -403,7 +403,7 @@ class Queries
 		'UPDATE 
 			reservation_instances
 		SET
-			series_id = @seriesId
+			series_id = @seriesid
 		WHERE
 			series_id = @currentSeriesId AND
 			start_date >= (SELECT start_date FROM reservation_instances WHERE reference_number = @referenceNumber)';
@@ -412,7 +412,7 @@ class Queries
 		'UPDATE
 			reservation_instances
 		SET
-			series_id = @seriesId,
+			series_id = @seriesid,
 			start_date = @startDate,
 			end_date = @endDate
 		WHERE
@@ -428,7 +428,7 @@ class Queries
 			repeat_type = @repeatType, 
 			repeat_options = @repeatOptions
 		WHERE
-			series_id = @seriesId';
+			series_id = @seriesid';
 	
 	const UPDATE_USER_BY_USERNAME = 
 		'UPDATE 

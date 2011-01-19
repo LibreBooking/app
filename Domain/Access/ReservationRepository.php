@@ -50,7 +50,9 @@ class ReservationRepository implements IReservationRepository
 		
 		if ($reservationSeries->RequiresNewSeries())
 		{
+			$currentId = $reservationSeries->SeriesId();
 			$newSeriesId = $this->InsertSeries($reservationSeries);
+			Log::Debug('Series branched from seriesId: %s to seriesId: %s',$currentId, $newSeriesId);
 			
 			$reservationSeries->SetSeriesId($newSeriesId);
 			
@@ -67,6 +69,8 @@ class ReservationRepository implements IReservationRepository
 		}
 		else
 		{
+			Log::Debug('Updating existing series (seriesId: %s)', $reservationSeries->SeriesId());
+			
 			$updateSeries = new UpdateReservationSeriesCommand(
 										$reservationSeries->SeriesId(),
 										$reservationSeries->Title(), 
@@ -94,7 +98,7 @@ class ReservationRepository implements IReservationRepository
 							$reservationSeries->SeriesId());
 			}
 			else if ($eventType == 'InstanceRemovedEvent')
-			{
+			{	
 				// delete removed instances
 				$command = new RemoveReservationCommand($event->Instance()->ReferenceNumber());
 			}

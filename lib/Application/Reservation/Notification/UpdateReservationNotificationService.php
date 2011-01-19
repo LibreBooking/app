@@ -3,7 +3,8 @@ class UpdateReservationNotificationService implements IUpdateReservationNotifica
 {
 	public function Notify($reservationSeries)
 	{
-		throw new Exception('Not Implemented');
+		// temp no-op
+		//throw new Exception('Not Implemented');
 	}
 }
 

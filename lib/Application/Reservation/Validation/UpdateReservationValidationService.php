@@ -3,7 +3,9 @@ class UpdateReservationValidationService implements IUpdateReservationValidation
 {
 	public function Validate($reservationSeries)
 	{
-		throw new Exception('Not Implemented');
+		// temporary no-op
+		return new ReservationValidationResult();
+		//throw new Exception('Not Implemented');
 	}
 }
 

@@ -194,6 +194,8 @@ class ExistingReservationSeries extends ReservationSeries
 				// delete all reservation instances which will be replaced
 				if ($this->seriesUpdateStrategy->ShouldInstanceBeRemoved($this, $instance))
 				{
+					throw new Exception('not removing tomorrows instance on first save');
+					echo 'removing';
 					$this->RemoveInstance($instance);
 				}
 			}
@@ -205,9 +207,11 @@ class ExistingReservationSeries extends ReservationSeries
 	
 	protected function AddNewInstance(DateRange $reservationDate)
 	{
-		parent::AddNewInstance($reservationDate);
-		
-		$this->AddEvent(new InstanceAddedEvent($this->GetInstance($reservationDate->GetBegin())));
+		if (!$this->InstanceExists($reservationDate))
+		{
+			parent::AddNewInstance($reservationDate);
+			$this->AddEvent(new InstanceAddedEvent($this->GetInstance($reservationDate->GetBegin())));
+		}
 	}
 	
 	public function GetEvents()

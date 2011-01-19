@@ -158,6 +158,8 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 
 class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 {
+	private $hasSameConfiguration = false;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -178,9 +180,30 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 		return Date::Now();
 	}
 	
+	public function CanChangeRepeatTo($series, $targetRepeatOptions)
+	{
+		$this->hasSameConfiguration = $targetRepeatOptions->HasSameConfigurationAs($series->RepeatOptions());
+		
+		return parent::CanChangeRepeatTo($series, $targetRepeatOptions) ||
+			$this->hasSameConfiguration;
+	}
+	
 	public function RequiresNewSeries()
 	{
 		return false;
+	}
+	
+	public function ShouldInstanceBeRemoved($series, $instance)
+	{
+		if ($this->hasSameConfiguration)
+		{
+			$newEndDate = $series->RepeatOptions()->TerminationDate();
+			// remove all instances past the new end date
+			return $instance->StartDate()->GreaterThan($newEndDate);
+		}
+		
+		// remove all current instances, which now have an incompatible configuration
+		return $instance->StartDate()->GreaterThan($this->EarliestDateToKeep($series));
 	}
 }
 
