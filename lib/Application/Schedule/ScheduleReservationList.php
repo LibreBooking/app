@@ -58,7 +58,7 @@ class ScheduleReservationList implements IScheduleReservationList
 			$reservation = $this->GetReservationStartingAt($layoutItem->Begin());
 			
 			if ($reservation != null)
-			{
+			{					
 				if ($this->ReservationEndsOnFutureDate($reservation))
 				{
 					$endTime = $this->_midnight;
@@ -100,6 +100,13 @@ class ScheduleReservationList implements IScheduleReservationList
 			$endsInTheFuture = $this->ReservationEndsOnFutureDate($reservation);
 			if ($endsInTheFuture || $endTime->Compare($this->_firstLayoutTime) >=0)
 			{
+				Log::Debug("Indexing reservation %s, date %s %s, end %s %s, key %s, layout date %s", 
+				$reservation->GetReferenceNumber(), 
+				$reservation->GetStartDate(), $reservation->GetStartTime(),
+				$reservation->GetEndDate(), $reservation->GetEndTime(),
+				$startTime->ToString(),
+				$this->_layoutDateStart);
+				
 				$this->_reservationsByStartTime[$startTime->ToString()] = $reservation;
 			}
 		}
@@ -107,12 +114,13 @@ class ScheduleReservationList implements IScheduleReservationList
 	
 	private function ReservationStartsOnPastDate(ScheduleReservation $reservation)
 	{
-		return $reservation->GetStartDate()->GetDate()->LessThan($this->_layoutDateStart);
+		Log::Debug("PAST");
+		return $reservation->GetStartDate()->GetDate()->LessThan($this->_layoutDateStart->GetDate());
 	}
 	
 	private function ReservationEndsOnFutureDate(ScheduleReservation $reservation)
 	{
-		return $reservation->GetEndDate()->GetDate()->GreaterThan($this->_layoutDateEnd);
+		return $reservation->GetEndDate()->GetDate()->GreaterThan($this->_layoutDateEnd->GetDate());
 	}
 	
 	private function IndexLayout()
@@ -151,6 +159,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	private function GetReservationStartingAt(Time $beginTime)
 	{
 		$timeKey = $beginTime->ToString();
+		Log::Debug("key %s", $timeKey);
 		if (array_key_exists($timeKey, $this->_reservationsByStartTime))
 		{
 			return $this->_reservationsByStartTime[$timeKey];

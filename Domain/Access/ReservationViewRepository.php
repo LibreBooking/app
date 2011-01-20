@@ -3,6 +3,7 @@ interface IReservationViewRepository
 {
 	/*
 	 * @var $referenceNumber string
+	 * @return ReservationView
 	 */
 	function GetReservationForEditing($referenceNumber);
 }

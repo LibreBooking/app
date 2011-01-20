@@ -533,4 +533,5 @@ class ScheduleReservationListTests extends TestBase
 		
 		$this->assertFalse($res1->OccursOn(Date::Parse('2009-10-10', 'CST')));
 	}
+
 }

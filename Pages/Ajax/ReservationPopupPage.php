@@ -14,7 +14,8 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		parent::__construct();
 		
-		$this->_presenter = new ReservationPopupPresenter($this, new ReservationRepository());
+		$this->_presenter = new ReservationPopupPresenter($this, 
+		new ReservationViewRepository());
 	}
 	
 	public function PageLoad()
@@ -94,11 +95,11 @@ class ReservationPopupPresenter
 	private $_page;
 	
 	/*
-	 * @var IReservationRepository
+	 * @var IReservationViewRepository
 	 */
 	private $_reservationRepository;
 	 
-	public function __construct(IReservationPopupPage $page, IReservationRepository $reservationRepository)
+	public function __construct(IReservationPopupPage $page, IReservationViewRepository $reservationRepository)
 	{
 		$this->_page = $page;
 		$this->_reservationRepository = $reservationRepository;
@@ -106,12 +107,14 @@ class ReservationPopupPresenter
 	
 	public function PageLoad()
 	{
+		$reservation = $this->_reservationRepository->GetReservationForEditing($this->_page->GetReservationId());
+		$startDate = $reservation->StartDate->ToTimezone('America/Chicago');
+		$endDate = $reservation->EndDate->ToTimezone('America/Chicago');
+		
 		$this->_page->SetName('first', 'last');
-		$this->_page->SetSummary('something interesting');
+		$this->_page->SetSummary($reservation->Description);
 		
-		$start = new Date('2009-10-11 03:04:04', 'UTC');
-		
-		$this->_page->SetDates($start->ToTimezone('CST'), $start->ToTimezone('EST'));
+		$this->_page->SetDates($startDate, $endDate);
 		
 	}
 }
