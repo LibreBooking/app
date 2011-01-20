@@ -189,13 +189,13 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		if ($this->seriesUpdateStrategy->CanChangeRepeatTo($this, $repeatOptions))
 		{
+			$this->_repeatOptions = $repeatOptions;
+			
 			foreach ($this->instances as $instance)
 			{
 				// delete all reservation instances which will be replaced
 				if ($this->seriesUpdateStrategy->ShouldInstanceBeRemoved($this, $instance))
 				{
-					throw new Exception('not removing tomorrows instance on first save');
-					echo 'removing';
 					$this->RemoveInstance($instance);
 				}
 			}

@@ -223,7 +223,7 @@ class ExistingReservationTests extends TestBase
 	{
 		$currentSeriesDate = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1));
 		$currentInstance = new TestReservation('current', $currentSeriesDate);
-		$futureInstance = new TestReservation('future', $currentSeriesDate->AddDays(1));
+		$futureInstance = new TestReservation('future', $currentSeriesDate->AddDays(11));
 		$repeatDaily = new RepeatDaily(1, $currentSeriesDate->AddDays(10)->GetBegin());
 
 		$builder = new ExistingReservationSeriesBuilder();
