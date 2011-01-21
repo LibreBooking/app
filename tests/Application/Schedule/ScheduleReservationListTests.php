@@ -533,5 +533,75 @@ class ScheduleReservationListTests extends TestBase
 		
 		$this->assertFalse($res1->OccursOn(Date::Parse('2009-10-10', 'CST')));
 	}
+	
+	public function testDoesNotOccurOnDateIfEndsAtMidnightOfThatDate()
+	{
+		$date = new Date('2010-01-01 00:00:00', 'UTC');
+		
+		$builder = new ScheduleReservationBuilder();
+		$builder
+			->WithStartDate($date->AddDays(-1))
+			->WithEndDate($date);
+		
+		$res = $builder->Build();
+		
+		$this->assertTrue($res->OccursOn($date->AddDays(-1)));
+		$this->assertFalse($res->OccursOn($date));
+	}
+}
 
+class ScheduleReservationBuilder
+{
+	public $reservationId;
+	public $startDate;
+	public $endDate;
+	public $reservationType;
+	public $summary;
+	public $resourceId;
+	public $userId;
+	public $firstName;
+	public $lastName;
+	public $referenceNumber;
+	
+	public function __construct()
+	{
+		$this->reservationId = 1;
+		$this->startDate = Date::Now();
+		$this->endDate = Date::Now();
+		$this->reservationType = ReservationTypes::Reservation;
+		$this->summary = 'summary';
+		$this->resourceId = 10;
+		$this->userId = 100;
+		$this->firstName = 'first';
+		$this->lastName = 'last';
+		$this->referenceNumber = 'referenceNumber';
+	}
+	
+	public function WithStartDate(Date $startDate)
+	{
+		$this->startDate = $startDate;
+		return $this;
+	}
+	
+	public function WithEndDate(Date $endDate)
+	{
+		$this->endDate = $endDate;
+		return $this;
+	}	
+	
+	public function Build()
+	{
+		return new ScheduleReservation(
+				$this->reservationId,
+				$this->startDate,
+				$this->endDate,
+				$this->reservationType,
+				$this->summary,
+				null,
+				$this->resourceId,
+				$this->userId,
+				$this->firstName ,
+				$this->lastName,
+				$this->referenceNumber);
+	}
 }

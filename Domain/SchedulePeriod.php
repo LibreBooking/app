@@ -18,12 +18,14 @@ class SchedulePeriod
 	protected $_end;
 	
 	protected $_label;
+	protected $_labelEnd;
 	
-	public function __construct(Time $begin, Time $end, $label = null)
+	public function __construct(Time $begin, Time $end, $label = null, $labelEnd = null)
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
 		$this->_label = $label;
+		$this->_labelEnd = $labelEnd;
 	}
 	
 	/**
@@ -54,6 +56,20 @@ class SchedulePeriod
 			return $this->_begin->Format($format);
 		}
 		return $this->_label;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function LabelEnd()
+	{
+		if (empty($this->_labelEnd))
+		{
+			$format = Resources::GetInstance()->GetDateFormat('period_time');
+			
+			return $this->_end->Format($format);
+		}
+		return $this->_labelEnd;
 	}
 	
 	/**

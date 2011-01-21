@@ -44,10 +44,9 @@
 				</label>
 				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
 					{foreach from=$Periods item=period}
-						{if $previous ne '' and $previous->IsReservable()}
-							<option value="{$period->Begin()}">{$period->Label()}</option>
+						{if $period->IsReservable()}
+							<option value="{$period->End()}">{$period->LabelEnd()}</option>
 						{/if}
-						{assign var=previous value=$period}
 					{/foreach}
 				</select>
 			</li>

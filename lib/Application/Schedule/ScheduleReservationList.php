@@ -86,7 +86,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	private function IndexReservations()
 	{
 		foreach ($this->_reservations as $reservation)
-		{
+		{		
 			$startTime = $reservation->GetStartTime()->ToTimezone($this->_destinationTimezone);
 			
 			$startsInPast = $this->ReservationStartsOnPastDate($reservation);

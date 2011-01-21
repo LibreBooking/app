@@ -51,6 +51,7 @@ class SchedulesTests extends TestBase
 						ColumnNames::BLOCK_START => '02:00:00',
 						ColumnNames::BLOCK_END => '03:00:00',
 						ColumnNames::BLOCK_LABEL => 'PERIOD1',
+						ColumnNames::BLOCK_LABEL_END => 'END PERIOD1',
 						ColumnNames::BLOCK_CODE => PeroidTypes::RESERVABLE,
 						);
 		
@@ -58,6 +59,7 @@ class SchedulesTests extends TestBase
 						ColumnNames::BLOCK_START => '03:00:00',
 						ColumnNames::BLOCK_END => '04:00:00',
 						ColumnNames::BLOCK_LABEL => 'PERIOD2',
+						ColumnNames::BLOCK_LABEL_END => 'END PERIOD2',
 						ColumnNames::BLOCK_CODE => PeroidTypes::RESERVABLE,
 						);
 						
@@ -65,6 +67,7 @@ class SchedulesTests extends TestBase
 						ColumnNames::BLOCK_START => '04:00:00',
 						ColumnNames::BLOCK_END => '05:00:00',
 						ColumnNames::BLOCK_LABEL => 'PERIOD3',
+						ColumnNames::BLOCK_LABEL_END => 'END PERIOD3',
 						ColumnNames::BLOCK_CODE => PeroidTypes::NONRESERVABLE,
 						);
 		

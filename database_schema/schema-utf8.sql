@@ -37,7 +37,8 @@ CREATE TABLE `time_block_groups` (
 DROP TABLE IF EXISTS `time_blocks`;
 CREATE TABLE `time_blocks` (
  `blockid` tinyint(2) unsigned NOT NULL,
- `label` varchar(85) NOT NULL,
+ `label` varchar(85),
+ `end_label` varchar(85),
  `availability_code` tinyint(2) unsigned NOT NULL,
  `cost_multiplier` numeric(7,2),
  `constraint_function` text,

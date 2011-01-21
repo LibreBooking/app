@@ -292,9 +292,15 @@ class Queries
 	
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
 		'SELECT 
-			tb.label, tb.start_time, tb.end_time, tb.availability_code
+			tb.label, 
+			tb.end_label, 
+			tb.start_time, 
+			tb.end_time, 
+			tb.availability_code
 		FROM 
-			time_blocks tb, time_block_groups tbg, schedule_time_block_groups stbg
+			time_blocks tb, 
+			time_block_groups tbg, 
+			schedule_time_block_groups stbg
 		WHERE 
 			tbg.block_groupid = stbg.block_group_id AND 
 			tb.block_group_id = tbg.block_groupid AND
@@ -497,6 +503,7 @@ class ColumnNames
 	
 	// TIME BLOCKS //
 	const BLOCK_LABEL = 'label';
+	const BLOCK_LABEL_END = 'end_label';
 	const BLOCK_CODE = 'availability_code';
 
 	// TIME BLOCK USES //

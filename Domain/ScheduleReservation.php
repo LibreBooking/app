@@ -220,9 +220,18 @@ class ScheduleReservation
 	{
 		$timezone = $date->Timezone();
 		$beginMidnight = $this->_startDate->ToTimezone($timezone)->GetDate();
-		$endMidnight = $this->_endDate->ToTimezone($timezone)->GetDate()->AddDays(1);
 		
-		return ($beginMidnight->Compare($date) <= 0 && $endMidnight->Compare($date) > 0);
+		if ($this->_endDate->ToTimezone($timezone)->IsMidnight())
+		{
+			$endMidnight = $this->_endDate;
+		}
+		else
+		{
+			$endMidnight = $this->_endDate->ToTimezone($timezone)->GetDate()->AddDays(1);
+		}
+		
+		return ($beginMidnight->Compare($date) <= 0 && 
+				$endMidnight->Compare($date) > 0);
 	}
 }
 ?>

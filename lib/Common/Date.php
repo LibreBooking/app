@@ -264,6 +264,14 @@ class Date
 	}
 	
 	/**
+	 * @return bool
+	 */
+	public function IsMidnight()
+	{
+		return $this->Hour() == 0 && $this->Minute() == 0 && $this->Second() == 0;
+	}
+	
+	/**
 	 * @param int $days
 	 * @return Date
 	 */

@@ -30,10 +30,11 @@ class ScheduleLayout implements IScheduleLayout
 	 * @param Time $startTime starting time of the schedule in specified timezone
 	 * @param Time $endTime ending time of the schedule in specified timezone
 	 * @param string $label optional label for the period
+	 * @param string $labelEnd optional end label for the period
 	 */
-	public function AppendPeriod(Time $startTime, Time $endTime, $label = null)
+	public function AppendPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null)
 	{
-		$this->AppendGenericPeriod($startTime, $endTime, $label, 'SchedulePeriod');		
+		$this->AppendGenericPeriod($startTime, $endTime, $label, $labelEnd, 'SchedulePeriod');		
 	}
 	
 	/**
@@ -42,13 +43,14 @@ class ScheduleLayout implements IScheduleLayout
 	 * @param Time $startTime starting time of the schedule in specified timezone
 	 * @param Time $endTime ending time of the schedule in specified timezone
 	 * @param string $label optional label for the period
+	 * @param string $labelEnd optional end label for the period
 	 */
-	public function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null)
+	public function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null)
 	{
-		$this->AppendGenericPeriod($startTime, $endTime, $label, 'NonSchedulePeriod');
+		$this->AppendGenericPeriod($startTime, $endTime, $label, $labelEnd, 'NonSchedulePeriod');
 	}
 	
-	protected function AppendGenericPeriod(Time $startTime, Time $endTime, $label = null, $periodType)
+	protected function AppendGenericPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null, $periodType)
 	{
 		$localStart = $startTime->ToTimezone($this->_timezone);
 		
