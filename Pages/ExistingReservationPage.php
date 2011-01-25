@@ -59,6 +59,11 @@ interface IExistingReservationPage extends IReservationPage
 	 * @param $reservationId int
 	 */
 	function SetReservationId($reservationId);
+	
+	/**
+	 * @param $isRecurring bool
+	 */
+	function SetIsRecurring($isRecurring);
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
@@ -150,5 +155,9 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 		$this->Set('ReservationId', $reservationId);
 	}
 	
+	function SetIsRecurring($isRecurring)
+	{
+		$this->Set('IsRecurring', $isRecurring);
+	}
 }
 ?>

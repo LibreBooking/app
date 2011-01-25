@@ -216,7 +216,9 @@ $(document).ready(function() {
 	});
 
 	var scopeOptions = {
-		instance: '{SeriesUpdateScope::ThisInstance}'
+		instance: '{SeriesUpdateScope::ThisInstance}',
+		full: '{SeriesUpdateScope::FullSeries}',
+		future: '{SeriesUpdateScope::FutureInstances}'
 	};
 	
 	var reservationOpts = {

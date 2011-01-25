@@ -44,6 +44,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		$this->page->SetReferenceNumber($this->reservationView->ReferenceNumber);
 		$this->page->SetReservationId($this->reservationView->ReservationId);
 		
+		$this->page->SetIsRecurring($this->reservationView->RepeatType != RepeatType::None);
 		$this->page->SetRepeatType($this->reservationView->RepeatType);
 		$this->page->SetRepeatInterval($this->reservationView->RepeatInterval);
 		$this->page->SetRepeatMonthlyType($this->reservationView->RepeatMonthlyType);

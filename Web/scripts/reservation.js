@@ -28,7 +28,8 @@ function Reservation(opts)
 			AddResources();
 		});
 		
-		$('#btnConfirmAddResources').click();
+		// initialize selected resources
+		AddResources();
 		
 		$('#repeatOptions').change(function() { 
 			ChangeRepeatOptions($(this));
@@ -38,6 +39,14 @@ function Reservation(opts)
 		
 		$('#btnUpdateThisInstance').click(function() {
 			ChangeUpdateScope(options.scopeOpts.instance);
+		});
+		
+		$('#btnUpdateAllInstances').click(function() {
+			ChangeUpdateScope(options.scopeOpts.full);
+		});
+		
+		$('#btnUpdateFutureInstances').click(function() {
+			ChangeUpdateScope(options.scopeOpts.future);
 		});
 	}
 	

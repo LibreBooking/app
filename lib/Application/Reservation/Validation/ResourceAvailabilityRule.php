@@ -35,6 +35,16 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 			
 			foreach ($reservations as $scheduleReservation)
 			{
+				if (
+					$scheduleReservation->GetStartDate()
+						->Equals($reservation->EndDate()) || 
+					$scheduleReservation->GetEndDate()
+						->Equals($reservation->StartDate())
+				)
+				{
+					continue;
+				}
+				
 				if (false !== array_search($scheduleReservation->GetResourceId(), $reservationResources))
 				{
 					array_push($conflicts, $scheduleReservation);

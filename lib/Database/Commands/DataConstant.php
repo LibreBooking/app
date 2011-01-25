@@ -290,6 +290,12 @@ class Queries
 			(ri.start_date <= @startDate AND ri.end_date >= @endDate)
 		)';
 	
+//	(ri.start_date >= @startDate AND ri.start_date <= @endDate)
+//	OR
+//	(ri.end_date >= @startDate AND ri.end_date <= @endDate)
+//	OR
+//	(ri.start_date <= @startDate AND ri.end_date >= @endDate)
+//	
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
 		'SELECT 
 			tb.label, 
