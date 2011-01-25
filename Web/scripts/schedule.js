@@ -59,6 +59,15 @@ function Schedule(opts)
 		    function () { $(this).removeClass('hilite'); }
 		);
 		
+		$('.reservable').click(function () {
+			var start = $('.start', this).val();
+			var currentRow = $(this).parent('tr');
+			var linkCell = $('.resourcename', currentRow);
+			var link = $('a', linkCell).attr('href');
+			// this assumes the start date is the last parameter
+			window.location = link + "+" + start;
+		});
+		
 		$("div:not(#schedule_list)").click(function () {
 		 	$("#schedule_list").hide();
 		 });

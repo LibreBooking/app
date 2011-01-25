@@ -55,14 +55,15 @@ class ReservationInitializationTests extends TestBase
 
 		$resourceId = 10;
 		$scheduleId = 100;
-		$dateInUserTimezone = Date::Parse('2010-01-01', $timezone);
+		$dateInUserTimezone = Date::Parse('2010-01-01 02:55:22', $timezone);
 		$periodId = 1;
 
 		$firstName = 'fname';
 		$lastName = 'lastName';
 
 		$expectedStartDate = Date::Parse($dateInUserTimezone, $timezone);
-
+		$expectedPeriod = new SchedulePeriod(new Time(3, 30, 0, $timezone), new Time(4, 30, 0, $timezone));
+		
 		$page = $this->getMock('INewReservationPage');
 
 		$page->expects($this->once())
@@ -103,7 +104,15 @@ class ReservationInitializationTests extends TestBase
 			->will($this->returnValue($resourceList));
 			
 		// periods
-		$periods = array(new SchedulePeriod(new Time(1, 0, 0), new Time(2, 0, 0)));
+		$periods = array(
+			new SchedulePeriod(new Time(1, 0, 0, $timezone), new Time(2, 0, 0, $timezone)),
+			new SchedulePeriod(new Time(2, 0, 0, $timezone), new Time(3, 0, 0, $timezone)),
+			new NonSchedulePeriod(new Time(3, 0, 0, $timezone), new Time(3, 30, 0, $timezone)),
+			$expectedPeriod,
+			new SchedulePeriod(new Time(4, 30, 0, $timezone), new Time(7, 30, 0, $timezone)),
+			new SchedulePeriod(new Time(7, 30, 0, $timezone), new Time(17, 30, 0, $timezone)),
+			new SchedulePeriod(new Time(17, 30, 0, $timezone), new Time(0, 0, 0, $timezone)),
+		);
 		$layout = $this->getMock('IScheduleLayout');
 
 		$this->_scheduleRepository->expects($this->once())
@@ -138,6 +147,18 @@ class ReservationInitializationTests extends TestBase
 		$page->expects($this->once())
 			->method('SetEndDate')
 			->with($this->equalTo($expectedStartDate));
+			
+		$page->expects($this->once())
+			->method('SetStartTime')
+			->with($this->equalTo($expectedPeriod->Begin()));
+
+		$page->expects($this->once())
+			->method('SetEndDate')
+			->with($this->equalTo($expectedStartDate));
+		
+		$page->expects($this->once())
+			->method('SetEndTime')
+			->with($this->equalTo($expectedPeriod->End()));
 
 		$page->expects($this->once())
 			->method('SetReservationUser')

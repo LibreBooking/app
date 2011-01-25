@@ -33,7 +33,11 @@
 				<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown" style="width:150px">
 					{foreach from=$Periods item=period}
 						{if $period->IsReservable()}
-							<option value="{$period->Begin()}">{$period->Label()}</option>
+							{assign var='selected' value=''}
+							{if $period->Begin()->Equals($StartTime)}
+								{assign var='selected' value=' selected="selected"'}
+							{/if}
+							<option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
 						{/if}
 					{/foreach}
 				</select>
@@ -45,7 +49,11 @@
 				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
 					{foreach from=$Periods item=period}
 						{if $period->IsReservable()}
-							<option value="{$period->End()}">{$period->LabelEnd()}</option>
+							{assign var='selected' value=''}
+							{if $period->End()->Equals($EndTime)}
+								{assign var='selected' value=' selected="selected"'}
+							{/if}
+							<option value="{$period->End()}"{$selected}>{$period->LabelEnd()}</option>
 						{/if}
 					{/foreach}
 				</select>

@@ -56,7 +56,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$timezone = $this->GetTimezone();
 		
 		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
-		$this->basePage->BindPeriods($layout->GetLayout());
+		$schedulePeriods = $layout->GetLayout();
+		$this->basePage->BindPeriods($schedulePeriods);
 
 		$scheduleUser = $this->scheduleUserRepository->GetUser($userId);
 		
@@ -70,6 +71,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$endDate = ($requestedEndDate == null) ? $startDate : $requestedEndDate->ToTimezone($timezone);
 		$this->basePage->SetStartDate($startDate);
 		$this->basePage->SetEndDate($endDate);
+		
+		$startPeriod = $this->GetPeriodClosestTo($schedulePeriods, $startDate);
+		$this->basePage->SetStartTime($startPeriod->Begin());
+		$this->basePage->SetEndTime($startPeriod->End());
+		
 		$reservationUser = $bindableUserData->ReservationUser;
 		$this->basePage->SetReservationUser($reservationUser);
 		$this->basePage->SetReservationResource($bindableResourceData->ReservationResource);
@@ -131,6 +137,30 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		}
 		
 		return $bindableResourceData;
+	}
+	
+	/**
+	 * @param SchedulePeriod[] $periods
+	 * @param Date $date
+	 * @return SchedulePeriod
+	 */
+	private function GetPeriodClosestTo($periods, $date)
+	{
+		$time = $date->GetTime();
+		
+		for ($i = 0; $i < count($periods); $i++)
+		{
+			$currentPeriod = $periods[$i];
+			$periodBegin = $currentPeriod->Begin();
+			
+			if ($currentPeriod->IsReservable() && $periodBegin->Compare($time) >= 0)
+			{
+				return $currentPeriod;
+			}
+		}
+		
+		$lastIndex = count($periods) - 1;
+		return $periods[$lastIndex];
 	}
 }
 ?>
