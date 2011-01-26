@@ -25,6 +25,21 @@ class RepeatOptionsTests extends TestBase
 		$this->assertEquals(0, count($repeatedDates));
 	}
 	
+	public function testTerminationDateIsInclusive()
+	{
+		$reservationStart = Date::Parse('2010-02-12 08:30', 'CST');
+		$reservationEnd = Date::Parse('2010-02-12 10:30', 'CST');
+		$duration = new DateRange($reservationStart, $reservationEnd);
+		
+		$interval = 1;
+		$terminiationDate = Date::Parse('2010-02-14', 'CST');
+		
+		$repeatOptions = new RepeatDaily($interval, $terminiationDate);
+		$repeatedDates = $repeatOptions->GetDates($duration);
+		
+		$this->assertEquals(2, count($repeatedDates));
+	}
+	
 	public function testRepeatDailyCreatesRecurranceEverySpecifiedDayUntilEndAcrossDST()
 	{
 		$reservationStart = Date::Parse('2010-02-12 08:30', 'CST');

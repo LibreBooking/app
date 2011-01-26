@@ -44,7 +44,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 	public function testGetsConflictingReservationTimesForSingleDateSingleResource()
 	{
 		$startDate = Date::Parse('2010-04-04', 'UTC');
-		$endDate = Date::Parse('2010-04-05', 'UTC');
+		$endDate = Date::Parse('2010-04-06', 'UTC');
 		$resourceId = 100;
 		
 		$reservation = new TestReservationSeries();
@@ -57,9 +57,17 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$startConflict2 = Date::Parse('2010-04-05', 'UTC');
 		$endConflict2 = Date::Parse('2010-04-08', 'UTC');
 		
+		$startNonConflict1 = Date::Parse('2010-04-06', 'UTC');
+		$endNonConflict1 = Date::Parse('2010-04-08', 'UTC');
+		
+		$startNonConflict2 = Date::Parse('2010-04-02', 'UTC');
+		$endNonConflict2 = Date::Parse('2010-04-04', 'UTC');
+		
 		$reservations = array( 
 			new TestScheduleReservation(2, $startConflict1, $endConflict1, $resourceId),
 			new TestScheduleReservation(3, $startConflict2, $endConflict2, 2),
+			new TestScheduleReservation(4, $startNonConflict1, $startNonConflict2, $resourceId),
+			new TestScheduleReservation(5, $startNonConflict2, $endNonConflict2, $resourceId),
 		);
 		
 		$reservationRepository = $this->getMock('IReservationRepository');
@@ -78,7 +86,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 	public function testGetsConflictingReservationTimesForSingleDateMultipleResources()
 	{
 		$startDate = Date::Parse('2010-04-04', 'UTC');
-		$endDate = Date::Parse('2010-04-05', 'UTC');
+		$endDate = Date::Parse('2010-04-06', 'UTC');
 		$additionalResourceId = 1;
 		
 		$reservation = new TestReservationSeries();

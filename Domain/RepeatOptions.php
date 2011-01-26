@@ -133,8 +133,8 @@ class RepeatDaily extends RepeatOptionsAbstract
 		$dates = array();
 		$startDate = $startingRange->GetBegin()->AddDays($this->_interval);
 		$endDate = $startingRange->GetEnd()->AddDays($this->_interval);
-		
-		while ($startDate->Compare($this->_terminationDate) <= 0)
+
+		while ($startDate->DateCompare($this->_terminationDate) <= 0)
 		{
 			$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
 			$startDate = $startDate->AddDays($this->_interval);
@@ -194,7 +194,7 @@ class RepeatWeekly extends RepeatOptionsAbstract
 		
 		$week = 1;
 		
-		while ($startDate->Compare($this->_terminationDate) <= 0)
+		while ($startDate->DateCompare($this->_terminationDate) <= 0)
 		{
 			$weekOffset = (7 * $this->_interval * $week);
 			
@@ -204,7 +204,7 @@ class RepeatWeekly extends RepeatOptionsAbstract
 				$startDate = $rawStart->AddDays($intervalOffset);
 				$endDate = $rawEnd->AddDays($intervalOffset);
 			
-				if ($startDate->Compare($this->_terminationDate) <= 0)
+				if ($startDate->DateCompare($this->_terminationDate) <= 0)
 				{
 					$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
 				}
@@ -256,14 +256,14 @@ class RepeatDayOfMonth extends RepeatOptionsAbstract
 		$rawEnd = $startingRange->GetEnd();
 		
 		$monthsFromStart = 1;
-		while ($startDate->Compare($this->_terminationDate) <= 0)
+		while ($startDate->DateCompare($this->_terminationDate) <= 0)
 		{
 			$monthAdjustment = $monthsFromStart * $this->_interval;
 			if ($this->DayExistsInNextMonth($rawStart, $monthAdjustment))
 			{
 				$startDate = $this->GetNextMonth($rawStart, $monthAdjustment);
 				$endDate = $this->GetNextMonth($rawEnd, $monthAdjustment);
-				if ($startDate->Compare($this->_terminationDate) <= 0)
+				if ($startDate->DateCompare($this->_terminationDate) <= 0)
 				{
 					$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
 				}
@@ -344,7 +344,7 @@ class RepeatWeekDayOfMonth extends RepeatOptionsAbstract
 		$startYear = $durationStart->Year();
 		
 		$monthsFromStart = 1;
-		while ($startDate->Compare($this->_terminationDate) <= 0)
+		while ($startDate->DateCompare($this->_terminationDate) <= 0)
 		{
 			$monthAdjustment = $startMonth + $monthsFromStart * $this->_interval;
 			$month = $monthAdjustment % 12;
@@ -361,7 +361,7 @@ class RepeatWeekDayOfMonth extends RepeatOptionsAbstract
 				
 			if ($month == $calculatedMonth[1])
 			{
-				if ($startDate->Compare($this->_terminationDate) <= 0)
+				if ($startDate->DateCompare($this->_terminationDate) <= 0)
 				{
 					$endDateString =  $calculatedDate . " {$endDate->Hour()}:{$endDate->Minute()}:{$endDate->Second()}";
 					$endDate = Date::Parse($endDateString, $endDate->Timezone());
@@ -435,7 +435,7 @@ class RepeatYearly extends RepeatOptionsAbstract
 		
 		$startDate = $begin;
 		
-		while ($startDate->Compare($this->_terminationDate) <= 0)
+		while ($startDate->DateCompare($this->_terminationDate) <= 0)
 		{
 			$nextStartYear = $nextStartYear + $this->_interval;
 			$nextEndYear = $nextEndYear + $this->_interval;
@@ -443,7 +443,7 @@ class RepeatYearly extends RepeatOptionsAbstract
 			$startDate = Date::Create($nextStartYear, $begin->Month(), $begin->Day(), $begin->Hour(), $begin->Minute(), $begin->Second(), $timezone);
 			$endDate = Date::Create($nextEndYear, $end->Month(), $end->Day(), $end->Hour(), $end->Minute(), $end->Second(), $timezone);
 			
-			if ($startDate->Compare($this->_terminationDate) <= 0)
+			if ($startDate->DateCompare($this->_terminationDate) <= 0)
 			{
 				$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
 			}
