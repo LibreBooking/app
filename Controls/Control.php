@@ -6,6 +6,7 @@ abstract class Control
 	public function __construct(SmartyPage $smarty)
 	{
 		$this->smarty =& $smarty;
+		$this->id = uniqid();
 	}
 	
 	public function Set($var, $value)

@@ -158,7 +158,7 @@ class SmartyPage extends Smarty
 	{
 		$type = $params['type'];
 		require_once(ROOT_DIR . "Controls/$type.php");
-		$control = new $type($this);
+		$control = new $type(new SmartyPage());
 		
 		foreach($params as $key => $val)
 		{
