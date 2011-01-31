@@ -293,5 +293,15 @@ class ExistingReservationTests extends TestBase
 		$this->assertEquals(2, count($series->Instances()));
 		$this->assertEquals(0, count($events));
 	}
+	
+	public function testChangingTimeOnlyAppliesTimeDifferenceToAllInstances()
+	{
+		throw new Exception('todo');
+	}
+	
+	public function testChangingDateOnlyAppliesToSingleInstance()
+	{
+		throw new Exception('todo');
+	}
 }
 ?>

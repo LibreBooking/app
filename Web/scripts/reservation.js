@@ -11,7 +11,7 @@ function Reservation(opts)
 	
 	Reservation.prototype.init = function()
 	{
-		beginDate.data['previousVal'] = beginDate.val();
+		elements.beginDate.data['previousVal'] = elements.beginDate.val();
 		
 		$('#dialogAddResources').dialog({
 		    bgiframe: true, autoOpen: false, 
@@ -62,10 +62,24 @@ function Reservation(opts)
 		elements.beginDate.change(function() {
 			AdjustEndDate();
 			ToggleRepeatOptions();
+			elements.beginDate.data['previousVal'] = elements.beginDate.val();
 		});
 		
 		elements.endDate.change(function() {
-			ToggleRepeatOptions();
+			ToggleRepeatOptions(options.scopeOpts.instance);			
+		});
+		
+		$('select, input', elements.repeatDiv).change(function()
+		{
+			if (elements.beginDate.val() != elements.endDate.val())
+			{
+				$('#btnUpdateAllInstances').hide();
+				$('#btnUpdateFutureInstances').hide();
+			}
+			else
+			{
+				$('#btnUpdateThisInstance').hide();
+			}
 		});
 	}
 	
@@ -112,16 +126,16 @@ function Reservation(opts)
 	
 	var AdjustEndDate = function()
 	{
-		var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-		var firstDate = new Date(beginDate.data['previousVal'];
-		var secondDate = new Date(beginDate.val());
+		var oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
+		var firstDate = new Date(elements.beginDate.data['previousVal']);
+		var secondDate = new Date(elements.beginDate.val());
 		
-		var diffDays = Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay));
+		var diffDays = (secondDate.getTime() - firstDate.getTime())/(oneDay);
 		
-		var currentEndDate = new Date(endDate.val());
+		var currentEndDate = new Date(elements.endDate.val());
 		currentEndDate.setDate(currentEndDate.getDate() + diffDays);
-		endDate.val()
 		
+		elements.endDate.datepicker("setDate", currentEndDate);
 	};
 
 	var CancelAdd = function(dialogBoxId, displayDivId)
@@ -248,5 +262,9 @@ function Reservation(opts)
 		{
 			SetValue(elements.repeatOptions.data["current"], '');
 		}
+	}
+	
+	var ToggleUpdateScope = function ()
+	{
 	}
 }
