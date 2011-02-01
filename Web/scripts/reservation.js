@@ -7,7 +7,11 @@ function Reservation(opts)
 			endDate: $('#EndDate'),
 			repeatOptions: $('#repeatOptions'),
 			repeatDiv: $('#repeatDiv'),
+			beginTime: $('#BeginPeriod'),
+			endTime: $('#EndPeriod')
 	};
+	
+	const oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
 	
 	Reservation.prototype.init = function()
 	{
@@ -66,20 +70,20 @@ function Reservation(opts)
 		});
 		
 		elements.endDate.change(function() {
-			ToggleRepeatOptions(options.scopeOpts.instance);			
+			ToggleRepeatOptions();			
+		});
+		
+		elements.beginTime.change(function() {
+			ToggleRepeatOptions();			
+		});
+		
+		elements.endTime.change(function() {
+			ToggleRepeatOptions();			
 		});
 		
 		$('select, input', elements.repeatDiv).change(function()
 		{
-			if (elements.beginDate.val() != elements.endDate.val())
-			{
-				$('#btnUpdateAllInstances').hide();
-				$('#btnUpdateFutureInstances').hide();
-			}
-			else
-			{
-				$('#btnUpdateThisInstance').hide();
-			}
+			ToggleUpdateScope();
 		});
 	}
 	
@@ -126,7 +130,7 @@ function Reservation(opts)
 	
 	var AdjustEndDate = function()
 	{
-		var oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
+		//var oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
 		var firstDate = new Date(elements.beginDate.data['previousVal']);
 		var secondDate = new Date(elements.beginDate.val());
 		
@@ -253,7 +257,7 @@ function Reservation(opts)
 			$('select, input', elements.repeatDiv).attr("disabled", disabled);
 		};
 		
-		if (elements.beginDate.val() != elements.endDate.val())
+		if (MoreThanOneDayBetweenBeginAndEnd())
 		{
 			elements.repeatOptions.data["current"] = elements.repeatOptions.val();
 			SetValue('none', 'disabled');
@@ -264,7 +268,29 @@ function Reservation(opts)
 		}
 	}
 	
-	var ToggleUpdateScope = function ()
+	var ToggleUpdateScope = function()
 	{
+		if (MoreThanOneDayBetweenBeginAndEnd())
+		{
+			$('#btnUpdateThisInstance').show();
+			$('#btnUpdateAllInstances').hide();
+			$('#btnUpdateFutureInstances').hide();
+		}
+		else
+		{
+			$('#btnUpdateAllInstances').show();
+			$('#btnUpdateFutureInstances').show();
+			$('#btnUpdateThisInstance').show();
+		}
+	}
+	
+	var MoreThanOneDayBetweenBeginAndEnd = function()
+	{
+		var begin = new Date(elements.beginDate.val() + ' ' + elements.beginTime.val());
+		var end = new Date(elements.endDate.val() + ' ' + elements.endTime.val());
+		
+		var timeBetweenDates = end.getTime() - begin.getTime();
+		
+		return timeBetweenDates > oneDay;
 	}
 }
