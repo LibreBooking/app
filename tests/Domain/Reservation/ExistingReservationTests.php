@@ -301,9 +301,11 @@ class ExistingReservationTests extends TestBase
 		$instance1Date = $dateRange->AddDays(5);
 		$instance2Date = $dateRange->AddDays(8);
 		
+		$instance1 = new TestReservation('123', $instance1Date);
+		
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithRepeatOptions($repeatOptions);
-		$builder->WithInstance(new TestReservation('123', $instance1Date));
+		$builder->WithInstance($instance1);
 		$builder->WithInstance(new TestReservation('223', $instance2Date));
 		$builder->WithCurrentInstance(new TestReservation('1', $dateRange));
 		
@@ -322,6 +324,10 @@ class ExistingReservationTests extends TestBase
 		
 		$this->assertEquals(new DateRange($newInstance1Start, $newInstance1End), $series->GetInstance($newInstance1Start)->Duration());
 		$this->assertEquals(new DateRange($newInstance2Start, $newInstance2End), $series->GetInstance($newInstance2Start)->Duration());
+		
+		$events = $series->GetEvents();
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($instance1), $events));
+		
 	}
 	
 	public function testChangingDateOnlyAppliesToSingleInstance()

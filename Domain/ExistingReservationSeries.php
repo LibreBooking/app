@@ -164,6 +164,12 @@ class ExistingReservationSeries extends ReservationSeries
 	public function UpdateDuration(DateRange $reservationDate)
 	{
 		$currentDuration = $this->CurrentInstance()->Duration();
+		
+		if ($currentDuration->Equals($reservationDate))
+		{
+			return;
+		}
+		
 		$currentBegin = $currentDuration->GetBegin();
 		$currentEnd = $currentDuration->GetEnd();
 		
@@ -245,6 +251,8 @@ class ExistingReservationSeries extends ReservationSeries
 		unset($this->instances[$this->CreateInstanceKey($instance)]);
 		$instance->SetReservationDate($newDate);
 		$this->AddInstance($instance);
+		
+		$this->AddEvent(new InstanceUpdatedEvent($instance));
 	}
 	
 	public function GetEvents()
@@ -293,6 +301,27 @@ class InstanceAddedEvent
 }
 
 class InstanceRemovedEvent
+{
+	/**
+     * @var Reservation
+	 */
+	private $instance;
+	
+	/**
+	 * @return Reservation
+	 */
+	public function Instance()
+	{
+		return $this->instance;
+	}
+	
+	public function __construct(Reservation $reservationInstance)
+	{
+		$this->instance = $reservationInstance;
+	}
+}
+
+class InstanceUpdatedEvent
 {
 	/**
      * @var Reservation

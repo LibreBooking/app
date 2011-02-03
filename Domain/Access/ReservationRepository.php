@@ -102,6 +102,15 @@ class ReservationRepository implements IReservationRepository
 				// delete removed instances
 				$command = new RemoveReservationCommand($event->Instance()->ReferenceNumber());
 			}
+			else if ($eventType == 'InstanceUpdatedEvent')
+			{
+				$instance = $event->Instance();
+				$command = new UpdateReservationCommand(
+										$instance->ReferenceNumber(),
+										$reservationSeries->SeriesId(),
+										$instance->StartDate(),
+										$instance->EndDate());
+			}
 			
 			if ($command != null)
 			{

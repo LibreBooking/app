@@ -40,6 +40,11 @@ class ExistingReservationSeriesBuilder
 		$this->series = $series;
 	}
 	
+	public function WithId($seriesId)
+	{
+		$this->series->WithId($seriesId);
+	}
+	
 	/**
 	 * @param Reservation $reservation
 	 * @return ExisitingReservationSeriesBuilder

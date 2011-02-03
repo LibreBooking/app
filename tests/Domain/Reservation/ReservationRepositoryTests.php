@@ -482,6 +482,34 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue(in_array($removeReservationCommand2, $this->db->_Commands));
 	}
 	
+	public function testWithUpdatedInstances()
+	{
+		$seriesId = 3929;
+		$dateRange = new TestDateRange();
+		
+		$instance1 = new TestReservation('323', $dateRange->AddDays(3));
+		$instance2 = new TestReservation('423', $dateRange->AddDays(4));
+		
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithId($seriesId);
+		$builder->WithEvent(new InstanceUpdatedEvent($instance1));
+		$builder->WithEvent(new InstanceUpdatedEvent($instance2));
+		$series = $builder->BuildTestVersion();
+		
+		$this->repository->Update($series);
+		
+		$updateReservationCommand1 = $this->GetUpdateReservationCommand($seriesId, $instance1);
+		$updateReservationCommand2 = $this->GetUpdateReservationCommand($seriesId, $instance2);
+			
+		$commands = $this->db->GetCommandsOfType('UpdateReservationCommand');
+		
+		$this->assertEquals(2, count($commands));
+		$this->assertTrue(in_array($updateReservationCommand1, $this->db->_Commands));
+		$this->assertTrue(in_array($updateReservationCommand2, $this->db->_Commands));
+		
+		
+	}
+	
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
 	{
 		return new UpdateReservationCommand(
