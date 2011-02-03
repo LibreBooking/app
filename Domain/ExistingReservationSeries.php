@@ -159,6 +159,31 @@ class ExistingReservationSeries extends ReservationSeries
 	}
 	
 	/**
+	 * @param DateRange $reservationDate
+	 */
+	public function UpdateDuration(DateRange $reservationDate)
+	{
+		$currentDuration = $this->CurrentInstance()->Duration();
+		$currentBegin = $currentDuration->GetBegin();
+		$currentEnd = $currentDuration->GetEnd();
+		
+		$startTimeAdjustment = $reservationDate->GetBegin()->GetDifference($currentBegin);
+		$endTimeAdjustment = $reservationDate->GetEnd()->GetDifference($currentEnd);		
+				
+		$this->currentInstanceDate = $currentBegin->ApplyDifference($startTimeAdjustment);
+//		echo "start {$startTimeAdjustment->format('%R%H:%I')} \n";
+//		echo "end {$endTimeAdjustment->format('%R%H:%I')} \n";
+		
+		foreach ($this->Instances() as $instance)
+		{
+			$newStart = $instance->StartDate()->ApplyDifference($startTimeAdjustment);
+			$newEnd = $instance->EndDate()->ApplyDifference($endTimeAdjustment);
+			
+			$this->UpdateInstance($instance, new DateRange($newStart, $newEnd));
+		}
+	}
+	
+	/**
 	 * @param SeriesUpdateScope $seriesUpdateScope
 	 */
 	public function ApplyChangesTo($seriesUpdateScope)
@@ -212,6 +237,14 @@ class ExistingReservationSeries extends ReservationSeries
 			parent::AddNewInstance($reservationDate);
 			$this->AddEvent(new InstanceAddedEvent($this->GetInstance($reservationDate->GetBegin())));
 		}
+	}
+	
+	protected function UpdateInstance(Reservation $instance, DateRange $newDate)
+	{
+		//echo "Start: {$newDate->GetBegin()} End: {$newDate->GetEnd()} ts: {$newDate->GetBegin()->Timestamp()}\n";
+		unset($this->instances[$this->CreateInstanceKey($instance)]);
+		$instance->SetReservationDate($newDate);
+		$this->AddInstance($instance);
 	}
 	
 	public function GetEvents()

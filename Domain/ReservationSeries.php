@@ -171,7 +171,7 @@ class ReservationSeries
 	
 	protected function InstanceExists(DateRange $reservationDate)
 	{
-		$key = $reservationDate->GetBegin()->Timestamp();
+		$key = $this->GetNewKey($reservationDate);
 		return isset($this->instances[$key]);
 	}
 	
@@ -182,8 +182,18 @@ class ReservationSeries
 	
 	protected function AddInstance(Reservation $reservation)
 	{
-		$key = $reservation->StartDate()->Timestamp();
+		$key = $this->CreateInstanceKey($reservation);
 		$this->instances[$key] = $reservation;
+	}
+	
+	protected function CreateInstanceKey(Reservation $reservation)
+	{
+		return $this->GetNewKey($reservation->Duration());
+	}
+	
+	protected function GetNewKey(DateRange $dateRange)
+	{
+		return $dateRange->GetBegin()->Timestamp();
 	}
 	
 	/**

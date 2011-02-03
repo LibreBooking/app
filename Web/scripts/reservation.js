@@ -278,9 +278,9 @@ function Reservation(opts)
 		}
 		else
 		{
+			$('#btnUpdateThisInstance').hide();
 			$('#btnUpdateAllInstances').show();
-			$('#btnUpdateFutureInstances').show();
-			$('#btnUpdateThisInstance').show();
+			$('#btnUpdateFutureInstances').show();	
 		}
 	}
 	

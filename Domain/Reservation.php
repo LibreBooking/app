@@ -42,6 +42,9 @@ class Reservation
 		return $this->endDate;
 	}
 	
+	/**
+	 * @return DateRange
+	 */
 	public function Duration()
 	{
 		return new DateRange($this->StartDate(), $this->EndDate());

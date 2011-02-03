@@ -279,7 +279,28 @@ class Date
 	{		
 		// can also use DateTime->modify()
 		return new Date($this->Format(self::SHORT_FORMAT) . " +" . $days . " days", $this->timezone);
-	}	
+	}
+	
+	/**
+	 * @param Date $date
+	 * @return DateInterval
+	 */
+	public function GetDifference(Date $date)
+	{
+		return date_diff($date->date, $this->date);
+	}
+	
+	/**
+	 * @param DateInterval $differenceInterval
+	 * @return Date
+	 */
+	public function ApplyDifference(DateInterval $differenceInterval)
+	{
+		$date = new DateTime($this->Format(self::SHORT_FORMAT, $this->Timezone()));
+		$newDate = date_add($date, $differenceInterval);
+		
+		return new Date($newDate->format(self::SHORT_FORMAT), $this->Timezone());
+	}
 	
     private function InitializeParts()
     {
