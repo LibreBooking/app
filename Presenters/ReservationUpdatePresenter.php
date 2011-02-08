@@ -34,13 +34,14 @@ class ReservationUpdatePresenter
 	}
 	
 	/**
-	 * @return ExisitingReservationSeries 
+	 * @return ExistingReservationSeries 
 	 */
 	public function BuildReservation()
 	{
 		$instanceId = $this->page->GetReservationId();
 		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
+		$existingSeries->UpdateDuration($this->GetReservationDuration());
 
 		$existingSeries->Update(
 			$this->page->GetUserId(), 
@@ -89,6 +90,20 @@ class ReservationUpdatePresenter
 		}
 		
 		$this->page->ShowWarnings($validationResult->GetWarnings());
+	}
+	
+	/**
+	 * @return DateRange
+	 */
+	private function GetReservationDuration()
+	{
+		$startDate = $this->page->GetStartDate();
+		$startTime = $this->page->GetStartTime();
+		$endDate = $this->page->GetEndDate();
+		$endTime = $this->page->GetEndTime();
+		
+		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 	}
 }
 ?>

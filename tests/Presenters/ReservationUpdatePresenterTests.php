@@ -76,6 +76,11 @@ class ReservationUpdatePresenterTests extends TestBase
 
 		$this->page->repeatOptions = new RepeatDaily(1, Date::Now());
 			
+		$expectedDuration = DateRange::Create(
+			$this->page->GetStartDate() . " " . $this->page->GetStartTime(),
+			$this->page->GetEndDate() . " " . $this->page->GetEndTime(),
+			$timezone);
+			
 		$existingSeries = $this->presenter->BuildReservation();
 		
 		$this->assertEquals($seriesId, $existingSeries->SeriesId());
@@ -86,6 +91,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($this->page->resourceId, $existingSeries->ResourceId());
 		$this->assertEquals($this->page->repeatOptions, $existingSeries->RepeatOptions());
 		$this->assertEquals($this->page->resourceIds, $existingSeries->Resources());
+		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()));
 	}
 	
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistanceAndNotification()
@@ -151,7 +157,7 @@ class ReservationUpdatePresenterTests extends TestBase
 class FakeReservationUpdatePage extends FakeReservationSavePage implements IReservationUpdatePage
 {
 	public $reservationId = 100;
-	public $seriesUpdateScope = SeriesUpdateScope::FutureInstances;
+	public $seriesUpdateScope = SeriesUpdateScope::FullSeries;
 	
 	public function GetReservationId()
 	{

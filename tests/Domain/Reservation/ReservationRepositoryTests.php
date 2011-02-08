@@ -491,11 +491,10 @@ class ReservationRepositoryTests extends TestBase
 		$instance2 = new TestReservation('423', $dateRange->AddDays(4));
 		
 		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithId($seriesId);
 		$builder->WithEvent(new InstanceUpdatedEvent($instance1));
 		$builder->WithEvent(new InstanceUpdatedEvent($instance2));
 		$series = $builder->BuildTestVersion();
-		
+		$series->WithId($seriesId);
 		$this->repository->Update($series);
 		
 		$updateReservationCommand1 = $this->GetUpdateReservationCommand($seriesId, $instance1);
@@ -506,8 +505,6 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertEquals(2, count($commands));
 		$this->assertTrue(in_array($updateReservationCommand1, $this->db->_Commands));
 		$this->assertTrue(in_array($updateReservationCommand2, $this->db->_Commands));
-		
-		
 	}
 	
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)

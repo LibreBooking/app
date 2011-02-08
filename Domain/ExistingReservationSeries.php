@@ -41,7 +41,7 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function WithId($seriesId)
 	{
-		$this->seriesId = $seriesId;
+		$this->SetSeriesId($seriesId);
 	}
 	
 	/**

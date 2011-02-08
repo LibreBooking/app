@@ -250,7 +250,7 @@ function Reservation(opts)
 	
 	var ToggleRepeatOptions = function()
 	{
-		function SetValue(value, disabled)
+		var SetValue = function(value, disabled)
 		{
 			elements.repeatOptions.val(value);
 			elements.repeatOptions.trigger('change');
@@ -260,11 +260,16 @@ function Reservation(opts)
 		if (MoreThanOneDayBetweenBeginAndEnd())
 		{
 			elements.repeatOptions.data["current"] = elements.repeatOptions.val();
+			this.updated = true;
 			SetValue('none', 'disabled');
 		}
 		else 
 		{
-			SetValue(elements.repeatOptions.data["current"], '');
+			if (this.updated)
+			{
+				SetValue(elements.repeatOptions.data["current"], '');				
+				this.updated = false;
+			}
 		}
 	}
 	
