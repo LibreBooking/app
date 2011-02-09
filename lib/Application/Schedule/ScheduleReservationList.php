@@ -114,13 +114,14 @@ class ScheduleReservationList implements IScheduleReservationList
 	
 	private function ReservationStartsOnPastDate(ScheduleReservation $reservation)
 	{
-		Log::Debug("PAST");
+		//Log::Debug("PAST");
 		return $reservation->GetStartDate()->GetDate()->LessThan($this->_layoutDateStart->GetDate());
 	}
 	
 	private function ReservationEndsOnFutureDate(ScheduleReservation $reservation)
 	{
-		return $reservation->GetEndDate()->GetDate()->Compare($this->_layoutDateEnd->GetDate()) >= 0;
+		//Log::Debug("%s %s %s", $reservation->GetReferenceNumber(), $reservation->GetEndDate()->GetDate(), $this->_layoutDateEnd->GetDate());
+		return $reservation->GetEndDate()->Compare($this->_layoutDateEnd) >= 0;
 	}
 	
 	private function IndexLayout()

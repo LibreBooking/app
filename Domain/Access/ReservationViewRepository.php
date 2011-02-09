@@ -112,7 +112,15 @@ class ReservationView
 	public $ReferenceNumber;
 	public $ResourceId;
 	public $ScheduleId;
+	
+	/**
+	 * @var Date
+	 */
 	public $StartDate;
+	
+	/**
+	 * @var Date
+	 */
 	public $EndDate;
 	public $OwnerId;
 	public $Title;
