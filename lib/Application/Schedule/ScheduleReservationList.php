@@ -38,12 +38,11 @@ class ScheduleReservationList implements IScheduleReservationList
 		$this->_reservations = $reservations;
 		$this->_layout = $layout;
 		$this->_destinationTimezone = $this->_layout->Timezone();
-		$this->_layoutDateStart = $layoutDate->GetDate()->ToUtc();
+		$this->_layoutDateStart = $layoutDate->ToTimezone($this->_destinationTimezone)->GetDate();
 		$this->_layoutDateEnd = $this->_layoutDateStart->AddDays(1);
 		$this->_layoutItems = $this->_layout->GetLayout();
 		$this->_midnight = new Time(0,0,0, $this->_destinationTimezone);
-		$this->_firstLayoutTime = new Time(23, 59, 59, $this->_destinationTimezone);
-			
+	
 		$this->IndexLayout();
 		$this->IndexReservations();
 	}
@@ -58,7 +57,7 @@ class ScheduleReservationList implements IScheduleReservationList
 			$reservation = $this->GetReservationStartingAt($layoutItem->Begin());
 			
 			if ($reservation != null)
-			{					
+			{			
 				if ($this->ReservationEndsOnFutureDate($reservation))
 				{
 					$endTime = $this->_midnight;
@@ -69,8 +68,8 @@ class ScheduleReservationList implements IScheduleReservationList
 				}
 				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
-				
-				$slots[] = new ReservationSlot($layoutItem->Begin(), $this->_layoutItems[$endingPeriodIndex]->End(), ($endingPeriodIndex - $currentIndex) + 1, $reservation, $this->_layoutDateStart);
+				$span = ($endingPeriodIndex - $currentIndex) + 1;
+				$slots[] = new ReservationSlot($layoutItem->Begin(), $this->_layoutItems[$endingPeriodIndex]->End(), $span, $reservation, $this->_layoutDateStart);
 				
 				$currentIndex = $endingPeriodIndex;
 			}
@@ -115,7 +114,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	private function ReservationStartsOnPastDate(ScheduleReservation $reservation)
 	{
 		//Log::Debug("PAST");
-		return $reservation->GetStartDate()->GetDate()->LessThan($this->_layoutDateStart->GetDate());
+		return $reservation->GetStartDate()->LessThan($this->_layoutDateStart);
 	}
 	
 	private function ReservationEndsOnFutureDate(ScheduleReservation $reservation)
@@ -126,6 +125,8 @@ class ScheduleReservationList implements IScheduleReservationList
 	
 	private function IndexLayout()
 	{
+		$this->_firstLayoutTime = new Time(23, 59, 59, $this->_destinationTimezone);
+		
 		for ($i = 0; $i < count($this->_layoutItems); $i++)		
 		{
 			if ($this->_layoutItems[$i]->Begin()->LessThan($this->_firstLayoutTime))

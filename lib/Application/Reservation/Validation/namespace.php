@@ -6,11 +6,11 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IReservationVali
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceAvailabilityRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationDateTimeRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationStartTimeRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/PermissionValidationRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationRuleResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValidationFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValidationResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AddReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/UpdateReservationValidationService.php');
-
 ?>
