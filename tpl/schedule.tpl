@@ -56,7 +56,7 @@
 				{/if}
 			</td>
 			{foreach from=$slots item=slot}
-				{control type="ScheduleReservationControl" Slot=$slot AccessAllowed=$resource->CanAccess SlotDate=$date}				
+				{control type="ScheduleReservationControl" Slot=$slot AccessAllowed=$resource->CanAccess}				
 			{/foreach}
 		</tr>
 	{/foreach}

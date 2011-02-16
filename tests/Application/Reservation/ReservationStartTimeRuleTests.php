@@ -51,7 +51,7 @@ class ReservationStartTimeRuleTests extends TestBase
 		$reservation = new TestReservationSeries();
 		$reservation->WithCurrentInstance(new TestReservation('1', new DateRange($start, $end)));
 			
-		$rule = new ReservationStartTimeRule();
+		$rule = new ReservationStartTimeRule(new FakeUserSession(true));
 		$result = $rule->Validate($reservation);
 		
 		$this->assertTrue($result->IsValid(), 'admins can reserve in the past');

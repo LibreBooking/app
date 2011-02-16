@@ -13,6 +13,11 @@ interface IReservationSlot
 	public function End();
 	
 	/**
+	 * @return Date
+	 */
+	public function Date();
+	
+	/**
 	 * @return int
 	 *
 	 */
@@ -32,6 +37,11 @@ interface IReservationSlot
 	 * @return bool
 	 */
 	public function IsReserved();
+	
+	/**
+	 * @return bool
+	 */
+	public function IsPastDate(Date $date);
 	
 	/**
 	 * @param string $timezone

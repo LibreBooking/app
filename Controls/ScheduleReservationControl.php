@@ -15,11 +15,22 @@ class ScheduleReservationControl extends Control
 
 		if ($slot->IsReserved())
 		{
-			$this->smarty->display('Controls/ReservedSlot.tpl');
+			if ($this->IsMyReservation($slot))
+			{
+				$this->smarty->display('Controls/MyReservedSlot.tpl');
+			}
+			else
+			{
+				$this->smarty->display('Controls/ReservedSlot.tpl');
+			}
 		}
 		else if (!$accessAllowed)
 		{
 			$this->smarty->display('Controls/RestrictedSlot.tpl');
+		}
+		else if ($slot->IsPastDate(Date::Now()) && !$this->UserHasAdminRights())
+		{
+			$this->smarty->display('Controls/PastTimeSlot.tpl');
 		}
 		else if ($slot->IsReservable())
 		{
@@ -29,6 +40,17 @@ class ScheduleReservationControl extends Control
 		{
 			$this->smarty->display('Controls/UnreservableSlot.tpl');
 		}
+	}
+	
+	private function UserHasAdminRights()
+	{
+		return ServiceLocator::GetServer()->GetUserSession()->IsAdmin;
+	}
+	
+	private function IsMyReservation(ReservationSlot $slot)
+	{
+		$mySession = ServiceLocator::GetServer()->GetUserSession();
+		return $slot->IsOwnedBy($mySession);
 	}
 }
 ?>

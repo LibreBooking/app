@@ -172,6 +172,7 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 
 	public function Instances($series)
 	{
+		//TODO: If the user is an admin, this should be all instances
 		return $this->AllInstancesGreaterThan($series, $this->EarliestDateToKeep($series));
 	}
 	

@@ -1,1 +1,1 @@
-<td colspan="{$Slot->PeriodSpan()}" class="reserved clickres slot" id="{$Slot->Id()}|{$SlotDate->Format('Ymd')}">{$Slot->Label()}</td>
+<td colspan="{$Slot->PeriodSpan()}" class="reserved clickres slot" id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label()}</td>

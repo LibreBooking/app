@@ -45,6 +45,14 @@ td.reserved.hilite {
     background-color: #59A8EF;
 }
 
+td.reserved.mine {
+	background-color: #88bbff;
+}
+
+td.reserved.mine.hilite {
+	background-color: #88ccff;
+}
+
 td.reservable.hilite {
     background-color: #23BF35;
 }
@@ -59,6 +67,14 @@ td.reservable.clicked {
 
 td.reserved.clicked {
     background-color: #1979CF;
+}
+
+td.pasttime {
+	background-color: #f0f0f0;
+}
+	
+td.restricted {
+	background-color: pink;
 }
 
 select.schedule_list {

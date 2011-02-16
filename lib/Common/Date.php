@@ -282,6 +282,15 @@ class Date
 	}
 	
 	/**
+	 * @param Time $time
+	 * @return Date
+	 */
+	public function SetTime(Time $time)
+	{
+		return Date::Create($this->Year(), $this->Month(), $this->Day(), $time->Hour(), $time->Minute(), $time->Second(), $this->Timezone());
+	}
+	
+	/**
 	 * @param Date $date
 	 * @return DateInterval
 	 */
