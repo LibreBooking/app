@@ -64,13 +64,20 @@ interface IExistingReservationPage extends IReservationPage
 	 * @param $isRecurring bool
 	 */
 	function SetIsRecurring($isRecurring);
+	
+	/**
+	 * @param $isEditable bool
+	 */
+	function SetIsEditable($isEditable);
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
 {
+	private $IsEditable = false;
+	
 	public function __construct()
 	{
-		parent::__construct('EditReservation');
+		parent::__construct();
 	}
 	
 	public function PageLoad()
@@ -92,7 +99,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 
 	protected function GetTemplateName()
 	{
-		return 'Reservation/edit.tpl';
+		if ($this->IsEditable)
+		{
+			return 'Reservation/edit.tpl';
+		}
+		return 'Reservation/view.tpl';
 	}
 	
 	protected function GetReservationAction()
@@ -158,6 +169,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	function SetIsRecurring($isRecurring)
 	{
 		$this->Set('IsRecurring', $isRecurring);
+	}
+	
+	function SetIsEditable($isEditable)
+	{
+		$this->IsEditable = $isEditable;
 	}
 }
 ?>

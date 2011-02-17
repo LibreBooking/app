@@ -82,7 +82,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 	 */
 	protected $permissionServiceFactory;
 	
-	protected function __construct($title)
+	protected function __construct($title = null)
 	{
 		parent::__construct($title);
 		

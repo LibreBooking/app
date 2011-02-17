@@ -91,6 +91,7 @@ class en_us extends Language
 		$strings['StartIsInPast'] = 'The start date cannot be in the past';
 		$strings['CreateReservationHeading'] = 'Create a new reservation';
 		$strings['EditReservationHeading'] = 'Editing reservation %s';
+		$strings['ViewReservationHeading'] = 'Viewing reservation %s';
 		$strings['CorrectErrors'] = 'Correct Errors';
 		$strings['Create'] = 'Create';
 		$strings['ThisInstance'] = 'Only This Instance';

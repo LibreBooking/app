@@ -14,17 +14,31 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	 */
 	private $reservationView;
 	
+	/**
+	 * @var IEditableCriteria
+	 */
+	private $editableCriteria;
 	
+	/**
+	 * @param IExistingReservationPage $page
+	 * @param IScheduleUserRepository $scheduleUserRepository
+	 * @param IScheduleRepository $scheduleRepository
+	 * @param IUserRepository $userRepository
+	 * @param ReservationView $reservationView
+	 * @param IEditableCriteria $editableCriteria defaults to new EditableViewCriteria
+	 */
 	public function __construct(
 		IExistingReservationPage $page, 
 		IScheduleUserRepository $scheduleUserRepository,
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
-		ReservationView $reservationView
+		ReservationView $reservationView,
+		$editableCriteria = null
 		)
 	{
 		$this->page = $page;
 		$this->reservationView = $reservationView;
+		$this->editableCriteria = ($editableCriteria == null) ? new EditableViewCriteria() : $editableCriteria;
 		
 		parent::__construct(
 						$page, 
@@ -58,6 +72,8 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 			$this->page->SetRepeatTerminationDate($this->reservationView->RepeatTerminationDate->ToTimezone($this->GetTimezone()));
 		}
 		$this->page->SetRepeatWeekdays($this->reservationView->RepeatWeekdays);
+		
+		$this->page->SetIsEditable($this->editableCriteria->IsEditable($this->reservationView));
 	}
 	
 	protected function GetOwnerId()
@@ -88,6 +104,32 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	protected function GetTimezone()
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
+	}
+}
+
+interface IEditableCriteria
+{
+	function IsEditable(ReservationView $reservationView);
+}
+
+class EditableViewCriteria implements IEditableCriteria
+{
+	public function IsEditable(ReservationView $reservationView)
+	{
+		$currentUser = ServiceLocator::GetServer()->GetUserSession();
+		
+		if ($currentUser->IsAdmin)
+		{
+			return true;
+		}
+		
+		if ($reservationView->OwnerId != $currentUser->UserId)
+		{
+			return false;
+		}
+		
+		return Date::Now()->LessThan($reservationView->EndDate);
+		
 	}
 }
 ?>
