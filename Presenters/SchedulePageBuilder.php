@@ -30,7 +30,7 @@ interface ISchedulePageBuilder
 	 * @param DateRange $dateRange display dates in UTC
 	 * @param UserSession $user
 	 */
-	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession);
+	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession, ISchedule $schedule);
 	
 	/**
 	 * @param ISchedulePage $page
@@ -111,19 +111,22 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		
 		$startDate = $currentDate->AddDays($adjustedDays);
 		
-		return new DateRange($startDate->ToUtc(), $startDate->AddDays($scheduleLength - 1)->ToUtc());
+		return new DateRange($startDate, $startDate->AddDays($scheduleLength));
 	}
 	
 	/**
 	 * @see ISchedulePageBuilder::BindDisplayDates()
 	 */
-	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession)
+	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession, ISchedule $schedule)
 	{
-		$adjustedDateRange = $dateRange->ToTimezone($userSession->Timezone);
+		$scheduleLength = $schedule->GetDaysVisible();
+		// we don't want to display the last date in the range (it will be midnight of the last day)
+		$adjustedDateRange = new DateRange($dateRange->GetBegin()->ToTimezone($userSession->Timezone), $dateRange->GetEnd()->ToTimezone($userSession->Timezone)->AddDays(-1));
+
 		$page->SetDisplayDates($adjustedDateRange);
 		
 		$startDate = $adjustedDateRange->GetBegin();
-		$page->SetPreviousNextDates($startDate->AddDays(-7), $startDate->AddDays(7));
+		$page->SetPreviousNextDates($startDate->AddDays(-$scheduleLength), $startDate->AddDays($scheduleLength));
 	}
 	
 	/**

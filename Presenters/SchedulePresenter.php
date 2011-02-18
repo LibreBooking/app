@@ -80,7 +80,7 @@ class SchedulePresenter implements ISchedulePresenter
 		$this->_builder->BindSchedules($this->_page, $schedules, $currentSchedule);
 		
 		$scheduleDates = $this->_builder->GetScheduleDates($user, $currentSchedule, $this->_page);
-		$this->_builder->BindDisplayDates($this->_page, $scheduleDates, $user);
+		$this->_builder->BindDisplayDates($this->_page, $scheduleDates, $user, $currentSchedule);
 				
 		$layout = $this->_scheduleRepository->GetLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone));														
 		

@@ -62,21 +62,19 @@
 				<div id="repeatDiv">
 					<label>{translate key="RepeatPrompt"}</label>
 					<select id="repeatOptions" {formname key=repeat_options} class="pulldown" style="width:250px">
-						<option value="none">{translate key="DoesNotRepeat"}</option>
-						<option value="daily">{translate key="Daily"}</option>
-						<option value="weekly">{translate key="Weekly"}</option>
-						<option value="monthly">{translate key="Monthly"}</option>
-						<option value="yearly">{translate key="Yearly"}</option>
+						{foreach from=$RepeatOptions key=k item=v}
+							<option value="{$k}">{translate key=$v['key']}</option>
+						{/foreach}					
 					</select>
 					<div id="repeatEveryDiv" style="display:none;" class="days weeks months years">
 						<label>{translate key="RepeatEveryPrompt"}</label>
 						<select {formname key=repeat_every} class="pulldown" style="width:55px">
 							{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}
 						</select>
-						<span class="days">{translate key="days"}</span>
-						<span class="weeks">{translate key="weeks"}</span>
-						<span class="months">{translate key="months"}</span>
-						<span class="years">{translate key="years"}</span>
+						<span class="days">{translate key=$RepeatOptions['daily']['everyKey']}</span>
+						<span class="weeks">{translate key=$RepeatOptions['weekly']['everyKey']}</span>
+						<span class="months">{translate key=$RepeatOptions['monthly']['everyKey']}</span>
+						<span class="years">{translate key=$RepeatOptions['yearly']['everyKey']}</span>
 					</div>
 					<div id="repeatOnWeeklyDiv" style="display:none;" class="weeks">
 						<label>{translate key="RepeatDaysPrompt"}</label>

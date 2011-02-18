@@ -216,6 +216,8 @@ class SchedulePresenterTests extends TestBase
 
 	public function testGetScheduleDatesStartsOnConfiguredDayOfWeekWhenStartDayIsPriorToToday()
 	{
+		$timezone = 'CST';
+		
 		// saturday
 		$currentServerDate = Date::Create(2009, 07, 18, 11, 00, 00, 'CST');
 		Date::_SetNow($currentServerDate);
@@ -224,12 +226,12 @@ class SchedulePresenterTests extends TestBase
 		$daysVisible = 6;
 		
 		// previous sunday
-		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, 'CST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
+		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, $timezone);
+		$expectedEnd = $expectedStart->AddDays($daysVisible);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);
-		$user->Timezone = 'CST';
+		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 		
 		$schedule = $this->getMock('ISchedule');
@@ -248,16 +250,17 @@ class SchedulePresenterTests extends TestBase
 			->will($this->returnValue($daysVisible));	
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$utcDates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
+		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
 		
 		//echo $expectedScheduleDates->ToString();
 		//echo $utcDates->ToString();
 		
-		$this->assertEquals($expectedScheduleDates, $utcDates);
+		$this->assertEquals($expectedScheduleDates, $dates);
 	}
 	
 	public function testGetScheduleDatesStartsOnConfiguredDayOfWeekWhenStartDayIsAfterToday()
 	{
+		$timezone = 'CST';
 		// tuesday
 		$currentServerDate = Date::Create(2009, 07, 14, 11, 00, 00, 'CST');
 		Date::_SetNow($currentServerDate);
@@ -266,12 +269,12 @@ class SchedulePresenterTests extends TestBase
 		$daysVisible = 6;
 		
 		// previous wednesday
-		$expectedStart = Date::Create(2009, 07, 8, 00, 00, 00, 'CST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
+		$expectedStart = Date::Create(2009, 07, 8, 00, 00, 00, $timezone);
+		$expectedEnd = $expectedStart->AddDays($daysVisible);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);
-		$user->Timezone = 'CST';
+		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 		
 		$schedule = $this->getMock('ISchedule');
@@ -290,16 +293,17 @@ class SchedulePresenterTests extends TestBase
 			->will($this->returnValue($daysVisible));	
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$utcDates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
+		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
 		
 		//echo $expectedScheduleDates->ToString();
 		//echo $utcDates->ToString();
 		
-		$this->assertEquals($expectedScheduleDates, $utcDates);
+		$this->assertEquals($expectedScheduleDates, $dates);
 	}
 	
 	public function testCorrectDatesAreUsedWhenTheUsersTimezoneIsAheadByAWeek()
 	{
+		$timezone = 'EST';
 		// saturday
 		$currentServerDate = Date::Create(2009, 07, 18, 23, 00, 00, 'CST');
 		Date::_SetNow($currentServerDate);
@@ -308,12 +312,12 @@ class SchedulePresenterTests extends TestBase
 		$daysVisible = 5;
 		
 		// sunday of next week
-		$expectedStart = Date::Create(2009, 07, 19, 00, 00, 00, 'EST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
+		$expectedStart = Date::Create(2009, 07, 19, 00, 00, 00, $timezone);
+		$expectedEnd = $expectedStart->AddDays($daysVisible);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);
-		$user->Timezone = 'EST';
+		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 		
 		$schedule = $this->getMock('ISchedule');
@@ -332,16 +336,17 @@ class SchedulePresenterTests extends TestBase
 			->will($this->returnValue($daysVisible));	
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$utcDates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
+		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
 		
 		//echo $expectedScheduleDates->ToString();
 		//echo $utcDates->ToString();
 		
-		$this->assertEquals($expectedScheduleDates, $utcDates);
+		$this->assertEquals($expectedScheduleDates, $dates);
 	}
 	
 	public function testCorrectDatesAreUsedWhenTheUsersTimezoneIsBehindByAWeek()
 	{
+		$timezone = 'PST';
 		// sunday
 		$currentServerDate = Date::Create(2009, 07, 19, 00, 30, 00, 'CST');
 		Date::_SetNow($currentServerDate);
@@ -350,12 +355,12 @@ class SchedulePresenterTests extends TestBase
 		$daysVisible = 3;
 		
 		// previous sunday
-		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, 'PST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
+		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, $timezone);
+		$expectedEnd = $expectedStart->AddDays($daysVisible);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);
-		$user->Timezone = 'PST';
+		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 		
 		$schedule = $this->getMock('ISchedule');
@@ -374,13 +379,14 @@ class SchedulePresenterTests extends TestBase
 			->will($this->returnValue($daysVisible));	
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$utcDates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
+		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
 		
-		$this->assertEquals($expectedScheduleDates, $utcDates);
+		$this->assertEquals($expectedScheduleDates, $dates);
 	}
 	
 	public function testProvidedStartDateIsUsedIfSpecified()
 	{
+		$timezone = 'CST';
 		// saturday
 		$selectedDate = Date::Create(2009, 07, 18, 00, 00, 00, 'CST');
 		
@@ -388,12 +394,12 @@ class SchedulePresenterTests extends TestBase
 		$daysVisible = 6;
 		
 		// previous sunday
-		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, 'CST')->ToUtc();
-		$expectedEnd = $expectedStart->AddDays($daysVisible -1);
+		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, $timezone);
+		$expectedEnd = $expectedStart->AddDays($daysVisible);
 		$expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
 		
 		$user = new UserSession(1);
-		$user->Timezone = 'CST';
+		$user->Timezone = $timezone;
 		$this->fakeConfig->SetTimezone('CST');
 		
 		$schedule = $this->getMock('ISchedule');
@@ -412,12 +418,12 @@ class SchedulePresenterTests extends TestBase
 			->will($this->returnValue($daysVisible));	
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$utcDates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
+		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
 		
 		//echo $expectedScheduleDates->ToString();
 		//echo $utcDates->ToString();
 		
-		$this->assertEquals($expectedScheduleDates, $utcDates);
+		$this->assertEquals($expectedScheduleDates, $dates);
 	}
 	
 	public function testBindReservationsSetsReservationsAndResourcesOnPage()
@@ -440,18 +446,19 @@ class SchedulePresenterTests extends TestBase
 	
 	public function testBindDisplayDatesSetsPageToArrayOfDatesInUserTimezoneForRange()
 	{
+		$daysVisible = 7;
+		$schedule = new Schedule(1, '', false, 4, $daysVisible);
 		$user = new UserSession(1);
 		$user->Timezone = 'EST';
 		$page = $this->getMock('ISchedulePage');
 		
-		$daysDisplayed = 5;
-		$startWeekday = 1;
+		$start = Date::Now();
+		$end = Date::Now()->AddDays(10);
+		$displayRange = new DateRange($start, $end);
+		$expectedRange = new DateRange($start->ToTimezone('EST'), $end->AddDays(-1)->ToTimezone('EST'));
 		
-		$displayRange = new DateRange(Date::Now(), Date::Now()->AddDays(1));
-		$expectedRange = $displayRange->ToTimezone('EST');
-		
-		$expectedPrev = $expectedRange->GetBegin()->AddDays(-7);
-		$expectedNext = $expectedRange->GetBegin()->AddDays(7);
+		$expectedPrev = $expectedRange->GetBegin()->AddDays(-$daysVisible);
+		$expectedNext = $expectedRange->GetBegin()->AddDays($daysVisible);
 		
 		$page->expects($this->once())
 			->method('SetDisplayDates')
@@ -462,7 +469,7 @@ class SchedulePresenterTests extends TestBase
 			->with($this->equalTo($expectedPrev), $this->equalTo($expectedNext));
 			
 		$pageBuilder = new SchedulePageBuilder();
-		$pageBuilder->BindDisplayDates($page, $displayRange, $user);
+		$pageBuilder->BindDisplayDates($page, $displayRange, $user, $schedule);
 	}
 	
 	public function testBindLayoutSetsLayoutOnPage()

@@ -21,6 +21,8 @@ class ReservationService implements IReservationService
 	{
 		$reservations = $this->_repository->GetWithin($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), $scheduleId);
 		
+		Log::Debug("Found %s reservations for schedule %s between %s and %s", count($reservations), $scheduleId, $dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd());
+		
 		$reservationListing = $this->_coordinatorFactory->CreateReservationListing($targetTimezone);
 		
 		foreach ($reservations as $reservation)

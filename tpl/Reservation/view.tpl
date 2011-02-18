@@ -27,10 +27,14 @@ End: {formatdate date=$EndDate}
 	{/if}
 {/foreach}
 
-Repeats: repeatType: '{$RepeatType}',
-		repeatInterval: '{$RepeatInterval}',
-		repeatMonthlyType: '{$RepeatMonthlyType}',
-		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}$day,{/foreach}],
+
+Repeats: {translate key=$RepeatOptions[$RepeatType]['key']}
+{if $IsRecurring}
+Every: {$RepeatInterval}
+$RepeatOptions[$RepeatType]['everyKey']
+repeatMonthlyType: '{$RepeatMonthlyType}',
+repeatWeekdays: {foreach from=$RepeatWeekdays item=day}$day,{/foreach},
+{/if}
 
 <br/>			
 Title: {$ReservationTitle}<br/>

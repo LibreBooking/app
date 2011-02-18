@@ -114,6 +114,14 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->presenter->PageLoad();
 		$this->Set('ReturnUrl', $this->GetLastPage(Pages::SCHEDULE));
 		$this->Set('RepeatEveryOptions', range(1, 20));
+		$this->Set('RepeatOptions', array (
+						'none' => array('key' => 'DoesNotRepeat', 'everyKey' => ''),
+						'daily' => array('key' => 'Daily', 'everyKey' => 'days'),
+						'weekly' => array('key' => 'Weekly', 'everyKey' => 'weeks'),
+						'monthly' => array('key' => 'Monthly', 'everyKey' => 'months'),
+						'yearly' => array('key' => 'Yearly', 'everyKey' => 'years'),
+								)
+		);
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		
 		$this->smarty->display($this->GetTemplateName());		
