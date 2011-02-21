@@ -5,7 +5,7 @@
 	xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <!--<html xmlns="http:/www.w3.org/1999/xhtml" xml:lang="{$CurrentLanguage}" lang="{$CurrentLanguage}">-->
 <head>
-<title>{$Title}</title>
+<title>{if $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
 <meta http-equiv="Content-Type" content="text/html; charset={$Charset}" />
 {if $AllowRss && $LoggedIn}
 <link rel="alternate" type="application/rss+xml" title="phpScheduleIt"

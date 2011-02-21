@@ -101,7 +101,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	{
 		if ($this->IsEditable)
 		{
-			return 'Reservation/edit.tpl';
+			return 'Reservation/view.tpl'; //return 'Reservation/edit.tpl';
 		}
 		return 'Reservation/view.tpl';
 	}

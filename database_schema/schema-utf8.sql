@@ -614,7 +614,7 @@ CREATE TABLE  `reservation_series` (
   `status_id` tinyint(2) unsigned NOT NULL,
   `total_cost` decimal(7,2) default NULL,
   `repeat_type` varchar(10) default NULL,
-  `repeat_options` varchar(50) default NULL,
+  `repeat_options` varchar(255) default NULL,
   `schedule_id` smallint(5) unsigned NOT NULL, 
   PRIMARY KEY  (`series_id`),
   KEY `type_id` (`type_id`),

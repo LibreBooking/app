@@ -122,6 +122,16 @@ abstract class ReservationPage extends Page implements IReservationPage
 						'yearly' => array('key' => 'Yearly', 'everyKey' => 'years'),
 								)
 		);
+		$this->Set('DayNames', array(
+								0 => 'DaySundayAbbr',
+								1 => 'DayMondayAbbr',
+								2 => 'DayTuesdayAbbr',
+								3 => 'DayWednesdayAbbr',
+								4 => 'DayThursdayAbbr',
+								5 => 'DayFridayAbbr',
+								6 => 'DaySaturdayAbbr',
+								)
+		);
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		
 		$this->smarty->display($this->GetTemplateName());		

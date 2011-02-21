@@ -147,6 +147,12 @@ div.page-footer {
 	text-align: center;
 }
 
+.no-data
+{
+	font-style:italic;
+	color: #aaa;
+}
+
 form.login, form.forgot {
         margin: 0 0 0 8px;
         padding: 20px 16px 48px 16px;
@@ -341,6 +347,7 @@ label.res, label.reg {
         background: #fbfbfb;
         color: #777;
 }
+
 #resourcebox .input {
     	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
         width: 98%;
@@ -349,6 +356,26 @@ label.res, label.reg {
         border: 1px solid #e5e5e5;
         background: #fbfbfb;
         color: #777;
+}
+
+#reservationbox.readonly label {
+	font-size: 18px;
+	font-weight: bold;
+	color: #000;
+}
+
+#reservationbox.readonly ul {
+	font-size: 18px;
+	color: #333;
+}
+
+#reservationbox.readonly .section {
+	padding-top: 15px;
+}
+
+#reservationbox.readonly .repeat-details, #reservationbox.readonly .repeat-details label {
+	margin-left: 10px;
+	font-size: 15px;
 }
 
 textarea.input-area {

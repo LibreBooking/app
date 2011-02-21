@@ -75,16 +75,16 @@ class en_us extends Language
 		$strings['Weekly'] = 'Weekly';
 		$strings['Monthly'] = 'Monthly';
 		$strings['Yearly'] = 'Yearly';
-		$strings['RepeatPrompt'] = 'Repeat:';
+		$strings['RepeatPrompt'] = 'Repeat';
 		$strings['days'] = 'days';
 		$strings['weeks'] = 'weeks';
 		$strings['months'] = 'months';
 		$strings['years'] = 'years';
 		$strings['repeatDayOfMonth'] = 'day of month';
 		$strings['repeatDayOfWeek'] = 'day of week';
-		$strings['RepeatUntilPrompt'] = 'Until:';
-		$strings['RepeatEveryPrompt'] = 'Every:';
-		$strings['RepeatDaysPrompt'] = 'On:';
+		$strings['RepeatUntilPrompt'] = 'Until';
+		$strings['RepeatEveryPrompt'] = 'Every';
+		$strings['RepeatDaysPrompt'] = 'On';
 		$strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources';
 		$strings['ConflictingReservationDates'] = 'There are conflicting reservations on the following dates:';
 		$strings['StartDateBeforeEndDateRule'] = 'The start date must be before the end date';
@@ -97,6 +97,7 @@ class en_us extends Language
 		$strings['ThisInstance'] = 'Only This Instance';
 		$strings['AllInstances'] = 'All Series Instances';
 		$strings['FutureInstances'] = 'Future Series Instances';
+		$strings['Print'] = 'Print';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

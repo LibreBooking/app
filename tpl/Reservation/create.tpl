@@ -105,7 +105,7 @@
         	</li>
         	<li class="rsv-box-l">
                 <label>{translate key="ReservationDescription"}<br />
-	                <textarea name="{FormKeys::DESCRIPTION}" class="input-area" rows="2" cols="52" tabindex="110">{$Description}</textarea>
+	                <textarea id="description" name="{FormKeys::DESCRIPTION}" class="input-area" rows="2" cols="52" tabindex="110">{$Description}</textarea>
                 </label>
         	</li>
 			<li class="rsv-pulldown">
@@ -208,11 +208,6 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-	$('#BeginPeriod').change(function() {
-		// handle date change if start time > end time
-		// handle end period change if end hasn't been set
-	});
-
 	var scopeOptions = {
 		instance: '{SeriesUpdateScope::ThisInstance}',
 		full: '{SeriesUpdateScope::FullSeries}',
@@ -229,6 +224,8 @@ $(document).ready(function() {
 		scopeOpts: scopeOptions,
 	};
 
+	$('#description').TextAreaExpander();
+	
 	var reservation = new Reservation(reservationOpts);
 	reservation.init();
 	

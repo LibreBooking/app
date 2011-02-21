@@ -1,5 +1,8 @@
 {extends file="Reservation\create.tpl"}
 
+{$TitleKey='ViewReservationHeading'}
+{$TitleArgs=$ReferenceNumber}
+
 {block name=reservationHeader}
 {translate key="EditReservationHeading" args=$ReferenceNumber}
 {/block}
@@ -13,6 +16,7 @@
 {else}
 	<input type="submit" id="btnSave" value="{translate key='Update'}" class="button save"></input>
 {/if}
+	<input type="button" value="{translate key='Print'}" class="button"></input>
 {/block}
 
 {block name="ajaxMessage"}
