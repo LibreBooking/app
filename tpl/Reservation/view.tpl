@@ -4,7 +4,8 @@
 </style>
 <a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>
 <div id="reservationbox" class="readonly">
-
+<div id="reservationForm">
+	
 	<div class="reservationHeader">
 		<h3>{translate key="ViewReservationHeading" args=$ReferenceNumber}</h3>
 	</div>
@@ -88,5 +89,6 @@
 	<br/>
 	<input type="button" value="{translate key='Close'}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
 	<input type="button" value="{translate key='Print'}" class="button"></input>
+</div>
 </div>
 {include file='globalfooter.tpl'}

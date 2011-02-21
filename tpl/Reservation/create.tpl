@@ -1,4 +1,6 @@
-{include file='globalheader.tpl' DisplayWelcome='false'}
+{block name="header"}
+	{include file='globalheader.tpl' DisplayWelcome='false'}
+{/block}
 <style type="text/css">
 	@import url({$Path}css/reservation.css);
 </style>

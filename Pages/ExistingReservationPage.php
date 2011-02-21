@@ -99,10 +99,10 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 
 	protected function GetTemplateName()
 	{
-		if ($this->IsEditable)
-		{
-			return 'Reservation/view.tpl'; //return 'Reservation/edit.tpl';
-		}
+//		if ($this->IsEditable)
+//		{
+//			return 'Reservation/edit.tpl';
+//		}
 		return 'Reservation/view.tpl';
 	}
 	
