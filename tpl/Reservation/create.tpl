@@ -68,7 +68,7 @@
 					</select>
 					<div id="repeatEveryDiv" style="display:none;" class="days weeks months years">
 						<label>{translate key="RepeatEveryPrompt"}</label>
-						<select {formname key=repeat_every} class="pulldown" style="width:55px">
+						<select id="repeatInterval" {formname key=repeat_every} class="pulldown" style="width:55px">
 							{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}
 						</select>
 						<span class="days">{translate key=$RepeatOptions['daily']['everyKey']}</span>

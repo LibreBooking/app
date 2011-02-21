@@ -7,11 +7,16 @@ function Reservation(opts)
 			endDate: $('#EndDate'),
 			repeatOptions: $('#repeatOptions'),
 			repeatDiv: $('#repeatDiv'),
+			repeatInterval: $('#repeatInterval'),
+			repeatTermination: $('#EndRepeat'),
 			beginTime: $('#BeginPeriod'),
 			endTime: $('#EndPeriod')
 	};
 	
 	const oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
+	
+	var repeatToggled = false;
+	var terminationDateSetManually = false;
 	
 	Reservation.prototype.init = function()
 	{
@@ -46,6 +51,15 @@ function Reservation(opts)
 		
 		elements.repeatOptions.change(function() { 
 			ChangeRepeatOptions($(this));
+			AdjustTerminationDate();
+		});
+		
+		elements.repeatInterval.change(function() {
+			AdjustTerminationDate();
+		});
+		
+		elements.repeatTermination.change(function() {
+			terminationDateSetManually = true;
 		});
 		
 		InitializeRepeatOptions();
@@ -62,7 +76,6 @@ function Reservation(opts)
 			ChangeUpdateScope(options.scopeOpts.future);
 		});
 		
-
 		elements.beginDate.change(function() {
 			AdjustEndDate();
 			ToggleRepeatOptions();
@@ -140,7 +153,44 @@ function Reservation(opts)
 		currentEndDate.setDate(currentEndDate.getDate() + diffDays);
 		
 		elements.endDate.datepicker("setDate", currentEndDate);
-	};
+	}
+	
+	var AdjustTerminationDate = function ()
+	{
+		if (terminationDateSetManually)
+		{
+			return;
+		}
+		
+		var begin = new Date(elements.beginDate.val());
+		var interval = parseInt(elements.repeatInterval.val());
+		var currentEnd = new Date(elements.repeatTermination.val());
+		
+		var repeatOption = elements.repeatOptions.val();
+		
+		if (repeatOption == 'daily')
+		{
+			begin.setDate(begin.getDate() + interval);
+		}
+		else if (repeatOption == 'weekly')
+		{
+			begin.setDate(begin.getDate() + (7 * interval));
+		}
+		else if (repeatOption == 'monthly')
+		{
+			begin.setMonth(begin.getMonth() + interval);
+		}
+		else if (repeatOption = 'yearly')
+		{
+			begin.setFullYear(begin.getFullYear() + interval);
+		}
+		else 
+		{
+			begin = currentEnd;
+		}
+		
+		elements.repeatTermination.datepicker("setDate", begin);
+	}
 
 	var CancelAdd = function(dialogBoxId, displayDivId)
 	{
@@ -260,15 +310,15 @@ function Reservation(opts)
 		if (MoreThanOneDayBetweenBeginAndEnd())
 		{
 			elements.repeatOptions.data["current"] = elements.repeatOptions.val();
-			this.updated = true;
+			repeatToggled = true;
 			SetValue('none', 'disabled');
 		}
 		else 
 		{
-			if (this.updated)
+			if (repeatToggled)
 			{
 				SetValue(elements.repeatOptions.data["current"], '');				
-				this.updated = false;
+				repeatToggled = false;
 			}
 		}
 	}
