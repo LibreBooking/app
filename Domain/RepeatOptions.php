@@ -182,10 +182,10 @@ class RepeatWeekly extends RepeatOptionsAbstract
 		{
 			if ($startWeekday < $weekday)
 			{
-				$startDate = $startDate->AddDays($weekday - $startWeekday);
-				$endDate = $endDate->AddDays($weekday - $startWeekday);
+				$start = $startDate->AddDays($weekday - $startWeekday);
+				$end = $endDate->AddDays($weekday - $startWeekday);
 				
-				$dates[] = new DateRange($startDate->ToUtc(), $endDate->ToUtc());
+				$dates[] = new DateRange($start->ToUtc(), $end->ToUtc());
 			}
 		}
 		
