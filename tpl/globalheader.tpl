@@ -20,16 +20,59 @@
 <script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/menubar.js"></script>
 <style type="text/css">
+@import url({$Path}css/nav.css);
 @import url({$Path}css/style.css);
+
 
 @import url({$Path}scripts/css/smoothness/jquery-ui-1.8.7.custom.css);
 </style>
+
+{literal}
+<script type="text/javascript">
+	function mainmenu(){
+	$("#nav ul").css({display: "none"}); // Opera Fix
+	$("#nav li").hover(function(){
+			$(this).find('ul:first').css({visibility: "visible",display: "none"}).show(10);
+			},function(){
+			$(this).find('ul:first').css({visibility: "hidden"});
+			});
+	}
+	
+	 $(document).ready(function(){
+		mainmenu();
+	});
+</script>
+{/literal}
 </head>
 <body>
 <div id="wrapper">
 	<div id="doc">
-		<div id="header"><!-- start #nav-main -->
-			<div id="nav-main" class="menubar menubarnav">
+		<div id="header">
+		<ul id="nav" class="menubar">
+		    <li class="menubaritem"><a href="dashboard.php">Dashboard</a></li>
+		    <li class="menubaritem"><a href="#">Users</a>
+		    	<ul>
+		    		<li class="menuitem"><a href="/reg-mini.php">Add user</a></li>
+		    		<li class="menuitem"><a href="/user.php">Edit user details</a></li>
+					<li class="menuitem"><a href="/user.php">Delete users</a></li>
+		    	</ul>
+		    </li>
+		    <li><a href="#">3 Javascript</a>
+		        <ul>
+		            <li><a href="#">3.1 jQuery</a>
+		                <ul>
+		                    <li><a href="#">3.1.1 Download</a></li>
+		                    <li><a href="#">3.1.2 Tutorial</a></li>
+		                </ul>
+		            </li>
+		            <li><a href="#">3.2 Mootools</a></li>
+		            <li><a href="#">3.3 Prototype</a></li>
+		        </ul>
+		    </li>
+		</ul>
+		</div>
+		<div id="header2" style="display:none"><!-- start #nav-main -->
+			<div id="nav-main2" class="menubar menubarnav">
 				<div class="bd">
 					<ul class="first">
 						<li class="menubaritem" onmouseover="mopen('submenu1')" onmouseout="mclosetimer()">

@@ -1,0 +1,72 @@
+#nav, #nav ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	list-style-position: outside;
+	position: relative;
+	/*
+	line-height: 1.5em;
+	*/
+}
+
+#nav a {
+	display: block;
+	padding: 0px 5px;
+	color: #fff;
+	text-decoration: none;
+	/* 
+	border: 1px solid #333;
+	background-color: #333; 
+	*/
+}
+
+#nav a:hover {
+	/*
+	background-color: #fff;
+	color: #333;
+	*/
+}
+
+#nav li {
+	float: left;
+	position: relative;
+}
+
+#nav menubaritem a {
+	background:transparent url(../img/menubar-divider.png) top right no-repeat;
+}
+
+#nav ul {
+	position: absolute;
+	display: none;
+	/*
+	width: 12em;
+	top: 1.5em;
+	*/
+}
+
+#nav li ul a {
+	/* 
+	width: 12em;
+	height: auto;
+	*/
+	float: left;
+}
+
+#nav ul ul {
+	top: auto;
+}
+
+#nav li ul ul {
+	left: 12em;
+	margin: 0px 0 0 10px;
+}
+
+#nav li:hover ul ul,#nav li:hover ul ul ul,#nav li:hover ul ul ul ul {
+	display: none;
+}
+
+#nav li:hover ul,#nav li li:hover ul,#nav li li li:hover ul,#nav li li li li:hover ul
+	{
+	display: block;
+}

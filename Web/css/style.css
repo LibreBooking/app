@@ -457,7 +457,7 @@ tr.admin-lastline {
 }
 
 .menu {
-	font-size: 110%;
+	font-size: 130%;
 }
 
 .menuitem {
@@ -476,20 +476,21 @@ tr.admin-lastline {
 .menu ul.first { border-width:0; }
 
 #header {
-        width: 900px;
-        margin:0 auto;
+        min-width: 900px;
+        width:100%;
+        margin:0 15px;
         background: url(../img/header-bg.png) bottom left no-repeat;
         height: 56px;
 }
 
-#nav-main { float:right; padding-right: 100px; }
-#nav-main ul{ float:left; z-index:99; left:auto; }
-#nav-main ul, #nav-main ul li { height:56px; background:none; position:relative; }
-#nav-main ul {
+/* #nav-main { float:right; padding-right: 100px; } */
+#nav-main ul{ float:left; z-index:99; left:100px; }
+#nav ul, #nav-main ul li { height:56px; background:none; position:relative; }
+#nav ul {
         background: transparent url(../img/menubar-divider.png) top left no-repeat;
         padding-left: 2px;
 }
-#nav-main ul li a {
+#nav ul li a {
         padding:20px 20px 0 20px;
         height:35px;
         display:block;
@@ -499,23 +500,23 @@ tr.admin-lastline {
         color:#fff;
         background:transparent url(../img/menubar-divider.png) top right no-repeat;
 }
-#nav-main ul li a:link, #nav-main ul li a:visited {
+#nav ul li a:link, #nav ul li a:visited {
         color:#fff;
         text-decoration:none;
 }
-#nav-main ul li span, #nav-main ul li a:hover, #nav-main ul li a:active {
+#nav ul li span, #nav ul li a:hover, #nav-main ul li a:active {
         color:#fff;
         background:#31526f url(../img/header-menu-bg.png) top right no-repeat;
 }
-#nav-main ul ul, #nav-main ul ul li { height:auto; border:0; }
+#nav ul ul, #nav ul ul li { height:auto; border:0; }
 
-#nav-main ul ul {
+#nav ul ul {
         background:url(../img/header-menu-bg.png) bottom left no-repeat;
         padding:5px 0;
         width:190px;
 }
 
-#nav-main ul li ul li a, #nav-main ul li ul li a:link, #nav-main ul li ul li a:visited {
+#nav ul li ul li a, #nav-main ul li ul li a:link, #nav-main ul li ul li a:visited {
 	padding: 4px 20px;
 	margin: 0 1px 1px 1px;
 	height: auto;
@@ -528,7 +529,7 @@ tr.admin-lastline {
 	position: relative;
 }
 
-#nav-main ul li ul li a:hover, #nav-main ul li ul li a:active { background:#3d5b74 }
+#nav ul li ul li a:hover, #nav ul li ul li a:active { background:#3d5b74 }
 
 .rsv-checkbox h4 {
 	display: inline;
