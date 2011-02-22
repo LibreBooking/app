@@ -102,6 +102,11 @@ class NullReservationView extends ReservationView
 		
 		return self::$instance;
 	}
+	
+	public function IsDisplayable()
+	{
+		return false;
+	}
 }
 
 
@@ -136,5 +141,10 @@ class ReservationView
 	
 	public $AdditionalResourceIds = array();
 	public $ParticipantIds = array();
+	
+	public function IsDisplayable()
+	{
+		return true;  // some qualification should probably be made
+	}
 }
 ?>

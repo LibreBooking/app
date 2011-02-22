@@ -24,19 +24,19 @@ class NewReservationPreconditionService implements INewReservationPreconditionSe
 
 		if (empty($requestedResourceId))
 		{
-			$page->RedirectToError(ErrorMessages::MISSING_RESOURCE, $page->GetLastPage());
+			$page->RedirectToError(ErrorMessages::MISSING_RESOURCE);
 			return;
 		}
 		
 		if (empty($requestedScheduleId))
 		{
-			$page->RedirectToError(ErrorMessages::MISSING_SCHEDULE, $page->GetLastPage());
+			$page->RedirectToError(ErrorMessages::MISSING_SCHEDULE);
 			return;
 		}
 		
 		if (!$this->UserHasPermission($user, $requestedResourceId))
 		{
-			$page->RedirectToError(ErrorMessages::INSUFFICIENT_PERMISSIONS, $page->GetLastPage());
+			$page->RedirectToError(ErrorMessages::INSUFFICIENT_PERMISSIONS);
 			return;
 		}
 	}
@@ -52,7 +52,11 @@ class EditReservationPreconditionService
 {
 	public function CheckAll(IExistingReservationPage $page, UserSession $user, ReservationView $reservationView)
 	{
-		// TODO: Handle if reservation is not found
+		if (!$reservationView->IsDisplayable())
+		{
+			$page->RedirectToError(ErrorMessages::RESERVATION_NOT_FOUND);
+			return;
+		}
 	}
 }
 

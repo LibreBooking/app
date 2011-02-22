@@ -95,6 +95,11 @@ abstract class Page implements IPage
 	
 	public function RedirectToError($errorMessageId, $lastPage = '')
 	{
+		if (empty($lastPage))
+		{
+			$lastPage = $this->GetLastPage();
+		}
+		
 		$errorPageUrl = sprintf("error.php?%s=%s&%s=%s", QueryStringKeys::MESSAGE_ID, $errorMessageId, QueryStringKeys::REDIRECT, urlencode($lastPage));
 		$this->Redirect($errorPageUrl);
 	}

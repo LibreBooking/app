@@ -39,7 +39,7 @@ class Server
 	{
 		if (isset($_GET[$name]))
 		{
-			return $_GET[$name];
+			return htmlentities($_GET[$name]);
 		}
 		return null;
 	}
