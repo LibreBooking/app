@@ -23,7 +23,6 @@
 @import url({$Path}css/nav.css);
 @import url({$Path}css/style.css);
 
-
 @import url({$Path}scripts/css/smoothness/jquery-ui-1.8.7.custom.css);
 </style>
 
@@ -57,16 +56,20 @@
 					<li class="menuitem"><a href="/user.php">Delete users</a></li>
 		    	</ul>
 		    </li>
-		    <li><a href="#">3 Javascript</a>
+		    <li class="menubaritem"><a href="#">Resources</a>
 		        <ul>
-		            <li><a href="#">3.1 jQuery</a>
-		                <ul>
-		                    <li><a href="#">3.1.1 Download</a></li>
-		                    <li><a href="#">3.1.2 Tutorial</a></li>
-		                </ul>
-		            </li>
-		            <li><a href="#">3.2 Mootools</a></li>
-		            <li><a href="#">3.3 Prototype</a></li>
+		            <li class="menuitem"><a href="/resource.php">Add resource</a></li>
+					<li class="menuitem"><a href="/resource.php">Edit resource details</a></li>
+					<li class="menuitem"><a href="/resource.php">Delete resources</a></li>
+		        </ul>
+		    </li>
+		    <li class="menubaritem"><a href="#">Reservations</a>
+		        <ul>
+		            <li class="menuitem"><a href="/reservation.php?rid=1">New reservation</a></li>
+					<li class="menuitem"><a href="/reservation.php?rid=1">Edit my reservations</a></li>
+					<li class="menuitem"><a href="/reservation.php?rid=1">Edit group reservations</a></li>
+					<li class="menuitem"><a href="/reservation.php?rid=1">Edit all reservations</a></li>
+					<li class="menuitem"><a href="/reservation.php?rid=1">Delete reservations</a></li>
 		        </ul>
 		    </li>
 		</ul>
