@@ -11,6 +11,6 @@
 		 firstDay: {$FirstDay},
 		 monthNames: {$MonthNames},
 		 monthNamesShort: {$MonthNamesShort},
-		 currentText: "{translate key='Today'}",
+		 currentText: "{translate key='Today'}"
   {rdelim});
 </script>

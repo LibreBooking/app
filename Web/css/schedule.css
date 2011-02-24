@@ -1,8 +1,9 @@
 table.reservations {
     border-collapse: collapse;
-    border: solid #333 1px;
+    border: solid #808080 1px;
     width: 100%;
-	font-size:9pt;
+	font-size:8pt;
+	table-layout: fixed;
 }
 
 table.reservations tr td {
@@ -11,18 +12,31 @@ table.reservations tr td {
 
 td.resourcename {
     padding: 1px 3px;
-	background-color: #eee;
+	background-color: #E0E0E0;	
+}
+
+td.resourcename a {
+	color: #0772A1;
+	text-decoration: none;
+}
+
+td.resourcename a:hover {
+	color: #3BA3D0;
 }
 
 td.resdate {
     width: 150px;
     padding: 0px 3px;
-	background-color: #ccc;
 }
 
 td.reslabel {
     padding-left: 2px;
-	background-color: #ccc;
+}
+
+td.resdate, td.reslabel {
+	background-color: #0772A1;
+	background-color: #245A71;
+	color: #F0F0F0;
 }
 
 td.unreservable {
@@ -37,7 +51,8 @@ td.reservable {
 
 td.reserved {
     background-color: #408AD2;
-    color: #fff;
+    color: #E0E0E0;
+    padding-left: 1px;
 }
 
 td.reserved.hilite {
@@ -46,11 +61,12 @@ td.reserved.hilite {
 }
 
 td.reserved.mine {
-	background-color: #88bbff;
+	background-color: #3BA3D0;
+	background-color: #6F9BAE;
 }
 
 td.reserved.mine.hilite {
-	background-color: #88ccff;
+	background-color: #63AFD0;
 }
 
 td.reservable.hilite {
@@ -70,7 +86,7 @@ td.reserved.clicked {
 }
 
 td.pasttime {
-	background-color: #f0f0f0;
+	background-color: #E0E5E7;
 }
 	
 td.restricted {

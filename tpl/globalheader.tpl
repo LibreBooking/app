@@ -32,10 +32,10 @@
 		$("#nav ul").css({display: "none"}); // Opera Fix
 		$("#nav li").hover(
 				function(){
-					$(this).find('ul:first').show(10); //.css({visibility: "visible",display: "none"})
+					$(this).find('ul:first').css({visibility: "visible",display: "none"}).show(10);
 				},
 				function(){
-					$(this).find('ul:first').hide();	//.css({visibility: "hidden"});
+					$(this).find('ul:first').css({visibility: "hidden"}).hide();
 				});
 	}
 	
@@ -59,9 +59,9 @@
 					<li class="menuitem"><a href="/user.php">Delete users</a></li>
 		    	</ul>
 		    </li>
-		    <li class="menubaritem"><a href="#">Resources</a>
+		    <li class="menubaritem"><a href="schedule.php">Schedule</a>
 		        <ul>
-		            <li class="menuitem"><a href="/resource.php">Add resource</a></li>
+		            <li class="menuitem"><a href="/resource.php">Schedule 1</a></li>
 					<li class="menuitem"><a href="/resource.php">Edit resource details</a></li>
 					<li class="menuitem"><a href="/resource.php">Delete resources</a></li>
 		        </ul>
