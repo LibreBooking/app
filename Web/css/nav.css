@@ -4,9 +4,6 @@
 	list-style-type: none;
 	list-style-position: outside;
 	position: relative;
-	/*
-	line-height: 1.5em;
-	*/
 }
 
 #nav a {
@@ -14,42 +11,24 @@
 	padding: 0px 5px;
 	color: #fff;
 	text-decoration: none;
-	/* 
-	border: 1px solid #333;
-	background-color: #333; 
-	*/
-}
-
-#nav a:hover {
-	/*
-	background-color: #fff;
-	color: #333;
-	*/
 }
 
 #nav li {
 	float: left;
 	position: relative;
+	border-left: solid 1px #436981;
 }
 
 #nav menubaritem a {
-	background:transparent url(../img/menubar-divider.png) top right no-repeat;
+	/*background:transparent url(../img/menubar-divider.png) top right no-repeat;*/
 }
 
 #nav ul {
 	position: absolute;
 	display: none;
-	/*
-	width: 12em;
-	top: 1.5em;
-	*/
 }
 
 #nav li ul a {
-	/* 
-	width: 12em;
-	height: auto;
-	*/
 	float: left;
 }
 
@@ -71,29 +50,28 @@
 }
 
 #header {
-        min-width: 900px;
-        width:100%;
-        margin:0 15px;
-        background: url(../img/header-bg.png) bottom left no-repeat;
-        height: 56px;
-        padding-left: 30px;
+    min-width: 900px;
+    margin:0 15px;
+    background: #3E5E79; /*url(../img/header-bg-c.png) repeat;*/
+    height: 56px;
+    padding-left: 30px;
 }
 
 #nav .menubaritem {
-        background: transparent url(../img/menubar-divider.png) top left no-repeat;
-        padding-left: 2px;
-}
-
-#nav .menubaritem {
+    /*background: transparent url(../img/menubar-divider.png) top left no-repeat;*/
 	font-size: 130%;
-	height: 50px;
-	padding-left:2px;
+	height: 56px;
+	padding: 0 2px;
 }
+
+/*
+.menubaritem a {
+	padding-left: 10px;
+}
+*/
 
 li.menubaritem {
 	border: 1px 0 0 0;
-	padding-left:2px;	
-	
 }
 
 li.menubaritem a {
@@ -101,22 +79,32 @@ li.menubaritem a {
 	font-weight: bold;
 }
 
-li.menubaritem a:hover{
-	background: #31526f url(../img/header-menu-bg.png) top right no-repeat;
+.menubaritem a:hover{
+	background: #31526f; /* url(../img/header-menu-bg.png) top right no-repeat; */
+	background: #3d5b74; /* url(../img/header-menu-bg.png) top right no-repeat; */
 }
 
 li.menubaritem ul li a {
 	line-height:40px;
 	font-size: 90%;
+	width: 190px;
 }
 
 li.menubaritem ul {
 	margin-top: 15px;
 }
 
+li.menubaritem:hover, li.menubaritem ul li {
+	background-color: #3d5b74;
+}
+
 li.menubaritem ul li {
-	background-color: #000;
-	width: 190px;
+	border: solid 1px #436981;
+	border-top-width: 0px;
+}
+
+li.menubaritem ul li a:hover{
+	background: #31526f;
 }
 
 /* Global header navigation, work in progress */

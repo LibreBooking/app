@@ -30,10 +30,12 @@
 <script type="text/javascript">
 	function mainmenu(){
 	$("#nav ul").css({display: "none"}); // Opera Fix
-	$("#nav li").hover(function(){
-			$(this).find('ul:first').css({visibility: "visible",display: "none"}).show(10);
-			},function(){
-			$(this).find('ul:first').css({visibility: "hidden"});
+	$("#nav li").hover(
+			function(){
+				$(this).find('ul:first').show(10); //.css({visibility: "visible",display: "none"})
+			},
+			function(){
+				$(this).find('ul:first').hide();	//.css({visibility: "hidden"});
 			});
 	}
 	
