@@ -32,6 +32,8 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->StartDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$reservationView->Title = $row[ColumnNames::RESERVATION_TITLE];	
 			$reservationView->SeriesId = $row[ColumnNames::SERIES_ID];	
+			$reservationView->OwnerFirstName = $row[ColumnNames::FIRST_NAME];	
+			$reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];	
 			
 			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
 			
@@ -41,45 +43,68 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->RepeatMonthlyType = $repeatConfig->MonthlyType;	
 			$reservationView->RepeatTerminationDate = $repeatConfig->TerminationDate;	
 		
-			$resources = $this->GetResources($reservationView->SeriesId);
-			$participants = $this->GetParticipants($reservationView->ReservationId);
+			$this->SetResources($reservationView);
+			$this->SetParticipants($reservationView);
+			//$participants = $this->GetParticipants($reservationView->ReservationId);
 			
-			$reservationView->AdditionalResourceIds = $resources;
-			$reservationView->ParticipantIds = $participants;
+			//$reservationView->ParticipantIds = $participants;
 		}
 		
 		return $reservationView;
 	}
 	
-	private function GetResources($seriesId)
+	private function SetResources(ReservationView $reservationView)
 	{
-		$resources = array();
-		
-		$getResources = new GetReservationResourcesCommand($seriesId);
+		$getResources = new GetReservationResourcesCommand($reservationView->SeriesId);
 		
 		$result = ServiceLocator::GetDatabase()->Query($getResources);
 		
 		while ($row = $result->GetRow())
 		{
-			$resources[] = $row[ColumnNames::RESOURCE_ID];
+			$reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
+			$reservationView->Resources[] = new ScheduleResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
 		}
-
-		return $resources;
 	}
 	
-	private function GetParticipants($reservationId)
+	private function SetParticipants(ReservationView $reservationView)
 	{
-		$participants = array();
-		$getParticipants = new GetReservationParticipantsCommand($reservationId);
+		$getParticipants = new GetReservationParticipantsCommand($reservationView->ReservationId);
 		
 		$result = ServiceLocator::GetDatabase()->Query($getParticipants);
 		
 		while ($row = $result->GetRow())
 		{
-			$participants[] = $row[ColumnNames::USER_ID];
+			$reservationView->ParticipantIds[] = $row[ColumnNames::USER_ID];
+			$reservationView->Participants[] = new ReservationUser(
+					$row[ColumnNames::USER_ID], 
+					$row[ColumnNames::FIRST_NAME], 
+					$row[ColumnNames::LAST_NAME],
+					$row[ColumnNames::EMAIL],
+					$row[ColumnNames::RESERVATION_USER_LEVEL]);
 		}
-		
-		return $participants;
+	}
+}
+
+class ReservationUser
+{
+	public $UserId;
+	public $FirstName;
+	public $LastName;
+	public $Email;
+	public $LevelId;
+	
+	public function __construct($userId, $firstName, $lastName, $email, $levelId)
+	{
+		$this->UserId = $userId;
+		$this->FirstName = $firstName;
+		$this->LastName = $lastName;
+		$this->Email = $email;
+		$this->LevelId = $levelId;
+	}
+	
+	public function IsOwner()
+	{
+		return $this->LevelId == ReservationUserLevel::OWNER;
 	}
 }
 
@@ -128,6 +153,8 @@ class ReservationView
 	 */
 	public $EndDate;
 	public $OwnerId;
+	public $OwnerFirstName;
+	public $OwnerLastName;
 	public $Title;
 	public $Description;
 	public $RepeatType;
@@ -139,12 +166,35 @@ class ReservationView
 	 */
 	public $RepeatTerminationDate;
 	
+	/**
+	 * @var int[]
+	 */
 	public $AdditionalResourceIds = array();
+	
+	/**
+	 * @var ScheduleResource[]
+	 */
+	public $Resources = array();
+	
+	/**
+	 * @var int[]
+	 */
 	public $ParticipantIds = array();
+	
+	/**
+	 * @var ReservationUser[]
+	 */
+	public $Participants = array();
+	
+	public function IsRecurring()
+	{
+		return $this->RepeatType != RepeatType::None;
+	}
 	
 	public function IsDisplayable()
 	{
 		return true;  // some qualification should probably be made
 	}
+	
 }
 ?>

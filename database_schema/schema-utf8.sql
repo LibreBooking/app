@@ -616,13 +616,15 @@ CREATE TABLE  `reservation_series` (
   `repeat_type` varchar(10) default NULL,
   `repeat_options` varchar(255) default NULL,
   `schedule_id` smallint(5) unsigned NOT NULL, 
+  `owner_id` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY  (`series_id`),
   KEY `type_id` (`type_id`),
   KEY `status_id` (`status_id`),
   KEY `reservations_schedule` (`schedule_id`),
   CONSTRAINT `reservations_type` FOREIGN KEY (`type_id`) REFERENCES `reservation_types` (`type_id`) ON UPDATE CASCADE,
   CONSTRAINT `reservations_status` FOREIGN KEY (`status_id`) REFERENCES `reservation_statuses` (`status_id`) ON UPDATE CASCADE,
-  CONSTRAINT `reservations_schedule` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`schedule_id`)
+  CONSTRAINT `reservations_schedule` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`schedule_id`),
+  CONSTRAINT `reservations_owner` FOREIGN KEY (`owner_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
@@ -650,14 +652,14 @@ CREATE TABLE  `reservation_instances` (
 
 DROP TABLE IF EXISTS `reservation_users`;
 CREATE TABLE `reservation_users` (
-  `series_id` mediumint(8) unsigned NOT NULL,
+  `reservation_instance_id` mediumint(8) unsigned NOT NULL,
   `user_id` mediumint(8) unsigned NOT NULL,
   `reservation_user_level` tinyint(2) unsigned NOT NULL,
-  PRIMARY KEY  (`series_id`,`user_id`),
-  KEY `series_id` (`series_id`),
+  PRIMARY KEY  (`reservation_instance_id`,`user_id`),
+  KEY `reservation_instance_id` (`reservation_instance_id`),
   KEY `user_id` (`user_id`),
   KEY `reservation_user_level` (`reservation_user_level`),
-  FOREIGN KEY (`series_id`) REFERENCES `reservation_series` (`series_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`reservation_instance_id`) REFERENCES `reservation_instances` (`reservation_instance_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 	

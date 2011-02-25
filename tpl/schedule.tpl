@@ -61,7 +61,6 @@
 		</tr>
 	{/foreach}
 </table>
-<br/>
 {/foreach}
 
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>

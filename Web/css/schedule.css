@@ -163,3 +163,14 @@ select.schedule_list {
 {
 	margin-left: auto; margin-right: auto;
 }
+
+.res_popup_details .summary {
+	font-style: italic;
+}
+
+.res_popup_details .user {
+	font-weight:bold;
+}
+
+.res_popup_details .dates {
+}

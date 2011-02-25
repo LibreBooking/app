@@ -40,6 +40,13 @@ class ReservationRepository implements IReservationRepository
 								$reservationSeriesId);
 			
 			$reservationId = $database->ExecuteInsert($insertReservation);
+			
+			$insertReservationUser = new AddReservationUserCommand(
+										$reservationId, 
+										$reservationSeries->UserId(), 
+										ReservationUserLevel::OWNER);
+		
+			$database->Execute($insertReservationUser);
 		}
 	}
 
@@ -136,7 +143,8 @@ class ReservationRepository implements IReservationRepository
 									$reservationSeries->RepeatOptions()->ConfigurationString(),
 									$reservationSeries->ScheduleId(),
 									ReservationTypes::Reservation,
-									ReservationStatus::Created
+									ReservationStatus::Created,
+									$reservationSeries->UserId()
 									);
 									
 		$reservationSeriesId = $database->ExecuteInsert($insertReservationSeries);
@@ -157,13 +165,6 @@ class ReservationRepository implements IReservationRepository
 					
 			$database->Execute($insertReservationResource);
 		}
-		
-		$insertReservationUser = new AddReservationUserCommand(
-										$reservationSeriesId, 
-										$reservationSeries->UserId(), 
-										ReservationUserLevel::OWNER);
-		
-		$database->Execute($insertReservationUser);
 
 		return $reservationSeriesId;
 	}

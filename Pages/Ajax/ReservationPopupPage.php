@@ -14,16 +14,14 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		parent::__construct();
 		
-		$this->_presenter = new ReservationPopupPresenter($this, 
-		new ReservationViewRepository());
+		$this->_presenter = new ReservationPopupPresenter($this, new ReservationViewRepository());
 	}
 	
 	public function PageLoad()
 	{
 		if (!$this->IsAuthenticated())
 		{
-			$this->smarty->assign('authorized', true);
-			//TODO: Update this after development
+			$this->smarty->assign('authorized', false);
 		}
 		else
 		{
@@ -50,6 +48,16 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 		$this->smarty->assign('lname', $last);
 	}
 	
+	function SetResources($resources)
+	{
+		$this->smarty->assign('resources', $resources);
+	}
+	
+	function SetParticipants($users)
+	{
+		$this->smarty->assign('participants', $users);
+	}
+	
 	function SetSummary($summary)
 	{
 		$this->smarty->assign('summary', $summary);
@@ -74,6 +82,16 @@ interface IReservationPopupPage
 	 * @param $last string
 	 */
 	function SetName($first, $last);
+	
+	/**
+	 * @param $resources ScheduleResource[]
+	 */
+	function SetResources($resources);
+	
+	/**
+	 * @param $users ReservationUser[]
+	 */
+	function SetParticipants($users);
 	
 	/**
 	 * @param $summary string
@@ -107,15 +125,18 @@ class ReservationPopupPresenter
 	
 	public function PageLoad()
 	{
-		$reservation = $this->_reservationRepository->GetReservationForEditing($this->_page->GetReservationId());
-		$startDate = $reservation->StartDate->ToTimezone('America/Chicago');
-		$endDate = $reservation->EndDate->ToTimezone('America/Chicago');
+		$tz = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 		
-		$this->_page->SetName('first', 'last');
+		$reservation = $this->_reservationRepository->GetReservationForEditing($this->_page->GetReservationId());
+		$startDate = $reservation->StartDate->ToTimezone($tz);
+		$endDate = $reservation->EndDate->ToTimezone($tz);
+		
+		$this->_page->SetName($reservation->OwnerFirstName, $reservation->OwnerLastName);
+		$this->_page->SetResources($reservation->Resources);
+		$this->_page->SetParticipants($reservation->Participants);
 		$this->_page->SetSummary($reservation->Description);
 		
 		$this->_page->SetDates($startDate, $endDate);
-		
 	}
 }
 ?>

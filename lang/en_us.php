@@ -31,6 +31,7 @@ class en_us extends Language
 		$dates['period_time'] = "g:i A";
 		$dates['url'] = 'Y-m-d';
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
+		$dates['res_popup'] = 'm/d/Y g:i A';
 		
 		$this->Dates = $dates;
 	}

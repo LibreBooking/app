@@ -118,13 +118,13 @@ class Queries
 	
 	const ADD_RESERVATION_SERIES = 
 		'INSERT INTO 
-			reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, schedule_id, type_id, status_id)
-		VALUES (@dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @scheduleid, @typeid, @statusid)';
+			reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, schedule_id, type_id, status_id, owner_id)
+		VALUES (@dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @scheduleid, @typeid, @statusid, @userid)';
 	
 	const ADD_RESERVATION_USER  = 
 		'INSERT INTO
-			reservation_users (series_id, user_id, reservation_user_level)
-		VALUES (@seriesid, @userid, @levelid)';
+			reservation_users (reservation_instance_id, user_id, reservation_user_level)
+		VALUES (@reservationid, @userid, @levelid)';
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
 		'INSERT INTO 
@@ -210,39 +210,51 @@ class Queries
 		FROM
 			reservation_instances ri
 		INNER JOIN
-			reservation_series r ON r.series_id = ri.series_id
+			reservation_series r 
+			ON 
+				r.series_id = ri.series_id
 		INNER JOIN
-			reservation_users ru 
-		ON 
-			r.series_id = ru.series_id 
-		AND
-			ru.reservation_user_level = @levelid
+			users u
+			ON 
+				u.user_id = r.owner_id
 		INNER JOIN
 			reservation_resources rr
-		ON
-			r.series_id = rr.series_id
-		AND 
-			rr.resource_level_id = @resourceLevelId
+			ON
+				r.series_id = rr.series_id
+			AND 
+				rr.resource_level_id = @resourceLevelId
 		WHERE 
-			reference_number = @referenceNumber
-		AND	
-			status_id <> 2';
+				reference_number = @referenceNumber
+			AND	
+				r.status_id <> 2';
 	
 	const GET_RESERVATION_PARTICIPANTS =
 		'SELECT
-			*
+			u.user_id, 
+			u.fname,
+			u.lname,
+			u.email,
+			ru.*
 		FROM
-			reservation_users
+			reservation_users ru
+		INNER JOIN 
+			users u
+			ON
+				ru.user_id = u.user_id
 		WHERE
-			series_id = @reservationid';
+			reservation_instance_id = @reservationid';
 	
 	const GET_RESERVATION_RESOURCES =
 		'SELECT
-			*
+			r.resource_id, r.name
 		FROM
-			reservation_resources
+			reservation_resources rr
+		INNER JOIN 
+			resources r
+			ON
+			rr.resource_id = r.resource_id
 		WHERE
-			series_id = @seriesid';
+			rr.series_id = @seriesid';
 	
 	const GET_RESERVATION_SERIES_INSTANCES =
 		'SELECT 
@@ -272,7 +284,7 @@ class Queries
 	INNER JOIN
 		reservation_series r ON ri.series_id = r.series_id AND r.status_id <> 2
 	INNER JOIN 
-		reservation_users ru ON ri.series_id = ru.series_id
+		reservation_users ru ON ri.reservation_instance_id = ru.reservation_instance_id
 	INNER JOIN 
 		users u ON ru.user_id = u.user_id
 	INNER JOIN 
