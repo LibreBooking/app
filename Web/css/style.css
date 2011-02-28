@@ -28,6 +28,9 @@ body {
     border-bottom: 3px solid #000000;
 }
 
+img {
+	border: none;
+}
 /*
 a {
     color: #104E8B;
@@ -449,7 +452,7 @@ tr.admin-lastline {
 
 .pulldown {
     font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    width: 91%;
+    width: 75%;
     padding: 3px;
     margin: 2px 0 5px 0;
     border: 1px solid #e5e5e5;

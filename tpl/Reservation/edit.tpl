@@ -10,14 +10,28 @@
 
 {block name=submitButtons}
 	{if $IsRecurring}
-		<h3>Apply Updates To:</h3>
-		<input type="submit" id="btnUpdateThisInstance" value="{translate key='ThisInstance'}" class="button save"></input>
-		<input type="submit" id="btnUpdateAllInstances" value="{translate key='AllInstances'}" class="button save"></input>
-		<input type="submit" id="btnUpdateFutureInstances" value="{translate key='FutureInstances'}" class="button save"></input>	
+		<div style="border: solid 1px #ccc; float:left; padding: 4px; margin-right: 5px;">
+		<img src="img/disk-black.png" alt="" />
+		<button type="submit" id="btnUpdateThisInstance" class="buttons save">
+			{translate key='ThisInstance'}
+		</button>
+		<button type="submit" id="btnUpdateAllInstances" class="buttons save">
+			{translate key='AllInstances'}
+		</button>
+		<button type="submit" id="btnUpdateFutureInstances" class="buttons save">
+			{translate key='FutureInstances'}
+		</button>	
+		</div>
 	{else}
-		<input type="submit" id="btnSave" value="{translate key='Update'}" class="button save"></input>
+		<button type="submit" id="btnCreate" class="buttons save">
+			<img src="img/disk-black.png" />
+			{translate key='Update'}
+		</button>
 	{/if}
-		<input type="button" value="{translate key='Print'}" class="button"></input>
+		<button type="submit" class="buttons save">
+			<img src="img/printer.png" />
+			{translate key='Print'}
+		</button>
 {/block}
 
 {block name="ajaxMessage"}

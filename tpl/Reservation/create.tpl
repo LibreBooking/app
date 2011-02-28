@@ -115,9 +115,13 @@
                         <select name="{FormKeys::PARTICIPANT_LIST}" class="pulldown" tabindex="120">
                                 {html_options values=$ParticipantListValues output=$ParticipantListOutput}
                         </select>
-				<input type="button" value="{translate key="Add"}" class="button" tabindex="130"></input>
+						<button type="button" class="buttons" style="display:inline">
+						<img src="img/user-plus.png" />
+						{translate key='Add'}
+					</button>
+					
 				</label>
-                
+				
         	</li>
 			<!-- The selected participants should be printed here, above the Invitation list pulldown -->
 			<li class="rsv-pulldown">
@@ -125,7 +129,10 @@
                         <select name="{FormKeys::INVITATION_LIST}" class="pulldown" tabindex="150">
                                 {html_options values=$InvitationListValues output=$InvitationListOutput}
                         </select>
-				<input type="button" value="{translate key="Add"}" class="button" tabindex="160"></input>
+					<button type="button" class="buttons" style="display:inline">
+						<img src="img/user-plus.png" />
+						{translate key='Add'}
+					</button>
 				</label>
                
         	</li>
@@ -159,11 +166,17 @@
 <input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" />
 <input type="hidden" {formname key=reservation_action} value="{$ReservationAction}" />
 <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}" />
-<div>
+<div style="float:right;">
 	{block name="submitButtons"}
-		<input type="submit" id="btnCreate" value="{translate key='Create'}" class="button save"></input>
+		<button type="submit" class="buttons save">
+			<img src="img/disk-black.png" />
+			{translate key='Create'}
+		</button>
 	{/block}
-	<input type="button" value="{translate key='Cancel'}" class="button" onclick="window.location='{$ReturnUrl}'"></input>
+	<button type="button" class="buttons" onclick="window.location='{$ReturnUrl}'">
+		<img src="img/slash.png" />
+		{translate key='Cancel'}
+	</button>
 </div>
 </form>
 

@@ -10,21 +10,23 @@
 		<td style="vertical-align:top; width:50%">
 			<div class="schedule_title">
 			<span>{$ScheduleName}</span>
+			{if $Schedules|@count gt 0}
 			<ul class="schedule_drop">
-				<li><a href="#" onclick="ShowScheduleList(); return false;">img: Down arrow</a></li>
+				<li><a href="#" id="show_schedule"><img src="img/down_sm_blue.png" alt="Change Schedule" /></a></li>
 				<ul style="display:none;" id="schedule_list">
 				{foreach from=$Schedules item=schedule}
 					<li><a href="#" onclick="ChangeSchedule({$schedule->GetId()}); return false;">{$schedule->GetName()}</a></li>
 				{/foreach}
 				</ul>
 			</ul>
+			{/if}
 			</div>
 			<div class="schedule_dates">
 				{assign var=FirstDate value=$DisplayDates->GetBegin()}
 				{assign var=LastDate value=$DisplayDates->GetEnd()}
-				<a href="#" onclick="ChangeDate({formatdate date=$PreviousDate format="Y, m, d"}); return false;">img: Prev arrow</a> 
+				<a href="#" onclick="ChangeDate({formatdate date=$PreviousDate format="Y, m, d"}); return false;"><img src="img/arrow_large_left.png" alt="Back" /></a> 
 				{formatdate date=$FirstDate} - {formatdate date=$LastDate}
-				<a href="#" onclick="ChangeDate({formatdate date=$NextDate format="Y, m, d"}); return false;">img: Next arrow</a>
+				<a href="#" onclick="ChangeDate({formatdate date=$NextDate format="Y, m, d"}); return false;"><img src="img/arrow_large_right.png" alt="Forward" /></a>
 			</div>
 		</td>
 		<td>

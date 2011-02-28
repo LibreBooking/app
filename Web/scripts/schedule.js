@@ -68,16 +68,18 @@ function Schedule(opts)
 			window.location = link + "+" + start;
 		});
 		
-		$("div:not(#schedule_list)").click(function () {
-		 	$("#schedule_list").hide();
-		 });
+		$('#show_schedule').click( function(e) {
+			$("#schedule_list").show();
+			e.preventDefault();
+		});
+		
+		$('#schedule_list li').hover(
+			function() {$("#schedule_list").show() },
+			function() {$("#schedule_list").hide() }
+		);
+
 	}
 }
- 
-  function ShowScheduleList()
-  {
-  	$("#schedule_list").toggle();
-  }
   
   function dpDateChanged(dateText, inst)
   {
