@@ -35,9 +35,14 @@
 
 <div style="height:10px">&nbsp;</div>
 
+{assign var=TodaysDate value=Date::Now()}
 {foreach from=$BoundDates item=date}
 <table class="reservations" border="1" cellpadding="0" width="100%">
-	<tr>
+	{if $TodaysDate->DateEquals($date) eq true}
+		<tr class="today">
+		{else}
+		<tr>
+		{/if}
 		<td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
 		{foreach from=$Periods item=period}
 			<td class="reslabel">{$period->Label()}</td>
@@ -49,7 +54,7 @@
 		{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 		<tr>
 			<td class="resourcename">
-				{if $resource->CanAccess}
+				{if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
 					<a href="reservation.php?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key="url"}">{$resource->Name}</a>
 				{else}
 					{$resource->Name}

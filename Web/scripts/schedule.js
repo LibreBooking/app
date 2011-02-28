@@ -37,7 +37,7 @@ function Schedule(opts)
 			
 			$(this).hover(
 				function () { $(pattern).addClass('hilite'); }, 
-			    function () { $(pattern).removeClass('hilite'); }
+				function () { $(pattern).removeClass('hilite'); }
 			);
 			
 			$(this).click(function() {
@@ -46,20 +46,20 @@ function Schedule(opts)
 			});
 		});
 		
-		$('.clickres')
-	    	.mousedown(
-	    		function () { $(this).addClass('clicked'); }
-	    	)
-	    	.mouseup(
-	    		function () { $(this).removeClass('clicked'); }
-	   	);
-	    
-		$('.clickres').hover(
-		    function () { $(this).addClass('hilite'); }, 
-		    function () { $(this).removeClass('hilite'); }
-		);
 		
-		$('.reservable').click(function () {
+		$('.reservations').delegate('.clickres:not(.reserved)', 'hover', function(){
+			$(this).toggleClass("hilite");
+		});
+		
+		$('.reservations').delegate('.clickres', 'mousedown', function (){ 
+			$(this).addClass('clicked'); 
+		});
+	    	
+	    $('.reservations').delegate('.clickres', 'mouseup', function (){ 
+			$(this).removeClass('clicked'); 
+		});
+		
+		$('.reservations').delegate('.reservable', 'click', function () {
 			var start = $('.start', this).val();
 			var currentRow = $(this).parent('tr');
 			var linkCell = $('.resourcename', currentRow);
