@@ -3,7 +3,6 @@ class ReservationValidationFactory implements IReservationValidationFactory
 {
 	public function Create($reservationAction, $userSession)
 	{
-		//$userSession = ServiceLocator::GetServer()->GetUserSession();
 		$dateTimeRule = new ReservationDateTimeRule();
 		$permissionRule = new PermissionValidationRule(new PermissionServiceFactory(), $userSession);
 		

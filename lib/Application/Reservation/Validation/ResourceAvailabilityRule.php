@@ -24,9 +24,6 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		$conflicts = array();
 		$conflictingIds = array();
 		
-		$reservationResources = $reservationSeries->Resources();
-		$reservationResources[] = $reservationSeries->ResourceId();
-		
 		$reservations = $reservationSeries->Instances();
 		
 		foreach ($reservations as $reservation)
@@ -45,7 +42,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 					continue;
 				}
 				
-				if (false !== array_search($scheduleReservation->GetResourceId(), $reservationResources))
+				if ($this->IsInConflict($reservation, $reservationSeries, $scheduleReservation))
 				{
 					array_push($conflicts, $scheduleReservation);
 				}
@@ -62,7 +59,13 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 	
-	private function GetErrorString($conflicts)
+	protected function IsInConflict(Reservation $instance, ReservationSeries $series, ScheduleReservation $scheduleReservation)
+	{
+		return ($scheduleReservation->GetResourceId() == $series->ResourceId()) ||
+			(false !== array_search($scheduleReservation->GetResourceId(), $series->Resources()));
+	}
+	
+	protected function GetErrorString($conflicts)
 	{
 		$errorString = new StringBuilder();
 
