@@ -2,6 +2,7 @@
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IReservationValidationFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IReservationValidationResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IReservationValidationRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IUpdateReservationValidationRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IReservationValidationService.php');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceAvailabilityRule.php');

@@ -45,9 +45,6 @@ class ReservationViewRepository implements IReservationViewRepository
 		
 			$this->SetResources($reservationView);
 			$this->SetParticipants($reservationView);
-			//$participants = $this->GetParticipants($reservationView->ReservationId);
-			
-			//$reservationView->ParticipantIds = $participants;
 		}
 		
 		return $reservationView;
@@ -62,7 +59,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		while ($row = $result->GetRow())
 		{
 			$reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
-			$reservationView->Resources[] = new ScheduleResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
+			$reservationView->Resources[] = new ReservationResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
 		}
 	}
 	
@@ -172,7 +169,7 @@ class ReservationView
 	public $AdditionalResourceIds = array();
 	
 	/**
-	 * @var ScheduleResource[]
+	 * @var ReservationResource[]
 	 */
 	public $Resources = array();
 	

@@ -63,14 +63,10 @@ class NewReservationPreconditionServiceTests extends TestBase
 			->method('CanAccessResource')
 			->with($this->equalTo($resource))
 			->will($this->returnValue(false));
-
-		$page->expects($this->once())
-			->method('GetLastPage')
-			->will($this->returnValue($lastPage));
 			
 		$page->expects($this->once())
 			->method('RedirectToError')
-			->with($this->equalTo($errorMessage), $this->equalTo($lastPage));
+			->with($this->equalTo($errorMessage));
 			
 		$preconditionService = new NewReservationPreconditionService($this->_permissionServiceFactory);
 		$preconditionService->CheckAll($page, $this->_user);
@@ -92,12 +88,8 @@ class NewReservationPreconditionServiceTests extends TestBase
 			->will($this->returnValue(null));
 			
 		$page->expects($this->once())
-			->method('GetLastPage')
-			->will($this->returnValue($lastPage));
-			
-		$page->expects($this->once())
 			->method('RedirectToError')
-			->with($this->equalTo($errorMessage), $this->equalTo($lastPage));
+			->with($this->equalTo($errorMessage));
 		
 		$preconditionService = new NewReservationPreconditionService($this->_permissionServiceFactory);
 		$preconditionService->CheckAll($page, $this->_user);
@@ -119,15 +111,10 @@ class NewReservationPreconditionServiceTests extends TestBase
 			->will($this->returnValue(null));
 			
 		$page->expects($this->once())
-			->method('GetLastPage')
-			->will($this->returnValue($lastPage));
-			
-		$page->expects($this->once())
 			->method('RedirectToError')
-			->with($this->equalTo($errorMessage), $this->equalTo($lastPage));
+			->with($this->equalTo($errorMessage));
 		
 		$preconditionService = new NewReservationPreconditionService($this->_permissionServiceFactory);
 		$preconditionService->CheckAll($page, $this->_user);
-	}
-	
+	}	
 }

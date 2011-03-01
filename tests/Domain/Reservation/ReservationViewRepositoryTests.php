@@ -33,12 +33,26 @@ class ReservationViewRepositoryTests extends TestBase
 		$repeatType = RepeatType::Yearly;
 		$repeatOptions = 'interval=5';
 		$seriesId = 1000;
+		$ownerFirst = 'f';
+		$ownerLast = 'l';
 		
 		$resourceId1 = 88;
+		$resourceName1 = 'r1';
+		
 		$resourceId2 = 99;
+		$resourceName2 = 'r2';
 		
 		$userId1 = 87;
+		$fname1 = 'f1';
+		$lname1 = 'l1';
+		$email1 = 'e1';
+		$level1 = 1;
+
 		$userId2 = 97;
+		$fname2 = 'f2';
+		$lname2 = 'l2';
+		$email2 = 'e2';
+		$level2 = 2;
 		
 		$getReservationForEditingCommand = new GetReservationForEditingCommand($referenceNumber);
 		$getReservationResources = new GetReservationResourcesCommand($seriesId);
@@ -57,16 +71,18 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::REPEAT_TYPE => $repeatType,
 			ColumnNames::REPEAT_OPTIONS => $repeatOptions,
 			ColumnNames::SERIES_ID => $seriesId,
+			ColumnNames::FIRST_NAME => $ownerFirst,
+			ColumnNames::LAST_NAME => $ownerLast,
 		);
 		
 		$resourceRows = array(
-			array(ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, ColumnNames::RESOURCE_ID => $resourceId1),
-			array(ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, ColumnNames::RESOURCE_ID => $resourceId2)
+			$this->GetResourceRow($reservationId, $resourceId1, $resourceName1),
+			$this->GetResourceRow($reservationId, $resourceId2, $resourceName2),
 			);
 			
 		$participantRows = array(
-			array(ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, ColumnNames::USER_ID => $userId1),
-			array(ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, ColumnNames::USER_ID => $userId2)
+			$this->GetParticipantRow($reservationId, $userId1, $fname1, $lname1, $email1, $level1),
+			$this->GetParticipantRow($reservationId, $userId2, $fname2, $lname2, $email2, $level2),
 			);
 		
 		$this->db->SetRow(0, array($reservationRow));
@@ -97,6 +113,18 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->RepeatType = $repeatType;
 		$expectedView->RepeatInterval = 5;
 		$expectedView->SeriesId = $seriesId;
+		$expectedView->OwnerFirstName = $ownerFirst;
+		$expectedView->OwnerLastName = $ownerLast;
+		
+		$expectedView->Participants = array(
+			new ReservationUser($userId1, $fname1, $lname1, $email1, $level1),
+			new ReservationUser($userId2, $fname2, $lname2, $email2, $level2),
+			);
+			
+		$expectedView->Resources = array(
+			new ReservationResource($resourceId1, $resourceName1),
+			new ReservationResource($resourceId2, $resourceName2),
+			);
 		
 		$this->assertEquals($expectedView, $reservationView);
 	}
@@ -107,6 +135,28 @@ class ReservationViewRepositoryTests extends TestBase
 		$reservationView = $this->repository->GetReservationForEditing($referenceNumber);
 		
 		$this->assertEquals(NullReservationView::Instance(), $reservationView);
+	}
+	
+	private function GetParticipantRow($reservationId, $userId, $fname, $lname, $email, $levelId)
+	{
+		return array(
+			ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, 
+			ColumnNames::USER_ID => $userId,
+			ColumnNames::FIRST_NAME => $fname,
+			ColumnNames::LAST_NAME => $lname,
+			ColumnNames::EMAIL => $email,
+			ColumnNames::RESERVATION_USER_LEVEL => $levelId,
+			);
+	}
+	
+	private function GetResourceRow($reservationId, $resourceId, $resourceName)
+	{
+		return array(
+			ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, 
+			ColumnNames::RESOURCE_ID => $resourceId,
+			ColumnNames::RESOURCE_NAME => $resourceName,
+			);
+			
 	}
 }
 ?>

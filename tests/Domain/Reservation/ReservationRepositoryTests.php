@@ -132,7 +132,8 @@ class ReservationRepositoryTests extends TestBase
 				$repeatOptionsString, 
 				$scheduleId, 
 				ReservationTypes::Reservation,
-				ReservationStatus::Created);
+				ReservationStatus::Created,
+				$userId);
 		
 		$insertReservation = new AddReservationCommand(
 				$startUtc, 
@@ -146,14 +147,14 @@ class ReservationRepositoryTests extends TestBase
 				ResourceLevel::Primary);
 		
 		$insertReservationUser = new AddReservationUserCommand(
-				$seriesId, 
+				$reservationId, 
 				$userId, 
 				$levelId);
 		
 		$this->assertEquals($insertReservationSeries, $this->db->_Commands[0]);
 		$this->assertEquals($insertReservationResource, $this->db->_Commands[1]);
-		$this->assertEquals($insertReservationUser, $this->db->_Commands[2]);
-		$this->assertEquals($insertReservation, $this->db->_Commands[3]);
+		$this->assertEquals($insertReservation, $this->db->_Commands[2]);
+		$this->assertEquals($insertReservationUser, $this->db->_Commands[3]);
 
 		$this->assertEquals(4, count($this->db->_Commands));
 	}
@@ -398,7 +399,8 @@ class ReservationRepositoryTests extends TestBase
 									$expectedRepeat->ConfigurationString(), 
 									$scheduleId,
 									ReservationTypes::Reservation,
-									ReservationStatus::Created);
+									ReservationStatus::Created,
+									$userId);
 		
 		$updateReservationCommand = $this->GetUpdateReservationCommand($seriesId, $currentReservation);
 
@@ -454,7 +456,8 @@ class ReservationRepositoryTests extends TestBase
 									$expectedRepeat->ConfigurationString(), 
 									$scheduleId,
 									ReservationTypes::Reservation,
-									ReservationStatus::Created);
+									ReservationStatus::Created,
+									$userId);
 		
 		$updateReservationCommand1 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance1);
 		$updateReservationCommand2 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance2);

@@ -2,8 +2,9 @@
 class ReservationResource implements IResource
 {
 	private $_id;
+	private $_resourceName;
 	
-	public function __construct($resourceId)
+	public function __construct($resourceId, $resourceName = '')
 	{
 		$this->_id = $resourceId;
 	}
@@ -17,13 +18,11 @@ class ReservationResource implements IResource
 	}
 	
 	/**
-	 * This will always be an empty string
-	 * 
 	 * @see IResource::GetName()
 	 */
 	public function GetName()
 	{
-		return "";
+		return $this->_resourceName;
 	}
 }
 ?>

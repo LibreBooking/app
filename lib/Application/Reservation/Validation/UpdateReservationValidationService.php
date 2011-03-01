@@ -1,11 +1,35 @@
 <?php
 class UpdateReservationValidationService implements IUpdateReservationValidationService
 {
+	/**
+	 * @var IExistingReservationValidationRule[]
+	 */
+	private $_validationRules;
+	
+	/**
+	 * @param IExistingReservationValidationRule[] $validationRules
+	 */
+	public function __construct($validationRules)
+	{
+		$this->_validationRules = $validationRules;	
+	}
+	
+	/**
+	 * @see IUpdateReservationValidationService::Validate()
+	 */
 	public function Validate($reservationSeries)
 	{
-		// temporary no-op
+		foreach ($this->_validationRules as $rule)
+		{
+			$result = $rule->Validate($reservationSeries);
+			
+			if (!$result->IsValid())
+			{
+				return new ReservationValidationResult(false, array($result->ErrorMessage()));
+			}
+		}
+		
 		return new ReservationValidationResult();
-		//throw new Exception('Not Implemented');
 	}
 }
 
