@@ -10,18 +10,18 @@
 
 {block name=submitButtons}
 	{if $IsRecurring}
-		<div style="border: solid 1px #ccc; float:left; padding: 4px; margin-right: 5px;">
-		<img src="img/disk-black.png" alt="" />
 		<button type="submit" id="btnUpdateThisInstance" class="buttons save">
+			<img src="img/disk-black.png" alt="" />
 			{translate key='ThisInstance'}
 		</button>
 		<button type="submit" id="btnUpdateAllInstances" class="buttons save">
+			<img src="img/disks-black.png" alt="" />
 			{translate key='AllInstances'}
 		</button>
 		<button type="submit" id="btnUpdateFutureInstances" class="buttons save">
+			<img src="img/disk-arrow.png" alt="" />
 			{translate key='FutureInstances'}
-		</button>	
-		</div>
+		</button>
 	{else}
 		<button type="submit" id="btnCreate" class="buttons save">
 			<img src="img/disk-black.png" />

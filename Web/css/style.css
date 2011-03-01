@@ -73,15 +73,24 @@ h3 {
 }
 
 .button {
-    font: bold 10px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    border: solid 1px #0e3046;
-    color: #ffffff;
-    height: 20px;
-    background: url(../img/button_background.gif) repeat;
+	display:inline;
+    margin:0 7px 0 0;
+    background-color:#f5f5f5;
+    border:1px solid #dedede;
+    border-top:1px solid #eee;
+    border-left:1px solid #eee;
+    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    font-size:12px;
+    line-height:130%;
+    text-decoration:none;
+    font-weight:bold;
+    color:#565656;
+    cursor:pointer;
+    padding:5px 10px 6px 7px; /* Links */
 }
 
 .button:hover {
-    background: url(../img/button_background_hover.gif) repeat;
+	background-color:#f0f0f0;
 }
 
 /*********************************************************/

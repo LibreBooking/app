@@ -96,8 +96,8 @@ class en_us extends Language
 		$strings['CorrectErrors'] = 'Correct Errors';
 		$strings['Create'] = 'Create';
 		$strings['ThisInstance'] = 'Only This Instance';
-		$strings['AllInstances'] = 'All Series Instances';
-		$strings['FutureInstances'] = 'Future Series Instances';
+		$strings['AllInstances'] = 'All Instances';
+		$strings['FutureInstances'] = 'Future Instances';
 		$strings['Print'] = 'Print';
 		
 		// Page Titles

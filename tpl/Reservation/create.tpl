@@ -28,7 +28,6 @@
 					<div id="additionalResources"></div>
         	</li>
         	<li>
-				<!--this needs to be changed to handle cross-day reservations-->
 				<label>{translate key='BeginDate'}
 				<input type="text" id="BeginDate" {formname key=BEGIN_DATE} class="dateinput" value="{formatdate date=$StartDate}"/>
 				</label>
@@ -43,8 +42,6 @@
 						{/if}
 					{/foreach}
 				</select>
-			</li>
-			<li>
 				<label>{translate key='EndDate'}
 				<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput" value="{formatdate date=$EndDate}" />
 				</label>
