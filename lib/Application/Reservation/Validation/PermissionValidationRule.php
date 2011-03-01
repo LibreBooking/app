@@ -8,10 +8,16 @@ class PermissionValidationRule implements IReservationValidationRule
 	 * @var IPermissionServiceFactory
 	 */
 	private $permissionServiceFactory;
+	
+	/**
+	 * @var UserSession
+	 */
+	private $userSession;
 
-	public function __construct(IPermissionServiceFactory $permissionServiceFactory)
+	public function __construct(IPermissionServiceFactory $permissionServiceFactory, UserSession $userSession)
 	{
 		$this->permissionServiceFactory = $permissionServiceFactory;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -19,13 +25,12 @@ class PermissionValidationRule implements IReservationValidationRule
 	 */
 	public function Validate($reservation)
 	{
-		$userSession = ServiceLocator::GetServer()->GetUserSession();
-		if ($userSession->IsAdmin)
+		if ($this->userSession->IsAdmin)
 		{
 			return new ReservationRuleResult(true);
 		}
 		
-		$currentUserId = $userSession->UserId;
+		$currentUserId = $this->userSession->UserId;
 
 		$permissionService = $this->permissionServiceFactory->GetPermissionService($reservation->UserId());
 

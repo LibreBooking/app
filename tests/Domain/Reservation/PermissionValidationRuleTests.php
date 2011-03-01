@@ -23,7 +23,7 @@ class PermissionValidationRuleTests extends TestBase
 		$resourceId1 = 1;
 		$resourceId2 = 2;
 		
-		$this->fakeServer->UserSession = new FakeUserSession(false, 'CST', 1909);
+		$userSession = new FakeUserSession(false, 'CST', 1909);
 
 		$resource = new ReservationResource($resourceId);
 		$resource1 = new ReservationResource($resourceId1);
@@ -42,7 +42,7 @@ class PermissionValidationRuleTests extends TestBase
 			->with($this->equalTo($userId))
 			->will($this->returnValue($service));		
 			
-		$rule = new PermissionValidationRule($factory);
+		$rule = new PermissionValidationRule($factory, $userSession);
 		$result = $rule->Validate($reservation);
 			
 		$this->assertEquals(false, $result->IsValid());
@@ -53,9 +53,9 @@ class PermissionValidationRuleTests extends TestBase
 	
 	public function testSkipsPermissionCheckIfUserIsAnAdmin()
 	{
-		$this->fakeServer->UserSession = new FakeUserSession(true, 'CST', 1909);
+		$userSession = new FakeUserSession(true, 'CST', 1909);
 		
-		$rule = new PermissionValidationRule($this->getMock('IPermissionServiceFactory'));
+		$rule = new PermissionValidationRule($this->getMock('IPermissionServiceFactory'), $userSession);
 		$result = $rule->Validate(null);
 		
 		$this->assertEquals(true, $result->IsValid());

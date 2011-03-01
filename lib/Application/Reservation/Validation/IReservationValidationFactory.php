@@ -3,8 +3,9 @@ interface IReservationValidationFactory
 {
 	/**
 	 * @param ReservationAction $reservationAction
+	 * @param UserSession $userSession
 	 * @return IReservationValidationService
 	 */
-	function Create($reservationAction);
+	function Create($reservationAction, $userSession);
 }
 ?>

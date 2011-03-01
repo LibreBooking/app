@@ -36,11 +36,12 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 		$notificationFactory = new ReservationNotificationFactory();
 
 		$updateAction = ReservationAction::Update;
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		
 		$this->_presenter = new ReservationUpdatePresenter(
 														$this,
 														$persistenceFactory->Create($updateAction),
-														$validationFactory->Create($updateAction),
+														$validationFactory->Create($updateAction, $userSession),
 														$notificationFactory->Create($updateAction)
 														);
 	}
