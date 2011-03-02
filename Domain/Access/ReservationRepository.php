@@ -207,10 +207,12 @@ class ReservationRepository implements IReservationRepository
 			$endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
 			$duration = new DateRange($startDate, $endDate);		
 			
-			$instance = new Reservation($series, $duration);
-			$instance->SetReservationId($row[ColumnNames::RESERVATION_INSTANCE_ID]);
-			$instance->SetReferenceNumber($row[ColumnNames::REFERENCE_NUMBER]);	
-
+			$instance = new Reservation(
+				$series, 
+				$duration, 
+				$row[ColumnNames::RESERVATION_INSTANCE_ID],
+				$row[ColumnNames::REFERENCE_NUMBER]);
+				
 			$series->WithCurrentInstance($instance);
 		}
 		
@@ -221,9 +223,13 @@ class ReservationRepository implements IReservationRepository
 		{
 			$start = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$end = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
-			$reservation = new Reservation($series, new DateRange($start, $end));
-			$reservation->SetReferenceNumber($row[ColumnNames::REFERENCE_NUMBER]);
-			$reservation->SetReservationId($row[ColumnNames::RESERVATION_INSTANCE_ID]);
+			
+			$reservation = new Reservation(
+				$series, 
+				new DateRange($start, $end),
+				$row[ColumnNames::RESERVATION_INSTANCE_ID],
+				$row[ColumnNames::REFERENCE_NUMBER]);
+				
 			$series->WithInstance($reservation);
 		}
 		

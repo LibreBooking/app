@@ -4,18 +4,19 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 	/**
 	 * @var IReservationRepository
 	 */
-	private $_repository; 
+	protected $_repository; 
 	
 	/**
 	 * @var string
 	 */
-	private $_timezone;
+	protected $_timezone;
 	
 	public function __construct(IReservationRepository $repository, $timezone)
 	{
 		$this->_repository = $repository;
 		$this->_timezone = $timezone;
 	}
+	
 	/**
 	 * @see IReservationValidationRule::Validate()
 	 */
@@ -28,9 +29,9 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		
 		foreach ($reservations as $reservation)
 		{
-			$reservations = $this->_repository->GetWithin($reservation->StartDate(), $reservation->EndDate());
+			$scheduleReservations = $this->_repository->GetWithin($reservation->StartDate(), $reservation->EndDate());
 			
-			foreach ($reservations as $scheduleReservation)
+			foreach ($scheduleReservations as $scheduleReservation)
 			{
 				if (
 					$scheduleReservation->GetStartDate()

@@ -6,6 +6,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IUpdateReservati
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IReservationValidationService.php');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceAvailabilityRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ExistingResourceAvailabilityRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationDateTimeRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationStartTimeRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/PermissionValidationRule.php');

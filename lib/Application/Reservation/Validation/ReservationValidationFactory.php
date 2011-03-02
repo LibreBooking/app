@@ -5,26 +5,30 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	{
 		$dateTimeRule = new ReservationDateTimeRule();
 		$permissionRule = new PermissionValidationRule(new PermissionServiceFactory(), $userSession);
+		$reservationRepository = new ReservationRepository();
 		
 		if ($reservationAction == ReservationAction::Update)
 		{
 			$rules = array(
 				$dateTimeRule,
 				$permissionRule,
+				new ExistingResourceAvailabilityRule($reservationRepository, $userSession->Timezone),
 			);
 			return new UpdateReservationValidationService($rules);	
 		}
-		
-		$rules = array(
-			$dateTimeRule,
-			$permissionRule,
-			new ResourceAvailabilityRule(new ReservationRepository(), $userSession->Timezone),
-		);
-		//length, start time buffer, end time buffer (quota?)
-		//$rules[] = new QuotaRule();
-		//$rules[] = new AccessoryAvailabilityRule();
-		
-		return new AddReservationValidationService($rules);
+		else 
+		{
+			$rules = array(
+				$dateTimeRule,
+				$permissionRule,
+				new ResourceAvailabilityRule($reservationRepository, $userSession->Timezone),
+			);
+			//length, start time buffer, end time buffer (quota?)
+			//$rules[] = new QuotaRule();
+			//$rules[] = new AccessoryAvailabilityRule();
+			
+			return new AddReservationValidationService($rules);
+		}
 	}
 }
 ?>

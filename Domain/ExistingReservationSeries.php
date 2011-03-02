@@ -15,6 +15,9 @@ class ExistingReservationSeries extends ReservationSeries
 	
 	protected $events = array();
 	
+	private $_deleteRequestIds = array();
+	private $_updateRequestIds = array();
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -137,6 +140,7 @@ class ExistingReservationSeries extends ReservationSeries
 		unset($this->instances[$reservation->StartDate()->Timestamp()]);
 		
 		$this->AddEvent(new InstanceRemovedEvent($reservation));
+		$this->_deleteRequestIds[] = $reservation->ReservationId();
 	}
 	
 	public function RequiresNewSeries()
@@ -245,7 +249,10 @@ class ExistingReservationSeries extends ReservationSeries
 		}
 	}
 	
-	protected function UpdateInstance(Reservation $instance, DateRange $newDate)
+	/**
+	 * @internal
+	 */
+	public function UpdateInstance(Reservation $instance, DateRange $newDate)
 	{
 		//echo "Start: {$newDate->GetBegin()} End: {$newDate->GetEnd()} ts: {$newDate->GetBegin()->Timestamp()}\n";
 		unset($this->instances[$this->CreateInstanceKey($instance)]);
@@ -253,6 +260,7 @@ class ExistingReservationSeries extends ReservationSeries
 		$this->AddInstance($instance);
 		
 		$this->AddEvent(new InstanceUpdatedEvent($instance));
+		$this->_updateRequestIds[] = $instance->ReservationId();
 	}
 	
 	public function GetEvents()
@@ -276,6 +284,16 @@ class ExistingReservationSeries extends ReservationSeries
 	protected function AddEvent($event)
 	{
 		$this->events[] = $event;
+	}
+	
+	public function IsMarkedForDelete($reservationId)
+	{
+		return in_array($reservationId, $this->_deleteRequestIds);
+	}
+	
+	public function IsMarkedForUpdate($reservationId)
+	{
+		return in_array($reservationId, $this->_updateRequestIds);
 	}
 }
 

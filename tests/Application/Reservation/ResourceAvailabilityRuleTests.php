@@ -148,6 +148,12 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 class TestScheduleReservation extends ScheduleReservation
 {
+	/**
+	 * @param $id
+	 * @param $startDate Date
+	 * @param $endDate Date
+	 * @param $resourceId
+	 */
 	public function __construct($id, $startDate, $endDate, $resourceId = 1)
 	{
 		$this->SetReservationId($id);

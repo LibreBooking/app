@@ -62,12 +62,22 @@ class Reservation
 	 */
 	public $series;
 	
-	public function __construct(ReservationSeries $reservationSeries, DateRange $reservationDate)
+	public function __construct(ReservationSeries $reservationSeries, DateRange $reservationDate, $reservationId = null, $referenceNumber = null)
 	{
 		$this->series = $reservationSeries;
 		
-		$this->SetReferenceNumber(uniqid());
 		$this->SetReservationDate($reservationDate);
+		$this->SetReferenceNumber($referenceNumber);
+		
+		if (!empty($reservationId))
+		{
+			$this->SetReservationId($reservationId);
+		}
+		
+		if (empty($referenceNumber))
+		{
+			$this->SetReferenceNumber(uniqid());
+		}
 	}
 	
 	public function SetReservationId($reservationId)

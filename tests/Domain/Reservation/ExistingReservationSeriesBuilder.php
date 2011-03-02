@@ -134,10 +134,22 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 
 class TestReservation extends Reservation
 {
-	public function __construct($referenceNumber, $reservationDate)
+	public function __construct($referenceNumber = null, $reservationDate = null)
 	{
-		$this->SetReferenceNumber($referenceNumber);
-		$this->SetReservationDate($reservationDate);
+		if (!empty($referenceNumber))
+		{
+			$this->SetReferenceNumber($referenceNumber);
+		}
+		
+		if ($reservationDate != null)
+		{
+			$this->SetReservationDate($reservationDate);
+		}
+		else
+		{
+			$this->SetReservationDate(new TestDateRange());
+		}
+		
 	}
 }
 ?>
