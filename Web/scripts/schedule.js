@@ -77,7 +77,22 @@ function Schedule(opts)
 			function() {$("#schedule_list").show() },
 			function() {$("#schedule_list").hide() }
 		);
-
+		
+		$("#calendar_toggle").click(function(event) {
+			event.preventDefault();
+			
+			var datePicker = $("#datepicker");
+			datePicker.toggle();
+			
+			if (datePicker.css("display") == "none")
+			{
+				$(this).find("img").first().attr("src", "img/calendar.png");
+			}
+			else
+			{
+				$(this).find("img").first().attr("src", "img/calendar-minus.png");
+			}
+		});
 	}
 }
   

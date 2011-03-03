@@ -99,6 +99,7 @@ class en_us extends Language
 		$strings['AllInstances'] = 'All Instances';
 		$strings['FutureInstances'] = 'Future Instances';
 		$strings['Print'] = 'Print';
+		$strings['ShowHideNavigation'] = 'Show/Hide Navigation';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

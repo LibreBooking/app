@@ -167,7 +167,7 @@ select.schedule_list {
 .schedule_title
 {
 	text-align: center; 
-	padding-bottom: 10px;
+	padding: 10px 0px;
 }
 
 .schedule_title span

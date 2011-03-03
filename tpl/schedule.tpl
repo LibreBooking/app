@@ -5,35 +5,35 @@
 	@import url({$Path}css/jquery.qtip.css);
 </style>
 
-<table>
-	<tr>
-		<td style="vertical-align:top; width:50%">
-			<div class="schedule_title">
-			<span>{$ScheduleName}</span>
-			{if $Schedules|@count gt 0}
-			<ul class="schedule_drop">
-				<li><a href="#" id="show_schedule"><img src="img/down_sm_blue.png" alt="Change Schedule" /></a></li>
-				<ul style="display:none;" id="schedule_list">
-				{foreach from=$Schedules item=schedule}
-					<li><a href="#" onclick="ChangeSchedule({$schedule->GetId()}); return false;">{$schedule->GetName()}</a></li>
-				{/foreach}
-				</ul>
-			</ul>
-			{/if}
-			</div>
-			<div class="schedule_dates">
-				{assign var=FirstDate value=$DisplayDates->GetBegin()}
-				{assign var=LastDate value=$DisplayDates->GetEnd()}
-				<a href="#" onclick="ChangeDate({formatdate date=$PreviousDate format="Y, m, d"}); return false;"><img src="img/arrow_large_left.png" alt="Back" /></a> 
-				{formatdate date=$FirstDate} - {formatdate date=$LastDate}
-				<a href="#" onclick="ChangeDate({formatdate date=$NextDate format="Y, m, d"}); return false;"><img src="img/arrow_large_right.png" alt="Forward" /></a>
-			</div>
-		</td>
-		<td>
-			<div type="text" id="datepicker"></div>
-		</td>
-	</tr>
-</table>
+<div>
+	<div class="schedule_title">
+	<span>{$ScheduleName}</span>
+	{if $Schedules|@count gt 0}
+	<ul class="schedule_drop">
+		<li><a href="#" id="show_schedule">{html_image src="down_sm_blue.png" alt="Change Schedule"}</a></li>
+		<ul style="display:none;" id="schedule_list">
+		{foreach from=$Schedules item=schedule}
+			<li><a href="#" onclick="ChangeSchedule({$schedule->GetId()}); return false;">{$schedule->GetName()}</a></li>
+		{/foreach}
+		</ul>
+	</ul>
+	{/if}
+	<a href="#" id="calendar_toggle">
+		{html_image src="calendar.png" altKey="ShowHideNavigation"}
+		
+	</a>
+	</div>
+	
+	<div class="schedule_dates">
+		{assign var=FirstDate value=$DisplayDates->GetBegin()}
+		{assign var=LastDate value=$DisplayDates->GetEnd()}
+		<a href="#" onclick="ChangeDate({formatdate date=$PreviousDate format="Y, m, d"}); return false;"><img src="img/arrow_large_left.png" alt="Back" /></a> 
+		{formatdate date=$FirstDate} - {formatdate date=$LastDate}
+		<a href="#" onclick="ChangeDate({formatdate date=$NextDate format="Y, m, d"}); return false;"><img src="img/arrow_large_right.png" alt="Forward" /></a>
+	</div>
+</div>
+
+<div type="text" id="datepicker" style="display:none;"></div>
 
 <div style="height:10px">&nbsp;</div>
 

@@ -144,14 +144,20 @@ class SmartyPage extends Smarty
 	public function PrintImage($params, &$smarty)
 	{
 		$alt = isset($params['alt']) ? $params['alt'] : '';
+		$altKey = isset($params['altKey']) ? $params['altKey'] : '';
 		$width = isset($params['width']) ? $params['width'] : '';
 		$height = isset($params['height']) ? $params['height'] : '';
 		$imgPath = sprintf('%simg/%s', $this->RootPath, $params['src']);	
 		
-		$knownAttributes = array('alt', 'width', 'height', 'src');
+		$knownAttributes = array('alt', 'width', 'height', 'src', 'title', 'altKey');
 		$attributes = $this->AppendAttributes($params, $knownAttributes);
 		
-		return "<img src=\"$imgPath\" alt=\"$alt\" width=\"\" height=\"\" $attributes />";
+		if (!empty($altKey))
+		{
+			$alt = $this->Resources->GetString($altKey);
+		}
+		
+		return "<img src=\"$imgPath\" title=\"$alt\" alt=\"$alt\" width=\"\" height=\"\" $attributes />";
 	}
 	
 	public function DisplayControl($params, &$smarty)
