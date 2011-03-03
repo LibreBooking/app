@@ -112,7 +112,7 @@
                         <select name="{FormKeys::PARTICIPANT_LIST}" class="pulldown" tabindex="120">
                                 {html_options values=$ParticipantListValues output=$ParticipantListOutput}
                         </select>
-						<button type="button" class="buttons" style="display:inline">
+						<button type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png" />
 						{translate key='Add'}
 					</button>
@@ -126,7 +126,7 @@
                         <select name="{FormKeys::INVITATION_LIST}" class="pulldown" tabindex="150">
                                 {html_options values=$InvitationListValues output=$InvitationListOutput}
                         </select>
-					<button type="button" class="buttons" style="display:inline">
+					<button type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png" />
 						{translate key='Add'}
 					</button>
@@ -165,12 +165,12 @@
 <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}" />
 <div style="float:right;">
 	{block name="submitButtons"}
-		<button type="submit" class="buttons save">
+		<button type="submit" class="button save">
 			<img src="img/disk-black.png" />
 			{translate key='Create'}
 		</button>
 	{/block}
-	<button type="button" class="buttons" onclick="window.location='{$ReturnUrl}'">
+	<button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
 		<img src="img/slash.png" />
 		{translate key='Cancel'}
 	</button>

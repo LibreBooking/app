@@ -330,6 +330,32 @@ class ExistingReservationTests extends TestBase
 		
 	}
 	
+	public function testUpdateToAnEarlierTime()
+	{
+		$now = Date::Now();
+		
+		$newStart = Date::Parse('2010-01-01 04:00:00', 'UTC');
+		$start = Date::Parse('2010-01-01 05:00:00', 'UTC');
+		$end = Date::Parse('2010-01-01 07:00:00', 'UTC');
+		
+		$future1 = new TestReservation('1', new DateRange($now->AddDays(5), $now->AddDays(5)));
+		$future2 = new TestReservation('2', new DateRange($now->AddDays(6), $now->AddDays(6)));
+		$current = new TestReservation('3', new DateRange($start, $end));
+		
+		$existing = new ExistingReservationSeries();
+		$existing->WithInstance($future1);
+		$existing->WithInstance($future2);
+		$existing->WithCurrentInstance($current);
+		
+		$existing->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
+		$existing->UpdateDuration(new DateRange($newStart, $end));
+		
+		$newCurrent = $existing->CurrentInstance();
+		
+		$this->assertTrue($newCurrent->StartDate()->Equals($newStart));
+		$this->assertTrue($newCurrent->EndDate()->Equals($end));
+	}
+	
 	public function testChangingDateOnlyAppliesToSingleInstance()
 	{
 		throw new Exception('todo');

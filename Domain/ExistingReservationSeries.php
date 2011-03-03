@@ -178,9 +178,8 @@ class ExistingReservationSeries extends ReservationSeries
 		$currentEnd = $currentDuration->GetEnd();
 		
 		$startTimeAdjustment = $reservationDate->GetBegin()->GetDifference($currentBegin);
-		$endTimeAdjustment = $reservationDate->GetEnd()->GetDifference($currentEnd);		
-				
-		$this->currentInstanceDate = $currentBegin->ApplyDifference($startTimeAdjustment);
+		$endTimeAdjustment = $reservationDate->GetEnd()->GetDifference($currentEnd);				
+		
 //		echo "start {$startTimeAdjustment->format('%R%H:%I')} \n";
 //		echo "end {$endTimeAdjustment->format('%R%H:%I')} \n";
 		
@@ -255,6 +254,11 @@ class ExistingReservationSeries extends ReservationSeries
 	public function UpdateInstance(Reservation $instance, DateRange $newDate)
 	{
 		//echo "Start: {$newDate->GetBegin()} End: {$newDate->GetEnd()} ts: {$newDate->GetBegin()->Timestamp()}\n";
+		if ($instance == $this->CurrentInstance())
+		{
+			$this->currentInstanceDate = $newDate->GetBegin();
+		}
+		
 		unset($this->instances[$this->CreateInstanceKey($instance)]);
 		$instance->SetReservationDate($newDate);
 		$this->AddInstance($instance);

@@ -59,7 +59,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		while ($row = $result->GetRow())
 		{
 			$reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
-			$reservationView->Resources[] = new ReservationResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
+			$reservationView->Resources[] = new ReservationResourceView($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
 		}
 	}
 	
@@ -72,7 +72,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		while ($row = $result->GetRow())
 		{
 			$reservationView->ParticipantIds[] = $row[ColumnNames::USER_ID];
-			$reservationView->Participants[] = new ReservationUser(
+			$reservationView->Participants[] = new ReservationUserView(
 					$row[ColumnNames::USER_ID], 
 					$row[ColumnNames::FIRST_NAME], 
 					$row[ColumnNames::LAST_NAME],
@@ -82,7 +82,28 @@ class ReservationViewRepository implements IReservationViewRepository
 	}
 }
 
-class ReservationUser
+class ReservationResourceView
+{
+	private $_id;
+	private $_resourceName;
+	
+	public function __construct($resourceId, $resourceName = '')
+	{
+		$this->_id = $resourceId;
+	}
+	
+	public function Id()
+	{
+		return $this->_id;
+	}
+	
+	public function Name()
+	{
+		return $this->_resourceName;
+	}
+}
+
+class ReservationUserView
 {
 	public $UserId;
 	public $FirstName;
@@ -169,7 +190,7 @@ class ReservationView
 	public $AdditionalResourceIds = array();
 	
 	/**
-	 * @var ReservationResource[]
+	 * @var ReservationResourceView[]
 	 */
 	public $Resources = array();
 	
@@ -179,7 +200,7 @@ class ReservationView
 	public $ParticipantIds = array();
 	
 	/**
-	 * @var ReservationUser[]
+	 * @var ReservationUserView[]
 	 */
 	public $Participants = array();
 	

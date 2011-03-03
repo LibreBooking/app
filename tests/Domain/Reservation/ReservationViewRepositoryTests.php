@@ -117,13 +117,13 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->OwnerLastName = $ownerLast;
 		
 		$expectedView->Participants = array(
-			new ReservationUser($userId1, $fname1, $lname1, $email1, $level1),
-			new ReservationUser($userId2, $fname2, $lname2, $email2, $level2),
+			new ReservationUserView($userId1, $fname1, $lname1, $email1, $level1),
+			new ReservationUserView($userId2, $fname2, $lname2, $email2, $level2),
 			);
 			
 		$expectedView->Resources = array(
-			new ReservationResource($resourceId1, $resourceName1),
-			new ReservationResource($resourceId2, $resourceName2),
+			new ReservationResourceView($resourceId1, $resourceName1),
+			new ReservationResourceView($resourceId2, $resourceName2),
 			);
 		
 		$this->assertEquals($expectedView, $reservationView);

@@ -183,29 +183,6 @@ form.login, form.forgot {
 
 form p { margin: 0 3px 16px 3px; }
 
-input.button {
-        font: bold 14px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-        padding: 5px 10px;
-        border: none;
-        -moz-border-radius: 13px;
-        -khtml-border-radius: 13px;
-        -webkit-border-radius: 13px;
-        border-radius: 13px;
-        -moz-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        -webkit-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        -khtml-box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        box-shadow: rgba(200,200,200,1) 3px 3px 10px;
-        cursor: pointer;
-        text-decoration: none;
-        margin: 0;
-        height: 26px;
-        background: url('../img/button_bg.gif') repeat-x 0 -4px;
-}
-
-input.button:hover {
-        background: url('../img/button_bg_hover.gif') repeat-x 0 -4px;
-}
-
 label.login, label.forgot {
         color: #666;
         font-size: 18px;

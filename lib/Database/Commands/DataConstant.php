@@ -246,7 +246,7 @@ class Queries
 	
 	const GET_RESERVATION_RESOURCES =
 		'SELECT
-			r.resource_id, r.name
+			r.resource_id, r.name, rr.resource_level_id
 		FROM
 			reservation_resources rr
 		INNER JOIN 
