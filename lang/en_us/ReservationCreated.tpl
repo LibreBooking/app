@@ -1,13 +1,13 @@
 {include file='..\tpl\Email\emailheader.tpl'}
 	
-	You have successfully created a new reservation.
+	Reservation Details:
 	<br/>
 	<br/>
 	
 	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
 	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
 	Title: {$Title}<br/>
-	Description: {$Description}<br/>
+	Description: {$Description|nl2br}<br/>
 	
 	{if count($RepeatDates) gt 0}
 		<br/>

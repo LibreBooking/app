@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
+require_once(ROOT_DIR . 'Pages/Pages.php');
 
 // TODO: Need a way to unit test this
 class ReservationCreatedEmail extends EmailMessage
@@ -62,8 +63,8 @@ class ReservationCreatedEmail extends EmailMessage
 	private function PopulateTemplate()
 	{	
 		$currentInstance = $this->reservationSeries->CurrentInstance();
-		$this->Set('StartDate', $currentInstanceStartDate()->ToTimezone($this->timezone));
-		$this->Set('EndDate', $currentInstanceEndDate()->ToTimezone($this->timezone));
+		$this->Set('StartDate', $currentInstance->StartDate()->ToTimezone($this->timezone));
+		$this->Set('EndDate', $currentInstance->EndDate()->ToTimezone($this->timezone));
 		
 		$this->Set('Title', $this->reservationSeries->Title());
 		$this->Set('Description', $this->reservationSeries->Description());
@@ -71,10 +72,10 @@ class ReservationCreatedEmail extends EmailMessage
 		$repeatDates = array();
 		foreach ($this->reservationSeries->Instances() as $repeated)
 		{
-			$repeatDates[] = $repeated->GetBegin()->ToTimezone($this->timezone);
+			$repeatDates[] = $repeated->StartDate()->ToTimezone($this->timezone);
 		}
 		$this->Set('RepeatDates', $repeatDates);
-		$this->Set('ReservationUrl', "reservation.php?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $currentInstance->ReferenceNumber());
+		$this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
 	}
 }
 ?>

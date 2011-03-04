@@ -1,6 +1,4 @@
 <?php
-define('SMARTY_DIR', ROOT_DIR . 'lib/external/Smarty/');
-
 require_once(ROOT_DIR . 'lib/external/Smarty/Smarty.class.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
@@ -49,7 +47,6 @@ class SmartyPage extends Smarty
 	{
 		$this->registerPlugin('function', 'translate', array($this, 'SmartyTranslate'));
 		$this->registerPlugin('function', 'formatdate', array($this, 'FormatDate'));
-//		$this->registerPlugin('function', 'constant', array($this, 'GetConstant'));
 		$this->registerPlugin('function', 'html_link', array($this, 'PrintLink'));
 		$this->registerPlugin('function', 'html_image', array($this, 'PrintImage'));
 		$this->registerPlugin('function', 'control', array($this, 'DisplayControl'));
@@ -128,18 +125,6 @@ class SmartyPage extends Smarty
 		}
 		return $params['date']->Format($this->Resources->GetDateFormat($key));
 	}
-	
-//	public function GetConstant($params, &$smarty)
-//	{
-//		if (defined($params['echo'])) 
-//		{
-//			return eval('return ' . $params['echo'] . ';');
-//		}
-//		else
-//		{
-//			throw new Exception(sprintf('Constant %s is not defined', $params['echo']));	
-//		}
-//	}
 	
 	public function PrintImage($params, &$smarty)
 	{

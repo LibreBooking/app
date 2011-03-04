@@ -1,10 +1,17 @@
 <?php
+define('SMARTY_DIR', ROOT_DIR . 'lib/external/Smarty/');
+
 require_once(ROOT_DIR . 'lib/external/Smarty/Smarty.class.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class SmartyEmail extends SmartyPage
+class SmartyEmail extends Smarty
 {
+	/**
+	 * @var Resources
+	 */
+	protected $Resources = null;
+	
 	public function __construct($languageCode = null)
 	{
 		$resources = null;
@@ -14,7 +21,7 @@ class SmartyEmail extends SmartyPage
 			$resources->SetLanguage($languageCode);
 		}
 		
-		parent::__construct($resources, null);
+		$this->Resources =& $resources;
 		
 		$this->assign('Charset', $this->Resources->Charset);
 		$this->assign('ScriptUrl', Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL));
@@ -25,13 +32,14 @@ class SmartyEmail extends SmartyPage
 		$this->cache_dir = ROOT_DIR . 'cache';
 		
 		$this->compile_check = true;	// should be set to false in production	
+		
+		$this->RegisterFunctions();
 	}
 	
 	protected function RegisterFunctions()
 	{
 		$this->registerPlugin('function', 'translate', array($this, 'SmartyTranslate'));
 		$this->registerPlugin('function', 'formatdate', array($this, 'FormatDate'));
-		$this->registerPlugin('function', 'constant', array($this, 'GetConstant'));
 		$this->registerPlugin('function', 'html_link', array($this, 'PrintLink'));
 		$this->registerPlugin('function', 'html_image', array($this, 'PrintImage'));
 	}
@@ -41,9 +49,29 @@ class SmartyEmail extends SmartyPage
 		return $this->fetch($this->Resources->CurrentLanguage . "/" . $templateName);
 	}
 	
-	public function Translate($key, $args = array())
+	public function SmartyTranslate($params, &$smarty) 
 	{
-		return $this->Resources->GetString($key, $args);
+		//TODO: make these more pluggable so theyre not copied
+		if (!isset($params['args']))
+		{
+			return $this->Resources->GetString($params['key'], '');
+		}
+		return $this->Resources->GetString($params['key'], explode(',', $params['args']));
+	}
+	
+	public function FormatDate($params, &$smarty) 
+	{
+		if (isset($params['format']))
+		{
+			return $params['date']->Format($params['format']);
+		}
+		
+		$key = 'general_date';
+		if (isset($params['key']))
+		{
+			$key = $params['key'];
+		}
+		return $params['date']->Format($this->Resources->GetDateFormat($key));
 	}
 }
 ?>

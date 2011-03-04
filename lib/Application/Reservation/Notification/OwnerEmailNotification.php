@@ -39,4 +39,18 @@ class OwnerEmailNotificaiton implements IReservationNotification
 		}
 	}
 }
+
+class ReservationEmailNotification
+{
+	protected abstract function ShouldSend($reservation);
+	protected abstract function GetMessage($reservation);
+	
+	public function Notify($reservation)
+	{
+		if ($this->ShouldSend($reservation))
+		{
+			ServiceLocator::GetEmailService()->Send($this->GetMessage($reservation));
+		}
+	}
+}
 ?>

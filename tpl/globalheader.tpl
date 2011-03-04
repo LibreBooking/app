@@ -52,28 +52,25 @@
 		<div id="logo">phpScheduleIt</div>
 		<ul id="nav" class="menubar">
 		    <li class="menubaritem first"><a href="dashboard.php">Dashboard</a></li>
-		    <li class="menubaritem"><a href="#">Users</a>
+		    <li class="menubaritem"><a href="#">Account</a>
 		    	<ul>
-		    		<li class="menuitem"><a href="/reg-mini.php">Add user</a></li>
-		    		<li class="menuitem"><a href="/user.php">Edit user details</a></li>
+		    		<li class="menuitem"><a href="/reg-mini.php">Profile</a></li>
+		    		<li class="menuitem"><a href="/user.php">Email Preferences</a></li>
 					<li class="menuitem"><a href="/user.php">Delete users</a></li>
 		    	</ul>
 		    </li>
 		    <li class="menubaritem"><a href="schedule.php">Schedule</a>
 		        <ul>
-		            <li class="menuitem"><a href="/resource.php">Schedule 1</a></li>
-					<li class="menuitem"><a href="/resource.php">Edit resource details</a></li>
-					<li class="menuitem"><a href="/resource.php">Delete resources</a></li>
+		            <li class="menuitem"><a href="schedule.php">Bookings</a></li>
+					<li class="menuitem"><a href="schedule.php">My Calendar</a></li>
+					<li class="menuitem"><a href="schedule.php">Resource Calendar</a></li>
 		        </ul>
 		    </li>
 		    <li class="menubaritem"><a href="#">Reservations</a>
 		        <ul>
-		            <li class="menuitem"><a href="/reservation.php?rid=1">New reservation</a></li>
-					<li class="menuitem"><a href="/reservation.php?rid=1">Edit my reservations</a></li>
-					<li class="menuitem"><a href="/reservation.php?rid=1">Edit group reservations</a></li>
-					<li class="menuitem"><a href="/reservation.php?rid=1">Edit all reservations</a></li>
-					<li class="menuitem"><a href="/reservation.php?rid=1">Delete reservations</a></li>
-		        </ul>
+		            <li class="menuitem"><a href="/reservation.php?rid=1">My Upcoming Reservations</a></li>
+					<li class="menuitem"><a href="/reservation.php?rid=1">Reservation Search</a></li>
+				</ul>
 		    </li>
 		    <li class="menubaritem"><a href="#">Help</a></li>
 		</ul>
