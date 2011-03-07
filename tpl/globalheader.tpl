@@ -26,24 +26,11 @@
 @import url({$Path}scripts/css/smoothness/jquery-ui-1.8.7.custom.css);
 </style>
 
-{literal}
-<script type="text/javascript">
-	function mainmenu(){
-		$("#nav ul").css({display: "none"}); // Opera Fix
-		$("#nav li").hover(
-				function(){
-					$(this).find('ul:first').css({visibility: "visible",display: "none"}).show(10);
-				},
-				function(){
-					$(this).find('ul:first').css({visibility: "hidden"}).hide();
-				});
-	}
-	
-	 $(document).ready(function(){
-		mainmenu();
+<script type="text/javascript">	
+	 $(document).ready(function() {
+		 initMenu();
 	});
 </script>
-{/literal}
 </head>
 <body>
 <div id="wrapper">

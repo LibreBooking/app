@@ -7,7 +7,7 @@ class EventCategory
 class ReservationEvent
 {
 	const Created = 'created';
-	const Modified = 'modified';
+	const Updated = 'updated';
 }
 
 class ReservationCreatedEvent implements IDomainEvent
@@ -15,6 +15,19 @@ class ReservationCreatedEvent implements IDomainEvent
 	public function EventType()
 	{
 		return ReservationEvent::Created;
+	}
+	
+	public function EventCategory()
+	{
+		return EventCategory::Reservation;
+	}
+}
+
+class ReservationUpdatedEvent implements IDomainEvent
+{
+	public function EventType()
+	{
+		return ReservationEvent::Updated;
 	}
 	
 	public function EventCategory()

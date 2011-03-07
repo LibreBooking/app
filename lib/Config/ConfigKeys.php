@@ -22,6 +22,7 @@ class ConfigKeys
 	const PLUGIN_AUTH = 'Auth';
 	
 	const RESERVATION_NOTIFY_CREATED = 'notify.created';
+	const RESERVATION_NOTIFY_UPDATED = 'notify.updated';
 }
 
 class ConfigSection

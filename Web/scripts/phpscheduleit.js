@@ -55,3 +55,15 @@ function eraseCookie(name)
 {
 	createCookie(name,"",-1);
 }
+
+function initMenu()
+{
+	$("#nav ul").css({display: "none"}); // Opera Fix
+	$("#nav li").hover(
+			function(){
+				$(this).find('ul:first').css({visibility: "visible",display: "none"}).show(10);
+			},
+			function(){
+				$(this).find('ul:first').css({visibility: "hidden"}).hide();
+			});
+}

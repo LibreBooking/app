@@ -2,7 +2,7 @@
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
 
-class OwnerEmailNotificaiton implements IReservationNotification 
+abstract class OwnerEmailNotificaiton implements IReservationNotification 
 {
 	/**
 	 * @var IUserRepository
@@ -23,34 +23,56 @@ class OwnerEmailNotificaiton implements IReservationNotification
 		$this->_userRepo = $userRepo;
 		$this->_resourceRepo = $resourceRepo;
 	}
-	
+
 	/**
 	 * @see IReservationNotification::Notify()
 	 */
 	public function Notify($reservation)
 	{
 		$owner = $this->_userRepo->LoadById($reservation->UserId());
-		if ($owner->WantsEventEmail(new ReservationCreatedEvent()))
+		if ($this->ShouldSend($owner))
 		{
 			$resource = $this->_resourceRepo->LoadById($reservation->ResourceId());
 			
-			$message = new ReservationCreatedEmail($owner, $reservation, $resource);
+			$message = $this->GetMessage($owner, $reservation, $resource);
 			ServiceLocator::GetEmailService()->Send($message);
 		}
 	}
+	
+	/**
+	 * @return bool
+	 */
+	protected abstract function ShouldSend($owner);
+	
+	/**
+	 * @return EmailMessage
+	 */
+	protected abstract function GetMessage($owner, $reservation, $resource);	
 }
 
-class ReservationEmailNotification
+class OwnerEmailCreatedNotificaiton extends OwnerEmailNotificaiton
 {
-	protected abstract function ShouldSend($reservation);
-	protected abstract function GetMessage($reservation);
-	
-	public function Notify($reservation)
+	protected function ShouldSend($owner)
 	{
-		if ($this->ShouldSend($reservation))
-		{
-			ServiceLocator::GetEmailService()->Send($this->GetMessage($reservation));
-		}
+		return $owner->WantsEventEmail(new ReservationCreatedEvent());
 	}
+	
+	protected function GetMessage($owner, $reservation, $resource)
+	{
+		return new ReservationCreatedEmail($owner, $reservation, $resource);	
+	}	
+}
+
+class OwnerEmailUpdatedNotificaiton extends OwnerEmailNotificaiton
+{
+	protected function ShouldSend($owner)
+	{
+		return $owner->WantsEventEmail(ReservationUpdatedEvent());
+	}
+	
+	protected function GetMessage($owner, $reservation, $resource)
+	{
+		return new ReservationUpdatedEmail($owner, $reservation, $resource);	
+	}	
 }
 ?>
