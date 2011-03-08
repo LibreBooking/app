@@ -1,4 +1,8 @@
 <?php
+
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmailAdmin.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmailAdmin.php');
+
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
@@ -101,7 +105,7 @@ class AdminEmailNotificationTests extends TestBase
 			->with($this->equalTo($resourceId))
 			->will($this->returnValue($resource));
 			
-		$notification = new AdminEmailCreatedNotificaiton($userRepo, $resourceRepo);
+		$notification = new AdminEmailUpdatedNotificaiton($userRepo, $resourceRepo);
 		$notification->Notify($reservation);
 		
 		$expectedMessage1 = new ReservationUpdatedEmailAdmin($admin1, $user, $reservation, $resource);
@@ -119,7 +123,7 @@ class AdminEmailNotificationTests extends TestBase
 										ConfigKeys::RESERVATION_NOTIFY_CREATED, 
 										'false');
 										
-		$notification = new AdminEmailNotificaiton($this->getMock('IUserRepository'), $this->getMock('IResourceRepository'));
+		$notification = new AdminEmailCreatedNotificaiton($this->getMock('IUserRepository'), $this->getMock('IResourceRepository'));
 		$notification->Notify(new TestReservationSeries());
 		
 		$this->assertEquals(0, count($this->fakeEmailService->_Messages));

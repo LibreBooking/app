@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmailAdmin.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmailAdmin.php');
 
 abstract class AdminEmailNotificaiton implements IReservationNotification
 {
@@ -65,6 +66,19 @@ class AdminEmailCreatedNotificaiton extends AdminEmailNotificaiton
 	protected function ShouldSend()
 	{
 		return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_NOTIFY_CREATED, new BooleanConverter());
+	}
+}
+
+class AdminEmailUpdatedNotificaiton extends AdminEmailNotificaiton
+{
+	protected function GetMessage($admin, $owner, $reservationSeries, $resource)
+	{
+		return new ReservationUpdatedEmailAdmin($admin, $owner, $reservationSeries, $resource);
+	}
+	
+	protected function ShouldSend()
+	{
+		return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_NOTIFY_UPDATED, new BooleanConverter());
 	}
 }
 ?>

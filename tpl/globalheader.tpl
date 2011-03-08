@@ -51,6 +51,7 @@
 		            <li class="menuitem"><a href="schedule.php">Bookings</a></li>
 					<li class="menuitem"><a href="schedule.php">My Calendar</a></li>
 					<li class="menuitem"><a href="schedule.php">Resource Calendar</a></li>
+					<li class="menuitem"><a href="schedule.php">Current Status</a></li>
 		        </ul>
 		    </li>
 		    <li class="menubaritem"><a href="#">Reservations</a>

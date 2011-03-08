@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationEvents.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
 
 abstract class OwnerEmailNotificaiton implements IReservationNotification 
@@ -27,7 +28,7 @@ abstract class OwnerEmailNotificaiton implements IReservationNotification
 	/**
 	 * @see IReservationNotification::Notify()
 	 */
-	public function Notify($reservation)
+	public function Notify($reservation, $event = null)
 	{
 		$owner = $this->_userRepo->LoadById($reservation->UserId());
 		if ($this->ShouldSend($owner))
@@ -67,7 +68,7 @@ class OwnerEmailUpdatedNotificaiton extends OwnerEmailNotificaiton
 {
 	protected function ShouldSend($owner)
 	{
-		return $owner->WantsEventEmail(ReservationUpdatedEvent());
+		return $owner->WantsEventEmail(new ReservationUpdatedEvent());
 	}
 	
 	protected function GetMessage($owner, $reservation, $resource)

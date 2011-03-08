@@ -14,14 +14,11 @@ class SmartyEmail extends Smarty
 	
 	public function __construct($languageCode = null)
 	{
-		$resources = null;
+		$this->Resources = new Resources();
 		if (!empty($languageCode))
 		{
-			$resources = new Resources();
-			$resources->SetLanguage($languageCode);
+			$this->Resources->SetLanguage($languageCode);
 		}
-		
-		$this->Resources =& $resources;
 		
 		$this->assign('Charset', $this->Resources->Charset);
 		$this->assign('ScriptUrl', Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL));
