@@ -8,6 +8,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'Presenters/ReservationHandler.php');
 
 class ReservationSavePresenter
 {
@@ -76,32 +77,19 @@ class ReservationSavePresenter
 	 */
 	public function HandleReservation($reservationSeries)
 	{		
-		$validationResult = $this->_validationService->Validate($reservationSeries);
+		$handler = new ReservationHandler();
 		
-		if ($validationResult->CanBeSaved())
+		$successfullySaved = $handler->Handle(
+					$reservationSeries,
+					$this->_page, 
+					$this->_persistenceService, 
+					$this->_validationService, 
+					$this->_notificationService);
+			
+		if ($successfullySaved)
 		{
-			try 
-			{
-				$this->_persistenceService->Persist($reservationSeries);
-			}
-			catch (Exception $ex)
-			{
-				Log::Error('Error saving reservation: %s', $ex);
-				throw($ex);
-			}
-			
-			$this->_notificationService->Notify($reservationSeries);
-			
 			$this->_page->SetReferenceNumber($reservationSeries->CurrentInstance()->ReferenceNumber());
-			$this->_page->SetSaveSuccessfulMessage(true);
 		}
-		else
-		{
-			$this->_page->SetSaveSuccessfulMessage(false);
-			$this->_page->ShowErrors($validationResult->GetErrors());
-		}
-		
-		$this->_page->ShowWarnings($validationResult->GetWarnings());
 	}
 	
 	/**
