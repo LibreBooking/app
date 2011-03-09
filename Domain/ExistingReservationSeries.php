@@ -240,7 +240,7 @@ class ExistingReservationSeries extends ReservationSeries
 	
 	public function Delete()
 	{
-		if (count($this->instances) > 1)
+		if (!$this->AppliesToAllInstances())
 		{
 			foreach ($this->Instances() as $instance)
 			{
@@ -251,6 +251,11 @@ class ExistingReservationSeries extends ReservationSeries
 		{
 			$this->AddEvent(new SeriesDeletedEvent($this));
 		}
+	}
+	
+	private function AppliesToAllInstances()
+	{
+		return count($this->instances) == count($this->Instances());
 	}
 	
 	protected function AddNewInstance(DateRange $reservationDate)

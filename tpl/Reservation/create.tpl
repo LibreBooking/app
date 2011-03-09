@@ -163,9 +163,14 @@
 <input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" />
 <input type="hidden" {formname key=reservation_action} value="{$ReservationAction}" />
 <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}" />
+<div style="float:left;">
+{block name="deleteButtons"}
+&nbsp;
+{/block}
+</div>
 <div style="float:right;">
 	{block name="submitButtons"}
-		<button type="submit" class="button save">
+		<button type="submit" class="button save create">
 			<img src="img/disk-black.png" />
 			{translate key='Create'}
 		</button>
@@ -234,6 +239,9 @@ $(document).ready(function() {
 		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}$day,{/foreach}],
 		returnUrl: '{$ReturnUrl}',
 		scopeOpts: scopeOptions,
+		createUrl: 'ajax/reservation_save.php',
+		updateUrl: 'ajax/reservation_update.php',
+		deleteUrl: 'ajax/reservation_delete.php',
 	};
 
 	$('#description').TextAreaExpander();
@@ -244,8 +252,8 @@ $(document).ready(function() {
 	var options = { 
         target: '#result',   // target element(s) to be updated with server response
         beforeSubmit: reservation.preSubmit,  // pre-submit callback 
-        success: reservation.showResponse,  // post-submit callback 
- 		url: {block name="submitUrl"}"ajax/reservation_save.php"{/block}
+        success: reservation.showResponse  // post-submit callback 
+ 		//url: {block name="submitUrl"}"ajax/reservation_save.php"{/block}
 
  	    // other available options: 
         //type:      type        // 'get' or 'post', override for form's 'method' attribute 

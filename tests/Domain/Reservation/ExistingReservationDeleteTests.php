@@ -114,5 +114,32 @@ class ExistingReservationDeleteTests extends TestBase
 		$this->assertTrue(in_array(new InstanceRemovedEvent($future2), $events));
 		$this->assertTrue(!in_array(new InstanceRemovedEvent($past), $events));
 	}
+	
+	public function testDeleteFullSeriesWithAllInstancesInFuture()
+	{
+		$current = new TestReservation();
+		$current->SetReservationDate(TestDateRange::CreateWithDays(1));
+		
+		$future1 = new TestReservation();
+		$future1->SetReservationDate(TestDateRange::CreateWithDays(2));
+		
+		$future2 = new TestReservation();
+		$future2->SetReservationDate(TestDateRange::CreateWithDays(20));
+		
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($current);
+		$builder->WithInstance($future1);
+		$builder->WithInstance($future2);
+		
+		$series = $builder->Build();
+		
+		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+		$series->Delete();
+		
+		$events = $series->GetEvents();
+		
+		$this->assertEquals(1, count($events));
+		$this->assertTrue(in_array(new SeriesDeletedEvent($series), $events));
+	}
 }
 ?>

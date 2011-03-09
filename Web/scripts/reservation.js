@@ -32,19 +32,13 @@ function Reservation(opts)
 			CancelAdd('#dialogAddResources', '#additionalResources');	
 		});
 		
-		$('#dialogSave').dialog({
-		    autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
-		    minHeight: 400, minWidth: 700, width: 700,
-		    open: function(event, ui) {  $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar").hide(); }
-		});
-		
-		$('.save').click(function(){
-			$('#dialogSave').dialog('open');
-		});
-		
 		$('#btnConfirmAddResources').click(function() {
 			AddResources();
 		});
+		
+		WireUpActions();		
+		WireUpButtonPrompt();
+		WireUpSaveDialog();
 		
 		// initialize selected resources
 		AddResources();
@@ -347,5 +341,49 @@ function Reservation(opts)
 		var timeBetweenDates = end.getTime() - begin.getTime();
 		
 		return timeBetweenDates > oneDay;
+	}
+	
+	var WireUpActions = function ()
+	{
+		$('.create').click(function() {
+			$('form').attr("action", options.createUrl);
+		});
+		
+		$('.update').click(function() {
+			$('form').attr("action", options.updateUrl);
+		});
+		
+		$('.delete').click(function() {
+			$('form').attr("action", options.deleteUrl);
+		});
+	}
+	
+	var WireUpButtonPrompt = function () 
+	{
+		$('#updateButtons').dialog({
+		    autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
+		    minWidth: 700, width: 700, height: 100
+		});
+		
+		$('#updateButtons').find('.button').click(function() {
+			$('#updateButtons').dialog('close');
+		});
+		
+		$('.prompt').click(function() {
+			$('#updateButtons').dialog('open');
+		});
+	}
+	
+	var WireUpSaveDialog = function() 
+	{
+		$('#dialogSave').dialog({
+		    autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
+		    minHeight: 400, minWidth: 700, width: 700,
+		    open: function(event, ui) {  $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar").hide(); }
+		});
+		
+		$('.save').click(function(){
+			$('#dialogSave').dialog('open');
+		});
 	}
 }
