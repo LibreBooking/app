@@ -57,7 +57,7 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 		}
 		else
 		{
-			$this->smarty->display('Ajax/reservation/savefailed.tpl');
+			$this->smarty->display('Ajax/reservation/save_failed.tpl');
 		}
 	}
 	
