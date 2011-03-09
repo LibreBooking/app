@@ -205,7 +205,6 @@ class ExistingReservationSeries extends ReservationSeries
 		if ($this->seriesUpdateStrategy->RequiresNewSeries())
 		{
 			$this->AddEvent(new SeriesBranchedEvent($this));
-			//$this->AddEvent(new InstanceMovedEvent())
 			$this->Repeats($this->seriesUpdateStrategy->GetRepeatOptions($this));
 		}
 	}
@@ -236,6 +235,21 @@ class ExistingReservationSeries extends ReservationSeries
 			
 			// create all future instances
 			parent::Repeats($repeatOptions);
+		}
+	}
+	
+	public function Delete()
+	{
+		if (count($this->instances) > 1)
+		{
+			foreach ($this->Instances() as $instance)
+			{
+				$this->AddEvent(new InstanceRemovedEvent($instance));
+			}
+		}
+		else
+		{
+			$this->AddEvent(new SeriesDeletedEvent($this));
 		}
 	}
 	
@@ -366,6 +380,18 @@ class InstanceUpdatedEvent
 
 class SeriesBranchedEvent
 {
+	private $series;
+	
+	public function __construct(ReservationSeries $series)
+	{
+		$this->series = $series;
+	}
+}
+
+class SeriesDeletedEvent
+{
+	private $series;
+	
 	public function __construct(ReservationSeries $series)
 	{
 		$this->series = $series;

@@ -5,5 +5,11 @@ class TestDateRange extends DateRange
 	{
 		parent::__construct(Date::Now(), Date::Now());
 	}
+	
+	public static function CreateWithDays($days)
+	{
+		$now = Date::Now();
+		return new DateRange($now->AddDays($days), $now->AddDays($days));
+	}
 }
 ?>

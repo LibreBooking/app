@@ -1,6 +1,6 @@
 {include file='..\tpl\Email\emailheader.tpl'}
 	
-	A new reservation was created 
+	Reservation Details: 
 	<br/>
 	<br/>
 	
