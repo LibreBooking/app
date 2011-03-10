@@ -2,7 +2,7 @@
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/IReservationPersistenceService.php');
 
-interface IUpdateReservationPersistenceService extends IReservationPersistenceService
+interface IDeleteReservationPersistenceService extends IReservationPersistenceService
 {
 	/**
 	 * @return ExistingReservationSeries
@@ -10,7 +10,7 @@ interface IUpdateReservationPersistenceService extends IReservationPersistenceSe
 	function LoadByInstanceId($reservationInstanceId);
 }
 
-class UpdateReservationPersistenceService implements IUpdateReservationPersistenceService
+class DeleteReservationPersistenceService implements IDeleteReservationPersistenceService
 {
 	/**
 	 * @var IReservationRepository
@@ -24,12 +24,13 @@ class UpdateReservationPersistenceService implements IUpdateReservationPersisten
 	
 	public function LoadByInstanceId($reservationInstanceId)
 	{
+		throw new Exception('not implemented');
 		return $this->_repository->LoadById($reservationInstanceId);
 	}
 	
 	public function Persist($existingReservationSeries)
 	{
-		$this->_repository->Update($existingReservationSeries);
+		throw new Exception('not implemented');
 	}
 }
 

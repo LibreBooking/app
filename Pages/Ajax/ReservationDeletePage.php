@@ -1,8 +1,9 @@
 <?php 
-//require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
+require_once(ROOT_DIR . 'Pages/SecurePage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
 require_once(ROOT_DIR . 'Presenters/ReservationDeletePresenter.php');
 
-interface IReservationDeletePage
+interface IReservationDeletePage extends IReservationSaveResultsPage
 {
 	/**
 	 * @return int
@@ -20,38 +21,37 @@ class ReservationDeletePage implements IReservationDeletePage
 	/**
 	 * @var ReservationDeletePresenter
 	 */
-	private $_presenter;
+	private $presenter;
 	
 	/**
 	 * @var bool
 	 */
-	private $_reservationSavedSuccessfully = false;
+	private $reservationSavedSuccessfully = false;
 	
 	public function __construct()
 	{
-		parent::__construct();
 		
-//		$persistenceFactory = new ReservationPersistenceFactory();
-//		$validationFactory = new ReservationValidationFactory();
-//		$notificationFactory = new ReservationNotificationFactory();
-//
-//		$updateAction = ReservationAction::Update;
-//		$userSession = ServiceLocator::GetServer()->GetUserSession();
-//		
-//		$this->_presenter = new ReservationUpdatePresenter(
-//														$this,
-//														$persistenceFactory->Create($updateAction),
-//														$validationFactory->Create($updateAction, $userSession),
-//														$notificationFactory->Create($updateAction)
-//														);
+		$persistenceFactory = new ReservationPersistenceFactory();
+		$validationFactory = new ReservationValidationFactory();
+		$notificationFactory = new ReservationNotificationFactory();
+
+		$updateAction = ReservationAction::Delete;
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
+		
+		$this->presenter = new ReservationDeletePresenter(
+														$this,
+														$persistenceFactory->Create($updateAction),
+														$validationFactory->Create($updateAction, $userSession),
+														$notificationFactory->Create($updateAction)
+														);
 	}
 	
 	public function PageLoad()
 	{
-//		$reservation = $this->_presenter->BuildReservation();
-//		$this->_presenter->HandleReservation($reservation);
+		$reservation = $this->presenter->BuildReservation();
+		$this->presenter->HandleReservation($reservation);
 
-		if ($this->_reservationSavedSuccessfully)
+		if ($this->reservationSavedSuccessfully)
 		{
 			$this->smarty->display('Ajax/reservation/delete_successful.tpl');
 		}
@@ -63,7 +63,7 @@ class ReservationDeletePage implements IReservationDeletePage
 	
 	public function SetSaveSuccessfulMessage($succeeded)
 	{
-		$this->_reservationSavedSuccessfully = $succeeded;
+		$this->reservationSavedSuccessfully = $succeeded;
 	}
 	
 	public function ShowErrors($errors)

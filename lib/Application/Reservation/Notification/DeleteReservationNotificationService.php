@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNotificationService.php');
 
-interface IUpdateReservationNotificationService extends IReservationNotificationService
+interface IDeleteReservationNotificationService extends IReservationNotificationService
 {
 	/**
 	 * @param ExistingReservationSeries $reservationSeries
@@ -10,7 +10,7 @@ interface IUpdateReservationNotificationService extends IReservationNotification
 }
 
 
-class UpdateReservationNotificationService implements IUpdateReservationNotificationService
+class DeleteReservationNotificationService implements IDeleteReservationNotificationService
 {
 	private $notifications;
 	

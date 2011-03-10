@@ -15,4 +15,5 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValid
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValidationResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AddReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/UpdateReservationValidationService.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/DeleteReservationValidationService.php');
 ?>

@@ -1,29 +1,7 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
 require_once(ROOT_DIR . 'Presenters/ReservationSavePresenter.php');
-
-interface IReservationSaveResultsPage
-{
-	/**
-	 * @param bool $succeeded
-	 */
-	public function SetSaveSuccessfulMessage($succeeded);
-	
-	/**
-	 * @param string $referenceNumber
-	 */
-	public function SetReferenceNumber($referenceNumber);
-	
-	/**
-	 * @param array[int]string $errors
-	 */
-	public function ShowErrors($errors);
-	
-	/**
-	 * @param array[int]string $warnings
-	 */
-	public function ShowWarnings($warnings);
-}
 
 interface IReservationSavePage extends IReservationSaveResultsPage
 {
@@ -79,6 +57,11 @@ interface IReservationSavePage extends IReservationSaveResultsPage
 	 * @return IRepeatOptions
 	 */
 	public function GetRepeatOptions();
+	
+	/**
+	 * @param string $referenceNumber
+	 */
+	public function SetReferenceNumber($referenceNumber);
 }
 
 class ReservationSavePage extends SecurePage implements IReservationSavePage

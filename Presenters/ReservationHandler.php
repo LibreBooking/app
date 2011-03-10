@@ -4,9 +4,9 @@ class ReservationHandler
 	/**
 	 * @param ReservationSeries $reservationSeries
 	 * @param IReservationSaveResultsPage $page
-	 * @param unknown_type $persistenceService
-	 * @param unknown_type $validationService
-	 * @param unknown_type $notificationService
+	 * @param IReservationPersistenceService $persistenceService
+	 * @param IReservationValidationService $validationService
+	 * @param IReservationNotificationService $notificationService
 	 * @return bool
 	 */
 	public function Handle(

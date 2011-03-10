@@ -1,4 +1,15 @@
 <?php
+require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Server/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
+require_once(ROOT_DIR . 'Domain/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'Presenters/ReservationHandler.php');
+
 class ReservationDeletePresenter
 {
 	/**
@@ -7,25 +18,25 @@ class ReservationDeletePresenter
 	private $page;
 	
 	/**
-	 * @var IUpdateReservationPersistenceService
+	 * @var IDeleteReservationPersistenceService
 	 */
 	private $persistenceService;
 	
 	/**
-	 * @var IUpdateReservationValidationService
+	 * @var IDeleteReservationValidationService
 	 */
 	private $validationService;
 	
 	/**
-	 * @var IUpdateReservationNotificationService
+	 * @var IDeleteReservationNotificationService
 	 */
 	private $notificationService;
 	
 	public function __construct(
 		IReservationDeletePage $page, 
-		IUpdateReservationPersistenceService $persistenceService,
-		IUpdateReservationValidationService $validationService,
-		IUpdateReservationNotificationService $notificationService)
+		IDeleteReservationPersistenceService $persistenceService,
+		IDeleteReservationValidationService $validationService,
+		IDeleteReservationNotificationService $notificationService)
 	{
 		$this->page = $page;
 		$this->persistenceService = $persistenceService;
@@ -42,7 +53,7 @@ class ReservationDeletePresenter
 		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
 		
-		// $existingSeries->Delete();
+		$existingSeries->Delete();
 		
 		return $existingSeries;
 	}
@@ -52,31 +63,13 @@ class ReservationDeletePresenter
 	 */
 	public function HandleReservation($reservationSeries)
 	{		
-		$validationResult = $this->validationService->Validate($reservationSeries);
-		
-		if ($validationResult->CanBeSaved())
-		{
-			try 
-			{
-				$this->persistenceService->Persist($reservationSeries);
-			}
-			catch (Exception $ex)
-			{
-				Log::Error('Error saving reservation: %s', $ex);
-				throw($ex);
-			}
-			
-			$this->notificationService->Notify($reservationSeries);
-			
-			$this->page->SetSaveSuccessfulMessage(true);
-		}
-		else
-		{
-			$this->page->SetSaveSuccessfulMessage(false);
-			$this->page->ShowErrors($validationResult->GetErrors());
-		}
-		
-		$this->page->ShowWarnings($validationResult->GetWarnings());
+		$handler = new ReservationHandler();
+		$handler->Handle(
+			$reservationSeries,
+			$this->page,
+			$this->persistenceService,
+			$this->validationService,
+			$this->notificationService);
 	}
 }
 ?>

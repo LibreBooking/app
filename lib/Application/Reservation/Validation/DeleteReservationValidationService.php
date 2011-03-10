@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IReservationValidationService.php');
 
-interface IUpdateReservationValidationService extends IReservationValidationService
+interface IDeleteReservationValidationService extends IReservationValidationService
 {
 	/**
 	 * @param ExistingReservationSeries $reservationSeries
@@ -10,7 +10,7 @@ interface IUpdateReservationValidationService extends IReservationValidationServ
 	//function Validate($reservationSeries);
 }
 
-class UpdateReservationValidationService implements IUpdateReservationValidationService
+class DeleteReservationValidationService implements IDeleteReservationValidationService
 {
 	/**
 	 * @var IExistingReservationValidationRule[]
