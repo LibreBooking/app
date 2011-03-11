@@ -16,6 +16,11 @@ class ReservationValidationFactory implements IReservationValidationFactory
 			);
 			return new UpdateReservationValidationService($rules);	
 		}
+		else if ($reservationAction == ReservationAction::Delete)
+		{
+			$rules = array();
+			return new DeleteReservationValidationService($rules);
+		}	
 		else 
 		{
 			$rules = array(

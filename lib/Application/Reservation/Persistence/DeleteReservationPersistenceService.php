@@ -24,13 +24,12 @@ class DeleteReservationPersistenceService implements IDeleteReservationPersisten
 	
 	public function LoadByInstanceId($reservationInstanceId)
 	{
-		throw new Exception('not implemented');
 		return $this->_repository->LoadById($reservationInstanceId);
 	}
 	
 	public function Persist($existingReservationSeries)
 	{
-		throw new Exception('not implemented');
+		return $this->_repository->Delete($existingReservationSeries);
 	}
 }
 
