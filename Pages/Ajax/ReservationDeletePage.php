@@ -16,7 +16,7 @@ interface IReservationDeletePage extends IReservationSaveResultsPage
 	public function GetSeriesUpdateScope();
 }
 
-class ReservationDeletePage implements IReservationDeletePage
+class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 {
 	/**
 	 * @var ReservationDeletePresenter
@@ -30,6 +30,7 @@ class ReservationDeletePage implements IReservationDeletePage
 	
 	public function __construct()
 	{
+		parent::__construct();
 		
 		$persistenceFactory = new ReservationPersistenceFactory();
 		$validationFactory = new ReservationValidationFactory();

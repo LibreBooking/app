@@ -170,7 +170,7 @@
 </div>
 <div style="float:right;">
 	{block name="submitButtons"}
-		<button type="submit" class="button save create">
+		<button type="button" class="button save create">
 			<img src="img/disk-black.png" />
 			{translate key='Create'}
 		</button>
@@ -272,21 +272,6 @@ $(document).ready(function() {
 
    
 });
-
-// pre-submit callback 
-function preSubmit(formData, jqForm, options) { 
-    $('#result').hide();
-    $('#creatingNotifiation').show();
-    
-    return true; 
-} 
-
-// post-submit callback 
-function showResponse(responseText, statusText, xhr, $form)  { 
-    $('#creatingNotifiation').hide();
-    $('#result').show();
-}
-
 </script>
 
 {include file='globalfooter.tpl'}

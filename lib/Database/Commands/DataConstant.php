@@ -156,6 +156,11 @@ class Queries
 		FROM users 
 		WHERE user_id = @userid';
 	
+	const DELETE_SERIES =
+		'DELETE 
+		FROM reservation_series
+		WHERE series_id = @seriesid';
+	
 	const LOGIN_USER = 
 		'SELECT user_id, email, fname, lname, timezone, lastlogin, homepageid
 		FROM users 

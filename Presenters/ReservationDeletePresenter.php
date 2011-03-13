@@ -53,6 +53,7 @@ class ReservationDeletePresenter
 		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
 		
+		//die($this->page->GetSeriesUpdateScope());
 		$existingSeries->Delete();
 		
 		return $existingSeries;

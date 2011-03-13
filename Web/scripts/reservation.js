@@ -35,11 +35,7 @@ function Reservation(opts)
 		$('#btnConfirmAddResources').click(function() {
 			AddResources();
 		});
-		
-		WireUpActions();		
-		WireUpButtonPrompt();
-		WireUpSaveDialog();
-		
+				
 		// initialize selected resources
 		AddResources();
 		
@@ -92,6 +88,10 @@ function Reservation(opts)
 		{
 			ToggleUpdateScope();
 		});
+		
+		WireUpActions();		
+		WireUpButtonPrompt();
+		WireUpSaveDialog();
 	}
 	
 	// pre-submit callback 
@@ -384,6 +384,8 @@ function Reservation(opts)
 		
 		$('.save').click(function(){
 			$('#dialogSave').dialog('open');
+			
+			$('#reservationForm').submit();
 		});
 	}
 }

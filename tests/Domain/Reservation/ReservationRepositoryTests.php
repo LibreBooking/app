@@ -510,6 +510,47 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue(in_array($updateReservationCommand2, $this->db->_Commands));
 	}
 	
+	public function testDeleteSeries()
+	{
+		$seriesId = 981;
+		$eventSeries = new ExistingReservationSeries();
+		$eventSeries->WithId($seriesId);
+		
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithEvent(new SeriesDeletedEvent($eventSeries));
+		$series = $builder->BuildTestVersion();
+		$series->WithId($seriesId);
+		
+		$this->repository->Delete($series);
+		
+		$deleteSeriesCommand = new DeleteSeriesCommand($eventSeries->SeriesId());
+		
+		$this->assertEquals(1, count($this->db->_Commands));
+		$this->assertTrue(in_array($deleteSeriesCommand, $this->db->_Commands));
+	}
+	
+	public function testDeleteInstances()
+	{
+		$seriesId = 981;
+		$instance1 = new TestReservation("ref1");
+		$instance2 = new TestReservation("ref2");
+		
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithEvent(new InstanceRemovedEvent($instance1));
+		$builder->WithEvent(new InstanceRemovedEvent($instance2));
+		$series = $builder->BuildTestVersion();
+		$series->WithId($seriesId);
+		
+		$this->repository->Delete($series);
+		
+		$deleteInstance1 = new RemoveReservationCommand($instance1->ReferenceNumber());
+		$deleteInstance2 = new RemoveReservationCommand($instance2->ReferenceNumber());
+		
+		$this->assertEquals(2, count($this->db->_Commands));
+		$this->assertTrue(in_array($deleteInstance1, $this->db->_Commands));
+		$this->assertTrue(in_array($deleteInstance2, $this->db->_Commands));
+	}
+	
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
 	{
 		return new UpdateReservationCommand(

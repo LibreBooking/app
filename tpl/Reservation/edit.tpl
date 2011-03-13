@@ -10,12 +10,12 @@
 
 {block name=deleteButtons}	
 	{if $IsRecurring}
-		<button type="submit" class="button delete prompt">
+		<button type="button" class="button delete prompt">
 			<img src="img/cross-button.png" />
 			{translate key='Delete'}
 		</button>
 	{else}
-		<button type="submit" class="button delete save">
+		<button type="button" class="button delete save">
 			<img src="img/cross-button.png" />
 			{translate key='Delete'}
 		</button>
@@ -24,21 +24,21 @@
 
 {block name=submitButtons}
 	{if $IsRecurring}
-		<button type="submit" class="button update prompt">
+		<button type="button" class="button update prompt">
 			<img src="img/disk-black.png" />
 			{translate key='Update'}
 		</button>
 		<div id="updateButtons" style="display:none;">
 			<div style="text-align: center;line-height:50px;">
-				<button type="submit" id="btnUpdateThisInstance" class="button save">
+				<button type="button" id="btnUpdateThisInstance" class="button save">
 					<img src="img/disk-black.png" alt="" />
 					{translate key='ThisInstance'}
 				</button>
-				<button type="submit" id="btnUpdateAllInstances" class="button save">
+				<button type="button" id="btnUpdateAllInstances" class="button save">
 					<img src="img/disks-black.png" alt="" />
 					{translate key='AllInstances'}
 				</button>
-				<button type="submit" id="btnUpdateFutureInstances" class="button save">
+				<button type="button" id="btnUpdateFutureInstances" class="button save">
 					<img src="img/disk-arrow.png" alt="" />
 					{translate key='FutureInstances'}
 				</button>
@@ -49,12 +49,12 @@
 			</div>
 		</div>
 	{else}
-		<button type="submit" id="btnCreate" class="button save update">
+		<button type="button" id="btnCreate" class="button save update">
 			<img src="img/disk-black.png" />
 			{translate key='Update'}
 		</button>
 	{/if}
-	<button type="submit" class="button">
+	<button type="button" class="button">
 		<img src="img/printer.png" />
 		{translate key='Print'}
 	</button>

@@ -166,6 +166,15 @@ class CookieLoginCommand extends SqlCommand
 	}
 }
 
+class DeleteSeriesCommand extends SqlCommand
+{
+	public function __construct($seriesId)
+	{
+		parent::__construct(Queries::DELETE_SERIES);
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+	}
+}
+
 class GetAllSchedulesCommand extends SqlCommand 
 {
 	public function __construct()
