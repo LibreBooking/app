@@ -2,34 +2,21 @@
 class AddReservationValidationService implements IReservationValidationService
 {
 	/**
-	 * @var IReservationValidationRule[]
+	 * @var IReservationValidationService
 	 */
-	private $_validationRules;
+	private $ruleProcessor;
 	
 	/**
-	 * @param IReservationValidationRule[] $validationRules
+	 * @param IReservationValidationService $ruleProcessor
 	 */
-	public function __construct($validationRules)
+	public function __construct($ruleProcessor)
 	{
-		$this->_validationRules = $validationRules;	
+		$this->ruleProcessor = $ruleProcessor;	
 	}
 	
-	/**
-	 * @see IReservationValidationService::Validate()
-	 */
-	public function Validate($reservation)
+	public function Validate($reservationSeries)
 	{
-		foreach ($this->_validationRules as $rule)
-		{
-			$result = $rule->Validate($reservation);
-			
-			if (!$result->IsValid())
-			{
-				return new ReservationValidationResult(false, array($result->ErrorMessage()));
-			}
-		}
-		
-		return new ReservationValidationResult();
+		return $this->ruleProcessor->Validate($reservationSeries);
 	}
 }
 ?>

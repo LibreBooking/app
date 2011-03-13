@@ -42,7 +42,7 @@ class ScheduleReservationList implements IScheduleReservationList
 		$this->_layoutDateEnd = $this->_layoutDateStart->AddDays(1);
 		$this->_layoutItems = $this->_layout->GetLayout();
 		$this->_midnight = new Time(0,0,0, $this->_destinationTimezone);
-	
+		
 		$this->IndexLayout();
 		$this->IndexReservations();
 	}
@@ -64,7 +64,7 @@ class ScheduleReservationList implements IScheduleReservationList
 				}
 				else
 				{
-					$endTime = $reservation->GetEndTime()->ToTimezone($this->_destinationTimezone);
+					$endTime = $reservation->GetEndDate()->ToTimezone($this->_destinationTimezone)->GetTime();
 				}
 				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
@@ -86,7 +86,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	{
 		foreach ($this->_reservations as $reservation)
 		{		
-			$startTime = $reservation->GetStartTime()->ToTimezone($this->_destinationTimezone);
+			$startTime = $reservation->GetStartDate()->ToTimezone($this->_destinationTimezone)->GetTime();
 			
 			$startsInPast = $this->ReservationStartsOnPastDate($reservation);
 			if ($startsInPast || $startTime->Compare($this->_firstLayoutTime) < 0)
@@ -94,7 +94,7 @@ class ScheduleReservationList implements IScheduleReservationList
 				$startTime = $this->_firstLayoutTime;
 			}
 			
-			$endTime = $reservation->GetEndTime()->ToTimezone($this->_destinationTimezone);
+			$endTime = $reservation->GetEndDate()->ToTimezone($this->_destinationTimezone)->GetTime();
 			
 			$endsInTheFuture = $this->ReservationEndsOnFutureDate($reservation);
 			if ($endsInTheFuture || $endTime->Compare($this->_firstLayoutTime) >=0)

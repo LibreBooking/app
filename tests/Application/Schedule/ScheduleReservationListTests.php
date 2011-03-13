@@ -47,7 +47,7 @@ class ScheduleReservationListTests extends TestBase
 	
 	function testLayoutIsConvertedToUserTimezoneBeforeSlotsAreCreated()
 	{
-		$userTz = 'CST';
+		$userTz = 'America/Chicago';
 		$utc = 'UTC';
 		
 		$midnightUtc = new Time(0,0,0, $utc);
@@ -65,10 +65,10 @@ class ScheduleReservationListTests extends TestBase
 		
 		FakeScheduleReservations::Initialize();
 		$r1 = FakeScheduleReservations::$Reservation1;
-		$r1->SetStartDate($this->dbDate);
-		$r1->SetStartTime(Time::Parse('01:00:00', $utc));
-		$r1->SetEndDate(Date::Parse($this->dbDate, $utc));
-		$r1->SetEndTime(Time::Parse('03:00:00', $utc));
+		$newStart = Date::Create($this->dbDate->Year(), $this->dbDate->Month(), $this->dbDate->Day(), 1, 0, 0, 'UTC');
+		$newEnd = Date::Create($this->dbDate->Year(), $this->dbDate->Month(), $this->dbDate->Day(), 3, 0, 0, 'UTC');
+		$r1->SetStartDate($newStart);	
+		$r1->SetEndDate($newEnd);
 		
 		$scheduleList = new ScheduleReservationList(array($r1), $layout, $this->date);
 		$slots = $scheduleList->BuildSlots();
@@ -103,29 +103,18 @@ class ScheduleReservationListTests extends TestBase
 		$r2 = FakeScheduleReservations::$Reservation2;
 		$r3 = FakeScheduleReservations::$Reservation3;
 		
-		$r1Start = Time::Parse('09:00:00', $utc);		// 03:00 CST
-		$r1End = Time::Parse('10:30:00', $utc);		// 04:30 CST
+		$y = $dbDate->Year();
+		$m = $dbDate->Month();
+		$d = $dbDate->Day() -1; // list date will be 1 day prior (midnight utc -> cst)
 		
-		$r2Start = Time::Parse('11:00:00', $utc);		// 05:00 CST
-		$r2End = Time::Parse('11:30:00', $utc);		// 05:30 CST
+		$r1->SetStartDate(Date::Create($y, $m, $d, 9, 0, 0, $utc));  // 03:00 CST
+		$r1->SetEndDate(Date::Create($y, $m, $d, 10, 30, 0, $utc));  // 04:30 CST
 		
-		$r3Start = Time::Parse('14:00:00', $utc);		// 08:00 CST
-		$r3End = Time::Parse('18:00:00', $utc);		// 12:00 CST
-		
-		$r1->SetStartDate($dbDate);
-		$r1->SetEndDate($dbDate);
-		$r1->SetStartTime($r1Start);
-		$r1->SetEndTime($r1End);
-		
-		$r2->SetStartDate($dbDate);
-		$r2->SetEndDate($dbDate);
-		$r2->SetStartTime($r2Start);
-		$r2->SetEndTime($r2End);
+		$r2->SetStartDate(Date::Create($y, $m, $d, 11, 0, 0, $utc)); // 05:00 CST
+		$r2->SetEndDate(Date::Create($y, $m, $d, 11, 30, 0, $utc));  // 05:30 CST
 
-		$r3->SetStartDate($dbDate);
-		$r3->SetEndDate($dbDate);
-		$r3->SetStartTime($r3Start);
-		$r3->SetEndTime($r3End);
+		$r3->SetStartDate(Date::Create($y, $m, $d, 14, 0, 0, $utc)); // 08:00 CST
+		$r3->SetEndDate(Date::Create($y, $m, $d, 18, 0, 0, $utc));   // 12:00 CST
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -192,34 +181,23 @@ class ScheduleReservationListTests extends TestBase
 		$dbDate = $this->dbDate;
 		$utc = $this->utc;
 		
+		$y = $dbDate->Year();
+		$m = $dbDate->Month();
+		$d = $dbDate->Day() -1; // list date will be 1 day prior (midnight utc -> cst)
+		
 		FakeScheduleReservations::Initialize();
 		$r1 = FakeScheduleReservations::$Reservation1;
 		$r2 = FakeScheduleReservations::$Reservation2;
 		$r3 = FakeScheduleReservations::$Reservation3;
 		
-		$r1Start = Time::Parse('09:00:00', $utc);		// 03:00 CST
-		$r1End = Time::Parse('10:40:00', $utc);		// 04:40 CST
+		$r1->SetStartDate(Date::Create($y, $m, $d, 9, 0, 0, $utc));  // 03:00 CST
+		$r1->SetEndDate(Date::Create($y, $m, $d, 10, 40, 0, $utc));  // 04:30 CST
 		
-		$r2Start = Time::Parse('11:00:00', $utc);		// 05:00 CST
-		$r2End = Time::Parse('11:20:00', $utc);		// 05:20 CST
-		
-		$r3Start = Time::Parse('14:00:00', $utc);		// 08:00 CST
-		$r3End = Time::Parse('18:05:00', $utc);		// 12:05 CST
-		
-		$r1->SetStartDate($dbDate);
-		$r1->SetEndDate($dbDate);
-		$r1->SetStartTime($r1Start);
-		$r1->SetEndTime($r1End);
-		
-		$r2->SetStartDate($dbDate);
-		$r2->SetEndDate($dbDate);
-		$r2->SetStartTime($r2Start);
-		$r2->SetEndTime($r2End);
-		
-		$r3->SetStartDate($dbDate);
-		$r3->SetEndDate($dbDate);
-		$r3->SetStartTime($r3Start);
-		$r3->SetEndTime($r3End);
+		$r2->SetStartDate(Date::Create($y, $m, $d, 11, 0, 0, $utc)); // 05:00 CST
+		$r2->SetEndDate(Date::Create($y, $m, $d, 11, 20, 0, $utc));  // 05:20 CST
+
+		$r3->SetStartDate(Date::Create($y, $m, $d, 14, 0, 0, $utc)); // 08:00 CST
+		$r3->SetEndDate(Date::Create($y, $m, $d, 18, 05, 0, $utc));  // 12:05 CST
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -281,35 +259,23 @@ class ScheduleReservationListTests extends TestBase
 		$utc = $this->utc;
 		$userTz = 'CST';
 		$dbDate = $this->dbDate;
+		$y = $dbDate->Year();
+		$m = $dbDate->Month();
+		$d = $dbDate->Day() - 1; // list date will be 1 day prior (midnight utc -> cst)
 		
 		FakeScheduleReservations::Initialize();
 		$r1 = FakeScheduleReservations::$Reservation1;
 		$r2 = FakeScheduleReservations::$Reservation2;
 		$r3 = FakeScheduleReservations::$Reservation3;
 		
-		$r1Start = Time::Parse('09:00:00', $utc);		// 03:00 CST
-		$r1End = Time::Parse('10:40:00', $utc);		// 04:40 CST
+		$r1->SetStartDate(Date::Create($y, $m, $d, 9, 0, 0, $utc));  // 03:00 CST
+		$r1->SetEndDate(Date::Create($y, $m, $d, 10, 40, 0, $utc));  // 04:30 CST
 		
-		$r2Start = Time::Parse('11:00:00', $utc);		// 05:00 CST
-		$r2End = Time::Parse('11:20:00', $utc);		// 05:20 CST
-		
-		$r3Start = Time::Parse('14:00:00', $utc);		// 08:00 CST
-		$r3End = Time::Parse('18:05:00', $utc);		// 12:05 CST
-		
-		$r1->SetStartDate($dbDate);
-		$r1->SetEndDate($dbDate);
-		$r1->SetStartTime($r1Start);
-		$r1->SetEndTime($r1End);
-		
-		$r2->SetStartDate($dbDate);
-		$r2->SetEndDate($dbDate);
-		$r2->SetStartTime($r2Start);
-		$r2->SetEndTime($r2End);
-		
-		$r3->SetStartDate($dbDate);
-		$r3->SetEndDate(Date::Parse($dbDate)->AddDays(2));
-		$r3->SetStartTime($r3Start);
-		$r3->SetEndTime($r3End);
+		$r2->SetStartDate(Date::Create($y, $m, $d, 11, 0, 0, $utc)); // 05:00 CST
+		$r2->SetEndDate(Date::Create($y, $m, $d, 11, 20, 0, $utc));  // 05:20 CST
+
+		$r3->SetStartDate(Date::Create($y, $m, $d + 2, 14, 0, 0, $utc)); // 08:00 CST
+		$r3->SetEndDate(Date::Create($y, $m, $d + 2, 18, 05, 0, $utc));  // 12:05 CST
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -378,18 +344,20 @@ class ScheduleReservationListTests extends TestBase
 		$layout = new ScheduleLayout($utc);
 		$layout->AppendPeriod(new Time(2,0,0, $utc), new Time(3,0,0, $utc));
 		
+		$y = $this->date->Year();
+		$m = $this->date->Month();
+		$d = $this->date->Day();
+		
 		FakeScheduleReservations::Initialize();
 		$r1 = FakeScheduleReservations::$Reservation1;
-		$r1->SetStartDate($this->date);
-		$r1->SetEndDate($this->date);
-		$r1->SetStartTime(new Time(0,0,0, $utc));
-		$r1->SetEndTime(new Time(1,0,0, $utc));
+		
+		$r1->SetStartDate(Date::Create($y, $m, $d, 0, 0, 0, $utc));
+		$r1->SetEndDate(Date::Create($y, $m, $d, 1, 0, 0, $utc));
 		
 		$r2 = FakeScheduleReservations::$Reservation2;
-		$r2->SetStartDate($this->date);
-		$r2->SetEndDate($this->date);
-		$r2->SetStartTime(new Time(1,0,0, $utc));
-		$r2->SetEndTime(new Time(3,0,0, $utc));
+		
+		$r2->SetStartDate(Date::Create($y, $m, $d, 1, 0, 0, $utc));
+		$r2->SetEndDate(Date::Create($y, $m, $d, 3, 0, 0, $utc));
 		
 		$list = new ScheduleReservationList(array($r1, $r2), $layout, $this->date);
 		$slots = $list->BuildSlots();

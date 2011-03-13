@@ -1,4 +1,4 @@
-{include file='header.tpl' DisplayWelcome='false'}
+{include file='globalheader.tpl' DisplayWelcome='false'}
 <div class="error">
 	<table>
 		<tr>
@@ -12,4 +12,4 @@
 </div>
 
 
-{include file='footer.tpl'}
+{include file='globalfooter.tpl'}

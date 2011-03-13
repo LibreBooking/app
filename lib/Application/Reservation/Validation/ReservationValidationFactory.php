@@ -3,37 +3,54 @@ class ReservationValidationFactory implements IReservationValidationFactory
 {
 	public function Create($reservationAction, $userSession)
 	{
-		$dateTimeRule = new ReservationDateTimeRule();
-		$permissionRule = new PermissionValidationRule(new PermissionServiceFactory(), $userSession);
-		$reservationRepository = new ReservationRepository();
+		$ruleProcessor = $this->GetRuleProcessor($userSession);
 		
 		if ($reservationAction == ReservationAction::Update)
 		{
-			$rules = array(
-				$dateTimeRule,
-				$permissionRule,
-				new ExistingResourceAvailabilityRule($reservationRepository, $userSession->Timezone),
-			);
-			return new UpdateReservationValidationService($rules);	
+			return $this->GetUpdate($ruleProcessor, $userSession);
 		}
 		else if ($reservationAction == ReservationAction::Delete)
 		{
-			$rules = array();
-			return new DeleteReservationValidationService($rules);
+			return $this->GetDelete($ruleProcessor, $userSession);
 		}	
 		else 
 		{
-			$rules = array(
-				$dateTimeRule,
-				$permissionRule,
-				new ResourceAvailabilityRule($reservationRepository, $userSession->Timezone),
-			);
-			//length, start time buffer, end time buffer (quota?)
-			//$rules[] = new QuotaRule();
-			//$rules[] = new AccessoryAvailabilityRule();
-			
-			return new AddReservationValidationService($rules);
+			return $this->GetCreate($ruleProcessor, $userSession);
+//			//length, start time buffer, end time buffer (quota?)
+//			//$rules[] = new QuotaRule();
+//			//$rules[] = new AccessoryAvailabilityRule();
 		}
+	}
+	
+	private function GetCreate(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
+	{
+		$reservationRepository = new ReservationRepository();
+		$ruleProcessor->AddRule(new ResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
+		
+		return new AddReservationValidationService($ruleProcessor);
+	}
+	
+	private function GetUpdate(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
+	{
+		$reservationRepository = new ReservationRepository();
+		$ruleProcessor->AddRule(new ExistingResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
+		
+		return new UpdateReservationValidationService($ruleProcessor);
+	}
+	
+	private function GetDelete(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
+	{
+		return new DeleteReservationValidationService($ruleProcessor);
+	}
+	
+	private function GetRuleProcessor(UserSession $userSession)
+	{
+		// Common rules
+		$rules = array();
+		$rules[] = new ReservationDateTimeRule();
+		$rules[] = new PermissionValidationRule(new PermissionServiceFactory(), $userSession);
+		
+		return new ReservationValidationRuleProcessor($rules);
 	}
 }
 ?>

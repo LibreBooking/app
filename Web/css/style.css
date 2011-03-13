@@ -98,6 +98,7 @@ h3 {
     border: solid 1px #a4381c;
     margin: 20px auto 5px;
     background-color: #f5e4df;
+    background-color: #ffffcd;
     width: 60%;
     padding: 6px;
     font-size: 14px;
@@ -123,7 +124,7 @@ div.error ul {
 }
 
 #content {
-    margin: 0px 15px;
+    margin: 0px 15px 15px 15px;
     padding: 0; 
 }
 

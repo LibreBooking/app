@@ -17,11 +17,11 @@
         {textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}</label>
 </p>
 <p class="stayloggedin">
-        <label class="login"><input type="checkbox" name="{constant echo='FormKeys::PERSIST_LOGIN'}" value="true" tabindex="30" /> {translate key='Keep me logged in'}</label>
+        <label class="login"><input type="checkbox" name="{FormKeys::PERSIST_LOGIN}" value="true" tabindex="30" /> {translate key='Keep me logged in'}</label>
 </p>
 <p class="loginsubmit">
-        <input type="submit" name="{constant echo='Actions::LOGIN'}" value="{translate key='Log In'}" class="button" tabindex="100" />
-        <input type="hidden" name="{constant echo='FormKeys::RESUME'}" value="{$ResumeUrl}" />
+        <input type="submit" name="{Actions::LOGIN}" value="{translate key='Log In'}" class="button" tabindex="100" />
+        <input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}" />
 </p>
 </form>
 </div>
@@ -45,4 +45,4 @@
 
 {setfocus key='EMAIL'}
 
-{include file='footer.tpl'}
+{include file='globalfooter.tpl'}

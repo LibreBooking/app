@@ -2,7 +2,7 @@
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
-class UpdateReservationValidationServiceTests extends TestBase
+class ReservationValidationRuleProcessorTests extends TestBase
 {
 	public function setup()
 	{
@@ -40,7 +40,7 @@ class UpdateReservationValidationServiceTests extends TestBase
 		
 		$rules = array($rule1, $rule2, $rule3);
 		
-		$vs = new UpdateReservationValidationService($rules);
+		$vs = new ReservationValidationRuleProcessor($rules);
 		$result = $vs->Validate($reservation);
 		
 		$this->assertEquals(true, $result->CanBeSaved());
@@ -70,7 +70,7 @@ class UpdateReservationValidationServiceTests extends TestBase
 			->with($this->equalTo($reservation))
 			->will($this->returnValue(new ReservationRuleResult(false, $error)));
 		
-		$vs = new UpdateReservationValidationService($rules);
+		$vs = new ReservationValidationRuleProcessor($rules);
 		
 		$result = $vs->Validate($reservation);
 		
