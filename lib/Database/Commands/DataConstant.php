@@ -319,7 +319,8 @@ class Queries
 			tb.end_label, 
 			tb.start_time, 
 			tb.end_time, 
-			tb.availability_code
+			tb.availability_code,
+			tbg.timezone
 		FROM 
 			time_blocks tb, 
 			time_block_groups tbg, 
@@ -528,6 +529,7 @@ class ColumnNames
 	const BLOCK_LABEL = 'label';
 	const BLOCK_LABEL_END = 'end_label';
 	const BLOCK_CODE = 'availability_code';
+	const BLOCK_TIMEZONE = 'timezone';
 
 	// TIME BLOCK USES //
 	const BLOCK_START = 'start_time';

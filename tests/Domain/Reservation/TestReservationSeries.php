@@ -30,7 +30,7 @@ class TestReservationSeries extends ReservationSeries
 	
 	public function WithCurrentInstance(Reservation $currentInstance)
 	{
-		$this->currentInstanceDate = $currentInstance->StartDate();
+		$this->SetCurrentDate($currentInstance->StartDate());
 		$this->AddInstance($currentInstance);
 	}
 }

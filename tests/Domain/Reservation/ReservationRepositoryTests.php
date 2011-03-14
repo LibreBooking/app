@@ -81,8 +81,8 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($startDate->Equals($actual->GetStartDate()));
 		$this->assertTrue($endDate->Equals($actual->GetEndDate()));
 		
-		$this->assertTrue($startTime->Equals($actual->GetStartTime()));
-		$this->assertTrue($endTime->Equals($actual->GetEndTime()));
+		$this->assertEquals($startTime, $actual->GetStartTime());
+		$this->assertEquals($endTime, $actual->GetEndTime());
 	}
 
 	public function testAddReservationWithOneUserAndOneResource()
@@ -146,7 +146,7 @@ class ReservationRepositoryTests extends TestBase
 				$resourceId, 
 				ResourceLevel::Primary);
 		
-		$insertReservationUser = new AddReservationUserCommand(
+		$insertReservationUser = $this->GetAddUserCommand(
 				$reservationId, 
 				$userId, 
 				$levelId);
@@ -412,6 +412,8 @@ class ReservationRepositoryTests extends TestBase
 	{
 		$existingSeriesId = 10909;
 		$newSeriesId = 10910;
+		$newInstanceId1 = 2827;
+		$newInstanceId2 = 2828;
 		$userId = 10;
 		$resourceId = 11;
 		$scheduleId = 12;
@@ -444,7 +446,9 @@ class ReservationRepositoryTests extends TestBase
 		
 		$expectedRepeat = $existingReservation->RepeatOptions();
 		
-		$this->db->_ExpectedInsertId = $newSeriesId;
+		$this->db->_ExpectedInsertIds[] = $newSeriesId;
+		$this->db->_ExpectedInsertIds[] = $newInstanceId1;
+		$this->db->_ExpectedInsertIds[] = $newInstanceId2;
 		
 		$this->repository->Update($existingReservation);
 		
@@ -466,6 +470,9 @@ class ReservationRepositoryTests extends TestBase
 		$addReservationCommand1 = $this->GetAddReservationCommand($newSeriesId, $newInstance1);
 		$addReservationCommand2 = $this->GetAddReservationCommand($newSeriesId, $newInstance2);
 		
+		$insertReservationUser1 = $this->GetAddUserCommand($newInstanceId1, $userId, ReservationUserLevel::OWNER);
+		$insertReservationUser2 = $this->GetAddUserCommand($newInstanceId2, $userId, ReservationUserLevel::OWNER);
+		
 		$removeReservationCommand1 = new RemoveReservationCommand($removedInstance1->ReferenceNumber());
 		$removeReservationCommand2 = new RemoveReservationCommand($removedInstance2->ReferenceNumber());
 		
@@ -474,12 +481,18 @@ class ReservationRepositoryTests extends TestBase
 		$commands = $this->db->GetCommandsOfType('UpdateReservationCommand');
 		$this->assertEquals(3, count($commands));
 		
+		$addUserCommands = $this->db->GetCommandsOfType('AddReservationUserCommand');
+		$this->assertEquals(2, count($addUserCommands));
+		
 		$this->assertTrue(in_array($updateReservationCommand1, $this->db->_Commands));
 		$this->assertTrue(in_array($updateReservationCommand2, $this->db->_Commands));
 		$this->assertTrue(in_array($updateReservationCommand3, $this->db->_Commands));
 		
 		$this->assertTrue(in_array($addReservationCommand1, $this->db->_Commands));
 		$this->assertTrue(in_array($addReservationCommand2, $this->db->_Commands));
+		
+		$this->assertTrue(in_array($insertReservationUser1, $this->db->_Commands));
+		$this->assertTrue(in_array($insertReservationUser2, $this->db->_Commands));
 		
 		$this->assertTrue(in_array($removeReservationCommand1, $this->db->_Commands));
 		$this->assertTrue(in_array($removeReservationCommand2, $this->db->_Commands));
@@ -567,6 +580,11 @@ class ReservationRepositoryTests extends TestBase
 								$expectedInstance->EndDate(),
 								$expectedInstance->ReferenceNumber(), 
 								$expectedSeriesId);
+	}
+	
+	private function GetAddUserCommand($reservationId, $userId, $levelId)
+	{
+		return new AddReservationUserCommand($reservationId, $userId, $levelId);
 	}
 }
 

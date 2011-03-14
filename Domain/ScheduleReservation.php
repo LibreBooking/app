@@ -48,8 +48,6 @@ class ScheduleReservation
 		$this->SetReservationId($reservationId);
 		$this->SetStartDate($startDate);
 		$this->SetEndDate($endDate);
-		//$this->SetStartTime($startDate->GetTime());
-		//$this->SetEndTime($endDate->GetTime());
 		$this->SetReservationType($reservationType);
 		$this->SetSummary($summary);
 		$this->SetParentId($parentId);

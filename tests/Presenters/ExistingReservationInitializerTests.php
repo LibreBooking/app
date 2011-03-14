@@ -124,7 +124,7 @@ class ExistingReservationInitializerTests extends TestBase
 			->will($this->returnValue($resourceList));
 			
 		// periods
-		$periods = array(new SchedulePeriod(new Time(1, 0, 0), new Time(2, 0, 0)));
+		$periods = array(new SchedulePeriod($expectedStartDate->SetTime(new Time(1, 0, 0)), $expectedStartDate->SetTime(new Time(2, 0, 0))));
 		$layout = $this->getMock('IScheduleLayout');
 
 		$this->_scheduleRepository->expects($this->once())
@@ -134,6 +134,7 @@ class ExistingReservationInitializerTests extends TestBase
 			
 		$layout->expects($this->once())
 			->method('GetLayout')
+			->with($this->equalTo($expectedStartDate->ToTimezone($timezone)))
 			->will($this->returnValue($periods));
 		
 		// BINDING

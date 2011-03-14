@@ -8,19 +8,19 @@ class PeroidTypes
 class SchedulePeriod
 {
 	/**
-	 * @var Time
+	 * @var Date
 	 */
 	protected $_begin;
 	
 	/**
-	 * @var Time
+	 * @var Date
 	 */
 	protected $_end;
 	
 	protected $_label;
 	protected $_labelEnd;
 	
-	public function __construct(Time $begin, Time $end, $label = null, $labelEnd = null)
+	public function __construct(Date $begin, Date $end, $label = null, $labelEnd = null)
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
@@ -33,13 +33,29 @@ class SchedulePeriod
 	 */
 	public function Begin()
 	{
-		return $this->_begin;
+		return $this->_begin->GetTime();
 	}
 	
 	/**
 	 * @return Time ending time for this period
 	 */
 	public function End()
+	{
+		return $this->_end->GetTime();
+	}
+	
+	/**
+	 * @return Date
+	 */
+	public function BeginDate()
+	{
+		return $this->_begin;
+	}
+	
+	/**
+	 * @return Date
+	 */
+	public function EndDate()
 	{
 		return $this->_end;
 	}
@@ -93,6 +109,14 @@ class SchedulePeriod
 	public function __toString()
 	{
 		return sprintf("Begin: %s End: %s Label: %s", $this->Begin(), $this->End(), $this->Label());
+	}
+	
+	/**
+	 * Compares the starting datetimes
+	 */
+	public function Compare(SchedulePeriod $other)
+	{
+		return $this->_begin->Compare($other->_begin);
 	}
 }
 

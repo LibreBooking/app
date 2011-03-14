@@ -5,7 +5,6 @@ insert into roles values (1, 'admin', 1);
 insert into long_quotas (long_quotaid, label) values (1, 'default long quota');
 insert into day_quotas (day_quotaid, label) values (1, 'default day quota');
 insert into constraint_functions values (1, '');
-insert into time_block_groups values (1, 'default day layout');
 insert into organizations values (1, 'default organization');
 insert into groups values (1, 'default group');
 insert into resource_types values (1, 'default');

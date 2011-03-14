@@ -55,14 +55,17 @@ class ReservationInitializationTests extends TestBase
 
 		$resourceId = 10;
 		$scheduleId = 100;
-		$dateInUserTimezone = Date::Parse('2010-01-01 02:55:22', $timezone);
+		$dateString = '2010-01-01 02:55:22';
+		$dateInUserTimezone = Date::Parse($dateString, $timezone);
 		$periodId = 1;
 
 		$firstName = 'fname';
 		$lastName = 'lastName';
 
-		$expectedStartDate = Date::Parse($dateInUserTimezone, $timezone);
-		$expectedPeriod = new SchedulePeriod(new Time(3, 30, 0, $timezone), new Time(4, 30, 0, $timezone));
+		$expectedStartDate = Date::Parse($dateString, $timezone);
+		$expectedPeriod = new SchedulePeriod(
+			$dateInUserTimezone->SetTime(new Time(3, 30, 0)), 
+			$dateInUserTimezone->SetTime(new Time(4, 30, 0)));
 		
 		$page = $this->getMock('INewReservationPage');
 
@@ -105,13 +108,13 @@ class ReservationInitializationTests extends TestBase
 			
 		// periods
 		$periods = array(
-			new SchedulePeriod(new Time(1, 0, 0, $timezone), new Time(2, 0, 0, $timezone)),
-			new SchedulePeriod(new Time(2, 0, 0, $timezone), new Time(3, 0, 0, $timezone)),
-			new NonSchedulePeriod(new Time(3, 0, 0, $timezone), new Time(3, 30, 0, $timezone)),
+			new SchedulePeriod($dateInUserTimezone->SetTime(new Time(1, 0, 0)), $dateInUserTimezone->SetTime(new Time(2, 0, 0))),
+			new SchedulePeriod($dateInUserTimezone->SetTime(new Time(2, 0, 0)), $dateInUserTimezone->SetTime(new Time(3, 0, 0))),
+			new NonSchedulePeriod($dateInUserTimezone->SetTime(new Time(3, 0, 0)), $dateInUserTimezone->SetTime(new Time(3, 30, 0))),
 			$expectedPeriod,
-			new SchedulePeriod(new Time(4, 30, 0, $timezone), new Time(7, 30, 0, $timezone)),
-			new SchedulePeriod(new Time(7, 30, 0, $timezone), new Time(17, 30, 0, $timezone)),
-			new SchedulePeriod(new Time(17, 30, 0, $timezone), new Time(0, 0, 0, $timezone)),
+			new SchedulePeriod($dateInUserTimezone->SetTime(new Time(4, 30, 0)), $dateInUserTimezone->SetTime(new Time(7, 30, 0))),
+			new SchedulePeriod($dateInUserTimezone->SetTime(new Time(7, 30, 0)), $dateInUserTimezone->SetTime(new Time(17, 30, 0))),
+			new SchedulePeriod($dateInUserTimezone->SetTime(new Time(17, 30, 0)), $dateInUserTimezone->SetTime(new Time(0, 0, 0))),
 		);
 		$layout = $this->getMock('IScheduleLayout');
 
@@ -122,6 +125,7 @@ class ReservationInitializationTests extends TestBase
 			
 		$layout->expects($this->once())
 			->method('GetLayout')
+			->with($this->equalTo($dateInUserTimezone))
 			->will($this->returnValue($periods));
 
 		// BINDING

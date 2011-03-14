@@ -27,6 +27,7 @@ DROP TABLE IF EXISTS `time_block_groups`;
 CREATE TABLE `time_block_groups` (
  `block_groupid` tinyint(2) unsigned NOT NULL,
  `label` varchar(85) NOT NULL,
+ `timezone` varchar(50) NOT NULL,
  PRIMARY KEY (`block_groupid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 

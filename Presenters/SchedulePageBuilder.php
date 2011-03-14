@@ -27,7 +27,7 @@ interface ISchedulePageBuilder
 	
 	/**
 	 * @param ISchedulePage $page
-	 * @param DateRange $dateRange display dates in UTC
+	 * @param DateRange $dateRange display dates
 	 * @param UserSession $user
 	 */
 	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession, ISchedule $schedule);
@@ -43,7 +43,7 @@ interface ISchedulePageBuilder
 	 * @param ISchedulePage $page
 	 * @param IScheduleLayout $layout
 	 */
-	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout);
+	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout, DateRange $dateRange);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
@@ -141,9 +141,9 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	/**
 	 * @see ISchedulePageBuilder::BindLayout()
 	 */
-	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout)
+	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout, DateRange $dateRange)
 	{
-		$page->SetLayout($layout->GetLayout());
+		$page->SetLayout($layout->GetLayout($dateRange->GetBegin()));
 	}
 	
 	/**

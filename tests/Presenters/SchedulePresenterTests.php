@@ -474,6 +474,10 @@ class SchedulePresenterTests extends TestBase
 	
 	public function testBindLayoutSetsLayoutOnPage()
 	{
+		$start = Date::Now();
+		$end = Date::Now()->AddDays(10);
+		$displayRange = new DateRange($start, $end);
+		
 		$page = $this->getMock('ISchedulePage');
 		$layout = $this->getMock('IScheduleLayout');
 		
@@ -481,6 +485,7 @@ class SchedulePresenterTests extends TestBase
 		
 		$layout->expects($this->once())
 			->method('GetLayout')
+			->with($start)
 			->will($this->returnValue($periods));
 			
 		$page->expects($this->once())
@@ -488,7 +493,7 @@ class SchedulePresenterTests extends TestBase
 			->with($this->equalTo($periods));
 		
 		$pageBuilder = new SchedulePageBuilder();
-		$pageBuilder->BindLayout($page, $layout);
+		$pageBuilder->BindLayout($page, $layout, $displayRange);
 	}
 }
 

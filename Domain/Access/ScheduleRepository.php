@@ -103,8 +103,9 @@ class ScheduleRepository implements IScheduleRepository
 
 		while ($row = $reader->GetRow())
 		{
-			$start = Time::Parse($row[ColumnNames::BLOCK_START], 'UTC');
-			$end = Time::Parse($row[ColumnNames::BLOCK_END], 'UTC');
+			$timezone = $row[ColumnNames::BLOCK_TIMEZONE];
+			$start = Time::Parse($row[ColumnNames::BLOCK_START], $timezone);
+			$end = Time::Parse($row[ColumnNames::BLOCK_END], $timezone);
 			$label = $row[ColumnNames::BLOCK_LABEL];
 			$labelEnd = $row[ColumnNames::BLOCK_LABEL_END];
 			$periodType = $row[ColumnNames::BLOCK_CODE];

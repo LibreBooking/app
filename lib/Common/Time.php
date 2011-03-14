@@ -4,40 +4,25 @@ class Time
 	private $_hour;
 	private $_minute;
 	private $_second;
-	public $_date;
+	private $_timezone;
 	
 	public function __construct($hour, $minute, $second = null, $timezone = null)
 	{
-		$this->_hour = $hour;
-		$this->_minute = $minute;
-		$this->_second = is_null($second) ? 0 : $second;
-
-		$parts = getdate(strtotime("$this->_hour:$this->_minute:$this->_second"));
+		$this->_hour = intval($hour);
+		$this->_minute =  intval($minute);
+		$this->_second = is_null($second) ? 0 : intval($second);
+		$this->_timezone = $timezone;
 		
-		$this->_date = new Date("{$parts['year']}-{$parts['mon']}-{$parts['mday']} $this->_hour:$this->_minute:$this->_second", $timezone);
+		if (empty($timezone))
+    	{
+    		$this->_timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+    	}
 	}
-    
-	 /**
-     * Returns the Time adjusted into the provided timezone
-     *
-     * @param string $timezone
-     * @return Time
-     */
-    public function ToTimezone($timezone)
+
+    private function GetDate()
     {
-    	$date = $this->_date->ToTimezone($timezone);
-    	
-    	return new Time($date->Hour(), $date->Minute(), $date->Second(), $timezone);
-    }
-    
-    /**
-     * Returns the Time adjusted into UTC
-     *
-     * @return Time
-     */
-    public function ToUtc()
-    {
-    	return $this->ToTimezone('UTC');
+    	$parts = getdate(strtotime("$this->_hour:$this->_minute:$this->_second"));
+    	return new Date("{$parts['year']}-{$parts['mon']}-{$parts['mday']} $this->_hour:$this->_minute:$this->_second", $this->_timezone);
     }
     
     /**
@@ -47,9 +32,9 @@ class Time
      */
     public static function Parse($time, $timezone = null)
     {
-    	$parts = getdate(strtotime($time));
-    	
-    	return new Time($parts['hours'], $parts['minutes'], $parts['seconds'], $timezone);
+    	$date = new Date($time, $timezone);
+  
+    	return new Time($date->Hour(), $date->Minute(), $date->Second(), $timezone);
     }
 	
 	public function Hour()
@@ -69,17 +54,12 @@ class Time
 	
 	public function Timezone()
 	{
-		return $this->_date->Timezone();
+		return $this->_timezone;
 	}
-	
-	public function Timestamp()
-	{
-		return $this->_date->Timestamp();
-	}
-	
+
 	public function Format($format)
 	{
-		return $this->_date->Format($format);
+		return $this->GetDate()->Format($format);
 	}
 	
 	/**
@@ -88,12 +68,21 @@ class Time
 	 * -1 if this time is less than the passed in time
 	 * 0 if the times are equal
 	 * 1 if this time is greater than the passed in time
-	 * @param Time time
+	 * @param Time $time
+	 * @param Date $comparisonDate date to be used for time comparison
 	 * @return int comparison result
 	 */
-	public function Compare(Time $time)
+	public function Compare(Time $time, Date $comparisonDate)
 	{
-		return $this->_date->Compare($time->_date);
+		if ($comparisonDate != null)
+		{
+			$myDate = Date::Create($comparisonDate->Year(), $comparisonDate->Month(), $comparisonDate->Day(), $this->Hour(), $this->Minute(), $this->Second(), $this->Timezone());
+			$otherDate = Date::Create($comparisonDate->Year(), $comparisonDate->Month(), $comparisonDate->Day(), $time->Hour(), $time->Minute(), $time->Second(), $time->Timezone());
+			
+			return ($myDate->Compare($otherDate));
+		}
+		
+		return $this->GetDate()->Compare($time->GetDate());
 	}
 	
 	/**
@@ -101,20 +90,20 @@ class Time
 	 * @param Time $time
 	 * @return bool if the current object is greater than the one passed in
 	 */
-	public function GreaterThan(Time $time)
-	{
-		return $this->_date->Compare($time->_date) > 0;
-	}
+//	public function GreaterThan(Time $time, Date $comparisonDate = null)
+//	{
+//		return $this->Compare($time, $comparisonDate) > 0;
+//	}
 	
 	/**
 	 * Compares this time to the one passed in
 	 * @param Time $time
 	 * @return bool if the current object is less than the one passed in
 	 */
-	public function LessThan(Time $time)
-	{
-		return $this->_date->Compare($time->_date) < 0;
-	}
+//	public function LessThan(Time $time, Date $comparisonDate = null)
+//	{
+//		return $this->Compare($time, $comparisonDate) < 0;
+//	}
 	
 	/**
 	 * Compare the 2 times
@@ -122,10 +111,10 @@ class Time
 	 * @param Time $time
 	 * @return bool
 	 */
-	public function Equals(Time $time)
-	{
-		return $this->Compare($time) == 0;
-	}
+//	public function Equals(Time $time, Date $comparisonDate = null)
+//	{
+//		return $this->Compare($time, $comparisonDate) == 0;
+//	}
 	
 	public function ToString()
 	{

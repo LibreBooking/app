@@ -55,8 +55,13 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$userId = $this->GetOwnerId();
 		$timezone = $this->GetTimezone();
 		
+		$startDate = ($requestedStartDate == null) ? Date::Now()->ToTimezone($timezone) : $requestedStartDate->ToTimezone($timezone);
+		$endDate = ($requestedEndDate == null) ? $startDate : $requestedEndDate->ToTimezone($timezone);
+		$this->basePage->SetStartDate($startDate);
+		$this->basePage->SetEndDate($endDate);
+		
 		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
-		$schedulePeriods = $layout->GetLayout();
+		$schedulePeriods = $layout->GetLayout($startDate);
 		$this->basePage->BindPeriods($schedulePeriods);
 
 		$scheduleUser = $this->scheduleUserRepository->GetUser($userId);
@@ -67,10 +72,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$this->basePage->BindAvailableUsers($bindableUserData->AvailableUsers);	
 		$this->basePage->BindAvailableResources($bindableResourceData->AvailableResources);		
 		
-		$startDate = ($requestedStartDate == null) ? Date::Now()->ToTimezone($timezone) : $requestedStartDate->ToTimezone($timezone);
-		$endDate = ($requestedEndDate == null) ? $startDate : $requestedEndDate->ToTimezone($timezone);
-		$this->basePage->SetStartDate($startDate);
-		$this->basePage->SetEndDate($endDate);
 		
 		$startPeriod = $this->GetPeriodClosestTo($schedulePeriods, $startDate);
 		$this->basePage->SetStartTime($startPeriod->Begin());
@@ -146,14 +147,12 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 */
 	private function GetPeriodClosestTo($periods, $date)
 	{
-		$time = $date->GetTime();
-		
 		for ($i = 0; $i < count($periods); $i++)
 		{
 			$currentPeriod = $periods[$i];
-			$periodBegin = $currentPeriod->Begin();
+			$periodBegin = $currentPeriod->BeginDate();
 			
-			if ($currentPeriod->IsReservable() && $periodBegin->Compare($time) >= 0)
+			if ($currentPeriod->IsReservable() && $periodBegin->Compare($date) >= 0)
 			{
 				return $currentPeriod;
 			}

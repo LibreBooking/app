@@ -6,6 +6,27 @@ class ReservationSeries
 	/**
 	 * @var int
 	 */
+	protected $seriesId;
+	
+	/**
+	 * @return int
+	 */
+	public function SeriesId()
+	{
+		return $this->seriesId;
+	}
+
+	/**
+	 * @param int $seriesId
+	 */
+	public function SetSeriesId($seriesId)
+	{
+		$this->seriesId = $seriesId;
+	}
+	
+	/**
+	 * @var int
+	 */
 	protected $_userId;
 
 	/**
@@ -101,7 +122,7 @@ class ReservationSeries
 	/**
 	 * @var Date
 	 */
-	protected $currentInstanceDate;
+	private $currentInstanceDate;
 	
 	protected function __construct()
 	{
@@ -145,7 +166,7 @@ class ReservationSeries
 	 */
 	protected function UpdateDuration(DateRange $reservationDate)
 	{
-		$this->currentInstanceDate = $reservationDate->GetBegin();
+		$this->SetCurrentDate($reservationDate->GetBegin());
 		$this->AddNewInstance($reservationDate);
 	}
 	
@@ -225,8 +246,31 @@ class ReservationSeries
 	 * @return Reservation
 	 */
 	public function CurrentInstance()
+	{ 
+		$instance = $this->GetInstance($this->GetCurrentDate());
+		if (!isset($instance))
+		{
+			throw new Exception("Current instance not found. Missing Reservation on date {$this->GetCurrentDate()}");
+		}
+		return $instance;
+	}
+	
+	protected function SetCurrentDate(Date $currentDate)
 	{
-		return $this->GetInstance($this->currentInstanceDate);
+		$this->currentInstanceDate = $currentDate;
+	}
+	
+	/**
+	 * @return Date
+	 */
+	protected function GetCurrentDate()
+	{
+		return $this->currentInstanceDate;
+	}
+	
+	protected function IsCurrent(Reservation $instance)
+	{
+		return $instance == $this->CurrentInstance();
 	}
 }
 ?>

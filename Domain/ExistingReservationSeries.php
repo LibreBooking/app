@@ -4,11 +4,6 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 class ExistingReservationSeries extends ReservationSeries
 {
 	/**
-	 * @var int
-	 */
-	private $seriesId;
-
-	/**
 	 * @var ISeriesUpdateScope
 	 */
 	protected $seriesUpdateStrategy;
@@ -22,16 +17,6 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		parent::__construct();
 		$this->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-	}
-
-	public function SeriesId()
-	{
-		return $this->seriesId;
-	}
-
-	public function SetSeriesId($seriesId)
-	{
-		$this->seriesId = $seriesId;
 	}
 
 	public function SeriesUpdateScope()
@@ -116,7 +101,7 @@ class ExistingReservationSeries extends ReservationSeries
 	public function WithCurrentInstance(Reservation $reservation)
 	{
 		$this->AddInstance($reservation);
-		$this->currentInstanceDate = $reservation->StartDate();
+		$this->SetCurrentDate($reservation->StartDate());
 	}
 
 	/**
@@ -273,9 +258,10 @@ class ExistingReservationSeries extends ReservationSeries
 	public function UpdateInstance(Reservation $instance, DateRange $newDate)
 	{
 		//echo "Start: {$newDate->GetBegin()} End: {$newDate->GetEnd()} ts: {$newDate->GetBegin()->Timestamp()}\n";
-		if ($instance == $this->CurrentInstance())
+		//if ($instance->ReferenceNumber() == $this->CurrentInstance()->ReferenceNumber())
+		if ($this->IsCurrent($instance))
 		{
-			$this->currentInstanceDate = $newDate->GetBegin();
+			$this->SetCurrentDate($newDate->GetBegin());
 		}
 
 		unset($this->instances[$this->CreateInstanceKey($instance)]);

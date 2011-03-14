@@ -48,34 +48,23 @@ class ReservationRepository implements IReservationRepository
 	{
 		$database = ServiceLocator::GetDatabase();
 
-		$reservationSeriesId = $this->InsertSeries($reservationSeries);
-
+		$seriesId = $this->InsertSeries($reservationSeries);
+		
+		$reservationSeries->SetSeriesId($seriesId);
+		
 		$instances = $reservationSeries->Instances();
 			
-		foreach($instances as $reservation)
+		foreach ($instances as $reservation)
 		{
-			$insertReservation = new AddReservationCommand(
-				$reservation->StartDate(),
-				$reservation->EndDate(),
-				$reservation->ReferenceNumber(),
-				$reservationSeriesId);
-				
-			$reservationId = $database->ExecuteInsert($insertReservation);
-				
-			$insertReservationUser = new AddReservationUserCommand(
-				$reservationId,
-				$reservationSeries->UserId(),
-				ReservationUserLevel::OWNER);
-
-			$database->Execute($insertReservationUser);
+			$command = new InstanceAddedEventCommand($reservation, $reservationSeries);
+			$command->Execute($database);
 		}
 	}
 
 	public function Update(ExistingReservationSeries $reservationSeries)
 	{
 		$database = ServiceLocator::GetDatabase();
-		$events = $reservationSeries->GetEvents();
-
+		
 		if ($reservationSeries->RequiresNewSeries())
 		{
 			$currentId = $reservationSeries->SeriesId();
@@ -87,10 +76,10 @@ class ReservationRepository implements IReservationRepository
 			foreach ($reservationSeries->Instances() as $instance)
 			{
 				$updateReservationCommand = new UpdateReservationCommand(
-				$instance->ReferenceNumber(),
-				$newSeriesId,
-				$instance->StartDate(),
-				$instance->EndDate());
+					$instance->ReferenceNumber(),
+					$newSeriesId,
+					$instance->StartDate(),
+					$instance->EndDate());
 
 				$database->Execute($updateReservationCommand);
 			}
@@ -111,15 +100,7 @@ class ReservationRepository implements IReservationRepository
 			$database->Execute($updateSeries);
 		}
 
-		foreach ($events as $event)
-		{
-			$command = $this->GetReservationCommand($event, $reservationSeries);
-				
-			if ($command != null)
-			{
-				$database->Execute($command);
-			}
-		}
+		$this->ExecuteEvents($reservationSeries);
 	}
 
 
@@ -168,22 +149,27 @@ class ReservationRepository implements IReservationRepository
 	
 	public function Delete(ExistingReservationSeries $existingReservationSeries)
 	{
+		$this->ExecuteEvents($existingReservationSeries);
+	}
+	
+	private function ExecuteEvents(ExistingReservationSeries $existingReservationSeries)
+	{
 		$database = ServiceLocator::GetDatabase();
 		$events = $existingReservationSeries->GetEvents();
-
+		
 		foreach ($events as $event)
 		{
 			$command = $this->GetReservationCommand($event, $existingReservationSeries);
 				
 			if ($command != null)
 			{
-				$database->Execute($command);
+				$command->Execute($database);
 			}
 		}
 	}
 
 	/**
-	 * @return ISqlCommand
+	 * @return EventCommand
 	 */
 	private function GetReservationCommand($event, $series)
 	{
@@ -324,6 +310,9 @@ class ReservationEventMapper
 		return self::$instance;
 	}
 
+	/**
+	 * @return EventCommand
+	 */
 	public function Map($event, ExistingReservationSeries $series)
 	{
 		$eventType = get_class($event);
@@ -340,35 +329,93 @@ class ReservationEventMapper
 	private function BuildDeleteSeriesCommand(SeriesDeletedEvent $event)
 	{
 		$series = $event->Series();
-		return new DeleteSeriesCommand($series->SeriesId());
+		
+		return new EventCommand(
+			new DeleteSeriesCommand($series->SeriesId())
+		);
 	}
 	
 	private function BuildAddReservationCommand(InstanceAddedEvent $event, ExistingReservationSeries $series)
 	{
 		$reservation = $event->Instance();
 		
-		return new AddReservationCommand(
-			$reservation->StartDate(),
-			$reservation->EndDate(),
-			$reservation->ReferenceNumber(),
-			$series->SeriesId());
+		return new InstanceAddedEventCommand($event->Instance(), $series);
 	}
 	
 	private function BuildRemoveReservationCommand(InstanceRemovedEvent $event)
 	{
-		return new RemoveReservationCommand($event->Instance()->ReferenceNumber());
+		return new EventCommand(
+			new RemoveReservationCommand($event->Instance()->ReferenceNumber())
+		);
 	}
 
 	private function BuildUpdateReservationCommand(InstanceUpdatedEvent $event, ExistingReservationSeries $series)
 	{
 		$instance = $event->Instance();
 		
-		return new UpdateReservationCommand(
-			$instance->ReferenceNumber(),
-			$series->SeriesId(),
-			$instance->StartDate(),
-			$instance->EndDate());
+		return new EventCommand(
+			new UpdateReservationCommand(
+				$instance->ReferenceNumber(),
+				$series->SeriesId(),
+				$instance->StartDate(),
+				$instance->EndDate())
+			);
 	}	
+}
+
+class EventCommand
+{
+	/**
+	 * @var ISqlCommand
+	 */
+	private $command;
+	
+ 	public function __construct(ISqlCommand $command)
+ 	{
+ 		$this->command = $command;
+ 	}
+ 	
+	public function Execute(Database $database)
+	{
+		$database->Execute($this->command);
+	}
+}
+
+class InstanceAddedEventCommand extends EventCommand
+{
+	/**
+	 * @var Reservation
+	 */
+	private $instance;
+	
+	/**
+	 * @var ReservationSeries
+	 */
+	private $series;
+	
+	public function __construct(Reservation $instance, ReservationSeries $series)
+	{
+		$this->instance = $instance;
+		$this->series = $series;
+	}
+	
+	public function Execute(Database $database)
+	{
+		$insertReservation = new AddReservationCommand(
+				$this->instance->StartDate(),
+				$this->instance->EndDate(),
+				$this->instance->ReferenceNumber(),
+				$this->series->SeriesId());
+				
+		$reservationId = $database->ExecuteInsert($insertReservation);
+			
+		$insertReservationUser = new AddReservationUserCommand(
+			$reservationId,
+			$this->series->UserId(),
+			ReservationUserLevel::OWNER);
+
+		$database->Execute($insertReservationUser);
+	}
 }
 
 interface IReservationRepository

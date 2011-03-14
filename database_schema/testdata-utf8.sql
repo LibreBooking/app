@@ -23,7 +23,7 @@ insert into roles values (1,'default admin',0),(2,'basic user',0),(3,'group admi
 
 insert into user_roles values (1, 1),(2, 1);
 
-insert into time_block_groups values (1, 'Business Day');
+insert into time_block_groups values (1, 'Business Day', 'America/Chicago');
 
 insert into time_blocks (blockid, availability_code, block_group_id, start_time, end_time) values
 (1, 1, 1, '00:00', '06:00'),

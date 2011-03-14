@@ -330,7 +330,7 @@ class ExistingReservationTests extends TestBase
 		
 	}
 	
-	public function testUpdateToAnEarlierTime()
+	public function testUpdateSingleInstanceToAnEarlierTime()
 	{
 		$now = Date::Now();
 		
@@ -354,6 +354,41 @@ class ExistingReservationTests extends TestBase
 		
 		$this->assertTrue($newCurrent->StartDate()->Equals($newStart));
 		$this->assertTrue($newCurrent->EndDate()->Equals($end));
+	}
+	
+	public function testWhenChangingTimeToFutureInstances()
+	{
+		$currentSeriesDate = new DateRange(Date::Now(), Date::Now());
+
+		$oldDates = $currentSeriesDate->AddDays(-1);
+		$oldReservation = new TestReservation('old', $oldDates);
+		
+		$currentInstance = new TestReservation('current', $currentSeriesDate);
+		
+		$futureDates1 = $currentSeriesDate->AddDays(1);
+		$futureReservation1 = new TestReservation('new1', $futureDates1);
+		
+		$futureDates2 = $currentSeriesDate->AddDays(10);
+		$futureReservation2 = new TestReservation('new2', $futureDates2);
+		
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($currentInstance);
+		$builder->WithInstance($oldReservation);
+		$builder->WithInstance($futureReservation1);
+		$builder->WithInstance($futureReservation2);
+		$series = $builder->Build();
+		// updates
+		$series->ApplyChangesTo(SeriesUpdateScope::FutureInstances);
+		$series->UpdateDuration($currentSeriesDate->AddDays(1));
+
+		//$instances = $series->Instances();
+
+		$events = $series->GetEvents();
+		
+		//$this->assertEquals(1, count($events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($currentInstance), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($futureReservation1), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($futureReservation2), $events));
 	}
 	
 	public function testChangingDateOnlyAppliesToSingleInstance()

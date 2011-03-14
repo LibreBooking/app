@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class SchedulesTests extends TestBase
+class ScheduleRepositoryTests extends TestBase
 {
 	private $scheduleRepository;
 	
@@ -47,12 +47,15 @@ class SchedulesTests extends TestBase
 	
 	public function testCanGetLayoutForSchedule()
 	{
+		$timezone = 'America/New_York';
+		
 		$layoutRows[] = array(
 						ColumnNames::BLOCK_START => '02:00:00',
 						ColumnNames::BLOCK_END => '03:00:00',
 						ColumnNames::BLOCK_LABEL => 'PERIOD1',
 						ColumnNames::BLOCK_LABEL_END => 'END PERIOD1',
 						ColumnNames::BLOCK_CODE => PeroidTypes::RESERVABLE,
+						ColumnNames::BLOCK_TIMEZONE => $timezone,
 						);
 		
 		$layoutRows[] = array(
@@ -61,6 +64,7 @@ class SchedulesTests extends TestBase
 						ColumnNames::BLOCK_LABEL => 'PERIOD2',
 						ColumnNames::BLOCK_LABEL_END => 'END PERIOD2',
 						ColumnNames::BLOCK_CODE => PeroidTypes::RESERVABLE,
+						ColumnNames::BLOCK_TIMEZONE => $timezone,
 						);
 						
 		$layoutRows[] = array(
@@ -69,12 +73,13 @@ class SchedulesTests extends TestBase
 						ColumnNames::BLOCK_LABEL => 'PERIOD3',
 						ColumnNames::BLOCK_LABEL_END => 'END PERIOD3',
 						ColumnNames::BLOCK_CODE => PeroidTypes::NONRESERVABLE,
+						ColumnNames::BLOCK_TIMEZONE => $timezone,
 						);
 		
 		$this->db->SetRows($layoutRows);
 		
 		$scheduleId = 109;
-		$targetTimezone = 'US/Central';
+		$targetTimezone = 'America/Chicago';
 		
 		$layoutFactory = $this->getMock('ILayoutFactory');
 		$expectedLayout = new ScheduleLayout($targetTimezone);
@@ -88,13 +93,14 @@ class SchedulesTests extends TestBase
 		$this->assertEquals(new GetLayoutCommand($scheduleId), $this->db->_Commands[0]);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
 		
-		$periods = $layout->GetLayout();
+		$layoutDate = Date::Parse("2010-01-01", $timezone);
+		$periods = $layout->GetLayout($layoutDate);
 		$this->assertEquals(3, count($periods));
 		
-		$start = new Time(2,0,0, 'UTC');
-		$end = new Time(3,0,0, 'UTC');
+		$start = $layoutDate->SetTime(new Time(2,0,0));
+		$end = $layoutDate->SetTime(new Time(3,0,0));
 		
-		$period = new SchedulePeriod($start->ToTimezone($targetTimezone), $end->ToTimezone($targetTimezone), 'PERIOD1');
+		$period = new SchedulePeriod($start->ToTimezone($targetTimezone), $end->ToTimezone($targetTimezone), 'PERIOD1', 'END PERIOD1');
 		$this->assertEquals($period, $periods[0]);
 
 	}

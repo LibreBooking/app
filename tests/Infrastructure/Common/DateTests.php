@@ -192,23 +192,25 @@ class DateTests extends TestBase
     
     public function testTimeCreatedInEasternCanBeConvertedToCentral()
     {
+    	$east = 'America/New_York';
+    	$central = 'America/Chicago';
     	$hour = 10;
     	$min = 10;
     	$sec = 10;
     	
-    	$time = new Time($hour, $min, $sec, 'US/Eastern');
-    	$converted = $time->ToTimezone('US/Central');
+    	$time = Date::Create(2001, 1, 1, $hour, $min, $sec, $east);
+    	$converted = $time->ToTimezone($central);
     	
     	$this->assertEquals($hour - 1, $converted->Hour());
     	$this->assertEquals($min, $converted->Minute());
     	$this->assertEquals($sec, $converted->Second());
     	
-    	$time = new Time(0, $min, $sec, 'US/Eastern');
-    	$converted = $time->ToTimezone('US/Central');
+    	$time = Date::Create(2001, 1, 1, 0, $min, $sec, $east);
+    	$converted = $time->ToTimezone($central);
     	$this->assertEquals(23, $converted->Hour());
     	
-    	$time = new Time(1, $min, $sec, 'US/Eastern');
-    	$converted = $time->ToTimezone('US/Central');
+    	$time = Date::Create(2001, 1, 1, 1, $min, $sec, $east);
+    	$converted = $time->ToTimezone($central);
     	$this->assertEquals(0, $converted->Hour());
     }
     
@@ -252,19 +254,20 @@ class DateTests extends TestBase
     
     public function testTimesCanBeCompared()
     {
+    	$date = Date::Parse('2010-01-01');
     	$early = Time::Parse('10:11');
     	$late = Time::Parse('12:11');
     	
-    	$this->assertEquals(-1, $early->Compare($late));
-    	$this->assertEquals(1, $late->Compare($early));
+    	$this->assertEquals(-1, $early->Compare($late, $date));
+    	$this->assertEquals(1, $late->Compare($early, $date));
     	
     	$early2 = Time::Parse('10:11', 'US/Central');
     	$late2 = Time::Parse('10:11', 'US/Pacific');
 
-    	$this->assertEquals(-1, $early2->Compare($late2));
+    	$this->assertEquals(-1, $early2->Compare($late2, $date));
     }
     
-    public function testCanCompareDateEquality()
+    public function testCanCompareDateOnlyEquality()
     {
     	$date1 = Date::Parse('2008-01-01 11:00:00', 'US/Central');
     	$date2 = Date::Parse('2008-01-01 11:00:00', 'US/Eastern');
