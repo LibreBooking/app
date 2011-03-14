@@ -132,7 +132,7 @@ class ScheduleReservationList implements IScheduleReservationList
 		
 		for ($i = 0; $i < count($this->_layoutItems); $i++)		
 		{
-			$itemBegin = $this->_layoutDateStart->SetTime($this->_layoutItems[$i]->Begin());
+			$itemBegin = $this->_layoutItems[$i]->BeginDate();// $this->_layoutDateStart->SetTime($this->_layoutItems[$i]->Begin());
 			if ($itemBegin->LessThan($this->_firstLayoutTime))
 			{
 				$this->_firstLayoutTime =  $this->_layoutItems[$i]->BeginDate();

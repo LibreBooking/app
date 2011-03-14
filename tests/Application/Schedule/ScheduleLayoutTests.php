@@ -17,22 +17,39 @@ class ScheduleLayoutTests extends TestBase
 		parent::teardown();
 	}
 	
-	function testLayoutFoo()
+	function testConvertingEasternLayoutToCentralPreAndPostDaylightSavings()
 	{
-		$cst = 'US/Central';
-		$utc = 'UTC';
+		$cst = 'America/Chicago';
+		$est = 'America/New_York';
 		
 		$layout = new ScheduleLayout($cst);
 		
-		for ($i = 3; $i < 21; $i++)
-		{
-			$start = $i;
-			$end = $i+1;
-			$layout->AppendPeriod(Time::Parse("$start:00", $utc), Time::Parse("$end:00", $utc));
-		}
+		$layout->AppendPeriod(Time::Parse("00:00", $est), Time::Parse("06:00", $est));
+		$layout->AppendPeriod(Time::Parse("06:00", $est), Time::Parse("08:00", $est));
+		$layout->AppendPeriod(Time::Parse("08:00", $est), Time::Parse("12:00", $est));
+		$layout->AppendPeriod(Time::Parse("12:00", $est), Time::Parse("18:00", $est));
+		$layout->AppendPeriod(Time::Parse("18:00", $est), Time::Parse("00:00", $est));
 		
-		$slots = $layout->GetLayout($this->date);
-		$this->assertEquals(18, count($slots));
+		$preDst = new Date('2011-03-12', $cst);
+		$onDst = new Date('2011-03-13', $cst);
+		$postDst = new Date('2011-03-14', $cst);
+		$endDst = new Date('2011-11-06', $cst);
+				
+		foreach (array($preDst, $onDst, $postDst) as $date)
+		{
+			echo '-----TEST-----';
+			$slots = $layout->GetLayout($date);
+			echo '-----TEST-----';
+			//die();
+			$this->assertEquals(5, count($slots));
+			
+			$day = $date->Day();
+			$tomorrow = $day+1;
+			$firstSlot = new SchedulePeriod(new Date("2011-03-$day 00:00", $cst), new Date("2011-03-$day 05:00", $cst));
+			$lastSlot = new SchedulePeriod(new Date("2011-03-$day 17:00", $cst), new Date("2011-03-$tomorrow 00:00", $cst));
+			$this->assertEquals($firstSlot, $slots[0], "Testing date $date");
+			$this->assertEquals($lastSlot, $slots[4], "Testing date $date");
+		}
 	}
 	
 	function testLayoutCanBeCreatedAsCSTFromUTCTimes()
@@ -51,8 +68,10 @@ class ScheduleLayoutTests extends TestBase
 		$layout->AppendPeriod($t1e->GetTime(), $t2e->GetTime());
 		$layout->AppendBlockedPeriod($t2e->GetTime(), $t1s->GetTime());
 
-		$slots = $layout->GetLayout($this->date);
-		
+		echo '-----TEST-----';
+		$slots = $layout->GetLayout(Date::Parse('2010-01-01', $userTz));
+		echo '-----TEST-----';
+		//die();
 		$this->assertEquals(4, count($slots), '3:00 UTC - 0:00 UTC crosses midnight when converted to CST');
 		$this->assertEquals(new Time(0, 0, 0, $userTz), $slots[0]->Begin());
 		$this->assertEquals($t1s->ToTimezone($userTz)->GetTime(), $slots[0]->End());
@@ -137,7 +156,7 @@ class ScheduleLayoutTests extends TestBase
 		$endUtc = new Time(10, 0, 0, 'UTC');
 		$layout->AppendPeriod($startUtc, $endUtc);
 		
-		$periods = $layout->GetLayout($this->date);
+		$periods = $layout->GetLayout(Date::Parse('2010-01-01', 'CST'));
 		
 		$this->assertEquals(2, count($periods));
 		

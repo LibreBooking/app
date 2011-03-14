@@ -11,7 +11,6 @@ class ScheduleLayout implements IScheduleLayout
 {
 	private $_periods = array();
 	private $_timezone;
-	private $_addedTimes = array();
 	
 	/**
 	 * @param string $timezone target timezone of layout
@@ -53,19 +52,18 @@ class ScheduleLayout implements IScheduleLayout
 	
 	protected function AppendGenericPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null, $periodType)
 	{
-		$this->_periods[] = array('start' => $startTime, 'end' => $endTime, 'label' => $label, 'labelEnd' => $labelEnd, 'periodType' => $periodType);
-		
+		$this->_periods[] = array('start' => $startTime, 'end' => $endTime, 'label' => $label, 'labelEnd' => $labelEnd, 'periodType' => $periodType);		
 	}
 	
 	/**
 	 * @param Date $start
 	 * @param Date $end
-	 * @param Date $midnight
 	 * @return bool
 	 */
-	protected function SpansMidnight(Date $start, Date $end, Date $midnight)
+	protected function SpansMidnight(Date $start, Date $end)
 	{
-		return !$end->Equals($midnight) && ($start->GreaterThan($end) || !$start->DateEquals($end));
+		return !$start->DateEquals($end);//($midnight) && $end->GreaterThan($midnight);
+		//return !$end->Equals($midnight) && ($start->GreaterThan($end) || !$start->DateEquals($end));
 	}
 
 	/**
@@ -73,47 +71,97 @@ class ScheduleLayout implements IScheduleLayout
 	 */
 	public function GetLayout(Date $layoutDate)
 	{
+		if ($layoutDate->Timezone() != $this->_timezone)
+		{
+			//throw new Exception("Cannot get layout. Date timezone {$layoutDate->Timezone()} does not equal target timezone {$this->_timezone}");
+		}
+		
 		$targetTimezone = $this->_timezone;
 		$layoutTimezone = $this->_periods[0]['start']->Timezone();
 		
-		$workingDate = $layoutDate->ToTimezone($layoutTimezone);
-		$midnight = $workingDate->ToTimezone($targetTimezone)->GetDate();
+		$layoutDate = $layoutDate->ToTimezone($targetTimezone);
 		
+		$workingDate = Date::Create($layoutDate->Year(), $layoutDate->Month(), $layoutDate->Day(), 0, 0, 0, $layoutTimezone);
+		$midnight = $layoutDate->GetDate();
+		$midnightTomorrow = $midnight->AddDays(1);
+		
+		$list = new PeriodList();
 		$layout = array();
 		foreach ($this->_periods as $period)
 		{
-			$startTime = $period['start'];
-			$endTime = $period['end'];
+			$start = $period['start'];
+			$end = $period['end'];
 			$periodType = $period['periodType'];
 			$label = $period['label'];
 			$labelEnd = $period['labelEnd'];
 			
-			$periodStart = $workingDate->SetTime($startTime)->ToTimezone($targetTimezone);
-			$periodEnd = $workingDate->SetTime($endTime)->ToTimezone($targetTimezone);
+			// convert to target timezone
+			$periodStart = $workingDate->SetTime($start)->ToTimezone($targetTimezone);
+			$periodEnd = $workingDate->SetTime($end)->ToTimezone($targetTimezone);
 			
-//			if ($this->AlreadyAdded($startTime))
-//			{
-//				return;
-//			}
-			if ($this->SpansMidnight($periodStart, $periodEnd, $midnight))
+			$startTime = $periodStart->GetTime();
+			$endTime = $periodEnd->GetTime();
+			
+			if ($this->BothDatesAreOff($periodStart, $periodEnd, $layoutDate))
 			{
-				$layout[] = new $periodType($periodStart->GetDate(), $periodEnd, $label, $labelEnd);
-				$layout[] = new $periodType($periodStart, $periodEnd->AddDays(1)->GetDate(), $label, $labelEnd);
+				$periodStart = $layoutDate->SetTime($startTime);
+				$periodEnd = $layoutDate->SetTime($endTime);
 			}
-			else
+
+			$adjusted = false;	
+			
+			if (!$periodStart->DateEquals($layoutDate))
 			{
-				$layout[] = new $periodType($periodStart, $periodEnd, $label, $labelEnd);
+				//echo "start adjustment";
+				$list->Add($this->Add($periodType, $midnight, $layoutDate->SetTime($endTime), $label, $labelEnd));
+				$adjusted = true;
+			}
+			
+			if (!$periodEnd->DateEquals($layoutDate))
+			{
+				//echo "end adjustment";
+				$list->Add($this->Add($periodType, $layoutDate->SetTime($startTime), $midnightTomorrow, $label, $labelEnd));
+				$adjusted = true;
+			}
+			
+			if ($periodStart->GreaterThan($periodEnd) && !$adjusted)
+			{
+				//echo "echo start > end adjustment";
+				
+				$list->Add($this->Add($periodType, $midnight, $layoutDate->SetTime($endTime), $label, $labelEnd));
+				$list->Add($this->Add($periodType, $layoutDate->SetTime($startTime), $midnightTomorrow, $label, $labelEnd));
+				$adjusted = true;		
+			}
+			
+			if (!$adjusted)
+			{
+				$list->Add($this->Add($periodType, $layoutDate->SetTime($startTime), $layoutDate->SetTime($endTime), $label, $labelEnd));
 			}
 		}
 		
+//		echo "printing";
+//		print_r($layout);
+//		die('printed');
+		
+		$layout = $list->GetItems();
+		//echo "number " . count($layout) . " \n";
 		$this->SortItems($layout);
 		
+//		foreach ($layout as $item)
+//		{
+//			echo "$item<br/>";
+//		}
 		return $layout;	
 	}
 	
-	public function Sort()
+	private function BothDatesAreOff(Date $start, Date $end, Date $layoutDate)
 	{
-		$this->SortItems($this->_periods);
+		return !$start->DateEquals($layoutDate) && !$end->DateEquals($layoutDate);
+	}
+	
+	private function Add($periodType, Date $start, Date $end, $label, $labelEnd)
+	{
+		return new $periodType($start, $end, $label, $labelEnd);
 	}
 	
 	protected function SortItems(&$items)
@@ -134,6 +182,27 @@ class ScheduleLayout implements IScheduleLayout
 	static function SortBeginTimes($period1, $period2)
 	{
 		return $period1->Compare($period2);
+	}
+}
+
+class PeriodList
+{
+	private $items = array();
+	private $_addedTimes = array();
+	
+	public function Add(SchedulePeriod $period)
+	{
+		if ($this->AlreadyAdded($period->Begin()))
+		{
+			echo "already added $period\n";
+			return;
+		}
+		$this->items[] = $period;
+	}
+	
+	public function GetItems()
+	{
+		return $this->items;
 	}
 	
 	private function AlreadyAdded(Time $startTime)
