@@ -291,6 +291,15 @@ class Date
 	}
 	
 	/**
+	 * @param string $time
+	 * @return Date
+	 */
+	public function SetTimeString($time)
+	{
+		return $this->SetTime(Time::Parse($time,  $this->Timezone()));
+	}
+	
+	/**
 	 * @param Date $date
 	 * @return DateInterval
 	 */

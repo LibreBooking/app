@@ -15,7 +15,15 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @var IScheduleLayout
 	 */
 	private $_layout;
+	
+	/**
+	 * @var Date
+	 */
 	private $_layoutDateStart;
+	
+	/**
+	 * @var Date
+	 */
 	private $_layoutDateEnd;
 	
 	private $_layoutItems;
@@ -23,6 +31,9 @@ class ScheduleReservationList implements IScheduleReservationList
 	private $_reservationsByStartTime = array();
 	private $_layoutByEndTime = array();	
 	
+	/**
+	 * @var Time
+	 */
 	private $_midnight;
 	private $_destinationTimezone;
 	
@@ -72,13 +83,13 @@ class ScheduleReservationList implements IScheduleReservationList
 				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
 				$span = ($endingPeriodIndex - $currentIndex) + 1;
-				$slots[] = new ReservationSlot($layoutItem->Begin(), $this->_layoutItems[$endingPeriodIndex]->End(), $this->_layoutDateStart, $span, $reservation);
+				$slots[] = new ReservationSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span, $reservation);
 				
 				$currentIndex = $endingPeriodIndex;
 			}
 			else
 			{
-				$slots[] = new EmptyReservationSlot($layoutItem->Begin(), $layoutItem->End(), $this->_layoutDateStart, $layoutItem->IsReservable());
+				$slots[] = new EmptyReservationSlot($layoutItem->BeginDate(), $layoutItem->EndDate(), $this->_layoutDateStart, $layoutItem->IsReservable());
 			}
 		}
 	
@@ -128,7 +139,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	
 	private function IndexLayout()
 	{
-		$this->_firstLayoutTime =  $this->_layoutDateStart->SetTime(new Time(23, 59, 59, $this->_destinationTimezone));
+		$this->_firstLayoutTime =  $this->_layoutDateEnd;
 		
 		for ($i = 0; $i < count($this->_layoutItems); $i++)		
 		{
@@ -138,7 +149,12 @@ class ScheduleReservationList implements IScheduleReservationList
 				$this->_firstLayoutTime =  $this->_layoutItems[$i]->BeginDate();
 			}
 			
-			$this->_layoutByEndTime[$this->_layoutItems[$i]->End()->ToString()] = $i;
+			$endTime = $this->_layoutItems[$i]->End();
+			if (!$this->_layoutItems[$i]->EndDate()->DateEquals($this->_layoutDateStart))
+			{
+				$endTime = $this->_midnight;
+			}
+			$this->_layoutByEndTime[$endTime->ToString()] = $i;
 		}
 	}
 	

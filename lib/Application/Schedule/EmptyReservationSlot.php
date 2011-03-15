@@ -3,12 +3,12 @@
 class EmptyReservationSlot implements IReservationSlot
 {
 	/**
-	 * @var Time
+	 * @var Date
 	 */
 	protected $_begin;
 	
 	/**
-	 * @var Time
+	 * @var Date
 	 */
 	protected $_end;
 	
@@ -27,11 +27,11 @@ class EmptyReservationSlot implements IReservationSlot
 	 */
 	protected $_periodSpan;
 	
-	public function __construct(Time $begin, Time $end, Date $date, $isReservable)
+	public function __construct(Date $begin, Date $end, Date $displayDate, $isReservable)
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
-		$this->_date = $date;
+		$this->_date = $displayDate;
 		$this->_isReservable = $isReservable;
 	}
 	
@@ -40,7 +40,7 @@ class EmptyReservationSlot implements IReservationSlot
 	 */
 	public function Begin()
 	{
-		return $this->_begin;
+		return $this->_begin->GetTime();
 	}
 	
 	/**
@@ -48,7 +48,7 @@ class EmptyReservationSlot implements IReservationSlot
 	 */
 	public function End()
 	{
-		return $this->_end;	
+		return $this->_end->GetTime(0);	
 	}
 	
 	/**
@@ -89,7 +89,7 @@ class EmptyReservationSlot implements IReservationSlot
 	
 	public function ToTimezone($timezone)
 	{
-		return new EmptyReservationSlot($this->Begin()->ToTimezone($timezone), $this->End()->ToTimezone($timezone));
+		return new EmptyReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->End()->ToTimezone($timezone));
 	}
 }
 

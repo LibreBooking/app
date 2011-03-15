@@ -5,6 +5,8 @@ interface IScheduleLayout
 	 * @return array of SchedulePeriod objects
 	 */
 	public function GetLayout(Date $layoutDate);
+	
+	public function Timezone();
 }
 
 class ScheduleLayout implements IScheduleLayout
@@ -271,6 +273,11 @@ class DatabaseScheduleLayout implements IScheduleLayout
 		{
 			$layout[] = new NonSchedulePeriod($layout[count($layout)-1]->End(), $midnight);
 		}
+	}
+	
+	public function Timezone()
+	{
+		return "UTC";
 	}
 }
 
