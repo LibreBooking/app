@@ -41,14 +41,16 @@ class ScheduleLayoutTests extends TestBase
 			$slots = $layout->GetLayout($date);
 			echo '-----TEST-----';
 			//die();
-			$this->assertEquals(5, count($slots));
+			$this->assertEquals(6, count($slots));
 			
 			$day = $date->Day();
 			$tomorrow = $day+1;
-			$firstSlot = new SchedulePeriod(new Date("2011-03-$day 00:00", $cst), new Date("2011-03-$day 05:00", $cst));
-			$lastSlot = new SchedulePeriod(new Date("2011-03-$day 17:00", $cst), new Date("2011-03-$tomorrow 00:00", $cst));
+			$yesterday = $day-1;
+			$firstSlot = new SchedulePeriod(new Date("2011-03-$yesterday 23:00", $cst), new Date("2011-03-$day 05:00", $cst));
+//			$ = new SchedulePeriod(new Date("2011-03-$day 17:00", $cst), new Date("2011-03-$tomorrow 00:00", $cst));
+			$lastSlot = new SchedulePeriod(new Date("2011-03-$day 23:00", $cst), new Date("2011-03-$tomorrow 05:00", $cst));
 			$this->assertEquals($firstSlot, $slots[0], "Testing date $date");
-			$this->assertEquals($lastSlot, $slots[4], "Testing date $date");
+			$this->assertEquals($lastSlot, $slots[5], "Testing date $date");
 		}
 	}
 	
@@ -162,15 +164,15 @@ class ScheduleLayoutTests extends TestBase
 		
 		$utcDate = $this->date->ToUtc();
 		
-		$firstBegin = new Time(0,0,0, 'CST');
-		$firstEnd = $utcDate->SetTime($endUtc)->ToTimezone('CST')->GetTime();
-		$secondBegin = $utcDate->SetTime($startUtc)->ToTimezone('CST')->GetTime();
-		$secondEnd = new Time(0, 0, 0, 'CST');
+		$firstBegin = Date::Parse('2010-01-01 0:00:00', 'UTC')->ToTimezone('CST');
+		$firstEnd = Date::Parse('2010-01-01 10:00:00', 'UTC')->ToTimezone('CST');
+		$secondBegin = Date::Parse('2010-01-01 10:00:00', 'UTC')->ToTimezone('CST');
+		$secondEnd = Date::Parse('2010-01-02 0:00:00', 'UTC')->ToTimezone('CST');
 		
-		$this->assertEquals($firstBegin, $periods[0]->Begin());
-		$this->assertEquals($firstEnd, $periods[0]->End());
-		$this->assertEquals($secondBegin, $periods[1]->Begin());
-		$this->assertEquals($secondEnd, $periods[1]->End());
+		$this->assertTrue($firstBegin->Equals($periods[0]->BeginDate()));
+		$this->assertTrue($firstEnd->Equals($periods[0]->EndDate()));
+		$this->assertTrue($secondBegin->Equals($periods[1]->BeginDate()));
+		$this->assertTrue($secondEnd->Equals($periods[1]->EndDate()));
 	}
 }
 ?>

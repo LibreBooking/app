@@ -62,8 +62,7 @@ class ScheduleLayout implements IScheduleLayout
 	 */
 	protected function SpansMidnight(Date $start, Date $end)
 	{
-		return !$start->DateEquals($end);//($midnight) && $end->GreaterThan($midnight);
-		//return !$end->Equals($midnight) && ($start->GreaterThan($end) || !$start->DateEquals($end));
+		return !$start->DateEquals($end);
 	}
 
 	/**
@@ -87,6 +86,7 @@ class ScheduleLayout implements IScheduleLayout
 		
 		$list = new PeriodList();
 		$layout = array();
+		$adjusted = false;	
 		foreach ($this->_periods as $period)
 		{
 			$start = $period['start'];
@@ -99,6 +99,11 @@ class ScheduleLayout implements IScheduleLayout
 			$periodStart = $workingDate->SetTime($start)->ToTimezone($targetTimezone);
 			$periodEnd = $workingDate->SetTime($end)->ToTimezone($targetTimezone);
 			
+			if ($periodEnd->LessThan($periodStart))
+			{
+				$periodEnd = $periodEnd->AddDays(1);
+			}
+			
 			$startTime = $periodStart->GetTime();
 			$endTime = $periodEnd->GetTime();
 			
@@ -108,36 +113,28 @@ class ScheduleLayout implements IScheduleLayout
 				$periodEnd = $layoutDate->SetTime($endTime);
 			}
 
-			$adjusted = false;	
-			
-			if (!$periodStart->DateEquals($layoutDate))
+			if ($this->SpansMidnight($periodStart, $periodEnd))
 			{
-				//echo "start adjustment";
-				$list->Add($this->Add($periodType, $midnight, $layoutDate->SetTime($endTime), $label, $labelEnd));
-				$adjusted = true;
+				if ($periodStart->LessThan($periodEnd))
+				{
+					// add compensating period at end
+					$start = $layoutDate->SetTime($startTime);
+					$end = $periodEnd->AddDays(1);
+					$list->Add($this->Add($periodType, $start, $end, $label, $labelEnd));
+				}
+				else 
+				{
+					// add compensating period at start	
+					$start = $periodStart->AddDays(-1);
+					$end = $layoutDate->SetTime($endTime);
+					$list->Add($this->Add($periodType, $start, $end, $label, $labelEnd));
+				}
 			}
 			
-			if (!$periodEnd->DateEquals($layoutDate))
-			{
-				//echo "end adjustment";
-				$list->Add($this->Add($periodType, $layoutDate->SetTime($startTime), $midnightTomorrow, $label, $labelEnd));
-				$adjusted = true;
-			}
+			$list->Add($this->Add($periodType, $periodStart, $periodEnd, $label, $labelEnd));
 			
-			if ($periodStart->GreaterThan($periodEnd) && !$adjusted)
-			{
-				//echo "echo start > end adjustment";
-				
-				$list->Add($this->Add($periodType, $midnight, $layoutDate->SetTime($endTime), $label, $labelEnd));
-				$list->Add($this->Add($periodType, $layoutDate->SetTime($startTime), $midnightTomorrow, $label, $labelEnd));
-				$adjusted = true;		
-			}
-			
-			if (!$adjusted)
-			{
-				$list->Add($this->Add($periodType, $layoutDate->SetTime($startTime), $layoutDate->SetTime($endTime), $label, $labelEnd));
-			}
 		}
+		
 		
 //		echo "printing";
 //		print_r($layout);
@@ -188,15 +185,17 @@ class ScheduleLayout implements IScheduleLayout
 class PeriodList
 {
 	private $items = array();
-	private $_addedTimes = array();
+	private $_addedStarts = array();
+	private $_addedEnds = array();
 	
 	public function Add(SchedulePeriod $period)
 	{
-		if ($this->AlreadyAdded($period->Begin()))
+		if ($this->AlreadyAdded($period->BeginDate(), $period->EndDate()))
 		{
 			echo "already added $period\n";
 			return;
 		}
+		
 		$this->items[] = $period;
 	}
 	
@@ -205,16 +204,25 @@ class PeriodList
 		return $this->items;
 	}
 	
-	private function AlreadyAdded(Time $startTime)
+	private function AlreadyAdded(Date $start, Date $end)
 	{
-		if (array_key_exists($startTime->ToString(), $this->_addedTimes))
+		$startExists = false;
+		$endExists = false;
+		
+		if (array_key_exists($start->Timestamp(), $this->_addedStarts))
 		{
-			return true;
+			$startExists = true;
 		}
 		
-		$this->_addedTimes[$startTime->ToString()] = true;
+		if (array_key_exists($end->Timestamp(), $this->_addedEnds))
+		{
+			$endExists = true;
+		}
 		
-		return false;
+		$this->_addedTimes[$start->Timestamp()] = true;
+		$this->_addedEnds[$end->Timestamp()] = true;
+		
+		return $startExists || $endExists;
 	}
 }
 
