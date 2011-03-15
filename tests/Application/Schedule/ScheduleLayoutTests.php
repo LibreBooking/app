@@ -35,57 +35,66 @@ class ScheduleLayoutTests extends TestBase
 		$postDst = new Date('2011-03-14', $cst);
 		$endDst = new Date('2011-11-06', $cst);
 				
-		foreach (array($preDst, $onDst, $postDst) as $date)
+		foreach (array($preDst, $onDst, $postDst, $endDst) as $date)
 		{
-			echo '-----TEST-----';
+			//echo '-----TEST-----';
 			$slots = $layout->GetLayout($date);
-			echo '-----TEST-----';
+			//echo '-----TEST-----';
 			//die();
 			$this->assertEquals(6, count($slots));
 			
+			$month = $date->Month();
 			$day = $date->Day();
 			$tomorrow = $day+1;
 			$yesterday = $day-1;
-			$firstSlot = new SchedulePeriod(new Date("2011-03-$yesterday 23:00", $cst), new Date("2011-03-$day 05:00", $cst));
-//			$ = new SchedulePeriod(new Date("2011-03-$day 17:00", $cst), new Date("2011-03-$tomorrow 00:00", $cst));
-			$lastSlot = new SchedulePeriod(new Date("2011-03-$day 23:00", $cst), new Date("2011-03-$tomorrow 05:00", $cst));
+			$firstSlot = new SchedulePeriod(new Date("2011-$month-$yesterday 23:00", $cst), new Date("2011-$month-$day 05:00", $cst));
+			$lastSlot = new SchedulePeriod(new Date("2011-$month-$day 23:00", $cst), new Date("2011-$month-$tomorrow 05:00", $cst));
 			$this->assertEquals($firstSlot, $slots[0], "Testing date $date");
 			$this->assertEquals($lastSlot, $slots[5], "Testing date $date");
 		}
 	}
 	
-	function testLayoutCanBeCreatedAsCSTFromUTCTimes()
+	function testLayoutCanBeCreatedAsCSTFromPSTTimes()
 	{
 		$userTz = 'America/Chicago';
-		$utc = 'UTC';
+		$periodTz = 'America/Los_Angeles';
 		
-		$utcDate = $this->date->ToUtc();
+		$date = Date::Parse('2011-01-01', $periodTz);
 		
-		$t1s = $utcDate->SetTime(new Time(0, 0, 0));
-		$t1e = $utcDate->SetTime(new Time(1, 0, 0));
-		$t2e = $utcDate->SetTime(new Time(3, 0, 0));
+		$t1s = $date->SetTime(new Time(0, 0, 0));
+		$t1e = $date->SetTime(new Time(1, 0, 0));
+		$t2e = $date->SetTime(new Time(21, 0, 0));
 		
 		$layout = new ScheduleLayout($userTz);
 		$layout->AppendBlockedPeriod($t1s->GetTime(), $t1e->GetTime());
 		$layout->AppendPeriod($t1e->GetTime(), $t2e->GetTime());
 		$layout->AppendBlockedPeriod($t2e->GetTime(), $t1s->GetTime());
 
-		echo '-----TEST-----';
-		$slots = $layout->GetLayout(Date::Parse('2010-01-01', $userTz));
-		echo '-----TEST-----';
+		//echo '-----TEST-----';
+		$slots = $layout->GetLayout(Date::Parse('2011-01-01', $userTz));
+		//echo '//-----TEST-----//';
 		//die();
-		$this->assertEquals(4, count($slots), '3:00 UTC - 0:00 UTC crosses midnight when converted to CST');
-		$this->assertEquals(new Time(0, 0, 0, $userTz), $slots[0]->Begin());
-		$this->assertEquals($t1s->ToTimezone($userTz)->GetTime(), $slots[0]->End());
-		
-		$this->assertEquals($t1s->ToTimezone($userTz)->GetTime(), $slots[1]->Begin(), $slots[1]->Begin()->ToString());
-		$this->assertEquals($t1e->ToTimezone($userTz)->GetTime(), $slots[1]->End(), $slots[1]->End()->ToString());
-		
-		$this->assertEquals($t1e->ToTimezone($userTz)->GetTime(), $slots[2]->Begin());
-		$this->assertEquals($t2e->ToTimezone($userTz)->GetTime(), $slots[2]->End());
-		
-		$this->assertEquals($t2e->ToTimezone($userTz)->GetTime(), $slots[3]->Begin());
-		$this->assertEquals(new Time(0, 0, 0, $userTz), $slots[3]->End());
+		$this->assertEquals(4, count($slots), '21:00 PST - 0:00 PST crosses midnight when converted to CST');
+		$firstSlot = new NonSchedulePeriod(new Date("2010-12-31 23:00", $userTz), new Date("2011-01-01 02:00", $userTz));
+		$slot2 = new NonSchedulePeriod(new Date("2011-01-01 02:00", $userTz), new Date("2011-01-01 03:00", $userTz));
+		$slot3 = new SchedulePeriod(new Date("2011-01-01 03:00", $userTz), new Date("2011-01-01 23:00", $userTz));
+		$lastSlot = new NonSchedulePeriod(new Date("2011-01-01 23:00", $userTz), new Date("2011-01-02 02:00", $userTz));
+			
+		$this->assertEquals($firstSlot, $slots[0]);
+		$this->assertEquals($slot2, $slots[1]);
+		$this->assertEquals($slot3, $slots[2]);
+		$this->assertEquals($lastSlot, $slots[3]);
+//		$this->assertEquals(new Time(0, 0, 0, $userTz), $slots[0]->Begin());
+//		$this->assertEquals($t1s->ToTimezone($userTz)->GetTime(), $slots[0]->End());
+//		
+//		$this->assertEquals($t1s->ToTimezone($userTz)->GetTime(), $slots[1]->Begin(), $slots[1]->Begin()->ToString());
+//		$this->assertEquals($t1e->ToTimezone($userTz)->GetTime(), $slots[1]->End(), $slots[1]->End()->ToString());
+//		
+//		$this->assertEquals($t1e->ToTimezone($userTz)->GetTime(), $slots[2]->Begin());
+//		$this->assertEquals($t2e->ToTimezone($userTz)->GetTime(), $slots[2]->End());
+//		
+//		$this->assertEquals($t2e->ToTimezone($userTz)->GetTime(), $slots[3]->Begin());
+//		$this->assertEquals(new Time(0, 0, 0, $userTz), $slots[3]->End());
 	}
 	
 	public function testCreatesScheduleLayoutInProperOrder()
@@ -157,10 +166,13 @@ class ScheduleLayoutTests extends TestBase
 		$startUtc = new Time(0, 0, 0, 'UTC');
 		$endUtc = new Time(10, 0, 0, 'UTC');
 		$layout->AppendPeriod($startUtc, $endUtc);
+		$layout->AppendPeriod($endUtc, $startUtc);
 		
+		//echo '--TEST--';
 		$periods = $layout->GetLayout(Date::Parse('2010-01-01', 'CST'));
-		
-		$this->assertEquals(2, count($periods));
+		//echo '//TEST--';
+		//die();
+		$this->assertEquals(3, count($periods));
 		
 		$utcDate = $this->date->ToUtc();
 		

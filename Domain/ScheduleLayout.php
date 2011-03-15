@@ -62,7 +62,7 @@ class ScheduleLayout implements IScheduleLayout
 	 */
 	protected function SpansMidnight(Date $start, Date $end)
 	{
-		return !$start->DateEquals($end);
+		return !$start->DateEquals($end) && !$end->IsMidnight();
 	}
 
 	/**
@@ -115,9 +115,10 @@ class ScheduleLayout implements IScheduleLayout
 
 			if ($this->SpansMidnight($periodStart, $periodEnd))
 			{
-				if ($periodStart->LessThan($periodEnd))
+				if ($periodStart->LessThan($midnight))
 				{
 					// add compensating period at end
+					//echo "\ncompensating end";
 					$start = $layoutDate->SetTime($startTime);
 					$end = $periodEnd->AddDays(1);
 					$list->Add($this->Add($periodType, $start, $end, $label, $labelEnd));
@@ -125,6 +126,7 @@ class ScheduleLayout implements IScheduleLayout
 				else 
 				{
 					// add compensating period at start	
+					//echo "\ncompensating start";
 					$start = $periodStart->AddDays(-1);
 					$end = $layoutDate->SetTime($endTime);
 					$list->Add($this->Add($periodType, $start, $end, $label, $labelEnd));
@@ -132,10 +134,8 @@ class ScheduleLayout implements IScheduleLayout
 			}
 			
 			$list->Add($this->Add($periodType, $periodStart, $periodEnd, $label, $labelEnd));
-			
 		}
-		
-		
+			
 //		echo "printing";
 //		print_r($layout);
 //		die('printed');
@@ -192,10 +192,11 @@ class PeriodList
 	{
 		if ($this->AlreadyAdded($period->BeginDate(), $period->EndDate()))
 		{
-			echo "already added $period\n";
+			//echo "already added $period\n";
 			return;
 		}
 		
+		//echo "\nadding {$period->BeginDate()} - {$period->EndDate()}";
 		$this->items[] = $period;
 	}
 	
