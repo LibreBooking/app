@@ -200,7 +200,7 @@ class ScheduleReservationList implements IScheduleReservationList
 		
 			if ($currentItem->End()->Compare($endingTime, $this->_layoutDateStart) > 0 )
 			{
-				return $i-1;
+				return $i;
 			}
 		}
 		
