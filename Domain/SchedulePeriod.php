@@ -61,14 +61,19 @@ class SchedulePeriod
 	}
 	
 	/**
+	 * @param $dateOverride
 	 * @return string
 	 */
-	public function Label()
+	public function Label($dateOverride = null)
 	{
 		if (empty($this->_label))
 		{
 			$format = Resources::GetInstance()->GetDateFormat('period_time');
 			
+			if (isset($dateOverride))
+			{
+				return $dateOverride->Format($format);
+			}
 			return $this->_begin->Format($format);
 		}
 		return $this->_label;
@@ -117,6 +122,11 @@ class SchedulePeriod
 	public function Compare(SchedulePeriod $other)
 	{
 		return $this->_begin->Compare($other->_begin);
+	}
+	
+	public function BeginsBefore(Date $date)
+	{
+		return $this->_begin->DateCompare($date) < 0;
 	}
 }
 

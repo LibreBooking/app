@@ -16,15 +16,10 @@ class ReservationListing implements IMutableReservationListing
 	 * @var array[int]ScheduleReservation
 	 */
 	private $_reservationByResource = array();
-	
-	private $_timezone;
-	
-	/**
-	 * @param $timezone string
-	 */
-	public function __construct($timezone)
+
+	public function __construct()
 	{
-		$this->_timezone = $timezone;
+		
 	}
 	
 	/**
@@ -48,7 +43,7 @@ class ReservationListing implements IMutableReservationListing
 	
 	public function OnDate($date)
 	{
-		$reservationListing = new ReservationListing($this->_timezone);
+		$reservationListing = new ReservationListing();
 		foreach ($this->_reservations as $reservation)
 		{
 			if ($reservation->OccursOn($date))
@@ -62,7 +57,7 @@ class ReservationListing implements IMutableReservationListing
 	
 	public function ForResource($resourceId)
 	{
-		$reservationListing = new ReservationListing($this->_timezone);
+		$reservationListing = new ReservationListing();
 		
 		if (array_key_exists($resourceId, $this->_reservationByResource))
 		{

@@ -1,6 +1,8 @@
 <?php
 class FakeResources extends Resources 
 {
+	private $_dateFormats = array();
+	
 	public function __construct()
 	{
 		
@@ -13,6 +15,10 @@ class FakeResources extends Resources
 	
 	public function GetDateFormat($key)
 	{
+		if (array_key_exists($key, $this->_dateFormats))
+		{
+			return $this->_dateFormats[$key];
+		}
 		return $key;
 	}
 	
@@ -24,6 +30,11 @@ class FakeResources extends Resources
 	public function GetMonths($key)
 	{
 		return $key;
+	}
+	
+	public function SetDateFormat($key, $value)
+	{
+		$this->_dateFormats[$key] = $value;
 	}
 }
 ?>

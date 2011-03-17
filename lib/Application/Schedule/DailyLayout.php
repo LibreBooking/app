@@ -47,6 +47,29 @@ class DailyLayout implements IDailyLayout
 	{
 		return !$date->GetDate()->LessThan(Date::Now()->GetDate());
 	}
+	
+	public function GetLabels(Date $displayDate)
+	{
+		$labels = array();
+		
+		$periods = $this->_scheduleLayout->GetLayout($displayDate);
+		
+		if ($periods[0]->BeginsBefore($displayDate))
+		{
+			$labels[] = $periods[0]->Label($displayDate->GetDate());
+		}
+		else
+		{
+			$labels[] = $periods[0]->Label();
+		}
+		
+		for ($i = 1; $i < count($periods); $i++)
+		{
+			$labels[] = $periods[$i]->Label();
+		}
+		
+		return $labels;
+	}
 }
 
 interface IDailyLayoutFactory

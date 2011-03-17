@@ -59,6 +59,11 @@ class TestHelper
 {
 	public static $Debug = false;
 	
+	/**
+	 * @param string $relativePath
+	 * @param string[] $ignoreCallback
+	 * @return PHPUnit_Framework_TestSuite
+	 */
 	public static function GetSuite($relativePath, $ignoreCallback = array())
 	{
 		$testDirectory = ROOT_DIR . $relativePath;
