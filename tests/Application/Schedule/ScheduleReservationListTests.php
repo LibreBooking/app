@@ -278,7 +278,7 @@ class ScheduleReservationListTests extends TestBase
 		$slot9 = new EmptyReservationSlot($expectedSlots[10]->BeginDate(), $expectedSlots[10]->EndDate(), $slotDate, $expectedSlots[10]->IsReservable());
 		$slot10 = new EmptyReservationSlot($expectedSlots[11]->BeginDate(), $expectedSlots[11]->EndDate(), $slotDate, $expectedSlots[11]->IsReservable());
 		$slot11 = new EmptyReservationSlot($expectedSlots[12]->BeginDate(), $expectedSlots[12]->EndDate(), $slotDate, $expectedSlots[12]->IsReservable());
-		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $expectedSlots[13]->EndDate(), $slotDate, 15, $r3);
+		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $date->AddDays(1), $slotDate, 15, $r3);
 		
 		$this->assertEquals(12, count($slots));
 		
