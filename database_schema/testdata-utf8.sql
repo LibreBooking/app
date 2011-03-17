@@ -1,17 +1,27 @@
 ﻿use phpscheduleit2;
 
-truncate table resources;
-truncate table users;
-truncate table roles;
-truncate table user_roles;
-truncate table time_block_groups;
-truncate table time_blocks;
-truncate table organizations;
-truncate table groups;
-truncate table addresses;
+delete from resources;
+alter table resources AUTO_INCREMENT = 1;
+delete from  users;
+alter table users AUTO_INCREMENT = 1;
+delete from roles;
+alter table roles AUTO_INCREMENT = 1;
+delete from user_roles;
+alter table user_roles AUTO_INCREMENT = 1;
+delete from time_block_groups;
+alter table time_block_groups AUTO_INCREMENT = 1;
+delete from time_blocks;
+alter table time_blocks AUTO_INCREMENT = 1;
+delete from organizations;
+alter table organizations AUTO_INCREMENT = 1;
+delete from groups;
+alter table groups AUTO_INCREMENT = 1;
+delete from addresses;
+alter table addresses AUTO_INCREMENT = 1;
 
 
-insert into resources (name, type_id, requires_approval) values ('resource1', 1, 0),('resource2', 1, 0);
+insert into resources (name, type_id, requires_approval) values ('Conference Room 1', 1, 0),('Conference Room 2', 1, 0);
+
 
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language)
 	values ('Nick', 'Korbel', 'nkorbel@gmail.com', 'nkorbel', '7b6aec38ff9b7650d64d0374194307bdde711425', '3b3dbb9b', 'America/Chicago', '2008-09-16 01:59:00', 1, now(), 'en_us');
@@ -42,7 +52,8 @@ insert into addresses values (1, 'home', 'home street, city, state and country')
 truncate table user_addresses;
 insert into user_addresses values (1, 1);
 
-truncate table schedules;
+delete from schedules;
+alter table schedules AUTO_INCREMENT = 1;
 insert into schedules (schedule_id, name, isdefault, weekdaystart) values (1, 'default', 1, 0);
 
 truncate table schedule_time_block_groups;
