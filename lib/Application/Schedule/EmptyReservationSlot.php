@@ -40,9 +40,7 @@ class EmptyReservationSlot implements IReservationSlot
 		$this->_beginDisplayTime = $this->_begin->GetTime();
 		if (!$this->_begin->DateEquals($displayDate))
 		{
-			echo "{$this->_begin}";
 			$this->_beginDisplayTime = $displayDate->GetDate()->GetTime();
-			echo "{$this->_beginDisplayTime}";
 		}
 		
 		$this->_endDisplayTime = $this->_end->GetTime();

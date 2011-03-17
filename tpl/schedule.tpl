@@ -47,7 +47,7 @@
 		{/if}
 		<td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
 		{foreach from=$Periods item=period}
-			<td class="reslabel">{$period->Label()}</td>
+			<td class="reslabel">{$period}</td>
 			<!-- pass format in? -->
 		{/foreach}
 	</tr>

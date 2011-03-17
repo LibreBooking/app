@@ -61,7 +61,7 @@ class SchedulePeriod
 	}
 	
 	/**
-	 * @param $dateOverride
+	 * @param Date $dateOverride
 	 * @return string
 	 */
 	public function Label($dateOverride = null)

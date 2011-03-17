@@ -41,9 +41,9 @@ interface ISchedulePageBuilder
 	
 	/**
 	 * @param ISchedulePage $page
-	 * @param IScheduleLayout $layout
+	 * @param IDailyLayout $layout
 	 */
-	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout, DateRange $dateRange);
+	public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
@@ -141,9 +141,9 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	/**
 	 * @see ISchedulePageBuilder::BindLayout()
 	 */
-	public function BindLayout(ISchedulePage $page, IScheduleLayout $layout, DateRange $dateRange)
+	public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange)
 	{
-		$page->SetLayout($layout->GetLayout($dateRange->GetBegin()));
+		$page->SetLayout($layout->GetLabels($dateRange->GetBegin()));
 	}
 	
 	/**

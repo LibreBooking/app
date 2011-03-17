@@ -100,7 +100,7 @@ class SchedulePresenterTests extends TestBase
 		
 		$pageBuilder->expects($this->once())
 			->method('BindLayout')
-			->with($this->equalTo($page), $this->equalTo($layout));
+			->with($this->equalTo($page), $this->equalTo($dailyLayout));
 		
 		$dailyLayoutFactory->expects($this->once())
 			->method('Create')
@@ -479,12 +479,12 @@ class SchedulePresenterTests extends TestBase
 		$displayRange = new DateRange($start, $end);
 		
 		$page = $this->getMock('ISchedulePage');
-		$layout = $this->getMock('IScheduleLayout');
+		$layout = $this->getMock('IDailyLayout');
 		
 		$periods = array();
 		
 		$layout->expects($this->once())
-			->method('GetLayout')
+			->method('GetLabels')
 			->with($start)
 			->will($this->returnValue($periods));
 			

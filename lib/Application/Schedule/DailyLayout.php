@@ -11,6 +11,12 @@ interface IDailyLayout
 	 * @return bool
 	 */
 	function IsDateReservable(Date $date);
+	
+	/**
+	 * @param Date $displayDate
+	 * @return string[]
+	 */
+	function GetLabels(Date $displayDate);
 }
 
 class DailyLayout implements IDailyLayout
