@@ -3,7 +3,7 @@ class FakeUser extends User
 {
 	public function __construct()
 	{
-		$this->timezone = 'US/Central';
+		$this->timezone = 'America/Chicago';
 		$this->language = 'en_us';
 	}
 	

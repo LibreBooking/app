@@ -61,7 +61,9 @@ class ReservationUpdatePresenterTests extends TestBase
 	{
 		$seriesId = 109809;
 		$expectedSeries = new ExistingReservationSeries();	
-		$reservation = new Reservation($expectedSeries, NullDateRange::Instance());		
+		$currentDuration = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(2), 'UTC');
+			
+		$reservation = new Reservation($expectedSeries, $currentDuration);		
 		$expectedSeries->WithId($seriesId);
 		$expectedSeries->WithCurrentInstance($reservation);
 		
@@ -82,7 +84,7 @@ class ReservationUpdatePresenterTests extends TestBase
 			$timezone);
 			
 		$existingSeries = $this->presenter->BuildReservation();
-		
+
 		$this->assertEquals($seriesId, $existingSeries->SeriesId());
 		$this->assertEquals($this->page->seriesUpdateScope, $existingSeries->SeriesUpdateScope());
 		$this->assertEquals($this->page->title, $existingSeries->Title());
@@ -91,7 +93,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($this->page->resourceId, $existingSeries->ResourceId());
 		$this->assertEquals($this->page->repeatOptions, $existingSeries->RepeatOptions());
 		$this->assertEquals($this->page->resourceIds, $existingSeries->Resources());
-		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()));
+		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()), "$expectedDuration {$existingSeries->CurrentInstance()->Duration()}");
 	}
 	
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistanceAndNotification()

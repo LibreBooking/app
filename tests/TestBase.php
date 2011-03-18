@@ -35,7 +35,7 @@ class TestBase extends PHPUnit_Framework_TestCase
 		$this->fakeServer = new FakeServer();
 		$this->fakeEmailService = new FakeEmailService();
 		$this->fakeConfig = new FakeConfig();
-        $this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, 'US/Central');
+        $this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, 'America/Chicago');
                 
 		$this->fakeResources = new FakeResources();
 		

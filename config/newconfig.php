@@ -1,5 +1,5 @@
 <?php
-$conf['settings']['server.timezone'] = 'US/Central';
+$conf['settings']['server.timezone'] = 'America/Chicago';
 $conf['settings']['allow.self.registration'] = 'true';
 $conf['settings']['admin.email'] = 'admin@example.com';
 $conf['settings']['default.language'] = 'en_US';

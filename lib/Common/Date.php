@@ -305,6 +305,10 @@ class Date
 	 */
 	public function GetDifference(Date $date)
 	{
+		if ($date->Timezone() != $this->Timezone())
+		{
+			$date = $date->ToTimezone($this->Timezone());
+		}
 		return date_diff($date->date, $this->date);
 	}
 	

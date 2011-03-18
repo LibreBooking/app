@@ -82,7 +82,7 @@ class ScheduleRepositoryTests extends TestBase
 		$targetTimezone = 'America/Chicago';
 		
 		$layoutFactory = $this->getMock('ILayoutFactory');
-		$expectedLayout = new ScheduleLayout($targetTimezone);
+		$expectedLayout = new ScheduleLayout($timezone);
 		
 		$layoutFactory->expects($this->once())
 			->method('CreateLayout')
@@ -100,7 +100,7 @@ class ScheduleRepositoryTests extends TestBase
 		$start = $layoutDate->SetTime(new Time(2,0,0));
 		$end = $layoutDate->SetTime(new Time(3,0,0));
 		
-		$period = new SchedulePeriod($start->ToTimezone($targetTimezone), $end->ToTimezone($targetTimezone), 'PERIOD1', 'END PERIOD1');
+		$period = new SchedulePeriod($start, $end, 'PERIOD1', 'END PERIOD1');
 		$this->assertEquals($period, $periods[0]);
 
 	}
