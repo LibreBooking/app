@@ -75,7 +75,7 @@ class ReservationTests extends TestBase
 		
 		$series = ReservationSeries::Create(1, 1, 1, null, null, $dateRange, $repeatOptions);
 		
-		$instance = $series->GetInstance($startDate);
+		$instance = $series->CurrentInstance();
 		
 		$this->assertEquals($startDate, $instance->StartDate());
 		$this->assertEquals($endDate, $instance->EndDate());

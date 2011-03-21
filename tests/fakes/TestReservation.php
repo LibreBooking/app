@@ -8,6 +8,10 @@ class TestReservation extends Reservation
 		{
 			$this->SetReferenceNumber($referenceNumber);
 		}
+		else
+		{
+			$this->SetReferenceNumber(uniqid());
+		}
 		
 		if ($reservationDate != null)
 		{

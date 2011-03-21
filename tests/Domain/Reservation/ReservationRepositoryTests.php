@@ -120,7 +120,7 @@ class ReservationRepositoryTests extends TestBase
 		
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatOptionsString = $repeatOptions->ConfigurationString();
-		$referenceNumber = $reservation->GetInstance($duration->GetBegin())->ReferenceNumber();
+		$referenceNumber = $reservation->CurrentInstance()->ReferenceNumber();
 		
 		$this->repository->Add($reservation);
 		
@@ -198,27 +198,18 @@ class ReservationRepositoryTests extends TestBase
 		
 		$this->repository->Add($reservation);
 		
-		$insertRepeatDate1 = new AddReservationCommand(
-				$startUtc1, 
-				$endUtc1, 				
-				$reservation->GetInstance($startUtc1)->ReferenceNumber(), 
-				$reservationSeriesId);
-				
-		$insertRepeatDate2 = new AddReservationCommand(
-				$startUtc2, 
-				$endUtc2, 
-				$reservation->GetInstance($startUtc2)->ReferenceNumber(), 
-				$reservationSeriesId);
-				
-		$insertRepeatDate3 = new AddReservationCommand(
-				$startUtc3, 
-				$endUtc3, 
-				$reservation->GetInstance($startUtc3)->ReferenceNumber(), 
-				$reservationSeriesId);
+		$instances = $reservation->Instances();
 		
-		$this->assertTrue(in_array($insertRepeatDate1, $this->db->_Commands));
-		$this->assertTrue(in_array($insertRepeatDate2, $this->db->_Commands));
-		$this->assertTrue(in_array($insertRepeatDate3, $this->db->_Commands));
+		foreach ($instances as $instance)
+		{
+			$insertRepeatCommand = new AddReservationCommand(
+				$instance->StartDate()->ToUtc(), 
+				$instance->EndDate()->ToUtc(), 				
+				$instance->ReferenceNumber(), 
+				$reservationSeriesId);
+				
+			$this->assertTrue(in_array($insertRepeatCommand, $this->db->_Commands), "command $insertRepeatCommand not found");
+		}
 	}
 	
 	public function testCanAddAdditionalResources()

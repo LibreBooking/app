@@ -122,7 +122,7 @@ class ReservationSeries
 	/**
 	 * @var Date
 	 */
-	private $currentInstanceDate;
+	private $currentInstanceKey;
 	
 	protected function __construct()
 	{
@@ -166,8 +166,7 @@ class ReservationSeries
 	 */
 	protected function UpdateDuration(DateRange $reservationDate)
 	{
-		$this->SetCurrentDate($reservationDate->GetBegin());
-		$this->AddNewInstance($reservationDate);
+		$this->AddNewCurrentInstance($reservationDate);
 	}
 	
 	/**
@@ -190,15 +189,34 @@ class ReservationSeries
 		}
 	}
 	
-	protected function InstanceExists(DateRange $reservationDate)
+	protected function InstanceExistsOnDate(DateRange $reservationDate)
 	{
-		$key = $this->GetNewKey($reservationDate);
-		return isset($this->instances[$key]);
+		foreach ($this->instances as $instance)
+		{
+			if ($instance->StartDate()->DateEquals($reservationDate->GetBegin()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
+	/**
+	 * @return Reservation newly created instance
+	 */
 	protected function AddNewInstance(DateRange $reservationDate)
 	{
-		$this->AddInstance(new Reservation($this, $reservationDate));
+		$newInstance = new Reservation($this, $reservationDate);
+		$this->AddInstance($newInstance);
+		
+		return $newInstance;
+	}
+	
+	protected function AddNewCurrentInstance(DateRange $reservationDate)
+	{
+		$currentInstance = new Reservation($this, $reservationDate);
+		$this->AddInstance($currentInstance);
+		$this->SetCurrentInstance($currentInstance);
 	}
 	
 	protected function AddInstance(Reservation $reservation)
@@ -209,12 +227,12 @@ class ReservationSeries
 	
 	protected function CreateInstanceKey(Reservation $reservation)
 	{
-		return $this->GetNewKey($reservation->Duration());
+		return $this->GetNewKey($reservation);
 	}
 	
-	protected function GetNewKey(DateRange $dateRange)
+	protected function GetNewKey(Reservation $reservation)
 	{
-		return $dateRange->GetBegin()->Timestamp();
+		return $reservation->ReferenceNumber();
 	}
 	
 	/**
@@ -234,12 +252,12 @@ class ReservationSeries
 	}
 	
 	/**
-	 * @param Date $startDate
+	 * @param string $referenceNumber
 	 * @return Reservation
 	 */
-	public function GetInstance(Date $startDate)
+	public function GetInstance($referenceNumber)
 	{
-		return $this->instances[$startDate->Timestamp()];
+		return $this->instances[$referenceNumber];
 	}
 	
 	/**
@@ -247,30 +265,30 @@ class ReservationSeries
 	 */
 	public function CurrentInstance()
 	{ 
-		$instance = $this->GetInstance($this->GetCurrentDate());
+		$instance = $this->GetInstance($this->GetCurrentKey());
 		if (!isset($instance))
 		{
-			throw new Exception("Current instance not found. Missing Reservation on date {$this->GetCurrentDate()}");
+			throw new Exception("Current instance not found. Missing Reservation key {$this->GetCurrentKey()}");
 		}
 		return $instance;
 	}
 	
-	protected function SetCurrentDate(Date $currentDate)
+	protected function SetCurrentInstance(Reservation $current)
 	{
-		$this->currentInstanceDate = $currentDate;
+		$this->currentInstanceKey = $this->GetNewKey($current);
 	}
 	
 	/**
 	 * @return Date
 	 */
-	protected function GetCurrentDate()
+	protected function GetCurrentKey()
 	{
-		return $this->currentInstanceDate;
+		return $this->currentInstanceKey;
 	}
 	
 	protected function IsCurrent(Reservation $instance)
 	{
-		return $instance == $this->CurrentInstance();
+		return $instance->ReferenceNumber() == $this->CurrentInstance()->ReferenceNumber();
 	}
 }
 ?>

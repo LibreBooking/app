@@ -101,7 +101,7 @@ class ExistingReservationSeries extends ReservationSeries
 	public function WithCurrentInstance(Reservation $reservation)
 	{
 		$this->AddInstance($reservation);
-		$this->SetCurrentDate($reservation->StartDate());
+		$this->SetCurrentInstance($reservation);
 	}
 
 	/**
@@ -122,7 +122,8 @@ class ExistingReservationSeries extends ReservationSeries
 			return; // never remove the current instance
 		}
 
-		unset($this->instances[$reservation->StartDate()->Timestamp()]);
+		$instanceKey = $this->GetNewKey($reservation);
+		unset($this->instances[$instanceKey]);
 
 		$this->AddEvent(new InstanceRemovedEvent($reservation));
 		$this->_deleteRequestIds[] = $reservation->ReservationId();
@@ -245,10 +246,10 @@ class ExistingReservationSeries extends ReservationSeries
 
 	protected function AddNewInstance(DateRange $reservationDate)
 	{
-		if (!$this->InstanceExists($reservationDate))
+		if (!$this->InstanceExistsOnDate($reservationDate))
 		{
-			parent::AddNewInstance($reservationDate);
-			$this->AddEvent(new InstanceAddedEvent($this->GetInstance($reservationDate->GetBegin())));
+			$newInstance = parent::AddNewInstance($reservationDate);
+			$this->AddEvent(new InstanceAddedEvent($newInstance));
 		}
 	}
 
@@ -259,12 +260,13 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		//echo "Start: {$newDate->GetBegin()} End: {$newDate->GetEnd()} ts: {$newDate->GetBegin()->Timestamp()}\n";
 		//if ($instance->ReferenceNumber() == $this->CurrentInstance()->ReferenceNumber())
-		if ($this->IsCurrent($instance))
-		{
-			$this->SetCurrentDate($newDate->GetBegin());
-		}
+//		if ($this->IsCurrent($instance))
+//		{
+//			$this->SetCurrentInstance($instance);
+//		}
 
 		unset($this->instances[$this->CreateInstanceKey($instance)]);
+		
 		$instance->SetReservationDate($newDate);
 		$this->AddInstance($instance);
 
