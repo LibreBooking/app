@@ -419,8 +419,6 @@ class ScheduleReservationListTests extends TestBase
 	
 	public function testTwentyFourHourReservationsCrossDay()
 	{
-		$this->markTestIncomplete();
-		
 		$timezone = 'America/Chicago';
 		$layout = new ScheduleLayout($timezone);
 		$layout->AppendPeriod(Time::Parse('0:00', $timezone), Time::Parse('4:00', $timezone));
@@ -458,9 +456,7 @@ class ScheduleReservationListTests extends TestBase
 	
 	public function testBindsSingleReservation()
 	{
-		$this->markTestIncomplete();
-		
-		$tz = 'CST';
+		$tz = 'America/Chicago';
 		$listDate = Date::Parse('2011-02-06', $tz);
 		
 		$layout = new ScheduleLayout($tz);
@@ -472,8 +468,8 @@ class ScheduleReservationListTests extends TestBase
 		
 		$r1 = new TestScheduleReservation(
 			1, 
-			Date::Parse('2011-02-06 12:00:00', 'UTC'),
-			Date::Parse('2011-02-06 18:00:00', 'UTC'),
+			Date::Parse('2011-02-06 12:00:00', $tz)->ToUtc(),
+			Date::Parse('2011-02-06 18:00:00', $tz)->ToUtc(),
 			1);
 		
 		$list = new ScheduleReservationList(array($r1), $layout, $listDate);
@@ -481,7 +477,7 @@ class ScheduleReservationListTests extends TestBase
 		$slots = $list->BuildSlots();
 		
 		$this->assertEquals(5, count($slots));
-		$this->assertEquals(new ReservationSlot(Time::Parse('6:00', $tz), Time::Parse('12:00', $tz), $listDate, 1, $r1), $slots[2]);
+		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("12:00"), $listDate->SetTimeString("18:00"), $listDate, 1, $r1), $slots[3]);
 	}
 }
 
