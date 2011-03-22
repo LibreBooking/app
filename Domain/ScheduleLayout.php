@@ -283,7 +283,7 @@ class DatabaseScheduleLayout implements IScheduleLayout
 
 class ReservationLayout extends ScheduleLayout implements IScheduleLayout
 {
-	protected function SpansMidnight(Time $start, Time $end, Time $midnight)
+	protected function SpansMidnight(Date $start, Date $end)
 	{
 		return false;
 	}

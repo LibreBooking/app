@@ -74,8 +74,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		
 		
 		$startPeriod = $this->GetPeriodClosestTo($schedulePeriods, $startDate);
-		$this->basePage->SetStartTime($startPeriod->Begin());
-		$this->basePage->SetEndTime($startPeriod->End());
+		$this->basePage->SetSelectedStart($startPeriod->BeginDate());
+		$this->basePage->SetSelectedEnd($startPeriod->EndDate());
 		
 		$reservationUser = $bindableUserData->ReservationUser;
 		$this->basePage->SetReservationUser($reservationUser);

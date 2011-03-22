@@ -153,16 +153,16 @@ class ReservationInitializationTests extends TestBase
 			->with($this->equalTo($expectedStartDate));
 			
 		$page->expects($this->once())
-			->method('SetStartTime')
-			->with($this->equalTo($expectedPeriod->Begin()));
+			->method('SetSelectedStart')
+			->with($this->equalTo($expectedPeriod->BeginDate()));
 
 		$page->expects($this->once())
 			->method('SetEndDate')
 			->with($this->equalTo($expectedStartDate));
 		
 		$page->expects($this->once())
-			->method('SetEndTime')
-			->with($this->equalTo($expectedPeriod->End()));
+			->method('SetSelectedEnd')
+			->with($this->equalTo($expectedPeriod->EndDate()));
 
 		$page->expects($this->once())
 			->method('SetReservationUser')

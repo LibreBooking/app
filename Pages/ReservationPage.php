@@ -28,9 +28,9 @@ interface IReservationPage extends IPage
 	function SetStartDate(Date $startDate);
 	
 	/**
-	 * @param Time $startTime
+	 * @param Date $selectedStart
 	 */
-	function SetStartTime(Time $startTime);
+	function SetSelectedStart(Date $selectedStart);
 	
 	/**
 	 * @param Date $startDate
@@ -38,9 +38,9 @@ interface IReservationPage extends IPage
 	function SetEndDate(Date $startDate);
 	
 	/**
-	 * @param Time $endTime
+	 * @param Date $selectedEnd
 	 */
-	function SetEndTime(Time $endTime);
+	function SetSelectedEnd(Date $selectedEnd);
 	
 	/**
 	 * @param UserDto $user
@@ -158,9 +158,9 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->SetRepeatTerminationDate($startDate);
 	}
 	
-	public function SetStartTime(Time $startTime)
+	public function SetSelectedStart(Date $selectedStart)
 	{
-		$this->Set('StartTime', $startTime);
+		$this->Set('SelectedStart', $selectedStart);
 	}
 	
 	public function SetEndDate(Date $startDate)
@@ -168,9 +168,9 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('EndDate', $startDate);
 	}
 	
-	public function SetEndTime(Time $endTime)
+	public function SetSelectedEnd(Date $selectedEnd)
 	{
-		$this->Set('EndTime', $endTime);
+		$this->Set('SelectedEnd', $selectedEnd);
 	}
 	
 	public function SetReservationUser($user)

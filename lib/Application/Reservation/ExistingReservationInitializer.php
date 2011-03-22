@@ -53,8 +53,8 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		
 		$timezone = $this->GetTimezone();
 		
-		$this->page->SetStartTime($this->reservationView->StartDate->ToTimezone($timezone)->GetTime());
-		$this->page->SetEndTime($this->reservationView->EndDate->ToTimezone($timezone)->GetTime());
+		$this->page->SetSelectedStart($this->reservationView->StartDate->ToTimezone($timezone));
+		$this->page->SetSelectedEnd($this->reservationView->EndDate->ToTimezone($timezone));
 		
 		$this->page->SetAdditionalResources($this->reservationView->AdditionalResourceIds);
 		$this->page->SetParticipants($this->reservationView->ParticipantIds);

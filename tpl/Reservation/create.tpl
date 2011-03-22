@@ -35,7 +35,7 @@
 					{foreach from=$Periods item=period}
 						{if $period->IsReservable()}
 							{assign var='selected' value=''}
-							{if $period->Begin()->Equals($StartTime)}
+							{if $period->BeginDate()->Equals($SelectedStart)}
 								{assign var='selected' value=' selected="selected"'}
 							{/if}
 							<option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
@@ -49,7 +49,7 @@
 					{foreach from=$Periods item=period}
 						{if $period->IsReservable()}
 							{assign var='selected' value=''}
-							{if $period->End()->Equals($EndTime)}
+							{if $period->EndDate()->Equals($SelectedEnd)}
 								{assign var='selected' value=' selected="selected"'}
 							{/if}
 							<option value="{$period->End()}"{$selected}>{$period->LabelEnd()}</option>
