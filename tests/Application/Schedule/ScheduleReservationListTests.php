@@ -300,13 +300,12 @@ class ScheduleReservationListTests extends TestBase
 	{
 		$userTz = 'America/Chicago';
 		$utc = $this->utc;
-		$date = $this->date;	
+		$date = Date::Parse('2008-11-12', $userTz);
 		
 		$r1 = new TestScheduleReservation(1, $date->AddDays(-1)->ToUtc(), $date->AddDays(1)->ToUtc());
 		
 		$reservations = array($r1);
 		
-		$date = Date::Parse('2008-11-12', $userTz);
 		$list = new ScheduleReservationList($reservations, $this->testDbLayout, $date);
 		$slots = $list->BuildSlots();
 		$expectedSlots = $this->testDbLayout->GetLayout($date);
@@ -319,36 +318,36 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertEquals($slot1, $slots[0]);
 	}
 	
-	public function testReservationStartingOnSameDayOutsideOfLayoutStartsAtFirstSlot()
+	public function testReservationStartingBeforeAndEndingOnDateStartsAtFirstSlot()
 	{
-		$this->markTestIncomplete('NOT SURE IF THIS IS EVEN VALID');
-		
+		$userTz = 'America/Chicago';
+		$layoutTz = 'America/New_York';
 		$utc = $this->utc;
-		$layout = new ScheduleLayout($utc);
-		$layout->AppendPeriod(new Time(2,0,0, $utc), new Time(3,0,0, $utc));
+		$date = Date::Parse('2008-11-12', $userTz);	
 		
-		$y = $this->date->Year();
-		$m = $this->date->Month();
-		$d = $this->date->Day();
+		$layout = new ScheduleLayout($userTz);
+		$layout->AppendPeriod(new Time(0,0,0, $layoutTz), new Time(6,0,0, $layoutTz));
+		$layout->AppendPeriod(new Time(6,0,0, $layoutTz), new Time(8,0,0, $layoutTz));
+		$layout->AppendPeriod(new Time(8,0,0, $layoutTz), new Time(12,0,0, $layoutTz));
+		$layout->AppendPeriod(new Time(12,0,0, $layoutTz), new Time(18,0,0, $layoutTz));
+		$layout->AppendPeriod(new Time(18,0,0, $layoutTz), new Time(0,0,0, $layoutTz));
 		
-		FakeScheduleReservations::Initialize();
-		$r1 = FakeScheduleReservations::$Reservation1;
+		$r1 = new TestScheduleReservation(1, $date->AddDays(-1)->ToUtc(), Date::Parse('2008-11-12 6:0:0', $layoutTz)->ToUtc());
 		
-		$r1->SetStartDate(Date::Create($y, $m, $d, 0, 0, 0, $utc));
-		$r1->SetEndDate(Date::Create($y, $m, $d, 1, 0, 0, $utc));
-		
-		$r2 = FakeScheduleReservations::$Reservation2;
-		
-		$r2->SetStartDate(Date::Create($y, $m, $d, 1, 0, 0, $utc));
-		$r2->SetEndDate(Date::Create($y, $m, $d, 3, 0, 0, $utc));
-		
-		$list = new ScheduleReservationList(array($r1, $r2), $layout, $this->date);
+		$list = new ScheduleReservationList(array($r1), $layout, $date);
 		$slots = $list->BuildSlots();
 		
-		$slot1 = new ReservationSlot(new Time(2,0,0, $utc), new Time(3,0,0, $utc), $this->date, 1, $r2);
+		$s1Begin = Date::Parse('2008-11-12 0:0:0', $layoutTz)->ToTimezone($userTz);
+		$s1End = Date::Parse('2008-11-12 6:0:0', $layoutTz)->ToTimezone($userTz);
 		
-		$this->assertEquals(1, count($slots));
+		$s6Begin = Date::Parse('2008-11-13 0:0:0', $layoutTz)->ToTimezone($userTz);
+		$s6End = Date::Parse('2008-11-13 6:0:0', $layoutTz)->ToTimezone($userTz);
+		
+		$slot1 = new ReservationSlot($s1Begin, $s1End, $date, 1, $r1);
+		$slot6 = new EmptyReservationSlot($s6Begin, $s6End, $date, true);
+		
 		$this->assertEquals($slot1, $slots[0]);
+		$this->assertEquals($slot6, $slots[5]);
 	}
 	
 	public function testCanTellIfReservationOccursOnSpecifiedDates()

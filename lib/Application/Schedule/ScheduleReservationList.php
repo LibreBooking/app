@@ -68,17 +68,17 @@ class ScheduleReservationList implements IScheduleReservationList
 		for ($currentIndex = 0; $currentIndex < count($this->_layoutItems); $currentIndex++)
 		{
 			$layoutItem = $this->_layoutItems[$currentIndex];
-			$reservation = $this->GetReservationStartingAt($layoutItem->Begin());
+			$reservation = $this->GetReservationStartingAt($layoutItem->BeginDate());
 			
 			if ($reservation != null)
 			{			
 				if ($this->ReservationEndsOnFutureDate($reservation))
 				{
-					$endTime = $this->_midnight;
+					$endTime = $this->_layoutDateEnd;
 				}
 				else
 				{
-					$endTime = $reservation->GetEndDate()->ToTimezone($this->_destinationTimezone)->GetTime();
+					$endTime = $reservation->GetEndDate()->ToTimezone($this->_destinationTimezone);
 				}
 				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
@@ -103,25 +103,12 @@ class ScheduleReservationList implements IScheduleReservationList
 			$start = $reservation->GetStartDate()->ToTimezone($this->_destinationTimezone);
 			
 			$startsInPast = $this->ReservationStartsOnPastDate($reservation);
-			if ($startsInPast || $start->Compare($this->_firstLayoutTime) < 0)
+			if ($startsInPast)// || $start->Compare($this->_firstLayoutTime) < 0)
 			{
 				$start = $this->_firstLayoutTime;
 			}
 			
-			$end = $reservation->GetEndDate()->ToTimezone($this->_destinationTimezone);
-			
-			$endsInTheFuture = $this->ReservationEndsOnFutureDate($reservation);
-			if ($endsInTheFuture || $end->Compare($this->_firstLayoutTime) >=0)
-			{
-//				Log::Debug("Indexing reservation %s, date %s %s, end %s %s, key %s, layout date %s", 
-//					$reservation->GetReferenceNumber(), 
-//					$reservation->GetStartDate(), $reservation->GetStartTime(),
-//					$reservation->GetEndDate(), $reservation->GetEndTime(),
-//					$startTime->ToString(),
-//					$this->_layoutDateStart);
-				
-				$this->_reservationsByStartTime[$start->GetTime()->ToString()] = $reservation;
-			}
+			$this->_reservationsByStartTime[$start->Timestamp()] = $reservation;
 		}
 	}
 	
@@ -143,28 +130,28 @@ class ScheduleReservationList implements IScheduleReservationList
 		
 		for ($i = 0; $i < count($this->_layoutItems); $i++)		
 		{
-			$itemBegin = $this->_layoutItems[$i]->BeginDate();// $this->_layoutDateStart->SetTime($this->_layoutItems[$i]->Begin());
+			$itemBegin = $this->_layoutItems[$i]->BeginDate();
 			if ($itemBegin->LessThan($this->_firstLayoutTime))
 			{
 				$this->_firstLayoutTime =  $this->_layoutItems[$i]->BeginDate();
 			}
 			
-			$endTime = $this->_layoutItems[$i]->End();
+			$endTime = $this->_layoutItems[$i]->EndDate();
 			if (!$this->_layoutItems[$i]->EndDate()->DateEquals($this->_layoutDateStart))
 			{
-				$endTime = $this->_midnight;
+				$endTime = $this->_layoutDateEnd;
 			}
-			$this->_layoutByEndTime[$endTime->ToString()] = $i;
+			$this->_layoutByEndTime[$endTime->Timestamp()] = $i;
 		}
 	}
 	
 	/**
-	 * @param Time $endingTime
+	 * @param Date $endingTime
 	 * @return int index of $_layoutItems which has the corresponding $endingTime
 	 */
-	private function GetLayoutIndexEndingAt(Time $endingTime)
+	private function GetLayoutIndexEndingAt(Date $endingTime)
 	{
-		$timeKey = $endingTime->ToString();
+		$timeKey = $endingTime->Timestamp();
 		
 		if (array_key_exists($timeKey, $this->_layoutByEndTime))
 		{
@@ -175,12 +162,12 @@ class ScheduleReservationList implements IScheduleReservationList
 	}
 	
 	/**
-	 * @param Time $beginTime
+	 * @param Date $beginTime
 	 * @return ScheduleReservation
 	 */
-	private function GetReservationStartingAt(Time $beginTime)
+	private function GetReservationStartingAt(Date $beginTime)
 	{
-		$timeKey = $beginTime->ToString();
+		$timeKey = $beginTime->Timestamp();
 		if (array_key_exists($timeKey, $this->_reservationsByStartTime))
 		{
 			return $this->_reservationsByStartTime[$timeKey];
@@ -189,16 +176,16 @@ class ScheduleReservationList implements IScheduleReservationList
 	}
 	
 	/**
-	 * @param Time $endingTime
+	 * @param Date $endingTime
 	 * @return int index of $_layoutItems which has the closest ending time to $endingTime without going past it
 	 */
-	private function FindClosestLayoutIndexBeforeEndingTime(Time $endingTime)
+	private function FindClosestLayoutIndexBeforeEndingTime(Date $endingTime)
 	{	
 		for ($i = 0; $i < count($this->_layoutItems); $i++)		
 		{
 			$currentItem = $this->_layoutItems[$i];
 		
-			if ($currentItem->End()->Compare($endingTime, $this->_layoutDateStart) > 0 )
+			if ($currentItem->EndDate()->GreaterThan($endingTime) )
 			{
 				return $i;
 			}
