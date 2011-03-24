@@ -12,7 +12,17 @@ interface INewReservationPage extends IReservationPage
 	/**
 	 * @return Date
 	 */
-	public function GetRequestedDate();
+	public function GetReservationDate();
+	
+	/**
+	 * @return Date
+	 */
+	public function GetStartDate();
+	
+	/**
+	 * @return Date
+	 */
+	public function GetEndDate();
 }
 
 class NewReservationPage extends ReservationPage implements INewReservationPage
@@ -53,14 +63,28 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 	}
 	
-	public function GetRequestedDate()
+	public function GetReservationDate()
 	{
+		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 		$dateTimeString = $this->server->GetQuerystring(QueryStringKeys::RESERVATION_DATE);
-		$dateTime = new DateTime($dateTimeString);
-		$dateString = $dateTime->format(Date::SHORT_FORMAT);
-		$timezone = $dateTime->getTimezone()->getName();
 
-		return new Date($dateString, $timezone);
+		return new Date($dateTimeString, $timezone);
+	}
+	
+	public function GetStartDate()
+	{
+		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+		$dateTimeString = $this->server->GetQuerystring(QueryStringKeys::START_DATE);
+		
+		return new Date($dateTimeString, $timezone);
+	}
+	
+	public function GetEndDate()
+	{
+		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+		$dateTimeString = $this->server->GetQuerystring(QueryStringKeys::START_DATE);
+
+		return new Date($dateTimeString, $timezone);
 	}
 }
 ?>

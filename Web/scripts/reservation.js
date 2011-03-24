@@ -40,7 +40,7 @@ function Reservation(opts)
 		AddResources();
 		
 		elements.repeatOptions.change(function() { 
-			ChangeRepeatOptions($(this));
+			ChangeRepeatOptions();
 			AdjustTerminationDate();
 		});
 		
@@ -200,8 +200,9 @@ function Reservation(opts)
 		$(dialogBoxId).dialog('close');
 	}
 	
-	var ChangeRepeatOptions = function(repeatDropDown)
+	var ChangeRepeatOptions = function()
 	{
+		var repeatDropDown = elements.repeatOptions;
 		if (repeatDropDown.val() != 'none')
     	{
     		$('#repeatUntilDiv').show();
@@ -283,7 +284,7 @@ function Reservation(opts)
 			
 			$("#repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").attr('checked', true);
 			
-			elements.repeatOptions.trigger('change');
+			ChangeRepeatOptions();
 		}
 	}
 

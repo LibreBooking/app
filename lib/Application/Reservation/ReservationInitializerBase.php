@@ -49,19 +49,20 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	{
 		$requestedResourceId = $this->GetResourceId();
 		$requestedScheduleId = $this->GetScheduleId();
+		$reservationDate = $this->GetReservationDate();
 		$requestedStartDate = $this->GetStartDate();
 		$requestedEndDate = $this->GetEndDate();
 		
 		$userId = $this->GetOwnerId();
 		$timezone = $this->GetTimezone();
 		
-		$startDate = ($requestedStartDate == null) ? Date::Now()->ToTimezone($timezone) : $requestedStartDate->ToTimezone($timezone);
-		$endDate = ($requestedEndDate == null) ? $startDate : $requestedEndDate->ToTimezone($timezone);
-		$this->basePage->SetStartDate($startDate);
-		$this->basePage->SetEndDate($endDate);
+		$requestedDate = ($reservationDate == null) ? Date::Now()->ToTimezone($timezone) : $reservationDate->ToTimezone($timezone);
+		
+		$startDate = ($requestedStartDate == null) ? $requestedDate : $requestedStartDate->ToTimezone($timezone);
+		$endDate = ($requestedEndDate == null) ? $requestedDate : $requestedEndDate->ToTimezone($timezone);
 		
 		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
-		$schedulePeriods = $layout->GetLayout($startDate);
+		$schedulePeriods = $layout->GetLayout($requestedDate);
 		$this->basePage->BindPeriods($schedulePeriods);
 
 		$scheduleUser = $this->scheduleUserRepository->GetUser($userId);
@@ -71,11 +72,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		
 		$this->basePage->BindAvailableUsers($bindableUserData->AvailableUsers);	
 		$this->basePage->BindAvailableResources($bindableResourceData->AvailableResources);		
-		
-		
-		$startPeriod = $this->GetPeriodClosestTo($schedulePeriods, $startDate);
-		$this->basePage->SetSelectedStart($startPeriod->BeginDate());
-		$this->basePage->SetSelectedEnd($startPeriod->EndDate());
+
+		$this->SetSelectedDates($startDate, $endDate, $schedulePeriods);
 		
 		$reservationUser = $bindableUserData->ReservationUser;
 		$this->basePage->SetReservationUser($reservationUser);
@@ -95,8 +93,16 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 * @return Date
 	 */
 	protected abstract function GetEndDate();
+	
+	/**
+	 * @return Date
+	 */
+	protected abstract function GetReservationDate();
+	
 	protected abstract function GetOwnerId();
 	protected abstract function GetTimezone();
+	
+	protected abstract function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods);
 	
 	private function GetBindableUserData($userId)
 	{
@@ -138,28 +144,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		}
 		
 		return $bindableResourceData;
-	}
-	
-	/**
-	 * @param SchedulePeriod[] $periods
-	 * @param Date $date
-	 * @return SchedulePeriod
-	 */
-	private function GetPeriodClosestTo($periods, $date)
-	{
-		for ($i = 0; $i < count($periods); $i++)
-		{
-			$currentPeriod = $periods[$i];
-			$periodBegin = $currentPeriod->BeginDate();
-			
-			if ($currentPeriod->IsReservable() && $periodBegin->Compare($date) >= 0)
-			{
-				return $currentPeriod;
-			}
-		}
-		
-		$lastIndex = count($periods) - 1;
-		return $periods[$lastIndex];
 	}
 }
 ?>

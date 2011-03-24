@@ -41,11 +41,6 @@ interface IExistingReservationPage extends IReservationPage
 	function SetRepeatMonthlyType($repeatMonthlyType);
 	
 	/**
-	 * @param $repeatTerminationDate Date
-	 */
-	function SetRepeatTerminationDate($repeatTerminationDate);
-	
-	/**
 	 * @param $repeatWeekdays int[]
 	 */
 	function SetRepeatWeekdays($repeatWeekdays);

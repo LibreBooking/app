@@ -15,6 +15,16 @@ interface IReservationSlot
 	/**
 	 * @return Date
 	 */
+	public function BeginDate();
+	
+	/**
+	 * @return Date
+	 */
+	public function EndDate();
+	
+	/**
+	 * @return Date
+	 */
 	public function Date();
 	
 	/**

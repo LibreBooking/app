@@ -51,11 +51,6 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	{
 		parent::Initialize();
 		
-		$timezone = $this->GetTimezone();
-		
-		$this->page->SetSelectedStart($this->reservationView->StartDate->ToTimezone($timezone));
-		$this->page->SetSelectedEnd($this->reservationView->EndDate->ToTimezone($timezone));
-		
 		$this->page->SetAdditionalResources($this->reservationView->AdditionalResourceIds);
 		$this->page->SetParticipants($this->reservationView->ParticipantIds);
 		$this->page->SetTitle($this->reservationView->Title);
@@ -76,6 +71,13 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		$this->page->SetIsEditable($this->editableCriteria->IsEditable($this->reservationView));
 	}
 	
+	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
+	{
+		$timezone = $this->GetTimezone();		
+		$this->page->SetSelectedStart($this->reservationView->StartDate->ToTimezone($timezone));
+		$this->page->SetSelectedEnd($this->reservationView->EndDate->ToTimezone($timezone));		
+	}
+	
 	protected function GetOwnerId()
 	{
 		return $this->reservationView->OwnerId;
@@ -89,6 +91,11 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	protected function GetScheduleId()
 	{
 		return $this->reservationView->ScheduleId;
+	}
+	
+	protected function GetReservationDate()
+	{
+		return $this->reservationView->StartDate;
 	}
 	
 	protected function GetStartDate()

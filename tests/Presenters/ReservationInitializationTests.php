@@ -55,7 +55,7 @@ class ReservationInitializationTests extends TestBase
 
 		$resourceId = 10;
 		$scheduleId = 100;
-		$dateString = '2010-01-01 02:55:22';
+		$dateString = Date::Now()->AddDays(1)->SetTimeString('02:55:22')->Format('Y-m-d H:i:s');
 		$dateInUserTimezone = Date::Parse($dateString, $timezone);
 		$periodId = 1;
 
@@ -67,6 +67,9 @@ class ReservationInitializationTests extends TestBase
 			$dateInUserTimezone->SetTime(new Time(3, 30, 0)), 
 			$dateInUserTimezone->SetTime(new Time(4, 30, 0)));
 		
+		$startDate = Date::Parse($dateString, $timezone);
+		$endDate = Date::Parse($dateString, $timezone);
+			
 		$page = $this->getMock('INewReservationPage');
 
 		$page->expects($this->once())
@@ -78,8 +81,16 @@ class ReservationInitializationTests extends TestBase
 			->will($this->returnValue($scheduleId));
 
 		$page->expects($this->any())
-			->method('GetRequestedDate')
+			->method('GetReservationDate')
 			->will($this->returnValue($dateInUserTimezone));
+			
+		$page->expects($this->any())
+			->method('GetStartDate')
+			->will($this->returnValue($startDate));
+		
+		$page->expects($this->any())
+			->method('GetEndDate')
+			->will($this->returnValue($endDate));
 			
 		// DATA
 		// users
@@ -144,24 +155,24 @@ class ReservationInitializationTests extends TestBase
 			->with($this->equalTo($userListWithoutReservationOwner));
 			
 		// SETUP
-		$page->expects($this->once())
-			->method('SetStartDate')
-			->with($this->equalTo($expectedStartDate));
-
-		$page->expects($this->once())
-			->method('SetEndDate')
-			->with($this->equalTo($expectedStartDate));
+//		$page->expects($this->once())
+//			->method('SetStartDate')
+//			->with($this->equalTo($startDate));
+//
+//		$page->expects($this->once())
+//			->method('SetEndDate')
+//			->with($this->equalTo($endDate));
 			
 		$page->expects($this->once())
 			->method('SetSelectedStart')
 			->with($this->equalTo($expectedPeriod->BeginDate()));
-
-		$page->expects($this->once())
-			->method('SetEndDate')
-			->with($this->equalTo($expectedStartDate));
 		
 		$page->expects($this->once())
 			->method('SetSelectedEnd')
+			->with($this->equalTo($expectedPeriod->EndDate()));
+		
+		$page->expects($this->once())
+			->method('SetRepeatTerminationDate')
 			->with($this->equalTo($expectedPeriod->EndDate()));
 
 		$page->expects($this->once())

@@ -45,11 +45,27 @@ class ReservationSlot implements IReservationSlot
 	}
 	
 	/**
+	 * @return Date
+	 */
+	public function BeginDate()
+	{
+		return $this->_begin;
+	}
+	
+	/**
 	 * @return Time
 	 */
 	public function End()
 	{
 		return $this->_end->GetTime();	
+	}
+	
+	/**
+	 * @return Date
+	 */
+	public function EndDate()
+	{
+		return $this->_end;
 	}
 	
 	/**

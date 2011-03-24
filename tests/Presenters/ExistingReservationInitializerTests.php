@@ -179,11 +179,11 @@ class ExistingReservationInitializerTests extends TestBase
 			->with($this->equalTo($description));
 		
 		$page->expects($this->once())
-			->method('SetStartDate')
+			->method('SetSelectedStart')
 			->with($this->equalTo($expectedStartDate->ToTimezone($timezone)));
 
 		$page->expects($this->once())
-			->method('SetEndDate')
+			->method('SetSelectedEnd')
 			->with($this->equalTo($expectedEndDate->ToTimezone($timezone)));
 			
 		$page->expects($this->once())
@@ -198,7 +198,7 @@ class ExistingReservationInitializerTests extends TestBase
 			->method('SetRepeatMonthlyType')
 			->with($this->equalTo($repeatMonthlyType));
 			
-		$page->expects($this->once())
+		$page->expects($this->any())
 			->method('SetRepeatTerminationDate')
 			->with($this->equalTo($repeatTerminationDate->ToTimezone($timezone)));
 		

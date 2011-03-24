@@ -21,26 +21,21 @@ interface IReservationPage extends IPage
 	 * @param array[int]ScheduleResource
 	 */
 	function BindAvailableUsers($resources);
-	
-	/**
-	 * @param Date $startDate
-	 */
-	function SetStartDate(Date $startDate);
-	
+
 	/**
 	 * @param Date $selectedStart
 	 */
 	function SetSelectedStart(Date $selectedStart);
 	
 	/**
-	 * @param Date $startDate
-	 */
-	function SetEndDate(Date $startDate);
-	
-	/**
 	 * @param Date $selectedEnd
 	 */
 	function SetSelectedEnd(Date $selectedEnd);
+	
+	/**
+	 * @param $repeatTerminationDate Date
+	 */
+	function SetRepeatTerminationDate($repeatTerminationDate);
 	
 	/**
 	 * @param UserDto $user
@@ -152,20 +147,9 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('AvailableUsers', $users);
 	}
 	
-	public function SetStartDate(Date $startDate)
-	{
-		$this->Set('StartDate', $startDate);
-		$this->SetRepeatTerminationDate($startDate);
-	}
-	
 	public function SetSelectedStart(Date $selectedStart)
 	{
 		$this->Set('SelectedStart', $selectedStart);
-	}
-	
-	public function SetEndDate(Date $startDate)
-	{
-		$this->Set('EndDate', $startDate);
 	}
 	
 	public function SetSelectedEnd(Date $selectedEnd)

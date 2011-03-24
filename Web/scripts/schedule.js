@@ -61,11 +61,10 @@ function Schedule(opts)
 		
 		$('.reservations').delegate('.reservable', 'click', function () {
 			var start = $('.start', this).val();
-			var currentRow = $(this).parent('tr');
-			var linkCell = $('.resourcename', currentRow);
-			var link = $('a', linkCell).attr('href');
+			var end = $('.end', this).val();
+			var link = $('.href', this).val();
 			// this assumes the start date is the last parameter
-			window.location = link + "+" + start;
+			window.location = link + "&sd=" + start + "&ed=" + end;
 		});
 		
 		$('#show_schedule').click( function(e) {

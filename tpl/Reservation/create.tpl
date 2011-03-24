@@ -29,7 +29,7 @@
         	</li>
         	<li>
 				<label>{translate key='BeginDate'}
-				<input type="text" id="BeginDate" {formname key=BEGIN_DATE} class="dateinput" value="{formatdate date=$StartDate}"/>
+				<input type="text" id="BeginDate" {formname key=BEGIN_DATE} class="dateinput" value="{formatdate date=$SelectedStart}"/>
 				</label>
 				<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown" style="width:150px">
 					{foreach from=$Periods item=period}
@@ -43,7 +43,7 @@
 					{/foreach}
 				</select>
 				<label>{translate key='EndDate'}
-				<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput" value="{formatdate date=$EndDate}" />
+				<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput" value="{formatdate date=$SelectedEnd}" />
 				</label>
 				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
 					{foreach from=$Periods item=period}
@@ -92,7 +92,7 @@
 						<label for="repeatMonthWeek">{translate key="repeatDayOfWeek"}</label>
 					</div>
 					<div id="repeatUntilDiv" style="display:none;">
-						{translate key="RepeatUntilPrompt"} 
+						{translate key="RepeatUntilPrompt"}
 						<input type="text" id="EndRepeat" {formname key=end_repeat_date} class="dateinput" value="{formatdate date=$RepeatTerminationDate}" />
 					</div>
 				</div>

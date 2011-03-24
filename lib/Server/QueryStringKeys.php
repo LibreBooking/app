@@ -14,5 +14,6 @@ class QueryStringKeys
 	const RESOURCE_ID = 'rid';
 	const SCHEDULE_ID = 'sid';
 	const START_DATE = 'sd';
+	const END_DATE = 'ed';
 }
 ?>
