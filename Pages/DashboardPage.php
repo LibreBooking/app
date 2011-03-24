@@ -4,6 +4,8 @@ require_once(ROOT_DIR . 'Presenters/DashboardPresenter.php');
 
 class DashboardPage extends SecurePage implements IDashboardPage
 {
+	private $items = array();
+	
 	public function __construct()
 	{
 		parent::__construct('MyDashboard');
@@ -12,12 +14,20 @@ class DashboardPage extends SecurePage implements IDashboardPage
 	
 	public function PageLoad()
 	{
-		$this->_presenter->PageLoad();
+		$this->_presenter->Initialize();
+		
+		$this->smarty->assign('items', $this->items);
 		$this->smarty->display('dashboard.tpl');		
+	}
+	
+	public function AddItem(DashboardItem $item)
+	{
+		$this->items[] = $item;
 	}
 }
 
 interface IDashboardPage
 {
+	function AddItem(DashboardItem $item);
 }
 ?>

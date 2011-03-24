@@ -485,3 +485,8 @@ textarea.input-areashow {
 	min-width:1px;
 	max-width:1px;
 }
+
+#dashboardList
+{
+	list-style: none;
+}

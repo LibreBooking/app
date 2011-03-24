@@ -4,6 +4,9 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
+require_once(ROOT_DIR . 'Controls/AnnouncementsControl.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/UpcomingReservations.php');
+
 class DashboardPresenter
 {
 	private $_page;
@@ -13,8 +16,12 @@ class DashboardPresenter
 		$this->_page = $page;
 	}
 	
-	public function PageLoad()
+	public function Initialize()
 	{
+		$announcement = new AnnouncementsControl(new SmartyPage());
+		$upcomingReservations = new UpcomingReservations(new SmartyPage());
+		
+		$this->_page->AddItem($announcement);
 	}
 }
 ?>
