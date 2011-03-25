@@ -204,7 +204,7 @@ class Queries
 		FROM
 			reservation_instances r
 		INNER JOIN	
-			reservation_series rs on r.series_id = rs.series_id
+			reservation_series rs ON r.series_id = rs.series_id
 		WHERE
 			r.reservation_instance_id = @reservationid AND
 			status_id <> 2';
@@ -232,6 +232,24 @@ class Queries
 				reference_number = @referenceNumber
 			AND	
 				r.status_id <> 2';
+	
+	const GET_RESERVATION_LIST = 
+		"SELECT
+			*
+		FROM
+			reservation_instances ri
+		INNER JOIN
+			reservation_series rs ON ri.series_id = rs.series_id
+		INNER JOIN
+			reservation_resources rr ON rr.series_id = rs.series_id
+		INNER JOIN
+			reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
+		WHERE 
+			ri.start_date >= @startDate AND
+			ri.start_date <= @endDate AND
+			ru.user_id = @userid AND
+			ru.reservation_user_level = @levelid AND
+			rs.status_id <> 2";
 	
 	const GET_RESERVATION_PARTICIPANTS =
 		'SELECT

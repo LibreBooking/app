@@ -1,11 +1,20 @@
 <?php
 interface IReservationViewRepository
 {
-	/*
+	/**
 	 * @var $referenceNumber string
 	 * @return ReservationView
 	 */
 	function GetReservationForEditing($referenceNumber);
+	
+	/**
+	 * @param $startDate Date
+	 * @param $endDate Date
+	 * @param $userId int
+	 * @param $userLevel ReservationUserLevel
+	 * @return ReservationItemView
+	 */
+	function GetReservationList(Date $startDate, Date $endDate, $userId,  $userLevel = ReservationUserLevel::OWNER);
 }
 
 class ReservationViewRepository implements IReservationViewRepository
@@ -48,6 +57,30 @@ class ReservationViewRepository implements IReservationViewRepository
 		}
 		
 		return $reservationView;
+	}
+	
+	public function GetReservationList(Date $startDate, Date $endDate, $userId, $userLevel = ReservationUserLevel::OWNER)
+	{
+		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel);
+		
+		$result = ServiceLocator::GetDatabase()->Query($getReservations);
+		
+		$reservations = array();
+		
+		while ($row = $result->GetRow())
+		{
+			$reservations[] = new ReservationItemView (
+					$row[ColumnNames::REFERENCE_NUMBER],
+					Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
+					Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
+					$row[ColumnNames::RESOURCE_NAME]
+				);
+		}
+		
+		$result->Free();
+		
+		return $reservations;
+		
 	}
 	
 	private function SetResources(ReservationView $reservationView)
@@ -214,5 +247,18 @@ class ReservationView
 		return true;  // some qualification should probably be made
 	}
 	
+}
+
+class ReservationItemView
+{
+	public function __construct(
+		$referenceNumber = null,
+		$startDate = null,
+		$endDate = null,
+		$resourceName = null
+		)
+	{
+		
+	}
 }
 ?>

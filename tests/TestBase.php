@@ -27,6 +27,11 @@ class TestBase extends PHPUnit_Framework_TestCase
 	 */
 	public $fakeEmailService;
 	
+	/**
+	 * @return UserSession
+	 */
+	public $fakeUser;
+	
 	public function setup()
 	{
 		Date::_SetNow(Date::Now());
@@ -38,6 +43,8 @@ class TestBase extends PHPUnit_Framework_TestCase
         $this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, 'America/Chicago');
                 
 		$this->fakeResources = new FakeResources();
+		
+		$this->fakeUser = $this->fakeServer->UserSession;
 		
 		ServiceLocator::SetDatabase($this->db);
 		ServiceLocator::SetServer($this->fakeServer);

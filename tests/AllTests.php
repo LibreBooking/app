@@ -25,6 +25,7 @@ require_once(ROOT_DIR . 'tests/Infrastructure/Database/Infrastructure_Database_S
 require_once(ROOT_DIR . 'tests/Plugins/Auth/Ldap/Plugins_Auth_Ldap_Suite.php');
 
 require_once(ROOT_DIR . 'tests/Presenters/Presenters_Suite.php');
+require_once(ROOT_DIR . 'tests/Presenters/Dashboard/DashboardPresenters_Suite.php');
 
 class AllTests
 {
@@ -50,6 +51,7 @@ class AllTests
         $suite->addTest(Plugins_Auth_Ldap_Suite::suite());
         
         $suite->addTest(Presenters_Suite::suite());
+        $suite->addTest(DashboardPresenters_Suite::suite());
 
         return $suite;
     }

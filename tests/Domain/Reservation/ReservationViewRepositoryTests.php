@@ -129,6 +129,35 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals($expectedView, $reservationView);
 	}
 	
+	public function testGetsReservationListForDateRangeAndUser()
+	{
+		$startDate = Date::Parse('2011-01-01');
+		$endDate = Date::Parse('2011-01-01');
+		$userId = 988;
+		
+		$referenceNumber1 = "ref1";
+		$resource1 = "resource1";
+		$start1 = Date::Parse('2011-08-09', 'UTC');
+		$end1 = Date::Parse('2011-08-10', 'UTC');
+		
+		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1);
+		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now());
+		
+		$this->db->SetRows($rows);
+		
+		$expectedCommand = new GetReservationListCommand($startDate, $endDate, $userId, ReservationUserLevel::OWNER);
+		
+		$reservations = $this->repository->GetReservationList($startDate, $endDate, $userId);
+		
+		$actualCommand = $this->db->_LastCommand;
+		
+		$this->assertEquals($expectedCommand, $actualCommand);
+		
+		$this->assertEquals(count($rows), count($reservations));
+		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1);
+		$this->assertEquals($expectedItem1, $reservations[0]);
+	}
+	
 	public function testReturnsNullObjectIfNothingFound()
 	{
 		$referenceNumber = "12345";
@@ -157,6 +186,16 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESOURCE_NAME => $resourceName,
 			);
 			
+	}
+	
+	private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate)
+	{
+		return array(
+			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
+			ColumnNames::RESOURCE_NAME => $resourceName,
+			ColumnNames::RESERVATION_START => $startDate->ToDatabase(),
+			ColumnNames::RESERVATION_START => $endDate->ToDatabase(),
+		);
 	}
 }
 ?>

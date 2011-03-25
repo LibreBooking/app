@@ -221,6 +221,18 @@ class GetReservationForEditingCommand extends SqlCommand
 	}
 }
 
+class GetReservationListCommand extends SqlCommand
+{
+	public function __construct(Date $startDate, Date $endDate, $userId, $userLevelId)
+	{
+		parent::__construct(Queries::GET_RESERVATION_LIST);
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
+	}
+}
+
 class GetReservationParticipantsCommand extends SqlCommand
 {
 	public function __construct($instanceId)
