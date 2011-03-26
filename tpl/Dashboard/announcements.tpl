@@ -1,13 +1,13 @@
-<div class="dashboardBorder">
+<div class="dashboard" id="announcementsDashboard">
 	<div id="announcementsHeader" class="dashboardHeader">
-		<a href="javascript:void(0);" onclick="showHideDashboard('{$AnnouncementsId}')" title="{translate key='ShowHide'}">{translate key="Announcements"}</a>
+		<a href="javascript:void(0);" title="{translate key='ShowHide'}">{translate key="Announcements"}</a>
 	</div>
-	<div id="{$AnnouncementsId}" style="display:{$AnnouncementsDisplayStyle};">
+	<div class="dashboardContents">
 		<ul>
 			{foreach from=$Announcements item=each}
 			    <li>{$each}</li>
 			{foreachelse}
-				{translate key="NoAnnouncements"}
+				<div class="noresults">{translate key="NoAnnouncements"}</div>
 			{/foreach}
 		</ul>
 	</div>

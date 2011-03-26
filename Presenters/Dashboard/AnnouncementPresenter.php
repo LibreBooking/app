@@ -1,8 +1,7 @@
 <?php
-require_once(ROOT_DIR . 'Presenters/DashboardPresenterBase.php');
 require_once(ROOT_DIR . 'Domain/Announcements.php');
 
-class AnnouncementPresenter extends DashboardPresenterBase
+class AnnouncementPresenter
 {
 	private $_control;
 	private $_announcements;
@@ -29,7 +28,6 @@ class AnnouncementPresenter extends DashboardPresenterBase
 	
 	private function PopulateAnnouncements()
 	{
-		$this->_control->SetAnnouncements($this->_announcements->GetFuture(), DashboardWidgets::ANNOUNCEMENTS);
-		$this->_control->SetAnnouncementsVisible($this->GetDashboardVisibility(DashboardWidgets::ANNOUNCEMENTS));
+		$this->_control->SetAnnouncements($this->_announcements->GetFuture());
 	}
 }

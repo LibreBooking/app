@@ -32,6 +32,7 @@ class en_us extends Language
 		$dates['url'] = 'Y-m-d';
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'm/d/Y g:i A';
+		$dates['dashboard'] = 'l, m/d/Y g:i A';
 		
 		$this->Dates = $dates;
 	}
@@ -66,6 +67,8 @@ class en_us extends Language
 		$strings['Registration'] = 'Registration';
 		$strings['NoAnnouncements'] = 'There are no announcements';
 		$strings['Announcements'] = 'Announcements';
+		$strings['NoUpcomingReservations'] = 'You have no upcoming reservations';
+		$strings['UpcomingReservations'] = 'Upcoming Reservations';
 		$strings['ShowHide'] = 'Show/Hide';
 		$strings['Error'] = 'Error';
 		$strings['ReturnToPreviousPage'] = 'Return to the last page that you were on';
@@ -100,6 +103,10 @@ class en_us extends Language
 		$strings['FutureInstances'] = 'Future Instances';
 		$strings['Print'] = 'Print';
 		$strings['ShowHideNavigation'] = 'Show/Hide Navigation';
+		$strings['ReferenceNumber'] = 'Reference Number';
+		$strings['Tomorrow'] = 'Tomorrow';
+		$strings['LaterThisWeek'] = 'Later This Week';
+		$strings['NextWeek'] = 'Next Week';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

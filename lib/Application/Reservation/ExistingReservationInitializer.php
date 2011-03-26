@@ -76,6 +76,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		$timezone = $this->GetTimezone();		
 		$this->page->SetSelectedStart($this->reservationView->StartDate->ToTimezone($timezone));
 		$this->page->SetSelectedEnd($this->reservationView->EndDate->ToTimezone($timezone));		
+		$this->page->SetRepeatTerminationDate($this->reservationView->StartDate->ToTimezone($timezone));		
 	}
 	
 	protected function GetOwnerId()

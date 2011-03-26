@@ -194,7 +194,7 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
 			ColumnNames::RESOURCE_NAME => $resourceName,
 			ColumnNames::RESERVATION_START => $startDate->ToDatabase(),
-			ColumnNames::RESERVATION_START => $endDate->ToDatabase(),
+			ColumnNames::RESERVATION_END => $endDate->ToDatabase(),
 		);
 	}
 }

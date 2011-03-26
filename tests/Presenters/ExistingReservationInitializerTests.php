@@ -200,7 +200,7 @@ class ExistingReservationInitializerTests extends TestBase
 			
 		$page->expects($this->any())
 			->method('SetRepeatTerminationDate')
-			->with($this->equalTo($repeatTerminationDate->ToTimezone($timezone)));
+			->with($this->anything());
 		
 		$page->expects($this->once())
 			->method('SetRepeatWeekdays')

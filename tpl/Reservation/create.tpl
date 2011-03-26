@@ -4,7 +4,7 @@
 <style type="text/css">
 	@import url({$Path}css/reservation.css);
 </style>
-<a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>
+<!-- <a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>-->
 <div id="reservationbox">
 
 <form id="reservationForm" method="post">

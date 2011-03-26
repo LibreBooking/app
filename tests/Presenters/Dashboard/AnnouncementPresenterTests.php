@@ -1,6 +1,6 @@
 <?php
-require_once(ROOT_DIR . 'Presenters/AnnouncementPresenter.php');
-require_once(ROOT_DIR . 'Controls/AnnouncementsControl.php');
+require_once(ROOT_DIR . 'Presenters/Dashboard/AnnouncementPresenter.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/AnnouncementsControl.php');
 
 class AnnouncementPresenterTests extends TestBase
 {
@@ -44,31 +44,6 @@ class AnnouncementPresenterTests extends TestBase
 		
 		$this->assertEquals($this->announcements->_ExpectedAnnouncements, $this->page->_LastAnnouncements);
 		$this->assertTrue($this->announcements->_GetFutureCalled);
-		$this->assertEquals(DashboardWidgets::ANNOUNCEMENTS, $this->page->_LastAnnouncementId);
-	}
-	
-	public function testSetsAnnouncmentVisiblityFromCookie()
-	{
-		$cookie = new Cookie('dashboard_' . DashboardWidgets::ANNOUNCEMENTS, 'true');
-		
-		$this->fakeServer->SetCookie($cookie);
-		$this->presenter->PageLoad();
-		
-		$this->assertTrue($this->page->_LastAnnouncementVisible);
-		
-		$cookie = new Cookie('dashboard_' . DashboardWidgets::ANNOUNCEMENTS, 'false');
-		
-		$this->fakeServer->SetCookie($cookie);
-		$this->presenter->PageLoad();
-		
-		$this->assertFalse($this->page->_LastAnnouncementVisible);
-	}
-	
-	public function testIsVisibleIfNoCookieExists()
-	{
-		$this->presenter->PageLoad();
-		
-		$this->assertTrue($this->page->_LastAnnouncementVisible);
 	}
 	
 	private function GetAnnouncementRows()
@@ -85,18 +60,10 @@ class AnnouncementPresenterTests extends TestBase
 class FakeAnnouncementsControl implements IAnnouncementsControl 
 {
 	public $_LastAnnouncements = array();
-	public $_LastAnnouncementVisible = false;
-	public $_LastAnnouncementId;
 	
-	public function SetAnnouncements($announcements, $widgetId)
+	public function SetAnnouncements($announcements)
 	{
 		$this->_LastAnnouncements = $announcements;
-		$this->_LastAnnouncementId = $widgetId;
-	}
-	
-	public function SetAnnouncementsVisible($isVisible)
-	{
-		$this->_LastAnnouncementVisible = $isVisible;
 	}
 }
 

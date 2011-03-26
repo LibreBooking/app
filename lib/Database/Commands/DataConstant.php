@@ -234,7 +234,7 @@ class Queries
 				r.status_id <> 2';
 	
 	const GET_RESERVATION_LIST = 
-		"SELECT
+		'SELECT
 			*
 		FROM
 			reservation_instances ri
@@ -244,12 +244,16 @@ class Queries
 			reservation_resources rr ON rr.series_id = rs.series_id
 		INNER JOIN
 			reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
+		INNER JOIN
+			resources r on rr.resource_id = r.resource_id
 		WHERE 
 			ri.start_date >= @startDate AND
 			ri.start_date <= @endDate AND
 			ru.user_id = @userid AND
 			ru.reservation_user_level = @levelid AND
-			rs.status_id <> 2";
+			rs.status_id <> 2
+		ORDER BY 
+			ri.start_date ASC';
 	
 	const GET_RESERVATION_PARTICIPANTS =
 		'SELECT

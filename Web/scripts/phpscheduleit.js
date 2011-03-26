@@ -1,23 +1,5 @@
-function showHideDashboard(dashboardId)
-{
-	var shown = 'true';
-	
-	if ($(dashboardId).style.display != "none")
-	{
-		$("#" + dashboardId).toggle('blind');
-		shown = 'false';
-	}
-	else
-	{
-		$("#" + dashboardId).toggle('blind');
-	}
-	
-	createCookie('dashboard_' + dashboardId, shown, 30);	
-}
-
-
 // Cookie functions from http://www.quirksmode.org/js/cookies.html //
-function createCookie(name,value,days) 
+function createCookie(name, value, days) 
 {
 	if (days) 
 	{

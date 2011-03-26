@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Controls/Dashboard/DashboardItem.php');
-require_once(ROOT_DIR . 'Presenters/AnnouncementPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Dashboard/AnnouncementPresenter.php');
 
 class AnnouncementsControl extends DashboardItem implements IAnnouncementsControl
 {
@@ -16,22 +16,15 @@ class AnnouncementsControl extends DashboardItem implements IAnnouncementsContro
 		$this->Display('announcements.tpl');	
 	}
 	
-	public function SetAnnouncements($announcements, $widgetId)
+	public function SetAnnouncements($announcements)
 	{
 		$this->Assign('Announcements', $announcements);	
-		$this->Assign('AnnouncementsId', $widgetId);
-	}
-	
-	public function SetAnnouncementsVisible($isVisible)
-	{
-		$this->Assign('AnnouncementsDisplayStyle', $isVisible ? 'inline' : 'none');
 	}
 }
 
 interface IAnnouncementsControl
 {
-	public function SetAnnouncements($announcements, $widgetId);
-	public function SetAnnouncementsVisible($isVisible);
+	public function SetAnnouncements($announcements);
 }
 
 

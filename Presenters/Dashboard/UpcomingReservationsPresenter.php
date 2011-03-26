@@ -21,13 +21,50 @@ class UpcomingReservationsPresenter
 	
 	public function PageLoad()
 	{
+		$user = ServiceLocator::GetServer()->GetUserSession();
+		$currentUserId = $user->UserId;
+		$timezone = $user->Timezone;
+		
 		$now = Date::Now();
-		$twoWeeksFromNow = $now->AddDays(14);
-		$currentUserId = ServiceLocator::GetServer()->GetUserSession()->UserId;
+		$today = $now->ToTimezone($timezone)->GetDate();
+		$dayOfWeek = $today->Weekday();
 		
-		$reservations = $this->repository->GetReservationList($now, $twoWeeksFromNow, $currentUserId);
+		$lastDate = $now->AddDays(13-$dayOfWeek-1);
+		$reservations = $this->repository->GetReservationList($now, $lastDate, $currentUserId);
+		$tomorrow = $today->AddDays(1);
 		
-		$this->control->BindReservations($reservations);
+		$startOfNextWeek = $today->AddDays(7-$dayOfWeek);
+		
+		/* @var $reservation ReservationItemView */
+		foreach ($reservations as $reservation)
+		{
+			$start = $reservation->StartDate->ToTimezone($timezone);
+			
+			if ($start->DateEquals($today))
+			{
+				$todays[] = $reservation;
+			}
+			else if ($start->DateEquals($tomorrow))
+			{
+				$tomorrows[] = $reservation;
+			}
+			else if ($start->LessThan($startOfNextWeek))
+			{
+				$thisWeeks[] = $reservation;
+			}
+			else 
+			{
+				$nextWeeks[] = $reservation;
+			}
+		}
+		
+		$this->control->SetTotal(count($reservations));
+		$this->control->SetTimezone($timezone);
+		
+		$this->control->BindToday($todays);
+		$this->control->BindTomorrow($tomorrows);
+		$this->control->BindThisWeek($thisWeeks);
+		$this->control->BindNextWeek($nextWeeks);
 	}
 }
 ?>

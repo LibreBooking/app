@@ -34,6 +34,7 @@ class SmartyPage extends Smarty
 		$this->error_reporting = E_ALL  & ~E_NOTICE;
 		
 		$this->compile_check = true;	// should be set to false in production
+		$this->force_compile = true;	// should be set to false in production
 		
 		if (is_null($resources))
 		{

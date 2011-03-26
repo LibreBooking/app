@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'Domain/Values/ReservationUserLevel.php');
+
 interface IReservationViewRepository
 {
 	/**
@@ -12,7 +14,7 @@ interface IReservationViewRepository
 	 * @param $endDate Date
 	 * @param $userId int
 	 * @param $userLevel ReservationUserLevel
-	 * @return ReservationItemView
+	 * @return ReservationItemView[]
 	 */
 	function GetReservationList(Date $startDate, Date $endDate, $userId,  $userLevel = ReservationUserLevel::OWNER);
 }
@@ -66,7 +68,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		$result = ServiceLocator::GetDatabase()->Query($getReservations);
 		
 		$reservations = array();
-		
+
 		while ($row = $result->GetRow())
 		{
 			$reservations[] = new ReservationItemView (
@@ -251,6 +253,32 @@ class ReservationView
 
 class ReservationItemView
 {
+	/**
+	 * @var string
+	 */
+	public $ReferenceNumber;
+	
+	/**
+	 * @var Date
+	 */
+	public $StartDate;
+	
+	/**
+	 * @var Date
+	 */
+	public $EndDate;
+	
+	/**
+	 * @var string
+	 */
+	public $ResourceName;
+	
+	/**
+	 * @param $referenceNumber string
+	 * @param $startDate Date
+	 * @param $endDate Date
+	 * @param $resourceName string
+	 */
 	public function __construct(
 		$referenceNumber = null,
 		$startDate = null,
@@ -258,7 +286,10 @@ class ReservationItemView
 		$resourceName = null
 		)
 	{
-		
+		$this->ReferenceNumber = $referenceNumber;
+		$this->StartDate = $startDate;
+		$this->EndDate = $endDate;
+		$this->ResourceName = $resourceName;
 	}
 }
 ?>

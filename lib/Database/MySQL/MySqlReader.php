@@ -10,7 +10,7 @@ class MySqlReader implements IReader
 	
 	public function GetRow() 
 	{
-		return mysql_fetch_array($this->_result);
+		return mysql_fetch_assoc($this->_result);
 	}
 	
 	public function NumRows() 
