@@ -1,4 +1,5 @@
 <?php
+require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/LoginTime.php');
 require_once(ROOT_DIR . 'lib/Common/SmartyPage.php');
 require_once(ROOT_DIR . 'lib/Common/AvailableLanguage.php');

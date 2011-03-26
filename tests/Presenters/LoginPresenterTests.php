@@ -56,7 +56,7 @@ class LoginPresenterTests extends TestBase
 		$userSession = new UserSession(1);
 		$userSession->HomepageId = 2;
 		
-		$this->fakeServer->SetSession(SessionKeys::USER_SESSION, $userSession);
+		$this->fakeServer->UserSession = $userSession;
 		$this->auth->_ValidateResult = true;
 		$presenter = new LoginPresenter($this->page, $this->auth);
 		$presenter->Login();

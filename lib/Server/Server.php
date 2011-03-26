@@ -55,7 +55,14 @@ class Server
 	
 	public function GetUrl()
 	{
-		return urlencode($_SERVER['PHP_SELF']) . '?' . urlencode($_SERVER['QUERY_STRING']);	
+		$url = urlencode($_SERVER['PHP_SELF']);
+		
+		if (isset($_SERVER['QUERY_STRING']))
+		{
+			$url.= '?' . urlencode($_SERVER['QUERY_STRING']);	
+		}
+		
+		return $url;
 	}
 	
 	/**

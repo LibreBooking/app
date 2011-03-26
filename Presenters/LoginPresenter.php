@@ -4,6 +4,9 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class LoginPresenter
 {
+	/**
+	 * @var ILoginPage
+	 */
 	private $_page = null;
 	
 	/**
@@ -66,6 +69,12 @@ class LoginPresenter
 			$this->_page->setShowLoginError();
 		}
 	}
+	
+	public function Logout()
+	{
+		$this->_auth->Logout(ServiceLocator::GetServer()->GetUserSession());		
+		$this->_page->Redirect(Pages::LOGIN);
+	}
 
 	private function _Redirect()
 	{
@@ -77,7 +86,7 @@ class LoginPresenter
 		}
 		else
 		{
-			$defaultId = ServiceLocator::GetServer()->GetSession(SessionKeys::USER_SESSION)->HomepageId;
+			$defaultId = ServiceLocator::GetServer()->GetUserSession()->HomepageId;
 			$this->_page->Redirect(Pages::UrlFromId($defaultId));
 		}
 	}

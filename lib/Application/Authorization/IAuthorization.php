@@ -14,6 +14,11 @@ interface IAuthorization
 	/**
 	 * @return void
 	 */
+	public function Logout(UserSession $user);
+	
+	/**
+	 * @return void
+	 */
 	public function CookieLogin($cookieValue);
 	
 	/**

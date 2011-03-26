@@ -17,14 +17,16 @@ abstract class Page implements IPage
 	 */
 	protected $server = null;
 	
+	protected $path;
+	
 	protected function __construct($titleKey = '', $pageDepth = 0)
 	{
-		$path = str_repeat('../', $pageDepth);
+		$this->path = str_repeat('../', $pageDepth);
 		
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
 	
-		$this->smarty = new SmartyPage($resources, $path);
+		$this->smarty = new SmartyPage($resources, $this->path);
 		
 		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		
@@ -35,11 +37,12 @@ abstract class Page implements IPage
 		$this->smarty->assign('AllowRss', Configuration::Instance()->GetKey(ConfigKeys::ALLOW_RSS));
 		$this->smarty->assign('LoggedIn', $userSession->IsLoggedIn());
 		$this->smarty->assign('Version', Configuration::Instance()->GetKey(ConfigKeys::VERSION));
-		$this->smarty->assign('Path', $path);
+		$this->smarty->assign('Path', $this->path);
 		$this->smarty->assign('ScriptUrl', Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL));
 		$this->smarty->assign('UserName', !is_null($userSession) ? $userSession->FirstName : '');
 		$this->smarty->assign('DisplayWelcome', $this->DisplayWelcome());
 		$this->smarty->assign('UserId', $userSession->UserId);
+		$this->smarty->assign('CanViewAdmin', $userSession->IsAdmin);
 
 
 		// TODO: should this be filled in dynamically from the database, for sure we want to 
@@ -89,6 +92,10 @@ abstract class Page implements IPage
 	
 	public function Redirect($url)
 	{
+		if (!String::StartsWith($url, $this->path))
+		{
+			$url = $this->path . $url;
+		}
 		header("Location: $url");
 		die();
 	}
@@ -100,7 +107,7 @@ abstract class Page implements IPage
 			$lastPage = $this->GetLastPage();
 		}
 		
-		$errorPageUrl = sprintf("error.php?%s=%s&%s=%s", QueryStringKeys::MESSAGE_ID, $errorMessageId, QueryStringKeys::REDIRECT, urlencode($lastPage));
+		$errorPageUrl = sprintf("%serror.php?%s=%s&%s=%s", $this->path, QueryStringKeys::MESSAGE_ID, $errorMessageId, QueryStringKeys::REDIRECT, urlencode($lastPage));
 		$this->Redirect($errorPageUrl);
 	}
 	

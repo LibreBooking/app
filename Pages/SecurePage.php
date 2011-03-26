@@ -15,9 +15,9 @@ class SecurePage extends Page
 		}
 	}
 	
-	private function GetResumeUrl()
+	protected function GetResumeUrl()
 	{
-		return sprintf("%s?%s=%s", Pages::LOGIN, QueryStringKeys::REDIRECT, $this->server->GetUrl());
+		return sprintf("%s%s?%s=%s", $this->path, Pages::LOGIN, QueryStringKeys::REDIRECT, $this->server->GetUrl());
 	}
 }
 ?>

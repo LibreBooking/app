@@ -391,9 +391,11 @@ class Queries
 		'SELECT 
 			user_id, user_level 
 		FROM 
-			roles r, user_roles ur
+			roles r
+		INNER JOIN
+			user_roles ur on r.roleid = ur.role_id
 		WHERE 
-			ur.user_id = @userid AND r.roleid = ur.role_id';
+			ur.user_id = @userid';
 	
 	const MIGRATE_PASSWORD = 
 		'UPDATE 

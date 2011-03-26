@@ -29,6 +29,11 @@ class Cookie
 		$this->Path = $path;
 	}
 	
+	public function Delete()
+	{
+		$this->Expiration = date(DATE_COOKIE, Date::Now()->AddDays(-30)->Timestamp());
+	}
+	
 	public function __toString()
 	{
 		return sprintf('%s %s %s %s', $this->Name, $this->Value, $this->Expiration, $this->Path);

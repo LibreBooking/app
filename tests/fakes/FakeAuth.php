@@ -29,6 +29,11 @@ class FakeAuth implements IAuthorization
 		$this->_LastPersist = $persist;
 	}
 	
+	public function Logout(UserSession $user)
+	{
+		
+	}
+	
 	public function CookieLogin($cookie)
 	{
 		$this->_CookieLoginCalled = true;

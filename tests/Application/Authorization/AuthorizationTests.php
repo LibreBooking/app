@@ -96,7 +96,7 @@ class AuthorizationTests extends TestBase
 
 		$loginRows = $this->GetRows();
 		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 1)
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => RoleLevel::ADMIN)
 			);
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);

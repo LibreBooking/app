@@ -1,6 +1,7 @@
 <?php
-
 require_once(ROOT_DIR . 'Domain/ScheduleLayout.php');
+require_once(ROOT_DIR . 'Domain/Schedule.php');
+require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
 interface IScheduleRepository
 {
@@ -79,11 +80,11 @@ class ScheduleRepository implements IScheduleRepository
 		while ($row = $reader->GetRow())
 		{
 			$schedules[] = new Schedule(
-			$row[ColumnNames::SCHEDULE_ID],
-			$row[ColumnNames::SCHEDULE_NAME],
-			$row[ColumnNames::SCHEDULE_DEFAULT],
-			$row[ColumnNames::SCHEDULE_WEEKDAY_START],
-			$row[ColumnNames::SCHEDULE_DAYS_VISIBLE]
+				$row[ColumnNames::SCHEDULE_ID],
+				$row[ColumnNames::SCHEDULE_NAME],
+				$row[ColumnNames::SCHEDULE_DEFAULT],
+				$row[ColumnNames::SCHEDULE_WEEKDAY_START],
+				$row[ColumnNames::SCHEDULE_DAYS_VISIBLE]
 			);
 		}
 

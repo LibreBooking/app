@@ -61,7 +61,6 @@ class en_us extends Language
 		$strings['Password'] = 'Password';
 		$strings['PasswordConfirmation'] = 'Confirm Password';
 		$strings['DefaultPage'] = 'Default Homepage';
-		$strings['MyDashboard'] = 'My Dashboard';
 		$strings['MyCalendar'] = 'My Calendar';
 		$strings['ScheduleCalendar'] = 'Schedule Calendar';
 		$strings['Registration'] = 'Registration';
@@ -107,11 +106,14 @@ class en_us extends Language
 		$strings['Tomorrow'] = 'Tomorrow';
 		$strings['LaterThisWeek'] = 'Later This Week';
 		$strings['NextWeek'] = 'Next Week';
+		$strings['SignOut'] = 'Sign Out';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';
 		$strings['EditReservation'] = 'Editing Reservation';
 		$strings['LogIn'] = 'Log In';
+		$strings['ManageSchedules'] = 'Manage Schedules';
+		$strings['MyDashboard'] = 'My Dashboard';
 		//
 		
 		// Day representations

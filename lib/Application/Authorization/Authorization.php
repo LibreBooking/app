@@ -3,6 +3,7 @@ require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
+require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
 
 class Authorization implements IAuthorization 
 {	
@@ -87,6 +88,17 @@ class Authorization implements IAuthorization
 	}
 	
 	/**
+	 * @see IAuthorization::Logout()
+	 */
+	public function Logout(UserSession $userSession)
+	{
+		Log::Debug('Logout userId: %s', $userSession->UserId);
+		
+		$this->DeleteLoginCookie($userSession->UserId);
+		ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, null);
+	}
+	
+	/**
 	 * @see IAuthorization::CookieLogin()
 	 */
 	public function CookieLogin($cookieValue)
@@ -135,7 +147,7 @@ class Authorization implements IAuthorization
 		{
 			if ($isAdminRole == false)
 			{
-				$isAdminRole = (bool)$row[ColumnNames::USER_LEVEL];
+				$isAdminRole = RoleLevel::ADMIN & (int)$row[ColumnNames::USER_LEVEL];
 			}
 		}
 		
@@ -160,6 +172,12 @@ class Authorization implements IAuthorization
 	private function SetLoginCookie($userid, $lastLogin)
 	{
 		$cookie = new LoginCookie($userid, $lastLogin);
+		ServiceLocator::GetServer()->SetCookie($cookie);
+	}
+	
+	private function DeleteLoginCookie($userid)
+	{
+		$cookie = new LoginCookie($userid, null);
 		ServiceLocator::GetServer()->SetCookie($cookie);
 	}
 	

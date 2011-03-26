@@ -86,6 +86,14 @@ class Drupal implements IAuthorization
 	}
 	
 	/**
+	 * @see IAuthorization::Logout()
+	 */
+	public function Logout(UserSession $user)
+	{
+		$this->authToDecorate->Logout($user);
+	}
+	
+	/**
 	 * @see IAuthorization::CookieLogin()
 	 */
 	public function CookieLogin($cookieValue)

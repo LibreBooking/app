@@ -4,8 +4,6 @@ delete from resources;
 alter table resources AUTO_INCREMENT = 1;
 delete from  users;
 alter table users AUTO_INCREMENT = 1;
-delete from roles;
-alter table roles AUTO_INCREMENT = 1;
 delete from user_roles;
 alter table user_roles AUTO_INCREMENT = 1;
 delete from time_block_groups;
@@ -28,11 +26,8 @@ insert into users (fname, lname, email, username, password, salt, timezone, last
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language)
 	values ('Jan', 'Mattila', 'jan.mattila@helvet.fi', 'admin', '70f3e748c6801656e4aae9dca6ee98ab137d952c', '4a04db87', 'Europe/Helsinki', '2010-03-26 12:44:00', 1, now(), 'en_us');
 
-
-insert into roles values (1,'default admin',0),(2,'basic user',0),(3,'group admin',2),(4,'sysadmin',9);
-
-insert into user_roles values (1, 1),(2, 1);
-
+insert into user_roles values (1, 2)
+	
 insert into time_block_groups values (1, 'Business Day', 'America/Chicago');
 
 insert into time_blocks (blockid, availability_code, block_group_id, start_time, end_time) values

@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
-require_once(ROOT_DIR . 'Controls/AnnouncementsControl.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/AnnouncementsControl.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/UpcomingReservations.php');
 
 class DashboardPresenter
