@@ -289,6 +289,14 @@ class GetResourceByIdCommand extends SqlCommand
 	}
 }
 
+class GetScheduleByIdCommand extends SqlCommand
+{
+public function __construct($scheduleId)
+	{
+		parent::__construct(Queries::GET_SCHEDULE_BY_ID);
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+	}
+}
 
 class GetScheduleResourcesCommand extends SqlCommand
 {
@@ -506,6 +514,24 @@ class UpdateReservationSeriesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));
 		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $dateModified->ToDatabase()));	
+	}
+}
+
+class UpdateScheduleCommand extends SqlCommand
+{
+	public function __construct($scheduleId,
+								$name, 
+								$isDefault, 
+								$weekdayStart, 
+								$daysVisible)
+	{
+		parent::__construct(Queries::UPDATE_SCHEDULE);	
+		
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_NAME, $name));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ISDEFAULT, $isDefault));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_WEEKDAYSTART, (int)$weekdayStart));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DAYSVISIBLE, (int)$daysVisible));
 	}
 }
 

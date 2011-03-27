@@ -75,6 +75,7 @@ class FormKeys
 	const RETURN_URL = 'returnUrl';
 	
 	const SCHEDULE_ID = 'scheduleId';
+	const SCHEDULE_NAME = 'scheduleName';
 	const SERIES_UPDATE_SCOPE = 'seriesUpdateScope';
 	const SUMMARY = 'summary';
 	

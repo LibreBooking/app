@@ -60,6 +60,10 @@ class ParameterNames
 	
 	const SALT = '@salt';
 	const SCHEDULE_ID = '@scheduleid';
+	const SCHEDULE_NAME = '@scheduleName';
+	const SCHEDULE_ISDEFAULT = '@scheduleIsDefault';
+	const SCHEDULE_WEEKDAYSTART = '@scheduleWeekdayStart';
+	const SCHEDULE_DAYSVISIBLE = '@scheduleDaysVisible';
 	const SERIES_ID = '@seriesid';
 	const START_DATE = '@startDate';
 	const STATUS_ID = '@statusid';
@@ -353,6 +357,14 @@ class Queries
 			stbg.schedule_id = @scheduleid 
 		ORDER BY tb.start_time';
 	
+	const GET_SCHEDULE_BY_ID = 
+		'SELECT
+			*
+		FROM
+			schedules
+		WHERE
+			schedule_id = @scheduleid';
+	
 	const GET_SCHEDULE_RESOURCES = 
 		'SELECT 
 			r.*
@@ -483,6 +495,17 @@ class Queries
 			repeat_options = @repeatOptions
 		WHERE
 			series_id = @seriesid';
+	
+	const UPDATE_SCHEDULE =
+		'UPDATE
+			schedules
+		SET
+			name = @scheduleName,
+			isdefault = @scheduleIsDefault,
+			weekdaystart = @scheduleWeekdayStart,
+			daysvisible = @scheduleDaysVisible
+		WHERE
+			schedule_id = @scheduleid';
 	
 	const UPDATE_USER_BY_USERNAME = 
 		'UPDATE 

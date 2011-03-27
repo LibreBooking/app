@@ -10,7 +10,18 @@ interface IScheduleRepository
 	 * @return array list of Schedule objects
 	 */
 	public function GetAll();
+	
+	/**
+	 * @param int $scheduleId
+	 * @return Schedule
+	 */
+	public function LoadById($scheduleId);
 
+	/**
+	 * @param Schedule $schedule
+	 */
+	public function Update(Schedule $schedule);
+	
 	/**
 	 * @param int $scheduleId
 	 * @param ILayoutFactory $layoutFactory factory to use to create the schedule layout
@@ -92,7 +103,39 @@ class ScheduleRepository implements IScheduleRepository
 
 		return $schedules;
 	}
+	
+	public function LoadById($scheduleId)
+	{
+		$schedule = null;
 
+		$reader = ServiceLocator::GetDatabase()->Query(new GetScheduleByIdCommand($scheduleId));
+
+		if ($row = $reader->GetRow())
+		{
+			$schedule = new Schedule(
+				$row[ColumnNames::SCHEDULE_ID],
+				$row[ColumnNames::SCHEDULE_NAME],
+				$row[ColumnNames::SCHEDULE_DEFAULT],
+				$row[ColumnNames::SCHEDULE_WEEKDAY_START],
+				$row[ColumnNames::SCHEDULE_DAYS_VISIBLE]
+			);
+		}
+
+		$reader->Free();
+
+		return $schedule;
+	}
+
+	public function Update(Schedule $schedule)
+	{
+		ServiceLocator::GetDatabase()->Execute(new UpdateScheduleCommand(
+			$schedule->GetId(), 
+			$schedule->GetName(), 
+			$schedule->GetIsDefault(),
+			$schedule->GetWeekdayStart(),
+			$schedule->GetDaysVisible()));
+	}
+	
 	/**
 	 * @see IScheduleRepository::GetLayout()
 	 */

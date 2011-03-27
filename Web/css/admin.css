@@ -2,7 +2,56 @@ table.admin {
 	border-collapse: collapse;
 }
 
-table.admin, table.admin th, table.admin td {
-	border: solid 1px #000;
+.admin {
+	width: 50%;
+}
+
+.admin ul {
+	list-style: none;
+}
+
+.admin .title, .admin .title td {
+	background-color: #f6f6f6;
+	font-weight: bold;
+	font-size: 14px;
+	color: #596171;
 	padding: 5px;
+	border-bottom: solid 1px #CECFCE;
+}
+
+.admin, .admin th, .admin td {
+	border: solid 1px #CECFCE;
+}
+
+.admin th, .admin td, .admin div {
+	padding: 5px;
+}
+
+table.admin th {
+	color: #737C8C;
+	background-color: #f9f9f9;
+}
+
+table.admin a {
+	color: #005B9A;
+}
+
+table.admin .label {
+	font-weight: bold;
+}
+
+table.admin .note {
+	font-style: italic;
+	color: #8D96A8
+}
+
+.admin h4 {
+	display:inline;
+	font-size: 12px;
+	color: #666666;
+}
+
+span.error {
+	font-weight: bold;
+	color: #CE0000;
 }

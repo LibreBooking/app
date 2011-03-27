@@ -2,7 +2,7 @@
 interface IScheduleLayout
 {
 	/**
-	 * @return array of SchedulePeriod objects
+	 * @return SchedulePeriod[] array of SchedulePeriod objects
 	 */
 	public function GetLayout(Date $layoutDate);
 	

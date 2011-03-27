@@ -30,20 +30,8 @@ class FakeScheduleRepository implements IScheduleRepository
 	public function GetRows()
 	{
 		return array(
-			array(
-				ColumnNames::SCHEDULE_ID => $this->_DefaultScheduleId,
-				ColumnNames::SCHEDULE_NAME => 'schedule 1',
-				ColumnNames::SCHEDULE_DEFAULT => 1,
-				ColumnNames::SCHEDULE_WEEKDAY_START => $this->_DefaultDayStart,
-				ColumnNames::SCHEDULE_DAYS_VISIBLE => $this->_DefaultDaysVisible
-			),
-			array(
-				ColumnNames::SCHEDULE_ID => 2,
-				ColumnNames::SCHEDULE_NAME => 'schedule 2',
-				ColumnNames::SCHEDULE_DEFAULT => 0,
-				ColumnNames::SCHEDULE_WEEKDAY_START => 0,
-				ColumnNames::SCHEDULE_DAYS_VISIBLE => 5
-			)
+			self::GetRow($this->_DefaultScheduleId, 'schedule 1', 1, $this->_DefaultDayStart, $this->_DefaultDaysVisible),
+			self::GetRow(2, 'schedule 1', 0, 0, 5),
 		);
 	}
 	
@@ -75,6 +63,27 @@ class FakeScheduleRepository implements IScheduleRepository
 	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
 	{
 		throw new Exception("not implemented");
+	}
+	
+	public function LoadById($scheduleId)
+	{
+		throw new Exception('mock this');
+	}
+	
+	public function Update(Schedule $schedule)
+	{
+		throw new Exception('mock this');
+	}
+	
+	public static function GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible)
+	{
+		return array(
+				ColumnNames::SCHEDULE_ID => $id,
+				ColumnNames::SCHEDULE_NAME => $name,
+				ColumnNames::SCHEDULE_DEFAULT => $isDefault,
+				ColumnNames::SCHEDULE_WEEKDAY_START => $weekdayStart,
+				ColumnNames::SCHEDULE_DAYS_VISIBLE => $daysVisible
+			);
 	}
 }
 ?>

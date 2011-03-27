@@ -66,7 +66,7 @@
 		    </li>
 		    {/if}
 		    <li class="menubaritem"><a href="#">Help</a></li>
-		    <li class="menubaritem"><a href="$Path}logout.php">{translate key="SignOut"}</a></li>
+		    <li class="menubaritem"><a href="{$Path}logout.php">{translate key="SignOut"}</a></li>
 		</ul>
 		<!-- end #nav -->
 		</div>

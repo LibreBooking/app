@@ -31,39 +31,6 @@ body {
 img {
 	border: none;
 }
-/*
-a {
-    color: #104E8B;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #474747;
-    text-decoration: underline;
-}
-
-/* Common text settings
- 
-p {
-    font-size: 11px;
-    margin-bottom: 2px;
-    margin-top: 2px;
-    margin-right: 2px;
-    margin-left: 2px;
-}
-
-h5 {
-    font-size: 12px;
-}
-
-h4 {
-    font-size: 13px;
-}
-
-h3 {
-    font-size: 18px;
-}
-*/
 
 h1 {
 	padding-top: 25px;

@@ -5,6 +5,7 @@ class QueryStringKeys
 	private function __construct()
 	{}
 	
+	const ACTION = 'action';
 	const LANGUAGE = 'lang';
 	const MESSAGE_ID = 'mid';
 	const PERIOD_ID = 'pid';

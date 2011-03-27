@@ -102,7 +102,47 @@ class ScheduleRepositoryTests extends TestBase
 		
 		$period = new SchedulePeriod($start, $end, 'PERIOD1', 'END PERIOD1');
 		$this->assertEquals($period, $periods[0]);
-
+	}
+	
+	public function testCanGetScheduleById()
+	{
+		$id = 10;
+		$name = 'super schedule';
+		$isDefault = 0;
+		$weekdayStart = 5;
+		$daysVisible = 3;
+		
+		$fakeSchedules = new FakeScheduleRepository();
+		$expectedSchedule = new Schedule($id, 
+									$name, 
+									$isDefault, 
+									$weekdayStart, 
+									$daysVisible);
+									
+		$this->db->SetRows(array($fakeSchedules->GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible)));
+		$actualSchedule = $this->scheduleRepository->LoadById($id);
+		
+		$this->assertEquals($expectedSchedule, $actualSchedule);
+		$this->assertEquals(new GetScheduleByIdCommand($id), $this->db->_LastCommand);
+	}
+	
+	public function testCanUpdateSchedule()
+	{
+		$id = 10;
+		$name = 'super schedule';
+		$isDefault = 0;
+		$weekdayStart = 5;
+		$daysVisible = 3;
+		
+		$schedule = new Schedule($id, 
+								$name, 
+								$isDefault, 
+								$weekdayStart, 
+								$daysVisible);
+									
+		$actualSchedule = $this->scheduleRepository->Update($schedule);
+		
+		$this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible), $this->db->_LastCommand);
 	}
 }
 
