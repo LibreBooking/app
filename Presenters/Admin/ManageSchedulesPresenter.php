@@ -30,14 +30,16 @@ class ManageSchedulesPresenter
 	{
 		$schedules = $this->scheduleRepository->GetAll();
 		
+		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+		
 		/* @var $schedule Schedule */
 		foreach ($schedules as $schedule)
 		{
-			//$layout = $this->scheduleRepository->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($targetTimezone));
-			//$periods = $layout->GetLayout($layoutDate);
+			$layout = $this->scheduleRepository->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($timezone));
+			$layouts[$schedule->GetId()] = $layout->GetLayout(Date::Now());
 		}
 		
-		$this->page->BindSchedules($schedules);
+		$this->page->BindSchedules($schedules, $layouts);
 	}
 	
 	public function ProcessAction()

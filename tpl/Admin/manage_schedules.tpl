@@ -16,9 +16,13 @@
 			<input type="hidden" class="id" value="{$schedule->GetId()}" />
 			<h4>{$schedule->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">Rename</a><br/>
 			Starts on Sunday, showing 7 days at a time <a class="update changeButton" href="javascript:void(0);">Change</a><br/>
-			00:00 - 06:00 (no label) Available
+			{foreach $Layouts[$schedule->GetId()] item=period}
+				{$period->Begin()} - {$period->End()}
+			{/foreach}
+			<!--  00:00 - 06:00 (no label) Available
 			06:00 - 12:00 First Period Available
 			12:00 - 04:00 (no label) Blocked
+			-->
 			<br/>
 			{if $schedule->GetIsDefault()}
 				<span class="note">This is the default schedule</span> |

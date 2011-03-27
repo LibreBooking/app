@@ -25,9 +25,10 @@ interface IUpdateSchedulePage
 interface IManageSchedulesPage extends IUpdateSchedulePage
 {
 	/**
-	 * @param $schedules Schedule[]
+	 * @param Schedule[] $schedules 
+	 * @param array $layouts 
 	 */
-	function BindSchedules($schedules);
+	function BindSchedules($schedules, $layouts);
 }
 
 class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
@@ -55,9 +56,10 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 		$this->_presenter->ProcessAction();
 	}
 	
-	public function BindSchedules($schedules)
+	public function BindSchedules($schedules, $layouts)
 	{
 		$this->Set('Schedules', $schedules);
+		$this->Set('Layouts', $layouts);
 	}
 	
 	public function GetAction()

@@ -1,6 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/ScheduleLayout.php');
 require_once(ROOT_DIR . 'Domain/Schedule.php');
+require_once(ROOT_DIR . 'Domain/SchedulePeriod.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
 interface IScheduleRepository
