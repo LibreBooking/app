@@ -101,6 +101,11 @@ class SchedulePeriod
 		return true;
 	}
 	
+	public function IsLabelled()
+	{
+		return !empty($this->_label);
+	}
+	
 	public function ToUtc()
 	{
 		return new SchedulePeriod($this->_begin->ToUtc(), $this->_end->ToUtc(), $this->_label);	

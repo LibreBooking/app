@@ -26,16 +26,33 @@ insert into users (fname, lname, email, username, password, salt, timezone, last
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language)
 	values ('Jan', 'Mattila', 'jan.mattila@helvet.fi', 'admin', '70f3e748c6801656e4aae9dca6ee98ab137d952c', '4a04db87', 'Europe/Helsinki', '2010-03-26 12:44:00', 1, now(), 'en_us');
 
-insert into user_roles values (1, 2)
+insert into user_roles values (1, 2);
 	
 insert into time_block_groups values (1, 'Business Day', 'America/Chicago');
 
-insert into time_blocks (blockid, availability_code, block_group_id, start_time, end_time) values
-(1, 1, 1, '00:00', '06:00'),
-(2, 1, 1, '06:00', '08:00'),
-(3, 2, 1, '08:00', '12:00'),
-(4, 1, 1, '12:00', '18:00'),
-(5, 1, 1, '18:00', '00:00');
+insert into time_blocks (availability_code, block_group_id, start_time, end_time) values
+(2, 1, '00:00', '08:00'),
+(1, 1, '08:00', '08:30'),
+(1, 1, '08:30', '09:00'),
+(1, 1, '09:00', '09:30'),
+(1, 1, '09:30', '10:00'),
+(1, 1, '10:00', '10:30'),
+(1, 1, '10:30', '11:00'),
+(1, 1, '11:00', '11:30'),
+(1, 1, '11:30', '12:00'),
+(1, 1, '12:00', '12:30'),
+(1, 1, '12:30', '13:00'),
+(1, 1, '13:00', '13:30'),
+(1, 1, '13:30', '14:00'),
+(1, 1, '14:00', '14:30'),
+(1, 1, '14:30', '15:00'),
+(1, 1, '15:00', '15:30'),
+(1, 1, '15:30', '16:00'),
+(1, 1, '16:00', '16:30'),
+(1, 1, '16:30', '17:00'),
+(1, 1, '17:00', '17:30'),
+(1, 1, '17:30', '18:00'),
+(2, 1, '18:00', '00:00');
 
 
 insert into organizations values (1, 'Default Organization'),(2, 'Other Organization');

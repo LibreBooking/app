@@ -48,7 +48,6 @@
 		<td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
 		{foreach from=$Periods item=period}
 			<td class="reslabel">{$period}</td>
-			<!-- pass format in? -->
 		{/foreach}
 	</tr>
 	{foreach from=$Resources item=resource name=resource_loop}
@@ -83,7 +82,7 @@ $(document).ready(function() {
 	};
 
 	var schedule = new Schedule(scheduleOpts);
-	schedule.init();   
+	schedule.init(); 
 });
 </script>
  

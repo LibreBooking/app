@@ -19,8 +19,19 @@ class SchedulePage extends Page implements ISchedulePage
 	
 	public function PageLoad()
 	{
+		$start = microtime(true);
+		
 		$this->_presenter->PageLoad();
+		
+		$endLoad = microtime(true);
+		
 		$this->smarty->display('schedule.tpl');		
+		
+		$endDisplay = microtime(true);
+		
+		$load = $endLoad-$start;
+		$display = $endDisplay-$endLoad;
+		//echo ("load: $load display: $display");
 	}
 	
 	public function IsPostBack()

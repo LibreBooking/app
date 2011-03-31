@@ -9,7 +9,14 @@ interface IScheduleLayout
 	public function Timezone();
 }
 
-class ScheduleLayout implements IScheduleLayout
+interface ILayoutCreation
+{
+	function AppendPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null);
+	
+	function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null);
+}
+
+class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 {
 	private $_periods = array();
 	private $_timezone;
@@ -71,12 +78,7 @@ class ScheduleLayout implements IScheduleLayout
 	 * @return array[]SchedulePeriod
 	 */
 	public function GetLayout(Date $layoutDate)
-	{
-		if ($layoutDate->Timezone() != $this->_timezone)
-		{
-			//throw new Exception("Cannot get layout. Date timezone {$layoutDate->Timezone()} does not equal target timezone {$this->_timezone}");
-		}
-		
+	{		
 		$targetTimezone = $this->_timezone;
 		$layoutTimezone = $this->_periods[0]['start']->Timezone();
 		
@@ -288,4 +290,6 @@ class ReservationLayout extends ScheduleLayout implements IScheduleLayout
 		return false;
 	}
 }
+
+
 ?>

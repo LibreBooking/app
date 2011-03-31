@@ -78,7 +78,7 @@ class SchedulePresenter implements ISchedulePresenter
 		$currentSchedule = $this->_builder->GetCurrentSchedule($this->_page, $schedules);
 		$activeScheduleId = $currentSchedule->GetId();
 		$this->_builder->BindSchedules($this->_page, $schedules, $currentSchedule);
-		
+
 		$scheduleDates = $this->_builder->GetScheduleDates($user, $currentSchedule, $this->_page);
 		$this->_builder->BindDisplayDates($this->_page, $scheduleDates, $user, $currentSchedule);
 				
@@ -88,7 +88,7 @@ class SchedulePresenter implements ISchedulePresenter
 		$dailyLayout = $this->_dailyLayoutFactory->Create($reservationListing, $layout);
 		$permissionService =$this->_permissionServiceFactory->GetPermissionService($user->UserId);
 		$resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources, $permissionService);
-		
+
 		$this->_builder->BindLayout($this->_page, $dailyLayout, $scheduleDates);															
 		$this->_builder->BindReservations($this->_page, $resources, $dailyLayout);
 	}

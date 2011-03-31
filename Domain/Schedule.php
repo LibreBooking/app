@@ -6,6 +6,7 @@ interface ISchedule
 	public function GetIsDefault();
 	public function GetWeekdayStart();
 	public function GetDaysVisible();
+	public function GetTimezone();
 }
 
 class Schedule implements ISchedule
@@ -15,19 +16,22 @@ class Schedule implements ISchedule
 	private $_isDefault;
 	private $_weekdayStart;
 	private $_daysVisible;
+	private $_timezone;
 	
 	public function __construct(
 		$id, 
 		$name, 
 		$isDefault, 
 		$weekdayStart, 
-		$daysVisible)
+		$daysVisible,
+		$timezone = null)
 	{
 		$this->_id = $id;
 		$this->_name = $name;
 		$this->_isDefault = $isDefault;
 		$this->_weekdayStart = $weekdayStart;
 		$this->_daysVisible = $daysVisible;
+		$this->_timezone = $timezone;
 	}
 	
 	public function GetId()
@@ -79,6 +83,10 @@ class Schedule implements ISchedule
 	{
 		$this->_daysVisible = $value;
 	}
-	
+		
+	public function GetTimezone()
+	{
+		return $this->_timezone;
+	}
 }
 ?>

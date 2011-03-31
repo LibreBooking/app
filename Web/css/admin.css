@@ -1,16 +1,12 @@
-table.admin {
-	border-collapse: collapse;
-}
-
 .admin {
-	width: 50%;
+	width: 75%;
 }
 
 .admin ul {
 	list-style: none;
 }
 
-.admin .title, .admin .title td {
+.admin .title{
 	background-color: #f6f6f6;
 	font-weight: bold;
 	font-size: 14px;
@@ -19,28 +15,22 @@ table.admin {
 	border-bottom: solid 1px #CECFCE;
 }
 
-.admin, .admin th, .admin td {
+.admin {
 	border: solid 1px #CECFCE;
 }
 
-.admin th, .admin td, .admin div {
+.admin div {
 	padding: 5px;
 }
-
-table.admin th {
-	color: #737C8C;
-	background-color: #f9f9f9;
-}
-
-table.admin a {
+.admin a {
 	color: #005B9A;
 }
 
-table.admin .label {
+.admin .label {
 	font-weight: bold;
 }
 
-table.admin .note {
+.admin .note {
 	font-style: italic;
 	color: #8D96A8
 }
@@ -54,4 +44,13 @@ table.admin .note {
 span.error {
 	font-weight: bold;
 	color: #CE0000;
+}
+
+#changeLayoutDialog textarea {
+	width: 300px;
+	height: 400px;
+}
+
+#changeLayoutDialog p {
+	margin: 0px;
 }

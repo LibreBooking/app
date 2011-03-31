@@ -96,7 +96,8 @@ class ScheduleRepository implements IScheduleRepository
 				$row[ColumnNames::SCHEDULE_NAME],
 				$row[ColumnNames::SCHEDULE_DEFAULT],
 				$row[ColumnNames::SCHEDULE_WEEKDAY_START],
-				$row[ColumnNames::SCHEDULE_DAYS_VISIBLE]
+				$row[ColumnNames::SCHEDULE_DAYS_VISIBLE],
+				$row[ColumnNames::TIMEZONE_NAME]
 			);
 		}
 
@@ -118,7 +119,8 @@ class ScheduleRepository implements IScheduleRepository
 				$row[ColumnNames::SCHEDULE_NAME],
 				$row[ColumnNames::SCHEDULE_DEFAULT],
 				$row[ColumnNames::SCHEDULE_WEEKDAY_START],
-				$row[ColumnNames::SCHEDULE_DAYS_VISIBLE]
+				$row[ColumnNames::SCHEDULE_DAYS_VISIBLE],
+				$row[ColumnNames::TIMEZONE_NAME]
 			);
 		}
 

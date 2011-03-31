@@ -46,7 +46,6 @@ function Schedule(opts)
 			});
 		});
 		
-		
 		$('.reservations').delegate('.clickres:not(.reserved)', 'hover', function(){
 			$(this).toggleClass("hilite");
 		});

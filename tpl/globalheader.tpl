@@ -11,8 +11,8 @@
 <link rel="alternate" type="application/rss+xml" title="phpScheduleIt"
 	href="{$ScriptUrl}/rss.php?id={$UserId}" />
 {/if}
-<link rel="shortcut icon" href="favicon.ico" />
-<link rel="icon" href="favicon.ico" />
+<link rel="shortcut icon" href="{$Path}favicon.ico" />
+<link rel="icon" href="{$Path}favicon.ico" />
 <script type="text/javascript" src="{$Path}scripts/js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.7.custom.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>

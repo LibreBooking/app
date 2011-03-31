@@ -25,10 +25,10 @@ CREATE TABLE `announcements` (
 
 DROP TABLE IF EXISTS `time_block_groups`;
 CREATE TABLE `time_block_groups` (
- `block_groupid` tinyint(2) unsigned NOT NULL,
+ `block_group_id` tinyint(2) unsigned NOT NULL,
  `label` varchar(85) NOT NULL,
  `timezone` varchar(50) NOT NULL,
- PRIMARY KEY (`block_groupid`)
+ PRIMARY KEY (`block_group_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `time_block_groups` (
 
 DROP TABLE IF EXISTS `time_blocks`;
 CREATE TABLE `time_blocks` (
- `blockid` tinyint(2) unsigned NOT NULL,
+ `blockid` tinyint(2) unsigned NOT NULL auto_increment,
  `label` varchar(85),
  `end_label` varchar(85),
  `availability_code` tinyint(2) unsigned NOT NULL,
@@ -537,7 +537,7 @@ CREATE TABLE `schedule_time_block_groups` (
 	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`block_group_id`),
  FOREIGN KEY (`block_group_id`) 
-	REFERENCES time_block_groups(`block_groupid`)
+	REFERENCES time_block_groups(`block_group_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 

@@ -172,7 +172,9 @@ class Queries
 	
 	const GET_ALL_SCHEDULES = 
 		'SELECT * 
-		FROM schedules';
+		FROM schedules s
+		INNER JOIN schedule_time_block_groups g ON s.schedule_id = g.schedule_id
+		INNER JOIN time_block_groups tb ON tb.block_group_id = g.block_group_id';
 	
 	const GET_ALL_USERS_BY_STATUS = 
 		'SELECT user_id, fname, lname, email, timezone, language
@@ -352,8 +354,8 @@ class Queries
 			time_block_groups tbg, 
 			schedule_time_block_groups stbg
 		WHERE 
-			tbg.block_groupid = stbg.block_group_id AND 
-			tb.block_group_id = tbg.block_groupid AND
+			tbg.block_group_id = stbg.block_group_id AND 
+			tb.block_group_id = tbg.block_group_id AND
 			stbg.schedule_id = @scheduleid 
 		ORDER BY tb.start_time';
 	
