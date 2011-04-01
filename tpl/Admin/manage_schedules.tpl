@@ -109,11 +109,11 @@
 	<form id="changeLayoutForm" method="post">
 		<div style="float:left;">
 			<h5>Reservable Time Slots</h5>
-			<textarea id="reservableEdit"></textarea>
+			<textarea id="reservableEdit" {formname key=SLOTS_RESERVABLE}></textarea>
 		</div>
 		<div style="float:right;">
 			<h5>Blocked Time Slots</h5>
-			<textarea id="blockedEdit"></textarea>
+			<textarea id="blockedEdit" {formname key=SLOTS_BLOCKED}></textarea>
 		</div>
 		<div style="clear:both;height:0px;">&nbsp</div>
 		<div style="margin-top: 5px; padding-top:5px; border-top: solid 1px #f0f0f0;">
@@ -127,6 +127,7 @@
 			</div>
 		</div>
 	</form>
+	<div id="layoutResults"></div>
 </div>
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
@@ -140,8 +141,9 @@ $(document).ready(function() {
 	var opts = {
 			submitUrl: '{$smarty.server.SCRIPT_NAME}',
 			saveRedirect: '{$smarty.server.SCRIPT_NAME}',
-			renameAction: 'rename',
-			changeLayoutAction: 'changeLayout'
+			renameAction: '{ManageSchedules::ActionRename}',		
+			changeLayoutAction: '{ManageSchedules::ActionChangeLayout}',
+			addAction: 'add'
 	};
 
 	var scheduleManagement = new ScheduleManagement(opts);

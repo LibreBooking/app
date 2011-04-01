@@ -34,7 +34,8 @@ class ScheduleRepositoryTests extends TestBase
 							$item[ColumnNames::SCHEDULE_NAME],
 							$item[ColumnNames::SCHEDULE_DEFAULT],
 							$item[ColumnNames::SCHEDULE_WEEKDAY_START],
-							$item[ColumnNames::SCHEDULE_DAYS_VISIBLE]
+							$item[ColumnNames::SCHEDULE_DAYS_VISIBLE],
+							$item[ColumnNames::TIMEZONE_NAME]
 						);
 		}
 		
@@ -53,8 +54,8 @@ class ScheduleRepositoryTests extends TestBase
 						ColumnNames::BLOCK_START => '02:00:00',
 						ColumnNames::BLOCK_END => '03:00:00',
 						ColumnNames::BLOCK_LABEL => 'PERIOD1',
-						ColumnNames::BLOCK_LABEL_END => 'END PERIOD1',
-						ColumnNames::BLOCK_CODE => PeroidTypes::RESERVABLE,
+						//ColumnNames::BLOCK_LABEL_END => 'END PERIOD1',
+						ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
 						ColumnNames::BLOCK_TIMEZONE => $timezone,
 						);
 		
@@ -62,8 +63,8 @@ class ScheduleRepositoryTests extends TestBase
 						ColumnNames::BLOCK_START => '03:00:00',
 						ColumnNames::BLOCK_END => '04:00:00',
 						ColumnNames::BLOCK_LABEL => 'PERIOD2',
-						ColumnNames::BLOCK_LABEL_END => 'END PERIOD2',
-						ColumnNames::BLOCK_CODE => PeroidTypes::RESERVABLE,
+						//ColumnNames::BLOCK_LABEL_END => 'END PERIOD2',
+						ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
 						ColumnNames::BLOCK_TIMEZONE => $timezone,
 						);
 						
@@ -71,8 +72,8 @@ class ScheduleRepositoryTests extends TestBase
 						ColumnNames::BLOCK_START => '04:00:00',
 						ColumnNames::BLOCK_END => '05:00:00',
 						ColumnNames::BLOCK_LABEL => 'PERIOD3',
-						ColumnNames::BLOCK_LABEL_END => 'END PERIOD3',
-						ColumnNames::BLOCK_CODE => PeroidTypes::NONRESERVABLE,
+						//ColumnNames::BLOCK_LABEL_END => 'END PERIOD3',
+						ColumnNames::BLOCK_CODE => PeriodTypes::NONRESERVABLE,
 						ColumnNames::BLOCK_TIMEZONE => $timezone,
 						);
 		
@@ -100,7 +101,7 @@ class ScheduleRepositoryTests extends TestBase
 		$start = $layoutDate->SetTime(new Time(2,0,0));
 		$end = $layoutDate->SetTime(new Time(3,0,0));
 		
-		$period = new SchedulePeriod($start, $end, 'PERIOD1', 'END PERIOD1');
+		$period = new SchedulePeriod($start, $end, 'PERIOD1');
 		$this->assertEquals($period, $periods[0]);
 	}
 	
@@ -111,15 +112,17 @@ class ScheduleRepositoryTests extends TestBase
 		$isDefault = 0;
 		$weekdayStart = 5;
 		$daysVisible = 3;
+		$timezone = 'America/Chicago';
 		
 		$fakeSchedules = new FakeScheduleRepository();
 		$expectedSchedule = new Schedule($id, 
 									$name, 
 									$isDefault, 
 									$weekdayStart, 
-									$daysVisible);
+									$daysVisible,
+									$timezone);
 									
-		$this->db->SetRows(array($fakeSchedules->GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible)));
+		$this->db->SetRows(array($fakeSchedules->GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible, $timezone)));
 		$actualSchedule = $this->scheduleRepository->LoadById($id);
 		
 		$this->assertEquals($expectedSchedule, $actualSchedule);

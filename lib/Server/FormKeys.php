@@ -77,6 +77,8 @@ class FormKeys
 	const SCHEDULE_ID = 'scheduleId';
 	const SCHEDULE_NAME = 'scheduleName';
 	const SERIES_UPDATE_SCOPE = 'seriesUpdateScope';
+	const SLOTS_BLOCKED = 'blockedSlots';
+	const SLOTS_RESERVABLE = 'reservableSlots';
 	const SUMMARY = 'summary';
 	
 	const TIMEZONE = 'timezone';

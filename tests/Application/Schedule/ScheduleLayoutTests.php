@@ -186,5 +186,31 @@ class ScheduleLayoutTests extends TestBase
 		$this->assertTrue($secondBegin->Equals($periods[1]->BeginDate()));
 		$this->assertTrue($secondEnd->Equals($periods[1]->EndDate()));
 	}
+	
+	public function testCanParseFromStrings()
+	{
+		$timezone = 'America/Chicago';
+		$reservableSlots = "00:00 - 01:00 Label 1 A\n1:00- 2:00\r\n02:00 -3:30\n03:30-12:00\r\n";
+		$blockedSlots = "12:00 - 15:00 Blocked 1 A\n15:00- 20:00\r\n20:00 -0:00\n";
+		
+		$layout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
+		
+		$slots = $layout->GetSlots();
+		
+		$this->assertEquals($timezone, $layout->Timezone());
+		$this->assertEquals(7, count($slots));
+		
+		$start1 = Time::Parse("00:00", $timezone);
+		$end1 = Time::Parse("01:00", $timezone);
+		$label1 = "Label 1 A";
+		
+		$start4 = Time::Parse("12:00", $timezone);
+		$end4 = Time::Parse("15:00", $timezone);
+		$label4 = "Blocked 1 A";
+		
+		$this->assertEquals(new LayoutPeriod($start1, $end1, PeriodTypes::RESERVABLE, $label1), $slots[0]);
+		$this->assertEquals(new LayoutPeriod($start4, $end4, PeriodTypes::NONRESERVABLE, $label4), $slots[4]);
+		
+	}
 }
 ?>

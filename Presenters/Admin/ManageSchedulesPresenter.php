@@ -1,7 +1,11 @@
 <?php 
+require_once(ROOT_DIR . 'Domain/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+
 class ManageSchedules
 {
 	const ActionRename = 'rename';
+	const ActionChangeLayout = 'changeLayout';
 }
 
 class ManageSchedulesPresenter
@@ -24,6 +28,7 @@ class ManageSchedulesPresenter
 		$this->scheduleRepository = $scheduleRepository;
 		
 		$this->actions[ManageSchedules::ActionRename] = 'Rename';
+		$this->actions[ManageSchedules::ActionChangeLayout] = 'ChangeLayout';
 	}
 	
 	public function PageLoad()
@@ -57,12 +62,30 @@ class ManageSchedulesPresenter
 		}
 	}
 	
-	private function Rename()
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function Rename()
 	{
 		$schedule = $this->scheduleRepository->LoadById($this->page->GetScheduleId());
 		$schedule->SetName($this->page->GetScheduleName());
 		
 		$this->scheduleRepository->Update($schedule);
+	}
+	
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function ChangeLayout()
+	{
+		$scheduleId = $this->page->GetScheduleId();
+		$reservableSlots = $this->page->GetReservableSlots();
+		$blockedSlots =  $this->page->GetBlockedSlots();
+		$timezone =  $this->page->GetLayoutTimezone();
+		
+		$layout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
+	
+		$this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
 	}
 	
 	private function ActionIsKnown($action)

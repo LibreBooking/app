@@ -14,6 +14,8 @@ interface ILayoutCreation
 	function AppendPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null);
 	
 	function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null);
+	
+	function GetSlots();
 }
 
 class ScheduleLayout implements IScheduleLayout, ILayoutCreation
@@ -32,6 +34,11 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
             $this->_timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
         }  
 	}
+	
+	public function GetSlots()
+	{
+		return $this->_periods;
+	}
 
 	/**
 	 * Appends a period to the schedule layout
@@ -43,7 +50,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 */
 	public function AppendPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null)
 	{
-		$this->AppendGenericPeriod($startTime, $endTime, $label, $labelEnd, 'SchedulePeriod');		
+		$this->AppendGenericPeriod($startTime, $endTime, PeriodTypes::RESERVABLE, $label, $labelEnd);		
 	}
 	
 	/**
@@ -56,12 +63,12 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 */
 	public function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null)
 	{
-		$this->AppendGenericPeriod($startTime, $endTime, $label, $labelEnd, 'NonSchedulePeriod');
+		$this->AppendGenericPeriod($startTime, $endTime, PeriodTypes::NONRESERVABLE, $label, $labelEnd);
 	}
 	
-	protected function AppendGenericPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null, $periodType)
+	protected function AppendGenericPeriod(Time $startTime, Time $endTime, $periodType, $label = null, $labelEnd = null)
 	{
-		$this->_periods[] = array('start' => $startTime, 'end' => $endTime, 'label' => $label, 'labelEnd' => $labelEnd, 'periodType' => $periodType);		
+		$this->_periods[] = new LayoutPeriod($startTime, $endTime, $periodType, $label);
 	}
 	
 	/**
@@ -80,7 +87,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	public function GetLayout(Date $layoutDate)
 	{		
 		$targetTimezone = $this->_timezone;
-		$layoutTimezone = $this->_periods[0]['start']->Timezone();
+		$layoutTimezone = $this->_periods[0]->Start->Timezone();
 		
 		$layoutDate = $layoutDate->ToTimezone($targetTimezone);
 		
@@ -91,13 +98,15 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		$list = new PeriodList();
 		$layout = array();
 		$adjusted = false;	
+		
+		/* @var $period LayoutPeriod */
 		foreach ($this->_periods as $period)
 		{
-			$start = $period['start'];
-			$end = $period['end'];
-			$periodType = $period['periodType'];
-			$label = $period['label'];
-			$labelEnd = $period['labelEnd'];
+			$start = $period->Start;
+			$end = $period->End;
+			$periodType = $period->PeriodTypeClass();
+			$label = $period->Label;
+			$labelEnd = null;//$period['labelEnd'];
 			
 			// convert to target timezone
 			$periodStart = $workingDate->SetTime($start)->ToTimezone($targetTimezone);
@@ -183,6 +192,97 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	static function SortBeginTimes($period1, $period2)
 	{
 		return $period1->Compare($period2);
+	}
+	
+	/**
+	 * @param string $timezone
+	 * @param string $reservableSlots
+	 * @param string $blockedSlots
+	 * @return ScheduleLayout
+	 */
+	public static function Parse($timezone, $reservableSlots, $blockedSlots)
+	{
+		$layout = new ScheduleLayout($timezone);
+
+		$parseSlots = function ($allSlots, $callback) use ($timezone)
+		{
+            $lines = preg_split("/[\r\n]/", $allSlots, -1, PREG_SPLIT_NO_EMPTY);
+		
+			foreach ($lines as $slotLine)
+			{
+				$label = null;
+				$parts = preg_split('/(\d?\d:\d\d\s*\-\s*\d?\d:\d\d)(.*)/', $slotLine, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+				$times = explode('-', $parts[0]);
+				$start = trim($times[0]);
+				$end = trim($times[1]);
+				
+				if (count($parts) > 1)
+				{
+					$label = trim($parts[1]);
+				}
+				
+				$callback(Time::Parse($start, $timezone), Time::Parse($end, $timezone), $label);
+			}
+        };
+        
+        $appendPeriod = function (Time $start, Time $end, $label) use (&$layout, $timezone)
+		{
+        	$layout->AppendPeriod(Time::Parse($start, $timezone), Time::Parse($end, $timezone), $label);
+        };
+        
+        $appendBlocked = function (Time $start, Time $end, $label) use (&$layout, $timezone)
+		{
+        	$layout->AppendBlockedPeriod(Time::Parse($start, $timezone), Time::Parse($end, $timezone), $label);
+        };
+        
+        $parseSlots($reservableSlots, $appendPeriod);
+        $parseSlots($blockedSlots, $appendBlocked);
+		
+		return $layout;
+	}
+}
+
+class LayoutPeriod
+{
+	/**
+	 * @var Time
+	 */
+	public $Start;
+	
+	/**
+	 * @var Time
+	 */
+	public $End;
+	
+	/**
+	 * @var PeriodTypes
+	 */
+	public $PeriodType;
+	
+	/**
+	 * @var string
+	 */
+	public $Label;
+	
+	/**
+	 * @return string
+	 */
+	public function PeriodTypeClass()
+	{
+		if ($this->PeriodType == PeriodTypes::RESERVABLE)
+		{
+			return 'SchedulePeriod';
+		}
+		
+		return 'NonSchedulePeriod';
+	}
+	
+	public function __construct(Time $start, Time $end, $periodType = PeriodTypes::RESERVABLE, $label = null)
+	{
+		$this->Start = $start;
+		$this->End = $end;
+		$this->PeriodType = $periodType;
+		$this->Label = $label;
 	}
 }
 

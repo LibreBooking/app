@@ -10,7 +10,8 @@ function ScheduleManagement(opts)
 		addForm: $('#addScheduleForm'),
 		reservableEdit: $('#reservableEdit'),
 		blockedEdit: $('#blockedEdit'),
-		layoutDialog: $('#changeLayoutDialog')
+		layoutDialog: $('#changeLayoutDialog'),
+		changeLayoutForm: $('#changeLayoutForm')
 	};
 	
 	ScheduleManagement.prototype.init = function()
@@ -47,9 +48,15 @@ function ScheduleManagement(opts)
 		});
 		
 		ConfigureForm(elements.renameForm,  options.renameAction);
-		ConfigureForm(elements.addForm, options.renameAction);
+		ConfigureForm(elements.addForm, options.addAction);
+		ConfigureForm(elements.changeLayoutForm, options.changeLayoutAction, showLayoutResults);
 	};
 
+	var showLayoutResults = function(responseText)
+	{
+		$('#layoutResults').text(responseText);
+	};
+	
 	var setActiveScheduleId = function(scheduleId)
 	{
 		elements.activeId.val(scheduleId);
@@ -79,7 +86,7 @@ function ScheduleManagement(opts)
 		return text;
 	};
 	
-	var ConfigureForm = function(formElement, updateAction)
+	var ConfigureForm = function(formElement, updateAction, responseHandler)
 	{
 		formElement.submit(function() { 
 			
@@ -87,8 +94,16 @@ function ScheduleManagement(opts)
 				url: options.submitUrl + "?sid=" + elements.activeId.val() + "&action=" + updateAction,
 		        //target: '#result',
 		        beforeSubmit: CheckRequiredFields,
-		        success: function(responseText, statusText, xhr, $form)  { 
-		        	window.location = options.saveRedirect;
+		        success: function(responseText, statusText, xhr, form)  { 
+					if (responseText.trim() != '' && responseHandler) 
+					{
+						$(form).find('.indicator').hide();
+						responseHandler(responseText);
+					}
+					else
+					{
+						window.location = options.saveRedirect;
+					}
 		        }
 			};
 			

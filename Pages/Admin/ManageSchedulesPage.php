@@ -19,6 +19,21 @@ interface IUpdateSchedulePage
 	 * @return string
 	 */
 	function GetScheduleName();
+	
+	/**
+	 * @return string
+	 */
+	function GetReservableSlots();
+	
+	/**
+	 * @return string
+	 */
+	function GetBlockedSlots();
+	
+	/**
+	 * @return string
+	 */
+	function GetLayoutTimezone();
 }
 
 
@@ -75,6 +90,22 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 	public function GetScheduleName()
 	{
 		return $this->server->GetForm(FormKeys::SCHEDULE_NAME);
+	}
+	
+	public function GetReservableSlots()
+	{
+		return $this->server->GetForm(FormKeys::SLOTS_RESERVABLE);
+	}
+	
+	public function GetBlockedSlots()
+	{
+		return $this->server->GetForm(FormKeys::SLOTS_BLOCKED);
+	}
+	
+	public function GetLayoutTimezone()
+	{
+		return 'America/Chicago';
+		//TODO: Read from server form
 	}
 }
 

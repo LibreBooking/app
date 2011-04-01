@@ -29,6 +29,12 @@ interface IScheduleRepository
 	 * @return IScheduleLayout
 	 */
 	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory);
+	
+	/**
+	 * @param int $scheduleId
+	 * @param IScheduleLayout $layout
+	 */
+	public function AddScheduleLayout($scheduleId, IScheduleLayout $layout);
 }
 
 interface ILayoutFactory 
@@ -154,22 +160,27 @@ class ScheduleRepository implements IScheduleRepository
 			$start = Time::Parse($row[ColumnNames::BLOCK_START], $timezone);
 			$end = Time::Parse($row[ColumnNames::BLOCK_END], $timezone);
 			$label = $row[ColumnNames::BLOCK_LABEL];
-			$labelEnd = $row[ColumnNames::BLOCK_LABEL_END];
+			//$labelEnd = $row[ColumnNames::BLOCK_LABEL_END];
 			$periodType = $row[ColumnNames::BLOCK_CODE];
 				
-			if ($periodType == PeroidTypes::RESERVABLE)
+			if ($periodType == PeriodTypes::RESERVABLE)
 			{
-				$layout->AppendPeriod($start, $end, $label, $labelEnd);
+				$layout->AppendPeriod($start, $end, $label);
 			}
 			else
 			{
-				$layout->AppendBlockedPeriod($start, $end, $label, $labelEnd);
+				$layout->AppendBlockedPeriod($start, $end, $label);
 			}
 		}
 
 		$reader->Free();
 
 		return $layout;
+	}
+	
+	public function AddScheduleLayout($scheduleId, IScheduleLayout $layout)
+	{
+		throw new Exception('not implemented');
 	}
 }
 

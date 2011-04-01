@@ -1,5 +1,5 @@
 <?php
-class PeroidTypes
+class PeriodTypes
 {
 	const RESERVABLE = 1;
 	const NONRESERVABLE = 2;
@@ -18,14 +18,12 @@ class SchedulePeriod
 	protected $_end;
 	
 	protected $_label;
-	protected $_labelEnd;
 	
-	public function __construct(Date $begin, Date $end, $label = null, $labelEnd = null)
+	public function __construct(Date $begin, Date $end, $label = null)
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
 		$this->_label = $label;
-		$this->_labelEnd = $labelEnd;
 	}
 	
 	/**
@@ -84,13 +82,13 @@ class SchedulePeriod
 	 */
 	public function LabelEnd()
 	{
-		if (empty($this->_labelEnd))
+		if (empty($this->_label))
 		{
 			$format = Resources::GetInstance()->GetDateFormat('period_time');
 			
 			return $this->_end->Format($format);
 		}
-		return $this->_labelEnd;
+		return "END " + $this->_label;
 	}
 	
 	/**

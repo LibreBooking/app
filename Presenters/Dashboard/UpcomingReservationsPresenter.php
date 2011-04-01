@@ -35,6 +35,11 @@ class UpcomingReservationsPresenter
 		
 		$startOfNextWeek = $today->AddDays(7-$dayOfWeek);
 		
+		$todays = array();
+		$tomorrows = array();
+		$thisWeeks = array();
+		$nextWeeks = array();
+		
 		/* @var $reservation ReservationItemView */
 		foreach ($reservations as $reservation)
 		{
