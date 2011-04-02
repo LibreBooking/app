@@ -17,7 +17,7 @@ class RegistrationMini implements IRegistrationMini
 	
 	public function RegisterMini($username, $email, $firstName, $lastName, $password, $timezone, $language)
 	{
-		$roleid = 1; //TODO get this from somewhere intelligent
+		$role_id = 1; //TODO get this from somewhere intelligent
 		$salt = $this->_passwordEncryption->Salt();
 		$encryptedPassword = $this->_passwordEncryption->Encrypt($password, $salt);
 		
@@ -27,7 +27,7 @@ class RegistrationMini implements IRegistrationMini
 		$registerCommand = new RegisterMiniUserCommand(
 					$usernameToInsert, $email, $firstName, $lastName, 
 					$encryptedPassword, $salt, $timezone,
-					AccountStatus::AWAITING_ACTIVATION, $roleid
+					AccountStatus::AWAITING_ACTIVATION, $role_id
 					);
 					
 		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);

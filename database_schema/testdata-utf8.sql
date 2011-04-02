@@ -6,8 +6,8 @@ delete from  users;
 alter table users AUTO_INCREMENT = 1;
 delete from user_roles;
 alter table user_roles AUTO_INCREMENT = 1;
-delete from time_block_groups;
-alter table time_block_groups AUTO_INCREMENT = 1;
+delete from layouts;
+alter table layouts AUTO_INCREMENT = 1;
 delete from time_blocks;
 alter table time_blocks AUTO_INCREMENT = 1;
 delete from organizations;
@@ -28,9 +28,9 @@ insert into users (fname, lname, email, username, password, salt, timezone, last
 
 insert into user_roles values (1, 2);
 	
-insert into time_block_groups values (1, 'Business Day', 'America/Chicago');
+insert into layouts values (1, 'America/Chicago');
 
-insert into time_blocks (availability_code, block_group_id, start_time, end_time) values
+insert into time_blocks (availability_code, layout_id, start_time, end_time) values
 (2, 1, '00:00', '08:00'),
 (1, 1, '08:00', '08:30'),
 (1, 1, '08:30', '09:00'),
@@ -66,10 +66,7 @@ insert into user_addresses values (1, 1);
 
 delete from schedules;
 alter table schedules AUTO_INCREMENT = 1;
-insert into schedules (schedule_id, name, isdefault, weekdaystart) values (1, 'default', 1, 0);
-
-truncate table schedule_time_block_groups;
-insert into schedule_time_block_groups values (1,1);
+insert into schedules (schedule_id, name, isdefault, weekdaystart, layout_id) values (1, 'default', 1, 0, 1);
 
 truncate table user_resource_permissions;
 insert into user_resource_permissions values (1,1,1),(1,2,1),(2,1,1),(2,2,1);

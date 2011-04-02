@@ -32,9 +32,9 @@ interface IScheduleRepository
 	
 	/**
 	 * @param int $scheduleId
-	 * @param IScheduleLayout $layout
+	 * @param ILayoutCreation $layout
 	 */
-	public function AddScheduleLayout($scheduleId, IScheduleLayout $layout);
+	public function AddScheduleLayout($scheduleId, ILayoutCreation $layout);
 }
 
 interface ILayoutFactory 
@@ -178,9 +178,23 @@ class ScheduleRepository implements IScheduleRepository
 		return $layout;
 	}
 	
-	public function AddScheduleLayout($scheduleId, IScheduleLayout $layout)
+	public function AddScheduleLayout($scheduleId, ILayoutCreation $layout)
 	{
-		throw new Exception('not implemented');
+		$db = ServiceLocator::GetDatabase();
+		$timezone = $layout->Timezone();
+		
+		$addLayoutCommand = new AddLayoutCommand($timezone);
+		$layoutId = $db->ExecuteInsert($addLayoutCommand);
+		
+		$slots = $layout->GetSlots();
+		
+		/* @var slot LayoutPeriod */
+		foreach($slots as $slot)
+		{
+			$db->Execute(new AddLayoutTimeCommand($layoutId, $slot->Start, $slot->End, $slot->PeriodType, $slot->Label));
+		}
+		
+		$db->Execute(new UpdateScheduleLayoutCommand($scheduleId, $layoutId));
 	}
 }
 

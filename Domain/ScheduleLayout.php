@@ -1,20 +1,26 @@
 <?php
-interface IScheduleLayout
+interface ILayoutTimezone
+{
+	public function Timezone();
+}
+
+interface IScheduleLayout extends ILayoutTimezone
 {
 	/**
 	 * @return SchedulePeriod[] array of SchedulePeriod objects
 	 */
 	public function GetLayout(Date $layoutDate);
-	
-	public function Timezone();
 }
 
-interface ILayoutCreation
+interface ILayoutCreation extends ILayoutTimezone
 {
 	function AppendPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null);
 	
 	function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null);
 	
+	/**
+	 * @return LayoutPeriod[] array of LayoutPeriod
+	 */
 	function GetSlots();
 }
 

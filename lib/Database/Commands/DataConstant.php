@@ -12,6 +12,7 @@ class ParameterNames
 	const DESCRIPTION = '@description';
 	
 	const END_DATE = '@endDate';
+	const END_TIME = '@endTime';
 	const EMAIL_ADDRESS = '@email';
 	
 	const FIRST_NAME = '@fname';
@@ -24,10 +25,13 @@ class ParameterNames
 	
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';
+	const LAYOUT_ID = '@layoutid';
 	
 	const ORGANIZATION = '@organization';
 	
 	const PASSWORD = '@password';
+	const PERIOD_AVAILABILITY_TYPE = '@periodType';
+	const PERIOD_LABEL = '@label';
 	const PHONE = '@phone';
 	const POSITION = '@position';
 
@@ -66,6 +70,7 @@ class ParameterNames
 	const SCHEDULE_DAYSVISIBLE = '@scheduleDaysVisible';
 	const SERIES_ID = '@seriesid';
 	const START_DATE = '@startDate';
+	const START_TIME = '@startTime';
 	const STATUS_ID = '@statusid';
 	const TIMEZONE_NAME = '@timezone';
 	const TYPE_ID = '@typeid';
@@ -109,6 +114,16 @@ class Queries
 			reservation_users JOIN reservation_series
 		WHERE
 			(@userid = reservation_users.user_id AND reservation_users.series_id = reservation_series.series_id)';
+	
+	const ADD_LAYOUT = 
+		'INSERT INTO 
+			layouts (timezone)
+		VALUES (@timezone)';
+	
+	const ADD_LAYOUT_TIME = 
+		'INSERT INTO
+			time_blocks (layout_id, start_time, end_time, availability_code, label)
+		VALUES (@layoutid, @startTime, @endTime, @periodType, @label)';
 	
 	const ADD_RESERVATION = 
 		'INSERT INTO 
@@ -173,8 +188,7 @@ class Queries
 	const GET_ALL_SCHEDULES = 
 		'SELECT * 
 		FROM schedules s
-		INNER JOIN schedule_time_block_groups g ON s.schedule_id = g.schedule_id
-		INNER JOIN time_block_groups tb ON tb.block_group_id = g.block_group_id';
+		INNER JOIN layouts l ON s.layout_id = l.layout_id';
 	
 	const GET_ALL_USERS_BY_STATUS = 
 		'SELECT user_id, fname, lname, email, timezone, language
@@ -194,8 +208,7 @@ class Queries
 			group_resource_permissions grp, resources r, user_groups ug
 		WHERE
 			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resource_id';
-	
-		
+			
 	const GET_RESOURCE_BY_ID = 
 		'SELECT 
 			r.*
@@ -348,15 +361,15 @@ class Queries
 			tb.start_time, 
 			tb.end_time, 
 			tb.availability_code,
-			tbg.timezone
+			l.timezone
 		FROM 
 			time_blocks tb, 
-			time_block_groups tbg, 
-			schedule_time_block_groups stbg
+			layouts l,
+			schedules s
 		WHERE 
-			tbg.block_group_id = stbg.block_group_id AND 
-			tb.block_group_id = tbg.block_group_id AND
-			stbg.schedule_id = @scheduleid 
+			l.layout_id = s.layout_id  AND 
+			tb.layout_id = l.layout_id AND
+			s.schedule_id = @scheduleid 
 		ORDER BY tb.start_time';
 	
 	const GET_SCHEDULE_BY_ID = 
@@ -407,7 +420,7 @@ class Queries
 		FROM 
 			roles r
 		INNER JOIN
-			user_roles ur on r.roleid = ur.role_id
+			user_roles ur on r.role_id = ur.role_id
 		WHERE 
 			ur.user_id = @userid';
 	
@@ -509,6 +522,14 @@ class Queries
 		WHERE
 			schedule_id = @scheduleid';
 	
+	const UPDATE_SCHEDULE_LAYOUT = 
+		'UPDATE
+			schedules
+		SET
+			layout_id = @layoutid
+		WHERE
+			schedule_id = @scheduleid';
+		
 	const UPDATE_USER_BY_USERNAME = 
 		'UPDATE 
 			users 
@@ -572,7 +593,7 @@ class ColumnNames
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
 	
 	// GROUPS //
-	const GROUP_ID = 'groupid';
+	const GROUP_ID = 'group_id';
 	
 	// TIME BLOCKS //
 	const BLOCK_LABEL = 'label';

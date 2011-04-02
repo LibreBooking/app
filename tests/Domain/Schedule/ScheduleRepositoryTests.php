@@ -147,6 +147,54 @@ class ScheduleRepositoryTests extends TestBase
 		
 		$this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible), $this->db->_LastCommand);
 	}
+	
+	public function testCanChangeLayout()
+	{
+		$scheduleId = 89;
+		$layoutId = 90;
+		$timezone = 'America/New_York';
+		
+		$start1 = new Time(0,0);
+		$end1 = new Time(12,0);
+		$label1 = 'label 1';
+		
+		$start2 = new Time(12,0);
+		$end2 = new Time(0,0);
+		
+		$slots = array(
+			new LayoutPeriod($start1, $end1, PeriodTypes::RESERVABLE, $label1),
+			new LayoutPeriod($start2, $end2, PeriodTypes::NONRESERVABLE),
+			);
+		
+		$layout = $this->getMock('ILayoutCreation');
+		
+		$layout->expects($this->once())
+			->method('Timezone')
+			->will($this->returnValue($timezone));
+		
+		$layout->expects($this->once())
+			->method('GetSlots')
+			->will($this->returnValue($slots));
+			
+		$this->db->_ExpectedInsertId = $layoutId;
+		
+		$this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
+		
+		$actualInsertBlockGroup = $this->db->_Commands[0];
+		$actualInsertBlock1 = $this->db->_Commands[1];
+		$actualInsertBlock2 = $this->db->_Commands[2];
+		$actualInsertScheduleBlock = $this->db->_Commands[3];
+		
+		$expectedInsertBlockGroup = new AddLayoutCommand($timezone);
+		$expectedInsertBlockGroup1 = new AddLayoutTimeCommand($layoutId, $start1, $end1, PeriodTypes::RESERVABLE, $label1);
+		$expectedInsertBlockGroup2 = new AddLayoutTimeCommand($layoutId, $start2, $end2, PeriodTypes::NONRESERVABLE, null);
+		$expectedUpdateScheudleLayout = new UpdateScheduleLayoutCommand($scheduleId, $layoutId);
+		
+		$this->assertEquals($expectedInsertBlockGroup, $actualInsertBlockGroup);
+		$this->assertEquals($expectedInsertBlockGroup1, $actualInsertBlock1);
+		$this->assertEquals($expectedInsertBlockGroup2, $actualInsertBlock2);
+		$this->assertEquals($actualInsertScheduleBlock, $actualInsertScheduleBlock);
+	}
 }
 
 ?>

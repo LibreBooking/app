@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class FakeScheduleRepository implements IScheduleRepository
+class FakeScheduleRepository
 {	
 	public $_GetAllCalled = false;
 	public $_AllRows = array();

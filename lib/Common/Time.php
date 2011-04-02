@@ -62,6 +62,11 @@ class Time
 		return $this->GetDate()->Format($format);
 	}
 	
+	public function ToDatabase()
+	{
+		return $this->Format('H:i:s');
+	}
+	
 	/**
 	 * Compares this time to the one passed in
 	 * Returns:

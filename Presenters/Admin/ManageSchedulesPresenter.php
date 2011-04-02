@@ -35,8 +35,6 @@ class ManageSchedulesPresenter
 	{
 		$schedules = $this->scheduleRepository->GetAll();
 		
-		//$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
-		
 		/* @var $schedule Schedule */
 		foreach ($schedules as $schedule)
 		{

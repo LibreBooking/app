@@ -17,6 +17,28 @@ class GetAllReservationsByUserCommand /*Give it a very literal name describing w
     }
 }
 
+class AddLayoutCommand extends SqlCommand
+{
+	public function __construct($timezone)
+	{
+		parent::__construct(Queries::ADD_LAYOUT);	
+		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezone));	
+	} 
+}
+
+class AddLayoutTimeCommand extends SqlCommand
+{
+	public function __construct($layoutId, Time $start, Time $end, $periodType, $label)
+	{
+		parent::__construct(Queries::ADD_LAYOUT_TIME);	
+		$this->AddParameter(new Parameter(ParameterNames::LAYOUT_ID, $layoutId));	
+		$this->AddParameter(new Parameter(ParameterNames::START_TIME, $start->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::END_TIME, $end->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::PERIOD_AVAILABILITY_TYPE, $periodType));	
+		$this->AddParameter(new Parameter(ParameterNames::PERIOD_LABEL, $label));
+	} 
+}
+
 class AddReservationSeriesCommand extends SqlCommand
 {
 	public function __construct(Date $dateCreatedUtc, 
@@ -532,6 +554,17 @@ class UpdateScheduleCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ISDEFAULT, $isDefault));	
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_WEEKDAYSTART, (int)$weekdayStart));	
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DAYSVISIBLE, (int)$daysVisible));
+	}
+}
+
+class UpdateScheduleLayoutCommand extends SqlCommand
+{
+	public function __construct($scheduleId, $layoutId)
+	{
+		parent::__construct(Queries::UPDATE_SCHEDULE_LAYOUT);	
+		
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::LAYOUT_ID, $layoutId));
 	}
 }
 

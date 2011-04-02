@@ -43,21 +43,21 @@ class ScheduleUserRepository implements IScheduleUserRepository
 
 		while ($row = $reader->GetRow())
 		{
-			$groupId = $row[ColumnNames::GROUP_ID];
+			$group_id = $row[ColumnNames::GROUP_ID];
 			$resourceId = $row[ColumnNames::RESOURCE_ID];
 			$resourceName = $row[ColumnNames::RESOURCE_NAME];
 				
-			$groupList[$groupId][] = array($resourceId, $resourceName);
+			$groupList[$group_id][] = array($resourceId, $resourceName);
 		}
 
 		$groups = array();
-		foreach($groupList as $groupId => $resourceList)
+		foreach($groupList as $group_id => $resourceList)
 		{
 			foreach($resourceList as $resourceItem)
 			{
 				$resources[] = new ScheduleResource($resourceItem[0], $resourceItem[1]);
 			}
-			$groups[] = new ScheduleGroup($groupId, $resources);
+			$groups[] = new ScheduleGroup($group_id, $resources);
 		}
 
 		return $groups;
@@ -160,12 +160,12 @@ class ScheduleGroup
 	private $_resources;
 
 	/**
-	 * @param int $groupId
+	 * @param int $group_id
 	 * @param array[int]ScheduleResource $resources
 	 */
-	public function __construct($groupId, $resources)
+	public function __construct($group_id, $resources)
 	{
-		$this->_groupId = $groupId;
+		$this->_groupId = $group_id;
 		$this->_resources = $resources;
 	}
 
