@@ -59,6 +59,9 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 	public function PageLoad()
 	{
 		$this->_presenter->PageLoad();
+		
+		$daynames = Resources::GetInstance()->GetDays('full');
+		$this->Set('DayNames', $daynames);
 		$this->Display('manage_schedules.tpl');		
 	}
 	

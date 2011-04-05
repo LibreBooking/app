@@ -107,6 +107,7 @@ class en_us extends Language
 		$strings['LaterThisWeek'] = 'Later This Week';
 		$strings['NextWeek'] = 'Next Week';
 		$strings['SignOut'] = 'Sign Out';
+		$strings['LayoutDescription'] = 'Starts on %s, showing %s days at a time';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

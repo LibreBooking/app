@@ -11,11 +11,15 @@
 	</div>
 	{foreach $Schedules item=schedule}
 	{assign var=id value=$schedule->GetId()}
+	{assign var=daysVisible value=$schedule->GetDaysVisible()}
+	{assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
+	{assign var=dayName value=$DayNames[$dayOfWeek]}
 	<div class="scheduleDetails">
 		<div style="float:left;">
 			<input type="hidden" class="id" value="{$id}" />
 			<h4>{$schedule->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">Rename</a><br/>
-			Starts on Sunday, showing 7 days at a time <a class="update changeButton" href="javascript:void(0);">Change</a><br/>
+			{translate key="LayoutDescription" args="$dayName, $daysVisible"}
+			<a class="update changeButton" href="javascript:void(0);">Change</a><br/>
 		</div>
 		<div style="border-left:solid 1px #f0f0f0;float:right;width:550px;">
 			Layout (all times {$schedule->GetTimezone()}):<br/>
