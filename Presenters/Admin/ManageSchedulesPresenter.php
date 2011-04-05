@@ -1,6 +1,7 @@
 <?php 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'config/timezones.php');
 
 class ManageSchedules
 {
@@ -43,6 +44,22 @@ class ManageSchedulesPresenter
 		}
 		
 		$this->page->BindSchedules($schedules, $layouts);
+		$this->PopulateTimezones();
+		
+	}
+	
+	private function PopulateTimezones()
+	{
+		$timezoneValues = array();
+		$timezoneOutput = array();
+		
+		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
+		{
+			$timezoneValues[] = $timezone;			
+			$timezoneOutput[] = $timezone;		
+		}
+				
+		$this->page->SetTimezones($timezoneValues, $timezoneOutput);
 	}
 	
 	public function ProcessAction()

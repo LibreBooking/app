@@ -44,6 +44,8 @@ interface IManageSchedulesPage extends IUpdateSchedulePage
 	 * @param array $layouts 
 	 */
 	function BindSchedules($schedules, $layouts);
+	
+	function SetTimezones($timezoneValues, $timezoneOutput);
 }
 
 class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
@@ -69,6 +71,12 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 	public function ProcessAction()
 	{
 		$this->_presenter->ProcessAction();
+	}
+	
+	public function SetTimezones($timezoneValues, $timezoneOutput)
+	{
+		$this->Set('TimezoneValues', $timezoneValues);
+		$this->Set('TimezoneOutput', $timezoneOutput);
 	}
 	
 	public function BindSchedules($schedules, $layouts)
@@ -104,8 +112,7 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 	
 	public function GetLayoutTimezone()
 	{
-		return 'America/Chicago';
-		//TODO: Read from server form
+		return $this->server->GetForm(FormKeys::TIMEZONE);
 	}
 }
 

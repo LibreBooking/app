@@ -2,7 +2,7 @@
 
 delete from resources;
 alter table resources AUTO_INCREMENT = 1;
-delete from  users;
+delete from users;
 alter table users AUTO_INCREMENT = 1;
 delete from user_roles;
 alter table user_roles AUTO_INCREMENT = 1;

@@ -19,6 +19,7 @@
 		</div>
 		<div style="border-left:solid 1px #f0f0f0;float:right;width:550px;">
 			Layout (all times {$schedule->GetTimezone()}):<br/>
+			<input type="hidden" class="timezone" value="{$schedule->GetTimezone()}" />
 			Reservable Time Slots
 			<div class="reservableSlots">
 			{foreach $Layouts[$id] item=period}
@@ -106,7 +107,7 @@
 </div>
 
 <div id="changeLayoutDialog" class="dialog" style="display:none;">
-	<form id="changeLayoutForm" method="post">
+	<form id="changeLayoutForm" method="post">		
 		<div style="float:left;">
 			<h5>Reservable Time Slots</h5>
 			<textarea id="reservableEdit" {formname key=SLOTS_RESERVABLE}></textarea>
@@ -116,6 +117,14 @@
 			<textarea id="blockedEdit" {formname key=SLOTS_BLOCKED}></textarea>
 		</div>
 		<div style="clear:both;height:0px;">&nbsp</div>
+		<div style="margin-top:5px;">
+			<h5>
+				{translate key=Timezone} 
+				<select {formname key=TIMEZONE} id="layoutTimezone" class="input" tabindex="50">
+		        	{html_options values=$TimezoneValues output=$TimezoneOutput}
+		        </select>
+	        </h5>
+		</div>
 		<div style="margin-top: 5px; padding-top:5px; border-top: solid 1px #f0f0f0;">
 			<div style="float:left;">
 				<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>

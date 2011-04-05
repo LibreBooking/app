@@ -11,7 +11,8 @@ function ScheduleManagement(opts)
 		reservableEdit: $('#reservableEdit'),
 		blockedEdit: $('#blockedEdit'),
 		layoutDialog: $('#changeLayoutDialog'),
-		changeLayoutForm: $('#changeLayoutForm')
+		changeLayoutForm: $('#changeLayoutForm'),
+		layoutTimezone: $('#layoutTimezone')
 	};
 	
 	ScheduleManagement.prototype.init = function()
@@ -23,6 +24,7 @@ function ScheduleManagement(opts)
 			var id = $(this).find(':hidden.id').val();
 			var reservable = $(this).find('.reservableSlots');
 			var blocked = $(this).find('.blockedSlots');
+			var timezone = $(this).find('.timezone');
 			
 			$(this).find('a.update').click(function() {
 				setActiveScheduleId(id);				
@@ -34,7 +36,7 @@ function ScheduleManagement(opts)
 			});
 			
 			$(this).find('.changeLayoutButton').click(function(e) {
-				showChangeLayout(e, reservable, blocked);
+				showChangeLayout(e, reservable, blocked, timezone.val());
 				return false;
 			});
 		});
@@ -68,13 +70,14 @@ function ScheduleManagement(opts)
 		elements.renameDialog.dialog("open");
 	};
 	
-	var showChangeLayout = function(e, reservableDiv, blockedDiv)
+	var showChangeLayout = function(e, reservableDiv, blockedDiv, timezone)
 	{
 		var reservable = reformatTimeSlots(reservableDiv);
 		var blocked = reformatTimeSlots(blockedDiv);
 		
 		elements.reservableEdit.val(reservable);
 		elements.blockedEdit.val(blocked);
+		elements.layoutTimezone.val(timezone);
 		
 		elements.layoutDialog.dialog("open");
 	};
