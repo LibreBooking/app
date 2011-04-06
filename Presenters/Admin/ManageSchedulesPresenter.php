@@ -6,6 +6,7 @@ require_once(ROOT_DIR . 'config/timezones.php');
 class ManageSchedules
 {
 	const ActionRename = 'rename';
+	const ActionChangeSettings = 'settings';
 	const ActionChangeLayout = 'changeLayout';
 }
 
@@ -29,6 +30,7 @@ class ManageSchedulesPresenter
 		$this->scheduleRepository = $scheduleRepository;
 		
 		$this->actions[ManageSchedules::ActionRename] = 'Rename';
+		$this->actions[ManageSchedules::ActionChangeSettings] = 'ChangeSettings';
 		$this->actions[ManageSchedules::ActionChangeLayout] = 'ChangeLayout';
 	}
 	
@@ -84,6 +86,18 @@ class ManageSchedulesPresenter
 	{
 		$schedule = $this->scheduleRepository->LoadById($this->page->GetScheduleId());
 		$schedule->SetName($this->page->GetScheduleName());
+		
+		$this->scheduleRepository->Update($schedule);
+	}
+	
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function ChangeSettings()
+	{
+		$schedule = $this->scheduleRepository->LoadById($this->page->GetScheduleId());
+		$schedule->SetWeekdayStart($this->page->GetStartDay());
+		$schedule->SetDaysVisible($this->page->GetDaysVisible());
 		
 		$this->scheduleRepository->Update($schedule);
 	}

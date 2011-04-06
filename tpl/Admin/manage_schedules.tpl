@@ -17,6 +17,8 @@
 	<div class="scheduleDetails">
 		<div style="float:left;">
 			<input type="hidden" class="id" value="{$id}" />
+			<input type="hidden" class="daysVisible" value="{$daysVisible}" />
+			<input type="hidden" class="dayOfWeek" value="{$dayOfWeek}" />
 			<h4>{$schedule->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">Rename</a><br/>
 			{translate key="LayoutDescription" args="$dayName, $daysVisible"}
 			<a class="update changeButton" href="javascript:void(0);">Change</a><br/>
@@ -103,8 +105,15 @@
 </div>
 
 <div id="changeSettingsDialog" class="dialog" style="display:none;">
-	<form>
-		New Name: <input type="text" class="textbox required" /><br/><br/>
+	<form id="settingsForm" method="post">
+		Starts On: <select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
+			{foreach from=$DayNames item="dayName" key="dayIndex"}
+				<option value="{$dayIndex}">{$dayName}</option>
+			{/foreach} 
+		</select>
+		<br/>
+		Number of Days Visible: <input type="text" class="textbox required" id="daysVisible" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
+		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
 	</form>
@@ -155,6 +164,7 @@ $(document).ready(function() {
 			submitUrl: '{$smarty.server.SCRIPT_NAME}',
 			saveRedirect: '{$smarty.server.SCRIPT_NAME}',
 			renameAction: '{ManageSchedules::ActionRename}',		
+			changeSettingsAction: '{ManageSchedules::ActionChangeSettings}',
 			changeLayoutAction: '{ManageSchedules::ActionChangeLayout}',
 			addAction: 'add'
 	};

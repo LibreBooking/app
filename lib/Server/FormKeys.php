@@ -76,6 +76,8 @@ class FormKeys
 	
 	const SCHEDULE_ID = 'scheduleId';
 	const SCHEDULE_NAME = 'scheduleName';
+	const SCHEDULE_WEEKDAY_START = 'scheduleWeekdayStart';
+	const SCHEDULE_DAYS_VISIBLE = 'scheduleDaysVisible';
 	const SERIES_UPDATE_SCOPE = 'seriesUpdateScope';
 	const SLOTS_BLOCKED = 'blockedSlots';
 	const SLOTS_RESERVABLE = 'reservableSlots';

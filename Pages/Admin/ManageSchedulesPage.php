@@ -23,6 +23,16 @@ interface IUpdateSchedulePage
 	/**
 	 * @return string
 	 */
+	function GetStartDay();
+	
+	/**
+	 * @return string
+	 */
+	function GetDaysVisible();
+	
+	/**
+	 * @return string
+	 */
 	function GetReservableSlots();
 	
 	/**
@@ -101,6 +111,16 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 	public function GetScheduleName()
 	{
 		return $this->server->GetForm(FormKeys::SCHEDULE_NAME);
+	}
+	
+	function GetStartDay()
+	{
+		return $this->server->GetForm(FormKeys::SCHEDULE_WEEKDAY_START);
+	}
+	
+	function GetDaysVisible()
+	{
+		return $this->server->GetForm(FormKeys::SCHEDULE_DAYS_VISIBLE);
 	}
 	
 	public function GetReservableSlots()

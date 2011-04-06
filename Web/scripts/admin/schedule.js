@@ -3,21 +3,30 @@ function ScheduleManagement(opts)
 	var options = opts;
 	
 	var elements = {
-		renameButton: $('.renameButton'),
-		renameDialog: $('#renameDialog'),
-		renameForm: $('#renameForm'),
 		activeId: $('#activeId'),
+			
+		renameDialog: $('#renameDialog'),
+		layoutDialog: $('#changeLayoutDialog'),
+		changeSettingsDialog: $('#changeSettingsDialog'),
+		
+		renameForm: $('#renameForm'),
+		settingsForm: $('#settingsForm'),
+		changeLayoutForm: $('#changeLayoutForm'),
+		
 		addForm: $('#addScheduleForm'),
+		
 		reservableEdit: $('#reservableEdit'),
 		blockedEdit: $('#blockedEdit'),
-		layoutDialog: $('#changeLayoutDialog'),
-		changeLayoutForm: $('#changeLayoutForm'),
-		layoutTimezone: $('#layoutTimezone')
+		layoutTimezone: $('#layoutTimezone'),
+		
+		daysVisible: $('#daysVisible'),
+		dayOfWeek: $('#dayOfWeek')
 	};
 	
 	ScheduleManagement.prototype.init = function()
 	{
 		ConfigureRenameDialog();
+		ConfigureSettingsDialog();
 		ConfigureLayoutDialog();
 		    
 		$('.scheduleDetails').each(function() {
@@ -25,6 +34,8 @@ function ScheduleManagement(opts)
 			var reservable = $(this).find('.reservableSlots');
 			var blocked = $(this).find('.blockedSlots');
 			var timezone = $(this).find('.timezone');
+			var daysVisible = $(this).find('.daysVisible');
+			var dayOfWeek = $(this).find('.dayOfWeek');
 			
 			$(this).find('a.update').click(function() {
 				setActiveScheduleId(id);				
@@ -32,6 +43,11 @@ function ScheduleManagement(opts)
 			
 			$(this).find('.renameButton').click(function(e) {
 				showRename(e);
+				return false;
+			});
+			
+			$(this).find('.changeButton').click(function(e) {
+				showChangeSettings(e, daysVisible.val(), dayOfWeek.val());
 				return false;
 			});
 			
@@ -49,9 +65,12 @@ function ScheduleManagement(opts)
 			$(this).closest('.dialog').dialog("close");
 		});
 		
+
 		ConfigureForm(elements.renameForm,  options.renameAction);
-		ConfigureForm(elements.addForm, options.addAction);
+		ConfigureForm(elements.settingsForm,  options.changeSettingsAction);
 		ConfigureForm(elements.changeLayoutForm, options.changeLayoutAction, showLayoutResults);
+		
+		ConfigureForm(elements.addForm, options.addAction);
 	};
 
 	var showLayoutResults = function(responseText)
@@ -68,6 +87,15 @@ function ScheduleManagement(opts)
 	{
 		elements.renameDialog.dialog("option", "position", [e.pageX, e.pageY]);
 		elements.renameDialog.dialog("open");
+	};
+	
+	var showChangeSettings = function(e, daysVisible, dayOfWeek)
+	{
+		elements.daysVisible.val(daysVisible);
+		elements.dayOfWeek.val(dayOfWeek);
+		
+		elements.changeSettingsDialog.dialog("option", "position", [e.pageX, e.pageY]);
+		elements.changeSettingsDialog.dialog("open");
 	};
 	
 	var showChangeLayout = function(e, reservableDiv, blockedDiv, timezone)
@@ -126,6 +154,19 @@ function ScheduleManagement(opts)
 		    };
 		        
 		elements.renameDialog.dialog(renameDialogOpts);
+	};
+	
+	var ConfigureSettingsDialog = function()
+	{
+		var settingsDialogOpts = {
+				title: 'Change Schedule Settings',
+		        modal: true,
+		        autoOpen: false,
+		        height: 140,
+		        width: 300
+		    };
+		        
+		elements.changeSettingsDialog.dialog(settingsDialogOpts);
 	};
 	
 	var ConfigureLayoutDialog = function()
