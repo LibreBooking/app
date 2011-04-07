@@ -12,6 +12,7 @@ function ScheduleManagement(opts)
 		renameForm: $('#renameForm'),
 		settingsForm: $('#settingsForm'),
 		changeLayoutForm: $('#changeLayoutForm'),
+		makeDefaultForm: $('#makeDefaultForm'),
 		
 		addForm: $('#addScheduleForm'),
 		
@@ -25,9 +26,9 @@ function ScheduleManagement(opts)
 	
 	ScheduleManagement.prototype.init = function()
 	{
-		ConfigureRenameDialog();
-		ConfigureSettingsDialog();
-		ConfigureLayoutDialog();
+		ConfigureDialog(elements.renameDialog, 'Rename Schedule', 300, 125);
+		ConfigureDialog(elements.changeSettingsDialog, 'Change Schedule Settings', 300, 140);
+		ConfigureDialog(elements.layoutDialog, 'Change Layout', 700, 510);
 		    
 		$('.scheduleDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -55,6 +56,11 @@ function ScheduleManagement(opts)
 				showChangeLayout(e, reservable, blocked, timezone);
 				return false;
 			});
+			
+			$(this).find('.makeDefaultButton').click(function(e) {
+				elements.makeDefaultForm.submit();
+				$(this).after($('.indicator'));
+			});
 		});
 
 		$(".save").click(function() {
@@ -66,11 +72,11 @@ function ScheduleManagement(opts)
 		});
 		
 
-		ConfigureForm(elements.renameForm,  options.renameAction);
-		ConfigureForm(elements.settingsForm,  options.changeSettingsAction);
+		ConfigureForm(elements.renameForm, options.renameAction);
+		ConfigureForm(elements.settingsForm, options.changeSettingsAction);
 		ConfigureForm(elements.changeLayoutForm, options.changeLayoutAction, showLayoutResults);
-		
 		ConfigureForm(elements.addForm, options.addAction, handleAddError);
+		ConfigureForm(elements.makeDefaultForm, options.makeDefaultAction, function(text){alert(text);});
 	};
 
 	var showLayoutResults = function(responseText)
@@ -149,43 +155,17 @@ function ScheduleManagement(opts)
 	    });
 	};
 	
-	var ConfigureRenameDialog = function()
+	var ConfigureDialog = function(dialogElement, dialogTitle, dialogWidth, dialogHeight)
 	{
-		var renameDialogOpts = {
-				title: 'Rename Schedule',
+		var dialogOpts = {
+				title: dialogTitle,
 		        modal: true,
 		        autoOpen: false,
-		        height: 125,
-		        width: 300
+		        height: dialogHeight,
+		        width: dialogWidth
 		    };
 		        
-		elements.renameDialog.dialog(renameDialogOpts);
-	};
-	
-	var ConfigureSettingsDialog = function()
-	{
-		var settingsDialogOpts = {
-				title: 'Change Schedule Settings',
-		        modal: true,
-		        autoOpen: false,
-		        height: 140,
-		        width: 300
-		    };
-		        
-		elements.changeSettingsDialog.dialog(settingsDialogOpts);
-	};
-	
-	var ConfigureLayoutDialog = function()
-	{
-		var layoutDialogOpts = {
-				title: 'Change Layout',
-		        modal: true,
-		        autoOpen: false,
-		        height: 510,
-		        width: 700
-		    };
-		        
-		elements.layoutDialog.dialog(layoutDialogOpts);
+		dialogElement.dialog(dialogOpts);
 	};
 	
 	function CheckRequiredFields(formData, jqForm, options)

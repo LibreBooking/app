@@ -479,6 +479,14 @@ class Queries
 		     @max_participants, @min_notice_time, @max_notice_time)
 		';
 	
+	const SET_DEFAULT_SCHEDULE = 
+		'UPDATE 
+			schedules
+		SET 
+			isdefault = 0
+		WHERE
+			schedule_id <> @scheduleid';
+	
 	const UPDATE_LOGINTIME = 
 		'UPDATE 
 			users 

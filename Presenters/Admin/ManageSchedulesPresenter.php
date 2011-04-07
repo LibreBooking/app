@@ -5,10 +5,11 @@ require_once(ROOT_DIR . 'config/timezones.php');
 
 class ManageSchedules
 {
-	const ActionRename = 'rename';
-	const ActionChangeSettings = 'settings';
-	const ActionChangeLayout = 'changeLayout';
 	const ActionAdd = 'add';
+	const ActionChangeLayout = 'changeLayout';
+	const ActionChangeSettings = 'settings';
+	const ActionMakeDefault = 'makeDefault';
+	const ActionRename = 'rename';
 }
 
 class ManageSchedulesPresenter
@@ -30,10 +31,11 @@ class ManageSchedulesPresenter
 		$this->page = $page;
 		$this->scheduleRepository = $scheduleRepository;
 		
-		$this->actions[ManageSchedules::ActionRename] = 'Rename';
-		$this->actions[ManageSchedules::ActionChangeSettings] = 'ChangeSettings';
-		$this->actions[ManageSchedules::ActionChangeLayout] = 'ChangeLayout';
 		$this->actions[ManageSchedules::ActionAdd] = 'Add';
+		$this->actions[ManageSchedules::ActionChangeLayout] = 'ChangeLayout';
+		$this->actions[ManageSchedules::ActionChangeSettings] = 'ChangeSettings';
+		$this->actions[ManageSchedules::ActionMakeDefault] = 'MakeDefault';
+		$this->actions[ManageSchedules::ActionRename] = 'Rename';
 	}
 	
 	public function PageLoad()
@@ -133,6 +135,17 @@ class ManageSchedulesPresenter
 		$layout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
 	
 		$this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
+	}
+	
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function MakeDefault()
+	{
+		$schedule = $this->scheduleRepository->LoadById($this->page->GetScheduleId());
+		$schedule->SetIsDefault(true);
+		
+		$this->scheduleRepository->Update($schedule);
 	}
 	
 	private function ActionIsKnown($action)

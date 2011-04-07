@@ -150,6 +150,11 @@ class ScheduleRepository implements IScheduleRepository
 			$schedule->GetIsDefault(),
 			$schedule->GetWeekdayStart(),
 			$schedule->GetDaysVisible()));
+			
+		if ($schedule->GetIsDefault())
+		{
+			ServiceLocator::GetDatabase()->Execute(new SetDefaultScheduleCommand($schedule->GetId()));
+		}
 	}
 	
 	public function Add(Schedule $schedule, $copyLayoutFromScheduleId)

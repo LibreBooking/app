@@ -493,6 +493,15 @@ class SelectUserGroupPermissions extends SqlCommand
 	}
 }
 
+class SetDefaultScheduleCommand extends SqlCommand
+{
+	public function __construct($scheduleId)
+	{
+		parent::__construct(Queries::SET_DEFAULT_SCHEDULE);
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));	
+	}
+}
+
 class UpdateLoginTimeCommand extends SqlCommand
 {
 	public function __construct($userid, $lastlogin)

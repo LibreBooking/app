@@ -105,6 +105,11 @@
 
 <input type="hidden" id="activeId" value="" />
 
+<div id="makeDefaultDialog" style="display:none">
+	<form id="makeDefaultForm" method="post">
+	</form>
+</div>
+
 <div id="renameDialog" class="dialog" style="display:none;">
 	<form id="renameForm" method="post">
 		New Name: <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /><br/><br/>
@@ -176,7 +181,8 @@ $(document).ready(function() {
 			renameAction: '{ManageSchedules::ActionRename}',		
 			changeSettingsAction: '{ManageSchedules::ActionChangeSettings}',
 			changeLayoutAction: '{ManageSchedules::ActionChangeLayout}',
-			addAction: '{ManageSchedules::ActionAdd}'
+			addAction: '{ManageSchedules::ActionAdd}',
+			makeDefaultAction: '{ManageSchedules::ActionMakeDefault}'
 	};
 
 	var scheduleManagement = new ScheduleManagement(opts);
