@@ -59,5 +59,38 @@ class ManageSchedulesPresenterTests extends TestBase
 		$presenter = new ManageSchedulesPresenter($this->page, $this->scheduleRepo);
 		$presenter->ChangeLayout();
 	}
+	
+	public function testNewScheduleIsAdded()
+	{
+		$sourceScheduleId = 198;
+		$name = 'new name';
+		$startDay = '3';
+		$daysVisible = '7';
+		
+		$expectedSchedule = new Schedule(null, $name, false, $startDay, $daysVisible);
+		
+		$this->page->expects($this->once())
+			->method('GetSourceScheduleId')
+			->will($this->returnValue($sourceScheduleId));
+			
+		$this->page->expects($this->once())
+			->method('GetScheduleName')
+			->will($this->returnValue($name));
+			
+		$this->page->expects($this->once())
+			->method('GetStartDay')
+			->will($this->returnValue($startDay));
+			
+		$this->page->expects($this->once())
+			->method('GetDaysVisible')
+			->will($this->returnValue($daysVisible));
+			
+		$this->scheduleRepo->expects($this->once())
+			->method('Add')
+			->with($this->equalTo($expectedSchedule), $this->equalTo($sourceScheduleId));
+			
+		$presenter = new ManageSchedulesPresenter($this->page, $this->scheduleRepo);
+		$presenter->Add();
+	}
 }
 ?>

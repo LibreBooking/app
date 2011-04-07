@@ -113,6 +113,7 @@ class ScheduleRepositoryTests extends TestBase
 		$weekdayStart = 5;
 		$daysVisible = 3;
 		$timezone = 'America/Chicago';
+		$layoutId = 988;
 		
 		$fakeSchedules = new FakeScheduleRepository();
 		$expectedSchedule = new Schedule($id, 
@@ -120,9 +121,10 @@ class ScheduleRepositoryTests extends TestBase
 									$isDefault, 
 									$weekdayStart, 
 									$daysVisible,
-									$timezone);
+									$timezone,
+									$layoutId);
 									
-		$this->db->SetRows(array($fakeSchedules->GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible, $timezone)));
+		$this->db->SetRows(array($fakeSchedules->GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible, $timezone, $layoutId)));
 		$actualSchedule = $this->scheduleRepository->LoadById($id);
 		
 		$this->assertEquals($expectedSchedule, $actualSchedule);
@@ -194,6 +196,28 @@ class ScheduleRepositoryTests extends TestBase
 		$this->assertEquals($expectedInsertBlockGroup1, $actualInsertBlock1);
 		$this->assertEquals($expectedInsertBlockGroup2, $actualInsertBlock2);
 		$this->assertEquals($actualInsertScheduleBlock, $actualInsertScheduleBlock);
+	}
+	
+	public function testCanAddNewSchedule()
+	{
+		$layoutId = 87;
+		$scheduleIdOfSourceLayout = 888;
+		$name = 'new dude';
+		$isDefault = false;
+		$weekdayStart = 2;
+		$daysVisible = 5;
+		$scheduleIdOfSourceLayout = 981;
+		
+		$schedule = new Schedule(null, $name, $isDefault, $weekdayStart, $daysVisible, null, $layoutId);
+		
+		$expectedGetScheduleById = new GetScheduleByIdCommand($scheduleIdOfSourceLayout);
+		
+		$fakeSchedules = new FakeScheduleRepository();
+		$this->db->SetRows(array($fakeSchedules->GetRow(9, null, true, 0, 0, null, $layoutId)));
+		
+		$expectedInsertScheduleCommand = new AddScheduleCommand($name, $isDefault, $weekdayStart, $daysVisible, $layoutId);
+		
+		$this->scheduleRepository->Add($schedule, $scheduleIdOfSourceLayout);
 	}
 }
 

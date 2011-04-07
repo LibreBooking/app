@@ -133,6 +133,19 @@ class AddResourceCommand extends SqlCommand
 	}
 }
 
+class AddScheduleCommand extends SqlCommand
+{
+	public function __construct($scheduleName, $isDefault, $weekdayStart, $daysVisible, $layoutId)
+	{
+		parent::__construct(Queries::ADD_SCHEDULE);
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_NAME, $scheduleName));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ISDEFAULT, $isDefault));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_WEEKDAYSTART, $weekdayStart));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DAYSVISIBLE, $daysVisible));	
+		$this->AddParameter(new Parameter(ParameterNames::LAYOUT_ID, $layoutId));	
+	}
+}
+
 class AuthorizationCommand extends SqlCommand
 {
 	public function __construct($username)

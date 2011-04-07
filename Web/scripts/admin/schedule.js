@@ -47,12 +47,12 @@ function ScheduleManagement(opts)
 			});
 			
 			$(this).find('.changeButton').click(function(e) {
-				showChangeSettings(e, daysVisible.val(), dayOfWeek.val());
+				showChangeSettings(e, daysVisible, dayOfWeek);
 				return false;
 			});
 			
 			$(this).find('.changeLayoutButton').click(function(e) {
-				showChangeLayout(e, reservable, blocked, timezone.val());
+				showChangeLayout(e, reservable, blocked, timezone);
 				return false;
 			});
 		});
@@ -70,12 +70,18 @@ function ScheduleManagement(opts)
 		ConfigureForm(elements.settingsForm,  options.changeSettingsAction);
 		ConfigureForm(elements.changeLayoutForm, options.changeLayoutAction, showLayoutResults);
 		
-		ConfigureForm(elements.addForm, options.addAction);
+		ConfigureForm(elements.addForm, options.addAction, handleAddError);
 	};
 
 	var showLayoutResults = function(responseText)
 	{
 		$('#layoutResults').text(responseText);
+	};
+	
+	var handleAddError = function(responseText)
+	{
+		$('#addScheduleResults').text(responseText);
+		$('#addScheduleResults').show();
 	};
 	
 	var setActiveScheduleId = function(scheduleId)
@@ -91,8 +97,8 @@ function ScheduleManagement(opts)
 	
 	var showChangeSettings = function(e, daysVisible, dayOfWeek)
 	{
-		elements.daysVisible.val(daysVisible);
-		elements.dayOfWeek.val(dayOfWeek);
+		elements.daysVisible.val(daysVisible.val());
+		elements.dayOfWeek.val(dayOfWeek.val());
 		
 		elements.changeSettingsDialog.dialog("option", "position", [e.pageX, e.pageY]);
 		elements.changeSettingsDialog.dialog("open");
@@ -105,7 +111,7 @@ function ScheduleManagement(opts)
 		
 		elements.reservableEdit.val(reservable);
 		elements.blockedEdit.val(blocked);
-		elements.layoutTimezone.val(timezone);
+		elements.layoutTimezone.val(timezone.val());
 		
 		elements.layoutDialog.dialog("open");
 	};

@@ -144,6 +144,11 @@ class Queries
 		'INSERT INTO
 			reservation_users (reservation_instance_id, user_id, reservation_user_level)
 		VALUES (@reservationid, @userid, @levelid)';
+
+	const ADD_SCHEDULE = 
+		'INSERT INTO
+			schedules (name, isdefault, weekdaystart, daysvisible, layout_id)
+		VALUES (@scheduleName, @scheduleIsDefault, @scheduleWeekdayStart, @scheduleDaysVisible, @layoutid)';
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
 		'INSERT INTO 
@@ -376,7 +381,9 @@ class Queries
 		'SELECT
 			*
 		FROM
-			schedules
+			schedules s
+		INNER JOIN
+			layouts l ON s.layout_id = l.layout_id
 		WHERE
 			schedule_id = @scheduleid';
 	
@@ -657,6 +664,7 @@ class ColumnNames
 	const SCHEDULE_DEFAULT = 'isdefault';
 	const SCHEDULE_WEEKDAY_START = 'weekdaystart';
 	const SCHEDULE_DAYS_VISIBLE = 'daysvisible';
+	const LAYOUT_ID = 'layout_id';
 	
 	// EMAIL PREFERENCES //
 	const EVENT_CATEGORY = 'event_category';

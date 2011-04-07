@@ -8,6 +8,7 @@ class ManageSchedules
 	const ActionRename = 'rename';
 	const ActionChangeSettings = 'settings';
 	const ActionChangeLayout = 'changeLayout';
+	const ActionAdd = 'add';
 }
 
 class ManageSchedulesPresenter
@@ -32,6 +33,7 @@ class ManageSchedulesPresenter
 		$this->actions[ManageSchedules::ActionRename] = 'Rename';
 		$this->actions[ManageSchedules::ActionChangeSettings] = 'ChangeSettings';
 		$this->actions[ManageSchedules::ActionChangeLayout] = 'ChangeLayout';
+		$this->actions[ManageSchedules::ActionAdd] = 'Add';
 	}
 	
 	public function PageLoad()
@@ -77,6 +79,22 @@ class ManageSchedulesPresenter
 		{
 			Log::Error("Unknown manage schedule action %s", $action);
 		}
+	}
+	
+	
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function Add()
+	{
+		$copyLayoutFromScheduleId = $this->page->GetSourceScheduleId();
+		$name = $this->page->GetScheduleName();
+		$weekdayStart = $this->page->GetStartDay();
+		$daysVisible = $this->page->GetDaysVisible();
+		
+		$schedule = new Schedule(null, $name, false, $weekdayStart, $daysVisible);
+		
+		$this->scheduleRepository->Add($schedule, $copyLayoutFromScheduleId);
 	}
 	
 	/**

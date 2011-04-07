@@ -81,7 +81,7 @@ class FakeScheduleRepository
 		throw new Exception('mock this');
 	}
 	
-	public static function GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible, $timezone)
+	public static function GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible, $timezone, $layoutId = null)
 	{
 		return array(
 				ColumnNames::SCHEDULE_ID => $id,
@@ -89,7 +89,8 @@ class FakeScheduleRepository
 				ColumnNames::SCHEDULE_DEFAULT => $isDefault,
 				ColumnNames::SCHEDULE_WEEKDAY_START => $weekdayStart,
 				ColumnNames::SCHEDULE_DAYS_VISIBLE => $daysVisible,
-				ColumnNames::TIMEZONE_NAME => $timezone
+				ColumnNames::TIMEZONE_NAME => $timezone,
+				ColumnNames::LAYOUT_ID => $layoutId
 			);
 	}
 }

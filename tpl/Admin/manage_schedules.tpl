@@ -75,19 +75,29 @@
 		Add New Schedule
 	</div>
 	<div>
+		<div id="addScheduleResults" class="error" style="display:none;"></div>
 		<form id="addScheduleForm" method="post">
 			<ul>
-				<li>Name<br/><input type="text" class="textbox required" /></li>
-				<li>Starts on<br/><input type="text" class="textbox required" /></li>
-				<li>Number of days to show<br/><input type="text" class="textbox required" /></li>
+				<li>Name<br/> <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /></li>
+				<li>Starts On:<br/> 
+				<select {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
+					{foreach from=$DayNames item="dayName" key="dayIndex"}
+						<option value="{$dayIndex}">{$dayName}</option>
+					{/foreach} 
+				</select>
+				</li>
+				<li>Number of Days Visible:<br/><input type="text" class="textbox required" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
+				</li>
 				<li>Use same layout at<br/>
-					<select class="textbox">
+					<select class="textbox" {formname key=SCHEDULE_ID}>
 					{foreach $Schedules item=schedule}
 						<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
 					{/foreach}
 					</select>
 				</li>
-				<li><button type="button" class="button save">{html_image src="disk-black.png"} Add Schedule</button></li>
+				<li>
+					<button type="button" class="button save">{html_image src="disk-black.png"} Add Schedule</button>
+				</li>
 			</ul>
 		</form>
 	</div>
@@ -133,7 +143,7 @@
 		<div style="margin-top:5px;">
 			<h5>
 				{translate key=Timezone} 
-				<select {formname key=TIMEZONE} id="layoutTimezone" class="input" tabindex="50">
+				<select {formname key=TIMEZONE} id="layoutTimezone" class="input">
 		        	{html_options values=$TimezoneValues output=$TimezoneOutput}
 		        </select>
 	        </h5>
@@ -166,7 +176,7 @@ $(document).ready(function() {
 			renameAction: '{ManageSchedules::ActionRename}',		
 			changeSettingsAction: '{ManageSchedules::ActionChangeSettings}',
 			changeLayoutAction: '{ManageSchedules::ActionChangeLayout}',
-			addAction: 'add'
+			addAction: '{ManageSchedules::ActionAdd}'
 	};
 
 	var scheduleManagement = new ScheduleManagement(opts);

@@ -24,6 +24,12 @@ interface IScheduleRepository
 	public function Update(Schedule $schedule);
 	
 	/**
+	 * @param Schedule $schedule
+	 * @param int $copyLayoutFromScheduleId
+	 */
+	public function Add(Schedule $schedule, $copyLayoutFromScheduleId);
+	
+	/**
 	 * @param int $scheduleId
 	 * @param ILayoutFactory $layoutFactory factory to use to create the schedule layout
 	 * @return IScheduleLayout
@@ -126,7 +132,8 @@ class ScheduleRepository implements IScheduleRepository
 				$row[ColumnNames::SCHEDULE_DEFAULT],
 				$row[ColumnNames::SCHEDULE_WEEKDAY_START],
 				$row[ColumnNames::SCHEDULE_DAYS_VISIBLE],
-				$row[ColumnNames::TIMEZONE_NAME]
+				$row[ColumnNames::TIMEZONE_NAME],
+				$row[ColumnNames::LAYOUT_ID]
 			);
 		}
 
@@ -145,6 +152,20 @@ class ScheduleRepository implements IScheduleRepository
 			$schedule->GetDaysVisible()));
 	}
 	
+	public function Add(Schedule $schedule, $copyLayoutFromScheduleId)
+	{
+		$source = $this->LoadById($copyLayoutFromScheduleId);
+
+		$db = ServiceLocator::GetDatabase();
+		
+		$db->ExecuteInsert(new AddScheduleCommand(
+			$schedule->GetName(),
+			$schedule->GetIsDefault(),
+			$schedule->GetWeekdayStart(),
+			$schedule->GetDaysVisible(),
+			$source->GetLayoutId()
+		));
+	}
 	/**
 	 * @see IScheduleRepository::GetLayout()
 	 */

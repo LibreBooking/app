@@ -44,6 +44,11 @@ interface IUpdateSchedulePage
 	 * @return string
 	 */
 	function GetLayoutTimezone();
+	
+	/**
+	 * @return string
+	 */
+	function GetSourceScheduleId();
 }
 
 
@@ -136,6 +141,11 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 	public function GetLayoutTimezone()
 	{
 		return $this->server->GetForm(FormKeys::TIMEZONE);
+	}
+	
+	public function GetSourceScheduleId()
+	{
+		return $this->server->GetForm(FormKeys::SCHEDULE_ID);
 	}
 }
 
