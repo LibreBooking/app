@@ -58,10 +58,10 @@
 		<div style="clear:both;border-top:solid 1px #f0f0f0;">
 			{if $schedule->GetIsDefault()}
 				<span class="note">This is the default schedule</span> |
-				<span class="note">Default schedule cannot be made unavailable</span>
+				<span class="note">Default schedule cannot be brought down</span>
 			{else}
 				<a class="update makeDefaultButton" href="javascript: void(0);">Make Default</a> |
-				<a class="update makeUnavailableButton" href="javascript: void(0);">Make Unavailable</a>
+				<a class="update bringDownButton" href="javascript: void(0);">Bring Down</a>
 			{/if}
 			|
 			<a class="update changeLayoutButton" href="javascript: void(0);">Change Layout</a>

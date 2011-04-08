@@ -126,7 +126,11 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		$page->SetDisplayDates($adjustedDateRange);
 		
 		$startDate = $adjustedDateRange->GetBegin();
-		$page->SetPreviousNextDates($startDate->AddDays(-$scheduleLength), $startDate->AddDays($scheduleLength));
+		
+		$adjustment = max($scheduleLength, 7);
+		
+		$prevAdjustment = 7 * floor($adjustment/7); // ie, if 10, we only want to go back 7 days so there is overlap
+		$page->SetPreviousNextDates($startDate->AddDays(-$prevAdjustment), $startDate->AddDays($adjustment));
 	}
 	
 	/**

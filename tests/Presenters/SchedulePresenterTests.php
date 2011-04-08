@@ -495,6 +495,52 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindLayout($page, $layout, $displayRange);
 	}
+	
+	public function testPreviousAndNextLinksWhenStartingOnMondayShowingFiveDays()
+	{
+		$tz = 'America/Chicago';
+		$start = Date::Parse('2011-04-04', $tz);
+		$end = Date::Parse('2011-04-08', $tz);
+		
+		$session = new UserSession(1);
+		$session->Timezone = $tz;
+		
+		$schedule = new Schedule(1, null, true, 1, 5);
+		
+		$expectedPrevious = Date::Parse('2011-03-28', $tz);
+		$expectedNext = Date::Parse('2011-04-11', $tz);
+		
+		$page = $this->getMock('ISchedulePage');
+		$page->expects($this->once())
+			->method('SetPreviousNextDates')
+			->with($this->equalTo($expectedPrevious), $this->equalTo($expectedNext));
+			
+		$builder = new SchedulePageBuilder();
+		$builder->BindDisplayDates($page, new DateRange($start, $end), $session, $schedule);
+	}
+	
+	public function testPreviousAndNextLinksWhenStartingOnMondayShowingTenDays()
+	{
+		$tz = 'America/Chicago';
+		$start = Date::Parse('2011-04-04', $tz);
+		$end = Date::Parse('2011-04-13', $tz);
+		
+		$session = new UserSession(1);
+		$session->Timezone = $tz;
+		
+		$schedule = new Schedule(1, null, true, 1, 10);
+		
+		$expectedPrevious = Date::Parse('2011-03-28', $tz);
+		$expectedNext = Date::Parse('2011-04-14', $tz);
+		
+		$page = $this->getMock('ISchedulePage');
+		$page->expects($this->once())
+			->method('SetPreviousNextDates')
+			->with($this->equalTo($expectedPrevious), $this->equalTo($expectedNext));
+			
+		$builder = new SchedulePageBuilder();
+		$builder->BindDisplayDates($page, new DateRange($start, $end), $session, $schedule);
+	}
 }
 
 ?>
