@@ -190,6 +190,12 @@ class Queries
 		FROM users 
 		WHERE (username = @username OR email = @username)';
 	
+	const GET_ALL_RESOURCES = 
+		'SELECT * 
+		FROM resources r
+		LEFT JOIN resource_schedules rs ON r.resource_id = rs.resource_id
+		WHERE r.isactive = 1';
+	
 	const GET_ALL_SCHEDULES = 
 		'SELECT * 
 		FROM schedules s

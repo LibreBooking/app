@@ -4,12 +4,7 @@ require_once(ROOT_DIR . 'Presenters/Admin/ManageSchedulesPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ScheduleRepository.php');
 
 interface IUpdateSchedulePage
-{
-	/**
-	 * @return string
-	 */
-	function GetAction();
-	
+{	
 	/**
 	 * @return int
 	 */
@@ -80,12 +75,6 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 		$this->Display('manage_schedules.tpl');		
 	}
 	
-	public function TakingAction()
-	{
-		$action = $this->GetAction();
-		return !empty($action);
-	}
-	
 	public function ProcessAction()
 	{
 		$this->_presenter->ProcessAction();
@@ -101,11 +90,6 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 	{
 		$this->Set('Schedules', $schedules);
 		$this->Set('Layouts', $layouts);
-	}
-	
-	public function GetAction()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::ACTION);
 	}
 	
 	public function GetScheduleId()

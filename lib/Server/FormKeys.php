@@ -71,6 +71,7 @@ class FormKeys
 	const RESOURCE = 'resource';
 	const RESOURCE_ID = 'resourceId';
 	const RESOURCE_NAME = 'resourceName';	
+	const RESOURCE_DESCRIPTION = 'resourceDescription';
 	const RESUME = 'resume';
 	const RETURN_URL = 'returnUrl';
 	

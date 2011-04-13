@@ -23,6 +23,11 @@ interface IResourceRepository
 	 * @return int ID of created Resource
 	 */
 	public function AddResource($name, $additionalFields = array());
+	
+	/**
+	 * @return Resource[] array of all resources
+	 */
+	public function GetResourceList();
 }
 
 class ResourceRepository implements IResourceRepository
@@ -43,6 +48,24 @@ class ResourceRepository implements IResourceRepository
 	public function GetScheduleResources($scheduleId)
 	{
 		$command = new GetScheduleResourcesCommand($scheduleId);
+		
+		$resources = array();
+		
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+		
+		while ($row = $reader->GetRow())
+		{
+			$resources[] = Resource::Create($row);
+		}
+		
+		$reader->Free();
+		
+		return $resources;
+	}
+	
+	public function GetResourceList()
+	{
+		$command = new GetAllResourcesCommand();
 		
 		$resources = array();
 		

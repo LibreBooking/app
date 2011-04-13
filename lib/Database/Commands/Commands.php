@@ -210,6 +210,14 @@ class DeleteSeriesCommand extends SqlCommand
 	}
 }
 
+class GetAllResourcesCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_ALL_RESOURCES);
+	}
+}
+
 class GetAllSchedulesCommand extends SqlCommand 
 {
 	public function __construct()

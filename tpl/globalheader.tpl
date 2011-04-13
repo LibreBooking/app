@@ -61,7 +61,7 @@
 		    <li class="menubaritem"><a href="#">Admin</a>
 		        <ul>
 		            <li class="menuitem"><a href="{$Path}admin/manage_schedules.php">Manage Schedules</a></li>
-					<li class="menuitem"><a href="/reservation.php?rid=1">Manage Resources</a></li>
+					<li class="menuitem"><a href="{$Path}admin/manage_resources.php">Manage Resources</a></li>
 				</ul>
 		    </li>
 		    {/if}

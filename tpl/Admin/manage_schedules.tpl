@@ -23,7 +23,7 @@
 			{translate key="LayoutDescription" args="$dayName, $daysVisible"}
 			<a class="update changeButton" href="javascript:void(0);">Change</a><br/>
 		</div>
-		<div style="border-left:solid 1px #f0f0f0;float:right;width:550px;">
+		<div class="layout">
 			Layout (all times {$schedule->GetTimezone()}):<br/>
 			<input type="hidden" class="timezone" value="{$schedule->GetTimezone()}" />
 			Reservable Time Slots
@@ -55,7 +55,7 @@
 			{/foreach}	
 			</div>		
 		</div>
-		<div style="clear:both;border-top:solid 1px #f0f0f0;">
+		<div class="actions">
 			{if $schedule->GetIsDefault()}
 				<span class="note">This is the default schedule</span> |
 				<span class="note">Default schedule cannot be brought down</span>
@@ -79,16 +79,16 @@
 		<form id="addScheduleForm" method="post">
 			<ul>
 				<li>Name<br/> <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /></li>
-				<li>Starts On:<br/> 
+				<li>Starts On<br/> 
 				<select {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
 					{foreach from=$DayNames item="dayName" key="dayIndex"}
 						<option value="{$dayIndex}">{$dayName}</option>
 					{/foreach} 
 				</select>
 				</li>
-				<li>Number of Days Visible:<br/><input type="text" class="textbox required" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
+				<li>Number of Days Visible<br/><input type="text" class="textbox required" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
 				</li>
-				<li>Use same layout at<br/>
+				<li>Use Same Layout As<br/>
 					<select class="textbox" {formname key=SCHEDULE_ID}>
 					{foreach $Schedules item=schedule}
 						<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>

@@ -1,7 +1,7 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
-class AdminPage extends SecurePage
+abstract class AdminPage extends SecurePage
 {
 	public function __construct($titleKey = '', $pageDepth = 1)
 	{
@@ -20,5 +20,18 @@ class AdminPage extends SecurePage
 	{
 		$this->smarty->display('admin/' . $adminTemplateName);
 	}
+	
+	public function TakingAction()
+	{
+		$action = $this->GetAction();
+		return !empty($action);
+	}
+	
+	public function GetAction()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::ACTION);
+	}
+	
+	abstract function ProcessAction();
 }
 ?>

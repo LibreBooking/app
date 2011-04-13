@@ -18,8 +18,9 @@ class Resource implements IResource
 	private $_resourceId;
 	private $_name;
 	private $_location;
-	private $_phone;
+	private $_contact;
 	private $_notes;
+	private $_description;
 	private $_minLength;
 	private $_maxLength;
 	private $_autoAssign;
@@ -28,11 +29,12 @@ class Resource implements IResource
 	private $_maxParticipants;
 	private $_minNotice;
 	private $_maxNotice;
+	private $_scheduleId;
 	
 	public function __construct($resourceId,
 								$name,
 								$location,
-								$phone,
+								$contact,
 								$notes,
 								$minLength,
 								$maxLength,
@@ -41,13 +43,16 @@ class Resource implements IResource
 								$allowMultiday,
 								$maxParticipants,
 								$minNotice,
-								$maxNotice)
+								$maxNotice,
+								$description = null,
+								$scheduleId = null)
 	{
 		$this->SetResourceId($resourceId);
 		$this->SetName($name);
 		$this->SetLocation($location);
-		$this->SetPhone($phone);
+		$this->SetContact($contact);
 		$this->SetNotes($notes);
+		$this->SetDescription($description);
 		$this->SetMinLength($minLength);
 		$this->SetMaxLength($maxLength);
 		$this->SetAutoAssign($autoAssign);
@@ -56,6 +61,7 @@ class Resource implements IResource
 		$this->SetMaxParticipants($maxParticipants);
 		$this->SetMinNotice($minNotice);
 		$this->SetMaxNotice($maxNotice);
+		$this->SetScheduleId($scheduleId);
 	}
 	
 	/**
@@ -76,7 +82,9 @@ class Resource implements IResource
 							$row[ColumnNames::RESOURCE_ALLOW_MULTIDAY],
 							$row[ColumnNames::RESOURCE_MAX_PARTICIPANTS],
 							$row[ColumnNames::RESOURCE_MINNOTICE],
-							$row[ColumnNames::RESOURCE_MAXNOTICE]);
+							$row[ColumnNames::RESOURCE_MAXNOTICE],
+							$row[ColumnNames::RESOURCE_DESCRIPTION],
+							$row[ColumnNames::SCHEDULE_ID]);
 	}
 	
 	public function GetResourceId()
@@ -109,14 +117,24 @@ class Resource implements IResource
 		$this->_location = $value;
 	}
 	
-	public function GetPhone()
+	public function HasLocation()
 	{
-		return $this->_phone;
+		return !empty($this->_location);
 	}
 	
-	public function SetPhone($value)
+	public function GetContact()
 	{
-		$this->_phone = $value;
+		return $this->_contact;
+	}
+	
+	public function SetContact($value)
+	{
+		$this->_contact = $value;
+	}
+	
+	public function HasContact()
+	{
+		return !empty($this->_contact);
 	}
 	
 	public function GetNotes()
@@ -129,6 +147,26 @@ class Resource implements IResource
 		$this->_notes = $value;
 	}
 	
+	public function HasNotes()
+	{
+		return !empty($this->_notes);
+	}
+	
+	public function GetDescription()
+	{
+		return $this->_description;
+	}
+	
+	public function SetDescription($value)
+	{
+		$this->_description = $value;
+	}
+	
+	public function HasDescription()
+	{
+		return !empty($this->_description);
+	}
+	
 	public function GetMinLength()
 	{
 		return $this->_minLength;
@@ -139,6 +177,11 @@ class Resource implements IResource
 		$this->_minLength = $value;
 	}
 	
+	public function HasMinLength()
+	{
+		return !empty($tihs->_minLength);
+	}
+	
 	public function GetMaxLength()
 	{
 		return $this->_maxLength;
@@ -147,6 +190,11 @@ class Resource implements IResource
 	public function SetMaxLength($value)
 	{
 		$this->_maxLength = $value;
+	}
+	
+	public function HasMaxLength()
+	{
+		return !empty($tihs->_maxLength);
 	}
 	
 	public function GetAutoAssign()
@@ -189,6 +237,11 @@ class Resource implements IResource
 		$this->_maxParticipants = $value;
 	}
 	
+	public function HasMaxParticipants()
+	{
+		return !empty($this->_maxParticipants);
+	}
+	
 	public function GetMinNotice()
 	{
 		return $this->_minNotice;
@@ -199,6 +252,11 @@ class Resource implements IResource
 		$this->_minNotice = $value;
 	}
 	
+	public function HasMinNotice()
+	{
+		return !empty($this->_minNotice);
+	}
+	
 	public function GetMaxNotice()
 	{
 		return $this->_maxNotice;
@@ -207,6 +265,21 @@ class Resource implements IResource
 	public function SetMaxNotice($value)
 	{
 		$this->_maxNotice = $value;
+	}
+	
+	public function HasMaxNotice()
+	{
+		return !empty($this->_maxNotice);
+	}
+	
+	public function GetScheduleId()
+	{
+		return $this->_scheduleId;
+	}
+	
+	public function SetScheduleId($value)
+	{
+		$this->_scheduleId = $value;
 	}
 }
 ?>
