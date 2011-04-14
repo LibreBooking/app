@@ -27,7 +27,7 @@ function ResourceManagement(opts)
 	ResourceManagement.prototype.init = function()
 	{
 		ConfigureAdminDialog(elements.renameDialog, 'Rename Resource', 300, 125);
-		ConfigureAdminDialog(elements.imageDialog, 'Change Image', 300, 125);
+		ConfigureAdminDialog(elements.imageDialog, 'Change Image', 500, 150);
 		ConfigureAdminDialog(elements.scheduleDialog, 'Change Schedule', 300, 125);
 		ConfigureAdminDialog(elements.locationDialog, 'Change Location', 300, 160);
 		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 260);
