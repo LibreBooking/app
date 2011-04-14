@@ -6,12 +6,14 @@ function ResourceManagement(opts)
 		activeId: $('#activeId'),
 			
 		renameDialog: $('#renameDialog'),
+		imageDialog: $('#imageDialog'),
 		scheduleDialog: $('#scheduleDialog'),
 		locationDialog: $('#locationDialog'),
 		descriptionDialog: $('#descriptionDialog'),
 		notesDialog: $('#notesDialog'),
 		
 		renameForm: $('#renameForm'),
+		imageForm: $('#imageForm'),
 		scheduleForm: $('#scheduleForm'),
 		locationForm: $('#locationForm'),
 		descriptionForm: $('#descriptionForm'),
@@ -25,6 +27,7 @@ function ResourceManagement(opts)
 	ResourceManagement.prototype.init = function()
 	{
 		ConfigureAdminDialog(elements.renameDialog, 'Rename Resource', 300, 125);
+		ConfigureAdminDialog(elements.imageDialog, 'Change Image', 300, 125);
 		ConfigureAdminDialog(elements.scheduleDialog, 'Change Schedule', 300, 125);
 		ConfigureAdminDialog(elements.locationDialog, 'Change Location', 300, 160);
 		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 260);
@@ -35,6 +38,11 @@ function ResourceManagement(opts)
 			
 			$(this).find('a.update').click(function() {
 				setActiveResourceId(id);				
+			});
+			
+			$(this).find('.imageButton').click(function(e) {
+				showChangeImage(e);
+				return false;
 			});
 			
 			$(this).find('.renameButton').click(function(e) {
@@ -77,6 +85,9 @@ function ResourceManagement(opts)
 			$(this).closest('.dialog').dialog("close");
 		});
 
+		var imageSaveErrorHandler = function(result) { alert(result); };
+		
+		ConfigureAdminForm(elements.imageForm, getSubmitCallback(options.actions.changeImage), null, imageSaveErrorHandler);
 		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.actions.rename), null, function(x){alert(x);});
 		ConfigureAdminForm(elements.scheduleForm, getSubmitCallback(options.actions.changeSchedule));
 		ConfigureAdminForm(elements.locationForm, getSubmitCallback(options.actions.changeLocation));
@@ -110,6 +121,11 @@ function ResourceManagement(opts)
 	{
 		return resources[getActiveResourceId()];
 	};
+	
+	var showChangeImage = function(e)
+	{
+		elements.imageDialog.dialog("open");
+	}
 	
 	var showRename = function(e)
 	{

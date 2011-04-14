@@ -14,6 +14,11 @@ interface IUpdateResourcePage
 	 * @return string
 	 */
 	function GetResourceName();
+	
+	/**
+	 * @return string
+	 */
+	function GetUploadedImageName();
 }
 
 
@@ -72,6 +77,11 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 	public function GetResourceName()
 	{
 		return $this->server->GetForm(FormKeys::RESOURCE_NAME);
+	}
+	
+	public function GetUploadedImageName()
+	{
+		return $_FILES['uploaded_image']['tmp_name'];
 	}
 }
 

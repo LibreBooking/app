@@ -17,6 +17,7 @@
 			<ul>
 				<li>
 					<h4>{$resource->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">Rename</a>
+					<a class="update imageButton" href="javascript: void(0);">Add Image</a>
 				</li>
 				<li>
 					Appears on {$Schedules[$resource->GetScheduleId()]} <a class="update changeScheduleButton" href="javascript: void(0);">Move</a>
@@ -176,13 +177,20 @@
 	</form>
 </div>
 
+<div id="imageDialog" class="dialog" style="display:none;">
+	<form id="imageForm" method="post" enctype="multipart/form-data">
+      <input type="file" name="uploaded_image" />
+      <br/><br/>
+      <button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
+	  <button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+  	</form>
+</div>
 <div id="renameDialog" class="dialog" style="display:none;">
 	<form id="renameForm" method="post">
 		New Name: <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=RESOURCE_NAME} />
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
-		
 	</form>
 </div>
 
@@ -291,6 +299,7 @@ $(document).ready(function() {
 
 	var actions = {
 		rename: '{ManageResourcesActions::ActionRename}',		
+		changeImage: '{ManageResourcesActions::ActionChangeImage}',		
 		changeSchedule: '{ManageResourcesActions::ActionChangeSchedule}',
 		changeLocation: '{ManageResourcesActions::ActionChangeLocation}',
 		changeDescription: '{ManageResourcesActions::ActionChangeDescription}',

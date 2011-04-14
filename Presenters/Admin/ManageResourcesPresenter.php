@@ -1,12 +1,13 @@
 <?php 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-require_once(ROOT_DIR . 'config/timezones.php');
+require_once(ROOT_DIR . 'lib/external/SimpleImage/SimpleImage.php');
 
 class ManageResourcesActions
 {
 	const ActionAdd = 'add';
 	const ActionChangeDescription = 'description';
+	const ActionChangeImage = 'image';
 	const ActionChangeLocation = 'location';
 	const ActionChangeNotes = 'notes';
 	const ActionChangeSchedule = 'schedule';
@@ -40,6 +41,7 @@ class ManageResourcesPresenter
 		
 		$this->actions[ManageResourcesActions::ActionAdd] = 'Add';
 		$this->actions[ManageResourcesActions::ActionChangeDescription] = 'ChangeDescription';
+		$this->actions[ManageResourcesActions::ActionChangeImage] = 'ChangeImage';
 		$this->actions[ManageResourcesActions::ActionChangeLocation] = 'ChangeLocation';
 		$this->actions[ManageResourcesActions::ActionChangeNotes] = 'ChangeNotes';
 		$this->actions[ManageResourcesActions::ActionChangeSchedule] = 'ChangeSchedule';
@@ -110,7 +112,24 @@ class ManageResourcesPresenter
 	 */
 	public function ChangeSettings()
 	{
+	
+	}
+	
+	public function ChangeImage()
+	{
+		if (!extension_loaded('gd')) 
+		{
+			return 'gd extension is required for image upload';
+		}
+			
+		// this whole thing should be behing a service or something
 		
+		$image = new SimpleImage();
+		$uploadedImageName = $this->page->GetUploadedImageName();
+      	$image->load($uploadedImageName);
+      	$image->resizeToWidth(150);
+      	
+      	$image->save('../../Web/uploads/images/picture3.jpg');
 	}
 	
 	private function ActionIsKnown($action)
