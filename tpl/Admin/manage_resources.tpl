@@ -19,7 +19,7 @@
 					<h4>{$resource->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">Rename</a>
 				</li>
 				<li>
-					Appears on {$Schedules[$resource->GetScheduleId()]} <a class="update" href="javascript: void(0);">Move</a>
+					Appears on {$Schedules[$resource->GetScheduleId()]} <a class="update changeScheduleButton" href="javascript: void(0);">Move</a>
 				</li>
 				<li>
 				 	Located at 
@@ -47,13 +47,13 @@
 					<a class="update descriptionButton" href="javascript: void(0);">Edit</a>
 				</li>
 				<li>
-				Notes
+					Notes
 					{if $resource->HasNotes()}
 						 {$resource->GetNotes()|truncate:500:"..."} 
 					{else}
 						<span class="note">(no notes)</span>
 					{/if}
-					<a class="update" href="javascript: void(0);">Edit</a>
+					<a class="update notesButton" href="javascript: void(0);">Edit</a>
 				</li>
 			</ul>
 		</div>
@@ -178,22 +178,59 @@
 
 <div id="renameDialog" class="dialog" style="display:none;">
 	<form id="renameForm" method="post">
-		New Name: <input type="text" class="textbox required" {formname key=RESOURCE_NAME} /><br/><br/>
+		New Name: <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=RESOURCE_NAME} />
+		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
 		
 	</form>
 </div>
 
-<div id="changeDescription" class="dialog" style="display:none;">
-	<form id="descriptionForm" method="post">
-		Description:<br/>
-		<textarea id="editDescription" type="text" class="textbox" style="width:400px;height:200px;" {formname key=RESOURCE_DESCRIPTION}></textarea><br/><br/>
+<div id="scheduleDialog" class="dialog" style="display:none;">
+	<form id="scheduleForm" method="post">
+		Move to schedule:
+		<select id="editSchedule" class="textbox" {formname key=SCHEDULE_ID}>
+			{foreach from=$Schedules item=scheduleName key=scheduleId}
+				<option value="{$scheduleId}">{$scheduleName}</option>
+			{/foreach}
+		</select>
+		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
 	</form>
 </div>
 
+<div id="locationDialog" class="dialog" style="display:none;">
+	<form id="locationForm" method="post">
+		Location:<br/>
+		<input id="editLocation" type="text" class="textbox" maxlength="85" style="width:250px" {formname key=RESOURCE_LOCATION} /><br/>
+		Contact Info:<br/>
+		<input id="editContact" type="text" class="textbox" maxlength="85" style="width:250px" {formname key=RESOURCE_CONTACT} />
+		<br/><br/>
+		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+	</form>
+</div>
+
+<div id="descriptionDialog" class="dialog" style="display:none;">
+	<form id="descriptionForm" method="post">
+		Description:<br/>
+		<textarea id="editDescription" class="textbox" style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
+		<br/><br/>
+		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+	</form>
+</div>
+
+<div id="notesDialog" class="dialog" style="display:none;">
+	<form id="notesForm" method="post">
+		Notes:<br/>
+		<textarea id="editNotes" class="textbox" style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
+		<br/><br/>
+		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+	</form>
+</div>
 
 <div id="changeSettingsDialog" class="dialog" style="display:none;">
 	<form id="settingsForm" method="post">
@@ -252,12 +289,18 @@
 
 $(document).ready(function() {
 
+	var actions = {
+		rename: '{ManageResourcesActions::ActionRename}',		
+		changeSchedule: '{ManageResourcesActions::ActionChangeSchedule}',
+		changeLocation: '{ManageResourcesActions::ActionChangeLocation}',
+		changeDescription: '{ManageResourcesActions::ActionChangeDescription}',
+		changeNotes: '{ManageResourcesActions::ActionChangeNotes}'
+	};
+	
 	var opts = {
 			submitUrl: '{$smarty.server.SCRIPT_NAME}',
 			saveRedirect: '{$smarty.server.SCRIPT_NAME}',
-			
-			renameAction: '{ManageResourcesActions::ActionRename}',		
-			changeDescriptionAction: '{ManageResourcesActions::ActionChangeDescription}'
+			actions: actions
 	};
 
 	var resourceManagement = new ResourceManagement(opts);
@@ -266,7 +309,7 @@ $(document).ready(function() {
 	{foreach $Resources item=resource}
 		var resource = {
 			id: '{$resource->GetResourceId()}',
-			name: "{$resource->GetName()}|escape:'javascript'",
+			name: "{$resource->GetName()|escape:'javascript'}",
 			location: "{$resource->GetLocation()|escape:'javascript'}",
 			contact: "{$resource->GetContact()|escape:'javascript'}",
 			description: "{$resource->GetDescription()|escape:'javascript'}",
@@ -276,7 +319,8 @@ $(document).ready(function() {
 			autoAssign: '{$resource->GetAutoAssign()}',
 			requiresApproval: '{$resource->GetRequiresApproval()}',
 			allowMultiday: '{$resource->GetAllowMultiday()}',
-			maxParticipants: '{$resource->GetMaxParticipants()}'
+			maxParticipants: '{$resource->GetMaxParticipants()}',
+			scheduleId: '{$resource->GetScheduleId()}'
 		};
 	
 		resourceManagement.add(resource);

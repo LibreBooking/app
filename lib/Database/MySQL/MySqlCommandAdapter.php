@@ -30,8 +30,15 @@ class MySqlCommandAdapter
 		{
 			$curParam = $command->Parameters->Items($p);
 			
-			$escapedValue = mysql_real_escape_string($curParam->Value);
-			$query = str_replace($curParam->Name, "'$escapedValue'", $query);
+			if (is_null($curParam->Value))
+			{
+				$query = str_replace($curParam->Name, 'null', $query);
+			}
+			else
+			{
+				$escapedValue = mysql_real_escape_string($curParam->Value);
+				$query = str_replace($curParam->Name, "'$escapedValue'", $query);
+			}
 		}
 		
 		$this->_query = $query . ';';

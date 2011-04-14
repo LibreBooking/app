@@ -532,6 +532,34 @@ class Queries
 		WHERE
 			series_id = @seriesid';
 	
+	const UPDATE_RESOURCE = 
+		'UPDATE
+			resources
+		SET
+			name = @resource_name,
+			location = @location,
+			contact_info = @contact_info,
+			description = @description,
+			notes = @resource_notes,
+			min_duration = @min_duration,
+			max_duration = @max_duration,
+			autoassign = @autoassign,
+			requires_approval = @requires_approval,
+			allow_multiday_reservations = @allow_multiday_reservations,
+			max_participants = @max_participants,
+			min_notice_time = @min_notice_time,
+			max_notice_time = @max_notice_time
+		WHERE
+			resource_id = @resourceid';
+	
+	const UPDATE_RESOURCE_SCHEDULE = 
+		'UPDATE
+			resource_schedules
+		SET
+			schedule_id = @scheduleid
+		WHERE
+			resource_id = @resourceid';
+	
 	const UPDATE_SCHEDULE =
 		'UPDATE
 			schedules

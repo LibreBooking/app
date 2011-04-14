@@ -60,6 +60,8 @@ class MySqlConnection implements IDbConnection
 	public function Execute(ISqlCommand $sqlCommand) 
 	{
 		$mysqlCommand = new MySqlCommandAdapter($sqlCommand);
+		
+		//die($mysqlCommand->GetQuery());
 		$result = mysql_query($mysqlCommand->GetQuery());
 		
 		$this->_handleError($result);

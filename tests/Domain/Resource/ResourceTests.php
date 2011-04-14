@@ -121,6 +121,68 @@ class ResourceTests extends TestBase
 		
 		$this->assertEquals(0, count($actual));
 	}
+	
+	public function testCanUpdateResource()
+	{
+		$id = 8383;
+		$name = "name";
+		$location = "location";
+		$contact = "contact";
+		$notes = "notes"; 
+		$minLength = "2:30"; 
+		$maxLength = "4:30";
+		$autoAssign = 1;
+		$requiresApproval = 0;
+		$allowMultiday = 1;
+		$maxParticipants = 100;
+		$minNotice = "10:15";
+		$maxNotice= "15:15";
+		$description = "description";
+		$scheduleId = 19819;
+								
+		$resource = new Resource($id, 
+								$name, 
+								$location, 
+								$contact, 
+								$notes, 
+								$minLength, 
+								$maxLength, 
+								$autoAssign, 
+								$requiresApproval, 
+								$allowMultiday,
+								$maxParticipants,
+								$minNotice,
+								$maxNotice,
+								$description,
+								$scheduleId);
+		
+		$resourceRepository = new ResourceRepository();
+		$resourceRepository->Update($resource);
+		
+		$expectedUpdateResourceCommand = new UpdateResourceCommand(
+								$id, 
+								$name, 
+								$location, 
+								$contact, 
+								$notes, 
+								Time::Parse($minLength), 
+								Time::Parse($maxLength), 
+								$autoAssign, 
+								$requiresApproval, 
+								$allowMultiday,
+								$maxParticipants,
+								Time::Parse($minNotice),
+								Time::Parse($maxNotice),
+								$description);
+								
+		$expectedUpdateScheduleCommand = new UpdateResourceScheduleCommand($id, $scheduleId);
+								
+		$actualUpdateResourceCommand = $this->db->_Commands[0];
+		$actualUpdateScheduleCommand = $this->db->_Commands[1];
+		
+		$this->assertEquals($expectedUpdateResourceCommand, $actualUpdateResourceCommand);
+		$this->assertEquals($expectedUpdateScheduleCommand, $actualUpdateScheduleCommand);
+	}
 }
 
 ?>

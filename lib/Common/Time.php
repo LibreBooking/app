@@ -90,37 +90,6 @@ class Time
 		return $this->GetDate()->Compare($time->GetDate());
 	}
 	
-	/**
-	 * Compares this time to the one passed in
-	 * @param Time $time
-	 * @return bool if the current object is greater than the one passed in
-	 */
-//	public function GreaterThan(Time $time, Date $comparisonDate = null)
-//	{
-//		return $this->Compare($time, $comparisonDate) > 0;
-//	}
-	
-	/**
-	 * Compares this time to the one passed in
-	 * @param Time $time
-	 * @return bool if the current object is less than the one passed in
-	 */
-//	public function LessThan(Time $time, Date $comparisonDate = null)
-//	{
-//		return $this->Compare($time, $comparisonDate) < 0;
-//	}
-	
-	/**
-	 * Compare the 2 times
-	 *
-	 * @param Time $time
-	 * @return bool
-	 */
-//	public function Equals(Time $time, Date $comparisonDate = null)
-//	{
-//		return $this->Compare($time, $comparisonDate) == 0;
-//	}
-	
 	public function ToString()
 	{
 		return sprintf("%d:%02d:%02d", $this->_hour, $this->_minute, $this->_second);
@@ -130,5 +99,18 @@ class Time
 	{
       return $this->ToString();
   	}
+}
+
+class NullTime extends Time
+{
+	public function __construct()
+	{
+		parent::__construct(0, 0, 0, null);
+	}
+	
+	public function ToDatabase()
+	{
+		return null;
+	}
 }
 ?>

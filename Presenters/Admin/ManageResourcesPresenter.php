@@ -7,6 +7,9 @@ class ManageResourcesActions
 {
 	const ActionAdd = 'add';
 	const ActionChangeDescription = 'description';
+	const ActionChangeLocation = 'location';
+	const ActionChangeNotes = 'notes';
+	const ActionChangeSchedule = 'schedule';
 	const ActionRename = 'rename';
 }
 
@@ -36,7 +39,10 @@ class ManageResourcesPresenter
 		$this->scheduleRepository = $scheduleRepository;
 		
 		$this->actions[ManageResourcesActions::ActionAdd] = 'Add';
-
+		$this->actions[ManageResourcesActions::ActionChangeDescription] = 'ChangeDescription';
+		$this->actions[ManageResourcesActions::ActionChangeLocation] = 'ChangeLocation';
+		$this->actions[ManageResourcesActions::ActionChangeNotes] = 'ChangeNotes';
+		$this->actions[ManageResourcesActions::ActionChangeSchedule] = 'ChangeSchedule';
 		$this->actions[ManageResourcesActions::ActionRename] = 'Rename';
 	}
 	
@@ -64,7 +70,14 @@ class ManageResourcesPresenter
 		if ($this->ActionIsKnown($action))
 		{
 			$method = $this->actions[$action];
-			$this->$method();
+			try 
+			{
+				$this->$method();
+			}
+			catch(Exception $ex)
+			{
+				Log::Error("Error managing resources. Action %s, Error %s", $action, $ex);
+			}
 		}
 		else 
 		{
@@ -77,14 +90,7 @@ class ManageResourcesPresenter
 	 */
 	public function Add()
 	{
-		$copyLayoutFromScheduleId = $this->page->GetSourceScheduleId();
-		$name = $this->page->GetScheduleName();
-		$weekdayStart = $this->page->GetStartDay();
-		$daysVisible = $this->page->GetDaysVisible();
 		
-		$schedule = new Schedule(null, $name, false, $weekdayStart, $daysVisible);
-		
-		$this->scheduleRepository->Add($schedule, $copyLayoutFromScheduleId);
 	}
 	
 	/**
@@ -92,7 +98,11 @@ class ManageResourcesPresenter
 	 */
 	public function Rename()
 	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 		
+		$resource->SetName($this->page->GetResourceName());
+		
+		$this->resourceRepository->Update($resource);
 	}
 	
 	/**

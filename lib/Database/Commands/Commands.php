@@ -569,6 +569,53 @@ class UpdateReservationSeriesCommand extends SqlCommand
 	}
 }
 
+class UpdateResourceCommand extends SqlCommand
+{
+	public function __construct($id, 
+								$name, 
+								$location, 
+								$contact, 
+								$notes, 
+								Time $minDuration, 
+								Time $maxDuration, 
+								$autoAssign, 
+								$requiresApproval, 
+								$allowMultiday,
+								$maxParticipants,
+								Time $minNoticeTime,
+								Time $maxNoticeTime,
+								$description)
+	{
+		parent::__construct(Queries::UPDATE_RESOURCE);
+		
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $id));	
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NAME, $name));	
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LOCATION, $location));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_CONTACT, $contact));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_DESCRIPTION, $description));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NOTES, $notes));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINDURATION, $minDuration->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXDURATION, $maxDuration->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_AUTOASSIGN, $autoAssign));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_REQUIRES_APPROVAL, $requiresApproval));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_MULTIDAY, $allowMultiday));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $maxParticipants));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $minNoticeTime->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $maxNoticeTime->ToDatabase()));
+	}
+}
+
+class UpdateResourceScheduleCommand extends SqlCommand
+{
+	public function __construct($id, $scheduleId)
+	{
+		parent::__construct(Queries::UPDATE_RESOURCE_SCHEDULE);
+		
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $id));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));	
+	}
+}
+
 class UpdateScheduleCommand extends SqlCommand
 {
 	public function __construct($scheduleId,

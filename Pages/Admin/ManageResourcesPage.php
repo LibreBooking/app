@@ -8,7 +8,7 @@ interface IUpdateResourcePage
 	/**
 	 * @return int
 	 */
-	function GeResourceId();
+	function GetResourceId();
 	
 	/**
 	 * @return string
@@ -17,7 +17,7 @@ interface IUpdateResourcePage
 }
 
 
-interface IManageResourcesPage// extends IUpdateResourcePage
+interface IManageResourcesPage extends IUpdateResourcePage
 {
 	/**
 	 * @param Resource[] $resources
@@ -62,6 +62,16 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 	public function ProcessAction()
 	{
 		$this->_presenter->ProcessAction();
+	}
+	
+	public function GetResourceId()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+	
+	public function GetResourceName()
+	{
+		return $this->server->GetForm(FormKeys::RESOURCE_NAME);
 	}
 }
 

@@ -6,10 +6,16 @@ function ResourceManagement(opts)
 		activeId: $('#activeId'),
 			
 		renameDialog: $('#renameDialog'),
-		descriptionDialog: $('#changeDescription'),
+		scheduleDialog: $('#scheduleDialog'),
+		locationDialog: $('#locationDialog'),
+		descriptionDialog: $('#descriptionDialog'),
+		notesDialog: $('#notesDialog'),
 		
 		renameForm: $('#renameForm'),
+		scheduleForm: $('#scheduleForm'),
+		locationForm: $('#locationForm'),
 		descriptionForm: $('#descriptionForm'),
+		notesForm: $('#notesForm'),
 		
 		addForm: $('#addScheduleForm')
 	};
@@ -19,7 +25,10 @@ function ResourceManagement(opts)
 	ResourceManagement.prototype.init = function()
 	{
 		ConfigureAdminDialog(elements.renameDialog, 'Rename Resource', 300, 125);
-		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 325);
+		ConfigureAdminDialog(elements.scheduleDialog, 'Change Schedule', 300, 125);
+		ConfigureAdminDialog(elements.locationDialog, 'Change Location', 300, 160);
+		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 260);
+		ConfigureAdminDialog(elements.notesDialog, 'Change Notes', 500, 260);
 		    
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -33,20 +42,31 @@ function ResourceManagement(opts)
 				return false;
 			});
 			
+			$(this).find('.changeScheduleButton').click(function(e) {
+				showScheduleMove(e);
+				return false;
+			});
+			
+			$(this).find('.changeLocationButton').click(function(e) {
+				showChangeLocation(e);
+				return false;
+			});
+			
 			$(this).find('.descriptionButton').click(function(e) {
 				showChangeDescription(e);
 				return false;
 			});
 			
-			$(this).find('.changeButton').click(function(e) {
-				showChangeSettings(e, daysVisible, dayOfWeek);
+			$(this).find('.notesButton').click(function(e) {
+				showChangeNotes(e);
 				return false;
 			});
+			
 
-			$(this).find('.makeDefaultButton').click(function(e) {
-				elements.makeDefaultForm.submit();
-				$(this).after($('.indicator'));
-			});
+//			$(this).find('.makeDefaultButton').click(function(e) {
+//				elements.makeDefaultForm.submit();
+//				$(this).after($('.indicator'));
+//			});
 		});
 
 		$(".save").click(function() {
@@ -57,8 +77,11 @@ function ResourceManagement(opts)
 			$(this).closest('.dialog').dialog("close");
 		});
 
-		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.renameAction));
-		ConfigureAdminForm(elements.descriptionForm, getSubmitCallback(options.changeDescriptionAction));
+		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.actions.rename), null, function(x){alert(x);});
+		ConfigureAdminForm(elements.scheduleForm, getSubmitCallback(options.actions.changeSchedule));
+		ConfigureAdminForm(elements.locationForm, getSubmitCallback(options.actions.changeLocation));
+		ConfigureAdminForm(elements.descriptionForm, getSubmitCallback(options.actions.changeDescription));
+		ConfigureAdminForm(elements.notesForm, getSubmitCallback(options.actions.changeNotes));
 	};
 
 	ResourceManagement.prototype.add = function(resource)
@@ -90,15 +113,34 @@ function ResourceManagement(opts)
 	
 	var showRename = function(e)
 	{
-		elements.renameDialog.dialog("option", "position", [e.pageX, e.pageY]);
+		$('#editName').val(getActiveResource().name);
+//		elements.renameDialog.dialog("option", "position", [e.pageX, e.pageY]);
 		elements.renameDialog.dialog("open");
+	};
+	
+	var showScheduleMove = function(e)
+	{
+		$('#editSchedule').val(getActiveResource().scheduleId);
+		elements.scheduleDialog.dialog("open");
+	};
+	
+	var showChangeLocation = function(e)
+	{
+		$('#editLocation').val(getActiveResource().location);
+		$('#editContact').val(getActiveResource().contact);
+		elements.locationDialog.dialog("open");
 	};
 	
 	var showChangeDescription = function(e)
 	{
 		$('#editDescription').val(getActiveResource().description);
-		elements.descriptionDialog.dialog("option", "position", [e.pageX, e.pageY]);
 		elements.descriptionDialog.dialog("open");
+	};
+	
+	var showChangeNotes = function(e)
+	{
+		$('#editNotes').val(getActiveResource().notes);
+		elements.notesDialog.dialog("open");
 	};
 	
 	var showChangeConfiguration = function(e, daysVisible, dayOfWeek)

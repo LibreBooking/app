@@ -167,11 +167,21 @@ class Resource implements IResource
 		return !empty($this->_description);
 	}
 	
+	/**
+	 * @return Time
+	 */
 	public function GetMinLength()
 	{
-		return $this->_minLength;
+		if ($this->HasMinLength())
+		{
+			return Time::Parse($this->_minLength);
+		}
+		return new NullTime();
 	}
 	
+	/**
+	 * @param string $value
+	 */
 	public function SetMinLength($value)
 	{
 		$this->_minLength = $value;
@@ -179,14 +189,24 @@ class Resource implements IResource
 	
 	public function HasMinLength()
 	{
-		return !empty($tihs->_minLength);
+		return !empty($this->_minLength);
 	}
 	
+	/**
+	 * @return Time
+	 */
 	public function GetMaxLength()
 	{
-		return $this->_maxLength;
+		if ($this->HasMaxLength())
+		{
+			return Time::Parse($this->_maxLength);
+		}
+		return new NullTime();
 	}
 	
+	/**
+	 * @param string $value
+	 */
 	public function SetMaxLength($value)
 	{
 		$this->_maxLength = $value;
@@ -194,7 +214,7 @@ class Resource implements IResource
 	
 	public function HasMaxLength()
 	{
-		return !empty($tihs->_maxLength);
+		return !empty($this->_maxLength);
 	}
 	
 	public function GetAutoAssign()
@@ -232,6 +252,9 @@ class Resource implements IResource
 		return $this->_maxParticipants;
 	}
 	
+	/**
+	 * @param string $value
+	 */
 	public function SetMaxParticipants($value)
 	{
 		$this->_maxParticipants = $value;
@@ -242,11 +265,21 @@ class Resource implements IResource
 		return !empty($this->_maxParticipants);
 	}
 	
+	/**
+	 * @return Time
+	 */
 	public function GetMinNotice()
 	{
-		return $this->_minNotice;
+		if ($this->HasMinNotice())
+		{
+			return Time::Parse($this->_minNotice);
+		}
+		return new NullTime();
 	}
 	
+	/**
+	 * @param string $value
+	 */
 	public function SetMinNotice($value)
 	{
 		$this->_minNotice = $value;
@@ -257,11 +290,21 @@ class Resource implements IResource
 		return !empty($this->_minNotice);
 	}
 	
+	/**
+	 * @return Time
+	 */
 	public function GetMaxNotice()
 	{
-		return $this->_maxNotice;
+		if ($this->HasMaxNotice())
+		{
+			return Time::Parse($this->_maxNotice);
+		}
+		return new NullTime();
 	}
 	
+	/**
+	 * @param string $value
+	 */
 	public function SetMaxNotice($value)
 	{
 		$this->_maxNotice = $value;
@@ -272,6 +315,9 @@ class Resource implements IResource
 		return !empty($this->_maxNotice);
 	}
 	
+	/**
+	 * @return int
+	 */
 	public function GetScheduleId()
 	{
 		return $this->_scheduleId;

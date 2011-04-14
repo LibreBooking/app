@@ -221,6 +221,8 @@ class ScheduleRepository implements IScheduleRepository
 		}
 		
 		$db->Execute(new UpdateScheduleLayoutCommand($scheduleId, $layoutId));
+		
+		//TODO: Delete old layout?
 	}
 }
 

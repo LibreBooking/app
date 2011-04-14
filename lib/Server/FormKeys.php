@@ -69,9 +69,12 @@ class FormKeys
 	const RESERVATION_ID = 'reservationId';
 	const RESERVATION_TITLE = 'reservationTitle';	
 	const RESOURCE = 'resource';
-	const RESOURCE_ID = 'resourceId';
-	const RESOURCE_NAME = 'resourceName';	
+	const RESOURCE_CONTACT = 'resourceContact';
 	const RESOURCE_DESCRIPTION = 'resourceDescription';
+	const RESOURCE_ID = 'resourceId';
+	const RESOURCE_LOCATION = 'resourceLocation';
+	const RESOURCE_NAME = 'resourceName';	
+	const RESOURCE_NOTES = 'resourceNotes';	
 	const RESUME = 'resume';
 	const RETURN_URL = 'returnUrl';
 	
