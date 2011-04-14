@@ -86,8 +86,9 @@ function ResourceManagement(opts)
 		});
 
 		var imageSaveErrorHandler = function(result) { alert(result); };
+		var imageSavePreSubmit = function() { showIndicator(elements.imageForm); };
 		
-		ConfigureAdminForm(elements.imageForm, getSubmitCallback(options.actions.changeImage), null, imageSaveErrorHandler);
+		ConfigureUploadForm(elements.imageForm.find('.async'), getSubmitCallback(options.actions.changeImage), imageSavePreSubmit, null, imageSaveErrorHandler);
 		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.actions.rename), null, function(x){alert(x);});
 		ConfigureAdminForm(elements.scheduleForm, getSubmitCallback(options.actions.changeSchedule));
 		ConfigureAdminForm(elements.locationForm, getSubmitCallback(options.actions.changeLocation));
@@ -125,7 +126,7 @@ function ResourceManagement(opts)
 	var showChangeImage = function(e)
 	{
 		elements.imageDialog.dialog("open");
-	}
+	};
 	
 	var showRename = function(e)
 	{
@@ -166,5 +167,12 @@ function ResourceManagement(opts)
 		
 		elements.changeSettingsDialog.dialog("option", "position", [e.pageX, e.pageY]);
 		elements.changeSettingsDialog.dialog("open");
+	};
+	
+	var showIndicator = function(formElement)
+	{
+		formElement.find('button').hide();
+		formElement.append($('.indicator'));
+		formElement.find('.indicator').show();
 	};
 }

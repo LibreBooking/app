@@ -179,12 +179,15 @@
 
 <div id="imageDialog" class="dialog" style="display:none;">
 	<form id="imageForm" method="post" enctype="multipart/form-data">
-      <input type="file" name="uploaded_image" />
+      <input id="resourceImage" type="file" class="text" size="60" name="uploaded_image" />
+      <br/>
+      <span class="note">Only .gif, .jpg, or .png</span>
       <br/><br/>
-      <button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
+      <button type="button" class="button async">{html_image src="disk-black.png"} Update</button>
 	  <button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
   	</form>
 </div>
+<iframe style="display:none" id="blah"></iframe>
 <div id="renameDialog" class="dialog" style="display:none;">
 	<form id="renameForm" method="post">
 		New Name: <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=RESOURCE_NAME} />
@@ -292,6 +295,7 @@
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/resource.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/ajaxfileupload.js"></script>
 
 <script type="text/javascript">
 

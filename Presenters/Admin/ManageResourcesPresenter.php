@@ -119,7 +119,7 @@ class ManageResourcesPresenter
 	{
 		if (!extension_loaded('gd')) 
 		{
-			return 'gd extension is required for image upload';
+			die('gd extension is required for image upload');
 		}
 			
 		// this whole thing should be behing a service or something
