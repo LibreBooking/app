@@ -1,5 +1,5 @@
 .admin {
-	width: 75%;
+	width: 100%;
 }
 
 .admin ul {
@@ -84,4 +84,21 @@ span.error {
 
 .resourceDetails img.image {
 	width: 100px;
+}
+
+.admin table {
+	border-collapse: collapse;
+}
+
+.admin th, .admin td {
+	padding: 5px;
+}
+
+.admin th {
+	padding-bottom: 2px;
+}
+
+.admin th {
+	text-align:left;
+	font-size:14px;
 }

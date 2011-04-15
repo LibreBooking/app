@@ -12,7 +12,7 @@
 	{foreach $Resources item=resource}
 	{assign var=id value=$resource->GetResourceId()}
 	<div class="resourceDetails">
-		<div style="float:left;width:40%;">
+		<div style="float:left;max-width:50%;">
 			<input type="hidden" class="id" value="{$id}" />
 			<div style="float:left; text-align:center; width:110px;;">
 				{if $resource->HasImage()}
@@ -155,30 +155,28 @@
 		Add New Resource
 	</div>
 	<div>
-		<div id="addScheduleResults" class="error" style="display:none;"></div>
-		<form id="addScheduleForm" method="post">
-			<ul>
-				<li>Name<br/> <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /></li>
-				<li>Starts On<br/> 
-				<select {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
-					{foreach from=$DayNames item="dayName" key="dayIndex"}
-						<option value="{$dayIndex}">{$dayName}</option>
-					{/foreach} 
-				</select>
-				</li>
-				<li>Number of Days Visible<br/><input type="text" class="textbox required" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
-				</li>
-				<li>Use Same Layout As<br/>
-					<select class="textbox" {formname key=SCHEDULE_ID}>
-					{foreach $Schedules key=scheduleId item=scheduleName}
-						<option value="{$scheduleId}">{$scheduleName}</option>
-					{/foreach}
+		<div id="addResourceResults" class="error" style="display:none;"></div>
+		<form id="addResourceForm" method="post">
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Schedule</th>
+					<th>&nbsp;</th>
+				</tr>
+				<tr>
+					<td><input type="text" class="textbox required"  maxlength="85" style="width:250px" {formname key=RESOURCE_NAME} /></td>
+					<td>
+						<select class="textbox" {formname key=SCHEDULE_ID}>
+						{foreach from=$Schedules item=scheduleName key=scheduleId}
+							<option value="{$scheduleId}">{$scheduleName}</option>
+						{/foreach}
 					</select>
-				</li>
-				<li>
-					<button type="button" class="button save">{html_image src="disk-black.png"} Add Schedule</button>
-				</li>
-			</ul>
+					</td>
+					<td>
+						<button type="button" class="button save">{html_image src="disk-black.png"} Add Resource</button>
+					</td>
+				</tr>
+			</table>
 		</form>
 	</div>
 </div>
@@ -258,54 +256,6 @@
 	</form>
 </div>
 
-<div id="changeSettingsDialog" class="dialog" style="display:none;">
-	<form id="settingsForm" method="post">
-		Starts On: <select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
-			{foreach from=$DayNames item="dayName" key="dayIndex"}
-				<option value="{$dayIndex}">{$dayName}</option>
-			{/foreach} 
-		</select>
-		<br/>
-		Number of Days Visible: <input type="text" class="textbox required" id="daysVisible" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
-	</form>
-</div>
-
-<div id="changeLayoutDialog" class="dialog" style="display:none;">
-	<form id="changeLayoutForm" method="post">		
-		<div style="float:left;">
-			<h5>Reservable Time Slots</h5>
-			<textarea id="reservableEdit" {formname key=SLOTS_RESERVABLE}></textarea>
-		</div>
-		<div style="float:right;">
-			<h5>Blocked Time Slots</h5>
-			<textarea id="blockedEdit" {formname key=SLOTS_BLOCKED}></textarea>
-		</div>
-		<div style="clear:both;height:0px;">&nbsp</div>
-		<div style="margin-top:5px;">
-			<h5>
-				{translate key=Timezone} 
-				<select {formname key=TIMEZONE} id="layoutTimezone" class="input">
-		        	{html_options values=$TimezoneValues output=$TimezoneOutput}
-		        </select>
-	        </h5>
-		</div>
-		<div style="margin-top: 5px; padding-top:5px; border-top: solid 1px #f0f0f0;">
-			<div style="float:left;">
-				<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
-			</div>
-			<div style="float:right;">
-				<p>Format: <span style="font-family:courier new;">HH:MM - HH:MM Optional Label</span></p>
-				<p>Enter one slot per line.  Slots must be provided for all 24 hours of the day.</p>
-			</div>
-		</div>
-	</form>
-	<div id="layoutResults"></div>
-</div>
-
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/resource.js"></script>
@@ -323,7 +273,8 @@ $(document).ready(function() {
 		changeSchedule: '{ManageResourcesActions::ActionChangeSchedule}',
 		changeLocation: '{ManageResourcesActions::ActionChangeLocation}',
 		changeDescription: '{ManageResourcesActions::ActionChangeDescription}',
-		changeNotes: '{ManageResourcesActions::ActionChangeNotes}'
+		changeNotes: '{ManageResourcesActions::ActionChangeNotes}',
+		add: '{ManageResourcesActions::ActionAdd}'
 	};
 	
 	var opts = {
@@ -354,10 +305,8 @@ $(document).ready(function() {
 	
 		resourceManagement.add(resource);
 	{/foreach}
-	
 });
 
 </script>
-
 
 {include file='globalfooter.tpl'}

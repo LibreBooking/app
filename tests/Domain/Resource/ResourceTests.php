@@ -182,6 +182,26 @@ class ResourceTests extends TestBase
 		$this->assertEquals($expectedUpdateResourceCommand, $actualUpdateResourceCommand);
 		$this->assertEquals($expectedUpdateScheduleCommand, $actualUpdateScheduleCommand);
 	}
+	
+	public function testCanAddResourceWithMinimumAttributes()
+	{
+		$name = "name";
+		$scheduleId = 828;
+		$resourceId = 8888;
+		
+		$resource = Resource::CreateNew($name, $scheduleId);
+		
+		$this->db->_ExpectedInsertId = $resourceId;
+		
+		$resourceRepository = new ResourceRepository();
+		$resourceRepository->Add($resource);
+		
+		$expectedAddCommand = new AddResourceCommand($name);
+		$expectedUpdateScheduleCommand = new AddResourceScheduleCommand($resourceId, $scheduleId);
+		
+		$actualAddResourceCommand = $this->db->_Commands[0];
+		$actualUpdateScheduleCommand = $this->db->_Commands[1];
+	}
 }
 
 ?>

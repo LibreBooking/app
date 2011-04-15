@@ -27,6 +27,11 @@ interface IResourceRepository
 	/**
 	 * @param Resource
 	 */
+	public function Add(Resource $resource);
+	
+	/**
+	 * @param Resource
+	 */
 	public function Update(Resource $resource);
 	
 	/**
@@ -137,6 +142,16 @@ class ResourceRepository implements IResourceRepository
 		$lastResourceId = ServiceLocator::GetDatabase()->ExecuteInsert($addResourceCommand);
 		
 		return $lastResourceId;
+	}
+	
+	public function Add(Resource $resource)
+	{
+		$db = ServiceLocator::GetDatabase();
+		$addResourceCommand = new AddResourceCommand($resource->GetName());
+		
+		$resourceId = $db->ExecuteInsert($addResourceCommand);
+	
+		$db->Execute(new AddResourceScheduleCommand($resourceId, $resource->GetScheduleId()));
 	}
 	
 	public function Update(Resource $resource)

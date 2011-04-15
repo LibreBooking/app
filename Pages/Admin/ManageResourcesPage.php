@@ -11,6 +11,11 @@ interface IUpdateResourcePage
 	function GetResourceId();
 	
 	/**
+	 * @return int
+	 */
+	function GetScheduleId();
+	
+	/**
 	 * @return string
 	 */
 	function GetResourceName();
@@ -75,6 +80,11 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 	public function GetResourceId()
 	{
 		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+	
+	public function GetScheduleId()
+	{
+		return $this->server->GetForm(FormKeys::SCHEDULE_ID);
 	}
 	
 	public function GetResourceName()

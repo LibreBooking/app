@@ -104,7 +104,11 @@ class ManageResourcesPresenter
 	 */
 	public function Add()
 	{
+		$name = $this->page->GetResourceName();
+		$scheduleId = $this->page->GetScheduleId();
 		
+		$resource = Resource::CreateNew($name, $scheduleId);
+		$this->resourceRepository->Add($resource);
 	}
 	
 	/**

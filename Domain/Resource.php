@@ -65,6 +65,25 @@ class Resource implements IResource
 		$this->SetScheduleId($scheduleId);
 	}
 	
+	public static function CreateNew($resourceName, $scheduleId)
+	{
+		return new Resource(null,
+							$resourceName,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							null,
+							$scheduleId);
+	}
+	
 	/**
 	 * @param array[string] $row
 	 * @return Resource

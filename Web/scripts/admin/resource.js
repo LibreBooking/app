@@ -19,14 +19,14 @@ function ResourceManagement(opts)
 		descriptionForm: $('#descriptionForm'),
 		notesForm: $('#notesForm'),
 		
-		addForm: $('#addScheduleForm')
+		addForm: $('#addResourceForm')
 	};
 	
 	var resources = new Object();
 	
 	ResourceManagement.prototype.init = function()
 	{
-		ConfigureAdminDialog(elements.renameDialog, 'Rename Resource', 300, 125);
+		ConfigureAdminDialog(elements.renameDialog, 'Rename Resource', 300, 135);
 		ConfigureAdminDialog(elements.imageDialog, 'Change Image', 500, 150);
 		ConfigureAdminDialog(elements.scheduleDialog, 'Change Schedule', 300, 125);
 		ConfigureAdminDialog(elements.locationDialog, 'Change Location', 300, 160);
@@ -100,6 +100,7 @@ function ResourceManagement(opts)
 		ConfigureAdminForm(elements.locationForm, getSubmitCallback(options.actions.changeLocation));
 		ConfigureAdminForm(elements.descriptionForm, getSubmitCallback(options.actions.changeDescription));
 		ConfigureAdminForm(elements.notesForm, getSubmitCallback(options.actions.changeNotes));
+		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add), null, handleAddError);
 		
 	};
 
@@ -180,5 +181,10 @@ function ResourceManagement(opts)
 		formElement.find('button').hide();
 		formElement.append($('.indicator'));
 		formElement.find('.indicator').show();
+	};
+	
+	var handleAddError = function(result)
+	{
+		$('#addResourceResults').text(result).show();
 	};
 }

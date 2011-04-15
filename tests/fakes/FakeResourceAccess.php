@@ -43,7 +43,10 @@ class FakeResourceAccess extends ResourceRepository
 					ColumnNames::RESOURCE_ALLOW_MULTIDAY => 0,
 					ColumnNames::RESOURCE_MAX_PARTICIPANTS => null,
 					ColumnNames::RESOURCE_MINNOTICE => null,
-					ColumnNames::RESOURCE_MAXNOTICE => null
+					ColumnNames::RESOURCE_MAXNOTICE => null,
+					ColumnNames::RESOURCE_DESCRIPTION => null,
+					ColumnNames::SCHEDULE_ID => 10,
+					ColumnNames::RESOURCE_IMAGE_NAME => null,
 					);
 					
 		$row2 =  array(ColumnNames::RESOURCE_ID => 2, 
@@ -58,7 +61,10 @@ class FakeResourceAccess extends ResourceRepository
 					ColumnNames::RESOURCE_ALLOW_MULTIDAY => 1,
 					ColumnNames::RESOURCE_MAX_PARTICIPANTS => 10,
 					ColumnNames::RESOURCE_MINNOTICE => 30,
-					ColumnNames::RESOURCE_MAXNOTICE => 400
+					ColumnNames::RESOURCE_MAXNOTICE => 400,
+					ColumnNames::RESOURCE_DESCRIPTION => null,
+					ColumnNames::SCHEDULE_ID => 11,
+					ColumnNames::RESOURCE_IMAGE_NAME => 'something.gif',
 					);	
 		
 		return array($row1, $row2);								

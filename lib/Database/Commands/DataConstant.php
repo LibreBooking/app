@@ -483,8 +483,12 @@ class Queries
 		VALUES
 			(@resource_name, @location, @contact_info, @description, @resource_notes, @isactive, @min_duration, @min_increment, 
 			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiday_reservations,
-		     @max_participants, @min_notice_time, @max_notice_time)
-		';
+		     @max_participants, @min_notice_time, @max_notice_time)';
+	
+	const ADD_RESOURCE_SCHEDULE = 
+		'INSERT INTO
+			resource_schedules (resource_id, schedule_id)
+			VALUES (@resourceid, @scheduleid)';
 	
 	const SET_DEFAULT_SCHEDULE = 
 		'UPDATE 
