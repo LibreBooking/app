@@ -1,7 +1,7 @@
 <?php 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-require_once(ROOT_DIR . 'lib/external/SimpleImage/SimpleImage.php');
+require_once(ROOT_DIR . 'lib/Graphics/namespace.php');
 
 class ManageResourcesActions
 {
@@ -11,6 +11,7 @@ class ManageResourcesActions
 	const ActionChangeLocation = 'location';
 	const ActionChangeNotes = 'notes';
 	const ActionChangeSchedule = 'schedule';
+	const ActionRemoveImage = 'removeImage';
 	const ActionRename = 'rename';
 }
 
@@ -31,13 +32,23 @@ class ManageResourcesPresenter
 	 */
 	private $scheduleRepository;
 	
+	/**
+	 * @var IImageFactory
+	 */
+	private $imageFactory;
+	
 	private $actions = array();
 	
-	public function __construct(IManageResourcesPage $page, IResourceRepository $resourceRepository, IScheduleRepository $scheduleRepository)
+	public function __construct(
+		IManageResourcesPage $page, 
+		IResourceRepository $resourceRepository, 
+		IScheduleRepository $scheduleRepository,
+		IImageFactory $imageFactory)
 	{
 		$this->page = $page;
 		$this->resourceRepository = $resourceRepository;
 		$this->scheduleRepository = $scheduleRepository;
+		$this->imageFactory = $imageFactory;
 		
 		$this->actions[ManageResourcesActions::ActionAdd] = 'Add';
 		$this->actions[ManageResourcesActions::ActionChangeDescription] = 'ChangeDescription';
@@ -45,6 +56,7 @@ class ManageResourcesPresenter
 		$this->actions[ManageResourcesActions::ActionChangeLocation] = 'ChangeLocation';
 		$this->actions[ManageResourcesActions::ActionChangeNotes] = 'ChangeNotes';
 		$this->actions[ManageResourcesActions::ActionChangeSchedule] = 'ChangeSchedule';
+		$this->actions[ManageResourcesActions::ActionRemoveImage] = 'RemoveImage';
 		$this->actions[ManageResourcesActions::ActionRename] = 'Rename';
 	}
 	
@@ -117,19 +129,44 @@ class ManageResourcesPresenter
 	
 	public function ChangeImage()
 	{
-		if (!extension_loaded('gd')) 
-		{
-			die('gd extension is required for image upload');
-		}
-			
-		// this whole thing should be behing a service or something
+		$uploadedImage = $this->page->GetUploadedImage();
 		
-		$image = new SimpleImage();
-		$uploadedImageName = $this->page->GetUploadedImageName();
-      	$image->load($uploadedImageName);
-      	$image->resizeToWidth(150);
-      	
-      	$image->save('../../Web/uploads/images/picture3.jpg');
+		if ($uploadedImage->IsError())
+		{
+			die("Image error: "  . $uploadedImage->Error());
+		}
+		
+		$fileType = strtolower($uploadedImage->Extension());
+		
+		$supportedTypes = array('jpeg', 'gif', 'png', 'jpg');
+		
+		if (!in_array($fileType, $supportedTypes))
+		{
+			die("Invalid image type: $fileType"); 
+		}
+		
+		$image = $this->imageFactory->Load($uploadedImage->TemporaryName());
+		$image->ResizeToWidth(300);
+	
+		$fileName = "resource{$this->page->GetResourceId()}.$fileType";
+		$path = ROOT_DIR . 'Web/' . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . "/$fileName";
+		$image->Save($path);
+		
+		$this->SaveResourceImage($fileName);
+	}
+	
+	public function RemoveImage()
+	{
+		$this->SaveResourceImage(null);
+	}
+	
+	private function SaveResourceImage($fileName)
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		
+		$resource->SetImage($fileName);
+		
+		$this->resourceRepository->Update($resource);
 	}
 	
 	private function ActionIsKnown($action)

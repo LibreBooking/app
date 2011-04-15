@@ -72,6 +72,7 @@ class FormKeys
 	const RESOURCE_CONTACT = 'resourceContact';
 	const RESOURCE_DESCRIPTION = 'resourceDescription';
 	const RESOURCE_ID = 'resourceId';
+	const RESOURCE_IMAGE = 'resourceImage';
 	const RESOURCE_LOCATION = 'resourceLocation';
 	const RESOURCE_NAME = 'resourceName';	
 	const RESOURCE_NOTES = 'resourceNotes';	

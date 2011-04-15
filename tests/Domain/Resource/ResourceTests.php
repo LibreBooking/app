@@ -18,10 +18,6 @@ class ResourceTests extends TestBase
 	
 	public function testCanGetAllResourcesForASchedule()
 	{
-//		$this->markTestIncomplete("need to decide what to do with this.  
-//			ideas: put into factory which knows how to create from db rows |
-//			create data access class for query |
-//			create data class for resource object");
 		$expected = array();
 		$scheduleId = 10;
 		
@@ -139,6 +135,7 @@ class ResourceTests extends TestBase
 		$maxNotice= "15:15";
 		$description = "description";
 		$scheduleId = 19819;
+		$imageName = 'something.png';
 								
 		$resource = new Resource($id, 
 								$name, 
@@ -155,6 +152,7 @@ class ResourceTests extends TestBase
 								$maxNotice,
 								$description,
 								$scheduleId);
+		$resource->SetImage($imageName);
 		
 		$resourceRepository = new ResourceRepository();
 		$resourceRepository->Update($resource);
@@ -173,7 +171,8 @@ class ResourceTests extends TestBase
 								$maxParticipants,
 								Time::Parse($minNotice),
 								Time::Parse($maxNotice),
-								$description);
+								$description,
+								$imageName);
 								
 		$expectedUpdateScheduleCommand = new UpdateResourceScheduleCommand($id, $scheduleId);
 								

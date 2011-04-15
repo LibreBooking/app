@@ -54,6 +54,7 @@
 						if (responseText.trim() != '' && responseHandler) 
 						{
 							form.find('.indicator').hide();
+							form.find('button').show();
 							responseHandler(responseText);
 						}
 						else
@@ -112,3 +113,14 @@
 		        
 		dialogElement.dialog(dialogOpts);
 	};
+	
+	function PerformAsyncAction(element, urlCallback, indicator)
+	{
+		if (indicator) {
+			indicator.show();
+		}
+		$.post(
+			urlCallback(), 
+			function(data) {window.location = window.location;}
+		);
+	}

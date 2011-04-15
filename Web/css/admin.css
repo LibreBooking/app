@@ -71,3 +71,17 @@ span.error {
 	border-bottom:solid 1px #f0f0f0;
 	background-color: #fcfcfc;
 }
+
+.noImage {
+	width: 98px; 
+	height: 60px; 
+	background-color: #f0f0f0; 
+	line-height: 60px; 
+	text-align:center;
+	color: #666;
+	border: solid 1px #ccc;
+}
+
+.resourceDetails img.image {
+	width: 100px;
+}

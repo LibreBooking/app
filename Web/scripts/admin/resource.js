@@ -35,6 +35,7 @@ function ResourceManagement(opts)
 		    
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
+			var indicator = $(this).find('.actionIndicator');
 			
 			$(this).find('a.update').click(function() {
 				setActiveResourceId(id);				
@@ -42,6 +43,11 @@ function ResourceManagement(opts)
 			
 			$(this).find('.imageButton').click(function(e) {
 				showChangeImage(e);
+				return false;
+			});
+			
+			$(this).find('.removeImageButton').click(function(e) {
+				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), indicator);
 				return false;
 			});
 			
@@ -94,6 +100,7 @@ function ResourceManagement(opts)
 		ConfigureAdminForm(elements.locationForm, getSubmitCallback(options.actions.changeLocation));
 		ConfigureAdminForm(elements.descriptionForm, getSubmitCallback(options.actions.changeDescription));
 		ConfigureAdminForm(elements.notesForm, getSubmitCallback(options.actions.changeNotes));
+		
 	};
 
 	ResourceManagement.prototype.add = function(resource)
@@ -104,7 +111,7 @@ function ResourceManagement(opts)
 	var getSubmitCallback = function(action)
 	{
 		return function() {
-			return options.submitUrl + "?sid=" + getActiveResourceId() + "&action=" + action;
+			return options.submitUrl + "?rid=" + getActiveResourceId() + "&action=" + action;
 		};
 	};
 	
@@ -131,7 +138,6 @@ function ResourceManagement(opts)
 	var showRename = function(e)
 	{
 		$('#editName').val(getActiveResource().name);
-//		elements.renameDialog.dialog("option", "position", [e.pageX, e.pageY]);
 		elements.renameDialog.dialog("open");
 	};
 	

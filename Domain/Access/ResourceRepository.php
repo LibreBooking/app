@@ -157,11 +157,14 @@ class ResourceRepository implements IResourceRepository
 								$resource->GetMaxParticipants(),
 								$resource->GetMinNotice(),
 								$resource->GetMaxNotice(),
-								$resource->GetDescription());
+								$resource->GetDescription(),
+								$resource->GetImage());
 								
 		$updateScheduleCommand = new UpdateResourceScheduleCommand(
 								$resource->GetResourceId(), 
 								$resource->GetScheduleId());
+		
+								
 		
 		$db->Execute($updateResourceCommand);
 		$db->Execute($updateScheduleCommand);

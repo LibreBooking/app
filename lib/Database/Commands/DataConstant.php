@@ -60,6 +60,7 @@ class ParameterNames
 	const RESOURCE_NOTES = '@resource_notes';
 	const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';
 	const RESOURCE_LEVEL_ID = "@resourceLevelId";
+	const RESOURCE_IMAGE_NAME = "@imageName";
 	
 	
 	const SALT = '@salt';
@@ -226,7 +227,7 @@ class Queries
 		FROM 
 			resources r
 		WHERE
-			r.isactive = 1';
+			r.resource_id = @resourceid';
 	
 	const GET_RESERVATION_BY_ID =
 		'SELECT
@@ -548,7 +549,8 @@ class Queries
 			allow_multiday_reservations = @allow_multiday_reservations,
 			max_participants = @max_participants,
 			min_notice_time = @min_notice_time,
-			max_notice_time = @max_notice_time
+			max_notice_time = @max_notice_time,
+			image_name = @imageName
 		WHERE
 			resource_id = @resourceid';
 	
@@ -696,6 +698,7 @@ class ColumnNames
 	const RESOURCE_MAX_PARTICIPANTS = 'max_participants';
 	const RESOURCE_MINNOTICE = 'min_notice_time';
 	const RESOURCE_MAXNOTICE = 'max_notice_time';
+	const RESOURCE_IMAGE_NAME = 'image_name';
 
 	// RESERVATION RESOURCES
 	const RESOURCE_LEVEL_ID = 'resource_level_id';

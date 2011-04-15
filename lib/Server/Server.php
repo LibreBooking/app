@@ -48,7 +48,16 @@ class Server
 	{
 		if (isset($_POST[$name]))
 		{
-			return $_POST[$name];
+			return htmlentities($_POST[$name]);
+		}
+		return null;
+	}
+	
+	public function GetFile($name)
+	{
+		if (isset($_FILES[$name]))
+		{
+			return new UploadedFile($_FILES[$name]);
 		}
 		return null;
 	}

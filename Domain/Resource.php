@@ -30,6 +30,7 @@ class Resource implements IResource
 	private $_minNotice;
 	private $_maxNotice;
 	private $_scheduleId;
+	private $_imageName;
 	
 	public function __construct($resourceId,
 								$name,
@@ -70,7 +71,7 @@ class Resource implements IResource
 	 */
 	public static function Create($row)
 	{
-		return new Resource($row[ColumnNames::RESOURCE_ID],
+		$resource = new Resource($row[ColumnNames::RESOURCE_ID],
 							$row[ColumnNames::RESOURCE_NAME],
 							$row[ColumnNames::RESOURCE_LOCATION],
 							$row[ColumnNames::RESOURCE_CONTACT],
@@ -85,6 +86,9 @@ class Resource implements IResource
 							$row[ColumnNames::RESOURCE_MAXNOTICE],
 							$row[ColumnNames::RESOURCE_DESCRIPTION],
 							$row[ColumnNames::SCHEDULE_ID]);
+							
+		$resource->SetImage($row[ColumnNames::RESOURCE_IMAGE_NAME]);
+		return $resource;
 	}
 	
 	public function GetResourceId()
@@ -326,6 +330,21 @@ class Resource implements IResource
 	public function SetScheduleId($value)
 	{
 		$this->_scheduleId = $value;
+	}
+	
+	public function GetImage()
+	{
+		return $this->_imageName;
+	}
+
+	public function SetImage($value)
+	{
+		$this->_imageName = $value;
+	}
+	
+	public function HasImage()
+	{
+		return !empty($this->_imageName);
 	}
 }
 ?>

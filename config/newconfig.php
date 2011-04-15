@@ -23,4 +23,5 @@ $conf['settings']['phpmailer']['smtp.secure'] = '';
 $conf['settings']['phpmailer']['smtp.auth'] = '';
 $conf['settings']['phpmailer']['smtp.username'] = '';
 $conf['settings']['phpmailer']['smtp.password'] = '';
+$conf['settings']['image.upload.directory'] = 'uploads/images';
 ?>

@@ -16,9 +16,9 @@ interface IUpdateResourcePage
 	function GetResourceName();
 	
 	/**
-	 * @return string
+	 * @return UploadedFile
 	 */
-	function GetUploadedImageName();
+	function GetUploadedImage();
 }
 
 
@@ -43,8 +43,11 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 		$this->_presenter = new ManageResourcesPresenter(
 								$this, 
 								new ResourceRepository(),
-								new ScheduleRepository()
+								new ScheduleRepository(),
+								new ImageFactory()
 								);
+								
+		$this->Set('ImageUploadPath', $this->path . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . '/');
 	}
 	
 	public function PageLoad()
@@ -79,9 +82,9 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 		return $this->server->GetForm(FormKeys::RESOURCE_NAME);
 	}
 	
-	public function GetUploadedImageName()
+	public function GetUploadedImage()
 	{
-		return $_FILES['uploaded_image']['tmp_name'];
+		return $this->server->GetFile(FormKeys::RESOURCE_IMAGE);
 	}
 }
 

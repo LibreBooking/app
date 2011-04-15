@@ -23,6 +23,8 @@ class ConfigKeys
 	
 	const RESERVATION_NOTIFY_CREATED = 'notify.created';
 	const RESERVATION_NOTIFY_UPDATED = 'notify.updated';
+	
+	const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
 }
 
 class ConfigSection

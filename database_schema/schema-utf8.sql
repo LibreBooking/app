@@ -388,6 +388,7 @@ CREATE TABLE `resources` (
  `max_participants` mediumint(8) unsigned,
  `min_notice_time` time,
  `max_notice_time` time,
+ `image_name` varchar(50),
  `legacyid` char(16),
  PRIMARY KEY (`resource_id`),
  INDEX (`type_id`),
