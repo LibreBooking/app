@@ -30,8 +30,8 @@ function ResourceManagement(opts)
 		ConfigureAdminDialog(elements.imageDialog, 'Change Image', 500, 150);
 		ConfigureAdminDialog(elements.scheduleDialog, 'Change Schedule', 300, 125);
 		ConfigureAdminDialog(elements.locationDialog, 'Change Location', 300, 160);
-		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 260);
-		ConfigureAdminDialog(elements.notesDialog, 'Change Notes', 500, 260);
+		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 270);
+		ConfigureAdminDialog(elements.notesDialog, 'Change Notes', 500, 270);
 		    
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -94,8 +94,9 @@ function ResourceManagement(opts)
 		var imageSaveErrorHandler = function(result) { alert(result); };
 		var imageSavePreSubmit = function() { showIndicator(elements.imageForm); };
 		
+		var errorHandler = function(result) { $("#globalError").html(result).show(); };
 		ConfigureUploadForm(elements.imageForm.find('.async'), getSubmitCallback(options.actions.changeImage), imageSavePreSubmit, null, imageSaveErrorHandler);
-		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.actions.rename), null, function(x){alert(x);});
+		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.actions.rename), null, errorHandler);
 		ConfigureAdminForm(elements.scheduleForm, getSubmitCallback(options.actions.changeSchedule));
 		ConfigureAdminForm(elements.locationForm, getSubmitCallback(options.actions.changeLocation));
 		ConfigureAdminForm(elements.descriptionForm, getSubmitCallback(options.actions.changeDescription));

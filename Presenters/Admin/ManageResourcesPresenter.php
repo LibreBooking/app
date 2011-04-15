@@ -114,6 +114,30 @@ class ManageResourcesPresenter
 	/**
 	 * @internal should only be used for testing
 	 */
+	public function ChangeDescription()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		
+		$resource->SetDescription($this->page->GetDescription());
+		
+		$this->resourceRepository->Update($resource);
+	}
+	
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function ChangeNotes()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		
+		$resource->SetNotes($this->page->GetNotes());
+		
+		$this->resourceRepository->Update($resource);
+	}
+	
+	/**
+	 * @internal should only be used for testing
+	 */
 	public function Rename()
 	{
 		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());

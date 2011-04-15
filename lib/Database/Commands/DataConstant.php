@@ -223,11 +223,12 @@ class Queries
 			
 	const GET_RESOURCE_BY_ID = 
 		'SELECT 
-			r.*
+			*
 		FROM 
 			resources r
+		INNER JOIN resource_schedules rs ON r.resource_id = rs.resource_id
 		WHERE
-			r.resource_id = @resourceid';
+			r.resource_id = @resourceid AND r.isactive = 1';
 	
 	const GET_RESERVATION_BY_ID =
 		'SELECT

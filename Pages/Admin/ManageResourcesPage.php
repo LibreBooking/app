@@ -24,6 +24,16 @@ interface IUpdateResourcePage
 	 * @return UploadedFile
 	 */
 	function GetUploadedImage();
+	
+	/**
+	 * @return string
+	 */
+	function GetDescription();
+	
+	/**
+	 * @return string
+	 */
+	function GetNotes();
 }
 
 
@@ -95,6 +105,16 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 	public function GetUploadedImage()
 	{
 		return $this->server->GetFile(FormKeys::RESOURCE_IMAGE);
+	}
+	
+	public function GetDescription()
+	{
+		return $this->server->GetForm(FormKeys::RESOURCE_DESCRIPTION);
+	}
+	
+	public function GetNotes()
+	{
+		return $this->server->GetForm(FormKeys::RESOURCE_NOTES);
 	}
 }
 

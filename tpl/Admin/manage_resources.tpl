@@ -5,6 +5,7 @@
 
 <h1>Manage Resources</h1>
 
+<div id="globalError" class="error" style="display:none"></div>
 <div class="admin">
 	<div class="title">
 		All Resources
