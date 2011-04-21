@@ -28,6 +28,16 @@ interface IUpdateResourcePage
 	/**
 	 * @return string
 	 */
+	function GetLocation();
+	
+	/**
+	 * @return string
+	 */
+	function GetContact();
+	
+	/**
+	 * @return string
+	 */
 	function GetDescription();
 	
 	/**
@@ -105,6 +115,16 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 	public function GetUploadedImage()
 	{
 		return $this->server->GetFile(FormKeys::RESOURCE_IMAGE);
+	}
+	
+	public function GetLocation()
+	{
+		return $this->server->GetForm(FormKeys::RESOURCE_LOCATION);
+	}
+
+	public function GetContact()
+	{
+		return $this->server->GetForm(FormKeys::RESOURCE_CONTACT);
 	}
 	
 	public function GetDescription()

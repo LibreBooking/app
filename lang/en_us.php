@@ -114,6 +114,7 @@ class en_us extends Language
 		$strings['EditReservation'] = 'Editing Reservation';
 		$strings['LogIn'] = 'Log In';
 		$strings['ManageSchedules'] = 'Manage Schedules';
+		$strings['ManageResources'] = 'Manage Resources';
 		$strings['MyDashboard'] = 'My Dashboard';
 		//
 		

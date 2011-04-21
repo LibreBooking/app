@@ -1,6 +1,14 @@
 <?php
 require_once(ROOT_DIR . 'lib/Database/SqlCommand.php');
 
+class AdHocCommand extends SqlCommand
+{
+	public function __construct($rawSql)
+	{
+		parent::__construct($rawSql);
+	} 
+}
+
 //MPinnegar
 //TO-DO: Move this into alphabetical order
 class GetAllReservationsByUserCommand /*Give it a very literal name describing what the command is going to do*/extends SqlCommand
@@ -208,6 +216,24 @@ class CookieLoginCommand extends SqlCommand
 	{
 		parent::__construct(Queries::COOKIE_LOGIN);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));	
+	}
+}
+
+class DeleteResourceCommand extends SqlCommand
+{
+	public function __construct($resourceId)
+	{
+		parent::__construct(Queries::DELETE_RESOURCE_COMMAND);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));	
+	}
+}
+
+class DeleteResourceReservationsCommand extends SqlCommand
+{
+	public function __construct($resourceId)
+	{
+		parent::__construct(Queries::DELETE_RESOURCE_RESERVATIONS_COMMAND);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));	
 	}
 }
 

@@ -181,6 +181,17 @@ class Queries
 		FROM users 
 		WHERE user_id = @userid';
 	
+	const DELETE_RESOURCE_COMMAND = 
+		'DELETE 
+		FROM resources 
+		WHERE resource_id = @resourceid';
+	
+	const DELETE_RESOURCE_RESERVATIONS_COMMAND = 
+		'DELETE s.* 
+		FROM reservation_series s 
+		INNER JOIN reservation_resources rs ON s.series_id = rs.series_id 
+		WHERE rs.resource_id = @resourceid';
+	
 	const DELETE_SERIES =
 		'DELETE 
 		FROM reservation_series
@@ -397,7 +408,7 @@ class Queries
 	
 	const GET_SCHEDULE_RESOURCES = 
 		'SELECT 
-			r.*
+			*
 		FROM 
 			resources r, resource_schedules rs 
 		WHERE 

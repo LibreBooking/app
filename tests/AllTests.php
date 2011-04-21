@@ -11,6 +11,7 @@ require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 require_once(ROOT_DIR . 'tests/Application/Authorization/Application_Authorization_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Reservation/Application_Reservation_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Schedule/Application_Schedule_Suite.php');
+require_once(ROOT_DIR . 'tests/Application/Resource/Application_Resource_Suite.php');
 
 require_once(ROOT_DIR . 'tests/Domain/Announcement/Domain_Announcement_Suite.php');
 require_once(ROOT_DIR . 'tests/Domain/Reservation/Domain_Reservation_Suite.php');
@@ -38,6 +39,7 @@ class AllTests
         $suite->addTest(Application_Authorization_Suite::suite());
         $suite->addTest(Application_Schedule_Suite::suite());
         $suite->addTest(Application_Reservation_Suite::suite());
+        $suite->addTest(Application_Resource_Suite::suite());
         
         $suite->addTest(Domain_Announcement_Suite::suite());
         $suite->addTest(Domain_Reservation_Suite::suite());

@@ -102,3 +102,7 @@ span.error {
 	text-align:left;
 	font-size:14px;
 }
+
+div.error {
+	width: 90%;
+}

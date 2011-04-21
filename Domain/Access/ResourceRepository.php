@@ -35,6 +35,11 @@ interface IResourceRepository
 	public function Update(Resource $resource);
 	
 	/**
+	 * @param Resource
+	 */
+	public function Delete(Resource $resource);
+	
+	/**
 	 * @return Resource[] array of all resources
 	 */
 	public function GetResourceList();
@@ -179,10 +184,19 @@ class ResourceRepository implements IResourceRepository
 								$resource->GetResourceId(), 
 								$resource->GetScheduleId());
 		
-								
-		
 		$db->Execute($updateResourceCommand);
 		$db->Execute($updateScheduleCommand);
+	}
+	
+	public function Delete(Resource $resource)
+	{
+		Log::Debug("Deleting resource %s (%s)", $resource->GetResourceId(), $resource->GetName());
+		
+		$resourceId = $resource->GetResourceId();
+		
+		$db = ServiceLocator::GetDatabase();
+		$db->Execute(new DeleteResourceReservationsCommand($resourceId));
+		$db->Execute(new DeleteResourceCommand($resourceId));
 	}
 }
 

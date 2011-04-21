@@ -13,6 +13,7 @@ class ManageResourcesActions
 	const ActionChangeSchedule = 'schedule';
 	const ActionRemoveImage = 'removeImage';
 	const ActionRename = 'rename';
+	const ActionDelete = 'delete';
 }
 
 class ManageResourcesPresenter
@@ -58,6 +59,7 @@ class ManageResourcesPresenter
 		$this->actions[ManageResourcesActions::ActionChangeSchedule] = 'ChangeSchedule';
 		$this->actions[ManageResourcesActions::ActionRemoveImage] = 'RemoveImage';
 		$this->actions[ManageResourcesActions::ActionRename] = 'Rename';
+		$this->actions[ManageResourcesActions::ActionDelete] = 'Delete';
 	}
 	
 	public function PageLoad()
@@ -114,6 +116,15 @@ class ManageResourcesPresenter
 	/**
 	 * @internal should only be used for testing
 	 */
+	public function Delete()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$this->resourceRepository->Delete($resource);
+	}
+	
+	/**
+	 * @internal should only be used for testing
+	 */
 	public function ChangeDescription()
 	{
 		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
@@ -150,9 +161,14 @@ class ManageResourcesPresenter
 	/**
 	 * @internal should only be used for testing
 	 */
-	public function ChangeSettings()
+	public function ChangeLocation()
 	{
-	
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		
+		$resource->SetLocation($this->page->GetLocation());
+		$resource->SetContact($this->page->GetContact());
+		
+		$this->resourceRepository->Update($resource);
 	}
 	
 	public function ChangeImage()

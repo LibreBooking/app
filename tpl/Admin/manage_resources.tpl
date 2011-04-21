@@ -184,11 +184,6 @@
 
 <input type="hidden" id="activeId" value="" />
 
-<div id="makeDefaultDialog" style="display:none">
-	<form id="makeDefaultForm" method="post">
-	</form>
-</div>
-
 <div id="imageDialog" class="dialog" style="display:none;">
 	<form id="imageForm" method="post" enctype="multipart/form-data">
       <input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
@@ -199,8 +194,6 @@
 	  <button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
   	</form>
 </div>
-
-<form id="removeImageForm" method="post"></form>
 
 <div id="renameDialog" class="dialog" style="display:none;">
 	<form id="renameForm" method="post">
@@ -257,6 +250,22 @@
 	</form>
 </div>
 
+<div id="deleteDialog" class="dialog" style="display:none;">
+	<form id="deleteForm" method="post">
+		<div class="error">
+			This action is permanent and irrecoverable! Deleting this resource will delete all associated data, including:
+			<ul>
+				<li>all past, current and future reservations assoicated with it</li>
+				<li>all permission assignments</li>
+			</ul>
+			Please reassign anything that you do not want to be deleted before proceeding
+		</div>
+
+		<button type="button" class="button save">{html_image src="cross-button.png"} Delete Resource</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+	</form>
+</div>
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/resource.js"></script>
@@ -275,7 +284,8 @@ $(document).ready(function() {
 		changeLocation: '{ManageResourcesActions::ActionChangeLocation}',
 		changeDescription: '{ManageResourcesActions::ActionChangeDescription}',
 		changeNotes: '{ManageResourcesActions::ActionChangeNotes}',
-		add: '{ManageResourcesActions::ActionAdd}'
+		add: '{ManageResourcesActions::ActionAdd}',
+		deleteResource: '{ManageResourcesActions::ActionDelete}'
 	};
 	
 	var opts = {

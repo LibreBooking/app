@@ -202,6 +202,25 @@ class ResourceTests extends TestBase
 		$actualAddResourceCommand = $this->db->_Commands[0];
 		$actualUpdateScheduleCommand = $this->db->_Commands[1];
 	}
+	
+	public function testDeletingAResourceRemovesAllAssociatedData()
+	{
+		$resourceId = 100;
+		$resource = Resource::CreateNew('name', 1);
+		$resource->SetResourceId($resourceId);
+		
+		$resourceRepository = new ResourceRepository();
+		$resourceRepository->Delete($resource);
+		
+		$deleteReservations = new DeleteResourceReservationsCommand($resourceId);
+		$deleteResources = new DeleteResourceCommand($resourceId);
+		
+		$actualDeleteReservations = $this->db->_Commands[0];
+		$actualDeleteResources = $this->db->_Commands[1];
+		
+		$this->assertEquals($deleteReservations, $actualDeleteReservations);
+		$this->assertEquals($deleteResources, $actualDeleteResources);
+	}
 }
 
 ?>

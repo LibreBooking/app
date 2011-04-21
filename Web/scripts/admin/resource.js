@@ -11,6 +11,7 @@ function ResourceManagement(opts)
 		locationDialog: $('#locationDialog'),
 		descriptionDialog: $('#descriptionDialog'),
 		notesDialog: $('#notesDialog'),
+		deleteDialog: $('#deleteDialog'),
 		
 		renameForm: $('#renameForm'),
 		imageForm: $('#imageForm'),
@@ -18,6 +19,7 @@ function ResourceManagement(opts)
 		locationForm: $('#locationForm'),
 		descriptionForm: $('#descriptionForm'),
 		notesForm: $('#notesForm'),
+		deleteForm: $('#deleteForm'),
 		
 		addForm: $('#addResourceForm')
 	};
@@ -29,9 +31,10 @@ function ResourceManagement(opts)
 		ConfigureAdminDialog(elements.renameDialog, 'Rename Resource', 300, 135);
 		ConfigureAdminDialog(elements.imageDialog, 'Change Image', 500, 150);
 		ConfigureAdminDialog(elements.scheduleDialog, 'Change Schedule', 300, 125);
-		ConfigureAdminDialog(elements.locationDialog, 'Change Location', 300, 160);
+		ConfigureAdminDialog(elements.locationDialog, 'Change Location', 300, 170);
 		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 270);
 		ConfigureAdminDialog(elements.notesDialog, 'Change Notes', 500, 270);
+		ConfigureAdminDialog(elements.deleteDialog, 'Delete Resource?', 500, 200);
 		    
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -76,11 +79,10 @@ function ResourceManagement(opts)
 				return false;
 			});
 			
-
-//			$(this).find('.makeDefaultButton').click(function(e) {
-//				elements.makeDefaultForm.submit();
-//				$(this).after($('.indicator'));
-//			});
+			$(this).find('.deleteButton').click(function(e) {
+				showDeletePrompt(e);
+				return false;
+			});
 		});
 
 		$(".save").click(function() {
@@ -102,6 +104,7 @@ function ResourceManagement(opts)
 		ConfigureAdminForm(elements.descriptionForm, getSubmitCallback(options.actions.changeDescription));
 		ConfigureAdminForm(elements.notesForm, getSubmitCallback(options.actions.changeNotes));
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add), null, handleAddError);
+		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource), null, handleAddError);
 		
 	};
 
@@ -168,14 +171,11 @@ function ResourceManagement(opts)
 		elements.notesDialog.dialog("open");
 	};
 	
-	var showChangeConfiguration = function(e, daysVisible, dayOfWeek)
+	var showDeletePrompt = function(e)
 	{
-		elements.daysVisible.val(daysVisible.val());
-		elements.dayOfWeek.val(dayOfWeek.val());
-		
-		elements.changeSettingsDialog.dialog("option", "position", [e.pageX, e.pageY]);
-		elements.changeSettingsDialog.dialog("open");
+		elements.deleteDialog.dialog("open");
 	};
+	
 	
 	var showIndicator = function(formElement)
 	{

@@ -48,6 +48,10 @@ class Server
 	{
 		if (isset($_POST[$name]))
 		{
+			if (is_array($_POST[$name]))
+			{
+				return $_POST[$name];
+			}
 			return htmlentities($_POST[$name]);
 		}
 		return null;
