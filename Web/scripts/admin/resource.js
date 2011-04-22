@@ -34,7 +34,7 @@ function ResourceManagement(opts)
 		ConfigureAdminDialog(elements.locationDialog, 'Change Location', 300, 170);
 		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 270);
 		ConfigureAdminDialog(elements.notesDialog, 'Change Notes', 500, 270);
-		ConfigureAdminDialog(elements.deleteDialog, 'Delete Resource?', 500, 200);
+		ConfigureAdminDialog(elements.deleteDialog, 'Delete Resource?', 500, 300);
 		    
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -51,6 +51,16 @@ function ResourceManagement(opts)
 			
 			$(this).find('.removeImageButton').click(function(e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), indicator);
+				return false;
+			});
+			
+			$(this).find('.takeOfflineButton').click(function(e) {
+				PerformAsyncAction($(this), getSubmitCallback(options.actions.takeOffline), indicator);
+				return false;
+			});
+			
+			$(this).find('.bringOnlineButton').click(function(e) {
+				PerformAsyncAction($(this), getSubmitCallback(options.actions.bringOnline), indicator);
 				return false;
 			});
 			

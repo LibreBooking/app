@@ -143,7 +143,12 @@
 		</div>
 		<div class="actions">
 			{html_image src="admin-ajax-indicator.gif" class="actionIndicator" style="display:none;"}
-			<a class="update" href="javascript: void(0);">Take Offline</a> |
+			
+			{if $resource->IsOnline()}
+				{html_image src="status.png"} <a class="update takeOfflineButton" href="javascript: void(0);">Take Offline</a> |
+			{else}
+				{html_image src="status-busy.png"} <a class="update bringOnlineButton" href="javascript: void(0);">Bring Online</a> |
+			{/if}
 			<a class="update deleteButton" href="javascript:void(0);">Delete</a>
 		</div>
 	</div>
@@ -252,12 +257,14 @@
 
 <div id="deleteDialog" class="dialog" style="display:none;">
 	<form id="deleteForm" method="post">
-		<div class="error">
-			This action is permanent and irrecoverable! Deleting this resource will delete all associated data, including:
+		<div class="error" style="margin-bottom: 25px;">
+			<h3>This action is permanent and irrecoverable!</h3>
+			<br/>Deleting this resource will delete all associated data, including:
 			<ul>
 				<li>all past, current and future reservations assoicated with it</li>
 				<li>all permission assignments</li>
 			</ul>
+			<br/>
 			Please reassign anything that you do not want to be deleted before proceeding
 		</div>
 
@@ -285,7 +292,9 @@ $(document).ready(function() {
 		changeDescription: '{ManageResourcesActions::ActionChangeDescription}',
 		changeNotes: '{ManageResourcesActions::ActionChangeNotes}',
 		add: '{ManageResourcesActions::ActionAdd}',
-		deleteResource: '{ManageResourcesActions::ActionDelete}'
+		deleteResource: '{ManageResourcesActions::ActionDelete}',
+		takeOffline: '{ManageResourcesActions::ActionTakeOffline}',
+		bringOnline: '{ManageResourcesActions::ActionBringOnline}'
 	};
 	
 	var opts = {

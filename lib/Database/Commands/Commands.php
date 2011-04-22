@@ -621,7 +621,8 @@ class UpdateResourceCommand extends SqlCommand
 								Time $minNoticeTime,
 								Time $maxNoticeTime,
 								$description,
-								$imageName)
+								$imageName,
+								$isActive)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 		
@@ -640,6 +641,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $minNoticeTime->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $maxNoticeTime->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_IMAGE_NAME, $imageName));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ISACTIVE, (int)$isActive));
 	}
 }
 

@@ -178,7 +178,8 @@ class ResourceRepository implements IResourceRepository
 								$resource->GetMinNotice(),
 								$resource->GetMaxNotice(),
 								$resource->GetDescription(),
-								$resource->GetImage());
+								$resource->GetImage(),
+								$resource->IsOnline());
 								
 		$updateScheduleCommand = new UpdateResourceScheduleCommand(
 								$resource->GetResourceId(), 

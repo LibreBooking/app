@@ -172,7 +172,8 @@ class ResourceTests extends TestBase
 								Time::Parse($minNotice),
 								Time::Parse($maxNotice),
 								$description,
-								$imageName);
+								$imageName,
+								$resource->IsOnline());
 								
 		$expectedUpdateScheduleCommand = new UpdateResourceScheduleCommand($id, $scheduleId);
 								

@@ -121,6 +121,12 @@
 		}
 		$.post(
 			urlCallback(), 
-			function(data) {window.location = window.location;}
+			function(data) {
+				if (data.trim() != "")
+				{
+					alert(data);
+				}
+				window.location = window.location;
+			}
 		);
 	}

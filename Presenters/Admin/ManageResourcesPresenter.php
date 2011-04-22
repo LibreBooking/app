@@ -14,6 +14,8 @@ class ManageResourcesActions
 	const ActionRemoveImage = 'removeImage';
 	const ActionRename = 'rename';
 	const ActionDelete = 'delete';
+	const ActionBringOnline = "bringOnline";
+	const ActionTakeOffline = "takeOffline";
 }
 
 class ManageResourcesPresenter
@@ -60,6 +62,8 @@ class ManageResourcesPresenter
 		$this->actions[ManageResourcesActions::ActionRemoveImage] = 'RemoveImage';
 		$this->actions[ManageResourcesActions::ActionRename] = 'Rename';
 		$this->actions[ManageResourcesActions::ActionDelete] = 'Delete';
+		$this->actions[ManageResourcesActions::ActionTakeOffline] = 'TakeOffline';
+		$this->actions[ManageResourcesActions::ActionBringOnline] = 'BringOnline';
 	}
 	
 	public function PageLoad()
@@ -202,6 +206,20 @@ class ManageResourcesPresenter
 	public function RemoveImage()
 	{
 		$this->SaveResourceImage(null);
+	}
+	
+	public function TakeOffline()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resource->TakeOffline();
+		$this->resourceRepository->Update($resource);
+	}
+	
+	public function BringOnline()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resource->BringOnline();
+		$this->resourceRepository->Update($resource);
 	}
 	
 	private function SaveResourceImage($fileName)

@@ -31,6 +31,7 @@ class Resource implements IResource
 	private $_maxNotice;
 	private $_scheduleId;
 	private $_imageName;
+	private $_isActive;
 	
 	public function __construct($resourceId,
 								$name,
@@ -107,6 +108,12 @@ class Resource implements IResource
 							$row[ColumnNames::SCHEDULE_ID]);
 							
 		$resource->SetImage($row[ColumnNames::RESOURCE_IMAGE_NAME]);
+		
+		$resource->_isActive = true;
+		if (isset($row[ColumnNames::RESOURCE_ISACTIVE]))
+		{
+			$resource->_isActive = (bool)$row[ColumnNames::RESOURCE_ISACTIVE];
+		}
 		return $resource;
 	}
 	
@@ -364,6 +371,21 @@ class Resource implements IResource
 	public function HasImage()
 	{
 		return !empty($this->_imageName);
+	}
+	
+	public function IsOnline()
+	{
+		return $this->_isActive;
+	}
+	
+	public function TakeOffline()
+	{
+		$this->_isActive = false;
+	}
+	
+	public function BringOnline()
+	{
+		$this->_isActive = true;
 	}
 }
 ?>

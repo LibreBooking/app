@@ -61,6 +61,7 @@ class ParameterNames
 	const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';
 	const RESOURCE_LEVEL_ID = "@resourceLevelId";
 	const RESOURCE_IMAGE_NAME = "@imageName";
+	const RESOURCE_ISACTIVE = "@isActive";
 	
 	
 	const SALT = '@salt';
@@ -205,8 +206,7 @@ class Queries
 	const GET_ALL_RESOURCES = 
 		'SELECT * 
 		FROM resources r
-		LEFT JOIN resource_schedules rs ON r.resource_id = rs.resource_id
-		WHERE r.isactive = 1';
+		LEFT JOIN resource_schedules rs ON r.resource_id = rs.resource_id';
 	
 	const GET_ALL_SCHEDULES = 
 		'SELECT * 
@@ -239,7 +239,7 @@ class Queries
 			resources r
 		INNER JOIN resource_schedules rs ON r.resource_id = rs.resource_id
 		WHERE
-			r.resource_id = @resourceid AND r.isactive = 1';
+			r.resource_id = @resourceid';
 	
 	const GET_RESERVATION_BY_ID =
 		'SELECT
@@ -566,7 +566,8 @@ class Queries
 			max_participants = @max_participants,
 			min_notice_time = @min_notice_time,
 			max_notice_time = @max_notice_time,
-			image_name = @imageName
+			image_name = @imageName,
+			isactive = @isActive
 		WHERE
 			resource_id = @resourceid';
 	
@@ -715,6 +716,7 @@ class ColumnNames
 	const RESOURCE_MINNOTICE = 'min_notice_time';
 	const RESOURCE_MAXNOTICE = 'max_notice_time';
 	const RESOURCE_IMAGE_NAME = 'image_name';
+	const RESOURCE_ISACTIVE = 'isactive';
 
 	// RESERVATION RESOURCES
 	const RESOURCE_LEVEL_ID = 'resource_level_id';
