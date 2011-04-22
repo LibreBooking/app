@@ -12,6 +12,7 @@ function ResourceManagement(opts)
 		descriptionDialog: $('#descriptionDialog'),
 		notesDialog: $('#notesDialog'),
 		deleteDialog: $('#deleteDialog'),
+		configurationDialog: $('#configurationDialog'),
 		
 		renameForm: $('#renameForm'),
 		imageForm: $('#imageForm'),
@@ -20,6 +21,7 @@ function ResourceManagement(opts)
 		descriptionForm: $('#descriptionForm'),
 		notesForm: $('#notesForm'),
 		deleteForm: $('#deleteForm'),
+		configurationForm: $('#configurationForm'),
 		
 		addForm: $('#addResourceForm')
 	};
@@ -35,6 +37,7 @@ function ResourceManagement(opts)
 		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 270);
 		ConfigureAdminDialog(elements.notesDialog, 'Change Notes', 500, 270);
 		ConfigureAdminDialog(elements.deleteDialog, 'Delete Resource?', 500, 300);
+		ConfigureAdminDialog(elements.configurationDialog, 'Change Configuration', 500, 500);
 		    
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -93,6 +96,11 @@ function ResourceManagement(opts)
 				showDeletePrompt(e);
 				return false;
 			});
+			
+			$(this).find('.changeConfigurationButton').click(function(e) {
+				showConfigurationPrompt(e);
+				return false;
+			});
 		});
 
 		$(".save").click(function() {
@@ -115,6 +123,7 @@ function ResourceManagement(opts)
 		ConfigureAdminForm(elements.notesForm, getSubmitCallback(options.actions.changeNotes));
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource), null, handleAddError);
+		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, handleAddError);
 		
 	};
 
@@ -186,6 +195,40 @@ function ResourceManagement(opts)
 		elements.deleteDialog.dialog("open");
 	};
 	
+	var showConfigurationPrompt = function(e)
+	{
+		elements.configurationDialog.find(':checkbox').change(function () {
+			var id = $(this).attr('id');
+			var span = elements.configurationDialog.find('.' + id);
+			
+			if ($(this).is(":checked"))
+			{
+				span.hide();
+			}
+			else
+			{
+				span.show();
+			}
+		});
+		
+		var resource = getActiveResource();
+		
+		$('#minDuration').val(resource.minLength);
+		if (resource.minLength == '')
+		{
+			$('#noMinimumDuration').attr('checked', true);
+			$('#noMinimumDuration').trigger('change');
+		}
+		
+//		minLength: '{$resource->GetMinLength()}',
+//		maxLength: '{$resource->GetMaxLength()}',
+//		autoAssign: '{$resource->GetAutoAssign()}',
+//		requiresApproval: '{$resource->GetRequiresApproval()}',
+//		allowMultiday: '{$resource->GetAllowMultiday()}',
+//		maxParticipants: '{$resource->GetMaxParticipants()}',
+		
+		elements.configurationDialog.dialog("open");
+	};
 	
 	var showIndicator = function(formElement)
 	{

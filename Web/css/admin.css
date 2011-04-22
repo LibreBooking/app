@@ -106,3 +106,12 @@ span.error {
 div.error {
 	width: 90%;
 }
+
+.dialog ul, .dialog li {
+	font-size: 12px;
+	list-style: none;
+}
+
+.dialog li {
+	margin-bottom: 5px;
+}

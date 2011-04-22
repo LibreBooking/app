@@ -112,5 +112,10 @@ class NullTime extends Time
 	{
 		return null;
 	}
+	
+	public function ToString()
+	{
+		return '';
+	}
 }
 ?>

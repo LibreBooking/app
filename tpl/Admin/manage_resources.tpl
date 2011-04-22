@@ -73,7 +73,7 @@
 		</div>
 		<div style="float:right">
 			<div>
-				<h5>Usage Configuration</h5> <a class="update" href="javascript: void(0);">Change Configuration</a>
+				<h5>Usage Configuration</h5> <a class="update changeConfigurationButton" href="javascript: void(0);">Change Configuration</a>
 			</div>
 			<div style="float:left">
 				<ul>
@@ -252,6 +252,85 @@
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+	</form>
+</div>
+
+<div id="configurationDialog" class="dialog" style="display:none;">
+	<form id="configurationForm" method="post">
+		<div>
+			<ul>
+				<li>
+					<label>
+						<input type="checkbox" id="noMinimumDuration" /> There is no minimum reservation duration
+					</label>
+					<span class="noMinimumDuration">
+						<br/>
+						Reservations must last at least <input type="text" id="minDuration" class="textbox" size="5" />  minutes 
+					</span>
+				</li>
+				<li>
+					<label>
+						<input type="checkbox" id="noMaximumDuration" /> There is no maximum reservation duration
+					</label>
+					<span class="noMaximumDuration">
+						<br/>
+						Reservations cannot last more than <input type="text" id="maxDuration" class="textbox" size="5" /> minutes 
+					</span>
+				</li>
+				<li>
+					Reservations must be approved:
+					<select id="allowMultiday" class="textbox">
+						<option value="1">Yes</option>
+						<option value="0">No</option>
+					</select>
+				</li>
+				<li>
+					Automatically grant user permission:
+					<select id="allowMultiday" class="textbox">
+						<option value="1">Yes</option>
+						<option value="0">No</option>
+					</select>
+				</li>			
+				<li>
+					<label>
+						<input type="checkbox" id="anyStartTime" /> Reservations can be made up until the current time
+					</label>
+					<span class="anyStartTime">
+						<br/>
+						Reservations must be made at least 
+						<input type="text" id="startMinutes" class="textbox" size="5"  /> 
+						minutes prior to start time
+					</span>
+				</li>
+				<li>
+					<label>
+						<input type="checkbox" id="anyEndTime" /> Reservations can end at any point in the future
+					</label>					
+					<span class="anyEndTime">
+						<br/>
+						Reservations must not end more than
+						<input type="text" id="endMinutes" class="textbox" size="5"  />
+						minutes from the current time
+					</span>
+				</li>
+				<li>
+					Reservations can be made across days:
+					<select id="allowMultiday" class="textbox">
+						<option value="1">Yes</option>
+						<option value="0">No</option>
+					</select>
+				</li>
+				<li>
+					<label>
+						<input type="checkbox" id="unlimitedCapactiy" /> This resource has unlimited capacity
+					</label>					
+					<span class="unlimitedCapactiy">
+						<br/>
+						This resource has a capacity of <input type="text" id="maxCapactiy" class="textbox" size="5" />people
+					</span>
+				</li>
+			</ul>
+		</div>
 	</form>
 </div>
 
