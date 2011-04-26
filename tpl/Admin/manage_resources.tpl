@@ -79,14 +79,14 @@
 				<ul>
 					<li>
 						{if $resource->HasMinLength()}
-							Reservations must last at least 30 minutes 
+							Reservations must last at least {$resource->GetMinLength()->Format(Time::FORMAT_HOUR_MINUTE)} 
 						{else}
 							There is no minimum reservation duration
 						{/if}
 					</li>
 					<li>
 						{if $resource->HasMaxLength()}
-							Reservations cannot last more than 30 minutes 
+							Reservations cannot last more than {$resource->GetMaxLength()->Format(Time::FORMAT_HOUR_MINUTE)}
 						{else}
 							There is no maximum reservation duration
 						{/if}
@@ -112,28 +112,28 @@
 				<ul>				
 				<li>
 					{if $resource->HasMinNotice()}
-						Reservations must be made at least 30 minutes prior to start time
+						Reservations must be made at least {$resource->GetMinNotice()->Format(Time::FORMAT_HOUR_MINUTE)} prior to start time
 					{else}
 						Reservations can be made up until the current time
 					{/if}
 				</li>
 				<li>
 					{if $resource->HasMaxNotice()}
-						Reservations must not end more than 30 minutes from the current time
+						Reservations must not end more than {$resource->GetMinNotice()->Format(Time::FORMAT_HOUR_MINUTE)} from the current time
 					{else}
 						Reservations can end at any point in the future
 					{/if}
 				</li>
 				<li>
 					{if $resource->GetAllowMultiday()}
-						Reservations cannot be made across days
-					{else}
 						Reservations can be made across days
+					{else}
+						Reservations cannot be made across days
 					{/if}
 				</li>
 				<li>
 					{if $resource->HasMaxParticipants()}
-						This resource has a capacity of 8 people
+						This resource has a capacity of {$resource->GetMaxParticipants()} people
 					{else}
 						This resource has unlimited capacity
 					{/if}
@@ -257,80 +257,92 @@
 
 <div id="configurationDialog" class="dialog" style="display:none;">
 	<form id="configurationForm" method="post">
-		<div>
-			<ul>
-				<li>
-					<label>
-						<input type="checkbox" id="noMinimumDuration" /> There is no minimum reservation duration
-					</label>
-					<span class="noMinimumDuration">
-						<br/>
-						Reservations must last at least <input type="text" id="minDuration" class="textbox" size="5" />  minutes 
-					</span>
-				</li>
-				<li>
-					<label>
-						<input type="checkbox" id="noMaximumDuration" /> There is no maximum reservation duration
-					</label>
-					<span class="noMaximumDuration">
-						<br/>
-						Reservations cannot last more than <input type="text" id="maxDuration" class="textbox" size="5" /> minutes 
-					</span>
-				</li>
-				<li>
-					Reservations must be approved:
-					<select id="allowMultiday" class="textbox">
-						<option value="1">Yes</option>
-						<option value="0">No</option>
-					</select>
-				</li>
-				<li>
-					Automatically grant user permission:
-					<select id="allowMultiday" class="textbox">
-						<option value="1">Yes</option>
-						<option value="0">No</option>
-					</select>
-				</li>			
-				<li>
-					<label>
-						<input type="checkbox" id="anyStartTime" /> Reservations can be made up until the current time
-					</label>
-					<span class="anyStartTime">
-						<br/>
-						Reservations must be made at least 
-						<input type="text" id="startMinutes" class="textbox" size="5"  /> 
-						minutes prior to start time
-					</span>
-				</li>
-				<li>
-					<label>
-						<input type="checkbox" id="anyEndTime" /> Reservations can end at any point in the future
-					</label>					
-					<span class="anyEndTime">
-						<br/>
-						Reservations must not end more than
-						<input type="text" id="endMinutes" class="textbox" size="5"  />
-						minutes from the current time
-					</span>
-				</li>
-				<li>
-					Reservations can be made across days:
-					<select id="allowMultiday" class="textbox">
-						<option value="1">Yes</option>
-						<option value="0">No</option>
-					</select>
-				</li>
-				<li>
-					<label>
-						<input type="checkbox" id="unlimitedCapactiy" /> This resource has unlimited capacity
-					</label>					
-					<span class="unlimitedCapactiy">
-						<br/>
-						This resource has a capacity of <input type="text" id="maxCapactiy" class="textbox" size="5" />people
-					</span>
-				</li>
-			</ul>
+		<div style="margin-bottom: 10px;">
+			<fieldset><legend>Duration</legend>
+				<ul>
+					<li>
+						<label>
+							<input type="checkbox" id="noMinimumDuration" /> There is no minimum reservation duration
+						</label>
+						<span class="noMinimumDuration">
+							<br/>
+							Reservations must last at least <input type="text" id="minDuration" class="textbox" size="5" maxlength="5" {formname key=MIN_DURATION} /> 
+						</span>
+					</li>
+					<li>
+						<label>
+							<input type="checkbox" id="noMaximumDuration" /> There is no maximum reservation duration
+						</label>
+						<span class="noMaximumDuration">
+							<br/>
+							Reservations cannot last more than <input type="text" id="maxDuration" class="textbox" size="5" maxlength="5" {formname key=MAX_DURATION} /> 
+						</span>
+					</li>
+					<li>
+						Reservations can be made across days:
+						<select id="allowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>
+							<option value="1">Yes</option>
+							<option value="0">No</option>
+						</select>
+					</li>
+				</ul>
+			</fieldset>
+			<fieldset><legend>Access</legend>
+				<ul>
+					<li>
+						Reservations must be approved:
+						<select id="requiresApproval" class="textbox" {formname key=REQUIRES_APPROVAL}>
+							<option value="1">Yes</option>
+							<option value="0">No</option>
+						</select>
+					</li>
+					<li>
+						Automatically grant user permission:
+						<select id="autoAssign" class="textbox" {formname key=AUTO_ASSIGN}>
+							<option value="1">Yes</option>
+							<option value="0">No</option>
+						</select>
+					</li>			
+					<li>
+						<label>
+							<input type="checkbox" id="noStartNotice" /> Reservations can be made up until the current time
+						</label>
+						<span class="noStartNotice">
+							<br/>
+							Reservations must be made at least 
+							<input type="text" id="startNotice" class="textbox" size="5" maxlength="5" {formname key=MIN_NOTICE} /> 
+							prior to start time
+						</span>
+					</li>
+					<li>
+						<label>
+							<input type="checkbox" id="noEndNotice" /> Reservations can end at any point in the future
+						</label>					
+						<span class="noEndNotice">
+							<br/>
+							Reservations must not end more than
+							<input type="text" id="endNotice" class="textbox" size="5" maxlength="5" {formname key=MAX_NOTICE}  />
+							from the current time
+						</span>
+					</li>
+				</ul>
+			</fieldset>
+			<fieldset><legend>Capacity</legend>
+				<ul>
+					<li>
+						<label>
+							<input type="checkbox" id="unlimitedCapactiy" /> This resource has unlimited capacity
+						</label>					
+						<span class="unlimitedCapactiy">
+							<br/>
+							This resource has a capacity of <input type="text" id="maxCapactiy" class="textbox" size="5" maxlength="5" {formname key=MAX_PARTICIPANTS} />people
+						</span>
+					</li>
+				</ul>
+			</fieldset>
 		</div>
+		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
 	</form>
 </div>
 
@@ -373,7 +385,8 @@ $(document).ready(function() {
 		add: '{ManageResourcesActions::ActionAdd}',
 		deleteResource: '{ManageResourcesActions::ActionDelete}',
 		takeOffline: '{ManageResourcesActions::ActionTakeOffline}',
-		bringOnline: '{ManageResourcesActions::ActionBringOnline}'
+		bringOnline: '{ManageResourcesActions::ActionBringOnline}',
+		changeConfiguration: '{ManageResourcesActions::ActionChangeConfiguration}'
 	};
 	
 	var opts = {
@@ -393,14 +406,32 @@ $(document).ready(function() {
 			contact: "{$resource->GetContact()|escape:'javascript'}",
 			description: "{$resource->GetDescription()|escape:'javascript'}",
 			notes: "{$resource->GetNotes()|escape:'javascript'}",
-			minLength: '{$resource->GetMinLength()}',
-			maxLength: '{$resource->GetMaxLength()}',
 			autoAssign: '{$resource->GetAutoAssign()}',
 			requiresApproval: '{$resource->GetRequiresApproval()}',
 			allowMultiday: '{$resource->GetAllowMultiday()}',
 			maxParticipants: '{$resource->GetMaxParticipants()}',
-			scheduleId: '{$resource->GetScheduleId()}'
+			scheduleId: '{$resource->GetScheduleId()}',
+			minLength: '',
+			maxLength: '',
+			startNotice: '',
+			endNotice: ''
 		};
+
+		{if $resource->HasMinLength()}
+			resource.minLength = '{$resource->GetMinLength()->Format(Time::FORMAT_HOUR_MINUTE)}';
+		{/if}
+
+		{if $resource->HasMaxLength()}
+			resource.maxLength = '{$resource->GetMaxLength()->Format(Time::FORMAT_HOUR_MINUTE)}';
+		{/if}
+
+		{if $resource->HasMinNotice()}
+			resource.startNotice = '{$resource->GetMinNotice()->Format(Time::FORMAT_HOUR_MINUTE)}';
+		{/if}
+
+		{if $resource->HasMaxNotice()}
+			resource.endNotice = '{$resource->GetMaxNotice()->Format(Time::FORMAT_HOUR_MINUTE)}';
+		{/if}
 	
 		resourceManagement.add(resource);
 	{/foreach}

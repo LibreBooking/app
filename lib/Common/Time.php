@@ -6,6 +6,8 @@ class Time
 	private $_second;
 	private $_timezone;
 	
+	const FORMAT_HOUR_MINUTE = "H:i";
+	
 	public function __construct($hour, $minute, $second = null, $timezone = null)
 	{
 		$this->_hour = intval($hour);

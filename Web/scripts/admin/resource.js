@@ -30,6 +30,11 @@ function ResourceManagement(opts)
 	
 	ResourceManagement.prototype.init = function()
 	{
+		$("#minDuration").watermark('HH:mm');
+		$("#maxDuration").watermark('HH:mm');
+		$("#startNotice").watermark('HH:mm');
+		$("#endNotice").watermark('HH:mm');
+		
 		ConfigureAdminDialog(elements.renameDialog, 'Rename Resource', 300, 135);
 		ConfigureAdminDialog(elements.imageDialog, 'Change Image', 500, 150);
 		ConfigureAdminDialog(elements.scheduleDialog, 'Change Schedule', 300, 125);
@@ -203,6 +208,7 @@ function ResourceManagement(opts)
 			
 			if ($(this).is(":checked"))
 			{
+				span.find(":text").val('');
 				span.hide();
 			}
 			else
@@ -213,22 +219,36 @@ function ResourceManagement(opts)
 		
 		var resource = getActiveResource();
 		
-		$('#minDuration').val(resource.minLength);
-		if (resource.minLength == '')
-		{
-			$('#noMinimumDuration').attr('checked', true);
-			$('#noMinimumDuration').trigger('change');
-		}
+		showHideConfiguration(resource.minLength, $('#minDuration'), $('#noMinimumDuration'));
+		showHideConfiguration(resource.maxLength, $('#maxDuration'), $('#noMaximumDuration'));
+		showHideConfiguration(resource.startNotice, $('#startNotice'), $('#noStartNotice'));
+		showHideConfiguration(resource.endNotice, $('#endNotice'), $('#noEndNotice'));
+		showHideConfiguration(resource.maxParticipants, $('#maxCapactiy'), $('#unlimitedCapactiy'));
 		
-//		minLength: '{$resource->GetMinLength()}',
-//		maxLength: '{$resource->GetMaxLength()}',
-//		autoAssign: '{$resource->GetAutoAssign()}',
-//		requiresApproval: '{$resource->GetRequiresApproval()}',
-//		allowMultiday: '{$resource->GetAllowMultiday()}',
-//		maxParticipants: '{$resource->GetMaxParticipants()}',
+		$('#allowMultiday').val(resource.allowMultiday);
+		$('#requiresApproval').val(resource.requiresApproval);
+		$('#autoAssign').val(resource.autoAssign);
 		
 		elements.configurationDialog.dialog("open");
 	};
+	
+	function showHideConfiguration(attributeValue, attributeDisplayElement, attributeCheckbox)
+	{
+		attributeDisplayElement.val(attributeValue);
+		var id = attributeCheckbox.attr('id');
+		var span = elements.configurationDialog.find('.' + id);
+		
+		if (attributeValue == '')
+		{
+			attributeCheckbox.attr('checked', true);
+			span.hide();
+		}
+		else
+		{
+			attributeCheckbox.attr('checked', false);
+			span.show();
+		}
+	}
 	
 	var showIndicator = function(formElement)
 	{

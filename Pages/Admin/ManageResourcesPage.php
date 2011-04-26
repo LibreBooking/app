@@ -44,6 +44,46 @@ interface IUpdateResourcePage
 	 * @return string
 	 */
 	function GetNotes();
+	
+	/**
+	 * @return string
+	 */
+	function GetMinimumDuration();
+	
+	/**
+	 * @return string
+	 */
+	function GetMaximumDuration();
+	
+	/**
+	 * @return string
+	 */
+	function GetAllowMultiday();
+		
+	/**
+	 * @return string
+	 */
+	function GetRequiresApproval();
+		
+	/**
+	 * @return string
+	 */
+	function GetAutoAssign();
+		
+	/**
+	 * @return string
+	 */
+	function GetStartNoticeMinutes();
+		
+	/**
+	 * @return string
+	 */
+	function GetEndNoticeMinutes();
+		
+	/**
+	 * @return string
+	 */
+	function GetMaxParticipants();
 }
 
 
@@ -135,6 +175,70 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 	public function GetNotes()
 	{
 		return $this->server->GetForm(FormKeys::RESOURCE_NOTES);
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function GetMinimumDuration()
+	{
+		return $this->server->GetForm(FormKeys::MIN_DURATION);
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function GetMaximumDuration()
+	{
+		return $this->server->GetForm(FormKeys::MAX_DURATION);
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function GetAllowMultiday()
+	{
+		return $this->server->GetForm(FormKeys::ALLOW_MULTIDAY);
+	}
+		
+	/**
+	 * @return string
+	 */
+	public function GetRequiresApproval()
+	{
+		return $this->server->GetForm(FormKeys::REQUIRES_APPROVAL);
+	}
+		
+	/**
+	 * @return string
+	 */
+	public function GetAutoAssign()
+	{
+		return $this->server->GetForm(FormKeys::AUTO_ASSIGN);
+	}
+		
+	/**
+	 * @return string
+	 */
+	public function GetStartNoticeMinutes()
+	{
+		return $this->server->GetForm(FormKeys::MIN_NOTICE);
+	}
+		
+	/**
+	 * @return string
+	 */
+	public function GetEndNoticeMinutes()
+	{
+		return $this->server->GetForm(FormKeys::MAX_NOTICE);
+	}
+		
+	/**
+	 * @return string
+	 */
+	public function GetMaxParticipants()
+	{
+		return $this->server->GetForm(FormKeys::MAX_PARTICIPANTS);
 	}
 }
 

@@ -15,6 +15,7 @@
 <link rel="icon" href="{$Path}favicon.ico" />
 <script type="text/javascript" src="{$Path}scripts/js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.7.custom.min.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/menubar.js"></script>
 <style type="text/css">

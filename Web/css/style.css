@@ -456,3 +456,13 @@ textarea.input-areashow {
 {
 	list-style: none;
 }
+
+fieldset {
+	border: solid #dedede 1px;
+	padding: 10px;
+}
+
+legend {
+	font-size: 11px;
+	padding: 0px 5px;	
+}

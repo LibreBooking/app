@@ -6,6 +6,7 @@ require_once(ROOT_DIR . 'lib/Graphics/namespace.php');
 class ManageResourcesActions
 {
 	const ActionAdd = 'add';
+	const ActionChangeConfiguration = 'configuration';
 	const ActionChangeDescription = 'description';
 	const ActionChangeImage = 'image';
 	const ActionChangeLocation = 'location';
@@ -54,6 +55,7 @@ class ManageResourcesPresenter
 		$this->imageFactory = $imageFactory;
 		
 		$this->actions[ManageResourcesActions::ActionAdd] = 'Add';
+		$this->actions[ManageResourcesActions::ActionChangeConfiguration] = 'ChangeConfiguration';
 		$this->actions[ManageResourcesActions::ActionChangeDescription] = 'ChangeDescription';
 		$this->actions[ManageResourcesActions::ActionChangeImage] = 'ChangeImage';
 		$this->actions[ManageResourcesActions::ActionChangeLocation] = 'ChangeLocation';
@@ -115,6 +117,34 @@ class ManageResourcesPresenter
 		
 		$resource = Resource::CreateNew($name, $scheduleId);
 		$this->resourceRepository->Add($resource);
+	}
+	
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function ChangeConfiguration()
+	{
+		$minDuration = $this->page->GetMinimumDuration();
+		$maxDuration = $this->page->GetMaximumDuration();
+		$allowMultiDay = $this->page->GetAllowMultiday();
+		$requiresApproval = $this->page->GetRequiresApproval();
+		$autoAssign = $this->page->GetAutoAssign();
+		$minNotice = $this->page->GetStartNoticeMinutes();
+		$maxNotice = $this->page->GetEndNoticeMinutes();
+		$maxParticipants = $this->page->GetMaxParticipants();
+		
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		
+		$resource->SetMinLength($minDuration);
+		$resource->SetMaxLength($maxDuration);
+		$resource->SetAllowMultiday($allowMultiDay);
+		$resource->SetRequiresApproval($requiresApproval);
+		$resource->SetAutoAssign($autoAssign);
+		$resource->SetMinNotice($minNotice);
+		$resource->SetMaxNotice($maxNotice);
+		$resource->SetMaxParticipants($maxParticipants);
+		
+		$this->resourceRepository->Update($resource);
 	}
 	
 	/**

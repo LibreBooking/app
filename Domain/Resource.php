@@ -269,7 +269,7 @@ class Resource implements IResource
 	
 	public function GetAllowMultiday()
 	{
-		return $this->_allowMultiday;
+		return (bool)$this->_allowMultiday;
 	}
 	
 	public function SetAllowMultiday($value)
@@ -288,6 +288,10 @@ class Resource implements IResource
 	public function SetMaxParticipants($value)
 	{
 		$this->_maxParticipants = $value;
+		if (empty($value))
+		{
+			$this->_maxParticipants = null;
+		}
 	}
 	
 	public function HasMaxParticipants()
