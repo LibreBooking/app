@@ -28,8 +28,6 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		$resourceRepository = new ResourceRepository();
 		
 		$ruleProcessor->AddRule(new ResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
-		$ruleProcessor->AddRule(new ResourceMinimumNoticeRule($resourceRepository));
-		$ruleProcessor->AddRule(new ResourceMaximumNoticeRule($resourceRepository));
 		
 		return new AddReservationValidationService($ruleProcessor);
 	}
@@ -38,9 +36,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	{
 		$reservationRepository = new ReservationRepository();
 		$ruleProcessor->AddRule(new ExistingResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
-		$ruleProcessor->AddRule(new ResourceMinimumNoticeRule($resourceRepository));
-		$ruleProcessor->AddRule(new ResourceMaximumNoticeRule($resourceRepository));
-		
+
 		return new UpdateReservationValidationService($ruleProcessor);
 	}
 	
@@ -54,7 +50,10 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		// Common rules
 		$rules = array();
 		$rules[] = new ReservationDateTimeRule();
-		$rules[] = new PermissionValidationRule(new PermissionServiceFactory(), $userSession);
+		$rules[] = new AdminExcludedRule(new PermissionValidationRule(new PermissionServiceFactory()), $userSession);
+		$rules[] = new AdminExcludedRule(new ResourceMinimumNoticeRule($resourceRepository), $userSession);
+		$rules[] = new AdminExcludedRule(new ResourceMaximumNoticeRule($resourceRepository), $userSession);
+		
 		
 		return new ReservationValidationRuleProcessor($rules);
 	}

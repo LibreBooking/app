@@ -16,14 +16,12 @@ class PermissionValidationRuleTests extends TestBase
 		parent::teardown();
 	}
 	
-	public function testChecksIfUserHasPermissionIfUserIsNotAnAdmin()
+	public function testChecksIfUserHasPermission()
 	{
 		$userId = 98;
 		$resourceId = 100;
 		$resourceId1 = 1;
 		$resourceId2 = 2;
-		
-		$userSession = new FakeUserSession(false, 'CST', 1909);
 
 		$resource = new ReservationResource($resourceId);
 		$resource1 = new ReservationResource($resourceId1);
@@ -42,23 +40,13 @@ class PermissionValidationRuleTests extends TestBase
 			->with($this->equalTo($userId))
 			->will($this->returnValue($service));		
 			
-		$rule = new PermissionValidationRule($factory, $userSession);
+		$rule = new PermissionValidationRule($factory);
 		$result = $rule->Validate($reservation);
 			
 		$this->assertEquals(false, $result->IsValid());
 		
 		$this->assertEquals($resource, $service->Resources[0]);
 		$this->assertEquals($resource1, $service->Resources[1]);
-	}
-	
-	public function testSkipsPermissionCheckIfUserIsAnAdmin()
-	{
-		$userSession = new FakeUserSession(true, 'CST', 1909);
-		
-		$rule = new PermissionValidationRule($this->getMock('IPermissionServiceFactory'), $userSession);
-		$result = $rule->Validate(null);
-		
-		$this->assertEquals(true, $result->IsValid());
 	}
 }
 

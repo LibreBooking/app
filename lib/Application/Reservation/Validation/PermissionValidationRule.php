@@ -8,30 +8,17 @@ class PermissionValidationRule implements IReservationValidationRule
 	 * @var IPermissionServiceFactory
 	 */
 	private $permissionServiceFactory;
-	
-	/**
-	 * @var UserSession
-	 */
-	private $userSession;
 
-	public function __construct(IPermissionServiceFactory $permissionServiceFactory, UserSession $userSession)
+	public function __construct(IPermissionServiceFactory $permissionServiceFactory)
 	{
 		$this->permissionServiceFactory = $permissionServiceFactory;
-		$this->userSession = $userSession;
 	}
 
 	/**
 	 * @see IReservationValidationRule::Validate()
 	 */
 	public function Validate($reservation)
-	{
-		if ($this->userSession->IsAdmin)
-		{
-			return new ReservationRuleResult(true);
-		}
-		
-		$currentUserId = $this->userSession->UserId;
-
+	{		
 		$permissionService = $this->permissionServiceFactory->GetPermissionService($reservation->UserId());
 
 		$resourceId = $reservation->ResourceId();
