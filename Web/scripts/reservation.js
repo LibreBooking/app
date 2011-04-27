@@ -35,6 +35,41 @@ function Reservation(opts)
 		$('#btnConfirmAddResources').click(function() {
 			AddResources();
 		});
+
+        $('.resourceDetails').each(function() {
+            $(this).qtip({
+                position:
+				{
+				     corner: {
+                         target: 'topRight',
+                         tooltip: 'bottomLeft'
+                     }
+				},
+
+				content:
+				{
+					text: 'Loading...',
+					ajax:
+					{
+				         url: "login.php",
+				         type: 'GET',
+				         data: { id: 2 },
+				         dataType: 'html'
+			      	}
+				},
+
+				show:
+				{
+					delay: 500
+				},
+
+                style:
+                {
+                    classes: 'ui-tooltip-blue ui-tooltip-shadow'
+                }
+
+			});
+        });
 				
 		// initialize selected resources
 		AddResources();

@@ -56,7 +56,6 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		$rules[] = new AdminExcludedRule(new ResourceMinimumDurationRule($resourceRepository), $userSession);
 		$rules[] = new AdminExcludedRule(new ResourceMaximumDurationRule($resourceRepository), $userSession);
 		
-		
 		return new ReservationValidationRuleProcessor($rules);
 	}
 }

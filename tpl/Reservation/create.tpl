@@ -3,8 +3,8 @@
 {/block}
 <style type="text/css">
 	@import url({$Path}css/reservation.css);
+    @import url({$Path}css/jquery.qtip.min.css);
 </style>
-<!-- <a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>-->
 <div id="reservationbox">
 
 <form id="reservationForm" method="post">
@@ -20,11 +20,14 @@
 		<ul class="no-style">
         	<li class="inline">
 		    	<label>{translate key="ResourceList"}</label><br />
-		    		<div id="resourceNames" style="display:inline">{$ResourceName} 
-			    		<input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}" />
+		    		<div id="resourceNames" style="display:inline">
+                        <a href="#" class="resourceDetails">{$ResourceName}</a>
+			    		<input class="resourceId" type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}" />
 			    		<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}" />
 		    		</div>
-					<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(Add/Change)</a>
+                    {if $AvailableResources|count > 1}
+					    <a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(More Resources)</a>
+                    {/if}
 					<div id="additionalResources"></div>
         	</li>
         	<li>
@@ -219,6 +222,8 @@
 
 
 <script type="text/javascript" src="scripts/js/jquery.textarea-expander.js"></script>
+<script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="scripts/js/jquery.qtip.pack.js"></script>
 <script type="text/javascript" src="scripts/reservation.js"></script>
 <script type="text/javascript" src="scripts/js/jquery.form-2.43.js"></script>
 
