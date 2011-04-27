@@ -111,8 +111,10 @@ class en_us extends Language
 		$strings['LayoutDescription'] = 'Starts on %s, showing %s days at a time';
 		
 		// Errors
-		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s';
-		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s';
+		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
+		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s.';
+		$strings['MinDurationError'] = 'This reservation must last at least %s.';
+		$strings['MaxDurationError'] = 'This reservation cannot last longer than %s.';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';
