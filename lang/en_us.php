@@ -27,6 +27,7 @@ class en_us extends Language
 		// new stuff
 		$dates['js_general_date'] = 'mm/dd/yy';
 		$dates['general_date'] = 'm/d/Y';
+		$dates['general_datetime'] = 'm/d/Y H:i:s';
 		$dates['schedule_daily'] = 'l, m/d/Y';
 		$dates['period_time'] = "g:i A";
 		$dates['url'] = 'Y-m-d';
@@ -108,6 +109,10 @@ class en_us extends Language
 		$strings['NextWeek'] = 'Next Week';
 		$strings['SignOut'] = 'Sign Out';
 		$strings['LayoutDescription'] = 'Starts on %s, showing %s days at a time';
+		
+		// Errors
+		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s';
+		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s';
 		
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

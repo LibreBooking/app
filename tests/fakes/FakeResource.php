@@ -1,5 +1,5 @@
 <?php
-class FakeResource implements IResource
+class FakeResource extends Resource
 {
 	public $_id;
 	public $_name;

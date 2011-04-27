@@ -109,6 +109,14 @@ class ReservationSeries
 		return $this->_resources;
 	}
 	
+	/**
+	 * @return int[]
+	 */
+	public function AllResources()
+	{
+		return array_merge(array($this->_resourceId), $this->_resources);
+	}
+	
 	protected $instances = array();
 	
 	/**

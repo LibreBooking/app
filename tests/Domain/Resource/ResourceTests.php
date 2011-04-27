@@ -153,6 +153,7 @@ class ResourceTests extends TestBase
 								$description,
 								$scheduleId);
 		$resource->SetImage($imageName);
+		$resource->BringOnline();
 		
 		$resourceRepository = new ResourceRepository();
 		$resourceRepository->Update($resource);
@@ -163,14 +164,14 @@ class ResourceTests extends TestBase
 								$location, 
 								$contact, 
 								$notes, 
-								Time::Parse($minLength), 
-								Time::Parse($maxLength), 
+								new TimeInterval($minLength), 
+								new TimeInterval($maxLength), 
 								$autoAssign, 
 								$requiresApproval, 
 								$allowMultiday,
 								$maxParticipants,
-								Time::Parse($minNotice),
-								Time::Parse($maxNotice),
+								new TimeInterval($minNotice),
+								new TimeInterval($maxNotice),
 								$description,
 								$imageName,
 								$resource->IsOnline());

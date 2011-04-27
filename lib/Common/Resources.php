@@ -5,14 +5,17 @@ interface IResourceLocalization
 	public function GetDateFormat($key);
 	public function GetDays($key);
 	public function GetMonths($key);
+	function GeneralDateFormat();
+	function GeneralDateTimeFormat();
 }
 
 class ResourceKeys
 {
 	const DATE_GENERAL = 'general_date';
+	const DATETIME_GENERAL = 'general_datetime';
 }
 
-class Resources
+class Resources implements IResourceLocalization
 {
 	public $CurrentLanguage;
 	public $LanguageFile;
@@ -107,6 +110,16 @@ class Resources
 		}
 		
 		return $dates[$key];
+	}
+	
+	public function GeneralDateFormat()
+	{
+		return $this->GetDateFormat(ResourceKeys::DATE_GENERAL);
+	}
+	
+	public function GeneralDateTimeFormat()
+	{
+		return $this->GetDateFormat(ResourceKeys::DATETIME_GENERAL);
 	}
 	
 	public function GetDays($key)

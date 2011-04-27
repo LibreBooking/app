@@ -198,15 +198,11 @@ class Resource implements IResource
 	}
 	
 	/**
-	 * @return Time
+	 * @return TimeInterval
 	 */
 	public function GetMinLength()
 	{
-		if ($this->HasMinLength())
-		{
-			return Time::Parse($this->_minLength);
-		}
-		return new NullTime();
+		return new TimeInterval($this->_minLength);
 	}
 	
 	/**
@@ -223,15 +219,11 @@ class Resource implements IResource
 	}
 	
 	/**
-	 * @return Time
+	 * @return TimeInterval
 	 */
 	public function GetMaxLength()
 	{
-		if ($this->HasMaxLength())
-		{
-			return Time::Parse($this->_maxLength);
-		}
-		return new NullTime();
+		return new TimeInterval($this->_maxLength);
 	}
 	
 	/**
@@ -269,7 +261,7 @@ class Resource implements IResource
 	
 	public function GetAllowMultiday()
 	{
-		return (bool)$this->_allowMultiday;
+		return $this->_allowMultiday;
 	}
 	
 	public function SetAllowMultiday($value)
@@ -300,15 +292,11 @@ class Resource implements IResource
 	}
 	
 	/**
-	 * @return Time
+	 * @return TimeInterval
 	 */
 	public function GetMinNotice()
 	{
-		if ($this->HasMinNotice())
-		{
-			return Time::Parse($this->_minNotice);
-		}
-		return new NullTime();
+		return new TimeInterval($this->_minNotice);
 	}
 	
 	/**
@@ -325,15 +313,11 @@ class Resource implements IResource
 	}
 	
 	/**
-	 * @return Time
+	 * @return TimeInterval
 	 */
 	public function GetMaxNotice()
 	{
-		if ($this->HasMaxNotice())
-		{
-			return Time::Parse($this->_maxNotice);
-		}
-		return new NullTime();
+		return new TimeInterval($this->_maxNotice);
 	}
 	
 	/**
