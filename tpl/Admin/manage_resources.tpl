@@ -79,14 +79,14 @@
 				<ul>
 					<li>
 						{if $resource->HasMinLength()}
-							Reservations must last at least {$resource->GetMinLength()->Format(Time::FORMAT_HOUR_MINUTE)} 
+							Reservations must last at least {$resource->GetMinLength()} 
 						{else}
 							There is no minimum reservation duration
 						{/if}
 					</li>
 					<li>
 						{if $resource->HasMaxLength()}
-							Reservations cannot last more than {$resource->GetMaxLength()->Format(Time::FORMAT_HOUR_MINUTE)}
+							Reservations cannot last more than {$resource->GetMaxLength()}
 						{else}
 							There is no maximum reservation duration
 						{/if}
@@ -112,14 +112,14 @@
 				<ul>				
 				<li>
 					{if $resource->HasMinNotice()}
-						Reservations must be made at least {$resource->GetMinNotice()->Format(Time::FORMAT_HOUR_MINUTE)} prior to start time
+						Reservations must be made at least {$resource->GetMinNotice()} prior to start time
 					{else}
 						Reservations can be made up until the current time
 					{/if}
 				</li>
 				<li>
 					{if $resource->HasMaxNotice()}
-						Reservations must not end more than {$resource->GetMinNotice()->Format(Time::FORMAT_HOUR_MINUTE)} from the current time
+						Reservations must not end more than {$resource->GetMinNotice()} from the current time
 					{else}
 						Reservations can end at any point in the future
 					{/if}
@@ -418,19 +418,19 @@ $(document).ready(function() {
 		};
 
 		{if $resource->HasMinLength()}
-			resource.minLength = '{$resource->GetMinLength()->Format(Time::FORMAT_HOUR_MINUTE)}';
+			resource.minLength = '{$resource->GetMinLength()}';
 		{/if}
 
 		{if $resource->HasMaxLength()}
-			resource.maxLength = '{$resource->GetMaxLength()->Format(Time::FORMAT_HOUR_MINUTE)}';
+			resource.maxLength = '{$resource->GetMaxLength()}';
 		{/if}
 
 		{if $resource->HasMinNotice()}
-			resource.startNotice = '{$resource->GetMinNotice()->Format(Time::FORMAT_HOUR_MINUTE)}';
+			resource.startNotice = '{$resource->GetMinNotice()}';
 		{/if}
 
 		{if $resource->HasMaxNotice()}
-			resource.endNotice = '{$resource->GetMaxNotice()->Format(Time::FORMAT_HOUR_MINUTE)}';
+			resource.endNotice = '{$resource->GetMaxNotice()}';
 		{/if}
 	
 		resourceManagement.add(resource);
