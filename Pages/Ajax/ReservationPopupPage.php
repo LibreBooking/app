@@ -130,12 +130,12 @@ class ReservationPopupPresenter
 		$reservation = $this->_reservationRepository->GetReservationForEditing($this->_page->GetReservationId());
 		$startDate = $reservation->StartDate->ToTimezone($tz);
 		$endDate = $reservation->EndDate->ToTimezone($tz);
-		
+
 		$this->_page->SetName($reservation->OwnerFirstName, $reservation->OwnerLastName);
 		$this->_page->SetResources($reservation->Resources);
 		$this->_page->SetParticipants($reservation->Participants);
 		$this->_page->SetSummary($reservation->Description);
-		
+	
 		$this->_page->SetDates($startDate, $endDate);
 	}
 }

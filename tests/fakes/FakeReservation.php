@@ -43,7 +43,7 @@ class FakeReservation extends ReservationSeries
 		$this->start_date = mktime(0,0,0,3,22,2006);
 		$this->end_date = mktime(0,0,0,3,24,2006);
 
-		$this->resource = new FakeResource();
+		$this->resource = new FakeBookableResource();
 		$this->user = new FakeUser();
 		$this->users = array( array('email' => 'fake1@email.com'), array('email' => 'fake2@email.com') );
 		$this->resources = array( array('name' => 'projector1') );

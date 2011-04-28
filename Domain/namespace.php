@@ -8,7 +8,7 @@ require_once(ROOT_DIR . 'Domain/Values/SeriesUpdateScope.php');
 require_once(ROOT_DIR . 'Domain/Announcements.php');
 require_once(ROOT_DIR . 'Domain/Schedule.php');
 require_once(ROOT_DIR . 'Domain/ScheduleReservation.php');
-require_once(ROOT_DIR . 'Domain/Resource.php');
+require_once(ROOT_DIR . 'Domain/BookableResource.php');
 require_once(ROOT_DIR . 'Domain/ReservationTypes.php');
 require_once(ROOT_DIR . 'Domain/ResourceService.php');
 require_once(ROOT_DIR . 'Domain/ResourcePermissionStore.php');

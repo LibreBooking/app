@@ -94,7 +94,7 @@ class OwnerEmailNotificationTests extends TestBase
 	
 	public function LoadsResource($resourceRepo, $resourceId)
 	{
-		$resource = new FakeResource($resourceId, 'name');
+		$resource = new FakeBookableResource($resourceId, 'name');
 		
 		$resourceRepo->expects($this->once())
 			->method('LoadById')

@@ -27,7 +27,7 @@ class ResourceTests extends TestBase
 		
 		foreach ($rows as $row)
 		{
-			$expected[] = Resource::Create($row);
+			$expected[] = BookableResource::Create($row);
 		}
 		
 		$resourceAccess = new ResourceRepository();
@@ -48,10 +48,10 @@ class ResourceTests extends TestBase
 		
 		$resourceService = new ResourceService($resourceRepository);
 		
-		$resource1 = new FakeResource(1, 'resource1');
-		$resource2 = new FakeResource(2, 'resource2');
-		$resource3 = new FakeResource(3, 'resource3');
-		$resource4 = new FakeResource(4, 'resource4');
+		$resource1 = new FakeBookableResource(1, 'resource1');
+		$resource2 = new FakeBookableResource(2, 'resource2');
+		$resource3 = new FakeBookableResource(3, 'resource3');
+		$resource4 = new FakeBookableResource(4, 'resource4');
 		$resources = array($resource1, $resource2, $resource3, $resource4);
 
 		$resourceRepository->expects($this->once())
@@ -100,7 +100,7 @@ class ResourceTests extends TestBase
 		
 		$resourceService = new ResourceService($resourceRepository);
 		
-		$resource1 = new FakeResource(1, 'resource1');
+		$resource1 = new FakeBookableResource(1, 'resource1');
 		
 		$resourceRepository->expects($this->once())
 			->method('GetScheduleResources')
@@ -137,7 +137,7 @@ class ResourceTests extends TestBase
 		$scheduleId = 19819;
 		$imageName = 'something.png';
 								
-		$resource = new Resource($id, 
+		$resource = new BookableResource($id,
 								$name, 
 								$location, 
 								$contact, 
@@ -191,7 +191,7 @@ class ResourceTests extends TestBase
 		$scheduleId = 828;
 		$resourceId = 8888;
 		
-		$resource = Resource::CreateNew($name, $scheduleId);
+		$resource = BookableResource::CreateNew($name, $scheduleId);
 		
 		$this->db->_ExpectedInsertId = $resourceId;
 		
@@ -208,7 +208,7 @@ class ResourceTests extends TestBase
 	public function testDeletingAResourceRemovesAllAssociatedData()
 	{
 		$resourceId = 100;
-		$resource = Resource::CreateNew('name', 1);
+		$resource = BookableResource::CreateNew('name', 1);
 		$resource->SetResourceId($resourceId);
 		
 		$resourceRepository = new ResourceRepository();

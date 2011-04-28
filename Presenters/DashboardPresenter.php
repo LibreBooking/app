@@ -20,7 +20,7 @@ class DashboardPresenter
 	{
 		$announcement = new AnnouncementsControl(new SmartyPage());
 		$upcomingReservations = new UpcomingReservations(new SmartyPage());
-		
+
 		$this->_page->AddItem($announcement);
 		$this->_page->AddItem($upcomingReservations);
 	}

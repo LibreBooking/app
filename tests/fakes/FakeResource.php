@@ -1,5 +1,5 @@
 <?php
-class FakeResource extends Resource
+class FakeBookableResource extends BookableResource
 {
 	public $_id;
 	public $_name;

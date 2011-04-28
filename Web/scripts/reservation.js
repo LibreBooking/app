@@ -37,6 +37,12 @@ function Reservation(opts)
 		});
 
         $('.resourceDetails').each(function() {
+            $(this).click(function(e) {
+                e.preventDefault();
+            });
+
+            var resourceId = $(this).siblings(".resourceId").val();
+            
             $(this).qtip({
                 position:
 				{
@@ -51,9 +57,9 @@ function Reservation(opts)
 					text: 'Loading...',
 					ajax:
 					{
-				         url: "login.php",
+				         url: "ajax/resource_details.php",
 				         type: 'GET',
-				         data: { id: 2 },
+				         data: { rid: resourceId },
 				         dataType: 'html'
 			      	}
 				},

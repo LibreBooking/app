@@ -20,10 +20,10 @@ class ResourceMaximumNoticeRuleTests extends TestBase
 		$resourceId1 = 1;
 		$resourceId2 = 2;
 		
-		$resource1 = new FakeResource($resourceId1, "1");
+		$resource1 = new FakeBookableResource($resourceId1, "1");
 		$resource1->SetMaxNotice(null);
 		
-		$resource2 = new FakeResource($resourceId2, "2");
+		$resource2 = new FakeBookableResource($resourceId2, "2");
 		$resource2->SetMaxNotice("23:00");
 		
 		$reservation = new TestReservationSeries();
@@ -49,7 +49,7 @@ class ResourceMaximumNoticeRuleTests extends TestBase
 	
 	public function testOkIfLatestInstanceIsBeforeTheMaximumNoticeTime()
 	{
-		$resource = new FakeResource(1, "2");
+		$resource = new FakeBookableResource(1, "2");
 		$resource->SetMaxNotice("1:00");
 		
 		$resourceRepo = $this->getMock('IResourceRepository');

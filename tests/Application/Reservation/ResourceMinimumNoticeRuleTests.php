@@ -20,10 +20,10 @@ class ResourceMinimumNoticeRuleTests extends TestBase
 		$resourceId1 = 1;
 		$resourceId2 = 2;
 		
-		$resource1 = new FakeResource($resourceId1, "1");
+		$resource1 = new FakeBookableResource($resourceId1, "1");
 		$resource1->SetMinNotice(null);
 		
-		$resource2 = new FakeResource($resourceId2, "2");
+		$resource2 = new FakeBookableResource($resourceId2, "2");
 		$resource2->SetMinNotice("25:00");
 		
 		$reservation = new TestReservationSeries();
@@ -49,7 +49,7 @@ class ResourceMinimumNoticeRuleTests extends TestBase
 	
 	public function testOkIfLatestInstanceIsBeforeTheMinimumNoticeTime()
 	{
-		$resource = new FakeResource(1, "2");
+		$resource = new FakeBookableResource(1, "2");
 		$resource->SetMinNotice("1:00");
 		
 		$resourceRepo = $this->getMock('IResourceRepository');

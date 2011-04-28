@@ -25,7 +25,7 @@ class FakeResourceAccess extends ResourceRepository
 		$rows = $this->GetRows();
 		foreach ($rows as $row)
 		{
-			$_Resources[] = Resource::Create($row);
+			$_Resources[] = BookableResource::Create($row);
 		}
 	}
 	

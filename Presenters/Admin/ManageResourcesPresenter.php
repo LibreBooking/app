@@ -115,7 +115,7 @@ class ManageResourcesPresenter
 		$name = $this->page->GetResourceName();
 		$scheduleId = $this->page->GetScheduleId();
 		
-		$resource = Resource::CreateNew($name, $scheduleId);
+		$resource = BookableResource::CreateNew($name, $scheduleId);
 		$this->resourceRepository->Add($resource);
 	}
 	

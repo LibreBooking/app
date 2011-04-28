@@ -1,49 +1,6 @@
 <?php
-require_once(ROOT_DIR . 'Domain/Resource.php');
-
-interface IResourceRepository
-{
-	/**
-	 * Gets all Resources for the given scheduleId
-	 *
-	 * @param int $scheduleId
-	 * @return array[int]Resource
-	 */
-	public function GetScheduleResources($scheduleId);
-	
-	/**
-	 * @param int $resourceId
-	 * @return Resource
-	 */
-	public function LoadById($resourceId);
-	
-	/**
-	 * @param string $name
-	 * @param array $additionalFields key value pair of additional fields to use during resource management
-	 * @return int ID of created Resource
-	 */
-	public function AddResource($name, $additionalFields = array());
-	
-	/**
-	 * @param Resource
-	 */
-	public function Add(Resource $resource);
-	
-	/**
-	 * @param Resource
-	 */
-	public function Update(Resource $resource);
-	
-	/**
-	 * @param Resource
-	 */
-	public function Delete(Resource $resource);
-	
-	/**
-	 * @return Resource[] array of all resources
-	 */
-	public function GetResourceList();
-}
+require_once(ROOT_DIR . 'Domain/BookableResource.php');
+require_once(ROOT_DIR . 'Domain/Access/IResourceRepository.php');
 
 class ResourceRepository implements IResourceRepository
 {
@@ -70,7 +27,7 @@ class ResourceRepository implements IResourceRepository
 		
 		while ($row = $reader->GetRow())
 		{
-			$resources[] = Resource::Create($row);
+			$resources[] = BookableResource::Create($row);
 		}
 		
 		$reader->Free();
@@ -88,7 +45,7 @@ class ResourceRepository implements IResourceRepository
 		
 		while ($row = $reader->GetRow())
 		{
-			$resources[] = Resource::Create($row);
+			$resources[] = BookableResource::Create($row);
 		}
 		
 		$reader->Free();
@@ -96,9 +53,10 @@ class ResourceRepository implements IResourceRepository
 		return $resources;
 	}
 	
-	/**
-	 * @see IResourceRepository::LoadById()
-	 */
+    /**
+     * @param  $resourceId
+     * @return BookableResource
+     */
 	public function LoadById($resourceId)
 	{
 		if (!$this->_cache->Exists($resourceId))
@@ -106,10 +64,11 @@ class ResourceRepository implements IResourceRepository
 			$command = new GetResourceByIdCommand($resourceId);
 	
 			$reader = ServiceLocator::GetDatabase()->Query($command);
-			
+
+            $resource = null;
 			if ($row = $reader->GetRow())
 			{
-				$resource = Resource::Create($row);
+				$resource = BookableResource::Create($row);
 			}
 			
 			$reader->Free();
@@ -149,7 +108,7 @@ class ResourceRepository implements IResourceRepository
 		return $lastResourceId;
 	}
 	
-	public function Add(Resource $resource)
+	public function Add(BookableResource $resource)
 	{
 		$db = ServiceLocator::GetDatabase();
 		$addResourceCommand = new AddResourceCommand($resource->GetName());
@@ -159,7 +118,7 @@ class ResourceRepository implements IResourceRepository
 		$db->Execute(new AddResourceScheduleCommand($resourceId, $resource->GetScheduleId()));
 	}
 	
-	public function Update(Resource $resource)
+	public function Update(BookableResource $resource)
 	{
 		$db = ServiceLocator::GetDatabase();
 		
@@ -189,7 +148,7 @@ class ResourceRepository implements IResourceRepository
 		$db->Execute($updateScheduleCommand);
 	}
 	
-	public function Delete(Resource $resource)
+	public function Delete(BookableResource $resource)
 	{
 		Log::Debug("Deleting resource %s (%s)", $resource->GetResourceId(), $resource->GetName());
 		

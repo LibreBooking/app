@@ -6,14 +6,14 @@ interface IResource
 	 * @return int
 	 */
 	public function GetResourceId();
-	
+
 	/**
 	 * @return string
 	 */
 	public function GetName();
 }
 
-class Resource implements IResource
+class BookableResource implements IResource
 {
 	private $_resourceId;
 	private $_name;
@@ -65,10 +65,15 @@ class Resource implements IResource
 		$this->SetMaxNotice($maxNotice);
 		$this->SetScheduleId($scheduleId);
 	}
-	
+
+    /**
+     * @param  $resourceName
+     * @param  $scheduleId
+     * @return BookableResource
+     */
 	public static function CreateNew($resourceName, $scheduleId)
 	{
-		return new Resource(null,
+		return new BookableResource(null,
 							$resourceName,
 							null,
 							null,
@@ -87,11 +92,11 @@ class Resource implements IResource
 	
 	/**
 	 * @param array[string] $row
-	 * @return Resource
+	 * @return BookableResource
 	 */
 	public static function Create($row)
 	{
-		$resource = new Resource($row[ColumnNames::RESOURCE_ID],
+		$resource = new BookableResource($row[ColumnNames::RESOURCE_ID],
 							$row[ColumnNames::RESOURCE_NAME],
 							$row[ColumnNames::RESOURCE_LOCATION],
 							$row[ColumnNames::RESOURCE_CONTACT],

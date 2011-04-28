@@ -90,7 +90,7 @@ interface IUpdateResourcePage
 interface IManageResourcesPage extends IUpdateResourcePage
 {
 	/**
-	 * @param Resource[] $resources
+	 * @param BookableResource[] $resources
 	 */
 	function BindResources($resources);
 	

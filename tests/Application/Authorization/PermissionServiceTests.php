@@ -6,7 +6,7 @@ class PermissionServiceTests extends TestBase
 	public function testAsksStoreForAllowedResourcesAndReturnsTrueIfItExists()
 	{
 		$userId = 99;
-		$resource = new FakeResource(1, 'whatever');
+		$resource = new FakeBookableResource(1, 'whatever');
 		$resourceIdList = array(3, 1, 4);
 		
 		$store = $this->getMock('IResourcePermissionStore');
@@ -25,7 +25,7 @@ class PermissionServiceTests extends TestBase
 	public function testCachesPermissionsPerUserForThisInstance()
 	{
 		$userId = 99;
-		$resource = new FakeResource(1, 'whatever');
+		$resource = new FakeBookableResource(1, 'whatever');
 		$resourceIdList = array(3, 1, 4);
 		
 		$store = $this->getMock('IResourcePermissionStore');

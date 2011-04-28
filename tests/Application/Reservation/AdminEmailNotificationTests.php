@@ -37,7 +37,7 @@ class AdminEmailNotificationTests extends TestBase
 		$admin2 = $this->getMock('User');
 		$admins = array($admin1, $admin2);
 		
-		$resource = new FakeResource($resourceId, 'name');
+		$resource = new FakeBookableResource($resourceId, 'name');
 			
 		$userRepo = $this->getMock('IUserRepository');
 		$userRepo->expects($this->once())
@@ -86,7 +86,7 @@ class AdminEmailNotificationTests extends TestBase
 		$admin2 = $this->getMock('User');
 		$admins = array($admin1, $admin2);
 		
-		$resource = new FakeResource($resourceId, 'name');
+		$resource = new FakeBookableResource($resourceId, 'name');
 			
 		$userRepo = $this->getMock('IUserRepository');
 		$userRepo->expects($this->once())

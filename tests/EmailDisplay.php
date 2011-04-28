@@ -20,7 +20,7 @@ $reservation->Repeats(new RepeatDayOfMonth(1, $end->AddDays(100), new DateRange(
 $user = new FakeUser();
 //$user->SetLanguage('en_gb');
 
-$email = new ReservationUpdatedEmail($user, $reservation, new FakeResource(1, 'name'));
+$email = new ReservationUpdatedEmail($user, $reservation, new FakeBookableResource(1, 'name'));
 echo $email->Body();
 
 //$emailService = new EmailService();
