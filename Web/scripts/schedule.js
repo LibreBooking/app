@@ -15,7 +15,6 @@ function Schedule(opts)
 				      at: 'top left',
 				      target: $(this)
 				},
-
 				content:
 				{
 					text: 'Loading...',
@@ -27,12 +26,14 @@ function Schedule(opts)
 				         dataType: 'html'
 			      	}
 				},
-				
 				show: 
 				{
 					delay: 700
+				},
+				 style:
+                {
+                    classes: ''
 				}
-
 			});
 			
 			$(this).hover(

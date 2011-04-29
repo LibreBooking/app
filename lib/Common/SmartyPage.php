@@ -60,7 +60,8 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('block', 'validation_group', array($this, 'ValidationGroup'));
 		$this->registerPlugin('function', 'setfocus', array($this, 'SetFocus'));
 		$this->registerPlugin('function', 'formname', array($this, 'GetFormName'));
-		
+		$this->registerPlugin('modifier', 'url2link', array($this, 'CreateUrl'));
+
 		$this->Validators = new PageValdiators();
 	}
 		
@@ -282,6 +283,15 @@ class SmartyPage extends Smarty
 			$append = '[]';
 		}
 		return 'name="' . FormKeys::Evaluate($params['key']) . $append . '"';
+	}
+
+	public function CreateUrl($var)
+	{
+		$string = preg_replace("/([^\w\/])(www\.[a-z0-9\-]+\.[a-z0-9\-]+)/i", "$1http://$2",$var);
+		$string = preg_replace("/([\w]+:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/i","<a target=\"_blank\" href=\"$1\">$1</A>",$string);
+		$string = preg_replace("/([\w-?&;#~=\.\/]+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?))/i","<A HREF=\"mailto:$1\">$1</A>",$string);
+
+		return $string;
 	}
 }
 ?>

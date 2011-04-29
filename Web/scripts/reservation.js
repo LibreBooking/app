@@ -44,36 +44,36 @@ function Reservation(opts)
             var resourceId = $(this).siblings(".resourceId").val();
             
             $(this).qtip({
-                position:
-				{
-				     corner: {
-                         target: 'topRight',
-                         tooltip: 'bottomLeft'
-                     }
+                position: {
+				     my: 'top left',  // Position my top left...
+					 at: 'bottom left', // at the bottom right of...
+					 target: $(this) // my target
 				},
-
-				content:
-				{
+				content: {
 					text: 'Loading...',
-					ajax:
-					{
+					ajax: {
 				         url: "ajax/resource_details.php",
 				         type: 'GET',
 				         data: { rid: resourceId },
 				         dataType: 'html'
 			      	}
 				},
-
-				show:
-				{
+				show: {
 					delay: 500
 				},
 
-                style:
-                {
-                    classes: 'ui-tooltip-blue ui-tooltip-shadow'
-                }
-
+                style: {
+                    classes: 'ui-tooltip-shadow ui-tooltip-blue',
+					width: 600,
+					tip: {
+						corner: true
+					}
+                },
+				hide: {
+					delay: 500,
+					fixed: true,
+					when: 'mouseout'
+				}
 			});
         });
 				
@@ -157,7 +157,7 @@ function Reservation(opts)
 	    $('#result').show();
 	}
 	
-	var AddResources = function(inputId)
+	var AddResources = function()
 	{
 		AddSelected('#dialogAddResources', '#additionalResources', options.additionalResourceElementId);
 		$('#dialogAddResources').dialog('close');
