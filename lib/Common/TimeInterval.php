@@ -51,7 +51,7 @@ class TimeInterval
 			return $this->interval->format("%H:%I");
 		}
 		
-		return null;
+		return '';
 	}
 }
 ?>

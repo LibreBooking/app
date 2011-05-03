@@ -466,3 +466,7 @@ legend {
 	font-size: 11px;
 	padding: 0px 5px;	
 }
+
+#resourceDetails {
+	overflow: scroll;
+}

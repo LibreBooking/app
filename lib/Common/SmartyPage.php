@@ -282,7 +282,7 @@ class SmartyPage extends Smarty
 		{
 			$append = '[]';
 		}
-		return 'name="' . FormKeys::Evaluate($params['key']) . $append . '"';
+		return 'name=\'' . FormKeys::Evaluate($params['key']) . $append . '\'';
 	}
 
 	public function CreateUrl($var)

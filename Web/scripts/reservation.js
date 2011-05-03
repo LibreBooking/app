@@ -64,7 +64,6 @@ function Reservation(opts)
 
                 style: {
                     classes: 'ui-tooltip-shadow ui-tooltip-blue',
-					width: 600,
 					tip: {
 						corner: true
 					}

@@ -30,11 +30,14 @@ class ResourceDetailsPage extends SecurePage implements IResourceDetailsPage
         $this->Set('contactInformation', $resource->GetContact());
         $this->Set('locationInformation', $resource->GetLocation());
         $this->Set('allowMultiday', $resource->GetAllowMultiday());
+		$this->Set('minimumDuration', $resource->GetMinLength());
         $this->Set('maximumDuration', $resource->GetMaxLength());
-        $this->Set('minimumDuration', $resource->GetMinLength());
+
         $this->Set('maxParticipants', $resource->GetMaxParticipants());
         $this->Set('maximumNotice', $resource->GetMaxNotice());
         $this->Set('minimumNotice', $resource->GetMinNotice());
+        $this->Set('requiresApproval', $resource->GetRequiresApproval());
+        $this->Set('autoAssign', $resource->GetAutoAssign());
 
         if ($resource->HasImage())
         {

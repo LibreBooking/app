@@ -47,6 +47,17 @@ class en_us extends Language
 		$strings['Timezone'] = 'Timezone';
 		
 		// new stuff
+		$strings['Edit'] = 'Edit';
+		$strings['Change'] = 'Change';
+		$strings['Rename'] = 'Rename';
+		$strings['Remove'] = 'Remove';
+		$strings['Delete'] = 'Delete';
+		$strings['Update'] = 'Update';
+		$strings['Cancel'] = 'Cancel';
+		$strings['Add'] = 'Add';
+		$strings['Name'] = 'Name';
+		$strings['Yes'] = 'Yes';
+		$strings['No'] = 'No';
 		$strings['FirstNameRequired'] = 'First name is required.';
 		$strings['LastNameRequired'] = 'Last name is required.';
 		$strings['PwMustMatch'] = 'Password confirmation must match password.';
@@ -109,7 +120,46 @@ class en_us extends Language
 		$strings['NextWeek'] = 'Next Week';
 		$strings['SignOut'] = 'Sign Out';
 		$strings['LayoutDescription'] = 'Starts on %s, showing %s days at a time';
-		
+		$strings['AllResources'] = 'All Resources';
+		$strings['TakeOffline'] = 'Take Offline';
+		$strings['BringOnline'] = 'Bring Online';
+		$strings['AddImage'] = 'Add Image';
+		$strings['NoImage'] = 'No Image Assigned';
+		$strings['Move'] = 'Move';
+		$strings['AppearsOn'] = 'Appears On %s';
+		$strings['Location'] = 'Location';
+		$strings['NoLocationLabel'] = '(no location set)';
+		$strings['Contact'] = 'Contact';
+		$strings['NoContactLabel'] = '(no contact information)';
+		$strings['Description'] = 'Description';
+		$strings['NoDescriptionLabel'] = '(no description';
+		$strings['Notes'] = 'Notes';
+		$strings['NoNotesLabel'] = '(no notes)';
+		$strings['UsageConfiguration'] = 'Usage Configuration';
+		$strings['ChangeConfiguration'] = 'Change Configuration';
+		$strings['ResourceMinLength'] = 'Reservations must last at least %s';
+		$strings['ResourceMinLengthNone'] = 'There is no minimum reservation duration';
+		$strings['ResourceMaxLength'] = 'Reservations cannot last more than %s';
+		$strings['ResourceMaxLengthNone'] = 'There is no maximum reservation duration';
+		$strings['ResourceRequiresApproval'] = 'Reservations must be approved';
+		$strings['ResourceRequiresApprovalNone'] = 'Reservations do not require approval';
+		$strings['ResourcePermissionAutoGranted'] = 'Permission is automatically granted';
+		$strings['ResourcePermissionNotAutoGranted'] = 'Permission is automatically granted';
+		$strings['ResourceMinNotice'] = 'Reservations must be made at least %s prior to start time';
+		$strings['ResourceMinNoticeNone'] = 'Reservations can be made up until the current time';
+		$strings['ResourceMaxNotice'] = 'Reservations must not end more than %s from the current time';
+		$strings['ResourceMaxNoticeNone'] = 'Reservations can end at any point in the future';
+		$strings['ResourceAllowMultiDay'] = 'Reservations can be made across days';
+		$strings['ResourceNotAllowMultiDay'] = 'Reservations cannot be made across days';
+		$strings['ResourceCapacity'] = 'This resource has a capacity of %s people';
+		$strings['ResourceCapacityNone'] = 'This resource has unlimited capacity';
+		$strings['AddNewResource'] = 'Add New Resource';
+		$strings['Schedule'] = 'Schedule';
+		$strings['AddResource'] = 'Add Resource';
+		$strings['Capacity'] = 'Capacity';
+		$strings['Access'] = 'Access';
+		$strings['Duration'] = 'Duration';
+
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
 		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s.';

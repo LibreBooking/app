@@ -3,12 +3,12 @@
 	@import url({$Path}css/admin.css);
 </style>
 
-<h1>Manage Resources</h1>
+<h1>{translate key='ManageResources'}</h1>
 
 <div id="globalError" class="error" style="display:none"></div>
 <div class="admin">
 	<div class="title">
-		All Resources
+		{translate key='AllResources'}
 	</div>
 	{foreach $Resources item=resource}
 	{assign var=id value=$resource->GetResourceId()}
@@ -18,91 +18,91 @@
 			<div style="float:left; text-align:center; width:110px;;">
 				{if $resource->HasImage()}
 					<img src="{$ImageUploadPath}{$resource->GetImage()}" alt="Resource Image" class="image" /><br/>
-					<a class="update imageButton" href="javascript: void(0);">Change</a> | 
-					<a class="update removeImageButton" href="javascript: void(0);">Remove</a>
+					<a class="update imageButton" href="javascript: void(0);">{translate key='Change'}</a> |
+					<a class="update removeImageButton" href="javascript: void(0);">{translate key='Remove'}</a>
 				{else}
-					<div class="noImage">No Image Assigned</div>
-					<a class="update imageButton" href="javascript: void(0);">Add Image</a>
+					<div class="noImage">{translate key='NoImage'}</div>
+					<a class="update imageButton" href="javascript: void(0);">{translate key='AddImage'}</a>
 				{/if}
 			</div>
 			<div style="float:right;">
 				<ul>
 					<li>
-						<h4>{$resource->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">Rename</a>
+						<h4>{$resource->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">{translate key='Rename'}</a>
 					</li>
 					<li>
-						Appears on {$Schedules[$resource->GetScheduleId()]} <a class="update changeScheduleButton" href="javascript: void(0);">Move</a>
+						{translate key='AppearsOn' args=$Schedules[$resource->GetScheduleId()]} <a class="update changeScheduleButton" href="javascript: void(0);">{translate key='Move'}</a>
 					</li>
 					<li>
-					 	Located at 
+					 	{translate key='Location'}
 						{if $resource->HasLocation()}
 							{$resource->GetLocation()} 
 						{else}
-							<span class="note">(no location set)</span>
+							<span class="note">{translate key='NoLocationLabel'}</span>
 						{/if}
-						<a class="update changeLocationButton" href="javascript: void(0);">Change Location Info</a>
+						<a class="update changeLocationButton" href="javascript: void(0);">{translate key='Edit'}</a>
 					</li>
 					<li>
-					 	Contact
+					 	{translate key='Contact'}
 						{if $resource->HasContact()}
 							{$resource->GetContact()} 
 						{else}
-							<span class="note">(no contact information)</span>
+							<span class="note">{translate key='NoContactLabel'}</span>
 						{/if}
 					</li>
 					<li>
-						Description
+						{translate key='Description'}
 						{if $resource->HasDescription()}
 							 {$resource->GetDescription()|truncate:500:"..."} 
 						{else}
-							<span class="note">(no description)</span>
+							<span class="note">{translate key='NoDescriptionLabel'}</span>
 						{/if}
-						<a class="update descriptionButton" href="javascript: void(0);">Edit</a>
+						<a class="update descriptionButton" href="javascript: void(0);">{translate key='Edit'}</a>
 					</li>
 					<li>
-						Notes
+						{translate key='Notes'}
 						{if $resource->HasNotes()}
 							 {$resource->GetNotes()|truncate:500:"..."} 
 						{else}
-							<span class="note">(no notes)</span>
+							<span class="note">{translate key='NoNotesLabel'}</span>
 						{/if}
-						<a class="update notesButton" href="javascript: void(0);">Edit</a>
+						<a class="update notesButton" href="javascript: void(0);">{translate key='Edit'}</a>
 					</li>
 				</ul>
 			</div>
 		</div>
 		<div style="float:right">
 			<div>
-				<h5>Usage Configuration</h5> <a class="update changeConfigurationButton" href="javascript: void(0);">Change Configuration</a>
+				<h5>{translate key='UsageConfiguration'}</h5> <a class="update changeConfigurationButton" href="javascript: void(0);">{translate key='ChangeConfiguration'}</a>
 			</div>
 			<div style="float:left">
 				<ul>
 					<li>
 						{if $resource->HasMinLength()}
-							Reservations must last at least {$resource->GetMinLength()} 
+							{translate key='ResourceMinLength' args=$resource->GetMinLength()}
 						{else}
-							There is no minimum reservation duration
+							{translate key='ResourceMinLengthNone'}
 						{/if}
 					</li>
 					<li>
 						{if $resource->HasMaxLength()}
-							Reservations cannot last more than {$resource->GetMaxLength()}
+							{translate key='ResourceMaxLength' args=$resource->GetMaxLength()}
 						{else}
-							There is no maximum reservation duration
+							{translate key='ResourceMaxLengthNone'}
 						{/if}
 					</li>
 					<li>
 						{if $resource->GetRequiresApproval()}
-							Reservations must be approved 
+							{translate key='ResourceRequiresApproval'}
 						{else}
-							Reservations do not require approval
+							{translate key='ResourceRequiresApprovalNone'}
 						{/if}
 					</li>
 					<li>
 						{if $resource->GetAutoAssign()}
-							Permission is automatically granted
+							{translate key='ResourcePermissionAutoGranted'}
 						{else}
-							Permission is not automatically granted
+							{translate key='ResourcePermissionNotAutoGranted'}
 						{/if}
 					</li>
 				</ul>
@@ -112,30 +112,30 @@
 				<ul>				
 				<li>
 					{if $resource->HasMinNotice()}
-						Reservations must be made at least {$resource->GetMinNotice()} prior to start time
+						{translate key='ResourceMinNotice' args=$resource->GetMinNotice()}
 					{else}
-						Reservations can be made up until the current time
+						{translate key='ResourceMinNoticeNone'}
 					{/if}
 				</li>
 				<li>
 					{if $resource->HasMaxNotice()}
-						Reservations must not end more than {$resource->GetMinNotice()} from the current time
+						{translate key='ResourceMaxNotice' args=$resource->GetMaxNotice()}
 					{else}
-						Reservations can end at any point in the future
+						{translate key='ResourceMaxNoticeNone'}
 					{/if}
 				</li>
 				<li>
 					{if $resource->GetAllowMultiday()}
-						Reservations can be made across days
+						{translate key='ResourceAllowMultiDay'}
 					{else}
-						Reservations cannot be made across days
+						{translate key='ResourceNotAllowMultiDay'}
 					{/if}
 				</li>
 				<li>
 					{if $resource->HasMaxParticipants()}
-						This resource has a capacity of {$resource->GetMaxParticipants()} people
+						{translate key='ResourceCapacity' args=$resource->GetMaxParticipants()}
 					{else}
-						This resource has unlimited capacity
+						{translate key='ResourceCapacityNone'}
 					{/if}
 				</li>
 			</ul>
@@ -145,11 +145,11 @@
 			{html_image src="admin-ajax-indicator.gif" class="actionIndicator" style="display:none;"}
 			
 			{if $resource->IsOnline()}
-				{html_image src="status.png"} <a class="update takeOfflineButton" href="javascript: void(0);">Take Offline</a> |
+				{html_image src="status.png"} <a class="update takeOfflineButton" href="javascript: void(0);">{translate key='TakeOffline'}</a> |
 			{else}
-				{html_image src="status-busy.png"} <a class="update bringOnlineButton" href="javascript: void(0);">Bring Online</a> |
+				{html_image src="status-busy.png"} <a class="update bringOnlineButton" href="javascript: void(0);">{translate key='BringOnline'}</a> |
 			{/if}
-			<a class="update deleteButton" href="javascript:void(0);">Delete</a>
+			<a class="update deleteButton" href="javascript:void(0);">{translate key='Delete'}</a>
 		</div>
 	</div>
 	{/foreach}
@@ -158,15 +158,15 @@
 
 <div class="admin" style="margin-top:30px">
 	<div class="title">
-		Add New Resource
+		{translate key='AddNewResource'}
 	</div>
 	<div>
 		<div id="addResourceResults" class="error" style="display:none;"></div>
 		<form id="addResourceForm" method="post">
 			<table>
 				<tr>
-					<th>Name</th>
-					<th>Schedule</th>
+					<th>{translate key='Name'}</th>
+					<th>{translate key='Schedule'}</th>
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
@@ -179,7 +179,7 @@
 					</select>
 					</td>
 					<td>
-						<button type="button" class="button save">{html_image src="disk-black.png"} Add Resource</button>
+						<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='AddResource'}</button>
 					</td>
 				</tr>
 			</table>
@@ -193,10 +193,10 @@
 	<form id="imageForm" method="post" enctype="multipart/form-data">
       <input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
       <br/>
-      <span class="note">Only .gif, .jpg, or .png</span>
+      <span class="note">.gif, .jpg, or .png</span>
       <br/><br/>
-      <button type="button" class="button async">{html_image src="disk-black.png"} Update</button>
-	  <button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+      <button type="button" class="button async">{html_image src="disk-black.png"} {translate key='Update'}</button>
+	  <button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
   	</form>
 </div>
 
@@ -204,8 +204,8 @@
 	<form id="renameForm" method="post">
 		New Name: <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=RESOURCE_NAME} />
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
@@ -218,8 +218,8 @@
 			{/foreach}
 		</select>
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
@@ -230,8 +230,8 @@
 		Contact Info:<br/>
 		<input id="editContact" type="text" class="textbox" maxlength="85" style="width:250px" {formname key=RESOURCE_CONTACT} />
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
@@ -240,8 +240,8 @@
 		Description:<br/>
 		<textarea id="editDescription" class="textbox" style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
@@ -250,99 +250,112 @@
 		Notes:<br/>
 		<textarea id="editNotes" class="textbox" style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
 <div id="configurationDialog" class="dialog" style="display:none;">
 	<form id="configurationForm" method="post">
 		<div style="margin-bottom: 10px;">
-			<fieldset><legend>Duration</legend>
+			<fieldset><legend>{translate key=Duration}</legend>
 				<ul>
 					<li>
 						<label>
-							<input type="checkbox" id="noMinimumDuration" /> There is no minimum reservation duration
+							<input type="checkbox" id="noMinimumDuration" /> {translate key=ResourceMinLengthNone}
 						</label>
 						<span class="noMinimumDuration">
 							<br/>
-							Reservations must last at least <input type="text" id="minDuration" class="textbox" size="5" maxlength="5" {formname key=MIN_DURATION} /> 
+							{capture name="txtMinDuration" assign="txtMinDuration"}
+								<input type='text' id='minDuration' class='textbox' size='5' maxlength='5' {formname key=MIN_DURATION} />
+							{/capture}
+							{translate key='ResourceMinLength' args=$txtMinDuration}
 						</span>
 					</li>
 					<li>
 						<label>
-							<input type="checkbox" id="noMaximumDuration" /> There is no maximum reservation duration
+							<input type="checkbox" id="noMaximumDuration" /> {translate key=ResourceMaxLengthNone}
 						</label>
 						<span class="noMaximumDuration">
 							<br/>
-							Reservations cannot last more than <input type="text" id="maxDuration" class="textbox" size="5" maxlength="5" {formname key=MAX_DURATION} /> 
+							{capture name="txtMaxDuration" assign="txtMaxDuration"}
+								<input type='text' id='maxDuration' class='textbox' size='5' maxlength='5' {formname key=MAX_DURATION} />
+							{/capture}
+							{translate key=ResourceMaxLength args=$txtMaxDuration}
 						</span>
 					</li>
 					<li>
-						Reservations can be made across days:
+						{translate key=ResourceAllowMultiDay}
 						<select id="allowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>
-							<option value="1">Yes</option>
-							<option value="0">No</option>
+							<option value="1">{translate key='Yes'}</option>
+							<option value="0">{translate key='No'}</option>
 						</select>
 					</li>
 				</ul>
 			</fieldset>
-			<fieldset><legend>Access</legend>
+			<fieldset>
+				<legend>{translate key=Access}</legend>
 				<ul>
 					<li>
-						Reservations must be approved:
+						{translate key='ResourceRequiresApproval'}
 						<select id="requiresApproval" class="textbox" {formname key=REQUIRES_APPROVAL}>
-							<option value="1">Yes</option>
-							<option value="0">No</option>
+							<option value="1">{translate key='Yes'}</option>
+							<option value="0">{translate key='No'}</option>
 						</select>
 					</li>
 					<li>
-						Automatically grant user permission:
+						{translate key='ResourcePermissionAutoGranted'}
 						<select id="autoAssign" class="textbox" {formname key=AUTO_ASSIGN}>
-							<option value="1">Yes</option>
-							<option value="0">No</option>
+							<option value="1">{translate key='Yes'}</option>
+							<option value="0">{translate key='No'}</option>
 						</select>
 					</li>			
 					<li>
 						<label>
-							<input type="checkbox" id="noStartNotice" /> Reservations can be made up until the current time
+							<input type="checkbox" id="noStartNotice" /> {translate key='ResourceMinNoticeNone'}
 						</label>
 						<span class="noStartNotice">
 							<br/>
-							Reservations must be made at least 
-							<input type="text" id="startNotice" class="textbox" size="5" maxlength="5" {formname key=MIN_NOTICE} /> 
-							prior to start time
+							{capture name="txtStartNotice" assign="txtStartNotice"}
+								<input type='text' id='startNotice' class='textbox' size='5' maxlength='5' {formname key=MIN_NOTICE} />
+							{/capture}
+							{translate key='ResourceMinNotice' args=$txtStartNotice}
 						</span>
 					</li>
 					<li>
 						<label>
-							<input type="checkbox" id="noEndNotice" /> Reservations can end at any point in the future
+							<input type="checkbox" id="noEndNotice" /> {translate key='ResourceMaxNoticeNone'}
 						</label>					
 						<span class="noEndNotice">
 							<br/>
-							Reservations must not end more than
-							<input type="text" id="endNotice" class="textbox" size="5" maxlength="5" {formname key=MAX_NOTICE}  />
-							from the current time
+							{capture name="txtEndNotice" assign="txtEndNotice"}
+								<input type='text' id='endNotice' class='textbox' size='5' maxlength='5' {formname key=MAX_NOTICE}  />
+							{/capture}
+							{translate key='ResourceMaxNotice' args=$txtEndNotice}
 						</span>
 					</li>
 				</ul>
 			</fieldset>
-			<fieldset><legend>Capacity</legend>
+			<fieldset>
+				<legend>{translate key='Capacity'}</legend>
 				<ul>
 					<li>
 						<label>
-							<input type="checkbox" id="unlimitedCapactiy" /> This resource has unlimited capacity
+							<input type="checkbox" id="unlimitedCapactiy" /> {translate key='ResourceCapacityNone'}
 						</label>					
 						<span class="unlimitedCapactiy">
 							<br/>
-							This resource has a capacity of <input type="text" id="maxCapactiy" class="textbox" size="5" maxlength="5" {formname key=MAX_PARTICIPANTS} />people
+							{capture name="txtMaxCapacity" assign="txtMaxCapacity"}
+								<input type='text' id='maxCapactiy' class='textbox' size='5' maxlength='5' {formname key=MAX_PARTICIPANTS} />
+							{/capture}
+							{translate key='ResourceCapacity' args=$txtMaxCapacity}
 						</span>
 					</li>
 				</ul>
 			</fieldset>
 		</div>
-		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
@@ -352,15 +365,15 @@
 			<h3>This action is permanent and irrecoverable!</h3>
 			<br/>Deleting this resource will delete all associated data, including:
 			<ul>
-				<li>all past, current and future reservations assoicated with it</li>
+				<li>all past, current and future reservations associated with it</li>
 				<li>all permission assignments</li>
 			</ul>
 			<br/>
 			Please reassign anything that you do not want to be deleted before proceeding
 		</div>
 
-		<button type="button" class="button save">{html_image src="cross-button.png"} Delete Resource</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
