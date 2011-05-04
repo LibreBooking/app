@@ -9,6 +9,24 @@ class AdHocCommand extends SqlCommand
 	} 
 }
 
+class CountCommand extends SqlCommand
+{
+	/**
+	 * @var SqlCommand
+	 */
+	private $baseCommand;
+	
+	public function __construct(SqlCommand $baseCommand)
+	{
+		$this->baseCommand = $baseCommand;
+	}
+
+	public function GetQuery()
+	{
+		return preg_replace('/SELECT.+FROM/ims', 'SELECT COUNT(*) FROM', $this->baseCommand->GetQuery());
+	}
+}
+
 //MPinnegar
 //TO-DO: Move this into alphabetical order
 class GetAllReservationsByUserCommand /*Give it a very literal name describing what the command is going to do*/extends SqlCommand

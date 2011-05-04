@@ -288,5 +288,14 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(Queries::GET_ALL_USERS_BY_STATUS, $command->GetQuery());
 		$this->assertEquals(new Parameter(ParameterNames::USER_STATUS_ID, $statusId), $command->Parameters->Items(0));
 	}
+
+	public function testCountCommandReplacesSelectBlahFromWithSelectCountFrom()
+	{
+		$baseCommand = new AdHocCommand("SeLEcT F.*,    lbl,
+											abc.* fROM table WHERE blah = blah");
+		$countCommand = new CountCommand($baseCommand);
+
+		$this->assertEquals("SELECT COUNT(*) FROM table WHERE blah = blah", $countCommand->GetQuery());
+	}
 }
 ?>

@@ -35,6 +35,11 @@ class UserRepository implements IUserRepository
 
 		return $users;
 	}
+
+	public function GetList()
+	{
+		new CountCommand(new GetUserListCommand());
+	}
 	
 	/**
 	 * @see IUserRepository::LoadById()
