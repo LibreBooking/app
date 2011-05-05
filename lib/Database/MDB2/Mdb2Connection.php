@@ -82,7 +82,13 @@ class Mdb2Connection implements IDbConnection
 	{
 		return $this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_RESULT);
 	}
-	
+
+	public function LimitQuery(ISqlCommand $sqlCommand, $limit, $offset = null)
+	{
+		$this->_db->setLimit($limit, $offset);
+		return $this->Query($sqlCommand);
+	}
+
 	public function Execute(ISqlCommand $sqlCommand) 
 	{
 		$this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_MANIP);

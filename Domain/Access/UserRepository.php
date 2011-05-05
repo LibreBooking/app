@@ -206,4 +206,21 @@ interface IEmailPreferences
 {
 	function Exists($eventCategory, $eventType);
 }
+
+class UserItemView
+{
+	public static function Create($row)
+	{
+		$user = new UserItemView();
+
+		$user->Id = $row[ColumnNames::USER_ID];
+		$user->Username = $row[ColumnNames::USERNAME];
+		$user->First = $row[ColumnNames::FIRST_NAME];
+		$user->Last = $row[ColumnNames::LAST_NAME];
+		$user->Email = $row[ColumnNames::EMAIL];
+		$user->LastLogin = Date::FromDatabase($row[ColumnNames::LAST_LOGIN]);
+	}
+
+
+}
 ?>

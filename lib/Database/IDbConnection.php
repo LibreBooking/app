@@ -11,6 +11,14 @@ interface IDbConnection
 	 * @return IReader to iterate over
 	 */
 	public function Query(ISqlCommand $command);
+
+	/**
+	 * @param ISqlCommand $command
+	 * @param int $limit
+	 * @param int $offset
+	 * @return IReader to iterate over
+	 */
+	public function LimitQuery(ISqlCommand $command, $limit, $offset = null);
 	
 	/**
 	 * Executes an alter query against the database

@@ -85,6 +85,26 @@ class UserRepositoryTests extends TestBase
 		
 		$this->assertEquals(2, count($this->db->_Commands));
 	}
+
+	public function testCanGetPageableListOfUsers()
+	{
+		$count = 50;
+		$countRow = array($count);
+		$row1 = $this->GetRow(1, 'first', 'last', 'email', 'un1', '2011-0101');
+		$row2 = $this->GetRow(2, 'first', 'last', 'email', null, '2010-01-01');
+		$userRows = array($row1, $row2);
+
+		$this->db->SetRow(0, $countRow);
+		$this->db->SetRow(1, $userRows);
+		
+		$userRepo = new UserRepository();
+		$pageable = $userRepo->GetList();
+		
+		$this->assertEquals($count, $pageable->PageInfo->Total);
+		$this->assertEquals(new UserItemView($row1), $pageable->Results[0]);
+		$this->assertEquals(new UserItemView($row2), $pageable->Results[1]);
+
+	}
 	
 	private function GetUserRow()
 	{
@@ -111,6 +131,19 @@ class UserRepositoryTests extends TestBase
 		);
 		
 		return $row;
+	}
+
+	private function GetRow($userId, $first, $last, $email, $userName, $lastLogin)
+	{
+		return
+			array(
+				ColumnNames::USER_ID => $userId,
+				ColumnNames::USERNAME => $userName,
+				ColumnNames::FIRST_NAME => $first,
+				ColumnNames::LAST_NAME => $last,
+				ColumnNames::EMAIL => $email,
+				ColumnNames::LAST_LOGIN => $lastLogin
+			);
 	}
 }
 ?>

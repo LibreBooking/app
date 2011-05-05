@@ -282,7 +282,10 @@ class GetAllSchedulesCommand extends SqlCommand
 
 class GetAllUsersByStatusCommand extends SqlCommand
 {
-	public function __construct($userStatusId)
+	/**
+	 * @param int $userStatusId defaults to getting all users regardless of status
+	 */
+	public function __construct($userStatusId = AccountStatus::ALL)
 	{
 		parent::__construct(Queries::GET_ALL_USERS_BY_STATUS);
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));

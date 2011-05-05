@@ -56,6 +56,11 @@ class MySqlConnection implements IDbConnection
 		
 		return new MySqlReader($result);
 	}
+
+	public function LimitQuery(ISqlCommand $command, $limit, $offset = 0)
+	{
+		return $this->Query(new MySqlLimitCommand($command, $limit, $offset));
+	}
 	
 	public function Execute(ISqlCommand $sqlCommand) 
 	{
@@ -86,5 +91,29 @@ class MySqlConnection implements IDbConnection
 		}
         return false;
 	}
+}
+
+class MySqlLimitCommand extends SqlCommand
+{
+	/**
+	 * @var \ISqlCommand
+	 */
+	private $baseCommand;
+
+	private $limit;
+	private $offset;
+
+	public function __construct(ISqlCommand $baseCommand, $limit, $offset)
+	{
+		$this->baseCommand = $baseCommand;
+		$this->limit = $limit;
+		$this->offset = $offset;
+	}
+	
+	public function GetQuery()
+	{
+		return $this->baseCommand->GetQuery() . sprintf(" LIMIT %s OFFSET %s",  $this->limit, $this->offset);
+	}
+
 }
 ?>
