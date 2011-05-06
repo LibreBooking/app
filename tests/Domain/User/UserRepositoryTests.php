@@ -88,21 +88,33 @@ class UserRepositoryTests extends TestBase
 
 	public function testCanGetPageableListOfUsers()
 	{
-		$count = 50;
+		$page = 3;
+		$pageSize = 5;
+		$count = 51;
+		$totalPages = 11;
+		$offset = 10;
 		$countRow = array($count);
-		$row1 = $this->GetRow(1, 'first', 'last', 'email', 'un1', '2011-0101');
+		$row1 = $this->GetRow(1, 'first', 'last', 'email', 'un1', '2011-01-01');
 		$row2 = $this->GetRow(2, 'first', 'last', 'email', null, '2010-01-01');
 		$userRows = array($row1, $row2);
 
-		$this->db->SetRow(0, $countRow);
+		$this->db->SetRow(0, array($countRow));
 		$this->db->SetRow(1, $userRows);
 		
 		$userRepo = new UserRepository();
-		$pageable = $userRepo->GetList();
+		$pageable = $userRepo->GetList($page, $pageSize);
 		
-		$this->assertEquals($count, $pageable->PageInfo->Total);
-		$this->assertEquals(new UserItemView($row1), $pageable->Results[0]);
-		$this->assertEquals(new UserItemView($row2), $pageable->Results[1]);
+		$this->assertEquals($count, $pageable->PageInfo()->Total);
+		$this->assertEquals($totalPages, $pageable->PageInfo()->TotalPages);
+		$this->assertEquals($pageSize, $pageable->PageInfo()->PageSize);
+		$this->assertEquals($page, $pageable->PageInfo()->CurrentPage);
+
+		$results = $pageable->Results();
+		$this->assertEquals(UserItemView::Create($row1), $results[0]);
+		$this->assertEquals(UserItemView::Create($row2), $results[1]);
+
+		$this->assertEquals($offset, $this->db->_Offset);
+		$this->assertEquals($pageSize, $this->db->_Limit);
 
 	}
 	

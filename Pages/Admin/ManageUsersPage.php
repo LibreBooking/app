@@ -1,7 +1,7 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
-require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
-require_once(ROOT_DIR . 'Domain/Access/UserRepository.php');
+//require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 
 class ManageUsersPage extends AdminPage
@@ -21,21 +21,25 @@ class ManageUsersPage extends AdminPage
 		$pageNumber = 1;
 		$pageSize = 50;
 		
-		$r = new PageableDataStore();
-		$users = $r->GetUsers($pageNumber, $pageSize);
-		$rowCount = $r->GetList();
+		$r = new UserRepository();
+		$pageable = $r->GetList($pageNumber, $pageSize);
+
+		$this->BindUsers($pageable->Results());
+		$this->BindPageInfo($pageable->PageInfo());
 		
 		$this->Display('manage_users.tpl');
 	}
-	
-	public function BindResources($resources)
+
+	public function BindPageInfo(PageInfo $pageInfo)
 	{
-		$this->Set('Resources', $resources);
+		$this->Set('page', $pageInfo->CurrentPage);
+		$this->Set('totalPages', $pageInfo->TotalPages);
+		$this->Set('totalResults', $pageInfo->Total);
+		$this->Set('pages', range(1, $pageInfo->TotalPages));
 	}
-	
-	public function BindSchedules($schedules)
+	public function BindUsers($users)
 	{
-		$this->Set('Schedules', $schedules);
+		$this->Set('users', $users);
 	}
 	
 	public function ProcessAction()

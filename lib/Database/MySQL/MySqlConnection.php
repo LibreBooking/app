@@ -48,8 +48,9 @@ class MySqlConnection implements IDbConnection
 	public function Query(ISqlCommand $sqlCommand) 
 	{
 		$mysqlCommand = new MySqlCommandAdapter($sqlCommand);
-		
-		//die ($mysqlCommand->GetQuery());
+
+		//Log::Debug("MySql Query: " . $mysqlCommand->GetQuery());
+
 		$result = mysql_query($mysqlCommand->GetQuery());
 		
 		$this->_handleError($result);
@@ -66,7 +67,8 @@ class MySqlConnection implements IDbConnection
 	{
 		$mysqlCommand = new MySqlCommandAdapter($sqlCommand);
 		
-		//die($mysqlCommand->GetQuery());
+		//Log::Debug("MySql Execute: " . $mysqlCommand->GetQuery());
+		
 		$result = mysql_query($mysqlCommand->GetQuery());
 		
 		$this->_handleError($result);
@@ -105,9 +107,13 @@ class MySqlLimitCommand extends SqlCommand
 
 	public function __construct(ISqlCommand $baseCommand, $limit, $offset)
 	{
+		parent::__construct();
+		
 		$this->baseCommand = $baseCommand;
 		$this->limit = $limit;
 		$this->offset = $offset;
+
+		$this->Parameters = $baseCommand->Parameters;
 	}
 	
 	public function GetQuery()

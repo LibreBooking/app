@@ -1,5 +1,7 @@
 <?php
-class UserRepository implements IUserRepository 
+require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
+
+class UserRepository implements IUserRepository, IUserViewRepository
 {
 	/**
 	 * @var DomainCache
@@ -36,9 +38,21 @@ class UserRepository implements IUserRepository
 		return $users;
 	}
 
-	public function GetList()
+	/**
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param string $sortField
+	 * @param string $sortDirection
+	 * @return PageableData of UserItemView
+	 */
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null)
 	{
-		new CountCommand(new GetUserListCommand());
+		$command = new GetAllUsersByStatusCommand();
+		$builder = function($row) {
+			return UserItemView::Create($row);
+		};
+		
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 	
 	/**
@@ -110,6 +124,18 @@ interface IUserRepository
 	 * @return UserDto[]
 	 */
 	function GetResourceAdmins($resourceId);
+}
+
+interface IUserViewRepository
+{
+	/**
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param string $sortField
+	 * @param string $sortDirection
+	 * @return PageableData of UserItemView
+	 */
+	public function GetList($pageNumber, $pageSize, $sortField, $sortDirection);
 }
 
 class UserDto
@@ -209,6 +235,13 @@ interface IEmailPreferences
 
 class UserItemView
 {
+	public $Id;
+	public $Username;
+	public $First;
+	public $Last;
+	public $Email;
+	public $LastLogin;
+
 	public static function Create($row)
 	{
 		$user = new UserItemView();
@@ -219,8 +252,8 @@ class UserItemView
 		$user->Last = $row[ColumnNames::LAST_NAME];
 		$user->Email = $row[ColumnNames::EMAIL];
 		$user->LastLogin = Date::FromDatabase($row[ColumnNames::LAST_LOGIN]);
+
+		return $user;
 	}
-
-
 }
 ?>

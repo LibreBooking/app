@@ -4,6 +4,7 @@ require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
 require_once(ROOT_DIR . 'Domain/Access/DomainCache.php');
+require_once(ROOT_DIR . 'Domain/Access/PageableDataStore.php');
 require_once(ROOT_DIR . 'Domain/Access/ScheduleRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/ReservationRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/ResourceRepository.php');

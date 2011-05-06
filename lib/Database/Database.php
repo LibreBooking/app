@@ -28,6 +28,24 @@ class Database
 
 		return $reader;
 	}
+
+	/**
+	 * @param ISqlCommand $command
+	 * @param int $limit
+	 * @param int $offset
+	 * @return IReader to iterate over
+	 */
+	public function &LimitQuery(ISqlCommand $command, $limit, $offset = null)
+	{
+		$this->Connection->Connect();
+
+		//Log::Debug('Database::LimitQuery %s', $command->GetQuery());
+
+		$reader = $this->Connection->LimitQuery($command, $limit, $offset);
+		$this->Connection->Disconnect();
+
+		return $reader;
+	}
 	
 	/**
 	 * Executes an alter query against the database

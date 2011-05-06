@@ -9,8 +9,10 @@ class FakeDatabase extends Database
 	public $_Commands = array();
 	public $_ExpectedInsertId = 0;
 	public $_ExpectedInsertIds = array();
-	private $readcount; 
-	private $executeInsertCount; 
+	public $_Limit = 0;
+	public $_Offset = 0;
+	private $readcount;
+	private $executeInsertCount;
 
 	public function __construct()
 	{
@@ -41,6 +43,14 @@ class FakeDatabase extends Database
 		
 		$this->readcount++;
 		return $reader;
+	}
+
+	public function &LimitQuery(ISqlCommand $command, $limit, $offset)
+	{
+		$this->_Limit = $limit;
+		$this->_Offset = $offset;
+		
+		return $this->Query($command);
 	}
 
 	public function Execute(ISqlCommand &$command) 
@@ -140,6 +150,7 @@ class FakeDBConnection implements IDBConnection
 	public $_DisconnectWasCalled = false;
 	public $_GetLastInsertIdCalled = false;
 	public $_ExpectedInsertId = 0;
+	public $_LimitQueryCalled = false;
 
 	public function __construct()
 	{
@@ -170,6 +181,17 @@ class FakeDBConnection implements IDBConnection
 	{
 		$this->_GetLastInsertIdCalled = true;
 		return $this->_ExpectedInsertId;
+	}
+
+	/**
+	 * @param ISqlCommand $command
+	 * @param int $limit
+	 * @param int $offset
+	 * @return IReader to iterate over
+	 */
+	public function LimitQuery(ISqlCommand $command, $limit, $offset = null)
+	{
+		$this->_LimitQueryCalled = true;
 	}
 }
 

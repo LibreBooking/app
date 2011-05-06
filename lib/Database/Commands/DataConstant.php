@@ -214,9 +214,9 @@ class Queries
 		INNER JOIN layouts l ON s.layout_id = l.layout_id';
 	
 	const GET_ALL_USERS_BY_STATUS = 
-		'SELECT * user_id, fname, lname, email, timezone, language
+		'SELECT *
 		FROM users
-		WHERE (@user_statusid = 0 OR status_id = @user_statusid)';
+		WHERE (0 = @user_statusid OR status_id = @user_statusid)';
 		
 	const GET_DASHBOARD_ANNOUNCEMENTS =
 		'SELECT announcement_text 

@@ -15,15 +15,18 @@ class CountCommand extends SqlCommand
 	 * @var SqlCommand
 	 */
 	private $baseCommand;
-	
+
 	public function __construct(SqlCommand $baseCommand)
 	{
+		parent::__construct();
+
 		$this->baseCommand = $baseCommand;
+		$this->Parameters = $baseCommand->Parameters;
 	}
 
 	public function GetQuery()
 	{
-		return preg_replace('/SELECT.+FROM/ims', 'SELECT COUNT(*) FROM', $this->baseCommand->GetQuery());
+		return preg_replace('/SELECT.+FROM/ims', 'SELECT COUNT(*) as total FROM', $this->baseCommand->GetQuery());
 	}
 }
 
