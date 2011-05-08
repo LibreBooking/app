@@ -470,3 +470,19 @@ legend {
 #resourceDetails {
 	overflow: scroll;
 }
+
+a, a:visited {
+	color: #006295;
+}
+
+a.page, a.page:visited {
+	padding: 1px;
+	font-size:larger;
+	text-decoration: none;
+	border: solid 1px transparent;
+}
+
+a.page:hover {
+	background-color:#fafafa;
+	border-color: #bbbbbb;
+}

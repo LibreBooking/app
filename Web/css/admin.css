@@ -115,3 +115,26 @@ div.error {
 .dialog li {
 	margin-bottom: 5px;
 }
+
+.list {
+    border-collapse:collapse;
+}
+
+.list, .list td, .list th {
+     border: solid 1px #000000;
+}
+
+.list td, .list th {
+    padding: 4px;
+}
+.list .row0 {
+    background-color: #eeeeee;
+}
+
+.list .row1 {
+    background-color: #fafafa;
+}
+
+.list th.id, .list td.id {
+	display: none;
+}

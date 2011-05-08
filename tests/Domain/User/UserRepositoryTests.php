@@ -93,7 +93,7 @@ class UserRepositoryTests extends TestBase
 		$count = 51;
 		$totalPages = 11;
 		$offset = 10;
-		$countRow = array($count);
+		$countRow = array('total' => $count);
 		$row1 = $this->GetRow(1, 'first', 'last', 'email', 'un1', '2011-01-01');
 		$row2 = $this->GetRow(2, 'first', 'last', 'email', null, '2010-01-01');
 		$userRows = array($row1, $row2);

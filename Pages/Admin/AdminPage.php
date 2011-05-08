@@ -26,10 +26,21 @@ abstract class AdminPage extends SecurePage
 		$action = $this->GetAction();
 		return !empty($action);
 	}
+
+	public function RequestingData()
+	{
+		$dataRequest = $this->GetDataRequest();
+		return !empty($dataRequest);
+	}
 	
 	public function GetAction()
 	{
 		return $this->server->GetQuerystring(QueryStringKeys::ACTION);
+	}
+
+	public function GetDataRequest()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::DATA_REQUEST);
 	}
 	
 	abstract function ProcessAction();

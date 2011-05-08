@@ -159,6 +159,15 @@ class en_us extends Language
 		$strings['Capacity'] = 'Capacity';
 		$strings['Access'] = 'Access';
 		$strings['Duration'] = 'Duration';
+		$strings['Active'] = 'Active';
+		$strings['Inactive'] = 'Inactive';
+		$strings['ResetPassword'] = 'Reset Password';
+		$strings['LastLogin'] = 'Last Login';
+		$strings['Search'] = 'Search';
+		$strings['ResourcePermissions'] = 'Resource Permissions';
+		$strings['Reservations'] = 'Reservations';
+		$strings['Groups'] = 'Groups';
+		$strings['ResetPassword'] = 'Reset Password';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
@@ -172,6 +181,7 @@ class en_us extends Language
 		$strings['LogIn'] = 'Log In';
 		$strings['ManageSchedules'] = 'Manage Schedules';
 		$strings['ManageResources'] = 'Manage Resources';
+		$strings['ManageUsers'] = 'Manage Users';
 		$strings['MyDashboard'] = 'My Dashboard';
 		//
 		

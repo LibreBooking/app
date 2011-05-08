@@ -20,7 +20,7 @@
 						}
 						else
 						{
-							window.location = window.location;
+							window.location.reload();
 						}
 					}
 		        }
@@ -65,7 +65,7 @@
 							}
 							else
 							{
-								window.location = window.location;
+								window.location.reload();
 							}
 						}
 					},
@@ -126,7 +126,7 @@
 				{
 					alert(data);
 				}
-				window.location = window.location;
+				window.location.reload();
 			}
 		);
-	}
+	};

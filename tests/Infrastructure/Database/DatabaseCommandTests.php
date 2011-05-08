@@ -295,7 +295,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 											abc.* fROM table WHERE blah = blah");
 		$countCommand = new CountCommand($baseCommand);
 
-		$this->assertEquals("SELECT COUNT(*) FROM table WHERE blah = blah", $countCommand->GetQuery());
+		$this->assertEquals("SELECT COUNT(*) as total FROM table WHERE blah = blah", $countCommand->GetQuery());
 	}
 }
 ?>

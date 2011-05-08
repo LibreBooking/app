@@ -78,11 +78,13 @@ interface IScheduleUser
 	function GetGroups();
 	
 	/**
+	 * The resources that the user directly has permission to
 	 * @return array[int]ScheduleResource
 	 */
 	function GetResources();
 	
 	/**
+	 * The resources that the user or any of their groups has permission to
 	 * @return array[int]ScheduleResource
 	 */
 	function GetAllResources();

@@ -418,7 +418,7 @@ class Queries
 	
 	const GET_USER_BY_ID = 
 		'SELECT
-			email, fname, lname, timezone, language, position, phone, homepageid, status_id
+			*
 		FROM
 			users
 		WHERE
@@ -597,7 +597,15 @@ class Queries
 			layout_id = @layoutid
 		WHERE
 			schedule_id = @scheduleid';
-		
+
+	const UPDATE_USER =
+		'UPDATE
+			users
+		SET
+			status_id = @user_statusid
+		WHERE
+			user_id = @userid';
+	
 	const UPDATE_USER_BY_USERNAME = 
 		'UPDATE 
 			users 

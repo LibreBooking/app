@@ -61,6 +61,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'setfocus', array($this, 'SetFocus'));
 		$this->registerPlugin('function', 'formname', array($this, 'GetFormName'));
 		$this->registerPlugin('modifier', 'url2link', array($this, 'CreateUrl'));
+        $this->registerPlugin('function', 'pagelink', array($this, 'CreatePageLink'));
 
 		$this->Validators = new PageValdiators();
 	}
@@ -293,5 +294,39 @@ class SmartyPage extends Smarty
 
 		return $string;
 	}
+
+    /**
+     * @param array $params
+     * @param Smarty $smarty
+     * @return string
+     */
+    public function CreatePageLink($params, &$smarty)
+    {
+        $url = $_SERVER['REQUEST_URI'];
+        $key = QueryStringKeys::PAGE;
+        $page = $params['page'];
+        $newUrl = $url;
+
+        if (strpos($url, $key) === false) // does not have page variable
+        {
+            if (strpos($url, '?') === false) // and does not have any query string
+            {
+                $newUrl = sprintf('%s?%s=%s', $url, $key, $page);
+            }
+            else
+            {
+                $newUrl = sprintf('%s&%s=%s', $url, $key, $page);  // and has existing query string
+            }
+        }
+        else
+        {
+            $pattern = '/(\?|&)' . $key .'=\d+/';
+            $replace = '${1}' . $key . '=' . $page;
+
+            $newUrl = preg_replace($pattern, $replace, $url);
+        }
+        
+        return sprintf('<a class="page" href="%s">%s</a>', $newUrl, $page);
+    }
 }
 ?>

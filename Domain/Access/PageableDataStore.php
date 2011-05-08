@@ -12,6 +12,11 @@ class PageableDataStore
 	 */
 	public function GetList($command, $listBuilder, $pageNumber, $pageSize, $sortField = null, $sortDirection = null)
 	{
+		if (is_null($pageNumber))
+		{
+			$pageNumber = 1;
+		}
+		
 		$total = 0;
 		$results = array();
 		$db = ServiceLocator::GetDatabase();
@@ -60,13 +65,17 @@ class PageInfo
 	public $TotalPages = 0;
 	public $PageSize = 0;
 	public $CurrentPage = 0;
+    public $ResultsStart = 0;
+    public $ResultsEnd = 0;
 
-	public function __construct($totalResults, $pageNumber, $pageSize)
+    public function __construct($totalResults, $pageNumber, $pageSize)
 	{
 		$this->Total = $totalResults;
 		$this->CurrentPage = $pageNumber;
 		$this->PageSize = $pageSize;
 		$this->TotalPages = ceil($totalResults/$pageSize);
+        $this->ResultsStart = ($pageNumber-1) * $pageSize + 1;
+        $this->ResultsEnd = min(($pageNumber * $pageSize), $totalResults);
 	}
 }
 

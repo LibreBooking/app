@@ -1,6 +1,6 @@
 use phpscheduleit2;
 
-insert into user_statuses values (1, 'active');
+insert into user_statuses values (1, 'active', 2, 'awaiting', 3, 'inactive');
 insert into roles values (1, 'user', 1), (2, 'admin', 2);
 insert into long_quotas (long_quotaid, label) values (1, 'default long quota');
 insert into day_quotas (day_quotaid, label) values (1, 'default day quota');

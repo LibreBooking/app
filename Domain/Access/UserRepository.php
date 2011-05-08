@@ -1,4 +1,5 @@
 <?php
+require_once(ROOT_DIR . 'Domain/User.php');
 require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
 
 class UserRepository implements IUserRepository, IUserViewRepository
@@ -79,6 +80,16 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		
 		return $this->_cache->Get($userId);
 	}
+
+	/**
+	 * @param User $user
+	 * @return void
+	 */
+	public function Update($user)
+	{
+		$command = new UpdateUserCommand($user->Id(), $user->StatusId());
+		ServiceLocator::GetDatabase()->Execute($command);
+	}
 	
 	public function LoadEmailPreferences($userId)
 	{
@@ -111,19 +122,27 @@ interface IUserRepository
 	/**
 	 * @return array[int]UserDto
 	 */
-	public function GetAll();
+	function GetAll();
 	
 	/**
 	 * @param int $userId
 	 * @return User
 	 */
-	public function LoadById($userId);
+	function LoadById($userId);
+
+	/**
+	 * @abstract
+	 * @param User $user
+	 * @return void
+	 */
+	function Update($user);
 	
 	/**
 	 * @param int $resourceId
 	 * @return UserDto[]
 	 */
 	function GetResourceAdmins($resourceId);
+	
 }
 
 interface IUserViewRepository
@@ -135,7 +154,7 @@ interface IUserViewRepository
 	 * @param string $sortDirection
 	 * @return PageableData of UserItemView
 	 */
-	public function GetList($pageNumber, $pageSize, $sortField, $sortDirection);
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null);
 }
 
 class UserDto
@@ -241,7 +260,14 @@ class UserItemView
 	public $Last;
 	public $Email;
 	public $LastLogin;
+	public $StatusId;
+	public $Timezone;
 
+	public function IsActive()
+	{
+		return $this->StatusId == AccountStatus::ACTIVE;
+	}
+	
 	public static function Create($row)
 	{
 		$user = new UserItemView();
@@ -252,6 +278,8 @@ class UserItemView
 		$user->Last = $row[ColumnNames::LAST_NAME];
 		$user->Email = $row[ColumnNames::EMAIL];
 		$user->LastLogin = Date::FromDatabase($row[ColumnNames::LAST_LOGIN]);
+		$user->StatusId = $row[ColumnNames::USER_STATUS_ID];
+		$user->Timezone = $row[ColumnNames::TIMEZONE_NAME];
 
 		return $user;
 	}

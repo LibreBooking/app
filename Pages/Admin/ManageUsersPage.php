@@ -1,32 +1,73 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
-//require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
+interface IManageUsersPage extends IPageable
+{
+	/**
+	 * @abstract
+	 * @param UserItemView[] $users
+	 * @return void
+	 */
+	function BindUsers($users);
 
-class ManageUsersPage extends AdminPage
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetUserId();
+
+	/**
+	 * @abstract
+	 * @param BookableResources[] $resources
+	 * @return void
+	 */
+	public function BindResources($resources);
+
+	/**
+	 * @abstract
+	 * @param mixed $objectToSerialize
+	 * @return void
+	 */
+	public function SetJson($objectToSerialize);
+}
+
+interface IPageable
+{
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	function GetPageNumber();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	function GetPageSize();
+
+	/**
+	 * @abstract
+	 * @param PageInfo $pageInfo
+	 * @return void
+	 */
+	function BindPageInfo(PageInfo $pageInfo);
+}
+
+class ManageUsersPage extends AdminPage implements IManageUsersPage
 {
 	public function __construct()
 	{
 		parent::__construct('ManageUsers');
-//		$this->_presenter = new ManageUsersPresenter(
-//								$this,
-//								new UserRepository()
-//								);
+		$this->_presenter = new ManageUsersPresenter($this, new UserRepository(), new ResourceRepository());
 	}
 	
 	public function PageLoad()
 	{
-		//$this->_presenter->PageLoad();
-		$pageNumber = 1;
-		$pageSize = 50;
-		
-		$r = new UserRepository();
-		$pageable = $r->GetList($pageNumber, $pageSize);
+		$this->_presenter->PageLoad();
 
-		$this->BindUsers($pageable->Results());
-		$this->BindPageInfo($pageable->PageInfo());
-		
+		$this->Set('statusDescriptions', array(AccountStatus::ACTIVE => 'Active', AccountStatus::AWAITING_ACTIVATION => 'Inactive', AccountStatus::INACTIVE => 'Inactive'));
 		$this->Display('manage_users.tpl');
 	}
 
@@ -36,7 +77,10 @@ class ManageUsersPage extends AdminPage
 		$this->Set('totalPages', $pageInfo->TotalPages);
 		$this->Set('totalResults', $pageInfo->Total);
 		$this->Set('pages', range(1, $pageInfo->TotalPages));
+        $this->Set('resultsStart', $pageInfo->ResultsStart);
+        $this->Set('resultsEnd', $pageInfo->ResultsEnd);
 	}
+	
 	public function BindUsers($users)
 	{
 		$this->Set('users', $users);
@@ -46,8 +90,44 @@ class ManageUsersPage extends AdminPage
 	{
 		$this->_presenter->ProcessAction();
 	}
+
+	public function ProcessDataRequest()
+	{
+		$this->_presenter->ProcessDataRequest();
+	}
+
+	public function SetJson($json)
+	{
+		header('Content-type: application/json');
+		$this->Set('data', json_encode($json));
+		$this->Display('json_data.tpl');
+	}
+
+	public function GetPageNumber()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::PAGE);
+	}
+
+	public function GetPageSize()
+	{
+		return 50;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetUserId()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::USER_ID);
+	}
+
+	/**
+	 * @param BookableResources[] $resources
+	 * @return void
+	 */
+	public function BindResources($resources)
+	{
+		$this->Set('resources', $resources);
+	}
 }
-
-
-
 ?>

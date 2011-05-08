@@ -5,7 +5,14 @@ class User
 	 * @var IEmailPreferences
 	 */
 	protected $emailPreferences;
+
+	protected $id;
 	
+	public function Id()
+	{
+		return $this->id;
+	}
+
 	protected $firstName;
 	
 	public function FirstName()
@@ -45,6 +52,22 @@ class User
 	{
 		return $this->timezone;
 	}
+
+	protected $statusId;
+	public function StatusId()
+	{
+		return $this->statusId;
+	}
+
+	public function Activate()
+	{
+		$this->statusId = AccountStatus::ACTIVE;
+	}
+
+	public function Deactivate()
+	{
+		$this->statusId = AccountStatus::INACTIVE;
+	}
 	
 	/**
 	 * @param IDomainEvent $event
@@ -58,15 +81,19 @@ class User
 	public static function FromRow($row, IEmailPreferences $emailPreferences)
 	{
 		$user = new User();
+		$user->id = $row[ColumnNames::USER_ID];
 		$user->firstName = $row[ColumnNames::FIRST_NAME];
 		$user->lastName = $row[ColumnNames::LAST_NAME];
 		$user->emailAddress = $row[ColumnNames::EMAIL];
 		$user->language = $row[ColumnNames::LANGUAGE_CODE];
 		$user->timezone = $row[ColumnNames::TIMEZONE_NAME];
+		$user->statusId = $row[ColumnNames::USER_STATUS_ID];
 			
 		$user->emailPreferences = $emailPreferences;
 		return $user;
 	}
+
+
 }
 
 ?>

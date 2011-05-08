@@ -7,14 +7,14 @@ class Date
 	private $date;
 	private $parts;
 	private $timezone;
-    private $timestamp;
-    private $timestring;
-    
-    const SHORT_FORMAT = "Y-m-d H:i:s";
-	
+	private $timestamp;
+	private $timestring;
+
+	const SHORT_FORMAT = "Y-m-d H:i:s";
+
 	// Only used for testing
 	private static $_Now = null;
-	
+
 	/**
 	 * Creates a Date with the provided timestamp and timezone
 	 * Defaults to current time
@@ -25,41 +25,40 @@ class Date
 	 */
 	public function __construct($timestring = null, $timezone = null)
 	{
-        $this->InitializeTimezone($timezone);
-                       
+		$this->InitializeTimezone($timezone);
+
 		$this->date = new DateTime($timestring, new DateTimeZone($this->timezone));
-		$this->timestring = $this->date->format(self::SHORT_FORMAT); 
+		$this->timestring = $this->date->format(self::SHORT_FORMAT);
 		$this->timestamp = $this->date->format('U');
 		$this->InitializeParts();
 	}
 
-    private function InitializeTimezone($timezone)
-    {
-        $this->timezone = $timezone;
-        if ($timezone == null)
-        {
-            $this->timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
-        }     
-    }
-	
+	private function InitializeTimezone($timezone)
+	{
+		$this->timezone = $timezone;
+		if ($timezone == null) {
+			$this->timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+		}
+	}
+
 	/**
-	* Creates a new Date object with the given year, month, day, and optional $hour, $minute, $secord and $timezone
-	* @return Date
-	*/
+	 * Creates a new Date object with the given year, month, day, and optional $hour, $minute, $secord and $timezone
+	 * @return Date
+	 */
 	public static function Create($year, $month, $day, $hour = 0, $minute = 0, $second = 0, $timezone = null)
 	{
 		return new Date(sprintf('%04d-%02d-%02d %02d:%02d:%02d', $year, $month, $day, $hour, $minute, $second), $timezone);
 	}
-	
+
 	/**
-	* Creates a new Date object from the given string and $timezone
-	* @return Date
-	*/
+	 * Creates a new Date object from the given string and $timezone
+	 * @return Date
+	 */
 	public static function Parse($dateString, $timezone = null)
 	{
 		return new Date($dateString, $timezone);
 	}
-	
+
 	/**
 	 * Returns a Date object representing the current date/time in the server's timezone
 	 *
@@ -67,14 +66,13 @@ class Date
 	 */
 	public static function Now()
 	{
-		if (isset(self::$_Now))
-		{
+		if (isset(self::$_Now)) {
 			return self::$_Now;
 		}
 
 		return new Date('now');
 	}
-	
+
 	/**
 	 * Formats the Date with the provided format
 	 *
@@ -85,7 +83,7 @@ class Date
 	{
 		return $this->date->format($format);
 	}
-	
+
 	/**
 	 * Returns the Date adjusted into the provided timezone
 	 *
@@ -94,29 +92,28 @@ class Date
 	 */
 	public function ToTimezone($timezone)
 	{
-		if ($this->Timezone() == $timezone)
-		{
+		if ($this->Timezone() == $timezone) {
 			return new Date($this->timestring, $this->Timezone());
 		}
-		
-        $date = new DateTime($this->timestring, new DateTimeZone($this->timezone));
-                
-        $date->setTimezone(new DateTimeZone($timezone));
-        $adjustedDate = $date->format(Date::SHORT_FORMAT);
 
-        return new Date($adjustedDate, $timezone);
+		$date = new DateTime($this->timestring, new DateTimeZone($this->timezone));
+
+		$date->setTimezone(new DateTimeZone($timezone));
+		$adjustedDate = $date->format(Date::SHORT_FORMAT);
+
+		return new Date($adjustedDate, $timezone);
 	}
-	    
-    /**
-     * Returns the Date adjusted into UTC
-     *
-     * @return Date
-     */
-    public function ToUtc()
-    {
-        return $this->ToTimezone('UTC');
-    }
-	
+
+	/**
+	 * Returns the Date adjusted into UTC
+	 *
+	 * @return Date
+	 */
+	public function ToUtc()
+	{
+		return $this->ToTimezone('UTC');
+	}
+
 	/**
 	 * Formats the Date into a format that is accepted by the database
 	 *
@@ -126,16 +123,19 @@ class Date
 	{
 		return $this->ToUtc()->Format('Y-m-d H:i:s');
 	}
-	
+
 	/**
 	 * @param string $databaseValue
 	 * @return Date
 	 */
 	public static function FromDatabase($databaseValue)
 	{
+		if (empty($databaseValue)) {
+			return NullDate::Instance();
+		}
 		return Date::Parse($databaseValue, 'UTC');
 	}
-	
+
 	/**
 	 * Returns the current Date as a timestamp
 	 *
@@ -145,27 +145,27 @@ class Date
 	{
 		return $this->timestamp;
 	}
-	
+
 	/**
 	 * Returns the Time part of the Date
-	 * 
+	 *
 	 * @return Time
 	 */
 	public function GetTime()
 	{
 		return new Time($this->Hour(), $this->Minute(), $this->Second(), $this->Timezone());
 	}
-	
+
 	/**
 	 * Returns the Date only part of the date.  Hours, Minutes and Seconds will be 0
-	 * 
+	 *
 	 * @return Date
 	 */
 	public function GetDate()
 	{
 		return Date::Create($this->Year(), $this->Month(), $this->Day(), 0, 0, 0, $this->Timezone());
 	}
-	
+
 	/**
 	 * Compares this date to the one passed in
 	 * Returns:
@@ -178,23 +178,20 @@ class Date
 	public function Compare(Date $date)
 	{
 		$date2 = $date;
-		if ($date2->Timezone() != $this->Timezone())
-		{
+		if ($date2->Timezone() != $this->Timezone()) {
 			$date2 = $date->ToTimezone($this->timezone);
 		}
-		
-		if ($this->Timestamp() < $date2->Timestamp())
-		{
+
+		if ($this->Timestamp() < $date2->Timestamp()) {
 			return -1;
 		}
-		else if ($this->Timestamp() > $date2->Timestamp())
-		{
+		else if ($this->Timestamp() > $date2->Timestamp()) {
 			return 1;
 		}
-		
+
 		return 0;
 	}
-	
+
 	/**
 	 * Compares this date to the one passed in
 	 * @param Date $end
@@ -204,7 +201,7 @@ class Date
 	{
 		return $this->Compare($end) > 0;
 	}
-	
+
 	/**
 	 * Compares this date to the one passed in
 	 * @param Date $end
@@ -214,7 +211,7 @@ class Date
 	{
 		return $this->Compare($end) < 0;
 	}
-	
+
 	/**
 	 * Compare the 2 dates
 	 *
@@ -225,7 +222,7 @@ class Date
 	{
 		return $this->Compare($date) == 0;
 	}
-	
+
 	/**
 	 * @param Date $date
 	 * @return bool
@@ -233,36 +230,32 @@ class Date
 	public function DateEquals(Date $date)
 	{
 		$date2 = $date;
-		if ($date2->Timezone() != $this->Timezone())
-		{
+		if ($date2->Timezone() != $this->Timezone()) {
 			$date2 = $date->ToTimezone($this->timezone);
 		}
-		
+
 		return ($this->Day() == $date2->Day() && $this->Month() == $date2->Month() && $this->Year() == $date2->Year());
 	}
-	
+
 	public function DateCompare(Date $date)
 	{
 		$date2 = $date;
-		if ($date2->Timezone() != $this->Timezone())
-		{
+		if ($date2->Timezone() != $this->Timezone()) {
 			$date2 = $date->ToTimezone($this->timezone);
 		}
-		
+
 		$d1 = (int)$this->Format('Ymd');
 		$d2 = (int)$date2->Format('Ymd');
-		
-		if ($d1 > $d2)
-		{
+
+		if ($d1 > $d2) {
 			return 1;
 		}
-		if ($d1 < $d2)
-		{
+		if ($d1 < $d2) {
 			return -1;
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * @return bool
 	 */
@@ -270,17 +263,17 @@ class Date
 	{
 		return $this->Hour() == 0 && $this->Minute() == 0 && $this->Second() == 0;
 	}
-	
+
 	/**
 	 * @param int $days
 	 * @return Date
 	 */
 	public function AddDays($days)
-	{		
+	{
 		// can also use DateTime->modify()
 		return new Date($this->Format(self::SHORT_FORMAT) . " +" . $days . " days", $this->timezone);
 	}
-	
+
 	/**
 	 * @param Time $time
 	 * @return Date
@@ -289,29 +282,28 @@ class Date
 	{
 		return Date::Create($this->Year(), $this->Month(), $this->Day(), $time->Hour(), $time->Minute(), $time->Second(), $this->Timezone());
 	}
-	
+
 	/**
 	 * @param string $time
 	 * @return Date
 	 */
 	public function SetTimeString($time)
 	{
-		return $this->SetTime(Time::Parse($time,  $this->Timezone()));
+		return $this->SetTime(Time::Parse($time, $this->Timezone()));
 	}
-	
+
 	/**
 	 * @param Date $date
 	 * @return DateInterval
 	 */
 	public function GetDifference(Date $date)
 	{
-		if ($date->Timezone() != $this->Timezone())
-		{
+		if ($date->Timezone() != $this->Timezone()) {
 			$date = $date->ToTimezone($this->Timezone());
 		}
 		return date_diff($date->date, $this->date);
 	}
-	
+
 	/**
 	 * @param DateInterval $differenceInterval
 	 * @return Date
@@ -320,73 +312,72 @@ class Date
 	{
 		$date = new DateTime($this->Format(self::SHORT_FORMAT, $this->Timezone()));
 		$newDate = date_add($date, $differenceInterval);
-		
+
 		return new Date($newDate->format(self::SHORT_FORMAT), $this->Timezone());
 	}
-	
-    private function InitializeParts()
-    {
-    	list($date, $time) = explode(' ', $this->Format('w-' . self::SHORT_FORMAT));
-    	list($weekday, $year, $month, $day) = explode("-", $date);
-    	list($hour, $minute, $second) = explode(":", $time);
-    	
-    	$this->parts['hours'] = $hour;
-    	$this->parts['minutes'] = $minute;
-    	$this->parts['seconds'] = $second;
-    	$this->parts['mon'] = $month;
-    	$this->parts['mday'] = $day;
-    	$this->parts['year'] = $year;
-    	$this->parts['wday'] = $weekday;
-    }
-    
+
+	private function InitializeParts()
+	{
+		list($date, $time) = explode(' ', $this->Format('w-' . self::SHORT_FORMAT));
+		list($weekday, $year, $month, $day) = explode("-", $date);
+		list($hour, $minute, $second) = explode(":", $time);
+
+		$this->parts['hours'] = $hour;
+		$this->parts['minutes'] = $minute;
+		$this->parts['seconds'] = $second;
+		$this->parts['mon'] = $month;
+		$this->parts['mday'] = $day;
+		$this->parts['year'] = $year;
+		$this->parts['wday'] = $weekday;
+	}
+
 	public function Hour()
 	{
-		return $this->parts['hours'];		
+		return $this->parts['hours'];
 	}
-	
+
 	public function Minute()
 	{
 		return $this->parts['minutes'];
 	}
-	
+
 	public function Second()
 	{
 		return $this->parts['seconds'];
 	}
-	
+
 	public function Month()
 	{
 		return $this->parts['mon'];
 	}
-	
+
 	public function Day()
 	{
 		return $this->parts['mday'];
 	}
-	
+
 	public function Year()
 	{
 		return $this->parts['year'];
 	}
-	
+
 	public function Timezone()
 	{
 		return $this->timezone;
 	}
-	
+
 	public function Weekday()
 	{
 		return $this->parts['wday'];
 	}
-	
+
 	/**
 	 * Only used for unit testing
 	 * @param Date $date
 	 */
 	public static function _SetNow(Date $date)
 	{
-		if (is_null($date))
-		{
+		if (is_null($date)) {
 			self::$_Now = null;
 		}
 		else
@@ -394,7 +385,7 @@ class Date
 			self::$_Now = $date;
 		}
 	}
-	
+
 	/**
 	 * Only used for unit testing
 	 */
@@ -402,15 +393,50 @@ class Date
 	{
 		self::$_Now = null;
 	}
-	
+
 	public function ToString()
 	{
 		return $this->Format('Y-m-d H:i:s') . ' ' . $this->timezone;
 	}
-	
-	public function __toString() 
+
+	public function __toString()
 	{
-      return $this->ToString();
-  	}
+		return $this->ToString();
+	}
 }
+
+class NullDate extends Date
+{
+	/**
+	 * @var NullDate
+	 */
+	private static $date;
+	
+	public function __construct()
+	{
+		parent::__construct();
+	}
+
+
+	public static function Instance()
+	{
+		if (self::$date == null)
+		{
+			self::$date = new NullDate();
+		}
+
+		return self::$date;
+	}
+
+	public function Format($format)
+	{
+		return '';
+	}
+
+	public function ToString()
+	{
+		return '';
+	}
+}
+
 ?>

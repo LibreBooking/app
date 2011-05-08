@@ -709,6 +709,16 @@ class UpdateScheduleLayoutCommand extends SqlCommand
 	}
 }
 
+class UpdateUserCommand extends SqlCommand
+{
+	public function __construct($userId, $statusId)
+	{
+		parent::__construct(Queries::UPDATE_USER);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $statusId));
+	}
+}
+
 class UpdateUserFromLdapCommand extends SqlCommand 
 {
 	public function __construct($username, $email, $fname, $lname, $password, $salt, $phone, $organization, $position)

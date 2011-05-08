@@ -63,7 +63,11 @@
 		        <ul>
 		            <li class="menuitem"><a href="{$Path}admin/manage_schedules.php">Manage Schedules</a></li>
 					<li class="menuitem"><a href="{$Path}admin/manage_resources.php">Manage Resources</a></li>
-					<li class="menuitem"><a href="{$Path}admin/manage_users.php">Manage Users</a></li>
+					<li class="menuitem"><a href="{$Path}admin/manage_users.php">Manage Users</a>
+						<ul>
+							<li><a href="#">Awaiting Activation</a></li>
+						</ul>
+					</li>
 				</ul>
 		    </li>
 		    {/if}
