@@ -42,7 +42,7 @@ Find User: <input type="text" id="userSearch"/>
 
 <div id="permissionsDialog" class="dialog" style="display:none;">
 	<form id="permissionsForm" method="post">
-		* Actual access to resource may be different depending on group permissions and external permission settings<br/>
+		<div class="error">Actual access to resource may be different depending on user role, group permissions, or external permission settings</div>
 		{foreach from=$resources item=resource}
 			<label><input class="resourceId" type="checkbox" value="{$resource->GetResourceId()}"> {$resource->GetName()}</label><br/>
 		{/foreach}
@@ -62,7 +62,8 @@ Find User: <input type="text" id="userSearch"/>
 
 	var actions = {
 		activate: '{ManageUsersActions::Activate}',
-		deactivate:'{ManageUsersActions::Deactivate}'
+		deactivate: '{ManageUsersActions::Deactivate}',
+		permissions: '{ManageUsersActions::Permissions}'
 	};
 			
 	var userOptions = {

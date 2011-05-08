@@ -4,6 +4,7 @@ class ManageUsersActions
 {
 	const Activate = 'activate';
 	const Deactivate = 'deactivate';
+	const Permissions = 'permissions';
 }
 
 class ManageUsersPresenter

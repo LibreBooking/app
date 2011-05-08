@@ -19,7 +19,7 @@ function UserManagement(opts) {
 
 	UserManagement.prototype.init = function() {
 
-		ConfigureAdminDialog(elements.permissionsDialog, 'Modify Privileges', 300, 135);
+		ConfigureAdminDialog(elements.permissionsDialog, 'Resource Permissions', 400, 500);
 
 		elements.userList.delegate('a.update', 'click', function(e) {
 			setActiveUserId($(this));
@@ -53,6 +53,17 @@ function UserManagement(opts) {
 				alert(ui.item);
 			}
 		});
+
+		$(".save").click(function() {
+			$(this).closest('form').submit();
+		});
+
+		$(".cancel").click(function() {
+			$(this).closest('.dialog').dialog("close");
+		});
+		
+		var noop = function() { elements.permissionsDialog.dialog('close'); };
+		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), noop, null);
 	};
 
 	UserManagement.prototype.addUser = function(user) {
