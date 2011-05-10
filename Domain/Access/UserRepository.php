@@ -57,7 +57,8 @@ class UserRepository implements IUserRepository, IUserViewRepository
 	}
 	
 	/**
-	 * @see IUserRepository::LoadById()
+	 * @param int $userId
+	 * @return User
 	 */
 	public function LoadById($userId)
 	{
@@ -65,15 +66,18 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		
 		if (!$this->_cache->Exists($userId))
 		{
-			$emailPreferences = $this->LoadEmailPreferences($userId);
-			
 			$command = new GetUserByIdCommand($userId);
-
 			$reader = ServiceLocator::GetDatabase()->Query($command);
 	
 			if ($row = $reader->GetRow())
 			{
-				$user = User::FromRow($row, $emailPreferences);
+				$emailPreferences = $this->LoadEmailPreferences($userId);
+				$permissions = $this->LoadPermissions($userId);
+				
+				$user = User::FromRow($row);
+				$user->WithEmailPreferences($emailPreferences);
+				$user->WithPermissions($permissions);
+				
 				$this->_cache->Add($userId, $user);
 			}		
 		}
@@ -87,8 +91,23 @@ class UserRepository implements IUserRepository, IUserViewRepository
 	 */
 	public function Update($user)
 	{
-		$command = new UpdateUserCommand($user->Id(), $user->StatusId());
-		ServiceLocator::GetDatabase()->Execute($command);
+		$userId = $user->Id();
+		
+		$db = ServiceLocator::GetDatabase();
+		$updateUserCommand = new UpdateUserCommand($user->Id(), $user->StatusId());
+		$db->Execute($updateUserCommand);
+
+		$removed = $user->GetRemovedPermissions();
+		foreach ($removed as $resourceId)
+		{
+			$db->Execute(new DeleteUserResourcePermission($userId, $resourceId));
+		}
+		
+		$added = $user->GetAddedPermissions();
+		foreach ($added as $resourceId)
+		{
+			$db->Execute(new AddUserResourcePermission($userId, $resourceId));
+		}
 	}
 	
 	public function LoadEmailPreferences($userId)
@@ -114,6 +133,21 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		//TODO: Implement for real
 		// needs first name, last name, email, language, timezone
 		return array();
+	}
+
+	private function LoadPermissions($userId)
+	{
+		$allowedResourceIds = array();
+		
+		$command = new SelectUserPermissions($userId);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		while ($row = $reader->GetRow())
+		{
+			$allowedResourceIds[] = $row[ColumnNames::RESOURCE_ID];
+		}
+
+		return $allowedResourceIds;
 	}
 }
 

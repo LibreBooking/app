@@ -109,6 +109,15 @@ class FakeDatabase extends Database
 		
 		return $commands;
 	}
+
+	/**
+	 * @param ISqlCommand $command
+	 * @return bool
+	 */
+	public function ContainsCommand($command)
+	{
+		return in_array($command, $this->_Commands);
+	}
 }
 
 class FakeReader implements IReader 

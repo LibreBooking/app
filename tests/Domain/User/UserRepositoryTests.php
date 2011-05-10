@@ -48,42 +48,46 @@ class UserRepositoryTests extends TestBase
 		$userId = 982;
 		$loadByIdCommand = new GetUserByIdCommand($userId);
 		$loadEmailPreferencesCommand = new GetUserEmailPreferencesCommand($userId);
-		
+		$loadPermissionsCommand = new SelectUserPermissions($userId);
+
 		$userRows = $this->GetUserRow();
 		$emailPrefRows = $this->GetEmailPrefRows();
-		
-		$this->db->SetRow(0, $emailPrefRows);
-		$this->db->SetRow(1, $userRows);
+		$permissionsRows = $this->GetPermissionsRows();
+
+		$this->db->SetRow(0, $userRows);
+		$this->db->SetRow(1, $emailPrefRows);
+		$this->db->SetRow(2, $permissionsRows);
 
 		$row = $userRows[0];
 		
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 		
-		$this->assertEquals(2, count($this->db->_Commands));
-		$this->assertEquals($loadEmailPreferencesCommand, $this->db->_Commands[0]);		
-		$this->assertEquals($loadByIdCommand, $this->db->_Commands[1]);
+		$this->assertEquals(3, count($this->db->_Commands));
+		$this->assertTrue($this->db->ContainsCommand($loadByIdCommand));
+		$this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
+		$this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
 
 		$this->assertEquals($row[ColumnNames::FIRST_NAME], $user->FirstName());
 		$this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
+		$this->assertArrayHasKey(1, $user->AllowedResourceIds());
 	}
 	
 	public function testLoadsUserFromCacheIfAlreadyLoadedFromDatabase()
 	{
 		$userId = 1;
 		
-		$row = $this->GetUserRow();		
-		$emailPrefRows = $this->GetEmailPrefRows();
-		
-		$this->db->SetRow(0, $emailPrefRows);
-		$this->db->SetRow(1, $row);
+		$row = $this->GetUserRow();
+		$this->db->SetRow(0, $row);
+		$this->db->SetRow(1, $this->GetEmailPrefRows());
+		$this->db->SetRow(2, $this->GetPermissionsRows());
 		
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 		
 		$user = $userRepository->LoadById($userId); // 2nd call should load from cache
 		
-		$this->assertEquals(2, count($this->db->_Commands));
+		$this->assertEquals(3, count($this->db->_Commands));
 	}
 
 	public function testCanGetPageableListOfUsers()
@@ -117,17 +121,41 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals($pageSize, $this->db->_Limit);
 
 	}
+
+	public function testOnlyUpdatesPermissionsIfTheyHaveChanged()
+	{
+		$userId = 987;
+		$user = new User();
+		$user->WithId($userId);
+		$user->WithPermissions(array(1, 2, 3, 5));
+		$user->ChangePermissions(array(2, 3, 4, 6));
+
+		$deletePermissionsCommand1 = new DeleteUserResourcePermission($userId, 1);
+		$deletePermissionsCommand2 = new DeleteUserResourcePermission($userId, 5);
+		$addPermissionsCommand1 = new AddUserResourcePermission($userId, 4);
+		$addPermissionsCommand2 = new AddUserResourcePermission($userId, 6);
+
+		$repo = new UserRepository();
+		$repo->Update($user);
+
+		$deleteCommands = $this->db->GetCommandsOfType('DeleteUserResourcePermission');
+		$insertCommands = $this->db->GetCommandsOfType('AddUserResourcePermission');
+		$this->assertEquals(2, count($deleteCommands));
+		$this->assertEquals(2, count($insertCommands));
+	}
 	
 	private function GetUserRow()
 	{
 		$row = array
 		(
 			array(
-				ColumnNames::FIRST_NAME => 'first', 
+				ColumnNames::USER_ID => 1,
+				ColumnNames::FIRST_NAME => 'first',
 				ColumnNames::LAST_NAME => 'last',
 				ColumnNames::EMAIL => 'email',
 				ColumnNames::LANGUAGE_CODE => 'en_us',
 				ColumnNames::TIMEZONE_NAME => 'UTC',
+				ColumnNames::USER_STATUS_ID => AccountStatus::ACTIVE,
 			)
 		);
 		
@@ -145,7 +173,7 @@ class UserRepositoryTests extends TestBase
 		return $row;
 	}
 
-	private function GetRow($userId, $first, $last, $email, $userName, $lastLogin)
+	private function GetRow($userId, $first, $last, $email, $userName, $lastLogin, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
 	{
 		return
 			array(
@@ -154,8 +182,19 @@ class UserRepositoryTests extends TestBase
 				ColumnNames::FIRST_NAME => $first,
 				ColumnNames::LAST_NAME => $last,
 				ColumnNames::EMAIL => $email,
-				ColumnNames::LAST_LOGIN => $lastLogin
+				ColumnNames::LAST_LOGIN => $lastLogin,
+				ColumnNames::TIMEZONE_NAME => $timezone,
+				ColumnNames::USER_STATUS_ID => $statusId
 			);
+	}
+
+	private function GetPermissionsRows()
+	{
+		return array (
+			array (ColumnNames::RESOURCE_ID => 1),
+			array (ColumnNames::RESOURCE_ID => 2),
+			array (ColumnNames::RESOURCE_ID => 3),
+		);
 	}
 }
 ?>

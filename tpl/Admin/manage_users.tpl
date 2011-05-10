@@ -44,7 +44,7 @@ Find User: <input type="text" id="userSearch"/>
 	<form id="permissionsForm" method="post">
 		<div class="error">Actual access to resource may be different depending on user role, group permissions, or external permission settings</div>
 		{foreach from=$resources item=resource}
-			<label><input class="resourceId" type="checkbox" value="{$resource->GetResourceId()}"> {$resource->GetName()}</label><br/>
+			<label><input {formname key=RESOURCE_ID  multi=true} class="resourceId" type="checkbox" value="{$resource->GetResourceId()}"> {$resource->GetName()}</label><br/>
 		{/foreach}
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
@@ -54,8 +54,11 @@ Find User: <input type="text" id="userSearch"/>
 <p>{$resultsStart} - {$resultsEnd} of {$totalResults}</p>
 <p>Page {foreach from=$pages item=page} {pagelink page=$page} {/foreach}</p>
 
+{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/user.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {

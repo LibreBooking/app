@@ -54,6 +54,8 @@ class User
 	}
 
 	protected $statusId;
+
+
 	public function StatusId()
 	{
 		return $this->statusId;
@@ -68,6 +70,61 @@ class User
 	{
 		$this->statusId = AccountStatus::INACTIVE;
 	}
+
+	/**
+	 * @var bool
+	 */
+	private $permissionsChanged = false;
+	private $removedPermissions = array();
+	private $addedPermissions = array();
+
+	/**
+	 * @var array
+	 */
+	protected $allowedResourceIds = array();
+
+	/**
+	 * @param int[] $allowedResourceIds
+	 * @return void
+	 */
+	public function WithPermissions($allowedResourceIds = array())
+	{
+		$this->permissionsChanged = false;
+		$this->allowedResourceIds = $allowedResourceIds;
+	}
+
+	public function ChangePermissions($allowedResourceIds = array())
+	{
+		$removed = array_diff($this->allowedResourceIds, $allowedResourceIds);
+		$added = array_diff($allowedResourceIds, $this->allowedResourceIds);
+		
+		if (!empty($removed) || !empty($added))
+		{
+			$this->permissionsChanged = true;
+			$this->removedPermissions = $removed;
+			$this->addedPermissions = $added;
+
+			$this->allowedResourceIds = $allowedResourceIds;
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function AllowedResourceIds()
+	{
+		return $this->allowedResourceIds;
+	}
+
+	/**
+	 * @internal
+	 * @param IEmailPreferences $emailPreferences
+	 * @return void
+	 */
+	public function WithEmailPreferences(IEmailPreferences $emailPreferences)
+	{
+		$this->emailPreferences = $emailPreferences;
+	}
 	
 	/**
 	 * @param IDomainEvent $event
@@ -78,7 +135,7 @@ class User
 		return $this->emailPreferences->Exists($event->EventCategory(), $event->EventType());
 	}
 	
-	public static function FromRow($row, IEmailPreferences $emailPreferences)
+	public static function FromRow($row)
 	{
 		$user = new User();
 		$user->id = $row[ColumnNames::USER_ID];
@@ -89,11 +146,33 @@ class User
 		$user->timezone = $row[ColumnNames::TIMEZONE_NAME];
 		$user->statusId = $row[ColumnNames::USER_STATUS_ID];
 			
-		$user->emailPreferences = $emailPreferences;
 		return $user;
 	}
 
 
+
+	public function WithId($userId)
+	{
+		$this->id = $userId;
+	}
+
+	/**
+	 * @internal
+	 * @return array
+	 */
+	public function GetAddedPermissions()
+	{
+		return $this->addedPermissions;
+	}
+
+	/**
+	 * @internal
+	 * @return array
+	 */
+	public function GetRemovedPermissions()
+	{
+		return $this->removedPermissions;
+	}
 }
 
 ?>

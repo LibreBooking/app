@@ -3,7 +3,7 @@ require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-interface IManageUsersPage extends IPageable
+interface IManageUsersPage extends IPageable, IActionPage
 {
 	/**
 	 * @abstract
@@ -31,6 +31,12 @@ interface IManageUsersPage extends IPageable
 	 * @return void
 	 */
 	public function SetJson($objectToSerialize);
+
+	/**
+	 * @abstract
+	 * @return int[] resource ids the user has permission to
+	 */
+	public function GetAllowedResourceIds();
 }
 
 interface IPageable
@@ -129,5 +135,14 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	{
 		$this->Set('resources', $resources);
 	}
+
+	/**
+	 * @return int[] resource ids the user has permission to
+	 */
+	public function GetAllowedResourceIds()
+	{
+		return $this->server->GetForm(FormKeys::RESOURCE_ID);
+	}
+
 }
 ?>

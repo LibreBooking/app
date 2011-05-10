@@ -151,6 +151,11 @@ class Queries
 		'INSERT INTO
 			schedules (name, isdefault, weekdaystart, daysvisible, layout_id)
 		VALUES (@scheduleName, @scheduleIsDefault, @scheduleWeekdayStart, @scheduleDaysVisible, @layoutid)';
+
+	const ADD_USER_RESOURCE_PERMISSION =
+		'INSERT INTO
+		user_resource_permissions (user_id, resource_id)
+		VALUES (@userid, @resourceid)';
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
 		'INSERT INTO 
@@ -197,6 +202,11 @@ class Queries
 		'DELETE 
 		FROM reservation_series
 		WHERE series_id = @seriesid';
+	
+	const DELETE_USER_RESOURCE_PERMISSION =
+		'DELETE
+		FROM user_resource_permissions
+		WHERE user_id = @userid AND resource_id = @resourceid';
 	
 	const LOGIN_USER = 
 		'SELECT user_id, email, fname, lname, timezone, lastlogin, homepageid

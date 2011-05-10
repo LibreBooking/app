@@ -185,6 +185,16 @@ class AddScheduleCommand extends SqlCommand
 	}
 }
 
+class AddUserResourcePermission extends SqlCommand
+{
+	public function __construct($userId, $resourceId)
+	{
+		parent::__construct(Queries::ADD_USER_RESOURCE_PERMISSION);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
 class AuthorizationCommand extends SqlCommand
 {
 	public function __construct($username)
@@ -264,6 +274,16 @@ class DeleteSeriesCommand extends SqlCommand
 	{
 		parent::__construct(Queries::DELETE_SERIES);
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+	}
+}
+
+class DeleteUserResourcePermission extends SqlCommand
+{
+	public function __construct($userId, $resourceId)
+	{
+		parent::__construct(Queries::DELETE_USER_RESOURCE_PERMISSION);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 	}
 }
 

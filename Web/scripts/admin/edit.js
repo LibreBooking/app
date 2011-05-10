@@ -6,10 +6,13 @@
 			var submitOptions = { 
 				url: urlCallback(),
 		        beforeSubmit: BeforeFormSubmit,
-		        success: function(responseText, statusText, xhr, form)  { 
+		        success: function(responseText, statusText, xhr, form)  {
+
+					formElement.find('.indicator').hide();
+					formElement.find('button').show();
+					
 					if (responseText.trim() != '' && responseHandler) 
 					{
-						$(form).find('.indicator').hide();
 						responseHandler(responseText);
 					}
 					else
@@ -51,10 +54,11 @@
 					fileElementId: uploadElementId,
 					success: function (responseText, status)
 					{
-						if (responseText.trim() != '' && responseHandler) 
+						form.find('.indicator').hide();
+						form.find('button').show();
+
+						if (responseText.trim() != '' && responseHandler)
 						{
-							form.find('.indicator').hide();
-							form.find('button').show();
 							responseHandler(responseText);
 						}
 						else

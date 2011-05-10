@@ -1,7 +1,13 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
-abstract class AdminPage extends SecurePage
+interface IActionPage
+{
+	function TakingAction();
+	function GetAction();
+}
+
+abstract class AdminPage extends SecurePage implements IActionPage
 {
 	public function __construct($titleKey = '', $pageDepth = 1)
 	{

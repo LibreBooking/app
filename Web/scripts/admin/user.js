@@ -61,9 +61,12 @@ function UserManagement(opts) {
 		$(".cancel").click(function() {
 			$(this).closest('.dialog').dialog("close");
 		});
-		
-		var noop = function() { elements.permissionsDialog.dialog('close'); };
-		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), noop, null);
+
+		var hidePermissionsDialog = function() {
+			elements.permissionsDialog.dialog('close');
+		};
+		var error = function(errorText) { alert(errorText);};
+		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
 	};
 
 	UserManagement.prototype.addUser = function(user) {
@@ -112,6 +115,7 @@ function UserManagement(opts) {
 		var user = getActiveUser();
 		var data = {dr: 'groups', uid: user.id};
 		$.get(opts.permissionsUrl, data, function(resourceIds) {
+			elements.permissionsForm.find(':checkbox').attr('checked', false);
 			$.each(resourceIds, function(index, value) {
 				elements.permissionsForm.find(':checkbox[value="' + value + '"]').attr('checked',true);
 			});

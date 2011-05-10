@@ -28,6 +28,10 @@ class DashboardPresenterTests extends TestBase
 
 class FakeDashboardPage implements IDashboardPage 
 {
+	function AddItem(DashboardItem $item)
+	{
+		// TODO: Implement AddItem() method.
+	}
 }
 
 ?>

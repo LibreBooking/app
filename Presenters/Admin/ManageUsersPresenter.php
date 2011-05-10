@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
 class ManageUsersActions
 {
@@ -7,7 +9,7 @@ class ManageUsersActions
 	const Permissions = 'permissions';
 }
 
-class ManageUsersPresenter
+class ManageUsersPresenter extends ActionPresenter
 {
 	/**
 	 * @var \IManageUsersPage
@@ -15,7 +17,7 @@ class ManageUsersPresenter
 	private $page;
 
 	/**
-	 * @var UserRepository
+	 * @var \UserRepository
 	 */
 	private $userRepository;
 
@@ -26,13 +28,19 @@ class ManageUsersPresenter
 
 	/**
 	 * @param IManageUsersPage $page
-	 * @param IUserViewRepository $userRepository
+	 * @param UserRepository $userRepository
 	 */
-	public function __construct(IManageUsersPage $page, IUserViewRepository $userRepository, IResourceRepository $resourceRepository)
+	public function __construct(IManageUsersPage $page, UserRepository $userRepository, IResourceRepository $resourceRepository)
 	{
+		parent::__construct($page);
+		
 		$this->page = $page;
 		$this->userRepository = $userRepository;
 		$this->resourceRepository = $resourceRepository;
+
+		$this->AddAction(ManageUsersActions::Activate, 'Activate');
+		$this->AddAction(ManageUsersActions::Deactivate, 'Deactivate');
+		$this->AddAction(ManageUsersActions::Permissions, 'ChangePermissions');
 	}
 
 	public function PageLoad()
@@ -58,12 +66,19 @@ class ManageUsersPresenter
 		$this->userRepository->Update($user);
 	}
 
-
-	public function ProcessAction()
+	public function ChangePermissions()
 	{
-//		$this->Deactivate();
-		$this->Activate();
+		$user = $this->userRepository->LoadById($this->page->GetUserId());
+		$allowedResources = array();
+
+		if (is_array($this->page->GetAllowedResourceIds()))
+		{
+			$allowedResources = $this->page->GetAllowedResourceIds();
+		}
+		$user->ChangePermissions($allowedResources);
+		$this->userRepository->Update($user);
 	}
+
 
 	public function ProcessDataRequest()
 	{
@@ -75,11 +90,8 @@ class ManageUsersPresenter
 	 */
 	public function GetUserResourcePermissions()
 	{
-		$repo = new ScheduleUserRepository();
-		$resources = $repo->GetUser($this->page->GetUserId())->GetResources();
-
-		return array_map(function($resource) { return $resource->Id();}, $resources);
-
+		$user = $this->userRepository->LoadById($this->page->GetUserId());
+		return $user->AllowedResourceIds();
 	}
 }
 

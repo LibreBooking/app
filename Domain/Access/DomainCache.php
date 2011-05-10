@@ -7,17 +7,30 @@ class DomainCache
 	{
 		$this->_cache = array();
 	}
-	
+
+	/**
+	 * @param mixed $key
+	 * @return bool
+	 */
 	public function Exists($key)
 	{
 		return array_key_exists($key, $this->_cache);
 	}
-	
+
+	/**
+	 * @param mixed $key
+	 * @return mixed
+	 */
 	public function Get($key)
 	{
 		return $this->_cache[$key];
 	}
-	
+
+	/**
+	 * @param mixed $key
+	 * @param mixed $object
+	 * @return void
+	 */
 	public function Add($key, $object)
 	{
 		$this->_cache[$key] = $object;
