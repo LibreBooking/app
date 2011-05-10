@@ -37,6 +37,12 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @return int[] resource ids the user has permission to
 	 */
 	public function GetAllowedResourceIds();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetPassword();
 }
 
 interface IPageable
@@ -66,7 +72,11 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	public function __construct()
 	{
 		parent::__construct('ManageUsers');
-		$this->_presenter = new ManageUsersPresenter($this, new UserRepository(), new ResourceRepository());
+		$this->_presenter = new ManageUsersPresenter(
+			$this,
+			new UserRepository(),
+			new ResourceRepository(),
+			new PasswordEncryption());
 	}
 	
 	public function PageLoad()
@@ -144,5 +154,12 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 		return $this->server->GetForm(FormKeys::RESOURCE_ID);
 	}
 
+	/**
+	 * @return string
+	 */
+	public function GetPassword()
+	{
+		return $this->server->GetForm(FormKeys::PASSWORD);
+	}
 }
 ?>

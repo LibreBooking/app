@@ -84,6 +84,16 @@ class User
 	protected $allowedResourceIds = array();
 
 	/**
+	 * @var string
+	 */
+	public $password;
+
+	/**
+	 * @var string
+	 */
+	public $passwordSalt;
+
+	/**
 	 * @param int[] $allowedResourceIds
 	 * @return void
 	 */
@@ -145,11 +155,11 @@ class User
 		$user->language = $row[ColumnNames::LANGUAGE_CODE];
 		$user->timezone = $row[ColumnNames::TIMEZONE_NAME];
 		$user->statusId = $row[ColumnNames::USER_STATUS_ID];
-			
+		$user->password = $row[ColumnNames::PASSWORD];
+		$user->passwordSalt = $row[ColumnNames::SALT];
+
 		return $user;
 	}
-
-
 
 	public function WithId($userId)
 	{
@@ -172,6 +182,12 @@ class User
 	public function GetRemovedPermissions()
 	{
 		return $this->removedPermissions;
+	}
+
+	public function ChangePassword($password, $salt)
+	{
+		$this->password = $password;
+		$this->passwordSalt = $salt;
 	}
 }
 

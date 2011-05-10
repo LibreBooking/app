@@ -731,11 +731,13 @@ class UpdateScheduleLayoutCommand extends SqlCommand
 
 class UpdateUserCommand extends SqlCommand
 {
-	public function __construct($userId, $statusId)
+	public function __construct($userId, $statusId, $encryptedPassword, $passwordSalt)
 	{
 		parent::__construct(Queries::UPDATE_USER);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $statusId));
+		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $encryptedPassword));
+		$this->AddParameter(new Parameter(ParameterNames::SALT, $passwordSalt));
 	}
 }
 

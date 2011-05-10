@@ -1,11 +1,13 @@
 <?php
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
 class ManageUsersActions
 {
 	const Activate = 'activate';
 	const Deactivate = 'deactivate';
+	const Password = 'password';
 	const Permissions = 'permissions';
 }
 
@@ -27,19 +29,26 @@ class ManageUsersPresenter extends ActionPresenter
 	private $resourceRepository;
 
 	/**
+	 * @var \PasswordEncryption
+	 */
+	private $passwordEncryption;
+
+	/**
 	 * @param IManageUsersPage $page
 	 * @param UserRepository $userRepository
 	 */
-	public function __construct(IManageUsersPage $page, UserRepository $userRepository, IResourceRepository $resourceRepository)
+	public function __construct(IManageUsersPage $page, UserRepository $userRepository, IResourceRepository $resourceRepository, PasswordEncryption $passwordEncryption)
 	{
 		parent::__construct($page);
 		
 		$this->page = $page;
 		$this->userRepository = $userRepository;
 		$this->resourceRepository = $resourceRepository;
+		$this->passwordEncryption = $passwordEncryption;
 
 		$this->AddAction(ManageUsersActions::Activate, 'Activate');
 		$this->AddAction(ManageUsersActions::Deactivate, 'Deactivate');
+		$this->AddAction(ManageUsersActions::Password, 'ResetPassword');
 		$this->AddAction(ManageUsersActions::Permissions, 'ChangePermissions');
 	}
 
@@ -76,6 +85,16 @@ class ManageUsersPresenter extends ActionPresenter
 			$allowedResources = $this->page->GetAllowedResourceIds();
 		}
 		$user->ChangePermissions($allowedResources);
+		$this->userRepository->Update($user);
+	}
+
+	public function ResetPassword()
+	{
+		$salt = $this->passwordEncryption->Salt();
+		$encryptedPassword = $this->passwordEncryption->Encrypt($this->page->GetPassword(), $salt);
+
+		$user = $this->userRepository->LoadById($this->page->GetUserId());
+		$user->ChangePassword($encryptedPassword, $salt);
 		$this->userRepository->Update($user);
 	}
 

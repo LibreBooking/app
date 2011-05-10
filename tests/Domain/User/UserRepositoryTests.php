@@ -119,7 +119,24 @@ class UserRepositoryTests extends TestBase
 
 		$this->assertEquals($offset, $this->db->_Offset);
 		$this->assertEquals($pageSize, $this->db->_Limit);
+	}
 
+	public function testUpdateSetsUserProperties()
+	{
+		$userId = 987;
+		$user = new User();
+		$user->WithId($userId);
+
+		$password = 'password';
+		$salt = 'salt';
+		
+		$user->ChangePassword($password, $salt);
+
+		$command = new UpdateUserCommand($userId, $user->StatusId(), $user->password, $user->passwordSalt);
+		$this->db->ContainsCommand($command);
+		
+		$repo = new UserRepository();
+		$repo->Update($user);
 	}
 
 	public function testOnlyUpdatesPermissionsIfTheyHaveChanged()
@@ -142,6 +159,11 @@ class UserRepositoryTests extends TestBase
 		$insertCommands = $this->db->GetCommandsOfType('AddUserResourcePermission');
 		$this->assertEquals(2, count($deleteCommands));
 		$this->assertEquals(2, count($insertCommands));
+
+		$this->db->ContainsCommand($deletePermissionsCommand1);
+		$this->db->ContainsCommand($deletePermissionsCommand2);
+		$this->db->ContainsCommand($addPermissionsCommand1);
+		$this->db->ContainsCommand($addPermissionsCommand2);
 	}
 	
 	private function GetUserRow()
@@ -156,6 +178,8 @@ class UserRepositoryTests extends TestBase
 				ColumnNames::LANGUAGE_CODE => 'en_us',
 				ColumnNames::TIMEZONE_NAME => 'UTC',
 				ColumnNames::USER_STATUS_ID => AccountStatus::ACTIVE,
+				ColumnNames::PASSWORD => 'encryptedPassword',
+				ColumnNames::SALT => 'passwordsalt',
 			)
 		);
 		

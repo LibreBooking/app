@@ -94,7 +94,7 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		$userId = $user->Id();
 		
 		$db = ServiceLocator::GetDatabase();
-		$updateUserCommand = new UpdateUserCommand($user->Id(), $user->StatusId());
+		$updateUserCommand = new UpdateUserCommand($user->Id(), $user->StatusId(), $user->password, $user->passwordSalt);
 		$db->Execute($updateUserCommand);
 
 		$removed = $user->GetRemovedPermissions();

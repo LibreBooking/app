@@ -8,8 +8,10 @@ function UserManagement(opts) {
 		userAutocomplete: $('#userSearch'),
 
 		permissionsDialog: $('#permissionsDialog'),
+		passwordDialog: $('#passwordDialog'),
 
 		permissionsForm: $('#permissionsForm'),
+		passwordForm: $('#passwordForm'),
 
 		addForm: $('#addScheduleForm')
 	};
@@ -20,6 +22,7 @@ function UserManagement(opts) {
 	UserManagement.prototype.init = function() {
 
 		ConfigureAdminDialog(elements.permissionsDialog, 'Resource Permissions', 400, 500);
+		ConfigureAdminDialog(elements.passwordDialog, 'Reset Password', 400, 300);
 
 		elements.userList.delegate('a.update', 'click', function(e) {
 			setActiveUserId($(this));
@@ -36,6 +39,11 @@ function UserManagement(opts) {
 
 		elements.userList.delegate('.changePermissions', 'click', function() {
 			changePermissions();
+		});
+
+		elements.userList.delegate('.resetPassword', 'click', function() {
+			elements.passwordDialog.find(':password').val('');
+			elements.passwordDialog.dialog('open');
 		});
 
 		$(elements.userAutocomplete).autocomplete({
@@ -65,8 +73,12 @@ function UserManagement(opts) {
 		var hidePermissionsDialog = function() {
 			elements.permissionsDialog.dialog('close');
 		};
+		
 		var error = function(errorText) { alert(errorText);};
+		
 		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
+
+		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), null, error);
 	};
 
 	UserManagement.prototype.addUser = function(user) {
@@ -113,7 +125,7 @@ function UserManagement(opts) {
 
 	var changePermissions = function () {
 		var user = getActiveUser();
-		var data = {dr: 'groups', uid: user.id};
+		var data = {dr: 'permissions', uid: user.id};
 		$.get(opts.permissionsUrl, data, function(resourceIds) {
 			elements.permissionsForm.find(':checkbox').attr('checked', false);
 			$.each(resourceIds, function(index, value) {

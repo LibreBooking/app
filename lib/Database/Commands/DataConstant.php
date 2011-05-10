@@ -612,7 +612,9 @@ class Queries
 		'UPDATE
 			users
 		SET
-			status_id = @user_statusid
+			status_id = @user_statusid,
+			password = @password,
+			salt = @salt
 		WHERE
 			user_id = @userid';
 	

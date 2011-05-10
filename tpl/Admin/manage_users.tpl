@@ -51,6 +51,15 @@ Find User: <input type="text" id="userSearch"/>
 	</form>
 </div>
 
+<div id="passwordDialog" class="dialog" style="display:none;">
+	<form id="passwordForm" method="post">
+		Password<br/>
+		{textbox type="password" name="PASSWORD" class="required textbox" value=""}
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
 <p>{$resultsStart} - {$resultsEnd} of {$totalResults}</p>
 <p>Page {foreach from=$pages item=page} {pagelink page=$page} {/foreach}</p>
 
@@ -66,7 +75,8 @@ Find User: <input type="text" id="userSearch"/>
 	var actions = {
 		activate: '{ManageUsersActions::Activate}',
 		deactivate: '{ManageUsersActions::Deactivate}',
-		permissions: '{ManageUsersActions::Permissions}'
+		permissions: '{ManageUsersActions::Permissions}',
+		password: '{ManageUsersActions::Password}'
 	};
 			
 	var userOptions = {
