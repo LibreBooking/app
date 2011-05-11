@@ -6,6 +6,7 @@ class QueryStringKeys
 	{}
 	
 	const ACTION = 'action';
+	const AUTOCOMPLETE_TYPE = 'type';
 	const DATA_REQUEST = 'dr';
 	const END_DATE = 'ed';
 	const LANGUAGE = 'lang';
@@ -19,5 +20,6 @@ class QueryStringKeys
 	const SCHEDULE_ID = 'sid';
 	const START_DATE = 'sd';
 	const USER_ID = 'uid';
+
 }
 ?>

@@ -73,12 +73,16 @@ function UserManagement(opts) {
 		var hidePermissionsDialog = function() {
 			elements.permissionsDialog.dialog('close');
 		};
+
+		var hidePasswordDialog = function() {
+			elements.passwordDialog.dialog('close');
+		};
 		
 		var error = function(errorText) { alert(errorText);};
 		
 		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
 
-		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), null, error);
+		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
 	};
 
 	UserManagement.prototype.addUser = function(user) {

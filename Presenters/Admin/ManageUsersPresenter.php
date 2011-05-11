@@ -101,7 +101,7 @@ class ManageUsersPresenter extends ActionPresenter
 
 	public function ProcessDataRequest()
 	{
-		$this->page->SetJson($this->GetUserResourcePermissions());
+		$this->page->SetJsonResponse($this->GetUserResourcePermissions());
 	}
 
 	/**

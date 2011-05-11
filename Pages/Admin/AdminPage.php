@@ -41,12 +41,12 @@ abstract class AdminPage extends SecurePage implements IActionPage
 	
 	public function GetAction()
 	{
-		return $this->server->GetQuerystring(QueryStringKeys::ACTION);
+		return $this->GetQuerystring(QueryStringKeys::ACTION);
 	}
 
 	public function GetDataRequest()
 	{
-		return $this->server->GetQuerystring(QueryStringKeys::DATA_REQUEST);
+		return $this->GetQuerystring(QueryStringKeys::DATA_REQUEST);
 	}
 	
 	abstract function ProcessAction();

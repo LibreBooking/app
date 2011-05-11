@@ -30,7 +30,7 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @param mixed $objectToSerialize
 	 * @return void
 	 */
-	public function SetJson($objectToSerialize);
+	public function SetJsonResponse($objectToSerialize);
 
 	/**
 	 * @abstract
@@ -112,16 +112,9 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 		$this->_presenter->ProcessDataRequest();
 	}
 
-	public function SetJson($json)
-	{
-		header('Content-type: application/json');
-		$this->Set('data', json_encode($json));
-		$this->Display('json_data.tpl');
-	}
-
 	public function GetPageNumber()
 	{
-		return $this->server->GetQuerystring(QueryStringKeys::PAGE);
+		return $this->GetQuerystring(QueryStringKeys::PAGE);
 	}
 
 	public function GetPageSize()
@@ -134,7 +127,7 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	 */
 	public function GetUserId()
 	{
-		return $this->server->GetQuerystring(QueryStringKeys::USER_ID);
+		return $this->GetQuerystring(QueryStringKeys::USER_ID);
 	}
 
 	/**
@@ -151,7 +144,7 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	 */
 	public function GetAllowedResourceIds()
 	{
-		return $this->server->GetForm(FormKeys::RESOURCE_ID);
+		return $this->GetForm(FormKeys::RESOURCE_ID);
 	}
 
 	/**
@@ -159,7 +152,26 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	 */
 	public function GetPassword()
 	{
-		return $this->server->GetForm(FormKeys::PASSWORD);
+		return $this->GetForm(FormKeys::PASSWORD);
+	}
+
+	function GetAction()
+	{
+		return parent::GetAction();
+	}
+
+	/**
+	 * @param mixed $objectToSerialize
+	 * @return void
+	 */
+	public function SetJsonResponse($objectToSerialize)
+	{
+		parent::SetJson($objectToSerialize);
+	}
+
+	function TakingAction()
+	{
+		return parent::GetAction();
 	}
 }
 ?>

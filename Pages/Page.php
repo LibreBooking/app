@@ -169,25 +169,51 @@ abstract class Page implements IPage
 	{
 		return $this->smarty->IsValid();
 	}
-	
+
+	/**
+	 * @param string $var
+	 * @param string $value
+	 * @return void
+	 */
 	public function Set($var, $value)
 	{
 		$this->smarty->assign($var, $value);
 	}
-	
+
 	protected function GetVar($var)
 	{
 		return $this->smarty->getTemplateVars($var);
 	}
-	
+
+	/**
+	 * @param string $var
+	 * @return null|string
+	 */
 	protected function GetForm($var)
 	{
 		return $this->server->GetForm($var);
 	}
-	
+
+	/**
+	 * @param string $key
+	 * @return null|string
+	 */
 	protected function GetQuerystring($key)
 	{
 		return $this->server->GetQuerystring($key);
+	}
+
+	/**
+	 * @param string $objectToSerialize
+	 * @param string null $error
+	 * @return void
+	 */
+	protected function SetJson($objectToSerialize, $error = null)
+	{
+		header('Content-type: application/json');
+		$this->Set('data', json_encode($objectToSerialize));
+		$this->Set('error', json_encode($error));
+		$this->smarty->display('json_data.tpl');
 	}
 }
 ?>
