@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Database/ISqlCommand.php');
+require_once(ROOT_DIR . 'lib/Database/SqlFilter.php');
 
 class SqlCommand implements ISqlCommand
 {
@@ -58,6 +59,105 @@ class SqlCommand implements ISqlCommand
 	public function __toString()
 	{
 		return $this->ToString();
+	}
+}
+
+class AdHocCommand extends SqlCommand
+{
+	public function __construct($rawSql)
+	{
+		parent::__construct($rawSql);
+	}
+}
+
+class CountCommand extends SqlCommand
+{
+	/**
+	 * @var SqlCommand
+	 */
+	private $baseCommand;
+
+	public function __construct(SqlCommand $baseCommand)
+	{
+		parent::__construct();
+
+		$this->baseCommand = $baseCommand;
+		$this->Parameters = $baseCommand->Parameters;
+	}
+
+	public function GetQuery()
+	{
+		return preg_replace('/SELECT.+FROM/ims', 'SELECT COUNT(*) as total FROM', $this->baseCommand->GetQuery());
+	}
+}
+
+class FilterCommand extends SqlCommand
+{
+	/**
+	 * @var SqlCommand
+	 */
+	private $baseCommand;
+
+	/**
+	 * @var \ISqlFilter
+	 */
+	private $filter;
+
+	public function __construct(SqlCommand $baseCommand, ISqlFilter $filter)
+	{
+		$this->baseCommand = $baseCommand;
+		$this->filter = $filter;
+
+		$this->Parameters = $baseCommand->Parameters;
+		$criterion = $filter->Criteria();
+		foreach ($criterion as $criteria)
+		{
+			$this->AddParameter(new Parameter($criteria->Variable, $criteria->Value));
+		}
+	}
+
+	public function GetQuery()
+	{
+		$baseQuery = $this->baseCommand->GetQuery();
+		$query = $baseQuery;
+		$hasWhere = (stripos($baseQuery, 'WHERE') !== false);
+		$hasOrderBy = (stripos($baseQuery, 'ORDER BY') !== false);
+		$newWhere = $this->filter->Where();
+
+		//Log::Debug("Applying filter to base query: $baseQuery");
+		if ($hasWhere)
+		{
+			$baseQuery = str_ireplace('WHERE', 'WHERE (', $baseQuery);
+
+			//Log::Debug("HAS WHERE, adding filter $newWhere");
+			$split = preg_split("/ORDER BY/ims", $baseQuery);
+
+			if (count($split) > 1)
+			{
+				$query = "{$split[0]}) AND ($newWhere) ORDER BY {$split[1]}";
+			}
+			else
+			{
+				$query = "$baseQuery) AND ($newWhere)";
+			}
+
+			// get between where and order by, replace with match plus new stuff
+			//return preg_replace('/WHERE(.+)(ORDER BY.*?)/ims', 'WHERE (${1}) AND (' . $newWhere . ') ${2}', $baseQuery);
+		}
+		else if (!$hasWhere && $hasOrderBy)
+		{
+			//Log::Debug("ORDER BY, adding filter $newWhere");
+			// replace order by, prefixing where
+			$query = str_ireplace('order by', " WHERE $newWhere ORDER BY", $baseQuery);
+		}
+		else
+		{
+			//Log::Debug("NO WHERE, adding filter $newWhere");
+			// no where, no order by, just append new where clause
+			$query = "$baseQuery WHERE $newWhere";
+		}
+	
+		return $query;
 	}
 }
 ?>

@@ -6,8 +6,11 @@ class AutoCompletePage extends SecurePage
 {
 	public function PageLoad()
 	{
+		$filter = new LikeSqlFilter(ColumnNames::FIRST_NAME, 'ni');
+
 		$r = new UserRepository();
-		$results = $r->GetList(1, 100, 'first', 'desc', $filterCriteria)->Results();
+		$results = $r->GetList(1, 100, null, null, $filter)->Results();
+
 		$this->SetJson($results);
 	}
 

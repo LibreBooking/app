@@ -211,8 +211,15 @@ abstract class Page implements IPage
 	protected function SetJson($objectToSerialize, $error = null)
 	{
 		header('Content-type: application/json');
-		$this->Set('data', json_encode($objectToSerialize));
-		$this->Set('error', json_encode($error));
+
+		if (empty($error))
+		{
+			$this->Set('data', json_encode($objectToSerialize));
+		}
+		else
+		{
+			$this->Set('error', json_encode($error));
+		}
 		$this->smarty->display('json_data.tpl');
 	}
 }

@@ -303,144 +303,36 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$baseCommand = new AdHocCommand("SeLEcT F.*,    lbl,
 											abc.* fROM table wHere blah = @blah and blah2 = @blah2 ORDER BY blah1");
 
-		$filter = new EqualFilter("fname", 'firstname');
-		$filter->_And(new EqualFilter("lname", 'last'));
+		$filter = new LikeSqlFilter("fname", 'firstname');
+		$filter->_And(new EqualsSqlFilter("lname", 'last'));
 
 		$filterCommand = new FilterCommand($baseCommand, $filter);
 
 		$this->assertEquals(2, $filterCommand->Parameters->Count());
+		$this->assertEquals('firstname%', $filterCommand->Parameters->Items(0)->Value);
+		$this->assertEquals('last', $filterCommand->Parameters->Items(1)->Value);
 
-		$constraint = $this->stringContains("table WHERE ( blah = @blah and blah2 = @blah2 ) AND (fname = @fname AND lname = @lname) ORDER BY blah1");
+		$constraint = $this->stringContains("table WHERE ( blah = @blah and blah2 = @blah2 ) AND (fname LIKE @fname AND lname = @lname) ORDER BY  blah1");
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
+		 //("SELECT COUNT(*) as total FROM table WHERE (blah = @blah and blah2 = @blah2) AND (fname = @fname AND lname = @lname) ORDER BY blah1", $filterCommand->GetQuery());
+	}
 
-						  //("SELECT COUNT(*) as total FROM table WHERE (blah = @blah and blah2 = @blah2) AND (fname = @fname AND lname = @lname) ORDER BY blah1", $filterCommand->GetQuery());
+	public function testFiltersWithLimit()
+	{
+		$baseCommand = new AdHocCommand("SELECT *
+						FROM users
+						WHERE (0 = '0' OR status_id = '0')");
+
+		$filter = new LikeSqlFilter("fname", 'firstname');
+		$filter->_And(new EqualsSqlFilter("lname", 'last'));
+
+		$filterCommand = new FilterCommand($baseCommand, $filter);
+
+		$constraint = $this->stringContains("WHERE ( (0 = '0' OR status_id = '0')) AND (fname LIKE @fname AND lname = @lname)");
+		$query = $filterCommand->GetQuery();
+		$this->assertThat($query, $constraint, $query);
 	}
 }
 
-class FilterCommand extends SqlCommand
-{
-	/**
-	 * @var SqlCommand
-	 */
-	private $baseCommand;
-
-	/**
-	 * @var \ISqlFilter
-	 */
-	private $filter;
-
-	public function __construct(SqlCommand $baseCommand, ISqlFilter $filter)
-	{
-		$this->baseCommand = $baseCommand;
-		$this->filter = $filter;
-
-		$this->Parameters = $baseCommand->Parameters;
-		$criterion = $filter->Criteria();
-		foreach ($criterion as $criteria)
-		{
-			$this->AddParameter(new Parameter($criteria->Variable, $criteria->Value));
-		}
-
-	}
-
-	public function GetQuery()
-	{
-		$baseQuery = $this->baseCommand->GetQuery();
-		$hasWhere = (stripos($baseQuery, 'WHERE') !== false);
-		$hasOrderBy = (stripos($baseQuery, 'ORDER BY') !== false);
-		$newWhere = $this->filter->Where();
-		
-		if ($hasWhere )
-		{
-			//$split = explode("order by")
-			// get between where and order by, replace with match plus new stuff
-			return preg_replace('/WHERE(.+)(ORDER BY.*?)/ims', 'WHERE (${1}) AND (' . $newWhere . ') ${2}', $baseQuery);
-		}
-		else if (!$hasWhere && $hasOrderBy)
-		{
-			// replace order by, prefixing where
-			return str_ireplace('order by', " WHERE $newWhere ORDER BY", $baseQuery);
-		}
-		else
-		{
-			// no where, no order by, just append new where clause
-			return  "$baseQuery WHERE $newWhere";
-		}
-	}
-}
-
-interface ISqlFilter
-{
-	public function Criteria();
-	public function _And(ISqlFilter $filter);
-	public function _Or(ISqlFilter $filter);
-
-	public function Where();
-}
-
-class Criteria
-{
-	public $Name;
-	public $Value;
-	public $Variable;
-
-	public function __construct($columnName, $columnValue)
-	{
-		$this->Name = $columnName;
-		$this->Value = $columnValue;
-		$this->Variable = '@' . $columnName;
-	}
-}
-class EqualFilter implements ISqlFilter
-{
-	private $criteria;
-	private $sql = '';
-	private $_and = array();
-	
-	public function __construct($columnName, $columnValue)
-	{
-		$this->criteria = new Criteria($columnName, $columnValue);
-	}
-
-	public function Criteria()
-	{
-		$criteria = array();
-		foreach($this->_and as $filter)
-		{
-			foreach($filter->Criteria() as $c)
-			{
-				$criteria[] = $c;
-			}
-		}
-		
-		array_unshift($criteria, $this->criteria);
-
-		return $criteria;
-	}
-
-	public function _And(ISqlFilter $filter)
-	{
-		$this->_and[] = $filter;
-		return $this;
-	}
-
-	public function _Or(ISqlFilter $filter)
-	{
-		return $this;
-	}
-
-	public function Where()
-	{
-		$sql = "{$this->criteria->Name} = {$this->criteria->Variable}";
-
-		/** @var $filter ISqlFilter */
-		foreach ($this->_and as $filter)
-		{
-			$sql .= " AND {$filter->Where()}";
-		}
-
-		return $sql;
-	}
-}
 ?>

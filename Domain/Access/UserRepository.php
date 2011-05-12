@@ -44,11 +44,18 @@ class UserRepository implements IUserRepository, IUserViewRepository
 	 * @param int $pageSize
 	 * @param string $sortField
 	 * @param string $sortDirection
+	 * @param ISqlFilter $filter
 	 * @return PageableData of UserItemView
 	 */
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null)
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
 	{
 		$command = new GetAllUsersByStatusCommand();
+
+		if ($filter != null)
+		{
+			$command = new FilterCommand($command, $filter);
+		}
+
 		$builder = function($row) {
 			return UserItemView::Create($row);
 		};

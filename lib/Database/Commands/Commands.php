@@ -1,34 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Database/SqlCommand.php');
 
-class AdHocCommand extends SqlCommand
-{
-	public function __construct($rawSql)
-	{
-		parent::__construct($rawSql);
-	} 
-}
-
-class CountCommand extends SqlCommand
-{
-	/**
-	 * @var SqlCommand
-	 */
-	private $baseCommand;
-
-	public function __construct(SqlCommand $baseCommand)
-	{
-		parent::__construct();
-
-		$this->baseCommand = $baseCommand;
-		$this->Parameters = $baseCommand->Parameters;
-	}
-
-	public function GetQuery()
-	{
-		return preg_replace('/SELECT.+FROM/ims', 'SELECT COUNT(*) as total FROM', $this->baseCommand->GetQuery());
-	}
-}
 
 //MPinnegar
 //TO-DO: Move this into alphabetical order

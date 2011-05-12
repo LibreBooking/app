@@ -8,51 +8,63 @@ class Log
 	 * @var Log
 	 */
 	private static $_instance;
-	
+
 	/**
 	 * @var Logger
 	 */
 	private $logger;
-	
+
 	private function __construct()
 	{
 		Logger::configure(ROOT_DIR . 'config/log4php.config.properties');
 		$this->logger = Logger::getRootLogger();
 	}
-	
+
 	/**
 	 * @return Log
 	 */
 	private static function &GetInstance()
-	{			
-		if (is_null(self::$_instance))
-		{
+	{
+		if (is_null(self::$_instance)) {
 			self::$_instance = new Log();
 		}
-		
+
 		return self::$_instance;
 	}
-	
+
 	/**
 	 * @param string $message
 	 * @param mixed $args
 	 */
 	public static function Debug($message, $args = array())
 	{
-		$args = func_get_args();
-		$log = vsprintf(array_shift($args), array_values($args));
-		self::GetInstance()->logger->debug($log);
+		try
+		{
+			$args = func_get_args();
+			$log = vsprintf(array_shift($args), array_values($args));
+			self::GetInstance()->logger->debug($log);
+		}
+		catch (Exception $ex)
+		{
+		}
 	}
-	
+
 	/**
 	 * @param string $message
 	 * @param mixed $args
 	 */
 	public static function Error($message, $args = array())
 	{
-		$args = func_get_args();
-		$log = vsprintf(array_shift($args), array_values($args));
-		self::GetInstance()->logger->error($log);
+		try
+		{
+			$args = func_get_args();
+			$log = vsprintf(array_shift($args), array_values($args));
+			self::GetInstance()->logger->error($log);
+		}
+		catch (Exception $ex)
+		{
+		}
 	}
 }
+
 ?>
