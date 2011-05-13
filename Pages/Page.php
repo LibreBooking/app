@@ -92,7 +92,7 @@ abstract class Page implements IPage
 	
 	public function Redirect($url)
 	{
-		if (!String::StartsWith($url, $this->path))
+		if (!StringHelper::StartsWith($url, $this->path))
 		{
 			$url = $this->path . $url;
 		}

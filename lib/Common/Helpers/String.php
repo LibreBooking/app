@@ -1,10 +1,10 @@
 <?php 
-class String
+class StringHelper
 {
-	public static function StartsWith($string, $search)
+	public static function StartsWith($haystack, $needle)
 	{	
-		$length = strlen($search);
-   		return (substr($string, 0, $length) === $search);
+		$length = strlen($needle);
+		return (substr($haystack, 0, $length) === $needle);
 	}
 }
 ?>

@@ -54,7 +54,14 @@ class ManageUsersPresenter extends ActionPresenter
 
 	public function PageLoad()
 	{
-		$userList = $this->userRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
+		if ($this->page->GetUserId() != null)
+		{
+			$userList = $this->userRepository->GetList(1, 1, null, null, new EqualsSqlFilter(ColumnNames::USER_ID, $this->page->GetUserId()));
+		}
+		else {
+			$userList = $this->userRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
+		}
+
 		$this->page->BindUsers($userList->Results());
 		$this->page->BindPageInfo($userList->PageInfo());
 

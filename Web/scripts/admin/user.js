@@ -71,7 +71,7 @@ function UserManagement(opts) {
 			},
 			select: function( event, ui ) {
 				elements.userAutocomplete.val( ui.item.label );
-				alert(ui.item.value);
+				window.location.href = options.selectUserUrl + ui.item.value
 				return false;
 			}
 		});

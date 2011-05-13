@@ -99,7 +99,15 @@ class SmartyPage extends Smarty
 			$title = $this->Resources->GetString($params['title']);
 		}
 		
-		$href = $this->RootPath . $params['href'];
+		if (StringHelper::StartsWith($params['href'], '/'))
+		{
+			$href = $params['href'];
+		}
+		else
+		{
+			$href = $this->RootPath . $params['href'];
+		}
+
 		
 		$knownAttributes = array('key', 'title', 'href');
 		$attributes = $this->AppendAttributes($params, $knownAttributes);

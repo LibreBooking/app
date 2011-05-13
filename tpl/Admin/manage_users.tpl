@@ -5,7 +5,7 @@
 
 <h1>Manage Users</h1>
 
-Find User: <input type="text" id="userSearch"/>
+Find User: <input type="text" id="userSearch"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllUsers}
 <table class="list">
 	<tr>
 		<th class="id">&nbsp;</th>
@@ -85,6 +85,7 @@ Find User: <input type="text" id="userSearch"/>
 		permissionsUrl:  '{$smarty.server.SCRIPT_NAME}',
 		submitUrl: '{$smarty.server.SCRIPT_NAME}',
 		saveRedirect: '{$smarty.server.SCRIPT_NAME}',
+		selectUserUrl: '{$smarty.server.SCRIPT_NAME}?uid=',
 		actions: actions
 	};
 
