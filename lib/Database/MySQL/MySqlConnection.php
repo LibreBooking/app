@@ -49,7 +49,7 @@ class MySqlConnection implements IDbConnection
 	{
 		$mysqlCommand = new MySqlCommandAdapter($sqlCommand);
 
-		Log::Debug("MySql Query: " . str_replace('%', '%%', $mysqlCommand->GetQuery()));
+		//Log::Debug("MySql Query: " . str_replace('%', '%%', $mysqlCommand->GetQuery()));
 
 		$result = mysql_query($mysqlCommand->GetQuery());
 		

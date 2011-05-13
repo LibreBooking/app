@@ -98,7 +98,6 @@ class ManageUsersPresenter extends ActionPresenter
 		$this->userRepository->Update($user);
 	}
 
-
 	public function ProcessDataRequest()
 	{
 		$this->page->SetJsonResponse($this->GetUserResourcePermissions());

@@ -127,6 +127,7 @@ class FilterCommand extends SqlCommand
 		//Log::Debug("Applying filter to base query: $baseQuery");
 		if ($hasWhere)
 		{
+			// get between where and order by, replace with match plus new stuff
 			$baseQuery = str_ireplace('WHERE', 'WHERE (', $baseQuery);
 
 			//Log::Debug("HAS WHERE, adding filter $newWhere");
@@ -141,7 +142,6 @@ class FilterCommand extends SqlCommand
 				$query = "$baseQuery) AND ($newWhere)";
 			}
 
-			// get between where and order by, replace with match plus new stuff
 			//return preg_replace('/WHERE(.+)(ORDER BY.*?)/ims', 'WHERE (${1}) AND (' . $newWhere . ') ${2}', $baseQuery);
 		}
 		else if (!$hasWhere && $hasOrderBy)

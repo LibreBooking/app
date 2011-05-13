@@ -6,6 +6,7 @@ class QueryStringKeys
 	{}
 	
 	const ACTION = 'action';
+	const AUTOCOMPLETE_TERM = 'term';
 	const AUTOCOMPLETE_TYPE = 'type';
 	const DATA_REQUEST = 'dr';
 	const END_DATE = 'ed';

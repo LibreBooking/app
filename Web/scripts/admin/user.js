@@ -46,19 +46,33 @@ function UserManagement(opts) {
 			elements.passwordDialog.dialog('open');
 		});
 
-		$(elements.userAutocomplete).autocomplete({
-			source: function(request, add) {
-				$.getJSON(opts.userAutocompleteUrl, request, function(data) {
-					add($.map(data, function(item) {
-						return {
-							label: item.First,
-							value: item.First
-						}
-					}));
+		elements.userAutocomplete.autocomplete(
+		{
+			source: function( request, response ) {
+				$.ajax({
+					url: options.userAutocompleteUrl,
+					dataType: "json",
+					data: {
+						term: request.term
+					},
+					success: function( data ) {
+						response( $.map( data, function( item ) {
+							return {
+								label: item.First + " " + item.Last,
+								value: item.Id
+							}
+						}));
+					}
 				});
 			},
-			select: function(e, ui) {
-				alert(ui.item);
+			focus: function( event, ui ) {
+				elements.userAutocomplete.val( ui.item.label );
+				return false;
+			},
+			select: function( event, ui ) {
+				elements.userAutocomplete.val( ui.item.label );
+				alert(ui.item.value);
+				return false;
 			}
 		});
 

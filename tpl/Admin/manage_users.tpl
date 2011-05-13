@@ -80,7 +80,7 @@ Find User: <input type="text" id="userSearch"/>
 	};
 			
 	var userOptions = {
-		userAutocompleteUrl: "{$Path}ajax/autocomplete.php?type=user",
+		userAutocompleteUrl: "../ajax/autocomplete.php?type=user",
 		groupsUrl:  "{$Path}admin/manage_groups.php",
 		permissionsUrl:  '{$smarty.server.SCRIPT_NAME}',
 		submitUrl: '{$smarty.server.SCRIPT_NAME}',

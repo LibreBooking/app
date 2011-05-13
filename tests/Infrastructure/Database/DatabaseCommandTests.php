@@ -318,7 +318,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		 //("SELECT COUNT(*) as total FROM table WHERE (blah = @blah and blah2 = @blah2) AND (fname = @fname AND lname = @lname) ORDER BY blah1", $filterCommand->GetQuery());
 	}
 
-	public function testFiltersWithLimit()
+	public function testFiltersWithoutOrderBy()
 	{
 		$baseCommand = new AdHocCommand("SELECT *
 						FROM users
