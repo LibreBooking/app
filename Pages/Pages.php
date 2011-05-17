@@ -4,7 +4,7 @@ class Pages
 	const DEFAULT_HOMEPAGE_ID = 1;
 	
 	const DEFAULT_LOGIN = 'dashboard.php';
-	const LOGIN = 'login.php';
+	const LOGIN = 'index.php';
 	const DASHBOARD = 'dashboard.php';
 	const SCHEDULE = 'schedule.php';
 	const MY_CALENDAR = 'mycalendar.php';
