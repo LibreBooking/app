@@ -30,7 +30,7 @@ class PageableDataStore
 		$resultReader = $db->LimitQuery($command, $pageSize, ($pageNumber - 1) * $pageSize);
 		while ($row = $resultReader->GetRow())
 		{
-			$results[] = $listBuilder($row);
+			$results[] = call_user_func($listBuilder, $row);
 		}
 		$resultReader->Free();
 

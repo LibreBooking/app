@@ -56,10 +56,7 @@ class UserRepository implements IUserRepository, IUserViewRepository
 			$command = new FilterCommand($command, $filter);
 		}
 
-		$builder = function($row) {
-			return UserItemView::Create($row);
-		};
-		
+		$builder = array('UserItemView', 'Create');
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 	

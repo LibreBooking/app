@@ -208,43 +208,71 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 */
 	public static function Parse($timezone, $reservableSlots, $blockedSlots)
 	{
-		$layout = new ScheduleLayout($timezone);
+		$parser = new LayoutParser($timezone);
+		$parser->AddReservable($reservableSlots);
+		$parser->AddBlocked($blockedSlots);
+		return $parser->GetLayout();
+	}
+}
 
-		$parseSlots = function ($allSlots, $callback) use ($timezone)
+class LayoutParser
+{
+	private $layout;
+	private $timezone;
+	
+	public function __construct($timezone)
+	{
+		$this->layout = new ScheduleLayout($timezone);
+		$this->timezone = $timezone;
+	}
+
+	public function AddReservable($reservableSlots)
+	{
+		$cb = array($this, 'appendPeriod');
+		$this->ParseSlots($reservableSlots, $cb);
+	}
+
+	public function AddBlocked($blockedSlots)
+	{
+		$cb = array($this, 'appendBlocked');
+
+		$this->ParseSlots($blockedSlots, $cb);
+	}
+
+	public function GetLayout()
+	{
+		return $this->layout;
+	}
+	
+	private function appendPeriod(Time $start, Time $end, $label)
+	{
+		$this->layout->AppendPeriod(Time::Parse($start, $this->timezone), Time::Parse($end, $this->timezone), $label);
+	}
+
+	private function appendBlocked (Time $start, Time $end, $label)
+	{
+		$this->layout->AppendBlockedPeriod(Time::Parse($start, $this->timezone), Time::Parse($end, $this->timezone), $label);
+	}
+
+	private function ParseSlots($allSlots, $callback)
+	{
+		 $lines = preg_split("/[\r\n]/", $allSlots, -1, PREG_SPLIT_NO_EMPTY);
+
+		foreach ($lines as $slotLine)
 		{
-            $lines = preg_split("/[\r\n]/", $allSlots, -1, PREG_SPLIT_NO_EMPTY);
-		
-			foreach ($lines as $slotLine)
+			$label = null;
+			$parts = preg_split('/(\d?\d:\d\d\s*\-\s*\d?\d:\d\d)(.*)/', $slotLine, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+			$times = explode('-', $parts[0]);
+			$start = trim($times[0]);
+			$end = trim($times[1]);
+
+			if (count($parts) > 1)
 			{
-				$label = null;
-				$parts = preg_split('/(\d?\d:\d\d\s*\-\s*\d?\d:\d\d)(.*)/', $slotLine, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-				$times = explode('-', $parts[0]);
-				$start = trim($times[0]);
-				$end = trim($times[1]);
-				
-				if (count($parts) > 1)
-				{
-					$label = trim($parts[1]);
-				}
-				
-				$callback(Time::Parse($start, $timezone), Time::Parse($end, $timezone), $label);
+				$label = trim($parts[1]);
 			}
-        };
-        
-        $appendPeriod = function (Time $start, Time $end, $label) use (&$layout, $timezone)
-		{
-        	$layout->AppendPeriod(Time::Parse($start, $timezone), Time::Parse($end, $timezone), $label);
-        };
-        
-        $appendBlocked = function (Time $start, Time $end, $label) use (&$layout, $timezone)
-		{
-        	$layout->AppendBlockedPeriod(Time::Parse($start, $timezone), Time::Parse($end, $timezone), $label);
-        };
-        
-        $parseSlots($reservableSlots, $appendPeriod);
-        $parseSlots($blockedSlots, $appendBlocked);
-		
-		return $layout;
+
+			call_user_func($callback, Time::Parse($start, $this->timezone), Time::Parse($end, $this->timezone), $label);
+		}
 	}
 }
 

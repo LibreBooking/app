@@ -20,7 +20,6 @@
 				<exclude name=".project" />
 				<exclude name="build.bat" />
 				<exclude name="build.xml" />
-				<exclude name="**/_*.*" />
 				<exclude name="**/tests/**" />
 				<exclude name="**/docs/**" />
 				<exclude name="tpl_c/**" />
