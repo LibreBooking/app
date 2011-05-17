@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<project name="phpScheduleIt" default="package">
+	<target name="package" description="packages all required files">
+		<property name="version" value="2.0.0-alpha1"/>
+		<property name="packagename" value="phpScheduleIt-${version}" />
+		<property name="zipdirectory" value="c:/work/phpScheduleIt_archive/zip/${version}"/>
+		<property name="archive_directory" value="c:/work/phpScheduleIt_archive/src/${version}"/>
+		<property name="staging" value="../staging"/>
+		<property name="stagingdir" value="${staging}/phpScheduleIt"/>
+
+		<delete dir="${staging}" failonerror="false" />
+		<mkdir dir="${staging}" />
+		<mkdir dir="${stagingdir}" />
+		<copy todir="${stagingdir}" includeemptydirs="true">
+			<fileset dir=".">
+				<include name="**/*" />
+				<exclude name="**.psd" />
+				<exclude name="**.bak" />
+				<exclude name="*test*" />
+				<exclude name=".project" />
+				<exclude name="build.bat" />
+				<exclude name="build.xml" />
+				<exclude name="**/_*.*" />
+				<exclude name="**/tests/**" />
+				<exclude name="**/docs/**" />
+				<exclude name="tpl_c/**" />
+				<exclude name="database_schema/**" />
+				<exclude name=".*" />
+				<exclude name=".idea/**" />
+				<exclude name=".settings/**" />
+			</fileset>
+		</copy>
+		<copy file="config/config.php" tofile="${stagingdir}/config/config.new.php"/>
+
+		<delete dir="${zipdirectory}" failonerror="false" />
+		<mkdir dir="${zipdirectory}" />
+
+		<zip destfile="${zipdirectory}/${packagename}.zip">
+			<fileset dir="${staging}">
+				<include name="**/*"/>
+			</fileset>
+		</zip>
+		<tar destfile="${zipdirectory}/${packagename}.tar">
+			<fileset dir="${staging}">
+				<include name="**/*"/>
+			</fileset>
+		</tar>
+		<tar destfile="${zipdirectory}/${packagename}.tar.gz" compression="GZip">
+			<fileset dir="${staging}">
+				<include name="**/*"/>
+			</fileset>
+		</tar>
+
+		<delete dir="${archive_directory}" failonerror="false" />
+		<mkdir dir="${archive_directory}" />
+
+		<copy todir="${archive_directory}" includeemptydirs="true">
+			<fileset dir="${staging}">				
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+
+		<delete dir="${staging}" failonerror="false"/>
+	</target>
+
+	<!--
+	<target name="minify" description="minify javascript and css files">
+	</target>
+	-->
+</project>
