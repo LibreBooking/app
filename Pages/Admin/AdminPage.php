@@ -24,7 +24,7 @@ abstract class AdminPage extends SecurePage implements IActionPage
 	
 	public function Display($adminTemplateName)
 	{
-		$this->smarty->display('admin/' . $adminTemplateName);
+		$this->smarty->display('Admin/' . $adminTemplateName);
 	}
 	
 	public function TakingAction()
