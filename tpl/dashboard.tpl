@@ -1,8 +1,4 @@
-{include file='globalheader.tpl'}
-<style type="text/css">
-	@import url({$Path}css/dashboard.css);
-	@import url({$Path}css/jquery.qtip.css);
-</style>
+{include file='globalheader.tpl' cssFiles='css/dashboard.css,css/jquery.qtip.css'}
 
 <ul id="dashboardList">
 {foreach from=$items item=dashboardItem}

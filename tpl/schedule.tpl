@@ -1,9 +1,4 @@
-{include file='globalheader.tpl'}
-
-<style type="text/css">
-	@import url({$Path}css/schedule.css);
-	@import url({$Path}css/jquery.qtip.css);
-</style>
+{include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.css'}
 
 <div>
 	<div class="schedule_title">

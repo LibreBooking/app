@@ -1,7 +1,5 @@
-{assign var='cssFiles' value='css/reservation.css,css/jquery.qtip.min.css'}
-
 {block name="header"}
-	{include file='globalheader.tpl' DisplayWelcome='false'}
+	{include file='globalheader.tpl' DisplayWelcome='false' cssFiles='css/reservation.css,css/jquery.qtip.min.css'}
 {/block}
 
 <div id="reservationbox">

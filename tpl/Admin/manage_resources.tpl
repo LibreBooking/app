@@ -1,7 +1,4 @@
-{include file='globalheader.tpl'}
-<style type="text/css">
-	@import url({$Path}css/admin.css);
-</style>
+{include file='globalheader.tpl' cssFiles='css/admin.css'}
 
 <h1>{translate key='ManageResources'}</h1>
 
