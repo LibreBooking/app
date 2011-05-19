@@ -22,7 +22,7 @@
 	@import url({$Path}css/nav.css);
 	@import url({$Path}css/style.css);
 	@import url({$Path}scripts/css/smoothness/jquery-ui-1.8.7.custom.css);
-	{assign var='CssFileList' value=$cssFiles|explode:','}
+	{assign var='CssFileList' value=','|explode:$cssFiles}
 	{foreach from=$CssFileList item=cssFile}
 		@import url({$Path}{$cssFile});
 	{/foreach}
