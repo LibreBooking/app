@@ -7,7 +7,7 @@ class SecurePage extends Page
 	public function __construct($titleKey = '', $pageDepth = 0)
 	{
 		parent::__construct($titleKey, $pageDepth);
-			
+
 		if (!$this->IsAuthenticated())
 		{
 			$this->Redirect($this->GetResumeUrl());

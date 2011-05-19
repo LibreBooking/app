@@ -14,7 +14,7 @@ class AdminExcludedRule implements IReservationValidationRule
 	public function __construct(IReservationValidationRule $baseRule, UserSession $userSession)
 	{
 		$this->rule = $baseRule;
-		$tihs->userSession = $userSession;	
+		$this->userSession = $userSession;
 	}
 	
 	public function Validate($reservationSeries)

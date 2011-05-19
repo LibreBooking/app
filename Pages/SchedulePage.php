@@ -2,7 +2,7 @@
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
 
-class SchedulePage extends Page implements ISchedulePage
+class SchedulePage extends SecurePage implements ISchedulePage
 {
 	public function __construct()
 	{

@@ -135,7 +135,7 @@ abstract class Page implements IPage
 	 */
 	public function IsAuthenticated()
 	{
-		return !is_null($this->server->GetSession(SessionKeys::USER_SESSION));
+		return !is_null($this->server->GetUserSession()) && $this->server->GetUserSession()->IsLoggedIn();
 	}
 	
 	/**

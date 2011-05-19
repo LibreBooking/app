@@ -1,4 +1,4 @@
-{extends file="Reservation\create.tpl"}
+{extends file="Reservation/create.tpl"}
 
 {block name=header}
 	{include file='globalheader.tpl' DisplayWelcome='false' TitleKey='EditReservationHeading' TitleArgs=$ReferenceNumber}

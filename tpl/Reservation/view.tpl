@@ -1,7 +1,4 @@
-{include file='globalheader.tpl' DisplayWelcome='false' TitleKey='ViewReservationHeading' TitleArgs=$ReferenceNumber}
-<style type="text/css">
-	@import url({$Path}css/reservation.css);
-</style>
+{include file='globalheader.tpl' DisplayWelcome='false' TitleKey='ViewReservationHeading' TitleArgs=$ReferenceNumber cssFiles='css/reservation.css'}
 <a href="{$ReturnUrl}">&lt; {translate key="BackToCalendar"}</a><br/>
 <div id="reservationbox" class="readonly">
 <div id="reservationForm">

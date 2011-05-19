@@ -53,7 +53,7 @@ interface IReservationPage extends IPage
 	function SetScheduleId($scheduleId);
 }
 
-abstract class ReservationPage extends Page implements IReservationPage
+abstract class ReservationPage extends SecurePage implements IReservationPage
 {
 	protected $presenter;
 	
@@ -77,7 +77,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 	 */
 	protected $permissionServiceFactory;
 	
-	protected function __construct($title = null)
+	public function __construct($title = null)
 	{
 		parent::__construct($title);
 		

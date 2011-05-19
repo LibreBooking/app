@@ -25,7 +25,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	private function GetCreate(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
 		$reservationRepository = new ReservationRepository();
-		$resourceRepository = new ResourceRepository();
+
 		
 		$ruleProcessor->AddRule(new ResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
 		
@@ -47,6 +47,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	
 	private function GetRuleProcessor(UserSession $userSession)
 	{
+		$resourceRepository = new ResourceRepository();
 		// Common rules
 		$rules = array();
 		$rules[] = new ReservationDateTimeRule();
