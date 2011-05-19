@@ -6,6 +6,7 @@ class en_us extends Language
 	public function __construct()
 	{
 		parent::__construct();
+		$this->HtmlLang = 'en';
 	}
 	
 	function _LoadDates()
@@ -184,6 +185,13 @@ class en_us extends Language
 		$strings['ManageResources'] = 'Manage Resources';
 		$strings['ManageUsers'] = 'Manage Users';
 		$strings['MyDashboard'] = 'My Dashboard';
+		$strings['ServerSettings'] = 'Server Settings';
+		$strings['Dashboard'] = 'Dashboard';
+		$strings['Help'] = 'Help';
+		$strings['Bookings'] = 'Bookings';
+		$strings['Schedule'] = 'Schedule';
+		$strings['Reservations'] = 'Reservations';
+		$strings['Account'] = 'Account';
 		//
 		
 		// Day representations

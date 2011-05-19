@@ -8,6 +8,7 @@ abstract class Language
 	public $Days = array();
 	public $Months = array();
 	public $Letters = array();
+	public $HtmlLang;
 
 	public function __construct()
 	{

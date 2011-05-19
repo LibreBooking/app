@@ -32,6 +32,7 @@ abstract class Page implements IPage
 		
 		$this->smarty->assign('Charset', $resources->Charset);
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);
+		$this->smarty->assign('HtmlLang', $resources->HtmlLang);
 		$this->smarty->assign('Title', 'phpScheduleIt - ' . $resources->GetString($titleKey));
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
 		$this->smarty->assign('AllowRss', Configuration::Instance()->GetKey(ConfigKeys::ALLOW_RSS));

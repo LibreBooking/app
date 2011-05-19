@@ -160,6 +160,7 @@ class Resources implements IResourceLocalization
 			$this->_lang = new $class;
 			$this->CurrentLanguage = $languageCode;
 			$this->Charset = $this->_lang->Charset;
+			$this->HtmlLang = $this->_lang->HtmlLang;
 		}
 	}
 	
