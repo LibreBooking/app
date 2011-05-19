@@ -1,8 +1,11 @@
 {include file='globalheader.tpl' cssFiles='css/admin.css'}
 
-<h1>Manage Users</h1>
+<h1>{translate key=ManageUsers}</h1>
 
-Find User: <input type="text" id="userSearch"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllUsers}
+<div style="padding: 10px 0px;">
+Find User:<br/>
+<input type="text" id="userSearch" class="textbox" size="40"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllUsers}
+</div>
 <table class="list">
 	<tr>
 		<th class="id">&nbsp;</th>

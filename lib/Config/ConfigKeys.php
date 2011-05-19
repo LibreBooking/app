@@ -4,6 +4,7 @@ class ConfigKeys
 	const ADMIN_EMAIL = 'admin.email';
 	const ALLOW_REGISTRATION = 'allow.self.registration';
 	const ALLOW_RSS = 'allow.rss';
+	const ENABLE_EMAIL = 'enable.email';
 	const LANGUAGE = 'default.language';
 	const PASSWORD_PATTERN = 'password.pattern';
 	const SCRIPT_URL = 'script.url';

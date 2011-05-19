@@ -78,4 +78,15 @@ class EmailService implements IEmailService
 		return Configuration::Instance()->GetSectionKey('phpmailer', $key);
 	}
 }
+
+class NullEmailService implements IEmailService
+{
+	/**
+	 * @param IEmailMessage $emailMessage
+	 */
+	function Send(IEmailMessage $emailMessage)
+	{
+		// no-op
+	}
+}
 ?>

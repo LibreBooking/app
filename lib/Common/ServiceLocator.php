@@ -60,7 +60,15 @@ class ServiceLocator
 		
 		if (self::$_emailSerivce == null)
 		{
-			self::$_emailSerivce = new EmailService();
+			if (Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter()))
+			{
+				self::$_emailSerivce = new EmailService();
+			}
+			else
+			{
+				self::$_emailSerivce = new NullEmailService();
+			}
+
 		}
 		return self::$_emailSerivce;
 	}
