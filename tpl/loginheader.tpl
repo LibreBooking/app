@@ -5,9 +5,6 @@
 	<head>
 		<title>{$Title}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset={$Charset}" />
-		{if $AllowRss && $LoggedIn}
-			<link rel="alternate" type="application/rss+xml" title="phpScheduleIt" href="{$ScriptUrl}/rss.php?id={$UserId}&rssKey={$RssKey}" />
-		{/if}
 		<link rel="shortcut icon" href="favicon.ico"/>
 		<link rel="icon" href="favicon.ico"/>
 		<style type="text/css">
