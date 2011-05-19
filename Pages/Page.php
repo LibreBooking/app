@@ -44,7 +44,6 @@ abstract class Page implements IPage
 		$this->smarty->assign('UserId', $userSession->UserId);
 		$this->smarty->assign('CanViewAdmin', $userSession->IsAdmin);
 
-
 		// TODO: should this be filled in dynamically from the database, for sure we want to 
 		// have a different one for administrators. Perhaps the value should be minimal until the 
 		// User is Authenticated.

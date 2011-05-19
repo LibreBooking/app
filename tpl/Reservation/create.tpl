@@ -1,10 +1,9 @@
+{assign var='cssFiles' value='css/reservation.css,css/jquery.qtip.min.css'}
+
 {block name="header"}
 	{include file='globalheader.tpl' DisplayWelcome='false'}
 {/block}
-<style type="text/css">
-	@import url({$Path}css/reservation.css);
-    @import url({$Path}css/jquery.qtip.min.css);
-</style>
+
 <div id="reservationbox">
 
 <form id="reservationForm" method="post">
