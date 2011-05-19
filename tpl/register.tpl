@@ -35,7 +35,7 @@
         </p>
         <p>
                 <label class="reg">{translate key="Timezone"}<br />
-                        <select name="{constant echo='FormKeys::TIMEZONE'}" class="input" tabindex="50">
+                        <select {formname key='TIMEZONE'} class="input" tabindex="50">
                                 {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
                         </select>
                 </label>
@@ -73,13 +73,13 @@
         </p>
         <p>
                 <label class="reg">{translate key="DefaultPage"}<br />
-                        <select name="{constant echo='FormKeys::DEFAULT_HOMEPAGE'}" class="input" tabindex="110">
+                        <select {formname key='DEFAULT_HOMEPAGE'} class="input" tabindex="110">
                                 {html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}
                         </select>
                 </label>
         </p>
         <p class="regsubmit">
-                <input type="submit" name="{constant echo='Actions::REGISTER'}" value="{translate key='Register'}" class="button" tabindex="200" />
+                <input type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}" class="button" tabindex="200" />
         </p>
 </form>
 </div>
