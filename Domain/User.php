@@ -38,6 +38,13 @@ class User
 	{
 		return $this->emailAddress;
 	}
+
+	protected $username;
+
+	public function Username()
+	{
+		return $this->username;
+	}
 	
 	protected $language;
 	
@@ -51,6 +58,13 @@ class User
 	public function Timezone()
 	{
 		return $this->timezone;
+	}
+
+	protected $homepageId;
+	
+	public function Homepage()
+	{
+		return $this->homepageId;
 	}
 
 	protected $statusId;
@@ -152,11 +166,13 @@ class User
 		$user->firstName = $row[ColumnNames::FIRST_NAME];
 		$user->lastName = $row[ColumnNames::LAST_NAME];
 		$user->emailAddress = $row[ColumnNames::EMAIL];
+		$user->username = $row[ColumnNames::USERNAME];
 		$user->language = $row[ColumnNames::LANGUAGE_CODE];
 		$user->timezone = $row[ColumnNames::TIMEZONE_NAME];
 		$user->statusId = $row[ColumnNames::USER_STATUS_ID];
 		$user->password = $row[ColumnNames::PASSWORD];
 		$user->passwordSalt = $row[ColumnNames::SALT];
+		$user->homepageId = $row[ColumnNames::HOMEPAGE_ID];
 
 		return $user;
 	}

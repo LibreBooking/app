@@ -42,18 +42,9 @@ class RegisterPresenterTests extends TestBase
         $this->fakeAuth = null;
 	}
 	
-	public function testSetsIfConfiguredToUseLoginName()
-	{
-		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
-		
-		$this->presenter->PageLoad();
-		
-		$this->assertTrue($this->page->_UseLoginName);
-	}
-	
 	public function testSetsSelectedTimezoneToServerDefault()
 	{
-		$expectedTimezone = "US/Central";
+		$expectedTimezone = "America/Chicago";
 		
 		$this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, $expectedTimezone);
 		$this->page->_IsPostBack = false;
@@ -64,7 +55,7 @@ class RegisterPresenterTests extends TestBase
 	
 	public function testSetsSelectedTimezoneToServerSubmitted()
 	{
-		$expectedTimezone = "US/Eastern";
+		$expectedTimezone = "America/New_York";
 		$this->page->SetTimezone($expectedTimezone);
 		$this->page->_IsPostBack = true;
 		$this->presenter->PageLoad();
@@ -144,7 +135,6 @@ class RegisterPresenterTests extends TestBase
 	{
 		$pattern = '/^[^\s]{6,}$/i';
 		$this->fakeConfig->SetKey(ConfigKeys::PASSWORD_PATTERN, '/^[^\s]{6,}$/i');
-		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
 		
 		$this->LoadPageValues();
 		$this->page->_IsPostBack = true;
@@ -161,20 +151,6 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($v['uniqueemail'], new UniqueEmailValidator($this->email));
 		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator($this->login));
 	}
-	
-	public function testDoesNotAddUsernameValidatorIfConfiguredOff()
-	{
-		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'false');
-		$this->LoadPageValues();
-		$this->page->_IsPostBack = true;
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
-		
-		$v = $this->page->_Validators;
-		
-		$this->assertEquals(6, count($v));
-		$this->assertFalse(key_exists('uniqueusername', $v));
-	}
-	
     
     public function testDoesNotRegisterIfPageIsNotValid()
     {   

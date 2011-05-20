@@ -207,7 +207,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$image->ResizeToWidth(300);
 
 		$fileName = "resource{$this->page->GetResourceId()}.$fileType";
-		$path = ROOT_DIR . 'Web/' . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . "/$fileName";
+		$path = ROOT_DIR . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . "/$fileName";
 		$image->Save($path);
 
 		$this->SaveResourceImage($fileName);

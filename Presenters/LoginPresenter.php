@@ -50,10 +50,7 @@ class LoginPresenter
 		}
 		
 		$allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
-		$useLogonName = Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter());
 		$this->_page->setShowRegisterLink($allowRegistration);
-		$this->_page->setUseLogonName($useLogonName);
-
 	}
 	
 	public function Login()

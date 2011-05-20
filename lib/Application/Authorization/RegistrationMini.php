@@ -21,11 +21,8 @@ class RegistrationMini implements IRegistrationMini
 		$salt = $this->_passwordEncryption->Salt();
 		$encryptedPassword = $this->_passwordEncryption->Encrypt($password, $salt);
 		
-		$usingLoginNames = Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter());
-		$usernameToInsert = $usingLoginNames ? $username : $email;
-		
 		$registerCommand = new RegisterMiniUserCommand(
-					$usernameToInsert, $email, $firstName, $lastName, 
+					$username, $email, $firstName, $lastName,
 					$encryptedPassword, $salt, $timezone,
 					AccountStatus::AWAITING_ACTIVATION, $role_id
 					);

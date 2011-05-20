@@ -180,6 +180,8 @@ class UserRepositoryTests extends TestBase
 				ColumnNames::USER_STATUS_ID => AccountStatus::ACTIVE,
 				ColumnNames::PASSWORD => 'encryptedPassword',
 				ColumnNames::SALT => 'passwordsalt',
+				ColumnNames::USERNAME => 'username',
+				ColumnNames::HOMEPAGE_ID => 3,
 			)
 		);
 		

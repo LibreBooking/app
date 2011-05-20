@@ -9,7 +9,7 @@
 
 <form class="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
 <p>
-        <label class="login">{if $UseLogonName} {translate key='Logon name'} {else} {translate key='Email address'} {/if}<br />
+        <label class="login">{translate key='UsernameOrEmail'}<br />
         {textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
 </p>
 <p>

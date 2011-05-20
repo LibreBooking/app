@@ -52,9 +52,6 @@ class RegistrationMiniPresenter
 		{
 			$this->RegisterMini();
 		}
-		
-		$this->_page->SetUseLoginName(Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()));
-
 	}
 	
 	public function RegisterMini()
@@ -92,11 +89,7 @@ class RegistrationMiniPresenter
 		$this->_page->RegisterValidator('passwordcomplexity', new RegexValidator($this->_page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
 		$this->_page->RegisterValidator('emailformat', new EmailValidator($this->_page->GetEmail()));
 		$this->_page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->_page->GetEmail()));
-		
-		if (Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()))
-		{
-			$this->_page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->_page->GetLoginName()));		
-		}
+		$this->_page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->_page->GetLoginName()));		
 	}
 }
 ?>

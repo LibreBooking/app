@@ -8,8 +8,7 @@ class ConfigKeys
 	const LANGUAGE = 'default.language';
 	const PASSWORD_PATTERN = 'password.pattern';
 	const SCRIPT_URL = 'script.url';
-	const SERVER_TIMEZONE = 'server.timezone';	
-	const USE_LOGON_NAME = 'use.logon.name';
+	const SERVER_TIMEZONE = 'server.timezone';
 	const VERSION = 'version';
 	
 	const SCHEDULE_SHOW_INACCESSIBLE_RESOURCES = 'show.inaccessible.resources';
@@ -26,6 +25,7 @@ class ConfigKeys
 	const RESERVATION_NOTIFY_UPDATED = 'notify.updated';
 	
 	const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
+	const IMAGE_UPLOAD_URL = 'image.upload.url';
 }
 
 class ConfigSection

@@ -170,6 +170,7 @@ class en_us extends Language
 		$strings['Groups'] = 'Groups';
 		$strings['ResetPassword'] = 'Reset Password';
 		$strings['AllUsers'] = 'All Users';
+		$strings['UsernameOrEmail'] = 'Username or Email';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';

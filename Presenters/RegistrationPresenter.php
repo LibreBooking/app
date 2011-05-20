@@ -4,8 +4,19 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class RegistrationPresenter
 {
+	/**
+	 * @var \IRegistrationPage
+	 */
 	private $_page;
+
+	/**
+	 * @var IRegistration
+	 */
 	private $_registration;
+
+	/**
+	 * @var IAuthorization
+	 */
     private $_auth;
 	
 	public function __construct(IRegistrationPage $page, $registration = null, $authorization = null)
@@ -52,8 +63,6 @@ class RegistrationPresenter
 		{
 			$this->Register();
 		}
-		
-		$this->_page->SetUseLoginName(Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()));
 
 		$this->PopulateTimezones();
 		$this->PopulateHomepages();
@@ -153,11 +162,7 @@ class RegistrationPresenter
 		$this->_page->RegisterValidator('passwordcomplexity', new RegexValidator($this->_page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
 		$this->_page->RegisterValidator('emailformat', new EmailValidator($this->_page->GetEmail()));
 		$this->_page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->_page->GetEmail()));
-		
-		if (Configuration::Instance()->GetKey(ConfigKeys::USE_LOGON_NAME, new BooleanConverter()))
-		{
-			$this->_page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->_page->GetLoginName()));		
-		}
+		$this->_page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->_page->GetLoginName()));
 	}
 }
 ?>

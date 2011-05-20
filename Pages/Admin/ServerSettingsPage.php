@@ -10,14 +10,23 @@ class ServerSettingsPage extends AdminPage
 	
 	public function PageLoad()
 	{
-		$this->Set('currentTime', date('Y-m-d, H:i:s (e P)'));
+		if ($this->TakingAction())
+		{
+			$this->ProcessAction();
+		}
+		
+		$uploadDir = ROOT_DIR . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY);
 
+		$this->Set('currentTime', date('Y-m-d, H:i:s (e P)'));
+		$this->Set('imageUploadDirPermissions', substr(sprintf('%o', fileperms($uploadDir)), -4));
+		$this->Set('imageUploadDirectory', Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY));
 		$this->Display('server_settings.tpl');
 	}
 
 	function ProcessAction()
 	{
-		// no actions
+		$uploadDir = ROOT_DIR . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY);
+		$chmodResult = chmod($uploadDir, 0777);
 	}
 }
 

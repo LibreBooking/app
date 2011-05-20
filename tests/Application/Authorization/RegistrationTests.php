@@ -23,8 +23,6 @@ class RegistrationTests extends TestBase
 
 		$this->fakeEncryption = new FakePasswordEncryption();		
 		$this->registration = new Registration($this->fakeEncryption);
-		
-		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
 	}
 	
 	public function tearDown()
@@ -47,24 +45,6 @@ class RegistrationTests extends TestBase
 		$this->assertTrue($this->fakeEncryption->_EncryptCalled);
 		$this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
 		$this->assertEquals($this->fakeEncryption->_Salt, $this->fakeEncryption->_LastSalt);
-	}
-	
-	public function testInsertsEmailAddressIntoLoginNameIfNotConfiguredToUseLoginName()
-	{
-		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'false');
-		
-		$expectedLogin = $this->email;
-		$this->login = '';
-		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
-		
-		$command = new RegisterUserCommand(
-					$expectedLogin, $this->email, $this->fname, $this->lname, 
-					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->language, $this->homepageId,
-					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position'],
-					AccountStatus::AWAITING_ACTIVATION
-					);
-		
-		$this->assertEquals($command, $this->db->_Commands[0]);
 	}
 	
 	public function testAutoAssignsAllResourcesForThisUser()

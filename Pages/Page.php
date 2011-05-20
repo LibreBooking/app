@@ -183,5 +183,10 @@ abstract class Page implements IPage
 		}
 		$this->smarty->display('json_data.tpl');
 	}
+
+	protected function Display($templateName)
+	{
+		$this->smarty->display($templateName);
+	}
 }
 ?>

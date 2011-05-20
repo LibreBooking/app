@@ -9,8 +9,6 @@ interface IRegistrationPage extends IPage
 {
 	public function RegisterClicked();
 	
-	public function SetUseLoginName($useLoginName);
-	
 	public function SetTimezones($timezoneValues, $timezoneOutput);
 	public function SetTimezone($timezone);
 	public function SetHomepages($hompeageValues, $homepageOutput);
@@ -59,11 +57,6 @@ class RegistrationPage extends Page implements IRegistrationPage
 		return $this->GetForm(Actions::REGISTER);
 	}
 	
-	public function SetUseLoginName($useLoginName)
-	{
-		$this->Set('UseLoginName', $useLoginName);	
-	}
-	
 	public function SetTimezones($timezoneValues, $timezoneOutput)
 	{
 		$this->Set('TimezoneValues', $timezoneValues);
@@ -75,9 +68,9 @@ class RegistrationPage extends Page implements IRegistrationPage
 		$this->Set('Timezone', $timezone);	
 	}
 	
-	public function SetHomepages($hompeageValues, $homepageOutput)
+	public function SetHomepages($homepageValues, $homepageOutput)
 	{
-		$this->Set('HomepageValues', $hompeageValues);
+		$this->Set('HomepageValues', $homepageValues);
 		$this->Set('HomepageOutput', $homepageOutput);
 	}
 	

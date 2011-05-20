@@ -2,15 +2,16 @@
 class Pages
 {
 	const DEFAULT_HOMEPAGE_ID = 1;
-	
+
+	const DASHBOARD = 'dashboard.php';
 	const DEFAULT_LOGIN = 'dashboard.php';
 	const LOGIN = 'index.php';
-	const DASHBOARD = 'dashboard.php';
-	const SCHEDULE = 'schedule.php';
 	const MY_CALENDAR = 'mycalendar.php';
-	const SCHEDULE_CALENDAR = 'schedulecalendar.php';
+	const PROFILE = 'profile.php';
 	const RESERVATION = 'reservation.php';
-	
+	const SCHEDULE = 'schedule.php';
+	const SCHEDULE_CALENDAR = 'schedulecalendar.php';
+
 	private static $_pages = array(
 						1 => array('url' => Pages::DASHBOARD, 'name' => 'MyDashboard'),
 						2 => array('url' => Pages::SCHEDULE, 'name' => 'Schedule'),

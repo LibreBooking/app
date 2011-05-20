@@ -16,8 +16,8 @@ class DashboardPage extends SecurePage implements IDashboardPage
 	{
 		$this->_presenter->Initialize();
 		
-		$this->smarty->assign('items', $this->items);
-		$this->smarty->display('dashboard.tpl');		
+		$this->Set('items', $this->items);
+		$this->Display('dashboard.tpl');
 	}
 	
 	public function AddItem(DashboardItem $item)

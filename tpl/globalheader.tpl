@@ -38,7 +38,7 @@
 		    <li class="menubaritem first"><a href="{$Path}dashboard.php">{translate key=Dashboard}</a></li>
 		    <li class="menubaritem"><a href="#">{translate key=Account}</a>
 		    	<ul>
-		    		<li class="menuitem"><a href="#">Profile</a></li>
+		    		<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">Profile</a></li>
 		    		<li class="menuitem"><a href="#">Email Preferences</a></li>
 					<li class="menuitem"><a href="#">Delete users</a></li>
 		    	</ul>

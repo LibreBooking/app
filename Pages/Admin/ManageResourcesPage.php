@@ -112,7 +112,7 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 								new ImageFactory()
 								);
 								
-		$this->Set('ImageUploadPath', $this->path . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . '/');
+		$this->Set('ImageUploadPath', $this->path . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/');
 	}
 	
 	public function PageLoad()

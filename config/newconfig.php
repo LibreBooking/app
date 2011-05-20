@@ -7,7 +7,6 @@ $conf['settings']['default.language'] = 'en_US';
 $conf['settings']['allow.rss'] = 'true';
 $conf['settings']['version'] = '2.0.0';
 $conf['settings']['script.url'] = 'http://localhost:8080/';
-$conf['settings']['use.logon.name'] = 'true';
 $conf['settings']['password.pattern'] = '/^[^\s]{6,}$/i';
 $conf['settings']['schedule']['show.inaccessible.resources'] = 'true';
 $conf['settings']['database']['type'] = 'mysql';
@@ -24,5 +23,6 @@ $conf['settings']['phpmailer']['smtp.secure'] = '';
 $conf['settings']['phpmailer']['smtp.auth'] = '';
 $conf['settings']['phpmailer']['smtp.username'] = '';
 $conf['settings']['phpmailer']['smtp.password'] = '';
-$conf['settings']['image.upload.directory'] = 'uploads/images';
+$conf['settings']['image.upload.directory'] = 'Web/uploads/images';		// from root directory
+$conf['settings']['image.upload.url'] = 'uploads/images';				// from script.url
 ?>

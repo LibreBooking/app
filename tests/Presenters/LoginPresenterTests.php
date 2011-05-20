@@ -79,13 +79,11 @@ class LoginPresenterTests extends TestBase
 	public function testPageLoadSetsVariablesCorrectly()
 	{
 		$this->fakeConfig->SetKey(ConfigKeys::ALLOW_REGISTRATION, 'true');
-		$this->fakeConfig->SetKey(ConfigKeys::USE_LOGON_NAME, 'true');
 		
 		$presenter = new LoginPresenter($this->page, $this->auth);
 		$presenter->PageLoad();
 		
 		$this->assertEquals(true, $this->page->getShowRegisterLink());
-		$this->assertEquals(true, $this->page->getUseLogonName());
 	}
 	
 	public function testPageLoadSetsLanguagesCorrect()
