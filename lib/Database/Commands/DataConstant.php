@@ -614,7 +614,13 @@ class Queries
 		SET
 			status_id = @user_statusid,
 			password = @password,
-			salt = @salt
+			salt = @salt,
+			fname = @fname,
+			lname = @lname,
+			email = @email,
+			username = @username,
+			homepageId = @homepageid,
+			last_modified = @dateModified
 		WHERE
 			user_id = @userid';
 	

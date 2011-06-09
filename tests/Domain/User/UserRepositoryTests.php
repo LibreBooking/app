@@ -129,10 +129,19 @@ class UserRepositoryTests extends TestBase
 
 		$password = 'password';
 		$salt = 'salt';
-		
-		$user->ChangePassword($password, $salt);
+		$homepageId = 19;
+		$fname = 'f';
+		$lname = 'l';
+		$email = 'e';
+		$username = 'u';
 
-		$command = new UpdateUserCommand($userId, $user->StatusId(), $user->password, $user->passwordSalt);
+		$user->ChangePassword($password, $salt);
+		$user->ChangeName($fname, $lname);
+		$user->ChangeEmailAddress($email);
+		$user->ChangeUsername($username);
+		$user->ChangeDefaultHomePage($homepageId);
+
+		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId);
 		$this->db->ContainsCommand($command);
 		
 		$repo = new UserRepository();

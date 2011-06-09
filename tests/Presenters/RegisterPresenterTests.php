@@ -6,8 +6,10 @@ require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
 class RegisterPresenterTests extends TestBase
 {
+	/**
+	 * @var FakeRegistrationPage
+	 */
 	private $page;
-	private $server;
 	private $presenter;
 	private $fakeReg;
     private $fakeAuth;
@@ -133,6 +135,7 @@ class RegisterPresenterTests extends TestBase
 	
 	public function testRegistersAllValidators()
 	{
+		$username = 'un';
 		$pattern = '/^[^\s]{6,}$/i';
 		$this->fakeConfig->SetKey(ConfigKeys::PASSWORD_PATTERN, '/^[^\s]{6,}$/i');
 		
@@ -142,9 +145,10 @@ class RegisterPresenterTests extends TestBase
 		
 		$v = $this->page->_Validators;
 		
-		$this->assertEquals(7, count($v));
+		$this->assertEquals(8, count($v));
 		$this->assertEquals($v['fname'], new RequiredValidator($this->fname));
 		$this->assertEquals($v['lname'], new RequiredValidator($this->lname));
+		$this->assertEquals($v['username'], new RequiredValidator($this->login));
 		$this->assertEquals($v['passwordmatch'], new EqualValidator($this->password, $this->confirm));
 		$this->assertEquals($v['passwordcomplexity'], new RegexValidator($this->password, $pattern));
 		$this->assertEquals($v['emailformat'], new EmailValidator($this->email));

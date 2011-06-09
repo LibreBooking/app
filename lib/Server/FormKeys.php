@@ -94,7 +94,6 @@ class FormKeys
 	const USER_ID = 'userId';
 	const USERNAME = 'username';
 
-	
 	public static function Evaluate($formKey)
 	{
 		$key = strtoupper($formKey);

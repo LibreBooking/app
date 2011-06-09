@@ -99,11 +99,13 @@ class User
 
 	/**
 	 * @var string
+	 * @internal
 	 */
 	public $password;
 
 	/**
 	 * @var string
+	 * @internal
 	 */
 	public $passwordSalt;
 
@@ -205,6 +207,26 @@ class User
 		$this->password = $password;
 		$this->passwordSalt = $salt;
 	}
-}
 
+	public function ChangeName($firstName, $lastName)
+	{
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
+	}
+
+	public function ChangeEmailAddress($emailAddress)
+	{
+		$this->emailAddress = $emailAddress;
+	}
+
+	public function ChangeUsername($username)
+	{
+		$this->username = $username;
+	}
+
+	public function ChangeDefaultHomePage($homepageId)
+	{
+		$this->homepageId = $homepageId;
+	}
+}
 ?>

@@ -5,9 +5,8 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-interface IProfilePage
+interface IProfilePage extends IPage
 {
-
 	public function SetFirstName($firstName);
 
 	public function SetLastName($lastName);
@@ -23,6 +22,20 @@ interface IProfilePage
 	public function SetTimezones($timezoneValues, $timezoneOutput);
 
 	public function SetHomepages($homepageValues, $homepageOutput);
+
+	public function SetProfileUpdated();
+
+	public function GetFirstName();
+
+	public function GetLastName();
+
+	public function GetEmail();
+
+	public function GetLoginName();
+
+	public function GetTimezone();
+
+	public function GetHomepage();
 }
 
 class ProfilePage extends SecurePage implements IProfilePage
@@ -69,7 +82,6 @@ class ProfilePage extends SecurePage implements IProfilePage
 		$this->Set('Timezone', $timezoneName);
 	}
 
-
 	public function SetHomepages($homepageValues, $homepageOutput)
 	{
 		$this->Set('HomepageValues', $homepageValues);
@@ -85,6 +97,41 @@ class ProfilePage extends SecurePage implements IProfilePage
 	public function SetUsername($username)
 	{
 		$this->Set('Username', $username);
+	}
+
+	public function SetProfileUpdated()
+	{
+		$this->Set('ProfileUpdated', true);
+	}
+
+	public function GetEmail()
+	{
+		return $this->GetForm(FormKeys::EMAIL);
+	}
+
+	public function GetFirstName()
+	{
+		return $this->GetForm(FormKeys::FIRST_NAME);
+	}
+
+	public function GetLastName()
+	{
+		return $this->GetForm(FormKeys::LAST_NAME);
+	}
+
+	public function GetLoginName()
+	{
+		return $this->GetForm(FormKeys::USERNAME);
+	}
+
+	public function GetHomepage()
+	{
+		return $this->GetForm(FormKeys::DEFAULT_HOMEPAGE);
+	}
+
+	public function GetTimezone()
+	{
+		return $this->GetForm(FormKeys::TIMEZONE);
 	}
 }
 
@@ -108,17 +155,30 @@ class ProfilePresenter
 
 	public function PageLoad()
 	{
+		if ($this->page->IsPostBack())
+		{
+			$this->LoadValidators();
+			$this->UpdateProfile();
+
+			// reset after post back
+			$this->page->SetTimezone($this->page->GetTimezone());
+			$this->page->SetHomepage($this->page->GetHomepage());
+		}
+		else
+		{
+			$userSession = ServiceLocator::GetServer()->GetUserSession();
+			$user = $this->userRepository->LoadById($userSession->UserId);
+
+			$this->page->SetUsername($user->Username());
+			$this->page->SetFirstName($user->FirstName());
+			$this->page->SetLastName($user->LastName());
+			$this->page->SetEmail($user->EmailAddress());
+			$this->page->SetTimezone($user->Timezone());
+			$this->page->SetHomepage($user->Homepage());
+		}
+
 		$this->PopulateTimezones();
 		$this->PopulateHomepages();
-
-		$userSession = ServiceLocator::GetServer()->GetUserSession();
-		$user = $this->userRepository->LoadById($userSession->UserId);
-
-		$this->page->SetFirstName($user->FirstName());
-		$this->page->SetLastName($user->LastName());
-		$this->page->SetEmail($user->EmailAddress());
-		$this->page->SetTimezone($user->Timezone());
-		$this->page->SetHomepage($user->Homepage());
 	}
 
 	private function PopulateTimezones()
@@ -148,5 +208,34 @@ class ProfilePresenter
 		}
 
 		$this->page->SetHomepages($homepageValues, $homepageOutput);
+	}
+
+	private function UpdateProfile()
+	{
+		if ($this->page->IsValid())
+		{
+			$userSession = ServiceLocator::GetServer()->GetUserSession();
+			$user = $this->userRepository->LoadById($userSession->UserId);
+
+			$user->ChangeName($this->page->GetFirstName(), $this->page->GetLastName());
+			$user->ChangeEmailAddress($this->page->GetEmail());
+			$user->ChangeUsername($this->page->GetLoginName());
+			$user->ChangeDefaultHomePage($this->page->GetHomepage());
+
+			$this->userRepository->Update($user);
+
+			$this->page->SetProfileUpdated();
+		}
+	}
+
+	private function LoadValidators()
+	{
+		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
+		$this->page->RegisterValidator('fname', new RequiredValidator($this->page->GetFirstName()));
+		$this->page->RegisterValidator('username', new RequiredValidator($this->page->GetLoginName()));
+		$this->page->RegisterValidator('lname', new RequiredValidator($this->page->GetLastName()));
+		$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
+		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail(), $userId));
+		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetLoginName(), $userId));
 	}
 }

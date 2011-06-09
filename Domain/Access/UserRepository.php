@@ -66,8 +66,6 @@ class UserRepository implements IUserRepository, IUserViewRepository
 	 */
 	public function LoadById($userId)
 	{
-		$user = new User();
-		
 		if (!$this->_cache->Exists($userId))
 		{
 			$command = new GetUserByIdCommand($userId);
@@ -98,7 +96,16 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		$userId = $user->Id();
 		
 		$db = ServiceLocator::GetDatabase();
-		$updateUserCommand = new UpdateUserCommand($user->Id(), $user->StatusId(), $user->password, $user->passwordSalt);
+		$updateUserCommand = new UpdateUserCommand(
+			$user->Id(),
+			$user->StatusId(),
+			$user->password,
+			$user->passwordSalt,
+			$user->FirstName(),
+			$user->LastName(),
+			$user->EmailAddress(),
+			$user->Username(),
+			$user->Homepage());
 		$db->Execute($updateUserCommand);
 
 		$removed = $user->GetRemovedPermissions();

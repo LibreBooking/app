@@ -158,6 +158,7 @@ class RegistrationPresenter
 	{
 		$this->_page->RegisterValidator('fname', new RequiredValidator($this->_page->GetFirstName()));
 		$this->_page->RegisterValidator('lname', new RequiredValidator($this->_page->GetLastName()));
+		$this->_page->RegisterValidator('username', new RequiredValidator($this->_page->GetLoginName()));
 		$this->_page->RegisterValidator('passwordmatch', new EqualValidator($this->_page->GetPassword(), $this->_page->GetPasswordConfirm()));
 		$this->_page->RegisterValidator('passwordcomplexity', new RegexValidator($this->_page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
 		$this->_page->RegisterValidator('emailformat', new EmailValidator($this->_page->GetEmail()));

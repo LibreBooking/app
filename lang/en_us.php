@@ -66,6 +66,7 @@ class en_us extends Language
 		$strings['ValidEmailRequired'] = 'A valid email address is required.';
 		$strings['UniqueEmailRequired'] = 'That email address is already registered.';
 		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
+		$strings['UserNameRequired'] = 'User name is required.';
 		$strings['Today'] = 'Today';
 		$strings['BackToCalendar'] = 'Back to calendar';
 		$strings['BeginDate'] = 'Begin';

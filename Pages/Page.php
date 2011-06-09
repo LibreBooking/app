@@ -80,8 +80,8 @@ abstract class Page implements IPage
 			return empty($defaultPage) ? Pages::LOGIN : $defaultPage;
 		}
 		
-		$scriptUrl = strtolower(Configuration::Instance()->GetScriptUrl());
-		$page = str_replace($scriptUrl, '', strtolower($referer));
+		$scriptUrl = Configuration::Instance()->GetScriptUrl();
+		$page = str_ireplace($scriptUrl, '', $referer);
 		return ltrim($page, '/');
 	}
 	
