@@ -455,8 +455,8 @@ class RegisterFormSettingsCommand extends SqlCommand
 	{
 		parent::__construct(Queries::REGISTER_FORM_SETTINGS);
 		
-		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME_SETTING, $fname));
-		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME_SETTING, $lname));
+		$this->AddParameter(new Parameter(ParameterNames::FIRST_NAME_SETTING, $firstName));
+		$this->AddParameter(new Parameter(ParameterNames::LAST_NAME_SETTING, $lastName));
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME_SETTING, $username));	
 		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS_SETTING, $email));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD_SETTING, $password));
@@ -703,7 +703,17 @@ class UpdateScheduleLayoutCommand extends SqlCommand
 
 class UpdateUserCommand extends SqlCommand
 {
-	public function __construct($userId, $statusId, $encryptedPassword, $passwordSalt, $firstName, $lastName, $emailAddress, $username, $homepageId)
+	public function __construct(
+		$userId,
+		$statusId,
+		$encryptedPassword,
+		$passwordSalt,
+		$firstName,
+		$lastName,
+		$emailAddress,
+		$username,
+		$homepageId,
+		$timezoneName)
 	{
 		parent::__construct(Queries::UPDATE_USER);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -715,9 +725,28 @@ class UpdateUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $emailAddress));
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));
 		$this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId));
+		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezoneName));
 		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, Date::Now()->ToDatabase()));
 	}
 }
+
+class UpdateUserAttributesCommand extends SqlCommand
+{
+	public function __construct(
+		$userId,
+		$phoneNumber,
+		$organization,
+		$position
+	)
+	{
+		parent::__construct(Queries::UPDATE_USER_ATTRIBUTES);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phoneNumber));
+		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));
+		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
+	}
+}
+
 
 class UpdateUserFromLdapCommand extends SqlCommand 
 {

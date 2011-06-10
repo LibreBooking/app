@@ -105,7 +105,8 @@ class UserRepository implements IUserRepository, IUserViewRepository
 			$user->LastName(),
 			$user->EmailAddress(),
 			$user->Username(),
-			$user->Homepage());
+			$user->Homepage(),
+			$user->Timezone());
 		$db->Execute($updateUserCommand);
 
 		$removed = $user->GetRemovedPermissions();

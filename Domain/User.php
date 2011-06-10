@@ -228,5 +228,24 @@ class User
 	{
 		$this->homepageId = $homepageId;
 	}
+
+	public function ChangeTimezone($timezoneName)
+	{
+		$this->timezone = $timezoneName;
+	}
+
+	public function ChangeAttributes($phone, $organization, $position)
+	{
+		$this->attributes[UserAttribute::Phone] = $phone;
+		$this->attributes[UserAttribute::Organization] = $organization;
+		$this->attributes[UserAttribute::Position] = $position;
+	}
+}
+
+class UserAttribute
+{
+	const Phone = 'phone';
+	const Organization = 'organization';
+	const Position = 'position';
 }
 ?>

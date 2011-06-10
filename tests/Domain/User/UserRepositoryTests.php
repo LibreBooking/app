@@ -134,18 +134,21 @@ class UserRepositoryTests extends TestBase
 		$lname = 'l';
 		$email = 'e';
 		$username = 'u';
+		$timezone = 'America/New_York';
 
 		$user->ChangePassword($password, $salt);
 		$user->ChangeName($fname, $lname);
 		$user->ChangeEmailAddress($email);
 		$user->ChangeUsername($username);
 		$user->ChangeDefaultHomePage($homepageId);
+		$user->ChangeTimezone($timezone);
 
-		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId);
-		$this->db->ContainsCommand($command);
-		
+		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone);
+
 		$repo = new UserRepository();
 		$repo->Update($user);
+
+		$this->assertTrue($this->db->ContainsCommand($command));
 	}
 
 	public function testOnlyUpdatesPermissionsIfTheyHaveChanged()
@@ -169,10 +172,26 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals(2, count($deleteCommands));
 		$this->assertEquals(2, count($insertCommands));
 
-		$this->db->ContainsCommand($deletePermissionsCommand1);
-		$this->db->ContainsCommand($deletePermissionsCommand2);
-		$this->db->ContainsCommand($addPermissionsCommand1);
-		$this->db->ContainsCommand($addPermissionsCommand2);
+		$this->assertTrue($this->db->ContainsCommand($deletePermissionsCommand1));
+		$this->assertTrue($this->db->ContainsCommand($deletePermissionsCommand2));
+		$this->assertTrue($this->db->ContainsCommand($addPermissionsCommand1));
+		$this->assertTrue($this->db->ContainsCommand($addPermissionsCommand2));
+	}
+
+	public function testUpdatesAttributesIfTheyHaveChanged()
+	{
+		$userId = 28;
+		$phone = '123.456.7890';
+		$organization = 'org';
+		$position = 'pos';
+		
+		$user = new User();
+		$user->WithId($userId);
+
+		$user->ChangeAttributes($phone, $organization, $position);
+
+		$updateAttributesCommand = new UpdateUserAttributesCommand($userId, $phone, $organization, $position);
+		$this->assertTrue($this->db->ContainsCommand($updateAttributesCommand));
 	}
 	
 	private function GetUserRow()

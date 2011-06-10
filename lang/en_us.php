@@ -194,6 +194,7 @@ class en_us extends Language
 		$strings['Schedule'] = 'Schedule';
 		$strings['Reservations'] = 'Reservations';
 		$strings['Account'] = 'Account';
+		$strings['EditProfile'] = 'Edit My Profile';
 		//
 		
 		// Day representations

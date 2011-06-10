@@ -36,6 +36,12 @@ interface IProfilePage extends IPage
 	public function GetTimezone();
 
 	public function GetHomepage();
+
+	public function GetPhone();
+
+	public function GetOrganization();
+
+	public function GetPosition();
 }
 
 class ProfilePage extends SecurePage implements IProfilePage
@@ -133,6 +139,21 @@ class ProfilePage extends SecurePage implements IProfilePage
 	{
 		return $this->GetForm(FormKeys::TIMEZONE);
 	}
+
+	public function GetOrganization()
+	{
+		return $this->GetForm(FormKeys::ORGANIZATION);
+	}
+
+	public function GetPhone()
+	{
+		return $this->GetForm(FormKeys::PHONE);
+	}
+
+	public function GetPosition()
+	{
+		return $this->GetForm(FormKeys::POSITION);
+	}
 }
 
 class ProfilePresenter
@@ -221,6 +242,9 @@ class ProfilePresenter
 			$user->ChangeEmailAddress($this->page->GetEmail());
 			$user->ChangeUsername($this->page->GetLoginName());
 			$user->ChangeDefaultHomePage($this->page->GetHomepage());
+			$user->ChangeTimezone($this->page->GetTimezone());
+
+			$user->ChangeAttributes($this->page->GetPhone(), $this->page->GetOrganization(), $this->page->GetPosition());
 
 			$this->userRepository->Update($user);
 

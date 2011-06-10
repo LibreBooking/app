@@ -620,7 +620,17 @@ class Queries
 			email = @email,
 			username = @username,
 			homepageId = @homepageid,
-			last_modified = @dateModified
+			last_modified = @dateModified,
+			timezone = @timezone
+		WHERE
+			user_id = @userid';
+
+	const UPDATE_USER_ATTRIBUTES =
+		'UPDATE
+			users
+		SET
+			phone = @phone,
+			position = @position
 		WHERE
 			user_id = @userid';
 	

@@ -68,7 +68,7 @@ h1 {
 }
 
 /*********************************************************/
-#loginError, div.error {
+div.error, div.success, #loginError {
     border: solid 1px #a4381c;
     margin: 20px auto 5px;
     background-color: #f5e4df;
@@ -79,9 +79,15 @@ h1 {
     text-align: center;
 }
 
-div.error {
+div.error, div.success {
     text-align: left;
     font-size: 13px;
+}
+
+div.success {
+ 	border: solid 1px #8CC739;
+	background-color: #BCE27F;
+	text-align: center;
 }
 
 div.error table {
