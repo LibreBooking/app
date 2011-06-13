@@ -109,6 +109,9 @@ class User
 	 */
 	public $passwordSalt;
 
+	private $attributes = array();
+	private $attributesChanged = false;
+
 	/**
 	 * @param int[] $allowedResourceIds
 	 * @return void
@@ -176,6 +179,9 @@ class User
 		$user->passwordSalt = $row[ColumnNames::SALT];
 		$user->homepageId = $row[ColumnNames::HOMEPAGE_ID];
 
+		$user->attributes[UserAttribute::Phone] = $row[ColumnNames::PHONE_NUMBER];
+		$user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
+		
 		return $user;
 	}
 
@@ -236,9 +242,29 @@ class User
 
 	public function ChangeAttributes($phone, $organization, $position)
 	{
+		$this->attributesChanged = true;
+		
 		$this->attributes[UserAttribute::Phone] = $phone;
 		$this->attributes[UserAttribute::Organization] = $organization;
 		$this->attributes[UserAttribute::Position] = $position;
+	}
+
+	public function HaveAttributesChanged()
+	{
+		return $this->attributesChanged;
+	}
+
+	/**
+	 * @param UserAttribute $attributeName
+	 * @return string
+	 */
+	public function GetAttribute($attributeName)
+	{
+		if (key_exists($attributeName, $this->attributes))
+		{
+			return $this->attributes[$attributeName];
+		}
+		return null;
 	}
 }
 

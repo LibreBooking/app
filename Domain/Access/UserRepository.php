@@ -120,6 +120,17 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		{
 			$db->Execute(new AddUserResourcePermission($userId, $resourceId));
 		}
+
+		if ($user->HaveAttributesChanged())
+		{
+
+			$updateAttributesCommand = new UpdateUserAttributesCommand(
+						$userId,
+						$user->GetAttribute(UserAttribute::Phone),
+						$user->GetAttribute(UserAttribute::Organization),
+						$user->GetAttribute(UserAttribute::Position));
+			$db->Execute($updateAttributesCommand);
+		}
 	}
 	
 	public function LoadEmailPreferences($userId)

@@ -71,6 +71,7 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals($row[ColumnNames::FIRST_NAME], $user->FirstName());
 		$this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
 		$this->assertArrayHasKey(1, $user->AllowedResourceIds());
+		$this->assertEquals($row[ColumnNames::PHONE_NUMBER], $user->GetAttribute(UserAttribute::Phone));
 	}
 	
 	public function testLoadsUserFromCacheIfAlreadyLoadedFromDatabase()
@@ -190,6 +191,9 @@ class UserRepositoryTests extends TestBase
 
 		$user->ChangeAttributes($phone, $organization, $position);
 
+		$repo = new UserRepository();
+		$repo->Update($user);
+		
 		$updateAttributesCommand = new UpdateUserAttributesCommand($userId, $phone, $organization, $position);
 		$this->assertTrue($this->db->ContainsCommand($updateAttributesCommand));
 	}
@@ -210,6 +214,8 @@ class UserRepositoryTests extends TestBase
 				ColumnNames::SALT => 'passwordsalt',
 				ColumnNames::USERNAME => 'username',
 				ColumnNames::HOMEPAGE_ID => 3,
+				ColumnNames::PHONE_NUMBER => '123-456-7890',
+				ColumnNames::POSITION => 'head honcho',
 			)
 		);
 		

@@ -677,6 +677,9 @@ class ColumnNames
 	const TIMEZONE_NAME = 'timezone';
 	const LANGUAGE_CODE = 'language';
 	const SALT = 'salt';
+	const PHONE_NUMBER = 'phone';
+	const ORGANIZATION = 'organization';
+	const POSITION = 'position';
 
 	// USER_ORGANIZATIONS //
 	const ORGANIZATION_ID = 'organization_id';
