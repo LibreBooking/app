@@ -89,12 +89,7 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 
 	public function BindPageInfo(PageInfo $pageInfo)
 	{
-		$this->Set('page', $pageInfo->CurrentPage);
-		$this->Set('totalPages', $pageInfo->TotalPages);
-		$this->Set('totalResults', $pageInfo->Total);
-		$this->Set('pages', range(1, $pageInfo->TotalPages));
-        $this->Set('resultsStart', $pageInfo->ResultsStart);
-        $this->Set('resultsEnd', $pageInfo->ResultsEnd);
+		$this->set('PageInfo', $pageInfo);
 	}
 	
 	public function BindUsers($users)

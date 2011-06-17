@@ -141,8 +141,6 @@ class FilterCommand extends SqlCommand
 			{
 				$query = "$baseQuery) AND ($newWhere)";
 			}
-
-			//return preg_replace('/WHERE(.+)(ORDER BY.*?)/ims', 'WHERE (${1}) AND (' . $newWhere . ') ${2}', $baseQuery);
 		}
 		else if (!$hasWhere && $hasOrderBy)
 		{

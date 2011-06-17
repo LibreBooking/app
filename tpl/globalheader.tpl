@@ -35,17 +35,16 @@
 		<div id="header">
 		<div id="logo">phpScheduleIt</div>
 		<ul id="nav" class="menubar">
-		    <li class="menubaritem first"><a href="{$Path}dashboard.php">{translate key=Dashboard}</a></li>
-		    <li class="menubaritem"><a href="#">{translate key=Account}</a>
+		    <li class="menubaritem first"><a href="{$Path}{Pages::DASHBOARD}">{translate key=Dashboard}</a></li>
+		    <li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key=Account}</a>
 		    	<ul>
 		    		<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">Profile</a></li>
 		    		<li class="menuitem"><a href="#">Email Preferences</a></li>
-					<li class="menuitem"><a href="#">Delete users</a></li>
 		    	</ul>
 		    </li>
-		    <li class="menubaritem"><a href="{$Path}schedule.php">{translate key=Schedule}</a>
+		    <li class="menubaritem"><a href="{$Path}{Pages::SCHEDULE}">{translate key=Schedule}</a>
 		        <ul>
-		            <li class="menuitem"><a href="{$Path}schedule.php">{translate key=Bookings}</a></li>
+		            <li class="menuitem"><a href="{$Path}{Pages::SCHEDULE}">{translate key=Bookings}</a></li>
 					<li class="menuitem"><a href="#">My Calendar</a></li>
 					<li class="menuitem"><a href="#">Resource Calendar</a></li>
 					<li class="menuitem"><a href="#">Current Status</a></li>
@@ -67,6 +66,7 @@
 							<li><a href="#">Awaiting Activation</a></li>
 						</ul>
 					</li>
+					<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key=ManageGroups}</a>
 					<li class="menuitem"><a href="{$Path}admin/server_settings.php">{translate key=ServerSettings}</a>
 				</ul>
 		    </li>

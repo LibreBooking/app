@@ -212,6 +212,10 @@ class Queries
 		'SELECT user_id, email, fname, lname, timezone, lastlogin, homepageid
 		FROM users 
 		WHERE (username = @username OR email = @username)';
+
+	const GET_ALL_GROUPS =
+		'SELECT *
+		FROM groups g';
 	
 	const GET_ALL_RESOURCES = 
 		'SELECT * 
@@ -701,6 +705,7 @@ class ColumnNames
 	
 	// GROUPS //
 	const GROUP_ID = 'group_id';
+	const GROUP_NAME = 'name';
 	
 	// TIME BLOCKS //
 	const BLOCK_LABEL = 'label';

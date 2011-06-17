@@ -10,6 +10,7 @@ class QueryStringKeys
 	const AUTOCOMPLETE_TYPE = 'type';
 	const DATA_REQUEST = 'dr';
 	const END_DATE = 'ed';
+	const GROUP_ID = 'gid';
 	const LANGUAGE = 'lang';
 	const MESSAGE_ID = 'mid';
     const PAGE = 'page';

@@ -171,6 +171,7 @@ class en_us extends Language
 		$strings['Groups'] = 'Groups';
 		$strings['ResetPassword'] = 'Reset Password';
 		$strings['AllUsers'] = 'All Users';
+		$strings['AllGroups'] = 'All Groups';
 		$strings['UsernameOrEmail'] = 'Username or Email';
 
 		// Errors
@@ -186,6 +187,7 @@ class en_us extends Language
 		$strings['ManageSchedules'] = 'Manage Schedules';
 		$strings['ManageResources'] = 'Manage Resources';
 		$strings['ManageUsers'] = 'Manage Users';
+		$strings['ManageGroups'] = 'Manage Groups';
 		$strings['MyDashboard'] = 'My Dashboard';
 		$strings['ServerSettings'] = 'Server Settings';
 		$strings['Dashboard'] = 'Dashboard';

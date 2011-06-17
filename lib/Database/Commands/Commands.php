@@ -259,6 +259,14 @@ class DeleteUserResourcePermission extends SqlCommand
 	}
 }
 
+class GetAllGroupsCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_ALL_GROUPS);
+	}
+}
+
 class GetAllResourcesCommand extends SqlCommand
 {
 	public function __construct()

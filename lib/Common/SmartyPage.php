@@ -62,6 +62,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'formname', array($this, 'GetFormName'));
 		$this->registerPlugin('modifier', 'url2link', array($this, 'CreateUrl'));
         $this->registerPlugin('function', 'pagelink', array($this, 'CreatePageLink'));
+        $this->registerPlugin('function', 'pagination', array($this, 'CreatePagination'));
 
 		$this->Validators = new PageValdiators();
 	}
@@ -301,6 +302,28 @@ class SmartyPage extends Smarty
 		$string = preg_replace("/([\w-?&;#~=\.\/]+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?))/i","<A HREF=\"mailto:$1\">$1</A>",$string);
 
 		return $string;
+	}
+
+	/**
+	 * @param  $params
+	 * @param Smarty $smarty
+	 * @return void
+	 */
+	public function CreatePagination($params, &$smarty)
+	{
+		/** @var PageInfo $pageInfo */
+		$pageInfo = $params['pageInfo'];
+		$sb = new StringBuilder();
+
+		$sb->Append("<p>{$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} of {$pageInfo->Total}</p><p>");
+		$sb->Append($this->Resources->GetString('Page'));
+		for ($i = 1; $i <= $pageInfo->TotalPages; $i++)
+		{
+			$sb->Append($this->CreatePageLink(array('page' => $i), $smarty));
+		}
+		$sb->Append('</p>');
+
+		return $sb->ToString();
 	}
 
     /**

@@ -1,43 +1,50 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
-//require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Admin/ManageGroupsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-
-class ManageGroupsPage extends AdminPage
+interface IManageGroupsPage
 {
+	public function GetGroupId();
+
+	public function BindGroups($groups);
+
+	public function BindPageInfo(PageInfo $pageInfo);
+
+	public function GetPageNumber();
+
+	public function GetPageSize();
+}
+
+class ManageGroupsPage extends AdminPage implements IManageGroupsPage
+{
+	private $presenter;
 	public function __construct()
 	{
 		parent::__construct('ManageGroups');
-		//$this->_presenter = new ManageUsersPresenter($this, new UserRepository());
+		$this->presenter = new ManageGroupsPresenter($this, new GroupRepository());
 	}
 	
 	public function PageLoad()
 	{
-		$this->_presenter->PageLoad();
+		$this->presenter->PageLoad();
 
-		$this->Set('statusDescriptions', array(AccountStatus::ACTIVE => 'Active', AccountStatus::AWAITING_ACTIVATION => 'Inactive', AccountStatus::INACTIVE => 'Inactive'));
-		$this->Display('manage_users.tpl');
+		$this->Display('manage_groups.tpl');
 	}
 
 	public function BindPageInfo(PageInfo $pageInfo)
 	{
-		$this->Set('page', $pageInfo->CurrentPage);
-		$this->Set('totalPages', $pageInfo->TotalPages);
-		$this->Set('totalResults', $pageInfo->Total);
-		$this->Set('pages', range(1, $pageInfo->TotalPages));
-        $this->Set('resultsStart', $pageInfo->ResultsStart);
-        $this->Set('resultsEnd', $pageInfo->ResultsEnd);
+		$this->Set('PageInfo', $pageInfo);
 	}
 	
-	public function BindUsers($users)
+	public function BindGroups($groups)
 	{
-		$this->Set('users', $users);
+		$this->Set('groups', $groups);
 	}
 	
 	public function ProcessAction()
 	{
-		$this->_presenter->ProcessAction();
+		$this->presenter->ProcessAction();
 	}
 
 	public function GetPageNumber()
@@ -53,9 +60,9 @@ class ManageGroupsPage extends AdminPage
 	/**
 	 * @return int
 	 */
-	public function GetUserId()
+	public function GetGroupId()
 	{
-		return $this->server->GetQuerystring(QueryStringKeys::USER_ID);
+		return $this->server->GetQuerystring(QueryStringKeys::GROUP_ID);
 	}
 
 	public function FulfilDataRequest()

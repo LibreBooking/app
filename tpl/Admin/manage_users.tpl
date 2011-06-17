@@ -60,8 +60,7 @@ Find User:<br/>
 	</form>
 </div>
 
-<p>{$resultsStart} - {$resultsEnd} of {$totalResults}</p>
-<p>Page {foreach from=$pages item=page} {pagelink page=$page} {/foreach}</p>
+{pagination pageInfo=$PageInfo}
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
