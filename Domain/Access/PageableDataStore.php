@@ -3,7 +3,7 @@ class PageableDataStore
 {
 	/**
 	 * @param SqlCommand $command
-	 * @param function $listBuilder callback to for each row of results
+	 * @param callback $listBuilder callback to for each row of results
 	 * @param int $pageNumber
 	 * @param int $pageSize
 	 * @param string $sortField
@@ -16,6 +16,11 @@ class PageableDataStore
 		{
 			$pageNumber = 1;
 		}
+
+		if (is_null($pageSize))
+		{
+			$pageSize = 1;
+		}
 		
 		$total = 0;
 		$results = array();
@@ -24,7 +29,7 @@ class PageableDataStore
 		$totalReader = $db->Query(new CountCommand($command));
 		if ($row = $totalReader->GetRow())
 		{
-			$total = $row['total'];
+			$total = $row[ColumnNames::TOTAL];
 		}
 
 		$resultReader = $db->LimitQuery($command, $pageSize, ($pageNumber - 1) * $pageSize);

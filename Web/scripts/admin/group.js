@@ -7,7 +7,8 @@ function GroupManagement(opts) {
 
 		autocompleteSearch: $('#groupSearch'),
 
-//		permissionsDialog: $('#permissionsDialog'),
+		groupUserList: $('#groupUserList'),
+		membersDialog: $('#membersDialog'),
 //		passwordDialog: $('#passwordDialog'),
 //
 //		permissionsForm: $('#permissionsForm'),
@@ -20,16 +21,16 @@ function GroupManagement(opts) {
 
 	GroupManagement.prototype.init = function() {
 
-//		ConfigureAdminDialog(elements.permissionsDialog, 'Resource Permissions', 400, 500);
+		ConfigureAdminDialog(elements.membersDialog, 'Group Membership', 400, 500);
 //		ConfigureAdminDialog(elements.passwordDialog, 'Reset Password', 400, 300);
 
 		elements.groupList.delegate('a.update', 'click', function(e) {
-			setActiveUserId($(this));
+			setActiveId($(this));
 			e.preventDefault();
 		});
 
-		elements.groupList.delegate('.changeStatus', 'click', function() {
-			changeStatus();
+		elements.groupList.delegate('.members', 'click', function() {
+			changeMembers();
 		});
 
 		elements.autocompleteSearch.autocomplete(
@@ -84,17 +85,13 @@ function GroupManagement(opts) {
 //		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
 	};
 
-	GroupManagement.prototype.addUser = function(user) {
-		users[user.id] = user;
-	};
-
 	var getSubmitCallback = function(action) {
 		return function() {
 			return options.submitUrl + "?uid=" + getActiveUserId() + "&action=" + action;
 		};
 	};
 
-	function setActiveUserId(activeElement) {
+	function setActiveId(activeElement) {
 		var id = activeElement.parents('td').siblings('td.id').find(':hidden').val();
 		elements.activeId.val(id);
 	}
@@ -105,6 +102,22 @@ function GroupManagement(opts) {
 
 	function getActiveUser() {
 		return users[getActiveUserId()];
+	}
+
+	function changeMembers() {
+		$.getJSON('manage_groups.php?dr=groupMembers', {gid: 1}, function(data) {
+			var items = [];
+
+			$('#totalUsers').text(data.Total);
+			$.map( data.Users, function( item ) {
+				items.push('<li id="' + item.UserId + '">' + item.FirstName + ' ' + item.LastName + '<a href="#" class="delete"><img src="../img/cross-button.png" /></a></li>');
+			});
+
+			elements.groupUserList.empty();
+
+			$('<ul/>', {'class': 'my-new-list', html: items.join('')}).appendTo(elements.groupUserList);
+			elements.membersDialog.dialog('open');
+		});
 	}
 
 	var changeGroups = function () {

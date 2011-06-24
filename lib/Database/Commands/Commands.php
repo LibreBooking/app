@@ -267,6 +267,15 @@ class GetAllGroupsCommand extends SqlCommand
 	}
 }
 
+class GetAllGroupUsersCommand extends SqlCommand
+{
+	public function __construct($groupId)
+	{
+		parent::__construct(Queries::GET_ALL_GROUP_USERS);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+	}
+}
+
 class GetAllResourcesCommand extends SqlCommand
 {
 	public function __construct()

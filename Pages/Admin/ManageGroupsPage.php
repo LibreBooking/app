@@ -14,6 +14,8 @@ interface IManageGroupsPage
 	public function GetPageNumber();
 
 	public function GetPageSize();
+
+	public function SetJsonResponse($response);
 }
 
 class ManageGroupsPage extends AdminPage implements IManageGroupsPage
@@ -67,10 +69,16 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 
 	public function FulfilDataRequest()
 	{
-		$groups = ServiceLocator::GetDatabase()->Query(new AdHocCommand('select * from groups'));
-		$data = json_encode($groups);
-		$this->Set('data', $data);
-		$this->Display('json_data.tpl');
+		$this->presenter->ProcessDataRequest();
+//		$groups = ServiceLocator::GetDatabase()->Query(new AdHocCommand('select * from groups'));
+//		$data = json_encode($groups);
+//		$this->Set('data', $data);
+//		$this->Display('json_data.tpl');
+	}
+
+	public function SetJsonResponse($response)
+	{
+		parent::SetJson($response);
 	}
 }
 ?>

@@ -17,7 +17,7 @@ class ParameterNames
 	
 	const FIRST_NAME = '@fname';
 	
-	const GROUP = '@group';
+	const GROUP_ID = '@groupid';
 		
 	const HOMEPAGE_ID = '@homepageid';
 
@@ -216,7 +216,14 @@ class Queries
 	const GET_ALL_GROUPS =
 		'SELECT *
 		FROM groups g';
-	
+
+	const GET_ALL_GROUP_USERS =
+		'SELECT *
+		FROM users u
+		INNER JOIN user_groups ug ON u.user_id = ug.user_id
+		INNER JOIN groups g ON g.group_id = ug.group_id
+		WHERE g.group_id = @groupid';
+
 	const GET_ALL_RESOURCES = 
 		'SELECT * 
 		FROM resources r
@@ -780,7 +787,7 @@ class ColumnNames
 	const REPEAT_START = 'repeat_start';
 	const REPEAT_END = 'repeat_end';
 	
-	
-
+	// dynamic
+	const TOTAL = 'total';
 }
 ?>

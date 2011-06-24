@@ -16,6 +16,15 @@ interface IGroupViewRepository
 	 * @return PageableData of GroupItemView
 	 */
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+
+	/**
+	 * @abstract
+	 * @param int $groupId
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @return PageableData of GroupUserView
+	 */
+	public function GetUsersInGroup($groupId, $pageNumber = null, $pageSize = null);
 }
 
 class GroupRepository implements IGroupRepository, IGroupViewRepository
@@ -39,6 +48,47 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 
 		$builder = array('GroupItemView', 'Create');
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+	}
+
+	public function GetUsersInGroup($groupId, $pageNumber = null, $pageSize = null)
+	{
+		$command = new GetAllGroupUsersCommand($groupId);
+
+		$builder = array('GroupUserView', 'Create');
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+	}
+}
+
+class GroupRoles
+{
+	const User = 1;
+	const Admin = 2;
+}
+
+class GroupUserView
+{
+	public static function Create($row)
+	{
+		return new GroupUserView(
+			$row[ColumnNames::USER_ID],
+			$row[ColumnNames::FIRST_NAME],
+			$row[ColumnNames::LAST_NAME],
+			$row[ColumnNames::ROLE_ID]);
+	}
+
+	public $UserId;
+	public $FirstName;
+	public $LastName;
+	public $IsAdmin;
+	public $RoleId;
+
+	public function __construct($userId, $firstName, $lastName, $roleId)
+	{
+		$this->UserId = $userId;
+		$this->FirstName = $firstName;
+		$this->LastName = $lastName;
+		$this->RoleId = $roleId;
+		$this->IsAdmin = $roleId == GroupRoles::Admin;
 	}
 }
 

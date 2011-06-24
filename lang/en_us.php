@@ -173,6 +173,7 @@ class en_us extends Language
 		$strings['AllUsers'] = 'All Users';
 		$strings['AllGroups'] = 'All Groups';
 		$strings['UsernameOrEmail'] = 'Username or Email';
+		$strings['Members'] = 'Members';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';

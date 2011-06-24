@@ -78,7 +78,11 @@ class ManageGroupsPresenter extends ActionPresenter
 
 	public function ProcessDataRequest()
 	{
-		$this->page->SetJsonResponse($this->GetUserResourcePermissions());
+		$users = $this->groupRepository->GetUsersInGroup($this->page->GetGroupId(), 1, 100);
+
+		$response = new UserGroupResults($users->Results(), $users->PageInfo()->Total);
+		
+		$this->page->SetJsonResponse($response);
 	}
 
 	/**
@@ -91,4 +95,15 @@ class ManageGroupsPresenter extends ActionPresenter
 	}
 }
 
+class UserGroupResults
+{
+	public function __construct($users, $totalUsers)
+	{
+	    $this->Users = $users;
+		$this->Total = $totalUsers;
+	}
+	
+	public $Total;
+	public $Users;
+}
 ?>

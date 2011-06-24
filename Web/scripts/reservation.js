@@ -10,7 +10,9 @@ function Reservation(opts)
 			repeatInterval: $('#repeatInterval'),
 			repeatTermination: $('#EndRepeat'),
 			beginTime: $('#BeginPeriod'),
-			endTime: $('#EndPeriod')
+			endTime: $('#EndPeriod'),
+			durationDays: $('#durationDays'),
+			durationHours: $('#durationHours')
 	};
 	
 	const oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
@@ -110,18 +112,24 @@ function Reservation(opts)
 			AdjustEndDate();
 			ToggleRepeatOptions();
 			elements.beginDate.data['previousVal'] = elements.beginDate.val();
+
+			DisplayDuration();
 		});
 		
 		elements.endDate.change(function() {
-			ToggleRepeatOptions();			
+			ToggleRepeatOptions();
+
+			DisplayDuration();
 		});
 		
 		elements.beginTime.change(function() {
-			ToggleRepeatOptions();			
+			ToggleRepeatOptions();
+			DisplayDuration();
 		});
 		
 		elements.endTime.change(function() {
-			ToggleRepeatOptions();			
+			ToggleRepeatOptions();
+			DisplayDuration();
 		});
 		
 		$('select, input', elements.repeatDiv).change(function()
@@ -132,6 +140,7 @@ function Reservation(opts)
 		WireUpActions();		
 		WireUpButtonPrompt();
 		WireUpSaveDialog();
+		DisplayDuration();
 	}
 	
 	// pre-submit callback 
@@ -293,6 +302,19 @@ function Reservation(opts)
 	{
 		$('#hdnSeriesUpdateScope').val(updateScopeValue);
 	};
+
+	var DisplayDuration = function()
+	{
+		var difference = GetEndDate() - GetBeginDate();
+		var days = difference/oneDay;
+		var hours = (days%1)*24;
+
+		var roundedHours = (hours % 1) ? hours.toPrecision(2) : hours;
+		var roundedDays = Math.floor(days);
+
+		elements.durationDays.text(roundedDays);
+		elements.durationHours.text(roundedHours);
+	};
 	
 	var InitialzeCheckboxes = function(dialogBoxId, displayDivId)
 	{
@@ -376,8 +398,8 @@ function Reservation(opts)
 	
 	var MoreThanOneDayBetweenBeginAndEnd = function()
 	{
-		var begin = new Date(elements.beginDate.val() + ' ' + elements.beginTime.val());
-		var end = new Date(elements.endDate.val() + ' ' + elements.endTime.val());
+		var begin = GetBeginDate();
+		var end = GetEndDate();
 		
 		var timeBetweenDates = end.getTime() - begin.getTime();
 		
@@ -428,5 +450,15 @@ function Reservation(opts)
 			
 			$('#reservationForm').submit();
 		});
+	}
+
+	function GetBeginDate()
+	{
+		return new Date(elements.beginDate.val() + ' ' + elements.beginTime.val());
+	}
+
+	function GetEndDate()
+	{
+		return new Date(elements.endDate.val() + ' ' + elements.endTime.val());
 	}
 }

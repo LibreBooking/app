@@ -58,6 +58,13 @@
 				</select>
 			</li>
 			<li>
+				<label>Reservation Length</label>
+				<div class="durationText">
+					<span id="durationDays">0</span> {translate key=days},
+					<span id="durationHours">0</span> {translate key=hours}
+				</div>
+			</li>
+			<li>
 				<div id="repeatDiv">
 					<label>{translate key="RepeatPrompt"}</label>
 					<select id="repeatOptions" {formname key=repeat_options} class="pulldown" style="width:250px">

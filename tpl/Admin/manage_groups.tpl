@@ -11,7 +11,7 @@
 		<th class="id">&nbsp;</th>
 		<th>{translate key='Name'}</th>
 		<th>&nbsp;</th>
-		<th>&nbsp;</th>
+		<th>{translate key='Members'}</th>
 	</tr>
 {foreach from=$groups item=group}
 	{cycle values='row0,row1' assign=rowCss}
@@ -19,7 +19,7 @@
 		<td class="id"><input type="hidden" class="id" value="{$group->Id}"/></td>
 		<td>{$group->Name}</td>
 		<td><a href="#" class="update rename">{translate key='Rename'}</a></td>
-		<td><a href="#" class="update members">{translate key='Members'}</a></td>
+		<td><a href="#" class="update members">{translate key='Manage'}</a></td>
 	</tr>
 {/foreach}
 </table>
@@ -27,6 +27,11 @@
 {pagination pageInfo=$PageInfo}
 
 <input type="hidden" id="activeId" />
+
+<div id="membersDialog" class="dialog" style="display:none;">
+	<h4><span id="totalUsers"></span> Users in this group</h4>
+	<div id="groupUserList"></div>
+</div>
 
 <div id="permissionsDialog" class="dialog" style="display:none;">
 	<form id="permissionsForm" method="post">

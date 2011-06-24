@@ -8,3 +8,11 @@
 	margin:0px;
 	font-style: italic;
 }
+
+.durationText
+{
+	font-size: 13px;
+	font-weight: normal;
+	display: inline;
+	color: #000;
+}

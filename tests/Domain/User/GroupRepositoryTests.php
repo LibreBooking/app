@@ -21,7 +21,7 @@ class GroupRepositoryTests extends TestBase
 		$pageSize = 100;
 		$count = 1000;
 
-		$countRow = array('total' => $count);
+		$countRow = array(ColumnNames::TOTAL => $count);
 		$row1 = self::GetRow(1, 'g1');
 		$row2 = self::GetRow(2, 'g2');
 		$rows = array($row1, $row2);
@@ -45,9 +45,39 @@ class GroupRepositoryTests extends TestBase
 		$this->assertEquals($pageNum, $pageInfo->CurrentPage);
 	}
 
+	public function testCanGetGroupUsers()
+	{
+		$rows[] = $this->GetGroupUserRow(1, 'f', 'l', 1);
+		$rows[] = $this->GetGroupUserRow(2, '2f', '2l', 2);
+		$this->db->SetRow(0, array(array(ColumnNames::TOTAL => 20)));
+		$this->db->SetRow(1, $rows);
+
+		$groupId = 50;
+		$repo = new GroupRepository();
+		$users = $repo->GetUsersInGroup($groupId);
+
+		$actualCommand = $this->db->_LastCommand;
+
+		$this->assertEquals(new GetAllGroupUsersCommand($groupId), $actualCommand);
+
+		$results = $users->Results();
+		$this->assertEquals(2, count($results));
+		$this->assertEquals(1, $results[0]->UserId);
+	}
+
 	public static function GetRow($groupId, $groupName)
 	{
 		return array(ColumnNames::GROUP_ID => $groupId, ColumnNames::GROUP_NAME => $groupName);
+	}
+
+	private function GetGroupUserRow($userId, $firstName, $lastName, $roleId)
+	{
+		return array(
+			ColumnNames::USER_ID => $userId,
+			ColumnNames::FIRST_NAME => $firstName,
+			ColumnNames::LAST_NAME => $lastName,
+			ColumnNames::ROLE_ID => $roleId,
+		);
 	}
 }
 ?>

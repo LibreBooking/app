@@ -107,7 +107,14 @@ class ManageUsersPresenter extends ActionPresenter
 
 	public function ProcessDataRequest()
 	{
-		$this->page->SetJsonResponse($this->GetUserResourcePermissions());
+		if ($this->page->GetDataRequest() == 'groupMembers')
+		{
+			$this->page->SetJsonResponse($users);
+		}
+		else
+		{
+			$this->page->SetJsonResponse($this->GetUserResourcePermissions());
+		}
 	}
 
 	/**
