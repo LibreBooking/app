@@ -107,6 +107,26 @@ class GroupRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($removeCommand1));
 		$this->assertTrue($this->db->ContainsCommand($removeCommand2));
 	}
+
+	public function testUpdateAddsAllUsersMarked()
+	{
+		$user1 = 100;
+		$user2 = 200;
+		$groupId = 9298;
+
+		$group = new Group($groupId, '');
+
+		$group->AddUser($user1);
+		$group->AddUser($user2);
+
+		$this->repository->Update($group);
+
+		$command1 = new AddUserGroupCommand($user1, $groupId);
+		$command2 = new AddUserGroupCommand($user2, $groupId);
+
+		$this->assertTrue($this->db->ContainsCommand($command1));
+		$this->assertTrue($this->db->ContainsCommand($command2));
+	}
 	
 	public static function GetRow($groupId, $groupName)
 	{

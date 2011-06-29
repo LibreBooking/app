@@ -29,6 +29,7 @@
 <input type="hidden" id="activeId" />
 
 <div id="membersDialog" class="dialog" style="display:none;">
+	Add User: <input type="text" id="userSearch" class="textbox" size="40" />
 	<h4><span id="totalUsers"></span> Users in this group</h4>
 	<div id="groupUserList"></div>
 </div>
@@ -49,6 +50,10 @@
 	<input type="hidden" id="removeUserId" {formname key=USER_ID} />
 </form>
 
+<form id="addUserForm" method="post">
+	<input type="hidden" id="addUserId" {formname key=USER_ID} />
+</form>
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
@@ -63,11 +68,12 @@
 		deactivate: '{ManageGroupsActions::Deactivate}',
 		permissions: '{ManageGroupsActions::Permissions}',
 		password: '{ManageGroupsActions::Password}',
-		removeUser: '{ManageGroupsActions::RemoveUser}'
+		removeUser: '{ManageGroupsActions::RemoveUser}',
+		addUser: '{ManageGroupsActions::AddUser}',
 	};
 			
 	var groupOptions = {
-		userAutocompleteUrl: "../ajax/autocomplete.php?type=user",
+		userAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::User}",
 		groupAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::Group}",
 		groupsUrl:  "{$Path}admin/manage_groups.php",
 		permissionsUrl:  '{$smarty.server.SCRIPT_NAME}',

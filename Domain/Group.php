@@ -4,6 +4,8 @@ class Group
 {
 	private $id;
 	private $name;
+	
+	private $_addedUsers = array();
 	private $_removedUsers = array();
 
 	public function __construct($id, $name)
@@ -22,6 +24,11 @@ class Group
 		return $this->name;
 	}
 
+	public function AddUser($userId)
+	{
+		$this->_addedUsers[] = $userId;
+	}
+
 	public function RemoveUser($userId)
 	{
 		$this->_removedUsers[] = $userId;
@@ -31,11 +38,19 @@ class Group
 	 * @internal
 	 * @return int[] array of userIds
 	 */
+	public function AddedUsers()
+	{
+		return $this->_addedUsers;
+	}
+	
+	/**
+	 * @internal
+	 * @return int[] array of userIds
+	 */
 	public function RemovedUsers()
 	{
 		return $this->_removedUsers;
 	}
-
 }
 
 ?>

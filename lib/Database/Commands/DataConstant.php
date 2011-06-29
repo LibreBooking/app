@@ -62,6 +62,7 @@ class ParameterNames
 	const RESOURCE_LEVEL_ID = "@resourceLevelId";
 	const RESOURCE_IMAGE_NAME = "@imageName";
 	const RESOURCE_ISACTIVE = "@isActive";
+	const ROLE_ID = '@roleid';
 	
 	
 	const SALT = '@salt';
@@ -152,6 +153,11 @@ class Queries
 			schedules (name, isdefault, weekdaystart, daysvisible, layout_id)
 		VALUES (@scheduleName, @scheduleIsDefault, @scheduleWeekdayStart, @scheduleDaysVisible, @layoutid)';
 
+	const ADD_USER_GROUP =
+		'INSERT INTO
+			user_groups (user_id, group_id, role_id)
+		VALUES (@userid, @groupid, @roleid)';
+	
 	const ADD_USER_RESOURCE_PERMISSION =
 		'INSERT INTO
 		user_resource_permissions (user_id, resource_id)

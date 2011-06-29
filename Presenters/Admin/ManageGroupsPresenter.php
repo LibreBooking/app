@@ -10,6 +10,7 @@ class ManageGroupsActions
 	const Password = 'password';
 	const Permissions = 'permissions';
 	const RemoveUser = 'removeUser';
+	const AddUser = 'addUser';
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -42,6 +43,7 @@ class ManageGroupsPresenter extends ActionPresenter
 
 //		$this->AddAction(ManageGroupsActions::Activate, 'Activate');
 //		$this->AddAction(ManageGroupsActions::Deactivate, 'Deactivate');
+		$this->AddAction(ManageGroupsActions::AddUser, 'AddUser');
 		$this->AddAction(ManageGroupsActions::RemoveUser, 'RemoveUser');
 	}
 
@@ -93,6 +95,18 @@ class ManageGroupsPresenter extends ActionPresenter
 	{
 		$user = $this->userRepository->LoadById($this->page->GetUserId());
 		return $user->AllowedResourceIds();
+	}
+
+	protected function AddUser()
+	{
+		$groupId =  $this->page->GetGroupId();
+		$userId = $this->page->GetUserId();
+
+		Log::Debug("Adding userId: %s from groupId: %s", $userId, $groupId);
+
+		$group = $this->groupRepository->LoadById($groupId);
+		$group->AddUser($userId);
+		$this->groupRepository->Update($group);
 	}
 
 	protected function RemoveUser()

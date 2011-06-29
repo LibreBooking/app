@@ -94,9 +94,15 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	public function Update($group)
 	{
 		$db = ServiceLocator::GetDatabase();
+
 		foreach ($group->RemovedUsers() as $userId)
 		{
 			$db->Execute(new DeleteUserGroupCommand($userId, $group->Id()));
+		}
+
+		foreach ($group->AddedUsers() as $userId)
+		{
+			$db->Execute(new AddUserGroupCommand($userId, $group->Id()));
 		}
 	}
 }

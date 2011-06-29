@@ -6,6 +6,7 @@ function GroupManagement(opts) {
 		groupList: $('table.list'),
 
 		autocompleteSearch: $('#groupSearch'),
+		userSearch: $('#userSearch'),
 
 		groupUserList: $('#groupUserList'),
 		membersDialog: $('#membersDialog'),
@@ -13,6 +14,7 @@ function GroupManagement(opts) {
 //
 //		permissionsForm: $('#permissionsForm'),
 //		passwordForm: $('#passwordForm'),
+		addUserForm: $('#addUserForm'),
 		removeUserForm: $('#removeUserForm'),
 
 		addForm: $('#addScheduleForm')
@@ -64,6 +66,37 @@ function GroupManagement(opts) {
 			}
 		});
 
+		elements.userSearch.autocomplete(
+		{
+			source: function( request, response ) {
+				$.ajax({
+					url: options.userAutocompleteUrl,
+					dataType: "json",
+					data: {
+						term: request.term
+					},
+					success: function( data ) {
+						response( $.map( data, function( item ) {
+							return {
+								label: item.First + " " + item.Last,
+								value: item.Id
+							}
+						}));
+					}
+				});
+			},
+			focus: function( event, ui ) {
+				elements.userSearch.val( ui.item.label );
+				return false;
+			},
+			select: function( event, ui ) {
+
+				addUserToGroup(ui.item.value);
+				elements.userSearch.val('');
+				return false;
+			}
+		});
+
 		$(".save").click(function() {
 			$(this).closest('form').submit();
 		});
@@ -82,8 +115,8 @@ function GroupManagement(opts) {
 		
 		var error = function(errorText) { alert(errorText);};
 		
+		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), changeMembers, error);
 		ConfigureAdminForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
-//		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
 	};
 
 	var getSubmitCallback = function(action) {
@@ -123,17 +156,21 @@ function GroupManagement(opts) {
 			elements.groupUserList.delegate('.delete', 'click', function() {
 				var userId = $(this).siblings('.id').val();
 				removeUserFromGroup($(this), userId);
-
-				alert('removing user ' + id);
 			});
 		});
 	}
+
+	var addUserToGroup = function(userId)
+	{
+		$('#addUserId').val(userId);
+		elements.addUserForm.submit();
+	};
 
 	var removeUserFromGroup = function(element, userId)
 	{
 		$('#removeUserId').val(userId);
 		elements.removeUserForm.submit();
-	}
+	};
 
 	var changeGroups = function () {
 		var user = getActiveGroup();

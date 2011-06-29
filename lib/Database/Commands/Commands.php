@@ -157,6 +157,17 @@ class AddScheduleCommand extends SqlCommand
 	}
 }
 
+class AddUserGroupCommand extends SqlCommand
+{
+	public function __construct($userId, $groupId)
+	{
+		parent::__construct(Queries::ADD_USER_GROUP);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+		$this->AddParameter(new Parameter(ParameterNames::ROLE_ID, GroupRoles::User));
+	}
+}
+
 class AddUserResourcePermission extends SqlCommand
 {
 	public function __construct($userId, $resourceId)
