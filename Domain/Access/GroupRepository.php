@@ -2,7 +2,19 @@
 
 interface IGroupRepository
 {
-	
+	/**
+	 * @abstract
+	 * @param int $groupId
+	 * @return Group
+	 */
+	public function LoadById($groupId);
+
+	/**
+	 * @abstract
+	 * @param Group $group
+	 * @return void
+	 */
+	public function Update($group);
 }
 
 interface IGroupViewRepository
@@ -56,6 +68,36 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 
 		$builder = array('GroupUserView', 'Create');
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+	}
+
+	public function LoadById($groupId)
+	{
+		$command = new GetGroupByIdCommand($groupId);
+
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+		$group = null;
+		
+		if ($row = $reader->GetRow())
+		{
+			$group = new Group($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME]);
+		}
+
+		$reader->Free();
+
+		return $group;
+	}
+
+	/**
+	 * @param Group $group
+	 * @return void
+	 */
+	public function Update($group)
+	{
+		$db = ServiceLocator::GetDatabase();
+		foreach ($group->RemovedUsers() as $userId)
+		{
+			$db->Execute(new DeleteUserGroupCommand($userId, $group->Id()));
+		}
 	}
 }
 

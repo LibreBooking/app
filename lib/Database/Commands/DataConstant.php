@@ -202,6 +202,11 @@ class Queries
 		'DELETE 
 		FROM reservation_series
 		WHERE series_id = @seriesid';
+
+	const DELETE_USER_GROUP =
+		'DELETE
+		FROM user_groups
+		WHERE user_id = @userid AND group_id = @groupid';
 	
 	const DELETE_USER_RESOURCE_PERMISSION =
 		'DELETE
@@ -244,6 +249,11 @@ class Queries
 		FROM announcements
 		WHERE (start_datetime <= @current_date AND end_datetime >= @current_date)
 		ORDER BY priority DESC';
+
+	const GET_GROUP_BY_ID =
+		'SELECT *
+		FROM groups
+		WHERE group_id = @groupid';
 
 	const GET_GROUP_RESOURCE_PERMISSIONS = 
 		'SELECT 

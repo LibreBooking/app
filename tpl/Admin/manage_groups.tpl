@@ -45,6 +45,9 @@
 </div>
 
 
+<form id="removeUserForm" method="post">
+	<input type="hidden" id="removeUserId" {formname key=USER_ID} />
+</form>
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
@@ -59,7 +62,8 @@
 		activate: '{ManageGroupsActions::Activate}',
 		deactivate: '{ManageGroupsActions::Deactivate}',
 		permissions: '{ManageGroupsActions::Permissions}',
-		password: '{ManageGroupsActions::Password}'
+		password: '{ManageGroupsActions::Password}',
+		removeUser: '{ManageGroupsActions::RemoveUser}'
 	};
 			
 	var groupOptions = {

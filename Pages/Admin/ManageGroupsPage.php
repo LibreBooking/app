@@ -16,6 +16,8 @@ interface IManageGroupsPage
 	public function GetPageSize();
 
 	public function SetJsonResponse($response);
+
+	public function GetUserId();
 }
 
 class ManageGroupsPage extends AdminPage implements IManageGroupsPage
@@ -64,7 +66,7 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	 */
 	public function GetGroupId()
 	{
-		return $this->server->GetQuerystring(QueryStringKeys::GROUP_ID);
+		return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
 	}
 
 	public function FulfilDataRequest()
@@ -79,6 +81,11 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function SetJsonResponse($response)
 	{
 		parent::SetJson($response);
+	}
+
+	public function GetUserId()
+	{
+		return $this->GetForm(FormKeys::USER_ID);
 	}
 }
 ?>

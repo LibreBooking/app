@@ -9,6 +9,7 @@ class ManageGroupsActions
 	const Deactivate = 'deactivate';
 	const Password = 'password';
 	const Permissions = 'permissions';
+	const RemoveUser = 'removeUser';
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -41,7 +42,7 @@ class ManageGroupsPresenter extends ActionPresenter
 
 //		$this->AddAction(ManageGroupsActions::Activate, 'Activate');
 //		$this->AddAction(ManageGroupsActions::Deactivate, 'Deactivate');
-//		$this->AddAction(ManageGroupsActions::Permissions, 'ChangePermissions');
+		$this->AddAction(ManageGroupsActions::RemoveUser, 'RemoveUser');
 	}
 
 	public function PageLoad()
@@ -92,6 +93,18 @@ class ManageGroupsPresenter extends ActionPresenter
 	{
 		$user = $this->userRepository->LoadById($this->page->GetUserId());
 		return $user->AllowedResourceIds();
+	}
+
+	protected function RemoveUser()
+	{
+		$groupId =  $this->page->GetGroupId();
+		$userId = $this->page->GetUserId();
+
+		Log::Debug("Removing userId: %s from groupId: %s", $userId, $groupId);
+
+		$group = $this->groupRepository->LoadById($groupId);
+		$group->RemoveUser($userId);
+		$this->groupRepository->Update($group);
 	}
 }
 

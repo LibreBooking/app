@@ -249,6 +249,15 @@ class DeleteSeriesCommand extends SqlCommand
 	}
 }
 
+class DeleteUserGroupCommand extends SqlCommand
+{
+	public function __construct($userId, $groupId)
+	{
+		parent::__construct(Queries::DELETE_USER_GROUP);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+	}
+}
 class DeleteUserResourcePermission extends SqlCommand
 {
 	public function __construct($userId, $resourceId)
@@ -310,6 +319,15 @@ class GetDashboardAnnouncementsCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_DASHBOARD_ANNOUNCEMENTS);
 		$this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate->ToDatabase()));
+	}
+}
+
+class GetGroupByIdCommand extends SqlCommand
+{
+	public function __construct($groupId)
+	{
+		parent::__construct(Queries::GET_GROUP_BY_ID);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
 	}
 }
 

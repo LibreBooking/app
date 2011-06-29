@@ -4,9 +4,16 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class GroupRepositoryTests extends TestBase
 {
+	/**
+	 * @var GroupRepository
+	 */
+	private $repository;
+	
 	public function setup()
 	{
 		parent::setup();
+
+		$this->repository = new GroupRepository();
 	}
 
 	public function teardown()
@@ -32,8 +39,7 @@ class GroupRepositoryTests extends TestBase
 		$baseCommand = new GetAllGroupsCommand();
 		$expected = new FilterCommand($baseCommand, $filter);
 
-		$repo = new GroupRepository();
-		$list = $repo->GetList($pageNum, $pageSize, null, null, $filter);
+		$list = $this->repository->GetList($pageNum, $pageSize, null, null, $filter);
 		
 		$results = $list->Results();
 		$this->assertEquals(GroupItemView::Create($row1), $results[0]);
@@ -53,8 +59,7 @@ class GroupRepositoryTests extends TestBase
 		$this->db->SetRow(1, $rows);
 
 		$groupId = 50;
-		$repo = new GroupRepository();
-		$users = $repo->GetUsersInGroup($groupId);
+		$users = $this->repository->GetUsersInGroup($groupId);
 
 		$actualCommand = $this->db->_LastCommand;
 
@@ -65,6 +70,44 @@ class GroupRepositoryTests extends TestBase
 		$this->assertEquals(1, $results[0]->UserId);
 	}
 
+	public function testCanLoadById()
+	{
+		$groupId = 98282;
+		$groupName = 'gn';
+
+		$rows = array();
+		$rows[] = $this->GetRow($groupId, $groupName);
+		$this->db->SetRows($rows);
+
+		$group = $this->repository->LoadById($groupId);
+
+		$expectedCommand = new GetGroupByIdCommand($groupId);
+				
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+		$this->assertEquals($groupId, $group->Id());
+		$this->assertEquals($groupName, $group->Name());
+	}
+
+	public function testUpdateRemovesAllUsersMarked()
+	{
+		$user1 = 100;
+		$user2 = 200;
+		$groupId = 9298;
+
+		$group = new Group($groupId, '');
+
+		$group->RemoveUser($user1);
+		$group->RemoveUser($user2);
+
+		$this->repository->Update($group);
+
+		$removeCommand1 = new DeleteUserGroupCommand($user1, $groupId);
+		$removeCommand2 = new DeleteUserGroupCommand($user2, $groupId);
+
+		$this->assertTrue($this->db->ContainsCommand($removeCommand1));
+		$this->assertTrue($this->db->ContainsCommand($removeCommand2));
+	}
+	
 	public static function GetRow($groupId, $groupName)
 	{
 		return array(ColumnNames::GROUP_ID => $groupId, ColumnNames::GROUP_NAME => $groupName);

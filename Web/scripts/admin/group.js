@@ -13,6 +13,7 @@ function GroupManagement(opts) {
 //
 //		permissionsForm: $('#permissionsForm'),
 //		passwordForm: $('#passwordForm'),
+		removeUserForm: $('#removeUserForm'),
 
 		addForm: $('#addScheduleForm')
 	};
@@ -81,13 +82,13 @@ function GroupManagement(opts) {
 		
 		var error = function(errorText) { alert(errorText);};
 		
-//		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
+		ConfigureAdminForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
 //		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
 	};
 
 	var getSubmitCallback = function(action) {
 		return function() {
-			return options.submitUrl + "?uid=" + getActiveUserId() + "&action=" + action;
+			return options.submitUrl + "?gid=" + getActiveId() + "&action=" + action;
 		};
 	};
 
@@ -96,32 +97,46 @@ function GroupManagement(opts) {
 		elements.activeId.val(id);
 	}
 
-	function getActiveUserId() {
+	function getActiveId() {
 		return elements.activeId.val();
 	}
 
-	function getActiveUser() {
-		return users[getActiveUserId()];
+	function getActiveGroup() {
+		return groups[getActiveId()];
 	}
 
 	function changeMembers() {
-		$.getJSON('manage_groups.php?dr=groupMembers', {gid: 1}, function(data) {
+		var groupId = getActiveId();
+		$.getJSON('manage_groups.php?dr=groupMembers', {gid: groupId}, function(data) {
 			var items = [];
 
 			$('#totalUsers').text(data.Total);
 			$.map( data.Users, function( item ) {
-				items.push('<li id="' + item.UserId + '">' + item.FirstName + ' ' + item.LastName + '<a href="#" class="delete"><img src="../img/cross-button.png" /></a></li>');
+				items.push('<li>' + item.FirstName + ' ' + item.LastName + '<a href="#" class="delete"><img src="../img/cross-button.png" /></a><input type="hidden" class="id" value="' + item.UserId + '"/></li>');
 			});
 
 			elements.groupUserList.empty();
 
 			$('<ul/>', {'class': 'my-new-list', html: items.join('')}).appendTo(elements.groupUserList);
 			elements.membersDialog.dialog('open');
+
+			elements.groupUserList.delegate('.delete', 'click', function() {
+				var userId = $(this).siblings('.id').val();
+				removeUserFromGroup($(this), userId);
+
+				alert('removing user ' + id);
+			});
 		});
 	}
 
+	var removeUserFromGroup = function(element, userId)
+	{
+		$('#removeUserId').val(userId);
+		elements.removeUserForm.submit();
+	}
+
 	var changeGroups = function () {
-		var user = getActiveUser();
+		var user = getActiveGroup();
 		var data = {dr: 'groups', id: user.id};
 		$.get(opts.groupsUrl, data, function(response) {
 			//$('#privilegesDialog').html(response).show();
@@ -129,7 +144,7 @@ function GroupManagement(opts) {
 	};
 
 	var changePermissions = function () {
-		var user = getActiveUser();
+		var user = getActiveGroup();
 		var data = {dr: 'permissions', uid: user.id};
 		$.get(opts.permissionsUrl, data, function(resourceIds) {
 			elements.permissionsForm.find(':checkbox').attr('checked', false);
