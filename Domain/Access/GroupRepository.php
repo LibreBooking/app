@@ -74,7 +74,8 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	{
 		$command = new GetGroupByIdCommand($groupId);
 
-		$reader = ServiceLocator::GetDatabase()->Query($command);
+		$db = ServiceLocator::GetDatabase();
+		$reader = $db->Query($command);
 		$group = null;
 		
 		if ($row = $reader->GetRow())
@@ -82,6 +83,14 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 			$group = new Group($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME]);
 		}
 
+		$reader->Free();
+
+		$reader = $db->Query(new GetAllGroupUsersCommand($groupId));
+
+		while ($row = $reader->GetRow())
+		{
+			$group->WithUser($row[ColumnNames::USER_ID]);
+		}
 		$reader->Free();
 
 		return $group;

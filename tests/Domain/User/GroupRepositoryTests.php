@@ -77,15 +77,24 @@ class GroupRepositoryTests extends TestBase
 
 		$rows = array();
 		$rows[] = $this->GetRow($groupId, $groupName);
-		$this->db->SetRows($rows);
+		$groupUsers = array(
+			array(ColumnNames::USER_ID => 1, ColumnNames::ROLE_ID => GroupRoles::User),
+			array(ColumnNames::USER_ID => 2, ColumnNames::ROLE_ID => GroupRoles::Admin),
+		);
+		$this->db->SetRow(0, $rows);
+		$this->db->SetRow(1, $groupUsers);
 
 		$group = $this->repository->LoadById($groupId);
 
-		$expectedCommand = new GetGroupByIdCommand($groupId);
-				
-		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+		$expectedGroupCommand = new GetGroupByIdCommand($groupId);
+		$expectedUsersCommand = new GetAllGroupUsersCommand($groupId);
+
+		$this->assertTrue($this->db->ContainsCommand($expectedGroupCommand));
+		$this->assertTrue($this->db->ContainsCommand($expectedUsersCommand));
 		$this->assertEquals($groupId, $group->Id());
 		$this->assertEquals($groupName, $group->Name());
+		$this->assertTrue($group->HasMember(1));
+		$this->assertFalse($group->HasMember(3));
 	}
 
 	public function testUpdateRemovesAllUsersMarked()
