@@ -25,4 +25,5 @@ $conf['settings']['phpmailer']['smtp.username'] = '';
 $conf['settings']['phpmailer']['smtp.password'] = '';
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images';		// from root directory
 $conf['settings']['image.upload.url'] = 'uploads/images';				// from script.url
+$conf['settings']['cache.templates'] = 'false';
 ?>

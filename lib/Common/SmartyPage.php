@@ -32,9 +32,11 @@ class SmartyPage extends Smarty
 		$this->cache_dir = $base . 'cache';
 		$this->plugins_dir = SMARTY_DIR . '/plugins/';
 		$this->error_reporting = E_ALL  & ~E_NOTICE;
-		
-		$this->compile_check = false;	// should be set to false in production
-		$this->force_compile = true;	// should be set to false in production
+
+		$cacheTemplates = Configuration::Instance()->GetKey(ConfigKeys::CACHE_TEMPLATES, new BooleanConverter());
+
+		$this->compile_check = !$cacheTemplates;	// should be set to false in production
+		$this->force_compile = !$cacheTemplates;	// should be set to false in production
 		
 		if (is_null($resources))
 		{

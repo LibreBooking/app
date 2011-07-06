@@ -138,3 +138,7 @@ div.error {
 .list th.id, .list td.id {
 	display: none;
 }
+
+#groupUserList {
+	overflow-y: auto;
+}

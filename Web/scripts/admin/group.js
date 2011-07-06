@@ -145,7 +145,7 @@ function GroupManagement(opts) {
 
 			$('#totalUsers').text(data.Total);
 			$.map( data.Users, function( item ) {
-				items.push('<li>' + item.FirstName + ' ' + item.LastName + '<a href="#" class="delete"><img src="../img/cross-button.png" /></a><input type="hidden" class="id" value="' + item.UserId + '"/></li>');
+				items.push('<li><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.FirstName + ' ' + item.LastName + '<input type="hidden" class="id" value="' + item.UserId + '"/></li>');
 			});
 
 			elements.groupUserList.empty();

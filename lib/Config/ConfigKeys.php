@@ -26,6 +26,8 @@ class ConfigKeys
 	
 	const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
 	const IMAGE_UPLOAD_URL = 'image.upload.url';
+
+	const CACHE_TEMPLATES = 'cache.templates';
 }
 
 class ConfigSection
