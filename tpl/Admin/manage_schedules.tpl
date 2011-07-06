@@ -150,6 +150,20 @@
 		        </select>
 	        </h5>
 		</div>
+		<div>
+			<h5>
+				{capture name="layoutConfig" assign="layoutConfig"}
+					<input type='text' value='30' id='quickLayoutConfig' size=5' />
+				{/capture}
+				{capture name="layoutStart" assign="layoutStart"}
+					<input type='text' value='08:00' id='quickLayoutStart' size='10' />
+				{/capture}
+				{capture name="layoutEnd" assign="layoutEnd"}
+					<input type='text' value='18:00' id='quickLayoutEnd' size='10' />
+				{/capture}
+				{translate key=QuickSlotCreation args="$layoutConfig,$layoutStart,$layoutEnd"}
+			</h5>
+		</div>
 		<div style="margin-top: 5px; padding-top:5px; border-top: solid 1px #f0f0f0;">
 			<div style="float:left;">
 				<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>

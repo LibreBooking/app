@@ -19,6 +19,9 @@ function ScheduleManagement(opts)
 		reservableEdit: $('#reservableEdit'),
 		blockedEdit: $('#blockedEdit'),
 		layoutTimezone: $('#layoutTimezone'),
+		quickLayoutConfig: $('#quickLayoutConfig'),
+		quickLayoutStart: $('#quickLayoutStart'),
+		quickLayoutEnd: $('#quickLayoutEnd'),
 		
 		daysVisible: $('#daysVisible'),
 		dayOfWeek: $('#dayOfWeek')
@@ -28,7 +31,7 @@ function ScheduleManagement(opts)
 	{
 		ConfigureDialog(elements.renameDialog, 'Rename Schedule', 300, 125);
 		ConfigureDialog(elements.changeSettingsDialog, 'Change Schedule Settings', 300, 140);
-		ConfigureDialog(elements.layoutDialog, 'Change Layout', 700, 510);
+		ConfigureDialog(elements.layoutDialog, 'Change Layout', 700, 520);
 		    
 		$('.scheduleDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -70,6 +73,18 @@ function ScheduleManagement(opts)
 		$(".cancel").click(function() {
 			$(this).closest('.dialog').dialog("close");
 		});
+
+		elements.quickLayoutConfig.change(function() {
+			createQuickLayout();
+		});
+
+		elements.quickLayoutStart.change(function() {
+			createQuickLayout();
+		});
+
+		elements.quickLayoutEnd.change(function() {
+			createQuickLayout();
+		});
 		
 
 		ConfigureForm(elements.renameForm, options.renameAction);
@@ -78,6 +93,62 @@ function ScheduleManagement(opts)
 		ConfigureForm(elements.addForm, options.addAction, handleAddError);
 		ConfigureForm(elements.makeDefaultForm, options.makeDefaultAction, function(text){alert(text);});
 	};
+
+	var createQuickLayout = function () {
+		var intervalMinutes = elements.quickLayoutConfig.val();
+		var startTime = elements.quickLayoutStart.val();
+		var endTime = elements.quickLayoutEnd.val();
+
+		if (intervalMinutes != '' && startTime != '' && endTime != '')
+		{
+			var layout = '';
+			var blocked = '';
+
+			if (startTime != '00:00')
+			{
+				blocked += '00:00 - ' + startTime + "\n";
+			}
+
+			if (endTime != '00:00')
+			{
+				blocked += endTime + ' - 00:00';
+			}
+
+			var startTimes = startTime.split(":");
+			var endTimes = endTime.split(":");
+
+			var currentTime = new Date();
+			currentTime.setHours(startTimes[0]);
+			currentTime.setMinutes(startTimes[1]);
+
+			var endDateTime = new Date();
+			endDateTime.setHours(endTimes[0]);
+			endDateTime.setMinutes(endTimes[1]);
+
+			var nextTime = new Date(currentTime);
+
+			var intervalMilliseconds =  60 * 1000 * intervalMinutes;
+			while (currentTime.getTime() < endDateTime.getTime())
+			{
+				nextTime.setTime(nextTime.getTime() + intervalMilliseconds)
+
+				layout += getFormattedTime(currentTime) + ' - ';
+				layout += getFormattedTime(nextTime) + '\n'
+
+				currentTime.setTime(currentTime.getTime() + intervalMilliseconds);
+			}
+			
+			elements.reservableEdit.val(layout)
+			elements.blockedEdit.val(blocked);
+		}
+	};
+
+	var getFormattedTime = function(date)
+	{
+		var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+		var minute = date.getMinutes()< 10 ? "0" + date.getMinutes() : date.getMinutes();
+		return hour + ":" + minute;
+	}
 
 	var showLayoutResults = function(responseText)
 	{
