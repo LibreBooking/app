@@ -13,7 +13,6 @@ function GroupManagement(opts) {
 		permissionsDialog: $('#permissionsDialog'),
 
 		permissionsForm: $('#permissionsForm'),
-//		passwordForm: $('#passwordForm'),
 		addUserForm: $('#addUserForm'),
 		removeUserForm: $('#removeUserForm'),
 
@@ -117,6 +116,7 @@ function GroupManagement(opts) {
 		
 		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), changeMembers, error);
 		ConfigureAdminForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
+		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
 	};
 
 	var getSubmitCallback = function(action) {
