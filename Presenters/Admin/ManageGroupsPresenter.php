@@ -16,12 +16,12 @@ class ManageGroupsActions
 class ManageGroupsPresenter extends ActionPresenter
 {
 	/**
-	 * @var \IManageGroupsPage
+	 * @var IManageGroupsPage
 	 */
 	private $page;
 
 	/**
-	 * @var \GroupRepository
+	 * @var GroupRepository
 	 */
 	private $groupRepository;
 
@@ -33,24 +33,24 @@ class ManageGroupsPresenter extends ActionPresenter
 	/**
 	 * @param IManageGroupsPage $page
 	 * @param GroupRepository $groupRepository
+	 * @param ResourceRepository $resourceRepository
 	 */
-	public function __construct(IManageGroupsPage $page, GroupRepository $groupRepository)
+	public function __construct(IManageGroupsPage $page, GroupRepository $groupRepository, ResourceRepository $resourceRepository)
 	{
 		parent::__construct($page);
-		
+
 		$this->page = $page;
 		$this->groupRepository = $groupRepository;
+		$this->resourceRepository = $resourceRepository;
 
-//		$this->AddAction(ManageGroupsActions::Activate, 'Activate');
-//		$this->AddAction(ManageGroupsActions::Deactivate, 'Deactivate');
 		$this->AddAction(ManageGroupsActions::AddUser, 'AddUser');
 		$this->AddAction(ManageGroupsActions::RemoveUser, 'RemoveUser');
+		$this->AddAction(ManageGroupsActions::Permissions, 'ChangePermissions');
 	}
 
 	public function PageLoad()
 	{
-		if ($this->page->GetGroupId() != null)
-		{
+		if ($this->page->GetGroupId() != null) {
 			$groupList = $this->groupRepository->GetList(1, 1, null, null, new EqualsSqlFilter(ColumnNames::GROUP_ID, $this->page->GeTGroupId()));
 		}
 		else
@@ -61,30 +61,36 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->page->BindGroups($groupList->Results());
 		$this->page->BindPageInfo($groupList->PageInfo());
 
-		//$this->page->BindResources($this->resourceRepository->GetResourceList());
+		$this->page->BindResources($this->resourceRepository->GetResourceList());
 	}
-
 
 
 	public function ChangePermissions()
 	{
-		$user = $this->userRepository->LoadById($this->page->GetUserId());
+		$group = $this->groupRepository->LoadById($this->page->GetGroupId());
 		$allowedResources = array();
 
-		if (is_array($this->page->GetAllowedResourceIds()))
-		{
+		if (is_array($this->page->GetAllowedResourceIds())) {
 			$allowedResources = $this->page->GetAllowedResourceIds();
 		}
-		$user->ChangePermissions($allowedResources);
-		$this->userRepository->Update($user);
+		$group->ChangePermissions($allowedResources);
+		$this->groupRepository->Update($group);
 	}
 
 	public function ProcessDataRequest()
 	{
-		$users = $this->groupRepository->GetUsersInGroup($this->page->GetGroupId(), 1, 100);
+		$response = '';
+		if ($this->page->GetDataRequest() == 'groupMembers')
+		{
+			$users = $this->groupRepository->GetUsersInGroup($this->page->GetGroupId(), 1, 100);
 
-		$response = new UserGroupResults($users->Results(), $users->PageInfo()->Total);
-		
+			$response = new UserGroupResults($users->Results(), $users->PageInfo()->Total);
+		}
+		else
+		{
+			$response = $this->GetGroupResourcePermissions();
+		}
+
 		$this->page->SetJsonResponse($response);
 	}
 
@@ -93,13 +99,13 @@ class ManageGroupsPresenter extends ActionPresenter
 	 */
 	public function GetGroupResourcePermissions()
 	{
-		$user = $this->userRepository->LoadById($this->page->GetUserId());
-		return $user->AllowedResourceIds();
+		$group = $this->groupRepository->LoadById($this->page->GetGroupId());
+		return $group->AllowedResourceIds();
 	}
 
 	protected function AddUser()
 	{
-		$groupId =  $this->page->GetGroupId();
+		$groupId = $this->page->GetGroupId();
 		$userId = $this->page->GetUserId();
 
 		Log::Debug("Adding userId: %s from groupId: %s", $userId, $groupId);
@@ -111,7 +117,7 @@ class ManageGroupsPresenter extends ActionPresenter
 
 	protected function RemoveUser()
 	{
-		$groupId =  $this->page->GetGroupId();
+		$groupId = $this->page->GetGroupId();
 		$userId = $this->page->GetUserId();
 
 		Log::Debug("Removing userId: %s from groupId: %s", $userId, $groupId);
@@ -126,11 +132,12 @@ class UserGroupResults
 {
 	public function __construct($users, $totalUsers)
 	{
-	    $this->Users = $users;
+		$this->Users = $users;
 		$this->Total = $totalUsers;
 	}
-	
+
 	public $Total;
 	public $Users;
 }
+
 ?>

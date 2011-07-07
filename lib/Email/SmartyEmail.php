@@ -29,8 +29,10 @@ class SmartyEmail extends Smarty
 		$this->compile_dir = ROOT_DIR . 'tpl_c';
 		$this->config_dir = ROOT_DIR . 'configs';
 		$this->cache_dir = ROOT_DIR . 'cache';
-		
-		$this->compile_check = true;	// should be set to false in production	
+
+		$cacheTemplates = Configuration::Instance()->GetKey(ConfigKeys::CACHE_TEMPLATES, new BooleanConverter());
+		$this->compile_check = !$cacheTemplates;	// should be set to false in production
+		$this->force_compile = !$cacheTemplates;	// should be set to false in production
 		
 		$this->RegisterFunctions();
 	}

@@ -18,6 +18,10 @@ interface IManageGroupsPage
 	public function SetJsonResponse($response);
 
 	public function GetUserId();
+	
+	public function BindResources($resources);
+
+	public function GetAllowedResourceIds();
 }
 
 class ManageGroupsPage extends AdminPage implements IManageGroupsPage
@@ -26,7 +30,7 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function __construct()
 	{
 		parent::__construct('ManageGroups');
-		$this->presenter = new ManageGroupsPresenter($this, new GroupRepository());
+		$this->presenter = new ManageGroupsPresenter($this, new GroupRepository(), new ResourceRepository());
 	}
 	
 	public function PageLoad()
@@ -72,10 +76,6 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function FulfilDataRequest()
 	{
 		$this->presenter->ProcessDataRequest();
-//		$groups = ServiceLocator::GetDatabase()->Query(new AdHocCommand('select * from groups'));
-//		$data = json_encode($groups);
-//		$this->Set('data', $data);
-//		$this->Display('json_data.tpl');
 	}
 
 	public function SetJsonResponse($response)
@@ -86,6 +86,23 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function GetUserId()
 	{
 		return $this->GetForm(FormKeys::USER_ID);
+	}
+
+	/**
+	 * @param BookableResources[] $resources
+	 * @return void
+	 */
+	public function BindResources($resources)
+	{
+		$this->Set('resources', $resources);
+	}
+
+	/**
+	 * @return int[] resource ids the user has permission to
+	 */
+	public function GetAllowedResourceIds()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_ID);
 	}
 }
 ?>

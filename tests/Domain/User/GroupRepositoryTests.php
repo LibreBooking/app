@@ -81,20 +81,30 @@ class GroupRepositoryTests extends TestBase
 			array(ColumnNames::USER_ID => 1, ColumnNames::ROLE_ID => GroupRoles::User),
 			array(ColumnNames::USER_ID => 2, ColumnNames::ROLE_ID => GroupRoles::Admin),
 		);
+		$permissions = array (
+			array(ColumnNames::GROUP_ID => 1, ColumnNames::RESOURCE_ID => 1),
+			array(ColumnNames::GROUP_ID => 1, ColumnNames::RESOURCE_ID => 2),
+
+		);
 		$this->db->SetRow(0, $rows);
 		$this->db->SetRow(1, $groupUsers);
+		$this->db->SetRow(2, $permissions);
 
 		$group = $this->repository->LoadById($groupId);
 
 		$expectedGroupCommand = new GetGroupByIdCommand($groupId);
 		$expectedUsersCommand = new GetAllGroupUsersCommand($groupId);
+		$expectedPermissionsCommand = new GetAllGroupPermissionsCommand($groupId);
 
 		$this->assertTrue($this->db->ContainsCommand($expectedGroupCommand));
 		$this->assertTrue($this->db->ContainsCommand($expectedUsersCommand));
+		$this->assertTrue($this->db->ContainsCommand($expectedPermissionsCommand));
 		$this->assertEquals($groupId, $group->Id());
 		$this->assertEquals($groupName, $group->Name());
 		$this->assertTrue($group->HasMember(1));
 		$this->assertFalse($group->HasMember(3));
+		$this->assertTrue(in_array(1, $group->AllowedResourceIds()));
+		$this->assertFalse(in_array(3, $group->AllowedResourceIds()));
 	}
 
 	public function testUpdateRemovesAllUsersMarked()
@@ -104,6 +114,8 @@ class GroupRepositoryTests extends TestBase
 		$groupId = 9298;
 
 		$group = new Group($groupId, '');
+		$group->WithUser($user1);
+		$group->WithUser($user2);
 
 		$group->RemoveUser($user1);
 		$group->RemoveUser($user2);
@@ -135,6 +147,27 @@ class GroupRepositoryTests extends TestBase
 
 		$this->assertTrue($this->db->ContainsCommand($command1));
 		$this->assertTrue($this->db->ContainsCommand($command2));
+	}
+	
+	public function testUpdateAddsAllNewAndRemovesAllDeletedPermissions()
+	{
+		$resource1 = 100;
+		$resource2 = 200;
+		
+		$groupId = 9298;
+
+		$group = new Group($groupId, '');
+		$group->WithPermission($resource1);
+
+		$group->ChangePermissions(array($resource2));
+
+		$this->repository->Update($group);
+
+		$removeCommand1 = new DeleteGroupResourcePermission($groupId, $resource1);
+		$removeCommand2 = new AddGroupResourcePermission($groupId, $resource2);
+
+		$this->assertTrue($this->db->ContainsCommand($removeCommand1));
+		$this->assertTrue($this->db->ContainsCommand($removeCommand2));
 	}
 	
 	public static function GetRow($groupId, $groupName)

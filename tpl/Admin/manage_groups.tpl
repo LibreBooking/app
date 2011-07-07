@@ -12,6 +12,7 @@
 		<th>{translate key='Name'}</th>
 		<th>&nbsp;</th>
 		<th>{translate key='Members'}</th>
+		<th>{translate key='ResourcePermissions'}</th>
 	</tr>
 {foreach from=$groups item=group}
 	{cycle values='row0,row1' assign=rowCss}
@@ -20,6 +21,7 @@
 		<td>{$group->Name}</td>
 		<td><a href="#" class="update rename">{translate key='Rename'}</a></td>
 		<td><a href="#" class="update members">{translate key='Manage'}</a></td>
+		<td><a href="#" class="update permissions">{translate key='Change'}</a></td>
 	</tr>
 {/foreach}
 </table>
@@ -36,7 +38,6 @@
 
 <div id="permissionsDialog" class="dialog" style="display:none;">
 	<form id="permissionsForm" method="post">
-		<div class="error">Actual access to resource may be different depending on user role, group permissions, or external permission settings</div>
 		{foreach from=$resources item=resource}
 			<label><input {formname key=RESOURCE_ID  multi=true} class="resourceId" type="checkbox" value="{$resource->GetResourceId()}"> {$resource->GetName()}</label><br/>
 		{/foreach}

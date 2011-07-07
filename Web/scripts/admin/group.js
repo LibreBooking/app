@@ -10,9 +10,9 @@ function GroupManagement(opts) {
 
 		groupUserList: $('#groupUserList'),
 		membersDialog: $('#membersDialog'),
-//		passwordDialog: $('#passwordDialog'),
-//
-//		permissionsForm: $('#permissionsForm'),
+		permissionsDialog: $('#permissionsDialog'),
+
+		permissionsForm: $('#permissionsForm'),
 //		passwordForm: $('#passwordForm'),
 		addUserForm: $('#addUserForm'),
 		removeUserForm: $('#removeUserForm'),
@@ -25,13 +25,17 @@ function GroupManagement(opts) {
 	GroupManagement.prototype.init = function() {
 
 		ConfigureAdminDialog(elements.membersDialog, 'Group Membership', 400, 500);
-//		ConfigureAdminDialog(elements.passwordDialog, 'Reset Password', 400, 300);
+		ConfigureAdminDialog(elements.permissionsDialog, 'Change Group Permissions', 400, 300);
 
 		elements.groupList.delegate('a.update', 'click', function(e) {
 			setActiveId($(this));
 			e.preventDefault();
 		});
 
+		elements.groupList.delegate('.permissions', 'click', function() {
+			changePermissions();
+		});
+		
 		elements.groupList.delegate('.members', 'click', function() {
 			changeMembers();
 		});
@@ -108,10 +112,6 @@ function GroupManagement(opts) {
 		var hidePermissionsDialog = function() {
 			elements.permissionsDialog.dialog('close');
 		};
-
-		var hidePasswordDialog = function() {
-			elements.passwordDialog.dialog('close');
-		};
 		
 		var error = function(errorText) { alert(errorText);};
 		
@@ -172,17 +172,10 @@ function GroupManagement(opts) {
 		elements.removeUserForm.submit();
 	};
 
-	var changeGroups = function () {
-		var user = getActiveGroup();
-		var data = {dr: 'groups', id: user.id};
-		$.get(opts.groupsUrl, data, function(response) {
-			//$('#privilegesDialog').html(response).show();
-		});
-	};
-
 	var changePermissions = function () {
-		var user = getActiveGroup();
-		var data = {dr: 'permissions', uid: user.id};
+		var groupId = getActiveId();
+		
+		var data = {dr: 'permissions', gid: groupId};
 		$.get(opts.permissionsUrl, data, function(resourceIds) {
 			elements.permissionsForm.find(':checkbox').attr('checked', false);
 			$.each(resourceIds, function(index, value) {

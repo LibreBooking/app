@@ -5,9 +5,14 @@ class Group
 	private $id;
 	private $name;
 	
-	private $_addedUsers = array();
-	private $_removedUsers = array();
-	private $_users = array();
+	private $addedUsers = array();
+	private $removedUsers = array();
+	private $users = array();
+	
+	private $permissionsChanged = false;
+	private $removedPermissions = array();
+	private $addedPermissions = array();
+	private $allowedResourceIds = array();
 
 	public function __construct($id, $name)
 	{
@@ -29,7 +34,7 @@ class Group
 	{
 		if (!$this->HasMember($userId))
 		{
-			$this->_addedUsers[] = $userId;
+			$this->addedUsers[] = $userId;
 		}
 	}
 
@@ -37,7 +42,7 @@ class Group
 	{
 		if ($this->HasMember($userId))
 		{
-			$this->_removedUsers[] = $userId;
+			$this->removedUsers[] = $userId;
 		}
 	}
 
@@ -47,7 +52,7 @@ class Group
 	 */
 	public function AddedUsers()
 	{
-		return $this->_addedUsers;
+		return $this->addedUsers;
 	}
 	
 	/**
@@ -56,7 +61,7 @@ class Group
 	 */
 	public function RemovedUsers()
 	{
-		return $this->_removedUsers;
+		return $this->removedUsers;
 	}
 
 	/**
@@ -66,7 +71,7 @@ class Group
 	 */
 	public function WithUser($userId)
 	{
-		$this->_users[] = $userId;
+		$this->users[] = $userId;
 	}
 
 	/**
@@ -75,7 +80,62 @@ class Group
 	 */
 	public function HasMember($userId)
 	{
-		return in_array($userId, $this->_users);
+		return in_array($userId, $this->users);
+	}
+	
+	/**
+	 * @param int $allowedResourceId
+	 * @return void
+	 */
+	public function WithPermission($allowedResourceId)
+	{
+		$this->permissionsChanged = false;
+		$this->allowedResourceIds[] = $allowedResourceId;
+	}
+
+	/**
+	 * @param int[] $allowedResourceIds
+	 * @return void
+	 */
+	public function ChangePermissions($allowedResourceIds = array())
+	{
+		$removed = array_diff($this->allowedResourceIds, $allowedResourceIds);
+		$added = array_diff($allowedResourceIds, $this->allowedResourceIds);
+
+		if (!empty($removed) || !empty($added))
+		{
+			$this->permissionsChanged = true;
+			$this->removedPermissions = $removed;
+			$this->addedPermissions = $added;
+
+			$this->allowedResourceIds = $allowedResourceIds;
+		}
+	}
+
+	/**
+	 * @internal
+	 * @return int[] array of resourceIds
+	 */
+	public function RemovedPermissions()
+	{
+		return $this->removedPermissions;
+	}
+
+	/**
+	 * @internal
+	 * @return int[] array of resourceIds
+	 */
+	public function AddedPermissions()
+	{
+		return $this->addedPermissions;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function AllowedResourceIds()
+	{
+		return $this->allowedResourceIds;
 	}
 }
 

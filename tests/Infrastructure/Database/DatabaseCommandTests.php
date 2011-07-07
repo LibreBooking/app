@@ -266,7 +266,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 
 		$command = new SelectUserGroupPermissions($userId);
 
-		$this->assertEquals(Queries::GET_GROUP_RESOURCE_PERMISSIONS, $command->GetQuery());
+		$this->assertEquals(Queries::GET_USER_GROUP_RESOURCE_PERMISSIONS, $command->GetQuery());
 		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $userId), $command->Parameters->Items(0));
 	}
 

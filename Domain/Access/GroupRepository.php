@@ -72,24 +72,27 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 
 	public function LoadById($groupId)
 	{
-		$command = new GetGroupByIdCommand($groupId);
-
-		$db = ServiceLocator::GetDatabase();
-		$reader = $db->Query($command);
 		$group = null;
-		
+		$db = ServiceLocator::GetDatabase();
+
+		$reader = $db->Query(new GetGroupByIdCommand($groupId));
 		if ($row = $reader->GetRow())
 		{
 			$group = new Group($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME]);
 		}
-
 		$reader->Free();
 
 		$reader = $db->Query(new GetAllGroupUsersCommand($groupId));
-
 		while ($row = $reader->GetRow())
 		{
 			$group->WithUser($row[ColumnNames::USER_ID]);
+		}
+		$reader->Free();
+
+		$reader = $db->Query(new GetAllGroupPermissionsCommand($groupId));
+		while ($row = $reader->GetRow())
+		{
+			$group->WithPermission($row[ColumnNames::RESOURCE_ID]);
 		}
 		$reader->Free();
 
@@ -112,6 +115,16 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		foreach ($group->AddedUsers() as $userId)
 		{
 			$db->Execute(new AddUserGroupCommand($userId, $group->Id()));
+		}
+
+		foreach ($group->RemovedPermissions() as $resourceId)
+		{
+			$db->Execute(new DeleteGroupResourcePermission($group->Id(), $resourceId));
+		}
+
+		foreach ($group->AddedPermissions() as $resourceId)
+		{
+			$db->Execute(new AddGroupResourcePermission($group->Id(), $resourceId));
 		}
 	}
 }

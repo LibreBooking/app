@@ -22,7 +22,7 @@
 			    		<input class="resourceId" type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}" />
 			    		<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}" />
 		    		</div>
-                    {if $AvailableResources|count > 1}
+                    {if $AvailableResources|count > 0}
 					    <a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(More Resources)</a>
                     {/if}
 					<div id="additionalResources"></div>

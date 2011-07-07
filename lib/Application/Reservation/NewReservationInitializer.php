@@ -86,10 +86,8 @@ class NewReservationInitializer extends ReservationInitializerBase
 			$periodBegin = $currentPeriod->BeginDate();
 			
 			$now = Date::Now();
-			//echo "$periodBegin $now";
 			if ($currentPeriod->IsReservable() && $periodBegin->Compare($date) >= 0 && $periodBegin->Compare(Date::Now()) >= 0)
 			{
-				//die($currentPeriod);
 				return $currentPeriod;
 			}
 		}

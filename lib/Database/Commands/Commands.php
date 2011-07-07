@@ -18,6 +18,17 @@ class GetAllReservationsByUserCommand /*Give it a very literal name describing w
     }
 }
 
+class AddGroupResourcePermission extends SqlCommand
+{
+	public function __construct($groupId, $resourceId)
+	{
+		parent::__construct(Queries::ADD_GROUP_RESOURCE_PERMISSION);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
+
 class AddLayoutCommand extends SqlCommand
 {
 	public function __construct($timezone)
@@ -233,6 +244,16 @@ class CookieLoginCommand extends SqlCommand
 	}
 }
 
+class DeleteGroupResourcePermission extends SqlCommand
+{
+	public function __construct($groupId, $resourceId)
+	{
+		parent::__construct(Queries::DELETE_GROUP_RESOURCE_PERMISSION);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
 class DeleteResourceCommand extends SqlCommand
 {
 	public function __construct($resourceId)
@@ -292,6 +313,15 @@ class GetAllGroupUsersCommand extends SqlCommand
 	public function __construct($groupId)
 	{
 		parent::__construct(Queries::GET_ALL_GROUP_USERS);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+	}
+}
+
+class GetAllGroupPermissionsCommand extends SqlCommand
+{
+	public function __construct($groupId)
+	{
+		parent::__construct(Queries::GET_GROUP_RESOURCE_PERMISSIONS);
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
 	}
 }
@@ -594,7 +624,7 @@ class SelectUserGroupPermissions extends SqlCommand
 {
 	public function __construct($userId)
 	{
-		parent::__construct(Queries::GET_GROUP_RESOURCE_PERMISSIONS);
+		parent::__construct(Queries::GET_USER_GROUP_RESOURCE_PERMISSIONS);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));	
 	}
 }

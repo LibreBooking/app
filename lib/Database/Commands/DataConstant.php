@@ -117,6 +117,11 @@ class Queries
 			reservation_users JOIN reservation_series
 		WHERE
 			(@userid = reservation_users.user_id AND reservation_users.series_id = reservation_series.series_id)';
+
+	const ADD_GROUP_RESOURCE_PERMISSION =
+		'INSERT INTO
+ 			group_resource_permissions (group_id, resource_id)
+		VALUES (@groupid, @resourceid)';
 	
 	const ADD_LAYOUT = 
 		'INSERT INTO 
@@ -160,7 +165,7 @@ class Queries
 	
 	const ADD_USER_RESOURCE_PERMISSION =
 		'INSERT INTO
-		user_resource_permissions (user_id, resource_id)
+			user_resource_permissions (user_id, resource_id)
 		VALUES (@userid, @resourceid)';
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
@@ -192,6 +197,11 @@ class Queries
 		'SELECT user_id, lastlogin, email 
 		FROM users 
 		WHERE user_id = @userid';
+
+	const DELETE_GROUP_RESOURCE_PERMISSION =
+		'DELETE
+		FROM group_resource_permissions
+		WHERE group_id = @groupid AND resource_id = @resourceid';
 	
 	const DELETE_RESOURCE_COMMAND = 
 		'DELETE 
@@ -261,71 +271,42 @@ class Queries
 		FROM groups
 		WHERE group_id = @groupid';
 
-	const GET_GROUP_RESOURCE_PERMISSIONS = 
-		'SELECT 
-			grp.group_id, r.resource_id, r.name
-		FROM
-			group_resource_permissions grp, resources r, user_groups ug
-		WHERE
-			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resource_id';
-			
+	const GET_GROUP_RESOURCE_PERMISSIONS =
+		'SELECT *
+		FROM group_resource_permissions
+		WHERE group_id = @groupid';
+
 	const GET_RESOURCE_BY_ID = 
-		'SELECT 
-			*
-		FROM 
-			resources r
+		'SELECT *
+		FROM resources r
 		INNER JOIN resource_schedules rs ON r.resource_id = rs.resource_id
-		WHERE
-			r.resource_id = @resourceid';
+		WHERE r.resource_id = @resourceid';
 	
 	const GET_RESERVATION_BY_ID =
-		'SELECT
-			*
-		FROM
-			reservation_instances r
-		INNER JOIN	
-			reservation_series rs ON r.series_id = rs.series_id
+		'SELECT *
+		FROM reservation_instances r
+		INNER JOIN reservation_series rs ON r.series_id = rs.series_id
 		WHERE
 			r.reservation_instance_id = @reservationid AND
 			status_id <> 2';
 	
 	const GET_RESERVATION_FOR_EDITING = 
-		'SELECT 
-			* 
-		FROM
-			reservation_instances ri
-		INNER JOIN
-			reservation_series r 
-			ON 
-				r.series_id = ri.series_id
-		INNER JOIN
-			users u
-			ON 
-				u.user_id = r.owner_id
-		INNER JOIN
-			reservation_resources rr
-			ON
-				r.series_id = rr.series_id
-			AND 
-				rr.resource_level_id = @resourceLevelId
+		'SELECT *
+		FROM reservation_instances ri
+		INNER JOIN reservation_series r ON r.series_id = ri.series_id
+		INNER JOIN users u ON u.user_id = r.owner_id
+		INNER JOIN reservation_resources rr ON r.series_id = rr.series_id AND rr.resource_level_id = @resourceLevelId
 		WHERE 
-				reference_number = @referenceNumber
-			AND	
-				r.status_id <> 2';
+			reference_number = @referenceNumber AND
+			r.status_id <> 2';
 	
 	const GET_RESERVATION_LIST = 
-		'SELECT
-			*
-		FROM
-			reservation_instances ri
-		INNER JOIN
-			reservation_series rs ON ri.series_id = rs.series_id
-		INNER JOIN
-			reservation_resources rr ON rr.series_id = rs.series_id
-		INNER JOIN
-			reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
-		INNER JOIN
-			resources r on rr.resource_id = r.resource_id
+		'SELECT *
+		FROM reservation_instances ri
+		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
+		INNER JOIN reservation_resources rr ON rr.series_id = rs.series_id
+		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
+		INNER JOIN resources r on rr.resource_id = r.resource_id
 		WHERE 
 			ri.start_date >= @startDate AND
 			ri.start_date <= @endDate AND
@@ -342,34 +323,20 @@ class Queries
 			u.lname,
 			u.email,
 			ru.*
-		FROM
-			reservation_users ru
-		INNER JOIN 
-			users u
-			ON
-				ru.user_id = u.user_id
-		WHERE
-			reservation_instance_id = @reservationid';
+		FROM reservation_users ru
+		INNER JOIN users u ON ru.user_id = u.user_id
+		WHERE reservation_instance_id = @reservationid';
 	
 	const GET_RESERVATION_RESOURCES =
-		'SELECT
-			r.resource_id, r.name, rr.resource_level_id
-		FROM
-			reservation_resources rr
-		INNER JOIN 
-			resources r
-			ON
-			rr.resource_id = r.resource_id
-		WHERE
-			rr.series_id = @seriesid';
+		'SELECT r.resource_id, r.name, rr.resource_level_id
+		FROM reservation_resources rr
+		INNER JOIN resources r ON rr.resource_id = r.resource_id
+		WHERE rr.series_id = @seriesid';
 	
 	const GET_RESERVATION_SERIES_INSTANCES =
-		'SELECT 
-			*
-		FROM
-			reservation_instances
-		WHERE 
-			series_id = @seriesid';
+		'SELECT *
+		FROM reservation_instances
+		WHERE series_id = @seriesid';
 	
 	// TODO: Pass in "Deleted" status ID
 	const GET_RESERVATIONS_COMMAND =
@@ -386,19 +353,13 @@ class Queries
 		u.lname,
 		ri.series_id,
 		ri.reference_number
-	FROM 
-		reservation_instances ri
-	INNER JOIN
-		reservation_series r ON ri.series_id = r.series_id AND r.status_id <> 2
-	INNER JOIN 
-		reservation_users ru ON ri.reservation_instance_id = ru.reservation_instance_id
-	INNER JOIN 
-		users u ON ru.user_id = u.user_id
-	INNER JOIN 
-		reservation_resources rr ON rr.series_id = ri.series_id
-	INNER JOIN 
-		resource_schedules rs ON rs.resource_id = rr.resource_id
-	WHERE 
+	FROM reservation_instances ri
+	INNER JOIN reservation_series r ON ri.series_id = r.series_id AND r.status_id <> 2
+	INNER JOIN reservation_users ru ON ri.reservation_instance_id = ru.reservation_instance_id
+	INNER JOIN users u ON ru.user_id = u.user_id
+	INNER JOIN reservation_resources rr ON rr.series_id = ri.series_id
+	INNER JOIN resource_schedules rs ON rs.resource_id = rr.resource_id
+	WHERE
 		ru.reservation_user_level = 1 AND
 		(rs.schedule_id = @scheduleid OR @scheduleid = -1) AND	
 		(
@@ -408,14 +369,8 @@ class Queries
 			OR
 			(ri.start_date <= @startDate AND ri.end_date >= @endDate)
 		)';
-	
-//	(ri.start_date >= @startDate AND ri.start_date <= @endDate)
-//	OR
-//	(ri.end_date >= @startDate AND ri.end_date <= @endDate)
-//	OR
-//	(ri.start_date <= @startDate AND ri.end_date >= @endDate)
-//	
-	const GET_SCHEDULE_TIME_BLOCK_GROUPS = 
+
+	const GET_SCHEDULE_TIME_BLOCK_GROUPS =
 		'SELECT 
 			tb.label, 
 			tb.end_label, 
@@ -476,7 +431,15 @@ class Queries
 			user_resource_permissions urp, resources r
 		WHERE
 			urp.user_id = @userid AND r.resource_id = urp.resource_id';
-		
+
+	const GET_USER_GROUP_RESOURCE_PERMISSIONS =
+		'SELECT
+			grp.group_id, r.resource_id, r.name
+		FROM
+			group_resource_permissions grp, resources r, user_groups ug
+		WHERE
+			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resource_id';
+
 	const GET_USER_ROLES = 
 		'SELECT 
 			user_id, user_level 
