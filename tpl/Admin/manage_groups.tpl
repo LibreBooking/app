@@ -68,6 +68,19 @@
 	</form>
 </div>
 
+<div class="admin" style="margin-top:30px">
+	<div class="title">
+		Add New Group
+	</div>
+	<div>
+		<div id="addGroupResults" class="error" style="display:none;"></div>
+		<form id="addGroupForm" method="post">
+			Name<br/> <input type="text" class="textbox required" {formname key=GROUP_NAME} />
+			<button type="button" class="button save">{html_image src="disk-black.png"} Add Group</button>
+		</form>
+	</div>
+</div>
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
@@ -84,6 +97,7 @@
 		password: '{ManageGroupsActions::Password}',
 		removeUser: '{ManageGroupsActions::RemoveUser}',
 		addUser: '{ManageGroupsActions::AddUser}',
+		addGroup: '{ManageGroupsActions::AddGroup}',
 		deleteGroup: '{ManageGroupsActions::DeleteGroup}'
 	};
 			

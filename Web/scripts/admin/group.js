@@ -18,7 +18,7 @@ function GroupManagement(opts) {
 		removeUserForm: $('#removeUserForm'),
 		deleteGroupForm: $('#deleteGroupForm'),
 
-		addForm: $('#addScheduleForm')
+		addForm: $('#addGroupForm')
 	};
 
 	var groups = new Object();
@@ -122,6 +122,10 @@ function GroupManagement(opts) {
 		var groupDeleted = function() {
 			elements.deleteDialog.dialog('close');
 		};
+
+		var groupAdded = function() {
+			window.location.reload();
+		};
 		
 		var error = function(errorText) { alert(errorText);};
 		
@@ -129,8 +133,14 @@ function GroupManagement(opts) {
 		ConfigureAdminForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
 		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
 		ConfigureAdminForm(elements.deleteGroupForm, getSubmitCallback(options.actions.deleteGroup), groupDeleted, error);
+		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.addGroup), groupAdded, error);
 	};
 
+	GroupManagement.prototype.addGroup = function(group)
+	{
+		groups[group.id] = group;
+	};
+	
 	var getSubmitCallback = function(action) {
 		return function() {
 			return options.submitUrl + "?gid=" + getActiveId() + "&action=" + action;

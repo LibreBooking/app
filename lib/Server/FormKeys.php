@@ -25,6 +25,7 @@ class FormKeys
 	const FIRST_NAME = 'fname';
 	
 	const GROUP = 'group';
+	const GROUP_NAME = 'group_name';
 	
 	const INVITATION_LIST = 'invitationList';
 	const IS_ACTIVE = 'isactive';

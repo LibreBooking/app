@@ -66,6 +66,16 @@ class Group
 
 	/**
 	 * @internal
+	 * @param $groupId
+	 * @return void
+	 */
+	public function WithId($groupId)
+	{
+		$this->id = $groupId;
+	}
+
+	/**
+	 * @internal
 	 * @param $userId
 	 * @return void
 	 */

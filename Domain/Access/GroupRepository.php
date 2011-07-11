@@ -14,6 +14,13 @@ interface IGroupRepository
 	 * @param Group $group
 	 * @return void
 	 */
+	public function Add(Group $group);
+	
+	/**
+	 * @abstract
+	 * @param Group $group
+	 * @return void
+	 */
 	public function Update(Group $group);
 
 	/**
@@ -138,6 +145,12 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	public function Remove(Group $group)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteGroupCommand($group->Id()));
+	}
+
+	public function Add(Group $group)
+	{
+		$groupId = ServiceLocator::GetDatabase()->ExecuteInsert(new AddGroupCommand($group->Name()));
+		$group->WithId($groupId);
 	}
 }
 

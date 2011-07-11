@@ -179,6 +179,22 @@ class GroupRepositoryTests extends TestBase
 		$deleteGroupCommand = new DeleteGroupCommand($id);
 		$this->assertTrue($this->db->ContainsCommand($deleteGroupCommand));
 	}
+
+	public function testCanAddNewGroup()
+	{
+		$newId = 40298;
+		$name = 'gn';
+		$group = new Group(0, $name);
+
+		$this->db->_ExpectedInsertId = $newId;
+
+		$this->repository->Add($group);
+		
+		$addGroupCommand = new AddGroupCommand($name);
+		$this->assertTrue($this->db->ContainsCommand($addGroupCommand));
+
+		$this->assertEquals($newId, $group->Id());
+	}
 	
 	public static function GetRow($groupId, $groupName)
 	{

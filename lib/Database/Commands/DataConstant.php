@@ -18,6 +18,7 @@ class ParameterNames
 	const FIRST_NAME = '@fname';
 	
 	const GROUP_ID = '@groupid';
+	const GROUP_NAME = '@groupName';
 		
 	const HOMEPAGE_ID = '@homepageid';
 
@@ -118,6 +119,11 @@ class Queries
 		WHERE
 			(@userid = reservation_users.user_id AND reservation_users.series_id = reservation_series.series_id)';
 
+	const ADD_GROUP =
+		'INSERT INTO
+			groups (name)
+		VALUES (@groupName)';
+	
 	const ADD_GROUP_RESOURCE_PERMISSION =
 		'INSERT INTO
  			group_resource_permissions (group_id, resource_id)

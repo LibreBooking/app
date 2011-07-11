@@ -18,6 +18,15 @@ class GetAllReservationsByUserCommand /*Give it a very literal name describing w
     }
 }
 
+class AddGroupCommand extends SqlCommand
+{
+	public function __construct($groupName)
+	{
+		parent::__construct(Queries::ADD_GROUP);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
+	}
+}
+
 class AddGroupResourcePermission extends SqlCommand
 {
 	public function __construct($groupId, $resourceId)

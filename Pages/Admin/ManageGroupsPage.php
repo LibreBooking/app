@@ -22,6 +22,8 @@ interface IManageGroupsPage
 	public function BindResources($resources);
 
 	public function GetAllowedResourceIds();
+
+	public function GetGroupName();
 }
 
 class ManageGroupsPage extends AdminPage implements IManageGroupsPage
@@ -103,6 +105,11 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function GetAllowedResourceIds()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_ID);
+	}
+
+	public function GetGroupName()
+	{
+		return $this->GetForm(FormKeys::GROUP_NAME);
 	}
 }
 ?>

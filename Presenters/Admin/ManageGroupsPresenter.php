@@ -11,6 +11,7 @@ class ManageGroupsActions
 	const Permissions = 'permissions';
 	const RemoveUser = 'removeUser';
 	const AddUser = 'addUser';
+	const AddGroup = 'addGroup';
 	const DeleteGroup = 'deleteGroup';
 }
 
@@ -47,6 +48,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageGroupsActions::AddUser, 'AddUser');
 		$this->AddAction(ManageGroupsActions::RemoveUser, 'RemoveUser');
 		$this->AddAction(ManageGroupsActions::Permissions, 'ChangePermissions');
+		$this->AddAction(ManageGroupsActions::AddGroup, 'AddGroup');
 		$this->AddAction(ManageGroupsActions::DeleteGroup, 'DeleteGroup');
 	}
 
@@ -122,13 +124,22 @@ class ManageGroupsPresenter extends ActionPresenter
 		$groupId = $this->page->GetGroupId();
 		$userId = $this->page->GetUserId();
 
-		Log::Debug("Removing userId: %s from groupId: %s", $userId, $groupId);
+		Log::Debug('Removing userId: %s from groupId: %s', $userId, $groupId);
 
 		$group = $this->groupRepository->LoadById($groupId);
 		$group->RemoveUser($userId);
 		$this->groupRepository->Update($group);
 	}
 
+	protected function AddGroup()
+	{
+		$groupName = $this->page->GetGroupName();
+		Log::Debug('Adding new group with name: %s', $groupName);
+
+		$group = new Group(0, $groupName);
+		$this->groupRepository->Add($group);
+	}
+	
 	protected function DeleteGroup()
 	{
 		$groupId = $this->page->GetGroupId();
