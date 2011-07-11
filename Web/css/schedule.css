@@ -118,13 +118,12 @@ td.pasttime {
 }
 	
 td.restricted {
-	background-color: pink;
+	background: url("../img/stripe.bg.red.png");
 }
 
 select.schedule_list {
 	font-size: 8pt;
 }
-
 
 .schedule_drop
 {

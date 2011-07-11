@@ -13,6 +13,7 @@
 		<th>&nbsp;</th>
 		<th>{translate key='Members'}</th>
 		<th>{translate key='ResourcePermissions'}</th>
+		<th>{translate key='Delete'}</th>
 	</tr>
 {foreach from=$groups item=group}
 	{cycle values='row0,row1' assign=rowCss}
@@ -22,6 +23,7 @@
 		<td><a href="#" class="update rename">{translate key='Rename'}</a></td>
 		<td><a href="#" class="update members">{translate key='Manage'}</a></td>
 		<td><a href="#" class="update permissions">{translate key='Change'}</a></td>
+		<td><a href="#" class="update delete">{translate key='Delete'}</a></td>
 	</tr>
 {/foreach}
 </table>
@@ -55,6 +57,17 @@
 	<input type="hidden" id="addUserId" {formname key=USER_ID} />
 </form>
 
+<div id="deleteDialog" class="dialog" style="display:none;">
+	<form id="deleteGroupForm" method="post">
+		<div class="error" style="margin-bottom: 25px;">
+			<h3>This action is permanent and irrecoverable!</h3>
+			<div>Deleting this group will remove all associated resource permissions.  Users in this group may lose access to resources.</div>
+		</div>
+		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
@@ -71,6 +84,7 @@
 		password: '{ManageGroupsActions::Password}',
 		removeUser: '{ManageGroupsActions::RemoveUser}',
 		addUser: '{ManageGroupsActions::AddUser}',
+		deleteGroup: '{ManageGroupsActions::DeleteGroup}'
 	};
 			
 	var groupOptions = {

@@ -244,6 +244,15 @@ class CookieLoginCommand extends SqlCommand
 	}
 }
 
+class DeleteGroupCommand extends SqlCommand
+{
+	public function __construct($groupId)
+	{
+		parent::__construct(Queries::DELETE_GROUP);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+	}
+}
+
 class DeleteGroupResourcePermission extends SqlCommand
 {
 	public function __construct($groupId, $resourceId)

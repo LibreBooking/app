@@ -198,6 +198,11 @@ class Queries
 		FROM users 
 		WHERE user_id = @userid';
 
+	const DELETE_GROUP =
+		'DELETE
+		FROM groups
+		WHERE group_id = @groupid';
+
 	const DELETE_GROUP_RESOURCE_PERMISSION =
 		'DELETE
 		FROM group_resource_permissions

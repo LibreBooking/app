@@ -11,6 +11,7 @@ class ManageGroupsActions
 	const Permissions = 'permissions';
 	const RemoveUser = 'removeUser';
 	const AddUser = 'addUser';
+	const DeleteGroup = 'deleteGroup';
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -46,6 +47,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageGroupsActions::AddUser, 'AddUser');
 		$this->AddAction(ManageGroupsActions::RemoveUser, 'RemoveUser');
 		$this->AddAction(ManageGroupsActions::Permissions, 'ChangePermissions');
+		$this->AddAction(ManageGroupsActions::DeleteGroup, 'DeleteGroup');
 	}
 
 	public function PageLoad()
@@ -125,6 +127,16 @@ class ManageGroupsPresenter extends ActionPresenter
 		$group = $this->groupRepository->LoadById($groupId);
 		$group->RemoveUser($userId);
 		$this->groupRepository->Update($group);
+	}
+
+	protected function DeleteGroup()
+	{
+		$groupId = $this->page->GetGroupId();
+
+		Log::Debug("Deleting groupId: %s", $groupId);
+
+		$group = $this->groupRepository->LoadById($groupId);
+		$this->groupRepository->Remove($group);
 	}
 }
 

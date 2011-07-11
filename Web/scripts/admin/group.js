@@ -11,10 +11,12 @@ function GroupManagement(opts) {
 		groupUserList: $('#groupUserList'),
 		membersDialog: $('#membersDialog'),
 		permissionsDialog: $('#permissionsDialog'),
+		deleteDialog: $('#deleteDialog'),
 
 		permissionsForm: $('#permissionsForm'),
 		addUserForm: $('#addUserForm'),
 		removeUserForm: $('#removeUserForm'),
+		deleteGroupForm: $('#deleteGroupForm'),
 
 		addForm: $('#addScheduleForm')
 	};
@@ -25,6 +27,7 @@ function GroupManagement(opts) {
 
 		ConfigureAdminDialog(elements.membersDialog, 'Group Membership', 400, 500);
 		ConfigureAdminDialog(elements.permissionsDialog, 'Change Group Permissions', 400, 300);
+		ConfigureAdminDialog(elements.deleteDialog, 'Delete Group', 400, 300);
 
 		elements.groupList.delegate('a.update', 'click', function(e) {
 			setActiveId($(this));
@@ -37,6 +40,10 @@ function GroupManagement(opts) {
 		
 		elements.groupList.delegate('.members', 'click', function() {
 			changeMembers();
+		});
+
+		elements.groupList.delegate('.delete', 'click', function() {
+			deleteGroup();
 		});
 
 		elements.autocompleteSearch.autocomplete(
@@ -111,12 +118,17 @@ function GroupManagement(opts) {
 		var hidePermissionsDialog = function() {
 			elements.permissionsDialog.dialog('close');
 		};
+
+		var groupDeleted = function() {
+			elements.deleteDialog.dialog('close');
+		};
 		
 		var error = function(errorText) { alert(errorText);};
 		
 		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), changeMembers, error);
 		ConfigureAdminForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
 		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
+		ConfigureAdminForm(elements.deleteGroupForm, getSubmitCallback(options.actions.deleteGroup), groupDeleted, error);
 	};
 
 	var getSubmitCallback = function(action) {
@@ -138,7 +150,7 @@ function GroupManagement(opts) {
 		return groups[getActiveId()];
 	}
 
-	function changeMembers() {
+	var changeMembers = function() {
 		var groupId = getActiveId();
 		$.getJSON('manage_groups.php?dr=groupMembers', {gid: groupId}, function(data) {
 			var items = [];
@@ -185,4 +197,9 @@ function GroupManagement(opts) {
 			elements.permissionsDialog.dialog('open');
 		});
 	};
+
+	var deleteGroup = function() {
+		elements.deleteDialog.dialog('open');
+	};
+
 }

@@ -169,6 +169,16 @@ class GroupRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($removeCommand1));
 		$this->assertTrue($this->db->ContainsCommand($removeCommand2));
 	}
+
+	public function testRemoveDeletesGroupFromDatabase()
+	{
+		$id = 123;
+		$group = new Group($id, '');
+		$this->repository->Remove($group);
+
+		$deleteGroupCommand = new DeleteGroupCommand($id);
+		$this->assertTrue($this->db->ContainsCommand($deleteGroupCommand));
+	}
 	
 	public static function GetRow($groupId, $groupName)
 	{
