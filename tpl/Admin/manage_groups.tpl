@@ -68,6 +68,14 @@
 	</form>
 </div>
 
+<div id="renameDialog" class="dialog" style="display:none;">
+	<form id="renameGroupForm" method="post">
+		Name<br/> <input type="text" class="textbox required" {formname key=GROUP_NAME} />
+		<button type="button" class="button save">{html_image src="disk-black.png"} Rename Group</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
 <div class="admin" style="margin-top:30px">
 	<div class="title">
 		Add New Group
@@ -98,6 +106,7 @@
 		removeUser: '{ManageGroupsActions::RemoveUser}',
 		addUser: '{ManageGroupsActions::AddUser}',
 		addGroup: '{ManageGroupsActions::AddGroup}',
+		renameGroup: '{ManageGroupsActions::RenameGroup}',
 		deleteGroup: '{ManageGroupsActions::DeleteGroup}'
 	};
 			

@@ -140,6 +140,8 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		{
 			$db->Execute(new AddGroupResourcePermission($group->Id(), $resourceId));
 		}
+
+		$db->Execute(new UpdateGroupCommand($group->Id(), $group->Name()));
 	}
 
 	public function Remove(Group $group)

@@ -12,6 +12,7 @@ class ManageGroupsActions
 	const RemoveUser = 'removeUser';
 	const AddUser = 'addUser';
 	const AddGroup = 'addGroup';
+	const RenameGroup = 'renameGroup';
 	const DeleteGroup = 'deleteGroup';
 }
 
@@ -49,6 +50,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageGroupsActions::RemoveUser, 'RemoveUser');
 		$this->AddAction(ManageGroupsActions::Permissions, 'ChangePermissions');
 		$this->AddAction(ManageGroupsActions::AddGroup, 'AddGroup');
+		$this->AddAction(ManageGroupsActions::RenameGroup, 'RenameGroup');
 		$this->AddAction(ManageGroupsActions::DeleteGroup, 'DeleteGroup');
 	}
 
@@ -138,6 +140,18 @@ class ManageGroupsPresenter extends ActionPresenter
 
 		$group = new Group(0, $groupName);
 		$this->groupRepository->Add($group);
+	}
+
+	protected function RenameGroup()
+	{
+		$groupId = $this->page->GetGroupId();
+		$groupName = $this->page->GetGroupName();
+		Log::Debug('Renaming group id: %s to: %s', $groupId, $groupName);
+
+		$group = $this->groupRepository->LoadById($groupId);
+		$group->Rename($groupName);
+		
+		$this->groupRepository->Update($group);
 	}
 	
 	protected function DeleteGroup()

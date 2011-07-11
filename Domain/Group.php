@@ -30,6 +30,11 @@ class Group
 		return $this->name;
 	}
 
+	public function Rename($groupName)
+	{
+		$this->name = $groupName;
+	}
+
 	public function AddUser($userId)
 	{
 		if (!$this->HasMember($userId))

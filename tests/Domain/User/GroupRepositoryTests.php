@@ -170,6 +170,20 @@ class GroupRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($removeCommand2));
 	}
 
+	public function testUpdateSavesNewGroupName()
+	{
+		$id = 2828;
+		$newName = 'new name';
+		
+		$group = new Group($id, 'old name');
+		$group->Rename($newName);
+
+		$this->repository->Update($group);
+
+		$updateGroupCommand = new UpdateGroupCommand($id, $newName);
+		$this->assertTrue($this->db->ContainsCommand($updateGroupCommand));
+	}
+
 	public function testRemoveDeletesGroupFromDatabase()
 	{
 		$id = 123;

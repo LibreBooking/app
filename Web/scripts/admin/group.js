@@ -12,10 +12,12 @@ function GroupManagement(opts) {
 		membersDialog: $('#membersDialog'),
 		permissionsDialog: $('#permissionsDialog'),
 		deleteDialog: $('#deleteDialog'),
+		renameDialog: $('#renameDialog'),
 
 		permissionsForm: $('#permissionsForm'),
 		addUserForm: $('#addUserForm'),
 		removeUserForm: $('#removeUserForm'),
+		renameGroupForm: $('#renameGroupForm'),
 		deleteGroupForm: $('#deleteGroupForm'),
 
 		addForm: $('#addGroupForm')
@@ -28,12 +30,17 @@ function GroupManagement(opts) {
 		ConfigureAdminDialog(elements.membersDialog, 'Group Membership', 400, 500);
 		ConfigureAdminDialog(elements.permissionsDialog, 'Change Group Permissions', 400, 300);
 		ConfigureAdminDialog(elements.deleteDialog, 'Delete Group', 400, 300);
+		ConfigureAdminDialog(elements.renameDialog, 'Rename Group', 500, 100);
 
 		elements.groupList.delegate('a.update', 'click', function(e) {
 			setActiveId($(this));
 			e.preventDefault();
 		});
 
+		elements.groupList.delegate('.rename', 'click', function() {
+			renameGroup();
+		});
+		
 		elements.groupList.delegate('.permissions', 'click', function() {
 			changePermissions();
 		});
@@ -118,22 +125,15 @@ function GroupManagement(opts) {
 		var hidePermissionsDialog = function() {
 			elements.permissionsDialog.dialog('close');
 		};
-
-		var groupDeleted = function() {
-			elements.deleteDialog.dialog('close');
-		};
-
-		var groupAdded = function() {
-			window.location.reload();
-		};
 		
 		var error = function(errorText) { alert(errorText);};
 		
 		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), changeMembers, error);
 		ConfigureAdminForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
 		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
-		ConfigureAdminForm(elements.deleteGroupForm, getSubmitCallback(options.actions.deleteGroup), groupDeleted, error);
-		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.addGroup), groupAdded, error);
+		ConfigureAdminForm(elements.renameGroupForm, getSubmitCallback(options.actions.renameGroup), null, error);
+		ConfigureAdminForm(elements.deleteGroupForm, getSubmitCallback(options.actions.deleteGroup), null, error);
+		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.addGroup), null, error);
 	};
 
 	GroupManagement.prototype.addGroup = function(group)
@@ -160,6 +160,10 @@ function GroupManagement(opts) {
 		return groups[getActiveId()];
 	}
 
+	var renameGroup = function() {
+		elements.renameDialog.dialog('open');
+	};
+	
 	var changeMembers = function() {
 		var groupId = getActiveId();
 		$.getJSON('manage_groups.php?dr=groupMembers', {gid: groupId}, function(data) {

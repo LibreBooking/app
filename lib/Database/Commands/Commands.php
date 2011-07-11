@@ -656,6 +656,16 @@ class SetDefaultScheduleCommand extends SqlCommand
 	}
 }
 
+class UpdateGroupCommand extends SqlCommand
+{
+	public function __construct($groupId, $groupName)
+	{
+		parent::__construct(Queries::UPDATE_GROUP);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
+	}
+}
+
 class UpdateLoginTimeCommand extends SqlCommand
 {
 	public function __construct($userid, $lastlogin)

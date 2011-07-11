@@ -514,33 +514,29 @@ class Queries
 			VALUES (@resourceid, @scheduleid)';
 	
 	const SET_DEFAULT_SCHEDULE = 
-		'UPDATE 
-			schedules
-		SET 
-			isdefault = 0
-		WHERE
-			schedule_id <> @scheduleid';
-	
+		'UPDATE schedules
+		SET isdefault = 0
+		WHERE schedule_id <> @scheduleid';
+
+	const UPDATE_GROUP =
+		'UPDATE groups
+		SET name = @groupName
+		WHERE group_id = @groupid';
+
 	const UPDATE_LOGINTIME = 
-		'UPDATE 
-			users 
-		SET 
-			lastlogin = @lastlogin 
-		WHERE 
-			user_id = @userid';
+		'UPDATE users
+		SET lastlogin = @lastlogin
+		WHERE user_id = @userid';
 
 	const UPDATE_FUTURE_RESERVATION_INSTANCES =
-		'UPDATE 
-			reservation_instances
-		SET
-			series_id = @seriesid
+		'UPDATE reservation_instances
+		SET series_id = @seriesid
 		WHERE
 			series_id = @currentSeriesId AND
 			start_date >= (SELECT start_date FROM reservation_instances WHERE reference_number = @referenceNumber)';
 	
 	const UPDATE_RESERVATION_INSTANCE = 
-		'UPDATE
-			reservation_instances
+		'UPDATE reservation_instances
 		SET
 			series_id = @seriesid,
 			start_date = @startDate,
