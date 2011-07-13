@@ -33,7 +33,7 @@
 <input type="hidden" id="activeId" />
 
 <div id="membersDialog" class="dialog" style="display:none;">
-	Add User: <input type="text" id="userSearch" class="textbox" size="40" />
+	Add User: <input type="text" id="userSearch" class="textbox" size="30" /> <a href="#" id="browseUsers">Browse <div id="allUsers" style="display:none;" class="dialog"></div></a>
 	<h4><span id="totalUsers"></span> Users in this group</h4>
 	<div id="groupUserList"></div>
 </div>
@@ -123,15 +123,6 @@
 
 	var groupManagement = new GroupManagement(groupOptions);
 	groupManagement.init();
-
-	{foreach from=$groups item=group}
-		var group = {
-			id: {$group->Id},
-			name: '{$group->Name}'
-		};
-		groupManagement.addGroup(group);
-	{/foreach}
-
 	});
 </script>
 {include file='globalfooter.tpl'}
