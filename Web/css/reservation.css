@@ -72,3 +72,8 @@
 	padding-left: 25px;
 	height: 100%;
 }
+
+.dialog
+{
+	display:none;
+}

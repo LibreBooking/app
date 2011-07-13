@@ -42,6 +42,8 @@
 						{/if}
 					{/foreach}
 				</select>
+			</li>
+			<li>
 				<label>{translate key='EndDate'}
 				<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput" value="{formatdate date=$SelectedEnd}" />
 				</label>
@@ -119,19 +121,20 @@
 	</div>
 	<div id="reservationParticipation">
 		<ul class="no-style">
-			<li class="rsv-pulldown">
+			<li>
                 <label>{translate key="ParticipantList"}<br />
-                       
-						<button type="button" class="button" style="display:inline">
+					<input type="text" id="participantAutocomplete" class="textbox" />
+					<button id="addParticipants" type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png" />
 						{translate key='Add'}
 					</button>
-
 				</label>
-
+				<div id="participants" title="Add Resources" class="dialog">
+					here is where they go
+				</div>
         	</li>
 			<!-- The selected participants should be printed here, above the Invitation list pulldown -->
-			<li class="rsv-pulldown">
+			<li>
                 <label>{translate key="InvitationList"}<br />
                        
 					<button type="button" class="button" style="display:inline">
@@ -146,52 +149,30 @@
 
 	</div>
 	<div style="clear:both;">&nbsp;</div>
-<!--
-<table cellspacing="0" cellpadding="0">
-	<tr>
-		<td>
-			<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(Add more)</a>
-		</td>
-		<td>
-		<a href="#">(Add Accessories)</a> // modal popup
-		</td>
-	</tr>
-	<tr>
-		<td><div id="additionalResources"></div></td>
-		<td></td>
-	</tr>
-</table>
-
-<div>
-	{$UserName}
-	<a href="#">(Add Participants)</a> // modal popup
-	<a href="#">(Invite Guests)</a> // modal popup
-</div>
--->
-<input type="hidden" {formname key=reservation_id} value="{$ReservationId}" />
-<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" />
-<input type="hidden" {formname key=reservation_action} value="{$ReservationAction}" />
-<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}" />
-<div style="float:left;">
-{block name="deleteButtons"}
-&nbsp;
-{/block}
-</div>
-<div style="float:right;">
-	{block name="submitButtons"}
-		<button type="button" class="button save create">
-			<img src="img/disk-black.png" />
-			{translate key='Create'}
-		</button>
+	<input type="hidden" {formname key=reservation_id} value="{$ReservationId}" />
+	<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" />
+	<input type="hidden" {formname key=reservation_action} value="{$ReservationAction}" />
+	<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}" />
+	<div style="float:left;">
+	{block name="deleteButtons"}
+	&nbsp;
 	{/block}
-	<button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
-		<img src="img/slash.png" />
-		{translate key='Cancel'}
-	</button>
-</div>
+	</div>
+	<div style="float:right;">
+		{block name="submitButtons"}
+			<button type="button" class="button save create">
+				<img src="img/disk-black.png" />
+				{translate key='Create'}
+			</button>
+		{/block}
+		<button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
+			<img src="img/slash.png" />
+			{translate key='Cancel'}
+		</button>
+	</div>
 </form>
 
-<div id="dialogAddResources" title="Add Resources" style="display:none;">
+<div id="dialogAddResources" class="dialog" title="Add Resources" style="display:none;">
 
 	{foreach from=$AvailableResources item=resource}
 		{assign var='checked' value=''}
@@ -231,6 +212,7 @@
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="scripts/js/jquery.qtip.pack.js"></script>
 <script type="text/javascript" src="scripts/reservation.js"></script>
+<script type="text/javascript" src="scripts/autocomplete.js"></script>
 <script type="text/javascript" src="scripts/js/jquery.form-2.43.js"></script>
 
 <script type="text/javascript">
@@ -253,6 +235,7 @@ $(document).ready(function() {
 		createUrl: 'ajax/reservation_save.php',
 		updateUrl: 'ajax/reservation_update.php',
 		deleteUrl: 'ajax/reservation_delete.php',
+		userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}"
 	};
 
 	$('#description').TextAreaExpander();

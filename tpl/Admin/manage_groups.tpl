@@ -92,6 +92,7 @@
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
+<script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/group.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
 

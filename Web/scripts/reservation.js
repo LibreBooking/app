@@ -11,7 +11,8 @@ function Reservation(opts) {
 		beginTime: $('#BeginPeriod'),
 		endTime: $('#EndPeriod'),
 		durationDays: $('#durationDays'),
-		durationHours: $('#durationHours')
+		durationHours: $('#durationHours'),
+		participantList: $('#participants')
 	};
 
 	const oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
@@ -22,9 +23,14 @@ function Reservation(opts) {
 	Reservation.prototype.init = function() {
 		elements.beginDate.data['previousVal'] = elements.beginDate.val();
 
+		$('.dialog').dialog({
+			bgiframe: true,
+			autoOpen: false,
+			modal: true
+		});
+
 		$('#dialogAddResources').dialog({
-			bgiframe: true, autoOpen: false,
-			height: 300, modal: true,
+			height: 300,
 			open: function(event, ui) {
 				InitialzeCheckboxes('#dialogAddResources', '#additionalResources');
 				return true;
@@ -41,6 +47,28 @@ function Reservation(opts) {
 
 		$('#resourceNames, #additionalResources').delegate('.resourceDetails', 'mouseover', function() {
 			bindResourceDetails($(this));
+		});
+
+		$('#addParticipants').click(function() {
+
+			var allUserList;
+			if (allUserList == null) {
+				$.ajax({
+					url: options.userAutocompleteUrl,
+					dataType: 'json',
+					async: false,
+					success: function(data) {
+						allUserList = data;
+					}
+				});
+			}
+			elements.participantList.empty();
+			
+			elements.participantList.dialog('open');
+		});
+
+		$("#participantAutocomplete").userAutoComplete(options.userAutocompleteUrl, function(ui) {
+			alert(ui.item.label);
 		});
 
 		// initialize selected resources

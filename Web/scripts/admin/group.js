@@ -99,36 +99,9 @@ function GroupManagement(opts) {
 					}
 				});
 
-		elements.userSearch.autocomplete(
-				{
-					source: function(request, response) {
-						$.ajax({
-							url: options.userAutocompleteUrl,
-							dataType: "json",
-							data: {
-								term: request.term
-							},
-							success: function(data) {
-								response($.map(data, function(item) {
-									return {
-										label: item.First + " " + item.Last,
-										value: item.Id
-									}
-								}));
-							}
-						});
-					},
-					focus: function(event, ui) {
-						elements.userSearch.val(ui.item.label);
-						return false;
-					},
-					select: function(event, ui) {
-
-						addUserToGroup(ui.item.value);
-						elements.userSearch.val('');
-						return false;
-					}
-				});
+		elements.userSearch.userAutoComplete(options.userAutocompleteUrl, function(ui) {
+			addUserToGroup(ui.item.value);
+		});
 
 		$(".save").click(function() {
 			$(this).closest('form').submit();
