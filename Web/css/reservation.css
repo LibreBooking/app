@@ -16,3 +16,59 @@
 	display: inline;
 	color: #000;
 }
+
+.resourceQtip, #resourceDetails
+{
+	width: 800px;
+	min-width: 800px;
+}
+
+#reservationbox {
+	width: 100%;
+	margin: 3em auto 1em;
+}
+
+#reservationbox .input {
+        font-size: 18px;
+        width: 98%;
+        padding: 3px;
+        margin: 2px 0 5px 0;
+        border: 1px solid #e5e5e5;
+        background: #fbfbfb;
+        color: #777;
+}
+
+#reservationbox.readonly label {
+	font-size: 18px;
+	font-weight: bold;
+	color: #000;
+}
+
+#reservationbox.readonly ul {
+	font-size: 18px;
+	color: #333;
+}
+
+#reservationbox.readonly .section {
+	padding-top: 15px;
+}
+
+#reservationbox.readonly .repeat-details, #reservationbox.readonly .repeat-details label {
+	margin-left: 10px;
+	font-size: 15px;
+}
+
+#reservationDetails
+{
+	float: left;
+	width: 50%;
+}
+
+#reservationParticipation
+{
+	float: right;
+	width: 45%;
+	border-left: solid 1px #ccc;
+	padding-left: 25px;
+	height: 100%;
+}

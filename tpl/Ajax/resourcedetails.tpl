@@ -1,11 +1,3 @@
-<style type="text/css">
-.ui-tooltip-blue {
-	min-width: 500px;
-	max-width: 900px;
-	max-height: 400px;
-}
-</style>
-
 <div id="resourceDetails">
 	<div style="float:left; width: 350px;">
 		<ul>

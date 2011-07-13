@@ -1,113 +1,78 @@
-function Reservation(opts)
-{
+function Reservation(opts) {
 	var options = opts;
-	
+
 	var elements = {
-			beginDate: $('#BeginDate'),
-			endDate: $('#EndDate'),
-			repeatOptions: $('#repeatOptions'),
-			repeatDiv: $('#repeatDiv'),
-			repeatInterval: $('#repeatInterval'),
-			repeatTermination: $('#EndRepeat'),
-			beginTime: $('#BeginPeriod'),
-			endTime: $('#EndPeriod'),
-			durationDays: $('#durationDays'),
-			durationHours: $('#durationHours')
+		beginDate: $('#BeginDate'),
+		endDate: $('#EndDate'),
+		repeatOptions: $('#repeatOptions'),
+		repeatDiv: $('#repeatDiv'),
+		repeatInterval: $('#repeatInterval'),
+		repeatTermination: $('#EndRepeat'),
+		beginTime: $('#BeginPeriod'),
+		endTime: $('#EndPeriod'),
+		durationDays: $('#durationDays'),
+		durationHours: $('#durationHours')
 	};
-	
+
 	const oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
-	
+
 	var repeatToggled = false;
 	var terminationDateSetManually = false;
-	
-	Reservation.prototype.init = function()
-	{
+
+	Reservation.prototype.init = function() {
 		elements.beginDate.data['previousVal'] = elements.beginDate.val();
-		
+
 		$('#dialogAddResources').dialog({
-		    bgiframe: true, autoOpen: false, 
-		    height: 300, modal: true,
-		    open: function(event, ui) { InitialzeCheckboxes('#dialogAddResources', '#additionalResources'); return true; }
+			bgiframe: true, autoOpen: false,
+			height: 300, modal: true,
+			open: function(event, ui) {
+				InitialzeCheckboxes('#dialogAddResources', '#additionalResources');
+				return true;
+			}
 		});
-		
-		$('#btnClearAddResources').click(function(){   
-			CancelAdd('#dialogAddResources', '#additionalResources');	
+
+		$('#btnClearAddResources').click(function() {
+			CancelAdd('#dialogAddResources', '#additionalResources');
 		});
-		
+
 		$('#btnConfirmAddResources').click(function() {
 			AddResources();
 		});
 
-        $('.resourceDetails').each(function() {
-            $(this).click(function(e) {
-                e.preventDefault();
-            });
+		$('#resourceNames, #additionalResources').delegate('.resourceDetails', 'mouseover', function() {
+			bindResourceDetails($(this));
+		});
 
-            var resourceId = $(this).siblings(".resourceId").val();
-            
-            $(this).qtip({
-                position: {
-				     my: 'top left',  // Position my top left...
-					 at: 'bottom left', // at the bottom right of...
-					 target: $(this) // my target
-				},
-				content: {
-					text: 'Loading...',
-					ajax: {
-				         url: "ajax/resource_details.php",
-				         type: 'GET',
-				         data: { rid: resourceId },
-				         dataType: 'html'
-			      	}
-				},
-				show: {
-					delay: 500
-				},
-
-                style: {
-                    classes: 'ui-tooltip-shadow ui-tooltip-blue',
-					tip: {
-						corner: true
-					}
-                },
-				hide: {
-					delay: 500,
-					fixed: true,
-					when: 'mouseout'
-				}
-			});
-        });
-				
 		// initialize selected resources
 		AddResources();
-		
-		elements.repeatOptions.change(function() { 
+
+		elements.repeatOptions.change(function() {
 			ChangeRepeatOptions();
 			AdjustTerminationDate();
 		});
-		
+
 		elements.repeatInterval.change(function() {
 			AdjustTerminationDate();
 		});
-		
+
 		elements.repeatTermination.change(function() {
 			terminationDateSetManually = true;
 		});
-		
+
 		InitializeRepeatOptions();
-		
+
 		$('#btnUpdateThisInstance').click(function() {
 			ChangeUpdateScope(options.scopeOpts.instance);
 		});
-		
+
 		$('#btnUpdateAllInstances').click(function() {
 			ChangeUpdateScope(options.scopeOpts.full);
 		});
-		
+
 		$('#btnUpdateFutureInstances').click(function() {
 			ChangeUpdateScope(options.scopeOpts.future);
 		});
-		
+
 		elements.beginDate.change(function() {
 			AdjustEndDate();
 			ToggleRepeatOptions();
@@ -115,199 +80,176 @@ function Reservation(opts)
 
 			DisplayDuration();
 		});
-		
+
 		elements.endDate.change(function() {
 			ToggleRepeatOptions();
 
 			DisplayDuration();
 		});
-		
+
 		elements.beginTime.change(function() {
 			ToggleRepeatOptions();
 			DisplayDuration();
 		});
-		
+
 		elements.endTime.change(function() {
 			ToggleRepeatOptions();
 			DisplayDuration();
 		});
-		
-		$('select, input', elements.repeatDiv).change(function()
-		{
+
+		$('select, input', elements.repeatDiv).change(function() {
 			ToggleUpdateScope();
 		});
-		
-		WireUpActions();		
+
+		WireUpActions();
 		WireUpButtonPrompt();
 		WireUpSaveDialog();
 		DisplayDuration();
 	}
-	
+
 	// pre-submit callback 
-	Reservation.prototype.preSubmit = function(formData, jqForm, options) { 
-	    $('#result').hide();
-	    $('#creatingNotifiation').show();
-	    
-	    return true; 
-	} 
-	
+	Reservation.prototype.preSubmit = function(formData, jqForm, options) {
+		$('#result').hide();
+		$('#creatingNotifiation').show();
+
+		return true;
+	}
+
 	// post-submit callback 
-	Reservation.prototype.showResponse = function(responseText, statusText, xhr, $form)  { 
+	Reservation.prototype.showResponse = function(responseText, statusText, xhr, $form) {
 		$('#btnSaveSuccessful').click(function(e) {
 			window.location = options.returnUrl;
 		});
-		
+
 		$('#btnSaveFailed').click(function() {
 			CloseSaveDialog();
 		});
-		
+
 		$('#creatingNotifiation').hide();
-	    $('#result').show();
+		$('#result').show();
 	}
-	
-	var AddResources = function()
-	{
+
+	var AddResources = function() {
 		AddSelected('#dialogAddResources', '#additionalResources', options.additionalResourceElementId);
 		$('#dialogAddResources').dialog('close');
 	}
 
-	var AddSelected = function(dialogBoxId, displayDivId, inputId)
-	{
+	var AddSelected = function(dialogBoxId, displayDivId, inputId) {
 		$(displayDivId).empty();
-		
-		$(dialogBoxId + ' :checked').each(function(){
+
+		$(dialogBoxId + ' :checked').each(function() {
 			$(displayDivId)
-				.append('<p>' + $(this).next().text() + '</p>')
-				.append('<input type="hidden" name="' + inputId + '[]" value="' + $(this).val() + '"/>')
+					.append('<p><a href="#" class="resourceDetails">' + $(this).next().text() + '</a><input class="resourceId" type="hidden" name="' + inputId + '[]" value="' + $(this).val() + '"/></p>')
 		});
-		
+
 		$(dialogBoxId).dialog('close');
 	}
-	
-	var AdjustEndDate = function()
-	{
+
+	var AdjustEndDate = function() {
 		//var oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
 		var firstDate = new Date(elements.beginDate.data['previousVal']);
 		var secondDate = new Date(elements.beginDate.val());
-		
-		var diffDays = (secondDate.getTime() - firstDate.getTime())/(oneDay);
-		
+
+		var diffDays = (secondDate.getTime() - firstDate.getTime()) / (oneDay);
+
 		var currentEndDate = new Date(elements.endDate.val());
 		currentEndDate.setDate(currentEndDate.getDate() + diffDays);
-		
+
 		elements.endDate.datepicker("setDate", currentEndDate);
 	}
-	
-	var AdjustTerminationDate = function ()
-	{
-		if (terminationDateSetManually)
-		{
+
+	var AdjustTerminationDate = function () {
+		if (terminationDateSetManually) {
 			return;
 		}
-		
+
 		var begin = new Date(elements.beginDate.val());
 		var interval = parseInt(elements.repeatInterval.val());
 		var currentEnd = new Date(elements.repeatTermination.val());
-		
+
 		var repeatOption = elements.repeatOptions.val();
-		
-		if (repeatOption == 'daily')
-		{
+
+		if (repeatOption == 'daily') {
 			begin.setDate(begin.getDate() + interval);
 		}
-		else if (repeatOption == 'weekly')
-		{
+		else if (repeatOption == 'weekly') {
 			begin.setDate(begin.getDate() + (7 * interval));
 		}
-		else if (repeatOption == 'monthly')
-		{
+		else if (repeatOption == 'monthly') {
 			begin.setMonth(begin.getMonth() + interval);
 		}
-		else if (repeatOption = 'yearly')
-		{
+		else if (repeatOption = 'yearly') {
 			begin.setFullYear(begin.getFullYear() + interval);
 		}
-		else 
-		{
+		else {
 			begin = currentEnd;
 		}
-		
+
 		elements.repeatTermination.datepicker("setDate", begin);
 	}
 
-	var CancelAdd = function(dialogBoxId, displayDivId)
-	{
+	var CancelAdd = function(dialogBoxId, displayDivId) {
 		var selectedItems = $.makeArray($(displayDivId + ' p').text());
-		$(dialogBoxId + ' :checked').each(function(){
+		$(dialogBoxId + ' :checked').each(function() {
 			var checkboxText = $(this).next().text();
-			if ($.inArray(checkboxText, selectedItems) < 0)
-			{
+			if ($.inArray(checkboxText, selectedItems) < 0) {
 				$(this).removeAttr('checked');
 			}
 		});
-		
+
 		$(dialogBoxId).dialog('close');
 	}
-	
-	var ChangeRepeatOptions = function()
-	{
+
+	var ChangeRepeatOptions = function() {
 		var repeatDropDown = elements.repeatOptions;
-		if (repeatDropDown.val() != 'none')
-    	{
-    		$('#repeatUntilDiv').show();
-    	}
-    	else
-    	{
-    		$('div[id!=repeatOptions]', elements.repeatDiv).hide();
-    	}
-    	
-    	if (repeatDropDown.val() == 'daily')
-    	{
-    		$('.weeks', elements.repeatDiv).hide();
-    		$('.months', elements.repeatDiv).hide();
-    		$('.years', elements.repeatDiv).hide();
-    		
-    		$('.days', elements.repeatDiv).show();	
-    	}
-    	
-    	if (repeatDropDown.val() == 'weekly')
-    	{
-    		$('.days', elements.repeatDiv).hide();
-    		$('.months', elements.repeatDiv).hide();
-    		$('.years', elements.repeatDiv).hide();
-    		
-    		$('.weeks', elements.repeatDiv).show();	
-    	}
-    	
-    	if (repeatDropDown.val() == 'monthly')
-    	{
-    		$('.days', elements.repeatDiv).hide();
-    		$('.weeks', elements.repeatDiv).hide();
-    		$('.years', elements.repeatDiv).hide();
-    		
-    		$('.months', elements.repeatDiv).show();	
-    	}
-    	
-    	if (repeatDropDown.val() == 'yearly')
-    	{
-    		$('.days', elements.repeatDiv).hide();
-    		$('.weeks', elements.repeatDiv).hide();
-    		$('.months', elements.repeatDiv).hide();
-    		
-    		$('.years', elements.repeatDiv).show();	
-    	}
+		if (repeatDropDown.val() != 'none') {
+			$('#repeatUntilDiv').show();
+		}
+		else {
+			$('div[id!=repeatOptions]', elements.repeatDiv).hide();
+		}
+
+		if (repeatDropDown.val() == 'daily') {
+			$('.weeks', elements.repeatDiv).hide();
+			$('.months', elements.repeatDiv).hide();
+			$('.years', elements.repeatDiv).hide();
+
+			$('.days', elements.repeatDiv).show();
+		}
+
+		if (repeatDropDown.val() == 'weekly') {
+			$('.days', elements.repeatDiv).hide();
+			$('.months', elements.repeatDiv).hide();
+			$('.years', elements.repeatDiv).hide();
+
+			$('.weeks', elements.repeatDiv).show();
+		}
+
+		if (repeatDropDown.val() == 'monthly') {
+			$('.days', elements.repeatDiv).hide();
+			$('.weeks', elements.repeatDiv).hide();
+			$('.years', elements.repeatDiv).hide();
+
+			$('.months', elements.repeatDiv).show();
+		}
+
+		if (repeatDropDown.val() == 'yearly') {
+			$('.days', elements.repeatDiv).hide();
+			$('.weeks', elements.repeatDiv).hide();
+			$('.months', elements.repeatDiv).hide();
+
+			$('.years', elements.repeatDiv).show();
+		}
 	}
 
-	var ChangeUpdateScope = function(updateScopeValue)
-	{
+	var ChangeUpdateScope = function(updateScopeValue) {
 		$('#hdnSeriesUpdateScope').val(updateScopeValue);
 	};
 
-	var DisplayDuration = function()
-	{
+	var DisplayDuration = function() {
 		var difference = GetEndDate() - GetBeginDate();
-		var days = difference/oneDay;
-		var hours = (days%1)*24;
+		var days = difference / oneDay;
+		var hours = (days % 1) * 24;
 
 		var roundedHours = (hours % 1) ? hours.toPrecision(2) : hours;
 		var roundedDays = Math.floor(days);
@@ -315,150 +257,171 @@ function Reservation(opts)
 		elements.durationDays.text(roundedDays);
 		elements.durationHours.text(roundedHours);
 	};
-	
-	var InitialzeCheckboxes = function(dialogBoxId, displayDivId)
-	{
+
+	var InitialzeCheckboxes = function(dialogBoxId, displayDivId) {
 		var selectedItems = $.makeArray($(displayDivId + ' p').text());
-		$(dialogBoxId + ' :checkbox').each(function(){
+		$(dialogBoxId + ' :checkbox').each(function() {
 			var checkboxText = $(this).next().text();
-			if ($.inArray(checkboxText, selectedItems) >= 0)
-			{
+			if ($.inArray(checkboxText, selectedItems) >= 0) {
 				$(this).attr('checked', 'checked');
 			}
-			else
-			{
+			else {
 				$(this).removeAttr('checked');
 			}
 		});
 	}
-	
-	var InitializeRepeatOptions = function()
-	{
-		if (options.repeatType)
-		{
+
+	var InitializeRepeatOptions = function() {
+		if (options.repeatType) {
 			elements.repeatOptions.val(options.repeatType);
 			$('#repeat_every').val(options.repeatInterval);
-			for (var i = 0; i < options.repeatWeekdays.length; i++)
-			{
+			for (var i = 0; i < options.repeatWeekdays.length; i++) {
 				var id = "#repeatDay" + i;
 				$(id).attr('checked', true);
 			}
-			
+
 			$("#repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").attr('checked', true);
-			
+
 			ChangeRepeatOptions();
 		}
 	}
 
-	var CloseSaveDialog = function()
-	{
+	var CloseSaveDialog = function() {
 		$('#dialogSave').dialog('close');
 	}
-	
-	var ToggleRepeatOptions = function()
-	{
-		var SetValue = function(value, disabled)
-		{
+
+	var ToggleRepeatOptions = function() {
+		var SetValue = function(value, disabled) {
 			elements.repeatOptions.val(value);
 			elements.repeatOptions.trigger('change');
 			$('select, input', elements.repeatDiv).attr("disabled", disabled);
 		};
-		
-		if (MoreThanOneDayBetweenBeginAndEnd())
-		{
+
+		if (MoreThanOneDayBetweenBeginAndEnd()) {
 			elements.repeatOptions.data["current"] = elements.repeatOptions.val();
 			repeatToggled = true;
 			SetValue('none', 'disabled');
 		}
-		else 
-		{
-			if (repeatToggled)
-			{
-				SetValue(elements.repeatOptions.data["current"], '');				
+		else {
+			if (repeatToggled) {
+				SetValue(elements.repeatOptions.data["current"], '');
 				repeatToggled = false;
 			}
 		}
 	}
-	
-	var ToggleUpdateScope = function()
-	{
-		if (MoreThanOneDayBetweenBeginAndEnd())
-		{
+
+	var ToggleUpdateScope = function() {
+		if (MoreThanOneDayBetweenBeginAndEnd()) {
 			$('#btnUpdateThisInstance').show();
 			$('#btnUpdateAllInstances').hide();
 			$('#btnUpdateFutureInstances').hide();
 		}
-		else
-		{
+		else {
 			$('#btnUpdateThisInstance').hide();
 			$('#btnUpdateAllInstances').show();
-			$('#btnUpdateFutureInstances').show();	
+			$('#btnUpdateFutureInstances').show();
 		}
 	}
-	
-	var MoreThanOneDayBetweenBeginAndEnd = function()
-	{
+
+	var MoreThanOneDayBetweenBeginAndEnd = function() {
 		var begin = GetBeginDate();
 		var end = GetEndDate();
-		
+
 		var timeBetweenDates = end.getTime() - begin.getTime();
-		
+
 		return timeBetweenDates > oneDay;
 	}
-	
-	var WireUpActions = function ()
-	{
+
+	var WireUpActions = function () {
 		$('.create').click(function() {
 			$('form').attr("action", options.createUrl);
 		});
-		
+
 		$('.update').click(function() {
 			$('form').attr("action", options.updateUrl);
 		});
-		
+
 		$('.delete').click(function() {
 			$('form').attr("action", options.deleteUrl);
 		});
 	}
-	
-	var WireUpButtonPrompt = function () 
-	{
+
+	var WireUpButtonPrompt = function () {
 		$('#updateButtons').dialog({
-		    autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
-		    minWidth: 700, width: 700, height: 100
+			autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
+			minWidth: 700, width: 700, height: 100
 		});
-		
+
 		$('#updateButtons').find('.button').click(function() {
 			$('#updateButtons').dialog('close');
 		});
-		
+
 		$('.prompt').click(function() {
 			$('#updateButtons').dialog('open');
 		});
 	}
-	
-	var WireUpSaveDialog = function() 
-	{
+
+	var WireUpSaveDialog = function() {
 		$('#dialogSave').dialog({
-		    autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
-		    minHeight: 400, minWidth: 700, width: 700,
-		    open: function(event, ui) {  $(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar").hide(); }
+			autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
+			minHeight: 400, minWidth: 700, width: 700,
+			open: function(event, ui) {
+				$(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar").hide();
+			}
 		});
-		
-		$('.save').click(function(){
+
+		$('.save').click(function() {
 			$('#dialogSave').dialog('open');
-			
+
 			$('#reservationForm').submit();
 		});
 	}
 
-	function GetBeginDate()
-	{
+	function GetBeginDate() {
 		return new Date(elements.beginDate.val() + ' ' + elements.beginTime.val());
 	}
 
-	function GetEndDate()
-	{
+	function GetEndDate() {
 		return new Date(elements.endDate.val() + ' ' + elements.endTime.val());
+	}
+
+	function bindResourceDetails(resourceNameElement) {
+		resourceNameElement.click(function(e) {
+			e.preventDefault();
+		});
+
+		var resourceId = resourceNameElement.siblings(".resourceId").val();
+
+		resourceNameElement.qtip({
+			position: {
+				my: 'top left',  // Position my top left...
+				at: 'bottom left', // at the bottom right of...
+				target: resourceNameElement // my target
+			},
+			content: {
+				text: 'Loading...',
+				ajax: {
+					url: "ajax/resource_details.php",
+					type: 'GET',
+					data: { rid: resourceId },
+					dataType: 'html'
+				}
+			},
+			show: {
+				ready: true,
+				delay: 500
+			},
+			style: {
+				classes: 'ui-tooltip-shadow ui-tooltip-blue resourceQtip',
+				tip: {
+					corner: true
+				}
+			},
+			hide: {
+				delay: 500,
+				fixed: true,
+				when: 'mouseout'
+			}
+		});
 	}
 }

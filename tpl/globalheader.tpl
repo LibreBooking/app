@@ -48,14 +48,17 @@
 					<li class="menuitem"><a href="#">My Calendar</a></li>
 					<li class="menuitem"><a href="#">Resource Calendar</a></li>
 					<li class="menuitem"><a href="#">Current Status</a></li>
+					<li class="menuitem"><a href="#">Find an Opening</a></li>
 		        </ul>
 		    </li>
+			<!--
 		    <li class="menubaritem"><a href="#">{translate key=Reservations}</a>
 		        <ul>
 		            <li class="menuitem"><a href="#">My Upcoming Reservations</a></li>
 					<li class="menuitem"><a href="#">Reservation Search</a></li>
 				</ul>
 		    </li>
+		    -->
 		    {if $CanViewAdmin}
 		    <li class="menubaritem"><a href="#">{translate key=Admin}</a>
 		        <ul>

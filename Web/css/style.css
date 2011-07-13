@@ -271,7 +271,7 @@ label.res, label.reg {
 	margin: 3em auto 1em;
 }
 
-#reg-adminbox, #reportingbox, #reservationbox {
+#reg-adminbox, #reportingbox{
 	width: 750px;
 	margin: 3em auto 1em;
 }
@@ -300,15 +300,6 @@ label.res, label.reg {
         color: #777;
 }
 
-#reservationbox .input {
-        font-size: 18px;
-        width: 98%;
-        padding: 3px;
-        margin: 2px 0 5px 0;
-        border: 1px solid #e5e5e5;
-        background: #fbfbfb;
-        color: #777;
-}
 
 #resourcebox .input {
     	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
@@ -320,25 +311,6 @@ label.res, label.reg {
         color: #777;
 }
 
-#reservationbox.readonly label {
-	font-size: 18px;
-	font-weight: bold;
-	color: #000;
-}
-
-#reservationbox.readonly ul {
-	font-size: 18px;
-	color: #333;
-}
-
-#reservationbox.readonly .section {
-	padding-top: 15px;
-}
-
-#reservationbox.readonly .repeat-details, #reservationbox.readonly .repeat-details label {
-	margin-left: 10px;
-	font-size: 15px;
-}
 
 textarea.input-area {
     font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;

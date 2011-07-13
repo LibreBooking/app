@@ -8,7 +8,7 @@
 	<div class="reservationHeader">
 		<h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
 	</div>
-	<div>
+	<div id="reservationDetails">
 		<ul class="no-style">
 			<li>
 				{$UserName} <input type="hidden" {formname key=USER_ID} value="{$UserId}" />
@@ -114,36 +114,38 @@
 	                <textarea id="description" name="{FormKeys::DESCRIPTION}" class="input-area" rows="2" cols="52" tabindex="110">{$Description}</textarea>
                 </label>
         	</li>
+			
+        </ul>
+	</div>
+	<div id="reservationParticipation">
+		<ul class="no-style">
 			<li class="rsv-pulldown">
                 <label>{translate key="ParticipantList"}<br />
-                        <select name="{FormKeys::PARTICIPANT_LIST}" class="pulldown" tabindex="120">
-                                {html_options values=$ParticipantListValues output=$ParticipantListOutput}
-                        </select>
+                       
 						<button type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png" />
 						{translate key='Add'}
 					</button>
-					
+
 				</label>
-				
+
         	</li>
 			<!-- The selected participants should be printed here, above the Invitation list pulldown -->
 			<li class="rsv-pulldown">
                 <label>{translate key="InvitationList"}<br />
-                        <select name="{FormKeys::INVITATION_LIST}" class="pulldown" tabindex="150">
-                                {html_options values=$InvitationListValues output=$InvitationListOutput}
-                        </select>
+                       
 					<button type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png" />
 						{translate key='Add'}
 					</button>
 				</label>
-               
+
         	</li>
 			<!-- The invited users should be printed here above the X -->
-			
-        </ul>
+		</ul>
+
 	</div>
+	<div style="clear:both;">&nbsp;</div>
 <!--
 <table cellspacing="0" cellpadding="0">
 	<tr>
