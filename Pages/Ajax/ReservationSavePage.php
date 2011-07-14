@@ -57,6 +57,12 @@ interface IReservationSavePage extends IReservationSaveResultsPage
 	 * @return IRepeatOptions
 	 */
 	public function GetRepeatOptions();
+
+	/**
+	 * @abstract
+	 * @return int[]
+	 */
+	public function GetParticipants();
 	
 	/**
 	 * @param string $referenceNumber
@@ -278,6 +284,20 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function GetSeriesUpdateScope()
 	{
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetParticipants()
+	{
+		$participants = $this->GetForm(FormKeys::PARTICIPANT_LIST);
+		if (is_array($participants))
+		{
+			return $participants;
+		}
+
+		return array();
 	}
 }
 ?>

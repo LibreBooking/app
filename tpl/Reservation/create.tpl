@@ -123,13 +123,17 @@
 		<ul class="no-style">
 			<li>
                 <label>{translate key="ParticipantList"}<br />
-					<input type="text" id="participantAutocomplete" class="textbox" />
+					Add <input type="text" id="participantAutocomplete" class="input" style="width:250px;" />
+					or
 					<button id="addParticipants" type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png" />
-						{translate key='Add'}
+						{translate key='All Users'}
 					</button>
 				</label>
-				<div id="participants" title="Add Resources" class="dialog">
+				<div id="addedParticipants">
+					<ul/>
+				</div>
+				<div id="participants" title="Add Participants" class="dialog">
 					here is where they go
 				</div>
         	</li>

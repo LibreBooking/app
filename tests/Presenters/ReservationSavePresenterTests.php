@@ -26,29 +26,14 @@ class ReservationSavePresenterTests extends TestBase
 	private $presenter;
 
 	/**
-	 * @var IReservationPersistenceFactory
-	 */
-	private $persistenceFactory;
-
-	/**
 	 * @var IReservationPersistenceService
 	 */
 	private $persistenceService;
-
-	/**
-	 * @var IReservationValidationFactory
-	 */
-	private $validationFactory;
 	
 	/**
 	 * @var IReservationValidationService
 	 */
 	private $validationService;
-
-	/**
-	 * @var IReservationNotificationFactory
-	 */
-	private $notificationFactory;
 	
 	/**
 	 * @var IReservationNotificationService
@@ -93,13 +78,16 @@ class ReservationSavePresenterTests extends TestBase
 		$additionalResources = $this->page->GetResources();
 
 		$repeatOptions = $this->page->GetRepeatOptions();
+
+		$participants = $this->page->GetParticipants();
 		
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
 		$expected = ReservationSeries::Create($userId, $resourceId, $scheduleId, $title, $description, $duration, $repeatOptions);
 		$expected->AddResource($additionalResources[0]);
 		$expected->AddResource($additionalResources[1]);
-		
+		$expected->ChangeParticipants($participants);
+
 		$actualReservation = $this->presenter->BuildReservation();
 		
 		$this->assertEquals($userId, $actualReservation->UserId());
@@ -109,6 +97,7 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals($description, $actualReservation->Description());
 		$this->assertEquals($duration, $actualReservation->CurrentInstance()->Duration());
 		$this->assertEquals($repeatOptions, $actualReservation->RepeatOptions());
+		$this->assertEquals($participants, $actualReservation->AddedParticipants());
 	}
 
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistanceAndNotification()
@@ -187,6 +176,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $errors = array();
 	public $warnings = array();
 	public $referenceNumber;
+	public $participants = array(1, 2, 4);
 	
 	public function __construct()
 	{
@@ -291,5 +281,10 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function ShowWarnings($warnings)
 	{
 		$this->warnings = $warnings;
+	}
+
+	public function GetParticipants()
+	{
+		return $this->participants;
 	}
 }

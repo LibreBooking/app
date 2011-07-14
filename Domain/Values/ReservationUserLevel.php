@@ -6,5 +6,6 @@ class ReservationUserLevel
 	}
 	
 	const OWNER = 1;
+	const PARTICIPANT = 2;
 }
 ?>

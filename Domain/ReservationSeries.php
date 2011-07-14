@@ -126,6 +126,16 @@ class ReservationSeries
 	{
 		return $this->instances;
 	}
+
+	protected $addedParticipants = array();
+
+	/**
+	 * @return int[]
+	 */
+	public function AddedParticipants()
+	{
+		return $this->addedParticipants;
+	}
 	
 	/**
 	 * @var Date
@@ -210,6 +220,7 @@ class ReservationSeries
 	}
 	
 	/**
+	 * @param DateRange $reservationDate
 	 * @return Reservation newly created instance
 	 */
 	protected function AddNewInstance(DateRange $reservationDate)
@@ -279,6 +290,15 @@ class ReservationSeries
 			throw new Exception("Current instance not found. Missing Reservation key {$this->GetCurrentKey()}");
 		}
 		return $instance;
+	}
+
+	/**
+	 * @param int[] $participantIds
+	 * @return void
+	 */
+	public function ChangeParticipants($participantIds)
+	{
+		$this->addedParticipants = $participantIds;
 	}
 	
 	protected function SetCurrentInstance(Reservation $current)

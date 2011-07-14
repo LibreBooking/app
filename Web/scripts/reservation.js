@@ -19,6 +19,7 @@ function Reservation(opts) {
 
 	var repeatToggled = false;
 	var terminationDateSetManually = false;
+	var addedParticipants = [];
 
 	Reservation.prototype.init = function() {
 		elements.beginDate.data['previousVal'] = elements.beginDate.val();
@@ -62,13 +63,33 @@ function Reservation(opts) {
 					}
 				});
 			}
+
+			var items = [];
+			$.map(allUserList, function(item) {
+				items.push('<li><a href="#" class="add"><input type="hidden" class="id" value="' + item.Id + '" />' +
+						'<img src="img/plus-button.png" /></a> ' +
+						item.First + ' ' + item.Last + '</li>')
+			});
 			elements.participantList.empty();
-			
+
+			$('<ul/>', {'class': 'no-style', html: items.join('')}).appendTo(elements.participantList);
+
 			elements.participantList.dialog('open');
 		});
 
+		elements.participantList.delegate('.add', 'click', function(){
+			addParticipant($(this).closest('li').text(), $(this).find('.id').val());
+		});
+		
+		$("#addedParticipants").delegate('.remove', 'click', function(){
+			var li = $(this).closest('li');
+			var id = li.find('.id').val();
+			li.remove();
+			removeParticipant(id);
+		});
+		
 		$("#participantAutocomplete").userAutoComplete(options.userAutocompleteUrl, function(ui) {
-			alert(ui.item.label);
+			addParticipant(ui.item.label, ui.item.value);
 		});
 
 		// initialize selected resources
@@ -133,6 +154,34 @@ function Reservation(opts) {
 		WireUpButtonPrompt();
 		WireUpSaveDialog();
 		DisplayDuration();
+	}
+
+	var addParticipant = function(name, userId)
+	{
+		if ($.inArray(userId, addedParticipants) >= 0)
+		{
+			// dont add if they are already participating
+			return;
+		}
+		
+		var item = '<li>' +
+				'<a href="#" class="remove"><img src="img/user-minus.png"/></a> ' +
+				name +
+				'<input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' +
+				'</li>';
+
+		$("#addedParticipants ul").append(item);
+
+		addedParticipants.push(userId);
+	}
+
+	var removeParticipant = function(userId)
+	{
+		var index = $.inArray(userId, addedParticipants);
+		if (index >= 0)
+		{
+			addedParticipants.splice(index, 1);
+		}
 	}
 
 	// pre-submit callback 
