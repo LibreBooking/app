@@ -24,8 +24,8 @@ class ReservationNotificationFactory implements IReservationNotificationFactory
 	{
 		$notifications = array();
 		$notifications[] = new OwnerEmailCreatedNotificaiton($userRepo, $resourceRepo);
-		$notifications[] = new AdminEmailCreatedNotificaiton($userRepo, $resourceRepo);
-		$notifications[] = new ParticipantCreatedNotificaiton($userRepo, $resourceRepo);
+		$notifications[] = new AdminEmailCreatedNotification($userRepo, $resourceRepo);
+		$notifications[] = new ParticipantAddedEmailNotification($userRepo);
 		
 		return new AddReservationNotificationService($notifications);
 	}
@@ -40,7 +40,7 @@ class ReservationNotificationFactory implements IReservationNotificationFactory
 	{
 		$notifications = array();
 		$notifications[] = new OwnerEmailUpdatedNotificaiton($userRepo, $resourceRepo);
-		$notifications[] = new AdminEmailUpdatedNotificaiton($userRepo, $resourceRepo);
+		$notifications[] = new AdminEmailUpdatedNotification($userRepo, $resourceRepo);
 			
 		return new UpdateReservationNotificationService($notifications);
 	}

@@ -2,7 +2,7 @@
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmailAdmin.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmailAdmin.php');
 
-abstract class AdminEmailNotificaiton implements IReservationNotification
+abstract class AdminEmailNotification implements IReservationNotification
 {
 	/**
 	 * @var IUserRepository
@@ -56,7 +56,7 @@ abstract class AdminEmailNotificaiton implements IReservationNotification
 	protected abstract function ShouldSend();
 }
 
-class AdminEmailCreatedNotificaiton extends AdminEmailNotificaiton
+class AdminEmailCreatedNotification extends AdminEmailNotification
 {
 	protected function GetMessage($admin, $owner, $reservationSeries, $resource)
 	{
@@ -69,7 +69,7 @@ class AdminEmailCreatedNotificaiton extends AdminEmailNotificaiton
 	}
 }
 
-class AdminEmailUpdatedNotificaiton extends AdminEmailNotificaiton
+class AdminEmailUpdatedNotification extends AdminEmailNotification
 {
 	protected function GetMessage($admin, $owner, $reservationSeries, $resource)
 	{

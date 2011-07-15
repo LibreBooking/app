@@ -223,6 +223,7 @@ class en_us extends Language
 		$strings['ReservationUpdatedSubject'] = 'Your reservation was updated';
 		$strings['ReservationCreatedAdminSubject'] = 'A reservation was created';
 		$strings['ReservationUpdatedAdminSubject'] = 'A reservation was updated';
+		$strings['ParticipantAddedSubject'] = 'You have been added as a reservation participant';
 		//
 		
 		/***

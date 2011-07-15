@@ -56,7 +56,7 @@ class AdminEmailNotificationTests extends TestBase
 			->with($this->equalTo($resourceId))
 			->will($this->returnValue($resource));
 			
-		$notification = new AdminEmailCreatedNotificaiton($userRepo, $resourceRepo);
+		$notification = new AdminEmailCreatedNotification($userRepo, $resourceRepo);
 		$notification->Notify($reservation);
 		
 		$expectedMessage1 = new ReservationCreatedEmailAdmin($admin1, $user, $reservation, $resource);
@@ -105,7 +105,7 @@ class AdminEmailNotificationTests extends TestBase
 			->with($this->equalTo($resourceId))
 			->will($this->returnValue($resource));
 			
-		$notification = new AdminEmailUpdatedNotificaiton($userRepo, $resourceRepo);
+		$notification = new AdminEmailUpdatedNotification($userRepo, $resourceRepo);
 		$notification->Notify($reservation);
 		
 		$expectedMessage1 = new ReservationUpdatedEmailAdmin($admin1, $user, $reservation, $resource);
@@ -123,7 +123,7 @@ class AdminEmailNotificationTests extends TestBase
 										ConfigKeys::RESERVATION_NOTIFY_CREATED, 
 										'false');
 										
-		$notification = new AdminEmailCreatedNotificaiton($this->getMock('IUserRepository'), $this->getMock('IResourceRepository'));
+		$notification = new AdminEmailCreatedNotification($this->getMock('IUserRepository'), $this->getMock('IResourceRepository'));
 		$notification->Notify(new TestReservationSeries());
 		
 		$this->assertEquals(0, count($this->fakeEmailService->_Messages));

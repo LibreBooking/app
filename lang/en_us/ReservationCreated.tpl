@@ -11,7 +11,7 @@
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		Your reservation was repeated on the following dates:
+		The reservation repeats on the following dates:
 		<br/>
 	{/if}
 	

@@ -18,7 +18,7 @@ abstract class EmailMessage implements IEmailMessage
 	
 	protected function FetchTemplate($templateName)
 	{
-		return $this->email->FetchTemplate("ReservationCreated.tpl"); 
+		return $this->email->FetchTemplate($templateName);
 	}
 	
 	protected function Translate($key, $args = array())

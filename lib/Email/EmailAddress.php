@@ -1,8 +1,8 @@
 <?php
 class EmailAddress
 {
-	private $_address;
-	private $_name;
+	private $address;
+	private $name;
 	
 	public function Address()
 	{
