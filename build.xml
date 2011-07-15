@@ -6,6 +6,40 @@
 	<property name="archive_directory" value="c:/work/phpScheduleIt_archive/src/${version}"/>
 	<property name="staging" value="../staging"/>
 	<property name="stagingdir" value="${staging}/phpScheduleIt"/>
+
+	<property name="mysql.bin" value="C:/Program Files/MySQL/MySQL Server 5.1/bin" />
+	<property name="mysql.username" value="root"/>
+	<property name="mysql.password" value=""/>
+	<property name="mysql.server" value="127.0.0.1"/>
+	<property name="mysql.database" value="phpScheduleIt2"/>
+	<property name="sql.file.create" value="database_schema/schema-utf8.sql"/>
+	<property name="sql.file.data" value="database_schema/data-utf8.sql"/>
+	<property name="sql.file.test.data" value="database_schema/testdata-utf8.sql"/>
+
+	<target name="setup.db" description="setting up the latest version of the database">
+
+		<if>
+			<equals arg1="${mysql.password}" arg2="" />
+			<then>
+				<input propertyName="mysql.password" defaultValue="" promptChar="?">mysql password</input>
+			</then>
+		</if>
+
+		<echo message="Create file: ${sql.file.create}" />
+		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create}"
+			  checkreturn="true"
+			  dir="${mysql.bin}" />
+
+		<echo message="Application data file: ${sql.file.data}" />
+		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.data}"
+			  checkreturn="true"
+			  dir="${mysql.bin}" />
+
+		<echo message="Test data file: ${sql.file.test.data}" />
+		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.test.data}"
+			  checkreturn="true"
+			  dir="${mysql.bin}" />
+	</target>
 	
 	<target name="package" description="packages all required files" depends="stage.files">
 		<delete dir="${zipdirectory}" failonerror="false" />
@@ -16,12 +50,12 @@
 				<include name="**/*"/>
 			</fileset>
 		</zip>
-		<tar destfile="${zipdirectory}/${packagename}.tar">
+		<tar destFile="" destfile="${zipdirectory}/${packagename}.tar">
 			<fileset dir="${staging}">
 				<include name="**/*"/>
 			</fileset>
 		</tar>
-		<tar destfile="${zipdirectory}/${packagename}.tar.gz" compression="GZip">
+		<tar destFile="${zipdirectory}/${packagename}.tar.gz" compression="GZip">
 			<fileset dir="${staging}">
 				<include name="**/*"/>
 			</fileset>
