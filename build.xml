@@ -50,12 +50,12 @@
 				<include name="**/*"/>
 			</fileset>
 		</zip>
-		<tar destFile="" destfile="${zipdirectory}/${packagename}.tar">
+		<tar destFile="${zipdirectory}/${packagename}.tar">
 			<fileset dir="${staging}">
 				<include name="**/*"/>
 			</fileset>
 		</tar>
-		<tar destFile="${zipdirectory}/${packagename}.tar.gz" compression="GZip">
+		<tar destFile="${zipdirectory}/${packagename}.tar.gz" compression="gzip">
 			<fileset dir="${staging}">
 				<include name="**/*"/>
 			</fileset>

@@ -11,6 +11,7 @@ class QueryStringKeys
 	const DATA_REQUEST = 'dr';
 	const END_DATE = 'ed';
 	const GROUP_ID = 'gid';
+	const INVITATION_ACTION = 'ia';
 	const LANGUAGE = 'lang';
 	const MESSAGE_ID = 'mid';
     const PAGE = 'page';

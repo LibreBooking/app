@@ -100,7 +100,8 @@ class ReservationRepositoryTests extends TestBase
 		$levelId = ReservationUserLevel::OWNER;
 		$repeatOptions = new RepeatNone();
 		$participantIds = array(2, 9);
-		
+		$inviteeIds = array(20, 90);
+
 		$startUtc = Date::Parse($startCst, 'CST')->ToUtc();
 		$endUtc = Date::Parse($endCst, 'CST')->ToUtc();
 		
@@ -122,8 +123,10 @@ class ReservationRepositoryTests extends TestBase
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatOptionsString = $repeatOptions->ConfigurationString();
 		$referenceNumber = $reservation->CurrentInstance()->ReferenceNumber();
+
 		$reservation->ChangeParticipants($participantIds);
-		
+		$reservation->ChangeInvitees($inviteeIds);
+
 		$this->repository->Add($reservation);
 		
 		$insertReservationSeries = new AddReservationSeriesCommand(
@@ -156,14 +159,19 @@ class ReservationRepositoryTests extends TestBase
 		$insertParticipant1 = $this->GetAddUserCommand($reservationId, $participantIds[0], ReservationUserLevel::PARTICIPANT);
 		$insertParticipant2 = $this->GetAddUserCommand($reservationId, $participantIds[1], ReservationUserLevel::PARTICIPANT);
 
+		$insertInvitee1 = $this->GetAddUserCommand($reservationId, $inviteeIds[0], ReservationUserLevel::INVITEE);
+		$insertInvitee2 = $this->GetAddUserCommand($reservationId, $inviteeIds[1], ReservationUserLevel::INVITEE);
+
+		$this->assertEquals(8, count($this->db->_Commands));
+		
 		$this->assertEquals($insertReservationSeries, $this->db->_Commands[0]);
 		$this->assertEquals($insertReservationResource, $this->db->_Commands[1]);
 		$this->assertEquals($insertReservation, $this->db->_Commands[2]);
 		$this->assertEquals($insertReservationUser, $this->db->_Commands[3]);
-		$this->assertEquals($insertParticipant1, $this->db->_Commands[4]);
-		$this->assertEquals($insertParticipant2, $this->db->_Commands[5]);
-
-		$this->assertEquals(6, count($this->db->_Commands));
+		$this->assertTrue($this->db->ContainsCommand($insertParticipant1));
+		$this->assertTrue($this->db->ContainsCommand($insertParticipant2));
+		$this->assertTrue($this->db->ContainsCommand($insertInvitee1));
+		$this->assertTrue($this->db->ContainsCommand($insertInvitee2));
 	}
 	
 	public function testRepeatedDatesAreSaved()
@@ -171,7 +179,6 @@ class ReservationRepositoryTests extends TestBase
 		$reservationSeriesId = 109;
 		$reservationId = 918;
 		$repeatId1 = 919;
-		$repeatId2 = 920;
 		$repeatId3 = 921;
 		
 		$timezone = 'UTC';

@@ -219,11 +219,12 @@ class en_us extends Language
 		$strings['DaySaturdayAbbr'] = 'Sat';
 		
 		// Email Subjects
-		$strings['ReservationCreatedSubject'] = 'Your reservation was created';
-		$strings['ReservationUpdatedSubject'] = 'Your reservation was updated';
-		$strings['ReservationCreatedAdminSubject'] = 'A reservation was created';
-		$strings['ReservationUpdatedAdminSubject'] = 'A reservation was updated';
-		$strings['ParticipantAddedSubject'] = 'You have been added as a reservation participant';
+		$strings['ReservationCreatedSubject'] = 'Your Reservation Was Created';
+		$strings['ReservationUpdatedSubject'] = 'Your Reservation Was Updated';
+		$strings['ReservationCreatedAdminSubject'] = 'Notification: A Reservation Was Created';
+		$strings['ReservationUpdatedAdminSubject'] = 'Notification: A Reservation Was Updated';
+		$strings['ParticipantAddedSubject'] = 'Reservation Participation Notification';
+		$strings['InviteeAddedSubject'] = 'Reservation Invitation';
 		//
 		
 		/***
@@ -895,7 +896,7 @@ class en_us extends Language
 		$strings['ResourceList'] = 'Resource(s) to be reserved';
 		$strings['Add'] = 'Add';
 		$strings['ParticipantList'] = 'Participants';
-		$strings['InvitationList'] = 'Invitations';
+		$strings['InvitationList'] = 'Invitees';
 
 		// new pages						
 		$strings['Reporting'] = 'Reporting';
@@ -906,115 +907,6 @@ class en_us extends Language
 		// end Since 2.0
 		
 		$this->Strings = $strings;
-	}
-	
-	function _LoadEmails()
-	{
-		$email = array();
-		/***
-		  EMAIL MESSAGES
-		  Please translate these email messages into your language.  You should keep the sprintf (%s) placeholders
-		   in their current position unless you know you need to move them.
-		  All email messages should be surrounded by double quotes "
-		  Each email message will be described below.
-		***/
-		// @since 1.1.0
-		// Email message that a user gets after they register
-		$email['register'] = "%s, %s \r\n"
-						. "You have successfully registered with the following information:\r\n"
-						. "Logon: %s\r\n"
-						. "Name: %s %s \r\n"
-						. "Phone: %s \r\n"
-						. "Institution: %s \r\n"
-						. "Position: %s \r\n\r\n"
-						. "Please log into the scheduler at this location:\r\n"
-						. "%s \r\n\r\n"
-						. "You can find links to the online scheduler and to edit your profile at My Control Panel.\r\n\r\n"
-						. "Please direct any resource or reservation based questions to %s";
-		
-		// Email message the admin gets after a new user registers
-		$email['register_admin'] = "Administrator,\r\n\r\n"
-							. "A new user has registered with the following information:\r\n"
-							. "Email: %s \r\n"
-							. "Name: %s %s \r\n"
-							. "Phone: %s \r\n"
-							. "Institution: %s \r\n"
-							. "Position: %s \r\n\r\n";
-		
-		// First part of the email that a user gets after they create/modify/delete a reservation
-		// 'reservation_activity_1' through 'reservation_activity_6' are all part of one email message
-		//  that needs to be assembled depending on different options.  Please translate all of them.
-		// @since 1.1.0
-		$email['reservation_activity_1'] = "%s,\r\n<br />"
-					. "You have successfully %s reservation #%s.\r\n\r\n<br/><br/>"
-					. "Please use this reservation number when contacting the administrator with any questions.\r\n\r\n<br/><br/>"
-					. "A reservation between %s %s and %s %s for %s"
-					. " located at %s has been %s.\r\n\r\n<br/><br/>";
-		$email['reservation_activity_2'] = "This reservation has been repeated on the following dates:\r\n<br/>";
-		$email['reservation_activity_3'] = "All recurring reservations in this group were also %s.\r\n\r\n<br/><br/>";
-		$email['reservation_activity_4'] = "The following summary was provided for this reservation:\r\n<br/>%s\r\n\r\n<br/><br/>";
-		$email['reservation_activity_5'] = "If this is a mistake, please contact the administrator at: %s"
-					. " or by calling %s.\r\n\r\n<br/><br/>"
-					. "You can view or modify your reservation information at any time by"
-					. " logging into %s at:\r\n<br/>"
-					. "<a href=\"%s\" target=\"_blank\">%s</a>.\r\n\r\n<br/><br/>";
-		$email['reservation_activity_6'] = "Please direct all technical questions to <a href=\"mailto:%s\">%s</a>.\r\n\r\n<br/><br/>";
-		// @since 1.1.0
-		$email['reservation_activity_7'] = "%s,\r\n<br />"
-					. "Reservation #%s has been approved.\r\n\r\n<br/><br/>"
-					. "Please use this reservation number when contacting the administrator with any questions.\r\n\r\n<br/><br/>"
-					. "A reservation between %s %s and %s %s for %s"
-					. " located at %s has been %s.\r\n\r\n<br/><br/>";
-		
-		// Email that the user gets when the administrator changes their password
-		$email['password_reset'] = "Your %s password has been reset by the administrator.\r\n\r\n"
-					. "Your temporary password is:\r\n\r\n %s\r\n\r\n"
-					. "Please use this temporary password (copy and paste to be sure it is correct) to log into %s at %s"
-					. " and immediately change it using the 'Change My Profile Information/Password' link in the My Quick Links table.\r\n\r\n"
-					. "Please contact %s with any questions.";
-		
-		// Email that the user gets when they change their lost password using the 'Password Reset' form
-		$email['new_password'] = "%s,\r\n"
-		            . "Your new password for your %s account is:\r\n\r\n"
-		            . "%s\r\n\r\n"
-		            . "Please Log In at %s "
-		            . "with this new password "
-		            . "(copy and paste it to ensure it is correct) "
-		            . "and promptly change your password by clicking the "
-		            . "Change My Profile Information/Password "
-		            . "link in My Control Panel.\r\n\r\n"
-		            . "Please direct any questions to %s.";
-		
-		// @since 1.1.0
-		// Email that is sent to invite users to a reservation
-		$email['reservation_invite'] = "%s has invited you to participate in the following reservation:\r\n\r\n"
-				. "Resource: %s\r\n"
-				. "Start Date: %s\r\n"
-				. "Start Time: %s\r\n"
-				. "End Date: %s\r\n"
-				. "End Time: %s\r\n"
-				. "Summary: %s\r\n"
-				. "Repeated Dates (if present): %s\r\n\r\n"
-				. "To accept this invitation click this link (copy and paste if it is not highlighted) %s\r\n"
-				. "To decline this invitation click this link (copy and paste if it is not highlighted) %s\r\n"
-				. "To accept select dates or manage your invitations at a later time, please log into %s at %s";
-		
-		// @since 1.1.0
-		// Email that is sent when a user is removed from a reservation
-		$email['reservation_removal'] = "You have been removed from the following reservation:\r\n\r\n"
-				. "Resource: %s\r\n"
-				. "Start Date: %s\r\n"
-				. "Start Time: %s\r\n"
-				. "End Date: %s\r\n"
-				. "End Time: %s\r\n"
-				. "Summary: %s\r\n"
-				. "Repeated Dates (if present): %s\r\n\r\n";	
-				
-		// @since 1.2.0
-		// Email body that is sent for reminders
-		$email['Reminder Body'] = "Your reservation for %s from %s %s to %s %s is approaching.";
-		
-		$this->Emails = $email;
 	}
 	
 	function _LoadDays()

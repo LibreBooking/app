@@ -128,6 +128,7 @@ class ReservationSeries
 	}
 
 	protected $addedParticipants = array();
+	protected $addedInvitees = array();
 
 	/**
 	 * @return int[]
@@ -135,6 +136,14 @@ class ReservationSeries
 	public function AddedParticipants()
 	{
 		return $this->addedParticipants;
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function AddedInvitees()
+	{
+		return $this->addedInvitees;
 	}
 	
 	/**
@@ -299,6 +308,15 @@ class ReservationSeries
 	public function ChangeParticipants($participantIds)
 	{
 		$this->addedParticipants = $participantIds;
+	}
+
+	/**
+	 * @param int[] $inviteeIds
+	 * @return void
+	 */
+	public function ChangeInvitees($inviteeIds)
+	{
+		$this->addedInvitees = $inviteeIds;
 	}
 	
 	protected function SetCurrentInstance(Reservation $current)

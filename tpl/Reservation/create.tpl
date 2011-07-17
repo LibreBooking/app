@@ -119,39 +119,40 @@
 			
         </ul>
 	</div>
+	
 	<div id="reservationParticipation">
 		<ul class="no-style">
 			<li>
                 <label>{translate key="ParticipantList"}<br />
 					Add <input type="text" id="participantAutocomplete" class="input" style="width:250px;" />
 					or
-					<button id="addParticipants" type="button" class="button" style="display:inline">
+					<button id="promptForParticipants" type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png" />
 						{translate key='All Users'}
 					</button>
 				</label>
-				<div id="addedParticipants">
+				<div id="participantList">
 					<ul/>
 				</div>
-				<div id="participants" title="Add Participants" class="dialog">
-					here is where they go
-				</div>
+				<div id="participantDialog" title="Add Participants" class="dialog"></div>
         	</li>
-			<!-- The selected participants should be printed here, above the Invitation list pulldown -->
 			<li>
                 <label>{translate key="InvitationList"}<br />
-                       
-					<button type="button" class="button" style="display:inline">
+					Add <input type="text" id="inviteeAutocomplete" class="input" style="width:250px;" />
+					or
+					<button id="promptForInvitees" type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png" />
-						{translate key='Add'}
+						{translate key='All Users'}
 					</button>
 				</label>
-
+				<div id="inviteeList">
+					<ul/>
+				</div>
+				<div id="inviteeDialog" title="Invite Others" class="dialog"></div>
         	</li>
-			<!-- The invited users should be printed here above the X -->
 		</ul>
-
 	</div>
+	
 	<div style="clear:both;">&nbsp;</div>
 	<input type="hidden" {formname key=reservation_id} value="{$ReservationId}" />
 	<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" />

@@ -42,5 +42,10 @@ class TestReservationSeries extends ReservationSeries
 	{
 		$this->addedParticipants = $addedParticipantIds;
 	}
+
+	public function WithAddedInvitees($addedInviteeIds)
+	{
+		$this->addedInvitees = $addedInviteeIds;
+	}
 }
 ?>

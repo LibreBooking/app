@@ -11,5 +11,6 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/ReservationNot
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/AdminEmailNotification.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/OwnerEmailNotification.php');
 
+require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/InviteeAddedEmailNotification.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/ParticipantAddedEmailNotification.php');
 ?>

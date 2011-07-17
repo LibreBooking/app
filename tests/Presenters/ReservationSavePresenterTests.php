@@ -80,13 +80,15 @@ class ReservationSavePresenterTests extends TestBase
 		$repeatOptions = $this->page->GetRepeatOptions();
 
 		$participants = $this->page->GetParticipants();
-		
+		$invitees = $this->page->GetInvitees();
+
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
 		$expected = ReservationSeries::Create($userId, $resourceId, $scheduleId, $title, $description, $duration, $repeatOptions);
 		$expected->AddResource($additionalResources[0]);
 		$expected->AddResource($additionalResources[1]);
 		$expected->ChangeParticipants($participants);
+		$expected->ChangeInvitees($invitees);
 
 		$actualReservation = $this->presenter->BuildReservation();
 		
@@ -98,6 +100,7 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals($duration, $actualReservation->CurrentInstance()->Duration());
 		$this->assertEquals($repeatOptions, $actualReservation->RepeatOptions());
 		$this->assertEquals($participants, $actualReservation->AddedParticipants());
+		$this->assertEquals($invitees, $actualReservation->AddedInvitees());
 	}
 
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistanceAndNotification()
@@ -176,8 +179,9 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $errors = array();
 	public $warnings = array();
 	public $referenceNumber;
-	public $participants = array(1, 2, 4);
-	
+	public $participants = array(10, 20, 40);
+	public $invitees = array(11, 21, 41);
+
 	public function __construct()
 	{
 		$this->repeatOptions = new RepeatNone();
@@ -286,5 +290,10 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetParticipants()
 	{
 		return $this->participants;
+	}
+
+	public function GetInvitees()
+	{
+		return $this->invitees;
 	}
 }

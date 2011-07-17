@@ -12,7 +12,16 @@ function Reservation(opts) {
 		endTime: $('#EndPeriod'),
 		durationDays: $('#durationDays'),
 		durationHours: $('#durationHours'),
-		participantList: $('#participants')
+
+		participantDialogPrompt: $('#promptForParticipants'),
+		participantDialog: $('#participantDialog'),
+		participantList: $('#participantList'),
+		participantAutocomplete: $('#participantAutocomplete'),
+
+		inviteeDialogPrompt: $('#promptForInvitees'),
+		inviteeDialog: $('#inviteeDialog'),
+		inviteeList: $('#inviteeList'),
+		inviteeAutocomplete: $('#inviteeAutocomplete')
 	};
 
 	const oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
@@ -20,6 +29,7 @@ function Reservation(opts) {
 	var repeatToggled = false;
 	var terminationDateSetManually = false;
 	var addedParticipants = [];
+	var addedInvitees = [];
 
 	Reservation.prototype.init = function() {
 		elements.beginDate.data['previousVal'] = elements.beginDate.val();
@@ -33,7 +43,7 @@ function Reservation(opts) {
 		$('#dialogAddResources').dialog({
 			height: 300,
 			open: function(event, ui) {
-				InitialzeCheckboxes('#dialogAddResources', '#additionalResources');
+				InitializeCheckboxes('#dialogAddResources', '#additionalResources');
 				return true;
 			}
 		});
@@ -49,65 +59,13 @@ function Reservation(opts) {
 		$('#resourceNames, #additionalResources').delegate('.resourceDetails', 'mouseover', function() {
 			bindResourceDetails($(this));
 		});
-
-		$('#addParticipants').click(function() {
-
-			var allUserList;
-			if (allUserList == null) {
-				$.ajax({
-					url: options.userAutocompleteUrl,
-					dataType: 'json',
-					async: false,
-					success: function(data) {
-						allUserList = data;
-					}
-				});
-			}
-
-			var items = [];
-			$.map(allUserList, function(item) {
-				items.push('<li><a href="#" class="add"><input type="hidden" class="id" value="' + item.Id + '" />' +
-						'<img src="img/plus-button.png" /></a> ' +
-						item.First + ' ' + item.Last + '</li>')
-			});
-			elements.participantList.empty();
-
-			$('<ul/>', {'class': 'no-style', html: items.join('')}).appendTo(elements.participantList);
-
-			elements.participantList.dialog('open');
-		});
-
-		elements.participantList.delegate('.add', 'click', function(){
-			addParticipant($(this).closest('li').text(), $(this).find('.id').val());
-		});
 		
-		$("#addedParticipants").delegate('.remove', 'click', function(){
-			var li = $(this).closest('li');
-			var id = li.find('.id').val();
-			li.remove();
-			removeParticipant(id);
-		});
-		
-		$("#participantAutocomplete").userAutoComplete(options.userAutocompleteUrl, function(ui) {
-			addParticipant(ui.item.label, ui.item.value);
-		});
+		InitializeParticipationElements();
 
 		// initialize selected resources
 		AddResources();
 
-		elements.repeatOptions.change(function() {
-			ChangeRepeatOptions();
-			AdjustTerminationDate();
-		});
-
-		elements.repeatInterval.change(function() {
-			AdjustTerminationDate();
-		});
-
-		elements.repeatTermination.change(function() {
-			terminationDateSetManually = true;
-		});
-
+		InitializeRepeatElements();
 		InitializeRepeatOptions();
 
 		$('#btnUpdateThisInstance').click(function() {
@@ -122,67 +80,13 @@ function Reservation(opts) {
 			ChangeUpdateScope(options.scopeOpts.future);
 		});
 
-		elements.beginDate.change(function() {
-			AdjustEndDate();
-			ToggleRepeatOptions();
-			elements.beginDate.data['previousVal'] = elements.beginDate.val();
-
-			DisplayDuration();
-		});
-
-		elements.endDate.change(function() {
-			ToggleRepeatOptions();
-
-			DisplayDuration();
-		});
-
-		elements.beginTime.change(function() {
-			ToggleRepeatOptions();
-			DisplayDuration();
-		});
-
-		elements.endTime.change(function() {
-			ToggleRepeatOptions();
-			DisplayDuration();
-		});
-
-		$('select, input', elements.repeatDiv).change(function() {
-			ToggleUpdateScope();
-		});
+		InitializeDateElements();
 
 		WireUpActions();
 		WireUpButtonPrompt();
 		WireUpSaveDialog();
 		DisplayDuration();
-	}
-
-	var addParticipant = function(name, userId)
-	{
-		if ($.inArray(userId, addedParticipants) >= 0)
-		{
-			// dont add if they are already participating
-			return;
-		}
-		
-		var item = '<li>' +
-				'<a href="#" class="remove"><img src="img/user-minus.png"/></a> ' +
-				name +
-				'<input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' +
-				'</li>';
-
-		$("#addedParticipants ul").append(item);
-
-		addedParticipants.push(userId);
-	}
-
-	var removeParticipant = function(userId)
-	{
-		var index = $.inArray(userId, addedParticipants);
-		if (index >= 0)
-		{
-			addedParticipants.splice(index, 1);
-		}
-	}
+	};
 
 	// pre-submit callback 
 	Reservation.prototype.preSubmit = function(formData, jqForm, options) {
@@ -190,7 +94,7 @@ function Reservation(opts) {
 		$('#creatingNotifiation').show();
 
 		return true;
-	}
+	};
 
 	// post-submit callback 
 	Reservation.prototype.showResponse = function(responseText, statusText, xhr, $form) {
@@ -204,12 +108,12 @@ function Reservation(opts) {
 
 		$('#creatingNotifiation').hide();
 		$('#result').show();
-	}
+	};
 
 	var AddResources = function() {
 		AddSelected('#dialogAddResources', '#additionalResources', options.additionalResourceElementId);
 		$('#dialogAddResources').dialog('close');
-	}
+	};
 
 	var AddSelected = function(dialogBoxId, displayDivId, inputId) {
 		$(displayDivId).empty();
@@ -220,10 +124,9 @@ function Reservation(opts) {
 		});
 
 		$(dialogBoxId).dialog('close');
-	}
+	};
 
 	var AdjustEndDate = function() {
-		//var oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
 		var firstDate = new Date(elements.beginDate.data['previousVal']);
 		var secondDate = new Date(elements.beginDate.val());
 
@@ -233,7 +136,7 @@ function Reservation(opts) {
 		currentEndDate.setDate(currentEndDate.getDate() + diffDays);
 
 		elements.endDate.datepicker("setDate", currentEndDate);
-	}
+	};
 
 	var AdjustTerminationDate = function () {
 		if (terminationDateSetManually) {
@@ -263,7 +166,7 @@ function Reservation(opts) {
 		}
 
 		elements.repeatTermination.datepicker("setDate", begin);
-	}
+	};
 
 	var CancelAdd = function(dialogBoxId, displayDivId) {
 		var selectedItems = $.makeArray($(displayDivId + ' p').text());
@@ -275,7 +178,7 @@ function Reservation(opts) {
 		});
 
 		$(dialogBoxId).dialog('close');
-	}
+	};
 
 	var ChangeRepeatOptions = function() {
 		var repeatDropDown = elements.repeatOptions;
@@ -317,7 +220,7 @@ function Reservation(opts) {
 
 			$('.years', elements.repeatDiv).show();
 		}
-	}
+	};
 
 	var ChangeUpdateScope = function(updateScopeValue) {
 		$('#hdnSeriesUpdateScope').val(updateScopeValue);
@@ -335,37 +238,9 @@ function Reservation(opts) {
 		elements.durationHours.text(roundedHours);
 	};
 
-	var InitialzeCheckboxes = function(dialogBoxId, displayDivId) {
-		var selectedItems = $.makeArray($(displayDivId + ' p').text());
-		$(dialogBoxId + ' :checkbox').each(function() {
-			var checkboxText = $(this).next().text();
-			if ($.inArray(checkboxText, selectedItems) >= 0) {
-				$(this).attr('checked', 'checked');
-			}
-			else {
-				$(this).removeAttr('checked');
-			}
-		});
-	}
-
-	var InitializeRepeatOptions = function() {
-		if (options.repeatType) {
-			elements.repeatOptions.val(options.repeatType);
-			$('#repeat_every').val(options.repeatInterval);
-			for (var i = 0; i < options.repeatWeekdays.length; i++) {
-				var id = "#repeatDay" + i;
-				$(id).attr('checked', true);
-			}
-
-			$("#repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").attr('checked', true);
-
-			ChangeRepeatOptions();
-		}
-	}
-
 	var CloseSaveDialog = function() {
 		$('#dialogSave').dialog('close');
-	}
+	};
 
 	var ToggleRepeatOptions = function() {
 		var SetValue = function(value, disabled) {
@@ -385,7 +260,7 @@ function Reservation(opts) {
 				repeatToggled = false;
 			}
 		}
-	}
+	};
 
 	var ToggleUpdateScope = function() {
 		if (MoreThanOneDayBetweenBeginAndEnd()) {
@@ -398,7 +273,7 @@ function Reservation(opts) {
 			$('#btnUpdateAllInstances').show();
 			$('#btnUpdateFutureInstances').show();
 		}
-	}
+	};
 
 	var MoreThanOneDayBetweenBeginAndEnd = function() {
 		var begin = GetBeginDate();
@@ -407,7 +282,7 @@ function Reservation(opts) {
 		var timeBetweenDates = end.getTime() - begin.getTime();
 
 		return timeBetweenDates > oneDay;
-	}
+	};
 
 	var WireUpActions = function () {
 		$('.create').click(function() {
@@ -421,7 +296,7 @@ function Reservation(opts) {
 		$('.delete').click(function() {
 			$('form').attr("action", options.deleteUrl);
 		});
-	}
+	};
 
 	var WireUpButtonPrompt = function () {
 		$('#updateButtons').dialog({
@@ -436,7 +311,7 @@ function Reservation(opts) {
 		$('.prompt').click(function() {
 			$('#updateButtons').dialog('open');
 		});
-	}
+	};
 
 	var WireUpSaveDialog = function() {
 		$('#dialogSave').dialog({
@@ -452,7 +327,7 @@ function Reservation(opts) {
 
 			$('#reservationForm').submit();
 		});
-	}
+	};
 
 	function GetBeginDate() {
 		return new Date(elements.beginDate.val() + ' ' + elements.beginTime.val());
@@ -501,4 +376,198 @@ function Reservation(opts) {
 			}
 		});
 	}
+
+	function InitializeCheckboxes(dialogBoxId, displayDivId) {
+		var selectedItems = $.makeArray($(displayDivId + ' p').text());
+		$(dialogBoxId + ' :checkbox').each(function() {
+			var checkboxText = $(this).next().text();
+			if ($.inArray(checkboxText, selectedItems) >= 0) {
+				$(this).attr('checked', 'checked');
+			}
+			else {
+				$(this).removeAttr('checked');
+			}
+		});
+	}
+
+	function InitializeRepeatElements() {
+		elements.repeatOptions.change(function() {
+			ChangeRepeatOptions();
+			AdjustTerminationDate();
+		});
+
+		elements.repeatInterval.change(function() {
+			AdjustTerminationDate();
+		});
+
+		elements.repeatTermination.change(function() {
+			terminationDateSetManually = true;
+		});
+
+				$('select, input', elements.repeatDiv).change(function() {
+			ToggleUpdateScope();
+		});
+	}
+	
+	function InitializeRepeatOptions() {
+		if (options.repeatType) {
+			elements.repeatOptions.val(options.repeatType);
+			$('#repeat_every').val(options.repeatInterval);
+			for (var i = 0; i < options.repeatWeekdays.length; i++) {
+				var id = "#repeatDay" + i;
+				$(id).attr('checked', true);
+			}
+
+			$("#repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").attr('checked', true);
+
+			ChangeRepeatOptions();
+		}
+	}
+	
+	function InitializeDateElements() {
+		elements.beginDate.change(function() {
+			AdjustEndDate();
+			ToggleRepeatOptions();
+			elements.beginDate.data['previousVal'] = elements.beginDate.val();
+
+			DisplayDuration();
+		});
+
+		elements.endDate.change(function() {
+			ToggleRepeatOptions();
+
+			DisplayDuration();
+		});
+
+		elements.beginTime.change(function() {
+			ToggleRepeatOptions();
+			DisplayDuration();
+		});
+
+		elements.endTime.change(function() {
+			ToggleRepeatOptions();
+			DisplayDuration();
+		});
+	}
+
+	function InitializeParticipationElements() {
+		elements.participantDialogPrompt.click(function() {
+			showAllUsersToAdd(elements.participantDialog);
+		});
+
+		elements.participantDialog.delegate('.add', 'click', function(){
+			addParticipant($(this).closest('li').text(), $(this).find('.id').val());
+		});
+
+		elements.participantList.delegate('.remove', 'click', function(){
+			var li = $(this).closest('li');
+			var id = li.find('.id').val();
+			li.remove();
+			removeParticipant(id);
+		});
+
+		elements.participantAutocomplete.userAutoComplete(options.userAutocompleteUrl, function(ui) {
+			addParticipant(ui.item.label, ui.item.value);
+		});
+
+		elements.inviteeDialogPrompt.click(function() {
+			showAllUsersToAdd(elements.inviteeDialog);
+		});
+
+		elements.inviteeDialog.delegate('.add', 'click', function(){
+			addInvitee($(this).closest('li').text(), $(this).find('.id').val());
+		});
+
+		elements.inviteeList.delegate('.remove', 'click', function(){
+			var li = $(this).closest('li');
+			var id = li.find('.id').val();
+			li.remove();
+			removeInvitee(id);
+		});
+
+		elements.inviteeAutocomplete.userAutoComplete(options.userAutocompleteUrl, function(ui) {
+			addInvitee(ui.item.label, ui.item.value);
+		});
+	}
+
+	var addParticipant = function(name, userId)
+	{
+		if ($.inArray(userId, addedParticipants) >= 0)
+		{
+			return;
+		}
+
+		var item = '<li>' +
+				'<a href="#" class="remove"><img src="img/user-minus.png" alt="Remove"/></a> ' +
+				name +
+				'<input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' +
+				'</li>';
+
+		elements.participantList.find("ul").append(item);
+
+		addedParticipants.push(userId);
+	};
+
+	var addInvitee = function(name, userId)
+	{
+		if ($.inArray(userId, addedInvitees) >= 0)
+		{
+			return;
+		}
+
+		var item = '<li>' +
+				'<a href="#" class="remove"><img src="img/user-minus.png" alt="Remove"/></a> ' +
+				name +
+				'<input type="hidden" class="id" name="invitationList[]" value="' + userId + '" />' +
+				'</li>';
+
+		elements.inviteeList.find("ul").append(item);
+
+		addedInvitees.push(userId);
+	};
+
+	var removeParticipant = function(userId)
+	{
+		var index = $.inArray(userId, addedParticipants);
+		if (index >= 0)
+		{
+			addedParticipants.splice(index, 1);
+		}
+	};
+
+	var removeInvitee = function(userId)
+	{
+		var index = $.inArray(userId, addedInvitees);
+		if (index >= 0)
+		{
+			addedInvitees.splice(index, 1);
+		}
+	};
+
+	var showAllUsersToAdd = function(dialogElement) {
+		var allUserList;
+		if (allUserList == null) {
+			$.ajax({
+				url: options.userAutocompleteUrl,
+				dataType: 'json',
+				async: false,
+				success: function(data) {
+					allUserList = data;
+				}
+			});
+
+			var items = [];
+			$.map(allUserList, function(item) {
+				items.push('<li><a href="#" class="add" title="Add"><input type="hidden" class="id" value="' + item.Id + '" />' +
+						'<img src="img/plus-button.png" /></a> ' +
+						item.First + ' ' + item.Last + '</li>')
+			});
+		}
+
+		dialogElement.empty();
+
+		$('<ul/>', {'class': 'no-style', html: items.join('')}).appendTo(dialogElement);
+
+		dialogElement.dialog('open');
+	};
 }

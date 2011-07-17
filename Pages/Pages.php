@@ -5,6 +5,7 @@ class Pages
 
 	const DASHBOARD = 'dashboard.php';
 	const DEFAULT_LOGIN = 'dashboard.php';
+	const INVITATION_RESPONSES = '';
 	const LOGIN = 'index.php';
 	const MY_CALENDAR = 'mycalendar.php';
 	const PROFILE = 'profile.php';

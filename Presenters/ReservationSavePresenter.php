@@ -46,9 +46,7 @@ class ReservationSavePresenter
 	
 	public function BuildReservation()
 	{
-		// $reservation->AddAccessory();
-
-		// accessories?, participants, invitations
+		// accessories
 		// reminder
 		
 		$userId = $this->_page->GetUserId();
@@ -70,7 +68,10 @@ class ReservationSavePresenter
 
 		$participantIds = $this->_page->GetParticipants();
 		$reservationSeries->ChangeParticipants($participantIds);
-				
+
+		$inviteeIds = $this->_page->GetInvitees();
+		$reservationSeries->ChangeInvitees($inviteeIds);
+
 		return $reservationSeries;
 	}
 	

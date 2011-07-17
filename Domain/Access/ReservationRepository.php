@@ -425,6 +425,16 @@ class InstanceAddedEventCommand extends EventCommand
 
 			$database->Execute($insertReservationUser);
 		}
+
+		foreach ($this->series->AddedInvitees() as $inviteeId)
+		{
+			$insertReservationUser = new AddReservationUserCommand(
+				$reservationId,
+				$inviteeId,
+				ReservationUserLevel::INVITEE);
+
+			$database->Execute($insertReservationUser);
+		}
 	}
 }
 

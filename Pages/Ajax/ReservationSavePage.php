@@ -63,6 +63,12 @@ interface IReservationSavePage extends IReservationSaveResultsPage
 	 * @return int[]
 	 */
 	public function GetParticipants();
+
+	/**
+	 * @abstract
+	 * @return int[]
+	 */
+	public function GetInvitees();
 	
 	/**
 	 * @param string $referenceNumber
@@ -295,6 +301,20 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		if (is_array($participants))
 		{
 			return $participants;
+		}
+
+		return array();
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetInvitees()
+	{
+		$invitees = $this->GetForm(FormKeys::INVITATION_LIST);
+		if (is_array($invitees))
+		{
+			return $invitees;
 		}
 
 		return array();

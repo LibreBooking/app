@@ -78,9 +78,10 @@
 	display:none;
 }
 
-#addedParticipants
+#participantList, #inviteeList
 {
 	height: 100px;
 	width: 100%;
-	overflow-y: scroll;
+	overflow-y: auto;
+	border: solid 1px #ededed;
 }
