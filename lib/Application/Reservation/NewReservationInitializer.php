@@ -86,7 +86,7 @@ class NewReservationInitializer extends ReservationInitializerBase
 			$periodBegin = $currentPeriod->BeginDate();
 			
 			$now = Date::Now();
-			if ($currentPeriod->IsReservable() && $periodBegin->Compare($date) >= 0 && $periodBegin->Compare(Date::Now()) >= 0)
+			if ($currentPeriod->IsReservable() && $periodBegin->Compare($date) >= 0 && $periodBegin->Compare($now) >= 0)
 			{
 				return $currentPeriod;
 			}
@@ -94,6 +94,16 @@ class NewReservationInitializer extends ReservationInitializerBase
 		
 		$lastIndex = count($periods) - 1;
 		return $periods[$lastIndex];
+	}
+
+	protected function GetParticipants()
+	{
+		return array();
+	}
+
+	protected function GetInvitees()
+	{
+		return array();
 	}
 }
 

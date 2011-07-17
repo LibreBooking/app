@@ -60,7 +60,14 @@ class ExistingReservationInitializerTests extends TestBase
 		$endDateUtc = '2010-01-02 10:11:12';
 		$ownerId = 987;
 		$additionalResourceIds = array (10, 20, 30);	
-		$participantIds = array (11, 22, 33);
+		$participants = array (
+			new ReservationUserView(10, 'p1', 'l', null, ReservationUserLevel::PARTICIPANT),
+			new ReservationUserView(11, 'p2', 'l', null, ReservationUserLevel::PARTICIPANT)
+		);
+		$invitees = array (
+			new ReservationUserView(100, 'i1', 'l', null, ReservationUserLevel::INVITEE),
+			new ReservationUserView(110, 'i2', 'l', null, ReservationUserLevel::INVITEE)
+		);
 		$title = 'title';
 		$description = 'description';
 
@@ -87,7 +94,8 @@ class ExistingReservationInitializerTests extends TestBase
 		$reservationView->OwnerFirstName = $firstName;
 		$reservationView->OwnerLastName = $lastName;
 		$reservationView->AdditionalResourceIds = $additionalResourceIds;
-		$reservationView->ParticipantIds = $participantIds;
+		$reservationView->Participants = $participants;
+		$reservationView->Invitees = $invitees;
 		$reservationView->Title = $title;
 		$reservationView->Description = $description;
 		$reservationView->RepeatType = $repeatType;
@@ -101,12 +109,11 @@ class ExistingReservationInitializerTests extends TestBase
 		// DATA			
 		// users
 		$schedUser = new UserDto($ownerId, $firstName, $lastName, 'email');
-		$otherUser = new UserDto(109, 'other', 'user', 'email');
-		$userList = array($otherUser, $schedUser);
 
 		$this->_userRepository->expects($this->once())
-			->method('GetAll')
-			->will($this->returnValue($userList));
+			->method('GetById')
+			->with($ownerId)
+			->will($this->returnValue($schedUser));
 			
 		// resources
 		$schedResource = new ScheduleResource($resourceId, 'resource 1');
@@ -146,11 +153,6 @@ class ExistingReservationInitializerTests extends TestBase
 		$page->expects($this->once())
 			->method('BindAvailableResources')
 			->with($this->equalTo($resourceListWithoutReservationResource));
-
-		$userListWithoutReservationOwner = array($otherUser);
-		$page->expects($this->once())
-			->method('BindAvailableUsers')
-			->with($this->equalTo($userListWithoutReservationOwner));
 		
 		// Reservation Data
 		
@@ -168,7 +170,11 @@ class ExistingReservationInitializerTests extends TestBase
 		
 		$page->expects($this->once())
 			->method('SetParticipants')
-			->with($this->equalTo($participantIds));
+			->with($this->equalTo($participants));
+
+		$page->expects($this->once())
+			->method('SetInvitees')
+			->with($this->equalTo($invitees));
 		
 		$page->expects($this->once())
 			->method('SetTitle')

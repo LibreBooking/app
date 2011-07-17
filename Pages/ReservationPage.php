@@ -15,12 +15,6 @@ interface IReservationPage extends IPage
 	 * @param array[int]ScheduleResource
 	 */
 	function BindAvailableResources($resources);
-	
-	/**
-	 * Set the resources that can be reserved by this user
-	 * @param array[int]ScheduleResource
-	 */
-	function BindAvailableUsers($resources);
 
 	/**
 	 * @param Date $selectedStart
@@ -40,7 +34,7 @@ interface IReservationPage extends IPage
 	/**
 	 * @param UserDto $user
 	 */
-	function SetReservationUser($user);
+	function SetReservationUser(UserDto $user);
 	
 	/**
 	 * @param ScheduleResource $resource
@@ -51,6 +45,20 @@ interface IReservationPage extends IPage
 	 * @param int $scheduleId
 	 */
 	function SetScheduleId($scheduleId);
+
+	/**
+	 * @abstract
+	 * @param ReservationUserView[] $participants
+	 * @return void
+	 */
+	function SetParticipants($participants);
+
+	/**
+	 * @abstract
+	 * @param ReservationUserView[] $invitees
+	 * @return void
+	 */
+	function SetInvitees($invitees);
 }
 
 abstract class ReservationPage extends SecurePage implements IReservationPage
@@ -142,11 +150,6 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 		$this->Set('AvailableResources', $resources);
 	}
 	
-	public function BindAvailableUsers($users)
-	{
-		$this->Set('AvailableUsers', $users);
-	}
-	
 	public function SetSelectedStart(Date $selectedStart)
 	{
 		$this->Set('SelectedStart', $selectedStart);
@@ -156,8 +159,12 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 	{
 		$this->Set('SelectedEnd', $selectedEnd);
 	}
-	
-	public function SetReservationUser($user)
+
+	/**
+	 * @param UserDto $user
+	 * @return void
+	 */
+	public function SetReservationUser(UserDto $user)
 	{
 		$this->Set('UserName', $user->FullName());
 		$this->Set('UserId', $user->Id());
@@ -180,6 +187,16 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 	public function SetRepeatTerminationDate($repeatTerminationDate)
 	{
 		$this->Set('RepeatTerminationDate', $repeatTerminationDate);
+	}
+
+	public function SetParticipants($participants)
+	{
+		$this->Set('Participants', $participants);
+	}
+
+	public function SetInvitees($invitees)
+	{
+		$this->Set('Invitees', $invitees);
 	}
 }
 ?>

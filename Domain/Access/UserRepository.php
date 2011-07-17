@@ -40,6 +40,31 @@ class UserRepository implements IUserRepository, IUserViewRepository
 	}
 
 	/**
+	 * @see IUserRepository:GetById()
+	 */
+	public function GetById($userId)
+	{
+		$command = new GetUserByIdCommand($userId);
+
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		if ($row = $reader->GetRow())
+		{
+			return new UserDto(
+								$row[ColumnNames::USER_ID],
+								$row[ColumnNames::FIRST_NAME],
+								$row[ColumnNames::LAST_NAME],
+								$row[ColumnNames::EMAIL],
+								$row[ColumnNames::TIMEZONE_NAME],
+								$row[ColumnNames::LANGUAGE_CODE]
+								);
+		}
+
+		return null;
+	}
+
+
+	/**
 	 * @param int $pageNumber
 	 * @param int $pageSize
 	 * @param string $sortField
@@ -180,6 +205,11 @@ interface IUserRepository
 	 * @return array[int]UserDto
 	 */
 	function GetAll();
+
+	/**
+	 * @return UserDto
+	 */
+	function GetById($userId);
 	
 	/**
 	 * @param int $userId

@@ -52,7 +52,6 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		parent::Initialize();
 		
 		$this->page->SetAdditionalResources($this->reservationView->AdditionalResourceIds);
-		$this->page->SetParticipants($this->reservationView->ParticipantIds);
 		$this->page->SetTitle($this->reservationView->Title);
 		$this->page->SetDescription($this->reservationView->Description);
 		$this->page->SetReferenceNumber($this->reservationView->ReferenceNumber);
@@ -112,6 +111,16 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	protected function GetTimezone()
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
+	}
+
+	protected function GetParticipants()
+	{
+		return $this->reservationView->Participants;
+	}
+
+	protected function GetInvitees()
+	{
+		return $this->reservationView->Invitees;
 	}
 }
 

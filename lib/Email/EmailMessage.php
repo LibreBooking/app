@@ -48,7 +48,7 @@ abstract class EmailMessage implements IEmailMessage
 	
 	public function Charset()
 	{
-		return $this->email->get_template_vars('Charset');
+		return $this->email->getTemplateVars('Charset');
 	}
 }
 ?>

@@ -57,12 +57,10 @@ class ReservationInitializationTests extends TestBase
 		$scheduleId = 100;
 		$dateString = Date::Now()->AddDays(1)->SetTimeString('02:55:22')->Format('Y-m-d H:i:s');
 		$dateInUserTimezone = Date::Parse($dateString, $timezone);
-		$periodId = 1;
 
 		$firstName = 'fname';
 		$lastName = 'lastName';
 
-		$expectedStartDate = Date::Parse($dateString, $timezone);
 		$expectedPeriod = new SchedulePeriod(
 			$dateInUserTimezone->SetTime(new Time(3, 30, 0)), 
 			$dateInUserTimezone->SetTime(new Time(4, 30, 0)));
@@ -95,12 +93,11 @@ class ReservationInitializationTests extends TestBase
 		// DATA
 		// users
 		$schedUser = new UserDto($this->_userId, $firstName, $lastName, 'email');
-		$otherUser = new UserDto(109, 'other', 'user', 'email');
-		$userList = array($otherUser, $schedUser);
 
 		$this->_userRepository->expects($this->once())
-			->method('GetAll')
-			->will($this->returnValue($userList));
+			->method('GetById')
+			->with($this->_userId)
+			->will($this->returnValue($schedUser));
 			
 		// resources
 		$schedResource = new ScheduleResource($resourceId, 'resource 1');
@@ -148,21 +145,8 @@ class ReservationInitializationTests extends TestBase
 		$page->expects($this->once())
 			->method('BindAvailableResources')
 			->with($this->equalTo($resourceListWithoutReservationResource));
-
-		$userListWithoutReservationOwner = array($otherUser);
-		$page->expects($this->once())
-			->method('BindAvailableUsers')
-			->with($this->equalTo($userListWithoutReservationOwner));
 			
 		// SETUP
-//		$page->expects($this->once())
-//			->method('SetStartDate')
-//			->with($this->equalTo($startDate));
-//
-//		$page->expects($this->once())
-//			->method('SetEndDate')
-//			->with($this->equalTo($endDate));
-			
 		$page->expects($this->once())
 			->method('SetSelectedStart')
 			->with($this->equalTo($expectedPeriod->BeginDate()));
@@ -182,6 +166,14 @@ class ReservationInitializationTests extends TestBase
 		$page->expects($this->once())
 			->method('SetReservationResource')
 			->with($this->equalTo($schedResource));	// may want this to be a real object
+
+		$page->expects($this->once())
+			->method('SetParticipants')
+			->with($this->equalTo(array()));
+
+		$page->expects($this->once())
+			->method('SetInvitees')
+			->with($this->equalTo(array()));
 		
 		$initializer = new NewReservationInitializer($page, $this->_scheduleUserRepository, $this->_scheduleRepository, $this->_userRepository);
 

@@ -246,22 +246,20 @@ $(document).ready(function() {
 	$('#description').TextAreaExpander();
 	
 	var reservation = new Reservation(reservationOpts);
-	reservation.init();
+	reservation.init('{$UserId}');
+		
+	{foreach from=$Participants item=user}
+		reservation.addParticipant('{$user->FullName}', '{$user->UserId}');
+	{/foreach}
+
+	{foreach from=$Invitees item=user}
+		reservation.addInvitee('{$user->FullName}', '{$user->UserId}');
+	{/foreach}
 	
 	var options = { 
         target: '#result',   // target element(s) to be updated with server response
         beforeSubmit: reservation.preSubmit,  // pre-submit callback 
         success: reservation.showResponse  // post-submit callback 
- 		//url: {block name="submitUrl"}"ajax/reservation_save.php"{/block}
-
- 	    // other available options: 
-        //type:      type        // 'get' or 'post', override for form's 'method' attribute 
-        //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
-        //clearForm: true        // clear all form fields after successful submit 
-        //resetForm: true        // reset the form after successful submit 
- 
-        // $.ajax options can be used here too, for example: 
-        //timeout:   3000 
     }; 
     
     $('#reservationForm').submit(function() { 

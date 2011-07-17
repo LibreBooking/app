@@ -106,13 +106,23 @@ class ReservationViewRepository implements IReservationViewRepository
 		
 		while ($row = $result->GetRow())
 		{
-			$reservationView->ParticipantIds[] = $row[ColumnNames::USER_ID];
-			$reservationView->Participants[] = new ReservationUserView(
-					$row[ColumnNames::USER_ID], 
-					$row[ColumnNames::FIRST_NAME], 
+			$levelId = $row[ColumnNames::RESERVATION_USER_LEVEL];
+			$reservationUserView = new ReservationUserView(
+					$row[ColumnNames::USER_ID],
+					$row[ColumnNames::FIRST_NAME],
 					$row[ColumnNames::LAST_NAME],
 					$row[ColumnNames::EMAIL],
-					$row[ColumnNames::RESERVATION_USER_LEVEL]);
+					$levelId);
+			
+			if ($levelId == ReservationUserLevel::PARTICIPANT)
+			{
+				$reservationView->Participants[] = $reservationUserView;
+			}
+
+			if ($levelId == ReservationUserLevel::INVITEE)
+			{
+				$reservationView->Invitees[] = $reservationUserView;
+			}
 		}
 	}
 }
@@ -145,12 +155,14 @@ class ReservationUserView
 	public $LastName;
 	public $Email;
 	public $LevelId;
+	public $FullName;
 	
 	public function __construct($userId, $firstName, $lastName, $email, $levelId)
 	{
 		$this->UserId = $userId;
 		$this->FirstName = $firstName;
 		$this->LastName = $lastName;
+		$this->FullName = $firstName . ' ' . $lastName;
 		$this->Email = $email;
 		$this->LevelId = $levelId;
 	}
@@ -230,14 +242,14 @@ class ReservationView
 	public $Resources = array();
 	
 	/**
-	 * @var int[]
-	 */
-	public $ParticipantIds = array();
-	
-	/**
 	 * @var ReservationUserView[]
 	 */
 	public $Participants = array();
+
+	/**
+	 * @var ReservationUserView[]
+	 */
+	public $Invitees = array();
 	
 	public function IsRecurring()
 	{
@@ -248,7 +260,6 @@ class ReservationView
 	{
 		return true;  // some qualification should probably be made
 	}
-	
 }
 
 class ReservationItemView

@@ -11,11 +11,6 @@ interface IExistingReservationPage extends IReservationPage
 	function SetAdditionalResources($additionalResourceIds);
 	
 	/**
-	 * @param $participantIds int[]
-	 */
-	function SetParticipants($participantIds);
-	
-	/**
      * @param $title string
 	 */
 	function SetTitle($title);
@@ -114,11 +109,6 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	public function SetAdditionalResources($additionalResourceIds)
 	{
 		$this->Set('AdditionalResourceIds', $additionalResourceIds);
-	}
-	
-	public function SetParticipants($participantIds)
-	{
-		$this->Set('ParticipantIds', $participantIds);
 	}
 	
 	public function SetTitle($title)

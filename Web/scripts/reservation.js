@@ -28,10 +28,14 @@ function Reservation(opts) {
 
 	var repeatToggled = false;
 	var terminationDateSetManually = false;
-	var addedParticipants = [];
-	var addedInvitees = [];
+	//this.addedUsers = [];
 
-	Reservation.prototype.init = function() {
+	var participation = {};
+	participation.addedUsers = [];
+	
+	Reservation.prototype.init = function(ownerId) {
+		participation.addedUsers.push(ownerId);
+
 		elements.beginDate.data['previousVal'] = elements.beginDate.val();
 
 		$('.dialog').dialog({
@@ -109,7 +113,7 @@ function Reservation(opts) {
 		$('#creatingNotifiation').hide();
 		$('#result').show();
 	};
-
+	
 	var AddResources = function() {
 		AddSelected('#dialogAddResources', '#additionalResources', options.additionalResourceElementId);
 		$('#dialogAddResources').dialog('close');
@@ -452,47 +456,47 @@ function Reservation(opts) {
 
 	function InitializeParticipationElements() {
 		elements.participantDialogPrompt.click(function() {
-			showAllUsersToAdd(elements.participantDialog);
+			participation.showAllUsersToAdd(elements.participantDialog);
 		});
 
 		elements.participantDialog.delegate('.add', 'click', function(){
-			addParticipant($(this).closest('li').text(), $(this).find('.id').val());
+			participation.addParticipant($(this).closest('li').text(), $(this).find('.id').val());
 		});
 
 		elements.participantList.delegate('.remove', 'click', function(){
 			var li = $(this).closest('li');
 			var id = li.find('.id').val();
 			li.remove();
-			removeParticipant(id);
+			participation.removeParticipant(id);
 		});
 
 		elements.participantAutocomplete.userAutoComplete(options.userAutocompleteUrl, function(ui) {
-			addParticipant(ui.item.label, ui.item.value);
+			this.addParticipant(ui.item.label, ui.item.value);
 		});
 
 		elements.inviteeDialogPrompt.click(function() {
-			showAllUsersToAdd(elements.inviteeDialog);
+			participation.showAllUsersToAdd(elements.inviteeDialog);
 		});
 
 		elements.inviteeDialog.delegate('.add', 'click', function(){
-			addInvitee($(this).closest('li').text(), $(this).find('.id').val());
+			participation.addInvitee($(this).closest('li').text(), $(this).find('.id').val());
 		});
 
 		elements.inviteeList.delegate('.remove', 'click', function(){
 			var li = $(this).closest('li');
 			var id = li.find('.id').val();
 			li.remove();
-			removeInvitee(id);
+			participation.removeInvitee(id);
 		});
 
 		elements.inviteeAutocomplete.userAutoComplete(options.userAutocompleteUrl, function(ui) {
-			addInvitee(ui.item.label, ui.item.value);
+			participation.addInvitee(ui.item.label, ui.item.value);
 		});
 	}
 
-	var addParticipant = function(name, userId)
+	participation.addParticipant = function(name, userId)
 	{
-		if ($.inArray(userId, addedParticipants) >= 0)
+		if ($.inArray(userId, participation.addedUsers) >= 0)
 		{
 			return;
 		}
@@ -505,12 +509,22 @@ function Reservation(opts) {
 
 		elements.participantList.find("ul").append(item);
 
-		addedParticipants.push(userId);
+		participation.addedUsers.push(userId);
 	};
 
-	var addInvitee = function(name, userId)
+	Reservation.prototype.addParticipant = function(name, userId)
 	{
-		if ($.inArray(userId, addedInvitees) >= 0)
+		participation.addParticipant(name, userId);
+	}
+
+	Reservation.prototype.addInvitee = function(name, userId)
+	{
+		participation.addInvitee(name, userId);
+	}
+	
+	participation.addInvitee = function(name, userId)
+	{
+		if ($.inArray(userId, participation.addedUsers) >= 0)
 		{
 			return;
 		}
@@ -523,28 +537,28 @@ function Reservation(opts) {
 
 		elements.inviteeList.find("ul").append(item);
 
-		addedInvitees.push(userId);
+		participation.addedUsers.push(userId);
 	};
 
-	var removeParticipant = function(userId)
+	participation.removeParticipant = function(userId)
 	{
-		var index = $.inArray(userId, addedParticipants);
+		var index = $.inArray(userId, participation.addedUsers);
 		if (index >= 0)
 		{
-			addedParticipants.splice(index, 1);
+			participation.addedUsers.splice(index, 1);
 		}
 	};
 
-	var removeInvitee = function(userId)
+	participation.removeInvitee = function(userId)
 	{
-		var index = $.inArray(userId, addedInvitees);
+		var index = $.inArray(userId, participation.addedUsers);
 		if (index >= 0)
 		{
-			addedInvitees.splice(index, 1);
+			participation.addedUsers.splice(index, 1);
 		}
 	};
 
-	var showAllUsersToAdd = function(dialogElement) {
+	participation.showAllUsersToAdd = function(dialogElement) {
 		var allUserList;
 		if (allUserList == null) {
 			$.ajax({

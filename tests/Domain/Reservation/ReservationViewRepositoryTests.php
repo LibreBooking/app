@@ -46,14 +46,21 @@ class ReservationViewRepositoryTests extends TestBase
 		$fname1 = 'f1';
 		$lname1 = 'l1';
 		$email1 = 'e1';
-		$level1 = 1;
 
 		$userId2 = 97;
 		$fname2 = 'f2';
 		$lname2 = 'l2';
 		$email2 = 'e2';
-		$level2 = 2;
+
+		$userId3 = 98;
+		$fname3 = 'f3';
+		$lname3 = 'l3';
+		$email3 = 'e3';
 		
+		$ownerLevel = ReservationUserLevel::OWNER;
+		$participantLevel = ReservationUserLevel::PARTICIPANT;
+		$inviteeLevel = ReservationUserLevel::INVITEE;
+
 		$getReservationForEditingCommand = new GetReservationForEditingCommand($referenceNumber);
 		$getReservationResources = new GetReservationResourcesCommand($seriesId);
 		$getParticpants = new GetReservationParticipantsCommand($reservationId);
@@ -81,14 +88,15 @@ class ReservationViewRepositoryTests extends TestBase
 			);
 			
 		$participantRows = array(
-			$this->GetParticipantRow($reservationId, $userId1, $fname1, $lname1, $email1, $level1),
-			$this->GetParticipantRow($reservationId, $userId2, $fname2, $lname2, $email2, $level2),
+			$this->GetParticipantRow($reservationId, $userId1, $fname1, $lname1, $email1, $ownerLevel),
+			$this->GetParticipantRow($reservationId, $userId2, $fname2, $lname2, $email2, $participantLevel),
+			$this->GetParticipantRow($reservationId, $userId3, $fname3, $lname3, $email3, $inviteeLevel),
 			);
 		
 		$this->db->SetRow(0, array($reservationRow));
 		$this->db->SetRow(1, $resourceRows);
 		$this->db->SetRow(2, $participantRows);
-			
+
 		$reservationView = $this->repository->GetReservationForEditing($referenceNumber);
 		
 		$commands = $this->db->_Commands;
@@ -103,7 +111,6 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->Description = $description;
 		$expectedView->EndDate = $endDate;
 		$expectedView->OwnerId = $ownerId;
-		$expectedView->ParticipantIds = array($userId1, $userId2);
 		$expectedView->ReferenceNumber = $referenceNumber;
 		$expectedView->ReservationId = $reservationId;
 		$expectedView->ResourceId = $resourceId;
@@ -117,8 +124,11 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->OwnerLastName = $ownerLast;
 		
 		$expectedView->Participants = array(
-			new ReservationUserView($userId1, $fname1, $lname1, $email1, $level1),
-			new ReservationUserView($userId2, $fname2, $lname2, $email2, $level2),
+			new ReservationUserView($userId2, $fname2, $lname2, $email2, $participantLevel),
+		);
+
+		$expectedView->Invitees = array(
+			new ReservationUserView($userId3, $fname3, $lname3, $email3, $inviteeLevel),
 			);
 			
 		$expectedView->Resources = array(

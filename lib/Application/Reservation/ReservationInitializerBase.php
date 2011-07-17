@@ -69,19 +69,32 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		
 		$bindableResourceData = $this->GetBindableResourceData($scheduleUser, $requestedResourceId);
 		$bindableUserData = $this->GetBindableUserData($userId);
-		
-		$this->basePage->BindAvailableUsers($bindableUserData->AvailableUsers);	
-		$this->basePage->BindAvailableResources($bindableResourceData->AvailableResources);		
-
-		$this->SetSelectedDates($startDate, $endDate, $schedulePeriods);
-		
 		$reservationUser = $bindableUserData->ReservationUser;
 		$this->basePage->SetReservationUser($reservationUser);
+		
+		$this->basePage->BindAvailableResources($bindableResourceData->AvailableResources);		
+
+		$participants = $this->GetParticipants();
+		$invitees = $this->GetInvitees();
+		$this->basePage->SetParticipants($participants);
+		$this->basePage->SetInvitees($invitees);
+		
+		$this->SetSelectedDates($startDate, $endDate, $schedulePeriods);
+		
 		$this->basePage->SetReservationResource($bindableResourceData->ReservationResource);
 		$this->basePage->SetScheduleId($requestedScheduleId);
 	}
-	
+
+	/**
+	 * @abstract
+	 * @return ReservationUserView[]
+	 */
 	protected abstract function GetResourceId();
+
+	/**
+	 * @abstract
+	 * @return ReservationUserView[]
+	 */
 	protected abstract function GetScheduleId();
 	
 	/**
@@ -103,24 +116,16 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	protected abstract function GetTimezone();
 	
 	protected abstract function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods);
+
+	protected abstract function GetParticipants();
+	protected abstract function GetInvitees();
 	
 	private function GetBindableUserData($userId)
 	{
-		$users = $this->userRepository->GetAll();	
+		$user = $this->userRepository->GetById($userId);
 
 		$bindableUserData = new BindableUserData();
-
-		foreach ($users as $user)
-		{
-			if ($user->Id() != $userId)
-			{
-				$bindableUserData->AddAvailableUser($user);
-			}
-			else
-			{
-				$bindableUserData->SetReservationUser($user);
-			}
-		}
+		$bindableUserData->SetReservationUser($user);
 		
 		return $bindableUserData;
 	}
@@ -145,5 +150,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		
 		return $bindableResourceData;
 	}
+
+
 }
 ?>
