@@ -471,7 +471,7 @@ function Reservation(opts) {
 		});
 
 		elements.participantAutocomplete.userAutoComplete(options.userAutocompleteUrl, function(ui) {
-			this.addParticipant(ui.item.label, ui.item.value);
+			participation.addParticipant(ui.item.label, ui.item.value);
 		});
 
 		elements.inviteeDialogPrompt.click(function() {

@@ -1,6 +1,7 @@
 $.fn.userAutoComplete = function(url, selectionCallback)
 {
 	var textbox = $(this);
+
 	textbox.autocomplete(
 		{
 			source: function(request, response) {

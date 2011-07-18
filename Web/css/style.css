@@ -464,3 +464,9 @@ a.page:hover {
 	background-color:#fafafa;
 	border-color: #bbbbbb;
 }
+
+.watermark {
+	color: #ebebeb;
+	font-style: italic;
+	font-weight: normal;
+}
