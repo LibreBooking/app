@@ -568,6 +568,39 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue(in_array($deleteInstance1, $this->db->_Commands));
 		$this->assertTrue(in_array($deleteInstance2, $this->db->_Commands));
 	}
+
+	public function testChangesParticipantsForAllInstances()
+	{
+		$reservation1 = new TestReservation();
+		$reservation1->WithParticipants(array(1, 2, 3));
+		$instanceId1 = $reservation1->ReservationId();
+
+		$reservation2 = new TestReservation();
+		$reservation2->WithParticipants(array(2, 3));
+		$instanceId2 = $reservation2->ReservationId();
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($reservation1);
+		$builder->WithInstance($reservation2);
+
+		$series = $builder->BuildTestVersion();
+		$series->ChangeParticipants(array(3, 4));
+		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+
+		$this->repository->Update($series);
+
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 1)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 2)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 3, ReservationUserLevel::PARTICIPANT)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 4, ReservationUserLevel::PARTICIPANT)));
+
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 1)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, 4, ReservationUserLevel::PARTICIPANT)));
+	}
+	function testRemoveInvitees()
+	{
+		$this->markTestIncomplete('2011.07.18 todo next');
+	}
 	
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
 	{
@@ -590,6 +623,11 @@ class ReservationRepositoryTests extends TestBase
 	private function GetAddUserCommand($reservationId, $userId, $levelId)
 	{
 		return new AddReservationUserCommand($reservationId, $userId, $levelId);
+	}
+
+	private function GetRemoveUserCommand($reservationId, $userId)
+	{
+		return new RemoveReservationUserCommand($reservationId, $userId);
 	}
 }
 

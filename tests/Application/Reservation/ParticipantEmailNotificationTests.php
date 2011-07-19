@@ -23,10 +23,13 @@ class ParticipantEmailNotificationTests extends TestBase
 		$participant1 = new User();
 		$participantId2 = 60;
 		$participant2 = new User();
+
+		$instance1 = new TestReservation();
+		$instance1->WithAddedParticipants(array($participantId1, $participantId2));
 		
 		$series = new TestReservationSeries();
 		$series->WithOwnerId($ownerId);
-		$series->WithAddedParticipants(array($participantId1, $participantId2));
+		$series->WithCurrentInstance($instance1);
 
 		$userRepo = $this->getMock('IUserRepository');
 
@@ -51,12 +54,16 @@ class ParticipantEmailNotificationTests extends TestBase
 		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
 		$lastExpectedMessage = new ParticipantAddedEmail($owner, $participant2, $series);
 		$this->assertEquals($lastExpectedMessage, $this->fakeEmailService->_LastMessage);
-
 	}
 	
-	public function testSendsReservationUpdatedEmailIfThereAreNewParticipants()
+	public function testSendsReservationUpdatedEmailToExistingParticipants()
 	{
-		$this->markTestIncomplete('2011.07.14');
+		$this->markTestIncomplete('2011.07.15');
+	}
+
+	public function testSendsReservationDeletedEmailToExistingParticipants()
+	{
+		$this->markTestIncomplete('2011.07.15');
 	}
 }
 

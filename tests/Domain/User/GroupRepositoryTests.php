@@ -164,10 +164,10 @@ class GroupRepositoryTests extends TestBase
 		$this->repository->Update($group);
 
 		$removeCommand1 = new DeleteGroupResourcePermission($groupId, $resource1);
-		$removeCommand2 = new AddGroupResourcePermission($groupId, $resource2);
+		$addGroup = new AddGroupResourcePermission($groupId, $resource2);
 
 		$this->assertTrue($this->db->ContainsCommand($removeCommand1));
-		$this->assertTrue($this->db->ContainsCommand($removeCommand2));
+		$this->assertTrue($this->db->ContainsCommand($addGroup));
 	}
 
 	public function testUpdateSavesNewGroupName()

@@ -20,7 +20,8 @@ class ParticipantAddedEmailNotification implements IReservationNotification
 	{
 		$owner = null;
 
-		foreach ($reservationSeries->AddedParticipants() as $userId)
+		$instance = $reservationSeries->CurrentInstance();
+		foreach ($instance->AddedParticipants() as $userId)
 		{
 			if ($owner == null)
 			{

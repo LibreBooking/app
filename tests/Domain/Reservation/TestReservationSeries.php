@@ -33,19 +33,5 @@ class TestReservationSeries extends ReservationSeries
 		$this->SetCurrentInstance($currentInstance);
 		$this->AddInstance($currentInstance);
 	}
-
-	/**
-	 * @param int[] $addedParticipantIds
-	 * @return void
-	 */
-	public function WithAddedParticipants($addedParticipantIds)
-	{
-		$this->addedParticipants = $addedParticipantIds;
-	}
-
-	public function WithAddedInvitees($addedInviteeIds)
-	{
-		$this->addedInvitees = $addedInviteeIds;
-	}
 }
 ?>

@@ -390,10 +390,50 @@ class ExistingReservationTests extends TestBase
 		$this->assertTrue(in_array(new InstanceUpdatedEvent($futureReservation1), $events));
 		$this->assertTrue(in_array(new InstanceUpdatedEvent($futureReservation2), $events));
 	}
+
+	public function testChangingParticipantsAddsNewRemovesOldAndKeepsOverlap()
+	{
+		$existingParticipants = array(1, 2, 3, 4);
+		$newParticipants = array(1, 5, 4, 6);
+
+		$reservation = new TestReservation();
+		$reservation->WithParticipants($existingParticipants);
+		
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($reservation);
+		$series = $builder->Build();
+
+		$series->ChangeParticipants($newParticipants);
+
+		$this->assertEquals(2, count($reservation->AddedParticipants()));
+		$this->assertEquals(array(5, 6), $reservation->AddedParticipants());
+		$this->assertEquals(array(2, 3), $reservation->RemovedParticipants());
+		$this->assertEquals(array(1, 4), $reservation->UnchangedParticipants());
+	}
+
+	public function testChangingInviteesAddsNewRemovesOldAndKeepsOverlap()
+	{
+		$existingInvitees = array(1, 2, 3, 4);
+		$newInvitees = array(1, 5, 4, 6);
+
+		$reservation = new TestReservation();
+		$reservation->WithInvitees($existingInvitees);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($reservation);
+		$series = $builder->Build();
+
+		$series->ChangeInvitees($newInvitees);
+
+		$this->assertEquals(2, count($reservation->AddedInvitees()));
+		$this->assertEquals(array(5, 6), $reservation->AddedInvitees());
+		$this->assertEquals(array(2, 3), $reservation->RemovedInvitees());
+		$this->assertEquals(array(1, 4), $reservation->UnchangedInvitees());
+	}
 	
 	public function testChangingDateOnlyAppliesToSingleInstance()
 	{
-		throw new Exception('todo');
+		$this->markTestIncomplete('not sure if this still applies');
 	}
 }
 ?>

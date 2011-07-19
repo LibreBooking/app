@@ -9,7 +9,7 @@ class ExistingReservationSeriesBuilder
 	/**
 	 * @var Reservation
 	 */
-	private $currentInstance;
+	public $currentInstance;
 	
 	/**
 	 * @var IRepeatOptions

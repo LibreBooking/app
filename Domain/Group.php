@@ -114,10 +114,11 @@ class Group
 	 */
 	public function ChangePermissions($allowedResourceIds = array())
 	{
-		$removed = array_diff($this->allowedResourceIds, $allowedResourceIds);
-		$added = array_diff($allowedResourceIds, $this->allowedResourceIds);
+		$diff = new ArrayDiff($this->allowedResourceIds, $allowedResourceIds);
+		$removed = $diff->GetRemovedFromArray1();
+		$added = $diff->GetAddedToArray1();
 
-		if (!empty($removed) || !empty($added))
+		if ($diff->AreDifferent())
 		{
 			$this->permissionsChanged = true;
 			$this->removedPermissions = $removed;

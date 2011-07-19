@@ -115,6 +115,19 @@ class ExistingReservationSeries extends ReservationSeries
 	/**
 	 * @internal
 	 */
+	public function WithParticipantId($participantId)
+	{
+		$this->_participantIds[] = $participantId;
+	}
+
+	public function WithInviteeId($inviteeId)
+	{
+		$this->_inviteeIds[] = $inviteeId;
+	}
+
+	/**
+	 * @internal
+	 */
 	public function RemoveInstance(Reservation $reservation)
 	{
 		if ($reservation == $this->CurrentInstance())
@@ -183,22 +196,13 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function ApplyChangesTo($seriesUpdateScope)
 	{
-		//if ($this->WasOrignallyNotRecurring())
-		{
-			$this->seriesUpdateStrategy = SeriesUpdateScope::CreateStrategy($seriesUpdateScope);
-		}
-
+		$this->seriesUpdateStrategy = SeriesUpdateScope::CreateStrategy($seriesUpdateScope);
+		
 		if ($this->seriesUpdateStrategy->RequiresNewSeries())
 		{
 			$this->AddEvent(new SeriesBranchedEvent($this));
 			$this->Repeats($this->seriesUpdateStrategy->GetRepeatOptions($this));
 		}
-	}
-
-	private function WasOrignallyNotRecurring()
-	{
-		// no idea if this is needed
-		return $this->_originalRepeatOptions == null || !$this->_originalRepeatOptions->Equals(new RepeatNone());
 	}
 
 	/**
@@ -258,13 +262,6 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function UpdateInstance(Reservation $instance, DateRange $newDate)
 	{
-		//echo "Start: {$newDate->GetBegin()} End: {$newDate->GetEnd()} ts: {$newDate->GetBegin()->Timestamp()}\n";
-		//if ($instance->ReferenceNumber() == $this->CurrentInstance()->ReferenceNumber())
-//		if ($this->IsCurrent($instance))
-//		{
-//			$this->SetCurrentInstance($instance);
-//		}
-
 		unset($this->instances[$this->CreateInstanceKey($instance)]);
 		
 		$instance->SetReservationDate($newDate);
@@ -305,6 +302,34 @@ class ExistingReservationSeries extends ReservationSeries
 	public function IsMarkedForUpdate($reservationId)
 	{
 		return in_array($reservationId, $this->_updateRequestIds);
+	}
+
+	/**
+	 * @param int[] $participantIds
+	 * @return void
+	 */
+	public function ChangeParticipants($participantIds)
+	{
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$instance->ChangeParticipants($participantIds);
+			$this->AddEvent(new InstanceUpdatedEvent($instance));
+		}
+	}
+
+	/**
+	 * @param int[] $inviteeIds
+	 * @return void
+	 */
+	public function ChangeInvitees($inviteeIds)
+	{
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$instance->ChangeInvitees($inviteeIds);
+			$this->AddEvent(new InstanceUpdatedEvent($instance));
+		}
 	}
 }
 
@@ -406,4 +431,5 @@ class SeriesDeletedEvent
 		return $this->series;
 	}
 }
+
 ?>

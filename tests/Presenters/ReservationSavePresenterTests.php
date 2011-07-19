@@ -99,8 +99,8 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals($description, $actualReservation->Description());
 		$this->assertEquals($duration, $actualReservation->CurrentInstance()->Duration());
 		$this->assertEquals($repeatOptions, $actualReservation->RepeatOptions());
-		$this->assertEquals($participants, $actualReservation->AddedParticipants());
-		$this->assertEquals($invitees, $actualReservation->AddedInvitees());
+		$this->assertEquals($participants, $actualReservation->CurrentInstance()->AddedParticipants());
+		$this->assertEquals($invitees, $actualReservation->CurrentInstance()->AddedInvitees());
 	}
 
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistanceAndNotification()

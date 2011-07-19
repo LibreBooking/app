@@ -23,5 +23,15 @@ class TestReservation extends Reservation
 		}
 		
 	}
+
+	public function WithAddedInvitees($inviteeIds)
+	{
+		$this->addedInvitees = $inviteeIds;
+	}
+
+	public function WithAddedParticipants($participantIds)
+	{
+		$this->addedParticipants = $participantIds;
+	}
 }
 ?>

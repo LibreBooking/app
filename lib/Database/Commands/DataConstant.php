@@ -498,6 +498,12 @@ class Queries
 		WHERE
 			reference_number = @referenceNumber';
 
+	const REMOVE_RESERVATION_USER =
+		'DELETE FROM
+			reservation_users
+		WHERE
+			reservation_instance_id = @reservationid AND user_id = @userid';
+
 	const ADD_RESOURCE = 
 		'INSERT INTO 
 			resources (name, location, contact_info, description, notes, isactive, min_duration, min_increment, 

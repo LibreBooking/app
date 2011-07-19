@@ -337,8 +337,6 @@ class ReservationEventMapper
 	
 	private function BuildAddReservationCommand(InstanceAddedEvent $event, ExistingReservationSeries $series)
 	{
-		$reservation = $event->Instance();
-		
 		return new InstanceAddedEventCommand($event->Instance(), $series);
 	}
 	
@@ -351,15 +349,7 @@ class ReservationEventMapper
 
 	private function BuildUpdateReservationCommand(InstanceUpdatedEvent $event, ExistingReservationSeries $series)
 	{
-		$instance = $event->Instance();
-		
-		return new EventCommand(
-			new UpdateReservationCommand(
-				$instance->ReferenceNumber(),
-				$series->SeriesId(),
-				$instance->StartDate(),
-				$instance->EndDate())
-			);
+		return new InstanceUpdatedEventCommand($event->Instance(), $series);
 	}	
 }
 
@@ -416,7 +406,7 @@ class InstanceAddedEventCommand extends EventCommand
 
 		$database->Execute($insertReservationUser);
 
-		foreach ($this->series->AddedParticipants() as $participantId)
+		foreach ($this->instance->AddedParticipants() as $participantId)
 		{
 			$insertReservationUser = new AddReservationUserCommand(
 				$reservationId,
@@ -426,7 +416,7 @@ class InstanceAddedEventCommand extends EventCommand
 			$database->Execute($insertReservationUser);
 		}
 
-		foreach ($this->series->AddedInvitees() as $inviteeId)
+		foreach ($this->instance->AddedInvitees() as $inviteeId)
 		{
 			$insertReservationUser = new AddReservationUserCommand(
 				$reservationId,
@@ -435,6 +425,64 @@ class InstanceAddedEventCommand extends EventCommand
 
 			$database->Execute($insertReservationUser);
 		}
+	}
+}
+
+class InstanceUpdatedEventCommand extends EventCommand
+{
+	/**
+	 * @var Reservation
+	 */
+	private $instance;
+
+	/**
+	 * @var ExistingReservationSeries
+	 */
+	private $series;
+
+	public function __construct(Reservation $instance, ExistingReservationSeries $series)
+	{
+		$this->instance = $instance;
+		$this->series = $series;
+	}
+
+	public function Execute(Database $database)
+	{
+		$updateReservationCommand = new UpdateReservationCommand(
+				$this->instance->ReferenceNumber(),
+				$this->series->SeriesId(),
+				$this->instance->StartDate(),
+				$this->instance->EndDate());
+
+		$database->Execute($updateReservationCommand);
+		
+		foreach ($this->instance->AddedParticipants() as $participantId)
+		{
+			$insertReservationUser = new AddReservationUserCommand(
+				$this->instance->ReservationId(),
+				$participantId,
+				ReservationUserLevel::PARTICIPANT);
+
+			$database->Execute($insertReservationUser);
+		}
+
+		foreach ($this->instance->RemovedParticipants() as $participantId)
+		{
+			$removeReservationUser = new RemoveReservationUserCommand(
+				$this->instance->ReservationId(),
+				$participantId);
+
+			$database->Execute($removeReservationUser);
+		}
+//		foreach ($this->series->AddedInvitees() as $inviteeId)
+//		{
+//			$insertReservationUser = new AddReservationUserCommand(
+//				$reservationId,
+//				$inviteeId,
+//				ReservationUserLevel::INVITEE);
+//
+//			$database->Execute($insertReservationUser);
+//		}
 	}
 }
 

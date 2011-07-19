@@ -28,7 +28,7 @@
 			<img src="img/disk-black.png" />
 			{translate key='Update'}
 		</button>
-		<div id="updateButtons" style="display:none;">
+		<div id="updateButtons" style="display:none;" title="{translate key=ApplyUpdatesTo}">
 			<div style="text-align: center;line-height:50px;">
 				<button type="button" id="btnUpdateThisInstance" class="button save">
 					<img src="img/disk-black.png" alt="" />

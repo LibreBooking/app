@@ -24,9 +24,12 @@ class InvitationEmailNotificationTests extends TestBase
 		$inviteeId2 = 60;
 		$invitee2 = new User();
 
+		$instance1 = new TestReservation();
+		$instance1->WithAddedInvitees(array($inviteeId1, $inviteeId2));
+
 		$series = new TestReservationSeries();
+		$series->WithCurrentInstance($instance1);
 		$series->WithOwnerId($ownerId);
-		$series->WithAddedInvitees(array($inviteeId1, $inviteeId2));
 
 		$userRepo = $this->getMock('IUserRepository');
 
