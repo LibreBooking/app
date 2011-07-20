@@ -252,7 +252,7 @@ class ReservationRepositoryTests extends TestBase
 		$seriesId = 10;
 		$reservationId = 1;
 		$referenceNumber = 'currentInstanceRefNum';
-		$userId = 10;
+		$ownerId = 10;
 		$resourceId = 100;
 		$scheduleId = 1000;
 		$title = 'title';
@@ -264,13 +264,18 @@ class ReservationRepositoryTests extends TestBase
 		$duration = DateRange::Create($begin, $end, 'UTC');
 		$interval = 3;
 		$repeatType = RepeatType::Daily;
-		$terminiationDateString = '2010-01-20 12:30:00'; 
-		$terminationDate = Date::FromDatabase($terminiationDateString);
+		$terminationDateString = '2010-01-20 12:30:00';
+		$terminationDate = Date::FromDatabase($terminationDateString);
 		$repeatOptions = new RepeatDaily($interval, $terminationDate);
-		
+
+		$instance1Invitees = array(1, 2, 3);
+		$instance1Participants = array(4, 5);
+		$instance2Invitees = array(6);
+		$instance2Participants = array(7, 8, 9);
+
 		$expected = new ExistingReservationSeries();
 		$expected->WithId($seriesId);
-		$expected->WithOwner($userId);
+		$expected->WithOwner($ownerId);
 		$expected->WithPrimaryResource($resourceId);
 		$expected->WithSchedule($scheduleId);
 		$expected->WithTitle($title);
@@ -278,12 +283,19 @@ class ReservationRepositoryTests extends TestBase
 		$expected->WithResource($resourceId1);
 		$expected->WithResource($resourceId2);
 		$expected->WithRepeatOptions($repeatOptions);
+
 		$instance1 = new Reservation($expected, $duration->AddDays(10));
 		$instance1->SetReferenceNumber('instance1');
 		$instance1->SetReservationId(909);
+		$instance1->WithInvitees($instance1Invitees);
+		$instance1->WithParticipants($instance1Participants);
+		
 		$instance2 = new Reservation($expected, $duration->AddDays(20));
 		$instance2->SetReferenceNumber('instance2');
 		$instance2->SetReservationId(1909);
+		$instance2->WithInvitees($instance2Invitees);
+		$instance2->WithParticipants($instance2Participants);
+		
 		$expected->WithInstance($instance1);
 		$expected->WithInstance($instance2);
 			
@@ -302,7 +314,8 @@ class ReservationRepositoryTests extends TestBase
 			$repeatOptions->ConfigurationString(),
 			$referenceNumber,
 			$scheduleId,
-			$seriesId
+			$seriesId,
+			$ownerId
 			);
 			
 		$reservationInstanceRow = new ReservationInstanceRow($seriesId);
@@ -317,10 +330,14 @@ class ReservationRepositoryTests extends TestBase
 			->WithAdditional($resourceId1)
 			->WithAdditional($resourceId2);
 			
-		$reservationUserRow = new ReservationUserRow($reservationId);
+		$reservationUserRow = new ReservationUserRow();
 		$reservationUserRow
-			->WithOwner($userId);
-		
+			//->WithOwner($userId)
+			->WithParticipants($instance1, $instance1Participants)
+			->WithParticipants($instance2, $instance2Participants)
+			->WithInvitees($instance1, $instance1Invitees)
+			->WithInvitees($instance2, $instance2Invitees);
+
 		$this->db->SetRow(0, $reservationRow->Rows());
 		$this->db->SetRow(1, $reservationInstanceRow->Rows());
 		$this->db->SetRow(2, $reservationResourceRow->Rows());
@@ -333,7 +350,7 @@ class ReservationRepositoryTests extends TestBase
 		$getReservation = new GetReservationByIdCommand($reservationId);
 		$getInstances = new GetReservationSeriesInstances($seriesId);
 		$getResources = new GetReservationResourcesCommand($seriesId);
-		$getParticipants = new GetReservationParticipantsCommand($reservationId);
+		$getParticipants = new GetReservationSeriesParticipantsCommand($seriesId);
 		
 		$this->assertTrue(in_array($getReservation, $this->db->_Commands));
 		$this->assertTrue(in_array($getInstances, $this->db->_Commands));
@@ -585,7 +602,6 @@ class ReservationRepositoryTests extends TestBase
 
 		$series = $builder->BuildTestVersion();
 		$series->ChangeParticipants(array(3, 4));
-		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
 
 		$this->repository->Update($series);
 
@@ -597,9 +613,33 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 1)));
 		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, 4, ReservationUserLevel::PARTICIPANT)));
 	}
-	function testRemoveInvitees()
+
+	public function testChangesInviteesForAllInstances()
 	{
-		$this->markTestIncomplete('2011.07.18 todo next');
+		$reservation1 = new TestReservation();
+		$reservation1->WithInvitees(array(1, 2, 3));
+		$instanceId1 = $reservation1->ReservationId();
+
+		$reservation2 = new TestReservation();
+		$reservation2->WithInvitees(array(2, 3));
+		$instanceId2 = $reservation2->ReservationId();
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($reservation1);
+		$builder->WithInstance($reservation2);
+
+		$series = $builder->BuildTestVersion();
+		$series->ChangeInvitees(array(3, 4));
+
+		$this->repository->Update($series);
+
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 1)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 2)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 3, ReservationUserLevel::INVITEE)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 4, ReservationUserLevel::INVITEE)));
+
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 1)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, 4, ReservationUserLevel::INVITEE)));
 	}
 	
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
@@ -651,7 +691,8 @@ class ReservationRow
 		$repeatOptions,
 		$referenceNumber,
 		$scheduleId,
-		$seriesId
+		$seriesId,
+		$ownerId
 		)
 	{
 		$this->row =  array(
@@ -665,7 +706,8 @@ class ReservationRow
 			ColumnNames::REPEAT_OPTIONS => $repeatOptions,
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
 			ColumnNames::SCHEDULE_ID => $scheduleId,
-			ColumnNames::SERIES_ID => $seriesId
+			ColumnNames::SERIES_ID => $seriesId,
+			ColumnNames::RESERVATION_OWNER => $ownerId
 		);
 	}
 }
@@ -739,28 +781,56 @@ class ReservationResourceRow
 
 class ReservationUserRow
 {
-	private $seriesId;
 	private $rows = array();
 	
 	public function Rows()
 	{
 		return $this->rows;
 	}
+
+//	/**
+//	 * @param int $userId
+//	 * @return ReservationUserRow
+//	 */
+//	public function WithOwner($userId)
+//	{
+//		$this->AddRow($userId, ReservationUserLevel::OWNER);
+//		return $this;
+//	}
 	
-	public function __construct($seriesId)
+	private function AddRow($referenceNumber, $userId, $levelId)
 	{
-		$this->seriesId = $seriesId;
+		$this->rows[] = array(ColumnNames::REFERENCE_NUMBER => $referenceNumber,
+							  ColumnNames::USER_ID => $userId,
+							  ColumnNames::RESERVATION_USER_LEVEL => $levelId);
 	}
-	
-	public function WithOwner($userId)
+
+	/**
+	 * @param Reservation $instance
+	 * @param array|int[] $participantIds
+	 * @return ReservationUserRow
+	 */
+	public function WithParticipants($instance, $participantIds)
 	{
-		$this->AddRow($userId, ReservationUserLevel::OWNER);
+		foreach ($participantIds as $id)
+		{
+			$this->AddRow($instance->ReferenceNumber(), $id, ReservationUserLevel::PARTICIPANT);
+		}
 		return $this;
 	}
-	
-	private function AddRow($userId, $levelId)
+
+	/**
+	 * @param Reservation $instance
+	 * @param array|int[] $inviteeIds
+	 * @return ReservationUserRow
+	 */
+	public function WithInvitees($instance, $inviteeIds)
 	{
-		$this->rows[] = array(ColumnNames::SERIES_ID => $this->seriesId, ColumnNames::USER_ID => $userId, ColumnNames::RESERVATION_USER_LEVEL => $levelId);
+		foreach ($inviteeIds as $id)
+		{
+			$this->AddRow($instance->ReferenceNumber(), $id, ReservationUserLevel::INVITEE);
+		}
+		return $this;
 	}
 }
 ?>

@@ -147,6 +147,11 @@ class Reservation
 		$this->_participantIds = $participantIds;
 	}
 
+	public function WithParticipant($participantId)
+	{
+		$this->_participantIds[] = $participantId;
+	}
+
 	/**
 	 * @internal
 	 * @param array|int[] $inviteeIds
@@ -155,6 +160,11 @@ class Reservation
 	public function WithInvitees($inviteeIds)
 	{
 		$this->_inviteeIds = $inviteeIds;
+	}
+
+	public function WithInvitee($inviteeId)
+	{
+		$this->_inviteeIds[] = $inviteeId;
 	}
 
 	/**

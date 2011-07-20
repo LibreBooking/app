@@ -25,7 +25,6 @@ class ReservationRepository implements IReservationRepository
 	
 	public function LoadById($reservationId)
 	{
-		$database = ServiceLocator::GetDatabase();
 		$getReservationCommand = new GetReservationByIdCommand($reservationId);
 
 		$reader = ServiceLocator::GetDatabase()->Query($getReservationCommand);
@@ -198,6 +197,7 @@ class ReservationRepository implements IReservationRepository
 			$series->WithSchedule($scheduleId);
 			$series->WithTitle($title);
 			$series->WithDescription($description);
+			$series->WithOwner($row[ColumnNames::RESERVATION_OWNER]);
 
 			$startDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
@@ -259,19 +259,19 @@ class ReservationRepository implements IReservationRepository
 	
 	private function AddParticipants(ExistingReservationSeries $series)
 	{
-		$reservationId = $series->CurrentInstance()->ReservationId();
-		
-		$getParticipantsCommand = new GetReservationParticipantsCommand($reservationId);
+		$getSeriesParticipants = new GetReservationSeriesParticipantsCommand($series->SeriesId());
 
-		$reader = ServiceLocator::GetDatabase()->Query($getParticipantsCommand);
+		$reader = ServiceLocator::GetDatabase()->Query($getSeriesParticipants);
 		while ($row = $reader->GetRow())
 		{
-			$userId = $row[ColumnNames::USER_ID];
-			if ($row[ColumnNames::RESERVATION_USER_LEVEL] == ReservationUserLevel::OWNER)
+			if ($row[ColumnNames::RESERVATION_USER_LEVEL] == ReservationUserLevel::PARTICIPANT)
 			{
-				$series->WithOwner($userId);
+				$series->GetInstance($row[ColumnNames::REFERENCE_NUMBER])->WithParticipant($row[ColumnNames::USER_ID]);
 			}
-			// TODO:  Add to participant list
+			if ($row[ColumnNames::RESERVATION_USER_LEVEL] == ReservationUserLevel::INVITEE)
+			{
+				$series->GetInstance($row[ColumnNames::REFERENCE_NUMBER])->WithInvitee($row[ColumnNames::USER_ID]);
+			}
 		}
 		$reader->Free();
 	}
@@ -448,6 +448,7 @@ class InstanceUpdatedEventCommand extends EventCommand
 
 	public function Execute(Database $database)
 	{
+		$instanceId = $this->instance->ReservationId();
 		$updateReservationCommand = new UpdateReservationCommand(
 				$this->instance->ReferenceNumber(),
 				$this->series->SeriesId(),
@@ -459,7 +460,7 @@ class InstanceUpdatedEventCommand extends EventCommand
 		foreach ($this->instance->AddedParticipants() as $participantId)
 		{
 			$insertReservationUser = new AddReservationUserCommand(
-				$this->instance->ReservationId(),
+				$instanceId,
 				$participantId,
 				ReservationUserLevel::PARTICIPANT);
 
@@ -469,20 +470,30 @@ class InstanceUpdatedEventCommand extends EventCommand
 		foreach ($this->instance->RemovedParticipants() as $participantId)
 		{
 			$removeReservationUser = new RemoveReservationUserCommand(
-				$this->instance->ReservationId(),
+				$instanceId,
 				$participantId);
 
 			$database->Execute($removeReservationUser);
 		}
-//		foreach ($this->series->AddedInvitees() as $inviteeId)
-//		{
-//			$insertReservationUser = new AddReservationUserCommand(
-//				$reservationId,
-//				$inviteeId,
-//				ReservationUserLevel::INVITEE);
-//
-//			$database->Execute($insertReservationUser);
-//		}
+
+		foreach ($this->instance->AddedInvitees() as $inviteeId)
+		{
+			$insertReservationUser = new AddReservationUserCommand(
+				$instanceId,
+				$inviteeId,
+				ReservationUserLevel::INVITEE);
+
+			$database->Execute($insertReservationUser);
+		}
+
+		foreach ($this->instance->RemovedInvitees() as $inviteeId)
+		{
+			$insertReservationUser = new RemoveReservationUserCommand(
+				$instanceId,
+				$inviteeId);
+
+			$database->Execute($insertReservationUser);
+		}
 	}
 }
 

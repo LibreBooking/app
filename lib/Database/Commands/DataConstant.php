@@ -348,6 +348,12 @@ class Queries
 		'SELECT *
 		FROM reservation_instances
 		WHERE series_id = @seriesid';
+
+	const GET_RESERVATION_SERIES_PARTICIPANTS =
+		'SELECT ru.*, ri.*
+		FROM reservation_users ru
+		INNER JOIN reservation_instances ri ON ru.reservation_instance_id = ri.reservation_instance_id
+		WHERE series_id = @seriesid';
 	
 	// TODO: Pass in "Deleted" status ID
 	const GET_RESERVATIONS_COMMAND =
