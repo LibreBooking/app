@@ -14,7 +14,7 @@ class ExistingResourceAvailabilityRule extends ResourceAvailabilityRule implemen
 		if ($scheduleReservation->GetReservationId() == $instance->ReservationId() ||
 			$series->IsMarkedForDelete($scheduleReservation->GetReservationId()) ||
 			$series->IsMarkedForUpdate($scheduleReservation->GetReservationId())
-			)		
+		)
 		{
 			return false;
 		}

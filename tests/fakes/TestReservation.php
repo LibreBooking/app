@@ -2,7 +2,7 @@
 
 class TestReservation extends Reservation
 {
-	public function __construct($referenceNumber = null, $reservationDate = null)
+	public function __construct($referenceNumber = null, $reservationDate = null, $reservationId = null)
 	{
 		if (!empty($referenceNumber))
 		{
@@ -21,7 +21,8 @@ class TestReservation extends Reservation
 		{
 			$this->SetReservationDate(new TestDateRange());
 		}
-		
+
+		$this->SetReservationId($reservationId);
 	}
 
 	public function WithAddedInvitees($inviteeIds)

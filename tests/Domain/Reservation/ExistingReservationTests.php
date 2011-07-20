@@ -301,13 +301,13 @@ class ExistingReservationTests extends TestBase
 		$instance1Date = $dateRange->AddDays(5);
 		$instance2Date = $dateRange->AddDays(8);
 		
-		$instance1 = new TestReservation('123', $instance1Date);
+		$instance1 = new TestReservation('123', $instance1Date, 100);
 		
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithRepeatOptions($repeatOptions);
 		$builder->WithInstance($instance1);
-		$builder->WithInstance(new TestReservation('223', $instance2Date));
-		$builder->WithCurrentInstance(new TestReservation('1', $dateRange));
+		$builder->WithInstance(new TestReservation('223', $instance2Date, 101));
+		$builder->WithCurrentInstance(new TestReservation('1', $dateRange, 102));
 		
 		$series = $builder->Build();
 		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
@@ -361,15 +361,15 @@ class ExistingReservationTests extends TestBase
 		$currentSeriesDate = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(2));
 
 		$oldDates = $currentSeriesDate->AddDays(-4);
-		$oldReservation = new TestReservation('old', $oldDates);
+		$oldReservation = new TestReservation('old', $oldDates, 1);
 		
-		$currentInstance = new TestReservation('current', $currentSeriesDate);
+		$currentInstance = new TestReservation('current', $currentSeriesDate, 2);
 		
 		$futureDates1 = $currentSeriesDate->AddDays(1);
-		$futureReservation1 = new TestReservation('new1', $futureDates1);
+		$futureReservation1 = new TestReservation('new1', $futureDates1, 3);
 		
 		$futureDates2 = $currentSeriesDate->AddDays(10);
-		$futureReservation2 = new TestReservation('new2', $futureDates2);
+		$futureReservation2 = new TestReservation('new2', $futureDates2, 4);
 		
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithCurrentInstance($currentInstance);
@@ -431,9 +431,23 @@ class ExistingReservationTests extends TestBase
 		$this->assertEquals(array(1, 4), $reservation->UnchangedInvitees());
 	}
 	
-	public function testChangingDateOnlyAppliesToSingleInstance()
+	public function testDuplicateEventsAreIgnored()
 	{
-		$this->markTestIncomplete('not sure if this still applies');
+		$reservation = new TestReservation();
+		$reservation->WithInvitees(array(1));
+		$reservation->SetReservationId(100);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($reservation);
+		$series = $builder->Build();
+
+		$series->ChangeInvitees(array(2));
+		$series->ChangeInvitees(array(3));
+
+		$events = $series->GetEvents();
+		$unique = array_unique($events);
+		
+		$this->assertEquals(count($unique), count($events));
 	}
 }
 ?>

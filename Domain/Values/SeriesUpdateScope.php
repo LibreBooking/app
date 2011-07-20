@@ -185,12 +185,17 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 	{
 		return Date::Now();
 	}
-	
+
+	/**
+	 * @param ReservationSeries $series
+	 * @param IRepeatOptions $targetRepeatOptions
+	 * @return bool
+	 */
 	public function CanChangeRepeatTo($series, $targetRepeatOptions)
 	{
 		$this->hasSameConfiguration = $targetRepeatOptions->HasSameConfigurationAs($series->RepeatOptions());
 		
-		return parent::CanChangeRepeatTo($series, $targetRepeatOptions) && !$this->hasSameConfiguration;
+		return parent::CanChangeRepeatTo($series, $targetRepeatOptions);
 	}
 	
 	public function RequiresNewSeries()

@@ -244,6 +244,14 @@ class Reservation
 
 		$this->_inviteeIds = $inviteeIds;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsNew()
+	{
+		return $this->ReservationId() == null;
+	}
 }
 
 ?>

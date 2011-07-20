@@ -245,6 +245,8 @@ class ExistingReservationSeries extends ReservationSeries
 		}
 		else
 		{
+			Log::Debug("Removing series %s", $this->SeriesId());
+			
 			$this->AddEvent(new SeriesDeletedEvent($this));
 		}
 	}
@@ -275,13 +277,22 @@ class ExistingReservationSeries extends ReservationSeries
 		$instance->SetReservationDate($newDate);
 		$this->AddInstance($instance);
 
-		$this->AddEvent(new InstanceUpdatedEvent($instance));
-		$this->_updateRequestIds[] = $instance->ReservationId();
+		$this->RaiseInstanceUpdatedEvent($instance);
+
+	}
+
+	private function RaiseInstanceUpdatedEvent(Reservation $instance)
+	{
+		if (!$instance->IsNew())
+		{
+			$this->AddEvent(new InstanceUpdatedEvent($instance));
+			$this->_updateRequestIds[] = $instance->ReservationId();
+		}
 	}
 
 	public function GetEvents()
 	{
-		return $this->events;
+		return array_unique($this->events);
 	}
 
 	public function Instances()
@@ -322,8 +333,7 @@ class ExistingReservationSeries extends ReservationSeries
 		foreach ($this->Instances() as $instance)
 		{
 			$instance->ChangeParticipants($participantIds);
-
-			$this->AddEvent(new InstanceUpdatedEvent($instance));
+			$this->RaiseInstanceUpdatedEvent($instance);
 		}
 	}
 
@@ -337,7 +347,7 @@ class ExistingReservationSeries extends ReservationSeries
 		foreach ($this->Instances() as $instance)
 		{
 			$instance->ChangeInvitees($inviteeIds);
-			$this->AddEvent(new InstanceUpdatedEvent($instance));
+			$this->RaiseInstanceUpdatedEvent($instance);
 		}
 	}
 }
@@ -361,6 +371,11 @@ class InstanceAddedEvent
 	{
 		$this->instance = $reservationInstance;
 	}
+	
+	public function __toString()
+	{
+        return sprintf("%s%s", get_class($this), $this->instance->ReferenceNumber());
+    }
 }
 
 class InstanceRemovedEvent
@@ -382,6 +397,11 @@ class InstanceRemovedEvent
 	{
 		$this->instance = $reservationInstance;
 	}
+
+	public function __toString()
+	{
+        return sprintf("%s%s", get_class($this), $this->instance->ReferenceNumber());
+    }
 }
 
 class InstanceUpdatedEvent
@@ -403,6 +423,11 @@ class InstanceUpdatedEvent
 	{
 		$this->instance = $reservationInstance;
 	}
+
+	public function __toString()
+	{
+        return sprintf("%s%s", get_class($this), $this->instance->ReferenceNumber());
+    }
 }
 
 class SeriesBranchedEvent
@@ -421,6 +446,11 @@ class SeriesBranchedEvent
 	{
 		return $this->series;
 	}
+
+	public function __toString()
+	{
+        return sprintf("%s%s", get_class($this), $this->series->SeriesId());
+    }
 }
 
 class SeriesDeletedEvent
@@ -439,6 +469,11 @@ class SeriesDeletedEvent
 	{
 		return $this->series;
 	}
+
+	public function __toString()
+	{
+        return sprintf("%s%s", get_class($this), $this->series->SeriesId());
+    }
 }
 
 ?>

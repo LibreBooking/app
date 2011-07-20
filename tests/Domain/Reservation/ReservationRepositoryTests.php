@@ -588,13 +588,13 @@ class ReservationRepositoryTests extends TestBase
 
 	public function testChangesParticipantsForAllInstances()
 	{
-		$reservation1 = new TestReservation();
+		$instanceId1 = 100;
+		$reservation1 = new TestReservation(null, null, $instanceId1);
 		$reservation1->WithParticipants(array(1, 2, 3));
-		$instanceId1 = $reservation1->ReservationId();
 
-		$reservation2 = new TestReservation();
+		$instanceId2 = 101;
+		$reservation2 = new TestReservation(null, null, $instanceId2);
 		$reservation2->WithParticipants(array(2, 3));
-		$instanceId2 = $reservation2->ReservationId();
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithInstance($reservation1);
@@ -607,22 +607,21 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 1)));
 		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 2)));
-		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 3, ReservationUserLevel::PARTICIPANT)));
 		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 4, ReservationUserLevel::PARTICIPANT)));
 
-		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 1)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 2)));
 		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, 4, ReservationUserLevel::PARTICIPANT)));
 	}
 
 	public function testChangesInviteesForAllInstances()
 	{
-		$reservation1 = new TestReservation();
+		$instanceId1 = 100;
+		$reservation1 = new TestReservation(null, null, $instanceId1);
 		$reservation1->WithInvitees(array(1, 2, 3));
-		$instanceId1 = $reservation1->ReservationId();
 
-		$reservation2 = new TestReservation();
+		$instanceId2 = 101;
+		$reservation2 = new TestReservation(null, null, $instanceId2);
 		$reservation2->WithInvitees(array(2, 3));
-		$instanceId2 = $reservation2->ReservationId();
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithInstance($reservation1);
@@ -635,10 +634,9 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 1)));
 		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, 2)));
-		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 3, ReservationUserLevel::INVITEE)));
 		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, 4, ReservationUserLevel::INVITEE)));
 
-		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 1)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 2)));
 		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, 4, ReservationUserLevel::INVITEE)));
 	}
 	
