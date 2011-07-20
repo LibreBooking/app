@@ -7,7 +7,9 @@
 	<property name="staging" value="../staging"/>
 	<property name="stagingdir" value="${staging}/phpScheduleIt"/>
 
-	<property name="mysql.bin" value="C:/Program Files/MySQL/MySQL Server 5.1/bin" />
+	<!--<property name="mysql.bin" value="C:/Program Files/MySQL/MySQL Server 5.1/bin" />-->
+	<property name="mysql.bin" value="C:/xampp/mysql/bin" />
+	<property name="mysql.bin.64bit" value="C:/Program Files (x86)/MySQL/MySQL Server 5.1/bin" />
 	<property name="mysql.username" value="root"/>
 	<property name="mysql.password" value=""/>
 	<property name="mysql.server" value="127.0.0.1"/>
@@ -17,7 +19,6 @@
 	<property name="sql.file.test.data" value="database_schema/testdata-utf8.sql"/>
 
 	<target name="setup.db" description="setting up the latest version of the database">
-
 		<if>
 			<equals arg1="${mysql.password}" arg2="" />
 			<then>

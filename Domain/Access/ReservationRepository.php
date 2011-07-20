@@ -505,7 +505,7 @@ interface IReservationRepository
 	 * @param Date $startDate
 	 * @param Date $endDate
 	 * @param int $scheduleId (defaults to all schedules
-	 * @return array of ScheduleReservation
+	 * @return array|ScheduleReservation[] of ScheduleReservation
 	 */
 	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES);
 

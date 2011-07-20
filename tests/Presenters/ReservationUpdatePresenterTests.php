@@ -31,6 +31,11 @@ class ReservationUpdatePresenterTests extends TestBase
 	 * @var IUpdateReservationNotificationService
 	 */
 	private $notificationService;
+
+	/**
+	 * @var ReservationUpdatePresenter
+	 */
+	private $presenter;
 	
 	public function setup()
 	{
@@ -93,12 +98,13 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($this->page->resourceId, $existingSeries->ResourceId());
 		$this->assertEquals($this->page->repeatOptions, $existingSeries->RepeatOptions());
 		$this->assertEquals($this->page->resourceIds, $existingSeries->Resources());
+		$this->assertEquals($this->page->participants, $existingSeries->CurrentInstance()->AddedParticipants());
+		$this->assertEquals($this->page->invitees, $existingSeries->CurrentInstance()->AddedInvitees());
 		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()), "$expectedDuration {$existingSeries->CurrentInstance()->Duration()}");
 	}
 	
-	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistanceAndNotification()
+	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistenceAndNotification()
 	{
-		
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
 		$instance = new Reservation($series, NullDateRange::Instance());
@@ -160,6 +166,11 @@ class FakeReservationUpdatePage extends FakeReservationSavePage implements IRese
 {
 	public $reservationId = 100;
 	public $seriesUpdateScope = SeriesUpdateScope::FullSeries;
+
+	public function __construct()
+	{
+	    parent::__construct();
+	}
 	
 	public function GetReservationId()
 	{

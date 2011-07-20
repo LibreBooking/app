@@ -173,6 +173,8 @@ class ExistingReservationSeries extends ReservationSeries
 			return;
 		}
 
+		Log::Debug('Updating duration for series %s', $this->SeriesId());
+
 		$currentBegin = $currentDuration->GetBegin();
 		$currentEnd = $currentDuration->GetEnd();
 
@@ -212,6 +214,8 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		if ($this->seriesUpdateStrategy->CanChangeRepeatTo($this, $repeatOptions))
 		{
+			Log::Debug('Updating recurrence for series %s', $this->SeriesId());
+			
 			$this->_repeatOptions = $repeatOptions;
 				
 			foreach ($this->instances as $instance)
@@ -234,6 +238,8 @@ class ExistingReservationSeries extends ReservationSeries
 		{
 			foreach ($this->Instances() as $instance)
 			{
+				Log::Debug("Removing instance %s from series %s", $instance->ReferenceNumber(), $this->SeriesId());
+				
 				$this->AddEvent(new InstanceRemovedEvent($instance));
 			}
 		}
@@ -252,6 +258,8 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		if (!$this->InstanceExistsOnDate($reservationDate))
 		{
+			Log::Debug('Adding instance for series %s on %s', $this->SeriesId(), $reservationDate);
+
 			$newInstance = parent::AddNewInstance($reservationDate);
 			$this->AddEvent(new InstanceAddedEvent($newInstance));
 		}
@@ -314,6 +322,7 @@ class ExistingReservationSeries extends ReservationSeries
 		foreach ($this->Instances() as $instance)
 		{
 			$instance->ChangeParticipants($participantIds);
+
 			$this->AddEvent(new InstanceUpdatedEvent($instance));
 		}
 	}

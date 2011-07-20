@@ -5,8 +5,19 @@ require_once(ROOT_DIR . 'Presenters/ReservationSavePresenter.php');
 
 interface IReservationSavePage extends IReservationSaveResultsPage
 {
+	/**
+	 * @return int
+	 */
 	public function GetUserId();
+
+	/**
+	 * @return int
+	 */
 	public function GetResourceId();
+
+	/**
+	 * @return int
+	 */
 	public function GetScheduleId();
 	
 	/**

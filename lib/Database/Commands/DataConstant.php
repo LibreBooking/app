@@ -736,7 +736,8 @@ class ColumnNames
 	const REPEAT_OPTIONS = 'repeat_options';
 	const RESERVATION_STATUS = 'status_id';
 	const SERIES_ID = 'series_id';
-	
+	const RESERVATION_OWNER = 'owner_id';
+
 	// RESERVATION_INSTANCE //
 	const RESERVATION_INSTANCE_ID = 'reservation_instance_id';
 	const RESERVATION_START = 'start_date';
@@ -744,7 +745,6 @@ class ColumnNames
 	const REFERENCE_NUMBER = 'reference_number';
 	
 	// RESERVATION_USER //
-	const RESERVATION_OWNER = 'reservation_owner';
 	const RESERVATION_USER_LEVEL = 'reservation_user_level';
 	
 	// RESOURCE //

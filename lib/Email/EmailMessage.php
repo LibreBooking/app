@@ -23,7 +23,7 @@ abstract class EmailMessage implements IEmailMessage
 	
 	protected function Translate($key, $args = array())
 	{
-		return $this->email->Translate($key, $args);
+		return $this->email->SmartyTranslate($key, $args);
 	}
 	
 	public function ReplyTo()

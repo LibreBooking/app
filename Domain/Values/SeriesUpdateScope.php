@@ -101,7 +101,12 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 	{
 		return $series->RepeatOptions();
 	}
-	
+
+	/**
+	 * @param ReservationSeries $series
+	 * @param IRepeatOptions $targetRepeatOptions
+	 * @return bool
+	 */
 	public function CanChangeRepeatTo($series, $targetRepeatOptions)
 	{
 		return !$targetRepeatOptions->Equals($series->RepeatOptions());
@@ -185,8 +190,7 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 	{
 		$this->hasSameConfiguration = $targetRepeatOptions->HasSameConfigurationAs($series->RepeatOptions());
 		
-		return parent::CanChangeRepeatTo($series, $targetRepeatOptions) ||
-			$this->hasSameConfiguration;
+		return parent::CanChangeRepeatTo($series, $targetRepeatOptions) && !$this->hasSameConfiguration;
 	}
 	
 	public function RequiresNewSeries()

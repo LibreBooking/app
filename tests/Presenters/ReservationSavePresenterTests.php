@@ -184,6 +184,10 @@ class FakeReservationSavePage implements IReservationSavePage
 
 	public function __construct()
 	{
+		$now = Date::Now();
+		$this->startDate = $now->AddDays(5)->Format('Y-m-d');
+		$this->endDate = $now->AddDays(6)->Format('Y-m-d');
+		$this->repeatTerminationDate = $now->AddDays(60)->Format('Y-m-d');
 		$this->repeatOptions = new RepeatNone();
 	}
 	

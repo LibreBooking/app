@@ -16,8 +16,9 @@ class Log
 
 	private function __construct()
 	{
-		Logger::configure(ROOT_DIR . 'config/log4php.config.properties');
-		$this->logger = Logger::getRootLogger();
+		Logger::configure(ROOT_DIR . 'config/log4php.config.xml');
+		$this->logger = Logger::getLogger('default');
+		$this->sqlLogger = Logger::getLogger('sql');
 	}
 
 	/**
@@ -62,6 +63,25 @@ class Log
 			self::GetInstance()->logger->error($log);
 		}
 		catch (Exception $ex)
+		{
+		}
+	}
+
+	/**
+	 * @static
+	 * @param string $message
+	 * @param mixed $args
+	 * @return void
+	 */
+	public static function Sql($message, $args = array())
+	{
+		try
+		{
+			$args = func_get_args();
+			$log = vsprintf(array_shift($args), array_values($args));
+			self::GetInstance()->sqlLogger->debug($log);
+		}
+		catch(Exception $ex)
 		{
 		}
 	}

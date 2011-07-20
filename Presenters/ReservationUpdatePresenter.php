@@ -49,7 +49,6 @@ class ReservationUpdatePresenter
 	 */
 	public function BuildReservation()
 	{
-		//die($this->page->GetSeriesUpdateScope());
 		$instanceId = $this->page->GetReservationId();
 		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
@@ -67,7 +66,10 @@ class ReservationUpdatePresenter
 		{
 			$existingSeries->AddResource($resourceId);
 		}
-		
+
+		$existingSeries->ChangeParticipants($this->page->GetParticipants());
+		$existingSeries->ChangeInvitees($this->page->GetInvitees());
+
 		return $existingSeries;
 	}
 	
