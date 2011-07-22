@@ -53,7 +53,7 @@ class TimeInterval
 	{
 		if ($this->interval != null)
 		{
-			return sprintf('%s:%s', $this->interval->Hours(), $this->interval->Minutes());
+			return sprintf('%02d:%02d', $this->interval->Hours(), $this->interval->Minutes());
 		}
 		
 		return '';
