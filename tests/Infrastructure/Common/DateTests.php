@@ -323,7 +323,7 @@ class DateTests extends TestBase
     
 	public function testDateIsWithinRange()
 	{
-		$begin = Date::Create(2008, 09, 9, 10, 11, 12, 'UTC');
+		$begin = Date::Create(2008, 9, 9, 10, 11, 12, 'UTC');
 		$end = Date::Create(2008, 10, 9, 10, 11, 12, 'UTC');
 		
 		$range = new DateRange($begin, $end);
@@ -390,6 +390,50 @@ class DateTests extends TestBase
 		$this->assertTrue($expected[1]->Equals($actual[1]), "Dates[1] are not equal");
 		$this->assertTrue($expected[2]->Equals($actual[2]), "Dates[2] are not equal");
 		$this->assertTrue($expected[3]->Equals($actual[3]), "Dates[3] are not equal");
+	}
+
+	public function testCanGetDifferenceBetweenTwoDates()
+	{
+		$date1 = Date::Parse('2011-01-01 12:15:45', 'UTC');
+		$date2 = $date1->AddDays(1);
+
+		$diff = $date1->GetDifference($date2);
+
+		$secondsInOneDay = 60 * 60 * 24;
+
+		$this->assertEquals($diff->Seconds(), $secondsInOneDay, '2nd date is one day greater than 1st date');
+		$this->assertEquals(24, $diff->Hours());
+		$this->assertEquals(0, $diff->Minutes());
+
+		$newDate = $date1->ApplyDifference($diff);
+		$this->assertTrue($date2->Equals($newDate));
+
+		$laterDate = Date::Parse('2011-07-26 05:30:00', 'America/New_York');
+		$earlierDate = Date::Parse('2011-07-22 17:40:41', 'America/Chicago');
+
+		$diff = $laterDate->GetDifference($earlierDate);
+		$shouldBeEarlier = $laterDate->ApplyDifference($diff);
+
+		$this->assertTrue($earlierDate->Equals($shouldBeEarlier));
+	}
+
+	public function testCanGetDifferenceBetweenTwoTimes()
+	{
+		$date1 = Date::Parse('2011-01-01 12:15:45', 'utc');
+		$date2 = Date::Parse('2011-01-01 13:16:45', 'utc');
+
+		$diff = $date1->GetDifference($date2);
+
+		$this->assertEquals(1, $diff->Hours());
+		$this->assertEquals(1, $diff->Minutes());
+	}
+
+	public function testCanGetDifferenceFromTime()
+	{
+		$seconds = (12 * 60 * 60) + (60 * 35);
+		$diff = DateDiff::FromTimeString("12:35");
+
+		$this->assertEquals($seconds, $diff->Seconds());
 	}
 }
 ?>

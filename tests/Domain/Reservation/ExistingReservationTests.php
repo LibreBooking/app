@@ -297,7 +297,7 @@ class ExistingReservationTests extends TestBase
 	public function testChangingTimeForFullSeriesUpdatesAllInstanceTimes()
 	{
 		$repeatOptions = new RepeatDaily(1, Date::Now());
-		$dateRange = DateRange::Create('2050-01-01 08:30', '2050-01-01 09:30', 'UTC');
+		$dateRange = DateRange::Create('2015-01-01 08:30', '2015-01-01 09:30', 'UTC');
 		$instance1Date = $dateRange->AddDays(5);
 		$instance2Date = $dateRange->AddDays(8);
 		
@@ -311,16 +311,16 @@ class ExistingReservationTests extends TestBase
 		
 		$series = $builder->Build();
 		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-		$newDuration = DateRange::Create('2050-01-01 09:30:00', '2050-01-02 00:00:00', 'UTC');
+		$newDuration = DateRange::Create('2015-01-01 09:30:00', '2015-01-02 00:00:00', 'UTC');
 		$series->UpdateDuration($newDuration);
 		
 		$this->assertEquals($newDuration, $series->CurrentInstance()->Duration());
 		
-		$newInstance1Start = Date::Parse('2050-01-06 09:30:00', 'UTC');
-		$newInstance1End = Date::Parse('2050-01-07 00:00:00', 'UTC');
+		$newInstance1Start = Date::Parse('2015-01-06 09:30:00', 'UTC');
+		$newInstance1End = Date::Parse('2015-01-07 00:00:00', 'UTC');
 		
-		$newInstance2Start = Date::Parse('2050-01-09 09:30:00', 'UTC');
-		$newInstance2End = Date::Parse('2050-01-10 00:00:00', 'UTC');
+		$newInstance2Start = Date::Parse('2015-01-09 09:30:00', 'UTC');
+		$newInstance2End = Date::Parse('2015-01-10 00:00:00', 'UTC');
 		
 //		$this->assertEquals(new DateRange($newInstance1Start, $newInstance1End), $series->GetInstance($newInstance1Start)->Duration());
 //		$this->assertEquals(new DateRange($newInstance2Start, $newInstance2End), $series->GetInstance($newInstance2Start)->Duration());

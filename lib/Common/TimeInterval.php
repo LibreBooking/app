@@ -2,7 +2,7 @@
 class TimeInterval
 {
 	/**
-	 * @var DateInterval
+	 * @var string
 	 */
 	private $interval = null;
 	
@@ -16,27 +16,32 @@ class TimeInterval
 		
 		if (!empty($timeString))
 		{
-			$timeParts = explode(':', $timeString);
-			
-			if (count($timeParts) > 1)
-			{
-				$h = $timeParts[0];
-				$m = $timeParts[1];
-				
-				$intervalSpec = sprintf("PT%sH%sM", $h, $m);
-				$this->interval = $interval = new DateInterval($intervalSpec);
-			}
+			$this->interval = DateDiff::FromTimeString($timeString);
+//			$timeParts = explode(':', $timeString);
+//
+//			if (count($timeParts) > 1)
+//			{
+//				$h = $timeParts[0];
+//				$m = $timeParts[1];
+//
+//				$this->interval = sprintf('%s:%s', $h, $m);
+//				//$intervalSpec = sprintf("PT%sH%sM", $h, $m);
+//				//$this->interval = new DateInterval($intervalSpec);
+//			}
 		}
 	}
-	
+
+	/**
+	 * @return DateDiff
+	 */
 	public function Interval()
 	{
 		if ($this->interval != null)
 		{
 			return $this->interval;
 		}
-		
-		return new DateInterval("PT0H0M");
+
+		return DateDiff::Null();
 	}
 	
 	public function ToDatabase()
@@ -48,7 +53,7 @@ class TimeInterval
 	{
 		if ($this->interval != null)
 		{
-			return $this->interval->format("%H:%I");
+			return sprintf('%s:%s', $this->interval->Hours(), $this->interval->Minutes());
 		}
 		
 		return '';

@@ -100,7 +100,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($this->page->resourceIds, $existingSeries->Resources());
 		$this->assertEquals($this->page->participants, $existingSeries->CurrentInstance()->AddedParticipants());
 		$this->assertEquals($this->page->invitees, $existingSeries->CurrentInstance()->AddedInvitees());
-		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()), "$expectedDuration {$existingSeries->CurrentInstance()->Duration()}");
+		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()), "Expected: $expectedDuration Actual: {$existingSeries->CurrentInstance()->Duration()}");
 	}
 	
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistenceAndNotification()

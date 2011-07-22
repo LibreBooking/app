@@ -178,8 +178,11 @@ class ExistingReservationSeries extends ReservationSeries
 		$currentBegin = $currentDuration->GetBegin();
 		$currentEnd = $currentDuration->GetEnd();
 
-		$startTimeAdjustment = $reservationDate->GetBegin()->GetDifference($currentBegin);
-		$endTimeAdjustment = $reservationDate->GetEnd()->GetDifference($currentEnd);
+//		$startTimeAdjustment = $reservationDate->GetBegin()->GetDifference($currentBegin);
+//		$endTimeAdjustment = $reservationDate->GetEnd()->GetDifference($currentEnd);
+
+		$startTimeAdjustment = $currentBegin->GetDifference($reservationDate->GetBegin());
+		$endTimeAdjustment = $currentEnd->GetDifference($reservationDate->GetEnd());
 
 		//		echo "start {$startTimeAdjustment->format('%R%H:%I')} \n";
 		//		echo "end {$endTimeAdjustment->format('%R%H:%I')} \n";

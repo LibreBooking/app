@@ -93,7 +93,7 @@ class Date
 	public function ToTimezone($timezone)
 	{
 		if ($this->Timezone() == $timezone) {
-			return new Date($this->timestring, $this->Timezone());
+			return $this->Copy();
 		}
 
 		$date = new DateTime($this->timestring, new DateTimeZone($this->timezone));
@@ -102,6 +102,14 @@ class Date
 		$adjustedDate = $date->format(Date::SHORT_FORMAT);
 
 		return new Date($adjustedDate, $timezone);
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function Copy()
+	{
+		return new Date($this->timestring, $this->Timezone());
 	}
 
 	/**
@@ -294,26 +302,29 @@ class Date
 
 	/**
 	 * @param Date $date
-	 * @return DateInterval
+	 * @return DateDiff
 	 */
 	public function GetDifference(Date $date)
 	{
-		if ($date->Timezone() != $this->Timezone()) {
-			$date = $date->ToTimezone($this->Timezone());
-		}
-		return date_diff($date->date, $this->date);
+		return DateDiff::BetweenDates($this, $date);
 	}
 
 	/**
-	 * @param DateInterval $differenceInterval
+	 * @param DateDiff $difference
 	 * @return Date
 	 */
-	public function ApplyDifference(DateInterval $differenceInterval)
+	public function ApplyDifference(DateDiff $difference)
 	{
-		$date = new DateTime($this->Format(self::SHORT_FORMAT, $this->Timezone()));
-		$newDate = date_add($date, $differenceInterval);
-
-		return new Date($newDate->format(self::SHORT_FORMAT), $this->Timezone());
+		if ($difference->IsNull())
+		{
+			return $this->Copy();
+		}
+		
+		$newTimestamp = $this->Timestamp() + $difference->Seconds();
+		$date = new DateTime('now', new DateTimeZone($this->Timezone()));
+		$date->setTimestamp($newTimestamp);
+		
+		return new Date($date->format(self::SHORT_FORMAT), $this->Timezone());
 	}
 
 	private function InitializeParts()
@@ -439,4 +450,99 @@ class NullDate extends Date
 	}
 }
 
+class DateDiff
+{
+	/**
+	 * @var int
+	 */
+	private $seconds = 0;
+
+	/**
+	 * @param int $seconds
+	 */
+	private function __construct($seconds)
+	{
+	    $this->seconds = $seconds;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function Seconds()
+	{
+		return $this->seconds;
+	}
+
+	public function Hours()
+	{
+		$hours = intval(intval($this->seconds) / 3600);
+		return $hours;
+	}
+
+	public function Minutes()
+	{
+		$minutes = intval(($this->seconds / 60) % 60);
+		return $minutes;
+	}
+
+	/**
+	 * @static
+	 * @param Date $date1
+	 * @param Date $date2
+	 * @return DateDiff
+	 */
+	public static function BetweenDates(Date $date1, Date $date2)
+	{
+		if ($date1->Equals($date2))
+		{
+			return DateDiff::Null();
+		}
+		
+		$compareDate = $date2;
+		if ($date1->Timezone() != $date2->Timezone())
+		{
+			$compareDate = $date2->ToTimezone($date1->Timezone());
+		}
+
+		return new DateDiff($compareDate->Timestamp() - $date1->Timestamp());
+	}
+
+	/**
+	 * @static
+	 * @param $timeString
+	 * @return DateDiff
+	 */
+	public static function FromTimeString($timeString)
+	{
+		$parts = explode(':', $timeString);
+
+		$hour = $parts[0];
+		$minute = $parts[1];
+		$second = 0;
+
+		if (count($parts) > 2)
+		{
+			$second = $parts[2];
+		}
+
+		return new DateDiff(($hour * 60 * 60) + ($minute * 60) + $second);
+	}
+
+	/**
+	 * @static
+	 * @return DateDiff
+	 */
+	public static function Null()
+	{
+		return new DateDiff(0);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsNull()
+	{
+		return $this->seconds == 0;
+	}
+}
 ?>
