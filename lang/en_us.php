@@ -200,6 +200,7 @@ class en_us extends Language
 		$strings['Reservations'] = 'Reservations';
 		$strings['Account'] = 'Account';
 		$strings['EditProfile'] = 'Edit My Profile';
+		$strings['FindAnOpening'] = 'Find An Opening';
 		//
 		
 		// Day representations

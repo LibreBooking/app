@@ -21,4 +21,4 @@
 
 {setfocus key='EMAIL'}
 
-{include file='footer.tpl'}
+{include file='globalfooter.tpl'}
