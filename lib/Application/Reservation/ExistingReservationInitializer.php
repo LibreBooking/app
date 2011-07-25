@@ -39,7 +39,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		$this->page = $page;
 		$this->reservationView = $reservationView;
 		$this->editableCriteria = ($editableCriteria == null) ? new EditableViewCriteria() : $editableCriteria;
-		
+
 		parent::__construct(
 						$page, 
 						$scheduleUserRepository, 
@@ -68,6 +68,15 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		$this->page->SetRepeatWeekdays($this->reservationView->RepeatWeekdays);
 		
 		$this->page->SetIsEditable($this->editableCriteria->IsEditable($this->reservationView));
+
+		$participants = $this->GetParticipants();
+		$invitees = $this->GetInvitees();
+		
+		$this->page->SetParticipants($participants);
+		$this->page->SetInvitees($invitees);
+
+		$this->page->SetCurrentUserParticipating($this->IsCurrentUserParticipating());
+		$this->page->SetCurrentUserInvited($this->IsCurrentUserInvited());
 	}
 	
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
@@ -121,6 +130,16 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	protected function GetInvitees()
 	{
 		return $this->reservationView->Invitees;
+	}
+
+	private function IsCurrentUserParticipating()
+	{
+		return in_array(new ReservationUserView($this->currentUserId, null, null, null, null), $this->reservationView->Participants);
+	}
+
+	private function IsCurrentUserInvited()
+	{
+		return in_array(new ReservationUserView($this->currentUserId, null, null, null, null), $this->reservationView->Invitees);
 	}
 }
 

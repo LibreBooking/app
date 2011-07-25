@@ -95,16 +95,6 @@ class NewReservationInitializer extends ReservationInitializerBase
 		$lastIndex = count($periods) - 1;
 		return $periods[$lastIndex];
 	}
-
-	protected function GetParticipants()
-	{
-		return array();
-	}
-
-	protected function GetInvitees()
-	{
-		return array();
-	}
 }
 
 class BindableUserData

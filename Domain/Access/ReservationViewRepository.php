@@ -171,6 +171,11 @@ class ReservationUserView
 	{
 		return $this->LevelId == ReservationUserLevel::OWNER;
 	}
+
+	public function __toString()
+	{
+		return $this->UserId;
+	}
 }
 
 class NullReservationView extends ReservationView

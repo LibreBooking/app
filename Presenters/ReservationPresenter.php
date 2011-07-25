@@ -30,23 +30,23 @@ class ReservationPresenter extends ReservationPresenterBase
 	/**
 	 * @var IReservationInitializerFactory
 	 */
-	private $initilizationFactory;
+	private $initializationFactory;
 	
 	/**
 	 * @var IReservationPreconditionService
 	 */
-	private $precondtionService;
+	private $preconditionService;
 
 	public function __construct(
 		INewReservationPage $page, 
 		IReservationInitializerFactory $initializationFactory,
-		INewReservationPreconditionService $precondtionService)
+		INewReservationPreconditionService $preconditionService)
 	{
 		parent::__construct($page);
 		
 		$this->_page = $page;
 		$this->initializationFactory = $initializationFactory;
-		$this->preconditionService = $precondtionService;
+		$this->preconditionService = $preconditionService;
 	}
 	
 	public function PageLoad()
@@ -84,14 +84,14 @@ class EditReservationPresenter extends ReservationPresenterBase
 	public function __construct(
 		IExistingReservationPage $page, 
 		IReservationInitializerFactory $initializationFactory,
-		EditReservationPreconditionService $precondtionService,
+		EditReservationPreconditionService $preconditionService,
 		IReservationViewRepository $reservationViewRepository)
 	{
 		parent::__construct($page);
 		
 		$this->page = $page;
 		$this->initializationFactory = $initializationFactory;
-		$this->preconditionService = $precondtionService;
+		$this->preconditionService = $preconditionService;
 		$this->reservationViewRepository = $reservationViewRepository;
 	}
 	

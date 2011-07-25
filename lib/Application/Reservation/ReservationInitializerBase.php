@@ -25,7 +25,12 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 * @var IUserRepository
 	 */
 	protected $userRepository;
-	
+
+	/**
+	 * @var int
+	 */
+	protected $currentUserId;
+
 	/**
 	 * @param $page IReservationPage
 	 * @param $scheduleUserRepository IScheduleUserRepository
@@ -47,6 +52,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	
 	public function Initialize()
 	{
+		$this->currentUserId = ServiceLocator::GetServer()->GetUserSession()->UserId;
+				
 		$requestedResourceId = $this->GetResourceId();
 		$requestedScheduleId = $this->GetScheduleId();
 		$reservationDate = $this->GetReservationDate();
@@ -73,11 +80,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$this->basePage->SetReservationUser($reservationUser);
 		
 		$this->basePage->BindAvailableResources($bindableResourceData->AvailableResources);		
-
-		$participants = $this->GetParticipants();
-		$invitees = $this->GetInvitees();
-		$this->basePage->SetParticipants($participants);
-		$this->basePage->SetInvitees($invitees);
 		
 		$this->SetSelectedDates($startDate, $endDate, $schedulePeriods);
 		
@@ -87,13 +89,13 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 
 	/**
 	 * @abstract
-	 * @return ReservationUserView[]
+	 * @return int
 	 */
 	protected abstract function GetResourceId();
 
 	/**
 	 * @abstract
-	 * @return ReservationUserView[]
+	 * @return int
 	 */
 	protected abstract function GetScheduleId();
 	
@@ -111,14 +113,20 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 * @return Date
 	 */
 	protected abstract function GetReservationDate();
-	
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
 	protected abstract function GetOwnerId();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
 	protected abstract function GetTimezone();
 	
 	protected abstract function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods);
-
-	protected abstract function GetParticipants();
-	protected abstract function GetInvitees();
 	
 	private function GetBindableUserData($userId)
 	{

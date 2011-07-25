@@ -30,6 +30,9 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 	public function __construct()
 	{
 		parent::__construct('CreateReservation');
+
+		$this->SetParticipants(array());
+		$this->SetInvitees(array());
 	}
 	
 	protected function GetPresenter()

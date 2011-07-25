@@ -4,9 +4,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
-require_once(ROOT_DIR . 'Pages/ExistingReservationPage.php');
 
-require_once(ROOT_DIR . 'lib/Application/Reservation/ExistingReservationInitializer.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/NewReservationInitializer.php');
 
 class ReservationInitializationTests extends TestBase
@@ -166,14 +164,6 @@ class ReservationInitializationTests extends TestBase
 		$page->expects($this->once())
 			->method('SetReservationResource')
 			->with($this->equalTo($schedResource));	// may want this to be a real object
-
-		$page->expects($this->once())
-			->method('SetParticipants')
-			->with($this->equalTo(array()));
-
-		$page->expects($this->once())
-			->method('SetInvitees')
-			->with($this->equalTo(array()));
 		
 		$initializer = new NewReservationInitializer($page, $this->_scheduleUserRepository, $this->_scheduleRepository, $this->_userRepository);
 

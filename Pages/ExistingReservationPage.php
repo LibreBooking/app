@@ -59,6 +59,16 @@ interface IExistingReservationPage extends IReservationPage
 	 * @param $isEditable bool
 	 */
 	function SetIsEditable($isEditable);
+
+	/**
+	 * @param $amIParticipating
+	 */
+	function SetCurrentUserParticipating($amIParticipating);
+
+	/**
+	 * @param $amIInvited
+	 */
+	function SetCurrentUserInvited($amIInvited);
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
@@ -89,7 +99,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 
 	protected function GetTemplateName()
 	{
-		if ($this->IsEditable)
+		if ($this->IsEditable && false)
 		{
 			return 'Reservation/edit.tpl';
 		}
@@ -159,6 +169,22 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	function SetIsEditable($isEditable)
 	{
 		$this->IsEditable = $isEditable;
+	}
+
+	/**
+	 * @param $amIParticipating
+	 */
+	function SetCurrentUserParticipating($amIParticipating)
+	{
+		$this->Set('IAmParticipating', $amIParticipating);
+	}
+
+	/**
+	 * @param $amIInvited
+	 */
+	function SetCurrentUserInvited($amIInvited)
+	{
+		$this->Set('IAmInvited', $amIInvited);
 	}
 }
 ?>

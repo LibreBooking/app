@@ -29,7 +29,11 @@ class ExistingReservationInitializerTests extends TestBase
 	 * @var IScheduleUserRepository
 	 */
 	private $_scheduleUserRepository;
-	
+
+	/**
+	 * @var IUserRepository
+	 */
+	private $_userRepository;
 	
 	public function setup()
 	{
@@ -65,7 +69,7 @@ class ExistingReservationInitializerTests extends TestBase
 			new ReservationUserView(11, 'p2', 'l', null, ReservationUserLevel::PARTICIPANT)
 		);
 		$invitees = array (
-			new ReservationUserView(100, 'i1', 'l', null, ReservationUserLevel::INVITEE),
+			new ReservationUserView($this->_userId, 'i1', 'l', null, ReservationUserLevel::INVITEE),
 			new ReservationUserView(110, 'i2', 'l', null, ReservationUserLevel::INVITEE)
 		);
 		$title = 'title';
@@ -219,11 +223,17 @@ class ExistingReservationInitializerTests extends TestBase
 			->method('IsEditable')
 			->with($this->equalTo($reservationView))
 			->will($this->returnValue($isEditable));
-			
+
+		$isParticipating = false;
 		$page->expects($this->once())
-			->method('SetIsEditable')
-			->with($this->equalTo($isEditable));
-			
+			->method('SetCurrentUserParticipating')
+			->with($this->equalTo($isParticipating));
+
+		$isInvited = true;
+		$page->expects($this->once())
+			->method('SetCurrentUserInvited')
+			->with($this->equalTo($isInvited));
+		
 		$initializer = new ExistingReservationInitializer(
 			$page, 
 			$this->_scheduleUserRepository, 
