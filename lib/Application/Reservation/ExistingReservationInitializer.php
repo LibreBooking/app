@@ -134,12 +134,28 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 
 	private function IsCurrentUserParticipating()
 	{
-		return in_array(new ReservationUserView($this->currentUserId, null, null, null, null), $this->reservationView->Participants);
+		/** @var $user ReservationUserView */
+		foreach ($this->reservationView->Participants as $user)
+		{
+			if ($user->UserId == $this->currentUserId)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private function IsCurrentUserInvited()
 	{
-		return in_array(new ReservationUserView($this->currentUserId, null, null, null, null), $this->reservationView->Invitees);
+		/** @var $user ReservationUserView */
+		foreach ($this->reservationView->Invitees as $user)
+		{
+			if ($user->UserId == $this->currentUserId)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
 
