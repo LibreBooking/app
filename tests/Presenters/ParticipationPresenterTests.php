@@ -49,6 +49,22 @@ class ParticipationPresenterTests extends TestBase
 		$this->assertUpdatesSeriesParticipation($invitationAction, $seriesMethod);
 	}
 
+	public function testWhenUserCancelsAllParticipation()
+	{
+		$invitationAction = InvitationAction::CancelAll;
+		$seriesMethod = 'CancelAllParticipation';
+
+		$this->assertUpdatesSeriesParticipation($invitationAction, $seriesMethod);
+	}
+
+	public function testWhenUserCancelsInstanceParticipation()
+	{
+		$invitationAction = InvitationAction::CancelInstance;
+		$seriesMethod = 'CancelInstanceParticipation';
+
+		$this->assertUpdatesSeriesParticipation($invitationAction, $seriesMethod);
+	}
+
 	private function assertUpdatesSeriesParticipation($invitationAction, $seriesMethod)
 	{
 		$currentUserId = 1029;

@@ -354,7 +354,15 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function AcceptInvitation($inviteeId)
 	{
-		throw new Exception('not implemented');
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$wasAccepted = $instance->AcceptInvitation($inviteeId);
+			if ($wasAccepted)
+			{
+				$this->RaiseInstanceUpdatedEvent($instance);
+			}
+		}
 	}
 
 	/**
@@ -363,7 +371,44 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function DeclineInvitation($inviteeId)
 	{
-		throw new Exception('not implemented');
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$wasAccepted = $instance->DeclineInvitation($inviteeId);
+			if ($wasAccepted)
+			{
+				$this->RaiseInstanceUpdatedEvent($instance);
+			}
+		}
+	}
+
+	/**
+	 * @param int $participantId
+	 * @return void
+	 */
+	public function CancelAllParticipation($participantId)
+	{
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$wasCancelled = $instance->CancelParticipation($participantId);
+			if ($wasCancelled)
+			{
+				$this->RaiseInstanceUpdatedEvent($instance);
+			}
+		}
+	}
+
+	/**
+	 * @param int $participantId
+	 * @return void
+	 */
+	public function CancelInstanceParticipation($participantId)
+	{
+		if ($this->CurrentInstance()->CancelParticipation($participantId))
+		{
+			$this->RaiseInstanceUpdatedEvent($this->CurrentInstance());
+		}
 	}
 }
 

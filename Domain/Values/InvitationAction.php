@@ -2,7 +2,8 @@
 class InvitationAction
 {
 	const Accept = 'accept';
-	const Cancel = 'cancel';
+	const CancelAll = 'cancelAll';
+	const CancelInstance = 'cancelInstance';
 	const Decline = 'decline';
 }
 ?>

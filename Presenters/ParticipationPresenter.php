@@ -26,26 +26,35 @@ class ParticipationPresenter
 
 		if (!empty($invitationAction))
 		{
-			$referenceNumber = $this->page->GetInvitationReferenceNumber();
-			$userId = $this->page->GetUserId();
-			
-			$series = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
-
-			if ($invitationAction == InvitationAction::Accept)
-			{
-				$series->AcceptInvitation($userId);
-			}
-			if ($invitationAction == InvitationAction::Decline)
-			{
-				$series->DeclineInvitation($userId);
-			}
-			
-			$this->reservationRepository->Update($series);
+			$this->HandleInvitationAction($invitationAction);
 		}
 		else
 		{
 
 		}
+	}
+
+	private function HandleInvitationAction($invitationAction)
+	{
+		$referenceNumber = $this->page->GetInvitationReferenceNumber();
+		$userId = $this->page->GetUserId();
+
+		$series = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
+
+		if ($invitationAction == InvitationAction::Accept) {
+			$series->AcceptInvitation($userId);
+		}
+		if ($invitationAction == InvitationAction::Decline) {
+			$series->DeclineInvitation($userId);
+		}
+		if ($invitationAction == InvitationAction::CancelInstance) {
+			$series->CancelInstanceParticipation($userId);
+		}
+		if ($invitationAction == InvitationAction::CancelAll) {
+			$series->CancelAllParticipation($userId);
+		}
+
+		$this->reservationRepository->Update($series);
 	}
 }
 ?>

@@ -468,6 +468,24 @@ class InstanceUpdatedEventCommand extends EventCommand
 				$this->instance->EndDate());
 
 		$database->Execute($updateReservationCommand);
+
+		foreach ($this->instance->RemovedParticipants() as $participantId)
+		{
+			$removeReservationUser = new RemoveReservationUserCommand(
+				$instanceId,
+				$participantId);
+
+			$database->Execute($removeReservationUser);
+		}
+		
+		foreach ($this->instance->RemovedInvitees() as $inviteeId)
+		{
+			$insertReservationUser = new RemoveReservationUserCommand(
+				$instanceId,
+				$inviteeId);
+
+			$database->Execute($insertReservationUser);
+		}
 		
 		foreach ($this->instance->AddedParticipants() as $participantId)
 		{
@@ -479,30 +497,12 @@ class InstanceUpdatedEventCommand extends EventCommand
 			$database->Execute($insertReservationUser);
 		}
 
-		foreach ($this->instance->RemovedParticipants() as $participantId)
-		{
-			$removeReservationUser = new RemoveReservationUserCommand(
-				$instanceId,
-				$participantId);
-
-			$database->Execute($removeReservationUser);
-		}
-
 		foreach ($this->instance->AddedInvitees() as $inviteeId)
 		{
 			$insertReservationUser = new AddReservationUserCommand(
 				$instanceId,
 				$inviteeId,
 				ReservationUserLevel::INVITEE);
-
-			$database->Execute($insertReservationUser);
-		}
-
-		foreach ($this->instance->RemovedInvitees() as $inviteeId)
-		{
-			$insertReservationUser = new RemoveReservationUserCommand(
-				$instanceId,
-				$inviteeId);
 
 			$database->Execute($insertReservationUser);
 		}

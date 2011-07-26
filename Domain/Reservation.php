@@ -252,6 +252,53 @@ class Reservation
 	{
 		return $this->ReservationId() == null;
 	}
+
+	/**
+	 * @param int $inviteeId
+	 * @return bool whether the invitation was accepted
+	 */
+	public function AcceptInvitation($inviteeId)
+	{
+		if (in_array($inviteeId, $this->_inviteeIds))
+		{
+			$this->addedParticipants[] = $inviteeId;
+			$this->removedInvitees[] = $inviteeId;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param int $inviteeId
+	 * @return bool whether the invitation was declined
+	 */
+	public function DeclineInvitation($inviteeId)
+	{
+		if (in_array($inviteeId, $this->_inviteeIds))
+		{
+			$this->removedInvitees[] = $inviteeId;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param int $participantId
+	 * @return bool whether the participant was removed
+	 */
+	public function CancelParticipation($participantId)
+	{
+		if (in_array($participantId, $this->_participantIds))
+		{
+			$this->removedParticipants[] = $participantId;
+			return true;
+		}
+
+		return false;
+	}
 }
 
 ?>

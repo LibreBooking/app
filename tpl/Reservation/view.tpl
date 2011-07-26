@@ -91,7 +91,8 @@
 			<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
 
 			{if $IAmParticipating or true}
-				<button value="{InvitationAction::Cancel}" class="button participationAction">Cancel Participation</button>
+				<button value="{InvitationAction::CancelAll}" class="button participationAction">All Instances</button>
+				<button value="{InvitationAction::CancelInstance}" class="button participationAction">This Instance</button>
 			{/if}
 			
 			{if $IAmInvited or true}
