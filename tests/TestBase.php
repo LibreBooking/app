@@ -28,7 +28,7 @@ class TestBase extends PHPUnit_Framework_TestCase
 	public $fakeEmailService;
 	
 	/**
-	 * @return UserSession
+	 * @var UserSession
 	 */
 	public $fakeUser;
 	

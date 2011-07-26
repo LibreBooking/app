@@ -245,23 +245,23 @@
 
 	$(document).ready(function() {
 	var scopeOptions = {
-	instance: '{SeriesUpdateScope::ThisInstance}',
-	full: '{SeriesUpdateScope::FullSeries}',
-	future: '{SeriesUpdateScope::FutureInstances}'
+		instance: '{SeriesUpdateScope::ThisInstance}',
+		full: '{SeriesUpdateScope::FullSeries}',
+		future: '{SeriesUpdateScope::FutureInstances}'
 	};
 
 	var reservationOpts = {
-	additionalResourceElementId: '{FormKeys::ADDITIONAL_RESOURCES}',
-	repeatType: '{$RepeatType}',
-	repeatInterval: '{$RepeatInterval}',
-	repeatMonthlyType: '{$RepeatMonthlyType}',
-	repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}$day,{/foreach}],
-	returnUrl: '{$ReturnUrl}',
-	scopeOpts: scopeOptions,
-	createUrl: 'ajax/reservation_save.php',
-	updateUrl: 'ajax/reservation_update.php',
-	deleteUrl: 'ajax/reservation_delete.php',
-	userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}"
+		additionalResourceElementId: '{FormKeys::ADDITIONAL_RESOURCES}',
+		repeatType: '{$RepeatType}',
+		repeatInterval: '{$RepeatInterval}',
+		repeatMonthlyType: '{$RepeatMonthlyType}',
+		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}$day,{/foreach}],
+		returnUrl: '{$ReturnUrl}',
+		scopeOpts: scopeOptions,
+		createUrl: 'ajax/reservation_save.php',
+		updateUrl: 'ajax/reservation_update.php',
+		deleteUrl: 'ajax/reservation_delete.php',
+		userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}"
 	};
 
 	$('#description').TextAreaExpander();
@@ -270,22 +270,22 @@
 	reservation.init('{$UserId}');
 
 	{foreach from=$Participants item=user}
-	reservation.addParticipant('{$user->FullName}', '{$user->UserId}');
+		reservation.addParticipant('{$user->FullName}', '{$user->UserId}');
 	{/foreach}
 
 	{foreach from=$Invitees item=user}
-	reservation.addInvitee('{$user->FullName}', '{$user->UserId}');
+		reservation.addInvitee('{$user->FullName}', '{$user->UserId}');
 	{/foreach}
 
 	var options = {
-	target: '#result',   // target element(s) to be updated with server response
-	beforeSubmit: reservation.preSubmit,  // pre-submit callback
-	success: reservation.showResponse  // post-submit callback
+		target: '#result',   // target element(s) to be updated with server response
+		beforeSubmit: reservation.preSubmit,  // pre-submit callback
+		success: reservation.showResponse  // post-submit callback
 	};
 
 	$('#reservationForm').submit(function() {
-	$(this).ajaxSubmit(options);
-	return false;
+		$(this).ajaxSubmit(options);
+		return false;
 	});
 
 

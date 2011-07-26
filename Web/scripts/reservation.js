@@ -28,7 +28,6 @@ function Reservation(opts) {
 
 	var repeatToggled = false;
 	var terminationDateSetManually = false;
-	//this.addedUsers = [];
 
 	var participation = {};
 	participation.addedUsers = [];

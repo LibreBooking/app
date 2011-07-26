@@ -25,17 +25,29 @@ class ReservationRepository implements IReservationRepository
 	
 	public function LoadById($reservationId)
 	{
-		$getReservationCommand = new GetReservationByIdCommand($reservationId);
+		Log::Debug("ReservationRepository::LoadById() - ReservationID: $reservationId");
+		
+		return $this->Load(new GetReservationByIdCommand($reservationId));
+	}
 
-		$reader = ServiceLocator::GetDatabase()->Query($getReservationCommand);
+	public function LoadByReferenceNumber($referenceNumber)
+	{
+		Log::Debug("ReservationRepository::LoadByReferenceNumber() - FeferenceNumber: $referenceNumber");
+		
+		return $this->Load(new GetReservationByReferenceNumberCommand($referenceNumber));
+	}
+
+	private function Load(SqlCommand $loadSeriesCommand)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query($loadSeriesCommand);
 
 		if ($reader->NumRows() != 1)
 		{
-			Log::Debug("ReservationRepository::LoadById() - Reservation not found. ID: $reservationId");
+			Log::Debug('Reservation not found. ID');
 			return null;
 		}
-		
-		$series = $this->BuildSeries($reader);	
+
+		$series = $this->BuildSeries($reader);
 		$this->AddInstances($series);
 		$this->AddResources($series);
 		$this->AddParticipants($series);
@@ -524,6 +536,14 @@ interface IReservationRepository
 	 * @return ExistingReservationSeries or null if no reservation found
 	 */
 	public function LoadById($reservationInstanceId);
+
+	/**
+	 * Return an existing reservation series
+	 *
+	 * @param string $referenceNumber
+	 * @return ExistingReservationSeries or null if no reservation found
+	 */
+	public function LoadByReferenceNumber($referenceNumber);
 
 	/**
 	 * Update an existing reservation

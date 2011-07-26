@@ -300,6 +300,14 @@ class Queries
 		WHERE
 			r.reservation_instance_id = @reservationid AND
 			status_id <> 2';
+
+	const GET_RESERVATION_BY_REFERENCE_NUMBER =
+		'SELECT *
+		FROM reservation_instances r
+		INNER JOIN reservation_series rs ON r.series_id = rs.series_id
+		WHERE
+			reference_number = @referenceNumber AND
+			r.status_id <> 2';
 	
 	const GET_RESERVATION_FOR_EDITING = 
 		'SELECT *

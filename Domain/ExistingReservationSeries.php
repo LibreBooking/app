@@ -178,14 +178,8 @@ class ExistingReservationSeries extends ReservationSeries
 		$currentBegin = $currentDuration->GetBegin();
 		$currentEnd = $currentDuration->GetEnd();
 
-//		$startTimeAdjustment = $reservationDate->GetBegin()->GetDifference($currentBegin);
-//		$endTimeAdjustment = $reservationDate->GetEnd()->GetDifference($currentEnd);
-
 		$startTimeAdjustment = $currentBegin->GetDifference($reservationDate->GetBegin());
 		$endTimeAdjustment = $currentEnd->GetDifference($reservationDate->GetEnd());
-
-		//		echo "start {$startTimeAdjustment->format('%R%H:%I')} \n";
-		//		echo "end {$endTimeAdjustment->format('%R%H:%I')} \n";
 
 		foreach ($this->Instances() as $instance)
 		{
@@ -352,6 +346,24 @@ class ExistingReservationSeries extends ReservationSeries
 			$instance->ChangeInvitees($inviteeIds);
 			$this->RaiseInstanceUpdatedEvent($instance);
 		}
+	}
+
+	/**
+	 * @param int $inviteeId
+	 * @return void
+	 */
+	public function AcceptInvitation($inviteeId)
+	{
+		throw new Exception('not implemented');
+	}
+
+	/**
+	 * @param int $inviteeId
+	 * @return void
+	 */
+	public function DeclineInvitation($inviteeId)
+	{
+		throw new Exception('not implemented');
 	}
 }
 
