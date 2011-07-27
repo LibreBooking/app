@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-require_once(ROOT_DIR . 'Presenters/DashboardPresenter.php');
+require_once(ROOT_DIR . 'Presenters/ParticipationPresenter.php');
 
 interface IParticipationPage
 {
@@ -20,9 +20,20 @@ interface IParticipationPage
 	function DisplayParticipation();
 
 	/**
+	 * @param $results serializable json
+	 * @return void
+	 */
+	function DisplayResult($results);
+
+	/**
 	 * @return int
 	 */
 	function GetUserId();
+
+	/**
+	 * @return string
+	 */
+	function GetResponseType();
 }
 
 class ParticipationPage extends SecurePage implements IParticipationPage
@@ -48,6 +59,11 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 		$this->Display('participation.tpl');
 	}
 
+	public function DisplayResult($results)
+	{
+		$this->SetJson($results);
+	}
+
 	function GetInvitationAction()
 	{
 		return $this->GetQuerystring(QueryStringKeys::INVITATION_ACTION);
@@ -61,6 +77,11 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 	public function GetUserId()
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->UserId;
+	}
+
+	function GetResponseType()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESPONSE_TYPE);
 	}
 }
 ?>

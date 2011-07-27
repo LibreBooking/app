@@ -176,6 +176,8 @@ class en_us extends Language
 		$strings['Members'] = 'Members';
 		$strings['QuickSlotCreation'] = 'Create slots every %s minutes between %s and %s';
 		$strings['ApplyUpdatesTo'] = 'ApplyUpdatesTo';
+		$strings['CancelParticipation'] = 'Cancel Participation';
+		$strings['Attending'] = 'Attending';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';

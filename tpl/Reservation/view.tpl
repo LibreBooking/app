@@ -81,40 +81,49 @@
 						<span class="no-data">{translate key='None'}</span>
 					{/foreach}
 				</li>
+				<li>
+					{if $IAmParticipating}
+						{translate key=CancelParticipation}?
+						</li>
+						<li>
+						{if $IsRecurring}
+							<button value="{InvitationAction::CancelAll}" class="button participationAction">{html_image src="user-minus.png"} {translate key=AllInstances}</button>
+							<button value="{InvitationAction::CancelInstance}" class="button participationAction">{html_image src="user-minus.png"} {translate key=ThisInstance}</button>
+						{/if}
+						<button value="{InvitationAction::CancelInstance}" class="button participationAction">{html_image src="user-minus.png"} {translate key=CancelParticipation}</button>
+					{/if}
+
+					{if $IAmInvited}
+						{translate key=Attending}?
+						</li>
+						<li>
+						<button value="{InvitationAction::Accept}" class="button participationAction">{html_image src="ticket-plus.png"} {translate key=Yes}</button>
+						<button value="{InvitationAction::Decline}" class="button participationAction">{html_image src="ticket-minus.png"} {translate key=No}</button>
+					{/if}
+					{html_image id="indicator" src="admin-ajax-indicator.gif" style="display:none;"}
+				</li>
 			</ul>
 		</div>
 		<div style="clear:both;">&nbsp;</div>
 		<div>
 			<input type="button" value="{translate key='Close'}" class="button" onclick="window.location='{$ReturnUrl}'"/>
 			<input type="button" value="{translate key='Print'}" class="button"/>
-			<input type="hidden" id="isRecurring" value="{$IsRecurring}" />
 			<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
-
-			{if $IAmParticipating or true}
-				<button value="{InvitationAction::CancelAll}" class="button participationAction">All Instances</button>
-				<button value="{InvitationAction::CancelInstance}" class="button participationAction">This Instance</button>
-			{/if}
-			
-			{if $IAmInvited or true}
-				Attending? <button value="{InvitationAction::Accept}" class="button participationAction">{translate key=Yes}</button>
-				<button value="{InvitationAction::Decline}" class="button participationAction">{translate key=No}</button>
-			{/if}
-			{html_image class="indicator" src="admin-ajax-indicator.gif" style="display:none;"}
 		</div>
 	</div>
 
-	
-
+	<script type="text/javascript" src="scripts/participation.js"></script>
 	<script type="text/javascript">
 
 	$(document).ready(function() {
-		$('.participationAction').click(function() {
-			$('.indicator').show();
 
-			$.getJSON('participation.php', {ia: $(this).val(), rn: $("#referenceNumber").val()}, function(data) {
-				window.location.reload();
-			};
-		});
+		var participationOptions = {
+			responseType: 'json'
+		};
+			
+		var participation = new Participation(participationOptions);
+		participation.init();
 	});
+
 	</script>
 {include file='globalfooter.tpl'}

@@ -307,7 +307,7 @@ class Queries
 		INNER JOIN reservation_series rs ON r.series_id = rs.series_id
 		WHERE
 			reference_number = @referenceNumber AND
-			r.status_id <> 2';
+			status_id <> 2';
 	
 	const GET_RESERVATION_FOR_EDITING = 
 		'SELECT *

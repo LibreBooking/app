@@ -1,4 +1,5 @@
 <?php
+require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/ReservationFactory.php');
 
 class ReservationRepository implements IReservationRepository

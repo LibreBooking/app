@@ -5,10 +5,11 @@ class Pages
 
 	const DASHBOARD = 'dashboard.php';
 	const DEFAULT_LOGIN = 'dashboard.php';
-	const INVITATION_RESPONSES = '';
+	const INVITATION_RESPONSES = 'participation.php';
 	const LOGIN = 'index.php';
 	const MY_CALENDAR = 'mycalendar.php';
 	const OPENINGS = 'openings.php';
+	const PARTICIPATION = 'participation.php';
 	const PROFILE = 'profile.php';
 	const RESERVATION = 'reservation.php';
 	const SCHEDULE = 'schedule.php';

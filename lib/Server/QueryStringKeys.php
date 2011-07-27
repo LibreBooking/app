@@ -12,6 +12,7 @@ class QueryStringKeys
 	const END_DATE = 'ed';
 	const GROUP_ID = 'gid';
 	const INVITATION_ACTION = 'ia';
+	const RESPONSE_TYPE = 'rs';
 	const LANGUAGE = 'lang';
 	const MESSAGE_ID = 'mid';
     const PAGE = 'page';

@@ -72,6 +72,10 @@ class ParticipationPresenterTests extends TestBase
 		$series = $this->getMock('ExistingReservationSeries');
 
 		$this->page->expects($this->once())
+			->method('GetResponseType')
+			->will($this->returnValue('json'));
+
+		$this->page->expects($this->once())
 			->method('GetInvitationAction')
 			->will($this->returnValue($invitationAction));
 
@@ -96,6 +100,10 @@ class ParticipationPresenterTests extends TestBase
 			->method('Update')
 			->with($this->equalTo($series));
 
+		$this->page->expects($this->once())
+			->method('DisplayResult')
+			->with($this->equalTo(null));
+		
 		$this->presenter->PageLoad();
 	}
 }
