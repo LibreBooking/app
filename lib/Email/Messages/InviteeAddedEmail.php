@@ -22,13 +22,14 @@ class InviteeAddedEmail extends EmailMessage
 	
 	private $timezone;
 	
-	public function __construct(User $reservationOwner, User $participant, ReservationSeries $reservationSeries)
+	public function __construct(User $reservationOwner, User $invitee, ReservationSeries $reservationSeries)
 	{
-		parent::__construct($participant->Language());
+		parent::__construct($invitee->Language());
 		
 		$this->reservationOwner = $reservationOwner;
 		$this->reservationSeries = $reservationSeries;
-		$this->timezone = $participant->Timezone();
+		$this->timezone = $invitee->Timezone();
+		$this->invitee = $invitee;
 	}
 	
 	/**

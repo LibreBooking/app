@@ -13,11 +13,17 @@ class ParticipationPresenter
 	 * @var \IReservationRepository
 	 */
 	private $reservationRepository;
+
+	/**
+	 * @var \IReservationViewRepository
+	 */
+	private $reservationViewRepository;
 	
-	public function __construct(IParticipationPage $page, IReservationRepository $reservationRepository)
+	public function __construct(IParticipationPage $page, IReservationRepository $reservationRepository, IReservationViewRepository $reservationViewRepository)
 	{
 		$this->page = $page;
 		$this->reservationRepository = $reservationRepository;
+		$this->reservationViewRepository = $reservationViewRepository;
 	}
 
 	public function PageLoad()
@@ -35,6 +41,13 @@ class ParticipationPresenter
 			}
 		}
 
+		$startDate = Date::Now();
+		$endDate = $startDate->AddDays(30);
+		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
+		$userId = 2;
+		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, ReservationUserLevel::INVITEE);
+
+		$this->page->BindReservations($reservations);
 		$this->page->DisplayParticipation();
 	}
 

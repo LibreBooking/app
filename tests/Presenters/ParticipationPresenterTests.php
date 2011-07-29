@@ -14,6 +14,11 @@ class ParticipationPresenterTests extends TestBase
 	private $reservationRepo;
 
 	/**
+	 * @var IReservationViewRepository
+	 */
+	private $reservationViewRepo;
+
+	/**
 	 * @var ParticipationPresenter
 	 */
 	private $presenter;
@@ -24,8 +29,9 @@ class ParticipationPresenterTests extends TestBase
 		
 		$this->page = $this->getMock('IParticipationPage');
 		$this->reservationRepo = $this->getMock('IReservationRepository');
+		$this->reservationViewRepo = $this->getMock('IReservationViewRepository');
 
-		$this->presenter = new ParticipationPresenter($this->page, $this->reservationRepo);
+		$this->presenter = new ParticipationPresenter($this->page, $this->reservationRepo, $this->reservationViewRepo);
 	}
 
 	public function teardown()
@@ -63,6 +69,29 @@ class ParticipationPresenterTests extends TestBase
 		$seriesMethod = 'CancelInstanceParticipation';
 
 		$this->assertUpdatesSeriesParticipation($invitationAction, $seriesMethod);
+	}
+
+	public function testWhenViewingOpenInvites()
+	{
+		$startDate = Date::Now();
+		$endDate = $startDate->AddDays(30);
+		$userId = $this->fakeUser->UserId;
+		$inviteeLevel = ReservationUserLevel::INVITEE;
+
+		$reservations[] = new ReservationItemView();
+		$reservations[] = new ReservationItemView();
+		$reservations[] = new ReservationItemView();
+
+		$this->reservationViewRepo->expects($this->once())
+				->method('GetReservationList')
+				->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId), $this->equalTo($inviteeLevel))
+				->will($this->returnValue($reservations));
+
+		$this->page->expects($this->once())
+				->method('BindReservations')
+				->with($this->equalTo($reservations));
+
+		$this->presenter->PageLoad();
 	}
 
 	private function assertUpdatesSeriesParticipation($invitationAction, $seriesMethod)

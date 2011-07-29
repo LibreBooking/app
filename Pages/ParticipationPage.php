@@ -34,6 +34,13 @@ interface IParticipationPage
 	 * @return string
 	 */
 	function GetResponseType();
+
+	/**
+	 * @abstract
+	 * @param array|ReservationViewItem[] $reservations
+	 * @return void
+	 */
+	function BindReservations($reservations);
 }
 
 class ParticipationPage extends SecurePage implements IParticipationPage
@@ -46,7 +53,7 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 	public function __construct()
 	{
 	    parent::__construct('OpenInvitations');
-		$this->presenter = new ParticipationPresenter($this, new ReservationRepository());
+		$this->presenter = new ParticipationPresenter($this, new ReservationRepository(), new ReservationViewRepository());
 	}
 	
 	public function PageLoad()
@@ -82,6 +89,11 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 	function GetResponseType()
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESPONSE_TYPE);
+	}
+
+	function BindReservations($reservations)
+	{
+		$this->Set('Reservations', $reservations);
 	}
 }
 ?>

@@ -122,7 +122,7 @@
 		};
 			
 		var participation = new Participation(participationOptions);
-		participation.init();
+		participation.initReservation();
 	});
 
 	</script>
