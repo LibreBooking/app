@@ -20,6 +20,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 	/**
 	 * @see IReservationValidationRule::Validate()
 	 * @param ReservationSeries $reservationSeries
+	 * @return ReservationRuleResult
 	 */
 	public function Validate($reservationSeries)
 	{
@@ -30,7 +31,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		/** @var Reservation $reservation */
 		foreach ($reservations as $reservation)
 		{
-			Log::Debug($reservation->ReferenceNumber());
+			Log::Debug("Checking for reservation conflicts, reference number %s", $reservation->ReferenceNumber());
 			
 			$scheduleReservations = $this->_repository->GetWithin($reservation->StartDate(), $reservation->EndDate());
 
@@ -45,8 +46,9 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 					continue;
 				}
 				
-				if ($this->IsInConflict($reservation, $reservationSeries, $scheduleReservation))
+				if ($this->IsInConflict($reservationSeries, $scheduleReservation))
 				{
+					Log::Debug("Reference number %s conflicts with existing reservation %s", $reservation->ReferenceNumber(), $scheduleReservation->GetReferenceNumber());
 					array_push($conflicts, $scheduleReservation);
 				}
 			}
@@ -62,12 +64,16 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 	
-	protected function IsInConflict(Reservation $instance, ReservationSeries $series, ScheduleReservation $scheduleReservation)
+	protected function IsInConflict(ReservationSeries $series, ScheduleReservation $scheduleReservation)
 	{
 		return ($scheduleReservation->GetResourceId() == $series->ResourceId()) ||
 			(false !== array_search($scheduleReservation->GetResourceId(), $series->Resources()));
 	}
-	
+
+	/**
+	 * @param array|ScheduleReservation $conflicts
+	 * @return string
+	 */
 	protected function GetErrorString($conflicts)
 	{
 		$errorString = new StringBuilder();
@@ -77,6 +83,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
 		
 		$dates = array();
+		/** @var ScheduleReservation $conflict */
 		foreach($conflicts as $conflict)
 		{
 			$dates[] = $conflict->GetStartDate()->ToTimezone($this->_timezone)->Format($format);

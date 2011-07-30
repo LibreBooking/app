@@ -203,6 +203,7 @@ class en_us extends Language
 		$strings['Account'] = 'Account';
 		$strings['EditProfile'] = 'Edit My Profile';
 		$strings['FindAnOpening'] = 'Find An Opening';
+		$strings['OpenInvitations'] = 'Open Invitations';
 		//
 		
 		// Day representations

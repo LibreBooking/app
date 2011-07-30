@@ -8,7 +8,6 @@ class TimeInterval
 	
 	/**
 	 * @param string $timeString in format hh:mm (seconds are ignored)
-	 * @return unknown_type
 	 */
 	public function __construct($timeString)
 	{
@@ -17,17 +16,6 @@ class TimeInterval
 		if (!empty($timeString))
 		{
 			$this->interval = DateDiff::FromTimeString($timeString);
-//			$timeParts = explode(':', $timeString);
-//
-//			if (count($timeParts) > 1)
-//			{
-//				$h = $timeParts[0];
-//				$m = $timeParts[1];
-//
-//				$this->interval = sprintf('%s:%s', $h, $m);
-//				//$intervalSpec = sprintf("PT%sH%sM", $h, $m);
-//				//$this->interval = new DateInterval($intervalSpec);
-//			}
 		}
 	}
 

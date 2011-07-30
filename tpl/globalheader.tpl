@@ -48,7 +48,7 @@
 					<li class="menuitem"><a href="#">My Calendar</a></li>
 					<li class="menuitem"><a href="#">Resource Calendar</a></li>
 					<li class="menuitem"><a href="#">Current Status</a></li>
-					<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">Open Invitations</a></li>
+					<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">{translate key=OpenInvitations}</a></li>
 					<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key=FindAnOpening}</a></li>
 		        </ul>
 		    </li>

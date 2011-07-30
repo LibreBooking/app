@@ -43,10 +43,12 @@ class ParticipationPresenter
 
 		$startDate = Date::Now();
 		$endDate = $startDate->AddDays(30);
-		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
-		$userId = 2;
+		$user = ServiceLocator::GetServer()->GetUserSession();
+		$userId = $user->UserId;
+
 		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, ReservationUserLevel::INVITEE);
 
+		$this->page->SetTimezone($user->Timezone);
 		$this->page->BindReservations($reservations);
 		$this->page->DisplayParticipation();
 	}

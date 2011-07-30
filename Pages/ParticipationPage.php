@@ -41,6 +41,13 @@ interface IParticipationPage
 	 * @return void
 	 */
 	function BindReservations($reservations);
+
+	/**
+	 * @abstract
+	 * @param $timezone
+	 * @return void
+	 */
+	public function SetTimezone($timezone);
 }
 
 class ParticipationPage extends SecurePage implements IParticipationPage
@@ -94,6 +101,11 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 	function BindReservations($reservations)
 	{
 		$this->Set('Reservations', $reservations);
+	}
+
+	public function SetTimezone($timezone)
+	{
+		$this->Set('Timezone', $timezone);
 	}
 }
 ?>

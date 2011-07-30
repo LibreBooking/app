@@ -33,7 +33,7 @@ class ReservationRepository implements IReservationRepository
 
 	public function LoadByReferenceNumber($referenceNumber)
 	{
-		Log::Debug("ReservationRepository::LoadByReferenceNumber() - FeferenceNumber: $referenceNumber");
+		Log::Debug("ReservationRepository::LoadByReferenceNumber() - ReferenceNumber: $referenceNumber");
 		
 		return $this->Load(new GetReservationByReferenceNumberCommand($referenceNumber));
 	}
@@ -188,8 +188,12 @@ class ReservationRepository implements IReservationRepository
 		return ReservationEventMapper::Instance()->Map($event, $series);
 	}
 
-	// LOAD BY ID HELPER FUNCTIONS
-	
+	/// LOAD BY ID HELPER FUNCTIONS
+
+	/**
+	 * @param IReader $reader
+	 * @return ExistingReservationSeries
+	 */
 	private function BuildSeries($reader)
 	{
 		$series = new ExistingReservationSeries();
