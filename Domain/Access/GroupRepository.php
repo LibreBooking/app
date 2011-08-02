@@ -41,7 +41,7 @@ interface IGroupViewRepository
 	 * @param ISqlFilter $filter
 	 * @return PageableData of GroupItemView
 	 */
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+	public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null, $filter = null);
 
 	/**
 	 * @abstract
@@ -63,7 +63,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	 * @param ISqlFilter $filter
 	 * @return PageableData of GroupItemView
 	 */
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+	public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null, $filter = null)
 	{
 		$command = new GetAllGroupsCommand();
 

@@ -71,6 +71,7 @@
 						</ul>
 					</li>
 					<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key=ManageGroups}</a>
+					<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key=ManageQuotas}</a>
 					<li class="menuitem"><a href="{$Path}admin/server_settings.php">{translate key=ServerSettings}</a>
 				</ul>
 		    </li>

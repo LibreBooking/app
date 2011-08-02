@@ -46,7 +46,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 					continue;
 				}
 				
-				if ($this->IsInConflict($reservationSeries, $scheduleReservation))
+				if ($this->IsInConflict($reservation, $reservationSeries, $scheduleReservation))
 				{
 					Log::Debug("Reference number %s conflicts with existing reservation %s", $reservation->ReferenceNumber(), $scheduleReservation->GetReferenceNumber());
 					array_push($conflicts, $scheduleReservation);
@@ -64,7 +64,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 	
-	protected function IsInConflict(ReservationSeries $series, ScheduleReservation $scheduleReservation)
+	protected function IsInConflict(Reservation $instance, ReservationSeries $series, ScheduleReservation $scheduleReservation)
 	{
 		return ($scheduleReservation->GetResourceId() == $series->ResourceId()) ||
 			(false !== array_search($scheduleReservation->GetResourceId(), $series->Resources()));

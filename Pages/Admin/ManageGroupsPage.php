@@ -18,7 +18,7 @@ interface IManageGroupsPage
 	public function SetJsonResponse($response);
 
 	public function GetUserId();
-	
+
 	public function BindResources($resources);
 
 	public function GetAllowedResourceIds();

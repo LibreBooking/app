@@ -97,6 +97,10 @@ class en_us extends Language
 		$strings['weeks'] = 'weeks';
 		$strings['months'] = 'months';
 		$strings['years'] = 'years';
+		$strings['day'] = 'day';
+		$strings['week'] = 'week';
+		$strings['month'] = 'month';
+		$strings['year'] = 'year';
 		$strings['repeatDayOfMonth'] = 'day of month';
 		$strings['repeatDayOfWeek'] = 'day of week';
 		$strings['RepeatUntilPrompt'] = 'Until';
@@ -178,6 +182,8 @@ class en_us extends Language
 		$strings['ApplyUpdatesTo'] = 'ApplyUpdatesTo';
 		$strings['CancelParticipation'] = 'Cancel Participation';
 		$strings['Attending'] = 'Attending';
+		$strings['QuotaConfiguration'] = 'For %s users in %s are limited to %s %s per %s';
+		$strings['reservations'] = 'reservations';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
@@ -193,6 +199,7 @@ class en_us extends Language
 		$strings['ManageResources'] = 'Manage Resources';
 		$strings['ManageUsers'] = 'Manage Users';
 		$strings['ManageGroups'] = 'Manage Groups';
+		$strings['ManageQuotas'] = 'Manage Quotas';
 		$strings['MyDashboard'] = 'My Dashboard';
 		$strings['ServerSettings'] = 'Server Settings';
 		$strings['Dashboard'] = 'Dashboard';

@@ -37,8 +37,11 @@
 
 .admin h4, .admin h5 {
 	display:inline;
-	font-size: 12px;
 	color: #666666;
+}
+
+.admin h4 {
+	font-size: 12px;
 }
 
 .admin h5 {
@@ -116,11 +119,11 @@ div.error {
 	margin-bottom: 5px;
 }
 
-.list {
+table.list {
     border-collapse:collapse;
 }
 
-.list, .list td, .list th {
+table.list, .list td, .list th {
      border: solid 1px #000000;
 }
 

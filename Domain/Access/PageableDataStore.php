@@ -2,26 +2,19 @@
 class PageableDataStore
 {
 	/**
+	 * Returns a limited query based on page number and size
+	 * If nulls are passed for both $pageNumber, $pageSize then all results are returned
+	 *
 	 * @param SqlCommand $command
 	 * @param callback $listBuilder callback to for each row of results
-	 * @param int $pageNumber
-	 * @param int $pageSize
-	 * @param string $sortField
-	 * @param string $sortDirection
+	 * @param int|null $pageNumber
+	 * @param int|null $pageSize
+	 * @param string|null $sortField
+	 * @param string|null $sortDirection
 	 * @return PageableData
 	 */
-	public function GetList($command, $listBuilder, $pageNumber, $pageSize, $sortField = null, $sortDirection = null)
+	public static function GetList($command, $listBuilder, $pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null)
 	{
-		if (is_null($pageNumber))
-		{
-			$pageNumber = 1;
-		}
-
-		if (is_null($pageSize))
-		{
-			$pageSize = 1;
-		}
-		
 		$total = 0;
 		$results = array();
 		$db = ServiceLocator::GetDatabase();
@@ -32,7 +25,18 @@ class PageableDataStore
 			$total = $row[ColumnNames::TOTAL];
 		}
 
-		$resultReader = $db->LimitQuery($command, $pageSize, ($pageNumber - 1) * $pageSize);
+		if (is_null($pageNumber) && is_null($pageSize))
+		{
+			$resultReader = $db->Query($command);
+		}
+		else
+		{
+			$pageNumber = is_null($pageNumber) ? 1 : $pageNumber;
+			$pageSize = is_null($pageSize) ? 1 : $pageSize;
+			
+			$resultReader = $db->LimitQuery($command, $pageSize, ($pageNumber - 1) * $pageSize);
+		}
+
 		while ($row = $resultReader->GetRow())
 		{
 			$results[] = call_user_func($listBuilder, $row);
@@ -50,14 +54,24 @@ class PageableData
 	public function __construct($results = array(), $total = 0, $pageNumber = 1, $pageSize = 1)
 	{
 		$this->results = $results;
+
+		$pageNumber = is_null($pageNumber) ? 1 : $pageNumber;
+		$pageSize = is_null($pageSize) ? 1 : $pageSize;
+
 		$this->pageInfo = new PageInfo($total, $pageNumber, $pageSize);
 	}
 
+	/**
+	 * @return array|mixed
+	 */
 	public function Results()
 	{
 		return $this->results;
 	}
 
+	/**
+	 * @return PageInfo
+	 */
 	public function PageInfo()
 	{
 		return $this->pageInfo;
