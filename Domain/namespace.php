@@ -22,4 +22,5 @@ require_once(ROOT_DIR . 'Domain/ExistingReservationSeries.php');
 require_once(ROOT_DIR . 'Domain/RepeatOptions.php');
 require_once(ROOT_DIR . 'Domain/User.php');
 require_once(ROOT_DIR . 'Domain/Group.php');
+require_once(ROOT_DIR . 'Domain/Quota.php');
 ?>

@@ -42,7 +42,7 @@ class ExistingReservationSeriesBuilder
 	
 	/**
 	 * @param Reservation $reservation
-	 * @return ExisitingReservationSeriesBuilder
+	 * @return ExistingReservationSeriesBuilder
 	 */
 	public function WithCurrentInstance($reservation)
 	{
@@ -51,26 +51,45 @@ class ExistingReservationSeriesBuilder
 		return $this;
 	}
 
+	/**
+	 * @return ExistingReservationSeriesBuilder
+	 */
 	public function WithRepeatOptions(IRepeatOptions $repeatOptions)
 	{
 		$this->repeatOptions = $repeatOptions;
 		
 		return $this;
 	}
-	
+
+	/**
+	 * @param Reservation $reservation
+	 * @return ExistingReservationSeriesBuilder
+	 */
 	public function WithInstance($reservation)
 	{
 		$this->instances[] = $reservation;
+
+		return $this;
 	}
-	
+
+	/**
+	 * @return ExistingReservationSeriesBuilder
+	 */
 	public function WithEvent($event)
 	{
 		$this->events[] = $event;
+
+		return $this;
 	}
-	
+
+	/**
+	 * @return ExistingReservationSeriesBuilder
+	 */
 	public function WithRequiresNewSeries($requiresNewSeries)
 	{
 		$this->requiresNewSeries = $requiresNewSeries;
+
+		return $this;
 	}
 	
 	/**
