@@ -15,14 +15,15 @@ class Quota
 	/**
 	 * @param ReservationSeries $reservationSeries
 	 * @param IReservationViewRepository $reservationViewRepository
+	 * @param string $timezone
 	 * @return bool
 	 */
-	public function ExceedsQuota($reservationSeries, IReservationViewRepository $reservationViewRepository)
+	public function ExceedsQuota($reservationSeries, IReservationViewRepository $reservationViewRepository, $timezone)
 	{
-		$dates = $this->GetEarliestAndLatestReservationDates($reservationSeries);
+		$dates = $this->GetEarliestAndLatestReservationDates($reservationSeries, $timezone);
 		$reservationsWithinRange = $reservationViewRepository->GetReservationList($dates[0], $dates[1], $reservationSeries->UserId(), ReservationUserLevel::OWNER);
 
-		$aggregation = $this->GetAggregation($reservationsWithinRange, $reservationSeries);
+		$aggregation = $this->GetAggregation($reservationsWithinRange, $reservationSeries, $timezone);
 
 		return $aggregation->ExceedsConstraint(1);
 	}
@@ -32,13 +33,13 @@ class Quota
 		return $this->quotaId . '';
 	}
 
-	private function GetEarliestAndLatestReservationDates(ReservationSeries $reservationSeries)
+	private function GetEarliestAndLatestReservationDates(ReservationSeries $reservationSeries, $timezone)
 	{
 		$instances = $reservationSeries->Instances();
 		usort($instances, array('Reservation', 'Compare'));
 		
-		$startDate = $instances[0]->StartDate()->GetDate();
-		$endDate = $instances[count($instances)-1]->EndDate()->AddDays(1)->GetDate();
+		$startDate = $instances[0]->StartDate()->ToTimezone($timezone)->GetDate();
+		$endDate = $instances[count($instances)-1]->EndDate()->ToTimezone($timezone)->AddDays(1)->GetDate();
 
 		return array($startDate, $endDate);
 	}
@@ -46,11 +47,12 @@ class Quota
 	/**
 	 * @param array|ReservationItemView[] $reservationsWithinRange
 	 * @param ReservationSeries $series
+	 * @param string $timezone
 	 * @return DailyBreakdown
 	 */
-	private function GetAggregation($reservationsWithinRange, ReservationSeries $series)
+	private function GetAggregation($reservationsWithinRange, ReservationSeries $series, $timezone)
 	{
-		$dailyBreakdown = new DailyBreakdown();
+		$dailyBreakdown = new DailyBreakdown($timezone);
 		
 		/** @var $reservation ReservationItemView */
 		foreach ($reservationsWithinRange as $reservation)
@@ -73,6 +75,15 @@ class Quota
 
 class DailyBreakdown
 {
+	/**
+	 * @var string
+	 */
+	private $timezone;
+	
+	public function __construct($timezone)
+	{
+		$this->timezone = $timezone;
+	}
 	public function AddExisting(ReservationItemView $reservation)
 	{
 		$this->_breakAndAdd($reservation->StartDate, $reservation->EndDate);
@@ -85,8 +96,11 @@ class DailyBreakdown
 
 	var $reservationLengths = array();
 
-	private function _breakAndAdd(Date $start, Date $end)
+	private function _breakAndAdd(Date $startDate, Date $endDate)
 	{
+		$start = $startDate->ToTimezone($this->timezone);
+		$end = $endDate->ToTimezone($this->timezone);
+		
 		if (!$start->DateEquals($end))
 		{
 			$beginningOfNextDay = $start->AddDays(1)->GetDate();

@@ -27,22 +27,23 @@ class QuotaTests extends TestBase
 	{
 		$quota = new Quota(1);
 
-		$startDate = Date::Parse('2011-04-03 12:30', $this->tz);
-		$endDate = Date::Parse('2011-04-03 1:30', $this->tz);
+		$startDate = Date::Parse('2011-04-03 1:30', 'UTC');
+		$endDate = Date::Parse('2011-04-03 2:30', 'UTC');
 
 		$series = $this->GetHourLongReservation($startDate, $endDate);
 
 		$res1 = new ReservationItemView('', $startDate, $endDate, '', 3, 98712);
 		$res2 = new ReservationItemView('', $startDate, $endDate, '', 4, 98713);
-		$res3 = new ReservationItemView('', $startDate->AddDays(1), $endDate->AddDays(1), '', $series->ResourceId(), 98713);
-		$reservations = array($res1, $res2);
+		// next day in America/Chicago
+		$res3 = new ReservationItemView('', $startDate->SetTimeString('6:30'), $endDate->SetTimeString('20:30'), '', $series->ResourceId(), 98713);
+		$reservations = array($res1, $res2, $res3);
 
-		$startSearch = $startDate->GetDate();
-		$endSearch = $endDate->AddDays(1)->GetDate();
+		$startSearch = $startDate->ToTimezone($this->tz)->GetDate();
+		$endSearch = $endDate->ToTimezone($this->tz)->AddDays(1)->GetDate();
 
 		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
 		
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository);
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
 
 		$this->assertFalse($exceeds);
 	}
@@ -51,20 +52,20 @@ class QuotaTests extends TestBase
 	{
 		$quota = new Quota(1);
 		
-		$startDate = Date::Parse('2011-04-03 12:30', $this->tz);
-		$endDate = Date::Parse('2011-04-03 1:30', $this->tz);
+		$startDate = Date::Parse('2011-04-03 12:30', 'UTC');
+		$endDate = Date::Parse('2011-04-03 1:30', 'UTC');
 
 		$series = $this->GetHourLongReservation($startDate, $endDate);
 		
-		$res1 = new ReservationItemView('', $startDate->SetTimeString('3:30'), $endDate->SetTimeString('5:00'), '', $series->ResourceId(), 98712);
+		$res1 = new ReservationItemView('', $startDate->SetTimeString('6:30'), $endDate->SetTimeString('8:00'), '', $series->ResourceId(), 98712);
 		$reservations = array($res1);
 
-		$startSearch = $startDate->GetDate();
-		$endSearch = $endDate->AddDays(1)->GetDate();
+		$startSearch = $startDate->ToTimezone($this->tz)->GetDate();
+		$endSearch = $endDate->ToTimezone($this->tz)->AddDays(1)->GetDate();
 
 		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository);
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
 
 		$this->assertTrue($exceeds);
 	}
