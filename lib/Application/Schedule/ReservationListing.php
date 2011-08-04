@@ -44,6 +44,8 @@ class ReservationListing implements IMutableReservationListing
 	public function OnDate($date)
 	{
 		$reservationListing = new ReservationListing();
+		
+		/** @var ScheduleReservation $reservation  */
 		foreach ($this->_reservations as $reservation)
 		{
 			if ($reservation->OccursOn($date))

@@ -196,9 +196,14 @@ class ReservationSeries
 			$this->AddNewInstance($date);
 		}
 	}
-	
-	protected function InstanceExistsOnDate(DateRange $reservationDate)
+
+	/**
+	 * @param DateRange $reservationDate
+	 * @return bool
+	 */
+	protected function InstanceStartsOnDate(DateRange $reservationDate)
 	{
+		/** @var $instance Reservation */
 		foreach ($this->instances as $instance)
 		{
 			if ($instance->StartDate()->DateEquals($reservationDate->GetBegin()))
@@ -307,7 +312,11 @@ class ReservationSeries
 			$instance->ChangeInvitees($inviteeIds);
 		}
 	}
-	
+
+	/**
+	 * @param Reservation $current
+	 * @return void
+	 */
 	protected function SetCurrentInstance(Reservation $current)
 	{
 		$this->currentInstanceKey = $this->GetNewKey($current);
@@ -320,10 +329,23 @@ class ReservationSeries
 	{
 		return $this->currentInstanceKey;
 	}
-	
+
+	/**
+	 * @param Reservation $instance
+	 * @return bool
+	 */
 	protected function IsCurrent(Reservation $instance)
 	{
 		return $instance->ReferenceNumber() == $this->CurrentInstance()->ReferenceNumber();
+	}
+
+	/**
+	 * @param int $resourceId
+	 * @return bool
+	 */
+	public function ContainsResource($resourceId)
+	{
+		return in_array($resourceId, $this->AllResources());
 	}
 }
 ?>

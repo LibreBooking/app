@@ -299,6 +299,11 @@ class Reservation
 
 		return false;
 	}
+
+	static function Compare(Reservation $res1, Reservation $res2)
+    {
+        return $res1->StartDate()->Compare($res2->StartDate());
+    }
 }
 
 ?>

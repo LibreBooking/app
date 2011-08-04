@@ -12,14 +12,127 @@ class Quota
 	    $this->quotaId = $quotaId;
 	}
 
-	public function ExceedsQuota($reservationSeries)
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 * @param IReservationViewRepository $reservationViewRepository
+	 * @return bool
+	 */
+	public function ExceedsQuota($reservationSeries, IReservationViewRepository $reservationViewRepository)
 	{
-		throw new Exception('not implemented');
+		$dates = $this->GetEarliestAndLatestReservationDates($reservationSeries);
+		$reservationsWithinRange = $reservationViewRepository->GetReservationList($dates[0], $dates[1], $reservationSeries->UserId(), ReservationUserLevel::OWNER);
+
+		$aggregation = $this->GetAggregation($reservationsWithinRange, $reservationSeries);
+
+		return $aggregation->ExceedsConstraint(1);
 	}
 
 	public function __toString()
 	{
 		return $this->quotaId . '';
 	}
+
+	private function GetEarliestAndLatestReservationDates(ReservationSeries $reservationSeries)
+	{
+		$instances = $reservationSeries->Instances();
+		usort($instances, array('Reservation', 'Compare'));
+		
+		$startDate = $instances[0]->StartDate()->GetDate();
+		$endDate = $instances[count($instances)-1]->EndDate()->AddDays(1)->GetDate();
+
+		return array($startDate, $endDate);
+	}
+
+	/**
+	 * @param array|ReservationItemView[] $reservationsWithinRange
+	 * @param ReservationSeries $series
+	 * @return DailyBreakdown
+	 */
+	private function GetAggregation($reservationsWithinRange, ReservationSeries $series)
+	{
+		$dailyBreakdown = new DailyBreakdown();
+		
+		/** @var $reservation ReservationItemView */
+		foreach ($reservationsWithinRange as $reservation)
+		{
+			if ($series->ContainsResource($reservation->ResourceId))
+			{
+				$dailyBreakdown->AddExisting($reservation);
+			}
+		}
+
+		/** @var $instance Reservation */
+		foreach ($series->Instances() as $instance)
+		{
+			$dailyBreakdown->AddInstance($instance);
+		}
+
+		return $dailyBreakdown;
+	}
 }
+
+class DailyBreakdown
+{
+	public function AddExisting(ReservationItemView $reservation)
+	{
+		$this->_breakAndAdd($reservation->StartDate, $reservation->EndDate);
+	}
+
+	public function AddInstance(Reservation $reservation)
+	{
+		$this->_breakAndAdd($reservation->StartDate(), $reservation->EndDate());
+	}
+
+	var $reservationLengths = array();
+
+	private function _breakAndAdd(Date $start, Date $end)
+	{
+		if (!$start->DateEquals($end))
+		{
+			$beginningOfNextDay = $start->AddDays(1)->GetDate();
+			$this->_add($start, $beginningOfNextDay);
+
+			$currentDate = $beginningOfNextDay;
+
+			for ($i = 1; $currentDate->LessThan($end) < 0; $i++)
+			{
+				$currentDate = $start->AddDays($i);
+				$this->_add($currentDate, $currentDate->AddDays(1)->GetDate());
+			}
+
+			$this->_add($currentDate, $end);
+		}
+		else
+		{
+			$this->_add($start, $end);
+		}
+	}
+	
+	private function _add(Date $start, Date $end)
+	{
+		$key = sprintf("%s%s%s", $start->Year(), $start->Month(), $start->Day());
+		if (array_key_exists($key, $this->reservationLengths))
+		{
+			$this->reservationLengths[$key][] = $end->GetDifference($start);
+		}
+		else
+		{
+			$this->reservationLengths[$key] = array($end->GetDifference($start));
+		}
+	}
+
+	public function ExceedsConstraint($constraint)
+	{
+		foreach ($this->reservationLengths as $x)
+		{
+			if (count($x) > $constraint)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+}
+
 ?>

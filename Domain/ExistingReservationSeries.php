@@ -255,7 +255,7 @@ class ExistingReservationSeries extends ReservationSeries
 
 	protected function AddNewInstance(DateRange $reservationDate)
 	{
-		if (!$this->InstanceExistsOnDate($reservationDate))
+		if (!$this->InstanceStartsOnDate($reservationDate))
 		{
 			Log::Debug('Adding instance for series %s on %s', $this->SeriesId(), $reservationDate);
 

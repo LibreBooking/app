@@ -43,7 +43,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	private $_firstLayoutTime; 
 	
 	/**
-	 * @param array[int]ScheduleReservation $reservations array of ScheduleReservation objects
+	 * @param array|ScheduleReservation[] $reservations array of ScheduleReservation objects
 	 * @param IScheduleLayout $layout
 	 * @param Date $layoutDate
 	 */
@@ -103,7 +103,7 @@ class ScheduleReservationList implements IScheduleReservationList
 			$start = $reservation->GetStartDate()->ToTimezone($this->_destinationTimezone);
 			
 			$startsInPast = $this->ReservationStartsOnPastDate($reservation);
-			if ($startsInPast)// || $start->Compare($this->_firstLayoutTime) < 0)
+			if ($startsInPast)
 			{
 				$start = $this->_firstLayoutTime;
 			}

@@ -99,11 +99,8 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		
 		$workingDate = Date::Create($layoutDate->Year(), $layoutDate->Month(), $layoutDate->Day(), 0, 0, 0, $layoutTimezone);
 		$midnight = $layoutDate->GetDate();
-		$midnightTomorrow = $midnight->AddDays(1);
 		
 		$list = new PeriodList();
-		$layout = array();
-		$adjusted = false;	
 		
 		/* @var $period LayoutPeriod */
 		foreach ($this->_periods as $period)
