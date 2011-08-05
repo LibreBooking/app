@@ -7,9 +7,21 @@ class Quota
 	 */
 	private $quotaId;
 
-	public function __construct($quotaId)
+	/**
+	 * @var \IQuotaDuration
+	 */
+	private $duration;
+
+	/**
+	 * @var \IQuotaLimit
+	 */
+	private $limit;
+
+	public function __construct($quotaId, $duration, $limit)
 	{
 	    $this->quotaId = $quotaId;
+		$this->duration = $duration;
+		$this->limit = $limit;
 	}
 
 	/**
@@ -20,12 +32,19 @@ class Quota
 	 */
 	public function ExceedsQuota($reservationSeries, IReservationViewRepository $reservationViewRepository, $timezone)
 	{
-		$dates = $this->GetEarliestAndLatestReservationDates($reservationSeries, $timezone);
-		$reservationsWithinRange = $reservationViewRepository->GetReservationList($dates[0], $dates[1], $reservationSeries->UserId(), ReservationUserLevel::OWNER);
+		$dates = $this->duration->GetSearchDates($reservationSeries, $timezone);
+		$reservationsWithinRange = $reservationViewRepository->GetReservationList($dates->Start(), $dates->End(), $reservationSeries->UserId(), ReservationUserLevel::OWNER);
 
-		$aggregation = $this->GetAggregation($reservationsWithinRange, $reservationSeries, $timezone);
+		try
+		{
+			$this->CheckAll($reservationsWithinRange, $reservationSeries, $timezone);
+		}
+		catch (QuotaExceededException $ex)
+		{
+			return true;
+		}
 
-		return $aggregation->ExceedsConstraint(1);
+		return false;
 	}
 
 	public function __toString()
@@ -33,74 +52,72 @@ class Quota
 		return $this->quotaId . '';
 	}
 
-	private function GetEarliestAndLatestReservationDates(ReservationSeries $reservationSeries, $timezone)
+	/**
+	 * @param array|ReservationItemView[] $reservationsWithinRange
+	 * @param ReservationSeries $series
+	 * @param string $timezone
+	 * @return QuotaAggregation
+	 */
+	private function GetAggregation($reservationsWithinRange, ReservationSeries $series, $timezone)
 	{
-		$instances = $reservationSeries->Instances();
-		usort($instances, array('Reservation', 'Compare'));
-		
-		$startDate = $instances[0]->StartDate()->ToTimezone($timezone)->GetDate();
-		$endDate = $instances[count($instances)-1]->EndDate()->ToTimezone($timezone)->AddDays(1)->GetDate();
+		$aggregation = new QuotaAggregation($timezone, $this->limit, $this->duration);
 
-		return array($startDate, $endDate);
+		/** @var $instance Reservation */
+		foreach ($series->Instances() as $instance)
+		{
+			$aggregation->AddInstance($instance);
+		}
+
+		/** @var $reservation ReservationItemView */
+		foreach ($reservationsWithinRange as $reservation)
+		{
+			if ($series->ContainsResource($reservation->ResourceId))
+			{
+				$aggregation->AddExisting($reservation);
+			}
+		}
+
+		return $aggregation;
 	}
 
 	/**
 	 * @param array|ReservationItemView[] $reservationsWithinRange
 	 * @param ReservationSeries $series
 	 * @param string $timezone
-	 * @return DailyBreakdown
 	 */
-	private function GetAggregation($reservationsWithinRange, ReservationSeries $series, $timezone)
+	private function CheckAll($reservationsWithinRange, $series, $timezone)
 	{
-		$dailyBreakdown = new DailyBreakdown($timezone);
-		
+		/** @var $instance Reservation */
+		foreach ($series->Instances() as $instance)
+		{
+			$this->AddInstance($instance, $timezone);
+		}
+
 		/** @var $reservation ReservationItemView */
 		foreach ($reservationsWithinRange as $reservation)
 		{
 			if ($series->ContainsResource($reservation->ResourceId))
 			{
-				$dailyBreakdown->AddExisting($reservation);
+				$this->AddExisting($reservation, $timezone);
 			}
 		}
-
-		/** @var $instance Reservation */
-		foreach ($series->Instances() as $instance)
-		{
-			$dailyBreakdown->AddInstance($instance);
-		}
-
-		return $dailyBreakdown;
-	}
-}
-
-class DailyBreakdown
-{
-	/**
-	 * @var string
-	 */
-	private $timezone;
-	
-	public function __construct($timezone)
-	{
-		$this->timezone = $timezone;
-	}
-	public function AddExisting(ReservationItemView $reservation)
-	{
-		$this->_breakAndAdd($reservation->StartDate, $reservation->EndDate);
 	}
 
-	public function AddInstance(Reservation $reservation)
+	public function AddExisting(ReservationItemView $reservation, $timezone)
 	{
-		$this->_breakAndAdd($reservation->StartDate(), $reservation->EndDate());
+		$this->_breakAndAdd($reservation->StartDate, $reservation->EndDate, $timezone);
 	}
 
-	var $reservationLengths = array();
-
-	private function _breakAndAdd(Date $startDate, Date $endDate)
+	public function AddInstance(Reservation $reservation, $timezone)
 	{
-		$start = $startDate->ToTimezone($this->timezone);
-		$end = $endDate->ToTimezone($this->timezone);
-		
+		$this->_breakAndAdd($reservation->StartDate(), $reservation->EndDate(), $timezone);
+	}
+
+	private function _breakAndAdd(Date $startDate, Date $endDate, $timezone)
+	{
+		$start = $startDate->ToTimezone($timezone);
+		$end = $endDate->ToTimezone($timezone);
+
 		if (!$start->DateEquals($end))
 		{
 			$beginningOfNextDay = $start->AddDays(1)->GetDate();
@@ -121,31 +138,149 @@ class DailyBreakdown
 			$this->_add($start, $end);
 		}
 	}
-	
+
 	private function _add(Date $start, Date $end)
 	{
-		$key = sprintf("%s%s%s", $start->Year(), $start->Month(), $start->Day());
-		if (array_key_exists($key, $this->reservationLengths))
+		$durationKey = $this->duration->GetDurationKey($start);
+
+		$this->limit->TryAdd($start, $end, $durationKey);
+	}
+}
+
+interface IQuotaDuration
+{
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 * @param string $timezone
+	 * @return QuotaSearchDates
+	 */
+	public function GetSearchDates(ReservationSeries $reservationSeries, $timezone);
+
+	/**
+	 * @abstract
+	 * @param Date $date
+	 * @return void
+	 */
+	public function GetDurationKey(Date $date);
+}
+
+class QuotaSearchDates
+{
+	/**
+	 * @var \Date
+	 */
+	private $start;
+
+	/**
+	 * @var \Date
+	 */
+	private $end;
+	
+	public function __construct(Date $start, Date $end)
+	{
+		$this->start = $start;
+		$this->end = $end;
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function Start()
+	{
+		return $this->start;
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function End()
+	{
+		return $this->end;
+	}
+}
+
+class QuotaDurationDay implements IQuotaDuration
+{
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 * @param string $timezone
+	 * @return QuotaSearchDates
+	 */
+	public function GetSearchDates(ReservationSeries $reservationSeries, $timezone)
+	{
+		$instances = $reservationSeries->Instances();
+		usort($instances, array('Reservation', 'Compare'));
+
+		$startDate = $instances[0]->StartDate()->ToTimezone($timezone)->GetDate();
+		$endDate = $instances[count($instances)-1]->EndDate()->ToTimezone($timezone)->AddDays(1)->GetDate();
+
+		return new QuotaSearchDates($startDate, $endDate);
+	}
+
+	/**
+	 * @param Date $date
+	 * @return string
+	 */
+	public function GetDurationKey(Date $date)
+	{
+		return sprintf("%s%s%s", $date->Year(), $date->Month(), $date->Day());
+	}
+}
+
+interface IQuotaLimit
+{
+	/**
+	 * @abstract
+	 * @param Date $start
+	 * @param Date $end
+	 * @param string $key
+	 * @return void
+	 * @throws QuotaExceededException
+	 */
+	public function TryAdd($start, $end, $key);
+}
+
+class QuotaLimitCount implements IQuotaLimit
+{
+	/**
+	 * @var array
+	 */
+	var $aggregateCounts = array();
+
+	/**
+	 * @param int $totalAllowed
+	 */
+	public function __construct($totalAllowed)
+	{
+		$this->totalAllowed = $totalAllowed;
+	}
+	
+	public function TryAdd($start, $end, $key)
+	{
+		if (array_key_exists($key, $this->aggregateCounts))
 		{
-			$this->reservationLengths[$key][] = $end->GetDifference($start);
+			$this->aggregateCounts[$key] = $this->aggregateCounts[$key]+1;
+
+			if ($this->aggregateCounts[$key] > $this->totalAllowed)
+			{
+				throw new QuotaExceededException("Only {$this->totalAllowed} reservations are allowed for this duration");
+			}
 		}
 		else
 		{
-			$this->reservationLengths[$key] = array($end->GetDifference($start));
+			$this->aggregateCounts[$key] = 1;
 		}
 	}
+}
 
-	public function ExceedsConstraint($constraint)
+class QuotaExceededException extends Exception
+{
+	/**
+	 * @param string $message
+	 */
+	public function __construct($message)
 	{
-		foreach ($this->reservationLengths as $x)
-		{
-			if (count($x) > $constraint)
-			{
-				return true;
-			}
-		}
-
-		return false;
+		parent::__construct($message);
 	}
 }
 

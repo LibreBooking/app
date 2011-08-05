@@ -112,7 +112,7 @@ class TestQuota extends Quota
 	{
 		$this->ShouldExceed = $shouldExceed;
 		
-		parent::__construct($quotaId);
+		parent::__construct($quotaId, null, null);
 	}
 
 	public function ExceedsQuota($reservationSeries)

@@ -23,9 +23,12 @@ class QuotaTests extends TestBase
 		parent::teardown();
 	}
 
-	public function testWhenUserHasNoReservationsOnSameDayForSelectedResources()
+	public function testWhenUserHasLessThanAllowedReservationsOnSameDayForSelectedResources()
 	{
-		$quota = new Quota(1);
+		$duration = new QuotaDurationDay();
+		$limit = new QuotaLimitCount(2);
+		
+		$quota = new Quota(1, $duration, $limit);
 
 		$startDate = Date::Parse('2011-04-03 1:30', 'UTC');
 		$endDate = Date::Parse('2011-04-03 2:30', 'UTC');
@@ -34,9 +37,10 @@ class QuotaTests extends TestBase
 
 		$res1 = new ReservationItemView('', $startDate, $endDate, '', 3, 98712);
 		$res2 = new ReservationItemView('', $startDate, $endDate, '', 4, 98713);
+		$res3 = new ReservationItemView('', $startDate->SetTimeString('3:30'), $endDate->SetTimeString('4:30'), '', $series->ResourceId(), 98713);
 		// next day in America/Chicago
-		$res3 = new ReservationItemView('', $startDate->SetTimeString('6:30'), $endDate->SetTimeString('20:30'), '', $series->ResourceId(), 98713);
-		$reservations = array($res1, $res2, $res3);
+		$res4 = new ReservationItemView('', $startDate->SetTimeString('6:30'), $endDate->SetTimeString('20:30'), '', $series->ResourceId(), 98713);
+		$reservations = array($res1, $res2, $res3, $res4);
 
 		$startSearch = $startDate->ToTimezone($this->tz)->GetDate();
 		$endSearch = $endDate->ToTimezone($this->tz)->AddDays(1)->GetDate();
@@ -50,7 +54,10 @@ class QuotaTests extends TestBase
 
 	public function testWhenReservationExistsOnSameDayForSameResource()
 	{
-		$quota = new Quota(1);
+		$duration = new QuotaDurationDay();
+		$limit = new QuotaLimitCount(1);
+				
+		$quota = new Quota(1, $duration, $limit);
 		
 		$startDate = Date::Parse('2011-04-03 12:30', 'UTC');
 		$endDate = Date::Parse('2011-04-03 1:30', 'UTC');
