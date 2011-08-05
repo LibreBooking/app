@@ -320,7 +320,7 @@ class Date
 			return $this->Copy();
 		}
 		
-		$newTimestamp = $this->Timestamp() + $difference->Seconds();
+		$newTimestamp = $this->Timestamp() + $difference->TotalSeconds();
 		$date = new DateTime('now', new DateTimeZone($this->Timezone()));
 		$date->setTimestamp($newTimestamp);
 		
@@ -460,7 +460,7 @@ class DateDiff
 	/**
 	 * @param int $seconds
 	 */
-	private function __construct($seconds)
+	public function __construct($seconds)
 	{
 	    $this->seconds = $seconds;
 	}
@@ -468,7 +468,7 @@ class DateDiff
 	/**
 	 * @return int
 	 */
-	public function Seconds()
+	public function TotalSeconds()
 	{
 		return $this->seconds;
 	}
@@ -543,6 +543,24 @@ class DateDiff
 	public function IsNull()
 	{
 		return $this->seconds == 0;
+	}
+
+	/**
+	 * @param DateDiff $diff
+	 * @return DateDiff
+	 */
+	public function Add(DateDiff $diff)
+	{
+		return new DateDiff($this->seconds + $diff->seconds);
+	}
+
+	/**
+	 * @param DateDiff $diff
+	 * @return bool
+	 */
+	public function GreaterThan(DateDiff $diff)
+	{
+		return $this->seconds > $diff->seconds;
 	}
 }
 ?>

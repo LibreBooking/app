@@ -56,34 +56,7 @@ class Quota
 	 * @param array|ReservationItemView[] $reservationsWithinRange
 	 * @param ReservationSeries $series
 	 * @param string $timezone
-	 * @return QuotaAggregation
-	 */
-	private function GetAggregation($reservationsWithinRange, ReservationSeries $series, $timezone)
-	{
-		$aggregation = new QuotaAggregation($timezone, $this->limit, $this->duration);
-
-		/** @var $instance Reservation */
-		foreach ($series->Instances() as $instance)
-		{
-			$aggregation->AddInstance($instance);
-		}
-
-		/** @var $reservation ReservationItemView */
-		foreach ($reservationsWithinRange as $reservation)
-		{
-			if ($series->ContainsResource($reservation->ResourceId))
-			{
-				$aggregation->AddExisting($reservation);
-			}
-		}
-
-		return $aggregation;
-	}
-
-	/**
-	 * @param array|ReservationItemView[] $reservationsWithinRange
-	 * @param ReservationSeries $series
-	 * @param string $timezone
+	 * @throws QuotaExceededException
 	 */
 	private function CheckAll($reservationsWithinRange, $series, $timezone)
 	{
@@ -243,7 +216,7 @@ interface IQuotaLimit
 class QuotaLimitCount implements IQuotaLimit
 {
 	/**
-	 * @var array
+	 * @var array|int[]
 	 */
 	var $aggregateCounts = array();
 
@@ -273,6 +246,57 @@ class QuotaLimitCount implements IQuotaLimit
 	}
 }
 
+class QuotaLimitHours implements IQuotaLimit
+{
+	/**
+	 * @var array|DateDiff[]
+	 */
+	var $aggregateCounts = array();
+
+	/**
+	 * @var \DateDiff
+	 */
+	var $allowedDuration;
+
+	/**
+	 * @var decimal
+	 */
+	var $allowedHours;
+	
+	/**
+	 * @param int $allowedHours
+	 */
+	public function __construct($allowedHours)
+	{
+		$this->allowedHours = $allowedHours;
+		$this->allowedDuration = new DateDiff($allowedHours * 3600);
+	}
+
+	/**
+	 * @param Date $start
+	 * @param Date $end
+	 * @param string $key
+	 * @return void
+	 * @throws QuotaExceededException
+	 */
+	public function TryAdd($start, $end, $key)
+	{
+		$diff = $start->GetDifference($end);
+		if (array_key_exists($key, $this->aggregateCounts))
+		{
+			$this->aggregateCounts[$key] = $this->aggregateCounts[$key]->Add($diff);
+
+			if ($this->aggregateCounts[$key]->GreaterThan($this->allowedDuration))
+			{
+				throw new QuotaExceededException("Cumulative reservation length cannot exceed {$this->allowedHours} hours for this duration");
+			}
+		}
+		else
+		{
+			$this->aggregateCounts[$key] = $diff;
+		}
+	}
+}
 class QuotaExceededException extends Exception
 {
 	/**

@@ -52,19 +52,19 @@ class QuotaTests extends TestBase
 		$this->assertFalse($exceeds);
 	}
 
-	public function testWhenReservationExistsOnSameDayForSameResource()
+	public function testWhenTotalLimitIsExceededOnSameDayForSameResource()
 	{
 		$duration = new QuotaDurationDay();
 		$limit = new QuotaLimitCount(1);
 				
 		$quota = new Quota(1, $duration, $limit);
 		
-		$startDate = Date::Parse('2011-04-03 12:30', 'UTC');
-		$endDate = Date::Parse('2011-04-03 1:30', 'UTC');
+		$startDate = Date::Parse('2011-04-03 1:30', 'UTC');
+		$endDate = Date::Parse('2011-04-03 2:30', 'UTC');
 
 		$series = $this->GetHourLongReservation($startDate, $endDate);
 		
-		$res1 = new ReservationItemView('', $startDate->SetTimeString('6:30'), $endDate->SetTimeString('8:00'), '', $series->ResourceId(), 98712);
+		$res1 = new ReservationItemView('', $startDate->SetTimeString('3:30'), $endDate->SetTimeString('8:00'), '', $series->ResourceId(), 98712);
 		$reservations = array($res1);
 
 		$startSearch = $startDate->ToTimezone($this->tz)->GetDate();
@@ -77,6 +77,28 @@ class QuotaTests extends TestBase
 		$this->assertTrue($exceeds);
 	}
 
+	public function testWhenHourlyLimitIsExceededOnSameDayForSameResource()
+	{
+		$duration = new QuotaDurationDay();
+		$limit = new QuotaLimitHours(1.5);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		$startDate = Date::Parse('2011-04-03 0:30', 'UTC');
+		$endDate = Date::Parse('2011-04-03 1:30', 'UTC');
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', $startDate->SetTimeString('00:00'), $endDate->SetTimeString('00:31'), '', $series->ResourceId(), 98712);
+		$reservations = array($res1);
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
+
+		$this->assertTrue($exceeds);
+	}
+	
 	private function GetHourLongReservation($startDate, $endDate)
 	{
 		$userId = 12;
@@ -96,6 +118,14 @@ class QuotaTests extends TestBase
 		$this->reservationViewRepository->expects($this->once())
 			->method('GetReservationList')
 			->with($this->equalTo($startSearch), $this->equalTo($endSearch), $this->equalTo($series->UserId()), $this->equalTo(ReservationUserLevel::OWNER))
+			->will($this->returnValue($reservations));
+	}
+
+	private function SearchReturns($reservations)
+	{
+		$this->reservationViewRepository->expects($this->once())
+			->method('GetReservationList')
+			->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 	}
 }

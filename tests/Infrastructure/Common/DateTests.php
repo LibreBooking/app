@@ -401,7 +401,7 @@ class DateTests extends TestBase
 
 		$secondsInOneDay = 60 * 60 * 24;
 
-		$this->assertEquals($diff->Seconds(), $secondsInOneDay, '2nd date is one day greater than 1st date');
+		$this->assertEquals($diff->TotalSeconds(), $secondsInOneDay, '2nd date is one day greater than 1st date');
 		$this->assertEquals(24, $diff->Hours());
 		$this->assertEquals(0, $diff->Minutes());
 
@@ -433,7 +433,7 @@ class DateTests extends TestBase
 		$seconds = (12 * 60 * 60) + (60 * 35);
 		$diff = DateDiff::FromTimeString("12:35");
 
-		$this->assertEquals($seconds, $diff->Seconds());
+		$this->assertEquals($seconds, $diff->TotalSeconds());
 	}
 }
 ?>
