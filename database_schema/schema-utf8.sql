@@ -53,72 +53,6 @@ CREATE TABLE `time_blocks` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `long_quotas`
---
-
-DROP TABLE IF EXISTS `long_quotas`;
-CREATE TABLE `long_quotas` (
- `long_quotaid` smallint(5) unsigned NOT NULL auto_increment,
- `label` varchar(85),
- `max_count` smallint(5) unsigned,
- `max_total_hours` smallint(5) unsigned,
- `quota_window_duration` time,
- PRIMARY KEY (`long_quotaid`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `block_long_quotas`
---
-
-DROP TABLE IF EXISTS `block_long_quotas`;
-CREATE TABLE `block_long_quotas` (
- `block_id` mediumint(8) unsigned NOT NULL,
- `long_quota_id` smallint(5) unsigned NOT NULL,
- PRIMARY KEY (`block_id`, `long_quota_id`),
- INDEX (`block_id`),
- FOREIGN KEY (`block_id`) 
-	REFERENCES time_blocks(`block_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`long_quota_id`),
- FOREIGN KEY (`long_quota_id`) 
-	REFERENCES long_quotas(`long_quotaid`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `day_quotas`
---
-
-DROP TABLE IF EXISTS `day_quotas`;
-CREATE TABLE `day_quotas` (
- `day_quotaid` smallint(5) unsigned NOT NULL auto_increment,
- `label` varchar(85),
- `max_total_hours` tinyint(2) unsigned,
- `max_count` tinyint(2) unsigned,
- `max_continuous` tinyint(2) unsigned,
- PRIMARY KEY (`day_quotaid`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `block_day_quotas`
---
-
-DROP TABLE IF EXISTS `block_day_quotas`;
-CREATE TABLE `block_day_quotas` (
- `block_id` mediumint(8) unsigned NOT NULL,
- `day_quota_id` smallint(5) unsigned NOT NULL,
- PRIMARY KEY (`block_id`, `day_quota_id`),
- INDEX (`block_id`),
- FOREIGN KEY (`block_id`) 
-	REFERENCES time_blocks(`block_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`day_quota_id`),
- FOREIGN KEY (`day_quota_id`) 
-	REFERENCES day_quotas(`day_quotaid`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
 -- Table structure for table `organizations`
 --
 
@@ -306,44 +240,6 @@ CREATE TABLE `user_addresses` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `user_day_quotas`
---
-
-DROP TABLE IF EXISTS `user_day_quotas`;
-CREATE TABLE `user_day_quotas` (
- `user_id` mediumint(8) unsigned NOT NULL,
- `day_quota_id` smallint(5) unsigned NOT NULL,
- PRIMARY KEY (`user_id`, `day_quota_id`),
- INDEX (`user_id`),
- FOREIGN KEY (`user_id`) 
-	REFERENCES users(`user_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`day_quota_id`),
- FOREIGN KEY (`day_quota_id`) 
-	REFERENCES day_quotas(`day_quotaid`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `user_long_quotas`
---
-
-DROP TABLE IF EXISTS `user_long_quotas`;
-CREATE TABLE `user_long_quotas` (
- `user_id` mediumint(8) unsigned NOT NULL,
- `long_quota_id` smallint(5) unsigned NOT NULL,
- PRIMARY KEY (`user_id`, `long_quota_id`),
- INDEX (`user_id`),
- FOREIGN KEY (`user_id`) 
-	REFERENCES users(`user_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`long_quota_id`),
- FOREIGN KEY (`long_quota_id`) 
-	REFERENCES long_quotas(`long_quotaid`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
 -- Table structure for table `constraint_functions`
 --
 
@@ -395,44 +291,6 @@ CREATE TABLE `resources` (
  INDEX (`type_id`),
  FOREIGN KEY (`type_id`) 
 	REFERENCES resource_types(`type_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `resource_day_quotas`
---
-
-DROP TABLE IF EXISTS `resource_day_quotas`;
-CREATE TABLE `resource_day_quotas` (
- `resource_id` smallint(5) unsigned NOT NULL,
- `day_quota_id` smallint(5) unsigned NOT NULL,
- PRIMARY KEY (`resource_id`, `day_quota_id`),
- INDEX (`resource_id`),
- FOREIGN KEY (`resource_id`) 
-	REFERENCES resources(`resource_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`day_quota_id`),
- FOREIGN KEY (`day_quota_id`) 
-	REFERENCES day_quotas(`day_quotaid`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `resource_long_quotas`
---
-
-DROP TABLE IF EXISTS `resource_long_quotas`;
-CREATE TABLE `resource_long_quotas` (
- `resource_id` smallint(5) unsigned NOT NULL,
- `long_quota_id` smallint(5) unsigned NOT NULL,
- PRIMARY KEY (`resource_id`, `long_quota_id`),
- INDEX (`resource_id`),
- FOREIGN KEY (`resource_id`) 
-	REFERENCES resources(`resource_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`long_quota_id`),
- FOREIGN KEY (`long_quota_id`) 
-	REFERENCES long_quotas(`long_quotaid`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -688,5 +546,27 @@ CREATE TABLE `user_email_preferences` (
   `event_type` varchar(45) NOT NULL,
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Table structure for table `quotas`
+--
+
+DROP TABLE IF EXISTS `quotas`;
+CREATE TABLE `quotas` (
+ `quota_id` mediumint(8) unsigned NOT NULL,
+ `limit` decimal unsigned NOT NULL,
+ `unit` varchar(25) NOT NULL,
+ `duration` varchar(25) NOT NULL,
+ `resource_id` smallint(5) unsigned,
+ `group_id` smallint(5) unsigned,
+ PRIMARY KEY (`quota_id`),
+ FOREIGN KEY (`resource_id`)
+	REFERENCES resources(`resource_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE,
+ FOREIGN KEY (`group_id`)
+	REFERENCES groups(`group_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 GRANT ALL on phpscheduleit2.* to 'schedule_user'@'localhost' identified by 'password';

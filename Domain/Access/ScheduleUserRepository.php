@@ -21,7 +21,7 @@ class ScheduleUserRepository implements IScheduleUserRepository
 
 	private function GetUserResources($userId)
 	{
-		$userCommand = new SelectUserPermissions($userId);
+		$userCommand = new GetUserPermissionsCommand($userId);
 
 		$reader = ServiceLocator::GetDatabase()->Query($userCommand);
 		$resources = array();

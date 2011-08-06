@@ -36,7 +36,7 @@ class ScheduleUserRepositoryTests extends TestBase
 		$repo = new ScheduleUserRepository();
 		$user = $repo->GetUser($userId);
 		
-		$userCommand = new SelectUserPermissions($userId);
+		$userCommand = new GetUserPermissionsCommand($userId);
 		$groupCommand = new SelectUserGroupPermissions($userId);
 		
 		$this->assertEquals(2, count($this->db->_Commands));

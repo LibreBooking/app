@@ -21,5 +21,10 @@ class FakeUser extends User
 	{
 		$this->timezone = $timezone;
 	}
+
+	public function SetGroups($groupIds)
+	{
+		$this->groupIds = $groupIds;
+	}
 }
 ?>

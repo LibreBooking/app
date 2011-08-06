@@ -1,6 +1,18 @@
 <?php
 
-class Quota
+interface IQuota
+{
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 * @param User $user
+	 * @param Schedule $schedule
+	 * @param IReservationViewRepository $reservationViewRepository
+	 * @return bool
+	 */
+	public function ExceedsQuota($reservationSeries, $user, $schedule, IReservationViewRepository $reservationViewRepository);
+}
+
+class Quota implements IQuota
 {
 	/**
 	 * @var int
@@ -17,21 +29,52 @@ class Quota
 	 */
 	private $limit;
 
-	public function __construct($quotaId, $duration, $limit)
+	/**
+	 * @var int
+	 */
+	private $resourceId;
+
+	/**
+	 * @var int
+	 */
+	private $groupId;
+	
+	public function __construct($quotaId, $duration, $limit, $resourceId = null, $groupId = null)
 	{
 	    $this->quotaId = $quotaId;
 		$this->duration = $duration;
 		$this->limit = $limit;
+		$this->resourceId = $resourceId;
+		$this->groupId = $groupId;
 	}
 
 	/**
 	 * @param ReservationSeries $reservationSeries
+	 * @param User $user
+	 * @param Schedule $schedule
 	 * @param IReservationViewRepository $reservationViewRepository
-	 * @param string $timezone
 	 * @return bool
 	 */
-	public function ExceedsQuota($reservationSeries, IReservationViewRepository $reservationViewRepository, $timezone)
+	public function ExceedsQuota($reservationSeries, $user, $schedule, IReservationViewRepository $reservationViewRepository)
 	{
+		$timezone = $schedule->GetTimezone();
+		
+		foreach ($reservationSeries->AllResources() as $resourceId)
+		{
+			if (!$this->AppliesToResource($resourceId))
+			{
+				return false;
+			}
+		}
+
+		foreach ($user->GroupIds() as $groupId)
+		{
+			if (!$this->AppliesToGroup($groupId))
+			{
+				return false;
+			}
+		}
+
 		if (count($reservationSeries->Instances()) == 0)
 		{
 			return false;
@@ -51,10 +94,54 @@ class Quota
 
 		return false;
 	}
-
+	
 	public function __toString()
 	{
 		return $this->quotaId . '';
+	}
+	
+	/**
+	 * @return IQuotaLimit
+	 */
+	public function GetLimit()
+	{
+		return $this->limit;
+	}
+
+	/**
+	 * @return IQuotaDuration
+	 */
+	public function GetDuration()
+	{
+		return $this->duration;
+	}
+
+	/**
+	 * @param int $resourceId
+	 * @return bool
+	 */
+	public function AppliesToResource($resourceId)
+	{
+		return is_null($this->resourceId) || $this->resourceId == $resourceId;
+	}
+
+	/**
+	 * @param int $groupId
+	 * @return bool
+	 */
+	public function AppliesToGroup($groupId)
+	{
+		return is_null($this->groupId) || $this->groupId == $groupId;
+	}
+
+	private function AddExisting(ReservationItemView $reservation, $timezone)
+	{
+		$this->_breakAndAdd($reservation->StartDate, $reservation->EndDate, $timezone);
+	}
+
+	private function AddInstance(Reservation $reservation, $timezone)
+	{
+		$this->_breakAndAdd($reservation->StartDate(), $reservation->EndDate(), $timezone);
 	}
 
 	/**
@@ -84,16 +171,6 @@ class Quota
 		}
 	}
 
-	public function AddExisting(ReservationItemView $reservation, $timezone)
-	{
-		$this->_breakAndAdd($reservation->StartDate, $reservation->EndDate, $timezone);
-	}
-
-	public function AddInstance(Reservation $reservation, $timezone)
-	{
-		$this->_breakAndAdd($reservation->StartDate(), $reservation->EndDate(), $timezone);
-	}
-
 	private function _breakAndAdd(Date $startDate, Date $endDate, $timezone)
 	{
 		$start = $startDate->ToTimezone($timezone);
@@ -116,6 +193,13 @@ class Quota
 		$this->limit->TryAdd($dateRange->GetBegin(), $dateRange->GetEnd(), $durationKey);
 	}
 }
+
+class QuotaUnit
+{
+	const Hours = 'hours';
+	const Reservations = 'reservations';
+}
+
 
 interface IQuotaDuration
 {
@@ -235,6 +319,10 @@ class QuotaDurationDay extends QuotaDuration implements IQuotaDuration
 
 abstract class QuotaDuration
 {
+	const Day = 'day';
+	const Week = 'week';
+	const Month = 'month';
+	
 	/**
 	 * @param ReservationSeries $reservationSeries
 	 * @return array|Date[]
@@ -449,7 +537,12 @@ class QuotaLimitCount implements IQuotaLimit
 	/**
 	 * @var array|int[]
 	 */
-	var $aggregateCounts = array();
+	private $aggregateCounts = array();
+
+	/**
+	 * @var int
+	 */
+	private $totalAllowed;
 
 	/**
 	 * @param int $totalAllowed
@@ -482,20 +575,20 @@ class QuotaLimitHours implements IQuotaLimit
 	/**
 	 * @var array|DateDiff[]
 	 */
-	var $aggregateCounts = array();
+	private $aggregateCounts = array();
 
 	/**
 	 * @var \DateDiff
 	 */
-	var $allowedDuration;
+	private $allowedDuration;
 
 	/**
 	 * @var decimal
 	 */
-	var $allowedHours;
+	private $allowedHours;
 	
 	/**
-	 * @param int $allowedHours
+	 * @param decimal $allowedHours
 	 */
 	public function __construct($allowedHours)
 	{

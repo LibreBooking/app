@@ -75,6 +75,13 @@ class User
 		return $this->statusId;
 	}
 
+	protected $groupIds = array();
+	
+	public function GroupIds()
+	{
+		return $this->groupIds;
+	}
+
 	public function Activate()
 	{
 		$this->statusId = AccountStatus::ACTIVE;
@@ -113,13 +120,22 @@ class User
 	private $attributesChanged = false;
 
 	/**
-	 * @param int[] $allowedResourceIds
+	 * @param array|int[] $allowedResourceIds
 	 * @return void
 	 */
 	public function WithPermissions($allowedResourceIds = array())
 	{
 		$this->permissionsChanged = false;
 		$this->allowedResourceIds = $allowedResourceIds;
+	}
+
+	/**
+	 * @param array|int[] $groupIds
+	 * @return void
+	 */
+	public function WithGroupIds($groupIds = array())
+	{
+		$this->groupIds = $groupIds;
 	}
 
 	public function ChangePermissions($allowedResourceIds = array())

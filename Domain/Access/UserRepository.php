@@ -100,11 +100,13 @@ class UserRepository implements IUserRepository, IUserViewRepository
 			{
 				$emailPreferences = $this->LoadEmailPreferences($userId);
 				$permissions = $this->LoadPermissions($userId);
-				
+				$groupIds = $this->LoadGroups($userId);
+
 				$user = User::FromRow($row);
 				$user->WithEmailPreferences($emailPreferences);
 				$user->WithPermissions($permissions);
-				
+				$user->WithGroupIds($groupIds);
+
 				$this->_cache->Add($userId, $user);
 			}		
 		}
@@ -187,7 +189,7 @@ class UserRepository implements IUserRepository, IUserViewRepository
 	{
 		$allowedResourceIds = array();
 		
-		$command = new SelectUserPermissions($userId);
+		$command = new GetUserPermissionsCommand($userId);
 		$reader = ServiceLocator::GetDatabase()->Query($command);
 
 		while ($row = $reader->GetRow())
@@ -196,6 +198,21 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		}
 
 		return $allowedResourceIds;
+	}
+
+	private function LoadGroups($userId)
+	{
+		$groupIds = array();
+
+		$command = new GetUserGroupsCommand($userId);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		while ($row = $reader->GetRow())
+		{
+			$groupIds[] = $row[ColumnNames::GROUP_ID];
+		}
+
+		return $groupIds;
 	}
 }
 

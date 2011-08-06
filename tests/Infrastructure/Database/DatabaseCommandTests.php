@@ -250,16 +250,6 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId), $command->Parameters->Items(0));
 	}
 
-	public function testSelectUserPermissionsCommand()
-	{
-		$userId = 1;
-
-		$command = new SelectUserPermissions($userId);
-
-		$this->assertEquals(Queries::GET_USER_RESOURCE_PERMISSIONS, $command->GetQuery());
-		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $userId), $command->Parameters->Items(0));
-	}
-
 	public function testSelectUserGroupPermissionsCommand()
 	{
 		$userId = 1;

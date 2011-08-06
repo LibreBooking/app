@@ -344,6 +344,14 @@ class GetAllGroupPermissionsCommand extends SqlCommand
 	}
 }
 
+class GetAllQuotasCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_ALL_QUOTAS);
+	}
+}
+
 class GetAllResourcesCommand extends SqlCommand
 {
 	public function __construct()
@@ -532,6 +540,15 @@ class GetUserEmailPreferencesCommand extends SqlCommand
 	}
 }
 
+class GetUserGroupsCommand extends SqlCommand
+{
+	public function __construct($userid)
+	{
+		parent::__construct(Queries::GET_USER_GROUPS);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
+	}
+}
+
 class GetUserRoleCommand extends SqlCommand
 {
 	public function __construct($userid)
@@ -658,7 +675,7 @@ class ReportingCommand extends SqlCommand
 	}
 }
 
-class SelectUserPermissions extends SqlCommand
+class GetUserPermissionsCommand extends SqlCommand
 {
 	public function __construct($userId)
 	{

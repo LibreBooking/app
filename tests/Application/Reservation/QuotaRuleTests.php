@@ -8,19 +8,31 @@ class QuotaRuleTests extends TestBase
 	/**
 	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
-	public $reservationRepository;
+	public $reservationViewRepository;
 
 	/**
 	 * @var IQuotaRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	public $quotaRepository;
 
+	/**
+	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	public $userRepository;
+
+	/**
+	 * @var IScheduleRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	public $scheduleRepository;
+
 	public function setup()
 	{
 		parent::setup();
 		
-		$this->reservationRepository = $this->getMock('IReservationViewRepository');
+		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
 		$this->quotaRepository = $this->getMock('IQuotaRepository');
+		$this->userRepository = $this->getMock('IUserRepository');
+		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 	}
 
 	public function teardown()
@@ -28,97 +40,112 @@ class QuotaRuleTests extends TestBase
 		parent::teardown();
 	}
 
-	public function testWhenTotalHoursForAnyReservationIsMoreThanQuotaAllowsForNewReservation()
+	public function testWhenQuotaThatAppliesToReservationResourceAndUserGroupIsNotExceed()
 	{
+		$scheduleId = 971243;
+		$timezone = 'America/New_York';
+		
 		$userId = 10;
 		$resourceId = 20;
 		$resourceId2 = 22;
-		$begin = Date::Now();
-		$begin->SetTimeString('3:30');
-		$end = Date::Now();
-		$end->SetTimeString('4:30');
 
-		$repeatDailyForOneWeek = new RepeatDaily(1, $begin->AddDays(7));
+		$groupId1 = 8287;
+		$groupId2 = 102;
 		
-		$reservationDate = new DateRange($begin, $end);
-		$series = ReservationSeries::Create($userId, $resourceId, 1, null, null, $reservationDate, $repeatDailyForOneWeek);
+		$user = new FakeUser();
+		$user->SetGroups(array($groupId1, $groupId2));
+
+		$schedule = new Schedule(1, null, null, null, null, $timezone);
+		$series = ReservationSeries::Create($userId, $resourceId, $scheduleId, null, null, new TestDateRange(), new RepeatNone());
 		$series->AddResource($resourceId2);
 
-		$quota1 = new TestQuota(1);
-		$quota2 = new TestQuota(2);
-		$quota4 = new TestQuota(4);
+		$quota1 = $this->GetMock('IQuota');
+		$quota2 = $this->GetMock('IQuota');
+		$quota3 = $this->GetMock('IQuota');
 		
-		$resource1Quotas = array($quota1, $quota2);
-		$resource2Quotas = array($quota1, $quota4);
+		$quotas = array($quota1, $quota2, $quota3);
 
-		$this->quotaRepository->expects($this->at(0))
-			->method('GetQuotas')
-			->with($this->equalTo($resourceId))
-			->will($this->returnValue($resource1Quotas));
+		$this->quotaRepository->expects($this->once())
+			->method('LoadAll')
+			->will($this->returnValue($quotas));
 
-		$this->quotaRepository->expects($this->at(1))
-			->method('GetQuotas')
-			->with($this->equalTo($resourceId2))
-			->will($this->returnValue($resource2Quotas));
-					
-		$rule = new QuotaRule($this->quotaRepository);
+		$this->userRepository->expects($this->once())
+			->method('LoadById')
+			->with($this->equalTo($userId))
+			->will($this->returnValue($user));
+
+		$this->scheduleRepository->expects($this->once())
+			->method('LoadById')
+			->with($this->equalTo($scheduleId))
+			->will($this->returnValue($schedule));
+
+		$this->ChecksAgainstQuota($quota1, $series, $this->reservationViewRepository, $schedule, $user);
+		$this->ChecksAgainstQuota($quota2, $series, $this->reservationViewRepository, $schedule, $user);
+		$this->ChecksAgainstQuota($quota3, $series, $this->reservationViewRepository, $schedule, $user);
+
+		$rule = new QuotaRule($this->quotaRepository, $this->reservationViewRepository, $this->userRepository, $this->scheduleRepository);
 		$result = $rule->Validate($series);
 
 		$this->assertTrue($result->IsValid(), 'no quotas were exceeded');
-		$this->assertEquals($series, $quota1->ExceedsCalledWith);
-		$this->assertEquals($series, $quota2->ExceedsCalledWith);
-		$this->assertEquals($series, $quota4->ExceedsCalledWith);
+		
 	}
 
-	public function testWhenFirstQuotaIsExceededTheOtherChecksAreSkipped()
+	public function testFirstQuotaExceeded()
 	{
-		$resourceId = 90123;
-		$series = ReservationSeries::Create(1, $resourceId, 1, null, null, new TestDateRange(), new RepeatNone());
+		$scheduleId = 971243;
+		$timezone = 'America/New_York';
 
-		$quota1 = new TestQuota(1, true);
-		$quota2 = new TestQuota(2);
-		$quota4 = new TestQuota(4);
+		$userId = 10;
+		$resourceId = 20;
+		$resourceId2 = 22;
 
-		$resource1Quotas = array($quota1, $quota2, $quota4);
+		$groupId1 = 8287;
+		$groupId2 = 102;
 
-		$this->quotaRepository->expects($this->at(0))
-			->method('GetQuotas')
-			->with($this->equalTo($resourceId))
-			->will($this->returnValue($resource1Quotas));;
+		$user = new FakeUser();
+		$user->SetGroups(array($groupId1, $groupId2));
 
-		$rule = new QuotaRule($this->quotaRepository);
+		$schedule = new Schedule(1, null, null, null, null, $timezone);
+		$series = ReservationSeries::Create($userId, $resourceId, $scheduleId, null, null, new TestDateRange(), new RepeatNone());
+		$series->AddResource($resourceId2);
+
+		$quota1 = $this->GetMock('IQuota');
+		$quota2 = $this->GetMock('IQuota');
+
+		$quotas = array($quota1, $quota2);
+
+		$this->quotaRepository->expects($this->once())
+			->method('LoadAll')
+			->will($this->returnValue($quotas));
+
+		$this->userRepository->expects($this->once())
+			->method('LoadById')
+			->with($this->equalTo($userId))
+			->will($this->returnValue($user));
+
+		$this->scheduleRepository->expects($this->once())
+			->method('LoadById')
+			->with($this->equalTo($scheduleId))
+			->will($this->returnValue($schedule));
+
+		$this->ChecksAgainstQuota($quota1, $series, $this->reservationViewRepository, $schedule, $user, true);
+
+		$quota2->expects($this->never())
+			->method('ExceedsQuota');
+
+		$rule = new QuotaRule($this->quotaRepository, $this->reservationViewRepository, $this->userRepository, $this->scheduleRepository);
 		$result = $rule->Validate($series);
 
 		$this->assertFalse($result->IsValid(), 'first quotas was exceeded');
-		$this->assertEquals($series, $quota1->ExceedsCalledWith);
-		$this->assertNull($quota2->ExceedsCalledWith, 'should fail after first quota problem');
-		$this->assertNull($quota4->ExceedsCalledWith);
-	}
-}
-
-class TestQuota extends Quota
-{
-	/**
-	 * @var ReservationSeries
-	 */
-	public $ExceedsCalledWith;
-
-	/**
-	 * @var bool
-	 */
-	public $ShouldExceed;
-	
-	public function __construct($quotaId, $shouldExceed = false)
-	{
-		$this->ShouldExceed = $shouldExceed;
-		
-		parent::__construct($quotaId, null, null);
 	}
 
-	public function ExceedsQuota($reservationSeries)
+
+	private function ChecksAgainstQuota($quota, $series, $repo, $schedule, $user, $exceeds = false)
 	{
-		$this->ExceedsCalledWith = $reservationSeries;
-		return $this->ShouldExceed;
+		$quota->expects($this->once())
+			->method('ExceedsQuota')
+			->with($this->equalTo($series), $this->equalTo($user), $this->equalTo($schedule), $this->equalTo($repo))
+			->will($this->returnValue($exceeds));
 	}
 }
 ?>

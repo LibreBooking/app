@@ -4,17 +4,35 @@ require_once(ROOT_DIR . 'tests/Domain/Reservation/ExistingReservationSeriesBuild
 
 class QuotaWhenModifyingTests extends TestBase
 {
+	/**
+	 * @var string
+	 */
 	var $tz;
+
+	/**
+	 * @var Schedule
+	 */
+	var $schedule;
+
 	/**
 	 * @var IReservationViewRepository
 	 */
 	var $reservationViewRepository;
 
+	/**
+	 * @var FakeUser
+	 */
+	var $user;
+
 	public function setup()
 	{
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
 
-		$this->tz = 'America/Chicago';
+		$this->tz = 'UTC';
+		$this->schedule = new Schedule(1, null, null, null, null, $this->tz);
+
+		$this->user = new FakeUser();
+		
 		parent::setup();
 	}
 
@@ -25,7 +43,6 @@ class QuotaWhenModifyingTests extends TestBase
 
 	public function testWhenNotChangingExistingTimes()
 	{
-		$tz = 'UTC';
 		$ref1 = 'ref1';
 		$ref2 = 'ref2';
 		$duration = new QuotaDurationDay();
@@ -33,11 +50,11 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$quota = new Quota(1, $duration, $limit);
 
-		$r1start = Date::Parse('2011-04-03 1:30', $tz);
-		$r1End = Date::Parse('2011-04-03 2:30', $tz);
+		$r1start = Date::Parse('2011-04-03 1:30', $this->tz);
+		$r1End = Date::Parse('2011-04-03 2:30', $this->tz);
 
-		$r2start = Date::Parse('2011-04-04 1:30', $tz);
-		$r2End = Date::Parse('2011-04-04 2:30', $tz);
+		$r2start = Date::Parse('2011-04-04 1:30', $this->tz);
+		$r2End = Date::Parse('2011-04-04 2:30', $this->tz);
 
 		$existing1 = new TestReservation($ref1, new DateRange($r1start, $r1End));
 		$existing2 = new TestReservation($ref2, new DateRange($r2start, $r2End));
@@ -53,14 +70,13 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertFalse($exceeds);
 	}
 
 	public function testWhenChangingExistingTimes()
 	{
-		$tz = 'UTC';
 		$ref1 = 'ref1';
 		$ref2 = 'ref2';
 		$duration = new QuotaDurationDay();
@@ -68,11 +84,11 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$quota = new Quota(1, $duration, $limit);
 
-		$r1start = Date::Parse('2011-04-03 1:30', $tz);
-		$r1End = Date::Parse('2011-04-03 2:30', $tz);
+		$r1start = Date::Parse('2011-04-03 1:30', $this->tz);
+		$r1End = Date::Parse('2011-04-03 2:30', $this->tz);
 
-		$r2start = Date::Parse('2011-04-04 1:30', $tz);
-		$r2End = Date::Parse('2011-04-04 2:30', $tz);
+		$r2start = Date::Parse('2011-04-04 1:30', $this->tz);
+		$r2End = Date::Parse('2011-04-04 2:30', $this->tz);
 
 		$existing1 = new TestReservation($ref1, new DateRange($r1start, $r1End));
 		$existing2 = new TestReservation($ref2, new DateRange($r2start, $r2End));
@@ -86,14 +102,13 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$this->SearchReturns(array());
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
 	
 	public function testWhenAddingNewReservations()
 	{
-		$tz = 'UTC';
 		$ref1 = 'ref1';
 		$ref2 = 'ref2';
 		$duration = new QuotaDurationDay();
@@ -101,11 +116,11 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$quota = new Quota(1, $duration, $limit);
 
-		$r1start = Date::Parse('2011-04-03 1:30', $tz);
-		$r1End = Date::Parse('2011-04-03 2:30', $tz);
+		$r1start = Date::Parse('2011-04-03 1:30', $this->tz);
+		$r1End = Date::Parse('2011-04-03 2:30',$this->tz);
 
-		$r2start = Date::Parse('2011-04-04 1:30', $tz);
-		$r2End = Date::Parse('2011-04-04 2:30', $tz);
+		$r2start = Date::Parse('2011-04-04 1:30', $this->tz);
+		$r2End = Date::Parse('2011-04-04 2:30', $this->tz);
 
 		$existing1 = new TestReservation($ref1, new DateRange($r1start, $r1End));
 		$new = new TestReservation($ref2, new DateRange($r2start, $r2End));
@@ -123,7 +138,7 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}

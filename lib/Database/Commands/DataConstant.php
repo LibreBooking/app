@@ -256,6 +256,10 @@ class Queries
 		INNER JOIN groups g ON g.group_id = ug.group_id
 		WHERE g.group_id = @groupid';
 
+	const GET_ALL_QUOTAS =
+		'SELECT *
+		FROM quotas';
+	
 	const GET_ALL_RESOURCES = 
 		'SELECT * 
 		FROM resources r
@@ -448,6 +452,9 @@ class Queries
 			user_email_preferences
 		WHERE
 			user_id = @userid';
+
+	const GET_USER_GROUPS =
+		'SELECT * FROM user_groups WHERE user_id = @userid';
 	
 	const GET_USER_RESOURCE_PERMISSIONS = 
 		'SELECT 
@@ -792,8 +799,15 @@ class ColumnNames
 	
 	const REPEAT_START = 'repeat_start';
 	const REPEAT_END = 'repeat_end';
-	
+
+	// QUOTAS //
+	const QUOTA_ID = 'quota_id';
+	const QUOTA_LIMIT = 'limit';
+	const QUOTA_UNIT = 'unit';
+	const QUOTA_DURATION = 'duration';
+
 	// dynamic
 	const TOTAL = 'total';
+
 }
 ?>

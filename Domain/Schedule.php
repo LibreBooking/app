@@ -97,5 +97,10 @@ class Schedule implements ISchedule
 	{
 		return $this->_layoutId;
 	}
+
+	public function SetTimezone($timezone)
+	{
+		$this->_timezone = $timezone;
+	}
 }
 ?>

@@ -3,17 +3,35 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 
 class QuotaTests extends TestBase
 {
+	/**
+	 * @var string
+	 */
 	var $tz;
+
+	/**
+	 * @var Schedule
+	 */
+	var $schedule;
+	
 	/**
 	 * @var IReservationViewRepository
 	 */
 	var $reservationViewRepository;
-	
+
+	/**
+	 * @var FakeUser
+	 */
+	var $user;
+
 	public function setup()
 	{
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
-				
+
 		$this->tz = 'America/Chicago';
+		$this->schedule = new Schedule(1, null, null, null, null, $this->tz);
+
+		$this->user = new FakeUser();
+
 		parent::setup();
 	}
 
@@ -46,7 +64,7 @@ class QuotaTests extends TestBase
 
 		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
 		
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertFalse($exceeds);
 	}
@@ -71,7 +89,7 @@ class QuotaTests extends TestBase
 
 		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -93,7 +111,7 @@ class QuotaTests extends TestBase
 
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertFalse($exceeds);
 	}
@@ -115,7 +133,7 @@ class QuotaTests extends TestBase
 
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $this->tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -123,6 +141,8 @@ class QuotaTests extends TestBase
 	public function testWhenTotalLimitIsExceededForWeek()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+		
 		$duration = new QuotaDurationWeek();
 		$limit = new QuotaLimitCount(2);
 
@@ -143,7 +163,7 @@ class QuotaTests extends TestBase
 
 		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -151,6 +171,8 @@ class QuotaTests extends TestBase
 	public function testWhenTotalLimitIsNotExceededForWeek()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+		
 		$duration = new QuotaDurationWeek();
 		$limit = new QuotaLimitCount(3);
 
@@ -171,7 +193,7 @@ class QuotaTests extends TestBase
 
 		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertFalse($exceeds);
 	}
@@ -179,6 +201,8 @@ class QuotaTests extends TestBase
 	public function testWhenTotalLimitIsExceededForAReservationLastingMultipleWeeks()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+		
 		$duration = new QuotaDurationWeek();
 		$limit = new QuotaLimitCount(1);
 
@@ -195,7 +219,7 @@ class QuotaTests extends TestBase
 		
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -203,6 +227,8 @@ class QuotaTests extends TestBase
 	public function testWhenHourLimitIsExceededForMultipleReservationsInOneWeek()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+		
 		$duration = new QuotaDurationWeek();
 		$limit = new QuotaLimitHours(2);
 
@@ -220,7 +246,7 @@ class QuotaTests extends TestBase
 
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -228,6 +254,8 @@ class QuotaTests extends TestBase
 	public function testWhenHourLimitIsExceededForReservationLastingMultipleWeeks()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+		
 		$duration = new QuotaDurationWeek();
 		$limit = new QuotaLimitHours(39);
 
@@ -243,7 +271,7 @@ class QuotaTests extends TestBase
 
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -251,6 +279,8 @@ class QuotaTests extends TestBase
 	public function testWhenTotalLimitIsNotExceededForMonth()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+		
 		$duration = new QuotaDurationMonth();
 		$limit = new QuotaLimitCount(3);
 
@@ -271,7 +301,7 @@ class QuotaTests extends TestBase
 
 		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertFalse($exceeds);
 	}
@@ -279,6 +309,8 @@ class QuotaTests extends TestBase
 	public function testWhenTotalLimitIsExceededForMonth()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+
 		$duration = new QuotaDurationMonth();
 		$limit = new QuotaLimitCount(2);
 
@@ -295,7 +327,7 @@ class QuotaTests extends TestBase
 
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -303,6 +335,8 @@ class QuotaTests extends TestBase
 	public function testWhenTotalLimitIsExceededForReservationThatSpansMoreThanOneMonth()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+				
 		$duration = new QuotaDurationMonth();
 		$limit = new QuotaLimitCount(1);
 
@@ -318,7 +352,7 @@ class QuotaTests extends TestBase
 
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -326,6 +360,8 @@ class QuotaTests extends TestBase
 	public function testWhenHourLimitIsExceededForReservationWithinAMonth()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+
 		$duration = new QuotaDurationMonth();
 		$limit = new QuotaLimitHours(4);
 
@@ -342,7 +378,7 @@ class QuotaTests extends TestBase
 
 		$this->SearchReturns($reservations);
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -350,6 +386,8 @@ class QuotaTests extends TestBase
 	public function testWhenHourLimitIsExceededForReservationLastingLongerThanOneMonth()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+
 		$duration = new QuotaDurationMonth();
 		$limit = new QuotaLimitHours(4);
 
@@ -362,7 +400,7 @@ class QuotaTests extends TestBase
 
 		$this->SearchReturns(array());
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
 	}
@@ -370,6 +408,8 @@ class QuotaTests extends TestBase
 	public function testWhenMonthlyHourLimitIsNotExceededForReservation()
 	{
 		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+				
 		$duration = new QuotaDurationMonth();
 		$limit = new QuotaLimitHours(4);
 
@@ -384,7 +424,7 @@ class QuotaTests extends TestBase
 		$res2 = new ReservationItemView('', Date::Parse('2011-08-31 23:30', $tz),  Date::Parse('2011-09-01 3:00', $tz), '', $series->ResourceId(), 98712);
 		$this->SearchReturns(array($res1, $res2));
 
-		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertFalse($exceeds);
 	}

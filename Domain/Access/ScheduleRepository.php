@@ -95,6 +95,16 @@ class ReservationLayoutFactory implements ILayoutFactory
 
 class ScheduleRepository implements IScheduleRepository
 {
+	/**
+	 * @var DomainCache
+	 */
+	private $_cache;
+
+	public function __construct()
+	{
+		$this->_cache = new DomainCache();
+	}
+	
 	public function GetAll()
 	{
 		$schedules = array();
@@ -120,26 +130,31 @@ class ScheduleRepository implements IScheduleRepository
 	
 	public function LoadById($scheduleId)
 	{
-		$schedule = null;
-
-		$reader = ServiceLocator::GetDatabase()->Query(new GetScheduleByIdCommand($scheduleId));
-
-		if ($row = $reader->GetRow())
+		if (!$this->_cache->Exists($scheduleId))
 		{
-			$schedule = new Schedule(
-				$row[ColumnNames::SCHEDULE_ID],
-				$row[ColumnNames::SCHEDULE_NAME],
-				$row[ColumnNames::SCHEDULE_DEFAULT],
-				$row[ColumnNames::SCHEDULE_WEEKDAY_START],
-				$row[ColumnNames::SCHEDULE_DAYS_VISIBLE],
-				$row[ColumnNames::TIMEZONE_NAME],
-				$row[ColumnNames::LAYOUT_ID]
-			);
+			$schedule = null;
+
+			$reader = ServiceLocator::GetDatabase()->Query(new GetScheduleByIdCommand($scheduleId));
+
+			if ($row = $reader->GetRow())
+			{
+				$schedule = new Schedule(
+					$row[ColumnNames::SCHEDULE_ID],
+					$row[ColumnNames::SCHEDULE_NAME],
+					$row[ColumnNames::SCHEDULE_DEFAULT],
+					$row[ColumnNames::SCHEDULE_WEEKDAY_START],
+					$row[ColumnNames::SCHEDULE_DAYS_VISIBLE],
+					$row[ColumnNames::TIMEZONE_NAME],
+					$row[ColumnNames::LAYOUT_ID]
+				);
+			}
+
+			$reader->Free();
+
+			return $schedule;
 		}
 
-		$reader->Free();
-
-		return $schedule;
+		return $this->_cache->Get($scheduleId);
 	}
 
 	public function Update(Schedule $schedule)

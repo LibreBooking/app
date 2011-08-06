@@ -48,30 +48,35 @@ class UserRepositoryTests extends TestBase
 		$userId = 982;
 		$loadByIdCommand = new GetUserByIdCommand($userId);
 		$loadEmailPreferencesCommand = new GetUserEmailPreferencesCommand($userId);
-		$loadPermissionsCommand = new SelectUserPermissions($userId);
+		$loadPermissionsCommand = new GetUserPermissionsCommand($userId);
+		$loadGroupsCommand = new GetUserGroupsCommand($userId);
 
 		$userRows = $this->GetUserRow();
 		$emailPrefRows = $this->GetEmailPrefRows();
 		$permissionsRows = $this->GetPermissionsRows();
+		$groupsRows = $this->GetGroupsRows();
 
 		$this->db->SetRow(0, $userRows);
 		$this->db->SetRow(1, $emailPrefRows);
 		$this->db->SetRow(2, $permissionsRows);
+		$this->db->SetRow(3, $groupsRows);
 
 		$row = $userRows[0];
 		
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 		
-		$this->assertEquals(3, count($this->db->_Commands));
+		$this->assertEquals(4, count($this->db->_Commands));
 		$this->assertTrue($this->db->ContainsCommand($loadByIdCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
+		$this->assertTrue($this->db->ContainsCommand($loadGroupsCommand));
 
 		$this->assertEquals($row[ColumnNames::FIRST_NAME], $user->FirstName());
 		$this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
-		$this->assertArrayHasKey(1, $user->AllowedResourceIds());
+		$this->assertContains($permissionsRows[1][ColumnNames::RESOURCE_ID], $user->AllowedResourceIds());
 		$this->assertEquals($row[ColumnNames::PHONE_NUMBER], $user->GetAttribute(UserAttribute::Phone));
+		$this->assertContains($groupsRows[1][ColumnNames::GROUP_ID], $user->GroupIds());
 	}
 	
 	public function testLoadsUserFromCacheIfAlreadyLoadedFromDatabase()
@@ -82,13 +87,14 @@ class UserRepositoryTests extends TestBase
 		$this->db->SetRow(0, $row);
 		$this->db->SetRow(1, $this->GetEmailPrefRows());
 		$this->db->SetRow(2, $this->GetPermissionsRows());
-		
+		$this->db->SetRow(3, $this->GetGroupsRows());
+
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 		
 		$user = $userRepository->LoadById($userId); // 2nd call should load from cache
 		
-		$this->assertEquals(3, count($this->db->_Commands));
+		$this->assertEquals(4, count($this->db->_Commands));
 	}
 
 	public function testCanGetPageableListOfUsers()
@@ -254,6 +260,14 @@ class UserRepositoryTests extends TestBase
 			array (ColumnNames::RESOURCE_ID => 1),
 			array (ColumnNames::RESOURCE_ID => 2),
 			array (ColumnNames::RESOURCE_ID => 3),
+		);
+	}
+
+	private function GetGroupsRows()
+	{
+		return array (
+			array (ColumnNames::GROUP_ID => 98017),
+			array (ColumnNames::GROUP_ID => 128736),
 		);
 	}
 }

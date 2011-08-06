@@ -1,2 +1,2 @@
 @echo off
-c:\php\pear\phing %1%
+c:\php\phing %1%
