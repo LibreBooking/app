@@ -554,8 +554,8 @@ CREATE TABLE `user_email_preferences` (
 
 DROP TABLE IF EXISTS `quotas`;
 CREATE TABLE `quotas` (
- `quota_id` mediumint(8) unsigned NOT NULL,
- `limit` decimal unsigned NOT NULL,
+ `quota_id` mediumint(8) unsigned NOT NULL auto_increment,
+ `quota_limit` decimal(7,2) unsigned NOT NULL,
  `unit` varchar(25) NOT NULL,
  `duration` varchar(25) NOT NULL,
  `resource_id` smallint(5) unsigned,

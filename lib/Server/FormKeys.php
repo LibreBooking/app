@@ -16,6 +16,7 @@ class FormKeys
 	
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';
 	const DESCRIPTION = 'reservationDescription';
+	const DURATION = 'duration';
 	
 	const EMAIL = 'email';
 	const END_DATE = 'endDate';
@@ -29,8 +30,10 @@ class FormKeys
 	
 	const INVITATION_LIST = 'invitationList';
 	const IS_ACTIVE = 'isactive';
+	
 	const LANGUAGE = 'language';
 	const LAST_NAME = 'lname';
+	const LIMIT = 'limit';
 	const LOCATION = 'location';
 	const LOGIN = 'login';
 	
@@ -90,7 +93,8 @@ class FormKeys
 	const SUMMARY = 'summary';
 	
 	const TIMEZONE = 'timezone';
-	
+
+	const UNIT = 'unit';
 	const UNIT_COST = 'unitCost';
 	const USER_ID = 'userId';
 	const USERNAME = 'username';

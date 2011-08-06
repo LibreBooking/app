@@ -23,6 +23,11 @@ class ManageQuotasPresenterTests extends TestBase
 	 */
 	public $groupRepository;
 
+	/**
+	 * @var IQuotaViewRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	public $quotaRepository;
+
 	public function setup()
 	{
 		parent::setup();
@@ -30,8 +35,9 @@ class ManageQuotasPresenterTests extends TestBase
 		$this->page = $this->getMock('IManageQuotasPage');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
 		$this->groupRepository = $this->getMock('IGroupViewRepository');
+		$this->quotaRepository = $this->getMock('IQuotaViewRepository');
 
-		$this->presenter = new ManageQuotasPresenter($this->page, $this->resourceRepository, $this->groupRepository);
+		$this->presenter = new ManageQuotasPresenter($this->page, $this->resourceRepository, $this->groupRepository, $this->quotaRepository);
 	}
 
 	public function teardown()
@@ -44,6 +50,8 @@ class ManageQuotasPresenterTests extends TestBase
 		$groups = array();
 		$bookableResources = array();
 		$groupResult = new PageableData($groups);
+
+		$quotaList = array();
 		
 		$this->resourceRepository->expects($this->once())
 			->method('GetResourceList')
@@ -56,6 +64,10 @@ class ManageQuotasPresenterTests extends TestBase
 		$this->groupRepository->expects($this->once())
 			->method('GetList')
 			->will($this->returnValue($groupResult));
+
+		$this->quotaRepository->expects($this->once())
+			->method('GetAll')
+			->will($this->returnValue($quotaList));
 
 		$this->page->expects($this->once())
 			->method('BindGroups')

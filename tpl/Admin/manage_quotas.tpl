@@ -6,7 +6,7 @@
 	<div class="title">
 		All Quotas
 	</div>
-	<div class="list">
+	<div class="list" id="quotaList">
 		{foreach from=$Quotas item=quota}
 			{capture name="resourceName" assign="resourceName"}
 				<h4>{if $quota->ResourceName ne ""}
@@ -26,7 +26,7 @@
 				</h4>
 			{/capture}
 			{capture name="amount" assign="amount"}
-				<h4>{$quota->Amount}</h4>
+				<h4>{$quota->Limit}</h4>
 			{/capture}
 			{capture name="unit" assign="unit"}
 				<h4>{translate key=$quota->Unit}</h4>
@@ -51,8 +51,9 @@
 		Add Quota
 	</div>
 	<div>
+		<form id="addQuotaForm" method="post">
 		{capture name="resources" assign="resources"}
-			<select class='textbox'>
+			<select class='textbox' {formname key=RESOURCE_ID}>
 				<option selected='selected'>{translate key=AllResources}</option>
 			{foreach from=$Resources item=resource}
 				<option value='{$resource->GetResourceId()}'>{$resource->GetName()}</option>
@@ -61,7 +62,7 @@
 		{/capture}
 			
 		{capture name="groups" assign="groups"}
-			<select class='textbox'>
+			<select class='textbox'> {formname key=GROUP}>
 				<option>{translate key=AllGroups}</option>
 			{foreach from=$Groups item=group}
 				<option value='{$group->Id}'>{$group->Name}</option>
@@ -70,16 +71,16 @@
 		{/capture}
 			
 		{capture name="amount" assign="amount"}
-			<input type='text' class='textbox' value='0' size='5'/>
+			<input type='text' class='textbox' value='0' size='5' {formname key=LIMIT} />
 		{/capture}
 		{capture name="unit" assign="unit"}
-			<select class='textbox'>
+			<select class='textbox' {formname key=UNIT}>
 				<option>hours</option>
 				<option>reservations</option>
 			</select>
 		{/capture}
 		{capture name="duration" assign="duration"}
-			<select class='textbox'>
+			<select class='textbox' {formname key=DURATION}>
 				<option>day</option>
 				<option>week</option>
 				<option>month</option>
@@ -88,8 +89,9 @@
 
 		{translate key=QuotaConfiguration args="$resources,$groups,$amount,$unit,$duration"}
 		
-		<button class="button">{html_image src="disk-black.png"} {translate key="Add"}</button>
+		<button class="button save">{html_image src="disk-black.png"} {translate key="Add"}</button>
 		{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+		</form>
 	</div>
 	<div class="note">Remember: Quotas are enforced based on the schedule's timezone.</div>
 </div>
@@ -112,9 +114,14 @@
 	$(document).ready(function() {
 
 	var actions = {
+		addQuota: '{ManageQuotasActions::AddQuota}',
+		deleteQuota: '{ManageQuotasActions::DeleteQuota}'
 	};
 
 	var quotaOptions = {
+		submitUrl: '{$smarty.server.SCRIPT_NAME}',
+		saveRedirect: '{$smarty.server.SCRIPT_NAME}',
+		actions: actions
 	};
 
 	var quotaManagement = new QuotaManagement(quotaOptions);

@@ -5,7 +5,8 @@ require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
 class ManageQuotasActions
 {
-	const AddUser = 'addUser';
+	const AddQuota = 'addQuota';
+	const DeleteQuota = 'deleteQuota';
 }
 
 class ManageQuotasPresenter extends ActionPresenter
@@ -26,19 +27,27 @@ class ManageQuotasPresenter extends ActionPresenter
 	private $groupRepository;
 
 	/**
+	 * @var \IQuotaViewRepository
+	 */
+	private $quotaRepository;
+
+	/**
 	 * @param IManageQuotasPage $page
 	 * @param IResourceRepository $resourceRepository
 	 * @param IGroupViewRepository $groupRepository
+	 * @param IQuotaViewRepository|IQuotaRepository $quotaRepository
 	 */
-	public function __construct(IManageQuotasPage $page, IResourceRepository $resourceRepository, IGroupViewRepository $groupRepository)
+	public function __construct(IManageQuotasPage $page, IResourceRepository $resourceRepository, IGroupViewRepository $groupRepository, IQuotaViewRepository $quotaRepository)
 	{
 		parent::__construct($page);
 
 		$this->page = $page;
 		$this->resourceRepository = $resourceRepository;
 		$this->groupRepository = $groupRepository;
+		$this->quotaRepository = $quotaRepository;
 
-		$this->AddAction(ManageQuotasActions::AddUser, 'AddUser');
+		$this->AddAction(ManageQuotasActions::AddQuota, 'AddQuota');
+		$this->AddAction(ManageQuotasActions::DeleteQuota, 'DeleteQuota');
 	}
 
 	public function PageLoad()
@@ -49,46 +58,16 @@ class ManageQuotasPresenter extends ActionPresenter
 		$this->page->BindResources($resources);
 		$this->page->BindGroups($groups);
 
-		$quotas = array(
-			new QuotaItemView(1, 10, 'reservations', 'week', 'group2', null),
-			new QuotaItemView(1, 10, 'hours', 'day', null, 'resource2')
-		);
+		$quotas = $this->quotaRepository->GetAll();
 		$this->page->BindQuotas($quotas);
 	}
 
-	public function ProcessDataRequest()
+	public function AddQuota()
 	{
-		$response = '';
-		$this->page->SetJsonResponse($response);
+		$quota = Quota::Create($this->page->GetDuration(), $this->page->GetLimit(), $this->page->GetUnit(), $this->page->GetResourceId(), $this->page->GetGroupId());
+		$this->quotaRepository->Add($quota);
 	}
-}
 
-class QuotaItemView
-{
-	public $Id;
-	public $Amount;
-	public $Unit;
-	public $Duration;
-	public $GroupName;
-	public $ResourceName;
-
-	/**
-	 * @param int $quotaId
-	 * @param decimal $amount
-	 * @param string $unit
-	 * @param string $duration
-	 * @param string $groupName
-	 * @param string $resourceName
-	 */
-	public function __construct($quotaId, $amount, $unit, $duration, $groupName, $resourceName)
-	{
-		$this->Id = $quotaId;
-		$this->Amount = $amount;
-		$this->Unit = $unit;
-		$this->Duration = $duration;
-		$this->GroupName = $groupName;
-		$this->ResourceName = $resourceName;
-	}
 }
 
 ?>

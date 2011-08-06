@@ -108,7 +108,6 @@
 	function ConfigureAdminDialog(dialogElement, dialogTitle, dialogWidth, dialogHeight)
 	{
 		var dialogOpts = {
-				title: dialogTitle,
 		        modal: true,
 		        autoOpen: false,
 		        height: dialogHeight,

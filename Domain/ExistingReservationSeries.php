@@ -115,19 +115,6 @@ class ExistingReservationSeries extends ReservationSeries
 	/**
 	 * @internal
 	 */
-	public function WithParticipantId($participantId)
-	{
-		$this->_participantIds[] = $participantId;
-	}
-
-	public function WithInviteeId($inviteeId)
-	{
-		$this->_inviteeIds[] = $inviteeId;
-	}
-
-	/**
-	 * @internal
-	 */
 	public function RemoveInstance(Reservation $reservation)
 	{
 		if ($reservation == $this->CurrentInstance())

@@ -35,6 +35,7 @@ abstract class ActionPresenter
 			$method = $this->actions[$action];
 			try
 			{
+				Log::Error("Processing page action. Action %s", $action);
 				$this->$method();
 			}
 			catch (Exception $ex)

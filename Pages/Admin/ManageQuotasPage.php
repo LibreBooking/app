@@ -25,6 +25,36 @@ interface IManageQuotasPage extends IActionPage
 	 * @return void
 	 */
 	public function BindQuotas($quotas);
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetDuration();
+
+	/**
+	 * @abstract
+	 * @return decimal
+	 */
+	public function GetLimit();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetResourceId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetGroupId();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetUnit();
 }
 
 class ManageQuotasPage extends AdminPage implements IManageQuotasPage
@@ -37,7 +67,7 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 	public function __construct()
 	{
 		parent::__construct('ManageQuotas');
-		$this->presenter = new ManageQuotasPresenter($this, new ResourceRepository(), new GroupRepository());
+		$this->presenter = new ManageQuotasPresenter($this, new ResourceRepository(), new GroupRepository(), new QuotaRepository());
 	}
 	
 	public function PageLoad()
@@ -50,11 +80,6 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 	public function ProcessAction()
 	{
 		$this->presenter->ProcessAction();
-	}
-
-	public function FulfilDataRequest()
-	{
-		$this->presenter->ProcessDataRequest();
 	}
 
 	public function SetJsonResponse($response)
@@ -87,6 +112,46 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 	public function BindQuotas($quotas)
 	{
 		$this->Set('Quotas', $quotas);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetDuration()
+	{
+		return $this->GetForm(FormKeys::DURATION);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetLimit()
+	{
+		return $this->GetForm(FormKeys::LIMIT);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetGroupId()
+	{
+		return $this->GetForm(FormKeys::GROUP);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetUnit()
+	{
+		return $this->GetForm(FormKeys::UNIT);
 	}
 }
 ?>

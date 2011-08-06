@@ -64,6 +64,23 @@ class QuotaRepositoryTests extends TestBase
 
 	}
 
+	public function testAddsNewQuota()
+	{
+		$duration = QuotaDuration::Month;
+		$limit = 2.4;
+		$unit = QuotaUnit::Reservations;
+		$resourceId = 2183;
+		$groupId = 123987;
+		
+		$quota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId);
+
+		$command = new AddQuotaCommand($duration, $limit, $unit, $resourceId, $groupId);
+
+		$this->repository->Add($quota);
+
+		$this->assertEquals($command, $this->db->_LastCommand);
+	}
+
 	private function GetRow($quotaId, $limit, $unit, $duration, $resourceId, $groupId)
 	{
 		return array(ColumnNames::QUOTA_ID => $quotaId,

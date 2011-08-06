@@ -36,6 +36,10 @@ class ParameterNames
 	const PHONE = '@phone';
 	const POSITION = '@position';
 
+	const QUOTA_DURATION = '@duration';
+	const QUOTA_LIMIT = '@limit';
+	const QUOTA_UNIT = '@unit';
+
 	const REFERENCE_NUMBER = '@referenceNumber';
 	
 	const REPEAT_OPTIONS = '@repeatOptions';
@@ -138,6 +142,11 @@ class Queries
 		'INSERT INTO
 			time_blocks (layout_id, start_time, end_time, availability_code, label)
 		VALUES (@layoutid, @startTime, @endTime, @periodType, @label)';
+
+	const ADD_QUOTA =
+		'INSERT INTO
+			quotas (quota_limit, unit, duration, resource_id, group_id)
+		VALUES (@limit, @unit, @duration, @resourceid, @groupid)';
 	
 	const ADD_RESERVATION = 
 		'INSERT INTO 
@@ -257,8 +266,10 @@ class Queries
 		WHERE g.group_id = @groupid';
 
 	const GET_ALL_QUOTAS =
-		'SELECT *
-		FROM quotas';
+		'SELECT q.*, r.name as resource_name, g.name as group_name
+		FROM quotas q
+		LEFT JOIN resources r ON r.resource_id = q.resource_id
+		LEFT JOIN groups g ON g.group_id = q.group_id';
 	
 	const GET_ALL_RESOURCES = 
 		'SELECT * 
@@ -802,7 +813,7 @@ class ColumnNames
 
 	// QUOTAS //
 	const QUOTA_ID = 'quota_id';
-	const QUOTA_LIMIT = 'limit';
+	const QUOTA_LIMIT = 'quota_limit';
 	const QUOTA_UNIT = 'unit';
 	const QUOTA_DURATION = 'duration';
 

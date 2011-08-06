@@ -127,7 +127,6 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithCurrentInstance($existing1)
-				->WithInstance($existing1)
 				->WithInstance($new);
 		
 		$series = $builder->BuildTestVersion();
@@ -141,6 +140,46 @@ class QuotaWhenModifyingTests extends TestBase
 		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
+	}
+	
+	public function testWhenDeletingAnInstanceItDoesNotCount()
+	{
+		$ref1 = 'ref1';
+		$ref2 = 'ref2';
+		$ref3 = 'ref3';
+		$duration = new QuotaDurationDay();
+		$limit = new QuotaLimitCount(1);
+
+		$quota = new Quota(1, $duration, $limit);
+		
+		$r1start = Date::Parse('2011-04-03 1:30', $this->tz);
+		$r1End = Date::Parse('2011-04-03 2:30',$this->tz);
+
+		$r2start = Date::Parse('2011-04-04 1:30', $this->tz);
+		$r2End = Date::Parse('2011-04-04 2:30', $this->tz);
+
+		$existing1 = new TestReservation($ref1, new DateRange($r1start, $r1End), 1);
+		$deleted = new TestReservation($ref2, new DateRange($r2start, $r2End), 2);
+		$new = new TestReservation($ref3, new DateRange($r2start, $r2End), 3);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($existing1)
+				->WithInstance($deleted)
+				->WithInstance($new);
+
+		$series = $builder->BuildTestVersion();
+		$series->RemoveInstance($deleted);
+
+		$res1 = new ReservationItemView($ref1, $r1start, $r1End, '',  $series->ResourceId(), $existing1->ReservationId());
+		$res2 = new ReservationItemView($ref2, $r1start, $r1End, '',  $series->ResourceId(), $deleted->ReservationId());
+		$res3 = new ReservationItemView($ref3, $r2start, $r2End, '', $series->ResourceId(),  $new->ReservationId());
+		$reservations = array($res1, $res2, $res3);
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
 	}
 	
 	private function SearchReturns($reservations)

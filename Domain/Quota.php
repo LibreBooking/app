@@ -38,7 +38,14 @@ class Quota implements IQuota
 	 * @var int
 	 */
 	private $groupId;
-	
+
+	/**
+	 * @param int $quotaId
+	 * @param IQuotaDuration $duration
+	 * @param IQuotaLimit $limit
+	 * @param int $resourceId
+	 * @param int $groupId
+	 */
 	public function __construct($quotaId, $duration, $limit, $resourceId = null, $groupId = null)
 	{
 	    $this->quotaId = $quotaId;
@@ -46,6 +53,56 @@ class Quota implements IQuota
 		$this->limit = $limit;
 		$this->resourceId = $resourceId;
 		$this->groupId = $groupId;
+	}
+
+	/**
+	 * @static
+	 * @param string $duration
+	 * @param decimal $limit
+	 * @param string $unit
+	 * @param int $resourceId
+	 * @param int $groupId
+	 * @return Quota
+	 */
+	public static function Create($duration, $limit, $unit, $resourceId, $groupId)
+	{
+		return new Quota(0, self::CreateDuration($duration), self::CreateLimit($limit, $unit), $resourceId, $groupId);
+	}
+
+	/**
+	 * @static
+	 * @param decimal $limit
+	 * @param string $unit QuotaUnit
+	 * @return IQuotaLimit
+	 */
+	public static function CreateLimit($limit, $unit)
+	{
+		if ($unit == QuotaUnit::Reservations)
+		{
+			return new QuotaLimitCount($limit);
+		}
+
+		return new QuotaLimitHours($limit);
+	}
+
+	/**
+	 * @static
+	 * @param string $duration QuotaDuration
+	 * @return IQuotaDuration
+	 */
+	public static function CreateDuration($duration)
+	{
+		if ($duration == QuotaDuration::Day)
+		{
+			return new QuotaDurationDay();
+		}
+
+		if ($duration == QuotaDuration::Week)
+		{
+			return new QuotaDurationWeek();
+		}
+
+		return new QuotaDurationMonth();
 	}
 
 	/**
@@ -134,6 +191,22 @@ class Quota implements IQuota
 		return is_null($this->groupId) || $this->groupId == $groupId;
 	}
 
+	/**
+	 * @return int|null
+	 */
+	public function ResourceId()
+	{
+		return $this->resourceId;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GroupId()
+	{
+		return $this->groupId;
+	}
+
 	private function AddExisting(ReservationItemView $reservation, $timezone)
 	{
 		$this->_breakAndAdd($reservation->StartDate, $reservation->EndDate, $timezone);
@@ -164,11 +237,26 @@ class Quota implements IQuota
 		/** @var $reservation ReservationItemView */
 		foreach ($reservationsWithinRange as $reservation)
 		{
-			if ($series->ContainsResource($reservation->ResourceId) && !array_key_exists($reservation->ReferenceNumber, $toBeSkipped))
+			if ($series->ContainsResource($reservation->ResourceId) && !array_key_exists($reservation->ReferenceNumber, $toBeSkipped) && !$this->willBeDeleted($series, $reservation->ReservationId))
 			{
 				$this->AddExisting($reservation, $timezone);
 			}
 		}
+	}
+
+	/**
+	 * @param $series
+	 * @param $reservationId
+	 * @return bool
+	 */
+	private function willBeDeleted($series, $reservationId)
+	{
+		if (method_exists($series , 'IsMarkedForDelete'))
+		{
+			return $series->IsMarkedForDelete($reservationId);
+		}
+
+		return false;
 	}
 
 	private function _breakAndAdd(Date $startDate, Date $endDate, $timezone)
@@ -203,6 +291,12 @@ class QuotaUnit
 
 interface IQuotaDuration
 {
+	/**
+	 * @abstract
+	 * @return string QuotaDuration
+	 */
+	public function Name();
+
 	/**
 	 * @param ReservationSeries $reservationSeries
 	 * @param string $timezone
@@ -314,6 +408,14 @@ class QuotaDurationDay extends QuotaDuration implements IQuotaDuration
 	public function GetDurationKey(Date $date)
 	{
 		return sprintf("%s%s%s", $date->Year(), $date->Month(), $date->Day());
+	}
+
+	/**
+	 * @return string QuotaDuration
+	 */
+	public function Name()
+	{
+		return QuotaDuration::Day;
 	}
 }
 
@@ -427,6 +529,14 @@ class QuotaDurationWeek extends QuotaDuration implements IQuotaDuration
 		$daysFromWeekEnd = 7 - $date->Weekday();
 		return $date->AddDays($daysFromWeekEnd)->GetDate();
 	}
+
+	/**
+	 * @return string QuotaDuration
+	 */
+	public function Name()
+	{
+		return QuotaDuration::Week;
+	}
 }
 
 class QuotaDurationMonth extends QuotaDuration implements IQuotaDuration
@@ -517,6 +627,14 @@ class QuotaDurationMonth extends QuotaDuration implements IQuotaDuration
 	{
 		return sprintf("%s%s", $date->Year(), $date->Month());
 	}
+
+	/**
+	 * @return string QuotaDuration
+	 */
+	public function Name()
+	{
+		return QuotaDuration::Month;
+	}
 }
 
 interface IQuotaLimit
@@ -530,6 +648,18 @@ interface IQuotaLimit
 	 * @throws QuotaExceededException
 	 */
 	public function TryAdd($start, $end, $key);
+
+	/**
+	 * @abstract
+	 * @return decimal
+	 */
+	public function Amount();
+
+	/**
+	 * @abstract
+	 * @return string|QuotaUnit
+	 */
+	public function Name();
 }
 
 class QuotaLimitCount implements IQuotaLimit
@@ -567,6 +697,22 @@ class QuotaLimitCount implements IQuotaLimit
 		{
 			$this->aggregateCounts[$key] = 1;
 		}
+	}
+
+	/**
+	 * @return decimal
+	 */
+	public function Amount()
+	{
+		return $this->totalAllowed;
+	}
+
+	/**
+	 * @return string|QuotaUnit
+	 */
+	public function Name()
+	{
+		return QuotaUnit::Reservations;
 	}
 }
 
@@ -620,6 +766,22 @@ class QuotaLimitHours implements IQuotaLimit
 		{
 			throw new QuotaExceededException("Cumulative reservation length cannot exceed {$this->allowedHours} hours for this duration");
 		}
+	}
+
+	/**
+	 * @return decimal
+	 */
+	public function Amount()
+	{
+		return $this->allowedHours;
+	}
+
+	/**
+	 * @return string|QuotaUnit
+	 */
+	public function Name()
+	{
+		return QuotaUnit::Hours;
 	}
 }
 class QuotaExceededException extends Exception

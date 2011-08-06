@@ -16,8 +16,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		else 
 		{
 			return $this->GetCreate($ruleProcessor, $userSession);
-//			//length, (quota?)
-//			//$rules[] = new QuotaRule();
+//			//length
 //			//$rules[] = new AccessoryAvailabilityRule();
 		}
 	}
@@ -26,7 +25,6 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	{
 		$reservationRepository = new ReservationRepository();
 
-		
 		$ruleProcessor->AddRule(new ResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
 		
 		return new AddReservationValidationService($ruleProcessor);
@@ -56,7 +54,8 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		$rules[] = new AdminExcludedRule(new ResourceMaximumNoticeRule($resourceRepository), $userSession);
 		$rules[] = new AdminExcludedRule(new ResourceMinimumDurationRule($resourceRepository), $userSession);
 		$rules[] = new AdminExcludedRule(new ResourceMaximumDurationRule($resourceRepository), $userSession);
-		
+		$rules[] = new AdminExcludedRule(new QuotaRule(new QuotaRepository(), new ReservationViewRepository(), new UserRepository(), new ScheduleRepository()), $userSession);
+
 		return new ReservationValidationRuleProcessor($rules);
 	}
 }
