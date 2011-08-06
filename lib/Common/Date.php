@@ -47,6 +47,13 @@ class Date
 	 */
 	public static function Create($year, $month, $day, $hour = 0, $minute = 0, $second = 0, $timezone = null)
 	{
+		if ($month > 12)
+		{
+			$yearOffset = floor($month/12);
+			$year = $year + $yearOffset;
+			$month = $month - ($yearOffset * 12);
+		}
+		
 		return new Date(sprintf('%04d-%02d-%02d %02d:%02d:%02d', $year, $month, $day, $hour, $minute, $second), $timezone);
 	}
 

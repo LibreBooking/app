@@ -177,7 +177,7 @@ class QuotaTests extends TestBase
 		$this->assertFalse($exceeds);
 	}
 	
-	public function testWhenReservationLastsMultipleWeeks()
+	public function testWhenTotalLimitIsExceededForAReservationLastingMultipleWeeks()
 	{
 		$tz = 'UTC';
 		$duration = new QuotaDurationWeek();
@@ -199,6 +199,195 @@ class QuotaTests extends TestBase
 		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
 
 		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenHourLimitIsExceededForMultipleReservationsInOneWeek()
+	{
+		$tz = 'UTC';
+		$duration = new QuotaDurationWeek();
+		$limit = new QuotaLimitHours(2);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		// week 07/31/2011 - 08/05/2011
+		$startDate = Date::Parse('2011-07-31 5:30', $tz);
+		$endDate = Date::Parse('2011-07-31 6:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2011-08-05 1:30', $tz),  Date::Parse('2011-08-05 2:30', $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2011-08-06 11:00', $tz),  Date::Parse('2011-08-07 0:00', $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+
+		$this->assertTrue($exceeds);
+	}
+	
+	public function testWhenHourLimitIsExceededForReservationLastingMultipleWeeks()
+	{
+		$tz = 'UTC';
+		$duration = new QuotaDurationWeek();
+		$limit = new QuotaLimitHours(39);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		// week 07/31/2011 - 08/05/2011
+		$startDate = Date::Parse('2011-07-30 5:30', $tz);
+		$endDate = Date::Parse('2011-08-07 5:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$reservations = array();
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+
+		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenTotalLimitIsNotExceededForMonth()
+	{
+		$tz = 'UTC';
+		$duration = new QuotaDurationMonth();
+		$limit = new QuotaLimitCount(3);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		// week 07/31/2011 - 08/05/2011
+		$startDate = Date::Parse('2011-07-30 5:30', $tz);
+		$endDate = Date::Parse('2011-08-03 5:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2011-08-04 1:30', $tz),  Date::Parse('2011-08-05 2:30', $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2011-08-25 1:30', $tz), Date::Parse('2011-08-28 2:30', $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
+
+		$startSearch = Date::Parse('2011-07-01 00:00', $tz);
+		$endSearch = Date::Parse('2011-09-01 00:00', $tz);
+
+		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+
+		$this->assertFalse($exceeds);
+	}
+
+	public function testWhenTotalLimitIsExceededForMonth()
+	{
+		$tz = 'UTC';
+		$duration = new QuotaDurationMonth();
+		$limit = new QuotaLimitCount(2);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		$startDate = Date::Parse('2011-08-01 5:30', $tz);
+		$endDate = Date::Parse('2011-08-03 5:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2011-08-04 1:30', $tz),  Date::Parse('2011-08-05 2:30', $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2011-08-25 1:30', $tz), Date::Parse('2011-08-28 2:30', $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+
+		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenTotalLimitIsExceededForReservationThatSpansMoreThanOneMonth()
+	{
+		$tz = 'UTC';
+		$duration = new QuotaDurationMonth();
+		$limit = new QuotaLimitCount(1);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		$startDate = Date::Parse('2011-07-30 5:30', $tz);
+		$endDate = Date::Parse('2011-08-03 5:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2011-07-01 1:30', $tz),  Date::Parse('2011-07-02 2:30', $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1);
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+
+		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenHourLimitIsExceededForReservationWithinAMonth()
+	{
+		$tz = 'UTC';
+		$duration = new QuotaDurationMonth();
+		$limit = new QuotaLimitHours(4);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		$startDate = Date::Parse('2011-08-01 5:30', $tz);
+		$endDate = Date::Parse('2011-08-01 6:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2011-08-02 1:30', $tz),  Date::Parse('2011-08-02 2:30', $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2011-08-31 21:30', $tz),  Date::Parse('2011-09-01 0:00', $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+
+		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenHourLimitIsExceededForReservationLastingLongerThanOneMonth()
+	{
+		$tz = 'UTC';
+		$duration = new QuotaDurationMonth();
+		$limit = new QuotaLimitHours(4);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		$startDate = Date::Parse('2011-07-31 5:30', $tz);
+		$endDate = Date::Parse('2011-08-01 6:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$this->SearchReturns(array());
+
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+
+		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenMonthlyHourLimitIsNotExceededForReservation()
+	{
+		$tz = 'UTC';
+		$duration = new QuotaDurationMonth();
+		$limit = new QuotaLimitHours(4);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		$startDate = Date::Parse('2011-07-31 21:30', $tz);
+		$endDate = Date::Parse('2011-08-01 2:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2011-07-02 2:00', $tz),  Date::Parse('2011-07-02 2:30', $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2011-08-31 23:30', $tz),  Date::Parse('2011-09-01 3:00', $tz), '', $series->ResourceId(), 98712);
+		$this->SearchReturns(array($res1, $res2));
+
+		$exceeds = $quota->ExceedsQuota($series, $this->reservationViewRepository, $tz);
+
+		$this->assertFalse($exceeds);
 	}
 	
 	private function GetHourLongReservation($startDate, $endDate)
