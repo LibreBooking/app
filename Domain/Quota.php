@@ -32,6 +32,11 @@ class Quota
 	 */
 	public function ExceedsQuota($reservationSeries, IReservationViewRepository $reservationViewRepository, $timezone)
 	{
+		if (count($reservationSeries->Instances()) == 0)
+		{
+			return false;
+		}
+		
 		$dates = $this->duration->GetSearchDates($reservationSeries, $timezone);
 		$reservationsWithinRange = $reservationViewRepository->GetReservationList($dates->Start(), $dates->End(), $reservationSeries->UserId(), ReservationUserLevel::OWNER);
 
@@ -60,16 +65,19 @@ class Quota
 	 */
 	private function CheckAll($reservationsWithinRange, $series, $timezone)
 	{
+		$toBeSkipped = array();
+		
 		/** @var $instance Reservation */
 		foreach ($series->Instances() as $instance)
 		{
+			$toBeSkipped[$instance->ReferenceNumber()] = true;
 			$this->AddInstance($instance, $timezone);
 		}
 
 		/** @var $reservation ReservationItemView */
 		foreach ($reservationsWithinRange as $reservation)
 		{
-			if ($series->ContainsResource($reservation->ResourceId))
+			if ($series->ContainsResource($reservation->ResourceId) && !array_key_exists($reservation->ReferenceNumber, $toBeSkipped))
 			{
 				$this->AddExisting($reservation, $timezone);
 			}
@@ -88,7 +96,6 @@ class Quota
 
 	private function _breakAndAdd(Date $startDate, Date $endDate, $timezone)
 	{
-
 		$start = $startDate->ToTimezone($timezone);
 		$end = $endDate->ToTimezone($timezone);
 

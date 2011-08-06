@@ -97,7 +97,6 @@ class TestHelper
 	        {
 	        	if (!self::Ignored($file, $ignoreCallback) && self::endsWith($file, "Tests.php"))
 	        	{
-	        		
 	        		$tests[] = new UnitTest($file);
 	        		if (self::$Debug)
 	        		{
@@ -151,7 +150,12 @@ class UnitTest
 	
 	public function AddToSuite($suite, $testDirectory)
 	{
-		require_once("$testDirectory/" . $this->FileName);
+		$filePath = "$testDirectory/" . $this->FileName;
+		if (TestHelper::$Debug)
+		{
+			echo "Adding test suite: $this->TestName from path: $filePath\n";
+		}
+		require_once($filePath);
 		$suite->addTestSuite($this->TestName);
 	}
 }

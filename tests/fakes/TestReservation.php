@@ -2,6 +2,11 @@
 
 class TestReservation extends Reservation
 {
+	/**
+	 * @param string $referenceNumber
+	 * @param DateRange $reservationDate
+	 * @param int $reservationId
+	 */
 	public function __construct($referenceNumber = null, $reservationDate = null, $reservationId = null)
 	{
 		if (!empty($referenceNumber))
