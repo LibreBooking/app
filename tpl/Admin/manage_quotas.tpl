@@ -54,7 +54,7 @@
 		<form id="addQuotaForm" method="post">
 		{capture name="resources" assign="resources"}
 			<select class='textbox' {formname key=RESOURCE_ID}>
-				<option selected='selected'>{translate key=AllResources}</option>
+				<option selected='selected' value=''>{translate key=AllResources}</option>
 			{foreach from=$Resources item=resource}
 				<option value='{$resource->GetResourceId()}'>{$resource->GetName()}</option>
 			{/foreach}
@@ -63,7 +63,7 @@
 			
 		{capture name="groups" assign="groups"}
 			<select class='textbox'> {formname key=GROUP}>
-				<option>{translate key=AllGroups}</option>
+				<option selected="selected" value=''>{translate key=AllGroups}</option>
 			{foreach from=$Groups item=group}
 				<option value='{$group->Id}'>{$group->Name}</option>
 			{/foreach}
@@ -89,7 +89,7 @@
 
 		{translate key=QuotaConfiguration args="$resources,$groups,$amount,$unit,$duration"}
 		
-		<button class="button save">{html_image src="disk-black.png"} {translate key="Add"}</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key="Add"}</button>
 		{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 		</form>
 	</div>

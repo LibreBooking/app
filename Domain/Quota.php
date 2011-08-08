@@ -51,8 +51,8 @@ class Quota implements IQuota
 	    $this->quotaId = $quotaId;
 		$this->duration = $duration;
 		$this->limit = $limit;
-		$this->resourceId = $resourceId;
-		$this->groupId = $groupId;
+		$this->resourceId = empty($resourceId) ? null : $resourceId;
+		$this->groupId = empty($groupId) ? null : $groupId;
 	}
 
 	/**
