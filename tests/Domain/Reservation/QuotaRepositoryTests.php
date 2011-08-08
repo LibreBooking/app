@@ -81,6 +81,18 @@ class QuotaRepositoryTests extends TestBase
 		$this->assertEquals($command, $this->db->_LastCommand);
 	}
 
+	public function testDeletesById()
+	{
+		$id = 282;
+
+		$command = new DeleteQuotaCommand($id);
+
+		$this->repository->DeleteById($id);
+
+		$this->assertEquals($command, $this->db->_LastCommand);
+		
+	}
+
 	private function GetRow($quotaId, $limit, $unit, $duration, $resourceId, $groupId)
 	{
 		return array(ColumnNames::QUOTA_ID => $quotaId,

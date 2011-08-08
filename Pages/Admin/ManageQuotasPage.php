@@ -55,6 +55,12 @@ interface IManageQuotasPage extends IActionPage
 	 * @return string
 	 */
 	public function GetUnit();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetQuotaId();
 }
 
 class ManageQuotasPage extends AdminPage implements IManageQuotasPage
@@ -152,6 +158,14 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 	public function GetUnit()
 	{
 		return $this->GetForm(FormKeys::UNIT);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetQuotaId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::QUOTA_ID);
 	}
 }
 ?>

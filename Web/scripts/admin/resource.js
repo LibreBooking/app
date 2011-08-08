@@ -35,14 +35,14 @@ function ResourceManagement(opts)
 		$("#startNotice").watermark('HH:mm');
 		$("#endNotice").watermark('HH:mm');
 		
-		ConfigureAdminDialog(elements.renameDialog, 'Rename Resource', 300, 135);
-		ConfigureAdminDialog(elements.imageDialog, 'Change Image', 500, 150);
-		ConfigureAdminDialog(elements.scheduleDialog, 'Change Schedule', 300, 125);
-		ConfigureAdminDialog(elements.locationDialog, 'Change Location', 300, 170);
-		ConfigureAdminDialog(elements.descriptionDialog, 'Change Description', 500, 270);
-		ConfigureAdminDialog(elements.notesDialog, 'Change Notes', 500, 270);
-		ConfigureAdminDialog(elements.deleteDialog, 'Delete Resource?', 500, 300);
-		ConfigureAdminDialog(elements.configurationDialog, 'Change Configuration', 500, 500);
+		ConfigureAdminDialog(elements.renameDialog, 300, 135);
+		ConfigureAdminDialog(elements.imageDialog, 500, 150);
+		ConfigureAdminDialog(elements.scheduleDialog, 300, 125);
+		ConfigureAdminDialog(elements.locationDialog, 300, 170);
+		ConfigureAdminDialog(elements.descriptionDialog, 500, 270);
+		ConfigureAdminDialog(elements.notesDialog, 500, 270);
+		ConfigureAdminDialog(elements.deleteDialog, 500, 300);
+		ConfigureAdminDialog(elements.configurationDialog, 500, 500);
 		    
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();

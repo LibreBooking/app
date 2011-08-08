@@ -29,13 +29,14 @@ abstract class ActionPresenter
 
 	public function ProcessAction()
 	{
+		/** @var $action string */
 		$action = $this->actionPage->GetAction();
 
 		if ($this->ActionIsKnown($action)) {
 			$method = $this->actions[$action];
 			try
 			{
-				Log::Error("Processing page action. Action %s", $action);
+				Log::Debug("Processing page action. Action %s", $action);
 				$this->$method();
 			}
 			catch (Exception $ex)

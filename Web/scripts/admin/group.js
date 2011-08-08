@@ -28,11 +28,11 @@ function GroupManagement(opts) {
 
 	GroupManagement.prototype.init = function() {
 
-		ConfigureAdminDialog(elements.membersDialog, 'Group Membership', 400, 500);
-		ConfigureAdminDialog(elements.permissionsDialog, 'Change Group Permissions', 400, 300);
-		ConfigureAdminDialog(elements.deleteDialog, 'Delete Group', 400, 300);
-		ConfigureAdminDialog(elements.renameDialog, 'Rename Group', 500, 100);
-		ConfigureAdminDialog(elements.browseUserDialog, 'Browse Users', 500, 100);
+		ConfigureAdminDialog(elements.membersDialog, 400, 500);
+		ConfigureAdminDialog(elements.permissionsDialog, 400, 300);
+		ConfigureAdminDialog(elements.deleteDialog,  400, 300);
+		ConfigureAdminDialog(elements.renameDialog, 500, 100);
+		ConfigureAdminDialog(elements.browseUserDialog, 500, 100);
 
 		elements.groupList.delegate('a.update', 'click', function(e) {
 			setActiveId($(this));

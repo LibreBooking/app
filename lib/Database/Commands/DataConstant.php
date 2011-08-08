@@ -37,6 +37,7 @@ class ParameterNames
 	const POSITION = '@position';
 
 	const QUOTA_DURATION = '@duration';
+	const QUOTA_ID = '@quotaid';
 	const QUOTA_LIMIT = '@limit';
 	const QUOTA_UNIT = '@unit';
 
@@ -222,7 +223,12 @@ class Queries
 		'DELETE
 		FROM group_resource_permissions
 		WHERE group_id = @groupid AND resource_id = @resourceid';
-	
+
+	const DELETE_QUOTA =
+		'DELETE
+		FROM quotas
+		WHERE quota_id = @quotaid';
+
 	const DELETE_RESOURCE_COMMAND = 
 		'DELETE 
 		FROM resources 

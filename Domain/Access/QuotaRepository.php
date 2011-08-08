@@ -14,6 +14,13 @@ interface IQuotaRepository
 	 * @return void
 	 */
 	function Add(Quota $quota);
+
+	/**
+	 * @abstract
+	 * @param $quotaId
+	 * @return void
+	 */
+	function DeleteById($quotaId);
 }
 
 interface IQuotaViewRepository
@@ -81,6 +88,17 @@ class QuotaRepository implements IQuotaRepository, IQuotaViewRepository
 	{
 		$command = new AddQuotaCommand($quota->GetDuration()->Name(), $quota->GetLimit()->Amount(), $quota->GetLimit()->Name(), $quota->ResourceId(), $quota->GroupId());
 
+		ServiceLocator::GetDatabase()->Execute($command);
+	}
+
+	/**
+	 * @param $quotaId
+	 * @return void
+	 */
+	function DeleteById($quotaId)
+	{
+		//TODO:  Make this delete a quota instead of the id
+		$command = new DeleteQuotaCommand($quotaId);
 		ServiceLocator::GetDatabase()->Execute($command);
 	}
 }

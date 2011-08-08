@@ -64,8 +64,18 @@ class ManageQuotasPresenter extends ActionPresenter
 
 	public function AddQuota()
 	{
+		Log::Debug('Adding new quota');
+		
 		$quota = Quota::Create($this->page->GetDuration(), $this->page->GetLimit(), $this->page->GetUnit(), $this->page->GetResourceId(), $this->page->GetGroupId());
 		$this->quotaRepository->Add($quota);
+	}
+
+	public function DeleteQuota()
+	{
+		$quotaId = $this->page->GetQuotaId();
+		Log::Debug('Deleting quota %s', $quotaId);
+
+		$this->quotaRepository->DeleteById($quotaId);
 	}
 
 }

@@ -4,20 +4,21 @@ function QuotaManagement(opts)
 	
 	var elements = {
 		
-		addForm: $('#addQuotaForm')
-	
+		addForm: $('#addQuotaForm'),
+		deleteForm: $('#deleteQuotaForm'),
+		deleteDialog: $('#deleteDialog')
 	};
+
+	var activeQuotaId = null;
 	
 	QuotaManagement.prototype.init = function()
 	{
-		//ConfigureAdminDialog(elements.deleteDialog,  300, 135);
+		ConfigureAdminDialog(elements.deleteDialog,  400, 200);
 		    
-		$('.quotaList').each(function() {
-
-			$(this).find('.delete').click(function(e) {
-				elements.deleteForm.submit();
-				$(this).after($('.indicator'));
-			});
+		$('.delete').click(function(e) {
+			e.preventDefault();
+			setActiveQuotaId($(this).attr('quotaId'));
+			elements.deleteDialog.dialog('open');
 		});
 
 		$(".save").click(function() {
@@ -29,6 +30,7 @@ function QuotaManagement(opts)
 		});
 
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.addQuota), null, handleAddError);
+		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteQuota), null, handleAddError);
 	};
 
 	var getSubmitCallback = function(action)
@@ -43,8 +45,13 @@ function QuotaManagement(opts)
 		alert(responseText);
 	};
 
+	var setActiveQuotaId = function (quotaId)
+	{
+		activeQuotaId = quotaId
+	};
+	
 	var getActiveQuotaId = function()
 	{
-		return null;
+		return activeQuotaId;
 	};
 }

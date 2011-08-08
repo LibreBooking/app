@@ -105,7 +105,7 @@
 		return isValid;
 	}
 	
-	function ConfigureAdminDialog(dialogElement, dialogTitle, dialogWidth, dialogHeight)
+	function ConfigureAdminDialog(dialogElement, dialogWidth, dialogHeight)
 	{
 		var dialogOpts = {
 		        modal: true,

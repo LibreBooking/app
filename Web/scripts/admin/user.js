@@ -21,8 +21,8 @@ function UserManagement(opts) {
 
 	UserManagement.prototype.init = function() {
 
-		ConfigureAdminDialog(elements.permissionsDialog, 'Resource Permissions', 400, 500);
-		ConfigureAdminDialog(elements.passwordDialog, 'Reset Password', 400, 300);
+		ConfigureAdminDialog(elements.permissionsDialog, 400, 500);
+		ConfigureAdminDialog(elements.passwordDialog, 400, 300);
 
 		elements.userList.delegate('a.update', 'click', function(e) {
 			setActiveUserId($(this));

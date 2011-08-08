@@ -17,6 +17,7 @@ class QueryStringKeys
 	const MESSAGE_ID = 'mid';
     const PAGE = 'page';
 	const PERIOD_ID = 'pid';
+	const QUOTA_ID = 'qid';
 	const REDIRECT = 'redirect';
 	const REFERENCE_NUMBER = 'rn';
 	const RESERVATION_DATE = 'rd';

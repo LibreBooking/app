@@ -285,6 +285,15 @@ class DeleteGroupResourcePermission extends SqlCommand
 	}
 }
 
+class DeleteQuotaCommand extends SqlCommand
+{
+	public function __construct($quotaId)
+	{
+		parent::__construct(Queries::DELETE_QUOTA);
+		$this->AddParameter(new Parameter(ParameterNames::QUOTA_ID, $quotaId));
+	}
+}
+
 class DeleteResourceCommand extends SqlCommand
 {
 	public function __construct($resourceId)

@@ -96,8 +96,8 @@
 	<div class="note">Remember: Quotas are enforced based on the schedule's timezone.</div>
 </div>
 
-<div id="deleteDialog" class="dialog" style="display:none;">
-	<form id="deleteGroupForm" method="post">
+<div id="deleteDialog" class="dialog" style="display:none;" title="Delete Quota?">
+	<form id="deleteQuotaForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>This action is permanent and irrecoverable!</h3>
 		</div>

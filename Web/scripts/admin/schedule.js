@@ -29,9 +29,9 @@ function ScheduleManagement(opts)
 	
 	ScheduleManagement.prototype.init = function()
 	{
-		ConfigureDialog(elements.renameDialog, 'Rename Schedule', 300, 125);
-		ConfigureDialog(elements.changeSettingsDialog, 'Change Schedule Settings', 300, 140);
-		ConfigureDialog(elements.layoutDialog, 'Change Layout', 700, 520);
+		ConfigureAdminDialog(elements.renameDialog, 300, 125);
+		ConfigureAdminDialog(elements.changeSettingsDialog, 300, 140);
+		ConfigureAdminDialog(elements.layoutDialog, 700, 520);
 		    
 		$('.scheduleDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -224,19 +224,6 @@ function ScheduleManagement(opts)
 	        $(this).ajaxSubmit(submitOptions); 
 	 		return false; 
 	    });
-	};
-	
-	var ConfigureDialog = function(dialogElement, dialogTitle, dialogWidth, dialogHeight)
-	{
-		var dialogOpts = {
-				title: dialogTitle,
-		        modal: true,
-		        autoOpen: false,
-		        height: dialogHeight,
-		        width: dialogWidth
-		    };
-		        
-		dialogElement.dialog(dialogOpts);
 	};
 	
 	function CheckRequiredFields(formData, jqForm, options)
