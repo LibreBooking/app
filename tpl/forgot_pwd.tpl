@@ -12,8 +12,8 @@
         {textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
 </p>
 <p class="resetpassword">
-        <input type="submit" name="{constant echo='Actions::RESET'}" value="{translate key='Reset'}" class="button" tabindex="100" />
-        <input type="hidden" name="{constant echo='FormKeys::RESUME'}" value="{$ResumeUrl}" />
+        <input type="submit" name="{Actions::RESET}" value="{translate key='Reset'}" class="button" tabindex="100" />
+        <input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}" />
 </p>
 </div>
 </form>
