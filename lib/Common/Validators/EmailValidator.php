@@ -11,7 +11,7 @@ class EmailValidator extends ValidatorBase implements IValidator
 
 	public function Validate()
 	{
-		$this->isValid = eregi("^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$", $this->email);
+		$this->isValid = preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $this->email);
 	}
 }
 
