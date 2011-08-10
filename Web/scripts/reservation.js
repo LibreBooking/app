@@ -94,7 +94,7 @@ function Reservation(opts) {
 	// pre-submit callback 
 	Reservation.prototype.preSubmit = function(formData, jqForm, options) {
 		$('#result').hide();
-		$('#creatingNotifiation').show();
+		$('#creatingNotification').show();
 
 		return true;
 	};
@@ -109,7 +109,7 @@ function Reservation(opts) {
 			CloseSaveDialog();
 		});
 
-		$('#creatingNotifiation').hide();
+		$('#creatingNotification').hide();
 		$('#result').show();
 	};
 	

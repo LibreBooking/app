@@ -639,6 +639,26 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, 2)));
 		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, 4, ReservationUserLevel::INVITEE)));
 	}
+
+	public function testAddsResources()
+	{
+		$addedId = 29;
+		$removedId = 28;
+		
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->Build();
+		$series->WithResource($removedId);
+		$series->ChangeResources(array($addedId));
+
+		$this->repository->Update($series);
+
+		$addCommand = new AddReservationResourceCommand($series->SeriesId(), $addedId, ResourceLevel::Additional);
+		$removeCommand = new RemoveReservationResourceCommand($series->SeriesId(), $removedId);
+
+		$this->assertTrue($this->db->ContainsCommand($addCommand));
+		$this->assertTrue($this->db->ContainsCommand($removeCommand));
+
+	}
 	
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
 	{

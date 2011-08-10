@@ -18,7 +18,7 @@ class ReservationUpdatePresenter
 	private $page;
 	
 	/**
-	 * @var IUpdateReservationPersistenceService
+	 * @var UpdateReservationPersistenceService
 	 */
 	private $persistenceService;
 	
@@ -61,11 +61,7 @@ class ReservationUpdatePresenter
 			$this->page->GetDescription());
 		
 		$existingSeries->Repeats($this->page->GetRepeatOptions());
-		
-		foreach ($this->page->GetResources() as $resourceId)
-		{
-			$existingSeries->AddResource($resourceId);
-		}
+		$existingSeries->ChangeResources($this->page->GetResources());
 
 		$existingSeries->ChangeParticipants($this->page->GetParticipants());
 		$existingSeries->ChangeInvitees($this->page->GetInvitees());

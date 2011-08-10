@@ -206,19 +206,18 @@
 	{/if}
 
 	<p>
-		<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id()}"
-			   value="{$resource->Id()}" {$checked} />
+		<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id()}" value="{$resource->Id()}" {$checked} />
 		<label for="additionalResource{$resource->Id()}">{$resource->Name()}</label>
 	</p>
 
 {/foreach}
 	<br/>
-	<button id="btnConfirmAddResources">Add Selected</button>
-	<button id="btnClearAddResources">Cancel</button>
+	<button id="btnConfirmAddResources" class="button">{translate key=Done}</button>
+	<button id="btnClearAddResources" class="button">{translate key=Cancel}</button>
 </div>
 
 <div id="dialogSave" style="display:none;">
-	<div id="creatingNotifiation" style="position:relative; top:170px; font-size:16pt;text-align:center;">
+	<div id="creatingNotification" style="position:relative; top:170px; font-size:16pt;text-align:center;">
 	{block name="ajaxMessage"}
 		Creating reservation...<br/>
 	{/block}

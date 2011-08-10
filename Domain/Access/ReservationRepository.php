@@ -49,9 +49,9 @@ class ReservationRepository implements IReservationRepository
 		}
 
 		$series = $this->BuildSeries($reader);
-		$this->AddInstances($series);
-		$this->AddResources($series);
-		$this->AddParticipants($series);
+		$this->PopulateInstances($series);
+		$this->PopulateResources($series);
+		$this->PopulateParticipants($series);
 
 		return $series;
 	}
@@ -84,7 +84,8 @@ class ReservationRepository implements IReservationRepository
 			Log::Debug('Series branched from seriesId: %s to seriesId: %s',$currentId, $newSeriesId);
 				
 			$reservationSeries->SetSeriesId($newSeriesId);
-				
+
+			/** @var $instance Reservation */
 			foreach ($reservationSeries->Instances() as $instance)
 			{
 				$updateReservationCommand = new UpdateReservationCommand(
@@ -233,7 +234,7 @@ class ReservationRepository implements IReservationRepository
 		return $series;
 	}
 	
-	private function AddInstances(ExistingReservationSeries $series)
+	private function PopulateInstances(ExistingReservationSeries $series)
 	{
 		// get all series instances
 		$getInstancesCommand = new GetReservationSeriesInstances($series->SeriesId());
@@ -254,7 +255,7 @@ class ReservationRepository implements IReservationRepository
 		$reader->Free();
 	}
 	
-	private function AddResources(ExistingReservationSeries $series)
+	private function PopulateResources(ExistingReservationSeries $series)
 	{
 		// get all reservation resources
 		$getResourcesCommand = new GetReservationResourcesCommand($series->SeriesId());
@@ -274,7 +275,7 @@ class ReservationRepository implements IReservationRepository
 		$reader->Free();
 	}
 	
-	private function AddParticipants(ExistingReservationSeries $series)
+	private function PopulateParticipants(ExistingReservationSeries $series)
 	{
 		$getSeriesParticipants = new GetReservationSeriesParticipantsCommand($series->SeriesId());
 
@@ -315,6 +316,9 @@ class ReservationEventMapper
 		$this->buildMethods['InstanceAddedEvent'] = 'BuildAddReservationCommand';
 		$this->buildMethods['InstanceRemovedEvent'] = 'BuildRemoveReservationCommand';
 		$this->buildMethods['InstanceUpdatedEvent'] = 'BuildUpdateReservationCommand';
+
+		$this->buildMethods['ResourceRemovedEvent'] = 'BuildRemoveResourceCommand';
+		$this->buildMethods['ResourceAddedEvent'] = 'BuildAddResourceCommand';
 	}
 
 	public static function Instance()
@@ -328,6 +332,8 @@ class ReservationEventMapper
 	}
 
 	/**
+	 * @param $event mixed
+	 * @param $series ExistingReservationSeries
 	 * @return EventCommand
 	 */
 	public function Map($event, ExistingReservationSeries $series)
@@ -367,7 +373,21 @@ class ReservationEventMapper
 	private function BuildUpdateReservationCommand(InstanceUpdatedEvent $event, ExistingReservationSeries $series)
 	{
 		return new InstanceUpdatedEventCommand($event->Instance(), $series);
-	}	
+	}
+
+	private function BuildRemoveResourceCommand(ResourceRemovedEvent $event, ExistingReservationSeries $series)
+	{
+		return new EventCommand(
+			new RemoveReservationResourceCommand($series->SeriesId(), $event->ResourceId())
+		);
+	}
+
+	private function BuildAddResourceCommand(ResourceAddedEvent $event, ExistingReservationSeries $series)
+	{
+		return new EventCommand(
+			new AddReservationResourceCommand($series->SeriesId(), $event->ResourceId(), ResourceLevel::Additional)
+		);
+	}
 }
 
 class EventCommand

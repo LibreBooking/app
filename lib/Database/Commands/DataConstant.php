@@ -536,6 +536,12 @@ class Queries
 		WHERE
 			reference_number = @referenceNumber';
 
+	const REMOVE_RESERVATION_RESOURCE =
+		'DELETE FROM
+			reservation_resources
+		WHERE
+			series_id = @seriesid AND resource_id = @resourceid';
+	
 	const REMOVE_RESERVATION_USER =
 		'DELETE FROM
 			reservation_users

@@ -67,10 +67,12 @@ class ReservationUpdatePresenterTests extends TestBase
 		$seriesId = 109809;
 		$expectedSeries = new ExistingReservationSeries();	
 		$currentDuration = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(2), 'UTC');
-			
+		$removedResourceId = 190;
+
 		$reservation = new Reservation($expectedSeries, $currentDuration);		
 		$expectedSeries->WithId($seriesId);
 		$expectedSeries->WithCurrentInstance($reservation);
+		$expectedSeries->WithResource($removedResourceId);
 		
 		$reservationId = $this->page->reservationId;
 		

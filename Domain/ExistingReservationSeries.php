@@ -215,7 +215,33 @@ class ExistingReservationSeries extends ReservationSeries
 			parent::Repeats($repeatOptions);
 		}
 	}
+	/**
+	 * @param $resourceIds array|int[]
+	 * @return void
+	 */
+	public function ChangeResources($resourceIds)
+	{
+		$diff = new ArrayDiff($this->_resources, $resourceIds);
 
+		$added = $diff->GetAddedToArray1();
+		$removed = $diff->GetRemovedFromArray1();
+
+		foreach ($added as $resourceId)
+		{
+			$this->AddEvent(new ResourceAddedEvent($resourceId, $this));
+		}
+
+		foreach ($removed as $resourceId)
+		{
+			$this->AddEvent(new ResourceRemovedEvent($resourceId, $this));
+		}
+		
+		$this->_resources = $resourceIds;
+	}
+
+	/**
+	 * @return void
+	 */
 	public function Delete()
 	{
 		if (!$this->AppliesToAllInstances())
@@ -520,6 +546,66 @@ class SeriesDeletedEvent
 	public function __toString()
 	{
         return sprintf("%s%s", get_class($this), $this->series->SeriesId());
+    }
+}
+
+class ResourceRemovedEvent
+{
+	private $series;
+	private $resourceId;
+
+	public function __construct($resourceId, ExistingReservationSeries $series)
+	{
+		$this->resourceId = $resourceId;
+		$this->series = $series;
+	}
+
+	public function ResourceId()
+	{
+		return $this->resourceId;
+	}
+	
+	/**
+	 * @return ExistingReservationSeries
+	 */
+	public function Series()
+	{
+		return $this->series;
+	}
+
+	public function __toString()
+	{
+        return sprintf("%s%s%s", get_class($this), $this->resourceId, $this->series->SeriesId());
+    }
+}
+
+class ResourceAddedEvent
+{
+	private $series;
+	private $resourceId;
+
+	public function __construct($resourceId, ExistingReservationSeries $series)
+	{
+		$this->resourceId = $resourceId;
+		$this->series = $series;
+	}
+
+	public function ResourceId()
+	{
+		return $this->resourceId;
+	}
+
+	/**
+	 * @return ExistingReservationSeries
+	 */
+	public function Series()
+	{
+		return $this->series;
+	}
+
+	public function __toString()
+	{
+        return sprintf("%s%s%s", get_class($this), $this->resourceId, $this->series->SeriesId());
     }
 }
 

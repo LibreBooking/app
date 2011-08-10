@@ -587,5 +587,25 @@ class ExistingReservationTests extends TestBase
 		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2), $events));
 		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3), $events));
 	}
+
+	public function testChangesResources()
+	{
+		$builder = new ExistingReservationSeriesBuilder();
+
+		$unchanged = 1;
+		$added = 2;
+		$removed = 3;
+		
+		$series = $builder->Build();
+		$series->WithResource($unchanged);
+		$series->WithResource($removed);
+
+		$series->ChangeResources(array($unchanged, $added));
+
+		$events = $series->GetEvents();
+
+		$this->assertTrue(in_array(new ResourceRemovedEvent($removed, $series), $events));
+		$this->assertTrue(in_array(new ResourceAddedEvent($added, $series), $events));
+	}
 }
 ?>
