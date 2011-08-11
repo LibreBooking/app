@@ -1,0 +1,855 @@
+<?xml version="1.0"?>
+<!--
+If you update this metadata, don't forget to change the actual version number
+attribute in the <sections> element below!
+
+Date       Diagnoses    Version Notes
+.......... ............ ....... ...............................................
+2010-11-15 #0-#151      3.0
+-->
+<meta version="3.0">
+	<Categories>
+		<item id="ISEMAIL_VALID_CATEGORY">
+			<value>1</value>
+			<description>Address is valid</description>
+		</item>
+		<item id="ISEMAIL_DNSWARN">
+			<value>7</value>
+			<description>Address is valid but a DNS check was not successful</description>
+		</item>
+		<item id="ISEMAIL_RFC5321">
+			<value>15</value>
+			<description>Address is valid for SMTP but has unusual elements</description>
+		</item>
+		<item id="ISEMAIL_CFWS">
+			<value>31</value>
+			<description>Address is valid within the message but cannot be used unmodified for the envelope</description>
+		</item>
+		<item id="ISEMAIL_DEPREC">
+			<value>63</value>
+			<description>Address contains deprecated elements but may still be valid in restricted contexts</description>
+		</item>
+		<item id="ISEMAIL_RFC5322">
+			<value>127</value>
+			<description>The address is only valid according to the broad definition of RFC 5322. It is otherwise invalid.</description>
+		</item>
+		<item id="ISEMAIL_ERR">
+			<value>255</value>
+			<description>Address is invalid for any purpose</description>
+		</item>
+	</Categories>
+
+	<SMTP>
+		<item id="ISEMAIL_META_SMTP_250_215">
+			<text>250 2.1.5 ok</text>
+			<value>2.1.5</value>
+		</item>
+		<item id="ISEMAIL_META_SMTP_553_510">
+			<text>553 5.1.0 Other address status</text>
+			<value>5.1.0</value>
+		</item>
+		<item id="ISEMAIL_META_SMTP_553_511">
+			<text>553 5.1.1 Bad destination mailbox address</text>
+			<value>5.1.1</value>
+		</item>
+		<item id="ISEMAIL_META_SMTP_553_512">
+			<text>553 5.1.2 Bad destination system address</text>
+			<value>5.1.2</value>
+		</item>
+		<item id="ISEMAIL_META_SMTP_553_513">
+			<text>553 5.1.3 Bad destination mailbox address syntax</text>
+			<value>5.1.3</value>
+		</item>
+	</SMTP>
+
+	<References>
+		<item id="local-part">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   local-part      =   dot-atom / quoted-string / obs-local-part
+
+   dot-atom        =   [CFWS] dot-atom-text [CFWS]
+
+   dot-atom-text   =   1*atext *("." 1*atext)
+
+   quoted-string   =   [CFWS]
+                       DQUOTE *([FWS] qcontent) [FWS] DQUOTE
+                       [CFWS]
+
+   obs-local-part  =   word *("." word)
+
+   word            =   atom / quoted-string
+
+   atom            =   [CFWS] 1*atext [CFWS]</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="local-part-maximum">
+			<blockquote cite="http://tools.ietf.org/html/rfc5321#section-4.5.3.1.1">
+   The maximum total length of a user name or other local-part is 64
+   octets.</blockquote>
+			<cite>RFC 5322 section 4.5.3.1.1</cite>
+		</item>
+		<item id="obs-local-part">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   obs-local-part  =   word *("." word)
+
+   word            =   atom / quoted-string
+
+   atom            =   [CFWS] 1*atext [CFWS]
+
+   quoted-string   =   [CFWS]
+                       DQUOTE *([FWS] qcontent) [FWS] DQUOTE
+                       [CFWS]
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="dot-atom">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   dot-atom        =   [CFWS] dot-atom-text [CFWS]
+
+   dot-atom-text   =   1*atext *("." 1*atext)
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="quoted-string">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   quoted-string   =   [CFWS]
+                       DQUOTE *([FWS] qcontent) [FWS] DQUOTE
+                       [CFWS]
+
+   qcontent        =   qtext / quoted-pair
+
+   qtext           =   %d33 /             ; Printable US-ASCII
+                       %d35-91 /          ;  characters not including
+                       %d93-126 /         ;  "\" or the quote character
+                       obs-qtext
+
+   quoted-pair     =   ("\" (VCHAR / WSP)) / obs-qp
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="CFWS-near-at">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   Comments and folding white space
+   SHOULD NOT be used around the "@" in the addr-spec.
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="SHOULD-NOT">
+			<blockquote cite="http://tools.ietf.org/html/rfc2119">
+ 4. SHOULD NOT   This phrase, or the phrase "NOT RECOMMENDED" mean that
+    there may exist valid reasons in particular circumstances when the
+    particular behavior is acceptable or even useful, but the full
+    implications should be understood and the case carefully weighed
+    before implementing any behavior described with this label.
+</blockquote>
+			<cite>RFC 2119 section 4</cite>
+		</item>
+		<item id="atext">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.2.3">
+    atext           =   ALPHA / DIGIT /    ; Printable US-ASCII
+                        "!" / "#" /        ;  characters not including
+                        "$" / "%" /        ;  specials.  Used for atoms.
+                        "&amp;" / "'" /
+                        "*" / "+" /
+                        "-" / "/" /
+                        "=" / "?" /
+                        "^" / "_" /
+                        "`" / "{" /
+                        "|" / "}" /
+                        "~"
+</blockquote>
+			<cite>RFC 5322 section 3.2.3</cite>
+		</item>
+		<item id="obs-domain">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   obs-domain      =   atom *("." atom)
+
+   atom            =   [CFWS] 1*atext [CFWS]
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="domain-RFC5322">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   domain          =   dot-atom / domain-literal / obs-domain
+
+   dot-atom        =   [CFWS] dot-atom-text [CFWS]
+
+   dot-atom-text   =   1*atext *("." 1*atext)
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="domain-RFC5321">
+			<blockquote cite="http://tools.ietf.org/html/rfc5321#section-4.1.2">
+   Domain         = sub-domain *("." sub-domain)
+</blockquote>
+			<cite>RFC 5321 section 4.1.2</cite>
+		</item>
+		<item id="sub-domain">
+			<blockquote cite="http://tools.ietf.org/html/rfc5321#section-4.1.2">
+   Domain         = sub-domain *("." sub-domain)
+
+   Let-dig        = ALPHA / DIGIT
+
+   Ldh-str        = *( ALPHA / DIGIT / "-" ) Let-dig
+</blockquote>
+			<cite>RFC 5321 section 4.1.2</cite>
+		</item>
+		<item id="label">
+			<blockquote cite="http://tools.ietf.org/html/rfc1035#section-2.3.4">
+   labels          63 octets or less
+</blockquote>
+			<cite>RFC 5321 section 4.1.2</cite>
+		</item>
+		<item id="CRLF">
+			<blockquote cite="http://tools.ietf.org/html/rfc5234#section-2.3">
+   CRLF        =  %d13.10
+</blockquote>
+			<cite>RFC 5234 section 2.3</cite>
+		</item>
+		<item id="CFWS">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.2.2">
+   CFWS            =   (1*([FWS] comment) [FWS]) / FWS
+
+   FWS             =   ([*WSP CRLF] 1*WSP) /  obs-FWS
+                                          ; Folding white space
+
+   comment         =   "(" *([FWS] ccontent) [FWS] ")"
+
+   ccontent        =   ctext / quoted-pair / comment
+
+   ctext           =   %d33-39 /          ; Printable US-ASCII
+                       %d42-91 /          ;  characters not including
+                       %d93-126 /         ;  "(", ")", or "\"
+                       obs-ctext
+</blockquote>
+			<cite>RFC 5322 section 3.2.2</cite>
+		</item>
+		<item id="domain-literal">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   domain-literal  =   [CFWS] "[" *([FWS] dtext) [FWS] "]" [CFWS]
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="address-literal">
+			<blockquote cite="http://tools.ietf.org/html/rfc5321#section-4.1.2">
+   address-literal  = "[" ( IPv4-address-literal /
+                    IPv6-address-literal /
+                    General-address-literal ) "]"
+</blockquote>
+			<cite>RFC 5321 section 4.1.2</cite>
+		</item>
+		<item id="address-literal-IPv4">
+			<blockquote cite="http://tools.ietf.org/html/rfc5321#section-4.1.3">
+   IPv4-address-literal  = Snum 3("."  Snum)
+
+   Snum           = 1*3DIGIT
+                  ; representing a decimal integer
+                  ; value in the range 0 through 255
+</blockquote>
+			<cite>RFC 5321 section 4.1.3</cite>
+		</item>
+		<item id="address-literal-IPv6">
+			<blockquote cite="http://tools.ietf.org/html/rfc5321#section-4.1.3">
+   IPv6-address-literal  = "IPv6:" IPv6-addr
+
+   IPv6-addr      = IPv6-full / IPv6-comp / IPv6v4-full / IPv6v4-comp
+
+   IPv6-hex       = 1*4HEXDIG
+
+   IPv6-full      = IPv6-hex 7(":" IPv6-hex)
+
+   IPv6-comp      = [IPv6-hex *5(":" IPv6-hex)] "::"
+                  [IPv6-hex *5(":" IPv6-hex)]
+                  ; The "::" represents at least 2 16-bit groups of
+                  ; zeros.  No more than 6 groups in addition to the
+                  ; "::" may be present.
+
+   IPv6v4-full    = IPv6-hex 5(":" IPv6-hex) ":" IPv4-address-literal
+
+   IPv6v4-comp    = [IPv6-hex *3(":" IPv6-hex)] "::"
+                  [IPv6-hex *3(":" IPv6-hex) ":"]
+                  IPv4-address-literal
+                  ; The "::" represents at least 2 16-bit groups of
+                  ; zeros.  No more than 4 groups in addition to the
+                  ; "::" and IPv4-address-literal may be present.
+</blockquote>
+			<cite>RFC 5321 section 4.1.3</cite>
+		</item>
+		<item id="dtext">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   dtext           =   %d33-90 /          ; Printable US-ASCII
+                       %d94-126 /         ;  characters not including
+                       obs-dtext          ;  "[", "]", or "\"
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="obs-dtext">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   obs-dtext       =   obs-NO-WS-CTL / quoted-pair
+
+   obs-NO-WS-CTL   =   %d1-8 /            ; US-ASCII control
+                       %d11 /             ;  characters that do not
+                       %d12 /             ;  include the carriage
+                       %d14-31 /          ;  return, line feed, and
+                       %d127              ;  white space characters
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+		<item id="qtext">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.2.4">
+   qtext           =   %d33 /             ; Printable US-ASCII
+                       %d35-91 /          ;  characters not including
+                       %d93-126 /         ;  "\" or the quote character
+                       obs-qtext
+</blockquote>
+			<cite>RFC 5322 section 3.2.4</cite>
+		</item>
+		<item id="obs-qtext">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-4.1">
+   obs-qtext       =   obs-NO-WS-CTL
+
+   obs-NO-WS-CTL   =   %d1-8 /            ; US-ASCII control
+                       %d11 /             ;  characters that do not
+                       %d12 /             ;  include the carriage
+                       %d14-31 /          ;  return, line feed, and
+                       %d127              ;  white space characters
+</blockquote>
+			<cite>RFC 5322 section 4.1</cite>
+		</item>
+		<item id="ctext">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.2.3">
+   ctext           =   %d33-39 /          ; Printable US-ASCII
+                       %d42-91 /          ;  characters not including
+                       %d93-126 /         ;  "(", ")", or "\"
+                       obs-ctext
+</blockquote>
+			<cite>RFC 5322 section 3.2.3</cite>
+		</item>
+		<item id="obs-ctext">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-4.1">
+   obs-qtext       =   obs-NO-WS-CTL
+
+   obs-NO-WS-CTL   =   %d1-8 /            ; US-ASCII control
+                       %d11 /             ;  characters that do not
+                       %d12 /             ;  include the carriage
+                       %d14-31 /          ;  return, line feed, and
+                       %d127              ;  white space characters
+</blockquote>
+			<cite>RFC 5322 section 4.1</cite>
+		</item>
+		<item id="quoted-pair">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.2.1">
+   quoted-pair     =   ("\" (VCHAR / WSP)) / obs-qp
+
+   VCHAR           =  %d33-126            ; visible (printing) characters
+   WSP             =  SP / HTAB           ; white space
+</blockquote>
+			<cite>RFC 5322 section 3.2.1</cite>
+		</item>
+		<item id="obs-qp">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-4.1">
+   obs-qp          =   "\" (%d0 / obs-NO-WS-CTL / LF / CR)
+
+   obs-NO-WS-CTL   =   %d1-8 /            ; US-ASCII control
+                       %d11 /             ;  characters that do not
+                       %d12 /             ;  include the carriage
+                       %d14-31 /          ;  return, line feed, and
+                       %d127              ;  white space characters
+</blockquote>
+			<cite>RFC 5322 section 4.1</cite>
+		</item>
+		<item id="TLD">
+			<blockquote cite="http://tools.ietf.org/html/rfc5321#section-2.3.5">
+   In the case
+   of a top-level domain used by itself in an email address, a single
+   string is used without any dots.  This makes the requirement,
+   described in more detail below, that only fully-qualified domain
+   names appear in SMTP transactions on the public Internet,
+   particularly important where top-level domains are involved.
+</blockquote>
+			<cite>RFC 5321 section 2.3.5</cite>
+		</item>
+		<item id="TLD-format">
+			<blockquote cite="http://www.rfc-editor.org/errata_search.php?eid=1353">
+   Errata ID 1081, reported 2007-11-20, identifies a problem with the
+   evolution of naming of top-level domains and the text of RFC 1123.
+   It reads:
+
+   Section 2.1 says:
+
+                           However, a valid host name can never
+   have the dotted-decimal form #.#.#.#, since at least the
+   highest-level component label will be alphabetic.
+
+   It should say:
+
+                           However, a valid host name can never
+   have the dotted-decimal form #.#.#.#, since at least the
+   highest-level component label will be not all-numeric.
+
+   Notes:
+
+   RFC 3696 section 2 states: "There is an additional rule that
+   essentially requires that top-level domain names not be
+   all-numeric." The eleven IDN test TLDs created in
+   September 2007 contain hyphen-minus as specified in the
+   IDNA RFCs.
+   It should say:
+
+   However, a valid host name can never have the dotted-decimal
+   form #.#.#.#, since this change does not permit the highest-level
+   component label to start with a digit even if it is not all-numeric.
+   Notes:
+
+   This is a correct identification of the problem, but the wrong fix.
+   RFC 3696, which ID 1081 cites, is an informational document that is
+   deliberately relaxed about the fine details and says so. It is not
+   relevant to determination of the text that should have been (with
+   perfect knowledge of the future) in 1123.
+
+   Based on discussions when we were doing RFC 1591 and subsequently,
+   the expectation then (and presumably when 1123 was written) was
+   that the name of any new TLD would follow the rules for the
+   existing ones, i.e., that they would be exactly two or three
+   characters long and be all-alphabetic (which is exactly what 1123
+   says). The slightly-odd "will be" language in 1123 was, I believe,
+   because that restriction was expected to be enforced by IANA,
+   rather than being a protocol issue. ICANN, with a different set of
+   assignment policies, effectively eliminated the length rule with
+   the TLDs allocated in 2000. IDNA (RFC 3490) uses a syntax for IDNs
+   that requires embedded hyphens in TLDs if there were ever to be an
+   actual IDN TLD (hence the comment in ID 1081 about the IANA IDN
+   testbed).
+
+   While the proposed correction in Errata ID 1081 would fix the
+   problem by imposing the narrowest possible restriction ("not
+   all-numeric"), the original host name rule and the original
+   statement in 1123 both assume the possibility of a minimal check
+   to differentiate between domain names and IP addresses, i.e.,
+   checking the first digit only. Because I believe that there are
+   probably implementations that depend on such minimal parsing --some
+   probably ancient and embedded-- it would appear to be wise to relax
+   the rule as little as possible and, in particular, to restrict the
+   "leading digit" exception to domains below the top-level, as 1123
+   effectively does.
+
+   The suggested text above reflects that reasoning. Because of the
+   possible consequences of this issue, I would hope that it would be
+   discussed with the relevant DNS-related WGs, the Root Server Advisory
+   Committee (RSAC), and with IANA for comment and as a heads-up. This
+   issue is substantive enough that it should probably be dealt with by
+   a document that explicitly updates 1123 and that is processed on the
+   Standards Track, but an accurate statement in the errata is the
+   next-best option until that can be done. In the interim and while
+   this suggestion is being discussed, Errata ID 1081 should probably
+   be taken out of "validated" status.</blockquote>
+  			<cite>John Klensin, RFC 1123 erratum 1353</cite>
+  		</item>
+ 		<item id="mailbox-maximum">
+  			<blockquote cite="http://www.rfc-editor.org/errata_search.php?eid=1690">
+   However, there is a restriction in RFC 2821 on the length of an
+   address in MAIL and RCPT commands of 254 characters.  Since addresses
+   that do not fit in those fields are not normally useful, the upper
+   limit on address lengths should normally be considered to be 254.
+</blockquote>
+			<cite>Dominic Sayers, RFC 3696 erratum 1690</cite>
+		</item>
+		<item id="domain-maximum">
+			<blockquote cite="http://tools.ietf.org/html/rfc1035#section-4.5.3.1.2">
+   The maximum total length of a domain name or number is 255 octets.
+</blockquote>
+			<cite>RFC 5321 section 4.5.3.1.2</cite>
+		</item>
+		<item id="mailbox">
+			<blockquote cite="http://tools.ietf.org/html/rfc5321#section-4.1.2">
+   Mailbox        = Local-part "@" ( Domain / address-literal )
+</blockquote>
+			<cite>RFC 5321 section 4.1.2</cite>
+		</item>
+		<item id="addr-spec">
+			<blockquote cite="http://tools.ietf.org/html/rfc5322#section-3.4.1">
+   addr-spec       =   local-part "@" domain
+</blockquote>
+			<cite>RFC 5322 section 3.4.1</cite>
+		</item>
+	</References>
+
+	<Diagnoses>
+		<item id="ISEMAIL_VALID">
+			<value>0</value>
+			<category>ISEMAIL_VALID_CATEGORY</category>
+			<description>Address is valid</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+		</item>
+		<item id="ISEMAIL_DNSWARN_NO_MX_RECORD">
+			<value>5</value>
+			<category>ISEMAIL_DNSWARN</category>
+			<description>Couldn't find an MX record for this domain but an A-record does exist</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+		</item>
+		<item id="ISEMAIL_DNSWARN_NO_RECORD">
+			<value>6</value>
+			<category>ISEMAIL_DNSWARN</category>
+			<description>Couldn't find an MX record or an A-record for this domain</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+		</item>
+		<item id="ISEMAIL_RFC5321_TLD">
+			<value>9</value>
+			<category>ISEMAIL_RFC5321</category>
+			<description>Address is valid but at a Top Level Domain</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+			<reference>TLD</reference>
+		</item>
+		<item id="ISEMAIL_RFC5321_TLDNUMERIC">
+			<value>10</value>
+			<category>ISEMAIL_RFC5321</category>
+			<description>Address is valid but the Top Level Domain begins with a number</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+			<reference>TLD-format</reference>
+		</item>
+		<item id="ISEMAIL_RFC5321_QUOTEDSTRING">
+			<value>11</value>
+			<category>ISEMAIL_RFC5321</category>
+			<description>Address is valid but contains a quoted string</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+			<reference>quoted-string</reference>
+		</item>
+		<item id="ISEMAIL_RFC5321_ADDRESSLITERAL">
+			<value>12</value>
+			<category>ISEMAIL_RFC5321</category>
+			<description>Address is valid but at a literal address not a domain</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+			<reference>address-literal</reference>
+			<reference>address-literal-IPv4</reference>
+		</item>
+		<item id="ISEMAIL_RFC5321_IPV6DEPRECATED">
+			<value>13</value>
+			<category>ISEMAIL_RFC5321</category>
+			<description>Address is valid but contains a :: that only elides one zero group</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+			<reference>address-literal-IPv6</reference>
+		</item>
+		<item id="ISEMAIL_CFWS_COMMENT">
+			<value>17</value>
+			<category>ISEMAIL_CFWS</category>
+			<description>Address contains comments</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+			<reference>dot-atom</reference>
+		</item>
+		<item id="ISEMAIL_CFWS_FWS">
+			<value>18</value>
+			<category>ISEMAIL_CFWS</category>
+			<description>Address contains Folding White Space</description>
+			<smtp>ISEMAIL_META_SMTP_250_215</smtp>
+			<reference>local-part</reference>
+		</item>
+		<item id="ISEMAIL_DEPREC_LOCALPART">
+			<value>33</value>
+			<category>ISEMAIL_DEPREC</category>
+			<description>The local part is in a deprecated form</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>obs-local-part</reference>
+		</item>
+		<item id="ISEMAIL_DEPREC_FWS">
+			<value>34</value>
+			<category>ISEMAIL_DEPREC</category>
+			<description>Address contains an obsolete form of Folding White Space</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>obs-local-part</reference>
+			<reference>obs-domain</reference>
+		</item>
+		<item id="ISEMAIL_DEPREC_QTEXT">
+			<value>35</value>
+			<category>ISEMAIL_DEPREC</category>
+			<description>A quoted string contains a deprecated character</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>obs-qtext</reference>
+		</item>
+		<item id="ISEMAIL_DEPREC_QP">
+			<value>36</value>
+			<category>ISEMAIL_DEPREC</category>
+			<description>A quoted pair contains a deprecated character</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>obs-qp</reference>
+		</item>
+		<item id="ISEMAIL_DEPREC_COMMENT">
+			<value>37</value>
+			<category>ISEMAIL_DEPREC</category>
+			<description>Address contains a comment in a position that is deprecated</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>obs-local-part</reference>
+			<reference>obs-domain</reference>
+		</item>
+		<item id="ISEMAIL_DEPREC_CTEXT">
+			<value>38</value>
+			<category>ISEMAIL_DEPREC</category>
+			<description>A comment contains a deprecated character</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>obs-ctext</reference>
+		</item>
+		<item id="ISEMAIL_DEPREC_CFWS_NEAR_AT">
+			<value>49</value>
+			<category>ISEMAIL_DEPREC</category>
+			<description>Address contains a comment or Folding White Space around the @ sign</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>CFWS-near-at</reference>
+			<reference>SHOULD-NOT</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_DOMAIN">
+			<value>65</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>Address is RFC 5322 compliant but contains domain characters that are not allowed by DNS</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>domain-RFC5322</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_TOOLONG">
+			<value>66</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>Address is too long</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>mailbox-maximum</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_LOCAL_TOOLONG">
+			<value>67</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>The local part of the address is too long</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>local-part-maximum</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_DOMAIN_TOOLONG">
+			<value>68</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>The domain part is too long</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>domain-maximum</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_LABEL_TOOLONG">
+			<value>69</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>The domain part contains an element that is too long</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>label</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_DOMAINLITERAL">
+			<value>70</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>The domain literal is not a valid RFC 5321 address literal</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>domain-literal</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_DOMLIT_OBSDTEXT">
+			<value>71</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>The domain literal is not a valid RFC 5321 address literal and it contains obsolete characters</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>obs-dtext</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_IPV6_GRPCOUNT">
+			<value>72</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>The IPv6 literal address contains the wrong number of groups</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>address-literal-IPv6</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_IPV6_2X2XCOLON">
+			<value>73</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>The IPv6 literal address contains too many :: sequences</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>address-literal-IPv6</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_IPV6_BADCHAR">
+			<value>74</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>The IPv6 address contains an illegal group of characters</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>address-literal-IPv6</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_IPV6_MAXGRPS">
+			<value>75</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>The IPv6 address has too many groups</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>address-literal-IPv6</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_IPV6_COLONSTRT">
+			<value>76</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>IPv6 address starts with a single colon</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>address-literal-IPv6</reference>
+		</item>
+		<item id="ISEMAIL_RFC5322_IPV6_COLONEND">
+			<value>77</value>
+			<category>ISEMAIL_RFC5322</category>
+			<description>IPv6 address ends with a single colon</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>address-literal-IPv6</reference>
+		</item>
+		<item id="ISEMAIL_ERR_EXPECTING_DTEXT">
+			<value>129</value>
+			<category>ISEMAIL_ERR</category>
+			<description>A domain literal contains a character that is not allowed</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>dtext</reference>
+		</item>
+		<item id="ISEMAIL_ERR_NOLOCALPART">
+			<value>130</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Address has no local part</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>local-part</reference>
+		</item>
+		<item id="ISEMAIL_ERR_NODOMAIN">
+			<value>131</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Address has no domain part</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>addr-spec</reference>
+			<reference>mailbox</reference>
+		</item>
+		<item id="ISEMAIL_ERR_CONSECUTIVEDOTS">
+			<value>132</value>
+			<category>ISEMAIL_ERR</category>
+			<description>The address may not contain consecutive dots</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>local-part</reference>
+			<reference>domain-RFC5322</reference>
+			<reference>domain-RFC5321</reference>
+		</item>
+		<item id="ISEMAIL_ERR_ATEXT_AFTER_CFWS">
+			<value>133</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Address contains text after a comment or Folding White Space</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>local-part</reference>
+			<reference>domain-RFC5322</reference>
+		</item>
+		<item id="ISEMAIL_ERR_ATEXT_AFTER_QS">
+			<value>134</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Address contains text after a quoted string</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>local-part</reference>
+		</item>
+		<item id="ISEMAIL_ERR_ATEXT_AFTER_DOMLIT">
+			<value>135</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Extra characters were found after the end of the domain literal</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>domain-RFC5322</reference>
+		</item>
+		<item id="ISEMAIL_ERR_EXPECTING_QPAIR">
+			<value>136</value>
+			<category>ISEMAIL_ERR</category>
+			<description>The address contains a character that is not allowed in a quoted pair</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>quoted-pair</reference>
+		</item>
+		<item id="ISEMAIL_ERR_EXPECTING_ATEXT">
+			<value>137</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Address contains a character that is not allowed</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>atext</reference>
+		</item>
+		<item id="ISEMAIL_ERR_EXPECTING_QTEXT">
+			<value>138</value>
+			<category>ISEMAIL_ERR</category>
+			<description>A quoted string contains a character that is not allowed</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>qtext</reference>
+		</item>
+		<item id="ISEMAIL_ERR_EXPECTING_CTEXT">
+			<value>139</value>
+			<category>ISEMAIL_ERR</category>
+			<description>A comment contains a character that is not allowed</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>qtext</reference>
+		</item>
+		<item id="ISEMAIL_ERR_BACKSLASHEND">
+			<value>140</value>
+			<category>ISEMAIL_ERR</category>
+			<description>The address can't end with a backslash</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>domain-RFC5322</reference>
+			<reference>domain-RFC5321</reference>
+			<reference>quoted-pair</reference>
+		</item>
+		<item id="ISEMAIL_ERR_DOT_START">
+			<value>141</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Neither part of the address may begin with a dot</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>local-part</reference>
+			<reference>domain-RFC5322</reference>
+			<reference>domain-RFC5321</reference>
+		</item>
+		<item id="ISEMAIL_ERR_DOT_END">
+			<value>142</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Neither part of the address may end with a dot</description>
+			<smtp>ISEMAIL_META_SMTP_553_511</smtp>
+			<reference>local-part</reference>
+			<reference>domain-RFC5322</reference>
+			<reference>domain-RFC5321</reference>
+		</item>
+		<item id="ISEMAIL_ERR_DOMAINHYPHENSTART">
+			<value>143</value>
+			<category>ISEMAIL_ERR</category>
+			<description>A domain or subdomain cannot begin with a hyphen</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>sub-domain</reference>
+		</item>
+		<item id="ISEMAIL_ERR_DOMAINHYPHENEND">
+			<value>144</value>
+			<category>ISEMAIL_ERR</category>
+			<description>A domain or subdomain cannot end with a hyphen</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>sub-domain</reference>
+		</item>
+		<item id="ISEMAIL_ERR_UNCLOSEDQUOTEDSTR">
+			<value>145</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Unclosed quoted string</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>quoted-string</reference>
+		</item>
+		<item id="ISEMAIL_ERR_UNCLOSEDCOMMENT">
+			<value>146</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Unclosed comment</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>CFWS</reference>
+		</item>
+		<item id="ISEMAIL_ERR_UNCLOSEDDOMLIT">
+			<value>147</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Domain literal is missing its closing bracket</description>
+			<smtp>ISEMAIL_META_SMTP_553_512</smtp>
+			<reference>domain-literal</reference>
+		</item>
+		<item id="ISEMAIL_ERR_FWS_CRLF_X2">
+			<value>148</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Folding White Space contains consecutive CRLF sequences</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>CFWS</reference>
+		</item>
+		<item id="ISEMAIL_ERR_FWS_CRLF_END">
+			<value>149</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Folding White Space ends with a CRLF sequence</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>CFWS</reference>
+		</item>
+		<item id="ISEMAIL_ERR_CR_NO_LF">
+			<value>150</value>
+			<category>ISEMAIL_ERR</category>
+			<description>Address contains a carriage return that is not followed by a line feed</description>
+			<smtp>ISEMAIL_META_SMTP_553_513</smtp>
+			<reference>CFWS</reference>
+			<reference>CRLF</reference>
+		</item>
+	</Diagnoses>
+</meta>

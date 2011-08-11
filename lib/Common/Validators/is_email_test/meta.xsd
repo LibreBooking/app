@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ * To validate an email address according to RFCs 5321, 5322 and others
+ * 
+ * Copyright © 2008-2011, Dominic Sayers					<br>
+ * Test schema documentation Copyright © 2011, Daniel Marschall			<br>
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ * 
+ *     - Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     - Redistributions in binary form must reproduce the above copyright notice,
+ *       this list of conditions and the following disclaimer in the documentation
+ *       and/or other materials provided with the distribution.
+ *     - Neither the name of Dominic Sayers nor the names of its contributors may be
+ *       used to endorse or promote products derived from this software without
+ *       specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * @package	is_email
+ * @author	Dominic Sayers <dominic@sayers.cc>
+ * @copyright	2008-2011 Dominic Sayers
+ * @license	http://www.opensource.org/licenses/bsd-license.php BSD License
+ * @link	http://www.dominicsayers.com/isemail
+ * @version	3.01.1 - Fixed examples and readme.txt
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="3.0">
+	<xsd:element name="meta">
+		<xsd:complexType>
+			<xsd:all>
+				<xsd:element name="Categories"	type="type_categories" />
+				<xsd:element name="SMTP"	type="type_smtp" />
+				<xsd:element name="References"	type="type_references" />
+				<xsd:element name="Diagnoses"	type="type_diagnoses" />
+			</xsd:all>
+			<xsd:attribute name="version" type="xsd:string" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="type_categories">
+		<xsd:sequence>
+			<xsd:element name="item" minOccurs="1" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:all>
+						<xsd:element name="value"	type="xsd:int" />
+						<xsd:element name="description"	type="xsd:string" />
+					</xsd:all>
+					<xsd:attribute name="id" type="xsd:ID" use="required" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="type_smtp">
+		<xsd:sequence>
+			<xsd:element name="item" minOccurs="1" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:all>
+						<xsd:element name="text"	type="xsd:string" />
+						<xsd:element name="value"	type="xsd:string" />
+					</xsd:all>
+					<xsd:attribute name="id" type="xsd:ID" use="required" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="type_references">
+		<xsd:sequence>
+			<xsd:element name="item" minOccurs="1" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:all>
+						<xsd:element name="cite"	type="xsd:string" />
+						<xsd:element name="blockquote">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="cite" type="xsd:anyURI" use="required" />
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:all>
+					<xsd:attribute name="id" type="xsd:ID" use="required" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="type_diagnoses">
+		<xsd:sequence>
+			<xsd:element name="item" minOccurs="1" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="value"	type="xsd:int"		minOccurs="1"	maxOccurs="1" />
+						<xsd:element name="category"	type="xsd:IDREF"	minOccurs="1"	maxOccurs="1" />
+						<xsd:element name="description"	type="xsd:string"	minOccurs="1"	maxOccurs="1" />
+						<xsd:element name="smtp"	type="xsd:IDREF"	minOccurs="1"	maxOccurs="1" />
+						<xsd:element name="reference"	type="xsd:IDREF"	minOccurs="0"	maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="id" type="xsd:ID" use="required" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
