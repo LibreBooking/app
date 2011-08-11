@@ -144,6 +144,7 @@ CREATE TABLE `users` (
  `email` varchar(85) NOT NULL,
  `password` varchar(85) NOT NULL,
  `salt` varchar(85) NOT NULL,
+ `organization_id` smallint(5) unsigned NOT NULL,
  `position` varchar(85),
  `phone` varchar(85),
  `timezone` varchar(85) NOT NULL,
@@ -159,7 +160,10 @@ CREATE TABLE `users` (
  INDEX (`status_id`),
  FOREIGN KEY (`status_id`) 
 	REFERENCES user_statuses(`status_id`)
-	ON UPDATE CASCADE ON DELETE RESTRICT
+	ON UPDATE CASCADE ON DELETE RESTRICT,
+ FOREIGN KEY (`organization_id`) 
+      REFERENCES organizations(`organization_id`)
+      ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
