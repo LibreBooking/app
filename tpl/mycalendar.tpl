@@ -8,10 +8,14 @@ Day Week Month List
 			<th width="14%">{$label}</th>
 		{/foreach}
 	</tr>
-{foreach from=$Weeks item=week}
+{foreach from=$Month->Weeks() item=week}
 	<tr>
 		{foreach from=$week->Days() item=day}
-			<td>{$day->Number}</td>
+			<td>{$day->DayOfMonth()}
+			{if $day->IsHighlighted()}
+				TODAY!
+			{/if}
+			</td>
 		{/foreach}
 	</tr>
 {/foreach}
