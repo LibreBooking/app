@@ -8,7 +8,6 @@ class LoginPresenterTests extends TestBase
 {
 	private $auth;
 	private $page;
-	private $server;
 	
 	public function setup()
 	{

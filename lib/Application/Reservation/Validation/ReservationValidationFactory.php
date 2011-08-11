@@ -49,6 +49,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		// Common rules
 		$rules = array();
 		$rules[] = new ReservationDateTimeRule();
+		$rules[] = new AdminExcludedRule(new ReservationStartTimeRule(), $userSession);
 		$rules[] = new AdminExcludedRule(new PermissionValidationRule(new PermissionServiceFactory()), $userSession);
 		$rules[] = new AdminExcludedRule(new ResourceMinimumNoticeRule($resourceRepository), $userSession);
 		$rules[] = new AdminExcludedRule(new ResourceMaximumNoticeRule($resourceRepository), $userSession);

@@ -7,7 +7,7 @@ class Pages
 	const DEFAULT_LOGIN = 'dashboard.php';
 	const INVITATION_RESPONSES = 'participation.php';
 	const LOGIN = 'index.php';
-	const MY_CALENDAR = 'mycalendar.php';
+	const MY_CALENDAR = 'my-calendar.php';
 	const OPENINGS = 'openings.php';
 	const PARTICIPATION = 'participation.php';
 	const PROFILE = 'profile.php';

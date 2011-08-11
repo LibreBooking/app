@@ -43,20 +43,6 @@ class ReservationStartTimeRuleTests extends TestBase
 		$this->assertTrue($result->IsValid());
 	}
 	
-	public function testRuleIsValidIfAdmin()
-	{
-		$start = Date::Now()->AddDays(-2);
-		$end = Date::Now()->AddDays(-1);
-		
-		$reservation = new TestReservationSeries();
-		$reservation->WithCurrentInstance(new TestReservation('1', new DateRange($start, $end)));
-			
-		$rule = new ReservationStartTimeRule(new FakeUserSession(true));
-		$result = $rule->Validate($reservation);
-		
-		$this->assertTrue($result->IsValid(), 'admins can reserve in the past');
-	}
-	
 	public function testRuleIsInvalidIfStartIsInPast()
 	{
 		$start = Date::Now()->AddDays(-2);
@@ -68,6 +54,22 @@ class ReservationStartTimeRuleTests extends TestBase
 		$rule = new ReservationStartTimeRule();
 		$result = $rule->Validate($reservation);
 		
+		$this->assertFalse($result->IsValid());
+	}
+
+	public function testRuleIsInvalidIfStartTimeIsInPast()
+	{
+		$now = Date::Parse('2011-04-04 12:13:15', 'UTC');
+		Date::_SetNow($now);
+		$start = Date::Parse('2011-04-04 12:13:14', 'UTC');
+		$end = $start->AddDays(5);
+
+		$reservation = new TestReservationSeries();
+		$reservation->WithCurrentInstance(new TestReservation('1', new DateRange($start, $end)));
+
+		$rule = new ReservationStartTimeRule();
+		$result = $rule->Validate($reservation);
+
 		$this->assertFalse($result->IsValid());
 	}
 }

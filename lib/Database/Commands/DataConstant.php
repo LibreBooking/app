@@ -351,7 +351,7 @@ class Queries
 			ri.start_date >= @startDate AND
 			ri.start_date <= @endDate AND
 			ru.user_id = @userid AND
-			ru.reservation_user_level = @levelid AND
+			(@levelid = 0 OR ru.reservation_user_level = @levelid) AND
 			rs.status_id <> 2
 		ORDER BY 
 			ri.start_date ASC';

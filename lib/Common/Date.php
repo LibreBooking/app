@@ -340,53 +340,74 @@ class Date
 		list($weekday, $year, $month, $day) = explode("-", $date);
 		list($hour, $minute, $second) = explode(":", $time);
 
-		$this->parts['hours'] = $hour;
-		$this->parts['minutes'] = $minute;
-		$this->parts['seconds'] = $second;
-		$this->parts['mon'] = $month;
-		$this->parts['mday'] = $day;
-		$this->parts['year'] = $year;
-		$this->parts['wday'] = $weekday;
+		$this->parts['hours'] = intval($hour);
+		$this->parts['minutes'] = intval($minute);
+		$this->parts['seconds'] = intval($second);
+		$this->parts['mon'] = intval($month);
+		$this->parts['mday'] = intval($day);
+		$this->parts['year'] = intval($year);
+		$this->parts['wday'] = intval($weekday);
 	}
 
+	/**
+	 * @return int
+	 */
 	public function Hour()
 	{
 		return $this->parts['hours'];
 	}
 
+	/**
+	 * @return int
+	 */
 	public function Minute()
 	{
 		return $this->parts['minutes'];
 	}
 
+	/**
+	 * @return int
+	 */
 	public function Second()
 	{
 		return $this->parts['seconds'];
 	}
 
+	/**
+	 * @return int
+	 */
 	public function Month()
 	{
 		return $this->parts['mon'];
 	}
 
+	/**
+	 * @return int
+	 */
 	public function Day()
 	{
 		return $this->parts['mday'];
 	}
 
+	/**
+	 * @return int
+	 */
 	public function Year()
 	{
 		return $this->parts['year'];
 	}
 
-	public function Timezone()
-	{
-		return $this->timezone;
-	}
-
+	/**
+	 * @return int
+	 */
 	public function Weekday()
 	{
 		return $this->parts['wday'];
+	}
+
+	public function Timezone()
+	{
+		return $this->timezone;
 	}
 
 	/**

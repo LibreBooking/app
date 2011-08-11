@@ -77,7 +77,8 @@ class ReservationViewRepository implements IReservationViewRepository
 					Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
 					$row[ColumnNames::RESOURCE_NAME],
 					$row[ColumnNames::RESOURCE_ID],
-					$row[ColumnNames::RESERVATION_INSTANCE_ID]
+					$row[ColumnNames::RESERVATION_INSTANCE_ID],
+					$row[ColumnNames::RESERVATION_USER_LEVEL]
 				);
 		}
 		
@@ -295,6 +296,11 @@ class ReservationItemView
 	 * @var int
 	 */
 	public $ReservationId;
+
+	/**
+	 * @var int|ReservationUserLevel
+	 */
+	public $UserLevelId;
 	
 	/**
 	 * @param $referenceNumber string
@@ -303,6 +309,7 @@ class ReservationItemView
 	 * @param $resourceName string
 	 * @param $resourceId int
 	 * @param $reservationId int
+	 * @param $userLevelId int|ReservationUserLevel
 	 */
 	public function __construct(
 		$referenceNumber = null,
@@ -310,7 +317,8 @@ class ReservationItemView
 		$endDate = null,
 		$resourceName = null,
 		$resourceId = null,
-		$reservationId = null
+		$reservationId = null,
+		$userLevelId = null
 		)
 	{
 		$this->ReferenceNumber = $referenceNumber;
@@ -319,6 +327,7 @@ class ReservationItemView
 		$this->ResourceName = $resourceName;
 		$this->ResourceId = $resourceId;
 		$this->ReservationId = $reservationId;
+		$this->UserLevelId = $userLevelId;
 	}
 }
 ?>
