@@ -19,7 +19,7 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 
 	public function PageLoad()
 	{
-		$presenter = new PersonalCalendarPresenter($this);
+		$presenter = new PersonalCalendarPresenter($this, null, null);
 		$user = ServiceLocator::GetServer()->GetUserSession();
 		$presenter->PageLoad($user->UserId, $user->Timezone);
 

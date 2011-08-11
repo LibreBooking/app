@@ -3,7 +3,14 @@ require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
 class RegistrationTests extends TestBase
 {
+	/**
+	 * @var Registration
+	 */
 	private $registration;
+
+	/**
+	 * @var FakePasswordEncryption
+	 */
 	private $fakeEncryption;
 	
 	private $login = 'testlogin';

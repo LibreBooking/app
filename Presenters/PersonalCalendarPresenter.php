@@ -1,23 +1,51 @@
 <?php
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class PersonalCalendarPresenter
 {
 
 	/**
 	 * @var \IPersonalCalendarPage
-	 */private $page;
+	 */
+	private $page;
 
-	public function __construct(IPersonalCalendarPage $page)
+	/**
+	 * @var \IReservationViewRepository
+	 */
+	private $repository;
+
+	/**
+	 * @var \ICalendarFactory
+	 */
+	private $calendarFactory;
+
+	public function __construct(IPersonalCalendarPage $page, IReservationViewRepository $repository, ICalendarFactory $calendarFactory)
 	{
 		$this->page = $page;
+		$this->repository = $repository;
+		$this->calendarFactory = $calendarFactory;
 	}
 	
 	public function PageLoad($userId, $timezone)
 	{
-		$month = new CalendarMonth($this->page->GetMonth(), $this->page->GetYear(), $timezone);
+		$month = $this->calendarFactory->GetMonth($this->page->GetYear(), $this->page->GetMonth(), $timezone);
+
+		$this->repository->GetReservationList($month->FirstDay(), $month->LastDay(), $userId, ReservationUserLevel::ALL);
 
 		$this->page->Bind($month);
 	}
+}
+
+interface ICalendarFactory
+{
+	/**
+	 * @abstract
+	 * @param $year int
+	 * @param $month int
+	 * @param $timezone string timezone of dates in calendar
+	 * @return CalendarMonth
+	 */
+	public function GetMonth($year, $month, $timezone);
 }
 
 /// TODO: Move to application
@@ -106,6 +134,10 @@ class CalendarMonth
 
 		return intval($week);
 	}
+
+	public function AddReservations($reservations)
+	{
+	}
 }
 
 interface ICalendarDay
@@ -113,6 +145,8 @@ interface ICalendarDay
 	public function DayOfMonth();
 	public function Weekday();
 	public function IsHighlighted();
+
+	public function Reservations();
 }
 
 class CalendarDay implements ICalendarDay
@@ -178,6 +212,11 @@ class CalendarDay implements ICalendarDay
 		}
 		return self::$nullInstance;
 	}
+
+	public function Reservations()
+	{
+		return array();
+	}
 }
 
 class NullCalendarDay implements ICalendarDay
@@ -199,6 +238,11 @@ class NullCalendarDay implements ICalendarDay
 	public function DayOfMonth()
 	{
 		return null;
+	}
+
+	public function Reservations()
+	{
+		return array();
 	}
 }
 

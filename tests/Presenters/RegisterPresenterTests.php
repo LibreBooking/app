@@ -356,5 +356,15 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	{
 		return $this->_PasswordConfirm;
 	}
+
+	public function SetOrganization($organization)
+	{
+		// TODO: Implement SetOrganization() method.
+	}
+
+	public function GetOrganization()
+	{
+		// TODO: Implement GetOrganization() method.
+	}
 }
 ?>
