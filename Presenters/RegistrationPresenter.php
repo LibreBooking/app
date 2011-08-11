@@ -72,11 +72,12 @@ class RegistrationPresenter
 	{
 		if ($this->_page->IsValid())
 	    {
-    		$additionalFields = array('phone' => $this->_page->GetPhone(),
-    								'institution' => $this->_page->GetInstitution(),
+
+    	$additionalFields = array('phone' => $this->_page->GetPhone(),
+    							'organization' => $this->_page->GetOrganization(),
     								'position' => $this->_page->GetPosition());
     		
-    		$this->_registration->Register(
+          $this->_registration->Register(
     			$this->_page->GetLoginName(), 
     			$this->_page->GetEmail(),
     			$this->_page->GetFirstName(),

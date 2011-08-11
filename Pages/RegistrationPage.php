@@ -3,7 +3,7 @@ require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Presenters/RegistrationPresenter.php');
 require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
-
+require_once(ROOT_DIR . 'lib/Common/Validators/is_email.php');
 
 interface IRegistrationPage extends IPage
 {
@@ -18,7 +18,7 @@ interface IRegistrationPage extends IPage
 	public function SetFirstName($firstName);
 	public function SetLastName($lastName);
 	public function SetPhone($phoneNumber);
-	public function SetInstitution($institution);
+	public function SetOrganization($organization);
 	public function SetPosition($position);
 	public function SetPassword($password);
 	public function SetPasswordConfirm($passwordConfirm);
@@ -30,7 +30,7 @@ interface IRegistrationPage extends IPage
 	public function GetFirstName();
 	public function GetLastName();
 	public function GetPhone();
-	public function GetInstitution();
+	public function GetOrganization();
 	public function GetPosition();
 	public function GetPassword();
 	public function GetPasswordConfirm();
@@ -104,9 +104,9 @@ class RegistrationPage extends Page implements IRegistrationPage
 		$this->Set('PhoneNumber', $phoneNumber);	
 	}
 	
-	public function SetInstitution($institution)
+	public function SetOrganization($organization)
 	{
-		$this->Set('Institution', $institution);	
+	$this->Set('Organization', $organization);	
 	}
 	
 	public function SetPosition($position)
@@ -159,10 +159,10 @@ class RegistrationPage extends Page implements IRegistrationPage
 		return $this->GetForm(FormKeys::PHONE);
 	}
 	
-	public function GetInstitution()
-	{
-		return $this->GetForm(FormKeys::INSTITUTION);
-	}
+	public function GetOrganization()
+    {
+	 	return $this->GetForm(FormKeys::ORGANIZATION);
+    }
 	
 	public function GetPosition()
 	{
