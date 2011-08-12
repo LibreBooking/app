@@ -1,20 +1,67 @@
 <?php
-class CalendarWeek
+class CalendarWeek implements ICalendarSegment
 {
 	/**
 	 * @var array|CalendarDay[]
 	 */
-	private $days;
+	private $days = array();
 
-	public function __construct($days = array())
+	/**
+	 * @var string
+	 */
+	private $timezone;
+
+	public function __construct($timezone)
 	{
-		$this->days = $days;
-
-		if (count($days) != 7)
+		$this->timezone = $timezone;
+		
+		for ($i = 0; $i < 7; $i++)
 		{
-			for ($i = 0; $i < 7; $i++)
+			$this->days[$i] = CalendarDay::Null();
+		}
+	}
+
+	public static function FromDate($year, $month, $day, $timezone)
+	{
+		$week = new CalendarWeek($timezone);
+
+		return $week;
+	}
+
+	public function FirstDay()
+	{
+		for ($i = 0; $i < 7; $i++)
+		{
+			if ($this->days[$i] != CalendarDay::Null())
 			{
-				$this->days[$i] = CalendarDay::Null();
+				return $this->days[$i]->Date();
+			}
+		}
+
+		return NullDate::Instance();
+	}
+
+	public function LastDay()
+	{
+		for ($i = 6; $i >=0; $i--)
+		{
+			if ($this->days[$i] != CalendarDay::Null())
+			{
+				return $this->days[$i]->Date();
+			}
+		}
+
+		return NullDate::Instance();
+	}
+
+	public function AddReservations($reservations)
+	{
+		/** @var $reservation ReservationItemView */
+		foreach ($reservations as $reservation)
+		{
+			foreach ($this->Days() as $day)
+			{
+				$day->AddReservation(CalendarReservation::FromView($reservation, $this->timezone));
 			}
 		}
 	}

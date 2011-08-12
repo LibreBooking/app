@@ -40,6 +40,9 @@ class PersonalCalendarPresenterTests extends TestBase
 		$userId = 10;
 		$userTimezone = "America/New_York";
 
+		$calendarType = CalendarTypes::Month;
+		
+		$requestedDay = 4;
 		$requestedMonth = 3;
 		$requestedYear = 2011;
 
@@ -51,6 +54,14 @@ class PersonalCalendarPresenterTests extends TestBase
 			->method('GetReservationList')
 			->with($this->equalTo($month->FirstDay()), $this->equalTo($month->LastDay()), $this->equalTo($userId), $this->equalTo(ReservationUserLevel::ALL))
 			->will($this->returnValue($reservations));
+
+		$this->page->expects($this->once())
+				->method('GetCalendarType')
+				->will($this->returnValue($calendarType));
+		
+		$this->page->expects($this->once())
+				->method('GetDay')
+				->will($this->returnValue($requestedDay));
 		
 		$this->page->expects($this->once())
 				->method('GetMonth')
@@ -61,12 +72,12 @@ class PersonalCalendarPresenterTests extends TestBase
 				->will($this->returnValue($requestedYear));
 
 		$this->calendarFactory->expects($this->once())
-			->method('GetMonth')
-			->with($this->equalTo($requestedYear), $this->equalTo($requestedMonth), $this->equalTo($userTimezone))
+			->method('Create')
+			->with($this->equalTo($calendarType), $this->equalTo($requestedYear), $this->equalTo($requestedMonth), $this->equalTo($requestedDay), $this->equalTo($userTimezone))
 			->will($this->returnValue($month));
 
 		$this->page->expects($this->once())
-			->method('Bind')
+			->method('BindMonth')
 			->with($this->equalTo($month));
 
 		$this->presenter->PageLoad($userId, $userTimezone);

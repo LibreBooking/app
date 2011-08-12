@@ -1,6 +1,6 @@
 <?php
 
-class CalendarMonth
+class CalendarMonth implements ICalendarSegment
 {
 	private $month;
 	private $year;
@@ -25,11 +25,11 @@ class CalendarMonth
 
 		$daysInMonth = $this->lastDay->AddDays(-1)->Day();
 
-		$weeks = floor(($daysInMonth + $this->firstDay->Weekday()) / 7);
+		$weeks = floor(($daysInMonth + $this->firstDay->Weekday()-1) / 7);
 
 		for ($week = 0; $week <= $weeks; $week++)
 		{
-			$this->weeks[$week] = new CalendarWeek();
+			$this->weeks[$week] = new CalendarWeek($timezone);
 		}
 
 		for ($dayOffset = 0; $dayOffset < $daysInMonth; $dayOffset++)
@@ -63,6 +63,23 @@ class CalendarMonth
 	}
 
 	/**
+	 * @param $reservations array|ReservationItemView[]
+	 * @return void
+	 */
+	public function AddReservations($reservations)
+	{
+		/** @var $reservation ReservationItemView */
+		foreach ($reservations as $reservation)
+		{
+			/** @var $week CalendarWeek */
+			foreach ($this->Weeks() as $week)
+			{
+				$week->AddReservation(CalendarReservation::FromView($reservation, $this->timezone));
+			}
+		}
+	}
+
+	/**
 	 * @param Date $day
 	 * @return int
 	 */
@@ -87,23 +104,7 @@ class CalendarMonth
 		return intval($week);
 	}
 
-	/**
-	 * @param $reservations array|ReservationItemView[]
-	 * @return void
-	 */
-	public function AddReservations($reservations)
-	{
-		/** @var $reservation ReservationItemView */
-		foreach ($reservations as $reservation)
-		{
-			/** @var $week CalendarWeek */
-			foreach ($this->Weeks() as $week)
-			{
-				$calReservation = CalendarReservation::FromView($reservation, $this->timezone);
-				$week->AddReservation($calReservation);
-			}
-		}
-	}
+
 }
 
 ?>

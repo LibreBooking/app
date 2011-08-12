@@ -4,10 +4,11 @@ require_once(ROOT_DIR . 'Presenters/PersonalCalendarPresenter.php');
 
 interface IPersonalCalendarPage
 {
+	public function GetDay();
 	public function GetMonth();
 	public function GetYear();
 
-	public function Bind(CalendarMonth $month);
+	public function BindMonth(CalendarMonth $month);
 
 	public function SetMonth($month);
 	public function SetYear($year);
@@ -17,6 +18,8 @@ interface IPersonalCalendarPage
 
 	public function SetNextMonth($month);
 	public function SetNextYear($year);
+
+	public function GetCalendarType();
 }
 
 class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
@@ -36,6 +39,11 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 		$this->Display('mycalendar.tpl');
 	}
 
+	public function GetDay()
+	{
+		return $this->GetQuerystring(QueryStringKeys::DAY);
+	}
+	
 	public function GetMonth()
 	{
 		return $this->GetQuerystring(QueryStringKeys::MONTH);
@@ -46,7 +54,7 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 		return $this->GetQuerystring(QueryStringKeys::YEAR);
 	}
 
-	public function Bind(CalendarMonth $month)
+	public function BindMonth(CalendarMonth $month)
 	{
 		$this->Set('Month', $month);
 	}
@@ -81,6 +89,12 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 	{
 		$this->Set('NextYear', $year);
 	}
+
+	public function GetCalendarType()
+	{
+		$this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
+	}
+
 }
 
 ?>

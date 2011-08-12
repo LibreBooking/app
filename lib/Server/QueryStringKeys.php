@@ -8,7 +8,9 @@ class QueryStringKeys
 	const ACTION = 'action';
 	const AUTOCOMPLETE_TERM = 'term';
 	const AUTOCOMPLETE_TYPE = 'type';
+	const CALENDAR_TYPE = 'ct';
 	const DATA_REQUEST = 'dr';
+	const DAY = 'd';
 	const END_DATE = 'ed';
 	const GROUP_ID = 'gid';
 	const INVITATION_ACTION = 'ia';
@@ -27,6 +29,5 @@ class QueryStringKeys
 	const START_DATE = 'sd';
 	const USER_ID = 'uid';
 	const YEAR = 'y';
-
 }
 ?>

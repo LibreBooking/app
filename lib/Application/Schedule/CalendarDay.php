@@ -13,7 +13,7 @@ interface ICalendarDay
 	public function GetAdjustedStartDate($reservation);
 }
 
-class CalendarDay implements ICalendarDay
+class CalendarDay implements ICalendarDay, ICalendarSegment
 {
 	/**
 	 * @var \Date
@@ -163,6 +163,35 @@ class CalendarDay implements ICalendarDay
 	public function Date()
 	{
 		return $this->date;
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function FirstDay()
+	{
+		return $this->date->GetDate();
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function LastDay()
+	{
+		return $this->date->AddDays(1)->GetDate();
+	}
+
+	/**
+	 * @param $reservations array|ReservationItemView[]
+	 * @return void
+	 */
+	public function AddReservations($reservations)
+	{
+		/** @var $reservation ReservationItemView */
+		foreach ($reservations as $reservation)
+		{
+			$this->AddReservation(CalendarReservation::FromView($reservation, $this->date->Timezone()));
+		}
 	}
 }
 

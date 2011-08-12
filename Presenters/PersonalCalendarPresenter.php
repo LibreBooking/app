@@ -29,34 +29,43 @@ class PersonalCalendarPresenter
 	
 	public function PageLoad($userId, $timezone)
 	{
+		$type = $this->page->GetCalendarType();
+
 		$year = $this->page->GetYear();
 		$month = $this->page->GetMonth();
+		$day = $this->page->GetDay();
 
-		if (empty($year) || empty($month))
+		$defaultDate = Date::Now()->ToTimezone($timezone);
+		
+		if (empty($year))
 		{
-			$date = Date::Now()->ToTimezone($timezone);
-			$month = $date->Month();
-			$year = $date->Year();
+			$year = $defaultDate->Year();
+		}
+		if (empty($month))
+		{
+			$month = $defaultDate->Month();
+		}
+		if (empty($day))
+		{
+			$day = $defaultDate->Day();
 		}
 
-		$calendarMonth = $this->calendarFactory->GetMonth($year, $month, $timezone);
+		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
+		$reservations = $this->repository->GetReservationList($calendar->FirstDay(), $calendar->LastDay(), $userId, ReservationUserLevel::ALL);
+		$calendar->AddReservations($reservations);
 
-		$reservations = $this->repository->GetReservationList($calendarMonth->FirstDay(), $calendarMonth->LastDay(), $userId, ReservationUserLevel::ALL);
-		$calendarMonth->AddReservations($reservations);
-
-		$this->page->Bind($calendarMonth);
+		$this->page->BindMonth($calendar);
 
 		$this->page->SetMonth($month);
 		$this->page->SetYear($year);
 
-		$prevMonth = $calendarMonth->FirstDay()->AddMonths(-1);
+		$prevMonth = $calendar->FirstDay()->AddMonths(-1);
 		$this->page->SetPreviousMonth($prevMonth->Month());
 		$this->page->SetPreviousYear($prevMonth->Year());
 
-		$nextMonth = $calendarMonth->LastDay();
+		$nextMonth = $calendar->LastDay();
 		$this->page->SetNextMonth($nextMonth->Month());
 		$this->page->SetNextYear($nextMonth->Year());
-
 	}
 }
 ?>

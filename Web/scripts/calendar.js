@@ -13,7 +13,23 @@ function Calendar(opts)
 		);
 
 		$('.day, .today').click(function() {
-			
+			alert($(this).attr('day'));
+		});
+
+		$('.week').hover(
+			function() {
+				$(this).addClass('hover');
+				$(this).siblings('.day, .today').addClass('hover');
+			},
+
+			function() {
+				$(this).removeClass('hover');
+				$(this).siblings('.day, .today').removeClass('hover');
+			}
+		);
+
+		$('.week').click(function() {
+			alert($(this).attr('week'));
 		});
 	}
 }

@@ -10,6 +10,7 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/ReservationListingItem.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/ReservationListing.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/DailyLayout.php');
 
+require_once(ROOT_DIR . 'lib/Application/Schedule/ICalendarSegment.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarDay.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarWeek.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarMonth.php');

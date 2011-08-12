@@ -1,7 +1,5 @@
 {include file='globalheader.tpl' cssFiles='css/calendar.css'}
 
-Day Week Month List
-
 <div>
 
 	<h1>
@@ -14,12 +12,14 @@ Day Week Month List
 
 <table class="monthCalendar">
 	<tr class="dayName">
+		<th style="width:5px;">&nbsp;</th>
 		{foreach from=$HeaderLabels item=label}
 			<th>{$label}</th>
 		{/foreach}
 	</tr>
 {foreach from=$Month->Weeks() item=week}
 	<tr>
+		<td class="week" week="{formatdate date=$week->FirstDay() key=url}"></td>
 		{foreach from=$week->Days() item=day}
 			{assign var=class value='day'}
 
@@ -31,13 +31,13 @@ Day Week Month List
 				{assign var=class value='unimportant'}
 			{/if}
 
-			<td class="{$class}">
+			<td class="{$class}" day="{formatdate date=$day->Date() key=url}">
 				<h3>{$day->DayOfMonth()}</h3>
 
 				{foreach from=$day->Reservations() item=reservation}
 					<div>
 						<a href="{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}={$reservation->ReferenceNumber}">
-							{formatdate format='h:i A' date=$day->GetAdjustedStartDate($reservation)} {$reservation->ResourceName}
+							{formatdate key='period_time' date=$day->GetAdjustedStartDate($reservation)} {$reservation->ResourceName}
 						</a>
 					</div>
 				{/foreach}
