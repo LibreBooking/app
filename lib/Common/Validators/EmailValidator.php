@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Common/Validators/is_email.php');
+require_once(ROOT_DIR . 'lib/external/is_email/is_email.php');
 
 class EmailValidator extends ValidatorBase implements IValidator 
 {
