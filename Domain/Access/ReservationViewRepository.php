@@ -13,7 +13,7 @@ interface IReservationViewRepository
 	 * @param $startDate Date
 	 * @param $endDate Date
 	 * @param $userId int
-	 * @param $userLevel ReservationUserLevel
+	 * @param $userLevel int|ReservationUserLevel
 	 * @return ReservationItemView[]
 	 */
 	function GetReservationList(Date $startDate, Date $endDate, $userId,  $userLevel = ReservationUserLevel::OWNER);

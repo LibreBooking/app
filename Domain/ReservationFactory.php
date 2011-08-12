@@ -17,7 +17,6 @@ class ReservationFactory
 							Date::Parse($endDate, 'UTC'),
 							$databaseRow[ColumnNames::RESERVATION_TYPE],
 							$databaseRow[ColumnNames::RESERVATION_DESCRIPTION],
-							null,//$databaseRow[ColumnNames::RESERVATION_PARENT_ID],
 							$databaseRow[ColumnNames::RESOURCE_ID],
 							$databaseRow[ColumnNames::USER_ID],
 							$databaseRow[ColumnNames::FIRST_NAME],

@@ -26,7 +26,6 @@ class ScheduleReservation
 	private $_endTime;
 	private $_reservationType;
 	private $_summary;
-	private $_parentId;
 	private $_resourceId;
 	private $_userId;
 	private $_firstName;
@@ -38,7 +37,6 @@ class ScheduleReservation
 							Date $endDate,
 							$reservationType,
 							$summary,
-							$parentId,
 							$resourceId,
 							$userId,
 							$firstName,
@@ -50,7 +48,6 @@ class ScheduleReservation
 		$this->SetEndDate($endDate);
 		$this->SetReservationType($reservationType);
 		$this->SetSummary($summary);
-		$this->SetParentId($parentId);
 		$this->SetResourceId($resourceId);
 		$this->SetUserId($userId);
 		$this->SetFirstName($firstName);
@@ -136,16 +133,6 @@ class ScheduleReservation
 	public function SetSummary($value)
 	{
 		$this->_summary = $value;
-	}
-	
-	public function GetParentId()
-	{
-		return $this->_parentId;
-	}
-	
-	public function SetParentId($value)
-	{
-		$this->_parentId = $value;
 	}
 	
 	public function GetResourceId()

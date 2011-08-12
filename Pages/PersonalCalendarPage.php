@@ -19,15 +19,13 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 
 	public function PageLoad()
 	{
-		$presenter = new PersonalCalendarPresenter($this, null, null);
+		$presenter = new PersonalCalendarPresenter($this, new ReservationViewRepository(), new CalendarFactory());
 		$user = ServiceLocator::GetServer()->GetUserSession();
 		$presenter->PageLoad($user->UserId, $user->Timezone);
 
 		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
 		$this->Display('mycalendar.tpl');
 	}
-
-
 
 	public function GetMonth()
 	{

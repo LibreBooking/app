@@ -30,7 +30,8 @@ class PersonalCalendarPresenter
 	{
 		$month = $this->calendarFactory->GetMonth($this->page->GetYear(), $this->page->GetMonth(), $timezone);
 
-		$this->repository->GetReservationList($month->FirstDay(), $month->LastDay(), $userId, ReservationUserLevel::ALL);
+		$reservations = $this->repository->GetReservationList($month->FirstDay(), $month->LastDay(), $userId, ReservationUserLevel::ALL);
+		$month->AddReservations($reservations);
 
 		$this->page->Bind($month);
 	}
@@ -46,6 +47,21 @@ interface ICalendarFactory
 	 * @return CalendarMonth
 	 */
 	public function GetMonth($year, $month, $timezone);
+}
+
+class CalendarFactory implements ICalendarFactory
+{
+
+	/**
+	 * @param $year int
+	 * @param $month int
+	 * @param $timezone string timezone of dates in calendar
+	 * @return CalendarMonth
+	 */
+	public function GetMonth($year, $month, $timezone)
+	{
+		return new CalendarMonth($month, $year, $timezone);
+	}
 }
 
 /// TODO: Move to application
@@ -135,8 +151,21 @@ class CalendarMonth
 		return intval($week);
 	}
 
+	/**
+	 * @param $reservations array|ReservationView[]
+	 * @return void
+	 */
 	public function AddReservations($reservations)
 	{
+		/** @var $reservation ReservationView */
+		foreach ($reservations as $reservation)
+		{
+			/** @var $week CalendarWeek */
+			foreach ($this->Weeks() as $week)
+			{
+				$week->AddReservation($reservation);
+			}
+		}
 	}
 }
 
@@ -147,6 +176,7 @@ interface ICalendarDay
 	public function IsHighlighted();
 
 	public function Reservations();
+	public function AddReservation($reservation);
 }
 
 class CalendarDay implements ICalendarDay
@@ -161,9 +191,14 @@ class CalendarDay implements ICalendarDay
 	 */
 	private $isHighlighted = false;
 
+	/**
+	 * @var array|ReservationView[]
+	 */
+	private $reservations = array();
+
 	public function __construct(Date $date)
 	{
-		$this->date = $date;
+		$this->date = $date->GetDate();
 	}
 
 	/**
@@ -215,7 +250,57 @@ class CalendarDay implements ICalendarDay
 
 	public function Reservations()
 	{
-		return array();
+		return $this->reservations;
+	}
+
+	/**
+	 * @param $reservation ReservationView
+	 * @return void
+	 */
+	public function AddReservation($reservation)
+	{
+		if ( ($this->StartsBefore($reservation) || $this->StartsOn($reservation)) && ($this->EndsOn($reservation) || $this->EndsAfter($reservation)) )
+		{
+			$x = new ReservationView();
+			$x->StartDate = $reservation->StartDate->ToTimezone($this->date->Timezone());
+			$this->reservations[] = $x;
+		}
+	}
+
+	/**
+	 * @param $reservation ReservationView
+	 * @return bool
+	 */
+	private function StartsBefore($reservation)
+	{
+		return $this->date->DateCompare($reservation->StartDate) >= 0;
+	}
+
+	/**
+	 * @param $reservation ReservationView
+	 * @return bool
+	 */
+	private function StartsOn($reservation)
+	{
+		return $this->date->DateEquals($reservation->StartDate);
+	}
+
+	/**
+	 * @param $reservation ReservationView
+	 * @return bool
+	 */
+	private function EndsAfter($reservation)
+	{
+		return $this->date->DateCompare($reservation->EndDate) < 0;
+	}
+
+	/**
+	 * @param $reservation ReservationView
+	 * @return bool
+	 */
+	private function EndsOn($reservation)
+	{
+		return $this->date->DateEquals($reservation->EndDate);
 	}
 }
 
@@ -243,6 +328,11 @@ class NullCalendarDay implements ICalendarDay
 	public function Reservations()
 	{
 		return array();
+	}
+
+	public function AddReservation($reservation)
+	{
+		// no-op
 	}
 }
 
@@ -277,6 +367,19 @@ class CalendarWeek
 	public function Days()
 	{
 		return $this->days;
+	}
+
+	/**
+	 * @param $reservation ReservationView
+	 * @return void
+	 */
+	public function AddReservation($reservation)
+	{
+		/** @var $day CalendarDay */
+		foreach ($this->days as $day)
+		{
+			$day->AddReservation($reservation);
+		}
 	}
 }
 

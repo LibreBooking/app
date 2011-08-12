@@ -60,7 +60,6 @@ class ReservationRepositoryTests extends TestBase
 							Date::Parse($r[ColumnNames::RESERVATION_END], 'UTC'),
 							$r[ColumnNames::RESERVATION_TYPE],
 							$r[ColumnNames::RESERVATION_DESCRIPTION],
-							null, //$r[ColumnNames::RESERVATION_PARENT_ID],
 							$r[ColumnNames::RESOURCE_ID],
 							$r[ColumnNames::USER_ID],
 							$r[ColumnNames::FIRST_NAME],
