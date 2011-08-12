@@ -3,7 +3,6 @@ require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Presenters/RegistrationPresenter.php');
 require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
-//require_once(ROOT_DIR . 'lib/Common/Validators/is_email.php');
 
 interface IRegistrationPage extends IPage
 {
@@ -106,7 +105,7 @@ class RegistrationPage extends Page implements IRegistrationPage
 	
 	public function SetOrganization($organization)
 	{
-	$this->Set('Organization', $organization);	
+       	$this->Set('Organization', $organization);	
 	}
 	
 	public function SetPosition($position)
