@@ -14,14 +14,6 @@ interface IPersonalCalendarPage
 	public function SetMonth($month);
 	public function SetYear($year);
 
-	public function SetPreviousDay($day);
-	public function SetPreviousMonth($month);
-	public function SetPreviousYear($year);
-
-	public function SetNextDay($day);
-	public function SetNextMonth($month);
-	public function SetNextYear($year);
-
 	public function GetCalendarType();
 }
 
@@ -67,6 +59,12 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 	{
 		$this->Set('Calendar', $calendar);
 
+		$prev = $calendar->GetPreviousDate();
+		$next = $calendar->GetNextDate();
+
+		$this->Set('PrevLink', CalendarUrl::Create($prev, $calendar->GetType())->__toString());
+		$this->Set('NextLink',CalendarUrl::Create($next, $calendar->GetType())->__toString());
+
 		$this->template = sprintf('mycalendar.%s.tpl', strtolower($calendar->GetType()));
 	}
 
@@ -86,40 +84,38 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 		$this->Set('Year', $year);
 	}
 
-	public function SetPreviousDay($day)
-	{
-		$this->Set('PrevDay', $day);
-	}
-
-	public function SetPreviousMonth($month)
-	{
-		$this->Set('PrevMonth', $month);
-	}
-
-	public function SetPreviousYear($year)
-	{
-		$this->Set('PrevYear', $year);
-	}
-
-	public function SetNextDay($day)
-	{
-		$this->Set('NextDay', $day);
-	}
-	
-	public function SetNextMonth($month)
-	{
-		$this->Set('NextMonth', $month);
-	}
-
-	public function SetNextYear($year)
-	{
-		$this->Set('NextYear', $year);
-	}
-
 	public function GetCalendarType()
 	{
 		return $this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
 	}
 }
 
+
+class CalendarUrl
+{
+	private $url;
+
+	private function __construct($year, $month, $day, $type)
+	{
+		$format = Pages::MY_CALENDAR . '?' . QueryStringKeys::DAY . '=%d&' . QueryStringKeys::MONTH . '=%d&' . QueryStringKeys::YEAR . '=%d&' . QueryStringKeys::CALENDAR_TYPE . '=%s';
+
+		$this->url = sprintf($format, $day, $month, $year, $type);
+	}
+
+	/**
+	 * @static
+	 * @param $date Date
+	 * @param $type string
+	 * @return CalendarUrl
+	 */
+	public static function Create($date, $type)
+	{
+		return new CalendarUrl($date->Year(), $date->Month(), $date->Day(), $type);
+	}
+
+	public function __toString()
+	{
+		return $this->url;
+	}
+}
 ?>

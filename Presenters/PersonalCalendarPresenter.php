@@ -4,7 +4,6 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class PersonalCalendarPresenter
 {
-
 	/**
 	 * @var \IPersonalCalendarPage
 	 */
@@ -58,16 +57,6 @@ class PersonalCalendarPresenter
 		$this->page->SetMonth($month);
 		$this->page->SetDay($day);
 		$this->page->SetYear($year);
-
-		$previousDate = $calendar->GetPreviousDate();
-		$this->page->SetPreviousMonth($previousDate->Month());
-		$this->page->SetPreviousDay($previousDate->Day());
-		$this->page->SetPreviousYear($previousDate->Year());
-
-		$nextDate = $calendar->GetNextDate();
-		$this->page->SetNextMonth($nextDate->Month());
-		$this->page->SetNextDay($nextDate->Day());
-		$this->page->SetNextYear($nextDate->Year());
 	}
 }
 ?>

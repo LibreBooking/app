@@ -3,9 +3,9 @@
 <div>
 
 	<h1>
-		<a href="{Pages::MY_CALENDAR}?{QueryStringKeys::MONTH}={$PrevMonth}&{QueryStringKeys::YEAR}={$PrevYear}"><img src="img/arrow_large_left.png" alt="Back" /></a>
-		{$MonthName} {$Year}
-		<a href="{Pages::MY_CALENDAR}?{QueryStringKeys::MONTH}={$NextMonth}&{QueryStringKeys::YEAR}={$NextYear}"><img src="img/arrow_large_right.png" alt="Forward" /></a>
+		<a href="{$PrevLink}"><img src="img/arrow_large_left.png" alt="Back" /></a>
+		Week of {$MonthName} {$Day}, {$Year}
+		<a href="{$NextLink}"><img src="img/arrow_large_right.png" alt="Forward" /></a>
 	</h1>
 
 </div>
@@ -28,7 +28,7 @@
 				{assign var=class value='unimportant'}
 			{/if}
 
-			<td class="{$class}" day="{formatdate date=$day->Date() key=url}">
+			<td class="{$class}" url="{CalendarUrl::Create($day->Date(), 'day')}">
 				<h3>{$day->DayOfMonth()}</h3>
 
 				{foreach from=$day->Reservations() item=reservation}

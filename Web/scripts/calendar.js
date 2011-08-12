@@ -13,7 +13,7 @@ function Calendar(opts)
 		);
 
 		$('.day, .today').click(function() {
-			alert($(this).attr('day'));
+			window.location = $(this).attr('url');
 		});
 
 		$('.week').hover(
@@ -29,7 +29,7 @@ function Calendar(opts)
 		);
 
 		$('.week').click(function() {
-			alert($(this).attr('week'));
+			window.location = $(this).attr('url');
 		});
 	}
 }
