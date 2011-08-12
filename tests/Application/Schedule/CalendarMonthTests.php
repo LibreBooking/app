@@ -80,5 +80,11 @@ class CalendarMonthTests extends TestBase
 		$lastWeekDays = $weeks[4]->Days();
 		$lastDayReservations = $lastWeekDays[6]->Reservations();
 		$this->assertEquals(CalendarReservation::FromView($endsAfterMonth, $timezone), $lastDayReservations[0]);
+
+		$next = Date::Parse('2012-01-01', $timezone);
+		$prev = Date::Parse('2011-11-01', $timezone);
+		
+		$this->assertEquals($next, $month->GetNextDate());
+		$this->assertEquals($prev, $month->GetPreviousDate());
 	}
 }

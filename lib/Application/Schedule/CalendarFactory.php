@@ -11,15 +11,6 @@ interface ICalendarFactory
 {
 	/**
 	 * @abstract
-	 * @param $year int
-	 * @param $month int
-	 * @param $timezone string timezone of dates in calendar
-	 * @return CalendarMonth
-	 */
-	public function GetMonth($year, $month, $timezone);
-
-	/**
-	 * @abstract
 	 * @param $type
 	 * @param $year
 	 * @param $month
@@ -32,30 +23,19 @@ interface ICalendarFactory
 
 class CalendarFactory implements ICalendarFactory
 {
-	/**
-	 * @param $year int
-	 * @param $month int
-	 * @param $timezone string timezone of dates in calendar
-	 * @return CalendarMonth
-	 */
-	public function GetMonth($year, $month, $timezone)
-	{
-		return new CalendarMonth($month, $year, $timezone);
-	}
-
 	public function Create($type, $year, $month, $day, $timezone)
 	{
 		if ($type == CalendarTypes::Day)
 		{
-			return null;
+			return new CalendarDay(Date::Create($year, $month, $day, 0, 0, 0, $timezone));
 		}
 
 		if ($type == CalendarTypes::Week)
 		{
-			return null;
+			return CalendarWeek::FromDate($year, $month, $day, $timezone);
 		}
 
-		return $this->GetMonth($year, $month, $timezone);
+		return new CalendarMonth($month, $year, $timezone);
 	}
 }
 

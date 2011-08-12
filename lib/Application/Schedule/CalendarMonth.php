@@ -105,6 +105,29 @@ class CalendarMonth implements ICalendarSegment
 	}
 
 
+	/**
+	 * @return string|CalendarTypes
+	 */
+	public function GetType()
+	{
+		return CalendarTypes::Month;
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetPreviousDate()
+	{
+		return $this->FirstDay()->AddMonths(-1);
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetNextDate()
+	{
+		return $this->FirstDay()->AddMonths(1);
+	}
 }
 
 ?>

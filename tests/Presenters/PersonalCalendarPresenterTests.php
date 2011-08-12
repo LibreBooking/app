@@ -77,7 +77,7 @@ class PersonalCalendarPresenterTests extends TestBase
 			->will($this->returnValue($month));
 
 		$this->page->expects($this->once())
-			->method('BindMonth')
+			->method('BindCalendar')
 			->with($this->equalTo($month));
 
 		$this->presenter->PageLoad($userId, $userTimezone);

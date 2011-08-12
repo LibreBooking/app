@@ -193,6 +193,30 @@ class CalendarDay implements ICalendarDay, ICalendarSegment
 			$this->AddReservation(CalendarReservation::FromView($reservation, $this->date->Timezone()));
 		}
 	}
+
+	/**
+	 * @return string|CalendarTypes
+	 */
+	public function GetType()
+	{
+		return CalendarTypes::Month;
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetPreviousDate()
+	{
+		return $this->date->AddDays(-1);
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetNextDate()
+	{
+		return $this->date->AddDays(1);
+	}
 }
 
 class NullCalendarDay implements ICalendarDay

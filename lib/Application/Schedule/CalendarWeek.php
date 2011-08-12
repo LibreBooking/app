@@ -25,6 +25,16 @@ class CalendarWeek implements ICalendarSegment
 	{
 		$week = new CalendarWeek($timezone);
 
+		$date = Date::Create($year, $month, $day, 0, 0, 0, $timezone);
+
+		$start = $date->Weekday();
+		$lastDay = 7 - $start;
+		
+		for ($i = $start * -1; $i < $lastDay; $i++)
+		{
+			$week->AddDay(new CalendarDay($date->AddDays($i)));
+		}
+
 		return $week;
 	}
 
@@ -47,7 +57,7 @@ class CalendarWeek implements ICalendarSegment
 		{
 			if ($this->days[$i] != CalendarDay::Null())
 			{
-				return $this->days[$i]->Date();
+				return $this->days[$i]->Date()->AddDays(1);
 			}
 		}
 
@@ -90,6 +100,30 @@ class CalendarWeek implements ICalendarSegment
 		{
 			$day->AddReservation($reservation);
 		}
+	}
+
+	/**
+	 * @return string|CalendarTypes
+	 */
+	public function GetType()
+	{
+		return CalendarTypes::Week;
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetPreviousDate()
+	{
+		return $this->FirstDay()->AddDays(-7);
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetNextDate()
+	{
+		return $this->FirstDay()->AddDays(7);
 	}
 }
 

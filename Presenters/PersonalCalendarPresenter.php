@@ -53,19 +53,21 @@ class PersonalCalendarPresenter
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
 		$reservations = $this->repository->GetReservationList($calendar->FirstDay(), $calendar->LastDay(), $userId, ReservationUserLevel::ALL);
 		$calendar->AddReservations($reservations);
-
-		$this->page->BindMonth($calendar);
+		$this->page->BindCalendar($calendar);
 
 		$this->page->SetMonth($month);
+		$this->page->SetDay($day);
 		$this->page->SetYear($year);
 
-		$prevMonth = $calendar->FirstDay()->AddMonths(-1);
-		$this->page->SetPreviousMonth($prevMonth->Month());
-		$this->page->SetPreviousYear($prevMonth->Year());
+		$previousDate = $calendar->GetPreviousDate();
+		$this->page->SetPreviousMonth($previousDate->Month());
+		$this->page->SetPreviousDay($previousDate->Day());
+		$this->page->SetPreviousYear($previousDate->Year());
 
-		$nextMonth = $calendar->LastDay();
-		$this->page->SetNextMonth($nextMonth->Month());
-		$this->page->SetNextYear($nextMonth->Year());
+		$nextDate = $calendar->GetNextDate();
+		$this->page->SetNextMonth($nextDate->Month());
+		$this->page->SetNextDay($nextDate->Day());
+		$this->page->SetNextYear($nextDate->Year());
 	}
 }
 ?>

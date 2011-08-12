@@ -12,15 +12,12 @@
 
 <table class="monthCalendar">
 	<tr class="dayName">
-		<th style="width:5px;">&nbsp;</th>
 		{foreach from=$HeaderLabels item=label}
 			<th>{$label}</th>
 		{/foreach}
 	</tr>
-{foreach from=$Month->Weeks() item=week}
 	<tr>
-		<td class="week" week="{formatdate date=$week->FirstDay() key=url}"></td>
-		{foreach from=$week->Days() item=day}
+		{foreach from=$Calendar->Days() item=day}
 			{assign var=class value='day'}
 
 			{if $day->IsHighlighted()}
@@ -44,7 +41,6 @@
 			</td>
 		{/foreach}
 	</tr>
-{/foreach}
 </table>
 
 <script type="text/javascript" src="scripts/calendar.js"></script>
