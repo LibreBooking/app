@@ -125,12 +125,12 @@ class PersonalCalendarPresenterTests extends TestBase
 
 		$nullDay = CalendarDay::Null();
 		$day1 = new CalendarDay($expectedFirstDay);
-		$day1->AddReservation($startsBeforeMonth);
-		$day1->AddReservation($firstDayOnly);
+		$day1->AddReservation(CalendarReservation::FromView($startsBeforeMonth, $timezone));
+		$day1->AddReservation(CalendarReservation::FromView($firstDayOnly, $timezone));
 		$day2 = new CalendarDay($expectedFirstDay->AddDays(1));
-		$day2->AddReservation($secondAndThirdDay);
+		$day2->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone));
 		$day3 = new CalendarDay($expectedFirstDay->AddDays(2));
-		$day3->AddReservation($secondAndThirdDay);
+		$day3->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone));
 
 		$weeks = $month->Weeks();
 		/** @var $actualWeek1 CalendarWeek */
@@ -152,7 +152,7 @@ class PersonalCalendarPresenterTests extends TestBase
 
 		$lastWeekDays = $weeks[4]->Days();
 		$lastDayReservations = $lastWeekDays[6]->Reservations();
-		$this->assertEquals($endsAfterMonth, $lastDayReservations[0]);
+		$this->assertEquals(CalendarReservation::FromView($endsAfterMonth, $timezone), $lastDayReservations[0]);
 	}
 }
 ?>

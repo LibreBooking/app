@@ -163,7 +163,8 @@ class CalendarMonth
 			/** @var $week CalendarWeek */
 			foreach ($this->Weeks() as $week)
 			{
-				$week->AddReservation($reservation);
+				$calReservation = CalendarReservation::FromView($reservation, $this->timezone);
+				$week->AddReservation($calReservation);
 			}
 		}
 	}
@@ -192,7 +193,7 @@ class CalendarDay implements ICalendarDay
 	private $isHighlighted = false;
 
 	/**
-	 * @var array|ReservationView[]
+	 * @var array|CalendarReservation[]
 	 */
 	private $reservations = array();
 
@@ -248,27 +249,28 @@ class CalendarDay implements ICalendarDay
 		return self::$nullInstance;
 	}
 
+	/**
+	 * @return array|CalendarReservation[]
+	 */
 	public function Reservations()
 	{
 		return $this->reservations;
 	}
 
 	/**
-	 * @param $reservation ReservationView
+	 * @param $reservation CalendarReservation
 	 * @return void
 	 */
 	public function AddReservation($reservation)
 	{
 		if ( ($this->StartsBefore($reservation) || $this->StartsOn($reservation)) && ($this->EndsOn($reservation) || $this->EndsAfter($reservation)) )
 		{
-			$x = new ReservationView();
-			$x->StartDate = $reservation->StartDate->ToTimezone($this->date->Timezone());
-			$this->reservations[] = $x;
+			$this->reservations[] = $reservation;
 		}
 	}
 
 	/**
-	 * @param $reservation ReservationView
+	 * @param $reservation CalendarReservation
 	 * @return bool
 	 */
 	private function StartsBefore($reservation)
@@ -277,7 +279,7 @@ class CalendarDay implements ICalendarDay
 	}
 
 	/**
-	 * @param $reservation ReservationView
+	 * @param $reservation CalendarReservation
 	 * @return bool
 	 */
 	private function StartsOn($reservation)
@@ -286,7 +288,7 @@ class CalendarDay implements ICalendarDay
 	}
 
 	/**
-	 * @param $reservation ReservationView
+	 * @param $reservation CalendarReservation
 	 * @return bool
 	 */
 	private function EndsAfter($reservation)
@@ -295,7 +297,7 @@ class CalendarDay implements ICalendarDay
 	}
 
 	/**
-	 * @param $reservation ReservationView
+	 * @param $reservation CalendarReservation
 	 * @return bool
 	 */
 	private function EndsOn($reservation)
@@ -370,7 +372,7 @@ class CalendarWeek
 	}
 
 	/**
-	 * @param $reservation ReservationView
+	 * @param $reservation CalendarReservation
 	 * @return void
 	 */
 	public function AddReservation($reservation)
@@ -383,4 +385,35 @@ class CalendarWeek
 	}
 }
 
+class CalendarReservation
+{
+	/**
+	 * @var Date
+	 */
+	public $StartDate;
+
+	/**
+	 * @var Date
+	 */
+	public $EndDate;
+
+	private function __construct(Date $startDate, Date $endDate)
+	{
+		$this->StartDate = $startDate;
+		$this->EndDate = $endDate;
+	}
+	
+	/**
+	 * @param $reservation ReservationView
+	 * @param $timezone string
+	 * @return CalendarReservation
+	 */
+	public static function FromView($reservation, $timezone)
+	{
+		$start = $reservation->StartDate->ToTimezone($timezone);
+		$end = $reservation->EndDate->ToTimezone($timezone);
+
+		return new CalendarReservation($start, $end);
+	}
+}
 ?>
