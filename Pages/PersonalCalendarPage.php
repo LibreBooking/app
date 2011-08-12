@@ -4,10 +4,19 @@ require_once(ROOT_DIR . 'Presenters/PersonalCalendarPresenter.php');
 
 interface IPersonalCalendarPage
 {
-	function GetMonth();
-	function GetYear();
+	public function GetMonth();
+	public function GetYear();
 
-	function Bind(CalendarMonth $month);
+	public function Bind(CalendarMonth $month);
+
+	public function SetMonth($month);
+	public function SetYear($year);
+
+	public function SetPreviousMonth($month);
+	public function SetPreviousYear($year);
+
+	public function SetNextMonth($month);
+	public function SetNextYear($year);
 }
 
 class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
@@ -29,17 +38,48 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 
 	public function GetMonth()
 	{
-		return 8;
+		return $this->GetQuerystring(QueryStringKeys::MONTH);
 	}
 
 	public function GetYear()
 	{
-		return 2011;
+		return $this->GetQuerystring(QueryStringKeys::YEAR);
 	}
 
 	public function Bind(CalendarMonth $month)
 	{
 		$this->Set('Month', $month);
+	}
+
+	public function SetMonth($month)
+	{
+		$months = Resources::GetInstance()->GetMonths('full');
+		$this->Set('MonthName', $months[$month-1]);
+	}
+
+	public function SetYear($year)
+	{
+		$this->Set('Year', $year);
+	}
+
+	public function SetPreviousMonth($month)
+	{
+		$this->Set('PrevMonth', $month);
+	}
+
+	public function SetPreviousYear($year)
+	{
+		$this->Set('PrevYear', $year);
+	}
+
+	public function SetNextMonth($month)
+	{
+		$this->Set('NextMonth', $month);
+	}
+
+	public function SetNextYear($year)
+	{
+		$this->Set('NextYear', $year);
 	}
 }
 

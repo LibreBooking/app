@@ -21,10 +21,11 @@ class CalendarMonth
 		$this->timezone = $timezone;
 
 		$this->firstDay = Date::Create($this->year, $this->month, 1, 0, 0, 0, $this->timezone);
-		$this->lastDay = Date::Create($this->year, $this->month + 1, 1, 0, 0, $this->timezone);
+		$this->lastDay = $this->firstDay->AddMonths(1);
 
 		$daysInMonth = $this->lastDay->AddDays(-1)->Day();
-		$weeks = floor($daysInMonth/7);
+
+		$weeks = floor(($daysInMonth + $this->firstDay->Weekday()) / 7);
 
 		for ($week = 0; $week <= $weeks; $week++)
 		{

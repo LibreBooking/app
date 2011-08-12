@@ -2,6 +2,16 @@
 
 Day Week Month List
 
+<div>
+
+	<h1>
+		<a href="{Pages::MY_CALENDAR}?{QueryStringKeys::MONTH}={$PrevMonth}&{QueryStringKeys::YEAR}={$PrevYear}"><img src="img/arrow_large_left.png" alt="Back" /></a>
+		{$MonthName} {$Year}
+		<a href="{Pages::MY_CALENDAR}?{QueryStringKeys::MONTH}={$NextMonth}&{QueryStringKeys::YEAR}={$NextYear}"><img src="img/arrow_large_right.png" alt="Forward" /></a>
+	</h1>
+
+</div>
+
 <table class="monthCalendar">
 	<tr class="dayName">
 		{foreach from=$HeaderLabels item=label}

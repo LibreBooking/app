@@ -290,6 +290,15 @@ class Date
 	}
 
 	/**
+	 * @param int $months
+	 * @return Date
+	 */
+	public function AddMonths($months)
+	{
+		return new Date($this->Format(self::SHORT_FORMAT) . " +" . $months . " months", $this->timezone);
+	}
+
+	/**
 	 * @param Time $time
 	 * @return Date
 	 */
