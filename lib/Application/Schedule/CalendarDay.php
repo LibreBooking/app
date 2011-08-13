@@ -33,6 +33,11 @@ class CalendarDay implements ICalendarDay, ICalendarSegment
 	public function __construct(Date $date)
 	{
 		$this->date = $date->GetDate();
+
+		if ($this->date->DateEquals(Date::Now()))
+		{
+			$this->Highlight();
+		}
 	}
 
 	/**
@@ -59,10 +64,7 @@ class CalendarDay implements ICalendarDay, ICalendarSegment
 		return $this->isHighlighted;
 	}
 
-	/**
-	 * @return void
-	 */
-	public function Highlight()
+	private function Highlight()
 	{
 		$this->isHighlighted = true;
 	}
@@ -199,7 +201,7 @@ class CalendarDay implements ICalendarDay, ICalendarSegment
 	 */
 	public function GetType()
 	{
-		return CalendarTypes::Month;
+		return CalendarTypes::Day;
 	}
 
 	/**

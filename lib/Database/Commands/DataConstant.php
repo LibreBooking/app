@@ -348,8 +348,13 @@ class Queries
 		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
 		INNER JOIN resources r on rr.resource_id = r.resource_id
 		WHERE 
-			ri.start_date >= @startDate AND
-			ri.start_date <= @endDate AND
+			(
+				(ri.start_date >= @startDate AND ri.start_date <= @endDate)
+				OR
+				(ri.end_date >= @startDate AND ri.end_date <= @endDate)
+				OR
+				(ri.start_date <= @startDate AND ri.end_date >= @endDate)
+			) AND
 			ru.user_id = @userid AND
 			(@levelid = 0 OR ru.reservation_user_level = @levelid) AND
 			rs.status_id <> 2

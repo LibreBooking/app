@@ -54,9 +54,7 @@ class PersonalCalendarPresenter
 		$calendar->AddReservations($reservations);
 		$this->page->BindCalendar($calendar);
 
-		$this->page->SetMonth($month);
-		$this->page->SetDay($day);
-		$this->page->SetYear($year);
+		$this->page->SetDisplayDate($calendar->FirstDay());
 	}
 }
 ?>

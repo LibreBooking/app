@@ -470,3 +470,9 @@ a.page:hover {
 	font-style: italic;
 	font-weight: normal;
 }
+
+div.clear
+{
+	clear:both;
+	height:0px;
+}

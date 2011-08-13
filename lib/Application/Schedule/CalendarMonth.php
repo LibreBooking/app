@@ -15,7 +15,6 @@ class CalendarMonth implements ICalendarSegment
 
 	public function __construct($month, $year, $timezone)
 	{
-		$now = Date::Now();
 		$this->month = $month;
 		$this->year = $year;
 		$this->timezone = $timezone;
@@ -37,11 +36,6 @@ class CalendarMonth implements ICalendarSegment
 			$currentDay = $this->firstDay->AddDays($dayOffset);
 			$currentWeek = $this->GetWeekNumber($currentDay);
 			$calendarDay = new CalendarDay($currentDay);
-
-			if ($currentDay->DateEquals($now))
-			{
-				$calendarDay->Highlight();
-			}
 
 			$this->weeks[$currentWeek]->AddDay($calendarDay);
 		}

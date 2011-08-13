@@ -1,12 +1,19 @@
 {include file='globalheader.tpl' cssFiles='css/calendar.css'}
 
-<div>
+<div class="calendarHeading">
 
-	<h1>
+	<div style="float:left;">
 		<a href="{$PrevLink}"><img src="img/arrow_large_left.png" alt="Back" /></a>
-		Week of {$MonthName} {$Day}, {$Year}
+		Week of {$MonthName} {$DisplayDate->Day()}, {$DisplayDate->Year()}
 		<a href="{$NextLink}"><img src="img/arrow_large_right.png" alt="Forward" /></a>
-	</h1>
+	</div>
+
+	<div style="float:right;">
+		<a href="{CalendarUrl::Create($Today, CalendarTypes::Week)}" alt="Today" title="Today">{html_image src="calendar-day.png"}</a>
+		<a href="{CalendarUrl::Create($DisplayDate, CalendarTypes::Month)}" alt="View Month" title="View Month">{html_image src="calendar-select-month.png"}</a>
+	</div>
+
+	<div class="clear">&nbsp;</div>
 
 </div>
 
@@ -28,7 +35,7 @@
 				{assign var=class value='unimportant'}
 			{/if}
 
-			<td class="{$class}" url="{CalendarUrl::Create($day->Date(), 'day')}">
+			<td class="{$class}" url="{CalendarUrl::Create($day->Date(), CalendarTypes::Day)}">
 				<h3>{$day->DayOfMonth()}</h3>
 
 				{foreach from=$day->Reservations() item=reservation}

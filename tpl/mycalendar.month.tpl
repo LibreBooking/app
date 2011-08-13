@@ -1,12 +1,18 @@
 {include file='globalheader.tpl' cssFiles='css/calendar.css'}
 
-<div>
+<div class="calendarHeading">
 
-	<h1>
+	<div style="float:left;">
 		<a href="{$PrevLink}"><img src="img/arrow_large_left.png" alt="Back" /></a>
-		{$MonthName} {$Year}
+		{$MonthName} {$DisplayDate->Year()}
 		<a href="{$NextLink}"><img src="img/arrow_large_right.png" alt="Forward" /></a>
-	</h1>
+	</div>
+
+	<div style="float:right;">
+		<a href="{CalendarUrl::Create($Today, CalendarTypes::Month)}" alt="Today" title="Today">{html_image src="calendar-day.png"}</a>
+	</div>
+
+	<div class="clear">&nbsp;</div>
 
 </div>
 
@@ -19,7 +25,7 @@
 	</tr>
 {foreach from=$Calendar->Weeks() item=week}
 	<tr>
-		<td class="week" url="{CalendarUrl::Create($week->FirstDay(), 'week')}"></td>
+		<td class="week" url="{CalendarUrl::Create($week->FirstDay(), CalendarTypes::Week)}"></td>
 		{foreach from=$week->Days() item=day}
 			{assign var=class value='day'}
 
@@ -31,7 +37,7 @@
 				{assign var=class value='unimportant'}
 			{/if}
 
-			<td class="{$class}" url="{CalendarUrl::Create($day->Date(), 'day')}">
+			<td class="{$class}" url="{CalendarUrl::Create($day->Date(), CalendarTypes::Day)}">
 				<h3>{$day->DayOfMonth()}</h3>
 
 				{foreach from=$day->Reservations() item=reservation}

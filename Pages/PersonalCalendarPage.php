@@ -7,14 +7,11 @@ interface IPersonalCalendarPage
 	public function GetDay();
 	public function GetMonth();
 	public function GetYear();
+	public function GetCalendarType();
 
 	public function BindCalendar(ICalendarSegment $calendar);
 
-	public function SetDay($day);
-	public function SetMonth($month);
-	public function SetYear($year);
-
-	public function GetCalendarType();
+	public function SetDisplayDate($displayDate);
 }
 
 class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
@@ -36,7 +33,8 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 		$presenter->PageLoad($user->UserId, $user->Timezone);
 
 		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
-
+		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
+		
 		$this->Display($this->template);
 	}
 
@@ -55,6 +53,11 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 		return $this->GetQuerystring(QueryStringKeys::YEAR);
 	}
 
+	public function GetCalendarType()
+	{
+		return $this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
+	}
+	
 	public function BindCalendar(ICalendarSegment $calendar)
 	{
 		$this->Set('Calendar', $calendar);
@@ -62,31 +65,27 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 		$prev = $calendar->GetPreviousDate();
 		$next = $calendar->GetNextDate();
 
-		$this->Set('PrevLink', CalendarUrl::Create($prev, $calendar->GetType())->__toString());
-		$this->Set('NextLink',CalendarUrl::Create($next, $calendar->GetType())->__toString());
+		$calendarType = $calendar->GetType();
 
-		$this->template = sprintf('mycalendar.%s.tpl', strtolower($calendar->GetType()));
+		$this->Set('PrevLink', CalendarUrl::Create($prev, $calendarType));
+		$this->Set('NextLink', CalendarUrl::Create($next, $calendarType));
+
+		$this->template = sprintf('mycalendar.%s.tpl', strtolower($calendarType));
 	}
 
-	public function SetDay($day)
+	/**
+	 * @param $displayDate Date
+	 * @return void
+	 */
+	public function SetDisplayDate($displayDate)
 	{
-		$this->Set('Day', $day);
-	}
-	
-	public function SetMonth($month)
-	{
+		$this->Set('DisplayDate', $displayDate);
+
 		$months = Resources::GetInstance()->GetMonths('full');
-		$this->Set('MonthName', $months[$month-1]);
-	}
+		$this->Set('MonthName', $months[$displayDate->Month()]);
 
-	public function SetYear($year)
-	{
-		$this->Set('Year', $year);
-	}
-
-	public function GetCalendarType()
-	{
-		return $this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
+		$days = Resources::GetInstance()->GetDays('full');
+		$this->Set('DayName', $days[$displayDate->Weekday()]);
 	}
 }
 
