@@ -23,8 +23,9 @@
 				{formatdate key='period_time' date=$Calendar->GetAdjustedStartDate($reservation)} {$reservation->ResourceName}
 			</a>
 		</div>
+	{foreachelse}
+		<div class="noresults">No reservations</div>
 	{/foreach}
-
 </div>
 
 <script type="text/javascript" src="scripts/calendar.js"></script>

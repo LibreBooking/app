@@ -59,3 +59,9 @@
 	font-size:16pt;
 	font-weight: bold;
 }
+
+.noresults
+{
+	font-style: italic;
+	font-size: 14pt;
+}
