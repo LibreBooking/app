@@ -21,6 +21,7 @@
 </div>
 
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="scripts/reservationPopup.js"></script>
 <script type="text/javascript" src="scripts/participation.js"></script>
 
 <script type="text/javascript">

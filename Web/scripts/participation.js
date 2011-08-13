@@ -26,34 +26,9 @@ function Participation(opts)
 		
 		$('.reservation').each(function(){
 			var refNum = $(this).attr('referenceNumber');
-			
-			$(this).qtip({
-				position:
-				{
-				      my: 'bottom left',
-				      at: 'top left',
-				      target: $(this)
-				},
-
-				content:
-				{
-					text: 'Loading...',
-					ajax:
-					{
-				         url: "ajax/respopup.php",
-				         type: 'GET',
-				         data: { id: refNum },
-				         dataType: 'html'
-			      	}
-				},
-
-				show:
-				{
-					delay: 700
-				}
-			})
+			$(this).attachReservationPopup(refNum);
 		});
-	}
+	};
 
 
 	function RespondToInvitation(action, referenceNumber) {
@@ -65,5 +40,5 @@ function Participation(opts)
 				window.location.reload();
 			}
 		});
-	}
+	};
 }

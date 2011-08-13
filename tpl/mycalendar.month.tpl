@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' cssFiles='css/calendar.css'}
+{include file='globalheader.tpl' cssFiles='css/calendar.css,css/jquery.qtip.css'}
 
 <div class="calendarHeading">
 
@@ -42,7 +42,7 @@
 
 				{foreach from=$day->Reservations() item=reservation}
 					<div>
-						<a href="{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}={$reservation->ReferenceNumber}">
+						<a class="reservation" refNum="{$reservation->ReferenceNumber}" href="{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}={$reservation->ReferenceNumber}">
 							{formatdate key='period_time' date=$day->GetAdjustedStartDate($reservation)} {$reservation->ResourceName}
 						</a>
 					</div>
@@ -53,6 +53,8 @@
 {/foreach}
 </table>
 
+<script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="scripts/reservationPopup.js"></script>
 <script type="text/javascript" src="scripts/calendar.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {

@@ -31,5 +31,10 @@ function Calendar(opts)
 		$('.week').click(function() {
 			window.location = $(this).attr('url');
 		});
+
+		$(".reservation").each(function() {
+			var refNum = $(this).attr('refNum');
+			$(this).attachReservationPopup(refNum);
+		});
 	}
 }

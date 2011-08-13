@@ -78,14 +78,15 @@ class ReservationViewRepository implements IReservationViewRepository
 					$row[ColumnNames::RESOURCE_NAME],
 					$row[ColumnNames::RESOURCE_ID],
 					$row[ColumnNames::RESERVATION_INSTANCE_ID],
-					$row[ColumnNames::RESERVATION_USER_LEVEL]
+					$row[ColumnNames::RESERVATION_USER_LEVEL],
+					$row[ColumnNames::RESERVATION_TITLE],
+					$row[ColumnNames::RESERVATION_DESCRIPTION]
 				);
 		}
 		
 		$result->Free();
 		
 		return $reservations;
-		
 	}
 	
 	private function SetResources(ReservationView $reservationView)
@@ -301,6 +302,16 @@ class ReservationItemView
 	 * @var int|ReservationUserLevel
 	 */
 	public $UserLevelId;
+
+	/**
+	 * @var string
+	 */
+	public $Title;
+
+	/**
+	 * @var string
+	 */
+	public $Description;
 	
 	/**
 	 * @param $referenceNumber string
@@ -310,6 +321,8 @@ class ReservationItemView
 	 * @param $resourceId int
 	 * @param $reservationId int
 	 * @param $userLevelId int|ReservationUserLevel
+	 * @param $title string
+	 * @param $description string
 	 */
 	public function __construct(
 		$referenceNumber = null,
@@ -318,7 +331,9 @@ class ReservationItemView
 		$resourceName = null,
 		$resourceId = null,
 		$reservationId = null,
-		$userLevelId = null
+		$userLevelId = null,
+		$title = null,
+		$description = null
 		)
 	{
 		$this->ReferenceNumber = $referenceNumber;
@@ -327,7 +342,8 @@ class ReservationItemView
 		$this->ResourceName = $resourceName;
 		$this->ResourceId = $resourceId;
 		$this->ReservationId = $reservationId;
-		$this->UserLevelId = $userLevelId;
+		$this->Title = $title;
+		$this->Description = $description;
 	}
 }
 ?>

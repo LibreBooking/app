@@ -21,6 +21,31 @@ class CalendarReservation
 	 */
 	public $ReferenceNumber;
 
+	/**
+	 * @var string
+	 */
+	public $Title;
+
+	/**
+	 * @var string
+	 */
+	public $Description;
+
+	/**
+	 * @var bool
+	 */
+	public $Invited;
+
+	/**
+	 * @var bool
+	 */
+	public $Participant;
+
+	/**
+	 * @var bool
+	 */
+	public $Owner;
+
 	private function __construct(Date $startDate, Date $endDate, $resourceName, $referenceNumber)
 	{
 		$this->StartDate = $startDate;
@@ -41,7 +66,16 @@ class CalendarReservation
 		$resourceName = $reservation->ResourceName;
 		$referenceNumber = $reservation->ReferenceNumber;
 
-		return new CalendarReservation($start, $end, $resourceName, $referenceNumber);
+		$res = new CalendarReservation($start, $end, $resourceName, $referenceNumber);
+
+		$res->Title = $reservation->Title;
+		$res->Description = $reservation->Description;
+
+		$res->Invited = $reservation->UserLevelId == ReservationUserLevel::INVITEE;
+		$res->Participant = $reservation->UserLevelId == ReservationUserLevel::PARTICIPANT;
+		$res->Owner = $reservation->UserLevelId == ReservationUserLevel::OWNER;
+
+		return $res;
 	}
 }
 
