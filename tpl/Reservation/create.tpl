@@ -212,8 +212,8 @@
 
 {/foreach}
 	<br/>
-	<button id="btnConfirmAddResources" class="button">{translate key=Done}</button>
-	<button id="btnClearAddResources" class="button">{translate key=Cancel}</button>
+	<button id="btnConfirmAddResources" class="button">{translate key='Done'}</button>
+	<button id="btnClearAddResources" class="button">{translate key='Cancel'}</button>
 </div>
 
 <div id="dialogSave" style="display:none;">
