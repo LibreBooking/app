@@ -13,6 +13,11 @@ class CalendarMonth implements ICalendarSegment
 	 */
 	private $weeks = array();
 
+	/**
+	 * @var array|CalendarReservation[]
+	 */
+	private $reservations = array();
+
 	public function __construct($month, $year, $timezone)
 	{
 		$this->month = $month;
@@ -65,10 +70,13 @@ class CalendarMonth implements ICalendarSegment
 		/** @var $reservation ReservationItemView */
 		foreach ($reservations as $reservation)
 		{
+			$calendarReservation = CalendarReservation::FromView($reservation, $this->timezone);
+			$this->reservations[] = $calendarReservation;
+
 			/** @var $week CalendarWeek */
 			foreach ($this->Weeks() as $week)
 			{
-				$week->AddReservation(CalendarReservation::FromView($reservation, $this->timezone));
+				$week->AddReservation($calendarReservation);
 			}
 		}
 	}
@@ -128,14 +136,7 @@ class CalendarMonth implements ICalendarSegment
 	 */
 	public function Reservations()
 	{
-		$reservations = array();
-		
-		foreach ($this->weeks as $week)
-		{
-			$reservations = array_merge($reservations, $week->Reservations());
-		}
-
-		return $reservations;
+		return $this->reservations;
 	}
 }
 

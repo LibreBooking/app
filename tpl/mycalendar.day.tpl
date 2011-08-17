@@ -17,44 +17,6 @@
 	<div class="clear">&nbsp;</div>
 </div>
 
-<div id="calendar">
-	
-</div>
-
-<script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="scripts/reservationPopup.js"></script>
-<script type="text/javascript" src="scripts/calendar.js"></script>
-<script type="text/javascript" src="scripts/js/fullcalendar.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-
-	var reservations = [];
-	{foreach from=$Calendar->Reservations() item=reservation}
-		reservations.push({
-			id: '{$reservation->ReferenceNumber}',
-			title: '{$reservation->ResourceName} {$reservation->Title}',
-			start: '{$reservation->StartDate->Timestamp()}',
-			end: '{$reservation->EndDate->Timestamp()}',
-			url: 'reservation.php?rn={$reservation->ReferenceNumber}',
-			allDay: false
-		});
-	{/foreach}
-
-	$('#calendar').fullCalendar({
-		header: '',
-		editable: false,
-		defaultView: 'agendaDay',
-		year: {$DisplayDate->Year()},
-		month: {$DisplayDate->Month()}-1,
-		date: {$DisplayDate->Day()},
-		events: reservations,
-		eventMouseover: function(e) { $(this).attachReservationPopup(e.id); }
-	});
-		
-	var calendar = new Calendar();
-	calendar.init();
-
-});
-</script>
+{include file='mycalendar.common.tpl' view='agendaDay'}
 
 {include file='globalfooter.tpl'}

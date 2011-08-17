@@ -65,6 +65,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('modifier', 'url2link', array($this, 'CreateUrl'));
         $this->registerPlugin('function', 'pagelink', array($this, 'CreatePageLink'));
         $this->registerPlugin('function', 'pagination', array($this, 'CreatePagination'));
+        $this->registerPlugin('function', 'js_array', array($this, 'CreateJavascriptArray'));
 
 		$this->Validators = new PageValdiators();
 	}
@@ -361,5 +362,14 @@ class SmartyPage extends Smarty
         
         return sprintf('<a class="page" href="%s">%s</a>', $newUrl, $page);
     }
+
+	function CreateJavascriptArray($params, &$smarty)
+	{
+		$array = $params['array'];
+
+		$string = implode('","', $array);
+
+		return "[\"$string\"]";
+	}
 }
 ?>
