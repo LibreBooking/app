@@ -125,6 +125,21 @@ class CalendarWeek implements ICalendarSegment
 	{
 		return $this->FirstDay()->AddDays(7);
 	}
+
+	/**
+	 * @return array|CalendarReservation[]
+	 */
+	public function Reservations()
+	{
+		$reservations = array();
+
+		foreach ($this->days as $day)
+		{
+			$reservations = array_merge($reservations, $day->Reservations());
+		}
+
+		return $reservations;
+	}
 }
 
 ?>

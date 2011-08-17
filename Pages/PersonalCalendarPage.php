@@ -87,6 +87,11 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 		$days = Resources::GetInstance()->GetDays('full');
 		$this->Set('DayName', $days[$displayDate->Weekday()]);
 	}
+
+	public function GetUrl()
+	{
+		$this->SetJson(CalendarUrl::Parse($this->GetRequestedDate(), $this->GetRequestedType()));
+	}
 }
 
 

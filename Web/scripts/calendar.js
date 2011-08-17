@@ -2,7 +2,7 @@ function Calendar(opts)
 {
 	Calendar.prototype.init = function()
 	{
-		$('.day, .today').hover(
+		$('.fc-widget-content').hover(
 			function() {
 				$(this).addClass('hover');
 			},
@@ -16,18 +16,6 @@ function Calendar(opts)
 			window.location = $(this).attr('url');
 		});
 
-		$('.week').hover(
-			function() {
-				$(this).addClass('hover');
-				$(this).siblings('.day, .today').addClass('hover');
-			},
-
-			function() {
-				$(this).removeClass('hover');
-				$(this).siblings('.day, .today').removeClass('hover');
-			}
-		);
-
 		$('.week').click(function() {
 			window.location = $(this).attr('url');
 		});
@@ -36,5 +24,12 @@ function Calendar(opts)
 			var refNum = $(this).attr('refNum');
 			$(this).attachReservationPopup(refNum);
 		});
+	};
+
+	Calendar.prototype.dayClick = function(date)
+	{
+		var month =  date.getMonth()+1;
+		window.location = 'my-calendar.php?&ct=day&y=' + date.getFullYear() + '&m=' + month + '&d=' + date.getDate();
 	}
+
 }

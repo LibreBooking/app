@@ -65,3 +65,8 @@
 	font-style: italic;
 	font-size: 14pt;
 }
+
+.fc-agenda-allday
+{
+	display:none;
+}

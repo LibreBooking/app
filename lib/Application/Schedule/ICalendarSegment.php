@@ -37,5 +37,11 @@ interface ICalendarSegment
 	 * @return Date
 	 */
 	public function GetNextDate();
+
+	/**
+	 * @abstract
+	 * @return  array|CalendarReservation[]
+	 */
+	public function Reservations();
 }
 ?>

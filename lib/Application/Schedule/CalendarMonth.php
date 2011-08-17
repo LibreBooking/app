@@ -122,6 +122,21 @@ class CalendarMonth implements ICalendarSegment
 	{
 		return $this->FirstDay()->AddMonths(1);
 	}
+
+	/**
+	 * @return array|CalendarReservation[]
+	 */
+	public function Reservations()
+	{
+		$reservations = array();
+		
+		foreach ($this->weeks as $week)
+		{
+			$reservations = array_merge($reservations, $week->Reservations());
+		}
+
+		return $reservations;
+	}
 }
 
 ?>

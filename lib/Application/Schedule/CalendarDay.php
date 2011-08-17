@@ -8,7 +8,6 @@ interface ICalendarDay
 	public function IsHighlighted();
 	public function IsUnimportant();
 
-	public function Reservations();
 	public function AddReservation($reservation);
 	public function GetAdjustedStartDate($reservation);
 }
