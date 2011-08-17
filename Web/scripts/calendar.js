@@ -19,6 +19,7 @@ function Calendar(opts, reservations)
 			dayNamesShort: _options.dayNamesShort,
 			monthNames: _options.monthNames,
 			monthNamesShort: _options.monthNamesShort,
+			weekMode: 'variable'
 		});
 
 		$('.fc-widget-content').hover(
