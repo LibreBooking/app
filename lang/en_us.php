@@ -330,6 +330,7 @@ class en_us extends Language
 		$strings['Close Window'] = 'Close Window';
 		$strings['Search'] = 'Search';
 		$strings['Clear'] = 'Clear';
+           $strings['Done'] = 'Done';
 		
 		$strings['Days to Show'] = 'Days to Show';
 		$strings['Reservation Offset'] = 'Reservation Offset';
