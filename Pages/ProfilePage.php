@@ -43,11 +43,11 @@ interface IProfilePage extends IPage
 
 	public function GetPosition();
 
-	public function SetPhone($param1);
+	public function SetPhone($phone);
 
-	public function SetOrganization($param1);
+	public function SetOrganization($organization);
 
-	public function SetPosition($param1);
+	public function SetPosition($position);
 }
 
 class ProfilePage extends SecurePage implements IProfilePage

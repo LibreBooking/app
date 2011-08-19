@@ -203,7 +203,8 @@ class User
 
 		$user->attributes[UserAttribute::Phone] = $row[ColumnNames::PHONE_NUMBER];
 		$user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
-		
+		$user->attributes[UserAttribute::Organization] = $row[ColumnNames::ORGANIZATION];
+
 		return $user;
 	}
 
