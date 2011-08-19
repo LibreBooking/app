@@ -532,7 +532,7 @@ class Queries
 
 	const REGISTER_USER = 
 		'INSERT INTO 
-			users (email, password, fname, lname, phone, organization_id, position, username, salt, timezone, language, homepageid, status_id)
+			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id)
 		VALUES
 			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid)
 		';
@@ -698,7 +698,7 @@ class Queries
 			fname = @fname,
 			lname = @lname,
 			phone = @phone,
-			organization_id = @organization,
+			organization = @organization,
 			position = @position
 		WHERE 
 			username = @username';
@@ -734,9 +734,6 @@ class ColumnNames
 	const PHONE_NUMBER = 'phone';
 	const ORGANIZATION = 'organization';
 	const POSITION = 'position';
-
-	// USER_ORGANIZATIONS //
-	const ORGANIZATION_ID = 'organization_id';
 
 	// USER_ADDRESSES //
 	const ADDRESS_ID = 'address_id';
