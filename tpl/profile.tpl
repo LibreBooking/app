@@ -71,7 +71,12 @@
 
 
 	<p class="regsubmit">
-	   <input type="submit" name="{Actions::SAVE}" value="{translate key='Update'}" class="button"/>
+                <button type="submit" class="button update prompt" name="{Actions::SAVE}">
+			<img src="img/disk-black.png" />
+                 	{translate key='Update'}
+		</button>
+
+
 	</p>
 </form>
 </div>
