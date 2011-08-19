@@ -1,27 +1,31 @@
 <?php
-require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/CalendarPresenter.php');
-require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
 
 interface ICalendarPage extends IPage
 {
-	/*public function GetReportClicked();
-		
-	public function SetFirstName($firstName);
-	public function SetLastName($lastName);
-	public function SetUsername($username);	
-	public function SetOrganization($organization);
-	public function SetGroup($group);
-	
-	public function GetFirstName();
-	public function GetLastName();
-	public function GetUsername();	
-	public function GetOrganization();
-	public function GetGroup();*/
+	public function GetDay();
+	public function GetMonth();
+	public function GetYear();
+	public function GetCalendarType();
+
+	public function BindCalendar(ICalendarSegment $calendar);
+
+	/**
+	 * @abstract
+	 * @param array|CalendarFilters[] $filters
+	 * @return void
+	 */
+	public function BindFilters($filters);
+
+	public function SetDisplayDate($displayDate);
+
+	public function GetScheduleId();
+	public function GetResourceId();
 }
 
-class CalendarPage extends Page implements ICalendarPage
+class CalendarPage extends SecurePage implements ICalendarPage
 {
 	public function __construct()
 	{
@@ -32,64 +36,57 @@ class CalendarPage extends Page implements ICalendarPage
 	
 	public function PageLoad()
 	{
-		$this->_presenter->PageLoad();
-		
-		$this->smarty->display('calendar.tpl');				
-	}
-	
-/*	public function GetReportClicked()
-	{
-		return $this->GetForm(Actions::GET_REPORT);
+		$user = ServiceLocator::GetServer()->GetUserSession();
+		$this->_presenter->PageLoad($user->UserId, $user->Timezone);
 	}
 
-	public function SetFirstName($firstName)
+	public function GetDay()
 	{
-		$this->Set('FirstName', $firstName);	
-	}
-	
-	public function SetLastName($lastName)
-	{
-		$this->Set('LastName', $lastName);	
-	}	
-		
-	public function SetUsername($username)
-	{
-		$this->Set('Username', $username);	
-	}	
-	
-	public function SetOrganization($organization)
-    {
-    	$this->Set('Organization', $organization);
-    }
-
-    public function SetGroup($group)
-    {
-    	$this->Set('Group', $group);
-    }
-		
-	public function GetFirstName()
-	{
-		return $this->GetForm(FormKeys::FIRST_NAME);
-	}
-	
-	public function GetLastName()
-	{
-		return $this->GetForm(FormKeys::LAST_NAME);
+		// TODO: Implement GetDay() method.
 	}
 
-	public function GetUsername()
+	public function GetMonth()
 	{
-		return $this->GetForm(FormKeys::USERNAME);
+		// TODO: Implement GetMonth() method.
 	}
 
-    public function GetOrganization()
-    {
-            return $this->GetForm(FormKeys::ORGANIZATION);
-    }
+	public function GetYear()
+	{
+		// TODO: Implement GetYear() method.
+	}
 
-    public function GetGroup()
-    {
-            return $this->GetForm(FormKeys::GROUP);
-    }*/
+	public function GetCalendarType()
+	{
+		// TODO: Implement GetCalendarType() method.
+	}
+
+	public function BindCalendar(ICalendarSegment $calendar)
+	{
+		// TODO: Implement BindCalendar() method.
+	}
+
+	public function SetDisplayDate($displayDate)
+	{
+		// TODO: Implement SetDisplayDate() method.
+	}
+
+	/**
+	 * @param array|CalendarFilters[] $filters
+	 * @return void
+	 */
+	public function BindFilters($filters)
+	{
+		// TODO: Implement BindFilters() method.
+	}
+
+	public function GetScheduleId()
+	{
+		// TODO: Implement GetScheduleId() method.
+	}
+
+	public function GetResourceId()
+	{
+		// TODO: Implement GetResourceId() method.
+	}
 }
 ?>

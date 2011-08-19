@@ -1,6 +1,9 @@
 <?php
 class ResourceService implements IResourceService
 {
+	/**
+	 * @var \IResourceRepository
+	 */
 	private $_resourceRepository;
 	
 	public function __construct(IResourceRepository $resourceRepository)

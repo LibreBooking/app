@@ -5,7 +5,7 @@ interface IResourceRepository
 	 * Gets all Resources for the given scheduleId
 	 *
 	 * @param int $scheduleId
-	 * @return array[int]BookableResource
+	 * @return array|BookableResource[]
 	 */
 	public function GetScheduleResources($scheduleId);
 
@@ -23,22 +23,22 @@ interface IResourceRepository
 	public function AddResource($name, $additionalFields = array());
 
 	/**
-	 * @param BookableResource
+	 * @param BookableResource $resource
 	 */
 	public function Add(BookableResource $resource);
 
 	/**
-	 * @param BookableResource
+	 * @param BookableResource $resource
 	 */
 	public function Update(BookableResource $resource);
 
 	/**
-	 * @param BookableResource
+	 * @param BookableResource $resource
 	 */
 	public function Delete(BookableResource $resource);
 
 	/**
-	 * @return BookableResource[] array of all resources
+	 * @return array|BookableResource[] array of all resources
 	 */
 	public function GetResourceList();
 }

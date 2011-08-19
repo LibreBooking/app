@@ -211,6 +211,8 @@ class en_us extends Language
 		$strings['EditProfile'] = 'Edit My Profile';
 		$strings['FindAnOpening'] = 'Find An Opening';
 		$strings['OpenInvitations'] = 'Open Invitations';
+		$strings['MyCalendar'] = 'My Calendar';
+		$strings['ResourceCalendar'] = 'Resource Calendar';
 		//
 		
 		// Day representations

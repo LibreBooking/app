@@ -9,7 +9,21 @@ interface IConfiguration extends IConfigurationFile
 
 interface IConfigurationFile
 {
+	/**
+	 * @abstract
+	 * @param string $section
+	 * @param string $name
+	 * @param null|IConvert $converter
+	 * @return mixed|string
+	 */
 	public function GetSectionKey($section, $name, $converter = null);
+
+	/**
+	 * @abstract
+	 * @param string $name
+	 * @param null|IConvert $converter
+	 * @return mixed|string
+	 */
 	public function GetKey($name, $converter = null);
 	
 	public function GetScriptUrl();

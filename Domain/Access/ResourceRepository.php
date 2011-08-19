@@ -14,8 +14,10 @@ class ResourceRepository implements IResourceRepository
 		$this->_cache = new DomainCache();
 	}
 	
+
 	/**
-	 * @see IResourceRepository::GetScheduleResources()
+	 * @param int $scheduleId
+	 * @return array|BookableResource[]
 	 */
 	public function GetScheduleResources($scheduleId)
 	{

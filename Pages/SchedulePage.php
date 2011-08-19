@@ -25,7 +25,7 @@ class SchedulePage extends SecurePage implements ISchedulePage
 		
 		$endLoad = microtime(true);
 		
-		$this->smarty->display('schedule.tpl');		
+		$this->Display('schedule.tpl');
 		
 		$endDisplay = microtime(true);
 		
@@ -42,22 +42,22 @@ class SchedulePage extends SecurePage implements ISchedulePage
 	
 	public function GetScheduleId()
 	{
-		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 	}
 	
 	public function SetScheduleId($scheduleId)
 	{
-		$this->smarty->assign('ScheduleId', $scheduleId);
+		$this->Set('ScheduleId', $scheduleId);
 	}
 	
 	public function SetScheduleName($scheduleName)
 	{
-		$this->smarty->assign('ScheduleName', $scheduleName);
+		$this->Set('ScheduleName', $scheduleName);
 	}
 	
 	public function SetSchedules($schedules)
 	{
-		$this->smarty->assign('Schedules', $schedules);
+		$this->Set('Schedules', $schedules);
 	}
 	
 	/**
@@ -65,22 +65,22 @@ class SchedulePage extends SecurePage implements ISchedulePage
 	 */
 	function SetFirstWeekday($firstWeekday)
 	{
-		$this->smarty->assign('FirstWeekday', $firstWeekday);
+		$this->Set('FirstWeekday', $firstWeekday);
 	}
 	
 	public function SetResources($resources)
 	{
-		$this->smarty->assign('Resources', $resources);
+		$this->Set('Resources', $resources);
 	}
 	
 	public function SetDailyLayout($dailyLayout)
 	{
-		$this->smarty->assign('DailyLayout', $dailyLayout);
+		$this->Set('DailyLayout', $dailyLayout);
 	}
 	
 	public function SetLayout($schedulePeriods)
 	{
-		$this->smarty->assign('Periods', $schedulePeriods);
+		$this->Set('Periods', $schedulePeriods);
 	}
 	
 	/**
@@ -88,14 +88,14 @@ class SchedulePage extends SecurePage implements ISchedulePage
 	 */
 	public function SetDisplayDates($dateRange)
 	{
-		$this->smarty->assign('DisplayDates', $dateRange);
-		$this->smarty->assign('BoundDates', $dateRange->Dates());
+		$this->Set('DisplayDates', $dateRange);
+		$this->Set('BoundDates', $dateRange->Dates());
 	}
 	
 	public function SetPreviousNextDates($previousDate, $nextDate)
 	{
-		$this->smarty->assign('PreviousDate', $previousDate);
-		$this->smarty->assign('NextDate', $nextDate);
+		$this->Set('PreviousDate', $previousDate);
+		$this->Set('NextDate', $nextDate);
 	}
 	
 	public function GetSelectedDate()
@@ -110,14 +110,14 @@ interface ISchedulePage
 	/**
 	 * Bind schedules to the page
 	 *
-	 * @param array[int]Schedule $schedules
+	 * @param array|Schedule[] $schedules
 	 */
 	public function SetSchedules($schedules);
 	
 	/**
 	 * Bind resources to the page
 	 *
-	 * @param array[int]ResourceDto $resources
+	 * @param arrayResourceDto[] $resources
 	 */
 	public function SetResources($resources);
 	
@@ -130,7 +130,7 @@ interface ISchedulePage
 	
 	/**
 	 * Set the schedule period items to be used when presenting reservations
-	 * @param array[int]ISchedulePeriod
+	 * @param $schedulePeriods array|ISchedulePeriod[]
 	 */
 	public function SetLayout($schedulePeriods);
 	

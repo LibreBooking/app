@@ -67,8 +67,8 @@ class BookableResource implements IResource
 	}
 
     /**
-     * @param  $resourceName
-     * @param  $scheduleId
+     * @param string $resourceName
+     * @param int $scheduleId
      * @return BookableResource
      */
 	public static function CreateNew($resourceName, $scheduleId)
@@ -91,7 +91,7 @@ class BookableResource implements IResource
 	}
 	
 	/**
-	 * @param array[string] $row
+	 * @param array $row
 	 * @return BookableResource
 	 */
 	public static function Create($row)

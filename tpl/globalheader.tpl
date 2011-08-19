@@ -46,7 +46,7 @@
 		        <ul>
 		            <li class="menuitem"><a href="{$Path}{Pages::SCHEDULE}">{translate key=Bookings}</a></li>
 					<li class="menuitem"><a href="{$Path}{Pages::MY_CALENDAR}">{translate key=MyCalendar}</a></li>
-					<li class="menuitem"><a href="#">Resource Calendar</a></li>
+					<li class="menuitem"><a href="{$Path}{Pages::CALENDAR}">{translate key=ResourceCalendar}</a></li>
 					<li class="menuitem"><a href="#">Current Status</a></li>
 					<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">{translate key=OpenInvitations}</a></li>
 					<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key=FindAnOpening}</a></li>
