@@ -40,7 +40,8 @@ class UserRepository implements IUserRepository, IUserViewRepository
 	}
 
 	/**
-	 * @see IUserRepository:GetById()
+	 * @param $userId
+	 * @return null|UserDto
 	 */
 	public function GetById($userId)
 	{
@@ -100,12 +101,12 @@ class UserRepository implements IUserRepository, IUserViewRepository
 			{
 				$emailPreferences = $this->LoadEmailPreferences($userId);
 				$permissions = $this->LoadPermissions($userId);
-				$groupIds = $this->LoadGroups($userId);
+				$groups = $this->LoadGroups($userId);
 
 				$user = User::FromRow($row);
 				$user->WithEmailPreferences($emailPreferences);
 				$user->WithPermissions($permissions);
-				$user->WithGroupIds($groupIds);
+				$user->WithGroups($groups);
 
 				$this->_cache->Add($userId, $user);
 			}		
@@ -202,17 +203,19 @@ class UserRepository implements IUserRepository, IUserViewRepository
 
 	private function LoadGroups($userId)
 	{
-		$groupIds = array();
+		$groups = array();
 
 		$command = new GetUserGroupsCommand($userId);
 		$reader = ServiceLocator::GetDatabase()->Query($command);
 
 		while ($row = $reader->GetRow())
 		{
-			$groupIds[] = $row[ColumnNames::GROUP_ID];
+			$group = new GroupUserView($userId, null, null, $row[ColumnNames::ROLE_ID]);
+			$group->GroupId = $row[ColumnNames::GROUP_ID];
+			$groups[] = $group;
 		}
 
-		return $groupIds;
+		return $groups;
 	}
 }
 

@@ -52,7 +52,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	
 	public function Initialize()
 	{
-		$this->currentUserId = ServiceLocator::GetServer()->GetUserSession()->UserId;
+		$currentUser = ServiceLocator::GetServer()->GetUserSession();
+		$this->currentUserId = $currentUser->UserId;
 				
 		$requestedResourceId = $this->GetResourceId();
 		$requestedScheduleId = $this->GetScheduleId();
@@ -73,6 +74,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$this->basePage->BindPeriods($schedulePeriods);
 
 		$scheduleUser = $this->scheduleUserRepository->GetUser($userId);
+
+		$this->basePage->SetCanChangeUser($currentUser->IsAdmin || $scheduleUser->IsGroupAdmin());
 		
 		$bindableResourceData = $this->GetBindableResourceData($scheduleUser, $requestedResourceId);
 		$bindableUserData = $this->GetBindableUserData($userId);

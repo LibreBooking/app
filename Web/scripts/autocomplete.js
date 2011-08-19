@@ -14,7 +14,7 @@ $.fn.userAutoComplete = function(url, selectionCallback)
 					success: function(data) {
 						response($.map(data, function(item) {
 							return {
-								label: item.First + " " + item.Last,
+								label: item.Name,
 								value: item.Id
 							}
 						}));

@@ -6,7 +6,6 @@ class ReservationViewRepositoryTests extends TestBase
 	 */
 	private $repository;
 	
-	
 	public function setup()
 	{
 		parent::setup();
@@ -152,9 +151,11 @@ class ReservationViewRepositoryTests extends TestBase
 		$resourceId = 929;
 		$instanceId = 1000;
 		$userLevelId = 2;
+		$title = 'title';
+		$description = 'description';
 
-		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId, $userLevelId);
-		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1);
+		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId, $userLevelId, $title, $description);
+		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null);
 
 		$this->db->SetRows($rows);
 		
@@ -167,7 +168,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals($expectedCommand, $actualCommand);
 		
 		$this->assertEquals(count($rows), count($reservations));
-		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId, $userLevelId);
+		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId, $userLevelId, $title, $description);
 		$this->assertEquals($expectedItem1, $reservations[0]);
 	}
 	
@@ -201,7 +202,7 @@ class ReservationViewRepositoryTests extends TestBase
 			
 	}
 	
-	private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate, $resourceId, $instanceId, $userLevelId)
+	private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate, $resourceId, $instanceId, $userLevelId, $title, $description)
 	{
 		return array(
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
@@ -210,7 +211,9 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESERVATION_END => $endDate->ToDatabase(),
 			ColumnNames::RESOURCE_ID => $resourceId,
 			ColumnNames::RESERVATION_INSTANCE_ID => $instanceId,
-			ColumnNames::RESERVATION_USER_LEVEL => $userLevelId
+			ColumnNames::RESERVATION_USER_LEVEL => $userLevelId,
+			ColumnNames::RESERVATION_TITLE => $title,
+			ColumnNames::RESERVATION_DESCRIPTION => $description
 		);
 	}
 }

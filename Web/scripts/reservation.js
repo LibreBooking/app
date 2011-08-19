@@ -21,7 +21,11 @@ function Reservation(opts) {
 		inviteeDialogPrompt: $('#promptForInvitees'),
 		inviteeDialog: $('#inviteeDialog'),
 		inviteeList: $('#inviteeList'),
-		inviteeAutocomplete: $('#inviteeAutocomplete')
+		inviteeAutocomplete: $('#inviteeAutocomplete'),
+
+		changeUserAutocomplete: $('#changeUserAutocomplete'),
+		userName: $('#userName'),
+		userId: $('#userId')
 	};
 
 	const oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
@@ -31,6 +35,8 @@ function Reservation(opts) {
 
 	var participation = {};
 	participation.addedUsers = [];
+
+	var changeUser = {};
 	
 	Reservation.prototype.init = function(ownerId) {
 		participation.addedUsers.push(ownerId);
@@ -62,7 +68,12 @@ function Reservation(opts) {
 		$('#resourceNames, #additionalResources').delegate('.resourceDetails', 'mouseover', function() {
 			bindResourceDetails($(this));
 		});
+
+		// CHANGE USERS //
+
+		changeUser.init();
 		
+		/////////////////////////
 		InitializeParticipationElements();
 
 		// initialize selected resources
@@ -493,6 +504,59 @@ function Reservation(opts) {
 		});
 	}
 
+	changeUser.init = function()
+	{
+		$('#showChangeUsers').click(function(e) {
+			$('#changeUsers').toggle();
+			e.preventDefault();
+		});
+
+		elements.changeUserAutocomplete.userAutoComplete(options.changeUserAutocompleteUrl, function(ui) {
+			changeUser.chooseUser(ui.item.value, ui.item.label);
+		});
+
+		$('#promptForChangeUsers').click(function()	{
+			changeUser.showAll();
+		});
+
+		$('#changeUserDialog').delegate('.add', 'click', function() {
+			changeUser.chooseUser($(this).attr('userId'), $(this).text());
+			$('#changeUserDialog').dialog('close');
+		});
+	};
+
+	changeUser.chooseUser = function(id, name)
+	{
+		elements.userName.text(name);
+		elements.userId.val(id);
+		$('#changeUsers').hide();
+	};
+	
+	changeUser.showAll = function()
+	{
+		var dialogElement = $('#changeUserDialog');
+		var allUserList;
+		if (dialogElement.children().length == 0) {
+			$.ajax({
+				url: options.changeUserAutocompleteUrl,
+				dataType: 'json',
+				async: false,
+				success: function(data) {
+					allUserList = data;
+				}
+			});
+
+			var items = [];
+			$.map(allUserList, function(item) {
+				items.push('<li><a href="#" class="add" title="Add" userId="' + item.Id + '">' + item.Name + '</a></li>')
+			});
+		}
+
+		$('<ul/>', {'class': 'no-style', html: items.join('')}).appendTo(dialogElement);
+
+		dialogElement.dialog('open');
+	};
+	
 	participation.addParticipant = function(name, userId)
 	{
 		if ($.inArray(userId, participation.addedUsers) >= 0)
@@ -514,12 +578,12 @@ function Reservation(opts) {
 	Reservation.prototype.addParticipant = function(name, userId)
 	{
 		participation.addParticipant(name, userId);
-	}
+	};
 
 	Reservation.prototype.addInvitee = function(name, userId)
 	{
 		participation.addInvitee(name, userId);
-	}
+	};
 	
 	participation.addInvitee = function(name, userId)
 	{
@@ -573,7 +637,7 @@ function Reservation(opts) {
 			$.map(allUserList, function(item) {
 				items.push('<li><a href="#" class="add" title="Add"><input type="hidden" class="id" value="' + item.Id + '" />' +
 						'<img src="img/plus-button.png" /></a> ' +
-						item.First + ' ' + item.Last + '</li>')
+						item.Name + '</li>')
 			});
 		}
 

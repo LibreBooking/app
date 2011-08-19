@@ -11,7 +11,19 @@
 	<div id="reservationDetails">
 		<ul class="no-style">
 			<li>
-			{$UserName} <input type="hidden" {formname key=USER_ID} value="{$UserId}"/>
+			<span id="userName">{$UserName}</span> <input id="userId" type="hidden" {formname key=USER_ID} value="{$UserId}"/>
+			{if $CanChangeUser}
+				<a href="#" id="showChangeUsers">(Change)</a>
+				<div id="changeUserDialog" title="Change User" class="dialog"></div>
+			{/if}
+			</li>
+			<li style="display:none;" id="changeUsers">
+				<input type="text" id="changeUserAutocomplete" class="input" style="width:250px;"/>
+				or
+				<button id="promptForChangeUsers" type="button" class="button" style="display:inline">
+					<img src="img/users.png"/>
+				{translate key='All Users'}
+				</button>
 			</li>
 		</ul>
 		<ul class="no-style">
@@ -260,7 +272,8 @@
 		createUrl: 'ajax/reservation_save.php',
 		updateUrl: 'ajax/reservation_update.php',
 		deleteUrl: 'ajax/reservation_delete.php',
-		userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}"
+		userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}",
+		changeUserAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::MyUsers}"
 	};
 
 	$('#description').TextAreaExpander();

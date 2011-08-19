@@ -124,9 +124,9 @@ class Quota implements IQuota
 			}
 		}
 
-		foreach ($user->GroupIds() as $groupId)
+		foreach ($user->Groups() as $group)
 		{
-			if (!$this->AppliesToGroup($groupId))
+			if (!$this->AppliesToGroup($group->GroupId))
 			{
 				return false;
 			}

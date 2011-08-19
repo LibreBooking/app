@@ -76,7 +76,9 @@ class UserRepositoryTests extends TestBase
 		$this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
 		$this->assertContains($permissionsRows[1][ColumnNames::RESOURCE_ID], $user->AllowedResourceIds());
 		$this->assertEquals($row[ColumnNames::PHONE_NUMBER], $user->GetAttribute(UserAttribute::Phone));
-		$this->assertContains($groupsRows[1][ColumnNames::GROUP_ID], $user->GroupIds());
+		$group = new GroupUserView($userId, null, null, $groupsRows[1][ColumnNames::ROLE_ID]);
+		$group->GroupId = $groupsRows[1][ColumnNames::GROUP_ID];
+		$this->assertTrue(in_array($group, $user->Groups()));
 	}
 	
 	public function testLoadsUserFromCacheIfAlreadyLoadedFromDatabase()
@@ -266,8 +268,8 @@ class UserRepositoryTests extends TestBase
 	private function GetGroupsRows()
 	{
 		return array (
-			array (ColumnNames::GROUP_ID => 98017),
-			array (ColumnNames::GROUP_ID => 128736),
+			array (ColumnNames::GROUP_ID => 98017, ColumnNames::ROLE_ID => 2),
+			array (ColumnNames::GROUP_ID => 128736, ColumnNames::ROLE_ID => 1),
 		);
 	}
 }

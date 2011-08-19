@@ -27,7 +27,11 @@ class Parameters
 		$this->_parameters = array_values($this->_parameters);	// Re-index the array
 		$this->_count--;
 	}
-	
+
+	/**
+	 * @param $index
+	 * @return Parameter
+	 */
 	public function &Items($index) 
 	{
 		return $this->_parameters[$index];

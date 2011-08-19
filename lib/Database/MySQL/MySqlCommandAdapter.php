@@ -6,8 +6,8 @@ class MySqlCommandAdapter
 	
 	public function __construct(ISqlCommand &$command) 
 	{
-		$_values = array();
-		$_query = null;
+		$this->_values = array();
+		$this->_query = null;
 		
 		$this->Convert($command);
 	}
@@ -22,7 +22,7 @@ class MySqlCommandAdapter
 		return $this->_query;
 	}
 	
-	private function Convert(ISqlCommand &$command) 
+	private function Convert(SqlCommand &$command)
 	{		
 		$query = $command->GetQuery();
 		
@@ -33,6 +33,17 @@ class MySqlCommandAdapter
 			if (is_null($curParam->Value))
 			{
 				$query = str_replace($curParam->Name, 'null', $query);
+			}
+			if  (is_array($curParam->Value))
+			{
+				$escapedValues = array();
+				foreach ($curParam->Value as $value)
+				{
+					$escapedValues[] = mysql_real_escape_string($value);
+				}
+				$values = implode("','", $escapedValues);
+				$inClause = "'$values'";
+				$query = str_replace($curParam->Name, $inClause, $query);
 			}
 			else
 			{

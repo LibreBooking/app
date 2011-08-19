@@ -45,12 +45,13 @@ interface IGroupViewRepository
 
 	/**
 	 * @abstract
-	 * @param int $groupId
+	 * @param int|array|int[] $groupIds
 	 * @param int $pageNumber
 	 * @param int $pageSize
+	 * @param ISqlFilter $filter
 	 * @return PageableData of GroupUserView
 	 */
-	public function GetUsersInGroup($groupId, $pageNumber = null, $pageSize = null);
+	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null);
 }
 
 class GroupRepository implements IGroupRepository, IGroupViewRepository
@@ -76,9 +77,14 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 
-	public function GetUsersInGroup($groupId, $pageNumber = null, $pageSize = null)
+	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null)
 	{
-		$command = new GetAllGroupUsersCommand($groupId);
+		$command = new GetAllGroupUsersCommand($groupIds);
+
+		if ($filter != null)
+		{
+			$command = new FilterCommand($command, $filter);
+		}
 
 		$builder = array('GroupUserView', 'Create');
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
@@ -178,6 +184,7 @@ class GroupUserView
 	public $LastName;
 	public $IsAdmin;
 	public $RoleId;
+	public $GroupId;
 
 	public function __construct($userId, $firstName, $lastName, $roleId)
 	{

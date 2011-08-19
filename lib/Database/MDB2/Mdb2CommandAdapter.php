@@ -6,8 +6,8 @@ class Mdb2CommandAdapter
 	
 	public function __construct(&$command) 
 	{
-		$_values = array();
-		$_query = null;
+		$this->_values = array();
+		$this->_query = null;
 		
 		$this->Convert($command);
 	}
@@ -22,12 +22,20 @@ class Mdb2CommandAdapter
 		return $this->_query;
 	}
 	
-	private function Convert(&$command) 
+	private function Convert(SqlCommand $command)
 	{		
 		for ($p = 0; $p < $command->Parameters->Count(); $p++) 
 		{
 			$curParam = $command->Parameters->Items($p);
-			$this->_values[str_replace('@', '', $curParam->Name)] = $curParam->Value;
+
+			$value = $curParam->Value;
+			if (is_array($value))
+			{
+				$value = implode("','", $value);
+				$value = "'$value'";
+			}
+			
+			$this->_values[str_replace('@', '', $curParam->Name)] = $value;
 		}
 		
 		$this->_query = str_replace('@', ':', $command->GetQuery());

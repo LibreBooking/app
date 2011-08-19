@@ -6,13 +6,13 @@ interface IReservationPage extends IPage
 {
 	/**
 	 * Set the schedule period items to be used when presenting reservations
-	 * @param array[int]ISchedulePeriod
+	 * @param $periods array|ISchedulePeriod[]
 	 */
 	function BindPeriods($periods);
 	
 	/**
 	 * Set the resources that can be reserved by this user
-	 * @param array[int]ScheduleResource
+	 * @param $resources array|ScheduleResource[]
 	 */
 	function BindAvailableResources($resources);
 
@@ -59,6 +59,13 @@ interface IReservationPage extends IPage
 	 * @return void
 	 */
 	function SetInvitees($invitees);
+
+	/**
+	 * @abstract
+	 * @param $canChangeUser
+	 * @return void
+	 */
+	function SetCanChangeUser($canChangeUser);
 }
 
 abstract class ReservationPage extends SecurePage implements IReservationPage
@@ -137,7 +144,7 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 		);
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		
-		$this->smarty->display($this->GetTemplateName());		
+		$this->Display($this->GetTemplateName());
 	}
 	
 	public function BindPeriods($periods)
@@ -197,6 +204,11 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 	public function SetInvitees($invitees)
 	{
 		$this->Set('Invitees', $invitees);
+	}
+
+	public function SetCanChangeUser($canChangeUser)
+	{
+		$this->Set('CanChangeUser', $canChangeUser);
 	}
 }
 ?>

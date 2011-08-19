@@ -262,14 +262,16 @@ class Queries
 
 	const GET_ALL_GROUPS =
 		'SELECT *
-		FROM groups g';
+		FROM groups g
+		ORDER BY g.name';
 
 	const GET_ALL_GROUP_USERS =
 		'SELECT *
 		FROM users u
 		INNER JOIN user_groups ug ON u.user_id = ug.user_id
 		INNER JOIN groups g ON g.group_id = ug.group_id
-		WHERE g.group_id = @groupid';
+		WHERE g.group_id IN (@groupid)
+		ORDER BY u.lname, u.fname';
 
 	const GET_ALL_QUOTAS =
 		'SELECT q.*, r.name as resource_name, g.name as group_name

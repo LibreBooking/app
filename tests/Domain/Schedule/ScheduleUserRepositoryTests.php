@@ -14,6 +14,11 @@ class ScheduleUserRepositoryTests extends TestBase
 	public function testPullsAllResourcesAndGroupsForUser()
 	{
 		$userId = 10;
+
+		$groups = array(
+			array(ColumnNames::GROUP_ID => 1, ColumnNames::ROLE_ID => GroupRoles::Admin),
+			array(ColumnNames::GROUP_ID => 2, ColumnNames::ROLE_ID => GroupRoles::User),
+		);
 		
 		$userResourceRoles = array
 		(
@@ -32,16 +37,21 @@ class ScheduleUserRepositoryTests extends TestBase
 		
 		$this->db->SetRow(0, $userResourceRoles);
 		$this->db->SetRow(1, $groupResourceRoles);
+		$this->db->SetRow(2, $groups);
 		
 		$repo = new ScheduleUserRepository();
 		$user = $repo->GetUser($userId);
 		
-		$userCommand = new GetUserPermissionsCommand($userId);
-		$groupCommand = new SelectUserGroupPermissions($userId);
+		$userGroupsCommand = new GetUserGroupsCommand($userId);
+		$userPermissionsCommand = new GetUserPermissionsCommand($userId);
+		$groupPermissionsCommand = new SelectUserGroupPermissions($userId);
 		
-		$this->assertEquals(2, count($this->db->_Commands));
-		$this->assertEquals($userCommand, $this->db->_Commands[0]);
-		$this->assertEquals($groupCommand, $this->db->_Commands[1]);
+		$this->assertEquals(3, count($this->db->_Commands));
+		$this->assertTrue($this->db->ContainsCommand($userPermissionsCommand));
+		$this->assertTrue($this->db->ContainsCommand($groupPermissionsCommand));
+		$this->assertTrue($this->db->ContainsCommand($userGroupsCommand));
+
+		$this->assertTrue($user->IsGroupAdmin());
 	}
 	
 	public function testGetsAllUniqueResourcesForUserAndGroup()
@@ -61,9 +71,9 @@ class ScheduleUserRepositoryTests extends TestBase
 		
 		$g1 = new ScheduleGroup(100, array($r1, $r3));
 		$g2 = new ScheduleGroup(200, array($r1, $r4, $r3));
-		$groups = array($g1, $g2);
-		
-		$user = new ScheduleUser($userId, $resources, $groups);
+		$groupPermissions = array($g1, $g2);
+
+		$user = new ScheduleUser($userId, $resources, $groupPermissions, array());
 		
 		$permittedResources = $user->GetAllResources();
 		

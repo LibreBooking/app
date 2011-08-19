@@ -75,11 +75,17 @@ class User
 		return $this->statusId;
 	}
 
-	protected $groupIds = array();
-	
-	public function GroupIds()
+	/**
+	 * @var array|GroupUserView[]
+	 */
+	protected $groups = array();
+
+	/**
+	 * @return array|GroupUserView[]
+	 */
+	public function Groups()
 	{
-		return $this->groupIds;
+		return $this->groups;
 	}
 
 	public function Activate()
@@ -130,12 +136,12 @@ class User
 	}
 
 	/**
-	 * @param array|int[] $groupIds
+	 * @param array|GroupUserView[] $groups
 	 * @return void
 	 */
-	public function WithGroupIds($groupIds = array())
+	public function WithGroups($groups = array())
 	{
-		$this->groupIds = $groupIds;
+		$this->groups = $groups;
 	}
 
 	public function ChangePermissions($allowedResourceIds = array())
