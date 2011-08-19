@@ -53,17 +53,6 @@ CREATE TABLE `time_blocks` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `organizations`
---
-
-DROP TABLE IF EXISTS `organizations`;
-CREATE TABLE `organizations` (
- `organization_id` smallint(5) unsigned NOT NULL auto_increment,
- `name` varchar(85) NOT NULL,
- PRIMARY KEY (`organization_id`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
 -- Table structure for table `groups`
 --
 
@@ -144,7 +133,7 @@ CREATE TABLE `users` (
  `email` varchar(85) NOT NULL,
  `password` varchar(85) NOT NULL,
  `salt` varchar(85) NOT NULL,
- `organization_id` smallint(5) unsigned NOT NULL,
+ `organization` varchar(85),
  `position` varchar(85),
  `phone` varchar(85),
  `timezone` varchar(85) NOT NULL,
@@ -160,29 +149,7 @@ CREATE TABLE `users` (
  INDEX (`status_id`),
  FOREIGN KEY (`status_id`) 
 	REFERENCES user_statuses(`status_id`)
-	ON UPDATE CASCADE ON DELETE RESTRICT,
- FOREIGN KEY (`organization_id`) 
-      REFERENCES organizations(`organization_id`)
-      ON UPDATE CASCADE ON DELETE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `user_organizations`
---
-
-DROP TABLE IF EXISTS `user_organizations`;
-CREATE TABLE `user_organizations` (
- `user_id` mediumint(8) unsigned NOT NULL,
- `organization_id` smallint(5) unsigned NOT NULL,
- PRIMARY KEY (`user_id`, `organization_id`),
- INDEX (`user_id`),
- FOREIGN KEY (`user_id`) 
-	REFERENCES users(`user_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`organization_id`),
- FOREIGN KEY (`organization_id`) 
-	REFERENCES organizations(`organization_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
+	ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
