@@ -20,7 +20,8 @@
         <label class="login"><input type="checkbox" name="{FormKeys::PERSIST_LOGIN}" value="true" tabindex="30" /> {translate key='Keep me logged in'}</label>
 </p>
 <p class="loginsubmit">
-        <input type="submit" name="{Actions::LOGIN}" value="{translate key='Log In'}" class="button" tabindex="100" />
+        <button type="submit" name="{Actions::LOGIN}" class="button" tabindex="100" value="submit">
+              <img src="img/door-open-in.png" />  {translate key='LogIn'}         </button>
         <input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}" />
 </p>
 </form>
