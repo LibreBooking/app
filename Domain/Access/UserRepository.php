@@ -151,7 +151,6 @@ class UserRepository implements IUserRepository, IUserViewRepository
 
 		if ($user->HaveAttributesChanged())
 		{
-
 			$updateAttributesCommand = new UpdateUserAttributesCommand(
 						$userId,
 						$user->GetAttribute(UserAttribute::Phone),

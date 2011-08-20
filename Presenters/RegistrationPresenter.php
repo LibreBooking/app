@@ -75,7 +75,7 @@ class RegistrationPresenter
 
     	$additionalFields = array('phone' => $this->_page->GetPhone(),
     							'organization' => $this->_page->GetOrganization(),
-    								'position' => $this->_page->GetPosition());
+    							'position' => $this->_page->GetPosition());
     		
           $this->_registration->Register(
     			$this->_page->GetLoginName(), 

@@ -642,7 +642,7 @@ class RegisterMiniUserCommand extends SqlCommand
 
 class RegisterUserCommand extends SqlCommand 
 {
-	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId, $phone, $institution, $position, $userStatusId)
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId, $phone, $organization, $position, $userStatusId)
 	{
 		parent::__construct(Queries::REGISTER_USER);
 		
@@ -656,9 +656,10 @@ class RegisterUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
 		$this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId));
 		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
-		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $institution));
+		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));	
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
 	}
 }
 

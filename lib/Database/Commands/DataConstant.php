@@ -532,10 +532,9 @@ class Queries
 
 	const REGISTER_USER = 
 		'INSERT INTO 
-			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id)
+			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created)
 		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid)
-		';
+			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated)';
 
 	const REMOVE_RESERVATION_INSTANCE = 
 		'DELETE FROM
@@ -684,7 +683,8 @@ class Queries
 			users
 		SET
 			phone = @phone,
-			position = @position
+			position = @position,
+			organization = @organization
 		WHERE
 			user_id = @userid';
 	
