@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' DisplayWelcome='false'}
+{include file='loginheader.tpl' DisplayWelcome='false'}
 <div id="registrationbox">
 <form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
 
