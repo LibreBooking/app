@@ -72,7 +72,7 @@
 
 	<p class="regsubmit">
                 <button type="submit" class="button update prompt" name="{Actions::SAVE}">
-			<img src="img/disk-black.png" />
+			<img src="img/tick-circle.png" />
                  	{translate key='Update'}
 		</button>
 

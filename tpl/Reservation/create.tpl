@@ -198,7 +198,7 @@
 	<div style="float:right;">
 	{block name="submitButtons"}
 		<button type="button" class="button save create">
-			<img src="img/disk-black.png"/>
+			<img src="img/tick-circle.png"/>
 			{translate key='Create'}
 		</button>
 	{/block}

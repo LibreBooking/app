@@ -46,7 +46,7 @@ Find User:<br/>
 		{foreach from=$resources item=resource}
 			<label><input {formname key=RESOURCE_ID  multi=true} class="resourceId" type="checkbox" value="{$resource->GetResourceId()}"> {$resource->GetName()}</label><br/>
 		{/foreach}
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>

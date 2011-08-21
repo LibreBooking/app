@@ -213,6 +213,7 @@ class en_us extends Language
 		$strings['OpenInvitations'] = 'Open Invitations';
 		$strings['MyCalendar'] = 'My Calendar';
 		$strings['ResourceCalendar'] = 'Resource Calendar';
+           $strings['Reservation'] = 'New Reservation';
 		//
 		
 		// Day representations

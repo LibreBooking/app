@@ -25,7 +25,7 @@
 {block name=submitButtons}
 	{if $IsRecurring}
 		<button type="button" class="button update prompt">
-			<img src="img/disk-black.png" />
+			<img src="img/tick-circle.png" />
 			{translate key='Update'}
 		</button>
 		<div id="updateButtons" style="display:none;" title="{translate key=ApplyUpdatesTo}">

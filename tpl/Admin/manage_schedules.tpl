@@ -93,7 +93,7 @@
 					</select>
 				</li>
 				<li>
-					<button type="button" class="button save">{html_image src="disk-black.png"} Add Schedule</button>
+					<button type="button" class="button save">{html_image src="tick-circle.png"} Add Schedule</button>
 				</li>
 			</ul>
 		</form>
