@@ -93,7 +93,7 @@
 					</select>
 				</li>
 				<li>
-					<button type="button" class="button save">{html_image src="tick-circle.png"} Add Schedule</button>
+					<button type="submit" class="button save" value="submit">{html_image src="tick-circle.png"} Add Schedule</button>
 				</li>
 			</ul>
 		</form>
@@ -110,7 +110,7 @@
 <div id="renameDialog" class="dialog" style="display:none;">
 	<form id="renameForm" method="post">
 		New Name: <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /><br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
+		<button type="button" class="button save">{html_image src="tick-circle.png"} Update</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
 		
 	</form>
@@ -126,7 +126,7 @@
 		<br/>
 		Number of Days Visible: <input type="text" class="textbox required" id="daysVisible" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
+		<button type="button" class="button save">{html_image src="tick-circle.png"} Update</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
 	</form>
 </div>
@@ -166,7 +166,7 @@
 		</div>
 		<div style="margin-top: 5px; padding-top:5px; border-top: solid 1px #f0f0f0;">
 			<div style="float:left;">
-				<button type="button" class="button save">{html_image src="disk-black.png"} Update</button>
+				<button type="button" class="button save">{html_image src="tick-circle.png"} Update</button>
 				<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
 			</div>
 			<div style="float:right;">
