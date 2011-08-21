@@ -84,7 +84,7 @@
 		<div id="addGroupResults" class="error" style="display:none;"></div>
 		<form id="addGroupForm" method="post">
 			Name<br/> <input type="text" class="textbox required" {formname key=GROUP_NAME} />
-			<button type="button" class="button save">{html_image src="disk-black.png"} Add Group</button>
+			<button type="button" class="button save">{html_image src="plus-circle.png"} Add Group</button>
 		</form>
 	</div>
 </div>
