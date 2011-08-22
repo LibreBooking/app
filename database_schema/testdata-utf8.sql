@@ -15,7 +15,9 @@ alter table addresses AUTO_INCREMENT = 1;
 delete from schedules;
 alter table schedules AUTO_INCREMENT = 1;
 
-insert into resources (name, type_id, requires_approval) values ('Conference Room 1', 1, 0),('Conference Room 2', 1, 0);
+INSERT INTO `resources` (`resource_id`, `name`, `type_id`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time`, `max_notice_time`, `image_name`, `legacyid`) VALUES
+(1, 'Conference Room 1', 1, NULL, NULL, NULL, NULL, 1, '00:00:00', NULL, '00:00:00', NULL, 1, 0, 1, NULL, '00:00:00', '00:00:00', 'resource1.jpg', NULL),
+(2, 'Conference Room 2', 1, NULL, NULL, NULL, NULL, 1, '00:00:00', NULL, '00:00:00', NULL, 1, 0, 1, NULL, '00:00:00', '00:00:00', 'resource2.jpg', NULL);
 
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language, organization)
 	values ('Nick', 'Korbel', 'nkorbel@gmail.com', 'nkorbel', '7b6aec38ff9b7650d64d0374194307bdde711425', '3b3dbb9b', 'America/Chicago', '2008-09-16 01:59:00', 1, now(), 'en_us', 'XYZ Org Inc.');
