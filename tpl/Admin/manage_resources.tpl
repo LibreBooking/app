@@ -25,10 +25,22 @@
 			<div style="float:right;">
 				<ul>
 					<li>
-						<h4>{$resource->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">{translate key='Rename'}</a>
+						<h4>{$resource->GetName()}</h4> 
+                                                   <a class="update renameButton" href="javascript:void(0);">{translate key='Rename'}</a> | 
+	                                           <a class="update deleteButton" href="javascript:void(0);">{translate key='Delete'}</a>
 					</li>
+                                        <li>
+                                                {translate key='Status'}  
+                                                {if $resource->IsOnline()}
+				                   {html_image src="status.png"} <a class="update takeOfflineButton" href="javascript: void(0);">{translate key='TakeOffline'}</a>
+			                        {else}
+				                   {html_image src="status-busy.png"} <a class="update bringOnlineButton" href="javascript: void(0);">{translate key='BringOnline'}</a>
+	                         		{/if}
+
+                                        </li>
+
 					<li>
-						{translate key='AppearsOn' args=$Schedules[$resource->GetScheduleId()]} <a class="update changeScheduleButton" href="javascript: void(0);">{translate key='Move'}</a>
+						{translate key='AppearsOn' args=$Schedules[$resource->GetScheduleId()]} {translate key='Schedule'} <a class="update changeScheduleButton" href="javascript: void(0);">{translate key='Move'}</a>
 					</li>
 					<li>
 					 	{translate key='Location'}
@@ -139,14 +151,8 @@
 			</div>
 		</div>
 		<div class="actions">
-			{html_image src="admin-ajax-indicator.gif" class="actionIndicator" style="display:none;"}
 			
-			{if $resource->IsOnline()}
-				{html_image src="status.png"} <a class="update takeOfflineButton" href="javascript: void(0);">{translate key='TakeOffline'}</a> |
-			{else}
-				{html_image src="status-busy.png"} <a class="update bringOnlineButton" href="javascript: void(0);">{translate key='BringOnline'}</a> |
-			{/if}
-			<a class="update deleteButton" href="javascript:void(0);">{translate key='Delete'}</a>
+		
 		</div>
 	</div>
 	{/foreach}
