@@ -89,7 +89,7 @@
 
 		{translate key=QuotaConfiguration args="$resources,$groups,$amount,$unit,$duration"}
 		
-		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key="Add"}</button>
+		<button type="button" class="button save">{html_image src="plus-circle.png"} {translate key="Add"}</button>
 		{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 		</form>
 	</div>
