@@ -891,6 +891,12 @@ class en_us extends Language
 		$strings['Organization'] = 'Organization';
 		$strings['Group'] = 'Group';
 		
+		$strings['Find Group'] = 'Find Group';
+ 		$strings['Group Name'] = 'Group Name';
+		$strings['Group Actions'] = 'Group Actions';
+		$strings['Group Members'] = 'Group Members';
+		$strings['Group Permissions'] = 'Group Permissions';
+
 		$strings['RadioRequired'] = 'Required';
 		$strings['RadioOptional'] = 'Optional';
 		$strings['RadioRemoved'] = 'Removed';

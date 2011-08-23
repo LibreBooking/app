@@ -3,27 +3,25 @@
 <h1>{translate key=ManageGroups}</h1>
 
 <div style="padding: 10px 0px;">
-	Find Group:<br/>
+	{translate key='Find Group'}<br/>
 	<input type="text" id="groupSearch" class="textbox" size="40"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllGroups}
 </div>
 <table class="list">
 	<tr>
 		<th class="id">&nbsp;</th>
-		<th>{translate key='Name'}</th>
-		<th>&nbsp;</th>
-		<th>{translate key='Members'}</th>
-		<th>{translate key='ResourcePermissions'}</th>
-		<th>{translate key='Delete'}</th>
+		<th>{translate key='Group Name'}</th>
+		<th>{translate key='Group Actions'}</th>
+		<th>{translate key='Group Members'}</th>
+		<th>{translate key='Group Permissions'}</th>
 	</tr>
 {foreach from=$groups item=group}
 	{cycle values='row0,row1' assign=rowCss}
 	<tr class="{$rowCss}">
 		<td class="id"><input type="hidden" class="id" value="{$group->Id}"/></td>
-		<td>{$group->Name}</td>
-		<td><a href="#" class="update rename">{translate key='Rename'}</a></td>
-		<td><a href="#" class="update members">{translate key='Manage'}</a></td>
-		<td><a href="#" class="update permissions">{translate key='Change'}</a></td>
-		<td><a href="#" class="update delete">{translate key='Delete'}</a></td>
+		<td >{$group->Name}</td>
+		<td align="center"><a href="#" class="update rename">{translate key='Rename'}</a> | <a href="#" class="update delete">{translate key='Delete'}</a></td>
+		<td align="center"><a href="#" class="update members">{translate key='Manage'}</a></td>
+		<td align="center"><a href="#" class="update permissions">{translate key='Change'}</a></td>
 	</tr>
 {/foreach}
 </table>
@@ -33,7 +31,7 @@
 <input type="hidden" id="activeId" />
 
 <div id="membersDialog" class="dialog" style="display:none;">
-	Add User: <input type="text" id="userSearch" class="textbox" size="30" /> <a href="#" id="browseUsers">Browse <div id="allUsers" style="display:none;" class="dialog"></div></a>
+	Add User: <input type="text" id="userSearch" class="textbox" size="40" /> <a href="#" id="browseUsers">Browse <div id="allUsers" style="display:none;" class="dialog"></div></a>
 	<h4><span id="totalUsers"></span> Users in this group</h4>
 	<div id="groupUserList"></div>
 </div>
