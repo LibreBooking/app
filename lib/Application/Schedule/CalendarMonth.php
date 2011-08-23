@@ -62,21 +62,20 @@ class CalendarMonth implements ICalendarSegment
 	}
 
 	/**
-	 * @param $reservations array|ReservationItemView[]
+	 * @param $reservations array|CalendarReservation[]
 	 * @return void
 	 */
 	public function AddReservations($reservations)
 	{
-		/** @var $reservation ReservationItemView */
+		/** @var $reservation CalendarReservation */
 		foreach ($reservations as $reservation)
 		{
-			$calendarReservation = CalendarReservation::FromView($reservation, $this->timezone);
-			$this->reservations[] = $calendarReservation;
+			$this->reservations[] = $reservation;
 
 			/** @var $week CalendarWeek */
 			foreach ($this->Weeks() as $week)
 			{
-				$week->AddReservation($calendarReservation);
+				$week->AddReservation($reservation);
 			}
 		}
 	}

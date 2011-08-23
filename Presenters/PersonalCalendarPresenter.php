@@ -51,7 +51,7 @@ class PersonalCalendarPresenter
 
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
 		$reservations = $this->repository->GetReservationList($calendar->FirstDay(), $calendar->LastDay(), $userId, ReservationUserLevel::ALL);
-		$calendar->AddReservations($reservations);
+		$calendar->AddReservations(CalendarReservation::FromViewList($reservations, $timezone));
 		$this->page->BindCalendar($calendar);
 
 		$this->page->SetDisplayDate($calendar->FirstDay());

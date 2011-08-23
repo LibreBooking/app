@@ -1,6 +1,8 @@
 <?php
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class CalendarPresenter
 {
@@ -73,7 +75,7 @@ class CalendarPresenter
 
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
 		$reservations = $this->reservationRepository->GetWithin($calendar->FirstDay(), $calendar->LastDay(), $selectedScheduleId);
-		$calendar->AddReservations($reservations);
+		$calendar->AddReservations(CalendarReservation::FromScheduleReservationList($reservations, $resources, $timezone));
 		$this->page->BindCalendar($calendar);
 
 		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId));
@@ -106,6 +108,9 @@ class CalendarPresenter
 
 class CalendarFilters
 {
+	const FilterSchedule = 'schedule';
+	const FilterResource = 'resource';
+
 	/**
 	 * @var array|ScheduleFilter[]
 	 */
@@ -121,13 +126,13 @@ class CalendarFilters
 	{
 		foreach ($schedules as $schedule)
 		{
-			$filter = new CalendarFilter('schedule', $schedule->GetId(), $schedule->GetName(), ($selectedScheduleId == $schedule->GetId()));
+			$filter = new CalendarFilter(self::FilterSchedule, $schedule->GetId(), $schedule->GetName(), (empty($selectedResourceId) && $selectedScheduleId == $schedule->GetId()));
 
 			foreach ($resources as $resource)
 			{
 				if ($resource->GetScheduleId() == $schedule->GetId())
 				{
-					$filter->AddSubFilter(new CalendarFilter('resource', $resource->GetResourceId(), $resource->GetName(), ($selectedResourceId == $resource->GetResourceId())));
+					$filter->AddSubFilter(new CalendarFilter(self::FilterResource, $resource->GetResourceId(), $resource->GetName(), ($selectedResourceId == $resource->GetResourceId())));
 				}
 			}
 
@@ -136,7 +141,7 @@ class CalendarFilters
 	}
 
 	/**
-	 * @return array|ScheduleFilter[]
+	 * @return array|CalendarFilter[]
 	 */
 	public function GetFilters()
 	{
@@ -147,7 +152,7 @@ class CalendarFilters
 class CalendarFilter
 {
 	/**
-	 * @var array|ScheduleFilter[]
+	 * @var array|CalendarFilter[]
 	 */
 	private $filters = array();
 
@@ -171,6 +176,38 @@ class CalendarFilter
 	 */
 	private $selected;
 
+	/**
+	 * @return string
+	 */
+	public function Name()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Id()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Type()
+	{
+		return $this->type;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function Selected()
+	{
+		return $this->selected;
+	}
+
 	public function __construct($type, $id, $name, $selected)
 	{
 		$this->type = $type;
@@ -185,7 +222,7 @@ class CalendarFilter
 	}
 
 	/**
-	 * @return array|ScheduleFilter[]
+	 * @return array|CalendarFilter[]
 	 */
 	public function GetFilters()
 	{

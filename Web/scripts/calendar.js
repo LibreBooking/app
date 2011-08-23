@@ -36,6 +36,28 @@ function Calendar(opts, reservations)
 			var refNum = $(this).attr('refNum');
 			$(this).attachReservationPopup(refNum);
 		});
+
+		$('#calendarFilter').change(function() {
+			var day = getQueryStringValue('d');
+			var month = getQueryStringValue('m');
+			var year = getQueryStringValue('y');
+			var type = getQueryStringValue('ct');
+			var scheduleId = '';
+			var resourceId = '';
+
+			if ($(this).hasClass('schedule'))
+			{
+				scheduleId = '&sid=' + $(this).val();
+			}
+			else
+			{
+				resourceId = '&rid=' + $(this).val();
+			}
+
+			var url = 'calendar.php?ct=' + type + '&d=' + day + '&m=' + month + '&y=' + year + scheduleId + resourceId;
+			
+			window.location = url;
+		});
 	};
 
 	var dayClick = function(date)

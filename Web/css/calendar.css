@@ -70,3 +70,19 @@
 {
 	display:none;
 }
+
+#filter
+{
+	margin: 15px;
+	text-align: center;
+}
+
+option.schedule
+{
+	padding-left: 2px;
+}
+
+option.resource
+{
+	padding-left: 15px;
+}

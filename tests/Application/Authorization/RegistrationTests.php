@@ -17,7 +17,7 @@ class RegistrationTests extends TestBase
 	private $email = 'test@test.com';
 	private $fname = 'First';
 	private $lname = 'Last';
-	private $additionalFields = array('phone' => '123.123.1234', 'institution' => '', 'position' => '');
+	private $additionalFields = array('phone' => '123.123.1234', 'organization' => '', 'position' => '');
 	private $password = 'password';
 	private $confirm = 'password';
 	private $timezone = 'US/Eastern';
@@ -45,7 +45,7 @@ class RegistrationTests extends TestBase
 		$command = new RegisterUserCommand(
 					$this->login, $this->email, $this->fname, $this->lname, 
 					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->language, $this->homepageId,
-					$this->additionalFields['phone'], $this->additionalFields['institution'], $this->additionalFields['position']
+					$this->additionalFields['phone'], $this->additionalFields['organization'], $this->additionalFields['position']
 					,AccountStatus::AWAITING_ACTIVATION);
 		
 		$this->assertEquals($command, $this->db->_Commands[0]);

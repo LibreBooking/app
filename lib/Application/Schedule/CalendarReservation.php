@@ -55,6 +55,22 @@ class CalendarReservation
 	}
 
 	/**
+	 * @param $reservations array|ReservationItemView[]
+	 * @param $timezone string
+	 * @return array|CalendarReservation[]
+	 */
+	public static function FromViewList($reservations, $timezone)
+	{
+		$results = array();
+
+		foreach ($reservations as $reservation)
+		{
+			$results[] = self::FromView($reservation, $timezone);
+		}
+		return $results;
+	}
+
+	/**
 	 * @param $reservation ReservationItemView
 	 * @param $timezone string
 	 * @return CalendarReservation
@@ -74,6 +90,34 @@ class CalendarReservation
 		$res->Invited = $reservation->UserLevelId == ReservationUserLevel::INVITEE;
 		$res->Participant = $reservation->UserLevelId == ReservationUserLevel::PARTICIPANT;
 		$res->Owner = $reservation->UserLevelId == ReservationUserLevel::OWNER;
+		return $res;
+	}
+
+	/**
+	 * @static
+	 * @param $reservations array|ScheduleReservation[]
+	 * @param $resources array|BookableResources[]
+	 * @param $timezone string
+	 * @return array|CalendarReservation[]
+	 */
+	public static function FromScheduleReservationList($reservations, $resources, $timezone)
+	{
+		$resourceMap = array();
+		/** @var $resource BookableResource */
+		foreach ($resources as $resource)
+		{
+			$resourceMap[$resource->GetResourceId()] = $resource->GetName();
+		}
+		
+		$res = array();
+		foreach ($reservations as $reservation)
+		{
+			$start = $reservation->GetStartDate()->ToTimezone($timezone);
+			$end = $reservation->GetEndDate()->ToTimezone($timezone);
+			$referenceNumber = $reservation->GetReferenceNumber();
+			
+			$res[] = new CalendarReservation($start, $end, $resourceMap[$reservation->GetResourceId()], $referenceNumber);
+		}
 
 		return $res;
 	}

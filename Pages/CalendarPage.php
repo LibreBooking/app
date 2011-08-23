@@ -14,11 +14,16 @@ interface ICalendarPage extends IPage
 
 	/**
 	 * @abstract
-	 * @param array|CalendarFilters[] $filters
+	 * @param CalendarFilters $filters
 	 * @return void
 	 */
 	public function BindFilters($filters);
 
+	/**
+	 * @abstract
+	 * @param Date $displayDate
+	 * @return void
+	 */
 	public function SetDisplayDate($displayDate);
 
 	public function GetScheduleId();
@@ -31,62 +36,77 @@ class CalendarPage extends SecurePage implements ICalendarPage
 	{
 		parent::__construct('Calendar');
 		
-		$this->_presenter = new CalendarPresenter($this);			
+		$this->_presenter = new CalendarPresenter($this, new CalendarFactory(),  new ReservationRepository(), new ScheduleRepository(), new ResourceRepository());
 	}
 	
 	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
 		$this->_presenter->PageLoad($user->UserId, $user->Timezone);
+
+		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
+		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
+		
+		$this->Display('calendar.tpl');
 	}
 
 	public function GetDay()
 	{
-		// TODO: Implement GetDay() method.
+		return $this->GetQuerystring(QueryStringKeys::DAY);
 	}
 
 	public function GetMonth()
 	{
-		// TODO: Implement GetMonth() method.
+		return $this->GetQuerystring(QueryStringKeys::MONTH);
 	}
 
 	public function GetYear()
 	{
-		// TODO: Implement GetYear() method.
+		return $this->GetQuerystring(QueryStringKeys::YEAR);
 	}
 
 	public function GetCalendarType()
 	{
-		// TODO: Implement GetCalendarType() method.
+		return $this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
 	}
 
 	public function BindCalendar(ICalendarSegment $calendar)
 	{
-		// TODO: Implement BindCalendar() method.
+		$this->Set('Calendar', $calendar);
 	}
 
 	public function SetDisplayDate($displayDate)
 	{
-		// TODO: Implement SetDisplayDate() method.
+		$this->Set('DisplayDate', $displayDate);
+
+		$months = Resources::GetInstance()->GetMonths('full');
+		$this->Set('MonthName', $months[$displayDate->Month()-1]);
+		$this->Set('MonthNames', $months);
+		$this->Set('MonthNamesShort', Resources::GetInstance()->GetMonths('abbr'));
+
+		$days = Resources::GetInstance()->GetDays('full');
+		$this->Set('DayName', $days[$displayDate->Weekday()]);
+		$this->Set('DayNames', $days);
+		$this->Set('DayNamesShort', Resources::GetInstance()->GetDays('abbr'));
 	}
 
 	/**
-	 * @param array|CalendarFilters[] $filters
+	 * @param CalendarFilters $filters
 	 * @return void
 	 */
 	public function BindFilters($filters)
 	{
-		// TODO: Implement BindFilters() method.
+		$this->Set('filters', $filters);
 	}
 
 	public function GetScheduleId()
 	{
-		// TODO: Implement GetScheduleId() method.
+		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 	}
 
 	public function GetResourceId()
 	{
-		// TODO: Implement GetResourceId() method.
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
 }
 ?>

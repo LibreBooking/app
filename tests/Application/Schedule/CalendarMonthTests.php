@@ -39,10 +39,11 @@ class CalendarMonthTests extends TestBase
 		$reservations = array($startsBeforeMonth, $endsAfterMonth, $firstDayOnly, $secondAndThirdDay, $notInMonth);
 
 		$timezone = 'America/Chicago';
-
+		$calendarReservations = CalendarReservation::FromViewList($reservations, $timezone);
+		
 		$month = new CalendarMonth(12, 2011, $timezone);
 
-		$month->AddReservations($reservations);
+		$month->AddReservations($calendarReservations);
 
 		$expectedFirstDay = Date::Parse('2011-12-01', $timezone);
 		$expectedLastDay = Date::Parse('2012-01-01', $timezone);

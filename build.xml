@@ -96,6 +96,7 @@
 				<exclude name=".settings/**" />
 				<exclude name="_excludes.txt" />
 				<exclude name="pdt_templates.xml" />
+				<exclude name="**/*.zip" />
 			</fileset>
 		</copy>
 		<copy file="config/config.php" tofile="${stagingdir}/config/config.new.php"/>

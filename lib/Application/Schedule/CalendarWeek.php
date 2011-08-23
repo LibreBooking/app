@@ -71,10 +71,10 @@ class CalendarWeek implements ICalendarSegment
 
 	public function AddReservations($reservations)
 	{
-		/** @var $reservation ReservationItemView */
+		/** @var $reservation CalendarReservation */
 		foreach ($reservations as $reservation)
 		{
-			$this->AddReservation(CalendarReservation::FromView($reservation, $this->timezone));
+			$this->AddReservation($reservation);
 		}
 	}
 

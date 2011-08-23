@@ -224,6 +224,7 @@ class UserRepositoryTests extends TestBase
 				ColumnNames::HOMEPAGE_ID => 3,
 				ColumnNames::PHONE_NUMBER => '123-456-7890',
 				ColumnNames::POSITION => 'head honcho',
+				ColumnNames::ORGANIZATION => 'earth',
 			)
 		);
 		

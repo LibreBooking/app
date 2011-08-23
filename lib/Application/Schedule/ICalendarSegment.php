@@ -15,7 +15,7 @@ interface ICalendarSegment
 
 	/**
 	 * @abstract
-	 * @param $reservations array|ReservationItemView[]
+	 * @param $reservations array|CalendarReservation[]
 	 * @return void
 	 */
 	public function AddReservations($reservations);

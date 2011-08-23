@@ -31,8 +31,9 @@ class CalendarWeekTests extends TestBase
 		$timezone = 'America/Chicago';
 
 		$week = CalendarWeek::FromDate(2011, 8, 3, $timezone);
+		$calendarReservations = CalendarReservation::FromViewList($reservations, $timezone);
 
-		$week->AddReservations($reservations);
+		$week->AddReservations($calendarReservations);
 
 		$expectedFirstDay = Date::Parse('2011-07-31', $timezone);
 		$expectedLastDay = Date::Parse('2011-08-07', $timezone);

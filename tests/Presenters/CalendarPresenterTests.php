@@ -59,15 +59,29 @@ class CalendarPresenterTests extends TestBase
 		$userTimezone = "America/New_York";
 
 		$calendarType = CalendarTypes::Month;
-		
+
 		$requestedDay = 4;
 		$requestedMonth = 3;
 		$requestedYear = 2011;
 
 		$month = new CalendarMonth($requestedMonth, $requestedYear, $userTimezone);
 
-		$reservations = array();
-		$resources = array();
+		$startDate = Date::Parse('2011-01-01', 'UTC');
+		$endDate = Date::Parse('2011-01-02', 'UTC');
+		$summary = 'foo summary';
+		$resourceId = 3;
+		$fname = 'fname';
+		$lname = 'lname';
+		$referenceNumber = 'refnum';
+		$resourceName = 'resource name';
+		
+		$res = new ScheduleReservation(1, $startDate, $endDate, null, $summary, $resourceId, $userId, $fname, $lname, $referenceNumber);
+
+		$r1 = new FakeBookableResource(1, 'dude1');
+		$r2 = new FakeBookableResource($resourceId, $resourceName);
+
+		$reservations = array($res);
+		$resources = array($r1, $r2);
 		$schedules = array(
 			new Schedule(1, null, false, null, null),
 			new Schedule($defaultScheduleId, null, true, null, null),
@@ -97,11 +111,11 @@ class CalendarPresenterTests extends TestBase
 		$this->page->expects($this->once())
 				->method('GetCalendarType')
 				->will($this->returnValue($calendarType));
-		
+
 		$this->page->expects($this->once())
 				->method('GetDay')
 				->will($this->returnValue($requestedDay));
-		
+
 		$this->page->expects($this->once())
 				->method('GetMonth')
 				->will($this->returnValue($requestedMonth));
@@ -125,6 +139,12 @@ class CalendarPresenterTests extends TestBase
 				->with($this->equalTo($calendarFilters));
 
 		$this->presenter->PageLoad($userId, $userTimezone);
+
+		$actualReservations = $month->Reservations();
+
+		$expectedReservations = CalendarReservation::FromScheduleReservationList($reservations, $resources, $userTimezone);
+
+		$this->assertEquals($expectedReservations, $actualReservations);
 	}
 }
 ?>
