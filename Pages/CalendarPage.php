@@ -32,6 +32,11 @@ interface ICalendarPage extends IPage
 
 class CalendarPage extends SecurePage implements ICalendarPage
 {
+	/**
+	 * @var string
+	 */
+	private $template;
+
 	public function __construct()
 	{
 		parent::__construct('Calendar');
@@ -47,7 +52,7 @@ class CalendarPage extends SecurePage implements ICalendarPage
 		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
 		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
 		
-		$this->Display('calendar.tpl');
+		$this->Display($this->template);
 	}
 
 	public function GetDay()
@@ -73,8 +78,22 @@ class CalendarPage extends SecurePage implements ICalendarPage
 	public function BindCalendar(ICalendarSegment $calendar)
 	{
 		$this->Set('Calendar', $calendar);
+
+		$prev = $calendar->GetPreviousDate();
+		$next = $calendar->GetNextDate();
+
+		$calendarType = $calendar->GetType();
+
+		$this->Set('PrevLink', CalendarUrl::Create($prev, $calendarType));
+		$this->Set('NextLink', CalendarUrl::Create($next, $calendarType));
+
+		$this->template = sprintf('calendar.%s.tpl', strtolower($calendarType));
 	}
 
+	/**
+	 * @param Date $displayDate
+	 * @return void
+	 */
 	public function SetDisplayDate($displayDate)
 	{
 		$this->Set('DisplayDate', $displayDate);
@@ -107,6 +126,43 @@ class CalendarPage extends SecurePage implements ICalendarPage
 	public function GetResourceId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+}
+
+class CalendarUrl
+{
+	private $url;
+
+	private function __construct($year, $month, $day, $type)
+	{
+		$resourceId = ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+		$scheduleId = ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+		
+		$format = Pages::CALENDAR . '?'
+				  . QueryStringKeys::DAY . '=%d&'
+				  . QueryStringKeys::MONTH . '=%d&'
+				  . QueryStringKeys::YEAR . '=%d&'
+				  . QueryStringKeys::CALENDAR_TYPE . '=%s&'
+				  . QueryStringKeys::RESOURCE_ID . '=%s&'
+				  . QueryStringKeys::SCHEDULE_ID . '=%s';
+
+		$this->url = sprintf($format, $day, $month, $year, $type, $resourceId, $scheduleId);
+	}
+
+	/**
+	 * @static
+	 * @param $date Date
+	 * @param $type string
+	 * @return PersonalCalendarUrl
+	 */
+	public static function Create($date, $type)
+	{
+		return new CalendarUrl($date->Year(), $date->Month(), $date->Day(), $type);
+	}
+
+	public function __toString()
+	{
+		return $this->url;
 	}
 }
 ?>

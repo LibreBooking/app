@@ -1,5 +1,3 @@
-{include file='globalheader.tpl' cssFiles='css/calendar.css,css/jquery.qtip.css,scripts/css/fullcalendar.css'}
-
 <div id="filter">
 {translate key="ChangeCalendar"}
 <select id="calendarFilter" class="textbox">
@@ -12,7 +10,3 @@
 
 </select>
 </div>
-
-{include file='mycalendar.common.tpl' view='month'}
-
-{include file='globalfooter.tpl'}

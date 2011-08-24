@@ -67,8 +67,8 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 
 		$calendarType = $calendar->GetType();
 
-		$this->Set('PrevLink', CalendarUrl::Create($prev, $calendarType));
-		$this->Set('NextLink', CalendarUrl::Create($next, $calendarType));
+		$this->Set('PrevLink', PersonalCalendarUrl::Create($prev, $calendarType));
+		$this->Set('NextLink', PersonalCalendarUrl::Create($next, $calendarType));
 
 		$this->template = sprintf('mycalendar.%s.tpl', strtolower($calendarType));
 	}
@@ -94,7 +94,7 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 }
 
 
-class CalendarUrl
+class PersonalCalendarUrl
 {
 	private $url;
 
@@ -109,11 +109,11 @@ class CalendarUrl
 	 * @static
 	 * @param $date Date
 	 * @param $type string
-	 * @return CalendarUrl
+	 * @return PersonalCalendarUrl
 	 */
 	public static function Create($date, $type)
 	{
-		return new CalendarUrl($date->Year(), $date->Month(), $date->Day(), $type);
+		return new PersonalCalendarUrl($date->Year(), $date->Month(), $date->Day(), $type);
 	}
 
 	public function __toString()
