@@ -45,7 +45,7 @@ function Calendar(opts, reservations)
 			var scheduleId = '';
 			var resourceId = '';
 
-			if ($(this).hasClass('schedule'))
+			if ($(this).find(':selected').hasClass('schedule'))
 			{
 				scheduleId = '&sid=' + $(this).val();
 			}

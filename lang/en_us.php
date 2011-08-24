@@ -214,7 +214,7 @@ class en_us extends Language
 		$strings['OpenInvitations'] = 'Open Invitations';
 		$strings['MyCalendar'] = 'My Calendar';
 		$strings['ResourceCalendar'] = 'Resource Calendar';
-           $strings['Reservation'] = 'New Reservation';
+        $strings['Reservation'] = 'New Reservation';
 		//
 		
 		// Day representations
@@ -334,7 +334,7 @@ class en_us extends Language
 		$strings['Close Window'] = 'Close Window';
 		$strings['Search'] = 'Search';
 		$strings['Clear'] = 'Clear';
-           $strings['Done'] = 'Done';
+        $strings['Done'] = 'Done';
 		
 		$strings['Days to Show'] = 'Days to Show';
 		$strings['Reservation Offset'] = 'Reservation Offset';
