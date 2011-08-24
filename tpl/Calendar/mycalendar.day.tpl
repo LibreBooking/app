@@ -17,6 +17,6 @@
 	<div class="clear">&nbsp;</div>
 </div>
 
-{include file='mycalendar.common.tpl' view='agendaDay'}
+{include file='Calendar/mycalendar.common.tpl' view='agendaDay'}
 
 {include file='globalfooter.tpl'}

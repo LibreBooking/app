@@ -14,7 +14,7 @@ $(document).ready(function() {
 			title: '{$reservation->ResourceName} {$reservation->Title}',
 			start: '{$reservation->StartDate->Timestamp()}',
 			end: '{$reservation->EndDate->Timestamp()}',
-			url: 'reservation.php?rn={$reservation->ReferenceNumber}',
+			url: '{Pages::RESERVATION}?rn={$reservation->ReferenceNumber}',
 			allDay: false
 		});
 	{/foreach}

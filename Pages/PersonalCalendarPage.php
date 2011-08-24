@@ -35,7 +35,7 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
 		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
 		
-		$this->Display($this->template);
+		$this->Display('calendar/' . $this->template);
 	}
 
 	public function GetDay()

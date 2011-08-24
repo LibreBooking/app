@@ -17,6 +17,6 @@
 
 </div>
 
-{include file='mycalendar.common.tpl' view='agendaWeek'}
+{include file='Calendar/mycalendar.common.tpl' view='agendaWeek'}
 
 {include file='globalfooter.tpl'}
