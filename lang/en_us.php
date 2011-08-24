@@ -184,6 +184,7 @@ class en_us extends Language
 		$strings['Attending'] = 'Attending';
 		$strings['QuotaConfiguration'] = 'For %s users in %s are limited to %s %s per %s';
 		$strings['reservations'] = 'reservations';
+		$strings['ChangeCalendar'] = 'Change Calendar';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';

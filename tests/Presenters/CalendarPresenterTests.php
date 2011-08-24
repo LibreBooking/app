@@ -87,11 +87,6 @@ class CalendarPresenterTests extends TestBase
 			new Schedule($defaultScheduleId, null, true, null, null),
 		);
 
-		$this->repository->expects($this->once())
-			->method('GetWithin')
-			->with($this->equalTo($month->FirstDay()), $this->equalTo($month->LastDay()), $this->equalTo($defaultScheduleId))
-			->will($this->returnValue($reservations));
-
 		$this->scheduleRepository->expects($this->once())
 				->method('GetAll')
 				->will($this->returnValue($schedules));
@@ -107,6 +102,11 @@ class CalendarPresenterTests extends TestBase
 		$this->page->expects($this->once())
 				->method('GetResourceId')
 				->will($this->returnValue(null));
+
+		$this->repository->expects($this->once())
+			->method('GetWithin')
+			->with($this->equalTo($month->FirstDay()), $this->equalTo($month->LastDay()), $this->equalTo($defaultScheduleId), $this->equalTo(null))
+			->will($this->returnValue($reservations));
 
 		$this->page->expects($this->once())
 				->method('GetCalendarType')

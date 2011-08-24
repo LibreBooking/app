@@ -5,10 +5,21 @@ require_once(ROOT_DIR . 'Domain/ReservationFactory.php');
 class ReservationRepository implements IReservationRepository
 {
 	const ALL_SCHEDULES = -1;
+	const ALL_RESOURCES = -1;
 
-	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES)
+	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES, $resourceId = ReservationRepository::ALL_RESOURCES)
 	{
-		$command = new GetReservationsCommand($startDate, $endDate, $scheduleId);
+		if (empty($scheduleId))
+		{
+			$scheduleId = ReservationRepository::ALL_SCHEDULES;
+		}
+
+		if (empty($resourceId))
+		{
+			$resourceId = ReservationRepository::ALL_RESOURCES;
+		}
+		
+		$command = new GetReservationsCommand($startDate, $endDate, $scheduleId, $resourceId);
 
 		$reservations = array();
 
@@ -541,10 +552,11 @@ interface IReservationRepository
 	 *
 	 * @param Date $startDate
 	 * @param Date $endDate
-	 * @param int $scheduleId (defaults to all schedules
+	 * @param int $scheduleId (defaults to all schedules)
+	 * @param int $resourceId (defaults to all resources)
 	 * @return array|ScheduleReservation[] of ScheduleReservation
 	 */
-	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES);
+	public function GetWithin(Date $startDate, Date $endDate, $scheduleId = ReservationRepository::ALL_SCHEDULES, $resourceId = ReservationRepository::ALL_RESOURCES);
 
 	/**
 	 * Insert a new reservation

@@ -69,12 +69,17 @@ class CalendarPresenter
 
 		$schedules = $this->scheduleRepository->GetAll();
 		$resources = $this->resourceRepository->GetResourceList();
-		
+
 		$selectedScheduleId = $this->GetScheduleId($schedules);
 		$selectedResourceId = $this->page->GetResourceId();
 
+		if (!empty($selectedResourceId))
+		{
+			$selectedScheduleId = null;
+		}
+
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
-		$reservations = $this->reservationRepository->GetWithin($calendar->FirstDay(), $calendar->LastDay(), $selectedScheduleId);
+		$reservations = $this->reservationRepository->GetWithin($calendar->FirstDay(), $calendar->LastDay(), $selectedScheduleId, $selectedResourceId);
 		$calendar->AddReservations(CalendarReservation::FromScheduleReservationList($reservations, $resources, $timezone));
 		$this->page->BindCalendar($calendar);
 

@@ -472,12 +472,13 @@ class GetReservationResourcesCommand extends SqlCommand
 
 class GetReservationsCommand extends SqlCommand
 {
-	public function __construct($startDate, $endDate, $scheduleId)
+	public function __construct(Date $startDate, Date $endDate, $scheduleId, $resourceId)
 	{
 		parent::__construct(Queries::GET_RESERVATIONS_COMMAND);
 		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 	}
 }
 

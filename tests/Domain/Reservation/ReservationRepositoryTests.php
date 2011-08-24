@@ -31,6 +31,7 @@ class ReservationRepositoryTests extends TestBase
 		$startDate = Date::Create(2008, 05, 20);
 		$endDate = Date::Create(2008, 05, 25);
 		$scheduleId = 1;
+		$resourceId = 10;
 		
 		$rows = FakeReservationRepository::GetReservationRows();
 		$this->db->SetRow(0, $rows);
@@ -41,9 +42,9 @@ class ReservationRepositoryTests extends TestBase
 			$expected[] = ReservationFactory::CreateForSchedule($item);
 		}
 
-		$loaded = $this->repository->GetWithin($startDate, $endDate, $scheduleId);		
+		$loaded = $this->repository->GetWithin($startDate, $endDate, $scheduleId, $resourceId);
 		
-		$this->assertEquals(new GetReservationsCommand($startDate, $endDate, $scheduleId), $this->db->_Commands[0]);
+		$this->assertEquals(new GetReservationsCommand($startDate, $endDate, $scheduleId, $resourceId), $this->db->_Commands[0]);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
 		$this->assertEquals(count($rows), count($loaded));
 		$this->assertEquals($expected, $loaded);

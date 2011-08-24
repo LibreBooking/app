@@ -400,7 +400,8 @@ class Queries
 		r.type_id,
 		r.status_id,
 		r.description,
-		rs.resource_id,
+		rr.resource_id,
+		rr.resource_level_id,
 		u.user_id,
 		u.fname,
 		u.lname,
@@ -414,7 +415,8 @@ class Queries
 	INNER JOIN resource_schedules rs ON rs.resource_id = rr.resource_id
 	WHERE
 		ru.reservation_user_level = 1 AND
-		(rs.schedule_id = @scheduleid OR @scheduleid = -1) AND	
+		(@scheduleid = -1 OR rs.schedule_id = @scheduleid) AND
+		(@resourceid = -1 OR rr.resource_id = @resourceid) AND
 		(
 			(ri.start_date >= @startDate AND ri.start_date <= @endDate)
 			OR
