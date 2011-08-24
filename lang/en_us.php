@@ -887,6 +887,14 @@ class en_us extends Language
 		$strings['DayQuota'] = 'Daily quota';
 		$strings['Before'] = 'before';
 		
+		$strings['Account'] = 'Account';
+       	$strings['Profile'] = 'Profile';
+           $strings['Email Preferences'] = 'Email Preferences';
+           $strings['Current Status'] = 'Current Status';
+           $strings['My Upcoming Reservations'] = 'My Upcoming Reservations';
+           $strings['Reservation Search'] = 'Reservation Search';
+           $strings['Awaiting Activation'] = 'Awaiting Activation';
+
 		$strings['Address'] = 'Address';
 		$strings['Organization'] = 'Organization';
 		$strings['Group'] = 'Group';

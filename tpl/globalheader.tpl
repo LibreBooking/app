@@ -35,48 +35,48 @@
 		<div id="header">
 		<div id="logo">phpScheduleIt</div>
 		<ul id="nav" class="menubar">
-		    <li class="menubaritem first"><a href="{$Path}{Pages::DASHBOARD}">{translate key=Dashboard}</a></li>
-		    <li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key=Account}</a>
+		    <li class="menubaritem first"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
+		    <li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="Account"}</a>
 		    	<ul>
-		    		<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">Profile</a></li>
-		    		<li class="menuitem"><a href="#">Email Preferences</a></li>
+		    		<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
+		    		<li class="menuitem"><a href="#">{translate key="Email Preferences"}</a></li>
 		    	</ul>
 		    </li>
-		    <li class="menubaritem"><a href="{$Path}{Pages::SCHEDULE}">{translate key=Schedule}</a>
+		    <li class="menubaritem"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Schedule"}</a>
 		        <ul>
-		            <li class="menuitem"><a href="{$Path}{Pages::SCHEDULE}">{translate key=Bookings}</a></li>
-					<li class="menuitem"><a href="{$Path}{Pages::MY_CALENDAR}">{translate key=MyCalendar}</a></li>
-					<li class="menuitem"><a href="{$Path}{Pages::CALENDAR}">{translate key=ResourceCalendar}</a></li>
-					<li class="menuitem"><a href="#">Current Status</a></li>
-					<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">{translate key=OpenInvitations}</a></li>
-					<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key=FindAnOpening}</a></li>
+		            <li class="menuitem"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Bookings"}</a></li>
+					<li class="menuitem"><a href="{$Path}{Pages::MY_CALENDAR}">{translate key="MyCalendar"}</a></li>
+					<li class="menuitem"><a href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>
+					<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>
+					<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a></li>
+					<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindAnOpening"}</a></li>
 		        </ul>
 		    </li>
 			<!--
 		    <li class="menubaritem"><a href="#">{translate key=Reservations}</a>
 		        <ul>
-		            <li class="menuitem"><a href="#">My Upcoming Reservations</a></li>
-					<li class="menuitem"><a href="#">Reservation Search</a></li>
-				</ul>
+		            <li class="menuitem"><a href="#">{translate key="My Upcoming Reservations"}</a></li>
+			    <li class="menuitem"><a href="#">{translate key="Reservation Search"}</a></li>
+			</ul>
 		    </li>
 		    -->
 		    {if $CanViewAdmin}
 		    <li class="menubaritem"><a href="#">{translate key=Admin}</a>
 		        <ul>
-		            <li class="menuitem"><a href="{$Path}admin/manage_schedules.php">{translate key=ManageSchedules}</a></li>
-					<li class="menuitem"><a href="{$Path}admin/manage_resources.php">{translate key=ManageResources}</a></li>
-					<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key=ManageUsers}</a>
+		            <li class="menuitem"><a href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a></li>
+					<li class="menuitem"><a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a></li>
+					<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>
 						<ul>
-							<li><a href="#">Awaiting Activation</a></li>
+							<li><a href="#">{translate key="Awaiting Activation"}</a></li>
 						</ul>
 					</li>
-					<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key=ManageGroups}</a>
-					<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key=ManageQuotas}</a>
-					<li class="menuitem"><a href="{$Path}admin/server_settings.php">{translate key=ServerSettings}</a>
+					<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
+					<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
+					<li class="menuitem"><a href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
 				</ul>
 		    </li>
 		    {/if}
-		    <li class="menubaritem"><a href="#">{translate key=Help}</a></li>
+		    <li class="menubaritem"><a href="#">{translate key="Help"}</a></li>
 		    <li class="menubaritem"><a href="{$Path}logout.php">{translate key="SignOut"}</a></li>
 		</ul>
 		<!-- end #nav -->
