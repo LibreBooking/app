@@ -63,7 +63,10 @@ function Calendar(opts, reservations)
 	var dayClick = function(date)
 	{
 		var month =  date.getMonth()+1;
-		window.location = _options.dayClickUrl + '&y=' + date.getFullYear() + '&m=' + month + '&d=' + date.getDate();
+		var url =  _options.dayClickUrl;
+		url = url + '&y=' + date.getFullYear() + '&m=' + month + '&d=' + date.getDate();
+
+		window.location = url;
 	}
 
 }

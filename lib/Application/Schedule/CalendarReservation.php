@@ -46,6 +46,11 @@ class CalendarReservation
 	 */
 	public $Owner;
 
+	/**
+	 * @var string
+	 */
+	public $OwnerName;
+
 	private function __construct(Date $startDate, Date $endDate, $resourceName, $referenceNumber)
 	{
 		$this->StartDate = $startDate;
@@ -115,8 +120,10 @@ class CalendarReservation
 			$start = $reservation->GetStartDate()->ToTimezone($timezone);
 			$end = $reservation->GetEndDate()->ToTimezone($timezone);
 			$referenceNumber = $reservation->GetReferenceNumber();
-			
-			$res[] = new CalendarReservation($start, $end, $resourceMap[$reservation->GetResourceId()], $referenceNumber);
+
+			$cr = new CalendarReservation($start, $end, $resourceMap[$reservation->GetResourceId()], $referenceNumber);
+			$cr->OwnerName = $reservation->GetFirstName() . ' ' . $reservation->GetLastName();
+			$res[] = $cr;
 		}
 
 		return $res;

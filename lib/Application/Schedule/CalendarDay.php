@@ -183,15 +183,15 @@ class CalendarDay implements ICalendarDay, ICalendarSegment
 	}
 
 	/**
-	 * @param $reservations array|ReservationItemView[]
+	 * @param $reservations array|CalendarReservation[]
 	 * @return void
 	 */
 	public function AddReservations($reservations)
 	{
-		/** @var $reservation ReservationItemView */
+		/** @var $reservation CalendarReservation */
 		foreach ($reservations as $reservation)
 		{
-			$this->AddReservation(CalendarReservation::FromViewList($reservation, $this->date->Timezone()));
+			$this->AddReservation($reservation);
 		}
 	}
 

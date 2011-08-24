@@ -11,7 +11,7 @@ $(document).ready(function() {
 	{foreach from=$Calendar->Reservations() item=reservation}
 		reservations.push({
 			id: '{$reservation->ReferenceNumber}',
-			title: '{$reservation->ResourceName} {$reservation->Title}',
+			title: '{$reservation->OwnerName} - {$reservation->ResourceName} {$reservation->Title}',
 			start: '{$reservation->StartDate->Timestamp()}',
 			end: '{$reservation->EndDate->Timestamp()}',
 			url: '{Pages::RESERVATION}?rn={$reservation->ReferenceNumber}',
@@ -24,7 +24,7 @@ $(document).ready(function() {
 					year: {$DisplayDate->Year()},
 					month: {$DisplayDate->Month()},
 					date: {$DisplayDate->Day()},
-					dayClickUrl: '{Pages::CALENDAR}?ct={CalendarTypes::Day}',
+					dayClickUrl: '{Pages::CALENDAR}?ct={CalendarTypes::Day}&sid={$ScheduleId}&rid={$ResourceId}',
 					dayNames: {js_array array=$DayNames},
 					dayNamesShort: {js_array array=$DayNamesShort},
 					monthNames: {js_array array=$MonthNames},

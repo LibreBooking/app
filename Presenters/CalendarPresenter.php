@@ -86,11 +86,13 @@ class CalendarPresenter
 		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId));
 		
 		$this->page->SetDisplayDate($calendar->FirstDay());
+		$this->page->SetScheduleId($selectedScheduleId);
+		$this->page->SetResourceId($selectedResourceId);
 	}
 
 	/**
 	 * @param array|Schedule[] $schedules
-	 * @return void
+	 * @return null|int
 	 */
 	private function GetScheduleId($schedules)
 	{
@@ -108,6 +110,8 @@ class CalendarPresenter
 				return $schedule->GetId();
 			}
 		}
+
+		return null;
 	}
 }
 

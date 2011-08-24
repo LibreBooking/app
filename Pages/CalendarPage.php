@@ -26,8 +26,31 @@ interface ICalendarPage extends IPage
 	 */
 	public function SetDisplayDate($displayDate);
 
+	/**
+	 * @abstract
+	 * @return null|int
+	 */
 	public function GetScheduleId();
+
+	/**
+	 * @abstract
+	 * @return null|int
+	 */
 	public function GetResourceId();
+
+	/**
+	 * @abstract
+	 * @param $scheduleId null|int
+	 * @return void
+	 */
+	public function SetScheduleId($scheduleId);
+
+	/**
+	 * @abstract
+	 * @param $resourceId null|int
+	 * @return void
+	 */
+	public function SetResourceId($resourceId);
 }
 
 class CalendarPage extends SecurePage implements ICalendarPage
@@ -127,6 +150,24 @@ class CalendarPage extends SecurePage implements ICalendarPage
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
+
+	/**
+	 * @param $scheduleId null|int
+	 * @return void
+	 */
+	public function SetScheduleId($scheduleId)
+	{
+		$this->Set('ScheduleId', $scheduleId);
+	}
+
+	/**
+	 * @param $resourceId null|int
+	 * @return void
+	 */
+	public function SetResourceId($resourceId)
+	{
+		$this->Set('ResourceId', $resourceId);
+	}
 }
 
 class CalendarUrl
@@ -135,6 +176,7 @@ class CalendarUrl
 
 	private function __construct($year, $month, $day, $type)
 	{
+		// TODO: figure out how to get these values without coupling to the query string
 		$resourceId = ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 		$scheduleId = ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 		
