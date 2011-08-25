@@ -12,7 +12,7 @@
 */
 
 /**
-* You must add the language infomation for the language that you are including to the
+* You must add the language information for the language that you are including to the
 *   $languages array below.
 * Please keep the language keys in alphabetical order.  The basic logic for this array
 *  is from the phpMyAdmin project.
