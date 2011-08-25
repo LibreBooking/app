@@ -326,6 +326,7 @@ class SmartyPage extends Smarty
 		for ($i = 1; $i <= $pageInfo->TotalPages; $i++)
 		{
 			$sb->Append($this->CreatePageLink(array('page' => $i), $smarty));
+                $sb->Append(" ");
 		}
 		$sb->Append('</p>');
 
