@@ -318,8 +318,11 @@ class SmartyPage extends Smarty
 		$pageInfo = $params['pageInfo'];
 		$sb = new StringBuilder();
 
-		$sb->Append("<p>{$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} of {$pageInfo->Total}</p><p>");
+		$sb->Append("<p><br>");
+           $sb->Append($this->Resources->GetString('Rows'));
+           $sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} of {$pageInfo->Total}</p><p> ");
 		$sb->Append($this->Resources->GetString('Page'));
+		$sb->Append(": ");
 		for ($i = 1; $i <= $pageInfo->TotalPages; $i++)
 		{
 			$sb->Append($this->CreatePageLink(array('page' => $i), $smarty));
@@ -360,7 +363,7 @@ class SmartyPage extends Smarty
             $newUrl = preg_replace($pattern, $replace, $url);
         }
         
-        return sprintf('<a class="page" href="%s">%s</a>', $newUrl, $page);
+        return sprintf('<a  href="%s">%s</a>', $newUrl, $page);
     }
 
 	function CreateJavascriptArray($params, &$smarty)

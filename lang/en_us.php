@@ -921,6 +921,10 @@ class en_us extends Language
 		$strings['OrganizationSelection'] = 'Organization selection';
 		$strings['TimezoneSelection'] = 'Timezone selection';
 
+		$strings['Rows']='Rows';
+		$strings['Page']='Page';
+
+
 		// reservation page
 		$strings['ReservationTitle'] = 'Title of reservation';
 		$strings['ReservationDescription'] = 'Description of reservation';
@@ -984,3 +988,4 @@ class en_us extends Language
 	}
 }
 ?>
+
