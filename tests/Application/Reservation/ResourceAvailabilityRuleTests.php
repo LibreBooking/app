@@ -21,10 +21,10 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$endDate = Date::Parse('2010-04-05', 'UTC');
 		
 		$reservation = new TestReservationSeries();
-		$reservation->WithResourceId(100);
+		$reservation->WithResource(new FakeBookableResource(100, null));
 		$reservation->WithDuration(new DateRange($startDate, $endDate));
-		$reservation->AddResource(101);
-		$reservation->AddResource(102);
+		$reservation->AddResource(new FakeBookableResource(101, null));
+		$reservation->AddResource(new FakeBookableResource(102, null));
 
 		$scheduleReservation = new TestScheduleReservation(2, $startDate, $endDate, 1);
 
@@ -48,7 +48,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$resourceId = 100;
 		
 		$reservation = new TestReservationSeries();
-		$reservation->WithResourceId($resourceId);
+		$reservation->WithResource(new FakeBookableResource($resourceId));
 		$reservation->WithDuration(new DateRange($startDate, $endDate));
 		
 		$startConflict1 = Date::Parse('2010-04-04', 'UTC');
@@ -90,9 +90,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$additionalResourceId = 1;
 		
 		$reservation = new TestReservationSeries();
-		$reservation->WithResourceId(100);
+		$reservation->WithResource(new FakeBookableResource(100));
 		$reservation->WithDuration(new DateRange($startDate, $endDate));
-		$reservation->AddResource($additionalResourceId);
+		$reservation->AddResource(new FakeBookableResource($additionalResourceId));
 		
 		$startConflict1 = Date::Parse('2010-04-04', 'UTC');
 		$endConflict1 = Date::Parse('2010-04-08', 'UTC');
@@ -150,9 +150,9 @@ class TestScheduleReservation extends ScheduleReservation
 {
 	/**
 	 * @param $id
-	 * @param $startDate Date
-	 * @param $endDate Date
-	 * @param $resourceId
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param int $resourceId
 	 */
 	public function __construct($id, $startDate, $endDate, $resourceId = 1)
 	{

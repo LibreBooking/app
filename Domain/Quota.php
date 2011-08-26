@@ -116,7 +116,7 @@ class Quota implements IQuota
 	{
 		$timezone = $schedule->GetTimezone();
 		
-		foreach ($reservationSeries->AllResources() as $resourceId)
+		foreach ($reservationSeries->AllResourceIds() as $resourceId)
 		{
 			if (!$this->AppliesToResource($resourceId))
 			{

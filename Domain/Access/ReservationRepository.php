@@ -157,11 +157,11 @@ class ReservationRepository implements IReservationRepository
 			
 		$database->Execute($insertReservationResource);
 
-		foreach($reservationSeries->Resources() as $resourceId)
+		foreach($reservationSeries->AdditionalResources() as $resource)
 		{
 			$insertReservationResource = new AddReservationResourceCommand(
 				$reservationSeriesId,
-				$resourceId,
+				$resource->GetResourceId(),
 				ResourceLevel::Additional);
 					
 			$database->Execute($insertReservationResource);
@@ -273,14 +273,27 @@ class ReservationRepository implements IReservationRepository
 		$reader = ServiceLocator::GetDatabase()->Query($getResourcesCommand);
 		while ($row = $reader->GetRow())
 		{
-			$resourceId = $row[ColumnNames::RESOURCE_ID];
+			$resource = new BookableResource($row[ColumnNames::RESOURCE_ID],
+				$row[ColumnNames::RESOURCE_NAME],
+				$row[ColumnNames::RESOURCE_LOCATION],
+				$row[ColumnNames::RESOURCE_CONTACT],
+				$row[ColumnNames::RESOURCE_NOTES],
+				$row[ColumnNames::RESOURCE_MINDURATION],
+				$row[ColumnNames::RESOURCE_MAXDURATION],
+				$row[ColumnNames::RESOURCE_AUTOASSIGN],
+				$row[ColumnNames::RESOURCE_REQUIRES_APPROVAL],
+				$row[ColumnNames::RESOURCE_ALLOW_MULTIDAY],
+				$row[ColumnNames::RESOURCE_MAX_PARTICIPANTS],
+				$row[ColumnNames::RESOURCE_MINNOTICE],
+				$row[ColumnNames::RESOURCE_MAXNOTICE]);
+
 			if ($row[ColumnNames::RESOURCE_LEVEL_ID] == ResourceLevel::Primary)
 			{
-				$series->WithPrimaryResource($resourceId);
+				$series->WithPrimaryResource($resource);
 			}
 			else
 			{
-				$series->WithResource($resourceId);
+				$series->WithResource($resource);
 			}
 		}
 		$reader->Free();

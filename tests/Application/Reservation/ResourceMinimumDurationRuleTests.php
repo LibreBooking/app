@@ -17,29 +17,20 @@ class ResourceMinimumDurationRuleTests extends TestBase
 	
 	public function testNotValidIfTheReservationIsShorterThanTheMinDurationForAnyResource()
 	{
-		$resourceId1 = 1;
-		$resourceId2 = 2;
-		
-		$resource1 = new FakeBookableResource($resourceId1, "1");
+		$resource1 = new FakeBookableResource(1, "1");
 		$resource1->SetMinLength(null);
 		
-		$resource2 = new FakeBookableResource($resourceId2, "2");
+		$resource2 = new FakeBookableResource(2, "2");
 		$resource2->SetMinLength("25:00");
 		
 		$reservation = new TestReservationSeries();
 	
 		$duration = new DateRange(Date::Now(), Date::Now()->AddDays(1));
 		$reservation->WithDuration($duration);
-		$reservation->WithResourceId($resourceId1);
-		$reservation->AddResource($resourceId2);
-		
-		$resourceRepo = $this->getMock('IResourceRepository');
-		
-		$resourceRepo->expects($this->any())
-			->method('LoadById')
-			->will($this->onConsecutiveCalls($resource1, $resource2));
+		$reservation->WithResource($resource1);
+		$reservation->AddResource($resource2);
 			
-		$rule = new ResourceMinimumDurationRule($resourceRepo);
+		$rule = new ResourceMinimumDurationRule();
 		$result = $rule->Validate($reservation);
 		
 		$this->assertFalse($result->IsValid());
@@ -49,19 +40,14 @@ class ResourceMinimumDurationRuleTests extends TestBase
 	{
 		$resource = new FakeBookableResource(1, "2");
 		$resource->SetMinLength("23:00");
-		
-		$resourceRepo = $this->getMock('IResourceRepository');
-		
-		$resourceRepo->expects($this->any())
-			->method('LoadById')
-			->will($this->returnValue($resource));
 			
 		$reservation = new TestReservationSeries();
+		$reservation->WithResource($resource);
 		
 		$duration = new DateRange(Date::Now(), Date::Now()->AddDays(1));
 		$reservation->WithDuration($duration);
 		
-		$rule = new ResourceMinimumDurationRule($resourceRepo);
+		$rule = new ResourceMinimumDurationRule();
 		$result = $rule->Validate($reservation);
 		
 		$this->assertTrue($result->IsValid());

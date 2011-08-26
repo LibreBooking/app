@@ -2,16 +2,6 @@
 class ResourceMaximumDurationRule implements IReservationValidationRule
 {
 	/**
-	 * @var IResourceRepository
-	 */
-	private $resourceRepository;
-	
-	public function __construct(IResourceRepository $resourceRepository)
-	{
-		$this->resourceRepository = $resourceRepository;
-	}
-	
-	/**
 	 * @see IReservationValidationRule::Validate()
 	 * 
 	 * @param ReservationSeries $reservationSeries
@@ -19,14 +9,12 @@ class ResourceMaximumDurationRule implements IReservationValidationRule
 	 */
 	public function Validate($reservationSeries)
 	{
-		$resources = Resources::GetInstance();
+		$r = Resources::GetInstance();
+
+		$resources = $reservationSeries->AllResources();
 		
-		$resourceIds = $reservationSeries->AllResources();
-		
-		foreach ($resourceIds as $resourceId)
+		foreach ($resources as $resource)
 		{
-			$resource = $this->resourceRepository->LoadById($resourceId);
-			
 			if ($resource->HasMaxLength())
 			{
 				$maxDuration = $resource->GetMaxLength()->Interval();
@@ -36,8 +24,7 @@ class ResourceMaximumDurationRule implements IReservationValidationRule
 				$maxEnd = $start->ApplyDifference($maxDuration);
 				if ($end->GreaterThan($maxEnd))
 				{
-					return new ReservationRuleResult(false,
-						$resources->GetString("MaxDurationError", $maxDuration));
+					return new ReservationRuleResult(false, $r->GetString("MaxDurationError", $maxDuration));
 				}
 			}
 		}

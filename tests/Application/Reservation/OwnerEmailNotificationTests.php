@@ -24,19 +24,18 @@ class OwnerEmailNotificationTests extends TestBase
 		$ownerId = 100;
 		$resourceId = 200;
 
+		$resource = new FakeBookableResource($resourceId, 'name');
+		
 		$reservation = new TestReservationSeries();
 		$reservation->WithOwnerId($ownerId);
-		$reservation->WithResourceId($resourceId);
+		$reservation->WithResource($resource);
 	
-		$resourceRepo = $this->getMock('IResourceRepository');
 		$userRepo = $this->getMock('IUserRepository');
 		
 		$user = $this->LoadsUser($userRepo, $ownerId);
 		$this->AsksUser($user, $event);
 			
-		$resource = $this->LoadsResource($resourceRepo, $resourceId);
-		
-		$notification = new OwnerEmailCreatedNotificaiton($userRepo, $resourceRepo);
+		$notification = new OwnerEmailCreatedNotificaiton($userRepo);
 		$notification->Notify($reservation);
 		
 		$expectedMessage = new ReservationCreatedEmail($user, $reservation, $resource);
@@ -51,19 +50,18 @@ class OwnerEmailNotificationTests extends TestBase
 		$ownerId = 100;
 		$resourceId = 200;
 
+		$resource = new FakeBookableResource($resourceId, 'name');
+		
 		$reservation = new ExistingReservationSeries();
 		$reservation->WithOwner($ownerId);
-		$reservation->WithPrimaryResource($resourceId);
+		$reservation->WithPrimaryResource($resource);
 	
-		$resourceRepo = $this->getMock('IResourceRepository');
 		$userRepo = $this->getMock('IUserRepository');
 		
 		$user = $this->LoadsUser($userRepo, $ownerId);
 		$this->AsksUser($user, $event);
 			
-		$resource = $this->LoadsResource($resourceRepo, $resourceId);
-		
-		$notification = new OwnerEmailUpdatedNotificaiton($userRepo, $resourceRepo);
+		$notification = new OwnerEmailUpdatedNotificaiton($userRepo);
 		$notification->Notify($reservation);
 		
 		$expectedMessage = new ReservationUpdatedEmail($user, $reservation, $resource);
@@ -90,19 +88,6 @@ class OwnerEmailNotificationTests extends TestBase
 			->will($this->returnValue($user));
 			
 		return $user;
-	}
-	
-	public function LoadsResource($resourceRepo, $resourceId)
-	{
-		$resource = new FakeBookableResource($resourceId, 'name');
-		
-		$resourceRepo->expects($this->once())
-			->method('LoadById')
-			->with($this->equalTo($resourceId))
-			->will($this->returnValue($resource));
-			
-		return $resource;
-			
 	}
 }
 ?>

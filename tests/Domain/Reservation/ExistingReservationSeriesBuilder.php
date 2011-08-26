@@ -32,8 +32,8 @@ class ExistingReservationSeriesBuilder
 		
 		$series->WithDescription('description');
 		$series->WithOwner(1);
-		$series->WithPrimaryResource(2);	
-		$series->WithResource(3);
+		$series->WithPrimaryResource(new FakeBookableResource(2));
+		$series->WithResource(new FakeBookableResource(3));
 		$series->WithSchedule(4);
 		$series->WithTitle('title');
 		
@@ -129,7 +129,13 @@ class ExistingReservationSeriesBuilder
 class TestHelperExistingReservationSeries extends ExistingReservationSeries
 {
 	public $requiresNewSeries = false;
-	
+
+	public function __construct()
+	{
+	    $this->WithPrimaryResource(new FakeBookableResource(2));
+		$this->WithResource(new FakeBookableResource(3));
+	}
+
 	public function AddEvent($event)
 	{
 		parent::AddEvent($event);

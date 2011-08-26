@@ -67,7 +67,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 	protected function IsInConflict(Reservation $instance, ReservationSeries $series, ScheduleReservation $scheduleReservation)
 	{
 		return ($scheduleReservation->GetResourceId() == $series->ResourceId()) ||
-			(false !== array_search($scheduleReservation->GetResourceId(), $series->Resources()));
+			(false !== array_search($scheduleReservation->GetResourceId(), $series->AllResourceIds()));
 	}
 
 	/**

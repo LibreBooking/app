@@ -5,6 +5,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/IReservationPer
 interface IDeleteReservationPersistenceService extends IReservationPersistenceService
 {
 	/**
+	 * @param int $reservationInstanceId
 	 * @return ExistingReservationSeries
 	 */
 	function LoadByInstanceId($reservationInstanceId);

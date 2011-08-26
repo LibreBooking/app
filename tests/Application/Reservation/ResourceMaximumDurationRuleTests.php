@@ -30,16 +30,10 @@ class ResourceMaximumDurationRuleTests extends TestBase
 	
 		$duration = new DateRange(Date::Now(), Date::Now()->AddDays(1));
 		$reservation->WithDuration($duration);
-		$reservation->WithResourceId($resourceId1);
-		$reservation->AddResource($resourceId2);
+		$reservation->WithResource($resource1);
+		$reservation->AddResource($resource2);
 		
-		$resourceRepo = $this->getMock('IResourceRepository');
-		
-		$resourceRepo->expects($this->any())
-			->method('LoadById')
-			->will($this->onConsecutiveCalls($resource1, $resource2));
-			
-		$rule = new ResourceMaximumDurationRule($resourceRepo);
+		$rule = new ResourceMaximumDurationRule();
 		$result = $rule->Validate($reservation);
 		
 		$this->assertFalse($result->IsValid());
@@ -49,19 +43,14 @@ class ResourceMaximumDurationRuleTests extends TestBase
 	{
 		$resource = new FakeBookableResource(1, "2");
 		$resource->SetMaxLength("25:00");
-		
-		$resourceRepo = $this->getMock('IResourceRepository');
-		
-		$resourceRepo->expects($this->any())
-			->method('LoadById')
-			->will($this->returnValue($resource));
 			
 		$reservation = new TestReservationSeries();
+		$reservation->WithResource($resource);
 		
 		$duration = new DateRange(Date::Now(), Date::Now()->AddDays(1));
 		$reservation->WithDuration($duration);
 		
-		$rule = new ResourceMaximumDurationRule($resourceRepo);
+		$rule = new ResourceMaximumDurationRule();
 		$result = $rule->Validate($reservation);
 		
 		$this->assertTrue($result->IsValid());

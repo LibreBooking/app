@@ -41,7 +41,7 @@ class ExistingReservationTests extends TestBase
 		$series = $builder->Build();
 		// updates
 		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
-		$series->Update(99, 999, 'new', 'new');
+		$series->Update(99, new FakeBookableResource(999), 'new', 'new');
 		$series->Repeats($currentRepeatOptions);
 
 		$instances = $series->Instances();
@@ -285,7 +285,7 @@ class ExistingReservationTests extends TestBase
 		
 		$series = $builder->Build();
 		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-		$series->Update(9, 10, 'new', 'new');
+		$series->Update(9, new FakeBookableResource(10), 'new', 'new');
 		$series->Repeats($repeatOptions);
 		
 		$events = $series->GetEvents();
@@ -592,13 +592,13 @@ class ExistingReservationTests extends TestBase
 	{
 		$builder = new ExistingReservationSeriesBuilder();
 
-		$unchanged = 1;
-		$added = 2;
-		$removed = 3;
+		$unchanged = new FakeBookableResource(1);
+		$added = new FakeBookableResource(2);
+		$removed = new FakeBookableResource(3);
 		
 		$series = $builder->Build();
-		$series->WithResource($unchanged);
-		$series->WithResource($removed);
+		$series->WithResource(new FakeBookableResource($unchanged));
+		$series->WithResource(new FakeBookableResource($removed));
 
 		$series->ChangeResources(array($unchanged, $added));
 

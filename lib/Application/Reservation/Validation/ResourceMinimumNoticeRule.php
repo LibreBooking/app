@@ -2,16 +2,6 @@
 class ResourceMinimumNoticeRule implements IReservationValidationRule
 {
 	/**
-	 * @var IResourceRepository
-	 */
-	private $resourceRepository;
-	
-	public function __construct(IResourceRepository $resourceRepository)
-	{
-		$this->resourceRepository = $resourceRepository;
-	}
-	
-	/**
 	 * @see IReservationValidationRule::Validate()
 	 * 
 	 * @param ReservationSeries $reservationSeries
@@ -19,14 +9,12 @@ class ResourceMinimumNoticeRule implements IReservationValidationRule
 	 */
 	public function Validate($reservationSeries)
 	{
-		$resources = Resources::GetInstance();
+		$r = Resources::GetInstance();
 		
-		$resourceIds = $reservationSeries->AllResources();
+		$resources = $reservationSeries->AllResources();
 		
-		foreach ($resourceIds as $resourceId)
+		foreach ($resources as $resource)
 		{
-			$resource = $this->resourceRepository->LoadById($resourceId);
-			
 			if ($resource->HasMinNotice())
 			{
 				$minStartDate = Date::Now()->ApplyDifference($resource->GetMinNotice()->Interval());
@@ -37,7 +25,7 @@ class ResourceMinimumNoticeRule implements IReservationValidationRule
 					if ($instance->StartDate()->LessThan($minStartDate))
 					{
 						return new ReservationRuleResult(false, 
-							$resources->GetString("MinNoticeError", $minStartDate->Format($resources->GeneralDateTimeFormat())));
+							$r->GetString("MinNoticeError", $minStartDate->Format($r->GeneralDateTimeFormat())));
 					}
 				}
 			}

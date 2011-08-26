@@ -33,6 +33,11 @@ class ReservationUpdatePresenterTests extends TestBase
 	private $notificationService;
 
 	/**
+	 * @var IResourceRepository
+	 */
+	private $resourceRepository;
+
+	/**
 	 * @var ReservationUpdatePresenter
 	 */
 	private $presenter;
@@ -47,14 +52,16 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->persistenceService = $this->getMock('IUpdateReservationPersistenceService');
 		$this->validationService = $this->getMock('IUpdateReservationValidationService');
 		$this->notificationService = $this->getMock('IUpdateReservationNotificationService');
-		
+		$this->resourceRepository = $this->getMock('IResourceRepository');
+
 		$this->page = new FakeReservationUpdatePage();
 		
 		$this->presenter = new ReservationUpdatePresenter(
 								$this->page, 
 								$this->persistenceService, 
 								$this->validationService, 
-								$this->notificationService);
+								$this->notificationService,
+								$this->resourceRepository);
 	}
 	
 	public function teardown()
@@ -69,10 +76,16 @@ class ReservationUpdatePresenterTests extends TestBase
 		$currentDuration = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(2), 'UTC');
 		$removedResourceId = 190;
 
+		$resource = new FakeBookableResource(1);
+		$additionalId1 = $this->page->resourceIds[0];
+		$additionalId2 = $this->page->resourceIds[1];
+		$additional1 = new FakeBookableResource($additionalId1);
+		$additional2 = new FakeBookableResource($additionalId2);
+
 		$reservation = new Reservation($expectedSeries, $currentDuration);		
 		$expectedSeries->WithId($seriesId);
 		$expectedSeries->WithCurrentInstance($reservation);
-		$expectedSeries->WithResource($removedResourceId);
+		$expectedSeries->WithResource(new FakeBookableResource($removedResourceId));
 		
 		$reservationId = $this->page->reservationId;
 		
@@ -82,6 +95,21 @@ class ReservationUpdatePresenterTests extends TestBase
 			->method('LoadByInstanceId')
 			->with($this->equalTo($reservationId))
 			->will($this->returnValue($expectedSeries));
+
+		$this->resourceRepository->expects($this->at(0))
+			->method('LoadById')
+			->with($this->equalTo($this->page->resourceId))
+			->will($this->returnValue($resource));
+
+		$this->resourceRepository->expects($this->at(1))
+			->method('LoadById')
+			->with($this->equalTo($additionalId1))
+			->will($this->returnValue($additional1));
+
+		$this->resourceRepository->expects($this->at(2))
+			->method('LoadById')
+			->with($this->equalTo($additionalId2))
+			->will($this->returnValue($additional2));
 
 		$this->page->repeatOptions = new RepeatDaily(1, Date::Now());
 			
@@ -97,9 +125,9 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($this->page->title, $existingSeries->Title());
 		$this->assertEquals($this->page->description, $existingSeries->Description());
 		$this->assertEquals($this->page->userId, $existingSeries->UserId());
-		$this->assertEquals($this->page->resourceId, $existingSeries->ResourceId());
+		$this->assertEquals($resource, $existingSeries->Resource());
 		$this->assertEquals($this->page->repeatOptions, $existingSeries->RepeatOptions());
-		$this->assertEquals($this->page->resourceIds, $existingSeries->Resources());
+		$this->assertEquals(array($additional1, $additional2), $existingSeries->AdditionalResources());
 		$this->assertEquals($this->page->participants, $existingSeries->CurrentInstance()->AddedParticipants());
 		$this->assertEquals($this->page->invitees, $existingSeries->CurrentInstance()->AddedInvitees());
 		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()), "Expected: $expectedDuration Actual: {$existingSeries->CurrentInstance()->Duration()}");

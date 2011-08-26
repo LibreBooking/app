@@ -15,23 +15,23 @@ interface IResource
 
 class BookableResource implements IResource
 {
-	private $_resourceId;
-	private $_name;
-	private $_location;
-	private $_contact;
-	private $_notes;
-	private $_description;
-	private $_minLength;
-	private $_maxLength;
-	private $_autoAssign;
-	private $_requiresApproval;
-	private $_allowMultiday;
-	private $_maxParticipants;
-	private $_minNotice;
-	private $_maxNotice;
-	private $_scheduleId;
-	private $_imageName;
-	private $_isActive;
+	protected $_resourceId;
+	protected $_name;
+	protected $_location;
+	protected $_contact;
+	protected $_notes;
+	protected $_description;
+	protected $_minLength;
+	protected $_maxLength;
+	protected $_autoAssign;
+	protected $_requiresApproval;
+	protected $_allowMultiday;
+	protected $_maxParticipants;
+	protected $_minNotice;
+	protected $_maxNotice;
+	protected $_scheduleId;
+	protected $_imageName;
+	protected $_isActive;
 	
 	public function __construct($resourceId,
 								$name,
@@ -379,6 +379,11 @@ class BookableResource implements IResource
 	public function BringOnline()
 	{
 		$this->_isActive = true;
+	}
+
+	public function __toString()
+	{
+		return 'BookableResource' . $this->_resourceId;
 	}
 }
 ?>

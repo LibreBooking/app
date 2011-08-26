@@ -31,17 +31,24 @@ class ReservationSavePresenter
 	 * @var IReservationNotificationService
 	 */
 	private $_notificationService;
+
+	/**
+	 * @var IResourceRepository
+	 */
+	private $_resourceRepository;
 	
 	public function __construct(
 		IReservationSavePage $page, 
 		IReservationPersistenceService $persistenceService,
 		IReservationValidationService $validationService,
-		IReservationNotificationService $notificationService)
+		IReservationNotificationService $notificationService,
+		IResourceRepository $resourceRepository)
 	{
 		$this->_page = $page;
 		$this->_persistenceService = $persistenceService;
 		$this->_validationService = $validationService;
 		$this->_notificationService = $notificationService;
+		$this->_resourceRepository = $resourceRepository;
 	}
 	
 	public function BuildReservation()
@@ -50,20 +57,20 @@ class ReservationSavePresenter
 		// reminder
 		
 		$userId = $this->_page->GetUserId();
-		$resourceId = $this->_page->GetResourceId();
+		$resource = $this->_resourceRepository->LoadById($this->_page->GetResourceId());
 		$scheduleId = $this->_page->GetScheduleId();
 		$title = $this->_page->GetTitle();
 		$description = $this->_page->GetDescription();
 		$repeatOptions = $this->_page->GetRepeatOptions();
 		$duration = $this->GetReservationDuration();
 		
-		$reservationSeries = ReservationSeries::Create($userId, $resourceId, $scheduleId, $title, $description, $duration, $repeatOptions);
+		$reservationSeries = ReservationSeries::Create($userId, $resource, $scheduleId, $title, $description, $duration, $repeatOptions);
 		
 		$resourceIds = $this->_page->GetResources();
 		
 		foreach ($resourceIds as $resourceId)
 		{
-			$reservationSeries->AddResource($resourceId);
+			$reservationSeries->AddResource( $this->_resourceRepository->LoadById($resourceId));
 		}
 
 		$participantIds = $this->_page->GetParticipants();

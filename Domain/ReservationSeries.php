@@ -38,16 +38,26 @@ class ReservationSeries
 	}
 
 	/**
-	 * @var int
+	 * @var BookableResource
 	 */
-	protected $_resourceId;
+	 protected $_resource;
 
 	/**
 	 * @return int
 	 */
 	public function ResourceId()
 	{
-		return $this->_resourceId;
+		if (!is_object($this->_resource))
+			throw new Exception('Resource is ' . $this->_resource);
+		return $this->_resource->GetResourceId();
+	}
+
+	/**
+	 * @return BookableResourceIRepeatOptions
+	 */
+	public function Resource()
+	{
+		return $this->_resource;
 	}
 	
 	/**
@@ -88,7 +98,10 @@ class ReservationSeries
 	{
 		return $this->_description;
 	}
-	
+
+	/**
+	 * @var IRepeatOptions
+	 */
 	protected $_repeatOptions;
 	
 	/**
@@ -98,13 +111,16 @@ class ReservationSeries
 	{
 		return $this->_repeatOptions;
 	}
-	
+
+	/**
+	 * @var array|BookableResource[]
+	 */
 	protected $_resources = array();
 	
 	/**
-	 * @return int[]
+	 * @return array|BookableResource[]
 	 */
-	public function Resources()
+	public function AdditionalResources()
 	{
 		return $this->_resources;
 	}
@@ -112,11 +128,27 @@ class ReservationSeries
 	/**
 	 * @return int[]
 	 */
+	public function AllResourceIds()
+	{
+		$ids = array($this->ResourceId());
+		foreach ($this->_resources as $resource)
+		{
+			$ids[] = $resource->GetResourceId();
+		}
+		return $ids;
+	}
+
+	/**
+	 * @return array|BookableResource[]
+	 */
 	public function AllResources()
 	{
-		return array_merge(array($this->_resourceId), $this->_resources);
+		return $this->_resources;
 	}
-	
+
+	/**
+	 * @var array|Reservation[]
+	 */
 	protected $instances = array();
 	
 	/**
@@ -139,7 +171,7 @@ class ReservationSeries
 	
 	/**
 	 * @param int $userId
-	 * @param int $resourceId
+	 * @param BookableResource $resource
 	 * @param int $scheduleId
 	 * @param string $title
 	 * @param string $description
@@ -149,7 +181,7 @@ class ReservationSeries
 	 */
 	public static function Create(
 								$userId, 
-								$resourceId, 
+								BookableResource $resource,
 								$scheduleId, 
 								$title, 
 								$description, 
@@ -159,7 +191,7 @@ class ReservationSeries
 		
 		$series = new ReservationSeries();
 		$series->_userId = $userId;
-		$series->_resourceId = $resourceId;
+		$series->_resource = $resource;
 		$series->_scheduleId = $scheduleId;
 		$series->_title = $title;
 		$series->_description = $description;
@@ -250,11 +282,11 @@ class ReservationSeries
 	}
 	
 	/**
-	 * @param int $resourceId
+	 * @param BookableResource $resource
 	 */
-	public function AddResource($resourceId)
+	public function AddResource(BookableResource $resource)
 	{
-		$this->_resources[] = $resourceId;
+		$this->_resources[] = $resource;
 	}
 	
 	/**
@@ -345,7 +377,7 @@ class ReservationSeries
 	 */
 	public function ContainsResource($resourceId)
 	{
-		return in_array($resourceId, $this->AllResources());
+		return in_array($resourceId, $this->AllResourceIds());
 	}
 }
 ?>

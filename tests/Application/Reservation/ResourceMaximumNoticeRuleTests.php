@@ -17,13 +17,10 @@ class ResourceMaximumNoticeRuleTests extends TestBase
 	
 	public function testMaxNoticeIsCheckedAgainstEachReservationInstanceForEachResource()
 	{
-		$resourceId1 = 1;
-		$resourceId2 = 2;
-		
-		$resource1 = new FakeBookableResource($resourceId1, "1");
+		$resource1 = new FakeBookableResource(1, "1");
 		$resource1->SetMaxNotice(null);
 		
-		$resource2 = new FakeBookableResource($resourceId2, "2");
+		$resource2 = new FakeBookableResource(2, "2");
 		$resource2->SetMaxNotice("23:00");
 		
 		$reservation = new TestReservationSeries();
@@ -32,16 +29,10 @@ class ResourceMaximumNoticeRuleTests extends TestBase
 		$tooFarInFuture = Date::Now()->AddDays(1);
 		$reservation->WithDuration($duration);
 		$reservation->WithRepeatOptions(new RepeatDaily(1, $tooFarInFuture));
-		$reservation->WithResourceId($resourceId1);
-		$reservation->AddResource($resourceId2);
-		
-		$resourceRepo = $this->getMock('IResourceRepository');
-		
-		$resourceRepo->expects($this->any())
-			->method('LoadById')
-			->will($this->onConsecutiveCalls($resource1, $resource2));
+		$reservation->WithResource($resource1);
+		$reservation->AddResource($resource2);
 			
-		$rule = new ResourceMaximumNoticeRule($resourceRepo);
+		$rule = new ResourceMaximumNoticeRule();
 		$result = $rule->Validate($reservation);
 		
 		$this->assertFalse($result->IsValid());
@@ -51,19 +42,14 @@ class ResourceMaximumNoticeRuleTests extends TestBase
 	{
 		$resource = new FakeBookableResource(1, "2");
 		$resource->SetMaxNotice("1:00");
-		
-		$resourceRepo = $this->getMock('IResourceRepository');
-		
-		$resourceRepo->expects($this->any())
-			->method('LoadById')
-			->will($this->returnValue($resource));
 			
 		$reservation = new TestReservationSeries();
+		$reservation->WithResource($resource);
 		
 		$duration = new DateRange(Date::Now(), Date::Now());
 		$reservation->WithDuration($duration);
 		
-		$rule = new ResourceMaximumNoticeRule($resourceRepo);
+		$rule = new ResourceMaximumNoticeRule();
 		$result = $rule->Validate($reservation);
 		
 		$this->assertTrue($result->IsValid());

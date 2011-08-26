@@ -37,10 +37,11 @@ class ReservationTests extends TestBase
 			->method('GetDates')
 			->with($this->equalTo($dateRange))
 			->will($this->returnValue($repeatDates));
-			
+
+		$resource = new FakeBookableResource($resourceId);
 		$series = ReservationSeries::Create(
-			$userId, 
-			$resourceId, 
+			$userId,
+			$resource,
 			$scheduleId, 
 			$title, 
 			$description, 
@@ -48,7 +49,7 @@ class ReservationTests extends TestBase
 			$repeatOptions);
 		
 		$this->assertEquals($userId, $series->UserId());
-		$this->assertEquals($resourceId, $series->ResourceId());
+		$this->assertEquals($resource, $series->Resource());
 		$this->assertEquals($scheduleId, $series->ScheduleId());
 		$this->assertEquals($title, $series->Title());
 		$this->assertEquals($description, $series->Description());
@@ -73,7 +74,7 @@ class ReservationTests extends TestBase
 		
 		$repeatOptions = $this->getMock('IRepeatOptions');
 		
-		$series = ReservationSeries::Create(1, 1, 1, null, null, $dateRange, $repeatOptions);
+		$series = ReservationSeries::Create(1, new FakeBookableResource(1), 1, null, null, $dateRange, $repeatOptions);
 		
 		$instance = $series->CurrentInstance();
 		

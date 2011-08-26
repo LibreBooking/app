@@ -23,14 +23,18 @@ class PermissionValidationRuleTests extends TestBase
 		$resourceId1 = 1;
 		$resourceId2 = 2;
 
-		$resource = new ReservationResource($resourceId);
-		$resource1 = new ReservationResource($resourceId1);
+		$rr1 = new ReservationResource($resourceId);
+		$rr2 = new ReservationResource($resourceId1);
+
+		$resource = new FakeBookableResource($resourceId, null);
+		$resource1 = new FakeBookableResource($resourceId1, null);
+		$resource2 = new FakeBookableResource($resourceId2, null);
 		
 		$reservation = new TestReservationSeries();
 		$reservation->WithOwnerId($userId);
-		$reservation->WithResourceId($resourceId);
-		$reservation->AddResource($resourceId1);
-		$reservation->AddResource($resourceId2);
+		$reservation->WithResource($resource);
+		$reservation->AddResource($resource1);
+		$reservation->AddResource($resource2);
 		
 		$service = new FakePermissionService(array(true, false));
 		$factory = $this->getMock('IPermissionServiceFactory');
@@ -45,8 +49,8 @@ class PermissionValidationRuleTests extends TestBase
 			
 		$this->assertEquals(false, $result->IsValid());
 		
-		$this->assertEquals($resource, $service->Resources[0]);
-		$this->assertEquals($resource1, $service->Resources[1]);
+		$this->assertEquals($rr1, $service->Resources[0]);
+		$this->assertEquals($rr2, $service->Resources[1]);
 	}
 }
 

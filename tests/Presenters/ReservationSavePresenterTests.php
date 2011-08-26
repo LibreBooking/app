@@ -16,7 +16,7 @@ class ReservationSavePresenterTests extends TestBase
 	private $userId;
 
 	/**
-	 * @var IReservationSavePage
+	 * @var IReservationSavePage|FakeReservationSavePage
 	 */
 	private $page;
 	
@@ -26,19 +26,24 @@ class ReservationSavePresenterTests extends TestBase
 	private $presenter;
 
 	/**
-	 * @var IReservationPersistenceService
+	 * @var IReservationPersistenceService|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $persistenceService;
 	
 	/**
-	 * @var IReservationValidationService
+	 * @var IReservationValidationService|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $validationService;
 	
 	/**
-	 * @var IReservationNotificationService
+	 * @var IReservationNotificationService|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $notificationService;
+
+	/**
+	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $resourceRepository;
 	
 	public function setup()
 	{
@@ -52,8 +57,14 @@ class ReservationSavePresenterTests extends TestBase
 		$this->persistenceService = $this->getMock('IReservationPersistenceService');
 		$this->validationService = $this->getMock('IReservationValidationService');
 		$this->notificationService = $this->getMock('IReservationNotificationService');
+		$this->resourceRepository = $this->getMock('IResourceRepository');
 		
-		$this->presenter = new ReservationSavePresenter($this->page, $this->persistenceService, $this->validationService, $this->notificationService);
+		$this->presenter = new ReservationSavePresenter(
+			$this->page,
+			$this->persistenceService,
+			$this->validationService,
+			$this->notificationService,
+			$this->resourceRepository);
 	}
 
 	public function teardown()
@@ -82,11 +93,30 @@ class ReservationSavePresenterTests extends TestBase
 		$participants = $this->page->GetParticipants();
 		$invitees = $this->page->GetInvitees();
 
+		$resource = new FakeBookableResource($resourceId, 'r1');
+		$additionalResource1 = new FakeBookableResource($additionalResources[0], 'r2');
+		$additionalResource2 = new FakeBookableResource($additionalResources[1], 'r3');
+
+		$this->resourceRepository->expects($this->at(0))
+			->method('LoadById')
+			->with($this->equalTo($resourceId))
+			->will($this->returnValue($resource));
+
+		$this->resourceRepository->expects($this->at(1))
+			->method('LoadById')
+			->with($this->equalTo($additionalResources[0]))
+			->will($this->returnValue($additionalResource1));
+
+		$this->resourceRepository->expects($this->at(2))
+			->method('LoadById')
+			->with($this->equalTo($additionalResources[1]))
+			->will($this->returnValue($additionalResource2));
+
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
-		$expected = ReservationSeries::Create($userId, $resourceId, $scheduleId, $title, $description, $duration, $repeatOptions);
-		$expected->AddResource($additionalResources[0]);
-		$expected->AddResource($additionalResources[1]);
+		$expected = ReservationSeries::Create($userId, $resource, $scheduleId, $title, $description, $duration, $repeatOptions);
+		$expected->AddResource($additionalResource1);
+		$expected->AddResource($additionalResource2);
 		$expected->ChangeParticipants($participants);
 		$expected->ChangeInvitees($invitees);
 

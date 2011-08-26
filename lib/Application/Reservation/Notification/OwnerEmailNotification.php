@@ -11,29 +11,23 @@ abstract class OwnerEmailNotificaiton implements IReservationNotification
 	private $_userRepo;
 	
 	/**
-	 * @var IResourceRepository
-	 */
-	private $_resourceRepo;
-	
-	/**
 	 * @param IUserRepository $userRepo
-	 * @param IResourceRepository $resourceRepo
 	 */
-	public function __construct(IUserRepository $userRepo, IResourceRepository $resourceRepo)
+	public function __construct(IUserRepository $userRepo)
 	{
 		$this->_userRepo = $userRepo;
-		$this->_resourceRepo = $resourceRepo;
 	}
 
 	/**
-	 * @see IReservationNotification::Notify()
+	 * @param ReservationSeries $reservation
+	 * @return void
 	 */
-	public function Notify($reservation, $event = null)
+	public function Notify($reservation)
 	{
 		$owner = $this->_userRepo->LoadById($reservation->UserId());
 		if ($this->ShouldSend($owner))
 		{
-			$resource = $this->_resourceRepo->LoadById($reservation->ResourceId());
+			$resource = $reservation->Resource();
 			
 			$message = $this->GetMessage($owner, $reservation, $resource);
 			ServiceLocator::GetEmailService()->Send($message);

@@ -13,9 +13,9 @@ class TestReservationSeries extends ReservationSeries
 		$this->_userId = $ownerId;
 	}
 	
-	public function WithResourceId($resourceId)
+	public function WithResource(BookableResource $resource)
 	{
-		$this->_resourceId = $resourceId;
+		$this->_resource = $resource;
 	}
 	
 	public function WithDuration(DateRange $duration)

@@ -46,9 +46,6 @@ class QuotaRuleTests extends TestBase
 		$timezone = 'America/New_York';
 		
 		$userId = 10;
-		$resourceId = 20;
-		$resourceId2 = 22;
-
 		$groupId1 = 8287;
 		$groupId2 = 102;
 		
@@ -56,8 +53,8 @@ class QuotaRuleTests extends TestBase
 		$user->SetGroups(array($groupId1, $groupId2));
 
 		$schedule = new Schedule(1, null, null, null, null, $timezone);
-		$series = ReservationSeries::Create($userId, $resourceId, $scheduleId, null, null, new TestDateRange(), new RepeatNone());
-		$series->AddResource($resourceId2);
+		$series = ReservationSeries::Create($userId, new FakeBookableResource(20), $scheduleId, null, null, new TestDateRange(), new RepeatNone());
+		$series->AddResource(new FakeBookableResource(22));
 
 		$quota1 = $this->GetMock('IQuota');
 		$quota2 = $this->GetMock('IQuota');
@@ -96,9 +93,6 @@ class QuotaRuleTests extends TestBase
 		$timezone = 'America/New_York';
 
 		$userId = 10;
-		$resourceId = 20;
-		$resourceId2 = 22;
-
 		$groupId1 = 8287;
 		$groupId2 = 102;
 
@@ -106,8 +100,8 @@ class QuotaRuleTests extends TestBase
 		$user->SetGroups(array($groupId1, $groupId2));
 
 		$schedule = new Schedule(1, null, null, null, null, $timezone);
-		$series = ReservationSeries::Create($userId, $resourceId, $scheduleId, null, null, new TestDateRange(), new RepeatNone());
-		$series->AddResource($resourceId2);
+		$series = ReservationSeries::Create($userId, new FakeBookableResource(20), $scheduleId, null, null, new TestDateRange(), new RepeatNone());
+		$series->AddResource(new FakeBookableResource(22));
 
 		$quota1 = $this->GetMock('IQuota');
 		$quota2 = $this->GetMock('IQuota');

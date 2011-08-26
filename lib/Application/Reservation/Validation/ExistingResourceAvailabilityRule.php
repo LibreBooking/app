@@ -2,7 +2,8 @@
 class ExistingResourceAvailabilityRule extends ResourceAvailabilityRule implements IUpdateReservationValidationRule
 {
 	/**
-	 * @see IUpdateReservationValidationRule::Validate()
+	 * @param ReservationSeries $series
+	 * @return ReservationRuleResult
 	 */
 	public function Validate($series)
 	{
@@ -20,7 +21,7 @@ class ExistingResourceAvailabilityRule extends ResourceAvailabilityRule implemen
 		}
 		
 		return ($scheduleReservation->GetResourceId() == $series->ResourceId()) ||
-			(false !== array_search($scheduleReservation->GetResourceId(), $series->Resources()));
+			(false !== array_search($scheduleReservation->GetResourceId(), $series->AllResourceIds()));
 	}
 }
 ?>

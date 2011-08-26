@@ -36,7 +36,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$current->SetReservationId($currentId);
 		
 		$series = new ExistingReservationSeries();
-		$series->WithResource($resourceId);
+		$series->WithResource(new FakeBookableResource($resourceId));
 		$series->WithCurrentInstance($current);	
 		$series->WithInstance($deleted);
 		$series->WithInstance($updated);
@@ -69,7 +69,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$current->SetReservationId($currentId);
 		
 		$series = new ExistingReservationSeries();
-		$series->WithResource($resourceId);
+		$series->WithResource(new FakeBookableResource($resourceId));
 		$series->WithCurrentInstance($current);	
 		
 		$reservations = array( 
@@ -96,8 +96,8 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$current->SetReservationId($currentId);
 		
 		$series = new ExistingReservationSeries();
-		$series->WithPrimaryResource($resourceId);
-		$series->WithResource($resourceId + 1);
+		$series->WithPrimaryResource(new FakeBookableResource($resourceId));
+		$series->WithResource(new FakeBookableResource($resourceId + 1));
 		$series->WithCurrentInstance($current);	
 		
 		$reservations = array( 
@@ -126,8 +126,8 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$current->SetReservationId($currentId);
 		
 		$series = new ExistingReservationSeries();
-		$series->WithPrimaryResource($resourceId1);
-		$series->WithResource($resourceId2);
+		$series->WithPrimaryResource(new FakeBookableResource($resourceId1));
+		$series->WithResource(new FakeBookableResource($resourceId2));
 		$series->WithCurrentInstance($current);	
 		
 		$reservations = array( 

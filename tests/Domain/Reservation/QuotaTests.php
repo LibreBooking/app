@@ -437,8 +437,8 @@ class QuotaTests extends TestBase
 
 		$hourLongReservation = new DateRange($startDate, $endDate, $this->tz);
 
-		$series = ReservationSeries::Create($userId, $resource1, 1, null, null, $hourLongReservation, new RepeatNone());
-		$series->AddResource($resource2);
+		$series = ReservationSeries::Create($userId, new FakeBookableResource($resource1), 1, null, null, $hourLongReservation, new RepeatNone());
+		$series->AddResource(new FakeBookableResource($resource2));
 
 		return $series;
 	}

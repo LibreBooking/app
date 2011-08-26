@@ -43,9 +43,9 @@ class ExistingReservationSeries extends ReservationSeries
 	/**
 	 * @internal
 	 */
-	public function WithPrimaryResource($resourceId)
+	public function WithPrimaryResource(BookableResource $resource)
 	{
-		$this->_resourceId = $resourceId;
+		$this->_resource = $resource;
 	}
 
 	/**
@@ -75,9 +75,9 @@ class ExistingReservationSeries extends ReservationSeries
 	/**
 	 * @internal
 	 */
-	public function WithResource($resourceId)
+	public function WithResource(BookableResource $resource)
 	{
-		$this->AddResource($resourceId);
+		$this->AddResource($resource);
 	}
 
 	/**
@@ -136,14 +136,14 @@ class ExistingReservationSeries extends ReservationSeries
 
 	/**
 	 * @param int $userId
-	 * @param int $resourceId
+	 * @param BookableResource $resource
 	 * @param string $title
 	 * @param string $description
 	 */
-	public function Update($userId, $resourceId, $title, $description)
+	public function Update($userId, BookableResource $resource, $title, $description)
 	{
 		$this->_userId = $userId;
-		$this->_resourceId = $resourceId;
+		$this->_resource = $resource;
 		$this->_title = $title;
 		$this->_description = $description;
 	}
@@ -216,27 +216,29 @@ class ExistingReservationSeries extends ReservationSeries
 		}
 	}
 	/**
-	 * @param $resourceIds array|int[]
+	 * @param $resources array|BookableResource([]
 	 * @return void
 	 */
-	public function ChangeResources($resourceIds)
+	public function ChangeResources($resources)
 	{
-		$diff = new ArrayDiff($this->_resources, $resourceIds);
+		$diff = new ArrayDiff($this->_resources, $resources);
 
 		$added = $diff->GetAddedToArray1();
 		$removed = $diff->GetRemovedFromArray1();
 
-		foreach ($added as $resourceId)
+		/** @var $resource BookableResource */
+		foreach ($added as $resource)
 		{
-			$this->AddEvent(new ResourceAddedEvent($resourceId, $this));
+			$this->AddEvent(new ResourceAddedEvent($resource, $this));
 		}
 
-		foreach ($removed as $resourceId)
+		/** @var $resource BookableResource */
+		foreach ($removed as $resource)
 		{
-			$this->AddEvent(new ResourceRemovedEvent($resourceId, $this));
+			$this->AddEvent(new ResourceRemovedEvent($resource, $this));
 		}
 		
-		$this->_resources = $resourceIds;
+		$this->_resources = $resources;
 	}
 
 	/**
@@ -551,18 +553,33 @@ class SeriesDeletedEvent
 
 class ResourceRemovedEvent
 {
+	/**
+	 * @var ExistingReservationSeries
+	 */
 	private $series;
-	private $resourceId;
 
-	public function __construct($resourceId, ExistingReservationSeries $series)
+	/**
+	 * @var BookableResource
+	 */
+	private $resource;
+
+	public function __construct(BookableResource $resource, ExistingReservationSeries $series)
 	{
-		$this->resourceId = $resourceId;
+		$this->resource = $resource;
 		$this->series = $series;
 	}
 
+	/**
+	 * @return BookableResource
+	 */
+	public function Resource()
+	{
+		return $this->resource;
+	}
+	
 	public function ResourceId()
 	{
-		return $this->resourceId;
+		return $this->resource->GetResourceId();
 	}
 	
 	/**
@@ -575,24 +592,39 @@ class ResourceRemovedEvent
 
 	public function __toString()
 	{
-        return sprintf("%s%s%s", get_class($this), $this->resourceId, $this->series->SeriesId());
+        return sprintf("%s%s%s", get_class($this), $this->ResourceId(), $this->series->SeriesId());
     }
 }
 
 class ResourceAddedEvent
 {
+	/**
+	 * @var ExistingReservationSeries
+	 */
 	private $series;
-	private $resourceId;
 
-	public function __construct($resourceId, ExistingReservationSeries $series)
+	/**
+	 * @var BookableResource
+	 */
+	private $resource;
+
+	public function __construct(BookableResource $resource, ExistingReservationSeries $series)
 	{
-		$this->resourceId = $resourceId;
+		$this->resource = $resource;
 		$this->series = $series;
+	}
+
+	/**
+	 * @return BookableResource
+	 */
+	public function Resource()
+	{
+		return $this->resource;
 	}
 
 	public function ResourceId()
 	{
-		return $this->resourceId;
+		return $this->resource->GetResourceId();
 	}
 
 	/**
@@ -605,7 +637,7 @@ class ResourceAddedEvent
 
 	public function __toString()
 	{
-        return sprintf("%s%s%s", get_class($this), $this->resourceId, $this->series->SeriesId());
+        return sprintf("%s%s%s", get_class($this), $this->ResourceId(), $this->series->SeriesId());
     }
 }
 

@@ -31,17 +31,24 @@ class ReservationUpdatePresenter
 	 * @var IUpdateReservationNotificationService
 	 */
 	private $notificationService;
+
+	/**
+	 * @var IResourceRepository
+	 */
+	private $resourceRepository;
 	
 	public function __construct(
 		IReservationUpdatePage $page, 
 		IUpdateReservationPersistenceService $persistenceService,
 		IUpdateReservationValidationService $validationService,
-		IUpdateReservationNotificationService $notificationService)
+		IUpdateReservationNotificationService $notificationService,
+		IResourceRepository $resourceRepository)
 	{
 		$this->page = $page;
 		$this->persistenceService = $persistenceService;
 		$this->validationService = $validationService;
 		$this->notificationService = $notificationService;
+		$this->resourceRepository = $resourceRepository;
 	}
 	
 	/**
@@ -54,14 +61,21 @@ class ReservationUpdatePresenter
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
 		$existingSeries->UpdateDuration($this->GetReservationDuration());
 
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 		$existingSeries->Update(
 			$this->page->GetUserId(), 
-			$this->page->GetResourceId(), 
+			$resource,
 			$this->page->GetTitle(), 
 			$this->page->GetDescription());
 		
 		$existingSeries->Repeats($this->page->GetRepeatOptions());
-		$existingSeries->ChangeResources($this->page->GetResources());
+
+		$additionalResources = array();
+		foreach ($this->page->GetResources() as $additionalResourceId)
+		{
+			$additionalResources[] = $this->resourceRepository->LoadById($additionalResourceId);
+		}
+		$existingSeries->ChangeResources($additionalResources);
 
 		$existingSeries->ChangeParticipants($this->page->GetParticipants());
 		$existingSeries->ChangeInvitees($this->page->GetInvitees());

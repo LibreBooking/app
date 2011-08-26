@@ -2,16 +2,6 @@
 class ResourceMinimumDurationRule implements IReservationValidationRule
 {
 	/**
-	 * @var IResourceRepository
-	 */
-	private $resourceRepository;
-	
-	public function __construct(IResourceRepository $resourceRepository)
-	{
-		$this->resourceRepository = $resourceRepository;
-	}
-	
-	/**
 	 * @see IReservationValidationRule::Validate()
 	 * 
 	 * @param ReservationSeries $reservationSeries
@@ -19,14 +9,12 @@ class ResourceMinimumDurationRule implements IReservationValidationRule
 	 */
 	public function Validate($reservationSeries)
 	{
-		$resources = Resources::GetInstance();
+		$r = Resources::GetInstance();
 		
-		$resourceIds = $reservationSeries->AllResources();
+		$resources = $reservationSeries->AllResources();
 		
-		foreach ($resourceIds as $resourceId)
+		foreach ($resources as $resource)
 		{
-			$resource = $this->resourceRepository->LoadById($resourceId);
-			
 			if ($resource->HasMinLength())
 			{
 				$minDuration = $resource->GetMinLength()->Interval();
@@ -37,7 +25,7 @@ class ResourceMinimumDurationRule implements IReservationValidationRule
 				if ($end->LessThan($minEnd))
 				{
 					return new ReservationRuleResult(false,
-						$resources->GetString("MinDurationError", $minDuration));
+						$r->GetString("MinDurationError", $minDuration));
 				}
 			}
 		}
