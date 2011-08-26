@@ -127,11 +127,11 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 
 		if ($this->_reservationSavedSuccessfully)
 		{
-			$this->smarty->display('Ajax/reservation/save_successful.tpl');
+			$this->Display('Ajax/reservation/save_successful.tpl');
 		}
 		else
 		{
-			$this->smarty->display('Ajax/reservation/save_failed.tpl');
+			$this->Display('Ajax/reservation/save_failed.tpl');
 		}
 	}
 	
