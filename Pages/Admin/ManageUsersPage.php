@@ -83,7 +83,7 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	{
 		$this->_presenter->PageLoad();
 
-		$this->Set('statusDescriptions', array(AccountStatus::ACTIVE => 'Active', AccountStatus::AWAITING_ACTIVATION => 'Inactive', AccountStatus::INACTIVE => 'Inactive'));
+		$this->Set('statusDescriptions', array(AccountStatus::ACTIVE => 'Active', AccountStatus::AWAITING_ACTIVATION => 'Pending', AccountStatus::INACTIVE => 'Inactive'));
 		$this->Display('manage_users.tpl');
 	}
 

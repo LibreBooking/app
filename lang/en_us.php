@@ -406,6 +406,7 @@ class en_us extends Language
 		$strings['Edit data for'] = 'Edit data for %s';
 		$strings['Active'] = 'Active';
 		$strings['Inactive'] = 'Inactive';
+		$strings['Pending'] = 'Pending';
 		$strings['Toggle this resource active/inactive'] = 'Toggle this resource active/inactive';
 		$strings['Minimum Reservation Time'] = 'Minimum Reservation Time';
 		$strings['Maximum Reservation Time'] = 'Maximum Reservation Time';
