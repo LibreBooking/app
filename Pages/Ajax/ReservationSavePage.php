@@ -106,6 +106,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		$persistenceFactory = new ReservationPersistenceFactory();
 		$validationFactory = new ReservationValidationFactory();
 		$notificationFactory = new ReservationNotificationFactory();
+		$resourceRepository = new ResourceRepository();
 
 		$updateAction = ReservationAction::Create;
 		
@@ -114,7 +115,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 														$this, 
 														$persistenceFactory->Create($updateAction),
 														$validationFactory->Create($updateAction, $userSession),
-														$notificationFactory->Create($updateAction)
+														$notificationFactory->Create($updateAction),
+														$resourceRepository
 														);
 	}
 	
