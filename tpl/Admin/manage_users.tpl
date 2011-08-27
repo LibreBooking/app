@@ -12,13 +12,19 @@ Find User:<br/>
 		<th>{translate key='Name'}</th>
 		<th>{translate key='Username'}</th>
 		<th>{translate key='Email'}</th>
+		<th>{translate key='Phone'}</th>
+		<th>{translate key='Organization'}</th>
+		<th>{translate key='Position'}</th>
+		<th>{translate key='Created'}</th>
 		<th>{translate key='LastLogin'}</th>
 		<th>{translate key='Timezone'}</th>
+		<th>{translate key='Language'}</th>
 		<th>{translate key='Status'}</th>
 		<th>{translate key='Groups'}</th>
-		<th>{translate key='ResourcePermissions'}</th>
+		<th>{translate key='Permissions'}</th>
 		<th>{translate key='Reservations'}</th>
-		<th>&nbsp;</th>
+		<th>{translate key='Password'}</th>
+		<th>{translate key='Delete'}</th>
 	</tr>
 {foreach from=$users item=user}
 	{cycle values='row0,row1' assign=rowCss}
@@ -26,14 +32,20 @@ Find User:<br/>
 		<td class="id"><input type="hidden" class="id" value="{$user->Id}"/></td>
 		<td>{$user->First} {$user->Last}</td>
 		<td>{$user->Username}</td>
-		<td>{$user->Email}</td>
+		<td><a href="mailto:{$user->Email}">{$user->Email}</a></td>
+		<td>{$user->Phone}</td>
+		<td>{$user->Organization}</td>
+		<td>{$user->Position}</td>
+		<td>{$user->Created}</td>
 		<td>{$user->LastLogin}</td>
-		<td>{$user->Timezone}</td>
-		<td><a href="#" class="update changeStatus">{translate key=$statusDescriptions[$user->StatusId]}</a></td>
-		<td><a href="#" class="update changeGroups">{translate key='Change'}</a></td>
-		<td><a href="#" class="update changePermissions">{translate key='Change'}</a></td>
-		<td><a href="#" class="update viewReservations">{translate key='Search'}</a></td>
-		<td><a href="#" class="update resetPassword">{translate key='ResetPassword'}</a></td>
+		<td>{$user->TimezoneName}</td>
+		<td>{$user->Language}</td>
+		<td align="center"><a href="#" class="update changeStatus">{translate key=$statusDescriptions[$user->StatusId]}</a></td>
+		<td align="center"><a href="#" class="update changeGroups">{translate key='Edit'}</a></td>
+		<td align="center"><a href="#" class="update changePermissions">{translate key='Edit'}</a></td>
+		<td align="center"><a href="#" class="update viewReservations">{translate key='Search'}</a></td>
+		<td align="center"><a href="#" class="update resetPassword">{translate key='Reset'}</a></td>
+		<td align="center"><input type="checkbox"></input></td>
 	</tr>
 {/foreach}
 </table>
