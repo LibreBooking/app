@@ -182,7 +182,7 @@
 					</select>
 					</td>
 					<td>
-						<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='AddResource'}</button>
+						<button type="button" class="button save">{html_image src="plus-button.png"} {translate key='AddResource'}</button>
 					</td>
 				</tr>
 			</table>

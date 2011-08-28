@@ -93,7 +93,7 @@
 					</select>
 				</li>
 				<li>
-					<button type="submit" class="button save" value="submit">{html_image src="tick-circle.png"} Add Schedule</button>
+					<button type="submit" class="button save" value="submit">{html_image src="plus-button.png"} Add Schedule</button>
 				</li>
 			</ul>
 		</form>
