@@ -38,7 +38,7 @@ Find User:<br/>
 		<td>{$user->Position}</td>
 		<td>{$user->Created}</td>
 		<td>{$user->LastLogin}</td>
-		<td>{$user->TimezoneName}</td>
+		<td>{$user->Timezone}</td>
 		<td>{$user->Language}</td>
 		<td align="center"><a href="#" class="update changeStatus">{translate key=$statusDescriptions[$user->StatusId]}</a></td>
 		<td align="center"><a href="#" class="update changeGroups">{translate key='Edit'}</a></td>
@@ -77,7 +77,7 @@ Find User:<br/>
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <div style="margin-top:30px">
-       <button type="button" class="button add">{html_image src="plus-button.png"} {translate key='AddNewUser'}</button>
+       <button type="button" class="button add">{html_image src="plus-button.png"} {translate key='AddUser'}</button>
 </div>
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
