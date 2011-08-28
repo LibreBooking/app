@@ -160,6 +160,7 @@ class en_us extends Language
 		$strings['ResourceCapacity'] = 'This resource has a capacity of %s people';
 		$strings['ResourceCapacityNone'] = 'This resource has unlimited capacity';
 		$strings['AddNewResource'] = 'Add New Resource';
+		$strings['AddNewUser'] = 'Add New User';
 		$strings['Schedule'] = 'Schedule';
 		$strings['AddResource'] = 'Add Resource';
 		$strings['Capacity'] = 'Capacity';

@@ -24,7 +24,7 @@ Find User:<br/>
 		<th>{translate key='Permissions'}</th>
 		<th>{translate key='Reservations'}</th>
 		<th>{translate key='Password'}</th>
-		<th>{translate key='Delete'}</th>
+		<th><button type="button" class="button delete">{html_image src="cross-button.png"} {translate key='Delete'}</button></th>
 	</tr>
 {foreach from=$users item=user}
 	{cycle values='row0,row1' assign=rowCss}
@@ -75,6 +75,10 @@ Find User:<br/>
 {pagination pageInfo=$PageInfo}
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+
+<div style="margin-top:30px">
+       <button type="button" class="button add">{html_image src="plus-button.png"} {translate key='AddNewUser'}</button>
+</div>
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
