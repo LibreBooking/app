@@ -395,7 +395,7 @@ class UserItemView
 		$user->Timezone = $row[ColumnNames::TIMEZONE_NAME];
 		$user->Organization = $row[ColumnNames::ORGANIZATION];
 		$user->Position = $row[ColumnNames::POSITION];
-        // $user->Language = $row[ColumnNames::LANGUAGE]; 
+        $user->Language = $row[ColumnNames::LANGUAGE_CODE]; 
 		
 		return $user;
 	}
