@@ -365,9 +365,14 @@ class UserItemView
 	public $First;
 	public $Last;
 	public $Email;
+	public $Phone;
+	public $DateCreated;
 	public $LastLogin;
 	public $StatusId;
 	public $Timezone;
+	public $Organization;
+	public $Position;
+	public $Language;
 
 	public function IsActive()
 	{
@@ -383,10 +388,15 @@ class UserItemView
 		$user->First = $row[ColumnNames::FIRST_NAME];
 		$user->Last = $row[ColumnNames::LAST_NAME];
 		$user->Email = $row[ColumnNames::EMAIL];
+		$user->Phone = $row[ColumnNames::PHONE_NUMBER];
+	    //$user->DateCreated = Date::FromDatabase($row[ColumnNames::DATE_CREATED]);
 		$user->LastLogin = Date::FromDatabase($row[ColumnNames::LAST_LOGIN]);
 		$user->StatusId = $row[ColumnNames::USER_STATUS_ID];
 		$user->Timezone = $row[ColumnNames::TIMEZONE_NAME];
-
+		$user->Organization = $row[ColumnNames::ORGANIZATION];
+		$user->Position = $row[ColumnNames::POSITION];
+        // $user->Language = $row[ColumnNames::LANGUAGE]; 
+		
 		return $user;
 	}
 }
