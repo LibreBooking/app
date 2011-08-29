@@ -47,8 +47,6 @@ class ReservationSeries
 	 */
 	public function ResourceId()
 	{
-		if (!is_object($this->_resource))
-			throw new Exception('Resource is ' . $this->_resource);
 		return $this->_resource->GetResourceId();
 	}
 
@@ -295,6 +293,14 @@ class ReservationSeries
 	public function IsRecurring()
 	{
 		return $this->RepeatOptions()->RepeatType() != RepeatType::None;
+	}
+
+	/**
+	 * @return int|ReservationStatus
+	 */
+	public function StatusId()
+	{
+		return ReservationStatus::Created;
 	}
 	
 	/**

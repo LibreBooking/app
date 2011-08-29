@@ -144,7 +144,7 @@ class ReservationRepository implements IReservationRepository
 			$reservationSeries->RepeatOptions()->ConfigurationString(),
 			$reservationSeries->ScheduleId(),
 			ReservationTypes::Reservation,
-			ReservationStatus::Created,
+			$reservationSeries->StatusId(),
 			$reservationSeries->UserId()
 		);
 			

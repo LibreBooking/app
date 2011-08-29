@@ -2,7 +2,8 @@
 class ReservationStartTimeRule implements IReservationValidationRule
 {
 	/**
-	 * @see IReservationValidationRule::Validate()
+	 * @param ReservationSeries $reservationSeries
+	 * @return ReservationRuleResult
 	 */
 	public function Validate($reservationSeries)
 	{

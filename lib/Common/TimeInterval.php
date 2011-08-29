@@ -44,7 +44,7 @@ class TimeInterval
 			return sprintf('%02d:%02d', $this->interval->Hours(), $this->interval->Minutes());
 		}
 		
-		return '';
+		return null;
 	}
 }
 ?>

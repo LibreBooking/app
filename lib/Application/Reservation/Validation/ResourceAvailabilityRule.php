@@ -18,7 +18,6 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 	}
 	
 	/**
-	 * @see IReservationValidationRule::Validate()
 	 * @param ReservationSeries $reservationSeries
 	 * @return ReservationRuleResult
 	 */

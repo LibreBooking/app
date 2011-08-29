@@ -258,7 +258,7 @@ interface IUserViewRepository
 	 * @param int $pageSize
 	 * @param string $sortField
 	 * @param string $sortDirection
-	 * @return PageableData of UserItemView
+	 * @return PageableData|UserItemView[]
 	 */
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null);
 }
