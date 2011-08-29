@@ -891,9 +891,10 @@ class en_us extends Language
 		$strings['DayQuota'] = 'Daily quota';
 		$strings['Before'] = 'before';
 		
-		$strings['Account'] = 'Account';
-       	$strings['Profile'] = 'Profile';
-           $strings['Email Preferences'] = 'Email Preferences';
+		$strings['MyAccount'] = 'My Account';
+       	$strings['MyProfile'] = 'My Profile';
+           $strings['MyEmailPreferences'] = 'My Email Preferences';
+           $strings['MyPassword'] = 'My Password';
            $strings['Current Status'] = 'Current Status';
            $strings['My Upcoming Reservations'] = 'My Upcoming Reservations';
            $strings['Reservation Search'] = 'Reservation Search';

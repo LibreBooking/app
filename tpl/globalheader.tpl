@@ -36,10 +36,11 @@
 		<div id="logo">phpScheduleIt</div>
 		<ul id="nav" class="menubar">
 		    <li class="menubaritem first"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
-		    <li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="Account"}</a>
+		    <li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyAccount"}</a>
 		    	<ul>
-		    		<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
-		    		<li class="menuitem"><a href="#">{translate key="Email Preferences"}</a></li>
+		    		<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyProfile"}</a></li>
+		    		<li class="menuitem"><a href="#">{translate key="MyPassword"}</a></li>
+		    		<li class="menuitem"><a href="#">{translate key="MyEmailPreferences"}</a></li>
 		    	</ul>
 		    </li>
 		    <li class="menubaritem"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Schedule"}</a>
