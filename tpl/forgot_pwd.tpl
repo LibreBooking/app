@@ -5,23 +5,19 @@
 	<form class="forgot" method="post"
 		action="{$smarty.server.SCRIPT_NAME}">
 		<div class="forgot_pwdHeader">
-			<h3>Reset forgotten password</h3>
+			<h3>{translate key='Forgot Password'}</h3>
 		</div>
 		<div>
-			<p class="forgot">
-				You can reset your password to a new, randomly generated one by
-				pressing the <strong>Reset</strong> button.
+			<p class="forgot">{translate key='This will change your password to a new, randomly generated one.'}
 			</p>
-			<p class="forgot">The new password will be emailed to the address
-				written below.</p>
+			<p class="forgot">{translate key='your new password will be set'}</p>
 			<p>
 				<label class="forgot">{translate key='Email address'}<br />
 					{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
 			</p>
 			<p class="resetpassword">
-				<input type="submit" name="{Actions::RESET}"
-					value="{translate key='Reset'}" class="button" tabindex="100" /> <input
-					type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}" />
+				<button type="submit" class="button update prompt" name="{Actions::RESET}"><img src="img/tick-circle.png" />  {translate key='Change Password'}</button>
+			    <input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}" />
 			</p>
 		</div>
 	</form>
