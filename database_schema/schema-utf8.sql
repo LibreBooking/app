@@ -41,7 +41,6 @@ CREATE TABLE `time_blocks` (
  `end_label` varchar(85),
  `availability_code` tinyint(2) unsigned NOT NULL,
  `cost_multiplier` numeric(7,2),
- `constraint_function` text,
  `layout_id` mediumint(8) unsigned NOT NULL,
  `start_time` time NOT NULL,
  `end_time` time NOT NULL,
@@ -84,18 +83,6 @@ CREATE TABLE `user_statuses` (
  `status_id` tinyint(2) unsigned NOT NULL,
  `description` varchar(85),
  PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `addresses`
---
-
-DROP TABLE IF EXISTS `addresses`;
-CREATE TABLE `addresses` (
- `address_id` tinyint(2) unsigned NOT NULL auto_increment,
- `label` varchar(85),
- `address_text` text NOT NULL,
- PRIMARY KEY (`address_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -191,35 +178,6 @@ CREATE TABLE `user_roles` (
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
---
--- Table structure for table `user_addresses`
---
-
-DROP TABLE IF EXISTS `user_addresses`;
-CREATE TABLE `user_addresses` (
- `user_id` mediumint(8) unsigned NOT NULL,
- `address_id` tinyint(2) unsigned NOT NULL,
- PRIMARY KEY (`user_id`, `address_id`),
- INDEX (`user_id`),
- FOREIGN KEY (`user_id`) 
-	REFERENCES users(`user_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`address_id`),
- FOREIGN KEY (`address_id`) 
-	REFERENCES addresses(`address_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `constraint_functions`
---
-
-DROP TABLE IF EXISTS `constraint_functions`;
-CREATE TABLE `constraint_functions` (
- `constraint_id` smallint(5) unsigned NOT NULL,
- `constraint_function` text,
- PRIMARY KEY (`constraint_id`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
 -- Table structure for table `resource_types`
@@ -265,24 +223,6 @@ CREATE TABLE `resources` (
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
---
--- Table structure for table `resource_constraints`
---
-
-DROP TABLE IF EXISTS `resource_constraints`;
-CREATE TABLE `resource_constraints` (
- `resource_id` smallint(5) unsigned,
- `constraint_id` smallint(5) unsigned,
- PRIMARY KEY (`resource_id`, `constraint_id`),
- INDEX (`resource_id`),
- FOREIGN KEY (`resource_id`) 
-	REFERENCES resources(`resource_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`constraint_id`),
- FOREIGN KEY (`constraint_id`) 
-	REFERENCES constraint_functions(`constraint_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
 -- Table structure for table `user_resource_permissions`

@@ -6,5 +6,10 @@ class FakeBookableResource extends BookableResource
 		$this->_resourceId = $id;
 		$this->_name = $name;
 	}
+
+	public function RequiresApproval($requiresApproval)
+	{
+		$this->_requiresApproval = $requiresApproval;
+	}
 }
 ?>

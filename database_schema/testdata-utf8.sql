@@ -1,5 +1,7 @@
 use phpscheduleit2;
 
+delete from groups;
+alter table groups AUTO_INCREMENT = 1;
 delete from resources;
 alter table resources AUTO_INCREMENT = 1;
 delete from users;
@@ -10,12 +12,12 @@ delete from layouts;
 alter table layouts AUTO_INCREMENT = 1;
 delete from time_blocks;
 alter table time_blocks AUTO_INCREMENT = 1;
-delete from addresses;
-alter table addresses AUTO_INCREMENT = 1;
 delete from schedules;
 alter table schedules AUTO_INCREMENT = 1;
 
-INSERT INTO `resources` (`resource_id`, `name`, `type_id`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time`, `max_notice_time`, `image_name`, `legacyid`) VALUES
+insert into groups values (1, 'Default Group'),(2, 'Other Group');
+
+insert into resources (`resource_id`, `name`, `type_id`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time`, `max_notice_time`, `image_name`, `legacyid`) VALUES
 (1, 'Conference Room 1', 1, NULL, NULL, NULL, NULL, 1, '00:00:00', NULL, '00:00:00', NULL, 1, 0, 1, NULL, '00:00:00', '00:00:00', 'resource1.jpg', NULL),
 (2, 'Conference Room 2', 1, NULL, NULL, NULL, NULL, 1, '00:00:00', NULL, '00:00:00', NULL, 1, 0, 1, NULL, '00:00:00', '00:00:00', 'resource2.jpg', NULL);
 
@@ -50,12 +52,6 @@ insert into time_blocks (availability_code, layout_id, start_time, end_time) val
 (1, 1, '17:00', '17:30'),
 (1, 1, '17:30', '18:00'),
 (2, 1, '18:00', '00:00');
-
-
-insert into addresses values (1, 'home', 'home street, city, state and country');
-
-truncate table user_addresses;
-insert into user_addresses values (1, 1);
 
 insert into schedules (schedule_id, name, isdefault, weekdaystart, layout_id) values (1, 'default', 1, 0, 1);
 

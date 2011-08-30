@@ -64,13 +64,13 @@ class ReservationSavePresenter
 		$repeatOptions = $this->_page->GetRepeatOptions();
 		$duration = $this->GetReservationDuration();
 		
-		$reservationSeries = ReservationSeries::Create($userId, $resource, $scheduleId, $title, $description, $duration, $repeatOptions);
+		$reservationSeries = ReservationSeries::Create($userId, $resource, $scheduleId, $title, $description, $duration, $repeatOptions, ServiceLocator::GetServer()->GetUserSession());
 		
 		$resourceIds = $this->_page->GetResources();
 		
 		foreach ($resourceIds as $resourceId)
 		{
-			$reservationSeries->AddResource( $this->_resourceRepository->LoadById($resourceId));
+			$reservationSeries->AddResource($this->_resourceRepository->LoadById($resourceId));
 		}
 
 		$participantIds = $this->_page->GetParticipants();

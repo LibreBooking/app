@@ -134,6 +134,7 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 	{
 	    $this->WithPrimaryResource(new FakeBookableResource(2));
 		$this->WithResource(new FakeBookableResource(3));
+		$this->WithBookedBy(new FakeUserSession());
 	}
 
 	public function AddEvent($event)
@@ -154,6 +155,11 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 	public function Instances()
 	{
 		return $this->instances;
+	}
+
+	private function WithBookedBy($bookedBy)
+	{
+		$this->_bookedBy = $bookedBy;
 	}
 }
 ?>

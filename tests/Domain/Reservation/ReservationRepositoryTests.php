@@ -110,6 +110,8 @@ class ReservationRepositoryTests extends TestBase
 		
 		$this->db->_ExpectedInsertIds[0] = $seriesId;
 		$this->db->_ExpectedInsertIds[1] = $reservationId;
+
+		$userSession = new FakeUserSession();
 		
 		$reservation = ReservationSeries::Create(
 									$userId, 
@@ -118,7 +120,8 @@ class ReservationRepositoryTests extends TestBase
 									$title, 
 									$description, 
 									$duration,
-									$repeatOptions);
+									$repeatOptions,
+									$userSession);
 		
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatOptionsString = $repeatOptions->ConfigurationString();
@@ -202,8 +205,10 @@ class ReservationRepositoryTests extends TestBase
 			->method('GetDates')
 			->with($this->anything())
 			->will($this->returnValue($dates));
-			
-		$reservation = ReservationSeries::Create(1, new FakeBookableResource(1), 1, null, null, $duration, $repeats);
+
+		$userSession = new FakeUserSession();
+		
+		$reservation = ReservationSeries::Create(1, new FakeBookableResource(1), 1, null, null, $duration, $repeats, $userSession);
 
 		$this->db->_ExpectedInsertIds[0] = $reservationSeriesId;
 		$this->db->_ExpectedInsertIds[1] = $reservationId;
@@ -382,7 +387,7 @@ class ReservationRepositoryTests extends TestBase
 		$builder = new ExistingReservationSeriesBuilder();
 		$existingReservation = $builder->Build();
 		
-		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description);
+		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, new FakeUserSession());
 		$repeatOptions = $existingReservation->RepeatOptions();
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatConfiguration = $repeatOptions->ConfigurationString();
@@ -395,7 +400,8 @@ class ReservationRepositoryTests extends TestBase
 			$description, 
 			$repeatType, 
 			$repeatConfiguration, 
-			Date::Now());
+			Date::Now(),
+			$existingReservation->StatusId());
 		$this->assertEquals(1, count($this->db->_Commands));
 		$this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
 	}
@@ -419,7 +425,7 @@ class ReservationRepositoryTests extends TestBase
 		$builder->WithCurrentInstance($currentReservation);
 		
 		$existingReservation = $builder->BuildTestVersion();		
-		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description);
+		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, new FakeUserSession());
 		$existingReservation->WithSchedule($scheduleId);
 		
 		
@@ -476,7 +482,7 @@ class ReservationRepositoryTests extends TestBase
 		$builder->WithCurrentInstance($currentInstance);
 		
 		$existingReservation = $builder->BuildTestVersion();
-		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description);
+		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, new FakeUserSession());
 		$existingReservation->WithSchedule($scheduleId);
 		
 		$expectedRepeat = $existingReservation->RepeatOptions();
@@ -659,7 +665,7 @@ class ReservationRepositoryTests extends TestBase
 		$removedId = 28;
 		
 		$builder = new ExistingReservationSeriesBuilder();
-		$series = $builder->Build();
+		$series = $builder->BuildTestVersion();
 		$series->WithResource(new FakeBookableResource($removedId));
 		$series->ChangeResources(array(new FakeBookableResource($addedId)));
 

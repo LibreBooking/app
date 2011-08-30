@@ -139,13 +139,15 @@ class ExistingReservationSeries extends ReservationSeries
 	 * @param BookableResource $resource
 	 * @param string $title
 	 * @param string $description
+	 * @param UserSession $updatedBy
 	 */
-	public function Update($userId, BookableResource $resource, $title, $description)
+	public function Update($userId, BookableResource $resource, $title, $description, UserSession $updatedBy)
 	{
 		$this->_userId = $userId;
 		$this->_resource = $resource;
 		$this->_title = $title;
 		$this->_description = $description;
+		$this->_bookedBy = $updatedBy;
 	}
 
 	/**
@@ -221,7 +223,7 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function ChangeResources($resources)
 	{
-		$diff = new ArrayDiff($this->_resources, $resources);
+		$diff = new ArrayDiff($this->_additionalResources, $resources);
 
 		$added = $diff->GetAddedToArray1();
 		$removed = $diff->GetRemovedFromArray1();
@@ -238,7 +240,7 @@ class ExistingReservationSeries extends ReservationSeries
 			$this->AddEvent(new ResourceRemovedEvent($resource, $this));
 		}
 		
-		$this->_resources = $resources;
+		$this->_additionalResources = $resources;
 	}
 
 	/**

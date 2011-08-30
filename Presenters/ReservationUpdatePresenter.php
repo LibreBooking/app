@@ -66,7 +66,8 @@ class ReservationUpdatePresenter
 			$this->page->GetUserId(), 
 			$resource,
 			$this->page->GetTitle(), 
-			$this->page->GetDescription());
+			$this->page->GetDescription(),
+			ServiceLocator::GetServer()->GetUserSession());
 		
 		$existingSeries->Repeats($this->page->GetRepeatOptions());
 

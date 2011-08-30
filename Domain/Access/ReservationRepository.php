@@ -118,7 +118,8 @@ class ReservationRepository implements IReservationRepository
 				$reservationSeries->Description(),
 				$reservationSeries->RepeatOptions()->RepeatType(),
 				$reservationSeries->RepeatOptions()->ConfigurationString(),
-				Date::Now()
+				Date::Now(),
+				$reservationSeries->StatusId()
 				);
 
 			$database->Execute($updateSeries);

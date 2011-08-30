@@ -38,6 +38,8 @@ class ReservationTests extends TestBase
 			->with($this->equalTo($dateRange))
 			->will($this->returnValue($repeatDates));
 
+		$userSession = new FakeUserSession();
+
 		$resource = new FakeBookableResource($resourceId);
 		$series = ReservationSeries::Create(
 			$userId,
@@ -46,7 +48,8 @@ class ReservationTests extends TestBase
 			$title, 
 			$description, 
 			$dateRange, 
-			$repeatOptions);
+			$repeatOptions,
+			$userSession);
 		
 		$this->assertEquals($userId, $series->UserId());
 		$this->assertEquals($resource, $series->Resource());
@@ -74,11 +77,31 @@ class ReservationTests extends TestBase
 		
 		$repeatOptions = $this->getMock('IRepeatOptions');
 		
-		$series = ReservationSeries::Create(1, new FakeBookableResource(1), 1, null, null, $dateRange, $repeatOptions);
+		$series = ReservationSeries::Create(1, new FakeBookableResource(1), 1, null, null, $dateRange, $repeatOptions, new FakeUserSession());
 		
 		$instance = $series->CurrentInstance();
 		
 		$this->assertEquals($startDate, $instance->StartDate());
 		$this->assertEquals($endDate, $instance->EndDate());
+	}
+
+	public function testStatusIsCreatedWhenBookedByAdmin()
+	{
+		$resource = new FakeBookableResource(1);
+		$resource->RequiresApproval(true);
+		
+		$series = ReservationSeries::Create(1, $resource, 1, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession(true));
+
+		$this->assertEquals(ReservationStatus::Created, $series->StatusId());
+	}
+
+	public function testStatusIsPendingWhenRequiresApprovalAndNotAdmin()
+	{
+		$resource = new FakeBookableResource(1);
+		$resource->RequiresApproval(true);
+
+		$series = ReservationSeries::Create(1, $resource, 1, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession(false));
+
+		$this->assertEquals(ReservationStatus::Pending, $series->StatusId());
 	}
 }

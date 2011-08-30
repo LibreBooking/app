@@ -114,7 +114,7 @@ class ReservationSavePresenterTests extends TestBase
 
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
-		$expected = ReservationSeries::Create($userId, $resource, $scheduleId, $title, $description, $duration, $repeatOptions);
+		$expected = ReservationSeries::Create($userId, $resource, $scheduleId, $title, $description, $duration, $repeatOptions, $this->user);
 		$expected->AddResource($additionalResource1);
 		$expected->AddResource($additionalResource2);
 		$expected->ChangeParticipants($participants);

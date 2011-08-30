@@ -253,7 +253,11 @@ class UserRepositoryTests extends TestBase
 				ColumnNames::EMAIL => $email,
 				ColumnNames::LAST_LOGIN => $lastLogin,
 				ColumnNames::TIMEZONE_NAME => $timezone,
-				ColumnNames::USER_STATUS_ID => $statusId
+				ColumnNames::USER_STATUS_ID => $statusId,
+				ColumnNames::PHONE_NUMBER => '123-456-7890',
+				ColumnNames::ORGANIZATION => 'company',
+				ColumnNames::POSITION => 'the dude',
+				ColumnNames::LANGUAGE_CODE => 'en_us',
 			);
 	}
 

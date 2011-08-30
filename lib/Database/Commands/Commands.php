@@ -793,7 +793,8 @@ class UpdateReservationSeriesCommand extends SqlCommand
 								$description, 
 								$repeatType,
 								$repeatOptions,
-								Date $dateModified								
+								Date $dateModified,
+								$statusId
 								)
 	{
 		parent::__construct(Queries::UPDATE_RESERVATION_SERIES);	
@@ -804,6 +805,7 @@ class UpdateReservationSeriesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));
 		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $dateModified->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));
 	}
 }
 

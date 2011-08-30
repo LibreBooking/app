@@ -610,7 +610,8 @@ class Queries
 			title = @title, 
 			description = @description, 
 			repeat_type = @repeatType, 
-			repeat_options = @repeatOptions
+			repeat_options = @repeatOptions,
+			status_id = @statusid
 		WHERE
 			series_id = @seriesid';
 	

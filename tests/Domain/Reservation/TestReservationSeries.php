@@ -6,6 +6,7 @@ class TestReservationSeries extends ReservationSeries
 	public function __construct()
 	{
 		parent::__construct();
+		$this->_bookedBy = new FakeUserSession();
 	}
 	
 	public function WithOwnerId($ownerId)

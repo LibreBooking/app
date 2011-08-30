@@ -38,6 +38,19 @@ class ReservationSeries
 	}
 
 	/**
+	 * @var UserSession
+	 */
+	protected $_bookedBy;
+
+	/**
+	 * @return UserSession
+	 */
+	public function BookedBy()
+	{
+		return $this->_bookedBy;
+	}
+
+	/**
 	 * @var BookableResource
 	 */
 	 protected $_resource;
@@ -113,14 +126,14 @@ class ReservationSeries
 	/**
 	 * @var array|BookableResource[]
 	 */
-	protected $_resources = array();
+	protected $_additionalResources = array();
 	
 	/**
 	 * @return array|BookableResource[]
 	 */
 	public function AdditionalResources()
 	{
-		return $this->_resources;
+		return $this->_additionalResources;
 	}
 	
 	/**
@@ -129,7 +142,7 @@ class ReservationSeries
 	public function AllResourceIds()
 	{
 		$ids = array($this->ResourceId());
-		foreach ($this->_resources as $resource)
+		foreach ($this->_additionalResources as $resource)
 		{
 			$ids[] = $resource->GetResourceId();
 		}
@@ -141,7 +154,7 @@ class ReservationSeries
 	 */
 	public function AllResources()
 	{
-		return $this->_resources;
+		return array_merge(array($this->Resource()), $this->AdditionalResources());
 	}
 
 	/**
@@ -175,6 +188,7 @@ class ReservationSeries
 	 * @param string $description
 	 * @param DateRange $reservationDate
 	 * @param IRepeatOptions $repeatOptions
+	 * @param UserSession $bookedBy
 	 * @return ReservationSeries
 	 */
 	public static function Create(
@@ -184,7 +198,8 @@ class ReservationSeries
 								$title, 
 								$description, 
 								$reservationDate, 
-								$repeatOptions)
+								$repeatOptions,
+								UserSession $bookedBy)
 	{
 		
 		$series = new ReservationSeries();
@@ -193,6 +208,7 @@ class ReservationSeries
 		$series->_scheduleId = $scheduleId;
 		$series->_title = $title;
 		$series->_description = $description;
+		$series->_bookedBy = $bookedBy;
 		$series->UpdateDuration($reservationDate);
 		$series->Repeats($repeatOptions);
 		
@@ -284,7 +300,7 @@ class ReservationSeries
 	 */
 	public function AddResource(BookableResource $resource)
 	{
-		$this->_resources[] = $resource;
+		$this->_additionalResources[] = $resource;
 	}
 	
 	/**
@@ -300,6 +316,19 @@ class ReservationSeries
 	 */
 	public function StatusId()
 	{
+		if ($this->_bookedBy->IsAdmin)
+		{
+			return ReservationStatus::Created;
+		}
+
+		foreach ($this->AllResources() as $resource)
+		{
+			if ($resource->GetRequiresApproval())
+			{
+				return ReservationStatus::Pending;
+			}
+		}
+
 		return ReservationStatus::Created;
 	}
 	
