@@ -13,20 +13,20 @@
         {validator id="uniqueusername" key="UniqueUsernameRequired"}
 {/validation_group}
 
-		<div class="registrationHeader"><h3>Login Information (all fields are required)</h3></div>
+		<div class="registrationHeader"><h3>{translate key="Login Information (all fields are required)"}</h3></div>
         <p>
                 <label class="reg">{translate key="Username"}<br />
-                {textbox name="LOGIN" class="input" value="Login" size="20" tabindex="80"}
+                {textbox name="LOGIN" class="input" value="Login" size="20" tabindex="10"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="Password"}<br />
-                {textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="90"}
+                {textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="PasswordConfirmation"}<br />
-                {textbox type="password" name="PASSWORD_CONFIRM" class="input" value="" size="20" tabindex="100"}
+                {textbox type="password" name="PASSWORD_CONFIRM" class="input" value="" size="20" tabindex="30"}
                 </label>
         </p>
         <p>
@@ -37,50 +37,50 @@
                 </label>
         </p>
 
-        <div class="registrationHeader"><h3>Account Registration (all fields are required)</h3></div>
+        <div class="registrationHeader"><h3>{translate key="Account Registration (all fields are required)"}</h3></div>
         <p>
                 <label class="reg">{translate key="FirstName"}<br />
-                {textbox name="FIRST_NAME" class="input" value="FirstName" size="20" tabindex="10"}
+                {textbox name="FIRST_NAME" class="input" value="FirstName" size="20" tabindex="110"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="LastName"}<br />
-                {textbox name="LAST_NAME" class="input" value="LastName" size="20" tabindex="20"}
+                {textbox name="LAST_NAME" class="input" value="LastName" size="20" tabindex="120"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="Email"}<br />
-                {textbox name="EMAIL" class="input" value="Email" size="20" tabindex="30"}
+                {textbox name="EMAIL" class="input" value="Email" size="20" tabindex="130"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="Timezone"}<br />
-                        <select {formname key='TIMEZONE'} class="input" tabindex="50">
+                        <select {formname key='TIMEZONE'} class="input" tabindex="150">
                                 {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
                         </select>
                 </label>
         </p>
 
-        <div class="registrationHeader"><h3>Additional Information (optional)</h3></div>
+        <div class="registrationHeader"><h3>{translate key="Additional Information (optional)"}</h3></div>
         <p>
                 <label class="reg">{translate key="Phone"}<br />
-                {textbox name="PHONE" class="input" value="Phone" size="20" tabindex="40"}
+                {textbox name="PHONE" class="input" value="Phone" size="20" tabindex="240"}
                 </label>
         </p>
 		<p>
                 <label class="reg">{translate key="Organization"}<br />
-                {textbox name="ORGANIZATION" class="input" value="Organization" size="20" tabindex="60"}
+                {textbox name="ORGANIZATION" class="input" value="Organization" size="20" tabindex="260"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="Position"}<br />
-                {textbox name="POSITION" class="input" value="Position" size="20" tabindex="70"}
+                {textbox name="POSITION" class="input" value="Position" size="20" tabindex="270"}
                 </label>
         </p>
 
 
         <p class="regsubmit">
-                <input type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}" class="button" tabindex="200" />
+                <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}" tabindex="300"><img src="img/tick-circle.png" /> {translate key='Register'}</button>
         </p>
 </form>
 </div>

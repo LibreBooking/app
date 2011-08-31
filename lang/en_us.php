@@ -890,6 +890,9 @@ class en_us extends Language
 		$strings['LongQuota'] = 'Period quota';
 		$strings['DayQuota'] = 'Daily quota';
 		$strings['Before'] = 'before';
+		$strings['Login Information (all fields are required)'] = 'Login Information (all fields are required)';
+		$strings['Account Registration (all fields are required)'] = 'Account Registration (all fields are required)';
+		$strings['Additional Information (optional)'] = 'Additional Information (optional)';
 		
 		$strings['MyAccount'] = 'My Account';
        	$strings['MyProfile'] = 'My Profile';
