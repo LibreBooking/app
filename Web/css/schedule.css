@@ -56,14 +56,6 @@ td.reslabel {
 tr.today td.reslabel {
 	color: #000000;
 }
-/*
-td.resdate, td.reslabel {
-	background-color: #0772A1;
-	background-color: #245A71;
-	background-color: #36648B;
-	color: #F0F0F0;
-}
-*/
 
 td.unreservable {
     background-color: #CF9D9B;
@@ -94,6 +86,15 @@ td.reserved.mine {
 td.reserved.mine.hilite {
 	background-color: #63AFD0;
 	color: #ffffff;
+}
+
+td.reserved.pending {
+	background-color: #ffb540;
+	color: #ffffff;
+}
+
+td.reserved.pending.hilite {
+	background-color: #ffc973;
 }
 
 td.reservable.hilite {

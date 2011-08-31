@@ -14,6 +14,7 @@ class ScheduleReservationControl extends Control
 		$slot = $this->Get('Slot');
 		$accessAllowed = $this->Get('AccessAllowed');
 
+		$slot->IsPending();
 		if ($slot->IsReserved())
 		{
 			if ($this->IsMyReservation($slot))
