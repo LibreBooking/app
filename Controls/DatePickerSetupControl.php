@@ -23,7 +23,7 @@ class DatePickerSetupControl extends Control
 		$this->Set('MonthNames', $this->GetJsMonthNames('full'));
 		$this->Set('MonthNamesShort', $this->GetJsMonthNames('abbr'));
 		
-		$this->smarty->display('Controls/DatePickerSetup.tpl');		
+		$this->Display('Controls/DatePickerSetup.tpl');
 	}
 	
 	private function SetDefault($key, $value)

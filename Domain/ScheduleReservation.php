@@ -31,7 +31,8 @@ class ScheduleReservation
 	private $_firstName;
 	private $_lastName;
 	private $_referenceNumber;
-	
+	private $_statusId;
+
 	public function __construct($reservationId,
 							Date $startDate,
 							Date $endDate,
@@ -41,7 +42,8 @@ class ScheduleReservation
 							$userId,
 							$firstName,
 							$lastName,
-							$referenceNumber)
+							$referenceNumber,
+							$statusId)
 	{
 		$this->SetReservationId($reservationId);
 		$this->SetStartDate($startDate);
@@ -53,6 +55,7 @@ class ScheduleReservation
 		$this->SetFirstName($firstName);
 		$this->SetLastName($lastName);
 		$this->SetReferenceNumber($referenceNumber);
+		$this->_statusId = $statusId;
 	}
 	
 	public function GetReservationId()
@@ -201,6 +204,11 @@ class ScheduleReservation
 		
 		return ($beginMidnight->Compare($date) <= 0 && 
 				$endMidnight->Compare($date) > 0);
+	}
+
+	public function GetIsPending()
+	{
+		return $this->_statusId == ReservationStatus::Pending;
 	}
 }
 ?>

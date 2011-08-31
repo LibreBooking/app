@@ -10,12 +10,12 @@ abstract class DashboardItem extends Control
 	
 	protected function Display($templateName)
 	{
-		$this->smarty->display("Dashboard/$templateName");
+		parent::Display("Dashboard/$templateName");
 	}
 	
 	protected function Assign($name, $value)
 	{
-		$this->smarty->assign($name, $value);
+		$this->Set($name, $value);
 	}
 }
 ?>

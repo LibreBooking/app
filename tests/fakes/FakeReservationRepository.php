@@ -24,6 +24,7 @@ class FakeReservationRepository
 					ColumnNames::REPEAT_START => null,
 					ColumnNames::REPEAT_END => null,
 					ColumnNames::REFERENCE_NUMBER => 'r1',
+					ColumnNames::RESERVATION_STATUS => ReservationStatus::Created,
 					);
 					
 		$row2 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 1, 
@@ -39,6 +40,7 @@ class FakeReservationRepository
 					ColumnNames::REPEAT_START => null,
 					ColumnNames::REPEAT_END => null,
 					ColumnNames::REFERENCE_NUMBER => 'r2',
+					ColumnNames::RESERVATION_STATUS => ReservationStatus::Created,
 					);			
 					
 		$row3 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 2, 
@@ -54,6 +56,7 @@ class FakeReservationRepository
 					ColumnNames::REPEAT_START => null,
 					ColumnNames::REPEAT_END => null,
 					ColumnNames::REFERENCE_NUMBER => 'r3',
+					ColumnNames::RESERVATION_STATUS => ReservationStatus::Pending,
 					);
 		
 		return array(

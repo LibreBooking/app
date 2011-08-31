@@ -47,8 +47,14 @@ interface IReservationSlot
 	 * @return bool
 	 */
 	public function IsReserved();
+
+	/**
+	 * @return bool
+	 */
+	public function IsPending();
 	
 	/**
+	 * @param $date Date
 	 * @return bool
 	 */
 	public function IsPastDate(Date $date);
@@ -58,6 +64,13 @@ interface IReservationSlot
 	 * @return IReservationSlot
 	 */
 	public function ToTimezone($timezone);
+
+	/**
+	 * @abstract
+	 * @param UserSession $session
+	 * @return void
+	 */
+	public function IsOwnedBy(UserSession $session);
 }
 
 ?>

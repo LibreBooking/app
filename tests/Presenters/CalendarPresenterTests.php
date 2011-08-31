@@ -75,7 +75,7 @@ class CalendarPresenterTests extends TestBase
 		$referenceNumber = 'refnum';
 		$resourceName = 'resource name';
 		
-		$res = new ScheduleReservation(1, $startDate, $endDate, null, $summary, $resourceId, $userId, $fname, $lname, $referenceNumber);
+		$res = new ScheduleReservation(1, $startDate, $endDate, null, $summary, $resourceId, $userId, $fname, $lname, $referenceNumber, ReservationStatus::Created);
 
 		$r1 = new FakeBookableResource(1, 'dude1');
 		$r2 = new FakeBookableResource($resourceId, $resourceName);

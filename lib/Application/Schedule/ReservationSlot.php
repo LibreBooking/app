@@ -15,7 +15,7 @@ class ReservationSlot implements IReservationSlot
 	/**
 	 * @var Date
 	 */
-	protected $_date;
+	protected $_displayDate;
 	
 	/**
 	 * @var int
@@ -31,7 +31,7 @@ class ReservationSlot implements IReservationSlot
 	{
 		$this->_reservation = $reservation;
 		$this->_begin = $begin;
-		$this->_date = $displayDate;
+		$this->_displayDate = $displayDate;
 		$this->_end = $end;
 		$this->_periodSpan = $periodSpan;
 	}
@@ -73,7 +73,7 @@ class ReservationSlot implements IReservationSlot
 	 */
 	public function Date()
 	{
-		return $this->_date;	
+		return $this->_displayDate;
 	}
 	
 	/**
@@ -98,15 +98,20 @@ class ReservationSlot implements IReservationSlot
 	{
 		return true;
 	}
+
+	public function IsPending()
+	{
+		return $this->_reservation->GetIsPending();
+	}
 	
 	public function IsPastDate(Date $date)
 	{
-		return $this->_date->SetTime($this->Begin())->LessThan($date);
+		return $this->_displayDate->SetTime($this->Begin())->LessThan($date);
 	}
 	
 	public function ToTimezone($timezone)
 	{
-		return new ReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->EndDate()->ToTimezone($timezone), $this->PeriodSpan());
+		return new ReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->EndDate()->ToTimezone($timezone), $this->Date(),  $this->PeriodSpan(), $this->_reservation);
 	}
 	
 	public function Id()

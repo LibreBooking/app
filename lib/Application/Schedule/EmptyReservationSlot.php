@@ -112,6 +112,11 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return false;
 	}
+
+	public function IsPending()
+	{
+		return false;
+	}
 	
 	public function IsPastDate(Date $date)
 	{
@@ -120,7 +125,12 @@ class EmptyReservationSlot implements IReservationSlot
 	
 	public function ToTimezone($timezone)
 	{
-		return new EmptyReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->End()->ToTimezone($timezone));
+		return new EmptyReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->End()->ToTimezone($timezone), $this->Date(), $this->_isReservable);
+	}
+
+	public function IsOwnedBy(UserSession $session)
+	{
+		return false;
 	}
 }
 

@@ -258,6 +258,7 @@ class UserRepositoryTests extends TestBase
 				ColumnNames::ORGANIZATION => 'company',
 				ColumnNames::POSITION => 'the dude',
 				ColumnNames::LANGUAGE_CODE => 'en_us',
+				ColumnNames::USER_CREATED => '2011-01-04 12:12:12'
 			);
 	}
 

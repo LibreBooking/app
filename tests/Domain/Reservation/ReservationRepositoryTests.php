@@ -65,7 +65,8 @@ class ReservationRepositoryTests extends TestBase
 							$r[ColumnNames::USER_ID],
 							$r[ColumnNames::FIRST_NAME],
 							$r[ColumnNames::LAST_NAME],
-							$r[ColumnNames::REFERENCE_NUMBER]
+							$r[ColumnNames::REFERENCE_NUMBER],
+							$r[ColumnNames::RESERVATION_STATUS]
 						);
 		
 		$actual = ReservationFactory::CreateForSchedule($r);
