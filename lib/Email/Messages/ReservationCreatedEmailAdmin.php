@@ -84,10 +84,11 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		$repeatDates = array();
 		foreach ($this->reservationSeries->Instances() as $repeated)
 		{
-			$repeatDates[] = $repeated->StartDate->ToTimezone($this->timezone);
+			$repeatDates[] = $repeated->StartDate()->ToTimezone($this->timezone);
 		}
+		$this->Set('RequiresApproval', $this->reservationSeries->RequiresApproval());
 		$this->Set('RepeatDates', $repeatDates);
-		$this->Set('ReservationUrl', "reservation.php?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $currentInstance->ReferenceNumber());
+		$this->Set('ReservationUrl', Pages::RESERVATION . "?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $currentInstance->ReferenceNumber());
 	}
 }
 ?>

@@ -331,6 +331,11 @@ class ReservationSeries
 
 		return ReservationStatus::Created;
 	}
+
+	public function RequiresApproval()
+	{
+		return $this->StatusId() == ReservationStatus::Pending;
+	}
 	
 	/**
 	 * @param string $referenceNumber

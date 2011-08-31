@@ -75,6 +75,7 @@ class ReservationCreatedEmail extends EmailMessage
 			$repeatDates[] = $repeated->StartDate()->ToTimezone($this->timezone);
 		}
 		$this->Set('RepeatDates', $repeatDates);
+		$this->Set('RequiresApproval', $this->reservationSeries->RequiresApproval());
 		$this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
 	}
 }

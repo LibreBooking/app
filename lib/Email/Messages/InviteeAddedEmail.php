@@ -82,11 +82,12 @@ class InviteeAddedEmail extends EmailMessage
 		{
 			$repeatDates[] = $repeated->StartDate()->ToTimezone($this->timezone);
 		}
+		
 		$this->Set('RepeatDates', $repeatDates);
-
+		$this->Set('RequiresApproval', $this->reservationSeries->RequiresApproval());
 		$this->Set('AcceptUrl', sprintf("%s?%s=%s&%s=%s", Pages::INVITATION_RESPONSES, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber(), QueryStringKeys::INVITATION_ACTION, InvitationAction::Accept));
 		$this->Set('DeclineUrl', sprintf("%s?%s=%s&%s=%s", Pages::INVITATION_RESPONSES, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber(), QueryStringKeys::INVITATION_ACTION, InvitationAction::Decline));
-		$this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::INVITATION_RESPONSES, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
+		$this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
 	}
 }
 ?>

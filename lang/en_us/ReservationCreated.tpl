@@ -18,6 +18,11 @@
 	{foreach from=$RepeatDates item=date name=dates}
 		{formatdate date=$date}<br/>
 	{/foreach}
+
+	{if $RequiresApproval}
+		<br/>
+		One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
+	{/if}
 	
 	<br/>
 	<a href="{$ScriptUrl}{$ReservationUrl}">View this reservation</a> | <a href="{$ScriptUrl}">Log in to phpScheduleIt</a>

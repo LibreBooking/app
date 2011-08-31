@@ -17,6 +17,11 @@
 	{foreach from=$RepeatDates item=date name=dates}
 		{formatdate date=$date}<br/>
 	{/foreach}
+
+	{if $RequiresApproval}
+		<br/>
+		One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
+	{/if}
 	
 	<br/>
 	Attending? <a href="{$ScriptUrl}{$AcceptUrl}">Yes</a> <a href="{$ScriptUrl}{$DeclineUrl}">No</a>
