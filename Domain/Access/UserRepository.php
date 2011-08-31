@@ -389,7 +389,7 @@ class UserItemView
 		$user->Last = $row[ColumnNames::LAST_NAME];
 		$user->Email = $row[ColumnNames::EMAIL];
 		$user->Phone = $row[ColumnNames::PHONE_NUMBER];
-	    //$user->DateCreated = Date::FromDatabase($row[ColumnNames::DATE_CREATED]);
+	    $user->DateCreated = Date::FromDatabase($row[ColumnNames::USER_CREATED]);
 		$user->LastLogin = Date::FromDatabase($row[ColumnNames::LAST_LOGIN]);
 		$user->StatusId = $row[ColumnNames::USER_STATUS_ID];
 		$user->Timezone = $row[ColumnNames::TIMEZONE_NAME];

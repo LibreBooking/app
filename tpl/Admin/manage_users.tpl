@@ -36,7 +36,7 @@ Find User:<br/>
 		<td>{$user->Phone}</td>
 		<td>{$user->Organization}</td>
 		<td>{$user->Position}</td>
-		<td>{$user->Created}</td>
+		<td>{$user->DateCreated}</td>
 		<td>{$user->LastLogin}</td>
 		<td>{$user->Timezone}</td>
 		<td>{$user->Language}</td>
