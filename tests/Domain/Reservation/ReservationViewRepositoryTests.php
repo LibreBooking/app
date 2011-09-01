@@ -153,9 +153,10 @@ class ReservationViewRepositoryTests extends TestBase
 		$userLevelId = 2;
 		$title = 'title';
 		$description = 'description';
+		$scheduleId = 213;
 
-		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId, $userLevelId, $title, $description);
-		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null);
+		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId);
+		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null, 1);
 
 		$this->db->SetRows($rows);
 		
@@ -168,7 +169,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals($expectedCommand, $actualCommand);
 		
 		$this->assertEquals(count($rows), count($reservations));
-		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId, $userLevelId, $title, $description);
+		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId);
 		$this->assertEquals($expectedItem1, $reservations[0]);
 	}
 	
@@ -202,7 +203,7 @@ class ReservationViewRepositoryTests extends TestBase
 			
 	}
 	
-	private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate, $resourceId, $instanceId, $userLevelId, $title, $description)
+	private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId)
 	{
 		return array(
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
@@ -213,7 +214,8 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESERVATION_INSTANCE_ID => $instanceId,
 			ColumnNames::RESERVATION_USER_LEVEL => $userLevelId,
 			ColumnNames::RESERVATION_TITLE => $title,
-			ColumnNames::RESERVATION_DESCRIPTION => $description
+			ColumnNames::RESERVATION_DESCRIPTION => $description,
+			ColumnNames::SCHEDULE_ID => $scheduleId
 		);
 	}
 }

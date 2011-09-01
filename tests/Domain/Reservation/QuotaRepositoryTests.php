@@ -28,10 +28,11 @@ class QuotaRepositoryTests extends TestBase
 		$limit = 12;
 		$resourceId = 100;
 		$groupId = 923;
+		$scheduleId = 828;
 
-		$rows[] = $this->GetRow(1, $limit, QuotaUnit::Reservations, QuotaDuration::Month, $resourceId, $groupId);
-		$rows[] = $this->GetRow(2, $limit, QuotaUnit::Hours, QuotaDuration::Day, null, null);
-		$rows[] = $this->GetRow(3, $limit, QuotaUnit::Hours, QuotaDuration::Week, null, $groupId);
+		$rows[] = $this->GetRow(1, $limit, QuotaUnit::Reservations, QuotaDuration::Month, $resourceId, $groupId, $scheduleId);
+		$rows[] = $this->GetRow(2, $limit, QuotaUnit::Hours, QuotaDuration::Day, null, null, null);
+		$rows[] = $this->GetRow(3, $limit, QuotaUnit::Hours, QuotaDuration::Week, null, $groupId, $scheduleId);
 
 		$this->db->SetRows($rows);
 
@@ -55,12 +56,19 @@ class QuotaRepositoryTests extends TestBase
 
 		$this->assertTrue($quota1->AppliesToResource($resourceId));
 		$this->assertTrue($quota1->AppliesToGroup($groupId));
+		$this->assertTrue($quota1->AppliesToSchedule($scheduleId));
+
+		$this->assertFalse($quota1->AppliesToResource(727));
+		$this->assertFalse($quota1->AppliesToGroup(727));
+		$this->assertFalse($quota1->AppliesToSchedule(727));
 
 		$this->assertTrue($quota2->AppliesToResource(89123987));
 		$this->assertTrue($quota2->AppliesToGroup(128973));
+		$this->assertTrue($quota2->AppliesToSchedule($scheduleId));
 
-		$this->assertTrue($quota2->AppliesToResource(89123987));
-		$this->assertTrue($quota2->AppliesToGroup($groupId));
+		$this->assertTrue($quota3->AppliesToResource(89123987));
+		$this->assertTrue($quota3->AppliesToGroup($groupId));
+		$this->assertFalse($quota3->AppliesToSchedule(18));
 
 	}
 
@@ -71,10 +79,11 @@ class QuotaRepositoryTests extends TestBase
 		$unit = QuotaUnit::Reservations;
 		$resourceId = 2183;
 		$groupId = 123987;
+		$scheduleId = 102983;
 		
-		$quota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId);
+		$quota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId);
 
-		$command = new AddQuotaCommand($duration, $limit, $unit, $resourceId, $groupId);
+		$command = new AddQuotaCommand($duration, $limit, $unit, $resourceId, $groupId, $scheduleId);
 
 		$this->repository->Add($quota);
 
@@ -93,14 +102,15 @@ class QuotaRepositoryTests extends TestBase
 		
 	}
 
-	private function GetRow($quotaId, $limit, $unit, $duration, $resourceId, $groupId)
+	private function GetRow($quotaId, $limit, $unit, $duration, $resourceId, $groupId, $scheduleId)
 	{
 		return array(ColumnNames::QUOTA_ID => $quotaId,
 					 ColumnNames::QUOTA_LIMIT => $limit,
 					 ColumnNames::QUOTA_UNIT => $unit,
 					 ColumnNames::QUOTA_DURATION => $duration,
 					 ColumnNames::RESOURCE_ID => $resourceId,
-					 ColumnNames::GROUP_ID => $groupId
+					 ColumnNames::GROUP_ID => $groupId,
+					 ColumnNames::SCHEDULE_ID => $scheduleId
 			);
 	}
 }

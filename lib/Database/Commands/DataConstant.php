@@ -146,8 +146,8 @@ class Queries
 
 	const ADD_QUOTA =
 		'INSERT INTO
-			quotas (quota_limit, unit, duration, resource_id, group_id)
-		VALUES (@limit, @unit, @duration, @resourceid, @groupid)';
+			quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id)
+		VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid)';
 	
 	const ADD_RESERVATION = 
 		'INSERT INTO 
@@ -274,11 +274,12 @@ class Queries
 		ORDER BY u.lname, u.fname';
 
 	const GET_ALL_QUOTAS =
-		'SELECT q.*, r.name as resource_name, g.name as group_name
+		'SELECT q.*, r.name as resource_name, g.name as group_name, s.name as schedule_name
 		FROM quotas q
 		LEFT JOIN resources r ON r.resource_id = q.resource_id
-		LEFT JOIN groups g ON g.group_id = q.group_id';
-	
+		LEFT JOIN groups g ON g.group_id = q.group_id
+		LEFT JOIN schedules s ON s.schedule_id = q.schedule_id';
+
 	const GET_ALL_RESOURCES = 
 		'SELECT * 
 		FROM resources r
@@ -375,7 +376,7 @@ class Queries
 		WHERE reservation_instance_id = @reservationid';
 	
 	const GET_RESERVATION_RESOURCES =
-		'SELECT r.resource_id, r.name, rr.resource_level_id
+		'SELECT r.*, rr.resource_level_id
 		FROM reservation_resources rr
 		INNER JOIN resources r ON rr.resource_id = r.resource_id
 		WHERE rr.series_id = @seriesid';

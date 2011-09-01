@@ -428,16 +428,117 @@ class QuotaTests extends TestBase
 
 		$this->assertFalse($exceeds);
 	}
+
+	public function testWhenAggregatedResourceTimesForScheduleAreExceeded()
+	{
+		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+
+		$duration = new QuotaDurationMonth();
+		$limit = new QuotaLimitHours(4);
+
+		$scheduleId = 1;
+		
+		$quota = new Quota(1, $duration, $limit, null, null, $scheduleId);
+
+		$startDate = Date::Parse('2011-08-05 1:30', $tz);
+		$endDate = Date::Parse('2011-08-05 2:30', $tz);
+
+		// 2 one hour reservations
+		$series = $this->GetHourLongReservation($startDate, $endDate, 1, 2, $scheduleId);
+
+		$res1 = new ReservationItemView('', Date::Parse('2011-08-01 00:00', $tz),  Date::Parse('2011-08-01 2:00', $tz), '', 999, 98712, null, null, null, $scheduleId);
+		$res2 = new ReservationItemView('', Date::Parse('2011-08-01 02:00', $tz),  Date::Parse('2011-08-01 3:00', $tz), '', 888, 98712, null, null, null, $scheduleId);
+		$this->SearchReturns(array($res1, $res2));
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenAggregatedResourceTimesForScheduleAreNotExceeded()
+	{
+		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+
+		$duration = new QuotaDurationMonth();
+		$limit = new QuotaLimitHours(4);
+
+		$scheduleId = 1;
+
+		$quota = new Quota(1, $duration, $limit, null, null, $scheduleId);
+
+		$startDate = Date::Parse('2011-08-05 1:30', $tz);
+		$endDate = Date::Parse('2011-08-05 2:30', $tz);
+
+		// 2 one hour reservations
+		$series = $this->GetHourLongReservation($startDate, $endDate, 1, 2, $scheduleId);
+
+		$res1 = new ReservationItemView('', Date::Parse('2011-08-01 00:00', $tz),  Date::Parse('2011-08-01 1:00', $tz), '', 999, 98712, null, null, null, $scheduleId);
+		$res2 = new ReservationItemView('', Date::Parse('2011-08-01 02:00', $tz),  Date::Parse('2011-08-01 3:00', $tz), '', 888, 98712, null, null, null, $scheduleId);
+		$this->SearchReturns(array($res1, $res2));
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
+	}
+
+	public function testDoesNotCheckWhenNoResourcesApply()
+	{
+		$resourceId = 100;
+		$startDate = Date::Parse('2011-07-31 21:30', $this->tz);
+		$endDate = Date::Parse('2011-08-01 2:30', $this->tz);
+		
+		$quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitCount(0), $resourceId, null, null);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate, 101, 102);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
+	}
+
+	public function testDoesNotCheckWhenNoGroupsApply()
+	{
+		$g1 = new GroupUserView(null, null, null, null);
+		$g1->GroupId = 1;
+		$g2 = new GroupUserView(null, null, null, null);
+		$g2->GroupId = 1;
+		$this->user->SetGroups(array($g1,$g2));
+		
+		$groupId = 4;
+		$startDate = Date::Parse('2011-07-31 21:30', $this->tz);
+		$endDate = Date::Parse('2011-08-01 2:30', $this->tz);
+
+		$quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitCount(0), null, $groupId, null);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate, 101, 102);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
+	}
+
+	public function testDoesNotCheckWhenNoSchedulesApply()
+	{
+		$series = $this->GetHourLongReservation(Date::Now(), Date::Now(), 101, 102, 999);
+		
+		$quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitCount(0), 101, 102, 888);
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
+	}
 	
-	private function GetHourLongReservation($startDate, $endDate)
+	private function GetHourLongReservation($startDate, $endDate, $resourceId1 = null, $resourceId2 = null, $scheduleId = null)
 	{
 		$userId = 12;
-		$resource1 = 13;
-		$resource2 = 14;
+		$resource1 = empty($resourceId1) ? 13 : $resourceId1;
+		$resource2 = empty($resourceId2) ? 14 : $resourceId2;
+		$schedule = empty($scheduleId) ? 1 : $scheduleId;
 
 		$hourLongReservation = new DateRange($startDate, $endDate, $this->tz);
 
-		$series = ReservationSeries::Create($userId, new FakeBookableResource($resource1), 1, null, null, $hourLongReservation, new RepeatNone(), new FakeUserSession());
+		$series = ReservationSeries::Create($userId, new FakeBookableResource($resource1), $schedule, null, null, $hourLongReservation, new RepeatNone(), new FakeUserSession());
 		$series->AddResource(new FakeBookableResource($resource2));
 
 		return $series;

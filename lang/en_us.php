@@ -178,15 +178,17 @@ class en_us extends Language
 		$strings['ResetPassword'] = 'Reset Password';
 		$strings['AllUsers'] = 'All Users';
 		$strings['AllGroups'] = 'All Groups';
+		$strings['AllSchedules'] = 'All Schedules';
 		$strings['UsernameOrEmail'] = 'Username or Email';
 		$strings['Members'] = 'Members';
 		$strings['QuickSlotCreation'] = 'Create slots every %s minutes between %s and %s';
 		$strings['ApplyUpdatesTo'] = 'ApplyUpdatesTo';
 		$strings['CancelParticipation'] = 'Cancel Participation';
 		$strings['Attending'] = 'Attending';
-		$strings['QuotaConfiguration'] = 'For %s users in %s are limited to %s %s per %s';
+		$strings['QuotaConfiguration'] = 'On %s for %s users in %s are limited to %s %s per %s';
 		$strings['reservations'] = 'reservations';
 		$strings['ChangeCalendar'] = 'Change Calendar';
+		$strings['AddQuota'] = 'Add Quota';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';

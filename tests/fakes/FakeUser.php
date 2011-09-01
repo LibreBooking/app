@@ -22,9 +22,13 @@ class FakeUser extends User
 		$this->timezone = $timezone;
 	}
 
-	public function SetGroups($groupIds)
+	/**
+	 * @param $groups array|GroupUserView[]
+	 * @return void
+	 */
+	public function SetGroups($groups)
 	{
-		$this->groupIds = $groupIds;
+		$this->groups = $groups;
 	}
 }
 ?>

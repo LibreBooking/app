@@ -62,7 +62,7 @@ class AddLayoutTimeCommand extends SqlCommand
 
 class AddQuotaCommand extends SqlCommand
 {
-	public function __construct($duration, $limit, $unit, $resourceId, $groupId)
+	public function __construct($duration, $limit, $unit, $resourceId, $groupId, $scheduleId)
 	{
 		parent::__construct(Queries::ADD_QUOTA);
 		$this->AddParameter(new Parameter(ParameterNames::QUOTA_DURATION, $duration));
@@ -70,7 +70,8 @@ class AddQuotaCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::QUOTA_UNIT, $unit));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
-	} 
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+	}
 }
 
 class AddReservationSeriesCommand extends SqlCommand

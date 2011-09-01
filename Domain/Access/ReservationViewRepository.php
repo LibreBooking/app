@@ -80,7 +80,8 @@ class ReservationViewRepository implements IReservationViewRepository
 					$row[ColumnNames::RESERVATION_INSTANCE_ID],
 					$row[ColumnNames::RESERVATION_USER_LEVEL],
 					$row[ColumnNames::RESERVATION_TITLE],
-					$row[ColumnNames::RESERVATION_DESCRIPTION]
+					$row[ColumnNames::RESERVATION_DESCRIPTION],
+					$row[ColumnNames::SCHEDULE_ID]
 				);
 		}
 		
@@ -312,6 +313,11 @@ class ReservationItemView
 	 * @var string
 	 */
 	public $Description;
+
+	/**
+	 * @var int
+	 */
+	public $ScheduleId;
 	
 	/**
 	 * @param $referenceNumber string
@@ -323,6 +329,7 @@ class ReservationItemView
 	 * @param $userLevelId int|ReservationUserLevel
 	 * @param $title string
 	 * @param $description string
+	 * @param $scheduleId int
 	 */
 	public function __construct(
 		$referenceNumber = null,
@@ -333,7 +340,8 @@ class ReservationItemView
 		$reservationId = null,
 		$userLevelId = null,
 		$title = null,
-		$description = null
+		$description = null,
+		$scheduleId = null
 		)
 	{
 		$this->ReferenceNumber = $referenceNumber;
@@ -344,6 +352,7 @@ class ReservationItemView
 		$this->ReservationId = $reservationId;
 		$this->Title = $title;
 		$this->Description = $description;
+		$this->ScheduleId = $scheduleId;
 	}
 }
 ?>

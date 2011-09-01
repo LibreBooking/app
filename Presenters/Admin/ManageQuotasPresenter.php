@@ -35,15 +35,21 @@ class ManageQuotasPresenter extends ActionPresenter
 	 * @param IManageQuotasPage $page
 	 * @param IResourceRepository $resourceRepository
 	 * @param IGroupViewRepository $groupRepository
+	 * @param IScheduleRepository $scheduleRepository
 	 * @param IQuotaViewRepository|IQuotaRepository $quotaRepository
 	 */
-	public function __construct(IManageQuotasPage $page, IResourceRepository $resourceRepository, IGroupViewRepository $groupRepository, IQuotaViewRepository $quotaRepository)
+	public function __construct(IManageQuotasPage $page,
+		IResourceRepository $resourceRepository,
+		IGroupViewRepository $groupRepository,
+		IScheduleRepository $scheduleRepository,
+		IQuotaViewRepository $quotaRepository)
 	{
 		parent::__construct($page);
 
 		$this->page = $page;
 		$this->resourceRepository = $resourceRepository;
 		$this->groupRepository = $groupRepository;
+		$this->scheduleRepository = $scheduleRepository;
 		$this->quotaRepository = $quotaRepository;
 
 		$this->AddAction(ManageQuotasActions::AddQuota, 'AddQuota');
@@ -54,9 +60,11 @@ class ManageQuotasPresenter extends ActionPresenter
 	{
 		$resources = $this->resourceRepository->GetResourceList();
 		$groups = $this->groupRepository->GetList()->Results();
+		$schedules = $this->scheduleRepository->GetAll();
 		
 		$this->page->BindResources($resources);
 		$this->page->BindGroups($groups);
+		$this->page->BindSchedules($schedules);
 
 		$quotas = $this->quotaRepository->GetAll();
 		$this->page->BindQuotas($quotas);
@@ -66,7 +74,12 @@ class ManageQuotasPresenter extends ActionPresenter
 	{
 		Log::Debug('Adding new quota');
 		
-		$quota = Quota::Create($this->page->GetDuration(), $this->page->GetLimit(), $this->page->GetUnit(), $this->page->GetResourceId(), $this->page->GetGroupId());
+		$quota = Quota::Create($this->page->GetDuration(),
+							   $this->page->GetLimit(),
+							   $this->page->GetUnit(),
+							   $this->page->GetResourceId(),
+							   $this->page->GetGroupId(),
+							   $this->page->GetScheduleId());
 		$this->quotaRepository->Add($quota);
 	}
 

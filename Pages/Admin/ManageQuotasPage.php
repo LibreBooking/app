@@ -21,6 +21,13 @@ interface IManageQuotasPage extends IActionPage
 
 	/**
 	 * @abstract
+	 * @param array|Schedule[] $schedules
+	 * @return void
+	 */
+	public function BindSchedules($schedules);
+
+	/**
+	 * @abstract
 	 * @param array|QuotaItemView[] $quotas
 	 * @return void
 	 */
@@ -61,6 +68,14 @@ interface IManageQuotasPage extends IActionPage
 	 * @return int
 	 */
 	public function GetQuotaId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetScheduleId();
+
+
 }
 
 class ManageQuotasPage extends AdminPage implements IManageQuotasPage
@@ -73,7 +88,12 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 	public function __construct()
 	{
 		parent::__construct('ManageQuotas');
-		$this->presenter = new ManageQuotasPresenter($this, new ResourceRepository(), new GroupRepository(), new QuotaRepository());
+		$this->presenter = new ManageQuotasPresenter(
+			$this,
+			new ResourceRepository(),
+			new GroupRepository(),
+			new ScheduleRepository(),
+			new QuotaRepository());
 	}
 	
 	public function PageLoad()
@@ -109,6 +129,16 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 	public function BindGroups($groups)
 	{
 		$this->Set('Groups', $groups);
+	}
+
+
+	/**
+	 * @param array|Schedule[] $schedules
+	 * @return void
+	 */
+	public function BindSchedules($schedules)
+	{
+		$this->Set('Schedules', $schedules);
 	}
 
 	/**
@@ -167,5 +197,14 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 	{
 		return $this->GetQuerystring(QueryStringKeys::QUOTA_ID);
 	}
+
+	/**
+	 * @return int
+	 */
+	public function GetScheduleId()
+	{
+		return $this->GetForm(FormKeys::SCHEDULE_ID);
+	}
+
 }
 ?>

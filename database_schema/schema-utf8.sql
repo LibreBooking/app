@@ -471,12 +471,16 @@ CREATE TABLE `quotas` (
  `duration` varchar(25) NOT NULL,
  `resource_id` smallint(5) unsigned,
  `group_id` smallint(5) unsigned,
+ `schedule_id` smallint(5) unsigned,
  PRIMARY KEY (`quota_id`),
  FOREIGN KEY (`resource_id`)
 	REFERENCES resources(`resource_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE,
  FOREIGN KEY (`group_id`)
 	REFERENCES groups(`group_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE,
+ FOREIGN KEY (`schedule_id`)
+	REFERENCES schedules(`schedule_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 

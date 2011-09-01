@@ -48,7 +48,11 @@ class QuotaRepository implements IQuotaRepository, IQuotaViewRepository
 			$limit = Quota::CreateLimit($row[ColumnNames::QUOTA_LIMIT], $row[ColumnNames::QUOTA_UNIT]);
 			$duration = Quota::CreateDuration($row[ColumnNames::QUOTA_DURATION]);
 
-			$quotas[] = new Quota($quotaId, $duration, $limit);
+			$resourceId = $row[ColumnNames::RESOURCE_ID];
+			$groupId = $row[ColumnNames::GROUP_ID];
+			$scheduleId = $row[ColumnNames::SCHEDULE_ID];
+			
+			$quotas[] = new Quota($quotaId, $duration, $limit, $resourceId, $groupId, $scheduleId);
 		}
 
 		return $quotas;
@@ -73,8 +77,9 @@ class QuotaRepository implements IQuotaRepository, IQuotaViewRepository
 			$duration = $row[ColumnNames::QUOTA_DURATION];
 			$groupName = $row['group_name'];
 			$resourceName = $row['resource_name'];
-			
-			$quotas[] = new QuotaItemView($quotaId, $limit, $unit, $duration, $groupName, $resourceName);
+			$scheduleName = $row['schedule_name'];
+
+			$quotas[] = new QuotaItemView($quotaId, $limit, $unit, $duration, $groupName, $resourceName, $scheduleName);
 		}
 
 		return $quotas;
@@ -86,7 +91,7 @@ class QuotaRepository implements IQuotaRepository, IQuotaViewRepository
 	 */
 	function Add(Quota $quota)
 	{
-		$command = new AddQuotaCommand($quota->GetDuration()->Name(), $quota->GetLimit()->Amount(), $quota->GetLimit()->Name(), $quota->ResourceId(), $quota->GroupId());
+		$command = new AddQuotaCommand($quota->GetDuration()->Name(), $quota->GetLimit()->Amount(), $quota->GetLimit()->Name(), $quota->ResourceId(), $quota->GroupId(), $quota->ScheduleId());
 
 		ServiceLocator::GetDatabase()->Execute($command);
 	}
@@ -111,6 +116,7 @@ class QuotaItemView
 	public $Duration;
 	public $GroupName;
 	public $ResourceName;
+	public $ScheduleName;
 
 	/**
 	 * @param int $quotaId
@@ -119,8 +125,9 @@ class QuotaItemView
 	 * @param string $duration
 	 * @param string $groupName
 	 * @param string $resourceName
+	 * @param string $scheduleName
 	 */
-	public function __construct($quotaId, $limit, $unit, $duration, $groupName, $resourceName)
+	public function __construct($quotaId, $limit, $unit, $duration, $groupName, $resourceName, $scheduleName)
 	{
 		$this->Id = $quotaId;
 		$this->Limit = $limit;
@@ -128,6 +135,7 @@ class QuotaItemView
 		$this->Duration = $duration;
 		$this->GroupName = $groupName;
 		$this->ResourceName = $resourceName;
+		$this->ScheduleName = $scheduleName;
 	}
 }
 ?>

@@ -8,6 +8,14 @@
 	</div>
 	<div class="list" id="quotaList">
 		{foreach from=$Quotas item=quota}
+			{capture name="scheduleName" assign="scheduleName"}
+				<h4>{if $quota->ScheduleName ne ""}
+					{$quota->ScheduleName}
+				{else}
+					{translate key="AllSchedules"}
+				{/if}
+				</h4>
+			{/capture}
 			{capture name="resourceName" assign="resourceName"}
 				<h4>{if $quota->ResourceName ne ""}
 					{$quota->ResourceName}
@@ -38,7 +46,7 @@
 			
 			<div class="{$rowCss}">
 				<a href="#" quotaId="{$quota->Id}" class="delete">{html_image src="cross-button.png"}</a>
-				{translate key=QuotaConfiguration args="$resourceName,$groupName,$amount,$unit,$duration"}
+				{translate key=QuotaConfiguration args="$scheduleName,$resourceName,$groupName,$amount,$unit,$duration"}
 			</div>
 		{foreachelse}
 			{translate key=None}
@@ -48,10 +56,19 @@
 
 <div class="admin" style="margin-top:30px">
 	<div class="title">
-		Add Quota
+		{translate key=AddQuota}
 	</div>
 	<div>
 		<form id="addQuotaForm" method="post">
+		{capture name="schedules" assign="schedules"}
+			<select class='textbox' {formname key=SCHEDULE_ID}>
+				<option selected='selected' value=''>{translate key=AllSchedules}</option>
+			{foreach from=$Schedules item=schedule}
+				<option value='{$schedule->GetId()}'>{$schedule->GetName()}</option>
+			{/foreach}
+			</select>
+		{/capture}
+				
 		{capture name="resources" assign="resources"}
 			<select class='textbox' {formname key=RESOURCE_ID}>
 				<option selected='selected' value=''>{translate key=AllResources}</option>
@@ -87,7 +104,7 @@
 			</select>
 		{/capture}
 
-		{translate key=QuotaConfiguration args="$resources,$groups,$amount,$unit,$duration"}
+		{translate key=QuotaConfiguration args="$schedules,$resources,$groups,$amount,$unit,$duration"}
 		
 		<button type="button" class="button save">{html_image src="plus-circle.png"} {translate key="Add"}</button>
 		{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}

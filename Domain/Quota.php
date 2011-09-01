@@ -40,19 +40,26 @@ class Quota implements IQuota
 	private $groupId;
 
 	/**
+	 * @var int
+	 */
+	private $scheduleId;
+
+	/**
 	 * @param int $quotaId
 	 * @param IQuotaDuration $duration
 	 * @param IQuotaLimit $limit
 	 * @param int $resourceId
 	 * @param int $groupId
+	 * @param int $scheduleId
 	 */
-	public function __construct($quotaId, $duration, $limit, $resourceId = null, $groupId = null)
+	public function __construct($quotaId, $duration, $limit, $resourceId = null, $groupId = null, $scheduleId = null)
 	{
 	    $this->quotaId = $quotaId;
 		$this->duration = $duration;
 		$this->limit = $limit;
 		$this->resourceId = empty($resourceId) ? null : $resourceId;
 		$this->groupId = empty($groupId) ? null : $groupId;
+		$this->scheduleId = empty($scheduleId) ? null : $scheduleId;
 	}
 
 	/**
@@ -62,11 +69,12 @@ class Quota implements IQuota
 	 * @param string $unit
 	 * @param int $resourceId
 	 * @param int $groupId
+	 * @param int $scheduleId
 	 * @return Quota
 	 */
-	public static function Create($duration, $limit, $unit, $resourceId, $groupId)
+	public static function Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId)
 	{
-		return new Quota(0, self::CreateDuration($duration), self::CreateLimit($limit, $unit), $resourceId, $groupId);
+		return new Quota(0, self::CreateDuration($duration), self::CreateLimit($limit, $unit), $resourceId, $groupId, $scheduleId);
 	}
 
 	/**
@@ -132,6 +140,11 @@ class Quota implements IQuota
 			}
 		}
 
+		if (!$this->AppliesToSchedule($reservationSeries->ScheduleId()))
+		{
+			return false;
+		}
+
 		if (count($reservationSeries->Instances()) == 0)
 		{
 			return false;
@@ -192,6 +205,15 @@ class Quota implements IQuota
 	}
 
 	/**
+	 * @param int $scheduleId
+	 * @return bool
+	 */
+	public function AppliesToSchedule($scheduleId)
+	{
+		return is_null($this->scheduleId) || $this->scheduleId == $scheduleId;
+	}
+
+	/**
 	 * @return int|null
 	 */
 	public function ResourceId()
@@ -205,6 +227,14 @@ class Quota implements IQuota
 	public function GroupId()
 	{
 		return $this->groupId;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function ScheduleId()
+	{
+		return $this->scheduleId;
 	}
 
 	private function AddExisting(ReservationItemView $reservation, $timezone)
@@ -231,13 +261,30 @@ class Quota implements IQuota
 		foreach ($series->Instances() as $instance)
 		{
 			$toBeSkipped[$instance->ReferenceNumber()] = true;
-			$this->AddInstance($instance, $timezone);
+
+			if (!is_null($this->scheduleId))
+			{
+				foreach ($series->AllResources() as $resource)
+				{
+					// add each resource instance
+					if ($this->AppliesToResource($resource->GetResourceId()))
+					{
+						$this->AddInstance($instance, $timezone);
+					}
+				}
+			}
+			else
+			{
+				$this->AddInstance($instance, $timezone);
+			}
 		}
 
 		/** @var $reservation ReservationItemView */
 		foreach ($reservationsWithinRange as $reservation)
 		{
-			if ($series->ContainsResource($reservation->ResourceId) && !array_key_exists($reservation->ReferenceNumber, $toBeSkipped) && !$this->willBeDeleted($series, $reservation->ReservationId))
+			if (($series->ContainsResource($reservation->ResourceId) || $series->ScheduleId() == $reservation->ScheduleId) &&
+				!array_key_exists($reservation->ReferenceNumber, $toBeSkipped) &&
+				!$this->willBeDeleted($series, $reservation->ReservationId))
 			{
 				$this->AddExisting($reservation, $timezone);
 			}
@@ -245,8 +292,8 @@ class Quota implements IQuota
 	}
 
 	/**
-	 * @param $series
-	 * @param $reservationId
+	 * @param ExistingReservationSeries $series
+	 * @param int $reservationId
 	 * @return bool
 	 */
 	private function willBeDeleted($series, $reservationId)
@@ -280,6 +327,7 @@ class Quota implements IQuota
 
 		$this->limit->TryAdd($dateRange->GetBegin(), $dateRange->GetEnd(), $durationKey);
 	}
+
 }
 
 class QuotaUnit

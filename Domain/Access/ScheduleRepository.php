@@ -8,7 +8,7 @@ interface IScheduleRepository
 {
 	/**
 	 * Gets all schedules
-	 * @return array list of Schedule objects
+	 * @return array|Schedule[]
 	 */
 	public function GetAll();
 	
