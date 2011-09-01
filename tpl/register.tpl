@@ -16,22 +16,22 @@
 		<div class="registrationHeader"><h3>{translate key="Login Information (all fields are required)"}</h3></div>
         <p>
                 <label class="reg">{translate key="Username"}<br />
-                {textbox name="LOGIN" class="input" value="Login" size="20" tabindex="10"}
+                {textbox name="LOGIN" class="input" value="Login" size="20" tabindex="110"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="Password"}<br />
-                {textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}
+                {textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="120"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="PasswordConfirmation"}<br />
-                {textbox type="password" name="PASSWORD_CONFIRM" class="input" value="" size="20" tabindex="30"}
+                {textbox type="password" name="PASSWORD_CONFIRM" class="input" value="" size="20" tabindex="130"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="DefaultPage"}<br />
-                        <select {formname key='DEFAULT_HOMEPAGE'} class="input" tabindex="110">
+                        <select {formname key='DEFAULT_HOMEPAGE'} class="input" tabindex="140">
                                 {html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}
                         </select>
                 </label>
@@ -40,41 +40,50 @@
         <div class="registrationHeader"><h3>{translate key="Account Registration (all fields are required)"}</h3></div>
         <p>
                 <label class="reg">{translate key="FirstName"}<br />
-                {textbox name="FIRST_NAME" class="input" value="FirstName" size="20" tabindex="110"}
+                {textbox name="FIRST_NAME" class="input" value="FirstName" size="20" tabindex="150"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="LastName"}<br />
-                {textbox name="LAST_NAME" class="input" value="LastName" size="20" tabindex="120"}
+                {textbox name="LAST_NAME" class="input" value="LastName" size="20" tabindex="160"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="Email"}<br />
-                {textbox name="EMAIL" class="input" value="Email" size="20" tabindex="130"}
+                {textbox name="EMAIL" class="input" value="Email" size="20" tabindex="170"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="Timezone"}<br />
-                        <select {formname key='TIMEZONE'} class="input" tabindex="150">
+                        <select {formname key='TIMEZONE'} class="input" tabindex="180">
                                 {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
                         </select>
                 </label>
         </p>
 
+        <p>
+                <label class="reg">{translate key="Language"}<br/>
+                        <select {formname key='LANGUAGE'} class="input" tabindex="190">
+                                 {html_options values=$LanguageValues output=$LanguageOutput selected=$Language}
+                        </select>
+                </label>
+        
+        </p>
+
         <div class="registrationHeader"><h3>{translate key="Additional Information (optional)"}</h3></div>
         <p>
                 <label class="reg">{translate key="Phone"}<br />
-                {textbox name="PHONE" class="input" value="Phone" size="20" tabindex="240"}
+                {textbox name="PHONE" class="input" value="Phone" size="20" tabindex="200"}
                 </label>
         </p>
 		<p>
                 <label class="reg">{translate key="Organization"}<br />
-                {textbox name="ORGANIZATION" class="input" value="Organization" size="20" tabindex="260"}
+                {textbox name="ORGANIZATION" class="input" value="Organization" size="20" tabindex="210"}
                 </label>
         </p>
         <p>
                 <label class="reg">{translate key="Position"}<br />
-                {textbox name="POSITION" class="input" value="Position" size="20" tabindex="270"}
+                {textbox name="POSITION" class="input" value="Position" size="20" tabindex="220"}
                 </label>
         </p>
 
@@ -84,5 +93,5 @@
         </p>
 </form>
 </div>
-{setfocus key='FIRST_NAME'}
+{setfocus key='LOGIN'}
 {include file='globalfooter.tpl'}
