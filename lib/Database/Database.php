@@ -64,7 +64,7 @@ class Database
 	}
 	
 	/**
-	 * Executes an alter query against the database and returns the auto-increment id
+	 * Executes an insert query against the database and returns the auto-increment id
 	 *
 	 * @param SqlCommand $command
 	 * @return long last id inserted for this connection

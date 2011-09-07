@@ -186,6 +186,7 @@ class ScheduleRepository implements IScheduleRepository
 			$source->GetLayoutId()
 		));
 	}
+	
 	/**
 	 * @see IScheduleRepository::GetLayout()
 	 */

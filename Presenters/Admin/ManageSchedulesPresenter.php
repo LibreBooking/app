@@ -95,7 +95,9 @@ class ManageSchedulesPresenter
 		$daysVisible = $this->page->GetDaysVisible();
 		
 		$schedule = new Schedule(null, $name, false, $weekdayStart, $daysVisible);
-		
+
+		Log::Debug('Adding schedule with name $%s', $name);
+
 		$this->scheduleRepository->Add($schedule, $copyLayoutFromScheduleId);
 	}
 	

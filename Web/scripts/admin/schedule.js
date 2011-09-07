@@ -85,13 +85,18 @@ function ScheduleManagement(opts)
 		elements.quickLayoutEnd.change(function() {
 			createQuickLayout();
 		});
-		
 
-		ConfigureForm(elements.renameForm, options.renameAction);
-		ConfigureForm(elements.settingsForm, options.changeSettingsAction);
-		ConfigureForm(elements.changeLayoutForm, options.changeLayoutAction, showLayoutResults);
-		ConfigureForm(elements.addForm, options.addAction, handleAddError);
-		ConfigureForm(elements.makeDefaultForm, options.makeDefaultAction, function(text){alert(text);});
+		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.renameAction));
+		ConfigureAdminForm(elements.settingsForm, getSubmitCallback(options.changeSettingsAction));
+		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction), showLayoutResults);
+		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
+		ConfigureAdminForm(elements.makeDefaultForm, getSubmitCallback(options.makeDefaultAction));
+	};
+
+	var getSubmitCallback = function(action) {
+		return function() {
+			return options.submitUrl + "?sid=" + elements.activeId.val() + "&action=" + action;
+		};
 	};
 
 	var createQuickLayout = function () {
@@ -130,15 +135,15 @@ function ScheduleManagement(opts)
 			var intervalMilliseconds =  60 * 1000 * intervalMinutes;
 			while (currentTime.getTime() < endDateTime.getTime())
 			{
-				nextTime.setTime(nextTime.getTime() + intervalMilliseconds)
+				nextTime.setTime(nextTime.getTime() + intervalMilliseconds);
 
 				layout += getFormattedTime(currentTime) + ' - ';
-				layout += getFormattedTime(nextTime) + '\n'
+				layout += getFormattedTime(nextTime) + '\n';
 
 				currentTime.setTime(currentTime.getTime() + intervalMilliseconds);
 			}
 			
-			elements.reservableEdit.val(layout)
+			elements.reservableEdit.val(layout);
 			elements.blockedEdit.val(blocked);
 		}
 	};
@@ -148,7 +153,7 @@ function ScheduleManagement(opts)
 		var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
 		var minute = date.getMinutes()< 10 ? "0" + date.getMinutes() : date.getMinutes();
 		return hour + ":" + minute;
-	}
+	};
 
 	var showLayoutResults = function(responseText)
 	{
@@ -199,51 +204,4 @@ function ScheduleManagement(opts)
 		text = text.replace(/\s*,\s*/g, '\n');
 		return text;
 	};
-	
-	var ConfigureForm = function(formElement, updateAction, responseHandler)
-	{
-		formElement.submit(function() { 
-			
-			var submitOptions = { 
-				url: options.submitUrl + "?sid=" + elements.activeId.val() + "&action=" + updateAction,
-		        //target: '#result',
-		        beforeSubmit: CheckRequiredFields,
-		        success: function(responseText, statusText, xhr, form)  { 
-					if (responseText.trim() != '' && responseHandler) 
-					{
-						$(form).find('.indicator').hide();
-						responseHandler(responseText);
-					}
-					else
-					{
-						window.location = options.saveRedirect;
-					}
-		        }
-			};
-			
-	        $(this).ajaxSubmit(submitOptions); 
-	 		return false; 
-	    });
-	};
-	
-	function CheckRequiredFields(formData, jqForm, options)
-	{
-		var isValid = true;
-		$(jqForm).find('.required').each(function(){
-			if ($(this).val() == '')
-			{
-				isValid = false;
-				$(this).after('<span class="error">*</span>');
-			}
-		});
-		
-		if (isValid)
-		{
-			$(jqForm).find('button').hide();
-			$(jqForm).append($('.indicator'));
-			$(jqForm).find('.indicator').show();
-		}
-		
-		return isValid;
-	}
 }

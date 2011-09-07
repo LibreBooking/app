@@ -1,10 +1,10 @@
 {include file='globalheader.tpl' cssFiles='css/admin.css'}
 
-<h1>Manage Schedules</h1>
+<h1>{translate key=ManageSchedules}</h1>
 
 <div class="admin">
 	<div class="title">
-		All Schedules
+		{translate key=AllSchedules}
 	</div>
 	{foreach $Schedules item=schedule}
 	{assign var=id value=$schedule->GetId()}
@@ -34,7 +34,7 @@
 					,
 				{/if}
 			{foreachelse}
-				None
+				{translate key=None}
 			{/foreach}
 			</div>
 			Blocked Time Slots
@@ -93,7 +93,7 @@
 					</select>
 				</li>
 				<li>
-					<button type="submit" class="button save" value="submit">{html_image src="plus-button.png"} Add Schedule</button>
+					<button type="button" class="button save" value="submit">{html_image src="plus-button.png"} Add Schedule</button>
 				</li>
 			</ul>
 		</form>
@@ -179,6 +179,7 @@
 </div>
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/schedule.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
 

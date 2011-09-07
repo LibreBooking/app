@@ -38,7 +38,7 @@
 	{
 		buttonElement.click(function() {
 			
-			if (preSubmitCallback && preSubmitCallback() == false)
+			if (preSubmitCallback && !preSubmitCallback())
 			{
 				return false;
 			}
