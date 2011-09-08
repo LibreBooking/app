@@ -75,7 +75,7 @@
 		<div id="addScheduleResults" class="error" style="display:none;"></div>
 		<form id="addScheduleForm" method="post">
 			<ul>
-				<li>Name<br/> <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /></li>
+				<li>Name<br/> <input type="text" style="width:300px" class="textbox required" {formname key=SCHEDULE_NAME} /></li>
 				<li>Starts On<br/> 
 				<select {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
 					{foreach from=$DayNames item="dayName" key="dayIndex"}
@@ -86,9 +86,9 @@
 				<li>Number of Days Visible<br/><input type="text" class="textbox required" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
 				</li>
 				<li>Use Same Layout As<br/>
-					<select class="textbox" {formname key=SCHEDULE_ID}>
+					<select style="width:300px" class="textbox" {formname key=SCHEDULE_ID}>
 					{foreach $Schedules item=schedule}
-						<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
+						<option value="{$schedule->GetId()}" >{$schedule->GetName()}</option>
 					{/foreach}
 					</select>
 				</li>
