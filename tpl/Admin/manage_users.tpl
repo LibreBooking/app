@@ -28,7 +28,7 @@ Find User:<br/>
 	</tr>
 {foreach from=$users item=user}
 	{cycle values='row0,row1' assign=rowCss}
-	<tr class="{$rowCss}">
+	<tr class="{$rowCss} editable">
 		<td class="id"><input type="hidden" class="id" value="{$user->Id}"/></td>
 		<td>{$user->First} {$user->Last}</td>
 		<td>{$user->Username}</td>
@@ -67,6 +67,32 @@ Find User:<br/>
 	<form id="passwordForm" method="post">
 		Password<br/>
 		{textbox type="password" name="PASSWORD" class="required textbox" value=""}
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
+<div id="userDialog" class="dialog" title="Update User">
+	<form id="userForm" method="post">
+		<ul>
+			<li>{translate key="Username"}</li>
+			<li>{textbox name="USERNAME" class="required textbox" size="40"}</li>
+			<li>{translate key="Email"}</li>
+			<li>{textbox name="EMAIL" class="required textbox" size="40"}</li>
+			
+			<li>{translate key="FirstName"}</li>
+			<li>{textbox name="FIRST_NAME" class="required textbox" size="40"}</li>
+			<li>{translate key="LastName"}</li>
+			<li>{textbox name="LAST_NAME" class="required textbox" size="40"}</li>
+
+			<li>{translate key="Timezone"}</li>
+			<li>
+				<select {formname key='TIMEZONE'} id='timezone' class="textbox">
+					{html_options values=$Timezones output=$Timezones}
+				</select>
+			</li>
+		</ul>
+		
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
@@ -113,7 +139,12 @@ Find User:<br/>
 			id: {$user->Id},
 			first: '{$user->First}',
 			last: '{$user->Last}',
-			isActive: '{$user->IsActive()}'
+			isActive: '{$user->IsActive()}',
+			username: '{$user->Username}',
+			email: '{$user->Email}',
+			timezone: '{$user->Timezone}',
+			phone: '{$user->Phone}',
+			organization: '{$user->Organization}'
 		};
 		userManagement.addUser(user);
 	{/foreach}

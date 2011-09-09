@@ -1,0 +1,1 @@
+<h1>{translate key=ManageReservations}</h1>

@@ -1,4 +1,5 @@
-<?php 
+<?php
+require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -84,6 +85,7 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 		$this->_presenter->PageLoad();
 
 		$this->Set('statusDescriptions', array(AccountStatus::ACTIVE => 'Active', AccountStatus::AWAITING_ACTIVATION => 'Pending', AccountStatus::INACTIVE => 'Inactive'));
+		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
 		$this->Display('manage_users.tpl');
 	}
 

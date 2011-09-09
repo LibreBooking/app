@@ -455,7 +455,10 @@ CREATE TABLE `user_email_preferences` (
   `user_id` mediumint(8) unsigned NOT NULL,
   `event_category` varchar(45) NOT NULL,
   `event_type` varchar(45) NOT NULL,
-  KEY `user_id` (`user_id`)
+ PRIMARY KEY (`user_id`),
+ FOREIGN KEY (`user_id`)
+	REFERENCES users(`user_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

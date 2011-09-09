@@ -145,3 +145,8 @@ table.list, .list td, .list th {
 #groupUserList {
 	overflow-y: auto;
 }
+
+.list tr.editable:hover {
+	cursor: pointer;
+	background-color: #FFFF99;
+}

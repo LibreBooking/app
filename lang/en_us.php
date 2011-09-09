@@ -200,6 +200,9 @@ class en_us extends Language
 		$strings['CreateReservation'] = 'Create Reservation';
 		$strings['EditReservation'] = 'Editing Reservation';
 		$strings['LogIn'] = 'Log In';
+		$strings['ManageReservations'] = 'Manage Reservations';
+		$strings['AwaitingActivation'] = 'Awaiting Activation';
+		$strings['PendingApproval'] = 'Pending Approval';
 		$strings['ManageSchedules'] = 'Manage Schedules';
 		$strings['ManageResources'] = 'Manage Resources';
 		$strings['ManageUsers'] = 'Manage Users';

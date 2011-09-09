@@ -3,8 +3,8 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
 interface IActionPage
 {
-	function TakingAction();
-	function GetAction();
+	public function TakingAction();
+	public function GetAction();
 }
 
 abstract class AdminPage extends SecurePage implements IActionPage
@@ -24,7 +24,7 @@ abstract class AdminPage extends SecurePage implements IActionPage
 	
 	public function Display($adminTemplateName)
 	{
-		$this->smarty->display('Admin/' . $adminTemplateName);
+		parent::Display('Admin/' . $adminTemplateName);
 	}
 	
 	public function TakingAction()
@@ -49,6 +49,6 @@ abstract class AdminPage extends SecurePage implements IActionPage
 		return $this->GetQuerystring(QueryStringKeys::DATA_REQUEST);
 	}
 	
-	abstract function ProcessAction();
+	public abstract function ProcessAction();
 }
 ?>

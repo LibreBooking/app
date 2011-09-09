@@ -53,6 +53,8 @@
 */
 #nav li ul ul {
 	left: 12em;
+	left: 190px;
+	top: 7px;
 	margin: 0px 0 0 10px;
 }
 
@@ -93,7 +95,7 @@ li.menubaritem a {
 	font-weight: bold;
 }
 
-.menubaritem a:hover{
+.menubaritem a:hover {
 	background: #31526f; /* url(../img/header-menu-bg.png) top right no-repeat; */
 	background: #3d5b74; /* url(../img/header-menu-bg.png) top right no-repeat; */
 }
