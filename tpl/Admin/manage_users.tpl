@@ -24,7 +24,7 @@
 		<th>{translate key='Permissions'}</th>
 		<th>{translate key='Reservations'}</th>
 		<th>{translate key='Password'}</th>
-		<th><button type="button" class="button delete">{html_image src="cross-button.png"} {translate key='Delete'}</button></th>
+		<th>{translate key='Delete'}</th>
 	</tr>
 {foreach from=$users item=user}
 	{cycle values='row0,row1' assign=rowCss}
@@ -45,7 +45,7 @@
 		<td align="center"><a href="#" class="update changePermissions">{translate key='Edit'}</a></td>
 		<td align="center"><a href="#" class="update viewReservations">{translate key='Search'}</a></td>
 		<td align="center"><a href="#" class="update resetPassword">{translate key='Reset'}</a></td>
-		<td align="center"><input type="checkbox"></input></td>
+		<td align="center"><a href="#" class="update delete">{html_image src="cross-button.png"}</a></td>
 	</tr>
 {/foreach}
 </table>
@@ -111,6 +111,16 @@
 	</form>
 </div>
 
+<div id="deleteDialog" class="dialog" title="Delete User">
+	<form id="deleteUserForm" method="post">
+		<div class="error" style="margin-bottom: 25px;">
+			<h3>This action is permanent and irrecoverable!</h3>
+			<div>Deleting this user will remove all of their current, future, and historical reservations.</div>
+		</div>
+		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
 {pagination pageInfo=$PageInfo}
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}

@@ -16,7 +16,10 @@ function UserManagement(opts) {
 		userDialog: $('#userDialog'),
 		userForm: $('#userForm'),
 
-		addForm: $('#addScheduleForm')
+		addForm: $('#addScheduleForm'),
+
+		deleteDialog: $('#deleteDialog'),
+		deleteUserForm: $('#deleteUserForm')
 	};
 
 	var users = new Object();
@@ -27,37 +30,39 @@ function UserManagement(opts) {
 		ConfigureAdminDialog(elements.permissionsDialog, 400, 500);
 		ConfigureAdminDialog(elements.passwordDialog, 400, 300);
 		ConfigureAdminDialog(elements.userDialog, 310, 550);
+		ConfigureAdminDialog(elements.deleteDialog, 600, 170);
 
 		elements.userList.delegate('a.update', 'click', function(e) {
 			setActiveUserElement($(this));
 			e.preventDefault();
+			e.stopPropagation();
 		});
 
 		elements.userList.delegate('.changeStatus', 'click', function(e) {
 			changeStatus();
-			e.stopPropagation();
 		});
 
 		elements.userList.delegate('.changeGroups', 'click', function(e) {
 			changeGroups();
-			e.stopPropagation();
 		});
 
 		elements.userList.delegate('.changePermissions', 'click', function(e) {
 			changePermissions();
-			e.stopPropagation();
 		});
 
 		elements.userList.delegate('.resetPassword', 'click', function(e) {
 			elements.passwordDialog.find(':password').val('');
 			elements.passwordDialog.dialog('open');
-			e.stopPropagation();
 		});
 
 		elements.userList.delegate('.editable', 'click', function() {
 			var userId = $(this).find('input:hidden.id').val();
 			setActiveUserId(userId);
 			changeUserInfo();
+		});
+
+		elements.userList.delegate('.delete', 'click', function(e) {
+			deleteUser();
 		});
 
 		elements.userAutocomplete.userAutoComplete(options.userAutocompleteUrl, function(ui) {
@@ -96,6 +101,7 @@ function UserManagement(opts) {
 		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
 		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
 		ConfigureAdminForm(elements.userForm, getSubmitCallback(options.actions.updateUser), hideDialog(elements.userDialog), handleUserUpdate);
+		ConfigureAdminForm(elements.deleteUserForm, getSubmitCallback(options.actions.deleteUser), hideDialog(elements.deleteDialog), error);
 	};
 
 	UserManagement.prototype.addUser = function(user) {
@@ -173,5 +179,9 @@ function UserManagement(opts) {
 		$('#position').val(user.position);
 
 		elements.userDialog.dialog('open');
+	};
+
+	var deleteUser = function() {
+		elements.deleteDialog.dialog('open');
 	};
 }
