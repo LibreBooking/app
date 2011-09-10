@@ -26,28 +26,32 @@ function UserManagement(opts) {
 
 		ConfigureAdminDialog(elements.permissionsDialog, 400, 500);
 		ConfigureAdminDialog(elements.passwordDialog, 400, 300);
-		ConfigureAdminDialog(elements.userDialog, 400, 400);
+		ConfigureAdminDialog(elements.userDialog, 310, 550);
 
 		elements.userList.delegate('a.update', 'click', function(e) {
 			setActiveUserElement($(this));
 			e.preventDefault();
 		});
 
-		elements.userList.delegate('.changeStatus', 'click', function() {
+		elements.userList.delegate('.changeStatus', 'click', function(e) {
 			changeStatus();
+			e.stopPropagation();
 		});
 
-		elements.userList.delegate('.changeGroups', 'click', function() {
+		elements.userList.delegate('.changeGroups', 'click', function(e) {
 			changeGroups();
+			e.stopPropagation();
 		});
 
-		elements.userList.delegate('.changePermissions', 'click', function() {
+		elements.userList.delegate('.changePermissions', 'click', function(e) {
 			changePermissions();
+			e.stopPropagation();
 		});
 
-		elements.userList.delegate('.resetPassword', 'click', function() {
+		elements.userList.delegate('.resetPassword', 'click', function(e) {
 			elements.passwordDialog.find(':password').val('');
 			elements.passwordDialog.dialog('open');
+			e.stopPropagation();
 		});
 
 		elements.userList.delegate('.editable', 'click', function() {
@@ -80,12 +84,18 @@ function UserManagement(opts) {
 		var hideDialog = function(dialogElement) {
 			dialogElement.dialog('close');
 		};
+
+		var handleUserUpdate = function(response) {
+			$.each(response.ErrorIds, function(index, errorId) {
+				$('#' + errorId).show();
+			});
+		};
 		
 		var error = function(errorText) { alert(errorText);};
 		
 		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
 		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
-		ConfigureAdminForm(elements.userForm, getSubmitCallback(options.actions.updateUser), hideDialog(elements.userDialog), error);
+		ConfigureAdminForm(elements.userForm, getSubmitCallback(options.actions.updateUser), hideDialog(elements.userDialog), handleUserUpdate);
 	};
 
 	UserManagement.prototype.addUser = function(user) {
@@ -150,11 +160,17 @@ function UserManagement(opts) {
 	var changeUserInfo = function () {
 		var user = getActiveUser();
 
+		ClearAsyncErrors(elements.userDialog);
+
 		$('#username').val(user.username);
 		$('#fname').val(user.first);
 		$('#lname').val(user.last);
 		$('#email').val(user.email);
 		$('#timezone').val(user.timezone);
+
+		$('#phone').val(user.phone);
+		$('#organization').val(user.organization);
+		$('#position').val(user.position);
 
 		elements.userDialog.dialog('open');
 	};

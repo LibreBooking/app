@@ -3,7 +3,7 @@
 <h1>{translate key=ManageUsers}</h1>
 
 <div style="padding: 10px 0px;">
-Find User:<br/>
+{translate key=FindUser}:<br/>
 <input type="text" id="userSearch" class="textbox" size="40"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllUsers}
 </div>
 <table class="list">
@@ -75,6 +75,12 @@ Find User:<br/>
 <div id="userDialog" class="dialog" title="Update User">
 	<form id="userForm" method="post">
 		<ul>
+			{async_validator id="emailformat" key="ValidEmailRequired"}
+			{async_validator id="uniqueemail" key="UniqueEmailRequired"}
+			{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
+		</ul>
+		
+		<ul>
 			<li>{translate key="Username"}</li>
 			<li>{textbox name="USERNAME" class="required textbox" size="40"}</li>
 			<li>{translate key="Email"}</li>
@@ -91,6 +97,13 @@ Find User:<br/>
 					{html_options values=$Timezones output=$Timezones}
 				</select>
 			</li>
+
+			<li>{translate key="Phone"}</li>
+			<li>{textbox name="PHONE" class="textbox" size="40"}</li>
+			<li>{translate key="Organization"}</li>
+			<li>{textbox name="ORGANIZATION" class="textbox" size="40"}</li>
+			<li>{translate key="Position"}</li>
+			<li>{textbox name="POSITION" class="textbox" size="40"}</li>
 		</ul>
 		
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
@@ -118,7 +131,8 @@ Find User:<br/>
 		activate: '{ManageUsersActions::Activate}',
 		deactivate: '{ManageUsersActions::Deactivate}',
 		permissions: '{ManageUsersActions::Permissions}',
-		password: '{ManageUsersActions::Password}'
+		password: '{ManageUsersActions::Password}',
+		updateUser: '{ManageUsersActions::UpdateUser}'
 	};
 			
 	var userOptions = {
@@ -144,7 +158,8 @@ Find User:<br/>
 			email: '{$user->Email}',
 			timezone: '{$user->Timezone}',
 			phone: '{$user->Phone}',
-			organization: '{$user->Organization}'
+			organization: '{$user->Organization}',
+			position: '{$user->Position}'
 		};
 		userManagement.addUser(user);
 	{/foreach}

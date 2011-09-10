@@ -1,10 +1,27 @@
 <?php
 
-class PageValdiators
+class PageValidators
 {
+	/**
+	 * @var array|IValidator[]
+	 */
 	private $validators = array();
+
+	/**
+	 * @var bool
+	 */
 	private $isValidated = false;
-	
+
+	/**
+	 * @var SmartyPage
+	 */
+	private $page;
+
+	public function __construct(SmartyPage $page)
+	{
+		$this->page = $page;
+	}
+
 	public function Register($id, $validator)
 	{
 		$this->validators[$id] = $validator;
@@ -12,12 +29,17 @@ class PageValdiators
 	
 	public function Validate()
 	{		
-		foreach($this->validators as $validator)
+		foreach($this->validators as $id => $validator)
 		{
 			$validator->Validate();
+
+			if (!$validator->IsValid())
+			{
+				$this->page->AddFailedValidation($id);
+			}
 		}
 
-		$this->_isValidated = true;
+		$this->isValidated = true;
 	}
 	
 	public function AreAllValid()

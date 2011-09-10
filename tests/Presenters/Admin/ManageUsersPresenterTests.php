@@ -5,22 +5,22 @@ require_once(ROOT_DIR . 'Pages/Admin/ManageUsersPage.php');
 class ManageUsersPresenterTests extends TestBase
 {
 	/**
-	 * @var IManageUsersPage
+	 * @var IManageUsersPage|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $page;
 
 	/**
-	 * @var UserRepository
+	 * @var UserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	public $userRepo;
 
 	/**
-	 * @var IResourceRepository
+	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	public $resourceRepo;
 
 	/**
-	 * @var ManageUsersPresenter
+	 * @var ManageUsersPresenter|PHPUnit_Framework_MockObject_MockObject
 	 */
 	public $presenter;
 
@@ -114,6 +114,78 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->assertEquals($encrypted, $user->password);
 		$this->assertEquals($salt, $user->passwordSalt);
+	}
+
+	public function testCanUpdateUser()
+	{
+		$user = new User();
+		$userId = 1029380;
+		$fname = 'f';
+		$lname = 'l';
+		$username = 'un';
+		$email = 'e@mail.com';
+		$timezone = 'America/Chicago';
+		$phone = '123-123-1234';
+		$organization = 'ou';
+		$position = 'position';
+
+		$this->page->expects($this->atLeastOnce())
+			->method('GetUserId')
+			->will($this->returnValue($userId));
+
+		$this->page->expects($this->once())
+			->method('GetFirstName')
+			->will($this->returnValue($fname));
+
+		$this->page->expects($this->once())
+			->method('GetLastName')
+			->will($this->returnValue($lname));
+
+		$this->page->expects($this->once())
+			->method('GetUserName')
+			->will($this->returnValue($username));
+
+		$this->page->expects($this->once())
+			->method('GetEmail')
+			->will($this->returnValue($email));
+
+		$this->page->expects($this->once())
+			->method('GetTimezone')
+			->will($this->returnValue($timezone));
+
+		$this->page->expects($this->once())
+			->method('GetPhone')
+			->will($this->returnValue($phone));
+
+		$this->page->expects($this->once())
+			->method('GetOrganization')
+			->will($this->returnValue($organization));
+
+		$this->page->expects($this->once())
+			->method('GetPosition')
+			->will($this->returnValue($position));
+
+
+		$this->userRepo->expects($this->once())
+			->method('LoadById')
+			->with($this->equalTo($userId))
+			->will($this->returnValue($user));
+
+		$this->userRepo->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($user));
+		
+		$this->presenter->UpdateUser();
+
+		$this->assertEquals($fname, $user->FirstName());
+		$this->assertEquals($lname, $user->LastName());
+		$this->assertEquals($timezone, $user->Timezone());
+
+		$this->assertEquals($username, $user->Username());
+		$this->assertEquals($email, $user->EmailAddress());
+		$this->assertEquals($phone, $user->GetAttribute(UserAttribute::Phone));
+		$this->assertEquals($organization, $user->GetAttribute(UserAttribute::Organization));
+		$this->assertEquals($position, $user->GetAttribute(UserAttribute::Position));
 	}
 }
 ?>

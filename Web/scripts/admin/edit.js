@@ -1,17 +1,23 @@
 	
-	function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHandler)
+	function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHandler, options)
 	{
-		formElement.submit(function() { 
+		var opts = $.extend({dataType: null}, options);
+
+		formElement.submit(function() {
 			
 			var submitOptions = { 
 				url: urlCallback(),
 		        beforeSubmit: BeforeFormSubmit,
+				dataType: opts.dataType,
 		        success: function(responseText, statusText, xhr, form)  {
 
 					formElement.find('.indicator').hide();
 					formElement.find('button').show();
 					
-					if (responseText.trim() != '' && responseHandler) 
+					if (responseHandler && (
+							(responseText.trim != undefined && responseText.trim() != '') || (responseText.constructor == Object)
+						)
+					)
 					{
 						responseHandler(responseText);
 					}
@@ -32,7 +38,7 @@
 	        $(this).ajaxSubmit(submitOptions); 
 	 		return false; 
 	    });
-	};
+	}
 	
 	function ConfigureUploadForm(buttonElement, urlCallback, preSubmitCallback, successHandler, responseHandler)
 	{
@@ -115,7 +121,7 @@
 		    };
 		        
 		dialogElement.dialog(dialogOpts);
-	};
+	}
 	
 	function PerformAsyncAction(element, urlCallback, indicator)
 	{
@@ -132,4 +138,9 @@
 				window.location.reload();
 			}
 		);
-	};
+	}
+
+	function ClearAsyncErrors(element)
+	{
+		element.find('.asyncValidation').hide();
+	}

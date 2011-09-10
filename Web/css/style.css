@@ -114,7 +114,10 @@ div.error li {
     padding: 0; 
 }
 
-
+.asyncValidation {
+	display:none;
+	color: red;
+}
 
 div.page-footer {
     color: #aaa;

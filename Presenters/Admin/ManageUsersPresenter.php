@@ -6,9 +6,11 @@ require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 class ManageUsersActions
 {
 	const Activate = 'activate';
+	const AddUser = 'addUser';
 	const Deactivate = 'deactivate';
 	const Password = 'password';
 	const Permissions = 'permissions';
+	const UpdateUser = 'UpdateUser';
 }
 
 class ManageUsersPresenter extends ActionPresenter
@@ -33,9 +35,12 @@ class ManageUsersPresenter extends ActionPresenter
 	 */
 	private $passwordEncryption;
 
+
 	/**
 	 * @param IManageUsersPage $page
 	 * @param UserRepository $userRepository
+	 * @param IResourceRepository $resourceRepository
+	 * @param PasswordEncryption $passwordEncryption
 	 */
 	public function __construct(IManageUsersPage $page, UserRepository $userRepository, IResourceRepository $resourceRepository, PasswordEncryption $passwordEncryption)
 	{
@@ -47,9 +52,11 @@ class ManageUsersPresenter extends ActionPresenter
 		$this->passwordEncryption = $passwordEncryption;
 
 		$this->AddAction(ManageUsersActions::Activate, 'Activate');
+		$this->AddAction(ManageUsersActions::AddUser, 'AddUser');
 		$this->AddAction(ManageUsersActions::Deactivate, 'Deactivate');
 		$this->AddAction(ManageUsersActions::Password, 'ResetPassword');
 		$this->AddAction(ManageUsersActions::Permissions, 'ChangePermissions');
+		$this->AddAction(ManageUsersActions::UpdateUser, 'UpdateUser');
 	}
 
 	public function PageLoad()
@@ -79,6 +86,19 @@ class ManageUsersPresenter extends ActionPresenter
 	{
 		$user = $this->userRepository->LoadById($this->page->GetUserId());
 		$user->Activate();
+		$this->userRepository->Update($user);
+	}
+
+	public function UpdateUser()
+	{
+		Log::Debug('Updating user %s', $this->page->GetUserId());
+		$user = $this->userRepository->LoadById($this->page->GetUserId());
+		$user->ChangeName($this->page->GetFirstName(), $this->page->GetLastName());
+		$user->ChangeEmailAddress($this->page->GetEmail());
+		$user->ChangeUsername($this->page->GetUserName());
+		$user->ChangeTimezone($this->page->GetTimezone());
+		$user->ChangeAttributes($this->page->GetPhone(), $this->page->GetOrganization(), $this->page->GetPosition());
+		
 		$this->userRepository->Update($user);
 	}
 
@@ -124,6 +144,33 @@ class ManageUsersPresenter extends ActionPresenter
 	{
 		$user = $this->userRepository->LoadById($this->page->GetUserId());
 		return $user->AllowedResourceIds();
+	}
+
+	public function UpdateUserValidators()
+	{
+		return array(new EmailValidator($this->page->GetEmail()));
+	}
+
+	protected function LoadValidators($action)
+	{
+		if ($action == ManageUsersActions::UpdateUser)
+		{
+			Log::Debug('Loading validators for %s', $action);
+
+			$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
+			$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail(), $this->page->GetUserId()));
+			$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetUserName(), $this->page->GetUserId()));
+		}
+	}
+}
+
+class ActionErrors
+{
+	public $ErrorIds = array();
+
+	public function AddId($id)
+	{
+		$this->ErrorIds[] = $id;
 	}
 }
 

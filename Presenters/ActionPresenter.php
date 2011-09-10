@@ -11,10 +11,16 @@ abstract class ActionPresenter
 	 */
 	private $actions;
 
+	/**
+	 * @var array
+	 */
+	private $validations;
+
 	protected function __construct(IActionPage $page)
 	{
 		$this->actionPage = $page;
 		$this->actions = array();
+		$this->validations = array();
 	}
 
 	protected function AddAction($actionName, $actionMethod)
@@ -22,9 +28,19 @@ abstract class ActionPresenter
 		$this->actions[$actionName] = $actionMethod;
 	}
 
+	protected function AddValidation($actionName, $validationMethod)
+	{
+		$this->validations[$actionName] = $validationMethod;
+	}
+
 	protected function ActionIsKnown($action)
 	{
 		return isset($this->actions[$action]);
+	}
+
+	protected function LoadValidators($action)
+	{
+		// Hook for children to load validators
 	}
 
 	public function ProcessAction()
@@ -32,12 +48,18 @@ abstract class ActionPresenter
 		/** @var $action string */
 		$action = $this->actionPage->GetAction();
 
-		if ($this->ActionIsKnown($action)) {
+		if ($this->ActionIsKnown($action))
+		{
 			$method = $this->actions[$action];
 			try
 			{
-				Log::Debug("Processing page action. Action %s", $action);
-				$this->$method();
+				$this->LoadValidators($action);
+				
+				if ($this->actionPage->IsValid())
+				{
+					Log::Debug("Processing page action. Action %s", $action);
+					$this->$method();
+				}
 			}
 			catch (Exception $ex)
 			{
@@ -50,4 +72,5 @@ abstract class ActionPresenter
 		}
 	}
 }
+
 ?>

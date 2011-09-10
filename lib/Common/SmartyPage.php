@@ -11,6 +11,9 @@ require_once(ROOT_DIR . 'lib/Common/SmartyControls/namespace.php');
 
 class SmartyPage extends Smarty
 {
+	/**
+	 * @var PageValidators
+	 */
 	public $Validators;
 		
 	/**
@@ -66,16 +69,32 @@ class SmartyPage extends Smarty
         $this->registerPlugin('function', 'pagelink', array($this, 'CreatePageLink'));
         $this->registerPlugin('function', 'pagination', array($this, 'CreatePagination'));
         $this->registerPlugin('function', 'js_array', array($this, 'CreateJavascriptArray'));
+        $this->registerPlugin('function', 'async_validator', array($this, 'AsyncValidator'));
 
-		$this->Validators = new PageValdiators();
+		$this->Validators = new PageValidators($this);
 	}
 		
 	public function IsValid()
 	{
-		$this->Validators->Validate();
+		$this->Validate();
 		$this->IsValid = $this->Validators->AreAllValid();
 
 		return $this->IsValid;
+	}
+
+	public function Validate()
+	{
+		$this->Validators->Validate();
+	}
+
+	/**
+	 * @var array|string[]
+	 */
+	public $failedValidatorIds = array();
+
+	public function AddFailedValidation($validatorId)
+	{
+		$this->failedValidatorIds[] = $validatorId;
 	}
 
 	private function AppendAttributes($params, $knownAttributes)
@@ -215,6 +234,11 @@ class SmartyPage extends Smarty
 			return '<li>' . $this->SmartyTranslate(array('key' => $params['key']), $smarty) . '</li>';
 		}
 		return;
+	}
+
+	public function AsyncValidator($params, &$smarty)
+	{
+		return sprintf('<li class="asyncValidation" id="%s">%s</li>', $params['id'], $this->SmartyTranslate(array('key' => $params['key']), $smarty));
 	}
 	
 	public function Textbox($params, &$smarty)

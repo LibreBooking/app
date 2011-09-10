@@ -7,7 +7,7 @@ class ValidatorTests extends TestBase
 	{
 		$validator = new FakeValidator();
 		$validator->_IsValid = true;
-		$validators = new PageValdiators();
+		$validators = new PageValidators(new SmartyPage());
 		
 		$validators->Register('someid', $validator);	
 		$validators->Validate();

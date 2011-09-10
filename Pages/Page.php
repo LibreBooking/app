@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Pages/IPage.php');
+require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Pages/Pages.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
@@ -122,7 +123,7 @@ abstract class Page implements IPage
 	}
 	
 	/**
-	 * Whether or not the current page passess all registered validators
+	 * Whether or not the current page is valid when checked against all registered validators
 	 *
 	 * @return bool
 	 */
@@ -166,7 +167,7 @@ abstract class Page implements IPage
 
 	/**
 	 * @param string $objectToSerialize
-	 * @param string null $error
+	 * @param string|null $error
 	 * @return void
 	 */
 	protected function SetJson($objectToSerialize, $error = null)

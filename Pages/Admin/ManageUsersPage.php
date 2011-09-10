@@ -44,29 +44,56 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @return string
 	 */
 	public function GetPassword();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetEmail();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetUserName();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetFirstName();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetLastName();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetTimezone();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetPhone();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetPosition();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetOrganization();
 }
 
-interface IPageable
-{
-	/**
-	 * @abstract
-	 * @return int
-	 */
-	function GetPageNumber();
-
-	/**
-	 * @abstract
-	 * @return int
-	 */
-	function GetPageSize();
-
-	/**
-	 * @abstract
-	 * @param PageInfo $pageInfo
-	 * @return void
-	 */
-	function BindPageInfo(PageInfo $pageInfo);
-}
 
 class ManageUsersPage extends AdminPage implements IManageUsersPage
 {
@@ -169,6 +196,52 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	function TakingAction()
 	{
 		return parent::GetAction();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetEmail()
+	{
+		return $this->GetForm(FormKeys::EMAIL);
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function GetUserName()
+	{
+		return $this->GetForm(FormKeys::USERNAME);
+	}
+
+	public function GetFirstName()
+	{
+		return $this->GetForm(FormKeys::FIRST_NAME);
+	}
+
+	public function GetLastName()
+	{
+		return $this->GetForm(FormKeys::LAST_NAME);
+	}
+
+	public function GetTimezone()
+	{
+		return $this->GetForm(FormKeys::TIMEZONE);
+	}
+
+	public function GetPhone()
+	{
+		return $this->GetForm(FormKeys::PHONE);
+	}
+
+	public function GetPosition()
+	{
+		return $this->GetForm(FormKeys::POSITION);
+	}
+
+	public function GetOrganization()
+	{
+		return $this->GetForm(FormKeys::ORGANIZATION);
 	}
 }
 ?>

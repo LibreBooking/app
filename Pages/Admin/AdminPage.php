@@ -1,7 +1,7 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
-interface IActionPage
+interface IActionPage extends IPage
 {
 	public function TakingAction();
 	public function GetAction();
@@ -48,7 +48,27 @@ abstract class AdminPage extends SecurePage implements IActionPage
 	{
 		return $this->GetQuerystring(QueryStringKeys::DATA_REQUEST);
 	}
-	
+
+	public function IsValid()
+	{
+		if (parent::IsValid())
+		{
+			Log::Debug('Action passed all validations');
+			return true;
+		}
+
+		$errors = new ActionErrors();
+
+		foreach ($this->smarty->failedValidatorIds as $validator)
+		{
+			Log::Debug('Failed validator %s', $validator);
+			$errors->AddId($validator);
+		}
+
+		$this->SetJson($errors);
+		return false;
+	}
+
 	public abstract function ProcessAction();
 }
 ?>

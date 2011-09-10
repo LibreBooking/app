@@ -6,5 +6,6 @@ interface IPage
 	public function IsPostBack();
 	public function IsValid();
 	public function GetLastPage();
+	public function RegisterValidator($validatorId, $validator);
 }
 ?>
