@@ -125,10 +125,6 @@
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
-<div style="margin-top:30px">
-       <button type="button" class="button add">{html_image src="plus-button.png"} {translate key='AddNewUser'}</button>
-</div>
-
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/user.js"></script>
