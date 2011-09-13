@@ -245,6 +245,11 @@ class Queries
 		FROM reservation_series
 		WHERE series_id = @seriesid';
 
+	const DELETE_USER =
+		'DELETE
+		FROM users
+		WHERE user_id = @userid';
+	
 	const DELETE_USER_GROUP =
 		'DELETE
 		FROM user_groups

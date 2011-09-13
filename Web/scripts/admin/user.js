@@ -30,7 +30,7 @@ function UserManagement(opts) {
 		ConfigureAdminDialog(elements.permissionsDialog, 400, 500);
 		ConfigureAdminDialog(elements.passwordDialog, 400, 300);
 		ConfigureAdminDialog(elements.userDialog, 310, 550);
-		ConfigureAdminDialog(elements.deleteDialog, 600, 170);
+		ConfigureAdminDialog(elements.deleteDialog, 600, 200);
 
 		elements.userList.delegate('a.update', 'click', function(e) {
 			setActiveUserElement($(this));

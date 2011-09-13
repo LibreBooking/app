@@ -159,6 +159,12 @@ class UserRepository implements IUserRepository, IUserViewRepository
 			$db->Execute($updateAttributesCommand);
 		}
 	}
+
+	public function DeleteById($userId)
+	{
+		$deleteUserCommand = new DeleteUserCommand($userId);
+		ServiceLocator::GetDatabase()->Execute($deleteUserCommand);
+	}
 	
 	public function LoadEmailPreferences($userId)
 	{
@@ -226,6 +232,7 @@ interface IUserRepository
 	function GetAll();
 
 	/**
+	 * @param int $userId
 	 * @return UserDto
 	 */
 	function GetById($userId);
@@ -242,6 +249,13 @@ interface IUserRepository
 	 * @return void
 	 */
 	function Update($user);
+
+	/**
+	 * @abstract
+	 * @param $userId int
+	 * @return void
+	 */
+	function DeleteById($userId);
 	
 	/**
 	 * @param int $resourceId
@@ -314,7 +328,7 @@ class UserDto
 	
 	public function Language()
 	{
-		return $this->language;
+		return $this->languageCode;
 	}
 }
 

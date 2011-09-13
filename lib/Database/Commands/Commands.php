@@ -322,6 +322,15 @@ class DeleteSeriesCommand extends SqlCommand
 	}
 }
 
+class DeleteUserCommand extends SqlCommand
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::DELETE_USER);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
 class DeleteUserGroupCommand extends SqlCommand
 {
 	public function __construct($userId, $groupId)

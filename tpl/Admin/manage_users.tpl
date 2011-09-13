@@ -142,6 +142,7 @@
 		deactivate: '{ManageUsersActions::Deactivate}',
 		permissions: '{ManageUsersActions::Permissions}',
 		password: '{ManageUsersActions::Password}',
+		deleteUser: '{ManageUsersActions::DeleteUser}',
 		updateUser: '{ManageUsersActions::UpdateUser}'
 	};
 			

@@ -187,5 +187,19 @@ class ManageUsersPresenterTests extends TestBase
 		$this->assertEquals($organization, $user->GetAttribute(UserAttribute::Organization));
 		$this->assertEquals($position, $user->GetAttribute(UserAttribute::Position));
 	}
+
+	public function testDeleteDelegatesToRepository()
+	{
+		$userId = 809;
+		$this->page->expects($this->once())
+				->method('GetUserId')
+				->will($this->returnValue($userId));
+
+		$this->userRepo->expects($this->once())
+				->method('DeleteById')
+				->with($this->equalTo($userId));
+		
+		$this->presenter->DeleteUser();
+	}
 }
 ?>

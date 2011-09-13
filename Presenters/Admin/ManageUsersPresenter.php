@@ -8,9 +8,10 @@ class ManageUsersActions
 	const Activate = 'activate';
 	const AddUser = 'addUser';
 	const Deactivate = 'deactivate';
+	const DeleteUser = 'deleteUser';
 	const Password = 'password';
 	const Permissions = 'permissions';
-	const UpdateUser = 'UpdateUser';
+	const UpdateUser = 'updateUser';
 }
 
 class ManageUsersPresenter extends ActionPresenter
@@ -54,6 +55,7 @@ class ManageUsersPresenter extends ActionPresenter
 		$this->AddAction(ManageUsersActions::Activate, 'Activate');
 		$this->AddAction(ManageUsersActions::AddUser, 'AddUser');
 		$this->AddAction(ManageUsersActions::Deactivate, 'Deactivate');
+		$this->AddAction(ManageUsersActions::DeleteUser, 'DeleteUser');
 		$this->AddAction(ManageUsersActions::Password, 'ResetPassword');
 		$this->AddAction(ManageUsersActions::Permissions, 'ChangePermissions');
 		$this->AddAction(ManageUsersActions::UpdateUser, 'UpdateUser');
@@ -102,6 +104,14 @@ class ManageUsersPresenter extends ActionPresenter
 		$this->userRepository->Update($user);
 	}
 
+	public function DeleteUser()
+	{
+		$userId = $this->page->GetUserId();
+		Log::Debug('Deleting user %s', $userId);
+		
+		$this->userRepository->DeleteById($userId);
+	}
+	
 	public function ChangePermissions()
 	{
 		$user = $this->userRepository->LoadById($this->page->GetUserId());

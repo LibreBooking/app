@@ -205,6 +205,15 @@ class UserRepositoryTests extends TestBase
 		$updateAttributesCommand = new UpdateUserAttributesCommand($userId, $phone, $organization, $position);
 		$this->assertTrue($this->db->ContainsCommand($updateAttributesCommand));
 	}
+
+	public function testDeletesUserById()
+	{
+		$userId = 8282;
+		
+		$command = new DeleteUserCommand($userId);
+
+		$this->assertTrue($this->db->ContainsCommand($command));
+	}
 	
 	private function GetUserRow()
 	{
