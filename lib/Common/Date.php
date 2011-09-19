@@ -337,9 +337,10 @@ class Date
 		}
 		
 		$newTimestamp = $this->Timestamp() + $difference->TotalSeconds();
-		$date = new DateTime('now', new DateTimeZone($this->Timezone()));
-		$date->setTimestamp($newTimestamp);
-		
+		$dateStr = gmdate(self::SHORT_FORMAT, $newTimestamp);
+		$date = new DateTime($dateStr, new DateTimeZone('UTC'));
+		$date->setTimezone(new DateTimeZone($this->Timezone()));
+			
 		return new Date($date->format(self::SHORT_FORMAT), $this->Timezone());
 	}
 

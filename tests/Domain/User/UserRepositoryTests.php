@@ -212,6 +212,9 @@ class UserRepositoryTests extends TestBase
 		
 		$command = new DeleteUserCommand($userId);
 
+		$repo = new UserRepository();
+		$repo->DeleteById($userId);
+
 		$this->assertTrue($this->db->ContainsCommand($command));
 	}
 	

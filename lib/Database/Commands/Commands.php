@@ -450,6 +450,14 @@ class GetReservationForEditingCommand extends SqlCommand
 	}
 }
 
+class GetFullReservationListCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_RESERVATION_LIST_FULL);
+	}
+}
+
 class GetReservationListCommand extends SqlCommand
 {
 	public function __construct(Date $startDate, Date $endDate, $userId, $userLevelId)

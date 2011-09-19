@@ -108,16 +108,34 @@ class Criteria
 	}
 }
 
-class EqualsSqlFilter extends BaseSqlFilter
+class SqlFilterEquals extends BaseSqlFilter
 {
+	/**
+	 * @param string $columnName
+	 * @param string $columnValue
+	 */
+	public function __construct($columnName, $columnValue)
+	{
+		parent::__construct($columnName, $columnValue);
+	}
+	
 	protected function GetSql()
 	{
 		return "{$this->criteria->Name} = {$this->criteria->Variable}";
 	}
 }
 
-class LikeSqlFilter extends BaseSqlFilter
+class SqlFilterLike extends BaseSqlFilter
 {
+	/**
+	 * @param string $columnName
+	 * @param string $columnValue
+	 */
+	public function __construct($columnName, $columnValue)
+	{
+		parent::__construct($columnName, $columnValue);
+	}
+	
 	protected function GetSql()
 	{
 		return "{$this->criteria->Name} LIKE {$this->criteria->Variable}";
@@ -126,6 +144,69 @@ class LikeSqlFilter extends BaseSqlFilter
 	protected function GetCriteria($columnName, $columnValue)
 	{
 		return new Criteria($columnName, $columnValue . '%');
+	}
+}
+
+class SqlFilterGreaterThan extends BaseSqlFilter
+{
+	/**
+	 * @var bool
+	 */
+	private $inclusive = false;
+	
+	/**
+	 * @param string $columnName
+	 * @param string $columnValue
+	 * @param bool $inclusive false by default
+	 */
+	public function __construct($columnName, $columnValue, $inclusive = false)
+	{
+		$this->inclusive = $inclusive;
+		parent::__construct($columnName, $columnValue);
+	}
+	
+	protected function GetSql()
+	{
+		$sign = $this->inclusive ? '>=' : '>';
+		return "{$this->criteria->Name} $sign {$this->criteria->Variable}";
+	}
+}
+
+class SqlFilterLessThan extends BaseSqlFilter
+{
+	/**
+	 * @var bool
+	 */
+	private $inclusive = false;
+
+	/**
+	 * @param string $columnName
+	 * @param string $columnValue
+	 * @param bool $inclusive false by default
+	 */
+	public function __construct($columnName, $columnValue, $inclusive = false)
+	{
+		$this->inclusive = $inclusive;
+		parent::__construct($columnName, $columnValue);
+	}
+
+	protected function GetSql()
+	{
+		$sign = $this->inclusive ? '<=' : '<';
+		return "{$this->criteria->Name} $sign {$this->criteria->Variable}";
+	}
+}
+
+class SqlFilterNull extends BaseSqlFilter
+{
+	public function __construct()
+	{
+		parent::__construct('1', '1');
+	}
+	
+	protected function GetSql()
+	{
+		return '1=1';
 	}
 }
 ?>

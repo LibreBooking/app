@@ -25,7 +25,7 @@ class MySqlCommandAdapter
 	private function Convert(SqlCommand &$command)
 	{		
 		$query = $command->GetQuery();
-		
+
 		for ($p = 0; $p < $command->Parameters->Count(); $p++) 
 		{
 			$curParam = $command->Parameters->Items($p);

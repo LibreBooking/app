@@ -64,14 +64,14 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		return null;
 	}
 
-
+	
 	/**
 	 * @param int $pageNumber
 	 * @param int $pageSize
-	 * @param string $sortField
-	 * @param string $sortDirection
-	 * @param ISqlFilter $filter
-	 * @return PageableData of UserItemView
+	 * @param null $sortField
+	 * @param null $sortDirection
+	 * @param null $filter
+	 * @return PageableData|UserItemView[]
 	 */
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
 	{
@@ -270,11 +270,12 @@ interface IUserViewRepository
 	/**
 	 * @param int $pageNumber
 	 * @param int $pageSize
-	 * @param string $sortField
-	 * @param string $sortDirection
+	 * @param null|string $sortField
+	 * @param null|string $sortDirection
+	 * @param null|ISqlFilter $filter
 	 * @return PageableData|UserItemView[]
 	 */
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null);
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 }
 
 class UserDto

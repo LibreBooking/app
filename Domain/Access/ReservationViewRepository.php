@@ -17,6 +17,16 @@ interface IReservationViewRepository
 	 * @return ReservationItemView[]
 	 */
 	function GetReservationList(Date $startDate, Date $endDate, $userId,  $userLevel = ReservationUserLevel::OWNER);
+
+	/**
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param string $sortField
+	 * @param string $sortDirection
+	 * @param ISqlFilter $filter
+	 * @return PageableData|ReservationItemView[]
+	 */
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 }
 
 class ReservationViewRepository implements IReservationViewRepository
@@ -71,23 +81,33 @@ class ReservationViewRepository implements IReservationViewRepository
 
 		while ($row = $result->GetRow())
 		{
-			$reservations[] = new ReservationItemView (
-					$row[ColumnNames::REFERENCE_NUMBER],
-					Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
-					Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
-					$row[ColumnNames::RESOURCE_NAME],
-					$row[ColumnNames::RESOURCE_ID],
-					$row[ColumnNames::RESERVATION_INSTANCE_ID],
-					$row[ColumnNames::RESERVATION_USER_LEVEL],
-					$row[ColumnNames::RESERVATION_TITLE],
-					$row[ColumnNames::RESERVATION_DESCRIPTION],
-					$row[ColumnNames::SCHEDULE_ID]
-				);
+			$reservations[] = ReservationItemView::Populate($row);
 		}
 		
 		$result->Free();
 		
 		return $reservations;
+	}
+
+	/**
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param null|string $sortField
+	 * @param null|string $sortDirection
+	 * @param null|ISqlFilter $filter
+	 * @return PageableData|ReservationItemView[]
+	 */
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+	{
+		$command = new GetFullReservationListCommand();
+
+		if ($filter != null)
+		{
+			$command = new FilterCommand($command, $filter);
+		}
+
+		$builder = array('ReservationItemView', 'Populate');
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 	
 	private function SetResources(ReservationView $reservationView)
@@ -353,6 +373,26 @@ class ReservationItemView
 		$this->Title = $title;
 		$this->Description = $description;
 		$this->ScheduleId = $scheduleId;
+	}
+
+	/**
+	 * @static
+	 * @param $row array
+	 * @return ReservationItemView
+	 */
+	public static function Populate($row)
+	{
+		return new ReservationItemView (
+					$row[ColumnNames::REFERENCE_NUMBER],
+					Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
+					Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
+					$row[ColumnNames::RESOURCE_NAME],
+					$row[ColumnNames::RESOURCE_ID],
+					$row[ColumnNames::RESERVATION_INSTANCE_ID],
+					$row[ColumnNames::RESERVATION_USER_LEVEL],
+					$row[ColumnNames::RESERVATION_TITLE],
+					$row[ColumnNames::RESERVATION_DESCRIPTION],
+					$row[ColumnNames::SCHEDULE_ID]);
 	}
 }
 ?>

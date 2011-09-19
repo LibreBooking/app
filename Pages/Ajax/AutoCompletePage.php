@@ -53,8 +53,8 @@ class AutoCompletePage extends SecurePage
 	 */
 	private function GetUsers($term)
 	{
-		$filter = new LikeSqlFilter(ColumnNames::FIRST_NAME, $term);
-		$filter->_Or(new LikeSqlFilter(ColumnNames::LAST_NAME, $term));
+		$filter = new SqlFilterLike(ColumnNames::FIRST_NAME, $term);
+		$filter->_Or(new SqlFilterLike(ColumnNames::LAST_NAME, $term));
 
 		$users = array();
 
@@ -72,7 +72,7 @@ class AutoCompletePage extends SecurePage
 
 	private function GetGroups($term)
 	{
-		$filter = new LikeSqlFilter(ColumnNames::GROUP_NAME, $term);
+		$filter = new SqlFilterLike(ColumnNames::GROUP_NAME, $term);
 		$r = new GroupRepository();
 		return $r->GetList(1, 100, null, null, $filter)->Results();
 	}
@@ -105,8 +105,8 @@ class AutoCompletePage extends SecurePage
 		$users = array();
 		if (!empty($groupIds))
 		{
-			$userFilter = new LikeSqlFilter(ColumnNames::FIRST_NAME, $term);
-			$userFilter->_Or(new LikeSqlFilter(ColumnNames::LAST_NAME, $term));
+			$userFilter = new SqlFilterLike(ColumnNames::FIRST_NAME, $term);
+			$userFilter->_Or(new SqlFilterLike(ColumnNames::LAST_NAME, $term));
 					
 			$groupRepo = new GroupRepository();
 			$results = $groupRepo->GetUsersInGroup($groupIds, null, null, $userFilter)->Results();

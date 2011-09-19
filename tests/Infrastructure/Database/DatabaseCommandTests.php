@@ -242,8 +242,8 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$baseCommand = new AdHocCommand("SeLEcT F.*,    lbl,
 											abc.* fROM table wHere blah = @blah and blah2 = @blah2 ORDER BY blah1");
 
-		$filter = new LikeSqlFilter("fname", 'firstname');
-		$filter->_And(new EqualsSqlFilter("lname", 'last'));
+		$filter = new SqlFilterLike("fname", 'firstname');
+		$filter->_And(new SqlFilterEquals("lname", 'last'));
 
 		$filterCommand = new FilterCommand($baseCommand, $filter);
 
@@ -263,8 +263,8 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 						FROM users
 						WHERE (0 = '0' OR status_id = '0')");
 
-		$filter = new LikeSqlFilter("fname", 'firstname');
-		$filter->_And(new EqualsSqlFilter("lname", 'last'));
+		$filter = new SqlFilterLike("fname", 'firstname');
+		$filter->_And(new SqlFilterEquals("lname", 'last'));
 
 		$filterCommand = new FilterCommand($baseCommand, $filter);
 

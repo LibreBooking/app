@@ -110,6 +110,7 @@ class FilterCommand extends SqlCommand
 
 		$this->Parameters = $baseCommand->Parameters;
 		$criterion = $filter->Criteria();
+		/** @var $criteria Criteria */
 		foreach ($criterion as $criteria)
 		{
 			$this->AddParameter(new Parameter($criteria->Variable, $criteria->Value));

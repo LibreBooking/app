@@ -150,6 +150,11 @@ class SmartyPage extends Smarty
 	
 	public function FormatDate($params, &$smarty) 
 	{
+		if (!isset($params['date']))
+		{
+			return '';
+		}
+		
 		if (isset($params['format']))
 		{
 			return $params['date']->Format($params['format']);

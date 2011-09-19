@@ -23,7 +23,7 @@ class GroupRepositoryTests extends TestBase
 
 	public function testCanGetPageableListOfGroups()
 	{
-		$filter = new EqualsSqlFilter(null, null);
+		$filter = new SqlFilterEquals(null, null);
 		$pageNum = 10;
 		$pageSize = 100;
 		$count = 1000;

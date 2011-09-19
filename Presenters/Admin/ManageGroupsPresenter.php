@@ -57,7 +57,7 @@ class ManageGroupsPresenter extends ActionPresenter
 	public function PageLoad()
 	{
 		if ($this->page->GetGroupId() != null) {
-			$groupList = $this->groupRepository->GetList(1, 1, null, null, new EqualsSqlFilter(ColumnNames::GROUP_ID, $this->page->GeTGroupId()));
+			$groupList = $this->groupRepository->GetList(1, 1, null, null, new SqlFilterEquals(ColumnNames::GROUP_ID, $this->page->GeTGroupId()));
 		}
 		else
 		{

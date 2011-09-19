@@ -50,6 +50,8 @@
 {/foreach}
 </table>
 
+{pagination pageInfo=$PageInfo}
+
 <input type="hidden" id="activeId" />
 
 <div id="permissionsDialog" class="dialog" style="display:none;">
@@ -121,7 +123,6 @@
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
-{pagination pageInfo=$PageInfo}
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
