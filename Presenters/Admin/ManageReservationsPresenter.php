@@ -28,8 +28,8 @@ class ManageReservationsPresenter
 		$startDate = $this->GetDate($startDateString, $userTimezone, -7);
 		$endDate = $this->GetDate($endDateString, $userTimezone, 7);
 
-		$this->page->SetEndDate($endDate);
 		$this->page->SetStartDate($startDate);
+		$this->page->SetEndDate($endDate);
 
 		$filter = new ReservationFilter($startDate, $endDate);
 
@@ -47,7 +47,7 @@ class ManageReservationsPresenter
 			$date = Date::Now()->AddDays($defaultDays)->ToTimezone($timezone)->GetDate();
 
 		}
-		elseif (!empty($startDateString))
+		elseif (!empty($dateString))
 		{
 			$date = Date::Parse($dateString, $timezone);
 		}

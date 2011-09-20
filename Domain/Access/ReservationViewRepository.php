@@ -338,6 +338,21 @@ class ReservationItemView
 	 * @var int
 	 */
 	public $ScheduleId;
+
+	/**
+	 * @var null|string
+	 */
+	public $FirstName;
+
+	/**
+	 * @var null|string
+	 */
+	public $LastName;
+
+	/**
+	 * @var null|int
+	 */
+	public $UserId;
 	
 	/**
 	 * @param $referenceNumber string
@@ -350,6 +365,9 @@ class ReservationItemView
 	 * @param $title string
 	 * @param $description string
 	 * @param $scheduleId int
+	 * @param $userFirstName string
+	 * @param $userLastName string
+	 * @param $userId int
 	 */
 	public function __construct(
 		$referenceNumber = null,
@@ -361,7 +379,10 @@ class ReservationItemView
 		$userLevelId = null,
 		$title = null,
 		$description = null,
-		$scheduleId = null
+		$scheduleId = null,
+		$userFirstName = null,
+		$userLastName = null,
+		$userId = null
 		)
 	{
 		$this->ReferenceNumber = $referenceNumber;
@@ -373,6 +394,9 @@ class ReservationItemView
 		$this->Title = $title;
 		$this->Description = $description;
 		$this->ScheduleId = $scheduleId;
+		$this->FirstName = $userFirstName;
+		$this->LastName = $userLastName;
+		$this->UserId = $userId;
 	}
 
 	/**
@@ -392,7 +416,10 @@ class ReservationItemView
 					$row[ColumnNames::RESERVATION_USER_LEVEL],
 					$row[ColumnNames::RESERVATION_TITLE],
 					$row[ColumnNames::RESERVATION_DESCRIPTION],
-					$row[ColumnNames::SCHEDULE_ID]);
+					$row[ColumnNames::SCHEDULE_ID],
+					$row[ColumnNames::FIRST_NAME],
+					$row[ColumnNames::LAST_NAME]
+		);
 	}
 }
 ?>

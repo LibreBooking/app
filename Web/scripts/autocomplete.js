@@ -28,8 +28,8 @@ $.fn.userAutoComplete = function(url, selectionCallback)
 			select: function(event, ui) {
 				if (selectionCallback != undefined)
 				{
-					selectionCallback(ui);
-					textbox.val('');
+					selectionCallback(ui, textbox);
+					//textbox.val('');
 				}
 				else
 				{

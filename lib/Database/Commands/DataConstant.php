@@ -366,6 +366,7 @@ class Queries
 		INNER JOIN reservation_resources rr ON rr.series_id = rs.series_id
 		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
 		INNER JOIN resources r on rr.resource_id = r.resource_id
+		INNER JOIN users u ON u.user_id = ru.user_id
 		WHERE 
 			(
 				(ri.start_date >= @startDate AND ri.start_date <= @endDate)

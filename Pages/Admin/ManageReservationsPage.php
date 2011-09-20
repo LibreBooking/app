@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageReservationsPresenter.php');
 
 interface IManageReservationsPage
@@ -32,17 +33,17 @@ interface IManageReservationsPage
 	
 	/**
 	 * @abstract
-	 * @param Date $date
+	 * @param Date $date|null
 	 * @return void
 	 */
-	public function SetStartDate(Date $date);
+	public function SetStartDate($date);
 
 	/**
 	 * @abstract
-	 * @param Date $date
+	 * @param Date $date|null
 	 * @return void
 	 */
-	public function SetEndDate(Date $date);
+	public function SetEndDate($date);
 }
 
 class ManageReservationsPage extends AdminPage implements IManageReservationsPage 
@@ -106,7 +107,7 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	 * @param Date $date
 	 * @return void
 	 */
-	public function SetStartDate(Date $date)
+	public function SetStartDate($date)
 	{
 		$this->Set('StartDate', $date);
 	}
@@ -115,7 +116,7 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	 * @param Date $date
 	 * @return void
 	 */
-	public function SetEndDate(Date $date)
+	public function SetEndDate($date)
 	{
 		$this->Set('EndDate', $date);
 	}
