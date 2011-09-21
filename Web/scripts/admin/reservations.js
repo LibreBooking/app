@@ -8,7 +8,8 @@ function ReservationManagement(opts)
 		endDate: $("#endDate"),
 		userId: $("#userId"),
 		scheduleId: $("#scheduleId"),
-		resourceId: $("#resourceId")
+		resourceId: $("#resourceId"),
+		referenceNumber: $("#referenceNumber")
 	};
 
 	ReservationManagement.prototype.init = function()
@@ -40,8 +41,9 @@ function ReservationManagement(opts)
 				'&sid=' + elements.scheduleId.val() +
 				'&rid=' + elements.resourceId.val() +
 				'&uid=' + elements.userId.val() +
-				'&un=' + elements.userFilter.val();
-		
+				'&un=' + elements.userFilter.val() +
+				'&rn=' + elements.referenceNumber.val();
+
 		window.location = document.location.pathname + '?' + encodeURI(filterQuery);
 	}
 }

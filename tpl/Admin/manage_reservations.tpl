@@ -10,6 +10,7 @@
 			<td>{translate key=User}</td>
 			<td>{translate key=Schedule}</td>
 			<td>{translate key=Resource}</td>
+			<td>{translate key=ReferenceNumber}</td>
 		</tr>
 		<tr>
 			<td>
@@ -18,18 +19,23 @@
 				<input id="endDate" type="textbox" class="datepicker textbox" value="{formatdate date=$EndDate}"/>
 			</td>
 			<td>
-				<input id="userFilter" type="textbox" class="textbox" />
-				<input id="userId" type="hidden" />
+				<input id="userFilter" type="textbox" class="textbox" value="{$UserName}" />
+				<input id="userId" type="hidden" value="{$UserId}" />
 			</td>
 			<td>
 				<select id="scheduleId" class="textbox">
 					<option value="">{translate key=AllSchedules}</option>
+					{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 				</select>
 			</td>
 			<td>
 				<select id="resourceId" class="textbox">
 					<option value="">{translate key=AllResources}</option>
+					{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 				</select>
+			</td>
+			<td>
+				<input id="referenceNumber" type="textbox" class="textbox" value="{$ReferenceNumber}" />
 			</td>
 			<td rowspan="2">
 				<button id="filter" class="button">{html_image src="search.png"} Filter</button>

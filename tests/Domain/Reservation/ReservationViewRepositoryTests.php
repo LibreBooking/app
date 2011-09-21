@@ -154,9 +154,12 @@ class ReservationViewRepositoryTests extends TestBase
 		$title = 'title';
 		$description = 'description';
 		$scheduleId = 213;
+		$fname = 'fn';
+		$lname = 'ln';
+		$userId = 111;
 
-		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId);
-		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null, 1);
+		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname, $userId);
+		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null, 1, null, null, null, null);
 
 		$this->db->SetRows($rows);
 		
@@ -169,7 +172,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals($expectedCommand, $actualCommand);
 		
 		$this->assertEquals(count($rows), count($reservations));
-		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId);
+		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname, $userId);
 		$this->assertEquals($expectedItem1, $reservations[0]);
 	}
 	
@@ -203,7 +206,7 @@ class ReservationViewRepositoryTests extends TestBase
 			
 	}
 	
-	private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId)
+	private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname, $userId)
 	{
 		return array(
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
@@ -215,7 +218,10 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESERVATION_USER_LEVEL => $userLevelId,
 			ColumnNames::RESERVATION_TITLE => $title,
 			ColumnNames::RESERVATION_DESCRIPTION => $description,
-			ColumnNames::SCHEDULE_ID => $scheduleId
+			ColumnNames::SCHEDULE_ID => $scheduleId,
+			ColumnNames::FIRST_NAME => $fname,
+			ColumnNames::LAST_NAME => $lname,
+			ColumnNames::USER_ID => $userId
 		);
 	}
 }

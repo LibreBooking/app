@@ -418,7 +418,8 @@ class ReservationItemView
 					$row[ColumnNames::RESERVATION_DESCRIPTION],
 					$row[ColumnNames::SCHEDULE_ID],
 					$row[ColumnNames::FIRST_NAME],
-					$row[ColumnNames::LAST_NAME]
+					$row[ColumnNames::LAST_NAME],
+					$row[ColumnNames::USER_ID]
 		);
 	}
 }

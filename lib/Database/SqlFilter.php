@@ -8,6 +8,21 @@ interface ISqlFilter
 	public function Where();
 }
 
+class SqlFilterColumn
+{
+	private $fullName;
+	
+	public function __construct($tableName, $columnName)
+	{
+		$this->fullName = $tableName . '.' . $columnName;
+	}
+
+	public function __toString()
+	{
+		return $this->fullName;
+	}
+}
+
 abstract class BaseSqlFilter implements ISqlFilter
 {
 	protected $criteria;
@@ -15,12 +30,20 @@ abstract class BaseSqlFilter implements ISqlFilter
 	private $_or = array();
 
 	/**
-	 * @param string $columnName
+	 * @param string|SqlFilterColumn $columnName
 	 * @param string $columnValue
 	 */
 	public function __construct($columnName, $columnValue)
 	{
-		$this->criteria = $this->GetCriteria($columnName, $columnValue);
+		if (is_a($columnName, 'SqlFilterColumn'))
+		{
+			$name = $columnName->__toString();
+		}
+		else
+		{
+			$name = $columnName;
+		}
+		$this->criteria = $this->GetCriteria($name, $columnValue);
 	}
 
 	/**
@@ -111,7 +134,7 @@ class Criteria
 class SqlFilterEquals extends BaseSqlFilter
 {
 	/**
-	 * @param string $columnName
+	 * @param string|SqlFilterColumn $columnName
 	 * @param string $columnValue
 	 */
 	public function __construct($columnName, $columnValue)

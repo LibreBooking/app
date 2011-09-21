@@ -354,8 +354,8 @@ class Queries
 		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
 		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id AND rr.resource_level_id = 1
 		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
-		INNER JOIN users u ON u.user_id = rs.owner_id
-		INNER JOIN resources r on rr.resource_id = r.resource_id
+		INNER JOIN users ON users.user_id = rs.owner_id
+		INNER JOIN resources on rr.resource_id = resources.resource_id
 		WHERE rs.status_id <> 2
 		ORDER BY ri.start_date ASC';
 	
@@ -857,5 +857,12 @@ class ColumnNames
 	// dynamic
 	const TOTAL = 'total';
 
+}
+
+class TableNames
+{
+	const RESOURCES = 'resources';
+	const SCHEDULES = 'schedules';
+	const USERS = 'users';
 }
 ?>

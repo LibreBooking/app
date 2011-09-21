@@ -3,9 +3,16 @@
 interface IResource
 {
 	/**
+	 * alias of GetId()
 	 * @return int
 	 */
 	public function GetResourceId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetId();
 
 	/**
 	 * @return string
@@ -123,6 +130,11 @@ class BookableResource implements IResource
 	}
 	
 	public function GetResourceId()
+	{
+		return $this->_resourceId;
+	}
+
+	public function GetId()
 	{
 		return $this->_resourceId;
 	}

@@ -28,6 +28,7 @@ class QueryStringKeys
 	const SCHEDULE_ID = 'sid';
 	const START_DATE = 'sd';
 	const USER_ID = 'uid';
+	const USER_NAME = 'un';
 	const YEAR = 'y';
 }
 ?>
