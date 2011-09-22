@@ -24,5 +24,13 @@ class ReservationResource implements IResource
 	{
 		return $this->_resourceName;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function GetId()
+	{
+		return $this->_id;
+	}
 }
 ?>

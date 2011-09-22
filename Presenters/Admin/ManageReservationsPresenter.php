@@ -62,10 +62,10 @@ class ManageReservationsPresenter
 
 		$filter = new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId);
 
-		$reservations = $this->reservationViewRepository->GetList(1, 50, null, null, $filter->GetFilter());
+		$reservations = $this->reservationViewRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize(), null, null, $filter->GetFilter());
 
 		$this->page->BindReservations($reservations->Results());
-		$this->page->SetPageInfo($reservations->PageInfo());
+		$this->page->BindPageInfo($reservations->PageInfo());
 	}
 
 	private function GetDate($dateString, $timezone, $defaultDays)

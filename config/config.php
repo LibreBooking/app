@@ -2,6 +2,7 @@
 $conf['settings']['server.timezone'] = 'America/Chicago';
 $conf['settings']['allow.self.registration'] = 'true';
 $conf['settings']['admin.email'] = 'admin@example.com';
+$conf['settings']['default.page.size'] = '50';
 $conf['settings']['enable.email'] = 'true';
 $conf['settings']['default.language'] = 'en_US';
 $conf['settings']['allow.rss'] = 'true';

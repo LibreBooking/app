@@ -354,9 +354,14 @@ class SmartyPage extends Smarty
         $sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} of {$pageInfo->Total}</p><p> ");
 		$sb->Append($this->Resources->GetString('Page'));
 		$sb->Append(": ");
+		$size = $pageInfo->PageSize;
+		$currentPage = $pageInfo->CurrentPage;
+		
 		for ($i = 1; $i <= $pageInfo->TotalPages; $i++)
 		{
-			$sb->Append($this->CreatePageLink(array('page' => $i), $smarty));
+			$isCurrent = ($i == $currentPage);
+			
+			$sb->Append($this->CreatePageLink(array('page' => $i, 'size' => $size, 'iscurrent' => $isCurrent), $smarty));
             $sb->Append(" ");
 		}
 		$sb->Append('</p>');
@@ -372,31 +377,43 @@ class SmartyPage extends Smarty
     public function CreatePageLink($params, &$smarty)
     {
         $url = $_SERVER['REQUEST_URI'];
-        $key = QueryStringKeys::PAGE;
-        $page = $params['page'];
-        $newUrl = $url;
+		$page = $params['page'];
+		$pageSize = $params['size'];
+		$iscurrent = $params['iscurrent'];
+		
+        $newUrl = $this->ReplaceQueryString($url, QueryStringKeys::PAGE, $page);
+        $newUrl = $this->ReplaceQueryString($newUrl, QueryStringKeys::PAGE_SIZE, $pageSize);
 
-        if (strpos($url, $key) === false) // does not have page variable
+		$class = $iscurrent ? "page current" : "page";
+		
+        return sprintf('<a class="%s" href="%s">%s</a>', $class, $newUrl, $page);
+    }
+
+	function ReplaceQueryString($url, $key, $value)
+	{
+		$newUrl = $url;
+		
+		if (strpos($url, $key) === false) // does not have page variable
         {
             if (strpos($url, '?') === false) // and does not have any query string
             {
-                $newUrl = sprintf('%s?%s=%s', $url, $key, $page);
+                $newUrl = sprintf('%s?%s=%s', $url, $key, $value);
             }
             else
             {
-                $newUrl = sprintf('%s&%s=%s', $url, $key, $page);  // and has existing query string
+                $newUrl = sprintf('%s&%s=%s', $url, $key, $value);  // and has existing query string
             }
         }
         else
         {
             $pattern = '/(\?|&)' . $key .'=\d+/';
-            $replace = '${1}' . $key . '=' . $page;
+            $replace = '${1}' . $key . '=' . $value;
 
             $newUrl = preg_replace($pattern, $replace, $url);
         }
-        
-        return sprintf('<a class="page" href="%s">%s</a>', $newUrl, $page);
-    }
+
+		return $newUrl;
+	}
 
 	function CreateJavascriptArray($params, &$smarty)
 	{

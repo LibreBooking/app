@@ -18,6 +18,7 @@ class QueryStringKeys
 	const MESSAGE_ID = 'mid';
 	const MONTH = 'm';
     const PAGE = 'page';
+	const PAGE_SIZE = 'pageSize';
 	const PERIOD_ID = 'pid';
 	const QUOTA_ID = 'qid';
 	const REDIRECT = 'redirect';

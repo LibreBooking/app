@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'Pages/Page.php');
+
 interface IPageable
 {
 	/**
@@ -19,5 +21,47 @@ interface IPageable
 	 * @return void
 	 */
 	function BindPageInfo(PageInfo $pageInfo);
+}
+
+class PageablePage extends Page implements IPageable
+{
+	/**
+	 * @var \Page
+	 */
+	private $page;
+	
+	public function __construct(Page $wrappedPage)
+	{
+		$this->page = $wrappedPage;
+	}
+	/**
+	 * @return int
+	 */
+	function GetPageNumber()
+	{
+		return $this->page->GetQuerystring(QueryStringKeys::PAGE);
+	}
+
+	/**
+	 * @return int
+	 */
+	function GetPageSize()
+	{
+		$size = $this->page->GetQuerystring(QueryStringKeys::PAGE_SIZE);
+		if (empty($size))
+		{
+			return Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_PAGE_SIZE);
+		}
+		return $size;
+	}
+
+	/**
+	 * @param PageInfo $pageInfo
+	 * @return void
+	 */
+	function BindPageInfo(PageInfo $pageInfo)
+	{
+		$this->page->Set('PageInfo', $pageInfo);
+	}
 }
 ?>

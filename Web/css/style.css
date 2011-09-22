@@ -463,7 +463,7 @@ a.page, a.page:visited {
 	border: solid 1px transparent;
 }
 
-a.page:hover {
+a.page:hover, a.page.current {
 	background-color:#fafafa;
 	border-color: #bbbbbb;
 }

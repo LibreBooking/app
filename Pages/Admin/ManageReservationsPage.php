@@ -1,9 +1,10 @@
 <?php
+require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageReservationsPresenter.php');
 
-interface IManageReservationsPage
+interface IManageReservationsPage extends IPageable
 {
 	/**
 	 * @abstract
@@ -11,13 +12,6 @@ interface IManageReservationsPage
 	 * @return void
 	 */
 	public function BindReservations($reservations);
-
-	/**
-	 * @abstract
-	 * @param PageInfo $pageInfo
-	 * @return void
-	 */
-	public function SetPageInfo($pageInfo);
 
 	/**
 	 * @abstract
@@ -133,6 +127,11 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	 */
 	private $presenter;
 
+	/**
+	 * @var \PageablePage
+	 */
+	private $pageablePage;
+
 	public function __construct()
 	{
 	    parent::__construct('ManageReservations');
@@ -141,6 +140,8 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 			new ReservationViewRepository(),
 			new ScheduleRepository(),
 			new ResourceRepository());
+
+		$this->pageablePage = new PageablePage($this);
 	}
 	
 	public function ProcessAction()
@@ -159,15 +160,6 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	public function BindReservations($reservations)
 	{
 		$this->Set('reservations', $reservations);
-	}
-
-	/**
-	 * @param PageInfo $pageInfo
-	 * @return void
-	 */
-	public function SetPageInfo($pageInfo)
-	{
-		$this->Set('PageInfo', $pageInfo);
 	}
 
 	/**
@@ -297,6 +289,31 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	public function SetReferenceNumber($referenceNumber)
 	{
 		$this->Set('ReferenceNumber', $referenceNumber);
+	}
+
+	/**
+	 * @return int
+	 */
+	function GetPageNumber()
+	{
+		return $this->pageablePage->GetPageNumber();
+	}
+
+	/**
+	 * @return int
+	 */
+	function GetPageSize()
+	{
+		return $this->pageablePage->GetPageSize();
+	}
+
+	/**
+	 * @param PageInfo $pageInfo
+	 * @return void
+	 */
+	function BindPageInfo(PageInfo $pageInfo)
+	{
+		$this->pageablePage->BindPageInfo($pageInfo);
 	}
 }
 ?>
