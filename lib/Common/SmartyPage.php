@@ -155,9 +155,12 @@ class SmartyPage extends Smarty
 			return '';
 		}
 		
+		/** @var $date Date */
+		$date = isset($params['timezone']) ? $params['date']->ToTimezone($params['timezone']) : $params['date'];
+		
 		if (isset($params['format']))
 		{
-			return $params['date']->Format($params['format']);
+			return $date->Format($params['format']);
 		}
 		
 		$key = 'general_date';
@@ -165,7 +168,7 @@ class SmartyPage extends Smarty
 		{
 			$key = $params['key'];
 		}
-		return $params['date']->Format($this->Resources->GetDateFormat($key));
+		return $date->Format($this->Resources->GetDateFormat($key));
 	}
 	
 	public function PrintImage($params, &$smarty)

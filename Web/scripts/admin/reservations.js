@@ -9,7 +9,8 @@ function ReservationManagement(opts)
 		userId: $("#userId"),
 		scheduleId: $("#scheduleId"),
 		resourceId: $("#resourceId"),
-		referenceNumber: $("#referenceNumber")
+		referenceNumber: $("#referenceNumber"),
+		reservationTable: $("#reservationTable")
 	};
 
 	ReservationManagement.prototype.init = function()
@@ -25,6 +26,16 @@ function ReservationManagement(opts)
 			}
 		});
 
+		elements.reservationTable.delegate('.editable', 'click', function() {
+			var td = $(this).find('.referenceNumber');
+			viewReservation(td.text());
+		});
+
+		elements.reservationTable.find('.editable').each(function() {
+			var refNum = $(this).find('.referenceNumber').text();
+			$(this).attachReservationPopup(refNum, options.popupUrl);
+		});
+		
 		$('#filter').click(filterReservations);
 	};
 
@@ -45,5 +56,10 @@ function ReservationManagement(opts)
 				'&rn=' + elements.referenceNumber.val();
 
 		window.location = document.location.pathname + '?' + encodeURI(filterQuery);
+	}
+
+	function viewReservation(referenceNumber)
+	{
+		window.location = options.reservationUrlTemplate.replace('[refnum]', referenceNumber);
 	}
 }

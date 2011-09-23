@@ -152,6 +152,8 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	public function PageLoad()
 	{
 		$userTimezone = $this->server->GetUserSession()->Timezone;
+
+		$this->Set('Timezone', $userTimezone);
 		$this->presenter->PageLoad($userTimezone);
 
 		$this->Display('manage_reservations.tpl');

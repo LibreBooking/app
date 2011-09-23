@@ -1,9 +1,9 @@
-{include file='globalheader.tpl' cssFiles='css/admin.css'}
+{include file='globalheader.tpl' cssFiles='css/admin.css,css/jquery.qtip.css'}
 
 <h1>{translate key=ManageReservations}</h1>
 
 <fieldset>
-	<legend>Filter</legend>
+	<legend><h3>Filter</h3></legend>
 	<table style="display:inline;">
 		<tr>
 			<td>Between</td>
@@ -46,23 +46,26 @@
 
 <div>&nbsp;</div>
 
-<table class="list">
+<table class="list" id="reservationTable">
 	<tr>
 		<th class="id">&nbsp;</th>
 		<th>{translate key='User'}</th>
 		<th>{translate key='Resource'}</th>
 		<th>{translate key='Start'}</th>
 		<th>{translate key='End'}</th>
+		<th>{translate key='ReferenceNumber'}</th>
 		<th>{translate key='Delete'}</th>
 	</tr>
 	{foreach from=$reservations item=reservation}
 	{cycle values='row0,row1' assign=rowCss}
 	<tr class="{$rowCss} editable">
+		<td class="id">{$reservation->ReservationId}</td>
 		<td>{$reservation->FirstName} {$reservation->LastName}</td>
 		<td>{$reservation->ResourceName}</td>
-		<td>{$reservation->StartDate}</td>
-		<td>{$reservation->EndDate}</td>
-		<td>{$reservation->ReferenceNumber}</td>
+		<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
+		<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
+		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
+		<td>{html_image src='cross-button.png'}</td>
 	</tr>
 	{/foreach}
 </table>
@@ -71,13 +74,17 @@
 
 
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
+<script type="text/javascript" src="{$Path}scripts/reservationPopup.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/reservations.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
 
 	var resOpts = {
-		autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}"
+		autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
+		reservationUrlTemplate: "{$Path}reservation.php?rn=[refnum]",
+		popupUrl: "{$Path}ajax/respopup.php"
 	};
 		
 	var reservationManagement = new ReservationManagement(resOpts);
