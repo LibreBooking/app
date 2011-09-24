@@ -17,14 +17,16 @@ interface IReservationPage extends IPage
 	function BindAvailableResources($resources);
 
 	/**
-	 * @param Date $selectedStart
+	 * @param SchedulePeriod $selectedStart
+	 * @param Date $startDate
 	 */
-	function SetSelectedStart(Date $selectedStart);
+	function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate);
 	
 	/**
-	 * @param Date $selectedEnd
+	 * @param SchedulePeriod $selectedEnd
+	 * @param Date $endDate
 	 */
-	function SetSelectedEnd(Date $selectedEnd);
+	function SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate);
 	
 	/**
 	 * @param $repeatTerminationDate Date
@@ -157,14 +159,16 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 		$this->Set('AvailableResources', $resources);
 	}
 	
-	public function SetSelectedStart(Date $selectedStart)
+	public function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate)
 	{
 		$this->Set('SelectedStart', $selectedStart);
+		$this->Set('StartDate', $startDate);
 	}
 	
-	public function SetSelectedEnd(Date $selectedEnd)
+	public function  SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate)
 	{
 		$this->Set('SelectedEnd', $selectedEnd);
+		$this->Set('EndDate', $endDate);
 	}
 
 	/**

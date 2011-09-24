@@ -175,9 +175,17 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 		return SeriesUpdateScope::FullSeries;
 	}
 
+	/**
+	 * @param ExistingReservationSeries $series
+	 * @return array
+	 */
 	public function Instances($series)
 	{
-		//TODO: If the user is an admin, this should be all instances
+		if ($series->BookedBy()->IsAdmin)
+		{
+			return $series->_Instances();
+		}
+		
 		return $this->AllInstancesGreaterThan($series, $this->EarliestDateToKeep($series));
 	}
 	

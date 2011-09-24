@@ -43,13 +43,13 @@
 			<li>
 				<label>{translate key='BeginDate'}
 					<input type="text" id="BeginDate" {formname key=BEGIN_DATE} class="dateinput"
-						   value="{formatdate date=$SelectedStart}"/>
+						   value="{formatdate date=$StartDate}"/>
 				</label>
 				<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown" style="width:150px">
 				{foreach from=$Periods item=period}
 					{if $period->IsReservable()}
 						{assign var='selected' value=''}
-						{if $period->BeginDate()->Equals($SelectedStart)}
+						{if $period eq $SelectedStart}
 							{assign var='selected' value=' selected="selected"'}
 						{/if}
 						<option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
@@ -60,13 +60,13 @@
 			<li>
 				<label>{translate key='EndDate'}
 					<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput"
-						   value="{formatdate date=$SelectedEnd}"/>
+						   value="{formatdate date=$EndDate}"/>
 				</label>
 				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
 				{foreach from=$Periods item=period}
 					{if $period->IsReservable()}
 						{assign var='selected' value=''}
-						{if $period->EndDate()->Equals($SelectedEnd)}
+						{if $period eq $SelectedEnd}
 							{assign var='selected' value=' selected="selected"'}
 						{/if}
 						<option value="{$period->End()}"{$selected}>{$period->LabelEnd()}</option>

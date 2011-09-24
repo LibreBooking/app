@@ -208,6 +208,36 @@ class Date
 	}
 
 	/**
+	 * Compares the time component of this date to the one passed in
+	 * Returns:
+	 * -1 if this time is less than the passed in time
+	 * 0 if the times are equal
+	 * 1 if this times is greater than the passed in times
+	 * @param Date $date
+	 * @return int comparison result
+	 */
+	public function CompareTime(Date $date)
+	{
+		$date2 = $date;
+		if ($date2->Timezone() != $this->Timezone()) {
+			$date2 = $date->ToTimezone($this->timezone);
+		}
+
+		$hourCompare = ($this->Hour() - $date2->Hour());
+		$minuteCompare = ($this->Minute() - $date2->Minute());
+		$secondCompare = ($this->Second() - $date2->Second());
+
+		if ($hourCompare < 0 || ($hourCompare == 0 && $minuteCompare < 0) || ($hourCompare == 0 && $minuteCompare == 0 && $secondCompare < 0)) {
+			return -1;
+		}
+		else if ($hourCompare > 0 || ($hourCompare == 0 && $minuteCompare > 0) || ($hourCompare == 0 && $minuteCompare == 0 && $secondCompare > 0)) {
+			return 1;
+		}
+
+		return 0;
+	}
+
+	/**
 	 * Compares this date to the one passed in
 	 * @param Date $end
 	 * @return bool if the current object is greater than the one passed in

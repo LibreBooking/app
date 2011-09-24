@@ -85,7 +85,7 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 	public function GetEndDate()
 	{
 		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
-		$dateTimeString = $this->server->GetQuerystring(QueryStringKeys::START_DATE);
+		$dateTimeString = $this->server->GetQuerystring(QueryStringKeys::END_DATE);
 
 		return new Date($dateTimeString, $timezone);
 	}

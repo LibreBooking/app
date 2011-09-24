@@ -32,10 +32,8 @@ class NewReservationInitializer extends ReservationInitializerBase
 	
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
 	{
-		$startPeriod = $this->GetPeriodClosestTo($schedulePeriods, $startDate);
-		$this->basePage->SetSelectedStart($startPeriod->BeginDate());
-		$this->basePage->SetSelectedEnd($startPeriod->EndDate());
-		$this->basePage->SetRepeatTerminationDate($startPeriod->EndDate());
+		parent::SetSelectedDates($startDate, $endDate, $schedulePeriods);
+		$this->basePage->SetRepeatTerminationDate($endDate);
 	}
 	
 	protected function GetOwnerId()
@@ -71,29 +69,6 @@ class NewReservationInitializer extends ReservationInitializerBase
 	protected function GetTimezone()
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
-	}
-	
-	/**
-	 * @param SchedulePeriod[] $periods
-	 * @param Date $date
-	 * @return SchedulePeriod
-	 */
-	private function GetPeriodClosestTo($periods, $date)
-	{
-		for ($i = 0; $i < count($periods); $i++)
-		{
-			$currentPeriod = $periods[$i];
-			$periodBegin = $currentPeriod->BeginDate();
-			
-			$now = Date::Now();
-			if ($currentPeriod->IsReservable() && $periodBegin->Compare($date) >= 0 && $periodBegin->Compare($now) >= 0)
-			{
-				return $currentPeriod;
-			}
-		}
-		
-		$lastIndex = count($periods) - 1;
-		return $periods[$lastIndex];
 	}
 }
 

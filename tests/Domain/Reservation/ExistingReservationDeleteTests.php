@@ -1,9 +1,22 @@
 <?php
 class ExistingReservationDeleteTests extends TestBase
 {
+	/**
+	 * @var FakeUserSession
+	 */
+	private $user;
+
+	/**
+	 * @var FakeUserSession
+	 */
+	private $admin;
+	
 	public function setup()
 	{
 		parent::setup();
+
+		$this->user = new FakeUserSession();
+		$this->admin = new FakeUserSession(true);
 	}
 	
 	public function teardown()
@@ -20,7 +33,7 @@ class ExistingReservationDeleteTests extends TestBase
 		$series = $builder->Build();
 		
 		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
-		$series->Delete();
+		$series->Delete($this->user);
 		
 		$events = $series->GetEvents();
 		
@@ -42,7 +55,7 @@ class ExistingReservationDeleteTests extends TestBase
 		$series = $builder->Build();
 		
 		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
-		$series->Delete();
+		$series->Delete($this->user);
 		
 		$events = $series->GetEvents();
 		
@@ -72,7 +85,7 @@ class ExistingReservationDeleteTests extends TestBase
 		$series = $builder->Build();
 		
 		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-		$series->Delete();
+		$series->Delete($this->user);
 		
 		$events = $series->GetEvents();
 		
@@ -105,7 +118,7 @@ class ExistingReservationDeleteTests extends TestBase
 		$series = $builder->Build();
 		
 		$series->ApplyChangesTo(SeriesUpdateScope::FutureInstances);
-		$series->Delete();
+		$series->Delete($this->user);
 		
 		$events = $series->GetEvents();
 		
@@ -134,10 +147,33 @@ class ExistingReservationDeleteTests extends TestBase
 		$series = $builder->Build();
 		
 		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-		$series->Delete();
+		$series->Delete($this->user);
 		
 		$events = $series->GetEvents();
 		
+		$this->assertEquals(1, count($events));
+		$this->assertTrue(in_array(new SeriesDeletedEvent($series), $events));
+	}
+
+	public function testDeletesWholeSeriesWhenAdminRegardlessOfDate()
+	{
+		$r1 = new TestReservation();
+		$r1->SetReservationDate(TestDateRange::CreateWithDays(-1));
+
+		$r2 = new TestReservation();
+		$r2->SetReservationDate(TestDateRange::CreateWithDays(-2));
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($r1);
+		$builder->WithInstance($r2);
+
+		$series = $builder->Build();
+
+		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+		$series->Delete($this->admin);
+
+		$events = $series->GetEvents();
+
 		$this->assertEquals(1, count($events));
 		$this->assertTrue(in_array(new SeriesDeletedEvent($series), $events));
 	}

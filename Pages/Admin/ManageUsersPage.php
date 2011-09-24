@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'config/timezones.php');
+require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -97,6 +98,16 @@ interface IManageUsersPage extends IPageable, IActionPage
 
 class ManageUsersPage extends AdminPage implements IManageUsersPage
 {
+	/**
+	 * @var \ManageUsersPresenter
+	 */
+	private $_presenter;
+
+	/**
+	 * @var \PageablePage
+	 */
+	private $pageable;
+
 	public function __construct()
 	{
 		parent::__construct('ManageUsers');
@@ -105,6 +116,8 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 			new UserRepository(),
 			new ResourceRepository(),
 			new PasswordEncryption());
+
+		$this->pageable = new PageablePage($this);
 	}
 	
 	public function PageLoad()
@@ -118,7 +131,7 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 
 	public function BindPageInfo(PageInfo $pageInfo)
 	{
-		$this->set('PageInfo', $pageInfo);
+		$this->pageable->BindPageInfo($pageInfo);
 	}
 	
 	public function BindUsers($users)
@@ -138,12 +151,12 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 
 	public function GetPageNumber()
 	{
-		return $this->GetQuerystring(QueryStringKeys::PAGE);
+		return $this->pageable->GetPageNumber();
 	}
 
 	public function GetPageSize()
 	{
-		return 50;
+		return $this->pageable->GetPageSize();
 	}
 
 	/**

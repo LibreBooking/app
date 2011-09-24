@@ -190,11 +190,11 @@ class ExistingReservationInitializerTests extends TestBase
 		
 		$page->expects($this->once())
 			->method('SetSelectedStart')
-			->with($this->equalTo($expectedStartDate->ToTimezone($timezone)));
+			->with($this->equalTo($periods[0]), $this->equalTo($expectedStartDate->ToTimezone($timezone)));
 
 		$page->expects($this->once())
 			->method('SetSelectedEnd')
-			->with($this->equalTo($expectedEndDate->ToTimezone($timezone)));
+			->with($this->equalTo($periods[0]), $this->equalTo($expectedEndDate->ToTimezone($timezone)));
 			
 		$page->expects($this->once())
 			->method('SetRepeatType')

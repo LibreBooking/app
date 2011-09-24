@@ -244,13 +244,19 @@ class ExistingReservationSeries extends ReservationSeries
 	}
 
 	/**
+	 * @param UserSession $deletedBy
 	 * @return void
 	 */
-	public function Delete()
+	public function Delete(UserSession $deletedBy)
 	{
+		$this->_bookedBy = $deletedBy;
+		
 		if (!$this->AppliesToAllInstances())
 		{
-			foreach ($this->Instances() as $instance)
+			$instances = $this->Instances();
+			Log::Debug('Removing %s instances of series %s', count($instances), $this->SeriesId());
+			
+			foreach ($instances as $instance)
 			{
 				Log::Debug("Removing instance %s from series %s", $instance->ReferenceNumber(), $this->SeriesId());
 				

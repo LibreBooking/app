@@ -28,6 +28,7 @@ class ParticipantAddedEmail extends EmailMessage
 		$this->reservationOwner = $reservationOwner;
 		$this->reservationSeries = $reservationSeries;
 		$this->timezone = $participant->Timezone();
+		$this->participant = $participant;
 	}
 	
 	/**

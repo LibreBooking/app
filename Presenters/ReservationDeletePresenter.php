@@ -53,7 +53,7 @@ class ReservationDeletePresenter
 		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
 		
-		$existingSeries->Delete();
+		$existingSeries->Delete(ServiceLocator::GetServer()->GetUserSession());
 		
 		return $existingSeries;
 	}
@@ -62,7 +62,9 @@ class ReservationDeletePresenter
 	 * @param ExistingReservationSeries $reservationSeries
 	 */
 	public function HandleReservation($reservationSeries)
-	{		
+	{
+		Log::Debug("Deleting reservation %s", $reservationSeries->CurrentInstance()->ReferenceNumber());
+		
 		$handler = new ReservationHandler();
 		$handler->Handle(
 			$reservationSeries,

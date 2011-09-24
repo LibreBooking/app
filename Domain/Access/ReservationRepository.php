@@ -346,6 +346,10 @@ class ReservationEventMapper
 		$this->buildMethods['ResourceAddedEvent'] = 'BuildAddResourceCommand';
 	}
 
+	/**
+	 * @static
+	 * @return ReservationEventMapper
+	 */
 	public static function Instance()
 	{
 		if (!isset(self::$instance))

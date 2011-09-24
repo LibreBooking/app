@@ -129,7 +129,63 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 */
 	protected abstract function GetTimezone();
 	
-	protected abstract function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods);
+	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
+	{
+		$startPeriod = $this->GetStartSlotClosestTo($schedulePeriods, $startDate);
+		$endPeriod = $this->GetEndSlotClosestTo($schedulePeriods, $endDate);
+
+		if ($endPeriod->Compare($startPeriod) < 0)
+		{
+			$endPeriod = $startPeriod;
+		}
+
+		$this->basePage->SetSelectedStart($startPeriod, $startDate);
+		$this->basePage->SetSelectedEnd($endPeriod, $endDate);
+	}
+
+	/**
+	 * @param SchedulePeriod[] $periods
+	 * @param Date $date
+	 * @return SchedulePeriod
+	 */
+	private function GetStartSlotClosestTo($periods, $date)
+	{
+		for ($i = 0; $i < count($periods); $i++)
+		{
+			$currentPeriod = $periods[$i];
+			$periodBegin = $currentPeriod->BeginDate();
+
+			if ($currentPeriod->IsReservable() && $periodBegin->CompareTime($date) >= 0)
+			{
+				return $currentPeriod;
+			}
+		}
+
+		$lastIndex = count($periods) - 1;
+		return $periods[$lastIndex];
+	}
+
+	/**
+	 * @param SchedulePeriod[] $periods
+	 * @param Date $date
+	 * @return SchedulePeriod
+	 */
+	private function GetEndSlotClosestTo($periods, $date)
+	{
+		for ($i = 0; $i < count($periods); $i++)
+		{
+			$currentPeriod = $periods[$i];
+			$periodEnd = $currentPeriod->EndDate();
+
+			if ($currentPeriod->IsReservable() && $periodEnd->CompareTime($date) >= 0)
+			{
+				return $currentPeriod;
+			}
+		}
+
+		$lastIndex = count($periods) - 1;
+		return $periods[$lastIndex];
+	}
 	
 	private function GetBindableUserData($userId)
 	{

@@ -82,9 +82,10 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
 	{
 		$timezone = $this->GetTimezone();		
-		$this->page->SetSelectedStart($this->reservationView->StartDate->ToTimezone($timezone));
-		$this->page->SetSelectedEnd($this->reservationView->EndDate->ToTimezone($timezone));		
-		$this->page->SetRepeatTerminationDate($this->reservationView->StartDate->ToTimezone($timezone));		
+		$startDate = $this->reservationView->StartDate->ToTimezone($timezone);
+		$endDate = $this->reservationView->EndDate->ToTimezone($timezone);
+
+		parent::SetSelectedDates($startDate, $endDate, $schedulePeriods);
 	}
 	
 	protected function GetOwnerId()

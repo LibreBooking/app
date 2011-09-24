@@ -18,7 +18,7 @@
 				{/foreach}
 				</li>
 				<li class="section">
-					<label>{translate key='Start'}</label> {formatdate date=$SelectedStart}
+					<label>{translate key='Start'}</label> {formatdate date=$StartDate}
 				{foreach from=$Periods item=period}
 					{if $period->BeginDate()->Equals($SelectedStart)}
 						{$period->Label()} <br/>
@@ -26,7 +26,7 @@
 				{/foreach}
 				</li>
 				<li>
-					<label>{translate key='End'}</label> {formatdate date=$SelectedEnd}
+					<label>{translate key='End'}</label> {formatdate date=$EndDate}
 				{foreach from=$Periods item=period}
 					{if $period->EndDate()->Equals($SelectedEnd)}
 						{$period->Label()} <br/>
