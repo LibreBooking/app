@@ -349,7 +349,7 @@ DROP TABLE IF EXISTS `reservation_series`;
 CREATE TABLE  `reservation_series` (
   `series_id` mediumint(8) unsigned NOT NULL auto_increment,
   `date_created` datetime NOT NULL,
-  `last_modified` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `last_modified` datetime,
   `title` varchar(85) NOT NULL,
   `description` text,
   `allow_participation` tinyint(1) unsigned NOT NULL,

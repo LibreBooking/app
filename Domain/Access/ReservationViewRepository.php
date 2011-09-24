@@ -353,7 +353,17 @@ class ReservationItemView
 	 * @var null|int
 	 */
 	public $UserId;
-	
+
+	/**
+	 * @var null|Date
+	 */
+	public $CreatedDate;
+
+	/**
+	 * @var null|Date
+	 */
+	public $ModifiedDate;
+
 	/**
 	 * @param $referenceNumber string
 	 * @param $startDate Date
@@ -406,7 +416,7 @@ class ReservationItemView
 	 */
 	public static function Populate($row)
 	{
-		return new ReservationItemView (
+		$view = new ReservationItemView (
 					$row[ColumnNames::REFERENCE_NUMBER],
 					Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
 					Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
@@ -421,6 +431,18 @@ class ReservationItemView
 					$row[ColumnNames::LAST_NAME],
 					$row[ColumnNames::USER_ID]
 		);
+
+		if (isset($row[ColumnNames::RESERVATION_CREATED]))
+		{
+			$view->CreatedDate = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
+		}
+
+		if (isset($row[ColumnNames::RESERVATION_MODIFIED]))
+		{
+			$view->ModifiedDate = Date::FromDatabase($row[ColumnNames::RESERVATION_MODIFIED]);
+		}
+
+		return $view;
 	}
 }
 ?>

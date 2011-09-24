@@ -27,6 +27,7 @@ function ReservationManagement(opts)
 		});
 
 		elements.reservationTable.delegate('.editable', 'click', function() {
+			$(this).addClass('clicked');
 			var td = $(this).find('.referenceNumber');
 			viewReservation(td.text());
 		});

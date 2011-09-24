@@ -76,7 +76,7 @@ class AddQuotaCommand extends SqlCommand
 
 class AddReservationSeriesCommand extends SqlCommand
 {
-	public function __construct(Date $dateCreatedUtc, 
+	public function __construct(Date $dateCreated,
 								$title, 
 								$description, 
 								$repeatType,
@@ -89,7 +89,7 @@ class AddReservationSeriesCommand extends SqlCommand
 	{
 		parent::__construct(Queries::ADD_RESERVATION_SERIES);	
 		
-		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, $dateCreatedUtc->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, $dateCreated->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));	
 		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
@@ -115,13 +115,13 @@ class AddReservationResourceCommand extends SqlCommand
 
 class AddReservationCommand extends SqlCommand
 {
-	public function __construct(Date $startDateUtc, 
+	public function __construct(Date $startDate,
 								Date $endDateUtc,
 								$referenceNumber,
 								$seriesId)
 	{
 		parent::__construct(Queries::ADD_RESERVATION);
-		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDateUtc->ToDatabase()));	
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDateUtc->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));		
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));	
@@ -455,6 +455,7 @@ class GetFullReservationListCommand extends SqlCommand
 	public function __construct()
 	{
 		parent::__construct(Queries::GET_RESERVATION_LIST_FULL);
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, ReservationUserLevel::OWNER));
 	}
 }
 

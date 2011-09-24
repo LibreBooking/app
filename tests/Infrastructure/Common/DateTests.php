@@ -435,5 +435,6 @@ class DateTests extends TestBase
 
 		$this->assertEquals($seconds, $diff->TotalSeconds());
 	}
+
 }
 ?>

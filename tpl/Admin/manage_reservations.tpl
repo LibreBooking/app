@@ -53,6 +53,8 @@
 		<th>{translate key='Resource'}</th>
 		<th>{translate key='Start'}</th>
 		<th>{translate key='End'}</th>
+		<th>{translate key='Created'}</th>
+		<th>{translate key='LastModified'}</th>
 		<th>{translate key='ReferenceNumber'}</th>
 		<th>{translate key='Delete'}</th>
 	</tr>
@@ -64,6 +66,8 @@
 		<td>{$reservation->ResourceName}</td>
 		<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
 		<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
+		<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
+		<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
 		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
 		<td>{html_image src='cross-button.png'}</td>
 	</tr>

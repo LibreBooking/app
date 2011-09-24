@@ -192,6 +192,8 @@ class en_us extends Language
 		$strings['ChangeCalendar'] = 'Change Calendar';
 		$strings['AddQuota'] = 'Add Quota';
 		$strings['FindUser'] = 'Find User';
+		$strings['Created'] = 'Created';
+		$strings['LastModified'] = 'Last Modified';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';

@@ -36,7 +36,7 @@ class Date
 	private function InitializeTimezone($timezone)
 	{
 		$this->timezone = $timezone;
-		if ($timezone == null) {
+		if (empty($timezone)) {
 			$this->timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
 		}
 	}
