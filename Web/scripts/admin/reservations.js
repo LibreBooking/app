@@ -13,6 +13,8 @@ function ReservationManagement(opts)
 		reservationTable: $("#reservationTable")
 	};
 
+	var reservations = new Object();
+
 	ReservationManagement.prototype.init = function()
 	{
 		$('.datepicker').datepicker();
@@ -26,6 +28,11 @@ function ReservationManagement(opts)
 			}
 		});
 
+		elements.reservationTable.delegate('a.update', 'click', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+		});
+		
 		elements.reservationTable.delegate('.editable', 'click', function() {
 			$(this).addClass('clicked');
 			var td = $(this).find('.referenceNumber');
@@ -36,8 +43,19 @@ function ReservationManagement(opts)
 			var refNum = $(this).find('.referenceNumber').text();
 			$(this).attachReservationPopup(refNum, options.popupUrl);
 		});
+
+		elements.reservationTable.delegate('.delete', 'click', function(e) {
+			var td = $(this).find('.referenceNumber');
+			var referenceNumber = td.text();
+			alert(reservations[referenceNumber].isRecurring);
+		});
 		
 		$('#filter').click(filterReservations);
+	};
+
+	ReservationManagement.prototype.addReservation = function(reservation)
+	{
+		reservations[reservation.referenceNumber] = reservation;
 	};
 
 	function selectUser(ui, textbox){

@@ -365,6 +365,16 @@ class ReservationItemView
 	public $ModifiedDate;
 
 	/**
+	 * @var null|bool
+	 */
+	public $IsRecurring;
+
+	/**
+	 * @var null|bool
+	 */
+	public $RequiresApproval;
+
+	/**
 	 * @param $referenceNumber string
 	 * @param $startDate Date
 	 * @param $endDate Date
@@ -440,6 +450,16 @@ class ReservationItemView
 		if (isset($row[ColumnNames::RESERVATION_MODIFIED]))
 		{
 			$view->ModifiedDate = Date::FromDatabase($row[ColumnNames::RESERVATION_MODIFIED]);
+		}
+
+		if (isset($row[ColumnNames::REPEAT_TYPE]))
+		{
+			$view->IsRecurring = $row[ColumnNames::REPEAT_TYPE] != RepeatType::None;
+		}
+
+		if (isset($row[ColumnNames::RESERVATION_STATUS]))
+		{
+			$view->RequiresApproval = $row[ColumnNames::RESERVATION_STATUS] == ReservationStatus::Pending;
 		}
 
 		return $view;

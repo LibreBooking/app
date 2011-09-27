@@ -69,7 +69,7 @@
 		<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
 		<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
 		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-		<td>{html_image src='cross-button.png'}</td>
+		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 	</tr>
 	{/foreach}
 </table>
@@ -93,6 +93,16 @@ $(document).ready(function() {
 		
 	var reservationManagement = new ReservationManagement(resOpts);
 	reservationManagement.init();
+
+	{foreach from=$reservations item=reservation}
+
+		reservationManagement.addReservation(
+			{
+				referenceNumber: '{$reservation->ReferenceNumber}',
+				isRecurring: '{$reservation->IsRecurring}'
+			}
+		);
+	{/foreach}
 });
 </script>
 
