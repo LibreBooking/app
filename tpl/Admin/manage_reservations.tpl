@@ -76,19 +76,68 @@
 
 {pagination pageInfo=$PageInfo}
 
+<div id="deleteInstanceDialog" class="dialog" style="display:none;">
+	<form id="deleteInstanceForm" method="post">
+		<div class="error" style="margin-bottom: 25px;">
+			<h3>This action is permanent and irrecoverable!</h3>
+		</div>
+		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
+
+<div id="deleteSeriesDialog" class="dialog" style="display:none;">
+	<form id="deleteSeriesForm" method="post">
+		<div class="error" style="margin-bottom: 25px;">
+			<h3>This action is permanent and irrecoverable!</h3>
+		</div>
+		<button type="button" id="btnUpdateThisInstance" class="button save">
+			{html_image src="disk-black.png"}
+			{translate key='ThisInstance'}
+		</button>
+		<button type="button" id="btnUpdateAllInstances" class="button save">
+			{html_image src="disks-black.png"}
+			{translate key='AllInstances'}
+		</button>
+		<button type="button" id="btnUpdateFutureInstances" class="button save">
+			{html_image src="disk-arrow.png"}
+			{translate key='FutureInstances'}
+		</button>
+		<button type="button" class="button cancel">
+			{html_image src="slash.png"}
+			{translate key='Cancel'}
+		</button>
+		<input type="hidden" id="hdnSeriesUpdateScope" {formname key=SERIES_UPDATE_SCOPE} />
+	</form>
+</div>
 
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
 <script type="text/javascript" src="{$Path}scripts/reservationPopup.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/reservations.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
 
+	var updateScope = {};
+	updateScope['btnUpdateThisInstance'] = '{SeriesUpdateScope::ThisInstance}';
+	updateScope['btnUpdateAllInstances'] = '{SeriesUpdateScope::FullSeries}';
+	updateScope['btnUpdateFutureInstances'] = '{SeriesUpdateScope::FutureInstances}';
+
+	var actions = {
+		deleteReservation : 'deleteReservation'
+	};
+		
 	var resOpts = {
 		autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
 		reservationUrlTemplate: "{$Path}reservation.php?rn=[refnum]",
-		popupUrl: "{$Path}ajax/respopup.php"
+		popupUrl: "{$Path}ajax/respopup.php",
+		updateScope: updateScope,
+		actions: actions,
+		actionUrl: '{$smarty.server.SCRIPT_NAME}'
 	};
 		
 	var reservationManagement = new ReservationManagement(resOpts);

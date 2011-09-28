@@ -10,18 +10,36 @@ function ReservationManagement(opts)
 		scheduleId: $("#scheduleId"),
 		resourceId: $("#resourceId"),
 		referenceNumber: $("#referenceNumber"),
-		reservationTable: $("#reservationTable")
+		reservationTable: $("#reservationTable"),
+		updateScope: $('#hdnSeriesUpdateScope'),
+
+		deleteInstanceDialog: $('#deleteInstanceDialog'),
+		deleteSeriesDialog: $('#deleteSeriesDialog'),
+
+		deleteInstanceForm: $('#deleteInstanceForm'),
+		deleteSeriesForm: $('#deleteSeriesForm')
 	};
 
 	var reservations = new Object();
 
 	ReservationManagement.prototype.init = function()
 	{
+		ConfigureAdminDialog(elements.deleteInstanceDialog, 425, 200);
+		ConfigureAdminDialog(elements.deleteSeriesDialog, 650, 200);
+		
 		$('.datepicker').datepicker();
 
+		$(".save").click(function() {
+			$(this).closest('form').submit();
+		});
+
+		$(".cancel").click(function() {
+			$(this).closest('.dialog').dialog("close");
+		});
+		
 		elements.userFilter.userAutoComplete(options.autocompleteUrl, selectUser);
 
-		elements.userFilter.change(function(){
+		elements.userFilter.change(function() {
 			if ($(this).val() == '')
 			{
 				elements.userId.val('');
@@ -44,13 +62,22 @@ function ReservationManagement(opts)
 			$(this).attachReservationPopup(refNum, options.popupUrl);
 		});
 
-		elements.reservationTable.delegate('.delete', 'click', function(e) {
-			var td = $(this).find('.referenceNumber');
+		elements.reservationTable.delegate('.delete', 'click', function() {
+			var td = $(this).parents('tr').find('.referenceNumber');
 			var referenceNumber = td.text();
-			alert(reservations[referenceNumber].isRecurring);
+			setActiveId(referenceNumber);
+			showDeleteReservation(referenceNumber);
+		});
+
+		elements.deleteSeriesForm.delegate('.save', 'click', function() {
+			var updateScope = opts.updateScope[$(this).attr('id')];
+			elements.updateScope.val(updateScope);
 		});
 		
 		$('#filter').click(filterReservations);
+
+		ConfigureAdminForm(elements.deleteInstanceForm, getSubmitCallback(options.actions.deleteReservation));
+		ConfigureAdminForm(elements.deleteSeriesForm, getSubmitCallback(options.actions.deleteReservation));
 	};
 
 	ReservationManagement.prototype.addReservation = function(reservation)
@@ -58,6 +85,33 @@ function ReservationManagement(opts)
 		reservations[reservation.referenceNumber] = reservation;
 	};
 
+	function getSubmitCallback(action)
+	{
+		return function() { return opts.actionUrl + "?rn=" + getActiveId() + "&action=" + action; };
+	}
+
+	function setActiveId(referenceNumber)
+	{
+		this.referenceNumber = referenceNumber;
+	}
+
+	function getActiveId()
+	{
+		return this.referenceNumber;
+	}
+	
+	function showDeleteReservation(referenceNumber)
+	{
+		if (reservations[referenceNumber].isRecurring == '1')
+		{
+			elements.deleteSeriesDialog.dialog('open');
+		}
+		else
+		{
+			elements.deleteInstanceDialog.dialog('open');
+		}
+	}
+	
 	function selectUser(ui, textbox){
 		elements.userId.val(ui.item.value);
 		textbox.val(ui.item.label);
