@@ -1,13 +1,17 @@
 	
 	function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHandler, options)
 	{
-		var opts = $.extend({dataType: null}, options);
+		var opts = $.extend(
+				{
+					dataType: null,
+					onBeforeSubmit: BeforeFormSubmit
+				}, options);
 
 		formElement.submit(function() {
 			
 			var submitOptions = { 
 				url: urlCallback(),
-		        beforeSubmit: BeforeFormSubmit,
+		        beforeSubmit: opts.onBeforeSubmit,
 				dataType: opts.dataType,
 		        success: function(responseText, statusText, xhr, form)  {
 

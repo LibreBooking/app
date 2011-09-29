@@ -41,7 +41,7 @@ class ExistingReservationTests extends TestBase
 		$series = $builder->Build();
 		// updates
 		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
-		$series->Update(99, new FakeBookableResource(999), 'new', 'new', new FakeUserSession());;
+		$series->Update(99, new FakeBookableResource(999), 'new', 'new', new FakeUserSession());
 		$series->Repeats($currentRepeatOptions);
 
 		$instances = $series->Instances();

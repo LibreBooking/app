@@ -83,6 +83,7 @@
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} value="{SeriesUpdateScope::ThisInstance}" />
 	</form>
 </div>
 
@@ -92,15 +93,15 @@
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>This action is permanent and irrecoverable!</h3>
 		</div>
-		<button type="button" id="btnUpdateThisInstance" class="button save">
+		<button type="button" id="btnUpdateThisInstance" class="button saveSeries">
 			{html_image src="disk-black.png"}
 			{translate key='ThisInstance'}
 		</button>
-		<button type="button" id="btnUpdateAllInstances" class="button save">
+		<button type="button" id="btnUpdateAllInstances" class="button saveSeries">
 			{html_image src="disks-black.png"}
 			{translate key='AllInstances'}
 		</button>
-		<button type="button" id="btnUpdateFutureInstances" class="button save">
+		<button type="button" id="btnUpdateFutureInstances" class="button saveSeries">
 			{html_image src="disk-arrow.png"}
 			{translate key='FutureInstances'}
 		</button>
@@ -111,6 +112,8 @@
 		<input type="hidden" id="hdnSeriesUpdateScope" {formname key=SERIES_UPDATE_SCOPE} />
 	</form>
 </div>
+
+{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
 <script type="text/javascript" src="{$Path}scripts/reservationPopup.js"></script>
@@ -128,7 +131,8 @@ $(document).ready(function() {
 	updateScope['btnUpdateFutureInstances'] = '{SeriesUpdateScope::FutureInstances}';
 
 	var actions = {
-		deleteReservation : 'deleteReservation'
+		deleteReservation : '{ManageReservationsActions::Delete}',
+		approveReservation : '{ManageReservationsActions::Approve}'
 	};
 		
 	var resOpts = {

@@ -23,6 +23,11 @@ abstract class ActionPresenter
 		$this->validations = array();
 	}
 
+	/**
+	 * @param string $actionName
+	 * @param string $actionMethod
+	 * @return void
+	 */
 	protected function AddAction($actionName, $actionMethod)
 	{
 		$this->actions[$actionName] = $actionMethod;

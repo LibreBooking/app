@@ -180,7 +180,7 @@ class ExistingReservationSeries extends ReservationSeries
 	}
 
 	/**
-	 * @param SeriesUpdateScope $seriesUpdateScope
+	 * @param SeriesUpdateScope|string $seriesUpdateScope
 	 */
 	public function ApplyChangesTo($seriesUpdateScope)
 	{

@@ -69,9 +69,10 @@ function ReservationManagement(opts)
 			showDeleteReservation(referenceNumber);
 		});
 
-		elements.deleteSeriesForm.delegate('.save', 'click', function() {
+		$(".saveSeries").click(function() {
 			var updateScope = opts.updateScope[$(this).attr('id')];
 			elements.updateScope.val(updateScope);
+			elements.deleteSeriesForm.submit();
 		});
 		
 		$('#filter').click(filterReservations);

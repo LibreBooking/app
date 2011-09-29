@@ -1,8 +1,16 @@
 <?php
 require_once(ROOT_DIR . 'Pages/Admin/ManageReservationsPage.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
-class ManageReservationsPresenter
+
+class ManageReservationsActions
+{
+	const Approve = 'approve';
+	const Delete = 'delete';
+}
+
+class ManageReservationsPresenter extends ActionPresenter
 {
 	/**
 	 * @var \IManageReservationsPage
@@ -23,17 +31,28 @@ class ManageReservationsPresenter
 	 * @var \IResourceRepository
 	 */
 	private $resourceRepository;
+
+	/**
+	 * @var \IReservationRepository
+	 */
+	private $reservationRepository;
 	
 	public function __construct(
 		IManageReservationsPage $page,
 		IReservationViewRepository $reservationViewRepository,
 		IScheduleRepository $scheduleRepository,
-		IResourceRepository $resourceRepository)
+		IResourceRepository $resourceRepository,
+		IReservationRepository $reservationRepository)
 	{
+		parent::__construct($page);
+		
 		$this->page = $page;
 		$this->reservationViewRepository = $reservationViewRepository;
 		$this->scheduleRepository = $scheduleRepository;
 		$this->resourceRepository = $resourceRepository;
+		$this->reservationRepository = $reservationRepository;
+
+		$this->AddAction(ManageReservationsActions::Delete, 'DeleteReservation');
 	}
 	
 	public function PageLoad($userTimezone)
@@ -68,6 +87,20 @@ class ManageReservationsPresenter
 		$this->page->BindPageInfo($reservations->PageInfo());
 	}
 
+	public function DeleteReservation()
+	{
+		$session = ServiceLocator::GetServer()->GetUserSession();
+		$referenceNumber = $this->page->GetDeleteReferenceNumber();
+		$scope = $this->page->GetDeleteScope();
+
+		Log::Debug('Admin: Deleting reservation %s with change scope %s', $referenceNumber, $scope);
+		$reservation = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
+
+		$reservation->ApplyChangesTo($scope);
+		$reservation->Delete($session);
+		$this->reservationRepository->Delete($reservation);
+	}
+	
 	private function GetDate($dateString, $timezone, $defaultDays)
 	{
 		$date = null;

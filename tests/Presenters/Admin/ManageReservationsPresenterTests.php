@@ -28,6 +28,11 @@ class ManageReservationsPresenterTests extends TestBase
 	 */
 	private $resourceRepository;
 
+	/**
+	 * @var IReservationRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $reservationRepository;
+
 	public function setup()
 	{
 		parent::setup();
@@ -36,11 +41,13 @@ class ManageReservationsPresenterTests extends TestBase
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->reservationRepository = $this->getMock('IReservationRepository');
 
 		$this->presenter = new ManageReservationsPresenter($this->page,
 											$this->reservationViewRepository,
 											$this->scheduleRepository,
-											$this->resourceRepository);
+											$this->resourceRepository,
+											$this->reservationRepository);
 	}
 	
 	public function testUsesTwoWeekSpanWhenNoDateFilterProvided()
@@ -120,6 +127,42 @@ class ManageReservationsPresenterTests extends TestBase
 		$this->presenter->PageLoad($userTimezone);
 	}
 
+	public function testDeleteRemovesReservation()
+	{
+		$referenceNumber = '123';
+		$scope = SeriesUpdateScope::FullSeries;
+		
+		$reservation = $this->getMock('ExistingReservationSeries');;
+		
+		$this->page->expects($this->once())
+			->method('GetDeleteReferenceNumber')
+			->will($this->returnValue($referenceNumber));
+
+		$this->page->expects($this->once())
+			->method('GetDeleteScope')
+			->will($this->returnValue($scope));
+
+		$this->reservationRepository->expects($this->once())
+			->method('LoadByReferenceNumber')
+			->with($this->equalTo($referenceNumber))
+			->will($this->returnValue($reservation));
+
+		$reservation->expects($this->once())
+			->method('ApplyChangesTo')
+			->with($this->equalTo($scope));
+		
+		$reservation->expects($this->once())
+			->method('Delete')
+			->with($this->equalTo($this->fakeUser));
+		
+		$this->reservationRepository->expects($this->once())
+			->method('Delete')
+			->with($this->equalTo($reservation))
+			->will($this->returnValue($reservation));
+
+		$this->presenter->DeleteReservation($this->fakeUser);
+	}
+
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate
@@ -133,19 +176,6 @@ class ManageReservationsPresenterTests extends TestBase
 	{
 		$filter = new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId);
 		return $filter->GetFilter();
-//		$filter = new SqlFilterNull();
-//
-//		if ($startDate != null)
-//		{
-//			$filter->_And(new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, $startDate->ToDatabase()));
-//		}
-//
-//		if ($endDate != null)
-//		{
-//			$filter->_And(new SqlFilterLessThan(ColumnNames::RESERVATION_END, $endDate->ToDatabase()));
-//		}
-//
-//		return $filter;
 	}
 }
 

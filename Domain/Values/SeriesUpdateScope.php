@@ -181,7 +181,8 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 	 */
 	public function Instances($series)
 	{
-		if ($series->BookedBy()->IsAdmin)
+		$bookedBy = $series->BookedBy();
+		if (!is_null($bookedBy) && $bookedBy->IsAdmin)
 		{
 			return $series->_Instances();
 		}

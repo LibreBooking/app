@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageReservationsPresenter.php');
 
-interface IManageReservationsPage extends IPageable
+interface IManageReservationsPage extends IPageable, IActionPage
 {
 	/**
 	 * @abstract
@@ -118,9 +118,21 @@ interface IManageReservationsPage extends IPageable
 	 * @return void
 	 */
 	public function BindResources($resources);
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetDeleteReferenceNumber();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetDeleteScope();
 }
 
-class ManageReservationsPage extends AdminPage implements IManageReservationsPage 
+class ManageReservationsPage extends AdminPage implements IManageReservationsPage
 {
 	/**
 	 * @var \ManageReservationsPresenter
@@ -139,14 +151,15 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 		$this->presenter = new ManageReservationsPresenter($this,
 			new ReservationViewRepository(),
 			new ScheduleRepository(),
-			new ResourceRepository());
+			new ResourceRepository(),
+			new ReservationRepository());
 
 		$this->pageablePage = new PageablePage($this);
 	}
 	
 	public function ProcessAction()
 	{
-		// TODO: Implement ProcessAction() method.
+		$this->presenter->ProcessAction();
 	}
 
 	public function PageLoad()
@@ -316,6 +329,22 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	function BindPageInfo(PageInfo $pageInfo)
 	{
 		$this->pageablePage->BindPageInfo($pageInfo);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetDeleteReferenceNumber()
+	{
+		return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetDeleteScope()
+	{
+		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
 	}
 }
 ?>
