@@ -3,9 +3,10 @@ interface IPermissionService
 {
 	/**
 	 * @param IResource $resource
+	 * @param $user UserSession
 	 * @return bool
 	 */
-	public function CanAccessResource(IResource $resource);	
+	public function CanAccessResource(IResource $resource, UserSession $user);
 }
 
 class PermissionService implements IPermissionService
@@ -15,31 +16,26 @@ class PermissionService implements IPermissionService
 	 */
 	private $_store;
 	
-	/**
-	 * @var int
-	 */
-	private $_userId;
-	
 	private $_allowedResourceIds;
 	
 	/**
 	 * @param IResourcePermissionStore $store
-	 * @param int $userId
 	 */
-	public function __construct(IResourcePermissionStore $store, $userId)
+	public function __construct(IResourcePermissionStore $store)
 	{
 		$this->_store = $store;
-		$this->_userId = $userId;
 	}
-	
+
 	/**
-	 * @see IPermissionService::CanAccessResource()
+	 * @param IResource $resource
+	 * @param $user UserSession
+	 * @return bool
 	 */
-	public function CanAccessResource(IResource $resource)
+	public function CanAccessResource(IResource $resource, UserSession $user)
 	{
 		if ($this->_allowedResourceIds == null)
 		{
-			$this->_allowedResourceIds = $this->_store->GetPermittedResources($this->_userId);
+			$this->_allowedResourceIds = $this->_store->GetPermittedResources($user->UserId);
 		}
 		
 		return in_array($resource->GetResourceId(), $this->_allowedResourceIds);

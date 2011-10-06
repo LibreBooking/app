@@ -34,5 +34,10 @@ class TestReservationSeries extends ReservationSeries
 		$this->SetCurrentInstance($currentInstance);
 		$this->AddInstance($currentInstance);
 	}
+
+	public function WithBookedBy($bookedBy)
+	{
+		$this->_bookedBy = $bookedBy;
+	}
 }
 ?>

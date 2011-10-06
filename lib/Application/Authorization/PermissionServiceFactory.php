@@ -2,22 +2,21 @@
 interface IPermissionServiceFactory
 {
 	/**
-	 * @param int $userId
 	 * @return IPermissionService
 	 */
-	function GetPermissionService($userId);
+	function GetPermissionService();
 }
 
 class PermissionServiceFactory implements IPermissionServiceFactory
 {
 	/**
-	 * @see IPermissionServiceFactory::GetPermissionService()
+	 * @return IPermissionService
 	 */
-	public function GetPermissionService($userId)
+	public function GetPermissionService()
 	{
 		// TODO: Make this pluggable
 		$resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
-		return new PermissionService($resourcePermissionStore, $userId);
+		return new PermissionService($resourcePermissionStore);
 	}
 }
 ?>

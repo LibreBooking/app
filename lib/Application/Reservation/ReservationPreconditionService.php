@@ -43,8 +43,8 @@ class NewReservationPreconditionService implements INewReservationPreconditionSe
 	
 	private function UserHasPermission(UserSession $user, $resourceId)
 	{
-		$permissionService = $this->_permissionServiceFactory->GetPermissionService($user->UserId);
-		return $permissionService->CanAccessResource(new ReservationResource($resourceId));
+		$permissionService = $this->_permissionServiceFactory->GetPermissionService();
+		return $permissionService->CanAccessResource(new ReservationResource($resourceId), $user);
 	}
 }
 

@@ -6,6 +6,9 @@ class PermissionServiceTests extends TestBase
 	public function testAsksStoreForAllowedResourcesAndReturnsTrueIfItExists()
 	{
 		$userId = 99;
+		$user = new FakeUserSession();
+		$user->UserId = $userId;
+		
 		$resource = new FakeBookableResource(1, 'whatever');
 		$resourceIdList = array(3, 1, 4);
 		
@@ -17,7 +20,7 @@ class PermissionServiceTests extends TestBase
 			->with($this->equalTo($userId))
 			->will($this->returnValue($resourceIdList));
 		
-		$canAccess = $ps->CanAccessResource($resource);
+		$canAccess = $ps->CanAccessResource($resource, $user);
 		
 		$this->assertTrue($canAccess);
 	}
@@ -25,6 +28,9 @@ class PermissionServiceTests extends TestBase
 	public function testCachesPermissionsPerUserForThisInstance()
 	{
 		$userId = 99;
+		$user = new FakeUserSession();
+		$user->UserId = $userId;
+
 		$resource = new FakeBookableResource(1, 'whatever');
 		$resourceIdList = array(3, 1, 4);
 		
@@ -36,8 +42,8 @@ class PermissionServiceTests extends TestBase
 			->with($this->equalTo($userId))
 			->will($this->returnValue($resourceIdList));
 		
-		$canAccess1 = $ps->CanAccessResource($resource);
-		$canAccess2 = $ps->CanAccessResource($resource);
+		$canAccess1 = $ps->CanAccessResource($resource, $user);
+		$canAccess2 = $ps->CanAccessResource($resource, $user);
 		
 		$this->assertTrue($canAccess1);
 		$this->assertTrue($canAccess2);

@@ -15,7 +15,7 @@ class NewReservationPreconditionServiceTests extends TestBase
 	private $_userId;
 	
 	/**
-	 * @var IPermissionServiceFactory
+	 * @var IPermissionServiceFactory|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $_permissionServiceFactory;
 	
@@ -38,8 +38,7 @@ class NewReservationPreconditionServiceTests extends TestBase
 	{
 		$resourceId = 123;
 		$resource = new ReservationResource($resourceId);
-				
-		$lastPage = 'last/page.php?a=b&c=d';
+
 		$errorMessage = ErrorMessages::INSUFFICIENT_PERMISSIONS;
 		
 		$page = $this->getMock('INewReservationPage');
@@ -56,12 +55,11 @@ class NewReservationPreconditionServiceTests extends TestBase
 			
 		$this->_permissionServiceFactory->expects($this->once())
 			->method('GetPermissionService')
-			->with($this->equalTo($this->_userId))
 			->will($this->returnValue($permissionService));			
 			
 		$permissionService->expects($this->once())
 			->method('CanAccessResource')
-			->with($this->equalTo($resource))
+			->with($this->equalTo($resource), $this->equalTo($this->_user))
 			->will($this->returnValue(false));
 			
 		$page->expects($this->once())
@@ -74,7 +72,6 @@ class NewReservationPreconditionServiceTests extends TestBase
 	
 	public function testBouncesWhenNoScheduleIdProvided()
 	{
-		$lastPage = 'last/page.php?a=b&c=d';
 		$errorMessage = ErrorMessages::MISSING_SCHEDULE;
 		
 		$page = $this->getMock('INewReservationPage');
@@ -97,7 +94,6 @@ class NewReservationPreconditionServiceTests extends TestBase
 	
 	public function testBouncesWhenNoResourceIdProvided()
 	{
-		$lastPage = 'last/page.php?a=b&c=d';
 		$errorMessage = ErrorMessages::MISSING_RESOURCE;
 		
 		$page = $this->getMock('INewReservationPage');

@@ -42,6 +42,7 @@ class ResourceTests extends TestBase
 	public function testResourceServiceChecksPermissionForEachResource()
 	{
 		$scheduleId = 100;
+		$user = $this->fakeUser;
 		
 		$permissionService = $this->getMock('IPermissionService');
 		$resourceRepository = $this->getMock('IResourceRepository');
@@ -61,22 +62,22 @@ class ResourceTests extends TestBase
 			
 		$permissionService->expects($this->at(0))
 			->method('CanAccessResource')
-			->with($this->equalTo($resource1))
+			->with($this->equalTo($resource1), $this->equalTo($user))
 			->will($this->returnValue(true));
 		
 		$permissionService->expects($this->at(1))
 			->method('CanAccessResource')
-			->with($this->equalTo($resource2))
+			->with($this->equalTo($resource2), $this->equalTo($user))
 			->will($this->returnValue(true));
 		
 		$permissionService->expects($this->at(2))
 			->method('CanAccessResource')
-			->with($this->equalTo($resource3))
+			->with($this->equalTo($resource3), $this->equalTo($user))
 			->will($this->returnValue(true));
 		
 		$permissionService->expects($this->at(3))
 			->method('CanAccessResource')
-			->with($this->equalTo($resource4))
+			->with($this->equalTo($resource4), $this->equalTo($user))
 			->will($this->returnValue(false));
 		
 		$resourceDto1 = new ResourceDto(1, 'resource1', true);
@@ -86,7 +87,7 @@ class ResourceTests extends TestBase
 		
 		$expected = array($resourceDto1, $resourceDto2, $resourceDto3, $resourceDto4);
 		
-		$actual = $resourceService->GetScheduleResources($scheduleId, true, $permissionService);
+		$actual = $resourceService->GetScheduleResources($scheduleId, true, $permissionService, $user);
 
 		$this->assertEquals($expected, $actual);
 	}	
@@ -94,6 +95,7 @@ class ResourceTests extends TestBase
 	public function testResourcesAreNotReturnedIfNotIncludingInaccessibleResources()
 	{
 		$scheduleId = 100;
+		$user = $this->fakeUser;
 		
 		$permissionService = $this->getMock('IPermissionService');
 		$resourceRepository = $this->getMock('IResourceRepository');
@@ -113,7 +115,7 @@ class ResourceTests extends TestBase
 			->will($this->returnValue(false));
 			
 		$includeInaccessibleResources = false;
-		$actual = $resourceService->GetScheduleResources($scheduleId, $includeInaccessibleResources, $permissionService);
+		$actual = $resourceService->GetScheduleResources($scheduleId, $includeInaccessibleResources, $permissionService, $user);
 		
 		$this->assertEquals(0, count($actual));
 	}

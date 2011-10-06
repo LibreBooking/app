@@ -14,14 +14,14 @@ class ResourceService implements IResourceService
 	/**
 	 * @see IResourceService::GetScheduleResources()
 	 */
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, IPermissionService $permissionService)
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, IPermissionService $permissionService, UserSession $user)
 	{
 		$resourceDtos = array();
 		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
 		
 		foreach ($resources as $resource)
 		{
-			$canAccess = $permissionService->CanAccessResource($resource);
+			$canAccess = $permissionService->CanAccessResource($resource, $user);
 			
 			if (!$includeInaccessibleResources && !$canAccess)
 			{
@@ -42,9 +42,10 @@ interface IResourceService
 	 * @param int $scheduleId
 	 * @param bool $includeInaccessibleResources
 	 * @param IPermissionService $permissionService
+	 * @param UserSession $user
 	 * @return array[int]ResourceDto
 	 */
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, IPermissionService $permissionService);
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, IPermissionService $permissionService, UserSession $user);
 }
 
 class ResourceDto

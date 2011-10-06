@@ -19,6 +19,9 @@ class PermissionValidationRuleTests extends TestBase
 	public function testChecksIfUserHasPermission()
 	{
 		$userId = 98;
+		$user = new FakeUserSession();
+		$user->UserId = $userId;
+		
 		$resourceId = 100;
 		$resourceId1 = 1;
 		$resourceId2 = 2;
@@ -35,13 +38,13 @@ class PermissionValidationRuleTests extends TestBase
 		$reservation->WithResource($resource);
 		$reservation->AddResource($resource1);
 		$reservation->AddResource($resource2);
+		$reservation->WithBookedBy($user);
 		
 		$service = new FakePermissionService(array(true, false));
 		$factory = $this->getMock('IPermissionServiceFactory');
 		
 		$factory->expects($this->once())
 			->method('GetPermissionService')
-			->with($this->equalTo($userId))
 			->will($this->returnValue($service));		
 			
 		$rule = new PermissionValidationRule($factory);
@@ -51,25 +54,37 @@ class PermissionValidationRuleTests extends TestBase
 		
 		$this->assertEquals($rr1, $service->Resources[0]);
 		$this->assertEquals($rr2, $service->Resources[1]);
+		$this->assertEquals($rr2, $service->Resources[1]);
+		$this->assertEquals($user, $service->User);
 	}
 }
 
 class FakePermissionService implements IPermissionService
 {
+	/**
+	 * @var array|IResource[]
+	 */
 	public $Resources;
+
+	/**
+	 * @var UserSession
+	 */
+	public $User;
+	
 	public $ReturnValues;
 	
-	private $_invokationCount = 0;
+	private $_invocationCount = 0;
 	public function __construct($returnValues)
 	{
 		$this->ReturnValues = $returnValues;
 	}
 	
-	public function CanAccessResource(IResource $resource)
+	public function CanAccessResource(IResource $resource, UserSession $user)
 	{
 		$this->Resources[] = $resource;
+		$this->User = $user;
 		
-		return $this->ReturnValues[$this->_invokationCount++];
+		return $this->ReturnValues[$this->_invocationCount++];
 	}
 }
 ?>

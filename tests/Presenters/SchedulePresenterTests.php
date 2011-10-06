@@ -81,7 +81,7 @@ class SchedulePresenterTests extends TestBase
 			
 		$resourceService->expects($this->once())
 			->method('GetScheduleResources')
-			->with($this->equalTo($this->scheduleId), $this->equalTo((bool)$this->showInaccessibleResources), $this->equalTo($permissionService))
+			->with($this->equalTo($this->scheduleId), $this->equalTo((bool)$this->showInaccessibleResources), $this->equalTo($permissionService), $this->equalTo($user))
 			->will($this->returnValue($resources));
 		
 		$pageBuilder->expects($this->once())
