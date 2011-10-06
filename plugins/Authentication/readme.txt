@@ -4,7 +4,7 @@ Creating an Authentication plugin
 
 phpScheduleIt was designed to make authentication pluggable so that new credential stores can be without changes to the phpScheduleIt source code.  phpScheduleIt ships with an LDAP authentication plugin.  This should serve as a good example because it is sufficiently complex and covers a typical scenario.
 
-To create a new Auth plugin:
+To create a new Authentication plugin:
 
 - Create a new folder with the name of your plugin within /plugins/Auth
 - Create a PHP source file with the same folder name within this folder.  For example, /plugins/Auth/Ldap contains Ldap.php
@@ -14,9 +14,9 @@ To create a new Auth plugin:
 	require_once(ROOT_DIR . 'lib/Authentication/namespace.php');
 	class Ldap implements IAuthentication { ... }
 	?>
-- In the phpScheduleIt configuration file, set $conf['settings']['plugins']['Auth'] to the folder name.  For example, $conf['settings']['plugins']['Auth'] = 'Ldap';
+- In the phpScheduleIt configuration file, set $conf['settings']['plugins']['Authentication'] to the folder name.  For example, $conf['settings']['plugins']['Authentication'] = 'Ldap';
 
-This class is intended to decorate an IAuthentication instance, so in most cases you would want to create a new Authorization() class in the constructor if one isn't supplied as a parameter.  This class must support parameterless instantiation.
+This class is intended to decorate an IAuthentication instance, so in most cases you would want to create a new Authentication() class in the constructor if one isn't supplied as a parameter.  This class must support parameterless instantiation.
 
 There are three methods which need to be implemented:
 
@@ -29,4 +29,4 @@ This method is only called if the result of Validate() was true.  Typically, thi
 The Login method should always call to the decorated Authentication classes Login() method.  This ensures that any functionality required by phpScheduleIt is executed.
 
 CookieLogin() accepts $cookieValue as a parameter.
-This method will typically delegate directly to the decorated Authentication class.  The intent of this method is to support persistent signon through cookies.  This can be overridden with a no-op to suppress this behavior.
+This method will typically delegate directly to the decorated Authentication class.  The intent of this method is to support persistent sign-on through cookies.  This can be overridden with a no-op to suppress this behavior.

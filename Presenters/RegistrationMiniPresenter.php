@@ -36,7 +36,7 @@ class RegistrationMiniPresenter
 	{
 		if (is_null($authorization))
 		{
-			$this->_auth = PluginManager::Instance()->LoadAuth();
+			$this->_auth = PluginManager::Instance()->LoadAuthentication();
 		}
 		else
 		{

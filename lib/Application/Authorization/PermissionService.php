@@ -3,7 +3,7 @@ interface IPermissionService
 {
 	/**
 	 * @param IResource $resource
-	 * @param $user UserSession
+	 * @param UserSession $user
 	 * @return bool
 	 */
 	public function CanAccessResource(IResource $resource, UserSession $user);
@@ -28,7 +28,7 @@ class PermissionService implements IPermissionService
 
 	/**
 	 * @param IResource $resource
-	 * @param $user UserSession
+	 * @param UserSession $user
 	 * @return bool
 	 */
 	public function CanAccessResource(IResource $resource, UserSession $user)

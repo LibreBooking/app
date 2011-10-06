@@ -14,9 +14,7 @@ class PermissionServiceFactory implements IPermissionServiceFactory
 	 */
 	public function GetPermissionService()
 	{
-		// TODO: Make this pluggable
-		$resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
-		return new PermissionService($resourcePermissionStore);
+		return PluginManager::Instance()->LoadPermission();
 	}
 }
 ?>

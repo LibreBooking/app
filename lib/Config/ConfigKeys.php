@@ -20,8 +20,10 @@ class ConfigKeys
 	const DATABASE_HOSTSPEC = 'hostspec';
 	const DATABASE_NAME = 'name';
 	
-	const PLUGIN_AUTH = 'Authentication';
-	
+	const PLUGIN_AUTHENTICATION = 'Authentication';
+	const PLUGIN_AUTHORIZATION = 'Authorization';
+	const PLUGIN_PERMISSION = 'Permission';
+
 	const RESERVATION_NOTIFY_CREATED = 'notify.created';
 	const RESERVATION_NOTIFY_UPDATED = 'notify.updated';
 	
