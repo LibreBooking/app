@@ -5,7 +5,7 @@ class Plugins_Auth_Ldap_Suite
 {
 	public static function suite()
     {
-    	return TestHelper::GetSuite('tests/Plugins/Auth/Ldap', array(__CLASS__, "IsIgnored"));
+    	return TestHelper::GetSuite('tests/Plugins/Authentication/Ldap', array(__CLASS__, "IsIgnored"));
     }
     
     public static function IsIgnored($fileName)

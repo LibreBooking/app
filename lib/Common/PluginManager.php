@@ -37,7 +37,7 @@ class PluginManager
 		require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 		
 		$authPlugin = Configuration::Instance()->GetKey(ConfigKeys::PLUGIN_AUTH);
-		$pluginFile = ROOT_DIR . "plugins/Auth/$authPlugin/$authPlugin.php";
+		$pluginFile = ROOT_DIR . "plugins/Authentication/$authPlugin/$authPlugin.php";
 		
 		if (!empty($authPlugin) && file_exists($pluginFile))
 		{					

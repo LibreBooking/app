@@ -14,21 +14,21 @@ class ResourcePermissionStore implements IResourcePermissionStore
 	/**
 	 * @var IScheduleUserRepository
 	 */
-	private $_scheduleUserRepoistory;
+	private $_scheduleUserRepository;
 	
 	/**
 	 * @param IScheduleUserRepository $scheduleUserRepository
 	 */
 	public function __construct(IScheduleUserRepository $scheduleUserRepository)
 	{
-		$this->_scheduleUserRepoistory = $scheduleUserRepository;	
+		$this->_scheduleUserRepository = $scheduleUserRepository;
 	}
 	
 	public function GetPermittedResources($userId)
 	{
 		$permittedResourceIds = array();
 		
-		$user = $this->_scheduleUserRepoistory->GetUser($userId);
+		$user = $this->_scheduleUserRepository->GetUser($userId);
 		
 		$resources = $user->GetAllResources();
 		foreach ($resources as $resource)

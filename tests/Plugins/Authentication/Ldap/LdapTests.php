@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'plugins/Auth/Ldap/namespace.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
 
 class LdapTests extends TestBase 
 {
@@ -231,7 +231,7 @@ class LdapTests extends TestBase
 		$ldapOptions = new LdapOptions();	
 		$options = $ldapOptions->AdLdapOptions();
 		
-		$expectedLdapConfigFile = dirname(ROOT_DIR . 'plugins/Auth/Ldap/PearLdap.php') . '/Ldap.config.php';
+		$expectedLdapConfigFile = dirname(ROOT_DIR . 'plugins/Authentication/Ldap/PearLdap.php') . '/Ldap.config.php';
 		$this->assertNotNull($this->fakeConfig->_RegisteredFiles[LdapConfig::CONFIG_ID]);
 		$this->assertEquals('localhost', $options['host'], 'get the first host in the list');
 		$this->assertEquals(intval($port), $options['port'], 'port should be int');

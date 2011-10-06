@@ -92,5 +92,14 @@ class Server
 		
 		return new NullUserSession();
 	}
+
+	/**
+	 * @param $userSession UserSession
+	 * @return void
+	 */
+	public function SetUserSession($userSession)
+	{
+		$this->SetSession(SessionKeys::USER_SESSION, $userSession);
+	}
 }
 ?>

@@ -20,7 +20,7 @@ class ConfigKeys
 	const DATABASE_HOSTSPEC = 'hostspec';
 	const DATABASE_NAME = 'name';
 	
-	const PLUGIN_AUTH = 'Auth';
+	const PLUGIN_AUTH = 'Authentication';
 	
 	const RESERVATION_NOTIFY_CREATED = 'notify.created';
 	const RESERVATION_NOTIFY_UPDATED = 'notify.updated';

@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'plugins/Auth/Ldap/ILdap.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/ILdap.php');
 
 class FakeLdapWrapper implements ILdap
 {

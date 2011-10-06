@@ -166,7 +166,7 @@ class Authentication implements IAuthentication
 		$isAdmin = ($user->Email == Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$isAdminRole;
 		$user->IsAdmin = $isAdmin;
 	
-		ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, $user);
+		ServiceLocator::GetServer()->SetUserSession($user);
 	}
 	
 	private function SetLoginCookie($userid, $lastLogin)

@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'plugins/Auth/Ldap/LdapOptions.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/LdapOptions.php');
 
 class FakeLdapOptions extends LdapOptions
 {
