@@ -5,7 +5,7 @@ require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 
-class AuthorizationTests extends TestBase
+class AuthenticationTests extends TestBase
 {
 	private $username;
 	private $password;
@@ -14,13 +14,23 @@ class AuthorizationTests extends TestBase
 	private $lname;
 	private $email;
 	private $isAdmin;
-	private $timeOffset;
 	private $timezone;
 	private $lastLogin;
 	private $homepageId;
 
+	/**
+	 * @var Authentication
+	 */
 	private $auth;
+
+	/**
+	 * @var FakePassword
+	 */
 	private $fakePassword;
+
+	/**
+	 * @var FakeMigration
+	 */
 	private $fakeMigration;
 
 	function setup()
@@ -54,7 +64,7 @@ class AuthorizationTests extends TestBase
 		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldPassword));
 		$this->db->SetRows($rows);
 
-		$this->authenticated = $this->auth->Validate($this->username, $this->password);
+		$this->auth->Validate($this->username, $this->password);
 
 		$command = new AuthorizationCommand(strtolower($this->username), $this->password);
 
@@ -72,7 +82,7 @@ class AuthorizationTests extends TestBase
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
 
-		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
+		$this->auth->Login(strtolower($this->username), false);
 
 		$command1 = new LoginCommand(strtolower($this->username));
 		$command2 = new GetUserRoleCommand($this->id);
@@ -101,9 +111,9 @@ class AuthorizationTests extends TestBase
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
 
-		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
+		$this->auth->Login(strtolower($this->username), false);
 
-		$this->assertEquals($user, $this->fakeServer->GetSession(SessionKeys::USER_SESSION));
+		$this->assertEquals($user, $this->fakeServer->GetUserSession());
 	}
 
 	function testUserIsAdminIfEmailMatchesConfigEmail()
@@ -117,9 +127,9 @@ class AuthorizationTests extends TestBase
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
 	
-		$this->authenticated = $this->auth->Login(strtolower($this->username), false);
+		$this->auth->Login(strtolower($this->username), false);
 
-		$user = $this->fakeServer->GetSession(SessionKeys::USER_SESSION);
+		$user = $this->fakeServer->GetUserSession();
 		$this->assertTrue($user->IsAdmin);
 	}
 
@@ -241,6 +251,7 @@ class FakeMigration extends PasswordMigration
 	public $_CreateCalled = false;
 	public $_LastOldPassword;
 	public $_LastNewPassword;
+	public $_LastPlainText;
 
 	public function Create($plaintext, $old, $new)
 	{
