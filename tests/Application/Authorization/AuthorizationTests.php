@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
@@ -40,7 +40,7 @@ class AuthorizationTests extends TestBase
 		$this->fakeMigration = new FakeMigration();
 		$this->fakeMigration->_Password = $this->fakePassword;
 
-		$this->auth = new Authorization();
+		$this->auth = new Authentication();
 		$this->auth->SetMigration($this->fakeMigration);
 		
 		parent::setup();

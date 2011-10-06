@@ -1,12 +1,12 @@
 <?php
 require_once('/Drupal.config.php');
-require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 
-class Drupal implements IAuthorization
+class Drupal implements IAuthentication
 {
     /**
-	 * @var IAuthorization
+	 * @var IAuthentication
 	 */
 	private $authToDecorate;
 	
@@ -29,14 +29,14 @@ class Drupal implements IAuthorization
 	}
 	
 	/**
-	 * @param IAuthorization $authorization Authorization class to decorate
+	 * @param IAuthentication $authorization Authentication class to decorate
 	 */
 	public function __construct($authorization = null)
 	{
 		$this->authToDecorate = $authorization; 
 		if ($authorization == null)
 		{
-			$this->authToDecorate = new Authorization();
+			$this->authToDecorate = new Authentication();
 		}
 	}
 	
@@ -81,7 +81,7 @@ class Drupal implements IAuthorization
         
         //MPinnegar - I assume I don't do anything with persist, that's only used by another wrapper?
         
-		// Always call decorated Authorization so proper phpScheduleIt functionality is executed
+		// Always call decorated Authentication so proper phpScheduleIt functionality is executed
 		$this->authToDecorate->Login($username, $persist);
 	}
 	
@@ -100,7 +100,7 @@ class Drupal implements IAuthorization
 	{
 		// Do anything Drupal-specific
 		  //MPinnegar - I don't think we need to do anything specific to Drupal? It shouldn't care about cookies set by phpScheduleIt
-		// Always call decorated Authorization so proper phpScheduleIt functionality is executed
+		// Always call decorated Authentication so proper phpScheduleIt functionality is executed
 		$this->authToDecorate->CookieLogin(cookieValue);
 	}
 	

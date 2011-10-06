@@ -34,6 +34,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$seriesId = 1000;
 		$ownerFirst = 'f';
 		$ownerLast = 'l';
+		$statusId = ReservationStatus::Pending;
 		
 		$resourceId1 = 88;
 		$resourceName1 = 'r1';
@@ -79,6 +80,7 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::SERIES_ID => $seriesId,
 			ColumnNames::FIRST_NAME => $ownerFirst,
 			ColumnNames::LAST_NAME => $ownerLast,
+			ColumnNames::RESERVATION_STATUS => $statusId
 		);
 		
 		$resourceRows = array(
@@ -121,7 +123,8 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->SeriesId = $seriesId;
 		$expectedView->OwnerFirstName = $ownerFirst;
 		$expectedView->OwnerLastName = $ownerLast;
-		
+		$expectedView->StatusId = $statusId;
+
 		$expectedView->Participants = array(
 			new ReservationUserView($userId2, $fname2, $lname2, $email2, $participantLevel),
 		);

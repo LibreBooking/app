@@ -27,14 +27,14 @@ class PluginManager
 	}
 	
 	/**
-	 * Loads the configured Authorization plugin, if one exists
-	 * If no plugin exists, the default Authorization class is returned
+	 * Loads the configured Authentication plugin, if one exists
+	 * If no plugin exists, the default Authentication class is returned
 	 *
-	 * @return IAuthorization the authorization class to use
+	 * @return IAuthentication the authorization class to use
 	 */
 	public function LoadAuth()
 	{
-		require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+		require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 		
 		$authPlugin = Configuration::Instance()->GetKey(ConfigKeys::PLUGIN_AUTH);
 		$pluginFile = ROOT_DIR . "plugins/Auth/$authPlugin/$authPlugin.php";
@@ -45,7 +45,7 @@ class PluginManager
 			return new $authPlugin();
 		}
 		
-		return new Authorization();
+		return new Authentication();
 	}
 }
 ?>

@@ -21,17 +21,17 @@ class ExistingReservationInitializerTests extends TestBase
 	private $_userId;
 	
 	/**
-	 * @var IScheduleRepository
+	 * @var IScheduleRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $_scheduleRepository;
 	
 	/**
-	 * @var IScheduleUserRepository
+	 * @var IScheduleUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $_scheduleUserRepository;
 
 	/**
-	 * @var IUserRepository
+	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $_userRepository;
 	
@@ -107,6 +107,7 @@ class ExistingReservationInitializerTests extends TestBase
 		$reservationView->RepeatWeekdays = $repeatWeekdays;
 		$reservationView->RepeatMonthlyType = $repeatMonthlyType;
 		$reservationView->RepeatTerminationDate = $repeatTerminationDate;
+		$reservationView->StatusId = ReservationStatus::Pending;
 		
 		$page = $this->getMock('IExistingReservationPage');
 		
@@ -223,6 +224,10 @@ class ExistingReservationInitializerTests extends TestBase
 			->method('IsEditable')
 			->with($this->equalTo($reservationView))
 			->will($this->returnValue($isEditable));
+
+		$page->expects($this->once())
+			->method('SetIsEditable')
+			->with($this->equalTo($isEditable));
 
 		$isParticipating = false;
 		$page->expects($this->once())

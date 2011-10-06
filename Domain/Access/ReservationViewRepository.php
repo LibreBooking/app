@@ -55,7 +55,8 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->SeriesId = $row[ColumnNames::SERIES_ID];	
 			$reservationView->OwnerFirstName = $row[ColumnNames::FIRST_NAME];	
 			$reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];	
-			
+			$reservationView->StatusId = $row[ColumnNames::RESERVATION_STATUS];
+
 			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
 			
 			$reservationView->RepeatType = $repeatConfig->Type;
@@ -237,6 +238,7 @@ class ReservationView
 	public $ReferenceNumber;
 	public $ResourceId;
 	public $ScheduleId;
+	public $StatusId;
 	
 	/**
 	 * @var Date
@@ -256,6 +258,7 @@ class ReservationView
 	public $RepeatInterval;
 	public $RepeatWeekdays;
 	public $RepeatMonthlyType;	
+
 	/**
 	 * @var Date
 	 */
@@ -280,15 +283,29 @@ class ReservationView
 	 * @var ReservationUserView[]
 	 */
 	public $Invitees = array();
-	
+
+	/**
+	 * @return bool
+	 */
 	public function IsRecurring()
 	{
 		return $this->RepeatType != RepeatType::None;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function IsDisplayable()
 	{
 		return true;  // some qualification should probably be made
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function RequiresApproval()
+	{
+		return $this->StatusId == ReservationStatus::Pending;
 	}
 }
 

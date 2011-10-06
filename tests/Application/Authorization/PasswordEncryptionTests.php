@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class PasswordEncryptionTests extends PHPUnit_Framework_TestCase
 {

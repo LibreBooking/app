@@ -61,6 +61,13 @@ interface IExistingReservationPage extends IReservationPage
 	function SetIsEditable($isEditable);
 
 	/**
+	 * @abstract
+	 * @param $isApprovable bool
+	 * @return void
+	 */
+	function SetIsApprovable($isApprovable);
+
+	/**
 	 * @param $amIParticipating
 	 */
 	function SetCurrentUserParticipating($amIParticipating);
@@ -74,6 +81,7 @@ interface IExistingReservationPage extends IReservationPage
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
 {
 	private $IsEditable = false;
+	private $IsApprovable = false;
 	
 	public function __construct()
 	{
@@ -99,6 +107,10 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 
 	protected function GetTemplateName()
 	{
+		if ($this->IsApprovable)
+		{
+			return 'Reservation/approve.tpl';
+		}
 		if ($this->IsEditable)
 		{
 			return 'Reservation/edit.tpl';
@@ -185,6 +197,15 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	function SetCurrentUserInvited($amIInvited)
 	{
 		$this->Set('IAmInvited', $amIInvited);
+	}
+
+	/**
+	 * @param $isApprovable bool
+	 * @return void
+	 */
+	function SetIsApprovable($isApprovable)
+	{
+		$this->IsApprovable = $isApprovable;
 	}
 }
 ?>

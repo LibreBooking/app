@@ -350,13 +350,19 @@ class SmartyPage extends Smarty
 	{
 		/** @var PageInfo $pageInfo */
 		$pageInfo = $params['pageInfo'];
+
+		if (empty($pageInfo->Total))
+		{
+			return '';
+		}
+		
 		$sb = new StringBuilder();
 
-		$sb->Append("<p><br>");
+		$sb->Append('<p><br>');
         $sb->Append($this->Resources->GetString('Rows'));
         $sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} of {$pageInfo->Total}</p><p> ");
 		$sb->Append($this->Resources->GetString('Page'));
-		$sb->Append(": ");
+		$sb->Append(': ');
 		$size = $pageInfo->PageSize;
 		$currentPage = $pageInfo->CurrentPage;
 		

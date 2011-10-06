@@ -15,7 +15,7 @@ class RegistrationPresenter
 	private $_registration;
 
 	/**
-	 * @var IAuthorization
+	 * @var IAuthentication
 	 */
     private $_auth;
 	

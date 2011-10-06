@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
-require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class ManageGroupsActions
 {

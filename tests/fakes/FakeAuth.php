@@ -1,7 +1,7 @@
 <?php
-require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class FakeAuth implements IAuthorization
+class FakeAuth implements IAuthentication
 {
 	public $_LastLogin;
 	public $_LastPassword;

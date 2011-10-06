@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Auth/Ldap/namespace.php');
 require_once(ROOT_DIR . 'plugins/Auth/Ldap/ldap.config.php');
 
@@ -7,10 +7,10 @@ require_once(ROOT_DIR . 'plugins/Auth/Ldap/ldap.config.php');
  * Provides LDAP authentication/synchronization for phpScheduleit
  * @see IAuthorization
  */
-class Ldap implements IAuthorization
+class Ldap implements IAuthentication
 {
 	/**
-	 * @var IAuthorization
+	 * @var IAuthentication
 	 */
 	private $authToDecorate;
 	
@@ -69,7 +69,7 @@ class Ldap implements IAuthorization
 
 	
 	/**
-	 * @param IAuthorization $authorization Authorization class to decorate
+	 * @param IAuthentication $authorization Authentication class to decorate
 	 * @param ILdap $ldapImplementation The actual LDAP implemenation to work against
 	 * @param LdapOptions $ldapOptions Options to use for LDAP configuration
 	 */
@@ -78,7 +78,7 @@ class Ldap implements IAuthorization
 		$this->authToDecorate = $authorization; 
 		if ($authorization == null)
 		{
-			$this->authToDecorate = new Authorization();
+			$this->authToDecorate = new Authentication();
 		}
 
 		$this->options = $ldapOptions;

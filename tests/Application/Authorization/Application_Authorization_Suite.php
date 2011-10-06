@@ -5,7 +5,7 @@ class Application_Authorization_Suite
 {
 	public static function suite()
     {
-    	return TestHelper::GetSuite('tests/Application/Authorization', array(__CLASS__, "IsIgnored"));
+    	return TestHelper::GetSuite('tests/Application/Authentication', array(__CLASS__, "IsIgnored"));
     }
     
     public static function IsIgnored($fileName)

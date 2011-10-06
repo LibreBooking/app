@@ -10,7 +10,7 @@ class LoginPresenter
 	private $_page = null;
 	
 	/**
-	 * @var IAuthorization
+	 * @var IAuthentication
 	 */
 	private $_auth = null;
 	

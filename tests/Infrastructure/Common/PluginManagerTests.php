@@ -26,7 +26,7 @@ class PluginManagerTests extends TestBase
 	{
 		$auth = PluginManager::Instance()->LoadAuth();
 		
-		$this->assertEquals('Authorization', get_class($auth));
+		$this->assertEquals('Authentication', get_class($auth));
 	}
 	
 	public function testLoadsDefaultPluginNotFound()
@@ -34,7 +34,7 @@ class PluginManagerTests extends TestBase
 		$this->fakeConfig->SetKey(ConfigKeys::PLUGIN_AUTH, 'foo');
 		$auth = PluginManager::Instance()->LoadAuth();
 		
-		$this->assertEquals('Authorization', get_class($auth));
+		$this->assertEquals('Authentication', get_class($auth));
 	}
 }
 ?>
