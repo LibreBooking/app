@@ -10,7 +10,8 @@ require_once 'PHPUnit/Autoload.php';
 require_once(ROOT_DIR . 'tests/TestBase.php');
 require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 
-require_once(ROOT_DIR . 'tests/Application/Authentication/Application_Authorization_Suite.php');
+require_once(ROOT_DIR . 'tests/Application/Authorization/Application_Authorization_Suite.php');
+require_once(ROOT_DIR . 'tests/Application/Authentication/Application_Authentication_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Reservation/Application_Reservation_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Schedule/Application_Schedule_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Resource/Application_Resource_Suite.php');

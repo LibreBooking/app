@@ -5,7 +5,7 @@ require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
 
-class Authorization implements IAuthorization 
+class Authentication implements IAuthentication
 {	
 	private $passwordMigration = null;
 	
@@ -24,7 +24,7 @@ class Authorization implements IAuthorization
 		{
 			$this->passwordMigration = new PasswordMigration();
 		}
-		
+
 		return $this->passwordMigration;
 	}
 	

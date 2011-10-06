@@ -1,5 +1,5 @@
 <?php
-interface IAuthorization
+interface IAuthentication
 {
 	/**
 	 * @return bool If user is valid

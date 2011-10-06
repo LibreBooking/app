@@ -1,11 +1,11 @@
 <?php 
 require_once(ROOT_DIR . 'tests/AllTests.php');
 
-class Application_Authorization_Suite
+class Application_Authentication_Suite
 {
 	public static function suite()
     {
-    	return TestHelper::GetSuite('tests/Application/Authorization', array(__CLASS__, "IsIgnored"));
+    	return TestHelper::GetSuite('tests/Application/Authentication', array(__CLASS__, "IsIgnored"));
     }
     
     public static function IsIgnored($fileName)
