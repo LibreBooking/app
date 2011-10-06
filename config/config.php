@@ -15,7 +15,6 @@ $conf['settings']['database']['user'] = 'schedule_user';
 $conf['settings']['database']['password'] = 'password';
 $conf['settings']['database']['hostspec'] = '127.0.0.1';
 $conf['settings']['database']['name'] = 'phpscheduleit2';
-$conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['reservation']['notify.created'] = 'true';
 $conf['settings']['phpmailer']['mailer'] = 'mail';
 $conf['settings']['phpmailer']['smtp.host'] = '';
@@ -27,4 +26,6 @@ $conf['settings']['phpmailer']['smtp.password'] = '';
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images';		// from root directory
 $conf['settings']['image.upload.url'] = 'uploads/images';				// from script.url
 $conf['settings']['cache.templates'] = 'false';
+$conf['settings']['plugins']['Authentication'] = '';
+$conf['settings']['plugins']['Authorization'] = '';
 ?>

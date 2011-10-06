@@ -1,4 +1,5 @@
 <?php
+require_once(ROOT_DIR . 'lib/Application/Schedule/ResourceService.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/ScheduleReservationList.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/IReservationSlot.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/ReservationSlot.php');
