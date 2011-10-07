@@ -48,13 +48,11 @@ class SchedulePresenterTests extends TestBase
 		$scheduleRepository = $this->getMock('IScheduleRepository');
 		$resourceService = $this->getMock('IResourceService');
 		$pageBuilder = $this->getMock('ISchedulePageBuilder');
-		$permissionService = $this->getMock('IPermissionService');
-		$permissionServiceFactory = $this->getMock('IPermissionServiceFactory');
 		$reservationService = $this->getMock('IReservationService');
 		$dailyLayoutFactory = $this->getMock('IDailyLayoutFactory');
 		$dailyLayout = $this->getMock('IDailyLayout');
 				
-		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $permissionServiceFactory, $reservationService, $dailyLayoutFactory);
+		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
 
 		$scheduleRepository->expects($this->once())
 			->method('GetAll')
@@ -73,15 +71,10 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder->expects($this->once())
 			->method('BindSchedules')
 			->with($this->equalTo($page), $this->equalTo($this->schedules), $this->equalTo($this->currentSchedule));
-		
-		$permissionServiceFactory->expects($this->once())
-			->method('GetPermissionService')
-			->with($this->equalTo($userId))
-			->will($this->returnValue($permissionService));
 			
 		$resourceService->expects($this->once())
 			->method('GetScheduleResources')
-			->with($this->equalTo($this->scheduleId), $this->equalTo((bool)$this->showInaccessibleResources), $this->equalTo($permissionService), $this->equalTo($user))
+			->with($this->equalTo($this->scheduleId), $this->equalTo((bool)$this->showInaccessibleResources), $this->equalTo($user))
 			->will($this->returnValue($resources));
 		
 		$pageBuilder->expects($this->once())

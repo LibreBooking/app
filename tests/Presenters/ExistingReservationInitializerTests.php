@@ -13,38 +13,45 @@ class ExistingReservationInitializerTests extends TestBase
 	/**
 	 * @var UserSession
 	 */
-	private $_user;
+	private $user;
 
 	/**
 	 * @var int
 	 */
-	private $_userId;
+	private $userId;
 	
 	/**
 	 * @var IScheduleRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $_scheduleRepository;
-	
-	/**
-	 * @var IScheduleUserRepository|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_scheduleUserRepository;
+	private $scheduleRepository;
 
 	/**
 	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $_userRepository;
+	private $userRepository;
+
+	/**
+	 * @var IResourceService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $resourceService;
+
+	/**
+	 * @var IAuthorizationService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $authorizationService;
 	
 	public function setup()
 	{
 		parent::setup();
 
-		$this->_user = $this->fakeServer->UserSession;
-		$this->_userId = $this->_user->UserId;
+		$this->user = $this->fakeServer->UserSession;
+		$this->userId = $this->user->UserId;
 
-		$this->_scheduleRepository = $this->getMock('IScheduleRepository');
-		$this->_scheduleUserRepository = $this->getMock('IScheduleUserRepository');
-		$this->_userRepository = $this->GetMock('IUserRepository');
+		$this->scheduleRepository = $this->getMock('IScheduleRepository');
+		$this->userRepository = $this->GetMock('IUserRepository');
+
+		$this->resourceService = $this->getMock('IResourceService');
+		$this->authorizationService = $this->getMock('IAuthorizationService');
 	}
 
 	public function teardown()
@@ -55,7 +62,7 @@ class ExistingReservationInitializerTests extends TestBase
 	public function testExistingReservationIsLoadedAndBoundToView()
 	{
 		$referenceNumber = '1234';
-		$timezone = $this->_user->Timezone;
+		$timezone = $this->user->Timezone;
 
 		$reservationId = 928;
 		$resourceId = 10;
@@ -69,7 +76,7 @@ class ExistingReservationInitializerTests extends TestBase
 			new ReservationUserView(11, 'p2', 'l', null, ReservationUserLevel::PARTICIPANT)
 		);
 		$invitees = array (
-			new ReservationUserView($this->_userId, 'i1', 'l', null, ReservationUserLevel::INVITEE),
+			new ReservationUserView($this->userId, 'i1', 'l', null, ReservationUserLevel::INVITEE),
 			new ReservationUserView(110, 'i2', 'l', null, ReservationUserLevel::INVITEE)
 		);
 		$title = 'title';
@@ -115,31 +122,26 @@ class ExistingReservationInitializerTests extends TestBase
 		// users
 		$schedUser = new UserDto($ownerId, $firstName, $lastName, 'email');
 
-		$this->_userRepository->expects($this->once())
+		$this->userRepository->expects($this->once())
 			->method('GetById')
 			->with($ownerId)
 			->will($this->returnValue($schedUser));
 			
 		// resources
-		$schedResource = new ScheduleResource($resourceId, 'resource 1');
-		$otherResource = new ScheduleResource(2, 'resource 2');
+		$schedResource = new ResourceDto($resourceId, 'resource 1');
+		$otherResource = new ResourceDto(2, 'resource 2');
 		$resourceList = array($otherResource, $schedResource);
-		$scheduleUser = $this->getMock('IScheduleUser');
 
-		$this->_scheduleUserRepository->expects($this->once())
-			->method('GetUser')
-			->with($this->equalTo($ownerId))
-			->will($this->returnValue($scheduleUser));
-			
-		$scheduleUser->expects($this->once())
-			->method('GetAllResources')
+		$this->resourceService->expects($this->once())
+			->method('GetScheduleResources')
+			->with($this->equalTo($scheduleId), $this->equalTo(false), $this->equalTo($this->fakeUser))
 			->will($this->returnValue($resourceList));
 			
 		// periods
 		$periods = array(new SchedulePeriod($expectedStartDate->SetTime(new Time(1, 0, 0)), $expectedStartDate->SetTime(new Time(2, 0, 0))));
 		$layout = $this->getMock('IScheduleLayout');
 
-		$this->_scheduleRepository->expects($this->once())
+		$this->scheduleRepository->expects($this->once())
 			->method('GetLayout')
 			->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
 			->will($this->returnValue($layout));
@@ -241,9 +243,10 @@ class ExistingReservationInitializerTests extends TestBase
 		
 		$initializer = new ExistingReservationInitializer(
 			$page, 
-			$this->_scheduleUserRepository, 
-			$this->_scheduleRepository, 
-			$this->_userRepository,
+			$this->scheduleRepository,
+			$this->userRepository,
+			$this->resourceService,
+			$this->authorizationService,
 			$reservationView,
 			$editableCriteria);
 			
@@ -254,10 +257,10 @@ class ExistingReservationInitializerTests extends TestBase
 	{
 		$endsInFuture = Date::Now()->AddDays(1);
 		
-		$criteria = new EditableViewCriteria();
+		$criteria = new EditableViewCriteria($this->authorizationService);
 		
 		$reservationView = new ReservationView();
-		$reservationView->OwnerId = $this->_userId;
+		$reservationView->OwnerId = $this->userId;
 		$reservationView->EndDate = $endsInFuture;
 		
 		$isEditable = $criteria->IsEditable($reservationView);
@@ -269,10 +272,10 @@ class ExistingReservationInitializerTests extends TestBase
 	{
 		$endsInPast = Date::Now()->AddDays(-1);
 		
-		$criteria = new EditableViewCriteria();
+		$criteria = new EditableViewCriteria($this->authorizationService);
 		
 		$reservationView = new ReservationView();
-		$reservationView->OwnerId = $this->_userId;
+		$reservationView->OwnerId = $this->userId;
 		$reservationView->EndDate = $endsInPast;
 		
 		$isEditable = $criteria->IsEditable($reservationView);
@@ -284,7 +287,7 @@ class ExistingReservationInitializerTests extends TestBase
 	{
 		$endsInPast = Date::Now()->AddDays(-1);
 		
-		$criteria = new EditableViewCriteria();
+		$criteria = new EditableViewCriteria($this->authorizationService);
 		
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = 92929;
@@ -298,9 +301,9 @@ class ExistingReservationInitializerTests extends TestBase
 	public function testPageIsEditableIfCurrentUserIsAnAdmin()
 	{
 		$endsInFuture = Date::Now()->AddDays(1);
-		$this->_user->IsAdmin = true;
+		$this->user->IsAdmin = true;
 		
-		$criteria = new EditableViewCriteria();
+		$criteria = new EditableViewCriteria($this->authorizationService);
 		
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = 92929;

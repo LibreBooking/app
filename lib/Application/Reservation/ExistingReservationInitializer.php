@@ -21,17 +21,19 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	
 	/**
 	 * @param IExistingReservationPage $page
-	 * @param IScheduleUserRepository $scheduleUserRepository
 	 * @param IScheduleRepository $scheduleRepository
 	 * @param IUserRepository $userRepository
+	 * @param IResourceService $resourceService
+	 * @param IAuthorizationService $authorizationService
 	 * @param ReservationView $reservationView
 	 * @param IEditableCriteria $editableCriteria defaults to new EditableViewCriteria
 	 */
 	public function __construct(
 		IExistingReservationPage $page, 
-		IScheduleUserRepository $scheduleUserRepository,
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
+		IResourceService $resourceService,
+		IAuthorizationService $authorizationService,
 		ReservationView $reservationView,
 		$editableCriteria = null
 		)
@@ -42,9 +44,10 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 
 		parent::__construct(
 						$page, 
-						$scheduleUserRepository, 
 						$scheduleRepository, 
-						$userRepository);
+						$userRepository,
+						$resourceService,
+						$authorizationService);
 	}
 	
 	public function Initialize()
@@ -66,8 +69,10 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 			$this->page->SetRepeatTerminationDate($this->reservationView->RepeatTerminationDate->ToTimezone($this->GetTimezone()));
 		}
 		$this->page->SetRepeatWeekdays($this->reservationView->RepeatWeekdays);
-		
+
+		throw new Exception('use the authorization service');
 		$this->page->SetIsEditable($this->editableCriteria->IsEditable($this->reservationView));
+		$this->page->SetIsApprovable($this->editableCriteria->IsApprovable($this->reservationView));
 
 		$participants = $this->GetParticipants();
 		$invitees = $this->GetInvitees();

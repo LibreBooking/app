@@ -56,7 +56,7 @@ class PluginManager
 	}
 
 	/**
-	 * Loads the configured PermissionService plugin, if one exists
+	 * Loads the configured Permission plugin, if one exists
 	 * If no plugin exists, the default PermissionService class is returned
 	 *
 	 * @return IPermissionService
@@ -74,6 +74,26 @@ class PluginManager
 
 		$resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
 		return new PermissionService($resourcePermissionStore);
+	}
+
+	/**
+	 * Loads the configured Authorization plugin, if one exists
+	 * If no plugin exists, the default PermissionService class is returned
+	 *
+	 * @return IAuthorizationService
+	 */
+	public function LoadAuthorization()
+	{
+		require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHORIZATION, 'Authorization');
+
+		if (!is_null($plugin))
+		{
+			return $plugin;
+		}
+
+		return new AuthorizationService();
 	}
 
 	private function LoadPlugin($configKey, $pluginDirectory)

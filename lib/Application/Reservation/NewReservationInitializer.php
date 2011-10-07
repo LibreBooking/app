@@ -11,18 +11,20 @@ class NewReservationInitializer extends ReservationInitializerBase
 	
 	public function __construct(
 		INewReservationPage $page, 
-		IScheduleUserRepository $scheduleUserRepository,
 		IScheduleRepository $scheduleRepository,
-		IUserRepository $userRepository
+		IUserRepository $userRepository,
+		IResourceService $resourceService,
+		IAuthorizationService $authorizationService
 		)
 	{
 		$this->_page = $page;
 		
 		parent::__construct(
 						$page, 
-						$scheduleUserRepository, 
 						$scheduleRepository, 
-						$userRepository);
+						$userRepository,
+						$resourceService,
+						$authorizationService);
 	}
 	
 	public function Initialize()
@@ -74,7 +76,11 @@ class NewReservationInitializer extends ReservationInitializerBase
 
 class BindableUserData
 {
+	/**
+	 * @var UserDto
+	 */
 	public $ReservationUser;
+	
 	public $AvailableUsers;
 	
 	public function __construct()
@@ -96,7 +102,14 @@ class BindableUserData
 
 class BindableResourceData
 {
+	/**
+	 * @var ResourceDto
+	 */
 	public $ReservationResource;
+
+	/**
+	 * @var array|ResourceDto[]
+	 */
 	public $AvailableResources;
 	
 	public function __construct()
@@ -104,12 +117,20 @@ class BindableResourceData
 		$this->ReservationResource = new NullScheduleResource();
 		$this->AvailableResources = array();
 	}
-	
+
+	/**
+	 * @param $resource ResourceDto
+	 * @return void
+	 */
 	public function SetReservationResource($resource)
 	{
 		$this->ReservationResource = $resource;
 	}
-	
+
+	/**
+	 * @param $resource ResourceDto
+	 * @return void
+	 */
 	public function AddAvailableResource($resource)
 	{
 		$this->AvailableResources[] = $resource;	

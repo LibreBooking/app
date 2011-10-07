@@ -56,16 +56,16 @@ interface IExistingReservationPage extends IReservationPage
 	function SetIsRecurring($isRecurring);
 	
 	/**
-	 * @param $isEditable bool
+	 * @param $canBeEdited bool
 	 */
-	function SetIsEditable($isEditable);
+	function SetIsEditable($canBeEdited);
 
 	/**
 	 * @abstract
-	 * @param $isApprovable bool
+	 * @param $canBeApproved bool
 	 * @return void
 	 */
-	function SetIsApprovable($isApprovable);
+	function SetIsApprovable($canBeApproved);
 
 	/**
 	 * @param $amIParticipating
@@ -178,9 +178,9 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 		$this->Set('IsRecurring', $isRecurring);
 	}
 	
-	function SetIsEditable($isEditable)
+	function SetIsEditable($canBeEdited)
 	{
-		$this->IsEditable = $isEditable;
+		$this->IsEditable = $canBeEdited;
 	}
 
 	/**
@@ -200,12 +200,12 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	}
 
 	/**
-	 * @param $isApprovable bool
+	 * @param $canBeApproved bool
 	 * @return void
 	 */
-	function SetIsApprovable($isApprovable)
+	function SetIsApprovable($canBeApproved)
 	{
-		$this->IsApprovable = $isApprovable;
+		$this->IsApprovable = $canBeApproved;
 	}
 }
 ?>

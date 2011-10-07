@@ -31,10 +31,7 @@ class SchedulePresenter implements ISchedulePresenter
 	 * @var ISchedulePageBuilder
 	 */
 	private $_builder;
-	/**
-	 * @var IPermissionServiceFactory
-	 */
-	private $_permissionServiceFactory;
+
 	/**
 	 * @var IReservationService
 	 */
@@ -45,7 +42,6 @@ class SchedulePresenter implements ISchedulePresenter
 	 * @param IScheduleRepository $scheduleRepository
 	 * @param IResourceService $resourceService
 	 * @param ISchedulePageBuilder $schedulePageBuilder
-	 * @param IPermissionServiceFactory $permissionServiceFactory
 	 * @param IReservationService $reservationService
 	 * @param IDailyLayoutFactory $dailyLayoutFactory
 	 */
@@ -54,7 +50,6 @@ class SchedulePresenter implements ISchedulePresenter
 		IScheduleRepository $scheduleRepository,
 		IResourceService $resourceService,
 		ISchedulePageBuilder $schedulePageBuilder,
-		IPermissionServiceFactory $permissionServiceFactory,
 		IReservationService $reservationService,
 		IDailyLayoutFactory $dailyLayoutFactory
 	)
@@ -63,7 +58,6 @@ class SchedulePresenter implements ISchedulePresenter
 		$this->_scheduleRepository = $scheduleRepository;
 		$this->_resourceService = $resourceService;
 		$this->_builder = $schedulePageBuilder;
-		$this->_permissionServiceFactory = $permissionServiceFactory;
 		$this->_reservationService = $reservationService;
 		$this->_dailyLayoutFactory = $dailyLayoutFactory;
 	}
@@ -87,8 +81,7 @@ class SchedulePresenter implements ISchedulePresenter
 		
 		$reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone);
 		$dailyLayout = $this->_dailyLayoutFactory->Create($reservationListing, $layout);
-		$permissionService = $this->_permissionServiceFactory->GetPermissionService($user->UserId);
-		$resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources, $permissionService, $user);
+		$resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources, $user);
 
 		$this->_builder->BindLayout($this->_page, $dailyLayout, $scheduleDates);															
 		$this->_builder->BindReservations($this->_page, $resources, $dailyLayout);

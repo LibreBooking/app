@@ -184,8 +184,8 @@ class AddScheduleCommand extends SqlCommand
 	{
 		parent::__construct(Queries::ADD_SCHEDULE);
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_NAME, $scheduleName));	
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ISDEFAULT, $isDefault));	
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_WEEKDAYSTART, $weekdayStart));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ISDEFAULT, (int)$isDefault));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_WEEKDAYSTART, $weekdayStart));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DAYSVISIBLE, $daysVisible));	
 		$this->AddParameter(new Parameter(ParameterNames::LAYOUT_ID, $layoutId));	
 	}
@@ -891,7 +891,7 @@ class UpdateScheduleCommand extends SqlCommand
 		
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_NAME, $name));	
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ISDEFAULT, $isDefault));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ISDEFAULT, (int)$isDefault));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_WEEKDAYSTART, (int)$weekdayStart));	
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DAYSVISIBLE, (int)$daysVisible));
 	}

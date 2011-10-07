@@ -12,38 +12,44 @@ class ReservationInitializationTests extends TestBase
 	/**
 	 * @var UserSession
 	 */
-	private $_user;
+	private $user;
 
 	/**
 	 * @var int
 	 */
-	private $_userId;
+	private $userId;
 	
 	/**
 	 * @var IScheduleRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $_scheduleRepository;
-	
-	/**
-	 * @var IScheduleUserRepository|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $_scheduleUserRepository;
+	private $scheduleRepository;
 
 	/**
 	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $_userRepository;
+	private $userRepository;
 	
+	/**
+	 * @var IResourceService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $resourceService;
+
+	/**
+	 * @var IAuthorizationService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $authorizationService;
+
 	public function setup()
 	{
 		parent::setup();
 
-		$this->_user = $this->fakeServer->UserSession;
-		$this->_userId = $this->_user->UserId;
+		$this->userId = $this->fakeUser->UserId;
 
-		$this->_scheduleRepository = $this->getMock('IScheduleRepository');
-		$this->_scheduleUserRepository = $this->getMock('IScheduleUserRepository');
-		$this->_userRepository = $this->getMock('IUserRepository');
+		$this->scheduleRepository = $this->getMock('IScheduleRepository');
+		$this->userRepository = $this->getMock('IUserRepository');
+		
+		$this->resourceService = $this->getMock('IResourceService');
+		$this->authorizationService = $this->getMock('IAuthorizationService');
 	}
 
 	public function teardown()
@@ -53,7 +59,7 @@ class ReservationInitializationTests extends TestBase
 	
 	public function testInitializeSetsDefaultsForSelectedUserAndResourceAndDate()
 	{
-		$timezone = $this->_user->Timezone;
+		$timezone = $this->fakeUser->Timezone;
 
 		$resourceId = 10;
 		$scheduleId = 100;
@@ -90,29 +96,21 @@ class ReservationInitializationTests extends TestBase
 			
 		// DATA
 		// users
-		$userDto = new UserDto($this->_userId, $firstName, $lastName, 'email');
+		$userDto = new UserDto($this->userId, $firstName, $lastName, 'email');
 
-		$this->_userRepository->expects($this->once())
+		$this->userRepository->expects($this->once())
 			->method('GetById')
-			->with($this->_userId)
+			->with($this->userId)
 			->will($this->returnValue($userDto));
 			
 		// resources
-		$schedResource = new ScheduleResource($resourceId, 'resource 1');
-		$otherResource = new ScheduleResource(2, 'resource 2');
+		$schedResource = new ResourceDto($resourceId, 'resource 1');
+		$otherResource = new ResourceDto(2, 'resource 2');
 		$resourceList = array($otherResource, $schedResource);
-		$scheduleUser = $this->getMock('IScheduleUser');
-		$scheduleUser->expects($this->once())
-			->method('IsGroupAdmin')
-			->will($this->returnValue(true));
-
-		$this->_scheduleUserRepository->expects($this->once())
-			->method('GetUser')
-			->with($this->equalTo($this->_userId))
-			->will($this->returnValue($scheduleUser));
-			
-		$scheduleUser->expects($this->once())
-			->method('GetAllResources')
+		
+		$this->resourceService->expects($this->once())
+			->method('GetScheduleResources')
+			->with($this->equalTo($scheduleId), $this->equalTo(false), $this->equalTo($this->fakeUser))
 			->will($this->returnValue($resourceList));
 			
 		// periods
@@ -128,9 +126,9 @@ class ReservationInitializationTests extends TestBase
 		);
 		$layout = $this->getMock('IScheduleLayout');
 
-		$this->_scheduleRepository->expects($this->once())
+		$this->scheduleRepository->expects($this->once())
 			->method('GetLayout')
-			->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($this->_user->Timezone)))
+			->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
 			->will($this->returnValue($layout));
 			
 		$layout->expects($this->once())
@@ -169,11 +167,17 @@ class ReservationInitializationTests extends TestBase
 			->method('SetReservationResource')
 			->with($this->equalTo($schedResource));	// may want this to be a real object
 
+		$canChangeUser = true;
+		$this->authorizationService->expects($this->once())
+			->method('CanReserveForOthers')
+			->with($this->equalTo($this->fakeUser))
+			->will($this->returnValue($canChangeUser));
+		
 		$page->expects($this->once())
 			->method('SetCanChangeUser')
-			->with($this->equalTo(true));
+			->with($this->equalTo($canChangeUser));
 		
-		$initializer = new NewReservationInitializer($page, $this->_scheduleUserRepository, $this->_scheduleRepository, $this->_userRepository);
+		$initializer = new NewReservationInitializer($page, $this->scheduleRepository, $this->userRepository, $this->resourceService, $this->authorizationService);
 
 		$initializer->Initialize();
 	}

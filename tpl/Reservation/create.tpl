@@ -213,13 +213,13 @@
 
 {foreach from=$AvailableResources item=resource}
 	{assign var='checked' value=''}
-	{if is_array($AdditionalResourceIds) && in_array($resource->Id(), $AdditionalResourceIds)}
+	{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
 		{assign var='checked' value='checked="checked"'}
 	{/if}
 
 	<p>
-		<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id()}" value="{$resource->Id()}" {$checked} />
-		<label for="additionalResource{$resource->Id()}">{$resource->Name()}</label>
+		<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id}" value="{$resource->Id}" {$checked} />
+		<label for="additionalResource{$resource->Id}">{$resource->Name}</label>
 	</p>
 
 {/foreach}

@@ -2,6 +2,9 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
+require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 
 abstract class ReservationInitializerBase implements IReservationInitializer
@@ -12,19 +15,24 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	protected $basePage;
 	
 	/**
-	 * @var IScheduleUserRepository
-	 */
-	protected $scheduleUserRepository;
-	
-	/**
 	 * @var IScheduleRepository
 	 */
 	protected $scheduleRepository;
-	
+
 	/**
 	 * @var IUserRepository
 	 */
 	protected $userRepository;
+
+	/**
+	 * @var IResourceService
+	 */
+	protected $resourceService;
+
+	/**
+	 * @var IAuthorizationService
+	 */
+	protected $authorizationService;
 
 	/**
 	 * @var int
@@ -33,21 +41,24 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 
 	/**
 	 * @param $page IReservationPage
-	 * @param $scheduleUserRepository IScheduleUserRepository
 	 * @param $scheduleRepository IScheduleRepository
 	 * @param $userRepository IUserRepository
+	 * @param $resourceService IResourceService
+	 * @param $authorizationService IAuthorizationService
 	 */
 	public function __construct(
 		$page, 
-		IScheduleUserRepository $scheduleUserRepository,
 		IScheduleRepository $scheduleRepository,
-		IUserRepository $userRepository
+		IUserRepository $userRepository,
+		IResourceService $resourceService,
+		IAuthorizationService $authorizationService
 		)
 	{
 		$this->basePage = $page;
-		$this->scheduleUserRepository = $scheduleUserRepository;
 		$this->scheduleRepository = $scheduleRepository;
 		$this->userRepository = $userRepository;
+		$this->resourceService = $resourceService;
+		$this->authorizationService = $authorizationService;
 	}
 	
 	public function Initialize()
@@ -73,11 +84,13 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$schedulePeriods = $layout->GetLayout($requestedDate);
 		$this->basePage->BindPeriods($schedulePeriods);
 
-		$scheduleUser = $this->scheduleUserRepository->GetUser($userId);
+		$resources = $this->resourceService->GetScheduleResources($requestedScheduleId, false, $currentUser);
+		//$scheduleUser = $this->scheduleUserRepository->GetUser($userId);
 
-		$this->basePage->SetCanChangeUser($currentUser->IsAdmin || $scheduleUser->IsGroupAdmin());
+//	$currentUser->IsAdmin ||
+		$this->basePage->SetCanChangeUser($this->authorizationService->CanReserveForOthers($currentUser));
 		
-		$bindableResourceData = $this->GetBindableResourceData($scheduleUser, $requestedResourceId);
+		$bindableResourceData = $this->GetBindableResourceData($resources, $requestedResourceId);
 		$bindableUserData = $this->GetBindableUserData($userId);
 		$reservationUser = $bindableUserData->ReservationUser;
 		$this->basePage->SetReservationUser($reservationUser);
@@ -196,16 +209,22 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		
 		return $bindableUserData;
 	}
-	
-	private function GetBindableResourceData(IScheduleUser $scheduleUser, $requestedResourceId)
+
+	/**
+	 * @param $resources array|ResourceDto[]
+	 * @param $requestedResourceId int
+	 * @return BindableResourceData
+	 */
+	private function GetBindableResourceData($resources, $requestedResourceId)
 	{
-		$resources = $scheduleUser->GetAllResources();
+		//$resources = $scheduleUser->GetAllResources();
 		
 		$bindableResourceData = new BindableResourceData();
-		
+
+		/** @var $resource ResourceDto */
 		foreach ($resources as $resource)
 		{
-			if ($resource->Id() != $requestedResourceId)
+			if ($resource->Id != $requestedResourceId)
 			{
 				$bindableResourceData->AddAvailableResource($resource);
 			}

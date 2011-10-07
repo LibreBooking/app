@@ -12,7 +12,7 @@ interface IReservationPage extends IPage
 	
 	/**
 	 * Set the resources that can be reserved by this user
-	 * @param $resources array|ScheduleResource[]
+	 * @param $resources array|ResourceDto[]
 	 */
 	function BindAvailableResources($resources);
 
@@ -39,7 +39,7 @@ interface IReservationPage extends IPage
 	function SetReservationUser(UserDto $user);
 	
 	/**
-	 * @param ScheduleResource $resource
+	 * @param ResourceDto $resource
 	 */
 	function SetReservationResource($resource);
 
@@ -182,12 +182,13 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 	}
 	
 	/**
-	 * @see IReservationPage::SetReservationResource()
+	 * @param $resource ResourceDto
+	 * @return void
 	 */
 	public function SetReservationResource($resource)
 	{
-		$this->Set('ResourceName', $resource->Name());
-		$this->Set('ResourceId', $resource->Id());
+		$this->Set('ResourceName', $resource->Name);
+		$this->Set('ResourceId', $resource->Id);
 	}
 	
 	public function SetScheduleId($scheduleId)

@@ -28,4 +28,5 @@ $conf['settings']['image.upload.url'] = 'uploads/images';				// from script.url
 $conf['settings']['cache.templates'] = 'true';
 $conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['plugins']['Authorization'] = '';
+$conf['settings']['plugins']['Permission'] = '';
 ?>

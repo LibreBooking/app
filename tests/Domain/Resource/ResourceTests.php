@@ -47,7 +47,7 @@ class ResourceTests extends TestBase
 		$permissionService = $this->getMock('IPermissionService');
 		$resourceRepository = $this->getMock('IResourceRepository');
 		
-		$resourceService = new ResourceService($resourceRepository);
+		$resourceService = new ResourceService($resourceRepository, $permissionService);
 		
 		$resource1 = new FakeBookableResource(1, 'resource1');
 		$resource2 = new FakeBookableResource(2, 'resource2');
@@ -87,7 +87,7 @@ class ResourceTests extends TestBase
 		
 		$expected = array($resourceDto1, $resourceDto2, $resourceDto3, $resourceDto4);
 		
-		$actual = $resourceService->GetScheduleResources($scheduleId, true, $permissionService, $user);
+		$actual = $resourceService->GetScheduleResources($scheduleId, true, $user);
 
 		$this->assertEquals($expected, $actual);
 	}	
@@ -100,7 +100,7 @@ class ResourceTests extends TestBase
 		$permissionService = $this->getMock('IPermissionService');
 		$resourceRepository = $this->getMock('IResourceRepository');
 		
-		$resourceService = new ResourceService($resourceRepository);
+		$resourceService = new ResourceService($resourceRepository, $permissionService);
 		
 		$resource1 = new FakeBookableResource(1, 'resource1');
 		
@@ -115,7 +115,7 @@ class ResourceTests extends TestBase
 			->will($this->returnValue(false));
 			
 		$includeInaccessibleResources = false;
-		$actual = $resourceService->GetScheduleResources($scheduleId, $includeInaccessibleResources, $permissionService, $user);
+		$actual = $resourceService->GetScheduleResources($scheduleId, $includeInaccessibleResources, $user);
 		
 		$this->assertEquals(0, count($actual));
 	}
