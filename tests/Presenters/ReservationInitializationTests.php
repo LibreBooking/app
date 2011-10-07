@@ -35,9 +35,9 @@ class ReservationInitializationTests extends TestBase
 	private $resourceService;
 
 	/**
-	 * @var IAuthorizationService|PHPUnit_Framework_MockObject_MockObject
+	 * @var IReservationAuthorization|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $authorizationService;
+	private $reservationAuthorization;
 
 	public function setup()
 	{
@@ -49,7 +49,7 @@ class ReservationInitializationTests extends TestBase
 		$this->userRepository = $this->getMock('IUserRepository');
 		
 		$this->resourceService = $this->getMock('IResourceService');
-		$this->authorizationService = $this->getMock('IAuthorizationService');
+		$this->reservationAuthorization = $this->getMock('IReservationAuthorization');
 	}
 
 	public function teardown()
@@ -104,9 +104,9 @@ class ReservationInitializationTests extends TestBase
 			->will($this->returnValue($userDto));
 			
 		// resources
-		$schedResource = new ResourceDto($resourceId, 'resource 1');
+		$bookedResource = new ResourceDto($resourceId, 'resource 1');
 		$otherResource = new ResourceDto(2, 'resource 2');
-		$resourceList = array($otherResource, $schedResource);
+		$resourceList = array($otherResource, $bookedResource);
 		
 		$this->resourceService->expects($this->once())
 			->method('GetScheduleResources')
@@ -165,11 +165,11 @@ class ReservationInitializationTests extends TestBase
 
 		$page->expects($this->once())
 			->method('SetReservationResource')
-			->with($this->equalTo($schedResource));	// may want this to be a real object
+			->with($this->equalTo($bookedResource));	// may want this to be a real object
 
 		$canChangeUser = true;
-		$this->authorizationService->expects($this->once())
-			->method('CanReserveForOthers')
+		$this->reservationAuthorization->expects($this->once())
+			->method('CanChangeUsers')
 			->with($this->equalTo($this->fakeUser))
 			->will($this->returnValue($canChangeUser));
 		
@@ -177,7 +177,7 @@ class ReservationInitializationTests extends TestBase
 			->method('SetCanChangeUser')
 			->with($this->equalTo($canChangeUser));
 		
-		$initializer = new NewReservationInitializer($page, $this->scheduleRepository, $this->userRepository, $this->resourceService, $this->authorizationService);
+		$initializer = new NewReservationInitializer($page, $this->scheduleRepository, $this->userRepository, $this->resourceService, $this->reservationAuthorization);
 
 		$initializer->Initialize();
 	}

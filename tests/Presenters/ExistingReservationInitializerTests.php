@@ -120,17 +120,17 @@ class ExistingReservationInitializerTests extends TestBase
 		
 		// DATA			
 		// users
-		$schedUser = new UserDto($ownerId, $firstName, $lastName, 'email');
+		$reservationUser = new UserDto($ownerId, $firstName, $lastName, 'email');
 
 		$this->userRepository->expects($this->once())
 			->method('GetById')
 			->with($ownerId)
-			->will($this->returnValue($schedUser));
+			->will($this->returnValue($reservationUser));
 			
 		// resources
-		$schedResource = new ResourceDto($resourceId, 'resource 1');
+		$bookedResource = new ResourceDto($resourceId, 'resource 1');
 		$otherResource = new ResourceDto(2, 'resource 2');
-		$resourceList = array($otherResource, $schedResource);
+		$resourceList = array($otherResource, $bookedResource);
 
 		$this->resourceService->expects($this->once())
 			->method('GetScheduleResources')
@@ -165,11 +165,11 @@ class ExistingReservationInitializerTests extends TestBase
 		
 		$page->expects($this->once())
 			->method('SetReservationUser')
-			->with($this->equalTo($schedUser));
+			->with($this->equalTo($reservationUser));
 			
 		$page->expects($this->once())
 			->method('SetReservationResource')
-			->with($this->equalTo($schedResource));
+			->with($this->equalTo($bookedResource));
 		
 		$page->expects($this->once())
 			->method('SetAdditionalResources')
@@ -221,15 +221,25 @@ class ExistingReservationInitializerTests extends TestBase
 		
 		$isEditable = true;
 		
-		$editableCriteria = $this->getMock('IEditableCriteria');
-		$editableCriteria->expects($this->once())
-			->method('IsEditable')
-			->with($this->equalTo($reservationView))
+		$reservationAuthorization = $this->getMock('IReservationAuthorization');
+		$reservationAuthorization->expects($this->once())
+			->method('CanEdit')
+			->with($this->equalTo($reservationView), $this->equalTo($this->user))
 			->will($this->returnValue($isEditable));
 
 		$page->expects($this->once())
 			->method('SetIsEditable')
 			->with($this->equalTo($isEditable));
+
+		$isApprovable = true;
+		$reservationAuthorization->expects($this->once())
+			->method('CanApprove')
+			->with($this->equalTo($reservationView), $this->equalTo($this->user))
+			->will($this->returnValue($isApprovable));
+
+		$page->expects($this->once())
+			->method('SetIsApprovable')
+			->with($this->equalTo($isApprovable));
 
 		$isParticipating = false;
 		$page->expects($this->once())
@@ -246,72 +256,10 @@ class ExistingReservationInitializerTests extends TestBase
 			$this->scheduleRepository,
 			$this->userRepository,
 			$this->resourceService,
-			$this->authorizationService,
 			$reservationView,
-			$editableCriteria);
+			$reservationAuthorization);
 			
 		$initializer->Initialize();
-	}
-	
-	public function testPageIsEditableIfReservationHasNotEnded()
-	{
-		$endsInFuture = Date::Now()->AddDays(1);
-		
-		$criteria = new EditableViewCriteria($this->authorizationService);
-		
-		$reservationView = new ReservationView();
-		$reservationView->OwnerId = $this->userId;
-		$reservationView->EndDate = $endsInFuture;
-		
-		$isEditable = $criteria->IsEditable($reservationView);
-		
-		$this->assertTrue($isEditable);
-	}
-	
-	public function testPageIsNotEditableIfReservationHasEnded()
-	{
-		$endsInPast = Date::Now()->AddDays(-1);
-		
-		$criteria = new EditableViewCriteria($this->authorizationService);
-		
-		$reservationView = new ReservationView();
-		$reservationView->OwnerId = $this->userId;
-		$reservationView->EndDate = $endsInPast;
-		
-		$isEditable = $criteria->IsEditable($reservationView);
-		
-		$this->assertFalse($isEditable);	
-	}
-	
-	public function testPageIsNotEditableIfCurrentUserIsNotTheOwner()
-	{
-		$endsInPast = Date::Now()->AddDays(-1);
-		
-		$criteria = new EditableViewCriteria($this->authorizationService);
-		
-		$reservationView = new ReservationView();
-		$reservationView->OwnerId = 92929;
-		$reservationView->EndDate = $endsInPast;
-		
-		$isEditable = $criteria->IsEditable($reservationView);
-		
-		$this->assertFalse($isEditable);
-	}
-	
-	public function testPageIsEditableIfCurrentUserIsAnAdmin()
-	{
-		$endsInFuture = Date::Now()->AddDays(1);
-		$this->user->IsAdmin = true;
-		
-		$criteria = new EditableViewCriteria($this->authorizationService);
-		
-		$reservationView = new ReservationView();
-		$reservationView->OwnerId = 92929;
-		$reservationView->EndDate = $endsInFuture;
-		
-		$isEditable = $criteria->IsEditable($reservationView);
-		
-		$this->assertTrue($isEditable);
 	}
 }
 ?>

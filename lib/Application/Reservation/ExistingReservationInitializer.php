@@ -15,39 +15,31 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	private $reservationView;
 	
 	/**
-	 * @var IEditableCriteria
-	 */
-	private $editableCriteria;
-	
-	/**
 	 * @param IExistingReservationPage $page
 	 * @param IScheduleRepository $scheduleRepository
 	 * @param IUserRepository $userRepository
 	 * @param IResourceService $resourceService
-	 * @param IAuthorizationService $authorizationService
 	 * @param ReservationView $reservationView
-	 * @param IEditableCriteria $editableCriteria defaults to new EditableViewCriteria
+	 * @param IReservationAuthorization $reservationAuthorization
 	 */
 	public function __construct(
 		IExistingReservationPage $page, 
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
-		IAuthorizationService $authorizationService,
 		ReservationView $reservationView,
-		$editableCriteria = null
+		IReservationAuthorization $reservationAuthorization
 		)
 	{
 		$this->page = $page;
 		$this->reservationView = $reservationView;
-		$this->editableCriteria = ($editableCriteria == null) ? new EditableViewCriteria() : $editableCriteria;
 
 		parent::__construct(
 						$page, 
 						$scheduleRepository, 
 						$userRepository,
 						$resourceService,
-						$authorizationService);
+						$reservationAuthorization);
 	}
 	
 	public function Initialize()
@@ -70,9 +62,8 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		}
 		$this->page->SetRepeatWeekdays($this->reservationView->RepeatWeekdays);
 
-		throw new Exception('use the authorization service');
-		$this->page->SetIsEditable($this->editableCriteria->IsEditable($this->reservationView));
-		$this->page->SetIsApprovable($this->editableCriteria->IsApprovable($this->reservationView));
+		$this->page->SetIsEditable($this->reservationAuthorization->CanEdit($this->reservationView, $this->currentUser));
+		$this->page->SetIsApprovable($this->reservationAuthorization->CanApprove($this->reservationView, $this->currentUser));
 
 		$participants = $this->GetParticipants();
 		$invitees = $this->GetInvitees();
@@ -162,32 +153,6 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 			}
 		}
 		return false;
-	}
-}
-
-interface IEditableCriteria
-{
-	function IsEditable(ReservationView $reservationView);
-}
-
-class EditableViewCriteria implements IEditableCriteria
-{
-	public function IsEditable(ReservationView $reservationView)
-	{
-		$currentUser = ServiceLocator::GetServer()->GetUserSession();
-		
-		if ($currentUser->IsAdmin)
-		{
-			return true;
-		}
-		
-		if ($reservationView->OwnerId != $currentUser->UserId)
-		{
-			return false;
-		}
-		
-		return Date::Now()->LessThan($reservationView->EndDate);
-		
 	}
 }
 ?>

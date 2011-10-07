@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationAuthorization.php');
+
 require_once(ROOT_DIR . 'lib/Application/Reservation/IReservationInitializer.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/IReservationInitializerFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/IReservationPreconditionService.php');

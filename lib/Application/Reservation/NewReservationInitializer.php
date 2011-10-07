@@ -14,7 +14,7 @@ class NewReservationInitializer extends ReservationInitializerBase
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
-		IAuthorizationService $authorizationService
+		IReservationAuthorization $reservationAuthorization
 		)
 	{
 		$this->_page = $page;
@@ -24,7 +24,7 @@ class NewReservationInitializer extends ReservationInitializerBase
 						$scheduleRepository, 
 						$userRepository,
 						$resourceService,
-						$authorizationService);
+						$reservationAuthorization);
 	}
 	
 	public function Initialize()
@@ -71,32 +71,6 @@ class NewReservationInitializer extends ReservationInitializerBase
 	protected function GetTimezone()
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
-	}
-}
-
-class BindableUserData
-{
-	/**
-	 * @var UserDto
-	 */
-	public $ReservationUser;
-	
-	public $AvailableUsers;
-	
-	public function __construct()
-	{
-		$this->ReservationUser = new NullUserDto();
-		$this->AvailableUsers = array();
-	}
-	
-	public function SetReservationUser($user)
-	{
-		$this->ReservationUser = $user;
-	}
-	
-	public function AddAvailableUser($user)
-	{
-		$this->AvailableUsers[] = $user;	
 	}
 }
 
