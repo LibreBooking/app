@@ -36,8 +36,9 @@ class ConfigKeys
 class ConfigSection
 {
 	const DATABASE = 'database';
-	const SCHEDULE = 'schedule';
+	const PLUGINS = 'plugins';
 	const RESERVATION = 'reservation';
+	const SCHEDULE = 'schedule';
 }
 
 ?>

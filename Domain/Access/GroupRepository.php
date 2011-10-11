@@ -162,12 +162,6 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	}
 }
 
-class GroupRoles
-{
-	const User = 1;
-	const Admin = 2;
-}
-
 class GroupUserView
 {
 	public static function Create($row)
@@ -175,24 +169,19 @@ class GroupUserView
 		return new GroupUserView(
 			$row[ColumnNames::USER_ID],
 			$row[ColumnNames::FIRST_NAME],
-			$row[ColumnNames::LAST_NAME],
-			$row[ColumnNames::ROLE_ID]);
+			$row[ColumnNames::LAST_NAME]);
 	}
 
 	public $UserId;
 	public $FirstName;
 	public $LastName;
-	public $IsAdmin;
-	public $RoleId;
 	public $GroupId;
 
-	public function __construct($userId, $firstName, $lastName, $roleId)
+	public function __construct($userId, $firstName, $lastName)
 	{
 		$this->UserId = $userId;
 		$this->FirstName = $firstName;
 		$this->LastName = $lastName;
-		$this->RoleId = $roleId;
-		$this->IsAdmin = $roleId == GroupRoles::Admin;
 	}
 }
 

@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/Ldap/ldap.config.php');
 
 /**
- * Provides LDAP authentication/synchronization for phpScheduleit
+ * Provides LDAP authentication/synchronization for phpScheduleIt
  * @see IAuthorization
  */
 class Ldap implements IAuthentication
@@ -33,8 +33,15 @@ class Ldap implements IAuthentication
 	 * @var PasswordEncryption
 	 */
 	private $_encryption;
-	
+
+	/**
+	 * @var LdapUser
+	 */
 	private $user;
+
+	/**
+	 * @var string
+	 */
 	private $password;
 	
 	public function SetRegistration($registration)
@@ -69,18 +76,14 @@ class Ldap implements IAuthentication
 
 	
 	/**
-	 * @param IAuthentication $authorization Authentication class to decorate
-	 * @param ILdap $ldapImplementation The actual LDAP implemenation to work against
+	 * @param IAuthentication $authentication Authentication class to decorate
+	 * @param ILdap $ldapImplementation The actual LDAP implementation to work against
 	 * @param LdapOptions $ldapOptions Options to use for LDAP configuration
 	 */
-	public function __construct($authorization = null, $ldapImplementation = null, $ldapOptions = null)
+	public function __construct(IAuthentication $authentication, $ldapImplementation = null, $ldapOptions = null)
 	{
-		$this->authToDecorate = $authorization; 
-		if ($authorization == null)
-		{
-			$this->authToDecorate = new Authentication();
-		}
-
+		$this->authToDecorate = $authentication;
+	
 		$this->options = $ldapOptions;
 		if ($ldapOptions == null)
 		{
@@ -93,10 +96,7 @@ class Ldap implements IAuthentication
 			$this->ldap = new AdLdapWrapper($this->options);
 		}
 	}
-	
-	/**
-	 * @see IAuthorization::Validate()
-	 */
+
 	public function Validate($username, $password)
 	{
 		$this->password = $password;
@@ -122,9 +122,6 @@ class Ldap implements IAuthentication
 		return $isValid;
 	}
 	
-	/**
-	 * @see IAuthorization::Login()
-	 */
 	public function Login($username, $persist)
 	{
 		if ($this->LdapUserExists())
@@ -134,34 +131,22 @@ class Ldap implements IAuthentication
 		
 		$this->authToDecorate->Login($username, $persist);
 	}
-	
-	/**
-	 * @see IAuthorization::Logout()
-	 */
+
 	public function Logout(UserSession $user)
 	{
 		$this->authToDecorate->Logout($user);
 	}
 	
-	/**
-	 * @see IAuthorization::CookieLogin()
-	 */
 	public function CookieLogin($cookieValue)
 	{
 		$this->authToDecorate->CookieLogin($cookieValue);
 	}
 	
-	/**
-	 * @see IAuthorization::AreCredentialsKnown()
-	 */
 	public function AreCredentialsKnown()
 	{
 		return false;
 	}
 	
-	/**
-	 * @see IAuthorization::HandleLoginFailure()
-	 */
 	public function HandleLoginFailure(ILoginPage $loginPage)
 	{
 		$this->authToDecorate->HandleLoginFailure($loginPage);
@@ -178,7 +163,7 @@ class Ldap implements IAuthentication
 		$encryption = $this->GetEncryption();
 		
 		$salt = $encryption->Salt();
-		$encrypedPassword = $encryption->Encrypt($this->password, $salt);
+		$encryptedPassword = $encryption->Encrypt($this->password, $salt);
 		
 		$email = $this->user->GetEmail();
 		$fname = $this->user->GetFirstName();
@@ -193,7 +178,7 @@ class Ldap implements IAuthentication
 							$email,
 							$fname,
 							$lname,
-							$encrypedPassword,
+							$encryptedPassword,
 							$salt,
 							$phone,
 							$inst,

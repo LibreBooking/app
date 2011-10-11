@@ -49,7 +49,7 @@ class UserRepositoryTests extends TestBase
 		$loadByIdCommand = new GetUserByIdCommand($userId);
 		$loadEmailPreferencesCommand = new GetUserEmailPreferencesCommand($userId);
 		$loadPermissionsCommand = new GetUserPermissionsCommand($userId);
-		$loadGroupsCommand = new GetUserGroupsCommand($userId);
+		$loadGroupsCommand = new GetUserGroupsCommand($userId, null);
 
 		$userRows = $this->GetUserRow();
 		$emailPrefRows = $this->GetEmailPrefRows();
@@ -76,9 +76,19 @@ class UserRepositoryTests extends TestBase
 		$this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
 		$this->assertContains($permissionsRows[1][ColumnNames::RESOURCE_ID], $user->AllowedResourceIds());
 		$this->assertEquals($row[ColumnNames::PHONE_NUMBER], $user->GetAttribute(UserAttribute::Phone));
-		$group = new GroupUserView($userId, null, null, $groupsRows[1][ColumnNames::ROLE_ID]);
-		$group->GroupId = $groupsRows[1][ColumnNames::GROUP_ID];
-		$this->assertTrue(in_array($group, $user->Groups()));
+
+		$row1 = $groupsRows[0];
+		$row2 = $groupsRows[1];
+		$row3 = $groupsRows[2];
+		
+		$group1 = new UserGroup($row1[ColumnNames::GROUP_ID], $row1[ColumnNames::GROUP_NAME], $row1[ColumnNames::GROUP_ADMIN_GROUP_ID], $row1[ColumnNames::ROLE_LEVEL]);
+		$group1->AddRole($row2[ColumnNames::ROLE_LEVEL]);
+		
+		$group2 = new UserGroup($row3[ColumnNames::GROUP_ID], $row3[ColumnNames::GROUP_NAME], $row3[ColumnNames::GROUP_ADMIN_GROUP_ID], $row3[ColumnNames::ROLE_LEVEL]);
+
+		$groups = $user->Groups();
+		$this->assertEquals(2, count($groups));
+		$this->assertTrue(in_array($group2, $groups));
 	}
 	
 	public function testLoadsUserFromCacheIfAlreadyLoadedFromDatabase()
@@ -285,9 +295,12 @@ class UserRepositoryTests extends TestBase
 
 	private function GetGroupsRows()
 	{
+		$groupId1 = 98017;
+		$groupId2 = 128736;
 		return array (
-			array (ColumnNames::GROUP_ID => 98017, ColumnNames::ROLE_ID => 2),
-			array (ColumnNames::GROUP_ID => 128736, ColumnNames::ROLE_ID => 1),
+			array (ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::GROUP_ADMIN),
+			array (ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::GROUP_ADMIN),
+			array (ColumnNames::GROUP_ID => $groupId2, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => $groupId1, ColumnNames::ROLE_LEVEL => RoleLevel::NONE),
 		);
 	}
 }

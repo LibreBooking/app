@@ -14,9 +14,6 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		$this->_cache = new DomainCache();
 	}
 	
-	/**
-	 * @see IUserRepository:GetAll()
-	 */
 	public function GetAll()
 	{
 		$command = new GetAllUsersByStatusCommand(AccountStatus::ACTIVE);
@@ -181,9 +178,6 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		return $emailPreferences;
 	}
 	
-	/**
-	 * @see IUserRepository::GetResourceAdmins()
-	 */
 	public function GetResourceAdmins($resourceId)
 	{
 		//TODO: Implement for real
@@ -206,21 +200,30 @@ class UserRepository implements IUserRepository, IUserViewRepository
 		return $allowedResourceIds;
 	}
 
-	private function LoadGroups($userId)
+
+	public function LoadGroups($userId, $roleLevel = null)
 	{
 		$groups = array();
 
-		$command = new GetUserGroupsCommand($userId);
+		$command = new GetUserGroupsCommand($userId, $roleLevel);
 		$reader = ServiceLocator::GetDatabase()->Query($command);
 
 		while ($row = $reader->GetRow())
 		{
-			$group = new GroupUserView($userId, null, null, $row[ColumnNames::ROLE_ID]);
-			$group->GroupId = $row[ColumnNames::GROUP_ID];
-			$groups[] = $group;
+			$groupId = $row[ColumnNames::GROUP_ID];
+			if (!array_key_exists($groupId, $groups))
+			{
+				// a group can have many roles which are all returned at once
+				$group = new UserGroup($groupId, $row[ColumnNames::GROUP_NAME], $row[ColumnNames::GROUP_ADMIN_GROUP_ID], $row[ColumnNames::ROLE_LEVEL]);
+				$groups[$groupId] = $group;
+			}
+			else
+			{
+				$groups[$groupId]->AddRole($row[ColumnNames::ROLE_LEVEL]);
+			}
 		}
 
-		return $groups;
+		return array_values($groups);
 	}
 }
 
@@ -259,10 +262,16 @@ interface IUserRepository
 	
 	/**
 	 * @param int $resourceId
-	 * @return UserDto[]
+	 * @return array|UserDto[]
 	 */
 	function GetResourceAdmins($resourceId);
-	
+
+	/**
+	 * @abstract
+	 * @param $userId int
+	 * @return array|UserGroup[]
+	 */
+	function LoadGroups($userId, $roleLevel = null);
 }
 
 interface IUserViewRepository

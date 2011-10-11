@@ -33,6 +33,11 @@ class AuthenticationTests extends TestBase
 	 */
 	private $fakeMigration;
 
+	/**
+	 * @var IAuthorizationService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $authorization;
+
 	function setup()
 	{
 		$this->username = 'LoGInName';
@@ -50,7 +55,8 @@ class AuthenticationTests extends TestBase
 		$this->fakeMigration = new FakeMigration();
 		$this->fakeMigration->_Password = $this->fakePassword;
 
-		$this->auth = new Authentication();
+		$this->authorization = $this->getMock('IAuthorizationService');
+		$this->auth = new Authentication($this->authorization);
 		$this->auth->SetMigration($this->fakeMigration);
 		
 		parent::setup();
@@ -76,40 +82,41 @@ class AuthenticationTests extends TestBase
 		LoginTime::$Now = time();
 
 		$loginRows = $this->GetRows();
-		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 1)
-			);
 		$this->db->SetRow(0, $loginRows);
-		$this->db->SetRow(1, $roleRows);
+
+		$this->authorization->expects($this->once())
+			->method('IsApplicationAdministrator')
+			->with($this->equalTo(new AuthorizationUser($this->id, $this->email)))
+			->will($this->returnValue(false));
 
 		$this->auth->Login(strtolower($this->username), false);
 
-		$command1 = new LoginCommand(strtolower($this->username));
-		$command2 = new GetUserRoleCommand($this->id);
-		$command3 = new UpdateLoginTimeCommand($this->id, LoginTime::Now());
+		$loginCommand = new LoginCommand(strtolower($this->username));
+		$updateLoginTimeCommand = new UpdateLoginTimeCommand($this->id, LoginTime::Now());
 
-		$this->assertEquals(3, count($this->db->_Commands));
-		$this->assertEquals($command1, $this->db->_Commands[0]);
-		$this->assertEquals($command2, $this->db->_Commands[1]);
-		$this->assertEquals($command3, $this->db->_Commands[2]);
+		$this->assertEquals(2, count($this->db->_Commands));
+		$this->assertEquals($loginCommand, $this->db->_Commands[0]);
+		$this->assertEquals($updateLoginTimeCommand, $this->db->_Commands[1]);
 	}
 
 	function testLoginSetsUserInSession()
 	{
+		$isAdmin = true;
 		$user = new UserSession($this->id);
 		$user->FirstName = $this->fname;
 		$user->LastName = $this->lname;
 		$user->Email = $this->email;
-		$user->IsAdmin = true;
+		$user->IsAdmin = $isAdmin;
 		$user->Timezone = $this->timezone;
 		$user->HomepageId = $this->homepageId;
 
 		$loginRows = $this->GetRows();
-		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => RoleLevel::ADMIN)
-			);
 		$this->db->SetRow(0, $loginRows);
-		$this->db->SetRow(1, $roleRows);
+
+		$this->authorization->expects($this->once())
+			->method('IsApplicationAdministrator')
+			->with($this->equalTo(new AuthorizationUser($this->id, $this->email)))
+			->will($this->returnValue($isAdmin));
 
 		$this->auth->Login(strtolower($this->username), false);
 
@@ -122,7 +129,7 @@ class AuthenticationTests extends TestBase
 
 		$loginRows = $this->GetRows();
 		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 0)
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::ROLE_LEVEL => 0)
 			);
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
@@ -165,7 +172,7 @@ class AuthenticationTests extends TestBase
 		LoginTime::$Now = $now;
 		$loginRows = $this->GetRows();
 		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 0)
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::ROLE_LEVEL => 0)
 			);
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
@@ -193,7 +200,7 @@ class AuthenticationTests extends TestBase
 		$this->db->SetRow(0, $rows);
 		$loginRows = $this->GetRows();
 		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::USER_LEVEL => 0)
+			array(ColumnNames::USER_ID => $this->id, ColumnNames::ROLE_LEVEL => 0)
 			);
 		$this->db->SetRow(1, $loginRows);
 		$this->db->SetRow(2, $roleRows);

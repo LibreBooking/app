@@ -500,10 +500,8 @@ class QuotaTests extends TestBase
 
 	public function testDoesNotCheckWhenNoGroupsApply()
 	{
-		$g1 = new GroupUserView(null, null, null, null);
-		$g1->GroupId = 1;
-		$g2 = new GroupUserView(null, null, null, null);
-		$g2->GroupId = 1;
+		$g1 = new UserGroup(1, null);
+		$g2 = new UserGroup(2, null);
 		$this->user->SetGroups(array($g1,$g2));
 		
 		$groupId = 4;

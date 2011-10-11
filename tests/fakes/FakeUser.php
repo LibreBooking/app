@@ -23,7 +23,7 @@ class FakeUser extends User
 	}
 
 	/**
-	 * @param $groups array|GroupUserView[]
+	 * @param $groups array|UserGroup[]
 	 * @return void
 	 */
 	public function SetGroups($groups)

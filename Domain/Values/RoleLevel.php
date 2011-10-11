@@ -3,9 +3,10 @@ class RoleLevel
 {
 	private function __construct()
 	{}
-	
-	const BASIC = 1;
-	const ADMIN = 2;
+
+	const NONE = null;
+	const GROUP_ADMIN = 1;
+	const APPLICATION_ADMIN = 2;
 	
 }
 ?>

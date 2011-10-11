@@ -10,16 +10,16 @@ class AuthorizationServiceTests extends TestBase
 	private $authorizationService;
 
 	/**
-	 * @var IScheduleUserRepository
+	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $scheduleUserRepository;
+	private $userRepository;
 
 	public function setup()
 	{
 		parent::setup();
 
-		$this->scheduleUserRepository = $this->getMock('IScheduleUserRepository');
-		$this->authorizationService = new AuthorizationService($this->scheduleUserRepository);
+		$this->userRepository = $this->getMock('IUserRepository');
+		$this->authorizationService = new AuthorizationService($this->userRepository);
 	}
 
 	public function testCanReserveForOthersIfUserIsAdminOrGroupAdmin()
@@ -29,8 +29,8 @@ class AuthorizationServiceTests extends TestBase
 		$adminUser = new FakeUserSession(true);
 		$user = new FakeUserSession(false, null, $userId);
 
-		$groupAdmin = $this->getMock('IScheduleUser');
-		$normalDude = $this->getMock('IScheduleUser');
+		$groupAdmin = $this->getMock('User');
+		$normalDude = $this->getMock('User');
 
 		$groupAdmin->expects($this->once())
 				->method('IsGroupAdmin')
@@ -40,13 +40,13 @@ class AuthorizationServiceTests extends TestBase
 				->method('IsGroupAdmin')
 				->will($this->returnValue(false));
 
-		$this->scheduleUserRepository->expects($this->at(0))
-				->method('GetUser')
+		$this->userRepository->expects($this->at(0))
+				->method('LoadById')
 				->with($this->equalTo($userId))
 				->will($this->returnValue($groupAdmin));
 
-		$this->scheduleUserRepository->expects($this->at(1))
-				->method('GetUser')
+		$this->userRepository->expects($this->at(1))
+				->method('LoadById')
 				->with($this->equalTo($userId))
 				->will($this->returnValue($normalDude));
 
@@ -62,35 +62,51 @@ class AuthorizationServiceTests extends TestBase
 	public function testCanReserveForAnotherUserIfAdminOrGroupAdmin()
 	{
 		$userId = 123;
-		$reserveFor = 222;
+		$reserveForId = 222;
 
 		$adminUser = new FakeUserSession(true);
 		$user = new FakeUserSession(false, null, $userId);
 
-		$groupAdmin = $this->getMock('IScheduleUser');
-		$normalDude = $this->getMock('IScheduleUser');
+		$groupAdmin = $this->getMock('User');
+		$normalDude = $this->getMock('User');
 
-		$groupAdmin->expects($this->once())
-				->method('IsGroupAdmin')
-				->will($this->returnValue(true));
+		$reserveForUser = $this->getMock('User');
 
-		$normalDude->expects($this->once())
-				->method('IsGroupAdmin')
-				->will($this->returnValue(false));
-
-		$this->scheduleUserRepository->expects($this->at(0))
-				->method('GetUser')
+		// group admin
+		$this->userRepository->expects($this->at(0))
+				->method('LoadById')
 				->with($this->equalTo($userId))
 				->will($this->returnValue($groupAdmin));
 
-		$this->scheduleUserRepository->expects($this->at(1))
-				->method('GetUser')
+		$this->userRepository->expects($this->at(1))
+				->method('LoadById')
+				->with($this->equalTo($reserveForId))
+				->will($this->returnValue($reserveForUser));
+
+		$groupAdmin->expects($this->once())
+				->method('IsAdminFor')
+				->with($this->equalTo($reserveForUser))
+				->will($this->returnValue(true));
+
+		// normal dude
+		$this->userRepository->expects($this->at(2))
+				->method('LoadById')
 				->with($this->equalTo($userId))
 				->will($this->returnValue($normalDude));
 
-		$asAdmin = $this->authorizationService->CanReserveFor($adminUser, $reserveFor);
-		$asGroupAdmin = $this->authorizationService->CanReserveFor($user, $reserveFor);
-		$asNormalDude = $this->authorizationService->CanReserveFor($user, $reserveFor);
+		$this->userRepository->expects($this->at(3))
+				->method('LoadById')
+				->with($this->equalTo($reserveForId))
+				->will($this->returnValue($reserveForUser));
+
+		$normalDude->expects($this->once())
+				->method('IsAdminFor')
+				->with($this->equalTo($reserveForUser))
+				->will($this->returnValue(false));
+
+		$asAdmin = $this->authorizationService->CanReserveFor($adminUser, $reserveForId);
+		$asGroupAdmin = $this->authorizationService->CanReserveFor($user, $reserveForId);
+		$asNormalDude = $this->authorizationService->CanReserveFor($user, $reserveForId);
 
 		$this->assertTrue($asAdmin);
 		$this->assertTrue($asGroupAdmin);
@@ -100,39 +116,75 @@ class AuthorizationServiceTests extends TestBase
 	public function testCanApproveForAnotherUserIfAdminOrGroupAdmin()
 	{
 		$userId = 123;
-		$reserveFor = 222;
+		$reserveForId = 222;
 
 		$adminUser = new FakeUserSession(true);
 		$user = new FakeUserSession(false, null, $userId);
 
-		$groupAdmin = $this->getMock('IScheduleUser');
-		$normalDude = $this->getMock('IScheduleUser');
+		$groupAdmin = $this->getMock('User');
+		$normalDude = $this->getMock('User');
 
-		$groupAdmin->expects($this->once())
-				->method('IsGroupAdmin')
-				->will($this->returnValue(true));
+		$reserveForUser = $this->getMock('User');
 
-		$normalDude->expects($this->once())
-				->method('IsGroupAdmin')
-				->will($this->returnValue(false));
-
-		$this->scheduleUserRepository->expects($this->at(0))
-				->method('GetUser')
+		// group admin
+		$this->userRepository->expects($this->at(0))
+				->method('LoadById')
 				->with($this->equalTo($userId))
 				->will($this->returnValue($groupAdmin));
 
-		$this->scheduleUserRepository->expects($this->at(1))
-				->method('GetUser')
+		$this->userRepository->expects($this->at(1))
+				->method('LoadById')
+				->with($this->equalTo($reserveForId))
+				->will($this->returnValue($reserveForUser));
+
+		$groupAdmin->expects($this->once())
+				->method('IsAdminFor')
+				->with($this->equalTo($reserveForUser))
+				->will($this->returnValue(true));
+
+		// normal dude
+		$this->userRepository->expects($this->at(2))
+				->method('LoadById')
 				->with($this->equalTo($userId))
 				->will($this->returnValue($normalDude));
 
-		$asAdmin = $this->authorizationService->CanApproveFor($adminUser, $reserveFor);
-		$asGroupAdmin = $this->authorizationService->CanApproveFor($user, $reserveFor);
-		$asNormalDude = $this->authorizationService->CanApproveFor($user, $reserveFor);
+		$this->userRepository->expects($this->at(3))
+				->method('LoadById')
+				->with($this->equalTo($reserveForId))
+				->will($this->returnValue($reserveForUser));
+
+		$normalDude->expects($this->once())
+				->method('IsAdminFor')
+				->with($this->equalTo($reserveForUser))
+				->will($this->returnValue(false));
+
+		$asAdmin = $this->authorizationService->CanApproveFor($adminUser, $reserveForId);
+		$asGroupAdmin = $this->authorizationService->CanApproveFor($user, $reserveForId);
+		$asNormalDude = $this->authorizationService->CanApproveFor($user, $reserveForId);
 
 		$this->assertTrue($asAdmin);
 		$this->assertTrue($asGroupAdmin);
 		$this->assertFalse($asNormalDude);
+	}
+	
+	public function testIsApplicationAdministratorIfAtLeastOneGroupCanAdministerApplication()
+	{
+		$userId = 123;
+		$expectedIsAdmin = true;
+
+		$groups = array(
+			new UserGroup(1, null, null, RoleLevel::APPLICATION_ADMIN),
+			new UserGroup(3, null, null, RoleLevel::APPLICATION_ADMIN),
+		);
+
+		$this->userRepository->expects($this->once())
+						->method('LoadGroups')
+						->with($this->equalTo($userId), $this->equalTo(RoleLevel::APPLICATION_ADMIN))
+						->will($this->returnValue($groups));
+
+		$actualIsAdmin = $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser($userId, null));
+
+		$this->assertEquals($expectedIsAdmin, $actualIsAdmin);
 	}
 }
 

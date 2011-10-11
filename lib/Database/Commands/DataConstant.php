@@ -68,8 +68,9 @@ class ParameterNames
 	const RESOURCE_LEVEL_ID = "@resourceLevelId";
 	const RESOURCE_IMAGE_NAME = "@imageName";
 	const RESOURCE_ISACTIVE = "@isActive";
+
 	const ROLE_ID = '@roleid';
-	
+	const ROLE_LEVEL = '@role_level';
 	
 	const SALT = '@salt';
 	const SCHEDULE_ID = '@scheduleid';
@@ -89,6 +90,9 @@ class ParameterNames
 	const USER_ROLE_ID = '@user_roleid';
 	const USER_STATUS_ID = '@user_statusid';
 	const USERNAME = '@username';	
+
+
+	// used?
 	const FIRST_NAME_SETTING = '@fname_setting';
 	const LAST_NAME_SETTING = '@lname_setting';
 	const USERNAME_SETTING = '@username_setting';	
@@ -100,7 +104,7 @@ class ParameterNames
 	const ADDRESS_SETTING = '@address_setting';
 	const PHONE_SETTING = '@phone_setting';
 	const HOMEPAGE_SELECTION_SETTING = '@homepage_setting';
-	const TIMEZONE_SELECTION_SETTING = '@timezone_setting';	
+	const TIMEZONE_SELECTION_SETTING = '@timezone_setting';
 }
 
 class Queries
@@ -176,8 +180,8 @@ class Queries
 
 	const ADD_USER_GROUP =
 		'INSERT INTO
-			user_groups (user_id, group_id, role_id)
-		VALUES (@userid, @groupid, @roleid)';
+			user_groups (user_id, group_id)
+		VALUES (@userid, @groupid)';
 	
 	const ADD_USER_RESOURCE_PERMISSION =
 		'INSERT INTO
@@ -498,7 +502,12 @@ class Queries
 			user_id = @userid';
 
 	const GET_USER_GROUPS =
-		'SELECT * FROM user_groups WHERE user_id = @userid';
+		'SELECT g.*, r.role_level
+		FROM user_groups ug
+		INNER JOIN groups g ON ug.group_id = g.group_id
+		LEFT JOIN group_roles gr ON ug.group_id = gr.group_id
+		LEFT JOIN roles r ON gr.role_id = r.role_id
+		WHERE user_id = @userid AND (@role_level is null OR r.role_level = @role_level)';
 	
 	const GET_USER_RESOURCE_PERMISSIONS = 
 		'SELECT 
@@ -745,7 +754,6 @@ class ColumnNames
 	const OLD_PASSWORD = 'legacypassword';
 	const USER_CREATED = 'date_created';
 	const USER_MODIFIED = 'last_modified';
-	const ROLE_ID = 'role_id';
 	const USER_STATUS_ID = 'status_id';
 	const HOMEPAGE_ID = 'homepageid';
 	const LAST_LOGIN = 'lastlogin';
@@ -758,15 +766,10 @@ class ColumnNames
 
 	// USER_ADDRESSES //
 	const ADDRESS_ID = 'address_id';
-
-	// USER_LONG_QUOTAS //
-	const USER_LQUOTA_ID = 'long_quota_id';
-
-	// USER_DAY_QUOTAS //
-	const USER_DQUOTA_ID = 'day_quota_id';
 	
 	// ROLES //
-	const USER_LEVEL = 'user_level';
+	const ROLE_LEVEL = 'role_level';
+	//const ROLE_ID = 'role_id';
 	
 	// ANNOUNCEMENTS //
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
@@ -774,6 +777,7 @@ class ColumnNames
 	// GROUPS //
 	const GROUP_ID = 'group_id';
 	const GROUP_NAME = 'name';
+	const GROUP_ADMIN_GROUP_ID = 'admin_group_id';
 	
 	// TIME BLOCKS //
 	const BLOCK_LABEL = 'label';

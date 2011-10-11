@@ -59,8 +59,12 @@ DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups` (
  `group_id` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
- PRIMARY KEY (`group_id`)
+ `admin_group_id` smallint(5) unsigned,
+ PRIMARY KEY (`group_id`),
+ FOREIGN KEY (`admin_group_id`)
+	REFERENCES groups(`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
 
 --
 -- Table structure for table `roles`
@@ -70,8 +74,27 @@ DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
  `role_id` tinyint(2) unsigned NOT NULL,
  `name` varchar(85),
- `user_level` tinyint(2) unsigned,
+ `role_level` tinyint(2) unsigned,
  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `user_roles`
+--
+
+DROP TABLE IF EXISTS `group_roles`;
+CREATE TABLE `group_roles` (
+ `group_id` smallint(8) unsigned NOT NULL,
+ `role_id` tinyint(2) unsigned NOT NULL,
+ PRIMARY KEY (`group_id`, `role_id`),
+ INDEX (`group_id`),
+ FOREIGN KEY (`group_id`)
+	REFERENCES groups(`group_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE,
+ INDEX (`role_id`),
+ FOREIGN KEY (`role_id`)
+	REFERENCES roles(`role_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -147,7 +170,6 @@ DROP TABLE IF EXISTS `user_groups`;
 CREATE TABLE `user_groups` (
  `user_id` mediumint(8) unsigned NOT NULL,
  `group_id` smallint(5) unsigned NOT NULL,
- `role_id` smallint(5) unsigned NOT NULL,
  PRIMARY KEY (`group_id`, `user_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
@@ -156,25 +178,6 @@ CREATE TABLE `user_groups` (
  INDEX (`group_id`),
  FOREIGN KEY (`group_id`) 
 	REFERENCES groups(`group_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `user_roles`
---
-
-DROP TABLE IF EXISTS `user_roles`;
-CREATE TABLE `user_roles` (
- `user_id` mediumint(8) unsigned NOT NULL,
- `role_id` tinyint(2) unsigned NOT NULL,
- PRIMARY KEY (`user_id`, `role_id`),
- INDEX (`user_id`),
- FOREIGN KEY (`user_id`) 
-	REFERENCES users(`user_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`role_id`),
- FOREIGN KEY (`role_id`) 
-	REFERENCES roles(`role_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 

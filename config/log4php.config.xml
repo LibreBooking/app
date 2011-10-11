@@ -1,5 +1,5 @@
 <log4php:configuration xmlns:log4php="http://logging.apache.org/log4php/">
-    <appender name="defaultAppender" class="LoggerAppenderDailyFile">
+	<appender name="defaultAppender" class="LoggerAppenderDailyFile">
 		<layout class="LoggerLayoutTTCC" />
 		<param name="file" value="c:\temp\log_%s.log" />
 		<param name="append" value="true" />
@@ -9,11 +9,11 @@
 		<param name="file" value="c:\temp\sql_log_%s.log" />
 		<param name="append" value="true" />
 	</appender>
-    <logger name="default">
+    <logger name="default" additivity="false">
         <level value="DEBUG" />
         <appender_ref ref="defaultAppender" />
     </logger>
-	<logger name="sql">
+	<logger name="sql" additivity="false">
         <level value="DEBUG" />
         <appender_ref ref="sqlAppender" />
     </logger>

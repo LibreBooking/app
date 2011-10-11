@@ -53,8 +53,8 @@ class GroupRepositoryTests extends TestBase
 
 	public function testCanGetGroupUsers()
 	{
-		$rows[] = $this->GetGroupUserRow(1, 'f', 'l', 1);
-		$rows[] = $this->GetGroupUserRow(2, '2f', '2l', 2);
+		$rows[] = $this->GetGroupUserRow(1, 'f', 'l');
+		$rows[] = $this->GetGroupUserRow(2, '2f', '2l');
 		$this->db->SetRow(0, array(array(ColumnNames::TOTAL => 20)));
 		$this->db->SetRow(1, $rows);
 
@@ -78,8 +78,8 @@ class GroupRepositoryTests extends TestBase
 		$rows = array();
 		$rows[] = $this->GetRow($groupId, $groupName);
 		$groupUsers = array(
-			array(ColumnNames::USER_ID => 1, ColumnNames::ROLE_ID => GroupRoles::User),
-			array(ColumnNames::USER_ID => 2, ColumnNames::ROLE_ID => GroupRoles::Admin),
+			array(ColumnNames::USER_ID => 1),
+			array(ColumnNames::USER_ID => 2),
 		);
 		$permissions = array (
 			array(ColumnNames::GROUP_ID => 1, ColumnNames::RESOURCE_ID => 1),
@@ -215,13 +215,12 @@ class GroupRepositoryTests extends TestBase
 		return array(ColumnNames::GROUP_ID => $groupId, ColumnNames::GROUP_NAME => $groupName);
 	}
 
-	private function GetGroupUserRow($userId, $firstName, $lastName, $roleId)
+	private function GetGroupUserRow($userId, $firstName, $lastName)
 	{
 		return array(
 			ColumnNames::USER_ID => $userId,
 			ColumnNames::FIRST_NAME => $firstName,
-			ColumnNames::LAST_NAME => $lastName,
-			ColumnNames::ROLE_ID => $roleId,
+			ColumnNames::LAST_NAME => $lastName
 		);
 	}
 }

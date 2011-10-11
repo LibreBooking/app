@@ -6,18 +6,30 @@ require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
 
 class Authentication implements IAuthentication
-{	
+{
+	/**
+	 * @var PasswordMigration
+	 */
 	private $passwordMigration = null;
+
+	/**
+	 * @var IAuthorizationService
+	 */
+	private $authorizationService;
 	
-	public function __construct()
+	public function __construct(IAuthorizationService $authorizationService)
 	{
+		$this->authorizationService = $authorizationService;
 	}
 	
 	public function SetMigration(PasswordMigration $migration)
 	{
 		$this->passwordMigration = $migration;
 	}
-	
+
+	/**
+	 * @return PasswordMigration
+	 */
 	private function GetMigration()
 	{
 		if (is_null($this->passwordMigration))
@@ -28,9 +40,6 @@ class Authentication implements IAuthentication
 		return $this->passwordMigration;
 	}
 	
-	/**
-	 * @see IAuthorization::Validate()
-	 */
 	public function Validate($username, $password)
 	{
 		Log::Debug('Trying to log in as: %s', $username);
@@ -57,10 +66,7 @@ class Authentication implements IAuthentication
 		Log::Debug('User: %s, was validated: %s', $username, $valid);
 		return $valid;
 	}
-	
-	/**
-	 * @see IAuthorization::Login()
-	 */
+
 	public function Login($username, $persist)
 	{
 		Log::Debug('Logging in with user: %s, persist: %s', $username, $persist);
@@ -72,8 +78,9 @@ class Authentication implements IAuthentication
 		{
 			$loginTime = LoginTime::Now();
 			$userid = $row[ColumnNames::USER_ID];
+			$emailAddress = $row[ColumnNames::EMAIL];
 			
-			$isAdminRole = $this->IsAdminRole($userid);
+			$isAdminRole = $this->IsAdminRole($userid, $emailAddress);
 
 			$updateLoginTimeCommand = new UpdateLoginTimeCommand($userid, $loginTime);
 			ServiceLocator::GetDatabase()->Execute($updateLoginTimeCommand);
@@ -86,10 +93,7 @@ class Authentication implements IAuthentication
 			}
 		}	
 	}
-	
-	/**
-	 * @see IAuthorization::Logout()
-	 */
+
 	public function Logout(UserSession $userSession)
 	{
 		Log::Debug('Logout userId: %s', $userSession->UserId);
@@ -97,10 +101,7 @@ class Authentication implements IAuthentication
 		$this->DeleteLoginCookie($userSession->UserId);
 		ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, null);
 	}
-	
-	/**
-	 * @see IAuthorization::CookieLogin()
-	 */
+
 	public function CookieLogin($cookieValue)
 	{
 		$loginCookie = LoginCookie::FromValue($cookieValue);
@@ -119,39 +120,20 @@ class Authentication implements IAuthentication
 		
 		return $valid;
 	}
-	
-	/**
-	 * @see IAuthorization::AreCredentialsKnown()
-	 */
+
 	public function AreCredentialsKnown()
 	{
 		return false;
 	}
-	
-	/**
-	 * @see IAuthorization::HandleLoginFailure()
-	 */
+
 	public function HandleLoginFailure(ILoginPage $loginPage)
 	{
 		$loginPage->setShowLoginError();
 	}
 	
-	private function IsAdminRole($userid)
+	private function IsAdminRole($userId, $emailAddress)
 	{
-		$isAdminRole = false;
-		
-		$command = new GetUserRoleCommand($userid);
-		$reader = ServiceLocator::GetDatabase()->Query($command);
-		
-		while ($row = $reader->GetRow())
-		{
-			if ($isAdminRole == false)
-			{
-				$isAdminRole = RoleLevel::ADMIN & (int)$row[ColumnNames::USER_LEVEL];
-			}
-		}
-		
-		return $isAdminRole;
+		return $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser($userId, $emailAddress));
 	}
 	
 	private function SetUserSession($row, $isAdminRole)

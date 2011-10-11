@@ -1,13 +1,12 @@
 use phpscheduleit2;
 
+delete from groups where admin_group_id is not null;
 delete from groups;
 alter table groups AUTO_INCREMENT = 1;
 delete from resources;
 alter table resources AUTO_INCREMENT = 1;
 delete from users;
 alter table users AUTO_INCREMENT = 1;
-delete from user_roles;
-alter table user_roles AUTO_INCREMENT = 1;
 delete from layouts;
 alter table layouts AUTO_INCREMENT = 1;
 delete from time_blocks;
@@ -15,7 +14,9 @@ alter table time_blocks AUTO_INCREMENT = 1;
 delete from schedules;
 alter table schedules AUTO_INCREMENT = 1;
 
-insert into groups values (1, 'Default Group'),(2, 'Other Group');
+insert into groups values (1, 'Default Group', NULL),(2, 'Admin Group', 1);
+
+insert into group_roles values (2, 1);
 
 insert into resources (`resource_id`, `name`, `type_id`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time`, `max_notice_time`, `image_name`, `legacyid`) VALUES
 (1, 'Conference Room 1', 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource1.jpg', NULL),
@@ -25,8 +26,9 @@ insert into users (fname, lname, email, username, password, salt, timezone, last
 	values ('Nick', 'Korbel', 'nkorbel@gmail.com', 'nkorbel', '7b6aec38ff9b7650d64d0374194307bdde711425', '3b3dbb9b', 'America/Chicago', '2008-09-16 01:59:00', 1, now(), 'en_us', 'XYZ Org Inc.');
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language, organization)
 	values ('Jan', 'Mattila', 'jan.mattila@helvet.fi', 'admin', '70f3e748c6801656e4aae9dca6ee98ab137d952c', '4a04db87', 'Europe/Helsinki', '2010-03-26 12:44:00', 1, now(), 'en_us', 'ABC Org Inc.');
-insert into user_roles values (1, 2);
-	
+
+insert into user_groups values (1, 2);
+
 insert into layouts values (1, 'America/Chicago');
 
 insert into time_blocks (availability_code, layout_id, start_time, end_time) values

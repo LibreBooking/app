@@ -11,12 +11,9 @@ interface IScheduleUserRepository
 
 class ScheduleUserRepository implements IScheduleUserRepository
 {
-	/**
-	 * @see IScheduleUserRepository::GetUser()
-	 */
 	public function GetUser($userId)
 	{
-		return new ScheduleUser($userId, $this->GetUserPermissions($userId), $this->GetGroupPermissions($userId), $this->GetGroups($userId));
+		return new ScheduleUser($userId, $this->GetUserPermissions($userId), $this->GetGroupPermissions($userId));
 	}
 
 	private function GetUserPermissions($userId)
@@ -67,18 +64,6 @@ class ScheduleUserRepository implements IScheduleUserRepository
 
 		return $groups;
 	}
-
-	private function GetGroups($userId)
-	{
-		$groups = array();
-		$reader = ServiceLocator::GetDatabase()->Query(new GetUserGroupsCommand($userId));
-		while ($row = $reader->GetRow())
-		{
-			$groups[] = array('groupid' => $row[ColumnNames::GROUP_ID], 'roleid' => $row[ColumnNames::ROLE_ID]);
-		}
-
-		return $groups;
-	}
 }
 
 interface IScheduleUser
@@ -87,30 +72,18 @@ interface IScheduleUser
 	 * @return int
 	 */
 	public function Id();
-
-	/**
-	 *
-	 * @return array|ScheduleGroup[]
-	 */
-	function GetGroups();
 	
 	/**
 	 * The resources that the user directly has permission to
 	 * @return array|ScheduleResource[]
 	 */
-	function GetResources();
+	public function GetResources();
 	
 	/**
 	 * The resources that the user or any of their groups has permission to
 	 * @return array|ScheduleResource[]
 	 */
-	function GetAllResources();
-
-	/**
-	 * @abstract
-	 * @return bool
-	 */
-	function IsGroupAdmin();
+	public function GetAllResources();
 }
 
 class ScheduleUser implements IScheduleUser
@@ -118,56 +91,34 @@ class ScheduleUser implements IScheduleUser
 	private $_userId;
 	private $_groupPermissions;
 	private $_resources;
-	private $_isGroupAdmin = false;
 
 	/**
 	 * @param int $userId;
 	 * @param array|ScheduleResource[] $userPermissions
 	 * @param array|ScheduleGroup[] $groupPermissions
-	 * @param array $groups
 	 */
-	public function __construct($userId, $userPermissions, $groupPermissions, $groups)
+	public function __construct($userId, $userPermissions, $groupPermissions)
 	{
 		$this->_userId = $userId;
 		$this->_resources = $userPermissions;
 		$this->_groupPermissions = $groupPermissions;
-
-		foreach ($groups as $group)
-		{
-			if ($group['roleid'] == GroupRoles::Admin)
-			{
-				$this->_isGroupAdmin = true;
-			}
-		}
 	}
 
-	/**
-	 * @see IScheduleUser::Id()
-	 */
 	public function Id()
 	{
 		return $this->_userId;
 	}
 
-	/**
-	 * @see IScheduleUser::GetGroups()
-	 */
-	function GetGroups()
+	private function GetGroupPermissions()
 	{
 		return $this->_groupPermissions;
 	}
 	
-	/**
-	 * @see IScheduleUser::GetResources()
-	 */
-	function GetResources()
+	public function GetResources()
 	{
 		return $this->_resources;
 	}
 	
-	/**
-	 * @see IScheduleUser::GetAllResources()
-	 */
 	public function GetAllResources()
 	{
 		$resources = array();
@@ -177,7 +128,7 @@ class ScheduleUser implements IScheduleUser
 			$resources[] = $resource;
 		}
 		
-		foreach($this->GetGroups() as $group)
+		foreach($this->GetGroupPermissions() as $group)
 		{
 			foreach ($group->GetResources() as $resource)
 			{
@@ -186,14 +137,6 @@ class ScheduleUser implements IScheduleUser
 		}
 		
 		return array_unique($resources);
-	}
-
-	/**
-	 * @return bool
-	 */
-	function IsGroupAdmin()
-	{
-		return $this->_isGroupAdmin;
 	}
 }
 

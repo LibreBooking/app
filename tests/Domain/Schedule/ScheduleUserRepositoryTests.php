@@ -15,11 +15,6 @@ class ScheduleUserRepositoryTests extends TestBase
 	{
 		$userId = 10;
 
-		$groups = array(
-			array(ColumnNames::GROUP_ID => 1, ColumnNames::ROLE_ID => GroupRoles::Admin),
-			array(ColumnNames::GROUP_ID => 2, ColumnNames::ROLE_ID => GroupRoles::User),
-		);
-		
 		$userResourceRoles = array
 		(
 			array(ColumnNames::USER_ID => $userId, ColumnNames::RESOURCE_ID => 1, ColumnNames::RESOURCE_NAME => 'r1'),
@@ -37,21 +32,16 @@ class ScheduleUserRepositoryTests extends TestBase
 		
 		$this->db->SetRow(0, $userResourceRoles);
 		$this->db->SetRow(1, $groupResourceRoles);
-		$this->db->SetRow(2, $groups);
 		
 		$repo = new ScheduleUserRepository();
 		$user = $repo->GetUser($userId);
 		
-		$userGroupsCommand = new GetUserGroupsCommand($userId);
 		$userPermissionsCommand = new GetUserPermissionsCommand($userId);
 		$groupPermissionsCommand = new SelectUserGroupPermissions($userId);
 		
-		$this->assertEquals(3, count($this->db->_Commands));
+		$this->assertEquals(2, count($this->db->_Commands));
 		$this->assertTrue($this->db->ContainsCommand($userPermissionsCommand));
 		$this->assertTrue($this->db->ContainsCommand($groupPermissionsCommand));
-		$this->assertTrue($this->db->ContainsCommand($userGroupsCommand));
-
-		$this->assertTrue($user->IsGroupAdmin());
 	}
 	
 	public function testGetsAllUniqueResourcesForUserAndGroup()

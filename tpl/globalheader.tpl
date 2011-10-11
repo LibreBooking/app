@@ -17,13 +17,15 @@
 	@import url({$Path}css/nav.css);
 	@import url({$Path}css/style.css);
 	@import url({$Path}scripts/css/smoothness/jquery-ui-1.8.7.custom.css);
-	{assign var='CssFileList' value=','|explode:$cssFiles}
-	{foreach from=$CssFileList item=cssFile}
-		@import url({$Path}{$cssFile});
-	{/foreach}
+	{if $cssFiles neq ''}
+		{assign var='CssFileList' value=','|explode:$cssFiles}
+		{foreach from=$CssFileList item=cssFile}
+			@import url({$Path}{$cssFile});
+		{/foreach}
+	{/if}
 </style>
 
-<script type="text/javascript">	
+<script type="text/javascript">
 	 $(document).ready(function() {
 		 initMenu();
 	});

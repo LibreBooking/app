@@ -45,14 +45,16 @@ class PluginManager
 	{
 		require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHENTICATION, 'Authentication');
+		$authentication = new Authentication($this->LoadAuthorization());
+				
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHENTICATION, 'Authentication', $authentication);
 
 		if (!is_null($plugin))
 		{
 			return $plugin;
 		}
-		
-		return new Authentication();
+
+		return $authentication;
 	}
 
 	/**
@@ -65,15 +67,17 @@ class PluginManager
 	{
 		require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
-		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_PERMISSION, 'Permission');
+		$resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
+		$permissionService = new PermissionService($resourcePermissionStore);
+		
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_PERMISSION, 'Permission', $permissionService);
 
 		if (!is_null($plugin))
 		{
 			return $plugin;
 		}
 
-		$resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
-		return new PermissionService($resourcePermissionStore);
+		return $permissionService;
 	}
 
 	/**
@@ -86,25 +90,33 @@ class PluginManager
 	{
 		require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
-		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHORIZATION, 'Authorization');
+		$authorizationService = new AuthorizationService(new UserRepository());
+
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHORIZATION, 'Authorization', $authorizationService);
 
 		if (!is_null($plugin))
 		{
 			return $plugin;
 		}
 
-		return new AuthorizationService();
+		return $authorizationService;
 	}
 
-	private function LoadPlugin($configKey, $pluginDirectory)
+	/**
+	 * @param string $configKey key to use
+	 * @param string $pluginSubDirectory subdirectory name under 'plugins'
+	 * @param mixed $baseImplementation the base implementation of the plugin.  allows decorating
+	 * @return mixed|null plugin implementation
+	 */
+	private function LoadPlugin($configKey, $pluginSubDirectory, $baseImplementation)
 	{
-		$plugin = Configuration::Instance()->GetKey($configKey);
-		$pluginFile = ROOT_DIR . "plugins/$pluginDirectory/$plugin/$plugin.php";
+		$plugin = Configuration::Instance()->GetSectionKey(ConfigSection::PLUGINS, $configKey);
+		$pluginFile = ROOT_DIR . "plugins/$pluginSubDirectory/$plugin/$plugin.php";
 
 		if (!empty($plugin) && file_exists($pluginFile))
 		{
 			require_once($pluginFile);
-			return new $plugin();
+			return new $plugin($baseImplementation);
 		}
 
 		return null;

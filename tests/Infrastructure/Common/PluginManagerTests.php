@@ -15,7 +15,7 @@ class PluginManagerTests extends TestBase
 	
 	public function testCanLoadAuthPluginThatExists()
 	{
-		$this->fakeConfig->SetKey(ConfigKeys::PLUGIN_AUTHENTICATION, 'Ldap');
+		$this->fakeConfig->SetSectionKey(ConfigSection::PLUGINS, ConfigKeys::PLUGIN_AUTHENTICATION, 'Ldap');
 		
 		$auth = PluginManager::Instance()->LoadAuthentication();
 		
@@ -31,7 +31,7 @@ class PluginManagerTests extends TestBase
 	
 	public function testLoadsDefaultPluginNotFound()
 	{
-		$this->fakeConfig->SetKey(ConfigKeys::PLUGIN_AUTHENTICATION, 'foo');
+		$this->fakeConfig->SetSectionKey(ConfigSection::PLUGINS, ConfigKeys::PLUGIN_AUTHENTICATION, 'foo');
 		$auth = PluginManager::Instance()->LoadAuthentication();
 		
 		$this->assertEquals('Authentication', get_class($auth));

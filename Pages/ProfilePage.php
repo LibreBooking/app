@@ -209,6 +209,9 @@ class ProfilePresenter
 		else
 		{
 			$userSession = ServiceLocator::GetServer()->GetUserSession();
+
+			Log::Debug('ProfilePresenter loading user %s', $userSession->UserId);
+
 			$user = $this->userRepository->LoadById($userSession->UserId);
 
 			$this->page->SetUsername($user->Username());

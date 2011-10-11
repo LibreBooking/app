@@ -96,7 +96,7 @@ class AutoCompletePage extends SecurePage
 
 		foreach ($user->Groups() as $group)
 		{
-			if ($group->IsAdmin)
+			if ($group->IsGroupAdmin)
 			{
 				$groupIds[] = $group->GroupId;
 			}

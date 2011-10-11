@@ -198,7 +198,6 @@ class AddUserGroupCommand extends SqlCommand
 		parent::__construct(Queries::ADD_USER_GROUP);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
-		$this->AddParameter(new Parameter(ParameterNames::ROLE_ID, GroupRoles::User));
 	}
 }
 
@@ -260,10 +259,10 @@ class CheckUsernameCommand extends SqlCommand
 
 class CookieLoginCommand extends SqlCommand
 {
-	public function __construct($userid)
+	public function __construct($userId)
 	{
 		parent::__construct(Queries::COOKIE_LOGIN);
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));	
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 	}
 }
 
@@ -566,37 +565,38 @@ class GetScheduleResourcesCommand extends SqlCommand
 
 class GetUserByIdCommand extends SqlCommand
 {
-	public function __construct($userid)
+	public function __construct($userId)
 	{
 		parent::__construct(Queries::GET_USER_BY_ID);		
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 	}
 }
 
 class GetUserEmailPreferencesCommand extends SqlCommand
 {
-	public function __construct($userid)
+	public function __construct($userId)
 	{
 		parent::__construct(Queries::GET_USER_EMAIL_PREFERENCES);		
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 	}
 }
 
 class GetUserGroupsCommand extends SqlCommand
 {
-	public function __construct($userid)
+	public function __construct($userId, $roleLevel)
 	{
 		parent::__construct(Queries::GET_USER_GROUPS);
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, $roleLevel));
 	}
 }
 
 class GetUserRoleCommand extends SqlCommand
 {
-	public function __construct($userid)
+	public function __construct($userId)
 	{
 		parent::__construct(Queries::GET_USER_ROLES);		
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 	}
 }
 
@@ -611,10 +611,10 @@ class LoginCommand extends SqlCommand
 
 class MigratePasswordCommand extends SqlCommand 
 {
-	public function __construct($userid, $password, $salt)
+	public function __construct($userId, $password, $salt)
 	{
 		parent::__construct(Queries::MIGRATE_PASSWORD);
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
 		$this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
 	}
@@ -769,11 +769,11 @@ class UpdateGroupCommand extends SqlCommand
 
 class UpdateLoginTimeCommand extends SqlCommand
 {
-	public function __construct($userid, $lastlogin)
+	public function __construct($userId, $lastlogin)
 	{
 		parent::__construct(Queries::UPDATE_LOGINTIME);
 		$this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastlogin));
-		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userid));	
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 	}
 }
 

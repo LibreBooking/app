@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
+
 class User
 {
 	/**
@@ -76,12 +78,12 @@ class User
 	}
 
 	/**
-	 * @var array|GroupUserView[]
+	 * @var array|UserGroup[]
 	 */
 	protected $groups = array();
 
 	/**
-	 * @return array|GroupUserView[]
+	 * @return array|UserGroup[]
 	 */
 	public function Groups()
 	{
@@ -125,6 +127,8 @@ class User
 	private $attributes = array();
 	private $attributesChanged = false;
 
+	private $isGroupAdmin = false;
+
 	/**
 	 * @param array|int[] $allowedResourceIds
 	 * @return void
@@ -136,11 +140,19 @@ class User
 	}
 
 	/**
-	 * @param array|GroupUserView[] $groups
+	 * @param array|UserGroup[] $groups
 	 * @return void
 	 */
 	public function WithGroups($groups = array())
 	{
+		foreach ($groups as $group)
+		{
+			if ($group->IsGroupAdmin)
+			{
+				$this->isGroupAdmin = true;
+				break;
+			}
+		}
 		$this->groups = $groups;
 	}
 
@@ -289,6 +301,39 @@ class User
 		}
 		return null;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsGroupAdmin()
+	{
+		return $this->isGroupAdmin;
+	}
+
+	public function IsAdminFor(User $user)
+	{
+		$adminIdsForUser = array();
+		foreach ($user->Groups() as $userGroup)
+		{
+			if (!empty($userGroup->AdminGroupId))
+			{
+				$adminIdsForUser[$userGroup->AdminGroupId] = true;
+			}
+		}
+
+		foreach ($this->Groups() as $group)
+		{
+			if ($group->IsGroupAdmin)
+			{
+				if (array_key_exists($group->GroupId, $adminIdsForUser))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 }
 
 class UserAttribute
@@ -296,5 +341,53 @@ class UserAttribute
 	const Phone = 'phone';
 	const Organization = 'organization';
 	const Position = 'position';
+}
+
+class UserGroup
+{
+	/**
+	 * @var int
+	 */
+	public $GroupId;
+
+	/**
+	 * @var string
+	 */
+	public $GroupName;
+
+	/**
+	 * @var int|null
+	 */
+	public $AdminGroupId;
+
+	/**
+	 * @var bool
+	 */
+	public $IsGroupAdmin;
+
+	/**
+	 * @param int $groupId
+	 * @param string $groupName
+	 * @param int|null $adminGroupId
+	 * @param int|RoleLevel $roleLevel defaults to none
+	 */
+	public function __construct($groupId, $groupName, $adminGroupId = null, $roleLevel = RoleLevel::NONE)
+	{
+		$this->GroupId = $groupId;
+		$this->GroupName = $groupName;
+		$this->AdminGroupId = $adminGroupId;
+		$this->IsGroupAdmin = $roleLevel == RoleLevel::GROUP_ADMIN;
+	}
+
+	/**
+	 * @param int|null|RoleLevel $roleLevel
+	 */
+	public function AddRole($roleLevel = null)
+	{
+		if ($roleLevel == RoleLevel::GROUP_ADMIN)
+		{
+			$this->IsGroupAdmin = true;
+		}
+	}
 }
 ?>
