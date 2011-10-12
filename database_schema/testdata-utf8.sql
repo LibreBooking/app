@@ -14,9 +14,10 @@ alter table time_blocks AUTO_INCREMENT = 1;
 delete from schedules;
 alter table schedules AUTO_INCREMENT = 1;
 
-insert into groups values (1, 'Default Group', NULL),(2, 'Admin Group', 1);
+insert into groups values (1, 'Group Administrators', null), (2, 'Application Administrators', null);
 
-insert into group_roles values (2, 1);
+insert into group_roles values (1, 1);
+insert into group_roles values (2, 2);
 
 insert into resources (`resource_id`, `name`, `type_id`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time`, `max_notice_time`, `image_name`, `legacyid`) VALUES
 (1, 'Conference Room 1', 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource1.jpg', NULL),

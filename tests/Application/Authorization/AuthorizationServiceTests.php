@@ -182,9 +182,19 @@ class AuthorizationServiceTests extends TestBase
 						->with($this->equalTo($userId), $this->equalTo(RoleLevel::APPLICATION_ADMIN))
 						->will($this->returnValue($groups));
 
-		$actualIsAdmin = $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser($userId, null));
+		$actualIsAdmin = $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser($userId, 'email'));
 
 		$this->assertEquals($expectedIsAdmin, $actualIsAdmin);
+	}
+
+	public function testIsApplicationAdminIfConfigured()
+	{
+		$email = 'abc123@email.com';
+		
+		$this->fakeConfig->SetKey(ConfigKeys::ADMIN_EMAIL, $email);
+		$actualIsAdmin = $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser(1, $email));
+
+		$this->assertTrue($actualIsAdmin);
 	}
 }
 
