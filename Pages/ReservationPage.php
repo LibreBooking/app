@@ -93,6 +93,11 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 	 * @var PermissionServiceFactory
 	 */
 	protected $permissionServiceFactory;
+
+	/**
+	 * @var ReservationInitializerFactory
+	 */
+	protected $initializationFactory;
 	
 	public function __construct($title = null)
 	{
@@ -102,7 +107,15 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 		$this->scheduleRepository = new ScheduleRepository();
 		$this->userRepository = new UserRepository();
 		$this->permissionServiceFactory = new PermissionServiceFactory();
-		
+
+		$this->initializationFactory = new ReservationInitializerFactory(
+			$this->scheduleUserRepository,
+			$this->scheduleRepository,
+			$this->userRepository,
+			new ResourceService(new ResourceRepository(), $this->permissionServiceFactory->GetPermissionService()),
+			new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService()));
+				
+
 		$this->presenter = $this->GetPresenter();
 	}
 	

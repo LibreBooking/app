@@ -13,6 +13,8 @@
 		<th>{translate key='Group Actions'}</th>
 		<th>{translate key='Group Members'}</th>
 		<th>{translate key='Group Permissions'}</th>
+		<th>{translate key='Group Roles'}</th>
+		<th>{translate key='Group Admin'}</th>
 	</tr>
 {foreach from=$groups item=group}
 	{cycle values='row0,row1' assign=rowCss}
@@ -22,6 +24,8 @@
 		<td align="center"><a href="#" class="update rename">{translate key='Rename'}</a> | <a href="#" class="update delete">{translate key='Delete'}</a></td>
 		<td align="center"><a href="#" class="update members">{translate key='Manage'}</a></td>
 		<td align="center"><a href="#" class="update permissions">{translate key='Change'}</a></td>
+		<td align="center"><a href="#" class="update roles">{translate key='Change'}</a></td>
+		<td align="center"><a href="#" class="update groupAdmin">{translate key='None'}</a></td>
 	</tr>
 {/foreach}
 </table>

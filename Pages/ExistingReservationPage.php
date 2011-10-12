@@ -95,12 +95,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	
 	protected function GetPresenter()
 	{
-		$initializationFactory = new ReservationInitializerFactory($this->scheduleUserRepository, $this->scheduleRepository, $this->userRepository);
 		$preconditionService = new EditReservationPreconditionService($this->permissionServiceFactory);
 		$reservationViewRepository = new ReservationViewRepository();
 		
 		return new EditReservationPresenter($this,
-										 $initializationFactory,
+										 $this->initializationFactory,
 										 $preconditionService,
 										 $reservationViewRepository);
 	}

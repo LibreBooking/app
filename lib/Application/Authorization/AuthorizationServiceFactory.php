@@ -5,7 +5,7 @@ class AuthorizationServiceFactory
 	/**
 	 * @return IAuthorizationService
 	 */
-	public function GetAuthorizationService()
+	public static function GetAuthorizationService()
 	{
 		return PluginManager::Instance()->LoadAuthorization();
 	}

@@ -37,12 +37,11 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 	
 	protected function GetPresenter()
 	{
-		$initializationFactory = new ReservationInitializerFactory($this->scheduleUserRepository, $this->scheduleRepository, $this->userRepository);
 		$preconditionService = new NewReservationPreconditionService($this->permissionServiceFactory);
 		
 		return new ReservationPresenter(
 			$this, 
-			$initializationFactory,
+			$this->initializationFactory,
 			$preconditionService);
 	}
 
