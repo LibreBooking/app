@@ -73,22 +73,6 @@ interface IReservationPage extends IPage
 abstract class ReservationPage extends SecurePage implements IReservationPage
 {
 	protected $presenter;
-	
-	/**
-	 * @var ScheduleUserRepository
-	 */
-	protected $scheduleUserRepository;
-	
-	/**
-	 * @var ScheduleRepository
-	 */
-	protected $scheduleRepository;
-	
-	/**
-	 * @var UserRepository
-	 */
-	protected $userRepository;
-	
 	/**
 	 * @var PermissionServiceFactory
 	 */
@@ -103,15 +87,12 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 	{
 		parent::__construct($title);
 		
-		$this->scheduleUserRepository = new ScheduleUserRepository();
-		$this->scheduleRepository = new ScheduleRepository();
-		$this->userRepository = new UserRepository();
 		$this->permissionServiceFactory = new PermissionServiceFactory();
 
 		$this->initializationFactory = new ReservationInitializerFactory(
-			$this->scheduleUserRepository,
-			$this->scheduleRepository,
-			$this->userRepository,
+			new ScheduleUserRepository(),
+			new ScheduleRepository(),
+			new UserRepository(),
 			new ResourceService(new ResourceRepository(), $this->permissionServiceFactory->GetPermissionService()),
 			new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService()));
 				
