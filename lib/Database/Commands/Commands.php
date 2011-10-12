@@ -375,6 +375,15 @@ class GetAllGroupPermissionsCommand extends SqlCommand
 	}
 }
 
+class GetAllGroupRolesCommand extends SqlCommand
+{
+	public function __construct($groupId)
+	{
+		parent::__construct(Queries::GET_GROUP_ROLES);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+	}
+}
+
 class GetAllQuotasCommand extends SqlCommand
 {
 	public function __construct()

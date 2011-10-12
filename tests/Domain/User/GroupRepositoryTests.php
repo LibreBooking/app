@@ -86,25 +86,34 @@ class GroupRepositoryTests extends TestBase
 			array(ColumnNames::GROUP_ID => 1, ColumnNames::RESOURCE_ID => 2),
 
 		);
+		$roles = array (
+			array(ColumnNames::ROLE_ID => 1, ColumnNames::ROLE_NAME => 'thing', ColumnNames::ROLE_LEVEL => RoleLevel::NONE),
+			array(ColumnNames::ROLE_ID => 2, ColumnNames::ROLE_NAME => 'name', ColumnNames::ROLE_LEVEL => RoleLevel::GROUP_ADMIN),
+
+		);
 		$this->db->SetRow(0, $rows);
 		$this->db->SetRow(1, $groupUsers);
 		$this->db->SetRow(2, $permissions);
+		$this->db->SetRow(3, $roles);
 
 		$group = $this->repository->LoadById($groupId);
 
 		$expectedGroupCommand = new GetGroupByIdCommand($groupId);
 		$expectedUsersCommand = new GetAllGroupUsersCommand($groupId);
 		$expectedPermissionsCommand = new GetAllGroupPermissionsCommand($groupId);
+		$expectedRolesCommand = new GetAllGroupRolesCommand($groupId);
 
 		$this->assertTrue($this->db->ContainsCommand($expectedGroupCommand));
 		$this->assertTrue($this->db->ContainsCommand($expectedUsersCommand));
 		$this->assertTrue($this->db->ContainsCommand($expectedPermissionsCommand));
+		$this->assertTrue($this->db->ContainsCommand($expectedRolesCommand));
 		$this->assertEquals($groupId, $group->Id());
 		$this->assertEquals($groupName, $group->Name());
 		$this->assertTrue($group->HasMember(1));
 		$this->assertFalse($group->HasMember(3));
 		$this->assertTrue(in_array(1, $group->AllowedResourceIds()));
 		$this->assertFalse(in_array(3, $group->AllowedResourceIds()));
+		$this->assertFalse(in_array(new RoleDto(2, 'name', RoleLevel::GROUP_ADMIN), $group->Roles()));
 	}
 
 	public function testUpdateRemovesAllUsersMarked()

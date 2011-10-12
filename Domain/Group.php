@@ -14,6 +14,11 @@ class Group
 	private $addedPermissions = array();
 	private $allowedResourceIds = array();
 
+	private $rolesChanged = false;
+	private $removedRoles = array();
+	private $addedRoles = array();
+	private $roles = array();
+
 	public function __construct($id, $name)
 	{
 		$this->id = $id;
@@ -109,6 +114,16 @@ class Group
 	}
 
 	/**
+	 * @param $role RoleDto
+	 * @return void
+	 */
+	public function WithRole($role)
+	{
+		$this->rolesChanged = false;
+		$this->roles[] = $role;
+	}
+
+	/**
 	 * @param int[] $allowedResourceIds
 	 * @return void
 	 */
@@ -130,7 +145,7 @@ class Group
 
 	/**
 	 * @internal
-	 * @return int[] array of resourceIds
+	 * @return int[]|array of resourceIds
 	 */
 	public function RemovedPermissions()
 	{
@@ -139,7 +154,7 @@ class Group
 
 	/**
 	 * @internal
-	 * @return int[] array of resourceIds
+	 * @return int[]|array of resourceIds
 	 */
 	public function AddedPermissions()
 	{
@@ -147,11 +162,19 @@ class Group
 	}
 
 	/**
-	 * @return array
+	 * @return array|int[]
 	 */
 	public function AllowedResourceIds()
 	{
 		return $this->allowedResourceIds;
+	}
+
+	/**
+	 * @return array|RoleDto
+	 */
+	public function Roles()
+	{
+		return $this->roles;
 	}
 }
 

@@ -3,7 +3,7 @@ require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageGroupsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-interface IManageGroupsPage
+interface IManageGroupsPage extends IActionPage
 {
 	public function GetGroupId();
 
@@ -20,6 +20,13 @@ interface IManageGroupsPage
 	public function GetUserId();
 
 	public function BindResources($resources);
+
+	/**
+	 * @abstract
+	 * @param $roles array|RoleDto[]
+	 * @return void
+	 */
+	public function BindRoles($roles);
 
 	public function GetAllowedResourceIds();
 
@@ -110,6 +117,11 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function GetGroupName()
 	{
 		return $this->GetForm(FormKeys::GROUP_NAME);
+	}
+
+	public function BindRoles($roles)
+	{
+		$this->Set('Roles', $roles);
 	}
 }
 ?>

@@ -14,12 +14,14 @@ function GroupManagement(opts) {
 		deleteDialog: $('#deleteDialog'),
 		renameDialog: $('#renameDialog'),
 		browseUserDialog: $('#allUsers'),
+		rolesDialog: $('#rolesDialog'),
 
 		permissionsForm: $('#permissionsForm'),
 		addUserForm: $('#addUserForm'),
 		removeUserForm: $('#removeUserForm'),
 		renameGroupForm: $('#renameGroupForm'),
 		deleteGroupForm: $('#deleteGroupForm'),
+		rolesForm: $('#rolesForm'),
 
 		addForm: $('#addGroupForm')
 	};
@@ -33,6 +35,7 @@ function GroupManagement(opts) {
 		ConfigureAdminDialog(elements.deleteDialog,  400, 300);
 		ConfigureAdminDialog(elements.renameDialog, 500, 100);
 		ConfigureAdminDialog(elements.browseUserDialog, 500, 100);
+		ConfigureAdminDialog(elements.rolesDialog, 500, 300);
 
 		elements.groupList.delegate('a.update', 'click', function(e) {
 			setActiveId($(this));
@@ -53,6 +56,10 @@ function GroupManagement(opts) {
 
 		elements.groupList.delegate('.delete', 'click', function() {
 			deleteGroup();
+		});
+
+		elements.groupList.delegate('.roles', 'click', function() {
+			changeRoles();
 		});
 
 		elements.browseUserDialog.delegate('.add', 'click', function() {
@@ -217,7 +224,7 @@ function GroupManagement(opts) {
 	var changePermissions = function () {
 		var groupId = getActiveId();
 
-		var data = {dr: 'permissions', gid: groupId};
+		var data = {dr: opts.dataRequests.permissions, gid: groupId};
 		$.get(opts.permissionsUrl, data, function(resourceIds) {
 			elements.permissionsForm.find(':checkbox').attr('checked', false);
 			$.each(resourceIds, function(index, value) {
@@ -232,4 +239,17 @@ function GroupManagement(opts) {
 		elements.deleteDialog.dialog('open');
 	};
 
+	var changeRoles = function() {
+		var groupId = getActiveId();
+
+		var data = {dr: opts.dataRequests.roles, gid: groupId};
+		$.get(opts.rolesUrl, data, function(roleIds) {
+			elements.rolesForm.find(':checkbox').attr('checked', false);
+			$.each(roleIds, function(index, value) {
+				elements.rolesForm.find(':checkbox[value="' + value + '"]').attr('checked', true);
+			});
+
+			elements.rolesDialog.dialog('open');
+		});
+	}
 }

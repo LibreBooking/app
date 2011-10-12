@@ -270,8 +270,9 @@ class Queries
 		WHERE (username = @username OR email = @username)';
 
 	const GET_ALL_GROUPS =
-		'SELECT *
+		'SELECT g.*, admin_group.name as admin_group_name
 		FROM groups g
+		LEFT JOIN groups admin_group ON g.admin_group_id = admin_group.group_id
 		ORDER BY g.name';
 
 	const GET_ALL_GROUP_USERS =
@@ -320,6 +321,12 @@ class Queries
 		FROM group_resource_permissions
 		WHERE group_id = @groupid';
 
+	const GET_GROUP_ROLES =
+		'SELECT r.*
+		FROM roles r
+		INNER JOIN group_roles gr ON r.role_id = gr.role_id
+		WHERE gr.group_id = @groupid';
+	
 	const GET_RESOURCE_BY_ID = 
 		'SELECT *
 		FROM resources r
@@ -769,7 +776,8 @@ class ColumnNames
 	
 	// ROLES //
 	const ROLE_LEVEL = 'role_level';
-	//const ROLE_ID = 'role_id';
+	const ROLE_ID = 'role_id';
+	const ROLE_NAME = 'name';
 	
 	// ANNOUNCEMENTS //
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
@@ -778,6 +786,7 @@ class ColumnNames
 	const GROUP_ID = 'group_id';
 	const GROUP_NAME = 'name';
 	const GROUP_ADMIN_GROUP_ID = 'admin_group_id';
+	const GROUP_ADMIN_GROUP_NAME = 'admin_group_name';
 	
 	// TIME BLOCKS //
 	const BLOCK_LABEL = 'label';

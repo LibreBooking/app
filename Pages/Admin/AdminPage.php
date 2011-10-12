@@ -5,6 +5,9 @@ interface IActionPage extends IPage
 {
 	public function TakingAction();
 	public function GetAction();
+
+	public function RequestingData();
+	public function GetDataRequest();
 }
 
 abstract class AdminPage extends SecurePage implements IActionPage

@@ -25,7 +25,7 @@
 		<td align="center"><a href="#" class="update members">{translate key='Manage'}</a></td>
 		<td align="center"><a href="#" class="update permissions">{translate key='Change'}</a></td>
 		<td align="center"><a href="#" class="update roles">{translate key='Change'}</a></td>
-		<td align="center"><a href="#" class="update groupAdmin">{translate key='None'}</a></td>
+		<td align="center"><a href="#" class="update groupAdmin">{$group->AdminGroupName|default:'Choose...'}</a></td>
 	</tr>
 {/foreach}
 </table>
@@ -78,6 +78,17 @@
 	</form>
 </div>
 
+<div id="rolesDialog" class="dialog">
+	What roles apply to this group?
+	<form id="rolesForm" method="post">
+		<ul>
+		{foreach from=$Roles item=role}
+			<li><label><input type="checkbox" name="roleid[]" value="{$role->Id}" /> {$role->Name}</label></li>
+		{/foreach}
+		</ul>
+	</form>
+</div>
+
 <div class="admin" style="margin-top:30px">
 	<div class="title">
 		Add New Group
@@ -112,16 +123,24 @@
 		renameGroup: '{ManageGroupsActions::RenameGroup}',
 		deleteGroup: '{ManageGroupsActions::DeleteGroup}'
 	};
+
+	var dataRequests = {
+		permissions: 'permissions',
+		roles: 'roles',
+		groupMembers: 'groupMembers'
+	};
 			
 	var groupOptions = {
 		userAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::User}",
 		groupAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::Group}",
 		groupsUrl:  "{$Path}admin/manage_groups.php",
 		permissionsUrl:  '{$smarty.server.SCRIPT_NAME}',
+		rolesUrl:  '{$smarty.server.SCRIPT_NAME}',
 		submitUrl: '{$smarty.server.SCRIPT_NAME}',
 		saveRedirect: '{$smarty.server.SCRIPT_NAME}',
 		selectGroupUrl: '{$smarty.server.SCRIPT_NAME}?gid=',
-		actions: actions
+		actions: actions,
+		dataRequests: dataRequests
 	};
 
 	var groupManagement = new GroupManagement(groupOptions);

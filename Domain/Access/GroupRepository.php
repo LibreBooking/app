@@ -57,6 +57,16 @@ interface IGroupViewRepository
 class GroupRepository implements IGroupRepository, IGroupViewRepository
 {
 	/**
+	 * @var DomainCache
+	 */
+	private $_cache;
+	
+	public function __construct()
+	{
+		$this->_cache = new DomainCache();
+	}
+	
+	/**
 	 * @param int $pageNumber
 	 * @param int $pageSize
 	 * @param string $sortField
@@ -92,6 +102,11 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 
 	public function LoadById($groupId)
 	{
+		if ($this->_cache->Exists($groupId))
+		{
+			return $this->_cache->Get($groupId);
+		}
+		
 		$group = null;
 		$db = ServiceLocator::GetDatabase();
 
@@ -116,6 +131,14 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		}
 		$reader->Free();
 
+		$reader = $db->Query(new GetAllGroupRolesCommand($groupId));
+		while ($row = $reader->GetRow())
+		{
+			$group->WithRole(new RoleDto($row[ColumnNames::ROLE_ID], $row[ColumnNames::ROLE_NAME], $row[ColumnNames::ROLE_LEVEL]));
+		}
+		$reader->Free();
+
+		$this->_cache->Add($groupId, $group);
 		return $group;
 	}
 
@@ -189,16 +212,59 @@ class GroupItemView
 {
 	public static function Create($row)
 	{
-		return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME]);
+		return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME], $row[ColumnNames::GROUP_ADMIN_GROUP_NAME]);
 	}
 
+	/**
+	 * @var int
+	 */
 	public $Id;
+
+	/**
+	 * @var string
+	 */
 	public $Name;
+
+	/**
+	 * @var string
+	 */
+	public $AdminGroupName;
 	
-	public function __construct($groupId, $groupName)
+	public function __construct($groupId, $groupName, $adminGroupName = null)
 	{
 		$this->Id = $groupId;
 		$this->Name = $groupName;
+		$this->AdminGroupName = $adminGroupName;
+	}
+}
+
+class RoleDto
+{
+	/**
+	 * @var int
+	 */
+	public $Id;
+
+	/**
+	 * @var string
+	 */
+	public $Name;
+
+	/**
+	 * @var int|RoleLevel
+	 */
+	public $Level;
+
+	/**
+	 * @param $id int
+	 * @param $name string
+	 * @param $level RoleLevel|int
+	 */
+	public function __construct($id, $name, $level)
+	{
+	    $this->Id = $id;
+		$this->Name = $name;
+		$this->Level = $level;
 	}
 }
 

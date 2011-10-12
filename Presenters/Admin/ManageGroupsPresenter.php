@@ -56,7 +56,8 @@ class ManageGroupsPresenter extends ActionPresenter
 
 	public function PageLoad()
 	{
-		if ($this->page->GetGroupId() != null) {
+		if ($this->page->GetGroupId() != null)
+		{
 			$groupList = $this->groupRepository->GetList(1, 1, null, null, new SqlFilterEquals(ColumnNames::GROUP_ID, $this->page->GeTGroupId()));
 		}
 		else
@@ -68,6 +69,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->page->BindPageInfo($groupList->PageInfo());
 
 		$this->page->BindResources($this->resourceRepository->GetResourceList());
+		$this->page->BindRoles(array(new RoleDto(1,'Group Admin', RoleLevel::GROUP_ADMIN), new RoleDto(2, 'Application Admin', RoleLevel::APPLICATION_ADMIN)));
 	}
 
 
@@ -86,17 +88,21 @@ class ManageGroupsPresenter extends ActionPresenter
 	public function ProcessDataRequest()
 	{
 		$response = '';
-		if ($this->page->GetDataRequest() == 'groupMembers')
+		$request = $this->page->GetDataRequest();
+		switch($request)
 		{
-			$users = $this->groupRepository->GetUsersInGroup($this->page->GetGroupId(), 1, 100);
-
-			$response = new UserGroupResults($users->Results(), $users->PageInfo()->Total);
+			case 'groupMembers' :
+				$users = $this->groupRepository->GetUsersInGroup($this->page->GetGroupId(), 1, 100);
+				$response = new UserGroupResults($users->Results(), $users->PageInfo()->Total);
+				break;
+			case 'permissions' :
+				$response = $this->GetGroupResourcePermissions();
+				break;
+			case 'roles' :
+				$response = $this->GetGroupRoles();
+				break;
 		}
-		else
-		{
-			$response = $this->GetGroupResourcePermissions();
-		}
-
+	
 		$this->page->SetJsonResponse($response);
 	}
 
@@ -162,6 +168,27 @@ class ManageGroupsPresenter extends ActionPresenter
 
 		$group = $this->groupRepository->LoadById($groupId);
 		$this->groupRepository->Remove($group);
+	}
+
+	/**
+	 * @return array|int[]
+	 */
+	private function GetGroupRoles()
+	{
+		$groupId = $this->page->GetGroupId();
+		$group = $this->groupRepository->LoadById($groupId);
+
+		$roles = $group->Roles();
+
+		$ids = array();
+
+		/** @var $role RoleDto */
+		foreach ($roles as $role)
+		{
+			$ids[] = $role->Id;
+		}
+
+		return $ids;
 	}
 }
 
