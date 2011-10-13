@@ -194,6 +194,11 @@ class en_us extends Language
 		$strings['FindUser'] = 'Find User';
 		$strings['Created'] = 'Created';
 		$strings['LastModified'] = 'Last Modified';
+		$strings['GroupName'] = 'Group Name';
+		$strings['GroupMembers'] = 'Group Members';
+		$strings['GroupRoles'] = 'Group Roles';
+		$strings['GroupAdmin'] = 'Group Administrator';
+		$strings['Actions'] = 'Actions';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';

@@ -18,7 +18,8 @@ class ParameterNames
 	const FIRST_NAME = '@fname';
 	
 	const GROUP_ID = '@groupid';
-	const GROUP_NAME = '@groupName';
+	const GROUP_NAME = '@groupname';
+	const GROUP_ADMIN_ID = '@admin_group_id';
 		
 	const HOMEPAGE_ID = '@homepageid';
 
@@ -131,7 +132,7 @@ class Queries
 	const ADD_GROUP =
 		'INSERT INTO
 			groups (name)
-		VALUES (@groupName)';
+		VALUES (@groupname)';
 	
 	const ADD_GROUP_RESOURCE_PERMISSION =
 		'INSERT INTO
@@ -283,6 +284,14 @@ class Queries
 		LEFT JOIN groups admin_group ON g.admin_group_id = admin_group.group_id
 		ORDER BY g.name';
 
+	const GET_ALL_GROUPS_BY_ROLE =
+		'SELECT g.*
+		FROM groups g
+		INNER JOIN group_roles gr ON g.group_id = gr.group_id
+		INNER JOIN roles r ON r.role_id = gr.role_id
+		WHERE r.role_level = @role_level
+		ORDER BY g.name';
+	
 	const GET_ALL_GROUP_USERS =
 		'SELECT *
 		FROM users u
@@ -620,7 +629,7 @@ class Queries
 
 	const UPDATE_GROUP =
 		'UPDATE groups
-		SET name = @groupName
+		SET name = @groupname, admin_group_id = @admin_group_id
 		WHERE group_id = @groupid';
 
 	const UPDATE_LOGINTIME = 

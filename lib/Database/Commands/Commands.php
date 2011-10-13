@@ -376,6 +376,18 @@ class GetAllGroupsCommand extends SqlCommand
 	}
 }
 
+class GetAllGroupsByRoleCommand extends SqlCommand
+{
+	/**
+	 * @param $roleLevel int|RoleLevel
+	 */
+	public function __construct($roleLevel)
+	{
+		parent::__construct(Queries::GET_ALL_GROUPS_BY_ROLE);
+		$this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, $roleLevel));
+	}
+}
+
 class GetAllGroupUsersCommand extends SqlCommand
 {
 	public function __construct($groupId)
@@ -787,11 +799,12 @@ class SetDefaultScheduleCommand extends SqlCommand
 
 class UpdateGroupCommand extends SqlCommand
 {
-	public function __construct($groupId, $groupName)
+	public function __construct($groupId, $groupName, $adminGroupId)
 	{
 		parent::__construct(Queries::UPDATE_GROUP);
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
 	}
 }
 

@@ -179,17 +179,19 @@ class GroupRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($addGroup));
 	}
 
-	public function testUpdateSavesNewGroupName()
+	public function testUpdateSavesNewGroupNameAndAdminId()
 	{
 		$id = 2828;
 		$newName = 'new name';
+		$groupAdminId = 123;
 		
 		$group = new Group($id, 'old name');
 		$group->Rename($newName);
+		$group->ChangeAdmin($groupAdminId);
 
 		$this->repository->Update($group);
 
-		$updateGroupCommand = new UpdateGroupCommand($id, $newName);
+		$updateGroupCommand = new UpdateGroupCommand($id, $newName, $groupAdminId);
 		$this->assertTrue($this->db->ContainsCommand($updateGroupCommand));
 	}
 
@@ -241,10 +243,32 @@ class GroupRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($removeCommand));
 		$this->assertTrue($this->db->ContainsCommand($addCommand));
 	}
+
+	public function testCanGetListOfGroupsByRole()
+	{
+		$roleLevel = RoleLevel::GROUP_ADMIN;
+		$row1 = self::GetRow(1, 'g1');
+		$row2 = self::GetRow(2, 'g2');
+		$rows = array($row1, $row2);
+
+		$this->db->SetRow(0, $rows);
+
+		$getGroupsCommand = new GetAllGroupsByRoleCommand($roleLevel);
+		$groups = $this->repository->GetGroupsByRole($roleLevel);
+
+		$this->assertEquals(GroupItemView::Create($row1), $groups[0]);
+		$this->assertEquals(GroupItemView::Create($row2), $groups[1]);
+
+		$this->assertEquals($this->db->ContainsCommand($getGroupsCommand), "missing select group command");
+	}
 	
 	public static function GetRow($groupId, $groupName)
 	{
-		return array(ColumnNames::GROUP_ID => $groupId, ColumnNames::GROUP_NAME => $groupName);
+		return array(
+			ColumnNames::GROUP_ID => $groupId,
+			ColumnNames::GROUP_NAME => $groupName,
+			ColumnNames::GROUP_ADMIN_GROUP_NAME => 'group admin'
+		);
 	}
 
 	private function GetGroupUserRow($userId, $firstName, $lastName)

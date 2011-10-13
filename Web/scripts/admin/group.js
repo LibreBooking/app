@@ -15,6 +15,7 @@ function GroupManagement(opts) {
 		renameDialog: $('#renameDialog'),
 		browseUserDialog: $('#allUsers'),
 		rolesDialog: $('#rolesDialog'),
+		groupAdminDialog: $('#groupAdminDialog'),
 
 		permissionsForm: $('#permissionsForm'),
 		addUserForm: $('#addUserForm'),
@@ -22,6 +23,7 @@ function GroupManagement(opts) {
 		renameGroupForm: $('#renameGroupForm'),
 		deleteGroupForm: $('#deleteGroupForm'),
 		rolesForm: $('#rolesForm'),
+		groupAdminForm: $('#groupAdminForm'),
 
 		addForm: $('#addGroupForm')
 	};
@@ -36,6 +38,7 @@ function GroupManagement(opts) {
 		ConfigureAdminDialog(elements.renameDialog, 500, 100);
 		ConfigureAdminDialog(elements.browseUserDialog, 500, 100);
 		ConfigureAdminDialog(elements.rolesDialog, 500, 300);
+		ConfigureAdminDialog(elements.groupAdminDialog, 500, 100);
 
 		elements.groupList.delegate('a.update', 'click', function(e) {
 			setActiveId($(this));
@@ -109,6 +112,10 @@ function GroupManagement(opts) {
 			addUserToGroup(ui.item.value);
 		});
 
+		elements.groupList.delegate('.groupAdmin', 'click', function() {
+			changeGroupAdmin();
+		});
+
 		$(".save").click(function() {
 			$(this).closest('form').submit();
 		});
@@ -136,6 +143,7 @@ function GroupManagement(opts) {
 		ConfigureAdminForm(elements.deleteGroupForm, getSubmitCallback(options.actions.deleteGroup), null, error);
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.addGroup), null, error);
 		ConfigureAdminForm(elements.rolesForm, getSubmitCallback(options.actions.roles), null, error);
+		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.actions.groupAdmin), null, error);
 	};
 
 	var showAllUsersToAdd = function() {
@@ -247,5 +255,13 @@ function GroupManagement(opts) {
 
 			elements.rolesDialog.dialog('open');
 		});
+	};
+
+	var changeGroupAdmin = function() {
+		var groupId = getActiveId();
+
+		elements.groupAdminForm.find('select').val('');
+		
+		elements.groupAdminDialog.dialog('open');
 	};
 }

@@ -15,6 +15,7 @@ class ManageGroupsActions
 	const RenameGroup = 'renameGroup';
 	const DeleteGroup = 'deleteGroup';
 	const Roles = 'roles';
+	const GroupAdmin = 'groupAdmin';
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -54,6 +55,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageGroupsActions::RenameGroup, 'RenameGroup');
 		$this->AddAction(ManageGroupsActions::DeleteGroup, 'DeleteGroup');
 		$this->AddAction(ManageGroupsActions::Roles, 'ChangeRoles');
+		$this->AddAction(ManageGroupsActions::GroupAdmin, 'ChangeGroupAdmin');
 	}
 
 	public function PageLoad()
@@ -71,7 +73,10 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->page->BindPageInfo($groupList->PageInfo());
 
 		$this->page->BindResources($this->resourceRepository->GetResourceList());
+
+		//TODO: get roles
 		$this->page->BindRoles(array(new RoleDto(1,'Group Admin', RoleLevel::GROUP_ADMIN), new RoleDto(2, 'Application Admin', RoleLevel::APPLICATION_ADMIN)));
+		$this->page->BindAdminGroups($this->groupRepository->GetGroupsByRole(RoleLevel::GROUP_ADMIN));
 	}
 
 
@@ -187,10 +192,23 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->groupRepository->Remove($group);
 	}
 
+	protected function ChangeGroupAdmin()
+	{
+		$groupId = $this->page->GetGroupId();
+		$adminGroupId = $this->page->GetAdminGroupId();
+
+		Log::Debug("Changing admin for groupId: %s to %s", $groupId, $adminGroupId);
+
+		$group = $this->groupRepository->LoadById($groupId);
+
+		$group->ChangeAdmin($adminGroupId);
+		
+		$this->groupRepository->Update($group);
+	}
 	/**
 	 * @return array|int[]
 	 */
-	private function GetGroupRoles()
+	protected  function GetGroupRoles()
 	{
 		$groupId = $this->page->GetGroupId();
 		$group = $this->groupRepository->LoadById($groupId);

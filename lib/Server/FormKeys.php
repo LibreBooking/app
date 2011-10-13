@@ -27,6 +27,7 @@ class FormKeys
 
 	const GROUP = 'group';
 	const GROUP_NAME = 'group_name';
+	const GROUP_ADMIN = 'group_admin';
 
 	const INVITATION_LIST = 'invitationList';
 	const IS_ACTIVE = 'isactive';

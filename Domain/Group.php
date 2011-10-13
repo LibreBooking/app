@@ -4,6 +4,7 @@ class Group
 {
 	private $id;
 	private $name;
+	private $adminGroupId;
 	
 	private $addedUsers = array();
 	private $removedUsers = array();
@@ -55,6 +56,14 @@ class Group
 	public function Name()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function AdminGroupId()
+	{
+		return $this->adminGroupId;
 	}
 
 	/**
@@ -138,12 +147,22 @@ class Group
 
 	/**
 	 * @internal
-	 * @param $userId
+	 * @param $userId int
 	 * @return void
 	 */
 	public function WithUser($userId)
 	{
 		$this->users[] = $userId;
+	}
+
+	/**
+	 * @internal
+	 * @param $groupId int
+	 * @return void
+	 */
+	public function WithGroupAdmin($groupId)
+	{
+		$this->adminGroupId = $groupId;
 	}
 
 	/**
@@ -247,6 +266,19 @@ class Group
 
 			$this->roleIds = $roleIds;
 		}
+	}
+
+	/**
+	 * @param $groupId int
+	 * @return void
+	 */
+	public function ChangeAdmin($groupId)
+	{
+		if (empty($groupId))
+		{
+			$groupId = null;
+		}
+		$this->adminGroupId = $groupId;
 	}
 }
 

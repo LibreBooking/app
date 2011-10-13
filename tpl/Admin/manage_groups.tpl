@@ -9,12 +9,12 @@
 <table class="list">
 	<tr>
 		<th class="id">&nbsp;</th>
-		<th>{translate key='Group Name'}</th>
-		<th>{translate key='Group Actions'}</th>
-		<th>{translate key='Group Members'}</th>
-		<th>{translate key='Group Permissions'}</th>
-		<th>{translate key='Group Roles'}</th>
-		<th>{translate key='Group Admin'}</th>
+		<th>{translate key='GroupName'}</th>
+		<th>{translate key='Actions'}</th>
+		<th>{translate key='GroupMembers'}</th>
+		<th>{translate key='Permissions'}</th>
+		<th>{translate key='GroupRoles'}</th>
+		<th>{translate key='GroupAdmin'}</th>
 	</tr>
 {foreach from=$groups item=group}
 	{cycle values='row0,row1' assign=rowCss}
@@ -91,6 +91,21 @@
 	</form>
 </div>
 
+
+<div id="groupAdminDialog" class="dialog" title="Who can manage this group?">
+	<form method="post" id="groupAdminForm">
+		<select {formname key=GROUP_ADMIN}>
+			{foreach from=$AdminGroups item=adminGroup}
+				<option value="">{translate key=None}</option>
+				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+			{/foreach}
+		</select>
+
+		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
 <div class="admin" style="margin-top:30px">
 	<div class="title">
 		Add New Group
@@ -103,6 +118,7 @@
 		</form>
 	</div>
 </div>
+
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
@@ -124,7 +140,8 @@
 		addGroup: '{ManageGroupsActions::AddGroup}',
 		renameGroup: '{ManageGroupsActions::RenameGroup}',
 		deleteGroup: '{ManageGroupsActions::DeleteGroup}',
-		roles: '{ManageGroupsActions::Roles}'
+		roles: '{ManageGroupsActions::Roles}',
+		groupAdmin: '{ManageGroupsActions::GroupAdmin}'
 	};
 
 	var dataRequests = {

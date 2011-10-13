@@ -82,6 +82,19 @@ interface IManageGroupsPage extends IActionPage
 	 * @return int[]|array
 	 */
 	public function GetRoleIds();
+
+	/**
+	 * @abstract
+	 * @param $adminGroups GroupItemView[]|array
+	 * @return void
+	 */
+	public function BindAdminGroups($adminGroups);
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetAdminGroupId();
 }
 
 class ManageGroupsPage extends AdminPage implements IManageGroupsPage
@@ -185,6 +198,23 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function GetRoleIds()
 	{
 		return $this->GetForm(FormKeys::ROLE_ID);
+	}
+
+	/**
+	 * @param $adminGroups GroupItemView[]|array
+	 * @return void
+	 */
+	public function BindAdminGroups($adminGroups)
+	{
+		$this->Set('AdminGroups', $adminGroups);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetAdminGroupId()
+	{
+		return $this->GetForm(FormKeys::GROUP_ADMIN);
 	}
 }
 ?>

@@ -52,6 +52,13 @@ interface IGroupViewRepository
 	 * @return PageableData of GroupUserView
 	 */
 	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null);
+
+	/**
+	 * @abstract
+	 * @param $roleLevel int|RoleLevel
+	 * @return GroupItemView[]|array
+	 */
+	public function GetGroupsByRole($roleLevel);
 }
 
 class GroupRepository implements IGroupRepository, IGroupViewRepository
@@ -180,7 +187,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 			$db->Execute(new AddGroupRoleCommand($group->Id(), $roleId));
 		}
 
-		$db->Execute(new UpdateGroupCommand($group->Id(), $group->Name()));
+		$db->Execute(new UpdateGroupCommand($group->Id(), $group->Name(), $group->AdminGroupId()));
 	}
 
 	public function Remove(Group $group)
@@ -192,6 +199,23 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	{
 		$groupId = ServiceLocator::GetDatabase()->ExecuteInsert(new AddGroupCommand($group->Name()));
 		$group->WithId($groupId);
+	}
+
+	/**
+	 * @param $roleLevel int|RoleLevel
+	 * @return GroupItemView[]|array
+	 */
+	public function GetGroupsByRole($roleLevel)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAllGroupsByRoleCommand($roleLevel));
+		$groups = array();
+		while ($row = $reader->GetRow())
+		{
+			$groups[] = GroupItemView::Create($row);
+		}
+		$reader->Free();
+
+		return $groups;
 	}
 }
 
@@ -222,7 +246,9 @@ class GroupItemView
 {
 	public static function Create($row)
 	{
-		return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME], $row[ColumnNames::GROUP_ADMIN_GROUP_NAME]);
+		$adminName = isset($row[ColumnNames::GROUP_ADMIN_GROUP_NAME]) ? $row[ColumnNames::GROUP_ADMIN_GROUP_NAME] : null;
+		
+		return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME], $adminName);
 	}
 
 	/**
