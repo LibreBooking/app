@@ -15,31 +15,61 @@ class Group
 	private $allowedResourceIds = array();
 
 	private $rolesChanged = false;
-	private $removedRoles = array();
-	private $addedRoles = array();
-	private $roles = array();
 
+	/**
+	 * @var array|int[]
+	 */
+	private $removedRoleIds = array();
+
+	/**
+	 * @var array|int[]
+	 */
+	private $addedRoleIds = array();
+
+	/**
+	 * @var array|RoleDto[]
+	 */
+	private $roleIds = array();
+
+	/**
+	 * @param $id int
+	 * @param $name string
+	 */
 	public function __construct($id, $name)
 	{
 		$this->id = $id;
 		$this->name = $name;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function Id()
 	{
 		return $this->id;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function Name()
 	{
 		return $this->name;
 	}
 
+	/**
+	 * @param $groupName string
+	 * @return void
+	 */
 	public function Rename($groupName)
 	{
 		$this->name = $groupName;
 	}
 
+	/**
+	 * @param $userId int
+	 * @return void
+	 */
 	public function AddUser($userId)
 	{
 		if (!$this->HasMember($userId))
@@ -48,6 +78,10 @@ class Group
 		}
 	}
 
+	/**
+	 * @param $userId int
+	 * @return void
+	 */
 	public function RemoveUser($userId)
 	{
 		if ($this->HasMember($userId))
@@ -72,6 +106,24 @@ class Group
 	public function RemovedUsers()
 	{
 		return $this->removedUsers;
+	}
+
+	/**
+	 * @internal
+	 * @return array|int[]
+	 */
+	public function AddedRoles()
+	{
+		return $this->addedRoleIds;
+	}
+
+	/**
+	 * @internal
+	 * @return array|int[]
+	 */
+	public function RemovedRoles()
+	{
+		return $this->removedRoleIds;
 	}
 
 	/**
@@ -114,13 +166,13 @@ class Group
 	}
 
 	/**
-	 * @param $role RoleDto
+	 * @param $role int
 	 * @return void
 	 */
 	public function WithRole($role)
 	{
 		$this->rolesChanged = false;
-		$this->roles[] = $role;
+		$this->roleIds[] = $role;
 	}
 
 	/**
@@ -170,11 +222,31 @@ class Group
 	}
 
 	/**
-	 * @return array|RoleDto
+	 * @return array|int[]
 	 */
-	public function Roles()
+	public function RoleIds()
 	{
-		return $this->roles;
+		return $this->roleIds;
+	}
+
+	/**
+	 * @param $roleIds int[]|array
+	 * @return void
+	 */
+	public function ChangeRoles($roleIds)
+	{
+		$diff = new ArrayDiff($this->roleIds, $roleIds);
+		$removed = $diff->GetRemovedFromArray1();
+		$added = $diff->GetAddedToArray1();
+
+		if ($diff->AreDifferent())
+		{
+			$this->rolesChanged = true;
+			$this->removedRoleIds = $removed;
+			$this->addedRoleIds = $added;
+
+			$this->roleIds = $roleIds;
+		}
 	}
 }
 

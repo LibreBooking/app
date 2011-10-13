@@ -37,6 +37,15 @@ class AddGroupResourcePermission extends SqlCommand
 	}
 }
 
+class AddGroupRoleCommand extends SqlCommand
+{
+	public function __construct($groupId, $roleId)
+	{
+		parent::__construct(Queries::ADD_GROUP_ROLE);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+		$this->AddParameter(new Parameter(ParameterNames::ROLE_ID, $roleId));
+	}
+}
 
 class AddLayoutCommand extends SqlCommand
 {
@@ -285,6 +294,16 @@ class DeleteGroupResourcePermission extends SqlCommand
 	}
 }
 
+class DeleteGroupRoleCommand extends SqlCommand
+{
+	public function __construct($groupId, $roleId)
+	{
+		parent::__construct(Queries::DELETE_GROUP_ROLE);
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+		$this->AddParameter(new Parameter(ParameterNames::ROLE_ID, $roleId));
+	}
+}
+
 class DeleteQuotaCommand extends SqlCommand
 {
 	public function __construct($quotaId)
@@ -422,7 +441,7 @@ class GetAllUsersByStatusCommand extends SqlCommand
 
 class GetDashboardAnnouncementsCommand extends SqlCommand 
 {
-	public function __construct($currentDate)
+	public function __construct(Date $currentDate)
 	{
 		parent::__construct(Queries::GET_DASHBOARD_ANNOUNCEMENTS);
 		$this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate->ToDatabase()));

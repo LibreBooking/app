@@ -76,35 +76,34 @@ function GroupManagement(opts) {
 			removeUserFromGroup($(this), userId);
 		});
 
-		elements.autocompleteSearch.autocomplete(
-				{
-					source: function(request, response) {
-						$.ajax({
-							url: options.groupAutocompleteUrl,
-							dataType: "json",
-							data: {
-								term: request.term
-							},
-							success: function(data) {
-								response($.map(data, function(item) {
-									return {
-										label: item.Name,
-										value: item.Id
-									}
-								}));
+		elements.autocompleteSearch.autocomplete({
+			source: function(request, response) {
+				$.ajax({
+					url: options.groupAutocompleteUrl,
+					dataType: "json",
+					data: {
+						term: request.term
+					},
+					success: function(data) {
+						response($.map(data, function(item) {
+							return {
+								label: item.Name,
+								value: item.Id
 							}
-						});
-					},
-					focus: function(event, ui) {
-						elements.autocompleteSearch.val(ui.item.label);
-						return false;
-					},
-					select: function(event, ui) {
-						elements.autocompleteSearch.val(ui.item.label);
-						window.location.href = options.selectGroupUrl + ui.item.value
-						return false;
+						}));
 					}
 				});
+			},
+			focus: function(event, ui) {
+				elements.autocompleteSearch.val(ui.item.label);
+				return false;
+			},
+			select: function(event, ui) {
+				elements.autocompleteSearch.val(ui.item.label);
+				window.location.href = options.selectGroupUrl + ui.item.value
+				return false;
+			}
+		});
 
 		elements.userSearch.userAutoComplete(options.userAutocompleteUrl, function(ui) {
 			addUserToGroup(ui.item.value);
@@ -136,6 +135,7 @@ function GroupManagement(opts) {
 		ConfigureAdminForm(elements.renameGroupForm, getSubmitCallback(options.actions.renameGroup), null, error);
 		ConfigureAdminForm(elements.deleteGroupForm, getSubmitCallback(options.actions.deleteGroup), null, error);
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.addGroup), null, error);
+		ConfigureAdminForm(elements.rolesForm, getSubmitCallback(options.actions.roles), null, error);
 	};
 
 	var showAllUsersToAdd = function() {
@@ -183,10 +183,6 @@ function GroupManagement(opts) {
 		return elements.activeId.val();
 	}
 
-	function getActiveGroup() {
-		return groups[getActiveId()];
-	}
-
 	var renameGroup = function() {
 		elements.renameDialog.dialog('open');
 	};
@@ -209,7 +205,7 @@ function GroupManagement(opts) {
 			$('<ul/>', {'class': '', html: items.join('')}).appendTo(elements.groupUserList);
 			elements.membersDialog.dialog('open');
 		});
-	}
+	};
 
 	var addUserToGroup = function(userId) {
 		$('#addUserId').val(userId);
@@ -251,5 +247,5 @@ function GroupManagement(opts) {
 
 			elements.rolesDialog.dialog('open');
 		});
-	}
+	};
 }

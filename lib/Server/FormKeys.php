@@ -82,6 +82,7 @@ class FormKeys
 	const RESOURCE_NOTES = 'resourceNotes';
 	const RESUME = 'resume';
 	const RETURN_URL = 'returnUrl';
+	const ROLE_ID = 'roleId';
 
 	const SCHEDULE_ID = 'scheduleId';
 	const SCHEDULE_NAME = 'scheduleName';

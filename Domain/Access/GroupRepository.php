@@ -134,7 +134,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		$reader = $db->Query(new GetAllGroupRolesCommand($groupId));
 		while ($row = $reader->GetRow())
 		{
-			$group->WithRole(new RoleDto($row[ColumnNames::ROLE_ID], $row[ColumnNames::ROLE_NAME], $row[ColumnNames::ROLE_LEVEL]));
+			$group->WithRole($row[ColumnNames::ROLE_ID]);
 		}
 		$reader->Free();
 
@@ -168,6 +168,16 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		foreach ($group->AddedPermissions() as $resourceId)
 		{
 			$db->Execute(new AddGroupResourcePermission($group->Id(), $resourceId));
+		}
+
+		foreach ($group->RemovedRoles() as $roleId)
+		{
+			$db->Execute(new DeleteGroupRoleCommand($group->Id(), $roleId));
+		}
+
+		foreach ($group->AddedRoles() as $roleId)
+		{
+			$db->Execute(new AddGroupRoleCommand($group->Id(), $roleId));
 		}
 
 		$db->Execute(new UpdateGroupCommand($group->Id(), $group->Name()));

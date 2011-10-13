@@ -78,14 +78,16 @@
 	</form>
 </div>
 
-<div id="rolesDialog" class="dialog">
-	What roles apply to this group?
+<div id="rolesDialog" class="dialog" title="What roles apply to this group?">
 	<form id="rolesForm" method="post">
 		<ul>
 		{foreach from=$Roles item=role}
-			<li><label><input type="checkbox" name="roleid[]" value="{$role->Id}" /> {$role->Name}</label></li>
+			<li><label><input type="checkbox" {formname key=ROLE_ID multi=true}" value="{$role->Id}" /> {$role->Name}</label></li>
 		{/foreach}
 		</ul>
+
+		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
@@ -121,7 +123,8 @@
 		addUser: '{ManageGroupsActions::AddUser}',
 		addGroup: '{ManageGroupsActions::AddGroup}',
 		renameGroup: '{ManageGroupsActions::RenameGroup}',
-		deleteGroup: '{ManageGroupsActions::DeleteGroup}'
+		deleteGroup: '{ManageGroupsActions::DeleteGroup}',
+		roles: '{ManageGroupsActions::Roles}'
 	};
 
 	var dataRequests = {

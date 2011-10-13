@@ -14,6 +14,7 @@ class ManageGroupsActions
 	const AddGroup = 'addGroup';
 	const RenameGroup = 'renameGroup';
 	const DeleteGroup = 'deleteGroup';
+	const Roles = 'roles';
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -52,6 +53,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageGroupsActions::AddGroup, 'AddGroup');
 		$this->AddAction(ManageGroupsActions::RenameGroup, 'RenameGroup');
 		$this->AddAction(ManageGroupsActions::DeleteGroup, 'DeleteGroup');
+		$this->AddAction(ManageGroupsActions::Roles, 'ChangeRoles');
 	}
 
 	public function PageLoad()
@@ -82,6 +84,21 @@ class ManageGroupsPresenter extends ActionPresenter
 			$allowedResources = $this->page->GetAllowedResourceIds();
 		}
 		$group->ChangePermissions($allowedResources);
+		$this->groupRepository->Update($group);
+	}
+
+	public function ChangeRoles()
+	{
+		$groupId = $this->page->GetGroupId();
+		Log::Debug("Changing roles for groupId: %s", $groupId);
+
+		$group = $this->groupRepository->LoadById($groupId);
+		$roles = array();
+
+		if (is_array($this->page->GetRoleIds())) {
+			$roles = $this->page->GetRoleIds();
+		}
+		$group->ChangeRoles($roles);
 		$this->groupRepository->Update($group);
 	}
 
@@ -178,15 +195,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$groupId = $this->page->GetGroupId();
 		$group = $this->groupRepository->LoadById($groupId);
 
-		$roles = $group->Roles();
-
-		$ids = array();
-
-		/** @var $role RoleDto */
-		foreach ($roles as $role)
-		{
-			$ids[] = $role->Id;
-		}
+		$ids = $group->RoleIds();
 
 		return $ids;
 	}

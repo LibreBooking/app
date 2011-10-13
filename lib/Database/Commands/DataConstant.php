@@ -137,6 +137,11 @@ class Queries
 		'INSERT INTO
  			group_resource_permissions (group_id, resource_id)
 		VALUES (@groupid, @resourceid)';
+
+	const ADD_GROUP_ROLE =
+		'INSERT INTO
+			group_roles (group_id, role_id)
+		VALUES (@groupid, @roleid)';
 	
 	const ADD_LAYOUT = 
 		'INSERT INTO 
@@ -228,6 +233,9 @@ class Queries
 		FROM group_resource_permissions
 		WHERE group_id = @groupid AND resource_id = @resourceid';
 
+	const DELETE_GROUP_ROLE =
+		'DELETE FROM group_roles WHERE group_id = @groupid AND role_id = @roleid';
+	
 	const DELETE_QUOTA =
 		'DELETE
 		FROM quotas

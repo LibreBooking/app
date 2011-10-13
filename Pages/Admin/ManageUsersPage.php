@@ -133,6 +133,16 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	{
 		$this->pageable->BindPageInfo($pageInfo);
 	}
+
+	public function GetPageNumber()
+	{
+		return $this->pageable->GetPageNumber();
+	}
+
+	public function GetPageSize()
+	{
+		return $this->pageable->GetPageSize();
+	}
 	
 	public function BindUsers($users)
 	{
@@ -147,16 +157,6 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	public function ProcessDataRequest()
 	{
 		$this->_presenter->ProcessDataRequest();
-	}
-
-	public function GetPageNumber()
-	{
-		return $this->pageable->GetPageNumber();
-	}
-
-	public function GetPageSize()
-	{
-		return $this->pageable->GetPageSize();
 	}
 
 	/**

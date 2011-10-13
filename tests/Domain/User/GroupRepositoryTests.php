@@ -1,5 +1,4 @@
 <?php
-
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class GroupRepositoryTests extends TestBase
@@ -113,7 +112,8 @@ class GroupRepositoryTests extends TestBase
 		$this->assertFalse($group->HasMember(3));
 		$this->assertTrue(in_array(1, $group->AllowedResourceIds()));
 		$this->assertFalse(in_array(3, $group->AllowedResourceIds()));
-		$this->assertFalse(in_array(new RoleDto(2, 'name', RoleLevel::GROUP_ADMIN), $group->Roles()));
+		$this->assertTrue(in_array(2, $group->RoleIds()));
+		$this->assertFalse(in_array(4, $group->RoleIds()));
 	}
 
 	public function testUpdateRemovesAllUsersMarked()
@@ -217,6 +217,29 @@ class GroupRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($addGroupCommand));
 
 		$this->assertEquals($newId, $group->Id());
+	}
+
+	public function testUpdateAddsAllNewAndRemovesAllDeletedRoles()
+	{
+		$roleId1 = 100;
+		$roleId2 = 200;
+		$roleId3 = 300;
+
+		$groupId = 9298;
+
+		$group = new Group($groupId, '');
+		$group->WithRole($roleId1);
+		$group->WithRole($roleId3);
+
+		$group->ChangeRoles(array($roleId2, $roleId3));
+
+		$this->repository->Update($group);
+
+		$removeCommand = new DeleteGroupRoleCommand($groupId, $roleId1);
+		$addCommand = new AddGroupRoleCommand($groupId, $roleId2);
+
+		$this->assertTrue($this->db->ContainsCommand($removeCommand));
+		$this->assertTrue($this->db->ContainsCommand($addCommand));
 	}
 	
 	public static function GetRow($groupId, $groupName)

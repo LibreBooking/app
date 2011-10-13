@@ -1,24 +1,61 @@
 <?php 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
+require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageGroupsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 interface IManageGroupsPage extends IActionPage
 {
+	/**
+	 * @abstract
+	 * @return int
+	 */
 	public function GetGroupId();
 
+	/**
+	 * @abstract
+	 * @param $groups GroupItemView[]|array
+	 * @return void
+	 */
 	public function BindGroups($groups);
 
+	/**
+	 * @abstract
+	 * @param PageInfo $pageInfo
+	 * @return void
+	 */
 	public function BindPageInfo(PageInfo $pageInfo);
 
+	/**
+	 * @abstract
+	 * @return int
+	 */
 	public function GetPageNumber();
 
+	/**
+	 * @abstract
+	 * @return int
+	 */
 	public function GetPageSize();
 
+	/**
+	 * @abstract
+	 * @param $response string
+	 * @return void
+	 */
 	public function SetJsonResponse($response);
 
+	/**
+	 * @abstract
+	 * @return int
+	 */
 	public function GetUserId();
 
+	/**
+	 * @abstract
+	 * @param $resources array|BookableResource[]
+	 * @return void
+	 */
 	public function BindResources($resources);
 
 	/**
@@ -28,18 +65,43 @@ interface IManageGroupsPage extends IActionPage
 	 */
 	public function BindRoles($roles);
 
+	/**
+	 * @abstract
+	 * @return int[]|array
+	 */
 	public function GetAllowedResourceIds();
 
+	/**
+	 * @abstract
+	 * @return string
+	 */
 	public function GetGroupName();
+
+	/**
+	 * @abstract
+	 * @return int[]|array
+	 */
+	public function GetRoleIds();
 }
 
 class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 {
+	/**
+	 * @var ManageGroupsPresenter
+	 */
 	private $presenter;
+
+	/**
+	 * @var PageablePage
+	 */
+	private $pageable;
+
 	public function __construct()
 	{
 		parent::__construct('ManageGroups');
 		$this->presenter = new ManageGroupsPresenter($this, new GroupRepository(), new ResourceRepository());
+
+		$this->pageable = new PageablePage($this);
 	}
 	
 	public function PageLoad()
@@ -51,7 +113,17 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 
 	public function BindPageInfo(PageInfo $pageInfo)
 	{
-		$this->Set('PageInfo', $pageInfo);
+		$this->pageable->BindPageInfo($pageInfo);
+	}
+
+	public function GetPageNumber()
+	{
+		return $this->pageable->GetPageNumber();
+	}
+
+	public function GetPageSize()
+	{
+		return $this->pageable->GetPageSize();
 	}
 	
 	public function BindGroups($groups)
@@ -62,16 +134,6 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function ProcessAction()
 	{
 		$this->presenter->ProcessAction();
-	}
-
-	public function GetPageNumber()
-	{
-		return $this->server->GetQuerystring(QueryStringKeys::PAGE);
-	}
-
-	public function GetPageSize()
-	{
-		return 50;
 	}
 
 	/**
@@ -97,18 +159,11 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 		return $this->GetForm(FormKeys::USER_ID);
 	}
 
-	/**
-	 * @param BookableResources[] $resources
-	 * @return void
-	 */
 	public function BindResources($resources)
 	{
 		$this->Set('resources', $resources);
 	}
 
-	/**
-	 * @return int[] resource ids the user has permission to
-	 */
 	public function GetAllowedResourceIds()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_ID);
@@ -122,6 +177,14 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function BindRoles($roles)
 	{
 		$this->Set('Roles', $roles);
+	}
+
+	/**
+	 * @return int[]|array
+	 */
+	public function GetRoleIds()
+	{
+		return $this->GetForm(FormKeys::ROLE_ID);
 	}
 }
 ?>
