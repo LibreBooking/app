@@ -27,8 +27,7 @@
 // Please keep the HTML formatting unless you need to change it.  Also, please try
 //  to keep the HTML XHTML 1.0 Transitional complaint.
 ///////////////////////////////////////////////////////////
-?>
-<div align="center"> 
+?><div align="center">
   <h3><a name="top" id="top"></a>Introduction to phpScheduleIt</h3>
   <p><a href="http://phpscheduleit.sourceforge.net" target="_blank">http://phpscheduleit.sourceforge.net</a></p>
   <table width="100%" border="0" cellspacing="0" cellpadding="5" style="border: solid #CCCCCC 1px">

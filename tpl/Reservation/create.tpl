@@ -187,8 +187,7 @@
 	<input type="hidden" {formname key=reservation_id} value="{$ReservationId}"/>
 	<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}"/>
 	<input type="hidden" {formname key=reservation_action} value="{$ReservationAction}"/>
-	<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
-		   value="{SeriesUpdateScope::FullSeries}"/>
+	<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
 
 	<div style="float:left;">
 	{block name="deleteButtons"}

@@ -23,14 +23,10 @@ class ReservationUpdatePresenterTests extends TestBase
 	private $persistenceService;
 	
 	/**
-	 * @var IUpdateReservationValidationService
+	 * @var IReservationHandler
 	 */
-	private $validationService;
-	
-	/**
-	 * @var IUpdateReservationNotificationService
-	 */
-	private $notificationService;
+	private $handler;
+
 
 	/**
 	 * @var IResourceRepository
@@ -50,8 +46,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->userId = $this->user->UserId;
 		
 		$this->persistenceService = $this->getMock('IUpdateReservationPersistenceService');
-		$this->validationService = $this->getMock('IUpdateReservationValidationService');
-		$this->notificationService = $this->getMock('IUpdateReservationNotificationService');
+		$this->handler = $this->getMock('IReservationHandler');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
 
 		$this->page = new FakeReservationUpdatePage();
@@ -59,8 +54,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->presenter = new ReservationUpdatePresenter(
 								$this->page, 
 								$this->persistenceService, 
-								$this->validationService, 
-								$this->notificationService,
+								$this->handler,
 								$this->resourceRepository);
 	}
 	
@@ -141,56 +135,15 @@ class ReservationUpdatePresenterTests extends TestBase
 		$instance = new Reservation($series, NullDateRange::Instance());
 		$series->WithCurrentInstance($instance);
 		
-		$validationResult = new ReservationValidationResult();
-
-		$this->validationService->expects($this->once())
-			->method('Validate')
-			->with($this->equalTo($series))
-			->will($this->returnValue($validationResult));
-
-		$this->persistenceService->expects($this->once())
-			->method('Persist')
-			->with($this->equalTo($series));
-			
-		$this->notificationService->expects($this->once())
-			->method('Notify')
-			->with($this->equalTo($series));
+		$this->handler->expects($this->once())
+				->method('Handle')
+				->with($this->equalTo($series), $this->isInstanceOf('FakeReservationUpdatePage'))
+				->will($this->returnValue(true));
 
 		$this->presenter->HandleReservation($series);
 		
-		$this->assertEquals(true, $this->page->saveSuccessful);
-		$this->assertEquals($validationResult->GetWarnings(), $this->page->warnings);
 		$this->assertEquals($instance->ReferenceNumber(), $this->page->referenceNumber);
 	}
-	
-	public function testPreventsPersistenceAndNotificationAndShowsFailedMessageWhenValidationFails()
-	{
-		$errorMessage1 = 'e1';
-		$errorMessage2 = 'e2';
-		$errors = array($errorMessage1, $errorMessage2);
-		
-		$builder = new ExistingReservationSeriesBuilder();
-		$series = $builder->Build();
-		
-		$validationResult = new ReservationValidationResult(false, $errors);
-
-		$this->validationService->expects($this->once())
-			->method('Validate')
-			->with($this->equalTo($series))
-			->will($this->returnValue($validationResult));
-		
-		$this->persistenceService->expects($this->never())
-			->method('Persist');
-
-		$this->notificationService->expects($this->never())
-			->method('Notify');
-					
-		$this->presenter->HandleReservation($series);
-		
-		$this->assertEquals(false, $this->page->saveSuccessful);
-		$this->assertEquals($errors, $this->page->errors);
-	}
-
 }
 
 class FakeReservationUpdatePage extends FakeReservationSavePage implements IReservationUpdatePage

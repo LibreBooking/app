@@ -1,15 +1,6 @@
 <?php
 
-interface IUpdateReservationValidationService
-{
-	/**
-	 * @param ExistingReservationSeries $reservationSeries
-	 * @return IReservationValidationResult
-	 */
-	function Validate($reservationSeries);
-}
-
-class UpdateReservationValidationService implements IUpdateReservationValidationService
+class UpdateReservationValidationService implements IReservationValidationService
 {
 	/**
 	 * @var IReservationValidationService

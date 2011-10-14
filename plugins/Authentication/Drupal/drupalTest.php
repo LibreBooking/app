@@ -7,5 +7,4 @@
     //Using the normal password before MD5 as password
     echo '<BR>' . $registration->Validate(1,'');
     
-    ?>
-    
+?>

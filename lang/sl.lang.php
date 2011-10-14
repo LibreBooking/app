@@ -65,13 +65,13 @@ $charset = 'windows-1250';
    and go through the seven day week, ending on Saturday
 ***/
 // The full day name
-$days_full = array('Nedelja', 'Ponedeljek', 'Torek', 'Sreda', 'Èetrtek', 'Petek', 'Sobota');
+$days_full = array('Nedelja', 'Ponedeljek', 'Torek', 'Sreda', 'ï¿½etrtek', 'Petek', 'Sobota');
 // The three letter abbreviation
-$days_abbr = array('Ned', 'Pon', 'Tor', 'Sre', 'Èet', 'Pet', 'Sob');
+$days_abbr = array('Ned', 'Pon', 'Tor', 'Sre', 'ï¿½et', 'Pet', 'Sob');
 // The two letter abbreviation
-$days_two  = array('Ne', 'Po', 'To', 'Sr', 'Èe', 'Pe', 'So');
+$days_two  = array('Ne', 'Po', 'To', 'Sr', 'ï¿½e', 'Pe', 'So');
 // The one letter abbreviation
-$days_letter = array('N', 'P', 'T', 'S', 'È', 'P', 'S');
+$days_letter = array('N', 'P', 'T', 'S', 'ï¿½', 'P', 'S');
 
 /***
   MONTH NAMES
@@ -84,7 +84,7 @@ $months_full = array('Januar', 'Februar', 'Marec', 'April', 'Maj', 'Junij', 'Jul
 $months_abbr = array('Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Avg', 'Sep', 'Okt', 'Nov', 'Dec');
 
 // All letters of the alphabet starting with A and ending with Z
-$letters = array ('A', 'B', 'C', 'È', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'Š', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+$letters = array ('A', 'B', 'C', 'ï¿½', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'ï¿½', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
 /***
   DATE FORMATTING
@@ -128,8 +128,8 @@ $strings['pm'] = 'pm';
 $strings['Administrator'] = 'Administrator';
 $strings['Welcome Back'] = 'Pozdravljeni, %s';
 $strings['Log Out'] = 'Odjavi se';
-$strings['My Control Panel'] = 'Nadzorna plošèa';
-$strings['Help'] = 'Pomoè';
+$strings['My Control Panel'] = 'Nadzorna ploï¿½ï¿½a';
+$strings['Help'] = 'Pomoï¿½';
 $strings['Manage Schedules'] = 'Urejanje urnikov';
 $strings['Manage Users'] ='Urejanje uporabnikov';
 $strings['Manage Resources'] ='Urejanje sredstev';
@@ -139,9 +139,9 @@ $strings['Email Users'] ='Email Users';
 $strings['Export Database Data'] = 'Izvozite podatke iz podatkovne baze';
 $strings['Reset Password'] = 'Reset Password';
 $strings['System Administration'] = 'Administracija sistema';
-$strings['Successful update'] = 'Uspešno spremenjeno';
+$strings['Successful update'] = 'Uspeï¿½no spremenjeno';
 $strings['Update failed!'] = 'Sprememba ni uspela!';
-$strings['Manage Blackout Times'] = 'Upravljanje nerazpoložljivih terminov';
+$strings['Manage Blackout Times'] = 'Upravljanje nerazpoloï¿½ljivih terminov';
 $strings['Forgot Password'] = 'Pozabil sem geslo';
 $strings['Manage My Email Contacts'] = 'Upravljanje mojih email kontaktov';
 $strings['Choose Date'] = 'Izberi datum';
@@ -154,54 +154,54 @@ $strings['Online Scheduler'] = 'Spletni urnik';
 $strings['phpScheduleIt Statistics'] = 'phpScheduleIt Statistike';
 $strings['User Info'] = 'Informacije o uporabniku:';
 
-$strings['Could not determine tool'] = 'Could not determine tool. Prosim vrnite se na nadzorno plošèo in poskusite kasneje.';
+$strings['Could not determine tool'] = 'Could not determine tool. Prosim vrnite se na nadzorno ploï¿½ï¿½o in poskusite kasneje.';
 $strings['This is only accessable to the administrator'] = 'Dostop ima samo administrator';
-$strings['Back to My Control Panel'] = 'Nazaj na nadzorno plošèo';
+$strings['Back to My Control Panel'] = 'Nazaj na nadzorno ploï¿½ï¿½o';
 $strings['That schedule is not available.'] = 'Ta urnik ni dosegljiv.';
 $strings['You did not select any schedules to delete.'] = 'Niste izbrali nobenega urnika za izbris.';
-$strings['You did not select any members to delete.'] = 'Niste izbrali nobenega èlana za izbris.';
+$strings['You did not select any members to delete.'] = 'Niste izbrali nobenega ï¿½lana za izbris.';
 $strings['You did not select any resources to delete.'] = 'Nisite izbrali nobenih sredstev za izbris.';
 $strings['Schedule title is required.'] = 'Potreben je naslov urnika.';
-$strings['Invalid start/end times'] = 'Neveljavni zaèetek/konec èasi';
+$strings['Invalid start/end times'] = 'Neveljavni zaï¿½etek/konec ï¿½asi';
 $strings['View days is required'] = 'View days is required';
 $strings['Day offset is required'] = 'Day offset is required';
 $strings['Admin email is required'] = 'Potreben je Admin email';
-$strings['Resource name is required.'] = 'Potrebno je doloèiti ime sredstva.';
+$strings['Resource name is required.'] = 'Potrebno je doloï¿½iti ime sredstva.';
 $strings['Valid schedule must be selected'] = 'Izbran mora biti veljaven urnik';
-$strings['Minimum reservation length must be less than or equal to maximum reservation length.'] = 'Minimalen èas rezervacije mora biti manjši ali enak èasu maksimalne rezervacije.';
-$strings['Your request was processed successfully.'] = 'Vaša zahteva je bila uspešno izvedena.';
+$strings['Minimum reservation length must be less than or equal to maximum reservation length.'] = 'Minimalen ï¿½as rezervacije mora biti manjï¿½i ali enak ï¿½asu maksimalne rezervacije.';
+$strings['Your request was processed successfully.'] = 'Vaï¿½a zahteva je bila uspeï¿½no izvedena.';
 $strings['Go back to system administration'] = 'Pojdite nazaj na administracijo sistema';
-$strings['Or wait to be automatically redirected there.'] = 'Ali poèakajte, da boste avtomatièno preusmerjeni tja.';
-$strings['There were problems processing your request.'] = 'So problemi z izvedbo vaše zahteve.';
-$strings['Please go back and correct any errors.'] = 'Prosim pojdite nazaj in popravite kakršnekoli napake.';
+$strings['Or wait to be automatically redirected there.'] = 'Ali poï¿½akajte, da boste avtomatiï¿½no preusmerjeni tja.';
+$strings['There were problems processing your request.'] = 'So problemi z izvedbo vaï¿½e zahteve.';
+$strings['Please go back and correct any errors.'] = 'Prosim pojdite nazaj in popravite kakrï¿½nekoli napake.';
 $strings['Login to view details and place reservations'] = 'Prijavite se, da bi videli detajle in vpisali rezervacije';
-$strings['Memberid is not available.'] = 'ID èlana: %s ni na razpolago.';
+$strings['Memberid is not available.'] = 'ID ï¿½lana: %s ni na razpolago.';
 
 $strings['Schedule Title'] = 'Ime Urnika';
-$strings['Start Time'] = 'Èas zaèetka';
-$strings['End Time'] = 'Èas konca';
-$strings['Time Span'] = 'Èasovna enota';
-$strings['Weekday Start'] = 'Zaèetek tedna';
+$strings['Start Time'] = 'ï¿½as zaï¿½etka';
+$strings['End Time'] = 'ï¿½as konca';
+$strings['Time Span'] = 'ï¿½asovna enota';
+$strings['Weekday Start'] = 'Zaï¿½etek tedna';
 $strings['Admin Email'] = 'Email Administratorju';
 
 $strings['Default'] = 'Privzeto';
-$strings['Reset'] = 'Osveži';
+$strings['Reset'] = 'Osveï¿½i';
 $strings['Edit'] = 'Uredi';
-$strings['Delete'] = 'Izbriši';
-$strings['Cancel'] = 'Preklièi';
+$strings['Delete'] = 'Izbriï¿½i';
+$strings['Cancel'] = 'Prekliï¿½i';
 $strings['View'] = 'Poglej';
 $strings['Modify'] = 'Spremeni';
 $strings['Save'] = 'Shrani';
 $strings['Back'] = 'Nazaj';
 $strings['Next'] = 'Naprej';
 $strings['Close Window'] = 'Zapri okno';
-$strings['Search'] = 'Išèi';
-$strings['Clear'] = 'Briši';
+$strings['Search'] = 'Iï¿½ï¿½i';
+$strings['Clear'] = 'Briï¿½i';
 
 $strings['Days to Show'] = 'Prikazani dnevi';
 $strings['Reservation Offset'] = 'Rezervacija najmanj dni pred';
 $strings['Hidden'] = 'Skrito';
-$strings['Show Summary'] = 'Prikaži povzetek';
+$strings['Show Summary'] = 'Prikaï¿½i povzetek';
 $strings['Add Schedule'] = 'Dodaj urnik';
 $strings['Edit Schedule'] = 'Uredi urnik';
 $strings['No'] = 'Ne';
@@ -216,43 +216,43 @@ $strings['Phone'] = 'Telefon';
 $strings['Password'] = 'Geslo';
 $strings['Permissions'] = 'Dovoljenja';
 $strings['View information about'] = 'Poglej informacije o %s %s';
-$strings['Send email to'] = 'Pošlji email %s %s';
+$strings['Send email to'] = 'Poï¿½lji email %s %s';
 $strings['Reset password for'] = 'Novo geslo za %s %s';
 $strings['Edit permissions for'] = 'Uredi dovoljenja za %s %s';
-$strings['Position'] = 'Položaj';
-$strings['Password (6 char min)'] = 'Geslo (%s èrk min)';	// @since 1.1.0
-$strings['Re-Enter Password'] = 'Ponovno vpiši geslo';
+$strings['Position'] = 'Poloï¿½aj';
+$strings['Password (6 char min)'] = 'Geslo (%s ï¿½rk min)';	// @since 1.1.0
+$strings['Re-Enter Password'] = 'Ponovno vpiï¿½i geslo';
 
-$strings['Sort by descending last name'] = 'Razvrsti padajoèe po priimku';
-$strings['Sort by descending email address'] = 'Razvrsti padajoèe po emailu';
-$strings['Sort by descending institution'] = 'Razvrsti padajoèe po instituciji';
-$strings['Sort by ascending last name'] = 'Razvrsti narašèajoèe po priimku';
-$strings['Sort by ascending email address'] = 'Razvrsti narašèajoèe po emailu';
-$strings['Sort by ascending institution'] = 'Razvrsti narašèajoèe po instituciji';
-$strings['Sort by descending resource name'] = 'Razvrsti padajoèe po imenu sredstva';
-$strings['Sort by descending location'] = 'Razvrsti padajoèe po naslovu';
-$strings['Sort by descending schedule title'] = 'Razvrsti padajoèe po imenu urnika';
-$strings['Sort by ascending resource name'] = 'Razvrsti narašèajoèe po imenu sredstva';
-$strings['Sort by ascending location'] = 'Razvrsti narašèajoèe po naslovu';
-$strings['Sort by ascending schedule title'] = 'Razvrsti narašèajoèe po imenu urnika';
-$strings['Sort by descending date'] = 'Razvrsti padajoèe po datumu';
-$strings['Sort by descending user name'] = 'Razvrsti padajoèe po uporabniškem imenu';
-$strings['Sort by descending start time'] = 'Razvrsti padajoèe po èasu zaèetka';
-$strings['Sort by descending end time'] = 'Razvrsti padajoèe po èasu konca';
-$strings['Sort by ascending date'] = 'Razvrsti narašèajoèe po datumu';
-$strings['Sort by ascending user name'] = 'Razvrsti narašèajoèe po uporabniškem imenu';
-$strings['Sort by ascending start time'] = 'Razvrsti narašèajoèe po èasu zaèetka';
-$strings['Sort by ascending end time'] = 'Razvrsti narašèajoèe po èasu konca';
-$strings['Sort by descending created time'] = 'Razvrsti padajoèe po èasu vpisa';
-$strings['Sort by ascending created time'] = 'Razvrsti narašèajoèe po èasu vpisa';
+$strings['Sort by descending last name'] = 'Razvrsti padajoï¿½e po priimku';
+$strings['Sort by descending email address'] = 'Razvrsti padajoï¿½e po emailu';
+$strings['Sort by descending institution'] = 'Razvrsti padajoï¿½e po instituciji';
+$strings['Sort by ascending last name'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po priimku';
+$strings['Sort by ascending email address'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po emailu';
+$strings['Sort by ascending institution'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po instituciji';
+$strings['Sort by descending resource name'] = 'Razvrsti padajoï¿½e po imenu sredstva';
+$strings['Sort by descending location'] = 'Razvrsti padajoï¿½e po naslovu';
+$strings['Sort by descending schedule title'] = 'Razvrsti padajoï¿½e po imenu urnika';
+$strings['Sort by ascending resource name'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po imenu sredstva';
+$strings['Sort by ascending location'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po naslovu';
+$strings['Sort by ascending schedule title'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po imenu urnika';
+$strings['Sort by descending date'] = 'Razvrsti padajoï¿½e po datumu';
+$strings['Sort by descending user name'] = 'Razvrsti padajoï¿½e po uporabniï¿½kem imenu';
+$strings['Sort by descending start time'] = 'Razvrsti padajoï¿½e po ï¿½asu zaï¿½etka';
+$strings['Sort by descending end time'] = 'Razvrsti padajoï¿½e po ï¿½asu konca';
+$strings['Sort by ascending date'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po datumu';
+$strings['Sort by ascending user name'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po uporabniï¿½kem imenu';
+$strings['Sort by ascending start time'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po ï¿½asu zaï¿½etka';
+$strings['Sort by ascending end time'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po ï¿½asu konca';
+$strings['Sort by descending created time'] = 'Razvrsti padajoï¿½e po ï¿½asu vpisa';
+$strings['Sort by ascending created time'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po ï¿½asu vpisa';
 $strings['Sort by descending last modified time'] = 'Sort by descending last modified time';
-$strings['Sort by ascending last modified time'] = 'Razvrsti narašèajoèe po zadnjem èasu spremembe';
+$strings['Sort by ascending last modified time'] = 'Razvrsti naraï¿½ï¿½ajoï¿½e po zadnjem ï¿½asu spremembe';
 
-$strings['Search Users'] = 'Poišèi uporabnike';
+$strings['Search Users'] = 'Poiï¿½ï¿½i uporabnike';
 $strings['Location'] = 'Naslov';
 $strings['Schedule'] = 'Urnik';
 $strings['Phone'] = 'Telefon';
-$strings['Notes'] = 'Beležka';
+$strings['Notes'] = 'Beleï¿½ka';
 $strings['Status'] = 'Status';
 $strings['All Schedules'] = 'Vsi urniki';
 $strings['All Resources'] = 'Vsa sredstva';
@@ -261,10 +261,10 @@ $strings['All Users'] = 'Vsi uporabniki';
 $strings['Edit data for'] = 'Uredi podatke za %s';
 $strings['Active'] = 'Aktivno';
 $strings['Inactive'] = 'Neaktivno';
-$strings['Toggle this resource active/inactive'] = 'Doloèi to sredstvo kot aktivno/neaktivno';
-$strings['Minimum Reservation Time'] = 'Minimalen èas rezervacije';
-$strings['Maximum Reservation Time'] = 'Maximalen èas rezervacije';
-$strings['Auto-assign permission'] = 'Avtomatièno dovoljenje';
+$strings['Toggle this resource active/inactive'] = 'Doloï¿½i to sredstvo kot aktivno/neaktivno';
+$strings['Minimum Reservation Time'] = 'Minimalen ï¿½as rezervacije';
+$strings['Maximum Reservation Time'] = 'Maximalen ï¿½as rezervacije';
+$strings['Auto-assign permission'] = 'Avtomatiï¿½no dovoljenje';
 $strings['Add Resource'] = 'Dodaj sredstvo';
 $strings['Edit Resource'] = 'Uredi sredstvo';
 $strings['Allowed'] = 'Dovoljeno';
@@ -272,15 +272,15 @@ $strings['Notify user'] = 'Obvesti uporabnika';
 $strings['User Reservations'] = 'Rezervacije uporabnika';
 $strings['Date'] = 'Datum';
 $strings['User'] = 'Uporabnik';
-$strings['Email Users'] = 'Pošlji email uporabnikom';
+$strings['Email Users'] = 'Poï¿½lji email uporabnikom';
 $strings['Subject'] = 'Zadeva';
-$strings['Message'] = 'Sporoèilo';
+$strings['Message'] = 'Sporoï¿½ilo';
 $strings['Please select users'] = 'Prosim izberi uporabnike';
-$strings['Send Email'] = 'Pošlji email';
-$strings['problem sending email'] = '®al so problemi s pošiljanjem vašega emaila. Prosim poskusite kasneje.';
-$strings['The email sent successfully.'] = 'Email je bil uspešno poslan.';
-$strings['do not refresh page'] = 'Prosin <u>ne</u> osvežite te strani. Èe boste, bo email ponovno poslan.';
-$strings['Return to email management'] = 'Vrni se na upravljanje E-sporoèil';
+$strings['Send Email'] = 'Poï¿½lji email';
+$strings['problem sending email'] = 'ï¿½al so problemi s poï¿½iljanjem vaï¿½ega emaila. Prosim poskusite kasneje.';
+$strings['The email sent successfully.'] = 'Email je bil uspeï¿½no poslan.';
+$strings['do not refresh page'] = 'Prosin <u>ne</u> osveï¿½ite te strani. ï¿½e boste, bo email ponovno poslan.';
+$strings['Return to email management'] = 'Vrni se na upravljanje E-sporoï¿½il';
 $strings['Please select which tables and fields to export'] = 'Prosim izberi tabele in polja za izvoz:';
 $strings['all fields'] = '- vsa polja -';
 $strings['HTML'] = 'HTML';
@@ -291,8 +291,8 @@ $strings['Export Data'] = 'Izvozi podatke';
 $strings['Reset Password for'] = 'Ponovno geslo za %s';
 $strings['Please edit your profile'] = 'Prosim uredi svoj profil';
 $strings['Please register'] = 'Prosim registriraj se';
-//$strings['Email address (this will be your login)'] = 'E-naslov (to bo vaše geslo)';
-$strings['Keep me logged in'] = 'Drži me prijavljenega <br/>(Potrebni so cookie-ji)';
+//$strings['Email address (this will be your login)'] = 'E-naslov (to bo vaï¿½e geslo)';
+$strings['Keep me logged in'] = 'Drï¿½i me prijavljenega <br/>(Potrebni so cookie-ji)';
 $strings['Edit Profile'] = 'Uredi profil';
 $strings['Register'] = 'Registriraj se';
 $strings['Please Log In'] = 'Prosim prijavite se';
@@ -306,7 +306,7 @@ $strings['View Schedule'] = 'Poglej urnik';
 $strings['View a read-only version of the schedule'] = 'Urnik samo za pogled';
 $strings['I Forgot My Password'] = 'Pozabil sem svoje geslo';
 $strings['Retreive lost password'] = 'Ponovno pridobi izgubljeno geslo';
-$strings['Get online help'] = 'Pomoè na spletu';
+$strings['Get online help'] = 'Pomoï¿½ na spletu';
 $strings['Language'] = 'Jezik';
 $strings['(Default)'] = '(Privzeto)';
 
@@ -321,34 +321,34 @@ $strings['Created'] = 'Vpisano';
 $strings['Last Modified'] = 'Nazadnje spremenjeno';
 $strings['View this reservation'] = 'Poglej to rezervacijo';
 $strings['Modify this reservation'] = 'Spremeni to rezervacijo';
-$strings['Delete this reservation'] = 'Briši to rezervacijo';
+$strings['Delete this reservation'] = 'Briï¿½i to rezervacijo';
 $strings['Bookings'] = 'Rezervacije';											// @since 1.2.0
 $strings['Change My Profile Information/Password'] = 'Spremeni profil';		// @since 1.2.0
 $strings['Manage My Email Preferences'] = 'Email Nastavitve';				// @since 1.2.0
-$strings['Mass Email Users'] = 'Skupinsko pošiljanje E-pošte uporabnikom';
-$strings['Search Scheduled Resource Usage'] = 'Išèi Rezervacije';		// @since 1.2.0
+$strings['Mass Email Users'] = 'Skupinsko poï¿½iljanje E-poï¿½te uporabnikom';
+$strings['Search Scheduled Resource Usage'] = 'Iï¿½ï¿½i Rezervacije';		// @since 1.2.0
 $strings['Export Database Content'] = 'Izvozi vsebino podatkovne baze';
 $strings['View System Stats'] = 'Poglej statistiko sistema';
-$strings['Email Administrator'] = 'Pošlji Email Administratorju';
+$strings['Email Administrator'] = 'Poï¿½lji Email Administratorju';
 
-$strings['Email me when'] = 'Pošlji mi E-sporoèilo ko:';
-$strings['I place a reservation'] = 'vpišem rezervacijo';
+$strings['Email me when'] = 'Poï¿½lji mi E-sporoï¿½ilo ko:';
+$strings['I place a reservation'] = 'vpiï¿½em rezervacijo';
 $strings['My reservation is modified'] = 'je moja rezervacija spremenjena';
 $strings['My reservation is deleted'] = 'je moja rezervacija izbrisana';
 $strings['I prefer'] = 'Prednost dajem:';
-$strings['Your email preferences were successfully saved'] = 'Nastavitve vaše E-pošte so bile uspešno spremenjene!';
-$strings['Return to My Control Panel'] = 'Vrni me na mojo nadzorno plošèo';
+$strings['Your email preferences were successfully saved'] = 'Nastavitve vaï¿½e E-poï¿½te so bile uspeï¿½no spremenjene!';
+$strings['Return to My Control Panel'] = 'Vrni me na mojo nadzorno ploï¿½ï¿½o';
 
-$strings['Please select the starting and ending times'] = 'Prosim izberi èas zaèetka in èas konca:';
-$strings['Please change the starting and ending times'] = 'Prosim spremeni èas zaèetka in èas konca:';
-$strings['Reserved time'] = 'Rezerviran èas:';
-$strings['Minimum Reservation Length'] = 'Minimalen èas rezervacije:';
-$strings['Maximum Reservation Length'] = 'Maximalen èas rezervacije:';
+$strings['Please select the starting and ending times'] = 'Prosim izberi ï¿½as zaï¿½etka in ï¿½as konca:';
+$strings['Please change the starting and ending times'] = 'Prosim spremeni ï¿½as zaï¿½etka in ï¿½as konca:';
+$strings['Reserved time'] = 'Rezerviran ï¿½as:';
+$strings['Minimum Reservation Length'] = 'Minimalen ï¿½as rezervacije:';
+$strings['Maximum Reservation Length'] = 'Maximalen ï¿½as rezervacije:';
 $strings['Reserved for'] = 'Rezervirano za:';
 $strings['Will be reserved for'] = 'Rezervacija za:';
 $strings['N/A'] = '02/4716156';
-$strings['Update all recurring records in group'] = 'Posodobi vse ponavljajoèe se vpise v skupini?';
-$strings['Delete?'] = 'Izbriši?';
+$strings['Update all recurring records in group'] = 'Posodobi vse ponavljajoï¿½e se vpise v skupini?';
+$strings['Delete?'] = 'Izbriï¿½i?';
 $strings['Never'] = '-- Nikoli --';
 $strings['Days'] = 'Dni';
 $strings['Weeks'] = 'Tedne';
@@ -357,7 +357,7 @@ $strings['Months (day)'] = 'Mesece (dan)';
 $strings['First Days'] = 'Prvi teden';
 $strings['Second Days'] = 'Drugi teden';
 $strings['Third Days'] = 'Tretji teden';
-$strings['Fourth Days'] = 'Èetrti teden';
+$strings['Fourth Days'] = 'ï¿½etrti teden';
 $strings['Last Days'] = 'Zadnji teden';
 $strings['Repeat every'] = 'Ponovi vsake:';
 $strings['Repeat on'] = 'Ponovi na:';
@@ -370,19 +370,19 @@ $strings['My Reservations'] = 'Moje rezervacije';
 $strings['My Past Reservations'] = 'Moje pretekle rezervacije';
 $strings['Other Reservations'] = 'Druge rezervacije';
 $strings['Other Past Reservations'] = 'Druge pretekle rezervacije';
-$strings['Blacked Out Time'] = 'Nerazpoložljiv èas';
-$strings['Set blackout times'] = 'Vstavi nerazpoložljiv èas za %s na %s'; 
+$strings['Blacked Out Time'] = 'Nerazpoloï¿½ljiv ï¿½as';
+$strings['Set blackout times'] = 'Vstavi nerazpoloï¿½ljiv ï¿½as za %s na %s'; 
 $strings['Reserve on'] = 'Rezerviraj %s na %s';
-$strings['Prev Week'] = '&laquo; Prejšnji teden';
-$strings['Jump 1 week back'] = 'Skoèi 1 teden nazaj';
-$strings['Prev days'] = '&#8249; Prejšnji %d dnevi';
-$strings['Previous days'] = '&#8249; Prejšnji %d dnevi';
+$strings['Prev Week'] = '&laquo; Prejï¿½nji teden';
+$strings['Jump 1 week back'] = 'Skoï¿½i 1 teden nazaj';
+$strings['Prev days'] = '&#8249; Prejï¿½nji %d dnevi';
+$strings['Previous days'] = '&#8249; Prejï¿½nji %d dnevi';
 $strings['This Week'] = 'Sedanji teden';
-$strings['Jump to this week'] = 'Skoèi na ta teden';
+$strings['Jump to this week'] = 'Skoï¿½i na ta teden';
 $strings['Next days'] = 'Naslednji %d dnevi &#8250;';
 $strings['Next Week'] = 'Naslednji teden &raquo;';
-$strings['Jump To Date'] = 'Skoèi na datum';
-$strings['View Monthly Calendar'] = 'Poglej meseèni koledar';
+$strings['Jump To Date'] = 'Skoï¿½i na datum';
+$strings['View Monthly Calendar'] = 'Poglej meseï¿½ni koledar';
 $strings['Open up a navigational calendar'] = 'Odpri navigacijski koledar';
 
 $strings['View stats for schedule'] = 'Poglej statistiko za urnik:';
@@ -392,9 +392,9 @@ $strings['Total Resources'] = 'Vseh sredstev:';
 $strings['Total Reservations'] = 'Vseh rezervacij:';
 $strings['Max Reservation'] = 'Max rezervacija:';
 $strings['Min Reservation'] = 'Min Rezervacija:';
-$strings['Avg Reservation'] = 'Povpreèna rezervacija:';
-$strings['Most Active Resource'] = 'Najaktivnejše sredstvo:';
-$strings['Most Active User'] = 'Najaktivnejši uporabnik:';
+$strings['Avg Reservation'] = 'Povpreï¿½na rezervacija:';
+$strings['Most Active Resource'] = 'Najaktivnejï¿½e sredstvo:';
+$strings['Most Active User'] = 'Najaktivnejï¿½i uporabnik:';
 $strings['System Stats'] = 'Statistika sistema';
 $strings['phpScheduleIt version'] = 'phpScheduleIt verzija:';
 $strings['Database backend'] = 'Database backend:';
@@ -406,12 +406,12 @@ $strings['phpScheduleIt root directory'] = 'phpScheduleIt korenski directorij:';
 $strings['Using permissions'] = 'Using permissions:';
 $strings['Using logging'] = 'Using logging:';
 $strings['Log file'] = 'Log datoteka:';
-$strings['Admin email address'] = 'E-poštni naslov administratorja:';
-$strings['Tech email address'] = 'Tehnièni E-poštni naslov:';
-$strings['CC email addresses'] = 'CC E-poštni naslov:';
-$strings['Reservation start time'] = 'Zaèetni èas rezervacije:';
-$strings['Reservation end time'] = 'Konèni èas rezervacijee:';
-$strings['Days shown at a time'] = 'Prikaži dni naenkrat:';
+$strings['Admin email address'] = 'E-poï¿½tni naslov administratorja:';
+$strings['Tech email address'] = 'Tehniï¿½ni E-poï¿½tni naslov:';
+$strings['CC email addresses'] = 'CC E-poï¿½tni naslov:';
+$strings['Reservation start time'] = 'Zaï¿½etni ï¿½as rezervacije:';
+$strings['Reservation end time'] = 'Konï¿½ni ï¿½as rezervacijee:';
+$strings['Days shown at a time'] = 'Prikaï¿½i dni naenkrat:';
 $strings['Reservations'] = 'Rezervacije';
 $strings['Return to top'] = 'Vrni na vrh';
 $strings['for'] = 'za';
@@ -419,77 +419,77 @@ $strings['for'] = 'za';
 $strings['Select Search Criteria'] = 'Izberi kriterij za iskanje';
 $strings['Schedules'] = 'Urniki:';
 $strings['All Schedules'] = 'Vsi urniki';
-$strings['Hold CTRL to select multiple'] = 'Drži CTRL, da jih izbereš veè';
+$strings['Hold CTRL to select multiple'] = 'Drï¿½i CTRL, da jih izbereï¿½ veï¿½';
 $strings['Users'] = 'Uporabniki:';
 $strings['All Users'] = 'Vsi uporabniki';
 $strings['Resources'] = 'Sredstva';
 $strings['All Resources'] = 'Vsa sredstva';
-$strings['Starting Date'] = 'Datum zaèetka:';
+$strings['Starting Date'] = 'Datum zaï¿½etka:';
 $strings['Ending Date'] = 'Datum konca:';
-$strings['Starting Time'] = 'Èas zaèetka:';
-$strings['Ending Time'] = 'Èas konca:';
+$strings['Starting Time'] = 'ï¿½as zaï¿½etka:';
+$strings['Ending Time'] = 'ï¿½as konca:';
 $strings['Output Type'] = 'Vrsta izpisa:';
 $strings['Manage'] = 'Uredi';
-$strings['Total Time'] = 'Skupen èas';
+$strings['Total Time'] = 'Skupen ï¿½as';
 $strings['Total hours'] = 'Skupno ur:';
 $strings['% of total resource time'] = '% of total resource time';
 $strings['View these results as'] = 'Glej te rezultate kot:';
 $strings['Edit this reservation'] = 'Uredi to rezervacijo';
-$strings['Search Results'] = 'Išèi rezultate';
-$strings['Search Resource Usage'] = 'Išèi uporabo po sredstvu';
-$strings['Search Results found'] = 'Išèi rezultate: %d najdenih rezervacij';
-$strings['Try a different search'] = 'Poskusi iskati drugaèe';
-$strings['Search Run On'] = 'Išèi Run On:';
-$strings['Member ID'] = 'ID èlana';
-$strings['Previous User'] = '&laquo; Prejšnji uporabnik';
+$strings['Search Results'] = 'Iï¿½ï¿½i rezultate';
+$strings['Search Resource Usage'] = 'Iï¿½ï¿½i uporabo po sredstvu';
+$strings['Search Results found'] = 'Iï¿½ï¿½i rezultate: %d najdenih rezervacij';
+$strings['Try a different search'] = 'Poskusi iskati drugaï¿½e';
+$strings['Search Run On'] = 'Iï¿½ï¿½i Run On:';
+$strings['Member ID'] = 'ID ï¿½lana';
+$strings['Previous User'] = '&laquo; Prejï¿½nji uporabnik';
 $strings['Next User'] = 'Naslednji uporabnik &raquo;';
 
 $strings['No results'] = 'Ni rezultatov';
-$strings['That record could not be found.'] = 'Vpisa ni bilo mogoère najti.';
-$strings['This blackout is not recurring.'] = 'Ta vpis nerazpoložljivega èasa se ne ponavlja.';
+$strings['That record could not be found.'] = 'Vpisa ni bilo mogoï¿½re najti.';
+$strings['This blackout is not recurring.'] = 'Ta vpis nerazpoloï¿½ljivega ï¿½asa se ne ponavlja.';
 $strings['This reservation is not recurring.'] = 'Ta rezervacija se ne  ponavlja.';
 $strings['There are no records in the table.'] = 'Ni rezultatov v %s tabeli.';
 $strings['You do not have any reservations scheduled.'] = 'Nobenih rezervacij nimate vpisanih.';
-$strings['You do not have permission to use any resources.'] = 'Nimaš dovoljenja za uporabo kateregakoli sredstva.';
+$strings['You do not have permission to use any resources.'] = 'Nimaï¿½ dovoljenja za uporabo kateregakoli sredstva.';
 $strings['No resources in the database.'] = 'V podatkovni bazi ni sredstev.';
-$strings['There was an error executing your query'] = 'Napaka pri izvedbi vaše poizvedbe:';
+$strings['There was an error executing your query'] = 'Napaka pri izvedbi vaï¿½e poizvedbe:';
 
-$strings['That cookie seems to be invalid'] = 'Izgleda da je ta kolaèek neveljaven';
+$strings['That cookie seems to be invalid'] = 'Izgleda da je ta kolaï¿½ek neveljaven';
 $strings['We could not find that logon in our database.'] = 'We could not find that logon in our database.';	// @since 1.1.0
-$strings['That password did not match the one in our database.'] = 'To geslo se ne ujema s tem v naši podatkovni bazi.';
-$strings['You can try'] = '<br />Poskusite lahko:<br />Registrirati E-poštni naslov.<br />Ali:<br />Ponovno se prijaviti.';
+$strings['That password did not match the one in our database.'] = 'To geslo se ne ujema s tem v naï¿½i podatkovni bazi.';
+$strings['You can try'] = '<br />Poskusite lahko:<br />Registrirati E-poï¿½tni naslov.<br />Ali:<br />Ponovno se prijaviti.';
 $strings['A new user has been added'] = 'Dodan je bil nov uporabnik';
-$strings['You have successfully registered'] = 'Uspešno ste se registrirali!';
+$strings['You have successfully registered'] = 'Uspeï¿½no ste se registrirali!';
 $strings['Continue'] = 'Nadaljuj...';
-$strings['Your profile has been successfully updated!'] = 'Vaš profil je bil uspešno obnovljen!';
-$strings['Please return to My Control Panel'] = 'Prosim vrni me na mojo nadzorno plošèo';
+$strings['Your profile has been successfully updated!'] = 'Vaï¿½ profil je bil uspeï¿½no obnovljen!';
+$strings['Please return to My Control Panel'] = 'Prosim vrni me na mojo nadzorno ploï¿½ï¿½o';
 $strings['Valid email address is required.'] = '- Potreben je veljaven E-naslov.';
 $strings['First name is required.'] = '- Potrebno je ime.';
 $strings['Last name is required.'] = '- Potreben je priimek.';
-$strings['Phone number is required.'] = '- Potrebna je telefonska številka.';
-$strings['That email is taken already.'] = '- Ta E-naslov je že zaseden.<br />Prosim poskusite ponovno z drugim E-poštnim naslovom.';
+$strings['Phone number is required.'] = '- Potrebna je telefonska ï¿½tevilka.';
+$strings['That email is taken already.'] = '- Ta E-naslov je ï¿½e zaseden.<br />Prosim poskusite ponovno z drugim E-poï¿½tnim naslovom.';
 $strings['Min 6 character password is required.'] = '- Geslo mora vsebovati min %s znakov.';
 $strings['Passwords do not match.'] = '- Gesli se ne ujemata.';
 
 $strings['Per page'] = 'Na stran:';
 $strings['Page'] = 'Stran:';
 
-$strings['Your reservation was successfully created'] = 'Vaša rezervacija je bila uspešno vpisana';
-$strings['Your reservation was successfully modified'] = 'Vaša rezervacija je bila uspešno spremenjena';
-$strings['Your reservation was successfully deleted'] = 'Vaša rezervacija je bila uspešno izbrisana';
-$strings['Your blackout was successfully created'] = 'Vaš nerazpoložljiv èas je bil uspešno vpisan';
-$strings['Your blackout was successfully modified'] = 'Vaš nerazpoložljiv èas je bil uspešno spremenjen';
-$strings['Your blackout was successfully deleted'] = 'Vaš nerazpoložljiv èas je bil uspešno izbrisan';
-$strings['for the follwing dates'] = 'za sledeèe datume:';
-$strings['Start time must be less than end time'] = 'Zaèetni èas mora biti manjši od konènega.';
-$strings['Current start time is'] = 'Zdajšnji zaèetni èas je:';
-$strings['Current end time is'] = 'Zdajšnji konèni èas je:';
-$strings['Reservation length does not fall within this resource\'s allowed length.'] = 'Dolžina rezervacije presega dovoljeno mejo tega sredstva.';
-$strings['Your reservation is'] = 'Vaša rezervacija je:';
-$strings['Minimum reservation length'] = 'Minimalna dolžina rezervacije:';
-$strings['Maximum reservation length'] = 'Maksimalna dolžina rezervacije:';
+$strings['Your reservation was successfully created'] = 'Vaï¿½a rezervacija je bila uspeï¿½no vpisana';
+$strings['Your reservation was successfully modified'] = 'Vaï¿½a rezervacija je bila uspeï¿½no spremenjena';
+$strings['Your reservation was successfully deleted'] = 'Vaï¿½a rezervacija je bila uspeï¿½no izbrisana';
+$strings['Your blackout was successfully created'] = 'Vaï¿½ nerazpoloï¿½ljiv ï¿½as je bil uspeï¿½no vpisan';
+$strings['Your blackout was successfully modified'] = 'Vaï¿½ nerazpoloï¿½ljiv ï¿½as je bil uspeï¿½no spremenjen';
+$strings['Your blackout was successfully deleted'] = 'Vaï¿½ nerazpoloï¿½ljiv ï¿½as je bil uspeï¿½no izbrisan';
+$strings['for the follwing dates'] = 'za sledeï¿½e datume:';
+$strings['Start time must be less than end time'] = 'Zaï¿½etni ï¿½as mora biti manjï¿½i od konï¿½nega.';
+$strings['Current start time is'] = 'Zdajï¿½nji zaï¿½etni ï¿½as je:';
+$strings['Current end time is'] = 'Zdajï¿½nji konï¿½ni ï¿½as je:';
+$strings['Reservation length does not fall within this resource\'s allowed length.'] = 'Dolï¿½ina rezervacije presega dovoljeno mejo tega sredstva.';
+$strings['Your reservation is'] = 'Vaï¿½a rezervacija je:';
+$strings['Minimum reservation length'] = 'Minimalna dolï¿½ina rezervacije:';
+$strings['Maximum reservation length'] = 'Maksimalna dolï¿½ina rezervacije:';
 $strings['You do not have permission to use this resource.'] = 'Nimate dovoljenja za uporabo tega sredstva.';
-$strings['reserved or unavailable'] = '%s do %s je rezerviran ali nerazpoložljiv.';	// @since 1.1.0
+$strings['reserved or unavailable'] = '%s do %s je rezerviran ali nerazpoloï¿½ljiv.';	// @since 1.1.0
 $strings['Reservation created for'] = 'Rezervacija vpisana za %s';
 $strings['Reservation modified for'] = 'Rezervacija spremenjena za %s';
 $strings['Reservation deleted for'] = 'Rezervacija izbrisana za %s';
@@ -507,25 +507,25 @@ $strings['Reservations by day of the week'] = 'Rezervacije po dnevu v tednu';
 $strings['Reservations per month'] = 'Rezervacij na mesec';
 $strings['Reservations per user'] = 'Rezervacij na uporabnika';
 $strings['Reservations per resource'] = 'Rezervacij po sredstvu';
-$strings['Reservations per start time'] = 'Rezervacije po zaèetnem èasu';
-$strings['Reservations per end time'] = 'Rezervacije po konènem èasu';
+$strings['Reservations per start time'] = 'Rezervacije po zaï¿½etnem ï¿½asu';
+$strings['Reservations per end time'] = 'Rezervacije po konï¿½nem ï¿½asu';
 $strings['[All Reservations]'] = '[Vse rezervacije]';
 
 $strings['Permissions Updated'] = 'Dovoljenja obnovljena';
-$strings['Your permissions have been updated'] = 'Vaša %s dovoljenja so bila obnovljena';
+$strings['Your permissions have been updated'] = 'Vaï¿½a %s dovoljenja so bila obnovljena';
 $strings['You now do not have permission to use any resources.'] = 'Nimate dovoljenja za uporabo sredstva.';
-$strings['You now have permission to use the following resources'] = 'Sedaj imate dovoljenje za uporabo sledeèih sredstev:';
-$strings['Please contact with any questions.'] = 'Prosim kontaktiraj %s, èe imate kakršnakoli vprašanja.';
+$strings['You now have permission to use the following resources'] = 'Sedaj imate dovoljenje za uporabo sledeï¿½ih sredstev:';
+$strings['Please contact with any questions.'] = 'Prosim kontaktiraj %s, ï¿½e imate kakrï¿½nakoli vpraï¿½anja.';
 $strings['Password Reset'] = 'Ponovno pridobi geslo';
 
-$strings['This will change your password to a new, randomly generated one.'] = 'To bo spremenilo vaše geslo v novo, nakljuèno pridobljeno geslo.';
-$strings['your new password will be set'] = 'Po vpisu vašega E-naslova in po kliku na "Spremeni geslo", bo vaše novo geslo vstavljeno v sistem in poslano na vaš E-poštni naslov.';
+$strings['This will change your password to a new, randomly generated one.'] = 'To bo spremenilo vaï¿½e geslo v novo, nakljuï¿½no pridobljeno geslo.';
+$strings['your new password will be set'] = 'Po vpisu vaï¿½ega E-naslova in po kliku na "Spremeni geslo", bo vaï¿½e novo geslo vstavljeno v sistem in poslano na vaï¿½ E-poï¿½tni naslov.';
 $strings['Change Password'] = 'Spremeni geslo';
-$strings['Sorry, we could not find that user in the database.'] = '®al nismo našli tega uporabnika v podatkovni bazi.';
-$strings['Your New Password'] = 'Vaše novo %s geslo';
-$strings['Your new passsword has been emailed to you.'] = 'Uspešno opravljeno!<br />'
-    			. 'Vaše novo geslo vam je bilo poslano po E-pošti.<br />'
-    			. 'Prosim preverite svojo E-pošto in se <a href="index.php">prijavite</a>'
+$strings['Sorry, we could not find that user in the database.'] = 'ï¿½al nismo naï¿½li tega uporabnika v podatkovni bazi.';
+$strings['Your New Password'] = 'Vaï¿½e novo %s geslo';
+$strings['Your new passsword has been emailed to you.'] = 'Uspeï¿½no opravljeno!<br />'
+    			. 'Vaï¿½e novo geslo vam je bilo poslano po E-poï¿½ti.<br />'
+    			. 'Prosim preverite svojo E-poï¿½to in se <a href="index.php">prijavite</a>'
     			. ' s tem novim geslom in ga nemudoma spremenite s klikom na &quot;Change My Profile Information/Password&quot;'
     			. ' link in My Control Panel.';
 
@@ -539,114 +539,114 @@ $strings['Login to database'] = 'Login to database';
 $strings['Root user is not required. Any database user who has permission to create tables is acceptable.'] = 'Korenski uporabnik <b>ni</b> zahtevan. Sprejemljiv je katerikoli uporabnik, ki ima dovoljenje za ustvarjanje tabelRoot user is <b>not</b> required. Any database user who has permission to create tables is acceptable.';
 $strings['This will set up all the necessary databases and tables for phpScheduleIt.'] = 'To bo instaliralo vse potrebne podatkovne baze in tabele za phpScheduleIt.';
 $strings['It also populates any required tables.'] = 'It also populates any required tables.';
-$strings['Warning: THIS WILL ERASE ALL DATA IN PREVIOUS phpScheduleIt DATABASES!'] = 'Opozorilo: TO BO IZBRISALO VSE PODATKE V PREJŠNJIH phpScheduleIt PODATKOVNIH BAZAH!';
+$strings['Warning: THIS WILL ERASE ALL DATA IN PREVIOUS phpScheduleIt DATABASES!'] = 'Opozorilo: TO BO IZBRISALO VSE PODATKE V PREJï¿½NJIH phpScheduleIt PODATKOVNIH BAZAH!';
 $strings['Not a valid database type in the config.php file.'] = 'Neveljaven tip podatkovne baze v config.php datoteki.';
-$strings['Database user password is not set in the config.php file.'] = 'Uporabniško geslo podatkovne baze v config.php datoteki ni vpisano.';
+$strings['Database user password is not set in the config.php file.'] = 'Uporabniï¿½ko geslo podatkovne baze v config.php datoteki ni vpisano.';
 $strings['Database name not set in the config.php file.'] = 'Ime podatkovne baze v config.php datoteki ni vpisano.';
-$strings['Successfully connected as'] = 'Uspešno povezano kot';
+$strings['Successfully connected as'] = 'Uspeï¿½no povezano kot';
 $strings['Create tables'] = 'Ustvari tabele &gt;';
-$strings['There were errors during the install.'] = 'Med instalacijo so bile napake. Lahko da bo phpScheduleIt še vedno deloval, èe so bile napake manj pomembne.<br/><br/>'
-	. 'Prosim naslovite kakršnakoli vprašanja na forum na <a href="http://sourceforge.net/forum/?group_id=95547">SourceForge</a>.';
-$strings['You have successfully finished setting up phpScheduleIt and are ready to begin using it.'] = 'Uspešno ste konèali instalacijo phpScheduleIt in ste pripravljeni na uporabo.';
+$strings['There were errors during the install.'] = 'Med instalacijo so bile napake. Lahko da bo phpScheduleIt ï¿½e vedno deloval, ï¿½e so bile napake manj pomembne.<br/><br/>'
+	. 'Prosim naslovite kakrï¿½nakoli vpraï¿½anja na forum na <a href="http://sourceforge.net/forum/?group_id=95547">SourceForge</a>.';
+$strings['You have successfully finished setting up phpScheduleIt and are ready to begin using it.'] = 'Uspeï¿½no ste konï¿½ali instalacijo phpScheduleIt in ste pripravljeni na uporabo.';
 $strings['Thank you for using phpScheduleIt'] = 'Prosim ne pozabite POPOLNOMA ODSTRANITI \'install\' DIREKTORIJ.'
-	. ' To je bistvenega pomena, kajti vsebuje gesla podatkovne baze in druge obèutljive informacije.'
-	. ' Èe tega ne napravite, so vrata odprta za kogarkoli, ki želi vstopiti v vašo podatkovno bazo!'
+	. ' To je bistvenega pomena, kajti vsebuje gesla podatkovne baze in druge obï¿½utljive informacije.'
+	. ' ï¿½e tega ne napravite, so vrata odprta za kogarkoli, ki ï¿½eli vstopiti v vaï¿½o podatkovno bazo!'
 	. '<br /><br />'
 	. 'Hvala za uporabo programa phpScheduleIt!';
-//$strings['This will update your version of phpScheduleIt from 0.9.3 to 1.0.0.'] = 'To bo nadgradilo vašo verzijo phpScheduleIt z 0.9.3 na 1.0.0.';
-$strings['There is no way to undo this action'] = 'Ni naèina za povrnitev tega dejanja!';
+//$strings['This will update your version of phpScheduleIt from 0.9.3 to 1.0.0.'] = 'To bo nadgradilo vaï¿½o verzijo phpScheduleIt z 0.9.3 na 1.0.0.';
+$strings['There is no way to undo this action'] = 'Ni naï¿½ina za povrnitev tega dejanja!';
 $strings['Click to proceed'] = 'Klikni za nadaljevanje';
-//$strings['This version has already been upgraded to 1.0.0.'] = 'Ta verzija je že bila nadgrajena na 1.0.0.';
-$strings['Please delete this file.'] = 'Prosim izbriši to datoteko.';
+//$strings['This version has already been upgraded to 1.0.0.'] = 'Ta verzija je ï¿½e bila nadgrajena na 1.0.0.';
+$strings['Please delete this file.'] = 'Prosim izbriï¿½i to datoteko.';
 $strings['Successful update'] = 'Posodobitev je v popolnosti uspela';
-$strings['Patch completed successfully'] = 'Popravek uspešno izveden';
+$strings['Patch completed successfully'] = 'Popravek uspeï¿½no izveden';
 //$strings['This will populate the required fields for phpScheduleIt 1.0.0 and patch a data bug in 0.9.9.'] = 'To bo ustvarilo potrebna polja za phpScheduleIt 1.0.0 in popravilo napake iz 0.9.9.'
-//		. '<br />To je potrebno samo, èe ste roèno posodobili SQL ali nadgrajujete iz verzije 0.9.9';
+//		. '<br />To je potrebno samo, ï¿½e ste roï¿½no posodobili SQL ali nadgrajujete iz verzije 0.9.9';
 
 // @since 1.0.0 RC1
-$strings['If no value is specified, the default password set in the config file will be used.'] = 'Èe ni doloèena nobena vrednost, potem bo uporabljeno privzeto geslo iz datoteke config.php.';
+$strings['If no value is specified, the default password set in the config file will be used.'] = 'ï¿½e ni doloï¿½ena nobena vrednost, potem bo uporabljeno privzeto geslo iz datoteke config.php.';
 $strings['Notify user that password has been changed?'] = 'Obvesti uporabnika, da je bilo geslo spremenjeno?';
 
 // @since 1.1.0
-$strings['This system requires that you have an email address.'] = 'Ta sistem zahteva, da imate E-poštni naslov.';
-$strings['Invalid User Name/Password.'] = 'Neveljavno uporabniško ime/geslo.';
-$strings['Pending User Reservations'] = 'Viseèe rezervacije uporabnikov';
+$strings['This system requires that you have an email address.'] = 'Ta sistem zahteva, da imate E-poï¿½tni naslov.';
+$strings['Invalid User Name/Password.'] = 'Neveljavno uporabniï¿½ko ime/geslo.';
+$strings['Pending User Reservations'] = 'Viseï¿½e rezervacije uporabnikov';
 $strings['Approve'] = 'Approve';
 $strings['Approve this reservation'] = 'Odobri to rezervacijo';
 $strings['Approve Reservations'] ='Odobri rezervacije';
 
 $strings['Announcement'] = 'Obvestilo';
-$strings['Number'] = 'Številka';
+$strings['Number'] = 'ï¿½tevilka';
 $strings['Add Announcement'] = 'Dodaj obvestilo';
 $strings['Edit Announcement'] = 'Uredi obvestilo';
 $strings['All Announcements'] = 'Vsa obvestila';
-$strings['Delete Announcements'] = 'Izbriši obvestila';
-$strings['Use start date/time?'] = 'Uporabi zaèeten datum/èas?';
-$strings['Use end date/time?'] = 'Uporabi konèen datum/èas?';
+$strings['Delete Announcements'] = 'Izbriï¿½i obvestila';
+$strings['Use start date/time?'] = 'Uporabi zaï¿½eten datum/ï¿½as?';
+$strings['Use end date/time?'] = 'Uporabi konï¿½en datum/ï¿½as?';
 $strings['Announcement text is required.'] = 'Zahtevan je tekst obvestila.';
-$strings['Announcement number is required.'] = 'Zahtevana je številka obvestila.';
+$strings['Announcement number is required.'] = 'Zahtevana je ï¿½tevilka obvestila.';
 
 
-$strings['Pending Approval'] = 'Odobritev viseèih rezervacij';
+$strings['Pending Approval'] = 'Odobritev viseï¿½ih rezervacij';
 $strings['My reservation is approved'] = 'je moja rezervacija odobrena';
 $strings['This reservation must be approved by the administrator.'] = 'Ta rezervacija mora biti odobrena od administratorja.';
 $strings['Approval Required'] = 'Zahtevana odobritev';
 $strings['No reservations requiring approval'] = 'Nobena rezervacija ne potrebuje odobritve';
-$strings['Your reservation was successfully approved'] = 'Vaše rezervacije so bile uspešno odobrene';
+$strings['Your reservation was successfully approved'] = 'Vaï¿½e rezervacije so bile uspeï¿½no odobrene';
 $strings['Reservation approved for'] = 'Rezervacija odobrena za %s';
 $strings['approved'] = 'odobreno';
 $strings['Reservation approved'] = 'Rezervacija odobrena';
 
-$strings['Valid username is required'] = 'Potrebno je veljavno uporabniško ime';
-$strings['That logon name is taken already.'] = 'To uporabniško ime je že zavzeto.';
-$strings['this will be your login'] = '(to bo vaše geslo)';
-$strings['Logon name'] = 'Uporabniško ime';
-$strings['Your logon name is'] = 'Vaše uporabniško ime je %s';
+$strings['Valid username is required'] = 'Potrebno je veljavno uporabniï¿½ko ime';
+$strings['That logon name is taken already.'] = 'To uporabniï¿½ko ime je ï¿½e zavzeto.';
+$strings['this will be your login'] = '(to bo vaï¿½e geslo)';
+$strings['Logon name'] = 'Uporabniï¿½ko ime';
+$strings['Your logon name is'] = 'Vaï¿½e uporabniï¿½ko ime je %s';
 
-$strings['Start'] = 'Zaèetek';
+$strings['Start'] = 'Zaï¿½etek';
 $strings['End'] = 'Konec';
-$strings['Start date must be less than or equal to end date'] = 'Zaèetni datum mora biti manjši ali enak konènemu datumu';
-$strings['That starting date has already passed'] = 'Ta zaèeten datum je že minil';
+$strings['Start date must be less than or equal to end date'] = 'Zaï¿½etni datum mora biti manjï¿½i ali enak konï¿½nemu datumu';
+$strings['That starting date has already passed'] = 'Ta zaï¿½eten datum je ï¿½e minil';
 $strings['Basic'] = 'Osnovno';
-$strings['Participants'] = 'Udeleženci';
+$strings['Participants'] = 'Udeleï¿½enci';
 $strings['Close'] = 'Zapri';
-$strings['Start Date'] = 'Datum zaèetka';
+$strings['Start Date'] = 'Datum zaï¿½etka';
 $strings['End Date'] = 'Datum konca';
 $strings['Minimum'] = 'Minimum';
 $strings['Maximum'] = 'Maksimum';
-$strings['Allow Multiple Day Reservations'] = 'Dovoli veèdnevne rezervacije';
+$strings['Allow Multiple Day Reservations'] = 'Dovoli veï¿½dnevne rezervacije';
 $strings['Invited Users'] = 'Povabljeni uporabniki';
 $strings['Invite Users'] = 'Povabi uporabnike';
-$strings['Remove Participants'] = 'Odstrani udeležence';
+$strings['Remove Participants'] = 'Odstrani udeleï¿½ence';
 $strings['Reservation Invitation'] = 'Povabilo k rezervaciji';
 $strings['Manage Invites'] = 'Uredi povabila';
 $strings['No invite was selected'] = 'Nobeno povabilo ni bilo izbrano';
 $strings['reservation accepted'] = '%s Accepted Your Invitation on %s';
 $strings['reservation declined'] = '%s Declined Your Invitation on %s';
 $strings['Login to manage all of your invitiations'] = 'Prijavite se, da bi lahko urejali svoja povabila';
-$strings['Reservation Participation Change'] = 'Spremeni udeležence rezervacije';
+$strings['Reservation Participation Change'] = 'Spremeni udeleï¿½ence rezervacije';
 $strings['My Invitations'] = 'Moja povabila';
 $strings['Accept'] = 'Sprejmi';
 $strings['Decline'] = 'Odkloni';
 $strings['Accept or decline this reservation'] = 'Sprejmi ali odkloni to rezervacijo';
-$strings['My Reservation Participation'] = 'Moja udeležba pri rezervacijah';
-$strings['End Participation'] = 'Odstrani udeležbo';
+$strings['My Reservation Participation'] = 'Moja udeleï¿½ba pri rezervacijah';
+$strings['End Participation'] = 'Odstrani udeleï¿½bo';
 $strings['Owner'] = 'Lastnik';
-$strings['Particpating Users'] = 'Potrjeni udeleženci';
-$strings['No advanced options available'] = 'Napredne možnosti niso na voljo';
-$strings['Confirm reservation participation'] = 'Potrdi udeležbo pri rezervaciji';
+$strings['Particpating Users'] = 'Potrjeni udeleï¿½enci';
+$strings['No advanced options available'] = 'Napredne moï¿½nosti niso na voljo';
+$strings['Confirm reservation participation'] = 'Potrdi udeleï¿½bo pri rezervaciji';
 $strings['Confirm'] = 'Potrdi';
 $strings['Do for all reservations in the group?'] = 'Za vse rezervacije v skupini?';
 
 $strings['My Calendar'] = 'Moj koledar';
 $strings['View My Calendar'] = 'Poglej moj koledar';
-$strings['Participant'] = 'Udeleženec';
-$strings['Recurring'] = 'Ponavljajoèe';
-$strings['Multiple Day'] = 'Veè dni';
+$strings['Participant'] = 'Udeleï¿½enec';
+$strings['Recurring'] = 'Ponavljajoï¿½e';
+$strings['Multiple Day'] = 'Veï¿½ dni';
 $strings['[today]'] = '[danes]';
 $strings['Day View'] = 'Dnevni pogled';
 $strings['Week View'] = 'Tedenski pogled';
-$strings['Month View'] = 'Meseèni pogled';
+$strings['Month View'] = 'Meseï¿½ni pogled';
 $strings['Resource Calendar'] = 'Koledar sredstev';
 $strings['View Resource Calendar'] = 'Urnik - Koledar';	// @since 1.2.0
 $strings['Signup View'] = 'Signup View';
@@ -655,8 +655,8 @@ $strings['Select User'] = 'Izberi uporabnika';
 $strings['Change'] = 'Spremeni';
 
 $strings['Update'] = 'Posodobi';
-$strings['phpScheduleIt Update is only available for versions 1.0.0 or later'] = 'phpScheduleIt Nadgradnja je na voljo samo verzijo za 1.0.0 ali poznejšo';
-$strings['phpScheduleIt is already up to date'] = 'phpScheduleIt - to je najnovejša razlièica';
+$strings['phpScheduleIt Update is only available for versions 1.0.0 or later'] = 'phpScheduleIt Nadgradnja je na voljo samo verzijo za 1.0.0 ali poznejï¿½o';
+$strings['phpScheduleIt is already up to date'] = 'phpScheduleIt - to je najnovejï¿½a razliï¿½ica';
 $strings['Migrating reservations'] = 'Preseli rezervacije';
 
 $strings['Admin'] = 'Admin';
@@ -665,57 +665,57 @@ $strings['There are no announcements'] = 'Ni obvestil';
 // end since 1.1.0
 
 // @since 1.2.0
-$strings['Maximum Participant Capacity'] = 'Maksimalna kapaciteta udeležencev';
-$strings['Leave blank for unlimited'] = 'Pusti prazno za neskonèno';
-$strings['Maximum of participants'] = 'Maksimalna kapaciteta tega sredstva je %s udeležencev';
+$strings['Maximum Participant Capacity'] = 'Maksimalna kapaciteta udeleï¿½encev';
+$strings['Leave blank for unlimited'] = 'Pusti prazno za neskonï¿½no';
+$strings['Maximum of participants'] = 'Maksimalna kapaciteta tega sredstva je %s udeleï¿½encev';
 $strings['That reservation is at full capacity.'] = 'Ta rezervacija je zasedena.';
-$strings['Allow registered users to join?'] = 'Dovoli registriranim uporabnikom, da se pridružijo?';
-$strings['Allow non-registered users to join?'] = 'Dovoli ne-registriranim uporabnikom, da se pridružijo?';
-$strings['Join'] = 'Pridruži se';
-$strings['My Participation Options'] = 'Možnosti za moje sodelovanje';
-$strings['Join Reservation'] = 'Pridruži se Rezervaciji';
-$strings['Join All Recurring'] = 'Pridruži se vsem ponavljajoèim';
-$strings['You are not participating on the following reservation dates because they are at full capacity.'] = 'Ne sodeluješ pri sledeèih rezervacijah, ker so polno zasedene.';
-$strings['You are already invited to this reservation. Please follow participation instructions previously sent to your email.'] = 'K tej rezervaciji si že povabljen. Prosim sledi navodilom za sodelovanje pri rezervaciji, ki so bila poslana na tvoj email.';
+$strings['Allow registered users to join?'] = 'Dovoli registriranim uporabnikom, da se pridruï¿½ijo?';
+$strings['Allow non-registered users to join?'] = 'Dovoli ne-registriranim uporabnikom, da se pridruï¿½ijo?';
+$strings['Join'] = 'Pridruï¿½i se';
+$strings['My Participation Options'] = 'Moï¿½nosti za moje sodelovanje';
+$strings['Join Reservation'] = 'Pridruï¿½i se Rezervaciji';
+$strings['Join All Recurring'] = 'Pridruï¿½i se vsem ponavljajoï¿½im';
+$strings['You are not participating on the following reservation dates because they are at full capacity.'] = 'Ne sodelujeï¿½ pri sledeï¿½ih rezervacijah, ker so polno zasedene.';
+$strings['You are already invited to this reservation. Please follow participation instructions previously sent to your email.'] = 'K tej rezervaciji si ï¿½e povabljen. Prosim sledi navodilom za sodelovanje pri rezervaciji, ki so bila poslana na tvoj email.';
 $strings['Additional Tools'] = 'Dodatna Orodja';
 $strings['Create User'] = 'Ustvari Uporabnika';
 $strings['Check Availability'] = 'Preveri Zasedenost';
 $strings['Manage Additional Resources'] = 'Urejanje dodatnih Sredstev';
 $strings['All Additional Resources'] = 'Vsa dodatna Sredstva';
-$strings['Number Available'] = 'Številka je na voljo';
+$strings['Number Available'] = 'ï¿½tevilka je na voljo';
 $strings['Unlimited'] = 'Neomejeno';
 $strings['Add Additional Resource'] = 'Dodaj dodatno Sredstvo';
 $strings['Edit Additional Resource'] = 'Uredi dodatno Sredstvo';
 $strings['Checking'] = 'Preveri';
-$strings['You did not select anything to delete.'] = 'Nièesar nisi izbral za izbris.';
+$strings['You did not select anything to delete.'] = 'Niï¿½esar nisi izbral za izbris.';
 $strings['Added Resources'] = 'Dodana Sredstva';
 $strings['Additional resource is reserved'] = 'Dodatno sredstvo %s ima na voljo samo %s ';
 $strings['All Groups'] = 'Vse Skupine';
 $strings['Group Name'] = 'Ime Skupine';
-$strings['Delete Groups'] = 'Izbriši Skupino';
+$strings['Delete Groups'] = 'Izbriï¿½i Skupino';
 $strings['Manage Groups'] = 'Urejanje Skupin';
 $strings['None'] = 'Nobena';
 $strings['Group name is required.'] = 'Potrebno je ime Skupine.';
 $strings['Groups'] = 'Skupine';
-$strings['Current Groups'] = 'Tekoèe Skupine';
+$strings['Current Groups'] = 'Tekoï¿½e Skupine';
 $strings['Group Administration'] = 'Administracija Skupine';
 $strings['Reminder Subject'] = 'Opomnik rezervacije- %s, %s %s';
 $strings['Reminder'] = 'Opomnik';
 $strings['before reservation'] = 'pred rezervacijo';
-$strings['My Participation'] = 'Moja udeležba';
-$strings['My Past Participation'] = 'Moja pretekla udeležba';
-$strings['Timezone'] = 'Èasovni pas';
+$strings['My Participation'] = 'Moja udeleï¿½ba';
+$strings['My Past Participation'] = 'Moja pretekla udeleï¿½ba';
+$strings['Timezone'] = 'ï¿½asovni pas';
 $strings['Export'] = 'Izvozi';
 $strings['Select reservations to export'] = 'Izberi rezervacije za Izvoz';
 $strings['Export Format'] = 'Format za Izvoz';
 $strings['This resource cannot be reserved less than x hours in advance'] = 'To sredstvo ne more biti rezervirano manj kot %s ur v naprej';
-$strings['This resource cannot be reserved more than x hours in advance'] = 'To sredstvo ne more biti rezervirano veè kot %s ur v naprej';
+$strings['This resource cannot be reserved more than x hours in advance'] = 'To sredstvo ne more biti rezervirano veï¿½ kot %s ur v naprej';
 $strings['Minimum Booking Notice'] = 'Minimalna Opomba za Rezervacijo';
 $strings['Maximum Booking Notice'] = 'Maksimalna Opomba za Rezervacijo';
-$strings['hours prior to the start time'] = 'ur pred èasom zaèetka';
+$strings['hours prior to the start time'] = 'ur pred ï¿½asom zaï¿½etka';
 $strings['hours from the current time'] = 'ur od tega trenutka';
 $strings['Contains'] = 'Vsebuje';
-$strings['Begins with'] = 'Se zaène z';
+$strings['Begins with'] = 'Se zaï¿½ne z';
 $strings['Minimum booking notice is required.'] = 'Potrebna je minimalna opomba za to rezervacijo.';
 $strings['Maximum booking notice is required.'] = 'Potrebna je maximalna opomba za to rezervacijo.';
 // end since 1.2.0
@@ -730,96 +730,96 @@ $strings['Maximum booking notice is required.'] = 'Potrebna je maximalna opomba 
 // @since 1.1.0
 // Email message that a user gets after they register
 $email['register'] = "%s, %s \r\n"
-				. "Uspešno ste se registrirali s sledeèimi informacijami:\r\n"
+				. "Uspeï¿½no ste se registrirali s sledeï¿½imi informacijami:\r\n"
 				. "Prijava: %s\r\n"
 				. "Ime: %s %s \r\n"
 				. "Telefon: %s \r\n"
 				. "Institucija: %s \r\n"
-				. "Položaj: %s \r\n\r\n"
-				. "Prosim prijavite se v urnik na sledeèem naslovu:\r\n"
+				. "Poloï¿½aj: %s \r\n\r\n"
+				. "Prosim prijavite se v urnik na sledeï¿½em naslovu:\r\n"
 				. "%s \r\n\r\n"
-				. "Povezave za spletni urnik in urejanje svojega profila lahko najdeš v Nadzorni plošèi.\r\n\r\n"
-				. "Prosim naslovite vsa vprašanja v zvezi z rezervacijami na %s";
+				. "Povezave za spletni urnik in urejanje svojega profila lahko najdeï¿½ v Nadzorni ploï¿½ï¿½i.\r\n\r\n"
+				. "Prosim naslovite vsa vpraï¿½anja v zvezi z rezervacijami na %s";
 
 // Email message the admin gets after a new user registers
 $email['register_admin'] = "Administrator,\r\n\r\n"
-					. "Nov uporabnik se je registriral s sledeèimi informacijami:\r\n"
+					. "Nov uporabnik se je registriral s sledeï¿½imi informacijami:\r\n"
 					. "E-naslov: %s \r\n"
 					. "Ime: %s %s \r\n"
 					. "Telefon: %s \r\n"
 					. "Institutcija: %s \r\n"
-					. "Položaj: %s \r\n\r\n";
+					. "Poloï¿½aj: %s \r\n\r\n";
 
 // First part of the email that a user gets after they create/modify/delete a reservation
 // 'reservation_activity_1' through 'reservation_activity_6' are all part of one email message
 //  that needs to be assembled depending on different options.  Please translate all of them.
 // @since 1.1.0
 $email['reservation_activity_1'] = "%s,\r\n<br />"
-			. "uspešno ste %s rezervacijo #%s.\r\n\r\n<br/><br/>"
-			. "Prosim uporabite številko te rezervacije, ko s kakršnimi koli vprašanji kontaktirate administratorja.\r\n\r\n<br/><br/>"
+			. "uspeï¿½no ste %s rezervacijo #%s.\r\n\r\n<br/><br/>"
+			. "Prosim uporabite ï¿½tevilko te rezervacije, ko s kakrï¿½nimi koli vpraï¿½anji kontaktirate administratorja.\r\n\r\n<br/><br/>"
 			. "Rezervacija je bila vpisana med %s %s in %s %s za %s"
 			. " na lokaciji %s.\r\n\r\n<br/><br/>";
-$email['reservation_activity_2'] = "Ta rezervacija je bila ponovljena na sledeèe datume:\r\n<br/>";
-$email['reservation_activity_3'] = "Vse ponavljajoèe se rezervacije v tej skupini so bile tudi %s.\r\n\r\n<br/><br/>";
-$email['reservation_activity_4'] = "Za to rezervacijo je bil napravljen sledeè povzetek:\r\n<br/>%s\r\n\r\n<br/><br/>";
-$email['reservation_activity_5'] = "Èe je to napaka, prosim kontaktirajte administratorja na: %s"
+$email['reservation_activity_2'] = "Ta rezervacija je bila ponovljena na sledeï¿½e datume:\r\n<br/>";
+$email['reservation_activity_3'] = "Vse ponavljajoï¿½e se rezervacije v tej skupini so bile tudi %s.\r\n\r\n<br/><br/>";
+$email['reservation_activity_4'] = "Za to rezervacijo je bil napravljen sledeï¿½ povzetek:\r\n<br/>%s\r\n\r\n<br/><br/>";
+$email['reservation_activity_5'] = "ï¿½e je to napaka, prosim kontaktirajte administratorja na: %s"
 			. " ali po telefonu: %s.\r\n\r\n<br/><br/>"
 			. "Informacije glede svoje rezervacijo lahko vidite kadarkoli, tako da se"
 			. " prijavite v %s tukaj:\r\n<br/>"
 			. "<a href=\"%s\" target=\"_blank\">%s</a>.\r\n\r\n<br/><br/>";
-$email['reservation_activity_6'] = "Vsa tehnièna vprašanja prosim naslovite na <a href=\"mailto:%s\">%s</a>.\r\n\r\n<br/><br/>";
+$email['reservation_activity_6'] = "Vsa tehniï¿½na vpraï¿½anja prosim naslovite na <a href=\"mailto:%s\">%s</a>.\r\n\r\n<br/><br/>";
 // @since 1.1.0
 $email['reservation_activity_7'] = "%s,\r\n<br />"
 			. "Rezervacija #%s je bila odobrena.\r\n\r\n<br/><br/>"
-			. "Prosim uporabite številko te rezervacije, ko s kakršnimi koli vprašanji kontaktirate administratorja.\r\n\r\n<br/><br/>"
+			. "Prosim uporabite ï¿½tevilko te rezervacije, ko s kakrï¿½nimi koli vpraï¿½anji kontaktirate administratorja.\r\n\r\n<br/><br/>"
 			. "Rezervacija med %s %s in %s %s za %s"
 			. " v %s je bila vpisana.\r\n\r\n<br/><br/>";
 
 // Email that the user gets when the administrator changes their password
-$email['password_reset'] = "Vaše %s geslo je bilo obnovljeno s strani administratorja.\r\n\r\n"
-			. "Vaše zaèasno geslo je:\r\n\r\n %s\r\n\r\n"
-			. "Prosim uporabite to zaèasno geslo (kopiraj in prilepi, da boš siguren v pravilnost) za prijavo v %s na %s"
+$email['password_reset'] = "Vaï¿½e %s geslo je bilo obnovljeno s strani administratorja.\r\n\r\n"
+			. "Vaï¿½e zaï¿½asno geslo je:\r\n\r\n %s\r\n\r\n"
+			. "Prosim uporabite to zaï¿½asno geslo (kopiraj in prilepi, da boï¿½ siguren v pravilnost) za prijavo v %s na %s"
 			. " in ga nemudoma spremeni z uporabo 'Spremeni informacije mojega profila/gesla' povezave v Moje hitre povezave tabeli.\r\n\r\n"
-			. "Prosim kontaktirajte %s , èe imate kakršnakoli vprašanja.";
+			. "Prosim kontaktirajte %s , ï¿½e imate kakrï¿½nakoli vpraï¿½anja.";
 
 // Email that the user gets when they change their lost password using the 'Password Reset' form
 $email['new_password'] = "%s,\r\n"
-            . "Vaše novo geslo za vaš %s raèun je:\r\n\r\n"
+            . "Vaï¿½e novo geslo za vaï¿½ %s raï¿½un je:\r\n\r\n"
             . "%s\r\n\r\n"
             . "Prosim prijavite se tukaj: %s "
             . "s tem novim geslom "
             . "(kopiraj in prilepi, da bo sigurno pravilno) "
             . "in nemudoma spremenite svoje geslo s klikom na "
             . "Spremeni informacije mojega profila/gesla "
-            . "povezava na mojo nadzorno plošèo.\r\n\r\n"
-            . "Prosim naslovite kakršnakoli vprašanja na %s.";
+            . "povezava na mojo nadzorno ploï¿½ï¿½o.\r\n\r\n"
+            . "Prosim naslovite kakrï¿½nakoli vpraï¿½anja na %s.";
 
 // @since 1.1.0
 // Email that is sent to invite users to a reservation
-$email['reservation_invite'] = "%s vas je povabil/a k sledeèi rezervaciji:\r\n\r\n"
+$email['reservation_invite'] = "%s vas je povabil/a k sledeï¿½i rezervaciji:\r\n\r\n"
 		. "Sredstvo: %s\r\n"
-		. "Datum zaèetka: %s\r\n"
-		. "Èas zaèetka: %s\r\n"
+		. "Datum zaï¿½etka: %s\r\n"
+		. "ï¿½as zaï¿½etka: %s\r\n"
 		. "Datum konca: %s\r\n"
-		. "Èas konca: %s\r\n"
+		. "ï¿½as konca: %s\r\n"
 		. "Povzetek: %s\r\n"
-		. "Ponavljajoèi se datumi (èe so kakšni): %s\r\n\r\n"
-		. "Da bi sprejeli to povabilo, kliknite sledeèo povezavo (kopiraj in prilepi, èe ni obarvana) %s\r\n"
-		. "Da bi zavrnili to povabilo, kliknite to povezavo (kopiraj in prilepi, èe ni obarvana) %s\r\n"
+		. "Ponavljajoï¿½i se datumi (ï¿½e so kakï¿½ni): %s\r\n\r\n"
+		. "Da bi sprejeli to povabilo, kliknite sledeï¿½o povezavo (kopiraj in prilepi, ï¿½e ni obarvana) %s\r\n"
+		. "Da bi zavrnili to povabilo, kliknite to povezavo (kopiraj in prilepi, ï¿½e ni obarvana) %s\r\n"
 		. "Da bi sprejeli izbrane datume ali uredili svoja povabila pozneje, se prosim prijavite v %s na %s";
 
 // @since 1.1.0
 // Email that is sent when a user is removed from a reservation
-$email['reservation_removal'] = "Bili ste izbrisani iz sledeèe rezervacije:\r\n\r\n"
+$email['reservation_removal'] = "Bili ste izbrisani iz sledeï¿½e rezervacije:\r\n\r\n"
 		. "Sredstvo: %s\r\n"
-		. "Datum zaèetka: %s\r\n"
-		. "Èas zaèetka: %s\r\n"
+		. "Datum zaï¿½etka: %s\r\n"
+		. "ï¿½as zaï¿½etka: %s\r\n"
 		. "Datum konca: %s\r\n"
-		. "Èas konca: %s\r\n"
+		. "ï¿½as konca: %s\r\n"
 		. "Povzetek: %s\r\n"
-		. "Ponavljajoèi se datumi (èe so kakšni): %s\r\n\r\n";
+		. "Ponavljajoï¿½i se datumi (ï¿½e so kakï¿½ni): %s\r\n\r\n";
 		
 // @since 1.2.0
 // Email body that is sent for reminders
-$email['Reminder Body'] = "Približuje se tvoja rezervacija za %s od %s %s do %s %s .";
+$email['Reminder Body'] = "Pribliï¿½uje se tvoja rezervacija za %s od %s %s do %s %s .";
 ?>

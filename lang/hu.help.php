@@ -25,286 +25,285 @@
 // Please keep the HTML formatting unless you need to change it.  Also, please try
 //  to keep the HTML XHTML 1.0 Transitional complaint.
 ///////////////////////////////////////////////////////////
-?>
-<div align="center"> 
-  <h3><a name="top" id="top"></a>Bevezetõ a phpScheduleIt használatába</h3>
+?><div align="center">
+  <h3><a name="top" id="top"></a>Bevezetï¿½ a phpScheduleIt hasznï¿½latï¿½ba</h3>
   <p><a href="http://phpscheduleit.sourceforge.net" target="_blank">http://phpscheduleit.sourceforge.net</a></p>
   <table width="100%" border="0" cellspacing="0" cellpadding="5" style="border: solid #CCCCCC 1px">
     <tr> 
       <td bgcolor="#FAFAFA"> 
         <ul>
-          <li><b><a href="#getting_started">Bevezetés</a></b></li>
+          <li><b><a href="#getting_started">Bevezetï¿½s</a></b></li>
           <ul>
-            <li><a href="#registering">Regisztráció</a></li>
-            <li><a href="#logging_in">Bejelentkezés</a></li>
-            <li><a href="#language">Nyelv Választás</a></li>
-            <li><a href="#manage_profile">Jelszó Váltás/Profil Szerkesztés</a></li>
-            <li><a href="#resetting_password">Elfelejtett Jelszó Visszaállítása</a></li>
-            <li><a href="#getting_support">Támogatás</a></li>
+            <li><a href="#registering">Regisztrï¿½ciï¿½</a></li>
+            <li><a href="#logging_in">Bejelentkezï¿½s</a></li>
+            <li><a href="#language">Nyelv Vï¿½lasztï¿½s</a></li>
+            <li><a href="#manage_profile">Jelszï¿½ Vï¿½ltï¿½s/Profil Szerkesztï¿½s</a></li>
+            <li><a href="#resetting_password">Elfelejtett Jelszï¿½ Visszaï¿½llï¿½tï¿½sa</a></li>
+            <li><a href="#getting_support">Tï¿½mogatï¿½s</a></li>
           </ul>
-          <li><a href="#my_control_panel"><b>Irányító Pult</b></a></li>
+          <li><a href="#my_control_panel"><b>Irï¿½nyï¿½tï¿½ Pult</b></a></li>
           <ul>
             <li><a href="#quick_links">Gyors Linkek</a></li>
-			<li><a href="#my_announcements">Bejelentések</a></li>
-            <li><a href="#my_reservations">Elõjegyzések</a></li>
-            <li><a href="#my_training">Jogosultságok</a></li>
-			<li><a href="#my_invitations">Meghívók</a></li>
-			<li><a href="#my_participation">Meghívott Részvételek</a></li>         
+			<li><a href="#my_announcements">Bejelentï¿½sek</a></li>
+            <li><a href="#my_reservations">Elï¿½jegyzï¿½sek</a></li>
+            <li><a href="#my_training">Jogosultsï¿½gok</a></li>
+			<li><a href="#my_invitations">Meghï¿½vï¿½k</a></li>
+			<li><a href="#my_participation">Meghï¿½vott Rï¿½szvï¿½telek</a></li>         
           </ul>
-          <li><a href="#using_the_scheduler"><b>Az Elõjegyzés Használata</b></a></li>
+          <li><a href="#using_the_scheduler"><b>Az Elï¿½jegyzï¿½s Hasznï¿½lata</b></a></li>
           <ul>
-			<li><a href="#read_only">Csak Olvasható Mód</a></li>
-            <li><a href="#making_a_reservation">Elõjegyzés Menete</a></li>
-            <li><a href="#modifying_deleting_a_reservation">Elõjegyzés 
-              Módosítása/Törlése</a></li>
-            <li><a href="#navigating">Barangolás az Elõjegyzési Rendszerben</a></li>
+			<li><a href="#read_only">Csak Olvashatï¿½ Mï¿½d</a></li>
+            <li><a href="#making_a_reservation">Elï¿½jegyzï¿½s Menete</a></li>
+            <li><a href="#modifying_deleting_a_reservation">Elï¿½jegyzï¿½s 
+              Mï¿½dosï¿½tï¿½sa/Tï¿½rlï¿½se</a></li>
+            <li><a href="#navigating">Barangolï¿½s az Elï¿½jegyzï¿½si Rendszerben</a></li>
           </ul>
         </ul>
 		<hr width="95%" size="1" noshade="noshade" /> 
-        <h4><a name="getting_started" id="getting_started"></a>Bevezetés</h4> 
-        <p>A phpScheduleIt használatához elsõként regisztrálni kell. 
-          Ammennyiben már regisztrált, akkor be kell jelentkeznie a Rendszerbe. 
-          Minden oldal tetején (kivéve a regisztrációs és a bejelentkezõ oldalt)
-          egy köszöntõ üzenetet talál, az aktuális dátummal és néhány linkkel. 
-          A &quot;Kilépés&quot; link és az &quot;Irányító Pult&quot; link 
-          a köszöntõ üzenet alatt, a &quot;Segítség&quot; link pedig a napi 
-          dátum alatt helyezkedik el.</p> 
-          <p>Ha más Felhasználó nevét olvassa a Köszöntõben, klikkeljen a &quot;Kilépés&quot; 
-          linkre, amivel érvényteleníti a sütiket, majd kattintson a <a href="#logging_in">Belépés</a>
-          linkre a bejelentkezéshez. Az &quot;Irányító Pult&quot; linkkel az 
-          <a href="#my_control_panel">Irányító Pultra</a> jut, amely az Ön &quot;központi 
-          lapja&quot; az elõjegyzõ Rendszerben. 
-          Amennyiben ráklikkel a &quot;Segítség&quot; linkre, egy felugró ablak jelenik meg. 
-          A &quot;Levél Küldése az Adminisztrátornak&quot; linket választva egy beviteli mezõ 
-          jelenik meg, mellyel az Rendszer karbantartójának üzenhet.</p> 
-          <p><font color="#FF0000">Figyelem:</font> Ha az ön gépén fut a Norton Personal 
-            Firewall miközben a phpScheduleIt-et használja, akkor problémák léphetnek fel. 
-            Kérem kapcsolja ki a Norton Personal Firewallt, ameddig a phpScheduleIt-tel 
-            dolgozik és kapcsolja vissza amint végzett a teendõivel.</p> 
-          <p align="right"><a href="#top">Ugrás a tetejére</a></p> 
-        <h5><a name="registering" id="registering"></a>Regisztráció</h5> 
-        <p>Regisztrációhoz menjen a Regisztrációs oldalra. Ez elérhetõ egy link 
-          segítségével a bejelentkezõ oldalon. Töltsön ki minden szükséges mezõt.
-          A megadott email cím lehet egyben a Felhasználói Neve is. A megadott 
-          adatokat bármikor megváltoztathatja: <a href="#quick_links">Profil 
-          Megváltoztatása</a>. Ha bejelöli az &quot;Õrizzen meg bejelentkezett állapotban&quot; 
-          opciót, akkor a rendszer sütiket fog használni az ön azonosítására minden alkalommal, 
-          feleslegessé téve ezzel az ismételt bejelentkezést. <i>Csak akkor használja ezt az 
-          opciót, ha Ön az egyedüli, aki a phpScheduleIt-et használja az adott géprõl.</i> 
-          Regisztráció után Ön automatikusan az <a href="#my_control_panel"> 
-          Irányító Pultra</a> kerül.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="logging_in" id="logging_in"></a>Bejelentkezés</h5>
-        <p>Bejelentkezéskor egyszerûen csak meg kell adni a Felhasználó Nevet és a 
-          Jelszavát. Elõbb <a href="#registering">Regisztrálnia</a> kell mielõtt 
-          be tudna jelentkezni. Ezt a Regisztráció linkre kattintva teheti meg az 
-          induló oldalon. Ha bejelöli az &quot;Õrizzen meg bejelentkezett állapotban&quot; 
-          opciót, akkor a rendszer sütiket fog használni az ön azonosítására minden alkalommal, 
-          feleslegessé téve ezzel az ismételt bejelentkezést. <i>Csak akkor használja ezt az 
-          opciót, ha Ön az egyedüli, aki a phpScheduleIt-et használja az adott géprõl.</i> 
-          Regisztráció után Ön automatikusan az <a href="#my_control_panel"> 
-          Irányító Pultra</a> kerül.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="language" id="language"></a>Nyelv Választás</h5>
-        <p>A Bejelentkezõ oldalon elérhetõ egy legördülõ menü, amelyben megtalálható az
-          összes nyelv, amelyet az Adminisztrátor beállított<a href="#my_control_panel"></a>.
-          Kérem válassza ki a kívánt nyelvet és minden phpScheduleIt felírat és üzenet
-          ezen a nyelven fog szólni. A bevitt információk nem kerülnek fordításra
-          sem az adminisztrátor sem más felhasználók által; a Nyelv Választás csak az 
-          alkalmazás szövegezésére terjed ki. Önnek ki kell jelentkeznie, ha egy 
-          másik nyelvet akar kiválasztani.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>        
-        <h5><a name="manage_profile" id="manage_profile"></a>Profil Szerkesztés/Jelszó Váltás</h5>
-        <p>Ha az adatait módosítani szeretné (név, email cím, stb.) vagy jelszót váltana, 
-          elsõként jelentkezzen be. Az <a href="#my_control_panel">Irányító Pulton
-          </a>, a <a href="#quick_links">Gyors Linkek</a> között, klikkeljen a &quot;Profil 
-          Szerkesztése/Jelszó Váltás&quot; linkre. Ez egy olyan oldalra viszi, 
-          ahol az adatai vannak felsorolva. Szerkessze azokat tetszése szerint. Az üresen 
-          hagyott mezõk tartalma nem fog változni. Amennyiben a Jelszavát szeretné Megváltoztatni, 
-          írja azt be kétszer. Amikor végrehajtotta a kívánt változtatásokat, klikkeljen a &quot;Profil Szerkesztése&quot; 
-          linkre és a változások érvénybe fognak lépni. Végezetül vissza fog kerülni az 
-          Irányító Pultra.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="resetting_password" id="resetting_password"></a>Elfelejtett Jelszó Visszaállítása</h5>
-        <p>Amennyiben elfelejtette a Jelszavát, kérheti, hogy a rendszer adjon egy újat 
-          önnek és küldje el email-ben. Ehhez keresse fel és kövesse a Bejelentkezõ oldalon az  
-          &quot;Elfelejtett Jelszó&quot; linket a Bejelentekezõ mezõ alatt. 
-          Egy új oldalra fog kerülni, ahol meg kell adnia email címét. 
-          Miután ráklikkelt a &quot;Küldés&quot; linkre, a rendszer egy Új, véletlen jelszót 
-          generál. Az Újdonsült Jelszó bekerül az adatbázisba és a Rendszer elküldi Önnek 
-          email-ben. Nyissa meg a levelet és másolja át a jelszavát a bejelentkezéhez, 
-          <a href="#logging_in">Jelentkezzen be</a> vele, és nyomban <a href="#manage_profile">változtassa 
+        <h4><a name="getting_started" id="getting_started"></a>Bevezetï¿½s</h4> 
+        <p>A phpScheduleIt hasznï¿½latï¿½hoz elsï¿½kï¿½nt regisztrï¿½lni kell. 
+          Ammennyiben mï¿½r regisztrï¿½lt, akkor be kell jelentkeznie a Rendszerbe. 
+          Minden oldal tetejï¿½n (kivï¿½ve a regisztrï¿½ciï¿½s ï¿½s a bejelentkezï¿½ oldalt)
+          egy kï¿½szï¿½ntï¿½ ï¿½zenetet talï¿½l, az aktuï¿½lis dï¿½tummal ï¿½s nï¿½hï¿½ny linkkel. 
+          A &quot;Kilï¿½pï¿½s&quot; link ï¿½s az &quot;Irï¿½nyï¿½tï¿½ Pult&quot; link 
+          a kï¿½szï¿½ntï¿½ ï¿½zenet alatt, a &quot;Segï¿½tsï¿½g&quot; link pedig a napi 
+          dï¿½tum alatt helyezkedik el.</p> 
+          <p>Ha mï¿½s Felhasznï¿½lï¿½ nevï¿½t olvassa a Kï¿½szï¿½ntï¿½ben, klikkeljen a &quot;Kilï¿½pï¿½s&quot; 
+          linkre, amivel ï¿½rvï¿½nytelenï¿½ti a sï¿½tiket, majd kattintson a <a href="#logging_in">Belï¿½pï¿½s</a>
+          linkre a bejelentkezï¿½shez. Az &quot;Irï¿½nyï¿½tï¿½ Pult&quot; linkkel az 
+          <a href="#my_control_panel">Irï¿½nyï¿½tï¿½ Pultra</a> jut, amely az ï¿½n &quot;kï¿½zponti 
+          lapja&quot; az elï¿½jegyzï¿½ Rendszerben. 
+          Amennyiben rï¿½klikkel a &quot;Segï¿½tsï¿½g&quot; linkre, egy felugrï¿½ ablak jelenik meg. 
+          A &quot;Levï¿½l Kï¿½ldï¿½se az Adminisztrï¿½tornak&quot; linket vï¿½lasztva egy beviteli mezï¿½ 
+          jelenik meg, mellyel az Rendszer karbantartï¿½jï¿½nak ï¿½zenhet.</p> 
+          <p><font color="#FF0000">Figyelem:</font> Ha az ï¿½n gï¿½pï¿½n fut a Norton Personal 
+            Firewall mikï¿½zben a phpScheduleIt-et hasznï¿½lja, akkor problï¿½mï¿½k lï¿½phetnek fel. 
+            Kï¿½rem kapcsolja ki a Norton Personal Firewallt, ameddig a phpScheduleIt-tel 
+            dolgozik ï¿½s kapcsolja vissza amint vï¿½gzett a teendï¿½ivel.</p> 
+          <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p> 
+        <h5><a name="registering" id="registering"></a>Regisztrï¿½ciï¿½</h5> 
+        <p>Regisztrï¿½ciï¿½hoz menjen a Regisztrï¿½ciï¿½s oldalra. Ez elï¿½rhetï¿½ egy link 
+          segï¿½tsï¿½gï¿½vel a bejelentkezï¿½ oldalon. Tï¿½ltsï¿½n ki minden szï¿½ksï¿½ges mezï¿½t.
+          A megadott email cï¿½m lehet egyben a Felhasznï¿½lï¿½i Neve is. A megadott 
+          adatokat bï¿½rmikor megvï¿½ltoztathatja: <a href="#quick_links">Profil 
+          Megvï¿½ltoztatï¿½sa</a>. Ha bejelï¿½li az &quot;ï¿½rizzen meg bejelentkezett ï¿½llapotban&quot; 
+          opciï¿½t, akkor a rendszer sï¿½tiket fog hasznï¿½lni az ï¿½n azonosï¿½tï¿½sï¿½ra minden alkalommal, 
+          feleslegessï¿½ tï¿½ve ezzel az ismï¿½telt bejelentkezï¿½st. <i>Csak akkor hasznï¿½lja ezt az 
+          opciï¿½t, ha ï¿½n az egyedï¿½li, aki a phpScheduleIt-et hasznï¿½lja az adott gï¿½prï¿½l.</i> 
+          Regisztrï¿½ciï¿½ utï¿½n ï¿½n automatikusan az <a href="#my_control_panel"> 
+          Irï¿½nyï¿½tï¿½ Pultra</a> kerï¿½l.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="logging_in" id="logging_in"></a>Bejelentkezï¿½s</h5>
+        <p>Bejelentkezï¿½skor egyszerï¿½en csak meg kell adni a Felhasznï¿½lï¿½ Nevet ï¿½s a 
+          Jelszavï¿½t. Elï¿½bb <a href="#registering">Regisztrï¿½lnia</a> kell mielï¿½tt 
+          be tudna jelentkezni. Ezt a Regisztrï¿½ciï¿½ linkre kattintva teheti meg az 
+          indulï¿½ oldalon. Ha bejelï¿½li az &quot;ï¿½rizzen meg bejelentkezett ï¿½llapotban&quot; 
+          opciï¿½t, akkor a rendszer sï¿½tiket fog hasznï¿½lni az ï¿½n azonosï¿½tï¿½sï¿½ra minden alkalommal, 
+          feleslegessï¿½ tï¿½ve ezzel az ismï¿½telt bejelentkezï¿½st. <i>Csak akkor hasznï¿½lja ezt az 
+          opciï¿½t, ha ï¿½n az egyedï¿½li, aki a phpScheduleIt-et hasznï¿½lja az adott gï¿½prï¿½l.</i> 
+          Regisztrï¿½ciï¿½ utï¿½n ï¿½n automatikusan az <a href="#my_control_panel"> 
+          Irï¿½nyï¿½tï¿½ Pultra</a> kerï¿½l.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="language" id="language"></a>Nyelv Vï¿½lasztï¿½s</h5>
+        <p>A Bejelentkezï¿½ oldalon elï¿½rhetï¿½ egy legï¿½rdï¿½lï¿½ menï¿½, amelyben megtalï¿½lhatï¿½ az
+          ï¿½sszes nyelv, amelyet az Adminisztrï¿½tor beï¿½llï¿½tott<a href="#my_control_panel"></a>.
+          Kï¿½rem vï¿½lassza ki a kï¿½vï¿½nt nyelvet ï¿½s minden phpScheduleIt felï¿½rat ï¿½s ï¿½zenet
+          ezen a nyelven fog szï¿½lni. A bevitt informï¿½ciï¿½k nem kerï¿½lnek fordï¿½tï¿½sra
+          sem az adminisztrï¿½tor sem mï¿½s felhasznï¿½lï¿½k ï¿½ltal; a Nyelv Vï¿½lasztï¿½s csak az 
+          alkalmazï¿½s szï¿½vegezï¿½sï¿½re terjed ki. ï¿½nnek ki kell jelentkeznie, ha egy 
+          mï¿½sik nyelvet akar kivï¿½lasztani.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>        
+        <h5><a name="manage_profile" id="manage_profile"></a>Profil Szerkesztï¿½s/Jelszï¿½ Vï¿½ltï¿½s</h5>
+        <p>Ha az adatait mï¿½dosï¿½tani szeretnï¿½ (nï¿½v, email cï¿½m, stb.) vagy jelszï¿½t vï¿½ltana, 
+          elsï¿½kï¿½nt jelentkezzen be. Az <a href="#my_control_panel">Irï¿½nyï¿½tï¿½ Pulton
+          </a>, a <a href="#quick_links">Gyors Linkek</a> kï¿½zï¿½tt, klikkeljen a &quot;Profil 
+          Szerkesztï¿½se/Jelszï¿½ Vï¿½ltï¿½s&quot; linkre. Ez egy olyan oldalra viszi, 
+          ahol az adatai vannak felsorolva. Szerkessze azokat tetszï¿½se szerint. Az ï¿½resen 
+          hagyott mezï¿½k tartalma nem fog vï¿½ltozni. Amennyiben a Jelszavï¿½t szeretnï¿½ Megvï¿½ltoztatni, 
+          ï¿½rja azt be kï¿½tszer. Amikor vï¿½grehajtotta a kï¿½vï¿½nt vï¿½ltoztatï¿½sokat, klikkeljen a &quot;Profil Szerkesztï¿½se&quot; 
+          linkre ï¿½s a vï¿½ltozï¿½sok ï¿½rvï¿½nybe fognak lï¿½pni. Vï¿½gezetï¿½l vissza fog kerï¿½lni az 
+          Irï¿½nyï¿½tï¿½ Pultra.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="resetting_password" id="resetting_password"></a>Elfelejtett Jelszï¿½ Visszaï¿½llï¿½tï¿½sa</h5>
+        <p>Amennyiben elfelejtette a Jelszavï¿½t, kï¿½rheti, hogy a rendszer adjon egy ï¿½jat 
+          ï¿½nnek ï¿½s kï¿½ldje el email-ben. Ehhez keresse fel ï¿½s kï¿½vesse a Bejelentkezï¿½ oldalon az  
+          &quot;Elfelejtett Jelszï¿½&quot; linket a Bejelentekezï¿½ mezï¿½ alatt. 
+          Egy ï¿½j oldalra fog kerï¿½lni, ahol meg kell adnia email cï¿½mï¿½t. 
+          Miutï¿½n rï¿½klikkelt a &quot;Kï¿½ldï¿½s&quot; linkre, a rendszer egy ï¿½j, vï¿½letlen jelszï¿½t 
+          generï¿½l. Az ï¿½jdonsï¿½lt Jelszï¿½ bekerï¿½l az adatbï¿½zisba ï¿½s a Rendszer elkï¿½ldi ï¿½nnek 
+          email-ben. Nyissa meg a levelet ï¿½s mï¿½solja ï¿½t a jelszavï¿½t a bejelentkezï¿½hez, 
+          <a href="#logging_in">Jelentkezzen be</a> vele, ï¿½s nyomban <a href="#manage_profile">vï¿½ltoztassa 
           meg azt</a>.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="getting_support" id="getting_support"></a>Támogatás</h5>
-        <p>Ha nincs joga egy Kontingens használatához, kérdése van egy Kontingenssel, 
-          Elõjegyzéssel, vagy a Felhasználójával kapcsolatban, kérem használja az &quot;Email
-          küldése az Adminisztrátornak&quot; linket,
-          melyet <a href="#quick_links">Gyors Linkek</a> között találhat meg.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>        <p align="right">&nbsp;</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="getting_support" id="getting_support"></a>Tï¿½mogatï¿½s</h5>
+        <p>Ha nincs joga egy Kontingens hasznï¿½latï¿½hoz, kï¿½rdï¿½se van egy Kontingenssel, 
+          Elï¿½jegyzï¿½ssel, vagy a Felhasznï¿½lï¿½jï¿½val kapcsolatban, kï¿½rem hasznï¿½lja az &quot;Email
+          kï¿½ldï¿½se az Adminisztrï¿½tornak&quot; linket,
+          melyet <a href="#quick_links">Gyors Linkek</a> kï¿½zï¿½tt talï¿½lhat meg.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>        <p align="right">&nbsp;</p>
         <hr width="95%" size="1" noshade="noshade" />
-        <h4><a name="my_control_panel" id="my_control_panel"></a>Irányító Pult</h4>
-        <p>Az Irányító Pult az Ön &quot;Kiinduló pontja&quot; az Elõjegyzési Rendszer 
-          kezeléséhez. Itt megtekintheti, módosíthatja, vagy törölheti Elõjegyzéseit. 
-          Az Irányító Pult is tartalmaz <a href="#using_the_scheduler">Elõjegyzés</a>, 
-          és <a href="#quick_links">Profil Módosítása</a> linket és egy opciót is, amivel 
-          kijelentkezhet az Elõjegyzési Rendszerbõl.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
+        <h4><a name="my_control_panel" id="my_control_panel"></a>Irï¿½nyï¿½tï¿½ Pult</h4>
+        <p>Az Irï¿½nyï¿½tï¿½ Pult az ï¿½n &quot;Kiindulï¿½ pontja&quot; az Elï¿½jegyzï¿½si Rendszer 
+          kezelï¿½sï¿½hez. Itt megtekintheti, mï¿½dosï¿½thatja, vagy tï¿½rï¿½lheti Elï¿½jegyzï¿½seit. 
+          Az Irï¿½nyï¿½tï¿½ Pult is tartalmaz <a href="#using_the_scheduler">Elï¿½jegyzï¿½s</a>, 
+          ï¿½s <a href="#quick_links">Profil Mï¿½dosï¿½tï¿½sa</a> linket ï¿½s egy opciï¿½t is, amivel 
+          kijelentkezhet az Elï¿½jegyzï¿½si Rendszerbï¿½l.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
         <h5><a name="quick_links" id="quick_links"></a>Gyors Linkek</h5>
-        <p>A Gyors Linkek révén egy helyen megtalálhatók a legfontosabb linkek.
-          Az elsõ az &quot;Elõjegyzés&quot;, mely az alapértelmezett
-          Elõjegyzéshez vezet. Itt megtekintheti és átnézheti a Kontingenseit, 
-          és módosíthatja Elõjegyzéseit.</p>
-        <p>A &quot;Saját Naptár Megtekintése&quot; az Elõjegyzés Naptár Nézetéhez vezet,
-          melyben azok az Elõjegyzések szerepelnek, melyekben Ön is Résztvevõ. Megtekinthetõ
-          Napi, Heti, vagy Havi Bontásban is.</p>
-        <p>A &quot;Kontingens Naptár Megtekintése&quot; elviszi Önt a Rendszer
-          Naptárához, amelyben az összes, vagy egy kiválasztott Elõjegyzés 
-          Vizsgálatait tekintheti meg. Ha kiválaszt egy Elõjegyzést a Napi Nézetben,
-          lehetõsége van kinyomtatni a &quot;Lista Nézetet&quot;, amennyiben
-          a jegyzettömb ikonra kattint, a Kontingens melletti legördülõ menüben.</p>
-        <p>A &quot;Profil Szerkesztése/Jelszó Váltás&quot; link egy olyan oldalra
-          vezet, ahol megváltoztathatja olyan adatait, mint: a Felhasználói Név, 
-          Email cím, Név, Telefonszám és a Jelszó. Minden mezõbe bekerül a megadott
-          érték. Az üresen, vagy változatlanul hagyott mezõk nem változnak.</p>
-        <p>Az &quot;Email Beállítások Szerkesztése&quot; olyan oldalra visz, ahol
-          megválaszthatja, hogy hogyan és milyen formában szeretne visszajelzést
-          kapni az Elõjegyzéseirõl. Alap értelmezés szerint a Rendszer HTML emailben
-          értesíti minden alkalommal, amikor hozzáad, módosít, vagy töröl egy elõjegyzést.</p>
-        <p>Végül a legutolsó link, a &quot;Kilépés&quot; kilépteti a Rendszerbõl, majd
-          visszakerül a Bejelentkezõ oldalara.</p>
-        <p align="right"><a href="#top">Vissza a tetejére</a></p>
-        <h5><a name="my_announcements" id="my_announcements"></a>Bejelentések</h5>
-        <p>A Bejelentések között olyan információkat talál, amiket az Adminisztrátor
-          közlésre fontosnak ítélt.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="my_reservations" id="my_reservations"></a>Elõjegyzések</h5>
-        <p>Az Elõjegyzések lista tartalmaz minde eljövendõ Elõjegyzést az aktuális 
-          naptól számítva (alapértelmezés). A táblázatban megtalálható az Elõjegyzés 
-          Dátuma, Kontingense, a Létrehozás ideje, az utolsó Módosítás ideje, valamint a
-          Kezdõ és a Befejezõ Idõpont. A listából kiindulva az Elõjegyzések 
-          Módosítani és Törölni lehet a &quot;Módosítás&quot; vagy a &quot;Törlés&quot; 
-          linkre kattintva a megfelelõ Elõjegyzés sorának végén lévõ linkre kattintva. 
-          Mindkét esetben egy elõugró ablakban határozhatja meg a kívánt változtatásokat. 
-          Az Elõjegyzés Idõpontjára kattintva egy új elõreugró ablak jelenik meg, 
-          melyen megtekintheti a részleteket.</p>
-        <p>Az Elõjegyzések rendezési módjának megváltoztatásához kattintson a &#150; 
-          vagy a + linkre az oszlop tetején. A mínusz jellel az adott oszlopra nézve 
-          csökkenõ sorrendben kérhetõk az Elõjegyzési lista elemei, a plussz jellel az 
-          aktuális oszlopnak megfelelõen növekvõ sorrendben listázhatók az Elõjegyzések.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="my_training" id="my_training"></a>Jogosultságok</h5>
-        <p>A Jogosultságok között fel van sorolva minden Kontingens, amelyre írási joga van.
-	  A listán megtalálható a Kontingens neve, a Helyszín és a Telefon szám, amelyen 
-          érdeklõdhet az Adminisztrátornál.</p>
-        <p>Regisztrációt követõen a Felhasználó nem tud egyik Kontingensbe sem írni, hacsak a 
-	  az Adminisztrátor nem határozott úgy, hogy a Felhasználók alapértelmezett Jogosultságot kapnak. 
-	  Az Adminisztrátor az egyetlen személy, aki Jogosultságot adhat egy Kontingenshez. Amíg ez nem 
-          történik meg, Ön nem írhat azokba a Kontingensekbe, amelyekhez nincs joga, de az Elõjegyzést 
+        <p>A Gyors Linkek rï¿½vï¿½n egy helyen megtalï¿½lhatï¿½k a legfontosabb linkek.
+          Az elsï¿½ az &quot;Elï¿½jegyzï¿½s&quot;, mely az alapï¿½rtelmezett
+          Elï¿½jegyzï¿½shez vezet. Itt megtekintheti ï¿½s ï¿½tnï¿½zheti a Kontingenseit, 
+          ï¿½s mï¿½dosï¿½thatja Elï¿½jegyzï¿½seit.</p>
+        <p>A &quot;Sajï¿½t Naptï¿½r Megtekintï¿½se&quot; az Elï¿½jegyzï¿½s Naptï¿½r Nï¿½zetï¿½hez vezet,
+          melyben azok az Elï¿½jegyzï¿½sek szerepelnek, melyekben ï¿½n is Rï¿½sztvevï¿½. Megtekinthetï¿½
+          Napi, Heti, vagy Havi Bontï¿½sban is.</p>
+        <p>A &quot;Kontingens Naptï¿½r Megtekintï¿½se&quot; elviszi ï¿½nt a Rendszer
+          Naptï¿½rï¿½hoz, amelyben az ï¿½sszes, vagy egy kivï¿½lasztott Elï¿½jegyzï¿½s 
+          Vizsgï¿½latait tekintheti meg. Ha kivï¿½laszt egy Elï¿½jegyzï¿½st a Napi Nï¿½zetben,
+          lehetï¿½sï¿½ge van kinyomtatni a &quot;Lista Nï¿½zetet&quot;, amennyiben
+          a jegyzettï¿½mb ikonra kattint, a Kontingens melletti legï¿½rdï¿½lï¿½ menï¿½ben.</p>
+        <p>A &quot;Profil Szerkesztï¿½se/Jelszï¿½ Vï¿½ltï¿½s&quot; link egy olyan oldalra
+          vezet, ahol megvï¿½ltoztathatja olyan adatait, mint: a Felhasznï¿½lï¿½i Nï¿½v, 
+          Email cï¿½m, Nï¿½v, Telefonszï¿½m ï¿½s a Jelszï¿½. Minden mezï¿½be bekerï¿½l a megadott
+          ï¿½rtï¿½k. Az ï¿½resen, vagy vï¿½ltozatlanul hagyott mezï¿½k nem vï¿½ltoznak.</p>
+        <p>Az &quot;Email Beï¿½llï¿½tï¿½sok Szerkesztï¿½se&quot; olyan oldalra visz, ahol
+          megvï¿½laszthatja, hogy hogyan ï¿½s milyen formï¿½ban szeretne visszajelzï¿½st
+          kapni az Elï¿½jegyzï¿½seirï¿½l. Alap ï¿½rtelmezï¿½s szerint a Rendszer HTML emailben
+          ï¿½rtesï¿½ti minden alkalommal, amikor hozzï¿½ad, mï¿½dosï¿½t, vagy tï¿½rï¿½l egy elï¿½jegyzï¿½st.</p>
+        <p>Vï¿½gï¿½l a legutolsï¿½ link, a &quot;Kilï¿½pï¿½s&quot; kilï¿½pteti a Rendszerbï¿½l, majd
+          visszakerï¿½l a Bejelentkezï¿½ oldalara.</p>
+        <p align="right"><a href="#top">Vissza a tetejï¿½re</a></p>
+        <h5><a name="my_announcements" id="my_announcements"></a>Bejelentï¿½sek</h5>
+        <p>A Bejelentï¿½sek kï¿½zï¿½tt olyan informï¿½ciï¿½kat talï¿½l, amiket az Adminisztrï¿½tor
+          kï¿½zlï¿½sre fontosnak ï¿½tï¿½lt.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="my_reservations" id="my_reservations"></a>Elï¿½jegyzï¿½sek</h5>
+        <p>Az Elï¿½jegyzï¿½sek lista tartalmaz minde eljï¿½vendï¿½ Elï¿½jegyzï¿½st az aktuï¿½lis 
+          naptï¿½l szï¿½mï¿½tva (alapï¿½rtelmezï¿½s). A tï¿½blï¿½zatban megtalï¿½lhatï¿½ az Elï¿½jegyzï¿½s 
+          Dï¿½tuma, Kontingense, a Lï¿½trehozï¿½s ideje, az utolsï¿½ Mï¿½dosï¿½tï¿½s ideje, valamint a
+          Kezdï¿½ ï¿½s a Befejezï¿½ Idï¿½pont. A listï¿½bï¿½l kiindulva az Elï¿½jegyzï¿½sek 
+          Mï¿½dosï¿½tani ï¿½s Tï¿½rï¿½lni lehet a &quot;Mï¿½dosï¿½tï¿½s&quot; vagy a &quot;Tï¿½rlï¿½s&quot; 
+          linkre kattintva a megfelelï¿½ Elï¿½jegyzï¿½s sorï¿½nak vï¿½gï¿½n lï¿½vï¿½ linkre kattintva. 
+          Mindkï¿½t esetben egy elï¿½ugrï¿½ ablakban hatï¿½rozhatja meg a kï¿½vï¿½nt vï¿½ltoztatï¿½sokat. 
+          Az Elï¿½jegyzï¿½s Idï¿½pontjï¿½ra kattintva egy ï¿½j elï¿½reugrï¿½ ablak jelenik meg, 
+          melyen megtekintheti a rï¿½szleteket.</p>
+        <p>Az Elï¿½jegyzï¿½sek rendezï¿½si mï¿½djï¿½nak megvï¿½ltoztatï¿½sï¿½hoz kattintson a &#150; 
+          vagy a + linkre az oszlop tetejï¿½n. A mï¿½nusz jellel az adott oszlopra nï¿½zve 
+          csï¿½kkenï¿½ sorrendben kï¿½rhetï¿½k az Elï¿½jegyzï¿½si lista elemei, a plussz jellel az 
+          aktuï¿½lis oszlopnak megfelelï¿½en nï¿½vekvï¿½ sorrendben listï¿½zhatï¿½k az Elï¿½jegyzï¿½sek.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="my_training" id="my_training"></a>Jogosultsï¿½gok</h5>
+        <p>A Jogosultsï¿½gok kï¿½zï¿½tt fel van sorolva minden Kontingens, amelyre ï¿½rï¿½si joga van.
+	  A listï¿½n megtalï¿½lhatï¿½ a Kontingens neve, a Helyszï¿½n ï¿½s a Telefon szï¿½m, amelyen 
+          ï¿½rdeklï¿½dhet az Adminisztrï¿½tornï¿½l.</p>
+        <p>Regisztrï¿½ciï¿½t kï¿½vetï¿½en a Felhasznï¿½lï¿½ nem tud egyik Kontingensbe sem ï¿½rni, hacsak a 
+	  az Adminisztrï¿½tor nem hatï¿½rozott ï¿½gy, hogy a Felhasznï¿½lï¿½k alapï¿½rtelmezett Jogosultsï¿½got kapnak. 
+	  Az Adminisztrï¿½tor az egyetlen szemï¿½ly, aki Jogosultsï¿½got adhat egy Kontingenshez. Amï¿½g ez nem 
+          tï¿½rtï¿½nik meg, ï¿½n nem ï¿½rhat azokba a Kontingensekbe, amelyekhez nincs joga, de az Elï¿½jegyzï¿½st 
           megtekintheti.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="my_invitations" id="my_invitations"></a>Meghívások</h5>
-        <p>A Meghívások között megtalálható minden Elõjegyzés, amelyre Meghívást kapott,
-          és lehetõsége nyílik az Elõjegyzésben való Részvétel Elfogadására és
-          Visszautasítására. Ha elfogadta a Részvételt, a késõbbiekben még lehetõsége
-          van rá, hogy felfüggessze azt. Visszautasítás esetén csak akkor tud Résztvevõként
-          szerepelni egy Elõjegyzésben, ha az adott Elõjegyzés létrehozója ismételten
-          meghívja Önt.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>        
-        <h5><a name="my_participation" id="my_participation"></a>Részvételek</h5>
-        <p>A Részvételek képernyõn megtalálhat minden Elõjegyzést, amelyben
-          Résztvevõként szerepel. Nem mutatkoznak azok az Elõjegyzések, melyeknek
-          Ön a gazdája. Az táblázaton lehetõség nyílik a Részvétel Felfüggesztésére
-          egy kiválasztott Elõjegyzésben. Ha befejezi a Részvételt egy Elõjegyzésben,
-          Nem fog tudni résztvenni benne, hacsak az Elõjegyzés létrehozója nem Hivja meg
-          Önt ismételten.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>        <p align="right">&nbsp;</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="my_invitations" id="my_invitations"></a>Meghï¿½vï¿½sok</h5>
+        <p>A Meghï¿½vï¿½sok kï¿½zï¿½tt megtalï¿½lhatï¿½ minden Elï¿½jegyzï¿½s, amelyre Meghï¿½vï¿½st kapott,
+          ï¿½s lehetï¿½sï¿½ge nyï¿½lik az Elï¿½jegyzï¿½sben valï¿½ Rï¿½szvï¿½tel Elfogadï¿½sï¿½ra ï¿½s
+          Visszautasï¿½tï¿½sï¿½ra. Ha elfogadta a Rï¿½szvï¿½telt, a kï¿½sï¿½bbiekben mï¿½g lehetï¿½sï¿½ge
+          van rï¿½, hogy felfï¿½ggessze azt. Visszautasï¿½tï¿½s esetï¿½n csak akkor tud Rï¿½sztvevï¿½kï¿½nt
+          szerepelni egy Elï¿½jegyzï¿½sben, ha az adott Elï¿½jegyzï¿½s lï¿½trehozï¿½ja ismï¿½telten
+          meghï¿½vja ï¿½nt.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>        
+        <h5><a name="my_participation" id="my_participation"></a>Rï¿½szvï¿½telek</h5>
+        <p>A Rï¿½szvï¿½telek kï¿½pernyï¿½n megtalï¿½lhat minden Elï¿½jegyzï¿½st, amelyben
+          Rï¿½sztvevï¿½kï¿½nt szerepel. Nem mutatkoznak azok az Elï¿½jegyzï¿½sek, melyeknek
+          ï¿½n a gazdï¿½ja. Az tï¿½blï¿½zaton lehetï¿½sï¿½g nyï¿½lik a Rï¿½szvï¿½tel Felfï¿½ggesztï¿½sï¿½re
+          egy kivï¿½lasztott Elï¿½jegyzï¿½sben. Ha befejezi a Rï¿½szvï¿½telt egy Elï¿½jegyzï¿½sben,
+          Nem fog tudni rï¿½sztvenni benne, hacsak az Elï¿½jegyzï¿½s lï¿½trehozï¿½ja nem Hivja meg
+          ï¿½nt ismï¿½telten.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>        <p align="right">&nbsp;</p>
         <hr width="95%" size="1" noshade="noshade" />
-        <h4><a name="using_the_scheduler" id="using_the_scheduler"></a>A Rendszer használata</h4>
-        <p>Az Elõjegyzési Rendszerben végrehajthat minden Elõjegyzési funkciót.
-          A Heti Bontás az aktuális hetet mutatja, és alapértelmezésben 7 napos
-          idõszakot mutat. Váltogathat az Elõjegyzések között, megtekintheti a Kontingenseket
-          és módosíthatja Elõjegyzéseit. Az Elõjegyzések színkódoltak, és mindegyik látható
-          de csak az <i>Ön</i> által létrehozottak esetében
-          található link a szerkesztéshez. A többi Elõjegyzés esetén csak a megtekintéshez
-          használható link érhetõ el.</p>
-        <p>Az elõjegyzések között (amennyiben több is létezik) a fönt található legördülõ
-          menü segítségével válthat.</p>
-        <p>A Rendszer Adminisztrátor meghatározhat &quot;Tiltott Idõpontokat&quot;,
-          amelyek nem lesznek elérhetõek. Az Elõjegyzés nem kerül bejegyzésre,
-          ha egy Tiltott Idõponttal ütközés tapasztalható.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="read_only" id="read_only"></a>Csak Olvasható Mód</h5>
-        <p>Ha nem Regisztrált, vagy nem jelentkezett be, akkor megtekintheti az Elõjegyzés
-          Csak Olvasható változatát, ha ráklikkel a &quot;Csak Olvasható Mód&quot; linkre
-          a bejelentkezõ oldalon. Ekkor látható minden Kontingens és Elõjegyzés,
-          de Ön sem részleteket nem tekinthet meg egyikrõl sem, sem az Elõjegyzések
-          szerkesztésére vagy létrehozására nem lesz lehetõsége.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="making_a_reservation" id="making_a_reservation"></a>Elõjegyzés Létrehozása</h5>
-        <p>Egy elõjegyzés létrehozásához elsõként arra a napra kell navigálnia,
-          amelyikre az Elõjegyzést létre szeretné hozni. Amikor megtalálta a kiválasztott
-          naphoz tartozó oldalt, kattintson a Kontingens nevére, vagy a kivánt idõpontra. Ekkor egy elõre
-          ugró ablakban kiválaszthatja a Kezdõ és Befejezõ idõpontot (ha engedélyezett)
-          amelyek között Elõjegyzését létre szeretné hozni.</p>
-        <p>Az Elõjegyzés hosszára vonatkozó információkat tartalmazó üzenetet találhat
-          az idõszak kiválasztására szolgáló mezõ alatt. Ha az elõjegyzése rövidebb,
-          vagy hosszabb a megadott intervallumnál, a Rendszer nem fogja elfogadni.</p>
-        <p>Az ablakban lehetõsége van Ismétlõdõ Elõjegyzés létrehozására is.
-          Elsõként válassza ki, hogy mely napokon szeretné, hogy az Elõjegyzés ismétlõdjön,
-          majd meg kell adnia, hogy milyen hosszú idõszakra vonatkozzon. Az Elõjegyzés
-          bejegyzésre kerül a kiinduló napra és minden további megadott napra
-          a meghatározott idõszakon belül. Minden olyan alkalmat, amikor valamilyen okból
-          nem hozható létre Ismételt Elõfordulás a Rendszer kijelez. Ha Többnapos Elõjegyzések
-          létrehozásakor Ismételt Elõfordulás nem választható.</p>
-        <p>Az Elõjegyzéséhez tartozó adatokat a Megjegyzés mezõben közölje.
-          A Megjegyzés mezõt azután minden Felhasználó megtekintheti, hogy 
-          informálódjon az Elõjegyzése részletei felõl.</p>
-        <p>Miután meghatározta az Elõjegyzés Kezdõ és Befejezõ Idõpontját,
-           és igényei szerint kiválasztotta a kívánt ismétlõdéseket, nyomja
-           meg a &quot;Mentés&quot; gombot.
-           A Rendszer ezt követõen egy üzenetet küld, hogy mely alkalmakra nem tudta
-           tudta teljesíteni a kérést. Sikertelen próbálkozás esetén menjen vissza és 
-           változtassa meg az Idõpontokat oly módon, hogy ne forduljon elõ átfedés más
-           Elõjegyzéssel. Az Elõjegyzés elfogadása esetén a Rendszer automatikusan
-           frissül. Ez elõfeltétele, hogy minden új információ kijelzésre kerüljön.</p>
-        <p>Nem hozhat létre Elõjegyzést olyan idõpontra, amelyik már elmúlt, továbbá olyan
-           Kontingensbe, amelyhez nincsen írási Jogosultsága vagy olyan Elõjegyzésbe
-           amely Inaktív. Ilyen esetben a Kontingens szürkén jelenik meg és nem érhetõ
-           el olyan link, amely elõhozná az elõre ugró ablakot.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="modifying_deleting_a_reservation" id="modifying_deleting_a_reservation"></a>Elõjegyzés Módosítása/Törlése</h5>
-        <p>Egy Elõjegyzés Törlése, vagy Módosítása több módon is lehetséges. Az egyiket
-           az <a href="#my_control_panel">Irányító Pultnál</a> már olvashatta.
-           Az Online Elõjegyzésben - mint már az korábban is említésre került - 
-           szintén megteheti. A nem Módosítható/Törölhetõ Elõjegyzések esetén
-           a Rendszer nem kínálja fel a linket.</p>
-        <p>Az Elõjegyzési Rendszerben rendkívül egyszerû módon elég a kívánt
-          Elõjegyzésre kattintania. Ezután az Elõjegyzés Létrehozásakor
-          látható ablakhoz hasonló elõre ugró ablak jelenik meg. Két választása
-          van: a Kezdõ és a Befejezõ idõpontok Módosítása után választhatja a &quot;Módosítás&quot;
-          gombot az oldal alján, az Elõjegyzés törléséhez pedig ez elõtt a &quot;Törlés&quot;
-          opciót is be kell jelölnie. A megadott új adatok ellenõrzésre kerülnek a
-          Rendszerben a többi Elõjegyzéshez képest és a Rendszer visszajelzést
-          ad, hogy sikeres volt-e a változtatás. Ha az idõpontok nem stimmelnek
-          térjen vissza a Módosítás ablakba, hogy kijavíthassa az átfedéseket 
-          Sikeres módosítás esetén az Elõjegyzési Rendszer automatikusan frissül,
-          és a képernyõ újra betöltõdik. Erre azért van szükség, hogy láthatóvá váljanak
-          az Ön által végrehajtott változások.</p>
-        <p>Ismételten Elõforduló Elõjegyzések változtatásakor, jelölje be az
-          &quot;Ismételt Elõfordulások Frissítése&quot; opciót. Az érvénytelen
-          elõfordulásokat a Rendszer visszajelzi Önnek.</p>
-        <p>Nem módosíthat olyan ELõjegyzést, amely már elmúlt.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
-        <h5><a name="navigating" id="navigating"></a>Barangolás az Elõjegyzési Rendszerben</h5>
-        <p>Számtalan lehetõsége van az Elõjegyzési Rendszerben történõ barangolásra.</p>
-        <p>A hetek között az &quot;Elõzõ Hét&quot; és a &quot;Következõ Hét&quot; link
-          segítségével válthat. Ezek az Elõjegyzés alján találhatók</p>
-        <p>Lehetõség van a kiválasztott napra történõ ugrásra, ha megadja azt a lap alján.</p>
-        <p>A Naptár elõhozása a &quot;Naptár Megtekintése&quot; linkkel lehetséges, amely
-          a lap alján található. Válaszza ki a megfelelõ lapot és rákattintva a kiválasztott
-          napra ugrik az Elõjegyzési Rendszer.</p>
-        <p align="right"><a href="#top">Ugrás a tetejére</a></p>
+        <h4><a name="using_the_scheduler" id="using_the_scheduler"></a>A Rendszer hasznï¿½lata</h4>
+        <p>Az Elï¿½jegyzï¿½si Rendszerben vï¿½grehajthat minden Elï¿½jegyzï¿½si funkciï¿½t.
+          A Heti Bontï¿½s az aktuï¿½lis hetet mutatja, ï¿½s alapï¿½rtelmezï¿½sben 7 napos
+          idï¿½szakot mutat. Vï¿½ltogathat az Elï¿½jegyzï¿½sek kï¿½zï¿½tt, megtekintheti a Kontingenseket
+          ï¿½s mï¿½dosï¿½thatja Elï¿½jegyzï¿½seit. Az Elï¿½jegyzï¿½sek szï¿½nkï¿½doltak, ï¿½s mindegyik lï¿½thatï¿½
+          de csak az <i>ï¿½n</i> ï¿½ltal lï¿½trehozottak esetï¿½ben
+          talï¿½lhatï¿½ link a szerkesztï¿½shez. A tï¿½bbi Elï¿½jegyzï¿½s esetï¿½n csak a megtekintï¿½shez
+          hasznï¿½lhatï¿½ link ï¿½rhetï¿½ el.</p>
+        <p>Az elï¿½jegyzï¿½sek kï¿½zï¿½tt (amennyiben tï¿½bb is lï¿½tezik) a fï¿½nt talï¿½lhatï¿½ legï¿½rdï¿½lï¿½
+          menï¿½ segï¿½tsï¿½gï¿½vel vï¿½lthat.</p>
+        <p>A Rendszer Adminisztrï¿½tor meghatï¿½rozhat &quot;Tiltott Idï¿½pontokat&quot;,
+          amelyek nem lesznek elï¿½rhetï¿½ek. Az Elï¿½jegyzï¿½s nem kerï¿½l bejegyzï¿½sre,
+          ha egy Tiltott Idï¿½ponttal ï¿½tkï¿½zï¿½s tapasztalhatï¿½.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="read_only" id="read_only"></a>Csak Olvashatï¿½ Mï¿½d</h5>
+        <p>Ha nem Regisztrï¿½lt, vagy nem jelentkezett be, akkor megtekintheti az Elï¿½jegyzï¿½s
+          Csak Olvashatï¿½ vï¿½ltozatï¿½t, ha rï¿½klikkel a &quot;Csak Olvashatï¿½ Mï¿½d&quot; linkre
+          a bejelentkezï¿½ oldalon. Ekkor lï¿½thatï¿½ minden Kontingens ï¿½s Elï¿½jegyzï¿½s,
+          de ï¿½n sem rï¿½szleteket nem tekinthet meg egyikrï¿½l sem, sem az Elï¿½jegyzï¿½sek
+          szerkesztï¿½sï¿½re vagy lï¿½trehozï¿½sï¿½ra nem lesz lehetï¿½sï¿½ge.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="making_a_reservation" id="making_a_reservation"></a>Elï¿½jegyzï¿½s Lï¿½trehozï¿½sa</h5>
+        <p>Egy elï¿½jegyzï¿½s lï¿½trehozï¿½sï¿½hoz elsï¿½kï¿½nt arra a napra kell navigï¿½lnia,
+          amelyikre az Elï¿½jegyzï¿½st lï¿½tre szeretnï¿½ hozni. Amikor megtalï¿½lta a kivï¿½lasztott
+          naphoz tartozï¿½ oldalt, kattintson a Kontingens nevï¿½re, vagy a kivï¿½nt idï¿½pontra. Ekkor egy elï¿½re
+          ugrï¿½ ablakban kivï¿½laszthatja a Kezdï¿½ ï¿½s Befejezï¿½ idï¿½pontot (ha engedï¿½lyezett)
+          amelyek kï¿½zï¿½tt Elï¿½jegyzï¿½sï¿½t lï¿½tre szeretnï¿½ hozni.</p>
+        <p>Az Elï¿½jegyzï¿½s hosszï¿½ra vonatkozï¿½ informï¿½ciï¿½kat tartalmazï¿½ ï¿½zenetet talï¿½lhat
+          az idï¿½szak kivï¿½lasztï¿½sï¿½ra szolgï¿½lï¿½ mezï¿½ alatt. Ha az elï¿½jegyzï¿½se rï¿½videbb,
+          vagy hosszabb a megadott intervallumnï¿½l, a Rendszer nem fogja elfogadni.</p>
+        <p>Az ablakban lehetï¿½sï¿½ge van Ismï¿½tlï¿½dï¿½ Elï¿½jegyzï¿½s lï¿½trehozï¿½sï¿½ra is.
+          Elsï¿½kï¿½nt vï¿½lassza ki, hogy mely napokon szeretnï¿½, hogy az Elï¿½jegyzï¿½s ismï¿½tlï¿½djï¿½n,
+          majd meg kell adnia, hogy milyen hosszï¿½ idï¿½szakra vonatkozzon. Az Elï¿½jegyzï¿½s
+          bejegyzï¿½sre kerï¿½l a kiindulï¿½ napra ï¿½s minden tovï¿½bbi megadott napra
+          a meghatï¿½rozott idï¿½szakon belï¿½l. Minden olyan alkalmat, amikor valamilyen okbï¿½l
+          nem hozhatï¿½ lï¿½tre Ismï¿½telt Elï¿½fordulï¿½s a Rendszer kijelez. Ha Tï¿½bbnapos Elï¿½jegyzï¿½sek
+          lï¿½trehozï¿½sakor Ismï¿½telt Elï¿½fordulï¿½s nem vï¿½laszthatï¿½.</p>
+        <p>Az Elï¿½jegyzï¿½sï¿½hez tartozï¿½ adatokat a Megjegyzï¿½s mezï¿½ben kï¿½zï¿½lje.
+          A Megjegyzï¿½s mezï¿½t azutï¿½n minden Felhasznï¿½lï¿½ megtekintheti, hogy 
+          informï¿½lï¿½djon az Elï¿½jegyzï¿½se rï¿½szletei felï¿½l.</p>
+        <p>Miutï¿½n meghatï¿½rozta az Elï¿½jegyzï¿½s Kezdï¿½ ï¿½s Befejezï¿½ Idï¿½pontjï¿½t,
+           ï¿½s igï¿½nyei szerint kivï¿½lasztotta a kï¿½vï¿½nt ismï¿½tlï¿½dï¿½seket, nyomja
+           meg a &quot;Mentï¿½s&quot; gombot.
+           A Rendszer ezt kï¿½vetï¿½en egy ï¿½zenetet kï¿½ld, hogy mely alkalmakra nem tudta
+           tudta teljesï¿½teni a kï¿½rï¿½st. Sikertelen prï¿½bï¿½lkozï¿½s esetï¿½n menjen vissza ï¿½s 
+           vï¿½ltoztassa meg az Idï¿½pontokat oly mï¿½don, hogy ne forduljon elï¿½ ï¿½tfedï¿½s mï¿½s
+           Elï¿½jegyzï¿½ssel. Az Elï¿½jegyzï¿½s elfogadï¿½sa esetï¿½n a Rendszer automatikusan
+           frissï¿½l. Ez elï¿½feltï¿½tele, hogy minden ï¿½j informï¿½ciï¿½ kijelzï¿½sre kerï¿½ljï¿½n.</p>
+        <p>Nem hozhat lï¿½tre Elï¿½jegyzï¿½st olyan idï¿½pontra, amelyik mï¿½r elmï¿½lt, tovï¿½bbï¿½ olyan
+           Kontingensbe, amelyhez nincsen ï¿½rï¿½si Jogosultsï¿½ga vagy olyan Elï¿½jegyzï¿½sbe
+           amely Inaktï¿½v. Ilyen esetben a Kontingens szï¿½rkï¿½n jelenik meg ï¿½s nem ï¿½rhetï¿½
+           el olyan link, amely elï¿½hoznï¿½ az elï¿½re ugrï¿½ ablakot.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="modifying_deleting_a_reservation" id="modifying_deleting_a_reservation"></a>Elï¿½jegyzï¿½s Mï¿½dosï¿½tï¿½sa/Tï¿½rlï¿½se</h5>
+        <p>Egy Elï¿½jegyzï¿½s Tï¿½rlï¿½se, vagy Mï¿½dosï¿½tï¿½sa tï¿½bb mï¿½don is lehetsï¿½ges. Az egyiket
+           az <a href="#my_control_panel">Irï¿½nyï¿½tï¿½ Pultnï¿½l</a> mï¿½r olvashatta.
+           Az Online Elï¿½jegyzï¿½sben - mint mï¿½r az korï¿½bban is emlï¿½tï¿½sre kerï¿½lt - 
+           szintï¿½n megteheti. A nem Mï¿½dosï¿½thatï¿½/Tï¿½rï¿½lhetï¿½ Elï¿½jegyzï¿½sek esetï¿½n
+           a Rendszer nem kï¿½nï¿½lja fel a linket.</p>
+        <p>Az Elï¿½jegyzï¿½si Rendszerben rendkï¿½vï¿½l egyszerï¿½ mï¿½don elï¿½g a kï¿½vï¿½nt
+          Elï¿½jegyzï¿½sre kattintania. Ezutï¿½n az Elï¿½jegyzï¿½s Lï¿½trehozï¿½sakor
+          lï¿½thatï¿½ ablakhoz hasonlï¿½ elï¿½re ugrï¿½ ablak jelenik meg. Kï¿½t vï¿½lasztï¿½sa
+          van: a Kezdï¿½ ï¿½s a Befejezï¿½ idï¿½pontok Mï¿½dosï¿½tï¿½sa utï¿½n vï¿½laszthatja a &quot;Mï¿½dosï¿½tï¿½s&quot;
+          gombot az oldal aljï¿½n, az Elï¿½jegyzï¿½s tï¿½rlï¿½sï¿½hez pedig ez elï¿½tt a &quot;Tï¿½rlï¿½s&quot;
+          opciï¿½t is be kell jelï¿½lnie. A megadott ï¿½j adatok ellenï¿½rzï¿½sre kerï¿½lnek a
+          Rendszerben a tï¿½bbi Elï¿½jegyzï¿½shez kï¿½pest ï¿½s a Rendszer visszajelzï¿½st
+          ad, hogy sikeres volt-e a vï¿½ltoztatï¿½s. Ha az idï¿½pontok nem stimmelnek
+          tï¿½rjen vissza a Mï¿½dosï¿½tï¿½s ablakba, hogy kijavï¿½thassa az ï¿½tfedï¿½seket 
+          Sikeres mï¿½dosï¿½tï¿½s esetï¿½n az Elï¿½jegyzï¿½si Rendszer automatikusan frissï¿½l,
+          ï¿½s a kï¿½pernyï¿½ ï¿½jra betï¿½ltï¿½dik. Erre azï¿½rt van szï¿½ksï¿½g, hogy lï¿½thatï¿½vï¿½ vï¿½ljanak
+          az ï¿½n ï¿½ltal vï¿½grehajtott vï¿½ltozï¿½sok.</p>
+        <p>Ismï¿½telten Elï¿½fordulï¿½ Elï¿½jegyzï¿½sek vï¿½ltoztatï¿½sakor, jelï¿½lje be az
+          &quot;Ismï¿½telt Elï¿½fordulï¿½sok Frissï¿½tï¿½se&quot; opciï¿½t. Az ï¿½rvï¿½nytelen
+          elï¿½fordulï¿½sokat a Rendszer visszajelzi ï¿½nnek.</p>
+        <p>Nem mï¿½dosï¿½that olyan ELï¿½jegyzï¿½st, amely mï¿½r elmï¿½lt.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
+        <h5><a name="navigating" id="navigating"></a>Barangolï¿½s az Elï¿½jegyzï¿½si Rendszerben</h5>
+        <p>Szï¿½mtalan lehetï¿½sï¿½ge van az Elï¿½jegyzï¿½si Rendszerben tï¿½rtï¿½nï¿½ barangolï¿½sra.</p>
+        <p>A hetek kï¿½zï¿½tt az &quot;Elï¿½zï¿½ Hï¿½t&quot; ï¿½s a &quot;Kï¿½vetkezï¿½ Hï¿½t&quot; link
+          segï¿½tsï¿½gï¿½vel vï¿½lthat. Ezek az Elï¿½jegyzï¿½s aljï¿½n talï¿½lhatï¿½k</p>
+        <p>Lehetï¿½sï¿½g van a kivï¿½lasztott napra tï¿½rtï¿½nï¿½ ugrï¿½sra, ha megadja azt a lap aljï¿½n.</p>
+        <p>A Naptï¿½r elï¿½hozï¿½sa a &quot;Naptï¿½r Megtekintï¿½se&quot; linkkel lehetsï¿½ges, amely
+          a lap aljï¿½n talï¿½lhatï¿½. Vï¿½laszza ki a megfelelï¿½ lapot ï¿½s rï¿½kattintva a kivï¿½lasztott
+          napra ugrik az Elï¿½jegyzï¿½si Rendszer.</p>
+        <p align="right"><a href="#top">Ugrï¿½s a tetejï¿½re</a></p>
       </td>
     </tr>
   </table>

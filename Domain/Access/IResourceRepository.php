@@ -43,4 +43,3 @@ interface IResourceRepository
 	public function GetResourceList();
 }
 ?>
- 

@@ -12,7 +12,7 @@
 				<li>
 					<label>{translate key='Resources'}</label> {$ResourceName}
 				{foreach from=$AvailableResources item=resource}
-					{if is_array($AdditionalResourceIds) && in_array($resource->Id(), $AdditionalResourceIds)}
+					{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
 						,{$resource->Name()}
 					{/if}
 				{/foreach}
@@ -20,7 +20,7 @@
 				<li class="section">
 					<label>{translate key='Start'}</label> {formatdate date=$StartDate}
 				{foreach from=$Periods item=period}
-					{if $period->BeginDate()->Equals($SelectedStart)}
+					{if $period eq $SelectedStart}
 						{$period->Label()} <br/>
 					{/if}
 				{/foreach}
@@ -28,7 +28,7 @@
 				<li>
 					<label>{translate key='End'}</label> {formatdate date=$EndDate}
 				{foreach from=$Periods item=period}
-					{if $period->EndDate()->Equals($SelectedEnd)}
+					{if $period eq $SelectedEnd}
 						{$period->Label()} <br/>
 					{/if}
 				{/foreach}
@@ -105,14 +105,30 @@
 			</ul>
 		</div>
 		<div style="clear:both;">&nbsp;</div>
-		<div>
-			<input type="button" value="{translate key='Close'}" class="button" onclick="window.location='{$ReturnUrl}'"/>
-			<input type="button" value="{translate key='Print'}" class="button"/>
-			<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
+
+		<div style="float:left;">
+			{block name="deleteButtons"}
+				&nbsp;
+			{/block}
 		</div>
+		<div style="float:right;">
+			{block name="submitButtons"}
+				&nbsp
+			{/block}
+			<button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
+				<img src="img/slash.png"/>
+				{translate key='Close'}
+			</button>
+					<button type="button" class="button">
+				<img src="img/printer.png" />
+				{translate key='Print'}
+			</button>
+		</div>
+		<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
 	</div>
 
 	<script type="text/javascript" src="scripts/participation.js"></script>
+	<script type="text/javascript" src="scripts/approval.js"></script>
 	<script type="text/javascript">
 
 	$(document).ready(function() {
@@ -120,9 +136,17 @@
 		var participationOptions = {
 			responseType: 'json'
 		};
-			
+
 		var participation = new Participation(participationOptions);
 		participation.initReservation();
+
+		var approvalOptions = {
+			responseType: 'json',
+			url: "{$Path}ajax/reservation_approve.php"
+		};
+
+		var approval = new Approval(approvalOptions);
+		approval.initReservation();
 	});
 
 	</script>

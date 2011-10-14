@@ -8,7 +8,7 @@ interface IReservationUpdatePage extends IReservationSavePage
 	 * @return int
 	 */
 	public function GetReservationId();
-	
+
 	/**
 	 * @return SeriesUpdateScope
 	 */
@@ -21,40 +21,34 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 	 * @var ReservationUpdatePresenter
 	 */
 	private $_presenter;
-	
+
 	/**
 	 * @var bool
 	 */
 	private $_reservationSavedSuccessfully = false;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
-		$persistenceFactory = new ReservationPersistenceFactory();
-		$validationFactory = new ReservationValidationFactory();
-		$notificationFactory = new ReservationNotificationFactory();
-		$resourceRepository = new ResourceRepository();
 
+		$persistenceFactory = new ReservationPersistenceFactory();
 		$updateAction = ReservationAction::Update;
-		$userSession = ServiceLocator::GetServer()->GetUserSession();
-		
+
+		$handler = ReservationHandler::Create($updateAction, $persistenceFactory->Create($updateAction));
 		$this->_presenter = new ReservationUpdatePresenter(
-														$this,
-														$persistenceFactory->Create($updateAction),
-														$validationFactory->Create($updateAction, $userSession),
-														$notificationFactory->Create($updateAction),
-														$resourceRepository
-														);
+			$this,
+			$persistenceFactory->Create($updateAction),
+			$handler,
+			new ResourceRepository()
+		);
 	}
-	
+
 	public function PageLoad()
 	{
 		$reservation = $this->_presenter->BuildReservation();
 		$this->_presenter->HandleReservation($reservation);
 
-		if ($this->_reservationSavedSuccessfully)
-		{
+		if ($this->_reservationSavedSuccessfully) {
 			$this->Display('Ajax/reservation/update_successful.tpl');
 		}
 		else
@@ -62,35 +56,36 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 			$this->Display('Ajax/reservation/save_failed.tpl');
 		}
 	}
-	
+
 	public function SetSaveSuccessfulMessage($succeeded)
 	{
 		$this->_reservationSavedSuccessfully = $succeeded;
 	}
-	
+
 	public function SetReferenceNumber($referenceNumber)
 	{
 		$this->Set('ReferenceNumber', $referenceNumber);
 	}
-	
+
 	public function ShowErrors($errors)
 	{
 		$this->Set('Errors', $errors);
 	}
-	
+
 	public function ShowWarnings($warnings)
 	{
 		// set warnings variable
 	}
-	
+
 	public function GetReservationId()
 	{
 		return $this->GetForm(FormKeys::RESERVATION_ID);
 	}
-	
+
 	public function GetSeriesUpdateScope()
 	{
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
 	}
 }
+
 ?>

@@ -1,14 +1,6 @@
 <?php
-interface IDeleteReservationValidationService
-{
-	/**
-	 * @param ExistingReservationSeries $reservationSeries
-	 * @return IReservationValidationResult
-	 */
-	function Validate($reservationSeries);
-}
 
-class DeleteReservationValidationService implements IDeleteReservationValidationService
+class DeleteReservationValidationService implements IReservationValidationService
 {
 	/**
 	 * @var IReservationValidationService

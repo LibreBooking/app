@@ -23,14 +23,9 @@ class ReservationDeletePresenterTests extends TestBase
 	private $persistenceService;
 	
 	/**
-	 * @var IDeleteReservationValidationService
+	 * @var IReservationHandler
 	 */
-	private $validationService;
-	
-	/**
-	 * @var IDeleteReservationNotificationService
-	 */
-	private $notificationService;
+	private $handler;
 	
 	/**
 	 * @var ReservationDeletePresenter
@@ -45,16 +40,14 @@ class ReservationDeletePresenterTests extends TestBase
 		$this->userId = $this->user->UserId;
 		
 		$this->persistenceService = $this->getMock('IDeleteReservationPersistenceService');
-		$this->validationService = $this->getMock('IDeleteReservationValidationService');
-		$this->notificationService = $this->getMock('IDeleteReservationNotificationService');
+		$this->handler = $this->getMock('IReservationHandler');
 		
 		$this->page = $this->getMock('IReservationDeletePage');
 		
 		$this->presenter = new ReservationDeletePresenter(
 								$this->page, 
 								$this->persistenceService, 
-								$this->validationService, 
-								$this->notificationService);
+								$this->handler);
 	}
 	
 	public function teardown()
@@ -77,15 +70,14 @@ class ReservationDeletePresenterTests extends TestBase
 			->method('GetSeriesUpdateScope')
 			->will($this->returnValue($seriesUpdateScope));
 		
-		$timezone = $this->user->Timezone;
-		
 		$this->persistenceService->expects($this->once())
 			->method('LoadByInstanceId')
 			->with($this->equalTo($reservationId))
 			->will($this->returnValue($expectedSeries));	
 			
 		$expectedSeries->expects($this->once())
-			->method('Delete');
+			->method('Delete')
+			->with($this->user);
 			
 		$expectedSeries->expects($this->once())
 			->method('ApplyChangesTo')
@@ -94,35 +86,18 @@ class ReservationDeletePresenterTests extends TestBase
 		$existingSeries = $this->presenter->BuildReservation();
 	}
 	
-	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistanceAndNotification()
+	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistenceAndNotification()
 	{
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
 		$instance = new Reservation($series, NullDateRange::Instance());
 		$series->WithCurrentInstance($instance);
 		
-		$validationResult = new ReservationValidationResult();
-
-		$this->validationService->expects($this->once())
-			->method('Validate')
-			->with($this->equalTo($series))
-			->will($this->returnValue($validationResult));
-
-		$this->persistenceService->expects($this->once())
-			->method('Persist')
-			->with($this->equalTo($series));
-			
-		$this->notificationService->expects($this->once())
-			->method('Notify')
-			->with($this->equalTo($series));
-			
-		$this->page->expects($this->once())
-			->method('SetSaveSuccessfulMessage')
-			->with($this->equalTo(true));
-		
-		$this->page->expects($this->once())
-			->method('ShowWarnings')
-			->with($this->equalTo($validationResult->GetWarnings()));
+		$this->handler->expects($this->once())
+			->method('Handle')
+			->with($this->equalTo($series), $this->equalTo($this->page))
+			->will($this->returnValue(true));
+					
 
 		$this->presenter->HandleReservation($series);	
 	}	

@@ -1,13 +1,4 @@
 <?php
-require_once(ROOT_DIR . 'lib/Config/namespace.php');
-require_once(ROOT_DIR . 'lib/Server/namespace.php');
-require_once(ROOT_DIR . 'lib/Common/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
-require_once(ROOT_DIR . 'Domain/namespace.php');
-require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ReservationHandler.php');
 
 class ReservationUpdatePresenter
@@ -23,14 +14,9 @@ class ReservationUpdatePresenter
 	private $persistenceService;
 	
 	/**
-	 * @var IUpdateReservationValidationService
+	 * @var IReservationHandler
 	 */
-	private $validationService;
-	
-	/**
-	 * @var IUpdateReservationNotificationService
-	 */
-	private $notificationService;
+	private $handler;
 
 	/**
 	 * @var IResourceRepository
@@ -40,14 +26,12 @@ class ReservationUpdatePresenter
 	public function __construct(
 		IReservationUpdatePage $page, 
 		IUpdateReservationPersistenceService $persistenceService,
-		IUpdateReservationValidationService $validationService,
-		IUpdateReservationNotificationService $notificationService,
+		IReservationHandler $handler,
 		IResourceRepository $resourceRepository)
 	{
 		$this->page = $page;
 		$this->persistenceService = $persistenceService;
-		$this->validationService = $validationService;
-		$this->notificationService = $notificationService;
+		$this->handler = $handler;
 		$this->resourceRepository = $resourceRepository;
 	}
 	
@@ -89,14 +73,7 @@ class ReservationUpdatePresenter
 	 */
 	public function HandleReservation($reservationSeries)
 	{		
-		$handler = new ReservationHandler();
-		
-		$successfullySaved = $handler->Handle(
-							$reservationSeries,
-							$this->page, 
-							$this->persistenceService, 
-							$this->validationService, 
-							$this->notificationService);
+		$successfullySaved = $this->handler->Handle($reservationSeries,	$this->page);
 		
 		if ($successfullySaved)
 		{

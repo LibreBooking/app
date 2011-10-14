@@ -9,7 +9,7 @@ interface IReservationDeletePage extends IReservationSaveResultsPage
 	 * @return int
 	 */
 	public function GetReservationId();
-	
+
 	/**
 	 * @return SeriesUpdateScope
 	 */
@@ -22,38 +22,34 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 	 * @var ReservationDeletePresenter
 	 */
 	private $presenter;
-	
+
 	/**
 	 * @var bool
 	 */
 	private $reservationSavedSuccessfully = false;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		$persistenceFactory = new ReservationPersistenceFactory();
-		$validationFactory = new ReservationValidationFactory();
-		$notificationFactory = new ReservationNotificationFactory();
 
 		$updateAction = ReservationAction::Delete;
-		$userSession = ServiceLocator::GetServer()->GetUserSession();
-		
+
+		$handler = ReservationHandler::Create($updateAction, $persistenceFactory->Create($updateAction));
 		$this->presenter = new ReservationDeletePresenter(
-														$this,
-														$persistenceFactory->Create($updateAction),
-														$validationFactory->Create($updateAction, $userSession),
-														$notificationFactory->Create($updateAction)
-														);
+			$this,
+			$persistenceFactory->Create($updateAction),
+			$handler
+		);
 	}
-	
+
 	public function PageLoad()
 	{
 		$reservation = $this->presenter->BuildReservation();
 		$this->presenter->HandleReservation($reservation);
 
-		if ($this->reservationSavedSuccessfully)
-		{
+		if ($this->reservationSavedSuccessfully) {
 			$this->smarty->display('Ajax/reservation/delete_successful.tpl');
 		}
 		else
@@ -61,30 +57,31 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 			$this->smarty->display('Ajax/reservation/delete_failed.tpl');
 		}
 	}
-	
+
 	public function SetSaveSuccessfulMessage($succeeded)
 	{
 		$this->reservationSavedSuccessfully = $succeeded;
 	}
-	
+
 	public function ShowErrors($errors)
 	{
 		$this->Set('Errors', $errors);
 	}
-	
+
 	public function ShowWarnings($warnings)
 	{
 		// set warnings variable
 	}
-	
+
 	public function GetReservationId()
 	{
 		return $this->GetForm(FormKeys::RESERVATION_ID);
 	}
-	
+
 	public function GetSeriesUpdateScope()
 	{
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
 	}
 }
+
 ?>

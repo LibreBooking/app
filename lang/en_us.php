@@ -1010,4 +1010,3 @@ class en_us extends Language
 	}
 }
 ?>
-

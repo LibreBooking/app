@@ -1,13 +1,4 @@
 <?php 
-require_once(ROOT_DIR . 'lib/Config/namespace.php');
-require_once(ROOT_DIR . 'lib/Server/namespace.php');
-require_once(ROOT_DIR . 'lib/Common/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
-require_once(ROOT_DIR . 'Domain/namespace.php');
-require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ReservationHandler.php');
 
 class ReservationSavePresenter
@@ -23,14 +14,9 @@ class ReservationSavePresenter
 	private $_persistenceService;
 	
 	/**
-	 * @var IReservationValidationService
+	 * @var IReservationHandler
 	 */
-	private $_validationService;
-	
-	/**
-	 * @var IReservationNotificationService
-	 */
-	private $_notificationService;
+	private $_handler;
 
 	/**
 	 * @var IResourceRepository
@@ -40,14 +26,12 @@ class ReservationSavePresenter
 	public function __construct(
 		IReservationSavePage $page, 
 		IReservationPersistenceService $persistenceService,
-		IReservationValidationService $validationService,
-		IReservationNotificationService $notificationService,
+		IReservationHandler $handler,
 		IResourceRepository $resourceRepository)
 	{
 		$this->_page = $page;
 		$this->_persistenceService = $persistenceService;
-		$this->_validationService = $validationService;
-		$this->_notificationService = $notificationService;
+		$this->_handler = $handler;
 		$this->_resourceRepository = $resourceRepository;
 	}
 	
@@ -87,14 +71,9 @@ class ReservationSavePresenter
 	 */
 	public function HandleReservation($reservationSeries)
 	{		
-		$handler = new ReservationHandler();
-		
-		$successfullySaved = $handler->Handle(
+		$successfullySaved = $this->_handler->Handle(
 					$reservationSeries,
-					$this->_page, 
-					$this->_persistenceService, 
-					$this->_validationService, 
-					$this->_notificationService);
+					$this->_page);
 			
 		if ($successfullySaved)
 		{

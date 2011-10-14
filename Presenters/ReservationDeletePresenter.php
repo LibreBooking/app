@@ -1,13 +1,4 @@
 <?php
-require_once(ROOT_DIR . 'lib/Config/namespace.php');
-require_once(ROOT_DIR . 'lib/Server/namespace.php');
-require_once(ROOT_DIR . 'lib/Common/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
-require_once(ROOT_DIR . 'Domain/namespace.php');
-require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ReservationHandler.php');
 
 class ReservationDeletePresenter
@@ -23,25 +14,18 @@ class ReservationDeletePresenter
 	private $persistenceService;
 	
 	/**
-	 * @var IDeleteReservationValidationService
+	 * @var IReservationHandler
 	 */
-	private $validationService;
-	
-	/**
-	 * @var IDeleteReservationNotificationService
-	 */
-	private $notificationService;
+	private $handler;
 	
 	public function __construct(
 		IReservationDeletePage $page, 
 		IDeleteReservationPersistenceService $persistenceService,
-		IDeleteReservationValidationService $validationService,
-		IDeleteReservationNotificationService $notificationService)
+		IReservationHandler $handler)
 	{
 		$this->page = $page;
 		$this->persistenceService = $persistenceService;
-		$this->validationService = $validationService;
-		$this->notificationService = $notificationService;
+		$this->handler = $handler;
 	}
 	
 	/**
@@ -64,14 +48,8 @@ class ReservationDeletePresenter
 	public function HandleReservation($reservationSeries)
 	{
 		Log::Debug("Deleting reservation %s", $reservationSeries->CurrentInstance()->ReferenceNumber());
-		
-		$handler = new ReservationHandler();
-		$handler->Handle(
-			$reservationSeries,
-			$this->page,
-			$this->persistenceService,
-			$this->validationService,
-			$this->notificationService);
+	
+		$this->handler->Handle($reservationSeries, $this->page);
 	}
 }
 ?>

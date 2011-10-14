@@ -5,7 +5,7 @@
 *  all other translations.
 *  
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @translator Marian Murín <murin@netkosice.sk>
+* @translator Marian Murï¿½n <murin@netkosice.sk>
 * @version 05-15-06
 * @package Languages
 *
@@ -27,151 +27,150 @@
 // Please keep the HTML formatting unless you need to change it.  Also, please try
 //  to keep the HTML XHTML 1.0 Transitional complaint.
 ///////////////////////////////////////////////////////////
-?>
-<div align="center"> 
-  <h3><a name="top" id="top"></a>Úvod do phpScheduleIt</h3>
+?><div align="center">
+  <h3><a name="top" id="top"></a>ï¿½vod do phpScheduleIt</h3>
   <p><a href="http://phpscheduleit.sourceforge.net" target="_blank">http://phpscheduleit.sourceforge.net</a></p>  
   <table width="100%" border="0" cellspacing="0" cellpadding="5" style="border: solid #CCCCCC 1px">
     <tr> 
       <td bgcolor="#FAFAFA"> 
         <ul>
-          <li><b><a href="#getting_started">Zaèíname</a></b></li>
+          <li><b><a href="#getting_started">Zaï¿½ï¿½name</a></b></li>
           <ul>
-            <li><a href="#registering">Registrácia</a></li>
+            <li><a href="#registering">Registrï¿½cia</a></li>
             <li><a href="#logging_in">Prihlasovanie</a></li>
-            <li><a href="#language">Vıber jazyka</a></li>
+            <li><a href="#language">Vï¿½ber jazyka</a></li>
             <li><a href="#manage_profile">Zmena Profilu/Hesla</a></li>
-            <li><a href="#resetting_password">Reset Vášho zabudnutého hesla</a></li>
-            <li><a href="#getting_support">Ako získa pomoc</a></li>
+            <li><a href="#resetting_password">Reset Vï¿½ho zabudnutï¿½ho hesla</a></li>
+            <li><a href="#getting_support">Ako zï¿½skaï¿½ pomoc</a></li>
           </ul>
-          <li><a href="#my_control_panel"><b>Môj Riadiaci Panel</b></a></li>
+          <li><a href="#my_control_panel"><b>Mï¿½j Riadiaci Panel</b></a></li>
           <ul>
-            <li><a href="#quick_links">Moje rıchle odkazy</a></li>
-			<li><a href="#my_announcements">Moje oznámenia</a></li>
-            <li><a href="#my_reservations">Moje rezervácie</a></li>
-            <li><a href="#my_training">Moje oprávnenia</a></li>
+            <li><a href="#quick_links">Moje rï¿½chle odkazy</a></li>
+			<li><a href="#my_announcements">Moje oznï¿½menia</a></li>
+            <li><a href="#my_reservations">Moje rezervï¿½cie</a></li>
+            <li><a href="#my_training">Moje oprï¿½vnenia</a></li>
 			<li><a href="#my_invitations">Moje pozvania</a></li>
-			<li><a href="#my_participation">Moja úèas na rezervácii</a></li>         
+			<li><a href="#my_participation">Moja ï¿½ï¿½asï¿½ na rezervï¿½cii</a></li>         
           </ul>
-          <li><a href="#using_the_scheduler"><b>Pouívanie plánovaèa</b></a></li>
+          <li><a href="#using_the_scheduler"><b>Pouï¿½ï¿½vanie plï¿½novaï¿½a</b></a></li>
           <ul>
-			<li><a href="#read_only">Verzia len na èítanie</a></li>
-            <li><a href="#making_a_reservation">Vytvorenie rezervácie</a></li>
-            <li><a href="#modifying_deleting_a_reservation">Zmena/Zrušenie rezervácie</a></li>
-            <li><a href="#navigating">Navigácia v plánovaèi</a></li>
+			<li><a href="#read_only">Verzia len na ï¿½ï¿½tanie</a></li>
+            <li><a href="#making_a_reservation">Vytvorenie rezervï¿½cie</a></li>
+            <li><a href="#modifying_deleting_a_reservation">Zmena/Zruï¿½enie rezervï¿½cie</a></li>
+            <li><a href="#navigating">Navigï¿½cia v plï¿½novaï¿½i</a></li>
           </ul>
         </ul>
 		<hr width="95%" size="1" noshade="noshade" />
-        <h4><a name="getting_started" id="getting_started"></a>Zaèíname</h4>
-        <p>Pre pouívanie plánovaèa je potrebné sa najskôr zaregistrova. 
-          Ak ste sa u zaregistrovali, musíte sa prihlási, aby ste mohli zaèa pouíva tento systém.  V hornej èasti kadej stránky (okrem registraènej stránky a stránky pre prihlásenie) uvidíte informácie o privítaní, dnešnı dátum a nieko¾ko odkazov -- &quot;Odhlási sa&quot;,  &quot;Môj riadiaci panel&quot;, pod odkazom pre privítanie, a &quot;Pomoc&quot; pod dátumom.</p>
-          <p>Ak je na privítacom odkaze zobrazenı predchádzajúci uívate¾ , kliknite na &quot;Odhlási&quot; pre vyèistenie cookies, ktoré boli pouité a <a href="#logging_in">Prihláste sa </a> pod svojim menom a heslom. Kliknutím na odkaz &quot;Môj riadiaci panel&quot; sa dostanete do èasti <a href="#my_control_panel">Môj riadiaci panel</a>, vaša &quot;domovská stránka&quot; plánovaèa.
-          Kliknutím na odkaz  &quot;Pomoc&quot; otvoríte pop-up okno pre nápovedu. Kliknutím na odkaz &quot;Email Administrátorovi&quot; pošle email administrátorovi systému.</p>
-          <p><font color="#FF0000">Varovanie:</font> Ak máte spustenı Norton Personal
-            Firewall poèas pouívania phpScheduleIt, môu sa vyskytnú problémy.
-            Prosím ukonèite  Norton Personal Firewall poèas pouívania  phpScheduleIt. Po skonèení práce s phpScheduleIt ho môete znova spusti.</p>
+        <h4><a name="getting_started" id="getting_started"></a>Zaï¿½ï¿½name</h4>
+        <p>Pre pouï¿½ï¿½vanie plï¿½novaï¿½a je potrebnï¿½ sa najskï¿½r zaregistrovaï¿½. 
+          Ak ste sa uï¿½ zaregistrovali, musï¿½te sa prihlï¿½siï¿½, aby ste mohli zaï¿½aï¿½ pouï¿½ï¿½vaï¿½ tento systï¿½m.  V hornej ï¿½asti kaï¿½dej strï¿½nky (okrem registraï¿½nej strï¿½nky a strï¿½nky pre prihlï¿½senie) uvidï¿½te informï¿½cie o privï¿½tanï¿½, dneï¿½nï¿½ dï¿½tum a niekoï¿½ko odkazov -- &quot;Odhlï¿½siï¿½ sa&quot;,  &quot;Mï¿½j riadiaci panel&quot;, pod odkazom pre privï¿½tanie, a &quot;Pomoc&quot; pod dï¿½tumom.</p>
+          <p>Ak je na privï¿½tacom odkaze zobrazenï¿½ predchï¿½dzajï¿½ci uï¿½ï¿½vateï¿½ , kliknite na &quot;Odhlï¿½siï¿½&quot; pre vyï¿½istenie cookies, ktorï¿½ boli pouï¿½itï¿½ a <a href="#logging_in">Prihlï¿½ste sa </a> pod svojim menom a heslom. Kliknutï¿½m na odkaz &quot;Mï¿½j riadiaci panel&quot; sa dostanete do ï¿½asti <a href="#my_control_panel">Mï¿½j riadiaci panel</a>, vaï¿½a &quot;domovskï¿½ strï¿½nka&quot; plï¿½novaï¿½a.
+          Kliknutï¿½m na odkaz  &quot;Pomoc&quot; otvorï¿½te pop-up okno pre nï¿½povedu. Kliknutï¿½m na odkaz &quot;Email Administrï¿½torovi&quot; poï¿½le email administrï¿½torovi systï¿½mu.</p>
+          <p><font color="#FF0000">Varovanie:</font> Ak mï¿½te spustenï¿½ Norton Personal
+            Firewall poï¿½as pouï¿½ï¿½vania phpScheduleIt, mï¿½ï¿½u sa vyskytnï¿½ problï¿½my.
+            Prosï¿½m ukonï¿½ite  Norton Personal Firewall poï¿½as pouï¿½ï¿½vania  phpScheduleIt. Po skonï¿½enï¿½ prï¿½ce s phpScheduleIt ho mï¿½ï¿½ete znova spustiï¿½.</p>
           <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="registering" id="registering"></a>Registrácia</h5>
-        <p>Pre zaregistrovanie sa do systému, choïte prosím na stránku pre registráciu. To môete dosiahnu cez odkaz na úvodnú prihlasovaciu stránku. Je potrebné vyplni kadé pole vo formulári. Emailová adresa, s ktorou sa zaregistrujete, bude slúi ako vaše prihlasovacie meno. Informácie, ktoré zadáte pri registrácii, môete v budúcnosti kedyko¾vek meni pomocou <a href="#quick_links">zmeny vášho profilu</a>. Vıberom vo¾by &quot;Udruj ma pripojeného&quot; dosiahnete to, e budú pouité  cookies pre vašu identifikáciu do systému a pri ïalšom pouívaní plánovaèa sa nebudete musie prihlasova do systému zadaním vášho mena a hesla, pretoe si to systém zapamätá.  <i>Túto vo¾bu by ste mali poui len vtedy, ak ste jedinı uívate¾ vyuívajúci plánovaè na vašom poèítaèi. V iadnom prípade túto vo¾bu nepouíva na poèítaèi, ktorı nie je Váš. Mohlo by tak dôjs k zneuitiu Vašich údajov. </i> 
-          Po registrácii, budete presmerovaní do èasti  <a href="#my_control_panel">Môj riadiaci panel</a>.</p>
+        <h5><a name="registering" id="registering"></a>Registrï¿½cia</h5>
+        <p>Pre zaregistrovanie sa do systï¿½mu, choï¿½te prosï¿½m na strï¿½nku pre registrï¿½ciu. To mï¿½ï¿½ete dosiahnuï¿½ cez odkaz na ï¿½vodnï¿½ prihlasovaciu strï¿½nku. Je potrebnï¿½ vyplniï¿½ kaï¿½dï¿½ pole vo formulï¿½ri. Emailovï¿½ adresa, s ktorou sa zaregistrujete, bude slï¿½iï¿½ ako vaï¿½e prihlasovacie meno. Informï¿½cie, ktorï¿½ zadï¿½te pri registrï¿½cii, mï¿½ï¿½ete v budï¿½cnosti kedykoï¿½vek meniï¿½ pomocou <a href="#quick_links">zmeny vï¿½ho profilu</a>. Vï¿½berom voï¿½by &quot;Udrï¿½uj ma pripojenï¿½ho&quot; dosiahnete to, ï¿½e budï¿½ pouï¿½itï¿½  cookies pre vaï¿½u identifikï¿½ciu do systï¿½mu a pri ï¿½alï¿½om pouï¿½ï¿½vanï¿½ plï¿½novaï¿½a sa nebudete musieï¿½ prihlasovaï¿½ do systï¿½mu zadanï¿½m vï¿½ho mena a hesla, pretoï¿½e si to systï¿½m zapamï¿½tï¿½.  <i>Tï¿½to voï¿½bu by ste mali pouï¿½iï¿½ len vtedy, ak ste jedinï¿½ uï¿½ï¿½vateï¿½ vyuï¿½ï¿½vajï¿½ci plï¿½novaï¿½ na vaï¿½om poï¿½ï¿½taï¿½i. V ï¿½iadnom prï¿½pade tï¿½to voï¿½bu nepouï¿½ï¿½vaï¿½ na poï¿½ï¿½taï¿½i, ktorï¿½ nie je Vï¿½. Mohlo by tak dï¿½jsï¿½ k zneuï¿½itiu Vaï¿½ich ï¿½dajov. </i> 
+          Po registrï¿½cii, budete presmerovanï¿½ do ï¿½asti  <a href="#my_control_panel">Mï¿½j riadiaci panel</a>.</p>
         <p align="right"><a href="#top">Nahor</a></p>
         <h5><a name="logging_in" id="logging_in"></a>Prihlasovanie</h5>
-        <p>Prihlasovanie je také jednoduché, aké je zadanie vašej emailovej adresy a hesla. 
-          Musíte by <a href="#registering">registrovanı</a> predtım ne sa môete prihlási. To môete dosiahnu kliknutím na registraènnı odkaz, ktorı je na prihlasovacej stránke. Vıberom vo¾by &quot;Udruj ma prihláseného &quot; bude pouité
-          cookies na identifikáciu pri kadom návrate do plánovaèa, bez toho, aby ste sa museli prihlasova.<i>Túto vo¾bu by ste mali poui len vtedy, ak ste jedinı uívate¾ vyuívajúci plánovaè na vašom poèítaèi.</i><em> </em>Po prihlásení budete presmerovanı do oblasti  <a href="#my_control_panel">Môj riadiaci panel</a>.</p>
+        <p>Prihlasovanie je takï¿½ jednoduchï¿½, akï¿½ je zadanie vaï¿½ej emailovej adresy a hesla. 
+          Musï¿½te byï¿½ <a href="#registering">registrovanï¿½</a> predtï¿½m neï¿½ sa mï¿½ï¿½ete prihlï¿½siï¿½. To mï¿½ï¿½ete dosiahnuï¿½ kliknutï¿½m na registraï¿½nnï¿½ odkaz, ktorï¿½ je na prihlasovacej strï¿½nke. Vï¿½berom voï¿½by &quot;Udrï¿½uj ma prihlï¿½senï¿½ho &quot; bude pouï¿½itï¿½
+          cookies na identifikï¿½ciu pri kaï¿½dom nï¿½vrate do plï¿½novaï¿½a, bez toho, aby ste sa museli prihlasovaï¿½.<i>Tï¿½to voï¿½bu by ste mali pouï¿½iï¿½ len vtedy, ak ste jedinï¿½ uï¿½ï¿½vateï¿½ vyuï¿½ï¿½vajï¿½ci plï¿½novaï¿½ na vaï¿½om poï¿½ï¿½taï¿½i.</i><em> </em>Po prihlï¿½senï¿½ budete presmerovanï¿½ do oblasti  <a href="#my_control_panel">Mï¿½j riadiaci panel</a>.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="language" id="language"></a>Vıber jazyka</h5>
-        <p>Na prihlasovacej stránke je menu so všetkımi dostupnımi jazykovımi mutáciami, ktoré administrátor pridal do systému. Prosím vyberte jazyk, ktorı preferujete a celı systém phpScheduleIt bude s vami komunikova tımto jazykom. Text, ktorı do systému pridá administrátor alebo uívatelia systému, nebude preloenı. Preloenı bude len text samotnej aplikácie. Ak chcete vybra inı jazyk, tak je potrebné sa odhlási.</p>
+        <h5><a name="language" id="language"></a>Vï¿½ber jazyka</h5>
+        <p>Na prihlasovacej strï¿½nke je menu so vï¿½etkï¿½mi dostupnï¿½mi jazykovï¿½mi mutï¿½ciami, ktorï¿½ administrï¿½tor pridal do systï¿½mu. Prosï¿½m vyberte jazyk, ktorï¿½ preferujete a celï¿½ systï¿½m phpScheduleIt bude s vami komunikovaï¿½ tï¿½mto jazykom. Text, ktorï¿½ do systï¿½mu pridï¿½ administrï¿½tor alebo uï¿½ï¿½vatelia systï¿½mu, nebude preloï¿½enï¿½. Preloï¿½enï¿½ bude len text samotnej aplikï¿½cie. Ak chcete vybraï¿½ inï¿½ jazyk, tak je potrebnï¿½ sa odhlï¿½siï¿½.</p>
         <p align="right"><a href="#top">Nahor</a></p>        
         <h5><a name="manage_profile" id="manage_profile"></a>Zmena Profilu/Hesla</h5>
-        <p>Ak chcete zmeni váš profil  (meno, email, atï.) alebo vaše heslo, prihláste sa prosím do systému. V sekcii <a href="#my_control_panel">Môj riadiaci panel</a>, v odkaze <a href="#quick_links">Moje rıchle odkazy</a>, klliknite na &quot;Zmena profilu /hesla&quot;. Dostanete sa do formulára s vašimi vyplnenımi informáciami. Môete zmeni ¾ubovo¾nú informáciu, ktorú potrebujete. Kadé pole, ktoré necháte prázdne, nebude zmenené. Ak si eláte zmeni vaše prihlasovacie heslo, zadajte ho prosím dvakrát. Po editácii vaších informácií, kliknite na  &quot;Zmeni profil &quot; 
-          a vaše zmeny budú uloené do databázy. Potom budete automaticky presmerovanı do sekcie Môj riadiaci panel.</p>
+        <p>Ak chcete zmeniï¿½ vï¿½ profil  (meno, email, atï¿½.) alebo vaï¿½e heslo, prihlï¿½ste sa prosï¿½m do systï¿½mu. V sekcii <a href="#my_control_panel">Mï¿½j riadiaci panel</a>, v odkaze <a href="#quick_links">Moje rï¿½chle odkazy</a>, klliknite na &quot;Zmena profilu /hesla&quot;. Dostanete sa do formulï¿½ra s vaï¿½imi vyplnenï¿½mi informï¿½ciami. Mï¿½ï¿½ete zmeniï¿½ ï¿½ubovoï¿½nï¿½ informï¿½ciu, ktorï¿½ potrebujete. Kaï¿½dï¿½ pole, ktorï¿½ nechï¿½te prï¿½zdne, nebude zmenenï¿½. Ak si ï¿½elï¿½te zmeniï¿½ vaï¿½e prihlasovacie heslo, zadajte ho prosï¿½m dvakrï¿½t. Po editï¿½cii vaï¿½ï¿½ch informï¿½ciï¿½, kliknite na  &quot;Zmeniï¿½ profil &quot; 
+          a vaï¿½e zmeny budï¿½ uloï¿½enï¿½ do databï¿½zy. Potom budete automaticky presmerovanï¿½ do sekcie Mï¿½j riadiaci panel.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="resetting_password" id="resetting_password"></a>Reset vášho zabudnutého hesla</h5>
-        <p>Ak ste si zabudli vaše heslo, môete ho zresetova a nové heslo vám bude poslané emailom. Aby ste to mohli zrealizova, prejdite na prihlasovaciu stránku a kliknite na odkaz  &quot;Zabudol som heslo&quot;, ktorı je hneï pod formulárom na prihlásenie. Následne budete presmerovanı na  novú stránku, na ktorej je potrebné zada vašu emailovú adresu. 
-          Po kliknutí na &quot;Odosla&quot;, vám bude náhodne vygenerované nové heslo. Toto nové heslo bude uloené v databáze systému a zároveò vám bude poslané emailom. Po obdraní nového hesla sa môete, 
-          <a href="#logging_in">prihlási</a> a následne si vaše nové heslo  <a href="#manage_profile">zmeni</a>.</p>
+        <h5><a name="resetting_password" id="resetting_password"></a>Reset vï¿½ho zabudnutï¿½ho hesla</h5>
+        <p>Ak ste si zabudli vaï¿½e heslo, mï¿½ï¿½ete ho zresetovaï¿½ a novï¿½ heslo vï¿½m bude poslanï¿½ emailom. Aby ste to mohli zrealizovaï¿½, prejdite na prihlasovaciu strï¿½nku a kliknite na odkaz  &quot;Zabudol som heslo&quot;, ktorï¿½ je hneï¿½ pod formulï¿½rom na prihlï¿½senie. Nï¿½sledne budete presmerovanï¿½ na  novï¿½ strï¿½nku, na ktorej je potrebnï¿½ zadaï¿½ vaï¿½u emailovï¿½ adresu. 
+          Po kliknutï¿½ na &quot;Odoslaï¿½&quot;, vï¿½m bude nï¿½hodne vygenerovanï¿½ novï¿½ heslo. Toto novï¿½ heslo bude uloï¿½enï¿½ v databï¿½ze systï¿½mu a zï¿½roveï¿½ vï¿½m bude poslanï¿½ emailom. Po obdrï¿½anï¿½ novï¿½ho hesla sa mï¿½ï¿½ete, 
+          <a href="#logging_in">prihlï¿½siï¿½</a> a nï¿½sledne si vaï¿½e novï¿½ heslo  <a href="#manage_profile">zmeniï¿½</a>.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="getting_support" id="getting_support"></a>Ako získa pomoc</h5>
-        <p>Ak nemáte oprávnenie na vyuívanie zdrojov alebo máte otázky oh¾adom rezervácií, prosím pouijte odkaz &quot;Email
-          Administrátorovi&quot;, ktorı sa nachádza v sekcii <a href="#quick_links">Moje rıchle odkazy</a></p>
+        <h5><a name="getting_support" id="getting_support"></a>Ako zï¿½skaï¿½ pomoc</h5>
+        <p>Ak nemï¿½te oprï¿½vnenie na vyuï¿½ï¿½vanie zdrojov alebo mï¿½te otï¿½zky ohï¿½adom rezervï¿½ciï¿½, prosï¿½m pouï¿½ijte odkaz &quot;Email
+          Administrï¿½torovi&quot;, ktorï¿½ sa nachï¿½dza v sekcii <a href="#quick_links">Moje rï¿½chle odkazy</a></p>
         <p align="right"><a href="#top">Nahor</a></p>        <p align="right">&nbsp;</p>
         <hr width="95%" size="1" noshade="noshade" />
-        <h4><a name="my_control_panel" id="my_control_panel"></a>Môj riadiaci panel</h4>
-        <p>Riadiaci panel  je vaša  &quot;domovská stránka &quot; pre rezervaènı systém. Tu môete prezera, zadáva nové rezervácia alebo ich maza. Môj riadiaci panel taktie obsahuje odkaz na <a href="#using_the_scheduler">Plánovaè</a>, 
-          odkaz na <a href="#quick_links">Zmenu vášho profilu</a> a vo¾bu na odhlásenie sa z rezervaèného systému.</p>
+        <h4><a name="my_control_panel" id="my_control_panel"></a>Mï¿½j riadiaci panel</h4>
+        <p>Riadiaci panel  je vaï¿½a  &quot;domovskï¿½ strï¿½nka &quot; pre rezervaï¿½nï¿½ systï¿½m. Tu mï¿½ï¿½ete prezeraï¿½, zadï¿½vaï¿½ novï¿½ rezervï¿½cia alebo ich mazaï¿½. Mï¿½j riadiaci panel taktieï¿½ obsahuje odkaz na <a href="#using_the_scheduler">Plï¿½novaï¿½</a>, 
+          odkaz na <a href="#quick_links">Zmenu vï¿½ho profilu</a> a voï¿½bu na odhlï¿½senie sa z rezervaï¿½nï¿½ho systï¿½mu.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="quick_links" id="quick_links"></a>Moje rıchle odkazy</h5>
-        <p>Oblas rıchlych odkazov vám poskytne bené odkazy aplikácie.
-          Prvı, &quot;Choï na Online plánovaè &quot; vás nasmeruje na predvolenı plánovaè. Tu môete prezera rozvrhy jednotlivıch zdrojov, rezervova zdroje a meni vaše súèasné rezervácie.</p>
-        <p>&quot;Prezri môj kalendár &quot; vás navedie na kalendárovı poh¾ad rezervácií, ktoré ste si naplánovali alebo na ktorıch ste zúèastnenı. Tento poh¾ad je monı na dennej, tıdennej alebo mesaènej báze.</p>
-        <p>&quot;Pozri rozvrh &amp; Kalendár zdrojov &quot; vás navedie na kalendárovı poh¾ad rezervácií pre vybranı zdroj  alebo pre všetky zdroje vybraného rozvrhu. Ak ste si zvolili dennı poh¾ad urèitého zdroja, budete ma tie monos vytlaèi poh¾ad &quot;Zonam prihlásenıch&quot; kliknutím na ikonu notebook-u, ktorá sa nachádza ved¾a menu pre zdroje.</p>
-        <p>&quot;Zmena môjho Profilu/Hesla&quot; vás navedie na stránku, ktorá vám umoní meni vaše osobné informácie, ako sú prihlasovacia email adresa, meno, telefónne èíslo a heslo. Všetky tieto informácie budú za vás vypísané. Prázdne alebo nezmenené hodnoty nebudú zapísané do databázy.</p>
-        <p>&quot;Správa mojich emailovıch nastavení &quot; vás navedie na stránku, kde si môete vybra ako a kedy chcete by kontaktovanı vzh¾adom naváš rozvrh. Predvolená vo¾ba je, e obdríte notifikáciu formou HTML emailu stále keï pridáte, zmeníte alebo zrušíte rezerváciu.</p>
-        <p>Poslednı odkaz , &quot;Odlhási&quot; vás odhlasí zo súèasnej session a presmeruje vás na prihlasovaciu stránku.</p>
+        <h5><a name="quick_links" id="quick_links"></a>Moje rï¿½chle odkazy</h5>
+        <p>Oblasï¿½ rï¿½chlych odkazov vï¿½m poskytne beï¿½nï¿½ odkazy aplikï¿½cie.
+          Prvï¿½, &quot;Choï¿½ na Online plï¿½novaï¿½ &quot; vï¿½s nasmeruje na predvolenï¿½ plï¿½novaï¿½. Tu mï¿½ï¿½ete prezeraï¿½ rozvrhy jednotlivï¿½ch zdrojov, rezervovaï¿½ zdroje a meniï¿½ vaï¿½e sï¿½ï¿½asnï¿½ rezervï¿½cie.</p>
+        <p>&quot;Prezri mï¿½j kalendï¿½r &quot; vï¿½s navedie na kalendï¿½rovï¿½ pohï¿½ad rezervï¿½ciï¿½, ktorï¿½ ste si naplï¿½novali alebo na ktorï¿½ch ste zï¿½ï¿½astnenï¿½. Tento pohï¿½ad je moï¿½nï¿½ na dennej, tï¿½dennej alebo mesaï¿½nej bï¿½ze.</p>
+        <p>&quot;Pozri rozvrh &amp; Kalendï¿½r zdrojov &quot; vï¿½s navedie na kalendï¿½rovï¿½ pohï¿½ad rezervï¿½ciï¿½ pre vybranï¿½ zdroj  alebo pre vï¿½etky zdroje vybranï¿½ho rozvrhu. Ak ste si zvolili dennï¿½ pohï¿½ad urï¿½itï¿½ho zdroja, budete maï¿½ tieï¿½ moï¿½nosï¿½ vytlaï¿½iï¿½ pohï¿½ad &quot;Zonam prihlï¿½senï¿½ch&quot; kliknutï¿½m na ikonu notebook-u, ktorï¿½ sa nachï¿½dza vedï¿½a menu pre zdroje.</p>
+        <p>&quot;Zmena mï¿½jho Profilu/Hesla&quot; vï¿½s navedie na strï¿½nku, ktorï¿½ vï¿½m umoï¿½nï¿½ meniï¿½ vaï¿½e osobnï¿½ informï¿½cie, ako sï¿½ prihlasovacia email adresa, meno, telefï¿½nne ï¿½ï¿½slo a heslo. Vï¿½etky tieto informï¿½cie budï¿½ za vï¿½s vypï¿½sanï¿½. Prï¿½zdne alebo nezmenenï¿½ hodnoty nebudï¿½ zapï¿½sanï¿½ do databï¿½zy.</p>
+        <p>&quot;Sprï¿½va mojich emailovï¿½ch nastavenï¿½ &quot; vï¿½s navedie na strï¿½nku, kde si mï¿½ï¿½ete vybraï¿½ ako a kedy chcete byï¿½ kontaktovanï¿½ vzhï¿½adom navï¿½ rozvrh. Predvolenï¿½ voï¿½ba je, ï¿½e obdrï¿½ï¿½te notifikï¿½ciu formou HTML emailu stï¿½le keï¿½ pridï¿½te, zmenï¿½te alebo zruï¿½ï¿½te rezervï¿½ciu.</p>
+        <p>Poslednï¿½ odkaz , &quot;Odlhï¿½siï¿½&quot; vï¿½s odhlasï¿½ zo sï¿½ï¿½asnej session a presmeruje vï¿½s na prihlasovaciu strï¿½nku.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="my_announcements" id="my_announcements"></a>Moje oznámenia</h5>
-        <p>Táto oblas obsahuje  všetky oznámenia, ktoré sú pridané do systému administrátorom.</p>
+        <h5><a name="my_announcements" id="my_announcements"></a>Moje oznï¿½menia</h5>
+        <p>Tï¿½to oblasï¿½ obsahuje  vï¿½etky oznï¿½menia, ktorï¿½ sï¿½ pridanï¿½ do systï¿½mu administrï¿½torom.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="my_reservations" id="my_reservations"></a>Moje rezervácie</h5>
-        <p>Oblas rezervácií zobrazuje všetky vaše rezervácie, ktoré zaèínajú dneškom (predvolene). Táto oblas zobrazuje pre kadú rezerváciu Dátum, 
-          Zdroj, Dátum/Èas vytvorenia rezervácie, Dátum/Èas jej poslednej modifikácie, 
-          Poèiatoènı èas a Koncovı èas. Z tejto oblasti môete taktie meni rezerváciu alebo ju zruši, jednoducho kliknutím na odkaz &quot;Zmeni&quot; alebo &quot;Zmaza&quot; 
-          na konci príslušnej rezervácie. Obidve akcie vyvolajú  pop-up okno, v ktorom je moné potvrïi zmeny vašej rezervácie. 
-          Kliknutím na dátum rezervácie sa otvorí nové okno, v ktorom je moné prezera detaily rezervácie.</p>
-        <p>Pre usporoadanie vašich rezervácií pod¾a konkrétneho ståpca, kliknite na odkaz ( &#150; ) 
-          alebo ( + ) v hornej èasti ståpca. Znak mínus usporiadá vaše rezervácie v poradí zhora nadol pod¾a mena ståpca, znak plus usporiada vaše rezervácie v poradí zdola nahor pod¾a mena ståpca.</p>
+        <h5><a name="my_reservations" id="my_reservations"></a>Moje rezervï¿½cie</h5>
+        <p>Oblasï¿½ rezervï¿½ciï¿½ zobrazuje vï¿½etky vaï¿½e rezervï¿½cie, ktorï¿½ zaï¿½ï¿½najï¿½ dneï¿½kom (predvolene). Tï¿½to oblasï¿½ zobrazuje pre kaï¿½dï¿½ rezervï¿½ciu Dï¿½tum, 
+          Zdroj, Dï¿½tum/ï¿½as vytvorenia rezervï¿½cie, Dï¿½tum/ï¿½as jej poslednej modifikï¿½cie, 
+          Poï¿½iatoï¿½nï¿½ ï¿½as a Koncovï¿½ ï¿½as. Z tejto oblasti mï¿½ï¿½ete taktieï¿½ meniï¿½ rezervï¿½ciu alebo ju zruï¿½iï¿½, jednoducho kliknutï¿½m na odkaz &quot;Zmeniï¿½&quot; alebo &quot;Zmazaï¿½&quot; 
+          na konci prï¿½sluï¿½nej rezervï¿½cie. Obidve akcie vyvolajï¿½  pop-up okno, v ktorom je moï¿½nï¿½ potvrï¿½iï¿½ zmeny vaï¿½ej rezervï¿½cie. 
+          Kliknutï¿½m na dï¿½tum rezervï¿½cie sa otvorï¿½ novï¿½ okno, v ktorom je moï¿½nï¿½ prezeraï¿½ detaily rezervï¿½cie.</p>
+        <p>Pre usporoadanie vaï¿½ich rezervï¿½ciï¿½ podï¿½a konkrï¿½tneho stï¿½pca, kliknite na odkaz ( &#150; ) 
+          alebo ( + ) v hornej ï¿½asti stï¿½pca. Znak mï¿½nus usporiadï¿½ vaï¿½e rezervï¿½cie v poradï¿½ zhora nadol podï¿½a mena stï¿½pca, znak plus usporiada vaï¿½e rezervï¿½cie v poradï¿½ zdola nahor podï¿½a mena stï¿½pca.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="my_training" id="my_training"></a>Moje oprávnenia</h5>
-        <p>Oblas oprávnení zobrazuje všetky zdroje, ku ktorım ste získali oprávnenie na pouívanie.
-		  Táto èas zobrazuje mená zdrojov, ich umiestnenie a telefónne èíslo, ktoré môete poui pre kontaktovanie.</p>
-        <p>Po registrácii nebudete ma oprávnenie na vyuívanie zdrojov, pokia¾ vám administrátor
-		  neumoní povoli všetky zdroje automaticky.  Iba administrátor vám môe prideli oprávnenia na vyuívanie zdrojov. Ak nemáte pridelené oprávnenie na vyuívanie konkretného zdroja, nebudete ho môc vyuíva, ale budete môc prezera jeho súèasné rezervácie.</p>
+        <h5><a name="my_training" id="my_training"></a>Moje oprï¿½vnenia</h5>
+        <p>Oblasï¿½ oprï¿½vnenï¿½ zobrazuje vï¿½etky zdroje, ku ktorï¿½m ste zï¿½skali oprï¿½vnenie na pouï¿½ï¿½vanie.
+		  Tï¿½to ï¿½asï¿½ zobrazuje menï¿½ zdrojov, ich umiestnenie a telefï¿½nne ï¿½ï¿½slo, ktorï¿½ mï¿½ï¿½ete pouï¿½iï¿½ pre kontaktovanie.</p>
+        <p>Po registrï¿½cii nebudete maï¿½ oprï¿½vnenie na vyuï¿½ï¿½vanie zdrojov, pokiaï¿½ vï¿½m administrï¿½tor
+		  neumoï¿½nï¿½ povoliï¿½ vï¿½etky zdroje automaticky.  Iba administrï¿½tor vï¿½m mï¿½ï¿½e prideliï¿½ oprï¿½vnenia na vyuï¿½ï¿½vanie zdrojov. Ak nemï¿½te pridelenï¿½ oprï¿½vnenie na vyuï¿½ï¿½vanie konkretnï¿½ho zdroja, nebudete ho mï¿½cï¿½ vyuï¿½ï¿½vaï¿½, ale budete mï¿½cï¿½ prezeraï¿½ jeho sï¿½ï¿½asnï¿½ rezervï¿½cie.</p>
         <p align="right"><a href="#top">Nahor</a></p>
         <h5><a name="my_invitations" id="my_invitations"></a>Moje pozvania</h5>
-        <p>Oblas moje pozvania zobrazuje všetky rezervácie, ku ktorım ste boli pozvanı a umoòuje vám to buï pozvanie akceptova alebo odmietnu. Ak pozvanie príjmete, stále máte monos ukonèi úèas na tomto pozvaní neskôr. Ak pozvanie zamietnete, nebudete ma v budúcnosti monos akceptova pozvanie k rezervácii.</p>
+        <p>Oblasï¿½ moje pozvania zobrazuje vï¿½etky rezervï¿½cie, ku ktorï¿½m ste boli pozvanï¿½ a umoï¿½ï¿½uje vï¿½m to buï¿½ pozvanie akceptovaï¿½ alebo odmietnuï¿½. Ak pozvanie prï¿½jmete, stï¿½le mï¿½te moï¿½nosï¿½ ukonï¿½iï¿½ ï¿½ï¿½asï¿½ na tomto pozvanï¿½ neskï¿½r. Ak pozvanie zamietnete, nebudete maï¿½ v budï¿½cnosti moï¿½nosï¿½ akceptovaï¿½ pozvanie k rezervï¿½cii.</p>
         <p align="right"><a href="#top">Nahor</a></p>        
-        <h5><a name="my_participation" id="my_participation"></a>Moja úèas na rezervácii</h5>
-        <p>Oblas Moja úèas na rezervácii zobrazuje všetky rezervácie, na ktorıch máte úèas. Neukazjue rezervácie, ktoré ste vytvorili sami. Na tomto mieste si môete vybra ukonèenie úèasti pre vybranú rezerváciu. Ak úèas ukonèíte,
-          nebudete ma monos zúèastni sa rezervácie aj keï vás tvorca pozve ešte raz.</p>
+        <h5><a name="my_participation" id="my_participation"></a>Moja ï¿½ï¿½asï¿½ na rezervï¿½cii</h5>
+        <p>Oblasï¿½ Moja ï¿½ï¿½asï¿½ na rezervï¿½cii zobrazuje vï¿½etky rezervï¿½cie, na ktorï¿½ch mï¿½te ï¿½ï¿½asï¿½. Neukazjue rezervï¿½cie, ktorï¿½ ste vytvorili sami. Na tomto mieste si mï¿½ï¿½ete vybraï¿½ ukonï¿½enie ï¿½ï¿½asti pre vybranï¿½ rezervï¿½ciu. Ak ï¿½ï¿½asï¿½ ukonï¿½ï¿½te,
+          nebudete maï¿½ moï¿½nosï¿½ zï¿½ï¿½astniï¿½ sa rezervï¿½cie aj keï¿½ vï¿½s tvorca pozve eï¿½te raz.</p>
         <p align="right"><a href="#top">Nahor</a></p>        <p align="right">&nbsp;</p>
         <hr width="95%" size="1" noshade="noshade" />
-        <h4><a name="using_the_scheduler" id="using_the_scheduler"></a>Pouívanie plánovaèa</h4>
-        <p>Plánovaè je miesto, kde môete vykonáva všetky plánovacie funkcie pre pride¾ovanie k jednotlivım zdrojom. Zobrazenı tıdeò zaèína súèasnım a pokraèuje siedmimi 
+        <h4><a name="using_the_scheduler" id="using_the_scheduler"></a>Pouï¿½ï¿½vanie plï¿½novaï¿½a</h4>
+        <p>Plï¿½novaï¿½ je miesto, kde mï¿½ï¿½ete vykonï¿½vaï¿½ vï¿½etky plï¿½novacie funkcie pre prideï¿½ovanie k jednotlivï¿½m zdrojom. Zobrazenï¿½ tï¿½deï¿½ zaï¿½ï¿½na sï¿½ï¿½asnï¿½m a pokraï¿½uje siedmimi 
           (7) 
-        dòami. Tu si môete prezera zdroje plánovaèa, rezervova zdroje a meni vaše súèasné rezervácie. Rezervácie budú zafarbené a budú zobrazené, ale iba vaše rezervácie budú odkazova na editáciu vašej rezervácie. Všetky ïalšie rezervácie budú odkazova len na prezeranie rezervácie.</p>
-        <p>Môete zmeni rezervácie  (ak existuje viac ako jedna) pouitím menu v hornej èasti kadej rezervácie.</p>
-        <p>Systemovı administrátor môe špecifikova èasy, ktoré znamenajú  &quot;vıpadky systému&quot;. Tieto èasy nebude moné rezervova pokia¾ budú v konflikte s èasmi vıpadkov.</p>
+        dï¿½ami. Tu si mï¿½ï¿½ete prezeraï¿½ zdroje plï¿½novaï¿½a, rezervovaï¿½ zdroje a meniï¿½ vaï¿½e sï¿½ï¿½asnï¿½ rezervï¿½cie. Rezervï¿½cie budï¿½ zafarbenï¿½ a budï¿½ zobrazenï¿½, ale iba vaï¿½e rezervï¿½cie budï¿½ odkazovaï¿½ na editï¿½ciu vaï¿½ej rezervï¿½cie. Vï¿½etky ï¿½alï¿½ie rezervï¿½cie budï¿½ odkazovaï¿½ len na prezeranie rezervï¿½cie.</p>
+        <p>Mï¿½ï¿½ete zmeniï¿½ rezervï¿½cie  (ak existuje viac ako jedna) pouï¿½itï¿½m menu v hornej ï¿½asti kaï¿½dej rezervï¿½cie.</p>
+        <p>Systemovï¿½ administrï¿½tor mï¿½ï¿½e ï¿½pecifikovaï¿½ ï¿½asy, ktorï¿½ znamenajï¿½  &quot;vï¿½padky systï¿½mu&quot;. Tieto ï¿½asy nebude moï¿½nï¿½ rezervovaï¿½ pokiaï¿½ budï¿½ v konflikte s ï¿½asmi vï¿½padkov.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="read_only" id="read_only"></a>Verzia len na èítanie</h5>
-        <p>Ak ste sa ešte nezaregistrovali do rezervaèného systému alebo ste sa neprihlásili, môete prezera verziu systému, ktorá je urèená len na èítanie kliknutím na odkaz &quot;Plánovaè len na èítanie &quot;, ktorı je na prihlasovacej stránke. Táto verzia plánovaèa vám ukáe všetky zdroje a rezervácie, ale nebudete môc prezera iadne detaily o zdrojoch a rezerváciách a taktie nebudete môc zadáva rezervácie.</p>
+        <h5><a name="read_only" id="read_only"></a>Verzia len na ï¿½ï¿½tanie</h5>
+        <p>Ak ste sa eï¿½te nezaregistrovali do rezervaï¿½nï¿½ho systï¿½mu alebo ste sa neprihlï¿½sili, mï¿½ï¿½ete prezeraï¿½ verziu systï¿½mu, ktorï¿½ je urï¿½enï¿½ len na ï¿½ï¿½tanie kliknutï¿½m na odkaz &quot;Plï¿½novaï¿½ len na ï¿½ï¿½tanie &quot;, ktorï¿½ je na prihlasovacej strï¿½nke. Tï¿½to verzia plï¿½novaï¿½a vï¿½m ukï¿½e vï¿½etky zdroje a rezervï¿½cie, ale nebudete mï¿½cï¿½ prezeraï¿½ ï¿½iadne detaily o zdrojoch a rezervï¿½ciï¿½ch a taktieï¿½ nebudete mï¿½cï¿½ zadï¿½vaï¿½ rezervï¿½cie.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="making_a_reservation" id="making_a_reservation"></a>Vytvorenie rezervácie</h5>
-        <p>Aby ste mohli rezervova zdroj, najprv prejdite na deò, pre ktorı si prajete vytvori rezerváciu. Keï ste u našli tabu¾ku pre poadovanı deò, kliknite na meno zdroja. Tım sa spustí pop-up
-        okno, kde si môete vybra poèiatoèné a koncové dni (ak sú povolené) a èasy, pre ktoré chcete rezervova danı zdroj.</p>
-        <p>Pod informáciou o vıbere èasu je odkaz, ktorı hovorí aká dlhá môe by rezervácia pre danı zdroj. Ak vaša rezervácia je väèšia alebo menšia ne tento povolenı èas, tak to nebude akceptované.</p>
-        <p>Ak máte záujem, môete si vybra aj opakovanú rezerváciu. Pre opakovanú rezerváciu vyberte dni, pre ktoré chcete, aby sa opakovala rezervácia, potom vyberte trvanie rezervácie, ktorá sa bude opakova. Rezervácia bude vytvorená pre vybranı poèiatoènı deò, plus všetky dni, ktoré ste vybrali ako opakujúce. Všetky dátumy, ktoré nemohli by rezervované kvôli konfliktom v rezervácii, budú vypísané. Ak vytvárate viacdennú rezerváciu, vo¾by pre opakovanie nebudú dostupné.</p>
-        <p>Môete prida súhrn tejto rezervácie pomocou vyplnenia sumárneho textového boxu. Tento súhrn bude dostupnı pre všetkıch ïalších uívate¾ov len na èítanie.</p>        
-        <p>Po nastavení správneho zaèiatku a nastavením poèiatoènıch a koncovıch dní/èasov pre rezerváciu a vıberom vo¾by pre opakovanú rezerváciu, stlaète tlaèítko &quot;Uloi&quot;.
-           Ak rezervácia nebola úspešná, objaví sa správa, ktorá vás informuje o dátume(och), ktoré neboli úspešne zarezervované. Ak sa vám nepodarilo úspešne zarezervova vybrané dátumy, choïte naspä a zmeòte poadované èasy tak, aby nekolidovali s ïalšími u existujúcimi rezerváciami. Ak vaše rezervácie boli úspešne vykonané, rozvrh sa automaticky obnoví. To je potrebné na to, aby sa obnovili všetky informácie o rezerváciách z databázy.</p>
-        <p>Nie je moné rezervova zdroj pre dátum, ktorı uplynul, pre zdroj, ktorı vám nebol pridelenı alebo pre zdroj, ktorı je momentálne neaktívny. Tieto zdroje sú oznaèené sivou farbou a neobsahujú odkaz pre vytvorenie rezervácie.</p>
+        <h5><a name="making_a_reservation" id="making_a_reservation"></a>Vytvorenie rezervï¿½cie</h5>
+        <p>Aby ste mohli rezervovaï¿½ zdroj, najprv prejdite na deï¿½, pre ktorï¿½ si prajete vytvoriï¿½ rezervï¿½ciu. Keï¿½ ste uï¿½ naï¿½li tabuï¿½ku pre poï¿½adovanï¿½ deï¿½, kliknite na meno zdroja. Tï¿½m sa spustï¿½ pop-up
+        okno, kde si mï¿½ï¿½ete vybraï¿½ poï¿½iatoï¿½nï¿½ a koncovï¿½ dni (ak sï¿½ povolenï¿½) a ï¿½asy, pre ktorï¿½ chcete rezervovaï¿½ danï¿½ zdroj.</p>
+        <p>Pod informï¿½ciou o vï¿½bere ï¿½asu je odkaz, ktorï¿½ hovorï¿½ akï¿½ dlhï¿½ mï¿½ï¿½e byï¿½ rezervï¿½cia pre danï¿½ zdroj. Ak vaï¿½a rezervï¿½cia je vï¿½ï¿½ia alebo menï¿½ia neï¿½ tento povolenï¿½ ï¿½as, tak to nebude akceptovanï¿½.</p>
+        <p>Ak mï¿½te zï¿½ujem, mï¿½ï¿½ete si vybraï¿½ aj opakovanï¿½ rezervï¿½ciu. Pre opakovanï¿½ rezervï¿½ciu vyberte dni, pre ktorï¿½ chcete, aby sa opakovala rezervï¿½cia, potom vyberte trvanie rezervï¿½cie, ktorï¿½ sa bude opakovaï¿½. Rezervï¿½cia bude vytvorenï¿½ pre vybranï¿½ poï¿½iatoï¿½nï¿½ deï¿½, plus vï¿½etky dni, ktorï¿½ ste vybrali ako opakujï¿½ce. Vï¿½etky dï¿½tumy, ktorï¿½ nemohli byï¿½ rezervovanï¿½ kvï¿½li konfliktom v rezervï¿½cii, budï¿½ vypï¿½sanï¿½. Ak vytvï¿½rate viacdennï¿½ rezervï¿½ciu, voï¿½by pre opakovanie nebudï¿½ dostupnï¿½.</p>
+        <p>Mï¿½ï¿½ete pridaï¿½ sï¿½hrn tejto rezervï¿½cie pomocou vyplnenia sumï¿½rneho textovï¿½ho boxu. Tento sï¿½hrn bude dostupnï¿½ pre vï¿½etkï¿½ch ï¿½alï¿½ï¿½ch uï¿½ï¿½vateï¿½ov len na ï¿½ï¿½tanie.</p>        
+        <p>Po nastavenï¿½ sprï¿½vneho zaï¿½iatku a nastavenï¿½m poï¿½iatoï¿½nï¿½ch a koncovï¿½ch dnï¿½/ï¿½asov pre rezervï¿½ciu a vï¿½berom voï¿½by pre opakovanï¿½ rezervï¿½ciu, stlaï¿½te tlaï¿½ï¿½tko &quot;Uloï¿½iï¿½&quot;.
+           Ak rezervï¿½cia nebola ï¿½speï¿½nï¿½, objavï¿½ sa sprï¿½va, ktorï¿½ vï¿½s informuje o dï¿½tume(och), ktorï¿½ neboli ï¿½speï¿½ne zarezervovanï¿½. Ak sa vï¿½m nepodarilo ï¿½speï¿½ne zarezervovaï¿½ vybranï¿½ dï¿½tumy, choï¿½te naspï¿½ a zmeï¿½te poï¿½adovanï¿½ ï¿½asy tak, aby nekolidovali s ï¿½alï¿½ï¿½mi uï¿½ existujï¿½cimi rezervï¿½ciami. Ak vaï¿½e rezervï¿½cie boli ï¿½speï¿½ne vykonanï¿½, rozvrh sa automaticky obnovï¿½. To je potrebnï¿½ na to, aby sa obnovili vï¿½etky informï¿½cie o rezervï¿½ciï¿½ch z databï¿½zy.</p>
+        <p>Nie je moï¿½nï¿½ rezervovaï¿½ zdroj pre dï¿½tum, ktorï¿½ uplynul, pre zdroj, ktorï¿½ vï¿½m nebol pridelenï¿½ alebo pre zdroj, ktorï¿½ je momentï¿½lne neaktï¿½vny. Tieto zdroje sï¿½ oznaï¿½enï¿½ sivou farbou a neobsahujï¿½ odkaz pre vytvorenie rezervï¿½cie.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="modifying_deleting_a_reservation" id="modifying_deleting_a_reservation"></a>Zmena/Zrušenie rezervácie</h5>
-        <p>Existuje nieko¾ko spôsobov ako zmeni alebo zruši rezerváciu. Jeden je prostredníctvom <a href="#my_control_panel">Môj riadiaci panel</a> ako je popísané vyššie. Druhı je pomocou online plánovaèa. Ako u bolo skôr uvedené, iba vy budete môc meni vaše rezervácie. Všetky ïalšie rezervácie budú zobrazené, ale nebudú obsahova odkaz na ich editáciu.</p>
-        <p>Pre zmenu rezervácie pomocou plánovaèa, jednoducho kliknite na rezerváciu, ktorú chcete zmeni. Tımto sa vám otvorí pop-up okno, ktoré je ve¾mi podobné ako je rezervaèné okno. Máte 2 monosti;
-          môete zmeni buï poèiatoèné a koncové èasy rezervácie,
-          alebo môete kliknú na zaškàtavací box &quot;Zmaza&quot;.
-           Po vykonaní vaších zmien, stlaète talèítko &quot;Zmeni&quot;, ktorı je v spodnej èasti formulára. Vaša nová vo¾ba bude porovnaná so súèasnımi rezerváciami a objaví sa správa, ktorá vám oznámi stav vašej modifikácie. Ak potrebujete zmeni èasy, choïte naspä na okno pre modifikáciu a vyberte nové èasy, ktoré sa neprekrıvajú s ïalšími rezerváciami. Po úspešnej zmene vašej rezervácie,
-           plánovaè sa automaticky obnoví. To je potrebné na obnovenie všetkıch informácií z databázy.</p>
-        <p>Pre zmenu skupiny opakujúcich sa rezervácií, zaškrtnite box oznaèenı
-        &quot;Zmeni všetky opakujúce sa záznamy v skupine?&quot;. Všetky kolidujúce dátumy budú vypísané.</p>
-        <p>Nie je moné zmeni rezerváciu, ktorá bola zadaná pred súèasnım dátumom, resp. dátumom, ktorı u uplynul.</p>
+        <h5><a name="modifying_deleting_a_reservation" id="modifying_deleting_a_reservation"></a>Zmena/Zruï¿½enie rezervï¿½cie</h5>
+        <p>Existuje niekoï¿½ko spï¿½sobov ako zmeniï¿½ alebo zruï¿½iï¿½ rezervï¿½ciu. Jeden je prostrednï¿½ctvom <a href="#my_control_panel">Mï¿½j riadiaci panel</a> ako je popï¿½sanï¿½ vyï¿½ï¿½ie. Druhï¿½ je pomocou online plï¿½novaï¿½a. Ako uï¿½ bolo skï¿½r uvedenï¿½, iba vy budete mï¿½cï¿½ meniï¿½ vaï¿½e rezervï¿½cie. Vï¿½etky ï¿½alï¿½ie rezervï¿½cie budï¿½ zobrazenï¿½, ale nebudï¿½ obsahovaï¿½ odkaz na ich editï¿½ciu.</p>
+        <p>Pre zmenu rezervï¿½cie pomocou plï¿½novaï¿½a, jednoducho kliknite na rezervï¿½ciu, ktorï¿½ chcete zmeniï¿½. Tï¿½mto sa vï¿½m otvorï¿½ pop-up okno, ktorï¿½ je veï¿½mi podobnï¿½ ako je rezervaï¿½nï¿½ okno. Mï¿½te 2 moï¿½nosti;
+          mï¿½ï¿½ete zmeniï¿½ buï¿½ poï¿½iatoï¿½nï¿½ a koncovï¿½ ï¿½asy rezervï¿½cie,
+          alebo mï¿½ï¿½ete kliknï¿½ na zaï¿½kï¿½tavacï¿½ box &quot;Zmazaï¿½&quot;.
+           Po vykonanï¿½ vaï¿½ï¿½ch zmien, stlaï¿½te talï¿½ï¿½tko &quot;Zmeniï¿½&quot;, ktorï¿½ je v spodnej ï¿½asti formulï¿½ra. Vaï¿½a novï¿½ voï¿½ba bude porovnanï¿½ so sï¿½ï¿½asnï¿½mi rezervï¿½ciami a objavï¿½ sa sprï¿½va, ktorï¿½ vï¿½m oznï¿½mi stav vaï¿½ej modifikï¿½cie. Ak potrebujete zmeniï¿½ ï¿½asy, choï¿½te naspï¿½ na okno pre modifikï¿½ciu a vyberte novï¿½ ï¿½asy, ktorï¿½ sa neprekrï¿½vajï¿½ s ï¿½alï¿½ï¿½mi rezervï¿½ciami. Po ï¿½speï¿½nej zmene vaï¿½ej rezervï¿½cie,
+           plï¿½novaï¿½ sa automaticky obnovï¿½. To je potrebnï¿½ na obnovenie vï¿½etkï¿½ch informï¿½ciï¿½ z databï¿½zy.</p>
+        <p>Pre zmenu skupiny opakujï¿½cich sa rezervï¿½ciï¿½, zaï¿½krtnite box oznaï¿½enï¿½
+        &quot;Zmeniï¿½ vï¿½etky opakujï¿½ce sa zï¿½znamy v skupine?&quot;. Vï¿½etky kolidujï¿½ce dï¿½tumy budï¿½ vypï¿½sanï¿½.</p>
+        <p>Nie je moï¿½nï¿½ zmeniï¿½ rezervï¿½ciu, ktorï¿½ bola zadanï¿½ pred sï¿½ï¿½asnï¿½m dï¿½tumom, resp. dï¿½tumom, ktorï¿½ uï¿½ uplynul.</p>
         <p align="right"><a href="#top">Nahor</a></p>
-        <h5><a name="navigating" id="navigating"></a>Navigácia v plánovaèi</h5>
-        <p>Je nieko¾ko spôsobov ako sa pohybova  v kalendári plánovaèa..</p>
-        <p>Pohybujte sa pomocou tıdòov pouitím odkazov &quot;Predchádzajúci tıdeò &quot; a &quot;Nasledujúci tıdeò &quot;, ktoré sú v spodnej èasti plánovaèa .</p>
-        <p>Môete prejs na ¾ubovo¾nı dátum vıberom dátumu z formulára, ktorı je v spodnej èasti plánovaèa.</p>
-        <p>Prechodom na navigaènı kalendár kliknutím na odkaz &quot;Prezeraj kalendár &quot;, ktorı je tie v spodnej èasti plánovaèa. Nájdite poadovanı dátum a kliknite naò, aby ste sa dostali na tento dátum v plánovaèi.</p>
+        <h5><a name="navigating" id="navigating"></a>Navigï¿½cia v plï¿½novaï¿½i</h5>
+        <p>Je niekoï¿½ko spï¿½sobov ako sa pohybovaï¿½  v kalendï¿½ri plï¿½novaï¿½a..</p>
+        <p>Pohybujte sa pomocou tï¿½dï¿½ov pouï¿½itï¿½m odkazov &quot;Predchï¿½dzajï¿½ci tï¿½deï¿½ &quot; a &quot;Nasledujï¿½ci tï¿½deï¿½ &quot;, ktorï¿½ sï¿½ v spodnej ï¿½asti plï¿½novaï¿½a .</p>
+        <p>Mï¿½ï¿½ete prejsï¿½ na ï¿½ubovoï¿½nï¿½ dï¿½tum vï¿½berom dï¿½tumu z formulï¿½ra, ktorï¿½ je v spodnej ï¿½asti plï¿½novaï¿½a.</p>
+        <p>Prechodom na navigaï¿½nï¿½ kalendï¿½r kliknutï¿½m na odkaz &quot;Prezeraj kalendï¿½r &quot;, ktorï¿½ je tieï¿½ v spodnej ï¿½asti plï¿½novaï¿½a. Nï¿½jdite poï¿½adovanï¿½ dï¿½tum a kliknite naï¿½, aby ste sa dostali na tento dï¿½tum v plï¿½novaï¿½i.</p>
         <p align="right"><a href="#top">Nahor</a></p>
       </td>
     </tr>

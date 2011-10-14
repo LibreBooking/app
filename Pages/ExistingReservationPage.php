@@ -106,6 +106,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 
 	protected function GetTemplateName()
 	{
+		//return 'Reservation/approve.tpl';
 		if ($this->IsApprovable)
 		{
 			return 'Reservation/approve.tpl';

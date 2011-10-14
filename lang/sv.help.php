@@ -3,7 +3,7 @@
 * Swedish (se) help translation file.
 *  
 * @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @translator Johan Sundström <johan.sundstrom@vasterbottensmuseum.se>
+* @translator Johan Sundstrï¿½m <johan.sundstrom@vasterbottensmuseum.se>
 * @version 03-13-05
 * @package Languages
 *
@@ -25,92 +25,91 @@
 // Please keep the HTML formatting unless you need to change it.  Also, please try
 //  to keep the HTML XHTML 1.0 Transitional complaint.
 ///////////////////////////////////////////////////////////
-?>
-<div align="center"> 
+?><div align="center">
   <h3><a name="top" id="top"></a>Introduction to phpScheduleIt</h3>
   <p><a href="http://phpscheduleit.sourceforge.net" target="_blank">http://phpscheduleit.sourceforge.net</a></p>
   <table width="100%" border="0" cellspacing="0" cellpadding="5" style="border: solid #CCCCCC 1px">
     <tr> 
       <td bgcolor="#FAFAFA"> 
         <ul>
-          <li><b><a href="#getting_started">Komma igång</a></b></li>
+          <li><b><a href="#getting_started">Komma igï¿½ng</a></b></li>
           <ul>
             <li><a href="#registering">Registrering</a></li>
             <li><a href="#logging_in">Inloggning</a></li>
-            <li><a href="#language">Välja språk</a></li>
-            <li><a href="#manage_profile">Ändra min profil information/l&ouml;senord</a></li>
-            <li><a href="#resetting_password">Återställ ett bortglömt lösenord</a></li>
-            <li><a href="#Få hjälp"></a></li>
+            <li><a href="#language">Vï¿½lja sprï¿½k</a></li>
+            <li><a href="#manage_profile">ï¿½ndra min profil information/l&ouml;senord</a></li>
+            <li><a href="#resetting_password">ï¿½terstï¿½ll ett bortglï¿½mt lï¿½senord</a></li>
+            <li><a href="#Fï¿½ hjï¿½lp"></a></li>
           </ul>
           <li><a href="#my_control_panel"><b>Startsidan</b></a></li>
           <ul>
             <li><a href="#my_announcements">E-posta Administrat&ouml;ren </a></li>
             <li><a href="#my_reservations">Mina bokningar</a></li>
-            <li><a href="#my_training">Mina rättigheter</a></li>
-            <li><a href="#quick_links">Mina genvägar</a></li>
+            <li><a href="#my_training">Mina rï¿½ttigheter</a></li>
+            <li><a href="#quick_links">Mina genvï¿½gar</a></li>
           </ul>
-          <li><a href="#using_the_scheduler"><b>Använd bokningssystemet</b></a></li>
+          <li><a href="#using_the_scheduler"><b>Anvï¿½nd bokningssystemet</b></a></li>
           <ul>
 			<li><a href="#read_only">Skrivskyddad version</a></li>
-            <li><a href="#making_a_reservation">Bokningshjälp</a></li>
-            <li><a href="#modifying_deleting_a_reservation">Ändra/ta bort en reservation</a></li>
+            <li><a href="#making_a_reservation">Bokningshjï¿½lp</a></li>
+            <li><a href="#modifying_deleting_a_reservation">ï¿½ndra/ta bort en reservation</a></li>
             <li><a href="#navigating">Navigera i bokningssystemet</a></li>
           </ul>
         </ul>
 		<hr width="95%" size="1" noshade="noshade" />
-        <h4><a name="getting_started" id="getting_started"></a>Komma igång</h4>
+        <h4><a name="getting_started" id="getting_started"></a>Komma igï¿½ng</h4>
         <p>
 		
-		Det första du måste göra för att  komma igång är att registrera dig. Om du redan har registrerat dig är det bara att logga in. 
-		Överst på alla sidor finns ett välkomstmeddelande, dagens datum samt några länkar. Bland länkarna hittar du &quot;Logga ut&quot;  och &quot;Startsidan&quot;. 
-		Det finns även en länk för att  nå hjälp filerna.
+		Det fï¿½rsta du mï¿½ste gï¿½ra fï¿½r att  komma igï¿½ng ï¿½r att registrera dig. Om du redan har registrerat dig ï¿½r det bara att logga in. 
+		ï¿½verst pï¿½ alla sidor finns ett vï¿½lkomstmeddelande, dagens datum samt nï¿½gra lï¿½nkar. Bland lï¿½nkarna hittar du &quot;Logga ut&quot;  och &quot;Startsidan&quot;. 
+		Det finns ï¿½ven en lï¿½nk fï¿½r att  nï¿½ hjï¿½lp filerna.
 		
-		Om fel användare står i välkomstmeddelandet, tryck &quot;Logga ut&quot;. Logga sedan in med din egen användare. Trycker du på &quot;Startsidan&quot; kommer du hamna på din egen sida i bokningssystemet.
-		Klickar du på &quot;Hjälp&quot; får du upp ett popupp fönster där du kan välja att kontakta administratören.
+		Om fel anvï¿½ndare stï¿½r i vï¿½lkomstmeddelandet, tryck &quot;Logga ut&quot;. Logga sedan in med din egen anvï¿½ndare. Trycker du pï¿½ &quot;Startsidan&quot; kommer du hamna pï¿½ din egen sida i bokningssystemet.
+		Klickar du pï¿½ &quot;Hjï¿½lp&quot; fï¿½r du upp ett popupp fï¿½nster dï¿½r du kan vï¿½lja att kontakta administratï¿½ren.
 		
-		<p>Varning: har du Norton Personal Firewall påslaget undertiden du använder bokningssystemet kan du råka på problem. 
-		  För att försäkra dig om att inte få problem är det bäst att slå av Norton Personal Firewall så länge du använder bokningssystemet.
+		<p>Varning: har du Norton Personal Firewall pï¿½slaget undertiden du anvï¿½nder bokningssystemet kan du rï¿½ka pï¿½ problem. 
+		  Fï¿½r att fï¿½rsï¿½kra dig om att inte fï¿½ problem ï¿½r det bï¿½st att slï¿½ av Norton Personal Firewall sï¿½ lï¿½nge du anvï¿½nder bokningssystemet.
 		   
         <p align="right"><a href="#top">Top</a></p>
         <h5><a name="registering" id="registering"></a>Registrering</h5>
         <p>
-		För att registrera måste man först ta sig till regisreringssidan. Den kan man nå från förstasidan. Kom ihåg att du måste fylla i alla fält. 
-		Emailadressen du registrerar dig med kommer vara ditt inloggningsnamn. Den övriga informationen du fyller i kan du ändra vid ett senare tillfälle.
-		<a href="#quick_links"> Ändra din profil</a>. Kryssar man i valet &quot;Håll mig inloggad&quot; behöver du inte logga in nästa gång du besöker bokningssidan.
-		<i>Använd bara detta val ifall du är den enda som använder bokningssystemet på datorn.</i>
+		Fï¿½r att registrera mï¿½ste man fï¿½rst ta sig till regisreringssidan. Den kan man nï¿½ frï¿½n fï¿½rstasidan. Kom ihï¿½g att du mï¿½ste fylla i alla fï¿½lt. 
+		Emailadressen du registrerar dig med kommer vara ditt inloggningsnamn. Den ï¿½vriga informationen du fyller i kan du ï¿½ndra vid ett senare tillfï¿½lle.
+		<a href="#quick_links"> ï¿½ndra din profil</a>. Kryssar man i valet &quot;Hï¿½ll mig inloggad&quot; behï¿½ver du inte logga in nï¿½sta gï¿½ng du besï¿½ker bokningssidan.
+		<i>Anvï¿½nd bara detta val ifall du ï¿½r den enda som anvï¿½nder bokningssystemet pï¿½ datorn.</i>
 		Efter registreringen kommer du att skickas till  <a href="#my_control_panel">Startsidan</a>.</p>
         <p align="right"><a href="#top">Top</a></p>
         <h5><a name="logging_in" id="logging_in"></a>Inloggning</h5>
-        <p>Skriv in mailadress och lösenord i fälten.
-		 Du måste <a href="#registering">registrera</a> dig innan du kan logga in. 
+        <p>Skriv in mailadress och lï¿½senord i fï¿½lten.
+		 Du mï¿½ste <a href="#registering">registrera</a> dig innan du kan logga in. 
 		 
         <p align="right"><a href="#top">Top</a></p>
-        <h5><a name="language" id="language"></a>Välja språk</h5>
+        <h5><a name="language" id="language"></a>Vï¿½lja sprï¿½k</h5>
         <p>
 		
-		På inloggningssidan finns det en rullgardinsmeny med de olika spr&aring;k du kan v&auml;lja. 
+		Pï¿½ inloggningssidan finns det en rullgardinsmeny med de olika spr&aring;k du kan v&auml;lja. 
 		Efter att du valt spr&aring;k kommer all text p&aring; sidan att &ouml;vers&auml;ttas. Text som administrat&ouml;ren har skrivit in kommer dock inte att &ouml;vers&auml;ttas. 
 		Du m&aring;ste logga ut f&ouml;r att kunna byta spr&aring;k.</p>
         <p align="right"><a href="#top">Top</a></p>        
         <h5><a name="manage_profile" id="manage_profile"></a>&Auml;ndra min profil information/l&ouml;senord </h5>
         <p>F&ouml;r att &auml;ndra konto information (namn, mailadress, etc.) eller ditt l&ouml;senord g&ouml;r p&aring; f&ouml;ljande s&auml;tt. 
-		Logga in, v&auml;lj sedan &quot;&Auml;ndra min kontoinformation / l&ouml;senord&quot; fr&aring;n <a href="#quick_links">Mina genvägar</a> p&aring; <a href="#my_control_panel">Startsidan.</a>
+		Logga in, v&auml;lj sedan &quot;&Auml;ndra min kontoinformation / l&ouml;senord&quot; fr&aring;n <a href="#quick_links">Mina genvï¿½gar</a> p&aring; <a href="#my_control_panel">Startsidan.</a>
 		 Du kommer att f&aring; upp en formul&auml;r med din tidigare information redan ifylld. Du kan d&aring; g&ouml;ra de &auml;ndringar du vill, n&auml;r du 
 		 &auml;r f&auml;rdig klickar du p&aring; &quot;&Auml;ndra profil&quot;, din information kommer d&aring; att uppdateras.</p>
        
         <p align="right"><a href="#top">Top</a></p>
-        <h5><a name="resetting_password" id="resetting_password"></a>Återställa tidigare lösenord</h5>
+        <h5><a name="resetting_password" id="resetting_password"></a>ï¿½terstï¿½lla tidigare lï¿½senord</h5>
         <p>
-		Om du har glömtbort ditt lösenord kan man återställa det. Det innebär att du får ett nytt lösenord med mail.
-		För att göra detta, gå till inloggingssidan, klicka på &quot;Glömt lösenord&quot; under login rutan. Du kommer då att få skriva in din mailadress. När du tryckt på &quot;Skicka&quot; kommer ett nytt lösenord skickas till din mail.
-	    När du tagit imot ditt nya lösenord så bör du <a href="#logging_in">logga in</a> och <a href="#manage_profile">ändra lösenord.</a>
+		Om du har glï¿½mtbort ditt lï¿½senord kan man ï¿½terstï¿½lla det. Det innebï¿½r att du fï¿½r ett nytt lï¿½senord med mail.
+		Fï¿½r att gï¿½ra detta, gï¿½ till inloggingssidan, klicka pï¿½ &quot;Glï¿½mt lï¿½senord&quot; under login rutan. Du kommer dï¿½ att fï¿½ skriva in din mailadress. Nï¿½r du tryckt pï¿½ &quot;Skicka&quot; kommer ett nytt lï¿½senord skickas till din mail.
+	    Nï¿½r du tagit imot ditt nya lï¿½senord sï¿½ bï¿½r du <a href="#logging_in">logga in</a> och <a href="#manage_profile">ï¿½ndra lï¿½senord.</a>
         <p align="right"><a href="#top">Top</a></p>
         <h5><a name="getting_support" id="getting_support"></a>F&aring; hj&auml;lp </h5>
-        <p>Om du har n&aring;gra fr&aring;gor eller problem tveka in att maila administrat&ouml;ren. L&auml;ttast &auml;r att anv&auml;nda l&auml;nken fr&aring;n <a href="#quick_links">Mina genvägar.</a></p>
+        <p>Om du har n&aring;gra fr&aring;gor eller problem tveka in att maila administrat&ouml;ren. L&auml;ttast &auml;r att anv&auml;nda l&auml;nken fr&aring;n <a href="#quick_links">Mina genvï¿½gar.</a></p>
         <p align="right"><a href="#top">Top</a></p>        <p align="right">&nbsp;</p>
         <hr width="95%" size="1" noshade="noshade" />
         <h4><a name="my_control_panel" id="my_control_panel"></a>Startsidan</h4>
-        <p>Fr&aring;n Startsidan kan du &ouml;verblicka dina bokningar och enkelt n&aring; <a href="#using_the_scheduler">bokningssystemet</a> f&ouml;r att &auml;ndra eller g&ouml;ra nya bokningar. Det finns &auml;ven l&auml;nkar f&ouml;r att <a href="#quick_links">ändra konto information</a> och en l&auml;nk f&ouml;r att logga ut.</p>
+        <p>Fr&aring;n Startsidan kan du &ouml;verblicka dina bokningar och enkelt n&aring; <a href="#using_the_scheduler">bokningssystemet</a> f&ouml;r att &auml;ndra eller g&ouml;ra nya bokningar. Det finns &auml;ven l&auml;nkar f&ouml;r att <a href="#quick_links">ï¿½ndra konto information</a> och en l&auml;nk f&ouml;r att logga ut.</p>
         <p align="right"><a href="#top">Top</a></p>
         <h5><a name="my_announcements" id="my_announcements"></a>E-posta Administrat&ouml;ren </h5>
         <p>Under den h&auml;r rubriken finns all information som administrat&ouml;ren tycker &auml;r viktig att veta. </p>
@@ -149,8 +148,8 @@
         <p><a href="#top">Top</a></p>
         <h5><a name="modifying_deleting_a_reservation" id="modifying_deleting_a_reservation"></a>Modifying/Deleting 
           a Reservation</h5>
-        <p>Det finns flera olika s&auml;tt att &auml;ndra eller ta bort en bokning. En &auml;r genom <a href="#my_control_panel">Startsidan</a> den andra är genom bokningssystemet.
-		Det är bara du själv som kan ändra dina bokningar. Alla andra bokningar kommer att visas i bokningssystemet men det kommer inte finnas någon länk för att ändra dem.</p>
+        <p>Det finns flera olika s&auml;tt att &auml;ndra eller ta bort en bokning. En &auml;r genom <a href="#my_control_panel">Startsidan</a> den andra ï¿½r genom bokningssystemet.
+		Det ï¿½r bara du sjï¿½lv som kan ï¿½ndra dina bokningar. Alla andra bokningar kommer att visas i bokningssystemet men det kommer inte finnas nï¿½gon lï¿½nk fï¿½r att ï¿½ndra dem.</p>
         <p>F&ouml;r att &auml;ndra en bokning genom schemal&auml;ggaren, klicka p&aring; den bokning du vill &auml;ndra. I f&ouml;nstret som kommer upp har du tv&aring; val, antingen kan du &auml;ndra start och slut tiderna eller s&aring; kan du kryssa i &quot;Ta bort&quot; rutan. Efter att du gjort dina &auml;ndringar klickar du &quot;&Auml;ndra&quot;. De nya &auml;ndringarna sparas d&aring; till databasen. Om det blir fel &auml;r det bara att g&aring; tillbaka och &auml;ndra tiderna, kom ih&aring;g att bokningen inte f&aring;r &ouml;verlappa n&aring;gon annans bokning. Efter att bokningen har &auml;ndrats kommer schemat att uppdateras och visa &auml;ndringen.</p>
         <p>F&ouml;r att &auml;ndra en grupp av &aring;terkommande bokningar, kryssa i f&auml;ltet &quot;Uppdatera alla &aring;terkommande bokningar i gruppen?&quot;. Om det blir n&aring;gra dubbelbokningar skrivs datumen f&ouml;r dem ut.</p>
         <p>Det &auml;r om&ouml;jligt att &auml;ndra n&aring;got p&aring; en bokning som redan har varit. </p>

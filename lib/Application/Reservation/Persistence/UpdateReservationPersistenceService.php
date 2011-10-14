@@ -5,9 +5,16 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/IReservationPer
 interface IUpdateReservationPersistenceService extends IReservationPersistenceService
 {
 	/**
+	 * @param int $reservationInstanceId
 	 * @return ExistingReservationSeries
 	 */
-	function LoadByInstanceId($reservationInstanceId);
+	public function LoadByInstanceId($reservationInstanceId);
+
+	/**
+	 * @param string $referenceNumber
+	 * @return ExistingReservationSeries
+	 */
+	public function LoadByReferenceNumber($referenceNumber);
 }
 
 class UpdateReservationPersistenceService implements IUpdateReservationPersistenceService
@@ -30,6 +37,11 @@ class UpdateReservationPersistenceService implements IUpdateReservationPersisten
 	public function Persist($existingReservationSeries)
 	{
 		$this->_repository->Update($existingReservationSeries);
+	}
+
+	public function LoadByReferenceNumber($referenceNumber)
+	{
+		return $this->_repository->LoadByReferenceNumber($referenceNumber);
 	}
 }
 
