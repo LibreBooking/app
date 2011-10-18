@@ -36,6 +36,7 @@ class ExistingReservationSeriesBuilder
 		$series->WithResource(new FakeBookableResource(3));
 		$series->WithSchedule(4);
 		$series->WithTitle('title');
+		$series->WithStatus(ReservationStatus::Created);
 		
 		$this->series = $series;
 	}
@@ -135,6 +136,7 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 	    $this->WithPrimaryResource(new FakeBookableResource(2));
 		$this->WithResource(new FakeBookableResource(3));
 		$this->WithBookedBy(new FakeUserSession());
+		$this->WithStatus(ReservationStatus::Created);
 	}
 
 	public function AddEvent($event)

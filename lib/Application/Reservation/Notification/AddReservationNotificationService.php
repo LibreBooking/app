@@ -1,39 +1,17 @@
 <?php
-class AddReservationNotificationService implements IReservationNotificationService 
+require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNotificationService.php');
+
+class AddReservationNotificationService extends ReservationNotificationService
 {
-	/**
-	 * @var IReservationNotification[]
-	 */
-	private $notifications;
-	
-	/**
-	 * @param IReservationNotification[] $notifications
-	 */
-	public function __construct($notifications)
+	public function __construct(IUserRepository $userRepo, IResourceRepository $resourceRepo)
 	{
-		$this->notifications = $notifications;	
-	}
-	
-	/**
-	 * @see IReservationNotificationService::Notify()
-	 */
-	public function Notify($reservationSeries)
-	{
-		$referenceNumber = $reservationSeries->CurrentInstance()->ReferenceNumber();
-		
-		foreach ($this->notifications as $notification)
-		{
-			try
-			{
-				Log::Debug("Calling notify on %s for reservation %s", get_class($notification), $referenceNumber);
-				
-				$notification->Notify($reservationSeries);
-			}
-			catch(Exception $ex)
-			{
-				Log::Error("Error sending notification of type %s for reservation %s. Exception: %s", get_class($notification), $referenceNumber, $ex);
-			}
-		}
+		$notifications = array();
+		$notifications[] = new OwnerEmailCreatedNotificaiton($userRepo, $resourceRepo);
+		$notifications[] = new AdminEmailCreatedNotification($userRepo, $resourceRepo);
+		$notifications[] = new ParticipantAddedEmailNotification($userRepo);
+		$notifications[] = new InviteeAddedEmailNotification($userRepo);
+
+		parent::__construct($notifications);
 	}
 }
 ?>

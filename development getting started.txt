@@ -1,3 +1,7 @@
+Requirements:
+PHP 5.2 or greater
+MySQL x.x or greater
+
 Getting the development branch running
 
 1) Create and populate the database
@@ -6,7 +10,7 @@ Getting the development branch running
 	run testdata.sql (optional)
 	
 2) Set configuration values
-	update newconfig.php with your local settings
+	update config.php with your local settings
 
 	
 Development branch technical information

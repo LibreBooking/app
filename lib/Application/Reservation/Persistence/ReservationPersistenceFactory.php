@@ -6,6 +6,7 @@ class ReservationPersistenceFactory implements IReservationPersistenceFactory
 	
 	public function __construct()
 	{
+		$this->creationStrategies[ReservationAction::Approve] = 'CreateUpdateService';
 		$this->creationStrategies[ReservationAction::Create] = 'CreateAddService';
 		$this->creationStrategies[ReservationAction::Delete] = 'CreateDeleteService';
 		$this->creationStrategies[ReservationAction::Update] = 'CreateUpdateService';

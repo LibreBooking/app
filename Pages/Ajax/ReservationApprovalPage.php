@@ -10,13 +10,6 @@ interface IReservationApprovalPage extends IReservationSaveResultsPage
 	 * @return string
 	 */
 	public function GetReferenceNumber();
-
-	/**
-	 * @abstract
-	 * @param $wasApproved bool
-	 * @return void
-	 */
-	public function SetResult($wasApproved);
 }
 class ReservationApprovalPage extends SecurePage implements IReservationApprovalPage
 {
@@ -38,22 +31,13 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	{
 		return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
 	}
-
-	/**
-	 * @param $wasApproved bool
-	 * @return void
-	 */
-	public function SetResult($wasApproved)
-	{
-		$this->SetJson(array('approved' => (string)$wasApproved));
-	}
-
+	
 	/**
 	 * @param bool $succeeded
 	 */
 	public function SetSaveSuccessfulMessage($succeeded)
 	{
-		// TODO: Implement SetSaveSuccessfulMessage() method.
+		$this->SetJson(array('approved' => (string)$succeeded));
 	}
 
 	/**
@@ -61,7 +45,7 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	 */
 	public function ShowErrors($errors)
 	{
-		// TODO: Implement ShowErrors() method.
+		$this->SetJson(array('approved' => (string)false), $errors);
 	}
 
 	/**
@@ -69,7 +53,7 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	 */
 	public function ShowWarnings($warnings)
 	{
-		// TODO: Implement ShowWarnings() method.
+		// nothing to do
 	}
 }
 ?>

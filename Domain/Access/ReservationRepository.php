@@ -228,6 +228,7 @@ class ReservationRepository implements IReservationRepository
 			$series->WithTitle($title);
 			$series->WithDescription($description);
 			$series->WithOwner($row[ColumnNames::RESERVATION_OWNER]);
+			$series->WithStatus($row[ColumnNames::RESERVATION_STATUS]);
 
 			$startDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);

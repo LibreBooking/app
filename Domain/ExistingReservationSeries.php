@@ -112,6 +112,17 @@ class ExistingReservationSeries extends ReservationSeries
 		$this->AddInstance($reservation);
 	}
 
+	protected $_statusId;
+
+	/**
+	 * @param $statusId int|ReservationStatus
+	 * @return void
+	 */
+	public function WithStatus($statusId)
+	{
+		$this->_statusId = $statusId;
+	}
+
 	/**
 	 * @internal
 	 */
@@ -132,6 +143,14 @@ class ExistingReservationSeries extends ReservationSeries
 	public function RequiresNewSeries()
 	{
 		return $this->seriesUpdateStrategy->RequiresNewSeries();
+	}
+
+	/**
+	 * @return int|ReservationStatus
+	 */
+	public function StatusId()
+	{
+		return $this->_statusId;
 	}
 
 	/**
@@ -271,6 +290,21 @@ class ExistingReservationSeries extends ReservationSeries
 		}
 	}
 
+	/**
+	 * @param UserSession $approvedBy
+	 * @return void
+	 */
+	public function Approve(UserSession $approvedBy)
+	{
+		$this->_bookedBy = $approvedBy;
+
+		$this->_statusId = ReservationStatus::Created;
+		
+		Log::Debug("Approving series %s", $this->SeriesId());
+
+		$this->AddEvent(new SeriesApprovedEvent($this));
+	}
+	
 	private function AppliesToAllInstances()
 	{
 		return count($this->instances) == count($this->Instances());
@@ -433,6 +467,7 @@ class ExistingReservationSeries extends ReservationSeries
 			$this->RaiseInstanceUpdatedEvent($this->CurrentInstance());
 		}
 	}
+
 }
 
 class InstanceAddedEvent
@@ -649,4 +684,21 @@ class ResourceAddedEvent
     }
 }
 
+class SeriesApprovedEvent
+{
+	/**
+	 * @var ExistingReservationSeries
+	 */
+	private $series;
+
+	public function __construct(ExistingReservationSeries $series)
+	{
+	    $this->series = $series;
+	}
+
+	public function __toString()
+	{
+        return sprintf("%s%s", get_class($this),  $this->series->SeriesId());
+    }
+}
 ?>

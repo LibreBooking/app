@@ -31,10 +31,15 @@ class ReservationApprovalPresenter
 	public function PageLoad()
 	{
 		$referenceNumber = $this->page->GetReferenceNumber();
-		
+
+		Log::Debug('User: %s, Approving reservation with reference number %s', $referenceNumber);
+
 		$series = $this->persistenceService->LoadByReferenceNumber($referenceNumber);
+		$series->Approve(ServiceLocator::GetServer()->GetUserSession());
 		$this->handler->Handle($series, $this->page);
 
-		$this->page->SetResult(true);
+		$this->page->SetSaveSuccessfulMessage(true);
 	}
 }
+
+?>

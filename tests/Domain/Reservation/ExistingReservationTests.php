@@ -607,5 +607,17 @@ class ExistingReservationTests extends TestBase
 		$this->assertTrue(in_array(new ResourceRemovedEvent($removed, $series), $events));
 		$this->assertTrue(in_array(new ResourceAddedEvent($added, $series), $events));
 	}
+
+	public function testApproveUpdatesStateAndFiresEvent()
+	{
+		$series = new ExistingReservationSeries();
+		$series->WithStatus(ReservationStatus::Pending);
+
+		$series->Approve($this->fakeUser);
+		$events = $series->GetEvents();
+
+		$this->assertEquals(ReservationStatus::Created, $series->StatusId());
+		$this->assertTrue(in_array(new SeriesApprovedEvent($series), $events));
+	}
 }
 ?>

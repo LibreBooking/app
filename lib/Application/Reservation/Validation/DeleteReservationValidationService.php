@@ -1,4 +1,5 @@
 <?php
+require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNotificationService.php');
 
 class DeleteReservationValidationService implements IReservationValidationService
 {

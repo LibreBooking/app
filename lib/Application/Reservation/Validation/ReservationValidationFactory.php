@@ -1,27 +1,33 @@
 <?php
 class ReservationValidationFactory implements IReservationValidationFactory
 {
+	/**
+	 * @var array|string[]
+	 */
+	private $creationStrategies = array();
+
+	public function __construct()
+	{
+		//$this->creationStrategies[ReservationAction::Approve] = 'CreateUpdateService';
+		$this->creationStrategies[ReservationAction::Create] = 'CreateAddService';
+		$this->creationStrategies[ReservationAction::Delete] = 'CreateDeleteService';
+		$this->creationStrategies[ReservationAction::Update] = 'CreateUpdateService';
+	}
+
 	public function Create($reservationAction, $userSession)
 	{
 		$ruleProcessor = $this->GetRuleProcessor($userSession);
-		
-		if ($reservationAction == ReservationAction::Update)
+
+		if (!array_key_exists($reservationAction, $this->creationStrategies))
 		{
-			return $this->GetUpdate($ruleProcessor, $userSession);
+			$createMethod = $this->creationStrategies[$reservationAction];
+			return $createMethod($ruleProcessor, $userSession);
 		}
-		else if ($reservationAction == ReservationAction::Delete)
-		{
-			return $this->GetDelete($ruleProcessor, $userSession);
-		}	
-		else 
-		{
-			return $this->GetCreate($ruleProcessor, $userSession);
-//			//length
-//			//$rules[] = new AccessoryAvailabilityRule();
-		}
+
+		return new NullReservationValidationService();
 	}
 	
-	private function GetCreate(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
+	private function CreateAddService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
 		$reservationRepository = new ReservationRepository();
 
@@ -30,7 +36,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		return new AddReservationValidationService($ruleProcessor);
 	}
 	
-	private function GetUpdate(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
+	private function CreateUpdateService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
 		$reservationRepository = new ReservationRepository();
 		$ruleProcessor->AddRule(new ExistingResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
@@ -38,7 +44,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		return new UpdateReservationValidationService($ruleProcessor);
 	}
 	
-	private function GetDelete(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
+	private function CreateDeleteService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
 		return new DeleteReservationValidationService($ruleProcessor);
 	}
@@ -58,6 +64,18 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		$rules[] = new AdminExcludedRule(new QuotaRule(new QuotaRepository(), new ReservationViewRepository(), new UserRepository(), new ScheduleRepository()), $userSession);
 
 		return new ReservationValidationRuleProcessor($rules);
+	}
+}
+
+class NullReservationValidationService implements IReservationValidationService
+{
+	/**
+	 * @param ReservationSeries $reservation
+	 * @return IReservationValidationResult
+	 */
+	function Validate($reservation)
+	{
+		// no-op
 	}
 }
 ?>

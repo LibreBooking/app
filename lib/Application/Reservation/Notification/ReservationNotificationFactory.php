@@ -1,49 +1,64 @@
 <?php
 class ReservationNotificationFactory implements IReservationNotificationFactory
 {
+	/**
+	 * @var array|string[]
+	 */
+	private $creationStrategies = array();
+	
+	public function __construct()
+	{
+		$this->creationStrategies[ReservationAction::Approve] = 'CreateApproveService';
+		$this->creationStrategies[ReservationAction::Create] = 'CreateAddService';
+		$this->creationStrategies[ReservationAction::Delete] = 'CreateDeleteService';
+		$this->creationStrategies[ReservationAction::Update] = 'CreateUpdateService';
+	}
+	
 	public function Create($reservationAction)
 	{
 		$userRepo = new UserRepository();
 		$resourceRepo = new ResourceRepository();
-		
-		if ($reservationAction == ReservationAction::Update)
+				
+		if (!array_key_exists($reservationAction, $this->creationStrategies))
 		{
-			return $this->CreateUpdateService($userRepo, $resourceRepo);
+			$createMethod = $this->creationStrategies[$reservationAction];
+			return $createMethod($userRepo, $resourceRepo);
 		}
-		else if ($reservationAction == ReservationAction::Delete)
-		{
-			return $this->CreateDeleteService($userRepo, $resourceRepo);
-		}
-		else 
-		{
-			return $this->CreateAddService($userRepo, $resourceRepo);
-		}
+
+		return new NullReservationNotificationService();
 	}
 	
 	private function CreateAddService($userRepo, $resourceRepo)
 	{
-		$notifications = array();
-		$notifications[] = new OwnerEmailCreatedNotificaiton($userRepo, $resourceRepo);
-		$notifications[] = new AdminEmailCreatedNotification($userRepo, $resourceRepo);
-		$notifications[] = new ParticipantAddedEmailNotification($userRepo);
-		$notifications[] = new InviteeAddedEmailNotification($userRepo);
+		return new AddReservationNotificationService($userRepo, $resourceRepo);
+	}
 
-		return new AddReservationNotificationService($notifications);
+	private function CreateApproveService($userRepo, $resourceRepo)
+	{
+		return new ApproveReservationNotificationService($userRepo, $resourceRepo);
 	}
 	
 	private function CreateDeleteService($userRepo, $resourceRepo)
 	{
-		$notifications = array();
-		return new DeleteReservationNotificationService($notifications);
+		return new DeleteReservationNotificationService();
 	}
 	
 	private function CreateUpdateService($userRepo, $resourceRepo)
 	{
-		$notifications = array();
-		$notifications[] = new OwnerEmailUpdatedNotificaiton($userRepo, $resourceRepo);
-		$notifications[] = new AdminEmailUpdatedNotification($userRepo, $resourceRepo);
-			
-		return new UpdateReservationNotificationService($notifications);
+
+		return new UpdateReservationNotificationService($userRepo, $resourceRepo);
+	}
+}
+
+class NullReservationNotificationService implements IReservationNotificationService
+{
+
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 */
+	function Notify($reservationSeries)
+	{
+		// no-op
 	}
 }
 ?>
