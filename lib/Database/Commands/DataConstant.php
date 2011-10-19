@@ -891,6 +891,7 @@ class ColumnNames
 
 class TableNames
 {
+	const RESERVATION_SERIES_ALIAS = 'rs';
 	const RESOURCES = 'resources';
 	const SCHEDULES = 'schedules';
 	const USERS = 'users';

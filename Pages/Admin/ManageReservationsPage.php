@@ -130,6 +130,19 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @return string
 	 */
 	public function GetDeleteScope();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetReservationStatusId();
+
+	/**
+	 * @abstract
+	 * @param $reservationStatusId int
+	 * @return void
+	 */
+	public function SetReservationStatusId($reservationStatusId);
 }
 
 class ManageReservationsPage extends AdminPage implements IManageReservationsPage
@@ -149,10 +162,9 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	    parent::__construct('ManageReservations');
 
 		$this->presenter = new ManageReservationsPresenter($this,
-			new ReservationViewRepository(),
+			new ManageReservationsService(new ReservationRepository(), new ReservationViewRepository()),
 			new ScheduleRepository(),
-			new ResourceRepository(),
-			new ReservationRepository());
+			new ResourceRepository());
 
 		$this->pageablePage = new PageablePage($this);
 	}
@@ -345,6 +357,23 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	public function GetDeleteScope()
 	{
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetReservationStatusId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESERVATION_STATUS_ID);
+	}
+
+	/**
+	 * @param $reservationStatusId int
+	 * @return void
+	 */
+	public function SetReservationStatusId($reservationStatusId)
+	{
+		$this->Set('ReservationStatusId', $reservationStatusId);
 	}
 }
 ?>

@@ -10,56 +10,120 @@ class ManageReservationsActions
 	const Delete = 'delete';
 }
 
+interface IManageReservationsService
+{
+	/**
+	 * @abstract
+	 * @param $pageNumber int
+	 * @param $pageSize int
+	 * @param $filter ReservationFilter
+	 * @param $user UserSession
+	 * @return PageableData
+	 */
+	public function LoadFiltered($pageNumber, $pageSize, $filter, $user);
+
+	/**
+	 * @abstract
+	 * @param $referenceNumber string
+	 * @param $seriesUpdateScope string|SeriesUpdateScope
+	 * @param $user UserSession
+	 * @return void
+	 */
+	public function Delete($referenceNumber, $seriesUpdateScope, $user);
+
+	/**
+	 * @abstract
+	 * @param $referenceNumber string
+	 * @param $user UserSession
+	 * @return void
+	 */
+	public function Approve($referenceNumber, $user);
+}
+
+class ManageReservationsService implements IManageReservationsService
+{
+	/**
+	 * @var IReservationRepository
+	 */
+	private $reservationRepository;
+
+	/**
+	 * @var IReservationViewRepository
+	 */
+	private $reservationViewRepository;
+
+	public function __construct(
+		IReservationRepository $reservationRepository,
+		IReservationViewRepository $reservationViewRepository)
+	{
+		$this->reservationRepository = $reservationRepository;
+		$this->reservationViewRepository = $reservationViewRepository;
+	}
+
+	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
+	{
+		return $this->reservationViewRepository->GetList($pageNumber, $pageSize, null, null, $filter->GetFilter());
+	}
+
+	public function Delete($referenceNumber, $seriesUpdateScope, $user)
+	{
+		$reservation = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
+
+		$reservation->ApplyChangesTo($seriesUpdateScope);
+		$reservation->Delete($user);
+		$this->reservationRepository->Delete($reservation);
+	}
+
+	public function Approve($referenceNumber, $user)
+	{
+	}
+}
+
 class ManageReservationsPresenter extends ActionPresenter
 {
 	/**
-	 * @var \IManageReservationsPage
+	 * @var IManageReservationsPage
 	 */
 	private $page;
 
 	/**
-	 * @var \IReservationViewRepository
+	 * @var IManageReservationsService
 	 */
-	private $reservationViewRepository;
+	private $manageReservationsService;
 
 	/**
-	 * @var \IScheduleRepository
+	 * @var IScheduleRepository
 	 */
 	private $scheduleRepository;
 
 	/**
-	 * @var \IResourceRepository
+	 * @var IResourceRepository
 	 */
 	private $resourceRepository;
 
-	/**
-	 * @var \IReservationRepository
-	 */
-	private $reservationRepository;
-	
 	public function __construct(
 		IManageReservationsPage $page,
-		IReservationViewRepository $reservationViewRepository,
+		IManageReservationsService $manageReservationsService,
 		IScheduleRepository $scheduleRepository,
-		IResourceRepository $resourceRepository,
-		IReservationRepository $reservationRepository)
+		IResourceRepository $resourceRepository)
 	{
 		parent::__construct($page);
-		
+
 		$this->page = $page;
-		$this->reservationViewRepository = $reservationViewRepository;
+		$this->manageReservationsService = $manageReservationsService;
 		$this->scheduleRepository = $scheduleRepository;
 		$this->resourceRepository = $resourceRepository;
-		$this->reservationRepository = $reservationRepository;
 
 		$this->AddAction(ManageReservationsActions::Delete, 'DeleteReservation');
 	}
-	
+
 	public function PageLoad($userTimezone)
 	{
+		$session = ServiceLocator::GetServer()->GetUserSession();
+
 		$this->page->BindSchedules($this->scheduleRepository->GetAll());
 		$this->page->BindResources($this->resourceRepository->GetResourceList());
-		
+
 		$startDateString = $this->page->GetStartDate();
 		$endDateString = $this->page->GetEndDate();
 
@@ -68,6 +132,7 @@ class ManageReservationsPresenter extends ActionPresenter
 		$referenceNumber = $this->page->GetReferenceNumber();
 		$scheduleId = $this->page->GetScheduleId();
 		$resourceId = $this->page->GetResourceId();
+		$reservationStatusId = $this->page->GetReservationStatusId();
 		$userId = $this->page->GetUserId();
 		$userName = $this->page->GetUserName();
 
@@ -78,10 +143,14 @@ class ManageReservationsPresenter extends ActionPresenter
 		$this->page->SetResourceId($resourceId);
 		$this->page->SetUserId($userId);
 		$this->page->SetUserName($userName);
+		$this->page->SetReservationStatusId($reservationStatusId);
 
-		$filter = new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId);
+		$filter = new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId, $reservationStatusId);
 
-		$reservations = $this->reservationViewRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize(), null, null, $filter->GetFilter());
+		$reservations = $this->manageReservationsService->LoadFiltered($this->page->GetPageNumber(),
+																	   $this->page->GetPageSize(),
+																	   $filter,
+																	   $session);
 
 		$this->page->BindReservations($reservations->Results());
 		$this->page->BindPageInfo($reservations->PageInfo());
@@ -94,18 +163,14 @@ class ManageReservationsPresenter extends ActionPresenter
 		$scope = $this->page->GetDeleteScope();
 
 		Log::Debug('Admin: Deleting reservation %s with change scope %s', $referenceNumber, $scope);
-		$reservation = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
 
-		$reservation->ApplyChangesTo($scope);
-		$reservation->Delete($session);
-		$this->reservationRepository->Delete($reservation);
+		$this->manageReservationsService->Delete($referenceNumber, $scope, $session);
 	}
-	
+
 	private function GetDate($dateString, $timezone, $defaultDays)
 	{
 		$date = null;
-		if (is_null($dateString))
-		{
+		if (is_null($dateString)) {
 			$date = Date::Now()->AddDays($defaultDays)->ToTimezone($timezone)->GetDate();
 
 		}
@@ -134,8 +199,9 @@ class ReservationFilter
 	 * @param int $scheduleId
 	 * @param int $resourceId
 	 * @param int $userId
+	 * @param int $statusId
 	 */
-	public function __construct($startDate = null, $endDate = null, $referenceNumber = null, $scheduleId = null, $resourceId = null, $userId = null)
+	public function __construct($startDate = null, $endDate = null, $referenceNumber = null, $scheduleId = null, $resourceId = null, $userId = null, $statusId = null)
 	{
 		$this->startDate = $startDate;
 		$this->endDate = $endDate;
@@ -143,35 +209,33 @@ class ReservationFilter
 		$this->scheduleId = $scheduleId;
 		$this->resourceId = $resourceId;
 		$this->userId = $userId;
+		$this->statusId = $statusId;
 	}
 
 	public function GetFilter()
 	{
 		$filter = new SqlFilterNull();
 
-		if (!empty($this->startDate))
-		{
+		if (!empty($this->startDate)) {
 			$filter->_And(new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, $this->startDate->ToDatabase()));
 		}
-		if (!empty($this->endDate))
-		{
+		if (!empty($this->endDate)) {
 			$filter->_And(new SqlFilterLessThan(ColumnNames::RESERVATION_END, $this->endDate->ToDatabase()));
 		}
-		if (!empty($this->referenceNumber))
-		{
+		if (!empty($this->referenceNumber)) {
 			$filter->_And(new SqlFilterEquals(ColumnNames::REFERENCE_NUMBER, $this->referenceNumber));
 		}
-		if (!empty($this->scheduleId))
-		{
+		if (!empty($this->scheduleId)) {
 			$filter->_And(new SqlFilterEquals(ColumnNames::SCHEDULE_ID, $this->scheduleId));
 		}
-		if (!empty($this->resourceId))
-		{
+		if (!empty($this->resourceId)) {
 			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_ID), $this->resourceId));
 		}
-		if (!empty($this->userId))
-		{
+		if (!empty($this->userId)) {
 			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::USERS, ColumnNames::USER_ID), $this->userId));
+		}
+		if (!empty($this->statusId)) {
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESERVATION_SERIES_ALIAS, ColumnNames::RESERVATION_STATUS), $this->statusId));
 		}
 
 		return $filter;

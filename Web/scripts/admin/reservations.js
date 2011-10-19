@@ -9,6 +9,7 @@ function ReservationManagement(opts)
 		userId: $("#userId"),
 		scheduleId: $("#scheduleId"),
 		resourceId: $("#resourceId"),
+		statusId: $('#statusId'),
 		referenceNumber: $("#referenceNumber"),
 		reservationTable: $("#reservationTable"),
 		updateScope: $('#hdnSeriesUpdateScope'),
@@ -127,7 +128,8 @@ function ReservationManagement(opts)
 				'&rid=' + elements.resourceId.val() +
 				'&uid=' + elements.userId.val() +
 				'&un=' + elements.userFilter.val() +
-				'&rn=' + elements.referenceNumber.val();
+				'&rn=' + elements.referenceNumber.val() +
+				'&rsid=' + elements.statusId.val();
 
 		window.location = document.location.pathname + '?' + encodeURI(filterQuery);
 	}

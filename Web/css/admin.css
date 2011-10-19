@@ -154,3 +154,7 @@ table.list, .list td, .list th {
 .list tr.clicked:hover, .list tr.clicked  {
 	background-color: #FFFF33;
 }
+
+tr.pending {
+	background-color: #ffb540;
+}

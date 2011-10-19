@@ -10,6 +10,7 @@
 			<td>{translate key=User}</td>
 			<td>{translate key=Schedule}</td>
 			<td>{translate key=Resource}</td>
+			<td>{translate key=Status}</td>
 			<td>{translate key=ReferenceNumber}</td>
 		</tr>
 		<tr>
@@ -35,6 +36,12 @@
 				</select>
 			</td>
 			<td>
+				<select id="statusId" class="textbox">
+					<option value="">All Reservations</option>
+					<option value="{ReservationStatus::Pending}" {if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>Pending Reservations</option>
+				</select>
+			</td>
+			<td>
 				<input id="referenceNumber" type="textbox" class="textbox" value="{$ReferenceNumber}" />
 			</td>
 			<td rowspan="2">
@@ -57,9 +64,13 @@
 		<th>{translate key='LastModified'}</th>
 		<th>{translate key='ReferenceNumber'}</th>
 		<th>{translate key='Delete'}</th>
+		<th>{translate key='Approve'}</th>
 	</tr>
 	{foreach from=$reservations item=reservation}
 	{cycle values='row0,row1' assign=rowCss}
+	{if $reservation->RequiresApproval}
+		{assign var=rowCss value='pending'}
+	{/if}
 	<tr class="{$rowCss} editable">
 		<td class="id">{$reservation->ReservationId}</td>
 		<td>{$reservation->FirstName} {$reservation->LastName}</td>
@@ -70,6 +81,13 @@
 		<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
 		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
 		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
+		<td align="center">
+			{if $reservation->RequiresApproval}
+				<a href="#" class="update approve">{html_image src='tick-button.png'}</a>
+			{else}
+				&nbsp;
+			{/if}
+		</td>
 	</tr>
 	{/foreach}
 </table>
