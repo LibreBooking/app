@@ -367,7 +367,7 @@ class Queries
 			status_id <> 2';
 	
 	const GET_RESERVATION_FOR_EDITING = 
-		'SELECT *
+		'SELECT *, r.status_id as status_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series r ON r.series_id = ri.series_id
 		INNER JOIN users u ON u.user_id = r.owner_id
@@ -377,7 +377,7 @@ class Queries
 			r.status_id <> 2';
 
 	const GET_RESERVATION_LIST_FULL =
-		'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified
+		'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.status_id as status_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
 		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id AND rr.resource_level_id = 1
@@ -388,7 +388,7 @@ class Queries
 		ORDER BY ri.start_date ASC';
 	
 	const GET_RESERVATION_LIST = 
-		'SELECT *
+		'SELECT *, rs.status_id as status_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
 		INNER JOIN reservation_resources rr ON rr.series_id = rs.series_id

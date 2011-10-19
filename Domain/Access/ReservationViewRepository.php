@@ -54,7 +54,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->Title = $row[ColumnNames::RESERVATION_TITLE];	
 			$reservationView->SeriesId = $row[ColumnNames::SERIES_ID];	
 			$reservationView->OwnerFirstName = $row[ColumnNames::FIRST_NAME];	
-			$reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];	
+			$reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];
 			$reservationView->StatusId = $row[ColumnNames::RESERVATION_STATUS];
 
 			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);

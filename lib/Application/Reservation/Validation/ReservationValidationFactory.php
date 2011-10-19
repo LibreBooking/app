@@ -16,12 +16,12 @@ class ReservationValidationFactory implements IReservationValidationFactory
 
 	public function Create($reservationAction, $userSession)
 	{
-		$ruleProcessor = $this->GetRuleProcessor($userSession);
-
-		if (!array_key_exists($reservationAction, $this->creationStrategies))
+		if (array_key_exists($reservationAction, $this->creationStrategies))
 		{
+			$ruleProcessor = $this->GetRuleProcessor($userSession);
+
 			$createMethod = $this->creationStrategies[$reservationAction];
-			return $createMethod($ruleProcessor, $userSession);
+			return $this->$createMethod($ruleProcessor, $userSession);
 		}
 
 		return new NullReservationValidationService();
@@ -75,7 +75,7 @@ class NullReservationValidationService implements IReservationValidationService
 	 */
 	function Validate($reservation)
 	{
-		// no-op
+		return new ReservationValidationResult();
 	}
 }
 ?>

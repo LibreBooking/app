@@ -40,17 +40,14 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 		$this->SetJson(array('approved' => (string)$succeeded));
 	}
 
-	/**
-	 * @param array[int]string $errors
-	 */
 	public function ShowErrors($errors)
 	{
-		$this->SetJson(array('approved' => (string)false), $errors);
+		if (!empty($errors))
+		{
+			$this->SetJson(array('approved' => (string)false), $errors);
+		}
 	}
-
-	/**
-	 * @param array[int]string $warnings
-	 */
+	
 	public function ShowWarnings($warnings)
 	{
 		// nothing to do

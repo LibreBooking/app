@@ -7,12 +7,12 @@ interface IReservationSaveResultsPage
 	public function SetSaveSuccessfulMessage($succeeded);
 	
 	/**
-	 * @param array[int]string $errors
+	 * @param array|string[] $errors
 	 */
 	public function ShowErrors($errors);
 	
 	/**
-	 * @param array[int]string $warnings
+	 * @param array|string[] $warnings
 	 */
 	public function ShowWarnings($warnings);
 }

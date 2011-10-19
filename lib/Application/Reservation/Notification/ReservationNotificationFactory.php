@@ -19,10 +19,10 @@ class ReservationNotificationFactory implements IReservationNotificationFactory
 		$userRepo = new UserRepository();
 		$resourceRepo = new ResourceRepository();
 				
-		if (!array_key_exists($reservationAction, $this->creationStrategies))
+		if (array_key_exists($reservationAction, $this->creationStrategies))
 		{
 			$createMethod = $this->creationStrategies[$reservationAction];
-			return $createMethod($userRepo, $resourceRepo);
+			return $this->$createMethod($userRepo, $resourceRepo);
 		}
 
 		return new NullReservationNotificationService();

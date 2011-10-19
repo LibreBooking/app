@@ -31,14 +31,13 @@ class ReservationApprovalPresenter
 	public function PageLoad()
 	{
 		$referenceNumber = $this->page->GetReferenceNumber();
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
 
-		Log::Debug('User: %s, Approving reservation with reference number %s', $referenceNumber);
+		Log::Debug('User: %s, Approving reservation with reference number %s', $userSession->UserId, $referenceNumber);
 
 		$series = $this->persistenceService->LoadByReferenceNumber($referenceNumber);
-		$series->Approve(ServiceLocator::GetServer()->GetUserSession());
+		$series->Approve($userSession);
 		$this->handler->Handle($series, $this->page);
-
-		$this->page->SetSaveSuccessfulMessage(true);
 	}
 }
 
