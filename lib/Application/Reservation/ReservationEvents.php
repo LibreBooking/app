@@ -6,6 +6,7 @@ class EventCategory
 
 class ReservationEvent
 {
+	const Approved = 'approved';
 	const Created = 'created';
 	const Updated = 'updated';
 }
@@ -30,6 +31,19 @@ class ReservationUpdatedEvent implements IDomainEvent
 		return ReservationEvent::Updated;
 	}
 	
+	public function EventCategory()
+	{
+		return EventCategory::Reservation;
+	}
+}
+
+class ReservationApprovedEvent implements IDomainEvent
+{
+	public function EventType()
+	{
+		return ReservationEvent::Approved;
+	}
+
 	public function EventCategory()
 	{
 		return EventCategory::Reservation;

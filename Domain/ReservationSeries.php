@@ -64,7 +64,7 @@ class ReservationSeries
 	}
 
 	/**
-	 * @return BookableResourceIRepeatOptions
+	 * @return BookableResource
 	 */
 	public function Resource()
 	{

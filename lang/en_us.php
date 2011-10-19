@@ -252,6 +252,7 @@ class en_us extends Language
 		$strings['DaySaturdayAbbr'] = 'Sat';
 		
 		// Email Subjects
+		$strings['ReservationApprovedSubject'] = 'Your Reservation Has Been Approved';
 		$strings['ReservationCreatedSubject'] = 'Your Reservation Was Created';
 		$strings['ReservationUpdatedSubject'] = 'Your Reservation Was Updated';
 		$strings['ReservationCreatedAdminSubject'] = 'Notification: A Reservation Was Created';

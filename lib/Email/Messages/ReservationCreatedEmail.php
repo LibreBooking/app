@@ -60,7 +60,7 @@ class ReservationCreatedEmail extends EmailMessage
 		return $this->FetchTemplate("ReservationCreated.tpl"); 
 	}
 	
-	private function PopulateTemplate()
+	protected function PopulateTemplate()
 	{	
 		$currentInstance = $this->reservationSeries->CurrentInstance();
 		$this->Set('StartDate', $currentInstance->StartDate()->ToTimezone($this->timezone));

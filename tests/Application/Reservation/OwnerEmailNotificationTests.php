@@ -35,7 +35,7 @@ class OwnerEmailNotificationTests extends TestBase
 		$user = $this->LoadsUser($userRepo, $ownerId);
 		$this->AsksUser($user, $event);
 			
-		$notification = new OwnerEmailCreatedNotificaiton($userRepo);
+		$notification = new OwnerEmailCreatedNotification($userRepo);
 		$notification->Notify($reservation);
 		
 		$expectedMessage = new ReservationCreatedEmail($user, $reservation, $resource);
@@ -61,7 +61,7 @@ class OwnerEmailNotificationTests extends TestBase
 		$user = $this->LoadsUser($userRepo, $ownerId);
 		$this->AsksUser($user, $event);
 			
-		$notification = new OwnerEmailUpdatedNotificaiton($userRepo);
+		$notification = new OwnerEmailUpdatedNotification($userRepo);
 		$notification->Notify($reservation);
 		
 		$expectedMessage = new ReservationUpdatedEmail($user, $reservation, $resource);

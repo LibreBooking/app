@@ -3,7 +3,7 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationEvents.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
 
-abstract class OwnerEmailNotificaiton implements IReservationNotification 
+abstract class OwnerEmailNotification implements IReservationNotification
 {
 	/**
 	 * @var IUserRepository
@@ -35,39 +35,68 @@ abstract class OwnerEmailNotificaiton implements IReservationNotification
 	}
 	
 	/**
+	 * @abstract
+	 * @param $owner User
 	 * @return bool
 	 */
-	protected abstract function ShouldSend($owner);
+	protected abstract function ShouldSend(User $owner);
 	
 	/**
+	 * @abstract
+	 * @param $owner User
+	 * @param $reservation ReservationSeries
+	 * @param $resource BookableResource
 	 * @return EmailMessage
 	 */
-	protected abstract function GetMessage($owner, $reservation, $resource);	
+	protected abstract function GetMessage(User $owner, ReservationSeries $reservation, BookableResource $resource);
 }
 
-class OwnerEmailCreatedNotificaiton extends OwnerEmailNotificaiton
+class OwnerEmailCreatedNotification extends OwnerEmailNotification
 {
-	protected function ShouldSend($owner)
+	protected function ShouldSend(User $owner)
 	{
 		return $owner->WantsEventEmail(new ReservationCreatedEvent());
 	}
 	
-	protected function GetMessage($owner, $reservation, $resource)
+	protected function GetMessage(User $owner, ReservationSeries $reservation, BookableResource $resource)
 	{
 		return new ReservationCreatedEmail($owner, $reservation, $resource);	
 	}	
 }
 
-class OwnerEmailUpdatedNotificaiton extends OwnerEmailNotificaiton
+class OwnerEmailUpdatedNotification extends OwnerEmailNotification
 {
-	protected function ShouldSend($owner)
+	protected function ShouldSend(User $owner)
 	{
 		return $owner->WantsEventEmail(new ReservationUpdatedEvent());
 	}
 	
-	protected function GetMessage($owner, $reservation, $resource)
+	protected function GetMessage(User $owner, ReservationSeries $reservation, BookableResource $resource)
 	{
 		return new ReservationUpdatedEmail($owner, $reservation, $resource);	
 	}	
+}
+
+class OwnerEmailApprovedNotification extends OwnerEmailNotification
+{
+	/**
+	 * @param $owner User
+	 * @return bool
+	 */
+	protected function ShouldSend(User $owner)
+	{
+		return $owner->WantsEventEmail(new ReservationApprovedEvent());
+	}
+
+	/**
+	 * @param $owner User
+	 * @param $reservation ReservationSeries
+	 * @param $resource BookableResource
+	 * @return EmailMessage
+	 */
+	protected function GetMessage(User $owner, ReservationSeries $reservation, BookableResource $resource)
+	{
+		return new ReservationApprovedEmail($owner, $reservation, $resource);
+	}
 }
 ?>

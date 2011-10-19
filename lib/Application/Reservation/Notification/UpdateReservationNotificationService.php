@@ -6,7 +6,7 @@ class UpdateReservationNotificationService extends ReservationNotificationServic
 	public function __construct(IUserRepository $userRepo, IResourceRepository $resourceRepo)
 	{
 		$notifications = array();
-		$notifications[] = new OwnerEmailUpdatedNotificaiton($userRepo, $resourceRepo);
+		$notifications[] = new OwnerEmailUpdatedNotification($userRepo, $resourceRepo);
 		$notifications[] = new AdminEmailUpdatedNotification($userRepo, $resourceRepo);
 
 		parent::__construct($notifications);
