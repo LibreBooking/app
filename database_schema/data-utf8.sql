@@ -1,5 +1,3 @@
-use phpscheduleit2;
-
 insert into user_statuses values (1, 'Active'), (2, 'Awaiting'), (3, 'Inactive');
 insert into roles values (1, 'Group Admin', 1);
 insert into roles values (2, 'Application Admin', 2);

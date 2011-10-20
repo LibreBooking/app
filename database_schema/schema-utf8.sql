@@ -1,9 +1,3 @@
-DROP DATABASE IF EXISTS phpscheduleit2;
-
-CREATE DATABASE phpscheduleit2;
-
-USE phpscheduleit2;
-
 --
 -- Table structure for table `announcements`
 --
@@ -489,5 +483,3 @@ CREATE TABLE `quotas` (
 	REFERENCES schedules(`schedule_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
-GRANT ALL on phpscheduleit2.* to 'schedule_user'@'localhost' identified by 'password';

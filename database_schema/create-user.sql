@@ -1,0 +1,1 @@
+GRANT ALL on phpscheduleit2.* to 'schedule_user'@'localhost' identified by 'password';
