@@ -143,6 +143,12 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @return void
 	 */
 	public function SetReservationStatusId($reservationStatusId);
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetApproveReferenceNumber();
 }
 
 class ManageReservationsPage extends AdminPage implements IManageReservationsPage
@@ -162,7 +168,7 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	    parent::__construct('ManageReservations');
 
 		$this->presenter = new ManageReservationsPresenter($this,
-			new ManageReservationsService(new ReservationRepository(), new ReservationViewRepository()),
+			new ManageReservationsService(new ReservationViewRepository()),
 			new ScheduleRepository(),
 			new ResourceRepository());
 
@@ -374,6 +380,14 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	public function SetReservationStatusId($reservationStatusId)
 	{
 		$this->Set('ReservationStatusId', $reservationStatusId);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetApproveReferenceNumber()
+	{
+		return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
 	}
 }
 ?>

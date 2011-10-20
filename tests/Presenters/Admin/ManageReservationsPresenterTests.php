@@ -129,26 +129,6 @@ class ManageReservationsPresenterTests extends TestBase
 		$this->presenter->PageLoad($userTimezone);
 	}
 
-	public function testDeleteRemovesReservation()
-	{
-		$referenceNumber = '123';
-		$scope = SeriesUpdateScope::FullSeries;
-
-		$this->page->expects($this->once())
-			->method('GetDeleteReferenceNumber')
-			->will($this->returnValue($referenceNumber));
-
-		$this->page->expects($this->once())
-			->method('GetDeleteScope')
-			->will($this->returnValue($scope));
-
-		$this->reservationsService->expects($this->once())
-			->method('Delete')
-			->with($this->equalTo($referenceNumber), $this->equalTo($scope));
-
-		$this->presenter->DeleteReservation($this->fakeUser);
-	}
-
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate

@@ -1,4 +1,4 @@
-function ReservationManagement(opts)
+function ReservationManagement(opts, approval)
 {
 	var options = opts;
 
@@ -18,7 +18,9 @@ function ReservationManagement(opts)
 		deleteSeriesDialog: $('#deleteSeriesDialog'),
 
 		deleteInstanceForm: $('#deleteInstanceForm'),
-		deleteSeriesForm: $('#deleteSeriesForm')
+		deleteSeriesForm: $('#deleteSeriesForm'),
+
+		reservationIdList: $(':hidden.reservationId')
 	};
 
 	var reservations = new Object();
@@ -50,6 +52,13 @@ function ReservationManagement(opts)
 		elements.reservationTable.delegate('a.update', 'click', function(e) {
 			e.preventDefault();
 			e.stopPropagation();
+
+			var tr = $(this).parents('tr');
+			var referenceNumber = tr.find('.referenceNumber').text();
+			var reservationId = tr.find('.id').text();
+			setActiveReferenceNumber(referenceNumber);
+			setActiveReservationId(reservationId);
+			elements.reservationIdList.val(reservationId);
 		});
 		
 		elements.reservationTable.delegate('.editable', 'click', function() {
@@ -64,13 +73,14 @@ function ReservationManagement(opts)
 		});
 
 		elements.reservationTable.delegate('.delete', 'click', function() {
-			var td = $(this).parents('tr').find('.referenceNumber');
-			var referenceNumber = td.text();
-			setActiveId(referenceNumber);
-			showDeleteReservation(referenceNumber);
+			showDeleteReservation(getActiveReferenceNumber());
 		});
 
-		$(".saveSeries").click(function() {
+		elements.reservationTable.delegate('.approve', 'click', function() {
+			approveReservation(getActiveReferenceNumber());
+		});
+
+		elements.deleteSeriesForm.find('.saveSeries').click(function() {
 			var updateScope = opts.updateScope[$(this).attr('id')];
 			elements.updateScope.val(updateScope);
 			elements.deleteSeriesForm.submit();
@@ -78,8 +88,8 @@ function ReservationManagement(opts)
 		
 		$('#filter').click(filterReservations);
 
-		ConfigureAdminForm(elements.deleteInstanceForm, getSubmitCallback(options.actions.deleteReservation));
-		ConfigureAdminForm(elements.deleteSeriesForm, getSubmitCallback(options.actions.deleteReservation));
+		ConfigureAdminForm(elements.deleteInstanceForm, getDeleteUrl);
+		ConfigureAdminForm(elements.deleteSeriesForm, getDeleteUrl);
 	};
 
 	ReservationManagement.prototype.addReservation = function(reservation)
@@ -87,19 +97,29 @@ function ReservationManagement(opts)
 		reservations[reservation.referenceNumber] = reservation;
 	};
 
-	function getSubmitCallback(action)
+	function getDeleteUrl()
 	{
-		return function() { return opts.actionUrl + "?rn=" + getActiveId() + "&action=" + action; };
+		return opts.deleteUrl;
 	}
 
-	function setActiveId(referenceNumber)
+	function setActiveReferenceNumber(referenceNumber)
 	{
 		this.referenceNumber = referenceNumber;
 	}
 
-	function getActiveId()
+	function getActiveReferenceNumber()
 	{
 		return this.referenceNumber;
+	}
+
+	function setActiveReservationId(reservationId)
+	{
+		this.reservationId = reservationId;
+	}
+
+	function getActiveReservationId()
+	{
+		return this.reservationId;
 	}
 	
 	function showDeleteReservation(referenceNumber)
@@ -137,5 +157,12 @@ function ReservationManagement(opts)
 	function viewReservation(referenceNumber)
 	{
 		window.location = options.reservationUrlTemplate.replace('[refnum]', referenceNumber);
+	}
+
+	function approveReservation(referenceNumber)
+	{
+		$.colorbox({inline:true, href:"#approveDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
+		$('#approveDiv').show();
+		approval.Approve(referenceNumber);
 	}
 }

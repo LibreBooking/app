@@ -3,11 +3,6 @@
 class ManageReservationsServiceTests extends TestBase
 {
 	/**
-	 * @var IReservationRepository|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $reservationRepository;
-
-	/**
 	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $reservationViewRepository;
@@ -21,11 +16,9 @@ class ManageReservationsServiceTests extends TestBase
 	{
 		parent::setup();
 
-		$this->reservationRepository = $this->getMock('IReservationRepository');
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
 
-		$this->service = new ManageReservationsService($this->reservationRepository, $this->reservationViewRepository);
-
+		$this->service = new ManageReservationsService($this->reservationViewRepository);
 	}
 
 	public function testLoadsFilteredResultsAndChecksAuthorizationAgainstPendingReservations()
@@ -44,32 +37,6 @@ class ManageReservationsServiceTests extends TestBase
 		$actualData = $this->service->LoadFiltered($pageNumber, $pageSize, $filter, $this->fakeUser);
 		
 		$this->assertEquals($data, $actualData);
-	}
-	
-	public function testServiceDeletesReservation()
-	{
-		$scope = SeriesUpdateScope::FullSeries;
-		$referenceNumber = '123';
-		$reservation = $this->getMock('ExistingReservationSeries');
-
-		$this->reservationRepository->expects($this->once())
-			->method('LoadByReferenceNumber')
-			->with($this->equalTo($referenceNumber))
-			->will($this->returnValue($reservation));
-
-		$reservation->expects($this->once())
-			->method('ApplyChangesTo')
-			->with($this->equalTo($scope));
-
-		$reservation->expects($this->once())
-			->method('Delete')
-			->with($this->equalTo($this->fakeUser));
-
-		$this->reservationRepository->expects($this->once())
-			->method('Delete')
-			->with($this->equalTo($reservation));
-
-		$this->service->Delete($referenceNumber, $scope, $this->fakeUser);
 	}
 }
 ?>

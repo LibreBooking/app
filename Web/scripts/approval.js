@@ -12,27 +12,11 @@ function Approval(opts)
 		elements.approveButton.click(function() {
 			elements.indicator.insertAfter(elements.approveButton).show();
 			elements.approveButton.hide();
-			Approve(elements.referenceNumber.val());
+			this.Approve(elements.referenceNumber.val());
 		});
 	};
 
-//	Approval.prototype.initParticipation = function() {
-//
-//		elements.invitationAction.click(function() {
-//			var li = $(this).parents('li');
-//			li.last('button').append('<img src="img/admin-ajax-indicator.gif" />')
-//			var referenceNumber = li.find('.referenceNumber').val();
-//			Approve($(this).val(), referenceNumber);
-//		});
-//
-//		$('.reservation').each(function(){
-//			var refNum = $(this).attr('referenceNumber');
-//			$(this).attachReservationPopup(refNum);
-//		});
-//	};
-
-
-	function Approve(referenceNumber) {
+	Approval.prototype.Approve = function(referenceNumber) {
 		$.ajax({
 			url: options.url,
 			dataType: 'json',

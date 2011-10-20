@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' cssFiles='css/admin.css,css/jquery.qtip.css'}
+{include file='globalheader.tpl' cssFiles='scripts/css/colorbox.css,css/admin.css,css/jquery.qtip.css'}
 
 <h1>{translate key=ManageReservations}</h1>
 
@@ -102,6 +102,7 @@
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} value="{SeriesUpdateScope::ThisInstance}" />
+		<input type="hidden" class="reservationId" {formname key=RESERVATION_ID} value="" />
 	</form>
 </div>
 
@@ -128,6 +129,7 @@
 			{translate key='Cancel'}
 		</button>
 		<input type="hidden" id="hdnSeriesUpdateScope" {formname key=SERIES_UPDATE_SCOPE} />
+		<input type="hidden" class="reservationId" {formname key=RESERVATION_ID} value="" />
 	</form>
 </div>
 
@@ -136,9 +138,11 @@
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
 <script type="text/javascript" src="{$Path}scripts/reservationPopup.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/reservations.js"></script>
+<script type="text/javascript" src="{$Path}scripts/approval.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -148,21 +152,24 @@ $(document).ready(function() {
 	updateScope['btnUpdateAllInstances'] = '{SeriesUpdateScope::FullSeries}';
 	updateScope['btnUpdateFutureInstances'] = '{SeriesUpdateScope::FutureInstances}';
 
-	var actions = {
-		deleteReservation : '{ManageReservationsActions::Delete}',
-		approveReservation : '{ManageReservationsActions::Approve}'
-	};
+	var actions = {};
 		
 	var resOpts = {
 		autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
-		reservationUrlTemplate: "{$Path}reservation.php?rn=[refnum]",
+		reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
 		popupUrl: "{$Path}ajax/respopup.php",
 		updateScope: updateScope,
 		actions: actions,
-		actionUrl: '{$smarty.server.SCRIPT_NAME}'
+		deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json'
 	};
+
+	var approvalOpts = {
+		url: '{$Path}ajax/reservation_approve.php'
+	};
+	
+	var approval = new Approval(approvalOpts);
 		
-	var reservationManagement = new ReservationManagement(resOpts);
+	var reservationManagement = new ReservationManagement(resOpts, approval);
 	reservationManagement.init();
 
 	{foreach from=$reservations item=reservation}
@@ -177,4 +184,8 @@ $(document).ready(function() {
 });
 </script>
 
+<div id="approveDiv" style="display:none;text-align:center; top:15%;position:relative;">
+<h3>Approving...</h3>
+{html_image src="reservation_submitting.gif"}
+</div>
 {include file='globalfooter.tpl'}

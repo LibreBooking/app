@@ -11,44 +11,9 @@ interface IReservationDeletePage extends IReservationSaveResultsPage
 	public function GetReservationId();
 
 	/**
-	 * @return SeriesUpdateScope
+	 * @return SeriesUpdateScope|string
 	 */
 	public function GetSeriesUpdateScope();
-}
-
-class ReservationDeleteJsonPage extends ReservationDeletePage implements IReservationDeletePage
-{
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	public function PageLoad()
-	{
-		$reservation = $this->presenter->BuildReservation();
-		$this->presenter->HandleReservation($reservation);
-	}
-
-	/**
-	 * @param bool $succeeded
-	 */
-	public function SetSaveSuccessfulMessage($succeeded)
-	{
-		$this->SetJson(array('deleted' => (string)$succeeded));
-	}
-
-	public function ShowErrors($errors)
-	{
-		if (!empty($errors))
-		{
-			$this->SetJson(array('deleted' => (string)false), $errors);
-		}
-	}
-
-	public function ShowWarnings($warnings)
-	{
-		// nothing to do
-	}
 }
 
 class ReservationDeletePage extends SecurePage implements IReservationDeletePage
@@ -86,11 +51,11 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 
 		if ($this->reservationSavedSuccessfully)
 		{
-			$this->smarty->display('Ajax/reservation/delete_successful.tpl');
+			$this->Display('Ajax/reservation/delete_successful.tpl');
 		}
 		else
 		{
-			$this->smarty->display('Ajax/reservation/delete_failed.tpl');
+			$this->Display('Ajax/reservation/delete_failed.tpl');
 		}
 	}
 
@@ -120,4 +85,38 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 	}
 }
 
+class ReservationDeleteJsonPage extends ReservationDeletePage implements IReservationDeletePage
+{
+	public function __construct()
+	{
+		parent::__construct();
+	}
+
+	public function PageLoad()
+	{
+		$reservation = $this->presenter->BuildReservation();
+		$this->presenter->HandleReservation($reservation);
+	}
+
+	/**
+	 * @param bool $succeeded
+	 */
+	public function SetSaveSuccessfulMessage($succeeded)
+	{
+		$this->SetJson(array('deleted' => (string)$succeeded));
+	}
+
+	public function ShowErrors($errors)
+	{
+		if (!empty($errors))
+		{
+			$this->SetJson(array('deleted' => (string)false), $errors);
+		}
+	}
+
+	public function ShowWarnings($warnings)
+	{
+		// nothing to do
+	}
+}
 ?>

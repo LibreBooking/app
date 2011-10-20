@@ -3,13 +3,6 @@ require_once(ROOT_DIR . 'Pages/Admin/ManageReservationsPage.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
-
-class ManageReservationsActions
-{
-	const Approve = 'approve';
-	const Delete = 'delete';
-}
-
 interface IManageReservationsService
 {
 	/**
@@ -21,23 +14,6 @@ interface IManageReservationsService
 	 * @return PageableData
 	 */
 	public function LoadFiltered($pageNumber, $pageSize, $filter, $user);
-
-	/**
-	 * @abstract
-	 * @param $referenceNumber string
-	 * @param $seriesUpdateScope string|SeriesUpdateScope
-	 * @param $user UserSession
-	 * @return void
-	 */
-	public function Delete($referenceNumber, $seriesUpdateScope, $user);
-
-	/**
-	 * @abstract
-	 * @param $referenceNumber string
-	 * @param $user UserSession
-	 * @return void
-	 */
-	public function Approve($referenceNumber, $user);
 }
 
 class ManageReservationsService implements IManageReservationsService
@@ -52,30 +28,14 @@ class ManageReservationsService implements IManageReservationsService
 	 */
 	private $reservationViewRepository;
 
-	public function __construct(
-		IReservationRepository $reservationRepository,
-		IReservationViewRepository $reservationViewRepository)
+	public function __construct(IReservationViewRepository $reservationViewRepository)
 	{
-		$this->reservationRepository = $reservationRepository;
 		$this->reservationViewRepository = $reservationViewRepository;
 	}
 
 	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
 	{
 		return $this->reservationViewRepository->GetList($pageNumber, $pageSize, null, null, $filter->GetFilter());
-	}
-
-	public function Delete($referenceNumber, $seriesUpdateScope, $user)
-	{
-		$reservation = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
-
-		$reservation->ApplyChangesTo($seriesUpdateScope);
-		$reservation->Delete($user);
-		$this->reservationRepository->Delete($reservation);
-	}
-
-	public function Approve($referenceNumber, $user)
-	{
 	}
 }
 
@@ -113,8 +73,6 @@ class ManageReservationsPresenter extends ActionPresenter
 		$this->manageReservationsService = $manageReservationsService;
 		$this->scheduleRepository = $scheduleRepository;
 		$this->resourceRepository = $resourceRepository;
-
-		$this->AddAction(ManageReservationsActions::Delete, 'DeleteReservation');
 	}
 
 	public function PageLoad($userTimezone)
@@ -156,17 +114,6 @@ class ManageReservationsPresenter extends ActionPresenter
 		$this->page->BindPageInfo($reservations->PageInfo());
 	}
 
-	public function DeleteReservation()
-	{
-		$session = ServiceLocator::GetServer()->GetUserSession();
-		$referenceNumber = $this->page->GetDeleteReferenceNumber();
-		$scope = $this->page->GetDeleteScope();
-
-		Log::Debug('Admin: Deleting reservation %s with change scope %s', $referenceNumber, $scope);
-
-		$this->manageReservationsService->Delete($referenceNumber, $scope, $session);
-	}
-
 	private function GetDate($dateString, $timezone, $defaultDays)
 	{
 		$date = null;
@@ -181,6 +128,7 @@ class ManageReservationsPresenter extends ActionPresenter
 
 		return $date;
 	}
+
 }
 
 class ReservationFilter
