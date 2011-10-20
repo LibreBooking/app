@@ -16,17 +16,52 @@ interface IReservationDeletePage extends IReservationSaveResultsPage
 	public function GetSeriesUpdateScope();
 }
 
+class ReservationDeleteJsonPage extends ReservationDeletePage implements IReservationDeletePage
+{
+	public function __construct()
+	{
+		parent::__construct();
+	}
+
+	public function PageLoad()
+	{
+		$reservation = $this->presenter->BuildReservation();
+		$this->presenter->HandleReservation($reservation);
+	}
+
+	/**
+	 * @param bool $succeeded
+	 */
+	public function SetSaveSuccessfulMessage($succeeded)
+	{
+		$this->SetJson(array('deleted' => (string)$succeeded));
+	}
+
+	public function ShowErrors($errors)
+	{
+		if (!empty($errors))
+		{
+			$this->SetJson(array('deleted' => (string)false), $errors);
+		}
+	}
+
+	public function ShowWarnings($warnings)
+	{
+		// nothing to do
+	}
+}
+
 class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 {
 	/**
 	 * @var ReservationDeletePresenter
 	 */
-	private $presenter;
+	protected $presenter;
 
 	/**
 	 * @var bool
 	 */
-	private $reservationSavedSuccessfully = false;
+	protected $reservationSavedSuccessfully = false;
 
 	public function __construct()
 	{
@@ -49,7 +84,8 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 		$reservation = $this->presenter->BuildReservation();
 		$this->presenter->HandleReservation($reservation);
 
-		if ($this->reservationSavedSuccessfully) {
+		if ($this->reservationSavedSuccessfully)
+		{
 			$this->smarty->display('Ajax/reservation/delete_successful.tpl');
 		}
 		else
