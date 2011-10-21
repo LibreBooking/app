@@ -31,6 +31,8 @@ class ConfigKeys
 	const IMAGE_UPLOAD_URL = 'image.upload.url';
 
 	const CACHE_TEMPLATES = 'cache.templates';
+
+	const INSTALLATION_PASSWORD = 'install.password';
 }
 
 class ConfigSection

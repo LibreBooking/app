@@ -5,5 +5,6 @@ class SessionKeys
 	{}
 	
 	const USER_SESSION = 'USER_SESSION';
+	const INSTALLATION = 'INSTALLATION';
 }
 ?>

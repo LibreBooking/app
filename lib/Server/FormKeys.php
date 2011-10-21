@@ -29,6 +29,9 @@ class FormKeys
 	const GROUP_NAME = 'group_name';
 	const GROUP_ADMIN = 'group_admin';
 
+	const INSTALL_PASSWORD = 'install_password';
+	const INSTALL_DB_USER = 'install_db_user';
+	const INSTALL_DB_PASSWORD = 'install_db_password';
 	const INVITATION_LIST = 'invitationList';
 	const IS_ACTIVE = 'isactive';
 
