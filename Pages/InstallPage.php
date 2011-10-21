@@ -1,10 +1,66 @@
 <?php
 require_once(ROOT_DIR . 'Pages/Page.php');
 
+
+class InstallationResult
+{
+	public $connectionError = false;
+	public $authError = false;
+	public $taskName;
+	public $sqlErrorCode;
+	public $sqlErrorText;
+	public $sqlText;
+
+	public function __construct($taskName)
+	{
+		$this->taskName = $taskName;
+	}
+
+	public function SetConnectionError()
+	{
+		$this->connectionError = true;
+		$this->sqlErrorText = "Error connecting to mysql database.  Check your configured host and entered username and password.";
+	}
+
+	public function SetAuthenticationError()
+	{
+		$this->authError = true;
+		$this->sqlErrorText = "Error selecting to mysql database.  Check entered username and password.";
+	}
+
+	public function SetResult($sqlErrorCode, $sqlErrorText, $sqlStmt)
+	{
+		$this->sqlErrorCode = $sqlErrorCode;
+		$this->sqlErrorText = $sqlErrorText;
+		$this->sqlText = $sqlStmt;
+	}
+
+	public function WasSuccessful()
+	{
+		return !$this->connectionError && !$this->authError && $this->sqlErrorCode == 0;
+	}
+}
+
 class Installer
 {
-	public function InstallFresh()
+	private $user;
+	private $password;
+
+	public function __construct($user, $password)
 	{
+	    $this->user = $user;
+		$this->password = $password;
+	}
+
+	/**
+	 * @param $should_create_db bool
+	 * @param $should_create_user bool
+	 * @return array|InstallationResult[]
+	 */
+	public function InstallFresh($should_create_db, $should_create_user)
+	{
+		$results = array();
+		
 		$config = Configuration::Instance();
 
 		$hostname = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
@@ -24,31 +80,50 @@ class Installer
 		$create_schema = new MySqlScript(ROOT_DIR . 'database_schema/schema-utf8.sql');
 		$populate_data = new MySqlScript(ROOT_DIR . 'database_schema/data-utf8.sql');
 
-		$this->ExecuteScript($hostname, 'mysql', 'root', '', $create_database);
-		$this->ExecuteScript($hostname, $database_name, 'root', '', $create_schema);
-		$this->ExecuteScript($hostname, $database_name, 'root', '', $create_user);
-		$this->ExecuteScript($hostname, $database_name, 'root', '', $populate_data);
+		if ($should_create_db)
+		{
+			$results[] = $this->ExecuteScript($hostname, 'mysql', $this->user, $this->password, $create_database);
+		}
+
+		$results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $create_schema);
+
+		if ($should_create_user)
+		{
+			$results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $create_user);
+		}
+
+		$results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_data);
+
+		return $results;
 	}
 
 	public function ExecuteScript($hostname, $database_name, $db_user, $db_password, MySqlScript $script)
 	{
-		echo "<br/>Executing: {$script->Name()}<br/>";
+		$result = new InstallationResult($script->Name());
 
 		$sqlErrorCode = 0;
+		$sqlErrorText = null;
+		$sqlStmt = null;
 
 		$link = mysql_connect($hostname, $db_user, $db_password);
 		if (!$link)
 		{
-			die ("MySQL Connection error");
+			$result->SetConnectionError();
+			return $result;
 		}
 
-		mysql_select_db($database_name, $link) or die ("Wrong MySQL Database");
+		$select_db_result = mysql_select_db($database_name, $link);
+		if (!$select_db_result) {
+
+			$result->SetAuthenticationError();
+			return $result;
+		}
 
 		$sqlArray = explode(';', $script->GetFullSql());
 		foreach ($sqlArray as $stmt) {
 			if (strlen($stmt) > 3 && substr(ltrim($stmt), 0, 2) != '/*') {
-				$result = mysql_query($stmt);
-				if (!$result) {
+				$queryResult = mysql_query($stmt);
+				if (!$queryResult) {
 					$sqlErrorCode = mysql_errno();
 					$sqlErrorText = mysql_error();
 					$sqlStmt = $stmt;
@@ -56,16 +131,10 @@ class Installer
 				}
 			}
 		}
-		if ($sqlErrorCode == 0) {
-			echo "Script is executed successfully!";
-		}
-		else
-		{
-			echo "An error occured during installation!<br/>";
-			echo "Error code: $sqlErrorCode<br/>";
-			echo "Error text: $sqlErrorText<br/>";
-			echo "Statement:<br/> $sqlStmt<br/>";
-		}
+
+		$result->SetResult($sqlErrorCode, $sqlErrorText, $sqlStmt);
+
+		return $result;
 	}
 }
 
@@ -118,13 +187,57 @@ interface IInstallPage
 {
 	public function SetInstallPasswordMissing($isMissing);
 
+	/**
+	 * @abstract
+	 * @return string
+	 */
 	public function GetInstallPassword();
 
-	public function SetShowPasswordPrompt($bool1);
+	public function SetShowPasswordPrompt($showPasswordPrompt);
 
-	public function SetShowInvalidPassword($bool1);
+	public function SetShowInvalidPassword($showInvalidPassword);
 
-	public function SetShowDatabasePrompt($bool1);
+	public function SetShowDatabasePrompt($showDatabasePrompt);
+
+	public function SetDatabaseConfig($dbname, $dbuser, $dbhost);
+
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function RunningInstall();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetInstallUser();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetInstallUserPassword();
+
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function GetShouldCreateDatabase();
+
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function GetShouldCreateUser();
+
+	/**
+	 * @abstract
+	 * @param $results array|InstallationResult[]
+	 * @return void
+	 */
+	public function SetInstallResults($results);
+
 }
 
 class InstallPage extends Page implements IInstallPage
@@ -174,6 +287,61 @@ class InstallPage extends Page implements IInstallPage
 	{
 		$this->Set('ShowDatabasePrompt', $showDatabasePrompt);
 	}
+
+	public function SetDatabaseConfig($dbname, $dbuser, $dbhost)
+	{
+		$this->Set('dbname', $dbname);
+		$this->Set('dbuser', $dbuser);
+		$this->Set('dbhost', $dbhost);
+	}
+
+	public function RunningInstall()
+	{
+		$run_install = $this->GetForm('run_install');
+		return !empty($run_install);
+	}
+
+	public function GetInstallUser()
+	{
+		return $this->GetForm(FormKeys::INSTALL_DB_USER);
+	}
+
+	public function GetInstallUserPassword()
+	{
+		return $this->GetForm(FormKeys::INSTALL_DB_PASSWORD);
+	}
+
+	public function GetShouldCreateDatabase()
+	{
+		$x = $this->GetForm('create_database');
+		return isset($x) && $x == true;
+	}
+
+	public function GetShouldCreateUser()
+	{
+		$x = $this->GetForm('create_user');
+		return isset($x) && $x == true;
+	}
+
+	/**
+	 * @param $results array|InstallationResult[]
+	 * @return void
+	 */
+	public function SetInstallResults($results)
+	{
+		$failure = false;
+		foreach ($results as $result)
+		{
+			if (!$result->WasSuccessful())
+			{
+				$failure = true;
+			}
+		}
+
+		$this->Set('InstallCompletedSuccessfully', !$failure);
+		$this->Set('InstallFailed', $failure);
+		$this->Set('installresults', $results);
+	}
 }
 
 class InstallPresenter
@@ -193,6 +361,17 @@ class InstallPresenter
 
 	public function PageLoad()
 	{
+		if ($this->page->RunningInstall())
+		{
+			$this->RunInstall();
+			return;
+		}
+		
+		$dbname = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
+		$dbuser = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
+		$dbhost = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
+		$this->page->SetDatabaseConfig($dbname, $dbuser, $dbhost);
+		
 		$this->CheckForInstallPasswordInConfig();
 		$this->CheckForInstallPasswordProvided();
 		$this->CheckForAuthentication();
@@ -267,6 +446,15 @@ class InstallPresenter
 		}
 
 		return $validated;
+	}
+
+	private function RunInstall()
+	{
+		$install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
+
+		$results = $install->InstallFresh($this->page->GetShouldCreateDatabase(), $this->page->GetShouldCreateUser());
+
+		$this->page->SetInstallResults($results);
 	}
 }
 

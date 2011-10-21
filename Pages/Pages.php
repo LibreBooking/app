@@ -13,6 +13,7 @@ class Pages
 	const PARTICIPATION = 'participation.php';
 	const PROFILE = 'profile.php';
 	const RESERVATION = 'reservation.php';
+	const REGISTRATION = 'reg.php';
 	const SCHEDULE = 'schedule.php';
 
 	private static $_pages = array(
