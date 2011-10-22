@@ -29,5 +29,5 @@ $conf['settings']['cache.templates'] = 'false';
 $conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';
-$conf['settings']['install.password'] = 'password';
+$conf['settings']['install.password'] = '';
 ?>
