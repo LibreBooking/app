@@ -2,7 +2,18 @@
 
 interface IPassword
 {
+	/**
+	 * @abstract
+	 * @param $salt string
+	 * @return bool
+	 */
 	public function Validate($salt);
+
+	/**
+	 * @abstract
+	 * @param $userid int
+	 * @return void
+	 */
 	public function Migrate($userid);
 }
 
@@ -26,17 +37,47 @@ class PasswordMigration
 
 class Password implements IPassword
 {
+	/**
+	 * @var \PasswordEncryption
+	 */
 	public $Encryption;
-	
-	protected $plaintext; 
+
+	/**
+	 * @var string
+	 */
+	protected $plaintext;
+
+	/**
+	 * @var string
+	 */
 	protected $encrypted;
-	
+
+	/**
+	 * @param $plaintext string
+	 * @param $encrypted string
+	 */
 	public function __construct($plaintext, $encrypted)
 	{
 		$this->plaintext = $plaintext;	
 		$this->encrypted = $encrypted;
 		
 		$this->Encryption = new PasswordEncryption();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function PlainText()
+	{
+		return $this->plaintext;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Encrypted()
+	{
+		return $this->encrypted;
 	}
 	
 	public function Validate($salt)
@@ -48,6 +89,25 @@ class Password implements IPassword
 	public function Migrate($userid)
 	{
 		// noop
+	}
+
+	/**
+	 * @static
+	 * @return string
+	 */
+	public static function GenerateRandom()
+	{
+		$length = 10;
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%';
+		$password ='';
+		$max = strlen($characters);
+			
+		for ($i = 0; $i < $length; $i++)
+		{
+			$password .= $characters[mt_rand(0, $max)];
+		}
+
+    	return $password;
 	}
 }
 

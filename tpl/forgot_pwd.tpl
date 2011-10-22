@@ -1,7 +1,14 @@
 {assign var='DisplayWelcome' value='false'} 
 {include file='loginheader.tpl'}
-<div id="forgotbox">
 
+	{if $ShowResetEmailSent}
+		<div class="success">
+			{translate key=ForgotPasswordEmailSent}<br/>
+			<a href="{$Path}{Pages::LOGIN}">{translate key="LogIn"}</a>
+		</div>
+	{/if}
+
+<div id="forgotbox">
 	<form class="forgot" method="post"
 		action="{$smarty.server.SCRIPT_NAME}">
 		<div class="forgot_pwdHeader">
@@ -16,8 +23,7 @@
 					{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
 			</p>
 			<p class="resetpassword">
-				<button type="submit" class="button update prompt" name="{Actions::RESET}"><img src="img/tick-circle.png" />  {translate key='Change Password'}</button>
-			    <input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}" />
+				<button type="submit" class="button" name="{Actions::RESET}" value="{Actions::RESET}">{html_image src="tick-circle.png"} {translate key='Change Password'}</button>
 			</p>
 		</div>
 	</form>

@@ -1,6 +1,8 @@
 <?php
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ForgotPasswordEmail.php');
 
 class ForgotPwdPresenter
 {
@@ -16,18 +18,33 @@ class ForgotPwdPresenter
 		if ($this->_page->ResetClicked())
 		{
 			$this->SendRandomPassword();
-			// TODO Say something nice about the password generation, then redirect to login page for retry
-			$this->_page->Redirect(Pages::LOGIN); 
-		}
-		else 
-		{
-			// TODO? Just load the page and wait, I guess.
+			$this->_page->ShowResetEmailSent(true);
 		}
 	}
 	
 	public function SendRandomPassword()
 	{
-		// TODO, generate random password and send it by email
+		$emailAddress = $this->_page->GetEmailAddress();
+
+		Log::Debug('Password reset request for email address" %s requested from REMOTE_ADDR: %s REMOTE_HOST: %s', $emailAddress, $_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_HOST']);
+
+		$temporaryPassword = Password::GenerateRandom();
+
+		$passwordEncryption = new PasswordEncryption();
+		$salt = $passwordEncryption->Salt();
+		$encrypted = $passwordEncryption->Encrypt($temporaryPassword, $salt);
+
+		$userRepository = new UserRepository();
+		$user = $userRepository->FindByEmail($emailAddress);
+
+		if ($user != null)
+		{
+			$user->ChangePassword($encrypted, $salt);
+			$userRepository->Update($user);
+
+			$emailMessage = new ForgotPasswordEmail($user, $temporaryPassword);
+			ServiceLocator::GetEmailService()->Send($emailMessage);
+		}
 	}
 }
 ?>

@@ -199,6 +199,7 @@ class en_us extends Language
 		$strings['GroupRoles'] = 'Group Roles';
 		$strings['GroupAdmin'] = 'Group Administrator';
 		$strings['Actions'] = 'Actions';
+		$strings['ForgotPasswordEmailSent'] = 'An email has been sent to the address provided with instructions for resetting your password';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
@@ -260,6 +261,7 @@ class en_us extends Language
 		$strings['ReservationUpdatedAdminSubject'] = 'Notification: A Reservation Was Updated';
 		$strings['ParticipantAddedSubject'] = 'Reservation Participation Notification';
 		$strings['InviteeAddedSubject'] = 'Reservation Invitation';
+		$strings['ResetPassword'] = 'Password Reset Request';
 		//
 		
 		/***

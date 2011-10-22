@@ -89,7 +89,7 @@
 
 
         <p class="regsubmit">
-                <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}" tabindex="300"><img src="img/tick-circle.png" /> {translate key='Register'}</button>
+                <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}" tabindex="300" class="button"><img src="img/tick-circle.png" /> {translate key='Register'}</button>
         </p>
 </form>
 </div>

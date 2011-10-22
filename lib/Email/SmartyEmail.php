@@ -47,7 +47,13 @@ class SmartyEmail extends Smarty
 	
 	public function FetchTemplate($templateName)
 	{
-		return $this->fetch($this->Resources->CurrentLanguage . "/" . $templateName);
+		$localizedTemplate = $this->Resources->CurrentLanguage . '/' . $templateName;
+		if (file_exists($localizedTemplate))
+		{
+			return $this->fetch($localizedTemplate);
+		}
+
+		return "en_us/$templateName}";
 	}
 	
 	public function SmartyTranslate($params, &$smarty) 

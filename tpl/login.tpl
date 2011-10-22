@@ -31,7 +31,7 @@
 {if $ShowRegisterLink} 
         <h4 class="register">
                 {translate key='First time user'}
-                {html_link href="reg.php" key="Click here to register"}
+                {html_link href="register.php" key="Click here to register"}
         </h4>
 {/if}
 

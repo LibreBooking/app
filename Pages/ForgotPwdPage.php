@@ -5,11 +5,9 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 interface IForgotPwdPage extends IPage
 {
 	public function ResetClicked();
+	public function ShowResetEmailSent($showResetEmailSent);
 
-	public function getEmailAddress();
-	public function getResumeUrl();
-	public function setRandomPassword($value);
-	public function setResumeUrl($value);
+	public function GetEmailAddress();
 }
 
 class ForgotPwdPage extends Page implements IForgotPwdPage
@@ -18,41 +16,32 @@ class ForgotPwdPage extends Page implements IForgotPwdPage
 
 	public function __construct()
 	{
-		parent::__construct('LogIn');
+		parent::__construct('Forgot Password');
 		
 		$this->_presenter = new ForgotPwdPresenter($this);
-		$this->smarty->assign('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
 	}
 
 	public function PageLoad()
 	{
 		$this->_presenter->PageLoad();
-		$this->smarty->display('forgot_pwd.tpl');		
+
+		$this->Display('forgot_pwd.tpl');
 	}
 
 	public function ResetClicked()
 	{
-		return $this->GetForm(Actions::RESET);
+		$reset = $this->GetForm(Actions::RESET);
+		return !empty($reset);
 	}
 	
-	public function getEmailAddress()
+	public function GetEmailAddress()
 	{
-		return $this->server->GetForm(FormKeys::EMAIL);
-	}
-
-	public function setRandomPassword($value)
-	{
-		$this->smarty->assign('RandomPassword', $value);	
-	}
-		
-	public function setResumeUrl($value)
-	{
-		$this->smarty->assign('ResumeUrl', $value);
+		return $this->GetForm(FormKeys::EMAIL);
 	}
 	
-	public function getResumeUrl()
+	public function ShowResetEmailSent($showResetEmailSent)
 	{
-		return $this->server->GetForm(FormKeys::RESUME);
+		$this->Set('ShowResetEmailSent', $showResetEmailSent);
 	}
 }
 ?>

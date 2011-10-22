@@ -225,6 +225,23 @@ class UserRepository implements IUserRepository, IUserViewRepository
 
 		return array_values($groups);
 	}
+
+	/**
+	 * @param $emailAddress string
+	 * @return User
+	 */
+	public function FindByEmail($emailAddress)
+	{
+		$command = new CheckEmailCommand($emailAddress);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		if ($row = $reader->GetRow())
+		{
+			return $this->GetById($row[ColumnNames::USER_ID]);
+		}
+
+		return null;
+	}
 }
 
 interface IUserRepository

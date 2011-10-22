@@ -7,7 +7,7 @@ interface IEmailMessage
 	function Charset();
 	
 	/**
-	 * @return EmailAddress[]
+	 * @return array|EmailAddress[]|EmailAddress
 	 */
 	function To();
 	
@@ -17,12 +17,12 @@ interface IEmailMessage
 	function From();
 	
 	/**
-	 * @return EmailAddress[]
+	 * @return array|EmailAddress[]|EmailAddress
 	 */
 	function CC();
 	
 	/**
-	 * @return EmailAddress[]
+	 * @return array|EmailAddress[]|EmailAddress
 	 */
 	function BCC();
 	

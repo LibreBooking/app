@@ -24,7 +24,7 @@ class Registration implements IRegistration
 					$username, $email, $firstName, $lastName,
 					$encryptedPassword, $salt, $timezone, $language, $homepageId, 
 	     			$additionalFields['phone'], $additionalFields['organization'], $additionalFields['position'],
-				AccountStatus::AWAITING_ACTIVATION
+				AccountStatus::ACTIVE
 				);			
 		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);
 		

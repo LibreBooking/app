@@ -39,7 +39,7 @@ class EmailService implements IEmailService
 		$replyTo = $emailMessage->ReplyTo();
 		$this->phpMailer->AddReplyTo($replyTo->Address(), $replyTo->Name());
 		
-		$to = $emailMessage->To();
+		$to = $this->ensureArray($emailMessage->To());
 		$toAddresses = new StringBuilder();
 		foreach ($to as $address)
 		{
@@ -47,20 +47,21 @@ class EmailService implements IEmailService
 			$this->phpMailer->AddAddress($address->Address(), $address->Name());
 		}
 
-		$cc = $emailMessage->CC();
+		$cc = $this->ensureArray($emailMessage->CC());
 		foreach ($cc as $address)
 		{
 			$this->phpMailer->AddCC($address->Address(), $address->Name());
 		}
 		
-		$bcc = $emailMessage->BCC();
+		$bcc = $this->ensureArray($emailMessage->BCC());
 		foreach ($bcc as $address)
 		{
 			$this->phpMailer->AddBCC($address->Address(), $address->Name());
 		}
 		
 		Log::Debug('Sending %s email to: %s from: %s', get_class($emailMessage), $toAddresses->ToString(), $from->Address());
-		
+
+		$success = false;
 		try
 		{
 			$success = $this->phpMailer->Send();
@@ -76,6 +77,20 @@ class EmailService implements IEmailService
 	private function Config($key)
 	{
 		return Configuration::Instance()->GetSectionKey('phpmailer', $key);
+	}
+
+	/**
+	 * @param $possibleArray array|EmailAddress[]
+	 * @return array|EmailAddress[]
+	 */
+	private function ensureArray($possibleArray)
+	{
+		if (is_array($possibleArray))
+		{
+			return $possibleArray;
+		}
+
+		return array($possibleArray);
 	}
 }
 
