@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <project name="phpScheduleIt" default="package">
-	<property name="version" value="2.0.0-alpha1"/>
+	<property name="version" value="2.0.0-alpha"/>
 	<property name="packagename" value="phpScheduleIt-${version}" />
-	<property name="zipdirectory" value="c:/work/phpScheduleIt_archive/zip/${version}"/>
-	<property name="archive_directory" value="c:/work/phpScheduleIt_archive/src/${version}"/>
+	<property name="zipdirectory" value="../phpScheduleIt_archive/zip/${version}"/>
+	<property name="archive_directory" value="../phpScheduleIt_archive/src/${version}"/>
 	<property name="staging" value="../staging"/>
 	<property name="stagingdir" value="${staging}/phpScheduleIt"/>
 
@@ -46,11 +46,14 @@
 		<delete dir="${zipdirectory}" failonerror="false" />
 		<mkdir dir="${zipdirectory}" />
 
-		<zip destfile="${zipdirectory}/${packagename}.zip">
+		<tstamp />
+		
+		<zip destfile="${zipdirectory}/${packagename}${DSTAMP}.zip">
 			<fileset dir="${staging}">
 				<include name="**/*"/>
 			</fileset>
 		</zip>
+		<!--
 		<tar destFile="${zipdirectory}/${packagename}.tar">
 			<fileset dir="${staging}">
 				<include name="**/*"/>
@@ -61,7 +64,7 @@
 				<include name="**/*"/>
 			</fileset>
 		</tar>
-
+		-->
 		<delete dir="${archive_directory}" failonerror="false" />
 		<mkdir dir="${archive_directory}" />
 
