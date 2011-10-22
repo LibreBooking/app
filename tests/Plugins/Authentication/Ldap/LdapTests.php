@@ -131,9 +131,8 @@ class LdapTests extends TestBase
 		
 		$this->assertEquals($expectedCommand, $this->db->_Commands[0]);
 		
-		$this->assertTrue($this->encryption->_EncryptCalled);
+		$this->assertTrue($this->encryption->_EncryptPasswordCalled);
 		$this->assertEquals($this->password, $this->encryption->_LastPassword);
-		$this->assertEquals($this->encryption->_Salt, $this->encryption->_LastSalt);
 			
 		$this->assertFalse($this->fakeRegistration->_RegisterCalled);
 		
@@ -169,9 +168,8 @@ class LdapTests extends TestBase
 		$this->assertEquals($this->username, $this->fakeRegistration->_LastLogin);
 		$this->assertEquals($this->ldapUser->GetEmail(), $this->fakeRegistration->_LastEmail);
 		
-		$this->assertTrue($this->encryption->_EncryptCalled);
+		$this->assertTrue($this->encryption->_EncryptPasswordCalled);
 		$this->assertEquals($this->password, $this->encryption->_LastPassword);
-		$this->assertEquals($this->encryption->_Salt, $this->encryption->_LastSalt);
 			
 		$this->assertTrue($this->fakeRegistration->_RegisterCalled);
 		$this->assertEquals($this->username, $this->fakeRegistration->_Login);
@@ -199,7 +197,7 @@ class LdapTests extends TestBase
 		
 		$this->assertFalse($this->fakeRegistration->_ExistsCalled);
 		$this->assertEquals(0, count($this->db->_Commands));
-		$this->assertFalse($this->encryption->_EncryptCalled);
+		$this->assertFalse($this->encryption->_EncryptPasswordCalled);
 		$this->assertFalse($this->fakeRegistration->_RegisterCalled);
 		$this->assertEquals($this->username, $this->fakeAuth->_LastLogin);
 		$this->assertEquals($persist, $this->fakeAuth->_LastPersist);

@@ -63,13 +63,13 @@ class Authentication implements IAuthentication
 			}
 		}
 		
-		Log::Debug('User: %s, was validated: %s', $username, $valid);
+		Log::Debug('User: %s, was validated: %d', $username, $valid);
 		return $valid;
 	}
 
 	public function Login($username, $persist)
 	{
-		Log::Debug('Logging in with user: %s, persist: %s', $username, $persist);
+		Log::Debug('Logging in with user: %s, persist: %d', $username, $persist);
 		
 		$command = new LoginCommand($username);
 		$reader = ServiceLocator::GetDatabase()->Query($command);

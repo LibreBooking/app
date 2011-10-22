@@ -17,12 +17,11 @@ class Registration implements IRegistration
 	
 	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array())
 	{
-		$salt = $this->_passwordEncryption->Salt();
-		$encryptedPassword = $this->_passwordEncryption->Encrypt($password, $salt);
+		$encryptedPassword = $this->_passwordEncryption->EncryptPassword($password);
 		
 		$registerCommand = new RegisterUserCommand(
 					$username, $email, $firstName, $lastName,
-					$encryptedPassword, $salt, $timezone, $language, $homepageId, 
+					$encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $timezone, $language, $homepageId,
 	     			$additionalFields['phone'], $additionalFields['organization'], $additionalFields['position'],
 				AccountStatus::ACTIVE
 				);			

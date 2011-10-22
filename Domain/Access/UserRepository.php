@@ -237,7 +237,7 @@ class UserRepository implements IUserRepository, IUserViewRepository
 
 		if ($row = $reader->GetRow())
 		{
-			return $this->GetById($row[ColumnNames::USER_ID]);
+			return $this->LoadById($row[ColumnNames::USER_ID]);
 		}
 
 		return null;

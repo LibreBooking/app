@@ -8,11 +8,11 @@ class en_us extends Language
 		parent::__construct();
 		$this->HtmlLang = 'en';
 	}
-	
+
 	function _LoadDates()
 	{
 		$dates = array();
-		
+
 		// General date formatting used for all date display unless otherwise noted
 		$dates['general_date'] = '%m/%d/%Y';
 		// General datetime formatting used for all datetime display unless otherwise noted
@@ -24,7 +24,7 @@ class en_us extends Language
 		$dates['schedule_daily'] = '%A,<br/>%m/%d/%Y';
 		// Date on top-right of each page
 		$dates['header'] = '%A, %B %d, %Y';
-		
+
 		// TODO: system - Move out of here
 		$dates['js_general_date'] = 'mm/dd/yy';
 		$dates['url'] = 'Y-m-d';
@@ -37,18 +37,18 @@ class en_us extends Language
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'm/d/Y g:i A';
 		$dates['dashboard'] = 'l, m/d/Y g:i A';
-		
+
 		$this->Dates = $dates;
 	}
-	
+
 	function _LoadStrings()
 	{
 		$strings = array();
-		
+
 		$strings['FirstName'] = 'First Name';
 		$strings['LastName'] = 'Last Name';
 		$strings['Timezone'] = 'Timezone';
-		
+
 		// new stuff
 		$strings['Edit'] = 'Edit';
 		$strings['Change'] = 'Change';
@@ -199,14 +199,17 @@ class en_us extends Language
 		$strings['GroupRoles'] = 'Group Roles';
 		$strings['GroupAdmin'] = 'Group Administrator';
 		$strings['Actions'] = 'Actions';
-		$strings['ForgotPasswordEmailSent'] = 'An email has been sent to the address provided with instructions for resetting your password';
+		$strings['CurrentPassword'] = 'Current Password';
+		$strings['NewPassword'] = 'New Password';
+		$strings['InvalidPassword'] = 'Current password is incorrect';
+		$strings['PasswordChangedSuccessfully'] = 'Your password has been changed successfully';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
 		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s.';
 		$strings['MinDurationError'] = 'This reservation must last at least %s.';
 		$strings['MaxDurationError'] = 'This reservation cannot last longer than %s.';
-		
+
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';
 		$strings['EditReservation'] = 'Editing Reservation';
@@ -232,10 +235,11 @@ class en_us extends Language
 		$strings['OpenInvitations'] = 'Open Invitations';
 		$strings['MyCalendar'] = 'My Calendar';
 		$strings['ResourceCalendar'] = 'Resource Calendar';
-        $strings['Reservation'] = 'New Reservation';
-        $strings['Install'] = 'Installation';
+		$strings['Reservation'] = 'New Reservation';
+		$strings['Install'] = 'Installation';
+		$strings['ChangePassword'] = 'Change Password';
 		//
-		
+
 		// Day representations
 		$strings['DaySundaySingle'] = 'S';
 		$strings['DayMondaySingle'] = 'M';
@@ -244,7 +248,7 @@ class en_us extends Language
 		$strings['DayThursdaySingle'] = 'T';
 		$strings['DayFridaySingle'] = 'F';
 		$strings['DaySaturdaySingle'] = 'S';
-		
+
 		$strings['DaySundayAbbr'] = 'Sun';
 		$strings['DayMondayAbbr'] = 'Mon';
 		$strings['DayTuesdayAbbr'] = 'Tue';
@@ -252,7 +256,7 @@ class en_us extends Language
 		$strings['DayThursdayAbbr'] = 'Thu';
 		$strings['DayFridayAbbr'] = 'Fri';
 		$strings['DaySaturdayAbbr'] = 'Sat';
-		
+
 		// Email Subjects
 		$strings['ReservationApprovedSubject'] = 'Your Reservation Has Been Approved';
 		$strings['ReservationCreatedSubject'] = 'Your Reservation Was Created';
@@ -262,15 +266,16 @@ class en_us extends Language
 		$strings['ParticipantAddedSubject'] = 'Reservation Participation Notification';
 		$strings['InviteeAddedSubject'] = 'Reservation Invitation';
 		$strings['ResetPassword'] = 'Password Reset Request';
+		$strings['ForgotPasswordEmailSent'] = 'An email has been sent to the address provided with instructions for resetting your password';
 		//
-		
+
 		/***
-		  STRING TRANSLATIONS
-		  All of these strings should be translated from the English value (right side of the equals sign) to the new language.
-		  - Please keep the keys (between the [] brackets) as they are.  The keys will not always be the same as the value.
-		  - Please keep the sprintf formatting (%s) placeholders where they are unless you are sure it needs to be moved.
-		  - Please keep the HTML and punctuation as-is unless you know that you want to change it.
-		***/
+		STRING TRANSLATIONS
+		All of these strings should be translated from the English value (right side of the equals sign) to the new language.
+		- Please keep the keys (between the [] brackets) as they are.  The keys will not always be the same as the value.
+		- Please keep the sprintf formatting (%s) placeholders where they are unless you are sure it needs to be moved.
+		- Please keep the HTML and punctuation as-is unless you know that you want to change it.
+		 ***/
 		$strings['hours'] = 'hours';
 		$strings['minutes'] = 'minutes';
 		// The common abbreviation to hint that a user should enter the month as 2 digits
@@ -281,7 +286,7 @@ class en_us extends Language
 		$strings['yyyy'] = 'yyyy';
 		$strings['am'] = 'am';
 		$strings['pm'] = 'pm';
-		
+
 		$strings['Administrator'] = 'Administrator';
 		$strings['Welcome Back'] = 'Welcome Back, %s';
 		$strings['Log Out'] = 'Log Out';
@@ -311,7 +316,7 @@ class en_us extends Language
 		$strings['Online Scheduler'] = 'Online Scheduler';
 		$strings['phpScheduleIt Statistics'] = 'phpScheduleIt Statistics';
 		$strings['User Info'] = 'User Info:';
-		
+
 		$strings['Could not determine tool'] = 'Could not determine tool. Please return to My Control Panel and try again later.';
 		$strings['This is only accessable to the administrator'] = 'This is only accessible to the administrator';
 		$strings['Back to My Control Panel'] = 'Back to My Control Panel';
@@ -334,14 +339,14 @@ class en_us extends Language
 		$strings['Please go back and correct any errors.'] = 'Please go back and correct any errors.';
 		$strings['Login to view details and place reservations'] = 'Login to view details and place reservations';
 		$strings['Memberid is not available.'] = 'Memberid: %s is not available.';
-		
+
 		$strings['Schedule Title'] = 'Schedule Title';
 		$strings['Start Time'] = 'Start Time';
 		$strings['End Time'] = 'End Time';
 		$strings['Time Span'] = 'Time Span';
 		$strings['Weekday Start'] = 'Weekday Start';
 		$strings['Admin Email'] = 'Admin Email';
-		
+
 		$strings['Default'] = 'Default';
 		$strings['Reset'] = 'Reset';
 		$strings['Edit'] = 'Edit';
@@ -355,8 +360,8 @@ class en_us extends Language
 		$strings['Close Window'] = 'Close Window';
 		$strings['Search'] = 'Search';
 		$strings['Clear'] = 'Clear';
-        $strings['Done'] = 'Done';
-		
+		$strings['Done'] = 'Done';
+
 		$strings['Days to Show'] = 'Days to Show';
 		$strings['Reservation Offset'] = 'Reservation Offset';
 		$strings['Hidden'] = 'Hidden';
@@ -379,9 +384,9 @@ class en_us extends Language
 		$strings['Reset password for'] = 'Reset password for %s %s';
 		$strings['Edit permissions for'] = 'Edit permissions for %s %s';
 		$strings['Position'] = 'Position';
-		$strings['Password (6 char min)'] = 'Password (%s char min)';	// @since 1.1.0
+		$strings['Password (6 char min)'] = 'Password (%s char min)'; // @since 1.1.0
 		$strings['Re-Enter Password'] = 'Re-Enter Password';
-		
+
 		$strings['Sort by descending last name'] = 'Sort by descending last name';
 		$strings['Sort by descending email address'] = 'Sort by descending email address';
 		$strings['Sort by descending institution'] = 'Sort by descending institution';
@@ -406,7 +411,7 @@ class en_us extends Language
 		$strings['Sort by ascending created time'] = 'Sort by ascending created time';
 		$strings['Sort by descending last modified time'] = 'Sort by descending last modified time';
 		$strings['Sort by ascending last modified time'] = 'Sort by ascending last modified time';
-		
+
 		$strings['Search Users'] = 'Search Users';
 		$strings['Location'] = 'Location';
 		$strings['Schedule'] = 'Schedule';
@@ -423,7 +428,7 @@ class en_us extends Language
 		$strings['All Resources'] = 'All Resources';
 		$strings['All Locations'] = 'All Locations';
 		$strings['All Users'] = 'All Users';
-		
+
 		$strings['Edit data for'] = 'Edit data for %s';
 		$strings['Active'] = 'Active';
 		$strings['Inactive'] = 'Inactive';
@@ -477,7 +482,7 @@ class en_us extends Language
 		$strings['Get online help'] = 'Get online help';
 		$strings['Language'] = 'Language';
 		$strings['(Default)'] = '(Default)';
-		
+
 		$strings['My Announcements'] = 'My Announcements';
 		$strings['My Reservations'] = 'My Reservations';
 		$strings['My Permissions'] = 'My Permissions';
@@ -490,15 +495,15 @@ class en_us extends Language
 		$strings['View this reservation'] = 'View this reservation';
 		$strings['Modify this reservation'] = 'Modify this reservation';
 		$strings['Delete this reservation'] = 'Delete this reservation';
-		$strings['Bookings'] = 'Bookings';											// @since 1.2.0
-		$strings['Change My Profile Information/Password'] = 'Change Profile';		// @since 1.2.0
-		$strings['Manage My Email Preferences'] = 'Email Preferences';				// @since 1.2.0
+		$strings['Bookings'] = 'Bookings'; // @since 1.2.0
+		$strings['Change My Profile Information/Password'] = 'Change Profile'; // @since 1.2.0
+		$strings['Manage My Email Preferences'] = 'Email Preferences'; // @since 1.2.0
 		$strings['Mass Email Users'] = 'Mass Email Users';
-		$strings['Search Scheduled Resource Usage'] = 'Search Reservations';		// @since 1.2.0
+		$strings['Search Scheduled Resource Usage'] = 'Search Reservations'; // @since 1.2.0
 		$strings['Export Database Content'] = 'Export Database Content';
 		$strings['View System Stats'] = 'View System Stats';
 		$strings['Email Administrator'] = 'Email Administrator';
-		
+
 		$strings['Email me when'] = 'Email me when:';
 		$strings['I place a reservation'] = 'I place a reservation';
 		$strings['My reservation is modified'] = 'My reservation is modified';
@@ -506,7 +511,7 @@ class en_us extends Language
 		$strings['I prefer'] = 'I prefer:';
 		$strings['Your email preferences were successfully saved'] = 'Your email preferences were successfully saved!';
 		$strings['Return to My Control Panel'] = 'Return to My Control Panel';
-		
+
 		$strings['Please select the starting and ending times'] = 'Please select the starting and ending times:';
 		$strings['Please change the starting and ending times'] = 'Please change the starting and ending times:';
 		$strings['Reserved time'] = 'Reserved time:';
@@ -532,14 +537,14 @@ class en_us extends Language
 		$strings['Repeat until date'] = 'Repeat until date:';
 		$strings['Choose Date'] = 'Choose Date';
 		$strings['Summary'] = 'Summary';
-		
+
 		$strings['View schedule'] = 'View schedule:';
 		$strings['My Reservations'] = 'My Reservations';
 		$strings['My Past Reservations'] = 'My Past Reservations';
 		$strings['Other Reservations'] = 'Other Reservations';
 		$strings['Other Past Reservations'] = 'Other Past Reservations';
 		$strings['Blacked Out Time'] = 'Blacked Out Time';
-		$strings['Set blackout times'] = 'Set blackout times for %s on %s'; 
+		$strings['Set blackout times'] = 'Set blackout times for %s on %s';
 		$strings['Reserve on'] = 'Reserve %s on %s';
 		$strings['Prev Week'] = '&laquo; Prev Week';
 		$strings['Jump 1 week back'] = 'Jump 1 week back';
@@ -552,7 +557,7 @@ class en_us extends Language
 		$strings['Jump To Date'] = 'Jump To Date';
 		$strings['View Monthly Calendar'] = 'View Monthly Calendar';
 		$strings['Open up a navigational calendar'] = 'Open up a navigational calendar';
-		
+
 		$strings['View stats for schedule'] = 'View stats for schedule:';
 		$strings['At A Glance'] = 'At A Glance';
 		$strings['Total Users'] = 'Total Users:';
@@ -583,14 +588,14 @@ class en_us extends Language
 		$strings['Reservations'] = 'Reservations';
 		$strings['Return to top'] = 'Return to top';
 		$strings['for'] = 'for';
-		
+
 		$strings['Select Search Criteria'] = 'Select Search Criteria';
 		$strings['Schedules'] = 'Schedules:';
 		$strings['All Schedules'] = 'All Schedules';
 		$strings['Hold CTRL to select multiple'] = 'Hold CTRL to select multiple';
 		$strings['Users'] = 'Users:';
 		$strings['All Users'] = 'All Users';
-		$strings['Resources'] = 'Resources';		// @since 1.2.0
+		$strings['Resources'] = 'Resources'; // @since 1.2.0
 		$strings['All Resources'] = 'All Resources';
 		$strings['Starting Date'] = 'Starting Date:';
 		$strings['Ending Date'] = 'Ending Date:';
@@ -611,7 +616,7 @@ class en_us extends Language
 		$strings['Member ID'] = 'Member ID';
 		$strings['Previous User'] = '&laquo; Previous User';
 		$strings['Next User'] = 'Next User &raquo;';
-		
+
 		$strings['No results'] = 'No results';
 		$strings['That record could not be found.'] = 'That record could not be found.';
 		$strings['This blackout is not recurring.'] = 'This blackout is not recurring.';
@@ -621,9 +626,9 @@ class en_us extends Language
 		$strings['You do not have permission to use any resources.'] = 'You do not have permission to use any resources.';
 		$strings['No resources in the database.'] = 'No resources in the database.';
 		$strings['There was an error executing your query'] = 'There was an error executing your query:';
-		
+
 		$strings['That cookie seems to be invalid'] = 'That cookie seems to be invalid';
-		$strings['We could not find that logon in our database.'] = 'We could not find that logon in our database.';	// @since 1.1.0
+		$strings['We could not find that logon in our database.'] = 'We could not find that logon in our database.'; // @since 1.1.0
 		$strings['That password did not match the one in our database.'] = 'That password did not match the one in our database.';
 		$strings['You can try'] = '<br />You can try:<br />Registering an email address.<br />Or:<br />Try logging in again.';
 		$strings['A new user has been added'] = 'A new user has been added';
@@ -638,10 +643,10 @@ class en_us extends Language
 		$strings['That email is taken already.'] = '- That email is taken already.<br />Please try again with a different email address.';
 		$strings['Min 6 character password is required.'] = '- Min %s character password is required.';
 		$strings['Passwords do not match.'] = '- Passwords do not match.';
-		
+
 		$strings['Per page'] = 'Per page:';
 		$strings['Page'] = 'Page:';
-		
+
 		$strings['Your reservation was successfully created'] = 'Your reservation was successfully created';
 		$strings['Your reservation was successfully modified'] = 'Your reservation was successfully modified';
 		$strings['Your reservation was successfully deleted'] = 'Your reservation was successfully deleted';
@@ -657,7 +662,7 @@ class en_us extends Language
 		$strings['Minimum reservation length'] = 'Minimum reservation length:';
 		$strings['Maximum reservation length'] = 'Maximum reservation length:';
 		$strings['You do not have permission to use this resource.'] = 'You do not have permission to use this resource.';
-		$strings['reserved or unavailable'] = '%s to %s is reserved or unavailable.';	// @since 1.1.0
+		$strings['reserved or unavailable'] = '%s to %s is reserved or unavailable.'; // @since 1.1.0
 		$strings['Reservation created for'] = 'Reservation created for %s';
 		$strings['Reservation modified for'] = 'Reservation modified for %s';
 		$strings['Reservation deleted for'] = 'Reservation deleted for %s';
@@ -669,7 +674,7 @@ class en_us extends Language
 		$strings['Reservation created'] = 'Reservation created';
 		$strings['Reservation modified'] = 'Reservation modified';
 		$strings['Reservation deleted'] = 'Reservation deleted';
-		
+
 		$strings['Reservations by month'] = 'Reservations by month';
 		$strings['Reservations by day of the week'] = 'Reservations by day of the week';
 		$strings['Reservations per month'] = 'Reservations per month';
@@ -678,27 +683,27 @@ class en_us extends Language
 		$strings['Reservations per start time'] = 'Reservations per start time';
 		$strings['Reservations per end time'] = 'Reservations per end time';
 		$strings['[All Reservations]'] = '[All Reservations]';
-		
+
 		$strings['Permissions Updated'] = 'Permissions Updated';
 		$strings['Your permissions have been updated'] = 'Your %s permissions have been updated';
 		$strings['You now do not have permission to use any resources.'] = 'You now do not have permission to use any resources.';
 		$strings['You now have permission to use the following resources'] = 'You now have permission to use the following resources:';
 		$strings['Please contact with any questions.'] = 'Please contact %s with any questions.';
 		$strings['Password Reset'] = 'Password Reset';
-		
+
 		$strings['This will change your password to a new, randomly generated one.'] = 'This will change your password to a new, randomly generated one.';
 		$strings['your new password will be set'] = 'After entering your email address and clicking "Change Password", your new password will be set in the system and emailed to you.';
 		$strings['Change Password'] = 'Change Password';
 		$strings['Sorry, we could not find that user in the database.'] = 'Sorry, we could not find that user in the database.';
 		$strings['Your New Password'] = 'Your New %s Password';
 		$strings['Your new passsword has been emailed to you.'] = 'Success!<br />'
-		    			. 'Your new password has been emailed to you.<br />'
-		    			. 'Please check your mailbox for your new password, then <a href="index.php">Log In</a>'
-		    			. ' with this new password and promptly change it by clicking the &quot;Change My Profile Information/Password&quot;'
-		    			. ' link in My Control Panel.';
-		
+																  . 'Your new password has been emailed to you.<br />'
+																  . 'Please check your mailbox for your new password, then <a href="index.php">Log In</a>'
+																  . ' with this new password and promptly change it by clicking the &quot;Change My Profile Information/Password&quot;'
+																  . ' link in My Control Panel.';
+
 		$strings['You are not logged in!'] = 'You are not logged in!';
-		
+
 		$strings['Setup'] = 'Setup';
 		$strings['Please log into your database'] = 'Please log into your database';
 		$strings['Enter database root username'] = 'Enter database root username:';
@@ -714,31 +719,31 @@ class en_us extends Language
 		$strings['Successfully connected as'] = 'Successfully connected as';
 		$strings['Create tables'] = 'Create tables &gt;';
 		$strings['There were errors during the install.'] = 'There were errors during the install. It is possible that phpScheduleIt will still work if the errors were minor.<br/><br/>'
-			. 'Please post any questions to the forums on <a href="http://sourceforge.net/forum/?group_id=95547">SourceForge</a>.';
+															. 'Please post any questions to the forums on <a href="http://sourceforge.net/forum/?group_id=95547">SourceForge</a>.';
 		$strings['You have successfully finished setting up phpScheduleIt and are ready to begin using it.'] = 'You have successfully finished setting up phpScheduleIt and are ready to begin using it.';
 		$strings['Thank you for using phpScheduleIt'] = 'Please be sure to COMPLETELY REMOVE THE \'install\' DIRECTORY.'
-			. ' This is critical because it contains database passwords and other sensitive information.'
-			. ' Failing to do so leaves the door wide open for anyone to break into your database!'
-			. '<br /><br />'
-			. 'Thank you for using phpScheduleIt!';
+														. ' This is critical because it contains database passwords and other sensitive information.'
+														. ' Failing to do so leaves the door wide open for anyone to break into your database!'
+														. '<br /><br />'
+														. 'Thank you for using phpScheduleIt!';
 		$strings['There is no way to undo this action'] = 'There is no way to undo this action!';
 		$strings['Click to proceed'] = 'Click to proceed';
 		$strings['Please delete this file.'] = 'Please delete this file.';
 		$strings['Successful update'] = 'The update succeeded fully';
 		$strings['Patch completed successfully'] = 'Patch completed successfully';
-		
+
 		// @since 1.0.0 RC1
 		$strings['If no value is specified, the default password set in the config file will be used.'] = 'If no value is specified, the default password set in the config file will be used.';
 		$strings['Notify user that password has been changed?'] = 'Notify user that password has been changed?';
-		
+
 		// @since 1.1.0
 		$strings['This system requires that you have an email address.'] = 'This system requires that you have an email address.';
 		$strings['Invalid User Name/Password.'] = 'Invalid User Name/Password.';
 		$strings['Pending User Reservations'] = 'Pending User Reservations';
 		$strings['Approve'] = 'Approve';
 		$strings['Approve this reservation'] = 'Approve this reservation';
-		$strings['Approve Reservations'] ='Approve Reservations';
-		
+		$strings['Approve Reservations'] = 'Approve Reservations';
+
 		$strings['Announcement'] = 'Announcement';
 		$strings['Number'] = 'Number';
 		$strings['Add Announcement'] = 'Add Announcement';
@@ -749,7 +754,7 @@ class en_us extends Language
 		$strings['Use end date/time?'] = 'Use end date/time?';
 		$strings['Announcement text is required.'] = 'Announcement text is required.';
 		$strings['Announcement number is required.'] = 'Announcement number is required.';
-		
+
 		$strings['Pending Approval'] = 'Pending Approval';
 		$strings['My reservation is approved'] = 'My reservation is approved';
 		$strings['This reservation must be approved by the administrator.'] = 'This reservation must be approved by the administrator.';
@@ -759,13 +764,13 @@ class en_us extends Language
 		$strings['Reservation approved for'] = 'Reservation approved for %s';
 		$strings['approved'] = 'approved';
 		$strings['Reservation approved'] = 'Reservation approved';
-		
+
 		$strings['Valid username is required'] = 'Valid username is required';
 		$strings['That logon name is taken already.'] = 'That logon name is taken already.';
 		$strings['this will be your login'] = '(this will be your login)';
 		$strings['Logon name'] = 'Username';
 		$strings['Your logon name is'] = 'Your logon name is %s';
-		
+
 		$strings['Start'] = 'Start';
 		$strings['End'] = 'End';
 		$strings['Start date must be less than or equal to end date'] = 'Start date must be less than or equal to end date';
@@ -800,7 +805,7 @@ class en_us extends Language
 		$strings['Confirm reservation participation'] = 'Confirm reservation participation';
 		$strings['Confirm'] = 'Confirm';
 		$strings['Do for all reservations in the group?'] = 'Do for all reservations in the group?';
-		
+
 		$strings['My Calendar'] = 'My Calendar';
 		$strings['View My Calendar'] = 'View My Calendar';
 		$strings['Participant'] = 'Participant';
@@ -811,22 +816,22 @@ class en_us extends Language
 		$strings['Week View'] = 'Week View';
 		$strings['Month View'] = 'Month View';
 		$strings['Resource Calendar'] = 'Resource Calendar';
-		$strings['View Resource Calendar'] = 'Schedule Calendar';	// @since 1.2.0
+		$strings['View Resource Calendar'] = 'Schedule Calendar'; // @since 1.2.0
 		$strings['Signup View'] = 'Signup View';
-		
+
 		$strings['Select User'] = 'Select User';
 		$strings['Change'] = 'Change';
-		
+
 		$strings['Update'] = 'Update';
 		$strings['phpScheduleIt Update is only available for versions 1.0.0 or later'] = 'phpScheduleIt Update is only available for versions 1.0.0 or later';
 		$strings['phpScheduleIt is already up to date'] = 'phpScheduleIt is already up to date';
 		$strings['Migrating reservations'] = 'Migrating reservations';
-		
+
 		$strings['Admin'] = 'Admin';
 		$strings['Manage Announcements'] = 'Manage Announcements';
 		$strings['There are no announcements'] = 'There are no announcements';
 		// end since 1.1.0
-		
+
 		// @since 1.2.0
 		$strings['Maximum Participant Capacity'] = 'Maximum Participant Capacity';
 		$strings['Leave blank for unlimited'] = 'Leave blank for unlimited';
@@ -885,10 +890,10 @@ class en_us extends Language
 		$strings['All Accessories'] = 'All Accessories';
 		$strings['Added Accessories'] = 'Added Accessories';
 		// end since 1.2.0
-		
+
 		// Since 2.0
 		$strings['Login Error'] = 'We could not match your username or password';
-		
+
 		$strings['ResourceName'] = 'Resource name';
 		$strings['ResourceLocation'] = 'Location of resource';
 		$strings['ResourceDescription'] = 'Description of resource';
@@ -912,22 +917,22 @@ class en_us extends Language
 		$strings['Login Information (all fields are required)'] = 'Login Information (all fields are required)';
 		$strings['Account Registration (all fields are required)'] = 'Account Registration (all fields are required)';
 		$strings['Additional Information (optional)'] = 'Additional Information (optional)';
-		
+
 		$strings['MyAccount'] = 'My Account';
-       	$strings['MyProfile'] = 'My Profile';
-           $strings['MyEmailPreferences'] = 'My Email Preferences';
-           $strings['MyPassword'] = 'My Password';
-           $strings['Current Status'] = 'Current Status';
-           $strings['My Upcoming Reservations'] = 'My Upcoming Reservations';
-           $strings['Reservation Search'] = 'Reservation Search';
-           $strings['Awaiting Activation'] = 'Awaiting Activation';
+		$strings['MyProfile'] = 'My Profile';
+		$strings['MyEmailPreferences'] = 'My Email Preferences';
+
+		$strings['Current Status'] = 'Current Status';
+		$strings['My Upcoming Reservations'] = 'My Upcoming Reservations';
+		$strings['Reservation Search'] = 'Reservation Search';
+		$strings['Awaiting Activation'] = 'Awaiting Activation';
 
 		$strings['Address'] = 'Address';
 		$strings['Organization'] = 'Organization';
 		$strings['Group'] = 'Group';
-		
+
 		$strings['Find Group'] = 'Find Group';
- 		$strings['Group Name'] = 'Group Name';
+		$strings['Group Name'] = 'Group Name';
 		$strings['Group Actions'] = 'Group Actions';
 		$strings['Group Members'] = 'Group Members';
 		$strings['Group Permissions'] = 'Group Permissions';
@@ -947,8 +952,8 @@ class en_us extends Language
 		$strings['OrganizationSelection'] = 'Organization selection';
 		$strings['TimezoneSelection'] = 'Timezone selection';
 
-		$strings['Rows']='Rows';
-		$strings['Page']='Page';
+		$strings['Rows'] = 'Rows';
+		$strings['Page'] = 'Page';
 
 
 		// reservation page
@@ -964,42 +969,42 @@ class en_us extends Language
 		$strings['Calendar'] = 'Calendar';
 		$strings['RegistrationAdmin'] = 'Registration form settings';
 		$strings['RegistrationMini'] = 'Registration';
-		
+
 		// end Since 2.0
-		
+
 		$this->Strings = $strings;
 	}
-	
+
 	function _LoadDays()
 	{
 		$days = array();
-		
+
 		/***
-		  DAY NAMES
-		  All of these arrays MUST start with Sunday as the first element 
-		   and go through the seven day week, ending on Saturday
-		***/
+		DAY NAMES
+		All of these arrays MUST start with Sunday as the first element
+		and go through the seven day week, ending on Saturday
+		 ***/
 		// The full day name
 		$days['full'] = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 		// The three letter abbreviation
 		$days['abbr'] = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
 		// The two letter abbreviation
-		$days['two']  = array('Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa');
+		$days['two'] = array('Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa');
 		// The one letter abbreviation
 		$days['letter'] = array('S', 'M', 'T', 'W', 'T', 'F', 'S');
-		
+
 		$this->Days = $days;
 	}
-	
+
 	function _LoadMonths()
 	{
 		$months = array();
-			
+
 		/***
-		  MONTH NAMES
-		  All of these arrays MUST start with January as the first element
-		   and go through the twelve months of the year, ending on December
-		***/
+		MONTH NAMES
+		All of these arrays MUST start with January as the first element
+		and go through the twelve months of the year, ending on December
+		 ***/
 		// The full month name
 		$months['full'] = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
 		// The three letter month name
@@ -1007,10 +1012,11 @@ class en_us extends Language
 
 		$this->Months = $months;
 	}
-	
+
 	function _LoadLetters()
 	{
-		$this->Letters = array ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+		$this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 	}
 }
+
 ?>

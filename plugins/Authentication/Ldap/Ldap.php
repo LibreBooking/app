@@ -162,9 +162,7 @@ class Ldap implements IAuthentication
 		$registration = $this->GetRegistration();
 		$encryption = $this->GetEncryption();
 		
-		$salt = $encryption->Salt();
-		$encryptedPassword = $encryption->Encrypt($this->password, $salt);
-		
+		$encryptedPassword = $encryption->EncryptPassword($this->password);
 		$email = $this->user->GetEmail();
 		$fname = $this->user->GetFirstName();
 		$lname = $this->user->GetLastName();
@@ -178,8 +176,8 @@ class Ldap implements IAuthentication
 							$email,
 							$fname,
 							$lname,
-							$encryptedPassword,
-							$salt,
+							$encryptedPassword->EncryptedPassword(),
+							$encryptedPassword->Salt(),
 							$phone,
 							$inst,
 							$title);

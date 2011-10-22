@@ -11,6 +11,7 @@ class Pages
 	const MY_CALENDAR = 'my-calendar.php';
 	const OPENINGS = 'openings.php';
 	const PARTICIPATION = 'participation.php';
+	const PASSWORD = 'password.php';
 	const PROFILE = 'profile.php';
 	const RESERVATION = 'reservation.php';
 	const REGISTRATION = 'register.php';

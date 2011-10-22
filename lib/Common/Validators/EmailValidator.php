@@ -13,7 +13,7 @@ class EmailValidator extends ValidatorBase implements IValidator
 	public function Validate()
 	{
 	//	$this->isValid = preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $this->email);
-     $this->isValid = is_email($this->email);
+     	$this->isValid = is_email($this->email);
 	}
 }
 

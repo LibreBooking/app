@@ -46,12 +46,11 @@ class RegistrationTests extends TestBase
 					$this->login, $this->email, $this->fname, $this->lname, 
 					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->language, $this->homepageId,
 					$this->additionalFields['phone'], $this->additionalFields['organization'], $this->additionalFields['position']
-					,AccountStatus::AWAITING_ACTIVATION);
+					,AccountStatus::ACTIVE);
 		
 		$this->assertEquals($command, $this->db->_Commands[0]);
-		$this->assertTrue($this->fakeEncryption->_EncryptCalled);
+		$this->assertTrue($this->fakeEncryption->_EncryptPasswordCalled);
 		$this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
-		$this->assertEquals($this->fakeEncryption->_Salt, $this->fakeEncryption->_LastSalt);
 	}
 	
 	public function testAutoAssignsAllResourcesForThisUser()

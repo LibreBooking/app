@@ -13,6 +13,7 @@ class FormKeys
 	const BEGIN_PERIOD = 'beginPeriod';
 
 	const CONTACT_INFO = 'contactInfo';
+	const CURRENT_PASSWORD = 'currentPassword';
 
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';
 	const DESCRIPTION = 'reservationDescription';

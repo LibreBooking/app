@@ -83,6 +83,7 @@ class Password implements IPassword
 	public function Validate($salt)
 	{
 		$encrypted = $this->Encryption->Encrypt($this->plaintext, $salt);
+
 		return $this->encrypted == $encrypted;
 	}
 	

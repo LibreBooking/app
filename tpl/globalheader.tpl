@@ -41,7 +41,7 @@
 		    <li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyAccount"}</a>
 		    	<ul>
 		    		<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyProfile"}</a></li>
-		    		<li class="menuitem"><a href="#">{translate key="MyPassword"}</a></li>
+		    		<li class="menuitem"><a href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a></li>
 		    		<li class="menuitem"><a href="#">{translate key="MyEmailPreferences"}</a></li>
 		    	</ul>
 		    </li>
@@ -50,9 +50,9 @@
 		            <li class="menuitem"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Bookings"}</a></li>
 					<li class="menuitem"><a href="{$Path}{Pages::MY_CALENDAR}">{translate key="MyCalendar"}</a></li>
 					<li class="menuitem"><a href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>
-					<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>
+					<!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
 					<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a></li>
-					<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindAnOpening"}</a></li>
+					<!--<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindAnOpening"}</a></li>-->
 		        </ul>
 		    </li>
 			<!--
@@ -69,11 +69,7 @@
 		            <li class="menuitem"><a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a></li>
 		            <li class="menuitem"><a href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a></li>
 					<li class="menuitem"><a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a></li>
-					<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>
-						<ul>
-							<li><a href="#">{translate key="AwaitingActivation"}</a></li>
-						</ul>
-					</li>
+					<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a></li>
 					<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
 					<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
 					<li class="menuitem"><a href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
