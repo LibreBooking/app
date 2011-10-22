@@ -16,9 +16,11 @@ class Log
 
 	private function __construct()
 	{
-		Logger::configure(ROOT_DIR . 'config/log4php.config.xml');
-		$this->logger = Logger::getLogger('default');
-		$this->sqlLogger = Logger::getLogger('sql');
+		if (file_exists(ROOT_DIR . 'config/log4php.config.xml')) {
+			Logger::configure(ROOT_DIR . 'config/log4php.config.xml');
+			$this->logger = Logger::getLogger('default');
+			$this->sqlLogger = Logger::getLogger('sql');
+		}
 	}
 
 	/**
@@ -81,7 +83,7 @@ class Log
 			$log = vsprintf(array_shift($args), array_values($args));
 			self::GetInstance()->sqlLogger->debug($log);
 		}
-		catch(Exception $ex)
+		catch (Exception $ex)
 		{
 		}
 	}

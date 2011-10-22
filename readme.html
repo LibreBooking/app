@@ -1,66 +1,108 @@
 <html>
 <head>
-<title>phpScheduleIt 2.0 - readme</title>
+	<title>phpScheduleIt 2.0 - readme</title>
+	<style>
+		h2 {
+			border: solid 1px #666;
+			background-color: #f0f0f0;
+			color: #1a3083;
+			padding: 3px 10px;
+		}
+
+		h3 {
+			border-bottom: solid 1px #999;
+		}
+
+	</style>
 </head>
 <body>
-	<h1>Welcome to phpScheduleIt 2.0!</h1>
-	
-	<h2 style="font-style:italic; color:red;">This is a pre-release version of phpScheduleIt.  It will certainly contain bugs and is not yet suitable for production use.</h2>
-	
-	<h2>Prerequisites</h2>
-	<ul>
-		<li>PHP 5.2 or greater</li>
-		<li>MySQL 5.0 or greater</li>
-	</ul>
-	
-	<h2>Server Configruation</h2>
-	<p>
-		Extract the contents of the .zip file to your web server.   phpScheduleIt only requires that the /Web folder is accessible.  
-		<ul>
-			<li>If possible, create a website or virtual directory pointed at the /Web folder.</li>
-			<li>If this is not possible, simply extract all of the contents to an accessible location on your server.</li>
-			<li>The PHP account will need read/write access to /tpl_c</li>
-			<li>To allow resource image uploads, the PHP account will need read/write access to your configured uploads folder ($conf['settings']['image.upload.directory'])
-		</ul>
-	</p>
-	
-	<h2>Application Configuration</h2>
-	<p>
-		The first step prior to running any installation process is to configure phpScheduleIt.  
-		<ul>
-			<li>To do this first rename config/config.dist.php to config/config.php.</li>
-			<li>Then open config/config.php and alter any settings that do not match your environment.</li>
-		</ul>
-	</p>
+<h1>Welcome to phpScheduleIt 2.0!</h1>
 
-	<h2>Database Setup</h2>
-	<h3>Automated</h3>
-	<p>
-		The automated database setup only supports MySQL at this time.  To run the automated database setup, navigate to the /Web/install directory in a web browser and follow the on screen instructions.
-	</p>
-	<h3>Manual</h3>
-	<p>
-		The packaged database scripts make assumptions about your desired database configuration.  Please edit them to suit your environment before running.
-		<br/>
-		Run the following scripts in order:
-		<ul>
-			<li>/database_schema/create-db.sql</li>
-			<li>/database_schema/schema-utf8.sql</li>
-			<li>/database_schema/create-user.sql</li>
-			<li>/database_schema/data-utf8.sql</li>
-		</ul>
-	</p>
-	
-	<h2>The First Login</h2>
-	<p>
-		You will need to register an account with your configured admin email address. This is specified in the following config.php setting: $conf['settings']['admin.email']
-	</p>
-	
-	<h2>Support</h2>
-	<p>
-		Post any questions or issues under the phpScheduleIt 2.0 section of the forums on <a href="http://php.brickhost.com/forums">http://php.brickhost.com/forums</a>
-	</p>
-	
+<h2 style="font-style:italic; color:red;">This is a pre-release version of phpScheduleIt. It will certainly contain bugs
+	and is not yet suitable for production use.</h2>
+
+<h2>Prerequisites</h2>
+<ul>
+	<li>PHP 5.2 or greater</li>
+	<li>MySQL 5.0 or greater</li>
+</ul>
+
+<h2>Server Configuration</h2>
+
+<div>
+	Extract the contents of the .zip file to your web server. phpScheduleIt only requires that the /Web folder is
+	accessible.
+<ul>
+	<li>If possible, create a website or virtual directory pointed at the /Web folder.</li>
+	<li>If this is not possible, simply extract all of the contents to an accessible location on your server.</li>
+	<li>The PHP account requires read/write access to /tpl_c</li>
+	<li>To allow resource image uploads, the PHP account requires read/write access to your configured uploads directory
+		($conf['settings']['image.upload.directory'])
+</ul>
+</div>
+
+<h2>Application Configuration</h2>
+
+<div>
+	The first step prior to running any installation process is to configure phpScheduleIt.
+<ul>
+	<li>To do this first rename config/config.dist.php to config/config.php.</li>
+	<li>Then open config/config.php and alter any settings that do not match your environment.</li>
+</ul>
+</div>
+
+<h2>Database Setup</h2>
+
+<h3>Automated</h3>
+
+<div>
+	The automated database setup only supports MySQL at this time. To run the automated database setup, navigate to the
+	/Web/install directory in a web browser and follow the on screen instructions.
+</div>
+
+<h3>Manual</h3>
+
+<div>
+	The packaged database scripts make assumptions about your desired database configuration. Please edit them to suit
+	your environment before running.
+	<br/>
+	Run the following scripts in order:
+</div>
+<div>
+<ul>
+	<li>/database_schema/create-db.sql</li>
+	<li>/database_schema/schema-utf8.sql</li>
+	<li>/database_schema/create-user.sql</li>
+	<li>/database_schema/data-utf8.sql</li>
+</ul>
+</div>
+
+<h2>The First Login</h2>
+
+<div>
+	You will need to register an account with your configured admin email address. This is specified in the following
+	config.php setting: $conf['settings']['admin.email']
+</div>
+
+<h2>Log Files</h2>
+phpScheduleIt logs multiple levels of information categorized into either application or database logs. To do this, the log4php library is used.
+By default, logging is turned OFF.
+<ul>
+	<li>First, rename /config/log4php.config.dist.xml to /config/log4php.config.xml</li>
+	<li>To allow application logging, the PHP account requires read/write access to your configured log directory
+	<li>Logging is configured in /config/log4php.config.xml</li>
+	<li>Logging is controlled by changing the &lt;level&gt; of each &lt;logger&gt;</li>
+	<li>Levels used by phpScheduleIt are OFF, DEBUG, ERROR.  For normal operation, ERROR is appropriate.  If trace logs are needed, DEBUG is appropriate.</li>
+	<li>To turn on application logging, change the &lt;level value=&quot;OFF&quot; /&gt; to an appropriate level for either the default or sql loggers.  For example, &lt;level value=&quot;ERROR&quot; /&gt;</li>
+	<li>For more information on logging configuration, visit http://logging.apache.org/log4php/</li>
+</ul>
+<h2>Support</h2>
+
+<div>
+	Post any questions or issues under the phpScheduleIt 2.0 section of the forums on <a
+		href="http://php.brickhost.com/forums">http://php.brickhost.com/forums</a>
+</div>
+
 
 </body>
 </html>

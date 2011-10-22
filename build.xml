@@ -1,15 +1,16 @@
 <?xml version="1.0"?>
 <project name="phpScheduleIt" default="package">
 	<property name="version" value="2.0.0-alpha"/>
-	<property name="packagename" value="phpScheduleIt-${version}" />
+	<property name="packagename" value="phpScheduleIt-${version}"/>
 	<property name="zipdirectory" value="../phpScheduleIt_archive/zip/${version}"/>
 	<property name="archive_directory" value="../phpScheduleIt_archive/src/${version}"/>
 	<property name="staging" value="../staging"/>
 	<property name="stagingdir" value="${staging}/phpScheduleIt"/>
 
-	<available file="C:/Program Files/MySQL/MySQL Server 5.1/bin" property="mysql.bin" value="C:/Program Files/MySQL/MySQL Server 5.1/bin"/>
+	<available file="C:/Program Files/MySQL/MySQL Server 5.1/bin" property="mysql.bin"
+			   value="C:/Program Files/MySQL/MySQL Server 5.1/bin"/>
 	<available file="C:/xampp/mysql/bin" property="mysql.bin" value="C:/xampp/mysql/bin"/>
-	<property name="mysql.bin.64bit" value="C:/Program Files (x86)/MySQL/MySQL Server 5.1/bin" />
+	<property name="mysql.bin.64bit" value="C:/Program Files (x86)/MySQL/MySQL Server 5.1/bin"/>
 	<property name="mysql.username" value="root"/>
 	<property name="mysql.password" value=""/>
 	<property name="mysql.server" value="127.0.0.1"/>
@@ -20,34 +21,34 @@
 
 	<target name="setup.db" description="setting up the latest version of the database">
 		<if>
-			<equals arg1="${mysql.password}" arg2="" />
+			<equals arg1="${mysql.password}" arg2=""/>
 			<then>
 				<input propertyName="mysql.password" defaultValue="" promptChar="?">mysql password</input>
 			</then>
 		</if>
 
-		<echo message="Create file: ${sql.file.create}" />
+		<echo message="Create file: ${sql.file.create}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create}"
 			  checkreturn="true"
-			  dir="${mysql.bin}" />
+			  dir="${mysql.bin}"/>
 
-		<echo message="Application data file: ${sql.file.data}" />
+		<echo message="Application data file: ${sql.file.data}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.data}"
 			  checkreturn="true"
-			  dir="${mysql.bin}" />
+			  dir="${mysql.bin}"/>
 
-		<echo message="Test data file: ${sql.file.test.data}" />
+		<echo message="Test data file: ${sql.file.test.data}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.test.data}"
 			  checkreturn="true"
-			  dir="${mysql.bin}" />
+			  dir="${mysql.bin}"/>
 	</target>
-	
-	<target name="package" description="packages all required files" depends="stage.files">
-		<delete dir="${zipdirectory}" failonerror="false" />
-		<mkdir dir="${zipdirectory}" />
 
-		<tstamp />
-		
+	<target name="package" description="packages all required files" depends="stage.files">
+		<delete dir="${zipdirectory}" failonerror="false"/>
+		<mkdir dir="${zipdirectory}"/>
+
+		<tstamp/>
+
 		<zip destfile="${zipdirectory}/${packagename}${DSTAMP}.zip">
 			<fileset dir="${staging}">
 				<include name="**/*"/>
@@ -65,52 +66,52 @@
 			</fileset>
 		</tar>
 		-->
-		<delete dir="${archive_directory}" failonerror="false" />
-		<mkdir dir="${archive_directory}" />
+		<delete dir="${archive_directory}" failonerror="false"/>
+		<mkdir dir="${archive_directory}"/>
 
 		<copy todir="${archive_directory}" includeemptydirs="true">
-			<fileset dir="${staging}">				
+			<fileset dir="${staging}">
 				<include name="**/*"/>
 			</fileset>
 		</copy>
 
 		<delete dir="${staging}" failonerror="false"/>
 	</target>
-	
+
 	<target name="stage.files">
-		<delete dir="${staging}" failonerror="false" />
-		<mkdir dir="${staging}" />
-		<mkdir dir="${stagingdir}" />
+		<delete dir="${staging}" failonerror="false"/>
+		<mkdir dir="${staging}"/>
+		<mkdir dir="${stagingdir}"/>
 		<copy todir="${stagingdir}" includeemptydirs="true">
 			<fileset dir=".">
-				<include name="**/*" />
-				<exclude name="**.psd" />
-				<exclude name="**.bak" />
-				<exclude name="*test*" />
-				<exclude name=".project" />
-				<exclude name="build.bat" />
-				<exclude name="build.xml" />
-				<exclude name="**/tests/**" />
-				<exclude name="**/docs/**" />
-				<exclude name="tpl_c/*.php" />
-				<!--<exclude name="database_schema/**" />-->
-				<exclude name=".*" />
-				<exclude name=".*/**" />
-				<exclude name=".idea/**" />
-				<exclude name=".settings/**" />
-				<exclude name="_excludes.txt" />
-				<exclude name="pdt_templates.xml" />
-				<exclude name="**/*.zip" />
-				<exclude name="config/config.php" />
+				<include name="**/*"/>
+				<exclude name="**.psd"/>
+				<exclude name="**.bak"/>
+				<exclude name="*test*"/>
+				<exclude name=".project"/>
+				<exclude name="build.bat"/>
+				<exclude name="build.xml"/>
+				<exclude name="**/tests/**"/>
+				<exclude name="**/docs/**"/>
+				<exclude name="tpl_c/*.php"/>
+				<exclude name=".*"/>
+				<exclude name=".*/**"/>
+				<exclude name=".idea/**"/>
+				<exclude name=".settings/**"/>
+				<exclude name="_excludes.txt"/>
+				<exclude name="pdt_templates.xml"/>
+				<exclude name="**/*.zip"/>
+				
+				<exclude name="config/config.php"/>
+				<exclude name="config/log4php.config.xml"/>
 			</fileset>
 		</copy>
 	</target>
 
 	<target name="create.demo" depends="stage.files">
-	
+
 	</target>
-	<!--
+
 	<target name="minify" description="minify javascript and css files">
 	</target>
-	-->
 </project>
