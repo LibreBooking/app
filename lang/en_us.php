@@ -232,6 +232,7 @@ class en_us extends Language
 		$strings['MyCalendar'] = 'My Calendar';
 		$strings['ResourceCalendar'] = 'Resource Calendar';
         $strings['Reservation'] = 'New Reservation';
+        $strings['Install'] = 'Installation';
 		//
 		
 		// Day representations

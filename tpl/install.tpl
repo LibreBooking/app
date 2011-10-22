@@ -13,7 +13,7 @@
 {if $InstallPasswordMissing}
 	<div class='error'>
 		<p>You must set an install password before the installation can be run.</p>
-		<p>Please set the password as something random and difficult to guess in $conf['settings']['install.password'] in /config/config.php and return to this page.</p>
+		<p>In /config/config.php please set $conf['settings']['install.password'] to a password which is random and difficult to guess, then return to this page.</p>
 	</div>
 {/if}
 	

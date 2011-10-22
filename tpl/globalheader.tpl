@@ -66,11 +66,7 @@
 		    {if $CanViewAdmin}
 		    <li class="menubaritem"><a href="#">{translate key=Admin}</a>
 		        <ul>
-		            <li class="menuitem"><a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
-						<ul>
-							<li><a href="#">{translate key="PendingApproval"}</a></li>
-						</ul>
-					</li>
+		            <li class="menuitem"><a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a></li>
 		            <li class="menuitem"><a href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a></li>
 					<li class="menuitem"><a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a></li>
 					<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>

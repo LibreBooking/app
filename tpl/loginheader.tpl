@@ -5,8 +5,8 @@
 	<head>
 		<title>{$Title}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset={$Charset}" />
-		<link rel="shortcut icon" href="favicon.ico"/>
-		<link rel="icon" href="favicon.ico"/>
+		<link rel="shortcut icon" href="{$Path}favicon.ico"/>
+		<link rel="icon" href="{$Path}favicon.ico"/>
 		<style type="text/css">
 			@import url({$Path}css/style.css);
 		</style>
