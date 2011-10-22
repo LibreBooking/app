@@ -93,16 +93,17 @@
 				<exclude name="**/tests/**" />
 				<exclude name="**/docs/**" />
 				<exclude name="tpl_c/*.php" />
-				<exclude name="database_schema/**" />
+				<!--<exclude name="database_schema/**" />-->
 				<exclude name=".*" />
+				<exclude name=".*/**" />
 				<exclude name=".idea/**" />
 				<exclude name=".settings/**" />
 				<exclude name="_excludes.txt" />
 				<exclude name="pdt_templates.xml" />
 				<exclude name="**/*.zip" />
+				<exclude name="config/config.php" />
 			</fileset>
 		</copy>
-		<copy file="config/config.php" tofile="${stagingdir}/config/config.new.php"/>
 	</target>
 
 	<target name="create.demo" depends="stage.files">
