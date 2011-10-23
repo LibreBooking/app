@@ -40,5 +40,5 @@
 		</p>
 	</form>
 </div>
-{setfocus key='LOGIN'}
+{setfocus key='CURRENT_PASSWORD'}
 {include file='globalfooter.tpl'}

@@ -98,11 +98,17 @@ class ProfilePresenter
 			$user->ChangeUsername($this->page->GetLoginName());
 			$user->ChangeDefaultHomePage($this->page->GetHomepage());
 			$user->ChangeTimezone($this->page->GetTimezone());
-
 			$user->ChangeAttributes($this->page->GetPhone(), $this->page->GetOrganization(), $this->page->GetPosition());
 
+			$userSession->Email = $this->page->GetEmail();
+			$userSession->FirstName = $this->page->GetFirstName();
+			$userSession->LastName = $this->page->GetLastName();
+			$userSession->HomepageId = $this->page->GetHomepage();
+			$userSession->Timezone = $this->page->GetTimezone();
+			
 			$this->userRepository->Update($user);
-
+			ServiceLocator::GetServer()->SetUserSession($userSession);
+			
 			$this->page->SetProfileUpdated();
 		}
 	}
