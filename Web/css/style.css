@@ -28,6 +28,19 @@ body {
     border-bottom: 3px solid #000000;
 }
 
+#signout {
+	float:right;
+	padding-right: 10px;
+	color: #fff;
+	font-size: 11pt;
+	text-align: right;
+	vertical-align: middle;
+}
+
+#signout a {
+	color: #fff;
+}
+
 img {
 	border: none;
 }

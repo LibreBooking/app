@@ -203,6 +203,7 @@ class en_us extends Language
 		$strings['NewPassword'] = 'New Password';
 		$strings['InvalidPassword'] = 'Current password is incorrect';
 		$strings['PasswordChangedSuccessfully'] = 'Your password has been changed successfully';
+		$strings['SignedInAs'] = 'Signed in as';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';

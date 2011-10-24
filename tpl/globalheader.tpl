@@ -43,7 +43,7 @@
 						<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyProfile"}</a></li>
 						<li class="menuitem"><a href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a>
 						</li>
-						<li class="menuitem"><a href="#">{translate key="MyEmailPreferences"}</a></li>
+						<!--<li class="menuitem"><a href="#">{translate key="MyEmailPreferences"}</a></li>-->
 					</ul>
 				</li>
 				<li class="menubaritem"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Schedule"}</a>
@@ -86,11 +86,10 @@
 				</li>
 			{/if}
 				<li class="menubaritem"><a href="#">{translate key="Help"}</a></li>
-				<li class="menubaritem"><a href="{$Path}logout.php">{translate key="SignOut"}</a></li>
 			</ul>
 			<!-- end #nav -->
-			<div style="float:right;padding-right: 10px; display:none;">
-				Signed in as {$UserName}<br /><a href="#">Sign Out</a>
+			<div id="signout">
+				{translate key="SignedInAs"} {$UserName}<br /><a href="{$Path}logout.php">{translate key="SignOut"}</a>
 			</div>
 		</div>
 		<!-- end #header -->
