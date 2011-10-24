@@ -33,7 +33,12 @@
 	display: block;
 	padding: 0px 5px;
 	color: #fff;
+	color: #dfdfdf;
 	text-decoration: none;
+}
+
+#nav a:hover {
+	color: #fff;
 }
 
 #nav li.first
@@ -41,16 +46,6 @@
 	border-left: solid 1px #436981;
 }
 
-/*
-
-#nav li ul a {
-	float: left;
-}
-
-#nav ul ul {
-	top: auto;
-}
-*/
 #nav li ul ul {
 	left: 12em;
 	left: 190px;
@@ -98,6 +93,7 @@ li.menubaritem a {
 .menubaritem a:hover {
 	background: #31526f; /* url(../img/header-menu-bg.png) top right no-repeat; */
 	background: #3d5b74; /* url(../img/header-menu-bg.png) top right no-repeat; */
+	color: #fff;
 }
 
 li.menubaritem ul li a {
