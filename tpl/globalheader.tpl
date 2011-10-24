@@ -90,7 +90,7 @@
 			</ul>
 			<!-- end #nav -->
 			<div style="float:right;padding-right: 10px; display:none;">
-				Signed in as {$UserName}</br><a href="#">Sign Out</a>
+				Signed in as {$UserName}<br /><a href="#">Sign Out</a>
 			</div>
 		</div>
 		<!-- end #header -->
