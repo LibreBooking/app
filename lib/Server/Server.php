@@ -101,5 +101,13 @@ class Server
 	{
 		$this->SetSession(SessionKeys::USER_SESSION, $userSession);
 	}
+
+	/**
+	 * @return string
+	 */
+	public function GetRequestMethod()
+	{
+		return $_SERVER['REQUEST_METHOD'];
+	}
 }
 ?>

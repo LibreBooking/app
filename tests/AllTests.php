@@ -32,6 +32,8 @@ require_once(ROOT_DIR . 'tests/Presenters/Presenters_Suite.php');
 require_once(ROOT_DIR . 'tests/Presenters/Dashboard/DashboardPresenters_Suite.php');
 require_once(ROOT_DIR . 'tests/Presenters/Admin/AdminPresenters_Suite.php');
 
+require_once(ROOT_DIR . 'tests/WebService/WebService_Suite.php');
+
 class AllTests
 {
     public static function suite()
@@ -60,6 +62,8 @@ class AllTests
         $suite->addTest(Presenters_Suite::suite());
         $suite->addTest(DashboardPresenters_Suite::suite());
         $suite->addTest(AdminPresenters_Suite::suite());
+
+        $suite->addTest(WebService_Suite::suite());
 
         return $suite;
     }
