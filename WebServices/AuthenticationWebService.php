@@ -23,7 +23,9 @@ class AuthenticationWebService implements IRestService
 	 */
 	public function HandleGet(IRestServer $server)
 	{
-		return new NotFoundResponse();
+		//return new NotFoundResponse();
+
+		return $this->Authenticate();
 	}
 }
 
@@ -32,6 +34,7 @@ class AuthenticationResponse extends RestResponse
 	public function __construct()
 	{
 	    $this->Body = "some response goes here";
+		$this->AddActionUrl('http://localhost/login.php');
 	}
 }
 
