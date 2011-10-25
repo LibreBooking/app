@@ -1,5 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/Values/ReservationUserLevel.php');
+require_once(ROOT_DIR . 'Domain/Values/ReservationStatus.php');
+require_once(ROOT_DIR . 'Domain/RepeatOptions.php');
 
 interface IReservationViewRepository
 {
