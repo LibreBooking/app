@@ -61,7 +61,7 @@
                 </label>
         </p>
 
-        <p>
+        <p style="display:none">
                 <label class="reg">{translate key="Language"}<br/>
                         <select {formname key='LANGUAGE'} class="input" tabindex="190">
                                  {html_options values=$LanguageValues output=$LanguageOutput selected=$Language}
