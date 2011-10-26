@@ -100,6 +100,9 @@ class Authentication implements IAuthentication
 		
 		$this->DeleteLoginCookie($userSession->UserId);
 		ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, null);
+
+		@session_unset();
+		@session_destroy();
 	}
 
 	public function CookieLogin($cookieValue)

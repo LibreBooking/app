@@ -10,7 +10,7 @@ require_once(ROOT_DIR . 'Presenters/SchedulePageBuilder.php');
 
 interface ISchedulePresenter
 {
-	public function PageLoad();
+	public function PageLoad(UserSession $user);
 }
 
 class SchedulePresenter implements ISchedulePresenter
@@ -62,9 +62,8 @@ class SchedulePresenter implements ISchedulePresenter
 		$this->_dailyLayoutFactory = $dailyLayoutFactory;
 	}
 	
-	public function PageLoad()
+	public function PageLoad(UserSession $user)
 	{
-		$user = ServiceLocator::GetServer()->GetUserSession();
 		$targetTimezone = $user->Timezone;
 		
 		$showInaccessibleResources = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());

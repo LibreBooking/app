@@ -1,5 +1,8 @@
+{block name="header"}
 {include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.css'}
+{/block}
 
+{block name="schedule_control"}
 <div>
 	<div class="schedule_title">
 	<span>{$ScheduleName}</span>
@@ -30,7 +33,11 @@
 
 <div type="text" id="datepicker" style="display:none;"></div>
 
+{/block}
+
 <div style="height:10px">&nbsp;</div>
+
+{block name="reservations"}
 
 {assign var=TodaysDate value=Date::Now()}
 {foreach from=$BoundDates item=date}
@@ -65,10 +72,15 @@
 </table>
 {/foreach}
 
+{/block}
+
+{block name="scripts"}
+
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="scripts/schedule.js"></script>
 
 <script type="text/javascript">
+	
 $(document).ready(function() {
 
 	var scheduleOpts = {
@@ -80,7 +92,9 @@ $(document).ready(function() {
 	schedule.init(); 
 });
 </script>
- 
+
+{/block}
+
 {control type="DatePickerSetupControl"
   	ControlId='datepicker' 
   	DefaultDate=$FirstDate 

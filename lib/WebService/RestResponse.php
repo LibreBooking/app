@@ -90,11 +90,6 @@ class WebServiceAction
 	const Update = 'update';
 }
 
-class RequestType
-{
-	const GET = 'GET';
-	const POST = 'POST';
-}
 
 class SecureRestAction extends RestAction
 {
@@ -132,7 +127,7 @@ class RestAction
 	}
 
 	/**
-	* @static
+	 * @static
 	 * @return SecureRestAction
 	 */
 	public static function SignOut()

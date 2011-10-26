@@ -36,6 +36,8 @@ class NullUserSession extends UserSession
 	public function __construct()
 	{
 		parent::__construct(0);
+		$this->SessionToken = '';
+		$this->Timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
 	}
 	
 	public function IsLoggedIn()

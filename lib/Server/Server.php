@@ -21,7 +21,11 @@ class Server
 	
 	public function SetSession($name, $value)
 	{
-		@session_start();
+		if (!is_null($value))
+		{
+			@session_start();
+		}
+
 		$_SESSION[$name] = $value;
 	}
 	

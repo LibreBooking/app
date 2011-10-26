@@ -8,6 +8,12 @@ class RestParams
 	const Password = 'password';
 }
 
+class RequestType
+{
+	const GET = 'GET';
+	const POST = 'POST';
+}
+
 abstract class RestServerBase implements IRestServer
 {
 	/**
@@ -15,7 +21,7 @@ abstract class RestServerBase implements IRestServer
 	 */
 	public function IsPost()
 	{
-		return ServiceLocator::GetServer()->GetRequestMethod() == 'POST';
+		return ServiceLocator::GetServer()->GetRequestMethod() == RequestType::POST;
 	}
 
 	/**
@@ -23,7 +29,7 @@ abstract class RestServerBase implements IRestServer
 	 */
 	public function IsGet()
 	{
-		return ServiceLocator::GetServer()->GetRequestMethod() == 'GET';
+		return ServiceLocator::GetServer()->GetRequestMethod() == RequestType::GET;
 	}
 
 	public function GetPost($variableName)

@@ -20,8 +20,10 @@ class SchedulePage extends SecurePage implements ISchedulePage
 	public function PageLoad()
 	{
 		$start = microtime(true);
-		
-		$this->_presenter->PageLoad();
+
+		$user = ServiceLocator::GetServer()->GetUserSession();
+
+		$this->_presenter->PageLoad($user);
 		
 		$endLoad = microtime(true);
 		

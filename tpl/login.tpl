@@ -36,7 +36,7 @@
 {/if}
 
 <p class="login_links">
-    <a href="sched.php">{translate key='View Schedule'}</a>
+    <a href="view-schedule.php">{translate key='View Schedule'}</a>
     | 
     <a href="forgot.php">{translate key='I Forgot My Password'}</a>
     | 

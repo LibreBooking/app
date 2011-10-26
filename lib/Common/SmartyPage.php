@@ -38,7 +38,7 @@ class SmartyPage extends Smarty
 
 		$cacheTemplates = Configuration::Instance()->GetKey(ConfigKeys::CACHE_TEMPLATES, new BooleanConverter());
 
-		$this->caching = $cacheTemplates;
+		$this->caching = false;
 		$this->compile_check = true;
 		$this->force_compile = !$cacheTemplates;
 		

@@ -89,7 +89,7 @@ class SignOutResponse extends RestResponse
 {
 	public function __construct()
 	{
-	    $this->Message = 'SignOut successful';
+	    $this->Message = 'Sign Out successful';
 	}
 }
 
