@@ -21,4 +21,5 @@ $(document).ready(function() {
 	dashboard.init();   
 });
 </script>
+
 {include file='globalfooter.tpl'}
