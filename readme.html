@@ -33,9 +33,10 @@
 	Extract the contents of the .zip file to your web server. phpScheduleIt only requires that the /Web folder is
 	accessible.
 <ul>
-	<li>If possible, create a website or virtual directory pointed at the /Web folder.</li>
+	<li>If possible, create a website, subdomain, or virtual directory pointed at the /Web folder.</li>
 	<li>If this is not possible, simply extract all of the contents to an accessible location on your server.</li>
-	<li>The PHP account requires read/write access to /tpl_c</li>
+	<li>The web server must have write access to /tpl_c <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(why?)</a></li>
+	<li>The web server must have write access to /cache <a href="http://www.smarty.net/docs/en/variable.cache.dir.tpl">(why?)</a></li>
 	<li>To allow resource image uploads, the PHP account requires read/write access to your configured uploads directory
 		($conf['settings']['image.upload.directory'])
 </ul>
