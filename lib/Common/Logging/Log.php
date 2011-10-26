@@ -13,6 +13,11 @@ class Log
 	 * @var Logger
 	 */
 	private $logger;
+	
+	/**
+	 * @var Logger
+	 */
+	private $sqlLogger;
 
 	private function __construct()
 	{
