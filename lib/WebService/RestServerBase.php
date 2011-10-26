@@ -40,6 +40,11 @@ abstract class RestServerBase implements IRestServer
 	{
 		return ServiceLocator::GetServer()->GetUserSession();
 	}
+
+	public function GetServiceAction()
+	{
+		return $this->GetQueryString('action');
+	}
 }
 
 ?>

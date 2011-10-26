@@ -12,9 +12,6 @@ class Cookie
 	{
 		if (is_null($expiration))
 		{
-//			$date = new Date();//Date::::Now();
-//			$date->addSpan(new Date_Span(30, '%D'));
-//			$expiration =$date->getDate(DATE_FORMAT_UNIXTIME);
 			$expiration = Date::Now()->AddDays(30)->TimeStamp();
 		}
 		
@@ -25,7 +22,7 @@ class Cookie
 		
 		$this->Name = $name;
 		$this->Value = $value;
-		$this->Expiration = date(DATE_COOKIE, $expiration);
+		$this->Expiration = $expiration;	// date(DATE_COOKIE, $expiration);
 		$this->Path = $path;
 	}
 	

@@ -41,6 +41,13 @@ interface IRestServer
 	 * @return UserSession
 	 */
 	public function GetUserSession();
+
+	/**
+	 * @abstract
+	 * @return string|WebServiceAction
+	 */
+	public function GetServiceAction();
+
 }
 
 ?>

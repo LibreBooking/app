@@ -18,6 +18,11 @@ class RestResponse
 	public $Body = null;
 
 	/**
+	 * @var string
+	 */
+	public $Message = null;
+
+	/**
 	 * @return mixed
 	 */
 	public function GetBody()
@@ -71,6 +76,7 @@ class NotFoundResponse extends RestResponse
 
 class WebServiceResource
 {
+	const Authentication = 'Authentication';
 	const Bookings = 'Bookings';
 	const Resources = 'Resources';
 }
@@ -78,9 +84,10 @@ class WebServiceResource
 class WebServiceAction
 {
 	const Create = 'create';
-	const MyBookings = 'mybookings';
-	const Update = 'update';
 	const Delete = 'update';
+	const MyBookings = 'mybookings';
+	const SignOut = 'signout';
+	const Update = 'update';
 }
 
 class RequestType
@@ -122,6 +129,18 @@ class RestAction
 		$this->ref = $url;
 		$this->description = $description;
 		$this->requestType = $requestType;
+	}
+
+	/**
+	* @static
+	 * @return SecureRestAction
+	 */
+	public static function SignOut()
+	{
+		return new SecureRestAction(
+			self::GetUrl(WebServiceResource::Authentication, WebServiceAction::SignOut),
+			'SignOut',
+			RequestType::POST);
 	}
 
 	/**

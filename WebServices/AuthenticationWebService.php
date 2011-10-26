@@ -39,12 +39,24 @@ class AuthenticationWebService implements IRestService
 		return AuthenticationResponse::Failed();
 	}
 
+
+	public function SignOut(IRestServer $server)
+	{
+		$this->authentication->Logout($server->GetUserSession());
+
+		return new SignOutResponse();
+	}
+
 	/**
 	 * @param IRestServer $server
 	 * @return RestResponse
 	 */
 	public function HandlePost(IRestServer $server)
 	{
+		if ($server->GetServiceAction() == WebServiceAction::SignOut)
+		{
+			return $this->SignOut($server);
+		}
 		return $this->Authenticate($server);
 	}
 
@@ -56,6 +68,7 @@ class AuthenticationWebService implements IRestService
 	{
 		return new NotFoundResponse();
 	}
+
 }
 
 class AuthenticationResponseBody
@@ -71,6 +84,15 @@ class AuthenticationResponseBody
 		$this->isAuthenticated = !empty($sessionToken) && !empty($userId);
 	}
 }
+
+class SignOutResponse extends RestResponse
+{
+	public function __construct()
+	{
+	    $this->Message = 'SignOut successful';
+	}
+}
+
 class AuthenticationResponse extends RestResponse
 {
 	public function __construct()

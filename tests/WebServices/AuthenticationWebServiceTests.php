@@ -49,7 +49,7 @@ class AuthenticationWebServiceTests extends TestBase
 				
 		$session = $this->server->GetUserSession();
 
-		$expectedResponse = AuthenticationResponse::Success($session->SessionToken);
+		$expectedResponse = AuthenticationResponse::Success($session);
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -71,6 +71,17 @@ class AuthenticationWebServiceTests extends TestBase
 		$expectedResponse = AuthenticationResponse::Failed();
 		$this->assertEquals($expectedResponse, $response);
 	}
+
+	public function testSignsUserOut()
+	{
+		$this->authentication->expects($this->once())
+			->method('LogOut')
+			->with($this->equalTo($this->fakeUser));
+
+		$response = $this->service->SignOut($this->server);
+
+		$this->assertEquals(new SignOutResponse(), $response);
+	}
 }
 
 class FakeWebServiceServer implements IRestServer
@@ -90,6 +101,7 @@ class FakeWebServiceServer implements IRestServer
 	public $_LastResponse = null;
 	public $_PostValues = array();
 	public $_GetValues = array();
+	public $_ServiceAction = null;
 
 	/**
 	 * @return bool
@@ -147,6 +159,14 @@ class FakeWebServiceServer implements IRestServer
 	public function GetUserSession()
 	{
 		return $this->server->GetUserSession();
+	}
+
+	/**
+	 * @return string|WebServiceAction
+	 */
+	public function GetServiceAction()
+	{
+		return $this->_ServiceAction;
 	}
 }
 ?>
