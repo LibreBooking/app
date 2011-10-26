@@ -24,17 +24,23 @@ interface IRestServer
 
 	/**
 	 * @abstract
-	 * @param $variableName
+	 * @param string $variableName
 	 * @return mixed
 	 */
 	public function GetPost($variableName);
 
 	/**
 	 * @abstract
-	 * @param $variableName
-	 * @return string
+	 * @param string $variableName
+	 * @return mixed
 	 */
 	public function GetQueryString($variableName);
+
+	/**
+	 * @abstract
+	 * @return UserSession
+	 */
+	public function GetUserSession();
 }
 
 ?>

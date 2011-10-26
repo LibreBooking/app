@@ -12,29 +12,29 @@ class LoginPresenter
 	/**
 	 * @var IAuthentication
 	 */
-	private $_auth = null;
+	private $authentication = null;
 	
-	public function __construct(ILoginPage &$page, $authorization = null)
+	public function __construct(ILoginPage &$page, $authentication = null)
 	{
 		$this->_page =& $page;
-		$this->SetAuthorization($authorization);
+		$this->SetAuthorization($authentication);
 	}
 	
-	private function SetAuthorization($authorization)
+	private function SetAuthorization($authentication)
 	{
-		if (is_null($authorization))
+		if (is_null($authentication))
 		{
-			$this->_auth = PluginManager::Instance()->LoadAuthentication();
+			$this->authentication = PluginManager::Instance()->LoadAuthentication();
 		}
 		else
 		{
-			$this->_auth = $authorization;
+			$this->authentication = $authentication;
 		}
 	}
 	
 	public function PageLoad()
 	{
-		if ($this->_auth->AreCredentialsKnown())
+		if ($this->authentication->AreCredentialsKnown())
 		{
 			$this->Login();
 		}
@@ -43,7 +43,7 @@ class LoginPresenter
 
 		if ($this->IsCookieLogin($loginCookie))
 		{
-			if ($this->_auth->CookieLogin($loginCookie))
+			if ($this->authentication->CookieLogin($loginCookie))
 			{
 				$this->_Redirect();
 			}
@@ -55,21 +55,21 @@ class LoginPresenter
 	
 	public function Login()
 	{
-		if ($this->_auth->Validate($this->_page->getEmailAddress(), $this->_page->getPassword()))
+		if ($this->authentication->Validate($this->_page->getEmailAddress(), $this->_page->getPassword()))
 		{
-			$this->_auth->Login($this->_page->getEmailAddress(), $this->_page->getPersistLogin());		
+			$this->authentication->Login($this->_page->getEmailAddress(), $this->_page->getPersistLogin());
 			$this->_Redirect();
 		}
 		else 
 		{
-			$this->_auth->HandleLoginFailure($this->_page);
+			$this->authentication->HandleLoginFailure($this->_page);
 			$this->_page->setShowLoginError();
 		}
 	}
 	
 	public function Logout()
 	{
-		$this->_auth->Logout(ServiceLocator::GetServer()->GetUserSession());		
+		$this->authentication->Logout(ServiceLocator::GetServer()->GetUserSession());
 		$this->_page->Redirect(Pages::LOGIN);
 	}
 

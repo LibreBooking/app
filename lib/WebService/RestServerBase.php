@@ -2,6 +2,12 @@
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
 
+class RestParams
+{
+	const UserName = 'username';
+	const Password = 'password';
+}
+
 abstract class RestServerBase implements IRestServer
 {
 	/**
@@ -20,14 +26,19 @@ abstract class RestServerBase implements IRestServer
 		return ServiceLocator::GetServer()->GetRequestMethod() == 'GET';
 	}
 
+	public function GetPost($variableName)
+	{
+		return ServiceLocator::GetServer()->GetForm($variableName);
+	}
+	
 	public function GetQueryString($variableName)
 	{
 		return ServiceLocator::GetServer()->GetQuerystring($variableName);
 	}
 
-	public function GetPost($variableName)
+	public function GetUserSession()
 	{
-		return ServiceLocator::GetServer()->GetForm($variableName);
+		return ServiceLocator::GetServer()->GetUserSession();
 	}
 }
 

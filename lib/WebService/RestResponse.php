@@ -1,4 +1,5 @@
 <?php
+
 class RestResponse
 {
 	/**
@@ -15,6 +16,14 @@ class RestResponse
 	 * @var mixed
 	 */
 	public $Body = null;
+
+	/**
+	 * @return mixed
+	 */
+	public function GetBody()
+	{
+		return $this->Body;
+	}
 
 	/**
 	 * @param RestAction $action
@@ -34,6 +43,17 @@ class RestResponse
 		$this->AddAction(new RestAction($url));
 	}
 
+	/**
+	 * @param $serviceResource string|WebServiceResource
+	 * @param $serviceAction string|WebServiceAction|null
+	 * @return void
+	 */
+	public function AddResourceAction($serviceResource, $serviceAction = '')
+	{
+		$url = Configuration::Instance()->GetScriptUrl();
+		$this->AddActionUrl(sprintf('%s/Services/%s?action=%s', $url, $serviceResource, $serviceAction));
+	}
+
 }
 
 class NullRestResponse extends RestResponse
@@ -49,16 +69,114 @@ class NotFoundResponse extends RestResponse
 	}
 }
 
+class WebServiceResource
+{
+	const Bookings = 'Bookings';
+	const Resources = 'Resources';
+}
+
+class WebServiceAction
+{
+	const Create = 'create';
+	const MyBookings = 'mybookings';
+	const Update = 'update';
+	const Delete = 'update';
+}
+
+class RequestType
+{
+	const GET = 'GET';
+	const POST = 'POST';
+}
+
+class SecureRestAction extends RestAction
+{
+	public function __construct($url, $description = '', $requestType = RequestType::GET)
+	{
+		$token = ServiceLocator::GetServer()->GetUserSession()->SessionToken;
+		$url = $url . '&sessionToken=' . $token;
+
+		parent::__construct($url, $description, $requestType);
+	}
+}
+
 class RestAction
 {
 	/**
 	 * @var string
 	 */
-	public $Href;
+	public $ref;
 
-	public function __construct($url)
+	/**
+	 * @var string
+	 */
+	public $description;
+
+	/**
+	 * @var string|RequestType
+	 */
+	public $requestType;
+	
+	public function __construct($url, $description = '', $requestType = RequestType::GET)
 	{
-		$this->Href = $url;
+		$this->ref = $url;
+		$this->description = $description;
+		$this->requestType = $requestType;
+	}
+
+	/**
+	 * @static
+	 * @return SecureRestAction
+	 */
+	public static function AllBookings()
+	{
+		return new SecureRestAction(
+			self::GetUrl(WebServiceResource::Bookings),
+			'AllBookings');
+	}
+
+	/**
+	 * @static
+	 * @return SecureRestAction
+	 */
+	public static function MyBookings()
+	{
+		return new SecureRestAction(
+			self::GetUrl(WebServiceResource::Bookings, WebServiceAction::MyBookings),
+			'MyBookings');
+	}
+
+	/**
+	 * @static
+	 * @return SecureRestAction
+	 */
+	public static function CreateBooking()
+	{
+		return new SecureRestAction(
+			self::GetUrl(WebServiceResource::Bookings, WebServiceAction::Create),
+			'CreateBooking',
+			RequestType::POST);
+	}
+
+	/**
+	 * @static
+	 * @param string $serviceResource
+	 * @param string $serviceAction
+	 * @return string
+	 */
+	private static function GetUrl($serviceResource, $serviceAction = '')
+	{
+		return sprintf('%s/%s?action=%s', self::GetBaseServiceUrl(), $serviceResource, $serviceAction);
+	}
+
+	/**
+	 * @static
+	 * @return string
+	 */
+	private static function GetBaseServiceUrl()
+	{
+		$url = Configuration::Instance()->GetScriptUrl();
+		return $url . '/Services';
 	}
 }
 

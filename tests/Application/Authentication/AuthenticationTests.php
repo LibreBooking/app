@@ -120,6 +120,7 @@ class AuthenticationTests extends TestBase
 
 		$this->auth->Login(strtolower($this->username), false);
 
+		$user->SessionToken = $this->fakeServer->GetUserSession()->SessionToken;
 		$this->assertEquals($user, $this->fakeServer->GetUserSession());
 	}
 

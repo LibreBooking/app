@@ -14,14 +14,15 @@ class UserSession
 	public $FirstName = '';
 	public $LastName = '';
 	public $Email = '';
-	// TODO: Remove this property in favor of roles
-	public $IsAdmin = false;
+	public $IsAdmin = false;	// TODO: Remove this property in favor of roles
 	public $Timezone = '';
 	public $HomepageId = 1;
+	public $SessionToken = '';
 	
 	public function __construct($id)
 	{
 		$this->UserId = $id;
+		$this->SessionToken = uniqid();
 	}
 	
 	public function IsLoggedIn()

@@ -33,6 +33,7 @@ require_once(ROOT_DIR . 'tests/Presenters/Dashboard/DashboardPresenters_Suite.ph
 require_once(ROOT_DIR . 'tests/Presenters/Admin/AdminPresenters_Suite.php');
 
 require_once(ROOT_DIR . 'tests/WebService/WebService_Suite.php');
+require_once(ROOT_DIR . 'tests/WebServices/WebServices_Suite.php');
 
 class AllTests
 {
@@ -64,6 +65,7 @@ class AllTests
         $suite->addTest(AdminPresenters_Suite::suite());
 
         $suite->addTest(WebService_Suite::suite());
+        $suite->addTest(WebServices_Suite::suite());
 
         return $suite;
     }
