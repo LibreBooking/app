@@ -25,7 +25,13 @@ function Reservation(opts) {
 
 		changeUserAutocomplete: $('#changeUserAutocomplete'),
 		userName: $('#userName'),
-		userId: $('#userId')
+		userId: $('#userId'),
+
+		accessoriesPrompt: $('#addAccessoriesPrompt'),
+		accessoriesDialog: $('#dialogAddAccessories'),
+		accessoriesList: $('#accessories'),
+		accessoriesConfirm: $('#btnConfirmAddAccessories'),
+		accessoriesCancel: $('#btnCancelAddAccessories')
 	};
 
 	const oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
@@ -57,6 +63,19 @@ function Reservation(opts) {
 			}
 		});
 
+		elements.accessoriesPrompt.click(function() {
+			elements.accessoriesDialog.dialog('open');
+		});
+
+		elements.accessoriesConfirm.click(function() {
+			AddAccessories();
+			elements.accessoriesDialog.dialog('close');
+		});
+
+		elements.accessoriesCancel.click(function() {
+			elements.accessoriesDialog.dialog('close');
+		});
+		
 		$('#btnClearAddResources').click(function() {
 			CancelAdd('#dialogAddResources', '#additionalResources');
 		});
@@ -122,6 +141,18 @@ function Reservation(opts) {
 
 		$('#creatingNotification').hide();
 		$('#result').show();
+	};
+
+	var AddAccessories = function() {
+		elements.accessoriesList.empty();
+		
+		elements.accessoriesDialog.find('input:text').each(function() {
+			AddAccessory($(this).siblings('input:hidden').val(), ($(this).val()));
+		})
+	};
+
+	var AddAccessory = function(name, quantity) {
+		alert(name + ' '+ quantity)
 	};
 	
 	var AddResources = function() {

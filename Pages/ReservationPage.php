@@ -17,6 +17,13 @@ interface IReservationPage extends IPage
 	function BindAvailableResources($resources);
 
 	/**
+	 * @abstract
+	 * @param $accessories array|AccessoryDto[]
+	 * @return void
+	 */
+	function BindAvailableAccessories($accessories);
+
+	/**
 	 * @param SchedulePeriod $selectedStart
 	 * @param Date $startDate
 	 */
@@ -151,6 +158,11 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 	public function BindAvailableResources($resources)
 	{
 		$this->Set('AvailableResources', $resources);
+	}
+
+	public function BindAvailableAccessories($accessories)
+	{
+		$this->Set('AvailableAccessories', $accessories);
 	}
 	
 	public function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate)

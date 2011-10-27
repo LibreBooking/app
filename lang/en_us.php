@@ -204,6 +204,13 @@ class en_us extends Language
 		$strings['InvalidPassword'] = 'Current password is incorrect';
 		$strings['PasswordChangedSuccessfully'] = 'Your password has been changed successfully';
 		$strings['SignedInAs'] = 'Signed in as';
+		$strings['ReservationTitle'] = 'Title of reservation';
+		$strings['ReservationDescription'] = 'Description of reservation';
+		$strings['ResourceList'] = 'Resources to be reserved';
+		$strings['Accessories'] = 'Accessories';
+		$strings['Add'] = 'Add';
+		$strings['ParticipantList'] = 'Participants';
+		$strings['InvitationList'] = 'Invitees';
 
 		// Errors
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
@@ -955,15 +962,6 @@ class en_us extends Language
 
 		$strings['Rows'] = 'Rows';
 		$strings['Page'] = 'Page';
-
-
-		// reservation page
-		$strings['ReservationTitle'] = 'Title of reservation';
-		$strings['ReservationDescription'] = 'Description of reservation';
-		$strings['ResourceList'] = 'Resource(s) to be reserved';
-		$strings['Add'] = 'Add';
-		$strings['ParticipantList'] = 'Participants';
-		$strings['InvitationList'] = 'Invitees';
 
 		// new pages						
 		$strings['Reporting'] = 'Reporting';

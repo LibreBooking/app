@@ -28,17 +28,29 @@
 		</ul>
 		<ul class="no-style">
 			<li class="inline">
-				<label>{translate key="ResourceList"}</label><br/>
+				<div>
+					<div style="float:left;">
+						<label>{translate key="ResourceList"}</label><br/>
 
-				<div id="resourceNames" style="display:inline">
-					<a href="#" class="resourceDetails">{$ResourceName}</a>
-					<input class="resourceId" type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
-					<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+						<div id="resourceNames" style="display:inline">
+							<a href="#" class="resourceDetails">{$ResourceName}</a>
+							<input class="resourceId" type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
+							<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+						</div>
+						{if $AvailableResources|count > 0}
+							<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(More Resources)</a>
+						{/if}
+						<div id="additionalResources"></div>
+					</div>
+					<div style="float:right;">
+						{if $AvailableAccessories|count > 0}
+							<label>{translate key="Accessories"}</label>
+							<a href="#" id="addAccessoriesPrompt">({translate key='Add'})</a>
+							<div id="accessories"></div>
+						{/if}
+					</div>
 				</div>
-			{if $AvailableResources|count > 0}
-				<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(More Resources)</a>
-			{/if}
-				<div id="additionalResources"></div>
+				<div style="clear:both;height:0px;">&nbsp;</div>
 			</li>
 			<li>
 				<label>{translate key='BeginDate'}
@@ -144,7 +156,6 @@
 							  tabindex="110">{$Description}</textarea>
 				</label>
 			</li>
-
 		</ul>
 	</div>
 
@@ -152,7 +163,7 @@
 		<ul class="no-style">
 			<li>
 				<label>{translate key="ParticipantList"}<br/>
-					Add <input type="text" id="participantAutocomplete" class="input" style="width:250px;"/>
+					{translate key=Add} <input type="text" id="participantAutocomplete" class="input" style="width:250px;"/>
 					or
 					<button id="promptForParticipants" type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png"/>
@@ -167,7 +178,7 @@
 			</li>
 			<li>
 				<label>{translate key="InvitationList"}<br/>
-					Add <input type="text" id="inviteeAutocomplete" class="input" style="width:250px;"/>
+					{translate key=Add} <input type="text" id="inviteeAutocomplete" class="input" style="width:250px;"/>
 					or
 					<button id="promptForInvitees" type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png"/>
@@ -225,6 +236,27 @@
 	<br/>
 	<button id="btnConfirmAddResources" class="button">{translate key='Done'}</button>
 	<button id="btnClearAddResources" class="button">{translate key='Cancel'}</button>
+</div>
+
+<div id="dialogAddAccessories" class="dialog" title="Add Accessories" style="display:none;">
+	{foreach from=$AvailableAccessories item=accessory}
+		<table width="100%">
+			<tr>
+				<td>Accessory</td>
+				<td>Quantity</td>
+			</tr>
+			<tr>
+				<td>{$accessory->Name}</td>
+				<td>
+					<input type="hidden" value="{$accessory->Name}" />
+					<input type="text" id="accessory{$accessory->Id}" value="0" size="3" />
+				</td>
+			</tr>
+		</table>
+	{/foreach}
+	<br/>
+	<button id="btnConfirmAddAccessories" class="button">{translate key='Done'}</button>
+	<button id="btnCancelAddAccessories" class="button">{translate key='Cancel'}</button>
 </div>
 
 <div id="dialogSave" style="display:none;">
