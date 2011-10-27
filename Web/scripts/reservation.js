@@ -147,12 +147,13 @@ function Reservation(opts) {
 		elements.accessoriesList.empty();
 		
 		elements.accessoriesDialog.find('input:text').each(function() {
-			AddAccessory($(this).siblings('input:hidden').val(), ($(this).val()));
+			AddAccessory($(this).siblings('.name').val(), $(this).siblings('.id').val(), $(this).val());
 		})
 	};
 
-	var AddAccessory = function(name, quantity) {
-		alert(name + ' '+ quantity)
+	var AddAccessory = function(name, id, quantity) {
+		var x = 'accessory-id=' + id + '-quantity=' + quantity;
+		elements.accessoriesList.append('<p>' + quantity + ' - ' + name + '<input type="hidden" name="accessories[]" value="' + x + '"/></p>');
 	};
 	
 	var AddResources = function() {

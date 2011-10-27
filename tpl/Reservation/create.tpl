@@ -248,8 +248,9 @@
 			<tr>
 				<td>{$accessory->Name}</td>
 				<td>
-					<input type="hidden" value="{$accessory->Name}" />
-					<input type="text" id="accessory{$accessory->Id}" value="0" size="3" />
+					<input type="hidden" class="name" value="{$accessory->Name}" />
+					<input type="hidden" class="id" value="{$accessory->Id}"}" />
+					<input type="text" value="0" size="3" />
 				</td>
 			</tr>
 		</table>
