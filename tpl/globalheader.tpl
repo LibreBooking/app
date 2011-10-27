@@ -88,11 +88,16 @@
 				<li class="menubaritem"><a href="#">{translate key="Help"}</a></li>
 			</ul>
 			<!-- end #nav -->
-			{if $LoggedIn}
-				<div id="signout">
+
+			<div id="signout">
+				{if $LoggedIn}
 					{translate key="SignedInAs"} {$UserName}<br /><a href="{$Path}logout.php">{translate key="SignOut"}</a>
-				</div>
-			{/if}
+				{else}
+					{translate key="NotSignedIn"}<br/>
+					<a href="{$Path}index.php">{translate key="LogIn"}</a>
+				{/if}
+			</div>
+
 		</div>
 		<!-- end #header -->
 		<div id="content">

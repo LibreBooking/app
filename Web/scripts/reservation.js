@@ -64,6 +64,7 @@ function Reservation(opts) {
 		});
 
 		elements.accessoriesPrompt.click(function() {
+			ShowAccessoriesPrompt();
 			elements.accessoriesDialog.dialog('open');
 		});
 
@@ -151,9 +152,26 @@ function Reservation(opts) {
 		})
 	};
 
+	var ShowAccessoriesPrompt = function() {
+		elements.accessoriesList.find('input:hidden').each(function (){
+			var idAndQuantity = $(this).val();
+			var y = idAndQuantity.split('-');
+			var params = y[1].split(',');
+			var id = params[0].split('=')[1];
+			var quantity = params[1].split('=')[1];
+			elements.accessoriesDialog.find('accessory' + id).val(quantity);
+		});
+		elements.accessoriesDialog.dialog('open');
+	};
+
 	var AddAccessory = function(name, id, quantity) {
-		var x = 'accessory-id=' + id + '-quantity=' + quantity;
-		elements.accessoriesList.append('<p>' + quantity + ' - ' + name + '<input type="hidden" name="accessories[]" value="' + x + '"/></p>');
+		if (quantity == 0)
+		{
+			return;
+		}
+		var x = 'accessory-id=' + id + ',quantity=' + quantity;
+
+		elements.accessoriesList.append('<p><span class="quantity">' + quantity + '</span> - ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></p>');
 	};
 	
 	var AddResources = function() {

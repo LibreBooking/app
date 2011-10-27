@@ -4,6 +4,7 @@ class FormKeys
 	private function __construct()
 	{}
 
+	const ACCESSORY_LIST = 'accessoryList';
 	const ADDITIONAL_RESOURCES = 'additionalResources';
 	const ADDRESS = 'address';
 	const ALLOW_MULTIDAY = 'allowMultiday';

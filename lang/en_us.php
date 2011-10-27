@@ -204,6 +204,7 @@ class en_us extends Language
 		$strings['InvalidPassword'] = 'Current password is incorrect';
 		$strings['PasswordChangedSuccessfully'] = 'Your password has been changed successfully';
 		$strings['SignedInAs'] = 'Signed in as';
+		$strings['NotSignedIn'] = 'You are not signed in';
 		$strings['ReservationTitle'] = 'Title of reservation';
 		$strings['ReservationDescription'] = 'Description of reservation';
 		$strings['ResourceList'] = 'Resources to be reserved';
