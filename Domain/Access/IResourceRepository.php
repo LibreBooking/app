@@ -41,5 +41,11 @@ interface IResourceRepository
 	 * @return array|BookableResource[] array of all resources
 	 */
 	public function GetResourceList();
+
+	/**
+	 * @abstract
+	 * @return array|AccessoryDto[] all accessories
+	 */
+	public function GetAccessoryList();
 }
 ?>

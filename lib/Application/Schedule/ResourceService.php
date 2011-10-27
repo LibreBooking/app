@@ -49,8 +49,7 @@ class ResourceService implements IResourceService
 	 */
 	public function GetAccessories()
 	{
-		// TODO: implement going to repository
-		return array(new AccessoryDto(2, "number 2", 20), new AccessoryDto(4, "number 4", 40));
+		return $this->_resourceRepository->GetAccessoryList();
 	}
 }
 
@@ -94,6 +93,11 @@ class AccessoryDto
 		$this->Id = $id;
 		$this->Name = $name;
 		$this->QuantityAvailable = $quantityAvailable;
+	}
+
+	public static function Create($row)
+	{
+		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
 	}
 }
 

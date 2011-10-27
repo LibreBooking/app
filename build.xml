@@ -15,7 +15,9 @@
 	<property name="mysql.password" value=""/>
 	<property name="mysql.server" value="127.0.0.1"/>
 	<property name="mysql.database" value="phpScheduleIt2"/>
-	<property name="sql.file.create" value="database_schema/schema-utf8.sql"/>
+	<property name="sql.file.create.db" value="database_schema/create-db.sql"/>
+	<property name="sql.file.create.schema" value="database_schema/schema-utf8.sql"/>
+	<property name="sql.file.create.user" value="database_schema/create-user.sql"/>
 	<property name="sql.file.data" value="database_schema/data-utf8.sql"/>
 	<property name="sql.file.test.data" value="database_schema/testdata-utf8.sql"/>
 
@@ -27,8 +29,18 @@
 			</then>
 		</if>
 
-		<echo message="Create file: ${sql.file.create}"/>
-		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create}"
+		<echo message="Create file: ${sql.file.create.db}"/>
+		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create.db}"
+			  checkreturn="true"
+			  dir="${mysql.bin}"/>
+
+		<echo message="Create file: ${sql.file.create.schema}"/>
+		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create.schema}"
+			  checkreturn="true"
+			  dir="${mysql.bin}"/>
+
+		<echo message="Create file: ${sql.file.create.user}"/>
+		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create.user}"
 			  checkreturn="true"
 			  dir="${mysql.bin}"/>
 

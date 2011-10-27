@@ -483,3 +483,15 @@ CREATE TABLE `quotas` (
 	REFERENCES schedules(`schedule_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `accessories`
+--
+
+DROP TABLE IF EXISTS `accessories`;
+CREATE TABLE `accessories` (
+ `accessory_id` smallint(5) unsigned NOT NULL auto_increment,
+ `accessory_name` varchar(85) NOT NULL,
+ `accessory_quantity` tinyint(2) unsigned,
+ PRIMARY KEY (`accessory_id`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;

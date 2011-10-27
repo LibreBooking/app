@@ -278,6 +278,9 @@ class Queries
 		FROM users 
 		WHERE (username = @username OR email = @username)';
 
+	const GET_ALL_ACCESSORIES =
+		'SELECT * FROM accessories ORDER BY accessory_name';
+	
 	const GET_ALL_GROUPS =
 		'SELECT g.*, admin_group.name as admin_group_name
 		FROM groups g
@@ -883,6 +886,11 @@ class ColumnNames
 	const QUOTA_LIMIT = 'quota_limit';
 	const QUOTA_UNIT = 'unit';
 	const QUOTA_DURATION = 'duration';
+
+	// ACCESSORIES //
+	const ACCESSORY_ID = 'accessory_id';
+	const ACCESSORY_NAME = 'accessory_name';
+	const ACCESSORY_QUANTITY = 'accessory_quantity';
 
 	// dynamic
 	const TOTAL = 'total';

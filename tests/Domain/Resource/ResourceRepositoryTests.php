@@ -4,7 +4,7 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'tests/fakes/namespace.php');
 
-class ResourceTests extends TestBase
+class ResourceRepositoryTests extends TestBase
 {
 	public function setup()
 	{
@@ -37,87 +37,6 @@ class ResourceTests extends TestBase
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
 		$this->assertEquals(count($rows), count($resources));
 		$this->assertEquals($expected, $resources);
-	}
-	
-	public function testResourceServiceChecksPermissionForEachResource()
-	{
-		$scheduleId = 100;
-		$user = $this->fakeUser;
-		
-		$permissionService = $this->getMock('IPermissionService');
-		$resourceRepository = $this->getMock('IResourceRepository');
-		
-		$resourceService = new ResourceService($resourceRepository, $permissionService);
-		
-		$resource1 = new FakeBookableResource(1, 'resource1');
-		$resource2 = new FakeBookableResource(2, 'resource2');
-		$resource3 = new FakeBookableResource(3, 'resource3');
-		$resource4 = new FakeBookableResource(4, 'resource4');
-		$resources = array($resource1, $resource2, $resource3, $resource4);
-
-		$resourceRepository->expects($this->once())
-			->method('GetScheduleResources')
-			->with($this->equalTo($scheduleId))
-			->will($this->returnValue($resources));
-			
-		$permissionService->expects($this->at(0))
-			->method('CanAccessResource')
-			->with($this->equalTo($resource1), $this->equalTo($user))
-			->will($this->returnValue(true));
-		
-		$permissionService->expects($this->at(1))
-			->method('CanAccessResource')
-			->with($this->equalTo($resource2), $this->equalTo($user))
-			->will($this->returnValue(true));
-		
-		$permissionService->expects($this->at(2))
-			->method('CanAccessResource')
-			->with($this->equalTo($resource3), $this->equalTo($user))
-			->will($this->returnValue(true));
-		
-		$permissionService->expects($this->at(3))
-			->method('CanAccessResource')
-			->with($this->equalTo($resource4), $this->equalTo($user))
-			->will($this->returnValue(false));
-		
-		$resourceDto1 = new ResourceDto(1, 'resource1', true);
-		$resourceDto2 = new ResourceDto(2, 'resource2', true);
-		$resourceDto3 = new ResourceDto(3, 'resource3', true);
-		$resourceDto4 = new ResourceDto(4, 'resource4', false);
-		
-		$expected = array($resourceDto1, $resourceDto2, $resourceDto3, $resourceDto4);
-		
-		$actual = $resourceService->GetScheduleResources($scheduleId, true, $user);
-
-		$this->assertEquals($expected, $actual);
-	}	
-	
-	public function testResourcesAreNotReturnedIfNotIncludingInaccessibleResources()
-	{
-		$scheduleId = 100;
-		$user = $this->fakeUser;
-		
-		$permissionService = $this->getMock('IPermissionService');
-		$resourceRepository = $this->getMock('IResourceRepository');
-		
-		$resourceService = new ResourceService($resourceRepository, $permissionService);
-		
-		$resource1 = new FakeBookableResource(1, 'resource1');
-		
-		$resourceRepository->expects($this->once())
-			->method('GetScheduleResources')
-			->with($this->equalTo($scheduleId))
-			->will($this->returnValue(array($resource1)));
-			
-		$permissionService->expects($this->at(0))
-			->method('CanAccessResource')
-			->with($this->equalTo($resource1))
-			->will($this->returnValue(false));
-			
-		$includeInaccessibleResources = false;
-		$actual = $resourceService->GetScheduleResources($scheduleId, $includeInaccessibleResources, $user);
-		
-		$this->assertEquals(0, count($actual));
 	}
 	
 	public function testCanUpdateResource()
@@ -224,6 +143,33 @@ class ResourceTests extends TestBase
 		
 		$this->assertEquals($deleteReservations, $actualDeleteReservations);
 		$this->assertEquals($deleteResources, $actualDeleteResources);
+	}
+
+	public function testGetsAccessories()
+	{
+		$accessoryRows = array($this->GetAccessoryRow(1, "name", 3), $this->GetAccessoryRow(2, "slkjdf", 23));
+		
+		$this->db->SetRows($accessoryRows);
+
+		$getAccessoriesCommand = new GetAllAccessoriesCommand();
+		
+		$resourceRepository = new ResourceRepository();
+		/** @var $accessories AccessoryDto[] */
+		$accessories = $resourceRepository->GetAccessoryList();
+
+		$this->assertEquals($getAccessoriesCommand, $this->db->_LastCommand);
+		$this->assertEquals(2, count($accessories));
+		$this->assertEquals(1, $accessories[0]->Id);
+		$this->assertEquals("name", $accessories[0]->Name);
+		$this->assertEquals(3, $accessories[0]->QuantityAvailable);
+	}
+
+	private function GetAccessoryRow($accessoryId, $name, $quantity)
+	{
+		return array(
+			ColumnNames::ACCESSORY_ID => $accessoryId,
+			ColumnNames::ACCESSORY_NAME => $name,
+			ColumnNames::ACCESSORY_QUANTITY => $quantity);
 	}
 }
 

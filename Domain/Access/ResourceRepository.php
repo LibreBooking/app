@@ -13,7 +13,6 @@ class ResourceRepository implements IResourceRepository
 	{
 		$this->_cache = new DomainCache();
 	}
-	
 
 	/**
 	 * @param int $scheduleId
@@ -40,18 +39,18 @@ class ResourceRepository implements IResourceRepository
 	public function GetResourceList()
 	{
 		$command = new GetAllResourcesCommand();
-		
+
 		$resources = array();
-		
+
 		$reader = ServiceLocator::GetDatabase()->Query($command);
-		
+
 		while ($row = $reader->GetRow())
 		{
 			$resources[] = BookableResource::Create($row);
 		}
 		
 		$reader->Free();
-		
+
 		return $resources;
 	}
 	
@@ -159,6 +158,23 @@ class ResourceRepository implements IResourceRepository
 		$db = ServiceLocator::GetDatabase();
 		$db->Execute(new DeleteResourceReservationsCommand($resourceId));
 		$db->Execute(new DeleteResourceCommand($resourceId));
+	}
+
+	public function GetAccessoryList()
+	{
+		$command = new GetAllAccessoriesCommand();
+		$accessories = array();
+
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		while ($row = $reader->GetRow())
+		{
+			$accessories[] = AccessoryDto::Create($row);
+		}
+
+		$reader->Free();
+
+		return $accessories;
 	}
 }
 

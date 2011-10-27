@@ -40,7 +40,7 @@ $tests = array(
 'SchedulePresenterTests.php',
 'ReservationServiceTests.php',
 'ScheduleReservationListTests.php',
-'ResourceTests.php',
+'ResourceRepositoryTestsitoryTests.php',
 'SchedulesTests.php',
 'AnnouncementsTests.php',
 'AnnouncementPresenterTests.php',
@@ -67,7 +67,7 @@ $tests = array(
 /*
 $tests = array(
 'SchedulePresenterTests.php',
-'ResourceTests.php',
+'ResourceRepositoryTests.phpyTests.php',
 'DateTests.php',
 'ScheduleReservationListTests.php');
 */
