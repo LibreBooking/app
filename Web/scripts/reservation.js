@@ -153,13 +153,15 @@ function Reservation(opts) {
 	};
 
 	var ShowAccessoriesPrompt = function() {
-		elements.accessoriesList.find('input:hidden').each(function (){
+		elements.accessoriesDialog.find('input:text').val('0');
+		
+		elements.accessoriesList.find('input:hidden').each(function () {
 			var idAndQuantity = $(this).val();
 			var y = idAndQuantity.split('-');
 			var params = y[1].split(',');
 			var id = params[0].split('=')[1];
 			var quantity = params[1].split('=')[1];
-			elements.accessoriesDialog.find('accessory' + id).val(quantity);
+			elements.accessoriesDialog.find('[name="accessory' + id + '"]').val(quantity);
 		});
 		elements.accessoriesDialog.dialog('open');
 	};
@@ -167,11 +169,12 @@ function Reservation(opts) {
 	var AddAccessory = function(name, id, quantity) {
 		if (quantity == 0)
 		{
+			elements.accessoriesList.find('p [accessoryId=' + id  + ']').remove();
 			return;
 		}
 		var x = 'accessory-id=' + id + ',quantity=' + quantity;
 
-		elements.accessoriesList.append('<p><span class="quantity">' + quantity + '</span> - ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></p>');
+		elements.accessoriesList.append('<p accessoryId="' + id + '"><span class="quantity">' + quantity + '</span> - ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></p>');
 	};
 	
 	var AddResources = function() {

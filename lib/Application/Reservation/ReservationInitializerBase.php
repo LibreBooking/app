@@ -98,7 +98,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$this->basePage->SetReservationUser($reservationUser);
 		
 		$this->basePage->BindAvailableResources($bindableResourceData->AvailableResources);
-		$accessories = array(new ResourceDto(1, 'dude'));
+		$accessories = $this->resourceService->GetAccessories();
 		$this->basePage->BindAvailableAccessories($accessories);
 		
 		$this->SetSelectedDates($startDate, $endDate, $schedulePeriods);

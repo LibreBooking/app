@@ -112,6 +112,12 @@ class ReservationInitializationTests extends TestBase
 			->method('GetScheduleResources')
 			->with($this->equalTo($scheduleId), $this->equalTo(false), $this->equalTo($this->fakeUser))
 			->will($this->returnValue($resourceList));
+
+		// accessories
+		$accessoryList = array(new AccessoryDto(1, 'a1', 30), new AccessoryDto(2, 'a2', 20));
+		$this->resourceService->expects($this->once())
+			->method('GetAccessories')
+			->will($this->returnValue($accessoryList));
 			
 		// periods
 		$expectedStartPeriod = new SchedulePeriod($dateInUserTimezone->SetTime(new Time(3, 30, 0)), $dateInUserTimezone->SetTime(new Time(4, 30, 0)));
@@ -145,6 +151,10 @@ class ReservationInitializationTests extends TestBase
 		$page->expects($this->once())
 			->method('BindAvailableResources')
 			->with($this->equalTo($resourceListWithoutReservationResource));
+
+		$page->expects($this->once())
+			->method('BindAvailableAccessories')
+			->with($this->equalTo($accessoryList));
 			
 		// SETUP
 		$page->expects($this->once())

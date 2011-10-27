@@ -43,6 +43,15 @@ class ResourceService implements IResourceService
 		
 		return $resourceDtos;
 	}
+
+	/**
+	 * @return array|AccessoryDto[]
+	 */
+	public function GetAccessories()
+	{
+		// TODO: implement going to repository
+		return array(new AccessoryDto(2, "number 2", 20), new AccessoryDto(4, "number 4", 40));
+	}
 }
 
 interface IResourceService
@@ -52,9 +61,40 @@ interface IResourceService
 	 * @param int $scheduleId
 	 * @param bool $includeInaccessibleResources
 	 * @param UserSession $user
-	 * @return array[int]ResourceDto
+	 * @return array|ResourceDto[]
 	 */
 	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user);
+
+	/**
+	 * @abstract
+	 * @return array|AccessoryDto[]
+	 */
+	public function GetAccessories();
+}
+
+class AccessoryDto
+{
+	/**
+	 * @var int
+	 */
+	public $Id;
+
+	/**
+	 * @var string
+	 */
+	public $Name;
+
+	/**
+	 * @var int
+	 */
+	public $QuantityAvailable;
+
+	public function __construct($id, $name, $quantityAvailable)
+	{
+		$this->Id = $id;
+		$this->Name = $name;
+		$this->QuantityAvailable = $quantityAvailable;
+	}
 }
 
 class ResourceDto

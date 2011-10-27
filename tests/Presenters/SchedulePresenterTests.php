@@ -104,7 +104,7 @@ class SchedulePresenterTests extends TestBase
 			->method('BindReservations')
 			->with($this->equalTo($page), $this->equalTo($resources), $this->equalTo($dailyLayout));
 			
-		$presenter->PageLoad();
+		$presenter->PageLoad($this->fakeUser);
 		
 	}
 	

@@ -239,12 +239,13 @@
 </div>
 
 <div id="dialogAddAccessories" class="dialog" title="Add Accessories" style="display:none;">
-	{foreach from=$AvailableAccessories item=accessory}
-		<table width="100%">
-			<tr>
-				<td>Accessory</td>
-				<td>Quantity</td>
-			</tr>
+	<table width="100%">
+		<tr>
+			<td>Accessory</td>
+			<td>Quantity</td>
+			<td>Available</td>
+		</tr>
+		{foreach from=$AvailableAccessories item=accessory}
 			<tr>
 				<td>{$accessory->Name}</td>
 				<td>
@@ -252,9 +253,10 @@
 					<input type="hidden" class="id" value="{$accessory->Id}"}" />
 					<input type="text" name="accessory{$accessory->Id}" value="0" size="3" />
 				</td>
+				<td>{$accessory->QuantityAvailable}</td>
 			</tr>
-		</table>
-	{/foreach}
+		{/foreach}
+	</table>
 	<br/>
 	<button id="btnConfirmAddAccessories" class="button">{translate key='Done'}</button>
 	<button id="btnCancelAddAccessories" class="button">{translate key='Cancel'}</button>
