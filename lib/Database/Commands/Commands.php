@@ -90,7 +90,6 @@ class AddReservationSeriesCommand extends SqlCommand
 								$description, 
 								$repeatType,
 								$repeatOptions,
-								$scheduleId,
 								$reservationTypeId,
 								$statusId,
 								$ownerId
@@ -102,8 +101,7 @@ class AddReservationSeriesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));	
 		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));	
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));	
-		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));	
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));	
+		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));
 		$this->AddParameter(new Parameter(ParameterNames::TYPE_ID, $reservationTypeId));	
 		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));	
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));	

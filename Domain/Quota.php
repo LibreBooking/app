@@ -123,7 +123,7 @@ class Quota implements IQuota
 	public function ExceedsQuota($reservationSeries, $user, $schedule, IReservationViewRepository $reservationViewRepository)
 	{
 		$timezone = $schedule->GetTimezone();
-		
+
 		foreach ($reservationSeries->AllResourceIds() as $resourceId)
 		{
 			if (!$this->AppliesToResource($resourceId))
@@ -140,6 +140,7 @@ class Quota implements IQuota
 			}
 		}
 
+		throw new Exception("figure out what happens when schedule is no longer on reservation series");
 		if (!$this->AppliesToSchedule($reservationSeries->ScheduleId()))
 		{
 			return false;

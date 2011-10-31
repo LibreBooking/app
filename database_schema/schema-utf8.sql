@@ -356,7 +356,7 @@ CREATE TABLE  `reservation_series` (
   `total_cost` decimal(7,2) default NULL,
   `repeat_type` varchar(10) default NULL,
   `repeat_options` varchar(255) default NULL,
-  `schedule_id` smallint(5) unsigned NOT NULL, 
+  -- THIS IS REDUNDANT, CHANGE CODE TO NOT NEED IT or CHANGE RESOURCE MGMT TO MOVE RESERVATIONS `schedule_id` smallint(5) unsigned NOT NULL,
   `owner_id` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY  (`series_id`),
   KEY `type_id` (`type_id`),

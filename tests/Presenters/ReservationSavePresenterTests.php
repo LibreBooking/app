@@ -71,7 +71,6 @@ class ReservationSavePresenterTests extends TestBase
 		
 		$userId = $this->page->GetUserId();
 		$resourceId = $this->page->GetResourceId();
-		$scheduleId = $this->page->GetScheduleId();
 		$title = $this->page->GetTitle();
 		$description = $this->page->GetDescription();
 
@@ -107,7 +106,7 @@ class ReservationSavePresenterTests extends TestBase
 
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 		
-		$expected = ReservationSeries::Create($userId, $resource, $scheduleId, $title, $description, $duration, $repeatOptions, $this->user);
+		$expected = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, $this->user);
 		$expected->AddResource($additionalResource1);
 		$expected->AddResource($additionalResource2);
 		$expected->ChangeParticipants($participants);
@@ -117,7 +116,6 @@ class ReservationSavePresenterTests extends TestBase
 		
 		$this->assertEquals($userId, $actualReservation->UserId());
 		$this->assertEquals($resourceId, $actualReservation->ResourceId());
-		$this->assertEquals($scheduleId, $actualReservation->ScheduleId());
 		$this->assertEquals($title, $actualReservation->Title());
 		$this->assertEquals($description, $actualReservation->Description());
 		$this->assertEquals($duration, $actualReservation->CurrentInstance()->Duration());

@@ -17,7 +17,6 @@ class ReservationTests extends TestBase
 	{
 		$userId = 32;
 		$resourceId = 10;
-		$scheduleId = 19;
 		$title = 'Title';
 		$description = 'some long decription';
 		
@@ -44,7 +43,6 @@ class ReservationTests extends TestBase
 		$series = ReservationSeries::Create(
 			$userId,
 			$resource,
-			$scheduleId, 
 			$title, 
 			$description, 
 			$dateRange, 
@@ -53,7 +51,6 @@ class ReservationTests extends TestBase
 		
 		$this->assertEquals($userId, $series->UserId());
 		$this->assertEquals($resource, $series->Resource());
-		$this->assertEquals($scheduleId, $series->ScheduleId());
 		$this->assertEquals($title, $series->Title());
 		$this->assertEquals($description, $series->Description());
 		$this->assertTrue($series->IsRecurring());
@@ -77,7 +74,7 @@ class ReservationTests extends TestBase
 		
 		$repeatOptions = $this->getMock('IRepeatOptions');
 		
-		$series = ReservationSeries::Create(1, new FakeBookableResource(1), 1, null, null, $dateRange, $repeatOptions, new FakeUserSession());
+		$series = ReservationSeries::Create(1, new FakeBookableResource(1), null, null, $dateRange, $repeatOptions, new FakeUserSession());
 		
 		$instance = $series->CurrentInstance();
 		
@@ -90,7 +87,7 @@ class ReservationTests extends TestBase
 		$resource = new FakeBookableResource(1);
 		$resource->RequiresApproval(true);
 		
-		$series = ReservationSeries::Create(1, $resource, 1, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession(true));
+		$series = ReservationSeries::Create(1, $resource, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession(true));
 
 		$this->assertEquals(ReservationStatus::Created, $series->StatusId());
 	}
@@ -100,7 +97,7 @@ class ReservationTests extends TestBase
 		$resource = new FakeBookableResource(1);
 		$resource->RequiresApproval(true);
 
-		$series = ReservationSeries::Create(1, $resource, 1, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession(false));
+		$series = ReservationSeries::Create(1, $resource, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession(false));
 
 		$this->assertEquals(ReservationStatus::Pending, $series->StatusId());
 	}

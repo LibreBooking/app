@@ -92,7 +92,6 @@ class ReservationRepositoryTests extends TestBase
 		$reservationId = 428;
 		$userId = 232;
 		$resourceId = 10978;
-		$scheduleId = 123;
 		$title = 'title';
 		$description = 'description';
 		$startCst = '2010-02-15 16:30';
@@ -117,7 +116,6 @@ class ReservationRepositoryTests extends TestBase
 		$reservation = ReservationSeries::Create(
 			$userId,
 			new FakeBookableResource($resourceId),
-			$scheduleId,
 			$title,
 			$description,
 			$duration,
@@ -139,7 +137,6 @@ class ReservationRepositoryTests extends TestBase
 			$description,
 			$repeatType,
 			$repeatOptionsString,
-			$scheduleId,
 			ReservationTypes::Reservation,
 			ReservationStatus::Created,
 			$userId);
@@ -209,7 +206,7 @@ class ReservationRepositoryTests extends TestBase
 
 		$userSession = new FakeUserSession();
 
-		$reservation = ReservationSeries::Create(1, new FakeBookableResource(1), 1, null, null, $duration, $repeats, $userSession);
+		$reservation = ReservationSeries::Create(1, new FakeBookableResource(1), null, null, $duration, $repeats, $userSession);
 
 		$this->db->_ExpectedInsertIds[0] = $reservationSeriesId;
 		$this->db->_ExpectedInsertIds[1] = $reservationId;

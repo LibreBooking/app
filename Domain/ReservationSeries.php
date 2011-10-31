@@ -72,16 +72,11 @@ class ReservationSeries
 	}
 	
 	/**
-	 * @var int
-	 */
-	protected $_scheduleId;
-	
-	/**
 	 * @return int
 	 */
 	public function ScheduleId()
 	{
-		return $this->_scheduleId;
+		throw new Exception("figure out what happens when schedule is no longer on reservation series");
 	}
 
 	/**
@@ -183,7 +178,6 @@ class ReservationSeries
 	/**
 	 * @param int $userId
 	 * @param BookableResource $resource
-	 * @param int $scheduleId
 	 * @param string $title
 	 * @param string $description
 	 * @param DateRange $reservationDate
@@ -194,7 +188,6 @@ class ReservationSeries
 	public static function Create(
 								$userId, 
 								BookableResource $resource,
-								$scheduleId, 
 								$title, 
 								$description, 
 								$reservationDate, 
@@ -205,7 +198,6 @@ class ReservationSeries
 		$series = new ReservationSeries();
 		$series->_userId = $userId;
 		$series->_resource = $resource;
-		$series->_scheduleId = $scheduleId;
 		$series->_title = $title;
 		$series->_description = $description;
 		$series->_bookedBy = $bookedBy;

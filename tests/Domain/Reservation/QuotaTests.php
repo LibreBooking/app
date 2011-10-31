@@ -527,16 +527,15 @@ class QuotaTests extends TestBase
 		$this->assertFalse($exceeds);
 	}
 	
-	private function GetHourLongReservation($startDate, $endDate, $resourceId1 = null, $resourceId2 = null, $scheduleId = null)
+	private function GetHourLongReservation($startDate, $endDate, $resourceId1 = null, $resourceId2 = null)
 	{
 		$userId = 12;
 		$resource1 = empty($resourceId1) ? 13 : $resourceId1;
 		$resource2 = empty($resourceId2) ? 14 : $resourceId2;
-		$schedule = empty($scheduleId) ? 1 : $scheduleId;
 
 		$hourLongReservation = new DateRange($startDate, $endDate, $this->tz);
 
-		$series = ReservationSeries::Create($userId, new FakeBookableResource($resource1), $schedule, null, null, $hourLongReservation, new RepeatNone(), new FakeUserSession());
+		$series = ReservationSeries::Create($userId, new FakeBookableResource($resource1), null, null, $hourLongReservation, new RepeatNone(), new FakeUserSession());
 		$series->AddResource(new FakeBookableResource($resource2));
 
 		return $series;

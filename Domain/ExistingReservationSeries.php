@@ -53,7 +53,7 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function WithSchedule($scheduleId)
 	{
-		$this->_scheduleId = $scheduleId;
+		throw new Exception("figure out what happens when schedule is no longer on reservation series");
 	}
 
 	/**

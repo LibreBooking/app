@@ -1,6 +1,12 @@
 <?php
 interface IResourceLocalization
 {
+	/**
+	 * @abstract
+	 * @param $key
+	 * @param array|string $args
+	 * @return void
+	 */
 	public function GetString($key, $args = array());
 	public function GetDateFormat($key);
 	public function GetDays($key);
@@ -71,6 +77,11 @@ class Resources implements IResourceLocalization
 	
 	public function GetString($key, $args = array())
 	{
+		if (!is_array($args))
+		{
+			$args = array($args);
+		}
+		
 		$strings = $this->_lang->Strings;
 		
 		$return = '';

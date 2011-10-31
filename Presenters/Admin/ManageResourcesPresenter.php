@@ -232,6 +232,14 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->resourceRepository->Update($resource);
 	}
 
+	public function ChangeSchedule()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$scheduleId = $this->page->GetScheduleId();
+		$resource->SetScheduleId($scheduleId);
+		$this->resourceRepository->Update($resource);
+	}
+
 	private function SaveResourceImage($fileName)
 	{
 		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());

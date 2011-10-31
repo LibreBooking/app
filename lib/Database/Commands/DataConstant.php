@@ -171,8 +171,8 @@ class Queries
 	
 	const ADD_RESERVATION_SERIES = 
 		'INSERT INTO 
-			reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, schedule_id, type_id, status_id, owner_id)
-		VALUES (@dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @scheduleid, @typeid, @statusid, @userid)';
+			reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id)
+		VALUES (@dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid)';
 	
 	const ADD_RESERVATION_USER  = 
 		'INSERT INTO
