@@ -276,22 +276,30 @@ class ExistingReservationTests extends TestBase
 	
 	public function testWhenApplyingSimpleUpdatesToFullSeries()
 	{
+		$currentResource = new FakeBookableResource(8);
+		$newResource = new FakeBookableResource(10);
+		
 		$repeatOptions = new RepeatDaily(1, Date::Now());
 		$dateRange = new TestDateRange();
 		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithPrimaryResource($currentResource);
 		$builder->WithRepeatOptions($repeatOptions);
 		$builder->WithInstance(new TestReservation('123', $dateRange));
 		$builder->WithCurrentInstance(new TestReservation('1', $dateRange->AddDays(5)));
 		
 		$series = $builder->Build();
 		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-		$series->Update(9, new FakeBookableResource(10), 'new', 'new', new FakeUserSession());
+
+		$series->Update(9, $newResource, 'new', 'new', new FakeUserSession());
 		$series->Repeats($repeatOptions);
 		
 		$events = $series->GetEvents();
-		
+
+		$this->assertEquals($newResource, $series->Resource());
 		$this->assertEquals(2, count($series->Instances()));
-		$this->assertEquals(0, count($events));
+		$this->assertEquals(2, count($events));
+		$this->assertTrue(in_array(new ResourceRemovedEvent($currentResource, $series), $events));
+		$this->assertTrue(in_array(new ResourceAddedEvent($newResource, ResourceLevel::Primary, $series), $events));
 	}
 	
 	public function testChangingTimeForFullSeriesUpdatesAllInstanceTimes()
@@ -605,7 +613,7 @@ class ExistingReservationTests extends TestBase
 		$events = $series->GetEvents();
 
 		$this->assertTrue(in_array(new ResourceRemovedEvent($removed, $series), $events));
-		$this->assertTrue(in_array(new ResourceAddedEvent($added, $series), $events));
+		$this->assertTrue(in_array(new ResourceAddedEvent($added, ResourceLevel::Additional, $series), $events));
 	}
 
 	public function testApproveUpdatesStateAndFiresEvent()

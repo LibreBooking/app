@@ -42,7 +42,6 @@ class QuotaRuleTests extends TestBase
 
 	public function testWhenQuotaThatAppliesToReservationResourceAndUserGroupIsNotExceed()
 	{
-		throw new Exception("figure out what happens when schedule is no longer on reservation series");
 		$scheduleId = 971243;
 		$timezone = 'America/New_York';
 		
@@ -54,7 +53,9 @@ class QuotaRuleTests extends TestBase
 		$user->SetGroups(array($groupId1, $groupId2));
 
 		$schedule = new Schedule(1, null, null, null, null, $timezone);
-		$series = ReservationSeries::Create($userId, new FakeBookableResource(20), null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession());
+		$resource = new FakeBookableResource(20);
+		$resource->SetScheduleId($scheduleId);
+		$series = ReservationSeries::Create($userId, $resource, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession());
 		$series->AddResource(new FakeBookableResource(22));
 
 		$quota1 = $this->GetMock('IQuota');
@@ -90,7 +91,6 @@ class QuotaRuleTests extends TestBase
 
 	public function testFirstQuotaExceeded()
 	{
-		throw new Exception("figure out what happens when schedule is no longer on reservation series");
 		$scheduleId = 971243;
 		$timezone = 'America/New_York';
 
@@ -102,7 +102,9 @@ class QuotaRuleTests extends TestBase
 		$user->SetGroups(array($groupId1, $groupId2));
 
 		$schedule = new Schedule(1, null, null, null, null, $timezone);
-		$series = ReservationSeries::Create($userId, new FakeBookableResource(20), null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession());
+		$resource = new FakeBookableResource(20);
+		$resource->SetScheduleId($scheduleId);
+		$series = ReservationSeries::Create($userId, $resource, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession());
 		$series->AddResource(new FakeBookableResource(22));
 
 		$quota1 = $this->GetMock('IQuota');

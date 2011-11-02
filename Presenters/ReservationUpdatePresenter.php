@@ -45,7 +45,16 @@ class ReservationUpdatePresenter
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
 		$existingSeries->UpdateDuration($this->GetReservationDuration());
 
-		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resourceId = $this->page->GetResourceId();
+		$additionalResourceIds = $this->page->GetResources();
+		
+		if (empty($resourceId))
+		{
+			// the first additional resource will become the primary if the primary is removed
+			$resourceId = array_shift($additionalResourceIds);
+		}
+		
+		$resource = $this->resourceRepository->LoadById($resourceId);
 		$existingSeries->Update(
 			$this->page->GetUserId(), 
 			$resource,
@@ -56,7 +65,7 @@ class ReservationUpdatePresenter
 		$existingSeries->Repeats($this->page->GetRepeatOptions());
 
 		$additionalResources = array();
-		foreach ($this->page->GetResources() as $additionalResourceId)
+		foreach ($additionalResourceIds as $additionalResourceId)
 		{
 			$additionalResources[] = $this->resourceRepository->LoadById($additionalResourceId);
 		}

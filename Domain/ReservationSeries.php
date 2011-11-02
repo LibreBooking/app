@@ -76,7 +76,7 @@ class ReservationSeries
 	 */
 	public function ScheduleId()
 	{
-		throw new Exception("figure out what happens when schedule is no longer on reservation series");
+		return $this->_resource->GetScheduleId();
 	}
 
 	/**

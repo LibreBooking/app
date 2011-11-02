@@ -140,7 +140,6 @@ class Quota implements IQuota
 			}
 		}
 
-		throw new Exception("figure out what happens when schedule is no longer on reservation series");
 		if (!$this->AppliesToSchedule($reservationSeries->ScheduleId()))
 		{
 			return false;

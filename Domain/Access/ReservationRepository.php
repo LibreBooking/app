@@ -218,12 +218,10 @@ class ReservationRepository implements IReservationRepository
 			$series->WithRepeatOptions($repeatOptions);
 
 			$seriesId = $row[ColumnNames::SERIES_ID];
-			$scheduleId = $row[ColumnNames::SCHEDULE_ID];
 			$title = $row[ColumnNames::RESERVATION_TITLE];
 			$description = $row[ColumnNames::RESERVATION_DESCRIPTION];
 				
 			$series->WithId($seriesId);
-			$series->WithSchedule($scheduleId);
 			$series->WithTitle($title);
 			$series->WithDescription($description);
 			$series->WithOwner($row[ColumnNames::RESERVATION_OWNER]);
@@ -286,7 +284,9 @@ class ReservationRepository implements IReservationRepository
 				$row[ColumnNames::RESOURCE_ALLOW_MULTIDAY],
 				$row[ColumnNames::RESOURCE_MAX_PARTICIPANTS],
 				$row[ColumnNames::RESOURCE_MINNOTICE],
-				$row[ColumnNames::RESOURCE_MAXNOTICE]);
+				$row[ColumnNames::RESOURCE_MAXNOTICE],
+				$row[ColumnNames::RESOURCE_DESCRIPTION],
+				$row[ColumnNames::SCHEDULE_ID]);
 
 			if ($row[ColumnNames::RESOURCE_LEVEL_ID] == ResourceLevel::Primary)
 			{
@@ -414,7 +414,7 @@ class ReservationEventMapper
 	private function BuildAddResourceCommand(ResourceAddedEvent $event, ExistingReservationSeries $series)
 	{
 		return new EventCommand(
-			new AddReservationResourceCommand($series->SeriesId(), $event->ResourceId(), ResourceLevel::Additional)
+			new AddReservationResourceCommand($series->SeriesId(), $event->ResourceId(), $event->ResourceLevel())
 		);
 	}
 }

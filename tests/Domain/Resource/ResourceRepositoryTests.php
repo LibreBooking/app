@@ -95,15 +95,12 @@ class ResourceRepositoryTests extends TestBase
 								new TimeInterval($maxNotice),
 								$description,
 								$imageName,
-								$resource->IsOnline());
-								
-		$expectedUpdateScheduleCommand = new UpdateResourceScheduleCommand($id, $scheduleId);
-								
+								$resource->IsOnline(),
+								$scheduleId);
+													
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
-		$actualUpdateScheduleCommand = $this->db->_Commands[1];
 		
 		$this->assertEquals($expectedUpdateResourceCommand, $actualUpdateResourceCommand);
-		$this->assertEquals($expectedUpdateScheduleCommand, $actualUpdateScheduleCommand);
 	}
 	
 	public function testCanAddResourceWithMinimumAttributes()
@@ -119,11 +116,10 @@ class ResourceRepositoryTests extends TestBase
 		$resourceRepository = new ResourceRepository();
 		$resourceRepository->Add($resource);
 		
-		$expectedAddCommand = new AddResourceCommand($name);
-		$expectedUpdateScheduleCommand = new AddResourceScheduleCommand($resourceId, $scheduleId);
-		
+		$expectedAddCommand = new AddResourceCommand($name, $scheduleId);
 		$actualAddResourceCommand = $this->db->_Commands[0];
-		$actualUpdateScheduleCommand = $this->db->_Commands[1];
+
+		$this->assertEquals($expectedAddCommand, $actualAddResourceCommand);
 	}
 	
 	public function testDeletingAResourceRemovesAllAssociatedData()

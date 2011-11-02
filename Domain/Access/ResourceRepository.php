@@ -112,11 +112,9 @@ class ResourceRepository implements IResourceRepository
 	public function Add(BookableResource $resource)
 	{
 		$db = ServiceLocator::GetDatabase();
-		$addResourceCommand = new AddResourceCommand($resource->GetName());
+		$addResourceCommand = new AddResourceCommand($resource->GetName(), $resource->GetScheduleId());
 		
-		$resourceId = $db->ExecuteInsert($addResourceCommand);
-	
-		$db->Execute(new AddResourceScheduleCommand($resourceId, $resource->GetScheduleId()));
+		$db->ExecuteInsert($addResourceCommand);
 	}
 	
 	public function Update(BookableResource $resource)
@@ -139,14 +137,10 @@ class ResourceRepository implements IResourceRepository
 								$resource->GetMaxNotice(),
 								$resource->GetDescription(),
 								$resource->GetImage(),
-								$resource->IsOnline());
-								
-		$updateScheduleCommand = new UpdateResourceScheduleCommand(
-								$resource->GetResourceId(), 
+								$resource->IsOnline(),
 								$resource->GetScheduleId());
-		
+								
 		$db->Execute($updateResourceCommand);
-		$db->Execute($updateScheduleCommand);
 	}
 	
 	public function Delete(BookableResource $resource)

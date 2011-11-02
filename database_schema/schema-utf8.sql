@@ -46,6 +46,26 @@ CREATE TABLE `time_blocks` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
+-- Table structure for table `schedules`
+--
+
+DROP TABLE IF EXISTS `schedules`;
+CREATE TABLE `schedules` (
+ `schedule_id` smallint(5) unsigned NOT NULL auto_increment,
+ `name` varchar(85) NOT NULL,
+ `isdefault` tinyint(1) unsigned NOT NULL,
+ `weekdaystart` tinyint(2) unsigned NOT NULL,
+ `daysvisible` tinyint(2) unsigned NOT NULL default '7',
+ `layout_id` mediumint(8) unsigned NOT NULL,
+ PRIMARY KEY (`schedule_id`),
+ INDEX (`layout_id`),
+ FOREIGN KEY (`layout_id`)
+	REFERENCES layouts(`layout_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+
+--
 -- Table structure for table `groups`
 --
 
@@ -212,14 +232,18 @@ CREATE TABLE `resources` (
  `min_notice_time` time,
  `max_notice_time` time,
  `image_name` varchar(50),
+ `schedule_id` smallint(5) unsigned NOT NULL,
  `legacyid` char(16),
  PRIMARY KEY (`resource_id`),
  INDEX (`type_id`),
  FOREIGN KEY (`type_id`) 
 	REFERENCES resource_types(`type_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE,
+ INDEX (`schedule_id`),
+ FOREIGN KEY (`schedule_id`)
+	REFERENCES schedules(`schedule_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
 
 --
 -- Table structure for table `user_resource_permissions`
@@ -261,25 +285,6 @@ FOREIGN KEY (`resource_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `schedules`
---
-
-DROP TABLE IF EXISTS `schedules`;
-CREATE TABLE `schedules` (
- `schedule_id` smallint(5) unsigned NOT NULL auto_increment,
- `name` varchar(85) NOT NULL,
- `isdefault` tinyint(1) unsigned NOT NULL,
- `weekdaystart` tinyint(2) unsigned NOT NULL,
- `daysvisible` tinyint(2) unsigned NOT NULL default '7',
- `layout_id` mediumint(8) unsigned NOT NULL,
- PRIMARY KEY (`schedule_id`),
- INDEX (`layout_id`),
- FOREIGN KEY (`layout_id`) 
-	REFERENCES layouts(`layout_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
 -- Table structure for table `schedule_admins`
 --
 
@@ -295,25 +300,6 @@ CREATE TABLE `schedule_admins` (
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`) 
 	REFERENCES users(`user_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `resource_schedules`
---
-
-DROP TABLE IF EXISTS `resource_schedules`;
-CREATE TABLE `resource_schedules` (
- `resource_id` smallint(5) unsigned NOT NULL,
- `schedule_id` smallint(5) unsigned NOT NULL,
- PRIMARY KEY (`resource_id`, `schedule_id`),
- INDEX (`resource_id`),
- FOREIGN KEY (`resource_id`) 
-	REFERENCES resources(`resource_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`schedule_id`),
- FOREIGN KEY (`schedule_id`) 
-	REFERENCES schedules(`schedule_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -356,15 +342,12 @@ CREATE TABLE  `reservation_series` (
   `total_cost` decimal(7,2) default NULL,
   `repeat_type` varchar(10) default NULL,
   `repeat_options` varchar(255) default NULL,
-  -- THIS IS REDUNDANT, CHANGE CODE TO NOT NEED IT or CHANGE RESOURCE MGMT TO MOVE RESERVATIONS `schedule_id` smallint(5) unsigned NOT NULL,
   `owner_id` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY  (`series_id`),
   KEY `type_id` (`type_id`),
   KEY `status_id` (`status_id`),
-  KEY `reservations_schedule` (`schedule_id`),
   CONSTRAINT `reservations_type` FOREIGN KEY (`type_id`) REFERENCES `reservation_types` (`type_id`) ON UPDATE CASCADE,
   CONSTRAINT `reservations_status` FOREIGN KEY (`status_id`) REFERENCES `reservation_statuses` (`status_id`) ON UPDATE CASCADE,
-  CONSTRAINT `reservations_schedule` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`schedule_id`),
   CONSTRAINT `reservations_owner` FOREIGN KEY (`owner_id`) REFERENCES `users` (`user_id`)  ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

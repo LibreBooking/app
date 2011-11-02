@@ -294,12 +294,11 @@ class ReservationRepositoryTests extends TestBase
 		$expected = new ExistingReservationSeries();
 		$expected->WithId($seriesId);
 		$expected->WithOwner($ownerId);
-		$expected->WithPrimaryResource(new BookableResource($resourceId, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign, $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice));
-		$expected->WithSchedule($scheduleId);
+		$expected->WithPrimaryResource(new BookableResource($resourceId, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign, $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice, null, $scheduleId));
 		$expected->WithTitle($title);
 		$expected->WithDescription($description);
-		$expected->WithResource(new BookableResource($resourceId1, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign, $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice));
-		$expected->WithResource(new BookableResource($resourceId2, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign, $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice));
+		$expected->WithResource(new BookableResource($resourceId1, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign, $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice, null, $scheduleId));
+		$expected->WithResource(new BookableResource($resourceId2, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign, $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice, null, $scheduleId));
 		$expected->WithRepeatOptions($repeatOptions);
 		$expected->WithStatus($statusId);
 
@@ -332,7 +331,6 @@ class ReservationRepositoryTests extends TestBase
 			$repeatType,
 			$repeatOptions->ConfigurationString(),
 			$referenceNumber,
-			$scheduleId,
 			$seriesId,
 			$ownerId,
 			$statusId
@@ -344,7 +342,7 @@ class ReservationRepositoryTests extends TestBase
 				->WithInstance($instance2->ReservationId(), $instance2->ReferenceNumber(), $instance2->Duration())
 				->WithInstance($reservationId, $expectedInstance->ReferenceNumber(), $expectedInstance->Duration());
 
-		$reservationResourceRow = new ReservationResourceRow($reservationId, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign, $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice);
+		$reservationResourceRow = new ReservationResourceRow($reservationId, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign, $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice, $scheduleId);
 		$reservationResourceRow
 				->WithPrimary($resourceId)
 				->WithAdditional($resourceId1)
@@ -352,7 +350,6 @@ class ReservationRepositoryTests extends TestBase
 
 		$reservationUserRow = new ReservationUserRow();
 		$reservationUserRow
-		//->WithOwner($userId)
 				->WithParticipants($instance1, $instance1Participants)
 				->WithParticipants($instance2, $instance2Participants)
 				->WithInvitees($instance1, $instance1Invitees)
@@ -412,7 +409,6 @@ class ReservationRepositoryTests extends TestBase
 		$seriesId = 10909;
 		$userId = 10;
 		$resourceId = 11;
-		$scheduleId = 12;
 		$title = "new title";
 		$description = "new description";
 		$expectedRepeat = new RepeatNone();
@@ -427,8 +423,6 @@ class ReservationRepositoryTests extends TestBase
 
 		$existingReservation = $builder->BuildTestVersion();
 		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, new FakeUserSession());
-		$existingReservation->WithSchedule($scheduleId);
-
 
 		$this->db->_ExpectedInsertId = $seriesId;
 
@@ -440,7 +434,6 @@ class ReservationRepositoryTests extends TestBase
 			$description,
 			$expectedRepeat->RepeatType(),
 			$expectedRepeat->ConfigurationString(),
-			$scheduleId,
 			ReservationTypes::Reservation,
 			ReservationStatus::Created,
 			$userId);
@@ -458,7 +451,6 @@ class ReservationRepositoryTests extends TestBase
 		$newInstanceId2 = 2828;
 		$userId = 10;
 		$resourceId = 11;
-		$scheduleId = 12;
 		$title = "new title";
 		$description = "new description";
 
@@ -484,7 +476,6 @@ class ReservationRepositoryTests extends TestBase
 
 		$existingReservation = $builder->BuildTestVersion();
 		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, new FakeUserSession());
-		$existingReservation->WithSchedule($scheduleId);
 
 		$expectedRepeat = $existingReservation->RepeatOptions();
 
@@ -500,7 +491,6 @@ class ReservationRepositoryTests extends TestBase
 			$description,
 			$expectedRepeat->RepeatType(),
 			$expectedRepeat->ConfigurationString(),
-			$scheduleId,
 			ReservationTypes::Reservation,
 			ReservationStatus::Created,
 			$userId);
@@ -728,7 +718,6 @@ class ReservationRow
 		$repeatType,
 		$repeatOptions,
 		$referenceNumber,
-		$scheduleId,
 		$seriesId,
 		$ownerId,
 		$statusId
@@ -744,7 +733,6 @@ class ReservationRow
 			ColumnNames::REPEAT_TYPE => $repeatType,
 			ColumnNames::REPEAT_OPTIONS => $repeatOptions,
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
-			ColumnNames::SCHEDULE_ID => $scheduleId,
 			ColumnNames::SERIES_ID => $seriesId,
 			ColumnNames::RESERVATION_OWNER => $ownerId,
 			ColumnNames::RESERVATION_STATUS => $statusId
@@ -809,7 +797,8 @@ class ReservationResourceRow
 		$allowMultiDay = null,
 		$maxParticipants = null,
 		$minNotice = null,
-		$maxNotice = null)
+		$maxNotice = null,
+		$scheduleId = null)
 	{
 		$this->seriesId = $seriesId;
 		$this->resourceName = $resourceName;
@@ -824,6 +813,7 @@ class ReservationResourceRow
 		$this->maxParticipants = $maxParticipants;
 		$this->minNotice = $minNotice;
 		$this->maxNotice = $maxNotice;
+		$this->scheduleId = $scheduleId;
 	}
 
 	public function WithPrimary($resourceId)
@@ -856,6 +846,7 @@ class ReservationResourceRow
 			ColumnNames::RESOURCE_MAX_PARTICIPANTS => $this->maxParticipants,
 			ColumnNames::RESOURCE_MINNOTICE => $this->minNotice,
 			ColumnNames::RESOURCE_MAXNOTICE => $this->maxNotice,
+			ColumnNames::SCHEDULE_ID => $this->scheduleId,
 		);
 	}
 }

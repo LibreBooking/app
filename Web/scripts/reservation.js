@@ -445,7 +445,9 @@ function Reservation(opts) {
 	}
 
 	function InitializeCheckboxes(dialogBoxId, displayDivId) {
-		var selectedItems = $.makeArray($(displayDivId + ' p').text());
+		var selectedItems = [];
+		$(displayDivId + ' p').each(function() { selectedItems.push($(this).text()) });
+
 		$(dialogBoxId + ' :checkbox').each(function() {
 			var checkboxText = $(this).next().text();
 			if ($.inArray(checkboxText, selectedItems) >= 0) {

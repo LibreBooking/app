@@ -149,7 +149,7 @@ class AddReservationUserCommand extends SqlCommand
 
 class AddResourceCommand extends SqlCommand 
 {
-	public function __construct($name, $location = null, $contact_info = null, $description = null, $notes = null, 
+	public function __construct($name, $schedule_id, $location = null, $contact_info = null, $description = null, $notes = null,
 								$isactive = 1, $min_duration = null, $min_increment = null, $max_duration = null, 
 								$unit_cost = null, $autoassign = 1, $requires_approval = 0, $allow_multiday = 1, 
 								$max_participants = null, $min_notice_time = null, $max_notice_time = null)
@@ -157,6 +157,7 @@ class AddResourceCommand extends SqlCommand
 		parent::__construct(Queries::ADD_RESOURCE);
 		
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NAME, $name));	
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $schedule_id));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_LOCATION, $location));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_CONTACT, $contact_info));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_DESCRIPTION, $description));
@@ -172,16 +173,6 @@ class AddResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $max_participants));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $min_notice_time));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $max_notice_time));
-	}
-}
-
-class AddResourceScheduleCommand extends SqlCommand
-{
-	public function __construct($resourceId, $scheduleId)
-	{
-		parent::__construct(Queries::ADD_RESOURCE_SCHEDULE);
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));	
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));	
 	}
 }
 
@@ -892,7 +883,8 @@ class UpdateResourceCommand extends SqlCommand
 								TimeInterval $maxNoticeTime,
 								$description,
 								$imageName,
-								$isActive)
+								$isActive,
+								$scheduleId)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 		
@@ -912,6 +904,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $maxNoticeTime->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_IMAGE_NAME, $imageName));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ISACTIVE, (int)$isActive));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
 }
 

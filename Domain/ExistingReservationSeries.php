@@ -47,15 +47,7 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		$this->_resource = $resource;
 	}
-
-	/**
-	 * @internal
-	 */
-	public function WithSchedule($scheduleId)
-	{
-		throw new Exception("figure out what happens when schedule is no longer on reservation series");
-	}
-
+	
 	/**
 	 * @internal
 	 */
@@ -162,6 +154,12 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function Update($userId, BookableResource $resource, $title, $description, UserSession $updatedBy)
 	{
+		if ($this->_resource->GetId() != $resource->GetId())
+		{
+			$this->AddEvent(new ResourceRemovedEvent($this->_resource, $this));
+			$this->AddEvent(new ResourceAddedEvent($resource, ResourceLevel::Primary, $this));
+		}
+
 		$this->_userId = $userId;
 		$this->_resource = $resource;
 		$this->_title = $title;
@@ -250,7 +248,7 @@ class ExistingReservationSeries extends ReservationSeries
 		/** @var $resource BookableResource */
 		foreach ($added as $resource)
 		{
-			$this->AddEvent(new ResourceAddedEvent($resource, $this));
+			$this->AddEvent(new ResourceAddedEvent($resource, ResourceLevel::Additional, $this));
 		}
 
 		/** @var $resource BookableResource */
@@ -651,7 +649,17 @@ class ResourceAddedEvent
 	 */
 	private $resource;
 
-	public function __construct(BookableResource $resource, ExistingReservationSeries $series)
+	/**
+	 * @var int|ResourceLevel
+	 */
+	private $resourceLevel;
+
+	/**
+	 * @param BookableResource $resource
+	 * @param int|ResourceLevel $resourceLevel
+	 * @param ExistingReservationSeries $series
+	 */
+	public function __construct(BookableResource $resource, $resourceLevel, ExistingReservationSeries $series)
 	{
 		$this->resource = $resource;
 		$this->series = $series;
@@ -682,6 +690,11 @@ class ResourceAddedEvent
 	{
         return sprintf("%s%s%s", get_class($this), $this->ResourceId(), $this->series->SeriesId());
     }
+
+	public function ResourceLevel()
+	{
+		return $this->resourceLevel;
+	}
 }
 
 class SeriesApprovedEvent

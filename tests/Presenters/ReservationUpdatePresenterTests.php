@@ -79,8 +79,9 @@ class ReservationUpdatePresenterTests extends TestBase
 		$reservation = new Reservation($expectedSeries, $currentDuration);		
 		$expectedSeries->WithId($seriesId);
 		$expectedSeries->WithCurrentInstance($reservation);
+		$expectedSeries->WithPrimaryResource($resource);
 		$expectedSeries->WithResource(new FakeBookableResource($removedResourceId));
-		
+
 		$reservationId = $this->page->reservationId;
 		
 		$timezone = $this->user->Timezone;
@@ -126,6 +127,34 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($this->page->invitees, $existingSeries->CurrentInstance()->AddedInvitees());
 		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()), "Expected: $expectedDuration Actual: {$existingSeries->CurrentInstance()->Duration()}");
 		$this->assertEquals($this->user, $expectedSeries->BookedBy());
+	}
+
+	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()
+	{
+		$reservationId = $this->page->reservationId;
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithPrimaryResource(new FakeBookableResource(100));
+		$expectedSeries = $builder->Build();
+
+		$additionalId = 5;
+		$this->page->resourceId = null;
+		$this->page->resourceIds = array($additionalId);
+
+		$resource = new FakeBookableResource($additionalId);
+
+		$this->persistenceService->expects($this->once())
+			->method('LoadByInstanceId')
+			->with($this->equalTo($reservationId))
+			->will($this->returnValue($expectedSeries));
+		
+		$this->resourceRepository->expects($this->once())
+			->method('LoadById')
+			->with($this->equalTo($additionalId))
+			->will($this->returnValue($resource));
+
+		$existingSeries = $this->presenter->BuildReservation();
+
+		$this->assertEquals($resource, $existingSeries->Resource());
 	}
 	
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistenceAndNotification()

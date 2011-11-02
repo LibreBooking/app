@@ -15,6 +15,11 @@ class ExistingReservationSeriesBuilder
 	 * @var IRepeatOptions
 	 */
 	private $repeatOptions;
+
+	/**
+	 * @var BookableResource
+	 */
+	private $resource;
 	
 	private $instances;
 	private $events;
@@ -32,9 +37,8 @@ class ExistingReservationSeriesBuilder
 		
 		$series->WithDescription('description');
 		$series->WithOwner(1);
-		$series->WithPrimaryResource(new FakeBookableResource(2));
+		$this->resource = new FakeBookableResource(2);
 		$series->WithResource(new FakeBookableResource(3));
-		$series->WithSchedule(4);
 		$series->WithTitle('title');
 		$series->WithStatus(ReservationStatus::Created);
 		
@@ -92,7 +96,17 @@ class ExistingReservationSeriesBuilder
 
 		return $this;
 	}
-	
+
+	/**
+	 * @param BookableResource $resource
+	 * @return ExistingReservationSeriesBuilder
+	 */
+	public function WithPrimaryResource(BookableResource $resource)
+	{
+		$this->resource = $resource;
+
+		return $this;
+	}
 	/**
 	 * @return ExistingReservationSeries
 	 */
@@ -111,6 +125,8 @@ class ExistingReservationSeriesBuilder
 			$this->series->AddEvent($event);
 		}
 
+		$this->series->WithPrimaryResource($this->resource);
+
 		return $this->series;
 	}
 	
@@ -125,6 +141,7 @@ class ExistingReservationSeriesBuilder
 		
 		return $this->series;
 	}
+
 }
 
 class TestHelperExistingReservationSeries extends ExistingReservationSeries

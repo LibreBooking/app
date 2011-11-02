@@ -312,8 +312,7 @@ class Queries
 
 	const GET_ALL_RESOURCES = 
 		'SELECT * 
-		FROM resources r
-		LEFT JOIN resource_schedules rs ON r.resource_id = rs.resource_id';
+		FROM resources r';
 	
 	const GET_ALL_SCHEDULES = 
 		'SELECT * 
@@ -350,7 +349,6 @@ class Queries
 	const GET_RESOURCE_BY_ID = 
 		'SELECT *
 		FROM resources r
-		INNER JOIN resource_schedules rs ON r.resource_id = rs.resource_id
 		WHERE r.resource_id = @resourceid';
 	
 	const GET_RESERVATION_BY_ID =
@@ -370,14 +368,15 @@ class Queries
 			status_id <> 2';
 	
 	const GET_RESERVATION_FOR_EDITING = 
-		'SELECT *, r.status_id as status_id
+		'SELECT ri.*, rs.*, u.user_id, r.schedule_id, rs.status_id as status_id
 		FROM reservation_instances ri
-		INNER JOIN reservation_series r ON r.series_id = ri.series_id
-		INNER JOIN users u ON u.user_id = r.owner_id
-		INNER JOIN reservation_resources rr ON r.series_id = rr.series_id AND rr.resource_level_id = @resourceLevelId
+		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
+		INNER JOIN users u ON u.user_id = rs.owner_id
+		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id AND rr.resource_level_id = @resourceLevelId
+		INNER JOIN resources r ON r.resource_id = rr.resource_id
 		WHERE 
 			reference_number = @referenceNumber AND
-			r.status_id <> 2';
+			rs.status_id <> 2';
 
 	const GET_RESERVATION_LIST_FULL =
 		'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.status_id as status_id
@@ -461,10 +460,10 @@ class Queries
 	INNER JOIN reservation_users ru ON ri.reservation_instance_id = ru.reservation_instance_id
 	INNER JOIN users u ON ru.user_id = u.user_id
 	INNER JOIN reservation_resources rr ON rr.series_id = ri.series_id
-	INNER JOIN resource_schedules rs ON rs.resource_id = rr.resource_id
+	INNER JOIN resources ON resources.resource_id = rr.resource_id
 	WHERE
 		ru.reservation_user_level = 1 AND
-		(@scheduleid = -1 OR rs.schedule_id = @scheduleid) AND
+		(@scheduleid = -1 OR resources.schedule_id = @scheduleid) AND
 		(@resourceid = -1 OR rr.resource_id = @resourceid) AND
 		(
 			(ri.start_date >= @startDate AND ri.start_date <= @endDate)
@@ -506,10 +505,9 @@ class Queries
 		'SELECT 
 			*
 		FROM 
-			resources r, resource_schedules rs 
+			resources r
 		WHERE 
-			r.resource_id = rs.resource_id AND 
-			rs.schedule_id = @scheduleid AND
+			r.schedule_id = @scheduleid AND
 			r.isactive = 1';
 	
 	const GET_USER_BY_ID = 
@@ -614,16 +612,11 @@ class Queries
 		'INSERT INTO 
 			resources (name, location, contact_info, description, notes, isactive, min_duration, min_increment, 
 					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations, 
-					   max_participants, min_notice_time, max_notice_time)
+					   max_participants, min_notice_time, max_notice_time, schedule_id)
 		VALUES
 			(@resource_name, @location, @contact_info, @description, @resource_notes, @isactive, @min_duration, @min_increment, 
 			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiday_reservations,
-		     @max_participants, @min_notice_time, @max_notice_time)';
-	
-	const ADD_RESOURCE_SCHEDULE = 
-		'INSERT INTO
-			resource_schedules (resource_id, schedule_id)
-			VALUES (@resourceid, @scheduleid)';
+		     @max_participants, @min_notice_time, @max_notice_time, @scheduleid)';
 	
 	const SET_DEFAULT_SCHEDULE = 
 		'UPDATE schedules
@@ -687,14 +680,7 @@ class Queries
 			min_notice_time = @min_notice_time,
 			max_notice_time = @max_notice_time,
 			image_name = @imageName,
-			isactive = @isActive
-		WHERE
-			resource_id = @resourceid';
-	
-	const UPDATE_RESOURCE_SCHEDULE = 
-		'UPDATE
-			resource_schedules
-		SET
+			isactive = @isActive,
 			schedule_id = @scheduleid
 		WHERE
 			resource_id = @resourceid';
