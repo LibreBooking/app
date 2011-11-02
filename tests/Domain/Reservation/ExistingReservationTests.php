@@ -41,7 +41,7 @@ class ExistingReservationTests extends TestBase
 		$series = $builder->Build();
 		// updates
 		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
-		$series->Update(99, new FakeBookableResource(999), 'new', 'new', new FakeUserSession());
+		$series->Update(99, $series->Resource(), 'new', 'new', new FakeUserSession());
 		$series->Repeats($currentRepeatOptions);
 
 		$instances = $series->Instances();
@@ -97,8 +97,8 @@ class ExistingReservationTests extends TestBase
 		
 		$this->assertEquals(13, count($events), "1 branched, 10 created, 2 removed");
 		// remove all future events
-		$instanceRemovedEvent1 = new InstanceRemovedEvent($futureReservation1);
-		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation2);
+		$instanceRemovedEvent1 = new InstanceRemovedEvent($futureReservation1, $series);
+		$instanceRemovedEvent2 = new InstanceRemovedEvent($futureReservation2, $series);
 		$seriesBranchedEvent = new SeriesBranchedEvent($series);
 		
 		$this->assertTrue(in_array($instanceRemovedEvent1, $events), "missing ref {$futureReservation1->ReferenceNumber()}");
@@ -113,7 +113,7 @@ class ExistingReservationTests extends TestBase
 				continue;
 			}
 			
-			$instanceAddedEvent = new InstanceAddedEvent($instance);
+			$instanceAddedEvent = new InstanceAddedEvent($instance, $series);
 			$this->assertTrue(in_array($instanceAddedEvent, $events), "missing ref num {$instance->ReferenceNumber()}");
 		}
 	}
@@ -200,8 +200,8 @@ class ExistingReservationTests extends TestBase
 		
 		$this->assertEquals(12, count($events), "2 removals, 10 adds");
 		// remove all future events
-		$instanceRemovedEvent1 = new InstanceRemovedEvent($afterTodayButBeforeCurrent);
-		$instanceRemovedEvent2 = new InstanceRemovedEvent($afterCurrent);
+		$instanceRemovedEvent1 = new InstanceRemovedEvent($afterTodayButBeforeCurrent, $series);
+		$instanceRemovedEvent2 = new InstanceRemovedEvent($afterCurrent, $series);
 		
 		$this->assertTrue(in_array($instanceRemovedEvent1, $events), "missing ref {$afterTodayButBeforeCurrent->ReferenceNumber()}");
 		$this->assertTrue(in_array($instanceRemovedEvent2, $events), "missing ref {$afterCurrent->ReferenceNumber()}");
@@ -214,7 +214,7 @@ class ExistingReservationTests extends TestBase
 				continue;
 			}
 			
-			$instanceAddedEvent = new InstanceAddedEvent($instance);
+			$instanceAddedEvent = new InstanceAddedEvent($instance, $series);
 			$this->assertTrue(in_array($instanceAddedEvent, $events), "missing ref num {$instance->ReferenceNumber()}");
 		}
 	}
@@ -271,7 +271,7 @@ class ExistingReservationTests extends TestBase
 		
 		$events = $series->GetEvents();
 		$this->assertEquals(20, count($events), "19 created, 1 deleted");
-		$this->assertTrue(in_array(new InstanceRemovedEvent($futureInstance), $events));
+		$this->assertTrue(in_array(new InstanceRemovedEvent($futureInstance, $series), $events));
 	}
 	
 	public function testWhenApplyingSimpleUpdatesToFullSeries()
@@ -334,7 +334,7 @@ class ExistingReservationTests extends TestBase
 //		$this->assertEquals(new DateRange($newInstance2Start, $newInstance2End), $series->GetInstance($newInstance2Start)->Duration());
 		
 		$events = $series->GetEvents();
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($instance1), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($instance1, $series), $events));
 		
 	}
 	
@@ -394,9 +394,9 @@ class ExistingReservationTests extends TestBase
 		$events = $series->GetEvents();
 		
 		//$this->assertEquals(1, count($events));
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($currentInstance), $events));
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($futureReservation1), $events));
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($futureReservation2), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($currentInstance, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($futureReservation1, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($futureReservation2, $series), $events));
 	}
 
 	public function testChangingParticipantsAddsNewRemovesOldAndKeepsOverlap()
@@ -491,9 +491,9 @@ class ExistingReservationTests extends TestBase
 		$this->assertContains($userId, $r2->AddedParticipants());
 		$this->assertContains($userId, $r2->RemovedInvitees());
 
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1), $events));
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2), $events));
-		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));
+		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events));
 	}
 
 	public function testDeclinesInvitesForEachInstance()
@@ -526,9 +526,9 @@ class ExistingReservationTests extends TestBase
 		$this->assertContains($userId, $r1->RemovedInvitees());
 		$this->assertContains($userId, $r2->RemovedInvitees());
 
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1), $events));
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2), $events));
-		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));
+		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events));
 	}
 
 	public function testRemovesParticipationFromCurrentInstance()
@@ -556,8 +556,8 @@ class ExistingReservationTests extends TestBase
 		$this->assertContains($userId, $r1->RemovedParticipants());
 		$this->assertEmpty($r2->RemovedInvitees());
 
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1), $events));
-		$this->assertFalse(in_array(new InstanceUpdatedEvent($r2), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
+		$this->assertFalse(in_array(new InstanceUpdatedEvent($r2, $series), $events));
 	}
 
 	public function testRemovesParticipationFromAllInstances()
@@ -591,9 +591,9 @@ class ExistingReservationTests extends TestBase
 		$this->assertContains($userId, $r2->RemovedParticipants());
 		$this->assertEmpty($r3->RemovedInvitees());
 
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1), $events));
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2), $events));
-		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));
+		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events));
 	}
 
 	public function testChangesResources()
@@ -603,17 +603,33 @@ class ExistingReservationTests extends TestBase
 		$unchanged = new FakeBookableResource(1);
 		$added = new FakeBookableResource(2);
 		$removed = new FakeBookableResource(3);
+		$primaryResource = new FakeBookableResource(4);
+		$becomesPrimary = new FakeBookableResource(5);
 		
 		$series = $builder->Build();
-		$series->WithResource(new FakeBookableResource($unchanged));
-		$series->WithResource(new FakeBookableResource($removed));
+		$series->WithPrimaryResource($primaryResource);
+		$series->WithResource($unchanged);
+		$series->WithResource($removed);
+		$series->WithResource($becomesPrimary);
 
+		$series->Update($series->UserId(), $becomesPrimary, $series->Title(), $series->Description(), $this->fakeUser);
 		$series->ChangeResources(array($unchanged, $added));
 
 		$events = $series->GetEvents();
 
+		$removeAdditionalEvent = new ResourceRemovedEvent($becomesPrimary, $series);
+		$addAdditionalEvent = new ResourceAddedEvent($becomesPrimary, ResourceLevel::Primary, $series);
+		
 		$this->assertTrue(in_array(new ResourceRemovedEvent($removed, $series), $events));
 		$this->assertTrue(in_array(new ResourceAddedEvent($added, ResourceLevel::Additional, $series), $events));
+		$this->assertTrue(in_array(new ResourceRemovedEvent($primaryResource, $series), $events));
+		$this->assertTrue(in_array($removeAdditionalEvent, $events));
+		$this->assertTrue(in_array($addAdditionalEvent, $events));
+
+		$removeAdditionalIndex = array_search($removeAdditionalEvent, $events);
+		$addAdditionalIndex = array_search($addAdditionalEvent, $events);
+
+		$this->assertTrue($removeAdditionalIndex < $addAdditionalIndex, "should remove existing relationship before adding new one");
 	}
 
 	public function testApproveUpdatesStateAndFiresEvent()

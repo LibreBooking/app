@@ -378,14 +378,13 @@ class ReservationRepositoryTests extends TestBase
 	public function testChangingOnlySharedInformationForFullSeriesJustUpdatesSeriesTable()
 	{
 		$userId = 10;
-		$resourceId = 11;
 		$title = "new title";
 		$description = "new description";
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$existingReservation = $builder->Build();
 
-		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, new FakeUserSession());
+		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
 		$repeatOptions = $existingReservation->RepeatOptions();
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatConfiguration = $repeatOptions->ConfigurationString();
