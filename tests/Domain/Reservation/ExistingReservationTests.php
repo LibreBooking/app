@@ -642,6 +642,7 @@ class ExistingReservationTests extends TestBase
 
 		$this->assertEquals(ReservationStatus::Created, $series->StatusId());
 		$this->assertTrue(in_array(new SeriesApprovedEvent($series), $events));
+	
 	}
 }
 ?>

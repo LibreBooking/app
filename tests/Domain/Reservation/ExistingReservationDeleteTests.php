@@ -59,7 +59,7 @@ class ExistingReservationDeleteTests extends TestBase
 		
 		$events = $series->GetEvents();
 		
-		$this->assertTrue(in_array(new InstanceRemovedEvent($current), $events));
+		$this->assertTrue(in_array(new InstanceRemovedEvent($current, $series), $events));
 	}
 	
 	public function testDeleteAllInstancesDeletesInstancesAfterTodaysDate()
@@ -90,9 +90,9 @@ class ExistingReservationDeleteTests extends TestBase
 		$events = $series->GetEvents();
 		
 		$this->assertEquals(3, count($events));
-		$this->assertTrue(in_array(new InstanceRemovedEvent($current), $events));
-		$this->assertTrue(in_array(new InstanceRemovedEvent($future1), $events));
-		$this->assertTrue(in_array(new InstanceRemovedEvent($future2), $events));
+		$this->assertTrue(in_array(new InstanceRemovedEvent($current, $series), $events));
+		$this->assertTrue(in_array(new InstanceRemovedEvent($future1, $series), $events));
+		$this->assertTrue(in_array(new InstanceRemovedEvent($future2, $series), $events));
 	}
 	
 	public function testDeleteFutureInstancesDeletesCurrentAndFutureInstances()
@@ -122,10 +122,10 @@ class ExistingReservationDeleteTests extends TestBase
 		
 		$events = $series->GetEvents();
 		
-		$this->assertTrue(in_array(new InstanceRemovedEvent($current), $events));
-		$this->assertTrue(in_array(new InstanceRemovedEvent($future1), $events));
-		$this->assertTrue(in_array(new InstanceRemovedEvent($future2), $events));
-		$this->assertTrue(!in_array(new InstanceRemovedEvent($past), $events));
+		$this->assertTrue(in_array(new InstanceRemovedEvent($current, $series), $events));
+		$this->assertTrue(in_array(new InstanceRemovedEvent($future1, $series), $events));
+		$this->assertTrue(in_array(new InstanceRemovedEvent($future2, $series), $events));
+		$this->assertTrue(!in_array(new InstanceRemovedEvent($past, $series), $events));
 	}
 	
 	public function testDeleteFullSeriesWithAllInstancesInFuture()

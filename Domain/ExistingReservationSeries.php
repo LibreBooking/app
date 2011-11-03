@@ -351,8 +351,9 @@ class ExistingReservationSeries extends ReservationSeries
 	public function GetEvents()
 	{
 		$uniqueEvents = array_unique($this->events);
+		usort($uniqueEvents, array('SeriesEvent', 'Compare'));
+
 		return $uniqueEvents;
-		//$sortedEvents = usort()
 	}
 
 	public function Instances()
@@ -478,11 +479,11 @@ class ExistingReservationSeries extends ReservationSeries
 
 class SeriesEventPriority
 {
-	const Highest = 1;
-	const High = 3;
+	const Highest = 10;
+	const High = 7;
 	const Normal = 5;
-	const Low = 7;
-	const Lowest = 10;
+	const Low = 3;
+	const Lowest = 1;
 
 }
 abstract class SeriesEvent
@@ -535,12 +536,23 @@ abstract class SeriesEvent
 	{
 		$this->priority = $priority;
 		$this->series = $series;
-		$this->id = uniqid();
+		$this->id = $this->series->SeriesId();
 	}
 
 	public function __toString()
 	{
 		return sprintf("%s-%s", get_class($this), $this->id);
+	}
+
+	public static function Compare(SeriesEvent $event1, SeriesEvent $event2)
+	{
+		if ($event1->GetPriority() == $event2->GetPriority())
+		{
+			return 0;
+		}
+
+		// higher priority should be at the top
+		return ($event1->GetPriority() > $event2->GetPriority()) ? -1 : 1;
 	}
 }
 

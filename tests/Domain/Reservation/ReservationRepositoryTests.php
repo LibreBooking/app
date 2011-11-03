@@ -463,10 +463,10 @@ class ReservationRepositoryTests extends TestBase
 		$currentInstance = new TestReservation('999', $dateRange);
 
 		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithEvent(new InstanceAddedEvent($newInstance1));
-		$builder->WithEvent(new InstanceAddedEvent($newInstance2));
-		$builder->WithEvent(new InstanceRemovedEvent($removedInstance1));
-		$builder->WithEvent(new InstanceRemovedEvent($removedInstance2));
+		$builder->WithEvent(new InstanceAddedEvent($newInstance1, $builder->series));
+		$builder->WithEvent(new InstanceAddedEvent($newInstance2, $builder->series));
+		$builder->WithEvent(new InstanceRemovedEvent($removedInstance1, $builder->series));
+		$builder->WithEvent(new InstanceRemovedEvent($removedInstance2, $builder->series));
 		$builder->WithEvent(new SeriesBranchedEvent($builder->series));
 		$builder->WithRequiresNewSeries(true);
 		$builder->WithInstance($existingInstance1);
@@ -538,8 +538,8 @@ class ReservationRepositoryTests extends TestBase
 		$instance2 = new TestReservation('423', $dateRange->AddDays(4));
 
 		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithEvent(new InstanceUpdatedEvent($instance1));
-		$builder->WithEvent(new InstanceUpdatedEvent($instance2));
+		$builder->WithEvent(new InstanceUpdatedEvent($instance1, $builder->series));
+		$builder->WithEvent(new InstanceUpdatedEvent($instance2, $builder->series));
 		$series = $builder->BuildTestVersion();
 		$series->WithId($seriesId);
 		$this->repository->Update($series);
@@ -580,8 +580,8 @@ class ReservationRepositoryTests extends TestBase
 		$instance2 = new TestReservation("ref2");
 
 		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithEvent(new InstanceRemovedEvent($instance1));
-		$builder->WithEvent(new InstanceRemovedEvent($instance2));
+		$builder->WithEvent(new InstanceRemovedEvent($instance1, $builder->series));
+		$builder->WithEvent(new InstanceRemovedEvent($instance2, $builder->series));
 		$series = $builder->BuildTestVersion();
 		$series->WithId($seriesId);
 
