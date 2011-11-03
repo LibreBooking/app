@@ -63,8 +63,10 @@ function Reservation(opts) {
 			}
 		});
 
+		elements.accessoriesDialog.dialog({ width: 450 });
 		elements.accessoriesPrompt.click(function() {
 			ShowAccessoriesPrompt();
+
 			elements.accessoriesDialog.dialog('open');
 		});
 

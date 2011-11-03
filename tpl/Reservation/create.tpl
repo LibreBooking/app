@@ -243,7 +243,7 @@
 		<tr>
 			<td>Accessory</td>
 			<td>Quantity</td>
-			<td>Available</td>
+			<td>Total Available *</td>
 		</tr>
 		{foreach from=$AvailableAccessories item=accessory}
 			<tr>
@@ -253,13 +253,14 @@
 					<input type="hidden" class="id" value="{$accessory->Id}"}" />
 					<input type="text" name="accessory{$accessory->Id}" value="0" size="3" />
 				</td>
-				<td>{$accessory->QuantityAvailable}</td>
+				<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
 			</tr>
 		{/foreach}
 	</table>
 	<br/>
 	<button id="btnConfirmAddAccessories" class="button">{translate key='Done'}</button>
 	<button id="btnCancelAddAccessories" class="button">{translate key='Cancel'}</button>
+	<p>* Limited number may be available at requested time</p>
 </div>
 
 <div id="dialogSave" style="display:none;">

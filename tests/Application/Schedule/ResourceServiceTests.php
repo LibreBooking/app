@@ -97,8 +97,9 @@ class ResourceServiceTests extends TestBase
 		$accessoryDtos = array(new AccessoryDto(4, "lksjdf", 23));
 		
 		$resourceRepository = $this->getMock('IResourceRepository');
-		
-		$resourceService = new ResourceService($resourceRepository, null);
+		$permissionService = $this->getMock('IPermissionService');
+
+		$resourceService = new ResourceService($resourceRepository, $permissionService);
 
 		$resourceRepository->expects($this->once())
 				->method('GetAccessoryList')
