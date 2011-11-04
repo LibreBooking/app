@@ -80,3 +80,8 @@
 	overflow-y: auto;
 	border: solid 1px #ededed;
 }
+
+#accessories p
+{
+	margin: 1px;
+}

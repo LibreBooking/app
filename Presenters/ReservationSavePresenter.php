@@ -37,9 +37,8 @@ class ReservationSavePresenter
 	
 	public function BuildReservation()
 	{
-		// accessories
-		// reminder
-		
+		//TODO: reminders
+
 		$userId = $this->_page->GetUserId();
 		$resource = $this->_resourceRepository->LoadById($this->_page->GetResourceId());
 		$title = $this->_page->GetTitle();
@@ -54,6 +53,13 @@ class ReservationSavePresenter
 		foreach ($resourceIds as $resourceId)
 		{
 			$reservationSeries->AddResource($this->_resourceRepository->LoadById($resourceId));
+		}
+
+		$accessories = $this->_page->GetAccessories();
+
+		foreach ($accessories as $accessory)
+		{
+			$reservationSeries->AddAccessory(new ReservationAccessory($accessory->Id, $accessory->Quantity));
 		}
 
 		$participantIds = $this->_page->GetParticipants();

@@ -79,6 +79,7 @@ class ReservationSavePresenterTests extends TestBase
 		$startTime = $this->page->GetStartTime();
 		$endTime = $this->page->GetEndTime();
 		$additionalResources = $this->page->GetResources();
+		$pageAccessories = $this->page->GetAccessories();
 
 		$repeatOptions = $this->page->GetRepeatOptions();
 
@@ -89,6 +90,12 @@ class ReservationSavePresenterTests extends TestBase
 		$additionalResource1 = new FakeBookableResource($additionalResources[0], 'r2');
 		$additionalResource2 = new FakeBookableResource($additionalResources[1], 'r3');
 
+		$accessories = array();
+		foreach ($pageAccessories as $pa)
+		{
+			$accessories[] = new ReservationAccessory($pa->Id, $pa->Quantity);
+		}
+		
 		$this->resourceRepository->expects($this->at(0))
 			->method('LoadById')
 			->with($this->equalTo($resourceId))
@@ -105,12 +112,6 @@ class ReservationSavePresenterTests extends TestBase
 			->will($this->returnValue($additionalResource2));
 
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
-		
-		$expected = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, $this->user);
-		$expected->AddResource($additionalResource1);
-		$expected->AddResource($additionalResource2);
-		$expected->ChangeParticipants($participants);
-		$expected->ChangeInvitees($invitees);
 
 		$actualReservation = $this->presenter->BuildReservation();
 		
@@ -122,6 +123,7 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals($repeatOptions, $actualReservation->RepeatOptions());
 		$this->assertEquals($participants, $actualReservation->CurrentInstance()->AddedParticipants());
 		$this->assertEquals($invitees, $actualReservation->CurrentInstance()->AddedInvitees());
+		$this->assertEquals($accessories, $actualReservation->Accessories());
 	}
 
 	public function testHandlingReservationCreationDelegatesToHandler()
@@ -165,6 +167,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $referenceNumber;
 	public $participants = array(10, 20, 40);
 	public $invitees = array(11, 21, 41);
+	public $accessories = array();
 
 	public function __construct()
 	{
@@ -283,5 +286,13 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetInvitees()
 	{
 		return $this->invitees;
+	}
+
+	/**
+	 * @return AccessoryFormElement[]
+	 */
+	public function GetAccessories()
+	{
+		return $this->accessories;
 	}
 }

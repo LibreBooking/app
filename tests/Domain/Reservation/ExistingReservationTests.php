@@ -644,5 +644,43 @@ class ExistingReservationTests extends TestBase
 		$this->assertTrue(in_array(new SeriesApprovedEvent($series), $events));
 	
 	}
+
+	public function testChangeAccessories()
+	{
+		$accessory1 = new ReservationAccessory(1, 100);
+		$accessory2 = new ReservationAccessory(2, 22);
+		$accessory3 = new ReservationAccessory(3, 3);
+		$accessory4 = new ReservationAccessory(4, 444);
+		
+		$accessory1WithDifferentQuantity = new ReservationAccessory(1, 99);
+
+		$series = new ExistingReservationSeries();
+
+		$series->WithAccessory($accessory1);
+		$series->WithAccessory($accessory2);
+		$series->WithAccessory($accessory3);
+
+		$accessories = array($accessory1WithDifferentQuantity, $accessory2, $accessory4);
+		$series->ChangeAccessories($accessories);
+
+		$this->assertEquals($accessories, $series->Accessories());
+
+		$events = $series->GetEvents();
+
+		$remove1 = new AccessoryRemovedEvent($accessory1, $series);
+		$remove3 = new AccessoryRemovedEvent($accessory3, $series);
+		$add1 = new AccessoryAddedEvent($accessory1WithDifferentQuantity, $series);
+		$add4 = new AccessoryAddedEvent($accessory4, $series);
+
+		$this->assertTrue(in_array($remove1, $events));
+		$this->assertTrue(in_array($add1, $events));
+		$this->assertTrue(in_array($add4, $events));
+		$this->assertTrue(in_array($remove3, $events));
+
+		$removeIndex = array_search($remove1, $events);
+		$addIndex = array_search($add1, $events);
+
+		$this->assertTrue($removeIndex < $addIndex, "need to remove before adding to avoid key conflicts");
+	}
 }
 ?>

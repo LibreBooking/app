@@ -89,6 +89,12 @@ interface IReservationSavePage extends IReservationSaveResultsPage
 	 * @param string $referenceNumber
 	 */
 	public function SetReferenceNumber($referenceNumber);
+
+	/**
+	 * @abstract
+	 * @return AccessoryFormElement[]
+	 */
+	public function GetAccessories();
 }
 
 class ReservationSavePage extends SecurePage implements IReservationSavePage
@@ -319,6 +325,44 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		}
 
 		return array();
+	}
+
+	/**
+	 * @return AccessoryFormElement[]
+	 */
+	public function GetAccessories()
+	{
+		$accessories = $this->GetForm(FormKeys::ACCESSORY_LIST);
+		if (is_array($accessories)) {
+			$af = array();
+
+			foreach ($accessories as $a)
+			{
+				$af[] = new AccessoryFormElement($a);
+			}
+
+			return $af;
+		}
+
+		return array();
+	}
+}
+
+class AccessoryFormElement
+{
+	public $Id;
+	public $Quantity;
+
+	public function __construct($formValue)
+	{
+		$idAndQuantity = $formValue;
+		$y = explode('-', $idAndQuantity);
+		$params = explode(',', $y[1]);
+		$id = explode('=', $params[0]);
+		$quantity = explode('=', $params[1]);
+
+		$this->Id = $id[1];
+		$this->Quantity = $quantity[1];
 	}
 }
 

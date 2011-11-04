@@ -1,5 +1,8 @@
 <?php
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'Domain/BookableResource.php');
+require_once(ROOT_DIR . 'Domain/Reservation.php');
+require_once(ROOT_DIR . 'Domain/Values/ReservationAccessory.php');
 
 class ReservationSeries
 {
@@ -163,6 +166,19 @@ class ReservationSeries
 	public function Instances()
 	{
 		return $this->instances;
+	}
+
+	/**
+	 * @var array|ReservationAccessory[]
+	 */
+	protected $_accessories = array();
+
+	/**
+	 * @return array|ReservationAccessory[]
+	 */
+	public function Accessories()
+	{
+		return $this->_accessories;
 	}
 	
 	/**
@@ -410,6 +426,15 @@ class ReservationSeries
 	public function ContainsResource($resourceId)
 	{
 		return in_array($resourceId, $this->AllResourceIds());
+	}
+
+	/**
+	 * @param ReservationAccessory $accessory
+	 * @return void
+	 */
+	public function AddAccessory(ReservationAccessory $accessory)
+	{
+		$this->_accessories[] = $accessory;
 	}
 }
 ?>

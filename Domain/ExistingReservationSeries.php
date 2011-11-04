@@ -1,5 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'Domain/Events/ReservationEvents.php');
 
 class ExistingReservationSeries extends ReservationSeries
 {
@@ -116,6 +117,15 @@ class ExistingReservationSeries extends ReservationSeries
 	public function WithStatus($statusId)
 	{
 		$this->_statusId = $statusId;
+	}
+	
+	/**
+	 * @param ReservationAccessory $accessory
+	 * @return void
+	 */
+	public function WithAccessory(ReservationAccessory $accessory)
+	{
+		$this->_accessories[] = $accessory;
 	}
 
 	/**
@@ -305,7 +315,10 @@ class ExistingReservationSeries extends ReservationSeries
 
 		$this->AddEvent(new SeriesApprovedEvent($this));
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	private function AppliesToAllInstances()
 	{
 		return count($this->instances) == count($this->Instances());
@@ -475,313 +488,30 @@ class ExistingReservationSeries extends ReservationSeries
 		}
 	}
 
-}
-
-class SeriesEventPriority
-{
-	const Highest = 10;
-	const High = 7;
-	const Normal = 5;
-	const Low = 3;
-	const Lowest = 1;
-
-}
-abstract class SeriesEvent
-{
 	/**
-	 * @var int
-	 */
-	private $priority;
-
-	/**
-	 * @var \ReservationSeries
-	 */
-	protected $series;
-
-	/**
-	 * @var string
-	 */
-	protected $id;
-
-	/**
-	 * @param int|SeriesEventPriority $priority
+	 * @param array|ReservationAccessory[] $accessories
 	 * @return void
 	 */
-	protected function SetPriority($priority)
+	public function ChangeAccessories($accessories)
 	{
-		$this->priority = $priority;
-	}
+		$diff = new ArrayDiff($this->_accessories, $accessories);
 
-	/**
-	 * @return int|SeriesEventPriority
-	 */
-	public function GetPriority()
-	{
-		return $this->priority;
-	}
+		$added = $diff->GetAddedToArray1();
+		$removed = $diff->GetRemovedFromArray1();
 
-	/**
-	 * @return ReservationSeries
-	 */
-	public function Series()
-	{
-		return $this->series;
-	}
-
-	/**
-	 * @param ReservationSeries $series
-	 * @param int|SeriesEventPriority $priority
-	 */
-	public function __construct(ReservationSeries $series, $priority = SeriesEventPriority::Normal)
-	{
-		$this->priority = $priority;
-		$this->series = $series;
-		$this->id = $this->series->SeriesId();
-	}
-
-	public function __toString()
-	{
-		return sprintf("%s-%s", get_class($this), $this->id);
-	}
-
-	public static function Compare(SeriesEvent $event1, SeriesEvent $event2)
-	{
-		if ($event1->GetPriority() == $event2->GetPriority())
+		/** @var $accessory ReservationAccessory */
+		foreach ($added as $accessory)
 		{
-			return 0;
+			$this->AddEvent(new AccessoryAddedEvent($accessory, $this));
 		}
 
-		// higher priority should be at the top
-		return ($event1->GetPriority() > $event2->GetPriority()) ? -1 : 1;
+		/** @var $accessory ReservationAccessory */
+		foreach ($removed as $accessory)
+		{
+			$this->AddEvent(new AccessoryRemovedEvent($accessory, $this));
+		}
+
+		$this->_accessories = $accessories;
 	}
-}
-
-class InstanceAddedEvent extends SeriesEvent
-{
-	/**
-	 * @var Reservation
-	 */
-	private $instance;
-
-	/**
-	 * @return Reservation
-	 */
-	public function Instance()
-	{
-		return $this->instance;
-	}
-
-	public function __construct(Reservation $reservationInstance, ExistingReservationSeries $series)
-	{
-		$this->instance = $reservationInstance;
-		parent::__construct($series, SeriesEventPriority::Lowest);
-	}
-	
-	public function __toString()
-	{
-        return sprintf("%s%s", get_class($this), $this->instance->ReferenceNumber());
-    }
-}
-
-class InstanceRemovedEvent extends SeriesEvent
-{
-	/**
-	 * @var Reservation
-	 */
-	private $instance;
-
-	/**
-	 * @return Reservation
-	 */
-	public function Instance()
-	{
-		return $this->instance;
-	}
-
-	public function __construct(Reservation $reservationInstance, ExistingReservationSeries $series)
-	{
-		$this->instance = $reservationInstance;
-		parent::__construct($series, SeriesEventPriority::Highest);
-	}
-
-	public function __toString()
-	{
-        return sprintf("%s%s", get_class($this), $this->instance->ReferenceNumber());
-    }
-}
-
-class InstanceUpdatedEvent extends SeriesEvent
-{
-	/**
-	 * @var Reservation
-	 */
-	private $instance;
-
-	/**
-	 * @return Reservation
-	 */
-	public function Instance()
-	{
-		return $this->instance;
-	}
-
-	public function __construct(Reservation $reservationInstance, ExistingReservationSeries $series)
-	{
-		$this->instance = $reservationInstance;
-		parent::__construct($series, SeriesEventPriority::Low);
-	}
-
-	public function __toString()
-	{
-        return sprintf("%s%s", get_class($this), $this->instance->ReferenceNumber());
-    }
-}
-
-class SeriesBranchedEvent extends SeriesEvent
-{
-	public function __construct(ReservationSeries $series)
-	{
-		parent::__construct($series);
-	}
-
-	public function __toString()
-	{
-        return sprintf("%s%s", get_class($this), $this->series->SeriesId());
-    }
-}
-
-class SeriesDeletedEvent extends SeriesEvent
-{
-	public function __construct(ExistingReservationSeries $series)
-	{
-		parent::__construct($series, SeriesEventPriority::Highest);
-	}
-
-	/**
-	 * @return ExistingReservationSeries
-	 */
-	public function Series()
-	{
-		return $this->series;
-	}
-
-	public function __toString()
-	{
-        return sprintf("%s%s", get_class($this), $this->series->SeriesId());
-    }
-}
-
-class ResourceRemovedEvent extends SeriesEvent
-{
-	/**
-	 * @var BookableResource
-	 */
-	private $resource;
-
-	public function __construct(BookableResource $resource, ExistingReservationSeries $series)
-	{
-		$this->resource = $resource;
-
-		parent::__construct($series, SeriesEventPriority::Highest);
-	}
-
-	/**
-	 * @return BookableResource
-	 */
-	public function Resource()
-	{
-		return $this->resource;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function ResourceId()
-	{
-		return $this->resource->GetResourceId();
-	}
-	
-	/**
-	 * @return ExistingReservationSeries
-	 */
-	public function Series()
-	{
-		return $this->series;
-	}
-
-	public function __toString()
-	{
-        return sprintf("%s%s%s", get_class($this), $this->ResourceId(), $this->series->SeriesId());
-    }
-}
-
-class ResourceAddedEvent extends SeriesEvent
-{
-	/**
-	 * @var BookableResource
-	 */
-	private $resource;
-
-	/**
-	 * @var int|ResourceLevel
-	 */
-	private $resourceLevel;
-
-	/**
-	 * @param BookableResource $resource
-	 * @param int|ResourceLevel $resourceLevel
-	 * @param ExistingReservationSeries $series
-	 */
-	public function __construct(BookableResource $resource, $resourceLevel, ExistingReservationSeries $series)
-	{
-		$this->resource = $resource;
-		$this->resourceLevel = $resourceLevel;
-
-		parent::__construct($series, SeriesEventPriority::Low);
-	}
-
-	/**
-	 * @return BookableResource
-	 */
-	public function Resource()
-	{
-		return $this->resource;
-	}
-
-	public function ResourceId()
-	{
-		return $this->resource->GetResourceId();
-	}
-
-	/**
-	 * @return ExistingReservationSeries
-	 */
-	public function Series()
-	{
-		return $this->series;
-	}
-
-	public function __toString()
-	{
-        return sprintf("%s%s%s", get_class($this), $this->ResourceId(), $this->series->SeriesId());
-    }
-
-	public function ResourceLevel()
-	{
-		return $this->resourceLevel;
-	}
-}
-
-class SeriesApprovedEvent extends SeriesEvent
-{
-	public function __construct(ExistingReservationSeries $series)
-	{
-		parent::__construct($series);
-	}
-
-	public function __toString()
-	{
-        return sprintf("%s%s", get_class($this),  $this->series->SeriesId());
-    }
 }
 ?>
