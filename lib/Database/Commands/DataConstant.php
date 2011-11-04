@@ -3,7 +3,10 @@ class ParameterNames
 {
 	private function __construct()
 	{}
-	
+
+	const ACCESSORY_ID = '@accessoryid';
+	const ACCESSORY_QUANTITY = '@quantity';
+
 	const CURRENT_DATE = '@current_date';
 	const CURRENT_SERIES_ID = '@currentSeriesId';
 	
@@ -163,6 +166,11 @@ class Queries
 		'INSERT INTO 
 			reservation_instances (start_date, end_date, reference_number, series_id)
 		VALUES (@startDate, @endDate, @referenceNumber, @seriesid)';
+
+	const ADD_RESERVATION_ACCESSORY =
+		'INSERT INTO
+			reservation_accessories (series_id, accessory_id, quantity)
+		VALUES (@seriesid, @accessoryid, @quantity)';
 	
 	const ADD_RESERVATION_RESOURCE =
 		'INSERT INTO
@@ -590,23 +598,17 @@ class Queries
 		VALUES
 			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated)';
 
+	const REMOVE_RESERVATION_ACCESSORY =
+		'DELETE FROM reservation_accessories WHERE accessory_id = @accessoryid AND series_id = @seriesid';
+	
 	const REMOVE_RESERVATION_INSTANCE = 
-		'DELETE FROM
-			reservation_instances
-		WHERE
-			reference_number = @referenceNumber';
+		'DELETE FROM reservation_instances WHERE reference_number = @referenceNumber';
 
 	const REMOVE_RESERVATION_RESOURCE =
-		'DELETE FROM
-			reservation_resources
-		WHERE
-			series_id = @seriesid AND resource_id = @resourceid';
+		'DELETE FROM reservation_resources WHERE series_id = @seriesid AND resource_id = @resourceid';
 	
 	const REMOVE_RESERVATION_USER =
-		'DELETE FROM
-			reservation_users
-		WHERE
-			reservation_instance_id = @reservationid AND user_id = @userid';
+		'DELETE FROM reservation_users WHERE reservation_instance_id = @reservationid AND user_id = @userid';
 
 	const ADD_RESOURCE = 
 		'INSERT INTO 

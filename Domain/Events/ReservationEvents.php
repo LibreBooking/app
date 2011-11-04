@@ -52,6 +52,14 @@ abstract class SeriesEvent
 	}
 
 	/**
+	 * @return int
+	 */
+	public function SeriesId()
+	{
+		return $this->series->SeriesId();
+	}
+
+	/**
 	 * @param ReservationSeries $series
 	 * @param int|SeriesEventPriority $priority
 	 */

@@ -101,6 +101,7 @@ class ReservationRepositoryTests extends TestBase
 		$repeatOptions = new RepeatNone();
 		$participantIds = array(2, 9);
 		$inviteeIds = array(20, 90);
+		$accessory = new ReservationAccessory(928, 3);
 
 		$startUtc = Date::Parse($startCst, 'CST')->ToUtc();
 		$endUtc = Date::Parse($endCst, 'CST')->ToUtc();
@@ -128,6 +129,7 @@ class ReservationRepositoryTests extends TestBase
 
 		$reservation->ChangeParticipants($participantIds);
 		$reservation->ChangeInvitees($inviteeIds);
+		$reservation->AddAccessory($accessory);
 
 		$this->repository->Add($reservation);
 
@@ -157,22 +159,25 @@ class ReservationRepositoryTests extends TestBase
 			$userId,
 			$levelId);
 
+		$insertReservationAccessory = new AddReservationAccessoryCommand($accessory->AccessoryId, $accessory->QuantityReserved, $seriesId);
+
 		$insertParticipant1 = $this->GetAddUserCommand($reservationId, $participantIds[0], ReservationUserLevel::PARTICIPANT);
 		$insertParticipant2 = $this->GetAddUserCommand($reservationId, $participantIds[1], ReservationUserLevel::PARTICIPANT);
 
 		$insertInvitee1 = $this->GetAddUserCommand($reservationId, $inviteeIds[0], ReservationUserLevel::INVITEE);
 		$insertInvitee2 = $this->GetAddUserCommand($reservationId, $inviteeIds[1], ReservationUserLevel::INVITEE);
 
-		$this->assertEquals(8, count($this->db->_Commands));
+		$this->assertEquals(9, count($this->db->_Commands));
 
 		$this->assertEquals($insertReservationSeries, $this->db->_Commands[0]);
 		$this->assertEquals($insertReservationResource, $this->db->_Commands[1]);
-		$this->assertEquals($insertReservation, $this->db->_Commands[2]);
-		$this->assertEquals($insertReservationUser, $this->db->_Commands[3]);
+		$this->assertTrue($this->db->ContainsCommand($insertReservation));
+		$this->assertTrue($this->db->ContainsCommand($insertReservationUser));
 		$this->assertTrue($this->db->ContainsCommand($insertParticipant1));
 		$this->assertTrue($this->db->ContainsCommand($insertParticipant2));
 		$this->assertTrue($this->db->ContainsCommand($insertInvitee1));
 		$this->assertTrue($this->db->ContainsCommand($insertInvitee2));
+		$this->assertTrue($this->db->ContainsCommand($insertReservationAccessory));
 	}
 
 	public function testRepeatedDatesAreSaved()
@@ -666,7 +671,23 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->assertTrue($this->db->ContainsCommand($addCommand));
 		$this->assertTrue($this->db->ContainsCommand($removeCommand));
+	}
 
+	public function testChangesAccessories()
+	{
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->BuildTestVersion();
+		$series->WithAccessory(new ReservationAccessory(1, 1));
+		$series->ChangeAccessories(array(new ReservationAccessory(2, 2)));
+
+		$seriesId = $series->SeriesId();
+		$this->repository->Update($series);
+
+		$addCommand = new AddReservationAccessoryCommand(2, 2, $seriesId);
+		$removeCommand = new RemoveReservationAccessoryCommand($seriesId, 1);
+
+		$this->assertTrue($this->db->ContainsCommand($addCommand));
+		$this->assertTrue($this->db->ContainsCommand($removeCommand));
 	}
 
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)

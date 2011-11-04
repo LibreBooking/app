@@ -167,6 +167,12 @@ class ReservationRepository implements IReservationRepository
 			$database->Execute($insertReservationResource);
 		}
 
+		foreach($reservationSeries->Accessories() as $accessory)
+		{
+			$insertAccessory = new AddReservationAccessoryCommand($accessory->AccessoryId, $accessory->QuantityReserved, $reservationSeriesId);
+			$database->Execute($insertAccessory);
+		}
+
 		return $reservationSeriesId;
 	}
 
@@ -344,6 +350,9 @@ class ReservationEventMapper
 
 		$this->buildMethods['ResourceRemovedEvent'] = 'BuildRemoveResourceCommand';
 		$this->buildMethods['ResourceAddedEvent'] = 'BuildAddResourceCommand';
+
+		$this->buildMethods['AccessoryAddedEvent'] = 'BuildAddAccessoryCommand';
+		$this->buildMethods['AccessoryRemovedEvent'] = 'BuildRemoveAccessoryCommand';
 	}
 
 	/**
@@ -415,6 +424,20 @@ class ReservationEventMapper
 	{
 		return new EventCommand(
 			new AddReservationResourceCommand($series->SeriesId(), $event->ResourceId(), $event->ResourceLevel())
+		);
+	}
+
+	private function BuildAddAccessoryCommand(AccessoryAddedEvent $event, ExistingReservationSeries $series)
+	{
+		return new EventCommand(
+			new AddReservationAccessoryCommand($event->AccessoryId(), $event->Quantity(), $series->SeriesId())
+		);
+	}
+
+	private function BuildRemoveAccessoryCommand(AccessoryRemovedEvent $event, ExistingReservationSeries $series)
+	{
+		return new EventCommand(
+			new RemoveReservationAccessoryCommand($series->SeriesId(), $event->AccessoryId())
 		);
 	}
 }

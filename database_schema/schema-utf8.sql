@@ -478,3 +478,24 @@ CREATE TABLE `accessories` (
  `accessory_quantity` tinyint(2) unsigned,
  PRIMARY KEY (`accessory_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `accessories`
+--
+
+DROP TABLE IF EXISTS `reservation_accessories`;
+CREATE TABLE `reservation_accessories` (
+ `series_id` mediumint(8) unsigned NOT NULL,
+ `accessory_id` smallint(5) unsigned NOT NULL,
+ `quantity` tinyint(2) unsigned NOT NULL,
+ PRIMARY KEY (`series_id`, `accessory_id`),
+ INDEX (`accessory_id`),
+ FOREIGN KEY (`accessory_id`)
+	REFERENCES accessories(`accessory_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE,
+ INDEX (`series_id`),
+ FOREIGN KEY (`series_id`)
+	REFERENCES reservation_series(`series_id`)
+	ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
