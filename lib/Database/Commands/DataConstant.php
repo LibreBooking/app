@@ -418,6 +418,11 @@ class Queries
 			rs.status_id <> 2
 		ORDER BY 
 			ri.start_date ASC';
+
+	const GET_RESERVATION_ACCESSORIES =
+		'SELECT *
+		FROM reservation_accessories ra
+		WHERE ra.series_id = @seriesid';
 	
 	const GET_RESERVATION_PARTICIPANTS =
 		'SELECT
@@ -879,6 +884,9 @@ class ColumnNames
 	const ACCESSORY_ID = 'accessory_id';
 	const ACCESSORY_NAME = 'accessory_name';
 	const ACCESSORY_QUANTITY = 'accessory_quantity';
+
+	// RESERVATION ACCESSORY //
+	const QUANTITY = 'quantity';
 
 	// dynamic
 	const TOTAL = 'total';

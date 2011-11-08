@@ -69,6 +69,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		
 			$this->SetResources($reservationView);
 			$this->SetParticipants($reservationView);
+			$this->SetAccessories($reservationView);
 		}
 		
 		return $reservationView;
@@ -151,6 +152,18 @@ class ReservationViewRepository implements IReservationViewRepository
 			{
 				$reservationView->Invitees[] = $reservationUserView;
 			}
+		}
+	}
+
+	private function SetAccessories(ReservationView $reservationView)
+	{
+		$getAccessories = new GetReservationAccessoriesCommand($reservationView->SeriesId);
+
+		$result = ServiceLocator::GetDatabase()->Query($getAccessories);
+
+		while ($row = $result->GetRow())
+		{
+			$reservationView->Accessories[] = new ReservationAccessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY]);
 		}
 	}
 }
@@ -285,6 +298,11 @@ class ReservationView
 	 * @var ReservationUserView[]
 	 */
 	public $Invitees = array();
+
+	/**
+	 * @var array|ReservationAccessory[]
+	 */
+	public $Accessories = array();
 
 	/**
 	 * @return bool

@@ -79,6 +79,9 @@ class ExistingReservationInitializerTests extends TestBase
 			new ReservationUserView($this->userId, 'i1', 'l', null, ReservationUserLevel::INVITEE),
 			new ReservationUserView(110, 'i2', 'l', null, ReservationUserLevel::INVITEE)
 		);
+		$accessories = array (
+			new ReservationAccessory(1, 2)
+		);
 		$title = 'title';
 		$description = 'description';
 
@@ -115,7 +118,8 @@ class ExistingReservationInitializerTests extends TestBase
 		$reservationView->RepeatMonthlyType = $repeatMonthlyType;
 		$reservationView->RepeatTerminationDate = $repeatTerminationDate;
 		$reservationView->StatusId = ReservationStatus::Pending;
-		
+		$reservationView->Accessories = $accessories;
+
 		$page = $this->getMock('IExistingReservationPage');
 		
 		// DATA			
@@ -218,6 +222,10 @@ class ExistingReservationInitializerTests extends TestBase
 		$page->expects($this->once())
 			->method('SetRepeatWeekdays')
 			->with($this->equalTo($repeatWeekdays));
+
+		$page->expects($this->once())
+			->method('SetAccessories')
+			->with($this->equalTo($accessories));
 		
 		$isEditable = true;
 		

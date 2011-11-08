@@ -63,6 +63,7 @@ class ReservationRepository implements IReservationRepository
 		$this->PopulateInstances($series);
 		$this->PopulateResources($series);
 		$this->PopulateParticipants($series);
+		$this->PopulateAccessories($series);
 
 		return $series;
 	}
@@ -321,6 +322,17 @@ class ReservationRepository implements IReservationRepository
 			{
 				$series->GetInstance($row[ColumnNames::REFERENCE_NUMBER])->WithInvitee($row[ColumnNames::USER_ID]);
 			}
+		}
+		$reader->Free();
+	}
+
+	private function PopulateAccessories(ExistingReservationSeries $series)
+	{
+		$getResourcesCommand = new GetReservationAccessoriesCommand($series->SeriesId());
+		$reader = ServiceLocator::GetDatabase()->Query($getResourcesCommand);
+		while ($row = $reader->GetRow())
+		{
+			$series->WithAccessory(new ReservationAccessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY]));
 		}
 		$reader->Free();
 	}

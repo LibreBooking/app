@@ -176,6 +176,7 @@ class FakeReservationSavePage implements IReservationSavePage
 		$this->endDate = $now->AddDays(6)->Format('Y-m-d');
 		$this->repeatTerminationDate = $now->AddDays(60)->Format('Y-m-d');
 		$this->repeatOptions = new RepeatNone();
+		$this->accessories = array(new FakeAccessoryFormElement(1, 2));
 	}
 	
 	public function GetUserId()
@@ -294,5 +295,14 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetAccessories()
 	{
 		return $this->accessories;
+	}
+}
+
+class FakeAccessoryFormElement extends AccessoryFormElement
+{
+	public function __construct($id, $quantity)
+	{
+		$this->Id = $id;
+		$this->Quantity = $quantity;
 	}
 }

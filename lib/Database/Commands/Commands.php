@@ -518,6 +518,15 @@ class GetReservationListCommand extends SqlCommand
 	}
 }
 
+class GetReservationAccessoriesCommand extends SqlCommand
+{
+	public function __construct($seriesId)
+	{
+		parent::__construct(Queries::GET_RESERVATION_ACCESSORIES);
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+	}
+}
+
 class GetReservationParticipantsCommand extends SqlCommand
 {
 	public function __construct($instanceId)

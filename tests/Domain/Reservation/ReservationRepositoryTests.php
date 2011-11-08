@@ -295,6 +295,10 @@ class ReservationRepositoryTests extends TestBase
 		$minNotice = '2:10';
 		$maxNotice = null;
 		$statusId = ReservationStatus::Pending;
+		$accessoryId1 = 8111;
+		$accessoryId2 = 8222;
+		$quantity1 = 11;
+		$quantity2 = 22;
 
 		$expected = new ExistingReservationSeries();
 		$expected->WithId($seriesId);
@@ -306,6 +310,8 @@ class ReservationRepositoryTests extends TestBase
 		$expected->WithResource(new BookableResource($resourceId2, $resourceName, $location, $contact, $notes, $minLength, $maxLength, $autoAssign, $requiresApproval, $allowMultiDay, $maxParticipants, $minNotice, $maxNotice, null, $scheduleId));
 		$expected->WithRepeatOptions($repeatOptions);
 		$expected->WithStatus($statusId);
+		$expected->WithAccessory(new ReservationAccessory($accessoryId1, $quantity1));
+		$expected->WithAccessory(new ReservationAccessory($accessoryId2, $quantity2));
 
 		$instance1 = new Reservation($expected, $duration->AddDays(10));
 		$instance1->SetReferenceNumber('instance1');
@@ -360,10 +366,15 @@ class ReservationRepositoryTests extends TestBase
 				->WithInvitees($instance1, $instance1Invitees)
 				->WithInvitees($instance2, $instance2Invitees);
 
+		$reservationAccessoryRow = new ReservationAccessoryRow();
+			$reservationAccessoryRow->WithAccessory($accessoryId1, $quantity1)
+				->WithAccessory($accessoryId2, $quantity2);
+
 		$this->db->SetRow(0, $reservationRow->Rows());
 		$this->db->SetRow(1, $reservationInstanceRow->Rows());
 		$this->db->SetRow(2, $reservationResourceRow->Rows());
 		$this->db->SetRow(3, $reservationUserRow->Rows());
+		$this->db->SetRow(4, $reservationAccessoryRow->Rows());
 
 		$actualReservation = $this->repository->LoadById($reservationId);
 
@@ -373,11 +384,13 @@ class ReservationRepositoryTests extends TestBase
 		$getInstances = new GetReservationSeriesInstances($seriesId);
 		$getResources = new GetReservationResourcesCommand($seriesId);
 		$getParticipants = new GetReservationSeriesParticipantsCommand($seriesId);
+		$getAccessories = new GetReservationAccessoriesCommand($seriesId);
 
 		$this->assertTrue(in_array($getReservation, $this->db->_Commands));
 		$this->assertTrue(in_array($getInstances, $this->db->_Commands));
 		$this->assertTrue(in_array($getResources, $this->db->_Commands));
 		$this->assertTrue(in_array($getParticipants, $this->db->_Commands));
+		$this->assertTrue(in_array($getAccessories, $this->db->_Commands));
 	}
 
 	public function testChangingOnlySharedInformationForFullSeriesJustUpdatesSeriesTable()
@@ -880,16 +893,6 @@ class ReservationUserRow
 		return $this->rows;
 	}
 
-//	/**
-//	 * @param int $userId
-//	 * @return ReservationUserRow
-//	 */
-//	public function WithOwner($userId)
-//	{
-//		$this->AddRow($userId, ReservationUserLevel::OWNER);
-//		return $this;
-//	}
-
 	private function AddRow($referenceNumber, $userId, $levelId)
 	{
 		$this->rows[] = array(ColumnNames::REFERENCE_NUMBER => $referenceNumber,
@@ -926,4 +929,21 @@ class ReservationUserRow
 	}
 }
 
+
+class ReservationAccessoryRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function WithAccessory($accessoryId, $quantity)
+	{
+		$this->rows[] = array(ColumnNames::ACCESSORY_ID => $accessoryId, ColumnNames::QUANTITY => $quantity);
+		
+		return $this;
+	}
+}
 ?>

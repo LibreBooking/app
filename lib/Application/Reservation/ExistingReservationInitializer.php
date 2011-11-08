@@ -70,6 +70,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		
 		$this->page->SetParticipants($participants);
 		$this->page->SetInvitees($invitees);
+		$this->page->SetAccessories($this->reservationView->Accessories);
 
 		$this->page->SetCurrentUserParticipating($this->IsCurrentUserParticipating());
 		$this->page->SetCurrentUserInvited($this->IsCurrentUserInvited());

@@ -154,6 +154,16 @@ function Reservation(opts) {
 		})
 	};
 
+	Reservation.prototype.addAccessory = function (accessoryId, quantity)
+	{
+		elements.accessoriesDialog.find('.id').each(function() {
+			if ($(this).val() == accessoryId)
+			{
+				AddAccessory($(this).siblings('.name').val(), accessoryId, quantity);
+			}
+		})
+	};
+
 	var ShowAccessoriesPrompt = function() {
 		elements.accessoriesDialog.find('input:text').val('0');
 		

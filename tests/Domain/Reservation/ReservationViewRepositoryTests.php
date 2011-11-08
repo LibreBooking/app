@@ -63,7 +63,8 @@ class ReservationViewRepositoryTests extends TestBase
 
 		$getReservationForEditingCommand = new GetReservationForEditingCommand($referenceNumber);
 		$getReservationResources = new GetReservationResourcesCommand($seriesId);
-		$getParticpants = new GetReservationParticipantsCommand($reservationId);
+		$getParticipants = new GetReservationParticipantsCommand($reservationId);
+		$getAccessories = new GetReservationAccessoriesCommand($seriesId);
 
 		$reservationRow = array(
 			ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
@@ -93,20 +94,31 @@ class ReservationViewRepositoryTests extends TestBase
 			$this->GetParticipantRow($reservationId, $userId2, $fname2, $lname2, $email2, $participantLevel),
 			$this->GetParticipantRow($reservationId, $userId3, $fname3, $lname3, $email3, $inviteeLevel),
 			);
+
+		$accessory1 = 123;
+		$accessory2 = 1232;
+		$quantity1 = 123;
+		$quantity2 = 1232;
+		
+		$accessoryRows = new ReservationAccessoryRow();
+		$accessoryRows->WithAccessory($accessory1, $quantity1)
+			->WithAccessory($accessory2, $quantity2);
 		
 		$this->db->SetRow(0, array($reservationRow));
 		$this->db->SetRow(1, $resourceRows);
 		$this->db->SetRow(2, $participantRows);
+		$this->db->SetRow(3, $accessoryRows->Rows());
 
 		$reservationView = $this->repository->GetReservationForEditing($referenceNumber);
 		
 		$commands = $this->db->_Commands;
 		
-		$this->assertEquals(count($commands), 3);
+		$this->assertEquals(count($commands), 4);
 		$this->assertEquals($getReservationForEditingCommand, $commands[0]);
 		$this->assertEquals($getReservationResources, $commands[1]);
-		$this->assertEquals($getParticpants, $commands[2]);
-		
+		$this->assertEquals($getParticipants, $commands[2]);
+		$this->assertEquals($getAccessories, $commands[3]);
+
 		$expectedView = new ReservationView();
 		$expectedView->AdditionalResourceIds = array($resourceId1, $resourceId2);
 		$expectedView->Description = $description;
@@ -137,6 +149,11 @@ class ReservationViewRepositoryTests extends TestBase
 			new ReservationResourceView($resourceId1, $resourceName1),
 			new ReservationResourceView($resourceId2, $resourceName2),
 			);
+
+		$expectedView->Accessories = array(
+			new ReservationAccessory($accessory1, $quantity1),
+			new ReservationAccessory($accessory2, $quantity2),
+		);
 		
 		$this->assertEquals($expectedView, $reservationView);
 	}

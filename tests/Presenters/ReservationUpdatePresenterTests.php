@@ -115,6 +115,7 @@ class ReservationUpdatePresenterTests extends TestBase
 			
 		$existingSeries = $this->presenter->BuildReservation();
 
+		$expectedAccessories = array(new ReservationAccessory(1, 2));
 		$this->assertEquals($seriesId, $existingSeries->SeriesId());
 		$this->assertEquals($this->page->seriesUpdateScope, $existingSeries->SeriesUpdateScope());
 		$this->assertEquals($this->page->title, $existingSeries->Title());
@@ -127,6 +128,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($this->page->invitees, $existingSeries->CurrentInstance()->AddedInvitees());
 		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()), "Expected: $expectedDuration Actual: {$existingSeries->CurrentInstance()->Duration()}");
 		$this->assertEquals($this->user, $expectedSeries->BookedBy());
+		$this->assertEquals($expectedAccessories, $existingSeries->Accessories());
 	}
 
 	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()

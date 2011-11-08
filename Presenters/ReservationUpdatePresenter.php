@@ -73,6 +73,7 @@ class ReservationUpdatePresenter
 
 		$existingSeries->ChangeParticipants($this->page->GetParticipants());
 		$existingSeries->ChangeInvitees($this->page->GetInvitees());
+		$existingSeries->ChangeAccessories($this->GetAccessories());
 
 		return $existingSeries;
 	}
@@ -102,6 +103,17 @@ class ReservationUpdatePresenter
 		
 		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
+	}
+
+	private function GetAccessories()
+	{
+		$accessories = array();
+		foreach ($this->page->GetAccessories() as $accessory)
+		{
+			$accessories[] = new ReservationAccessory($accessory->Id, $accessory->Quantity);
+		}
+
+		return $accessories;
 	}
 }
 ?>

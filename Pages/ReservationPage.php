@@ -71,6 +71,13 @@ interface IReservationPage extends IPage
 
 	/**
 	 * @abstract
+	 * @param $accessories ReservationAccessory[]|array
+	 * @return void
+	 */
+	function SetAccessories($accessories);
+
+	/**
+	 * @abstract
 	 * @param $canChangeUser
 	 * @return void
 	 */
@@ -215,6 +222,11 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 	public function SetInvitees($invitees)
 	{
 		$this->Set('Invitees', $invitees);
+	}
+
+	public function SetAccessories($accessories)
+	{
+		$this->Set('Accessories', $accessories);
 	}
 
 	public function SetCanChangeUser($canChangeUser)

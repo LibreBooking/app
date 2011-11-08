@@ -325,6 +325,10 @@
 		reservation.addInvitee('{$user->FullName}', '{$user->UserId}');
 	{/foreach}
 
+	{foreach from=$Accessories item=accessory}
+		reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}');
+	{/foreach}
+
 	var options = {
 		target: '#result',   // target element(s) to be updated with server response
 		beforeSubmit: reservation.preSubmit,  // pre-submit callback
