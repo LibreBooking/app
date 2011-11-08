@@ -376,7 +376,7 @@ class Queries
 			status_id <> 2';
 	
 	const GET_RESERVATION_FOR_EDITING = 
-		'SELECT ri.*, rs.*, u.user_id, r.schedule_id, rs.status_id as status_id
+		'SELECT ri.*, rs.*, rr.*, u.user_id, r.schedule_id, rs.status_id as status_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
 		INNER JOIN users u ON u.user_id = rs.owner_id
@@ -422,6 +422,7 @@ class Queries
 	const GET_RESERVATION_ACCESSORIES =
 		'SELECT *
 		FROM reservation_accessories ra
+		INNER JOIN accessories a ON ra.accessory_id = a.accessory_id
 		WHERE ra.series_id = @seriesid';
 	
 	const GET_RESERVATION_PARTICIPANTS =

@@ -12,13 +12,20 @@ class ReservationAccessory
 	public $QuantityReserved;
 
 	/**
+	 * @var null|string
+	 */
+	public $Name;
+
+	/**
 	 * @param int $accessoryId
 	 * @param int $quantityReserved
+	 * @param string $accessoryName
 	 */
-	public function __construct($accessoryId, $quantityReserved)
+	public function __construct($accessoryId, $quantityReserved, $accessoryName = null)
 	{
 		$this->AccessoryId = $accessoryId;
 		$this->QuantityReserved = $quantityReserved;
+		$this->Name = $accessoryName;
 	}
 
 	public function __toString()

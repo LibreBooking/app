@@ -939,9 +939,9 @@ class ReservationAccessoryRow
 		return $this->rows;
 	}
 
-	public function WithAccessory($accessoryId, $quantity)
+	public function WithAccessory($accessoryId, $quantity, $name = null)
 	{
-		$this->rows[] = array(ColumnNames::ACCESSORY_ID => $accessoryId, ColumnNames::QUANTITY => $quantity);
+		$this->rows[] = array(ColumnNames::ACCESSORY_ID => $accessoryId, ColumnNames::QUANTITY => $quantity, ColumnNames::ACCESSORY_NAME => $name);
 		
 		return $this;
 	}

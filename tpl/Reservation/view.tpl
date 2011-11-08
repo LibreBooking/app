@@ -11,11 +11,22 @@
 				</li>
 				<li>
 					<label>{translate key='Resources'}</label> {$ResourceName}
-				{foreach from=$AvailableResources item=resource}
-					{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-						,{$resource->Name()}
-					{/if}
-				{/foreach}
+					{foreach from=$AvailableResources item=resource}
+						{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
+							,{$resource->Name}
+						{/if}
+					{/foreach}
+				</li>
+				<li>
+					<label>{translate key='Accessories'}</label>
+					{foreach from=$Accessories item=accessory name=accessoryLoop}
+						({$accessory->QuantityReserved})
+						{if $smarty.foreach.accessoryLoop.last}
+							{$accessory->Name}
+						{else}
+							{$accessory->Name},
+						{/if}
+					{/foreach}
 				</li>
 				<li class="section">
 					<label>{translate key='Start'}</label> {formatdate date=$StartDate}

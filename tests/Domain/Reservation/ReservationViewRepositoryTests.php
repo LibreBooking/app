@@ -99,10 +99,12 @@ class ReservationViewRepositoryTests extends TestBase
 		$accessory2 = 1232;
 		$quantity1 = 123;
 		$quantity2 = 1232;
-		
+		$accessoryName1 = 'a1';
+		$accessoryName2 = 'a2';
+
 		$accessoryRows = new ReservationAccessoryRow();
-		$accessoryRows->WithAccessory($accessory1, $quantity1)
-			->WithAccessory($accessory2, $quantity2);
+		$accessoryRows->WithAccessory($accessory1, $quantity1, $accessoryName1)
+			->WithAccessory($accessory2, $quantity2, $accessoryName2);
 		
 		$this->db->SetRow(0, array($reservationRow));
 		$this->db->SetRow(1, $resourceRows);
@@ -151,8 +153,8 @@ class ReservationViewRepositoryTests extends TestBase
 			);
 
 		$expectedView->Accessories = array(
-			new ReservationAccessory($accessory1, $quantity1),
-			new ReservationAccessory($accessory2, $quantity2),
+			new ReservationAccessory($accessory1, $quantity1, $accessoryName1),
+			new ReservationAccessory($accessory2, $quantity2, $accessoryName2),
 		);
 		
 		$this->assertEquals($expectedView, $reservationView);
@@ -222,6 +224,7 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, 
 			ColumnNames::RESOURCE_ID => $resourceId,
 			ColumnNames::RESOURCE_NAME => $resourceName,
+			ColumnNames::RESOURCE_LEVEL_ID => ResourceLevel::Additional
 			);
 			
 	}

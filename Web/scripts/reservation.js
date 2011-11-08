@@ -154,14 +154,9 @@ function Reservation(opts) {
 		})
 	};
 
-	Reservation.prototype.addAccessory = function (accessoryId, quantity)
+	Reservation.prototype.addAccessory = function (accessoryId, quantity, name)
 	{
-		elements.accessoriesDialog.find('.id').each(function() {
-			if ($(this).val() == accessoryId)
-			{
-				AddAccessory($(this).siblings('.name').val(), accessoryId, quantity);
-			}
-		})
+		AddAccessory(name, accessoryId, quantity);
 	};
 
 	var ShowAccessoriesPrompt = function() {
@@ -186,7 +181,7 @@ function Reservation(opts) {
 		}
 		var x = 'accessory-id=' + id + ',quantity=' + quantity;
 
-		elements.accessoriesList.append('<p accessoryId="' + id + '"><span class="quantity">' + quantity + '</span> - ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></p>');
+		elements.accessoriesList.append('<p accessoryId="' + id + '"><span class="quantity">(' + quantity + ')</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></p>');
 	};
 	
 	var AddResources = function() {

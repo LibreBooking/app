@@ -326,7 +326,7 @@
 	{/foreach}
 
 	{foreach from=$Accessories item=accessory}
-		reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}');
+		reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}', '{$accessory->Name}');
 	{/foreach}
 
 	var options = {

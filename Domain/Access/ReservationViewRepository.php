@@ -122,7 +122,10 @@ class ReservationViewRepository implements IReservationViewRepository
 		
 		while ($row = $result->GetRow())
 		{
-			$reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
+			if ($row[ColumnNames::RESOURCE_LEVEL_ID] == ResourceLevel::Additional)
+			{
+				$reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
+			}
 			$reservationView->Resources[] = new ReservationResourceView($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
 		}
 	}
@@ -163,7 +166,7 @@ class ReservationViewRepository implements IReservationViewRepository
 
 		while ($row = $result->GetRow())
 		{
-			$reservationView->Accessories[] = new ReservationAccessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY]);
+			$reservationView->Accessories[] = new ReservationAccessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY], $row[ColumnNames::ACCESSORY_NAME]);
 		}
 	}
 }
