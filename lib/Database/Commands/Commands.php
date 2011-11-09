@@ -368,6 +368,16 @@ class DeleteUserResourcePermission extends SqlCommand
 	}
 }
 
+class GetAccessoryListCommand extends SqlCommand
+{
+	public function __construct(Date $startDate, Date $endDate)
+	{
+		parent::__construct(Queries::GET_ACCESSORY_LIST);
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+	}
+}
+
 class GetAllAccessoriesCommand extends SqlCommand
 {
 	public function __construct()

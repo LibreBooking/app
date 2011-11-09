@@ -39,5 +39,15 @@ class TestReservationSeries extends ReservationSeries
 	{
 		$this->_bookedBy = $bookedBy;
 	}
+
+	public function WithAccessory(ReservationAccessory $accessory)
+	{
+		$this->AddAccessory($accessory);
+	}
+
+	public function WithInstanceOn(DateRange $dateRange)
+	{
+		$this->AddNewInstance($dateRange);
+	}
 }
 ?>

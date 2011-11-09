@@ -21,6 +21,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMaximumN
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumDurationRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMaximumDurationRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/QuotaRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AccessoryAvailabilityRule.php');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AddReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/UpdateReservationValidationService.php');

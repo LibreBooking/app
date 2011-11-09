@@ -286,6 +286,24 @@ class Queries
 		FROM users 
 		WHERE (username = @username OR email = @username)';
 
+	const GET_ACCESSORY_LIST =
+		'SELECT *, rs.status_id as status_id
+		FROM reservation_instances ri
+		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
+		INNER JOIN reservation_accessories ar ON ar.series_id = rs.series_id
+		INNER JOIN accessories a on ar.accessory_id = a.accessory_id
+		WHERE
+			(
+				(ri.start_date >= @startDate AND ri.start_date <= @endDate)
+				OR
+				(ri.end_date >= @startDate AND ri.end_date <= @endDate)
+				OR
+				(ri.start_date <= @startDate AND ri.end_date >= @endDate)
+			) AND
+			rs.status_id <> 2
+		ORDER BY
+			ri.start_date ASC';
+	
 	const GET_ALL_ACCESSORIES =
 		'SELECT * FROM accessories ORDER BY accessory_name';
 	

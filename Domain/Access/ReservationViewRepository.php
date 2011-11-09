@@ -29,6 +29,14 @@ interface IReservationViewRepository
 	 * @return PageableData|ReservationItemView[]
 	 */
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+
+
+	/**
+	 * @abstract
+	 * @param DateRange $dateRange
+	 * @return array|AccessoryReservation[]
+	 */
+	public function GetAccessoriesWithin(DateRange $dateRange);
 }
 
 class ReservationViewRepository implements IReservationViewRepository
@@ -168,6 +176,30 @@ class ReservationViewRepository implements IReservationViewRepository
 		{
 			$reservationView->Accessories[] = new ReservationAccessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY], $row[ColumnNames::ACCESSORY_NAME]);
 		}
+	}
+
+	/**
+	 * @param DateRange $dateRange
+	 * @return array|AccessoryReservation[]
+	 */
+	public function GetAccessoriesWithin(DateRange $dateRange)
+	{
+		$getAccessoriesCommand = new GetAccessoryListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
+
+		$result = ServiceLocator::GetDatabase()->Query($getAccessoriesCommand);
+
+		$accessories = array();
+		while ($row = $result->GetRow())
+		{
+			$accessories[] = new AccessoryReservation(
+				$row[ColumnNames::REFERENCE_NUMBER],
+				Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
+				Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
+				$row[ColumnNames::ACCESSORY_ID],
+				$row[ColumnNames::QUANTITY]);
+		}
+
+		return $accessories;
 	}
 }
 
@@ -503,6 +535,90 @@ class ReservationItemView
 		}
 
 		return $view;
+	}
+}
+
+class AccessoryReservation
+{
+	/**
+	 * @var string
+	 */
+	private $referenceNumber;
+	
+	/**
+	 * @var int
+	 */
+	private $accessoryId;
+
+	/**
+	 * @var \Date
+	 */
+	private $startDate;
+
+	/**
+	 * @var \Date
+	 */
+	private $endDate;
+
+	/**
+	 * @var int
+	 */
+	private $quantityReserved;
+
+	/**
+	 * @param string $referenceNumber
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param int $accessoryId
+	 * @param int $quantityReserved
+	 */
+	public function __construct($referenceNumber, $startDate, $endDate, $accessoryId, $quantityReserved)
+	{
+ 		$this->referenceNumber = $referenceNumber;
+ 		$this->accessoryId = $accessoryId;
+		$this->startDate = $startDate;
+		$this->endDate = $endDate;
+		$this->quantityReserved = $quantityReserved;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetReferenceNumber()
+	{
+		return $this->referenceNumber;
+	}
+	
+	/**
+	 * @return Date
+	 */
+	public function GetStartDate()
+	{
+		return $this->startDate;
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetEndDate()
+	{
+		return $this->endDate;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetAccessoryId()
+	{
+		return $this->accessoryId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function QuantityReserved()
+	{
+		return $this->quantityReserved;
 	}
 }
 ?>

@@ -205,6 +205,33 @@ class ReservationViewRepositoryTests extends TestBase
 		
 		$this->assertEquals(NullReservationView::Instance(), $reservationView);
 	}
+
+	public function testReturnsAllAccessoriesReservedWithinDateRange()
+	{
+		$dateRange = new TestDateRange();
+
+		$refNum = "213213213";
+		$start = Date::Now();
+		$end = Date::Now();
+		$accessoryName = 'accessory';
+		$accessoryId = 123;
+		$quantity = 898;
+		
+		$rows[] = $this->GetAccessoryRow($refNum, $start, $end, $accessoryName, $accessoryId, $quantity);
+		$rows[] = $this->GetAccessoryRow("1", Date::Now(), Date::Now(), "", 1, 1);
+
+		$this->db->SetRows($rows);
+
+		$getAccessoriesCommand = new GetAccessoryListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
+
+		$accessories = $this->repository->GetAccessoriesWithin($dateRange);
+
+		$a = new AccessoryReservation($refNum, $start->ToUtc(), $end->ToUtc(), $accessoryId, $quantity, $accessoryName);
+
+		$this->assertEquals($getAccessoriesCommand, $this->db->_LastCommand);
+		$this->assertEquals(2, count($accessories));
+		$this->assertEquals($a, $accessories[0]);
+	}
 	
 	private function GetParticipantRow($reservationId, $userId, $fname, $lname, $email, $levelId)
 	{
@@ -245,6 +272,18 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::FIRST_NAME => $fname,
 			ColumnNames::LAST_NAME => $lname,
 			ColumnNames::USER_ID => $userId
+		);
+	}
+
+	private function GetAccessoryRow($referenceNumber, Date $startDate, Date $endDate, $accessoryName, $accessoryId, $quantityReserved)
+	{
+		return array(
+			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
+			ColumnNames::RESERVATION_START => $startDate->ToDatabase(),
+			ColumnNames::RESERVATION_END => $endDate->ToDatabase(),
+			ColumnNames::ACCESSORY_NAME => $accessoryName,
+			ColumnNames::ACCESSORY_ID => $accessoryId,
+			ColumnNames::QUANTITY => $quantityReserved,
 		);
 	}
 }
