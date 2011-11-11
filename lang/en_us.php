@@ -210,6 +210,7 @@ class en_us extends Language
 		$strings['InvitationList'] = 'Invitees';
 
 		// Errors
+		$strings['ReservationFailed'] = 'The reservation could not be made';
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
 		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s.';
 		$strings['MinDurationError'] = 'This reservation must last at least %s.';
