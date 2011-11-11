@@ -19,7 +19,14 @@ class AccessoryRepository implements IAccessoryRepository
 	 */
 	public function LoadById($accessoryId)
 	{
-		// TODO: Implement LoadById() method.
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAccessoryByIdCommand($accessoryId));
+
+		if ($row = $reader->GetRow())
+		{
+			return new Accessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
+		}
+
+		return null;
 	}
 }
 ?>

@@ -108,10 +108,6 @@ class en_us extends Language
 		$strings['RepeatUntilPrompt'] = 'Until';
 		$strings['RepeatEveryPrompt'] = 'Every';
 		$strings['RepeatDaysPrompt'] = 'On';
-		$strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources';
-		$strings['ConflictingReservationDates'] = 'There are conflicting reservations on the following dates:';
-		$strings['StartDateBeforeEndDateRule'] = 'The start date must be before the end date';
-		$strings['StartIsInPast'] = 'The start date cannot be in the past';
 		$strings['CreateReservationHeading'] = 'Create a new reservation';
 		$strings['EditReservationHeading'] = 'Editing reservation %s';
 		$strings['ViewReservationHeading'] = 'Viewing reservation %s';
@@ -218,6 +214,11 @@ class en_us extends Language
 		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s.';
 		$strings['MinDurationError'] = 'This reservation must last at least %s.';
 		$strings['MaxDurationError'] = 'This reservation cannot last longer than %s.';
+		$strings['ConflictingAccessoryDates'] = 'There are not enough of the following accessories:';
+		$strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources';
+		$strings['ConflictingReservationDates'] = 'There are conflicting reservations on the following dates:';
+		$strings['StartDateBeforeEndDateRule'] = 'The start date must be before the end date';
+		$strings['StartIsInPast'] = 'The start date cannot be in the past';
 
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

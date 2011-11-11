@@ -94,12 +94,12 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
 		$reservation = new TestReservationSeries();
 		$reservation->WithAccessory($accessory1);
-
 		$dr1 = new DateRange($startDate, $endDate);
 		$reservation->WithDuration($dr1);
 
-		$lowerQuantity = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 4);
-		$notOnReservation = new AccessoryReservation(2, $startDate, $endDate, 100, 1);
+		$lowerQuantity1 = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 2);
+		$lowerQuantity2 = new AccessoryReservation(3, $startDate, $endDate, $accessory1->AccessoryId, 2);
+		$notOnReservation = new AccessoryReservation(4, $startDate, $endDate, 100, 1);
 
 		$this->accessoryRepository->expects($this->at(0))
 			->method('LoadById')
@@ -109,50 +109,38 @@ class AccessoryAvailabilityRuleTests extends TestBase
 		$this->reservationRepository->expects($this->at(0))
 			->method('GetAccessoriesWithin')
 			->with($this->equalTo($dr1))
-			->will($this->returnValue(array($lowerQuantity, $notOnReservation)));
+			->will($this->returnValue(array($lowerQuantity1, $lowerQuantity2, $notOnReservation)));
 
 		$result = $this->rule->Validate($reservation);
 
 		$this->assertFalse($result->IsValid());
-		$this->assertTrue(!is_null($result->ErrorMessage()));
+		$this->assertFalse(is_null($result->ErrorMessage()));
 	}
 	
-	public function testGetsConflictingReservationTimesForSingleDateMultipleResources()
+	public function testNoConflictsButTooHigh()
 	{
-		$this->markTestIncomplete('working on accessory validation');
-		
-		$startDate = Date::Parse('2010-04-04', 'UTC');
-		$endDate = Date::Parse('2010-04-06', 'UTC');
-		$additionalResourceId = 1;
-		
+		$accessory1 = new ReservationAccessory(1, 5);
+		$quantityAvailable = 4;
+
 		$reservation = new TestReservationSeries();
-		$reservation->WithResource(new FakeBookableResource(100));
-		$reservation->WithDuration(new DateRange($startDate, $endDate));
-		$reservation->AddResource(new FakeBookableResource($additionalResourceId));
-		
-		$startConflict1 = Date::Parse('2010-04-04', 'UTC');
-		$endConflict1 = Date::Parse('2010-04-08', 'UTC');
-		
-		$startConflict2 = Date::Parse('2010-04-05', 'UTC');
-		$endConflict2 = Date::Parse('2010-04-08', 'UTC');
-		
-		$reservations = array( 
-			new TestScheduleReservation(2, $startConflict1, $endConflict1, 2),
-			new TestScheduleReservation(3, $startConflict2, $endConflict2, $additionalResourceId),
-		);
-		
-		$reservationRepository = $this->getMock('IReservationRepository');
-		
-		$reservationRepository->expects($this->once())
-			->method('GetWithin')
-			->with($this->equalTo($startDate), $this->equalTo($endDate))
-			->will($this->returnValue($reservations));
-			
-		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
-		$result = $rule->Validate($reservation);
-		
+		$dr1 = new TestDateRange();
+		$reservation->WithDuration($dr1);
+		$reservation->WithAccessory($accessory1);
+
+		$this->accessoryRepository->expects($this->at(0))
+			->method('LoadById')
+			->with($accessory1->AccessoryId)
+			->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
+
+		$this->reservationRepository->expects($this->once(0))
+			->method('GetAccessoriesWithin')
+			->with($this->anything())
+			->will($this->returnValue(array()));
+
+		$result = $this->rule->Validate($reservation);
+
 		$this->assertFalse($result->IsValid());
-		$this->assertTrue(!is_null($result->ErrorMessage()));
+		$this->assertFalse(is_null($result->ErrorMessage()));
 	}
 }
 ?>

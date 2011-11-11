@@ -286,6 +286,9 @@ class Queries
 		FROM users 
 		WHERE (username = @username OR email = @username)';
 
+	const GET_ACCESSORY_BY_ID =
+		'SELECT * FROM accessories WHERE accessory_id = @accessoryid';
+
 	const GET_ACCESSORY_LIST =
 		'SELECT *, rs.status_id as status_id
 		FROM reservation_instances ri

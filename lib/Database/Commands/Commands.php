@@ -368,6 +368,15 @@ class DeleteUserResourcePermission extends SqlCommand
 	}
 }
 
+class GetAccessoryByIdCommand extends SqlCommand
+{
+	public function __construct($accessoryId)
+	{
+	    parent::__construct(Queries::GET_ACCESSORY_BY_ID);
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
+	}
+}
+
 class GetAccessoryListCommand extends SqlCommand
 {
 	public function __construct(Date $startDate, Date $endDate)

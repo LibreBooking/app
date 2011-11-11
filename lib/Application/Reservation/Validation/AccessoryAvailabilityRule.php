@@ -33,12 +33,20 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 	public function Validate($reservationSeries)
 	{
 		$conflicts = array();
+		$reservationAccessories = $reservationSeries->Accessories();
 
+		if (count($reservationAccessories) == 0)
+		{
+			// no accessories to be reserved, no need to proceed
+			return new ReservationRuleResult();
+		}
+
+		/** @var AccessoryToCheck[] $accessories  */
 		$accessories = array();
-		foreach ($reservationSeries->Accessories() as $accessory)
+		foreach ($reservationAccessories as $accessory)
 		{
 			$a = $this->accessoryRepository->LoadById($accessory->AccessoryId);
-			$accessories[$a->Id] = new AccessoryToCheck($a, $accessory);
+			$accessories[$a->GetId()] = new AccessoryToCheck($a, $accessory);
 		}
 
 		$reservations = $reservationSeries->Instances();
@@ -49,28 +57,30 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 			
 			$accessoryReservations = $this->reservationRepository->GetAccessoriesWithin($reservation->Duration());
 
-			/** @var AccessoryReservation $accessoryReservation */
+			$aggregation = new AccessoryAggregation($accessories, $reservation->Duration());
+
 			foreach ($accessoryReservations as $accessoryReservation)
 			{
-				if (!array_key_exists($accessoryReservation->GetAccessoryId(), $accessories))
+				if ($reservation->ReferenceNumber() != $accessoryReservation->GetReferenceNumber())
 				{
-					// not an accessory on this reservation
-					continue;
+					$aggregation->Add($accessoryReservation);
 				}
-				
-				if (
-					$accessoryReservation->GetStartDate()->Equals($reservation->EndDate()) ||
-					$accessoryReservation->GetEndDate()->Equals($reservation->StartDate())
-				)
+			}
+
+			foreach ($accessories as $accessory)
+			{
+				$alreadyReserved = $aggregation->GetQuantity($accessory->GetId());
+				$requested = $accessory->QuantityReserved();
+
+				if ($requested + $alreadyReserved > $accessory->QuantityAvailable())
 				{
-					// not overlapping
-					continue;
-				}
-				
-				if ($this->IsInConflict($reservation, $accessoryReservation, $accessories))
-				{
-					Log::Debug("Accessory for reference number %s conflicts with existing reservation %s", $reservation->ReferenceNumber(), $accessoryReservation->GetReferenceNumber());
-					array_push($conflicts, $accessoryReservation);
+					Log::Debug("Accessory over limit. Reference Number %s, Date %s, Quantity already reserved %s, Quantity requested: %s",
+							   $reservation->ReferenceNumber(),
+							   $reservation->Duration(),
+								$alreadyReserved,
+								$requested);
+
+					array_push($conflicts, array('name' => $accessory->GetName(), 'date' => $reservation->StartDate()));
 				}
 			}
 		}
@@ -86,21 +96,7 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 	}
 
 	/**
-	 * @param Reservation $instance
-	 * @param AccessoryReservation $accessoryReservation
-	 * @param AccessoryToCheck[] $accessoriesToCheck
-	 * @return bool
-	 */
-	protected function IsInConflict(Reservation $instance,AccessoryReservation $accessoryReservation, $accessoriesToCheck)
-	{
-		/** @var AccessoryToCheck $accessoryToCheck  */
-		$accessoryToCheck = $accessoriesToCheck[$accessoryReservation->GetAccessoryId()];
-
-		return $accessoryReservation->QuantityReserved() + $accessoryToCheck->QuantityReserved() > $accessoryToCheck->QuantityAvailable();
-	}
-
-	/**
-	 * @param array|AccessoryReservation[] $conflicts
+	 * @param array $conflicts
 	 * @return string
 	 */
 	protected function GetErrorString($conflicts)
@@ -108,29 +104,70 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 		$errorString = new StringBuilder();
 
 		$errorString->Append(Resources::GetInstance()->GetString('ConflictingAccessoryDates'));
-		$errorString->Append("\n");
+		$errorString->AppendLine();
 		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
 		
-		$dates = array();
-		/** @var AccessoryReservation $conflict */
 		foreach($conflicts as $conflict)
 		{
-			$dates[] = $conflict->GetStartDate()->ToTimezone($this->timezone)->Format($format);
-		}
-		
-		$uniqueDates = array_unique($dates);
-		sort($uniqueDates);
-		
-		foreach ($uniqueDates as $date)
-		{
-			$errorString->Append($date);
-			$errorString->Append("\n");
+			$errorString->Append(sprintf('%s %s', $conflict['name'], $conflict['date']->ToTimezone($this->timezone)->Format($format)));
+			$errorString->AppendLine();
 		}
 		
 		return $errorString->ToString();
 	}
 }
 
+class AccessoryAggregation
+{
+	private $quantities = array();
+
+	/**
+	 * @var \DateRange
+	 */
+	private $duration;
+
+	/**
+	 * @param array|AccessoryToCheck[] $accessories
+	 * @param DateRange $duration
+	 */
+	public function __construct($accessories, $duration)
+	{
+		foreach ($accessories as $a)
+		{
+			$this->quantities[$a->GetId()] = 0;
+		}
+
+		$this->duration = $duration;
+
+	}
+	/**
+	 * @param AccessoryReservation $accessoryReservation
+	 * @return void
+	 */
+	public function Add(AccessoryReservation $accessoryReservation)
+	{
+		if ($accessoryReservation->GetStartDate()->Equals($this->duration->GetEnd()) || $accessoryReservation->GetEndDate()->Equals($this->duration->GetBegin()))
+		{
+			return;
+		}
+
+		$accessoryId = $accessoryReservation->GetAccessoryId();
+		if (array_key_exists($accessoryId, $this->quantities))
+		{
+			$this->quantities[$accessoryId] += $accessoryReservation->QuantityReserved();
+		}
+	}
+
+	/**
+	 * @param int $accessoryId
+	 * @return int
+	 */
+	public function GetQuantity($accessoryId)
+	{
+		return $this->quantities[$accessoryId];
+	}
+
+}
 class AccessoryToCheck
 {
 	/**
@@ -142,11 +179,33 @@ class AccessoryToCheck
 	 * @var \ReservationAccessory
 	 */
 	private $reservationAccessory;
+
+	/**
+	 * @var int
+	 */
+	private $quantityReserved;
 	
 	public function __construct(Accessory $accessory, ReservationAccessory $reservationAccessory)
 	{
 		$this->accessory = $accessory;
 		$this->reservationAccessory = $reservationAccessory;
+		$this->quantityReserved = $this->reservationAccessory->QuantityReserved;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetId()
+	{
+		return $this->accessory->GetId();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetName()
+	{
+		return $this->accessory->GetName();
 	}
 
 	/**
@@ -154,7 +213,7 @@ class AccessoryToCheck
 	 */
 	public function QuantityReserved()
 	{
-		return $this->reservationAccessory->QuantityReserved;
+		return $this->quantityReserved;
 	}
 
 	/**
@@ -162,7 +221,7 @@ class AccessoryToCheck
 	 */
 	public function QuantityAvailable()
 	{
-		return $this->accessory->QuantityAvailable;
+		return $this->accessory->GetQuantityAvailable();
 	}
 }
 ?>

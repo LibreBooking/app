@@ -32,7 +32,8 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		$reservationRepository = new ReservationRepository();
 
 		$ruleProcessor->AddRule(new ResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
-		
+		$ruleProcessor->AddRule(new AccessoryAvailabilityRule(new ReservationViewRepository(), new AccessoryRepository(), $userSession->Timezone));
+
 		return new AddReservationValidationService($ruleProcessor);
 	}
 	
