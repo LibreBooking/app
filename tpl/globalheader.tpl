@@ -53,8 +53,7 @@
 						<li class="menuitem"><a href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a>
 						</li>
 						<!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
-						<li class="menuitem"><a
-								href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a></li>
+						<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a></li>
 						<!--<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindAnOpening"}</a></li>-->
 					</ul>
 				</li>
@@ -69,15 +68,15 @@
 			{if $CanViewAdmin}
 				<li class="menubaritem"><a href="#">{translate key=Admin}</a>
 					<ul>
-						<li class="menuitem"><a
-								href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
+						<li class="menuitem"><a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
 						</li>
-						<li class="menuitem"><a
-								href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a></li>
-						<li class="menuitem"><a
-								href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a></li>
-						<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>
+						<li class="menuitem"><a href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a></li>
+						<li class="menuitem"><a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a>
+							<ul>
+								<li class="menuitem"><a href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a>
+							</ul>
 						</li>
+						<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a></li>
 						<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
 						<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
 						<li class="menuitem"><a

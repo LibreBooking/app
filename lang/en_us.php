@@ -208,6 +208,8 @@ class en_us extends Language
 		$strings['Add'] = 'Add';
 		$strings['ParticipantList'] = 'Participants';
 		$strings['InvitationList'] = 'Invitees';
+		$strings['AccessoryName'] = 'Accessory Name';
+		$strings['QuantityAvailable'] = 'Quantity Available';
 
 		// Errors
 		$strings['ReservationFailed'] = 'The reservation could not be made';
@@ -230,6 +232,7 @@ class en_us extends Language
 		$strings['PendingApproval'] = 'Pending Approval';
 		$strings['ManageSchedules'] = 'Manage Schedules';
 		$strings['ManageResources'] = 'Manage Resources';
+		$strings['ManageAccessories'] = 'Manage Accessories';
 		$strings['ManageUsers'] = 'Manage Users';
 		$strings['ManageGroups'] = 'Manage Groups';
 		$strings['ManageQuotas'] = 'Manage Quotas';

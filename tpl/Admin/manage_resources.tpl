@@ -173,7 +173,7 @@
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
-					<td><input type="text" class="textbox required"  maxlength="85" style="width:250px" {formname key=RESOURCE_NAME} /></td>
+					<td><input type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=RESOURCE_NAME} /></td>
 					<td>
 						<select class="textbox" {formname key=SCHEDULE_ID}>
 						{foreach from=$Schedules item=scheduleName key=scheduleId}

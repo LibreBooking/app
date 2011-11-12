@@ -172,4 +172,35 @@ class ResourceRepository implements IResourceRepository
 	}
 }
 
+
+class AccessoryDto
+{
+	/**
+	 * @var int
+	 */
+	public $Id;
+
+	/**
+	 * @var string
+	 */
+	public $Name;
+
+	/**
+	 * @var int
+	 */
+	public $QuantityAvailable;
+
+	public function __construct($id, $name, $quantityAvailable)
+	{
+		$this->Id = $id;
+		$this->Name = $name;
+		$this->QuantityAvailable = $quantityAvailable;
+	}
+
+	public static function Create($row)
+	{
+		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
+	}
+}
+
 ?>

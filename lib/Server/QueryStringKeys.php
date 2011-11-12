@@ -4,7 +4,8 @@ class QueryStringKeys
 {
 	private function __construct()
 	{}
-	
+
+	const ACCESSORY_ID = 'aid';
 	const ACTION = 'action';
 	const AUTOCOMPLETE_TERM = 'term';
 	const AUTOCOMPLETE_TYPE = 'type';

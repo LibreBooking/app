@@ -5,6 +5,8 @@ class FormKeys
 	{}
 
 	const ACCESSORY_LIST = 'accessoryList';
+	const ACCESSORY_NAME = 'accessoryName';
+	const ACCESSORY_QUANTITY_AVAILABLE = 'accessoryQuantityAvailable';
 	const ADDITIONAL_RESOURCES = 'additionalResources';
 	const ADDRESS = 'address';
 	const ALLOW_MULTIDAY = 'allowMultiday';
