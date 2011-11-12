@@ -174,7 +174,7 @@ function Reservation(opts) {
 	};
 
 	var AddAccessory = function(name, id, quantity) {
-		if (quantity == 0)
+		if (quantity == 0 || isNaN(quantity))
 		{
 			elements.accessoriesList.find('p [accessoryId=' + id  + ']').remove();
 			return;

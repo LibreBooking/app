@@ -5,6 +5,7 @@ class ParameterNames
 	{}
 
 	const ACCESSORY_ID = '@accessoryid';
+	const ACCESSORY_NAME = '@accessoryname';
 	const ACCESSORY_QUANTITY = '@quantity';
 
 	const CURRENT_DATE = '@current_date';
@@ -132,6 +133,11 @@ class Queries
 		WHERE
 			(@userid = reservation_users.user_id AND reservation_users.series_id = reservation_series.series_id)';
 
+	const ADD_ACCESSORY =
+		'INSERT INTO
+			accessories (accessory_name, accessory_quantity)
+		VALUES (@accessoryname, @quantity)';
+	
 	const ADD_GROUP =
 		'INSERT INTO
 			groups (name)
@@ -232,28 +238,23 @@ class Queries
 		FROM users 
 		WHERE user_id = @userid';
 
+	const DELETE_ACCESSORY =
+		'DELETE FROM accessories WHERE accessory_id = @accessoryid';
+	
 	const DELETE_GROUP =
-		'DELETE
-		FROM groups
-		WHERE group_id = @groupid';
+		'DELETE FROM groups	WHERE group_id = @groupid';
 
 	const DELETE_GROUP_RESOURCE_PERMISSION =
-		'DELETE
-		FROM group_resource_permissions
-		WHERE group_id = @groupid AND resource_id = @resourceid';
+		'DELETE	FROM group_resource_permissions WHERE group_id = @groupid AND resource_id = @resourceid';
 
 	const DELETE_GROUP_ROLE =
 		'DELETE FROM group_roles WHERE group_id = @groupid AND role_id = @roleid';
 	
 	const DELETE_QUOTA =
-		'DELETE
-		FROM quotas
-		WHERE quota_id = @quotaid';
+		'DELETE	FROM quotas	WHERE quota_id = @quotaid';
 
 	const DELETE_RESOURCE_COMMAND = 
-		'DELETE 
-		FROM resources 
-		WHERE resource_id = @resourceid';
+		'DELETE FROM resources WHERE resource_id = @resourceid';
 	
 	const DELETE_RESOURCE_RESERVATIONS_COMMAND = 
 		'DELETE s.* 
@@ -262,24 +263,16 @@ class Queries
 		WHERE rs.resource_id = @resourceid';
 	
 	const DELETE_SERIES =
-		'DELETE 
-		FROM reservation_series
-		WHERE series_id = @seriesid';
+		'DELETE FROM reservation_series	WHERE series_id = @seriesid';
 
 	const DELETE_USER =
-		'DELETE
-		FROM users
-		WHERE user_id = @userid';
+		'DELETE FROM users	WHERE user_id = @userid';
 	
 	const DELETE_USER_GROUP =
-		'DELETE
-		FROM user_groups
-		WHERE user_id = @userid AND group_id = @groupid';
+		'DELETE	FROM user_groups WHERE user_id = @userid AND group_id = @groupid';
 	
 	const DELETE_USER_RESOURCE_PERMISSION =
-		'DELETE
-		FROM user_resource_permissions
-		WHERE user_id = @userid AND resource_id = @resourceid';
+		'DELETE	FROM user_resource_permissions WHERE user_id = @userid AND resource_id = @resourceid';
 	
 	const LOGIN_USER = 
 		'SELECT user_id, email, fname, lname, timezone, lastlogin, homepageid
@@ -652,6 +645,11 @@ class Queries
 		SET isdefault = 0
 		WHERE schedule_id <> @scheduleid';
 
+	const UPDATE_ACCESSORY =
+		'UPDATE accessories
+		SET accessory_name = @accessoryname, accessory_quantity = @quantity
+		WHERE accessory_id = @accessoryid';
+	
 	const UPDATE_GROUP =
 		'UPDATE groups
 		SET name = @groupname, admin_group_id = @admin_group_id

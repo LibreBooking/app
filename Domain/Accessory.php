@@ -26,8 +26,8 @@ class Accessory
 	public function __construct($id, $name, $quantityAvailable)
 	{
 		$this->id = $id;
-		$this->name = $name;
-		$this->quantityAvailable = $quantityAvailable;
+		$this->SetName($name);
+		$this->SetQuantityAvailable($quantityAvailable);
 	}
 
 	/**
@@ -47,11 +47,40 @@ class Accessory
 	}
 
 	/**
+	 * @param string $name
+	 * @return void
+	 */
+	public function SetName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @param int $quantity
+	 */
+	public function SetQuantityAvailable($quantity)
+	{
+		$q = intval($quantity);
+		$this->quantityAvailable = empty($q) ? null : $q;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function GetQuantityAvailable()
 	{
 		return $this->quantityAvailable;
+	}
+
+	/**
+	 * @static
+	 * @param string $name
+	 * @param int $quantity
+	 * @return Accessory
+	 */
+	public static function Create($name, $quantity)
+	{
+		return new Accessory(null, $name, $quantity);
 	}
 }
 

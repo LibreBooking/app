@@ -24,7 +24,6 @@ function UserManagement(opts) {
 
 	var users = new Object();
 
-
 	UserManagement.prototype.init = function() {
 
 		ConfigureAdminDialog(elements.permissionsDialog, 400, 500);

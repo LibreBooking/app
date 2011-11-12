@@ -30,6 +30,45 @@ class AccessoryRepositoryTests extends TestBase
 		$this->assertEquals($command, $this->db->_LastCommand);
 	}
 
+	public function testCanAdd()
+	{
+		$name = 'n';
+		$available = 100;
+
+		$accessory = Accessory::Create($name, $available);
+
+		$command = new AddAccessoryCommand($name, $available);
+
+		$this->repository->Add($accessory);
+
+		$this->assertEquals($command, $this->db->_LastCommand);
+	}
+	
+	public function testCanUpdate()
+	{
+		$accessoryId = 100;
+		$name = 'n';
+		$available = 100;
+
+		$accessory = new Accessory($accessoryId, $name, $available);
+		
+		$command = new UpdateAccessoryCommand($accessoryId, $name, $available);
+
+		$this->repository->Update($accessory);
+
+		$this->assertEquals($command, $this->db->_LastCommand);
+	}
+	
+	public function testCanDelete()
+	{
+		$accessoryId = 100;
+		$command = new DeleteAccessoryCommand($accessoryId);
+
+		$this->repository->Delete($accessoryId);
+
+		$this->assertEquals($command, $this->db->_LastCommand);
+	}
+
 	private function GetAccessoryRow($accessoryId, $name, $available)
 	{
 		return array(

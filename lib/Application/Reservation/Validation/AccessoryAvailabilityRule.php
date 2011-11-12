@@ -109,7 +109,7 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 		
 		foreach($conflicts as $conflict)
 		{
-			$errorString->Append(sprintf('%s %s', $conflict['name'], $conflict['date']->ToTimezone($this->timezone)->Format($format)));
+			$errorString->Append(sprintf('(%s) %s', $conflict['date']->ToTimezone($this->timezone)->Format($format), $conflict['name']));
 			$errorString->AppendLine();
 		}
 		

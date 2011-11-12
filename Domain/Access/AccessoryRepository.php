@@ -9,6 +9,27 @@ interface IAccessoryRepository
 	 * @return Accessory
 	 */
 	public function LoadById($accessoryId);
+
+	/**
+	 * @abstract
+	 * @param Accessory $accessory
+	 * @return void
+	 */
+	public function Add(Accessory $accessory);
+
+	/**
+	 * @abstract
+	 * @param Accessory $accessory
+	 * @return void
+	 */
+	public function Update(Accessory $accessory);
+
+	/**
+	 * @abstract
+	 * @param int $accessoryId
+	 * @return void
+	 */
+	public function Delete($accessoryId);
 }
 
 class AccessoryRepository implements IAccessoryRepository
@@ -28,5 +49,33 @@ class AccessoryRepository implements IAccessoryRepository
 
 		return null;
 	}
+
+	/**
+	 * @param Accessory $accessory
+	 * @return void
+	 */
+	public function Add(Accessory $accessory)
+	{
+		ServiceLocator::GetDatabase()->Execute(new AddAccessoryCommand($accessory->GetName(), $accessory->GetQuantityAvailable()));
+	}
+
+	/**
+	 * @param Accessory $accessory
+	 * @return void
+	 */
+	public function Update(Accessory $accessory)
+	{
+		ServiceLocator::GetDatabase()->Execute(new UpdateAccessoryCommand($accessory->GetId(), $accessory->GetName(), $accessory->GetQuantityAvailable()));
+	}
+
+	/**
+	 * @param int $accessoryId
+	 * @return void
+	 */
+	public function Delete($accessoryId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteAccessoryCommand($accessoryId));
+	}
+	
 }
 ?>

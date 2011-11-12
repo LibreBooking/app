@@ -18,6 +18,16 @@ class GetAllReservationsByUserCommand /*Give it a very literal name describing w
     }
 }
 
+class AddAccessoryCommand extends SqlCommand
+{
+	public function __construct($accessoryName, $quantityAvailable)
+	{
+		parent::__construct(Queries::ADD_ACCESSORY);
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_NAME, $accessoryName));
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_QUANTITY, $quantityAvailable));
+	}
+}
+
 class AddGroupCommand extends SqlCommand
 {
 	public function __construct($groupName)
@@ -272,6 +282,15 @@ class CookieLoginCommand extends SqlCommand
 	{
 		parent::__construct(Queries::COOKIE_LOGIN);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
+class DeleteAccessoryCommand extends SqlCommand
+{
+	public function __construct($accessoryId)
+	{
+		parent::__construct(Queries::DELETE_ACCESSORY);
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
 	}
 }
 
@@ -845,6 +864,16 @@ class SetDefaultScheduleCommand extends SqlCommand
 	}
 }
 
+class UpdateAccessoryCommand extends SqlCommand
+{
+	public function __construct($accessoryId, $accessoryName, $quantityAvailable)
+	{
+		parent::__construct(Queries::UPDATE_ACCESSORY);
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_NAME, $accessoryName));
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_QUANTITY, $quantityAvailable));
+	}
+}
 class UpdateGroupCommand extends SqlCommand
 {
 	public function __construct($groupId, $groupName, $adminGroupId)

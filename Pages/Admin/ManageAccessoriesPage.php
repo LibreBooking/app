@@ -17,6 +17,11 @@ interface IManageAccessoriesPage extends IActionPage
 	public function GetAccessoryName();
 
 	/**
+	 * @return int
+	 */
+	public function GetQuantityAvailable();
+
+	/**
 	 * @abstract
 	 * @param $accessories AccessoryDto[]
 	 * @return void
@@ -67,15 +72,15 @@ class ManageAccessoriesPage extends AdminPage implements IManageAccessoriesPage
 	 */
 	public function GetAccessoryName()
 	{
-		$this->GetForm(FormKeys::ACCESSORY_NAME);
+		return $this->GetForm(FormKeys::ACCESSORY_NAME);
 	}
 
 	/**
-	 * @return string
+	 * @return int
 	 */
 	public function GetQuantityAvailable()
 	{
-		$this->GetForm(FormKeys::ACCESSORY_QUANTITY_AVAILABLE);
+		return $this->GetForm(FormKeys::ACCESSORY_QUANTITY_AVAILABLE);
 	}
 }
 

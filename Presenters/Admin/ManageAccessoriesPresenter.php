@@ -51,19 +51,38 @@ class ManageAccessoriesPresenter extends ActionPresenter
 		$this->page->BindAccessories($accessories);
 	}
 
-	protected function AddAccessory()
+	public function AddAccessory()
 	{
+		$name = $this->page->GetAccessoryName();
+		$quantity = $this->page->GetQuantityAvailable();
 		
+		Log::Debug('Adding new accessory with name %s and quantity %s', $name, $quantity);
+
+		$this->accessoryRepository->Add(Accessory::Create($name, $quantity));
 	}
 
-	protected function ChangeAccessory()
+	public function ChangeAccessory()
 	{
+		$id = $this->page->GetAccessoryId();
+		$name = $this->page->GetAccessoryName();
+		$quantity = $this->page->GetQuantityAvailable();
 		
+		Log::Debug('Changing accessory with id %s to name %s and quantity %s', $id, $name, $quantity);
+
+		$accessory = $this->accessoryRepository->LoadById($id);
+		$accessory->SetName($name);
+		$accessory->SetQuantityAvailable($quantity);
+		
+		$this->accessoryRepository->Update($accessory);
 	}
 	
-	protected function DeleteAccessory()
+	public function DeleteAccessory()
 	{
+		$id = $this->page->GetAccessoryId();
 		
+		Log::Debug('Deleting accessory with id %s', $id);
+
+		$this->accessoryRepository->Delete($id);
 	}
 }
 ?>

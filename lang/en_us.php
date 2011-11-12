@@ -111,7 +111,7 @@ class en_us extends Language
 		$strings['CreateReservationHeading'] = 'Create a new reservation';
 		$strings['EditReservationHeading'] = 'Editing reservation %s';
 		$strings['ViewReservationHeading'] = 'Viewing reservation %s';
-		$strings['CorrectErrors'] = 'Correct Errors';
+		$strings['ReservationErrors'] = 'Change Reservation';
 		$strings['Create'] = 'Create';
 		$strings['ThisInstance'] = 'Only This Instance';
 		$strings['AllInstances'] = 'All Instances';
@@ -212,7 +212,7 @@ class en_us extends Language
 		$strings['QuantityAvailable'] = 'Quantity Available';
 
 		// Errors
-		$strings['ReservationFailed'] = 'The reservation could not be made';
+		$strings['ReservationFailed'] = 'Your reservation could not be made';
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
 		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s.';
 		$strings['MinDurationError'] = 'This reservation must last at least %s.';

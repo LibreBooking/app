@@ -9,5 +9,5 @@
 </div>
 
 <div style="margin: auto;text-align: center;">
-	<button id="btnSaveFailed" class="button">{html_image src="arrow_large_left.png"} {translate key='CorrectErrors'}</button>
+	<button id="btnSaveFailed" class="button">{html_image src="arrow_large_left.png"} {translate key='ReservationErrors'}</button>
 </div>

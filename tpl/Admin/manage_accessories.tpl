@@ -13,8 +13,8 @@
 	{cycle values='row0,row1' assign=rowCss}
 	<tr class="{$rowCss}">
 		<td class="id"><input type="hidden" class="id" value="{$accessory->Id}"/></td>
-		<td >{$accessory->Name}</td>
-		<td >{$accessory->QuantityAvailable|default:'&infin;'}</td>
+		<td>{$accessory->Name}</td>
+		<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
 		<td align="center"><a href="#" class="update edit">{translate key='Edit'}</a> | <a href="#" class="update delete">{translate key='Delete'}</a></td>
 	</tr>
 {/foreach}
@@ -23,7 +23,7 @@
 <input type="hidden" id="activeId" />
 
 <div id="deleteDialog" class="dialog" style="display:none;">
-	<form id="deleteAccessoryForm" method="post">
+	<form id="deleteForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>This action is permanent and irrecoverable!</h3>
 			<div>Deleting this accessory will remove it from all reservations.</div>
@@ -35,9 +35,9 @@
 
 <div id="editDialog" class="dialog" style="display:none;">
 	<form id="editForm" method="post">
-		{translate key=AccessoryName}<br/> <input type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
+		{translate key=AccessoryName}<br/> <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
 		<br/><br/>
-		{translate key='QuantityAvailable'}<br/><input type="text" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
+		{translate key='QuantityAvailable'}<br/><input id="editQuantity" type="text" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
 		<input type="checkbox" id="chkUnlimitedEdit" class="unlimited" name="chkUnlimited" checked="checked" />
 		<label for="chkUnlimitedEdit"> {translate key=Unlimited}</label><br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
@@ -63,7 +63,7 @@
 						<input type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
 					</td>
 					<td>
-						<input type="text" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
+						<input type="text" id="addQuantity" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
 						<input type="checkbox" id="chkUnlimitedAdd" class="unlimited" name="chkUnlimited" checked="checked" />
 						<label for="chkUnlimitedAdd"> {translate key=Unlimited}</label>
 					</td>
@@ -99,6 +99,11 @@
 
 	var accessoryManagement = new AccessoryManagement(accessoryOptions);
 	accessoryManagement.init();
+
+	{foreach from=$accessories item=accessory}
+		accessoryManagement.addAccessory('{$accessory->Id}', '{$accessory->Name}', '{$accessory->QuantityAvailable}');
+	{/foreach}
+	
 	});
 </script>
 {include file='globalfooter.tpl'}
