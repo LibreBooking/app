@@ -25,15 +25,10 @@ class en_us extends Language
 		// Date on top-right of each page
 		$dates['header'] = '%A, %B %d, %Y';
 
-		// TODO: system - Move out of here
-		$dates['js_general_date'] = 'mm/dd/yy';
-		$dates['url'] = 'Y-m-d';
-
 		// new stuff
 		$dates['general_date'] = 'm/d/Y';
 		$dates['general_datetime'] = 'm/d/Y H:i:s';
 		$dates['schedule_daily'] = 'l, m/d/Y';
-		$dates['period_time'] = "g:i A";
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'm/d/Y g:i A';
 		$dates['dashboard'] = 'l, m/d/Y g:i A';

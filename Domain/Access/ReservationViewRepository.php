@@ -57,6 +57,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->EndDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
 			$reservationView->OwnerId = $row[ColumnNames::USER_ID];
 			$reservationView->ResourceId = $row[ColumnNames::RESOURCE_ID];
+			$reservationView->ResourceName = $row[ColumnNames::RESOURCE_NAME];
 			$reservationView->ReferenceNumber = $row[ColumnNames::REFERENCE_NUMBER];
 			$reservationView->ReservationId = $row[ColumnNames::RESERVATION_INSTANCE_ID];
 			$reservationView->ScheduleId = $row[ColumnNames::SCHEDULE_ID];
@@ -65,7 +66,9 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->SeriesId = $row[ColumnNames::SERIES_ID];	
 			$reservationView->OwnerFirstName = $row[ColumnNames::FIRST_NAME];	
 			$reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];
+			$reservationView->OwnerEmailAddress = $row[ColumnNames::EMAIL];
 			$reservationView->StatusId = $row[ColumnNames::RESERVATION_STATUS];
+			$reservationView->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
 
 			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
 			
@@ -287,6 +290,7 @@ class ReservationView
 	public $SeriesId;
 	public $ReferenceNumber;
 	public $ResourceId;
+	public $ResourceName;
 	public $ScheduleId;
 	public $StatusId;
 	
@@ -299,14 +303,36 @@ class ReservationView
 	 * @var Date
 	 */
 	public $EndDate;
+	
+	/**
+	 * @var Date
+	 */
+	public $DateCreated;
 	public $OwnerId;
+	public $OwnerEmailAddress;
 	public $OwnerFirstName;
 	public $OwnerLastName;
 	public $Title;
 	public $Description;
+
+	/**
+	 * @var string|RepeatType
+	 */
 	public $RepeatType;
+
+	/**
+	 * @var int
+	 */
 	public $RepeatInterval;
+
+	/**
+	 * @var array
+	 */
 	public $RepeatWeekdays;
+
+	/**
+	 * @var string|RepeatMonthlyType
+	 */
 	public $RepeatMonthlyType;	
 
 	/**
@@ -323,7 +349,7 @@ class ReservationView
 	 * @var ReservationResourceView[]
 	 */
 	public $Resources = array();
-	
+
 	/**
 	 * @var ReservationUserView[]
 	 */

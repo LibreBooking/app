@@ -55,7 +55,7 @@
 	{foreach from=$Resources item=resource name=resource_loop}
 		{assign var=resourceId value=$resource->Id}
 		{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
-		{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key="url"}"}
+		{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
 		<tr>
 			<td class="resourcename">
 				{if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}

@@ -28,10 +28,13 @@ class Resources implements IResourceLocalization
 	public $CalendarLanguageFile;
 	public $AvailableLanguages = array();
 	public $Charset;
+	public $HtmlLang;
 	
 	protected $LanguageDirectory;
 	
 	private static $_instance;
+
+	private $systemDateKeys = array();
 	
 	/**
 	 * @var Language
@@ -41,6 +44,11 @@ class Resources implements IResourceLocalization
 	public function __construct()
 	{	
 		$this->LanguageDirectory = dirname(__FILE__) . '/../../lang/';
+
+		$this->systemDateKeys['js_general_date'] = 'mm/dd/yy';
+		$this->systemDateKeys['url'] = 'Y-m-d';
+		$this->systemDateKeys['ical'] = 'Ymd\THis\Z';
+		$this->systemDateKeys['period_time'] = "g:i A";
 		
 		$this->LoadAvailableLanguages();
 	}
@@ -113,6 +121,11 @@ class Resources implements IResourceLocalization
 	
 	public function GetDateFormat($key)
 	{
+		if (array_key_exists($key, $this->systemDateKeys))
+		{
+			return $this->systemDateKeys[$key];
+		}
+		
 		$dates = $this->_lang->Dates;
 			
 		if (!isset($dates[$key]) || empty($dates[$key]))
@@ -213,19 +226,6 @@ class Resources implements IResourceLocalization
 			'sv' => new AvailableLanguage('sv', 'sv([-_][[:alpha:]]{2})?|swedish', 'sv.lang.php', 'Swedish'),
 			'tr' => new AvailableLanguage('tr', 'fi([-_][[:alpha:]]{2})?|turkish', 'tr.lang.php', 'T&uuml;rk&ccedil;e')
 		);
-	}
-	
-	private function GetCalendarLanguageFile()
-	{
-		$incomplete_translations = array ('tr');
-		
-		$file = "calendar-{$this->CurrentLanguage}.js";
-		$base = dirname(__FILE__) . '/../..';
-		if ( (array_search($this->CurrentLanguage, $incomplete_translations) !== false) || !file_exists("$base/jscalendar/lang/$file") )
-		{
-			$file = "calendar-en.js";
-		}
-		return $file;
 	}
 }
 ?>

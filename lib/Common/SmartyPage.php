@@ -57,6 +57,7 @@ class SmartyPage extends Smarty
 	{
 		$this->registerPlugin('function', 'translate', array($this, 'SmartyTranslate'));
 		$this->registerPlugin('function', 'formatdate', array($this, 'FormatDate'));
+		$this->registerPlugin('function', 'format_date', array($this, 'FormatDate'));
 		$this->registerPlugin('function', 'html_link', array($this, 'PrintLink'));
 		$this->registerPlugin('function', 'html_image', array($this, 'PrintImage'));
 		$this->registerPlugin('function', 'control', array($this, 'DisplayControl'));
