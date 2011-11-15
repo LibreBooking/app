@@ -259,8 +259,6 @@ class InstallPage extends Page implements IInstallPage
 		$this->presenter->PageLoad();
 		
 		$this->Display('install.tpl');
-		//$installer = new Installer();
-		//$installer->InstallFresh();
 	}
 
 	public function SetInstallPasswordMissing($isMissing)
