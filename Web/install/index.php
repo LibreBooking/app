@@ -17,6 +17,11 @@ else
 
 function SmartyPermissionsAreOk($smartyTemplateCacheDir)
 {
-	return is_writable($smartyTemplateCacheDir);
+	if (!is_writable($smartyTemplateCacheDir))
+	{
+		return chmod($smartyTemplateCacheDir, 0770);
+	}
+
+	return false;
 }
 ?>

@@ -26,7 +26,7 @@ class ServerSettingsPage extends AdminPage
 	function ProcessAction()
 	{
 		$uploadDir = ROOT_DIR . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY);
-		$chmodResult = chmod($uploadDir, 0777);
+		$chmodResult = chmod($uploadDir, 0770);
 	}
 }
 
