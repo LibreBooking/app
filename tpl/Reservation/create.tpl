@@ -302,7 +302,7 @@
 		repeatType: '{$RepeatType}',
 		repeatInterval: '{$RepeatInterval}',
 		repeatMonthlyType: '{$RepeatMonthlyType}',
-		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}$day,{/foreach}],
+		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day},{/foreach}],
 		returnUrl: '{$ReturnUrl}',
 		scopeOpts: scopeOptions,
 		createUrl: 'ajax/reservation_save.php',

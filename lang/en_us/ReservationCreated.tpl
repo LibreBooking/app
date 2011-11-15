@@ -25,6 +25,8 @@
 	{/if}
 	
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">View this reservation</a> | <a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
+	<a href="{$ScriptUrl}{$ReservationUrl}">View this reservation</a> |
+	<a href="{$ScriptUrl}{$ICalUrl}">Add to Outlook</a> |
+	<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
 	
 {include file='..\tpl\Email\emailfooter.tpl'}

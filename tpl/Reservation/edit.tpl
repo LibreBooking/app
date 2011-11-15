@@ -10,16 +10,21 @@
 
 {block name=deleteButtons}	
 	{if $IsRecurring}
-		<button type="button" class="button delete prompt">
-			<img src="img/cross-button.png" />
+		<a href="#" class="delete prompt">
+			{html_image src="cross-button.png"}
 			{translate key='Delete'}
-		</button>
+		</a>
 	{else}
-		<button type="button" class="button delete save">
-			<img src="img/cross-button.png" />
+		<a href="#" class="delete save">
+			{html_image src="cross-button.png"}
 			{translate key='Delete'}
-		</button>
+		</a>
 	{/if}
+
+	<a style='margin-left:10px;' href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
+		{html_image src="calendar-plus.png"}
+		Add to Outlook</a>
+	
 {/block}
 
 {block name=submitButtons}
@@ -31,19 +36,19 @@
 		<div id="updateButtons" style="display:none;" title="{translate key=ApplyUpdatesTo}">
 			<div style="text-align: center;line-height:50px;">
 				<button type="button" id="btnUpdateThisInstance" class="button save">
-					<img src="img/disk-black.png" alt="" />
+					{html_image src="disk-black.png"}
 					{translate key='ThisInstance'}
 				</button>
 				<button type="button" id="btnUpdateAllInstances" class="button save">
-					<img src="img/disks-black.png" alt="" />
+					{html_image src="disks-black.png"}
 					{translate key='AllInstances'}
 				</button>
 				<button type="button" id="btnUpdateFutureInstances" class="button save">
-					<img src="img/disk-arrow.png" alt="" />
+					{html_image src="disk-arrow.png"}
 					{translate key='FutureInstances'}
 				</button>
 				<button type="button" class="button">
-					<img src="img/slash.png" />
+					{html_image src="slash.png"}
 					{translate key='Cancel'}
 				</button>
 			</div>

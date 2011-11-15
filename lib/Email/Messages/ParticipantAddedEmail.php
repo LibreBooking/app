@@ -84,6 +84,7 @@ class ParticipantAddedEmail extends EmailMessage
 		$this->Set('RepeatDates', $repeatDates);
 		$this->Set('RequiresApproval', $this->reservationSeries->RequiresApproval());
 		$this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
+		$this->Set('ICalUrl', sprintf("export/%s?%s=%s", Pages::CALENDAR_EXPORT, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
 	}
 }
 ?>

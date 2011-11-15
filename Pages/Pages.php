@@ -4,6 +4,7 @@ class Pages
 	const DEFAULT_HOMEPAGE_ID = 1;
 
 	const CALENDAR = 'calendar.php';
+	const CALENDAR_EXPORT = 'ical.php';
 	const DASHBOARD = 'dashboard.php';
 	const DEFAULT_LOGIN = 'dashboard.php';
 	const INVITATION_RESPONSES = 'participation.php';
