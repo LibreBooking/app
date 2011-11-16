@@ -236,8 +236,8 @@ class en_us extends Language
 		$strings['ViewSchedule'] = 'View Schedule';
 		$strings['ForgotMyPassword'] = 'I Forgot My Password';
 		$strings['YouWillBeEmailedANewPassword'] = 'You will be emailed a new randomly generated password';
-
-
+		$strings['Close'] = 'Close';
+		$strings['ExportToCSV'] = 'Export to CSV';
 
 		// Errors
 		$strings['ReservationFailed'] = 'Your reservation could not be made';

@@ -13,6 +13,7 @@ class QueryStringKeys
 	const DATA_REQUEST = 'dr';
 	const DAY = 'd';
 	const END_DATE = 'ed';
+	const FORMAT = 'format';
 	const GROUP_ID = 'gid';
 	const INVITATION_ACTION = 'ia';
 	const LANGUAGE = 'lang';

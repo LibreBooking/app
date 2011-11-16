@@ -362,7 +362,9 @@ class SmartyPage extends Smarty
 
 		$sb->Append('<p><br>');
         $sb->Append($this->Resources->GetString('Rows'));
-        $sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} of {$pageInfo->Total}</p><p> ");
+        $sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} of {$pageInfo->Total}");
+		$sb->Append($this->CreatePageLink(array('page' => 1, 'size' => '-1', 'text' => 'View All'), $smarty));
+		$sb->Append('</p><p>');
 		$sb->Append($this->Resources->GetString('Page'));
 		$sb->Append(': ');
 		$size = $pageInfo->PageSize;
@@ -391,20 +393,21 @@ class SmartyPage extends Smarty
 		$page = $params['page'];
 		$pageSize = $params['size'];
 		$iscurrent = $params['iscurrent'];
+		$text = isset($params['text']) ? $params['text'] : $page;
 		
         $newUrl = $this->ReplaceQueryString($url, QueryStringKeys::PAGE, $page);
         $newUrl = $this->ReplaceQueryString($newUrl, QueryStringKeys::PAGE_SIZE, $pageSize);
 
 		$class = $iscurrent ? "page current" : "page";
 		
-        return sprintf('<a class="%s" href="%s">%s</a>', $class, $newUrl, $page);
+        return sprintf('<a class="%s" href="%s">%s</a>', $class, $newUrl, $text);
     }
 
 	function ReplaceQueryString($url, $key, $value)
 	{
 		$newUrl = $url;
 		
-		if (strpos($url, $key) === false) // does not have page variable
+		if (strpos($url, $key) === false) // does not have variable
         {
             if (strpos($url, '?') === false) // and does not have any query string
             {
@@ -417,10 +420,12 @@ class SmartyPage extends Smarty
         }
         else
         {
-            $pattern = '/(\?|&)' . $key .'=\d+/';
+            $pattern = '/(\?|&)(' . $key .'=.*)/';
             $replace = '${1}' . $key . '=' . $value;
 
             $newUrl = preg_replace($pattern, $replace, $url);
+
+			//die($pattern . ' ' . $url . ' ' . $newUrl);
         }
 
 		return $newUrl;

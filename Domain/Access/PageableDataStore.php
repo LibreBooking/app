@@ -25,7 +25,7 @@ class PageableDataStore
 			$total = $row[ColumnNames::TOTAL];
 		}
 
-		if (is_null($pageNumber) && is_null($pageSize))
+		if ((is_null($pageNumber) && is_null($pageSize)) || $pageSize == PageInfo::All)
 		{
 			$resultReader = $db->Query($command);
 		}
@@ -58,7 +58,7 @@ class PageableData
 		$pageNumber = is_null($pageNumber) ? 1 : $pageNumber;
 		$pageSize = is_null($pageSize) ? 1 : $pageSize;
 
-		$this->pageInfo = new PageInfo($total, $pageNumber, $pageSize);
+		$this->pageInfo = PageInfo::Create($total, $pageNumber, $pageSize);
 	}
 
 	/**
@@ -80,6 +80,8 @@ class PageableData
 
 class PageInfo
 {
+	const All = -1;
+
 	public $Total = 0;
 	public $TotalPages = 0;
 	public $PageSize = 0;
@@ -96,6 +98,29 @@ class PageInfo
         $this->ResultsStart = ($pageNumber-1) * $pageSize + 1;
         $this->ResultsEnd = min(($pageNumber * $pageSize), $totalResults);
 	}
+
+	public static function Create($total, $pageNumber, $pageSize)
+	{
+		if ($pageSize == self::All)
+		{
+			return new PageInfoAll($total);
+		}
+
+		return new PageInfo($total, $pageNumber, $pageSize);
+	}
 }
+
+class PageInfoAll extends PageInfo
+{
+	public function __construct($totalResults)
+	{
+		$defaultPageSize = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_PAGE_SIZE);
+	    parent::__construct($totalResults, 1, $defaultPageSize);
+		$this->TotalPages = 1;
+		$this->ResultsStart = 1;
+		$this->ResultsEnd = 1;
+	}
+}
+
 
 ?>

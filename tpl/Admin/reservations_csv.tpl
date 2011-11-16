@@ -1,0 +1,4 @@
+{translate key='User'},{translate key='Resource'},{translate key='BeginDate'},{translate key='EndDate'},{translate key='Created'},{translate key='LastModified'},{translate key='ReferenceNumber'}
+{foreach from=$reservations item=reservation}
+{$reservation->FirstName} {$reservation->LastName},{$reservation->ResourceName},{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup},{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup},{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime},{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime},{$reservation->ReferenceNumber}
+{/foreach}

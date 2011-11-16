@@ -26,6 +26,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$scheduleId = 73;
 		$startDate = new Date('2010-01-01 05:00', 'UTC');
 		$endDate = new Date('2010-01-01 12:00', 'UTC');
+		$dateCreated = new Date('2010-01-01', 'UTC');
 		$ownerId = 92;
 		$title = 'ti';
 		$description = 'de';
@@ -35,6 +36,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$ownerFirst = 'f';
 		$ownerLast = 'l';
 		$statusId = ReservationStatus::Pending;
+		$resourceName = 'resource';
 		
 		$resourceId1 = 88;
 		$resourceName1 = 'r1';
@@ -81,7 +83,9 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::SERIES_ID => $seriesId,
 			ColumnNames::FIRST_NAME => $ownerFirst,
 			ColumnNames::LAST_NAME => $ownerLast,
-			ColumnNames::RESERVATION_STATUS => $statusId
+			ColumnNames::RESERVATION_STATUS => $statusId,
+			ColumnNames::RESERVATION_CREATED => $dateCreated->ToDatabase(),
+			ColumnNames::RESOURCE_NAME => $resourceName,
 		);
 		
 		$resourceRows = array(
@@ -129,6 +133,8 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->ReferenceNumber = $referenceNumber;
 		$expectedView->ReservationId = $reservationId;
 		$expectedView->ResourceId = $resourceId;
+		$expectedView->ResourceName = $resourceName;
+		$expectedView->DateCreated = $dateCreated;
 		$expectedView->ScheduleId = $scheduleId;
 		$expectedView->StartDate = $startDate;
 		$expectedView->Title = $title;

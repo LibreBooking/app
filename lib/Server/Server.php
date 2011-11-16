@@ -72,11 +72,11 @@ class Server
 	
 	public function GetUrl()
 	{
-		$url = urlencode($_SERVER['PHP_SELF']);
+		$url = htmlspecialchars($_SERVER['PHP_SELF']);
 		
 		if (isset($_SERVER['QUERY_STRING']))
 		{
-			$url.= '?' . urlencode($_SERVER['QUERY_STRING']);	
+			$url.= '?' . htmlspecialchars($_SERVER['QUERY_STRING']);
 		}
 		
 		return $url;

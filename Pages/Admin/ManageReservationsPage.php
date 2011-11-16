@@ -185,9 +185,19 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 		$userTimezone = $this->server->GetUserSession()->Timezone;
 
 		$this->Set('Timezone', $userTimezone);
+		$this->Set('CsvExportUrl', ServiceLocator::GetServer()->GetUrl() . '&' . QueryStringKeys::FORMAT . '=csv');
 		$this->presenter->PageLoad($userTimezone);
 
-		$this->Display('manage_reservations.tpl');
+		if ($this->GetFormat() == 'csv')
+		{
+			header("Content-Type: text/csv");
+			header("Content-Disposition: inline; filename=reservations.csv");
+			$this->Display('reservations_csv.tpl');
+		}
+		else
+		{
+			$this->Display('manage_reservations.tpl');
+		}
 	}
 
 	public function BindReservations($reservations)
@@ -388,6 +398,14 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	public function GetApproveReferenceNumber()
 	{
 		return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
+	}
+
+	/**
+	 * @return null|string
+	 */
+	private function GetFormat()
+	{
+		return $this->GetQuerystring(QueryStringKeys::FORMAT);
 	}
 }
 ?>

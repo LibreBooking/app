@@ -53,6 +53,9 @@
 
 <div>&nbsp;</div>
 
+<p>
+	<a href="{$CsvExportUrl}">{translate key=ExportToCSV} {html_image src='table-export.png'}</a>
+</p>
 <table class="list" id="reservationTable">
 	<tr>
 		<th class="id">&nbsp;</th>
