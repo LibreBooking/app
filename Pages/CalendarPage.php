@@ -62,7 +62,7 @@ class CalendarPage extends SecurePage implements ICalendarPage
 
 	public function __construct()
 	{
-		parent::__construct('Calendar');
+		parent::__construct('ResourceCalendar');
 		
 		$this->_presenter = new CalendarPresenter($this, new CalendarFactory(), new ReservationRepository(), new ScheduleRepository(), new ResourceRepository());
 	}

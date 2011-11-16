@@ -3,7 +3,7 @@
 <h1>{translate key=ManageGroups}</h1>
 
 <div style="padding: 10px 0px;">
-	{translate key='Find Group'}<br/>
+	{translate key='FindGroup'}:<br/>
 	<input type="text" id="groupSearch" class="textbox" size="40"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllGroups}
 </div>
 <table class="list">
@@ -94,9 +94,9 @@
 
 <div id="groupAdminDialog" class="dialog" title="Who can manage this group?">
 	<form method="post" id="groupAdminForm">
-		<select {formname key=GROUP_ADMIN}>
+		<select {formname key=GROUP_ADMIN} class="textbox">
 			{foreach from=$AdminGroups item=adminGroup}
-				<option value="">{translate key=None}</option>
+				<option value="">-- {translate key=None} --</option>
 				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
 			{/foreach}
 		</select>

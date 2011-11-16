@@ -23,7 +23,7 @@
 
 	<a style='margin-left:10px;' href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
 		{html_image src="calendar-plus.png"}
-		Add to Outlook</a>
+		{translate key=AddToOutlook}</a>
 	
 {/block}
 

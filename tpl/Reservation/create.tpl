@@ -22,7 +22,7 @@
 				or
 				<button id="promptForChangeUsers" type="button" class="button" style="display:inline">
 					<img src="img/users.png"/>
-				{translate key='All Users'}
+				{translate key='AllUsers'}
 				</button>
 			</li>
 		</ul>
@@ -167,7 +167,7 @@
 					or
 					<button id="promptForParticipants" type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png"/>
-					{translate key='All Users'}
+					{translate key='AllUsers'}
 					</button>
 				</label>
 
@@ -182,7 +182,7 @@
 					or
 					<button id="promptForInvitees" type="button" class="button" style="display:inline">
 						<img src="img/user-plus.png"/>
-					{translate key='All Users'}
+					{translate key='AllUsers'}
 					</button>
 				</label>
 

@@ -60,6 +60,12 @@
 	font-weight: bold;
 }
 
+.calendarHeading a
+{
+	font-weight: normal;
+	font-size: 10pt;
+}
+
 .noresults
 {
 	font-style: italic;

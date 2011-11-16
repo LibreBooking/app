@@ -9,8 +9,8 @@
 	</div>
 
 	<div style="float:right;">
-		<a href="{PersonalCalendarUrl::Create($Today, CalendarTypes::Month)}" alt="Today" title="Today">{html_image src="calendar-day.png"}</a>
-		<a href="{PersonalCalendarUrl::Create($DisplayDate, CalendarTypes::Week)}" alt="Week" title="Week">{html_image src="calendar-select-week.png"}</a>
+		<a href="{PersonalCalendarUrl::Create($Today, CalendarTypes::Month)}" alt="Today" title="Today">{translate key=Today} {html_image src="calendar-day.png"}</a>
+		<a href="{PersonalCalendarUrl::Create($DisplayDate, CalendarTypes::Week)}" alt="Week" title="Week">{translate key=Week} {html_image src="calendar-select-week.png"}</a>
 	</div>
 
 	<div class="clear">&nbsp;</div>

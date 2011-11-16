@@ -119,7 +119,9 @@
 
 		<div style="float:left;">
 			{block name="deleteButtons"}
-				&nbsp;
+				<a href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
+				{html_image src="calendar-plus.png"}
+				{translate key=AddToOutlook}</a>
 			{/block}
 		</div>
 		<div style="float:right;">

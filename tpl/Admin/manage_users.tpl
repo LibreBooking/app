@@ -20,7 +20,7 @@
 		<th>{translate key='Timezone'}</th>
 		<th>{translate key='Language'}</th>
 		<th>{translate key='Status'}</th>
-		<th>{translate key='Groups'}</th>
+		<!--<th>{translate key='Groups'}</th>-->
 		<th>{translate key='Permissions'}</th>
 		<th>{translate key='Reservations'}</th>
 		<th>{translate key='Password'}</th>
@@ -41,7 +41,7 @@
 		<td>{$user->Timezone}</td>
 		<td>{$user->Language}</td>
 		<td align="center"><a href="#" class="update changeStatus">{translate key=$statusDescriptions[$user->StatusId]}</a></td>
-		<td align="center"><a href="#" class="update changeGroups">{translate key='Edit'}</a></td>
+		<!--<td align="center"><a href="#" class="update changeGroups">{translate key='Edit'}</a></td>-->
 		<td align="center"><a href="#" class="update changePermissions">{translate key='Edit'}</a></td>
 		<td align="center"><a href="#" class="update viewReservations">{translate key='Search'}</a></td>
 		<td align="center"><a href="#" class="update resetPassword">{translate key='Reset'}</a></td>

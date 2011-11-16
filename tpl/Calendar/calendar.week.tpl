@@ -11,8 +11,8 @@
 	</div>
 
 	<div style="float:right;">
-		<a href="{CalendarUrl::Create($Today, CalendarTypes::Week)}" alt="Today" title="Today">{html_image src="calendar-day.png"}</a>
-		<a href="{CalendarUrl::Create($DisplayDate, CalendarTypes::Month)}" alt="View Month" title="View Month">{html_image src="calendar-select-month.png"}</a>
+		<a href="{CalendarUrl::Create($Today, CalendarTypes::Week)}" alt="Today" title="Today">{translate key=Today} {html_image src="calendar-day.png"}</a>
+		<a href="{CalendarUrl::Create($DisplayDate, CalendarTypes::Month)}" alt="View Month" title="View Month">{translate key=Month} {html_image src="calendar-select-month.png"}</a>
 	</div>
 
 	<div class="clear">&nbsp;</div>

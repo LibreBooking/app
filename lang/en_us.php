@@ -65,6 +65,8 @@ class en_us extends Language
 		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
 		$strings['UserNameRequired'] = 'User name is required.';
 		$strings['Today'] = 'Today';
+		$strings['Week'] = 'Week';
+		$strings['Month'] = 'Month';
 		$strings['BackToCalendar'] = 'Back to calendar';
 		$strings['BeginDate'] = 'Begin';
 		$strings['EndDate'] = 'End';
@@ -90,6 +92,7 @@ class en_us extends Language
 		$strings['Monthly'] = 'Monthly';
 		$strings['Yearly'] = 'Yearly';
 		$strings['RepeatPrompt'] = 'Repeat';
+		$strings['hours'] = 'hours';
 		$strings['days'] = 'days';
 		$strings['weeks'] = 'weeks';
 		$strings['months'] = 'months';
@@ -207,6 +210,26 @@ class en_us extends Language
 		$strings['QuantityAvailable'] = 'Quantity Available';
 		$strings['Resources'] = 'Resources';
 		$strings['Participants'] = 'Participants';
+		$strings['User'] = 'User';
+		$strings['Resource'] = 'Resource';
+		$strings['Status'] = 'Status';
+		$strings['Approve'] = 'Approve';
+		$strings['Page'] = 'Page';
+		$strings['Rows'] = 'Rows';
+		$strings['Unlimited'] = 'Unlimited';
+		$strings['Email'] = 'Email';
+		$strings['Phone'] = 'Phone';
+		$strings['Organization'] = 'Organization';
+		$strings['Position'] = 'Position';
+		$strings['Language'] = 'Language';
+		$strings['Permissions'] = 'Permissions';
+		$strings['Reset'] = 'Reset';
+		$strings['FindGroup'] = 'Find Group';
+		$strings['Manage'] = 'Manage';
+		$strings['None'] = 'None';
+		$strings['AddToOutlook'] = 'Add to Outlook';
+		$strings['Done'] = 'Done';
+		
 
 
 		// Errors
@@ -225,15 +248,15 @@ class en_us extends Language
 		$strings['CreateReservation'] = 'Create Reservation';
 		$strings['EditReservation'] = 'Editing Reservation';
 		$strings['LogIn'] = 'Log In';
-		$strings['ManageReservations'] = 'Manage Reservations';
+		$strings['ManageReservations'] = 'Reservations';
 		$strings['AwaitingActivation'] = 'Awaiting Activation';
 		$strings['PendingApproval'] = 'Pending Approval';
-		$strings['ManageSchedules'] = 'Manage Schedules';
-		$strings['ManageResources'] = 'Manage Resources';
-		$strings['ManageAccessories'] = 'Manage Accessories';
-		$strings['ManageUsers'] = 'Manage Users';
-		$strings['ManageGroups'] = 'Manage Groups';
-		$strings['ManageQuotas'] = 'Manage Quotas';
+		$strings['ManageSchedules'] = 'Schedules';
+		$strings['ManageResources'] = 'Resources';
+		$strings['ManageAccessories'] = 'Accessories';
+		$strings['ManageUsers'] = 'Users';
+		$strings['ManageGroups'] = 'Groups';
+		$strings['ManageQuotas'] = 'Quotas';
 		$strings['MyDashboard'] = 'My Dashboard';
 		$strings['ServerSettings'] = 'Server Settings';
 		$strings['Dashboard'] = 'Dashboard';
@@ -250,6 +273,9 @@ class en_us extends Language
 		$strings['Reservation'] = 'New Reservation';
 		$strings['Install'] = 'Installation';
 		$strings['ChangePassword'] = 'Change Password';
+		$strings['MyAccount'] = 'My Account';
+		$strings['Profile'] = 'Profile';
+		$strings['ApplicationManagement'] = 'Application Management';
 		//
 
 		// Day representations

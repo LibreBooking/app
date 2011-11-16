@@ -40,7 +40,7 @@
 				<li class="menubaritem first"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
 				<li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyAccount"}</a>
 					<ul>
-						<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyProfile"}</a></li>
+						<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
 						<li class="menuitem"><a href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a>
 						</li>
 						<!--<li class="menuitem"><a href="#">{translate key="MyEmailPreferences"}</a></li>-->
@@ -66,7 +66,7 @@
 		    </li>
 		    -->
 			{if $CanViewAdmin}
-				<li class="menubaritem"><a href="#">{translate key=Admin}</a>
+				<li class="menubaritem"><a href="#">{translate key=ApplicationManagement}</a>
 					<ul>
 						<li class="menuitem"><a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
 						</li>

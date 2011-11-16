@@ -27,7 +27,7 @@ function UserManagement(opts) {
 	UserManagement.prototype.init = function() {
 
 		ConfigureAdminDialog(elements.permissionsDialog, 400, 500);
-		ConfigureAdminDialog(elements.passwordDialog, 400, 300);
+		ConfigureAdminDialog(elements.passwordDialog, 400, 150);
 		ConfigureAdminDialog(elements.userDialog, 310, 550);
 		ConfigureAdminDialog(elements.deleteDialog, 600, 200);
 
@@ -62,6 +62,11 @@ function UserManagement(opts) {
 
 		elements.userList.delegate('.delete', 'click', function(e) {
 			deleteUser();
+		});
+
+		elements.userList.delegate('.viewReservations', 'click', function(e) {
+			var user = getActiveUser();
+			window.location.href = 'manage_reservations.php?uid=' + user.id + '&un=' + user.first + ' ' + user.last;
 		});
 
 		elements.userAutocomplete.userAutoComplete(options.userAutocompleteUrl, function(ui) {

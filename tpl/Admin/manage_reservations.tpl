@@ -58,8 +58,8 @@
 		<th class="id">&nbsp;</th>
 		<th>{translate key='User'}</th>
 		<th>{translate key='Resource'}</th>
-		<th>{translate key='Start'}</th>
-		<th>{translate key='End'}</th>
+		<th>{translate key='BeginDate'}</th>
+		<th>{translate key='EndDate'}</th>
 		<th>{translate key='Created'}</th>
 		<th>{translate key='LastModified'}</th>
 		<th>{translate key='ReferenceNumber'}</th>
@@ -85,7 +85,7 @@
 			{if $reservation->RequiresApproval}
 				<a href="#" class="update approve">{html_image src='tick-button.png'}</a>
 			{else}
-				&nbsp;
+				-
 			{/if}
 		</td>
 	</tr>

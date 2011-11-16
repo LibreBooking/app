@@ -598,6 +598,7 @@ function Reservation(opts) {
 	{
 		var dialogElement = $('#changeUserDialog');
 		var allUserList;
+		var items = [];
 		if (dialogElement.children().length == 0) {
 			$.ajax({
 				url: options.changeUserAutocompleteUrl,
@@ -608,7 +609,7 @@ function Reservation(opts) {
 				}
 			});
 
-			var items = [];
+
 			$.map(allUserList, function(item) {
 				items.push('<li><a href="#" class="add" title="Add" userId="' + item.Id + '">' + item.Name + '</a></li>')
 			});
