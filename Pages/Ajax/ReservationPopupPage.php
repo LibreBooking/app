@@ -21,17 +21,17 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		if (!$this->IsAuthenticated())
 		{
-			$this->smarty->assign('authorized', false);
+			$this->Set('authorized', false);
 		}
 		else
 		{
-			$this->smarty->assign('authorized', true);
+			$this->Set('authorized', true);
 			$this->_presenter->PageLoad();
 		}
 		
-		$this->smarty->assign('ReservationId', $this->GetReservationId());
+		$this->Set('ReservationId', $this->GetReservationId());
 		
-		$this->smarty->display('Ajax/respopup.tpl');		
+		$this->Display('Ajax/respopup.tpl');
 	}
 	
 	/**
@@ -39,34 +39,34 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	 */
 	function GetReservationId()
 	{
-		return $this->server->GetQuerystring('id');
+		return $this->GetQuerystring('id');
 	}
 	
 	function SetName($first, $last)
 	{
-		$this->smarty->assign('fname', $first);
-		$this->smarty->assign('lname', $last);
+		$this->Set('fname', $first);
+		$this->Set('lname', $last);
 	}
 	
 	function SetResources($resources)
 	{
-		$this->smarty->assign('resources', $resources);
+		$this->Set('resources', $resources);
 	}
 	
 	function SetParticipants($users)
 	{
-		$this->smarty->assign('participants', $users);
+		$this->Set('participants', $users);
 	}
 	
 	function SetSummary($summary)
 	{
-		$this->smarty->assign('summary', $summary);
+		$this->Set('summary', $summary);
 	}
 	
 	function SetDates($startDate, $endDate)
 	{
-		$this->smarty->assign('startDate', $startDate);
-		$this->smarty->assign('endDate', $endDate);
+		$this->Set('startDate', $startDate);
+		$this->Set('endDate', $endDate);
 	}
 }
 

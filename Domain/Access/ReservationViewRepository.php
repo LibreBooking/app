@@ -214,6 +214,7 @@ class ReservationResourceView
 	public function __construct($resourceId, $resourceName = '')
 	{
 		$this->_id = $resourceId;
+		$this->_resourceName = $resourceName;
 	}
 	
 	public function Id()

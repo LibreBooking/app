@@ -454,7 +454,8 @@ class Queries
 		'SELECT r.*, rr.resource_level_id
 		FROM reservation_resources rr
 		INNER JOIN resources r ON rr.resource_id = r.resource_id
-		WHERE rr.series_id = @seriesid';
+		WHERE rr.series_id = @seriesid
+		ORDER BY resource_level_id, name';
 	
 	const GET_RESERVATION_SERIES_INSTANCES =
 		'SELECT *
