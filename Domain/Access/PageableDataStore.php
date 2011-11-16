@@ -118,7 +118,7 @@ class PageInfoAll extends PageInfo
 	    parent::__construct($totalResults, 1, $defaultPageSize);
 		$this->TotalPages = 1;
 		$this->ResultsStart = 1;
-		$this->ResultsEnd = 1;
+		$this->ResultsEnd = $totalResults;
 	}
 }
 

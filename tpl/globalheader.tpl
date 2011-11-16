@@ -84,7 +84,7 @@
 					</ul>
 				</li>
 			{/if}
-				<li class="menubaritem"><a href="#">{translate key="Help"}</a></li>
+				<li class="menubaritem"><a href="{$Path}help.php">{translate key="Help"}</a></li>
 			</ul>
 			<!-- end #nav -->
 

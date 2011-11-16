@@ -360,9 +360,10 @@ class SmartyPage extends Smarty
 		
 		$sb = new StringBuilder();
 
-		$sb->Append('<p><br>');
+		$sb->Append('<p><br/>');
         $sb->Append($this->Resources->GetString('Rows'));
         $sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} of {$pageInfo->Total}");
+		$sb->Append('<span>&nbsp;</span>');
 		$sb->Append($this->CreatePageLink(array('page' => 1, 'size' => '-1', 'text' => 'View All'), $smarty));
 		$sb->Append('</p><p>');
 		$sb->Append($this->Resources->GetString('Page'));
@@ -424,8 +425,6 @@ class SmartyPage extends Smarty
             $replace = '${1}' . $key . '=' . $value;
 
             $newUrl = preg_replace($pattern, $replace, $url);
-
-			//die($pattern . ' ' . $url . ' ' . $newUrl);
         }
 
 		return $newUrl;
