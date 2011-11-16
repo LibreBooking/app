@@ -12,18 +12,16 @@
 	<form class="forgot" method="post"
 		action="{$smarty.server.SCRIPT_NAME}">
 		<div class="forgot_pwdHeader">
-			<h3>{translate key='Forgot Password'}</h3>
+			<h3>{translate key='ForgotPassword'}</h3>
 		</div>
 		<div>
-			<p class="forgot">{translate key='This will change your password to a new, randomly generated one.'}
-			</p>
-			<p class="forgot">{translate key='your new password will be set'}</p>
+			<p class="forgot">{translate key='YouWillBeEmailedANewPassword'}</p>
 			<p>
-				<label class="forgot">{translate key='Email address'}<br />
+				<label class="forgot">{translate key='EmailAddress'}<br />
 					{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
 			</p>
 			<p class="resetpassword">
-				<button type="submit" class="button" name="{Actions::RESET}" value="{Actions::RESET}">{html_image src="tick-circle.png"} {translate key='Change Password'}</button>
+				<button type="submit" class="button" name="{Actions::RESET}" value="{Actions::RESET}">{html_image src="tick-circle.png"} {translate key='ChangePassword'}</button>
 			</p>
 		</div>
 	</form>

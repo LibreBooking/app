@@ -17,7 +17,7 @@
         {textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}</label>
 </p>
 <p class="stayloggedin">
-        <label class="login"><input type="checkbox" name="{FormKeys::PERSIST_LOGIN}" value="true" tabindex="30" /> {translate key='Keep me logged in'}</label>
+        <label class="login"><input type="checkbox" name="{FormKeys::PERSIST_LOGIN}" value="true" tabindex="30" /> {translate key='RememberMe'}</label>
 </p>
 <p class="loginsubmit">
         <button type="submit" name="{Actions::LOGIN}" class="button" tabindex="100" value="submit">
@@ -30,15 +30,15 @@
 <div id="login-links">
 {if $ShowRegisterLink} 
         <h4 class="register">
-                {translate key='First time user'}
-                {html_link href="register.php" key="Click here to register"}
+                {translate key='FirstTimeUser?'}
+                {html_link href="register.php" key="CreateAnAccount"}
         </h4>
 {/if}
 
 <p class="login_links">
-    <a href="view-schedule.php">{translate key='View Schedule'}</a>
+    <a href="view-schedule.php">{translate key='ViewSchedule'}</a>
     | 
-    <a href="forgot.php">{translate key='I Forgot My Password'}</a>
+    <a href="forgot.php">{translate key='ForgotMyPassword'}</a>
     | 
     <a href="javascript: help();">{translate key='Help'}</a>
 </p>

@@ -16,7 +16,7 @@ class ForgotPwdPage extends Page implements IForgotPwdPage
 
 	public function __construct()
 	{
-		parent::__construct('Forgot Password');
+		parent::__construct('ForgotPassword');
 		
 		$this->_presenter = new ForgotPwdPresenter($this);
 	}

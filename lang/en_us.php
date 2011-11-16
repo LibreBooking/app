@@ -218,6 +218,7 @@ class en_us extends Language
 		$strings['Rows'] = 'Rows';
 		$strings['Unlimited'] = 'Unlimited';
 		$strings['Email'] = 'Email';
+		$strings['EmailAddress'] = 'Email Address';
 		$strings['Phone'] = 'Phone';
 		$strings['Organization'] = 'Organization';
 		$strings['Position'] = 'Position';
@@ -229,7 +230,13 @@ class en_us extends Language
 		$strings['None'] = 'None';
 		$strings['AddToOutlook'] = 'Add to Outlook';
 		$strings['Done'] = 'Done';
-		
+		$strings['RememberMe'] = 'Remember Me';
+		$strings['FirstTimeUser?'] = 'First Time User?';
+		$strings['CreateAnAccount'] = 'Create an Account';
+		$strings['ViewSchedule'] = 'View Schedule';
+		$strings['ForgotMyPassword'] = 'I Forgot My Password';
+		$strings['YouWillBeEmailedANewPassword'] = 'You will be emailed a new randomly generated password';
+
 
 
 		// Errors
@@ -276,6 +283,7 @@ class en_us extends Language
 		$strings['MyAccount'] = 'My Account';
 		$strings['Profile'] = 'Profile';
 		$strings['ApplicationManagement'] = 'Application Management';
+		$strings['ForgotPassword'] = 'Forgot Password';
 		//
 
 		// Day representations
