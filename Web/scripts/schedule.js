@@ -67,22 +67,27 @@ function Schedule(opts)
 			window.location = link + "&sd=" + start + "&ed=" + end;
 		});
 		
+		this.initNavigation();
+	};
+
+	Schedule.prototype.initNavigation = function()
+	{
 		$('#show_schedule').click( function(e) {
 			$("#schedule_list").show();
 			e.preventDefault();
 		});
-		
+
 		$('#schedule_list li').hover(
 			function() {$("#schedule_list").show() },
 			function() {$("#schedule_list").hide() }
 		);
-		
+
 		$("#calendar_toggle").click(function(event) {
 			event.preventDefault();
-			
+
 			var datePicker = $("#datepicker");
 			datePicker.toggle();
-			
+
 			if (datePicker.css("display") == "none")
 			{
 				$(this).find("img").first().attr("src", "img/calendar.png");
@@ -131,9 +136,4 @@ function Schedule(opts)
   	newUrl = newUrl.replace("#", "");
   	
   	window.location = newUrl;
-  }
-  
-  function CreateReservation($resourceId)
-  {
-	  window.location = 'reservation.php';
   }

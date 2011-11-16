@@ -5,5 +5,15 @@
 {/block}
 
 {block name="scripts"}
-&nbsp;
+<script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="scripts/schedule.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	var schedule = new Schedule();
+	schedule.initNavigation();
+});
+</script>
+
 {/block}
