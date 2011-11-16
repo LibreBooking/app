@@ -149,6 +149,24 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @return string
 	 */
 	public function GetApproveReferenceNumber();
+
+	/**
+	 * @abstract
+	 * @return void
+	 */
+	public function ShowPage();
+
+	/**
+	 * @abstract
+	 * @return void
+	 */
+	public function ShowCsv();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetFormat();
 }
 
 class ManageReservationsPage extends AdminPage implements IManageReservationsPage
@@ -187,17 +205,18 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 		$this->Set('Timezone', $userTimezone);
 		$this->Set('CsvExportUrl', ServiceLocator::GetServer()->GetUrl() . '&' . QueryStringKeys::FORMAT . '=csv');
 		$this->presenter->PageLoad($userTimezone);
+	}
 
-		if ($this->GetFormat() == 'csv')
-		{
-			header("Content-Type: text/csv");
-			header("Content-Disposition: inline; filename=reservations.csv");
-			$this->Display('reservations_csv.tpl');
-		}
-		else
-		{
-			$this->Display('manage_reservations.tpl');
-		}
+	public function ShowPage()
+	{
+		$this->Display('manage_reservations.tpl');
+	}
+
+	public function ShowCsv()
+	{
+		header("Content-Type: text/csv");
+		header("Content-Disposition: inline; filename=reservations.csv");
+		$this->Display('reservations_csv.tpl');
 	}
 
 	public function BindReservations($reservations)
@@ -401,9 +420,9 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 	}
 
 	/**
-	 * @return null|string
+	 * @return string
 	 */
-	private function GetFormat()
+	public function GetFormat()
 	{
 		return $this->GetQuerystring(QueryStringKeys::FORMAT);
 	}

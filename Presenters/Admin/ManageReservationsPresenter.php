@@ -112,6 +112,15 @@ class ManageReservationsPresenter extends ActionPresenter
 
 		$this->page->BindReservations($reservations->Results());
 		$this->page->BindPageInfo($reservations->PageInfo());
+
+		if ($this->page->GetFormat() == 'csv')
+		{
+			$this->page->ShowCsv();
+		}
+		else
+		{
+			$this->page->ShowPage();
+		}
 	}
 
 	private function GetDate($dateString, $timezone, $defaultDays)
