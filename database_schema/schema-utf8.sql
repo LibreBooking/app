@@ -221,16 +221,16 @@ CREATE TABLE `resources` (
  `description` text,
  `notes` text,
  `isactive` tinyint(1) unsigned NOT NULL default '1',
- `min_duration` time,
- `min_increment` time,
- `max_duration` time,
+ `min_duration` int,
+ `min_increment` int,
+ `max_duration` int,
  `unit_cost` dec(7,2),
  `autoassign` tinyint(1) unsigned NOT NULL default '1',
  `requires_approval` tinyint(1) unsigned NOT NULL,
  `allow_multiday_reservations` tinyint(1) unsigned NOT NULL default '1',
  `max_participants` mediumint(8) unsigned,
- `min_notice_time` time,
- `max_notice_time` time,
+ `min_notice_time` int,
+ `max_notice_time` int,
  `image_name` varchar(50),
  `schedule_id` smallint(5) unsigned NOT NULL,
  `legacyid` char(16),
@@ -330,7 +330,7 @@ CREATE TABLE `reservation_statuses` (
 --
 DROP TABLE IF EXISTS `reservation_series`;
 CREATE TABLE  `reservation_series` (
-  `series_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `series_id` int unsigned NOT NULL auto_increment,
   `date_created` datetime NOT NULL,
   `last_modified` datetime,
   `title` varchar(85) NOT NULL,
@@ -357,11 +357,11 @@ CREATE TABLE  `reservation_series` (
 
 DROP TABLE IF EXISTS `reservation_instances`;
 CREATE TABLE  `reservation_instances` (
-  `reservation_instance_id` mediumint(8) unsigned NOT NULL auto_increment,
+  `reservation_instance_id` int unsigned NOT NULL auto_increment,
   `start_date` datetime NOT NULL,
   `end_date` datetime NOT NULL,
   `reference_number` varchar(50) NOT NULL,
-  `series_id` mediumint(8) unsigned NOT NULL,
+  `series_id` int unsigned NOT NULL,
   PRIMARY KEY  (`reservation_instance_id`),
   KEY `start_date` (`start_date`),
   KEY `end_date` (`end_date`),
@@ -376,7 +376,7 @@ CREATE TABLE  `reservation_instances` (
 
 DROP TABLE IF EXISTS `reservation_users`;
 CREATE TABLE `reservation_users` (
-  `reservation_instance_id` mediumint(8) unsigned NOT NULL,
+  `reservation_instance_id` int unsigned NOT NULL,
   `user_id` mediumint(8) unsigned NOT NULL,
   `reservation_user_level` tinyint(2) unsigned NOT NULL,
   PRIMARY KEY  (`reservation_instance_id`,`user_id`),
@@ -393,7 +393,7 @@ CREATE TABLE `reservation_users` (
 
 DROP TABLE IF EXISTS `reservation_time_blocks`;
 CREATE TABLE `reservation_time_blocks` (
- `series_id` mediumint(8) unsigned NOT NULL,
+ `series_id` int unsigned NOT NULL,
  `block_id` mediumint(8) unsigned NOT NULL,
  PRIMARY KEY (`series_id`, `block_id`),
  INDEX (`series_id`),
@@ -412,7 +412,7 @@ CREATE TABLE `reservation_time_blocks` (
 
 DROP TABLE IF EXISTS `reservation_resources`;
 CREATE TABLE `reservation_resources` (
- `series_id` mediumint(8) unsigned NOT NULL,
+ `series_id` int unsigned NOT NULL,
  `resource_id` smallint(5) unsigned NOT NULL,
  `resource_level_id` tinyint(2) unsigned NOT NULL,
  PRIMARY KEY (`series_id`, `resource_id`),
@@ -485,7 +485,7 @@ CREATE TABLE `accessories` (
 
 DROP TABLE IF EXISTS `reservation_accessories`;
 CREATE TABLE `reservation_accessories` (
- `series_id` mediumint(8) unsigned NOT NULL,
+ `series_id` int unsigned NOT NULL,
  `accessory_id` smallint(5) unsigned NOT NULL,
  `quantity` tinyint(2) unsigned NOT NULL,
  PRIMARY KEY (`series_id`, `accessory_id`),

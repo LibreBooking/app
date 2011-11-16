@@ -21,7 +21,7 @@ class ResourceMinimumDurationRuleTests extends TestBase
 		$resource1->SetMinLength(null);
 		
 		$resource2 = new FakeBookableResource(2, "2");
-		$resource2->SetMinLength("25:00");
+		$resource2->SetMinLength("25h00m");
 		
 		$reservation = new TestReservationSeries();
 	
@@ -39,7 +39,7 @@ class ResourceMinimumDurationRuleTests extends TestBase
 	public function testOkIfReservationIsLongerThanTheMinDuration()
 	{
 		$resource = new FakeBookableResource(1, "2");
-		$resource->SetMinLength("23:00");
+		$resource->SetMinLength("23h00m");
 			
 		$reservation = new TestReservationSeries();
 		$reservation->WithResource($resource);

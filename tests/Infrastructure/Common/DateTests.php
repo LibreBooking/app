@@ -402,7 +402,8 @@ class DateTests extends TestBase
 		$secondsInOneDay = 60 * 60 * 24;
 
 		$this->assertEquals($diff->TotalSeconds(), $secondsInOneDay, '2nd date is one day greater than 1st date');
-		$this->assertEquals(24, $diff->Hours());
+		$this->assertEquals(1, $diff->Days());
+		$this->assertEquals(0, $diff->Hours());
 		$this->assertEquals(0, $diff->Minutes());
 
 		$newDate = $date1->ApplyDifference($diff);
@@ -420,10 +421,11 @@ class DateTests extends TestBase
 	public function testCanGetDifferenceBetweenTwoTimes()
 	{
 		$date1 = Date::Parse('2011-01-01 12:15:45', 'utc');
-		$date2 = Date::Parse('2011-01-01 13:16:45', 'utc');
+		$date2 = Date::Parse('2011-01-01 13:16:46', 'utc');
 
 		$diff = $date1->GetDifference($date2);
 
+		$this->assertEquals(0, $diff->Days());
 		$this->assertEquals(1, $diff->Hours());
 		$this->assertEquals(1, $diff->Minutes());
 	}
@@ -431,9 +433,27 @@ class DateTests extends TestBase
 	public function testCanGetDifferenceFromTime()
 	{
 		$seconds = (12 * 60 * 60) + (60 * 35);
-		$diff = DateDiff::FromTimeString("12:35");
+		$str1 = "0d12h35m";
+		$diff1 = DateDiff::FromTimeString($str1);
 
-		$this->assertEquals($seconds, $diff->TotalSeconds());
+		$this->assertEquals($seconds, $diff1->TotalSeconds());
+		$this->assertEquals(12, $diff1->Hours());
+		$this->assertEquals(35, $diff1->Minutes());
+		$this->assertEquals(0, $diff1->Days());
+		$this->assertEquals($str1, $diff1->__toString());
+
+		$seconds2 = (4 * 24 * 60 * 60) + (12 * 60 * 60) + (60 * 35);
+		$str2 = "4d12h35m";
+		$diff2 = DateDiff::FromTimeString($str2);
+
+		$this->assertEquals($seconds2, $diff2->TotalSeconds());
+		$this->assertEquals(12, $diff2->Hours());
+		$this->assertEquals(35, $diff2->Minutes());
+		$this->assertEquals(4, $diff2->Days());
+		$this->assertEquals($str2, $diff2->__toString());
+
+		$diff3 = DateDiff::FromTimeString("25h0m");
+		$this->assertEquals((25*60*60), $diff3->TotalSeconds());
 	}
 
 }

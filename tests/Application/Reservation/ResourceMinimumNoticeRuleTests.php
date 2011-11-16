@@ -21,7 +21,7 @@ class ResourceMinimumNoticeRuleTests extends TestBase
 		$resource1->SetMinNotice(null);
 		
 		$resource2 = new FakeBookableResource(2, "2");
-		$resource2->SetMinNotice("25:00");
+		$resource2->SetMinNotice("25h00m");
 		
 		$reservation = new TestReservationSeries();
 		
@@ -41,7 +41,7 @@ class ResourceMinimumNoticeRuleTests extends TestBase
 	public function testOkIfLatestInstanceIsBeforeTheMinimumNoticeTime()
 	{
 		$resource = new FakeBookableResource(1, "2");
-		$resource->SetMinNotice("1:00");
+		$resource->SetMinNotice("1h00m");
 			
 		$reservation = new TestReservationSeries();
 		$reservation->WithResource($resource);

@@ -172,7 +172,6 @@ class ResourceRepository implements IResourceRepository
 	}
 }
 
-
 class AccessoryDto
 {
 	/**

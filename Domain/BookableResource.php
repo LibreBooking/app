@@ -28,18 +28,47 @@ class BookableResource implements IResource
 	protected $_contact;
 	protected $_notes;
 	protected $_description;
+	/**
+	 * @var string|int
+	 */
 	protected $_minLength;
+	/**
+	 * @var string|int
+	 */
 	protected $_maxLength;
 	protected $_autoAssign;
 	protected $_requiresApproval;
 	protected $_allowMultiday;
 	protected $_maxParticipants;
+	/**
+	 * @var string|int
+	 */
 	protected $_minNotice;
+	/**
+	 * @var string|int
+	 */
 	protected $_maxNotice;
 	protected $_scheduleId;
 	protected $_imageName;
 	protected $_isActive;
-	
+
+	/**
+	 * @param int $resourceId
+	 * @param string $name
+	 * @param string $location
+	 * @param string $contact
+	 * @param string $notes
+	 * @param string|int $minLength
+	 * @param string|int $maxLength
+	 * @param bool $autoAssign
+	 * @param bool $requiresApproval
+	 * @param bool $allowMultiday
+	 * @param int $maxParticipants
+	 * @param int $minNotice
+	 * @param int $maxNotice
+	 * @param string $description
+	 * @param int $scheduleId
+	 */
 	public function __construct($resourceId,
 								$name,
 								$location,
@@ -219,17 +248,20 @@ class BookableResource implements IResource
 	 */
 	public function GetMinLength()
 	{
-		return new TimeInterval($this->_minLength);
+		return TimeInterval::Parse($this->_minLength);
 	}
 	
 	/**
-	 * @param string $value
+	 * @param string|int $value
 	 */
 	public function SetMinLength($value)
 	{
 		$this->_minLength = $value;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function HasMinLength()
 	{
 		return !empty($this->_minLength);
@@ -240,59 +272,86 @@ class BookableResource implements IResource
 	 */
 	public function GetMaxLength()
 	{
-		return new TimeInterval($this->_maxLength);
+		return TimeInterval::Parse($this->_maxLength);
 	}
 	
 	/**
-	 * @param string $value
+	 * @param string|int $value
 	 */
 	public function SetMaxLength($value)
 	{
 		$this->_maxLength = $value;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function HasMaxLength()
 	{
 		return !empty($this->_maxLength);
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function GetAutoAssign()
 	{
 		return $this->_autoAssign;
 	}
-	
+
+	/**
+	 * @param bool $value
+	 * @return void
+	 */
 	public function SetAutoAssign($value)
 	{
 		$this->_autoAssign = $value;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function GetRequiresApproval()
 	{
 		return $this->_requiresApproval;
 	}
-	
+
+	/**
+	 * @param bool $value
+	 * @return void
+	 */
 	public function SetRequiresApproval($value)
 	{
 		$this->_requiresApproval = $value;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function GetAllowMultiday()
 	{
 		return $this->_allowMultiday;
 	}
-	
+
+	/**
+	 * @param bool $value
+	 * @return void
+	 */
 	public function SetAllowMultiday($value)
 	{
 		$this->_allowMultiday = $value;
 	}
-	
+
+	/**
+	 * @return int
+	 */
 	public function GetMaxParticipants()
 	{
 		return $this->_maxParticipants;
 	}
 	
 	/**
-	 * @param string $value
+	 * @param int $value
 	 */
 	public function SetMaxParticipants($value)
 	{
@@ -302,7 +361,10 @@ class BookableResource implements IResource
 			$this->_maxParticipants = null;
 		}
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function HasMaxParticipants()
 	{
 		return !empty($this->_maxParticipants);
@@ -313,17 +375,20 @@ class BookableResource implements IResource
 	 */
 	public function GetMinNotice()
 	{
-		return new TimeInterval($this->_minNotice);
+		return TimeInterval::Parse($this->_minNotice);
 	}
 	
 	/**
-	 * @param string $value
+	 * @param string|int $value
 	 */
 	public function SetMinNotice($value)
 	{
 		$this->_minNotice = $value;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function HasMinNotice()
 	{
 		return !empty($this->_minNotice);
@@ -334,17 +399,20 @@ class BookableResource implements IResource
 	 */
 	public function GetMaxNotice()
 	{
-		return new TimeInterval($this->_maxNotice);
+		return TimeInterval::Parse($this->_maxNotice);
 	}
 	
 	/**
-	 * @param string $value
+	 * @param string|int $value
 	 */
 	public function SetMaxNotice($value)
 	{
 		$this->_maxNotice = $value;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function HasMaxNotice()
 	{
 		return !empty($this->_maxNotice);
@@ -357,32 +425,52 @@ class BookableResource implements IResource
 	{
 		return $this->_scheduleId;
 	}
-	
+
+	/**
+	 * @param int $value
+	 * @return void
+	 */
 	public function SetScheduleId($value)
 	{
 		$this->_scheduleId = $value;
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	public function GetImage()
 	{
 		return $this->_imageName;
 	}
 
+	/**
+	 * @param string $value
+	 * @return void
+	 */
 	public function SetImage($value)
 	{
 		$this->_imageName = $value;
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function HasImage()
 	{
 		return !empty($this->_imageName);
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function IsOnline()
 	{
 		return $this->_isActive;
 	}
-	
+
+	/**
+	 * @return void
+	 */
 	public function TakeOffline()
 	{
 		$this->_isActive = false;
@@ -393,6 +481,9 @@ class BookableResource implements IResource
 		$this->_isActive = true;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function __toString()
 	{
 		return 'BookableResource' . $this->_resourceId;

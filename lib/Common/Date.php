@@ -158,7 +158,7 @@ class Date
 	 */
 	public function Timestamp()
 	{
-		return $this->timestamp;
+		return intval($this->timestamp);
 	}
 
 	/**
@@ -530,7 +530,7 @@ class DateDiff
 	 */
 	public function __construct($seconds)
 	{
-	    $this->seconds = $seconds;
+	    $this->seconds = intval($seconds);
 	}
 
 	/**
@@ -541,9 +541,15 @@ class DateDiff
 		return $this->seconds;
 	}
 
+	public function Days()
+	{
+		$days = intval($this->seconds / 86400);
+		return $days;
+	}
+	
 	public function Hours()
 	{
-		$hours = intval(intval($this->seconds) / 3600);
+		$hours = intval($this->seconds / 3600) - intval($this->Days() * 24);
 		return $hours;
 	}
 
@@ -577,23 +583,37 @@ class DateDiff
 
 	/**
 	 * @static
-	 * @param $timeString
+	 * @param string $timeString in #d#h#m, for example 2d22h13m for 2 days 22 hours 13 minutes
 	 * @return DateDiff
 	 */
 	public static function FromTimeString($timeString)
 	{
-		$parts = explode(':', $timeString);
-
-		$hour = $parts[0];
-		$minute = $parts[1];
-		$second = 0;
-
-		if (count($parts) > 2)
+		if (strpos($timeString, 'd') === false && strpos($timeString, 'h') === false && strpos($timeString, 'm') === false)
 		{
-			$second = $parts[2];
+			throw new Exception('Time format must contain at least a day, hour or minute. For example: 12d1h22m');
 		}
+		
+		$matches = array();
+		
+		preg_match('/(\d+d)?(\d+h)?(\d+m)?/i', $timeString, $matches);
 
-		return new DateDiff(($hour * 60 * 60) + ($minute * 60) + $second);
+		$day = intval(substr($matches[1], 0, -1));
+		$hour = intval(substr($matches[2], 0, -1));
+		$minute = intval(substr($matches[3], 0, -1));
+
+		return self::Create($day, $hour, $minute);
+	}
+
+	/**
+	 * @static
+	 * @param int $days
+	 * @param int $hours
+	 * @param int $minutes
+	 * @return DateDiff
+	 */
+	public static function Create($days, $hours, $minutes)
+	{
+		return new DateDiff(($days * 24 * 60 * 60) + ($hours * 60 * 60) + ($minutes * 60));
 	}
 
 	/**
@@ -629,6 +649,14 @@ class DateDiff
 	public function GreaterThan(DateDiff $diff)
 	{
 		return $this->seconds > $diff->seconds;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return sprintf('%dd%dh%dm', $this->Days(), $this->Hours(), $this->Minutes());
 	}
 }
 ?>

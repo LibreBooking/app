@@ -2,21 +2,40 @@
 class TimeInterval
 {
 	/**
-	 * @var string
+	 * @var DateDiff
 	 */
 	private $interval = null;
 	
 	/**
-	 * @param string $timeString in format hh:mm (seconds are ignored)
+	 * @param int $seconds
 	 */
-	public function __construct($timeString)
+	public function __construct($seconds)
 	{
 		$this->interval = null;
 		
-		if (!empty($timeString))
+		if (!empty($seconds))
 		{
-			$this->interval = DateDiff::FromTimeString($timeString);
+			$this->interval = new DateDiff($seconds);
 		}
+	}
+
+	/**
+	 * @static
+	 * @param string|int $interval string interval in format: #d#h#m ie: 22d4h12m or total seconds
+	 * @return DateDiff
+	 */
+	public static function Parse($interval)
+	{
+		if (!is_int($interval))
+		{
+			$seconds = DateDiff::FromTimeString($interval)->TotalSeconds();
+		}
+		else
+		{
+			$seconds = $interval;
+		}
+
+		return new TimeInterval($seconds);
 	}
 
 	/**
@@ -31,17 +50,28 @@ class TimeInterval
 
 		return DateDiff::Null();
 	}
-	
+
+	/**
+	 * @return null|int
+	 */
 	public function ToDatabase()
 	{
-		return $this->__toString();
+		if ($this->interval != null && !$this->interval->IsNull())
+		{
+			return $this->interval->TotalSeconds();
+		}
+
+		return null;
 	}
-	
+
+	/**
+	 * @return string
+	 */
 	public function __toString()
 	{
 		if ($this->interval != null)
 		{
-			return sprintf('%02d:%02d', $this->interval->Hours(), $this->interval->Minutes());
+			$this->interval->__toString();
 		}
 		
 		return '';
