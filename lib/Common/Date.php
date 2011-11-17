@@ -656,7 +656,23 @@ class DateDiff
 	 */
 	public function __toString()
 	{
-		return sprintf('%dd%dh%dm', $this->Days(), $this->Hours(), $this->Minutes());
+		$str = '';
+
+		if ($this->Days() > 0)
+		{
+			$str .= $this->Days() . 'days ';
+		}
+		if ($this->Hours() > 0)
+		{
+			$str .= $this->Hours() . 'hours ';
+		}
+		if ($this->Minutes() > 0)
+		{
+			$str .= $this->Minutes() . 'minutes ';
+		}
+
+		return $str;
+		//return sprintf('%dd%dh%dm', $this->Days(), $this->Hours(), $this->Minutes());
 	}
 }
 ?>

@@ -4,7 +4,8 @@
 		var opts = $.extend(
 				{
 					dataType: null,
-					onBeforeSubmit: BeforeFormSubmit
+					onBeforeSubmit: BeforeFormSubmit,
+					onBeforeSerialize: null
 				}, options);
 
 		formElement.submit(function() {
@@ -12,6 +13,7 @@
 			var submitOptions = { 
 				url: urlCallback(),
 		        beforeSubmit: opts.onBeforeSubmit,
+		        beforeSerialize: opts.onBeforeSerialize,
 				dataType: opts.dataType,
 		        success: function(responseText, statusText, xhr, form)  {
 

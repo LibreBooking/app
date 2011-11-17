@@ -2,7 +2,7 @@
 {include file='loginheader.tpl'}
 {if $ShowLoginError}
         <div id="loginError">
-                {translate key='Login Error'}
+                {translate key='LoginError'}
         </div>
 {/if}
 <div id="loginbox">

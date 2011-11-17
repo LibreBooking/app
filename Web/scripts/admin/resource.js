@@ -30,11 +30,10 @@ function ResourceManagement(opts)
 	
 	ResourceManagement.prototype.init = function()
 	{
-		$("#minDuration").watermark('HH:mm');
-		$("#maxDuration").watermark('HH:mm');
-		$("#startNotice").watermark('HH:mm');
-		$("#endNotice").watermark('HH:mm');
-		
+		$(".days").watermark('days');
+		$(".hours").watermark('hrs');
+		$(".minutes").watermark('mins');
+
 		ConfigureAdminDialog(elements.renameDialog, 300, 135);
 		ConfigureAdminDialog(elements.imageDialog, 500, 150);
 		ConfigureAdminDialog(elements.scheduleDialog, 300, 125);
@@ -118,6 +117,20 @@ function ResourceManagement(opts)
 
 		var imageSaveErrorHandler = function(result) { alert(result); };
 		var imageSavePreSubmit = function() { showIndicator(elements.imageForm); };
+		var combineIntervals = function(form, options)
+		{
+			$('.interval', form).each(function() {
+				var id = $(this).attr('id');
+				var d = $('#' + id + 'Days').val();
+				var h = $('#' + id + 'Hours').val();
+				var m = $('#' + id + 'Minutes').val();
+				$(this).val(d + 'd' + h + 'h' + m + 'm');
+			});
+//			var d = $('#endNoticeDays').val();
+//			var h = $('#endNoticeHours').val();
+//			var m = $('#endNoticeMinutes').val();
+
+		};
 		
 		var errorHandler = function(result) { $("#globalError").html(result).show(); };
 		ConfigureUploadForm(elements.imageForm.find('.async'), getSubmitCallback(options.actions.changeImage), imageSavePreSubmit, null, imageSaveErrorHandler);
@@ -128,7 +141,7 @@ function ResourceManagement(opts)
 		ConfigureAdminForm(elements.notesForm, getSubmitCallback(options.actions.changeNotes));
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource), null, handleAddError);
-		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, handleAddError);
+		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, handleAddError, {onBeforeSerialize: combineIntervals});
 		
 	};
 
@@ -218,11 +231,11 @@ function ResourceManagement(opts)
 		});
 		
 		var resource = getActiveResource();
-		
-		showHideConfiguration(resource.minLength, $('#minDuration'), $('#noMinimumDuration'));
-		showHideConfiguration(resource.maxLength, $('#maxDuration'), $('#noMaximumDuration'));
-		showHideConfiguration(resource.startNotice, $('#startNotice'), $('#noStartNotice'));
-		showHideConfiguration(resource.endNotice, $('#endNotice'), $('#noEndNotice'));
+
+		setDaysHoursMinutes('#minDuration', resource.minLength, $('#noMinimumDuration'));
+		setDaysHoursMinutes('#maxDuration', resource.maxLength, $('#noMaximumDuration'));
+		setDaysHoursMinutes('#startNotice', resource.startNotice, $('#noStartNotice'));
+		setDaysHoursMinutes('#endNotice', resource.endNotice, $('#noEndNotice'));
 		showHideConfiguration(resource.maxParticipants, $('#maxCapactiy'), $('#unlimitedCapactiy'));
 		
 		$('#allowMultiday').val(resource.allowMultiday);
@@ -231,14 +244,22 @@ function ResourceManagement(opts)
 		
 		elements.configurationDialog.dialog("open");
 	};
-	
+
+	function setDaysHoursMinutes(elementPrefix, interval, attributeCheckbox)
+	{
+		$(elementPrefix + 'Days').val(interval.days);
+		$(elementPrefix + 'Hours').val(interval.hours);
+		$(elementPrefix + 'Minutes').val(interval.minutes);
+		showHideConfiguration(interval.value, $(elementPrefix), attributeCheckbox);
+	}
+
 	function showHideConfiguration(attributeValue, attributeDisplayElement, attributeCheckbox)
 	{
 		attributeDisplayElement.val(attributeValue);
 		var id = attributeCheckbox.attr('id');
 		var span = elements.configurationDialog.find('.' + id);
 		
-		if (attributeValue == '')
+		if (attributeValue == '' || attributeValue == undefined)
 		{
 			attributeCheckbox.attr('checked', true);
 			span.hide();

@@ -106,6 +106,7 @@ class ManageResourcesPresenter extends ActionPresenter
 	 */
 	public function ChangeConfiguration()
 	{
+		$resourceId = $this->page->GetResourceId();
 		$minDuration = $this->page->GetMinimumDuration();
 		$maxDuration = $this->page->GetMaximumDuration();
 		$allowMultiDay = $this->page->GetAllowMultiday();
@@ -115,7 +116,9 @@ class ManageResourcesPresenter extends ActionPresenter
 		$maxNotice = $this->page->GetEndNoticeMinutes();
 		$maxParticipants = $this->page->GetMaxParticipants();
 
-		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		Log::Debug('Updating resource id %s. MaxNotice: %s', $resourceId, $maxNotice);
+
+		$resource = $this->resourceRepository->LoadById($resourceId);
 
 		$resource->SetMinLength($minDuration);
 		$resource->SetMaxLength($maxDuration);

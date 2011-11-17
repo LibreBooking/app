@@ -240,6 +240,7 @@ class en_us extends Language
 		$strings['ExportToCSV'] = 'Export to CSV';
 
 		// Errors
+		$strings['LoginError'] = 'We could not match your username or password';
 		$strings['ReservationFailed'] = 'Your reservation could not be made';
 		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
 		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s.';

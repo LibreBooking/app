@@ -89,7 +89,7 @@
 				<h5>{translate key='UsageConfiguration'}</h5> <a class="update changeConfigurationButton"
 																 href="javascript: void(0);">{translate key='ChangeConfiguration'}</a>
 			</div>
-			<div style="float:left">
+			<div style="float:left;width:300px;">
 				<ul>
 					<li>
 						{if $resource->HasMinLength()}
@@ -122,7 +122,7 @@
 				</ul>
 			</div>
 
-			<div style="float:right">
+			<div style="float:right;width:300px;">
 				<ul>
 					<li>
 						{if $resource->HasMinNotice()}
@@ -283,8 +283,10 @@
 						<span class="noMinimumDuration">
 							<br/>
 						{capture name="txtMinDuration" assign="txtMinDuration"}
-							<input type='text' id='minDuration' class='textbox' size='5'
-								   maxlength='5' {formname key=MIN_DURATION} />
+							<input type='text' id='minDurationDays' size='2' class='days textbox' maxlength='2'/>
+							<input type='text' id='minDurationHours' size='2' class='hours textbox' maxlength='2'/>
+							<input type='text' id='minDurationMinutes' size='2' class='minutes textbox' maxlength='2'/>
+							<input type='hidden' id='minDuration' class='interval' {formname key=MIN_DURATION} />
 						{/capture}
 						{translate key='ResourceMinLength' args=$txtMinDuration}
 						</span>
@@ -296,8 +298,10 @@
 						<span class="noMaximumDuration">
 							<br/>
 						{capture name="txtMaxDuration" assign="txtMaxDuration"}
-							<input type='text' id='maxDuration' class='textbox' size='5'
-								   maxlength='5' {formname key=MAX_DURATION} />
+							<input type='text' id='maxDurationDays' size='2' class='days textbox' maxlength='2'/>
+							<input type='text' id='maxDurationHours' size='2' class='hours textbox' maxlength='2'/>
+							<input type='text' id='maxDurationMinutes' size='2' class='minutes textbox' maxlength='2'/>
+							<input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />
 						{/capture}
 						{translate key=ResourceMaxLength args=$txtMaxDuration}
 						</span>
@@ -335,8 +339,10 @@
 						<span class="noStartNotice">
 							<br/>
 						{capture name="txtStartNotice" assign="txtStartNotice"}
-							<input type='text' id='startNotice' class='textbox' size='5'
-								   maxlength='5' {formname key=MIN_NOTICE} />
+							<input type='text' id='startNoticeDays' size='2' class='days textbox' maxlength='2'/>
+							<input type='text' id='startNoticeHours' size='2' class='hours textbox' maxlength='2'/>
+							<input type='text' id='startNoticeMinutes' size='2' class='minutes textbox' maxlength='2'/>
+							<input type='hidden' id='startNotice' class='interval' {formname key=MIN_NOTICE} />
 						{/capture}
 						{translate key='ResourceMinNotice' args=$txtStartNotice}
 						</span>
@@ -348,11 +354,10 @@
 						<span class="noEndNotice">
 							<br/>
 						{capture name="txtEndNotice" assign="txtEndNotice"}
-							<input type='text' id='endYears' size='2' maxlength='2'/>
-							<input type='text' id='endDays' size='2' maxlength='2'/>
-							<input type='text' id='endHours' size='2' maxlength='2'/>
-							<input type='text' id='endMinutes' size='2' maxlength='2'/>
-							<input type='hidden' id='endNotice' class='textbox'  {formname key=MAX_NOTICE}  />
+							<input type='text' id='endNoticeDays' size='2' class='days textbox' maxlength='2'/>
+							<input type='text' id='endNoticeHours' size='2' class='hours textbox' maxlength='2'/>
+							<input type='text' id='endNoticeMinutes' size='2' class='minutes textbox' maxlength='2'/>
+							<input type='hidden' id='endNotice' class='interval' {formname key=MAX_NOTICE} />
 						{/capture}
 						{translate key='ResourceMaxNotice' args=$txtEndNotice}
 						</span>
@@ -436,38 +441,58 @@
 	resourceManagement.init();
 
 	{foreach from=$Resources item=resource}
-	var resource = {
-	id: '{$resource->GetResourceId()}',
-	name: "{$resource->GetName()|escape:'javascript'}",
-	location: "{$resource->GetLocation()|escape:'javascript'}",
-	contact: "{$resource->GetContact()|escape:'javascript'}",
-	description: "{$resource->GetDescription()|escape:'javascript'}",
-	notes: "{$resource->GetNotes()|escape:'javascript'}",
-	autoAssign: '{$resource->GetAutoAssign()}',
-	requiresApproval: '{$resource->GetRequiresApproval()}',
-	allowMultiday: '{$resource->GetAllowMultiday()}',
-	maxParticipants: '{$resource->GetMaxParticipants()}',
-	scheduleId: '{$resource->GetScheduleId()}',
-	minLength: '',
-	maxLength: '',
-	startNotice: '',
-	endNotice: ''
-	};
+		var resource = {
+		id: '{$resource->GetResourceId()}',
+		name: "{$resource->GetName()|escape:'javascript'}",
+		location: "{$resource->GetLocation()|escape:'javascript'}",
+		contact: "{$resource->GetContact()|escape:'javascript'}",
+		description: "{$resource->GetDescription()|escape:'javascript'}",
+		notes: "{$resource->GetNotes()|escape:'javascript'}",
+		autoAssign: '{$resource->GetAutoAssign()}',
+		requiresApproval: '{$resource->GetRequiresApproval()}',
+		allowMultiday: '{$resource->GetAllowMultiday()}',
+		maxParticipants: '{$resource->GetMaxParticipants()}',
+		scheduleId: '{$resource->GetScheduleId()}',
+		minLength: {},
+		maxLength: {},
+		startNotice: {},
+		endNotice: {}
+		};
 
 		{if $resource->HasMinLength()}
-		resource.minLength = '{$resource->GetMinLength()}';
+		resource.minLength = {
+							value: '{$resource->GetMinLength()}',
+							days: '{$resource->GetMinLength()->Days()}',
+							hours: '{$resource->GetMinLength()->Hours()}',
+							minutes: '{$resource->GetMinLength()->Minutes()}'
+							};
 		{/if}
 
 		{if $resource->HasMaxLength()}
-		resource.maxLength = '{$resource->GetMaxLength()}';
+		resource.maxLength = {
+							value: '{$resource->GetMaxLength()}',
+							days: '{$resource->GetMaxLength()->Days()}',
+							hours: '{$resource->GetMaxLength()->Hours()}',
+							minutes: '{$resource->GetMaxLength()->Minutes()}'
+							};
 		{/if}
 
 		{if $resource->HasMinNotice()}
-		resource.startNotice = '{$resource->GetMinNotice()}';
+		resource.startNotice = {
+							value: '{$resource->GetMinNotice()}',
+							days: '{$resource->GetMinNotice()->Days()}',
+							hours: '{$resource->GetMinNotice()->Hours()}',
+							minutes: '{$resource->GetMinNotice()->Minutes()}'
+							};
 		{/if}
 
 		{if $resource->HasMaxNotice()}
-		resource.endNotice = '{$resource->GetMaxNotice()}';
+		resource.endNotice = {
+							value: '{$resource->GetMaxNotice()}',
+							days: '{$resource->GetMaxNotice()->Days()}',
+							hours: '{$resource->GetMaxNotice()->Hours()}',
+							minutes: '{$resource->GetMaxNotice()->Minutes()}'
+							};
 		{/if}
 
 	resourceManagement.add(resource);

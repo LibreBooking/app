@@ -26,7 +26,12 @@ class TimeInterval
 	 */
 	public static function Parse($interval)
 	{
-		if (!is_int($interval))
+		if (empty($interval))
+		{
+			return new TimeInterval(0);
+		}
+
+		if (!is_numeric($interval))
 		{
 			$seconds = DateDiff::FromTimeString($interval)->TotalSeconds();
 		}
@@ -38,6 +43,30 @@ class TimeInterval
 		return new TimeInterval($seconds);
 	}
 
+	/**
+	 * @return int
+	 */
+	public function Days()
+	{
+		return $this->Interval()->Days();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function Hours()
+	{
+		return $this->Interval()->Hours();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function Minutes()
+	{
+		return $this->Interval()->Minutes();
+	}
+	
 	/**
 	 * @return DateDiff
 	 */
@@ -71,7 +100,7 @@ class TimeInterval
 	{
 		if ($this->interval != null)
 		{
-			$this->interval->__toString();
+			return $this->interval->__toString();
 		}
 		
 		return '';
