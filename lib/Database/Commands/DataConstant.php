@@ -345,7 +345,24 @@ class Queries
 		'SELECT *
 		FROM users
 		WHERE (0 = @user_statusid OR status_id = @user_statusid)';
-		
+
+	const GET_BLACKOUT_LIST =
+		'SELECT *
+		FROM blackout_instances bi
+		INNER JOIN blackout_series bs ON bi.blackout_series_id = bs.blackout_series_id
+		INNER JOIN resources r on bs.resource_id = r.resource_id
+		INNER JOIN users u ON u.user_id = bs.owner_id
+		WHERE
+			(
+				(bi.start_date >= @startDate AND bi.start_date <= @endDate)
+				OR
+				(bi.end_date >= @startDate AND bi.end_date <= @endDate)
+				OR
+				(bi.start_date <= @startDate AND bi.end_date >= @endDate)
+			) AND
+		ORDER BY
+			bi.start_date ASC';
+	
 	const GET_DASHBOARD_ANNOUNCEMENTS =
 		'SELECT announcement_text 
 		FROM announcements
@@ -909,9 +926,16 @@ class ColumnNames
 	// RESERVATION ACCESSORY //
 	const QUANTITY = 'quantity';
 
+	// BLACKOUTS //
+	const BLACKOUT_INSTANCE_ID = 'blackout_instance_id';
+	const BLACKOUT_START = 'end_date';
+	const BLACKOUT_END = 'start_date';
+	const BLACKOUT_TITLE = 'title';
+	const BLACKOUT_DESCRIPTION = 'description';
+	const BLACKOUT_SERIES_ID = 'blackout_series_id';
+
 	// dynamic
 	const TOTAL = 'total';
-
 }
 
 class TableNames

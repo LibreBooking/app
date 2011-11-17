@@ -9,7 +9,7 @@ interface IReservationViewRepository
 	 * @var $referenceNumber string
 	 * @return ReservationView
 	 */
-	function GetReservationForEditing($referenceNumber);
+	public function GetReservationForEditing($referenceNumber);
 	
 	/**
 	 * @param $startDate Date
@@ -18,7 +18,7 @@ interface IReservationViewRepository
 	 * @param $userLevel int|ReservationUserLevel
 	 * @return ReservationItemView[]
 	 */
-	function GetReservationList(Date $startDate, Date $endDate, $userId,  $userLevel = ReservationUserLevel::OWNER);
+	public function GetReservationList(Date $startDate, Date $endDate, $userId,  $userLevel = ReservationUserLevel::OWNER);
 
 	/**
 	 * @param int $pageNumber
@@ -29,6 +29,12 @@ interface IReservationViewRepository
 	 * @return PageableData|ReservationItemView[]
 	 */
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+
+	/**
+	 * @param DateRange $dateRange
+	 * @return BlackoutItemView[]
+	 */
+	public function GetBlackoutsWithin(DateRange $dateRange);
 
 
 	/**
@@ -63,7 +69,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->ScheduleId = $row[ColumnNames::SCHEDULE_ID];
 			$reservationView->StartDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$reservationView->Title = $row[ColumnNames::RESERVATION_TITLE];	
-			$reservationView->SeriesId = $row[ColumnNames::SERIES_ID];	
+			$reservationView->SeriesId = $row[ColumnNames::SERIES_ID];
 			$reservationView->OwnerFirstName = $row[ColumnNames::FIRST_NAME];	
 			$reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];
 			$reservationView->OwnerEmailAddress = $row[ColumnNames::EMAIL];
@@ -202,7 +208,43 @@ class ReservationViewRepository implements IReservationViewRepository
 				$row[ColumnNames::QUANTITY]);
 		}
 
+		$result->Free();
+
 		return $accessories;
+	}
+
+	/**
+	 * @param DateRange $dateRange
+	 * @return BlackoutItemView[]
+	 */
+	public function GetBlackoutsWithin(DateRange $dateRange)
+	{
+		$getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
+
+		$result = ServiceLocator::GetDatabase()->Query($getBlackoutsCommand);
+
+		$blackouts = array();
+		while ($row = $result->GetRow())
+		{
+			$blackouts[] = new BlackoutItemView(
+				$row[ColumnNames::BLACKOUT_INSTANCE_ID],
+				Date::FromDatabase($row[ColumnNames::BLACKOUT_START]),
+				Date::FromDatabase($row[ColumnNames::BLACKOUT_END]),
+				$row[ColumnNames::RESOURCE_ID],
+				$row[ColumnNames::USER_ID],
+				$row[ColumnNames::SCHEDULE_ID],
+				$row[ColumnNames::BLACKOUT_TITLE],
+				$row[ColumnNames::BLACKOUT_DESCRIPTION],
+				$row[ColumnNames::FIRST_NAME],
+				$row[ColumnNames::LAST_NAME],
+				$row[ColumnNames::RESOURCE_NAME],
+				$row[ColumnNames::BLACKOUT_SERIES_ID]
+			);
+		}
+
+		$result->Free();
+
+		return $blackouts;
 	}
 }
 
@@ -283,7 +325,6 @@ class NullReservationView extends ReservationView
 		return false;
 	}
 }
-
 
 class ReservationView
 {
@@ -562,6 +603,111 @@ class ReservationItemView
 		}
 
 		return $view;
+	}
+}
+
+class BlackoutItemView
+{
+	/**
+	 * @var Date
+	 */
+	public $StartDate;
+
+	/**
+	 * @var Date
+	 */
+	public $EndDate;
+
+	/**
+	 * @var int
+	 */
+	public $ResourceId;
+
+	/**
+	 * @var string
+	 */
+	public $ResourceName;
+
+	/**
+	 * @var int
+	 */
+	public $InstanceId;
+
+	/**
+	 * @var int
+	 */
+	public $SeriesId;
+
+	/**
+	 * @var string
+	 */
+	public $Title;
+
+	/**
+	 * @var string
+	 */
+	public $Description;
+
+	/**
+	 * @var int
+	 */
+	public $ScheduleId;
+
+	/**
+	 * @var null|string
+	 */
+	public $FirstName;
+
+	/**
+	 * @var null|string
+	 */
+	public $LastName;
+
+	/**
+	 * @var null|int
+	 */
+	public $OwnerId;
+
+	/**
+	 * @param int $instanceId
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param int $resourceId
+	 * @param int $ownerId
+	 * @param int $scheduleId
+	 * @param string $title
+	 * @param string $description
+	 * @param string $firstName
+	 * @param string $lastName
+	 * @param string $resourceName
+	 * @param int $seriesId
+	 */
+	public function __construct(
+		$instanceId,
+		Date $startDate,
+		Date $endDate,
+		$resourceId,
+		$ownerId,
+		$scheduleId,
+		$title,
+		$description,
+		$firstName,
+		$lastName,
+		$resourceName,
+		$seriesId)
+	{
+		$this->InstanceId = $instanceId;
+		$this->StartDate = $startDate;
+		$this->EndDate = $endDate;
+		$this->ResourceId = $resourceId;
+		$this->OwnerId = $ownerId;
+		$this->ScheduleId = $scheduleId;
+		$this->Title = $title;
+		$this->Description = $description;
+		$this->FirstName = $firstName;
+		$this->LastName = $lastName;
+		$this->ResourceName = $resourceName;
+		$this->SeriesId = $seriesId;
 	}
 }
 

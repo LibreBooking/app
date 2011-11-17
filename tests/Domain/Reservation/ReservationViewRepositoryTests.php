@@ -238,7 +238,40 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals(2, count($accessories));
 		$this->assertEquals($a, $accessories[0]);
 	}
-	
+
+	public function testReturnsAllBlackoutInstancesWithinDateRange()
+	{
+		$dateRange = new TestDateRange();
+
+		$start = Date::Now();
+		$end = Date::Now();
+		$instanceId = 12;
+		$seriesId = 222;
+		$resourceId = 333;
+		$userid = 444;
+		$scheduleId = 555;
+		$resourceName = 'resource 123';
+		$firstName = 'f';
+		$lastName = 'l';
+		$title = 'title';
+		$description = 'description';
+
+		$rows[] = $this->GetBlackoutRow($instanceId, $start, $end, $resourceId,	$userid, $scheduleId, $title, $description,	$firstName, $lastName, $resourceName, $seriesId);
+		$rows[] = $this->GetBlackoutRow("1", Date::Now(), Date::Now());
+
+		$this->db->SetRows($rows);
+
+		$getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
+
+		$blackouts = $this->repository->GetBlackoutsWithin($dateRange);
+
+		$b = new BlackoutItemView($instanceId, $start->ToUtc(), $end->ToUtc(), $resourceId, $userid, $scheduleId, $title, $description, $firstName, $lastName, $resourceName, $seriesId);
+
+		$this->assertEquals($getBlackoutsCommand, $this->db->_LastCommand);
+		$this->assertEquals(2, count($blackouts));
+		$this->assertEquals($b, $blackouts[0]);
+	}
+
 	private function GetParticipantRow($reservationId, $userId, $fname, $lname, $email, $levelId)
 	{
 		return array(
@@ -290,6 +323,36 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::ACCESSORY_NAME => $accessoryName,
 			ColumnNames::ACCESSORY_ID => $accessoryId,
 			ColumnNames::QUANTITY => $quantityReserved,
+		);
+	}
+
+	private function GetBlackoutRow(
+		$instanceId,
+		Date $start,
+		Date $end,
+		$resourceId = 1,
+		$userid = 2,
+		$scheduleId = 3,
+		$title = 'title',
+		$description = 'description',
+		$firstName = 'fname',
+		$lastName = 'lname',
+		$resourceName = 'resource name',
+		$seriesId = 999)
+	{
+		return array(
+			ColumnNames::BLACKOUT_INSTANCE_ID => $instanceId,
+			ColumnNames::BLACKOUT_START => $start->ToDatabase(),
+			ColumnNames::BLACKOUT_END => $end->ToDatabase(),
+			ColumnNames::RESOURCE_ID => $resourceId,
+			ColumnNames::USER_ID => $userid,
+			ColumnNames::SCHEDULE_ID => $scheduleId,
+			ColumnNames::BLACKOUT_TITLE => $title,
+			ColumnNames::BLACKOUT_DESCRIPTION => $description,
+			ColumnNames::FIRST_NAME => $firstName,
+			ColumnNames::LAST_NAME => $lastName,
+			ColumnNames::RESOURCE_NAME => $resourceName,
+			ColumnNames::BLACKOUT_SERIES_ID => $seriesId
 		);
 	}
 }

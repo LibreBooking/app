@@ -440,7 +440,7 @@ class DateTests extends TestBase
 		$this->assertEquals(12, $diff1->Hours());
 		$this->assertEquals(35, $diff1->Minutes());
 		$this->assertEquals(0, $diff1->Days());
-		$this->assertEquals($str1, $diff1->__toString());
+		$this->assertEquals("12 hours 35 minutes", $diff1->__toString());
 
 		$seconds2 = (4 * 24 * 60 * 60) + (12 * 60 * 60) + (60 * 35);
 		$str2 = "4d12h35m";
@@ -450,7 +450,7 @@ class DateTests extends TestBase
 		$this->assertEquals(12, $diff2->Hours());
 		$this->assertEquals(35, $diff2->Minutes());
 		$this->assertEquals(4, $diff2->Days());
-		$this->assertEquals($str2, $diff2->__toString());
+		$this->assertEquals("4 days 12 hours 35 minutes", $diff2->__toString());
 
 		$diff3 = DateDiff::FromTimeString("25h0m");
 		$this->assertEquals((25*60*60), $diff3->TotalSeconds());

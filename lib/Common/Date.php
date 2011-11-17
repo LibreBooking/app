@@ -660,15 +660,15 @@ class DateDiff
 
 		if ($this->Days() > 0)
 		{
-			$str .= $this->Days() . 'days ';
+			$str .= $this->Days() . ' days ';
 		}
 		if ($this->Hours() > 0)
 		{
-			$str .= $this->Hours() . 'hours ';
+			$str .= $this->Hours() . ' hours ';
 		}
 		if ($this->Minutes() > 0)
 		{
-			$str .= $this->Minutes() . 'minutes ';
+			$str .= $this->Minutes() . ' minutes';
 		}
 
 		return $str;
