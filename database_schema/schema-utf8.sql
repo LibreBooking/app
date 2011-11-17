@@ -339,7 +339,6 @@ CREATE TABLE  `reservation_series` (
   `allow_anon_participation` tinyint(1) unsigned NOT NULL,
   `type_id` tinyint(2) unsigned NOT NULL,
   `status_id` tinyint(2) unsigned NOT NULL,
-  `total_cost` decimal(7,2) default NULL,
   `repeat_type` varchar(10) default NULL,
   `repeat_options` varchar(255) default NULL,
   `owner_id` mediumint(8) unsigned NOT NULL,
@@ -425,6 +424,40 @@ CREATE TABLE `reservation_resources` (
 	REFERENCES reservation_series(`series_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+--
+-- Table structure for table `blackout_series`
+--
+DROP TABLE IF EXISTS `blackout_series`;
+CREATE TABLE  `blackout_series` (
+  `blackout_series_id` int unsigned NOT NULL auto_increment,
+  `date_created` datetime NOT NULL,
+  `last_modified` datetime,
+  `title` varchar(85) NOT NULL,
+  `description` text,
+  `owner_id` mediumint(8) unsigned NOT NULL,
+  `resource_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY  (`blackout_series_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `blackout_instances`
+--
+
+DROP TABLE IF EXISTS `blackout_instances`;
+CREATE TABLE  `blackout_instances` (
+  `blackout_instance_id` int unsigned NOT NULL auto_increment,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime NOT NULL,
+  `blackout_series_id` int unsigned NOT NULL,
+  PRIMARY KEY  (`blackout_instance_id`),
+  INDEX `start_date` (`start_date`),
+  INDEX `end_date` (`end_date`),
+  INDEX `blackout_series_id` (`blackout_series_id`),
+  FOREIGN KEY (`blackout_series_id`)
+  	REFERENCES `blackout_series` (`blackout_series_id`)
+  	ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `user_email_preferences`
