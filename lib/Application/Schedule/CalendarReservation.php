@@ -100,7 +100,7 @@ class CalendarReservation
 
 	/**
 	 * @static
-	 * @param $reservations array|ScheduleReservation[]
+	 * @param $reservations array|ReservationItemView[]
 	 * @param $resources array|BookableResources[]
 	 * @param $timezone string
 	 * @return array|CalendarReservation[]
@@ -117,12 +117,12 @@ class CalendarReservation
 		$res = array();
 		foreach ($reservations as $reservation)
 		{
-			$start = $reservation->GetStartDate()->ToTimezone($timezone);
-			$end = $reservation->GetEndDate()->ToTimezone($timezone);
-			$referenceNumber = $reservation->GetReferenceNumber();
+			$start = $reservation->StartDate->ToTimezone($timezone);
+			$end = $reservation->EndDate->ToTimezone($timezone);
+			$referenceNumber = $reservation->ReferenceNumber;
 
-			$cr = new CalendarReservation($start, $end, $resourceMap[$reservation->GetResourceId()], $referenceNumber);
-			$cr->OwnerName = $reservation->GetFirstName() . ' ' . $reservation->GetLastName();
+			$cr = new CalendarReservation($start, $end, $resourceMap[$reservation->ResourceId], $referenceNumber);
+			$cr->OwnerName = $reservation->FirstName . ' ' . $reservation->LastName;
 			$res[] = $cr;
 		}
 

@@ -29,7 +29,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	
 	private function CreateAddService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
-		$reservationRepository = new ReservationRepository();
+		$reservationRepository = new ReservationViewRepository();
 
 		$ruleProcessor->AddRule(new ResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
 		$ruleProcessor->AddRule(new AccessoryAvailabilityRule(new ReservationViewRepository(), new AccessoryRepository(), $userSession->Timezone));
@@ -39,7 +39,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	
 	private function CreateUpdateService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
-		$reservationRepository = new ReservationRepository();
+		$reservationRepository = new ReservationViewRepository();
 		$ruleProcessor->AddRule(new ExistingResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
 		$ruleProcessor->AddRule(new AccessoryAvailabilityRule(new ReservationViewRepository(), new AccessoryRepository(), $userSession->Timezone));
 

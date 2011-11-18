@@ -556,13 +556,15 @@ class GetFullReservationListCommand extends SqlCommand
 
 class GetReservationListCommand extends SqlCommand
 {
-	public function __construct(Date $startDate, Date $endDate, $userId, $userLevelId)
+	public function __construct(Date $startDate, Date $endDate, $userId, $userLevelId, $scheduleId, $resourceId)
 	{
 		parent::__construct(Queries::GET_RESERVATION_LIST);
 		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 	}
 }
 
@@ -590,18 +592,6 @@ class GetReservationResourcesCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_RESERVATION_RESOURCES);
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
-	}
-}
-
-class GetReservationsCommand extends SqlCommand
-{
-	public function __construct(Date $startDate, Date $endDate, $scheduleId, $resourceId)
-	{
-		parent::__construct(Queries::GET_RESERVATIONS_COMMAND);
-		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
-		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 	}
 }
 

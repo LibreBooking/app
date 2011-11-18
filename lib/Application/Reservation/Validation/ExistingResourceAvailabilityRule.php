@@ -10,18 +10,18 @@ class ExistingResourceAvailabilityRule extends ResourceAvailabilityRule implemen
 		return parent::Validate($series);
 	}
 	
-	protected function IsInConflict(Reservation $instance, ExistingReservationSeries $series, ScheduleReservation $scheduleReservation)
+	protected function IsInConflict(Reservation $instance, ExistingReservationSeries $series, ReservationItemView $existingReservation)
 	{
-		if ($scheduleReservation->GetReservationId() == $instance->ReservationId() ||
-			$series->IsMarkedForDelete($scheduleReservation->GetReservationId()) ||
-			$series->IsMarkedForUpdate($scheduleReservation->GetReservationId())
+		if ($existingReservation->GetReservationId() == $instance->ReservationId() ||
+			$series->IsMarkedForDelete($existingReservation->GetReservationId()) ||
+			$series->IsMarkedForUpdate($existingReservation->GetReservationId())
 		)
 		{
 			return false;
 		}
 		
-		return ($scheduleReservation->GetResourceId() == $series->ResourceId()) ||
-			(false !== array_search($scheduleReservation->GetResourceId(), $series->AllResourceIds()));
+		return ($existingReservation->GetResourceId() == $series->ResourceId()) ||
+			(false !== array_search($existingReservation->GetResourceId(), $series->AllResourceIds()));
 	}
 }
 ?>

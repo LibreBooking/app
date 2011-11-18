@@ -421,11 +421,12 @@ class Queries
 		'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.status_id as status_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
-		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id AND rr.resource_level_id = 1
+		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
 		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
 		INNER JOIN users ON users.user_id = rs.owner_id
 		INNER JOIN resources on rr.resource_id = resources.resource_id
-		WHERE rs.status_id <> 2 AND ru.reservation_user_level = @levelid
+		WHERE rs.status_id <> 2
+			AND ru.reservation_user_level = @levelid
 		ORDER BY ri.start_date ASC';
 	
 	const GET_RESERVATION_LIST = 
@@ -446,6 +447,8 @@ class Queries
 			) AND
 			(@userid = -1 OR ru.user_id = @userid) AND
 			(@levelid = 0 OR ru.reservation_user_level = @levelid) AND
+			(@scheduleid = -1 OR r.schedule_id = @scheduleid) AND
+			(@resourceid = -1 OR rr.resource_id = @resourceid) AND
 			rs.status_id <> 2
 		ORDER BY 
 			ri.start_date ASC';
@@ -485,40 +488,6 @@ class Queries
 		INNER JOIN reservation_instances ri ON ru.reservation_instance_id = ri.reservation_instance_id
 		WHERE series_id = @seriesid';
 	
-	// TODO: Pass in "Deleted" status ID
-	const GET_RESERVATIONS_COMMAND =
-	 'SELECT 
-		ri.reservation_instance_id,
-		ri.start_date,
-		ri.end_date,
-		r.type_id,
-		r.status_id,
-		r.description,
-		rr.resource_id,
-		rr.resource_level_id,
-		u.user_id,
-		u.fname,
-		u.lname,
-		ri.series_id,
-		ri.reference_number
-	FROM reservation_instances ri
-	INNER JOIN reservation_series r ON ri.series_id = r.series_id AND r.status_id <> 2
-	INNER JOIN reservation_users ru ON ri.reservation_instance_id = ru.reservation_instance_id
-	INNER JOIN users u ON ru.user_id = u.user_id
-	INNER JOIN reservation_resources rr ON rr.series_id = ri.series_id
-	INNER JOIN resources ON resources.resource_id = rr.resource_id
-	WHERE
-		ru.reservation_user_level = 1 AND
-		(@scheduleid = -1 OR resources.schedule_id = @scheduleid) AND
-		(@resourceid = -1 OR rr.resource_id = @resourceid) AND
-		(
-			(ri.start_date >= @startDate AND ri.start_date <= @endDate)
-			OR
-			(ri.end_date >= @startDate AND ri.end_date <= @endDate)
-			OR
-			(ri.start_date <= @startDate AND ri.end_date >= @endDate)
-		)';
-
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS =
 		'SELECT 
 			tb.label, 

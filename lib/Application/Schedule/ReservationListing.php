@@ -3,7 +3,7 @@
 class ReservationListing implements IMutableReservationListing
 {
 	/**
-	 * @var array[int]ScheduleReservation
+	 * @var array|ReservationItemView[]
 	 */
 	private $_reservations = array();
 	
@@ -23,12 +23,12 @@ class ReservationListing implements IMutableReservationListing
 	}
 	
 	/**
-	 * @param ScheduleReservation $reservation 
+	 * @param ReservationItemView $reservation
 	 */
 	public function Add($reservation)
 	{
 		$this->_reservations[] = $reservation;
-		$this->_reservationByResource[$reservation->GetResourceId()][] = $reservation;
+		$this->_reservationByResource[$reservation->ResourceId][] = $reservation;
 	}
 	
 	public function Count()
@@ -45,7 +45,7 @@ class ReservationListing implements IMutableReservationListing
 	{
 		$reservationListing = new ReservationListing();
 		
-		/** @var ScheduleReservation $reservation  */
+		/** @var ReservationItemView $reservation  */
 		foreach ($this->_reservations as $reservation)
 		{
 			if ($reservation->OccursOn($date))

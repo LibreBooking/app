@@ -19,11 +19,6 @@ interface IManageReservationsService
 class ManageReservationsService implements IManageReservationsService
 {
 	/**
-	 * @var IReservationRepository
-	 */
-	private $reservationRepository;
-
-	/**
 	 * @var IReservationViewRepository
 	 */
 	private $reservationViewRepository;

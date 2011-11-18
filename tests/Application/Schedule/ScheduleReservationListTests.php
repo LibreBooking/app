@@ -54,7 +54,6 @@ class ScheduleReservationListTests extends TestBase
 	function testLayoutIsConvertedToUserTimezoneBeforeSlotsAreCreated()
 	{
 		$userTz = 'America/Chicago';
-		$utc = 'UTC';
 		$date = Date::Parse('2010-01-02', $userTz);
 
 		$s1 = Date::Parse('2010-01-01 23:00:00', $userTz);
@@ -64,7 +63,7 @@ class ScheduleReservationListTests extends TestBase
 		$s3 = Date::Parse('2010-01-02 23:00:00', $userTz);
 		$e3 = Date::Parse('2010-01-03 02:00:00', $userTz);
 		
-		$r1 = new TestScheduleReservation(1, $s2->ToUtc(), $e2->ToUtc());
+		$r1 = new ReservationItemView(1, $s2->ToUtc(), $e2->ToUtc());
 		$layoutPeriods[] = new NonSchedulePeriod($s1, $e1);
 		$layoutPeriods[] = new SchedulePeriod($s2, $e2);
 		$layoutPeriods[] = new SchedulePeriod($s3, $e3);
@@ -94,8 +93,6 @@ class ScheduleReservationListTests extends TestBase
 	
 	function testCanGetReservationSlotsForSingleDay()
 	{
-		$userTz = 'America/Chicago';
-		$utc = $this->utc;
 		$date = $this->date;
 		
 		$s1 = $date->SetTimeString('03:00');
@@ -107,9 +104,9 @@ class ScheduleReservationListTests extends TestBase
 		$s3 = $date->SetTimeString('08:00');
 		$e3 = $date->SetTimeString('12:00');
 		
-		$r1 = new TestScheduleReservation(1, $s1->ToUtc(), $e1->ToUtc());
-		$r2 = new TestScheduleReservation(2, $s2->ToUtc(), $e2->ToUtc());
-		$r3 = new TestScheduleReservation(3, $s3->ToUtc(), $e3->ToUtc());
+		$r1 = new TestReservationItemView(1, $s1->ToUtc(), $e1->ToUtc());
+		$r2 = new TestReservationItemView(2, $s2->ToUtc(), $e2->ToUtc());
+		$r3 = new TestReservationItemView(3, $s3->ToUtc(), $e3->ToUtc());
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -170,8 +167,6 @@ class ScheduleReservationListTests extends TestBase
 	
 	public function testFitsReservationToLayoutIfReservationEndingTimeIsNotAtSlotBreak()
 	{
-		$userTz = 'America/Chicago';
-		$utc = $this->utc;
 		$date = $this->date;		
 
 		$s1 = $date->SetTimeString('03:00');
@@ -183,9 +178,9 @@ class ScheduleReservationListTests extends TestBase
 		$s3 = $date->SetTimeString('08:00');
 		$e3 = $date->SetTimeString('11:55');
 		
-		$r1 = new TestScheduleReservation(1, $s1->ToUtc(), $e1->ToUtc());
-		$r2 = new TestScheduleReservation(2, $s2->ToUtc(), $e2->ToUtc());
-		$r3 = new TestScheduleReservation(3, $s3->ToUtc(), $e3->ToUtc());
+		$r1 = new TestReservationItemView(1, $s1->ToUtc(), $e1->ToUtc());
+		$r2 = new TestReservationItemView(2, $s2->ToUtc(), $e2->ToUtc());
+		$r3 = new TestReservationItemView(3, $s3->ToUtc(), $e3->ToUtc());
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -242,8 +237,6 @@ class ScheduleReservationListTests extends TestBase
 	
 	public function testReservaionEndingAfterLayoutPeriodAndStartingWithinIsCreatedProperly()
 	{
-		$userTz = 'America/Chicago';
-		$utc = $this->utc;
 		$date = $this->date;	
 		
 		$s1 = $date->SetTimeString('03:00');
@@ -255,9 +248,9 @@ class ScheduleReservationListTests extends TestBase
 		$s3 = $date->SetTimeString('08:00');
 		$e3 = $date->AddDays(2)->SetTimeString('11:55');
 		
-		$r1 = new TestScheduleReservation(1, $s1->ToUtc(), $e1->ToUtc());
-		$r2 = new TestScheduleReservation(2, $s2->ToUtc(), $e2->ToUtc());
-		$r3 = new TestScheduleReservation(3, $s3->ToUtc(), $e3->ToUtc());
+		$r1 = new TestReservationItemView(1, $s1->ToUtc(), $e1->ToUtc());
+		$r2 = new TestReservationItemView(2, $s2->ToUtc(), $e2->ToUtc());
+		$r3 = new TestReservationItemView(3, $s3->ToUtc(), $e3->ToUtc());
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -299,10 +292,9 @@ class ScheduleReservationListTests extends TestBase
 	public function testReservaionStartingBeforeLayoutPeriodAndEndingAfterLayoutPeriodIsCreatedProperly()
 	{
 		$userTz = 'America/Chicago';
-		$utc = $this->utc;
 		$date = Date::Parse('2008-11-12', $userTz);
 		
-		$r1 = new TestScheduleReservation(1, $date->AddDays(-1)->ToUtc(), $date->AddDays(1)->ToUtc());
+		$r1 = new TestReservationItemView(1, $date->AddDays(-1)->ToUtc(), $date->AddDays(1)->ToUtc());
 		
 		$reservations = array($r1);
 		
@@ -322,8 +314,7 @@ class ScheduleReservationListTests extends TestBase
 	{
 		$userTz = 'America/Chicago';
 		$layoutTz = 'America/New_York';
-		$utc = $this->utc;
-		$date = Date::Parse('2008-11-12', $userTz);	
+		$date = Date::Parse('2008-11-12', $userTz);
 		
 		$layout = new ScheduleLayout($userTz);
 		$layout->AppendPeriod(new Time(0,0,0, $layoutTz), new Time(6,0,0, $layoutTz));
@@ -332,7 +323,7 @@ class ScheduleReservationListTests extends TestBase
 		$layout->AppendPeriod(new Time(12,0,0, $layoutTz), new Time(18,0,0, $layoutTz));
 		$layout->AppendPeriod(new Time(18,0,0, $layoutTz), new Time(0,0,0, $layoutTz));
 		
-		$r1 = new TestScheduleReservation(1, $date->AddDays(-1)->ToUtc(), Date::Parse('2008-11-12 6:0:0', $layoutTz)->ToUtc());
+		$r1 = new TestReservationItemView(1, $date->AddDays(-1)->ToUtc(), Date::Parse('2008-11-12 6:0:0', $layoutTz)->ToUtc());
 		
 		$list = new ScheduleReservationList(array($r1), $layout, $date);
 		$slots = $list->BuildSlots();
@@ -355,11 +346,7 @@ class ScheduleReservationListTests extends TestBase
 		$startDate = Date::Parse('2009-11-1 0:0:0', 'UTC');
 		$endDate = Date::Parse('2009-11-10 1:0:0', 'UTC');
 		
-		FakeScheduleReservations::Initialize();
-		
-		$reservation = FakeScheduleReservations::$Reservation1;
-		$reservation->SetStartDate($startDate);
-		$reservation->SetEndDate($endDate);
+		$reservation = new ReservationItemView(1, $startDate, $endDate);
 		
 		$this->assertTrue($reservation->OccursOn($startDate));
 		$this->assertTrue($reservation->OccursOn($startDate->AddDays(2)));
@@ -382,7 +369,7 @@ class ScheduleReservationListTests extends TestBase
 		
 		$this->assertEquals($d1->Timestamp(), $d2->Timestamp());
 		
-		$res1 = new ScheduleReservation(1, Date::Parse('2009-10-09 22:00:00', 'UTC'), Date::Parse('2009-10-09 23:00:00', 'UTC'), 1, null, null, 1, 1, null, null, null);
+		$res1 = new ReservationItemView(1, Date::Parse('2009-10-09 22:00:00', 'UTC'), Date::Parse('2009-10-09 23:00:00', 'UTC'));
 		// 2009-10-09 17:00:00 - 2009-10-09 18:00:00 CST
 		
 		$this->assertTrue($res1->OccursOn(Date::Parse('2009-10-09', 'CST')));
@@ -396,7 +383,7 @@ class ScheduleReservationListTests extends TestBase
 		$d1Cst = $d1->ToTimezone('CST');
 		$d2Cst = $d2->ToTimezone('CST');
 		
-		$res1 = new ScheduleReservation(1, $d1, $d2, 1, null, null, 1, 1, null, null, null);
+		$res1 = new ReservationItemView(1, $d1, $d2);
 		
 		$this->assertFalse($res1->OccursOn(Date::Parse('2009-10-10', 'CST')));
 	}
@@ -405,7 +392,7 @@ class ScheduleReservationListTests extends TestBase
 	{
 		$date = new Date('2010-01-01 00:00:00', 'UTC');
 		
-		$builder = new ScheduleReservationBuilder();
+		$builder = new ReservationItemViewBuilder();
 		$builder
 			->WithStartDate($date->AddDays(-1))
 			->WithEndDate($date);
@@ -428,17 +415,17 @@ class ScheduleReservationListTests extends TestBase
 		
 		$date = new Date('2010-01-02', $timezone);
 		
-		$r1 = new TestScheduleReservation(
+		$r1 = new TestReservationItemView(
 			1, 
 			Date::Parse('2010-01-01 00:00:00', 'UTC'),
 			Date::Parse('2010-01-02 00:00:00', 'UTC'),
 			1);
-		$r2 = new TestScheduleReservation(
+		$r2 = new TestReservationItemView(
 			2, 
 			Date::Parse('2010-01-02 00:00:00', 'UTC'),
 			Date::Parse('2010-01-03 00:00:00', 'UTC'), 
 			1);
-		$r3 = new TestScheduleReservation(
+		$r3 = new TestReservationItemView(
 			3, 
 			Date::Parse('2010-01-03 00:00:00', 'UTC'),
 			Date::Parse('2010-01-04 00:00:00', 'UTC'), 
@@ -465,7 +452,7 @@ class ScheduleReservationListTests extends TestBase
 		$layout->AppendPeriod(Time::Parse('12:00', $tz), Time::Parse('18:00', $tz));
 		$layout->AppendPeriod(Time::Parse('18:00', $tz), Time::Parse('0:00', $tz));		
 		
-		$r1 = new TestScheduleReservation(
+		$r1 = new TestReservationItemView(
 			1, 
 			Date::Parse('2011-02-06 12:00:00', $tz)->ToUtc(),
 			Date::Parse('2011-02-06 18:00:00', $tz)->ToUtc(),
@@ -480,12 +467,11 @@ class ScheduleReservationListTests extends TestBase
 	}
 }
 
-class ScheduleReservationBuilder
+class ReservationItemViewBuilder
 {
 	public $reservationId;
 	public $startDate;
 	public $endDate;
-	public $reservationType;
 	public $summary;
 	public $resourceId;
 	public $userId;
@@ -498,7 +484,6 @@ class ScheduleReservationBuilder
 		$this->reservationId = 1;
 		$this->startDate = Date::Now();
 		$this->endDate = Date::Now();
-		$this->reservationType = ReservationTypes::Reservation;
 		$this->summary = 'summary';
 		$this->resourceId = 10;
 		$this->userId = 100;
@@ -518,20 +503,26 @@ class ScheduleReservationBuilder
 		$this->endDate = $endDate;
 		return $this;
 	}	
-	
+
+	/**
+	 * @return ReservationItemView
+	 */
 	public function Build()
 	{
-		return new ScheduleReservation(
-				$this->reservationId,
+		return new ReservationItemView(
+				$this->referenceNumber,
 				$this->startDate,
 				$this->endDate,
-				$this->reservationType,
-				$this->summary,
 				null,
 				$this->resourceId,
-				$this->userId,
-				$this->firstName ,
+				$this->reservationId,
+				null,
+				null,
+				$this->summary,
+				null,
+				$this->firstName,
 				$this->lastName,
-				$this->referenceNumber);
+				$this->userId
+				);
 	}
 }

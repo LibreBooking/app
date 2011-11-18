@@ -2,16 +2,16 @@
 class ReservationService implements IReservationService
 {
 	/**
-	 * @var IReservationRepository
+	 * @var IReservationViewRepository
 	 */
 	private $_repository;
 	
 	/**
 	 * @var IReservationListingFactory
 	 */
-	private $_listingFactory;
+	private $_coordinatorFactory;
 	
-	public function __construct(IReservationRepository $repository, IReservationListingFactory $listingFactory)
+	public function __construct(IReservationViewRepository $repository, IReservationListingFactory $listingFactory)
 	{
 		$this->_repository = $repository;
 		$this->_coordinatorFactory = $listingFactory;
@@ -19,7 +19,7 @@ class ReservationService implements IReservationService
 		
 	public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone)
 	{
-		$reservations = $this->_repository->GetWithin($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), $scheduleId);
+		$reservations = $this->_repository->GetReservationList($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), null, null, $scheduleId, null);
 		
 		Log::Debug("Found %s reservations for schedule %s between %s and %s", count($reservations), $scheduleId, $dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd());
 		

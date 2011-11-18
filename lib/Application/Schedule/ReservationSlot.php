@@ -23,10 +23,17 @@ class ReservationSlot implements IReservationSlot
 	protected $_periodSpan;
 	
 	/**
-	 * @var ScheduleReservation
+	 * @var ReservationItemView
 	 */
 	private $_reservation;
-	
+
+	/**
+	 * @param Date $begin
+	 * @param Date $end
+	 * @param Date $displayDate
+	 * @param $periodSpan
+	 * @param ReservationItemView $reservation
+	 */
 	public function __construct(Date $begin, Date $end, Date $displayDate, $periodSpan, $reservation)
 	{
 		$this->_reservation = $reservation;
@@ -86,7 +93,7 @@ class ReservationSlot implements IReservationSlot
 	
 	public function Label()
 	{
-		return $this->_reservation->GetFirstName() . ' ' . $this->_reservation->GetLastName();
+		return $this->_reservation->FirstName . ' ' . $this->_reservation->LastName;
 	}
 	
 	public function IsReservable()
@@ -101,7 +108,7 @@ class ReservationSlot implements IReservationSlot
 
 	public function IsPending()
 	{
-		return $this->_reservation->GetIsPending();
+		return $this->_reservation->RequiresApproval;
 	}
 	
 	public function IsPastDate(Date $date)
@@ -116,12 +123,12 @@ class ReservationSlot implements IReservationSlot
 	
 	public function Id()
 	{ 
-		return $this->_reservation->GetReferenceNumber();	
+		return $this->_reservation->ReferenceNumber;
 	}
 	
 	public function IsOwnedBy(UserSession $user)
 	{
-		return $this->_reservation->GetUserId() == $user->UserId;
+		return $this->_reservation->UserId == $user->UserId;
 	}
 	
 	public function __toString() 

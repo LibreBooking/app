@@ -2,7 +2,7 @@
 class ResourceAvailabilityRule implements IReservationValidationRule
 {
 	/**
-	 * @var IReservationRepository
+	 * @var IReservationViewRepository
 	 */
 	protected $_repository; 
 	
@@ -11,7 +11,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 	 */
 	protected $_timezone;
 	
-	public function __construct(IReservationRepository $repository, $timezone)
+	public function __construct(IReservationViewRepository $repository, $timezone)
 	{
 		$this->_repository = $repository;
 		$this->_timezone = $timezone;
@@ -32,23 +32,23 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		{
 			Log::Debug("Checking for reservation conflicts, reference number %s", $reservation->ReferenceNumber());
 			
-			$scheduleReservations = $this->_repository->GetWithin($reservation->StartDate(), $reservation->EndDate());
+			$existingReservations = $this->_repository->GetReservationList($reservation->StartDate(), $reservation->EndDate());
 
-			/** @var ScheduleReservation $scheduleReservation */
-			foreach ($scheduleReservations as $scheduleReservation)
+			/** @var ReservationItemView $existingReservation */
+			foreach ($existingReservations as $existingReservation)
 			{
 				if (
-					$scheduleReservation->GetStartDate()->Equals($reservation->EndDate()) ||
-					$scheduleReservation->GetEndDate()->Equals($reservation->StartDate())
+					$existingReservation->GetStartDate()->Equals($reservation->EndDate()) ||
+					$existingReservation->GetEndDate()->Equals($reservation->StartDate())
 				)
 				{
 					continue;
 				}
 				
-				if ($this->IsInConflict($reservation, $reservationSeries, $scheduleReservation))
+				if ($this->IsInConflict($reservation, $reservationSeries, $existingReservation))
 				{
-					Log::Debug("Reference number %s conflicts with existing reservation %s", $reservation->ReferenceNumber(), $scheduleReservation->GetReferenceNumber());
-					array_push($conflicts, $scheduleReservation);
+					Log::Debug("Reference number %s conflicts with existing reservation %s", $reservation->ReferenceNumber(), $existingReservation->GetReferenceNumber());
+					array_push($conflicts, $existingReservation);
 				}
 			}
 		}
@@ -63,14 +63,14 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 	
-	protected function IsInConflict(Reservation $instance, ReservationSeries $series, ScheduleReservation $scheduleReservation)
+	protected function IsInConflict(Reservation $instance, ReservationSeries $series, ReservationItemView $existingReservation)
 	{
-		return ($scheduleReservation->GetResourceId() == $series->ResourceId()) ||
-			(false !== array_search($scheduleReservation->GetResourceId(), $series->AllResourceIds()));
+		return ($existingReservation->GetResourceId() == $series->ResourceId()) ||
+			(false !== array_search($existingReservation->GetResourceId(), $series->AllResourceIds()));
 	}
 
 	/**
-	 * @param array|ScheduleReservation $conflicts
+	 * @param array|ReservationItemView $conflicts
 	 * @return string
 	 */
 	protected function GetErrorString($conflicts)
@@ -82,7 +82,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
 		
 		$dates = array();
-		/** @var ScheduleReservation $conflict */
+		/** @var ReservationItemView $conflict */
 		foreach($conflicts as $conflict)
 		{
 			$dates[] = $conflict->GetStartDate()->ToTimezone($this->_timezone)->Format($format);

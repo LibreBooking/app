@@ -23,19 +23,19 @@ class ReservationServiceTests extends TestBase
 		
 		$range = new DateRange($startDate, $endDate);
 		
-		$repository = $this->getMock('IReservationRepository');
+		$repository = $this->getMock('IReservationViewRepository');
 		$reservationListing = $this->getMock('IMutableReservationListing');
 		$listingFactory = $this->getMock('IReservationListingFactory');
 		
 		$rows = FakeReservationRepository::GetReservationRows();
-		$res1 = ReservationFactory::CreateForSchedule($rows[0]);
-		$res2 = ReservationFactory::CreateForSchedule($rows[1]);
-		$res3 = ReservationFactory::CreateForSchedule($rows[2]);
+		$res1 = ReservationItemView::Populate($rows[0]);
+		$res2 = ReservationItemView::Populate($rows[1]);
+		$res3 = ReservationItemView::Populate($rows[2]);
 		
 		$repository
 			->expects($this->once())
-			->method('GetWithin')
-			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($scheduleId))
+			->method('GetReservationList')
+			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->isNull(), $this->isNull(), $this->equalTo($scheduleId), $this->isNull())
 			->will($this->returnValue(array($res1, $res2, $res3)));
 
 		$listingFactory

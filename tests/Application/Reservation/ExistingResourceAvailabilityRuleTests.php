@@ -6,13 +6,17 @@ require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 class ExistingResourceAvailabilityRuleTests extends TestBase
 {
 	private $timezone = 'UTC';
+
+	/**
+	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
 	private $repo;	
 	
 	public function setup()
 	{
 		parent::setup();
 		
-		$this->repo = $this->getMock('IReservationRepository');
+		$this->repo = $this->getMock('IReservationViewRepository');
 	}
 
 	public function teardown()
@@ -45,12 +49,12 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$series->UpdateInstance($updated, new DateRange($now->AddDays(20), $now->AddDays(21)));
 		
 		$reservations = array( 
-			new TestScheduleReservation($id1, Date::Now(), Date::Now(), $resourceId),
-			new TestScheduleReservation($id2, Date::Now(), Date::Now(), $resourceId),
+			new TestReservationItemView($id1, Date::Now(), Date::Now(), $resourceId),
+			new TestReservationItemView($id2, Date::Now(), Date::Now(), $resourceId),
 		);
 		
 		$this->repo->expects($this->exactly(2))
-			->method('GetWithin')
+			->method('GetReservationList')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 		
@@ -73,11 +77,11 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$series->WithCurrentInstance($current);	
 		
 		$reservations = array( 
-			new TestScheduleReservation($currentId, Date::Now(), Date::Now(), $resourceId),
+			new TestReservationItemView($currentId, Date::Now(), Date::Now(), $resourceId),
 		);
 		
 		$this->repo->expects($this->once())
-			->method('GetWithin')
+			->method('GetReservationList')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 			
@@ -101,11 +105,11 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$series->WithCurrentInstance($current);	
 		
 		$reservations = array( 
-			new TestScheduleReservation($currentId+1, Date::Now(), Date::Now(), $resourceId),
+			new TestReservationItemView($currentId+1, Date::Now(), Date::Now(), $resourceId),
 		);
 		
 		$this->repo->expects($this->once())
-			->method('GetWithin')
+			->method('GetReservationList')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 			
@@ -131,11 +135,11 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$series->WithCurrentInstance($current);	
 		
 		$reservations = array( 
-			new TestScheduleReservation($currentId+1, Date::Now(), Date::Now(), $resourceId3),
+			new TestReservationItemView($currentId+1, Date::Now(), Date::Now(), $resourceId3),
 		);
 		
 		$this->repo->expects($this->once())
-			->method('GetWithin')
+			->method('GetReservationList')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 			

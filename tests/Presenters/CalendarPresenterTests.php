@@ -15,7 +15,7 @@ class CalendarPresenterTests extends TestBase
 	private $presenter;
 
 	/**
-	 * @var IReservationRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $repository;
 
@@ -39,7 +39,7 @@ class CalendarPresenterTests extends TestBase
 		parent::setup();
 
 		$this->page = $this->getMock('ICalendarPage');
-		$this->repository = $this->getMock('IReservationRepository');
+		$this->repository = $this->getMock('IReservationViewRepository');
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 		$this->calendarFactory = $this->getMock('ICalendarFactory');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
@@ -75,8 +75,9 @@ class CalendarPresenterTests extends TestBase
 		$referenceNumber = 'refnum';
 		$resourceName = 'resource name';
 		
-		$res = new ScheduleReservation(1, $startDate, $endDate, null, $summary, $resourceId, $userId, $fname, $lname, $referenceNumber, ReservationStatus::Created);
-
+		//$res = new ScheduleReservation(1, $startDate, $endDate, null, $summary, $resourceId, $userId, $fname, $lname, $referenceNumber, ReservationStatus::Created);
+		$res = new ReservationItemView($referenceNumber, $startDate, $endDate, 'resource name', $resourceId, 1, null, null, $summary, null, $fname, $lname, $userId);
+		
 		$r1 = new FakeBookableResource(1, 'dude1');
 		$r2 = new FakeBookableResource($resourceId, $resourceName);
 
@@ -104,8 +105,8 @@ class CalendarPresenterTests extends TestBase
 				->will($this->returnValue(null));
 
 		$this->repository->expects($this->once())
-			->method('GetWithin')
-			->with($this->equalTo($month->FirstDay()), $this->equalTo($month->LastDay()), $this->equalTo($defaultScheduleId), $this->equalTo(null))
+			->method('GetReservationList')
+			->with($this->equalTo($month->FirstDay()), $this->equalTo($month->LastDay()), $this->equalTo(null), $this->equalTo(null), $this->equalTo($defaultScheduleId), $this->equalTo(null))
 			->will($this->returnValue($reservations));
 
 		$this->page->expects($this->once())

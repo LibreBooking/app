@@ -12,7 +12,7 @@ class SchedulePage extends SecurePage implements ISchedulePage
 		$scheduleRepository = new ScheduleRepository();
 		$resourceService = new ResourceService(new ResourceRepository(), $permissionServiceFactory->GetPermissionService());
 		$pageBuilder = new SchedulePageBuilder();
-		$reservationService = new ReservationService(new ReservationRepository(), new ReservationListingFactory());
+		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
 		$this->_presenter = new SchedulePresenter($this, $scheduleRepository, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
 	}

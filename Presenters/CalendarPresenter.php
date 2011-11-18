@@ -7,33 +7,33 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 class CalendarPresenter
 {
 	/**
-	 * @var \ICalendarPage
+	 * @var ICalendarPage
 	 */
 	private $page;
 
 	/**
-	 * @var \ICalendarFactory
+	 * @var ICalendarFactory
 	 */
 	private $calendarFactory;
 
 	/**
-	 * @var \IReservationRepository
+	 * @var IReservationViewRepository
 	 */
 	private $reservationRepository;
 
 	/**
-	 * @var \IScheduleRepository
+	 * @var IScheduleRepository
 	 */
 	private $scheduleRepository;
 
 	/**
-	 * @var \IResourceRepository
+	 * @var IResourceRepository
 	 */
 	private $resourceRepository;
 
 	public function __construct(ICalendarPage $page,
 		ICalendarFactory $calendarFactory,
-		IReservationRepository $reservationRepository,
+		IReservationViewRepository $reservationRepository,
 		IScheduleRepository $scheduleRepository,
 		IResourceRepository $resourceRepository)
 	{
@@ -79,7 +79,7 @@ class CalendarPresenter
 		}
 
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
-		$reservations = $this->reservationRepository->GetWithin($calendar->FirstDay(), $calendar->LastDay(), $selectedScheduleId, $selectedResourceId);
+		$reservations = $this->reservationRepository->GetReservationList($calendar->FirstDay(), $calendar->LastDay(), null, null, $selectedScheduleId, $selectedResourceId);
 		$calendar->AddReservations(CalendarReservation::FromScheduleReservationList($reservations, $resources, $timezone));
 		$this->page->BindCalendar($calendar);
 

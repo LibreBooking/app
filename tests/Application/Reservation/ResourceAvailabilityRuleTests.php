@@ -26,12 +26,12 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservation->AddResource(new FakeBookableResource(101, null));
 		$reservation->AddResource(new FakeBookableResource(102, null));
 
-		$scheduleReservation = new TestScheduleReservation(2, $startDate, $endDate, 1);
+		$scheduleReservation = new TestReservationItemView(2, $startDate, $endDate, 1);
 
-		$reservationRepository = $this->getMock('IReservationRepository');
+		$reservationRepository = $this->getMock('IReservationViewRepository');
 		
 		$reservationRepository->expects($this->once())
-			->method('GetWithin')
+			->method('GetReservationList')
 			->with($this->equalTo($startDate), $this->equalTo($endDate))
 			->will($this->returnValue(array($scheduleReservation)));
 			
@@ -64,16 +64,16 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$endNonConflict2 = Date::Parse('2010-04-04', 'UTC');
 		
 		$reservations = array( 
-			new TestScheduleReservation(2, $startConflict1, $endConflict1, $resourceId),
-			new TestScheduleReservation(3, $startConflict2, $endConflict2, 2),
-			new TestScheduleReservation(4, $startNonConflict1, $startNonConflict2, $resourceId),
-			new TestScheduleReservation(5, $startNonConflict2, $endNonConflict2, $resourceId),
+			new TestReservationItemView(2, $startConflict1, $endConflict1, $resourceId),
+			new TestReservationItemView(3, $startConflict2, $endConflict2, 2),
+			new TestReservationItemView(4, $startNonConflict1, $startNonConflict2, $resourceId),
+			new TestReservationItemView(5, $startNonConflict2, $endNonConflict2, $resourceId),
 		);
 		
-		$reservationRepository = $this->getMock('IReservationRepository');
+		$reservationRepository = $this->getMock('IReservationViewRepository');
 		
 		$reservationRepository->expects($this->once())
-			->method('GetWithin')
+			->method('GetReservationList')
 			->with($this->equalTo($startDate), $this->equalTo($endDate))
 			->will($this->returnValue($reservations));
 			
@@ -101,14 +101,14 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$endConflict2 = Date::Parse('2010-04-08', 'UTC');
 		
 		$reservations = array( 
-			new TestScheduleReservation(2, $startConflict1, $endConflict1, 2),
-			new TestScheduleReservation(3, $startConflict2, $endConflict2, $additionalResourceId),
+			new TestReservationItemView(2, $startConflict1, $endConflict1, 2),
+			new TestReservationItemView(3, $startConflict2, $endConflict2, $additionalResourceId),
 		);
 		
-		$reservationRepository = $this->getMock('IReservationRepository');
+		$reservationRepository = $this->getMock('IReservationViewRepository');
 		
 		$reservationRepository->expects($this->once())
-			->method('GetWithin')
+			->method('GetReservationList')
 			->with($this->equalTo($startDate), $this->equalTo($endDate))
 			->will($this->returnValue($reservations));
 			
@@ -134,10 +134,10 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservation->WithDuration($reservationDates);
 		$reservation->WithRepeatOptions($twoRepetitions);
 		
-		$reservationRepository = $this->getMock('IReservationRepository');
+		$reservationRepository = $this->getMock('IReservationViewRepository');
 		
 		$reservationRepository->expects($this->exactly(1 + count($repeatDates)))
-			->method('GetWithin')
+			->method('GetReservationList')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue(array()));
 		
@@ -146,7 +146,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 	}
 }
 
-class TestScheduleReservation extends ScheduleReservation
+class TestReservationItemView extends ReservationItemView
 {
 	/**
 	 * @param $id
@@ -156,10 +156,10 @@ class TestScheduleReservation extends ScheduleReservation
 	 */
 	public function __construct($id, $startDate, $endDate, $resourceId = 1)
 	{
-		$this->SetReservationId($id);
-		$this->SetStartDate($startDate);
-		$this->SetEndDate($endDate);
-		$this->SetResourceId($resourceId);
+		$this->ReservationId = $id;
+		$this->StartDate = $startDate;
+		$this->EndDate = $endDate;
+		$this->ResourceId = $resourceId;
 	}
 }
 ?>

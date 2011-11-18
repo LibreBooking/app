@@ -19,7 +19,6 @@ class DailyLayoutTests extends TestBase
 		$resourceId = 1;
 		$targetTimezone = 'CST';
 		
-		$scheduleLayout = $this->getMock('IScheduleLayout');
 		$scheduleLayout = new ScheduleLayout($targetTimezone);
 		$scheduleLayout->AppendPeriod(new Time(5, 0, 0, $targetTimezone), new Time(6, 0, 0, $targetTimezone));
 		
@@ -29,7 +28,7 @@ class DailyLayoutTests extends TestBase
 		
 		$startDate = Date::Parse('2009-09-02 17:00:00', 'UTC');
 		$endDate = Date::Parse('2009-09-02 18:00:00', 'UTC');
-		$reservation = new ScheduleReservation(1, $startDate, $endDate, 1, 's', null, $resourceId, 100, 'f', 'l', 'rn');
+		$reservation = new ReservationItemView('rn', $startDate, $endDate, null, $resourceId);
 		$reservations = array($reservation);		
 
 		$listing->expects($this->once())

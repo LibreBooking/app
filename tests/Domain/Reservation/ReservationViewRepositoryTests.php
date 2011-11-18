@@ -191,9 +191,9 @@ class ReservationViewRepositoryTests extends TestBase
 
 		$this->db->SetRows($rows);
 		
-		$expectedCommand = new GetReservationListCommand($startDate, $endDate, $userId, ReservationUserLevel::OWNER);
+		$expectedCommand = new GetReservationListCommand($startDate, $endDate, $userId, ReservationUserLevel::OWNER, $scheduleId, $resourceId);
 		
-		$reservations = $this->repository->GetReservationList($startDate, $endDate, $userId);
+		$reservations = $this->repository->GetReservationList($startDate, $endDate, $userId, null, $scheduleId, $resourceId);
 		
 		$actualCommand = $this->db->_LastCommand;
 		

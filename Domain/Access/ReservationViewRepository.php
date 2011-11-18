@@ -10,15 +10,24 @@ interface IReservationViewRepository
 	 * @return ReservationView
 	 */
 	public function GetReservationForEditing($referenceNumber);
-	
+
 	/**
-	 * @param $startDate Date
-	 * @param $endDate Date
-	 * @param $userId int
-	 * @param $userLevel int|ReservationUserLevel
+	 * @abstract
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param int|null $userId
+	 * @param int|ReservationUserLevel|null $userLevel
+	 * @param int|null $scheduleId
+	 * @param int|null $resourceId
 	 * @return ReservationItemView[]
 	 */
-	public function GetReservationList(Date $startDate, Date $endDate, $userId,  $userLevel = ReservationUserLevel::OWNER);
+	public function GetReservationList(
+		Date $startDate,
+		Date $endDate,
+		$userId = ReservationRepository::ALL_USERS,
+		$userLevel = ReservationUserLevel::OWNER,
+		$scheduleId = ReservationRepository::ALL_SCHEDULES,
+		$resourceId = ReservationRepository::ALL_RESOURCES);
 
 	/**
 	 * @param int $pageNumber
@@ -92,9 +101,32 @@ class ReservationViewRepository implements IReservationViewRepository
 		return $reservationView;
 	}
 	
-	public function GetReservationList(Date $startDate, Date $endDate, $userId, $userLevel = ReservationUserLevel::OWNER)
+	public function GetReservationList(
+		Date $startDate,
+		Date $endDate,
+		$userId = ReservationRepository::ALL_USERS,
+		$userLevel = ReservationUserLevel::OWNER,
+		$scheduleId = ReservationRepository::ALL_SCHEDULES,
+		$resourceId = ReservationRepository::ALL_RESOURCES)
 	{
-		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel);
+		if (empty($userId))
+		{
+			$userId = ReservationRepository::ALL_USERS;
+		}
+		if (empty($userLevel))
+		{
+			$userLevel = ReservationUserLevel::OWNER;
+		}
+		if (empty($scheduleId))
+		{
+			$scheduleId = ReservationRepository::ALL_SCHEDULES;
+		}
+		if (empty($resourceId))
+		{
+			$resourceId = ReservationRepository::ALL_RESOURCES;
+		}
+		
+		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleId, $resourceId);
 		
 		$result = ServiceLocator::GetDatabase()->Query($getReservations);
 		
@@ -603,6 +635,68 @@ class ReservationItemView
 		}
 
 		return $view;
+	}
+
+	/**
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function OccursOn(Date $date)
+	{
+		$timezone = $date->Timezone();
+		$beginMidnight = $this->StartDate->ToTimezone($timezone)->GetDate();
+
+		if ($this->EndDate->ToTimezone($timezone)->IsMidnight())
+		{
+			$endMidnight = $this->EndDate;
+		}
+		else
+		{
+			$endMidnight = $this->EndDate->ToTimezone($timezone)->GetDate()->AddDays(1);
+		}
+
+		return ($beginMidnight->Compare($date) <= 0 &&
+				$endMidnight->Compare($date) > 0);
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetStartDate()
+	{
+		return $this->StartDate;
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetEndDate()
+	{
+		return $this->EndDate;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetReservationId()
+	{
+		return $this->ReservationId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->ResourceId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetReferenceNumber()
+	{
+		return $this->ReferenceNumber;
 	}
 }
 

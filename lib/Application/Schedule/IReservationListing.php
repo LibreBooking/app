@@ -33,7 +33,7 @@ interface IReservationListing extends IResourceReservationListing
 interface IMutableReservationListing extends IReservationListing
 {
 	/**
-	 * @param ScheduleReservation $reservation 
+	 * @param ReservationItemView $reservation
 	 */
 	public function Add($reservation);
 }

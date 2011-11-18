@@ -26,66 +26,6 @@ class ReservationRepositoryTests extends TestBase
 		$this->repository = null;
 	}
 
-	public function testCanGetReservationsWithinDateRange()
-	{
-		$startDate = Date::Create(2008, 05, 20);
-		$endDate = Date::Create(2008, 05, 25);
-		$scheduleId = 1;
-		$resourceId = 10;
-
-		$rows = FakeReservationRepository::GetReservationRows();
-		$this->db->SetRow(0, $rows);
-
-		$expected = array();
-		foreach ($rows as $item)
-		{
-			$expected[] = ReservationFactory::CreateForSchedule($item);
-		}
-
-		$loaded = $this->repository->GetWithin($startDate, $endDate, $scheduleId, $resourceId);
-
-		$this->assertEquals(new GetReservationsCommand($startDate, $endDate, $scheduleId, $resourceId), $this->db->_Commands[0]);
-		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
-		$this->assertEquals(count($rows), count($loaded));
-		$this->assertEquals($expected, $loaded);
-	}
-
-	public function testCanCreateScheduleReservation()
-	{
-		$rows = FakeReservationRepository::GetReservationRows();
-
-		$r = $rows[0];
-		$expected = new ScheduleReservation(
-			$r[ColumnNames::RESERVATION_INSTANCE_ID],
-			Date::Parse($r[ColumnNames::RESERVATION_START], 'UTC'),
-			Date::Parse($r[ColumnNames::RESERVATION_END], 'UTC'),
-			$r[ColumnNames::RESERVATION_TYPE],
-			$r[ColumnNames::RESERVATION_DESCRIPTION],
-			$r[ColumnNames::RESOURCE_ID],
-			$r[ColumnNames::USER_ID],
-			$r[ColumnNames::FIRST_NAME],
-			$r[ColumnNames::LAST_NAME],
-			$r[ColumnNames::REFERENCE_NUMBER],
-			$r[ColumnNames::RESERVATION_STATUS]
-		);
-
-		$actual = ReservationFactory::CreateForSchedule($r);
-
-		$startTime = Time::Parse($r[ColumnNames::RESERVATION_START], 'UTC');
-		$endTime = Time::Parse($r[ColumnNames::RESERVATION_END], 'UTC');
-
-		$startDate = Date::Parse($r[ColumnNames::RESERVATION_START], 'UTC');
-		$endDate = Date::Parse($r[ColumnNames::RESERVATION_END], 'UTC');
-
-		$this->assertEquals($expected, $actual);
-
-		$this->assertTrue($startDate->Equals($actual->GetStartDate()));
-		$this->assertTrue($endDate->Equals($actual->GetEndDate()));
-
-		$this->assertEquals($startTime, $actual->GetStartTime());
-		$this->assertEquals($endTime, $actual->GetEndTime());
-	}
-
 	public function testAddReservationWithOneUserAndOneResource()
 	{
 		$seriesId = 100;

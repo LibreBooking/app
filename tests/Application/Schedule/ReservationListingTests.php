@@ -4,14 +4,6 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class ReservationListingTests extends TestBase
 {
-	private $res1;
-	private $res2;
-	private $res3;
-	private $res4;
-	private $res5;
-
-	private $reservationRepository;
-
 	public function setup()
 	{
 		parent::setup();
@@ -64,7 +56,7 @@ class ReservationListingTests extends TestBase
 	
 	private function GetReservation($startDateString, $endDateString)
 	{
-		return new ScheduleReservation(1, Date::Parse($startDateString, 'UTC'), Date::Parse($endDateString, 'UTC'), 1, null, null, 1, 1, '', '', '');
+		return new ReservationItemView(1, Date::Parse($startDateString, 'UTC'), Date::Parse($endDateString, 'UTC'));
 	}
 }
 ?>
