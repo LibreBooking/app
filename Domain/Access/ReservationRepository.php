@@ -3,10 +3,6 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 
 class ReservationRepository implements IReservationRepository
 {
-	const ALL_SCHEDULES = -1;
-	const ALL_RESOURCES = -1;
-	const ALL_USERS = -1;
-
 	public function LoadById($reservationId)
 	{
 		Log::Debug("ReservationRepository::LoadById() - ReservationID: $reservationId");

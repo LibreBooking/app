@@ -24,10 +24,10 @@ interface IReservationViewRepository
 	public function GetReservationList(
 		Date $startDate,
 		Date $endDate,
-		$userId = ReservationRepository::ALL_USERS,
+		$userId = ReservationViewRepository::ALL_USERS,
 		$userLevel = ReservationUserLevel::OWNER,
-		$scheduleId = ReservationRepository::ALL_SCHEDULES,
-		$resourceId = ReservationRepository::ALL_RESOURCES);
+		$scheduleId = ReservationViewRepository::ALL_SCHEDULES,
+		$resourceId = ReservationViewRepository::ALL_RESOURCES);
 
 	/**
 	 * @param int $pageNumber
@@ -56,6 +56,10 @@ interface IReservationViewRepository
 
 class ReservationViewRepository implements IReservationViewRepository
 {
+	const ALL_SCHEDULES = -1;
+	const ALL_RESOURCES = -1;
+	const ALL_USERS = -1;
+
 	public function GetReservationForEditing($referenceNumber)
 	{
 		$reservationView = NullReservationView::Instance();
@@ -104,14 +108,14 @@ class ReservationViewRepository implements IReservationViewRepository
 	public function GetReservationList(
 		Date $startDate,
 		Date $endDate,
-		$userId = ReservationRepository::ALL_USERS,
+		$userId = self::ALL_USERS,
 		$userLevel = ReservationUserLevel::OWNER,
-		$scheduleId = ReservationRepository::ALL_SCHEDULES,
-		$resourceId = ReservationRepository::ALL_RESOURCES)
+		$scheduleId = self::ALL_SCHEDULES,
+		$resourceId = self::ALL_RESOURCES)
 	{
 		if (empty($userId))
 		{
-			$userId = ReservationRepository::ALL_USERS;
+			$userId = self::ALL_USERS;
 		}
 		if (empty($userLevel))
 		{
@@ -119,11 +123,11 @@ class ReservationViewRepository implements IReservationViewRepository
 		}
 		if (empty($scheduleId))
 		{
-			$scheduleId = ReservationRepository::ALL_SCHEDULES;
+			$scheduleId = self::ALL_SCHEDULES;
 		}
 		if (empty($resourceId))
 		{
-			$resourceId = ReservationRepository::ALL_RESOURCES;
+			$resourceId = self::ALL_RESOURCES;
 		}
 		
 		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleId, $resourceId);
