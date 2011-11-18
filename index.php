@@ -1,6 +1,6 @@
 <?php
 /*
- * All requests start here
+ * All page requests start here
  */
 header("Location: Web");
 
