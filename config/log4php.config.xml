@@ -1,12 +1,12 @@
 <log4php:configuration xmlns:log4php="http://logging.apache.org/log4php/">
 	<appender name="defaultAppender" class="LoggerAppenderDailyFile">
 		<layout class="LoggerLayoutTTCC" />
-		<param name="file" value="c:\temp\log_%s.log" />
+		<param name="file" value="../Logs/log_%s.log" />
 		<param name="append" value="true" />
 	</appender>
 	<appender name="sqlAppender" class="LoggerAppenderDailyFile">
 		<layout class="LoggerLayoutTTCC" />
-		<param name="file" value="c:\temp\sql_log_%s.log" />
+		<param name="file" value="../Logs/sql_log_%s.log" />
 		<param name="append" value="true" />
 	</appender>
     <logger name="default" additivity="false">
