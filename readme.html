@@ -15,11 +15,18 @@
 
         </style>
     </head>
+    
+    <!--**section**-->
+    
     <body>
         <h1>Welcome to phpScheduleIt 2.0!</h1>
+        
+        <!--**section**-->
 
         <h2 style="font-style:italic; color:red;">This is a pre-release version of phpScheduleIt. It will certainly contain bugs
             and is not yet suitable for production use.</h2>
+        
+        <!--**section**-->
 
         <h2>Prerequisites</h2>
         <ul>
@@ -36,6 +43,8 @@
             <br/>
             - http://netbeans.org/kb/docs/php/configure-php-environment-windows.html
         </ul>
+        
+        <!--**section**-->
 
         <h2>Server Configuration</h2>
 
@@ -48,11 +57,47 @@
                 <li>If possible, create a website, subdomain, or virtual directory pointed at the /Web folder because this is the main directory of the program, 
                     or if this is not possible, simply extract all of the contents to an accessible location on your server</li>
                 <li>If this is not possible, simply extract all of the contents to an accessible location on your server</li>
-                <li>The web server must have write access to /tpl_c <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(why?)</a></li>
                 <li>To allow resource image uploads, the PHP account requires read/write access to your configured uploads directory
                     ($conf['settings']['image.upload.directory'])
             </ul>
         </div>
+        
+        <!--**section**-->
+        
+        <h2>Database Setup</h2>
+
+        <h3>Automated</h3>
+
+        <div>
+            The automated database setup only supports MySQL at this time. To run the automated database setup, navigate to the
+            /Web/install directory in a web browser and follow the on screen instructions.
+        </div>
+        
+        <!--**section**-->
+
+        <h3>Manual</h3>
+
+        <div>
+            The packaged database scripts make assumptions about your desired database configuration. Please edit them to suit
+            your environment before running. Run the following scripts in order (recommending phpmyadmin interface http://www.phpmyadmin.net/documentation/):
+        </div>
+        <div>
+            <ul>
+                <li>The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(why?)</a></li>
+                <li>import "/database_schema/create-db.sql" to mysql db (phpscheduleit2 db created)</li>
+                <li>import "/database_schema/schema-utf8.sql" to phpscheduleit2 (db schema created)</li>
+                <li>import "/database_schema/create-user.sql" to mysql db (schedule_user/password mysql account created to match to your default configuration
+                    and notice: this is not the application user!). At this point with the aforementioned default configuration in your-phpScheduleIt/config/config.php 
+                    your application can connect to the database and loaded eg. see http://localhost/your-phpScheduleIt/Web/index.php 
+                    but you can not login since there is no application data or user, so go to next step
+                </li>
+                <li>import "/database_schema/data-utf8.sql" to phpscheduleit2 (initializing application database)</li>
+                <li>import "/database_schema/testdata-utf8.sql" to phpscheduleit2 (a sample application data created with 2 users:
+                    1) admin/password and 2) nkorbel/password). Use these users for testing your installation. You are done. Congratulation!</li>
+            </ul>
+        </div>
+        
+        <!--**section**-->
 
         <h2>Application Configuration</h2>
 
@@ -64,31 +109,7 @@
             </ul>
         </div>
 
-        <h2>Database Setup</h2>
-
-        <h3>Automated</h3>
-
-        <div>
-            The automated database setup only supports MySQL at this time. To run the automated database setup, navigate to the
-            /Web/install directory in a web browser and follow the on screen instructions.
-        </div>
-
-        <h3>Manual</h3>
-
-        <div>
-            The packaged database scripts make assumptions about your desired database configuration. Please edit them to suit
-            your environment before running.
-            <br/>
-            Run the following scripts in order:
-        </div>
-        <div>
-            <ul>
-                <li>/database_schema/create-db.sql</li>
-                <li>/database_schema/schema-utf8.sql</li>
-                <li>/database_schema/create-user.sql</li>
-                <li>/database_schema/data-utf8.sql</li>
-            </ul>
-        </div>
+        <!--**section**-->
 
         <h2>The First Login</h2>
 
@@ -96,6 +117,8 @@
             You will need to register an account with your configured admin email address. This is specified in the following
             config.php setting: $conf['settings']['admin.email']
         </div>
+        
+        <!--**section**-->
 
         <h2>Log Files</h2>
         phpScheduleIt logs multiple levels of information categorized into either application or database logs. To do this, the log4php library is used.
@@ -109,6 +132,9 @@
             <li>To turn on application logging, change the &lt;level value=&quot;OFF&quot; /&gt; to an appropriate level for either the default or sql loggers.  For example, &lt;level value=&quot;ERROR&quot; /&gt;</li>
             <li>For more information on logging configuration, visit http://logging.apache.org/log4php/</li>
         </ul>
+        
+        <!--**section**-->
+        
         <h2>Support</h2>
 
         <div>
