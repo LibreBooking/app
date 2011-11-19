@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE);
 
-$conf['settings']['server.timezone'] = 'America/Chicago';
+$conf['settings']['server.timezone'] = 'America/Chicago';   // look up here http://php.net/manual/en/timezones.php
 $conf['settings']['allow.self.registration'] = 'true';
 $conf['settings']['admin.email'] = 'admin@example.com';
 $conf['settings']['default.page.size'] = '50';
@@ -19,14 +19,14 @@ $conf['settings']['database']['hostspec'] = '127.0.0.1';
 $conf['settings']['database']['name'] = 'phpscheduleit2';
 $conf['settings']['reservation']['notify.created'] = 'true';
 $conf['settings']['phpmailer']['mailer'] = 'mail';
-$conf['settings']['phpmailer']['smtp.host'] = '';
-$conf['settings']['phpmailer']['smtp.port'] = '';
-$conf['settings']['phpmailer']['smtp.secure'] = '';
-$conf['settings']['phpmailer']['smtp.auth'] = '';
-$conf['settings']['phpmailer']['smtp.username'] = '';
-$conf['settings']['phpmailer']['smtp.password'] = '';
-$conf['settings']['image.upload.directory'] = 'Web/uploads/images';		// from root directory, ie public_html/phpscheduleit/Web/uploads/images should be set to Web/uploads/images
-$conf['settings']['image.upload.url'] = 'uploads/images';				// from script.url
+$conf['settings']['phpmailer']['smtp.host'] = '';   // 'smtp.university.ca'
+$conf['settings']['phpmailer']['smtp.port'] = '';   // '25'
+$conf['settings']['phpmailer']['smtp.secure'] = ''; // 'ssl'
+$conf['settings']['phpmailer']['smtp.auth'] = '';   // 'Password'
+$conf['settings']['phpmailer']['smtp.username'] = '';   // 'username'
+$conf['settings']['phpmailer']['smtp.password'] = '';   // 'password'
+$conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // from root directory, ie public_html/phpscheduleit/Web/uploads/images should be set to Web/uploads/images
+$conf['settings']['image.upload.url'] = 'uploads/images';   // from script.url
 $conf['settings']['cache.templates'] = 'true';
 $conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['plugins']['Authorization'] = '';

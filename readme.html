@@ -1,7 +1,11 @@
 <html>
     <head>
-        <title>phpScheduleIt 2.0 - readme</title>
+        <title>phpScheduleIt 2.0</title>
+        
+        <!--**section**-->
+        
         <style type="text/css">
+            
             h2 {
                 border: solid 1px #666;
                 background-color: #f0f0f0;
@@ -12,6 +16,13 @@
             h3 {
                 border-bottom: solid 1px #999;
             }
+            
+            h4 {
+                border: solid 1px #666;
+                background-color: #f0f0f0;
+                color: #727E0A;
+                padding: 3px 10px;
+            }
 
         </style>
     </head>
@@ -19,7 +30,7 @@
     <!--**section**-->
     
     <body>
-        <h1>Welcome to phpScheduleIt 2.0!</h1>
+        <h1>Welcome to phpScheduleIt 2.0! (A quick installation).</h1>
         
         <!--**section**-->
 
@@ -34,47 +45,55 @@
             <li>MySQL 5.0 or greater.</li>
             <li>Web server (e.g Apache2, etc...).</li>
             <li>OS - Windows, Mac, Unix-like were tested.</li>
-            
-            * Note: If you want to accomplish all of the above quick and easy? 
-            try this apachefriends.org, it will do it for you in no time (recommended).
-            <br/>
-            - http://www.apachefriends.org/en/index.html
-            <br/>
-            or
-            <br/>
-            - http://netbeans.org/kb/docs/php/configure-php-environment-windows.html
         </ul>
+            <p STYLE="color:red">
+            (Note for users without web host service). If you want to accomplish all of the above quick and easy? 
+            try this apachefriends.org, it will do it for you in no time (recommended).
+            </p>
+            - http://www.apachefriends.org/en/index.html <span STYLE="color:red">(highly recommended).</span> Or <br/>
+            - http://netbeans.org/kb/docs/php/configure-php-environment-windows.html.
         
         <!--**section**-->
 
-        <h2>Server Configuration</h2>
+        <h2>Server Deployment</h2>
 
         <div>
             <ul>
-                <li>Untar or unzip the distribution in your webserver's document root. 
-                    If you don't have direct access to your document root, put the files in a directory on your local machine, and transfer the directory on your web server using, 
-                    for example, ftp.</li>
-                <li>Open /config/config.php to be edited. To allow resource image uploads, the webserver account requires read/write 
-                    access to your configured uploads directory ($conf['settings']['image.upload.directory']).<li>
-                <li></li>
-                <li></li>
+                <li>Untar or unzip the distribution in your webserver's document root.</li>
+                <li>If you don't have direct access to your document root and use hosting service, 
+                    put the files in a directory on your local machine, and transfer the directory on your web server using, for example, ftp.</li>
+                <li>Note: Some may have directory permission issues. Contact support below or contact your hosting service to resolve.</li>
+            </ul>
+        </div>
+        
+        <!--**section**-->
+
+        <h2>Application Configuration</h2>
+
+        <div>
+            You can configure phpScheduleIt to fit your environments and needs or use the minimal default settings.
+            <ul>
+                <li>You can use the minimal default pre-configuration. To allow resource image uploads, the web-server account requires read/write 
+                    access to your configured uploads directory ($conf['settings']['image.upload.directory']), or you may leave it empty.</li>
+                <li>Or you can open config/config.php and alter any settings that do not match your environment.</li>
             </ul>
         </div>
         
         <!--**section**-->
         
         <h2>Database Setup</h2>
+        You have 2 ways to set up your database for the application to work. 
 
-        <h3>Automated</h3>
+        <h3>1) Automated</h3>
 
         <div>
             The automated database setup only supports MySQL at this time. To run the automated database setup, navigate to the
             /Web/install directory in a web browser and follow the on screen instructions.
         </div>
         
-        <!--**section**-->
+        <!--**section**--> <br/>OR<br/>
 
-        <h3>Manual</h3>
+        <h3>2) Manual</h3>
 
         <div>
             The packaged database scripts make assumptions about your desired database configuration. Please edit them to suit
@@ -92,34 +111,26 @@
                 </li>
                 <li>import "/database_schema/data-utf8.sql" to phpscheduleit2 (initializing application database)</li>
                 <li>import "/database_schema/testdata-utf8.sql" to phpscheduleit2 (a sample application data created with 2 users:
-                    1) admin/password and 2) nkorbel/password). Use these users for testing your installation. You are done. Congratulation!</li>
-            </ul>
-        </div>
-        
-        <!--**section**-->
-
-        <h2>Application Configuration</h2>
-
-        <div>
-            The first step prior to running any installation process is to configure phpScheduleIt.
-            <ul>
-                <li>To do this first rename config/config.dist.php to config/config.php.</li>
-                <li>Then open config/config.php and alter any settings that do not match your environment.</li>
+                    1) admin/password and 2) nkorbel/password). Use these users for testing your installation. <span STYLE="color:red">You are done. Congratulation!</span></li>
             </ul>
         </div>
 
         <!--**section**-->
 
-        <h2>The First Login</h2>
+        <h4>The First Login</h4>
 
-        <div>
-            You will need to register an account with your configured admin email address. This is specified in the following
-            config.php setting: $conf['settings']['admin.email']
-        </div>
+        <ul>
+            <li>Aforementioned if you imported a sample application data, you now can use 1) admin/password and 2) nkorbel/password</li>
+            <li>Or you will need to register an account with your configured admin email address. This is specified in the following
+            config.php setting: $conf['settings']['admin.email']<br/>
+            For the email registration process to work - this means it will send you and email with account login information.
+            You need to make sure your email server is working and the application configured, look for smtp.* parameters,
+            and fill them in properly. Examples are shown next the parameters</li>
+        </ul>
         
         <!--**section**-->
 
-        <h2>Log Files</h2>
+        <h4>Log Files</h4>
         phpScheduleIt logs multiple levels of information categorized into either application or database logs. To do this, the log4php library is used.
         By default, logging is turned OFF.
         <ul>
@@ -134,7 +145,7 @@
         
         <!--**section**-->
         
-        <h2>Support</h2>
+        <h4>Support</h4>
 
         <div>
             Post any questions or issues under the phpScheduleIt 2.0 section of the forums on <a
