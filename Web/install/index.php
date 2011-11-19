@@ -21,7 +21,7 @@ function SmartyPermissionsAreOk($smartyTemplateCacheDir)
 	{
 		return chmod($smartyTemplateCacheDir, 0770);
 	}
-
-	return false;
+        // Why Nick returns false?
+	return true; // false;
 }
 ?>
