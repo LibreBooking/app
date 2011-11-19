@@ -29,8 +29,6 @@ function ReservationManagement(opts, approval)
 	{
 		ConfigureAdminDialog(elements.deleteInstanceDialog, 425, 200);
 		ConfigureAdminDialog(elements.deleteSeriesDialog, 650, 200);
-		
-		$('.datepicker').datepicker();
 
 		$(".save").click(function() {
 			$(this).closest('form').submit();

@@ -507,6 +507,14 @@ class GetBlackoutListCommand extends SqlCommand
 	}
 }
 
+class GetBlackoutListFullCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_BLACKOUT_LIST_FULL);
+	}
+}
+
 class GetDashboardAnnouncementsCommand extends SqlCommand
 {
 	public function __construct(Date $currentDate)

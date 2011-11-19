@@ -1,27 +1,63 @@
-{include file='globalheader.tpl' cssFiles='scripts/css/colorbox.css,css/admin.css,css/jquery.qtip.css'}
+{include file='globalheader.tpl' cssFiles='scripts/css/colorbox.css,css/admin.css,css/jquery.qtip.css,scripts/css/timePicker.css'}
 
 <h1>{translate key=ManageReservations}</h1>
+
+<div class="admin">
+	<div class="title">
+		Add Blackout
+	</div>
+	<div>
+		<form>
+			<ul>
+				<li>
+					<label for="addStartDate" class="wideLabel">Start</label>
+					<input type="text" id="addStartDate" class="textbox" size="10" value="{formatdate date=$AddStartDate}"/>
+					<input type="text" id="addStartTime" class="textbox" size="7" value="12:00 AM" />
+				</li>
+				<li>
+					<label for="addEndDate" class="wideLabel">End</label>
+					<input type="text" id="addEndDate" class="textbox" size="10" value="{formatdate date=$AddEndDate}"/>
+					<input type="text" id="addEndTime" class="textbox" size="7"  value="12:00 AM" />
+				</li>
+				<li>
+					<label for="addResourceId" class="wideLabel">Resource</label>
+					<select class="textbox" id="addResourceId">
+						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
+					</select>
+					or
+					<label for="allResources" style="">All Resources On </label> <input type="checkbox" id="allResources" />
+					<select id="addScheduleId" class="textbox" disabled="disabled">
+						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
+					</select>
+				</li>
+				<li>
+					<label for="blackoutReason" class="wideLabel">Reason</label>
+					<input type="text" id="blackoutReason" class="textbox" size="100" maxlength="85"/>
+				</li>
+				<li style="margin-top:15px; padding-top:15px; border-top: solid 1px #ededed;">
+					<button type="button" class="button save create">
+						{html_image src="tick-circle.png"} {translate key='Create'}
+					</button>
+					<input type="reset" value="Cancel" class="button" style="border: 0;background: transparent;color: blue;cursor:pointer; font-size: 60%" />
+				</li>
+			</ul>
+		</form>
+	</div>
+</div>
 
 <fieldset>
 	<legend><h3>Filter</h3></legend>
 	<table style="display:inline;">
 		<tr>
 			<td>Between</td>
-			<td>{translate key=User}</td>
 			<td>{translate key=Schedule}</td>
 			<td>{translate key=Resource}</td>
-			<td>{translate key=Status}</td>
-			<td>{translate key=ReferenceNumber}</td>
 		</tr>
 		<tr>
 			<td>
 				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}"/>
 				and
 				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}"/>
-			</td>
-			<td>
-				<input id="userFilter" type="text" class="textbox" value="{$UserName}" />
-				<input id="userId" type="hidden" value="{$UserId}" />
 			</td>
 			<td>
 				<select id="scheduleId" class="textbox">
@@ -35,15 +71,6 @@
 					{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 				</select>
 			</td>
-			<td>
-				<select id="statusId" class="textbox">
-					<option value="">All Reservations</option>
-					<option value="{ReservationStatus::Pending}" {if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>Pending Reservations</option>
-				</select>
-			</td>
-			<td>
-				<input id="referenceNumber" type="text" class="textbox" value="{$ReferenceNumber}" />
-			</td>
 			<td rowspan="2">
 				<button id="filter" class="button">{html_image src="search.png"} Filter</button>
 			</td>
@@ -53,43 +80,27 @@
 
 <div>&nbsp;</div>
 
-<p>
-	<a href="{$CsvExportUrl}">{translate key=ExportToCSV}</a>
-</p>
 <table class="list" id="reservationTable">
 	<tr>
 		<th class="id">&nbsp;</th>
-		<th>{translate key='User'}</th>
 		<th>{translate key='Resource'}</th>
 		<th>{translate key='BeginDate'}</th>
 		<th>{translate key='EndDate'}</th>
-		<th>{translate key='Created'}</th>
-		<th>{translate key='LastModified'}</th>
-		<th>{translate key='ReferenceNumber'}</th>
+		<th>Created By</th>
 		<th>{translate key='Delete'}</th>
-		<th>{translate key='Approve'}</th>
+		<th>{translate key='Edit'}</th>
 	</tr>
-	{foreach from=$reservations item=reservation}
+	{foreach from=$blackouts item=blackout}
 	{cycle values='row0,row1' assign=rowCss}
-	{if $reservation->RequiresApproval}
-		{assign var=rowCss value='pending'}
-	{/if}
 	<tr class="{$rowCss} editable">
-		<td class="id">{$reservation->ReservationId}</td>
-		<td>{$reservation->FirstName} {$reservation->LastName}</td>
-		<td>{$reservation->ResourceName}</td>
-		<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
-		<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
-		<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
-		<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
-		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
+		<td class="id">{$blackout->InstanceId}</td>
+		<td>{$blackout->ResourceName}</td>
+		<td>{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
+		<td>{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
+		<td>{$blackout->FirstName} {$blackout->LastName}</td>
 		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 		<td align="center">
-			{if $reservation->RequiresApproval}
-				<a href="#" class="update approve">{html_image src='tick-button.png'}</a>
-			{else}
-				-
-			{/if}
+			Edit
 		</td>
 	</tr>
 	{/foreach}
@@ -141,13 +152,11 @@
 <script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.timePicker.min.js"></script>
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/reservations.js"></script>
 
-<script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
-<script type="text/javascript" src="{$Path}scripts/reservationPopup.js"></script>
-<script type="text/javascript" src="{$Path}scripts/approval.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -160,40 +169,31 @@ $(document).ready(function() {
 	var actions = {};
 		
 	var resOpts = {
-		autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
 		reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
-		popupUrl: "{$Path}ajax/respopup.php",
 		updateScope: updateScope,
 		actions: actions,
 		deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json'
 	};
 
-	var approvalOpts = {
-		url: '{$Path}ajax/reservation_approve.php'
-	};
-	
-	var approval = new Approval(approvalOpts);
-		
-	var reservationManagement = new ReservationManagement(resOpts, approval);
-	reservationManagement.init();
+	//var reservationManagement = new ReservationManagement(resOpts, approval);
+	//reservationManagement.init();
 
-	{foreach from=$reservations item=reservation}
-
-		reservationManagement.addReservation(
-			{
-				referenceNumber: '{$reservation->ReferenceNumber}',
-				isRecurring: '{$reservation->IsRecurring}'
-			}
-		);
-	{/foreach}
+	$('#addStartTime').timePicker({
+		show24Hours: false
+	});
+	$('#addEndTime').timePicker({
+		show24Hours: false
+	});
 });
 </script>
 
 {control type="DatePickerSetupControl" ControlId="startDate"}
 {control type="DatePickerSetupControl" ControlId="endDate"}
+{control type="DatePickerSetupControl" ControlId="addStartDate"}
+{control type="DatePickerSetupControl" ControlId="addEndDate"}
 
 <div id="approveDiv" style="display:none;text-align:center; top:15%;position:relative;">
-<h3>Approving...</h3>
+<h3>Creating...</h3>
 {html_image src="reservation_submitting.gif"}
 </div>
 {include file='globalfooter.tpl'}

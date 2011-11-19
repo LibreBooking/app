@@ -6,6 +6,7 @@ require_once(ROOT_DIR . 'Domain/RepeatOptions.php');
 interface IReservationViewRepository
 {
 	/**
+	 * @abstract
 	 * @var $referenceNumber string
 	 * @return ReservationView
 	 */
@@ -30,6 +31,7 @@ interface IReservationViewRepository
 		$resourceId = ReservationViewRepository::ALL_RESOURCES);
 
 	/**
+	 * @abstract
 	 * @param int $pageNumber
 	 * @param int $pageSize
 	 * @param string $sortField
@@ -40,11 +42,22 @@ interface IReservationViewRepository
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
 	/**
+	 * @abstract
 	 * @param DateRange $dateRange
 	 * @return BlackoutItemView[]
 	 */
 	public function GetBlackoutsWithin(DateRange $dateRange);
 
+	/**
+	 * @abstract
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param null|string $sortField
+	 * @param null|string $sortDirection
+	 * @param null|ISqlFilter $filter
+	 * @return PageableData|BlackoutItemView[]
+	 */
+	public function GetBlackoutList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
 	/**
 	 * @abstract
@@ -146,14 +159,6 @@ class ReservationViewRepository implements IReservationViewRepository
 		return $reservations;
 	}
 
-	/**
-	 * @param int $pageNumber
-	 * @param int $pageSize
-	 * @param null|string $sortField
-	 * @param null|string $sortDirection
-	 * @param null|ISqlFilter $filter
-	 * @return PageableData|ReservationItemView[]
-	 */
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
 	{
 		$command = new GetFullReservationListCommand();
@@ -223,10 +228,6 @@ class ReservationViewRepository implements IReservationViewRepository
 		}
 	}
 
-	/**
-	 * @param DateRange $dateRange
-	 * @return array|AccessoryReservation[]
-	 */
 	public function GetAccessoriesWithin(DateRange $dateRange)
 	{
 		$getAccessoriesCommand = new GetAccessoryListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
@@ -249,10 +250,6 @@ class ReservationViewRepository implements IReservationViewRepository
 		return $accessories;
 	}
 
-	/**
-	 * @param DateRange $dateRange
-	 * @return BlackoutItemView[]
-	 */
 	public function GetBlackoutsWithin(DateRange $dateRange)
 	{
 		$getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
@@ -262,25 +259,25 @@ class ReservationViewRepository implements IReservationViewRepository
 		$blackouts = array();
 		while ($row = $result->GetRow())
 		{
-			$blackouts[] = new BlackoutItemView(
-				$row[ColumnNames::BLACKOUT_INSTANCE_ID],
-				Date::FromDatabase($row[ColumnNames::BLACKOUT_START]),
-				Date::FromDatabase($row[ColumnNames::BLACKOUT_END]),
-				$row[ColumnNames::RESOURCE_ID],
-				$row[ColumnNames::USER_ID],
-				$row[ColumnNames::SCHEDULE_ID],
-				$row[ColumnNames::BLACKOUT_TITLE],
-				$row[ColumnNames::BLACKOUT_DESCRIPTION],
-				$row[ColumnNames::FIRST_NAME],
-				$row[ColumnNames::LAST_NAME],
-				$row[ColumnNames::RESOURCE_NAME],
-				$row[ColumnNames::BLACKOUT_SERIES_ID]
-			);
+			$blackouts[] = BlackoutItemView::Populate($row);
 		}
 
 		$result->Free();
 
 		return $blackouts;
+	}
+
+	public function GetBlackoutList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+	{
+		$command = new GetBlackoutListFullCommand();
+
+		if ($filter != null)
+		{
+			$command = new FilterCommand($command, $filter);
+		}
+
+		$builder = array('BlackoutItemView', 'Populate');
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 }
 
@@ -806,6 +803,27 @@ class BlackoutItemView
 		$this->LastName = $lastName;
 		$this->ResourceName = $resourceName;
 		$this->SeriesId = $seriesId;
+	}
+
+	/**
+	 * @static
+	 * @param $row
+	 * @return BlackoutItemView
+	 */
+	public static function Populate($row)
+	{
+		return new BlackoutItemView($row[ColumnNames::BLACKOUT_INSTANCE_ID],
+				Date::FromDatabase($row[ColumnNames::BLACKOUT_START]),
+				Date::FromDatabase($row[ColumnNames::BLACKOUT_END]),
+				$row[ColumnNames::RESOURCE_ID],
+				$row[ColumnNames::USER_ID],
+				$row[ColumnNames::SCHEDULE_ID],
+				$row[ColumnNames::BLACKOUT_TITLE],
+				$row[ColumnNames::BLACKOUT_DESCRIPTION],
+				$row[ColumnNames::FIRST_NAME],
+				$row[ColumnNames::LAST_NAME],
+				$row[ColumnNames::RESOURCE_NAME],
+				$row[ColumnNames::BLACKOUT_SERIES_ID]);
 	}
 }
 

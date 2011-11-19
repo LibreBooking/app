@@ -126,10 +126,6 @@ function ResourceManagement(opts)
 				var m = $('#' + id + 'Minutes').val();
 				$(this).val(d + 'd' + h + 'h' + m + 'm');
 			});
-//			var d = $('#endNoticeDays').val();
-//			var h = $('#endNoticeHours').val();
-//			var m = $('#endNoticeMinutes').val();
-
 		};
 		
 		var errorHandler = function(result) { $("#globalError").html(result).show(); };

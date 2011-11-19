@@ -10,7 +10,6 @@ class DatePickerSetupControl extends Control
 	
 	public function PageLoad()
 	{
-		$this->SetDefault('DefaultDate', Date::Now());
 		$this->SetDefault('NumberOfMonths', 1);
 		$this->SetDefault('ShowButtonPanel', 'false');
 		$this->SetDefault('OnSelect', sprintf("function() { $('#%s').trigger('change'); }", $this->Get("ControlId")));		

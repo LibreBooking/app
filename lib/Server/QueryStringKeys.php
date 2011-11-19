@@ -9,6 +9,7 @@ class QueryStringKeys
 	const ACTION = 'action';
 	const AUTOCOMPLETE_TERM = 'term';
 	const AUTOCOMPLETE_TYPE = 'type';
+	const BLACKOUT_ID = 'bid';
 	const CALENDAR_TYPE = 'ct';
 	const DATA_REQUEST = 'dr';
 	const DAY = 'd';

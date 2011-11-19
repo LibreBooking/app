@@ -265,6 +265,7 @@ class en_us extends Language
 		$strings['ManageUsers'] = 'Users';
 		$strings['ManageGroups'] = 'Groups';
 		$strings['ManageQuotas'] = 'Quotas';
+		$strings['ManageBlackouts'] = 'Blackout Times';
 		$strings['MyDashboard'] = 'My Dashboard';
 		$strings['ServerSettings'] = 'Server Settings';
 		$strings['Dashboard'] = 'Dashboard';

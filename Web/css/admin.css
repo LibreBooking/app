@@ -59,7 +59,7 @@ span.error {
 }
 
 #changeLayoutDialog p {
-	margin: 0px;
+	margin: 0;
 }
 
 .scheduleDetails .layout {
@@ -162,3 +162,6 @@ tr.pending {
 #cboxClose {
 	display:none !important;
 }
+
+.wideLabel { display:inline-block; width: 100px;}
+

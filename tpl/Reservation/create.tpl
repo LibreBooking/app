@@ -70,7 +70,7 @@
 				</select>
 			</li>
 			<li>
-				<label>{translate key='EndDate'}
+				<label for="EndDate">{translate key='EndDate'}
 					<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput"
 						   value="{formatdate date=$EndDate}"/>
 				</label>
@@ -208,12 +208,12 @@
 	<div style="float:right;">
 	{block name="submitButtons"}
 		<button type="button" class="button save create">
-			<img src="img/tick-circle.png"/>
+			{html_image src="tick-circle.png"}
 			{translate key='Create'}
 		</button>
 	{/block}
 		<button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
-			<img src="img/slash.png"/>
+			{html_image src="slash.png"}
 		{translate key='Cancel'}
 		</button>
 	</div>

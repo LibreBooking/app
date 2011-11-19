@@ -359,9 +359,16 @@ class Queries
 				(bi.end_date >= @startDate AND bi.end_date <= @endDate)
 				OR
 				(bi.start_date <= @startDate AND bi.end_date >= @endDate)
-			) AND
-		ORDER BY
-			bi.start_date ASC';
+			)
+		ORDER BY bi.start_date ASC';
+
+	const GET_BLACKOUT_LIST_FULL =
+		'SELECT *
+		FROM blackout_instances bi
+		INNER JOIN blackout_series bs ON bi.blackout_series_id = bs.blackout_series_id
+		INNER JOIN resources r on bs.resource_id = r.resource_id
+		INNER JOIN users u ON u.user_id = bs.owner_id
+		ORDER BY bi.start_date ASC';
 	
 	const GET_DASHBOARD_ANNOUNCEMENTS =
 		'SELECT announcement_text 
