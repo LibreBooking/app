@@ -531,4 +531,3 @@ CREATE TABLE `reservation_accessories` (
 	REFERENCES reservation_series(`series_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-

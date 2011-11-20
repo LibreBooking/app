@@ -1,11 +1,11 @@
 <html>
     <head>
         <title>phpScheduleIt 2.0</title>
-        
+
         <!--**section**-->
-        
+
         <style type="text/css">
-            
+
             h2 {
                 border: solid 1px #666;
                 background-color: #f0f0f0;
@@ -16,7 +16,7 @@
             h3 {
                 border-bottom: solid 1px #999;
             }
-            
+
             h4 {
                 border: solid 1px #666;
                 background-color: #f0f0f0;
@@ -26,17 +26,17 @@
 
         </style>
     </head>
-    
+
     <!--**section**-->
-    
+
     <body>
         <h1>Welcome to phpScheduleIt 2.0! (A quick installation).</h1>
-        
+
         <!--**section**-->
 
         <h2 style="font-style:italic; color:red;">This is a pre-release version of phpScheduleIt. It will certainly contain bugs
             and is not yet suitable for production use.</h2>
-        
+
         <!--**section**-->
 
         <h2>Prerequisites</h2>
@@ -46,13 +46,12 @@
             <li>Web server (e.g Apache2, etc...).</li>
             <li>OS - Windows, Mac, Unix-like were tested.</li>
         </ul>
-            <p STYLE="color:red">
-            (Note for users without web host service). If you want to accomplish all of the above quick and easy? 
-            try this apachefriends.org, it will do it for you in no time (recommended).
-            </p>
-            - http://www.apachefriends.org/en/index.html <span STYLE="color:red">(highly recommended).</span> Or <br/>
-            - http://netbeans.org/kb/docs/php/configure-php-environment-windows.html.
-        
+        <p STYLE="color:red">
+            Note: for users without web host service. If you want to accomplish all of the above quick and easy? 
+            try this apachefriends.org, it will do it for you in no time. <a href="http://www.apachefriends.org/en/index.html">XAMMP</a> 
+            <span STYLE="color:red">(highly recommended).</span>
+        </p>
+
         <!--**section**-->
 
         <h2>Server Deployment</h2>
@@ -61,47 +60,59 @@
             <ul>
                 <li>Untar or unzip the distribution in your webserver's document root.</li>
                 <li>If you don't have direct access to your document root and use hosting service, 
-                    put the files in a directory on your local machine, and transfer the directory on your web server using, for example, ftp.</li>
+                    put the files in a directory on your local machine, 
+                    and transfer the directory on your web server using, for example, ftp or <a href="http://sourceforge.net/projects/winscp/">WinSCP</a>.</li>
                 <li>Note: Some may have directory permission issues. Contact support below or contact your hosting service to resolve.</li>
             </ul>
         </div>
-        
+
         <!--**section**-->
 
         <h2>Application Configuration</h2>
 
         <div>
-            You can configure phpScheduleIt to fit your environments and needs or use the minimal default settings.
+            You can configure phpScheduleIt to fit your environments and needs or use the minimal default settings which is enough for the application to work.
             <ul>
-                <li>You can use the minimal default pre-configuration. To allow resource image uploads, the web-server account requires read/write 
-                    access to your configured uploads directory ($conf['settings']['image.upload.directory']), or you may leave it empty.</li>
-                <li>Or you can open config/config.php and alter any settings that do not match your environment.</li>
+                <li>In addition, to allow resource image uploads, the web-server account requires read/write 
+                    access to your configured uploads directory ($conf['settings']['image.upload.directory']).</li>
+                <li>To customize, you can open /config/config.php and alter the settings to your environment.</li>
             </ul>
+            Note: If you try to load the application at this time (eg. http://yourhostname/phpScheduleIt/Web/), you will probably get a white page. 
+            Because there is no backend database configured yet.
         </div>
-        
+
         <!--**section**-->
-        
+
         <h2>Database Setup</h2>
-        You have 2 ways to set up your database for the application to work. 
+        You have 2 ways to set up your database for the application to work.
 
         <h3>1) Automated</h3>
 
+        <div>The packaged database scripts make assumptions about your desired database configuration and set default values. 
+            Please edit them to suit your environment before running located phpScheduleIt/database_schema/.</div>
+
         <div>
-            The automated database setup only supports MySQL at this time. To run the automated database setup, navigate to the
-            /Web/install directory in a web browser and follow the on screen instructions.
+            <ul>
+                <li>The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl 
+                    <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(why?)</a></li>
+                <li>The automated database setup only supports MySQL at this time. To run the automated database setup, navigate to the
+                    /Web/install directory in a web browser and follow the on screen instructions.</li>
+            </ul>
         </div>
-        
-        <!--**section**--> <br/>OR<br/>
+
+        <!--**section**--> OR<br/>
 
         <h3>2) Manual</h3>
 
         <div>
-            The packaged database scripts make assumptions about your desired database configuration. Please edit them to suit
-            your environment before running. Run the following scripts in order (recommending phpmyadmin interface http://www.phpmyadmin.net/documentation/):
+            The packaged database scripts make assumptions about your desired database configuration and set default values. 
+            Please edit them to suit your environment before running located phpScheduleIt/database_schema/. 
+            Import the following sql files in the listed order (recommending <a href="http://www.phpmyadmin.net/documentation/">phpmyadmin interface</a>):
         </div>
         <div>
             <ul>
-                <li>The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(why?)</a></li>
+                <li>The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl 
+                    <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(why?)</a></li>
                 <li>import "/database_schema/create-db.sql" to mysql db (phpscheduleit2 db created)</li>
                 <li>import "/database_schema/schema-utf8.sql" to phpscheduleit2 (db schema created)</li>
                 <li>import "/database_schema/create-user.sql" to mysql db (schedule_user/password mysql account created to match to your default configuration
@@ -122,12 +133,12 @@
         <ul>
             <li>Aforementioned if you imported a sample application data, you now can use 1) admin/password and 2) nkorbel/password to login and make changes from the application.</li>
             <li>Or you will need to register an account with your configured admin email address. This is specified in the following
-            config.php setting: $conf['settings']['admin.email']<br/>
-            For the email registration process to work - this means it will send you and email with account login information.
-            You need to make sure your email server is working and the application configured, look for smtp.* parameters,
-            and fill them in properly. Examples are shown next the parameters.</li>
+                config.php setting: $conf['settings']['admin.email']<br/>
+                For the email registration process to work - this means it will send you an email with account login information.
+                You need to make sure your email server is working and the application is configured. Look for smtp.* parameters,
+                and fill them in properly. Examples are shown next the parameters.</li>
         </ul>
-        
+
         <!--**section**-->
 
         <h4>Log Files</h4>
@@ -139,19 +150,19 @@
             <li>Logging is configured in /config/log4php.config.xml</li>
             <li>Logging is controlled by changing the &lt;level&gt; of each &lt;logger&gt;</li>
             <li>Levels used by phpScheduleIt are OFF, DEBUG, ERROR.  For normal operation, ERROR is appropriate.  If trace logs are needed, DEBUG is appropriate.</li>
-            <li>To turn on application logging, change the &lt;level value=&quot;OFF&quot; /&gt; to an appropriate level for either the default or sql loggers.  For example, &lt;level value=&quot;ERROR&quot; /&gt;</li>
-            <li>For more information on logging configuration, visit http://logging.apache.org/log4php/</li>
+            <li>To turn on application logging, change the &lt;level value=&quot;OFF&quot; /&gt; to an appropriate level for either the default or sql loggers.  
+                For example, &lt;level value=&quot;ERROR&quot; /&gt;</li>
+            <li>For more information on logging configuration, visit <a href="http://logging.apache.org/log4php/">Log4Php</a></li>
         </ul>
-        
+
         <!--**section**-->
-        
+
         <h4>Support</h4>
 
         <div>
-            Post any questions or issues under the phpScheduleIt 2.0 section of the forums on <a
-                href="http://php.brickhost.com/forums">http://php.brickhost.com/forums</a>
+            Post any questions or issues under the phpScheduleIt 2.0 section of the forums on 
+            <a href="http://php.brickhost.com/forums">http://php.brickhost.com/forums</a>
         </div>
-
 
     </body>
 </html>
