@@ -77,7 +77,11 @@
             <ul>
                 <li>In addition, to allow resource image uploads, the web-server must also have read/write 
                     access to your configurable uploads directory of "$conf['settings']['image.upload.directory']" in the config.php.</li>
-                <li>To configure, you can open /config/config.php and alter any settings accordingly.</li>
+                <li>To configure the system, you can open /config/config.php and alter any settings accordingly. 
+                    The admin email address can be set in the phpScheduleIt/config/config.php file of setting $conf['settings']['admin.email'].<br/> 
+                When later register an account with admin email address the user will be given admin privilege.</li>
+                <li>An alternative  to the default email authentication method is <span STYLE="color:red">LDAP (this is optional)</span>. To configure LDAP authentication, you can open /config/config.php and alter any settings accordingly. 
+                Examples are shown next to the parameters.</li>
             </ul>
             Note: If you try to load the application at this time (eg. http://yourhostname/phpScheduleIt/Web/), you will probably get a white page. 
             This is because there is no backend database configured yet. So continue on ...
@@ -98,7 +102,7 @@
                 <li>The automated database setup only supports MySQL at this time. To run the automated database setup, navigate to the
                     /Web/install directory in a web browser and follow the on-screen instructions.</li>
                 <li>Note: Some may see directory permission issues displayed on the page. Recall that 
-                    (The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl). If you cannot provide the required permission. 
+                    (The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl). If you cannot provide the required permission. <br/>
                     Contact your web server administrator or hosting service to resolve.</li>
             </ul>
         </div>
@@ -139,12 +143,17 @@
         <div>There are 2 main types of account, they are admin and user account.</div>
 
         <ul>
-            <li>Aforementioned if you imported a sample application data, you now can use 1) admin/password and 2) nkorbel/password to login and make changes via the application.</li>
-            <li>Or you will need to register an account with your configured admin email address. This is specified in the following
-                config.php setting: $conf['settings']['admin.email'].<br/>
-                For the email registration process to work - this means it will send you an email with account login information.
-                You need to make sure your email server is working and the application is configured. Look for smtp.* parameters,
-                and fill them in properly. Examples are shown next to the parameters.</li>
+            <li>Aforementioned if you imported a sample application data, you now can use 1) admin/password and 2) nkorbel/password to login and make changes or addition via the application.</li>
+            <li>Or you will need to register for an account with your configured admin email address. The admin email address can be set in the 
+                phpScheduleIt/config/config.php file of setting $conf['settings']['admin.email']. Other self registration accounts are defaulted to normal users.<br/>
+                
+                After a shelf registration, you will be logged in automatically. <span STYLE="color:red">Important!</span> At this time, you are recommended to change your password immediately. 
+                Because in the case your mail server fails to send you your login information you have already changed the password. Notice that an email address is required 
+                to register for an account.</li>          
+            <li>For the email registration process to work (it will send you an email with account login information).
+                You need to make sure your email server is working and the application is configured correctly. Look for smtp.* parameters in phpScheduleIt/config/config.php,
+                and fill them in with your mail server information. Examples are shown next to the parameters.</li>
+            <li>For LDAP authentication please login with your LDAP username/password.</li>
         </ul>
 
         <!--**section**-->
