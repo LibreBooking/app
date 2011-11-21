@@ -80,8 +80,8 @@
                 <li>To configure the application, you can open /config/config.php and alter any settings accordingly. 
                     The admin email address can be set in the phpScheduleIt/config/config.php file of setting $conf['settings']['admin.email'].<br/> 
                 When later register an account with admin email address the user will be given admin privilege.</li>
-                <li>An alternative  to the default email authentication method is <span STYLE="color:red">LDAP (this is optional)</span>. To configure LDAP authentication, you can open /config/config.php and alter any settings accordingly. 
-                Examples are shown next to the parameters.</li>
+                <li>In addition to the default email authentication method is <span STYLE="color:red">LDAP</span> (a system can have both, email authentication will fail over to LDAP as a secondary). 
+                    <br/>To configure LDAP authentication, you can open /config/config.php and alter any settings accordingly. Examples are shown next to the parameters.</li>
             </ul>
             Note: If you try to load the application at this time (eg. http://yourhostname/phpScheduleIt/Web/), you will probably get a white page. 
             This is because there is no backend database configured yet. So continue on ...
