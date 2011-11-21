@@ -34,6 +34,14 @@
 					<label for="blackoutReason" class="wideLabel">Reason</label>
 					<input type="text" id="blackoutReason" class="textbox" size="100" maxlength="85"/>
 				</li>
+				<li>
+
+					<input type="radio" id="notifyExisting" name="existingReservations" checked="checked" />
+					<label for="notifyExisting">Show me conflicting reservations</label>
+
+					<input type="radio" id="deleteExisting" name="existingReservations" />
+					<label for="deleteExisting">Delete conflicting reservations</label>
+				</li>
 				<li style="margin-top:15px; padding-top:15px; border-top: solid 1px #ededed;">
 					<button type="button" class="button save create">
 						{html_image src="tick-circle.png"} {translate key='Create'}
@@ -175,6 +183,18 @@ $(document).ready(function() {
 		deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json'
 	};
 
+	$('#allResources').change(function(){
+		if ($(this).is(':checked'))
+		{
+			$('#addResourceId').attr('disabled', 'disabled');
+			$('#addScheduleId').removeAttr('disabled');
+		}
+		else
+		{
+			$('#addScheduleId').attr('disabled', 'disabled');
+			$('#addResourceId').removeAttr('disabled');
+		}
+	});
 	//var reservationManagement = new ReservationManagement(resOpts, approval);
 	//reservationManagement.init();
 
