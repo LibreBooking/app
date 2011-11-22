@@ -28,7 +28,7 @@ $conf['settings']['phpmailer']['smtp.password'] = '';   // 'password'
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // from root directory, ie public_html/phpscheduleit/Web/uploads/images should be set to Web/uploads/images
 $conf['settings']['image.upload.url'] = 'uploads/images';   // from script.url
 $conf['settings']['cache.templates'] = 'true';
-$conf['settings']['plugins']['Authentication'] = 'Ldap'; // $conf['settings']['plugins']['Authentication'] = 'Ldap';
+$conf['settings']['plugins']['Authentication'] = ''; // $conf['settings']['plugins']['Authentication'] = 'Ldap';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';
 $conf['settings']['install.password'] = 'mypass'; // any password
