@@ -62,7 +62,7 @@
                 <li>Untar or unzip the archived distribution to your webserver's document root. Or</li>
                 <li>If you don't have direct access to your document root or use hosting service, 
                     then transfer the extracted directory to your web server's document root using, for example, ftp or <a href="http://sourceforge.net/projects/winscp/">WinSCP</a>.</li>
-                <li><span STYLE="color:red">Important!</span> The web server <span STYLE="color:red">must</span> have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl 
+                <li><span STYLE="color:red">Important!</span> The web server <span STYLE="color:red">must</span> have write access (0770) to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl 
                     <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(want to know why?).</a></li>
             </ul>
         </div>
@@ -163,13 +163,13 @@
         By default, logging is turned OFF.
         <ul>
             <li>First, rename /config/log4php.config.dist.xml to /config/log4php.config.xml</li>
-            <li>To allow application logging, the PHP account requires read/write access to your configured log directory
+            <li>To allow application logging, the PHP account requires write access (0770) to your configured log directory
             <li>Logging is configured in /config/log4php.config.xml</li>
             <li>Logging is controlled by changing the &lt;level&gt; of each &lt;logger&gt;</li>
             <li>Levels used by phpScheduleIt are OFF, DEBUG, ERROR.  For normal operation, ERROR is appropriate.  If trace logs are needed, DEBUG is appropriate.</li>
             <li>To turn on application logging, change the &lt;level value=&quot;OFF&quot; /&gt; to an appropriate level for either the default or sql loggers.  
                 For example, &lt;level value=&quot;ERROR&quot; /&gt;</li>
-            <li>For more information on logging configuration, visit <a href="http://logging.apache.org/log4php/">Log4Php</a></li>
+            <li>For more information on logging configuration, visit <a href="http://logging.apache.org/log4php/">log4php</a></li>
         </ul>
 
         <!--**section**-->

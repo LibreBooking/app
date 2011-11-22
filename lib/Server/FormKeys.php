@@ -14,7 +14,10 @@ class FormKeys
 
 	const BEGIN_DATE = 'beginDate';
 	const BEGIN_PERIOD = 'beginPeriod';
+	const BEGIN_TIME = 'beginTime';
+	const BLACKOUT_APPLY_TO_SCHEDULE = 'applyToSchedule';
 
+	const CONFLICT_ACTION = 'conflictAction';
 	const CONTACT_INFO = 'contactInfo';
 	const CURRENT_PASSWORD = 'currentPassword';
 
@@ -26,6 +29,7 @@ class FormKeys
 	const END_DATE = 'endDate';
 	const END_PERIOD = 'endPeriod';
 	const END_REPEAT_DATE = 'endRepeatDate';
+	const END_TIME = 'endTime';
 
 	const FIRST_NAME = 'fname';
 

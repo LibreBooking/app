@@ -66,18 +66,7 @@
 				<include name="**/*"/>
 			</fileset>
 		</zip>
-		<!--
-		<tar destFile="${zipdirectory}/${packagename}.tar">
-			<fileset dir="${staging}">
-				<include name="**/*"/>
-			</fileset>
-		</tar>
-		<tar destFile="${zipdirectory}/${packagename}.tar.gz" compression="gzip">
-			<fileset dir="${staging}">
-				<include name="**/*"/>
-			</fileset>
-		</tar>
-		-->
+		
 		<delete dir="${archive_directory}" failonerror="false"/>
 		<mkdir dir="${archive_directory}"/>
 
@@ -120,7 +109,7 @@
 		</copy>
 	</target>
 
-	<target name="create.demo" depends="stage.files">
+	<target name="create.demo" depends="package">
 
 	</target>
 
