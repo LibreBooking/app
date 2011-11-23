@@ -456,5 +456,28 @@ class DateTests extends TestBase
 		$this->assertEquals((25*60*60), $diff3->TotalSeconds());
 	}
 
+	public function testDateRangeOverlapsIfStartsWithinOrEndsWithin()
+	{
+		$dr1 = DateRange::Create('2011-01-01 12:00:00', '2011-01-02 11:00:00', 'UTC');
+		$dr2 = DateRange::Create('2011-01-01 12:00:00', '2011-01-02 10:00:00', 'UTC');
+
+		$this->assertTrue($dr1->Overlaps($dr2));
+	}
+
+	public function testDateRangeOverlapsIfStartsAndEndsExactlyTheSameTimes()
+	{
+		$dr1 = DateRange::Create('2011-01-01 12:00:00', '2011-01-02 11:00:00', 'UTC');
+		$dr2 = DateRange::Create('2011-01-01 12:00:00', '2011-01-02 11:00:00', 'UTC');
+
+		$this->assertTrue($dr1->Overlaps($dr2));
+	}
+
+	public function testDateRangeDoesNotOverlapIfStartsAtEnd()
+	{
+		$dr1 = DateRange::Create('2011-01-01 12:00:00', '2011-01-02 11:00:00', 'UTC');
+		$dr2 = DateRange::Create('2011-01-02 11:00:00', '2011-01-04 10:00:00', 'UTC');
+
+		$this->assertFalse($dr1->Overlaps($dr2));
+	}
 }
 ?>

@@ -481,6 +481,11 @@ class ReservationItemView
 	 * @var Date
 	 */
 	public $EndDate;
+
+	/**
+	 * @var DateRange
+	 */
+	public $Date;
 	
 	/**
 	 * @var string
@@ -590,6 +595,11 @@ class ReservationItemView
 		$this->FirstName = $userFirstName;
 		$this->LastName = $userLastName;
 		$this->UserId = $userId;
+
+		if (!is_null($startDate) && !is_null($endDate))
+		{
+			$this->Date = new DateRange($startDate, $endDate);
+		}
 	}
 
 	/**
@@ -714,6 +724,11 @@ class BlackoutItemView
 	public $EndDate;
 
 	/**
+	 * @var DateRange
+	 */
+	public $Date;
+
+	/**
 	 * @var int
 	 */
 	public $ResourceId;
@@ -803,6 +818,7 @@ class BlackoutItemView
 		$this->LastName = $lastName;
 		$this->ResourceName = $resourceName;
 		$this->SeriesId = $seriesId;
+		$this->Date = new DateRange($startDate, $endDate);
 	}
 
 	/**

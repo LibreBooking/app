@@ -54,7 +54,7 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$endDate = $this->GetDate($endDateString, $userTimezone, 7);
 		$scheduleId = $this->page->GetScheduleId();
 		$resourceId = $this->page->GetResourceId();
-		
+
 		$this->page->SetStartDate($startDate);
 		$this->page->SetEndDate($endDate);
 		$this->page->SetScheduleId($scheduleId);
@@ -63,9 +63,9 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$filter = new BlackoutFilter($startDate, $endDate, $scheduleId, $resourceId);
 
 		$blackouts = $this->manageBlackoutsService->LoadFiltered($this->page->GetPageNumber(),
-																	   $this->page->GetPageSize(),
-																	   $filter,
-																	   $session);
+																 $this->page->GetPageSize(),
+																 $filter,
+																 $session);
 
 		$this->page->BindBlackouts($blackouts->Results());
 		$this->page->BindPageInfo($blackouts->PageInfo());
@@ -76,8 +76,7 @@ class ManageBlackoutsPresenter extends ActionPresenter
 	private function GetDate($dateString, $timezone, $defaultDays)
 	{
 		$date = null;
-		if (is_null($dateString))
-		{
+		if (is_null($dateString)) {
 			$date = Date::Now()->AddDays($defaultDays)->ToTimezone($timezone)->GetDate();
 
 		}
@@ -92,11 +91,16 @@ class ManageBlackoutsPresenter extends ActionPresenter
 	public function AddBlackout()
 	{
 		$session = ServiceLocator::GetServer()->GetUserSession();
-		
+
 		$resourceIds = array();
 		if ($this->page->GetApplyBlackoutToAllResources())
 		{
-			 $this->page->GetBlackoutScheduleId();
+			$scheduleId = $this->page->GetBlackoutScheduleId();
+			$resources = $this->resourceRepository->GetScheduleResources($scheduleId);
+			foreach ($resources as $resource)
+			{
+				$resourceIds[] = $resource->GetId();
+			}
 		}
 		else
 		{

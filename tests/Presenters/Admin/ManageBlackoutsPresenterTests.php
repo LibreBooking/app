@@ -123,6 +123,42 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$this->presenter->AddBlackout();
 	}
 
+	public function testAddsNewBlackoutTimeForSchedule()
+	{
+		$startDate = '1/1/2011';
+		$endDate = '1/2/2011';
+		$startTime = '01:30 PM';
+		$endTime = '12:15 AM';
+		$timezone = $this->fakeUser->Timezone;
+		$dr = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
+		$title = 'out of service';
+		$conflictAction = ReservationConflictResolution::Delete;
+		$conflictResolution = ReservationConflictResolution::Create($conflictAction);
+
+		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
+
+		$scheduleId = 123;
+		$this->page->expects($this->once())
+			->method('GetBlackoutScheduleId')
+			->will($this->returnValue($scheduleId));
+
+		$this->page->expects($this->once())
+			->method('GetApplyBlackoutToAllResources')
+			->will($this->returnValue(true));
+
+		$resources = array(new FakeBookableResource(1), new FakeBookableResource(2), new FakeBookableResource(3));
+		$this->resourceRepository->expects($this->once())
+			->method('GetScheduleResources')
+			->with($this->equalTo($scheduleId))
+			->will($this->returnValue($resources));
+
+		$this->blackoutsService->expects($this->once())
+			->method('Add')
+			->with($this->equalTo($dr), $this->equalTo(array(1, 2, 3)), $this->equalTo($title), $this->equalTo($conflictResolution));
+
+		$this->presenter->AddBlackout();
+	}
+
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate

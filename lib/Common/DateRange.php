@@ -51,6 +51,18 @@ class DateRange
 	}
 
 	/**
+	 * @param DateRange $dateRange
+	 * @return bool
+	 */
+	public function Overlaps(DateRange $dateRange)
+	{
+		return ($this->Contains($dateRange->GetBegin()) || $this->Contains($dateRange->GetEnd()) ||
+				$dateRange->Contains($this->GetBegin()) || $dateRange->Contains($this->GetEnd())) &&
+				(!$this->GetBegin()->Equals($dateRange->GetEnd()) && !$this->GetEnd()->Equals($dateRange->GetBegin()));
+
+	}
+
+	/**
 	 * @return Date
 	 */
 	public function GetBegin()

@@ -14,4 +14,5 @@ require_once(ROOT_DIR . 'Domain/Access/ReservationViewRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/GroupRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/QuotaRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/AccessoryRepository.php');
+require_once(ROOT_DIR . 'Domain/Access/BlackoutRepository.php');
 ?>

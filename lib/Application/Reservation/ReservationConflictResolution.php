@@ -2,10 +2,15 @@
 
 interface IReservationConflictResolution
 {
-	
+	/**
+	 * @abstract
+	 * @param ReservationItemView $existingReservation
+	 * @return bool
+	 */
+	public function Handle(ReservationItemView $existingReservation);
 }
 
-class ReservationConflictResolution implements IReservationConflictResolution
+abstract class ReservationConflictResolution implements IReservationConflictResolution
 {
 	const Delete = 'delete';
 	const Notify = 'notify';
@@ -21,7 +26,31 @@ class ReservationConflictResolution implements IReservationConflictResolution
 	 */
 	public static function Create($resolutionType)
 	{
-		return new ReservationConflictResolution();
+		return new ReservationConflictNotify();
+	}
+}
+
+class ReservationConflictNotify extends ReservationConflictResolution
+{
+	/**
+	 * @param ReservationItemView $existingReservation
+	 * @return bool
+	 */
+	public function Handle(ReservationItemView $existingReservation)
+	{
+		return false;
+	}
+}
+
+class ReservationConflictDelete extends ReservationConflictResolution
+{
+	/**
+	 * @param ReservationItemView $existingReservation
+	 * @return bool
+	 */
+	public function Handle(ReservationItemView $existingReservation)
+	{
+		return false;
 	}
 }
 ?>

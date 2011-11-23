@@ -154,12 +154,13 @@ class TestReservationItemView extends ReservationItemView
 	 * @param Date $endDate
 	 * @param int $resourceId
 	 */
-	public function __construct($id, $startDate, $endDate, $resourceId = 1)
+	public function __construct($id, Date $startDate, Date $endDate, $resourceId = 1)
 	{
 		$this->ReservationId = $id;
 		$this->StartDate = $startDate;
 		$this->EndDate = $endDate;
 		$this->ResourceId = $resourceId;
+		$this->Date = new DateRange($startDate, $endDate);
 	}
 }
 ?>
