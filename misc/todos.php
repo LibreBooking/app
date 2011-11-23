@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This can be compiled in the task list or todos list
  *
  * To do file. It includes users' requests and the nice-to-have things. Things that contribute values to the project

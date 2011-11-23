@@ -3,7 +3,7 @@
 define('ROOT_DIR', '../../');
 $smartyTemplateCacheDir = ROOT_DIR . 'tpl_c';
 
-/*
+/**
  * Checking directory permission
  */
 if (SmartyPermissionsAreOk($smartyTemplateCacheDir)) {
@@ -16,7 +16,7 @@ if (SmartyPermissionsAreOk($smartyTemplateCacheDir)) {
     echo "The permissions are currently set to " . substr(sprintf('%o', fileperms($smartyTemplateCacheDir)), -4);
 }
 
-/*
+/**
  * Determine the permission of given directory
  * @param string $smartyTemplateCacheDir location of tpl_c directory
  * @return bool|string bool when writabe, and string otherwise
