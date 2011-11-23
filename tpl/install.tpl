@@ -1,7 +1,7 @@
 {assign var='DisplayWelcome' value='false'}
 {include file='loginheader.tpl'}
 
-<h1>Install phpScheduleIt (MySQL only)</h1>
+<h1>Install backend database phpScheduleIt (MySQL only)</h1>
 
 <div>
     <form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
@@ -20,7 +20,7 @@
         {if $ShowPasswordPrompt}
             <ul class="no-style">
                 <li>Please provide your installation password.</li>
-                <li>This can be found at $conf['settings']['install.password'] in /config/config.php</li>
+                <li>This can be found at $conf['settings']['install.password'] in /config/config.php.</li>
                 <li>{textbox type="password" name="INSTALL_PASSWORD" class="textbox" size="20"}
                     <button type="submit" name="" class="button" value="submit">Next {html_image src="arrow_large_right.png"} </button>
                 </li>

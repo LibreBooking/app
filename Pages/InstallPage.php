@@ -240,9 +240,8 @@ class InstallPage extends Page implements IInstallPage {
     }
 
     public function PageLoad() {
-        $this->presenter->PageLoad();
-
-        $this->Display('install.tpl');
+        $this->presenter->PageLoad();   // Calling to class InstallPresenter's method
+        $this->Display('install.tpl');  // Calling to class Page's method
     }
 
     public function SetInstallPasswordMissing($isMissing) {
