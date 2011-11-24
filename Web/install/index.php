@@ -8,7 +8,6 @@ $smartyTemplateCacheDir = ROOT_DIR . 'tpl_c';
  */
 if (SmartyPermissionsAreOk($smartyTemplateCacheDir)) {
     require_once(ROOT_DIR . 'Pages/InstallPage.php');
-
     $page = new InstallPage();
     $page->PageLoad();
 } else {

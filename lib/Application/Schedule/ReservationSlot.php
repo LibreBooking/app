@@ -6,22 +6,22 @@ class ReservationSlot implements IReservationSlot
 	 * @var Date
 	 */
 	protected $_begin;
-	
+
 	/**
 	 * @var Date
 	 */
 	protected $_end;
-	
+
 	/**
 	 * @var Date
 	 */
 	protected $_displayDate;
-	
+
 	/**
 	 * @var int
 	 */
 	protected $_periodSpan;
-	
+
 	/**
 	 * @var ReservationItemView
 	 */
@@ -42,7 +42,7 @@ class ReservationSlot implements IReservationSlot
 		$this->_end = $end;
 		$this->_periodSpan = $periodSpan;
 	}
-	
+
 	/**
 	 * @return Time
 	 */
@@ -50,7 +50,7 @@ class ReservationSlot implements IReservationSlot
 	{
 		return $this->_begin->GetTime();
 	}
-	
+
 	/**
 	 * @return Date
 	 */
@@ -58,15 +58,15 @@ class ReservationSlot implements IReservationSlot
 	{
 		return $this->_begin;
 	}
-	
+
 	/**
 	 * @return Time
 	 */
 	public function End()
 	{
-		return $this->_end->GetTime();	
+		return $this->_end->GetTime();
 	}
-	
+
 	/**
 	 * @return Date
 	 */
@@ -74,7 +74,7 @@ class ReservationSlot implements IReservationSlot
 	{
 		return $this->_end;
 	}
-	
+
 	/**
 	 * @return Date
 	 */
@@ -82,7 +82,7 @@ class ReservationSlot implements IReservationSlot
 	{
 		return $this->_displayDate;
 	}
-	
+
 	/**
 	 * @return int
 	 */
@@ -90,17 +90,17 @@ class ReservationSlot implements IReservationSlot
 	{
 		return $this->_periodSpan;
 	}
-	
+
 	public function Label()
 	{
 		return $this->_reservation->FirstName . ' ' . $this->_reservation->LastName;
 	}
-	
+
 	public function IsReservable()
 	{
 		return false;
 	}
-	
+
 	public function IsReserved()
 	{
 		return true;
@@ -110,30 +110,30 @@ class ReservationSlot implements IReservationSlot
 	{
 		return $this->_reservation->RequiresApproval;
 	}
-	
+
 	public function IsPastDate(Date $date)
 	{
 		return $this->_displayDate->SetTime($this->Begin())->LessThan($date);
 	}
-	
+
 	public function ToTimezone($timezone)
 	{
 		return new ReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->EndDate()->ToTimezone($timezone), $this->Date(),  $this->PeriodSpan(), $this->_reservation);
 	}
-	
+
 	public function Id()
-	{ 
+	{
 		return $this->_reservation->ReferenceNumber;
 	}
-	
+
 	public function IsOwnedBy(UserSession $user)
 	{
 		return $this->_reservation->UserId == $user->UserId;
 	}
-	
-	public function __toString() 
+
+	public function __toString()
 	{
-       return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());
+                return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());
   	}
 }
 

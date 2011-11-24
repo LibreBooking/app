@@ -22,7 +22,7 @@
                 <li>Please provide your installation password.</li>
                 <li>This can be found at $conf['settings']['install.password'] in /config/config.php.</li>
                 <li>{textbox type="password" name="INSTALL_PASSWORD" class="textbox" size="20"}
-                    <button type="submit" name="" class="button" value="submit">Next {html_image src="arrow_large_right.png"} </button>
+                    <button type="submit" name="" class="button" value="submit">Next {html_image src="arrow_large_right.png"}</button>
                 </li>
             </ul>
         {/if}

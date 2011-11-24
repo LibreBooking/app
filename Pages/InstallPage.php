@@ -344,6 +344,9 @@ interface IInstallPage {
     public function SetInstallResults($results);
 }
 
+/**
+ * This class supports auto installation pages
+ */
 class InstallPage extends Page implements IInstallPage {
 
     /**
@@ -422,7 +425,7 @@ class InstallPage extends Page implements IInstallPage {
                 $failure = true;
             }
         }
-
+        //
         $this->Set('InstallCompletedSuccessfully', !$failure);
         $this->Set('InstallFailed', $failure);
         $this->Set('installresults', $results);
