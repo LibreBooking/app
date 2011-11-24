@@ -11,7 +11,7 @@
  */
 
 /**
- * Base class with template and variable methodes
+ * Base class with template and variable methods
  */
 class Smarty_Internal_Data {
     // class used for templates
