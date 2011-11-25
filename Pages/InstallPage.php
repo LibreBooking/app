@@ -6,6 +6,9 @@
  */
 require_once(ROOT_DIR . 'Pages/Page.php');
 
+/**
+ * 
+ */
 class InstallationResult {
 
     public $connectionError = false;
@@ -41,6 +44,9 @@ class InstallationResult {
 
 }
 
+/**
+ * 
+ */
 class Installer {
 
     private $user;
@@ -133,6 +139,9 @@ class Installer {
 
 }
 
+/**
+ * 
+ */
 class MySqlScript {
 
     /**
@@ -174,6 +183,9 @@ class MySqlScript {
 
 }
 
+/**
+ * To check configuration and present accordingly
+ */
 class InstallPresenter {
 
     /**
@@ -273,6 +285,9 @@ class InstallPresenter {
 
 }
 
+/**
+ * 
+ */
 interface IInstallPage {
 
     /**
@@ -361,8 +376,8 @@ class InstallPage extends Page implements IInstallPage {
     }
 
     public function PageLoad() {
-        $this->presenter->PageLoad();   // Calling to class InstallPresenter's method
-        $this->Display('install.tpl');  // Calling to class Page's method
+        $this->presenter->PageLoad();   // Calling to class InstallPresenter's method - PageLoad()
+        $this->Display('install.tpl');  // Calling to extended class Page's method - Display('')
     }
 
     public function SetInstallPasswordMissing($isMissing) {
