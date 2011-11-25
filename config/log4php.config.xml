@@ -1,19 +1,23 @@
+<!--
+*   Cofiguring your application logs here. Note: this is not the same as system logs (see webwerver's logs).
+*   The log directory as normally configured to locate here /phpScheduleIt/Logs.
+-->
 <log4php:configuration xmlns:log4php="http://logging.apache.org/log4php/">
-	<appender name="defaultAppender" class="LoggerAppenderDailyFile">
-		<layout class="LoggerLayoutTTCC" />
-		<param name="file" value="../Logs/log_%s.log" />
-		<param name="append" value="true" />
-	</appender>
-	<appender name="sqlAppender" class="LoggerAppenderDailyFile">
-		<layout class="LoggerLayoutTTCC" />
-		<param name="file" value="../Logs/sql_log_%s.log" />
-		<param name="append" value="true" />
-	</appender>
+    <appender name="defaultAppender" class="LoggerAppenderDailyFile">
+        <layout class="LoggerLayoutTTCC" />
+        <param name="file" value="../Logs/log_%s.log" />
+        <param name="append" value="true" />
+    </appender>
+    <appender name="sqlAppender" class="LoggerAppenderDailyFile">
+        <layout class="LoggerLayoutTTCC" />
+        <param name="file" value="../Logs/sql_log_%s.log" />
+        <param name="append" value="true" />
+    </appender>
     <logger name="default" additivity="false">
         <level value="DEBUG" />
         <appender_ref ref="defaultAppender" />
     </logger>
-	<logger name="sql" additivity="false">
+    <logger name="sql" additivity="false">
         <level value="DEBUG" />
         <appender_ref ref="sqlAppender" />
     </logger>

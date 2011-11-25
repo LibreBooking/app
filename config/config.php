@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE);
 
-$conf['settings']['server.timezone'] = 'America/Chicago';   // look up here http://php.net/manual/en/timezones.php
+$conf['settings']['server.timezone'] = 'America/Edmonton';   // look up here http://php.net/manual/en/timezones.php
 $conf['settings']['allow.self.registration'] = 'true';  // this is email self registration on home page the other is optional LDAP authentication. You may have both at the same time
 $conf['settings']['admin.email'] = 'admin@example.com'; // notification email to be sent to admin user
 $conf['settings']['default.page.size'] = '50';  // number of records per page
@@ -31,5 +31,5 @@ $conf['settings']['cache.templates'] = 'true';
 $conf['settings']['plugins']['Authentication'] = ''; // $conf['settings']['plugins']['Authentication'] = 'Ldap';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';
-$conf['settings']['install.password'] = 'mypass'; // any password
+$conf['settings']['install.password'] = 'mypass1'; // any password
 ?>
