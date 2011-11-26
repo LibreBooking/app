@@ -4,6 +4,11 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
+class ManageBlackoutsActions
+{
+	const ADD = 'add';
+}
+
 class ManageBlackoutsPresenter extends ActionPresenter
 {
 	/**
@@ -38,6 +43,8 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$this->manageBlackoutsService = $manageBlackoutsService;
 		$this->scheduleRepository = $scheduleRepository;
 		$this->resourceRepository = $resourceRepository;
+
+		$this->AddAction(ManageBlackoutsActions::ADD, 'AddBlackout');
 	}
 
 	public function PageLoad($userTimezone)
@@ -117,7 +124,8 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$title = $this->page->GetBlackoutTitle();
 		$conflictAction = $this->page->GetBlackoutConflictAction();
 
-		$this->manageBlackoutsService->Add($blackoutDate, $resourceIds, $title, ReservationConflictResolution::Create($conflictAction));
+		$result = $this->manageBlackoutsService->Add($blackoutDate, $resourceIds, $title, ReservationConflictResolution::Create($conflictAction));
+		$this->page->ShowAddResult();
 	}
 
 }

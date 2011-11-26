@@ -17,7 +17,8 @@ class DateTests extends TestBase
 	public function testCanGetNow()
 	{
 		$format = 'd m y H:i:s';
-		
+
+		Date::_ResetNow();
 		$now = Date::Now();
 		$datenow = new DateTime(date(Date::SHORT_FORMAT, time()));
 		

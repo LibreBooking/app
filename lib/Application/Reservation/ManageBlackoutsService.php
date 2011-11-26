@@ -26,16 +26,20 @@ class BlackoutFilter
 	{
 		$filter = new SqlFilterNull();
 
-		if (!empty($this->startDate)) {
+		if (!empty($this->startDate))
+		{
 			$filter->_And(new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, $this->startDate->ToDatabase()));
 		}
-		if (!empty($this->endDate)) {
+		if (!empty($this->endDate))
+		{
 			$filter->_And(new SqlFilterLessThan(ColumnNames::RESERVATION_END, $this->endDate->ToDatabase()));
 		}
-		if (!empty($this->scheduleId)) {
+		if (!empty($this->scheduleId))
+		{
 			$filter->_And(new SqlFilterEquals(ColumnNames::SCHEDULE_ID, $this->scheduleId));
 		}
-		if (!empty($this->resourceId)) {
+		if (!empty($this->resourceId))
+		{
 			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_ID), $this->resourceId));
 		}
 
@@ -61,9 +65,48 @@ interface IManageBlackoutsService
 	 * @param array|int[] $resourceIds
 	 * @param string $title
 	 * @param IReservationConflictResolution $reservationConflictResolution
-	 * @return void
+	 * @return BlackoutValidationResult
 	 */
 	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution);
+}
+
+class BlackoutValidationResult
+{
+	/**
+	 * @var array|Blackout[]
+	 */
+	private $conflictingBlackouts;
+
+	/**
+	 * @var array|ReservationItemView[]
+	 */
+	private $conflictingReservations;
+
+	/**
+	 * @param array|Blackout[] $conflictingBlackouts
+	 * @param array|ReservationItemView[] $conflictingReservations
+	 */
+	public function __construct($conflictingBlackouts, $conflictingReservations)
+	{
+		$this->conflictingBlackouts = $conflictingBlackouts;
+		$this->conflictingReservations = $conflictingReservations;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function WasSuccessful()
+	{
+		return $this->CanBeSaved();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function CanBeSaved()
+	{
+		return empty($this->conflictingBlackouts) && empty($this->conflictingReservations);
+	}
 }
 
 class ManageBlackoutsService implements IManageBlackoutsService
@@ -107,14 +150,18 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		{
 			$conflictingReservations = $this->GetConflictingReservations($blackouts, $blackoutDate, $reservationConflictResolution);
 		}
+
+		$blackoutValidationResult = new BlackoutValidationResult($conflictingBlackouts, $conflictingReservations);
 		
-		if (empty($conflictingBlackouts) && empty($conflictingReservations))
+		if ($blackoutValidationResult->CanBeSaved())
 		{
 			foreach ($blackouts as $blackout)
 			{
 				$this->blackoutRepository->Add($blackout);
 			}
 		}
+		
+		return $blackoutValidationResult;
 	}
 
 	/**
@@ -169,4 +216,5 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		return $conflictingBlackouts;
 	}
 }
+
 ?>

@@ -5,7 +5,8 @@
 				{
 					dataType: null,
 					onBeforeSubmit: BeforeFormSubmit,
-					onBeforeSerialize: null
+					onBeforeSerialize: null,
+					target: null
 				}, options);
 
 		formElement.submit(function() {
@@ -15,6 +16,7 @@
 		        beforeSubmit: opts.onBeforeSubmit,
 		        beforeSerialize: opts.onBeforeSerialize,
 				dataType: opts.dataType,
+				target: opts.target,
 		        success: function(responseText, statusText, xhr, form)  {
 
 					formElement.find('.indicator').hide();

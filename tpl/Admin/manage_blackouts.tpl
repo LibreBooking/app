@@ -7,39 +7,38 @@
 		Add Blackout
 	</div>
 	<div>
-		<form>
+		<form id="addBlackoutForm" method="post">
 			<ul>
 				<li>
 					<label for="addStartDate" class="wideLabel">Start</label>
-					<input type="text" id="addStartDate" class="textbox" size="10" value="{formatdate date=$AddStartDate}"/>
-					<input type="text" id="addStartTime" class="textbox" size="7" value="12:00 AM" />
+					<input {formname key=BEGIN_DATE} type="text" id="addStartDate" class="textbox" size="10" value="{formatdate date=$AddStartDate}"/>
+					<input {formname key=BEGIN_TIME} type="text" id="addStartTime" class="textbox" size="7" value="12:00 AM" />
 				</li>
 				<li>
 					<label for="addEndDate" class="wideLabel">End</label>
-					<input type="text" id="addEndDate" class="textbox" size="10" value="{formatdate date=$AddEndDate}"/>
-					<input type="text" id="addEndTime" class="textbox" size="7"  value="12:00 AM" />
+					<input {formname key=END_DATE} type="text" id="addEndDate" class="textbox" size="10" value="{formatdate date=$AddEndDate}"/>
+					<input {formname key=END_TIME} type="text" id="addEndTime" class="textbox" size="7"  value="12:00 AM" />
 				</li>
 				<li>
 					<label for="addResourceId" class="wideLabel">Resource</label>
-					<select class="textbox" id="addResourceId">
+					<select {formname key=RESOURCE_ID} class="textbox" id="addResourceId">
 						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 					</select>
 					or
-					<label for="allResources" style="">All Resources On </label> <input type="checkbox" id="allResources" />
-					<select id="addScheduleId" class="textbox" disabled="disabled">
+					<label for="allResources" style="">All Resources On </label> <input {formname key=BLACKOUT_APPLY_TO_SCHEDULE} type="checkbox" id="allResources" />
+					<select {formname key=SCHEDULE_ID} id="addScheduleId" class="textbox" disabled="disabled">
 						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 					</select>
 				</li>
 				<li>
 					<label for="blackoutReason" class="wideLabel">Reason</label>
-					<input type="text" id="blackoutReason" class="textbox" size="100" maxlength="85"/>
+					<input {formname key=SUMMARY} type="text" id="blackoutReason" class="textbox required" size="100" maxlength="85"/>
 				</li>
 				<li>
-
-					<input type="radio" id="notifyExisting" name="existingReservations" checked="checked" />
+					<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting" name="existingReservations" checked="checked" />
 					<label for="notifyExisting">Show me conflicting reservations</label>
 
-					<input type="radio" id="deleteExisting" name="existingReservations" />
+					<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExisting" name="existingReservations" />
 					<label for="deleteExisting">Delete conflicting reservations</label>
 				</li>
 				<li style="margin-top:15px; padding-top:15px; border-top: solid 1px #ededed;">
@@ -163,7 +162,7 @@
 <script type="text/javascript" src="{$Path}scripts/js/jquery.timePicker.min.js"></script>
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/reservations.js"></script>
+<script type="text/javascript" src="{$Path}scripts/admin/blackouts.js"></script>
 
 <script type="text/javascript">
 
@@ -176,34 +175,19 @@ $(document).ready(function() {
 
 	var actions = {};
 		
-	var resOpts = {
+	var blackoutOpts = {
 		reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
 		updateScope: updateScope,
 		actions: actions,
-		deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json'
+		deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json',
+		addUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::ADD}'
 	};
 
-	$('#allResources').change(function(){
-		if ($(this).is(':checked'))
-		{
-			$('#addResourceId').attr('disabled', 'disabled');
-			$('#addScheduleId').removeAttr('disabled');
-		}
-		else
-		{
-			$('#addScheduleId').attr('disabled', 'disabled');
-			$('#addResourceId').removeAttr('disabled');
-		}
-	});
-	//var reservationManagement = new ReservationManagement(resOpts, approval);
-	//reservationManagement.init();
+	
+	var blackoutManagement = new BlackoutManagement(blackoutOpts);
+	blackoutManagement.init();
 
-	$('#addStartTime').timePicker({
-		show24Hours: false
-	});
-	$('#addEndTime').timePicker({
-		show24Hours: false
-	});
+	
 });
 </script>
 
@@ -212,8 +196,12 @@ $(document).ready(function() {
 {control type="DatePickerSetupControl" ControlId="addStartDate"}
 {control type="DatePickerSetupControl" ControlId="addEndDate"}
 
-<div id="approveDiv" style="display:none;text-align:center; top:15%;position:relative;">
-<h3>Creating...</h3>
-{html_image src="reservation_submitting.gif"}
+<div id="createDiv" style="display:none;text-align:center; top:15%;position:relative;">
+	<div id="creating">
+		<h3>Creating...</h3>
+		{html_image src="reservation_submitting.gif"}
+	</div>
+	<div id="result" style="display:none;"></div>
 </div>
+
 {include file='globalfooter.tpl'}

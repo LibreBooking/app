@@ -150,6 +150,12 @@ interface IManageBlackoutsPage extends IPageable, IActionPage
 	 * @return string|ReservationConflictResolution
 	 */
 	public function GetBlackoutConflictAction();
+
+	/**
+	 * @abstract
+	 * @return void
+	 */
+	public function ShowAddResult();
 }
 
 class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
@@ -169,7 +175,7 @@ class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
 	    parent::__construct('ManageBlackouts');
 
 		$this->presenter = new ManageBlackoutsPresenter($this,
-			new ManageBlackoutsService(new ReservationViewRepository()),
+			new ManageBlackoutsService(new ReservationViewRepository(), new BlackoutRepository()),
 			new ScheduleRepository(),
 			new ResourceRepository());
 
@@ -194,6 +200,11 @@ class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
 	public function ShowPage()
 	{
 		$this->Display('manage_blackouts.tpl');
+	}
+
+	public function ShowAddResult()
+	{
+		$this->Display('manage_blackouts_response.tpl');
 	}
 	
 	public function BindBlackouts($blackouts)
@@ -392,5 +403,7 @@ class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
 	{
 		return $this->GetForm(FormKeys::CONFLICT_ACTION);
 	}
+
+
 }
 ?>

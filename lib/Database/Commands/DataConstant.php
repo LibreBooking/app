@@ -137,6 +137,16 @@ class Queries
 		'INSERT INTO
 			accessories (accessory_name, accessory_quantity)
 		VALUES (@accessoryname, @quantity)';
+
+	const ADD_BLACKOUT_INSTANCE =
+		'INSERT INTO
+			blackout_instances (start_date, end_date, blackout_series_id)
+		VALUES (@startDate, @endDate, @seriesid)';
+	
+	const ADD_BLACKOUT_SERIES =
+		'INSERT INTO
+			blackout_series (date_created, title, owner_id, resource_id)
+		VALUES (@dateCreated, @title, @userid, @resourceid)';
 	
 	const ADD_GROUP =
 		'INSERT INTO

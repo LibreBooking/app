@@ -80,5 +80,21 @@ class Blackout
 	{
 		return $this->resourceId;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function OwnerId()
+	{
+		return $this->ownerId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Title()
+	{
+		return $this->title;
+	}
 }
 ?>

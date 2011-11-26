@@ -74,7 +74,9 @@ class BlackoutsServiceTests extends TestBase
 			->method('Add')
 			->with($this->equalTo($blackout3));
 		
-		$this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+
+		$this->assertTrue($result->WasSuccessful());
 	}
 
 	public function testDoesNotAddAnyBlackoutsIfThereAreConflictingBlackoutTimes()
@@ -94,7 +96,9 @@ class BlackoutsServiceTests extends TestBase
 		$this->blackoutRepository->expects($this->never())
 			->method('Add');
 		
-		$this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+
+		$this->assertFalse($result->WasSuccessful());
 	}
 
 	public function testConflictHandlerActsOnEachConflictingReservationAndSavesBlackout()
@@ -132,7 +136,47 @@ class BlackoutsServiceTests extends TestBase
 			->method('Add')
 			->with($this->equalTo(Blackout::Create($userId, 2, $title, $date)));
 		
-		$this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+
+		$this->assertTrue($result->WasSuccessful());
+	}
+
+	public function testConflictHandlerReportsConflictingReservationAndDoesNotSaveBlackout()
+	{
+		$start = Date::Parse('2011-01-01 01:01:01');
+		$end = Date::Parse('2011-02-02 02:02:02');
+		$date = new DateRange($start, $end);
+		$resourceIds = array(2);
+		$title = 'title';
+
+		$this->reservationViewRepository->expects($this->once())
+			->method('GetBlackoutsWithin')
+			->with($this->equalTo($date))
+			->will($this->returnValue(array()));
+
+		$reservation1 = new TestReservationItemView(1, $start, $end, 2);
+		$reservation2 = new TestReservationItemView(2, $start, $end, 2);
+		$this->reservationViewRepository->expects($this->once())
+			->method('GetReservationList')
+			->with($this->equalTo($start), $this->equalTo($end))
+			->will($this->returnValue(array($reservation1, $reservation2)));
+
+		$this->conflictHandler->expects($this->at(0))
+			->method('Handle')
+			->with($this->equalTo($reservation1))
+			->will($this->returnValue(false));
+
+		$this->conflictHandler->expects($this->at(1))
+			->method('Handle')
+			->with($this->equalTo($reservation2))
+			->will($this->returnValue(false));
+
+		$this->blackoutRepository->expects($this->never())
+			->method('Add');
+
+		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+
+		$this->assertFalse($result->WasSuccessful());
 	}
 }
 
