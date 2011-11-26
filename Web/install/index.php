@@ -11,8 +11,10 @@ if (SmartyPermissionsAreOk($smartyTemplateCacheDir)) {
     $page = new InstallPage();
     $page->PageLoad();
 } else {
-    echo "The web server must have write access to $smartyTemplateCacheDir. ";
-    echo "The permissions are currently set to " . substr(sprintf('%o', fileperms($smartyTemplateCacheDir)), -4);
+    echo "The web server (such as _www on Mac or apache on Linux) must have write access to $smartyTemplateCacheDir. ";
+    echo "<br/>The permissions are currently set is " . substr(sprintf('%o', fileperms($smartyTemplateCacheDir)), -4);
+    echo "<br/>You can either change $smartyTemplateCacheDir to group for example: _www/apache accordingly";
+    echo "<br/>Or change $smartyTemplateCacheDir to have permission 777 which is only for testing due to security vulnerability.";
 }
 
 /**
