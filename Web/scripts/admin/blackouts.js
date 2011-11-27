@@ -36,8 +36,13 @@ function BlackoutManagement(opts)
 			$(this).closest('.dialog').dialog("close");
 		});
 
-		$('#createDiv').delegate('.close', 'click', function(e) {
+		$('#createDiv').delegate('.reload', 'click', function(e) {
 			location.reload();
+		});
+
+		$('#createDiv').delegate('.close', 'click', function(e) {
+			$('#createDiv').hide();
+			$.colorbox.close();
 		});
 		
 		handleBlackoutApplicabilityChange();
@@ -90,6 +95,7 @@ function BlackoutManagement(opts)
 		if (isValid)
 		{
 			$.colorbox({inline:true, href:"#createDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
+			$('#result').hide();
 			$('#creating, #createDiv').show();
 		}
 		return isValid;

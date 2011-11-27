@@ -914,8 +914,8 @@ class ColumnNames
 
 	// BLACKOUTS //
 	const BLACKOUT_INSTANCE_ID = 'blackout_instance_id';
-	const BLACKOUT_START = 'end_date';
-	const BLACKOUT_END = 'start_date';
+	const BLACKOUT_START = 'start_date';
+	const BLACKOUT_END = 'end_date';
 	const BLACKOUT_TITLE = 'title';
 	const BLACKOUT_DESCRIPTION = 'description';
 	const BLACKOUT_SERIES_ID = 'blackout_series_id';

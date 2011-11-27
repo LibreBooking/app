@@ -153,9 +153,14 @@ interface IManageBlackoutsPage extends IPageable, IActionPage
 
 	/**
 	 * @abstract
+	 * @param bool $wasAddedSuccessfully
+	 * @param string $displayMessage
+	 * @param array|ReservationItemView[] $conflictingReservations
+	 * @param array|BlackoutItemView[] $conflictingBlackouts
+	 * @param string $timezone
 	 * @return void
 	 */
-	public function ShowAddResult();
+	public function ShowAddResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations, $conflictingBlackouts, $timezone);
 }
 
 class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
@@ -202,8 +207,13 @@ class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
 		$this->Display('manage_blackouts.tpl');
 	}
 
-	public function ShowAddResult()
+	public function ShowAddResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations, $conflictingBlackouts, $timezone)
 	{
+		$this->Set('Successful', $wasAddedSuccessfully);
+		$this->Set('Message', $displayMessage);
+		$this->Set('Reservations', $conflictingReservations);
+		$this->Set('Blackouts', $conflictingBlackouts);
+		$this->Set('Timezone', $timezone);
 		$this->Display('manage_blackouts_response.tpl');
 	}
 	

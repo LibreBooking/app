@@ -19,7 +19,7 @@
 	<property name="sql.file.create.schema" value="database_schema/schema-utf8.sql"/>
 	<property name="sql.file.create.user" value="database_schema/create-user.sql"/>
 	<property name="sql.file.data" value="database_schema/data-utf8.sql"/>
-	<property name="sql.file.test.data" value="database_schema/testdata-utf8.sql"/>
+	<property name="sql.file.test.data" value="database_schema/sample-data-utf8.sql"/>
 
 	<target name="setup.db" description="setting up the latest version of the database">
 		<if>

@@ -65,15 +65,41 @@ interface IManageBlackoutsService
 	 * @param array|int[] $resourceIds
 	 * @param string $title
 	 * @param IReservationConflictResolution $reservationConflictResolution
-	 * @return BlackoutValidationResult
+	 * @return IBlackoutValidationResult
 	 */
 	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution);
 }
 
-class BlackoutValidationResult
+interface IBlackoutValidationResult
 {
 	/**
-	 * @var array|Blackout[]
+	 * @return bool
+	 */
+	public function WasSuccessful();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function Message();
+
+	/**
+	 * @abstract
+	 * @return array|ReservationItemView[]
+	 */
+	public function ConflictingReservations();
+
+	/**
+	 * @abstract
+	 * @return array|BlackoutItemView[]
+	 */
+	public function ConflictingBlackouts();
+}
+
+class BlackoutValidationResult implements IBlackoutValidationResult
+{
+	/**
+	 * @var array|BlackoutItemView[]
 	 */
 	private $conflictingBlackouts;
 
@@ -83,7 +109,7 @@ class BlackoutValidationResult
 	private $conflictingReservations;
 
 	/**
-	 * @param array|Blackout[] $conflictingBlackouts
+	 * @param array|BlackoutItemView[] $conflictingBlackouts
 	 * @param array|ReservationItemView[] $conflictingReservations
 	 */
 	public function __construct($conflictingBlackouts, $conflictingReservations)
@@ -92,9 +118,6 @@ class BlackoutValidationResult
 		$this->conflictingReservations = $conflictingReservations;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function WasSuccessful()
 	{
 		return $this->CanBeSaved();
@@ -106,6 +129,62 @@ class BlackoutValidationResult
 	public function CanBeSaved()
 	{
 		return empty($this->conflictingBlackouts) && empty($this->conflictingReservations);
+	}
+
+	public function Message()
+	{
+		return null;
+	}
+
+	/**
+	 * @return array|ReservationItemView[]
+	 */
+	public function ConflictingReservations()
+	{
+		return $this->conflictingReservations;
+	}
+
+	/**
+	 * @return array|BlackoutItemView[]
+	 */
+	public function ConflictingBlackouts()
+	{
+		return $this->conflictingBlackouts;
+	}
+}
+
+class BlackoutDateTimeValidationResult implements IBlackoutValidationResult
+{
+	/**
+	 * @return bool
+	 */
+	public function WasSuccessful()
+	{
+		return false;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Message()
+	{
+		return Resources::GetInstance()->GetString('StartDateBeforeEndDateRule');
+	}
+
+	/**
+	 * @return array|ReservationItemView[]
+	 */
+	public function ConflictingReservations()
+	{
+		return array();
+	}
+
+	/**
+	 * @return array|BlackoutItemView[]
+	 */
+	public function ConflictingBlackouts()
+	{
+		return array();
 	}
 }
 
@@ -134,6 +213,11 @@ class ManageBlackoutsService implements IManageBlackoutsService
 
 	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution)
 	{
+		if (!$blackoutDate->GetEnd()->GreaterThan($blackoutDate->GetBegin()))
+		{
+			return new BlackoutDateTimeValidationResult();
+		}
+		
 		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
 
 		/** @var $blackouts array|Blackout[] */
@@ -195,7 +279,7 @@ class ManageBlackoutsService implements IManageBlackoutsService
 	/**
 	 * @param array|Blackout[] $blackouts
 	 * @param DateRange $blackoutDate
-	 * @return array|Blackout[]
+	 * @return array|BlackoutItemView[]
 	 */
 	private function GetConflictingBlackouts($blackouts, $blackoutDate)
 	{
@@ -208,7 +292,7 @@ class ManageBlackoutsService implements IManageBlackoutsService
 			{
 				if ($existingBlackout->ResourceId == $blackout->ResourceId() && $blackout->Date()->Overlaps($existingBlackout->Date))
 				{
-					$conflictingBlackouts[] = $blackout;
+					$conflictingBlackouts[] = $existingBlackout;
 				}
 			}
 		}

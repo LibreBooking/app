@@ -178,6 +178,15 @@ class BlackoutsServiceTests extends TestBase
 
 		$this->assertFalse($result->WasSuccessful());
 	}
+
+	public function testNothingIsCheckedIfTimesAreInvalid()
+	{
+		$date = DateRange::Create('2011-01-01 00:00:00', '2011-01-01 00:00:00', 'UTC');
+		$result = $this->service->Add($date, array(1), 'title', $this->conflictHandler);
+
+		$this->assertFalse($result->WasSuccessful());
+		$this->assertNotEmpty($result->Message());
+	}
 }
 
 class TestBlackoutItemView extends BlackoutItemView
