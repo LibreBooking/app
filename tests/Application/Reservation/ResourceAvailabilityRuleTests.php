@@ -28,14 +28,14 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 		$scheduleReservation = new TestReservationItemView(2, $startDate, $endDate, 1);
 
-		$reservationRepository = $this->getMock('IReservationViewRepository');
+		$strategy = $this->getMock('IResourceAvailabilityStrategy');
 		
-		$reservationRepository->expects($this->once())
-			->method('GetReservationList')
+		$strategy->expects($this->once())
+			->method('GetItemsBetween')
 			->with($this->equalTo($startDate), $this->equalTo($endDate))
 			->will($this->returnValue(array($scheduleReservation)));
 			
-		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
+		$rule = new ResourceAvailabilityRule($strategy, 'UTC');
 		$result = $rule->Validate($reservation);
 		
 		$this->assertTrue($result->IsValid());
@@ -70,14 +70,14 @@ class ResourceAvailabilityRuleTests extends TestBase
 			new TestReservationItemView(5, $startNonConflict2, $endNonConflict2, $resourceId),
 		);
 		
-		$reservationRepository = $this->getMock('IReservationViewRepository');
+		$strategy = $this->getMock('IResourceAvailabilityStrategy');
 		
-		$reservationRepository->expects($this->once())
-			->method('GetReservationList')
+		$strategy->expects($this->once())
+			->method('GetItemsBetween')
 			->with($this->equalTo($startDate), $this->equalTo($endDate))
 			->will($this->returnValue($reservations));
 			
-		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
+		$rule = new ResourceAvailabilityRule($strategy, 'UTC');
 		$result = $rule->Validate($reservation);
 		
 		$this->assertFalse($result->IsValid());
@@ -105,14 +105,14 @@ class ResourceAvailabilityRuleTests extends TestBase
 			new TestReservationItemView(3, $startConflict2, $endConflict2, $additionalResourceId),
 		);
 		
-		$reservationRepository = $this->getMock('IReservationViewRepository');
+		$strategy = $this->getMock('IResourceAvailabilityStrategy');
 		
-		$reservationRepository->expects($this->once())
-			->method('GetReservationList')
+		$strategy->expects($this->once())
+			->method('GetItemsBetween')
 			->with($this->equalTo($startDate), $this->equalTo($endDate))
 			->will($this->returnValue($reservations));
 			
-		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
+		$rule = new ResourceAvailabilityRule($strategy, 'UTC');
 		$result = $rule->Validate($reservation);
 		
 		$this->assertFalse($result->IsValid());
@@ -134,15 +134,55 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservation->WithDuration($reservationDates);
 		$reservation->WithRepeatOptions($twoRepetitions);
 		
-		$reservationRepository = $this->getMock('IReservationViewRepository');
+		$strategy = $this->getMock('IResourceAvailabilityStrategy');
 		
-		$reservationRepository->expects($this->exactly(1 + count($repeatDates)))
-			->method('GetReservationList')
+		$strategy->expects($this->exactly(1 + count($repeatDates)))
+			->method('GetItemsBetween')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue(array()));
 		
-		$rule = new ResourceAvailabilityRule($reservationRepository, 'UTC');
+		$rule = new ResourceAvailabilityRule($strategy, 'UTC');
 		$result = $rule->Validate($reservation);
+	}
+	
+	public function testReservationStrategyChecksReservations()
+	{
+		$startDate = Date::Now();
+		$endDate = Date::Now();
+		
+		$repository = $this->getMock('IReservationViewRepository');
+
+		$strategy = new ResourceReservationAvailability($repository);
+
+		$reservations = array();
+		$repository->expects($this->once())
+			->method('GetReservationList')
+			->with($this->equalTo($startDate), $this->equalTo($endDate))
+			->will($this->returnValue($reservations));
+		
+		$items = $strategy->GetItemsBetween($startDate, $endDate);
+
+		$this->assertEquals($reservations, $items);
+	}
+
+	public function testBlackoutStrategyChecksBlackouts()
+	{
+		$startDate = Date::Now();
+		$endDate = Date::Now();
+
+		$repository = $this->getMock('IReservationViewRepository');
+
+		$strategy = new ResourceBlackoutAvailability($repository);
+
+		$blackouts = array();
+		$repository->expects($this->once())
+			->method('GetBlackoutsWithin')
+			->with($this->equalTo(new DateRange($startDate, $endDate)))
+			->will($this->returnValue($blackouts));
+
+		$items = $strategy->GetItemsBetween($startDate, $endDate);
+
+		$this->assertEquals($blackouts, $items);
 	}
 }
 

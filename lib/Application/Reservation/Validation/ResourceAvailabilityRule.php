@@ -1,20 +1,66 @@
 <?php
-class ResourceAvailabilityRule implements IReservationValidationRule
+interface IResourceAvailabilityStrategy
+{
+	/**
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @return array|IReservedItemView[]
+	 */
+	public function GetItemsBetween(Date $startDate, Date $endDate);
+}
+
+class ResourceReservationAvailability implements IResourceAvailabilityStrategy
 {
 	/**
 	 * @var IReservationViewRepository
 	 */
-	protected $_repository; 
+	protected $_repository;
+
+	public function __construct(IReservationViewRepository $repository)
+	{
+		$this->_repository = $repository;
+	}
+	
+	public function GetItemsBetween(Date $startDate, Date $endDate)
+	{
+		return $this->_repository->GetReservationList($startDate, $endDate);
+	}
+}
+
+class ResourceBlackoutAvailability implements IResourceAvailabilityStrategy
+{
+	/**
+	 * @var IReservationViewRepository
+	 */
+	protected $_repository;
+
+	public function __construct(IReservationViewRepository $repository)
+	{
+		$this->_repository = $repository;
+	}
+
+	public function GetItemsBetween(Date $startDate, Date $endDate)
+	{
+		return $this->_repository->GetBlackoutsWithin(new DateRange($startDate, $endDate));
+	}
+}
+
+class ResourceAvailabilityRule implements IReservationValidationRule
+{
+	/**
+	 * @var IResourceAvailabilityStrategy
+	 */
+	protected $strategy;
 	
 	/**
 	 * @var string
 	 */
-	protected $_timezone;
+	protected $timezone;
 	
-	public function __construct(IReservationViewRepository $repository, $timezone)
+	public function __construct(IResourceAvailabilityStrategy $strategy, $timezone)
 	{
-		$this->_repository = $repository;
-		$this->_timezone = $timezone;
+		$this->strategy = $strategy;
+		$this->timezone = $timezone;
 	}
 	
 	/**
@@ -32,23 +78,23 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		{
 			Log::Debug("Checking for reservation conflicts, reference number %s", $reservation->ReferenceNumber());
 			
-			$existingReservations = $this->_repository->GetReservationList($reservation->StartDate(), $reservation->EndDate());
+			$existingItems = $this->strategy->GetItemsBetween($reservation->StartDate(), $reservation->EndDate());
 
-			/** @var ReservationItemView $existingReservation */
-			foreach ($existingReservations as $existingReservation)
+			/** @var IReservedItemView $existingItem */
+			foreach ($existingItems as $existingItem)
 			{
 				if (
-					$existingReservation->GetStartDate()->Equals($reservation->EndDate()) ||
-					$existingReservation->GetEndDate()->Equals($reservation->StartDate())
+					$existingItem->GetStartDate()->Equals($reservation->EndDate()) ||
+					$existingItem->GetEndDate()->Equals($reservation->StartDate())
 				)
 				{
 					continue;
 				}
 				
-				if ($this->IsInConflict($reservation, $reservationSeries, $existingReservation))
+				if ($this->IsInConflict($reservation, $reservationSeries, $existingItem))
 				{
-					Log::Debug("Reference number %s conflicts with existing reservation %s", $reservation->ReferenceNumber(), $existingReservation->GetReferenceNumber());
-					array_push($conflicts, $existingReservation);
+					Log::Debug("Reference number %s conflicts with existing %s with id %s", $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId());
+					array_push($conflicts, $existingItem);
 				}
 			}
 		}
@@ -63,14 +109,14 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 	
-	protected function IsInConflict(Reservation $instance, ReservationSeries $series, ReservationItemView $existingReservation)
+	protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem)
 	{
-		return ($existingReservation->GetResourceId() == $series->ResourceId()) ||
-			(false !== array_search($existingReservation->GetResourceId(), $series->AllResourceIds()));
+		return ($existingItem->GetResourceId() == $series->ResourceId()) ||
+			(false !== array_search($existingItem->GetResourceId(), $series->AllResourceIds()));
 	}
 
 	/**
-	 * @param array|ReservationItemView $conflicts
+	 * @param array|IReservedItemView[] $conflicts
 	 * @return string
 	 */
 	protected function GetErrorString($conflicts)
@@ -82,10 +128,10 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
 		
 		$dates = array();
-		/** @var ReservationItemView $conflict */
+		/** @var IReservedItemView $conflict */
 		foreach($conflicts as $conflict)
 		{
-			$dates[] = $conflict->GetStartDate()->ToTimezone($this->_timezone)->Format($format);
+			$dates[] = $conflict->GetStartDate()->ToTimezone($this->timezone)->Format($format);
 		}
 		
 		$uniqueDates = array_unique($dates);

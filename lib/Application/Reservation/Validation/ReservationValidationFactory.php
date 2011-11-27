@@ -31,8 +31,8 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	{
 		$reservationRepository = new ReservationViewRepository();
 
-		$ruleProcessor->AddRule(new ResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
-		$ruleProcessor->AddRule(new AccessoryAvailabilityRule(new ReservationViewRepository(), new AccessoryRepository(), $userSession->Timezone));
+		$ruleProcessor->AddRule(new ResourceAvailabilityRule(new ResourceReservationAvailability($reservationRepository), $userSession->Timezone));
+		$ruleProcessor->AddRule(new AccessoryAvailabilityRule($reservationRepository, new AccessoryRepository(), $userSession->Timezone));
 
 		return new AddReservationValidationService($ruleProcessor);
 	}
@@ -40,8 +40,9 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	private function CreateUpdateService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
 		$reservationRepository = new ReservationViewRepository();
-		$ruleProcessor->AddRule(new ExistingResourceAvailabilityRule($reservationRepository, $userSession->Timezone));
-		$ruleProcessor->AddRule(new AccessoryAvailabilityRule(new ReservationViewRepository(), new AccessoryRepository(), $userSession->Timezone));
+
+		$ruleProcessor->AddRule(new ExistingResourceAvailabilityRule(new ResourceReservationAvailability($reservationRepository), $userSession->Timezone));
+		$ruleProcessor->AddRule(new AccessoryAvailabilityRule($reservationRepository, new AccessoryRepository(), $userSession->Timezone));
 
 		return new UpdateReservationValidationService($ruleProcessor);
 	}
@@ -54,6 +55,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 	private function GetRuleProcessor(UserSession $userSession)
 	{
 		$resourceRepository = new ResourceRepository();
+		$reservationRepository = new ReservationViewRepository();
 		// Common rules
 		$rules = array();
 		$rules[] = new ReservationDateTimeRule();
@@ -63,8 +65,9 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		$rules[] = new AdminExcludedRule(new ResourceMaximumNoticeRule($resourceRepository), $userSession);
 		$rules[] = new AdminExcludedRule(new ResourceMinimumDurationRule($resourceRepository), $userSession);
 		$rules[] = new AdminExcludedRule(new ResourceMaximumDurationRule($resourceRepository), $userSession);
-		$rules[] = new AdminExcludedRule(new QuotaRule(new QuotaRepository(), new ReservationViewRepository(), new UserRepository(), new ScheduleRepository()), $userSession);
-
+		$rules[] = new AdminExcludedRule(new QuotaRule(new QuotaRepository(), $reservationRepository, new UserRepository(), new ScheduleRepository()), $userSession);
+		$rules[] = new ResourceAvailabilityRule(new ResourceBlackoutAvailability($reservationRepository), $userSession->Timezone);
+		
 		return new ReservationValidationRuleProcessor($rules);
 	}
 }

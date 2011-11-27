@@ -10,13 +10,13 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 	/**
 	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $repo;	
+	private $strategy;
 	
 	public function setup()
 	{
 		parent::setup();
 		
-		$this->repo = $this->getMock('IReservationViewRepository');
+		$this->strategy = $this->getMock('IResourceAvailabilityStrategy');
 	}
 
 	public function teardown()
@@ -53,12 +53,12 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 			new TestReservationItemView($id2, Date::Now(), Date::Now(), $resourceId),
 		);
 		
-		$this->repo->expects($this->exactly(2))
-			->method('GetReservationList')
+		$this->strategy->expects($this->exactly(2))
+			->method('GetItemsBetween')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 		
-		$rule = new ExistingResourceAvailabilityRule($this->repo, $this->timezone);
+		$rule = new ExistingResourceAvailabilityRule($this->strategy, $this->timezone);
 		$ruleResult = $rule->Validate($series);
 		
 		$this->assertTrue($ruleResult->IsValid());
@@ -80,12 +80,12 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 			new TestReservationItemView($currentId, Date::Now(), Date::Now(), $resourceId),
 		);
 		
-		$this->repo->expects($this->once())
-			->method('GetReservationList')
+		$this->strategy->expects($this->once())
+			->method('GetItemsBetween')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 			
-		$rule = new ExistingResourceAvailabilityRule($this->repo, $this->timezone);
+		$rule = new ExistingResourceAvailabilityRule($this->strategy, $this->timezone);
 		$ruleResult = $rule->Validate($series);
 		
 		$this->assertTrue($ruleResult->IsValid());
@@ -108,12 +108,12 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 			new TestReservationItemView($currentId+1, Date::Now(), Date::Now(), $resourceId),
 		);
 		
-		$this->repo->expects($this->once())
-			->method('GetReservationList')
+		$this->strategy->expects($this->once())
+			->method('GetItemsBetween')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 			
-		$rule = new ExistingResourceAvailabilityRule($this->repo, $this->timezone);
+		$rule = new ExistingResourceAvailabilityRule($this->strategy, $this->timezone);
 		$ruleResult = $rule->Validate($series);
 		
 		$this->assertFalse($ruleResult->IsValid());
@@ -138,12 +138,12 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 			new TestReservationItemView($currentId+1, Date::Now(), Date::Now(), $resourceId3),
 		);
 		
-		$this->repo->expects($this->once())
-			->method('GetReservationList')
+		$this->strategy->expects($this->once())
+			->method('GetItemsBetween')
 			->with($this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 			
-		$rule = new ExistingResourceAvailabilityRule($this->repo, $this->timezone);
+		$rule = new ExistingResourceAvailabilityRule($this->strategy, $this->timezone);
 		$ruleResult = $rule->Validate($series);
 		
 		$this->assertTrue($ruleResult->IsValid());

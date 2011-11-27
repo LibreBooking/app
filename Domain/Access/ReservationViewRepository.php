@@ -465,7 +465,34 @@ class ReservationView
 	}
 }
 
-class ReservationItemView
+interface IReservedItemView
+{
+	/**
+	 * @abstract
+	 * @return Date
+	 */
+	public function GetStartDate();
+
+	/**
+	 * @abstract
+	 * @return Date
+	 */
+	public function GetEndDate();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetResourceId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetId();
+}
+
+class ReservationItemView implements IReservedItemView
 {
 	/**
 	 * @var string
@@ -709,9 +736,14 @@ class ReservationItemView
 	{
 		return $this->ReferenceNumber;
 	}
+
+	public function GetId()
+	{
+		return $this->GetReservationId();
+	}
 }
 
-class BlackoutItemView
+class BlackoutItemView implements IReservedItemView
 {
 	/**
 	 * @var Date
@@ -840,6 +872,38 @@ class BlackoutItemView
 				$row[ColumnNames::LAST_NAME],
 				$row[ColumnNames::RESOURCE_NAME],
 				$row[ColumnNames::BLACKOUT_SERIES_ID]);
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetStartDate()
+	{
+		return $this->StartDate;
+	}
+
+	/**
+	 * @return Date
+	 */
+	public function GetEndDate()
+	{
+		return $this->EndDate;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->ResourceId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetId()
+	{
+		return $this->InstanceId;
 	}
 }
 

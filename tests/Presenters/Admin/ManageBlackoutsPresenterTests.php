@@ -116,9 +116,11 @@ class ManageBlackoutsPresenterTests extends TestBase
 			->method('GetApplyBlackoutToAllResources')
 			->will($this->returnValue(false));
 
+		$result = $this->getMock('IBlackoutValidationResult');
 		$this->blackoutsService->expects($this->once())
 			->method('Add')
-			->with($this->equalTo($dr), $this->equalTo(array($resourceId)), $this->equalTo($title), $this->equalTo($conflictResolution));
+			->with($this->equalTo($dr), $this->equalTo(array($resourceId)), $this->equalTo($title), $this->equalTo($conflictResolution))
+			->will($this->returnValue($result));
 		
 		$this->presenter->AddBlackout();
 	}
@@ -152,9 +154,11 @@ class ManageBlackoutsPresenterTests extends TestBase
 			->with($this->equalTo($scheduleId))
 			->will($this->returnValue($resources));
 
+		$result = $this->getMock('IBlackoutValidationResult');
 		$this->blackoutsService->expects($this->once())
 			->method('Add')
-			->with($this->equalTo($dr), $this->equalTo(array(1, 2, 3)), $this->equalTo($title), $this->equalTo($conflictResolution));
+			->with($this->equalTo($dr), $this->equalTo(array(1, 2, 3)), $this->equalTo($title), $this->equalTo($conflictResolution))
+			->will($this->returnValue($result));
 
 		$this->presenter->AddBlackout();
 	}
