@@ -37,17 +37,18 @@
                     </ul>
                 </li>
                 <li>&nbsp;</li>
-                <li>2) Please provide credentials of a MySQL user who has privileges create databases. If you do not know, contact your database admin.</li>
+                <li>2) You MUST provide credentials of a MySQL user who has privileges create databases. If you do not know, contact your database admin.</li>
                 <li>MySQL User</li>
                 <li>{textbox name="INSTALL_DB_USER" class="textbox" size="20"}</li>
                 <li>Password</li>
                 <li>{textbox type="password" name="INSTALL_DB_PASSWORD" class="textbox" size="20"}</li>
                 <li>&nbsp;</li>
                 <li>3)<i>The following options will not work in a hosted environment.  Please set up the database and user through your provider's database tools.</i></li>
-                <li><input type="checkbox" name="create_database" /> Create the database ({$dbname})</li>
-                <li><input type="checkbox" name="create_user" /> Create the user ({$dbuser})</li>
+                <li><input type="checkbox" name="create_database" /> Create the database based on configruation /config/config.php ({$dbname})</li>
+                <li><input type="checkbox" name="create_user" /> Create the user based on configruation /config/config.php ({$dbuser})</li>
+                <li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and user/password for user</li>
                 <li>
-                    <button type="submit" name="run_install" class="button" value="submit">Run Installation {html_image src="arrow_large_right.png"}</button>
+                    </br><button type="submit" name="run_install" class="button" value="submit">Run Installation {html_image src="arrow_large_right.png"}</br>
                 </li>
             </ul>
         {/if}

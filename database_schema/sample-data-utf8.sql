@@ -22,7 +22,7 @@ insert into group_roles values (1, 1);
 insert into group_roles values (2, 2);
 
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language, organization)
-	values ('Nick', 'Korbel', 'nkorbel@gmail.com', 'nkorbel', '7b6aec38ff9b7650d64d0374194307bdde711425', '3b3dbb9b', 'America/Chicago', '2008-09-16 01:59:00', 1, now(), 'en_us', 'XYZ Org Inc.');
+	values ('Nick', 'Korbel', 'nkorbel@gmail.com', 'nkorbel', '70f3e748c6801656e4aae9dca6ee98ab137d952c', '3b3dbb9b', 'America/Chicago', '2008-09-16 01:59:00', 1, now(), 'en_us', 'XYZ Org Inc.');
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language, organization)
 	values ('Jan', 'Mattila', 'jan.mattila@helvet.fi', 'admin', '70f3e748c6801656e4aae9dca6ee98ab137d952c', '4a04db87', 'Europe/Helsinki', '2010-03-26 12:44:00', 1, now(), 'en_us', 'ABC Org Inc.');
 

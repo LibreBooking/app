@@ -1,292 +1,14 @@
 <?php
 
 /**
- * This file contains 5 classes and 1 interface:
- *  InstallationResult, Installer, MySqlScript InstallPage, InstallPresenter, and IIinstallPage respectively.
+ * This file contains 1 classe and 1 interface:
+ *  InstallPage, and IIinstallPage respectively.
  */
 require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'Presenters/InstallPresenter.php');
 
 /**
- * 
- */
-class InstallationResult {
-
-    public $connectionError = false;
-    public $authError = false;
-    public $taskName;
-    public $sqlErrorCode;
-    public $sqlErrorText;
-    public $sqlText;
-
-    public function __construct($taskName) {
-        $this->taskName = $taskName;
-    }
-
-    public function SetConnectionError() {
-        $this->connectionError = true;
-        $this->sqlErrorText = "Error connecting to mysql database.  Check your configured host and entered username and password.";
-    }
-
-    public function SetAuthenticationError() {
-        $this->authError = true;
-        $this->sqlErrorText = "Error selecting to mysql database.  Check entered username and password.";
-    }
-
-    public function SetResult($sqlErrorCode, $sqlErrorText, $sqlStmt) {
-        $this->sqlErrorCode = $sqlErrorCode;
-        $this->sqlErrorText = $sqlErrorText;
-        $this->sqlText = $sqlStmt;
-    }
-
-    public function WasSuccessful() {
-        return!$this->connectionError && !$this->authError && $this->sqlErrorCode == 0;
-    }
-
-}
-
-/**
- * 
- */
-class Installer {
-
-    private $user;
-    private $password;
-
-    public function __construct($user, $password) {
-        $this->user = $user;
-        $this->password = $password;
-    }
-
-    /**
-     * @param $should_create_db bool
-     * @param $should_create_user bool
-     * @return array|InstallationResult[]
-     */
-    public function InstallFresh($should_create_db, $should_create_user) {
-        $results = array();
-
-        $config = Configuration::Instance();
-
-        $hostname = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
-        $database_name = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
-        $database_user = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
-        $database_password = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_PASSWORD);
-
-        $create_database = new MySqlScript(ROOT_DIR . 'database_schema/create-db.sql');
-        $create_database->Replace('phpscheduleit2', $database_name);
-
-        $create_user = new MySqlScript(ROOT_DIR . 'database_schema/create-user.sql');
-        $create_user->Replace('phpscheduleit2', $database_name);
-        $create_user->Replace('schedule_user', $database_user);
-        $create_user->Replace('localhost', $hostname);
-        $create_user->Replace('password', $database_password);
-
-        $create_schema = new MySqlScript(ROOT_DIR . 'database_schema/schema-utf8.sql');
-        $populate_data = new MySqlScript(ROOT_DIR . 'database_schema/data-utf8.sql');
-
-        if ($should_create_db) {
-            $results[] = $this->ExecuteScript($hostname, 'mysql', $this->user, $this->password, $create_database);
-        }
-
-        $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $create_schema);
-
-        if ($should_create_user) {
-            $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $create_user);
-        }
-
-        $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_data);
-
-        return $results;
-    }
-
-    public function ExecuteScript($hostname, $database_name, $db_user, $db_password, MySqlScript $script) {
-        $result = new InstallationResult($script->Name());
-
-        $sqlErrorCode = 0;
-        $sqlErrorText = null;
-        $sqlStmt = null;
-
-        $link = mysql_connect($hostname, $db_user, $db_password);
-        if (!$link) {
-            $result->SetConnectionError();
-            return $result;
-        }
-
-        $select_db_result = mysql_select_db($database_name, $link);
-        if (!$select_db_result) {
-
-            $result->SetAuthenticationError();
-            return $result;
-        }
-
-        $sqlArray = explode(';', $script->GetFullSql());
-        foreach ($sqlArray as $stmt) {
-            if (strlen($stmt) > 3 && substr(ltrim($stmt), 0, 2) != '/*') {
-                $queryResult = mysql_query($stmt);
-                if (!$queryResult) {
-                    $sqlErrorCode = mysql_errno();
-                    $sqlErrorText = mysql_error();
-                    $sqlStmt = $stmt;
-                    break;
-                }
-            }
-        }
-
-        $result->SetResult($sqlErrorCode, $sqlErrorText, $sqlStmt);
-
-        return $result;
-    }
-
-}
-
-/**
- * 
- */
-class MySqlScript {
-
-    /**
-     * @var string
-     */
-    private $path;
-
-    /**
-     * @var array|string[]
-     */
-    private $tokens = array();
-
-    public function __construct($path) {
-        $this->path = $path;
-    }
-
-    /**
-     * @return string
-     */
-    public function Name() {
-        return $this->path;
-    }
-
-    public function Replace($search, $replace) {
-        $this->tokens[$search] = $replace;
-    }
-
-    public function GetFullSql() {
-        $f = fopen($this->path, "r");
-        $sql = fread($f, filesize($this->path));
-        fclose($f);
-
-        foreach ($this->tokens as $search => $replace) {
-            $sql = str_replace($search, $replace, $sql);
-        }
-
-        return $sql;
-    }
-
-}
-
-/**
- * To check configuration and present accordingly
- */
-class InstallPresenter {
-
-    /**
-     * @var \IInstallPage
-     */
-    private $page;
-
-    const VALIDATED_INSTALL = 'validated_install';
-
-    public function __construct(IInstallPage $page) {
-        //ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, null);
-        $this->page = $page;
-    }
-
-    public function PageLoad() {
-        if ($this->page->RunningInstall()) {
-            $this->RunInstall();
-            return;
-        }
-
-        $dbname = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
-        $dbuser = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
-        $dbhost = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
-        $this->page->SetDatabaseConfig($dbname, $dbuser, $dbhost);
-
-        $this->CheckForInstallPasswordInConfig();
-        $this->CheckForInstallPasswordProvided();
-        $this->CheckForAuthentication();
-    }
-
-    public function CheckForInstallPasswordInConfig() {
-        $installPassword = Configuration::Instance()->GetKey(ConfigKeys::INSTALLATION_PASSWORD);
-
-        if (empty($installPassword)) {
-            $this->page->SetInstallPasswordMissing(true);
-            return;
-        }
-
-        $this->page->SetInstallPasswordMissing(false);
-    }
-
-    private function CheckForInstallPasswordProvided() {
-        if ($this->IsAuthenticated()) {
-            return;
-        }
-
-        $installPassword = $this->page->GetInstallPassword();
-
-        if (empty($installPassword)) {
-            $this->page->SetShowPasswordPrompt(true);
-            return;
-        }
-
-        $validated = $this->Validate($installPassword);
-        if (!$validated) {
-            $this->page->SetShowPasswordPrompt(true);
-            $this->page->SetShowInvalidPassword(true);
-            return;
-        }
-
-        $this->page->SetShowPasswordPrompt(false);
-        $this->page->SetShowInvalidPassword(false);
-    }
-
-    private function CheckForAuthentication() {
-        if ($this->IsAuthenticated()) {
-            $this->page->SetShowDatabasePrompt(true);
-            return;
-        }
-
-        $this->page->SetShowDatabasePrompt(false);
-    }
-
-    private function IsAuthenticated() {
-        return ServiceLocator::GetServer()->GetSession(SessionKeys::INSTALLATION) == self::VALIDATED_INSTALL;
-    }
-
-    private function Validate($installPassword) {
-        $validated = $installPassword == Configuration::Instance()->GetKey(ConfigKeys::INSTALLATION_PASSWORD);
-
-        if ($validated) {
-            ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, self::VALIDATED_INSTALL);
-        } else {
-            ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, null);
-        }
-
-        return $validated;
-    }
-
-    private function RunInstall() {
-        $install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
-
-        $results = $install->InstallFresh($this->page->GetShouldCreateDatabase(), $this->page->GetShouldCreateUser());
-
-        $this->page->SetInstallResults($results);
-    }
-
-}
-
-/**
- * 
+ * Abstract interface for flexibility
  */
 interface IInstallPage {
 
@@ -375,6 +97,9 @@ class InstallPage extends Page implements IInstallPage {
         $this->presenter = new InstallPresenter($this);
     }
 
+    /**
+     * Load data for page then display
+     */
     public function PageLoad() {
         $this->presenter->PageLoad();   // Calling to class InstallPresenter's method - PageLoad()
         $this->Display('install.tpl');  // Calling to extended class Page's method - Display('')
@@ -400,6 +125,12 @@ class InstallPage extends Page implements IInstallPage {
         $this->Set('ShowDatabasePrompt', $showDatabasePrompt);
     }
 
+    /**
+     * Set values for displayed template - install.tpl
+     * @param string $dbname database name
+     * @param string $dbuser mysql user for your database e.g phpScheduleIt
+     * @param string $dbhost server address/name where mySql lives
+     */
     public function SetDatabaseConfig($dbname, $dbuser, $dbhost) {
         $this->Set('dbname', $dbname);
         $this->Set('dbuser', $dbuser);
@@ -408,7 +139,7 @@ class InstallPage extends Page implements IInstallPage {
 
     public function RunningInstall() {
         $run_install = $this->GetForm('run_install');
-        return!empty($run_install);
+        return !empty($run_install);
     }
 
     public function GetInstallUser() {
@@ -429,7 +160,14 @@ class InstallPage extends Page implements IInstallPage {
         return isset($x) && $x == true;
     }
 
+    public function GetShouldCreateSampleData() {
+        $x = $this->GetForm('create_sample_data');
+        return isset($x) && $x == true;
+    }
+
+
     /**
+     * Iterate results in array set status for display template
      * @param $results array|InstallationResult[]
      * @return void
      */
@@ -440,7 +178,7 @@ class InstallPage extends Page implements IInstallPage {
                 $failure = true;
             }
         }
-        //
+        // Set installation status
         $this->Set('InstallCompletedSuccessfully', !$failure);
         $this->Set('InstallFailed', $failure);
         $this->Set('installresults', $results);

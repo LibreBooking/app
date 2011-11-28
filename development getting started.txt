@@ -43,13 +43,13 @@ D) Development branch technical information:
 
 	* Any code outside of these locations should be considered legacy and obsolete
 
-    2) Design philosphies
+    2) Design philosophy
 	[page].php should
 		- define ROOT_DIR
 		- include /Pages/[page]Page.php
 		- construct [page]Page and call PageLoad()
 
-	Each page should have at least one corressponding template in /tpl
+	Each page should have at least one corresponding template in /tpl
 	Each page should have a corresponding class in /Pages
 	Each Page class should have a corresponding presenter class in /Presenters
 
