@@ -1,51 +1,57 @@
-Requirements:
-PHP 5.2 or greater
-MySQL x.x or greater
+A) Project:
+    - Repository viewed @ http://phpscheduleit.svn.sourceforge.net/
+    - Check out url @ https://phpscheduleit.svn.sourceforge.net/svnroot/phpscheduleit/development
+    - To contribute and submit your code please contact "Nick Korbel" <nkorbel@gmail.com>
 
-Getting the development branch running
+B) Requirements:
+    - Web-server
+    - PHP 5.2 or greater
+    - MySQL x.x or greater
 
-1) Create and populate the database
+C) Getting the development branch running:
+
+    1) Create and populate the database
 	run schema.sql
 	run data.sql
-	run testdata.sql (optional)
-	
-2) Set configuration values
+	run sample-data-utf8.sql (optional)
+
+    2) Set configuration values
 	update config.php with your local settings
 
-	
-Development branch technical information
 
-Application structure
-	/							All user facing pages
-	/css						All css style sheets
-	/Controls					All reusable page control objects
-	/lib						All application supporting objects
-		/Authorization			Login/registration/authorization
-		/Common					Non-specific shared objects (localization, dates, smarty, etc)
-		/Config					Configuration read/write
-		/Database				Database access and abstractions
-		/Domain					Domain specific entities, repositories, services, etc
-		/Schedule				Non-domain schedule related objects
-		/Server					Web server abstractions (sessions, cookies, etc)
-	/Pages						Page binding and workflow logic
-	/plugins					Contains subdirectories for each type of plugin
-	/Presenters					Application logic, page population
-	/scripts					All application related javascript files
-	/tests						All unit tests
-	/tpl						All Smarty page and control templates
+D) Development branch technical information:
+
+    1) Application structure
+	/			All user facing pages
+	/css			All css style sheets
+	/Controls		All reusable page control objects
+	/lib			All application supporting objects
+        /Authorization		Login/registration/authorization
+        /Common			Non-specific shared objects (localization, dates, smarty, etc)
+        /Config			Configuration read/write
+        /Database		Database access and abstractions
+        /Domain			Domain specific entities, repositories, services, etc
+        /Schedule		Non-domain schedule related objects
+        /Server			Web server abstractions (sessions, cookies, etc)
+	/Pages			Page binding and workflow logic
+	/plugins		Contains subdirectories for each type of plugin
+	/Presenters		Application logic, page population
+	/scripts		All application related javascript files
+	/tests			All unit tests
+	/tpl			All Smarty page and control templates
 
 	* Any code outside of these locations should be considered legacy and obsolete
-	
-Design philosphies
-	[page].php should 
-		1) define ROOT_DIR
-		2) include /Pages/[page]Page.php
-		3) construct [page]Page and call PageLoad()
-	
+
+    2) Design philosphies
+	[page].php should
+		- define ROOT_DIR
+		- include /Pages/[page]Page.php
+		- construct [page]Page and call PageLoad()
+
 	Each page should have at least one corressponding template in /tpl
 	Each page should have a corresponding class in /Pages
 	Each Page class should have a corresponding presenter class in /Presenters
-	
+
 	Logically related code should be grouped in a directory with a "namespace.php" file, which requires all files in that directory
-	
+
 	All classes should have good unit test coverage (level of coverage is up to the developer)

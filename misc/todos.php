@@ -8,6 +8,6 @@
  *
  * @todo paint a nicer error message box.
  * @todo configure LDAP.
- * @todo include sample-data-utf8.sql to the auto database creation.
+ * @todo include sample-data-utf8.sql to the auto database creation. something like "sample data" and give the users an option to include it when installing
  */
 ?>
