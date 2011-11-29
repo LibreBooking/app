@@ -480,5 +480,17 @@ class DateTests extends TestBase
 
 		$this->assertFalse($dr1->Overlaps($dr2));
 	}
+
+	public function testDateRangeOccursOnDateIfAnyDateStartsOrEnds()
+	{
+		$range = DateRange::Create('2011-01-01 12:00:00', '2011-01-03 00:00:00', 'UTC');
+		$d1 = Date::Parse('2011-01-02 02:02:02', 'UTC');
+		$d2 = Date::Parse('2011-01-01 23:59:59', 'UTC');
+		$d3 = Date::Parse('2011-01-03 00:00:00', 'UTC');
+
+		$this->assertTrue($range->OccursOn($d1));
+		$this->assertTrue($range->OccursOn($d2));
+		$this->assertFalse($range->OccursOn($d3));
+	}
 }
 ?>

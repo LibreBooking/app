@@ -34,7 +34,7 @@ class ReservationSlot implements IReservationSlot
 	 * @param $periodSpan
 	 * @param ReservationItemView $reservation
 	 */
-	public function __construct(Date $begin, Date $end, Date $displayDate, $periodSpan, $reservation)
+	public function __construct(Date $begin, Date $end, Date $displayDate, $periodSpan, ReservationItemView $reservation)
 	{
 		$this->_reservation = $reservation;
 		$this->_begin = $begin;
@@ -133,7 +133,7 @@ class ReservationSlot implements IReservationSlot
 
 	public function __toString()
 	{
-                return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());
+		return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());
   	}
 }
 

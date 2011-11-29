@@ -7,17 +7,19 @@
 		<button class="close button">{translate key="OK"}</button>
 	{/if}
 
-	{$Message}
+	{if !empty($Message)}
+		<h5>{$Message}</h5>
+	{/if}
 
 	{if !empty($Blackouts)}
-		There are conflicting blackout times
+		<h5>There are conflicting blackout times</h5>
 		{foreach from=$Blackouts item=blackout}
 			{format_date date=$blackout->StartDate timezone=$Timezone}
 		{/foreach}
 	{/if}
 
 	{if !empty($Reservations)}
-		There are conflicting reservations times
+		<h5>There are conflicting reservations times</h5>
 		{foreach from=$Reservations item=reservation}
 			{format_date date=$reservation->StartDate timezone=$Timezone}
 		{/foreach}

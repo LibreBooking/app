@@ -24,7 +24,7 @@ class ViewSchedulePage extends Page implements ISchedulePage
 		$scheduleRepository = new ScheduleRepository();
 		$resourceService = new ResourceService(new ResourceRepository(), new NullPermissionService());
 		$pageBuilder = new SchedulePageBuilder();
-		$reservationService = new ReservationService(new ReservationRepository(), new ReservationListingFactory());
+		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
 		
 		$this->_presenter = new SchedulePresenter(

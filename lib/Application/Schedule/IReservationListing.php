@@ -16,7 +16,7 @@ interface IResourceReservationListing
 	public function Count();
 	
 	/**
-	 * @return array[int]ReservationListingItem
+	 * @return array|ReservationListItem[]
 	 */
 	public function Reservations();
 }
@@ -33,8 +33,17 @@ interface IReservationListing extends IResourceReservationListing
 interface IMutableReservationListing extends IReservationListing
 {
 	/**
+	 * @abstract
 	 * @param ReservationItemView $reservation
+	 * @return void
 	 */
 	public function Add($reservation);
+
+	/**
+	 * @abstract
+	 * @param BlackoutItemView $blackout
+	 * @return void
+	 */
+	public function AddBlackout($blackout);
 }
 ?>

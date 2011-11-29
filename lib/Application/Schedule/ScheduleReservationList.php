@@ -11,7 +11,7 @@ interface IScheduleReservationList
 class ScheduleReservationList implements IScheduleReservationList
 {
 	/**
-	 * @var array|ReservationItemView[]
+	 * @var array|ReservationListItem[]
 	 */
 	private $_reservations;
 	
@@ -29,7 +29,10 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @var Date
 	 */
 	private $_layoutDateEnd;
-	
+
+	/**
+	 * @var array|SchedulePeriod[]
+	 */
 	private $_layoutItems;
 	
 	private $_reservationsByStartTime = array();
@@ -39,6 +42,10 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @var Time
 	 */
 	private $_midnight;
+
+	/**
+	 * @var string
+	 */
 	private $_destinationTimezone;
 	
 	/**
@@ -47,7 +54,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	private $_firstLayoutTime; 
 	
 	/**
-	 * @param array|ReservationItemView[] $reservations
+	 * @param array|ReservationListItem[] $reservations
 	 * @param IScheduleLayout $layout
 	 * @param Date $layoutDate
 	 */
@@ -82,13 +89,15 @@ class ScheduleReservationList implements IScheduleReservationList
 				}
 				else
 				{
-					$endTime = $reservation->EndDate->ToTimezone($this->_destinationTimezone);
+					$endTime = $reservation->EndDate()->ToTimezone($this->_destinationTimezone);
 				}
 				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
 				$span = ($endingPeriodIndex - $currentIndex) + 1;
-				$slots[] = new ReservationSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span, $reservation);
-				
+
+				$slots[] = $reservation->BuildSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span);
+				//$slots[] = new ReservationSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span, $reservation);
+
 				$currentIndex = $endingPeriodIndex;
 			}
 			else
@@ -104,7 +113,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	{
 		foreach ($this->_reservations as $reservation)
 		{		
-			$start = $reservation->StartDate->ToTimezone($this->_destinationTimezone);
+			$start = $reservation->StartDate()->ToTimezone($this->_destinationTimezone);
 			
 			$startsInPast = $this->ReservationStartsOnPastDate($reservation);
 			if ($startsInPast)
@@ -116,16 +125,16 @@ class ScheduleReservationList implements IScheduleReservationList
 		}
 	}
 	
-	private function ReservationStartsOnPastDate(ReservationItemView $reservation)
+	private function ReservationStartsOnPastDate(ReservationListItem $reservation)
 	{
 		//Log::Debug("PAST");
-		return $reservation->StartDate->LessThan($this->_layoutDateStart);
+		return $reservation->StartDate()->LessThan($this->_layoutDateStart);
 	}
 	
-	private function ReservationEndsOnFutureDate(ReservationItemView $reservation)
+	private function ReservationEndsOnFutureDate(ReservationListItem $reservation)
 	{
 		//Log::Debug("%s %s %s", $reservation->GetReferenceNumber(), $reservation->GetEndDate()->GetDate(), $this->_layoutDateEnd->GetDate());
-		return $reservation->EndDate->Compare($this->_layoutDateEnd) >= 0;
+		return $reservation->EndDate()->Compare($this->_layoutDateEnd) >= 0;
 	}
 	
 	private function IndexLayout()
@@ -134,12 +143,14 @@ class ScheduleReservationList implements IScheduleReservationList
 		
 		for ($i = 0; $i < count($this->_layoutItems); $i++)		
 		{
+			/** @var Date $itemBegin  */
 			$itemBegin = $this->_layoutItems[$i]->BeginDate();
 			if ($itemBegin->LessThan($this->_firstLayoutTime))
 			{
 				$this->_firstLayoutTime =  $this->_layoutItems[$i]->BeginDate();
 			}
-			
+
+			/** @var Date $endTime */
 			$endTime = $this->_layoutItems[$i]->EndDate();
 			if (!$this->_layoutItems[$i]->EndDate()->DateEquals($this->_layoutDateStart))
 			{
@@ -167,7 +178,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	
 	/**
 	 * @param Date $beginTime
-	 * @return ReservationItemView
+	 * @return ReservationListItem
 	 */
 	private function GetReservationStartingAt(Date $beginTime)
 	{

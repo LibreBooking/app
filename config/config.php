@@ -22,10 +22,10 @@ $conf['settings']['cache.templates'] = 'true';  // caching template files helps 
  * Database configuration
  */
 $conf['settings']['database']['type'] = 'mysql';
-$conf['settings']['database']['user'] = 'schedule_user3';    // default user
+$conf['settings']['database']['user'] = 'schedule_user';    // default user
 $conf['settings']['database']['password'] = 'password'; // default password
 $conf['settings']['database']['hostspec'] = '127.0.0.1';    // mysql.acs.university.com
-$conf['settings']['database']['name'] = 'phpscheduleit3';
+$conf['settings']['database']['name'] = 'phpscheduleit2';
 /**
  * Mail server configuration
  *
@@ -52,5 +52,8 @@ $conf['settings']['phpmailer']['smtp.password'] = '';   // 'password'
 $conf['settings']['plugins']['Authentication'] = 'Ldap';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';
-$conf['settings']['install.password'] = 'now';
+/**
+ * Installation settings
+ */
+$conf['settings']['install.password'] = '';
 ?>

@@ -44,9 +44,10 @@ interface IReservationViewRepository
 	/**
 	 * @abstract
 	 * @param DateRange $dateRange
+	 * @param int|null $scheduleId
 	 * @return BlackoutItemView[]
 	 */
-	public function GetBlackoutsWithin(DateRange $dateRange);
+	public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES);
 
 	/**
 	 * @abstract
@@ -250,9 +251,9 @@ class ReservationViewRepository implements IReservationViewRepository
 		return $accessories;
 	}
 
-	public function GetBlackoutsWithin(DateRange $dateRange)
+	public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES)
 	{
-		$getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
+		$getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd(), $scheduleId);
 
 		$result = ServiceLocator::GetDatabase()->Query($getBlackoutsCommand);
 
@@ -490,6 +491,13 @@ interface IReservedItemView
 	 * @return int
 	 */
 	public function GetId();
+
+	/**
+	 * @abstract
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function OccursOn(Date $date);
 }
 
 class ReservationItemView implements IReservedItemView
@@ -681,20 +689,7 @@ class ReservationItemView implements IReservedItemView
 	 */
 	public function OccursOn(Date $date)
 	{
-		$timezone = $date->Timezone();
-		$beginMidnight = $this->StartDate->ToTimezone($timezone)->GetDate();
-
-		if ($this->EndDate->ToTimezone($timezone)->IsMidnight())
-		{
-			$endMidnight = $this->EndDate;
-		}
-		else
-		{
-			$endMidnight = $this->EndDate->ToTimezone($timezone)->GetDate()->AddDays(1);
-		}
-
-		return ($beginMidnight->Compare($date) <= 0 &&
-				$endMidnight->Compare($date) > 0);
+		return $this->Date->OccursOn($date);
 	}
 
 	/**
@@ -904,6 +899,15 @@ class BlackoutItemView implements IReservedItemView
 	public function GetId()
 	{
 		return $this->InstanceId;
+	}
+
+	/**
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function OccursOn(Date $date)
+	{
+		return $this->Date->OccursOn($date);
 	}
 }
 

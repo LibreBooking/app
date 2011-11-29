@@ -33,6 +33,7 @@ class DateRange
 	}
 
 	/**
+	 * Whether or not the $date is within the range.  Range boundaries are inclusive
 	 * @param Date $date
 	 * @return bool
 	 */
@@ -51,6 +52,7 @@ class DateRange
 	}
 
 	/**
+	 * Whether or not the date ranges overlap.  Dates that start or end on boundaries are excluded
 	 * @param DateRange $dateRange
 	 * @return bool
 	 */
@@ -60,6 +62,30 @@ class DateRange
 				$dateRange->Contains($this->GetBegin()) || $dateRange->Contains($this->GetEnd())) &&
 				(!$this->GetBegin()->Equals($dateRange->GetEnd()) && !$this->GetEnd()->Equals($dateRange->GetBegin()));
 
+	}
+
+	/**
+	 * Whether or not any date within this range occurs on the provided date
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function OccursOn(Date $date)
+	{
+		$timezone = $date->Timezone();
+		$compare = $this->ToTimezone($timezone);
+		$beginMidnight = $compare->GetBegin();
+
+		if ($this->GetEnd()->IsMidnight())
+		{
+			$endMidnight = $compare->GetEnd();
+		}
+		else
+		{
+			$endMidnight = $compare->GetEnd()->AddDays(1);
+		}
+
+		return ($beginMidnight->DateCompare($date) <= 0 &&
+				$endMidnight->DateCompare($date) > 0);
 	}
 
 	/**

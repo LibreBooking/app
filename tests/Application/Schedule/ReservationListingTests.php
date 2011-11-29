@@ -34,7 +34,12 @@ class ReservationListingTests extends TestBase
 		$reservationListing->Add($res3);
 		$reservationListing->Add($res2);
 		$reservationListing->Add($res5);
-		
+
+		$blackout1 = new TestBlackoutItemView(1, $res1->StartDate, $res1->EndDate, $res1->ResourceId);
+		$blackout2 = new TestBlackoutItemView(2, $res2->StartDate, $res2->EndDate, $res2->ResourceId);
+		$reservationListing->AddBlackout($blackout1);
+		$reservationListing->AddBlackout($blackout2);
+
 		$onDate1 = $reservationListing->OnDate(Date::Parse('2009-10-09', 'CST'));
 		$onDate2 = $reservationListing->OnDate(Date::Parse('2009-10-10', 'CST'));
 		$onDate3 = $reservationListing->OnDate(Date::Parse('2009-10-11', 'CST'));
@@ -44,16 +49,32 @@ class ReservationListingTests extends TestBase
 		$onDate7 = $reservationListing->OnDate(Date::Parse('2009-10-15', 'CST'));
 		$onDate8 = $reservationListing->OnDate(Date::Parse('2009-10-16', 'CST'));
 		
-		$this->assertEquals(2, $onDate1->Count());
-		$this->assertEquals(2, $onDate2->Count());
+		$this->assertEquals(4, $onDate1->Count(), "2 reservations 2 blackouts");
+		$this->assertEquals(3, $onDate2->Count(), "2 reservations 1 blackout");
 		$this->assertEquals(1, $onDate3->Count());
 		$this->assertEquals(1, $onDate4->Count());
 		$this->assertEquals(3, $onDate5->Count());
 		$this->assertEquals(1, $onDate6->Count());
 		$this->assertEquals(1, $onDate7->Count());
 		$this->assertEquals(0, $onDate8->Count());
+
+		$date1Items = $onDate1->Reservations();
+		$this->assertTrue(in_array(new ReservationListItem($res1), $date1Items));
+		$this->assertTrue(in_array(new ReservationListItem($res2), $date1Items));
+		$this->assertTrue(in_array(new BlackoutListItem($blackout1), $date1Items));
+		$this->assertTrue(in_array(new BlackoutListItem($blackout2), $date1Items));
+
+		$date2Items = $onDate2->Reservations();
+		$this->assertTrue(in_array(new ReservationListItem($res2), $date2Items));
+		$this->assertTrue(in_array(new ReservationListItem($res3), $date2Items));
+		$this->assertTrue(in_array(new BlackoutListItem($blackout2), $date2Items));
 	}
-	
+
+	/**
+	 * @param $startDateString
+	 * @param $endDateString
+	 * @return ReservationItemView
+	 */
 	private function GetReservation($startDateString, $endDateString)
 	{
 		return new ReservationItemView(1, Date::Parse($startDateString, 'UTC'), Date::Parse($endDateString, 'UTC'));

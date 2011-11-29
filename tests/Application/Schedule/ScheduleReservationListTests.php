@@ -62,8 +62,9 @@ class ScheduleReservationListTests extends TestBase
 		$e2 = Date::Parse('2010-01-02 23:00:00', $userTz);
 		$s3 = Date::Parse('2010-01-02 23:00:00', $userTz);
 		$e3 = Date::Parse('2010-01-03 02:00:00', $userTz);
-		
-		$r1 = new ReservationItemView(1, $s2->ToUtc(), $e2->ToUtc());
+
+		$item = new ReservationItemView(1, $s2->ToUtc(), $e2->ToUtc());
+		$r1 = new ReservationListItem($item);
 		$layoutPeriods[] = new NonSchedulePeriod($s1, $e1);
 		$layoutPeriods[] = new SchedulePeriod($s2, $e2);
 		$layoutPeriods[] = new SchedulePeriod($s3, $e3);
@@ -82,7 +83,7 @@ class ScheduleReservationListTests extends TestBase
 		$slots = $scheduleList->BuildSlots();
 	
 		$slot1 = new EmptyReservationSlot($s1, $e1, $date, false);
-		$slot2 = new ReservationSlot($s2, $e2, $date, 1, $r1);
+		$slot2 = new ReservationSlot($s2, $e2, $date, 1, $item);
 		$slot3 = new EmptyReservationSlot($s3, $e3, $date, true);
 
 		$this->assertEquals(3, count($slots));
@@ -103,10 +104,13 @@ class ScheduleReservationListTests extends TestBase
 		
 		$s3 = $date->SetTimeString('08:00');
 		$e3 = $date->SetTimeString('12:00');
-		
-		$r1 = new TestReservationItemView(1, $s1->ToUtc(), $e1->ToUtc());
-		$r2 = new TestReservationItemView(2, $s2->ToUtc(), $e2->ToUtc());
-		$r3 = new TestReservationItemView(3, $s3->ToUtc(), $e3->ToUtc());
+
+		$item1 = new TestReservationItemView(1, $s1->ToUtc(), $e1->ToUtc());
+		$item2 = new TestReservationItemView(2, $s2->ToUtc(), $e2->ToUtc());
+		$item3 = new TestReservationItemView(3, $s3->ToUtc(), $e3->ToUtc());
+		$r1 = new ReservationListItem($item1);
+		$r2 = new ReservationListItem($item2);
+		$r3 = new ReservationListItem($item3);
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -123,15 +127,15 @@ class ScheduleReservationListTests extends TestBase
 		$slot1 = new EmptyReservationSlot($expectedSlots[0]->BeginDate(), $expectedSlots[0]->EndDate(), $slotDate, $expectedSlots[0]->IsReservable());
 		$slot2 = new EmptyReservationSlot($expectedSlots[1]->BeginDate(), $expectedSlots[1]->EndDate(), $slotDate, $expectedSlots[1]->IsReservable());
 		$slot3 = new EmptyReservationSlot($expectedSlots[2]->BeginDate(), $expectedSlots[2]->EndDate(), $slotDate, $expectedSlots[2]->IsReservable());
-		$slot4 = new ReservationSlot($expectedSlots[3]->BeginDate(), $expectedSlots[5]->EndDate(), $slotDate, 3, $r1);
+		$slot4 = new ReservationSlot($expectedSlots[3]->BeginDate(), $expectedSlots[5]->EndDate(), $slotDate, 3, $item1);
 		$slot5 = new EmptyReservationSlot($expectedSlots[6]->BeginDate(), $expectedSlots[6]->EndDate(), $slotDate, $expectedSlots[6]->IsReservable());
-		$slot6 = new ReservationSlot($expectedSlots[7]->BeginDate(), $expectedSlots[7]->EndDate(), $slotDate, 1, $r2);
+		$slot6 = new ReservationSlot($expectedSlots[7]->BeginDate(), $expectedSlots[7]->EndDate(), $slotDate, 1, $item2);
 		$slot7 = new EmptyReservationSlot($expectedSlots[8]->BeginDate(), $expectedSlots[8]->EndDate(), $slotDate, $expectedSlots[8]->IsReservable());
 		$slot8 = new EmptyReservationSlot($expectedSlots[9]->BeginDate(), $expectedSlots[9]->EndDate(), $slotDate, $expectedSlots[9]->IsReservable());
 		$slot9 = new EmptyReservationSlot($expectedSlots[10]->BeginDate(), $expectedSlots[10]->EndDate(), $slotDate, $expectedSlots[10]->IsReservable());
 		$slot10 = new EmptyReservationSlot($expectedSlots[11]->BeginDate(), $expectedSlots[11]->EndDate(), $slotDate, $expectedSlots[11]->IsReservable());
 		$slot11 = new EmptyReservationSlot($expectedSlots[12]->BeginDate(), $expectedSlots[12]->EndDate(), $slotDate, $expectedSlots[12]->IsReservable());
-		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $expectedSlots[20]->EndDate(), $slotDate, 8, $r3);
+		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $expectedSlots[20]->EndDate(), $slotDate, 8, $item3);
 		$slot13 = new EmptyReservationSlot($expectedSlots[21]->BeginDate(), $expectedSlots[21]->EndDate(), $slotDate, $expectedSlots[21]->IsReservable());
 		$slot14 = new EmptyReservationSlot($expectedSlots[22]->BeginDate(), $expectedSlots[22]->EndDate(), $slotDate, $expectedSlots[22]->IsReservable());
 		$slot15 = new EmptyReservationSlot($expectedSlots[23]->BeginDate(), $expectedSlots[23]->EndDate(), $slotDate, $expectedSlots[23]->IsReservable());
@@ -177,10 +181,13 @@ class ScheduleReservationListTests extends TestBase
 		
 		$s3 = $date->SetTimeString('08:00');
 		$e3 = $date->SetTimeString('11:55');
-		
-		$r1 = new TestReservationItemView(1, $s1->ToUtc(), $e1->ToUtc());
-		$r2 = new TestReservationItemView(2, $s2->ToUtc(), $e2->ToUtc());
-		$r3 = new TestReservationItemView(3, $s3->ToUtc(), $e3->ToUtc());
+
+		$item1 = new TestReservationItemView(1, $s1->ToUtc(), $e1->ToUtc());
+		$item2 = new TestReservationItemView(2, $s2->ToUtc(), $e2->ToUtc());
+		$item3 = new TestReservationItemView(3, $s3->ToUtc(), $e3->ToUtc());
+		$r1 = new ReservationListItem($item1);
+		$r2 = new ReservationListItem($item2);
+		$r3 = new ReservationListItem($item3);
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -193,15 +200,15 @@ class ScheduleReservationListTests extends TestBase
 		$slot1 = new EmptyReservationSlot($expectedSlots[0]->BeginDate(), $expectedSlots[0]->EndDate(), $slotDate, $expectedSlots[0]->IsReservable());
 		$slot2 = new EmptyReservationSlot($expectedSlots[1]->BeginDate(), $expectedSlots[1]->EndDate(), $slotDate, $expectedSlots[1]->IsReservable());
 		$slot3 = new EmptyReservationSlot($expectedSlots[2]->BeginDate(), $expectedSlots[2]->EndDate(), $slotDate, $expectedSlots[2]->IsReservable());
-		$slot4 = new ReservationSlot($expectedSlots[3]->BeginDate(), $expectedSlots[5]->EndDate(), $slotDate, 3, $r1);
+		$slot4 = new ReservationSlot($expectedSlots[3]->BeginDate(), $expectedSlots[5]->EndDate(), $slotDate, 3, $item1);
 		$slot5 = new EmptyReservationSlot($expectedSlots[6]->BeginDate(), $expectedSlots[6]->EndDate(), $slotDate, $expectedSlots[6]->IsReservable());
-		$slot6 = new ReservationSlot($expectedSlots[7]->BeginDate(), $expectedSlots[7]->EndDate(), $slotDate, 1, $r2);
+		$slot6 = new ReservationSlot($expectedSlots[7]->BeginDate(), $expectedSlots[7]->EndDate(), $slotDate, 1, $item2);
 		$slot7 = new EmptyReservationSlot($expectedSlots[8]->BeginDate(), $expectedSlots[8]->EndDate(), $slotDate, $expectedSlots[8]->IsReservable());
 		$slot8 = new EmptyReservationSlot($expectedSlots[9]->BeginDate(), $expectedSlots[9]->EndDate(), $slotDate, $expectedSlots[9]->IsReservable());
 		$slot9 = new EmptyReservationSlot($expectedSlots[10]->BeginDate(), $expectedSlots[10]->EndDate(), $slotDate, $expectedSlots[10]->IsReservable());
 		$slot10 = new EmptyReservationSlot($expectedSlots[11]->BeginDate(), $expectedSlots[11]->EndDate(), $slotDate, $expectedSlots[11]->IsReservable());
 		$slot11 = new EmptyReservationSlot($expectedSlots[12]->BeginDate(), $expectedSlots[12]->EndDate(), $slotDate, $expectedSlots[12]->IsReservable());
-		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $expectedSlots[20]->EndDate(), $slotDate, 8, $r3);
+		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $expectedSlots[20]->EndDate(), $slotDate, 8, $item3);
 		$slot13 = new EmptyReservationSlot($expectedSlots[21]->BeginDate(), $expectedSlots[21]->EndDate(), $slotDate, $expectedSlots[21]->IsReservable());
 		$slot14 = new EmptyReservationSlot($expectedSlots[22]->BeginDate(), $expectedSlots[22]->EndDate(), $slotDate, $expectedSlots[22]->IsReservable());
 		$slot15 = new EmptyReservationSlot($expectedSlots[23]->BeginDate(), $expectedSlots[23]->EndDate(), $slotDate, $expectedSlots[23]->IsReservable());
@@ -235,7 +242,7 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertEquals($slot19, $slots[18]);
 	}
 	
-	public function testReservaionEndingAfterLayoutPeriodAndStartingWithinIsCreatedProperly()
+	public function testReservationEndingAfterLayoutPeriodAndStartingWithinIsCreatedProperly()
 	{
 		$date = $this->date;	
 		
@@ -247,10 +254,13 @@ class ScheduleReservationListTests extends TestBase
 		
 		$s3 = $date->SetTimeString('08:00');
 		$e3 = $date->AddDays(2)->SetTimeString('11:55');
-		
-		$r1 = new TestReservationItemView(1, $s1->ToUtc(), $e1->ToUtc());
-		$r2 = new TestReservationItemView(2, $s2->ToUtc(), $e2->ToUtc());
-		$r3 = new TestReservationItemView(3, $s3->ToUtc(), $e3->ToUtc());
+
+		$item1 = new TestReservationItemView(1, $s1->ToUtc(), $e1->ToUtc());
+		$item2 = new TestReservationItemView(2, $s2->ToUtc(), $e2->ToUtc());
+		$item3 = new TestReservationItemView(3, $s3->ToUtc(), $e3->ToUtc());
+		$r1 = new ReservationListItem($item1);
+		$r2 = new ReservationListItem($item2);
+		$r3 = new ReservationListItem($item3);
 		
 		$reservations = array($r1, $r2, $r3);
 		
@@ -263,15 +273,15 @@ class ScheduleReservationListTests extends TestBase
 		$slot1 = new EmptyReservationSlot($expectedSlots[0]->BeginDate(), $expectedSlots[0]->EndDate(), $slotDate, $expectedSlots[0]->IsReservable());
 		$slot2 = new EmptyReservationSlot($expectedSlots[1]->BeginDate(), $expectedSlots[1]->EndDate(), $slotDate, $expectedSlots[1]->IsReservable());
 		$slot3 = new EmptyReservationSlot($expectedSlots[2]->BeginDate(), $expectedSlots[2]->EndDate(), $slotDate, $expectedSlots[2]->IsReservable());
-		$slot4 = new ReservationSlot($expectedSlots[3]->BeginDate(), $expectedSlots[5]->EndDate(), $slotDate, 3, $r1);
+		$slot4 = new ReservationSlot($expectedSlots[3]->BeginDate(), $expectedSlots[5]->EndDate(), $slotDate, 3, $item1);
 		$slot5 = new EmptyReservationSlot($expectedSlots[6]->BeginDate(), $expectedSlots[6]->EndDate(), $slotDate, $expectedSlots[6]->IsReservable());
-		$slot6 = new ReservationSlot($expectedSlots[7]->BeginDate(), $expectedSlots[7]->EndDate(), $slotDate, 1, $r2);
+		$slot6 = new ReservationSlot($expectedSlots[7]->BeginDate(), $expectedSlots[7]->EndDate(), $slotDate, 1, $item2);
 		$slot7 = new EmptyReservationSlot($expectedSlots[8]->BeginDate(), $expectedSlots[8]->EndDate(), $slotDate, $expectedSlots[8]->IsReservable());
 		$slot8 = new EmptyReservationSlot($expectedSlots[9]->BeginDate(), $expectedSlots[9]->EndDate(), $slotDate, $expectedSlots[9]->IsReservable());
 		$slot9 = new EmptyReservationSlot($expectedSlots[10]->BeginDate(), $expectedSlots[10]->EndDate(), $slotDate, $expectedSlots[10]->IsReservable());
 		$slot10 = new EmptyReservationSlot($expectedSlots[11]->BeginDate(), $expectedSlots[11]->EndDate(), $slotDate, $expectedSlots[11]->IsReservable());
 		$slot11 = new EmptyReservationSlot($expectedSlots[12]->BeginDate(), $expectedSlots[12]->EndDate(), $slotDate, $expectedSlots[12]->IsReservable());
-		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $date->AddDays(1), $slotDate, 15, $r3);
+		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $date->AddDays(1), $slotDate, 15, $item3);
 		
 		$this->assertEquals(12, count($slots));
 		
@@ -289,12 +299,13 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertEquals($slot12, $slots[11], $slot12 . ' ' . $slots[11]);
 	}
 	
-	public function testReservaionStartingBeforeLayoutPeriodAndEndingAfterLayoutPeriodIsCreatedProperly()
+	public function testReservationStartingBeforeLayoutPeriodAndEndingAfterLayoutPeriodIsCreatedProperly()
 	{
 		$userTz = 'America/Chicago';
 		$date = Date::Parse('2008-11-12', $userTz);
-		
-		$r1 = new TestReservationItemView(1, $date->AddDays(-1)->ToUtc(), $date->AddDays(1)->ToUtc());
+
+		$item = new TestReservationItemView(1, $date->AddDays(-1)->ToUtc(), $date->AddDays(1)->ToUtc());
+		$r1 = new ReservationListItem($item);
 		
 		$reservations = array($r1);
 		
@@ -303,7 +314,7 @@ class ScheduleReservationListTests extends TestBase
 		$expectedSlots = $this->testDbLayout->GetLayout($date);
 		
 		$totalSlotsInDay = count($expectedSlots);
-		$slot1 = new ReservationSlot($expectedSlots[0]->BeginDate(), $expectedSlots[$totalSlotsInDay-1]->EndDate(), $date, $totalSlotsInDay, $r1);
+		$slot1 = new ReservationSlot($expectedSlots[0]->BeginDate(), $expectedSlots[$totalSlotsInDay-1]->EndDate(), $date, $totalSlotsInDay, $item);
 		
 		$this->assertEquals(1, count($slots));
 		
@@ -322,8 +333,9 @@ class ScheduleReservationListTests extends TestBase
 		$layout->AppendPeriod(new Time(8,0,0, $layoutTz), new Time(12,0,0, $layoutTz));
 		$layout->AppendPeriod(new Time(12,0,0, $layoutTz), new Time(18,0,0, $layoutTz));
 		$layout->AppendPeriod(new Time(18,0,0, $layoutTz), new Time(0,0,0, $layoutTz));
-		
-		$r1 = new TestReservationItemView(1, $date->AddDays(-1)->ToUtc(), Date::Parse('2008-11-12 6:0:0', $layoutTz)->ToUtc());
+
+		$item = new TestReservationItemView(1, $date->AddDays(-1)->ToUtc(), Date::Parse('2008-11-12 6:0:0', $layoutTz)->ToUtc());
+		$r1 = new ReservationListItem($item);
 		
 		$list = new ScheduleReservationList(array($r1), $layout, $date);
 		$slots = $list->BuildSlots();
@@ -334,7 +346,7 @@ class ScheduleReservationListTests extends TestBase
 		$s6Begin = Date::Parse('2008-11-13 0:0:0', $layoutTz)->ToTimezone($userTz);
 		$s6End = Date::Parse('2008-11-13 6:0:0', $layoutTz)->ToTimezone($userTz);
 		
-		$slot1 = new ReservationSlot($s1Begin, $s1End, $date, 1, $r1);
+		$slot1 = new ReservationSlot($s1Begin, $s1End, $date, 1, $item);
 		$slot6 = new EmptyReservationSlot($s6Begin, $s6End, $date, true);
 		
 		$this->assertEquals($slot1, $slots[0]);
@@ -380,9 +392,6 @@ class ScheduleReservationListTests extends TestBase
 		$d1 = new Date('2009-10-09 22:00:00', 'UTC');	// 2009-10-09 17:00:00 CST
 		$d2 = new Date('2009-10-09 23:00:00', 'UTC'); 	// 2009-10-09 18:00:00 CST
 		
-		$d1Cst = $d1->ToTimezone('CST');
-		$d2Cst = $d2->ToTimezone('CST');
-		
 		$res1 = new ReservationItemView(1, $d1, $d2);
 		
 		$this->assertFalse($res1->OccursOn(Date::Parse('2009-10-10', 'CST')));
@@ -415,21 +424,21 @@ class ScheduleReservationListTests extends TestBase
 		
 		$date = new Date('2010-01-02', $timezone);
 		
-		$r1 = new TestReservationItemView(
+		$r1 = new ReservationListItem(new TestReservationItemView(
 			1, 
 			Date::Parse('2010-01-01 00:00:00', 'UTC'),
 			Date::Parse('2010-01-02 00:00:00', 'UTC'),
-			1);
-		$r2 = new TestReservationItemView(
+			1));
+		$r2 = new ReservationListItem(new TestReservationItemView(
 			2, 
 			Date::Parse('2010-01-02 00:00:00', 'UTC'),
 			Date::Parse('2010-01-03 00:00:00', 'UTC'), 
-			1);
-		$r3 = new TestReservationItemView(
+			1));
+		$r3 = new ReservationListItem(new TestReservationItemView(
 			3, 
 			Date::Parse('2010-01-03 00:00:00', 'UTC'),
 			Date::Parse('2010-01-04 00:00:00', 'UTC'), 
-			1);
+			1));
 			
 		$list = new ScheduleReservationList(array($r1, $r2, $r3), $layout, $date);
 
@@ -450,20 +459,21 @@ class ScheduleReservationListTests extends TestBase
 		$layout->AppendPeriod(Time::Parse('2:00', $tz), Time::Parse('6:00', $tz));
 		$layout->AppendPeriod(Time::Parse('6:00', $tz), Time::Parse('12:00', $tz));
 		$layout->AppendPeriod(Time::Parse('12:00', $tz), Time::Parse('18:00', $tz));
-		$layout->AppendPeriod(Time::Parse('18:00', $tz), Time::Parse('0:00', $tz));		
-		
-		$r1 = new TestReservationItemView(
-			1, 
+		$layout->AppendPeriod(Time::Parse('18:00', $tz), Time::Parse('0:00', $tz));
+
+		$item = new TestReservationItemView(
+			1,
 			Date::Parse('2011-02-06 12:00:00', $tz)->ToUtc(),
 			Date::Parse('2011-02-06 18:00:00', $tz)->ToUtc(),
 			1);
+		$r1 = new ReservationListItem($item);
 		
 		$list = new ScheduleReservationList(array($r1), $layout, $listDate);
 
 		$slots = $list->BuildSlots();
 		
 		$this->assertEquals(5, count($slots));
-		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("12:00"), $listDate->SetTimeString("18:00"), $listDate, 1, $r1), $slots[3]);
+		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("12:00"), $listDate->SetTimeString("18:00"), $listDate, 1, $item), $slots[3]);
 	}
 }
 

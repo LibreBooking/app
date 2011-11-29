@@ -24,47 +24,105 @@ class ReservationServiceTests extends TestBase
 		$range = new DateRange($startDate, $endDate);
 		
 		$repository = $this->getMock('IReservationViewRepository');
-		$reservationListing = $this->getMock('IMutableReservationListing');
+		$reservationListing = new TestReservationListing();
 		$listingFactory = $this->getMock('IReservationListingFactory');
 		
 		$rows = FakeReservationRepository::GetReservationRows();
 		$res1 = ReservationItemView::Populate($rows[0]);
 		$res2 = ReservationItemView::Populate($rows[1]);
 		$res3 = ReservationItemView::Populate($rows[2]);
-		
+
+		$date = Date::Now();
+		$blackout1 = new TestBlackoutItemView(1, $date, $date, 1);
+		$blackout2 = new TestBlackoutItemView(2, $date, $date, 2);
+		$blackout3 = new TestBlackoutItemView(3, $date, $date, 3);
+
 		$repository
 			->expects($this->once())
 			->method('GetReservationList')
 			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->isNull(), $this->isNull(), $this->equalTo($scheduleId), $this->isNull())
 			->will($this->returnValue(array($res1, $res2, $res3)));
 
+		$repository
+			->expects($this->once())
+			->method('GetBlackoutsWithin')
+			->with($this->equalTo(new DateRange($startDate, $endDate)), $this->equalTo($scheduleId))
+			->will($this->returnValue(array($blackout1, $blackout2, $blackout3)));
+
 		$listingFactory
 			->expects($this->once())
 			->method('CreateReservationListing')
-			->with($timezone)
+			->with($this->equalTo($timezone))
 			->will($this->returnValue($reservationListing));
 
-		$reservationListing
-			->expects($this->at(0))
-			->method('Add')
-			->with($res1);
-
-		$reservationListing
-			->expects($this->at(1))
-			->method('Add')
-			->with($res2);
-						
-		$reservationListing
-			->expects($this->at(2))
-			->method('Add')
-			->with($res3);
-			
 		$service = new ReservationService($repository, $listingFactory);
 		
 		$listing = $service->GetReservations($range, $scheduleId, $timezone);
 		
 		$this->assertEquals($reservationListing, $listing);
+		$this->assertTrue(in_array($res1, $reservationListing->reservations));
+		$this->assertTrue(in_array($res2, $reservationListing->reservations));
+		$this->assertTrue(in_array($res3, $reservationListing->reservations));
+		$this->assertTrue(in_array($blackout1, $reservationListing->blackouts));
+		$this->assertTrue(in_array($blackout2, $reservationListing->blackouts));
+		$this->assertTrue(in_array($blackout3, $reservationListing->blackouts));
 	}
-	
+
+}
+
+class TestReservationListing implements IMutableReservationListing
+{
+	/**
+	 * @var array|ReservationItemView[]
+	 */
+	public $reservations = array();
+
+	/**
+	 * @var array|BlackoutItemView[]
+	 */
+	public $blackouts = array();
+
+	/**
+	 * @return int
+	 */
+	public function Count()
+	{
+		// TODO: Implement Count() method.
+	}
+
+	/**
+	 * @return array|ReservationItemView[]
+	 */
+	public function Reservations()
+	{
+		// TODO: Implement Reservations() method.
+	}
+
+	/**
+	 * @param Date $date
+	 * @return IDateReservationListing
+	 */
+	public function OnDate($date)
+	{
+		// TODO: Implement OnDate() method.
+	}
+
+	/**
+	 * @param ReservationItemView $reservation
+	 * @return void
+	 */
+	public function Add($reservation)
+	{
+		$this->reservations[] = $reservation;
+	}
+
+	/**
+	 * @param BlackoutItemView $blackout
+	 * @return void
+	 */
+	public function AddBlackout($blackout)
+	{
+		$this->blackouts[] = $blackout;
+	}
 }
 ?>

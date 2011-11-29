@@ -2,7 +2,9 @@
 interface IDailyLayout
 {
 	/**
-	 * @return array[int]IReservationSlot
+	 * @param Date $date
+	 * @param int $resourceId
+	 * @return array|IReservationSlot[]
 	 */
 	function GetLayout(Date $date, $resourceId);
 	

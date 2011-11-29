@@ -7,7 +7,8 @@ interface ILayoutTimezone
 interface IScheduleLayout extends ILayoutTimezone
 {
 	/**
-	 * @return SchedulePeriod[] array of SchedulePeriod objects
+	 * @param Date $layoutDate
+	 * @return SchedulePeriod[]|array of SchedulePeriod objects
 	 */
 	public function GetLayout(Date $layoutDate);
 }

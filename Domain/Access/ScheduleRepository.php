@@ -130,6 +130,7 @@ class ScheduleRepository implements IScheduleRepository
 	
 	public function LoadById($scheduleId)
 	{
+		// TODO: Handle when not found
 		if (!$this->_cache->Exists($scheduleId))
 		{
 			$schedule = null;

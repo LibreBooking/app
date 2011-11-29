@@ -261,7 +261,7 @@ class ReservationViewRepositoryTests extends TestBase
 
 		$this->db->SetRows($rows);
 
-		$getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
+		$getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd(), ReservationViewRepository::ALL_SCHEDULES);
 
 		$blackouts = $this->repository->GetBlackoutsWithin($dateRange);
 

@@ -28,7 +28,7 @@ class DailyLayoutTests extends TestBase
 		
 		$startDate = Date::Parse('2009-09-02 17:00:00', 'UTC');
 		$endDate = Date::Parse('2009-09-02 18:00:00', 'UTC');
-		$reservation = new ReservationItemView('rn', $startDate, $endDate, null, $resourceId);
+		$reservation = new TestReservationListItem($startDate, $endDate, $resourceId);
 		$reservations = array($reservation);		
 
 		$listing->expects($this->once())
@@ -75,6 +75,46 @@ class DailyLayoutTests extends TestBase
 		$this->assertEquals('12:00', $labels[0]);
 		$this->assertEquals('start', $labels[1]);
 		$this->assertEquals('08:30', $labels[2]);
+	}
+}
+
+class TestReservationListItem extends ReservationListItem
+{
+	/**
+	 * @var \Date
+	 */
+	private $start;
+
+	/**
+	 * @var \Date
+	 */
+	private $end;
+
+	/**
+	 * @var int
+	 */
+	private $resourceId;
+
+	public function __construct(Date $start, Date $end, $resourceId)
+	{
+		$this->start = $start;
+		$this->end = $end;
+		$this->resourceId = $resourceId;
+	}
+
+	public function StartDate()
+	{
+		return $this->start;
+	}
+
+	public function EndDate()
+	{
+		return $this->end;
+	}
+
+	public function ResourceId()
+	{
+		return $this->resourceId;
 	}
 }
 ?>
