@@ -1,11 +1,21 @@
 <?php
 
+/**
+ * Abstract/parent class only
+ */
 require_once(ROOT_DIR . 'Pages/IPage.php');
 require_once(ROOT_DIR . 'Pages/Pages.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
+/**
+ * An abstract class is a class that is declared abstract—it may or may not include abstract methods.
+ * Abstract classes cannot be instantiated, but they can be subclassed.
+ * If a class includes abstract methods, the class itself must be declared abstract
+ * An abstract method is a method that is declared without an implementation (without braces, and followed by a semicolon), like this:
+ * abstract void moveTo(double deltaX, double deltaY);
+ */
 abstract class Page implements IPage {
 
     /**

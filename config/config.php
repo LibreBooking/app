@@ -4,7 +4,7 @@ error_reporting(E_ALL & ~E_NOTICE);
  * Application configuration
  */
 $conf['settings']['server.timezone'] = 'America/Edmonton';   // look up here http://php.net/manual/en/timezones.php
-$conf['settings']['allow.self.registration'] = 'true';  // this is email self registration on home page the other is optional LDAP authentication. You may have both at the same time
+$conf['settings']['allow.self.registration'] = 'false';  // this is email self registration on home page the other is optional LDAP authentication. You may have both at the same time
 $conf['settings']['admin.email'] = 'dule@ucalgary.ca'; // notification email to be sent to admin user
 $conf['settings']['default.page.size'] = '50';  // number of records per page
 $conf['settings']['enable.email'] = 'true'; // sending auto email to users
@@ -46,7 +46,7 @@ $conf['settings']['phpmailer']['smtp.username'] = '';   // 'username'
 $conf['settings']['phpmailer']['smtp.password'] = '';   // 'password'
 /**
  * Authentication configuration
- * 
+ *
  * Read /plugins/Authentication/readme.txt
  */
 $conf['settings']['plugins']['Authentication'] = 'Ldap';
