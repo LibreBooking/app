@@ -46,7 +46,7 @@
                 <li>3)<i>The following options will not work in a hosted environment.  Please set up the database and user through your provider's database tools.</i></li>
                 <li><input type="checkbox" name="create_database" /> Create the database based on configruation /config/config.php ({$dbname})</li>
                 <li><input type="checkbox" name="create_user" /> Create the user based on configruation /config/config.php ({$dbuser})</li>
-                <li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and user/password for user</li>
+                <li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and nkorbel/password for user</li>
                 <li>
                     </br><button type="submit" name="run_install" class="button" value="submit">Run Installation {html_image src="arrow_large_right.png"}</br>
                 </li>
@@ -72,8 +72,8 @@
             <li>
                 {if $InstallCompletedSuccessfully}
                     Summary: <br/> Installation completed successfully! <br/>
-                    <a href="{$Path}{Pages::LOGIN}">Login with admin/password for admin user Or nkorbel/password for basic user.</a> Or <br/>
-                    <a href="{$Path}{Pages::REGISTRATION}">Register your admin user.</a>
+                    1)<a href="{$Path}{Pages::LOGIN}"> Login </a>with admin/password for admin-user Or nkorbel/password for basic-user. This is sample data chosen to installed in previous page. Or <br/>
+                    2)<a href="{$Path}{Pages::REGISTRATION}"> Register </a>your admin-user/basic-user. This is email authentication method and it requires mail server configured to work successfully.
                 {/if}
                 {if $InstallFailed}
                     Summary: <br/> There were problems with the installation.  Please correct them and retry the installation.
