@@ -1,4 +1,7 @@
 <?php
+/**
+ * 
+ */
 require_once(ROOT_DIR . 'plugins/Authentication/Ldap/Ldap.config.php');
 require_once(ROOT_DIR . 'plugins/Authentication/Ldap/Ldap.php');
 require_once(ROOT_DIR . 'plugins/Authentication/Ldap/LdapOptions.php');
