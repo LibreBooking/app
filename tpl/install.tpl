@@ -72,7 +72,8 @@
             <li>
                 {if $InstallCompletedSuccessfully}
                     Summary: <br/> Installation completed successfully! <br/>
-                    <a href="{$Path}{Pages::REGISTRATION}">Register your admin user</a>
+                    <a href="{$Path}{Pages::LOGIN}">Login with admin/password for admin user Or nkorbel/password for basic user.</a> Or <br/>
+                    <a href="{$Path}{Pages::REGISTRATION}">Register your admin user.</a>
                 {/if}
                 {if $InstallFailed}
                     Summary: <br/> There were problems with the installation.  Please correct them and retry the installation.

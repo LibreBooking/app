@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Display successful/failure message after attempting the auto installation
  */
 class InstallationResult {
 
