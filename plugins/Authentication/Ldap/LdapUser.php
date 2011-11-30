@@ -12,13 +12,16 @@ class LdapUser {
     private $institution;
     private $title;
 
+	/**
+	 * @param adLDAPUserCollection $entry
+	 */
     public function __construct($entry) {
-        $this->fname = $entry['givenname'][0];
-        $this->lname = $entry['sn'][0];
-        $this->mail = strtolower($entry['mail'][0]);
-        $this->phone = isset($entry['telephonenumber']) ? $entry['telephonenumber'][0] : '';
-        $this->institution = isset($entry['physicaldeliveryofficename']) ? $entry['physicaldeliveryofficename'] : '';
-        $this->title = isset($entry['title']) ? $entry['title'][0] : '';
+        $this->fname = $entry->givenname;
+        $this->lname = $entry->sn;
+        $this->mail = strtolower($entry->mail);
+        $this->phone = isset($entry->telephonenumber) ? $entry->telephonenumber : '';
+        $this->institution = isset($entry->physicaldeliveryofficename) ? $entry->physicaldeliveryofficename : '';
+        $this->title = isset($entry->title) ? $entry->title : '';
     }
 
     public function GetFirstName() {

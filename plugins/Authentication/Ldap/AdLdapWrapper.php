@@ -3,9 +3,19 @@ require_once(ROOT_DIR . 'plugins/Authentication/Ldap/adLDAP.php');
 
 class AdLdapWrapper implements ILdap
 {
+	/**
+	 * @var LdapOptions
+	 */
 	private $options;
+
+	/**
+	 * @var adLdap
+	 */
 	private $ldap;
 
+	/**
+	 * @param LdapOptions $ldapOptions
+	 */
 	public function __construct($ldapOptions)
 	{
 		$this->options = $ldapOptions;
@@ -27,9 +37,9 @@ class AdLdapWrapper implements ILdap
 				$this->ldap = new adLdap($options);
 				$connected = true;
 			}
-			catch (Exception $ex)
+			catch (adLDAPException $ex)
 			{
-				// adLdap throws exception when cannot connect
+				Log::Error($ex);
 			}
 		}
 
@@ -44,8 +54,9 @@ class AdLdapWrapper implements ILdap
 	public function GetLdapUser($username)
 	{
 		$attributes = array( 'sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title' );
-		$entries = $this->ldap->user_info($username, $attributes);
 
+		/** @var adLDAPUserCollection $entries  */
+		$entries = $this->ldap->user()->infoCollection($username, $attributes);
 		if (count($entries) > 0)
 		{
 			return new LdapUser($entries);
