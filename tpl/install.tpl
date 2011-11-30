@@ -46,9 +46,9 @@
                 <li>3)<i>The following options will not work in a hosted environment.  Please set up the database and user through your provider's database tools.</i></li>
                 <li><input type="checkbox" name="create_database" /> Create the database based on configruation /config/config.php ({$dbname})</li>
                 <li><input type="checkbox" name="create_user" /> Create the user based on configruation /config/config.php ({$dbuser})</li>
-                <li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and nkorbel/password for user</li>
+                <li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and user/password for user</li>
                 <li>
-                    </br><button type="submit" name="run_install" class="button" value="submit">Run Installation {html_image src="arrow_large_right.png"}</br>
+                    </br><button type="submit" name="run_install" class="button" value="submit">Run Installation {html_image src="arrow_large_right.png"}<br/>
                 </li>
             </ul>
         {/if}
