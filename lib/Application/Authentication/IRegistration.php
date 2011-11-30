@@ -20,5 +20,12 @@ interface IRegistration
 	 * @return bool if the user exists or not
 	 */
 	public function UserExists($loginName, $emailAddress);
+
+	/**
+	 * Add or update a user who has already been authenticated
+	 * @param AuthenticatedUser $user
+	 * @return void
+	 */
+	public function Synchronize(AuthenticatedUser $user);
 }
 ?>

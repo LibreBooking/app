@@ -12,7 +12,7 @@ class RegistrationTests extends TestBase
 	 * @var FakePasswordEncryption
 	 */
 	private $fakeEncryption;
-	
+
 	private $login = 'testlogin';
 	private $email = 'test@test.com';
 	private $fname = 'First';
@@ -23,46 +23,88 @@ class RegistrationTests extends TestBase
 	private $timezone = 'US/Eastern';
 	private $language = 'en_US';
 	private $homepageId = 1;
-	
+
 	public function setUp()
 	{
 		parent::setup();
 
-		$this->fakeEncryption = new FakePasswordEncryption();		
+		$this->fakeEncryption = new FakePasswordEncryption();
 		$this->registration = new Registration($this->fakeEncryption);
 	}
-	
+
 	public function tearDown()
 	{
 		parent::teardown();
 		$this->registration = null;
 	}
-	
+
 	public function testRegistersUser()
 	{
 		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
-		
-		$command = new RegisterUserCommand(
-					$this->login, $this->email, $this->fname, $this->lname, 
-					$this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->language, $this->homepageId,
-					$this->additionalFields['phone'], $this->additionalFields['organization'], $this->additionalFields['position']
-					,AccountStatus::ACTIVE);
-		
+
+		$command = new RegisterUserCommand($this->login, $this->email, $this->fname, $this->lname, $this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->language, $this->homepageId, $this->additionalFields['phone'], $this->additionalFields['organization'], $this->additionalFields['position'], AccountStatus::ACTIVE);
+
 		$this->assertEquals($command, $this->db->_Commands[0]);
 		$this->assertTrue($this->fakeEncryption->_EncryptPasswordCalled);
 		$this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
 	}
-	
+
 	public function testAutoAssignsAllResourcesForThisUser()
 	{
 		$expectedUserId = 100;
-		
+
 		$this->db->_ExpectedInsertId = $expectedUserId;
 		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
-		
+
 		$command = new AutoAssignPermissionsCommand($expectedUserId);
-		
+
 		$this->assertEquals($command, $this->db->_Commands[1]);
 	}
+
+	public function testSynchronizeUpdatesExistingUser()
+	{
+		$this->db->SetRows(array(true));
+
+		$username = 'un';
+		$email = 'em';
+		$fname = 'fn';
+		$lname = 'ln';
+		$phone = 'ph';
+		$inst = 'or';
+		$title = 'title';
+		$encryptedPassword = $this->fakeEncryption->_Encrypted;
+		$salt = $this->fakeEncryption->_Salt;
+
+		$user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title);
+		$expectedCommand = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $encryptedPassword, $salt, $phone, $inst, $title);
+
+		$this->registration->Synchronize($user);
+
+		$this->assertTrue($this->db->ContainsCommand($expectedCommand));
+	}
+
+	public function testSynchronizeRegistersNewUser()
+	{
+		$username = 'un';
+		$email = 'em';
+		$fname = 'fn';
+		$lname = 'ln';
+		$phone = 'ph';
+		$inst = 'or';
+		$title = 'title';
+		$langCode = 'en_US';
+		$timezone = 'UTC';
+
+		$encryptedPassword = $this->fakeEncryption->_Encrypted;
+		$salt = $this->fakeEncryption->_Salt;
+		
+		$user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', $langCode, $timezone, $phone, $inst, $title);
+		$expectedCommand = new RegisterUserCommand($username, $email, $fname, $lname, $encryptedPassword, $salt, $timezone, $langCode, Pages::DEFAULT_HOMEPAGE_ID, $phone, $inst, $title, AccountStatus::ACTIVE);
+
+		$this->registration->Synchronize($user);
+
+		$this->assertTrue($this->db->ContainsCommand($expectedCommand), 'Expected  ' . $expectedCommand);
+	}
 }
+
 ?>

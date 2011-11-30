@@ -4,6 +4,7 @@ class FakeRegistration implements IRegistration
 	public $_RegisterCalled = false;
 	public $_UserExists = true;
 	public $_ExistsCalled = false;
+	public $_SynchronizeCalled = false;
 	public $_LastLogin;
 	public $_LastEmail;
 	public $_Login;
@@ -14,6 +15,7 @@ class FakeRegistration implements IRegistration
 	public $_Timezone;
 	public $_AdditionalFields;
 	public $_HomepageId;
+	public $_LastSynchronizedUser;
 	
 	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array())
 	{
@@ -35,6 +37,12 @@ class FakeRegistration implements IRegistration
 		$this->_LastEmail = $emailAddress;
 		
 		return $this->_UserExists;
+	}
+
+	public function Synchronize(AuthenticatedUser $user)
+	{
+		$this->_SynchronizeCalled = true;
+		$this->_LastSynchronizedUser = $user;
 	}
 }
 ?>

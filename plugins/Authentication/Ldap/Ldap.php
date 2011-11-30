@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
-require_once(ROOT_DIR . 'plugins/Authentication/Ldap/Ldap.config.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/ldap.config.php');
 
 /**
  * Provides LDAP authentication/synchronization for phpScheduleIt
@@ -110,8 +110,7 @@ class Ldap implements IAuthentication
 		if ($this->LdapUserExists())
 		{
 			$isValid = $this->ldap->Authenticate($username, $password);
-		}
-		else
+		} else
 		{
 			if ($this->options->RetryAgainstDatabase())
 			{
@@ -160,35 +159,13 @@ class Ldap implements IAuthentication
 	private function Synchronize($username)
 	{
 		$registration = $this->GetRegistration();
-		$encryption = $this->GetEncryption();
 
-		$encryptedPassword = $encryption->EncryptPassword($this->password);
-		$email = $this->user->GetEmail();
-		$fname = $this->user->GetFirstName();
-		$lname = $this->user->GetLastName();
-		$phone = $this->user->GetPhone();
-		$inst = $this->user->GetInstitution();
-		$title = $this->user->GetTitle();
-
-		if ($registration->UserExists($username, $this->user->GetEmail()))
-		{
-			$command = new UpdateUserFromLdapCommand($username,
-							$email,
-							$fname,
-							$lname,
-							$encryptedPassword->EncryptedPassword(),
-							$encryptedPassword->Salt(),
-							$phone,
-							$inst,
-							$title);
-
-			ServiceLocator::GetDatabase()->Execute($command);
-		}
-		else
-		{
-			$additionalFields = array('phone' => $phone, 'institution' => $inst, 'position' => $title);
-			$registration->Register($username, $email, $fname, $lname, $this->password, Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE), Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE), Pages::DEFAULT_HOMEPAGE_ID, $additionalFields);
-		}
+		$registration->Synchronize(
+			new AuthenticatedUser($username, $this->user->GetEmail(), $this->user->GetFirstName(), $this->user->GetLastName(), $this->password,
+				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE), Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
+				$this->user->GetPhone(), $this->user->GetInstitution(), $this->user->GetTitle())
+		);
 	}
 }
+
 ?>

@@ -34,7 +34,14 @@ interface IConfiguration extends IConfigurationFile {
 
 class Configuration implements IConfiguration {
 
+	/**
+	 * @var array|ConfigurationFile[]
+	 */
     protected $_configs = array();
+
+	/**
+	 * @var Configuration
+	 */
     private static $_instance = null;
 
     const SETTINGS = 'settings';
@@ -42,7 +49,6 @@ class Configuration implements IConfiguration {
     const DEFAULT_CONFIG_FILE_PATH = '/config/config.php';
 
     protected function __construct() {
-        // is this incomplete, Nick?
     }
 
     /**
@@ -63,7 +69,6 @@ class Configuration implements IConfiguration {
     }
 
     public function Register($configFile, $configId, $overwrite = false) {
-        echo $configFile;   // something is wrong here? output to browser.
         $config = new Config();
         $container = $config->parseConfig($configFile, "PHPArray");
 

@@ -10,4 +10,5 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/IRegistrationMini.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/RegistrationMini.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/RegistrationAdmin.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/Reporting.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/AuthenticatedUser.php');
 ?>
