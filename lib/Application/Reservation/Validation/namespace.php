@@ -26,4 +26,8 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AccessoryAvailab
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AddReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/UpdateReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/DeleteReservationValidationService.php');
+
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IBlackoutValidationResult.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/BlackoutValidationResult.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/BlackoutDateTimeValidationResult.php');
 ?>

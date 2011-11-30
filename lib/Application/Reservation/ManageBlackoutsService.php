@@ -1,51 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-
-class BlackoutFilter
-{
-	private $startDate = null;
-	private $endDate = null;
-	private $scheduleId = null;
-	private $resourceId = null;
-
-	/**
-	 * @param Date $startDate
-	 * @param Date $endDate
-	 * @param int $scheduleId
-	 * @param int $resourceId
-	 */
-	public function __construct($startDate = null, $endDate = null, $scheduleId = null, $resourceId = null)
-	{
-		$this->startDate = $startDate;
-		$this->endDate = $endDate;
-		$this->scheduleId = $scheduleId;
-		$this->resourceId = $resourceId;
-	}
-
-	public function GetFilter()
-	{
-		$filter = new SqlFilterNull();
-
-		if (!empty($this->startDate))
-		{
-			$filter->_And(new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, $this->startDate->ToDatabase()));
-		}
-		if (!empty($this->endDate))
-		{
-			$filter->_And(new SqlFilterLessThan(ColumnNames::RESERVATION_END, $this->endDate->ToDatabase()));
-		}
-		if (!empty($this->scheduleId))
-		{
-			$filter->_And(new SqlFilterEquals(ColumnNames::SCHEDULE_ID, $this->scheduleId));
-		}
-		if (!empty($this->resourceId))
-		{
-			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_ID), $this->resourceId));
-		}
-
-		return $filter;
-	}
-}
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/BlackoutFilter.php');
 
 interface IManageBlackoutsService
 {
@@ -70,124 +26,6 @@ interface IManageBlackoutsService
 	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution);
 }
 
-interface IBlackoutValidationResult
-{
-	/**
-	 * @return bool
-	 */
-	public function WasSuccessful();
-
-	/**
-	 * @abstract
-	 * @return string
-	 */
-	public function Message();
-
-	/**
-	 * @abstract
-	 * @return array|ReservationItemView[]
-	 */
-	public function ConflictingReservations();
-
-	/**
-	 * @abstract
-	 * @return array|BlackoutItemView[]
-	 */
-	public function ConflictingBlackouts();
-}
-
-class BlackoutValidationResult implements IBlackoutValidationResult
-{
-	/**
-	 * @var array|BlackoutItemView[]
-	 */
-	private $conflictingBlackouts;
-
-	/**
-	 * @var array|ReservationItemView[]
-	 */
-	private $conflictingReservations;
-
-	/**
-	 * @param array|BlackoutItemView[] $conflictingBlackouts
-	 * @param array|ReservationItemView[] $conflictingReservations
-	 */
-	public function __construct($conflictingBlackouts, $conflictingReservations)
-	{
-		$this->conflictingBlackouts = $conflictingBlackouts;
-		$this->conflictingReservations = $conflictingReservations;
-	}
-
-	public function WasSuccessful()
-	{
-		return $this->CanBeSaved();
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function CanBeSaved()
-	{
-		return empty($this->conflictingBlackouts) && empty($this->conflictingReservations);
-	}
-
-	public function Message()
-	{
-		return null;
-	}
-
-	/**
-	 * @return array|ReservationItemView[]
-	 */
-	public function ConflictingReservations()
-	{
-		return $this->conflictingReservations;
-	}
-
-	/**
-	 * @return array|BlackoutItemView[]
-	 */
-	public function ConflictingBlackouts()
-	{
-		return $this->conflictingBlackouts;
-	}
-}
-
-class BlackoutDateTimeValidationResult implements IBlackoutValidationResult
-{
-	/**
-	 * @return bool
-	 */
-	public function WasSuccessful()
-	{
-		return false;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function Message()
-	{
-		return Resources::GetInstance()->GetString('StartDateBeforeEndDateRule');
-	}
-
-	/**
-	 * @return array|ReservationItemView[]
-	 */
-	public function ConflictingReservations()
-	{
-		return array();
-	}
-
-	/**
-	 * @return array|BlackoutItemView[]
-	 */
-	public function ConflictingBlackouts()
-	{
-		return array();
-	}
-}
-
 class ManageBlackoutsService implements IManageBlackoutsService
 {
 	/**
@@ -206,6 +44,13 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		$this->blackoutRepository = $blackoutRepository;
 	}
 
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param BlackoutFilter $filter
+     * @param UserSession $user
+     * @return BlackoutItemView[]|PageableData
+     */
 	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
 	{
 		return $this->reservationViewRepository->GetBlackoutList($pageNumber, $pageSize, null, null, $filter->GetFilter());
