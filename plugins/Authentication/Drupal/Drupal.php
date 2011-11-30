@@ -1,5 +1,5 @@
 <?php
-require_once('/Drupal.config.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Drupal/Drupal.config.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 
@@ -29,15 +29,11 @@ class Drupal implements IAuthentication
 	}
 	
 	/**
-	 * @param IAuthentication $authorization Authentication class to decorate
+	 * @param IAuthentication $authentication Authentication class to decorate
 	 */
-	public function __construct($authorization = null)
+	public function __construct(IAuthentication $authentication)
 	{
-		$this->authToDecorate = $authorization; 
-		if ($authorization == null)
-		{
-			$this->authToDecorate = new Authentication();
-		}
+		$this->authToDecorate = $authentication;
 	}
 	
 	/**
