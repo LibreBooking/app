@@ -70,6 +70,44 @@ class ReservationListingTests extends TestBase
 		$this->assertTrue(in_array(new BlackoutListItem($blackout2), $date2Items));
 	}
 
+	public function testReservationListItemCreatesReservationSlot()
+	{
+		$view = new TestReservationItemView(1, Date::Parse('2011-11-22 04:34'), Date::Parse('2011-11-23 14:43'), 123);
+		$item = new ReservationListItem($view);
+
+		$this->assertEquals($view->StartDate, $item->StartDate());
+		$this->assertEquals($view->EndDate, $item->EndDate());
+		$this->assertEquals($view->ResourceId, $item->ResourceId());
+
+		$start = Date::Parse('2011-12-01');
+		$end = Date::Parse('2011-12-02');
+		$display = Date::Parse('2011-12-03');
+		$span = 3;
+		
+		$expectedSlot = new ReservationSlot($start, $end, $display, $span, $view);
+		$actualSlot = $item->BuildSlot($start, $end, $display, $span);
+		$this->assertEquals($expectedSlot, $actualSlot);
+	}
+
+	public function testBlackoutListItemCreatesBlackoutSlot()
+	{
+		$view = new TestBlackoutItemView(1, Date::Parse('2011-11-22 04:34'), Date::Parse('2011-11-23 14:43'), 123);
+		$item = new BlackoutListItem($view);
+
+		$this->assertEquals($view->StartDate, $item->StartDate());
+		$this->assertEquals($view->EndDate, $item->EndDate());
+		$this->assertEquals($view->ResourceId, $item->ResourceId());
+
+		$start = Date::Parse('2011-12-01');
+		$end = Date::Parse('2011-12-02');
+		$display = Date::Parse('2011-12-03');
+		$span = 3;
+
+		$expectedSlot = new BlackoutSlot($start, $end, $display, $span, $view);
+		$actualSlot = $item->BuildSlot($start, $end, $display, $span);
+		$this->assertEquals($expectedSlot, $actualSlot);
+	}
+
 	/**
 	 * @param $startDateString
 	 * @param $endDateString

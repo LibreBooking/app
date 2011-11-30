@@ -8,7 +8,7 @@ class LdapOptions
 	public function __construct()
 	{
 		Configuration::Instance()->Register(
-					dirname(__FILE__) . 'Ldap.config.php', 
+					dirname(__FILE__) . '/Ldap.config.php',
 					LdapConfig::CONFIG_ID);
 	}
 	

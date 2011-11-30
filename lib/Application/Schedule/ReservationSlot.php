@@ -31,7 +31,7 @@ class ReservationSlot implements IReservationSlot
 	 * @param Date $begin
 	 * @param Date $end
 	 * @param Date $displayDate
-	 * @param $periodSpan
+	 * @param int $periodSpan
 	 * @param ReservationItemView $reservation
 	 */
 	public function __construct(Date $begin, Date $end, Date $displayDate, $periodSpan, ReservationItemView $reservation)

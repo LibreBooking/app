@@ -64,7 +64,7 @@ class BlackoutListItem extends ReservationListItem
 	 */
 	public function BuildSlot(Date $start, Date $end, Date $displayDate, $span)
 	{
-		throw new Exception('todo');
+		return new BlackoutSlot($start, $end, $displayDate, $span, $this->item);
 	}
 }
 ?>

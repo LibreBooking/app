@@ -49,7 +49,7 @@ $conf['settings']['phpmailer']['smtp.password'] = '';   // 'password'
  *
  * Read /plugins/Authentication/readme.txt
  */
-$conf['settings']['plugins']['Authentication'] = 'Ldap';
+$conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';
 /**

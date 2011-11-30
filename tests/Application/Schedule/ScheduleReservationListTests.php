@@ -475,6 +475,30 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertEquals(5, count($slots));
 		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("12:00"), $listDate->SetTimeString("18:00"), $listDate, 1, $item), $slots[3]);
 	}
+
+	public function testReservationStartingOffPeriodBoundaryAdjusts()
+	{
+		$tz = 'America/Chicago';
+		$listDate = Date::Parse('2011-02-06', $tz);
+		
+		$layout = new ScheduleLayout($tz);
+		$layout->AppendPeriod(Time::Parse('0:00', $tz), Time::Parse('2:00', $tz));
+		$layout->AppendPeriod(Time::Parse('2:00', $tz), Time::Parse('6:00', $tz));
+
+		$item = new TestReservationItemView(
+			1,
+			Date::Parse('2011-02-06 1:00:00', $tz)->ToUtc(),
+			Date::Parse('2011-02-06 5:00:00', $tz)->ToUtc(),
+			1);
+		$r1 = new ReservationListItem($item);
+		
+		$list = new ScheduleReservationList(array($r1), $layout, $listDate);
+
+		$slots = $list->BuildSlots();
+
+		$this->assertEquals(1, count($slots));
+		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("00:00"), $listDate->SetTimeString("6:00"), $listDate, 2, $item), $slots[0]);
+	}
 }
 
 class ReservationItemViewBuilder

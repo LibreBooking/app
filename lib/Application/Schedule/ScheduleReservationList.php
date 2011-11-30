@@ -13,7 +13,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	/**
 	 * @var array|ReservationListItem[]
 	 */
-	private $_reservations;
+	private $_items;
 	
 	/**
 	 * @var IScheduleLayout
@@ -35,8 +35,17 @@ class ScheduleReservationList implements IScheduleReservationList
 	 */
 	private $_layoutItems;
 	
-	private $_reservationsByStartTime = array();
-	private $_layoutByEndTime = array();	
+	private $_itemsByStartTime = array();
+
+	/**
+	 * @var array|SchedulePeriod[]
+	 */
+	private $_layoutByStartTime = array();
+
+	/**
+	 * @var array|int[]
+	 */
+	private $_layoutIndexByEndTime = array();
 	
 	/**
 	 * @var Time
@@ -54,13 +63,13 @@ class ScheduleReservationList implements IScheduleReservationList
 	private $_firstLayoutTime; 
 	
 	/**
-	 * @param array|ReservationListItem[] $reservations
+	 * @param array|ReservationListItem[] $items
 	 * @param IScheduleLayout $layout
 	 * @param Date $layoutDate
 	 */
-	public function __construct($reservations, IScheduleLayout $layout, Date $layoutDate)
+	public function __construct($items, IScheduleLayout $layout, Date $layoutDate)
 	{
-		$this->_reservations = $reservations;
+		$this->_items = $items;
 		$this->_layout = $layout;
 		$this->_destinationTimezone = $this->_layout->Timezone();
 		$this->_layoutDateStart = $layoutDate->ToTimezone($this->_destinationTimezone)->GetDate();
@@ -69,7 +78,7 @@ class ScheduleReservationList implements IScheduleReservationList
 		$this->_midnight = new Time(0,0,0, $this->_destinationTimezone);
 		
 		$this->IndexLayout();
-		$this->IndexReservations();
+		$this->IndexItems();
 	}
 	
 	public function BuildSlots()
@@ -79,23 +88,23 @@ class ScheduleReservationList implements IScheduleReservationList
 		for ($currentIndex = 0; $currentIndex < count($this->_layoutItems); $currentIndex++)
 		{
 			$layoutItem = $this->_layoutItems[$currentIndex];
-			$reservation = $this->GetReservationStartingAt($layoutItem->BeginDate());
+			$item = $this->GetItemStartingAt($layoutItem->BeginDate());
 			
-			if ($reservation != null)
+			if ($item != null)
 			{			
-				if ($this->ReservationEndsOnFutureDate($reservation))
+				if ($this->ItemEndsOnFutureDate($item))
 				{
 					$endTime = $this->_layoutDateEnd;
 				}
 				else
 				{
-					$endTime = $reservation->EndDate()->ToTimezone($this->_destinationTimezone);
+					$endTime = $item->EndDate()->ToTimezone($this->_destinationTimezone);
 				}
 				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
 				$span = ($endingPeriodIndex - $currentIndex) + 1;
 
-				$slots[] = $reservation->BuildSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span);
+				$slots[] = $item->BuildSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span);
 				//$slots[] = new ReservationSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span, $reservation);
 
 				$currentIndex = $endingPeriodIndex;
@@ -109,32 +118,37 @@ class ScheduleReservationList implements IScheduleReservationList
 		return $slots;
 	}
 	
-	private function IndexReservations()
+	private function IndexItems()
 	{
-		foreach ($this->_reservations as $reservation)
+		foreach ($this->_items as $item)
 		{		
-			$start = $reservation->StartDate()->ToTimezone($this->_destinationTimezone);
+			$start = $item->StartDate()->ToTimezone($this->_destinationTimezone);
 			
-			$startsInPast = $this->ReservationStartsOnPastDate($reservation);
+			$startsInPast = $this->ItemStartsOnPastDate($item);
 			if ($startsInPast)
 			{
 				$start = $this->_firstLayoutTime;
 			}
+			elseif ($this->ItemIsNotOnLayoutBoundary($item))
+			{
+				$layoutItem = $this->FindClosestLayoutIndexBeforeStartingTime($item);
+				$start = $layoutItem->BeginDate()->ToTimezone($this->_destinationTimezone);
+			}
 			
-			$this->_reservationsByStartTime[$start->Timestamp()] = $reservation;
+			$this->_itemsByStartTime[$start->Timestamp()] = $item;
 		}
 	}
 	
-	private function ReservationStartsOnPastDate(ReservationListItem $reservation)
+	private function ItemStartsOnPastDate(ReservationListItem $item)
 	{
 		//Log::Debug("PAST");
-		return $reservation->StartDate()->LessThan($this->_layoutDateStart);
+		return $item->StartDate()->LessThan($this->_layoutDateStart);
 	}
 	
-	private function ReservationEndsOnFutureDate(ReservationListItem $reservation)
+	private function ItemEndsOnFutureDate(ReservationListItem $item)
 	{
 		//Log::Debug("%s %s %s", $reservation->GetReferenceNumber(), $reservation->GetEndDate()->GetDate(), $this->_layoutDateEnd->GetDate());
-		return $reservation->EndDate()->Compare($this->_layoutDateEnd) >= 0;
+		return $item->EndDate()->Compare($this->_layoutDateEnd) >= 0;
 	}
 	
 	private function IndexLayout()
@@ -156,7 +170,9 @@ class ScheduleReservationList implements IScheduleReservationList
 			{
 				$endTime = $this->_layoutDateEnd;
 			}
-			$this->_layoutByEndTime[$endTime->Timestamp()] = $i;
+
+			$this->_layoutByStartTime[$itemBegin->Timestamp()] = $this->_layoutItems[$i];
+			$this->_layoutIndexByEndTime[$endTime->Timestamp()] = $i;
 		}
 	}
 	
@@ -168,9 +184,9 @@ class ScheduleReservationList implements IScheduleReservationList
 	{
 		$timeKey = $endingTime->Timestamp();
 		
-		if (array_key_exists($timeKey, $this->_layoutByEndTime))
+		if (array_key_exists($timeKey, $this->_layoutIndexByEndTime))
 		{
-			return $this->_layoutByEndTime[$timeKey];
+			return $this->_layoutIndexByEndTime[$timeKey];
 		}
 		
 		return $this->FindClosestLayoutIndexBeforeEndingTime($endingTime);
@@ -180,12 +196,12 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @param Date $beginTime
 	 * @return ReservationListItem
 	 */
-	private function GetReservationStartingAt(Date $beginTime)
+	private function GetItemStartingAt(Date $beginTime)
 	{
 		$timeKey = $beginTime->Timestamp();
-		if (array_key_exists($timeKey, $this->_reservationsByStartTime))
+		if (array_key_exists($timeKey, $this->_itemsByStartTime))
 		{
-			return $this->_reservationsByStartTime[$timeKey];
+			return $this->_itemsByStartTime[$timeKey];
 		}
 		return null;
 	}
@@ -196,17 +212,46 @@ class ScheduleReservationList implements IScheduleReservationList
 	 */
 	private function FindClosestLayoutIndexBeforeEndingTime(Date $endingTime)
 	{	
-		for ($i = 0; $i < count($this->_layoutItems); $i++)		
+		for ($i = count($this->_layoutItems)-1; $i >= 0; $i--)
 		{
 			$currentItem = $this->_layoutItems[$i];
 		
-			if ($currentItem->EndDate()->GreaterThan($endingTime) )
+			if ($currentItem->BeginDate()->LessThan($endingTime) )
 			{
 				return $i;
 			}
 		}
 		
 		return 0;
+	}
+
+	/**
+	 * @param ReservationListItem $item
+	 * @return SchedulePeriod which has the closest starting time to $endingTime without going prior to it
+	 */
+	private function FindClosestLayoutIndexBeforeStartingTime(ReservationListItem $item)
+	{
+		for ($i = 0; $i < count($this->_layoutItems); $i++)
+		{
+			$currentItem = $this->_layoutItems[$i];
+
+			if ($currentItem->BeginDate()->LessThan($item->StartDate()) )
+			{
+				return $currentItem;
+			}
+		}
+
+		throw new Exception('Could not find a fitting starting slot');
+	}
+
+	/**
+	 * @param ReservationListItem $item
+	 * @return bool
+	 */
+	private function ItemIsNotOnLayoutBoundary(ReservationListItem $item)
+	{
+		$timeKey = $item->StartDate()->Timestamp();
+		return !(array_key_exists($timeKey, $this->_layoutByStartTime));
 	}
 }
 ?>

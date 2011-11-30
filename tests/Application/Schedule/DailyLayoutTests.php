@@ -100,6 +100,8 @@ class TestReservationListItem extends ReservationListItem
 		$this->start = $start;
 		$this->end = $end;
 		$this->resourceId = $resourceId;
+
+		parent::__construct(new TestReservationItemView(1, $start, $end, $resourceId));
 	}
 
 	public function StartDate()
