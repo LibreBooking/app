@@ -35,10 +35,10 @@
 					<input {formname key=SUMMARY} type="text" id="blackoutReason" class="textbox required" size="100" maxlength="85"/>
 				</li>
 				<li>
-					<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting" name="existingReservations" checked="checked" />
+					<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting" name="existingReservations" checked="checked" value="{ReservationConflictResolution::Notify}" />
 					<label for="notifyExisting">Show me conflicting reservations</label>
 
-					<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExisting" name="existingReservations" />
+					<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExisting" name="existingReservations" value="{ReservationConflictResolution::Delete}" />
 					<label for="deleteExisting">Delete conflicting reservations</label>
 				</li>
 				<li style="margin-top:15px; padding-top:15px; border-top: solid 1px #ededed;">

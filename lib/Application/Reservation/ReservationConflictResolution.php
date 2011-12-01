@@ -1,4 +1,5 @@
 <?php
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 interface IReservationConflictResolution
 {
@@ -17,7 +18,6 @@ abstract class ReservationConflictResolution implements IReservationConflictReso
 
 	protected function __construct()
 	{
-
 	}
 
 	/**
@@ -26,6 +26,10 @@ abstract class ReservationConflictResolution implements IReservationConflictReso
 	 */
 	public static function Create($resolutionType)
 	{
+        if ($resolutionType == self::Delete)
+        {
+            return new ReservationConflictDelete(new ReservationRepository());
+        }
 		return new ReservationConflictNotify();
 	}
 }
@@ -44,13 +48,26 @@ class ReservationConflictNotify extends ReservationConflictResolution
 
 class ReservationConflictDelete extends ReservationConflictResolution
 {
+    /**
+     * @var IReservationRepository
+     */
+    private $repository;
+
+    public function __construct(IReservationRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 	/**
 	 * @param ReservationItemView $existingReservation
 	 * @return bool
 	 */
 	public function Handle(ReservationItemView $existingReservation)
 	{
-		return false;
+        $reservation = $this->repository->LoadById($existingReservation->GetId());
+        $reservation->Delete(ServiceLocator::GetServer()->GetUserSession());
+        $this->repository->Delete($reservation);
+
+		return true;
 	}
 }
 ?>

@@ -23,6 +23,7 @@ class ExistingReservationSeriesBuilder
 	
 	private $instances;
 	private $events;
+    private $id = 1;
 	
 	private $requiresNewSeries = false;
 	
@@ -44,6 +45,17 @@ class ExistingReservationSeriesBuilder
 		
 		$this->series = $series;
 	}
+
+    /**
+     * @param int $id
+     * @return ExistingReservationSeriesBuilder
+     */
+    public function WithId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 	
 	/**
 	 * @param Reservation $reservation
@@ -112,6 +124,7 @@ class ExistingReservationSeriesBuilder
 	 */
 	public function Build()
 	{
+        $this->series->WithId($this->id);
 		$this->series->WithCurrentInstance($this->currentInstance);
 		$this->series->WithRepeatOptions($this->repeatOptions);
 		
