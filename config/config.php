@@ -55,5 +55,5 @@ $conf['settings']['plugins']['Permission'] = '';
 /**
  * Installation settings
  */
-$conf['settings']['install.password'] = '';
+$conf['settings']['install.password'] = 'pass';
 ?>
