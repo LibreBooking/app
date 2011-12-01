@@ -317,6 +317,15 @@ class DeleteAccessoryCommand extends SqlCommand
 	}
 }
 
+class DeleteBlackoutCommand extends SqlCommand
+{
+    public function __construct($blackoutId)
+    {
+        parent::__construct(Queries::DELETE_BLACKOUT_SERIES);
+        $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $blackoutId));
+    }
+}
+
 class DeleteGroupCommand extends SqlCommand
 {
 	public function __construct($groupId)

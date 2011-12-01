@@ -250,6 +250,9 @@ class Queries
 
 	const DELETE_ACCESSORY =
 		'DELETE FROM accessories WHERE accessory_id = @accessoryid';
+
+    const DELETE_BLACKOUT_SERIES =
+		'DELETE FROM blackout_series WHERE blackout_series_id = @seriesid';
 	
 	const DELETE_GROUP =
 		'DELETE FROM groups	WHERE group_id = @groupid';

@@ -9,6 +9,12 @@ interface IBlackoutRepository
 	 * @return void
 	 */
 	public function Add(Blackout $blackout);
+
+    /**
+     * @abstract
+     * @param int $blackoutId
+     */
+    public function Delete($blackoutId);
 }
 
 class BlackoutRepository implements IBlackoutRepository
@@ -23,4 +29,12 @@ class BlackoutRepository implements IBlackoutRepository
 		$seriesId = $db->ExecuteInsert(new AddBlackoutCommand($blackout->OwnerId(), $blackout->ResourceId(), $blackout->Title()));
 		$db->Execute(new AddBlackoutInstanceCommand($seriesId, $blackout->StartDate(), $blackout->EndDate()));
 	}
+
+    /**
+     * @param int $blackoutId
+     */
+    public function Delete($blackoutId)
+    {
+        ServiceLocator::GetDatabase()->Execute(new DeleteBlackoutCommand($blackoutId));
+    }
 }

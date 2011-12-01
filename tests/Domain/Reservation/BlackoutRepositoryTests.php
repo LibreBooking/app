@@ -1,5 +1,4 @@
 <?php
-
 require_once(ROOT_DIR . 'Domain/Access/BlackoutRepository.php');
 
 class BlackoutRepositoryTests extends TestBase
@@ -38,6 +37,16 @@ class BlackoutRepositoryTests extends TestBase
 		$this->assertEquals($addBlackoutCommand, $this->db->_Commands[0]);
 		$this->assertEquals($addBlackoutInstanceCommand, $this->db->_Commands[1]);
 	}
+
+    public function testDeletesBlackout()
+    {
+        $id = 98123;
+        $deleteBlackoutCommand = new DeleteBlackoutCommand($id);
+
+        $this->repository->Delete($id);
+
+        $this->assertEquals($deleteBlackoutCommand, $this->db->_Commands[0]);
+    }
 }
 
 ?>

@@ -187,6 +187,17 @@ class BlackoutsServiceTests extends TestBase
 		$this->assertFalse($result->WasSuccessful());
 		$this->assertNotEmpty($result->Message());
 	}
+
+    public function testDeletesBlackoutById()
+    {
+        $blackoutId = 123;;
+
+        $this->blackoutRepository->expects($this->once())
+                ->method('Delete')
+                ->with($this->equalTo($blackoutId));
+
+        $this->service->Delete($blackoutId);
+    }
 }
 
 class TestBlackoutItemView extends BlackoutItemView

@@ -144,6 +144,14 @@ class ManageBlackoutsService implements IManageBlackoutsService
 
 		return $conflictingBlackouts;
 	}
+
+    /**
+     * @param int $blackoutId
+     */
+    public function Delete($blackoutId)
+    {
+        $this->blackoutRepository->Delete($blackoutId);
+    }
 }
 
 ?>
