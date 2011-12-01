@@ -4,7 +4,6 @@ error_reporting(E_ALL & ~E_NOTICE);
  * Application configuration
  */
 $conf['settings']['server.timezone'] = 'America/Edmonton';   // look up here http://php.net/manual/en/timezones.php
-$conf['settings']['allow.self.registration'] = 'false';  // this is email self registration on home page the other is optional LDAP authentication. You may have both at the same time
 $conf['settings']['admin.email'] = 'dule@ucalgary.ca'; // notification email to be sent to admin user
 $conf['settings']['default.page.size'] = '50';  // number of records per page
 $conf['settings']['enable.email'] = 'true'; // sending auto email to users
@@ -24,8 +23,8 @@ $conf['settings']['cache.templates'] = 'true';  // caching template files helps 
 $conf['settings']['database']['type'] = 'mysql';
 $conf['settings']['database']['user'] = 'schedule_user';    // default user
 $conf['settings']['database']['password'] = 'password'; // default password
-$conf['settings']['database']['hostspec'] = '127.0.0.1';    // mysql.acs.university.com
-$conf['settings']['database']['name'] = 'phpscheduleit2';
+$conf['settings']['database']['hostspec'] = 'localhost';    // mysql.acs.university.ca
+$conf['settings']['database']['name'] = 'development';
 /**
  * Mail server configuration
  *
@@ -52,6 +51,7 @@ $conf['settings']['phpmailer']['smtp.password'] = '';   // 'password'
 $conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';
+$conf['settings']['allow.self.registration'] = 'false';  // this is email self registration on home page, the other is optional LDAP authentication. Can be both.
 /**
  * Installation settings
  */
