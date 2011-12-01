@@ -13,14 +13,14 @@ class Mdb2Connection implements IDbConnection
 	private $_dbPassword = '';
 	private $_hostSpec = '';
 	private $_dbName = '';
-	
+
 	/**
 	 * @var MDB2
 	 */
 	private $_db = null;
 	private $_connected = false;
-	
-	public function __construct($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName) 
+
+	public function __construct($_dbType, $_dbUser, $_dbPassword, $_hostSpec, $_dbName)
 	{
 		//echo "type: $_dbType user: $_dbUser password: $_dbPassword host: $_hostSpec dbname: $_dbName";
 		$this->_dbType = $_dbType;
@@ -29,7 +29,7 @@ class Mdb2Connection implements IDbConnection
 		$this->_hostSpec = $_hostSpec;
 		$this->_dbName = $_dbName;
 	}
-	
+
 	/**
 	 * Just used for testing
 	 */
@@ -37,14 +37,14 @@ class Mdb2Connection implements IDbConnection
 	{
 		$this->_db =& $db;
 	}
-	
-	public function Connect() 
+
+	public function Connect()
 	{
-		if ($this->_connected && !is_null($this->_db)) 
+		if ($this->_connected && !is_null($this->_db))
 		{
 			return;
 		}
-		
+
 		$dsn = array('phptype'  => $this->_dbType,
 			    'username' => $this->_dbUser,
 			    'password' => $this->_dbPassword,
@@ -56,29 +56,29 @@ class Mdb2Connection implements IDbConnection
 		    'portability' => MDB2_PORTABILITY_ALL,
 		    'persistent'  => true
 		);
-		
+
 		$this->_db =& MDB2::connect($dsn, $options);
-        
-        if (MDB2::isError($this->_db)) 
-        {			
+
+        if (MDB2::isError($this->_db))
+        {
         	// If there is an error, print to browser, print to logfile and kill app
             throw new Exception("Error connecting to database\nError: " . $this->_db->getMessage() . "\nDebug: " . $this->_db->getDebugInfo());
             // TODO: LOG
         }
-        
+
         $this->_db->setFetchMode(MDB2_FETCHMODE_ASSOC);	// Set fetch mode to return associatve array
-        
+
 		$this->_connected = true;
 	}
-	
-	public function Disconnect() 
+
+	public function Disconnect()
 	{
 		$this->_db->disconnect();
 		$this->_db = null;
 		$this->_connected = false;
 	}
-	
-	public function Query(ISqlCommand $sqlCommand) 
+
+	public function Query(ISqlCommand $sqlCommand)
 	{
 		return $this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_RESULT);
 	}
@@ -89,74 +89,74 @@ class Mdb2Connection implements IDbConnection
 		return $this->Query($sqlCommand);
 	}
 
-	public function Execute(ISqlCommand $sqlCommand) 
+	public function Execute(ISqlCommand $sqlCommand)
 	{
 		$this->_PrepareAndExecute($sqlCommand, MDB2_PREPARE_MANIP);
 	}
-	
+
 	public function GetLastInsertId()
 	{
 		$id = $this->_db->lastInsertID();
 		$this->_isError($id);
-		
+
 		return $id;
 	}
-	
-	public function _PrepareAndExecute(ISqlCommand &$sqlCommand, $prepareType) 
+
+	public function _PrepareAndExecute(ISqlCommand &$sqlCommand, $prepareType)
 	{
 		$cmd = new Mdb2CommandAdapter($sqlCommand);
-		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);		
-		$result =& $stmt->execute($cmd->GetValues());	
-		
+		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);
+		$result =& $stmt->execute($cmd->GetValues());
+
 		echo "<pre>";
 		print_r($result);
 		echo "</pre>";
 		$e = MDB2::isError($result);
-		echo '<br/>   error   ' . (int)$e; 
+		echo '<br/>   error   ' . (int)$e;
 		echo ($result->numRows());
 		die();
 		$this->_isError($result, $cmd);
 
 		return new Mdb2Reader($result);
 	}
-	
-	private function _isError($result, $cmd = null) 
+
+	private function _isError($result, $cmd = null)
 	{
-		if (PEAR::isError($result)) 
+		if (PEAR::isError($result))
 		{
 			if ($cmd != null)
 			{
 				echo $cmd->GetQuery();
 			}
-			throw new Exception('There was an error executing your query\n' . $result->getMessage());
-		
+			throw new Exception('There was an error executing your query. ' . $result->getMessage());
+
            	// TODO: LOG: . $result->getMessage()
 		}
         return false;
 	}
-		
-	public function GetDbType() 
-	{ 
-		return $this->_dbType; 
+
+	public function GetDbType()
+	{
+		return $this->_dbType;
 	}
-	
-	public function GetDbUser() 
-	{ 
+
+	public function GetDbUser()
+	{
 		return $this->_dbUser;
 	}
-	
-	public function GetDbPassword() 
-	{ 
+
+	public function GetDbPassword()
+	{
 		return $this->_dbPassword;
 	}
-	
-	public function GetHostSpec() 
+
+	public function GetHostSpec()
 	{
 		return $this->_hostSpec;
 	}
-	
-	public function GetDbName() 
-	{ 
+
+	public function GetDbName()
+	{
 		return $this->_dbName;
 	}
 }
