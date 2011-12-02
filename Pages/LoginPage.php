@@ -97,11 +97,18 @@ class LoginPage extends Page implements ILoginPage {
     public function DisplayWelcome() {
         return false;
     }
-
+    
+    /**
+     * Get and return form status on Actions::LOGIN
+     * @return type null
+     */
     public function LoggingIn() {
         return $this->server->GetForm(Actions::LOGIN);
     }
-
+    
+    /**
+     * 
+     */
     public function Login() {
         $this->_presenter->Login();
     }

@@ -34,7 +34,7 @@ D) Development branch technical information:
         /Domain			Domain specific entities, repositories, services, etc
         /Schedule		Non-domain schedule related objects
         /Server			Web server abstractions (sessions, cookies, etc)
-	/Pages			Page binding and workflow logic
+	/Pages			Page binding and work flow logic
 	/plugins		Contains subdirectories for each type of plugin
 	/Presenters		Application logic, page population
 	/scripts		All application related javascript files
