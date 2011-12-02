@@ -7,7 +7,7 @@
     </div>
 {/if}
 
-<div id="loginbox">
+<div id="loginbox"><!--This "$smarty.server.SCRIPT_NAME" sets up the form to post back to the same page that it is on.-->
     <form class="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
         <p>
             <label class="login">{translate key='UsernameOrEmail'}<br/>

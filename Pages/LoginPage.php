@@ -49,6 +49,10 @@ class LoginPage extends Page implements ILoginPage {
         $this->smarty->assign('ShowLoginError', false);
     }
 
+    /**
+     * Present appropriate page by calling PageLoad method.
+     * Call template engine Smarty object to display login template.
+     */
     public function PageLoad() {
         $this->_presenter->PageLoad();
         $this->smarty->display('login.tpl');

@@ -31,6 +31,9 @@ class LoginPresenter {
         }
     }
 
+    /**
+     * User validation, assigning cookie, check cookie, and whether to show registration link
+     */
     public function PageLoad() {
         if ($this->authentication->AreCredentialsKnown()) {
             $this->Login();

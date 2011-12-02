@@ -27,7 +27,7 @@ class Pages {
     );
 
     private function __construct() {
-        
+        // Constructor can be empty.
     }
 
     public static function UrlFromId($pageId) {
