@@ -24,6 +24,11 @@ interface IManageBlackoutsService
 	 * @return IBlackoutValidationResult
 	 */
 	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution);
+
+    /**
+     * @param int $blackoutId
+     */
+    public function Delete($blackoutId);
 }
 
 class ManageBlackoutsService implements IManageBlackoutsService

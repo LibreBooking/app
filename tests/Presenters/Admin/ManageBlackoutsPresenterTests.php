@@ -163,6 +163,21 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$this->presenter->AddBlackout();
 	}
 
+    public function testDeletesBlackoutById()
+    {
+        $id = 123;
+
+        $this->page->expects($this->once())
+        			->method('GetBlackoutId')
+        			->will($this->returnValue($id));
+
+        $this->blackoutsService->expects($this->once())
+        			->method('Delete')
+        			->with($this->equalTo($id));
+
+        $this->presenter->DeleteBlackout();
+    }
+
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate

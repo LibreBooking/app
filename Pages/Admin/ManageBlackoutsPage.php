@@ -151,6 +151,12 @@ interface IManageBlackoutsPage extends IPageable, IActionPage
 	 */
 	public function GetBlackoutConflictAction();
 
+    /**
+     * @abstract
+     * @return int
+     */
+    public function GetBlackoutId();
+
 	/**
 	 * @abstract
 	 * @param bool $wasAddedSuccessfully
@@ -415,5 +421,12 @@ class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
 	}
 
 
+    /**
+     * @return int
+     */
+    public function GetBlackoutId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::BLACKOUT_ID);
+    }
 }
 ?>

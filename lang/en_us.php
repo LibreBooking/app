@@ -239,6 +239,7 @@ class en_us extends Language
 		$strings['Close'] = 'Close';
 		$strings['ExportToCSV'] = 'Export to CSV';
 		$strings['OK'] = 'OK';
+		$strings['Working'] = 'Working';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';

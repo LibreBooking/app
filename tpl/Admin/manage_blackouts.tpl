@@ -87,7 +87,7 @@
 
 <div>&nbsp;</div>
 
-<table class="list" id="reservationTable">
+<table class="list" id="blackoutTable">
 	<tr>
 		<th class="id">&nbsp;</th>
 		<th>{translate key='Resource'}</th>
@@ -115,42 +115,13 @@
 
 {pagination pageInfo=$PageInfo}
 
-<div id="deleteInstanceDialog" class="dialog" style="display:none;">
-	<form id="deleteInstanceForm" method="post">
+<div id="deleteDialog" class="dialog" style="display:none;">
+	<form id="deleteForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>This action is permanent and irrecoverable!</h3>
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} value="{SeriesUpdateScope::ThisInstance}" />
-		<input type="hidden" class="reservationId" {formname key=RESERVATION_ID} value="" />
-	</form>
-</div>
-
-
-<div id="deleteSeriesDialog" class="dialog" style="display:none;">
-	<form id="deleteSeriesForm" method="post">
-		<div class="error" style="margin-bottom: 25px;">
-			<h3>This action is permanent and irrecoverable!</h3>
-		</div>
-		<button type="button" id="btnUpdateThisInstance" class="button saveSeries">
-			{html_image src="disk-black.png"}
-			{translate key='ThisInstance'}
-		</button>
-		<button type="button" id="btnUpdateAllInstances" class="button saveSeries">
-			{html_image src="disks-black.png"}
-			{translate key='AllInstances'}
-		</button>
-		<button type="button" id="btnUpdateFutureInstances" class="button saveSeries">
-			{html_image src="disk-arrow.png"}
-			{translate key='FutureInstances'}
-		</button>
-		<button type="button" class="button cancel">
-			{html_image src="slash.png"}
-			{translate key='Cancel'}
-		</button>
-		<input type="hidden" id="hdnSeriesUpdateScope" {formname key=SERIES_UPDATE_SCOPE} />
-		<input type="hidden" class="reservationId" {formname key=RESERVATION_ID} value="" />
 	</form>
 </div>
 
@@ -179,7 +150,7 @@ $(document).ready(function() {
 		reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
 		updateScope: updateScope,
 		actions: actions,
-		deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json',
+		deleteUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE}&{QueryStringKeys::BLACKOUT_ID}=',
 		addUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::ADD}'
 	};
 
@@ -198,7 +169,7 @@ $(document).ready(function() {
 
 <div id="createDiv" style="display:none;text-align:center; top:15%;position:relative;">
 	<div id="creating">
-		<h3>Creating...</h3>
+		<h3>{translate key=Working}...</h3>
 		{html_image src="reservation_submitting.gif"}
 	</div>
 	<div id="result" style="display:none;"></div>

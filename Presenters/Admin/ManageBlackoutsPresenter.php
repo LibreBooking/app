@@ -7,6 +7,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 class ManageBlackoutsActions
 {
 	const ADD = 'add';
+	const DELETE = 'delete';
 }
 
 class ManageBlackoutsPresenter extends ActionPresenter
@@ -45,6 +46,7 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$this->resourceRepository = $resourceRepository;
 
 		$this->AddAction(ManageBlackoutsActions::ADD, 'AddBlackout');
+		$this->AddAction(ManageBlackoutsActions::DELETE, 'DeleteBlackout');
 	}
 
 	public function PageLoad($userTimezone)
@@ -128,6 +130,15 @@ class ManageBlackoutsPresenter extends ActionPresenter
 
 		$this->page->ShowAddResult($result->WasSuccessful(), $result->Message(), $result->ConflictingReservations(), $result->ConflictingBlackouts(), $session->Timezone);
 	}
+
+    public function DeleteBlackout()
+    {
+        $id = $this->page->GetBlackoutId();
+
+        Log::Debug('Deleting blackout with id %s', $id);
+
+        $this->manageBlackoutsService->Delete($id);
+    }
 
 }
 
