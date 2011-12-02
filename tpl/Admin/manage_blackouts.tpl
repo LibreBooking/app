@@ -132,6 +132,8 @@
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.timePicker.min.js"></script>
 
+<script type="text/javascript" src="{$Path}scripts/reservationPopup.js"></script>
+
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/blackouts.js"></script>
 
@@ -151,7 +153,9 @@ $(document).ready(function() {
 		updateScope: updateScope,
 		actions: actions,
 		deleteUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE}&{QueryStringKeys::BLACKOUT_ID}=',
-		addUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::ADD}'
+		addUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::ADD}',
+        reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
+		popupUrl: "{$Path}ajax/respopup.php",
 	};
 
 	

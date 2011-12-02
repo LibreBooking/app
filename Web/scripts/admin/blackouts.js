@@ -8,6 +8,7 @@ function BlackoutManagement(opts)
 		scheduleId: $("#scheduleId"),
 		resourceId: $("#resourceId"),
         blackoutTable: $("#blackoutTable"),
+        reservationTable: $("#reservationTable"),
 
 		allResources: $('#allResources'),
 		addResourceId: $('#addResourceId'),
@@ -102,6 +103,17 @@ function BlackoutManagement(opts)
 	{
 		$('#creating').hide();
 		$('#result').show();
+
+        $("#reservationTable").find('.editable').each(function() {
+           var refNum = $(this).find('.referenceNumber').text();
+           $(this).attachReservationPopup(refNum, options.popupUrl);
+       });
+
+        $("#reservationTable").delegate('.editable', 'click', function() {
+            $(this).addClass('clicked');
+            var td = $(this).find('.referenceNumber');
+            viewReservation(td.text());
+        });
 	}
 
     function onDeleteSuccess()

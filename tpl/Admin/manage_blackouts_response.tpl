@@ -20,8 +20,26 @@
 
 	{if !empty($Reservations)}
 		<h5>There are conflicting reservations times</h5>
-		{foreach from=$Reservations item=reservation}
-			{format_date date=$reservation->StartDate timezone=$Timezone}
-		{/foreach}
+        <table class="list" id="reservationTable" style="margin-left: auto; margin-right: auto;">
+        	<tr>
+        		<th class="id">&nbsp;</th>
+        		<th>{translate key='User'}</th>
+        		<th>{translate key='Resource'}</th>
+        		<th>{translate key='BeginDate'}</th>
+        		<th>{translate key='EndDate'}</th>
+        		<th>{translate key='ReferenceNumber'}</th>
+        	</tr>
+        	{foreach from=$Reservations item=reservation}
+        	{cycle values='row0,row1' assign=rowCss}
+        	<tr class="{$rowCss} editable">
+        		<td class="id">{$reservation->ReservationId}</td>
+        		<td>{$reservation->FirstName} {$reservation->LastName}</td>
+        		<td>{$reservation->ResourceName}</td>
+        		<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
+        		<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
+        		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
+        	</tr>
+        	{/foreach}
+        </table>
 	{/if}
 </div>
