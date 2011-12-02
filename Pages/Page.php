@@ -31,10 +31,15 @@ abstract class Page implements IPage {
 
     protected function __construct($titleKey = '', $pageDepth = 0) {
         $this->path = str_repeat('../', $pageDepth);
-
+        /**
+         * Get Server object
+         */
         $this->server = ServiceLocator::GetServer();
         $resources = Resources::GetInstance();
-
+        
+        /**
+         * SmartyPage is an extension of external Smarty class
+         */
         $this->smarty = new SmartyPage($resources, $this->path);
 
         $userSession = ServiceLocator::GetServer()->GetUserSession();
@@ -142,6 +147,7 @@ abstract class Page implements IPage {
     }
 
     /**
+     * Get the current form(s) on this server
      * @param string $var
      * @return null|string
      */
@@ -172,7 +178,11 @@ abstract class Page implements IPage {
         }
         $this->smarty->display('json_data.tpl');
     }
-
+    
+    /**
+     * A template file to be displayed
+     * @param type $templateName 
+     */
     protected function Display($templateName) {
         $this->smarty->display($templateName);
     }

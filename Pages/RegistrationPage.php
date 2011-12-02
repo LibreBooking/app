@@ -159,9 +159,9 @@ class RegistrationPage extends Page implements IRegistrationPage
 	}
 	
 	public function GetOrganization()
-    {
+        {
 	 	return $this->GetForm(FormKeys::ORGANIZATION);
-    }
+        }
 	
 	public function GetPosition()
 	{

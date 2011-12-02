@@ -7,7 +7,7 @@ require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 /**
- * An interface extending IPage interface for class implementation
+ * An interface extending IPage interface to be implemented by class
  */
 interface ILoginPage extends IPage {
 
@@ -40,7 +40,7 @@ class LoginPage extends Page implements ILoginPage {
     private $_presenter = null;
 
     public function __construct() {
-        parent::__construct('LogIn');
+        parent::__construct('LogIn');   // parent Page class
         /**
          * As well instantiate LoginPresenter class object
          */

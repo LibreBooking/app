@@ -14,15 +14,16 @@ require_once(ROOT_DIR . 'Presenters/LoginPresenter.php');
  */
 $page = new LoginPage();
 /**
- * If already logged in?
+ * If Logging-In Page is requested or TRUE
  */
 if ($page->LoggingIn()) {
-    $page->Login();
+    $page->Login(); // Preparing Logging-In Page components
 }
 /**
- * Load to login.tpl page
+ * Now load page components to login.tpl page to be displayed
  * @var nill
  * @param nill
  */
 $page->PageLoad();
+
 ?>
