@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Start page of application
+ * Start page of application.
  */
 define('ROOT_DIR', '../');  // ROOT_DIR defined as string '../' (back one directory)
 /**
@@ -14,10 +14,10 @@ require_once(ROOT_DIR . 'Presenters/LoginPresenter.php');
  */
 $page = new LoginPage();
 /**
- * If Logging-In Page is requested or TRUE
+ * If Logging failed, show error message.
  */
 if ($page->LoggingIn()) {
-    $page->Login(); // Preparing Logging-In Page components
+    $page->Login();
 }
 /**
  * Now load page components to login.tpl page to be displayed
