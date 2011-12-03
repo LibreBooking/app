@@ -1,7 +1,7 @@
 {include file='globalheader.tpl'}
 
 {if $ProfileUpdated}
-	<div class="success">Your profile was updated</div>
+	<div class="success">{translate key=YourProfileWasUpdated}</div>
 {/if}
 
 	{validation_group class="error"}
@@ -15,7 +15,7 @@
 
 <div id="registrationbox">
 <form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
-	<div class="registrationHeader"><h3>Login (all fields are required)</h3></div>
+    <div class="registrationHeader"><h3>{translate key=Login} ({translate key=AllFieldsAreRequired})</h3></div>
 	<p>
 		<label class="reg">{translate key="Username"}<br />
 		{textbox name="USERNAME" class="input" value="Username" size="20"}
@@ -28,7 +28,7 @@
 				</select>
 		</label>
 	</p>
-	<div class="registrationHeader"><h3>Profile (all fields are required)</h3></div>
+	<div class="registrationHeader"><h3>{translate key=Profile} ({translate key=AllFieldsAreRequired})</h3></div>
 	<p>
 		<label class="reg">{translate key="FirstName"}<br />
 		{textbox name="FIRST_NAME" class="input" value="FirstName" size="20"}
@@ -52,7 +52,7 @@
 		</label>
 	</p>
 
-	<div class="registrationHeader"><h3>Additional Information (optional)</h3></div>
+	<div class="registrationHeader"><h3>{translate key=AdditionalInformation} ({translate key=optional})</h3></div>
 	<p>
 		<label class="reg">{translate key="Phone"}<br />
 		{textbox name="PHONE" class="input" value="Phone" size="20"}
@@ -71,12 +71,9 @@
 
 
 	<p class="regsubmit">
-                <button type="submit" class="button update prompt" name="{Actions::SAVE}">
-			<img src="img/tick-circle.png" />
-                 	{translate key='Update'}
-		</button>
-
-
+        <button type="submit" class="button update prompt" name="{Actions::SAVE}">
+			<img src="img/tick-circle.png" />{translate key='Update'}
+	    </button>
 	</p>
 </form>
 </div>

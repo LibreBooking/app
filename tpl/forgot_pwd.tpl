@@ -9,8 +9,7 @@
 	{/if}
 
 <div id="forgotbox">
-	<form class="forgot" method="post"
-		action="{$smarty.server.SCRIPT_NAME}">
+	<form class="forgot" method="post" action="{$smarty.server.SCRIPT_NAME}">
 		<div class="forgot_pwdHeader">
 			<h3>{translate key='ForgotPassword'}</h3>
 		</div>

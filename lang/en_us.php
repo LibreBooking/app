@@ -240,6 +240,12 @@ class en_us extends Language
 		$strings['ExportToCSV'] = 'Export to CSV';
 		$strings['OK'] = 'OK';
 		$strings['Working'] = 'Working';
+		$strings['Login'] = 'Login';
+		$strings['AdditionalInformation'] = 'Additional Information';
+		$strings['AllFieldsAreRequired'] = 'all fields are required';
+		$strings['Optional'] = 'optional';
+		$strings['YourProfileWasUpdated'] = 'Your profile was updated';
+		$strings['YourSettingsWereUpdated'] = 'Your settings were updated';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';
@@ -288,6 +294,7 @@ class en_us extends Language
 		$strings['Profile'] = 'Profile';
 		$strings['ApplicationManagement'] = 'Application Management';
 		$strings['ForgotPassword'] = 'Forgot Password';
+		$strings['NotificationPreferences'] = 'Notification Preferences';
 		//
 
 		// Day representations

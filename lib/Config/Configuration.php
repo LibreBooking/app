@@ -37,7 +37,9 @@ class Configuration implements IConfiguration
 	const SETTINGS = 'settings';
 	const DEFAULT_CONFIG_ID = 'phpscheduleit';
 	const DEFAULT_CONFIG_FILE_PATH = 'config/config.php';
-	
+
+    const VERSION = '2.0.0 alpha1';
+
 	protected function __construct()
 	{
 	}
@@ -64,7 +66,12 @@ class Configuration implements IConfiguration
 	}
 	
 	public function Register($configFile, $configId, $overwrite = false)
-	{		
+	{
+        if (!file_exists($configFile))
+        {
+            throw new Exception("Missing config file: $configFile");
+        }
+
 		$config = new Config();
 		$container = $config->parseConfig($configFile, "PHPArray");
 		

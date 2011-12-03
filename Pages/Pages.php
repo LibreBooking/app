@@ -11,6 +11,7 @@ class Pages {
     const LOGIN = 'index.php';
     const MY_CALENDAR = 'my-calendar.php';
     const OPENINGS = 'openings.php';
+    const NOTIFICATION_PREFERENCES = 'notification-preferences.php';
     const PARTICIPATION = 'participation.php';
     const PASSWORD = 'password.php';
     const PROFILE = 'profile.php';
@@ -22,8 +23,7 @@ class Pages {
         1 => array('url' => Pages::DASHBOARD, 'name' => 'MyDashboard'),
         2 => array('url' => Pages::SCHEDULE, 'name' => 'Schedule'),
         3 => array('url' => Pages::MY_CALENDAR, 'name' => 'MyCalendar'),
-        4 => array('url' => Pages::CALENDAR, 'name' => 'ResourceCalendar'),
-        5 => array('url' => Pages::RESERVATION, 'name' => 'Reservation'),
+        4 => array('url' => Pages::CALENDAR, 'name' => 'ResourceCalendar')
     );
 
     private function __construct() {

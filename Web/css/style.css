@@ -154,7 +154,7 @@ div.page-footer {
 	color: #aaa;
 }
 
-form.login, form.forgot {
+form.login, form.forgot, form.register, #reservationForm {
         margin: 0 0 0 8px;
         padding: 20px 16px 48px 16px;
         font-weight: normal;
@@ -170,7 +170,8 @@ form.login, form.forgot {
         box-shadow: rgba(200,200,200,1) 0 4px 18px;
 }
 
-form p { margin: 0 3px 16px 3px; }
+form p { margin: 0 3px 12px 3px; }
+
 
 label.login, label.forgot {
         color: #666;
@@ -209,25 +210,7 @@ p.loginsubmit, p.save, p.reg-adminsubmit, p.reporting-submit, p.resetpassword { 
 
 #login-links p, #login-links h4 {text-align: center;}
 
-form.register, form.resource, form.reg-admin, #reservationForm {
-        margin: 0 0 0 8px;
-        padding: 20px 16px 48px 16px;
-        font-weight: normal;
-        -moz-border-radius: 11px;
-        -khtml-border-radius: 11px;
-        -webkit-border-radius: 11px;
-        border-radius: 11px;
-        background: #fff;
-        border: 1px solid #e5e5e5;
-        -moz-box-shadow: rgba(200,200,200,1) 0 4px 18px;
-        -webkit-box-shadow: rgba(200,200,200,1) 0 4px 18px;
-        -khtml-box-shadow: rgba(200,200,200,1) 0 4px 18px;
-        box-shadow: rgba(200,200,200,1) 0 4px 18px;
-}
-
 p.regsubmit { float:left; }
-
-form p { margin-bottom: 12px; }
 
 form li { 
 	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif; 

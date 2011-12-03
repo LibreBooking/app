@@ -51,7 +51,7 @@ abstract class Page implements IPage {
         $this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
         $this->smarty->assign('AllowRss', Configuration::Instance()->GetKey(ConfigKeys::ALLOW_RSS));
         $this->smarty->assign('LoggedIn', $userSession->IsLoggedIn());
-        $this->smarty->assign('Version', Configuration::Instance()->GetKey(ConfigKeys::VERSION));
+        $this->smarty->assign('Version', Configuration::VERSION);
         $this->smarty->assign('Path', $this->path);
         $this->smarty->assign('ScriptUrl', Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL));
         $this->smarty->assign('UserName', !is_null($userSession) ? $userSession->FirstName : '');
