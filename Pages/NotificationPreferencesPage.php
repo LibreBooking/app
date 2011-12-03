@@ -16,7 +16,7 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
 	
 	public function __construct()
 	{
-	    parent::__construct('EditProfile');
+	    parent::__construct('NotificationPreferences');
 		$this->presenter = new NotificationPreferencesPresenter($this, new UserRepository());
 	}
 

@@ -1,4 +1,6 @@
 <?php
+require_once(ROOT_DIR . 'Domain/Events/IDomainEvent.php');
+
 class EventCategory
 {
 	const Reservation = 'reservation'; 
@@ -50,9 +52,5 @@ class ReservationApprovedEvent implements IDomainEvent
 	}
 }
 
-interface IDomainEvent
-{
-	function EventType();
-	function EventCategory();
-}
+
 ?>
