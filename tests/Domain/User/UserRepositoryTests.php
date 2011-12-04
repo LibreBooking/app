@@ -227,6 +227,29 @@ class UserRepositoryTests extends TestBase
 
 		$this->assertTrue($this->db->ContainsCommand($command));
 	}
+
+    public function testChangesEmailPreferences()
+    {
+        $id = 123;
+    	$user = new User();
+        $user->WithId($id);
+        $emailPreferences = new EmailPreferences();
+        $emailPreferences->Add(EventCategory::Reservation, ReservationEvent::Updated);
+        $user->WithEmailPreferences($emailPreferences);
+
+        $user->ChangeEmailPreference(new ReservationUpdatedEvent(), false);
+        $user->ChangeEmailPreference(new ReservationCreatedEvent(), false);
+        $user->ChangeEmailPreference(new ReservationApprovedEvent(), true);
+
+        $repo = new UserRepository();
+        $repo->Update($user);
+
+        $addEmailPreferenceCommand = new AddEmailPreferenceCommand($id, EventCategory::Reservation, ReservationEvent::Approved);
+        $removeEmailPreferenceCommand = new DeleteEmailPreferenceCommand($id, EventCategory::Reservation, ReservationEvent::Updated);
+
+        $this->assertTrue($this->db->ContainsCommand($addEmailPreferenceCommand));
+        $this->assertTrue($this->db->ContainsCommand($removeEmailPreferenceCommand));
+    }
 	
 	private function GetUserRow()
 	{

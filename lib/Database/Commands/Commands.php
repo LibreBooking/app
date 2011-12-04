@@ -51,6 +51,17 @@ class AddBlackoutInstanceCommand extends SqlCommand
 	}
 }
 
+class AddEmailPreferenceCommand extends SqlCommand
+{
+    public function __construct($userId, $eventCategory, $eventType)
+    {
+        parent::__construct(Queries::ADD_EMAIL_PREFERENCE);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::EVENT_CATEGORY, $eventCategory));
+        $this->AddParameter(new Parameter(ParameterNames::EVENT_TYPE, $eventType));
+    }
+}
+
 class AddGroupCommand extends SqlCommand
 {
 	public function __construct($groupName)
@@ -323,6 +334,17 @@ class DeleteBlackoutCommand extends SqlCommand
     {
         parent::__construct(Queries::DELETE_BLACKOUT_SERIES);
         $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $blackoutId));
+    }
+}
+
+class DeleteEmailPreferenceCommand extends SqlCommand
+{
+    public function __construct($userId, $eventCategory, $eventType)
+    {
+       parent::__construct(Queries::DELETE_EMAIL_PREFERENCE);
+       $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+       $this->AddParameter(new Parameter(ParameterNames::EVENT_CATEGORY, $eventCategory));
+       $this->AddParameter(new Parameter(ParameterNames::EVENT_TYPE, $eventType));
     }
 }
 

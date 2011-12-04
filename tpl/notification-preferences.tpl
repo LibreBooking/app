@@ -1,6 +1,6 @@
 {include file='globalheader.tpl'}
 
-{if $Updated}
+{if $PreferencesUpdated}
 <div class="success">{translate key=YourSettingsWereUpdated}</div>
 {/if}
 
@@ -16,10 +16,10 @@
                     When I create a reservation or a reservation is created on my behalf
                 </div>
                 <div class="notification-status">
-                    <input id="createdYes" type="radio" name="{ReservationEvent::Created}" value="true"/><label
+                    <input id="createdYes" type="radio" name="{ReservationEvent::Created}" value="1" {if $Created}checked="checked"{/if}/><label
                         for="createdYes">Send me an email</label>
                     <br/>
-                    <input id="createdNo" type="radio" name="{ReservationEvent::Created}" value="false"/><label
+                    <input id="createdNo" type="radio" name="{ReservationEvent::Created}" value="0" {if !$Created}checked="checked"{/if}/><label
                         for="createdNo">Do not notify me</label>
                 </div>
             </div>
@@ -29,10 +29,10 @@
                     When I update a reservation or a reservation is updated on my behalf
                 </div>
                 <div class="notification-status">
-                    <input id="updatedYes" type="radio" name="{ReservationEvent::Updated}" value="true"/><label
+                    <input id="updatedYes" type="radio" name="{ReservationEvent::Updated}" value="1" {if $Updated}checked="checked"{/if}/><label
                         for="updatedYes">Send me an email</label>
                     <br/>
-                    <input id="updatedNo" type="radio" name="{ReservationEvent::Updated}" value="false"/><label
+                    <input id="updatedNo" type="radio" name="{ReservationEvent::Updated}" value="0" {if !$Updated}checked="checked"{/if}/><label
                         for="updatedNo">Do not notify me</label>
                 </div>
             </div>
@@ -42,10 +42,10 @@
                     When my pending reservation is approved
                 </div>
                 <div class="notification-status">
-                    <input id="approvedYes" type="radio" name="{ReservationEvent::Approved}" value="true"/><label
+                    <input id="approvedYes" type="radio" name="{ReservationEvent::Approved}" value="1" {if $Approved}checked="checked"{/if}/><label
                         for="approvedYes">Send me an email</label>
                     <br/>
-                    <input id="approvedNo" type="radio" name="{ReservationEvent::Approved}" value="false"/><label
+                    <input id="approvedNo" type="radio" name="{ReservationEvent::Approved}" value="0" {if !$Approved}checked="checked"{/if}/><label
                         for="approvedNo">Do not notify me</label>
                 </div>
             </div>

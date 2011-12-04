@@ -1,7 +1,6 @@
 <?php
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
-require_once(ROOT_DIR . 'plugins/Authentication/Ldap/Ldap.config.php');
 
 /**
  * Provides LDAP authentication/synchronization for phpScheduleIt

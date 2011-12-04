@@ -468,7 +468,7 @@ CREATE TABLE `user_email_preferences` (
   `user_id` mediumint(8) unsigned NOT NULL,
   `event_category` varchar(45) NOT NULL,
   `event_type` varchar(45) NOT NULL,
- PRIMARY KEY (`user_id`),
+ PRIMARY KEY (`user_id`, `event_category`, `event_type`),
  FOREIGN KEY (`user_id`)
 	REFERENCES users(`user_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE

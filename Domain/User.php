@@ -1,41 +1,47 @@
 <?php
 require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
+require_once(ROOT_DIR . 'Domain/Values/EmailPreferences.php');
 
 class User
 {
+	public function __construct()
+	{
+		$this->emailPreferences = new EmailPreferences();
+	}
+
 	/**
 	 * @var IEmailPreferences
 	 */
 	protected $emailPreferences;
 
 	protected $id;
-	
+
 	public function Id()
 	{
 		return $this->id;
 	}
 
 	protected $firstName;
-	
+
 	public function FirstName()
 	{
 		return $this->firstName;
 	}
-	
+
 	protected $lastName;
-	
+
 	public function LastName()
 	{
 		return $this->lastName;
 	}
-	
+
 	public function FullName()
 	{
 		return $this->FirstName() . ' ' . $this->LastName();
 	}
-	
+
 	protected $emailAddress;
-	
+
 	public function EmailAddress()
 	{
 		return $this->emailAddress;
@@ -47,23 +53,23 @@ class User
 	{
 		return $this->username;
 	}
-	
+
 	protected $language;
-	
+
 	public function Language()
 	{
 		return $this->language;
 	}
-	
+
 	protected $timezone;
-	
+
 	public function Timezone()
 	{
 		return $this->timezone;
 	}
 
 	protected $homepageId;
-	
+
 	public function Homepage()
 	{
 		return $this->homepageId;
@@ -147,8 +153,7 @@ class User
 	{
 		foreach ($groups as $group)
 		{
-			if ($group->IsGroupAdmin)
-			{
+			if ($group->IsGroupAdmin) {
 				$this->isGroupAdmin = true;
 				break;
 			}
@@ -160,9 +165,8 @@ class User
 	{
 		$removed = array_diff($this->allowedResourceIds, $allowedResourceIds);
 		$added = array_diff($allowedResourceIds, $this->allowedResourceIds);
-		
-		if (!empty($removed) || !empty($added))
-		{
+
+		if (!empty($removed) || !empty($added)) {
 			$this->permissionsChanged = true;
 			$this->removedPermissions = $removed;
 			$this->addedPermissions = $added;
@@ -188,7 +192,7 @@ class User
 	{
 		$this->emailPreferences = $emailPreferences;
 	}
-	
+
 	/**
 	 * @param IDomainEvent $event
 	 * @return bool
@@ -197,7 +201,39 @@ class User
 	{
 		return $this->emailPreferences->Exists($event->EventCategory(), $event->EventType());
 	}
-	
+
+	/**
+	 * @param IDomainEvent $event
+	 * @param bool $turnedOn
+	 */
+	public function ChangeEmailPreference(IDomainEvent $event, $turnedOn)
+	{
+		if ($turnedOn)
+		{
+			$this->emailPreferences->AddPreference($event);
+		}
+		else
+		{
+			$this->emailPreferences->RemovePreference($event);
+		}
+	}
+
+	/**
+	 * @return array|IDomainEvent[]
+	 */
+	public function GetAddedEmailPreferences()
+	{
+		return $this->emailPreferences->GetAdded();
+	}
+
+	/**
+	 * @return array|IDomainEvent[]
+	 */
+	public function GetRemovedEmailPreferences()
+	{
+		return $this->emailPreferences->GetRemoved();
+	}
+
 	public static function FromRow($row)
 	{
 		$user = new User();
@@ -278,7 +314,7 @@ class User
 	public function ChangeAttributes($phone, $organization, $position)
 	{
 		$this->attributesChanged = true;
-		
+
 		$this->attributes[UserAttribute::Phone] = $phone;
 		$this->attributes[UserAttribute::Organization] = $organization;
 		$this->attributes[UserAttribute::Position] = $position;
@@ -290,13 +326,12 @@ class User
 	}
 
 	/**
-	 * @param UserAttribute $attributeName
+	 * @param UserAttribute|string $attributeName
 	 * @return string
 	 */
 	public function GetAttribute($attributeName)
 	{
-		if (key_exists($attributeName, $this->attributes))
-		{
+		if (key_exists($attributeName, $this->attributes)) {
 			return $this->attributes[$attributeName];
 		}
 		return null;
@@ -315,18 +350,15 @@ class User
 		$adminIdsForUser = array();
 		foreach ($user->Groups() as $userGroup)
 		{
-			if (!empty($userGroup->AdminGroupId))
-			{
+			if (!empty($userGroup->AdminGroupId)) {
 				$adminIdsForUser[$userGroup->AdminGroupId] = true;
 			}
 		}
 
 		foreach ($this->Groups() as $group)
 		{
-			if ($group->IsGroupAdmin)
-			{
-				if (array_key_exists($group->GroupId, $adminIdsForUser))
-				{
+			if ($group->IsGroupAdmin) {
+				if (array_key_exists($group->GroupId, $adminIdsForUser)) {
 					return true;
 				}
 			}
@@ -384,10 +416,10 @@ class UserGroup
 	 */
 	public function AddRole($roleLevel = null)
 	{
-		if ($roleLevel == RoleLevel::GROUP_ADMIN)
-		{
+		if ($roleLevel == RoleLevel::GROUP_ADMIN) {
 			$this->IsGroupAdmin = true;
 		}
 	}
 }
+
 ?>

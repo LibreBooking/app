@@ -181,7 +181,7 @@ abstract class Page implements IPage {
     
     /**
      * A template file to be displayed
-     * @param type $templateName 
+     * @param string $templateName
      */
     protected function Display($templateName) {
         $this->smarty->display($templateName);

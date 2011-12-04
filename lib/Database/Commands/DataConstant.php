@@ -18,7 +18,9 @@ class ParameterNames
 	const END_DATE = '@endDate';
 	const END_TIME = '@endTime';
 	const EMAIL_ADDRESS = '@email';
-	
+    const EVENT_CATEGORY = '@event_category';
+    const EVENT_TYPE = '@event_type';
+
 	const FIRST_NAME = '@fname';
 	
 	const GROUP_ID = '@groupid';
@@ -110,6 +112,7 @@ class ParameterNames
 	const PHONE_SETTING = '@phone_setting';
 	const HOMEPAGE_SELECTION_SETTING = '@homepage_setting';
 	const TIMEZONE_SELECTION_SETTING = '@timezone_setting';
+
 }
 
 class Queries
@@ -134,93 +137,75 @@ class Queries
 			(@userid = reservation_users.user_id AND reservation_users.series_id = reservation_series.series_id)';
 
 	const ADD_ACCESSORY =
-		'INSERT INTO
-			accessories (accessory_name, accessory_quantity)
+		'INSERT INTO accessories (accessory_name, accessory_quantity)
 		VALUES (@accessoryname, @quantity)';
 
 	const ADD_BLACKOUT_INSTANCE =
-		'INSERT INTO
-			blackout_instances (start_date, end_date, blackout_series_id)
+		'INSERT INTO blackout_instances (start_date, end_date, blackout_series_id)
 		VALUES (@startDate, @endDate, @seriesid)';
-	
+
+    const ADD_EMAIL_PREFERENCE =
+        'INSERT INTO user_email_preferences (user_id, event_category, event_type) VALUES (@userid, @event_category, @event_type)';
+
 	const ADD_BLACKOUT_SERIES =
-		'INSERT INTO
-			blackout_series (date_created, title, owner_id, resource_id)
-		VALUES (@dateCreated, @title, @userid, @resourceid)';
+		'INSERT INTO blackout_series (date_created, title, owner_id, resource_id) VALUES (@dateCreated, @title, @userid, @resourceid)';
 	
 	const ADD_GROUP =
-		'INSERT INTO
-			groups (name)
-		VALUES (@groupname)';
+		'INSERT INTO groups (name) VALUES (@groupname)';
 	
 	const ADD_GROUP_RESOURCE_PERMISSION =
-		'INSERT INTO
- 			group_resource_permissions (group_id, resource_id)
-		VALUES (@groupid, @resourceid)';
+		'INSERT INTO group_resource_permissions (group_id, resource_id) VALUES (@groupid, @resourceid)';
 
 	const ADD_GROUP_ROLE =
-		'INSERT INTO
-			group_roles (group_id, role_id)
-		VALUES (@groupid, @roleid)';
+		'INSERT INTO group_roles (group_id, role_id) VALUES (@groupid, @roleid)';
 	
 	const ADD_LAYOUT = 
-		'INSERT INTO 
-			layouts (timezone)
-		VALUES (@timezone)';
+		'INSERT INTO layouts (timezone) VALUES (@timezone)';
 	
 	const ADD_LAYOUT_TIME = 
-		'INSERT INTO
-			time_blocks (layout_id, start_time, end_time, availability_code, label)
+		'INSERT INTO time_blocks (layout_id, start_time, end_time, availability_code, label)
 		VALUES (@layoutid, @startTime, @endTime, @periodType, @label)';
 
 	const ADD_QUOTA =
-		'INSERT INTO
-			quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id)
+		'INSERT INTO quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id)
 		VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid)';
 	
 	const ADD_RESERVATION = 
-		'INSERT INTO 
-			reservation_instances (start_date, end_date, reference_number, series_id)
+		'INSERT INTO reservation_instances (start_date, end_date, reference_number, series_id)
 		VALUES (@startDate, @endDate, @referenceNumber, @seriesid)';
 
 	const ADD_RESERVATION_ACCESSORY =
-		'INSERT INTO
-			reservation_accessories (series_id, accessory_id, quantity)
+		'INSERT INTO reservation_accessories (series_id, accessory_id, quantity)
 		VALUES (@seriesid, @accessoryid, @quantity)';
 	
 	const ADD_RESERVATION_RESOURCE =
-		'INSERT INTO
-			reservation_resources (series_id, resource_id, resource_level_id)
+		'INSERT INTO reservation_resources (series_id, resource_id, resource_level_id)
 		VALUES (@seriesid, @resourceid, @resourceLevelId)';	
 	
 	const ADD_RESERVATION_SERIES = 
-		'INSERT INTO 
-			reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id)
+		'INSERT INTO
+        reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id)
 		VALUES (@dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid)';
 	
 	const ADD_RESERVATION_USER  = 
-		'INSERT INTO
-			reservation_users (reservation_instance_id, user_id, reservation_user_level)
+		'INSERT INTO reservation_users (reservation_instance_id, user_id, reservation_user_level)
 		VALUES (@reservationid, @userid, @levelid)';
 
 	const ADD_SCHEDULE = 
-		'INSERT INTO
-			schedules (name, isdefault, weekdaystart, daysvisible, layout_id)
+		'INSERT INTO schedules (name, isdefault, weekdaystart, daysvisible, layout_id)
 		VALUES (@scheduleName, @scheduleIsDefault, @scheduleWeekdayStart, @scheduleDaysVisible, @layoutid)';
 
 	const ADD_USER_GROUP =
-		'INSERT INTO
-			user_groups (user_id, group_id)
+		'INSERT INTO user_groups (user_id, group_id)
 		VALUES (@userid, @groupid)';
 	
 	const ADD_USER_RESOURCE_PERMISSION =
-		'INSERT INTO
-			user_resource_permissions (user_id, resource_id)
+		'INSERT INTO user_resource_permissions (user_id, resource_id)
 		VALUES (@userid, @resourceid)';
 	
 	const AUTO_ASSIGN_PERMISSIONS = 
-		'INSERT INTO 
-			user_resource_permissions (user_id, resource_id) 
+		'INSERT INTO
+          user_resource_permissions (user_id, resource_id)
 		SELECT 
 			@userid as user_id, resource_id 
 		FROM 
@@ -253,7 +238,10 @@ class Queries
 
     const DELETE_BLACKOUT_SERIES =
 		'DELETE FROM blackout_series WHERE blackout_series_id = @seriesid';
-	
+
+    const DELETE_EMAIL_PREFERENCE =
+        'DELETE FROM user_email_preferences WHERE user_id = @userid AND event_category = @event_category AND event_type = @event_type';
+
 	const DELETE_GROUP =
 		'DELETE FROM groups	WHERE group_id = @groupid';
 

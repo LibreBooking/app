@@ -6,7 +6,12 @@ class FakeLdapOptions extends LdapOptions
 	public $_Options = array();
 	public $_Hosts = array();
 	public $_RetryAgainstDatabase = false;
-	
+
+    public function __construct()
+    {
+
+    }
+
 	public function AdLdapOptions()
 	{
 		return $this->_Options;

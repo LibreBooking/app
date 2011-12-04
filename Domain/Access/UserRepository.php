@@ -134,14 +134,14 @@ class UserRepository implements IUserRepository, IUserViewRepository
 			$user->Timezone());
 		$db->Execute($updateUserCommand);
 
-		$removed = $user->GetRemovedPermissions();
-		foreach ($removed as $resourceId)
+		$removedPermissions = $user->GetRemovedPermissions();
+		foreach ($removedPermissions as $resourceId)
 		{
 			$db->Execute(new DeleteUserResourcePermission($userId, $resourceId));
 		}
 		
-		$added = $user->GetAddedPermissions();
-		foreach ($added as $resourceId)
+		$addedPermissions = $user->GetAddedPermissions();
+		foreach ($addedPermissions as $resourceId)
 		{
 			$db->Execute(new AddUserResourcePermission($userId, $resourceId));
 		}
@@ -155,6 +155,18 @@ class UserRepository implements IUserRepository, IUserViewRepository
 						$user->GetAttribute(UserAttribute::Position));
 			$db->Execute($updateAttributesCommand);
 		}
+
+        $removedPreferences = $user->GetRemovedEmailPreferences();
+        foreach ($removedPreferences as $event)
+        {
+            $db->Execute(new DeleteEmailPreferenceCommand($userId, $event->EventCategory(), $event->EventType()));
+        }
+
+        $addedPreferences = $user->GetAddedEmailPreferences();
+        foreach ($addedPreferences as $event)
+        {
+            $db->Execute(new AddEmailPreferenceCommand($userId,$event->EventCategory(), $event->EventType()));
+        }
 	}
 
 	public function DeleteById($userId)
@@ -286,6 +298,7 @@ interface IUserRepository
 	/**
 	 * @abstract
 	 * @param $userId int
+     * @param $roleLevel int|null
 	 * @return array|UserGroup[]
 	 */
 	function LoadGroups($userId, $roleLevel = null);
@@ -370,33 +383,6 @@ class NullUserDto extends UserDto
 	{
 		return null;
 	}
-}
-
-class EmailPreferences implements IEmailPreferences
-{
-	private $preferences = array();
-	
-	public function Add($eventCategory, $eventType)
-	{
-		$key = $this->ToKey($eventCategory, $eventType);
-		$this->preferences[$key] = true;
-	}
-	
-	public function Exists($eventCategory, $eventType)
-	{
-		$key = $this->ToKey($eventCategory, $eventType);
-		return isset($this->preferences[$key]);
-	}
-	
-	private function ToKey($eventCategory, $eventType)
-	{
-		return $eventCategory . '|' . $eventType;
-	}
-}
-
-interface IEmailPreferences
-{
-	function Exists($eventCategory, $eventType);
 }
 
 class UserItemView
