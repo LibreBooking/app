@@ -18,12 +18,24 @@ class LoginPresenter {
      */
     private $authentication = null;
 
+    /**
+     * Construct page type and authentication method
+     * @param ILoginPage $page passed by reference
+     * @param IAuthentication $authentication default to null
+     */
     public function __construct(ILoginPage &$page, $authentication = null) {
         $this->_page = & $page;
         $this->SetAuthorization($authentication);
     }
 
-    private function SetAuthorization($authentication) {
+    /**
+     * 
+     * @param type $authentication 
+     */
+    private function SetAuthorization($authentication) {var_dump($authentication);
+    /**
+     * If authentication is null (NOT LOGIN) or not null (LOGIN)
+     */
         if (is_null($authentication)) {
             $this->authentication = PluginManager::Instance()->LoadAuthentication();
         } else {

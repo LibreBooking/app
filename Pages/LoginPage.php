@@ -38,8 +38,14 @@ interface ILoginPage extends IPage {
 class LoginPage extends Page implements ILoginPage {
 
     private $_presenter = null;
-
+    
+    /**
+     * 
+     */
     public function __construct() {
+        /**
+         * Calling a parent constructor within a constructor
+         */
         parent::__construct('LogIn');   // parent Page class
         /**
          * As well instantiate LoginPresenter class object

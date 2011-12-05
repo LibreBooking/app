@@ -1,9 +1,9 @@
 <?php
 
 /**
- * 
+ * Include plugins
  */
-require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/Config/namespace.php');    // namespace.php is an include files of classes
 
 class PluginManager {
 
@@ -11,9 +11,12 @@ class PluginManager {
      * @var PluginManager
      */
     private static $_instance = null;
-
+    
+    /**
+     * Empty constructor is legal
+     */
     private function __construct() {
-
+        
     }
 
     /**
@@ -21,6 +24,9 @@ class PluginManager {
      * @return PluginManager
      */
     public static function Instance() {
+        /**
+         * $_instance variable seems to be always Null.
+         */
         if (is_null(self::$_instance)) {
             self::$_instance = new PluginManager();
         }
@@ -43,8 +49,10 @@ class PluginManager {
      * @return IAuthentication the authorization class to use
      */
     public function LoadAuthentication() {
-        require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
-
+        require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');    // namespace.php is include file
+        /**
+         * Instantiate Authentication class object with 
+         */
         $authentication = new Authentication($this->LoadAuthorization());
 
         $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHENTICATION, 'Authentication', $authentication);
@@ -63,6 +71,7 @@ class PluginManager {
      * @return IPermissionService
      */
     public function LoadPermission() {
+        // namespace.php is include files
         require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
         $resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
@@ -84,6 +93,7 @@ class PluginManager {
      * @return IAuthorizationService
      */
     public function LoadAuthorization() {
+        // namespace.php is include files
         require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
         $authorizationService = new AuthorizationService(new UserRepository());
