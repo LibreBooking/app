@@ -95,7 +95,6 @@
 		<th>{translate key='EndDate'}</th>
 		<th>Created By</th>
 		<th>{translate key='Delete'}</th>
-		<th>{translate key='Edit'}</th>
 	</tr>
 	{foreach from=$blackouts item=blackout}
 	{cycle values='row0,row1' assign=rowCss}
@@ -106,9 +105,6 @@
 		<td>{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
 		<td>{$blackout->FirstName} {$blackout->LastName}</td>
 		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
-		<td align="center">
-			Edit
-		</td>
 	</tr>
 	{/foreach}
 </table>
