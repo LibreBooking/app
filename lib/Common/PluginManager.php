@@ -11,12 +11,12 @@ class PluginManager {
      * @var PluginManager
      */
     private static $_instance = null;
-    
+
     /**
      * Empty constructor is legal
      */
     private function __construct() {
-        
+
     }
 
     /**
@@ -51,7 +51,7 @@ class PluginManager {
     public function LoadAuthentication() {
         require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');    // namespace.php is include file
         /**
-         * Instantiate Authentication class object with 
+         * Instantiate Authentication class object with
          */
         $authentication = new Authentication($this->LoadAuthorization());
 
