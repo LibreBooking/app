@@ -23,6 +23,8 @@ class NotificationPreferencesPresenter
 
 	public function PageLoad()
 	{
+        $this->page->SetEmailEnabled(Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter()));
+
         $userSession = ServiceLocator::GetServer()->GetUserSession();
         $user = $this->userRepository->LoadById($userSession->UserId);
 

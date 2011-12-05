@@ -4,6 +4,9 @@
 <div class="success">{translate key=YourSettingsWereUpdated}</div>
 {/if}
 
+{if !$EmailEnabled}
+<div class="error">The administrator has disabled email notifications</div>
+{else}
 <div id="notificationPreferences" class="box-form">
     <form class="box-form" method="post" action="{$smarty.server.SCRIPT_NAME}">
         <div class="header">
@@ -59,4 +62,7 @@
         </div>
     </form>
 </div>
+{/if}
+
+
 {include file='globalfooter.tpl'}

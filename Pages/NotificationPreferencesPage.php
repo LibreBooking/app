@@ -7,6 +7,12 @@ interface INotificationPreferencesPage extends IPage
 {
     /**
      * @abstract
+     * @param bool $enabled
+     */
+    public function SetEmailEnabled($enabled);
+
+    /**
+     * @abstract
      * @param bool $wantsApprovalEmails
      */
     public function SetApproved($wantsApprovalEmails);
@@ -122,6 +128,14 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
 	{
 		$this->Set('PreferencesUpdated', $werePreferencesUpdated);
 	}
+
+    /**
+     * @param bool $enabled
+     */
+    public function SetEmailEnabled($enabled)
+    {
+        $this->Set('EmailEnabled', $enabled);
+    }
 }
 
 ?>
