@@ -38,9 +38,9 @@ interface ILoginPage extends IPage {
 class LoginPage extends Page implements ILoginPage {
 
     private $_presenter = null;
-    
+
     /**
-     * 
+     *
      */
     public function __construct() {
         /**
@@ -103,17 +103,20 @@ class LoginPage extends Page implements ILoginPage {
     public function DisplayWelcome() {
         return false;
     }
-    
+
     /**
      * Get and return form status on Actions::LOGIN
      * @return type null
      */
     public function LoggingIn() {
+
         return $this->server->GetForm(Actions::LOGIN);
     }
-    
+
     /**
-     * 
+     * Calling upon _presenter->Login() for authentication to a requested page.
+     * (Notice that this is not the Login Page, better understand the Login Page is an extension of Page).
+     * $this->_presenter = new LoginPresenter($this): is infact an extension of Page class
      */
     public function Login() {
         $this->_presenter->Login();

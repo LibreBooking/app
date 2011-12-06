@@ -63,7 +63,13 @@ class LoginPresenter {
         $this->_page->setShowRegisterLink($allowRegistration);
     }
 
+    /**
+     * Validating the login submission form.
+     */
     public function Login() {
+        /**
+         * If authentication is successful Log the user in and redirect to requested page.
+         */
         if ($this->authentication->Validate($this->_page->getEmailAddress(), $this->_page->getPassword())) {
             $this->authentication->Login($this->_page->getEmailAddress(), $this->_page->getPersistLogin());
             $this->_Redirect();

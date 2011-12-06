@@ -16,7 +16,8 @@ $page = new LoginPage();
 /**
  * A login is attempted, response accordingly.
  */
-if ($page->LoggingIn()) {   // Get and return form status. Is login attempt?
+if ($page->LoggingIn()) {   // Is form ['submit'] returned?
+    
     $page->Login(); // Verify the login and reponse accordingly.
 }
 /**

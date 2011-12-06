@@ -3,7 +3,7 @@
 class Server {
 
     public function __construct() {
-        
+
     }
 
     public function SetCookie(Cookie $cookie) {
@@ -40,12 +40,24 @@ class Server {
         return null;
     }
 
+    /**
+     * This return null or an array of form elements such as email and password and submit
+     * @param type $name
+     * @return type
+     */
     public function GetForm($name) {
         if (isset($_POST[$name])) {
+            /**
+             * When is it returning an array?
+             */
             if (is_array($_POST[$name])) {
                 return $_POST[$name];
             }
-            return htmlentities($_POST[$name]);
+            /**
+             * Is it always returning a string and not an array
+             */
+
+            return htmlentities($_POST[$name]);   // Convert all applicable characters to HTML entities
         }
         return null;
     }

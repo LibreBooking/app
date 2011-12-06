@@ -36,30 +36,41 @@ class Authentication implements IAuthentication {
 
         return $this->passwordMigration;
     }
-    
-    /**
-     * 
-     */
-    public function Validate($username, $password) {
-        Log::Debug('Trying to log in as: %s', $username);
 
+    /**
+     * $username, $password a result of inputs of login form
+     * Finding username and password here from the database?
+     */
+    public function Validate($username, $password) {echo('$username');
+        /**
+         * To Logs' logfiles.
+         */
+        Log::Debug('Trying to log in as: %s', $username);
+        /**
+         *
+         */
         $command = new AuthorizationCommand($username);
         $reader = ServiceLocator::GetDatabase()->Query($command);
         $valid = false;
-
-        if ($row = $reader->GetRow()) {
+        /**
+         *
+         */
+        if (($row = $reader->GetRow())) {
             Log::Debug('User was found: %s', $username);
             $migration = $this->GetMigration();
             $password = $migration->Create($password, $row[ColumnNames::OLD_PASSWORD], $row[ColumnNames::PASSWORD]);
-
             $salt = $row[ColumnNames::SALT];
-
+            /**
+             *
+             */
             if ($password->Validate($salt)) {
                 $password->Migrate($row[ColumnNames::USER_ID]);
                 $valid = true;
             }
         }
-
+        /**
+         *
+         */
         Log::Debug('User: %s, was validated: %d', $username, $valid);
         return $valid;
     }
@@ -70,7 +81,7 @@ class Authentication implements IAuthentication {
         $command = new LoginCommand($username);
         $reader = ServiceLocator::GetDatabase()->Query($command);
 
-        if ($row = $reader->GetRow()) {
+        if (($row = $reader->GetRow())) {
             $loginTime = LoginTime::Now();
             $userid = $row[ColumnNames::USER_ID];
             $emailAddress = $row[ColumnNames::EMAIL];

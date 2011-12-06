@@ -36,7 +36,7 @@ abstract class Page implements IPage {
          */
         $this->server = ServiceLocator::GetServer();
         $resources = Resources::GetInstance();
-        
+
         /**
          * SmartyPage is an extension of external Smarty class
          */
@@ -152,6 +152,7 @@ abstract class Page implements IPage {
      * @return null|string
      */
     protected function GetForm($var) {
+
         return $this->server->GetForm($var);
     }
 
@@ -178,7 +179,7 @@ abstract class Page implements IPage {
         }
         $this->smarty->display('json_data.tpl');
     }
-    
+
     /**
      * A template file to be displayed
      * @param string $templateName
