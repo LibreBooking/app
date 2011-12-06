@@ -50,7 +50,7 @@ class LoginPage extends Page implements ILoginPage {
         /**
          * As well instantiate LoginPresenter class object
          */
-        $this->_presenter = new LoginPresenter($this);  // $this pseudo variable of class object is null
+        $this->_presenter = new LoginPresenter($this);  // $this pseudo variable of class object is Page object
         $this->smarty->assign('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
         $this->smarty->assign('ShowLoginError', false);
     }
