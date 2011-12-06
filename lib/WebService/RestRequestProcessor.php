@@ -23,7 +23,14 @@ class RestRequestProcessor
 			$response = $this->service->HandleGet($this->server, $this->GetServiceAction());
 		}
 
-		$this->server->Respond($response);
+        if (is_a($response, 'IExactRestResponse'))
+        {
+            $this->server->RespondExact($response);
+        }
+        else
+        {
+            $this->server->Respond($response);
+        }
 	}
 
 	private function GetServiceAction()

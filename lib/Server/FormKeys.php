@@ -17,6 +17,7 @@ class FormKeys
 	const BEGIN_TIME = 'beginTime';
 	const BLACKOUT_APPLY_TO_SCHEDULE = 'applyToSchedule';
 
+    const CAPTCHA = 'captcha';
 	const CONFLICT_ACTION = 'conflictAction';
 	const CONTACT_INFO = 'contactInfo';
 	const CURRENT_PASSWORD = 'currentPassword';

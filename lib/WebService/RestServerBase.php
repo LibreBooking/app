@@ -1,18 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
-
-class RestParams
-{
-	const UserName = 'username';
-	const Password = 'password';
-}
-
-class RequestType
-{
-	const GET = 'GET';
-	const POST = 'POST';
-}
+require_once(ROOT_DIR . 'lib/WebService/RestConstants.php');
 
 abstract class RestServerBase implements IRestServer
 {
@@ -49,8 +38,24 @@ abstract class RestServerBase implements IRestServer
 
 	public function GetServiceAction()
 	{
-		return $this->GetQueryString('action');
+		return $this->GetQueryString(QueryStringKeys::WEB_SERVICE_ACTION);
 	}
+
+    public function RespondExact(IExactRestResponse $response)
+    {
+        $response->Respond();
+    }
+}
+
+interface IExactRestResponse
+{
+    /**
+     * Output the exact response needed, including all header information
+     *
+     * @abstract
+     * return void
+     */
+    public function Respond();
 }
 
 ?>

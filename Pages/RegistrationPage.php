@@ -21,6 +21,7 @@ interface IRegistrationPage extends IPage
 	public function SetPosition($position);
 	public function SetPassword($password);
 	public function SetPasswordConfirm($passwordConfirm);
+    public function SetCaptchaImageUrl($captchaUrl);
 	
 	public function GetTimezone();
 	public function GetHomepage();
@@ -33,6 +34,7 @@ interface IRegistrationPage extends IPage
 	public function GetPosition();
 	public function GetPassword();
 	public function GetPasswordConfirm();
+	public function GetCaptcha();
 }
 
 class RegistrationPage extends Page implements IRegistrationPage
@@ -48,7 +50,7 @@ class RegistrationPage extends Page implements IRegistrationPage
 	{
 		$this->_presenter->PageLoad();
 		
-		$this->smarty->display('register.tpl');				
+		$this->Display('register.tpl');
 	}
 	
 	public function RegisterClicked()
@@ -177,5 +179,15 @@ class RegistrationPage extends Page implements IRegistrationPage
 	{
 		return $this->GetForm(FormKeys::PASSWORD_CONFIRM);
 	}
+
+    public function SetCaptchaImageUrl($captchaUrl)
+    {
+        $this->Set('CaptchaImageUrl', $captchaUrl);
+    }
+
+    public function GetCaptcha()
+    {
+        return $this->GetForm(FormKeys::CAPTCHA);
+    }
 }
 ?>

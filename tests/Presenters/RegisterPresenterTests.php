@@ -10,9 +10,26 @@ class RegisterPresenterTests extends TestBase
 	 * @var FakeRegistrationPage
 	 */
 	private $page;
+
+    /**
+     * @var RegistrationPresenter
+     */
 	private $presenter;
+
+    /**
+     * @var FakeRegistration
+     */
 	private $fakeReg;
+
+    /**
+     * @var FakeAuth
+     */
     private $fakeAuth;
+
+    /**
+     * @var ICaptchaService
+     */
+    private $captcha;
 	
 	private $login = 'testlogin';
 	private $email = 'test@test.com';
@@ -31,8 +48,9 @@ class RegisterPresenterTests extends TestBase
 		$this->page = new FakeRegistrationPage();
 		$this->fakeReg = new FakeRegistration();
         $this->fakeAuth = new FakeAuth();
+        $this->captcha = $this->getMock('ICaptchaService');
 		
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth, $this->captcha);
 	}
 	
 	public function teardown()
@@ -105,6 +123,19 @@ class RegisterPresenterTests extends TestBase
 		
 		$this->assertEquals($this->page->_Homepage, $expectedHomepage);
 	}
+    
+    public function testSetsCaptchaUrl()
+    {
+        $url = "http://blah/blah/blah";
+
+        $this->captcha->expects($this->once())
+            ->method('GetImageUrl')
+            ->will($this->returnValue($url));
+
+        $this->presenter->PageLoad();
+
+        $this->assertEquals($url, $this->page->_CaptchaUrl);
+    }
 	
 	public function testPresenterRegistersIfAllFieldsAreValid()
 	{		
@@ -224,6 +255,7 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	public $_Password;
 	public $_PasswordConfirm;
 	public $_UseLoginName;
+    public $_CaptchaUrl;
 	
 	public function RegisterClicked()
 	{
@@ -366,5 +398,10 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	{
 		// TODO: Implement GetOrganization() method.
 	}
+
+    public function SetCaptchaImageUrl($captchaUrl)
+    {
+        $this->_CaptchaUrl = $captchaUrl;
+    }
 }
 ?>

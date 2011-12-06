@@ -4,167 +4,185 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class RegistrationPresenter
 {
-	/**
-	 * @var \IRegistrationPage
-	 */
-	private $_page;
+    /**
+     * @var IRegistrationPage
+     */
+    private $page;
 
-	/**
-	 * @var IRegistration
-	 */
-	private $_registration;
+    /**
+     * @var IRegistration
+     */
+    private $registration;
 
-	/**
-	 * @var IAuthentication
-	 */
-    private $_auth;
-	
-	public function __construct(IRegistrationPage $page, $registration = null, $authorization = null)
-	{
-		$this->_page = $page;
-		$this->SetRegistration($registration);
-		$this->SetAuthorization($authorization);
-				
-		if ($page->IsPostBack())
-		{
-			$this->LoadValidators();
-		}
-	}
-	
-	private function SetRegistration($registration)
-	{
-		if (is_null($registration))
-		{
-			$this->_registration = new Registration();
-		}
-		else
-		{
-			$this->_registration = $registration;
-		}
-	}
-			
-	private function SetAuthorization($authorization)
-	{
-		if (is_null($authorization))
-		{
-			$this->_auth = PluginManager::Instance()->LoadAuthentication();
-		}
-		else
-		{
-			$this->_auth = $authorization;
-		}
-	}
-	
-	public function PageLoad()
-	{	
-		$this->BounceIfNotAllowingRegistration();
-		
-		if ($this->_page->RegisterClicked())
-		{
-			$this->Register();
-		}
+    /**
+     * @var IAuthentication
+     */
+    private $auth;
 
-		$this->PopulateTimezones();
-		$this->PopulateHomepages();
-	}
-	
-	public function Register()
-	{
-		if ($this->_page->IsValid())
-	    {
+    /**
+     * @var ICaptchaService
+     */
+    private $captchaService;
 
-    	$additionalFields = array('phone' => $this->_page->GetPhone(),
-    							'organization' => $this->_page->GetOrganization(),
-    							'position' => $this->_page->GetPosition());
-    		
-          $this->_registration->Register(
-    			$this->_page->GetLoginName(), 
-    			$this->_page->GetEmail(),
-    			$this->_page->GetFirstName(),
-    			$this->_page->GetLastName(),
-    			$this->_page->GetPassword(),
-    			$this->_page->GetTimezone(),
-    			Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-    			intval($this->_page->GetHomepage()),
-    			$additionalFields);
-    			
-    		$this->_auth->Login($this->_page->GetEmail(), false);
-    		$this->_page->Redirect(Pages::UrlFromId($this->_page->GetHomepage()));
-	    }
-	}
-	
-	private function BounceIfNotAllowingRegistration()
-	{
-		if (!Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter()))
-		{
-			$this->_page->Redirect(Pages::LOGIN);
-		}
-	}
-	
-	private function PopulateTimezones()
-	{
-		$timezoneValues = array();
-		$timezoneOutput = array();
-		
-		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
-		{
-			$timezoneValues[] = $timezone;			
-			$timezoneOutput[] = $timezone;		
-		}
-				
-		$this->_page->SetTimezones($timezoneValues, $timezoneOutput);
-		
-		$timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
-		if ($this->_page->IsPostBack())
-		{
-			$timezone = $this->_page->GetTimezone();
-		}
-		
-		$this->_page->SetTimezone($timezone);
-	}
-	
-	private function PopulateHomepages()
-	{
-		$homepageValues = array();
-		$homepageOutput = array();
-		
-		$pages = Pages::GetAvailablePages();
-		foreach($pages as $pageid => $page)
-		{
-			$homepageValues[] = $pageid;
-			$homepageOutput[] = Resources::GetInstance()->GetString($page['name']);
-		}
-		
-		$this->_page->SetHomepages($homepageValues, $homepageOutput);
-		
-		$homepageId = 1;
-		if ($this->_page->IsPostBack())
-		{
-			$homepageId = $this->_page->GetHomepage();
-		}
-		
-		$this->_page->SetHomepage($homepageId);
-	}
-	
-	private function FormatOffset($offset)
-	{
-		$hour = intval($offset);
-		$decimalPartOfHour = abs($offset) - intval(abs($offset));
-		$min = $decimalPartOfHour * 60;
-		
-		return sprintf("%+d:%02d", $hour, $min);
-	}
-	
-	private function LoadValidators()
-	{
-		$this->_page->RegisterValidator('fname', new RequiredValidator($this->_page->GetFirstName()));
-		$this->_page->RegisterValidator('lname', new RequiredValidator($this->_page->GetLastName()));
-		$this->_page->RegisterValidator('username', new RequiredValidator($this->_page->GetLoginName()));
-		$this->_page->RegisterValidator('passwordmatch', new EqualValidator($this->_page->GetPassword(), $this->_page->GetPasswordConfirm()));
-		$this->_page->RegisterValidator('passwordcomplexity', new RegexValidator($this->_page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
-		$this->_page->RegisterValidator('emailformat', new EmailValidator($this->_page->GetEmail()));
-		$this->_page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->_page->GetEmail()));
-		$this->_page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->_page->GetLoginName()));
-	}
+    /**
+     * @param IRegistrationPage $page
+     * @param IRegistration|null $registration
+     * @param IAuthentication|null $authentication
+     * @param ICaptchaService|null $captchaService
+     */
+    public function __construct(IRegistrationPage $page, $registration = null, $authentication = null, $captchaService = null)
+    {
+        $this->page = $page;
+        $this->SetRegistration($registration);
+        $this->SetAuthentication($authentication);
+        $this->SetCaptchaService($captchaService);
+
+        if ($page->IsPostBack())
+        {
+            $this->LoadValidators();
+        }
+    }
+
+    private function SetRegistration($registration)
+    {
+        if (is_null($registration))
+        {
+            $this->registration = new Registration();
+        }
+        else
+        {
+            $this->registration = $registration;
+        }
+    }
+
+    private function SetAuthentication($authorization)
+    {
+        if (is_null($authorization))
+        {
+            $this->auth = PluginManager::Instance()->LoadAuthentication();
+        }
+        else
+        {
+            $this->auth = $authorization;
+        }
+    }
+
+    private function SetCaptchaService($captchaService)
+    {
+        if (is_null($captchaService))
+        {
+            $this->captchaService = new CaptchaService();
+        }
+        else
+        {
+            $this->captchaService = $captchaService;
+        }
+    }
+
+    public function PageLoad()
+    {
+        $this->BounceIfNotAllowingRegistration();
+
+        if ($this->page->RegisterClicked())
+        {
+            $this->Register();
+        }
+
+        $this->page->SetCaptchaImageUrl($this->captchaService->GetImageUrl());
+        $this->PopulateTimezones();
+        $this->PopulateHomepages();
+    }
+
+    public function Register()
+    {
+        if ($this->page->IsValid())
+        {
+
+            $additionalFields = array('phone' => $this->page->GetPhone(),
+                'organization' => $this->page->GetOrganization(),
+                'position' => $this->page->GetPosition());
+
+            $this->registration->Register(
+                $this->page->GetLoginName(),
+                $this->page->GetEmail(),
+                $this->page->GetFirstName(),
+                $this->page->GetLastName(),
+                $this->page->GetPassword(),
+                $this->page->GetTimezone(),
+                Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
+                intval($this->page->GetHomepage()),
+                $additionalFields);
+
+            $this->auth->Login($this->page->GetEmail(), false);
+            $this->page->Redirect(Pages::UrlFromId($this->page->GetHomepage()));
+        }
+    }
+
+    private function BounceIfNotAllowingRegistration()
+    {
+        if (!Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter()))
+        {
+            $this->page->Redirect(Pages::LOGIN);
+        }
+    }
+
+    private function PopulateTimezones()
+    {
+        $timezoneValues = array();
+        $timezoneOutput = array();
+
+        foreach ($GLOBALS['APP_TIMEZONES'] as $timezone)
+        {
+            $timezoneValues[] = $timezone;
+            $timezoneOutput[] = $timezone;
+        }
+
+        $this->page->SetTimezones($timezoneValues, $timezoneOutput);
+
+        $timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+        if ($this->page->IsPostBack())
+        {
+            $timezone = $this->page->GetTimezone();
+        }
+
+        $this->page->SetTimezone($timezone);
+    }
+
+    private function PopulateHomepages()
+    {
+        $homepageValues = array();
+        $homepageOutput = array();
+
+        $pages = Pages::GetAvailablePages();
+        foreach ($pages as $pageid => $page)
+        {
+            $homepageValues[] = $pageid;
+            $homepageOutput[] = Resources::GetInstance()->GetString($page['name']);
+        }
+
+        $this->page->SetHomepages($homepageValues, $homepageOutput);
+
+        $homepageId = 1;
+        if ($this->page->IsPostBack())
+        {
+            $homepageId = $this->page->GetHomepage();
+        }
+
+        $this->page->SetHomepage($homepageId);
+    }
+
+    private function LoadValidators()
+    {
+        $this->page->RegisterValidator('fname', new RequiredValidator($this->page->GetFirstName()));
+        $this->page->RegisterValidator('lname', new RequiredValidator($this->page->GetLastName()));
+        $this->page->RegisterValidator('username', new RequiredValidator($this->page->GetLoginName()));
+        $this->page->RegisterValidator('passwordmatch', new EqualValidator($this->page->GetPassword(), $this->page->GetPasswordConfirm()));
+        $this->page->RegisterValidator('passwordcomplexity', new RegexValidator($this->page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
+        $this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
+        $this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
+        $this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetLoginName()));
+        $this->page->RegisterValidator('captcha', new CaptchaValidator($this->page->GetCaptcha(), $this->captchaService));
+    }
 }
+
 ?>

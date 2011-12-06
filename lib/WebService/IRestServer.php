@@ -22,6 +22,13 @@ interface IRestServer
 	 */
 	public function Respond(RestResponse $response);
 
+    /**
+     * @abstract
+     * @param IExactRestResponse $response
+     * @return void
+     */
+    public function RespondExact(IExactRestResponse $response);
+
 	/**
 	 * @abstract
 	 * @param string $variableName

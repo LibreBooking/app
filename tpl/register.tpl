@@ -1,6 +1,4 @@
 {include file='loginheader.tpl' DisplayWelcome='false'}
-<div id="registrationbox">
-<form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
 
 {validation_group class="error"}
         {validator id="fname" key="FirstNameRequired"}
@@ -11,9 +9,11 @@
         {validator id="emailformat" key="ValidEmailRequired"}
         {validator id="uniqueemail" key="UniqueEmailRequired"}
         {validator id="uniqueusername" key="UniqueUsernameRequired"}
+        {validator id="captcha" key="CaptchaMustMatch"}
 {/validation_group}
-
-		<div class="registrationHeader"><h3>{translate key="Login Information (all fields are required)"}</h3></div>
+<div id="registrationbox">
+<form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
+		<div class="registrationHeader"><h3>{translate key=Login} ({translate key=AllFieldsAreRequired})</h3></div>
         <p>
                 <label class="reg">{translate key="Username"}<br />
                 {textbox name="LOGIN" class="input" value="Login" size="20" tabindex="110"}
@@ -37,7 +37,7 @@
                 </label>
         </p>
 
-        <div class="registrationHeader"><h3>{translate key="Account Registration (all fields are required)"}</h3></div>
+        <div class="registrationHeader"><h3>{translate key=Profile} ({translate key=AllFieldsAreRequired})</h3></div>
         <p>
                 <label class="reg">{translate key="FirstName"}<br />
                 {textbox name="FIRST_NAME" class="input" value="FirstName" size="20" tabindex="150"}
@@ -70,7 +70,7 @@
         
         </p>
 
-        <div class="registrationHeader"><h3>{translate key="Additional Information (optional)"}</h3></div>
+        <div class="registrationHeader"><h3>{translate key="AdditionalInformation"} ({translate key=Optional})</h3></div>
         <p>
                 <label class="reg">{translate key="Phone"}<br />
                 {textbox name="PHONE" class="input" value="Phone" size="20" tabindex="200"}
@@ -87,9 +87,14 @@
                 </label>
         </p>
 
+        <p>
+            <img src="{$CaptchaImageUrl}" alt='captcha' /><br/>
+            <label class="reg">{translate key="SecurityCode"}<br />
+            <input type="text" class="input" {formname key=CAPTCHA} size="20"  />
+        </p>
 
         <p class="regsubmit">
-                <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}" tabindex="300" class="button"><img src="img/tick-circle.png" /> {translate key='Register'}</button>
+             <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}" tabindex="300" class="button"><img src="img/tick-circle.png" /> {translate key='Register'}</button>
         </p>
 </form>
 </div>

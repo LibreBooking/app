@@ -64,6 +64,7 @@ class en_us extends Language
 		$strings['UniqueEmailRequired'] = 'That email address is already registered.';
 		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
 		$strings['UserNameRequired'] = 'User name is required.';
+		$strings['CaptchaMustMatch'] = 'Please enter the letters from security image exactly as shown.';
 		$strings['Today'] = 'Today';
 		$strings['Week'] = 'Week';
 		$strings['Month'] = 'Month';
@@ -246,6 +247,8 @@ class en_us extends Language
 		$strings['Optional'] = 'optional';
 		$strings['YourProfileWasUpdated'] = 'Your profile was updated';
 		$strings['YourSettingsWereUpdated'] = 'Your settings were updated';
+		$strings['Register'] = 'Register';
+		$strings['SecurityCode'] = 'Security Code';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';

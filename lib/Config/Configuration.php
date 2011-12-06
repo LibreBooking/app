@@ -25,7 +25,11 @@ interface IConfigurationFile
 	 * @return mixed|string
 	 */
 	public function GetKey($name, $converter = null);
-	
+
+    /**
+     * @abstract
+     * @return string the full url to the root of this phpScheduleIt instance WITHOUT the trailing /
+     */
 	public function GetScriptUrl();
 }
 

@@ -34,6 +34,7 @@ class QueryStringKeys
 	const START_DATE = 'sd';
 	const USER_ID = 'uid';
 	const USER_NAME = 'un';
+    const WEB_SERVICE_ACTION = 'action';
 	const YEAR = 'y';
 }
 ?>

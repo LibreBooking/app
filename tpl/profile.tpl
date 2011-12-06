@@ -52,7 +52,7 @@
 		</label>
 	</p>
 
-	<div class="registrationHeader"><h3>{translate key=AdditionalInformation} ({translate key=optional})</h3></div>
+	<div class="registrationHeader"><h3>{translate key=AdditionalInformation} ({translate key=Optional})</h3></div>
 	<p>
 		<label class="reg">{translate key="Phone"}<br />
 		{textbox name="PHONE" class="input" value="Phone" size="20"}
