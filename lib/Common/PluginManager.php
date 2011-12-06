@@ -54,10 +54,17 @@ class PluginManager {
          * Instantiate Authentication class object with
          */
         $authentication = new Authentication($this->LoadAuthorization());
-
+        /**
+         * param#1: ConfigKeys::PLUGIN_AUTHENTICATION is a constance, which provides type of authentication.
+         * param#2: 'Authentication' is a constant for plugin sub-directory
+         * param#3: $authentication is actually the authoriaztion of this authentication.
+         */
         $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHENTICATION, 'Authentication', $authentication);
 
         if (!is_null($plugin)) {
+            /**
+             * Returning authentication plugin
+             */
             return $plugin;
         }
 
@@ -119,6 +126,7 @@ class PluginManager {
 
         if (!empty($plugin) && file_exists($pluginFile)) {
             require_once($pluginFile);
+
             return new $plugin($baseImplementation);
         }
 
