@@ -2,16 +2,18 @@
 require_once(ROOT_DIR . 'lib/WebService/RestServerBase.php');
 require_once(ROOT_DIR . 'lib/WebService/IRestService.php');
 
-class AuthenticationWebService implements IRestService
+class AuthenticationWebService extends RestServiceBase implements IRestService
 {
 	/**
-	 * @var \IAuthentication
+	 * @var IAuthentication
 	 */
 	private $authentication;
 	
 	public function __construct(IAuthentication $authentication)
 	{
 		$this->authentication = $authentication;
+		$this->Register(RestAction::SignIn(), array($this, 'Authenticate'));
+		$this->Register(RestAction::SignOut(), array($this, 'SignOut'));
 	}
 
 	/**
@@ -47,27 +49,27 @@ class AuthenticationWebService implements IRestService
 		return new SignOutResponse();
 	}
 
-	/**
-	 * @param IRestServer $server
-	 * @return RestResponse
-	 */
-	public function HandlePost(IRestServer $server)
-	{
-		if ($server->GetServiceAction() == WebServiceAction::SignOut)
-		{
-			return $this->SignOut($server);
-		}
-		return $this->Authenticate($server);
-	}
-
-	/**
-	 * @param IRestServer $server
-	 * @return RestResponse
-	 */
-	public function HandleGet(IRestServer $server)
-	{
-		return new NotFoundResponse();
-	}
+//	/**
+//	 * @param IRestServer $server
+//	 * @return RestResponse
+//	 */
+//	public function HandlePost(IRestServer $server)
+//	{
+//		if ($server->GetServiceAction() == WebServiceAction::SignOut)
+//		{
+//			return $this->SignOut($server);
+//		}
+//		return $this->Authenticate($server);
+//	}
+//
+//	/**
+//	 * @param IRestServer $server
+//	 * @return RestResponse
+//	 */
+//	public function HandleGet(IRestServer $server)
+//	{
+//		return new NotFoundResponse();
+//	}
 
 }
 

@@ -84,6 +84,7 @@ class WebServiceResource
 class WebServiceAction
 {
 	const Create = 'create';
+	const DefaultAction = '';
 	const Delete = 'update';
 	const MyBookings = 'mybookings';
 	const SignOut = 'signout';
@@ -93,12 +94,12 @@ class WebServiceAction
 
 class SecureRestAction extends RestAction
 {
-	public function __construct($url, $description = '', $requestType = RequestType::GET)
+	public function __construct($url, $description = '', $requestType = RequestType::GET, $serviceAction = WebServiceAction::DefaultAction)
 	{
 		$token = ServiceLocator::GetServer()->GetUserSession()->SessionToken;
 		$url = $url . '&sessionToken=' . $token;
 
-		parent::__construct($url, $description, $requestType);
+		parent::__construct($url, $description, $requestType, $serviceAction);
 	}
 }
 
@@ -118,12 +119,38 @@ class RestAction
 	 * @var string|RequestType
 	 */
 	public $requestType;
+
+	/**
+	 * @var string|WebServiceAction
+	 */
+	private $action;
+
+	/**
+	 * @return string|WebServiceAction
+	 */
+	public function GetServiceAction()
+	{
+		return $this->action;
+	}
 	
-	public function __construct($url, $description = '', $requestType = RequestType::GET)
+	public function __construct($url, $description = '', $requestType = RequestType::GET, $serviceAction = WebServiceAction::DefaultAction)
 	{
 		$this->ref = $url;
 		$this->description = $description;
 		$this->requestType = $requestType;
+		$this->action = $serviceAction;
+	}
+
+	/**
+	 * @static
+	 * @return RestAction
+	 */
+	public static function SignIn()
+	{
+		return new RestAction(
+			self::GetUrl(WebServiceResource::Authentication),
+			'SignIn',
+			RequestType::POST);
 	}
 
 	/**
@@ -135,7 +162,8 @@ class RestAction
 		return new SecureRestAction(
 			self::GetUrl(WebServiceResource::Authentication, WebServiceAction::SignOut),
 			'SignOut',
-			RequestType::POST);
+			RequestType::POST,
+			WebServiceAction::SignOut);
 	}
 
 	/**
@@ -157,7 +185,9 @@ class RestAction
 	{
 		return new SecureRestAction(
 			self::GetUrl(WebServiceResource::Bookings, WebServiceAction::MyBookings),
-			'MyBookings');
+			'MyBookings',
+			RequestType::GET,
+			WebServiceAction::MyBookings);
 	}
 
 	/**
@@ -169,7 +199,8 @@ class RestAction
 		return new SecureRestAction(
 			self::GetUrl(WebServiceResource::Bookings, WebServiceAction::Create),
 			'CreateBooking',
-			RequestType::POST);
+			RequestType::POST,
+			WebServiceAction::Create);
 	}
 
 	/**
@@ -178,7 +209,7 @@ class RestAction
 	 * @param string $serviceAction
 	 * @return string
 	 */
-	private static function GetUrl($serviceResource, $serviceAction = '')
+	private static function GetUrl($serviceResource, $serviceAction = WebServiceAction::DefaultAction)
 	{
 		return sprintf('%s/%s?action=%s', self::GetBaseServiceUrl(), $serviceResource, $serviceAction);
 	}

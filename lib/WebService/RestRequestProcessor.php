@@ -16,14 +16,19 @@ class RestRequestProcessor
 
 		if ($this->server->IsPost())
 		{
-			$response = $this->service->HandlePost($this->server);
+			$response = $this->service->HandlePost($this->server, $this->GetServiceAction());
 		}
 		if ($this->server->IsGet())
 		{
-			$response = $this->service->HandleGet($this->server);
+			$response = $this->service->HandleGet($this->server, $this->GetServiceAction());
 		}
 
 		$this->server->Respond($response);
+	}
+
+	private function GetServiceAction()
+	{
+		return $this->server->GetServiceAction();
 	}
 }
 
