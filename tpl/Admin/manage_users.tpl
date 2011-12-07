@@ -55,17 +55,17 @@
 
 {pagination pageInfo=$PageInfo}
 
-<div class="admin" style="margin-top:30px; display: none;">
+<div class="admin" style="margin-top:30px;">
 	<div class="title">
 		Add New User
 	</div>
 	<div>
 		<ul>
-		{async_validator id="emailformat" key="ValidEmailRequired"}
-			{async_validator id="uniqueemail" key="UniqueEmailRequired"}
-			{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
+		    {async_validator id="addUserEmailformat" key="ValidEmailRequired"}
+			{async_validator id="addUserUniqueemail" key="UniqueEmailRequired"}
+			{async_validator id="addUserUsername" key="UniqueUsernameRequired"}
 		</ul>
-		<form id="addGroupForm" method="post">
+		<form id="addUserForm" method="post">
 			<div style="display: table-row">
 				<div style="display: table-cell;">
 					<ul>
@@ -112,7 +112,7 @@
 			</div>
 
 			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Add'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			<button type="button" class="button clear">{html_image src="slash.png"} {translate key='Cancel'}</button>
 		</form>
 	</div>
 </div>
@@ -146,9 +146,9 @@
 <div id="userDialog" class="dialog" title="Update User">
 	<form id="userForm" method="post">
 		<ul>
-		{async_validator id="addUserEmailformat" key="ValidEmailRequired"}
-			{async_validator id="addUserUniqueemail" key="UniqueEmailRequired"}
-			{async_validator id="addUserUsername" key="UniqueUsernameRequired"}
+            {async_validator id="emailformat" key="ValidEmailRequired"}
+       		{async_validator id="uniqueemail" key="UniqueEmailRequired"}
+       		{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
 		</ul>
 
 		<ul>
@@ -210,7 +210,8 @@
 	permissions: '{ManageUsersActions::Permissions}',
 	password: '{ManageUsersActions::Password}',
 	deleteUser: '{ManageUsersActions::DeleteUser}',
-	updateUser: '{ManageUsersActions::UpdateUser}'
+	updateUser: '{ManageUsersActions::UpdateUser}',
+	addUser: '{ManageUsersActions::AddUser}'
 	};
 
 	var userOptions = {

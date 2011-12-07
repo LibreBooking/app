@@ -16,7 +16,7 @@ function UserManagement(opts) {
 		userDialog: $('#userDialog'),
 		userForm: $('#userForm'),
 
-		addForm: $('#addScheduleForm'),
+        addUserForm: $('#addUserForm'),
 
 		deleteDialog: $('#deleteDialog'),
 		deleteUserForm: $('#deleteUserForm')
@@ -82,6 +82,10 @@ function UserManagement(opts) {
 			$(this).closest('.dialog').dialog("close");
 		});
 
+        $('.clear').click(function() {
+            $(this).closest('form')[0].reset();
+        });
+
 		var hidePermissionsDialog = function() {
 			elements.permissionsDialog.dialog('close');
 		};
@@ -95,12 +99,7 @@ function UserManagement(opts) {
 		};
 
 		var handleUserUpdate = function(response) {
-			$.each(response.ErrorIds, function(index, errorId) {
-				$('#' + errorId).show();
-			});
-		};
-
-		var handleAddUser = function(response) {
+            $('.asyncValidation').hide();
 			$.each(response.ErrorIds, function(index, errorId) {
 				$('#' + errorId).show();
 			});
@@ -112,6 +111,7 @@ function UserManagement(opts) {
 		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
 		ConfigureAdminForm(elements.userForm, getSubmitCallback(options.actions.updateUser), hideDialog(elements.userDialog), handleUserUpdate);
 		ConfigureAdminForm(elements.deleteUserForm, getSubmitCallback(options.actions.deleteUser), hideDialog(elements.deleteDialog), error);
+		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), null, handleUserUpdate);
 	};
 
 	UserManagement.prototype.addUser = function(user) {

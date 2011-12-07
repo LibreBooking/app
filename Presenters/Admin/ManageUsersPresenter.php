@@ -5,201 +5,202 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class ManageUsersActions
 {
-	const Activate = 'activate';
-	const AddUser = 'addUser';
-	const Deactivate = 'deactivate';
-	const DeleteUser = 'deleteUser';
-	const Password = 'password';
-	const Permissions = 'permissions';
-	const UpdateUser = 'updateUser';
+    const Activate = 'activate';
+    const AddUser = 'addUser';
+    const Deactivate = 'deactivate';
+    const DeleteUser = 'deleteUser';
+    const Password = 'password';
+    const Permissions = 'permissions';
+    const UpdateUser = 'updateUser';
 }
 
 class ManageUsersPresenter extends ActionPresenter
 {
-	/**
-	 * @var \IManageUsersPage
-	 */
-	private $page;
+    /**
+     * @var \IManageUsersPage
+     */
+    private $page;
 
-	/**
-	 * @var \UserRepository
-	 */
-	private $userRepository;
+    /**
+     * @var \UserRepository
+     */
+    private $userRepository;
 
-	/**
-	 * @var ResourceRepository
-	 */
-	private $resourceRepository;
+    /**
+     * @var ResourceRepository
+     */
+    private $resourceRepository;
 
-	/**
-	 * @var \PasswordEncryption
-	 */
-	private $passwordEncryption;
+    /**
+     * @var \PasswordEncryption
+     */
+    private $passwordEncryption;
 
 
-	/**
-	 * @param IManageUsersPage $page
-	 * @param UserRepository $userRepository
-	 * @param IResourceRepository $resourceRepository
-	 * @param PasswordEncryption $passwordEncryption
-	 */
-	public function __construct(IManageUsersPage $page, UserRepository $userRepository, IResourceRepository $resourceRepository, PasswordEncryption $passwordEncryption)
-	{
-		parent::__construct($page);
-		
-		$this->page = $page;
-		$this->userRepository = $userRepository;
-		$this->resourceRepository = $resourceRepository;
-		$this->passwordEncryption = $passwordEncryption;
+    /**
+     * @param IManageUsersPage $page
+     * @param UserRepository $userRepository
+     * @param IResourceRepository $resourceRepository
+     * @param PasswordEncryption $passwordEncryption
+     */
+    public function __construct(IManageUsersPage $page, UserRepository $userRepository, IResourceRepository $resourceRepository, PasswordEncryption $passwordEncryption)
+    {
+        parent::__construct($page);
 
-		$this->AddAction(ManageUsersActions::Activate, 'Activate');
-		$this->AddAction(ManageUsersActions::AddUser, 'AddUser');
-		$this->AddAction(ManageUsersActions::Deactivate, 'Deactivate');
-		$this->AddAction(ManageUsersActions::DeleteUser, 'DeleteUser');
-		$this->AddAction(ManageUsersActions::Password, 'ResetPassword');
-		$this->AddAction(ManageUsersActions::Permissions, 'ChangePermissions');
-		$this->AddAction(ManageUsersActions::UpdateUser, 'UpdateUser');
-	}
+        $this->page = $page;
+        $this->userRepository = $userRepository;
+        $this->resourceRepository = $resourceRepository;
+        $this->passwordEncryption = $passwordEncryption;
 
-	public function PageLoad()
-	{
-		if ($this->page->GetUserId() != null)
-		{
-			$userList = $this->userRepository->GetList(1, 1, null, null, new SqlFilterEquals(ColumnNames::USER_ID, $this->page->GetUserId()));
-		}
-		else {
-			$userList = $this->userRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
-		}
+        $this->AddAction(ManageUsersActions::Activate, 'Activate');
+        $this->AddAction(ManageUsersActions::AddUser, 'AddUser');
+        $this->AddAction(ManageUsersActions::Deactivate, 'Deactivate');
+        $this->AddAction(ManageUsersActions::DeleteUser, 'DeleteUser');
+        $this->AddAction(ManageUsersActions::Password, 'ResetPassword');
+        $this->AddAction(ManageUsersActions::Permissions, 'ChangePermissions');
+        $this->AddAction(ManageUsersActions::UpdateUser, 'UpdateUser');
+    }
 
-		$this->page->BindUsers($userList->Results());
-		$this->page->BindPageInfo($userList->PageInfo());
+    public function PageLoad()
+    {
+        if ($this->page->GetUserId() != null)
+        {
+            $userList = $this->userRepository->GetList(1, 1, null, null, new SqlFilterEquals(ColumnNames::USER_ID, $this->page->GetUserId()));
+        }
+        else
+        {
+            $userList = $this->userRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
+        }
 
-		$this->page->BindResources($this->resourceRepository->GetResourceList());
-	}
+        $this->page->BindUsers($userList->Results());
+        $this->page->BindPageInfo($userList->PageInfo());
 
-	public function Deactivate()
-	{
-		$user = $this->userRepository->LoadById($this->page->GetUserId());
-		$user->Deactivate();
-		$this->userRepository->Update($user);
-	}
+        $this->page->BindResources($this->resourceRepository->GetResourceList());
+    }
 
-	public function Activate()
-	{
-		$user = $this->userRepository->LoadById($this->page->GetUserId());
-		$user->Activate();
-		$this->userRepository->Update($user);
-	}
+    public function Deactivate()
+    {
+        $user = $this->userRepository->LoadById($this->page->GetUserId());
+        $user->Deactivate();
+        $this->userRepository->Update($user);
+    }
 
-	public function AddUser()
-	{
-		$registration = new Registration(new PasswordEncryption());
-		$registration->Register(
-		$this->page->GetUserName(),
-		$this->page->GetEmail(),
-		$this->page->GetFirstName(),
-		$this->page->GetLastName(),
-		$this->page->GetPassword(),
-		$this->page->GetTimezone(),
-		Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-		Pages::DEFAULT_HOMEPAGE_ID);
-	}
+    public function Activate()
+    {
+        $user = $this->userRepository->LoadById($this->page->GetUserId());
+        $user->Activate();
+        $this->userRepository->Update($user);
+    }
 
-	public function UpdateUser()
-	{
-		Log::Debug('Updating user %s', $this->page->GetUserId());
-		$user = $this->userRepository->LoadById($this->page->GetUserId());
-		$user->ChangeName($this->page->GetFirstName(), $this->page->GetLastName());
-		$user->ChangeEmailAddress($this->page->GetEmail());
-		$user->ChangeUsername($this->page->GetUserName());
-		$user->ChangeTimezone($this->page->GetTimezone());
-		$user->ChangeAttributes($this->page->GetPhone(), $this->page->GetOrganization(), $this->page->GetPosition());
-		
-		$this->userRepository->Update($user);
-	}
+    public function AddUser()
+    {
+        $registration = new Registration($this->passwordEncryption);
+        $registration->Register(
+            $this->page->GetUserName(),
+            $this->page->GetEmail(),
+            $this->page->GetFirstName(),
+            $this->page->GetLastName(),
+            $this->page->GetPassword(),
+            $this->page->GetTimezone(),
+            Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
+            Pages::DEFAULT_HOMEPAGE_ID);
+    }
 
-	public function DeleteUser()
-	{
-		$userId = $this->page->GetUserId();
-		Log::Debug('Deleting user %s', $userId);
-		
-		$this->userRepository->DeleteById($userId);
-	}
-	
-	public function ChangePermissions()
-	{
-		$user = $this->userRepository->LoadById($this->page->GetUserId());
-		$allowedResources = array();
+    public function UpdateUser()
+    {
+        Log::Debug('Updating user %s', $this->page->GetUserId());
+        $user = $this->userRepository->LoadById($this->page->GetUserId());
+        $user->ChangeName($this->page->GetFirstName(), $this->page->GetLastName());
+        $user->ChangeEmailAddress($this->page->GetEmail());
+        $user->ChangeUsername($this->page->GetUserName());
+        $user->ChangeTimezone($this->page->GetTimezone());
+        $user->ChangeAttributes($this->page->GetPhone(), $this->page->GetOrganization(), $this->page->GetPosition());
 
-		if (is_array($this->page->GetAllowedResourceIds()))
-		{
-			$allowedResources = $this->page->GetAllowedResourceIds();
-		}
-		$user->ChangePermissions($allowedResources);
-		$this->userRepository->Update($user);
-	}
+        $this->userRepository->Update($user);
+    }
 
-	public function ResetPassword()
-	{
-		$salt = $this->passwordEncryption->Salt();
-		$encryptedPassword = $this->passwordEncryption->Encrypt($this->page->GetPassword(), $salt);
+    public function DeleteUser()
+    {
+        $userId = $this->page->GetUserId();
+        Log::Debug('Deleting user %s', $userId);
 
-		$user = $this->userRepository->LoadById($this->page->GetUserId());
-		$user->ChangePassword($encryptedPassword, $salt);
-		$this->userRepository->Update($user);
-	}
+        $this->userRepository->DeleteById($userId);
+    }
 
-	public function ProcessDataRequest()
-	{
-		if ($this->page->GetDataRequest() == 'groupMembers')
-		{
-			$this->page->SetJsonResponse($users);
-		}
-		else
-		{
-			$this->page->SetJsonResponse($this->GetUserResourcePermissions());
-		}
-	}
+    public function ChangePermissions()
+    {
+        $user = $this->userRepository->LoadById($this->page->GetUserId());
+        $allowedResources = array();
 
-	/**
-	 * @return int[] all resource ids the user has permission to
-	 */
-	public function GetUserResourcePermissions()
-	{
-		$user = $this->userRepository->LoadById($this->page->GetUserId());
-		return $user->AllowedResourceIds();
-	}
+        if (is_array($this->page->GetAllowedResourceIds()))
+        {
+            $allowedResources = $this->page->GetAllowedResourceIds();
+        }
+        $user->ChangePermissions($allowedResources);
+        $this->userRepository->Update($user);
+    }
 
-	protected function LoadValidators($action)
-	{
-		if ($action == ManageUsersActions::UpdateUser)
-		{
-			Log::Debug('Loading validators for %s', $action);
+    public function ResetPassword()
+    {
+        $salt = $this->passwordEncryption->Salt();
+        $encryptedPassword = $this->passwordEncryption->Encrypt($this->page->GetPassword(), $salt);
 
-			$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
-			$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail(), $this->page->GetUserId()));
-			$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetUserName(), $this->page->GetUserId()));
-		}
+        $user = $this->userRepository->LoadById($this->page->GetUserId());
+        $user->ChangePassword($encryptedPassword, $salt);
+        $this->userRepository->Update($user);
+    }
 
-		if ($action == ManageUsersActions::AddUser)
-		{
-			Log::Debug('Loading validators for %s', $action);
+    public function ProcessDataRequest()
+    {
+        if ($this->page->GetDataRequest() == 'groupMembers')
+        {
+            $this->page->SetJsonResponse($users);
+        }
+        else
+        {
+            $this->page->SetJsonResponse($this->GetUserResourcePermissions());
+        }
+    }
 
-			$this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
-			$this->page->RegisterValidator('addUserUniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
-			$this->page->RegisterValidator('addUserUsername', new UniqueUserNameValidator($this->page->GetUserName()));
-		}
-	}
+    /**
+     * @return int[] all resource ids the user has permission to
+     */
+    public function GetUserResourcePermissions()
+    {
+        $user = $this->userRepository->LoadById($this->page->GetUserId());
+        return $user->AllowedResourceIds();
+    }
+
+    protected function LoadValidators($action)
+    {
+        if ($action == ManageUsersActions::UpdateUser)
+        {
+            Log::Debug('Loading validators for %s', $action);
+
+            $this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
+            $this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail(), $this->page->GetUserId()));
+            $this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetUserName(), $this->page->GetUserId()));
+        }
+
+        if ($action == ManageUsersActions::AddUser)
+        {
+            Log::Debug('Loading validators for %s', $action);
+
+            $this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
+            $this->page->RegisterValidator('addUserUniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
+            $this->page->RegisterValidator('addUserUsername', new UniqueUserNameValidator($this->page->GetUserName()));
+        }
+    }
 }
 
 class ActionErrors
 {
-	public $ErrorIds = array();
+    public $ErrorIds = array();
 
-	public function AddId($id)
-	{
-		$this->ErrorIds[] = $id;
-	}
+    public function AddId($id)
+    {
+        $this->ErrorIds[] = $id;
+    }
 }
 
 ?>
