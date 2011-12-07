@@ -1,3 +1,5 @@
+SET foreign_key_checks = 0;
+
 --
 -- Table structure for table `announcements`
 --
@@ -285,25 +287,6 @@ FOREIGN KEY (`resource_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
--- Table structure for table `schedule_admins`
---
-
-DROP TABLE IF EXISTS `schedule_admins`;
-CREATE TABLE `schedule_admins` (
- `schedule_id` smallint(5) unsigned NOT NULL,
- `user_id` mediumint(8) unsigned NOT NULL,
- PRIMARY KEY (`schedule_id`, `user_id`),
- INDEX (`schedule_id`),
- FOREIGN KEY (`schedule_id`) 
-	REFERENCES schedules(`schedule_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`user_id`),
- FOREIGN KEY (`user_id`) 
-	REFERENCES users(`user_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
 -- Table structure for table `reservation_types`
 --
 
@@ -385,25 +368,7 @@ CREATE TABLE `reservation_users` (
   FOREIGN KEY (`reservation_instance_id`) REFERENCES `reservation_instances` (`reservation_instance_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-	
---
--- Table structure for table `reservation_time_blocks`
---
 
-DROP TABLE IF EXISTS `reservation_time_blocks`;
-CREATE TABLE `reservation_time_blocks` (
- `series_id` int unsigned NOT NULL,
- `block_id` mediumint(8) unsigned NOT NULL,
- PRIMARY KEY (`series_id`, `block_id`),
- INDEX (`series_id`),
- FOREIGN KEY (`series_id`) 
-	REFERENCES reservation_series(`series_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
- INDEX (`block_id`),
- FOREIGN KEY (`block_id`) 
-	REFERENCES time_blocks(`block_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
 -- Table structure for table `reservation_resources`
@@ -531,3 +496,5 @@ CREATE TABLE `reservation_accessories` (
 	REFERENCES reservation_series(`series_id`)
 	ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+SET foreign_key_checks = 1;
