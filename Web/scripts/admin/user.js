@@ -99,6 +99,12 @@ function UserManagement(opts) {
 				$('#' + errorId).show();
 			});
 		};
+
+		var handleAddUser = function(response) {
+			$.each(response.ErrorIds, function(index, errorId) {
+				$('#' + errorId).show();
+			});
+		};
 		
 		var error = function(errorText) { alert(errorText);};
 		

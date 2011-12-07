@@ -6,98 +6,114 @@
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class LoginPresenter {
+class LoginPresenter
+{
+	/**
+	 * @var ILoginPage
+	 */
+	private $_page = null;
 
-    /**
-     * @var ILoginPage
-     */
-    private $_page = null;
+	/**
+	 * @var IAuthentication
+	 */
+	private $authentication = null;
 
-    /**
-     * @var IAuthentication
-     */
-    private $authentication = null;
+	/**
+	 * Construct page type and authentication method
+	 * @param ILoginPage $page passed by reference
+	 * @param IAuthentication $authentication default to null
+	 */
+	public function __construct(ILoginPage &$page, $authentication = null)
+	{
+		$this->_page = & $page;
+		$this->SetAuthentication($authentication);
+	}
 
-    /**
-     * Construct page type and authentication method
-     * @param ILoginPage $page passed by reference
-     * @param IAuthentication $authentication default to null
-     */
-    public function __construct(ILoginPage &$page, $authentication = null) {
-        $this->_page = & $page;
-        $this->SetAuthorization($authentication);
-    }
+	/**
+	 *
+	 * @param IAuthentication $authentication
+	 */
+	private function SetAuthentication($authentication)
+	{
+		/**
+		 * If authentication is null (NOT LOGIN) or not null (LOGIN)
+		 */
+		if (is_null($authentication))
+		{
+			$this->authentication = PluginManager::Instance()->LoadAuthentication();
+		} else
+		{
+			$this->authentication = $authentication;
+		}
+	}
 
-    /**
-     *
-     * @param type $authentication
-     */
-    private function SetAuthorization($authentication) {
-        /**
-         * If authentication is null (NOT LOGIN) or not null (LOGIN)
-         */
-        if (is_null($authentication)) {
-            $this->authentication = PluginManager::Instance()->LoadAuthentication();
-        } else {
-            $this->authentication = $authentication;
-        }
-    }
+	/**
+	 * User validation, assigning cookie, check cookie, and whether to show registration link
+	 */
+	public function PageLoad()
+	{
+		if ($this->authentication->AreCredentialsKnown())
+		{
+			$this->Login();
+		}
 
-    /**
-     * User validation, assigning cookie, check cookie, and whether to show registration link
-     */
-    public function PageLoad() {
-        if ($this->authentication->AreCredentialsKnown()) {
-            $this->Login();
-        }
+		$loginCookie = ServiceLocator::GetServer()->GetCookie(CookieKeys::PERSIST_LOGIN);
 
-        $loginCookie = ServiceLocator::GetServer()->GetCookie(CookieKeys::PERSIST_LOGIN);
+		if ($this->IsCookieLogin($loginCookie))
+		{
+			if ($this->authentication->CookieLogin($loginCookie))
+			{
+				$this->_Redirect();
+			}
+		}
 
-        if ($this->IsCookieLogin($loginCookie)) {
-            if ($this->authentication->CookieLogin($loginCookie)) {
-                $this->_Redirect();
-            }
-        }
+		$allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
+		$this->_page->setShowRegisterLink($allowRegistration);
+	}
 
-        $allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
-        $this->_page->setShowRegisterLink($allowRegistration);
-    }
+	/**
+	 * Validating the login submission form.
+	 */
+	public function Login()
+	{
+		/**
+		 * If authentication is successful Log the user in and redirect to requested page.
+		 */
+		if ($this->authentication->Validate($this->_page->getEmailAddress(), $this->_page->getPassword()))
+		{
+			$this->authentication->Login($this->_page->getEmailAddress(), $this->_page->getPersistLogin());
+			$this->_Redirect();
+		} else
+		{
+			$this->authentication->HandleLoginFailure($this->_page);
+			$this->_page->setShowLoginError();
+		}
+	}
 
-    /**
-     * Validating the login submission form.
-     */
-    public function Login() {
-        /**
-         * If authentication is successful Log the user in and redirect to requested page.
-         */
-        if ($this->authentication->Validate($this->_page->getEmailAddress(), $this->_page->getPassword())) {
-            $this->authentication->Login($this->_page->getEmailAddress(), $this->_page->getPersistLogin());
-            $this->_Redirect();
-        } else {
-            $this->authentication->HandleLoginFailure($this->_page);
-            $this->_page->setShowLoginError();
-        }
-    }
+	public function Logout()
+	{
+		$this->authentication->Logout(ServiceLocator::GetServer()->GetUserSession());
+		$this->_page->Redirect(Pages::LOGIN);
+	}
 
-    public function Logout() {
-        $this->authentication->Logout(ServiceLocator::GetServer()->GetUserSession());
-        $this->_page->Redirect(Pages::LOGIN);
-    }
+	private function _Redirect()
+	{
+		$redirect = $this->_page->getResumeUrl();
 
-    private function _Redirect() {
-        $redirect = $this->_page->getResumeUrl();
+		if (!empty($redirect))
+		{
+			$this->_page->Redirect($redirect);
+		} else
+		{
+			$defaultId = ServiceLocator::GetServer()->GetUserSession()->HomepageId;
+			$this->_page->Redirect(Pages::UrlFromId($defaultId));
+		}
+	}
 
-        if (!empty($redirect)) {
-            $this->_page->Redirect($redirect);
-        } else {
-            $defaultId = ServiceLocator::GetServer()->GetUserSession()->HomepageId;
-            $this->_page->Redirect(Pages::UrlFromId($defaultId));
-        }
-    }
-
-    private function IsCookieLogin($loginCookie) {
-        return!is_null($loginCookie);
-    }
+	private function IsCookieLogin($loginCookie)
+	{
+		return !is_null($loginCookie);
+	}
 
 }
 

@@ -98,6 +98,7 @@ class Ldap implements IAuthentication
 
 	public function Validate($username, $password)
 	{
+		die("Ldap Validate: $username $password");
 		$this->password = $password;
 
 		$this->ldap->Connect();

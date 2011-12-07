@@ -91,6 +91,20 @@ class ManageUsersPresenter extends ActionPresenter
 		$this->userRepository->Update($user);
 	}
 
+	public function AddUser()
+	{
+		$registration = new Registration(new PasswordEncryption());
+		$registration->Register(
+		$this->page->GetUserName(),
+		$this->page->GetEmail(),
+		$this->page->GetFirstName(),
+		$this->page->GetLastName(),
+		$this->page->GetPassword(),
+		$this->page->GetTimezone(),
+		Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
+		Pages::DEFAULT_HOMEPAGE_ID);
+	}
+
 	public function UpdateUser()
 	{
 		Log::Debug('Updating user %s', $this->page->GetUserId());
@@ -156,11 +170,6 @@ class ManageUsersPresenter extends ActionPresenter
 		return $user->AllowedResourceIds();
 	}
 
-	public function UpdateUserValidators()
-	{
-		return array(new EmailValidator($this->page->GetEmail()));
-	}
-
 	protected function LoadValidators($action)
 	{
 		if ($action == ManageUsersActions::UpdateUser)
@@ -170,6 +179,15 @@ class ManageUsersPresenter extends ActionPresenter
 			$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
 			$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail(), $this->page->GetUserId()));
 			$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetUserName(), $this->page->GetUserId()));
+		}
+
+		if ($action == ManageUsersActions::AddUser)
+		{
+			Log::Debug('Loading validators for %s', $action);
+
+			$this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
+			$this->page->RegisterValidator('addUserUniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
+			$this->page->RegisterValidator('addUserUsername', new UniqueUserNameValidator($this->page->GetUserName()));
 		}
 	}
 }

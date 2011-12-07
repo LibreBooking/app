@@ -15,7 +15,8 @@ class Registration implements IRegistration
 		}
 	}
 
-	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId,
+	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
+							 $homepageId,
 							 $additionalFields = array())
 	{
 		$encryptedPassword = $this->_passwordEncryption->EncryptPassword($password);

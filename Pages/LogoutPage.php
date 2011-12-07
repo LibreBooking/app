@@ -12,7 +12,6 @@ class LogoutPage extends LoginPage
 
 	public function __construct()
 	{
-		parent::__construct('');
 		$this->_presenter = new LoginPresenter($this);
 	}
 

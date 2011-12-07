@@ -93,6 +93,12 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @return string
 	 */
 	public function GetOrganization();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetLanguage();
 }
 
 
@@ -125,7 +131,10 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 		$this->_presenter->PageLoad();
 
 		$this->Set('statusDescriptions', array(AccountStatus::ACTIVE => 'Active', AccountStatus::AWAITING_ACTIVATION => 'Pending', AccountStatus::INACTIVE => 'Inactive'));
+
+		$this->Set('Timezone', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
+		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
 		$this->Display('manage_users.tpl');
 	}
 
@@ -255,6 +264,11 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	public function GetOrganization()
 	{
 		return $this->GetForm(FormKeys::ORGANIZATION);
+	}
+
+	public function GetLanguage()
+	{
+		return $this->GetForm(FormKeys::LANGUAGE);
 	}
 }
 ?>

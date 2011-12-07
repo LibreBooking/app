@@ -71,7 +71,7 @@ class Configuration implements IConfiguration
 	
 	public function Register($configFile, $configId, $overwrite = false)
 	{
-        if (!file_exists($configFile))
+		if (!file_exists($configFile))
         {
             throw new Exception("Missing config file: $configFile");
         }
