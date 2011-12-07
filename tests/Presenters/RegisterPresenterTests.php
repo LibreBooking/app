@@ -176,7 +176,7 @@ class RegisterPresenterTests extends TestBase
 		
 		$v = $this->page->_Validators;
 		
-		$this->assertEquals(8, count($v));
+		$this->assertEquals(9, count($v));
 		$this->assertEquals($v['fname'], new RequiredValidator($this->fname));
 		$this->assertEquals($v['lname'], new RequiredValidator($this->lname));
 		$this->assertEquals($v['username'], new RequiredValidator($this->login));
@@ -402,6 +402,11 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
     public function SetCaptchaImageUrl($captchaUrl)
     {
         $this->_CaptchaUrl = $captchaUrl;
+    }
+
+    public function GetCaptcha()
+    {
+        // TODO: Implement GetCaptcha() method.
     }
 }
 ?>

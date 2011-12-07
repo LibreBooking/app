@@ -168,5 +168,14 @@ class FakeWebServiceServer implements IRestServer
 	{
 		return $this->_ServiceAction;
 	}
+
+    /**
+     * @param IExactRestResponse $response
+     * @return void
+     */
+    public function RespondExact(IExactRestResponse $response)
+    {
+        // TODO: Implement RespondExact() method.
+    }
 }
 ?>
