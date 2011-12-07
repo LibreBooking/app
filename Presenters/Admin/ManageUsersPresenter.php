@@ -32,18 +32,27 @@ class ManageUsersPresenter extends ActionPresenter
     private $resourceRepository;
 
     /**
-     * @var \PasswordEncryption
+     * @var PasswordEncryption
      */
     private $passwordEncryption;
 
+    /**
+     * @var IRegistration
+     */
+    private $registration;
 
     /**
      * @param IManageUsersPage $page
      * @param UserRepository $userRepository
      * @param IResourceRepository $resourceRepository
      * @param PasswordEncryption $passwordEncryption
+     * @param IRegistration $registration
      */
-    public function __construct(IManageUsersPage $page, UserRepository $userRepository, IResourceRepository $resourceRepository, PasswordEncryption $passwordEncryption)
+    public function __construct(IManageUsersPage $page,
+                                UserRepository $userRepository,
+                                IResourceRepository $resourceRepository,
+                                PasswordEncryption $passwordEncryption,
+                                IRegistration $registration)
     {
         parent::__construct($page);
 
@@ -51,6 +60,7 @@ class ManageUsersPresenter extends ActionPresenter
         $this->userRepository = $userRepository;
         $this->resourceRepository = $resourceRepository;
         $this->passwordEncryption = $passwordEncryption;
+        $this->registration = $registration;
 
         $this->AddAction(ManageUsersActions::Activate, 'Activate');
         $this->AddAction(ManageUsersActions::AddUser, 'AddUser');
@@ -94,8 +104,7 @@ class ManageUsersPresenter extends ActionPresenter
 
     public function AddUser()
     {
-        $registration = new Registration($this->passwordEncryption);
-        $registration->Register(
+        $this->registration->Register(
             $this->page->GetUserName(),
             $this->page->GetEmail(),
             $this->page->GetFirstName(),
