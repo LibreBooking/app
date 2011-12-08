@@ -10,6 +10,8 @@ require_once 'PHPUnit/Autoload.php';
 require_once(ROOT_DIR . 'tests/TestBase.php');
 require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 
+require_once(ROOT_DIR . 'tests/Plugins/Authentication/Ldap/Plugins_Auth_Ldap_Suite.php');
+
 require_once(ROOT_DIR . 'tests/Application/Authorization/Application_Authorization_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Authentication/Application_Authentication_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Reservation/Application_Reservation_Suite.php');
@@ -25,8 +27,6 @@ require_once(ROOT_DIR . 'tests/Domain/User/Domain_User_Suite.php');
 require_once(ROOT_DIR . 'tests/Infrastructure/Common/Infrastructure_Common_Suite.php');
 require_once(ROOT_DIR . 'tests/Infrastructure/Config/Infrastructure_Config_Suite.php');
 require_once(ROOT_DIR . 'tests/Infrastructure/Database/Infrastructure_Database_Suite.php');
-
-require_once(ROOT_DIR . 'tests/Plugins/Authentication/Ldap/Plugins_Auth_Ldap_Suite.php');
 
 require_once(ROOT_DIR . 'tests/Presenters/Presenters_Suite.php');
 require_once(ROOT_DIR . 'tests/Presenters/Dashboard/DashboardPresenters_Suite.php');

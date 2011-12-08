@@ -5,7 +5,6 @@
  */
 class LdapConfig {
     const CONFIG_ID = 'ldap';
-    const HOST = 'host';
     const PORT = 'port';
     const USERNAME = 'username';
     const PASSWORD = 'password';

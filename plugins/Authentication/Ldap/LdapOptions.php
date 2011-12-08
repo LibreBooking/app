@@ -17,7 +17,7 @@ class LdapOptions
 	public function AdLdapOptions()
 	{
 		$hosts = $this->GetHosts();
-		$this->SetOption('host', $hosts[0]);
+		$this->SetOption('domain_controllers', $hosts);
 		$this->SetOption('port', $this->GetConfig(LdapConfig::PORT), new IntConverter());
 		$this->SetOption('ad_username', $this->GetConfig(LdapConfig::USERNAME));
 		$this->SetOption('ad_password', $this->GetConfig(LdapConfig::PASSWORD));
@@ -56,7 +56,7 @@ class LdapOptions
 	
 	private function GetHosts()
 	{
-		$hosts = explode(',', $this->GetConfig(LdapConfig::HOST));
+		$hosts = explode(',', $this->GetConfig(LdapConfig::DOMAIN_CONTROLLERS));
 
 		for ($i = 0; $i < count($hosts); $i++)
 		{

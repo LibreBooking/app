@@ -32,7 +32,7 @@ class AdLdapWrapper implements ILdap
 		{
 			try
 			{
-				$options['host'] = $hosts[$attempts];
+				$options['domain_controllers'] = array($hosts[$attempts]);
 				$attempts++;
 				$this->ldap = new adLdap($options);
 				$connected = true;
