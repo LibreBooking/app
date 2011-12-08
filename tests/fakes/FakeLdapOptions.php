@@ -17,7 +17,7 @@ class FakeLdapOptions extends LdapOptions
 		return $this->_Options;
 		
 	}
-	public function Hosts()
+	public function Controllers()
 	{
 		return $this->_Hosts;
 	}

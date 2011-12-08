@@ -19,9 +19,9 @@ class LdapUser {
         $this->fname = $entry->givenname;
         $this->lname = $entry->sn;
         $this->mail = strtolower($entry->mail);
-        $this->phone = isset($entry->telephonenumber) ? $entry->telephonenumber : '';
-        $this->institution = isset($entry->physicaldeliveryofficename) ? $entry->physicaldeliveryofficename : '';
-        $this->title = isset($entry->title) ? $entry->title : '';
+        $this->phone = $entry->telephonenumber;
+        $this->institution = $entry->physicaldeliveryofficename;
+        $this->title = $entry->title;
     }
 
     public function GetFirstName() {

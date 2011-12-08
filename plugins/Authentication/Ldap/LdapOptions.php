@@ -34,7 +34,7 @@ class LdapOptions
 		return $this->GetConfig(LdapConfig::RETRY_AGAINST_DATABASE, new BooleanConverter());
 	}
 	
-	public function Hosts()
+	public function Controllers()
 	{
 		return $this->GetHosts();
 	}

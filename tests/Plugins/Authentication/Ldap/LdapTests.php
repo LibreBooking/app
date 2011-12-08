@@ -77,8 +77,18 @@ class LdapTests extends TestBase
 
 		$this->assertFalse($isValid);
 		$this->assertTrue($this->fakeLdap->_ConnectCalled);
-		$this->assertFalse($this->fakeLdap->_AuthenticateCalled);
+		$this->assertTrue($this->fakeLdap->_AuthenticateCalled);
 	}
+
+    public function testDoesNotTryToLoadUserDetailsIfNotValid()
+    {
+        $this->fakeLdap->_ExpectedAuthenticate = false;
+        $auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+        $isValid = $auth->Validate($this->username, $this->password);
+
+        $this->assertFalse($this->fakeLdap->_GetLdapUserCalled);
+        $this->assertFalse($isValid);
+    }
 
 	public function testNotValidIfValidateFailsAndNotFailingOverToDb()
 	{
@@ -92,10 +102,10 @@ class LdapTests extends TestBase
 		$this->assertEquals($expectedResult, $isValid);
 	}
 
-	public function testFailoverToDbIfConfigured()
+	public function testFailOverToDbIfConfigured()
 	{
 		$this->fakeLdapOptions->_RetryAgainstDatabase = true;
-		$this->fakeLdap->_ExpectedLdapUser = null;
+		$this->fakeLdap->_ExpectedAuthenticate = false;
 
 		$authResult = true;
 		$this->fakeAuth->_ValidateResult = $authResult;
@@ -104,7 +114,7 @@ class LdapTests extends TestBase
 		$isValid = $auth->Validate($this->username, $this->password);
 
 		$this->assertEquals($authResult, $isValid);
-		$this->assertFalse($this->fakeLdap->_AuthenticateCalled);
+		$this->assertTrue($this->fakeLdap->_AuthenticateCalled);
 		$this->assertEquals($this->username, $this->fakeAuth->_LastLogin);
 		$this->assertEquals($this->password, $this->fakeAuth->_LastPassword);
 	}
@@ -123,8 +133,8 @@ class LdapTests extends TestBase
 			$this->ldapUser->GetFirstName(),
 			$this->ldapUser->GetLastName(),
 			$this->password,
-			$timezone,
 			$languageCode,
+            $timezone,
 			$this->ldapUser->GetPhone(),
 			$this->ldapUser->GetInstitution(),
 			$this->ldapUser->GetTitle());
@@ -157,7 +167,7 @@ class LdapTests extends TestBase
 
 	public function testAdLdapConstructsOptionsCorrectly()
 	{
-		$host = 'localhost, localhost.2';
+		$controllers = 'localhost, localhost.2';
 		$port = '389';
 		$username = 'uname';
 		$password = 'pw';
@@ -167,7 +177,7 @@ class LdapTests extends TestBase
 		$accountSuffix = '';
 
 		$configFile = new FakeConfigFile();
-		$configFile->SetKey(LdapConfig::HOST, $host);
+		$configFile->SetKey(LdapConfig::DOMAIN_CONTROLLERS, $controllers);
 		$configFile->SetKey(LdapConfig::PORT, $port);
 		$configFile->SetKey(LdapConfig::USERNAME, $username);
 		$configFile->SetKey(LdapConfig::PASSWORD, $password);
@@ -181,9 +191,8 @@ class LdapTests extends TestBase
 		$ldapOptions = new LdapOptions();
 		$options = $ldapOptions->AdLdapOptions();
 
-		$expectedLdapConfigFile = dirname(ROOT_DIR . 'plugins/Authentication/Ldap/PearLdap.php') . '/Ldap.config.php';
 		$this->assertNotNull($this->fakeConfig->_RegisteredFiles[LdapConfig::CONFIG_ID]);
-		$this->assertEquals('localhost', $options['host'], 'get the first host in the list');
+		$this->assertEquals('localhost', $options['domain_controllers'][0], 'domain_controllers must be an array');
 		$this->assertEquals(intval($port), $options['port'], 'port should be int');
 		$this->assertEquals($username, $options['ad_username']);
 		$this->assertEquals($password, $options['ad_password']);
@@ -195,15 +204,15 @@ class LdapTests extends TestBase
 
 	public function testGetAllHosts()
 	{
-		$host = 'localhost, localhost.2';
+		$controllers = 'localhost, localhost.2';
 
 		$configFile = new FakeConfigFile();
-		$configFile->SetKey(LdapConfig::HOST, $host);
+		$configFile->SetKey(LdapConfig::DOMAIN_CONTROLLERS, $controllers);
 		$this->fakeConfig->SetFile(LdapConfig::CONFIG_ID, $configFile);
 
 		$options = new LdapOptions();
 
-		$this->assertEquals(array('localhost', 'localhost.2'), $options->Hosts(), "comma seperated values should become array");
+		$this->assertEquals(array('localhost', 'localhost.2'), $options->Controllers(), "comma separated values should become array");
 	}
 }
 

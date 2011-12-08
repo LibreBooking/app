@@ -25,7 +25,7 @@ class AdLdapWrapper implements ILdap
 	{
 		$connected = false;
 		$attempts = 0;
-		$hosts = $this->options->Hosts();
+		$hosts = $this->options->Controllers();
 		$options = $this->options->AdLdapOptions();
 
 		while (!$connected && $attempts < count($hosts))

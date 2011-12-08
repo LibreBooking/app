@@ -98,7 +98,6 @@ class Ldap implements IAuthentication
 
 	public function Validate($username, $password)
 	{
-		//die("Ldap Validate: $username $password");
 		$this->password = $password;
 
 		$connected = $this->ldap->Connect();
@@ -108,23 +107,22 @@ class Ldap implements IAuthentication
             throw new Exception("Could not connect to LDAP server");
         }
 
-       // $isValid = $this->ldap->Authenticate($username, $password);
-		$this->user = $this->ldap->GetLdapUser($username);
+        $isValid = $this->ldap->Authenticate($username, $password);
 
-		$isValid = false;
+        if ($isValid)
+        {
+            $this->user = $this->ldap->GetLdapUser($username);
+            return $this->LdapUserExists();
+        }
+        else
+        {
+            if ($this->options->RetryAgainstDatabase())
+            {
+                return $this->authToDecorate->Validate($username, $password);
+            }
+        }
 
-		if ($this->LdapUserExists())
-		{
-			$isValid = $this->ldap->Authenticate($username, $password);
-		} else
-		{
-			if ($this->options->RetryAgainstDatabase())
-			{
-				$isValid = $this->authToDecorate->Validate($username, $password);
-			}
-		}
-
-		return $isValid;
+		return false;
 	}
 
 	public function Login($username, $persist)
@@ -167,9 +165,16 @@ class Ldap implements IAuthentication
 		$registration = $this->GetRegistration();
 
 		$registration->Synchronize(
-			new AuthenticatedUser($username, $this->user->GetEmail(), $this->user->GetFirstName(), $this->user->GetLastName(), $this->password,
-				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE), Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-				$this->user->GetPhone(), $this->user->GetInstitution(), $this->user->GetTitle())
+			new AuthenticatedUser(
+                $username,
+                $this->user->GetEmail(),
+                $this->user->GetFirstName(),
+                $this->user->GetLastName(),
+                $this->password,
+                Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
+				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
+				$this->user->GetPhone(), $this->user->GetInstitution(),
+                $this->user->GetTitle())
 		);
 	}
 }
