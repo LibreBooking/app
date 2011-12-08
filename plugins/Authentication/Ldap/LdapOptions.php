@@ -21,7 +21,7 @@ class LdapOptions
 		$this->SetOption('port', $this->GetConfig(LdapConfig::PORT), new IntConverter());
 		$this->SetOption('ad_username', $this->GetConfig(LdapConfig::USERNAME));
 		$this->SetOption('ad_password', $this->GetConfig(LdapConfig::PASSWORD));
-		$this->SetOption('base_dn', $this->GetConfig(LdapConfig::BASEDN ));
+		$this->SetOption('base_dn', $this->GetConfig(LdapConfig::BASEDN));
 		$this->SetOption('use_ssl', $this->GetConfig(LdapConfig::USE_SSL, new BooleanConverter()));
 		$this->SetOption('account_suffix', $this->GetConfig(LdapConfig::ACCOUNT_SUFFIX));
 		$this->SetOption('ldap_version', $this->GetConfig(LdapConfig::VERSION), new IntConverter());
@@ -41,6 +41,11 @@ class LdapOptions
 	
 	private function SetOption($key, $value)
 	{
+        if (empty($value))
+        {
+            $value = null;
+        }
+
 		$this->_options[$key] = $value;
 	}
 	

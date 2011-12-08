@@ -9,7 +9,7 @@ class AdLdapWrapper implements ILdap
 	private $options;
 
 	/**
-	 * @var adLdap
+	 * @var adLdap|null
 	 */
 	private $ldap;
 
@@ -40,6 +40,7 @@ class AdLdapWrapper implements ILdap
 			catch (adLDAPException $ex)
 			{
 				Log::Error($ex);
+                throw($ex);
 			}
 		}
 

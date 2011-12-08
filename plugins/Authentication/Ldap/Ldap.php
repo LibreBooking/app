@@ -101,7 +101,12 @@ class Ldap implements IAuthentication
 		//die("Ldap Validate: $username $password");
 		$this->password = $password;
 
-		$this->ldap->Connect();
+		$connected = $this->ldap->Connect();
+
+        if (!$connected)
+        {
+            throw new Exception("Could not connect to LDAP server");
+        }
 
 		$this->user = $this->ldap->GetLdapUser($username);
 
