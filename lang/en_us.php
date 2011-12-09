@@ -43,8 +43,6 @@ class en_us extends Language
 		$strings['FirstName'] = 'First Name';
 		$strings['LastName'] = 'Last Name';
 		$strings['Timezone'] = 'Timezone';
-
-		// new stuff
 		$strings['Edit'] = 'Edit';
 		$strings['Change'] = 'Change';
 		$strings['Rename'] = 'Rename';
@@ -249,6 +247,11 @@ class en_us extends Language
 		$strings['YourSettingsWereUpdated'] = 'Your settings were updated';
 		$strings['Register'] = 'Register';
 		$strings['SecurityCode'] = 'Security Code';
+		$strings['ReservationCreatedPreference'] = 'When I create a reservation or a reservation is created on my behalf';
+		$strings['ReservationUpdatedPreference'] = 'When I update a reservation or a reservation is updated on my behalf';
+		$strings['ReservationApprovalPreference'] = 'When my pending reservation is approved';
+		$strings['PreferenceSendEmail'] = 'Send me an email';
+		$strings['PreferenceNoEmail'] = 'Do not notify me';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';
@@ -262,6 +265,7 @@ class en_us extends Language
 		$strings['ConflictingReservationDates'] = 'There are conflicting reservations on the following dates:';
 		$strings['StartDateBeforeEndDateRule'] = 'The start date must be before the end date';
 		$strings['StartIsInPast'] = 'The start date cannot be in the past';
+		$strings['EmailDisabled'] = 'The administrator has disabled email notifications';
 
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

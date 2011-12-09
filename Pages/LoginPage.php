@@ -1,8 +1,4 @@
 <?php
-
-/**
- *
- */
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
@@ -51,8 +47,8 @@ class LoginPage extends Page implements ILoginPage {
          * As well instantiate LoginPresenter class object
          */
         $this->_presenter = new LoginPresenter($this);  // $this pseudo variable of class object is Page object
-        $this->smarty->assign('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
-        $this->smarty->assign('ShowLoginError', false);
+        $this->Set('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
+        $this->Set('ShowLoginError', false);
     }
 
     /**
@@ -61,43 +57,43 @@ class LoginPage extends Page implements ILoginPage {
      */
     public function PageLoad() {
         $this->_presenter->PageLoad();
-        $this->smarty->display('login.tpl');
+        $this->Display('login.tpl');
     }
 
     public function getEmailAddress() {
-        return $this->server->GetForm(FormKeys::EMAIL);
+        return $this->GetForm(FormKeys::EMAIL);
     }
 
     public function getPassword() {
-        return $this->server->GetForm(FormKeys::PASSWORD);
+        return $this->GetForm(FormKeys::PASSWORD);
     }
 
     public function getPersistLogin() {
-        return $this->server->GetForm(FormKeys::PERSIST_LOGIN);
+        return $this->GetForm(FormKeys::PERSIST_LOGIN);
     }
 
     public function getShowRegisterLink() {
-        return $this->smarty->get_template_vars('ShowRegisterLink');
+        return $this->GetVar('ShowRegisterLink');
     }
 
     public function setShowRegisterLink($value) {
-        $this->smarty->assign('ShowRegisterLink', $value);
+        $this->Set('ShowRegisterLink', $value);
     }
 
     public function getCurrentLanguage() {
-        return $this->server->GetForm(FormKeys::LANGUAGE);
+        return $this->GetForm(FormKeys::LANGUAGE);
     }
 
     public function setUseLogonName($value) {
-        $this->smarty->assign('UseLogonName', $value);
+        $this->Set('UseLogonName', $value);
     }
 
     public function setResumeUrl($value) {
-        $this->smarty->assign('ResumeUrl', $value);
+        $this->Set('ResumeUrl', $value);
     }
 
     public function getResumeUrl() {
-        return $this->server->GetForm(FormKeys::RESUME);
+        return $this->GetForm(FormKeys::RESUME);
     }
 
     public function DisplayWelcome() {
@@ -110,7 +106,7 @@ class LoginPage extends Page implements ILoginPage {
      */
     public function LoggingIn() {
 
-        return $this->server->GetForm(Actions::LOGIN);
+        return $this->GetForm(Actions::LOGIN);
     }
 
     /**
@@ -123,7 +119,7 @@ class LoginPage extends Page implements ILoginPage {
     }
 
     public function setShowLoginError() {
-        $this->smarty->assign('ShowLoginError', true);
+        $this->Set('ShowLoginError', true);
     }
 
 }

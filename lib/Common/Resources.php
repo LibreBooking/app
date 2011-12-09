@@ -89,7 +89,7 @@ class Resources implements IResourceLocalization
 		{
 			$args = array($args);
 		}
-		
+
 		$strings = $this->_lang->Strings;
 		
 		$return = '';
@@ -204,27 +204,8 @@ class Resources implements IResourceLocalization
 	private function LoadAvailableLanguages()
 	{
 		$this->AvailableLanguages = array(
-			//'ca' => new AvailableLanguage('ca', 'ca([-_][[:alpha:]]{2})?|catalan','ca.lang.php', 'Catal&agrave;'),
-			'zh_TW' => new AvailableLanguage('zh_tw', 'zh([-_]tw)?|chinese', 'zh_TW.lang.php', 'Chinese Traditional (&#x6b63;&#x9ad4;&#x4e2d;&#x6587)'),
-			'cs' => new AvailableLanguage('cs', 'cs([-_][[:alpha:]]{2})?|czech', 'cs.lang.php', 'Czech (&#x010c;esky)'),
-			'de' => new AvailableLanguage('de', 'de([-_][[:alpha:]]{2})?|german', 'de.lang.php', 'Deutsch'),
 			'en_us' => new AvailableLanguage('en_us', 'en([-_]us)?|english', 'en_us.php', 'English US'),
-			'en_gb' => new AvailableLanguage('en_gb', 'en([-_]gb)?|english', 'en_gb.php', 'English GB'),
-			'es' => new AvailableLanguage('es', 'es([-_][[:alpha:]]{2})?|spanish', 'es.lang.php', 'Espa&ntilde;ol'),
-			'fr' => new AvailableLanguage('fr', 'fr([-_][[:alpha:]]{2})?|french', 'fr.lang.php', 'Fran&ccedil;ais'),
-			'el' => new AvailableLanguage('el', 'el([-_][[:alpha:]]{2})?|greek', 'el.lang.php', 'Greek (&#x0395;&#x03bb;&#x03bb;&#x03b7;&#x03bd;&#x03b9;&#x03ba;&#x03ac;)'),
-			'it' => new AvailableLanguage('it', 'it([-_][[:alpha:]]{2})?|italian', 'it.lang.php', 'Italiano'),
-			//'ko' => new AvailableLanguage('ko', 'ko([-_][[:alpha:]]{2})?|korean', 'ko.lang.php', 'Korean'),
-			'hu' => new AvailableLanguage('hu', 'hu([-_][[:alpha:]]{2})?|hungarian', 'hu.lang.php', 'Magyar'),
-			'nl' => new AvailableLanguage('nl', 'nl([-_][[:alpha:]]{2})?|dutch', 'nl.lang.php', 'Nederlands'),
-			'pt_PT' => new AvailableLanguage('pt_pt', 'pr([-_]PT)|portuguese', 'pt_PT.lang.php', 'Portugu&ecirc;s'),
-			'pt_BR' => new AvailableLanguage('pt_br', 'pr([-_]BR)|portuguese', 'pt_BR.lang.php', 'Portugu&ecirc;s Brasileiro'),
-			'ru' => new AvailableLanguage('ru', 'ru([-_][[:alpha:]]{2})?|russian', 'ru.lang.php', 'Russian (&#x0420;&#x0443;&#x0441;&#x0441;&#x043a;&#x0438;&#x0439;)'),
-			'sk' => new AvailableLanguage('sk', 'sk([-_][[:alpha:]]{2})?|slovakian', 'sk.lang.php', 'Slovak (Sloven&#x010d;ina)'),
-			'sl' => new AvailableLanguage('sl', 'sl([-_][[:alpha:]]{2})?|slovenian', 'sl.lang.php', 'Slovensko'),
-			'fi' => new AvailableLanguage('fi', 'fi([-_][[:alpha:]]{2})?|finnish', 'fi.lang.php', 'Suomi'),
-			'sv' => new AvailableLanguage('sv', 'sv([-_][[:alpha:]]{2})?|swedish', 'sv.lang.php', 'Swedish'),
-			'tr' => new AvailableLanguage('tr', 'fi([-_][[:alpha:]]{2})?|turkish', 'tr.lang.php', 'T&uuml;rk&ccedil;e')
+			'en_gb' => new AvailableLanguage('en_gb', 'en([-_]gb)?|english', 'en_gb.php', 'English GB')
 		);
 	}
 }
