@@ -87,11 +87,15 @@
                 </label>
         </p>
 
+        {if $EnableCaptcha}
         <p>
             <img src="{$CaptchaImageUrl}" alt='captcha' /><br/>
             <label class="reg">{translate key="SecurityCode"}<br />
             <input type="text" class="input" {formname key=CAPTCHA} size="20"  />
         </p>
+        {else}
+            <input type="hidden" {formname key=CAPTCHA} value=""  />
+        {/if}
 
         <p class="regsubmit">
              <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}" tabindex="300" class="button"><img src="img/tick-circle.png" /> {translate key='Register'}</button>

@@ -16,6 +16,7 @@ $conf['settings']['reservation']['notify.created'] = 'true';    // notifying a b
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // ie public_html/phpscheduleit/Web/uploads/images
 $conf['settings']['image.upload.url'] = 'uploads/images';       // path to show uploaded images from, relative to script.url
 $conf['settings']['cache.templates'] = 'true';                  // recommended, caching template files helps web pages render faster
+$conf['settings']['registration.captcha.enabled'] = 'true';     // recommended, requires php_gd2.dll enabled in php.ini
 /**
  * Database configuration
  */

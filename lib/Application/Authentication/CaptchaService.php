@@ -17,8 +17,31 @@ interface ICaptchaService
     public function IsCorrect($captchaValue);
 }
 
+class NullCaptchaService implements ICaptchaService
+{
+    /**
+     * @return string
+     */
+    public function GetImageUrl()
+    {
+       return '';
+    }
+
+    /**
+     * @param string $captchaValue
+     * @return bool
+     */
+    public function IsCorrect($captchaValue)
+    {
+       return true;
+    }
+}
+
 class CaptchaService implements ICaptchaService
 {
+    protected function __construct()
+    {}
+
     public function GetImageUrl()
     {
         return RestAction::Captcha(WebServiceAction::Create)->ToUrl() . '&rand=' . uniqid();
@@ -38,6 +61,16 @@ class CaptchaService implements ICaptchaService
         $response = json_decode($jsonResponse);
 
         return $response->response->isValid;
+    }
+
+    public static function Create()
+    {
+        if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_ENABLE_CAPTCHA, new BooleanConverter()))
+        {
+            return new CaptchaService();
+        }
+
+        return new NullCaptchaService();
     }
 }
 

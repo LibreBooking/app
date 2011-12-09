@@ -48,6 +48,7 @@ class RegistrationPage extends Page implements IRegistrationPage
 	
 	public function PageLoad()
 	{
+        $this->Set('EnableCaptcha', Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_ENABLE_CAPTCHA, new BooleanConverter()));
 		$this->_presenter->PageLoad();
 		
 		$this->Display('register.tpl');

@@ -10,6 +10,7 @@ class ConfigKeys {
     const PASSWORD_PATTERN = 'password.pattern';
     const SCRIPT_URL = 'script.url';
     const SERVER_TIMEZONE = 'server.timezone';
+    const REGISTRATION_ENABLE_CAPTCHA = 'registration.captcha.enabled';
     const VERSION = 'version';
 
     const SCHEDULE_SHOW_INACCESSIBLE_RESOURCES = 'show.inaccessible.resources';

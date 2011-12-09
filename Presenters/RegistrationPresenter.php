@@ -71,7 +71,7 @@ class RegistrationPresenter
     {
         if (is_null($captchaService))
         {
-            $this->captchaService = new CaptchaService();
+            $this->captchaService = CaptchaService::Create();
         }
         else
         {
