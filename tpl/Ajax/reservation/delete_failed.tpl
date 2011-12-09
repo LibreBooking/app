@@ -1,4 +1,4 @@
-Save Failed
+{translate key=ReservationFailed}
 <ul>
 {foreach from=$Errors item=each}
 	<li>{$each}</li>

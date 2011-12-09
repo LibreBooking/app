@@ -181,7 +181,7 @@
 					{translate key=Add} <input type="text" id="inviteeAutocomplete" class="input" style="width:250px;"/>
 					or
 					<button id="promptForInvitees" type="button" class="button" style="display:inline">
-						<img src="img/user-plus.png"/>
+						{html_image src="user-plus.png"}
 					{translate key='AllUsers'}
 					</button>
 				</label>

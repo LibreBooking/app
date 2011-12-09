@@ -252,6 +252,11 @@ class en_us extends Language
 		$strings['ReservationApprovalPreference'] = 'When my pending reservation is approved';
 		$strings['PreferenceSendEmail'] = 'Send me an email';
 		$strings['PreferenceNoEmail'] = 'Do not notify me';
+		$strings['ReservationCreated'] = 'Your reservation was successfully created!';
+		$strings['ReservationUpdated'] = 'Your reservation was successfully updated!';
+		$strings['ReservationRemoved'] = 'Your reservation was removed';
+		$strings['YourReferenceNumber'] = 'Your reference number is %s';
+		$strings['UpdatingReservation'] = 'Updating reservation';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';
