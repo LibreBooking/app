@@ -18,7 +18,7 @@
 					<img src="{$ImageUploadPath}{$resource->GetImage()}" alt="Resource Image" class="image"/><br/>
 					<a class="update imageButton" href="javascript: void(0);">{translate key='Change'}</a> |
 					<a class="update removeImageButton" href="javascript: void(0);">{translate key='Remove'}</a>
-					{else}
+				{else}
 					<div class="noImage">{translate key='NoImage'}</div>
 					<a class="update imageButton" href="javascript: void(0);">{translate key='AddImage'}</a>
 				{/if}
@@ -155,10 +155,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="actions">
-
-
-		</div>
+		<div class="actions">&nbsp;</div>
 	</div>
 {/foreach}
 </div>
@@ -199,7 +196,7 @@
 
 <input type="hidden" id="activeId" value=""/>
 
-<div id="imageDialog" class="dialog" style="display:none;">
+<div id="imageDialog" class="dialog" style="display:none;" title="{translate key=AddImage}">
 	<form id="imageForm" method="post" enctype="multipart/form-data">
 		<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
 		<br/>
@@ -210,19 +207,19 @@
 	</form>
 </div>
 
-<div id="renameDialog" class="dialog" style="display:none;">
+<div id="renameDialog" class="dialog" style="display:none;" title="{translate key=Rename}">
 	<form id="renameForm" method="post">
 	{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
 								   style="width:250px" {formname key=RESOURCE_NAME} />
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
-<div id="scheduleDialog" class="dialog" style="display:none;">
+<div id="scheduleDialog" class="dialog" style="display:none;" title="{translate key=MoveToSchedule}">
 	<form id="scheduleForm" method="post">
-		Move to schedule:
+		{translate key=MoveToSchedule}:
 		<select id="editSchedule" class="textbox" {formname key=SCHEDULE_ID}>
 		{foreach from=$Schedules item=scheduleName key=scheduleId}
 			<option value="{$scheduleId}">{$scheduleName}</option>
@@ -234,12 +231,12 @@
 	</form>
 </div>
 
-<div id="locationDialog" class="dialog" style="display:none;">
+<div id="locationDialog" class="dialog" style="display:none;" title="{translate key=Location}">
 	<form id="locationForm" method="post">
-		Location:<br/>
+		{translate key=Location}:<br/>
 		<input id="editLocation" type="text" class="textbox" maxlength="85"
 			   style="width:250px" {formname key=RESOURCE_LOCATION} /><br/>
-		Contact Info:<br/>
+		{translate key=Contact}:<br/>
 		<input id="editContact" type="text" class="textbox" maxlength="85"
 			   style="width:250px" {formname key=RESOURCE_CONTACT} />
 		<br/><br/>
@@ -248,9 +245,9 @@
 	</form>
 </div>
 
-<div id="descriptionDialog" class="dialog" style="display:none;">
+<div id="descriptionDialog" class="dialog" style="display:none;" title="{translate key=Description}">
 	<form id="descriptionForm" method="post">
-		Description:<br/>
+		{translate key=Description}:<br/>
 		<textarea id="editDescription" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
 		<br/><br/>
@@ -259,9 +256,9 @@
 	</form>
 </div>
 
-<div id="notesDialog" class="dialog" style="display:none;">
+<div id="notesDialog" class="dialog" style="display:none;" title="{translate key=Notes}">
 	<form id="notesForm" method="post">
-		Notes:<br/>
+		{translate key=Notes}:<br/>
 		<textarea id="editNotes" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
 		<br/><br/>
@@ -270,7 +267,7 @@
 	</form>
 </div>
 
-<div id="configurationDialog" class="dialog" style="display:none;">
+<div id="configurationDialog" class="dialog" style="display:none;" title="{translate key=UsageConfiguration}">
 	<form id="configurationForm" method="post">
 		<div style="margin-bottom: 10px;">
 			<fieldset>
@@ -388,17 +385,17 @@
 	</form>
 </div>
 
-<div id="deleteDialog" class="dialog" style="display:none;">
+<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
 	<form id="deleteForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
-			<h3>This action is permanent and irrecoverable!</h3>
-			<br/>Deleting this resource will delete all associated data, including:
+			<h3>{translate key=DeleteWarning}</h3>
+			<br/>{translate key=DeleteResourceWarning}:
 			<ul>
-				<li>all past, current and future reservations associated with it</li>
-				<li>all permission assignments</li>
+				<li>{translate key=DeleteResourceWarningReservations}</li>
+				<li>{translate key=DeleteResourceWarningPermissions}</li>
 			</ul>
 			<br/>
-			Please reassign anything that you do not want to be deleted before proceeding
+			{translate key=DeleteResourceWarningReassign}
 		</div>
 
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>

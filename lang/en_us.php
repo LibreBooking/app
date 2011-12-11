@@ -294,6 +294,11 @@ class en_us extends Language
 		$strings['AllReservations'] = 'All Reservations';
 		$strings['PendingReservations'] = 'Pending Reservations';
 		$strings['Approving'] = 'Approving';
+		$strings['MoveToSchedule'] = 'Move to schedule';
+		$strings['DeleteResourceWarning'] = 'Deleting this resource will delete all associated data, including';
+		$strings['DeleteResourceWarningReservations'] = 'all past, current and future reservations associated with it';
+		$strings['DeleteResourceWarningPermissions'] = 'all permission assignments';
+		$strings['DeleteResourceWarningReassign'] = 'Please reassign anything that you do not want to be deleted before proceeding';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';
