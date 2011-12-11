@@ -66,5 +66,5 @@
 {/block}
 
 {block name="ajaxMessage"}
-	Updating reservation...<br/>
+	{translate key=UpdatingReservation}...<br/>
 {/block}

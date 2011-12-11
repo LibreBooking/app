@@ -257,6 +257,17 @@ class en_us extends Language
 		$strings['ReservationRemoved'] = 'Your reservation was removed';
 		$strings['YourReferenceNumber'] = 'Your reference number is %s';
 		$strings['UpdatingReservation'] = 'Updating reservation';
+		$strings['ChangeUser'] = 'Change User';
+		$strings['MoreResources'] = 'More Resources';
+		$strings['ReservationLength'] = 'Reservation Length';
+		$strings['ParticipantList'] = 'Participant List';
+		$strings['InviteOthers'] = 'Invite Others';
+		$strings['AddResources'] = 'Add Resources';
+		$strings['AddAccessories'] = 'Add Accessories';
+		$strings['Accessory'] = 'Accessory';
+		$strings['QuantityRequested'] = 'Quantity Requested';
+		$strings['CreatingReservation'] = 'Creating Reservation';
+		$strings['UpdatingReservation'] = 'Updating Reservation';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';

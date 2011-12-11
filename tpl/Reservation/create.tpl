@@ -13,13 +13,13 @@
 			<li>
 			<span id="userName">{$UserName}</span> <input id="userId" type="hidden" {formname key=USER_ID} value="{$UserId}"/>
 			{if $CanChangeUser}
-				<a href="#" id="showChangeUsers">(Change)</a>
-				<div id="changeUserDialog" title="Change User" class="dialog"></div>
+				<a href="#" id="showChangeUsers">({translate key=Change})</a>
+				<div id="changeUserDialog" title="{translate key=ChangeUser}" class="dialog"></div>
 			{/if}
 			</li>
 			<li style="display:none;" id="changeUsers">
 				<input type="text" id="changeUserAutocomplete" class="input" style="width:250px;"/>
-				or
+				|
 				<button id="promptForChangeUsers" type="button" class="button" style="display:inline">
 					<img src="img/users.png"/>
 				{translate key='AllUsers'}
@@ -38,7 +38,7 @@
 							<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
 						</div>
 						{if $AvailableResources|count > 0}
-							<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">(More Resources)</a>
+							<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">({translate key=MoreResources})</a>
 						{/if}
 						<div id="additionalResources"></div>
 					</div>
@@ -50,13 +50,11 @@
 						{/if}
 					</div>
 				</div>
-				<div style="clear:both;height:0px;">&nbsp;</div>
+				<div style="clear:both;height:0;">&nbsp;</div>
 			</li>
 			<li>
-				<label>{translate key='BeginDate'}
-					<input type="text" id="BeginDate" {formname key=BEGIN_DATE} class="dateinput"
-						   value="{formatdate date=$StartDate}"/>
-				</label>
+				<label for="BeginDate" style="width:50px;display:inline-block;">{translate key='BeginDate'}</label>
+				<input type="text" id="BeginDate" {formname key=BEGIN_DATE} class="dateinput" value="{formatdate date=$StartDate}"/>
 				<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown" style="width:150px">
 				{foreach from=$Periods item=period}
 					{if $period->IsReservable()}
@@ -70,10 +68,8 @@
 				</select>
 			</li>
 			<li>
-				<label for="EndDate">{translate key='EndDate'}
-					<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput"
-						   value="{formatdate date=$EndDate}"/>
-				</label>
+				<label for="EndDate" style="width:50px;display:inline-block;">{translate key='EndDate'}</label>
+				<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput" value="{formatdate date=$EndDate}"/>
 				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
 				{foreach from=$Periods item=period}
 					{if $period->IsReservable()}
@@ -87,8 +83,7 @@
 				</select>
 			</li>
 			<li>
-				<label>Reservation Length</label>
-
+				<label>{translate key=ReservationLength}</label>
 				<div class="durationText">
 					<span id="durationDays">0</span> {translate key=days},
 					<span id="durationHours">0</span> {translate key=hours}
@@ -116,19 +111,19 @@
 					<div id="repeatOnWeeklyDiv" style="display:none;" class="weeks">
 						<label>{translate key="RepeatDaysPrompt"}</label>
 						<input type="checkbox"
-							   id="repeatDay0" {formname key=repeat_sunday} />{translate key="DaySundaySingle"}
+							   id="repeatDay0" {formname key=repeat_sunday} /><label for="repeatDay0">{translate key="DaySundaySingle"}</label>
 						<input type="checkbox"
-							   id="repeatDay1" {formname key=repeat_monday} />{translate key="DayMondaySingle"}
+							   id="repeatDay1" {formname key=repeat_monday} /><label for="repeatDay1">{translate key="DayMondaySingle"}</label>
 						<input type="checkbox"
-							   id="repeatDay2" {formname key=repeat_tuesday} />{translate key="DayTuesdaySingle"}
+							   id="repeatDay2" {formname key=repeat_tuesday} /><label for="repeatDay2">{translate key="DayTuesdaySingle"}</label>
 						<input type="checkbox"
-							   id="repeatDay3" {formname key=repeat_wednesday} />{translate key="DayWednesdaySingle"}
+							   id="repeatDay3" {formname key=repeat_wednesday} /><label for="repeatDay3">{translate key="DayWednesdaySingle"}</label>
 						<input type="checkbox"
-							   id="repeatDay4" {formname key=repeat_thursday} />{translate key="DayThursdaySingle"}
+							   id="repeatDay4" {formname key=repeat_thursday} /><label for="repeatDay4">{translate key="DayThursdaySingle"}</label>
 						<input type="checkbox"
-							   id="repeatDay5" {formname key=repeat_friday} />{translate key="DayFridaySingle"}
+							   id="repeatDay5" {formname key=repeat_friday} /><label for="repeatDay5">{translate key="DayFridaySingle"}</label>
 						<input type="checkbox"
-							   id="repeatDay6" {formname key=repeat_saturday} />{translate key="DaySaturdaySingle"}
+							   id="repeatDay6" {formname key=repeat_saturday} /><label for="repeatDay6">{translate key="DaySaturdaySingle"}</label>
 					</div>
 					<div id="repeatOnMonthlyDiv" style="display:none;" class="months">
 						<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfMonth}"
@@ -174,7 +169,7 @@
 				<div id="participantList">
 					<ul/>
 				</div>
-				<div id="participantDialog" title="Add Participants" class="dialog"></div>
+				<div id="participantDialog" title="{translate key=AddParticipants}" class="dialog"></div>
 			</li>
 			<li>
 				<label>{translate key="InvitationList"}<br/>
@@ -189,7 +184,7 @@
 				<div id="inviteeList">
 					<ul/>
 				</div>
-				<div id="inviteeDialog" title="Invite Others" class="dialog"></div>
+				<div id="inviteeDialog" title="{translate key=InviteOthers}" class="dialog"></div>
 			</li>
 		</ul>
 	</div>
@@ -219,7 +214,7 @@
 	</div>
 </form>
 
-<div id="dialogAddResources" class="dialog" title="Add Resources" style="display:none;">
+<div id="dialogAddResources" class="dialog" title="{translate key=AddResources}" style="display:none;">
 
 {foreach from=$AvailableResources item=resource}
 	{assign var='checked' value=''}
@@ -238,12 +233,12 @@
 	<button id="btnClearAddResources" class="button">{translate key='Cancel'}</button>
 </div>
 
-<div id="dialogAddAccessories" class="dialog" title="Add Accessories" style="display:none;">
+<div id="dialogAddAccessories" class="dialog" title="{translate key=AddAccessories}" style="display:none;">
 	<table width="100%">
 		<tr>
-			<td>Accessory</td>
-			<td>Quantity</td>
-			<td>Total Available *</td>
+			<td>{translate key=Accessory}</td>
+			<td>{translate key=QuantityRequested}</td>
+			<td>{translate key=QuantityAvailable}</td>
 		</tr>
 		{foreach from=$AvailableAccessories item=accessory}
 			<tr>
@@ -260,13 +255,12 @@
 	<br/>
 	<button id="btnConfirmAddAccessories" class="button">{translate key='Done'}</button>
 	<button id="btnCancelAddAccessories" class="button">{translate key='Cancel'}</button>
-	<p>* Limited number may be available at requested time</p>
 </div>
 
 <div id="dialogSave" style="display:none;">
 	<div id="creatingNotification" style="position:relative; top:170px; font-size:16pt;text-align:center;">
 	{block name="ajaxMessage"}
-		Creating reservation...<br/>
+		{translate key=CreatingReservation}...<br/>
 	{/block}
 		<img src="{$Path}img/reservation_submitting.gif" alt="Creating reservation"/>
 	</div>
