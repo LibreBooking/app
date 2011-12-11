@@ -268,6 +268,9 @@ class en_us extends Language
 		$strings['QuantityRequested'] = 'Quantity Requested';
 		$strings['CreatingReservation'] = 'Creating Reservation';
 		$strings['UpdatingReservation'] = 'Updating Reservation';
+		$strings['DeleteWarning'] = 'This action is permanent and irrecoverable!';
+		$strings['DeleteAccessoryWarning'] = 'Deleting this accessory will remove it from all reservations.';
+		$strings['AddAccessory'] = 'Add New Accessory';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';

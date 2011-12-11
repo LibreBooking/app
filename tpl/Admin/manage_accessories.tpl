@@ -22,18 +22,18 @@
 
 <input type="hidden" id="activeId" />
 
-<div id="deleteDialog" class="dialog" style="display:none;">
+<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
 	<form id="deleteForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
-			<h3>This action is permanent and irrecoverable!</h3>
-			<div>Deleting this accessory will remove it from all reservations.</div>
+			<h3>{translate key=DeleteWarning}</h3>
+			<div>{translate key=DeleteAccessoryWarning}</div>
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
-<div id="editDialog" class="dialog" style="display:none;">
+<div id="editDialog" class="dialog" style="display:none;" title="{translate key=Edit}">
 	<form id="editForm" method="post">
 		{translate key=AccessoryName}<br/> <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
 		<br/><br/>
@@ -47,7 +47,7 @@
 
 <div class="admin" style="margin-top:30px">
 	<div class="title">
-		Add New Accessory
+		{translate key=AddAccessory}
 	</div>
 	<div>
 		<div id="addResults" class="error" style="display:none;"></div>
