@@ -1,4 +1,4 @@
-{include file='loginheader.tpl' DisplayWelcome='false'}
+{include file='loginheader.tpl'}
 
 {validation_group class="error"}
         {validator id="fname" key="FirstNameRequired"}

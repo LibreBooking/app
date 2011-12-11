@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' DisplayWelcome='false'}
+{include file='globalheader.tpl'}
 <div id="reportingbox">
 <form class="reports" method="post" action="{$smarty.server.SCRIPT_NAME}">
 

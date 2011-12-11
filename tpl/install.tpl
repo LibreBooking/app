@@ -1,4 +1,3 @@
-{assign var='DisplayWelcome' value='false'}
 {include file='loginheader.tpl'}
 
 <h1>Install backend database phpScheduleIt (MySQL only)</h1>

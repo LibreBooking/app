@@ -1,7 +1,7 @@
 {extends file="Reservation/view.tpl"}
 
 {block name=header}
-	{include file='globalheader.tpl' DisplayWelcome='false' TitleKey='EditReservationHeading' TitleArgs=$ReferenceNumber cssFiles='css/reservation.css,css/jquery.qtip.min.css'}
+	{include file='globalheader.tpl' TitleKey='EditReservationHeading' TitleArgs=$ReferenceNumber cssFiles='css/reservation.css,css/jquery.qtip.min.css'}
 {/block}
 
 {block name=reservationHeader}

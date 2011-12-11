@@ -1,4 +1,3 @@
-{assign var='DisplayWelcome' value='false'}
 {include file='loginheader.tpl'}
 
 {if $ShowLoginError}

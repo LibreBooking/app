@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' DisplayWelcome='false' TitleKey='ViewReservationHeading' TitleArgs=$ReferenceNumber cssFiles='css/reservation.css'}
+{include file='globalheader.tpl' TitleKey='ViewReservationHeading' TitleArgs=$ReferenceNumber cssFiles='css/reservation.css'}
 <div id="reservationbox" class="readonly">
 	<div id="reservationForm">
 		<div class="reservationHeader">
