@@ -4,42 +4,42 @@
 
 <div class="admin">
 	<div class="title">
-		Add Blackout
+		{translate key=AddBlackout}
 	</div>
 	<div>
 		<form id="addBlackoutForm" method="post">
 			<ul>
 				<li>
-					<label for="addStartDate" class="wideLabel">Start</label>
+					<label for="addStartDate" class="wideLabel">{translate key=BeginDate}</label>
 					<input {formname key=BEGIN_DATE} type="text" id="addStartDate" class="textbox" size="10" value="{formatdate date=$AddStartDate}"/>
 					<input {formname key=BEGIN_TIME} type="text" id="addStartTime" class="textbox" size="7" value="12:00 AM" />
 				</li>
 				<li>
-					<label for="addEndDate" class="wideLabel">End</label>
+					<label for="addEndDate" class="wideLabel">{translate key=EndDate}</label>
 					<input {formname key=END_DATE} type="text" id="addEndDate" class="textbox" size="10" value="{formatdate date=$AddEndDate}"/>
 					<input {formname key=END_TIME} type="text" id="addEndTime" class="textbox" size="7"  value="12:00 AM" />
 				</li>
 				<li>
-					<label for="addResourceId" class="wideLabel">Resource</label>
+					<label for="addResourceId" class="wideLabel">{translate key=Resource}</label>
 					<select {formname key=RESOURCE_ID} class="textbox" id="addResourceId">
 						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 					</select>
-					or
-					<label for="allResources" style="">All Resources On </label> <input {formname key=BLACKOUT_APPLY_TO_SCHEDULE} type="checkbox" id="allResources" />
+					|
+					<label for="allResources" style="">{translate key=AllResourcesOn} </label> <input {formname key=BLACKOUT_APPLY_TO_SCHEDULE} type="checkbox" id="allResources" />
 					<select {formname key=SCHEDULE_ID} id="addScheduleId" class="textbox" disabled="disabled">
 						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 					</select>
 				</li>
 				<li>
-					<label for="blackoutReason" class="wideLabel">Reason</label>
+					<label for="blackoutReason" class="wideLabel">{translate key=Reason}</label>
 					<input {formname key=SUMMARY} type="text" id="blackoutReason" class="textbox required" size="100" maxlength="85"/>
 				</li>
 				<li>
 					<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting" name="existingReservations" checked="checked" value="{ReservationConflictResolution::Notify}" />
-					<label for="notifyExisting">Show me conflicting reservations</label>
+					<label for="notifyExisting">{translate key=BlackoutShowMe}</label>
 
 					<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExisting" name="existingReservations" value="{ReservationConflictResolution::Delete}" />
-					<label for="deleteExisting">Delete conflicting reservations</label>
+					<label for="deleteExisting">{translate key=BlackoutDeleteConflicts}</label>
 				</li>
 				<li style="margin-top:15px; padding-top:15px; border-top: solid 1px #ededed;">
 					<button type="button" class="button save create">
@@ -53,17 +53,17 @@
 </div>
 
 <fieldset>
-	<legend><h3>Filter</h3></legend>
+	<legend><h3>{translate key=Filter}</h3></legend>
 	<table style="display:inline;">
 		<tr>
-			<td>Between</td>
+			<td>{translate key=Between}</td>
 			<td>{translate key=Schedule}</td>
 			<td>{translate key=Resource}</td>
 		</tr>
 		<tr>
 			<td>
 				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}"/>
-				and
+				-
 				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}"/>
 			</td>
 			<td>
@@ -79,7 +79,7 @@
 				</select>
 			</td>
 			<td rowspan="2">
-				<button id="filter" class="button">{html_image src="search.png"} Filter</button>
+				<button id="filter" class="button">{html_image src="search.png"} {translate key=Filter}</button>
 			</td>
 		</tr>
 	</table>
@@ -90,11 +90,11 @@
 <table class="list" id="blackoutTable">
 	<tr>
 		<th class="id">&nbsp;</th>
-		<th>{translate key='Resource'}</th>
-		<th>{translate key='BeginDate'}</th>
-		<th>{translate key='EndDate'}</th>
-		<th>Created By</th>
-		<th>{translate key='Delete'}</th>
+		<th>{translate key=Resource}</th>
+		<th>{translate key=BeginDate}</th>
+		<th>{translate key=EndDate}</th>
+		<th>{translate key=CreatedBy}</th>
+		<th>{translate key=Delete}</th>
 	</tr>
 	{foreach from=$blackouts item=blackout}
 	{cycle values='row0,row1' assign=rowCss}
@@ -111,10 +111,10 @@
 
 {pagination pageInfo=$PageInfo}
 
-<div id="deleteDialog" class="dialog" style="display:none;">
+<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
 	<form id="deleteForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
-			<h3>This action is permanent and irrecoverable!</h3>
+			<h3>{translate key=DeleteWarning}</h3>
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>

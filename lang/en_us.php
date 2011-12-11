@@ -270,7 +270,19 @@ class en_us extends Language
 		$strings['UpdatingReservation'] = 'Updating Reservation';
 		$strings['DeleteWarning'] = 'This action is permanent and irrecoverable!';
 		$strings['DeleteAccessoryWarning'] = 'Deleting this accessory will remove it from all reservations.';
-		$strings['AddAccessory'] = 'Add New Accessory';
+		$strings['AddAccessory'] = 'Add Accessory';
+		$strings['AddBlackout'] = 'Add Blackout';
+		$strings['AllResourcesOn'] = 'All Resources On';
+		$strings['Reason'] = 'Reason';
+		$strings['BlackoutShowMe'] = 'Show me conflicting reservations';
+		$strings['BlackoutDeleteConflicts'] = 'Delete conflicting reservations';
+		$strings['Filter'] = 'Filter';
+		$strings['Between'] = 'Between';
+		$strings['CreatedBy'] = 'Created By';
+		$strings['BlackoutCreated'] = 'Blackout Created!';
+		$strings['BlackoutNotCreated'] = 'Blackout could not be created!';
+		$strings['BlackoutConflicts'] = 'There are conflicting blackout times';
+		$strings['ReservationConflicts'] = 'There are conflicting reservations times';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';

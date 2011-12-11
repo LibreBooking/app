@@ -1,9 +1,9 @@
 <div>
 	{if $Successful}
-		<h3>Blackout Created!</h3>
+		<h3>{translate key=BlackoutCreated}</h3>
 		<button class="reload button">{translate key="OK"}</button>
 	{else}
-		<h3>Blackout could not be created!</h3>
+		<h3>{translate key=BlackoutNotCreated}</h3>
 		<button class="close button">{translate key="OK"}</button>
 	{/if}
 
@@ -12,14 +12,14 @@
 	{/if}
 
 	{if !empty($Blackouts)}
-		<h5>There are conflicting blackout times</h5>
+		<h5>{translate key=BlackoutConflicts}</h5>
 		{foreach from=$Blackouts item=blackout}
 			{format_date date=$blackout->StartDate timezone=$Timezone}
 		{/foreach}
 	{/if}
 
 	{if !empty($Reservations)}
-		<h5>There are conflicting reservations times</h5>
+		<h5>{translate key=ReservationConflicts}</h5>
         <table class="list" id="reservationTable" style="margin-left: auto; margin-right: auto;">
         	<tr>
         		<th class="id">&nbsp;</th>
