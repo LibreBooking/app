@@ -289,6 +289,11 @@ class en_us extends Language
 		$strings['WhatRolesApplyToThisGroup'] = 'What roles apply to this group?';
 		$strings['WhoCanManageThisGroup'] = 'Who can manage this group?';
 		$strings['AddGroup'] = 'Add Group';
+		$strings['AllQuotas'] = 'All Quotas';
+		$strings['QuotaReminder'] = 'Remember: Quotas are enforced based on the schedule\'s timezone.';
+		$strings['AllReservations'] = 'All Reservations';
+		$strings['PendingReservations'] = 'Pending Reservations';
+		$strings['Approving'] = 'Approving';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';

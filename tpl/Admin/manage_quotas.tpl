@@ -4,7 +4,7 @@
 
 <div class="admin">
 	<div class="title">
-		All Quotas
+		{translate key=AllQuotas}
 	</div>
 	<div class="list" id="quotaList">
 		{foreach from=$Quotas item=quota}
@@ -92,15 +92,15 @@
 		{/capture}
 		{capture name="unit" assign="unit"}
 			<select class='textbox' {formname key=UNIT}>
-				<option>hours</option>
-				<option>reservations</option>
+				<option>{translate key=hours}</option>
+				<option>{translate key=reservations}</option>
 			</select>
 		{/capture}
 		{capture name="duration" assign="duration"}
 			<select class='textbox' {formname key=DURATION}>
-				<option>day</option>
-				<option>week</option>
-				<option>month</option>
+				<option>{translate key=day}</option>
+				<option>{translate key=week}</option>
+				<option>{translate key=month}</option>
 			</select>
 		{/capture}
 
@@ -110,13 +110,13 @@
 		{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 		</form>
 	</div>
-	<div class="note">Remember: Quotas are enforced based on the schedule's timezone.</div>
+	<div class="note">{translate key=QuotaReminder}</div>
 </div>
 
-<div id="deleteDialog" class="dialog" style="display:none;" title="Delete Quota?">
+<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
 	<form id="deleteQuotaForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
-			<h3>This action is permanent and irrecoverable!</h3>
+			<h3>{translate key=DeleteWarning}</h3>
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>

@@ -3,10 +3,10 @@
 <h1>{translate key=ManageReservations}</h1>
 
 <fieldset>
-	<legend><h3>Filter</h3></legend>
+	<legend><h3>{translate key=Filter}</h3></legend>
 	<table style="display:inline;">
 		<tr>
-			<td>Between</td>
+			<td>{translate key=Between}</td>
 			<td>{translate key=User}</td>
 			<td>{translate key=Schedule}</td>
 			<td>{translate key=Resource}</td>
@@ -16,7 +16,7 @@
 		<tr>
 			<td>
 				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}"/>
-				and
+				-
 				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}"/>
 			</td>
 			<td>
@@ -37,15 +37,15 @@
 			</td>
 			<td>
 				<select id="statusId" class="textbox">
-					<option value="">All Reservations</option>
-					<option value="{ReservationStatus::Pending}" {if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>Pending Reservations</option>
+					<option value="">{translate key=AllReservations}</option>
+					<option value="{ReservationStatus::Pending}" {if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>{translate key=PendingReservations}</option>
 				</select>
 			</td>
 			<td>
 				<input id="referenceNumber" type="text" class="textbox" value="{$ReferenceNumber}" />
 			</td>
 			<td rowspan="2">
-				<button id="filter" class="button">{html_image src="search.png"} Filter</button>
+				<button id="filter" class="button">{html_image src="search.png"} {translate key=Filter}</button>
 			</td>
 		</tr>
 	</table>
@@ -97,10 +97,10 @@
 
 {pagination pageInfo=$PageInfo}
 
-<div id="deleteInstanceDialog" class="dialog" style="display:none;">
+<div id="deleteInstanceDialog" class="dialog" style="display:none;" title="{translate key='Delete'}">
 	<form id="deleteInstanceForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
-			<h3>This action is permanent and irrecoverable!</h3>
+			<h3>{translate key=DeleteWarning}</h3>
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
@@ -110,10 +110,10 @@
 </div>
 
 
-<div id="deleteSeriesDialog" class="dialog" style="display:none;">
+<div id="deleteSeriesDialog" class="dialog" style="display:none;" title="{translate key='Delete'}">
 	<form id="deleteSeriesForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
-			<h3>This action is permanent and irrecoverable!</h3>
+			<h3>{translate key=DeleteWarning}</h3>
 		</div>
 		<button type="button" id="btnUpdateThisInstance" class="button saveSeries">
 			{html_image src="disk-black.png"}
@@ -193,7 +193,7 @@ $(document).ready(function() {
 {control type="DatePickerSetupControl" ControlId="endDate"}
 
 <div id="approveDiv" style="display:none;text-align:center; top:15%;position:relative;">
-<h3>Approving...</h3>
+<h3>{translate key=Approving}...</h3>
 {html_image src="reservation_submitting.gif"}
 </div>
 {include file='globalfooter.tpl'}
