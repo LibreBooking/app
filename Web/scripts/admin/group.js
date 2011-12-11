@@ -32,7 +32,7 @@ function GroupManagement(opts) {
 
 	GroupManagement.prototype.init = function() {
 
-		ConfigureAdminDialog(elements.membersDialog, 400, 500);
+		ConfigureAdminDialog(elements.membersDialog, 420, 500);
 		ConfigureAdminDialog(elements.permissionsDialog, 400, 300);
 		ConfigureAdminDialog(elements.deleteDialog,  400, 300);
 		ConfigureAdminDialog(elements.renameDialog, 500, 100);

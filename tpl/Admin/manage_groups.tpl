@@ -34,13 +34,14 @@
 
 <input type="hidden" id="activeId" />
 
-<div id="membersDialog" class="dialog" style="display:none;">
-	Add User: <input type="text" id="userSearch" class="textbox" size="40" /> <a href="#" id="browseUsers">Browse <div id="allUsers" style="display:none;" class="dialog"></div></a>
-	<h4><span id="totalUsers"></span> Users in this group</h4>
+<div id="membersDialog" class="dialog" style="display:none;" title="{translate key=GroupMembers}">
+	{translate key=AddUser}: <input type="text" id="userSearch" class="textbox" size="40" /> <a href="#" id="browseUsers">{translate key=Browse}</a>
+	<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
+	<h4><span id="totalUsers"></span> {translate key=UsersInGroup}</h4>
 	<div id="groupUserList"></div>
 </div>
 
-<div id="permissionsDialog" class="dialog" style="display:none;">
+<div id="permissionsDialog" class="dialog" style="display:none;" title="{translate key=Permissions}">
 	<form id="permissionsForm" method="post">
 		{foreach from=$resources item=resource}
 			<label><input {formname key=RESOURCE_ID  multi=true} class="resourceId" type="checkbox" value="{$resource->GetResourceId()}"> {$resource->GetName()}</label><br/>
@@ -50,7 +51,6 @@
 	</form>
 </div>
 
-
 <form id="removeUserForm" method="post">
 	<input type="hidden" id="removeUserId" {formname key=USER_ID} />
 </form>
@@ -59,26 +59,26 @@
 	<input type="hidden" id="addUserId" {formname key=USER_ID} />
 </form>
 
-<div id="deleteDialog" class="dialog" style="display:none;">
+<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
 	<form id="deleteGroupForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
-			<h3>This action is permanent and irrecoverable!</h3>
-			<div>Deleting this group will remove all associated resource permissions.  Users in this group may lose access to resources.</div>
+			<h3>{translate key=DeleteWarning}</h3>
+			<div>{translate key=DeleteGroupWarning}</div>
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
-<div id="renameDialog" class="dialog" style="display:none;">
+<div id="renameDialog" class="dialog" style="display:none;" title="{translate key=Rename}">
 	<form id="renameGroupForm" method="post">
-		Name<br/> <input type="text" class="textbox required" {formname key=GROUP_NAME} />
-		<button type="button" class="button save">{html_image src="disk-black.png"} Rename Group</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<label>{translate key=Name}<br/> <input type="text" class="textbox required" {formname key=GROUP_NAME} /></label>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key=Rename}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 	</form>
 </div>
 
-<div id="rolesDialog" class="dialog" title="What roles apply to this group?">
+<div id="rolesDialog" class="dialog" title="{translate key=WhatRolesApplyToThisGroup}">
 	<form id="rolesForm" method="post">
 		<ul>
 		{foreach from=$Roles item=role}
@@ -92,7 +92,7 @@
 </div>
 
 
-<div id="groupAdminDialog" class="dialog" title="Who can manage this group?">
+<div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisGroup}">
 	<form method="post" id="groupAdminForm">
 		<select {formname key=GROUP_ADMIN} class="textbox">
 			{foreach from=$AdminGroups item=adminGroup}
@@ -108,17 +108,16 @@
 
 <div class="admin" style="margin-top:30px">
 	<div class="title">
-		Add New Group
+		{translate key=AddGroup}
 	</div>
 	<div>
 		<div id="addGroupResults" class="error" style="display:none;"></div>
 		<form id="addGroupForm" method="post">
 			Name<br/> <input type="text" class="textbox required" {formname key=GROUP_NAME} />
-			<button type="button" class="button save">{html_image src="plus-button.png"} Add Group</button>
+			<button type="button" class="button save">{html_image src="plus-button.png"} {translate key=AddGroup}</button>
 		</form>
 	</div>
 </div>
-
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 

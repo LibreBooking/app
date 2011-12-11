@@ -283,6 +283,12 @@ class en_us extends Language
 		$strings['BlackoutNotCreated'] = 'Blackout could not be created!';
 		$strings['BlackoutConflicts'] = 'There are conflicting blackout times';
 		$strings['ReservationConflicts'] = 'There are conflicting reservations times';
+		$strings['UsersInGroup'] = 'Users in this group';
+		$strings['Browse'] = 'Browse';
+		$strings['DeleteGroupWarning'] = 'Deleting this group will remove all associated resource permissions.  Users in this group may lose access to resources.';
+		$strings['WhatRolesApplyToThisGroup'] = 'What roles apply to this group?';
+		$strings['WhoCanManageThisGroup'] = 'Who can manage this group?';
+		$strings['AddGroup'] = 'Add Group';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';
