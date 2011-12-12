@@ -299,6 +299,21 @@ class en_us extends Language
 		$strings['DeleteResourceWarningReservations'] = 'all past, current and future reservations associated with it';
 		$strings['DeleteResourceWarningPermissions'] = 'all permission assignments';
 		$strings['DeleteResourceWarningReassign'] = 'Please reassign anything that you do not want to be deleted before proceeding';
+		$strings['ScheduleLayout'] = 'Layout (all times %s)';
+		$strings['ReservableTimeSlots'] = 'Reservable Time Slots';
+		$strings['BlockedTimeSlots'] = 'Blocked Time Slots';
+		$strings['ThisIsTheDefaultSchedule'] = 'This is the default schedule';
+		$strings['DefaultScheduleCannotBeBroughtDown'] = 'Default schedule cannot be brought down';
+		$strings['MakeDefault'] = 'Make Default';
+		$strings['BringDown'] = 'Bring Down';
+		$strings['ChangeLayout'] = 'Change Layout';
+		$strings['AddSchedule'] = 'Add Schedule';
+		$strings['StartsOn'] = 'Starts On';
+		$strings['NumberOfDaysVisible'] = 'Number of Days Visible';
+		$strings['UseSameLayoutAs'] = 'Use Same Layout As';
+		$strings['Format'] = 'Format';
+		$strings['OptionalLabel'] = 'Optional Label';
+		$strings['LayoutInstructions'] = 'Enter one slot per line.  Slots must be provided for all 24 hours of the day.';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';

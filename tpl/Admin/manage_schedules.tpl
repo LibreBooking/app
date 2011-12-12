@@ -6,7 +6,7 @@
 	<div class="title">
 		{translate key=AllSchedules}
 	</div>
-	{foreach $Schedules item=schedule}
+	{foreach from=$Schedules item=schedule}
 	{assign var=id value=$schedule->GetId()}
 	{assign var=daysVisible value=$schedule->GetDaysVisible()}
 	{assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
@@ -21,11 +21,11 @@
 			<a class="update changeButton" href="javascript:void(0);">Change</a><br/>
 		</div>
 		<div class="layout">
-			Layout (all times {$schedule->GetTimezone()}):<br/>
+			{translate key=ScheduleLayout args=$schedule->GetTimezone()}:<br/>
 			<input type="hidden" class="timezone" value="{$schedule->GetTimezone()}" />
-			Reservable Time Slots
+			{translate key=ReservableTimeSlots}
 			<div class="reservableSlots">
-			{foreach $Layouts[$id] item=period}
+			{foreach from=$Layouts[$id] item=period}
 				{if $period->IsReservable()}
 					{formatdate format="H:i" date=$period->Begin()} - {formatdate format="H:i" date=$period->End()}
 					{if $period->IsLabelled()}
@@ -37,9 +37,9 @@
 				{translate key=None}
 			{/foreach}
 			</div>
-			Blocked Time Slots
+			{translate key=BlockedTimeSlots}
 			<div class="blockedSlots">
-			{foreach $Layouts[$id] item=period}
+			{foreach from=$Layouts[$id] item=period}
 				{if !$period->IsReservable()}
 					{formatdate format="H:i" date=$period->Begin()} - {formatdate format="H:i" date=$period->End()}
 					{if $period->IsLabelled()}
@@ -48,20 +48,20 @@
 					,
 				{/if}
 			{foreachelse}
-				None
+				{translate key=None}
 			{/foreach}	
 			</div>		
 		</div>
 		<div class="actions">
 			{if $schedule->GetIsDefault()}
-				<span class="note">This is the default schedule</span> |
-				<span class="note">Default schedule cannot be brought down</span>
+				<span class="note">{translate key=ThisIsTheDefaultSchedule}</span> |
+				<span class="note">{translate key=DefaultScheduleCannotBeBroughtDown}</span>
 			{else}
-				<a class="update makeDefaultButton" href="javascript: void(0);">Make Default</a> |
-				<a class="update bringDownButton" href="javascript: void(0);">Bring Down</a>
+				<a class="update makeDefaultButton" href="javascript: void(0);">{translate key=MakeDefault}</a> |
+				<a class="update bringDownButton" href="javascript: void(0);">{translate key=BringDown}</a>
 			{/if}
 			|
-			<a class="update changeLayoutButton" href="javascript: void(0);">Change Layout</a>
+			<a class="update changeLayoutButton" href="javascript: void(0);">{translate key=ChangeLayout}</a>
 		</div>
 	</div>
 	{/foreach}
@@ -69,31 +69,31 @@
 
 <div class="admin" style="margin-top:30px">
 	<div class="title">
-		Add New Schedule
+		{translate key=AddSchedule}
 	</div>
 	<div>
 		<div id="addScheduleResults" class="error" style="display:none;"></div>
 		<form id="addScheduleForm" method="post">
 			<ul>
-				<li>Name<br/> <input type="text" style="width:300px" class="textbox required" {formname key=SCHEDULE_NAME} /></li>
-				<li>Starts On<br/> 
+				<li>{translate key=Name}<br/> <input type="text" style="width:300px" class="textbox required" {formname key=SCHEDULE_NAME} /></li>
+				<li>{translate key=StartsOn}<br/>
 				<select {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
 					{foreach from=$DayNames item="dayName" key="dayIndex"}
 						<option value="{$dayIndex}">{$dayName}</option>
 					{/foreach} 
 				</select>
 				</li>
-				<li>Number of Days Visible<br/><input type="text" class="textbox required" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
+				<li>{translate key=NumberOfDaysVisible}<br/><input type="text" class="textbox required" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
 				</li>
-				<li>Use Same Layout As<br/>
+				<li>{translate key=UseSameLayoutAs}<br/>
 					<select style="width:300px" class="textbox" {formname key=SCHEDULE_ID}>
-					{foreach $Schedules item=schedule}
+					{foreach from=$Schedules item=schedule}
 						<option value="{$schedule->GetId()}" >{$schedule->GetName()}</option>
 					{/foreach}
 					</select>
 				</li>
 				<li>
-					<button type="button" class="button save" value="submit">{html_image src="plus-button.png"} Add Schedule</button>
+					<button type="button" class="button save" value="submit">{html_image src="plus-button.png"} {translate key=AddSchedule}</button>
 				</li>
 			</ul>
 		</form>
@@ -109,36 +109,36 @@
 
 <div id="renameDialog" class="dialog" style="display:none;">
 	<form id="renameForm" method="post">
-		New Name: <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /><br/><br/>
-		<button type="button" class="button save">{html_image src="tick-circle.png"} Update</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+		{translate key=Name}: <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /><br/><br/>
+		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 		
 	</form>
 </div>
 
 <div id="changeSettingsDialog" class="dialog" style="display:none;">
 	<form id="settingsForm" method="post">
-		Starts On: <select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
+		{translate key=StartsOn}: <select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
 			{foreach from=$DayNames item="dayName" key="dayIndex"}
 				<option value="{$dayIndex}">{$dayName}</option>
 			{/foreach} 
 		</select>
 		<br/>
-		Number of Days Visible: <input type="text" class="textbox required" id="daysVisible" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} /> 
+		{translate key=NumberOfDaysVisible}: <input type="text" class="textbox required" id="daysVisible" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="tick-circle.png"} Update</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 	</form>
 </div>
 
 <div id="changeLayoutDialog" class="dialog" style="display:none;">
 	<form id="changeLayoutForm" method="post">		
 		<div style="float:left;">
-			<h5>Reservable Time Slots</h5>
+			<h5>{translate key=ReservableTimeSlots}</h5>
 			<textarea id="reservableEdit" {formname key=SLOTS_RESERVABLE}></textarea>
 		</div>
 		<div style="float:right;">
-			<h5>Blocked Time Slots</h5>
+			<h5>{translate key=BlockedTimeSlots}</h5>
 			<textarea id="blockedEdit" {formname key=SLOTS_BLOCKED}></textarea>
 		</div>
 		<div style="clear:both;height:0px;">&nbsp</div>
@@ -166,12 +166,12 @@
 		</div>
 		<div style="margin-top: 5px; padding-top:5px; border-top: solid 1px #f0f0f0;">
 			<div style="float:left;">
-				<button type="button" class="button save">{html_image src="tick-circle.png"} Update</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} Cancel</button>
+				<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
+				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 			</div>
 			<div style="float:right;">
-				<p>Format: <span style="font-family:courier new;">HH:MM - HH:MM Optional Label</span></p>
-				<p>Enter one slot per line.  Slots must be provided for all 24 hours of the day.</p>
+				<p>{translate key=Format}: <span style="font-family:courier new;">HH:MM - HH:MM {translate key=OptionalLabel}</span></p>
+				<p>{translate key=LayoutInstructions}</p>
 			</div>
 		</div>
 	</form>
