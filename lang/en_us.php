@@ -314,6 +314,9 @@ class en_us extends Language
 		$strings['Format'] = 'Format';
 		$strings['OptionalLabel'] = 'Optional Label';
 		$strings['LayoutInstructions'] = 'Enter one slot per line.  Slots must be provided for all 24 hours of the day.';
+		$strings['AddUser'] = 'Add User';
+		$strings['UserPermissionInfo'] = 'Actual access to resource may be different depending on user role, group permissions, or external permission settings';
+		$strings['DeleteUserWarning'] = 'Deleting this user will remove all of their current, future, and historical reservations.';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';

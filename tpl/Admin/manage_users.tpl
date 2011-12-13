@@ -57,7 +57,7 @@
 
 <div class="admin" style="margin-top:30px;">
 	<div class="title">
-		Add New User
+		{translate key=AddUser}
 	</div>
 	<div>
 		<ul>
@@ -111,7 +111,7 @@
 				</div>
 			</div>
 
-			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Add'}</button>
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='AddUser'}</button>
 			<button type="button" class="button clear">{html_image src="slash.png"} {translate key='Cancel'}</button>
 		</form>
 	</div>
@@ -119,11 +119,9 @@
 
 <input type="hidden" id="activeId"/>
 
-<div id="permissionsDialog" class="dialog" style="display:none;">
+<div id="permissionsDialog" class="dialog" style="display:none;" title="{translate key=Permissions}">
 	<form id="permissionsForm" method="post">
-		<div class="error">Actual access to resource may be different depending on user role, group permissions, or
-			external permission settings
-		</div>
+		<div class="error">{translate key=UserPermissionInfo}</div>
 	{foreach from=$resources item=resource}
 		<label><input {formname key=RESOURCE_ID  multi=true} class="resourceId" type="checkbox"
 															 value="{$resource->GetResourceId()}"> {$resource->GetName()}
@@ -134,16 +132,16 @@
 	</form>
 </div>
 
-<div id="passwordDialog" class="dialog" style="display:none;">
+<div id="passwordDialog" class="dialog" style="display:none;" title="{translate key=Password}">
 	<form id="passwordForm" method="post">
-		Password<br/>
+		{translate key=Password}<br/>
 	{textbox type="password" name="PASSWORD" class="required textbox" value=""}
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
-<div id="userDialog" class="dialog" title="Update User">
+<div id="userDialog" class="dialog" title="{translate key=Update}">
 	<form id="userForm" method="post">
 		<ul>
             {async_validator id="emailformat" key="ValidEmailRequired"}
@@ -182,12 +180,12 @@
 	</form>
 </div>
 
-<div id="deleteDialog" class="dialog" title="Delete User">
+<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
 	<form id="deleteUserForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
-			<h3>This action is permanent and irrecoverable!</h3>
+			<h3>{translate key=DeleteWarning}</h3>
 
-			<div>Deleting this user will remove all of their current, future, and historical reservations.</div>
+			<div>{translate key=DeleteUserWarning}</div>
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
