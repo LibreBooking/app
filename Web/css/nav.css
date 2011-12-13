@@ -1,9 +1,10 @@
 #logo {
-	line-height:46px;
+
 	float:left;
 	color:#fff;
 	font-size:16pt;
 	width:250px;
+    display: inline;
 }
 
 #nav {
@@ -63,14 +64,21 @@
 
 #header {
     min-width: 900px;
-    margin:0 15px;
+    margin:0;
     background: #3E5E79; /*url(../img/header-bg-c.png) repeat;*/
-    height: 46px;
-    padding-left: 30px;
+    height: 125px;
+    /*padding-left: 30px;*/
     -moz-border-radius-bottomleft: 3px;
     -moz-border-radius-bottomright: 3px;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
+    margin-bottom: 30px;
+}
+
+#header-top {
+    height:75px;
+    background: url(../img/header-top.png) repeat;
+    border-bottom: solid 1px #436981;
 }
 
 #nav .menubaritem {

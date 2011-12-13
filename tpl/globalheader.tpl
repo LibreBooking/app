@@ -34,8 +34,20 @@
 <body>
 <div id="wrapper">
 	<div id="doc">
+        <div id="logo">{html_image src="logo4.1.png"}</div>
+
+
 		<div id="header">
-			<div id="logo">phpScheduleIt</div>
+            <div id="header-top">
+                <div id="signout">
+            				{if $LoggedIn}
+            					{translate key="SignedInAs"} {$UserName}<br /><a href="{$Path}logout.php">{translate key="SignOut"}</a>
+            				{else}
+            					{translate key="NotSignedIn"}<br/>
+            					<a href="{$Path}index.php">{translate key="LogIn"}</a>
+            				{/if}
+            			</div>
+            </div>
 			<ul id="nav" class="menubar">
 				<li class="menubaritem first"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
 				<li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyAccount"}</a>
@@ -88,16 +100,6 @@
 				<li class="menubaritem"><a href="{$Path}help.php">{translate key="Help"}</a></li>
 			</ul>
 			<!-- end #nav -->
-
-			<div id="signout">
-				{if $LoggedIn}
-					{translate key="SignedInAs"} {$UserName}<br /><a href="{$Path}logout.php">{translate key="SignOut"}</a>
-				{else}
-					{translate key="NotSignedIn"}<br/>
-					<a href="{$Path}index.php">{translate key="LogIn"}</a>
-				{/if}
-			</div>
-
 		</div>
 		<!-- end #header -->
 		<div id="content">
