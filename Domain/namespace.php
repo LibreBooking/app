@@ -6,7 +6,6 @@ require_once(ROOT_DIR . 'Domain/Values/ReservationStatus.php');
 require_once(ROOT_DIR . 'Domain/Values/ResourceLevel.php');
 require_once(ROOT_DIR . 'Domain/Values/SeriesUpdateScope.php');
 
-require_once(ROOT_DIR . 'Domain/Announcements.php');
 require_once(ROOT_DIR . 'Domain/Schedule.php');
 require_once(ROOT_DIR . 'Domain/BookableResource.php');
 require_once(ROOT_DIR . 'Domain/ReservationTypes.php');

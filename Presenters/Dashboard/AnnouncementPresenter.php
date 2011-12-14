@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'Domain/Announcements.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class AnnouncementPresenter
 {
@@ -8,7 +8,7 @@ class AnnouncementPresenter
 	
 	/**
 	 * @param IAnnouncementsControl $control the control to populate
-	 * @param IAnnouncements $announcements Announcements domain object
+	 * @param IAnnouncementRepository $announcements Announcements domain object
 	 */
 	public function __construct(IAnnouncementsControl $control, $announcements = null)
 	{
@@ -17,7 +17,7 @@ class AnnouncementPresenter
 		$this->_announcements = $announcements;
 		if (is_null($announcements))
 		{
-			$this->_announcements = new Announcements();
+			$this->_announcements = new AnnouncementRepository();
 		}
 	}
 	

@@ -11,7 +11,7 @@ class AnnouncementsTests extends TestBase
 		
 		Date::_SetNow(new Date());
 		
-		$this->announcements = new Announcements();
+		$this->announcements = new AnnouncementRepository();
 	}
 	
 	public function teardown()
@@ -27,7 +27,7 @@ class AnnouncementsTests extends TestBase
 	{
 		$now = Date::Now();
 		
-		$fakeAnc = new FakeAnnouncements();
+		$fakeAnc = new FakeAnnouncementRepository();
 		
 		$rows = $fakeAnc->GetRows();
 		$this->db->SetRow(0, $rows);

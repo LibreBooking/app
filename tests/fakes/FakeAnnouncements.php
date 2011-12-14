@@ -1,7 +1,7 @@
 <?php
 require_once(ROOT_DIR . 'Domain/Announcements.php');
 
-class FakeAnnouncements implements IAnnouncements
+class FakeAnnouncementRepository implements IAnnouncementRepository
 {
 	public $_GetFutureCalled = false;
 	public $_ExpectedAnnouncements;

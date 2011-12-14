@@ -1,6 +1,6 @@
 <?php
 
-class Announcements
+class AnnouncementRepository implements IAnnouncementRepository
 {
 	public function GetFuture() 
 	{
@@ -17,14 +17,25 @@ class Announcements
 		
 		return $announcements;
 	}
+
+	public function GetAll()
+	{
+		throw new Exception('not implemented');
+	}
 }
 
-interface IAnnouncements
+interface IAnnouncementRepository
 {
 	/**
 	 * Gets all announcements to be displayed for the user
-	 * @return array list of announcement text values
+	 * @return string[]|array list of announcement text values
 	 */
 	public function GetFuture();
+
+	/**
+	 * @abstract
+	 * @return Announcement[]|array
+	 */
+	public function GetAll();
 }
 ?>

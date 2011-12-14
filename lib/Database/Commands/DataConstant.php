@@ -376,7 +376,7 @@ class Queries
 		'SELECT announcement_text 
 		FROM announcements
 		WHERE (start_datetime <= @current_date AND end_datetime >= @current_date)
-		ORDER BY priority DESC';
+		ORDER BY priority, start_datetime, end_datetime';
 
 	const GET_GROUP_BY_ID =
 		'SELECT *

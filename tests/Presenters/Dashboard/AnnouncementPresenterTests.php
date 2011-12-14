@@ -16,7 +16,7 @@ class AnnouncementPresenterTests extends TestBase
 		
 		$this->page = new FakeAnnouncementsControl();
 		
-		$this->announcements = new FakeAnnouncements();
+		$this->announcements = new FakeAnnouncementRepository();
 		$this->presenter = new AnnouncementPresenter($this->page, $this->announcements);
 	}
 	

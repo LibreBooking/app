@@ -318,6 +318,7 @@ class en_us extends Language
 		$strings['AddUser'] = 'Add User';
 		$strings['UserPermissionInfo'] = 'Actual access to resource may be different depending on user role, group permissions, or external permission settings';
 		$strings['DeleteUserWarning'] = 'Deleting this user will remove all of their current, future, and historical reservations.';
+		$strings['AddAnnouncement'] = 'Add Announcement';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';
@@ -368,6 +369,7 @@ class en_us extends Language
 		$strings['ApplicationManagement'] = 'Application Management';
 		$strings['ForgotPassword'] = 'Forgot Password';
 		$strings['NotificationPreferences'] = 'Notification Preferences';
+		$strings['ManageAnnouncements'] = 'Announcements';
 		//
 
 		// Day representations

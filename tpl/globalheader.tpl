@@ -35,8 +35,6 @@
 <div id="wrapper">
 	<div id="doc">
         <div id="logo">{html_image src="logo4.1.png"}</div>
-
-
 		<div id="header">
             <div id="header-top">
                 <div id="signout">
@@ -93,6 +91,7 @@
 						<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a></li>
 						<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
 						<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
+						<li class="menuitem"><a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
 						<li class="menuitem"><a href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
 					</ul>
 				</li>
