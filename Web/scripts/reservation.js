@@ -34,7 +34,7 @@ function Reservation(opts) {
 		accessoriesCancel: $('#btnCancelAddAccessories')
 	};
 
-	const oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
+	var oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
 
 	var repeatToggled = false;
 	var terminationDateSetManually = false;

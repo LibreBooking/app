@@ -37,7 +37,7 @@ function Schedule(opts)
 			});
 			
 			$(this).hover(
-				function () { $(pattern).addClass('hilite'); }, 
+				function () { $(pattern).addClass('hilite'); },
 				function () { $(pattern).removeClass('hilite'); }
 			);
 			
@@ -49,6 +49,7 @@ function Schedule(opts)
 		
 		$('.reservations').delegate('.clickres:not(.reserved)', 'hover', function(){
 			$(this).toggleClass("hilite");
+			$(this).siblings('.resourcename').toggleClass('hilite');
 		});
 		
 		$('.reservations').delegate('.clickres', 'mousedown', function (){ 

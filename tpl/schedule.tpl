@@ -44,9 +44,9 @@
 <table class="reservations" border="1" cellpadding="0" width="100%">
 	{if $TodaysDate->DateEquals($date) eq true}
 		<tr class="today">
-		{else}
+	{else}
 		<tr>
-		{/if}
+	{/if}
 		<td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
 		{foreach from=$Periods item=period}
 			<td class="reslabel">{$period}</td>
@@ -56,7 +56,7 @@
 		{assign var=resourceId value=$resource->Id}
 		{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 		{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
-		<tr>
+		<tr class="slots">
 			<td class="resourcename">
 				{if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
 					<a href="{$href}">{$resource->Name}</a>

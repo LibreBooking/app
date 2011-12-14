@@ -261,6 +261,7 @@ class en_us extends Language
 		$strings['MoreResources'] = 'More Resources';
 		$strings['ReservationLength'] = 'Reservation Length';
 		$strings['ParticipantList'] = 'Participant List';
+		$strings['AddParticipants'] = 'Add Participants';
 		$strings['InviteOthers'] = 'Invite Others';
 		$strings['AddResources'] = 'Add Resources';
 		$strings['AddAccessories'] = 'Add Accessories';

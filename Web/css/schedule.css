@@ -1,30 +1,20 @@
 table.reservations {
-    border-collapse: collapse;
-    /*border: solid #808080 1px;*/
-   
-    width: 100%;
-	font-size:8pt;
+	border-collapse: collapse;
+	width: 100%;
+	font-size: 8pt;
 	table-layout: fixed;
 }
 
-table.reservations td
-{
-	 border: solid #36648B 1px;
+table.reservations td {
+	border: solid #36648B 1px;
+	height: 30px;
 }
-
-/*
-table.reservations tr td {
-    border: solid 1px #333;
-}
-*/
 
 td.resourcename {
-    padding: 1px 3px;
-	background-color: #E0E0E0;	
-	background-color: #EDEDED;	
-	color: #999999;	
+	padding: 1px 3px;
+	background-color: #EDEDED;
+	color: #999999;
 }
-
 
 td.resourcename a {
 	color: #0772A1;
@@ -36,8 +26,8 @@ td.resourcename a:hover {
 }
 
 td.resdate {
-    width: 150px;
-    padding: 0px 3px;
+	width: 150px;
+	padding: 0 3px;
 	background-color: #36648B;
 	color: #F0F0F0;
 }
@@ -45,10 +35,16 @@ td.resdate {
 tr.today td.resdate {
 	font-weight: bold;
 	color: #FFFFFF;
+	background-color: #5199d1
+}
+
+tr.today td.reslabel {
+	font-weight: bold;
+	background-color: #cfcfcf
 }
 
 td.reslabel {
-    padding-left: 2px;
+	padding-left: 2px;
 	background-color: #EDEDED;
 	color: #333333;
 }
@@ -58,28 +54,26 @@ tr.today td.reslabel {
 }
 
 td.unreservable {
-    background-color: #CF9D9B;
-    color: #fff;
+	background-color: #CF9D9B;
+	color: #fff;
 }
 
 td.reservable {
-    background-color: #FFF;
-    color: #333;
+	background-color: #FFF;
+	color: #333;
 }
 
 td.reserved {
-    background-color: #408AD2;
-    color: #E0E0E0;
-    padding-left: 1px;
+	background-color: #408AD2;
+	color: #E0E0E0;
+	padding-left: 1px;
 }
 
 td.reserved.hilite {
-    background-color: #679ED2;
-    background-color: #59A8EF;
+	background-color: #59A8EF;
 }
 
 td.reserved.mine {
-	background-color: #3BA3D0;
 	background-color: #6F9BAE;
 }
 
@@ -98,26 +92,25 @@ td.reserved.pending.hilite {
 }
 
 td.reservable.hilite {
-    background-color: #23BF35;
+	background-color: #23BF35;
 }
 
 td.hilite {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 td.reservable.clicked {
-    background-color: #259433;
+	background-color: #259433;
 }
 
 td.reserved.clicked {
-    background-color: #1979CF;
+	background-color: #1979CF;
 }
 
 td.pasttime {
-	background-color: #E0E5E7;
 	background-color: #BDBDBD;
 }
-	
+
 td.restricted {
 	background: url("../img/stripe.bg.red.png");
 }
@@ -126,19 +119,17 @@ select.schedule_list {
 	font-size: 8pt;
 }
 
-.schedule_drop
-{
+.schedule_drop {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 	display: inline-block;
 }
 
-.schedule_drop ul
-{
+.schedule_drop ul {
 	display: block;
 	list-style: none;
-	position:absolute;
+	position: absolute;
 	padding: 0;
 	margin: 0;
 	width: 125px;
@@ -146,50 +137,43 @@ select.schedule_list {
 	background-color: white;
 }
 
-.schedule_drop ul li
-{
+.schedule_drop ul li {
 	font-size: 10pt;
 	padding: 4px;
 	text-align: left;
 }
 
-.schedule_drop a
-{
+.schedule_drop a {
 	text-decoration: none;
 }
 
-.schedule_drop ul li a
-{
+.schedule_drop ul li a {
 	color: #666;
 	width: 125px;
 }
 
-.schedule_drop ul li a:hover
-{
+.schedule_drop ul li a:hover {
 	color: #000;
 }
 
-.schedule_title
-{
-	text-align: center; 
-	padding: 10px 0px;
+.schedule_title {
+	text-align: center;
+	padding: 10px 0;
 }
 
-.schedule_title span
-{
-	font-size:18pt;
+.schedule_title span {
+	font-size: 18pt;
 }
 
-.schedule_dates 
-{
-	text-align: center; 
-	font-size: 14pt; 
+.schedule_dates {
+	text-align: center;
+	font-size: 14pt;
 	padding-bottom: 10px;
 }
 
-.ui-datepicker
-{
-	margin-left: auto; margin-right: auto;
+.ui-datepicker {
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .res_popup_details .summary {
@@ -197,8 +181,12 @@ select.schedule_list {
 }
 
 .res_popup_details .user {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 .res_popup_details .dates {
+}
+
+td.resourcename.hilite {
+	background-color: #fbffc2;
 }
