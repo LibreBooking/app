@@ -1,4 +1,4 @@
-{include file='loginheader.tpl'}
+{include file='globalheader.tpl'}
 
 {validation_group class="error"}
         {validator id="fname" key="FirstNameRequired"}

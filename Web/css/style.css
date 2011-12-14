@@ -156,6 +156,10 @@ div.page-footer {
 	border-top: solid 1px #cfdce8;
 }
 
+div.push {
+	height: 38px;
+}
+
 .page-footer a, page-footer a:visited {
     color: #588abd;
 }
