@@ -1,24 +1,20 @@
 #logo {
-
 	float:left;
 	color:#fff;
 	font-size:16pt;
-	width:250px;
+	width:200px;
     display: inline;
 }
 
 #nav {
-	list-style: none;
-	list-style-type: none;
+	list-style: none none;
 }
 
 #nav ul {
 	margin: 0;
 	padding: 0;
-	left:0; 
-	list-style: none;
-	list-style-type: none;
-	list-style-position: outside;
+	left:0;
+	list-style: none outside none;
 	position: absolute;
 	display: none;
 	z-index: 999;
@@ -32,8 +28,7 @@
 
 #nav a {
 	display: block;
-	padding: 0px 5px;
-	color: #fff;
+	padding: 0 5px;
 	color: #dfdfdf;
 	text-decoration: none;
 }
@@ -44,14 +39,13 @@
 
 #nav li.first
 {
-	border-left: solid 1px #436981;
+	/*border-left: solid 1px #436981;*/
 }
 
 #nav li ul ul {
-	left: 12em;
 	left: 190px;
 	top: 7px;
-	margin: 0px 0 0 10px;
+	margin: 0 0 0 10px;
 }
 
 #nav li:hover ul ul,#nav li:hover ul ul ul,#nav li:hover ul ul ul ul {
@@ -64,37 +58,38 @@
 
 #header {
     min-width: 900px;
-    margin:0;
-    background: #3E5E79; /*url(../img/header-bg-c.png) repeat;*/
-    height: 125px;
-    /*padding-left: 30px;*/
+    margin-right: 10px;
+    background: #3E5E79;
+    height: 111px;
     -moz-border-radius-bottomleft: 3px;
     -moz-border-radius-bottomright: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	-webkit-border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
-    margin-bottom: 30px;
+    margin-bottom: 45px;
 }
 
 #header-top {
-    height:75px;
+    height:65px;
     background: url(../img/header-top.png) repeat;
     border-bottom: solid 1px #436981;
 }
 
 #nav .menubaritem {
     font-size: 10pt;
-	height: 46px;
+	height: 45px;
 	padding: 0 2px;
 	text-align: center;
 }
 
 li.menubaritem {
-	border: 1px 0 0 0;
+	border-top: 1px;
 	min-width: 90px;
 }
 
 li.menubaritem a {
-	line-height: 46px;
+	line-height: 45px;
 	font-weight: bold;
 }
 
@@ -122,7 +117,7 @@ li.menubaritem:hover, li.menubaritem ul li {
 
 li.menubaritem ul li {
 	border: solid 1px #436981;
-	border-top-width: 0px;
+	border-top-width: 0;
 }
 
 li.menubaritem ul li a:hover{

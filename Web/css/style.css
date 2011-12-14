@@ -8,7 +8,10 @@ body {
     background-color: #fefefe;
     margin: 0px;
     color: #333333;
-    height: 100%;
+}
+
+html, body {
+	height: 100%;
 }
 
 #page-header {
@@ -135,11 +138,22 @@ div.error li {
     color: red;
 }
 
+#wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -40px;
+}
+
 div.page-footer {
     color: #aaa;
     vertical-align: bottom;
     width: 100%;
     text-align: center;
+	height: 38px;
+	background-color: #e3f2ff;
+	padding-top: 1px;
+	border-top: solid 1px #cfdce8;
 }
 
 .page-footer a, page-footer a:visited {
@@ -169,6 +183,10 @@ form.login, form.forgot, form.register, #reservationForm, form.box-form {
     -webkit-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
     -khtml-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
     box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
+}
+
+form.login {
+	padding-bottom: 18px;
 }
 
 div.registrationHeader, div.forgot_pwdHeader, .reservationHeader, div.box-form div.header{
@@ -263,6 +281,13 @@ p.loginsubmit, p.save, p.reg-adminsubmit, p.reporting-submit, p.resetpassword {
 
 #login-links p, #login-links h4 {
     text-align: center;
+	font-size:12pt;
+}
+
+h4.register
+{
+	text-align: center;
+	margin-bottom: 0;
 }
 
 p.regsubmit {

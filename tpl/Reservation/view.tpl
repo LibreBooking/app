@@ -29,7 +29,7 @@
 					{/foreach}
 				</li>
 				<li class="section">
-					<label>{translate key='Start'}</label> {formatdate date=$StartDate}
+					<label>{translate key='BeginDate'}</label> {formatdate date=$StartDate}
 				{foreach from=$Periods item=period}
 					{if $period eq $SelectedStart}
 						{$period->Label()} <br/>
@@ -37,7 +37,7 @@
 				{/foreach}
 				</li>
 				<li>
-					<label>{translate key='End'}</label> {formatdate date=$EndDate}
+					<label>{translate key='EndDate'}</label> {formatdate date=$EndDate}
 				{foreach from=$Periods item=period}
 					{if $period eq $SelectedEnd}
 						{$period->Label()} <br/>
@@ -139,7 +139,7 @@
 		</div>
 		<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
 	</div>
-
+</div>
 	<script type="text/javascript" src="scripts/participation.js"></script>
 	<script type="text/javascript" src="scripts/approval.js"></script>
 	<script type="text/javascript">
