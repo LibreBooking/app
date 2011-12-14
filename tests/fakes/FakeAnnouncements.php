@@ -1,5 +1,5 @@
 <?php
-require_once(ROOT_DIR . 'Domain/Announcements.php');
+require_once(ROOT_DIR . 'Domain/Access/AnnouncementRepository.php');
 
 class FakeAnnouncementRepository implements IAnnouncementRepository
 {
@@ -37,5 +37,13 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
 		
 		return $expectedAnnouncements;
 	}
+
+    /**
+     * @return Announcement[]|array
+     */
+    public function GetAll()
+    {
+        // TODO: Implement GetAll() method.
+    }
 }
 ?>

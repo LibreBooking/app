@@ -303,7 +303,9 @@ class Queries
 	
 	const GET_ALL_ACCESSORIES =
 		'SELECT * FROM accessories ORDER BY accessory_name';
-	
+
+    const GET_ALL_ANNOUNCEMENTS = 'SELECT * FROM announcements ORDER BY start_date';
+
 	const GET_ALL_GROUPS =
 		'SELECT g.*, admin_group.name as admin_group_name
 		FROM groups g
@@ -375,8 +377,8 @@ class Queries
 	const GET_DASHBOARD_ANNOUNCEMENTS =
 		'SELECT announcement_text 
 		FROM announcements
-		WHERE (start_datetime <= @current_date AND end_datetime >= @current_date)
-		ORDER BY priority, start_datetime, end_datetime';
+		WHERE (start_date <= @current_date AND end_date >= @current_date) OR (end_date IS NULL)
+		ORDER BY priority, start_date, end_date';
 
 	const GET_GROUP_BY_ID =
 		'SELECT *
@@ -809,6 +811,10 @@ class ColumnNames
 	const ROLE_NAME = 'name';
 	
 	// ANNOUNCEMENTS //
+    const ANNOUNCEMENT_ID = 'announcementid';
+    const ANNOUNCEMENT_PRIORITY = 'priority';
+    const ANNOUNCEMENT_START = 'start_date';
+    const ANNOUNCEMENT_END = 'end_date';
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
 	
 	// GROUPS //

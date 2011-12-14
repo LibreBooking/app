@@ -468,6 +468,14 @@ class GetAllAccessoriesCommand extends SqlCommand
 	}
 }
 
+class GetAllAnnouncementsCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_ALL_ANNOUNCEMENTS);
+	}
+}
+
 class GetAllGroupsCommand extends SqlCommand
 {
 	public function __construct()

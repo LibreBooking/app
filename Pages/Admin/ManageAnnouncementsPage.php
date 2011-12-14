@@ -10,6 +10,30 @@ interface IManageAnnouncementsPage extends IActionPage
 	 */
 	public function GetAnnouncementId();
 
+    /**
+     * @abstract
+     * @return string
+     */
+    public function GetText();
+
+    /**
+     * @abstract
+     * @return string
+     */
+    public function GetStart();
+
+    /**
+     * @abstract
+     * @return string
+     */
+    public function GetEnd();
+
+    /**
+     * @abstract
+     * @return string
+     */
+    public function GetPriority();
+
 	/**
 	 * @abstract
 	 * @param $announcements AnnouncementDto[]
@@ -35,6 +59,8 @@ class ManageAnnouncementsPage extends AdminPage implements IManageAnnouncementsP
 	{
 		$this->presenter->PageLoad();
 
+        $this->Set('priorities', range(1,10));
+
 		$this->Display('manage_Announcements.tpl');
 	}
 
@@ -57,6 +83,37 @@ class ManageAnnouncementsPage extends AdminPage implements IManageAnnouncementsP
 	}
 
 
+    /**
+     * @return string
+     */
+    public function GetText()
+    {
+        return $this->GetForm(FormKeys::ANNOUNCEMENT_TEXT);
+    }
+
+    /**
+     * @return string
+     */
+    public function GetStart()
+    {
+        return $this->GetForm(FormKeys::ANNOUNCEMENT_START);
+    }
+
+    /**
+     * @return string
+     */
+    public function GetEnd()
+    {
+        return $this->GetForm(FormKeys::ANNOUNCEMENT_END);
+    }
+
+    /**
+     * @return string
+     */
+    public function GetPriority()
+    {
+        return $this->GetForm(FormKeys::ANNOUNCEMENT_PRIORITY);
+    }
 }
 
 ?>

@@ -7,11 +7,10 @@ SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS `announcements`;
 CREATE TABLE `announcements` (
  `announcementid` mediumint(8) unsigned NOT NULL auto_increment,
- `title` varchar(85) NOT NULL,
- `announcement_text` text,
- `priority` mediumint(8) NOT NULL,
- `start_datetime` datetime,
- `end_datetime` datetime,
+ `announcement_text` text NOT NULL,
+ `priority` mediumint(8),
+ `start_date` datetime,
+ `end_date` datetime,
  PRIMARY KEY (`announcementid`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 

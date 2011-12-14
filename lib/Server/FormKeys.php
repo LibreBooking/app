@@ -10,6 +10,10 @@ class FormKeys
 	const ADDITIONAL_RESOURCES = 'additionalResources';
 	const ADDRESS = 'address';
 	const ALLOW_MULTIDAY = 'allowMultiday';
+    const ANNOUNCEMENT_TEXT = 'announcementText';
+    const ANNOUNCEMENT_START = 'announcementStart';
+    const ANNOUNCEMENT_END = 'announcementEnd';
+    const ANNOUNCEMENT_PRIORITY = 'announcementPriority';
 	const AUTO_ASSIGN = 'autoAssign';
 
 	const BEGIN_DATE = 'beginDate';

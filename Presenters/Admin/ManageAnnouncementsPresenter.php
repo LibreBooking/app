@@ -44,12 +44,15 @@ class ManageAnnouncementsPresenter extends ActionPresenter
 
 	public function AddAnnouncement()
 	{
-		$name = $this->page->GetAnnouncementName();
-		$quantity = $this->page->GetQuantityAvailable();
-		
-		Log::Debug('Adding new Announcement with name %s and quantity %s', $name, $quantity);
+        $user = ServiceLocator::GetServer()->GetUserSession();
+		$text = $this->page->GetText();
+		$start = Date::Parse($this->page->GetStart(), $user->Timezone);
+		$end = Date::Parse($this->page->GetEnd(), $user->Timezone);
+		$priority = $this->page->GetPriority();
 
-		$this->announcementRepository->Add(Announcement::Create($name, $quantity));
+		Log::Debug('Adding new Announcement');
+
+		$this->announcementRepository->Add(Announcement::Create($text, $start, $end, $priority));
 	}
 
 	public function ChangeAnnouncement()

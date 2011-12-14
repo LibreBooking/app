@@ -7,8 +7,8 @@
 		<th class="id">&nbsp;</th>
 		<th>{translate key='Announcement'}</th>
 		<th>{translate key='Priority'}</th>
-		<th>{translate key='Start'}</th>
-		<th>{translate key='End'}</th>
+		<th>{translate key='BeginDate'}</th>
+		<th>{translate key='EndDate'}</th>
 		<th>{translate key='Actions'}</th>
 	</tr>
 {foreach from=$announcements item=announcement}
@@ -58,21 +58,30 @@
 		<form id="addForm" method="post">
 			<table>
 				<tr>
-					<th>{translate key='AccessoryName'}</th>
-					<th>{translate key='QuantityAvailable'}</th>
+					<th>{translate key='Announcement'}</th>
+					<th>{translate key='BeginDate'}</th>
+					<th>{translate key='EndDate'}</th>
+					<th>{translate key='Priority'}</th>
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
 					<td>
-						<input type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
+						<textarea class="textbox required" style="width:500px" {formname key=ANNOUNCEMENT_TEXT}></textarea>
 					</td>
 					<td>
-						<input type="text" id="addQuantity" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
-						<input type="checkbox" id="chkUnlimitedAdd" class="unlimited" name="chkUnlimited" checked="checked" />
-						<label for="chkUnlimitedAdd"> {translate key=Unlimited}</label>
+						<input type="text" id="BeginDate" class="textbox" {formname key=ANNOUNCEMENT_START} />
+					</td>
+                    <td>
+						<input type="text" id="EndDate" class="textbox" {formname key=ANNOUNCEMENT_END} />
+					</td>
+                    <td>
+                        <select class="textbox" {formname key=ANNOUNCEMENT_PRIORITY}>
+                            <option value="">---</option>
+                            {html_options values=$priorities output=$priorities}
+                        </select>
 					</td>
 					<td>
-						<button type="button" class="button save">{html_image src="plus-button.png"} Add Accessory</button>
+						<button type="button" class="button save">{html_image src="plus-button.png"} {translate key=AddAnnouncement}</button>
 					</td>
 				</tr>
 			</table>
@@ -80,19 +89,22 @@
 	</div>
 </div>
 
+{control type="DatePickerSetupControl" ControlId="BeginDate"}
+{control type="DatePickerSetupControl" ControlId="EndDate"}
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/accessory.js"></script>
+<script type="text/javascript" src="{$Path}scripts/admin/announcement.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
 
 	var actions = {
-		add: '{ManageAccessoriesActions::Add}',
-		edit: '{ManageAccessoriesActions::Change}',
-		delete: '{ManageAccessoriesActions::Delete}'
+		add: '{ManageAnnouncementsActions::Add}',
+		edit: '{ManageAnnouncementsActions::Change}',
+		delete: '{ManageAnnouncementsActions::Delete}'
 	};
 
 	var accessoryOptions = {
@@ -101,11 +113,17 @@
 		actions: actions
 	};
 
-	var accessoryManagement = new AccessoryManagement(accessoryOptions);
-	accessoryManagement.init();
+	var announcementManagement = new AnnouncementManagement(accessoryOptions);
+    announcementManagement.init();
 
-	{foreach from=$accessories item=accessory}
-		accessoryManagement.addAccessory('{$accessory->Id}', '{$accessory->Name}', '{$accessory->QuantityAvailable}');
+	{foreach from=$announcements item=announcement}
+    announcementManagement.addAnnouncement(
+        '{$announcement->Id()}',
+        '{$announcement->Text()}',
+        '{$announcement->Start()}',
+        '{$announcement->End()}',
+        '{$announcement->Priority()}'
+    );
 	{/foreach}
 	
 	});

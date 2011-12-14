@@ -42,7 +42,7 @@ $tests = array(
 'ScheduleReservationListTests.php',
 'ResourceRepositoryTestsitoryTests.php',
 'SchedulesTests.php',
-'AnnouncementsTests.php',
+'AnnouncementRepositoryTeststoryTests.php',
 'AnnouncementPresenterTests.php',
 //'DashboardPresenterTests.php',
 'PluginManagerTests.php',

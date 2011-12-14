@@ -1,4 +1,5 @@
 <?php
+require_once (ROOT_DIR . 'Domain/Announcement.php');
 
 class AnnouncementRepository implements IAnnouncementRepository
 {
@@ -20,8 +21,27 @@ class AnnouncementRepository implements IAnnouncementRepository
 
 	public function GetAll()
 	{
-		throw new Exception('not implemented');
+        $announcements = array();
+
+        $reader = ServiceLocator::GetDatabase()->Query(new GetAllAnnouncementsCommand());
+
+        while ($row = $reader->GetRow())
+        {
+            $announcements[] = Announcement::FromRow($row);
+        }
+
+        $reader->Free();
+
+        return $announcements;
 	}
+
+    /**
+     * @param Announcement $announcement
+     */
+    public function Add(Announcement $announcement)
+    {
+        // TODO: Implement Add() method.
+    }
 }
 
 interface IAnnouncementRepository
@@ -37,5 +57,11 @@ interface IAnnouncementRepository
 	 * @return Announcement[]|array
 	 */
 	public function GetAll();
+
+    /**
+     * @abstract
+     * @param Announcement $announcement
+     */
+    public function Add(Announcement $announcement);
 }
 ?>
