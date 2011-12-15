@@ -1,4 +1,4 @@
-{include file='loginheader.tpl'}
+{include file='globalheader.tpl'}
 
 	{if $ShowResetEmailSent}
 		<div class="success">

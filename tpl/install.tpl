@@ -1,4 +1,4 @@
-{include file='loginheader.tpl'}
+{include file='globalheader.tpl'}
 
 <h1>Install backend database phpScheduleIt (MySQL only)</h1>
 
