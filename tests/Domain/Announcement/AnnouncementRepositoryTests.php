@@ -85,8 +85,14 @@ class AnnouncementRepositoryTests extends TestBase
 
 		$this->repository->Add($announcement);
 		$this->assertEquals(new AddAnnouncementCommand($text, $start, $end, $priority), $this->db->_LastCommand);
-
 	}
+
+    public function testDeletesAnnouncement()
+    {
+        $id = 1232;
+        $this->repository->Delete($id);
+        $this->assertEquals(new DeleteAnnouncementCommand($id), $this->db->_LastCommand);
+    }
 
     private function GetAnnouncementRow($id, $text, $startDate, $endDate, $priority)
     {

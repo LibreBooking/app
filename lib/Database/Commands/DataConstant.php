@@ -8,6 +8,7 @@ class ParameterNames
 	const ACCESSORY_NAME = '@accessoryname';
 	const ACCESSORY_QUANTITY = '@quantity';
 
+    const ANNOUNCEMENT_ID = '@announcementid';
 	const ANNOUNCEMENT_TEXT = '@text';
 	const ANNOUNCEMENT_PRIORITY = '@priority';
 
@@ -242,6 +243,9 @@ class Queries
 
 	const DELETE_ACCESSORY =
 		'DELETE FROM accessories WHERE accessory_id = @accessoryid';
+
+    const DELETE_ANNOUNCEMENT =
+		'DELETE FROM announcements WHERE announcementid = @announcementid';
 
     const DELETE_BLACKOUT_SERIES =
 		'DELETE FROM blackout_series WHERE blackout_series_id = @seriesid';

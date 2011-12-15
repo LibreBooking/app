@@ -50,8 +50,7 @@ class ManageAnnouncementsPresenter extends ActionPresenter
 		$end = Date::Parse($this->page->GetEnd(), $user->Timezone);
 		$priority = $this->page->GetPriority();
 
-
-		Log::Debug('Adding new Announcement, %s, %s', $start, $end);
+		Log::Debug('Adding new Announcement');
 
 		$this->announcementRepository->Add(Announcement::Create($text, $start, $end, $priority));
 	}

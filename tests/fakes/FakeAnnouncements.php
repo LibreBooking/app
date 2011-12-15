@@ -53,5 +53,13 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
 	{
 		// TODO: Implement Add() method.
 	}
+
+    /**
+     * @param int $announcementId
+     */
+    public function Delete($announcementId)
+    {
+        // TODO: Implement Delete() method.
+    }
 }
 ?>

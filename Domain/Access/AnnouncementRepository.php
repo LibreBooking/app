@@ -42,6 +42,14 @@ class AnnouncementRepository implements IAnnouncementRepository
     {
 		ServiceLocator::GetDatabase()->ExecuteInsert(new AddAnnouncementCommand($announcement->Text(), $announcement->Start(), $announcement->End(), $announcement->Priority()));
     }
+
+    /**
+     * @param int $announcementId
+     */
+    public function Delete($announcementId)
+    {
+        ServiceLocator::GetDatabase()->Execute(new DeleteAnnouncementCommand($announcementId));
+    }
 }
 
 interface IAnnouncementRepository
@@ -63,5 +71,11 @@ interface IAnnouncementRepository
      * @param Announcement $announcement
      */
     public function Add(Announcement $announcement);
+
+    /**
+     * @abstract
+     * @param int $announcementId
+     */
+    public function Delete($announcementId);
 }
 ?>

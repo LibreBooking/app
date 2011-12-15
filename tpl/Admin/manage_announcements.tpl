@@ -15,10 +15,10 @@
 	{cycle values='row0,row1' assign=rowCss}
 	<tr class="{$rowCss}">
 		<td class="id"><input type="hidden" class="id" value="{$announcement->Id()}"/></td>
-		<td>{$announcement->Text()|nl2br}</td>
+		<td style="width:300px;">{$announcement->Text()|nl2br}</td>
 		<td>{$announcement->Priority()}</td>
-		<td>{formatdate date=$announcement->Start()->ToTimezone($timezone)}</td>
-		<td>{formatdate date=$announcement->End()->ToTimezone($timezone)}</td>
+		<td style="width: 100px;">{formatdate date=$announcement->Start()->ToTimezone($timezone)}</td>
+		<td style="width: 100px;">{formatdate date=$announcement->End()->ToTimezone($timezone)}</td>
 		<td align="center"><a href="#" class="update edit">{translate key='Edit'}</a> | <a href="#" class="update delete">{translate key='Delete'}</a></td>
 	</tr>
 {/foreach}
@@ -119,7 +119,7 @@
 	{foreach from=$announcements item=announcement}
     announcementManagement.addAnnouncement(
         '{$announcement->Id()}',
-        '{$announcement->Text()|regex_replace:"/[\r\t\n]/":" "}}',
+        '{$announcement->Text()|regex_replace:"/[\n]/":"\\n"}}',
         '{$announcement->Start()}',
         '{$announcement->End()}',
         '{$announcement->Priority()}'
