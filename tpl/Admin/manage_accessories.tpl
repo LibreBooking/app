@@ -68,7 +68,7 @@
 						<label for="chkUnlimitedAdd"> {translate key=Unlimited}</label>
 					</td>
 					<td>
-						<button type="button" class="button save">{html_image src="plus-button.png"} Add Accessory</button>
+						<button type="button" class="button save">{html_image src="plus-button.png"} {translate key=AddAccessory}</button>
 					</td>
 				</tr>
 			</table>

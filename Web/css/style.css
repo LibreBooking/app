@@ -146,22 +146,23 @@ div.error li {
 }
 
 div.page-footer {
-    color: #aaa;
+    color: #fafafa;
     vertical-align: bottom;
     width: 100%;
     text-align: center;
 	height: 38px;
 	background-color: #e3f2ff;
+    background: url(../img/header-top.png) repeat;
 	padding-top: 1px;
-	border-top: solid 1px #cfdce8;
+	border-top: solid 1px #333333;
 }
 
 div.push {
 	height: 38px;
 }
 
-.page-footer a, page-footer a:visited {
-    color: #588abd;
+.page-footer a, .page-footer a:visited {
+    color: #fafafa;
 }
 
 .p-center {

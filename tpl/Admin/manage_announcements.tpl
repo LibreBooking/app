@@ -127,8 +127,8 @@
     announcementManagement.addAnnouncement(
         '{$announcement->Id()}',
         '{$announcement->Text()|regex_replace:"/[\n]/":"\\n"}',
-        '{formatdate date=$announcement->Start()}',
-        '{formatdate date=$announcement->End()}',
+        '{formatdate date=$announcement->Start()->ToTimezone($timezone)}',
+        '{formatdate date=$announcement->End()->ToTimezone($timezone)}',
         '{$announcement->Priority()}'
     );
 	{/foreach}
