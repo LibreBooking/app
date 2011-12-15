@@ -43,7 +43,6 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
      */
     public function GetAll()
     {
-        // TODO: Implement GetAll() method.
     }
 
 	/**
@@ -51,7 +50,6 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
 	 */
 	public function Add(Announcement $announcement)
 	{
-		// TODO: Implement Add() method.
 	}
 
     /**
@@ -59,7 +57,21 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
      */
     public function Delete($announcementId)
     {
-        // TODO: Implement Delete() method.
+    }
+
+    /**
+     * @param Announcement $announcement
+     */
+    public function Update(Announcement $announcement)
+    {
+    }
+
+    /**
+     * @param int $announcementId
+     * @return Announcement
+     */
+    public function LoadById($announcementId)
+    {
     }
 }
 ?>

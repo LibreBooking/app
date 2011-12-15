@@ -30,7 +30,6 @@
 	<form id="deleteForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
-			<div>{translate key=DeleteAccessoryWarning}</div>
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
@@ -39,11 +38,17 @@
 
 <div id="editDialog" class="dialog" style="display:none;" title="{translate key=Edit}">
 	<form id="editForm" method="post">
-		{translate key=AccessoryName}<br/> <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
-		<br/><br/>
-		{translate key='QuantityAvailable'}<br/><input id="editQuantity" type="text" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
-		<input type="checkbox" id="chkUnlimitedEdit" class="unlimited" name="chkUnlimited" checked="checked" />
-		<label for="chkUnlimitedEdit"> {translate key=Unlimited}</label><br/><br/>
+		{translate key=Announcement}<br/>
+        <textarea id="editText" class="textbox required" style="width:500px" {formname key=ANNOUNCEMENT_TEXT}></textarea><br/>
+        {translate key='BeginDate'}<br/>
+        <input type="text" id="editBegin" class="textbox" {formname key=ANNOUNCEMENT_START} /><br/>
+        {translate key='EndDate'}<br/>
+        <input type="text" id="editEnd" class="textbox" {formname key=ANNOUNCEMENT_END} /><br/>
+        {translate key='Priority'} <br/>
+        <select id="editPriority" class="textbox" {formname key=ANNOUNCEMENT_PRIORITY}>
+            <option value="">---</option>
+            {html_options values=$priorities output=$priorities}
+        </select><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
@@ -91,6 +96,8 @@
 
 {control type="DatePickerSetupControl" ControlId="BeginDate"}
 {control type="DatePickerSetupControl" ControlId="EndDate"}
+{control type="DatePickerSetupControl" ControlId="editBegin"}
+{control type="DatePickerSetupControl" ControlId="editEnd"}
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
@@ -119,9 +126,9 @@
 	{foreach from=$announcements item=announcement}
     announcementManagement.addAnnouncement(
         '{$announcement->Id()}',
-        '{$announcement->Text()|regex_replace:"/[\n]/":"\\n"}}',
-        '{$announcement->Start()}',
-        '{$announcement->End()}',
+        '{$announcement->Text()|regex_replace:"/[\n]/":"\\n"}',
+        '{formatdate date=$announcement->Start()}',
+        '{formatdate date=$announcement->End()}',
         '{$announcement->Priority()}'
     );
 	{/foreach}

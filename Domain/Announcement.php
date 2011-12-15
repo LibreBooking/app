@@ -79,11 +79,37 @@ class Announcement
      */
     public static function Create($text, Date $start, Date $end, $priority)
     {
-		if (empty($priority))
-		{
-			$priority = null;
-		}
+        if (empty($priority))
+        {
+            $priority = null;
+        }
         return new Announcement(null, $text, $start, $end, $priority);
+    }
+
+    /**
+     * @param string $text
+     */
+    public function SetText($text)
+    {
+        $this->Text = $text;
+    }
+
+    /**
+     * @param Date $start
+     * @param Date $end
+     */
+    public function SetDates(Date $start, Date $end)
+    {
+        $this->Start = $start;
+        $this->End = $end;
+    }
+
+    /**
+     * @param int $priority
+     */
+    public function SetPriority($priority)
+    {
+        $this->Priority = $priority;
     }
 }
 

@@ -10,14 +10,19 @@ function AnnouncementManagement(opts) {
 
 		addForm: $('#addForm'),
 		editForm: $('#editForm'),
-		deleteForm: $('#deleteForm')
+		deleteForm: $('#deleteForm'),
+
+        editText: $('#editText'),
+        editBegin: $('#editBegin'),
+        editEnd: $('#editEnd'),
+        editPriority: $('#editPriority')
 	};
 
 	var announcements = new Object();
 
     AnnouncementManagement.prototype.init = function() {
 
-		ConfigureAdminDialog(elements.editDialog, 450, 200);
+		ConfigureAdminDialog(elements.editDialog, 550, 300);
 		ConfigureAdminDialog(elements.deleteDialog,  500, 200);
 
 		elements.announcementList.delegate('a.update', 'click', function(e) {
@@ -61,20 +66,12 @@ function AnnouncementManagement(opts) {
 	}
 
 	var editAnnouncement = function() {
-		var accessory = getActiveAccessory();
-		elements.editName.val(accessory.name);
-		elements.editQuantity.val(accessory.quantity);
+		var announcement = getActiveAnnouncement();
+		elements.editText.val(announcement.text);
+		elements.editBegin.val(announcement.start);
+		elements.editEnd.val(announcement.end);
+		elements.editPriority.val(announcement.priority);
 
-		if (accessory.quantity == '')
-		{
-			elements.editUnlimited.attr('checked', 'checked');
-		}
-		else
-		{
-			elements.editUnlimited.removeAttr('checked');
-		}
-
-		elements.editUnlimited.trigger('change');
 		elements.editDialog.dialog('open');
 	};
 
@@ -82,7 +79,7 @@ function AnnouncementManagement(opts) {
 		elements.deleteDialog.dialog('open');
 	};
 
-	var getActiveAccessory = function ()
+	var getActiveAnnouncement = function ()
 	{
 		return announcements[getActiveId()];
 	};

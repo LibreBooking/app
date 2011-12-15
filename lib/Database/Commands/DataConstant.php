@@ -294,6 +294,9 @@ class Queries
 	const GET_ACCESSORY_BY_ID =
 		'SELECT * FROM accessories WHERE accessory_id = @accessoryid';
 
+    const GET_ANNOUNCEMENT_BY_ID =
+		'SELECT * FROM announcements WHERE announcementid = @announcementid';
+
 	const GET_ACCESSORY_LIST =
 		'SELECT *, rs.status_id as status_id
 		FROM reservation_instances ri
@@ -658,6 +661,11 @@ class Queries
 		'UPDATE accessories
 		SET accessory_name = @accessoryname, accessory_quantity = @quantity
 		WHERE accessory_id = @accessoryid';
+
+    const UPDATE_ANNOUNCEMENT =
+		'UPDATE announcements
+		SET announcement_text = @text, priority = @priority, start_date = @startDate, end_date = @endDate
+		WHERE announcementid = @announcementid';
 	
 	const UPDATE_GROUP =
 		'UPDATE groups

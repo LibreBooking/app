@@ -471,6 +471,15 @@ class GetAccessoryByIdCommand extends SqlCommand
 	}
 }
 
+class GetAnnouncementByIdCommand extends SqlCommand
+{
+	public function __construct($announcementId)
+	{
+	    parent::__construct(Queries::GET_ANNOUNCEMENT_BY_ID);
+		$this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_ID, $announcementId));
+	}
+}
+
 class GetAccessoryListCommand extends SqlCommand
 {
 	public function __construct(Date $startDate, Date $endDate)
@@ -966,6 +975,20 @@ class UpdateAccessoryCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_QUANTITY, $quantityAvailable));
 	}
 }
+
+class UpdateAnnouncementCommand extends SqlCommand
+{
+	public function __construct($announcementId, $text, Date $start, Date $end, $priority)
+	{
+		parent::__construct(Queries::UPDATE_ANNOUNCEMENT);
+		$this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_ID, $announcementId));
+        $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_TEXT, $text));
+        $this->AddParameter(new Parameter(ParameterNames::START_DATE, $start->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::END_DATE, $end->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_PRIORITY, $priority));
+	}
+}
+
 class UpdateGroupCommand extends SqlCommand
 {
 	public function __construct($groupId, $groupName, $adminGroupId)

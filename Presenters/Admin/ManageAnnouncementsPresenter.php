@@ -57,17 +57,22 @@ class ManageAnnouncementsPresenter extends ActionPresenter
 
 	public function ChangeAnnouncement()
 	{
-		$id = $this->page->GetAnnouncementId();
-		$name = $this->page->GetAnnouncementName();
-		$quantity = $this->page->GetQuantityAvailable();
-		
-		Log::Debug('Changing Announcement with id %s to name %s and quantity %s', $id, $name, $quantity);
+        $user = ServiceLocator::GetServer()->GetUserSession();
 
-		$Announcement = $this->announcementRepository->LoadById($id);
-		$Announcement->SetName($name);
-		$Announcement->SetQuantityAvailable($quantity);
+        $id = $this->page->GetAnnouncementId();
+        $text = $this->page->GetText();
+        $start = Date::Parse($this->page->GetStart(), $user->Timezone);
+        $end = Date::Parse($this->page->GetEnd(), $user->Timezone);
+        $priority = $this->page->GetPriority();
 		
-		$this->announcementRepository->Update($Announcement);
+		Log::Debug('Changing Announcement with id %s', $id);
+
+		$announcement = $this->announcementRepository->LoadById($id);
+        $announcement->SetText($text);
+        $announcement->SetDates($start, $end);
+        $announcement->SetPriority($priority);
+
+		$this->announcementRepository->Update($announcement);
 	}
 	
 	public function DeleteAnnouncement()
