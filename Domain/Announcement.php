@@ -79,6 +79,10 @@ class Announcement
      */
     public static function Create($text, Date $start, Date $end, $priority)
     {
+		if (empty($priority))
+		{
+			$priority = null;
+		}
         return new Announcement(null, $text, $start, $end, $priority);
     }
 }

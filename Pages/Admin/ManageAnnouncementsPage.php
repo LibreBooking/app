@@ -60,8 +60,9 @@ class ManageAnnouncementsPage extends AdminPage implements IManageAnnouncementsP
 		$this->presenter->PageLoad();
 
         $this->Set('priorities', range(1,10));
+        $this->Set('timezone', ServiceLocator::GetServer()->GetUserSession()->Timezone);
 
-		$this->Display('manage_Announcements.tpl');
+		$this->Display('manage_announcements.tpl');
 	}
 
 	public function BindAnnouncements($announcements)

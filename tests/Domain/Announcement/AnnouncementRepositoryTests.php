@@ -6,7 +6,7 @@ class AnnouncementRepositoryTests extends TestBase
     /**
      * @var AnnouncementRepository
      */
-	private $announcements;
+	private $repository;
 	
 	public function setup()
 	{
@@ -14,7 +14,7 @@ class AnnouncementRepositoryTests extends TestBase
 		
 		Date::_SetNow(new Date());
 		
-		$this->announcements = new AnnouncementRepository();
+		$this->repository = new AnnouncementRepository();
 	}
 	
 	public function teardown()
@@ -23,7 +23,7 @@ class AnnouncementRepositoryTests extends TestBase
 		
 		Date::_ResetNow();
 		
-		$this->announcements = null;
+		$this->repository = null;
 	}
 	
 	public function testGetFutureCallDBCorrectly()
@@ -41,7 +41,7 @@ class AnnouncementRepositoryTests extends TestBase
 			$expectedAnnouncements[] = $item[ColumnNames::ANNOUNCEMENT_TEXT];
 		}
 		
-		$actualRows = $this->announcements->GetFuture();
+		$actualRows = $this->repository->GetFuture();
 		
 		$this->assertEquals(new GetDashboardAnnouncementsCommand($now), $this->db->_Commands[0]);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
@@ -63,7 +63,7 @@ class AnnouncementRepositoryTests extends TestBase
         $rows[] = $this->GetAnnouncementRow(1, $text1, $start1, $end1, $priority1);
         $rows[] = $this->GetAnnouncementRow(2, $text2, $start2, $end2, $priority2);
         $this->db->SetRows($rows);
-        $announcements = $this->announcements->GetAll();
+        $announcements = $this->repository->GetAll();
 
         $expectedAnnouncements = array(
             new Announcement(1, $text1, Date::FromDatabase($start1), Date::FromDatabase($end1), $priority1),
@@ -73,6 +73,20 @@ class AnnouncementRepositoryTests extends TestBase
         $this->assertEquals(new GetAllAnnouncementsCommand(), $this->db->_LastCommand);
         $this->assertEquals($expectedAnnouncements, $announcements);
     }
+
+	public function testAddsAnnouncement()
+	{
+		$text = 'text';
+		$start = Date::Parse('2011-01-01', 'America/Chicago');
+		$end = NullDate::Instance();
+		$priority = 1;
+
+		$announcement = Announcement::Create($text, $start, $end, $priority);
+
+		$this->repository->Add($announcement);
+		$this->assertEquals(new AddAnnouncementCommand($text, $start, $end, $priority), $this->db->_LastCommand);
+
+	}
 
     private function GetAnnouncementRow($id, $text, $startDate, $endDate, $priority)
     {

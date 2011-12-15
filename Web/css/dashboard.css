@@ -49,6 +49,11 @@
 	color: #666;
 }
 
+.dashboardContents li{
+	list-style: circle;
+	margin-left: 30px;
+}
+
 #upcomingReservationsDashboard .timespan td {
 	background-color: #ececec;
 	font-style: italic;

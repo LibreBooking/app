@@ -5,7 +5,7 @@
 	<div class="dashboardContents">
 		<ul>
 			{foreach from=$Announcements item=each}
-			    <li>{$each}</li>
+			    <li>{$each|html_entity_decode|nl2br}</li>
 			{foreachelse}
 				<div class="noresults">{translate key="NoAnnouncements"}</div>
 			{/foreach}

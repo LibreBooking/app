@@ -8,6 +8,9 @@ class ParameterNames
 	const ACCESSORY_NAME = '@accessoryname';
 	const ACCESSORY_QUANTITY = '@quantity';
 
+	const ANNOUNCEMENT_TEXT = '@text';
+	const ANNOUNCEMENT_PRIORITY = '@priority';
+
 	const CURRENT_DATE = '@current_date';
 	const CURRENT_SERIES_ID = '@currentSeriesId';
 	
@@ -139,6 +142,10 @@ class Queries
 	const ADD_ACCESSORY =
 		'INSERT INTO accessories (accessory_name, accessory_quantity)
 		VALUES (@accessoryname, @quantity)';
+
+	const ADD_ANNOUNCEMENT =
+		'INSERT INTO announcements (announcement_text, priority, start_date, end_date)
+		VALUES (@text, @priority, @startDate, @endDate)';
 
 	const ADD_BLACKOUT_INSTANCE =
 		'INSERT INTO blackout_instances (start_date, end_date, blackout_series_id)

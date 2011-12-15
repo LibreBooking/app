@@ -45,5 +45,13 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
     {
         // TODO: Implement GetAll() method.
     }
+
+	/**
+	 * @param Announcement $announcement
+	 */
+	public function Add(Announcement $announcement)
+	{
+		// TODO: Implement Add() method.
+	}
 }
 ?>

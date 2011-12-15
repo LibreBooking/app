@@ -63,6 +63,9 @@ class Date
 	 */
 	public static function Parse($dateString, $timezone = null)
 	{
+		if (empty($dateString)) {
+			return NullDate::Instance();
+		}
 		return new Date($dateString, $timezone);
 	}
 
@@ -515,6 +518,16 @@ class NullDate extends Date
 	public function ToString()
 	{
 		return '';
+	}
+
+	public function ToDatabase()
+	{
+		return null;
+	}
+
+	public function ToTimezone($timezone)
+	{
+		return $this;
 	}
 }
 

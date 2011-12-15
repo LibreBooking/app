@@ -28,6 +28,18 @@ class AddAccessoryCommand extends SqlCommand
 	}
 }
 
+class AddAnnouncementCommand extends SqlCommand
+{
+	public function __construct($text, Date $start, Date $end, $priority)
+	{
+		parent::__construct(Queries::ADD_ANNOUNCEMENT);
+		$this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_TEXT, $text));
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $start->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $end->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_PRIORITY, $priority));
+	}
+}
+
 class AddBlackoutCommand extends SqlCommand
 {
 	public function __construct($userId, $resourceId, $title)

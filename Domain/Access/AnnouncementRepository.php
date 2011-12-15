@@ -40,7 +40,7 @@ class AnnouncementRepository implements IAnnouncementRepository
      */
     public function Add(Announcement $announcement)
     {
-        // TODO: Implement Add() method.
+		ServiceLocator::GetDatabase()->ExecuteInsert(new AddAnnouncementCommand($announcement->Text(), $announcement->Start(), $announcement->End(), $announcement->Priority()));
     }
 }
 

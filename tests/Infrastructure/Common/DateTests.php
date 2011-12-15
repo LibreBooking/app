@@ -492,5 +492,13 @@ class DateTests extends TestBase
 		$this->assertTrue($range->OccursOn($d2));
 		$this->assertFalse($range->OccursOn($d3));
 	}
+
+	public function testNullDateTests()
+	{
+		$null = NullDate::Instance();
+
+		$this->assertNull($null->ToDatabase());
+		$this->assertEquals($null, $null->ToTimezone('anything'));
+	}
 }
 ?>
