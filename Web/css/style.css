@@ -518,3 +518,25 @@ div.notification-status {
     width:50%;
     display: table-cell;
 }
+
+#help h3, #help h2
+{
+    /*margin: 10px 0;*/
+}
+
+#help h2
+{
+    padding: 2px;
+    background-color: #e8eef2;
+}
+#help h3
+{
+    margin-left: 10px;
+    text-decoration: underline;
+}
+
+#help p
+{
+    margin: 10px 20px;
+    font-size: 11pt;
+}
