@@ -121,7 +121,8 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 			$this,
 			new UserRepository(),
 			new ResourceRepository(),
-			new PasswordEncryption());
+			new PasswordEncryption(),
+            new Registration());
 
 		$this->pageable = new PageablePage($this);
 	}
