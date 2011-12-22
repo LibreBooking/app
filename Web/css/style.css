@@ -540,3 +540,10 @@ div.notification-status {
     margin: 10px 20px;
     font-size: 11pt;
 }
+
+#help p.setting span
+{
+    color: green;
+    font-family: Courier;
+    display: block;
+}
