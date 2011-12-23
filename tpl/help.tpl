@@ -1,7 +1,6 @@
 {include file='globalheader.tpl'}
 <h1>phpScheduleIt Help</h1>
 
-DRAFT - INCOMPLETE AND SUBJECT TO CHANGE
 <div id="help">
 <h2>Registration</h2>
 
@@ -311,9 +310,10 @@ DRAFT - INCOMPLETE AND SUBJECT TO CHANGE
 <p class="setting"><span>['phpmailer']['mailer']</span>PHP email library. Options are mail, smtp, sendmail, qmail</p>
 
 <h2>Plugins</h2>
-<p>Authentication, Authorization and Permission phpScheduleIt components are pluggable.</p>
 
-<p></p>
+<p>Authentication, Authorization and Permission phpScheduleIt components are pluggable. To enable a plugin just set the
+    value of the config setting to the name of the plugin folder. For example, to enable LDAP authentication, set
+    $conf['settings']['plugins']['Authentication'] = 'Ldap';</p>
 
 <h2>Support</h2>
 
