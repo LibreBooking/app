@@ -4,59 +4,59 @@
 
 <div class="admin">
 	<div class="title">
-		{translate key=AllSchedules}
+	{translate key=AllSchedules}
 	</div>
-	{foreach from=$Schedules item=schedule}
+{foreach from=$Schedules item=schedule}
 	{assign var=id value=$schedule->GetId()}
 	{assign var=daysVisible value=$schedule->GetDaysVisible()}
 	{assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
 	{assign var=dayName value=$DayNames[$dayOfWeek]}
 	<div class="scheduleDetails">
 		<div style="float:left;">
-			<input type="hidden" class="id" value="{$id}" />
-			<input type="hidden" class="daysVisible" value="{$daysVisible}" />
-			<input type="hidden" class="dayOfWeek" value="{$dayOfWeek}" />
+			<input type="hidden" class="id" value="{$id}"/>
+			<input type="hidden" class="daysVisible" value="{$daysVisible}"/>
+			<input type="hidden" class="dayOfWeek" value="{$dayOfWeek}"/>
 			<h4>{$schedule->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">Rename</a><br/>
 			{translate key="LayoutDescription" args="$dayName, $daysVisible"}
 			<a class="update changeButton" href="javascript:void(0);">Change</a><br/>
 		</div>
 		<div class="layout">
 			{translate key=ScheduleLayout args=$schedule->GetTimezone()}:<br/>
-			<input type="hidden" class="timezone" value="{$schedule->GetTimezone()}" />
+			<input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
 			{translate key=ReservableTimeSlots}
 			<div class="reservableSlots">
-			{foreach from=$Layouts[$id] item=period}
-				{if $period->IsReservable()}
-					{formatdate format="H:i" date=$period->Begin()} - {formatdate format="H:i" date=$period->End()}
-					{if $period->IsLabelled()}
-						{$period->Label()}
+				{foreach from=$Layouts[$id] item=period}
+					{if $period->IsReservable()}
+						{formatdate format="H:i" date=$period->Begin()} - {formatdate format="H:i" date=$period->End()}
+						{if $period->IsLabelled()}
+							{$period->Label()}
+						{/if}
+						,
 					{/if}
-					,
-				{/if}
-			{foreachelse}
-				{translate key=None}
-			{/foreach}
+					{foreachelse}
+					{translate key=None}
+				{/foreach}
 			</div>
 			{translate key=BlockedTimeSlots}
 			<div class="blockedSlots">
-			{foreach from=$Layouts[$id] item=period}
-				{if !$period->IsReservable()}
-					{formatdate format="H:i" date=$period->Begin()} - {formatdate format="H:i" date=$period->End()}
-					{if $period->IsLabelled()}
-						{$period->Label()}
+				{foreach from=$Layouts[$id] item=period}
+					{if !$period->IsReservable()}
+						{formatdate format="H:i" date=$period->Begin()} - {formatdate format="H:i" date=$period->End()}
+						{if $period->IsLabelled()}
+							{$period->Label()}
+						{/if}
+						,
 					{/if}
-					,
-				{/if}
-			{foreachelse}
-				{translate key=None}
-			{/foreach}	
-			</div>		
+					{foreachelse}
+					{translate key=None}
+				{/foreach}
+			</div>
 		</div>
 		<div class="actions">
 			{if $schedule->GetIsDefault()}
 				<span class="note">{translate key=ThisIsTheDefaultSchedule}</span> |
 				<span class="note">{translate key=DefaultScheduleCannotBeBroughtDown}</span>
-			{else}
+				{else}
 				<a class="update makeDefaultButton" href="javascript: void(0);">{translate key=MakeDefault}</a> |
 				<a class="update bringDownButton" href="javascript: void(0);">{translate key=BringDown}</a>
 			{/if}
@@ -64,43 +64,46 @@
 			<a class="update changeLayoutButton" href="javascript: void(0);">{translate key=ChangeLayout}</a>
 		</div>
 	</div>
-	{/foreach}
+{/foreach}
 </div>
 
 <div class="admin" style="margin-top:30px">
 	<div class="title">
-		{translate key=AddSchedule}
+	{translate key=AddSchedule}
 	</div>
 	<div>
 		<div id="addScheduleResults" class="error" style="display:none;"></div>
 		<form id="addScheduleForm" method="post">
 			<ul>
-				<li>{translate key=Name}<br/> <input type="text" style="width:300px" class="textbox required" {formname key=SCHEDULE_NAME} /></li>
+				<li>{translate key=Name}<br/> <input type="text" style="width:300px"
+													 class="textbox required" {formname key=SCHEDULE_NAME} /></li>
 				<li>{translate key=StartsOn}<br/>
-				<select {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
+					<select {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
 					{foreach from=$DayNames item="dayName" key="dayIndex"}
 						<option value="{$dayIndex}">{$dayName}</option>
-					{/foreach} 
-				</select>
+					{/foreach}
+					</select>
 				</li>
-				<li>{translate key=NumberOfDaysVisible}<br/><input type="text" class="textbox required" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
+				<li>{translate key=NumberOfDaysVisible}<br/><input type="text" class="textbox required" maxlength="3"
+																   size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
 				</li>
 				<li>{translate key=UseSameLayoutAs}<br/>
 					<select style="width:300px" class="textbox" {formname key=SCHEDULE_ID}>
 					{foreach from=$Schedules item=schedule}
-						<option value="{$schedule->GetId()}" >{$schedule->GetName()}</option>
+						<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
 					{/foreach}
 					</select>
 				</li>
 				<li>
-					<button type="button" class="button save" value="submit">{html_image src="plus-button.png"} {translate key=AddSchedule}</button>
+					<button type="button" class="button save"
+							value="submit">{html_image src="plus-button.png"} {translate key=AddSchedule}</button>
 				</li>
 			</ul>
 		</form>
 	</div>
 </div>
 
-<input type="hidden" id="activeId" value="" />
+<input type="hidden" id="activeId" value=""/>
 
 <div id="makeDefaultDialog" style="display:none">
 	<form id="makeDefaultForm" method="post">
@@ -109,22 +112,23 @@
 
 <div id="renameDialog" class="dialog" style="display:none;">
 	<form id="renameForm" method="post">
-		{translate key=Name}: <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /><br/><br/>
+	{translate key=Name}: <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /><br/><br/>
 		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
-		
+
 	</form>
 </div>
 
 <div id="changeSettingsDialog" class="dialog" style="display:none;">
 	<form id="settingsForm" method="post">
-		{translate key=StartsOn}: <select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
-			{foreach from=$DayNames item="dayName" key="dayIndex"}
-				<option value="{$dayIndex}">{$dayName}</option>
-			{/foreach} 
-		</select>
+	{translate key=StartsOn}: <select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
+	{foreach from=$DayNames item="dayName" key="dayIndex"}
+		<option value="{$dayIndex}">{$dayName}</option>
+	{/foreach}
+	</select>
 		<br/>
-		{translate key=NumberOfDaysVisible}: <input type="text" class="textbox required" id="daysVisible" maxlength="3" size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
+	{translate key=NumberOfDaysVisible}: <input type="text" class="textbox required" id="daysVisible" maxlength="3"
+												size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
@@ -132,7 +136,11 @@
 </div>
 
 <div id="changeLayoutDialog" class="dialog" style="display:none;">
-	<form id="changeLayoutForm" method="post">		
+	<div>
+		<ul>{async_validator id="layoutValidator" key="ValidLayoutRequired"}
+		</ul>
+	</div>
+	<form id="changeLayoutForm" method="post">
 		<div style="float:left;">
 			<h5>{translate key=ReservableTimeSlots}</h5>
 			<textarea id="reservableEdit" {formname key=SLOTS_RESERVABLE}></textarea>
@@ -144,38 +152,39 @@
 		<div style="clear:both;height:0px;">&nbsp</div>
 		<div style="margin-top:5px;">
 			<h5>
-				{translate key=Timezone} 
+			{translate key=Timezone}
 				<select {formname key=TIMEZONE} id="layoutTimezone" class="input">
-		        	{html_options values=$TimezoneValues output=$TimezoneOutput}
-		        </select>
-	        </h5>
+				{html_options values=$TimezoneValues output=$TimezoneOutput}
+				</select>
+			</h5>
 		</div>
 		<div>
 			<h5>
-				{capture name="layoutConfig" assign="layoutConfig"}
-					<input type='text' value='30' id='quickLayoutConfig' size=5' />
-				{/capture}
-				{capture name="layoutStart" assign="layoutStart"}
-					<input type='text' value='08:00' id='quickLayoutStart' size='10' />
-				{/capture}
-				{capture name="layoutEnd" assign="layoutEnd"}
-					<input type='text' value='18:00' id='quickLayoutEnd' size='10' />
-				{/capture}
-				{translate key=QuickSlotCreation args="$layoutConfig,$layoutStart,$layoutEnd"}
+			{capture name="layoutConfig" assign="layoutConfig"}
+				<input type='text' value='30' id='quickLayoutConfig' size=5' />
+			{/capture}
+			{capture name="layoutStart" assign="layoutStart"}
+				<input type='text' value='08:00' id='quickLayoutStart' size='10'/>
+			{/capture}
+			{capture name="layoutEnd" assign="layoutEnd"}
+				<input type='text' value='18:00' id='quickLayoutEnd' size='10'/>
+			{/capture}
+			{translate key=QuickSlotCreation args="$layoutConfig,$layoutStart,$layoutEnd"}
 			</h5>
 		</div>
 		<div style="margin-top: 5px; padding-top:5px; border-top: solid 1px #f0f0f0;">
-			<div style="float:left;">
-				<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
+			<div>
+				<button type="button"
+						class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
 				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 			</div>
-			<div style="float:right;">
+			<div>
 				<p>{translate key=Format}: <span style="font-family:courier new;">HH:MM - HH:MM {translate key=OptionalLabel}</span></p>
+
 				<p>{translate key=LayoutInstructions}</p>
 			</div>
 		</div>
 	</form>
-	<div id="layoutResults"></div>
 </div>
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
@@ -185,21 +194,21 @@
 
 <script type="text/javascript">
 
-$(document).ready(function() {
+	$(document).ready(function () {
 
 	var opts = {
-			submitUrl: '{$smarty.server.SCRIPT_NAME}',
-			saveRedirect: '{$smarty.server.SCRIPT_NAME}',
-			renameAction: '{ManageSchedules::ActionRename}',		
-			changeSettingsAction: '{ManageSchedules::ActionChangeSettings}',
-			changeLayoutAction: '{ManageSchedules::ActionChangeLayout}',
-			addAction: '{ManageSchedules::ActionAdd}',
-			makeDefaultAction: '{ManageSchedules::ActionMakeDefault}'
+	submitUrl: '{$smarty.server.SCRIPT_NAME}',
+	saveRedirect: '{$smarty.server.SCRIPT_NAME}',
+	renameAction: '{ManageSchedules::ActionRename}',
+	changeSettingsAction: '{ManageSchedules::ActionChangeSettings}',
+	changeLayoutAction: '{ManageSchedules::ActionChangeLayout}',
+	addAction: '{ManageSchedules::ActionAdd}',
+	makeDefaultAction: '{ManageSchedules::ActionMakeDefault}'
 	};
 
 	var scheduleManagement = new ScheduleManagement(opts);
 	scheduleManagement.init();
-});
+	});
 
 </script>
 

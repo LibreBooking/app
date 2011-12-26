@@ -47,7 +47,7 @@ interface IUpdateSchedulePage
 }
 
 
-interface IManageSchedulesPage extends IUpdateSchedulePage
+interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
 {
 	/**
 	 * @param Schedule[] $schedules 
@@ -74,7 +74,7 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 		$this->Set('DayNames', $daynames);
 		$this->Display('manage_schedules.tpl');		
 	}
-	
+
 	public function ProcessAction()
 	{
 		$this->_presenter->ProcessAction();

@@ -31,7 +31,7 @@ function ScheduleManagement(opts)
 	{
 		ConfigureAdminDialog(elements.renameDialog, 300, 125);
 		ConfigureAdminDialog(elements.changeSettingsDialog, 300, 140);
-		ConfigureAdminDialog(elements.layoutDialog, 700, 520);
+		ConfigureAdminDialog(elements.layoutDialog, 730, 550);
 		    
 		$('.scheduleDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -86,9 +86,16 @@ function ScheduleManagement(opts)
 			createQuickLayout();
 		});
 
+		var handleLayoutUpdate = function(response) {
+			$('.asyncValidation').hide();
+			$.each(response.ErrorIds, function(index, errorId) {
+				$('#' + errorId).show();
+			});
+		};
+
 		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.renameAction));
 		ConfigureAdminForm(elements.settingsForm, getSubmitCallback(options.changeSettingsAction));
-		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction), showLayoutResults);
+		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction), null, handleLayoutUpdate);
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
 		ConfigureAdminForm(elements.makeDefaultForm, getSubmitCallback(options.makeDefaultAction));
 	};
@@ -155,11 +162,6 @@ function ScheduleManagement(opts)
 		return hour + ":" + minute;
 	};
 
-	var showLayoutResults = function(responseText)
-	{
-		$('#layoutResults').text(responseText);
-	};
-	
 	var handleAddError = function(responseText)
 	{
 		$('#addScheduleResults').text(responseText);

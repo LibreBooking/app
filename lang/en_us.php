@@ -314,7 +314,7 @@ class en_us extends Language
 		$strings['UseSameLayoutAs'] = 'Use Same Layout As';
 		$strings['Format'] = 'Format';
 		$strings['OptionalLabel'] = 'Optional Label';
-		$strings['LayoutInstructions'] = 'Enter one slot per line.  Slots must be provided for all 24 hours of the day.';
+		$strings['LayoutInstructions'] = 'Enter one slot per line.  Slots must be provided for all 24 hours of the day beginning and ending at 12:00 AM.';
 		$strings['AddUser'] = 'Add User';
 		$strings['UserPermissionInfo'] = 'Actual access to resource may be different depending on user role, group permissions, or external permission settings';
 		$strings['DeleteUserWarning'] = 'Deleting this user will remove all of their current, future, and historical reservations.';
@@ -335,6 +335,7 @@ class en_us extends Language
 		$strings['StartDateBeforeEndDateRule'] = 'The start date must be before the end date';
 		$strings['StartIsInPast'] = 'The start date cannot be in the past';
 		$strings['EmailDisabled'] = 'The administrator has disabled email notifications';
+		$strings['ValidLayoutRequired'] = 'Slots must be provided for all 24 hours of the day beginning and ending at 12:00 AM.';
 
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';

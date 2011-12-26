@@ -78,4 +78,13 @@ abstract class ActionPresenter
 	}
 }
 
+class ActionErrors
+{
+    public $ErrorIds = array();
+
+    public function AddId($id)
+    {
+        $this->ErrorIds[] = $id;
+    }
+}
 ?>

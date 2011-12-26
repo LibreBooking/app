@@ -41,7 +41,10 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
             $this->_timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
         }  
 	}
-	
+
+	/**
+	 * @return array|LayoutPeriod[]
+	 */
 	public function GetSlots()
 	{
 		return $this->_periods;
@@ -89,7 +92,8 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	}
 
 	/**
-	 * @return array[]SchedulePeriod
+	 * @param Date $layoutDate
+	 * @return array|SchedulePeriod[]
 	 */
 	public function GetLayout(Date $layoutDate)
 	{		

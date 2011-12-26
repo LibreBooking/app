@@ -1,7 +1,9 @@
 <?php 
+require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'config/timezones.php');
+require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
 
 class ManageSchedules
 {
@@ -12,7 +14,7 @@ class ManageSchedules
 	const ActionRename = 'rename';
 }
 
-class ManageSchedulesPresenter
+class ManageSchedulesPresenter extends ActionPresenter
 {
 	/**
 	 * @var IManageSchedulesPage
@@ -23,19 +25,18 @@ class ManageSchedulesPresenter
 	 * @var IScheduleRepository
 	 */
 	private $scheduleRepository;
-	
-	private $actions = array();
-	
+
 	public function __construct(IManageSchedulesPage $page, IScheduleRepository $scheduleRepository)
 	{
+		parent::__construct($page);
 		$this->page = $page;
 		$this->scheduleRepository = $scheduleRepository;
-		
-		$this->actions[ManageSchedules::ActionAdd] = 'Add';
-		$this->actions[ManageSchedules::ActionChangeLayout] = 'ChangeLayout';
-		$this->actions[ManageSchedules::ActionChangeSettings] = 'ChangeSettings';
-		$this->actions[ManageSchedules::ActionMakeDefault] = 'MakeDefault';
-		$this->actions[ManageSchedules::ActionRename] = 'Rename';
+
+		$this->AddAction(ManageSchedules::ActionAdd, 'Add');
+		$this->AddAction(ManageSchedules::ActionChangeLayout, 'ChangeLayout');
+		$this->AddAction(ManageSchedules::ActionChangeSettings, 'ChangeSettings');
+		$this->AddAction(ManageSchedules::ActionMakeDefault, 'MakeDefault');
+		$this->AddAction(ManageSchedules::ActionRename, 'Rename');
 	}
 	
 	public function PageLoad()
@@ -67,22 +68,6 @@ class ManageSchedulesPresenter
 				
 		$this->page->SetTimezones($timezoneValues, $timezoneOutput);
 	}
-	
-	public function ProcessAction()
-	{
-		$action = $this->page->GetAction();
-		
-		if ($this->ActionIsKnown($action))
-		{
-			$method = $this->actions[$action];
-			$this->$method();
-		}
-		else 
-		{
-			Log::Error("Unknown manage schedule action %s", $action);
-		}
-	}
-	
 	
 	/**
 	 * @internal should only be used for testing
@@ -149,10 +134,16 @@ class ManageSchedulesPresenter
 		
 		$this->scheduleRepository->Update($schedule);
 	}
-	
-	private function ActionIsKnown($action)
-	{
-		return isset($this->actions[$action]);
+
+
+	protected function LoadValidators($action)
+    {
+        if ($action == ManageSchedules::ActionChangeLayout)
+		{
+			$reservableSlots = $this->page->GetReservableSlots();
+			$blockedSlots =  $this->page->GetBlockedSlots();
+			$this->page->RegisterValidator('layoutValidator', new LayoutValidator($reservableSlots, $blockedSlots));
+		}
 	}
 }
 ?>

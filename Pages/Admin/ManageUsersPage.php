@@ -202,11 +202,6 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 		return $this->GetForm(FormKeys::PASSWORD);
 	}
 
-	function GetAction()
-	{
-		return parent::GetAction();
-	}
-
 	/**
 	 * @param mixed $objectToSerialize
 	 * @return void
@@ -214,11 +209,6 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 	public function SetJsonResponse($objectToSerialize)
 	{
 		parent::SetJson($objectToSerialize);
-	}
-
-	function TakingAction()
-	{
-		return parent::GetAction();
 	}
 
 	/**

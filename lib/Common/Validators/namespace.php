@@ -10,4 +10,5 @@ require_once(ROOT_DIR . 'lib/Common/Validators/UniqueEmailValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/UniqueUserNameValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/PasswordValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/CaptchaValidator.php');
+require_once(ROOT_DIR . 'lib/Common/Validators/LayoutValidator.php');
 ?>
