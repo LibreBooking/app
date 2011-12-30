@@ -30,7 +30,7 @@
     <!--**section**-->
 
     <body>
-        <h1>Welcome to phpScheduleIt 2.0! A quick A),B),C) installation.</h1>
+        <h1>Welcome to phpScheduleIt 2.0!</h1>
 
         <!--**section**-->
 
@@ -41,10 +41,7 @@
 
         <h2><span STYLE="color:#727E0A">Prerequisite</span></h2>
         <div STYLE="color:red">
-            Note: for users without web host service, or existing environment. <br/>
-            If you want to accomplish all of the below quick and easy, 
-            try this apachefriends.org, it will do it for you in no time. <a href="http://www.apachefriends.org/en/index.html">XAMMP</a> 
-            <span STYLE="color:red">(highly recommended).</span>
+            Note: for users without web hosting service or existing environment, <a href="http://www.apachefriends.org/en/index.html">XAMMP</a> can help you get set up quicky.<br/>
         </div>
         <ul>
             <li>PHP 5.2 or greater.</li>
@@ -63,7 +60,7 @@
                 <li>If you don't have direct access to your document root or use hosting service, 
                     then transfer the extracted directory to your web server's document root using, for example, ftp or <a href="http://sourceforge.net/projects/winscp/">WinSCP</a>.</li>
                 <li><span STYLE="color:red">Important!</span> The web server <span STYLE="color:red">must</span> have write access (0770) to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl 
-                    <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(want to know why?).</a></li>
+                    <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(want to know why?)</a></li>
             </ul>
         </div>
 
@@ -76,7 +73,7 @@
             We recommend you to change according to your specifics.
             <ul>
                 <li>In addition, to allow resource image uploads, the web-server must also have read/write 
-                    access to your configurable uploads directory of "$conf['settings']['image.upload.directory']" in the config.php.</li>
+                    access to your configurable uploads directory of $conf['settings']['image.upload.directory'] in the config.php.</li>
                 <li>To configure the application, you can open /config/config.php and alter any settings accordingly. 
                     The admin email address can be set in the phpScheduleIt/config/config.php file of setting $conf['settings']['admin.email'].<br/> 
                 When later register an account with admin email address the user will be given admin privilege.</li>
@@ -94,16 +91,14 @@
 
         <h3>1) Automatically</h3>
 
-        <div>The packaged database scripts make assumptions about your desired database configuration and set default values. 
-            Please edit them to suit your environment before running. And the files are located in phpScheduleIt/database_schema/.</div>
+        <div>You must have the application configured correctly before running the automated install.</div>
 
         <div>
             <ul>
                 <li>The automated database setup only supports MySQL at this time. To run the automated database setup, navigate to the
                     /Web/install directory in a web browser and follow the on-screen instructions.</li>
-                <li>Note: Some may see directory permission issues displayed on the page. Recall that 
-                    (The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl). 
-                    If you cannot provide the required permission. Contact your web server administrator or hosting service to resolve.</li>
+                <li>Note: Some may see directory permission issues displayed on the page. The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl. 
+                    If you cannot provide the required permission. Contact your web server administrator or hosting service to resolve or run the manual install.</li>
             </ul>
         </div>
 
@@ -119,20 +114,20 @@
         
         <div>
             <ul>
-                <li>Note: Some may see directory permission issues during the following process. Recall that 
-                    (The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl). If you cannot provide the required permission. 
+                <li>Note: Some may see directory permission issues during the following process. The web server must have write access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl). If you cannot provide the required permission. 
                     Contact your web server administrator or hosting service to resolve.</li>
-                <li>import "/database_schema/create-db.sql" to mysql db (phpscheduleit2 db created)</li>
-                <li>import "/database_schema/schema-utf8.sql" to phpscheduleit2 (db schema created)</li>
-                <li>import "/database_schema/create-user.sql" to mysql db (schedule_user/password mysql account created to match to your default configuration
+                <li>Run/import "/database_schema/create-db.sql" to mysql db (phpscheduleit2 db created)</li>
+                <li>Run/import "/database_schema/schema-utf8.sql" to phpscheduleit2 (db schema created)</li>
+                <li>Run/import "/database_schema/create-user.sql" to mysql db (schedule_user/password mysql account created to match to your default configuration
                     and notice that this is not the application user!). <br/>
                     At this point with the aforementioned default configuration in your-phpScheduleIt/config/config.php 
                     your application can connect to the database and loaded eg. see http://localhost/your-phpScheduleIt/Web/index.php 
                     but you can not login since there is no application data or user, so go to next step
                 </li>
-                <li>import "/database_schema/data-utf8.sql" to phpscheduleit2 (initializing application database)</li>
-                <li>import "/database_schema/testdata-utf8.sql" to phpscheduleit2 (a sample application data created with 2 users:
-                    1) admin/password and 2) nkorbel/password). Use these users for testing your installation. <span STYLE="color:red">You are done. Congratulation!</span>  
+                <li>Run/import "/database_schema/data-utf8.sql" to phpscheduleit2 (initializing application database)</li>
+                <li>Optionally - run/import "/database_schema/testdata-utf8.sql" to phpscheduleit2 (sample application data will be created with 2 users:
+                    admin/password and user/password). These users are available for testing your installation.</li>
+				<li><span STYLE="color:red">You are done. Congratulations!</span>  
                     Try to load the application at (eg. http://yourhostname/phpScheduleIt/Web/).</li>
             </ul>
         </div>
@@ -141,18 +136,14 @@
 
         <h4>The First Login</h4>
         
-        <div>There are 2 main types of account, they are admin and user account.</div>
+        <div>There are 2 main types of accounts, they are admin and user account.</div>
 
         <ul>
-            <li>Aforementioned if you imported a sample application data, you now can use 1) admin/password and 2) nkorbel/password to login and make changes or addition via the application.</li>
-            <li>Or you will need to register for an account with your configured admin email address. The admin email address can be set in the 
+            <li>If you imported a sample application data, you now can use admin/password and user/password to login and make changes or addition via the application.</li>
+            <li>If not, you will need to register an account with your configured admin email address. The admin email address can be set in the 
                 phpScheduleIt/config/config.php file of setting $conf['settings']['admin.email']. Other self registration accounts are defaulted to normal users.<br/>
-                After a shelf registration, you will be logged in automatically. <span STYLE="color:red">Important!</span> At this time, you are recommended to change your password immediately. 
-                Because in the case your mail server fails to send you your login information you have already changed the password. 
+                After registration you will be logged in automatically. <span STYLE="color:red">Important!</span> At this time, it is recommended to change your password immediately.  
                 Notice that an email address is required to register for an account.</li>          
-            <li>For the email registration process to work (it will send you an email with account login information).
-                You need to make sure your email server is working and the application is configured correctly. Look for smtp.* parameters in phpScheduleIt/config/config.php, 
-                and fill them in with your mail server information. Examples are shown next to the parameters.</li>
             <li>For LDAP authentication please login with your LDAP username/password.</li>
         </ul>
 
