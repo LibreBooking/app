@@ -8,9 +8,15 @@ abstract class EmailMessage implements IEmailMessage
 	
 	protected function __construct($languageCode = null)
 	{
-		$this->email = new SmartyEmail($languageCode);
+		$resources = new Resources();
+		if (!empty($languageCode))
+		{
+			$resources->SetLanguage($languageCode);
+		}
+
+		$this->email = new SmartyPage($resources);
 	}
-	
+
 	protected function Set($var, $value)
 	{
 		$this->email->assign($var, $value);
@@ -18,7 +24,7 @@ abstract class EmailMessage implements IEmailMessage
 	
 	protected function FetchTemplate($templateName)
 	{
-		return $this->email->FetchTemplate($templateName);
+		return $this->email->FetchLocalized($templateName);
 	}
 	
 	protected function Translate($key, $args = array())

@@ -53,7 +53,7 @@ class SmartyEmail extends Smarty
 			return $this->fetch($localizedTemplate);
 		}
 
-		return "en_us/$templateName}";
+		return "en_us/$templateName";
 	}
 	
 	public function SmartyTranslate($params, &$smarty) 

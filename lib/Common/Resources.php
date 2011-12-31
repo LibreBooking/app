@@ -61,7 +61,7 @@ class Resources implements IResourceLocalization
 	}
 	
 	/**
-	 * @return IResourceLocalization
+	 * @return Resources
 	 */
 	public static function &GetInstance()
 	{					
