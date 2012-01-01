@@ -1,5 +1,5 @@
 {*
-Copyright  Nick Korbel
+Copyright 2011-2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -17,7 +17,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\tpl\Email\emailheader.tpl'}
-	en_gb version
 	You have successfully created a new reservation.
 	<br/>
 	<br/>
