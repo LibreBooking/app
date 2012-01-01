@@ -1,14 +1,4 @@
 <?php
-/**
-* Utility class for timing code execution
-* @author Nick Korbel <lqqkout13@users.sourceforge.net>
-* @version 11-11-05
-* @package phpScheduleIt
-*
-* Copyright (C) 2003 - 2007 phpScheduleIt
-* License: GPL, see LICENSE
-*/
-
 class Timer {
 	private $name = null;
 	
