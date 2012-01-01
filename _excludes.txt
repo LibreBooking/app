@@ -10,10 +10,10 @@ build.xml
 **/docs/**
 lib/config
 lib/config/**
-**/configupdate.php
 tpl_c/**
 database_schema/**
 .*
 _excludes.txt
 .settings
 .idea
+**/*.config.php
