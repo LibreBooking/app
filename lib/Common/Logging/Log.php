@@ -40,6 +40,9 @@ class Log
 
 	private function __construct()
 	{
+        $this->logger = new NullLog4php();
+        $this->sqlLogger = new NullLog4php();
+
 		if (file_exists(ROOT_DIR . 'config/log4php.config.xml')) {
 			Logger::configure(ROOT_DIR . 'config/log4php.config.xml');
 			$this->logger = Logger::getLogger('default');
@@ -111,6 +114,18 @@ class Log
 		{
 		}
 	}
+}
+
+class NullLog4php
+{
+    public function error($log)
+    {
+
+    }
+    public function debug($log)
+    {
+
+    }
 }
 
 ?>
