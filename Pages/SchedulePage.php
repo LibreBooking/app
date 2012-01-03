@@ -45,7 +45,8 @@ class SchedulePage extends SecurePage implements ISchedulePage
 		$this->_presenter->PageLoad($user);
 		
 		$endLoad = microtime(true);
-		
+
+        $this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Display('schedule.tpl');
 		
 		$endDisplay = microtime(true);
@@ -126,6 +127,53 @@ class SchedulePage extends SecurePage implements ISchedulePage
 	}
 }
 
+class DisplaySlotFactory
+{
+    public function GetFunction(IReservationSlot $slot, $accessAllowed = false)
+    {
+		$slot->IsPending();
+		if ($slot->IsReserved())
+		{
+			if ($this->IsMyReservation($slot))
+			{
+				return 'displayMyReserved';
+			}
+			else
+			{
+                return 'displayReserved';
+			}
+		}
+		else if (!$accessAllowed)
+		{
+            return 'displayRestricted';
+		}
+		else if ($slot->IsPastDate(Date::Now()) && !$this->UserHasAdminRights())
+		{
+            return 'displayPastTime';
+		}
+		else if ($slot->IsReservable())
+		{
+            return 'displayReservable';
+		}
+		else
+		{
+			return 'displayUnreservable';
+		}
+
+        return null;
+	}
+
+	private function UserHasAdminRights()
+	{
+		return ServiceLocator::GetServer()->GetUserSession()->IsAdmin;
+	}
+
+	private function IsMyReservation(IReservationSlot $slot)
+	{
+		$mySession = ServiceLocator::GetServer()->GetUserSession();
+		return $slot->IsOwnedBy($mySession);
+	}
+}
 interface ISchedulePage
 {
 	/**

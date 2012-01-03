@@ -16,6 +16,48 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
+{* All of the slot display formatting *}
+
+{function name=displayMyReserved}
+    {if $Slot->IsPending()}
+    	{assign var=class value='pending'}
+    {/if}
+    <td colspan="{$Slot->PeriodSpan()}" class="reserved {$class} mine clickres slot" id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label()}</td>
+{/function}
+
+{function name=displayPastTime}
+    <td colspan="{$Slot->PeriodSpan()}" class="pasttime slot">&nbsp;</td>
+{/function}
+
+{function name=displayReservable}
+    <td colspan="{$Slot->PeriodSpan()}" class="reservable clickres slot">
+        &nbsp;
+        <input type="hidden" class="href" value="{$Href}" />
+        <input type="hidden" class="start" value="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}" />
+        <input type="hidden" class="end" value="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}" />
+    </td>
+{/function}
+
+{function name=displayReserved}
+    {if $Slot->IsPending()}
+    	{assign var=class value='pending'}
+    {/if}
+    <td colspan="{$Slot->PeriodSpan()}" class="reserved {$class} clickres slot" id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label()}</td>
+{/function}
+
+{function name=displayRestricted}
+    <td colspan="{$Slot->PeriodSpan()}" class="restricted slot">&nbsp;</td>
+{/function}
+
+{function name=displayUnreservable}
+    <td colspan="{$Slot->PeriodSpan()}" class="unreservable slot">&nbsp;</td>
+{/function}
+
+{function name=displaySlot}
+    {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href}
+{/function}
+
 {block name="header"}
 {include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.css'}
 {/block}
@@ -83,7 +125,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 			</td>
 			{foreach from=$slots item=slot}
-				{control type="ScheduleReservationControl" Slot=$slot AccessAllowed=$resource->CanAccess Href="$href"}				
+                {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess}
 			{/foreach}
 		</tr>
 	{/foreach}

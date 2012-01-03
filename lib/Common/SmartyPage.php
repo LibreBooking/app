@@ -53,7 +53,7 @@ class SmartyPage extends Smarty
 	public function __construct(Resources &$resources = null, $rootPath = null)
 	{
         parent::__construct();
-        
+
 		$base = dirname(__FILE__) . '/../../';
 
 		$this->debugging = isset($_GET['debug']);
