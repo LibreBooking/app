@@ -340,6 +340,13 @@ class en_us extends Language
 		$strings['AddAnnouncement'] = 'Add Announcement';
 		$strings['Announcement'] = 'Announcement';
 		$strings['Priority'] = 'Priority';
+		$strings['Reservable'] = 'Reservable';
+		$strings['Unreservable'] = 'Unreservable';
+		$strings['Reserved'] = 'Reserved';
+		$strings['MyReservation'] = 'My Reservation';
+		$strings['Pending'] = 'Pending';
+		$strings['Past'] = 'Past';
+		$strings['Restricted'] = 'Restricted';
 
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';
