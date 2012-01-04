@@ -198,17 +198,6 @@ CREATE TABLE `user_groups` (
 
 
 --
--- Table structure for table `resource_types`
---
-
-DROP TABLE IF EXISTS `resource_types`;
-CREATE TABLE `resource_types` (
- `type_id` tinyint(2) unsigned NOT NULL,
- `label` varchar(85) NOT NULL,
- PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
 -- Table structure for table `resources`
 --
 
@@ -216,7 +205,6 @@ DROP TABLE IF EXISTS `resources`;
 CREATE TABLE `resources` (
  `resource_id` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
- `type_id` tinyint(2) unsigned,
  `location` varchar(85),
  `contact_info` varchar(85),
  `description` text,
@@ -236,10 +224,6 @@ CREATE TABLE `resources` (
  `schedule_id` smallint(5) unsigned NOT NULL,
  `legacyid` char(16),
  PRIMARY KEY (`resource_id`),
- INDEX (`type_id`),
- FOREIGN KEY (`type_id`) 
-	REFERENCES resource_types(`type_id`)
-	ON UPDATE CASCADE ON DELETE CASCADE,
  INDEX (`schedule_id`),
  FOREIGN KEY (`schedule_id`)
 	REFERENCES schedules(`schedule_id`)
