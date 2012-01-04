@@ -4,7 +4,7 @@ function Schedule(opts)
 	
 	Schedule.prototype.init = function()
 	{
-		$('.reserved').each(function() { 
+		$('td.reserved').each(function() {
 			var resid = $(this).attr('id').split('|')[0];
 			var pattern = 'td[id^=' + resid + '|]';
 

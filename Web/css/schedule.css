@@ -53,27 +53,30 @@ tr.today td.reslabel {
 	color: #000000;
 }
 
-td.unreservable {
+td.unreservable, div.unreservable {
 	background-color: #CF9D9B;
 	color: #fff;
 }
 
-td.reservable {
+td.reservable, div.reservable {
 	background-color: #FFF;
 	color: #333;
 }
 
-td.reserved {
+td.reserved, div.reserved {
 	background-color: #408AD2;
 	color: #E0E0E0;
-	padding-left: 1px;
+}
+
+td.reserved {
+    padding-left: 1px;
 }
 
 td.reserved.hilite {
 	background-color: #59A8EF;
 }
 
-td.reserved.mine {
+td.reserved.mine, div.reserved.mine {
 	background-color: #6F9BAE;
 }
 
@@ -82,7 +85,7 @@ td.reserved.mine.hilite {
 	color: #ffffff;
 }
 
-td.reserved.pending {
+td.reserved.pending, div.reserved.pending {
 	background-color: #ffb540;
 	color: #ffffff;
 }
@@ -107,12 +110,13 @@ td.reserved.clicked {
 	background-color: #1979CF;
 }
 
-td.pasttime {
+td.pasttime, div.pasttime {
 	background-color: #BDBDBD;
 }
 
-td.restricted {
+td.restricted, div.restricted {
 	background: url("../img/stripe.bg.red.png");
+    color: black;
 }
 
 select.schedule_list {
@@ -189,4 +193,13 @@ select.schedule_list {
 
 td.resourcename.hilite {
 	background-color: #fbffc2;
+}
+
+div.legend {
+    line-height: 25px;
+    width: 100px;
+    border: solid #555 2px;
+    text-align: center;
+    display: inline-block;
+    margin: 0px 2px;
 }

@@ -58,6 +58,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href}
 {/function}
 
+{* End slot display formatting *}
+
 {block name="header"}
 {include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.css'}
 {/block}
@@ -94,6 +96,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div type="text" id="datepicker" style="display:none;"></div>
 
 {/block}
+
+<div style="text-align: center; margin: auto;">
+<div class="legend reservable">Reservable</div>
+<div class="legend unreservable">Unreservable</div>
+<div class="legend reserved">Reserved</div>
+<div class="legend reserved mine">My Reservation</div>
+<div class="legend reserved pending">Pending</div>
+<div class="legend pasttime">Past</div>
+<div class="legend restricted">Restricted</div>
+</div>
 
 <div style="height:10px">&nbsp;</div>
 
