@@ -35,7 +35,6 @@ CREATE TABLE `time_blocks` (
  `label` varchar(85),
  `end_label` varchar(85),
  `availability_code` tinyint(2) unsigned NOT NULL,
- `cost_multiplier` numeric(7,2),
  `layout_id` mediumint(8) unsigned NOT NULL,
  `start_time` time NOT NULL,
  `end_time` time NOT NULL,
@@ -58,6 +57,7 @@ CREATE TABLE `schedules` (
  `weekdaystart` tinyint(2) unsigned NOT NULL,
  `daysvisible` tinyint(2) unsigned NOT NULL default '7',
  `layout_id` mediumint(8) unsigned NOT NULL,
+ `legacyid` char(16),
  PRIMARY KEY (`schedule_id`),
  INDEX (`layout_id`),
  FOREIGN KEY (`layout_id`)
@@ -75,6 +75,7 @@ CREATE TABLE `groups` (
  `group_id` smallint(5) unsigned NOT NULL auto_increment,
  `name` varchar(85) NOT NULL,
  `admin_group_id` smallint(5) unsigned,
+ `legacyid` char(16),
  PRIMARY KEY (`group_id`),
  FOREIGN KEY (`admin_group_id`)
 	REFERENCES groups(`group_id`)
@@ -121,28 +122,6 @@ CREATE TABLE `user_statuses` (
  `status_id` tinyint(2) unsigned NOT NULL,
  `description` varchar(85),
  PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
---
--- Table structure for table `registration_form_settings`
---
-
-DROP TABLE IF EXISTS `registration_form_settings`;
-CREATE TABLE `registration_form_settings` (
- `form_id` mediumint(8) unsigned NOT NULL auto_increment,
- `fname_setting` tinyint(1) NOT NULL default '1',
- `lname_setting` tinyint(1) NOT NULL default '1',
- `username_setting` tinyint(1) NOT NULL default '1',
- `email_setting` tinyint(1) NOT NULL default '1',
- `password_setting` tinyint(1) NOT NULL default '1',
- `organization_setting` tinyint(1) NOT NULL default '2',
- `group_setting` tinyint(1) NOT NULL default '2',
- `position_setting` tinyint(1) NOT NULL default '2',
- `address_setting` tinyint(1) NOT NULL default '2',
- `phone_setting` tinyint(1) NOT NULL default '2',
- `homepage_setting`  tinyint(1) NOT NULL default '2',
- `timezone_setting` tinyint(1) NOT NULL default '3',
- PRIMARY KEY (`form_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 --
@@ -308,6 +287,7 @@ CREATE TABLE  `reservation_series` (
   `repeat_type` varchar(10) default NULL,
   `repeat_options` varchar(255) default NULL,
   `owner_id` mediumint(8) unsigned NOT NULL,
+  `legacyid` char(16),
   PRIMARY KEY  (`series_id`),
   KEY `type_id` (`type_id`),
   KEY `status_id` (`status_id`),
@@ -385,6 +365,7 @@ CREATE TABLE  `blackout_series` (
   `description` text,
   `owner_id` mediumint(8) unsigned NOT NULL,
   `resource_id` mediumint(8) unsigned NOT NULL,
+  `legacyid` char(16),
   PRIMARY KEY  (`blackout_series_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -457,6 +438,7 @@ CREATE TABLE `accessories` (
  `accessory_id` smallint(5) unsigned NOT NULL auto_increment,
  `accessory_name` varchar(85) NOT NULL,
  `accessory_quantity` tinyint(2) unsigned,
+ `legacyid` char(16),
  PRIMARY KEY (`accessory_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 

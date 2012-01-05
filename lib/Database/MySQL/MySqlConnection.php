@@ -28,14 +28,19 @@ class MySqlConnection implements IDbConnection
 	
 	private $_db = null;
 	private $_connected = false;
-	
-	public function __construct($_dbUser, $_dbPassword, $_hostSpec, $_dbName) 
+
+    /**
+     * @param string $dbUser
+     * @param string $dbPassword
+     * @param string $hostSpec
+     * @param string $dbName
+     */
+	public function __construct($dbUser, $dbPassword, $hostSpec, $dbName)
 	{
-		//echo "type: $_dbType user: $_dbUser password: $_dbPassword host: $_hostSpec dbname: $_dbName";
-		$this->_dbUser = $_dbUser;
-		$this->_dbPassword = $_dbPassword;
-		$this->_hostSpec = $_hostSpec;
-		$this->_dbName = $_dbName;
+		$this->_dbUser = $dbUser;
+		$this->_dbPassword = $dbPassword;
+		$this->_hostSpec = $hostSpec;
+		$this->_dbName = $dbName;
 	}
 	
 	public function Connect() 
@@ -44,11 +49,11 @@ class MySqlConnection implements IDbConnection
 		{
 			return;
 		}
-		
+
 		$this->_db = mysql_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword );
-		mysql_select_db($this->_dbName, $this->_db);
+		$selected = mysql_select_db($this->_dbName, $this->_db);
 		
-		if (!$this->_db) 
+		if (!$this->_db || !$selected)
 		{
 			throw new Exception("Error connecting to database\nError: " . mysql_error());
 			Log::Error("Error connecting to database\n%s",  mysql_error());

@@ -45,6 +45,7 @@ interface IScheduleRepository
 	/**
 	 * @param Schedule $schedule
 	 * @param int $copyLayoutFromScheduleId
+     * @return int $insertedScheduleId
 	 */
 	public function Add(Schedule $schedule, $copyLayoutFromScheduleId);
 	
@@ -198,7 +199,7 @@ class ScheduleRepository implements IScheduleRepository
 
 		$db = ServiceLocator::GetDatabase();
 		
-		$db->ExecuteInsert(new AddScheduleCommand(
+		return $db->ExecuteInsert(new AddScheduleCommand(
 			$schedule->GetName(),
 			$schedule->GetIsDefault(),
 			$schedule->GetWeekdayStart(),
@@ -206,10 +207,7 @@ class ScheduleRepository implements IScheduleRepository
 			$source->GetLayoutId()
 		));
 	}
-	
-	/**
-	 * @see IScheduleRepository::GetLayout()
-	 */
+
 	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
 	{
 		$layout = $layoutFactory->CreateLayout();
