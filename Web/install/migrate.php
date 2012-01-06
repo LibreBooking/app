@@ -90,6 +90,26 @@ class MigrationPage extends Page
     {
         $this->Set('SchedulesMigratedCount', $schedulesMigrated);
     }
+
+    public function SetResourcesMigrated($resourcesMigrated)
+    {
+        $this->Set('ResourcesMigratedCount', $resourcesMigrated);
+    }
+
+    public function SetAccessoriesMigrated($accessoriesMigrated)
+    {
+        $this->Set('AccessoriesMigratedCount', $accessoriesMigrated);
+    }
+
+    public function SetGroupsMigrated($groupsMigrated)
+    {
+        $this->Set('GroupsMigratedCount', $groupsMigrated);
+    }
+
+    public function SetUsersMigrated($usersMigrated)
+    {
+        $this->Set('UsersMigratedCount', $usersMigrated);
+    }
 }
 
 class MigrationPresenter
@@ -130,6 +150,10 @@ class MigrationPresenter
         $currentDatabase = ServiceLocator::GetDatabase();
 
         $this->MigrateSchedules($legacyDatabase, $currentDatabase);
+        $this->MigrateResources($legacyDatabase, $currentDatabase);
+        $this->MigrateAccessories($legacyDatabase, $currentDatabase);
+        $this->MigrateGroups($legacyDatabase, $currentDatabase);
+        $this->MigrateUsers($legacyDatabase, $currentDatabase);
     }
 
     /**
@@ -168,14 +192,29 @@ class MigrationPresenter
         $schedulesMigrated = 0;
         $scheduleRepo = new ScheduleRepository();
 
-        $getSchedules = new AdHocCommand('select scheduleid, scheduletitle, daystart, dayend, timespan,
+        $getLegacySchedules = new AdHocCommand('select scheduleid, scheduletitle, daystart, dayend, timespan,
                 timeformat, weekdaystart, viewdays, usepermissions, ishidden, showsummary, adminemail, isdefault
                 from schedules');
 
-        $reader = $legacyDatabase->Query($getSchedules);
+
+        $getExistingSchedules = new AdHocCommand('select legacyid from schedules');
+        $reader = $currentDatabase->Query($getExistingSchedules);
+
+        $knownIds = array();
+        while ($row = $reader->GetRow())
+        {
+            $knownIds[] = $row['legacyid'];
+        }
+
+        $reader = $legacyDatabase->Query($getLegacySchedules);
 
         while ($row = $reader->GetRow())
         {
+            if (in_array($row['scheduleid'], $knownIds))
+            {
+                continue;
+            }
+
             $newId = $scheduleRepo->Add(new Schedule(null, $row['scheduletitle'], false, $row['weekdaystart'], $row['viewdays']), 1);
 
             $currentDatabase->Execute(new AdHocCommand("update schedules set legacyid = \"{$row['scheduleid']}\" where schedule_id = $newId"));
@@ -191,6 +230,214 @@ class MigrationPresenter
         }
 
         $this->page->SetSchedulesMigrated($schedulesMigrated);
+    }
+
+    private function MigrateResources(Database $legacyDatabase, Database $currentDatabase)
+    {
+        $resourcesMigrated = 0;
+        $resourceRepo = new ResourceRepository();
+
+        $getExisting = new AdHocCommand('select legacyid from resources');
+        $reader = $currentDatabase->Query($getExisting);
+
+        $knownIds = array();
+        while ($row = $reader->GetRow())
+        {
+            $knownIds[] = $row['legacyid'];
+        }
+
+        $getResources = new AdHocCommand('select machid, scheduleid, name, location, rphone, notes, status, minres, maxres, autoassign, approval,
+                        allow_multi, max_participants, min_notice_time, max_notice_time
+                        from resources');
+
+        $reader = $legacyDatabase->Query($getResources);
+
+        while ($row = $reader->GetRow())
+        {
+            if (in_array($row['machid'], $knownIds))
+            {
+                continue;
+            }
+
+            $newScheduleId = $currentDatabase->Query(new AdHocCommand("select schedule_id from schedules where legacyId = {$row['scheduleid']}"));
+
+            $minTimeSeconds = $row['minres'] * 60;
+            $maxTimeSeconds = $row['maxres'] * 60;
+            $min_notice_time = $row['min_notice_time'] * 60;
+            $max_notice_time = $row['max_notice_time'] * 60;
+
+            $newId = $resourceRepo->Add(
+                new BookableResource(null,
+                    $row['name'],
+                    $row['location'],
+                    $row['rphone'],
+                    $row['notes'],
+                    $minTimeSeconds,
+                    $maxTimeSeconds,
+                    $row['autoassign'],
+                    $row['approval'],
+                    $row['allow_multi'],
+                    $row['max_participants'],
+                    $min_notice_time,
+                    $max_notice_time, null, $newScheduleId));
+
+            $currentDatabase->Execute(new AdHocCommand("update resources set legacyid = \"{$row['machid']}\" where resource_id = $newId"));
+
+            $resourcesMigrated++;
+        }
+
+        $this->page->SetResourcesMigrated($resourcesMigrated);
+    }
+
+    private function MigrateAccessories(Database $legacyDatabase, Database $currentDatabase)
+    {
+        $accessoriesMigrated = 0;
+        $accessoryRepo = new AccessoryRepository();
+
+        $getExisting = new AdHocCommand('select legacyid from accessories');
+        $reader = $currentDatabase->Query($getExisting);
+
+        $knownIds = array();
+        while ($row = $reader->GetRow())
+        {
+            $knownIds[] = $row['legacyid'];
+        }
+
+        $getAccessories = new AdHocCommand('select resourceid, name, number_available from additional_resources');
+
+        $reader = $legacyDatabase->Query($getAccessories);
+
+        while ($row = $reader->GetRow())
+        {
+            if (in_array($row['resourceid'], $knownIds))
+            {
+                continue;
+            }
+            $newId = $accessoryRepo->Add(new Accessory(null, $row['name'], $row['number_available']));
+
+            $currentDatabase->Execute(new AdHocCommand("update accessories set legacyid = \"{$row['resourceid']}\" where accessory_id = $newId"));
+
+            $accessoriesMigrated++;
+        }
+
+        $this->page->SetAccessoriesMigrated($accessoriesMigrated);
+    }
+
+    private function MigrateGroups(Database $legacyDatabase, Database $currentDatabase)
+    {
+        $groupsMigrated = 0;
+        $groupRepo = new GroupRepository();
+
+        $getExisting = new AdHocCommand('select legacyid from groups');
+        $reader = $currentDatabase->Query($getExisting);
+
+        $knownIds = array();
+        while ($row = $reader->GetRow())
+        {
+            $knownIds[] = $row['legacyid'];
+        }
+
+        $getGroups = new AdHocCommand('select groupid, group_name  from groups');
+
+        $reader = $legacyDatabase->Query($getGroups);
+
+        while ($row = $reader->GetRow())
+        {
+            if (in_array($row['groupid'], $knownIds))
+            {
+                continue;
+            }
+
+            $newId = $groupRepo->Add(new Group(null, $row['group_name']));
+
+            $currentDatabase->Execute(new AdHocCommand("update groups set legacyid = \"{$row['groupid']}\" where group_id = $newId"));
+
+            $groupsMigrated++;
+        }
+
+        $this->page->SetGroupsMigrated($groupsMigrated);
+    }
+
+    private function MigrateUsers(Database $legacyDatabase, Database $currentDatabase)
+    {
+        $usersMigrated = 0;
+        $userRepo = new UserRepository();
+
+        $getExisting = new AdHocCommand('select legacyid from users');
+        $reader = $currentDatabase->Query($getExisting);
+
+        $knownIds = array();
+        while ($row = $reader->GetRow())
+        {
+            $knownIds[] = $row['legacyid'];
+        }
+
+        $getGroups = new AdHocCommand('select groupid, memberid from user_groups');
+        $reader = $legacyDatabase->Query($getGroups);
+
+        $userGroups = array();
+        while ($row = $reader->GetRow())
+        {
+            $memberId = $row['memberid'];
+            if (!array_key_exists($memberId, $userGroups))
+            {
+                $userGroups[$memberId] = array();
+            }
+            $userGroups[$memberId][] = $row['groupid'];
+        }
+
+        $getGroupMapping = new AdHocCommand('select group_id, legacyid from groups');
+        $currentDatabase->Query($getGroupMapping);
+
+        $groupMap = array();
+        while ($row = $reader->GetRow())
+        {
+            $groupMap[$row['legacyid']] = $row['group_id'];
+        }
+
+        $getUsers = new AdHocCommand('select memberid, email, password, fname, lname, phone, institution, position, e_add, e_mod, e_del, e_app, e_html, logon_name, is_admin, lang, timezone from login');
+        $reader = $legacyDatabase->Query($getUsers);
+
+        while ($row = $reader->GetRow())
+        {
+            $legacyId = $row['memberid'];
+            if (in_array($legacyId, $knownIds))
+            {
+                continue;
+            }
+
+            $registerCommand = new RegisterUserCommand(
+                $row['logon_name'],
+                $row['email'],
+                $row['fname'],
+                $row['lname'],
+                $row['password'],
+                null,
+                Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
+                $row['lang'],
+                Pages::DEFAULT_HOMEPAGE_ID,
+                $row['phone'],
+                $row['institution'],
+                $row['position'],
+                AccountStatus::ACTIVE);
+
+            $newId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);
+
+            $currentDatabase->Execute(new AdHocCommand("update users set legacyid = \"$legacyId\" where user_id = $newId"));
+
+            // migrate group assignments
+            if (array_key_exists($legacyId, $userGroups))
+            {
+                foreach ($userGroups[$legacyId] as $legacyGroupId)
+                {
+                    $newGroupId = $groupMap[$legacyGroupId];
+                    $currentDatabase->ExecuteInsert(new AddUserGroupCommand($newId, $newGroupId));
+                }
+            }
+            $usersMigrated++;
+        }
+
+        $this->page->SetUsersMigrated($usersMigrated);
     }
 
     private function CreateAvailableTimeSlots($start, $end, $interval)
@@ -246,28 +493,17 @@ class MigrationPresenter
 
         return $times;
     }
+
+
 }
 
 $page = new MigrationPage();
 $page->PageLoad();
 
-// migrate resources
-// select machid, scheduleid, name, location, rphone, notes, status, minres, maxres, autoassign, approval,
-//    allow_multi, max_participants, min_notice_time, max_notice_time
-
-// insert resource_id, name, location, contact_info, description, notes, isactive, min_duration, min_increment,
-//        max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations, max_participants
-//        min_notice_time, max_notice_time, image_nam, 	schedule_id, legacyid
-
-
-// migrate accessories
-
-// migrate groups
-
 // migrate users
 
-// migrate reservations
-
 // migrate permissions
+
+// migrate reservations
 
 ?>

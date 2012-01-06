@@ -43,6 +43,7 @@ interface IResourceRepository
 
 	/**
 	 * @param BookableResource $resource
+     * @return int ID of created resource
 	 */
 	public function Add(BookableResource $resource);
 

@@ -31,7 +31,7 @@ interface IGroupRepository
 	/**
 	 * @abstract
 	 * @param Group $group
-	 * @return void
+	 * @return int newly inserted group id
 	 */
 	public function Add(Group $group);
 	
@@ -218,6 +218,8 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	{
 		$groupId = ServiceLocator::GetDatabase()->ExecuteInsert(new AddGroupCommand($group->Name()));
 		$group->WithId($groupId);
+
+        return $groupId;
 	}
 
 	/**

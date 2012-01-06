@@ -32,7 +32,7 @@ interface IAccessoryRepository
 	/**
 	 * @abstract
 	 * @param Accessory $accessory
-	 * @return void
+     * @return int
 	 */
 	public function Add(Accessory $accessory);
 
@@ -71,11 +71,11 @@ class AccessoryRepository implements IAccessoryRepository
 
 	/**
 	 * @param Accessory $accessory
-	 * @return void
+	 * @return int
 	 */
 	public function Add(Accessory $accessory)
 	{
-		ServiceLocator::GetDatabase()->Execute(new AddAccessoryCommand($accessory->GetName(), $accessory->GetQuantityAvailable()));
+		return ServiceLocator::GetDatabase()->ExecuteInsert(new AddAccessoryCommand($accessory->GetName(), $accessory->GetQuantityAvailable()));
 	}
 
 	/**
