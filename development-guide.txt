@@ -3,6 +3,7 @@ A) Project:
     - Check out url @ https://phpscheduleit.svn.sourceforge.net/svnroot/phpscheduleit/development
     - To contribute and submit your code please contact "Nick Korbel" <nkorbel@gmail.com>
     - Programming paradigm: toward 100% object oriented php 5, Smarty template engine, LDAP and other plugins
+    - Please include the GPL header on every new source file with your name and date. If you are altering an existing file, just add your name and year.
 
 B) Requirements:
     - Web-server
