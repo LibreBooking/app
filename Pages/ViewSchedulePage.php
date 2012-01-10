@@ -58,6 +58,7 @@ class ViewSchedulePage extends Page implements ISchedulePage
 	public function PageLoad()
 	{
 		$this->_presenter->PageLoad(new NullUserSession());
+		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Display('view-schedule.tpl');
 	}
 	

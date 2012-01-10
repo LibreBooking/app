@@ -102,8 +102,10 @@
 				<exclude name="_excludes.txt"/>
 				<exclude name="pdt_templates.xml"/>
 				<exclude name="**/*.zip"/>
-				
-				<exclude name="config/config.php"/>
+				<exclude name="**/*.jar"/>
+
+				<exclude name="**/config.php"/>
+				<exclude name="**/*.config.php"/>
 				<exclude name="config/log4php.config.xml"/>
 			</fileset>
 		</copy>
