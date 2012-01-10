@@ -88,13 +88,20 @@ h1 {
 
 /*********************************************************/
 div.error, div.success, #loginError {
-    border: solid 1px #a4381c;
+    border: 1px solid maroon !important;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 1px 1px #FFFFFF inset;
+
+    background: none repeat scroll 0 0 pink;
+    background-image: url("../img/s_error.png");
+    background-position: 5px 50%;
+    background-repeat: no-repeat;
+
+    width: 30%;
     margin: 20px auto 5px;
-    background-color: #f5e4df;
-    background-color: #ffffcd;
-    width: 60%;
     padding: 6px;
     font-size: 14px;
+    font-family: sans-serif;
     text-align: center;
 }
 
