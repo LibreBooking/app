@@ -34,7 +34,7 @@ class MigrationPage extends Page
 
     public function __construct()
     {
-        parent::__construct('Migration', 1);
+        parent::__construct('', 1);
         $this->presenter = new MigrationPresenter($this);
     }
 
@@ -83,7 +83,7 @@ class MigrationPage extends Page
 
     public function SetLegacyConnectionSucceeded($wasSuccessful)
     {
-        $this->Set('LegacyConnectionSucceeded', $wasSuccessful);
+        $this->Set('LegacyConnectionFailed', !$wasSuccessful);
     }
 
     public function SetSchedulesMigrated($schedulesMigrated)
@@ -440,6 +440,111 @@ class MigrationPresenter
         $this->page->SetUsersMigrated($usersMigrated);
     }
 
+    private function MigrateReservations(Database $legacyDatabase, Database $currentDatabase)
+    {
+        $reservationRepository = new ReservationRepository();
+        $blackoutRepository = new BlackoutRepository();
+
+        $getLegacyReservations = new AdHocCommand('select resid, machid, scheduleid, start_date, end_date,
+            starttime, endtime, created, modified, parentid, is_blackout, is_pending, summary, allow_participation, allow_anon_participation
+            FROM reservations r INNER JOIN reservation_users ru ON r.resid = ru.resid AND owner = "Y"');
+
+        $getLegacyReservationAccessories = new AdHocCommand('SELECT resid, resourceid from reservation_resources');
+        $getLegacyReservationParticipants = new AdHocCommand('SELECT resid, memberid, owner, invited  FROM reservation_users WHERE invited is null and owner is null');
+
+        $getAccessoryMapping = new AdHocCommand('select accessory_id, legacyid from accessories');
+        $getUserMapping = new AdHocCommand('select user_id, legacyid from users');
+        $getResourceMapping = new AdHocCommand('select resource_id, legacyid from resources');
+
+        $accessoryMapping = array();
+        $accessoryMappingReader = $currentDatabase->Query($getAccessoryMapping);
+        while ($row = $accessoryMappingReader->GetRow())
+        {
+            $legacyId = $row['legacyid'];
+            $accessoryMapping[$legacyId] = $row['accessory_id'];
+        }
+
+        $userMapping = array();
+        $userMappingReader = $currentDatabase->Query($getUserMapping);
+        while ($row = $userMappingReader->GetRow())
+        {
+            $legacyId = $row['legacyid'];
+            $userMapping[$legacyId] = $row['user_id'];
+        }
+
+        $resourceMapping = array();
+        $resourceMappingReader = $currentDatabase->Query($getResourceMapping);
+        while ($row = $resourceMappingReader->GetRow())
+        {
+            $legacyId = $row['legacyid'];
+            $resourceMapping[$legacyId] = $row['resource_id'];
+        }
+
+        $reservationAccessories = array();
+        $legacyAccessoryReader = $legacyDatabase->Query($getLegacyReservationAccessories);
+        while ($row = $legacyAccessoryReader->GetRow())
+        {
+            $resId = $row['resid'];
+            $reservationAccessories[$resId] = $row['resourceid'];
+        }
+
+        $reservationParticipants = array();
+        $legacyParticipantReader = $legacyDatabase->Query($getLegacyReservationParticipants);
+        while ($row = $legacyParticipantReader->GetRow())
+        {
+            $resId = $row['resid'];
+            if (!array_key_exists($resId, $reservationParticipants))
+            {
+                $reservationParticipants[$resId] = array();
+            }
+            $reservationParticipants[$resId][] = $row['memberid'];
+        }
+
+        $legacyReservationReader = $legacyDatabase->Query($getLegacyReservations);
+        while ($row = $legacyReservationReader->GetRow())
+        {
+            $date = $this->BuildDateRange($row['start_date'], $row['starttime'], $row['end_date'], $row['endtime']);
+
+            $mappedUserId = $userMapping[$row['memberid']];
+            $mappedResourceId = $resourceMapping[$row['machid']];
+            $mappedAccessoryId = $accessoryMapping[$row['resourceid']];
+
+            $legacyId = $row['resid'];
+
+            if ($row['is_blackout'] == 'Y')
+            {
+                // handle blackout
+                $blackout = Blackout::Create($mappedUserId, $mappedResourceId, '', $date);
+
+                $newId = $blackoutRepository->Add($blackout);
+                $currentDatabase->Execute(new AdHocCommand("update blackout_series set legacyid = \"$legacyId\" where blackout_series_id = $newId"));
+            }
+            else
+            {
+                // handle reservation
+
+                $mappedParticipantIds = array();
+                $legacyParticipants = $reservationParticipants[$legacyId];
+                foreach ($legacyParticipants as $legacyParticipantId)
+                {
+                    $mappedParticipantIds[] = $mappedParticipantIds[$legacyParticipantId];
+                }
+
+                $currentUser = new UserSession($row['memberid']);
+                $mappedResource = new MigrateBookableResource($mappedResourceId);
+
+                $reservation = ReservationSeries::Create($mappedUserId, $mappedResource, '', $row['summary'], $date, new RepeatNone(), $currentUser);
+                $reservation->AddAccessory(new ReservationAccessory($mappedAccessoryId, 1));
+                $reservation->ChangeParticipants($mappedParticipantIds);
+
+                $reservationRepository->Add($reservation);
+
+                $newId = $reservation->SeriesId();
+                $currentDatabase->Execute(new AdHocCommand("update reservation_series set legacyid = \"$legacyId\" where series_id = $newId"));
+            }
+        }
+    }
+
     private function CreateAvailableTimeSlots($start, $end, $interval)
     {
         $times = '';
@@ -466,44 +571,50 @@ class MigrationPresenter
         for ($time = 0; $time < $start; $time += $interval)
         {
             $startTime = $time;
-
-            $startHour = intval($startTime / 60);
-            $startMin = $startTime % 60;
+            $startString = $this->MinutesToTime($startTime);
 
             $endTime = $time + $interval;
-            $endHour = intval($endTime / 60);
-            $endMin = $endTime % 60;
+            $endString = $this->MinutesToTime($endTime);
 
-            $times .= "$startHour:$startMin - $endHour:$endMin\n";
+            $times .= "$startString - $endString\n";
         }
 
         for ($time = $end; $time < 1440; $time += $interval)
         {
             $startTime = $time;
-
-            $startHour = intval($startTime / 60);
-            $startMin = $startTime % 60;
+            $startString = $this->MinutesToTime($startTime);
 
             $endTime = $time + $interval;
-            $endHour = intval($endTime / 60);
-            $endMin = $endTime % 60;
+            $endString = $this->MinutesToTime($endTime);
 
-            $times .= "$startHour:$startMin - $endHour:$endMin\n";
+            $times .= "$startString - $endString\n";
         }
 
         return $times;
     }
 
+    private function MinutesToTime($minutes)
+    {
+        $hour = intval($minutes / 60);
+        $min = $minutes % 60;
 
+        return "$hour:$min";
+    }
+
+
+}
+
+class MigrateBookableResource extends BookableResource
+{
+    public function __construct($resourceId)
+    {
+        $this->_resourceId = $resourceId;
+    }
 }
 
 $page = new MigrationPage();
 $page->PageLoad();
 
-// migrate users
 
-// migrate permissions
-
-// migrate reservations
 
 ?>

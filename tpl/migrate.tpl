@@ -17,9 +17,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{include file='globalheader.tpl'}
+{include file='globalheader.tpl' Title='phpScheduleIt v2.0 Migration'}
 
-<h1>Migrate phpScheduleIt 1.2 to 2.0 (MySQL only)</h1>
+<h1>Migrate phpScheduleIt v1.2 to v2.0 (MySQL only)</h1>
 
 <div>
 {if $ShowResults}
@@ -33,39 +33,43 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
     {else}
 
-    <h5>This will copy all data from your phpScheduleIt v1.2 instance into 2.0. Due to changes in 2.0, this process will
-        not be perfect. This process only migrates data which exists in your 1.2 instance but not in your 2.0 instance.
-        Running this multiple times will not insert duplicate data.</h5>
+    <h3>This will copy all data from your phpScheduleIt v1.2 installation into 2.0. Due to changes in 2.0, this process will
+        not be perfect. This process only migrates data which exists in your 1.2 installation but not in your 2.0 installation.
+        Running this multiple times will not insert duplicate data.</h3>
 
-    <h5>Known Issues</h5>
-    <ul>
+    <br/>
+    <h3>There is no automated way to undo this process. Please check all migrated data for accuracy after the import
+        completes.</h3>
+    <div class="error">
+    <h3>Known Issues</h3>
+    <ul style="margin-left: 30px;">
         <li>Recurring reservations will appear as single instances</li>
         <li>Application admin designations will not be migrated, only the user accounts</li>
         <li>Group admin designations will not be migrated, only the user accounts</li>
         <li>Open reservation invitations will be removed</li>
         <li>User timezones will all be set to the server's timezone</li>
-        <li>At the time of writing, phpScheduleIt 2.0 is only available in English (US). User language preferences will be migrated but will have no effect</li>
+        <li>At the time of writing, phpScheduleIt 2.0 is only available in English (US). User language preferences will be migrated but will have no immediate effect</li>
         <li>User email preferences will not be migrated</li>
     </ul>
-
-    <h3>There is no automated way to undo this process. Please check all migrated data for accuracy after the import
-        completes.</h3>
+    </div>
 
     <form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
-        {if !$LegacyConnectionSucceeded}
+        {if $LegacyConnectionFailed}
             <div class="error">
                 Could not connect to 1.2 database. Please confirm the settings below and try again.
             </div>
         {/if}
 
-        <h4>phpScheduleIt 1.2 database settings</h4>
+        <h3>phpScheduleIt 1.2 database settings</h3>
+        <br/>
+
         <ul style="list-style: none;">
             <li>User: <input type="text" class="textbox" name="legacyUser"/></li>
             <li>Password: <input type="password" class="textbox" name="legacyPassword"/></li>
             <li>Hostspec: <input type="text" class="textbox" name="legacyHostSpec"/></li>
             <li>Database Name: <input type="text" class="textbox" name="legacyDatabaseName"/></li>
         </ul>
-
+        <br/>
         <input type="submit" name="run" value="Run Migration" class="button"/>
     </form>
 {/if}

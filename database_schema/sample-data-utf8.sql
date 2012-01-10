@@ -20,6 +20,8 @@ insert into users (fname, lname, email, username, password, salt, timezone, last
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language, organization)
 	values ('Admin', 'Admin', 'admin@example.com', 'admin', '70f3e748c6801656e4aae9dca6ee98ab137d952c', '4a04db87', 'Europe/Helsinki', '2010-03-26 12:44:00', 1, now(), 'en_us', 'ABC Org Inc.');
 
+insert into user_groups values (2,2);	
+	
 insert into resources (`resource_id`, `name`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time`, `max_notice_time`, `image_name`, `legacyid`, `schedule_id`) VALUES
 (1, 'Conference Room 1', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource1.jpg', NULL, 1),
 (2, 'Conference Room 2', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource2.jpg', NULL, 1);
