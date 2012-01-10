@@ -53,7 +53,7 @@ class SchedulePage extends SecurePage implements ISchedulePage
 		
 		$load = $endLoad-$start;
 		$display = $endDisplay-$endLoad;
-		Log::Debug('Schedule took %d ms to load, %s ms to render', $load, $display);
+		Log::Debug('Schedule took %s sec to load, %s sec to render', $load, $display);
 	}
 	
 	public function IsPostBack()
