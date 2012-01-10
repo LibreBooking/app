@@ -110,6 +110,16 @@ class MigrationPage extends Page
     {
         $this->Set('UsersMigratedCount', $usersMigrated);
     }
+
+    public function GetInstallPassword()
+    {
+        return $this->GetForm('installPassword');
+    }
+
+    public function SetInstallPasswordSucceeded($passwordValid)
+    {
+        $this->Set('InstallPasswordFailed', !$passwordValid);
+    }
 }
 
 class MigrationPresenter
@@ -128,7 +138,7 @@ class MigrationPresenter
     {
         if ($this->page->IsRunningMigration())
         {
-            if ($this->TestLegacyConnection())
+            if ($this->TestInstallPassword() && $this->TestLegacyConnection())
             {
                 $this->Migrate();
                 $this->page->DisplayResults();
@@ -170,6 +180,9 @@ class MigrationPresenter
 
     }
 
+    /**
+     * @return bool
+     */
     private function TestLegacyConnection()
     {
         $legacyConnection = $this->GetLegacyConnection();
@@ -185,6 +198,22 @@ class MigrationPresenter
             $this->page->SetLegacyConnectionSucceeded(false);
             return false;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function TestInstallPassword()
+    {
+        $password = Configuration::Instance()->GetKey(ConfigKeys::INSTALLATION_PASSWORD);
+
+        if (empty($password) || $password != $this->page->GetInstallPassword())
+        {
+            $this->page->SetInstallPasswordSucceeded(false);
+            return false;
+        }
+        $this->page->SetInstallPasswordSucceeded(true);
+        return true;
     }
 
     private function MigrateSchedules(Database $legacyDatabase, Database $currentDatabase)
@@ -259,7 +288,7 @@ class MigrationPresenter
                 continue;
             }
 
-            $newScheduleId = $currentDatabase->Query(new AdHocCommand("select schedule_id from schedules where legacyId = {$row['scheduleid']}"));
+            $newScheduleId = $currentDatabase->Query(new AdHocCommand("select schedule_id from schedules where legacyId = \"{$row['scheduleid']}\""));
 
             $minTimeSeconds = $row['minres'] * 60;
             $maxTimeSeconds = $row['maxres'] * 60;
@@ -387,7 +416,7 @@ class MigrationPresenter
         }
 
         $getGroupMapping = new AdHocCommand('select group_id, legacyid from groups');
-        $currentDatabase->Query($getGroupMapping);
+        $reader = $currentDatabase->Query($getGroupMapping);
 
         $groupMap = array();
         while ($row = $reader->GetRow())
@@ -412,7 +441,7 @@ class MigrationPresenter
                 $row['fname'],
                 $row['lname'],
                 $row['password'],
-                null,
+                '',
                 Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
                 $row['lang'],
                 Pages::DEFAULT_HOMEPAGE_ID,
@@ -551,15 +580,12 @@ class MigrationPresenter
         for ($time = $start; $time < $end; $time += $interval)
         {
             $startTime = $time;
-
-            $startHour = intval($startTime / 60);
-            $startMin = $startTime % 60;
+            $startString = $this->MinutesToTime($startTime);
 
             $endTime = $time + $interval;
-            $endHour = intval($endTime / 60);
-            $endMin = $endTime % 60;
+            $endString = $this->MinutesToTime($endTime);
 
-            $times .= "$startHour:$startMin - $endHour:$endMin\n";
+            $times .= "$startString - $endString\n";
         }
 
         return $times;
@@ -597,6 +623,11 @@ class MigrationPresenter
     {
         $hour = intval($minutes / 60);
         $min = $minutes % 60;
+
+        if ($hour == 24)
+        {
+            $hour = 0;
+        }
 
         return "$hour:$min";
     }

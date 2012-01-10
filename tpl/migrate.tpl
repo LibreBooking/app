@@ -60,10 +60,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         {/if}
 
+        {if $InstallPasswordFailed}
+           <div class="error">
+              Your installation password was incorrect. Please confirm this config setting in $conf['settings']['install.password']
+           </div>
+       {/if}
+
         <h3>phpScheduleIt 1.2 database settings</h3>
         <br/>
 
         <ul style="list-style: none;">
+            <li>Install Password: <input type="password" class="textbox" name="installPassword"/> (found in config.php)</li>
             <li>User: <input type="text" class="textbox" name="legacyUser"/></li>
             <li>Password: <input type="password" class="textbox" name="legacyPassword"/></li>
             <li>Hostspec: <input type="text" class="textbox" name="legacyHostSpec"/></li>
