@@ -28,8 +28,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     Migrated {$AccessoriesMigratedCount} Accessories<br/>
     Migrated {$GroupsMigratedCount} Groups<br/>
     Migrated {$UsersMigratedCount} Users<br/>
-    Migrated {$GroupsMigratedCount} Permissions<br/>
-    Migrated {$GroupsMigratedCount} Reservations<br/>
+    Migrated {$ReservationsMigratedCount} Reservations<br/>
 
     {else}
 
