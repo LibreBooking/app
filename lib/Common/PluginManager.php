@@ -105,7 +105,6 @@ class PluginManager
      */
     public function LoadPermission()
     {
-        // namespace.php is include files
         require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
         $resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
@@ -129,7 +128,6 @@ class PluginManager
      */
     public function LoadAuthorization()
     {
-        // namespace.php is include files
         require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
         $authorizationService = new AuthorizationService(new UserRepository());
@@ -152,7 +150,16 @@ class PluginManager
      */
     public function LoadPreReservation()
     {
+        require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
+
         $factory = new PreReservationFactory();
+
+        $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_PRERESERVATION, 'PreReservation', $factory);
+
+        if (!is_null($plugin))
+        {
+            return $plugin;
+        }
 
         return $factory;
     }

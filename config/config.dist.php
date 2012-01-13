@@ -61,6 +61,7 @@ $conf['settings']['phpmailer']['sendmail.path'] = '/usr/sbin/sendmail';
 $conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';
+$conf['settings']['plugins']['PreReservation'] = '';
 /**
  * Installation settings
  */

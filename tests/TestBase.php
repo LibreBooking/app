@@ -77,6 +77,7 @@ class TestBase extends PHPUnit_Framework_TestCase
 		$this->db = null;
 		$this->fakeServer = null;
 		Configuration::SetInstance(null);
+        PluginManager::SetInstance(null);
 		$this->fakeResources = null;
 		Date::_ResetNow();
 	}

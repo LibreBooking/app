@@ -55,5 +55,14 @@ class PluginManagerTests extends TestBase
 		
 		$this->assertEquals('Authentication', get_class($auth));
 	}
+
+    public function testPreReservationPlugin()
+    {
+        $this->fakeConfig->SetSectionKey(ConfigSection::PLUGINS, ConfigKeys::PLUGIN_PRERESERVATION, 'foo');
+
+        $plugin = PluginManager::Instance()->LoadPreReservation();
+
+        $this->assertEquals('PreReservationFactory', get_class($plugin));
+    }
 }
 ?>

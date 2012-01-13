@@ -23,6 +23,7 @@ require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class ReservationValidationFactoryTests extends TestBase
 {
+
     public function testLoadsAddRulesFromPlugins()
     {
         $preResPlugin = $this->getMock('IPreReservationFactory');
