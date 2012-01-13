@@ -165,6 +165,28 @@ class PluginManager
     }
 
     /**
+        * Loads the configured PreReservation plugin, if one exists
+        * If no plugin exists, the default PreReservationFactory class is returned
+        *
+        * @return IPostReservationFactory
+        */
+       public function LoadPostReservation()
+       {
+           require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
+
+           $factory = new PostReservationFactory();
+
+           $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_POSTRESERVATION, 'PostReservation', $factory);
+
+           if (!is_null($plugin))
+           {
+               return $plugin;
+           }
+
+           return $factory;
+       }
+
+    /**
      * @param string $configKey key to use
      * @param string $pluginSubDirectory subdirectory name under 'plugins'
      * @param mixed $baseImplementation the base implementation of the plugin.  allows decorating

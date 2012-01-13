@@ -80,7 +80,7 @@ class ReservationHandler implements IReservationHandler
 		$validationService = $vfactory->Create($reservationAction, ServiceLocator::GetServer()->GetUserSession());
 
 		$nfactory = new ReservationNotificationFactory();
-		$notificationService = $nfactory->Create($reservationAction);
+		$notificationService = $nfactory->Create($reservationAction, ServiceLocator::GetServer()->GetUserSession());
 
 		return new ReservationHandler($persistenceService, $validationService, $notificationService);
 	}

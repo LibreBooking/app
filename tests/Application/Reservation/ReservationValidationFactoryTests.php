@@ -29,7 +29,7 @@ class ReservationValidationFactoryTests extends TestBase
         $preResPlugin = $this->getMock('IPreReservationFactory');
         $pluginManager = new FakePluginManager();
         $pluginManager->preResPlugin = $preResPlugin;
-        $validationService = $this->getMock('IAddReservationValidationService');
+        $validationService = $this->getMock('IReservationValidationService');
 
         PluginManager::SetInstance($pluginManager);
 
@@ -49,7 +49,7 @@ class ReservationValidationFactoryTests extends TestBase
         $preResPlugin = $this->getMock('IPreReservationFactory');
         $pluginManager = new FakePluginManager();
         $pluginManager->preResPlugin = $preResPlugin;
-        $validationService = $this->getMock('IUpdateReservationValidationService');
+        $validationService = $this->getMock('IReservationValidationService');
 
         PluginManager::SetInstance($pluginManager);
 
@@ -69,7 +69,7 @@ class ReservationValidationFactoryTests extends TestBase
         $preResPlugin = $this->getMock('IPreReservationFactory');
         $pluginManager = new FakePluginManager();
         $pluginManager->preResPlugin = $preResPlugin;
-        $validationService = $this->getMock('IDeleteReservationValidationService');
+        $validationService = $this->getMock('IReservationValidationService');
 
         PluginManager::SetInstance($pluginManager);
 
@@ -93,10 +93,16 @@ class FakePluginManager extends PluginManager
     }
 
     public $preResPlugin = null;
+    public $postResPlugin = null;
 
     public function LoadPreReservation()
     {
         return $this->preResPlugin;
+    }
+
+    public function LoadPostReservation()
+    {
+        return $this->postResPlugin;
     }
 }
 

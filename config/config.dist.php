@@ -62,6 +62,7 @@ $conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';
 $conf['settings']['plugins']['PreReservation'] = '';
+$conf['settings']['plugins']['PostReservation'] = '';
 /**
  * Installation settings
  */

@@ -44,6 +44,7 @@ class ConfigKeys {
     const PLUGIN_AUTHORIZATION = 'Authorization';
     const PLUGIN_PERMISSION = 'Permission';
     const PLUGIN_PRERESERVATION = 'PreReservation';
+    const PLUGIN_POSTRESERVATION = 'PostReservation';
 
     const RESERVATION_NOTIFY_CREATED = 'notify.created';
     const RESERVATION_NOTIFY_UPDATED = 'notify.updated';

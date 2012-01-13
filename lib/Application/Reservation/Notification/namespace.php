@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/PostReservationFactory.php');
+
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNotification.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNotificationFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNotificationService.php');
