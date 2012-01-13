@@ -58,13 +58,6 @@ $conf['settings']['phpmailer']['sendmail.path'] = '/usr/sbin/sendmail';
 /**
  * Plugin configuration.  For more on plugins, see readme_installation.html
  */
-/**
- * Authentication plugin
- *
- * You can not have email registration and LDAP authentication at the same time. One or the other.
- * By turning on LDAP $conf['settings']['plugins']['Authentication'] = 'Ldap'; Email registration will be turned off.
- * Read /plugins/Authentication/readme.txt
- */
 $conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';

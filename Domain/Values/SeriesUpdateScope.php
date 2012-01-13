@@ -203,7 +203,7 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 		$bookedBy = $series->BookedBy();
 		if (!is_null($bookedBy) && $bookedBy->IsAdmin)
 		{
-			return $series->_Instances();
+            return $series->_Instances();
 		}
 		
 		return $this->AllInstancesGreaterThan($series, $this->EarliestDateToKeep($series));

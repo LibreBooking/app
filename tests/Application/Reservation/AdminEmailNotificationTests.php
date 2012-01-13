@@ -77,8 +77,8 @@ class AdminEmailNotificationTests extends TestBase
 		
 		$this->assertEquals(count($admins), count($this->fakeEmailService->_Messages));
 		
-		$this->assertEquals($expectedMessage1, $this->fakeEmailService->_Messages[0]);
-		$this->assertEquals($expectedMessage2, $this->fakeEmailService->_Messages[1]);
+		$this->isInstanceOf('ReservationCreatedEmailAdmin', $this->fakeEmailService->_Messages[0]);
+		$this->isInstanceOf('ReservationCreatedEmailAdmin', $this->fakeEmailService->_Messages[1]);
 	}
 	
 	public function testSendsReservationUpdatedEmailIfAdminWantsIt()
@@ -119,8 +119,8 @@ class AdminEmailNotificationTests extends TestBase
 		
 		$this->assertEquals(count($admins), count($this->fakeEmailService->_Messages));
 		
-		$this->assertEquals($expectedMessage1, $this->fakeEmailService->_Messages[0]);
-		$this->assertEquals($expectedMessage2, $this->fakeEmailService->_Messages[1]);
+        $this->isInstanceOf('ReservationUpdatedEmailAdmin', $this->fakeEmailService->_Messages[0]);
+        $this->isInstanceOf('ReservationUpdatedEmailAdmin', $this->fakeEmailService->_Messages[1]);
 	}
 	
 	public function testNothingSentIfConfiguredOff()

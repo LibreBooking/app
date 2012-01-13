@@ -21,9 +21,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 interface IReservationValidationService
 {
 	/**
-	 * @param ReservationSeries $reservation
+	 * @param ReservationSeries|ExistingReservationSeries $series
 	 * @return IReservationValidationResult
 	 */
-	function Validate($reservation);
+	function Validate($series);
 }
 ?>

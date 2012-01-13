@@ -211,19 +211,19 @@ class ExistingReservationSeries extends ReservationSeries
 			return;
 		}
 
-		Log::Debug('Updating duration for series %s', $this->SeriesId());
-
 		$currentBegin = $currentDuration->GetBegin();
 		$currentEnd = $currentDuration->GetEnd();
 
 		$startTimeAdjustment = $currentBegin->GetDifference($reservationDate->GetBegin());
 		$endTimeAdjustment = $currentEnd->GetDifference($reservationDate->GetEnd());
 
+        Log::Debug('Updating duration for series %s', $this->SeriesId());
+
 		foreach ($this->Instances() as $instance)
 		{
-			$newStart = $instance->StartDate()->ApplyDifference($startTimeAdjustment);
+            $newStart = $instance->StartDate()->ApplyDifference($startTimeAdjustment);
 			$newEnd = $instance->EndDate()->ApplyDifference($endTimeAdjustment);
-				
+
 			$this->UpdateInstance($instance, new DateRange($newStart, $newEnd));
 		}
 	}
@@ -390,7 +390,7 @@ class ExistingReservationSeries extends ReservationSeries
 
 	public function Instances()
 	{
-		return $this->seriesUpdateStrategy->Instances($this);
+        return $this->seriesUpdateStrategy->Instances($this);
 	}
 
 	/**

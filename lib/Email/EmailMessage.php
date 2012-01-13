@@ -21,9 +21,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 abstract class EmailMessage implements IEmailMessage
 {
 	/**
-	 * @var SmartyEmail
+	 * @var SmartyPage
 	 */
-	protected $email;
+	private $email;
 	
 	protected function __construct($languageCode = null)
 	{

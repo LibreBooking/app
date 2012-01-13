@@ -62,7 +62,6 @@ class ReservationUpdatePresenter
 		$instanceId = $this->page->GetReservationId();
 		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
-		$existingSeries->UpdateDuration($this->GetReservationDuration());
 
 		$resourceId = $this->page->GetResourceId();
 		$additionalResourceIds = $this->page->GetResources();
@@ -80,7 +79,8 @@ class ReservationUpdatePresenter
 			$this->page->GetTitle(), 
 			$this->page->GetDescription(),
 			ServiceLocator::GetServer()->GetUserSession());
-		
+
+        $existingSeries->UpdateDuration($this->GetReservationDuration());
 		$existingSeries->Repeats($this->page->GetRepeatOptions());
 
 		$additionalResources = array();
