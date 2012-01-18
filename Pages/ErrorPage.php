@@ -22,8 +22,6 @@ require_once(ROOT_DIR . 'Pages/Page.php');
 
 class ErrorPage extends Page
 {
-	private $_presenter = null;
-
 	public function __construct()
 	{
 		parent::__construct('Error');
@@ -42,9 +40,9 @@ class ErrorPage extends Page
 		
 		//TODO: Log
 		
-		$this->smarty->assign('ReturnUrl', urldecode($returnUrl));
-		$this->smarty->assign('ErrorMessage', $errorMessageKey);
-		$this->smarty->display('error.tpl');		
+		$this->Set('ReturnUrl', urldecode($returnUrl));
+		$this->Set('ErrorMessage', $errorMessageKey);
+		$this->Display('error.tpl');
 	}
 }
 ?>

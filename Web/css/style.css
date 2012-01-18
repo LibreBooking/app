@@ -99,7 +99,7 @@ div.error, div.success, #loginError {
 
     width: 30%;
     margin: 20px auto 5px;
-    padding: 6px;
+    padding: 6px 25px;
     font-size: 14px;
     font-family: sans-serif;
     text-align: center;

@@ -42,7 +42,15 @@ class SmartyPage extends Smarty
 	 * @var Resources
 	 */
 	protected $Resources = null;
+
+    /**
+     * @var null|string
+     */
 	protected $RootPath = null;
+
+    /**
+     * @var bool
+     */
 	private $IsValid = true;
 
 	/**
@@ -228,7 +236,6 @@ class SmartyPage extends Smarty
 
 	public function SmartyTranslate($params, &$smarty)
 	{
-		/// SHOULD THIS BE CHANGED TO REGISTER THE RESOURCE OBJECT WITH SMARTY AND ACCESS IT FROM THE TEMPLATES? ///
 		if (!isset($params['args']))
 		{
 			return $this->Resources->GetString($params['key'], '');

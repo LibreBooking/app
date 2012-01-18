@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\tpl\Email\emailheader.tpl'}
+{include file='..\..\tpl\Email\emailheader.tpl'}
 	
 	Reservation Details:
 	<br/>
@@ -43,8 +43,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">View this reservation</a> |
-	<a href="{$ScriptUrl}{$ICalUrl}">Add to Outlook</a> |
+	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
+	<a href="{$ScriptUrl}/{$ICalUrl}">Add to Outlook</a> |
 	<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
 	
-{include file='..\tpl\Email\emailfooter.tpl'}
+{include file='..\..\tpl\Email\emailfooter.tpl'}

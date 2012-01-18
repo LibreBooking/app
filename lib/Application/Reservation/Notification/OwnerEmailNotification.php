@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationEvents.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmail.php');
 
 abstract class OwnerEmailNotification implements IReservationNotification
 {

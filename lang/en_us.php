@@ -104,6 +104,8 @@ class en_us extends Language
 		$strings['ReturnToPreviousPage'] = 'Return to the last page that you were on';
 		$strings['UnknownError'] = 'Unknown Error';
 		$strings['InsufficientPermissionsError'] = 'You do not have permission to access this resource';
+		$strings['MissingReservationResourceError'] = 'A resource was not selected';
+		$strings['MissingReservationScheduleError'] = 'A schedule was not selected';
 		$strings['DoesNotRepeat'] = 'Does Not Repeat';
 		$strings['Daily'] = 'Daily';
 		$strings['Weekly'] = 'Weekly';

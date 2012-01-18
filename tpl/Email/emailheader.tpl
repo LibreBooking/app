@@ -23,7 +23,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={$Charset}" />
 		<style type="text/css">
-			@import url({$ScriptUrl}css/email.css);
+			@import url({$ScriptUrl}/css/email.css);
 		</style>
 	</head>
 	<body>

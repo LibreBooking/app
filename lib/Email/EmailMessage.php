@@ -32,8 +32,9 @@ abstract class EmailMessage implements IEmailMessage
 		{
 			$resources->SetLanguage($languageCode);
 		}
-
 		$this->email = new SmartyPage($resources);
+        $this->Set('ScriptUrl', Configuration::Instance()->GetScriptUrl());
+        $this->Set('Charset', $resources->Charset);
 	}
 
 	protected function Set($var, $value)
@@ -48,7 +49,7 @@ abstract class EmailMessage implements IEmailMessage
 	
 	protected function Translate($key, $args = array())
 	{
-		return $this->email->SmartyTranslate($key, $args);
+		return $this->email->SmartyTranslate(array('key' => $key, 'args' => implode(',', $args)), $this->email);
 	}
 	
 	public function ReplyTo()

@@ -36,7 +36,11 @@ class ErrorMessages
 		$this->SetKey(ErrorMessages::MISSING_SCHEDULE, 'MissingReservationScheduleError');
 		$this->SetKey(ErrorMessages::RESERVATION_NOT_FOUND, 'ReservationNotFoundError');
 	}
-	
+
+    /**
+     * @static
+     * @return ErrorMessages
+     */
 	public static function Instance()
 	{
 		if (self::$_instance == null)

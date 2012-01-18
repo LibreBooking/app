@@ -16,10 +16,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 
-class ServiceLocator {
+class ServiceLocator
+{
 
     /**
      * @var Database
@@ -39,16 +40,19 @@ class ServiceLocator {
     /**
      * @return Database
      */
-    public static function GetDatabase() {
+    public static function GetDatabase()
+    {
         require_once(ROOT_DIR . 'lib/Database/namespace.php');
 
-        if (self::$_database == null) {
+        if (self::$_database == null)
+        {
             self::$_database = DatabaseFactory::GetDatabase();
         }
         return self::$_database;
     }
 
-    public static function SetDatabase(Database $database) {
+    public static function SetDatabase(Database $database)
+    {
         self::$_database = $database;
     }
 
@@ -56,33 +60,43 @@ class ServiceLocator {
      * Returning a server object
      * @return Server
      */
-    public static function GetServer() {
+    public static function GetServer()
+    {
         require_once(ROOT_DIR . 'lib/Server/namespace.php');
-        
-        if (self::$_server == null) {
+
+        if (self::$_server == null)
+        {
             self::$_server = new Server();
         }
         return self::$_server;
     }
 
-    public static function SetServer(Server $server) {
+    public static function SetServer(Server $server)
+    {
         self::$_server = $server;
     }
 
-    public static function GetEmailService() {
+    public static function GetEmailService()
+    {
         require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
-        if (self::$_emailSerivce == null) {
-            if (Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter())) {
+        if (self::$_emailSerivce == null)
+        {
+            if (Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter()))
+            {
                 self::$_emailSerivce = new EmailService();
-            } else {
+//                self::$_emailSerivce = new EmailLogger();
+            }
+            else
+            {
                 self::$_emailSerivce = new NullEmailService();
             }
         }
         return self::$_emailSerivce;
     }
 
-    public static function SetEmailService(IEmailService $emailService) {
+    public static function SetEmailService(IEmailService $emailService)
+    {
         self::$_emailSerivce = $emailService;
     }
 
