@@ -107,7 +107,7 @@ class SchedulePeriod
 			
 			return $this->_end->Format($format);
 		}
-		return "END " + $this->_label;
+		return '(' . $this->_label . ')';
 	}
 	
 	/**
