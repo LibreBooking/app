@@ -38,38 +38,39 @@ class UpcomingReservations extends DashboardItem implements IUpcomingReservation
 	
 	public function PageLoad()
 	{
+        $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
 		$this->presenter->PageLoad();
 		$this->Display('upcoming_reservations.tpl');
 	}
 	
 	public function SetTimezone($timezone)
 	{
-		$this->Assign('Timezone', $timezone);
+		$this->Set('Timezone', $timezone);
 	}
 	
 	public function SetTotal($total)
 	{
-		$this->Assign('Total', $total);
+		$this->Set('Total', $total);
 	}
 	
 	public function BindToday($reservations)
 	{
-		$this->Assign('TodaysReservations', $reservations);
+		$this->Set('TodaysReservations', $reservations);
 	}
 	
 	public function BindTomorrow($reservations)
 	{
-		$this->Assign('TomorrowsReservations', $reservations);
+		$this->Set('TomorrowsReservations', $reservations);
 	}
 	
 	public function BindThisWeek($reservations)
 	{
-		$this->Assign('ThisWeeksReservations', $reservations);
+		$this->Set('ThisWeeksReservations', $reservations);
 	}
 	
 	public function BindNextWeek($reservations)
 	{
-		$this->Assign('NextWeeksReservations', $reservations);
+		$this->Set('NextWeeksReservations', $reservations);
 	}
 }
 

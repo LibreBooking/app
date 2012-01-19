@@ -20,7 +20,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div class="res_popup_details">
 	<div class="user">{$fname} {$lname}</div>
 	<div class="dates">{formatdate date=$startDate key=res_popup} - {formatdate date=$endDate key=res_popup}</div>	
-	
+
+    <div class="title">{$title}</div>
+
 	<div class="resources">
 	{translate key="Resources"} ({$resources|@count})
 	{foreach from=$resources item=resource name=resource_loop}

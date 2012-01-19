@@ -155,9 +155,10 @@ class en_us extends Language
 		$strings['Contact'] = 'Contact';
 		$strings['NoContactLabel'] = '(no contact information)';
 		$strings['Description'] = 'Description';
-		$strings['NoDescriptionLabel'] = '(no description';
+		$strings['NoDescriptionLabel'] = '(no description)';
 		$strings['Notes'] = 'Notes';
 		$strings['NoNotesLabel'] = '(no notes)';
+		$strings['NoTitleLabel'] = '(no title)';
 		$strings['UsageConfiguration'] = 'Usage Configuration';
 		$strings['ChangeConfiguration'] = 'Change Configuration';
 		$strings['ResourceMinLength'] = 'Reservations must last at least %s';

@@ -81,6 +81,11 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		$this->Set('summary', $summary);
 	}
+
+    function SetTitle($title)
+    {
+        $this->Set('title', $title);
+    }
 	
 	function SetDates($startDate, $endDate)
 	{
@@ -116,6 +121,11 @@ interface IReservationPopupPage
 	 * @param $summary string
 	 */
 	function SetSummary($summary);
+
+    /**
+	 * @param $title string
+	 */
+	function SetTitle($title);
 	
 	/**
 	 * @param $startDate Date
@@ -154,7 +164,8 @@ class ReservationPopupPresenter
 		$this->_page->SetResources($reservation->Resources);
 		$this->_page->SetParticipants($reservation->Participants);
 		$this->_page->SetSummary($reservation->Description);
-	
+		$this->_page->SetTitle($reservation->Title);
+
 		$this->_page->SetDates($startDate, $endDate);
 	}
 }
