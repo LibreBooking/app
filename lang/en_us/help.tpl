@@ -373,6 +373,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Jan Mattila</p>
 
+<h3>Logo/UI</h3>
+
+<p>Hannah Milan</p>
+
 <h3>Translators</h3>
 
 <h3>Thank you to the following projects and libraries</h3>
@@ -394,6 +398,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p>SimpleImage</p>
 
 <p>PHPMailer</p>
+
+<p>jsTimezoneDetect</p>
 
 <h2>License</h2>
 

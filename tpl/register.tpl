@@ -73,7 +73,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         </p>
         <p>
                 <label class="reg">{translate key="Timezone"}<br />
-                        <select {formname key='TIMEZONE'} class="input" tabindex="180">
+                        <select {formname key='TIMEZONE'} class="input" tabindex="180" id="timezoneDropDown">
                                 {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
                         </select>
                 </label>
@@ -121,4 +121,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </form>
 </div>
 {setfocus key='LOGIN'}
+
+<script src="scripts/js/jstz.min.js"></script>
+
+<script type="text/javascript">
+		$(document).ready(function() {
+			var timezone = jstz.determine_timezone();
+			$('#timezoneDropDown').val(timezone.name());
+		});
+	</script>
+
 {include file='globalfooter.tpl'}
