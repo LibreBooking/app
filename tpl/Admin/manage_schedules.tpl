@@ -34,9 +34,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<input type="hidden" class="id" value="{$id}"/>
 			<input type="hidden" class="daysVisible" value="{$daysVisible}"/>
 			<input type="hidden" class="dayOfWeek" value="{$dayOfWeek}"/>
-			<h4>{$schedule->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">Rename</a><br/>
+			<h4>{$schedule->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">{translate key=Rename}</a><br/>
 			{translate key="LayoutDescription" args="$dayName, $daysVisible"}
-			<a class="update changeButton" href="javascript:void(0);">Change</a><br/>
+			<a class="update changeButton" href="javascript:void(0);">{translate key=Change}</a><br/>
 		</div>
 		<div class="layout">
 			{translate key=ScheduleLayout args=$schedule->GetTimezone()}:<br/>
@@ -72,13 +72,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div class="actions">
 			{if $schedule->GetIsDefault()}
-				<span class="note">{translate key=ThisIsTheDefaultSchedule}</span> |
-				<span class="note">{translate key=DefaultScheduleCannotBeBroughtDown}</span>
-				{else}
+				<span class="note">{translate key=ThisIsTheDefaultSchedule}</span>
+			{else}
 				<a class="update makeDefaultButton" href="javascript: void(0);">{translate key=MakeDefault}</a> |
-				<a class="update bringDownButton" href="javascript: void(0);">{translate key=BringDown}</a>
 			{/if}
-			|
 			<a class="update changeLayoutButton" href="javascript: void(0);">{translate key=ChangeLayout}</a>
 		</div>
 	</div>
