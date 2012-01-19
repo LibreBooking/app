@@ -235,9 +235,9 @@ class AddReservationUserCommand extends SqlCommand
 
 class AddResourceCommand extends SqlCommand
 {
-	public function __construct($name, $schedule_id, $location = null, $contact_info = null, $description = null, $notes = null,
+	public function __construct($name, $schedule_id, $autoassign = 1, $location = null, $contact_info = null, $description = null, $notes = null,
 								$isactive = 1, $min_duration = null, $min_increment = null, $max_duration = null,
-								$unit_cost = null, $autoassign = 1, $requires_approval = 0, $allow_multiday = 1,
+								$unit_cost = null, $requires_approval = 0, $allow_multiday = 1,
 								$max_participants = null, $min_notice_time = null, $max_notice_time = null)
 	{
 		parent::__construct(Queries::ADD_RESOURCE);
@@ -310,6 +310,15 @@ class AutoAssignPermissionsCommand extends SqlCommand
 	{
 		parent::__construct(Queries::AUTO_ASSIGN_PERMISSIONS);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
+class AutoAssignResourcePermissionsCommand extends SqlCommand
+{
+	public function __construct($resourceId)
+	{
+		parent::__construct(Queries::AUTO_ASSIGN_RESOURCE_PERMISSIONS);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 	}
 }
 

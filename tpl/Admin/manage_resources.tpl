@@ -190,18 +190,26 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<tr>
 					<th>{translate key='Name'}</th>
 					<th>{translate key='Schedule'}</th>
+					<th>{translate key='ResourcePermissions'}</th>
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
 					<td><input type="text" class="textbox required" maxlength="85"
-							   style="width:250px" {formname key=RESOURCE_NAME} /></td>
+							   style="width:250px" {formname key=RESOURCE_NAME} />
+                    </td>
 					<td>
-						<select class="textbox" {formname key=SCHEDULE_ID}>
+						<select class="textbox" {formname key=SCHEDULE_ID} style="width:100px">
 						{foreach from=$Schedules item=scheduleName key=scheduleId}
 							<option value="{$scheduleId}">{$scheduleName}</option>
 						{/foreach}
 						</select>
 					</td>
+                    <td>
+                        <select class="textbox" {formname key=AUTO_ASSIGN} style="width:100px">
+                            <option value="0">{translate key="None"}</option>
+                            <option value="1">{translate key="AllUsers"}</option>
+                        </select>
+                    </td>
 					<td>
 						<button type="button"
 								class="button save">{html_image src="plus-button.png"} {translate key='AddResource'}</button>

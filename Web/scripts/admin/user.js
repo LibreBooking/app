@@ -26,9 +26,9 @@ function UserManagement(opts) {
 
 	UserManagement.prototype.init = function() {
 
-		ConfigureAdminDialog(elements.permissionsDialog, 400, 500);
+		ConfigureAdminDialog(elements.permissionsDialog, 430, 500);
 		ConfigureAdminDialog(elements.passwordDialog, 400, 150);
-		ConfigureAdminDialog(elements.userDialog, 310, 550);
+		ConfigureAdminDialog(elements.userDialog, 320, 560);
 		ConfigureAdminDialog(elements.deleteDialog, 600, 200);
 
 		elements.userList.delegate('a.update', 'click', function(e) {

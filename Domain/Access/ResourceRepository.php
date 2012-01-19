@@ -98,42 +98,19 @@ class ResourceRepository implements IResourceRepository
 		
 		return $this->_cache->Get($resourceId);
 	}
-	
-	/**
-	 * @see IResourceRepository::AddResource()
-	 */
-	public function AddResource($name, $additionalFields = array())
-	{
-		$addResourceCommand = new AddResourceCommand(
-					$name, 
-					$additionalFields['location'],
-					$additionalFields['contactInfo'],
-					$additionalFields['description'], 
-					$additionalFields['notes'], 
-					$additionalFields['isActive'], 
-					$additionalFields['minDuration'], 
-					$additionalFields['minIncrement'], 
-					$additionalFields['maxDuration'], 
-					$additionalFields['unitCost'], 
-					$additionalFields['autoAssign'], 
-					$additionalFields['requiresApproval'], 
-					$additionalFields['allowMultiday'], 
-					$additionalFields['maxParticipants'], 
-					$additionalFields['minNotice'], 
-					$additionalFields['maxNotice'] 
-					);
-					
-		$lastResourceId = ServiceLocator::GetDatabase()->ExecuteInsert($addResourceCommand);
-		
-		return $lastResourceId;
-	}
-	
+
 	public function Add(BookableResource $resource)
 	{
 		$db = ServiceLocator::GetDatabase();
-		$addResourceCommand = new AddResourceCommand($resource->GetName(), $resource->GetScheduleId());
+		$addResourceCommand = new AddResourceCommand($resource->GetName(), $resource->GetScheduleId(), $resource->GetAutoAssign());
 		
-		return $db->ExecuteInsert($addResourceCommand);
+		$resourceId = $db->ExecuteInsert($addResourceCommand);
+        if ($resource->GetAutoAssign())
+        {
+            $db->Execute(new AutoAssignResourcePermissionsCommand($resourceId));
+        }
+
+        return $resourceId;
 	}
 	
 	public function Update(BookableResource $resource)

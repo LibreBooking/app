@@ -35,13 +35,6 @@ interface IResourceRepository
 	public function LoadById($resourceId);
 
 	/**
-	 * @param string $name
-	 * @param array $additionalFields key value pair of additional fields to use during resource management
-	 * @return int ID of created BookableResource
-	 */
-	public function AddResource($name, $additionalFields = array());
-
-	/**
 	 * @param BookableResource $resource
      * @return int ID of created resource
 	 */

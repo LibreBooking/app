@@ -124,9 +124,10 @@ class BookableResource implements IResource
     /**
      * @param string $resourceName
      * @param int $scheduleId
+     * @param bool $autoAssign
      * @return BookableResource
      */
-	public static function CreateNew($resourceName, $scheduleId)
+	public static function CreateNew($resourceName, $scheduleId, $autoAssign = false)
 	{
 		return new BookableResource(null,
 							$resourceName,
@@ -135,7 +136,7 @@ class BookableResource implements IResource
 							null,
 							null,
 							null,
-							null,
+                            $autoAssign,
 							null,
 							null,
 							null,

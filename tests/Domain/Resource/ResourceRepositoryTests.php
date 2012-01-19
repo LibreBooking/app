@@ -127,18 +127,22 @@ class ResourceRepositoryTests extends TestBase
 		$name = "name";
 		$scheduleId = 828;
 		$resourceId = 8888;
+        $autoAssign = true;
 		
-		$resource = BookableResource::CreateNew($name, $scheduleId);
+		$resource = BookableResource::CreateNew($name, $scheduleId, $autoAssign);
 		
 		$this->db->_ExpectedInsertId = $resourceId;
 		
 		$resourceRepository = new ResourceRepository();
 		$resourceRepository->Add($resource);
 		
-		$expectedAddCommand = new AddResourceCommand($name, $scheduleId);
+		$expectedAddCommand = new AddResourceCommand($name, $scheduleId, $autoAssign);
+        $assignResourcePermissions = new AutoAssignResourcePermissionsCommand($resourceId);
 		$actualAddResourceCommand = $this->db->_Commands[0];
+		$actualAssignResourcePermissions = $this->db->_Commands[1];
 
 		$this->assertEquals($expectedAddCommand, $actualAddResourceCommand);
+		$this->assertEquals($assignResourcePermissions, $actualAssignResourcePermissions);
 	}
 	
 	public function testDeletingAResourceRemovesAllAssociatedData()

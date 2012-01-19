@@ -168,7 +168,7 @@ class en_us extends Language
 		$strings['ResourceRequiresApproval'] = 'Reservations must be approved';
 		$strings['ResourceRequiresApprovalNone'] = 'Reservations do not require approval';
 		$strings['ResourcePermissionAutoGranted'] = 'Permission is automatically granted';
-		$strings['ResourcePermissionNotAutoGranted'] = 'Permission is automatically granted';
+		$strings['ResourcePermissionNotAutoGranted'] = 'Permission is not automatically granted';
 		$strings['ResourceMinNotice'] = 'Reservations must be made at least %s prior to start time';
 		$strings['ResourceMinNoticeNone'] = 'Reservations can be made up until the current time';
 		$strings['ResourceMaxNotice'] = 'Reservations must not end more than %s from the current time';
