@@ -42,11 +42,26 @@ class ResourceKeys
 
 class Resources implements IResourceLocalization
 {
+    /**
+     * @var string
+     */
 	public $CurrentLanguage;
 	public $LanguageFile;
 	public $CalendarLanguageFile;
+
+    /**
+     * @var array|AvailableLanguage[]
+     */
 	public $AvailableLanguages = array();
+
+    /**
+     * @var string
+     */
 	public $Charset;
+
+    /**
+     * @var string
+     */
 	public $HtmlLang;
 	
 	protected $LanguageDirectory;
@@ -95,10 +110,14 @@ class Resources implements IResourceLocalization
 	{
 		self::$_instance = $instance;
 	}
-	
+
+    /**
+     * @param string $languageCode
+     * @return bool
+     */
 	public function SetLanguage($languageCode)
 	{
-		$this->SetCurrentLanguage($languageCode);
+		return $this->SetCurrentLanguage($languageCode);
 	}
 	
 	public function GetString($key, $args = array())
@@ -187,7 +206,11 @@ class Resources implements IResourceLocalization
 		
 		return $months[$key];
 	}
-	
+
+    /**
+     * @param $languageCode
+     * @return bool
+     */
 	private function SetCurrentLanguage($languageCode)
 	{
 		$languageCode = strtolower($languageCode);
@@ -203,7 +226,11 @@ class Resources implements IResourceLocalization
 			$this->CurrentLanguage = $languageCode;
 			$this->Charset = $this->_lang->Charset;
 			$this->HtmlLang = $this->_lang->HtmlLang;
+
+            return true;
 		}
+
+        return false;
 	}
 	
 	private function GetLanguageCode()

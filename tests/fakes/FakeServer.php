@@ -44,6 +44,10 @@ class FakeServer extends Server
 		$this->Cookies[$cookie->Name] = $cookie;
 	}
 
+    /**
+     * @param string $name
+     * @return string
+     */
 	public function GetCookie($name)
 	{
 		if (array_key_exists($name, $this->Cookies)) {

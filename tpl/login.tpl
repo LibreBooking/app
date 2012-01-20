@@ -35,6 +35,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<label class="login">{translate key='Password'}<br/>
 					{textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}</label>
 			</p>
+			<p>
+				<label class="login">{translate key='Language'}<br/>
+				<select {formname key='LANGUAGE'} class="input-small" id="languageDropDown">
+						{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$SelectedLanguage}
+				</select>
+			</p>
+
 			<p class="stayloggedin">
 				<label class="login"><input type="checkbox" name="{FormKeys::PERSIST_LOGIN}" value="true" tabindex="30" /> {translate key='RememberMe'}</label>
 
@@ -64,4 +71,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 {setfocus key='EMAIL'}
+
+<script type="text/javascript">
+	var url = 'index.php?{QueryStringKeys::LANGUAGE}=';
+	$(document).ready(function() {
+		$('#languageDropDown').change(function()
+		{
+			window.location.href = url + $(this).val();
+		});
+	});
+</script>
 {include file='globalfooter.tpl'}

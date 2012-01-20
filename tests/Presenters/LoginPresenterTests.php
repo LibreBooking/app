@@ -25,8 +25,20 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class LoginPresenterTests extends TestBase
 {
+    /**
+     * @var FakeAuth
+     */
 	private $auth;
+
+    /**
+     * @var FakeLoginPage
+     */
 	private $page;
+
+    /**
+     * @var LoginPresenter
+     */
+    private $presenter;
 	
 	public function setup()
 	{
@@ -40,6 +52,8 @@ class LoginPresenterTests extends TestBase
 		$this->page->_PersistLogin = true;
 		
 		$this->fakeServer->SetSession(SessionKeys::USER_SESSION, new UserSession(1));
+
+        $this->presenter = new LoginPresenter($this->page, $this->auth);
 	}
 	
 	public function teardown()
@@ -52,8 +66,7 @@ class LoginPresenterTests extends TestBase
 	
 	public function testLoginCallsAuthValidate() 
 	{	
-		$presenter = new LoginPresenter($this->page, $this->auth);
-		$presenter->Login();
+		$this->presenter->Login();
 		
 		$this->assertEquals($this->page->_EmailAddress, $this->auth->_LastLogin);
 		$this->assertEquals($this->page->_Password, $this->auth->_LastPassword);
@@ -62,8 +75,7 @@ class LoginPresenterTests extends TestBase
 	public function testSuccessfulValidateCallsLogin()
 	{
 		$this->auth->_ValidateResult = true;
-		$presenter = new LoginPresenter($this->page, $this->auth);
-		$presenter->Login();
+        $this->presenter->Login();
 		
 		$this->assertEquals($this->page->_EmailAddress, $this->auth->_LastLogin);
 		$this->assertEquals($this->page->_PersistLogin, $this->auth->_LastPersist);
@@ -76,8 +88,7 @@ class LoginPresenterTests extends TestBase
 		
 		$this->fakeServer->UserSession = $userSession;
 		$this->auth->_ValidateResult = true;
-		$presenter = new LoginPresenter($this->page, $this->auth);
-		$presenter->Login();
+		$this->presenter->Login();
 		
 		$this->assertEquals(Pages::UrlFromId(2), $this->page->_LastRedirect);
 	}
@@ -88,8 +99,7 @@ class LoginPresenterTests extends TestBase
 		$this->page->_ResumeUrl = $redirect;
 		
 		$this->auth->_ValidateResult = true;
-		$presenter = new LoginPresenter($this->page, $this->auth);
-		$presenter->Login();
+        $this->presenter->Login();
 		
 		$this->assertEquals($redirect, $this->page->_LastRedirect);
 	}
@@ -97,17 +107,15 @@ class LoginPresenterTests extends TestBase
 	public function testPageLoadSetsVariablesCorrectly()
 	{
 		$this->fakeConfig->SetKey(ConfigKeys::ALLOW_REGISTRATION, 'true');
-		
-		$presenter = new LoginPresenter($this->page, $this->auth);
-		$presenter->PageLoad();
+
+        $this->presenter->PageLoad();
 		
 		$this->assertEquals(true, $this->page->getShowRegisterLink());
 	}
 	
 	public function testPageLoadSetsLanguagesCorrect()
 	{
-		$presenter = new LoginPresenter($this->page, $this->auth);
-		$presenter->PageLoad();
+		$this->presenter->PageLoad();
 		
 		$resources = Resources::GetInstance();
 		$curLang = 'en_US';
@@ -125,8 +133,7 @@ class LoginPresenterTests extends TestBase
 	public function testErrorIsDisplayedIfValidationFails()
 	{
 		$this->auth->_ValidateResult = false;
-		$presenter = new LoginPresenter($this->page, $this->auth);
-		$presenter->Login();
+		$this->presenter->Login();
 		
 		$this->assertEquals("", $this->page->_LastRedirect, "Does not redirect if auth fails");
 		$this->assertTrue($this->page->_ShowLoginError, "Should show login error if auth fails");
@@ -140,8 +147,7 @@ class LoginPresenterTests extends TestBase
 		
 		$this->auth->_CookieValidateResult = true;
 		
-		$presenter = new LoginPresenter($this->page, $this->auth);
-		$presenter->PageLoad();
+		$this->presenter->PageLoad();
 		
 		$this->assertTrue($this->auth->_CookieLoginCalled, "should try to auto login if persist cookie is set");
 		$this->assertEquals($cookie->Value, $this->auth->_LastLoginCookie);
@@ -151,11 +157,32 @@ class LoginPresenterTests extends TestBase
 	public function testDoesNotAutoLoginIfCookieNotSet()
 	{
 		$this->page->_ResumeUrl = '/autologin/page/whatever.html';	
-		$presenter = new LoginPresenter($this->page, $this->auth);
-		$presenter->PageLoad();
+		$this->presenter->PageLoad();
 		
 		$this->assertFalse($this->auth->_CookieLoginCalled, "should not try to auto login without persist cookie");
 	}
+
+    public function testCanChangeToKnownLanguage()
+    {
+        $this->page->_requestedLanguage = 'en_gb';
+        $this->fakeResources->_SetCurrentLanguageResult = true;
+
+        $this->presenter->ChangeLanguage();
+
+        $cookie = $this->fakeServer->GetCookie('language');
+        $this->assertEquals('en_gb', $cookie);
+        $this->assertEquals('en_gb', $this->page->_selectedLanguage);
+    }
+
+    public function testCannotChangeToUnknownLanguage()
+    {
+        $this->page->_requestedLanguage = 'en_xx';
+
+        $this->presenter->ChangeLanguage();
+
+        // dont set cookie
+        // leave selection
+    }
 }
 
 class FakeLoginPage extends FakePageBase implements ILoginPage
@@ -170,8 +197,10 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 	public $_UseLogonName = false;
 	public $_ResumeUrl = "";
 	public $_ShowLoginError = false;
-	
-	public function PageLoad()
+    public $_requestedLanguage;
+    public $_selectedLanguage;
+
+    public function PageLoad()
 	{
 		$this->_PageLoadWasCalled = true;
 	}
@@ -240,5 +269,15 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 	{
 		$this->_ShowLoginError = true;
 	}
+
+    public function getRequestedLanguage()
+    {
+       return $this->_requestedLanguage;
+    }
+
+    public function setSelectedLanguage($languageCode)
+    {
+        $this->_selectedLanguage = $languageCode;
+    }
 }
 ?>

@@ -17,11 +17,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-
-/**
- * Presenting login page.
- */
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
@@ -49,7 +44,6 @@ class LoginPresenter
 	}
 
 	/**
-	 *
 	 * @param IAuthentication $authentication
 	 */
 	private function SetAuthentication($authentication)
@@ -108,6 +102,18 @@ class LoginPresenter
 			$this->_page->setShowLoginError();
 		}
 	}
+
+    public function ChangeLanguage()
+    {
+       $resources = Resources::GetInstance();
+
+       $languageCode = $this->_page->getRequestedLanguage();
+       if ($resources->SetLanguage($languageCode))
+       {
+           ServiceLocator::GetServer()->SetCookie(new Cookie('language', $languageCode));
+           $this->_page->setSelectedLanguage($resources->CurrentLanguage);
+       }
+    }
 
 	public function Logout()
 	{

@@ -263,6 +263,17 @@ form.box-form li {
     color: #777
 }
 
+.input-small
+{
+    font-size: 12px;
+    width: 97%;
+    padding: 3px;
+    margin: 2px 6px 20px 0;
+    border: 1px solid #e5e5e5;
+    background: #fbfbfb;
+    color: #777
+}
+
 form p {
     margin: 0 3px 12px 3px;
 }

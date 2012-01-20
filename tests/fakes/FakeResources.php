@@ -21,6 +21,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class FakeResources extends Resources 
 {
 	private $_dateFormats = array();
+
+    public $_SetCurrentLanguageResult = true;
 	
 	public function __construct()
 	{
@@ -55,5 +57,10 @@ class FakeResources extends Resources
 	{
 		$this->_dateFormats[$key] = $value;
 	}
+
+    public function SetLanguage($languageCode)
+    {
+        return $this->_SetCurrentLanguageResult;
+    }
 }
 ?>

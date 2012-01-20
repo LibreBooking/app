@@ -16,22 +16,33 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 class AvailableLanguage
 {
-	public $LanguageCode;
-	public $ValidationExpression;
-	public $LanguageFile;
-	public $DisplayName;
-	
-	public function __construct($languageCode, $validationExpression, $languageFile, $displayName)
-	{
-		$this->LanguageCode = $languageCode;
-		$this->ValidationExpression = $validationExpression;
-		$this->LanguageFile = $languageFile;
-		$this->DisplayName = $displayName;	
-		$this->LanguageClass = str_replace('.php', '', $languageFile);
-	}
+    public $LanguageCode;
+    public $ValidationExpression;
+    public $LanguageFile;
+    public $DisplayName;
+
+    public function GetDisplayName()
+    {
+        return $this->DisplayName;
+    }
+
+    public function GetLanguageCode()
+    {
+        return $this->LanguageCode;
+    }
+
+    public function __construct($languageCode, $validationExpression, $languageFile, $displayName)
+    {
+        $this->LanguageCode = $languageCode;
+        $this->ValidationExpression = $validationExpression;
+        $this->LanguageFile = $languageFile;
+        $this->DisplayName = $displayName;
+        $this->LanguageClass = str_replace('.php', '', $languageFile);
+    }
 }
+
 ?>
