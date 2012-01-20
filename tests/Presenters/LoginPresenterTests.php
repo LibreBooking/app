@@ -169,19 +169,9 @@ class LoginPresenterTests extends TestBase
 
         $this->presenter->ChangeLanguage();
 
-        $cookie = $this->fakeServer->GetCookie('language');
+        $cookie = $this->fakeServer->GetCookie(CookieKeys::LANGUAGE);
         $this->assertEquals('en_gb', $cookie);
         $this->assertEquals('en_gb', $this->page->_selectedLanguage);
-    }
-
-    public function testCannotChangeToUnknownLanguage()
-    {
-        $this->page->_requestedLanguage = 'en_xx';
-
-        $this->presenter->ChangeLanguage();
-
-        // dont set cookie
-        // leave selection
     }
 }
 
@@ -265,17 +255,17 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 		return $this->_ResumeUrl;
 	}
 	
-	public function setShowLoginError()
+	public function SetShowLoginError()
 	{
 		$this->_ShowLoginError = true;
 	}
 
-    public function getRequestedLanguage()
+    public function GetRequestedLanguage()
     {
        return $this->_requestedLanguage;
     }
 
-    public function setSelectedLanguage($languageCode)
+    public function SetSelectedLanguage($languageCode)
     {
         $this->_selectedLanguage = $languageCode;
     }

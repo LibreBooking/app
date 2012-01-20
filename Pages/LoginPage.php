@@ -39,7 +39,7 @@ interface ILoginPage extends IPage
 
     public function getCurrentLanguage();
 
-    public function getRequestedLanguage();
+    public function GetRequestedLanguage();
 
     public function setUseLogonName($value);
 
@@ -47,9 +47,9 @@ interface ILoginPage extends IPage
 
     public function getResumeUrl();
 
-    public function setShowLoginError();
+    public function SetShowLoginError();
 
-    public function setSelectedLanguage($languageCode);
+    public function SetSelectedLanguage($languageCode);
 }
 
 /**
@@ -57,13 +57,13 @@ interface ILoginPage extends IPage
  */
 class LoginPage extends Page implements ILoginPage
 {
-    private $_presenter = null;
+    private $presenter = null;
 
     public function __construct()
     {
         parent::__construct('LogIn'); // parent Page class
 
-        $this->_presenter = new LoginPresenter($this); // $this pseudo variable of class object is Page object
+        $this->presenter = new LoginPresenter($this); // $this pseudo variable of class object is Page object
         $this->Set('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
         $this->Set('ShowLoginError', false);
         $this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
@@ -75,7 +75,7 @@ class LoginPage extends Page implements ILoginPage
      */
     public function PageLoad()
     {
-        $this->_presenter->PageLoad();
+        $this->presenter->PageLoad();
         $this->Display('login.tpl');
     }
 
@@ -130,12 +130,21 @@ class LoginPage extends Page implements ILoginPage
     }
 
     /**
-     * Get and return form status on Actions::LOGIN
-     * @return type null
+     * @return bool
      */
     public function LoggingIn()
     {
-        return $this->GetForm(Actions::LOGIN);
+        $loggingIn = $this->GetForm(Actions::LOGIN);
+        return !empty($loggingIn);
+    }
+
+    /**
+     * @return bool
+     */
+    public function ChangingLanguage()
+    {
+        $lang = $this->GetRequestedLanguage();
+        return !empty($lang);
     }
 
     /**
@@ -145,20 +154,25 @@ class LoginPage extends Page implements ILoginPage
      */
     public function Login()
     {
-        $this->_presenter->Login();
+        $this->presenter->Login();
     }
 
-    public function setShowLoginError()
+    public function ChangeLanguage()
+    {
+        $this->presenter->ChangeLanguage();
+    }
+
+    public function SetShowLoginError()
     {
         $this->Set('ShowLoginError', true);
     }
 
-    public function getRequestedLanguage()
+    public function GetRequestedLanguage()
     {
         return $this->GetQuerystring(QueryStringKeys::LANGUAGE);
     }
 
-    public function setSelectedLanguage($languageCode)
+    public function SetSelectedLanguage($languageCode)
     {
         $this->Set('SelectedLanguage', $languageCode);
     }

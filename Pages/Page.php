@@ -239,11 +239,11 @@ abstract class Page implements IPage
 			$languageCode = $this->GetVar('CurrentLanguage');
 		}
 		$localizedPath = ROOT_DIR . 'lang/' . $languageCode;
-		$defaultPath = ROOT_DIR . 'lang/en_us/' . $templateName;
+		$defaultPath = ROOT_DIR . 'lang/en_us/';
 
 		if (file_exists($localizedPath . '/' . $templateName))
 		{
-			$this->smarty->AddTemplateDirectory($localizedPath);
+           $this->smarty->AddTemplateDirectory($localizedPath);
 		}
 		else
 		{

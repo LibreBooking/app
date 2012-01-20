@@ -163,7 +163,7 @@ class Authentication implements IAuthentication
 
     public function HandleLoginFailure(ILoginPage $loginPage)
     {
-        $loginPage->setShowLoginError();
+        $loginPage->SetShowLoginError();
     }
 
     private function IsAdminRole($userId, $emailAddress)

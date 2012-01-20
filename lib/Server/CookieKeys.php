@@ -18,8 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//require_once('namespace.php');
-
 class CookieKeys
 {
 	private function __construct()

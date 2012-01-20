@@ -19,66 +19,76 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl'}
 
 {if $ShowLoginError}
-    <div id="loginError">
-        {translate key='LoginError'}
-    </div>
+<div id="loginError">
+	{translate key='LoginError'}
+</div>
 {/if}
 
-<div id="loginbox"><!--This "$smarty.server.SCRIPT_NAME" sets up the form to post back to the same page that it is on.-->
-    <form class="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
-        <div>
+<div id="loginbox">
+	<!--This "$smarty.server.SCRIPT_NAME" sets up the form to post back to the same page that it is on.-->
+	<form class="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
+		<div>
 			<p>
 				<label class="login">{translate key='UsernameOrEmail'}<br/>
-					{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
+				{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
 			</p>
+
 			<p>
 				<label class="login">{translate key='Password'}<br/>
-					{textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}</label>
+				{textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}</label>
 			</p>
+
 			<p>
 				<label class="login">{translate key='Language'}<br/>
-				<select {formname key='LANGUAGE'} class="input-small" id="languageDropDown">
-						{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$SelectedLanguage}
-				</select>
+					<select {formname key='LANGUAGE'} class="input-small" id="languageDropDown">
+					{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$SelectedLanguage}
+					</select>
 			</p>
 
 			<p class="stayloggedin">
-				<label class="login"><input type="checkbox" name="{FormKeys::PERSIST_LOGIN}" value="true" tabindex="30" /> {translate key='RememberMe'}</label>
+				<label class="login"><input type="checkbox" name="{FormKeys::PERSIST_LOGIN}" value="true"
+											tabindex="30"/> {translate key='RememberMe'}</label>
 
 			</p>
 
 			<p class="loginsubmit">
-				<button type="submit" name="{Actions::LOGIN}" class="button" tabindex="100" value="submit"><img src="img/door-open-in.png" /> {translate key='LogIn'} </button>
-				<input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}" />
+				<button type="submit" name="{Actions::LOGIN}" class="button" tabindex="100" value="submit"><img
+						src="img/door-open-in.png"/> {translate key='LogIn'} </button>
+				<input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}"/>
 			</p>
 		</div>
 		<div style="clear:both;">&nbsp;</div>
-		{if $ShowRegisterLink}
-			<h4 class="register">
-				{translate key='FirstTimeUser?'}
+	{if $ShowRegisterLink}
+		<h4 class="register">
+			{translate key='FirstTimeUser?'}
 				{html_link href="register.php" key="CreateAnAccount"}
-			</h4>
-		{/if}
-    </form>
+		</h4>
+	{/if}
+	</form>
 </div>
 
 <div id="login-links">
-    <p>
-        <a href="view-schedule.php">{translate key='ViewSchedule'}</a>
-        |
-        <a href="forgot.php">{translate key='ForgotMyPassword'}</a>
-    </p>
+	<p>
+		<a href="view-schedule.php">{translate key='ViewSchedule'}</a>
+		|
+		<a href="forgot.php">{translate key='ForgotMyPassword'}</a>
+	</p>
 </div>
 
 {setfocus key='EMAIL'}
 
 <script type="text/javascript">
 	var url = 'index.php?{QueryStringKeys::LANGUAGE}=';
-	$(document).ready(function() {
+	$(document).ready(function () {
 		$('#languageDropDown').change(function()
 		{
 			window.location.href = url + $(this).val();
 		});
+
+		var langCode = readCookie('{CookieKeys::LANGUAGE}');
+
+		if (!langCode) {
+		}
 	});
 </script>
 {include file='globalfooter.tpl'}

@@ -214,7 +214,11 @@ class Resources implements IResourceLocalization
 	private function SetCurrentLanguage($languageCode)
 	{
 		$languageCode = strtolower($languageCode);
-		if (isset($this->AvailableLanguages[$languageCode]) && file_exists($this->LanguageDirectory . $this->AvailableLanguages[$languageCode]->LanguageFile))
+
+        if (
+            ($languageCode != $this->CurrentLanguage) &&
+            ($this->AvailableLanguages[$languageCode]) &&
+            file_exists($this->LanguageDirectory . $this->AvailableLanguages[$languageCode]->LanguageFile))
 		{
 			$languageSettings = $this->AvailableLanguages[$languageCode];
 			$this->LanguageFile = $languageSettings->LanguageFile;			
