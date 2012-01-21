@@ -25,6 +25,7 @@ class ConfigKeys {
     const ALLOW_RSS = 'allow.rss';
     const DEFAULT_PAGE_SIZE = 'default.page.size';
     const ENABLE_EMAIL = 'enable.email';
+	const INACTIVITY_TIMEOUT = 'inactivity.timeout';
     const LANGUAGE = 'default.language';
     const PASSWORD_PATTERN = 'password.pattern';
     const SCRIPT_URL = 'script.url';

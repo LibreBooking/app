@@ -315,6 +315,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>registration.captcha.enabled</span>Whether or not captcha image security is enabled during user
     account registration</p>
 
+<p class="setting"><span>inactivity.timeout</span>Number of minutes before the user is automatically logged out</p>
+
 <p class="setting"><span>['database']['type']</span>Any PEAR::MDB2 supported type</p>
 
 <p class="setting"><span>['database']['user']</span>Database user with access to the configured database</p>

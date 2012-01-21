@@ -36,6 +36,7 @@ $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // ie public
 $conf['settings']['image.upload.url'] = 'uploads/images';       // path to show uploaded images from, relative to script.url
 $conf['settings']['cache.templates'] = 'true';                  // recommended, caching template files helps web pages render faster
 $conf['settings']['registration.captcha.enabled'] = 'true';     // recommended, requires php_gd2.dll enabled in php.ini
+$conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out
 /**
  * Database configuration
  */

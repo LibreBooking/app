@@ -78,6 +78,7 @@ abstract class Page implements IPage
 		$this->smarty->assign('DisplayWelcome', $this->DisplayWelcome());
 		$this->smarty->assign('UserId', $userSession->UserId);
 		$this->smarty->assign('CanViewAdmin', $userSession->IsAdmin);
+		$this->smarty->assign('SessionTimeoutSeconds', Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT) * 60);
 	}
 
 	protected function SetTitle($title)
