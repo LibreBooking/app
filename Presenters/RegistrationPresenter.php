@@ -116,23 +116,24 @@ class RegistrationPresenter
     {
         if ($this->page->IsValid())
         {
-
             $additionalFields = array('phone' => $this->page->GetPhone(),
                 'organization' => $this->page->GetOrganization(),
                 'position' => $this->page->GetPosition());
 
-            $this->registration->Register(
+			$language = Resources::GetInstance()->CurrentLanguage;
+			$this->registration->Register(
                 $this->page->GetLoginName(),
                 $this->page->GetEmail(),
                 $this->page->GetFirstName(),
                 $this->page->GetLastName(),
                 $this->page->GetPassword(),
                 $this->page->GetTimezone(),
-                Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
+				$language,
                 intval($this->page->GetHomepage()),
                 $additionalFields);
 
-            $this->auth->Login($this->page->GetEmail(), false);
+			$context = new WebLoginContext(ServiceLocator::GetServer(), new LoginData(false, $language));
+            $this->auth->Login($this->page->GetEmail(), $context);
             $this->page->Redirect(Pages::UrlFromId($this->page->GetHomepage()));
         }
     }

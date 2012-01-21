@@ -31,10 +31,10 @@ interface IAuthentication
 	/**
 	 * @abstract
 	 * @param string $username
-	 * @param bool $persist whether or not to persist login across sessions
+	 * @param ILoginContext $loginContext
 	 * @return void
 	 */
-	public function Login($username, $persist);
+	public function Login($username, $loginContext);
 	
 	/**
 	 * @param UserSession $user
@@ -44,9 +44,10 @@ interface IAuthentication
 	
 	/**
 	 * @param string $cookieValue phpScheduleIt authentication cookie value
+	 * @param ILoginContext $loginContext
 	 * @return void
 	 */
-	public function CookieLogin($cookieValue);
+	public function CookieLogin($cookieValue, $loginContext);
 	
 	/**
 	 * @return bool

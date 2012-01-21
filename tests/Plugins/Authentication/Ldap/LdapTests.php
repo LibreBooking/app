@@ -55,6 +55,11 @@ class LdapTests extends TestBase
 	private $username = 'username';
 	private $password = 'password';
 
+	/**
+	 * @var ILoginContext
+	 */
+	private $loginContext;
+
 	public function setup()
 	{
 		parent::setup();
@@ -70,6 +75,8 @@ class LdapTests extends TestBase
 		$this->ldapUser = new LdapUser($ldapEntry);
 
 		$this->fakeLdap->_ExpectedLdapUser = $this->ldapUser;
+
+		$this->loginContext = $this->getMock('ILoginContext');
 	}
 
 	public function testCanValidateUser()
@@ -144,7 +151,6 @@ class LdapTests extends TestBase
 		$this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, $timezone);
 		$languageCode = 'en_US';
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $languageCode);
-		$persist = true;
 
 		$expectedUser = new AuthenticatedUser(
 			$this->username,
@@ -163,25 +169,24 @@ class LdapTests extends TestBase
 		$auth->SetRegistration($this->fakeRegistration);
 
 		$auth->Validate($this->username, $this->password);
-		$auth->Login($this->username, $persist);
+		$auth->Login($this->username, $this->loginContext);
 
 		$this->assertTrue($this->fakeRegistration->_SynchronizeCalled);
 		$this->assertEquals($expectedUser, $this->fakeRegistration->_LastSynchronizedUser);
-		$this->assertEquals($persist, $this->fakeAuth->_LastPersist);
+		$this->assertEquals($this->loginContext, $this->fakeAuth->_LastLoginContext);
 	}
 
 	public function testDoesNotSyncIfUserWasNotFoundInLdap()
 	{
-		$persist = false;
 		$this->fakeLdap->_ExpectedLdapUser = null;
 
 		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 
 		$auth->Validate($this->username, $this->password);
-		$auth->Login($this->username, $persist);
+		$auth->Login($this->username, $this->loginContext);
 
 		$this->assertFalse($this->fakeRegistration->_SynchronizeCalled);
-		$this->assertEquals($persist, $this->fakeAuth->_LastPersist);
+		$this->assertEquals($this->loginContext, $this->loginContext);
 	}
 
 	public function testAdLdapConstructsOptionsCorrectly()

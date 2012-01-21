@@ -57,8 +57,15 @@ class AuthenticationTests extends TestBase
 	 */
 	private $authorization;
 
+	/**
+	 * @var WebLoginContext
+	 */
+	private $loginContext;
+
 	function setup()
 	{
+		parent::setup();
+
 		$this->username = 'LoGInName';
 		$this->password = 'password';
 		$this->id = 191;
@@ -77,8 +84,8 @@ class AuthenticationTests extends TestBase
 		$this->authorization = $this->getMock('IAuthorizationService');
 		$this->auth = new Authentication($this->authorization);
 		$this->auth->SetMigration($this->fakeMigration);
-		
-		parent::setup();
+
+		$this->loginContext = new WebLoginContext($this->fakeServer, new LoginData());
 	}
 
 	function testValidateChecksAgainstDB()
@@ -98,6 +105,7 @@ class AuthenticationTests extends TestBase
 
 	function testLoginGetsUserDataFromDatabase()
 	{
+		$language = 'en_gb';
 		LoginTime::$Now = time();
 
 		$loginRows = $this->GetRows();
@@ -108,10 +116,11 @@ class AuthenticationTests extends TestBase
 			->with($this->equalTo(new AuthorizationUser($this->id, $this->email)))
 			->will($this->returnValue(false));
 
-		$this->auth->Login(strtolower($this->username), false);
+		$context = new WebLoginContext($this->fakeServer, new LoginData(false, $language));
+		$this->auth->Login(strtolower($this->username), $context);
 
 		$loginCommand = new LoginCommand(strtolower($this->username));
-		$updateLoginTimeCommand = new UpdateLoginTimeCommand($this->id, LoginTime::Now());
+		$updateLoginTimeCommand = new UpdateLoginDataCommand($this->id, LoginTime::Now(), $language);
 
 		$this->assertEquals(2, count($this->db->_Commands));
 		$this->assertEquals($loginCommand, $this->db->_Commands[0]);
@@ -137,7 +146,7 @@ class AuthenticationTests extends TestBase
 			->with($this->equalTo(new AuthorizationUser($this->id, $this->email)))
 			->will($this->returnValue($isAdmin));
 
-		$this->auth->Login(strtolower($this->username), false);
+		$this->auth->Login(strtolower($this->username), $this->loginContext);
 
 		$user->SessionToken = $this->fakeServer->GetUserSession()->SessionToken;
 		$this->assertEquals($user, $this->fakeServer->GetUserSession());
@@ -153,8 +162,8 @@ class AuthenticationTests extends TestBase
 			);
 		$this->db->SetRow(0, $loginRows);
 		$this->db->SetRow(1, $roleRows);
-	
-		$this->auth->Login(strtolower($this->username), false);
+
+		$this->auth->Login(strtolower($this->username), $this->loginContext);
 
 		$user = $this->fakeServer->GetUserSession();
 		$this->assertTrue($user->IsAdmin);
@@ -198,8 +207,9 @@ class AuthenticationTests extends TestBase
 		$this->db->SetRow(1, $roleRows);
 		
 		$hashedValue = sprintf("%s|%s", $this->id, LoginTime::Now());
-		
-		$this->auth->Login($this->username, true);
+
+		$loginContext = new WebLoginContext($this->fakeServer, new LoginData(true));
+		$this->auth->Login($this->username, $loginContext);
 
 		$expectedCookie = new Cookie(CookieKeys::PERSIST_LOGIN, $hashedValue);
 		$this->assertEquals($expectedCookie->Value, $this->fakeServer->GetCookie(CookieKeys::PERSIST_LOGIN));
@@ -225,7 +235,7 @@ class AuthenticationTests extends TestBase
 		$this->db->SetRow(1, $loginRows);
 		$this->db->SetRow(2, $roleRows);
 		
-		$valid = $this->auth->CookieLogin($cookie->Value);
+		$valid = $this->auth->CookieLogin($cookie->Value, $this->loginContext);
 		
 		$cookieValidateCommand = new CookieLoginCommand($userid);
 		$loginCommand = new LoginCommand($email);
@@ -249,7 +259,7 @@ class AuthenticationTests extends TestBase
 					));
 		$this->db->SetRows($rows);
 		
-		$valid = $this->auth->CookieLogin($cookie->Value);
+		$valid = $this->auth->CookieLogin($cookie->Value, $this->loginContext);
 		
 		$this->assertFalse($valid, 'should not be valid if cookie does not match');
 		$this->assertEquals(1, count($this->db->_Commands));

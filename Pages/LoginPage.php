@@ -26,30 +26,53 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
  */
 interface ILoginPage extends IPage
 {
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetEmailAddress();
 
-    public function getEmailAddress();
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetPassword();
 
-    public function getPassword();
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function GetPersistLogin();
 
-    public function getPersistLogin();
+	public function GetShowRegisterLink();
 
-    public function getShowRegisterLink();
+	public function SetShowRegisterLink($value);
 
-    public function setShowRegisterLink($value);
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetSelectedLanguage();
 
-    public function getCurrentLanguage();
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetRequestedLanguage();
 
-    public function GetRequestedLanguage();
+	public function SetUseLogonName($value);
 
-    public function setUseLogonName($value);
+	public function SetResumeUrl($value);
 
-    public function setResumeUrl($value);
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetResumeUrl();
 
-    public function getResumeUrl();
+	public function SetShowLoginError();
 
-    public function SetShowLoginError();
-
-    public function SetSelectedLanguage($languageCode);
+	public function SetSelectedLanguage($languageCode);
 }
 
 /**
@@ -57,125 +80,125 @@ interface ILoginPage extends IPage
  */
 class LoginPage extends Page implements ILoginPage
 {
-    private $presenter = null;
+	private $presenter = null;
 
-    public function __construct()
-    {
-        parent::__construct('LogIn'); // parent Page class
+	public function __construct()
+	{
+		parent::__construct('LogIn'); // parent Page class
 
-        $this->presenter = new LoginPresenter($this); // $this pseudo variable of class object is Page object
-        $this->Set('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
-        $this->Set('ShowLoginError', false);
-        $this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
-    }
+		$this->presenter = new LoginPresenter($this); // $this pseudo variable of class object is Page object
+		$this->Set('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
+		$this->Set('ShowLoginError', false);
+		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
+	}
 
-    /**
-     * Present appropriate page by calling PageLoad method.
-     * Call template engine Smarty object to display login template.
-     */
-    public function PageLoad()
-    {
-        $this->presenter->PageLoad();
-        $this->Display('login.tpl');
-    }
+	/**
+	 * Present appropriate page by calling PageLoad method.
+	 * Call template engine Smarty object to display login template.
+	 */
+	public function PageLoad()
+	{
+		$this->presenter->PageLoad();
+		$this->Display('login.tpl');
+	}
 
-    public function getEmailAddress()
-    {
-        return $this->GetForm(FormKeys::EMAIL);
-    }
+	public function GetEmailAddress()
+	{
+		return $this->GetForm(FormKeys::EMAIL);
+	}
 
-    public function getPassword()
-    {
-        return $this->GetForm(FormKeys::PASSWORD);
-    }
+	public function GetPassword()
+	{
+		return $this->GetForm(FormKeys::PASSWORD);
+	}
 
-    public function getPersistLogin()
-    {
-        return $this->GetForm(FormKeys::PERSIST_LOGIN);
-    }
+	public function GetPersistLogin()
+	{
+		return $this->GetForm(FormKeys::PERSIST_LOGIN);
+	}
 
-    public function getShowRegisterLink()
-    {
-        return $this->GetVar('ShowRegisterLink');
-    }
+	public function GetShowRegisterLink()
+	{
+		return $this->GetVar('ShowRegisterLink');
+	}
 
-    public function setShowRegisterLink($value)
-    {
-        $this->Set('ShowRegisterLink', $value);
-    }
+	public function SetShowRegisterLink($value)
+	{
+		$this->Set('ShowRegisterLink', $value);
+	}
 
-    public function getCurrentLanguage()
-    {
-        return $this->GetForm(FormKeys::LANGUAGE);
-    }
+	public function GetSelectedLanguage()
+	{
+		return $this->GetForm(FormKeys::LANGUAGE);
+	}
 
-    public function setUseLogonName($value)
-    {
-        $this->Set('UseLogonName', $value);
-    }
+	public function SetUseLogonName($value)
+	{
+		$this->Set('UseLogonName', $value);
+	}
 
-    public function setResumeUrl($value)
-    {
-        $this->Set('ResumeUrl', $value);
-    }
+	public function SetResumeUrl($value)
+	{
+		$this->Set('ResumeUrl', $value);
+	}
 
-    public function getResumeUrl()
-    {
-        return $this->GetForm(FormKeys::RESUME);
-    }
+	public function GetResumeUrl()
+	{
+		return $this->GetForm(FormKeys::RESUME);
+	}
 
-    public function DisplayWelcome()
-    {
-        return false;
-    }
+	public function DisplayWelcome()
+	{
+		return false;
+	}
 
-    /**
-     * @return bool
-     */
-    public function LoggingIn()
-    {
-        $loggingIn = $this->GetForm(Actions::LOGIN);
-        return !empty($loggingIn);
-    }
+	/**
+	 * @return bool
+	 */
+	public function LoggingIn()
+	{
+		$loggingIn = $this->GetForm(Actions::LOGIN);
+		return !empty($loggingIn);
+	}
 
-    /**
-     * @return bool
-     */
-    public function ChangingLanguage()
-    {
-        $lang = $this->GetRequestedLanguage();
-        return !empty($lang);
-    }
+	/**
+	 * @return bool
+	 */
+	public function ChangingLanguage()
+	{
+		$lang = $this->GetRequestedLanguage();
+		return !empty($lang);
+	}
 
-    /**
-     * Calling upon _presenter->Login() for authentication to a requested page.
-     * (Notice that this is not the Login Page, better understand the Login Page is an extension of Page).
-     * $this->_presenter = new LoginPresenter($this): is infact an extension of Page class
-     */
-    public function Login()
-    {
-        $this->presenter->Login();
-    }
+	/**
+	 * Calling upon _presenter->Login() for authentication to a requested page.
+	 * (Notice that this is not the Login Page, better understand the Login Page is an extension of Page).
+	 * $this->_presenter = new LoginPresenter($this): is infact an extension of Page class
+	 */
+	public function Login()
+	{
+		$this->presenter->Login();
+	}
 
-    public function ChangeLanguage()
-    {
-        $this->presenter->ChangeLanguage();
-    }
+	public function ChangeLanguage()
+	{
+		$this->presenter->ChangeLanguage();
+	}
 
-    public function SetShowLoginError()
-    {
-        $this->Set('ShowLoginError', true);
-    }
+	public function SetShowLoginError()
+	{
+		$this->Set('ShowLoginError', true);
+	}
 
-    public function GetRequestedLanguage()
-    {
-        return $this->GetQuerystring(QueryStringKeys::LANGUAGE);
-    }
+	public function GetRequestedLanguage()
+	{
+		return $this->GetQuerystring(QueryStringKeys::LANGUAGE);
+	}
 
-    public function SetSelectedLanguage($languageCode)
-    {
-        $this->Set('SelectedLanguage', $languageCode);
-    }
+	public function SetSelectedLanguage($languageCode)
+	{
+		$this->Set('SelectedLanguage', $languageCode);
+	}
 }
 
 ?>

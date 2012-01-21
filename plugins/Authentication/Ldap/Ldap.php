@@ -151,14 +151,14 @@ class Ldap implements IAuthentication
 		return false;
 	}
 
-	public function Login($username, $persist)
+	public function Login($username, $loginContext)
 	{
 		if ($this->LdapUserExists())
 		{
 			$this->Synchronize($username);
 		}
 
-		$this->authToDecorate->Login($username, $persist);
+		$this->authToDecorate->Login($username, $loginContext);
 	}
 
 	public function Logout(UserSession $user)
@@ -166,9 +166,9 @@ class Ldap implements IAuthentication
 		$this->authToDecorate->Logout($user);
 	}
 
-	public function CookieLogin($cookieValue)
+	public function CookieLogin($cookieValue, $loginContext)
 	{
-		$this->authToDecorate->CookieLogin($cookieValue);
+		$this->authToDecorate->CookieLogin($cookieValue, $loginContext);
 	}
 
 	public function AreCredentialsKnown()

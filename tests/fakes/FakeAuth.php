@@ -24,7 +24,11 @@ class FakeAuth implements IAuthentication
 {
 	public $_LastLogin;
 	public $_LastPassword;
-	public $_LastPersist;
+
+	/**
+	 * @var ILoginContext
+	 */
+	public $_LastLoginContext;
 	public $_LastLoginId;
 	public $_CookieLoginCalled = false;
 	public $_LastLoginCookie;
@@ -41,11 +45,11 @@ class FakeAuth implements IAuthentication
 		return $this->_ValidateResult;
 	}
 	
-	public function Login($username, $persist)
+	public function Login($username, $context)
 	{
         $this->_LoginCalled = true;
 		$this->_LastLogin = $username;
-		$this->_LastPersist = $persist;
+		$this->_LastLoginContext = $context;
 	}
 	
 	public function Logout(UserSession $user)
@@ -53,10 +57,11 @@ class FakeAuth implements IAuthentication
 		
 	}
 	
-	public function CookieLogin($cookie)
+	public function CookieLogin($cookie, $context)
 	{
 		$this->_CookieLoginCalled = true;
 		$this->_LastLoginCookie = $cookie;
+		$this->_LastLoginContext = $context;
 		
 		return $this->_CookieValidateResult;
 	}

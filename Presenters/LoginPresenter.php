@@ -72,18 +72,19 @@ class LoginPresenter
             $this->Login();
         }
 
-        $loginCookie = ServiceLocator::GetServer()->GetCookie(CookieKeys::PERSIST_LOGIN);
+		$server = ServiceLocator::GetServer();
+		$loginCookie = $server->GetCookie(CookieKeys::PERSIST_LOGIN);
 
         if ($this->IsCookieLogin($loginCookie))
         {
-            if ($this->authentication->CookieLogin($loginCookie))
+            if ($this->authentication->CookieLogin($loginCookie, new WebLoginContext($server, new LoginData(true))))
             {
                 $this->_Redirect();
             }
         }
 
         $allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
-        $this->_page->setShowRegisterLink($allowRegistration);
+        $this->_page->SetShowRegisterLink($allowRegistration);
     }
 
     /**
@@ -94,9 +95,10 @@ class LoginPresenter
         /**
          * If authentication is successful Log the user in and redirect to requested page.
          */
-        if ($this->authentication->Validate($this->_page->getEmailAddress(), $this->_page->getPassword()))
+        if ($this->authentication->Validate($this->_page->GetEmailAddress(), $this->_page->GetPassword()))
         {
-            $this->authentication->Login($this->_page->getEmailAddress(), $this->_page->getPersistLogin());
+			$context = new WebLoginContext(ServiceLocator::GetServer(), new LoginData($this->_page->GetPersistLogin(), $this->_page->GetSelectedLanguage()));
+            $this->authentication->Login($this->_page->GetEmailAddress(), $context);
             $this->_Redirect();
         }
         else
@@ -113,7 +115,7 @@ class LoginPresenter
         $languageCode = $this->_page->GetRequestedLanguage();
         if ($resources->SetLanguage($languageCode))
         {
-            ServiceLocator::GetServer()->SetCookie(new Cookie('language', $languageCode));
+            ServiceLocator::GetServer()->SetCookie(new Cookie(CookieKeys::LANGUAGE, $languageCode));
             $this->_page->SetSelectedLanguage($languageCode);
         }
     }
@@ -126,7 +128,7 @@ class LoginPresenter
 
     private function _Redirect()
     {
-        $redirect = $this->_page->getResumeUrl();
+        $redirect = $this->_page->GetResumeUrl();
 
         if (!empty($redirect))
         {

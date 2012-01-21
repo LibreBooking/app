@@ -53,26 +53,6 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(strtolower($username), $par1->Value);
 	}
 
-	function testUpdateLoginTimeCommand()
-	{
-		$userid = 1;
-		$time = new LoginTime();
-		LoginTime::$Now = time();
-
-		$command = new UpdateLoginTimeCommand($userid, $time->Now());
-
-		$this->assertEquals(Queries::UPDATE_LOGINTIME, $command->GetQuery());
-		$this->assertEquals(2, $command->Parameters->Count());
-
-		$par1 = $command->Parameters->Items(0);
-		$par2 = $command->Parameters->Items(1);
-
-		$this->assertEquals(ParameterNames::LAST_LOGIN, $par1->Name);
-		$this->assertEquals($time->Now(), $par1->Value);
-		$this->assertEquals(ParameterNames::USER_ID, $par2->Name);
-		$this->assertEquals($userid, $par2->Value);
-	}
-
 	function testMigratePasswordCommand()
 	{
 		$userid = 1;

@@ -1028,12 +1028,13 @@ class UpdateGroupCommand extends SqlCommand
 	}
 }
 
-class UpdateLoginTimeCommand extends SqlCommand
+class UpdateLoginDataCommand extends SqlCommand
 {
-	public function __construct($userId, $lastlogin)
+	public function __construct($userId, $lastLoginTime, $language)
 	{
-		parent::__construct(Queries::UPDATE_LOGINTIME);
-		$this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastlogin));
+		parent::__construct(Queries::UPDATE_LOGINDATA);
+		$this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastLoginTime));
+		$this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 	}
 }

@@ -701,9 +701,10 @@ class Queries
 		SET name = @groupname, admin_group_id = @admin_group_id
 		WHERE group_id = @groupid';
 
-    const UPDATE_LOGINTIME =
+    const UPDATE_LOGINDATA =
             'UPDATE users
-		SET lastlogin = @lastlogin
+		SET lastlogin = @lastlogin,
+		language = @language
 		WHERE user_id = @userid';
 
     const UPDATE_FUTURE_RESERVATION_INSTANCES =

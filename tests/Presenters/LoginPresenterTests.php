@@ -78,7 +78,8 @@ class LoginPresenterTests extends TestBase
         $this->presenter->Login();
 		
 		$this->assertEquals($this->page->_EmailAddress, $this->auth->_LastLogin);
-		$this->assertEquals($this->page->_PersistLogin, $this->auth->_LastPersist);
+		$data = $this->auth->_LastLoginContext->GetData();
+		$this->assertEquals($this->page->_PersistLogin, $data->Persist);
 	}
 
 	public function testSuccessfulValidateCallsRedirectToNormalPageWhenNoRequestedPage()
@@ -110,7 +111,7 @@ class LoginPresenterTests extends TestBase
 
         $this->presenter->PageLoad();
 		
-		$this->assertEquals(true, $this->page->getShowRegisterLink());
+		$this->assertEquals(true, $this->page->GetShowRegisterLink());
 	}
 	
 	public function testPageLoadSetsLanguagesCorrect()
@@ -195,27 +196,27 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 		$this->_PageLoadWasCalled = true;
 	}
 	
-	public function getEmailAddress()
+	public function GetEmailAddress()
 	{ 
 		return $this->_EmailAddress;
 	}
 	
-	public function getPassword()
+	public function GetPassword()
 	{ 
 		return $this->_Password;
 	}
 	
-	public function getPersistLogin()
+	public function GetPersistLogin()
 	{
 		return $this->_PersistLogin;
 	}
 	
-	public function getShowRegisterLink()
+	public function GetShowRegisterLink()
 	{
 		return $this->_ShowRegisterLink;
 	}
 	
-	public function setShowRegisterLink($value)
+	public function SetShowRegisterLink($value)
 	{
 		$this->_ShowRegisterLink = $value;
 	}
@@ -230,7 +231,7 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 		$this->_Languages = $languages;
 	}
 	
-	public function getCurrentLanguage()
+	public function GetSelectedLanguage()
 	{
 		return $this->_CurrentCode;
 	}
@@ -240,17 +241,17 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 		return $this->_UseLogonName;
 	}
 	
-	public function setUseLogonName($value)
+	public function SetUseLogonName($value)
 	{
 		$this->_UseLogonName = $value;
 	}
 	
-	public function setResumeUrl($value)
+	public function SetResumeUrl($value)
 	{
 		$this->_ResumeUrl = $value;
 	}
 	
-	public function getResumeUrl()
+	public function GetResumeUrl()
 	{
 		return $this->_ResumeUrl;
 	}

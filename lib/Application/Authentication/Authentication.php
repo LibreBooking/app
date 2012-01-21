@@ -27,7 +27,6 @@ require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
 
 class Authentication implements IAuthentication
 {
-
     /**
      * @var PasswordMigration
      */
@@ -61,67 +60,66 @@ class Authentication implements IAuthentication
         return $this->passwordMigration;
     }
 
-
     public function Validate($username, $password)
     {
-        /**
-         * To Logs' logfiles.
-         */
         Log::Debug('Trying to log in as: %s', $username);
-        /**
-         *
-         */
+
         $command = new AuthorizationCommand($username);
         $reader = ServiceLocator::GetDatabase()->Query($command);
         $valid = false;
-        /**
-         *
-         */
-        if (($row = $reader->GetRow()))
+
+        if ($row = $reader->GetRow())
         {
             Log::Debug('User was found: %s', $username);
             $migration = $this->GetMigration();
             $password = $migration->Create($password, $row[ColumnNames::OLD_PASSWORD], $row[ColumnNames::PASSWORD]);
             $salt = $row[ColumnNames::SALT];
-            /**
-             *
-             */
+
             if ($password->Validate($salt))
             {
                 $password->Migrate($row[ColumnNames::USER_ID]);
                 $valid = true;
             }
         }
-        /**
-         *
-         */
+
         Log::Debug('User: %s, was validated: %d', $username, $valid);
         return $valid;
     }
 
-    public function Login($username, $persist)
+	/**
+	 * @param string $username
+	 * @param ILoginContext $loginContext
+	 */
+    public function Login($username, $loginContext)
     {
-        Log::Debug('Logging in with user: %s, persist: %d', $username, $persist);
+        Log::Debug('Logging in with user: %s', $username);
 
         $command = new LoginCommand($username);
         $reader = ServiceLocator::GetDatabase()->Query($command);
 
-        if (($row = $reader->GetRow()))
+        if ($row = $reader->GetRow())
         {
+			$loginData = $loginContext->GetData();
             $loginTime = LoginTime::Now();
             $userid = $row[ColumnNames::USER_ID];
             $emailAddress = $row[ColumnNames::EMAIL];
+            $language = $row[ColumnNames::LANGUAGE_CODE];
+
+			if (!empty($loginData->Language))
+			{
+				$language = $loginData->Language;
+			}
 
             $isAdminRole = $this->IsAdminRole($userid, $emailAddress);
 
-            $updateLoginTimeCommand = new UpdateLoginTimeCommand($userid, $loginTime);
+            $updateLoginTimeCommand = new UpdateLoginDataCommand($userid, $loginTime, $language);
             ServiceLocator::GetDatabase()->Execute($updateLoginTimeCommand);
 
-            $this->SetUserSession($row, $isAdminRole);
+            $this->SetUserSession($row, $isAdminRole, $loginContext->GetServer());
 
-            if ($persist)
+            if ($loginContext->GetData()->Persist)
             {
-                $this->SetLoginCookie($userid, $loginTime);
+                $this->SetLoginCookie($userid, $loginTime, $loginContext->GetServer());
             }
         }
     }
@@ -137,7 +135,7 @@ class Authentication implements IAuthentication
         @session_destroy();
     }
 
-    public function CookieLogin($cookieValue)
+    public function CookieLogin($cookieValue, $loginContext)
     {
         $loginCookie = LoginCookie::FromValue($cookieValue);
         $valid = false;
@@ -149,7 +147,7 @@ class Authentication implements IAuthentication
 
             if ($valid)
             {
-                $this->Login($validEmail, true);
+                $this->Login($validEmail, $loginContext);
             }
         }
 
@@ -171,7 +169,12 @@ class Authentication implements IAuthentication
         return $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser($userId, $emailAddress));
     }
 
-    private function SetUserSession($row, $isAdminRole)
+	/**
+	 * @param array $row
+	 * @param bool $isAdminRole
+	 * @param Server $server
+	 */
+    private function SetUserSession($row, $isAdminRole, $server)
     {
         $user = new UserSession($row[ColumnNames::USER_ID]);
         $user->Email = $row[ColumnNames::EMAIL];
@@ -183,13 +186,18 @@ class Authentication implements IAuthentication
         $isAdmin = ($user->Email == Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$isAdminRole;
         $user->IsAdmin = $isAdmin;
 
-        ServiceLocator::GetServer()->SetUserSession($user);
+		$server->SetUserSession($user);
     }
 
-    private function SetLoginCookie($userid, $lastLogin)
+	/**
+	 * @param int $userid
+	 * @param string $lastLogin
+	 * @param Server $server
+	 */
+    private function SetLoginCookie($userid, $lastLogin, $server)
     {
         $cookie = new LoginCookie($userid, $lastLogin);
-        ServiceLocator::GetServer()->SetCookie($cookie);
+		$server->SetCookie($cookie);
     }
 
     private function DeleteLoginCookie($userid)

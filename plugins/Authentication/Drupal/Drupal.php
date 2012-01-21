@@ -89,7 +89,7 @@ class Drupal implements IAuthentication
 	* Called after Validate returns true
 	* @see IAuthorization::Login()
 	*/
-	public function Login($username, $persist)
+	public function Login($username, $loginContext)
 	{
 		// Synchronize account information from Drupal
             //The only thing Drupal really has is the user's e-mail address. Could syncronize that?
@@ -97,7 +97,7 @@ class Drupal implements IAuthentication
         //MPinnegar - I assume I don't do anything with persist, that's only used by another wrapper?
         
 		// Always call decorated Authentication so proper phpScheduleIt functionality is executed
-		$this->authToDecorate->Login($username, $persist);
+		$this->authToDecorate->Login($username, $loginContext);
 	}
 	
 	/**
@@ -111,12 +111,12 @@ class Drupal implements IAuthentication
 	/**
 	 * @see IAuthorization::CookieLogin()
 	 */
-	public function CookieLogin($cookieValue)
+	public function CookieLogin($cookieValue, $loginContext)
 	{
 		// Do anything Drupal-specific
 		  //MPinnegar - I don't think we need to do anything specific to Drupal? It shouldn't care about cookies set by phpScheduleIt
 		// Always call decorated Authentication so proper phpScheduleIt functionality is executed
-		$this->authToDecorate->CookieLogin(cookieValue);
+		$this->authToDecorate->CookieLogin($cookieValue, $loginContext);
 	}
 	
 	/**

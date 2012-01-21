@@ -229,7 +229,7 @@ class RegisterPresenterTests extends TestBase
 		$this->assertTrue($this->fakeReg->_RegisterCalled);
 		$this->assertTrue($this->fakeAuth->_LoginCalled);
         $this->assertEquals($this->email, $this->fakeAuth->_LastLogin);
-        $this->assertFalse($this->fakeAuth->_LastPersist);
+        $this->assertFalse($this->fakeAuth->_LastLoginContext->GetData()->Persist);
         
         $this->assertEquals(Pages::UrlFromId(2), $this->page->_RedirectDestination);
 	}
