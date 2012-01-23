@@ -21,10 +21,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class Server
 {
-
     public function __construct()
     {
-
     }
 
     public function SetCookie(Cookie $cookie)
@@ -65,7 +63,7 @@ class Server
     {
         if (isset($_GET[$name]))
         {
-            return htmlentities($_GET[$name]);
+            return htmlspecialchars($_GET[$name]);
         }
         return null;
     }
@@ -84,7 +82,7 @@ class Server
                 return $_POST[$name];
             }
 
-            return htmlentities($_POST[$name]); // Convert all applicable characters to HTML entities
+            return htmlspecialchars($_POST[$name]);
         }
         return null;
     }

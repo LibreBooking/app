@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 abstract class Language
 {
-	public $Charset = 'iso-8859-1';
+	public $Charset = 'UTF-8';
 	public $Dates = array();
 	public $Strings = array();
 	public $Days = array();
