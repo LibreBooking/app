@@ -16,43 +16,52 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once('Language.php');
 require_once('en_us.php');
 
 class en_gb extends en_us
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-	
-	function _LoadDates()
-	{
-		$dates = array();
-		
-		// General date formatting used for all date display unless otherwise noted
-		$dates['general_date'] = '%m/%d/%Y';
-		// General datetime formatting used for all datetime display unless otherwise noted
-		// The hour:minute:second will always follow this format
-		$dates['general_datetime'] = '%m/%d/%Y @';
-		// Date in the reservation notification popup and email
-		$dates['res_check'] = '%A %m/%d/%Y';
-		// Date on the scheduler that appears above the resource links
-		$dates['schedule_daily'] = '%A,<br/>%m/%d/%Y';
-		// Date on top-right of each page
-		$dates['header'] = '%A, %B %d, %Y';
-		
-		// new stuff
-		$dates['js_general_date'] = 'mm/dd/yy';
-		$dates['general_date'] = 'm/d/Y';
-		$dates['schedule_daily'] = 'l, m/d/Y';
-		$dates['period_time'] = "g:i A";
-		$dates['url'] = 'Y-m-d';
-		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
-		
-		$this->Dates = $dates;
-	}
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    protected function _LoadDates()
+    {
+        parent::_LoadDates();
+
+        // change defaults here
+        $this->Dates['general_date'] = 'd/m/Y';
+        $this->Dates['general_datetime'] = 'd/m/Y H:i:s';
+        $this->Dates['schedule_daily'] = 'l, d/m/Y';
+        $this->Dates['reservation_email'] = 'd/m/Y @ g:i A (e)';
+        $this->Dates['res_popup'] = 'd/m/Y g:i A';
+        $this->Dates['dashboard'] = 'l, d/m/Y g:i A';
+        $this->Dates['period_time'] = "g:i A";
+    }
+
+    protected function _LoadStrings()
+    {
+        parent::_LoadStrings();
+
+        // change defaults here
+    }
+
+    protected function _LoadDays()
+    {
+        parent::_LoadDays();
+
+        // change defaults here
+    }
+
+    protected function _LoadMonths()
+    {
+        parent:: _LoadMonths();
+
+        // change defaults here
+    }
 }
+
 ?>

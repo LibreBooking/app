@@ -35,6 +35,8 @@ abstract class Language
 		$this->_LoadDays();
 		$this->_LoadMonths();
 		$this->_LoadLetters();
+
+        $this->HtmlLang = $this->_GetHtmlLangCode();
 	}
 	
 	abstract protected function _LoadDates();
@@ -46,5 +48,7 @@ abstract class Language
 	abstract protected function _LoadMonths();
 	
 	abstract protected function _LoadLetters();
+
+    abstract protected function _GetHtmlLangCode();
 }
 ?>
