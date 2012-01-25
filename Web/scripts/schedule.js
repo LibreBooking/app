@@ -6,7 +6,7 @@ function Schedule(opts)
 	{
 		$('td.reserved').each(function() {
 			var resid = $(this).attr('id').split('|')[0];
-			var pattern = 'td[id^=' + resid + '|]';
+			var pattern = 'td[id^="' + resid + '|"]';
 
 			$(this).qtip({
 				position: 

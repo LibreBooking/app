@@ -214,6 +214,8 @@ class ManageResourcesPresenter extends ActionPresenter
 
 	public function ChangeImage()
 	{
+        Log::Debug("Changing resource image for resource id %s", $this->page->GetResourceId());
+
 		$uploadedImage = $this->page->GetUploadedImage();
 
 		if ($uploadedImage->IsError()) {
@@ -233,7 +235,10 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$fileName = "resource{$this->page->GetResourceId()}.$fileType";
 		$path = ROOT_DIR . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . "/$fileName";
-		$image->Save($path);
+
+        Log::Debug("Saving resource image $path");
+
+        $image->Save($path);
 
 		$this->SaveResourceImage($fileName);
 	}

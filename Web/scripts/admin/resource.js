@@ -116,7 +116,7 @@ function ResourceManagement(opts)
 		});
 
 		var imageSaveErrorHandler = function(result) { alert(result); };
-		var imageSavePreSubmit = function() { showIndicator(elements.imageForm); };
+		var imageSavePreSubmit = function() { showIndicator(elements.imageForm); return true; };
 		var combineIntervals = function(form, options)
 		{
 			$('.interval', form).each(function() {
@@ -129,7 +129,7 @@ function ResourceManagement(opts)
 		};
 		
 		var errorHandler = function(result) { $("#globalError").html(result).show(); };
-		ConfigureUploadForm(elements.imageForm.find('.async'), getSubmitCallback(options.actions.changeImage), imageSavePreSubmit, null, imageSaveErrorHandler);
+		ConfigureUploadForm(elements.imageForm.find('.uploadImage'), getSubmitCallback(options.actions.changeImage), imageSavePreSubmit, null, imageSaveErrorHandler);
 		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.actions.rename), null, errorHandler);
 		ConfigureAdminForm(elements.scheduleForm, getSubmitCallback(options.actions.changeSchedule));
 		ConfigureAdminForm(elements.locationForm, getSubmitCallback(options.actions.changeLocation));

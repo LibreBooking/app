@@ -228,7 +228,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<br/>
 		<span class="note">.gif, .jpg, or .png</span>
 		<br/><br/>
-		<button type="button" class="button async">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button uploadImage">{html_image src="disk-black.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>

@@ -27,15 +27,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<meta http-equiv="REFRESH" content="{$SessionTimeoutSeconds};URL={$Path}logout.php">
 	<link rel="shortcut icon" href="{$Path}favicon.ico"/>
 	<link rel="icon" href="{$Path}favicon.ico"/>
-	<script type="text/javascript" src="{$Path}scripts/js/jquery-1.4.4.min.js"></script>
-	<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.7.custom.min.js"></script>
+	<script type="text/javascript" src="{$Path}scripts/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.17.custom.min.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/menubar.js"></script>
 	<style type="text/css">
 		@import url({$Path}css/nav.css);
 		@import url({$Path}css/style.css);
-		@import url({$Path}scripts/css/smoothness/jquery-ui-1.8.7.custom.css);
+		@import url({$Path}scripts/css/smoothness/jquery-ui-1.8.17.custom.css);
 		{if $cssFiles neq ''}
 			{assign var='CssFileList' value=','|explode:$cssFiles}
 			{foreach from=$CssFileList item=cssFile}
