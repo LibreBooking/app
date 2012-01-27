@@ -36,6 +36,7 @@ class AuthenticationTests extends TestBase
 	private $timezone;
 	private $lastLogin;
 	private $homepageId;
+    private $languageCode;
 
 	/**
 	 * @var Authentication
@@ -76,6 +77,7 @@ class AuthenticationTests extends TestBase
 		$this->timezone = "US/Central";
 		$this->lastLogin = time();	
 		$this->homepageId = 2;	
+		$this->languageCode = 'en_us';
 
 		$this->fakePassword = new FakePassword();
 		$this->fakeMigration = new FakeMigration();
@@ -274,7 +276,8 @@ class AuthenticationTests extends TestBase
 					ColumnNames::LAST_NAME => $this->lname,
 					ColumnNames::EMAIL => $this->email,
 					ColumnNames::TIMEZONE_NAME => $this->timezone,
-					ColumnNames::HOMEPAGE_ID => $this->homepageId
+					ColumnNames::HOMEPAGE_ID => $this->homepageId,
+					ColumnNames::LANGUAGE_CODE => $this->languageCode,
 					);
 
 		return array($row);

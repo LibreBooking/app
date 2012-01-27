@@ -190,6 +190,7 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 	public $_ShowLoginError = false;
     public $_requestedLanguage;
     public $_selectedLanguage;
+    public $_CurrentCode = '';
 
     public function PageLoad()
 	{

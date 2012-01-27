@@ -806,6 +806,7 @@ class ReservationResourceRow
 		$this->minNotice = $minNotice;
 		$this->maxNotice = $maxNotice;
 		$this->scheduleId = $scheduleId;
+        $this->description = null;
 	}
 
 	public function WithPrimary($resourceId)
@@ -827,6 +828,7 @@ class ReservationResourceRow
 			ColumnNames::RESOURCE_ID => $resourceId,
 			ColumnNames::RESOURCE_LEVEL_ID => $levelId,
 			ColumnNames::RESOURCE_NAME => $this->resourceName,
+			ColumnNames::RESOURCE_DESCRIPTION => $this->description,
 			ColumnNames::RESOURCE_LOCATION => $this->location,
 			ColumnNames::RESOURCE_CONTACT => $this->contact,
 			ColumnNames::RESOURCE_NOTES => $this->notes,

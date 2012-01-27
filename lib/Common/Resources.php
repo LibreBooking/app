@@ -18,6 +18,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
+require_once(ROOT_DIR . 'lang/AvailableLanguages.php');
+
 interface IResourceLocalization
 {
 	/**
@@ -252,10 +255,7 @@ class Resources implements IResourceLocalization
 	
 	private function LoadAvailableLanguages()
 	{
-		$this->AvailableLanguages = array(
-			'en_us' => new AvailableLanguage('en_us', 'en([-_]us)?|english', 'en_us.php', 'English US'),
-			'en_gb' => new AvailableLanguage('en_gb', 'en([-_]gb)?|english', 'en_gb.php', 'English GB')
-		);
+		$this->AvailableLanguages = AvailableLanguages::GetAvailableLanguages();
 	}
 }
 ?>

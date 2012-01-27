@@ -109,6 +109,11 @@ class FakeServer extends Server
 	{
 		return $this->UserSession;
 	}
+
+    public function GetLanguage()
+    {
+        return 'en_us';
+    }
 }
 
 ?>

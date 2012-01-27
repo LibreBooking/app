@@ -515,7 +515,7 @@ class NullDate extends Date
 	
 	public function __construct()
 	{
-		parent::__construct();
+		//parent::__construct();
 	}
 
 

@@ -77,6 +77,8 @@ class ReservationViewRepositoryTests extends TestBase
 		$fname3 = 'f3';
 		$lname3 = 'l3';
 		$email3 = 'e3';
+
+        $email = 'owner@email.com';
 		
 		$ownerLevel = ReservationUserLevel::OWNER;
 		$participantLevel = ReservationUserLevel::PARTICIPANT;
@@ -105,6 +107,7 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESERVATION_STATUS => $statusId,
 			ColumnNames::RESERVATION_CREATED => $dateCreated->ToDatabase(),
 			ColumnNames::RESOURCE_NAME => $resourceName,
+			ColumnNames::EMAIL => $email,
 		);
 		
 		$resourceRows = array(
@@ -163,6 +166,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->OwnerFirstName = $ownerFirst;
 		$expectedView->OwnerLastName = $ownerLast;
 		$expectedView->StatusId = $statusId;
+        $expectedView->OwnerEmailAddress = $email;
 
 		$expectedView->Participants = array(
 			new ReservationUserView($userId2, $fname2, $lname2, $email2, $participantLevel),

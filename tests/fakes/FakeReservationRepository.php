@@ -36,6 +36,7 @@ class FakeReservationRepository
 					ColumnNames::RESERVATION_END => '2008-05-20 15:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,
 					ColumnNames::RESERVATION_DESCRIPTION => 'summary1',
+					ColumnNames::RESERVATION_TITLE => 'summary1',
 					ColumnNames::RESOURCE_ID => 1,
 					ColumnNames::USER_ID => 1,
 					ColumnNames::FIRST_NAME => 'first',
@@ -44,6 +45,9 @@ class FakeReservationRepository
 					ColumnNames::REPEAT_END => null,
 					ColumnNames::REFERENCE_NUMBER => 'r1',
 					ColumnNames::RESERVATION_STATUS => ReservationStatus::Created,
+                    ColumnNames::RESOURCE_NAME => 'rn',
+                    ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::OWNER,
+                    ColumnNames::SCHEDULE_ID => 1,
 					);
 					
 		$row2 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 1, 
@@ -51,6 +55,7 @@ class FakeReservationRepository
 					ColumnNames::RESERVATION_END => '2008-05-20 15:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,
 					ColumnNames::RESERVATION_DESCRIPTION => 'summary1',
+					ColumnNames::RESERVATION_TITLE => 'summary1',
 					ColumnNames::RESERVATION_PARENT_ID => null,
 					ColumnNames::RESOURCE_ID => 2,
 					ColumnNames::USER_ID => 1,
@@ -60,13 +65,17 @@ class FakeReservationRepository
 					ColumnNames::REPEAT_END => null,
 					ColumnNames::REFERENCE_NUMBER => 'r2',
 					ColumnNames::RESERVATION_STATUS => ReservationStatus::Created,
-					);			
+                    ColumnNames::RESOURCE_NAME => 'rn',
+                    ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::OWNER,
+                    ColumnNames::SCHEDULE_ID => 1,
+					);
 					
 		$row3 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 2, 
 					ColumnNames::RESERVATION_START => '2008-05-22 06:00:00',
 					ColumnNames::RESERVATION_END => '2008-05-24 09:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,
 					ColumnNames::RESERVATION_DESCRIPTION => 'summary2',
+					ColumnNames::RESERVATION_TITLE => 'summary2',
 					ColumnNames::RESERVATION_PARENT_ID => null,
 					ColumnNames::RESOURCE_ID => 1,
 					ColumnNames::USER_ID => 1,
@@ -76,6 +85,9 @@ class FakeReservationRepository
 					ColumnNames::REPEAT_END => null,
 					ColumnNames::REFERENCE_NUMBER => 'r3',
 					ColumnNames::RESERVATION_STATUS => ReservationStatus::Pending,
+                    ColumnNames::RESOURCE_NAME => 'rn',
+                    ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::OWNER,
+                    ColumnNames::SCHEDULE_ID => 1,
 					);
 		
 		return array(

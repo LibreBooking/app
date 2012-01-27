@@ -70,7 +70,13 @@ class LdapTests extends TestBase
 		$this->fakeRegistration = new FakeRegistration();
 		$this->encryption = new FakePasswordEncryption();
 
-		$ldapEntry = array("sn" => array('user'), "givenname" => array('test'), "mail" => array('ldap@user.com'), "telephonenumber" => array('000-000-0000'), "physicaldeliveryofficename" => array(''), "title" => array(''));
+        $ldapEntry = new TestLdapEntry();
+		$ldapEntry->sn = array('user');
+        $ldapEntry->givenname = array('test');
+        $ldapEntry->mail = array('ldap@user.com');
+        $ldapEntry->telephonenumber = array('000-000-0000');
+        $ldapEntry->physicaldeliveryofficename = array('');
+        $ldapEntry->title = array('');
 
 		$this->ldapUser = new LdapUser($ldapEntry);
 
@@ -238,6 +244,17 @@ class LdapTests extends TestBase
 
 		$this->assertEquals(array('localhost', 'localhost.2'), $options->Controllers(), "comma separated values should become array");
 	}
+}
+
+class TestLdapEntry
+{
+
+    public $sn;
+    public $givenname;
+    public $mail;
+    public $telephonenumber;
+    public $physicaldeliveryofficename;
+    public $title;
 }
 
 ?>
