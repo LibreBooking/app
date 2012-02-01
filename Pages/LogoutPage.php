@@ -32,11 +32,17 @@ class LogoutPage extends LoginPage
 	public function __construct()
 	{
 		$this->_presenter = new LoginPresenter($this);
+		parent::__construct();
 	}
 
 	public function PageLoad()
 	{
 		$this->_presenter->Logout();
+	}
+
+	public function GetResumeUrl()
+	{
+		return $this->GetQuerystring(QueryStringKeys::REDIRECT);
 	}
 }
 ?>

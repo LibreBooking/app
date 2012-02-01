@@ -189,7 +189,6 @@ abstract class Page implements IPage
 	 */
 	protected function GetForm($var)
 	{
-
 		return $this->server->GetForm($var);
 	}
 

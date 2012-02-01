@@ -122,8 +122,9 @@ class LoginPresenter
 
     public function Logout()
     {
+		$url = sprintf('%s?%s=%s', Pages::LOGIN, QueryStringKeys::REDIRECT, $this->_page->GetResumeUrl());
         $this->authentication->Logout(ServiceLocator::GetServer()->GetUserSession());
-        $this->_page->Redirect(Pages::LOGIN);
+        $this->_page->Redirect($url);
     }
 
     private function _Redirect()
