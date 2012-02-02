@@ -40,6 +40,7 @@ class en_gb extends en_us
         $this->Dates['res_popup'] = 'd/m/Y g:i A';
         $this->Dates['dashboard'] = 'l, d/m/Y g:i A';
         $this->Dates['period_time'] = "g:i A";
+        $this->Dates['general_date_js'] = "dd/mm/yy";
     }
 
     protected function _LoadStrings()

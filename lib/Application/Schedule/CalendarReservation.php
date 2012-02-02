@@ -141,6 +141,7 @@ class CalendarReservation
 			$referenceNumber = $reservation->ReferenceNumber;
 
 			$cr = new CalendarReservation($start, $end, $resourceMap[$reservation->ResourceId], $referenceNumber);
+            $cr->Title = $reservation->Title;
 			$cr->OwnerName = $reservation->FirstName . ' ' . $reservation->LastName;
 			$res[] = $cr;
 		}

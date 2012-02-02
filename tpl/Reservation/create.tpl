@@ -72,7 +72,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 			<li>
 				<label for="BeginDate" style="width:50px;display:inline-block;">{translate key='BeginDate'}</label>
-				<input type="text" id="BeginDate" {formname key=BEGIN_DATE} class="dateinput" value="{formatdate date=$StartDate}"/>
+				<input type="text" id="BeginDate" class="dateinput" value="{formatdate date=$StartDate}"/>
+				<input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE} value="{formatdate date=$StartDate key=system}"/>
 				<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown" style="width:150px">
 				{foreach from=$Periods item=period}
 					{if $period->IsReservable()}
@@ -87,7 +88,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 			<li>
 				<label for="EndDate" style="width:50px;display:inline-block;">{translate key='EndDate'}</label>
-				<input type="text" id="EndDate" {formname key=END_DATE} class="dateinput" value="{formatdate date=$EndDate}"/>
+				<input type="text" id="EndDate" class="dateinput" value="{formatdate date=$EndDate}"/>
+				<input type="hidden" id="formattedEndDate" {formname key=END_DATE} value="{formatdate date=$EndDate key=system}"/>
 				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
 				{foreach from=$Periods item=period}
 					{if $period->IsReservable()}
@@ -153,8 +155,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<div id="repeatUntilDiv" style="display:none;">
 					{translate key="RepeatUntilPrompt"}
-						<input type="text" id="EndRepeat" {formname key=end_repeat_date} class="dateinput"
-							   value="{formatdate date=$RepeatTerminationDate}"/>
+						<input type="text" id="EndRepeat" class="dateinput" value="{formatdate date=$RepeatTerminationDate}"/>
+						<input type="hidden" id="formattedEndRepeat" {formname key=end_repeat_date} value="{formatdate date=$RepeatTerminationDate key=system}" />
 					</div>
 				</div>
 			</li>
@@ -287,9 +289,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <!-- reservationbox ends -->
 </div>
 
-{control type="DatePickerSetupControl" ControlId="BeginDate" DefaultDate=$StartDate}
-{control type="DatePickerSetupControl" ControlId="EndDate" DefaultDate=$EndDate}
-{control type="DatePickerSetupControl" ControlId="EndRepeat" DefaultDate=$EndDate}
+{control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
+{control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
+{control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate}
 
 
 <script type="text/javascript" src="scripts/js/jquery.textarea-expander.js"></script>

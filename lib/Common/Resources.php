@@ -85,7 +85,8 @@ class Resources implements IResourceLocalization
 		$this->systemDateKeys['js_general_date'] = 'mm/dd/yy';
 		$this->systemDateKeys['url'] = 'Y-m-d';
 		$this->systemDateKeys['ical'] = 'Ymd\THis\Z';
-		
+		$this->systemDateKeys['system'] = 'Y/m/d';
+
 		$this->LoadAvailableLanguages();
 	}
 	
@@ -233,6 +234,8 @@ class Resources implements IResourceLocalization
 			$this->CurrentLanguage = $languageCode;
 			$this->Charset = $this->_lang->Charset;
 			$this->HtmlLang = $this->_lang->HtmlLang;
+
+            setlocale(LC_ALL, $languageCode);
 
             return true;
 		}

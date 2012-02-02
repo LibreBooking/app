@@ -29,5 +29,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		 monthNames: {$MonthNames},
 		 monthNamesShort: {$MonthNamesShort},
 		 currentText: "{translate key='Today'}"
+	  	 {if $AltId neq ''}
+		   ,
+	  		altField: "#{$AltId}",
+	  	 	altFormat: '{$AltFormat}'
+		  {/if}
   {rdelim});
 </script>

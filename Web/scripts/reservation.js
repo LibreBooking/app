@@ -2,12 +2,14 @@ function Reservation(opts) {
 	var options = opts;
 
 	var elements = {
-		beginDate: $('#BeginDate'),
-		endDate: $('#EndDate'),
+		beginDate: $('#formattedBeginDate'),
+		endDate: $('#formattedEndDate'),
+        endDateTextbox: $('#EndDate'),
 		repeatOptions: $('#repeatOptions'),
 		repeatDiv: $('#repeatDiv'),
 		repeatInterval: $('#repeatInterval'),
-		repeatTermination: $('#EndRepeat'),
+		repeatTermination: $('#formattedEndRepeat'),
+        repeatTerminationTextbox: $('#EndRepeat'),
 		beginTime: $('#BeginPeriod'),
 		endTime: $('#EndPeriod'),
 		durationDays: $('#durationDays'),
@@ -47,7 +49,7 @@ function Reservation(opts) {
 	Reservation.prototype.init = function(ownerId) {
 		participation.addedUsers.push(ownerId);
 
-		elements.beginDate.data['previousVal'] = elements.beginDate.val();
+		//elements.beginDate.data['previousVal'] = elements.beginDate.val();
 
 		$('.dialog').dialog({
 			bgiframe: true,
@@ -209,7 +211,7 @@ function Reservation(opts) {
 		var currentEndDate = new Date(elements.endDate.val());
 		currentEndDate.setDate(currentEndDate.getDate() + diffDays);
 
-		elements.endDate.datepicker("setDate", currentEndDate);
+		elements.endDateTextbox.datepicker("setDate", currentEndDate);
 	};
 
 	var AdjustTerminationDate = function () {
@@ -217,29 +219,29 @@ function Reservation(opts) {
 			return;
 		}
 
-		var begin = new Date(elements.beginDate.val());
+		var newEndDate = new Date(elements.beginDate.val());
 		var interval = parseInt(elements.repeatInterval.val());
 		var currentEnd = new Date(elements.repeatTermination.val());
 
 		var repeatOption = elements.repeatOptions.val();
 
 		if (repeatOption == 'daily') {
-			begin.setDate(begin.getDate() + interval);
+			newEndDate.setDate(newEndDate.getDate() + interval);
 		}
 		else if (repeatOption == 'weekly') {
-			begin.setDate(begin.getDate() + (7 * interval));
+			newEndDate.setDate(newEndDate.getDate() + (7 * interval));
 		}
 		else if (repeatOption == 'monthly') {
-			begin.setMonth(begin.getMonth() + interval);
+			newEndDate.setMonth(newEndDate.getMonth() + interval);
 		}
 		else if (repeatOption = 'yearly') {
-			begin.setFullYear(begin.getFullYear() + interval);
+			newEndDate.setFullYear(newEndDate.getFullYear() + interval);
 		}
 		else {
-			begin = currentEnd;
+			newEndDate = currentEnd;
 		}
 
-		elements.repeatTermination.datepicker("setDate", begin);
+		elements.repeatTerminationTextbox.datepicker("setDate", newEndDate);
 	};
 
 	var CancelAdd = function(dialogBoxId, displayDivId) {
@@ -476,11 +478,15 @@ function Reservation(opts) {
 			AdjustTerminationDate();
 		});
 
+        elements.beginDate.change(function() {
+            AdjustTerminationDate();
+        });
+
 		elements.repeatTermination.change(function() {
 			terminationDateSetManually = true;
 		});
 
-				$('select, input', elements.repeatDiv).change(function() {
+		$('select, input', elements.repeatDiv).change(function() {
 			ToggleUpdateScope();
 		});
 	}
@@ -501,17 +507,17 @@ function Reservation(opts) {
 	}
 	
 	function InitializeDateElements() {
+        elements.beginDate.data['previousVal'] = elements.beginDate.val();
+
 		elements.beginDate.change(function() {
 			AdjustEndDate();
 			ToggleRepeatOptions();
 			elements.beginDate.data['previousVal'] = elements.beginDate.val();
-
 			DisplayDuration();
 		});
 
 		elements.endDate.change(function() {
 			ToggleRepeatOptions();
-
 			DisplayDuration();
 		});
 
