@@ -16,7 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<script type="text/javascript"> 
+<script type="text/javascript">
+$(function(){
   $("#{$ControlId}").datepicker({ldelim} 
 		 numberOfMonths: {$NumberOfMonths},
 		 showButtonPanel: {$ShowButtonPanel},
@@ -35,4 +36,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	  	 	altFormat: '{$AltFormat}'
 		  {/if}
   {rdelim});
+
+  {if $AltId neq ''}
+	$("#{$ControlId}").change(function() {
+ 		if ($(this).val() == '') {
+			$("#{$AltId}").val('');
+		}
+  	});
+  {/if}
+
+});
 </script>

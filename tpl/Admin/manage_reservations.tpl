@@ -34,8 +34,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<tr>
 			<td>
 				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}"/>
+				<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
 				-
 				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}"/>
+				<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
 			</td>
 			<td>
 				<input id="userFilter" type="text" class="textbox" value="{$UserName}" />
@@ -207,8 +209,8 @@ $(document).ready(function() {
 });
 </script>
 
-{control type="DatePickerSetupControl" ControlId="startDate"}
-{control type="DatePickerSetupControl" ControlId="endDate"}
+{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}
+{control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate"}
 
 <div id="approveDiv" style="display:none;text-align:center; top:15%;position:relative;">
 <h3>{translate key=Approving}...</h3>

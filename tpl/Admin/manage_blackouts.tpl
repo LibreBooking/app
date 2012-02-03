@@ -29,12 +29,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<ul>
 				<li>
 					<label for="addStartDate" class="wideLabel">{translate key=BeginDate}</label>
-					<input {formname key=BEGIN_DATE} type="text" id="addStartDate" class="textbox" size="10" value="{formatdate date=$AddStartDate}"/>
+					<input type="text" id="addStartDate" class="textbox" size="10" value="{formatdate date=$AddStartDate}"/>
+					<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden" value="{formatdate date=$AddStartDate key=system}"/>
 					<input {formname key=BEGIN_TIME} type="text" id="addStartTime" class="textbox" size="7" value="12:00 AM" />
 				</li>
 				<li>
 					<label for="addEndDate" class="wideLabel">{translate key=EndDate}</label>
-					<input {formname key=END_DATE} type="text" id="addEndDate" class="textbox" size="10" value="{formatdate date=$AddEndDate}"/>
+					<input type="text" id="addEndDate" class="textbox" size="10" value="{formatdate date=$AddEndDate}"/>
+					<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate" value="{formatdate date=$AddEndDate key=system}"/>
 					<input {formname key=END_TIME} type="text" id="addEndTime" class="textbox" size="7"  value="12:00 AM" />
 				</li>
 				<li>
@@ -81,8 +83,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<tr>
 			<td>
 				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}"/>
+				<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
 				-
 				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}"/>
+				<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
 			</td>
 			<td>
 				<select id="scheduleId" class="textbox">
@@ -180,10 +184,10 @@ $(document).ready(function() {
 });
 </script>
 
-{control type="DatePickerSetupControl" ControlId="startDate"}
-{control type="DatePickerSetupControl" ControlId="endDate"}
-{control type="DatePickerSetupControl" ControlId="addStartDate"}
-{control type="DatePickerSetupControl" ControlId="addEndDate"}
+{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}
+{control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate"}
+{control type="DatePickerSetupControl" ControlId="addStartDate" AltId="formattedAddStartDate"}
+{control type="DatePickerSetupControl" ControlId="addEndDate" AltId="formattedAddEndDate"}
 
 <div id="createDiv" style="display:none;text-align:center; top:15%;position:relative;">
 	<div id="creating">

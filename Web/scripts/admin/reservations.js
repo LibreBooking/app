@@ -4,8 +4,8 @@ function ReservationManagement(opts, approval)
 
 	var elements = {
 		userFilter: $("#userFilter"),
-		startDate: $("#startDate"),
-		endDate: $("#endDate"),
+		startDate: $("#formattedStartDate"),
+		endDate: $("#formattedEndDate"),
 		userId: $("#userId"),
 		scheduleId: $("#scheduleId"),
 		resourceId: $("#resourceId"),
