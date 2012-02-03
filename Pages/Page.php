@@ -57,6 +57,8 @@ abstract class Page implements IPage
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
 
+		ExceptionHandler::SetExceptionHandler(new WebExceptionHandler(array($this, 'RedirectToError')));
+
 		/**
 		 * SmartyPage is an extension of external Smarty class
 		 */
@@ -97,7 +99,7 @@ abstract class Page implements IPage
 		die();
 	}
 
-	public function RedirectToError($errorMessageId, $lastPage = '')
+	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
 	{
 		if (empty($lastPage))
 		{

@@ -26,7 +26,7 @@ interface IPage {
 
     public function Redirect($url);
 
-    public function RedirectToError($errorMessageId, $lastPage = '');
+    public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '');
 
     public function IsPostBack();
 
