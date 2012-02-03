@@ -87,7 +87,7 @@ class LoginPage extends Page implements ILoginPage
 		parent::__construct('LogIn'); // parent Page class
 
 		$this->presenter = new LoginPresenter($this); // $this pseudo variable of class object is Page object
-		$this->Set('ResumeUrl', $this->server->GetQuerystring(QueryStringKeys::REDIRECT));
+		$this->Set('ResumeUrl', urldecode($this->server->GetQuerystring(QueryStringKeys::REDIRECT)));
 		$this->Set('ShowLoginError', false);
 		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
 	}
@@ -199,6 +199,11 @@ class LoginPage extends Page implements ILoginPage
 	{
 		$this->Set('SelectedLanguage', $languageCode);
 	}
+
+    protected function GetShouldAutoLogout()
+    {
+        return false;
+    }
 }
 
 ?>

@@ -122,7 +122,9 @@ class LoginPresenter
 
     public function Logout()
     {
-		$url = sprintf('%s?%s=%s', Pages::LOGIN, QueryStringKeys::REDIRECT, $this->_page->GetResumeUrl());
+        $url =  htmlspecialchars_decode($this->_page->GetResumeUrl());
+
+		$url = sprintf('%s?%s=%s', Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($url));
         $this->authentication->Logout(ServiceLocator::GetServer()->GetUserSession());
         $this->_page->Redirect($url);
     }
@@ -134,7 +136,8 @@ class LoginPresenter
         if (!empty($redirect))
         {
             $this->_page->Redirect($redirect);
-        } else
+        }
+        else
         {
             $defaultId = ServiceLocator::GetServer()->GetUserSession()->HomepageId;
             $this->_page->Redirect(Pages::UrlFromId($defaultId));
@@ -171,7 +174,6 @@ class LoginPresenter
         $this->_page->SetSelectedLanguage($languageCode);
         Resources::GetInstance()->SetLanguage($languageCode);
     }
-
 }
 
 ?>

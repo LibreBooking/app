@@ -35,7 +35,7 @@ class FakePageBase implements IPage
 		$this->_RedirectDestination = $destination;
 	}
 	
-	public function RedirectToError($errorMessageId, $lastPage = '')
+	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
 	{
 		// implement me?
 	}

@@ -24,7 +24,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <head>
 	<title>{if $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset={$Charset}"/>
-	<meta http-equiv="REFRESH" content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI}">
+	{if $ShouldLogout}
+		<meta http-equiv="REFRESH" content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}">
+	{/if}
 	<link rel="shortcut icon" href="{$Path}favicon.ico"/>
 	<link rel="icon" href="{$Path}favicon.ico"/>
 	<script type="text/javascript" src="{$Path}scripts/js/jquery-1.7.1.min.js"></script>

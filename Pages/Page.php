@@ -82,6 +82,7 @@ abstract class Page implements IPage
 		$this->smarty->assign('CanViewAdmin', $userSession->IsAdmin);
         $timeout = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT);
 		$this->smarty->assign('SessionTimeoutSeconds', max($timeout, 1) * 60);
+        $this->smarty->assign('ShouldLogout', $this->GetShouldAutoLogout());
 	}
 
 	protected function SetTitle($title)
@@ -95,6 +96,8 @@ abstract class Page implements IPage
 		{
 			$url = $this->path . $url;
 		}
+
+        $url = str_replace('&amp;', '&', $url);
 		header("Location: $url");
 		die();
 	}
@@ -255,6 +258,11 @@ abstract class Page implements IPage
 
 		$this->Display($templateName);
 	}
+
+    protected function GetShouldAutoLogout()
+    {
+        return true;
+    }
 }
 
 ?>
