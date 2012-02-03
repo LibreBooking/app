@@ -42,6 +42,11 @@ $(function(){
  		if ($(this).val() == '') {
 			$("#{$AltId}").val('');
 		}
+		else{
+			var dateVal = $("#{$ControlId}").datepicker('getDate');
+			var dateString = dateVal.getFullYear() + '/' + (dateVal.getMonth()+1) + '/' + dateVal.getDate();
+			$("#{$AltId}").val(dateString);
+		}
   	});
   {/if}
 

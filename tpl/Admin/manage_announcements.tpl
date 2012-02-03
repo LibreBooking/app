@@ -59,9 +59,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key=Announcement}<br/>
         <textarea id="editText" class="textbox required" style="width:500px" {formname key=ANNOUNCEMENT_TEXT}></textarea><br/>
         {translate key='BeginDate'}<br/>
-        <input type="text" id="editBegin" class="textbox" {formname key=ANNOUNCEMENT_START} /><br/>
+        <input type="text" id="editBegin" class="textbox" />
+        <input type="hidden" id="formattedEditBegin" {formname key=ANNOUNCEMENT_START} />
+		<br/>
         {translate key='EndDate'}<br/>
-        <input type="text" id="editEnd" class="textbox" {formname key=ANNOUNCEMENT_END} /><br/>
+        <input type="text" id="editEnd" class="textbox" />
+        <input type="hidden" id="formattedEditEnd" {formname key=ANNOUNCEMENT_END} />
+		<br/>
         {translate key='Priority'} <br/>
         <select id="editPriority" class="textbox" {formname key=ANNOUNCEMENT_PRIORITY}>
             <option value="">---</option>
@@ -93,9 +97,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					</td>
 					<td>
 						<input type="text" id="BeginDate" class="textbox" {formname key=ANNOUNCEMENT_START} />
+						<input type="hidden" id="formattedBeginDate" {formname key=ANNOUNCEMENT_START} />
 					</td>
                     <td>
 						<input type="text" id="EndDate" class="textbox" {formname key=ANNOUNCEMENT_END} />
+						<input type="hidden" id="formattedEndDate" {formname key=ANNOUNCEMENT_END} />
 					</td>
                     <td>
                         <select class="textbox" {formname key=ANNOUNCEMENT_PRIORITY}>
@@ -112,10 +118,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
-{control type="DatePickerSetupControl" ControlId="BeginDate"}
-{control type="DatePickerSetupControl" ControlId="EndDate"}
-{control type="DatePickerSetupControl" ControlId="editBegin"}
-{control type="DatePickerSetupControl" ControlId="editEnd"}
+{control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate"}
+{control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate"}
+{control type="DatePickerSetupControl" ControlId="editBegin" AltId="formattedEditBegin"}
+{control type="DatePickerSetupControl" ControlId="editEnd" AltId="formattedEditEnd"}
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 

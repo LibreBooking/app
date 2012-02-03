@@ -69,7 +69,9 @@ function AnnouncementManagement(opts) {
 		var announcement = getActiveAnnouncement();
 		elements.editText.val(announcement.text);
 		elements.editBegin.val(announcement.start);
+        elements.editBegin.trigger('change');
 		elements.editEnd.val(announcement.end);
+		elements.editEnd.trigger('change');
 		elements.editPriority.val(announcement.priority);
 
 		elements.editDialog.dialog('open');
