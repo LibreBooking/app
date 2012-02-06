@@ -338,6 +338,7 @@ class en_us extends Language
         $strings['Pending'] = 'Pending';
         $strings['Past'] = 'Past';
         $strings['Restricted'] = 'Restricted';
+        $strings['ViewAll'] = 'View All';
 
         // Errors
         $strings['LoginError'] = 'We could not match your username or password';
