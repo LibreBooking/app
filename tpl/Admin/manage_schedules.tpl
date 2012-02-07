@@ -72,9 +72,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div class="actions">
 			{if $schedule->GetIsDefault()}
-				<span class="note">{translate key=ThisIsTheDefaultSchedule}</span>
+				<span class="note">{translate key=ThisIsTheDefaultSchedule}</span> |
+				<span class="note">{translate key=DefaultScheduleCannotBeDeleted}</span> |
 			{else}
 				<a class="update makeDefaultButton" href="javascript: void(0);">{translate key=MakeDefault}</a> |
+				<a class="update deleteScheduleButton" href="#">{translate key=Delete}</a> |
 			{/if}
 			<a class="update changeLayoutButton" href="javascript: void(0);">{translate key=ChangeLayout}</a>
 		</div>
@@ -120,6 +122,24 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <input type="hidden" id="activeId" value=""/>
 
+<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
+	<form id="deleteForm" method="post">
+		<div class="error" style="margin-bottom: 25px;">
+			<h3>{translate key=DeleteWarning}</h3>
+		</div>
+
+		Move resources and reservations to
+		<select id="targetScheduleId" {formname key=SCHEDULE_ID} class="required">
+			<option value="">-- {translate key=Schedule} --</option>
+			{foreach from=$Schedules item=schedule}
+			<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
+			{/foreach}
+		</select>
+		<br/>
+		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key=Delete}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
+	</form>
+</div>
 <div id="makeDefaultDialog" style="display:none">
 	<form id="makeDefaultForm" method="post">
 	</form>
@@ -218,7 +238,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	changeSettingsAction: '{ManageSchedules::ActionChangeSettings}',
 	changeLayoutAction: '{ManageSchedules::ActionChangeLayout}',
 	addAction: '{ManageSchedules::ActionAdd}',
-	makeDefaultAction: '{ManageSchedules::ActionMakeDefault}'
+	makeDefaultAction: '{ManageSchedules::ActionMakeDefault}',
+	deleteAction: '{ManageSchedules::ActionDelete}'
 	};
 
 	var scheduleManagement = new ScheduleManagement(opts);

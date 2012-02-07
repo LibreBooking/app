@@ -31,6 +31,113 @@ class ManageSchedules
 	const ActionChangeSettings = 'settings';
 	const ActionMakeDefault = 'makeDefault';
 	const ActionRename = 'rename';
+	const ActionDelete = 'delete';
+}
+
+class ManageScheduleService
+{
+    /**
+     * @var IScheduleRepository
+     */
+    private $scheduleRepository;
+
+    /**
+     * @var IResourceRepository
+     */
+    private $resourceRepository;
+
+    public function __construct(IScheduleRepository $scheduleRepository, IResourceRepository $resourceRepository)
+    {
+        $this->scheduleRepository = $scheduleRepository;
+        $this->resourceRepository = $resourceRepository;
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param string $timezone
+     * @return IScheduleLayout
+     */
+    public function GetLayout($scheduleId, $timezone)
+    {
+        return $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($timezone));
+    }
+
+    /**
+     * @param string $name
+     * @param int $daysVisible
+     * @param int $startDay
+     * @param int $copyLayoutFromScheduleId
+     */
+    public function Add($name, $daysVisible, $startDay, $copyLayoutFromScheduleId)
+    {
+        $schedule = new Schedule(null, $name, false, $startDay, $daysVisible);
+        $this->scheduleRepository->Add($schedule, $copyLayoutFromScheduleId);
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param string $name
+     */
+    public function Rename($scheduleId, $name)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+      	$schedule->SetName($name);
+        $this->scheduleRepository->Update($schedule);
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param int $startDay
+     * @param int $daysVisible
+     */
+    public function ChangeSettings($scheduleId, $startDay, $daysVisible)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->SetWeekdayStart($startDay);
+        $schedule->SetDaysVisible($daysVisible);
+
+        $this->scheduleRepository->Update($schedule);
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param string $timezone
+     * @param string $reservableSlots
+     * @param string $blockedSlots
+     */
+    public function ChangeLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots)
+    {
+        $layout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
+        $this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
+    }
+
+    /**
+     * @param int $scheduleId
+     */
+    public function MakeDefault($scheduleId)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->SetIsDefault(true);
+
+        $this->scheduleRepository->Update($schedule);
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param int $moveResourcesToThisScheduleId
+     */
+    public function Delete($scheduleId, $moveResourcesToThisScheduleId)
+    {
+        $resources = $this->resourceRepository->GetScheduleResources($scheduleId);
+        foreach ($resources as $resource)
+        {
+            $resource->SetScheduleId($moveResourcesToThisScheduleId);
+            $this->resourceRepository->Update($resource);
+        }
+
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $this->scheduleRepository->Delete($schedule);
+    }
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
@@ -41,15 +148,15 @@ class ManageSchedulesPresenter extends ActionPresenter
 	private $page;
 	
 	/**
-	 * @var IScheduleRepository
+	 * @var ManageScheduleService
 	 */
-	private $scheduleRepository;
+	private $manageSchedulesService;
 
-	public function __construct(IManageSchedulesPage $page, IScheduleRepository $scheduleRepository)
+	public function __construct(IManageSchedulesPage $page, ManageScheduleService $manageSchedulesService)
 	{
 		parent::__construct($page);
 		$this->page = $page;
-		$this->scheduleRepository = $scheduleRepository;
+		$this->manageSchedulesService = $manageSchedulesService;
 
 		$this->AddAction(ManageSchedules::ActionAdd, 'Add');
 		$this->AddAction(ManageSchedules::ActionChangeLayout, 'ChangeLayout');
@@ -60,12 +167,13 @@ class ManageSchedulesPresenter extends ActionPresenter
 	
 	public function PageLoad()
 	{
-		$schedules = $this->scheduleRepository->GetAll();
-		
+		$schedules = $this->manageSchedulesService->GetAll();
+
+        $layouts = array();
 		/* @var $schedule Schedule */
 		foreach ($schedules as $schedule)
 		{
-			$layout = $this->scheduleRepository->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($schedule->GetTimezone()));
+			$layout = $this->manageSchedulesService->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($schedule->GetTimezone()));
 			$layouts[$schedule->GetId()] = $layout->GetLayout(Date::Now());
 		}
 		
@@ -97,12 +205,10 @@ class ManageSchedulesPresenter extends ActionPresenter
 		$name = $this->page->GetScheduleName();
 		$weekdayStart = $this->page->GetStartDay();
 		$daysVisible = $this->page->GetDaysVisible();
-		
-		$schedule = new Schedule(null, $name, false, $weekdayStart, $daysVisible);
 
 		Log::Debug('Adding schedule with name $%s', $name);
 
-		$this->scheduleRepository->Add($schedule, $copyLayoutFromScheduleId);
+		$this->manageSchedulesService->Add($name, $daysVisible, $weekdayStart, $copyLayoutFromScheduleId);
 	}
 	
 	/**
@@ -110,10 +216,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 	 */
 	public function Rename()
 	{
-		$schedule = $this->scheduleRepository->LoadById($this->page->GetScheduleId());
-		$schedule->SetName($this->page->GetScheduleName());
-		
-		$this->scheduleRepository->Update($schedule);
+		$this->manageSchedulesService->Rename($this->page->GetScheduleId(), $this->page->GetScheduleName());
 	}
 	
 	/**
@@ -121,11 +224,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 	 */
 	public function ChangeSettings()
 	{
-		$schedule = $this->scheduleRepository->LoadById($this->page->GetScheduleId());
-		$schedule->SetWeekdayStart($this->page->GetStartDay());
-		$schedule->SetDaysVisible($this->page->GetDaysVisible());
-		
-		$this->scheduleRepository->Update($schedule);
+		$this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), $this->page->GetStartDay(), $this->page->GetDaysVisible());
 	}
 	
 	/**
@@ -137,10 +236,8 @@ class ManageSchedulesPresenter extends ActionPresenter
 		$reservableSlots = $this->page->GetReservableSlots();
 		$blockedSlots =  $this->page->GetBlockedSlots();
 		$timezone =  $this->page->GetLayoutTimezone();
-		
-		$layout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
-	
-		$this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
+
+        $this->manageSchedulesService->ChangeLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots);
 	}
 	
 	/**
@@ -148,12 +245,16 @@ class ManageSchedulesPresenter extends ActionPresenter
 	 */
 	public function MakeDefault()
 	{
-		$schedule = $this->scheduleRepository->LoadById($this->page->GetScheduleId());
-		$schedule->SetIsDefault(true);
-		
-		$this->scheduleRepository->Update($schedule);
+        $this->manageSchedulesService->MakeDefault($this->page->GetScheduleId());
 	}
 
+    /**
+   	 * @internal should only be used for testing
+   	 */
+    public function Delete()
+    {
+        $this->manageSchedulesService->Delete($this->page->GetScheduleId(), $this->page->GetTargetScheduleId());
+    }
 
 	protected function LoadValidators($action)
     {

@@ -453,6 +453,15 @@ class DeleteResourceReservationsCommand extends SqlCommand
 	}
 }
 
+class DeleteScheduleCommand extends SqlCommand
+{
+    public function __construct($scheduleId)
+    {
+        parent::__construct(Queries::DELETE_SCHEDULE);
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+    }
+}
+
 class DeleteSeriesCommand extends SqlCommand
 {
 	public function __construct($seriesId)

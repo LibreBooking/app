@@ -8,12 +8,14 @@ function ScheduleManagement(opts)
 		renameDialog: $('#renameDialog'),
 		layoutDialog: $('#changeLayoutDialog'),
 		changeSettingsDialog: $('#changeSettingsDialog'),
-		
+		deleteDialog: $('#deleteDialog'),
+
 		renameForm: $('#renameForm'),
 		settingsForm: $('#settingsForm'),
 		changeLayoutForm: $('#changeLayoutForm'),
 		makeDefaultForm: $('#makeDefaultForm'),
-		
+		deleteForm: $('#deleteForm'),
+
 		addForm: $('#addScheduleForm'),
 		
 		reservableEdit: $('#reservableEdit'),
@@ -32,7 +34,8 @@ function ScheduleManagement(opts)
 		ConfigureAdminDialog(elements.renameDialog, 300, 125);
 		ConfigureAdminDialog(elements.changeSettingsDialog, 300, 140);
 		ConfigureAdminDialog(elements.layoutDialog, 730, 550);
-		    
+		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
+
 		$('.scheduleDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
 			var reservable = $(this).find('.reservableSlots');
@@ -64,6 +67,11 @@ function ScheduleManagement(opts)
 				elements.makeDefaultForm.submit();
 				$(this).after($('.indicator'));
 			});
+
+            $(this).find('.deleteScheduleButton').click(function(e) {
+                showDeleteDialog(e);
+                return false;
+            });
 		});
 
 		$(".save").click(function() {
@@ -98,6 +106,7 @@ function ScheduleManagement(opts)
 		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction), null, handleLayoutUpdate);
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
 		ConfigureAdminForm(elements.makeDefaultForm, getSubmitCallback(options.makeDefaultAction));
+		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
 	};
 
 	var getSubmitCallback = function(action) {
@@ -172,6 +181,11 @@ function ScheduleManagement(opts)
 	{
 		elements.activeId.val(scheduleId);
 	};
+
+    var getActiveScheduleId = function()
+    {
+        return elements.activeId.val();
+    };
 	
 	var showRename = function(e)
 	{
@@ -199,6 +213,13 @@ function ScheduleManagement(opts)
 		
 		elements.layoutDialog.dialog("open");
 	};
+
+    var showDeleteDialog = function(e)
+    {
+        var scheduleId = getActiveScheduleId();
+        $('#targetScheduleId').children('option[value="' + scheduleId + '"]').attr('disabled','disabled');
+        elements.deleteDialog.dialog('open');
+    };
 	
 	var reformatTimeSlots = function(div) {
 		var text = div.text().trim();

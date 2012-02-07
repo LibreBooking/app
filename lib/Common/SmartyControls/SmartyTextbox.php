@@ -22,13 +22,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class SmartyTextbox
 {
 	private $name;
+    private $id;
 	private $attributes;
 	private $smartyVariable;
 	private $smarty;
 	
-	public function __construct($formKey, $smartyVariable, $attributes, &$smarty)
+	public function __construct($formKey, $id, $smartyVariable, $attributes, &$smarty)
 	{
 		$this->name = $this->GetName($formKey);
+        $this->id = empty($id) ? $this->GetName($formKey) : $id;
 		$this->attributes = $attributes;
 		$this->smartyVariable = $smartyVariable;
 		$this->smarty = $smarty;
@@ -39,7 +41,7 @@ class SmartyTextbox
 		$value = $this->GetValue();
 		$style = empty($this->style) ? '' : " style=\"{$this->style}\"";
 		
-		return "<input type=\"{$this->GetInputType()}\" name=\"{$this->name}\" id=\"{$this->name}\" value=\"$value\" $this->attributes />";
+		return "<input type=\"{$this->GetInputType()}\" name=\"{$this->name}\" id=\"{$this->id}\" value=\"$value\" $this->attributes />";
 	}
 	
 	protected function GetInputType()

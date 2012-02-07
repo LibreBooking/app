@@ -88,25 +88,25 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<div style="display: table-cell;">
 					<ul>
 						<li>{translate key="Username"}</li>
-						<li>{textbox name="USERNAME" class="required textbox" size="40"}</li>
+						<li>{textbox name="USERNAME" class="required textbox" size="40" id="addUsername"}</li>
 					</ul>
 				</div>
 				<div style="display: table-cell;">
 					<ul>
 						<li>{translate key="Email"}</li>
-						<li>{textbox name="EMAIL" class="required textbox" size="40"}</li>
+						<li>{textbox name="EMAIL" class="required textbox" size="40" id="addEmail"}</li>
 					</ul>
 				</div>
 				<div style="display: table-cell;">
 					<ul>
 						<li>{translate key="FirstName"}</li>
-						<li>{textbox name="FIRST_NAME" class="required textbox" size="40"}</li>
+						<li>{textbox name="FIRST_NAME" class="required textbox" size="40" id="addFname"}</li>
 					</ul>
 				</div>
 				<div style="display: table-cell;">
 					<ul>
 						<li>{translate key="LastName"}</li>
-						<li>{textbox name="LAST_NAME" class="required textbox" size="40"}</li>
+						<li>{textbox name="LAST_NAME" class="required textbox" size="40" id="addLname"}</li>
 					</ul>
 				</div>
 			</div>
@@ -124,7 +124,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<div style="display: table-cell;">
 					<ul>
 						<li>{translate key="Password"}</li>
-						<li>{textbox name="PASSWORD" class="required textbox" size="40"}</li>
+						<li>{textbox name="PASSWORD" class="required textbox" size="40" id="addPassword"}</li>
 					</ul>
 				</div>
 			</div>
@@ -169,14 +169,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		<ul>
 			<li>{translate key="Username"}</li>
-			<li>{textbox name="USERNAME" class="required textbox" size="40"}</li>
+			<li>{textbox name="USERNAME" class="required textbox" size="40" id="username"}</li>
 			<li>{translate key="Email"}</li>
-			<li>{textbox name="EMAIL" class="required textbox" size="40"}</li>
+			<li>{textbox name="EMAIL" class="required textbox" size="40" id="email"}</li>
 
 			<li>{translate key="FirstName"}</li>
-			<li>{textbox name="FIRST_NAME" class="required textbox" size="40"}</li>
+			<li>{textbox name="FIRST_NAME" class="required textbox" size="40" id="fname"}</li>
 			<li>{translate key="LastName"}</li>
-			<li>{textbox name="LAST_NAME" class="required textbox" size="40"}</li>
+			<li>{textbox name="LAST_NAME" class="required textbox" size="40" id="lname"}</li>
 
 			<li>{translate key="Timezone"}</li>
 			<li>
@@ -186,11 +186,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 
 			<li>{translate key="Phone"}</li>
-			<li>{textbox name="PHONE" class="textbox" size="40"}</li>
+			<li>{textbox name="PHONE" class="textbox" size="40" id="phone"}</li>
 			<li>{translate key="Organization"}</li>
-			<li>{textbox name="ORGANIZATION" class="textbox" size="40"}</li>
+			<li>{textbox name="ORGANIZATION" class="textbox" size="40" id="organization"}</li>
 			<li>{translate key="Position"}</li>
-			<li>{textbox name="POSITION" class="textbox" size="40"}</li>
+			<li>{textbox name="POSITION" class="textbox" size="40" id="position"}</li>
 		</ul>
 
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>

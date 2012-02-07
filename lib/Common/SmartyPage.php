@@ -377,15 +377,21 @@ class SmartyPage extends Smarty
 			$type = strtolower($params['type']);
 		}
 
+        $id = null;
+        if (isset($params['id']))
+        {
+            $id = $params['id'];
+        }
+
 		$knownAttributes = array('value', 'type', 'name');
 		$attributes = $this->AppendAttributes($params, $knownAttributes);
 
 		if ($type == 'password')
 		{
-			$textbox = new SmartyPasswordbox($params['name'], $value, $attributes, $smarty);
+			$textbox = new SmartyPasswordbox($params['name'], $id, $value, $attributes, $smarty);
 		} else
 		{
-			$textbox = new SmartyTextbox($params['name'], $value, $attributes, $smarty);
+			$textbox = new SmartyTextbox($params['name'], $id, $value, $attributes, $smarty);
 		}
 
 		return $textbox->Html();

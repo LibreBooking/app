@@ -41,6 +41,11 @@ interface IScheduleRepository
 	 * @param Schedule $schedule
 	 */
 	public function Update(Schedule $schedule);
+
+    /**
+     * @param Schedule $schedule
+     */
+    public function Delete(Schedule $schedule);
 	
 	/**
 	 * @param Schedule $schedule
@@ -208,6 +213,11 @@ class ScheduleRepository implements IScheduleRepository
 		));
 	}
 
+    public function Delete(Schedule $schedule)
+    {
+        ServiceLocator::GetDatabase()->Execute(new DeleteScheduleCommand($schedule->GetId()));
+    }
+
 	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
 	{
 		$layout = $layoutFactory->CreateLayout();
@@ -259,5 +269,4 @@ class ScheduleRepository implements IScheduleRepository
 		//TODO: Delete old layout?
 	}
 }
-
 ?>

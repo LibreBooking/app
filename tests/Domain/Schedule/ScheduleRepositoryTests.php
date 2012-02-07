@@ -22,6 +22,9 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class ScheduleRepositoryTests extends TestBase
 {
+    /**
+     * @var ScheduleRepository
+     */
 	private $scheduleRepository;
 	
 	public function setup()
@@ -238,6 +241,20 @@ class ScheduleRepositoryTests extends TestBase
 		
 		$this->scheduleRepository->Add($schedule, $scheduleIdOfSourceLayout);
 	}
+
+    public function testCanDeleteSchedule()
+    {
+        $id = 123;
+        $schedule = new Schedule($id, null, false, null, null);
+
+        $deleteScheduleCommand = new DeleteScheduleCommand($id);
+
+        $this->scheduleRepository->Delete($schedule);
+
+        $actualDeleteCommand = $this->db->_LastCommand;
+
+        $this->assertEquals($deleteScheduleCommand, $actualDeleteCommand);
+    }
 }
 
 ?>

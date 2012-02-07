@@ -303,14 +303,13 @@ class Queries
 		INNER JOIN reservation_resources rs ON s.series_id = rs.series_id 
 		WHERE rs.resource_id = @resourceid';
 
-    const DELETE_SERIES =
-            'DELETE FROM reservation_series	WHERE series_id = @seriesid';
+    const DELETE_SCHEDULE = 'DELETE FROM schedules WHERE schedule_id = @scheduleid';
 
-    const DELETE_USER =
-            'DELETE FROM users	WHERE user_id = @userid';
+    const DELETE_SERIES = 'DELETE FROM reservation_series WHERE series_id = @seriesid';
 
-    const DELETE_USER_GROUP =
-            'DELETE	FROM user_groups WHERE user_id = @userid AND group_id = @groupid';
+    const DELETE_USER = 'DELETE FROM users	WHERE user_id = @userid';
+
+    const DELETE_USER_GROUP = 'DELETE FROM user_groups WHERE user_id = @userid AND group_id = @groupid';
 
     const DELETE_USER_RESOURCE_PERMISSION =
             'DELETE	FROM user_resource_permissions WHERE user_id = @userid AND resource_id = @resourceid';
@@ -320,11 +319,9 @@ class Queries
 		FROM users 
 		WHERE (username = @username OR email = @username)';
 
-    const GET_ACCESSORY_BY_ID =
-            'SELECT * FROM accessories WHERE accessory_id = @accessoryid';
+    const GET_ACCESSORY_BY_ID =  'SELECT * FROM accessories WHERE accessory_id = @accessoryid';
 
-    const GET_ANNOUNCEMENT_BY_ID =
-            'SELECT * FROM announcements WHERE announcementid = @announcementid';
+    const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
 
     const GET_ACCESSORY_LIST =
             'SELECT *, rs.status_id as status_id

@@ -314,7 +314,7 @@ class en_us extends Language
         $strings['ReservableTimeSlots'] = 'Reservable Time Slots';
         $strings['BlockedTimeSlots'] = 'Blocked Time Slots';
         $strings['ThisIsTheDefaultSchedule'] = 'This is the default schedule';
-        $strings['DefaultScheduleCannotBeBroughtDown'] = 'Default schedule cannot be brought down';
+        $strings['DefaultScheduleCannotBeDeleted'] = 'Default schedule cannot be deleted';
         $strings['MakeDefault'] = 'Make Default';
         $strings['BringDown'] = 'Bring Down';
         $strings['ChangeLayout'] = 'Change Layout';

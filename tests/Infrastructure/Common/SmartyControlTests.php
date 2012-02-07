@@ -48,7 +48,7 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 	
 	public function testSmartyTextboxWithoutPostback()
 	{
-		$textbox = new SmartyTextbox($this->_formKey, $this->_templateVar, $this->_attributes, $this->_smarty);
+		$textbox = new SmartyTextbox($this->_formKey, null, $this->_templateVar, $this->_attributes, $this->_smarty);
 		$expectedHtml = $this->BuildExpectedSmartyTextbox();
 		
 		$this->assertEquals($expectedHtml, $textbox->Html());	
@@ -59,7 +59,7 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 		$this->_server->SetForm($this->_expectedName, $this->_expectedValue);
 		$this->_smarty->_Value = 'somewrongvalue';
 		
-		$textbox = new SmartyTextbox($this->_formKey, $this->_templateVar, $this->_attributes, $this->_smarty);
+		$textbox = new SmartyTextbox($this->_formKey, null, $this->_templateVar, $this->_attributes, $this->_smarty);
 		$expectedHtml = $this->BuildExpectedSmartyTextbox();
 		
 		$this->assertEquals($expectedHtml, $textbox->Html());
@@ -67,7 +67,7 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 	
 	public function testSmartyTextboxForPassword()
 	{
-		$textbox = new SmartyPasswordbox($this->_formKey, $this->_templateVar, $this->_attributes, $this->_smarty);
+		$textbox = new SmartyPasswordbox($this->_formKey, null, $this->_templateVar, $this->_attributes, $this->_smarty);
 		$expectedHtml = $this->BuildExpectedSmartyTextbox('password');
 		
 		$this->assertEquals($expectedHtml, $textbox->Html());
