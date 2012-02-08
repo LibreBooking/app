@@ -339,6 +339,7 @@ class en_us extends Language
         $strings['Past'] = 'Past';
         $strings['Restricted'] = 'Restricted';
         $strings['ViewAll'] = 'View All';
+        $strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
 
         // Errors
         $strings['LoginError'] = 'We could not match your username or password';

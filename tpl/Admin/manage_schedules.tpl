@@ -111,7 +111,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					{/foreach}
 					</select>
 				</li>
-				<li>
+				<li style="padding-top:5px;">
 					<button type="button" class="button save"
 							value="submit">{html_image src="plus-button.png"} {translate key=AddSchedule}</button>
 				</li>
@@ -128,14 +128,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<h3>{translate key=DeleteWarning}</h3>
 		</div>
 
-		Move resources and reservations to
+		{translate key=MoveResourcesAndReservations}
 		<select id="targetScheduleId" {formname key=SCHEDULE_ID} class="required">
 			<option value="">-- {translate key=Schedule} --</option>
 			{foreach from=$Schedules item=schedule}
 			<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
 			{/foreach}
 		</select>
-		<br/>
+		<br/><br/>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key=Delete}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 	</form>

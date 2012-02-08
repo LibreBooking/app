@@ -106,10 +106,6 @@ span.error {
 	font-size:14px;
 }
 
-div.error {
-	width: 90%;
-}
-
 .dialog ul, .dialog li {
 	font-size: 12px;
 	list-style: none;
@@ -163,5 +159,4 @@ tr.pending {
 	display:none !important;
 }
 
-.wideLabel { display:inline-block; width: 100px;}
-
+.wideLabel { display:inline-block; min-width: 100px;}
