@@ -52,14 +52,21 @@ class ManageScheduleService
         $this->resourceRepository = $resourceRepository;
     }
 
+	/**
+	 * @return array|Schedule[]
+	 */
+	public function GetAll()
+	{
+		return $this->scheduleRepository->GetAll();
+	}
+
     /**
-     * @param int $scheduleId
-     * @param string $timezone
+     * @param Schedule $schedule
      * @return IScheduleLayout
      */
-    public function GetLayout($scheduleId, $timezone)
+    public function GetLayout($schedule)
     {
-        return $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($timezone));
+        return $this->scheduleRepository->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($schedule->GetTimezone()));
     }
 
     /**
@@ -163,6 +170,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 		$this->AddAction(ManageSchedules::ActionChangeSettings, 'ChangeSettings');
 		$this->AddAction(ManageSchedules::ActionMakeDefault, 'MakeDefault');
 		$this->AddAction(ManageSchedules::ActionRename, 'Rename');
+		$this->AddAction(ManageSchedules::ActionDelete, 'Delete');
 	}
 	
 	public function PageLoad()
@@ -173,7 +181,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 		/* @var $schedule Schedule */
 		foreach ($schedules as $schedule)
 		{
-			$layout = $this->manageSchedulesService->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($schedule->GetTimezone()));
+			$layout = $this->manageSchedulesService->GetLayout($schedule);
 			$layouts[$schedule->GetId()] = $layout->GetLayout(Date::Now());
 		}
 		

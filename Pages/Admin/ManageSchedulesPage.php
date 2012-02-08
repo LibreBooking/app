@@ -87,7 +87,7 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
 	public function __construct()
 	{
 		parent::__construct('ManageSchedules');
-		$this->_presenter = new ManageSchedulesPresenter($this, new ScheduleRepository());
+		$this->_presenter = new ManageSchedulesPresenter($this, new ManageScheduleService(new ScheduleRepository(), new ResourceRepository()));
 	}
 	
 	public function PageLoad()

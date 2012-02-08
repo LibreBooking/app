@@ -26,7 +26,8 @@ function ScheduleManagement(opts)
 		quickLayoutEnd: $('#quickLayoutEnd'),
 		
 		daysVisible: $('#daysVisible'),
-		dayOfWeek: $('#dayOfWeek')
+		dayOfWeek: $('#dayOfWeek'),
+		deleteDestinationScheduleId: $('#targetScheduleId')
 	};
 	
 	ScheduleManagement.prototype.init = function()
@@ -217,7 +218,10 @@ function ScheduleManagement(opts)
     var showDeleteDialog = function(e)
     {
         var scheduleId = getActiveScheduleId();
-        $('#targetScheduleId').children('option[value="' + scheduleId + '"]').attr('disabled','disabled');
+		elements.deleteDestinationScheduleId.children().removeAttr('disabled');
+		elements.deleteDestinationScheduleId.children('option[value="' + scheduleId + '"]').attr('disabled','disabled');
+		elements.deleteDestinationScheduleId.val('');
+
         elements.deleteDialog.dialog('open');
     };
 	

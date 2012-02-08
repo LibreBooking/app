@@ -38,7 +38,7 @@ class en_us extends Language
         $dates['res_popup'] = 'm/d/Y g:i A';
         $dates['dashboard'] = 'l, m/d/Y g:i A';
         $dates['period_time'] = "g:i A";
-        $this->Dates['general_date_js'] = "mm/dd/yy";;
+		$dates['general_date_js'] = "mm/dd/yy";
 
         $this->Dates = $dates;
     }
