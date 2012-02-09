@@ -359,56 +359,7 @@ sur celui-ci.Vous pourrez modifier cette configuration en cliquant sur "Modifier
     <br>$conf['settings']['plugins']['Authentication'], $conf['settings']['plugins']['Authorization'] ou
     $conf['settings']['plugins']['Permission'] au ficheir config.php .</p>
 
-<h2>Aide</h2>
-
-<p><a href="http://php.brickhost.com/">Site Officiel de phpScheduleIt</a></p>
-
-<p><a href="http://php.brickhost.com/forums/">Forum d'entraide</a></p>
-
-<p><a href="https://sourceforge.net/projects/phpscheduleit/">Site SourceForge de phpScheduleIt</a></p>
-
-<h2>Remerciements</h2>
-
-<h3>Auteurs</h3>
-
-<p>Nick Korbel</p>
-
-<p>Dung Le</p>
-
-<p>Jan Mattila</p>
-
-<h3>Logo/UI</h3>
-
-<p>Hannah Milan</p>
-
-<h3>Traducteurs</h3>
-
-<h3>Merci pour ces projets et librairies :</h3>
-
-<p>Smarty</p>
-
-<p>PEAR</p>
-
-<p>adLDAP</p>
-
-<p>jQuery</p>
-
-<p>FullCalendar</p>
-
-<p>log4php</p>
-
-<p>securimage</p>
-
-<p>SimpleImage</p>
-
-<p>PHPMailer</p>
-
-<p>jsTimezoneDetect</p>
-
-<h2>License</h2>
-
-<p>phpScheduleIt est gratuit et libre(open source), sa licence est de type  GNU GENERAL PUBLIC LICENSE. Merci de lire le fichier de license pour plus d'informations.</p>
-
+{include file="support-and-credits.tpl"}
 </div>
 
 {include file='globalfooter.tpl'}

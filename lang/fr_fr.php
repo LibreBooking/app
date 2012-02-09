@@ -338,7 +338,7 @@ class fr_fr extends Language
         $strings['Past'] = 'Passé';
         $strings['Restricted'] = 'Restreint';
 		$strings['ViewAll'] = 'View All';
-        $strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
+        $strings['MoveResourcesAndReservations'] = 'Déplacer les ressources et réservations vers';
 
         // Errors
         $strings['LoginError'] = 'Nom d\'utilisateur ou mot de passe inconnu';
