@@ -1,6 +1,5 @@
-<?php
-/**
-Copyright 2012 Nick Korbel
+{*
+Copyright 2011-2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -16,23 +15,15 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
- */
+*}
+{include file='..\..\tpl\Email\emailheader.tpl'}
+	
+Votre mot de passe temporaire phpScheduleIt : {$TemporaryPassword}
 
-require_once(ROOT_DIR . 'lang/AvailableLanguage.php');
+<br/>
 
-class AvailableLanguages
-{
-    /**
-     * @return array|AvailableLanguage[]
-     */
-    public static function GetAvailableLanguages()
-    {
-        return array(
-        			'en_us' => new AvailableLanguage('en_us', 'en_us.php', 'English US'),
-        			'en_gb' => new AvailableLanguage('en_gb', 'en_gb.php', 'English GB'),
-        			'fr_fr' => new AvailableLanguage('fr_fr', 'fr_fr.php', 'Fran&ccedil;ais'),
-        		);
-    }
-}
+Votre ancien mot de passe ne fonctionne maintenant plus.
 
-?>
+SVP : <a href="{$ScriptUrl}">Connexion à phpScheduleIt</a> pour changer au plus vite votre mot de passe.
+	
+{include file='..\..\tpl\Email\emailfooter.tpl'}

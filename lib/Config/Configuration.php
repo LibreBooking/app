@@ -54,14 +54,21 @@ interface IConfigurationFile
 
 class Configuration implements IConfiguration
 {
+    /**
+     * @var array|Configuration[]
+     */
 	protected $_configs = array();
+
+    /**
+     * @var Configuration
+     */
 	private static $_instance = null;
 	
 	const SETTINGS = 'settings';
 	const DEFAULT_CONFIG_ID = 'phpscheduleit';
 	const DEFAULT_CONFIG_FILE_PATH = 'config/config.php';
 
-    const VERSION = '2.0.0 beta';
+    const VERSION = '2.0.0';
 
 	protected function __construct()
 	{
@@ -105,7 +112,11 @@ class Configuration implements IConfiguration
 		
 		$this->AddConfig($configId, $container, $overwrite);
 	}
-	
+
+    /**
+     * @param $configId
+     * @return Configuration
+     */
 	public function File($configId)
 	{
 		return $this->_configs[$configId];
