@@ -37,9 +37,9 @@ class LdapOptions
 	{
 		$hosts = $this->GetHosts();
 		$this->SetOption('domain_controllers', $hosts);
-		$this->SetOption('port', $this->GetConfig(LdapConfig::PORT), new IntConverter());
-		$this->SetOption('ad_username', $this->GetConfig(LdapConfig::USERNAME));
-		$this->SetOption('ad_password', $this->GetConfig(LdapConfig::PASSWORD));
+		$this->SetOption('ad_port', $this->GetConfig(LdapConfig::PORT), new IntConverter());
+		$this->SetOption('admin_username', $this->GetConfig(LdapConfig::USERNAME));
+		$this->SetOption('admin_password', $this->GetConfig(LdapConfig::PASSWORD));
 		$this->SetOption('base_dn', $this->GetConfig(LdapConfig::BASEDN));
 		$this->SetOption('use_ssl', $this->GetConfig(LdapConfig::USE_SSL, new BooleanConverter()));
 		$this->SetOption('account_suffix', $this->GetConfig(LdapConfig::ACCOUNT_SUFFIX));

@@ -729,7 +729,8 @@ class Queries
 			description = @description, 
 			repeat_type = @repeatType, 
 			repeat_options = @repeatOptions,
-			status_id = @statusid
+			status_id = @statusid,
+			owner_id = @userid
 		WHERE
 			series_id = @seriesid';
 

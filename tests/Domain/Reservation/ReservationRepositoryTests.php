@@ -375,7 +375,8 @@ class ReservationRepositoryTests extends TestBase
 			$repeatType,
 			$repeatConfiguration,
 			Date::Now(),
-			$existingReservation->StatusId());
+			$existingReservation->StatusId(),
+			$userId);
 		$this->assertEquals(1, count($this->db->_Commands));
 		$this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
 	}

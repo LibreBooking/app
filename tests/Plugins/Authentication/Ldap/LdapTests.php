@@ -71,12 +71,12 @@ class LdapTests extends TestBase
 		$this->encryption = new FakePasswordEncryption();
 
         $ldapEntry = new TestLdapEntry();
-		$ldapEntry->sn = array('user');
-        $ldapEntry->givenname = array('test');
-        $ldapEntry->mail = array('ldap@user.com');
-        $ldapEntry->telephonenumber = array('000-000-0000');
-        $ldapEntry->physicaldeliveryofficename = array('');
-        $ldapEntry->title = array('');
+		$ldapEntry->sn = 'user';
+        $ldapEntry->givenname = 'test';
+        $ldapEntry->mail = 'ldap@user.com';
+        $ldapEntry->telephonenumber = '000-000-0000';
+        $ldapEntry->physicaldeliveryofficename = '';
+        $ldapEntry->title = '';
 
 		$this->ldapUser = new LdapUser($ldapEntry);
 
@@ -223,9 +223,9 @@ class LdapTests extends TestBase
 
 		$this->assertNotNull($this->fakeConfig->_RegisteredFiles[LdapConfig::CONFIG_ID]);
 		$this->assertEquals('localhost', $options['domain_controllers'][0], 'domain_controllers must be an array');
-		$this->assertEquals(intval($port), $options['port'], 'port should be int');
-		$this->assertEquals($username, $options['ad_username']);
-		$this->assertEquals($password, $options['ad_password']);
+		$this->assertEquals(intval($port), $options['ad_port'], 'port should be int');
+		$this->assertEquals($username, $options['admin_username']);
+		$this->assertEquals($password, $options['admin_password']);
 		$this->assertEquals($base, $options['base_dn']);
 		$this->assertEquals(false, $options['use_ssl']);
 		$this->assertEquals($accountSuffix, $options['account_suffix']);
