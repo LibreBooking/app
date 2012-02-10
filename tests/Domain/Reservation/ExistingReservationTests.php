@@ -60,7 +60,7 @@ class ExistingReservationTests extends TestBase
 		$series = $builder->Build();
 		// updates
 		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
-		$series->Update(99, $series->Resource(), 'new', 'new', new FakeUserSession());
+		$series->Update($series->UserId(), $series->Resource(), 'new', 'new', new FakeUserSession());
 		$series->Repeats($currentRepeatOptions);
 
 		$instances = $series->Instances();
@@ -309,7 +309,7 @@ class ExistingReservationTests extends TestBase
 		$series = $builder->Build();
 		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
 
-		$series->Update(9, $newResource, 'new', 'new', new FakeUserSession());
+		$series->Update($series->UserId(), $newResource, 'new', 'new', new FakeUserSession());
 		$series->Repeats($repeatOptions);
 		
 		$events = $series->GetEvents();
@@ -701,5 +701,20 @@ class ExistingReservationTests extends TestBase
 
 		$this->assertTrue($removeIndex < $addIndex, "need to remove before adding to avoid key conflicts");
 	}
+
+    public function testChangeOwner()
+    {
+        $oldOwnerId = 100;
+        $newUserId = 200;
+
+        $builder = new ExistingReservationSeriesBuilder();
+        $series = $builder->Build();
+        $series->WithOwner($oldOwnerId);
+
+        $series->Update($newUserId, $series->Resource(), '', '', $this->fakeUser);
+        $events = $series->GetEvents();
+
+        $this->assertTrue(in_array(new OwnerChangedEvent($series, $oldOwnerId, $newUserId), $events));
+    }
 }
 ?>

@@ -398,4 +398,57 @@ class AccessoryRemovedEvent extends SeriesEvent
         return sprintf("%s%s", get_class($this), $this->accessory->__toString());
     }
 }
+
+class OwnerChangedEvent extends SeriesEvent
+{
+    /**
+     * @var int
+     */
+    private $oldOwnerId;
+
+    /**
+     * @var int
+     */
+    private $newOwnerId;
+
+    /**
+     * @param ExistingReservationSeries $series
+     * @param int $oldOwnerId
+     * @param int $newOwnerId
+     */
+    public function __construct(ExistingReservationSeries $series, $oldOwnerId, $newOwnerId)
+    {
+        $this->series = $series;
+        $this->oldOwnerId = $oldOwnerId;
+        $this->newOwnerId = $newOwnerId;
+    }
+    /**
+     * @return ExistingReservationSeries
+     */
+    public function Series()
+    {
+        return $this->series;
+    }
+
+    /**
+     * @return int
+     */
+    public function OldOwnerId()
+    {
+        return $this->oldOwnerId;
+    }
+
+    /**
+     * @return int
+     */
+    public function NewOwnerId()
+    {
+        return $this->newOwnerId;
+    }
+
+    public function __toString()
+    {
+        return sprintf("%s%s%s%s", get_class($this), $this->OldOwnerId(), $this->NewOwnerId(), $this->series->SeriesId());
+    }
+}
 ?>

@@ -343,6 +343,7 @@ class ReservationEventMapper
 	private function __construct()
 	{
 		$this->buildMethods['SeriesDeletedEvent'] = 'BuildDeleteSeriesCommand';
+		$this->buildMethods['OwnerChangedEvent'] = 'OwnerChangedCommand';
 
 		$this->buildMethods['InstanceAddedEvent'] = 'BuildAddReservationCommand';
 		$this->buildMethods['InstanceRemovedEvent'] = 'BuildRemoveReservationCommand';
@@ -440,6 +441,11 @@ class ReservationEventMapper
 			new RemoveReservationAccessoryCommand($series->SeriesId(), $event->AccessoryId())
 		);
 	}
+
+    private function OwnerChangedCommand(OwnerChangedEvent $event, ExistingReservationSeries $series)
+    {
+        return new OwnerChangedEventCommand($event);
+    }
 }
 
 class EventCommand
@@ -584,6 +590,39 @@ class InstanceUpdatedEventCommand extends EventCommand
 			$database->Execute($insertReservationUser);
 		}
 	}
+}
+
+class OwnerChangedEventCommand extends EventCommand
+{
+    /**
+     * @var OwnerChangedEvent
+     */
+    private $event;
+
+    public function __construct(OwnerChangedEvent $event)
+    {
+        $this->event = $event;
+    }
+
+    public function Execute(Database $database)
+    {
+        $oldOwnerId = $this->event->OldOwnerId();
+        $newOwnerId = $this->event->NewOwnerId();
+
+        $instances = $this->event->Series()->_Instances();
+
+        /** @var Reservation $instance */
+        foreach($instances as $instance)
+        {
+            if (!$instance->IsNew())
+            {
+                $id = $instance->ReservationId();
+                $database->Execute(new RemoveReservationUserCommand($id, $oldOwnerId));
+                $database->Execute(new RemoveReservationUserCommand($id, $newOwnerId));
+                $database->Execute(new AddReservationUserCommand($id, $newOwnerId, ReservationUserLevel::OWNER));
+            }
+        }
+    }
 }
 
 interface IReservationRepository

@@ -663,6 +663,34 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($removeCommand));
 	}
 
+    public function testChangesOwner()
+    {
+        $currentOwner = 1111;
+        $newOwner = 2222;
+        $instanceId1 = 100;
+        $reservation1 = new TestReservation(null, null, $instanceId1);
+
+        $instanceId2 = 101;
+        $reservation2 = new TestReservation(null, null, $instanceId2);
+
+        $builder = new ExistingReservationSeriesBuilder();
+        $builder->WithInstance($reservation1);
+        $builder->WithInstance($reservation2);
+
+        $series = $builder->Build();
+        $series->WithOwner($currentOwner);
+        $series->Update($newOwner, $series->Resource(), '', '', $this->fakeUser);
+        $this->repository->Update($series);
+
+        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, $currentOwner)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, $newOwner)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, $newOwner, ReservationUserLevel::OWNER)));
+
+        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, $currentOwner)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, $newOwner)));
+        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, $newOwner, ReservationUserLevel::OWNER)));
+    }
+
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
 	{
 		return new UpdateReservationCommand(
