@@ -338,7 +338,7 @@ class fr_fr extends Language
         $strings['Pending'] = 'En attente';
         $strings['Past'] = 'Passé';
         $strings['Restricted'] = 'Restreint';
-		$strings['ViewAll'] = 'View All';
+		$strings['ViewAll'] = 'Tout Voir';
         $strings['MoveResourcesAndReservations'] = 'Déplacer les ressources et réservations vers';
 
         // Errors
