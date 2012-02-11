@@ -68,7 +68,7 @@ class Configuration implements IConfiguration
 	const DEFAULT_CONFIG_ID = 'phpscheduleit';
 	const DEFAULT_CONFIG_FILE_PATH = 'config/config.php';
 
-    const VERSION = '2.0.0';
+    const VERSION = '2.0';
 
 	protected function __construct()
 	{
