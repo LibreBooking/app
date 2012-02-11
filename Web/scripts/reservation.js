@@ -33,7 +33,9 @@ function Reservation(opts) {
 		accessoriesDialog: $('#dialogAddAccessories'),
 		accessoriesList: $('#accessories'),
 		accessoriesConfirm: $('#btnConfirmAddAccessories'),
-		accessoriesCancel: $('#btnCancelAddAccessories')
+		accessoriesCancel: $('#btnCancelAddAccessories'),
+
+		printButton: $('#btnPrint')
 	};
 
 	var oneDay = 86400000; //24*60*60*1000 => hours*minutes*seconds*milliseconds
@@ -79,6 +81,10 @@ function Reservation(opts) {
 
 		elements.accessoriesCancel.click(function() {
 			elements.accessoriesDialog.dialog('close');
+		});
+
+		elements.printButton.click(function() {
+			window.print();
 		});
 		
 		$('#btnClearAddResources').click(function() {

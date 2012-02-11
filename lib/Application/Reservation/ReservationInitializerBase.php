@@ -170,11 +170,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$startPeriod = $this->GetStartSlotClosestTo($schedulePeriods, $startDate);
 		$endPeriod = $this->GetEndSlotClosestTo($schedulePeriods, $endDate);
 
-		if ($endPeriod->Compare($startPeriod) < 0)
-		{
-			$endPeriod = $startPeriod;
-		}
-
 		$this->basePage->SetSelectedStart($startPeriod, $startDate);
 		$this->basePage->SetSelectedEnd($endPeriod, $endDate);
 	}

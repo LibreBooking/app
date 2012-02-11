@@ -77,7 +77,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{translate key='Update'}
 		</button>
 	{/if}
-	<button type="button" class="button">
+	<button type="button" id="btnPrint" class="button">
 		<img src="img/printer.png" />
 		{translate key='Print'}
 	</button>
