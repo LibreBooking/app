@@ -27,20 +27,21 @@ class fr_fr extends Language
         parent::__construct();
     }
 
-    protected function _LoadDates()
-    {
-        $dates = array();
+	protected function _LoadDates()
+	{
+		$dates = array();
 
-        $dates['general_date'] = 'm/d/Y';
-        $dates['general_datetime'] = 'm/d/Y H:i:s';
-        $dates['schedule_daily'] = 'l, m/d/Y';
-        $dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
-        $dates['res_popup'] = 'm/d/Y g:i A';
-        $dates['dashboard'] = 'l, m/d/Y g:i A';
-        $dates['period_time'] = "g:i A";
+		$dates['general_date'] = 'd/m/Y';
+		$dates['general_datetime'] = 'd/m/Y H:i:s';
+		$dates['schedule_daily'] = 'l, d/m/Y';
+		$dates['reservation_email'] = 'd/m/Y @ g:i A (e)';
+		$dates['res_popup'] = 'd/m/Y g:i A';
+		$dates['dashboard'] = 'l, d/m/Y g:i A';
+		$dates['period_time'] = "g:i A";
+		$dates['general_date_js'] = "dd/mm/yy";
 
-        $this->Dates = $dates;
-    }
+		$this->Dates = $dates;
+	}
 
     protected function _LoadStrings()
     {
