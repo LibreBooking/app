@@ -7,6 +7,7 @@
 	<property name="archive_directory" value="../phpScheduleIt_archive/src/${version}"/>
 	<property name="staging" value="../staging"/>
 	<property name="stagingdir" value="${staging}/phpScheduleIt"/>
+	<property name="demo.dir" value="../phpScheduleIt_archive/src/demo"/>
 
 	<available file="C:/Program Files/MySQL/MySQL Server 5.1/bin" property="mysql.bin"
 			   value="C:/Program Files/MySQL/MySQL Server 5.1/bin"/>
@@ -120,8 +121,14 @@
 		</copy>
 	</target>
 
-	<target name="create.demo" depends="package">
-
+	<target name="create.demo" depends="stage.files">
+		<delete dir="${demo.dir}" failonerror="false"/>
+		<mkdir dir="${demo.dir}"/>
+		<copy todir="${demo.dir}" includeemptydirs="true">
+			<fileset dir="${stagingdir}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="minify" description="minify javascript and css files">
