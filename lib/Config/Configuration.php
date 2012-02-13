@@ -99,6 +99,7 @@ class Configuration implements IConfiguration
 	{
 		if (!file_exists($configFile))
         {
+			echo "Missing config file: $configFile";
             throw new Exception("Missing config file: $configFile");
         }
 
@@ -180,7 +181,7 @@ class ConfigurationFile implements IConfigurationFile
 	
 	public function GetScriptUrl()
 	{
-		$url = strtolower($this->GetKey(ConfigKeys::SCRIPT_URL));
+		$url = $this->GetKey(ConfigKeys::SCRIPT_URL);
 		
 		return rtrim($url, '/');
 	}

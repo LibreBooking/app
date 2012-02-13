@@ -133,7 +133,7 @@ class SmartyPage extends Smarty
 			$languageCode = $this->getTemplateVars('CurrentLanguage');
 		}
 		$localizedPath = ROOT_DIR . 'lang/' . $languageCode;
-		$defaultPath = ROOT_DIR . 'lang/en_us/' . $templateName;
+		$defaultPath = ROOT_DIR . 'lang/en_us/';
 
 		if (file_exists($localizedPath . '/' . $templateName))
 		{
