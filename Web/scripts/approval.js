@@ -12,7 +12,7 @@ function Approval(opts)
 		elements.approveButton.click(function() {
 			elements.indicator.insertAfter(elements.approveButton).show();
 			elements.approveButton.hide();
-			this.Approve(elements.referenceNumber.val());
+            Approval.prototype.Approve(elements.referenceNumber.val());
 		});
 	};
 
