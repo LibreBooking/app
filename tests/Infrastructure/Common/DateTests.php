@@ -474,6 +474,10 @@ class DateTests extends TestBase
 
 		$diff3 = DateDiff::FromTimeString("25h0m");
 		$this->assertEquals((25*60*60), $diff3->TotalSeconds());
+
+        $this->assertEquals(0, DateDiff::FromTimeString("dhm")->TotalSeconds());
+        $this->assertEquals(0, DateDiff::FromTimeString("hm")->TotalSeconds());
+        $this->assertEquals(0, DateDiff::FromTimeString("dm")->TotalSeconds());
 	}
 
 	public function testDateRangeOverlapsIfStartsWithinOrEndsWithin()
