@@ -99,7 +99,7 @@ class Configuration implements IConfiguration
 	{
 		if (!file_exists($configFile))
         {
-			echo "Missing config file: $configFile";
+			echo "Missing config file: $configFile. If there is a .dist config file in this location, please copy it as $configFile";
             throw new Exception("Missing config file: $configFile");
         }
 

@@ -219,9 +219,13 @@ class Resources implements IResourceLocalization
 	{
 		$languageCode = strtolower($languageCode);
 
+		if ($languageCode == $this->CurrentLanguage)
+		{
+			return true;
+		}
+
         if (
-            ($languageCode != $this->CurrentLanguage) &&
-            ($this->AvailableLanguages[$languageCode]) &&
+           ($this->AvailableLanguages[$languageCode]) &&
             file_exists($this->LanguageDirectory . $this->AvailableLanguages[$languageCode]->LanguageFile))
 		{
 			$languageSettings = $this->AvailableLanguages[$languageCode];
