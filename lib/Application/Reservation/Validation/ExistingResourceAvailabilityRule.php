@@ -21,15 +21,21 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class ExistingResourceAvailabilityRule extends ResourceAvailabilityRule implements IUpdateReservationValidationRule
 {
 	/**
-	 * @param ReservationSeries $series
+	 * @param ReservationSeries|ExistingReservationSeries $series
 	 * @return ReservationRuleResult
 	 */
 	public function Validate($series)
 	{
 		return parent::Validate($series);
 	}
-	
-	protected function IsInConflict(Reservation $instance, ExistingReservationSeries $series, IReservedItemView $existingItem)
+
+	/**
+	 * @param Reservation $instance
+	 * @param ReservationSeries|ExistingReservationSeries $series
+	 * @param IReservedItemView $existingItem
+	 * @return bool
+	 */
+	protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem)
 	{
 		if ($existingItem->GetId() == $instance->ReservationId() ||
 			$series->IsMarkedForDelete($existingItem->GetId()) ||
