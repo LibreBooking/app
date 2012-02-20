@@ -33,7 +33,8 @@ class NewReservationInitializer extends ReservationInitializerBase
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
-		IReservationAuthorization $reservationAuthorization
+		IReservationAuthorization $reservationAuthorization,
+		UserSession $userSession
 		)
 	{
 		$this->_page = $page;
@@ -43,7 +44,8 @@ class NewReservationInitializer extends ReservationInitializerBase
 						$scheduleRepository, 
 						$userRepository,
 						$resourceService,
-						$reservationAuthorization);
+						$reservationAuthorization,
+						$userSession);
 	}
 	
 	public function Initialize()
@@ -104,6 +106,11 @@ class BindableResourceData
 	 * @var array|ResourceDto[]
 	 */
 	public $AvailableResources;
+
+	/**
+	 * @var int
+	 */
+	public $NumberAccessible = 0;
 	
 	public function __construct()
 	{
@@ -126,6 +133,10 @@ class BindableResourceData
 	 */
 	public function AddAvailableResource($resource)
 	{
+		if ($resource->CanAccess)
+		{
+			$this->NumberAccessible++;
+		}
 		$this->AvailableResources[] = $resource;	
 	}
 }

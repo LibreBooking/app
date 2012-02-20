@@ -110,6 +110,7 @@ class ResourceRepository implements IResourceRepository
             $db->Execute(new AutoAssignResourcePermissionsCommand($resourceId));
         }
 
+		$resource->SetResourceId($resourceId);
         return $resourceId;
 	}
 	

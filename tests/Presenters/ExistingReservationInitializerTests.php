@@ -157,7 +157,7 @@ class ExistingReservationInitializerTests extends TestBase
 
 		$this->resourceService->expects($this->once())
 			->method('GetScheduleResources')
-			->with($this->equalTo($scheduleId), $this->equalTo(false), $this->equalTo($this->fakeUser))
+			->with($this->equalTo($scheduleId), $this->equalTo(true), $this->equalTo($this->fakeUser))
 			->will($this->returnValue($resourceList));
 			
 		// periods
@@ -284,7 +284,8 @@ class ExistingReservationInitializerTests extends TestBase
 			$this->userRepository,
 			$this->resourceService,
 			$reservationView,
-			$reservationAuthorization);
+			$reservationAuthorization,
+			$this->fakeUser);
 			
 		$initializer->Initialize();
 	}

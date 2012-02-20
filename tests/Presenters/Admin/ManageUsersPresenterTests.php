@@ -137,7 +137,7 @@ class ManageUsersPresenterTests extends TestBase
 
         $this->presenter->ResetPassword();
 
-        $this->assertEquals($encrypted, $user->password);
+        $this->assertEquals($encrypted, $user->encryptedPassword);
         $this->assertEquals($salt, $user->passwordSalt);
     }
 

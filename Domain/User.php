@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
 require_once(ROOT_DIR . 'Domain/Values/EmailPreferences.php');
@@ -141,7 +141,7 @@ class User
 	 * @var string
 	 * @internal
 	 */
-	public $password;
+	public $encryptedPassword;
 
 	/**
 	 * @var string
@@ -172,7 +172,8 @@ class User
 	{
 		foreach ($groups as $group)
 		{
-			if ($group->IsGroupAdmin) {
+			if ($group->IsGroupAdmin)
+			{
 				$this->isGroupAdmin = true;
 				break;
 			}
@@ -185,7 +186,8 @@ class User
 		$removed = array_diff($this->allowedResourceIds, $allowedResourceIds);
 		$added = array_diff($allowedResourceIds, $this->allowedResourceIds);
 
-		if (!empty($removed) || !empty($added)) {
+		if (!empty($removed) || !empty($added))
+		{
 			$this->permissionsChanged = true;
 			$this->removedPermissions = $removed;
 			$this->addedPermissions = $added;
@@ -230,8 +232,7 @@ class User
 		if ($turnedOn)
 		{
 			$this->emailPreferences->AddPreference($event);
-		}
-		else
+		} else
 		{
 			$this->emailPreferences->RemovePreference($event);
 		}
@@ -264,7 +265,7 @@ class User
 		$user->language = $row[ColumnNames::LANGUAGE_CODE];
 		$user->timezone = $row[ColumnNames::TIMEZONE_NAME];
 		$user->statusId = $row[ColumnNames::USER_STATUS_ID];
-		$user->password = $row[ColumnNames::PASSWORD];
+		$user->encryptedPassword = $row[ColumnNames::PASSWORD];
 		$user->passwordSalt = $row[ColumnNames::SALT];
 		$user->homepageId = $row[ColumnNames::HOMEPAGE_ID];
 
@@ -272,6 +273,21 @@ class User
 		$user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
 		$user->attributes[UserAttribute::Organization] = $row[ColumnNames::ORGANIZATION];
 
+		return $user;
+	}
+
+	public static function Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt)
+	{
+		$user = new User();
+		$user->firstName = $firstName;
+		$user->lastName = $lastName;
+		$user->emailAddress = $emailAddress;
+		$user->username = $userName;
+		$user->language = $language;
+		$user->timezone = $timezone;
+		$user->encryptedPassword = $password;
+		$user->passwordSalt = $passwordSalt;
+		$user->homepageId = Pages::DEFAULT_HOMEPAGE_ID;
 		return $user;
 	}
 
@@ -298,9 +314,13 @@ class User
 		return $this->removedPermissions;
 	}
 
-	public function ChangePassword($password, $salt)
+	/**
+	 * @param string $encryptedPassword
+	 * @param string $salt
+	 */
+	public function ChangePassword($encryptedPassword, $salt)
 	{
-		$this->password = $password;
+		$this->encryptedPassword = $encryptedPassword;
 		$this->passwordSalt = $salt;
 	}
 
@@ -350,7 +370,8 @@ class User
 	 */
 	public function GetAttribute($attributeName)
 	{
-		if (key_exists($attributeName, $this->attributes)) {
+		if (key_exists($attributeName, $this->attributes))
+		{
 			return $this->attributes[$attributeName];
 		}
 		return null;
@@ -369,21 +390,33 @@ class User
 		$adminIdsForUser = array();
 		foreach ($user->Groups() as $userGroup)
 		{
-			if (!empty($userGroup->AdminGroupId)) {
+			if (!empty($userGroup->AdminGroupId))
+			{
 				$adminIdsForUser[$userGroup->AdminGroupId] = true;
 			}
 		}
 
 		foreach ($this->Groups() as $group)
 		{
-			if ($group->IsGroupAdmin) {
-				if (array_key_exists($group->GroupId, $adminIdsForUser)) {
+			if ($group->IsGroupAdmin)
+			{
+				if (array_key_exists($group->GroupId, $adminIdsForUser))
+				{
 					return true;
 				}
 			}
 		}
 
 		return false;
+	}
+
+	/**
+	 * @static
+	 * @return User
+	 */
+	public static function Null()
+	{
+		return new User();
 	}
 }
 
@@ -435,7 +468,8 @@ class UserGroup
 	 */
 	public function AddRole($roleLevel = null)
 	{
-		if ($roleLevel == RoleLevel::GROUP_ADMIN) {
+		if ($roleLevel == RoleLevel::GROUP_ADMIN)
+		{
 			$this->IsGroupAdmin = true;
 		}
 	}

@@ -171,7 +171,7 @@ class LoginPresenter
             $languageCode = $languageHeader;
         }
 
-        $this->_page->SetSelectedLanguage($languageCode);
+		$this->_page->SetSelectedLanguage(strtolower($languageCode));
         Resources::GetInstance()->SetLanguage($languageCode);
     }
 }

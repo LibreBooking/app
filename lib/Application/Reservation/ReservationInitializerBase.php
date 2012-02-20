@@ -69,13 +69,15 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 * @param $userRepository IUserRepository
 	 * @param $resourceService IResourceService
 	 * @param $reservationAuthorization IReservationAuthorization
+	 * @param $userSession UserSession
 	 */
 	public function __construct(
 		$page, 
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
-		IReservationAuthorization $reservationAuthorization
+		IReservationAuthorization $reservationAuthorization,
+		UserSession $userSession
 		)
 	{
 		$this->basePage = $page;
@@ -83,13 +85,12 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$this->userRepository = $userRepository;
 		$this->resourceService = $resourceService;
 		$this->reservationAuthorization = $reservationAuthorization;
+		$this->currentUser = $userSession;
+		$this->currentUserId = $this->currentUser->UserId;
 	}
 	
 	public function Initialize()
 	{
-		$this->currentUser = ServiceLocator::GetServer()->GetUserSession();
-		$this->currentUserId = $this->currentUser->UserId;
-				
 		$requestedResourceId = $this->GetResourceId();
 		$requestedScheduleId = $this->GetScheduleId();
 		$reservationDate = $this->GetReservationDate();
@@ -108,7 +109,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$schedulePeriods = $layout->GetLayout($requestedDate);
 		$this->basePage->BindPeriods($schedulePeriods);
 
-		$resources = $this->resourceService->GetScheduleResources($requestedScheduleId, false, $this->currentUser);
+		$resources = $this->resourceService->GetScheduleResources($requestedScheduleId, true, $this->currentUser);
 
 		$this->basePage->SetCanChangeUser($this->reservationAuthorization->CanChangeUsers($this->currentUser));
 
@@ -119,7 +120,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$this->basePage->BindAvailableResources($bindableResourceData->AvailableResources);
 		$accessories = $this->resourceService->GetAccessories();
 		$this->basePage->BindAvailableAccessories($accessories);
-		
+		$this->basePage->ShowAdditionalResources($bindableResourceData->NumberAccessible > 0);
+
 		$this->SetSelectedDates($startDate, $endDate, $schedulePeriods);
 		
 		$this->basePage->SetReservationResource($bindableResourceData->ReservationResource);
@@ -225,8 +227,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 */
 	private function GetBindableResourceData($resources, $requestedResourceId)
 	{
-		//$resources = $scheduleUser->GetAllResources();
-		
 		$bindableResourceData = new BindableResourceData();
 
 		/** @var $resource ResourceDto */
@@ -244,7 +244,5 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		
 		return $bindableResourceData;
 	}
-
-
 }
 ?>

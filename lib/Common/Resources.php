@@ -239,8 +239,6 @@ class Resources implements IResourceLocalization
 			$this->Charset = $this->_lang->Charset;
 			$this->HtmlLang = $this->_lang->HtmlLang;
 
-            setlocale(LC_ALL, $languageCode);
-
             return true;
 		}
 

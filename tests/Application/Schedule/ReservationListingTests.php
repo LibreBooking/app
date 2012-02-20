@@ -35,18 +35,18 @@ class ReservationListingTests extends TestBase
 	
 	public function testReservationSpanningMultipleDaysIsReturnedOnAllOfThem()
 	{
-		$res1 = $this->GetReservation('2009-10-09 22:00:00', '2009-10-09 23:00:00');
+		$res1 = $this->GetReservation('2009-10-09 22:00:00', '2009-10-09 23:00:00', 1);
 		// 2009-10-09 17:00:00 - 2009-10-09 18:00:00 CST
-		$res2 = $this->GetReservation('2009-10-10 01:00:00', '2009-10-10 07:00:00');
+		$res2 = $this->GetReservation('2009-10-10 01:00:00', '2009-10-10 07:00:00', 2);
 		// 2009-10-09 20:00:00 - 2009-10-10 02:00:00 CST
-		$res3 = $this->GetReservation('2009-10-10 10:00:00', '2009-10-13 10:00:00');
+		$res3 = $this->GetReservation('2009-10-10 10:00:00', '2009-10-13 10:00:00', 1);
 		// 2009-10-10 05:00:00 - 2009-10-13 05:00:00 CST
-		$res4 = $this->GetReservation('2009-10-14 01:00:00', '2009-10-16 01:00:00');
+		$res4 = $this->GetReservation('2009-10-14 01:00:00', '2009-10-16 01:00:00', 2);
 		// 2009-10-13 20:00:00 - 2009-10-15 20:00:00 CST
-		$res5 = $this->GetReservation('2009-10-13 10:00:00', '2009-10-13 15:00:00');
+		$res5 = $this->GetReservation('2009-10-13 10:00:00', '2009-10-13 15:00:00', 1);
 		// 2009-10-13 05:00:00 - 2009-10-13 10:00:00 CST
 		
-		$reservationListing = new ReservationListing("CST");
+		$reservationListing = new ReservationListing("America/Chicago");
 		
 		$reservationListing->Add($res4);
 		$reservationListing->Add($res1);
@@ -76,6 +76,14 @@ class ReservationListingTests extends TestBase
 		$this->assertEquals(1, $onDate6->Count());
 		$this->assertEquals(1, $onDate7->Count());
 		$this->assertEquals(0, $onDate8->Count());
+
+		$this->assertEquals(4, $reservationListing->ForResource(1)->Count());
+		$this->assertEquals(2, $onDate1->ForResource(1)->Count());
+
+		$this->assertEquals(2, count($reservationListing->OnDateForResource(Date::Parse('2009-10-09', 'CST'), 1)));
+		$this->assertEquals(2, count($reservationListing->OnDateForResource(Date::Parse('2009-10-09', 'CST'), 2)));
+		$this->assertEquals(1, count($reservationListing->OnDateForResource(Date::Parse('2009-10-10', 'CST'), 1)));
+		$this->assertEquals(0, count($reservationListing->OnDateForResource(Date::Parse('2009-10-10', 'CST'), 999)));
 
 		$date1Items = $onDate1->Reservations();
 		$this->assertTrue(in_array(new ReservationListItem($res1), $date1Items));
@@ -132,9 +140,12 @@ class ReservationListingTests extends TestBase
 	 * @param $endDateString
 	 * @return ReservationItemView
 	 */
-	private function GetReservation($startDateString, $endDateString)
+	private function GetReservation($startDateString, $endDateString, $resourceId = 1)
 	{
-		return new ReservationItemView(1, Date::Parse($startDateString, 'UTC'), Date::Parse($endDateString, 'UTC'));
+		$i = new ReservationItemView(1, Date::Parse($startDateString, 'UTC'), Date::Parse($endDateString, 'UTC'));
+		$i->ResourceId = $resourceId;
+
+		return $i;
 	}
 }
 ?>

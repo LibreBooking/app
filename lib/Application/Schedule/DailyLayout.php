@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'lib/Common/Helpers/StopWatch.php');
+
 interface IDailyLayout
 {
 	/**
@@ -63,11 +65,26 @@ class DailyLayout implements IDailyLayout
 	
 	public function GetLayout(Date $date, $resourceId)
 	{
-		$onDate = $this->_reservationListing->OnDate($date);
-		$forResource = $onDate->ForResource($resourceId);
-		
-		$list = new ScheduleReservationList($forResource->Reservations(), $this->_scheduleLayout, $date);
-		return $list->BuildSlots();
+		$sw = new StopWatch();
+		$sw->Start();
+
+		$items = $this->_reservationListing->OnDateForResource($date, $resourceId);
+		$sw->Record('listing');
+
+		$list = new ScheduleReservationList($items, $this->_scheduleLayout, $date);
+		$slots = $list->BuildSlots();
+		$sw->Record('slots');
+		$sw->Stop();
+
+//		Log::Debug("DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations",
+//			$resourceId,
+//			$date->ToString(),
+//			$sw->GetRecordSeconds('listing'),
+//			$sw->TimeBetween('slots', 'listing'),
+//			$sw->GetTotalSeconds(),
+//			count($items));
+
+		return $slots;
 	}
 	
 	public function IsDateReservable(Date $date)

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Pages/Page.php');
 
@@ -48,15 +48,16 @@ class PageablePage extends Page implements IPageable
 	 * @var \Page
 	 */
 	private $page;
-	
+
 	public function __construct(Page $wrappedPage)
 	{
 		$this->page = $wrappedPage;
 	}
+
 	/**
 	 * @return int
 	 */
-	function GetPageNumber()
+	public function GetPageNumber()
 	{
 		return $this->page->GetQuerystring(QueryStringKeys::PAGE);
 	}
@@ -64,7 +65,7 @@ class PageablePage extends Page implements IPageable
 	/**
 	 * @return int
 	 */
-	function GetPageSize()
+	public function GetPageSize()
 	{
 		$size = $this->page->GetQuerystring(QueryStringKeys::PAGE_SIZE);
 		if (empty($size))
@@ -78,9 +79,15 @@ class PageablePage extends Page implements IPageable
 	 * @param PageInfo $pageInfo
 	 * @return void
 	 */
-	function BindPageInfo(PageInfo $pageInfo)
+	public function BindPageInfo(PageInfo $pageInfo)
 	{
 		$this->page->Set('PageInfo', $pageInfo);
 	}
+
+	public function PageLoad()
+	{
+		$this->page->PageLoad();
+	}
 }
+
 ?>

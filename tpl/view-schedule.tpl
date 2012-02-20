@@ -29,8 +29,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript">
 
 $(document).ready(function() {
-	var schedule = new Schedule();
+	var scheduleOptions = {
+		reservationUrlTemplate: "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
+		summaryPopupUrl: "ajax/respopup.php"
+	}
+	var schedule = new Schedule(scheduleOptions);
 	schedule.initNavigation();
+	schedule.initReservations();
 });
 </script>
 

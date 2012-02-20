@@ -99,8 +99,8 @@ interface IExistingReservationPage extends IReservationPage
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
 {
-	private $IsEditable = false;
-	private $IsApprovable = false;
+	protected $IsEditable = false;
+	protected $IsApprovable = false;
 	
 	public function __construct()
 	{
@@ -186,17 +186,17 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 		$this->Set('ReferenceNumber', $referenceNumber);
 	}
 	
-	function SetReservationId($reservationId)
+	public function SetReservationId($reservationId)
 	{
 		$this->Set('ReservationId', $reservationId);
 	}
 	
-	function SetIsRecurring($isRecurring)
+	public function SetIsRecurring($isRecurring)
 	{
 		$this->Set('IsRecurring', $isRecurring);
 	}
 	
-	function SetIsEditable($canBeEdited)
+	public function SetIsEditable($canBeEdited)
 	{
 		$this->IsEditable = $canBeEdited;
 	}
@@ -204,7 +204,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	/**
 	 * @param $amIParticipating
 	 */
-	function SetCurrentUserParticipating($amIParticipating)
+	public function SetCurrentUserParticipating($amIParticipating)
 	{
 		$this->Set('IAmParticipating', $amIParticipating);
 	}
@@ -212,7 +212,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	/**
 	 * @param $amIInvited
 	 */
-	function SetCurrentUserInvited($amIInvited)
+	public function SetCurrentUserInvited($amIInvited)
 	{
 		$this->Set('IAmInvited', $amIInvited);
 	}
@@ -221,7 +221,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	 * @param $canBeApproved bool
 	 * @return void
 	 */
-	function SetIsApprovable($canBeApproved)
+	public function SetIsApprovable($canBeApproved)
 	{
 		$this->IsApprovable = $canBeApproved;
 	}

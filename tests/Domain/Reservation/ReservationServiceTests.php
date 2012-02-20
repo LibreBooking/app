@@ -143,5 +143,24 @@ class TestReservationListing implements IMutableReservationListing
 	{
 		$this->blackouts[] = $blackout;
 	}
+
+	/**
+	 * @param int $resourceId
+	 * @return IReservationListing
+	 */
+	public function ForResource($resourceId)
+	{
+		// TODO: Implement ForResource() method.
+	}
+
+	/**
+	 * @param Date $date
+	 * @param int $resourceId
+	 * @return array|ReservationListItem[]
+	 */
+	public function OnDateForResource(Date $date, $resourceId)
+	{
+		// TODO: Implement OnDateForResource() method.
+	}
 }
 ?>

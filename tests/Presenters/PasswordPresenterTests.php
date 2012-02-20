@@ -85,7 +85,7 @@ class PasswordPresenterTests extends TestBase
 
 		$encrypted = $passwordEncryption->Encrypt($current, $salt);
 		
-		$user->password = $encrypted;
+		$user->encryptedPassword = $encrypted;
 		$user->passwordSalt = $salt;
 		
 		$validator = new PasswordValidator($current, $user);

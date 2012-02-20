@@ -59,4 +59,9 @@ class FakePageBase implements IPage
 	{
 		return $this->_LastPage;
 	}
+
+	public function PageLoad()
+	{
+		// TODO: Implement PageLoad() method.
+	}
 }

@@ -35,7 +35,6 @@ class ResourceService implements IResourceService
 		$this->_resourceRepository = $resourceRepository;
 		$this->_permissionService = $permissionService;
 	}
-	
 
 	/**
 	 * @param $scheduleId

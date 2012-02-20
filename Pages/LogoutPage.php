@@ -24,20 +24,14 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class LogoutPage extends LoginPage
 {
-	/**
-	 * @var LoginPresenter
-	 */
-	private $_presenter = null;
-
 	public function __construct()
 	{
-		$this->_presenter = new LoginPresenter($this);
 		parent::__construct();
 	}
 
 	public function PageLoad()
 	{
-		$this->_presenter->Logout();
+		$this->presenter->Logout();
 	}
 
 	public function GetResumeUrl()

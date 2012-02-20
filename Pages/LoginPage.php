@@ -80,7 +80,7 @@ interface ILoginPage extends IPage
  */
 class LoginPage extends Page implements ILoginPage
 {
-	private $presenter = null;
+	protected $presenter = null;
 
 	public function __construct()
 	{

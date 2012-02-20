@@ -88,7 +88,7 @@ h1 {
 
 /*********************************************************/
 div.error, div.success, #loginError {
-    border: 1px solid #ba0026 !important;
+    border: 1px solid #ba0026;
     border-radius: 5px 5px 5px 5px;
 
 	background: #ffc3c8 url("../img/s_error.png") no-repeat scroll 5px 5px;
@@ -156,6 +156,8 @@ div.page-footer {
     background: url(../img/header-top.png) repeat;
 	padding-top: 1px;
 	border-top: solid 1px #333333;
+	font-size: 8pt;
+	font-weight: normal;
 }
 
 div.push {

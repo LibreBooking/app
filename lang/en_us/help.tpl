@@ -297,7 +297,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	phpScheduleIt lang directory</p>
 
 <p class="setting"><span>script.url</span>The full public URL to the root of this instance of phpScheduleIt. This should
-	be the Web directory which contains index.php</p>
+	be the Web directory which contains files like bookings.php and calendar.php</p>
 
 <p class="setting"><span>password.pattern</span>A regular expression to enforce password complexity during user account
 	registration</p>

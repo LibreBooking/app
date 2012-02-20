@@ -51,7 +51,8 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
-		IReservationAuthorization $reservationAuthorization
+		IReservationAuthorization $reservationAuthorization,
+		UserSession $userSession
 	)
 	{
 		$this->_scheduleUserRepository = $scheduleUserRepository;
@@ -59,6 +60,7 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 		$this->_userRepository = $userRepository;
 		$this->_resourceService = $resourceService;
 		$this->_reservationAuthorization = $reservationAuthorization;
+		$this->_user = $userSession;
 	}
 
 	public function GetNewInitializer(INewReservationPage $page)
@@ -67,7 +69,8 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 			$this->_scheduleRepository,
 			$this->_userRepository,
 			$this->_resourceService,
-			$this->_reservationAuthorization);
+			$this->_reservationAuthorization,
+			$this->_user);
 	}
 
 	public function GetExisitingInitializer(IExistingReservationPage $page, ReservationView $reservationView)
@@ -77,7 +80,8 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 			$this->_userRepository,
 			$this->_resourceService,
 			$reservationView,
-			$this->_reservationAuthorization);
+			$this->_reservationAuthorization,
+			$this->_user);
 	}
 }
 

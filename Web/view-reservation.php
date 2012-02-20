@@ -17,29 +17,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
+ 
+define('ROOT_DIR', '../');
 
-class PasswordValidator extends ValidatorBase implements IValidator 
-{
-	/**
-	 * @var User
-	 */
-	private $user;
+require_once(ROOT_DIR . 'Pages/ReadOnlyReservationPage.php');
 
-	/**
-	 * @param string $currentPasswordPlainText
-	 * @param User $user
-	 */
-	public function __construct($currentPasswordPlainText, User $user)
-	{
-		$this->currentPasswordPlainText = $currentPasswordPlainText;
-		$this->user = $user;
-	}
+$page = new ReadOnlyReservationPage();
+$page->PageLoad();
 
-	public function Validate()
-	{
-		$pw = new Password($this->currentPasswordPlainText, $this->user->encryptedPassword);
-		$this->isValid = $pw->Validate($this->user->passwordSalt);
-	}
-}
 
 ?>

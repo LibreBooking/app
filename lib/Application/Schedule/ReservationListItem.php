@@ -70,6 +70,14 @@ class ReservationListItem
 	{
 		return $this->item->GetResourceId();
 	}
+
+	/**
+	 * @return int
+	 */
+	public function Id()
+	{
+		return $this->item->GetId();
+	}
 }
 
 class BlackoutListItem extends ReservationListItem

@@ -68,8 +68,8 @@ class ScheduleLayoutTests extends TestBase
 			$yesterday = $day-1;
 			$firstSlot = new SchedulePeriod(new Date("2011-$month-$yesterday 23:00", $cst), new Date("2011-$month-$day 05:00", $cst));
 			$lastSlot = new SchedulePeriod(new Date("2011-$month-$day 23:00", $cst), new Date("2011-$month-$tomorrow 05:00", $cst));
-			$this->assertEquals($firstSlot, $slots[0], "Testing date $date");
-			$this->assertEquals($lastSlot, $slots[5], "Testing date $date");
+			$this->assertEquals($firstSlot, $slots[0], "Testing first slot on date $date");
+			$this->assertEquals($lastSlot, $slots[5], "Testing last slot on date $date");
 		}
 	}
 	

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -16,29 +16,29 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-class PasswordValidator extends ValidatorBase implements IValidator 
+require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
+require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
+require_once(ROOT_DIR . 'Pages/ExistingReservationPage.php');
+
+class ReadOnlyReservationPage extends ExistingReservationPage
 {
-	/**
-	 * @var User
-	 */
-	private $user;
-
-	/**
-	 * @param string $currentPasswordPlainText
-	 * @param User $user
-	 */
-	public function __construct($currentPasswordPlainText, User $user)
+	public function __construct()
 	{
-		$this->currentPasswordPlainText = $currentPasswordPlainText;
-		$this->user = $user;
+		parent::__construct();
+		$this->IsEditable = false;
+		$this->IsApprovable = false;
 	}
 
-	public function Validate()
+	function SetIsEditable($canBeEdited)
 	{
-		$pw = new Password($this->currentPasswordPlainText, $this->user->encryptedPassword);
-		$this->isValid = $pw->Validate($this->user->passwordSalt);
+		// no-op
+	}
+
+	public function SetIsApprovable($canBeApproved)
+	{
+		// no-op
 	}
 }
 

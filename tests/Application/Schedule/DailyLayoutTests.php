@@ -42,8 +42,6 @@ class DailyLayoutTests extends TestBase
 		$scheduleLayout->AppendPeriod(new Time(5, 0, 0, $targetTimezone), new Time(6, 0, 0, $targetTimezone));
 		
 		$listing = $this->getMock('IReservationListing');
-		$dateListing = $this->getMock('IDateReservationListing');
-		$resourceListing = $this->getMock('IResourceReservationListing');
 		
 		$startDate = Date::Parse('2009-09-02 17:00:00', 'UTC');
 		$endDate = Date::Parse('2009-09-02 18:00:00', 'UTC');
@@ -51,19 +49,10 @@ class DailyLayoutTests extends TestBase
 		$reservations = array($reservation);		
 
 		$listing->expects($this->once())
-			->method('OnDate')
-			->with($this->equalTo($date))
-			->will($this->returnValue($dateListing));
-			
-		$dateListing->expects($this->once())
-			->method('ForResource')
-			->with($this->equalTo($resourceId))
-			->will($this->returnValue($resourceListing));
-		
-		$resourceListing->expects($this->once())
-			->method('Reservations')
-			->will($this->returnValue($reservations));			
-			
+			->method('OnDateForResource')
+			->with($this->equalTo($date), $this->equalTo($resourceId))
+			->will($this->returnValue($reservations));
+
 		$layout = new DailyLayout($listing, $scheduleLayout);
 		$layoutSlots = $layout->GetLayout($date, $resourceId);
 		
@@ -88,7 +77,7 @@ class DailyLayoutTests extends TestBase
 			->with($this->equalTo($displayDate))
 			->will($this->returnValue($periods));
 		
-		$layout = new DailyLayout(new ReservationListing(), $scheduleLayout);
+		$layout = new DailyLayout(new ReservationListing("America/Chicago"), $scheduleLayout);
 		$labels = $layout->GetLabels($displayDate);
 		
 		$this->assertEquals('12:00', $labels[0]);

@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
-class SecurePage extends Page
+abstract class SecurePage extends Page
 {
 	public function __construct($titleKey = '', $pageDepth = 0)
 	{
@@ -37,6 +37,65 @@ class SecurePage extends Page
 	protected function GetResumeUrl()
 	{
 		return sprintf("%s%s?%s=%s", $this->path, Pages::LOGIN, QueryStringKeys::REDIRECT, $this->server->GetUrl());
+	}
+}
+
+class SecurePageDecorator extends Page implements IPage
+{
+	/**
+	 * @var Page
+	 */
+	private $page;
+
+	public function __construct(Page $page)
+	{
+		$this->page = $page;
+
+		if (!$this->page->IsAuthenticated())
+		{
+			$this->Redirect($this->GetResumeUrl());
+			die();
+		}
+	}
+
+	public function PageLoad()
+	{
+		$this->page->PageLoad();
+	}
+
+	public function Redirect($url)
+	{
+		$this->page->Redirect($url);
+	}
+
+	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
+	{
+		$this->page->RedirectToError($errorMessageId, $lastPage);
+	}
+
+	public function IsPostBack()
+	{
+		return $this->page->IsPostBack();
+	}
+
+	public function IsValid()
+	{
+		return $this->page->IsValid();
+	}
+
+	public function GetLastPage()
+	{
+		return $this->page->GetLastPage();
+	}
+
+	public function RegisterValidator($validatorId, $validator)
+	{
+		$this->page->RegisterValidator($validatorId, $validator);
+	}
+
+	protected function GetResumeUrl()
+	{
+		return sprintf("%s%s?%s=%s", $this->page->path, Pages::LOGIN, QueryStringKeys::REDIRECT, $this->page->server->GetUrl());
 	}
 }
 ?>

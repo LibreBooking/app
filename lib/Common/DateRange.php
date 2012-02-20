@@ -31,13 +31,28 @@ class DateRange
 	private $_end;
 
 	/**
+	 * @var string
+	 */
+	private $_timezone;
+
+	/**
 	 * @param Date $begin
 	 * @param Date $end
+	 * @param string $timezone
 	 */
-	public function __construct(Date $begin, Date $end)
+	public function __construct(Date $begin, Date $end, $timezone = null)
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
+
+		if (empty($timezone))
+		{
+			$this->_timezone = $begin->Timezone();
+		}
+		else
+		{
+			$this->_timezone = $timezone;
+		}
 	}
 
 	/**
@@ -48,7 +63,7 @@ class DateRange
 	 */
 	public static function Create($beginString, $endString, $timezoneString)
 	{
-		return new DateRange(Date::Parse($beginString, $timezoneString), Date::Parse($endString, $timezoneString));
+		return new DateRange(Date::Parse($beginString, $timezoneString), Date::Parse($endString, $timezoneString), $timezoneString);
 	}
 
 	/**
@@ -91,7 +106,13 @@ class DateRange
 	public function OccursOn(Date $date)
 	{
 		$timezone = $date->Timezone();
-		$compare = $this->ToTimezone($timezone);
+		$compare = $this;
+
+		if ($timezone != $this->_timezone)
+		{
+			$compare = $this->ToTimezone($timezone);
+		}
+
 		$beginMidnight = $compare->GetBegin();
 
 		if ($this->GetEnd()->IsMidnight())

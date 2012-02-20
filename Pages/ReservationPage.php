@@ -101,9 +101,11 @@ interface IReservationPage extends IPage
 	 * @return void
 	 */
 	function SetCanChangeUser($canChangeUser);
+
+	public function ShowAdditionalResources($param1);
 }
 
-abstract class ReservationPage extends SecurePage implements IReservationPage
+abstract class ReservationPage extends Page implements IReservationPage
 {
 	protected $presenter;
 	/**
@@ -127,8 +129,9 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 			new ScheduleRepository(),
 			new UserRepository(),
 			new ResourceService(new ResourceRepository(), $this->permissionServiceFactory->GetPermissionService()),
-			new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService()));
-				
+			new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService()),
+			ServiceLocator::GetServer()->GetUserSession()
+			);
 
 		$this->presenter = $this->GetPresenter();
 	}
@@ -186,6 +189,11 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 		$this->Set('AvailableResources', $resources);
 	}
 
+	public function ShowAdditionalResources($shouldShow)
+	{
+		$this->Set('ShowAdditionalResources', $shouldShow);
+	}
+
 	public function BindAvailableAccessories($accessories)
 	{
 		$this->Set('AvailableAccessories', $accessories);
@@ -197,7 +205,7 @@ abstract class ReservationPage extends SecurePage implements IReservationPage
 		$this->Set('StartDate', $startDate);
 	}
 	
-	public function  SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate)
+	public function SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate)
 	{
 		$this->Set('SelectedEnd', $selectedEnd);
 		$this->Set('EndDate', $endDate);

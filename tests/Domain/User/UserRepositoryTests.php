@@ -269,6 +269,37 @@ class UserRepositoryTests extends TestBase
         $this->assertTrue($this->db->ContainsCommand($addEmailPreferenceCommand));
         $this->assertTrue($this->db->ContainsCommand($removeEmailPreferenceCommand));
     }
+
+	public function testAddsUser()
+	{
+		$expectedId = 999;
+		$firstName = 'f';
+		$lastName = 'l';
+		$emailAddress = 'e';
+		$userName = 'u';
+		$language = 'la';
+		$timezone = 't';
+		$password = 'p';
+		$passwordSalt = 'ps';
+		$phone = 'ph';
+		$organization = 'o';
+		$position = 'po';
+
+		$user = User::Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt);
+		$user->ChangeAttributes($phone, $organization, $position);
+
+		$this->db->_ExpectedInsertId = $expectedId;
+		$repo = new UserRepository();
+		$newId = $repo->Add($user);
+
+		$command = new RegisterUserCommand($userName, $emailAddress, $firstName, $lastName, $password, $passwordSalt,
+			$timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE);
+
+		$this->assertTrue($this->db->ContainsCommand($command));
+
+		$this->assertEquals($expectedId, $newId);
+		$this->assertEquals($expectedId, $user->Id());
+	}
 	
 	private function GetUserRow()
 	{

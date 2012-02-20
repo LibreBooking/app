@@ -40,6 +40,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	 * @param IResourceService $resourceService
 	 * @param ReservationView $reservationView
 	 * @param IReservationAuthorization $reservationAuthorization
+	 * @param UserSession $userSession
 	 */
 	public function __construct(
 		IExistingReservationPage $page, 
@@ -47,7 +48,8 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
 		ReservationView $reservationView,
-		IReservationAuthorization $reservationAuthorization
+		IReservationAuthorization $reservationAuthorization,
+		UserSession $userSession
 		)
 	{
 		$this->page = $page;
@@ -58,7 +60,8 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 						$scheduleRepository, 
 						$userRepository,
 						$resourceService,
-						$reservationAuthorization);
+						$reservationAuthorization,
+						$userSession);
 	}
 	
 	public function Initialize()

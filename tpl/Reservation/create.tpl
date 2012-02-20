@@ -55,7 +55,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 							<input class="resourceId" type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
 							<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
 						</div>
-						{if $AvailableResources|count > 0}
+						{if $ShowAdditionalResources}
 							<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">({translate key=MoreResources})</a>
 						{/if}
 						<div id="additionalResources"></div>
@@ -237,16 +237,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="dialogAddResources" class="dialog" title="{translate key=AddResources}" style="display:none;">
 
 {foreach from=$AvailableResources item=resource}
-	{assign var='checked' value=''}
-	{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-		{assign var='checked' value='checked="checked"'}
+	{if $resource->CanAccess}
+		{assign var='checked' value=''}
+		{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
+			{assign var='checked' value='checked="checked"'}
+		{/if}
+
+		<p>
+			<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id}" value="{$resource->Id}" {$checked} />
+			<label for="additionalResource{$resource->Id}">{$resource->Name}</label>
+		</p>
 	{/if}
-
-	<p>
-		<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id}" value="{$resource->Id}" {$checked} />
-		<label for="additionalResource{$resource->Id}">{$resource->Name}</label>
-	</p>
-
 {/foreach}
 	<br/>
 	<button id="btnConfirmAddResources" class="button">{translate key='Done'}</button>

@@ -226,7 +226,7 @@ function ScheduleManagement(opts)
     };
 	
 	var reformatTimeSlots = function(div) {
-		var text = div.text().trim();
+		var text = $.trim(div.text());
 		text = text.replace(/\s\s+/g, ' ');
 		text = text.replace(/\s*,\s*/g, '\n');
 		return text;

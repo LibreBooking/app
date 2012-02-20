@@ -28,11 +28,11 @@ $server = ServiceLocator::GetServer();
 
 if (!is_null($server->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER)))
 {
-	$page = new ExistingReservationPage();
+	$page = new SecurePageDecorator(new ExistingReservationPage());
 }
 else
 {
-	$page = new NewReservationPage();
+	$page = new SecurePageDecorator(new NewReservationPage());
 }
 
 $page->PageLoad();

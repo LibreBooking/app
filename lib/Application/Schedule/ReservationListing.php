@@ -18,18 +18,40 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 class ReservationListing implements IMutableReservationListing
 {
 	/**
+	 * @param string $targetTimezone
+	 */
+	public function __construct($targetTimezone)
+	{
+		$this->timezone = $targetTimezone;
+	}
+
+	/**
+	 * @var string
+	 */
+	protected $timezone;
+
+	/**
 	 * @var array|ReservationItemView[]
 	 */
-	private $_reservations = array();
+	protected $_reservations = array();
 	
 	/**
 	 * @var array|ReservationItemView[]
 	 */
-	private $_reservationByResource = array();
+	protected $_reservationByResource = array();
+
+	/**
+	 * @var array|ReservationItemView[]
+	 */
+	protected $_reservationsByDate = array();
+
+	/**
+	 * @var array|ReservationItemView[]
+	 */
+	protected $_reservationsByDateAndResource = array();
 
 	public function Add($reservation)
 	{
@@ -43,8 +65,32 @@ class ReservationListing implements IMutableReservationListing
 
 	protected function AddItem(ReservationListItem $item)
 	{
+		$currentDate = $item->StartDate()->ToTimezone($this->timezone);
+		$lastDate = $item->EndDate()->ToTimezone($this->timezone);
+
+		if ($currentDate->DateEquals($lastDate))
+		{
+			$this->AddOnDate($item, $currentDate);
+		}
+		else
+		{
+			while (!$currentDate->DateEquals($lastDate))
+			{
+				$this->AddOnDate($item, $currentDate);
+				$currentDate = $currentDate->AddDays(1);
+			}
+			$this->AddOnDate($item, $lastDate);
+		}
+
 		$this->_reservations[] = $item;
 		$this->_reservationByResource[$item->ResourceId()][] = $item;
+	}
+
+	protected function AddOnDate(ReservationListItem $item, Date $date)
+	{
+//		Log::Debug('Adding id %s on %s', $item->Id(), $date);
+		$this->_reservationsByDate[$date->Format('Ymd')][] = $item;
+		$this->_reservationsByDateAndResource[$date->Format('Ymd') . '|' . $item->ResourceId()][] = $item;
 	}
 	
 	public function Count()
@@ -56,33 +102,56 @@ class ReservationListing implements IMutableReservationListing
 	{
 		return $this->_reservations;
 	}
-	
-	public function OnDate($date)
+
+	/**
+	 * @param array|ReservationListItem[] $reservations
+	 * @return ReservationListing
+	 */
+	private function Create($reservations)
 	{
-		$reservationListing = new ReservationListing();
-		
-		/** @var ReservationListItem $reservation  */
-		foreach ($this->_reservations as $reservation)
+		$reservationListing = new ReservationListing($this->timezone);
+
+		if ($reservations != null)
 		{
-			if ($reservation->OccursOn($date))
+			foreach($reservations as $reservation)
 			{
 				$reservationListing->AddItem($reservation);
 			}
 		}
-		
+
 		return $reservationListing;
+	}
+
+	/**
+	 * @param Date $date
+	 * @return ReservationListing
+	 */
+	public function OnDate($date)
+	{
+//		Log::Debug('Found %s reservations on %s', count($this->_reservationsByDate[$date->Format('Ymd')]), $date);
+		return $this->Create($this->_reservationsByDate[$date->Format('Ymd')]);
 	}
 	
 	public function ForResource($resourceId)
 	{
-		$reservationListing = new ReservationListing();
-		
 		if (array_key_exists($resourceId, $this->_reservationByResource))
 		{
-			$reservationListing->_reservations = $this->_reservationByResource[$resourceId];
+			return $this->Create($this->_reservationByResource[$resourceId]);
 		}
 		
-		return $reservationListing;
+		return new ReservationListing($this->timezone);
+	}
+
+	public function OnDateForResource(Date $date, $resourceId)
+	{
+		$items = $this->_reservationsByDateAndResource[$date->Format('Ymd') . '|' . $resourceId];
+
+		if (is_null($items))
+		{
+			return array();
+		}
+
+		return $items;
 	}
 }
 

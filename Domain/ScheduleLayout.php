@@ -46,8 +46,22 @@ interface ILayoutCreation extends ILayoutTimezone
 
 class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 {
+	/**
+	 * @var array|LayoutPeriod[]
+	 */
 	private $_periods = array();
+
+	/**
+	 * @var string
+	 */
 	private $_timezone;
+
+	/**
+	 * @var bool
+	 */
+	private $cached = false;
+
+	private $cachedPeriods = array();
 	
 	/**
 	 * @param string $timezone target timezone of layout
@@ -115,12 +129,18 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 * @return array|SchedulePeriod[]
 	 */
 	public function GetLayout(Date $layoutDate)
-	{		
+	{
 		$targetTimezone = $this->_timezone;
-		$layoutTimezone = $this->_periods[0]->Start->Timezone();
-		
 		$layoutDate = $layoutDate->ToTimezone($targetTimezone);
-		
+
+		$cachedValues = $this->GetCachedValuesForDate($layoutDate);
+		if (!empty($cachedValues))
+		{
+			return $cachedValues;
+		}
+
+		$layoutTimezone = $this->_periods[0]->Start->Timezone();
+
 		$workingDate = Date::Create($layoutDate->Year(), $layoutDate->Month(), $layoutDate->Day(), 0, 0, 0, $layoutTimezone);
 		$midnight = $layoutDate->GetDate();
 		
@@ -133,7 +153,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 			$end = $period->End;
 			$periodType = $period->PeriodTypeClass();
 			$label = $period->Label;
-			$labelEnd = null;//$period['labelEnd'];
+			$labelEnd = null;
 			
 			// convert to target timezone
 			$periodStart = $workingDate->SetTime($start)->ToTimezone($targetTimezone);
@@ -158,37 +178,51 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 				if ($periodStart->LessThan($midnight))
 				{
 					// add compensating period at end
-					//echo "\ncompensating end";
 					$start = $layoutDate->SetTime($startTime);
 					$end = $periodEnd->AddDays(1);
-					$list->Add($this->Add($periodType, $start, $end, $label, $labelEnd));
+					$list->Add($this->BuildPeriod($periodType, $start, $end, $label, $labelEnd));
 				}
 				else 
 				{
-					// add compensating period at start	
-					//echo "\ncompensating start";
+					// add compensating period at start
 					$start = $periodStart->AddDays(-1);
 					$end = $layoutDate->SetTime($endTime);
-					$list->Add($this->Add($periodType, $start, $end, $label, $labelEnd));
+					$list->Add($this->BuildPeriod($periodType, $start, $end, $label, $labelEnd));
 				}
 			}
 			
-			$list->Add($this->Add($periodType, $periodStart, $periodEnd, $label, $labelEnd));
+			$list->Add($this->BuildPeriod($periodType, $periodStart, $periodEnd, $label, $labelEnd));
 		}
-			
-//		echo "printing";
-//		print_r($layout);
-//		die('printed');
-		
+
 		$layout = $list->GetItems();
-		//echo "number " . count($layout) . " \n";
 		$this->SortItems($layout);
-		
-//		foreach ($layout as $item)
-//		{
-//			echo "$item<br/>";
-//		}
+		$this->AddCached($layout, $workingDate);
+
 		return $layout;	
+	}
+
+	/**
+	 * @param array|SchedulePeriod[] $layout
+	 * @param Date $date
+	 */
+	private function AddCached($layout, $date)
+	{
+		$this->cached = true;
+		$this->cachedPeriods[$date->Format('Ymd')] = $layout;
+	}
+
+	/**
+	 * @param Date $date
+	 * @return array|SchedulePeriod[]
+	 */
+	private function GetCachedValuesForDate($date)
+	{
+		$key = $date->Format('Ymd');
+		if (array_key_exists($date->Format('Ymd'), $this->cachedPeriods))
+		{
+			return $this->cachedPeriods[$key];
+		}
+		return null;
 	}
 	
 	private function BothDatesAreOff(Date $start, Date $end, Date $layoutDate)
@@ -196,7 +230,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		return !$start->DateEquals($layoutDate) && !$end->DateEquals($layoutDate);
 	}
 	
-	private function Add($periodType, Date $start, Date $end, $label, $labelEnd)
+	private function BuildPeriod($periodType, Date $start, Date $end, $label, $labelEnd)
 	{
 		return new $periodType($start, $end, $label, $labelEnd);
 	}
@@ -216,6 +250,12 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		$this->_periods[] = $period;
 	}
 
+	/**
+	 * @static
+	 * @param SchedulePeriod $period1
+	 * @param SchedulePeriod $period2
+	 * @return int
+	 */
 	static function SortBeginTimes($period1, $period2)
 	{
 		return $period1->Compare($period2);

@@ -126,11 +126,12 @@ class ReservationInitializationTests extends TestBase
 		// resources
 		$bookedResource = new ResourceDto($resourceId, 'resource 1');
 		$otherResource = new ResourceDto(2, 'resource 2');
-		$resourceList = array($otherResource, $bookedResource);
+		$otherResource2 = new ResourceDto(100, 'something', false);
+		$resourceList = array($otherResource, $bookedResource, $otherResource2);
 		
 		$this->resourceService->expects($this->once())
 			->method('GetScheduleResources')
-			->with($this->equalTo($scheduleId), $this->equalTo(false), $this->equalTo($this->fakeUser))
+			->with($this->equalTo($scheduleId), $this->equalTo(true), $this->equalTo($this->fakeUser))
 			->will($this->returnValue($resourceList));
 
 		// accessories
@@ -168,10 +169,14 @@ class ReservationInitializationTests extends TestBase
 			->method('BindPeriods')
 			->with($this->equalTo($periods));
 
-		$resourceListWithoutReservationResource = array($otherResource);
+		$resourceListWithoutReservationResource = array($otherResource, $otherResource2);
 		$page->expects($this->once())
 			->method('BindAvailableResources')
 			->with($this->equalTo($resourceListWithoutReservationResource));
+
+		$page->expects($this->once())
+			->method('ShowAdditionalResources')
+			->with($this->equalTo(true));
 
 		$page->expects($this->once())
 			->method('BindAvailableAccessories')
@@ -208,7 +213,7 @@ class ReservationInitializationTests extends TestBase
 			->method('SetCanChangeUser')
 			->with($this->equalTo($canChangeUser));
 		
-		$initializer = new NewReservationInitializer($page, $this->scheduleRepository, $this->userRepository, $this->resourceService, $this->reservationAuthorization);
+		$initializer = new NewReservationInitializer($page, $this->scheduleRepository, $this->userRepository, $this->resourceService, $this->reservationAuthorization, $this->fakeUser);
 
 		$initializer->Initialize();
 	}

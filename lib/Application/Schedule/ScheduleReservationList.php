@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 interface IScheduleReservationList
 {
 	/**
@@ -124,7 +123,6 @@ class ScheduleReservationList implements IScheduleReservationList
 				$span = ($endingPeriodIndex - $currentIndex) + 1;
 
 				$slots[] = $item->BuildSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span);
-				//$slots[] = new ReservationSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span, $reservation);
 
 				$currentIndex = $endingPeriodIndex;
 			}
