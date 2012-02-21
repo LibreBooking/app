@@ -246,15 +246,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{foreach from=$users item=user}
 	var user = {
 	id: {$user->Id},
-	first: '{$user->First}',
-	last: '{$user->Last}',
+	first: '{$user->First|escape:"quotes"}',
+	last: '{$user->Last|escape:"quotes"}',
 	isActive: '{$user->IsActive()}',
-	username: '{$user->Username}',
-	email: '{$user->Email}',
+	username: '{$user->Username|escape:"quotes"}',
+	email: '{$user->Email|escape:"quotes"}',
 	timezone: '{$user->Timezone}',
-	phone: '{$user->Phone}',
-	organization: '{$user->Organization}',
-	position: '{$user->Position}'
+	phone: '{$user->Phone|escape:"quotes"}',
+	organization: '{$user->Organization|escape:"quotes"}',
+	position: '{$user->Position|escape:"quotes"}'
 	};
 	userManagement.addUser(user);
 	{/foreach}
