@@ -68,6 +68,15 @@ class RegistrationTests extends TestBase
 		$this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
 	}
 
+    public function testHandlesWhenAttributeDoesNotExist()
+    {
+        $this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId);
+
+        $command = new RegisterUserCommand($this->login, $this->email, $this->fname, $this->lname, $this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->language, $this->homepageId, null, null, null, AccountStatus::ACTIVE);
+
+        $this->assertEquals($command, $this->db->_Commands[0]);
+    }
+
 	public function testAutoAssignsAllResourcesForThisUser()
 	{
 		$expectedUserId = 100;

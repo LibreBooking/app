@@ -425,6 +425,30 @@ class UserAttribute
 	const Phone = 'phone';
 	const Organization = 'organization';
 	const Position = 'position';
+
+    /**
+     * @var array|string[]
+     */
+    private $attributeValues = array();
+
+    public function __construct($attributeValues = array())
+    {
+        $this->attributeValues = $attributeValues;
+    }
+
+    /**
+     * @param string|UserAttribute $attributeName
+     * @return null|string
+     */
+    public function Get($attributeName)
+    {
+        if (array_key_exists($attributeName, $this->attributeValues))
+        {
+            return $this->attributeValues[$attributeName];
+        }
+
+        return null;
+    }
 }
 
 class UserGroup
