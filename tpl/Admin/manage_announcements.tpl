@@ -150,7 +150,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{foreach from=$announcements item=announcement}
     announcementManagement.addAnnouncement(
         '{$announcement->Id()}',
-        '{$announcement->Text()|regex_replace:"/[\n]/":"\\n"}',
+        '{$announcement->Text()|escape:"quotes"|regex_replace:"/[\n]/":"\\n"}',
         '{formatdate date=$announcement->Start()->ToTimezone($timezone)}',
         '{formatdate date=$announcement->End()->ToTimezone($timezone)}',
         '{$announcement->Priority()}'

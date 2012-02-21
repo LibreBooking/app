@@ -27,19 +27,19 @@ class ReservationCreatedEmail extends EmailMessage
 	/**
 	 * @var User
 	 */
-	private $reservationOwner;
+	protected $reservationOwner;
 	
 	/**
 	 * @var ReservationSeries
 	 */
-	private $reservationSeries;
+    protected $reservationSeries;
 	
 	/**
 	 * @var IResource
 	 */
-	private $primaryResource;
+    protected $primaryResource;
 	
-	private $timezone;
+    protected $timezone;
 	
 	public function __construct(User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource)
 	{
