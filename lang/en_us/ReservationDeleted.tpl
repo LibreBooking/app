@@ -1,5 +1,4 @@
-<?php
-/**
+{*
 Copyright 2011-2012 Nick Korbel
 
 This file is part of phpScheduleIt.
@@ -16,20 +15,29 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+*}
+{include file='..\..\tpl\Email\emailheader.tpl'}
+	
+	Reservation Details:
+	<br/>
+	<br/>
+	
+	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
+	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
+	Resource: {$ResourceName}<br/>
+	Title: {$Title}<br/>
+	Description: {$Description|nl2br}<br/>
+	
+	{if count($RepeatDates) gt 0}
+		<br/>
+		The following dates have been removed:
+		<br/>
+	{/if}
+	
+	{foreach from=$RepeatDates item=date name=dates}
+		{formatdate date=$date}<br/>
+	{/foreach}
 
-require_once(ROOT_DIR . 'lib/Email/Messages/ReservationEmailMessage.php');
-
-class ReservationUpdatedEmail extends ReservationEmailMessage
-{
-	public function Subject()
-	{
-		return $this->Translate('ReservationUpdatedSubject');
-	}
-
-    protected function GetTemplateName()
-    {
-        return 'ReservationCreated.tpl';
-    }
-}
-?>
+	<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
+	
+{include file='..\..\tpl\Email\emailfooter.tpl'}

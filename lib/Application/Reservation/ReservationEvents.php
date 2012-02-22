@@ -30,6 +30,7 @@ class ReservationEvent
 	const Approved = 'approved';
 	const Created = 'created';
 	const Updated = 'updated';
+	const Deleted = 'deleted';
 }
 
 class ReservationCreatedEvent implements IDomainEvent
@@ -52,6 +53,19 @@ class ReservationUpdatedEvent implements IDomainEvent
 		return ReservationEvent::Updated;
 	}
 	
+	public function EventCategory()
+	{
+		return EventCategory::Reservation;
+	}
+}
+
+class ReservationDeletedEvent implements IDomainEvent
+{
+	public function EventType()
+	{
+		return ReservationEvent::Deleted;
+	}
+
 	public function EventCategory()
 	{
 		return EventCategory::Reservation;

@@ -129,7 +129,14 @@ class ReservationListing implements IMutableReservationListing
 	public function OnDate($date)
 	{
 //		Log::Debug('Found %s reservations on %s', count($this->_reservationsByDate[$date->Format('Ymd')]), $date);
-		return $this->Create($this->_reservationsByDate[$date->Format('Ymd')]);
+
+        $key = $date->Format('Ymd');
+        $reservations = array();
+        if (array_key_exists($key, $this->_reservationsByDate))
+        {
+            $reservations = $this->_reservationsByDate[$key];
+        }
+        return $this->Create($reservations);
 	}
 	
 	public function ForResource($resourceId)
@@ -144,14 +151,14 @@ class ReservationListing implements IMutableReservationListing
 
 	public function OnDateForResource(Date $date, $resourceId)
 	{
-		$items = $this->_reservationsByDateAndResource[$date->Format('Ymd') . '|' . $resourceId];
+        $key = $date->Format('Ymd') . '|' . $resourceId;
 
-		if (is_null($items))
+		if (!array_key_exists($key,  $this->_reservationsByDateAndResource))
 		{
 			return array();
 		}
 
-		return $items;
+		return $this->_reservationsByDateAndResource[$key];;
 	}
 }
 

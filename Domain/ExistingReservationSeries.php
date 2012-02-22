@@ -204,22 +204,6 @@ class ExistingReservationSeries extends ReservationSeries
 		$this->_bookedBy = $updatedBy;
 	}
 
-//    private function ChangeOwner($userId)
-//    {
-//        $instances = $this->_Instances();
-//
-//        foreach ($instances as $instance)
-//        {
-//            if (!$instance->IsNew())
-//            {
-//                echo 'id' . $instance->ReservationId();
-//                $this->AddEvent(new RemoveReservationUserCommand($instance->ReservationId(), $userId));
-//                $this->AddEvent(new RemoveReservationUserCommand($instance->ReservationId(), $this->UserId()));
-//                $this->AddEvent(new AddReservationUserCommand($instance->ReservationId(), $userId, ReservationUserLevel::OWNER));
-//            }
-//        }
-//    }
-
 	/**
 	 * @param DateRange $reservationDate
 	 */

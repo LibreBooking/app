@@ -24,12 +24,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	
 	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
 	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
+	Resource: {$ResourceName}<br/>
 	Title: {$Title}<br/>
 	Description: {$Description|nl2br}<br/>
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		The reservation repeats on the following dates:
+		The reservation occurs on the following dates:
 		<br/>
 	{/if}
 	

@@ -56,15 +56,15 @@ class NotificationPreferencesPresenter
         $this->page->SetApproved($user->WantsEventEmail(new ReservationApprovedEvent()));
         $this->page->SetCreated($user->WantsEventEmail(new ReservationCreatedEvent()));
         $this->page->SetUpdated($user->WantsEventEmail(new ReservationUpdatedEvent()));
+        $this->page->SetDeleted($user->WantsEventEmail(new ReservationDeletedEvent()));
 	}
 
 	private function UpdateProfile(User $user)
 	{
-		Log::Debug("%s %s %s", $this->page->GetApproved(), $this->page->GetCreated(), $this->page->GetUpdated());
-
         $user->ChangeEmailPreference(new ReservationApprovedEvent(), $this->page->GetApproved());
         $user->ChangeEmailPreference(new ReservationCreatedEvent(), $this->page->GetCreated());
         $user->ChangeEmailPreference(new ReservationUpdatedEvent(), $this->page->GetUpdated());
+        $user->ChangeEmailPreference(new ReservationDeletedEvent(), $this->page->GetDeleted());
 
         $this->userRepository->Update($user);
 	}

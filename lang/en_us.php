@@ -259,6 +259,7 @@ class en_us extends Language
         $strings['SecurityCode'] = 'Security Code';
         $strings['ReservationCreatedPreference'] = 'When I create a reservation or a reservation is created on my behalf';
         $strings['ReservationUpdatedPreference'] = 'When I update a reservation or a reservation is updated on my behalf';
+        $strings['ReservationDeletedPreference'] = 'When I delete a reservation or a reservation is deleted on my behalf';
         $strings['ReservationApprovalPreference'] = 'When my pending reservation is approved';
         $strings['PreferenceSendEmail'] = 'Send me an email';
         $strings['PreferenceNoEmail'] = 'Do not notify me';
@@ -415,6 +416,7 @@ class en_us extends Language
         $strings['ReservationApprovedSubject'] = 'Your Reservation Has Been Approved';
         $strings['ReservationCreatedSubject'] = 'Your Reservation Was Created';
         $strings['ReservationUpdatedSubject'] = 'Your Reservation Was Updated';
+        $strings['ReservationDeletedSubject'] = 'Your Reservation Was Removed';
         $strings['ReservationCreatedAdminSubject'] = 'Notification: A Reservation Was Created';
         $strings['ReservationUpdatedAdminSubject'] = 'Notification: A Reservation Was Updated';
         $strings['ParticipantAddedSubject'] = 'Reservation Participation Notification';

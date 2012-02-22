@@ -19,18 +19,21 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
-require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationEmailMessage.php');
 
-class ReservationApprovedEmail extends ReservationCreatedEmail
+class ReservationApprovedEmail extends ReservationEmailMessage
 {
-	public function __construct(User $reservationOwner, ExistingReservationSeries $reservationSeries, IResource $primaryResource)
-	{
-		parent::__construct($reservationOwner, $reservationSeries, $primaryResource);
-	}
-	
 	public function Subject()
 	{
 		return $this->Translate('ReservationApprovedSubject');
 	}
+
+    /**
+     * @return string
+     */
+    protected function GetTemplateName()
+    {
+        return 'ReservationCreated.tpl';
+    }
 }
 ?>

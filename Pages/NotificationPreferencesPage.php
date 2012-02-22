@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/NotificationPreferencesPresenter.php');
 
@@ -44,9 +43,15 @@ interface INotificationPreferencesPage extends IPage
 
     /**
      * @abstract
-     * @param $wantsUpdateEmails
+     * @param bool $wantsUpdateEmails
      */
     public function SetUpdated($wantsUpdateEmails);
+
+    /**
+     * @abstract
+     * @param bool $wantsDeleteEmails
+     */
+    public function SetDeleted($wantsDeleteEmails);
 
     /**
      * @abstract
@@ -65,6 +70,12 @@ interface INotificationPreferencesPage extends IPage
      * @return bool
      */
     public function GetUpdated();
+
+    /**
+     * @abstract
+     * @return bool
+     */
+    public function GetDeleted();
 
 	/**
 	 * @abstract
@@ -117,6 +128,14 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
     }
 
     /**
+     * @param bool $wantsDeleteEmails
+     */
+    public function SetDeleted($wantsDeleteEmails)
+    {
+        $this->Set('Deleted', $wantsDeleteEmails);
+    }
+
+    /**
      * @return bool
      */
     public function GetApproved()
@@ -140,6 +159,14 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
         return (bool)$this->GetForm(ReservationEvent::Updated);
     }
 
+    /**
+     * @return bool
+     */
+    public function GetDeleted()
+    {
+        return (bool)$this->GetForm(ReservationEvent::Deleted);
+    }
+
 	/**
 	 * @param bool $werePreferencesUpdated
 	 */
@@ -155,6 +182,7 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
     {
         $this->Set('EmailEnabled', $enabled);
     }
+
 }
 
 ?>

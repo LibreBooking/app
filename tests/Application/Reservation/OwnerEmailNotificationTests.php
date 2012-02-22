@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmail.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationDeletedEmail.php');
 
 require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
@@ -57,7 +58,7 @@ class OwnerEmailNotificationTests extends TestBase
 		$notification = new OwnerEmailCreatedNotification($userRepo);
 		$notification->Notify($reservation);
 		
-		$expectedMessage = new ReservationCreatedEmail($user, $reservation, $resource);
+		$expectedMessage = new ReservationCreatedEmail($user, $reservation);
 		
 		$lastMessage = $this->fakeEmailService->_LastMessage;
         $this->assertInstanceOf('ReservationCreatedEmail', $lastMessage);
@@ -84,12 +85,38 @@ class OwnerEmailNotificationTests extends TestBase
 		$notification = new OwnerEmailUpdatedNotification($userRepo);
 		$notification->Notify($reservation);
 		
-		$expectedMessage = new ReservationUpdatedEmail($user, $reservation, $resource);
+		$expectedMessage = new ReservationUpdatedEmail($user, $reservation);
 		
 		$lastMessage = $this->fakeEmailService->_LastMessage;
 		$this->assertInstanceOf('ReservationUpdatedEmail', $lastMessage);
 //		$this->assertEquals($expectedMessage, $lastMessage);
 	}
+
+    public function testSendsReservationDeletedEmailIfUserWantsIt()
+    {
+        $event = new ReservationDeletedEvent();
+        $ownerId = 100;
+        $resourceId = 200;
+
+        $resource = new FakeBookableResource($resourceId, 'name');
+
+        $reservation = new ExistingReservationSeries();
+        $reservation->WithOwner($ownerId);
+        $reservation->WithPrimaryResource($resource);
+
+        $userRepo = $this->getMock('IUserRepository');
+
+        $user = $this->LoadsUser($userRepo, $ownerId);
+        $this->AsksUser($user, $event);
+
+        $notification = new OwnerEmailDeletedNotification($userRepo);
+        $notification->Notify($reservation);
+
+        $expectedMessage = new ReservationDeletedEmail($user, $reservation);
+
+        $lastMessage = $this->fakeEmailService->_LastMessage;
+        $this->assertInstanceOf('ReservationDeletedEmail', $lastMessage);
+    }
 	
 	public function AsksUser($user, $event)
 	{
