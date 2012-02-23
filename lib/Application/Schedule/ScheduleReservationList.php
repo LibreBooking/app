@@ -143,6 +143,7 @@ class ScheduleReservationList implements IScheduleReservationList
             {
                 continue;
             }
+
 			$start = $item->StartDate()->ToTimezone($this->_destinationTimezone);
 			
 			$startsInPast = $this->ItemStartsOnPastDate($item);

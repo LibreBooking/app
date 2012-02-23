@@ -205,6 +205,13 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 */
 	private function GetEndSlotClosestTo($periods, $date)
 	{
+        $lastIndex = count($periods) - 1;
+
+        if ($periods[$lastIndex]->EndDate()->CompareTime($date) == 0)
+        {
+            return $periods[$lastIndex];
+        }
+
 		for ($i = 0; $i < count($periods); $i++)
 		{
 			$currentPeriod = $periods[$i];
@@ -216,7 +223,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 			}
 		}
 
-		$lastIndex = count($periods) - 1;
 		return $periods[$lastIndex];
 	}
 
