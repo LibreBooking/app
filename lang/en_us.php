@@ -420,6 +420,7 @@ class en_us extends Language
         $strings['ReservationCreatedAdminSubject'] = 'Notification: A Reservation Was Created';
         $strings['ReservationUpdatedAdminSubject'] = 'Notification: A Reservation Was Updated';
         $strings['ParticipantAddedSubject'] = 'Reservation Participation Notification';
+        $strings['ParticipantDeletedSubject'] = 'Reservation Removed';
         $strings['InviteeAddedSubject'] = 'Reservation Invitation';
         $strings['ResetPassword'] = 'Password Reset Request';
         $strings['ForgotPasswordEmailSent'] = 'An email has been sent to the address provided with instructions for resetting your password';

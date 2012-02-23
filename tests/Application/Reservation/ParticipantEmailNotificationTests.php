@@ -75,6 +75,49 @@ class ParticipantEmailNotificationTests extends TestBase
         $this->assertInstanceOf('ParticipantAddedEmail', $this->fakeEmailService->_LastMessage);
 //		$this->assertEquals($lastExpectedMessage, $this->fakeEmailService->_LastMessage);
 	}
+
+    public function testSendsReservationDeletedEmails()
+    {
+        $ownerId = 828;
+        		$owner = new User();
+        		$participantId1 = 50;
+        		$participant1 = new User();
+        		$participantId2 = 60;
+        		$participant2 = new User();
+
+        		$instance1 = new TestReservation();
+        		$instance1->WithAddedParticipants(array(1000, 2000));
+        		$instance1->WithExistingParticipants(array($participantId1, $participantId2));
+
+        		$series = new TestReservationSeries();
+        		$series->WithOwnerId($ownerId);
+        		$series->WithCurrentInstance($instance1);
+
+        		$userRepo = $this->getMock('IUserRepository');
+
+        		$userRepo->expects($this->at(0))
+        			->method('LoadById')
+        			->with($this->equalTo($ownerId))
+        			->will($this->returnValue($owner));
+
+        		$userRepo->expects($this->at(1))
+        			->method('LoadById')
+        			->with($this->equalTo($participantId1))
+        			->will($this->returnValue($participant1));
+
+        		$userRepo->expects($this->at(2))
+        			->method('LoadById')
+        			->with($this->equalTo($participantId2))
+        			->will($this->returnValue($participant2));
+
+        		$notification = new ParticipantDeletedEmailNotification($userRepo);
+        		$notification->Notify($series);
+
+        		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
+        		$lastExpectedMessage = new ParticipantAddedEmail($owner, $participant2, $series);
+                $this->assertInstanceOf('ParticipantDeletedEmail', $this->fakeEmailService->_LastMessage);
+        //		$this->assertEquals($lastExpectedMessage, $this->fakeEmailService->_LastMessage);
+    }
 	
 	public function testSendsReservationUpdatedEmailToExistingParticipants()
 	{

@@ -37,16 +37,11 @@ class ParticipantAddedEmailNotification implements IReservationNotification
 	 */
 	function Notify($reservationSeries)
 	{
-		$owner = null;
-
 		$instance = $reservationSeries->CurrentInstance();
+        $owner = $this->userRepository->LoadById($reservationSeries->UserId());
+
 		foreach ($instance->AddedParticipants() as $userId)
 		{
-			if ($owner == null)
-			{
-				$owner = $this->userRepository->LoadById($reservationSeries->UserId());
-			}
-
 			$participant = $this->userRepository->LoadById($userId);
 
 			$message = new ParticipantAddedEmail($owner, $participant, $reservationSeries);

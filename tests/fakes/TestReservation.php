@@ -58,5 +58,10 @@ class TestReservation extends Reservation
 	{
 		$this->addedParticipants = $participantIds;
 	}
+
+    public function WithExistingParticipants($participantIds)
+    {
+        $this->unchangedParticipants = $participantIds;
+    }
 }
 ?>

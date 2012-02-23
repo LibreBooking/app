@@ -164,11 +164,16 @@ class Reservation
 	public function WithParticipants($participantIds)
 	{
 		$this->_participantIds = $participantIds;
+        $this->unchangedParticipants = $participantIds;
 	}
 
+    /**
+     * @param int $participantId
+     */
 	public function WithParticipant($participantId)
 	{
 		$this->_participantIds[] = $participantId;
+        $this->unchangedParticipants[] = $participantId;
 	}
 
 	/**
@@ -179,11 +184,16 @@ class Reservation
 	public function WithInvitees($inviteeIds)
 	{
 		$this->_inviteeIds = $inviteeIds;
+        $this->unchangedInvitees = $inviteeIds;
 	}
 
+    /**
+     * @param int $inviteeId
+     */
 	public function WithInvitee($inviteeId)
 	{
 		$this->_inviteeIds[] = $inviteeId;
+        $this->unchangedInvitees[] = $inviteeId;
 	}
 
 	/**

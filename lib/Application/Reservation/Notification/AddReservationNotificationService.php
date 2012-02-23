@@ -25,8 +25,8 @@ class AddReservationNotificationService extends ReservationNotificationService
 	public function __construct(IUserRepository $userRepo, IResourceRepository $resourceRepo)
 	{
 		$notifications = array();
-		$notifications[] = new OwnerEmailCreatedNotification($userRepo, $resourceRepo);
-		$notifications[] = new AdminEmailCreatedNotification($userRepo, $resourceRepo);
+		$notifications[] = new OwnerEmailCreatedNotification($userRepo);
+		$notifications[] = new AdminEmailCreatedNotification($userRepo);
 		$notifications[] = new ParticipantAddedEmailNotification($userRepo);
 		$notifications[] = new InviteeAddedEmailNotification($userRepo);
 
