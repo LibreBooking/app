@@ -138,7 +138,11 @@ class ScheduleReservationList implements IScheduleReservationList
 	private function IndexItems()
 	{
 		foreach ($this->_items as $item)
-		{		
+		{
+            if ($item->EndDate()->ToTimezone($this->_destinationTimezone)->Equals($this->_firstLayoutTime))
+            {
+                continue;
+            }
 			$start = $item->StartDate()->ToTimezone($this->_destinationTimezone);
 			
 			$startsInPast = $this->ItemStartsOnPastDate($item);
