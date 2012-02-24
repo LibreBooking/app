@@ -24,7 +24,12 @@
 	<property name="sql.file.data" value="database_schema/data-utf8.sql"/>
 	<property name="sql.file.test.data" value="database_schema/sample-data-utf8.sql"/>
 
-	<target name="setup.db" description="setting up the latest version of the database">
+    <target name="setup.db" description="setting up the latest version of the database">
+        <phingcall target="baseline.db" />
+        <phingcall target="upgrade.db" />
+    </target>
+
+	<target name="baseline.db" description="baseline db">
 		<if>
 			<equals arg1="${mysql.password}" arg2=""/>
 			<then>
@@ -56,9 +61,6 @@
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.test.data}"
 			  checkreturn="true"
 			  dir="${mysql.bin}"/>
-
-        <phingcall target="upgrade.db" />
-
 	</target>
 
     <target name="upgrade.db">
