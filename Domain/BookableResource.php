@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 interface IResource
 {
 	/**
@@ -70,6 +69,7 @@ class BookableResource implements IResource
 	protected $_scheduleId;
 	protected $_imageName;
 	protected $_isActive;
+    protected $_adminGroupId;
 
 	/**
 	 * @param int $resourceId
@@ -102,7 +102,9 @@ class BookableResource implements IResource
 								$minNotice,
 								$maxNotice,
 								$description = null,
-								$scheduleId = null)
+								$scheduleId = null,
+                                $adminGroupId = null
+)
 	{
 		$this->SetResourceId($resourceId);
 		$this->SetName($name);
@@ -119,6 +121,7 @@ class BookableResource implements IResource
 		$this->SetMinNotice($minNotice);
 		$this->SetMaxNotice($maxNotice);
 		$this->SetScheduleId($scheduleId);
+        $this->SetAdminGroupId($adminGroupId);
 	}
 
     /**
@@ -454,6 +457,22 @@ class BookableResource implements IResource
 	{
 		$this->_scheduleId = $value;
 	}
+
+    /**
+     * @return int
+     */
+    public function GetAdminGroupId()
+    {
+        return $this->_adminGroupId;
+    }
+
+    /**
+     * @param int $adminGroupId
+     */
+    public function SetAdminGroupId($adminGroupId)
+    {
+        $this->_adminGroupId = $adminGroupId;
+    }
 
 	/**
 	 * @return string

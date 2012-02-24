@@ -26,6 +26,7 @@ class RoleLevel
 	const NONE = null;
 	const GROUP_ADMIN = 1;
 	const APPLICATION_ADMIN = 2;
+    const RESOURCE_ADMIN = 3;
 	
 }
 ?>

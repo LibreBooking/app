@@ -8,6 +8,7 @@
 	<property name="staging" value="../staging"/>
 	<property name="stagingdir" value="${staging}/phpScheduleIt"/>
 	<property name="demo.dir" value="../phpScheduleIt_archive/src/demo"/>
+	<property name="phing.tasks.dir" value="c:/php/pear/phing/tasks/my"/>
 
 	<available file="C:/Program Files/MySQL/MySQL Server 5.1/bin" property="mysql.bin"
 			   value="C:/Program Files/MySQL/MySQL Server 5.1/bin"/>
@@ -55,7 +56,23 @@
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.test.data}"
 			  checkreturn="true"
 			  dir="${mysql.bin}"/>
+
+        <phingcall target="upgrade.db" />
+
 	</target>
+
+    <target name="upgrade.db">
+        <copy todir="${phing.tasks.dir}">
+            <fileset dir="phing-tasks">
+                    <include name="*.php" />
+            </fileset>
+        </copy>
+
+        <taskdef name="upgradedb" classname="phing.tasks.my.UpgradeDbTask" />
+        <upgradedb username="${mysql.username}" password="${mysql.password}"
+                   host="${mysql.server}" database="${mysql.database}"
+                   schemadir="${application.startdir}/database_schema" />
+    </target>
 
 	<target name="package" description="packages all required files" depends="stage.files">
 		<delete dir="${zipdirectory}" failonerror="false"/>
@@ -113,6 +130,7 @@
 				<exclude name="pdt_templates.xml"/>
 				<exclude name="**/*.zip"/>
 				<exclude name="**/*.jar"/>
+				<exclude name="**/phing-tasks/**"/>
 
 				<exclude name="**/config.php"/>
 				<exclude name="**/*.config.php"/>

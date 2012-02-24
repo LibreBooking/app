@@ -94,7 +94,11 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->page->BindResources($this->resourceRepository->GetResourceList());
 
 		//TODO: get roles
-		$this->page->BindRoles(array(new RoleDto(1,'Group Admin', RoleLevel::GROUP_ADMIN), new RoleDto(2, 'Application Admin', RoleLevel::APPLICATION_ADMIN)));
+		$this->page->BindRoles(array(
+                                   new RoleDto(1,'Group Admin', RoleLevel::GROUP_ADMIN),
+                                   new RoleDto(2, 'Application Admin', RoleLevel::APPLICATION_ADMIN),
+                                   new RoleDto(3, 'Resource Admin', RoleLevel::RESOURCE_ADMIN))
+                                );
 		$this->page->BindAdminGroups($this->groupRepository->GetGroupsByRole(RoleLevel::GROUP_ADMIN));
 	}
 
