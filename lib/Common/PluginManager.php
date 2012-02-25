@@ -75,15 +75,11 @@ class PluginManager
     public function LoadAuthentication()
     {
         require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+        require_once(ROOT_DIR . 'Domain/Access/namespace.php');
         /**
          * Instantiate Authentication class object with
          */
-        $authentication = new Authentication($this->LoadAuthorization());
-        /**
-         * param#1: ConfigKeys::PLUGIN_AUTHENTICATION is a constance, which provides type of authentication.
-         * param#2: 'Authentication' is a constant for plugin sub-directory
-         * param#3: $authentication is actually the authoriaztion of this authentication.
-         */
+        $authentication = new Authentication($this->LoadAuthorization(), new UserRepository());
         $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHENTICATION, 'Authentication', $authentication);
 
         if (!is_null($plugin))

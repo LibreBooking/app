@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
@@ -37,9 +37,15 @@ class Authentication implements IAuthentication
      */
     private $authorizationService;
 
-    public function __construct(IAuthorizationService $authorizationService)
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
+
+    public function __construct(IAuthorizationService $authorizationService, IUserRepository $userRepository)
     {
         $this->authorizationService = $authorizationService;
+        $this->userRepository = $userRepository;
     }
 
     public function SetMigration(PasswordMigration $migration)
@@ -86,36 +92,34 @@ class Authentication implements IAuthentication
         return $valid;
     }
 
-	/**
-	 * @param string $username
-	 * @param ILoginContext $loginContext
-	 */
+    /**
+     * @param string $username
+     * @param ILoginContext $loginContext
+     */
     public function Login($username, $loginContext)
     {
         Log::Debug('Logging in with user: %s', $username);
 
-        $command = new LoginCommand($username);
-        $reader = ServiceLocator::GetDatabase()->Query($command);
-
-        if ($row = $reader->GetRow())
+        $user = $this->userRepository->LoadByUsername($username);
+        if ($user->StatusId() == AccountStatus::ACTIVE)
         {
-			$loginData = $loginContext->GetData();
+            $loginData = $loginContext->GetData();
             $loginTime = LoginTime::Now();
-            $userid = $row[ColumnNames::USER_ID];
-            $emailAddress = $row[ColumnNames::EMAIL];
-            $language = $row[ColumnNames::LANGUAGE_CODE];
+            $userid = $user->Id();
+            $emailAddress = $user->EmailAddress();
+            $language = $user->Language();
 
-			if (!empty($loginData->Language))
-			{
-				$language = $loginData->Language;
-			}
+            if (!empty($loginData->Language))
+            {
+                $language = $loginData->Language;
+            }
 
             $isAdminRole = $this->IsAdminRole($userid, $emailAddress);
 
-            $updateLoginTimeCommand = new UpdateLoginDataCommand($userid, $loginTime, $language);
-            ServiceLocator::GetDatabase()->Execute($updateLoginTimeCommand);
+            $user->Login($loginTime, $language);
+            $this->userRepository->Update($user);
 
-            $this->SetUserSession($row, $isAdminRole, $loginContext->GetServer());
+            $this->SetUserSession($user, $isAdminRole, $loginContext->GetServer());
 
             if ($loginContext->GetData()->Persist)
             {
@@ -169,35 +173,35 @@ class Authentication implements IAuthentication
         return $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser($userId, $emailAddress));
     }
 
-	/**
-	 * @param array $row
-	 * @param bool $isAdminRole
-	 * @param Server $server
-	 */
-    private function SetUserSession($row, $isAdminRole, $server)
+    /**
+     * @param User $user
+     * @param bool $isAdminRole
+     * @param Server $server
+     */
+    private function SetUserSession(User $user, $isAdminRole, $server)
     {
-        $user = new UserSession($row[ColumnNames::USER_ID]);
-        $user->Email = $row[ColumnNames::EMAIL];
-        $user->FirstName = $row[ColumnNames::FIRST_NAME];
-        $user->LastName = $row[ColumnNames::LAST_NAME];
-        $user->Timezone = $row[ColumnNames::TIMEZONE_NAME];
-        $user->HomepageId = $row[ColumnNames::HOMEPAGE_ID];
+        $userSession = new UserSession($user->Id());
+        $userSession->Email = $user->EmailAddress();
+        $userSession->FirstName = $user->FirstName();
+        $userSession->LastName = $user->LastName();
+        $userSession->Timezone = $user->Timezone();
+        $userSession->HomepageId = $user->Homepage();
 
-        $isAdmin = ($user->Email == Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$isAdminRole;
-        $user->IsAdmin = $isAdmin;
+        $isAdmin = ($userSession->Email == Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$isAdminRole;
+        $userSession->IsAdmin = $isAdmin;
 
-		$server->SetUserSession($user);
+        $server->SetUserSession($userSession);
     }
 
-	/**
-	 * @param int $userid
-	 * @param string $lastLogin
-	 * @param Server $server
-	 */
+    /**
+     * @param int $userid
+     * @param string $lastLogin
+     * @param Server $server
+     */
     private function SetLoginCookie($userid, $lastLogin, $server)
     {
         $cookie = new LoginCookie($userid, $lastLogin);
-		$server->SetCookie($cookie);
+        $server->SetCookie($cookie);
     }
 
     private function DeleteLoginCookie($userid)

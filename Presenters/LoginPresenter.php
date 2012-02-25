@@ -48,9 +48,6 @@ class LoginPresenter
      */
     private function SetAuthentication($authentication)
     {
-        /**
-         * If authentication is null (NOT LOGIN) or not null (LOGIN)
-         */
         if (is_null($authentication))
         {
             $this->authentication = PluginManager::Instance()->LoadAuthentication();

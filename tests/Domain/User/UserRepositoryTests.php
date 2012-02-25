@@ -128,6 +128,37 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals(4, count($this->db->_Commands));
 	}
 
+    public function testCanLoadUserByUserName()
+    {
+        $userName = 'username';
+        $userId = 982;
+        $loginCommand = new LoginCommand(strtolower($userName));
+        $loadEmailPreferencesCommand = new GetUserEmailPreferencesCommand($userId);
+        $loadPermissionsCommand = new GetUserPermissionsCommand($userId);
+        $loadGroupsCommand = new GetUserGroupsCommand($userId, null);
+
+        $userRows = $this->GetUserRow();
+        $emailPrefRows = $this->GetEmailPrefRows();
+        $permissionsRows = $this->GetPermissionsRows();
+        $groupsRows = $this->GetGroupsRows();
+
+        $this->db->SetRow(0, $userRows);
+        $this->db->SetRow(1, $emailPrefRows);
+        $this->db->SetRow(2, $permissionsRows);
+        $this->db->SetRow(3, $groupsRows);
+
+        $userRepository = new UserRepository();
+        $user = $userRepository->LoadByUsername($userName);
+
+        $this->assertEquals(4, count($this->db->_Commands));
+        $this->assertTrue($this->db->ContainsCommand($loginCommand));
+        $this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
+        $this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
+        $this->assertTrue($this->db->ContainsCommand($loadGroupsCommand));
+
+        $this->assertEquals($userId, $user->Id());
+    }
+
 	public function testCanGetPageableListOfUsers()
 	{
 		$page = 3;
@@ -162,8 +193,10 @@ class UserRepositoryTests extends TestBase
 	public function testUpdateSetsUserProperties()
 	{
 		$userId = 987;
+        $loginTime = '2010-01-01';
 		$user = new User();
 		$user->WithId($userId);
+        $user->WithLastLogin($loginTime);
 
 		$password = 'password';
 		$salt = 'salt';
@@ -181,7 +214,7 @@ class UserRepositoryTests extends TestBase
 		$user->ChangeDefaultHomePage($homepageId);
 		$user->ChangeTimezone($timezone);
 
-		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone);
+		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime);
 
 		$repo = new UserRepository();
 		$repo->Update($user);
@@ -300,26 +333,49 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals($expectedId, $newId);
 		$this->assertEquals($expectedId, $user->Id());
 	}
-	
-	private function GetUserRow()
+
+//    private function GetRow($userId = 1, $first = 'first', $last = 'last', $email = 'e@mail.com', $userName = 'dude', $lastLogin = null, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
+//    	{
+//    		return
+//    			array(
+//    				ColumnNames::USER_ID => $userId,
+//    				ColumnNames::USERNAME => $userName,
+//    				ColumnNames::FIRST_NAME => $first,
+//    				ColumnNames::LAST_NAME => $last,
+//    				ColumnNames::EMAIL => $email,
+//    				ColumnNames::LAST_LOGIN => $lastLogin,
+//    				ColumnNames::TIMEZONE_NAME => $timezone,
+//    				ColumnNames::USER_STATUS_ID => $statusId,
+//    				ColumnNames::PHONE_NUMBER => '123-456-7890',
+//    				ColumnNames::ORGANIZATION => 'company',
+//    				ColumnNames::POSITION => 'the dude',
+//    				ColumnNames::LANGUAGE_CODE => 'en_us',
+//    				ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
+//                    ColumnNames::HOMEPAGE_ID => Pages::DEFAULT_HOMEPAGE_ID
+//    			);
+//    	}
+
+	private function GetUserRow($userId = 1, $first = 'first', $last = 'last', $email = 'e@mail.com', $userName = 'username', $lastLogin = null, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
 	{
 		$row = array
 		(
 			array(
-				ColumnNames::USER_ID => 1,
-				ColumnNames::FIRST_NAME => 'first',
-				ColumnNames::LAST_NAME => 'last',
-				ColumnNames::EMAIL => 'email',
+				ColumnNames::USER_ID => $userId,
+                ColumnNames::USERNAME => $userName,
+				ColumnNames::FIRST_NAME => $first,
+				ColumnNames::LAST_NAME => $last,
+				ColumnNames::EMAIL => $email,
+                ColumnNames::LAST_LOGIN => $lastLogin,
 				ColumnNames::LANGUAGE_CODE => 'en_us',
-				ColumnNames::TIMEZONE_NAME => 'UTC',
-				ColumnNames::USER_STATUS_ID => AccountStatus::ACTIVE,
+				ColumnNames::TIMEZONE_NAME => $timezone,
+				ColumnNames::USER_STATUS_ID => $statusId,
 				ColumnNames::PASSWORD => 'encryptedPassword',
 				ColumnNames::SALT => 'passwordsalt',
-				ColumnNames::USERNAME => 'username',
 				ColumnNames::HOMEPAGE_ID => 3,
 				ColumnNames::PHONE_NUMBER => '123-456-7890',
 				ColumnNames::POSITION => 'head honcho',
 				ColumnNames::ORGANIZATION => 'earth',
+                ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
 			)
 		);
 		
@@ -335,26 +391,6 @@ class UserRepositoryTests extends TestBase
 		);
 		
 		return $row;
-	}
-
-	private function GetRow($userId, $first, $last, $email, $userName, $lastLogin, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
-	{
-		return
-			array(
-				ColumnNames::USER_ID => $userId,
-				ColumnNames::USERNAME => $userName,
-				ColumnNames::FIRST_NAME => $first,
-				ColumnNames::LAST_NAME => $last,
-				ColumnNames::EMAIL => $email,
-				ColumnNames::LAST_LOGIN => $lastLogin,
-				ColumnNames::TIMEZONE_NAME => $timezone,
-				ColumnNames::USER_STATUS_ID => $statusId,
-				ColumnNames::PHONE_NUMBER => '123-456-7890',
-				ColumnNames::ORGANIZATION => 'company',
-				ColumnNames::POSITION => 'the dude',
-				ColumnNames::LANGUAGE_CODE => 'en_us',
-				ColumnNames::USER_CREATED => '2011-01-04 12:12:12'
-			);
 	}
 
 	private function GetPermissionsRows()

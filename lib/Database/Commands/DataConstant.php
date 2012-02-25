@@ -315,9 +315,7 @@ class Queries
             'DELETE	FROM user_resource_permissions WHERE user_id = @userid AND resource_id = @resourceid';
 
     const LOGIN_USER =
-            'SELECT user_id, email, fname, lname, timezone, lastlogin, homepageid
-		FROM users 
-		WHERE (username = @username OR email = @username)';
+            'SELECT * FROM users WHERE (username = @username OR email = @username)';
 
     const GET_ACCESSORY_BY_ID =  'SELECT * FROM accessories WHERE accessory_id = @accessoryid';
 

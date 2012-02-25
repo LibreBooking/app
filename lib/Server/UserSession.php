@@ -18,15 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-interface IUser
-{	
-	public function Populate(&$db);
-	
-	public function Persist(&$db);
-	
-	public function SetProperty($name, $value);
-}
-
 class UserSession
 {
 	public $UserId = '';
@@ -37,7 +28,8 @@ class UserSession
 	public $Timezone = '';
 	public $HomepageId = 1;
 	public $SessionToken = '';
-	
+	public $Roles = array();
+
 	public function __construct($id)
 	{
 		$this->UserId = $id;

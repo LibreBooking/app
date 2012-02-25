@@ -102,6 +102,19 @@ class User
 		return $this->statusId;
 	}
 
+    /**
+     * @var string
+     */
+    private $lastLogin;
+
+    /**
+     * @return string
+     */
+    public function LastLogin()
+    {
+        return $this->lastLogin;
+    }
+
 	/**
 	 * @var array|UserGroup[]
 	 */
@@ -238,6 +251,16 @@ class User
 		}
 	}
 
+    /**
+     * @param string $loginTime
+     * @param string $language
+     */
+    public function Login($loginTime, $language)
+    {
+        $this->lastLogin = $loginTime;
+        $this->language = $language;
+    }
+
 	/**
 	 * @return array|IDomainEvent[]
 	 */
@@ -268,6 +291,7 @@ class User
 		$user->encryptedPassword = $row[ColumnNames::PASSWORD];
 		$user->passwordSalt = $row[ColumnNames::SALT];
 		$user->homepageId = $row[ColumnNames::HOMEPAGE_ID];
+        $user->lastLogin = $row[ColumnNames::LAST_LOGIN];
 
 		$user->attributes[UserAttribute::Phone] = $row[ColumnNames::PHONE_NUMBER];
 		$user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
@@ -291,10 +315,21 @@ class User
 		return $user;
 	}
 
+    /**
+     * @param int $userId
+     */
 	public function WithId($userId)
 	{
 		$this->id = $userId;
 	}
+
+    /**
+     * @param string $loginTime
+     */
+    public function WithLastLogin($loginTime)
+    {
+        $this->lastLogin = $loginTime;
+    }
 
 	/**
 	 * @internal
