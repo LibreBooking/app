@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
@@ -36,7 +36,7 @@ class AuthenticationTests extends TestBase
 	private $timezone;
 	private $lastLogin;
 	private $homepageId;
-    private $languageCode;
+	private $languageCode;
 
 	/**
 	 * @var Authentication
@@ -54,7 +54,7 @@ class AuthenticationTests extends TestBase
 	private $fakeMigration;
 
 	/**
-	 * @var IAuthorizationService|PHPUnit_Framework_MockObject_MockObject
+	 * @var IRoleService|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $authorization;
 
@@ -63,15 +63,15 @@ class AuthenticationTests extends TestBase
 	 */
 	private $loginContext;
 
-    /**
-     * @var User
-     */
-    private $user;
+	/**
+	 * @var FakeUser
+	 */
+	private $user;
 
-    /**
-     * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
-     */
-    private $userRepository;
+	/**
+	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $userRepository;
 
 	function setup()
 	{
@@ -85,20 +85,27 @@ class AuthenticationTests extends TestBase
 		$this->email = 'my@email.com';
 		$this->isAdmin = true;
 		$this->timezone = "US/Central";
-		$this->lastLogin = time();	
-		$this->homepageId = 2;	
+		$this->lastLogin = time();
+		$this->homepageId = 2;
 		$this->languageCode = 'en_us';
 
-        $this->user = new FakeUser();
+		$this->user = new FakeUser();
+		$this->user->WithId($this->id);
+		$this->user->ChangeName($this->fname, $this->lname);
+		$this->user->ChangeEmailAddress($this->email);
+		$this->user->ChangeTimezone($this->timezone);
+		$this->user->ChangeDefaultHomePage($this->homepageId);
+		$this->user->SetLanguage($this->languageCode);
+		$this->user->Activate();
 
 		$this->fakePassword = new FakePassword();
 		$this->fakeMigration = new FakeMigration();
 		$this->fakeMigration->_Password = $this->fakePassword;
 
-		$this->authorization = $this->getMock('IAuthorizationService');
+		$this->authorization = $this->getMock('IRoleService');
 		$this->userRepository = $this->getMock('IUserRepository');
 
-        $this->auth = new Authentication($this->authorization, $this->userRepository);
+		$this->auth = new Authentication($this->authorization, $this->userRepository);
 		$this->auth->SetMigration($this->fakeMigration);
 
 		$this->loginContext = new WebLoginContext($this->fakeServer, new LoginData());
@@ -108,7 +115,7 @@ class AuthenticationTests extends TestBase
 	{
 		$id = 10;
 		$oldPassword = 'oldpassword';
-		
+
 		$rows = array(array(ColumnNames::USER_ID => $id, ColumnNames::PASSWORD => null, ColumnNames::SALT => null, ColumnNames::OLD_PASSWORD => $oldPassword));
 		$this->db->SetRows($rows);
 
@@ -123,70 +130,49 @@ class AuthenticationTests extends TestBase
 	{
 		$language = 'en_gb';
 
-        $this->userRepository->expects($this->once())
-                ->method('LoadByUsername')
-                ->with($this->equalTo($this->username))
-                ->will($this->returnValue($this->user));
+		$this->userRepository->expects($this->once())
+				->method('LoadByUsername')
+				->with($this->equalTo($this->username))
+				->will($this->returnValue($this->user));
 
-        LoginTime::$Now = time();
+		LoginTime::$Now = time();
 
-        $this->user->Login(LoginTime::Now(), $language);
+		$this->user->Login(LoginTime::Now(), $language);
 
-        $this->userRepository->expects($this->once())
-            ->method('Update')
-            ->with($this->equalTo($this->user));
+		$this->userRepository->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($this->user));
 
 		$this->authorization->expects($this->once())
-			->method('IsApplicationAdministrator')
-			->with($this->equalTo(new AuthorizationUser($this->id, $this->email)))
-			->will($this->returnValue(false));
+				->method('IsApplicationAdministrator')
+				->with($this->equalTo($this->user))
+				->will($this->returnValue(true));
+
+		$this->authorization->expects($this->once())
+				->method('IsGroupAdministrator')
+				->with($this->equalTo($this->user))
+				->will($this->returnValue(true));
+
+		$this->authorization->expects($this->once())
+				->method('IsResourceAdministrator')
+				->with($this->equalTo($this->user))
+				->will($this->returnValue(true));
 
 		$context = new WebLoginContext($this->fakeServer, new LoginData(false, $language));
-		$this->auth->Login(strtolower($this->username), $context);
-	}
+		$this->auth->Login($this->username, $context);
 
-	function testLoginSetsUserInSession()
-	{
-        $this->markTestIncomplete(time());
-		$isAdmin = true;
 		$user = new UserSession($this->id);
 		$user->FirstName = $this->fname;
 		$user->LastName = $this->lname;
 		$user->Email = $this->email;
-		$user->IsAdmin = $isAdmin;
 		$user->Timezone = $this->timezone;
 		$user->HomepageId = $this->homepageId;
-
-		$loginRows = $this->GetRows();
-		$this->db->SetRow(0, $loginRows);
-
-		$this->authorization->expects($this->once())
-			->method('IsApplicationAdministrator')
-			->with($this->equalTo(new AuthorizationUser($this->id, $this->email)))
-			->will($this->returnValue($isAdmin));
-
-		$this->auth->Login(strtolower($this->username), $this->loginContext);
-
 		$user->SessionToken = $this->fakeServer->GetUserSession()->SessionToken;
+		$user->IsAdmin = true;
+		$user->IsGroupAdmin = true;
+		$user->IsResourceAdmin = true;
+
 		$this->assertEquals($user, $this->fakeServer->GetUserSession());
-	}
-
-	function testUserIsAdminIfEmailMatchesConfigEmail()
-	{
-        $this->markTestIncomplete(time());
-		$this->fakeConfig->SetKey(ConfigKeys::ADMIN_EMAIL, $this->email);
-
-		$loginRows = $this->GetRows();
-		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::ROLE_LEVEL => 0)
-			);
-		$this->db->SetRow(0, $loginRows);
-		$this->db->SetRow(1, $roleRows);
-
-		$this->auth->Login(strtolower($this->username), $this->loginContext);
-
-		$user = $this->fakeServer->GetUserSession();
-		$this->assertTrue($user->IsAdmin);
 	}
 
 	function testMigratesPasswordNewPasswordHasNotBeenSet()
@@ -217,16 +203,14 @@ class AuthenticationTests extends TestBase
 
 	function testCanPersistLoginWhenValidLogin()
 	{
-        $this->markTestIncomplete(time());
-		$now = mktime(10, 11, 12, 1, 2, 2000);	
+		$now = mktime(10, 11, 12, 1, 2, 2000);
 		LoginTime::$Now = $now;
-		$loginRows = $this->GetRows();
-		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::ROLE_LEVEL => 0)
-			);
-		$this->db->SetRow(0, $loginRows);
-		$this->db->SetRow(1, $roleRows);
-		
+
+		$this->userRepository->expects($this->once())
+				->method('LoadByUsername')
+				->with($this->equalTo($this->username))
+				->will($this->returnValue($this->user));
+
 		$hashedValue = sprintf("%s|%s", $this->id, LoginTime::Now());
 
 		$loginContext = new WebLoginContext($this->fakeServer, new LoginData(true));
@@ -235,55 +219,50 @@ class AuthenticationTests extends TestBase
 		$expectedCookie = new Cookie(CookieKeys::PERSIST_LOGIN, $hashedValue);
 		$this->assertEquals($expectedCookie->Value, $this->fakeServer->GetCookie(CookieKeys::PERSIST_LOGIN));
 	}
-	
+
 	function testCanAutoLoginWithCookie()
 	{
-        $this->markTestIncomplete(time());
 		$userid = 'userid';
 		$lastLogin = LoginTime::Now();
 		$email = 'email@address.com';
-		$cookie = new LoginCookie($userid, $lastLogin);		
-		
+		$cookie = new LoginCookie($userid, $lastLogin);
+
+		$this->userRepository->expects($this->once())
+				->method('LoadByUsername')
+				->with($this->equalTo($email))
+				->will($this->returnValue($this->user));
+
 		$rows = array(array(
-					ColumnNames::USER_ID => $userid,
-					ColumnNames::LAST_LOGIN => $lastLogin,
-					ColumnNames::EMAIL => $email
-					));
+						  ColumnNames::USER_ID => $userid,
+						  ColumnNames::LAST_LOGIN => $lastLogin,
+						  ColumnNames::EMAIL => $email
+					  ));
 		$this->db->SetRow(0, $rows);
-		$loginRows = $this->GetRows();
-		$roleRows = array(
-			array(ColumnNames::USER_ID => $this->id, ColumnNames::ROLE_LEVEL => 0)
-			);
-		$this->db->SetRow(1, $loginRows);
-		$this->db->SetRow(2, $roleRows);
-		
+
 		$valid = $this->auth->CookieLogin($cookie->Value, $this->loginContext);
-		
+
 		$cookieValidateCommand = new CookieLoginCommand($userid);
-		$loginCommand = new LoginCommand($email);
-		
+
 		$this->assertTrue($valid, 'should be valid if cookie matches');
 		$this->assertEquals($cookieValidateCommand, $this->db->_Commands[0]);
-		$this->assertEquals($loginCommand, $this->db->_Commands[1], 'should login if cookie login is valid');
 	}
-	
+
 	function testDoesNotAutoLoginIfCookieNotValid()
 	{
-        $this->markTestIncomplete(time());
 		$userid = 'userid';
 		$lastLogin = LoginTime::Now();
 		$email = 'email@address.com';
-		$cookie = new LoginCookie($userid, $lastLogin);		
-		
+		$cookie = new LoginCookie($userid, $lastLogin);
+
 		$rows = array(array(
-					ColumnNames::USER_ID => $userid,
-					ColumnNames::LAST_LOGIN => 'not the same thing',
-					ColumnNames::EMAIL => $email
-					));
+						  ColumnNames::USER_ID => $userid,
+						  ColumnNames::LAST_LOGIN => 'not the same thing',
+						  ColumnNames::EMAIL => $email
+					  ));
 		$this->db->SetRows($rows);
-		
+
 		$valid = $this->auth->CookieLogin($cookie->Value, $this->loginContext);
-		
+
 		$this->assertFalse($valid, 'should not be valid if cookie does not match');
 		$this->assertEquals(1, count($this->db->_Commands));
 	}
@@ -330,4 +309,5 @@ class FakePassword implements IPassword
 		$this->_LastUserId = $userid;
 	}
 }
+
 ?>

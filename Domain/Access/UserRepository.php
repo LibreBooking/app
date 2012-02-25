@@ -178,7 +178,8 @@ class UserRepository implements IUserRepository, IUserViewRepository
                 $user->WithGroups($groups);
 
                 $this->_cache->Add($userId, $user);
-            } else
+            }
+			else
             {
                 return User::Null();
             }
@@ -193,7 +194,7 @@ class UserRepository implements IUserRepository, IUserViewRepository
      */
     public function LoadByUsername($userName)
     {
-        $command = new LoginCommand($userName);
+        $command = new LoginCommand(strtolower($userName));
         $reader = ServiceLocator::GetDatabase()->Query($command);
 
         if ($row = $reader->GetRow())
@@ -208,6 +209,7 @@ class UserRepository implements IUserRepository, IUserViewRepository
             $user->WithPermissions($permissions);
             $user->WithGroups($groups);
 
+			$this->_cache->Add($userId, $user);
             return $user;
         }
         else
@@ -324,6 +326,9 @@ class UserRepository implements IUserRepository, IUserViewRepository
 
     public function LoadGroups($userId, $roleLevel = null)
     {
+		/**
+		 * @var $groups array|UserGroup[]
+		 */
         $groups = array();
 
         $command = new GetUserGroupsCommand($userId, $roleLevel);

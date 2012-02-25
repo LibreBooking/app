@@ -102,11 +102,11 @@ class UserRepositoryTests extends TestBase
 		
 		$group1 = new UserGroup($row1[ColumnNames::GROUP_ID], $row1[ColumnNames::GROUP_NAME], $row1[ColumnNames::GROUP_ADMIN_GROUP_ID], $row1[ColumnNames::ROLE_LEVEL]);
 		$group1->AddRole($row2[ColumnNames::ROLE_LEVEL]);
-		
 		$group2 = new UserGroup($row3[ColumnNames::GROUP_ID], $row3[ColumnNames::GROUP_NAME], $row3[ColumnNames::GROUP_ADMIN_GROUP_ID], $row3[ColumnNames::ROLE_LEVEL]);
 
 		$groups = $user->Groups();
 		$this->assertEquals(2, count($groups));
+		$this->assertTrue(in_array($group1, $groups));
 		$this->assertTrue(in_array($group2, $groups));
 	}
 	
@@ -137,7 +137,7 @@ class UserRepositoryTests extends TestBase
         $loadPermissionsCommand = new GetUserPermissionsCommand($userId);
         $loadGroupsCommand = new GetUserGroupsCommand($userId, null);
 
-        $userRows = $this->GetUserRow();
+        $userRows = $this->GetUserRow($userId);
         $emailPrefRows = $this->GetEmailPrefRows();
         $permissionsRows = $this->GetPermissionsRows();
         $groupsRows = $this->GetGroupsRows();
@@ -167,8 +167,8 @@ class UserRepositoryTests extends TestBase
 		$totalPages = 11;
 		$offset = 10;
 		$countRow = array('total' => $count);
-		$row1 = $this->GetRow(1, 'first', 'last', 'email', 'un1', '2011-01-01');
-		$row2 = $this->GetRow(2, 'first', 'last', 'email', null, '2010-01-01');
+		$row1 = $this->GetUserRow(1, 'first', 'last', 'email', 'un1', '2011-01-01');
+		$row2 = $this->GetUserRow(2, 'first', 'last', 'email', null, '2010-01-01');
 		$userRows = array($row1, $row2);
 
 		$this->db->SetRow(0, array($countRow));
@@ -334,27 +334,6 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals($expectedId, $user->Id());
 	}
 
-//    private function GetRow($userId = 1, $first = 'first', $last = 'last', $email = 'e@mail.com', $userName = 'dude', $lastLogin = null, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
-//    	{
-//    		return
-//    			array(
-//    				ColumnNames::USER_ID => $userId,
-//    				ColumnNames::USERNAME => $userName,
-//    				ColumnNames::FIRST_NAME => $first,
-//    				ColumnNames::LAST_NAME => $last,
-//    				ColumnNames::EMAIL => $email,
-//    				ColumnNames::LAST_LOGIN => $lastLogin,
-//    				ColumnNames::TIMEZONE_NAME => $timezone,
-//    				ColumnNames::USER_STATUS_ID => $statusId,
-//    				ColumnNames::PHONE_NUMBER => '123-456-7890',
-//    				ColumnNames::ORGANIZATION => 'company',
-//    				ColumnNames::POSITION => 'the dude',
-//    				ColumnNames::LANGUAGE_CODE => 'en_us',
-//    				ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
-//                    ColumnNames::HOMEPAGE_ID => Pages::DEFAULT_HOMEPAGE_ID
-//    			);
-//    	}
-
 	private function GetUserRow($userId = 1, $first = 'first', $last = 'last', $email = 'e@mail.com', $userName = 'username', $lastLogin = null, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
 	{
 		$row = array
@@ -408,7 +387,7 @@ class UserRepositoryTests extends TestBase
 		$groupId2 = 128736;
 		return array (
 			array (ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::GROUP_ADMIN),
-			array (ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::GROUP_ADMIN),
+			array (ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::RESOURCE_ADMIN),
 			array (ColumnNames::GROUP_ID => $groupId2, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => $groupId1, ColumnNames::ROLE_LEVEL => RoleLevel::NONE),
 		);
 	}

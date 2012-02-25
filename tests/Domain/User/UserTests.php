@@ -34,6 +34,32 @@ class UserTests extends TestBase
 
 		$this->assertTrue($user->IsGroupAdmin());
 	}
+
+	public function testUserIsApplicaitonAdminIfAtLeastOneGroupIsAnAdminGroup()
+	{
+		$user = new User();
+
+		$nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
+		$adminGroup = new UserGroup(2, 'admin', null, RoleLevel::APPLICATION_ADMIN);
+		$groups = array($nonAdminGroup, $adminGroup);
+
+		$user->WithGroups($groups);
+
+		$this->assertTrue($user->IsInRole(RoleLevel::APPLICATION_ADMIN));
+	}
+
+	public function testUserIsResourceAdminIfAtLeastOneGroupIsAnAdminGroup()
+	{
+		$user = new User();
+
+		$nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
+		$adminGroup = new UserGroup(2, 'admin', null, RoleLevel::RESOURCE_ADMIN);
+		$groups = array($nonAdminGroup, $adminGroup);
+
+		$user->WithGroups($groups);
+
+		$this->assertTrue($user->IsInRole(RoleLevel::RESOURCE_ADMIN));
+	}
 	
 	public function testWhenUserIsInAGroupThatCanAdminAnotherGroup()
 	{

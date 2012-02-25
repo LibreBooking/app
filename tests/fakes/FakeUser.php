@@ -24,11 +24,7 @@ class FakeUser extends User
 	{
 		$this->timezone = 'America/Chicago';
 		$this->language = 'en_us';
-	}
-	
-	public function EmailAddress()
-	{
-		return 'test@test.com';
+		$this->emailAddress = 'test@test.com';
 	}
 	
 	public function SetLanguage($language)

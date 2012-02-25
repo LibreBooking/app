@@ -33,18 +33,18 @@ class Authentication implements IAuthentication
     private $passwordMigration = null;
 
     /**
-     * @var IAuthorizationService
+     * @var IRoleService
      */
-    private $authorizationService;
+    private $roleService;
 
     /**
      * @var IUserRepository
      */
     private $userRepository;
 
-    public function __construct(IAuthorizationService $authorizationService, IUserRepository $userRepository)
+    public function __construct(IRoleService $roleService, IUserRepository $userRepository)
     {
-        $this->authorizationService = $authorizationService;
+        $this->roleService = $roleService;
         $this->userRepository = $userRepository;
     }
 
@@ -106,7 +106,6 @@ class Authentication implements IAuthentication
             $loginData = $loginContext->GetData();
             $loginTime = LoginTime::Now();
             $userid = $user->Id();
-            $emailAddress = $user->EmailAddress();
             $language = $user->Language();
 
             if (!empty($loginData->Language))
@@ -114,12 +113,10 @@ class Authentication implements IAuthentication
                 $language = $loginData->Language;
             }
 
-            $isAdminRole = $this->IsAdminRole($userid, $emailAddress);
-
             $user->Login($loginTime, $language);
             $this->userRepository->Update($user);
 
-            $this->SetUserSession($user, $isAdminRole, $loginContext->GetServer());
+            $this->SetUserSession($user, $loginContext->GetServer());
 
             if ($loginContext->GetData()->Persist)
             {
@@ -168,17 +165,11 @@ class Authentication implements IAuthentication
         $loginPage->SetShowLoginError();
     }
 
-    private function IsAdminRole($userId, $emailAddress)
-    {
-        return $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser($userId, $emailAddress));
-    }
-
     /**
      * @param User $user
-     * @param bool $isAdminRole
      * @param Server $server
      */
-    private function SetUserSession(User $user, $isAdminRole, $server)
+    private function SetUserSession(User $user, $server)
     {
         $userSession = new UserSession($user->Id());
         $userSession->Email = $user->EmailAddress();
@@ -187,8 +178,9 @@ class Authentication implements IAuthentication
         $userSession->Timezone = $user->Timezone();
         $userSession->HomepageId = $user->Homepage();
 
-        $isAdmin = ($userSession->Email == Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL)) || (bool)$isAdminRole;
-        $userSession->IsAdmin = $isAdmin;
+		$userSession->IsAdmin = $this->roleService->IsApplicationAdministrator($user);
+		$userSession->IsGroupAdmin = $this->roleService->IsGroupAdministrator($user);
+		$userSession->IsResourceAdmin = $this->roleService->IsResourceAdministrator($user);
 
         $server->SetUserSession($userSession);
     }

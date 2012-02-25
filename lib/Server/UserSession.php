@@ -24,11 +24,12 @@ class UserSession
 	public $FirstName = '';
 	public $LastName = '';
 	public $Email = '';
-	public $IsAdmin = false;	// TODO: Remove this property in favor of roles
 	public $Timezone = '';
 	public $HomepageId = 1;
 	public $SessionToken = '';
-	public $Roles = array();
+	public $IsAdmin = false;
+	public $IsGroupAdmin = false;
+	public $IsResourceAdmin = false;
 
 	public function __construct($id)
 	{

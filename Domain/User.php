@@ -102,18 +102,18 @@ class User
 		return $this->statusId;
 	}
 
-    /**
-     * @var string
-     */
-    private $lastLogin;
+	/**
+	 * @var string
+	 */
+	private $lastLogin;
 
-    /**
-     * @return string
-     */
-    public function LastLogin()
-    {
-        return $this->lastLogin;
-    }
+	/**
+	 * @return string
+	 */
+	public function LastLogin()
+	{
+		return $this->lastLogin;
+	}
 
 	/**
 	 * @var array|UserGroup[]
@@ -166,6 +166,8 @@ class User
 	private $attributesChanged = false;
 
 	private $isGroupAdmin = false;
+	private $isApplicationAdmin = false;
+	private $isResourceAdmin = false;
 
 	/**
 	 * @param array|int[] $allowedResourceIds
@@ -188,7 +190,14 @@ class User
 			if ($group->IsGroupAdmin)
 			{
 				$this->isGroupAdmin = true;
-				break;
+			}
+			if ($group->IsApplicationAdmin)
+			{
+				$this->isApplicationAdmin = true;
+			}
+			if ($group->IsResourceAdmin)
+			{
+				$this->isResourceAdmin = true;
 			}
 		}
 		$this->groups = $groups;
@@ -251,15 +260,15 @@ class User
 		}
 	}
 
-    /**
-     * @param string $loginTime
-     * @param string $language
-     */
-    public function Login($loginTime, $language)
-    {
-        $this->lastLogin = $loginTime;
-        $this->language = $language;
-    }
+	/**
+	 * @param string $loginTime
+	 * @param string $language
+	 */
+	public function Login($loginTime, $language)
+	{
+		$this->lastLogin = $loginTime;
+		$this->language = $language;
+	}
 
 	/**
 	 * @return array|IDomainEvent[]
@@ -291,7 +300,7 @@ class User
 		$user->encryptedPassword = $row[ColumnNames::PASSWORD];
 		$user->passwordSalt = $row[ColumnNames::SALT];
 		$user->homepageId = $row[ColumnNames::HOMEPAGE_ID];
-        $user->lastLogin = $row[ColumnNames::LAST_LOGIN];
+		$user->lastLogin = $row[ColumnNames::LAST_LOGIN];
 
 		$user->attributes[UserAttribute::Phone] = $row[ColumnNames::PHONE_NUMBER];
 		$user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
@@ -315,21 +324,21 @@ class User
 		return $user;
 	}
 
-    /**
-     * @param int $userId
-     */
+	/**
+	 * @param int $userId
+	 */
 	public function WithId($userId)
 	{
 		$this->id = $userId;
 	}
 
-    /**
-     * @param string $loginTime
-     */
-    public function WithLastLogin($loginTime)
-    {
-        $this->lastLogin = $loginTime;
-    }
+	/**
+	 * @param string $loginTime
+	 */
+	public function WithLastLogin($loginTime)
+	{
+		$this->lastLogin = $loginTime;
+	}
 
 	/**
 	 * @internal
@@ -422,6 +431,11 @@ class User
 
 	public function IsAdminFor(User $user)
 	{
+		if (!$this->isGroupAdmin)
+		{
+			return false;
+		}
+
 		$adminIdsForUser = array();
 		foreach ($user->Groups() as $userGroup)
 		{
@@ -446,13 +460,39 @@ class User
 	}
 
 	/**
+	 * @param int|RoleLevel $roleLevel
+	 * @return bool
+	 */
+	public function IsInRole($roleLevel)
+	{
+		if ($roleLevel == RoleLevel::GROUP_ADMIN)
+		{
+			return $this->isGroupAdmin;
+		}
+		if ($roleLevel == RoleLevel::APPLICATION_ADMIN)
+		{
+			return $this->isApplicationAdmin;
+		}
+		if ($roleLevel == RoleLevel::RESOURCE_ADMIN)
+		{
+			return $this->isResourceAdmin;
+		}
+
+		return false;
+	}
+
+	/**
 	 * @static
 	 * @return User
 	 */
 	public static function Null()
 	{
-		return new User();
+		return new NullUser();
 	}
+}
+
+class NullUser extends User
+{
 }
 
 class UserAttribute
@@ -461,29 +501,29 @@ class UserAttribute
 	const Organization = 'organization';
 	const Position = 'position';
 
-    /**
-     * @var array|string[]
-     */
-    private $attributeValues = array();
+	/**
+	 * @var array|string[]
+	 */
+	private $attributeValues = array();
 
-    public function __construct($attributeValues = array())
-    {
-        $this->attributeValues = $attributeValues;
-    }
+	public function __construct($attributeValues = array())
+	{
+		$this->attributeValues = $attributeValues;
+	}
 
-    /**
-     * @param string|UserAttribute $attributeName
-     * @return null|string
-     */
-    public function Get($attributeName)
-    {
-        if (array_key_exists($attributeName, $this->attributeValues))
-        {
-            return $this->attributeValues[$attributeName];
-        }
+	/**
+	 * @param string|UserAttribute $attributeName
+	 * @return null|string
+	 */
+	public function Get($attributeName)
+	{
+		if (array_key_exists($attributeName, $this->attributeValues))
+		{
+			return $this->attributeValues[$attributeName];
+		}
 
-        return null;
-    }
+		return null;
+	}
 }
 
 class UserGroup
@@ -506,7 +546,17 @@ class UserGroup
 	/**
 	 * @var bool
 	 */
-	public $IsGroupAdmin;
+	public $IsGroupAdmin = false;
+
+	/**
+	 * @var bool
+	 */
+	public $IsApplicationAdmin = false;
+
+	/**
+	 * @var bool
+	 */
+	public $IsResourceAdmin = false;
 
 	/**
 	 * @param int $groupId
@@ -519,7 +569,7 @@ class UserGroup
 		$this->GroupId = $groupId;
 		$this->GroupName = $groupName;
 		$this->AdminGroupId = $adminGroupId;
-		$this->IsGroupAdmin = $roleLevel == RoleLevel::GROUP_ADMIN;
+		$this->AddRole($roleLevel);
 	}
 
 	/**
@@ -530,6 +580,14 @@ class UserGroup
 		if ($roleLevel == RoleLevel::GROUP_ADMIN)
 		{
 			$this->IsGroupAdmin = true;
+		}
+		if ($roleLevel == RoleLevel::APPLICATION_ADMIN)
+		{
+			$this->IsApplicationAdmin = true;
+		}
+		if ($roleLevel == RoleLevel::RESOURCE_ADMIN)
+		{
+			$this->IsResourceAdmin = true;
 		}
 	}
 }

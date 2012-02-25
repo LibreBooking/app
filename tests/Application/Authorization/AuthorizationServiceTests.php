@@ -196,12 +196,11 @@ class AuthorizationServiceTests extends TestBase
 			new UserGroup(3, null, null, RoleLevel::APPLICATION_ADMIN),
 		);
 
-		$this->userRepository->expects($this->once())
-						->method('LoadGroups')
-						->with($this->equalTo($userId), $this->equalTo(RoleLevel::APPLICATION_ADMIN))
-						->will($this->returnValue($groups));
+		$user = new User();
+		$user->WithGroups($groups);
 
-		$actualIsAdmin = $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser($userId, 'email'));
+
+		$actualIsAdmin = $this->authorizationService->IsApplicationAdministrator($user);
 
 		$this->assertEquals($expectedIsAdmin, $actualIsAdmin);
 	}
@@ -209,11 +208,49 @@ class AuthorizationServiceTests extends TestBase
 	public function testIsApplicationAdminIfConfigured()
 	{
 		$email = 'abc123@email.com';
-		
+		$user = new User();
+		$user->ChangeEmailAddress($email);
+
 		$this->fakeConfig->SetKey(ConfigKeys::ADMIN_EMAIL, $email);
-		$actualIsAdmin = $this->authorizationService->IsApplicationAdministrator(new AuthorizationUser(1, $email));
+		$actualIsAdmin = $this->authorizationService->IsApplicationAdministrator($user);
 
 		$this->assertTrue($actualIsAdmin);
+	}
+
+	public function testIsResourceAdminIfAtLeastOneGroupHasResourceAdminRole()
+	{
+		$userId = 123;
+		$expectedIsAdmin = true;
+
+		$groups = array(
+			new UserGroup(1, null, null, RoleLevel::APPLICATION_ADMIN),
+			new UserGroup(3, null, null, RoleLevel::RESOURCE_ADMIN),
+		);
+
+		$user = new User();
+		$user->WithGroups($groups);
+
+		$actualIsAdmin = $this->authorizationService->IsResourceAdministrator($user);
+
+		$this->assertEquals($expectedIsAdmin, $actualIsAdmin);
+	}
+
+	public function testIsGroupAdminIfAtLeastOneGroupHasResourceAdminRole()
+	{
+		$userId = 123;
+		$expectedIsAdmin = true;
+
+		$groups = array(
+			new UserGroup(1, null, null, RoleLevel::APPLICATION_ADMIN),
+			new UserGroup(3, null, null, RoleLevel::GROUP_ADMIN),
+		);
+
+		$user = new User();
+		$user->WithGroups($groups);
+
+		$actualIsAdmin = $this->authorizationService->IsGroupAdministrator($user);
+
+		$this->assertEquals($expectedIsAdmin, $actualIsAdmin);
 	}
 }
 
