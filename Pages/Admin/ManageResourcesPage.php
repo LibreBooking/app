@@ -119,11 +119,16 @@ interface IManageResourcesPage extends IUpdateResourcePage
 	function BindSchedules($scheduleList);
 }
 
-class ManageResourcesPage extends AdminPage implements IManageResourcesPage
+class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 {
+	/**
+	 * @var ManageResourcesPresenter
+	 */
+	protected $_presenter;
+
 	public function __construct()
 	{
-		parent::__construct('ManageResources');
+		parent::__construct('ManageResources', 1);
 		$this->_presenter = new ManageResourcesPresenter(
 								$this, 
 								new ResourceRepository(),
@@ -138,7 +143,7 @@ class ManageResourcesPage extends AdminPage implements IManageResourcesPage
 	{
 		$this->_presenter->PageLoad();
 		
-		$this->Display('manage_resources.tpl');		
+		$this->Display('Admin/manage_resources.tpl');
 	}
 	
 	public function BindResources($resources)

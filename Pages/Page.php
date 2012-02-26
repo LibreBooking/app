@@ -80,6 +80,8 @@ abstract class Page implements IPage
 		$this->smarty->assign('DisplayWelcome', $this->DisplayWelcome());
 		$this->smarty->assign('UserId', $userSession->UserId);
 		$this->smarty->assign('CanViewAdmin', $userSession->IsAdmin);
+		$this->smarty->assign('CanViewGroupAdmin', $userSession->IsGroupAdmin);
+		$this->smarty->assign('CanViewResourceAdminAdmin', $userSession->IsResourceAdmin);
         $timeout = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT);
 		$this->smarty->assign('SessionTimeoutSeconds', max($timeout, 1) * 60);
         $this->smarty->assign('ShouldLogout', $this->GetShouldAutoLogout());
@@ -154,7 +156,7 @@ abstract class Page implements IPage
 	/**
 	 * Registers a Validator with the page
 	 *
-	 * @param unknown_type $validatorId
+	 * @param int|string $validatorId
 	 * @param IValidator $validator
 	 */
 	public function RegisterValidator($validatorId, $validator)

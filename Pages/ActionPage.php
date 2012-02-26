@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -18,83 +18,24 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'Pages/ActionPage.php');
-require_once(ROOT_DIR . 'Pages/SecurePage.php');
+require_once(ROOT_DIR . 'Pages/Page.php');
 
-class AdminPageDecorator extends ActionPage implements IActionPage
+interface IActionPage extends IPage
 {
-	/**
-	 * @var ActionPage
-	 */
-	private $page;
+	public function TakingAction();
 
-	public function __construct(ActionPage $page)
-	{
-		$this->page = $page;
-	}
+	public function GetAction();
 
-	public function PageLoad()
-	{
-		$user = ServiceLocator::GetServer()->GetUserSession();
+	public function RequestingData();
 
-		if (!$this->page->IsAuthenticated() || !$user->IsAdmin)
-		{
-			$this->Redirect($this->GetLastPage());
-			die();
-		}
-
-		$this->page->PageLoad();
-	}
-
-	public function TakingAction()
-	{
-		return $this->page->TakingAction();
-	}
-
-	public function RequestingData()
-	{
-		return $this->page->RequestingData();
-	}
-
-	public function GetAction()
-	{
-		return $this->page->GetAction(QueryStringKeys::ACTION);
-	}
-
-	public function GetDataRequest()
-	{
-		return $this->page->GetDataRequest(QueryStringKeys::DATA_REQUEST);
-	}
-
-	public function IsValid()
-	{
-		return $this->page->IsValid();
-	}
-
-	public function ProcessAction()
-	{
-		$this->page->ProcessAction();
-	}
+	public function GetDataRequest();
 }
 
-abstract class AdminPage extends SecurePage implements IActionPage
+abstract class ActionPage extends Page implements IActionPage
 {
-	public function __construct($titleKey = '', $pageDepth = 1)
+	public function __construct($titleKey, $pageDepth)
 	{
 		parent::__construct($titleKey, $pageDepth);
-
-		$user = ServiceLocator::GetServer()->GetUserSession();
-
-		if (!$user->IsAdmin)
-		{
-			$this->Redirect($this->GetResumeUrl());
-			die();
-		}
-	}
-
-	public function Display($adminTemplateName)
-	{
-		parent::Display('Admin/' . $adminTemplateName);
 	}
 
 	public function TakingAction()
@@ -141,5 +82,4 @@ abstract class AdminPage extends SecurePage implements IActionPage
 
 	public abstract function ProcessAction();
 }
-
 ?>

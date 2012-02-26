@@ -24,9 +24,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <head>
 	<title>{if $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset={$Charset}"/>
-	{if $ShouldLogout}
-		<meta http-equiv="REFRESH" content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}">
-	{/if}
+{if $ShouldLogout}
+	<meta http-equiv="REFRESH"
+		  content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}">
+{/if}
 	<link rel="shortcut icon" href="{$Path}favicon.ico"/>
 	<link rel="icon" href="{$Path}favicon.ico"/>
 	<script type="text/javascript" src="{$Path}scripts/js/jquery-1.7.1.min.js"></script>
@@ -47,33 +48,36 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</style>
 
 	<script type="text/javascript">
-		$(document).ready(function() {
-			initMenu();
+		$(document).ready(function () {
+		initMenu();
 		});
 	</script>
 </head>
 <body>
 <div id="wrapper">
 	<div id="doc">
-        <div id="logo">{html_image src="logo4.1.png"}</div>
+		<div id="logo">{html_image src="logo4.1.png"}</div>
 		<div id="header">
-            <div id="header-top">
-                <div id="signout">
-            				{if $LoggedIn}
-            					{translate key="SignedInAs"} {$UserName}<br /><a href="{$Path}logout.php">{translate key="SignOut"}</a>
-            				{else}
-            					{translate key="NotSignedIn"}<br/>
-            					<a href="{$Path}index.php">{translate key="LogIn"}</a>
-            				{/if}
-            			</div>
-            </div>
+			<div id="header-top">
+				<div id="signout">
+				{if $LoggedIn}
+					{translate key="SignedInAs"} {$UserName}<br/><a
+						href="{$Path}logout.php">{translate key="SignOut"}</a>
+					{else}
+					{translate key="NotSignedIn"}<br/>
+					<a href="{$Path}index.php">{translate key="LogIn"}</a>
+				{/if}
+				</div>
+			</div>
 			<ul id="nav" class="menubar">
 				<li class="menubaritem first"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
 				<li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyAccount"}</a>
 					<ul>
 						<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
 						<li class="menuitem"><a href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a>
-						<li class="menuitem"><a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a></li>
+						<li class="menuitem"><a
+								href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>
+						</li>
 					</ul>
 				</li>
 				<li class="menubaritem"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Schedule"}</a>
@@ -83,37 +87,60 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<li class="menuitem"><a href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a>
 						</li>
 						<!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
-						<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a></li>
+						<li class="menuitem"><a
+								href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a></li>
 						<!--<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindAnOpening"}</a></li>-->
 					</ul>
 				</li>
-				<!--
-		    <li class="menubaritem"><a href="#">{translate key=Reservations}</a>
-		        <ul>
-		            <li class="menuitem"><a href="#">{translate key="My Upcoming Reservations"}</a></li>
-			    <li class="menuitem"><a href="#">{translate key="Reservation Search"}</a></li>
-			</ul>
-		    </li>
-		    -->
 			{if $CanViewAdmin}
 				<li class="menubaritem"><a href="#">{translate key=ApplicationManagement}</a>
 					<ul>
-						<li class="menuitem"><a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
+						<li class="menuitem"><a
+								href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
 							<ul>
-								<li class="menuitem"><a href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>
+								<li class="menuitem"><a
+										href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>
 							</ul>
 						</li>
-						<li class="menuitem"><a href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a></li>
-						<li class="menuitem"><a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a>
+						<li class="menuitem"><a
+								href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a></li>
+						<li class="menuitem"><a
+								href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a>
 							<ul>
-								<li class="menuitem"><a href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a>
+								<li class="menuitem"><a
+										href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a>
 							</ul>
 						</li>
-						<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a></li>
+						<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>
+						</li>
 						<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
 						<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
-						<li class="menuitem"><a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
-						<li class="menuitem"><a href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
+						<li class="menuitem"><a
+								href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
+						<li class="menuitem"><a
+								href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
+					</ul>
+				</li>
+			{/if}
+			{if $CanViewGroupAdmin or $CanViewResourceAdmin}
+				<li class="menubaritem"><a href="#">Responsibilities</a>
+					<ul>
+						{if $CanViewGroupAdmin}
+
+							<li class="menuitem"><a
+									href="{$Path}admin/manage_group_users.php">{translate key="ManageUsers"}</a></li>
+							<li class="menuitem"><a href="{$Path}admin/manage_group_reservations.php">Group Reservations</a>
+							</li>
+
+						{/if}
+						{if $CanViewResourceAdmin}
+							<li class="menuitem"><a
+									href="{$Path}admin/manage_admin_resources.php">{translate key="ManageResources"}</a></li>
+							<li class="menuitem"><a href="{$Path}admin/manage_resource_reservations.php">Resource
+								Reservations</a>
+							</li>
+
+						{/if}
 					</ul>
 				</li>
 			{/if}

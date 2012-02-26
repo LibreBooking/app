@@ -62,8 +62,6 @@ class ManageResourcesPresenter extends ActionPresenter
 	 */
 	private $imageFactory;
 
-	private $actions = array();
-
 	public function __construct(
 		IManageResourcesPage $page,
 		IResourceRepository $resourceRepository,
@@ -94,10 +92,9 @@ class ManageResourcesPresenter extends ActionPresenter
 	public function PageLoad()
 	{
 		$resources = $this->resourceRepository->GetResourceList();
-		$schedules = $this->scheduleRepository->GetAll();
-
 		$this->page->BindResources($resources);
 
+		$schedules = $this->scheduleRepository->GetAll();
 		$scheduleList = array();
 
 		/* @var $schedule Schedule */
