@@ -188,21 +188,21 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	public function GetFormat();
 }
 
-class ManageReservationsPage extends AdminPage implements IManageReservationsPage
+class ManageReservationsPage extends ActionPage implements IManageReservationsPage
 {
 	/**
 	 * @var \ManageReservationsPresenter
 	 */
-	private $presenter;
+	protected $presenter;
 
 	/**
 	 * @var \PageablePage
 	 */
-	private $pageablePage;
+	protected $pageablePage;
 
 	public function __construct()
 	{
-	    parent::__construct('ManageReservations');
+	    parent::__construct('ManageReservations', 1);
 
 		$this->presenter = new ManageReservationsPresenter($this,
 			new ManageReservationsService(new ReservationViewRepository()),
@@ -228,14 +228,14 @@ class ManageReservationsPage extends AdminPage implements IManageReservationsPag
 
 	public function ShowPage()
 	{
-		$this->Display('manage_reservations.tpl');
+		$this->Display('Admin/manage_reservations.tpl');
 	}
 
 	public function ShowCsv()
 	{
 		header("Content-Type: text/csv");
 		header("Content-Disposition: inline; filename=reservations.csv");
-		$this->Display('reservations_csv.tpl');
+		$this->Display('Admin/reservations_csv.tpl');
 	}
 
 	public function BindReservations($reservations)
