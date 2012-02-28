@@ -170,7 +170,7 @@ class SqlFilterEquals extends BaseSqlFilter
 class SqlFilterLike extends BaseSqlFilter
 {
 	/**
-	 * @param string $columnName
+	 * @param string|SqlFilterColumn $columnName
 	 * @param string $columnValue
 	 */
 	public function __construct($columnName, $columnValue)
@@ -197,7 +197,7 @@ class SqlFilterGreaterThan extends BaseSqlFilter
 	private $inclusive = false;
 	
 	/**
-	 * @param string $columnName
+	 * @param string|SqlFilterColumn $columnName
 	 * @param string $columnValue
 	 * @param bool $inclusive false by default
 	 */
@@ -222,7 +222,7 @@ class SqlFilterLessThan extends BaseSqlFilter
 	private $inclusive = false;
 
 	/**
-	 * @param string $columnName
+	 * @param string|SqlFilterColumn $columnName
 	 * @param string $columnValue
 	 * @param bool $inclusive false by default
 	 */
@@ -236,6 +236,36 @@ class SqlFilterLessThan extends BaseSqlFilter
 	{
 		$sign = $this->inclusive ? '<=' : '<';
 		return "{$this->criteria->Name} $sign {$this->criteria->Variable}";
+	}
+}
+
+class SqlFilterIn extends BaseSqlFilter
+{
+	/**
+	 * @var array
+	 */
+	private $possibleValues = array();
+
+	/**
+	 * @param string|SqlFilterColumn $columnName
+	 * @param array $possibleValues
+	 */
+	public function __construct($columnName, $possibleValues)
+	{
+		$this->possibleValues = $possibleValues;
+		parent::__construct($columnName, $columnName . 'In');
+	}
+
+	protected function GetSql()
+	{
+		$escapedValues = array();
+		foreach ($this->possibleValues as $value)
+		{
+			$escapedValues[] = str_replace("'", "''", $value);
+		}
+		$values = implode("','", $escapedValues);
+		$inClause = "'$values'";
+		return "{$this->criteria->Name} IN ($inClause)";
 	}
 }
 

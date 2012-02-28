@@ -31,6 +31,7 @@ require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 
 require_once(ROOT_DIR . 'tests/Plugins/Authentication/Ldap/Plugins_Auth_Ldap_Suite.php');
 
+require_once(ROOT_DIR . 'tests/Application/Admin/Application_Admin_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Authorization/Application_Authorization_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Authentication/Application_Authentication_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Reservation/Application_Reservation_Suite.php');
@@ -61,6 +62,7 @@ class AllTests
         $suite = new PHPUnit_Framework_TestSuite();
 
         //TODO: Dynamically add all suites under the test directory and subdirectories
+        $suite->addTest(Application_Admin_Suite::suite());
         $suite->addTest(Application_Authentication_Suite::suite());
         $suite->addTest(Application_Authorization_Suite::suite());
         $suite->addTest(Application_Schedule_Suite::suite());

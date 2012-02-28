@@ -271,6 +271,19 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
 	}
+	
+	public function testFiltersWithInClause()
+	{
+		$baseCommand = new AdHocCommand("SELECT * FROM users WHERE (0 = '0' OR status_id = '0')");
+
+		$filter = new SqlFilterIn("fname", array("n'k", '123'));
+
+		$filterCommand = new FilterCommand($baseCommand, $filter);
+
+		$constraint = $this->stringContains("WHERE ( (0 = '0' OR status_id = '0')) AND (fname IN ('n''k','123'))");
+		$query = $filterCommand->GetQuery();
+		$this->assertThat($query, $constraint, $query);
+	}
 }
 
 ?>

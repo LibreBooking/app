@@ -29,97 +29,14 @@ class ResourceAdminManageReservationsPage extends ManageReservationsPage
 	{
 		parent::__construct();
 
+		$userRepository = new UserRepository();
 		$this->presenter = new ManageReservationsPresenter($this,
-					new ResourceAdminManageReservationsService(new ReservationViewRepository()),
+					new ResourceAdminManageReservationsService(new ReservationViewRepository(), $userRepository),
 					new ScheduleRepository(),
-					new ResourceAdminResourceRepository(new ResourceRepository()));
+					new ResourceAdminResourceRepository($userRepository, ServiceLocator::GetServer()->GetUserSession()));
 	}
 }
 
-class ResourceAdminManageReservationsService implements IManageReservationsService
-{
-
-	/**
-	 * @param $pageNumber int
-	 * @param $pageSize int
-	 * @param $filter ReservationFilter
-	 * @param $user UserSession
-	 * @return PageableData
-	 */
-	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
-	{
-		// TODO: Implement LoadFiltered() method.
-	}
-}
-
-class ResourceAdminResourceRepository implements IResourceRepository
-{
-	public function __construct(IResourceRepository $repo)
-	{
-
-	}
-
-	/**
-	 * Gets all Resources for the given scheduleId
-	 *
-	 * @param int $scheduleId
-	 * @return array|BookableResource[]
-	 */
-	public function GetScheduleResources($scheduleId)
-	{
-		// TODO: Implement GetScheduleResources() method.
-	}
-
-	/**
-	 * @param int $resourceId
-	 * @return BookableResource
-	 */
-	public function LoadById($resourceId)
-	{
-		// TODO: Implement LoadById() method.
-	}
-
-	/**
-	 * @param BookableResource $resource
-	 * @return int ID of created resource
-	 */
-	public function Add(BookableResource $resource)
-	{
-		// TODO: Implement Add() method.
-	}
-
-	/**
-	 * @param BookableResource $resource
-	 */
-	public function Update(BookableResource $resource)
-	{
-		// TODO: Implement Update() method.
-	}
-
-	/**
-	 * @param BookableResource $resource
-	 */
-	public function Delete(BookableResource $resource)
-	{
-		// TODO: Implement Delete() method.
-	}
-
-	/**
-	 * @return array|BookableResource[] array of all resources
-	 */
-	public function GetResourceList()
-	{
-		// TODO: Implement GetResourceList() method.
-	}
-
-	/**
-	 * @return array|AccessoryDto[] all accessories
-	 */
-	public function GetAccessoryList()
-	{
-		// TODO: Implement GetAccessoryList() method.
-	}
-}
 
 $page = new ResourceAdminManageReservationsPage();
 if ($page->TakingAction())

@@ -57,11 +57,8 @@ class ResourceRepository implements IResourceRepository
 	
 	public function GetResourceList()
 	{
-		$command = new GetAllResourcesCommand();
-
 		$resources = array();
-
-		$reader = ServiceLocator::GetDatabase()->Query($command);
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAllResourcesCommand());
 
 		while ($row = $reader->GetRow())
 		{

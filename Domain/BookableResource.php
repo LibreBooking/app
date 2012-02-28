@@ -172,6 +172,7 @@ class BookableResource implements IResource
 							$row[ColumnNames::SCHEDULE_ID]);
 							
 		$resource->SetImage($row[ColumnNames::RESOURCE_IMAGE_NAME]);
+		$resource->SetAdminGroupId($row[ColumnNames::RESOURCE_ADMIN_GROUP_ID]);
 		
 		$resource->_isActive = true;
 		if (isset($row[ColumnNames::RESOURCE_ISACTIVE]))

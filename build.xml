@@ -25,11 +25,7 @@
 	<property name="sql.file.test.data" value="database_schema/sample-data-utf8.sql"/>
 
     <target name="setup.db" description="setting up the latest version of the database">
-        <phingcall target="baseline.db" />
-        <phingcall target="upgrade.db" />
-    </target>
 
-	<target name="baseline.db" description="baseline db">
 		<if>
 			<equals arg1="${mysql.password}" arg2=""/>
 			<then>
@@ -37,6 +33,25 @@
 			</then>
 		</if>
 
+		<phingcall target="baseline.db">
+			<property name="mysql.password" value="${mysql.password}"/>
+		</phingcall>
+
+        <phingcall target="upgrade.db">
+			<property name="mysql.password" value="${mysql.password}"/>
+		</phingcall>
+    </target>
+
+	<target name="baseline.db" description="baseline db">
+
+		<if>
+			<equals arg1="${mysql.password}" arg2=""/>
+			<then>
+				<input propertyName="mysql.password" defaultValue="" promptChar="?">mysql password</input>
+			</then>
+		</if>
+
+		<echo message="cur pw ${mysql.password}" />
 		<echo message="Create file: ${sql.file.create.db}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create.db}"
 			  checkreturn="true"
@@ -64,13 +79,22 @@
 	</target>
 
     <target name="upgrade.db">
-        <copy todir="${phing.tasks.dir}">
+
+		<if>
+			<equals arg1="${mysql.password}" arg2=""/>
+			<then>
+				<input propertyName="mysql.password" defaultValue="" promptChar="?">mysql password</input>
+			</then>
+		</if>
+
+		<copy todir="${phing.tasks.dir}">
             <fileset dir="phing-tasks">
                     <include name="*.php" />
             </fileset>
         </copy>
 
         <taskdef name="upgradedb" classname="phing.tasks.my.UpgradeDbTask" />
+		<echo message="password ${mysql.password}" />
         <upgradedb username="${mysql.username}" password="${mysql.password}"
                    host="${mysql.server}" database="${mysql.database}"
                    schemadir="${application.startdir}/database_schema" />

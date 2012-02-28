@@ -28,11 +28,11 @@ class UpgradeDbTask extends Task
         $this->username = $username;
     }
 
-    private $password = null;
+    private $mysqlPassword = null;
 
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->mysqlPassword = $password;
     }
 
     private $host = null;
@@ -95,7 +95,7 @@ class UpgradeDbTask extends Task
 
         print("Upgrading database to version $upgrade\n");
 
-        $this->ExecuteFile($fullUpgradeDir, 'clean.sql');
+       // $this->ExecuteFile($fullUpgradeDir, 'clean.sql');
         $this->ExecuteFile($fullUpgradeDir, 'schema.sql');
         $this->ExecuteFile($fullUpgradeDir, 'data.sql');
 
@@ -104,8 +104,14 @@ class UpgradeDbTask extends Task
 
     private function ExecuteFile($fullUpgradeDir, $fileName)
     {
-        $dblink = mysql_connect($this->host, $this->username, $this->password);
-        mysql_select_db($this->database, $dblink);
+		print("password "  . $this->mysqlPassword);
+        $dblink = mysql_connect($this->host, $this->username, $this->mysqlPassword);
+		if (!$dblink)
+		{
+		    die('Could not connect: ' . mysql_error());
+		}
+
+		mysql_select_db($this->database, $dblink);
 
         $path = "$fullUpgradeDir/$fileName";
         print("Executing $path\n");

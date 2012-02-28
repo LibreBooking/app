@@ -923,6 +923,7 @@ class ColumnNames
     const RESOURCE_MAXNOTICE = 'max_notice_time';
     const RESOURCE_IMAGE_NAME = 'image_name';
     const RESOURCE_ISACTIVE = 'isactive';
+	const RESOURCE_ADMIN_GROUP_ID = 'admin_group_id';
 
     // RESERVATION RESOURCES
     const RESOURCE_LEVEL_ID = 'resource_level_id';
