@@ -99,6 +99,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						{/if}
 						<a class="update notesButton" href="javascript: void(0);">{translate key='Edit'}</a>
 					</li>
+					<li>
+						{translate key='ResourceAdministrator'}
+						{if $resource->HasAdminGroup()}
+							{$GroupLookup[$resource->GetAdminGroupId()]->Name}
+						{else}
+							<span class="note">{translate key='NoResourceAdministratorLabel'}</span>
+						{/if}
+						<a class="update notesButton" href="javascript: void(0);">{translate key='Edit'}</a>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -407,6 +416,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</fieldset>
 		</div>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
+<div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisResource}">
+	<form method="post" id="groupAdminForm">
+		<select {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">
+			{foreach from=$AdminGroups item=adminGroup}
+				<option value="">-- {translate key=None} --</option>
+				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+			{/foreach}
+		</select>
+
+		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>

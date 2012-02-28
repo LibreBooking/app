@@ -62,11 +62,17 @@ class ManageResourcesPresenter extends ActionPresenter
 	 */
 	private $imageFactory;
 
+	/**
+	 * @var IGroupViewRepository
+	 */
+	private $groupRepository;
+
 	public function __construct(
 		IManageResourcesPage $page,
 		IResourceRepository $resourceRepository,
 		IScheduleRepository $scheduleRepository,
-		IImageFactory $imageFactory)
+		IImageFactory $imageFactory,
+		IGroupViewRepository $groupRepository)
 	{
 		parent::__construct($page);
 
@@ -74,6 +80,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->resourceRepository = $resourceRepository;
 		$this->scheduleRepository = $scheduleRepository;
 		$this->imageFactory = $imageFactory;
+		$this->groupRepository = $groupRepository;
 
 		$this->AddAction(ManageResourcesActions::ActionAdd, 'Add');
 		$this->AddAction(ManageResourcesActions::ActionChangeConfiguration, 'ChangeConfiguration');
@@ -103,6 +110,9 @@ class ManageResourcesPresenter extends ActionPresenter
 			$scheduleList[$schedule->GetId()] = $schedule->GetName();
 		}
 		$this->page->BindSchedules($scheduleList);
+
+		$groups = $this->groupRepository->GetGroupsByRole(RoleLevel::RESOURCE_ADMIN);
+		$this->page->BindAdminGroups($groups);
 	}
 
 	/**

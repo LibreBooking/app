@@ -109,6 +109,7 @@ class FormKeys
 	const RESERVATION_ID = 'reservationId';
 	const RESERVATION_TITLE = 'reservationTitle';
 	const RESOURCE = 'resource';
+	const RESOURCE_ADMIN_GROUP_ID = 'resourceAdminGroupId';
 	const RESOURCE_CONTACT = 'resourceContact';
 	const RESOURCE_DESCRIPTION = 'resourceDescription';
 	const RESOURCE_ID = 'resourceId';

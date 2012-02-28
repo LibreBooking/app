@@ -103,6 +103,12 @@ interface IUpdateResourcePage
 	 * @return string
 	 */
 	function GetMaxParticipants();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	function GetAdminGroupId();
 }
 
 
@@ -117,6 +123,13 @@ interface IManageResourcesPage extends IUpdateResourcePage
 	 * @param array $scheduleList array of (id, schedule name)
 	 */
 	function BindSchedules($scheduleList);
+
+	/**
+	 * @abstract
+	 * @param $adminGroups GroupItemView[]|array
+	 * @return void
+	 */
+	function BindAdminGroups($adminGroups);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -133,7 +146,8 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 								$this, 
 								new ResourceRepository(),
 								new ScheduleRepository(),
-								new ImageFactory()
+								new ImageFactory(),
+								new GroupRepository()
 								);
 								
 		$this->Set('ImageUploadPath', $this->path . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/');
@@ -263,6 +277,29 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetMaxParticipants()
 	{
 		return $this->server->GetForm(FormKeys::MAX_PARTICIPANTS);
+	}
+
+	/**
+	 * @return int
+	 */
+	function GetAdminGroupId()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_ADMIN_GROUP_ID);
+	}
+
+	/**
+	 * @param $adminGroups GroupItemView[]|array
+	 * @return void
+	 */
+	function BindAdminGroups($adminGroups)
+	{
+		$this->Set('AdminGroups', $adminGroups);
+		$groupLookup = array();
+		foreach ($adminGroups as $group)
+		{
+			$groupLookup[$group->Id] = $group;
+		}
+		$this->Set('GroupLookup', $groupLookup);
 	}
 }
 

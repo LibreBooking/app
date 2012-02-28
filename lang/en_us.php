@@ -393,6 +393,8 @@ class en_us extends Language
         $strings['ForgotPassword'] = 'Forgot Password';
         $strings['NotificationPreferences'] = 'Notification Preferences';
         $strings['ManageAnnouncements'] = 'Announcements';
+        $strings['ResourceAdministrator'] = 'Resource Administrator';
+        $strings['NoResourceAdministratorLabel'] = '(No Resource Administrator)';
         //
 
         // Day representations

@@ -476,6 +476,14 @@ class BookableResource implements IResource
     }
 
 	/**
+	 * @return bool
+	 */
+	public function HasAdminGroup()
+	{
+		return !empty($this->_adminGroupId);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function GetImage()
