@@ -26,6 +26,7 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 class ManageResourcesActions
 {
 	const ActionAdd = 'add';
+	const ActionChangeAdmin = 'changeAdmin';
 	const ActionChangeConfiguration = 'configuration';
 	const ActionChangeDescription = 'description';
 	const ActionChangeImage = 'image';
@@ -83,6 +84,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->groupRepository = $groupRepository;
 
 		$this->AddAction(ManageResourcesActions::ActionAdd, 'Add');
+		$this->AddAction(ManageResourcesActions::ActionChangeAdmin, 'ChangeAdmin');
 		$this->AddAction(ManageResourcesActions::ActionChangeConfiguration, 'ChangeConfiguration');
 		$this->AddAction(ManageResourcesActions::ActionChangeDescription, 'ChangeDescription');
 		$this->AddAction(ManageResourcesActions::ActionChangeImage, 'ChangeImage');
@@ -274,6 +276,15 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 		$scheduleId = $this->page->GetScheduleId();
 		$resource->SetScheduleId($scheduleId);
+		$this->resourceRepository->Update($resource);
+	}
+
+	public function ChangeAdmin()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$adminGroupId = $this->page->GetAdminGroupId();
+		Log::Debug("thing $adminGroupId");
+		$resource->SetAdminGroupId($adminGroupId);
 		$this->resourceRepository->Update($resource);
 	}
 

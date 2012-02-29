@@ -22,7 +22,7 @@ define('ROOT_DIR', '../../');
 
 require_once(ROOT_DIR . 'Pages/Admin/ResourceAdminManageReservationsPage.php');
 
-$page = new ResourceAdminManageReservationsPage();
+$page = new SecureActionPageDecorator(new ResourceAdminManageReservationsPage());
 if ($page->TakingAction())
 {
 	$page->ProcessAction();

@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'Pages/ActionPage.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 abstract class SecurePage extends Page
@@ -37,6 +38,90 @@ abstract class SecurePage extends Page
 	protected function GetResumeUrl()
 	{
 		return sprintf("%s%s?%s=%s", $this->path, Pages::LOGIN, QueryStringKeys::REDIRECT, $this->server->GetUrl());
+	}
+}
+
+class SecureActionPageDecorator extends ActionPage
+{
+	/**
+	 * @var ActionPage
+	 */
+	private $page;
+
+	public function __construct(ActionPage $page)
+	{
+		$this->page = $page;
+
+		if (!$this->page->IsAuthenticated())
+		{
+			$this->Redirect($this->GetResumeUrl());
+			die();
+		}
+	}
+
+	public function ProcessAction()
+	{
+		$this->page->ProcessAction();
+	}
+
+	public function PageLoad()
+	{
+		$this->page->PageLoad();
+	}
+
+	protected function GetResumeUrl()
+	{
+		return sprintf("%s%s?%s=%s", $this->page->path, Pages::LOGIN, QueryStringKeys::REDIRECT, $this->page->server->GetUrl());
+	}
+
+	public function TakingAction()
+	{
+		return $this->page->TakingAction();
+	}
+
+	public function RequestingData()
+	{
+		return $this->page->RequestingData();
+	}
+
+	public function GetAction()
+	{
+		return $this->page->GetAction();
+	}
+
+	public function GetDataRequest()
+	{
+		return $this->page->GetDataRequest();
+	}
+
+	public function IsValid()
+	{
+		return $this->page->IsValid();
+	}
+
+	public function Redirect($url)
+	{
+		$this->page->Redirect($url);
+	}
+
+	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
+	{
+		$this->page->RedirectToError($errorMessageId, $lastPage);
+	}
+
+	public function GetLastPage($defaultPage = '')
+	{
+		return $this->page->GetLastPage($defaultPage);
+	}
+
+	public function IsPostBack()
+	{
+		return $this->page->IsPostBack();
+	}
+
+	public function RegisterValidator($validatorId, $validator)
+	{
+		$this->page->RegisterValidator($validatorId, $validator);
 	}
 }
 

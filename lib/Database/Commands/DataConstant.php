@@ -96,9 +96,9 @@ class ParameterNames
     const RESOURCE_NAME = '@resource_name';
     const RESOURCE_NOTES = '@resource_notes';
     const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';
-    const RESOURCE_LEVEL_ID = "@resourceLevelId";
-    const RESOURCE_IMAGE_NAME = "@imageName";
-    const RESOURCE_ISACTIVE = "@isActive";
+    const RESOURCE_LEVEL_ID = '@resourceLevelId';
+    const RESOURCE_IMAGE_NAME = '@imageName';
+    const RESOURCE_ISACTIVE = '@isActive';
 
     const ROLE_ID = '@roleid';
     const ROLE_LEVEL = '@role_level';
@@ -751,7 +751,8 @@ class Queries
 			max_notice_time = @max_notice_time,
 			image_name = @imageName,
 			isactive = @isActive,
-			schedule_id = @scheduleid
+			schedule_id = @scheduleid,
+			admin_group_id = @admin_group_id
 		WHERE
 			resource_id = @resourceid';
 

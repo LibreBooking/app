@@ -76,6 +76,7 @@ class ResourceRepositoryTests extends TestBase
 		$description = "description";
 		$scheduleId = 19819;
 		$imageName = 'something.png';
+		$adminGroupId = 232;
 								
 		$resource = new BookableResource($id,
 								$name, 
@@ -94,6 +95,7 @@ class ResourceRepositoryTests extends TestBase
 								$scheduleId);
 		$resource->SetImage($imageName);
 		$resource->BringOnline();
+		$resource->SetAdminGroupId($adminGroupId);
 		
 		$resourceRepository = new ResourceRepository();
 		$resourceRepository->Update($resource);
@@ -115,7 +117,8 @@ class ResourceRepositoryTests extends TestBase
 								$description,
 								$imageName,
 								$resource->IsOnline(),
-								$scheduleId);
+								$scheduleId,
+								$adminGroupId);
 													
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
 		

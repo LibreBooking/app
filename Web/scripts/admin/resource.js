@@ -13,6 +13,7 @@ function ResourceManagement(opts)
 		notesDialog: $('#notesDialog'),
 		deleteDialog: $('#deleteDialog'),
 		configurationDialog: $('#configurationDialog'),
+		groupAdminDialog: $('#groupAdminDialog'),
 		
 		renameForm: $('#renameForm'),
 		imageForm: $('#imageForm'),
@@ -22,7 +23,8 @@ function ResourceManagement(opts)
 		notesForm: $('#notesForm'),
 		deleteForm: $('#deleteForm'),
 		configurationForm: $('#configurationForm'),
-		
+		groupAdminForm: $('#groupAdminForm'),
+
 		addForm: $('#addResourceForm')
 	};
 	
@@ -42,7 +44,8 @@ function ResourceManagement(opts)
 		ConfigureAdminDialog(elements.notesDialog, 500, 270);
 		ConfigureAdminDialog(elements.deleteDialog, 500, 300);
 		ConfigureAdminDialog(elements.configurationDialog, 500, 500);
-		    
+		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
+
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
 			var indicator = $(this).find('.actionIndicator');
@@ -95,6 +98,11 @@ function ResourceManagement(opts)
 				showChangeNotes(e);
 				return false;
 			});
+
+			$(this).find('.adminButton').click(function(e) {
+				showResourceAdmin(e);
+				return false;
+			});
 			
 			$(this).find('.deleteButton').click(function(e) {
 				showDeletePrompt(e);
@@ -136,9 +144,10 @@ function ResourceManagement(opts)
 		ConfigureAdminForm(elements.descriptionForm, getSubmitCallback(options.actions.changeDescription));
 		ConfigureAdminForm(elements.notesForm, getSubmitCallback(options.actions.changeNotes));
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add), null, handleAddError);
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource), null, handleAddError);
-		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, handleAddError, {onBeforeSerialize: combineIntervals});
-		
+		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource));
+		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, errorHandler, {onBeforeSerialize: combineIntervals});
+		ConfigureAdminForm(elements.groupAdminDialog, getSubmitCallback(options.actions.changeAdmin));
+
 	};
 
 	ResourceManagement.prototype.add = function(resource)
@@ -203,7 +212,13 @@ function ResourceManagement(opts)
 		$('#editNotes').val(getActiveResource().notes);
 		elements.notesDialog.dialog("open");
 	};
-	
+
+	var showResourceAdmin = function(e)
+	{
+		$('#adminGroupId').val(getActiveResource().adminGroupId);
+		elements.groupAdminDialog.dialog("open");
+	};
+
 	var showDeletePrompt = function(e)
 	{
 		elements.deleteDialog.dialog("open");

@@ -1119,7 +1119,8 @@ class UpdateResourceCommand extends SqlCommand
 								$description,
 								$imageName,
 								$isActive,
-								$scheduleId)
+								$scheduleId,
+								$adminGroupId)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -1140,6 +1141,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_IMAGE_NAME, $imageName));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ISACTIVE, (int)$isActive));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
 	}
 }
 

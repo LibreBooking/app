@@ -177,17 +177,17 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	
 	public function GetResourceId()
 	{
-		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
 	
 	public function GetScheduleId()
 	{
-		return $this->server->GetForm(FormKeys::SCHEDULE_ID);
+		return $this->GetForm(FormKeys::SCHEDULE_ID);
 	}
 	
 	public function GetResourceName()
 	{
-		return $this->server->GetForm(FormKeys::RESOURCE_NAME);
+		return $this->GetForm(FormKeys::RESOURCE_NAME);
 	}
 	
 	public function GetUploadedImage()
@@ -197,22 +197,22 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	
 	public function GetLocation()
 	{
-		return $this->server->GetForm(FormKeys::RESOURCE_LOCATION);
+		return $this->GetForm(FormKeys::RESOURCE_LOCATION);
 	}
 
 	public function GetContact()
 	{
-		return $this->server->GetForm(FormKeys::RESOURCE_CONTACT);
+		return $this->GetForm(FormKeys::RESOURCE_CONTACT);
 	}
 	
 	public function GetDescription()
 	{
-		return $this->server->GetForm(FormKeys::RESOURCE_DESCRIPTION);
+		return $this->GetForm(FormKeys::RESOURCE_DESCRIPTION);
 	}
 	
 	public function GetNotes()
 	{
-		return $this->server->GetForm(FormKeys::RESOURCE_NOTES);
+		return $this->GetForm(FormKeys::RESOURCE_NOTES);
 	}
 	
 	/**
@@ -220,7 +220,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetMinimumDuration()
 	{
-		return $this->server->GetForm(FormKeys::MIN_DURATION);
+		return $this->GetForm(FormKeys::MIN_DURATION);
 	}
 	
 	/**
@@ -228,7 +228,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetMaximumDuration()
 	{
-		return $this->server->GetForm(FormKeys::MAX_DURATION);
+		return $this->GetForm(FormKeys::MAX_DURATION);
 	}
 	
 	/**
@@ -236,7 +236,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetAllowMultiday()
 	{
-		return $this->server->GetForm(FormKeys::ALLOW_MULTIDAY);
+		return $this->GetForm(FormKeys::ALLOW_MULTIDAY);
 	}
 		
 	/**
@@ -244,7 +244,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetRequiresApproval()
 	{
-		return $this->server->GetForm(FormKeys::REQUIRES_APPROVAL);
+		return $this->GetForm(FormKeys::REQUIRES_APPROVAL);
 	}
 		
 	/**
@@ -252,7 +252,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetAutoAssign()
 	{
-		return $this->server->GetForm(FormKeys::AUTO_ASSIGN);
+		return $this->GetForm(FormKeys::AUTO_ASSIGN);
 	}
 		
 	/**
@@ -260,7 +260,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetStartNoticeMinutes()
 	{
-		return $this->server->GetForm(FormKeys::MIN_NOTICE);
+		return $this->GetForm(FormKeys::MIN_NOTICE);
 	}
 		
 	/**
@@ -268,7 +268,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetEndNoticeMinutes()
 	{
-		return $this->server->GetForm(FormKeys::MAX_NOTICE);
+		return $this->GetForm(FormKeys::MAX_NOTICE);
 	}
 		
 	/**
@@ -276,14 +276,15 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetMaxParticipants()
 	{
-		return $this->server->GetForm(FormKeys::MAX_PARTICIPANTS);
+		return $this->GetForm(FormKeys::MAX_PARTICIPANTS);
 	}
 
 	/**
 	 * @return int
 	 */
-	function GetAdminGroupId()
+	public function GetAdminGroupId()
 	{
+		Log::Debug('getting');
 		return $this->GetForm(FormKeys::RESOURCE_ADMIN_GROUP_ID);
 	}
 

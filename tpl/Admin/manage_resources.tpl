@@ -106,7 +106,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						{else}
 							<span class="note">{translate key='NoResourceAdministratorLabel'}</span>
 						{/if}
-						<a class="update notesButton" href="javascript: void(0);">{translate key='Edit'}</a>
+						<a class="update adminButton" href="javascript: void(0);">{translate key='Edit'}</a>
 					</li>
 				</ul>
 			</div>
@@ -422,7 +422,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisResource}">
 	<form method="post" id="groupAdminForm">
-		<select {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">
+		<select id="adminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">
 			{foreach from=$AdminGroups item=adminGroup}
 				<option value="">-- {translate key=None} --</option>
 				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
@@ -474,7 +474,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	deleteResource: '{ManageResourcesActions::ActionDelete}',
 	takeOffline: '{ManageResourcesActions::ActionTakeOffline}',
 	bringOnline: '{ManageResourcesActions::ActionBringOnline}',
-	changeConfiguration: '{ManageResourcesActions::ActionChangeConfiguration}'
+	changeConfiguration: '{ManageResourcesActions::ActionChangeConfiguration}',
+	changeAdmin: '{ManageResourcesActions::ActionChangeAdmin}'
 	};
 
 	var opts = {
@@ -502,7 +503,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		minLength: {},
 		maxLength: {},
 		startNotice: {},
-		endNotice: {}
+		endNotice: {},
+		adminGroupId: '{$resource->GetAdminGroupId()}'
 		};
 
 		{if $resource->HasMinLength()}

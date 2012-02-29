@@ -132,7 +132,9 @@ class ResourceRepository implements IResourceRepository
 								$resource->GetDescription(),
 								$resource->GetImage(),
 								$resource->IsOnline(),
-								$resource->GetScheduleId());
+								$resource->GetScheduleId(),
+								$resource->GetAdminGroupId()
+		);
 								
 		$db->Execute($updateResourceCommand);
 	}

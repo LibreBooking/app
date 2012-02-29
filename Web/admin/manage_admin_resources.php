@@ -22,8 +22,24 @@ define('ROOT_DIR', '../../');
 
 require_once(ROOT_DIR . 'Pages/Admin/ManageResourcesPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageResourcesPresenter.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-$page = new ManageResourcesPage();
+class ResourceAdminManageResourcesPage extends ManageResourcesPage
+{
+	public function __construct()
+	{
+		parent::__construct();
+		$this->_presenter = new ManageResourcesPresenter(
+										$this,
+										new ResourceAdminResourceRepository(new UserRepository(), ServiceLocator::GetServer()->GetUserSession()),
+										new ScheduleRepository(),
+										new ImageFactory(),
+										new GroupRepository()
+										);
+	}
+}
+
+$page = new SecureActionPageDecorator(new ResourceAdminManageResourcesPage());
 if ($page->TakingAction())
 {
 	$page->ProcessAction();

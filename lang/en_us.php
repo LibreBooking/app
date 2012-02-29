@@ -395,6 +395,7 @@ class en_us extends Language
         $strings['ManageAnnouncements'] = 'Announcements';
         $strings['ResourceAdministrator'] = 'Resource Administrator';
         $strings['NoResourceAdministratorLabel'] = '(No Resource Administrator)';
+        $strings['WhoCanManageThisResource'] = 'Who Can Manage This Resource?';
         //
 
         // Day representations
