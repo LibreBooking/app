@@ -146,7 +146,7 @@ function ResourceManagement(opts)
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource));
 		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, errorHandler, {onBeforeSerialize: combineIntervals});
-		ConfigureAdminForm(elements.groupAdminDialog, getSubmitCallback(options.actions.changeAdmin));
+		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.actions.changeAdmin));
 
 	};
 

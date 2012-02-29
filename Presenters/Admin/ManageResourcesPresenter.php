@@ -283,7 +283,6 @@ class ManageResourcesPresenter extends ActionPresenter
 	{
 		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 		$adminGroupId = $this->page->GetAdminGroupId();
-		Log::Debug("thing $adminGroupId");
 		$resource->SetAdminGroupId($adminGroupId);
 		$this->resourceRepository->Update($resource);
 	}

@@ -106,7 +106,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						{else}
 							<span class="note">{translate key='NoResourceAdministratorLabel'}</span>
 						{/if}
-						<a class="update adminButton" href="javascript: void(0);">{translate key='Edit'}</a>
+						{if $AdminGroups|count > 0}
+							<a class="update adminButton" href="javascript: void(0);">{translate key='Edit'}</a>
+						{/if}
 					</li>
 				</ul>
 			</div>

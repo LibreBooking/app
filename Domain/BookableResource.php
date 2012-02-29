@@ -473,6 +473,10 @@ class BookableResource implements IResource
     public function SetAdminGroupId($adminGroupId)
     {
         $this->_adminGroupId = $adminGroupId;
+        if (empty($adminGroupId))
+        {
+            $this->_adminGroupId = null;
+        }
     }
 
 	/**

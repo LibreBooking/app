@@ -31,12 +31,14 @@ $conf['settings']['default.language'] = 'en_US';                // find your lan
 $conf['settings']['script.url'] = 'http://localhost/Web';   	// public URL to the Web directory of this phpScheduleIt instance. this is the URL that appears when you are logging in
 $conf['settings']['password.pattern'] = '/^[^\s]{6,}$/i';           // regular expression to enforce password complexity
 $conf['settings']['schedule']['show.inaccessible.resources'] = 'true';  // whether or not resources that are inaccessible to the user are visible
-$conf['settings']['reservation']['notify.created'] = 'true';    // notifying a booking event
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // ie public_html/phpscheduleit/Web/uploads/images
 $conf['settings']['image.upload.url'] = 'uploads/images';       // path to show uploaded images from, relative to script.url
 $conf['settings']['cache.templates'] = 'true';                  // recommended, caching template files helps web pages render faster
 $conf['settings']['registration.captcha.enabled'] = 'true';     // recommended, requires php_gd2.dll enabled in php.ini
 $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out
+$conf['settings']['reservation']['notify.created'] = 'true';    //
+$conf['settings']['reservation']['notify.updated'] = 'true';    //
+$conf['settings']['reservation']['notify.deleted'] = 'true';    //
 /**
  * Database configuration
  */
