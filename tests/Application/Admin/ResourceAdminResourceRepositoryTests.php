@@ -57,6 +57,27 @@ class ResourceAdminResourceRepositoryTests extends TestBase
 		$this->assertEquals(1, count($resources));
 		$this->assertEquals(2, $resources[0]->GetId());
 	}
+
+    public function testDoesNotUpdateResourceIfUserDoesNotHaveAccess()
+    {
+        $this->fakeUser->IsResourceAdmin = false;
+
+        $repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
+        $resource = new FakeBookableResource(1);
+        $resource->SetAdminGroupId(2);
+
+        $actualEx = null;
+        try
+        {
+            $repo->Update($resource);
+        }
+        catch(Exception $ex)
+        {
+            $actualEx = $ex;
+
+        }
+        $this->assertNotEmpty($actualEx, "should have thrown an exception");
+    }
 }
 
 ?>
