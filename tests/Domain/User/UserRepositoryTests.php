@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 class UserRepositoryTests extends TestBase
 {
 	public function setup()
@@ -70,17 +69,17 @@ class UserRepositoryTests extends TestBase
 		$loadPermissionsCommand = new GetUserPermissionsCommand($userId);
 		$loadGroupsCommand = new GetUserGroupsCommand($userId, null);
 
-		$userRows = $this->GetUserRow();
+		$userRow = $this->GetUserRow();
 		$emailPrefRows = $this->GetEmailPrefRows();
 		$permissionsRows = $this->GetPermissionsRows();
 		$groupsRows = $this->GetGroupsRows();
 
-		$this->db->SetRow(0, $userRows);
+		$this->db->SetRow(0, array($userRow));
 		$this->db->SetRow(1, $emailPrefRows);
 		$this->db->SetRow(2, $permissionsRows);
 		$this->db->SetRow(3, $groupsRows);
 
-		$row = $userRows[0];
+		$row = $userRow;
 		
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
@@ -115,14 +114,13 @@ class UserRepositoryTests extends TestBase
 		$userId = 1;
 		
 		$row = $this->GetUserRow();
-		$this->db->SetRow(0, $row);
+		$this->db->SetRow(0, array($row));
 		$this->db->SetRow(1, $this->GetEmailPrefRows());
 		$this->db->SetRow(2, $this->GetPermissionsRows());
 		$this->db->SetRow(3, $this->GetGroupsRows());
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
-		
 		$user = $userRepository->LoadById($userId); // 2nd call should load from cache
 		
 		$this->assertEquals(4, count($this->db->_Commands));
@@ -137,12 +135,12 @@ class UserRepositoryTests extends TestBase
         $loadPermissionsCommand = new GetUserPermissionsCommand($userId);
         $loadGroupsCommand = new GetUserGroupsCommand($userId, null);
 
-        $userRows = $this->GetUserRow($userId);
+        $userRow = $this->GetUserRow($userId);
         $emailPrefRows = $this->GetEmailPrefRows();
         $permissionsRows = $this->GetPermissionsRows();
         $groupsRows = $this->GetGroupsRows();
 
-        $this->db->SetRow(0, $userRows);
+        $this->db->SetRow(0, array($userRow));
         $this->db->SetRow(1, $emailPrefRows);
         $this->db->SetRow(2, $permissionsRows);
         $this->db->SetRow(3, $groupsRows);
@@ -336,8 +334,7 @@ class UserRepositoryTests extends TestBase
 
 	private function GetUserRow($userId = 1, $first = 'first', $last = 'last', $email = 'e@mail.com', $userName = 'username', $lastLogin = null, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
 	{
-		$row = array
-		(
+		$row =
 			array(
 				ColumnNames::USER_ID => $userId,
                 ColumnNames::USERNAME => $userName,
@@ -355,7 +352,6 @@ class UserRepositoryTests extends TestBase
 				ColumnNames::POSITION => 'head honcho',
 				ColumnNames::ORGANIZATION => 'earth',
                 ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
-			)
 		);
 		
 		return $row;

@@ -125,10 +125,12 @@ class ManageResourcesPresenter extends ActionPresenter
 		$name = $this->page->GetResourceName();
 		$scheduleId = $this->page->GetScheduleId();
         $autoAssign = $this->page->GetAutoAssign();
+        $resourceAdminGroupId = $this->page->GetAdminGroupId();
 
-        Log::Debug("Adding new resource with name: %s, scheduleId: %s, autoAssign: %s", $name, $scheduleId, $autoAssign);
+        Log::Debug("Adding new resource with name: %s, scheduleId: %s, autoAssign: %s, resourceAdminGroupId %s", $name, $scheduleId, $autoAssign, $resourceAdminGroupId);
 
 		$resource = BookableResource::CreateNew($name, $scheduleId, $autoAssign);
+        $resource->SetAdminGroupId($resourceAdminGroupId);
 		$this->resourceRepository->Add($resource);
 	}
 

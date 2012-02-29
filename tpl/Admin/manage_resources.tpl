@@ -202,6 +202,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<th>{translate key='Name'}</th>
 					<th>{translate key='Schedule'}</th>
 					<th>{translate key='ResourcePermissions'}</th>
+					<th>{translate key='ResourceAdministrator'}</th>
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
@@ -216,11 +217,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						</select>
 					</td>
                     <td>
-                        <select class="textbox" {formname key=AUTO_ASSIGN} style="width:100px">
+                        <select class="textbox" {formname key=AUTO_ASSIGN} style="width:170px">
                             <option value="0">{translate key="None"}</option>
                             <option value="1">{translate key="AllUsers"}</option>
                         </select>
                     </td>
+					<td>
+						<select class="textbox" {formname key=RESOURCE_ADMIN_GROUP_ID} style="width:170px">
+							{foreach from=$AdminGroups item=adminGroup}
+								<option value="">{translate key=None}</option>
+								<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+							{/foreach}
+						</select>
+					</td>
 					<td>
 						<button type="button"
 								class="button save">{html_image src="plus-button.png"} {translate key='AddResource'}</button>

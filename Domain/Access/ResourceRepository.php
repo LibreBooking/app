@@ -99,7 +99,11 @@ class ResourceRepository implements IResourceRepository
 	public function Add(BookableResource $resource)
 	{
 		$db = ServiceLocator::GetDatabase();
-		$addResourceCommand = new AddResourceCommand($resource->GetName(), $resource->GetScheduleId(), $resource->GetAutoAssign());
+		$addResourceCommand = new AddResourceCommand(
+            $resource->GetName(),
+            $resource->GetScheduleId(),
+            $resource->GetAutoAssign(),
+            $resource->GetAdminGroupId());
 		
 		$resourceId = $db->ExecuteInsert($addResourceCommand);
         if ($resource->GetAutoAssign())

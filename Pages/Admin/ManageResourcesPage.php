@@ -284,7 +284,6 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetAdminGroupId()
 	{
-		Log::Debug('getting');
 		return $this->GetForm(FormKeys::RESOURCE_ADMIN_GROUP_ID);
 	}
 

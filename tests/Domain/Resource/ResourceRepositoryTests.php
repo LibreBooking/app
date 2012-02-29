@@ -131,15 +131,17 @@ class ResourceRepositoryTests extends TestBase
 		$scheduleId = 828;
 		$resourceId = 8888;
         $autoAssign = true;
+        $groupId = 111;
 		
 		$resource = BookableResource::CreateNew($name, $scheduleId, $autoAssign);
+        $resource->SetAdminGroupId($groupId);
 		
 		$this->db->_ExpectedInsertId = $resourceId;
 		
 		$resourceRepository = new ResourceRepository();
 		$resourceRepository->Add($resource);
 		
-		$expectedAddCommand = new AddResourceCommand($name, $scheduleId, $autoAssign);
+		$expectedAddCommand = new AddResourceCommand($name, $scheduleId, $autoAssign, $groupId);
         $assignResourcePermissions = new AutoAssignResourcePermissionsCommand($resourceId);
 		$actualAddResourceCommand = $this->db->_Commands[0];
 		$actualAssignResourcePermissions = $this->db->_Commands[1];

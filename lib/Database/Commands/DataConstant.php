@@ -670,11 +670,11 @@ class Queries
             'INSERT INTO
 			resources (name, location, contact_info, description, notes, isactive, min_duration, min_increment, 
 					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations, 
-					   max_participants, min_notice_time, max_notice_time, schedule_id)
+					   max_participants, min_notice_time, max_notice_time, schedule_id, admin_group_id)
 		VALUES
 			(@resource_name, @location, @contact_info, @description, @resource_notes, @isactive, @min_duration, @min_increment, 
 			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiday_reservations,
-		     @max_participants, @min_notice_time, @max_notice_time, @scheduleid)';
+		     @max_participants, @min_notice_time, @max_notice_time, @scheduleid, @admin_group_id)';
 
     const SET_DEFAULT_SCHEDULE =
             'UPDATE schedules

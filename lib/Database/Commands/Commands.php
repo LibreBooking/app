@@ -235,7 +235,8 @@ class AddReservationUserCommand extends SqlCommand
 
 class AddResourceCommand extends SqlCommand
 {
-	public function __construct($name, $schedule_id, $autoassign = 1, $location = null, $contact_info = null, $description = null, $notes = null,
+	public function __construct($name, $schedule_id, $autoassign = 1, $admin_group_id = null,
+                                $location = null, $contact_info = null, $description = null, $notes = null,
 								$isactive = 1, $min_duration = null, $min_increment = null, $max_duration = null,
 								$unit_cost = null, $requires_approval = 0, $allow_multiday = 1,
 								$max_participants = null, $min_notice_time = null, $max_notice_time = null)
@@ -259,6 +260,7 @@ class AddResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $max_participants));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $min_notice_time));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $max_notice_time));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $admin_group_id));
 	}
 }
 
