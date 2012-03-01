@@ -41,6 +41,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h3>Translators</h3>
 
 <p>Boris Vatin (French)</p>
+<p>Dariusz Kliszewski (Polish)</p>
 
 <h3>Thank you to the following projects and libraries</h3>
 
