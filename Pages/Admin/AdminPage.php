@@ -75,6 +75,11 @@ class AdminPageDecorator extends ActionPage implements IActionPage
 	{
 		$this->page->ProcessAction();
 	}
+
+	public function ProcessDataRequest()
+	{
+		$this->page->ProcessDataRequest();
+	}
 }
 
 abstract class AdminPage extends SecurePage implements IActionPage

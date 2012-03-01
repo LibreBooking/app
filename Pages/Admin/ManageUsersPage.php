@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
@@ -121,21 +122,21 @@ interface IManageUsersPage extends IPageable, IActionPage
 }
 
 
-class ManageUsersPage extends AdminPage implements IManageUsersPage
+class ManageUsersPage extends ActionPage implements IManageUsersPage
 {
 	/**
 	 * @var \ManageUsersPresenter
 	 */
-	private $_presenter;
+	protected $_presenter;
 
 	/**
 	 * @var \PageablePage
 	 */
-	private $pageable;
+	protected $pageable;
 
 	public function __construct()
 	{
-		parent::__construct('ManageUsers');
+		parent::__construct('ManageUsers', 1);
 		$this->_presenter = new ManageUsersPresenter(
 			$this,
 			new UserRepository(),
@@ -155,7 +156,7 @@ class ManageUsersPage extends AdminPage implements IManageUsersPage
 		$this->Set('Timezone', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
-		$this->Display('manage_users.tpl');
+		$this->Display('Admin/manage_users.tpl');
 	}
 
 	public function BindPageInfo(PageInfo $pageInfo)

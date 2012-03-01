@@ -64,6 +64,11 @@ class SecureActionPageDecorator extends ActionPage
 		$this->page->ProcessAction();
 	}
 
+	public function ProcessDataRequest()
+	{
+		$this->page->ProcessDataRequest();
+	}
+
 	public function PageLoad()
 	{
 		$this->page->PageLoad();

@@ -22,7 +22,7 @@ define('ROOT_DIR', '../../');
 
 require_once(ROOT_DIR . 'Pages/Admin/ManageUsersPage.php');
 
-$page = new ManageUsersPage();
+$page = new AdminPageDecorator(new ManageUsersPage());
 if ($page->TakingAction())
 {
 	$page->ProcessAction();

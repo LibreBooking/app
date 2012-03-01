@@ -51,7 +51,6 @@
 			</then>
 		</if>
 
-		<echo message="cur pw ${mysql.password}" />
 		<echo message="Create file: ${sql.file.create.db}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create.db}"
 			  checkreturn="true"
@@ -94,7 +93,6 @@
         </copy>
 
         <taskdef name="upgradedb" classname="phing.tasks.my.UpgradeDbTask" />
-		<echo message="password ${mysql.password}" />
         <upgradedb username="${mysql.username}" password="${mysql.password}"
                    host="${mysql.server}" database="${mysql.database}"
                    schemadir="${application.startdir}/database_schema" />

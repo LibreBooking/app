@@ -139,7 +139,7 @@ class UserRepository implements IUserRepository, IUserViewRepository
      * @param int $pageSize
      * @param null $sortField
      * @param null $sortDirection
-     * @param null $filter
+     * @param ISqlFilter $filter
      * @return PageableData|UserItemView[]
      */
     public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)

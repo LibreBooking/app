@@ -445,5 +445,13 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	{
 		return $this->GetQuerystring(QueryStringKeys::FORMAT);
 	}
+
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// no-op
+	}
 }
 ?>

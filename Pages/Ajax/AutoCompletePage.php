@@ -130,11 +130,11 @@ class AutoCompletePage extends SecurePage
 			$groupRepo = new GroupRepository();
 			$results = $groupRepo->GetUsersInGroup($groupIds, null, null, $userFilter)->Results();
 
-			/** @var $result GroupUserView */
+			/** @var $result UserItemView */
 			foreach ($results as $result)
 			{
 				// consolidates results by user id if the user is in multiple groups
-				$users[$result->UserId] = new AutocompleteUser($result->UserId, $result->FirstName, $result->LastName);
+				$users[$result->Id] = new AutocompleteUser($result->Id, $result->First, $result->Last);
 			}
 		}
 

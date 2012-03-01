@@ -80,6 +80,16 @@ abstract class ActionPage extends Page implements IActionPage
 		return false;
 	}
 
+	/**
+	 * @abstract
+	 * @return void
+	 */
 	public abstract function ProcessAction();
+
+	/**
+	 * @abstract
+	 * @return void
+	 */
+	public abstract function ProcessDataRequest();
 }
 ?>

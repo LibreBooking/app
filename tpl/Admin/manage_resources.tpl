@@ -439,7 +439,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
 			{/foreach}
 		</select>
-		<br/>
+		<br/><br/>
 		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>

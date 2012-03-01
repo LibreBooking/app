@@ -571,6 +571,7 @@ class GetAllGroupUsersCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_ALL_GROUP_USERS);
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, AccountStatus::ACTIVE));
 	}
 }
 
