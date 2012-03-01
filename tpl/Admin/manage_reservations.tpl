@@ -119,6 +119,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="deleteInstanceDialog" class="dialog" style="display:none;" title="{translate key='Delete'}">
 	<form id="deleteInstanceForm" method="post">
+		<div class="delResResponse"></div>
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
 		</div>

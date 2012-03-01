@@ -112,7 +112,6 @@ class ReservationSlot implements IReservationSlot
 
 	public function Label()
 	{
-        return $this->_reservation->Title;
 		return $this->_reservation->FirstName . ' ' . $this->_reservation->LastName;
 	}
 

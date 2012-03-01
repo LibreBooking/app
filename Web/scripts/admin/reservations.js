@@ -86,8 +86,17 @@ function ReservationManagement(opts, approval)
 		
 		$('#filter').click(filterReservations);
 
-		ConfigureAdminForm(elements.deleteInstanceForm, getDeleteUrl);
-		ConfigureAdminForm(elements.deleteSeriesForm, getDeleteUrl);
+		var deleteReservationResponseHander = function(response, form)
+		{
+			form.find('.delResResponse').empty();
+			if (!response.deleted)
+			{
+				form.find('.delResResponse').text(response.errors.join('<br/>'));
+			}
+		};
+
+		ConfigureAdminForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHander, {dataType: 'json'});
+		ConfigureAdminForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHander, {dataType: 'json'});
 	};
 
 	ReservationManagement.prototype.addReservation = function(reservation)

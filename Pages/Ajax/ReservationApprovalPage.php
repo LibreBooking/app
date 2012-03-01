@@ -56,7 +56,10 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	 */
 	public function SetSaveSuccessfulMessage($succeeded)
 	{
-		$this->SetJson(array('approved' => (string)$succeeded));
+		if ($succeeded)
+		{
+			$this->SetJson(array('approved' => (string)$succeeded));
+		}
 	}
 
 	public function ShowErrors($errors)

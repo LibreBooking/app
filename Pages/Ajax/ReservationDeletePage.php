@@ -122,7 +122,10 @@ class ReservationDeleteJsonPage extends ReservationDeletePage implements IReserv
 	 */
 	public function SetSaveSuccessfulMessage($succeeded)
 	{
-		$this->SetJson(array('deleted' => (string)$succeeded));
+		if ($succeeded)
+		{
+			$this->SetJson(array('deleted' => (string)$succeeded));
+		}
 	}
 
 	public function ShowErrors($errors)

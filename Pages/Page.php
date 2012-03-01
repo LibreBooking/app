@@ -223,7 +223,7 @@ abstract class Page implements IPage
 			$this->Set('data', json_encode($objectToSerialize));
 		} else
 		{
-			$this->Set('error', json_encode($error));
+			$this->Set('error', json_encode(array('response' => $objectToSerialize, 'errors' => $error)));
 		}
 		$this->smarty->display('json_data.tpl');
 	}
