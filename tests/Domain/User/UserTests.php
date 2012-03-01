@@ -105,4 +105,27 @@ class UserTests extends TestBase
 
 		$this->assertFalse($adminUser->IsAdminFor($user), 'admin is not in any group that can admin group 1 or 2');
 	}
+
+    public function testWherUserIsInAdminGroupForResource()
+    {
+        $adminGroupId = 223;
+        $resource = new ReservationResource(1, 'n', $adminGroupId);
+
+        $adminUser = new User();
+        $regularUser = new User();
+
+        $adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::RESOURCE_ADMIN);
+        $group1 = new UserGroup(1, 'random group');
+        $group2 = new UserGroup(2, 'group with admin');
+
+        $adminUserGroups = array($group1, $adminGroup);
+        $userGroups = array($group1, $group2);
+
+        $adminUser->WithGroups($adminUserGroups);
+        $regularUser->WithGroups($userGroups);
+
+        $this->assertTrue($adminUser->IsResourceAdminFor($resource));
+        $this->assertFalse($regularUser->IsResourceAdminFor($resource));
+
+    }
 }

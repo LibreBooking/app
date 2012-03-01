@@ -429,6 +429,10 @@ class User
 		return $this->isGroupAdmin;
 	}
 
+    /**
+     * @param User $user
+     * @return bool
+     */
 	public function IsAdminFor(User $user)
 	{
 		if (!$this->isGroupAdmin)
@@ -458,6 +462,28 @@ class User
 
 		return false;
 	}
+
+    /**
+     * @param IResource $resource
+     * @return bool
+     */
+    public function IsResourceAdminFor(IResource $resource)
+    {
+       if (!$this->isResourceAdmin)
+       {
+           return false;
+       }
+
+        foreach ($this->groups as $group)
+        {
+            if ($group->GroupId == $resource->GetAdminGroupId())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 	/**
 	 * @param int|RoleLevel $roleLevel

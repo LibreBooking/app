@@ -224,8 +224,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </td>
 					<td>
 						<select class="textbox" {formname key=RESOURCE_ADMIN_GROUP_ID} style="width:170px">
+							<option value="">{translate key=None}</option>
 							{foreach from=$AdminGroups item=adminGroup}
-								<option value="">{translate key=None}</option>
 								<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
 							{/foreach}
 						</select>
@@ -434,12 +434,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisResource}">
 	<form method="post" id="groupAdminForm">
 		<select id="adminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">
+			<option value="">-- {translate key=None} --</option>
 			{foreach from=$AdminGroups item=adminGroup}
-				<option value="">-- {translate key=None} --</option>
 				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
 			{/foreach}
 		</select>
-
+		<br/>
 		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>

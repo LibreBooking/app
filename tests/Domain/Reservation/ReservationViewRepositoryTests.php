@@ -59,6 +59,7 @@ class ReservationViewRepositoryTests extends TestBase
 		
 		$resourceId1 = 88;
 		$resourceName1 = 'r1';
+        $adminGroupId1 = 1239;
 		
 		$resourceId2 = 99;
 		$resourceName2 = 'r2';
@@ -111,8 +112,8 @@ class ReservationViewRepositoryTests extends TestBase
 		);
 		
 		$resourceRows = array(
-			$this->GetResourceRow($reservationId, $resourceId1, $resourceName1),
-			$this->GetResourceRow($reservationId, $resourceId2, $resourceName2),
+			$this->GetResourceRow($reservationId, $resourceId1, $resourceName1, $adminGroupId1),
+			$this->GetResourceRow($reservationId, $resourceId2, $resourceName2, null),
 			);
 			
 		$participantRows = array(
@@ -177,8 +178,8 @@ class ReservationViewRepositoryTests extends TestBase
 			);
 			
 		$expectedView->Resources = array(
-			new ReservationResourceView($resourceId1, $resourceName1),
-			new ReservationResourceView($resourceId2, $resourceName2),
+			new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1),
+			new ReservationResourceView($resourceId2, $resourceName2, null),
 			);
 
 		$expectedView->Accessories = array(
@@ -307,13 +308,14 @@ class ReservationViewRepositoryTests extends TestBase
 			);
 	}
 	
-	private function GetResourceRow($reservationId, $resourceId, $resourceName)
+	private function GetResourceRow($reservationId, $resourceId, $resourceName, $adminGroupId = null)
 	{
 		return array(
 			ColumnNames::RESERVATION_INSTANCE_ID => $reservationId, 
 			ColumnNames::RESOURCE_ID => $resourceId,
 			ColumnNames::RESOURCE_NAME => $resourceName,
-			ColumnNames::RESOURCE_LEVEL_ID => ResourceLevel::Additional
+			ColumnNames::RESOURCE_LEVEL_ID => ResourceLevel::Additional,
+            ColumnNames::RESOURCE_ADMIN_GROUP_ID => $adminGroupId
 			);
 			
 	}

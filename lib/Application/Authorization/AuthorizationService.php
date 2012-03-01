@@ -67,6 +67,20 @@ interface IAuthorizationService extends IRoleService
 	 */
 	public function CanApproveFor(UserSession $approver, $approveForId);
 
+    /**
+     * @param UserSession $user
+     * @param IResource $resource
+     * @return bool
+     */
+    public function CanEditForResource(UserSession $user, IResource $resource);
+
+    /**
+     * @param UserSession $user
+     * @param IResource $resource
+     * @return bool
+     */
+    public function CanApproveForResource(UserSession $user, IResource $resource);
+
 }
 
 class AuthorizationService implements IAuthorizationService
@@ -117,6 +131,38 @@ class AuthorizationService implements IAuthorizationService
 		return $this->IsAdminFor($approver, $approveForId);
 	}
 
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function IsApplicationAdministrator(User $user)
+    {
+        if ($user->EmailAddress() == Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL))
+        {
+            return true;
+        }
+
+        return $user->IsInRole(RoleLevel::APPLICATION_ADMIN);
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function IsResourceAdministrator(User $user)
+    {
+        return $user->IsInRole(RoleLevel::RESOURCE_ADMIN);
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function IsGroupAdministrator(User $user)
+    {
+        return $user->IsInRole(RoleLevel::GROUP_ADMIN);
+    }
+
 	/**
 	 * @param UserSession $user
 	 * @param int $otherUserId
@@ -129,61 +175,59 @@ class AuthorizationService implements IAuthorizationService
 			return true;
 		}
 
+        if (!$user->IsGroupAdmin)
+        {
+            // dont even bother checking if the user isnt a group admin
+            return false;
+        }
+
 		$user1 = $this->userRepository->LoadById($user->UserId);
 		$user2 = $this->userRepository->LoadById($otherUserId);
 
 		return $user1->IsAdminFor($user2);
 	}
 
-	/**
-	 * @param User $user
-	 * @return bool
-	 */
-	public function IsApplicationAdministrator(User $user)
-	{
-		if ($user->EmailAddress() == Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL))
-		{
-			return true;
-		}
+    /**
+     * @param UserSession $user
+     * @param IResource $resource
+     * @return bool
+     */
+    public function CanEditForResource(UserSession $user, IResource $resource)
+    {
+        if ($user->IsAdmin)
+        {
+            return true;
+        }
 
-		return $user->IsInRole(RoleLevel::APPLICATION_ADMIN);
-	}
+        if (!$user->IsResourceAdmin)
+        {
+            return false;
+        }
 
-	/**
-	 * @param User $user
-	 * @return bool
-	 */
-	public function IsResourceAdministrator(User $user)
-	{
-		return $user->IsInRole(RoleLevel::RESOURCE_ADMIN);
-	}
+        $user = $this->userRepository->LoadById($user->UserId);
 
-	/**
-	 * @param User $user
-	 * @return bool
-	 */
-	public function IsGroupAdministrator(User $user)
-	{
-		return $user->IsInRole(RoleLevel::GROUP_ADMIN);
-	}
+        return $user->IsResourceAdminFor($resource);
+    }
+
+    /**
+     * @param UserSession $user
+     * @param IResource $resource
+     * @return bool
+     */
+    public function CanApproveForResource(UserSession $user, IResource $resource)
+    {
+        if ($user->IsAdmin)
+        {
+            return true;
+        }
+
+        if (!$user->IsResourceAdmin)
+        {
+            return false;
+        }
+
+        $user = $this->userRepository->LoadById($user->UserId);
+
+        return $user->IsResourceAdminFor($resource);
+    }
 }
-
-//class AuthorizationUser
-//{
-//    public function __construct($userId, $emailAddress)
-//    {
-//        $this->userId = $userId;
-//        $this->emailAddress = $emailAddress;
-//    }
-//
-//    public function EmailAddress()
-//    {
-//        return $this->emailAddress;
-//    }
-//
-//    public function UserId()
-//    {
-//        return $this->userId;
-//    }
-//
-//}

@@ -50,12 +50,12 @@ class ReservationAuthorization implements IReservationAuthorization
 	 * @var \IAuthorizationService
 	 */
 	private $authorizationService;
-	
+
 	public function __construct(IAuthorizationService $authorizationService)
 	{
 		$this->authorizationService = $authorizationService;
 	}
-	
+
 	public function CanEdit(ReservationView $reservationView, UserSession $currentUser)
 	{
 		$ongoingReservation = Date::Now()->LessThan($reservationView->EndDate);
@@ -68,10 +68,22 @@ class ReservationAuthorization implements IReservationAuthorization
 			}
 			else
 			{
-				return $this->authorizationService->CanReserveFor($currentUser, $reservationView->OwnerId);
+				$canReserveForUser = $this->authorizationService->CanReserveFor($currentUser, $reservationView->OwnerId);
+                if ($canReserveForUser)
+                {
+                    return true;
+                }
+
+                foreach ($reservationView->Resources as $resource)
+                {
+                    if ($this->authorizationService->CanEditForResource($currentUser, $resource))
+                    {
+                        return true;
+                    }
+                }
 			}
 		}
-		
+
 		return $currentUser->IsAdmin;	// only admins can edit reservations that have ended
 	}
 
@@ -86,8 +98,27 @@ class ReservationAuthorization implements IReservationAuthorization
 		{
 			return false;
 		}
-		
-		return $currentUser->IsAdmin || $this->authorizationService->CanApproveFor($currentUser, $reservationView->OwnerId);
+
+		if ($currentUser->IsAdmin)
+        {
+            return true;
+        }
+
+        $canReserveForUser = $this->authorizationService->CanApproveFor($currentUser, $reservationView->OwnerId);
+        if ($canReserveForUser)
+        {
+            return true;
+        }
+
+        foreach ($reservationView->Resources as $resource)
+        {
+            if ($this->authorizationService->CanApproveForResource($currentUser, $resource))
+            {
+                return true;
+            }
+        }
+
+        return false;
 	}
 }
 ?>

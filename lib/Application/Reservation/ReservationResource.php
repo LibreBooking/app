@@ -22,34 +22,36 @@ class ReservationResource implements IResource
 {
 	private $_id;
 	private $_resourceName;
-	
-	public function __construct($resourceId, $resourceName = '')
+	private $_adminGroupId;
+
+	public function __construct($resourceId, $resourceName = '', $adminGroupId = null)
 	{
 		$this->_id = $resourceId;
+        $this->_resourceName = $resourceName;
+        $this->_adminGroupId = $adminGroupId;
 	}
-	
-	/**
-	 * @see IResource::GetResourceId()
-	 */
+
 	public function GetResourceId()
 	{
 		return $this->_id;
 	}
-	
-	/**
-	 * @see IResource::GetName()
-	 */
+
 	public function GetName()
 	{
 		return $this->_resourceName;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetId()
 	{
 		return $this->_id;
 	}
+
+    /**
+     * @return int
+     */
+    public function GetAdminGroupId()
+    {
+        return $this->_adminGroupId;
+    }
 }
 ?>

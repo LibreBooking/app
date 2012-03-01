@@ -113,8 +113,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisGroup}">
 	<form method="post" id="groupAdminForm">
 		<select {formname key=GROUP_ADMIN} class="textbox">
+			<option value="">-- {translate key=None} --</option>
 			{foreach from=$AdminGroups item=adminGroup}
-				<option value="">-- {translate key=None} --</option>
 				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
 			{/foreach}
 		</select>
