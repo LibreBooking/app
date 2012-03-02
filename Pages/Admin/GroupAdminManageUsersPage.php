@@ -18,10 +18,23 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/Application/Admin/ReservationFilter.php');
-require_once(ROOT_DIR . 'lib/Application/Admin/ManageReservationsService.php');
-require_once(ROOT_DIR . 'lib/Application/Admin/ResourceAdminManageReservationsService.php');
-require_once(ROOT_DIR . 'lib/Application/Admin/ResourceAdminResourceRepository.php');
-require_once(ROOT_DIR . 'lib/Application/Admin/GroupAdminUserRepository.php');
+require_once(ROOT_DIR . 'Pages/Admin/ManageUsersPage.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
+
+
+class GroupAdminManageUsersPage extends ManageUsersPage
+{
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->_presenter = new ManageUsersPresenter(
+					$this,
+					new GroupAdminUserRepository(new GroupRepository(), ServiceLocator::GetServer()->GetUserSession()),
+					new ResourceRepository(),
+					new PasswordEncryption(),
+		            new Registration());
+	}
+}
 
 ?>

@@ -20,58 +20,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 define('ROOT_DIR', '../../');
 
-require_once(ROOT_DIR . 'Pages/Admin/ManageUsersPage.php');
-
-class GroupAdminUserRepository extends UserRepository
-{
-	/**
-	 * @var IGroupViewRepository
-	 */
-	private $groupRepository;
-
-	/**
-	 * @var UserSession
-	 */
-	private $userSession;
-
-	public function __construct(IGroupViewRepository $groupRepository, UserSession $userSession)
-	{
-		$this->groupRepository = $groupRepository;
-		$this->userSession = $userSession;
-		parent::__construct();
-	}
-
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
-	{
-		$user = $this->LoadById($this->userSession->UserId);
-
-		$groupIds = array();
-
-		foreach ($user->Groups() as $group)
-		{
-			if ($group->IsGroupAdmin)
-			{
-				$groupIds[] = $group->GroupId;
-			}
-		}
-		return $this->groupRepository->GetUsersInGroup($groupIds, $pageNumber, $pageSize, $sortField, $sortDirection, $filter);
-	}
-}
-
-class GroupAdminManageUsersPage extends ManageUsersPage
-{
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->_presenter = new ManageUsersPresenter(
-					$this,
-					new GroupAdminUserRepository(new GroupRepository(), ServiceLocator::GetServer()->GetUserSession()),
-					new ResourceRepository(),
-					new PasswordEncryption(),
-		            new Registration());
-	}
-}
+require_once(ROOT_DIR . 'Pages/Admin/GroupAdminManageUsersPage.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
 $page = new GroupAdminManageUsersPage();
 if ($page->TakingAction())
