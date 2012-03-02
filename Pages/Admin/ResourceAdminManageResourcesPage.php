@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -16,19 +16,24 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
- 
-define('ROOT_DIR', '../../');
+ */
 
-require_once(ROOT_DIR . 'Pages/Admin/ResourceAdminManageResourcesPage.php');
+require_once(ROOT_DIR . 'Pages/Admin/ManageResourcesPage.php');
+require_once(ROOT_DIR . 'Presenters/Admin/ManageResourcesPresenter.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-$page = new SecureActionPageDecorator(new ResourceAdminManageResourcesPage());
-if ($page->TakingAction())
+class ResourceAdminManageResourcesPage extends ManageResourcesPage
 {
-	$page->ProcessAction();
-}
-else
-{
-	$page->PageLoad();
+	public function __construct()
+	{
+		parent::__construct();
+		$this->_presenter = new ManageResourcesPresenter(
+										$this,
+										new ResourceAdminResourceRepository(new UserRepository(), ServiceLocator::GetServer()->GetUserSession()),
+										new ScheduleRepository(),
+										new ImageFactory(),
+										new GroupRepository()
+										);
+	}
 }
 ?>
