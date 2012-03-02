@@ -128,4 +128,24 @@ class UserTests extends TestBase
         $this->assertFalse($regularUser->IsResourceAdminFor($resource));
 
     }
+
+    public function testCanGetGroupsThatUserHasAdminOver()
+    {
+        $user = new User();
+
+        $nonAdminGroup1 = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
+        $nonAdminGroup2 = new UserGroup(2, 'admin', null, RoleLevel::RESOURCE_ADMIN);
+        $adminGroup1 = new UserGroup(3, 'admin', null, RoleLevel::GROUP_ADMIN);
+        $adminGroup2 = new UserGroup(4, 'admin', null, RoleLevel::GROUP_ADMIN);
+
+        $groups = array($nonAdminGroup1, $nonAdminGroup2, $adminGroup1, $adminGroup2);
+
+        $user->WithGroups($groups);
+
+        $adminGroups = $user->GetAdminGroups();
+
+        $this->assertEquals(2, count($adminGroups));
+        $this->assertContains($adminGroup1, $adminGroups);
+        $this->assertContains($adminGroup2, $adminGroups);
+    }
 }

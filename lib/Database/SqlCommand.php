@@ -106,7 +106,7 @@ class CountCommand extends SqlCommand
 
 	public function GetQuery()
 	{
-		return preg_replace('/SELECT.+FROM/ims', 'SELECT COUNT(*) as total FROM', $this->baseCommand->GetQuery());
+		return preg_replace('/SELECT.+FROM/imsU', 'SELECT COUNT(*) as total FROM', $this->baseCommand->GetQuery(), 1);
 	}
 }
 
@@ -148,7 +148,7 @@ class FilterCommand extends SqlCommand
 		if ($hasWhere)
 		{
 			// get between where and order by, replace with match plus new stuff
-			$baseQuery = str_ireplace('WHERE', 'WHERE (', $baseQuery);
+			$baseQuery = preg_replace('/WHERE/ims', 'WHERE (', $baseQuery, 1);
 
 			//Log::Debug("HAS WHERE, adding filter $newWhere");
 			$split = preg_split("/ORDER BY/ims", $baseQuery);

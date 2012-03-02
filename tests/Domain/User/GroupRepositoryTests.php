@@ -295,7 +295,20 @@ class GroupRepositoryTests extends TestBase
 		return array(
 			ColumnNames::USER_ID => $userId,
 			ColumnNames::FIRST_NAME => $firstName,
-			ColumnNames::LAST_NAME => $lastName
+			ColumnNames::LAST_NAME => $lastName,
+            ColumnNames::USERNAME => 'username',
+            ColumnNames::EMAIL => 'email',
+            ColumnNames::LAST_LOGIN => null,
+            ColumnNames::LANGUAGE_CODE => 'en_us',
+            ColumnNames::TIMEZONE_NAME => 'America/Chicago',
+            ColumnNames::USER_STATUS_ID => AccountStatus::ACTIVE,
+            ColumnNames::PASSWORD => 'encryptedPassword',
+            ColumnNames::SALT => 'passwordsalt',
+            ColumnNames::HOMEPAGE_ID => 3,
+            ColumnNames::PHONE_NUMBER => '123-456-7890',
+            ColumnNames::POSITION => 'head honcho',
+            ColumnNames::ORGANIZATION => 'earth',
+            ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
 		);
 	}
 }

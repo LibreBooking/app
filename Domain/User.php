@@ -515,6 +515,24 @@ class User
 	{
 		return new NullUser();
 	}
+
+    /**
+     * @return array|UserGroup[]
+     */
+    public function GetAdminGroups()
+    {
+        $adminGroups = array();
+
+        foreach ($this->Groups() as $group)
+        {
+            if ($group->IsGroupAdmin)
+            {
+                $adminGroups[] = $group;
+            }
+        }
+
+        return $adminGroups;
+    }
 }
 
 class NullUser extends User

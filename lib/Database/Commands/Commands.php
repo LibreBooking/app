@@ -695,6 +695,24 @@ class GetFullReservationListCommand extends SqlCommand
 	}
 }
 
+class GetFullGroupReservationListCommand extends GetFullReservationListCommand
+{
+    public function __construct($groupIds = array())
+    {
+        parent::__construct();
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupIds));
+    }
+
+    public function GetQuery()
+    {
+        $query = parent::GetQuery();
+
+        $newQuery = preg_replace('/WHERE/', 'WHERE owner_id IN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) AND ', $query, 1);
+
+        return $newQuery;
+    }
+}
+
 class GetReservationListCommand extends SqlCommand
 {
 	public function __construct(Date $startDate, Date $endDate, $userId, $userLevelId, $scheduleId, $resourceId)

@@ -23,5 +23,6 @@ require_once(ROOT_DIR . 'lib/Application/Admin/ManageReservationsService.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/ResourceAdminManageReservationsService.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/ResourceAdminResourceRepository.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/GroupAdminUserRepository.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/GroupAdminManageReservationsService.php');
 
 ?>

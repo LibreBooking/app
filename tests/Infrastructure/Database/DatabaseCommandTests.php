@@ -284,6 +284,23 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
 	}
+
+    public function testGetGroupReservations()
+    {
+        $command = new GetFullGroupReservationListCommand(array(1,2));
+        $filterCommand = new FilterCommand($command, new SqlFilterEquals(ColumnNames::ACCESSORY_NAME, 'something just to make sure filter does not break subquery'));
+        $countCommand = new CountCommand($filterCommand);
+
+        $containsSubQuery = $this->stringContains("WHERE ( owner_id IN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) AND ", false);
+        $containsFilter = $this->stringContains("AND (accessory_name = @accessory_name)", false);
+
+        $query = $filterCommand->GetQuery();
+        $countQuery = $countCommand->GetQuery();
+        $this->assertThat($query, $containsSubQuery, $query);
+        $this->assertThat($query, $containsFilter, $query);
+        $this->assertThat($countQuery, $containsSubQuery, $countQuery);
+        $this->assertThat($countQuery, $containsFilter, $countQuery);
+    }
 }
 
 ?>
