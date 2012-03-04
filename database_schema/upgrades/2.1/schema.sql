@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `dbversion`;
 CREATE TABLE `dbversion` (
  `version_number` double unsigned NOT NULL default 0,
  `version_date` timestamp NOT NULL default current_timestamp

@@ -61,8 +61,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 <li>{textbox type="password" name="INSTALL_DB_PASSWORD" class="textbox" size="20"}</li>
                 <li>&nbsp;</li>
 				{if $ShowInstallOptions}
-					<li>3)<i>The following options will not work in a hosted environment.  Please set up the database and user through your provider's database tools.</i></li>
-					<li><input type="checkbox" name="create_database" /> Create the database based on configruation /config/config.php ({$dbname})</li>
+					<li>3)<i>The following options will probably not work in a hosted environment.  Please set up the database and user through your provider's database tools.</i></li>
+					<li><input type="checkbox" name="create_database" /> Create the database based on configruation /config/config.php ({$dbname}) <span style="color:Red;">Warning: This will delete all existing data</span></span> </li>
 					<li><input type="checkbox" name="create_user" /> Create the user based on configruation /config/config.php ({$dbuser})</li>
 					<li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and user/password for user</li>
 					<li>
@@ -94,11 +94,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </li>
                 {/if}
             {/foreach}
+			<li>&nbsp;</li>
             <li>
                 {if $InstallCompletedSuccessfully}
                     Summary: <br/> Installation completed successfully! <br/>
-                    1) <a href="{$Path}{Pages::LOGIN}">Login</a> with admin/password for admin-user Or user/password for basic-user. This is sample data chosen to installed in previous page. Or <br/>
-                    2) <a href="{$Path}{Pages::REGISTRATION}">Register</a> your admin-user/basic-user. This is email authentication method and it requires mail server configured to work successfully.
+                    1) <a href="{$Path}{Pages::LOGIN}">Login</a> with admin/password for admin user Or user/password for basic user. This is sample data chosen to installed in previous page. Or <br/>
+                    2) <a href="{$Path}{Pages::REGISTRATION}">Register</a> your admin user/basic user. This is email authentication method and it requires mail server configured to work successfully.
                 {/if}
 				{if $UpgradeCompletedSuccessfully}
 					You are now running version {$TargetVersion} of phpScheduleIt

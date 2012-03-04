@@ -2,7 +2,7 @@
 		"http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>phpScheduleIt 2.0 Installation</title>
+	<title>phpScheduleIt 2.1 Installation</title>
 	<style type="text/css">
 
 		h1.section {
@@ -39,7 +39,7 @@
 </head>
 
 <body>
-<h1>Welcome to phpScheduleIt 2.0!</h1>
+<h1>Welcome to phpScheduleIt 2.1!</h1>
 
 <h2><span STYLE="color:#727E0A">Prerequisites</span></h2>
 
@@ -127,19 +127,14 @@ OR<br/>
 
 <div>
 	The packaged database scripts make assumptions about your desired database configuration and set default values.
-	Please edit them to suit your environment before running. And the file are located in
-	phpScheduleIt/database_schema/. <br/>
-	Go ahead import the following sql files in the listed order (recommending <a
-		href="http://www.phpmyadmin.net/documentation/">phpmyadmin interface</a>):
+	Please edit them to suit your environment before running. The files are located in
+	phpScheduleIt/database_schema/. <br/> <br/>
+	Import the following sql files in the listed order (we recommend <a
+		href="http://www.phpmyadmin.net/documentation/">phpMyAdmin</a> for this):
 </div>
 
 <div>
 	<ul>
-		<li>Note: Some may see directory permission issues during the following process. The web server must have write
-			access to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl). If you cannot provide the required
-			permission.
-			Contact your web server administrator or hosting service to resolve.
-		</li>
 		<li>Run/import "/database_schema/create-db.sql" to mysql db (phpscheduleit2 db created)</li>
 		<li>Run/import "/database_schema/schema-utf8.sql" to phpscheduleit2 (db schema created)</li>
 		<li>Run/import "/database_schema/create-user.sql" to mysql db (schedule_user/password mysql account created to
@@ -155,7 +150,7 @@ OR<br/>
 			be created with 2 users:
 			admin/password and user/password). These users are available for testing your installation.
 		</li>
-		<li><span STYLE="color:red">You are done. Congratulations!</span>
+		<li><span STYLE="color:green;">You are done. Congratulations!</span>
 			Try to load the application at (eg. http://yourhostname/phpScheduleIt/Web/).
 		</li>
 	</ul>
@@ -163,10 +158,12 @@ OR<br/>
 
 <h1 class="section">Upgrading</h1>
 <a name="upgrading"></a>
-<h2>Upgrading from 2.0</h2>
+
+<h2>Upgrading from a previous version of phpScheduleIt 2</h2>
 
 <div>
-	The steps for upgrading from 2.0 are very similar to the steps described above in Application Deployment to Server.
+	The steps for upgrading from a previous version of phpScheduleIt 2 are very similar to the steps described above in
+	Application Deployment to Server.
 
 	<h3>Recommended</h3>
 
@@ -178,9 +175,34 @@ OR<br/>
 		one.</p>
 
 	<h3>Alternative</h3>
-	An alternative upgrade approach is to overwrite the current phpScheduleIt files with the new ones. If doing this,
-	you must delete the contents of /tpl_c. This approach will not allow you to roll back and will not clear out any
-	obsolete files.
+
+	<p>An alternative upgrade approach is to overwrite the current phpScheduleIt files with the new ones. If doing this,
+		you must delete the contents of /tpl_c. This approach will not allow you to roll back and will not clear out any
+		obsolete files.</p>
+
+	<h3>Database</h3>
+
+	<p>
+		After the application files have been upgraded you will need to upgrade the database.
+	</p>
+
+	<h4>Automatically</h4>
+
+	<p>The automatic database upgrade is exactly the same as the automatic database install. Please follow the
+		instructions in the Automatic Database Setup section above.</p>
+
+	<h4>Manually</h4>
+
+	<div>
+		The packaged database scripts make assumptions about your desired database configuration and set default values.
+		Please edit them to suit your environment before running. The files are located in
+		phpScheduleIt/database_schema/upgrades. <br/> <br/>
+		Depending on your current version, import the upgrade.sql file within each subdirectory to get to the current
+		version (we recommend <a
+			href="http://www.phpmyadmin.net/documentation/">phpMyAdmin</a> for this).<br/><br/>
+		For example, if you are running version 2.0 and the current version is 2.2 then you should run
+		phpScheduleIt/database_schema/upgrade/2.1/upgrade.sql then phpScheduleIt/database_schema/upgrade/2.2/upgrade.sql
+	</div>
 </div>
 
 <h2>Migrating from version 1.2</h2>

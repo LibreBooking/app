@@ -24,7 +24,7 @@
 	<property name="sql.file.data" value="database_schema/data-utf8.sql"/>
 	<property name="sql.file.test.data" value="database_schema/sample-data-utf8.sql"/>
 
-    <target name="setup.db" description="setting up the latest version of the database">
+	<target name="setup.db" description="setting up the latest version of the database">
 
 		<if>
 			<equals arg1="${mysql.password}" arg2=""/>
@@ -37,10 +37,10 @@
 			<property name="mysql.password" value="${mysql.password}"/>
 		</phingcall>
 
-        <phingcall target="upgrade.db">
+		<phingcall target="upgrade.db">
 			<property name="mysql.password" value="${mysql.password}"/>
 		</phingcall>
-    </target>
+	</target>
 
 	<target name="baseline.db" description="baseline db">
 
@@ -77,7 +77,7 @@
 			  dir="${mysql.bin}"/>
 	</target>
 
-    <target name="upgrade.db">
+	<target name="upgrade.db" depends="custom.tasks">
 
 		<if>
 			<equals arg1="${mysql.password}" arg2=""/>
@@ -86,17 +86,11 @@
 			</then>
 		</if>
 
-		<copy todir="${phing.tasks.dir}">
-            <fileset dir="phing-tasks">
-                    <include name="*.php" />
-            </fileset>
-        </copy>
-
-        <taskdef name="upgradedb" classname="phing.tasks.my.UpgradeDbTask" />
-        <upgradedb username="${mysql.username}" password="${mysql.password}"
-                   host="${mysql.server}" database="${mysql.database}"
-                   schemadir="${application.startdir}/database_schema" />
-    </target>
+		<taskdef name="upgradedb" classname="phing.tasks.my.UpgradeDbTask"/>
+		<upgradedb username="${mysql.username}" password="${mysql.password}"
+				   host="${mysql.server}" database="${mysql.database}"
+				   schemadir="${application.startdir}/database_schema"/>
+	</target>
 
 	<target name="package" description="packages all required files" depends="stage.files">
 		<delete dir="${zipdirectory}" failonerror="false"/>
@@ -104,11 +98,11 @@
 
 		<tstamp/>
 
-		<property name="zip.file.name" value="${zipdirectory}/${packagename}.zip" />
+		<property name="zip.file.name" value="${zipdirectory}/${packagename}.zip"/>
 		<if>
 			<equals arg1="${is.pre.release}" arg2="true"/>
 			<then>
-				<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip" />
+				<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip"/>
 			</then>
 		</if>
 
@@ -130,7 +124,7 @@
 		<delete dir="${staging}" failonerror="false"/>
 	</target>
 
-	<target name="stage.files">
+	<target name="stage.files" >
 		<delete dir="${staging}" failonerror="false"/>
 		<mkdir dir="${staging}"/>
 		<mkdir dir="${stagingdir}"/>
@@ -161,6 +155,17 @@
 				<exclude name="config/log4php.config.xml"/>
 			</fileset>
 		</copy>
+
+		<phingcall target="combine.db.files">
+
+		</phingcall>
+	</target>
+
+	<target name="combine.db.files" depends="custom.tasks">
+		<taskdef name="combinedbfiles" classname="phing.tasks.my.CombineDbFilesTask"/>
+		<combinedbfiles schemadir="${stagingdir}/database_schema"
+						schemaFile="${stagingdir}/${sql.file.create.schema}"
+						dataFile="${stagingdir}/${sql.file.data}"/>
 	</target>
 
 	<target name="create.demo" depends="stage.files">
@@ -168,11 +173,19 @@
 		<mkdir dir="${demo.dir}"/>
 		<copy todir="${demo.dir}" includeemptydirs="true">
 			<fileset dir="${stagingdir}">
-				<include name="**/*" />
+				<include name="**/*"/>
 			</fileset>
 		</copy>
 	</target>
 
 	<target name="minify" description="minify javascript and css files">
+	</target>
+
+	<target name="custom.tasks">
+		<copy todir="${phing.tasks.dir}">
+			<fileset dir="phing-tasks">
+				<include name="*.php"/>
+			</fileset>
+		</copy>
 	</target>
 </project>

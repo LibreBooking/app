@@ -168,6 +168,12 @@ class InstallPresenter
 		$install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
 		$currentVersion = $install->GetVersion();
 
+		if (!$currentVersion)
+		{
+			$this->page->ShowInstallOptions(true);
+			return;
+		}
+
 		if (floatval($currentVersion) < floatval(Configuration::VERSION))
 		{
 			$this->page->SetCurrentVersion($currentVersion);
@@ -179,7 +185,6 @@ class InstallPresenter
 			$this->page->ShowInstallOptions(true);
 		}
 	}
-
 }
 
 ?>

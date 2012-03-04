@@ -104,7 +104,6 @@ class UpgradeDbTask extends Task
 
     private function ExecuteFile($fullUpgradeDir, $fileName)
     {
-		print("password "  . $this->mysqlPassword);
         $dblink = mysql_connect($this->host, $this->username, $this->mysqlPassword);
 		if (!$dblink)
 		{
