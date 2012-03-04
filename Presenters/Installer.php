@@ -16,121 +16,245 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-
-/**
- *
  */
-class Installer {
 
-    private $user;
-    private $password;
+class Installer
+{
+	/**
+	 * @var string
+	 */
+	private $user;
 
-    public function __construct($user, $password) {
-        $this->user = $user;
-        $this->password = $password;
-    }
+	/**
+	 * @var string
+	 */
+	private $password;
 
-    /**
-     * @param $should_create_db bool
-     * @param $should_create_user bool
-     * @param $should_create_sample_data bool
-     * @return array|InstallationResult[]
-     */
-    public function InstallFresh($should_create_db, $should_create_user, $should_create_sample_data) {
-        $results = array();
-        // Calling static method of class Configuration
-        $config = Configuration::Instance();
-        // Get and Set configuration values
-        $hostname = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
-        $database_name = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
-        $database_user = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
-        $database_password = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_PASSWORD);
-        // Instantiating create-db sql string
-        $create_database = new MySqlScript(ROOT_DIR . 'database_schema/create-db.sql');
-        // Replacing the above default values with configured values
-        $create_database->Replace('phpscheduleit2', $database_name);
-        // Instantiating create-user sql string
-        $create_user = new MySqlScript(ROOT_DIR . 'database_schema/create-user.sql');
-        // Replacing the above default values with configured values
-        $create_user->Replace('phpscheduleit2', $database_name);
-        $create_user->Replace('schedule_user', $database_user);
-        $create_user->Replace('localhost', $hostname);
-        $create_user->Replace('password', $database_password);
-        // Instantiating sample-data-utf8 sql string
-        $populate_sample_data = new MySqlScript(ROOT_DIR . 'database_schema/sample-data-utf8.sql');
-        // Replacing the above default values with configured values
-        $populate_sample_data->Replace('phpscheduleit2', $database_name);
-        // Instantiating the rest
-        $create_schema = new MySqlScript(ROOT_DIR . 'database_schema/schema-utf8.sql');
-        $populate_data = new MySqlScript(ROOT_DIR . 'database_schema/data-utf8.sql');
+	public function __construct($user, $password)
+	{
+		$this->user = $user;
+		$this->password = $password;
+	}
 
-        /**
-         *
-         */
-        if ($should_create_db) {
-            $results[] = $this->ExecuteScript($hostname, 'mysql', $this->user, $this->password, $create_database);
-        }
+	/**
+	 * @param $should_create_db bool
+	 * @param $should_create_user bool
+	 * @param $should_create_sample_data bool
+	 * @return array|InstallationResult[]
+	 */
+	public function InstallFresh($should_create_db, $should_create_user, $should_create_sample_data)
+	{
+		$results = array();
+		$config = Configuration::Instance();
 
-        $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $create_schema);
+		$hostname = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
+		$database_name = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
+		$database_user = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
+		$database_password = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_PASSWORD);
 
-        /**
-         *
-         */
-        if ($should_create_user) {
-            $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $create_user);
-        }
+		$create_database = new MySqlScript(ROOT_DIR . 'database_schema/create-db.sql');
+		$create_database->Replace('phpscheduleit2', $database_name);
 
-        $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_data);
+		$create_user = new MySqlScript(ROOT_DIR . 'database_schema/create-user.sql');
+		$create_user->Replace('phpscheduleit2', $database_name);
+		$create_user->Replace('schedule_user', $database_user);
+		$create_user->Replace('localhost', $hostname);
+		$create_user->Replace('password', $database_password);
 
-        /**
-         * Populate sample data given in /phpScheduleIt/database_schema/sample-data-utf8.sql
-         */
-        if ($should_create_sample_data) {
-            $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_sample_data);
-        }
+		$populate_sample_data = new MySqlScript(ROOT_DIR . 'database_schema/sample-data-utf8.sql');
+		$populate_sample_data->Replace('phpscheduleit2', $database_name);
 
-        return $results;
-    }
+		$create_schema = new MySqlScript(ROOT_DIR . 'database_schema/schema-utf8.sql');
+		$populate_data = new MySqlScript(ROOT_DIR . 'database_schema/data-utf8.sql');
 
-    public function ExecuteScript($hostname, $database_name, $db_user, $db_password, MySqlScript $script) {
-        $result = new InstallationResult($script->Name());
+		if ($should_create_db)
+		{
+			$results[] = $this->ExecuteScript($hostname, 'mysql', $this->user, $this->password, $create_database);
+		}
 
-        $sqlErrorCode = 0;
-        $sqlErrorText = null;
-        $sqlStmt = null;
+		$results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $create_schema);
 
-        $link = mysql_connect($hostname, $db_user, $db_password);
-        if (!$link) {
-            $result->SetConnectionError();
-            return $result;
-        }
+		if ($should_create_user)
+		{
+			$results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $create_user);
+		}
 
-        $select_db_result = mysql_select_db($database_name, $link);
-        if (!$select_db_result) {
+		$results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_data);
 
-            $result->SetAuthenticationError();
-            return $result;
-        }
+		/**
+		 * Populate sample data given in /phpScheduleIt/database_schema/sample-data-utf8.sql
+		 */
+		if ($should_create_sample_data)
+		{
+			$results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_sample_data);
+		}
 
-        $sqlArray = explode(';', $script->GetFullSql());
-        foreach ($sqlArray as $stmt) {
-            if (strlen($stmt) > 3 && substr(ltrim($stmt), 0, 2) != '/*') {
-                $queryResult = mysql_query($stmt);
-                if (!$queryResult) {
-                    $sqlErrorCode = mysql_errno();
-                    $sqlErrorText = mysql_error();
-                    $sqlStmt = $stmt;
-                    break;
-                }
-            }
-        }
+		$upgradeResults = $this->Upgrade();
+		$results = array_merge($results, $upgradeResults);
+		return $results;
+	}
 
-        $result->SetResult($sqlErrorCode, $sqlErrorText, $sqlStmt);
+	/**
+	 * @return array|InstallationResult[]
+	 */
+	public function Upgrade()
+	{
+		$results = array();
 
-        return $result;
-    }
+		$upgradeDir = ROOT_DIR . 'database_schema/upgrades';
+		$upgrades = scandir($upgradeDir);
+
+		$currentVersion = $this->GetVersion();
+
+		usort($upgrades, array($this, 'SortDirectories'));
+
+		foreach ($upgrades as $upgrade)
+		{
+			if ($upgrade === '.' || $upgrade === '..' || strpos($upgrade, '.') === 0)
+			{
+				continue;
+			}
+
+			$upgradeResults = $this->ExecuteUpgrade($upgradeDir, $upgrade, $currentVersion);
+			$results = array_merge($results, $upgradeResults);
+		}
+
+		return $results;
+	}
+
+	/**
+	 * @param string $upgradeDir
+	 * @param string $versionNumber
+	 * @param string $currentVersion
+	 * @return array|InstallationResult[]
+	 */
+	private function ExecuteUpgrade($upgradeDir, $versionNumber, $currentVersion)
+	{
+		$results = array();
+		$fullUpgradeDir = "$upgradeDir/$versionNumber";
+		if (!is_dir($fullUpgradeDir))
+		{
+			$results[] = new InstallationResultSkipped($versionNumber);
+		}
+		else
+		{
+			$greaterThanCurrent = floatval($versionNumber) > floatval($currentVersion);
+
+			if ($greaterThanCurrent)
+			{
+				$config = Configuration::Instance();
+				$hostname = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
+				$database_name = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
+				$database_user = $this->user;
+				$database_password = $this->password;
+
+				$create_schema = new MySqlScript("$fullUpgradeDir/schema.sql");
+				$results[] = $this->ExecuteScript($hostname, $database_name, $database_user, $database_password, $create_schema);
+
+				$populate_data = new MySqlScript("$fullUpgradeDir/data.sql");
+				$results[] = $this->ExecuteScript($hostname, $database_name, $database_user, $database_password, $populate_data);
+			}
+		}
+		return $results;
+	}
+
+	private function SortDirectories($dir1, $dir2)
+	{
+		$d1 = floatval($dir1);
+		$d2 = floatval($dir2);
+
+		if ($d1 == $d2)
+		{
+			return 0;
+		}
+		return ($d1 < $d2) ? -1 : 1;
+	}
+
+	protected function ExecuteScript($hostname, $database_name, $db_user, $db_password, MySqlScript $script)
+	{
+		$result = new InstallationResult($script->Name());
+
+		$sqlErrorCode = 0;
+		$sqlErrorText = null;
+		$sqlStmt = null;
+
+		$link = @mysql_connect($hostname, $db_user, $db_password);
+		if (!$link)
+		{
+			$result->SetConnectionError();
+			return $result;
+		}
+
+		$select_db_result = @mysql_select_db($database_name, $link);
+		if (!$select_db_result)
+		{
+			$result->SetAuthenticationError();
+			return $result;
+		}
+
+		$sqlArray = explode(';', $script->GetFullSql());
+		foreach ($sqlArray as $stmt)
+		{
+			if (strlen($stmt) > 3 && substr(ltrim($stmt), 0, 2) != '/*')
+			{
+				$queryResult = @mysql_query($stmt);
+				if (!$queryResult)
+				{
+					$sqlErrorCode = mysql_errno();
+					$sqlErrorText = mysql_error();
+					$sqlStmt = $stmt;
+					break;
+				}
+			}
+		}
+
+		$result->SetResult($sqlErrorCode, $sqlErrorText, $sqlStmt);
+
+		return $result;
+	}
+
+	/**
+	 * @return float
+	 */
+	public function GetVersion()
+	{
+		// if dbversion table does not exist or version in db is less than current
+
+		$config = Configuration::Instance();
+		$hostname = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
+		$database_name = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
+		$database_user = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
+		$database_password = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_PASSWORD);
+
+		$link = mysql_connect($hostname, $database_user, $database_password);
+		if (!$link)
+		{
+			return false;
+		}
+
+		$select_db_result = mysql_select_db($database_name, $link);
+		if (!$select_db_result)
+		{
+			return false;
+		}
+
+		$getVersion = 'SELECT * FROM dbversion';
+		$result = mysql_query($getVersion);
+
+		if (!$result)
+		{
+			return 2.0;
+		}
+
+		if ($row = mysql_fetch_assoc($result))
+		{
+			return $row['version_number'];
+		}
+
+		return 2.0;
+	}
+
 
 }
+
 ?>

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 
 /**
@@ -29,107 +29,157 @@ require_once(ROOT_DIR . 'Presenters/InstallationResult.php');
 /**
  * Installation Presenter class
  */
-class InstallPresenter {
+class InstallPresenter
+{
 
-    /**
-     * @var \IInstallPage
-     */
-    private $page;
+	/**
+	 * @var \IInstallPage
+	 */
+	private $page;
 
-    const VALIDATED_INSTALL = 'validated_install';
+	const VALIDATED_INSTALL = 'validated_install';
 
-    public function __construct(IInstallPage $page) {
-        //ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, null);
-        $this->page = $page;
-    }
+	public function __construct(IInstallPage $page)
+	{
+		$this->page = $page;
+	}
 
-    /**
-     * Get and Set data to be process by template engine
-     * @return type
-     */
-    public function PageLoad() {
-        if ($this->page->RunningInstall()) {
-            $this->RunInstall();
-            return;
-        }
+	/**
+	 * Get and Set data to be process by template engine
+	 * @return void
+	 */
+	public function PageLoad()
+	{
+		if ($this->page->RunningInstall())
+		{
+			$this->RunInstall();
+			return;
+		}
 
-        $dbname = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
-        $dbuser = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
-        $dbhost = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
+		if ($this->page->RunningUpgrade())
+		{
+			$this->RunUpgrade();
+			return;
+		}
 
-        $this->page->SetDatabaseConfig($dbname, $dbuser, $dbhost);
+		$dbname = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
+		$dbuser = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
+		$dbhost = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
 
-        $this->CheckForInstallPasswordInConfig();
-        $this->CheckForInstallPasswordProvided();
-        $this->CheckForAuthentication();
-    }
+		$this->page->SetDatabaseConfig($dbname, $dbuser, $dbhost);
 
-    public function CheckForInstallPasswordInConfig() {
-        $installPassword = Configuration::Instance()->GetKey(ConfigKeys::INSTALLATION_PASSWORD);
+		$this->CheckForInstallPasswordInConfig();
+		$this->CheckForInstallPasswordProvided();
+		$this->CheckForAuthentication();
+		$this->CheckForUpgrade();
+	}
 
-        if (empty($installPassword)) {
-            $this->page->SetInstallPasswordMissing(true);
-            return;
-        }
+	public function CheckForInstallPasswordInConfig()
+	{
+		$installPassword = Configuration::Instance()->GetKey(ConfigKeys::INSTALLATION_PASSWORD);
 
-        $this->page->SetInstallPasswordMissing(false);
-    }
+		if (empty($installPassword))
+		{
+			$this->page->SetInstallPasswordMissing(true);
+			return;
+		}
 
-    private function CheckForInstallPasswordProvided() {
-        if ($this->IsAuthenticated()) {
-            return;
-        }
+		$this->page->SetInstallPasswordMissing(false);
+	}
 
-        $installPassword = $this->page->GetInstallPassword();
+	private function CheckForInstallPasswordProvided()
+	{
+		if ($this->IsAuthenticated())
+		{
+			return;
+		}
 
-        if (empty($installPassword)) {
-            $this->page->SetShowPasswordPrompt(true);
-            return;
-        }
+		$installPassword = $this->page->GetInstallPassword();
 
-        $validated = $this->Validate($installPassword);
-        if (!$validated) {
-            $this->page->SetShowPasswordPrompt(true);
-            $this->page->SetShowInvalidPassword(true);
-            return;
-        }
+		if (empty($installPassword))
+		{
+			$this->page->SetShowPasswordPrompt(true);
+			return;
+		}
 
-        $this->page->SetShowPasswordPrompt(false);
-        $this->page->SetShowInvalidPassword(false);
-    }
+		$validated = $this->Validate($installPassword);
+		if (!$validated)
+		{
+			$this->page->SetShowPasswordPrompt(true);
+			$this->page->SetShowInvalidPassword(true);
+			return;
+		}
 
-    private function CheckForAuthentication() {
-        if ($this->IsAuthenticated()) {
-            $this->page->SetShowDatabasePrompt(true);
-            return;
-        }
+		$this->page->SetShowPasswordPrompt(false);
+		$this->page->SetShowInvalidPassword(false);
+	}
 
-        $this->page->SetShowDatabasePrompt(false);
-    }
+	private function CheckForAuthentication()
+	{
+		if ($this->IsAuthenticated())
+		{
+			$this->page->SetShowDatabasePrompt(true);
+			return;
+		}
 
-    private function IsAuthenticated() {
-        return ServiceLocator::GetServer()->GetSession(SessionKeys::INSTALLATION) == self::VALIDATED_INSTALL;
-    }
+		$this->page->SetShowDatabasePrompt(false);
+	}
 
-    private function Validate($installPassword) {
-        $validated = $installPassword == Configuration::Instance()->GetKey(ConfigKeys::INSTALLATION_PASSWORD);
+	private function IsAuthenticated()
+	{
+		return ServiceLocator::GetServer()->GetSession(SessionKeys::INSTALLATION) == self::VALIDATED_INSTALL;
+	}
 
-        if ($validated) {
-            ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, self::VALIDATED_INSTALL);
-        } else {
-            ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, null);
-        }
+	private function Validate($installPassword)
+	{
+		$validated = $installPassword == Configuration::Instance()->GetKey(ConfigKeys::INSTALLATION_PASSWORD);
 
-        return $validated;
-    }
+		if ($validated)
+		{
+			ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, self::VALIDATED_INSTALL);
+		} else
+		{
+			ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, null);
+		}
 
-    private function RunInstall() {
-        $install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
+		return $validated;
+	}
 
-        $results = $install->InstallFresh($this->page->GetShouldCreateDatabase(), $this->page->GetShouldCreateUser(), $this->page->GetShouldCreateSampleData());
+	private function RunInstall()
+	{
+		$install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
 
-        $this->page->SetInstallResults($results);
-    }
+		$results = $install->InstallFresh($this->page->GetShouldCreateDatabase(), $this->page->GetShouldCreateUser(), $this->page->GetShouldCreateSampleData());
+
+		$this->page->SetInstallResults($results);
+	}
+
+	private function RunUpgrade()
+	{
+		$install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
+
+		$results = $install->Upgrade();
+
+		$this->page->SetUpgradeResults($results, Configuration::VERSION);
+	}
+
+	private function CheckForUpgrade()
+	{
+		$install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
+		$currentVersion = $install->GetVersion();
+
+		if (floatval($currentVersion) < floatval(Configuration::VERSION))
+		{
+			$this->page->SetCurrentVersion($currentVersion);
+			$this->page->SetTargetVersion(Configuration::VERSION);
+			$this->page->ShowUpgradeOptions(true);
+		}
+		else
+		{
+			$this->page->ShowInstallOptions(true);
+		}
+	}
 
 }
+
 ?>

@@ -48,9 +48,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             <ul class="no-style">
                 <li>1) Verify the following default settings before continuing. Or you can change them in /config/config.php.
                     <ul class="no-style" style="margin-left: 20px;">
-                        <li>Database Name: {$dbname}</li>
-                        <li>Database User: {$dbuser} (this is not any application user, but the user for your database: {$dbname})</li>
-                        <li>Database Host: {$dbhost} (or localhost)</li>
+                        <li><b>Database Name:</b> {$dbname}</li>
+                        <li><b>Database User:</b> {$dbuser} (this is not any application user, but the user for your database: {$dbname})</li>
+                        <li><b>Database Host:</b> {$dbhost} (or localhost)</li>
                     </ul>
                 </li>
                 <li>&nbsp;</li>
@@ -60,13 +60,21 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 <li>Password</li>
                 <li>{textbox type="password" name="INSTALL_DB_PASSWORD" class="textbox" size="20"}</li>
                 <li>&nbsp;</li>
-                <li>3)<i>The following options will not work in a hosted environment.  Please set up the database and user through your provider's database tools.</i></li>
-                <li><input type="checkbox" name="create_database" /> Create the database based on configruation /config/config.php ({$dbname})</li>
-                <li><input type="checkbox" name="create_user" /> Create the user based on configruation /config/config.php ({$dbuser})</li>
-                <li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and user/password for user</li>
-                <li>
-                    </br><button type="submit" name="run_install" class="button" value="submit">Run Installation {html_image src="arrow_large_right.png"}<br/>
-                </li>
+				{if $ShowInstallOptions}
+					<li>3)<i>The following options will not work in a hosted environment.  Please set up the database and user through your provider's database tools.</i></li>
+					<li><input type="checkbox" name="create_database" /> Create the database based on configruation /config/config.php ({$dbname})</li>
+					<li><input type="checkbox" name="create_user" /> Create the user based on configruation /config/config.php ({$dbuser})</li>
+					<li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and user/password for user</li>
+					<li>
+						<br/><button type="submit" name="run_install" class="button" value="submit">Run Installation {html_image src="arrow_large_right.png"}<br/>
+					</li>
+				{/if}
+				{if $ShowUpgradeOptions}
+					<li>3) You are upgrading from version <b>{$CurrentVersion}</b> to version <b>{$TargetVersion}</b></li>
+					<li>
+						<br/><button type="submit" name="run_upgrade" class="button" value="submit">Run Upgrade {html_image src="arrow_large_right.png"}<br/>
+					</li>
+				{/if}
             </ul>
         {/if}
 
@@ -89,9 +97,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             <li>
                 {if $InstallCompletedSuccessfully}
                     Summary: <br/> Installation completed successfully! <br/>
-                    1)<a href="{$Path}{Pages::LOGIN}"> Login </a>with admin/password for admin-user Or nkorbel/password for basic-user. This is sample data chosen to installed in previous page. Or <br/>
-                    2)<a href="{$Path}{Pages::REGISTRATION}"> Register </a>your admin-user/basic-user. This is email authentication method and it requires mail server configured to work successfully.
+                    1) <a href="{$Path}{Pages::LOGIN}">Login</a> with admin/password for admin-user Or user/password for basic-user. This is sample data chosen to installed in previous page. Or <br/>
+                    2) <a href="{$Path}{Pages::REGISTRATION}">Register</a> your admin-user/basic-user. This is email authentication method and it requires mail server configured to work successfully.
                 {/if}
+				{if $UpgradeCompletedSuccessfully}
+					You are now running version {$TargetVersion} of phpScheduleIt
+				{/if}
                 {if $InstallFailed}
                     Summary: <br/> There were problems with the installation.  Please correct them and retry the installation.
                 {/if}
