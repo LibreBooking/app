@@ -173,7 +173,7 @@ $(document).ready(function() {
 		deleteUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE}&{QueryStringKeys::BLACKOUT_ID}=',
 		addUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::ADD}',
         reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
-		popupUrl: "{$Path}ajax/respopup.php",
+		popupUrl: "{$Path}ajax/respopup.php"
 	};
 
 	
