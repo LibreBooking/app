@@ -150,7 +150,7 @@ class ReservationViewRepository implements IReservationViewRepository
         {
             $userId = self::ALL_USERS;
         }
-        if (empty($userLevel))
+        if (is_null($userLevel))
         {
             $userLevel = ReservationUserLevel::OWNER;
         }

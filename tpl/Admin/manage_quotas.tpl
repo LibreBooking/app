@@ -97,7 +97,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{/capture}
 			
 		{capture name="groups" assign="groups"}
-			<select class='textbox'> {formname key=GROUP}>
+			<select class='textbox' {formname key=GROUP}>
 				<option selected="selected" value=''>{translate key=AllGroups}</option>
 			{foreach from=$Groups item=group}
 				<option value='{$group->Id}'>{$group->Name}</option>
@@ -110,15 +110,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{/capture}
 		{capture name="unit" assign="unit"}
 			<select class='textbox' {formname key=UNIT}>
-				<option>{translate key=hours}</option>
-				<option>{translate key=reservations}</option>
+				<option value='{QuotaUnit::Hours}'>{translate key=hours}</option>
+				<option value='{QuotaUnit::Reservations}'>{translate key=reservations}</option>
 			</select>
 		{/capture}
 		{capture name="duration" assign="duration"}
 			<select class='textbox' {formname key=DURATION}>
-				<option>{translate key=day}</option>
-				<option>{translate key=week}</option>
-				<option>{translate key=month}</option>
+				<option value='{QuotaDuration::Day}'>{translate key=day}</option>
+				<option value='{QuotaDuration::Week}'>{translate key=week}</option>
+				<option value='{QuotaDuration::Month}'>{translate key=month}</option>
 			</select>
 		{/capture}
 
