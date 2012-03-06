@@ -161,5 +161,37 @@ class AccessoryAvailabilityRuleTests extends TestBase
 		$this->assertFalse($result->IsValid());
 		$this->assertFalse(is_null($result->ErrorMessage()));
 	}
+
+	public function testUnlimitedQuantity()
+	{
+		$accessory1 = new ReservationAccessory(1, 5);
+		$quantityAvailable = null;
+
+		$startDate = Date::Parse('2010-04-04', 'UTC');
+		$endDate = Date::Parse('2010-04-05', 'UTC');
+
+		$reservation = new TestReservationSeries();
+		$reservation->WithAccessory($accessory1);
+		$dr1 = new DateRange($startDate, $endDate);
+		$reservation->WithDuration($dr1);
+
+		$lowerQuantity1 = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 2);
+		$lowerQuantity2 = new AccessoryReservation(3, $startDate, $endDate, $accessory1->AccessoryId, 2);
+		$notOnReservation = new AccessoryReservation(4, $startDate, $endDate, 100, 1);
+
+		$this->accessoryRepository->expects($this->at(0))
+			->method('LoadById')
+			->with($accessory1->AccessoryId)
+			->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
+
+		$this->reservationRepository->expects($this->at(0))
+			->method('GetAccessoriesWithin')
+			->with($this->equalTo($dr1))
+			->will($this->returnValue(array($lowerQuantity1, $lowerQuantity2, $notOnReservation)));
+
+		$result = $this->rule->Validate($reservation);
+
+		$this->assertTrue($result->IsValid());
+	}
 }
 ?>

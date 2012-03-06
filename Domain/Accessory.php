@@ -101,6 +101,14 @@ class Accessory
 	{
 		return new Accessory(null, $name, $quantity);
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasUnlimitedQuantity()
+	{
+		return empty($this->quantityAvailable);
+	}
 }
 
 ?>

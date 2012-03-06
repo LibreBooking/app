@@ -65,7 +65,16 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 		foreach ($reservationAccessories as $accessory)
 		{
 			$a = $this->accessoryRepository->LoadById($accessory->AccessoryId);
-			$accessories[$a->GetId()] = new AccessoryToCheck($a, $accessory);
+			if (!$a->HasUnlimitedQuantity())
+			{
+				$accessories[$a->GetId()] = new AccessoryToCheck($a, $accessory);
+			}
+		}
+
+		if (count($accessories) == 0)
+		{
+			// no accessories with limited quantity to be reserved, no need to proceed
+			return new ReservationRuleResult();
 		}
 
 		$reservations = $reservationSeries->Instances();
