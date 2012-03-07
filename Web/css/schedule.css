@@ -3,6 +3,7 @@ table.reservations {
 	width: 100%;
 	font-size: 8pt;
 	table-layout: fixed;
+    border: solid #36648B 1px;
 }
 
 table.reservations td {
@@ -201,5 +202,6 @@ div.legend {
     border: solid #555 2px;
     text-align: center;
     display: inline-block;
+    *display: inline;
     margin: 0px 2px;
 }
