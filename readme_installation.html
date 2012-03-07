@@ -134,6 +134,38 @@ OR<br/>
 </div>
 
 <div>
+	<h4>On a remote host</h4>
+	<p>If you are installing phpScheduleIt on a remote host, please follow these steps. These steps assume you are using
+		cPanel.</p>
+
+	<p>Adding the database and user</p>
+
+	<ul>
+		<li>Select the MySQL Databases tool</li>
+		<li>Add a new user with username and password of your choice. This will be the username and password used in
+			your phpScheduleIt config file.
+		</li>
+		<li>Create a new database with whatever name you choose. This will be the name of the database in your
+			phpScheduleIt config file. 'phpSchedlueIt2' is the recommended database name.
+		</li>
+		<li>Associate the new user with the new database, giving the user permission to SELECT, CREATE, UPDATE, INSERT
+			and DELETE. Click the 'Add User to Db' button.
+	</ul>
+
+
+	<p>Creating tables</p>
+
+	<ul>
+		<li>Open phpMyAdmin.</li>
+		<li>Click on the database name that you just created in the left panel.</li>
+		<li>Click the SQL tab at the top of the page.</li>
+		<li>Import "/database_schema/schema-utf8.sql" to phpscheduleit2</li>
+		<li>Import "/database_schema/data-utf8.sql" to phpscheduleit2</li>
+	</ul>
+
+</div>
+<div>
+	<h4>If you have access to MySQL</h4>
 	<ul>
 		<li>Run/import "/database_schema/create-db.sql" to mysql db (phpscheduleit2 db created)</li>
 		<li>Run/import "/database_schema/schema-utf8.sql" to phpscheduleit2 (db schema created)</li>
@@ -150,11 +182,12 @@ OR<br/>
 			be created with 2 users:
 			admin/password and user/password). These users are available for testing your installation.
 		</li>
-		<li><span STYLE="color:green;">You are done. Congratulations!</span>
-			Try to load the application at (eg. http://yourhostname/phpScheduleIt/Web/).
-		</li>
 	</ul>
+
+	<span STYLE="color:green;">You are done. Congratulations!</span>
+				Try to load the application at (eg. http://yourhostname/phpScheduleIt/Web/).
 </div>
+
 
 <h1 class="section">Upgrading</h1>
 <a name="upgrading"></a>
