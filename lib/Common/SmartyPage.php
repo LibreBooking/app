@@ -328,7 +328,7 @@ class SmartyPage extends Smarty
 		{
 			$actualContent = trim($content);
 			return empty($actualContent) ? '' :
-					"<div class=\"$class\">
+					"<div class=\"$class\" style=\"background-image:none;\">
 					<table>
 						<tr>
 							<td><img src=\"img/alert.png\" alt=\"Alert\" width=\"60\" height=\"60\" /></td>
