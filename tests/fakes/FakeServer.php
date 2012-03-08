@@ -114,6 +114,11 @@ class FakeServer extends Server
     {
         return 'en_us';
     }
+
+    public function GetRemoteAddress()
+    {
+        return 'localhost';
+    }
 }
 
 ?>

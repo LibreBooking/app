@@ -90,7 +90,7 @@ class RegistrationPresenter
     {
         if (is_null($captchaService))
         {
-            $this->captchaService = CaptchaService::Create();
+            $this->captchaService = CaptchaService::Create(ServiceLocator::GetServer()->GetRemoteAddress());
         }
         else
         {

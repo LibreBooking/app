@@ -125,27 +125,27 @@ class ManageQuotasPresenterTests extends TestBase
 		$groupId = 8287;
 		$scheduleId = 400;
 		
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				->method('GetDuration')
 				->will($this->returnValue($duration));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				->method('GetLimit')
 				->will($this->returnValue($limit));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				->method('GetUnit')
 				->will($this->returnValue($unit));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				->method('GetResourceId')
 				->will($this->returnValue($resourceId));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				->method('GetGroupId')
 				->will($this->returnValue($groupId));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				->method('GetScheduleId')
 				->will($this->returnValue($scheduleId));
 		

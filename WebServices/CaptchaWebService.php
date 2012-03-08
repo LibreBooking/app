@@ -32,25 +32,41 @@ class CaptchaWebService extends RestServiceBase
 
     public function CreateImage(IRestServer $server)
     {
-        $img = $this->GetImage();
+        $ip = $server->GetQueryString('ip');
+        $img = $this->GetImage($ip);
 
         return new SecurimageRestResponse($img);
     }
 
     public function ValidateCaptcha(IRestServer $server)
     {
-        $captcha = $server->GetQueryString('captcha');
-        $securimage = $this->GetImage();
+        try
+        {
+            $captcha = $server->GetQueryString('captcha');
+            $ip = $server->GetQueryString('ip');
 
-        return new CaptchaRestResponse($securimage->check($captcha), $captcha);
+            $securimage = $this->GetImage($ip);
+            $isValid = $securimage->check($captcha);
+
+            Log::Debug("Captcha Validation for IP %s. Actual: %s", $ip, $captcha);
+
+            return new CaptchaRestResponse($isValid, $captcha);
+        }
+        catch(Exception $ex)
+        {
+            Log::Error("Error during captcha validation: %s", $ex);
+        }
+
+        return new NullRestResponse();
     }
 
     /**
+     * @param string $ip
      * @return Securimage
      */
-    private function GetImage()
+    private function GetImage($ip)
     {
-        $img = new Securimage();
+        $img = new Securimage(array(), $ip);
 
         // configure the captcha display
         $img->image_width = 280;

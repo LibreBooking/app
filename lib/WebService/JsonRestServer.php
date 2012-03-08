@@ -30,8 +30,9 @@ class JsonRestServer extends RestServerBase implements IRestServer
 	{
 		header('Content-type: application/json', true, $response->StatusCode);
 
-		$r = array('response' => $response->GetBody(), 'actions' => $response->Actions, 'message' => $response->Message);
-		echo json_encode($r);
+		//$r = array('response' => $response->GetBody(), 'actions' => $response->Actions, 'message' => $response->Message);
+		echo json_encode($response);
+        //echo json_encode($r);
 	}
 }
 

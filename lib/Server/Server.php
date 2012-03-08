@@ -153,9 +153,21 @@ class Server
         return null;
     }
 
+    /**
+     * @param string $headerCode
+     * @return string
+     */
     public function GetHeader($headerCode)
     {
         return $_SERVER[$headerCode];
+    }
+
+    /**
+     * @return string
+     */
+    public function GetRemoteAddress()
+    {
+        return $this->GetHeader('REMOTE_ADDR');
     }
 
 }

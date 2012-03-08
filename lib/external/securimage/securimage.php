@@ -341,6 +341,11 @@ class Securimage
     protected $gdtextcolor;
     protected $gdlinecolor;
     protected $gdsignaturecolor;
+
+    /**
+     * @var string
+     */
+    protected $ip;
     
     /**
      * Create a new securimage object, pass options to set in the constructor.<br />
@@ -358,10 +363,12 @@ class Securimage
      * $img = new Securimage($options);
      * </code>
      */
-    public function __construct($options = array())
+    public function __construct($options = array(), $ip)
     {
         $this->securimage_path = dirname(__FILE__);
-        
+
+        $this->ip = $ip;
+
         if (is_array($options) && sizeof($options) > 0) {
             foreach($options as $prop => $val) {
                 $this->$prop = $val;
@@ -1024,14 +1031,17 @@ class Securimage
         
         if (isset($_SESSION['securimage_code_value'][$this->namespace]) &&
          trim($_SESSION['securimage_code_value'][$this->namespace]) != '') {
+//            Log::Debug('securimage: Getting from session');
             if ($this->isCodeExpired(
             $_SESSION['securimage_code_ctime'][$this->namespace]) == false) {
                 $code = $_SESSION['securimage_code_value'][$this->namespace];
             }
         } else if ($this->use_sqlite_db == true && function_exists('sqlite_open')) {
+//            Log::Debug('securimage: Getting from database');
             // no code in session - may mean user has cookies turned off
             $this->openDatabase();
             $code = $this->getCodeFromDatabase();
+//            Log::Debug('securimage: Code from database: %s', $code);
         } else { /* no code stored in session or sqlite database, validation will fail */ }
         
         return $code;
@@ -1059,7 +1069,7 @@ class Securimage
         $this->openDatabase();
         
         if ($this->use_sqlite_db && $this->sqlite_handle !== false) {
-            $ip      = $_SERVER['REMOTE_ADDR'];
+            $ip      = $this->ip;   //$_SERVER['REMOTE_ADDR'];
             $time    = time();
             $code    = $_SESSION['securimage_code_value'][$this->namespace]; // if cookies are disabled the session still exists at this point
             $success = sqlite_query($this->sqlite_handle,
@@ -1101,7 +1111,7 @@ class Securimage
         $code = '';
 
         if ($this->use_sqlite_db && $this->sqlite_handle !== false) {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = $this->ip;    //$_SERVER['REMOTE_ADDR'];
             $ns = sqlite_escape_string($this->namespace);
 
             $res = sqlite_query($this->sqlite_handle, "SELECT * FROM codes WHERE ip = '$ip' AND namespace = '$ns'");
@@ -1122,7 +1132,7 @@ class Securimage
     protected function clearCodeFromDatabase()
     {
         if (is_resource($this->sqlite_handle)) {
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip = $this->ip;    //$_SERVER['REMOTE_ADDR'];
             $ns = sqlite_escape_string($this->namespace);
             
             sqlite_query($this->sqlite_handle, "DELETE FROM codes WHERE ip = '$ip' AND namespace = '$ns'");
