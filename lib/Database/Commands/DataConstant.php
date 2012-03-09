@@ -377,6 +377,17 @@ class Queries
             'SELECT *
 		FROM resources r';
 
+    const GET_ALL_RESOURCE_ADMINS =
+            'SELECT *
+        FROM users
+        WHERE status_id = @user_statusid AND
+        user_id IN (
+            SELECT user_id
+            FROM user_groups ug
+            INNER JOIN groups g ON ug.group_id = g.group_id
+            INNER JOIN group_roles gr ON g.group_id = gr.group_id AND gr.role_id = @application_admin_role_id
+          )';
+
     const GET_ALL_SCHEDULES =
             'SELECT *
 		FROM schedules s

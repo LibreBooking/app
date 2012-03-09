@@ -22,19 +22,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Domain/User.php');
 require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
 
-interface IUserRepository
+interface IUserRepository extends IUserViewRepository
 {
-    /**
-     * @return array[int]UserDto
-     */
-    function GetAll();
-
-    /**
-     * @param int $userId
-     * @return UserDto
-     */
-    function GetById($userId);
-
     /**
      * @param int $userId
      * @return User
@@ -60,12 +49,37 @@ interface IUserRepository
      * @return void
      */
     function DeleteById($userId);
+}
+
+interface IUserViewRepository
+{
+    /**
+     * @param int $userId
+     * @return UserDto
+     */
+    function GetById($userId);
+
+    /**
+     * @return array[int]UserDto
+     */
+    function GetAll();
+
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param null|string $sortField
+     * @param null|string $sortDirection
+     * @param null|ISqlFilter $filter
+     * @return PageableData|UserItemView[]
+     */
+    public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
     /**
      * @param int $resourceId
      * @return array|UserDto[]
      */
     function GetResourceAdmins($resourceId);
+
 
     /**
      * @abstract
@@ -76,20 +90,7 @@ interface IUserRepository
     function LoadGroups($userId, $roleLevel = null);
 }
 
-interface IUserViewRepository
-{
-    /**
-     * @param int $pageNumber
-     * @param int $pageSize
-     * @param null|string $sortField
-     * @param null|string $sortDirection
-     * @param null|ISqlFilter $filter
-     * @return PageableData|UserItemView[]
-     */
-    public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
-}
-
-class UserRepository implements IUserRepository, IUserViewRepository
+class UserRepository implements IUserRepository
 {
     /**
      * @var DomainCache
@@ -302,8 +303,23 @@ class UserRepository implements IUserRepository, IUserViewRepository
         return $emailPreferences;
     }
 
+    /**
+     * @param int $resourceId
+     * @return array|UserDto[]
+     */
     public function GetResourceAdmins($resourceId)
     {
+        $command = new GetAllUsersByStatusCommand(AccountStatus::ACTIVE);
+
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+        $users = array();
+
+        while ($row = $reader->GetRow())
+        {
+            $users[] = new UserDto($row[ColumnNames::USER_ID], $row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME], $row[ColumnNames::EMAIL], $row[ColumnNames::TIMEZONE_NAME], $row[ColumnNames::LANGUAGE_CODE]);
+        }
+
+        return $users;
         //TODO: Implement for real
         // needs first name, last name, email, language, timezone
         return array();

@@ -26,16 +26,22 @@ abstract class AdminEmailNotification implements IReservationNotification
 	/**
 	 * @var IUserRepository
 	 */
-	private $_userRepo;
+	private $userRepo;
 
-	/**
-	 * @param IUserRepository $userRepo
-	 */
-	public function __construct(IUserRepository $userRepo)
+    /**
+     * @var IUserViewRepository
+     */
+    private $userViewRepo;
+
+    /**
+     * @param IUserRepository $userRepo
+     * @param IUserViewRepository $userViewRepo
+     */
+	public function __construct(IUserRepository $userRepo, IUserViewRepository $userViewRepo)
 	{
-		$this->_userRepo = $userRepo;
+		$this->userRepo = $userRepo;
+		$this->userViewRepo = $userViewRepo;
 	}
-
 
 	/**
 	 * @param ReservationSeries $reservationSeries
@@ -48,8 +54,8 @@ abstract class AdminEmailNotification implements IReservationNotification
 			return;
 		}
 
-		$admins = $this->_userRepo->GetResourceAdmins($reservationSeries->ResourceId());
-		$owner = $this->_userRepo->LoadById($reservationSeries->UserId());
+		$admins = $this->userViewRepo->GetResourceAdmins($reservationSeries->ResourceId());
+		$owner = $this->userRepo->LoadById($reservationSeries->UserId());
 		$resource = $reservationSeries->Resource();
 			
 		foreach ($admins as $admin)

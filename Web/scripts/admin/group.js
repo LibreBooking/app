@@ -203,8 +203,8 @@ function GroupManagement(opts) {
 
 			$('#totalUsers').text(data.Total);
 			$.map(data.Users, function(item) {
-				items.push('<li><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.FirstName + ' ' + item.LastName + '<input type="hidden" class="id" value="' + item.UserId + '"/></li>');
-				userIds[item.UserId] = item.UserId;
+				items.push('<li><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.First + ' ' + item.Last + '<input type="hidden" class="id" value="' + item.Id + '"/></li>');
+				userIds[item.Id] = item.Id;
 			});
 
 			elements.groupUserList.empty();
