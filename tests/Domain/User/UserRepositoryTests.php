@@ -332,7 +332,7 @@ class UserRepositoryTests extends TestBase
         $this->assertEquals($expectedId, $user->Id());
     }
 
-    public function testGetsResourceAndApplicationAdmins()
+    public function testGetsResourceAdmins()
     {
         $resourceId = 123;
         $repo = new UserRepository();

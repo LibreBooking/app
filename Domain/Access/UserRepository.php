@@ -309,7 +309,7 @@ class UserRepository implements IUserRepository
      */
     public function GetResourceAdmins($resourceId)
     {
-        $command = new GetAllUsersByStatusCommand(AccountStatus::ACTIVE);
+        $command = new GetAllResourceAdminsCommand($resourceId);
 
         $reader = ServiceLocator::GetDatabase()->Query($command);
         $users = array();
@@ -320,9 +320,6 @@ class UserRepository implements IUserRepository
         }
 
         return $users;
-        //TODO: Implement for real
-        // needs first name, last name, email, language, timezone
-        return array();
     }
 
     private function LoadPermissions($userId)

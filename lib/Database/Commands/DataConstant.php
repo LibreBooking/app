@@ -385,7 +385,10 @@ class Queries
             SELECT user_id
             FROM user_groups ug
             INNER JOIN groups g ON ug.group_id = g.group_id
-            INNER JOIN group_roles gr ON g.group_id = gr.group_id AND gr.role_id = @application_admin_role_id
+            INNER JOIN group_roles gr ON g.group_id = gr.group_id
+            INNER JOIN roles ON roles.role_id = gr.role_id AND roles.role_level = @role_level
+            INNER JOIN resources r ON g.group_id = r.admin_group_id
+            WHERE r.resource_id = @resourceid
           )';
 
     const GET_ALL_SCHEDULES =

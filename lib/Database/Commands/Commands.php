@@ -616,8 +616,7 @@ class GetAllResourceAdminsCommand extends SqlCommand
         parent::__construct(Queries::GET_ALL_RESOURCE_ADMINS);
         $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, AccountStatus::ACTIVE));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
-        $this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL_APP_ADMIN, RoleLevel::APPLICATION_ADMIN));
-        $this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL_RESOURCE_ADMIN, RoleLevel::RESOURCE_ADMIN));
+        $this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, RoleLevel::RESOURCE_ADMIN));
     }
 }
 

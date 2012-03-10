@@ -110,6 +110,7 @@ function GroupManagement(opts) {
 
 		elements.userSearch.userAutoComplete(options.userAutocompleteUrl, function(ui) {
 			addUserToGroup(ui.item.value);
+			elements.userSearch.val('');
 		});
 
 		elements.groupList.delegate('.groupAdmin', 'click', function() {
