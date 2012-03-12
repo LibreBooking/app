@@ -32,6 +32,10 @@ class CaptchaWebService extends RestServiceBase
 
     public function CreateImage(IRestServer $server)
     {
+		if (!function_exists('sqlite_open'))
+		{
+			Log::Error('php_sqlite extension must be enabled in php.ini for captcha to work');
+		}
         $ip = $server->GetQueryString('ip');
         $img = $this->GetImage($ip);
 
@@ -48,7 +52,7 @@ class CaptchaWebService extends RestServiceBase
             $securimage = $this->GetImage($ip);
             $isValid = $securimage->check($captcha);
 
-            Log::Debug("Captcha Validation for IP %s. Actual: %s", $ip, $captcha);
+            Log::Debug("Captcha Validation for IP %s. Entered: %s", $ip, $captcha);
 
             return new CaptchaRestResponse($isValid, $captcha);
         }
@@ -113,5 +117,4 @@ class SecurimageRestResponse implements IExactRestResponse
         $this->img->show();
     }
 }
-
 ?>

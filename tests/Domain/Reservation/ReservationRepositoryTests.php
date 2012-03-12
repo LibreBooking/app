@@ -691,6 +691,39 @@ class ReservationRepositoryTests extends TestBase
         $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, $newOwner, ReservationUserLevel::OWNER)));
     }
 
+	public function testEventsWhichAreNotNecessaryWhenSeriesIsBranchedAreIgnored()
+	{
+		$oldOwnerId = 100;
+		$newUserId = 200;
+		$resource = new FakeBookableResource(92);
+		$accessory = new ReservationAccessory(9292, 4);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->Build();
+		$instance = new Reservation($series, new TestDateRange(), 123123);
+		$series->WithCurrentInstance($instance);
+		$series->WithOwner($oldOwnerId);
+
+		$series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
+
+		$series->Update($newUserId, $series->Resource(), '', '', $this->fakeUser);
+		$series->ChangeResources(array($resource));
+		$series->ChangeAccessories(array($accessory));
+
+		$this->repository->Update($series);
+
+		$addResources = $this->db->GetCommandsOfType('AddReservationResourceCommand');
+		$addAccessories = $this->db->GetCommandsOfType('AddReservationAccessoryCommand');
+		$deleteResources = $this->db->GetCommandsOfType('RemoveReservationResourceCommand');
+		$deleteAccessories = $this->db->GetCommandsOfType('RemoveReservationAccessoryCommand');
+
+		$this->assertTrue($this->db->ContainsCommand(new AddReservationUserCommand($instance->ReservationId(), $newUserId, ReservationUserLevel::OWNER)));
+		$this->assertEquals(count($series->AdditionalResources()) +1, count($addResources), "dont want to double add");
+		$this->assertEquals(count($series->Accessories()), count($addAccessories));
+		$this->assertEquals(0, count($deleteResources));
+		$this->assertEquals(0, count($deleteAccessories));
+	}
+
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
 	{
 		return new UpdateReservationCommand(

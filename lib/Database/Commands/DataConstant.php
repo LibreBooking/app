@@ -375,7 +375,8 @@ class Queries
 
     const GET_ALL_RESOURCES =
             'SELECT *
-		FROM resources r';
+		FROM resources r
+		ORDER BY r.name';
 
     const GET_ALL_RESOURCE_ADMINS =
             'SELECT *
@@ -538,7 +539,7 @@ class Queries
 		FROM reservation_resources rr
 		INNER JOIN resources r ON rr.resource_id = r.resource_id
 		WHERE rr.series_id = @seriesid
-		ORDER BY resource_level_id, name';
+		ORDER BY resource_level_id, r.name';
 
     const GET_RESERVATION_SERIES_INSTANCES =
             'SELECT *
@@ -586,7 +587,8 @@ class Queries
 			resources r
 		WHERE 
 			r.schedule_id = @scheduleid AND
-			r.isactive = 1';
+			r.isactive = 1
+		ORDER BY r.name';
 
     const GET_USER_BY_ID =
             'SELECT
