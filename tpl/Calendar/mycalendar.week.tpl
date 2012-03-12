@@ -22,7 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div style="float:left;">
 		<a href="{$PrevLink}"><img src="img/arrow_large_left.png" alt="Back" /></a>
-		Week of {$MonthName} {$DisplayDate->Day()}, {$DisplayDate->Year()}
+		{$MonthName} {$DisplayDate->Day()}, {$DisplayDate->Year()} ({translate key=Week})
 		<a href="{$NextLink}"><img src="img/arrow_large_right.png" alt="Forward" /></a>
 	</div>
 
