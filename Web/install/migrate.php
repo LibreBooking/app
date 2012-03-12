@@ -226,6 +226,8 @@ class MigrationPresenter
 
     private function MigrateSchedules(Database $legacyDatabase, Database $currentDatabase)
     {
+		Log::Debug('Start migrating schedules');
+
         $schedulesMigrated = 0;
         $scheduleRepo = new ScheduleRepository();
 
@@ -266,11 +268,15 @@ class MigrationPresenter
             $schedulesMigrated++;
         }
 
+		Log::Debug('Done migrating schedules (%s schedules)', $schedulesMigrated);
+
         $this->page->SetSchedulesMigrated($schedulesMigrated);
     }
 
     private function MigrateResources(Database $legacyDatabase, Database $currentDatabase)
     {
+		Log::Debug('Start migrating resources');
+
         $resourcesMigrated = 0;
         $resourceRepo = new ResourceRepository();
 
@@ -298,9 +304,9 @@ class MigrationPresenter
 
             $newScheduleReader = $currentDatabase->Query(new AdHocCommand("select schedule_id from schedules where legacyId = \"{$row['scheduleid']}\""));
 
-            if ($row = $newScheduleReader->GetRow())
+            if ($srow = $newScheduleReader->GetRow())
             {
-                $newScheduleId = $row['schedule_id'];
+                $newScheduleId = $srow['schedule_id'];
             }
 
             $minTimeSeconds = $row['minres'] * 60;
@@ -328,11 +334,15 @@ class MigrationPresenter
             $resourcesMigrated++;
         }
 
+		Log::Debug('Done migrating resources (%s resources)', $resourcesMigrated);
+
         $this->page->SetResourcesMigrated($resourcesMigrated);
     }
 
     private function MigrateAccessories(Database $legacyDatabase, Database $currentDatabase)
     {
+		Log::Debug('Start migrating accessories');
+
         $accessoriesMigrated = 0;
         $accessoryRepo = new AccessoryRepository();
 
@@ -362,11 +372,14 @@ class MigrationPresenter
             $accessoriesMigrated++;
         }
 
+		Log::Debug('Done migrating accessories (%s accessories)', $accessoriesMigrated);
         $this->page->SetAccessoriesMigrated($accessoriesMigrated);
     }
 
     private function MigrateGroups(Database $legacyDatabase, Database $currentDatabase)
     {
+		Log::Debug('Start migrating groups');
+
         $groupsMigrated = 0;
         $groupRepo = new GroupRepository();
 
@@ -397,11 +410,15 @@ class MigrationPresenter
             $groupsMigrated++;
         }
 
+		Log::Debug('Done migrating groups (%s groups)', $groupsMigrated);
+
         $this->page->SetGroupsMigrated($groupsMigrated);
     }
 
     private function MigrateUsers(Database $legacyDatabase, Database $currentDatabase)
     {
+		Log::Debug('Start migrating users');
+
         $usersMigrated = 0;
         $userRepo = new UserRepository();
 
@@ -479,11 +496,15 @@ class MigrationPresenter
             $usersMigrated++;
         }
 
+		Log::Debug('Done migrating users (%s users)', $usersMigrated);
+
         $this->page->SetUsersMigrated($usersMigrated);
     }
 
     private function MigrateReservations(Database $legacyDatabase, Database $currentDatabase)
     {
+		Log::Debug('Start migrating reservations');
+
         $reservationsMigrated = 0;
         $reservationRepository = new ReservationRepository();
         $blackoutRepository = new BlackoutRepository();
@@ -611,6 +632,8 @@ class MigrationPresenter
                 $currentDatabase->Execute(new AdHocCommand("update reservation_series set legacyid = \"$legacyId\" where series_id = $newId"));
             }
         }
+
+		Log::Debug('Done migrating reservations (%s reservations)', $reservationsMigrated);
 
         $this->page->SetReservationsMigrated($reservationsMigrated);
     }
