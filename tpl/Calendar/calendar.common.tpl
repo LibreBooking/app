@@ -30,8 +30,8 @@ $(document).ready(function() {
 		reservations.push({
 			id: '{$reservation->ReferenceNumber}',
 			title: '{$reservation->OwnerName} - {$reservation->ResourceName} {$reservation->Title}',
-			start: '{$reservation->StartDate->Timestamp()}',
-			end: '{$reservation->EndDate->Timestamp()}',
+			start: '{format_date date=$reservation->StartDate key=fullcalendar}',
+			end: '{format_date date=$reservation->EndDate key=fullcalendar}',
 			url: '{Pages::RESERVATION}?rn={$reservation->ReferenceNumber}',
 			allDay: false
 		});
@@ -46,7 +46,9 @@ $(document).ready(function() {
 					dayNames: {js_array array=$DayNames},
 					dayNamesShort: {js_array array=$DayNamesShort},
 					monthNames: {js_array array=$MonthNames},
-					monthNamesShort: {js_array array=$MonthNamesShort}
+					monthNamesShort: {js_array array=$MonthNamesShort},
+					timeFormat: '{$TimeFormat}',
+					dayMonth: '{$DateFormat}'
 				};
 		
 	var calendar = new Calendar(options, reservations);

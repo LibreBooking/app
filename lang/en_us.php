@@ -37,8 +37,10 @@ class en_us extends Language
         $dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
         $dates['res_popup'] = 'm/d/Y g:i A';
         $dates['dashboard'] = 'l, m/d/Y g:i A';
-        $dates['period_time'] = "g:i A";
-		$dates['general_date_js'] = "mm/dd/yy";
+        $dates['period_time'] = 'g:i A';
+		$dates['general_date_js'] = 'mm/dd/yy';
+		$dates['calendar_time'] = 'h:mmt';
+		$dates['calendar_dates'] = 'M/d';
 
         $this->Dates = $dates;
     }

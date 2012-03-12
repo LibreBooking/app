@@ -19,7 +19,14 @@ function Calendar(opts, reservations)
 			dayNamesShort: _options.dayNamesShort,
 			monthNames: _options.monthNames,
 			monthNamesShort: _options.monthNamesShort,
-			weekMode: 'variable'
+			weekMode: 'variable',
+			timeFormat: _options.timeFormat,
+			columnFormat:  {
+				month: 'dddd',
+			    week: 'dddd ' + _options.dayMonth,
+			    day: 'dddd ' + _options.dayMonth
+			},
+			axisFormat: _options.timeFormat
 		});
 
 		$('.fc-widget-content').hover(
