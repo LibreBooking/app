@@ -38,9 +38,9 @@ class EmailService implements IEmailService
 			$this->phpMailer->IsHTML(true);
 			$this->phpMailer->Mailer = $this->Config('mailer');
 			$this->phpMailer->Host = $this->Config('smtp.host');
-			$this->phpMailer->Port = $this->Config('smtp.port');
+			$this->phpMailer->Port = $this->Config('smtp.port', new IntConverter());
 			$this->phpMailer->SMTPSecure = $this->Config('smtp.secure');
-			$this->phpMailer->SMTPAuth = $this->Config('smtp.auth');
+			$this->phpMailer->SMTPAuth = $this->Config('smtp.auth', new BooleanConverter());
 			$this->phpMailer->Username = $this->Config('smtp.username');
 			$this->phpMailer->Password = $this->Config('smtp.password');
 			$this->phpMailer->Sendmail = $this->Config('sendmail.path');
@@ -93,10 +93,15 @@ class EmailService implements IEmailService
 		
 		Log::Debug('Send success: %d. %s', $success, $this->phpMailer->ErrorInfo);
 	}
-	
-	private function Config($key)
+
+	/**
+	 * @param $key
+	 * @param IConvert|null $converter
+	 * @return mixed|string
+	 */
+	private function Config($key, $converter = null)
 	{
-		return Configuration::Instance()->GetSectionKey('phpmailer', $key);
+		return Configuration::Instance()->GetSectionKey('phpmailer', $key, $converter);
 	}
 
 	/**

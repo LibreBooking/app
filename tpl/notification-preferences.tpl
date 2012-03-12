@@ -93,7 +93,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 
-		<div style="clear:both;">
+		<div style="clear:both;margin-top: 15px;">
 			<button type="submit" class="button update prompt" name="{Actions::SAVE}">
 				<img src="img/tick-circle.png"/>
 				{translate key='Update'}
