@@ -33,7 +33,8 @@ class AvailableLanguages
         			'en_gb' => new AvailableLanguage('en_gb', 'en_gb.php', 'English GB'),
         			'es' => new AvailableLanguage('es', 'es.php', 'Espa&ntilde;ol'),
         			'fr_fr' => new AvailableLanguage('fr_fr', 'fr_fr.php', 'Fran&ccedil;ais'),
-        			'pl' => new AvailableLanguage('pl', 'pl.php', 'Polski'),
+        			'ja_jp' => new AvailableLanguage('ja_jp', 'ja_jp.php', 'Japanese'),
+					'pl' => new AvailableLanguage('pl', 'pl.php', 'Polski'),
         		);
     }
 }
