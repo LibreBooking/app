@@ -20,20 +20,22 @@ BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//phpScheduleIt//NONSGML {$phpScheduleItVersion}//EN
 METHOD:REQUEST
+{foreach from=$reservations item=reservation}
 BEGIN:VEVENT
-CREATED:{formatdate date=$DateCreated key=ical}
-DESCRIPTION:{$Description}
-DTEND:{formatdate date=$DateEnd key=ical}
-DTSTAMP:{formatdate date=$DateStamp key=ical}
-DTSTART:{formatdate date=$DateStart key=ical}
-LOCATION:{$ResourceName}
-ORGANIZER:MAILTO:{$OwnerEmail}
-{if $RecurRule neq ''}
-RRULE:{$RecurRule}
+CREATED:{formatdate date=$reservation->DateCreated key=ical}
+DESCRIPTION:{$reservation->Description}
+DTEND:{formatdate date=$reservation->DateEnd key=ical}
+DTSTAMP:{formatdate date=$reservation->DateStamp key=ical}
+DTSTART:{formatdate date=$reservation->DateStart key=ical}
+LOCATION:{$reservation->ResourceName}
+ORGANIZER:MAILTO:{$reservation->OwnerEmail}
+{if $reservation->RecurRule neq ''}
+RRULE:{$reservation->RecurRule}
 {/if}
-SUMMARY:{$Summary}
-UID:{$ReferenceNumber}&{$ScriptUrl}
-URL:{$ReservationUrl}
+SUMMARY:{$reservation->Summary}
+UID:{$reservation->ReferenceNumber}&{$ScriptUrl}
+URL:{$reservation->ReservationUrl}
 X-MICROSOFT-CDO-BUSYSTATUS:BUSY
 END:VEVENT
+{/foreach}
 END:VCALENDAR

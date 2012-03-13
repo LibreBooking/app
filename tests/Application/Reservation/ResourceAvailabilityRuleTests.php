@@ -220,6 +220,7 @@ class TestReservationItemView extends ReservationItemView
 		$this->EndDate = $endDate;
 		$this->ResourceId = $resourceId;
 		$this->Date = new DateRange($startDate, $endDate);
+		$this->RepeatType = RepeatType::None;
 	}
 }
 ?>

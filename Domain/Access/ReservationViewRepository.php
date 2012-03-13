@@ -204,7 +204,7 @@ class ReservationViewRepository implements IReservationViewRepository
             {
                 $reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
             }
-			$reservationView->Resources[] = new ReservationResourceView($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
+			$reservationView->Resources[] = new ReservationResourceView($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME], $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID]);
         }
     }
 
@@ -301,13 +301,13 @@ class ReservationViewRepository implements IReservationViewRepository
     }
 }
 
-class ReservationResourceView
+class ReservationResourceView implements IResource
 {
     private $_id;
     private $_resourceName;
     private $_adminGroupId;
 
-	public function __construct($resourceId, $resourceName = '')
+	public function __construct($resourceId, $resourceName = '', $adminGroupId)
     {
         $this->_id = $resourceId;
         $this->_resourceName = $resourceName;
@@ -639,6 +639,37 @@ class ReservationItemView implements IReservedItemView
      */
     public $RequiresApproval;
 
+	/**
+	 * @var string|RepeatType
+	 */
+	public $RepeatType;
+
+	/**
+	 * @var int
+	 */
+
+	public $RepeatInterval;
+	/**
+	 * @var array
+	 */
+
+	public $RepeatWeekdays;
+	/**
+	 * @var string|RepeatMonthlyType
+	 */
+
+	public $RepeatMonthlyType;
+	/**
+	 * @var Date
+	 */
+
+	public $RepeatTerminationDate;
+
+	/**
+	 * @var string
+	 */
+	public $OwnerEmailAddress;
+
     /**
      * @param $referenceNumber string
      * @param $startDate Date
@@ -724,6 +755,14 @@ class ReservationItemView implements IReservedItemView
 
         if (isset($row[ColumnNames::REPEAT_TYPE]))
         {
+			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
+
+			$view->RepeatType = $repeatConfig->Type;
+			$view->RepeatInterval = $repeatConfig->Interval;
+			$view->RepeatWeekdays = $repeatConfig->Weekdays;
+			$view->RepeatMonthlyType = $repeatConfig->MonthlyType;
+			$view->RepeatTerminationDate = $repeatConfig->TerminationDate;
+
             $view->IsRecurring = $row[ColumnNames::REPEAT_TYPE] != RepeatType::None;
         }
 
@@ -731,6 +770,11 @@ class ReservationItemView implements IReservedItemView
         {
             $view->RequiresApproval = $row[ColumnNames::RESERVATION_STATUS] == ReservationStatus::Pending;
         }
+
+		if (isset($row[ColumnNames::EMAIL]))
+		{
+			$view->OwnerEmailAddress = $row[ColumnNames::EMAIL];
+		}
 
         return $view;
     }
