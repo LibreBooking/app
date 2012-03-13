@@ -23,111 +23,113 @@ require_once(ROOT_DIR . 'Pages/Export/CalendarExportPage.php');
 
 class CalendarExportPresenter
 {
-	/**
-	 * @var \ICalendarExportPage
-	 */
-	private $page;
+    /**
+     * @var \ICalendarExportPage
+     */
+    private $page;
 
-	public function __construct(ICalendarExportPage $page, IReservationViewRepository $reservationViewRepository)
-	{
-		$this->page = $page;
-		$this->reservationViewRepository = $reservationViewRepository;
-	}
+    public function __construct(ICalendarExportPage $page, IReservationViewRepository $reservationViewRepository)
+    {
+        $this->page = $page;
+        $this->reservationViewRepository = $reservationViewRepository;
+    }
 
-	public function PageLoad()
-	{
-		//$res = $this->reservationViewRepository->GetReservationForEditing($this->page->GetReferenceNumber());
-		$list = $this->reservationViewRepository->GetList(1, 200, null, null, $this->GetFilter());
+    public function PageLoad()
+    {
+        $referenceNumber = $this->page->GetReferenceNumber();
+        $reservations = array();
 
-		$reservations = array();
-		/** @var $res ReservationItemView */
-		foreach ($list->Results() as $res)
-		{
-			$reservations[] = new iCalendarReservationView($res);
-		}
+        if (!empty($referenceNumber))
+        {
+            $res = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
+            $reservations = array(new iCalendarReservationView($res));
+        }
+        else
+        {
+//            $list = $this->reservationViewRepository->GetList(1, 200, null, null, $this->GetFilter());
+//
+//            /** @var $res ReservationItemView */
+//            foreach ($list->Results() as $res)
+//            {
+//                $reservations[] = new iCalendarReservationView($res);
+//            }
+        }
 
-		$this->page->SetReservations($reservations);
-	}
+        $this->page->SetReservations($reservations);
+    }
 
-	/**
-	 * @return ISqlFilter
-	 */
-	private function GetFilter()
-	{
-		$filter = new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, Date::Now()->AddDays(-7)->ToDatabase());
-		$filter->_And(new SqlFilterEquals(ColumnNames::REFERENCE_NUMBER, $this->page->GetReferenceNumber()));
-
-		return $filter;
-	}
 }
 
 class iCalendarReservationView
 {
-	public $DateCreated;
-	public $DateEnd;
-	public $DateStart;
-	public $Description;
-	public $Organizer;
-	public $RecurRule;
-	public $ReferenceNumber;
-	public $Summary;
-	public $ReservationUrl;
-	public $Location;
+    public $DateCreated;
+    public $DateEnd;
+    public $DateStart;
+    public $Description;
+    public $Organizer;
+    public $RecurRule;
+    public $ReferenceNumber;
+    public $Summary;
+    public $ReservationUrl;
+    public $Location;
 
-	public function __construct(ReservationItemView $res)
-	{
-		$this->DateCreated = $res->CreatedDate;
-		$this->DateEnd = $res->EndDate;
-		$this->DateStart = $res->StartDate;
-		$this->Description = $res->Description;
-		$this->Organizer = $res->OwnerEmailAddress;
-		$this->RecurRule = $this->CreateRecurRule($res);
-		$this->ReferenceNumber = $res->ReferenceNumber;
-		$this->Summary = $res->Title;
-		$this->ReservationUrl = sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $res->ReferenceNumber);
-		$this->Location = $res->ResourceName;
-	}
+    /**
+     * @param ReservationItemView|ReservationView $res
+     */
+    public function __construct($res)
+    {
+        $this->DateCreated = $res->DateCreated;
+        $this->DateEnd = $res->EndDate;
+        $this->DateStart = $res->StartDate;
+        $this->Description = $res->Description;
+        $this->Organizer = $res->OwnerEmailAddress;
+        $this->RecurRule = $this->CreateRecurRule($res);
+        $this->ReferenceNumber = $res->ReferenceNumber;
+        $this->Summary = $res->Title;
+        $this->ReservationUrl = sprintf("%s/%s?%s=%s", Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $res->ReferenceNumber);
+        $this->Location = $res->ResourceName;
+    }
 
-	/**
-	 * @param ReservationItemView $res
-	 * @return null|string
-	 */
-	private function CreateRecurRule(ReservationItemView $res)
-	{
-		if ($res->RepeatType == RepeatType::None)
-		{
-			return null;
-		}
+    /**
+     * @param ReservationItemView|ReservationView $res
+     * @return null|string
+     */
+    private function CreateRecurRule($res)
+    {
+        if (empty($res->RepeatType) || $res->RepeatType == RepeatType::None)
+        {
+            return null;
+        }
 
-		$freqMapping = array(RepeatType::Daily => 'DAILY', RepeatType::Weekly => 'WEEKLY', RepeatType::Monthly => 'MONTHLY', RepeatType::Yearly => 'YEARLY');
-		$freq = $freqMapping[$res->RepeatType];
-		$interval = $res->RepeatInterval;
-		$format = Resources::GetInstance()->GetDateFormat('ical');
-		$end = $res->RepeatTerminationDate->Format($format);
-		$rrule = sprintf('FREQ=%s;INTERVAL=%s;UNTIL=%s', $freq, $interval, $end);
+        $freqMapping = array(RepeatType::Daily => 'DAILY', RepeatType::Weekly => 'WEEKLY', RepeatType::Monthly => 'MONTHLY', RepeatType::Yearly => 'YEARLY');
+        $freq = $freqMapping[$res->RepeatType];
+        $interval = $res->RepeatInterval;
+        $format = Resources::GetInstance()->GetDateFormat('ical');
+        $end = $res->RepeatTerminationDate->Format($format);
+        $rrule = sprintf('FREQ=%s;INTERVAL=%s;UNTIL=%s', $freq, $interval, $end);
 
-		if ($res->RepeatType == RepeatType::Monthly)
-		{
-			if ($res->RepeatMonthlyType == RepeatMonthlyType::DayOfMonth)
-			{
-				$rrule .= ';BYMONTHDAY=' . $res->StartDate->Day();
-			}
-		}
+        if ($res->RepeatType == RepeatType::Monthly)
+        {
+            if ($res->RepeatMonthlyType == RepeatMonthlyType::DayOfMonth)
+            {
+                $rrule .= ';BYMONTHDAY=' . $res->StartDate->Day();
+            }
+        }
 
-		if (!empty($res->RepeatWeekdays))
-		{
-			$dayMapping = array('SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA');
-			$days = '';
-			foreach ($res->RepeatWeekdays as $weekDay)
-			{
-				$days .= ($dayMapping[$weekDay] . ',');
-			}
-			$days = substr($days, 0, -1);
-			$rrule .= (';BYDAY=' . $days);
-		}
+        if (!empty($res->RepeatWeekdays))
+        {
+            $dayMapping = array('SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA');
+            $days = '';
+            foreach ($res->RepeatWeekdays as $weekDay)
+            {
+                $days .= ($dayMapping[$weekDay] . ',');
+            }
+            $days = substr($days, 0, -1);
+            $rrule .= (';BYDAY=' . $days);
+        }
 
-		return $rrule;
-	}
+        return $rrule;
+    }
 }
 
 ?>

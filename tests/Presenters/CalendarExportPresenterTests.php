@@ -50,20 +50,15 @@ class CalendarExportPresenterTests extends TestBase
 	public function testLoadsReservationByReferenceNumber()
 	{
 		$referenceNumber = 'ref';
-		$results = array(new TestReservationItemView(1, Date::Now(), Date::Now()));
-
-		$reservationResult = new PageableData($results, 200, 1, 200);
-
-		$filter = new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, Date::Now()->AddDays(-7)->ToDatabase());
-		$filter->_And(new SqlFilterEquals(ColumnNames::REFERENCE_NUMBER, $referenceNumber));
+        $reservationResult = new ReservationView();
 
 		$this->page->expects($this->once())
 				->method('GetReferenceNumber')
 				->will($this->returnValue($referenceNumber));
 
 		$this->repo->expects($this->once())
-				->method('GetList')
-				->with($this->equalTo(1), $this->equalTo(200), $this->isNull(), $this->isNull(), $this->equalTo($filter))
+				->method('GetReservationForEditing')
+				->with($this->equalTo($referenceNumber))
 				->will($this->returnValue($reservationResult));
 
 		$this->page->expects($this->once())

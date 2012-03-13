@@ -20,15 +20,15 @@ BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//phpScheduleIt//NONSGML {$phpScheduleItVersion}//EN
 METHOD:REQUEST
-{foreach from=$reservations item=reservation}
+{foreach from=$Reservations item=reservation}
 BEGIN:VEVENT
 CREATED:{formatdate date=$reservation->DateCreated key=ical}
 DESCRIPTION:{$reservation->Description}
 DTEND:{formatdate date=$reservation->DateEnd key=ical}
-DTSTAMP:{formatdate date=$reservation->DateStamp key=ical}
+DTSTAMP:{formatdate date=$reservation->DateCreated key=ical}
 DTSTART:{formatdate date=$reservation->DateStart key=ical}
 LOCATION:{$reservation->ResourceName}
-ORGANIZER:MAILTO:{$reservation->OwnerEmail}
+ORGANIZER:MAILTO:{$reservation->Organizer}
 {if $reservation->RecurRule neq ''}
 RRULE:{$reservation->RecurRule}
 {/if}

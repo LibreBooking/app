@@ -625,6 +625,12 @@ class ReservationItemView implements IReservedItemView
     public $CreatedDate;
 
     /**
+     * alias of $CreatedDate
+     * @var null|Date
+     */
+    public $DateCreated;
+
+    /**
      * @var null|Date
      */
     public $ModifiedDate;
