@@ -35,10 +35,10 @@ class pl extends Language
         $dates['general_date'] = 'Y-m-d';
         $dates['general_datetime'] = 'Y-m-d H:i:s';
         $dates['schedule_daily'] = 'l, Y-m-d';
-        $dates['reservation_email'] = 'Y-m-d @ g:i A (e)';
-        $dates['res_popup'] = 'Y-m-d g:i A';
-        $dates['dashboard'] = 'l, Y-m-d g:i A';
-        $dates['period_time'] = "g:i A";
+        $dates['reservation_email'] = 'Y-m-d @ G:i (e)';
+        $dates['res_popup'] = 'Y-m-d G:i';
+        $dates['dashboard'] = 'l, Y-m-d G:i';
+        $dates['period_time'] = "G:i";
 		$dates['general_date_js'] = "dd.mm.yy";
 
         $this->Dates = $dates;
