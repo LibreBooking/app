@@ -16,6 +16,6 @@ CREATE UNIQUE INDEX `public_id` ON `resources` (`public_id`);
 ALTER TABLE `schedules` ADD COLUMN `public_id` VARCHAR(20);
 CREATE UNIQUE INDEX `public_id` ON `schedules` (`public_id`);
 
-ALTER TABLE `users` ADD COLUMN `allow_calendar_subscription` BIT NOT NULL DEFAULT 0;
-ALTER TABLE `resources` ADD COLUMN `allow_calendar_subscription` BIT NOT NULL DEFAULT 0;
-ALTER TABLE `schedules` ADD COLUMN `allow_calendar_subscription` BIT NOT NULL DEFAULT 0;
+ALTER TABLE `users` ADD COLUMN `allow_calendar_subscription` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE `resources` ADD COLUMN `allow_calendar_subscription` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE `schedules` ADD COLUMN `allow_calendar_subscription` TINYINT(1) NOT NULL DEFAULT 0;

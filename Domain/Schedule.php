@@ -126,17 +126,17 @@ class Schedule implements ISchedule
 		$this->_timezone = $timezone;
 	}
 
-    public function SetIsCalendarSubscriptionAllowed($isAllowed)
+    protected function SetIsCalendarSubscriptionAllowed($isAllowed)
     {
         $this->_isCalendarSubscriptionAllowed = $isAllowed;
     }
 
     public function GetIsCalendarSubscriptionAllowed()
     {
-        return $this->_isCalendarSubscriptionAllowed;
+        return (bool)$this->_isCalendarSubscriptionAllowed;
     }
 
-    public function SetPublicId($publicId)
+    protected function SetPublicId($publicId)
     {
         $this->_publicId = $publicId;
     }
@@ -144,6 +144,20 @@ class Schedule implements ISchedule
     public function GetPublicId()
     {
         return $this->_publicId;
+    }
+
+    public function EnableSubscription()
+    {
+        $this->SetIsCalendarSubscriptionAllowed(true);
+        if (empty($this->_publicId))
+        {
+            $this->SetPublicId(uniqid());
+        }
+    }
+
+    public function DisableSubscription()
+    {
+        $this->SetIsCalendarSubscriptionAllowed(false);
     }
 
     /**
@@ -162,13 +176,36 @@ class Schedule implements ISchedule
      */
     public static function FromRow($row)
     {
-        return new Schedule($row[ColumnNames::SCHEDULE_ID],
+        $schedule = new Schedule($row[ColumnNames::SCHEDULE_ID],
                         $row[ColumnNames::SCHEDULE_NAME],
                         $row[ColumnNames::SCHEDULE_DEFAULT],
                         $row[ColumnNames::SCHEDULE_WEEKDAY_START],
                         $row[ColumnNames::SCHEDULE_DAYS_VISIBLE],
                         $row[ColumnNames::TIMEZONE_NAME],
                         $row[ColumnNames::LAYOUT_ID]);
+
+        $schedule->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
+        $schedule->WithPublicId($row[ColumnNames::PUBLIC_ID]);
+
+        return $schedule;
+    }
+
+    /**
+     * @param bool $allowSubscription
+     * @internal
+     */
+    public function WithSubscription($allowSubscription)
+    {
+        $this->SetIsCalendarSubscriptionAllowed($allowSubscription);
+    }
+
+    /**
+     * @param string $publicId
+     * @internal
+     */
+    public function WithPublicId($publicId)
+    {
+        $this->SetPublicId($publicId);
     }
 }
 ?>

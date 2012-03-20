@@ -100,7 +100,16 @@ class FakeScheduleRepository
 		throw new Exception('mock this');
 	}
 	
-	public static function GetRow($id = 1, $name = 'name', $isDefault = false, $weekdayStart = 0, $daysVisible = 7, $timezone = 'America/Chicago', $layoutId = null)
+	public static function GetRow(
+        $id = 1,
+        $name = 'name',
+        $isDefault = false,
+        $weekdayStart = 0,
+        $daysVisible = 7,
+        $timezone = 'America/Chicago',
+        $layoutId = null,
+        $allowCalendarSubscription = false,
+        $publicId = null)
 	{
 		return array(
 				ColumnNames::SCHEDULE_ID => $id,
@@ -109,7 +118,9 @@ class FakeScheduleRepository
 				ColumnNames::SCHEDULE_WEEKDAY_START => $weekdayStart,
 				ColumnNames::SCHEDULE_DAYS_VISIBLE => $daysVisible,
 				ColumnNames::TIMEZONE_NAME => $timezone,
-				ColumnNames::LAYOUT_ID => $layoutId
+				ColumnNames::LAYOUT_ID => $layoutId,
+                ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => $allowCalendarSubscription,
+                ColumnNames::PUBLIC_ID => $publicId
 			);
 	}
 }

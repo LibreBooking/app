@@ -78,7 +78,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<a class="update makeDefaultButton" href="javascript: void(0);">{translate key=MakeDefault}</a> |
 				<a class="update deleteScheduleButton" href="#">{translate key=Delete}</a> |
 			{/if}
-			<a class="update changeLayoutButton" href="javascript: void(0);">{translate key=ChangeLayout}</a>
+			<a class="update changeLayoutButton" href="javascript: void(0);">{translate key=ChangeLayout}</a> |
+			{if $schedule->GetIsCalendarSubscriptionAllowed()}
+				<a class="update disableSubscription" href="javascript: void(0);">{translate key=TurnOffSubscription}</a>
+			{else}
+				<a class="update enableSubscription" href="javascript: void(0);">{translate key=TurnOnSubscription}</a>
+			{/if}
 		</div>
 	</div>
 {/foreach}
@@ -140,8 +145,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 	</form>
 </div>
-<div id="makeDefaultDialog" style="display:none">
-	<form id="makeDefaultForm" method="post">
+<div id="placeholderDialog" style="display:none">
+	<form id="placeholderForm" method="post">
 	</form>
 </div>
 
@@ -239,7 +244,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	changeLayoutAction: '{ManageSchedules::ActionChangeLayout}',
 	addAction: '{ManageSchedules::ActionAdd}',
 	makeDefaultAction: '{ManageSchedules::ActionMakeDefault}',
-	deleteAction: '{ManageSchedules::ActionDelete}'
+	deleteAction: '{ManageSchedules::ActionDelete}',
+	enableSubscriptionAction: '{ManageSchedules::ActionEnableSubscription}',
+	disableSubscriptionAction: '{ManageSchedules::ActionDisableSubscription}'
 	};
 
 	var scheduleManagement = new ScheduleManagement(opts);

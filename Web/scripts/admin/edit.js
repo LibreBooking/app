@@ -134,6 +134,7 @@
 	function PerformAsyncAction(element, urlCallback, indicator)
 	{
 		if (indicator) {
+            element.after(indicator);
 			indicator.show();
 		}
 		$.post(

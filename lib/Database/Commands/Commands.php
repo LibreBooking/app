@@ -1204,24 +1204,15 @@ class UpdateResourceCommand extends SqlCommand
 	}
 }
 
-class UpdateResourceScheduleCommand extends SqlCommand
-{
-	public function __construct($id, $scheduleId)
-	{
-		parent::__construct(Queries::UPDATE_RESOURCE_SCHEDULE);
-
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $id));
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
-	}
-}
-
 class UpdateScheduleCommand extends SqlCommand
 {
 	public function __construct($scheduleId,
 								$name,
 								$isDefault,
 								$weekdayStart,
-								$daysVisible)
+								$daysVisible,
+                                $subscriptionEnabled,
+                                $publicId)
 	{
 		parent::__construct(Queries::UPDATE_SCHEDULE);
 
@@ -1230,6 +1221,8 @@ class UpdateScheduleCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ISDEFAULT, (int)$isDefault));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_WEEKDAYSTART, (int)$weekdayStart));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DAYSVISIBLE, (int)$daysVisible));
+		$this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$subscriptionEnabled));
+		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
 	}
 }
 

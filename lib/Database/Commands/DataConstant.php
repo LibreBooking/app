@@ -28,6 +28,8 @@ class ParameterNames
     const ACCESSORY_NAME = '@accessoryname';
     const ACCESSORY_QUANTITY = '@quantity';
 
+    const ALLOW_CALENDAR_SUBSCRIPTION = '@allow_calendar_subscription';
+
     const ANNOUNCEMENT_ID = '@announcementid';
     const ANNOUNCEMENT_TEXT = '@text';
     const ANNOUNCEMENT_PRIORITY = '@priority';
@@ -741,8 +743,7 @@ class Queries
 			series_id = @seriesid';
 
     const UPDATE_RESOURCE =
-            'UPDATE
-			resources
+            'UPDATE resources
 		SET
 			name = @resource_name,
 			location = @location,
@@ -765,27 +766,26 @@ class Queries
 			resource_id = @resourceid';
 
     const UPDATE_SCHEDULE =
-            'UPDATE
-			schedules
+            'UPDATE schedules
 		SET
 			name = @scheduleName,
 			isdefault = @scheduleIsDefault,
 			weekdaystart = @scheduleWeekdayStart,
-			daysvisible = @scheduleDaysVisible
+			daysvisible = @scheduleDaysVisible,
+			allow_calendar_subscription = @allow_calendar_subscription,
+			public_id = @publicid
 		WHERE
 			schedule_id = @scheduleid';
 
     const UPDATE_SCHEDULE_LAYOUT =
-            'UPDATE
-			schedules
+            'UPDATE schedules
 		SET
 			layout_id = @layoutid
 		WHERE
 			schedule_id = @scheduleid';
 
     const UPDATE_USER =
-            'UPDATE
-			users
+            'UPDATE users
 		SET
 			status_id = @user_statusid,
 			password = @password,
@@ -976,6 +976,10 @@ class ColumnNames
 
     // dynamic
     const TOTAL = 'total';
+
+    // shared
+    const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';
+    const PUBLIC_ID = 'public_id';
 }
 
 class TableNames

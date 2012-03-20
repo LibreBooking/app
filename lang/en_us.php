@@ -343,6 +343,8 @@ class en_us extends Language
         $strings['Restricted'] = 'Restricted';
         $strings['ViewAll'] = 'View All';
         $strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
+        $strings['TurnOffSubscription'] = 'Turn Off Calendar Subscription';
+        $strings['TurnOnSubscription'] = 'Allow Subscriptions To This Calendar';
 
         // Errors
         $strings['LoginError'] = 'We could not match your username or password';

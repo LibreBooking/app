@@ -136,7 +136,9 @@ class ScheduleRepositoryTests extends TestBase
 		$daysVisible = 3;
 		$timezone = 'America/Chicago';
 		$layoutId = 988;
-		
+        $allowSubscription = 1;
+        $publicId = '123';
+
 		$fakeSchedules = new FakeScheduleRepository();
 		$expectedSchedule = new Schedule($id, 
 									$name, 
@@ -145,8 +147,10 @@ class ScheduleRepositoryTests extends TestBase
 									$daysVisible,
 									$timezone,
 									$layoutId);
-									
-		$this->db->SetRows(array($fakeSchedules->GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible, $timezone, $layoutId)));
+		$expectedSchedule->WithSubscription($allowSubscription);
+		$expectedSchedule->WithPublicId($publicId);
+
+		$this->db->SetRows(array($fakeSchedules->GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible, $timezone, $layoutId, $allowSubscription, $publicId)));
 		$actualSchedule = $this->scheduleRepository->LoadById($id);
 		
 		$this->assertEquals($expectedSchedule, $actualSchedule);
@@ -172,16 +176,20 @@ class ScheduleRepositoryTests extends TestBase
 		$isDefault = 0;
 		$weekdayStart = 5;
 		$daysVisible = 3;
-		
+        $subscriptionEnabled = true;
+
 		$schedule = new Schedule($id, 
 								$name, 
 								$isDefault, 
 								$weekdayStart, 
 								$daysVisible);
-									
-		$actualSchedule = $this->scheduleRepository->Update($schedule);
+
+        $schedule->EnableSubscription();
+        $publicId = $schedule->GetPublicId();
+
+		$this->scheduleRepository->Update($schedule);
 		
-		$this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible), $this->db->_LastCommand);
+		$this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible, $subscriptionEnabled, $publicId), $this->db->_LastCommand);
 	}
 	
 	public function testCanChangeLayout()

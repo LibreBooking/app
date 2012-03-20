@@ -25,5 +25,10 @@ class FakeSchedule extends Schedule
     {
         parent::__construct($id, $name, $isDefault, $weekdayStart, $daysVisible);
     }
+
+    public function SetIsCalendarSubscriptionAllowed($isAllowed)
+    {
+        parent::SetIsCalendarSubscriptionAllowed($isAllowed);
+    }
 }
 ?>

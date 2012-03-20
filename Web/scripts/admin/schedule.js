@@ -13,7 +13,7 @@ function ScheduleManagement(opts)
 		renameForm: $('#renameForm'),
 		settingsForm: $('#settingsForm'),
 		changeLayoutForm: $('#changeLayoutForm'),
-		makeDefaultForm: $('#makeDefaultForm'),
+        placeholderForm: $('#placeholderForm'),
 		deleteForm: $('#deleteForm'),
 
 		addForm: $('#addScheduleForm'),
@@ -65,8 +65,17 @@ function ScheduleManagement(opts)
 			});
 			
 			$(this).find('.makeDefaultButton').click(function(e) {
-				elements.makeDefaultForm.submit();
-				$(this).after($('.indicator'));
+                PerformAsyncAction($(this), getSubmitCallback(options.makeDefaultAction), $('.indicator'));
+//                elements.placeholderForm.submit();
+//				$(this).after($('.indicator'));
+			});
+
+            $(this).find('.enableSubscription').click(function(e) {
+                PerformAsyncAction($(this), getSubmitCallback(options.enableSubscriptionAction), $('.indicator'));
+			});
+
+            $(this).find('.disableSubscription').click(function(e) {
+                PerformAsyncAction($(this), getSubmitCallback(options.disableSubscriptionAction), $('.indicator'));
 			});
 
             $(this).find('.deleteScheduleButton').click(function(e) {
@@ -106,7 +115,7 @@ function ScheduleManagement(opts)
 		ConfigureAdminForm(elements.settingsForm, getSubmitCallback(options.changeSettingsAction));
 		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction), null, handleLayoutUpdate);
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
-		ConfigureAdminForm(elements.makeDefaultForm, getSubmitCallback(options.makeDefaultAction));
+		//ConfigureAdminForm(elements.placeholderForm, getSubmitCallback(options.makeDefaultAction));
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
 	};
 
