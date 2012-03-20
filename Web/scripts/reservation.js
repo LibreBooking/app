@@ -502,7 +502,7 @@ function Reservation(opts) {
 			elements.repeatOptions.val(options.repeatType);
 			$('#repeat_every').val(options.repeatInterval);
 			for (var i = 0; i < options.repeatWeekdays.length; i++) {
-				var id = "#repeatDay" + i;
+				var id = "#repeatDay" + options.repeatWeekdays[i];
 				$(id).attr('checked', true);
 			}
 
