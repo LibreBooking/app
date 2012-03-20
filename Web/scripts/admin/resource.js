@@ -48,7 +48,7 @@ function ResourceManagement(opts)
 
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
-			var indicator = $(this).find('.actionIndicator');
+			var indicator = $('.indicator');
 			
 			$(this).find('a.update').click(function() {
 				setActiveResourceId(id);				
@@ -73,6 +73,16 @@ function ResourceManagement(opts)
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.bringOnline), indicator);
 				return false;
 			});
+
+            $(this).find('.enableSubscription').click(function(e) {
+                PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), indicator);
+                return false;
+            });
+
+            $(this).find('.disableSubscription').click(function(e) {
+                PerformAsyncAction($(this), getSubmitCallback(options.actions.disableSubscription), indicator);
+                return false;
+            });
 			
 			$(this).find('.renameButton').click(function(e) {
 				showRename(e);

@@ -77,6 +77,7 @@ class ResourceRepositoryTests extends TestBase
         $scheduleId = 19819;
         $imageName = 'something.png';
         $adminGroupId = 232;
+        $allowSubscription = true;
 
         $resource = new BookableResource($id,
             $name,
@@ -96,6 +97,9 @@ class ResourceRepositoryTests extends TestBase
         $resource->SetImage($imageName);
         $resource->BringOnline();
         $resource->SetAdminGroupId($adminGroupId);
+        $resource->EnableSubscription();
+
+        $publicId = $resource->GetPublicId();
 
         $resourceRepository = new ResourceRepository();
         $resourceRepository->Update($resource);
@@ -118,7 +122,9 @@ class ResourceRepositoryTests extends TestBase
             $imageName,
             $resource->IsOnline(),
             $scheduleId,
-            $adminGroupId);
+            $adminGroupId,
+            $allowSubscription,
+            $publicId);
 
         $actualUpdateResourceCommand = $this->db->_Commands[0];
 
@@ -192,7 +198,9 @@ class ResourceRepositoryTests extends TestBase
     {
         $publicId = uniqid();
 
-        $this->db->SetRows(array($this->GetResourceRow(123)));
+        $fr = new FakeResourceAccess();
+        $rows = $fr->GetRows();
+        $this->db->SetRows($rows);
         $loadResourceCommand = new GetResourceByPublicIdCommand($publicId);
 
         $resourceRepository = new ResourceRepository();
@@ -208,31 +216,6 @@ class ResourceRepositoryTests extends TestBase
             ColumnNames::ACCESSORY_ID => $accessoryId,
             ColumnNames::ACCESSORY_NAME => $name,
             ColumnNames::ACCESSORY_QUANTITY => $quantity);
-    }
-
-    private function GetResourceRow($resourceId)
-    {
-        $row = array();
-        $row[ColumnNames::RESOURCE_ID] = $resourceId;
-        $row[ColumnNames::RESOURCE_NAME] = 'name';
-        $row[ColumnNames::RESOURCE_LOCATION] = 'loc';
-        $row[ColumnNames::RESOURCE_CONTACT] = 'contact';
-        $row[ColumnNames::RESOURCE_NOTES] = 'notes';
-        $row[ColumnNames::RESOURCE_MINDURATION] = null;
-        $row[ColumnNames::RESOURCE_MAXDURATION] = null;
-        $row[ColumnNames::RESOURCE_AUTOASSIGN] = false;
-        $row[ColumnNames::RESOURCE_REQUIRES_APPROVAL] = false;
-        $row[ColumnNames::RESOURCE_ALLOW_MULTIDAY] = false;
-        $row[ColumnNames::RESOURCE_MAX_PARTICIPANTS] = null;
-        $row[ColumnNames::RESOURCE_MINNOTICE] = null;
-        $row[ColumnNames::RESOURCE_MAXNOTICE] = null;
-        $row[ColumnNames::RESOURCE_DESCRIPTION] = null;
-        $row[ColumnNames::SCHEDULE_ID] = 10;
-        $row[ColumnNames::RESOURCE_IMAGE_NAME] = null;
-        $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID] = null;
-
-        return $row;
-
     }
 }
 

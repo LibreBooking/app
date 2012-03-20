@@ -761,7 +761,9 @@ class Queries
 			image_name = @imageName,
 			isactive = @isActive,
 			schedule_id = @scheduleid,
-			admin_group_id = @admin_group_id
+			admin_group_id = @admin_group_id,
+			allow_calendar_subscription = @allow_calendar_subscription,
+			public_id = @publicid
 		WHERE
 			resource_id = @resourceid';
 

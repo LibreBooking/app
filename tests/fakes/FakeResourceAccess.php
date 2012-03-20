@@ -67,6 +67,8 @@ class FakeResourceAccess extends ResourceRepository
 					ColumnNames::SCHEDULE_ID => 10,
 					ColumnNames::RESOURCE_IMAGE_NAME => null,
 					ColumnNames::RESOURCE_ADMIN_GROUP_ID => null,
+					ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
+					ColumnNames::PUBLIC_ID => '1232',
 					);
 					
 		$row2 =  array(ColumnNames::RESOURCE_ID => 2, 
@@ -86,6 +88,8 @@ class FakeResourceAccess extends ResourceRepository
 					ColumnNames::SCHEDULE_ID => 11,
 					ColumnNames::RESOURCE_IMAGE_NAME => 'something.gif',
 					ColumnNames::RESOURCE_ADMIN_GROUP_ID => 1,
+                    ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 0,
+            	    ColumnNames::PUBLIC_ID => null,
 					);	
 		
 		return array($row1, $row2);								

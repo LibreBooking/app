@@ -110,6 +110,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 							<a class="update adminButton" href="javascript: void(0);">{translate key='Edit'}</a>
 						{/if}
 					</li>
+					<li>
+						{if $resource->GetIsCalendarSubscriptionAllowed()}
+							<a class="update disableSubscription" href="javascript: void(0);">{translate key=TurnOffSubscription}</a>
+						{else}
+							<a class="update enableSubscription" href="javascript: void(0);">{translate key=TurnOnSubscription}</a>
+						{/if}
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -486,7 +493,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	takeOffline: '{ManageResourcesActions::ActionTakeOffline}',
 	bringOnline: '{ManageResourcesActions::ActionBringOnline}',
 	changeConfiguration: '{ManageResourcesActions::ActionChangeConfiguration}',
-	changeAdmin: '{ManageResourcesActions::ActionChangeAdmin}'
+	changeAdmin: '{ManageResourcesActions::ActionChangeAdmin}',
+	enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
+	disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}'
 	};
 
 	var opts = {

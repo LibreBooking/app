@@ -186,6 +186,10 @@ class BookableResource implements IResource
         {
             $resource->_isActive = (bool)$row[ColumnNames::RESOURCE_ISACTIVE];
         }
+
+        $resource->WithPublicId($row[ColumnNames::PUBLIC_ID]);
+        $resource->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
+
         return $resource;
     }
 
@@ -544,7 +548,7 @@ class BookableResource implements IResource
     /**
      * @param bool $isAllowed
      */
-    public function SetIsCalendarSubscriptionAllowed($isAllowed)
+    protected function SetIsCalendarSubscriptionAllowed($isAllowed)
     {
         $this->_isCalendarSubscriptionAllowed = $isAllowed;
     }
@@ -560,7 +564,7 @@ class BookableResource implements IResource
     /**
      * @param string $publicId
      */
-    public function SetPublicId($publicId)
+    protected function SetPublicId($publicId)
     {
         $this->_publicId = $publicId;
     }
@@ -571,6 +575,20 @@ class BookableResource implements IResource
     public function GetPublicId()
     {
         return $this->_publicId;
+    }
+
+    public function EnableSubscription()
+    {
+        $this->SetIsCalendarSubscriptionAllowed(true);
+        if (empty($this->_publicId))
+        {
+            $this->SetPublicId(uniqid());
+        }
+    }
+
+    public function DisableSubscription()
+    {
+        $this->SetIsCalendarSubscriptionAllowed(false);
     }
 
     /**
@@ -587,7 +605,17 @@ class BookableResource implements IResource
      */
     public static function Null()
     {
-        return new BookableResource(null, null, null, null, null, null, null, false, false, false, null, null,null);
+        return new BookableResource(null, null, null, null, null, null, null, false, false, false, null, null, null);
+    }
+
+    protected function WithPublicId($publicId)
+    {
+        $this->SetPublicId($publicId);
+    }
+
+    protected function WithSubscription($isAllowed)
+    {
+        $this->SetIsCalendarSubscriptionAllowed($isAllowed);
     }
 }
 
