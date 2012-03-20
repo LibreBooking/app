@@ -30,10 +30,5 @@ class FakeBookableResource extends BookableResource
 	{
 		$this->_requiresApproval = $requiresApproval;
 	}
-
-    public function SetIsCalendarSubscriptionAllowed($isAllowed)
-    {
-        parent::SetIsCalendarSubscriptionAllowed($isAllowed);
-    }
 }
 ?>

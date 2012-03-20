@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/PersonalCalendarPresenter.php');
 
-interface IPersonalCalendarPage
+interface IPersonalCalendarPage extends IActionPage
 {
 	public function GetDay();
 	public function GetMonth();
@@ -29,27 +29,34 @@ interface IPersonalCalendarPage
 	public function GetCalendarType();
 
 	public function BindCalendar(ICalendarSegment $calendar);
+    public function BindSubscription($isAllowed, $publicId);
 
 	public function SetDisplayDate($displayDate);
 }
 
-class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
+class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 {
 	/**
 	 * @var string
 	 */
 	private $template;
 
+    /**
+     * @var PersonalCalendarPresenter
+     */
+    private $presenter;
+
 	public function __construct()
 	{
-	    parent::__construct('MyCalendar');
+	    parent::__construct('MyCalendar', 0);
+
+        $this->presenter = new PersonalCalendarPresenter($this, new ReservationViewRepository(), new CalendarFactory(), new UserRepository());
 	}
 
 	public function PageLoad()
 	{
-		$presenter = new PersonalCalendarPresenter($this, new ReservationViewRepository(), new CalendarFactory());
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		$presenter->PageLoad($user->UserId, $user->Timezone);
+		$this->presenter->PageLoad($user->UserId, $user->Timezone);
 
 		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
 		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
@@ -112,8 +119,30 @@ class PersonalCalendarPage extends SecurePage implements IPersonalCalendarPage
 		$this->Set('DayNames', $days);
 		$this->Set('DayNamesShort', Resources::GetInstance()->GetDays('abbr'));
 	}
-}
 
+    /**
+     * @return void
+     */
+    public function ProcessAction()
+    {
+       $this->presenter->ProcessAction();
+    }
+
+    /**
+     * @return void
+     */
+    public function ProcessDataRequest()
+    {
+        // no-op
+    }
+
+    public function BindSubscription($isAllowed, $publicId)
+    {
+        $this->Set('IsSubscriptionAllowed', $isAllowed);
+        $url = new CalendarSubscriptionUrl($publicId, null, null);
+        $this->Set('SubscriptionUrl', $url->__toString());
+    }
+}
 
 class PersonalCalendarUrl
 {

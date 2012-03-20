@@ -345,6 +345,10 @@ class en_us extends Language
         $strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
         $strings['TurnOffSubscription'] = 'Turn Off Calendar Subscriptions';
         $strings['TurnOnSubscription'] = 'Allow Subscriptions to this Calendar';
+        $strings['NoResourceAdministratorLabel'] = '(No Resource Administrator)';
+        $strings['WhoCanManageThisResource'] = 'Who Can Manage This Resource?';
+        $strings['ResourceAdministrator'] = 'Resource Administrator';
+        // End Strings
 
         // Errors
         $strings['LoginError'] = 'We could not match your username or password';
@@ -360,6 +364,7 @@ class en_us extends Language
         $strings['StartIsInPast'] = 'The start date cannot be in the past';
         $strings['EmailDisabled'] = 'The administrator has disabled email notifications';
         $strings['ValidLayoutRequired'] = 'Slots must be provided for all 24 hours of the day beginning and ending at 12:00 AM.';
+        // End Errors
 
         // Page Titles
         $strings['CreateReservation'] = 'Create Reservation';
@@ -397,10 +402,7 @@ class en_us extends Language
         $strings['ForgotPassword'] = 'Forgot Password';
         $strings['NotificationPreferences'] = 'Notification Preferences';
         $strings['ManageAnnouncements'] = 'Announcements';
-        $strings['ResourceAdministrator'] = 'Resource Administrator';
-        $strings['NoResourceAdministratorLabel'] = '(No Resource Administrator)';
-        $strings['WhoCanManageThisResource'] = 'Who Can Manage This Resource?';
-        //
+        // End Page Titles
 
         // Day representations
         $strings['DaySundaySingle'] = 'S';

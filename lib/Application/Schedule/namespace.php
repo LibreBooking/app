@@ -35,6 +35,7 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarDay.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarWeek.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarMonth.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarReservation.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionUrl.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/iCalendarReservationView.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionService.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionValidator.php');

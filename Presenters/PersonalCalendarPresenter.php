@@ -20,8 +20,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
-class PersonalCalendarPresenter
+class PersonalCalendarActions
+{
+    const ActionEnableSubscription = 'enable';
+    const ActionDisableSubscription = 'disable';
+}
+
+class PersonalCalendarPresenter extends ActionPresenter
 {
 	/**
 	 * @var \IPersonalCalendarPage
@@ -38,11 +45,26 @@ class PersonalCalendarPresenter
 	 */
 	private $calendarFactory;
 
-	public function __construct(IPersonalCalendarPage $page, IReservationViewRepository $repository, ICalendarFactory $calendarFactory)
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
+
+	public function __construct(
+        IPersonalCalendarPage $page,
+        IReservationViewRepository $repository,
+        ICalendarFactory $calendarFactory,
+        IUserRepository $userRepository)
 	{
+        parent::__construct($page);
+
 		$this->page = $page;
 		$this->repository = $repository;
 		$this->calendarFactory = $calendarFactory;
+		$this->userRepository = $userRepository;
+
+        $this->AddAction(PersonalCalendarActions::ActionEnableSubscription, 'EnableSubscription');
+        $this->AddAction(PersonalCalendarActions::ActionDisableSubscription, 'DisableSubscription');
 	}
 	
 	public function PageLoad($userId, $timezone)
@@ -74,6 +96,9 @@ class PersonalCalendarPresenter
 		$this->page->BindCalendar($calendar);
 
 		$this->page->SetDisplayDate($calendar->FirstDay());
+
+        $user = $this->userRepository->LoadById($userId);
+        $this->page->BindSubscription($user->GetIsCalendarSubscriptionAllowed(), $user->GetPublicId());
 	}
 }
 ?>

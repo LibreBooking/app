@@ -17,13 +17,28 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
-require_once(ROOT_DIR . 'Domain/Schedule.php');
 
-class FakeSchedule extends Schedule
+class CalendarSubscriptionUrl
 {
-    public function __construct($id = 1, $name = 'test', $isDefault = true, $weekdayStart = 0, $daysVisible = 7)
+    /**
+     * @var Url
+     */
+    private $url;
+
+    public function __construct($userId, $scheduleId, $resourceId)
     {
-        parent::__construct($id, $name, $isDefault, $weekdayStart, $daysVisible);
+        $url = new Url(Configuration::Instance()->GetScriptUrl());
+
+        $url->AddQueryString(QueryStringKeys::USER_ID, $userId);
+        $url->AddQueryString(QueryStringKeys::SCHEDULE_ID, $scheduleId);
+        $url->AddQueryString(QueryStringKeys::RESOURCE_ID, $resourceId);
+        $this->url = $url;
+    }
+
+    public function __toString()
+    {
+        return $this->url->ToString();
     }
 }
+
 ?>

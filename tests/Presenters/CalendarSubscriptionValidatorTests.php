@@ -50,7 +50,7 @@ class CalendarSubscriptionValidatorTests extends TestBase
     public function testIsNotValidWhenTurnedOffForResource()
     {
         $resource = new FakeBookableResource(12);
-        $resource->SetIsCalendarSubscriptionAllowed(false);
+        $resource->DisableSubscription();
 
         $publicId = uniqid();
 
@@ -73,7 +73,7 @@ class CalendarSubscriptionValidatorTests extends TestBase
     public function testIsNotValidWhenTurnedOffForSchedule()
     {
         $schedule = new FakeSchedule(12);
-        $schedule->SetIsCalendarSubscriptionAllowed(false);
+        $schedule->DisableSubscription();
 
         $publicId = uniqid();
 
@@ -96,7 +96,7 @@ class CalendarSubscriptionValidatorTests extends TestBase
     public function testIsNotValidWhenTurnedOffForUser()
     {
         $user = new FakeUser();
-        $user->SetIsCalendarSubscriptionAllowed(false);
+        $user->DisableSubscription();
 
         $publicId = uniqid();
 

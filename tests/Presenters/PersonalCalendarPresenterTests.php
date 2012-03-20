@@ -42,6 +42,11 @@ class PersonalCalendarPresenterTests extends TestBase
 	 * @var ICalendarFactory|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $calendarFactory;
+
+    /**
+     * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $userRepository;
 	
 	public function setup()
 	{
@@ -50,8 +55,9 @@ class PersonalCalendarPresenterTests extends TestBase
 		$this->page = $this->getMock('IPersonalCalendarPage');
 		$this->repository = $this->getMock('IReservationViewRepository');
 		$this->calendarFactory = $this->getMock('ICalendarFactory');
+		$this->userRepository = $this->getMock('IUserRepository');
 
-		$this->presenter = new PersonalCalendarPresenter($this->page, $this->repository, $this->calendarFactory);
+		$this->presenter = new PersonalCalendarPresenter($this->page, $this->repository, $this->calendarFactory, $this->userRepository);
 	}
 
 	public function testBindsEmptyCalendarToPageWhenNoReservationsAreFound()
@@ -99,6 +105,18 @@ class PersonalCalendarPresenterTests extends TestBase
 			->method('BindCalendar')
 			->with($this->equalTo($month));
 
+        $user = new FakeUser();
+        $user->EnableSubscription();
+
+       $this->userRepository->expects($this->once())
+            ->method('LoadById')
+            ->with($this->equalTo($userId))
+            ->will($this->returnValue($user));
+
+        $this->page->expects($this->once())
+            ->method('BindSubscription')
+            ->with($this->equalTo(true), $this->equalTo($user->GetPublicId()));
+        
 		$this->presenter->PageLoad($userId, $userTimezone);
 	}
 }

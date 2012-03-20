@@ -133,7 +133,7 @@ class User
     /**
      * @param bool $isAllowed
      */
-    public function SetIsCalendarSubscriptionAllowed($isAllowed)
+    protected function SetIsCalendarSubscriptionAllowed($isAllowed)
     {
         $this->isCalendarSubscriptionAllowed = $isAllowed;
     }
@@ -151,7 +151,7 @@ class User
     /**
      * @param string $publicId
      */
-    public function SetPublicId($publicId)
+    protected function SetPublicId($publicId)
     {
         $this->publicId = $publicId;
     }
@@ -162,6 +162,20 @@ class User
     public function GetPublicId()
     {
         return $this->publicId;
+    }
+
+    public function EnableSubscription()
+    {
+        $this->SetIsCalendarSubscriptionAllowed(true);
+        if (empty($this->publicId))
+        {
+            $this->SetPublicId(uniqid());
+        }
+    }
+
+    public function DisableSubscription()
+    {
+        $this->SetIsCalendarSubscriptionAllowed(false);
     }
 
 	public function Activate()
