@@ -109,6 +109,30 @@ class UserRepositoryTests extends TestBase
         $this->assertTrue(in_array($group2, $groups));
     }
 
+    public function testLoadsUserByPublicId()
+    {
+        $userRow = $this->GetUserRow();
+        $emailPrefRows = $this->GetEmailPrefRows();
+        $permissionsRows = $this->GetPermissionsRows();
+        $groupsRows = $this->GetGroupsRows();
+
+        $this->db->SetRow(0, array($userRow));
+        $this->db->SetRow(1, $emailPrefRows);
+        $this->db->SetRow(2, $permissionsRows);
+        $this->db->SetRow(3, $groupsRows);
+
+        $publicId = uniqid();
+        $userRepository = new UserRepository();
+
+        $user = $userRepository->LoadByPublicId($publicId);
+
+        $loadByIdCommand = new GetUserByPublicIdCommand($publicId);
+        $this->assertEquals(4, count($this->db->_Commands));
+        $this->assertTrue($this->db->ContainsCommand($loadByIdCommand));
+
+        $this->assertNotNull($user);
+    }
+
     public function testLoadsUserFromCacheIfAlreadyLoadedFromDatabase()
     {
         $userId = 1;

@@ -66,6 +66,7 @@ class ParameterNames
     const PERIOD_LABEL = '@label';
     const PHONE = '@phone';
     const POSITION = '@position';
+    const PUBLIC_ID = '@publicid';
 
     const QUOTA_DURATION = '@duration';
     const QUOTA_ID = '@quotaid';
@@ -450,9 +451,10 @@ class Queries
 		WHERE gr.group_id = @groupid';
 
     const GET_RESOURCE_BY_ID =
-            'SELECT *
-		FROM resources r
-		WHERE r.resource_id = @resourceid';
+            'SELECT * FROM resources r WHERE r.resource_id = @resourceid';
+
+    const GET_RESOURCE_BY_PUBLIC_ID =
+            'SELECT * FROM resources r WHERE r.public_id = @publicid';
 
     const GET_RESERVATION_BY_ID =
             'SELECT *
@@ -571,40 +573,30 @@ class Queries
 		ORDER BY tb.start_time';
 
     const GET_SCHEDULE_BY_ID =
-            'SELECT
-			*
-		FROM
-			schedules s
-		INNER JOIN
-			layouts l ON s.layout_id = l.layout_id
-		WHERE
-			schedule_id = @scheduleid';
+            'SELECT * FROM schedules s
+		INNER JOIN layouts l ON s.layout_id = l.layout_id
+		WHERE schedule_id = @scheduleid';
+
+    const GET_SCHEDULE_BY_PUBLIC_ID =
+            'SELECT * FROM schedules s
+        INNER JOIN layouts l ON s.layout_id = l.layout_id
+        WHERE public_id = @publicid';
 
     const GET_SCHEDULE_RESOURCES =
-            'SELECT
-			*
-		FROM 
-			resources r
+            'SELECT * FROM  resources r
 		WHERE 
 			r.schedule_id = @scheduleid AND
 			r.isactive = 1
 		ORDER BY r.name';
 
     const GET_USER_BY_ID =
-            'SELECT
-			*
-		FROM
-			users
-		WHERE
-			user_id = @userid';
+            'SELECT * FROM users WHERE user_id = @userid';
+
+    const GET_USER_BY_PUBLIC_ID =
+            'SELECT * FROM users WHERE public_id = @publicid';
 
     const GET_USER_EMAIL_PREFERENCES =
-            'SELECT
-			*
-		FROM
-			user_email_preferences
-		WHERE
-			user_id = @userid';
+            'SELECT * FROM user_email_preferences WHERE user_id = @userid';
 
     const GET_USER_GROUPS =
             'SELECT g.*, r.role_level

@@ -31,6 +31,12 @@ interface IUserRepository extends IUserViewRepository
     function LoadById($userId);
 
     /**
+     * @param string $publicId
+     * @return User
+     */
+    function LoadByPublicId($publicId);
+
+    /**
      * @param string $userName
      * @return User
      */
@@ -187,6 +193,35 @@ class UserRepository implements IUserRepository
         }
 
         return $this->_cache->Get($userId);
+    }
+
+    /**
+     * @param string $publicId
+     * @return User
+     */
+    public function LoadByPublicId($publicId)
+    {
+        $command = new GetUserByPublicIdCommand($publicId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        if ($row = $reader->GetRow())
+        {
+            $userId = $row[ColumnNames::USER_ID];
+            $emailPreferences = $this->LoadEmailPreferences($userId);
+            $permissions = $this->LoadPermissions($userId);
+            $groups = $this->LoadGroups($userId);
+
+            $user = User::FromRow($row);
+            $user->WithEmailPreferences($emailPreferences);
+            $user->WithPermissions($permissions);
+            $user->WithGroups($groups);
+
+            return $user;
+        }
+        else
+        {
+            return User::Null();
+        }
     }
 
     /**

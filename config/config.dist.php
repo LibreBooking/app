@@ -36,9 +36,8 @@ $conf['settings']['image.upload.url'] = 'uploads/images';       // path to show 
 $conf['settings']['cache.templates'] = 'true';                  // recommended, caching template files helps web pages render faster
 $conf['settings']['registration.captcha.enabled'] = 'true';     // recommended, requires php_gd2.dll enabled in php.ini
 $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out
-$conf['settings']['reservation']['notify.created'] = 'true';    //
-$conf['settings']['reservation']['notify.updated'] = 'true';    //
-$conf['settings']['reservation']['notify.deleted'] = 'true';    //
+$conf['settings']['ics']['require.login'] = 'true';             // recommended, if the user must be logged in to access ics files
+$conf['settings']['ics']['subscription.key'] = '';              // must be set to allow webcal subscriptions
 /**
  * Database configuration
  */

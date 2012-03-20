@@ -71,7 +71,7 @@ class ResourceRepository implements IResourceRepository
 	}
 	
     /**
-     * @param  $resourceId
+     * @param int $resourceId
      * @return BookableResource
      */
 	public function LoadById($resourceId)
@@ -95,6 +95,25 @@ class ResourceRepository implements IResourceRepository
 		
 		return $this->_cache->Get($resourceId);
 	}
+
+    /**
+     * @param string $publicId
+     * @return BookableResource
+     */
+    public function LoadByPublicId($publicId)
+    {
+        $command = new GetResourceByPublicIdCommand($publicId);
+
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        $resource = BookableResource::Null();
+        if ($row = $reader->GetRow())
+        {
+            $resource = BookableResource::Create($row);
+        }
+
+        return $resource;
+    }
 
 	public function Add(BookableResource $resource)
 	{

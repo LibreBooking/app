@@ -152,6 +152,18 @@ class ScheduleRepositoryTests extends TestBase
 		$this->assertEquals($expectedSchedule, $actualSchedule);
 		$this->assertEquals(new GetScheduleByIdCommand($id), $this->db->_LastCommand);
 	}
+
+    public function testCanGetScheudleByPublicId()
+    {
+        $publicId = uniqid();
+        $fakeSchedules = new FakeScheduleRepository();
+
+        $this->db->SetRows(array($fakeSchedules->GetRow()));
+        $actualSchedule = $this->scheduleRepository->LoadByPublicId($publicId);
+
+        $this->assertNotNull($actualSchedule);
+        $this->assertEquals(new GetScheduleByPublicIdCommand($publicId), $this->db->_LastCommand);
+    }
 	
 	public function testCanUpdateSchedule()
 	{

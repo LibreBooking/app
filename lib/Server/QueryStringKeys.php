@@ -52,6 +52,7 @@ class QueryStringKeys
 	const RESOURCE_ID = 'rid';
 	const SCHEDULE_ID = 'sid';
 	const START_DATE = 'sd';
+    const SUBSCRIPTION_KEY = 'icskey';
 	const USER_ID = 'uid';
 	const USER_NAME = 'un';
     const WEB_SERVICE_ACTION = 'action';

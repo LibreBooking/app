@@ -810,12 +810,30 @@ class GetResourceByIdCommand extends SqlCommand
 	}
 }
 
+class GetResourceByPublicIdCommand extends SqlCommand
+{
+	public function __construct($publicId)
+	{
+		parent::__construct(Queries::GET_RESOURCE_BY_PUBLIC_ID);
+		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
+	}
+}
+
 class GetScheduleByIdCommand extends SqlCommand
 {
-public function __construct($scheduleId)
+    public function __construct($scheduleId)
 	{
 		parent::__construct(Queries::GET_SCHEDULE_BY_ID);
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+	}
+}
+
+class GetScheduleByPublicIdCommand extends SqlCommand
+{
+    public function __construct($publicId)
+	{
+		parent::__construct(Queries::GET_SCHEDULE_BY_PUBLIC_ID);
+		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
 	}
 }
 
@@ -834,6 +852,15 @@ class GetUserByIdCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_USER_BY_ID);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
+class GetUserByPublicIdCommand extends SqlCommand
+{
+	public function __construct($publicId)
+	{
+		parent::__construct(Queries::GET_USER_BY_PUBLIC_ID);
+		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
 	}
 }
 

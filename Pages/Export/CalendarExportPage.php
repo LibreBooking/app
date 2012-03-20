@@ -34,9 +34,21 @@ interface ICalendarExportPage
 	 * @param array|iCalendarReservationView[] $reservations
 	 */
 	public function SetReservations($reservations);
+
+    /**
+     * @abstract
+     * @return int
+     */
+    public function GetScheduleId();
+
+    /**
+     * @abstract
+     * @return int
+     */
+    public function GetResourceId();
 }
 
-class CalendarExportPage extends SecurePage implements ICalendarExportPage
+class CalendarExportPage extends Page implements ICalendarExportPage
 {
 	/**
 	 * @var \CalendarExportPresenter
@@ -45,7 +57,7 @@ class CalendarExportPage extends SecurePage implements ICalendarExportPage
 
 	public function __construct()
 	{
-		$this->presenter = new CalendarExportPresenter($this, new ReservationViewRepository());
+		$this->presenter = new CalendarExportPresenter($this, new ReservationViewRepository(), new NullCalendarExportValidator());
 		parent::__construct('', 1);
 	}
 
@@ -77,6 +89,32 @@ class CalendarExportPage extends SecurePage implements ICalendarExportPage
 	{
 		$this->Set('Reservations', $reservations);
 	}
+
+    /**
+     * @return int
+     */
+    public function GetScheduleId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+    }
+
+    /**
+     * @return int
+     */
+    public function GetResourceId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+    }
 }
 
+class NullCalendarExportValidator implements ICalendarExportValidator
+{
+    /**
+     * @return bool
+     */
+    function IsValid()
+    {
+        return true;
+    }
+}
 ?>

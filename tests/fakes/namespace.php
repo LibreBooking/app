@@ -28,7 +28,6 @@ require_once(ROOT_DIR . 'tests/fakes/FakeServer.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeSmarty.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeConfig.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeLdapOptions.php');
-require_once(ROOT_DIR . 'tests/fakes/FakeLdapOptions.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeLdapWrapper.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeResources.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeAnnouncements.php');
@@ -39,6 +38,7 @@ require_once(ROOT_DIR . 'tests/fakes/FakeUserSession.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeResource.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeEmailService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeUser.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeSchedule.php');
 
 require_once(ROOT_DIR . 'tests/fakes/TestDateRange.php');
 require_once(ROOT_DIR . 'tests/fakes/TestReservation.php');

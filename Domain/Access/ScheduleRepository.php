@@ -37,6 +37,13 @@ interface IScheduleRepository
 	 */
 	public function LoadById($scheduleId);
 
+    /**
+     * @abstract
+     * @param string $publicId
+     * @return Schedule
+     */
+    public function LoadByPublicId($publicId);
+
 	/**
 	 * @param Schedule $schedule
 	 */
@@ -155,7 +162,6 @@ class ScheduleRepository implements IScheduleRepository
 	
 	public function LoadById($scheduleId)
 	{
-		// TODO: Handle when not found
 		if (!$this->_cache->Exists($scheduleId))
 		{
 			$schedule = null;
@@ -164,15 +170,7 @@ class ScheduleRepository implements IScheduleRepository
 
 			if ($row = $reader->GetRow())
 			{
-				$schedule = new Schedule(
-					$row[ColumnNames::SCHEDULE_ID],
-					$row[ColumnNames::SCHEDULE_NAME],
-					$row[ColumnNames::SCHEDULE_DEFAULT],
-					$row[ColumnNames::SCHEDULE_WEEKDAY_START],
-					$row[ColumnNames::SCHEDULE_DAYS_VISIBLE],
-					$row[ColumnNames::TIMEZONE_NAME],
-					$row[ColumnNames::LAYOUT_ID]
-				);
+				$schedule = Schedule::FromRow($row);
 			}
 
 			$reader->Free();
@@ -182,6 +180,22 @@ class ScheduleRepository implements IScheduleRepository
 
 		return $this->_cache->Get($scheduleId);
 	}
+
+    public function LoadByPublicId($publicId)
+    {
+        $schedule = Schedule::Null();
+
+        $reader = ServiceLocator::GetDatabase()->Query(new GetScheduleByPublicIdCommand($publicId));
+
+        if ($row = $reader->GetRow())
+        {
+            $schedule = Schedule::FromRow($row);
+        }
+
+        $reader->Free();
+
+        return $schedule;
+    }
 
 	public function Update(Schedule $schedule)
 	{

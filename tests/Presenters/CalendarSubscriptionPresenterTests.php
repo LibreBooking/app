@@ -18,9 +18,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'Presenters/CalendarExportPresenter.php');
+require_once(ROOT_DIR . 'Presenters/CalendarSubscriptionPresenter.php');
 
-class CalendarExportPresenterTests extends TestBase
+class CalendarSubscriptionPresenterTests extends TestBase
 {
     /**
      * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
@@ -28,12 +28,12 @@ class CalendarExportPresenterTests extends TestBase
     private $repo;
 
     /**
-     * @var ICalendarExportPage|PHPUnit_Framework_MockObject_MockObject
+     * @var ICalendarSubscriptionPage|PHPUnit_Framework_MockObject_MockObject
      */
     private $page;
 
     /**
-     * @var CalendarExportPresenter
+     * @var CalendarSubscriptionPresenter
      */
     private $presenter;
 
@@ -42,53 +42,46 @@ class CalendarExportPresenterTests extends TestBase
      */
     private $validator;
 
+    /**
+     * @var ICalendarSubscriptionService|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $service;
+
     public function setup()
     {
         parent::setup();
 
         $this->repo = $this->getMock('IReservationViewRepository');
-        $this->page = $this->getMock('ICalendarExportPage');
+        $this->page = $this->getMock('ICalendarSubscriptionPage');
         $this->validator = $this->getMock('ICalendarExportValidator');
+        $this->service = $this->getMock('ICalendarSubscriptionService');
 
         $this->validator->expects($this->atLeastOnce())
             ->method('IsValid')
             ->will($this->returnValue(true));
 
-        $this->presenter = new CalendarExportPresenter($this->page, $this->repo, $this->validator);
-    }
-
-    public function testLoadsReservationByReferenceNumber()
-    {
-        $referenceNumber = 'ref';
-        $reservationResult = new ReservationView();
-
-        $this->page->expects($this->once())
-                ->method('GetReferenceNumber')
-                ->will($this->returnValue($referenceNumber));
-
-        $this->repo->expects($this->once())
-                ->method('GetReservationForEditing')
-                ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue($reservationResult));
-
-        $this->page->expects($this->once())
-                ->method('SetReservations')
-                ->with($this->arrayHasKey(0));
-
-        $this->presenter->PageLoad();
+        $this->presenter = new CalendarSubscriptionPresenter($this->page, $this->repo, $this->validator, $this->service);
     }
 
     public function testGetsScheduleReservationsForTheNextYearByScheduleId()
     {
-        $scheduleId = '1';
+        $publicId = '1';
         $reservationResult = array(new TestReservationItemView(1, Date::Now(), Date::Now()));
+
+        $scheduleId = 999;
+        $schedule = new FakeSchedule($scheduleId);
 
         $weekAgo = Date::Now()->AddDays(-7);
         $nextYear = Date::Now()->AddDays(365);
 
         $this->page->expects($this->once())
                 ->method('GetScheduleId')
-                ->will($this->returnValue($scheduleId));
+                ->will($this->returnValue($publicId));
+
+        $this->service->expects($this->once())
+                    ->method('GetSchedule')
+                    ->with($this->equalTo($publicId))
+                    ->will($this->returnValue($schedule));
 
         $this->repo->expects($this->once())
                 ->method('GetReservationList')
@@ -104,15 +97,23 @@ class CalendarExportPresenterTests extends TestBase
 
     public function testGetsScheduleReservationsForTheNextYearByResourceId()
     {
-        $resourceId = '1';
+        $publicId = '1';
         $reservationResult = array(new TestReservationItemView(1, Date::Now(), Date::Now()));
+
+        $resourceId = 999;
+        $resource = new FakeBookableResource($resourceId);
 
         $weekAgo = Date::Now()->AddDays(-7);
         $nextYear = Date::Now()->AddDays(365);
 
         $this->page->expects($this->once())
                 ->method('GetResourceId')
-                ->will($this->returnValue($resourceId));
+                ->will($this->returnValue($publicId));
+
+       $this->service->expects($this->once())
+            ->method('GetResource')
+            ->with($this->equalTo($publicId))
+            ->will($this->returnValue($resource));
 
         $this->repo->expects($this->once())
                 ->method('GetReservationList')
@@ -125,6 +126,38 @@ class CalendarExportPresenterTests extends TestBase
 
         $this->presenter->PageLoad();
     }
+
+    public function testGetsUserReservationsForTheNextYearByResourceId()
+        {
+            $publicId = '1';
+            $reservationResult = array(new TestReservationItemView(1, Date::Now(), Date::Now()));
+
+            $userId = 999;
+            $user = new FakeUser($userId);
+
+            $weekAgo = Date::Now()->AddDays(-7);
+            $nextYear = Date::Now()->AddDays(365);
+
+            $this->page->expects($this->once())
+                    ->method('GetUserId')
+                    ->will($this->returnValue($publicId));
+
+            $this->service->expects($this->once())
+                        ->method('GetUser')
+                        ->with($this->equalTo($publicId))
+                        ->will($this->returnValue($user));
+
+            $this->repo->expects($this->once())
+                    ->method('GetReservationList')
+                    ->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $userId, $this->isNull(), $this->isNull(), $this->isNull())
+                    ->will($this->returnValue($reservationResult));
+
+            $this->page->expects($this->once())
+                    ->method('SetReservations')
+                    ->with($this->arrayHasKey(0));
+
+            $this->presenter->PageLoad();
+        }
 }
 
 ?>

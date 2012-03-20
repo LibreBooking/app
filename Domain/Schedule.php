@@ -27,6 +27,8 @@ interface ISchedule
 	public function GetDaysVisible();
 	public function GetTimezone();
 	public function GetLayoutId();
+    public function GetIsCalendarSubscriptionAllowed();
+    public function GetPublicId();
 }
 
 class Schedule implements ISchedule
@@ -38,7 +40,9 @@ class Schedule implements ISchedule
 	private $_daysVisible;
 	private $_timezone;
 	private $_layoutId;
-	
+    private $_isCalendarSubscriptionAllowed = false;
+    private $_publicId;
+
 	public function __construct(
 		$id, 
 		$name, 
@@ -121,5 +125,50 @@ class Schedule implements ISchedule
 	{
 		$this->_timezone = $timezone;
 	}
+
+    public function SetIsCalendarSubscriptionAllowed($isAllowed)
+    {
+        $this->_isCalendarSubscriptionAllowed = $isAllowed;
+    }
+
+    public function GetIsCalendarSubscriptionAllowed()
+    {
+        return $this->_isCalendarSubscriptionAllowed;
+    }
+
+    public function SetPublicId($publicId)
+    {
+        $this->_publicId = $publicId;
+    }
+
+    public function GetPublicId()
+    {
+        return $this->_publicId;
+    }
+
+    /**
+     * @static
+     * @return Schedule
+     */
+    public static function Null()
+    {
+        return new Schedule(null, null, false, null, null);
+    }
+
+    /**
+     * @static
+     * @param array $row
+     * @return Schedule
+     */
+    public static function FromRow($row)
+    {
+        return new Schedule($row[ColumnNames::SCHEDULE_ID],
+                        $row[ColumnNames::SCHEDULE_NAME],
+                        $row[ColumnNames::SCHEDULE_DEFAULT],
+                        $row[ColumnNames::SCHEDULE_WEEKDAY_START],
+                        $row[ColumnNames::SCHEDULE_DAYS_VISIBLE],
+                        $row[ColumnNames::TIMEZONE_NAME],
+                        $row[ColumnNames::LAYOUT_ID]);
+    }
 }
 ?>

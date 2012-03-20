@@ -18,33 +18,11 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class FakeUser extends User
-{
-	public function __construct($userId = null)
-	{
-		$this->timezone = 'America/Chicago';
-		$this->language = 'en_us';
-		$this->emailAddress = 'test@test.com';
-        $this->id = $userId;
-	}
-	
-	public function SetLanguage($language)
-	{
-		$this->language = $language;
-	}
-	
-	public function SetTimezone($timezone)
-	{
-		$this->timezone = $timezone;
-	}
+define('ROOT_DIR', '../../');
 
-	/**
-	 * @param $groups array|UserGroup[]
-	 * @return void
-	 */
-	public function SetGroups($groups)
-	{
-		$this->groups = $groups;
-	}
-}
+require_once(ROOT_DIR . 'Pages/Export/CalendarSubscriptionPage.php');
+
+$page = new CalendarSubscriptionPage();
+$page->PageLoad();
+
 ?>

@@ -100,7 +100,7 @@ class FakeScheduleRepository
 		throw new Exception('mock this');
 	}
 	
-	public static function GetRow($id, $name, $isDefault, $weekdayStart, $daysVisible, $timezone, $layoutId = null)
+	public static function GetRow($id = 1, $name = 'name', $isDefault = false, $weekdayStart = 0, $daysVisible = 7, $timezone = 'America/Chicago', $layoutId = null)
 	{
 		return array(
 				ColumnNames::SCHEDULE_ID => $id,

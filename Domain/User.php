@@ -128,6 +128,42 @@ class User
 		return $this->groups;
 	}
 
+    private $isCalendarSubscriptionAllowed = false;
+
+    /**
+     * @param bool $isAllowed
+     */
+    public function SetIsCalendarSubscriptionAllowed($isAllowed)
+    {
+        $this->isCalendarSubscriptionAllowed = $isAllowed;
+    }
+
+    /**
+     * @return bool
+     */
+    public function GetIsCalendarSubscriptionAllowed()
+    {
+        return $this->isCalendarSubscriptionAllowed;
+    }
+
+    private $publicId;
+
+    /**
+     * @param string $publicId
+     */
+    public function SetPublicId($publicId)
+    {
+        $this->publicId = $publicId;
+    }
+
+    /**
+     * @return string
+     */
+    public function GetPublicId()
+    {
+        return $this->publicId;
+    }
+
 	public function Activate()
 	{
 		$this->statusId = AccountStatus::ACTIVE;
