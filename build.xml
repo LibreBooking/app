@@ -176,6 +176,11 @@
 				<include name="**/*"/>
 			</fileset>
 		</copy>
+
+        <delete file="C:/work/demo/reload.v2.sql" failonerror="false" />
+		<append destFile="C:/work/demo/reload.v2.sql">
+            <filelist dir="${demo.dir}/database_schema" files="schema-utf8.sql,data-utf8.sql,sample-data-utf8.sql"/>
+		</append>
 	</target>
 
 	<target name="minify" description="minify javascript and css files">

@@ -89,7 +89,7 @@ class CombineDbFilesTask extends Task
 
 	private function CombineMainFiles($upgradeDir, $versionNumber)
 	{
-		$versionInfo = "\r\n\r\n--- UPGRADE TO VERSION $versionNumber ---";
+		$versionInfo = "\r\n\r\n-- UPGRADE TO VERSION $versionNumber";
 
 		// schema
 		$schemaHandle = fopen($this->schemaFile, "a");

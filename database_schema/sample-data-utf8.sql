@@ -1,4 +1,3 @@
-use phpscheduleit2;
 
 delete from groups where admin_group_id is not null;
 delete from groups;
