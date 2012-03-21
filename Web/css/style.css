@@ -473,10 +473,6 @@ legend {
     padding: 0px 5px;
 }
 
-#resourceDetails {
-    overflow: scroll;
-}
-
 a, a:visited {
     color: #006295;
 }

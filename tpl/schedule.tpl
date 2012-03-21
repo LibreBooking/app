@@ -61,7 +61,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {* End slot display formatting *}
 
 {block name="header"}
-{include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.css'}
+{include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.min.css'}
 {/block}
 
 {block name="schedule_control"}
@@ -131,7 +131,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<tr class="slots">
 			<td class="resourcename">
 				{if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
-					<a href="{$href}">{$resource->Name}</a>
+					<a href="{$href}" resourceId="{$resource->Id}" class="resourceNameSelector">{$resource->Name}</a>
 				{else}
 					{$resource->Name}
 				{/if}
@@ -150,6 +150,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="scripts/schedule.js"></script>
+<script type="text/javascript" src="scripts/resourcePopup.js"></script>
 
 <script type="text/javascript">
 	

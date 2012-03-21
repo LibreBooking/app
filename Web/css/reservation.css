@@ -17,12 +17,6 @@
 	color: #000;
 }
 
-.resourceQtip, #resourceDetails
-{
-	width: 800px;
-	min-width: 800px;
-}
-
 #reservationbox {
 	width: 100%;
 	margin: 3em auto 1em;

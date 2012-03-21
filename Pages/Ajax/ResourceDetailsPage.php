@@ -60,7 +60,7 @@ class ResourceDetailsPage extends SecurePage implements IResourceDetailsPage
 
         if ($resource->HasImage())
         {
-            $this->Set('imageUrl', Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . '/' . $resource->GetImage() );
+            $this->Set('imageUrl', Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/' . $resource->GetImage() );
         }
     }
 

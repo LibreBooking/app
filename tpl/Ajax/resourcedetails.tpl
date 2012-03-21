@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div id="resourceDetails">
-	<div style="float:left; width: 350px;">
+<div id="resourceDetailsPopup" style="padding: 20px; overflow:hidden:">
+	<div style="display:inline-block; vertical-align:top; width: 350px;">
 		<ul>
 			<li>{translate key=Description}
 				{if $description neq ''}
@@ -109,9 +109,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</ul>
 	</div>
 
-	{if $imageUrl neq ''}
-		<div style="float:right; width: 320px;">
-			<img src="{$imageUrl}" />
-		</div>
-	{/if}
+{if $imageUrl neq ''}
+	<div style="display:inline-block;">
+		<img src="{$imageUrl}" alt="Resource" />
+	</div>
+{/if}
 </div>

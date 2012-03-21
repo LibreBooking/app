@@ -96,7 +96,8 @@ function Reservation(opts) {
 		});
 
 		$('#resourceNames, #additionalResources').delegate('.resourceDetails', 'mouseover', function() {
-			bindResourceDetails($(this));
+            var resourceId = $(this).siblings(".resourceId").val();
+			$(this).bindResourceDetails(resourceId);
 		});
 
 		// CHANGE USERS //
@@ -419,45 +420,45 @@ function Reservation(opts) {
 		return new Date(elements.endDate.val() + ' ' + elements.endTime.val());
 	}
 
-	function bindResourceDetails(resourceNameElement) {
-		resourceNameElement.click(function(e) {
-			e.preventDefault();
-		});
-
-		var resourceId = resourceNameElement.siblings(".resourceId").val();
-
-		resourceNameElement.qtip({
-			position: {
-				my: 'top left',  // Position my top left...
-				at: 'bottom left', // at the bottom right of...
-				target: resourceNameElement // my target
-			},
-			content: {
-				text: 'Loading...',
-				ajax: {
-					url: "ajax/resource_details.php",
-					type: 'GET',
-					data: { rid: resourceId },
-					dataType: 'html'
-				}
-			},
-			show: {
-				ready: true,
-				delay: 500
-			},
-			style: {
-				classes: 'ui-tooltip-shadow ui-tooltip-blue resourceQtip',
-				tip: {
-					corner: true
-				}
-			},
-			hide: {
-				delay: 500,
-				fixed: true,
-				when: 'mouseout'
-			}
-		});
-	}
+//	function bindResourceDetails(resourceNameElement) {
+//		resourceNameElement.click(function(e) {
+//			e.preventDefault();
+//		});
+//
+//		var resourceId = resourceNameElement.siblings(".resourceId").val();
+//
+//		resourceNameElement.qtip({
+//			position: {
+//				my: 'top left',  // Position my top left...
+//				at: 'bottom left', // at the bottom right of...
+//				target: resourceNameElement // my target
+//			},
+//			content: {
+//				text: 'Loading...',
+//				ajax: {
+//					url: "ajax/resource_details.php",
+//					type: 'GET',
+//					data: { rid: resourceId },
+//					dataType: 'html'
+//				}
+//			},
+//			show: {
+//				ready: true,
+//				delay: 500
+//			},
+//			style: {
+//				classes: 'ui-tooltip-shadow ui-tooltip-blue resourceQtip',
+//				tip: {
+//					corner: true
+//				}
+//			},
+//			hide: {
+//				delay: 500,
+//				fixed: true,
+//				when: 'mouseout'
+//			}
+//		});
+//	}
 
 	function InitializeCheckboxes(dialogBoxId, displayDivId) {
 		var selectedItems = [];
