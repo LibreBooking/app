@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div style="text-align: right; padding: 10px 0px;">
+<div class="calendar-subscription">
 {if $IsSubscriptionAllowed}
 	{if $IsSubscriptionEnabled}
 		<a id="subscribeTocalendar" href="{$SubscriptionUrl}">{html_image src="calendar-share.png"} {translate key=SubscribeToCalendar}</a>

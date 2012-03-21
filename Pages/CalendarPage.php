@@ -70,6 +70,12 @@ interface ICalendarPage extends IPage
 	 * @return void
 	 */
 	public function SetResourceId($resourceId);
+
+    /**
+     * @abstract
+     * @param CalendarSubscriptionDetails $subscriptionDetails
+     */
+    public function BindSubscription($subscriptionDetails);
 }
 
 class CalendarPage extends SecurePage implements ICalendarPage
@@ -82,8 +88,11 @@ class CalendarPage extends SecurePage implements ICalendarPage
 	public function __construct()
 	{
 		parent::__construct('ResourceCalendar');
-		
-		$this->_presenter = new CalendarPresenter($this, new CalendarFactory(), new ReservationViewRepository(), new ScheduleRepository(), new ResourceRepository());
+        $resourceRepository = new ResourceRepository();
+        $scheduleRepository =  new ScheduleRepository();
+        $subscriptionService = new CalendarSubscriptionService(new UserRepository(), $resourceRepository, $scheduleRepository);
+
+		$this->_presenter = new CalendarPresenter($this, new CalendarFactory(), new ReservationViewRepository(), $scheduleRepository, $resourceRepository, $subscriptionService);
 	}
 	
 	public function PageLoad()
@@ -189,6 +198,16 @@ class CalendarPage extends SecurePage implements ICalendarPage
 	{
 		$this->Set('ResourceId', $resourceId);
 	}
+
+    /**
+     * @param CalendarSubscriptionDetails $details
+     */
+    public function BindSubscription($details)
+    {
+        $this->Set('IsSubscriptionAllowed', $details->IsAllowed());
+        $this->Set('IsSubscriptionEnabled', $details->IsEnabled());
+        $this->Set('SubscriptionUrl', $details->Url());
+    }
 }
 
 class CalendarUrl

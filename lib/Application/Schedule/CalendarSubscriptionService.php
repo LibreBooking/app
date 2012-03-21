@@ -49,6 +49,20 @@ interface ICalendarSubscriptionService
      * @return CalendarSubscriptionDetails
      */
     function ForUser($userId);
+
+    /**
+     * @abstract
+     * @param int $resourceId
+     * @return CalendarSubscriptionDetails
+     */
+    function ForResource($resourceId);
+
+    /**
+     * @abstract
+     * @param int $scheduleId
+     * @return CalendarSubscriptionDetails
+     */
+    function ForSchedule($scheduleId);
 }
 
 class CalendarSubscriptionDetails
@@ -199,7 +213,7 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
 
         return new CalendarSubscriptionDetails(
             $resource->GetIsCalendarSubscriptionAllowed(),
-            new CalendarSubscriptionUrl($resource->GetPublicId(), null, null));
+            new CalendarSubscriptionUrl(null, null, $resource->GetPublicId()));
     }
 
     /**
@@ -212,7 +226,7 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
 
         return new CalendarSubscriptionDetails(
             $schedule->GetIsCalendarSubscriptionAllowed(),
-            new CalendarSubscriptionUrl($schedule->GetPublicId(), null, null));
+            new CalendarSubscriptionUrl(null, $schedule->GetPublicId(), null));
     }
 }
 

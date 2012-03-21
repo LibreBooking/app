@@ -52,6 +52,11 @@ class CalendarPresenterTests extends TestBase
 	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $resourceRepository;
+
+    /**
+     * @var ICalendarSubscriptionService|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $subscriptionService;
 	
 	public function setup()
 	{
@@ -62,13 +67,15 @@ class CalendarPresenterTests extends TestBase
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 		$this->calendarFactory = $this->getMock('ICalendarFactory');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->subscriptionService = $this->getMock('ICalendarSubscriptionService');
 
 		$this->presenter = new CalendarPresenter(
 			$this->page,
 			$this->calendarFactory,
 			$this->repository,
 			$this->scheduleRepository,
-			$this->resourceRepository);
+			$this->resourceRepository,
+            $this->subscriptionService);
 	}
 
 	public function testBindsDefaultScheduleByMonthWhenNothingSelected()
@@ -152,6 +159,17 @@ class CalendarPresenterTests extends TestBase
 		$this->page->expects($this->once())
 			->method('BindCalendar')
 			->with($this->equalTo($month));
+
+        $details = new CalendarSubscriptionDetails(true);
+        $this->subscriptionService->expects($this->once())
+                        ->method('ForSchedule')
+                        ->with($this->equalTo($defaultScheduleId))
+                        ->will($this->returnValue($details));
+
+        $this->page->expects($this->once())
+                ->method('BindSubscription')
+                ->with($this->equalTo($details));
+
 
 		$calendarFilters = new CalendarFilters($schedules, $resources, $defaultScheduleId, null);
 		$this->page->expects($this->once())

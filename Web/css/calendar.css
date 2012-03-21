@@ -92,3 +92,9 @@ option.resource
 {
 	padding-left: 15px;
 }
+
+.calendar-subscription
+{
+    text-align: right;
+    padding: 10px 0px;
+}

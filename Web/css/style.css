@@ -566,3 +566,8 @@ div.notification-status {
     margin-left: 20px;
     font-size: 11pt;
 }
+
+.note {
+	font-style: italic;
+	color: #8D96A8
+}

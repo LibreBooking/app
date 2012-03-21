@@ -50,17 +50,24 @@ class CalendarPresenter
 	 */
 	private $resourceRepository;
 
+    /**
+     * @var ICalendarSubscriptionService
+     */
+    private $subscriptionService;
+
 	public function __construct(ICalendarPage $page,
 		ICalendarFactory $calendarFactory,
 		IReservationViewRepository $reservationRepository,
 		IScheduleRepository $scheduleRepository,
-		IResourceRepository $resourceRepository)
+		IResourceRepository $resourceRepository,
+        ICalendarSubscriptionService $subscriptionService)
 	{
 		$this->page = $page;
 		$this->calendarFactory = $calendarFactory;
 		$this->reservationRepository = $reservationRepository;
 		$this->scheduleRepository = $scheduleRepository;
 		$this->resourceRepository = $resourceRepository;
+        $this->subscriptionService = $subscriptionService;
 	}
 	
 	public function PageLoad($userId, $timezone)
@@ -95,7 +102,12 @@ class CalendarPresenter
 		if (!empty($selectedResourceId))
 		{
 			$selectedScheduleId = null;
+            $subscriptionDetails = $this->subscriptionService->ForResource($selectedResourceId);
 		}
+        else
+        {
+            $subscriptionDetails = $this->subscriptionService->ForSchedule($selectedScheduleId);
+        }
 
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
 		$reservations = $this->reservationRepository->GetReservationList($calendar->FirstDay(), $calendar->LastDay(), null, null, $selectedScheduleId, $selectedResourceId);
@@ -107,6 +119,8 @@ class CalendarPresenter
 		$this->page->SetDisplayDate($calendar->FirstDay());
 		$this->page->SetScheduleId($selectedScheduleId);
 		$this->page->SetResourceId($selectedResourceId);
+
+        $this->page->BindSubscription($subscriptionDetails);
 	}
 
 	/**
