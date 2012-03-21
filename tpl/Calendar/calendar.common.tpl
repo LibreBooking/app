@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div class="calendar-subscription">
 {if $IsSubscriptionAllowed && $IsSubscriptionEnabled}
 	<a id="subscribeTocalendar" href="{$SubscriptionUrl}">{html_image src="calendar-share.png"} {translate key=SubscribeToCalendar}</a>
+	<br/>URL: <span class="note">{$SubscriptionUrl}</span>
 {else}
 	<span class="note">{translate key=SubscriptionsAreDisabled}</span>
 {/if}

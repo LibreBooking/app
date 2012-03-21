@@ -135,12 +135,38 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Only Application Administrators can delete reservations in the past.</p>
 
-<h2>Adding a Reservation to Outlook &reg;</h2>
+<h2>Adding a Reservation to Outlook&reg;</h2>
 
 <p>When viewing or updating a reservation you will see a button to Add to Outlook. If Outlook is installed on your
 	computer then you should be asked to add the meeting. If it is not installed you will be prompted to download an
 	.ics file. This is a standard calendar format. You can use this file to add the reservation to any application
 	that supports the iCalendar file format.</p>
+
+<h2>Subscribing to Calendars</h2>
+
+<p>Calendars can be published for Schedules, Resources and Users. For this feature to work, the administrator must have
+	configured a subscription key in the config file. To enable Scheudle and Resource level calendar
+	subscriptions, simply turn subscriptions on when managing the Schedule or Resource. To turn on personal calendar
+	subcriptions, open Schedule -> My Calendar. On the right side of the page you will find a link to Allow or Turn Off
+	calendar subscriptions.
+</p>
+
+<p> To subscribe to a Schedule calendar, open Schedule -> Resource Calendar and select the schedule you want. On the
+	right side of the page, you will find a link to subscribe to the current calendar. Subscribing the a Resource
+	calendar follows the same steps. To subscribe to your personal calendar, open Scheudle -> My Calendar. On the
+	right side of the page, you will find a link to subscribe to the current calendar.</p>
+
+<h3>Outlook&reg;</h3>
+
+<p>In most cases, simply clicking the Subscribe to this Calendar link will automatically set up the subscription in
+	Outlook. If it does not automatically add, open the Calendar view in Outlook. Right click My Calendars and choose
+	Add Calendar -> From Internet. Paste in the URL printed under the Subscribe to this Calendar link in
+	phpScheduleIt.</p>
+
+<h3>Google&reg; Calendar</h3>
+
+<p>Open Google Calendar settings. Click the Calendars tab. Click Browse interesting calendars. Click add by URL. Paste
+	in the URL printed under the Subscribe to this Calendar link in phpScheduleIt.</p>
 
 <h2>Quotas</h2>
 
@@ -213,7 +239,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h3>Resource Images</h3>
 
 <p>You can set a resource image which will be displayed when viewing resource details from the reservation page. This
-	requires php_gd2 to be installed and enabled in your php.ini file. <a href="http://www.php.net/manual/en/book.image.php">More Details</a></p>
+	requires php_gd2 to be installed and enabled in your php.ini file. <a
+			href="http://www.php.net/manual/en/book.image.php">More Details</a></p>
 
 <h3>Setting up Accessories</h3>
 
@@ -333,6 +360,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>['database']['name']</span>Name of phpScheduleIt database</p>
 
 <p class="setting"><span>['phpmailer']['mailer']</span>PHP email library. Options are mail, smtp, sendmail, qmail</p>
+
+<p class="setting"><span>['ics']['require.login']</span>If users should be required to log in to add a reservation to
+	Outlook.</p>
+
+<p class="setting"><span>['ics']['subscription.key']</span>If you want to allow webcal subscriptions, set this to a
+	difficult to guess value. If nothing is set then webcal subscriptions will be disabled.</p>
 
 <h2>Plugins</h2>
 
