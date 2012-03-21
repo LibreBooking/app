@@ -345,6 +345,8 @@ class en_us extends Language
         $strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
         $strings['TurnOffSubscription'] = 'Turn Off Calendar Subscriptions';
         $strings['TurnOnSubscription'] = 'Allow Subscriptions to this Calendar';
+        $strings['SubscribeToCalendar'] = 'Subscribe to this Calendar';
+        $strings['SubscriptionsAreDisabled'] = 'The administrator has disabled subscriptions';
         $strings['NoResourceAdministratorLabel'] = '(No Resource Administrator)';
         $strings['WhoCanManageThisResource'] = 'Who Can Manage This Resource?';
         $strings['ResourceAdministrator'] = 'Resource Administrator';

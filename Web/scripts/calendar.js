@@ -65,6 +65,16 @@ function Calendar(opts, reservations)
 			
 			window.location = url;
 		});
+
+        $('#turnOffSubscription').click(function(e){
+            e.preventDefault();
+            PerformAsyncAction($(this), function(){return opts.subscriptionDisableUrl;});
+        });
+
+        $('#turnOnSubscription').click(function(e){
+            e.preventDefault();
+            PerformAsyncAction($(this), function(){return opts.subscriptionEnableUrl;});
+        });
 	};
 
 	var dayClick = function(date)

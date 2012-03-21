@@ -283,7 +283,8 @@ class UserRepository implements IUserRepository
         $updateUserCommand = new UpdateUserCommand($user->Id(), $user->StatusId(), $user->encryptedPassword,
             $user->passwordSalt, $user->FirstName(), $user->LastName(),
             $user->EmailAddress(), $user->Username(), $user->Homepage(),
-            $user->Timezone(), $user->LastLogin());
+            $user->Timezone(), $user->LastLogin(),
+            $user->GetIsCalendarSubscriptionAllowed(), $user->GetPublicId());
         $db->Execute($updateUserCommand);
 
         $removedPermissions = $user->GetRemovedPermissions();

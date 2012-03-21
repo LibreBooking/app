@@ -1257,7 +1257,9 @@ class UpdateUserCommand extends SqlCommand
         $username,
         $homepageId,
         $timezoneName,
-        $lastLogin)
+        $lastLogin,
+        $allowCalendarSubscription,
+        $publicId)
     {
         parent::__construct(Queries::UPDATE_USER);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -1272,6 +1274,8 @@ class UpdateUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezoneName));
         $this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, Date::Now()->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastLogin));
+        $this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$allowCalendarSubscription));
+        $this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
     }
 }
 

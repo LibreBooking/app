@@ -27,11 +27,16 @@ class CalendarSubscriptionUrl
 
     public function __construct($userId, $scheduleId, $resourceId)
     {
-        $url = new Url(Configuration::Instance()->GetScriptUrl());
+        $config = Configuration::Instance();
+        $scriptUrl = $config->GetScriptUrl();
+        $scriptUrl = str_replace('http', 'webcal', $scriptUrl);
+        $scriptUrl .= '/export/' . Pages::CALENDAR_SUBSCRIBE;
+        $url = new Url($scriptUrl);
 
         $url->AddQueryString(QueryStringKeys::USER_ID, $userId);
         $url->AddQueryString(QueryStringKeys::SCHEDULE_ID, $scheduleId);
         $url->AddQueryString(QueryStringKeys::RESOURCE_ID, $resourceId);
+        $url->AddQueryString(QueryStringKeys::SUBSCRIPTION_KEY, $config->GetSectionKey(ConfigSection::ICS, ConfigKeys::SUBSCRIPTION_KEY));
         $this->url = $url;
     }
 

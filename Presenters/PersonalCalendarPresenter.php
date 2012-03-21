@@ -46,6 +46,11 @@ class PersonalCalendarPresenter extends ActionPresenter
 	private $calendarFactory;
 
     /**
+     * @var ICalendarSubscriptionService
+     */
+    private $subscriptionService;
+
+    /**
      * @var IUserRepository
      */
     private $userRepository;
@@ -54,6 +59,7 @@ class PersonalCalendarPresenter extends ActionPresenter
         IPersonalCalendarPage $page,
         IReservationViewRepository $repository,
         ICalendarFactory $calendarFactory,
+        ICalendarSubscriptionService $subscriptionService,
         IUserRepository $userRepository)
 	{
         parent::__construct($page);
@@ -61,6 +67,7 @@ class PersonalCalendarPresenter extends ActionPresenter
 		$this->page = $page;
 		$this->repository = $repository;
 		$this->calendarFactory = $calendarFactory;
+		$this->subscriptionService = $subscriptionService;
 		$this->userRepository = $userRepository;
 
         $this->AddAction(PersonalCalendarActions::ActionEnableSubscription, 'EnableSubscription');
@@ -97,8 +104,28 @@ class PersonalCalendarPresenter extends ActionPresenter
 
 		$this->page->SetDisplayDate($calendar->FirstDay());
 
-        $user = $this->userRepository->LoadById($userId);
-        $this->page->BindSubscription($user->GetIsCalendarSubscriptionAllowed(), $user->GetPublicId());
+        $details = $this->subscriptionService->ForUser($userId);
+        $this->page->BindSubscription($details);
 	}
+
+    public function EnableSubscription()
+    {
+        $userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
+        Log::Debug('Enabling calendar subscription for userId: %s', $userId);
+
+        $user = $this->userRepository->LoadById($userId);
+        $user->EnableSubscription();
+        $this->userRepository->Update($user);
+    }
+
+    public function DisableSubscription()
+    {
+        $userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
+        Log::Debug('Disabling calendar subscription for userId: %s', $userId);
+
+        $user = $this->userRepository->LoadById($userId);
+        $user->DisableSubscription();
+        $this->userRepository->Update($user);
+    }
 }
 ?>

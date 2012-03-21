@@ -798,7 +798,9 @@ class Queries
 			username = @username,
 			homepageId = @homepageid,
 			last_modified = @dateModified,
-			timezone = @timezone
+			timezone = @timezone,
+			allow_calendar_subscription = @allow_calendar_subscription,
+			public_id = @publicid
 		WHERE
 			user_id = @userid';
 

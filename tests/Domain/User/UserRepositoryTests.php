@@ -235,8 +235,10 @@ class UserRepositoryTests extends TestBase
         $user->ChangeUsername($username);
         $user->ChangeDefaultHomePage($homepageId);
         $user->ChangeTimezone($timezone);
+        $user->EnableSubscription();
+        $publicId = $user->GetPublicId();
 
-        $command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime);
+        $command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime, true, $publicId);
 
         $repo = new UserRepository();
         $repo->Update($user);
@@ -402,6 +404,8 @@ class UserRepositoryTests extends TestBase
                     ColumnNames::POSITION => 'head honcho',
                     ColumnNames::ORGANIZATION => 'earth',
                     ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
+                    ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
+                    ColumnNames::PUBLIC_ID => uniqid(),
                 );
 
         return $row;

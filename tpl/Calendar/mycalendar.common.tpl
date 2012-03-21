@@ -18,10 +18,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div style="text-align: right; padding: 10px 0px;">
 {if $IsSubscriptionAllowed}
-	<a href="{$SubscriptionUrl}">SUBSCRIPTION URL IMAGE GOES HERE</a>
-	<a href="#">{html_image src="switch-minus.png"} {translate key=TurnOffSubscription}</a>
+	{if $IsSubscriptionEnabled}
+		<a id="subscribeTocalendar" href="{$SubscriptionUrl}">{html_image src="calendar-share.png"} {translate key=SubscribeToCalendar}</a>
+	{else}
+		<span class="note">{translate key=SubscriptionsAreDisabled}</span>
+	{/if}
+	<a href="#" id="turnOffSubscription">{html_image src="switch-minus.png"} {translate key=TurnOffSubscription}</a>
 {else}
-	<a href="">{html_image src="switch-plus.png"} {translate key=TurnOnSubscription}</a>
+	<a href="#" id="turnOnSubscription">{html_image src="switch-plus.png"} {translate key=TurnOnSubscription}</a>
 {/if}
 </div>
 
@@ -31,6 +35,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript" src="scripts/reservationPopup.js"></script>
 <script type="text/javascript" src="scripts/calendar.js"></script>
 <script type="text/javascript" src="scripts/js/fullcalendar.min.js"></script>
+<script type="text/javascript" src="scripts/admin/edit.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -57,7 +62,9 @@ $(document).ready(function() {
 					monthNames: {js_array array=$MonthNames},
 					monthNamesShort: {js_array array=$MonthNamesShort},
 					timeFormat: '{$TimeFormat}',
-					dayMonth: '{$DateFormat}'
+					dayMonth: '{$DateFormat}',
+					subscriptionEnableUrl: '{Pages::MY_CALENDAR}?{QueryStringKeys::ACTION}={PersonalCalendarActions::ActionEnableSubscription}',
+					subscriptionDisableUrl: '{Pages::MY_CALENDAR}?{QueryStringKeys::ACTION}={PersonalCalendarActions::ActionDisableSubscription}',
 				};
 		
 	var calendar = new Calendar(options, reservations);

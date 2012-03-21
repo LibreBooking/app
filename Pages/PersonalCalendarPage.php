@@ -29,7 +29,7 @@ interface IPersonalCalendarPage extends IActionPage
 	public function GetCalendarType();
 
 	public function BindCalendar(ICalendarSegment $calendar);
-    public function BindSubscription($isAllowed, $publicId);
+    public function BindSubscription(CalendarSubscriptionDetails $details);
 
 	public function SetDisplayDate($displayDate);
 }
@@ -50,7 +50,9 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	{
 	    parent::__construct('MyCalendar', 0);
 
-        $this->presenter = new PersonalCalendarPresenter($this, new ReservationViewRepository(), new CalendarFactory(), new UserRepository());
+        $userRepository = new UserRepository();
+        $subscriptionService = new CalendarSubscriptionService($userRepository, new ResourceRepository(), new ScheduleRepository());
+        $this->presenter = new PersonalCalendarPresenter($this, new ReservationViewRepository(), new CalendarFactory(), $subscriptionService, $userRepository);
 	}
 
 	public function PageLoad()
@@ -136,11 +138,11 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
         // no-op
     }
 
-    public function BindSubscription($isAllowed, $publicId)
+    public function BindSubscription(CalendarSubscriptionDetails $details)
     {
-        $this->Set('IsSubscriptionAllowed', $isAllowed);
-        $url = new CalendarSubscriptionUrl($publicId, null, null);
-        $this->Set('SubscriptionUrl', $url->__toString());
+        $this->Set('IsSubscriptionAllowed', $details->IsAllowed());
+        $this->Set('IsSubscriptionEnabled', $details->IsEnabled());
+        $this->Set('SubscriptionUrl', $details->Url());
     }
 }
 

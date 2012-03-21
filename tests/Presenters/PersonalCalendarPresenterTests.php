@@ -16,108 +16,114 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Pages/PersonalCalendarPage.php');
 require_once(ROOT_DIR . 'Presenters/PersonalCalendarPresenter.php');
 
 class PersonalCalendarPresenterTests extends TestBase
 {
-	/**
-	 * @var IPersonalCalendarPage|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $page;
+    /**
+     * @var IPersonalCalendarPage|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $page;
 
-	/**
-	 * @var PersonalCalendarPresenter
-	 */
-	private $presenter;
+    /**
+     * @var PersonalCalendarPresenter
+     */
+    private $presenter;
 
-	/**
-	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $repository;
+    /**
+     * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $repository;
 
-	/**
-	 * @var ICalendarFactory|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $calendarFactory;
+    /**
+     * @var ICalendarFactory|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $calendarFactory;
+
+    /**
+     * @var ICalendarSubscriptionService|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $subscriptionService;
 
     /**
      * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
      */
     private $userRepository;
-	
-	public function setup()
-	{
-		parent::setup();
 
-		$this->page = $this->getMock('IPersonalCalendarPage');
-		$this->repository = $this->getMock('IReservationViewRepository');
-		$this->calendarFactory = $this->getMock('ICalendarFactory');
-		$this->userRepository = $this->getMock('IUserRepository');
+    public function setup()
+    {
+        parent::setup();
 
-		$this->presenter = new PersonalCalendarPresenter($this->page, $this->repository, $this->calendarFactory, $this->userRepository);
-	}
+        $this->page = $this->getMock('IPersonalCalendarPage');
+        $this->repository = $this->getMock('IReservationViewRepository');
+        $this->calendarFactory = $this->getMock('ICalendarFactory');
+        $this->subscriptionService = $this->getMock('ICalendarSubscriptionService');
+        $this->userRepository = $this->getMock('IUserRepository');
 
-	public function testBindsEmptyCalendarToPageWhenNoReservationsAreFound()
-	{
-		$userId = 10;
-		$userTimezone = "America/New_York";
+        $this->presenter = new PersonalCalendarPresenter($this->page, $this->repository, $this->calendarFactory, $this->subscriptionService, $this->userRepository);
+    }
 
-		$calendarType = CalendarTypes::Month;
-		
-		$requestedDay = 4;
-		$requestedMonth = 3;
-		$requestedYear = 2011;
+    public function testBindsEmptyCalendarToPageWhenNoReservationsAreFound()
+    {
+        $userId = 10;
+        $userTimezone = "America/New_York";
 
-		$month = new CalendarMonth($requestedMonth, $requestedYear, $userTimezone);
+        $calendarType = CalendarTypes::Month;
 
-		$reservations = array();
+        $requestedDay = 4;
+        $requestedMonth = 3;
+        $requestedYear = 2011;
 
-		$this->repository->expects($this->once())
-			->method('GetReservationList')
-			->with($this->equalTo($month->FirstDay()), $this->equalTo($month->LastDay()), $this->equalTo($userId), $this->equalTo(ReservationUserLevel::ALL))
-			->will($this->returnValue($reservations));
+        $month = new CalendarMonth($requestedMonth, $requestedYear, $userTimezone);
 
-		$this->page->expects($this->once())
-				->method('GetCalendarType')
-				->will($this->returnValue($calendarType));
-		
-		$this->page->expects($this->once())
-				->method('GetDay')
-				->will($this->returnValue($requestedDay));
-		
-		$this->page->expects($this->once())
-				->method('GetMonth')
-				->will($this->returnValue($requestedMonth));
+        $reservations = array();
 
-		$this->page->expects($this->once())
-				->method('GetYear')
-				->will($this->returnValue($requestedYear));
-
-		$this->calendarFactory->expects($this->once())
-			->method('Create')
-			->with($this->equalTo($calendarType), $this->equalTo($requestedYear), $this->equalTo($requestedMonth), $this->equalTo($requestedDay), $this->equalTo($userTimezone))
-			->will($this->returnValue($month));
-
-		$this->page->expects($this->once())
-			->method('BindCalendar')
-			->with($this->equalTo($month));
-
-        $user = new FakeUser();
-        $user->EnableSubscription();
-
-       $this->userRepository->expects($this->once())
-            ->method('LoadById')
-            ->with($this->equalTo($userId))
-            ->will($this->returnValue($user));
+        $this->repository->expects($this->once())
+                ->method('GetReservationList')
+                ->with($this->equalTo($month->FirstDay()), $this->equalTo($month->LastDay()), $this->equalTo($userId), $this->equalTo(ReservationUserLevel::ALL))
+                ->will($this->returnValue($reservations));
 
         $this->page->expects($this->once())
-            ->method('BindSubscription')
-            ->with($this->equalTo(true), $this->equalTo($user->GetPublicId()));
-        
-		$this->presenter->PageLoad($userId, $userTimezone);
-	}
+                ->method('GetCalendarType')
+                ->will($this->returnValue($calendarType));
+
+        $this->page->expects($this->once())
+                ->method('GetDay')
+                ->will($this->returnValue($requestedDay));
+
+        $this->page->expects($this->once())
+                ->method('GetMonth')
+                ->will($this->returnValue($requestedMonth));
+
+        $this->page->expects($this->once())
+                ->method('GetYear')
+                ->will($this->returnValue($requestedYear));
+
+        $this->calendarFactory->expects($this->once())
+                ->method('Create')
+                ->with($this->equalTo($calendarType), $this->equalTo($requestedYear), $this->equalTo($requestedMonth), $this->equalTo($requestedDay), $this->equalTo($userTimezone))
+                ->will($this->returnValue($month));
+
+        $this->page->expects($this->once())
+                ->method('BindCalendar')
+                ->with($this->equalTo($month));
+
+        $details = new CalendarSubscriptionDetails(true);
+
+        $this->subscriptionService->expects($this->once())
+                ->method('ForUser')
+                ->with($this->equalTo($userId))
+                ->will($this->returnValue($details));
+
+        $this->page->expects($this->once())
+                ->method('BindSubscription')
+                ->with($this->equalTo($details));
+
+        $this->presenter->PageLoad($userId, $userTimezone);
+    }
 }
+
 ?>
