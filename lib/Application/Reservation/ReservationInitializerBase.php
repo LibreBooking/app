@@ -111,7 +111,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 
 		$resources = $this->resourceService->GetScheduleResources($requestedScheduleId, true, $this->currentUser);
 
-		$this->basePage->SetCanChangeUser($this->reservationAuthorization->CanChangeUsers($this->currentUser));
+        $canChangeUser = $this->reservationAuthorization->CanChangeUsers($this->currentUser);
+        $this->basePage->SetCanChangeUser($canChangeUser);
 
 		$bindableResourceData = $this->GetBindableResourceData($resources, $requestedResourceId);
 		$reservationUser = $this->userRepository->GetById($userId);
@@ -126,6 +127,9 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		
 		$this->basePage->SetReservationResource($bindableResourceData->ReservationResource);
 		$this->basePage->SetScheduleId($requestedScheduleId);
+
+        $shouldHideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
+        $this->basePage->ShowUserDetails(!$shouldHideDetails || $canChangeUser);
 	}
 
 	/**

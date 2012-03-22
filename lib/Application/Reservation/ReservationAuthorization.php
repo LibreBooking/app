@@ -87,12 +87,12 @@ class ReservationAuthorization implements IReservationAuthorization
 		return $currentUser->IsAdmin;	// only admins can edit reservations that have ended
 	}
 
-	function CanChangeUsers(UserSession $currentUser)
+	public function CanChangeUsers(UserSession $currentUser)
 	{
 		return $currentUser->IsAdmin || $this->authorizationService->CanReserveForOthers($currentUser);
 	}
 
-	function CanApprove(ReservationView $reservationView, UserSession $currentUser)
+	public function CanApprove(ReservationView $reservationView, UserSession $currentUser)
 	{
 		if (!$reservationView->RequiresApproval())
 		{

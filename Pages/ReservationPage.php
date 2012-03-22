@@ -102,7 +102,17 @@ interface IReservationPage extends IPage
 	 */
 	function SetCanChangeUser($canChangeUser);
 
-	public function ShowAdditionalResources($param1);
+    /**
+     * @abstract
+     * @param bool $canShowAdditionalResources
+     */
+	function ShowAdditionalResources($canShowAdditionalResources);
+
+    /**
+     * @abstract
+     * @param bool $canShowUserDetails
+     */
+    function ShowUserDetails($canShowUserDetails);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -260,5 +270,10 @@ abstract class ReservationPage extends Page implements IReservationPage
 	{
 		$this->Set('CanChangeUser', $canChangeUser);
 	}
+
+    public function ShowUserDetails($canShowUserDetails)
+    {
+        $this->Set('ShowUserDetails', $canShowUserDetails);
+    }
 }
 ?>

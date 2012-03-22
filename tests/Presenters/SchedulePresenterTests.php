@@ -73,7 +73,11 @@ class SchedulePresenterTests extends TestBase
 				
 		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
 
-		$scheduleRepository->expects($this->once())
+        $page->expects($this->once())
+                ->method('ShowInaccessibleResources')
+                ->will($this->returnValue($this->showInaccessibleResources));
+
+        $scheduleRepository->expects($this->once())
 			->method('GetAll')
 			->will($this->returnValue($this->schedules));
 		

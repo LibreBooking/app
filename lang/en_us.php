@@ -350,6 +350,7 @@ class en_us extends Language
         $strings['NoResourceAdministratorLabel'] = '(No Resource Administrator)';
         $strings['WhoCanManageThisResource'] = 'Who Can Manage This Resource?';
         $strings['ResourceAdministrator'] = 'Resource Administrator';
+        $strings['Private'] = 'Private';
         // End Strings
 
         // Errors

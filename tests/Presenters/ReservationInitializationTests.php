@@ -212,6 +212,13 @@ class ReservationInitializationTests extends TestBase
 		$page->expects($this->once())
 			->method('SetCanChangeUser')
 			->with($this->equalTo($canChangeUser));
+
+        $shouldHideDetails = true;
+        $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, $shouldHideDetails);
+
+        $page->expects($this->once())
+            ->method('SetShowUserDetails')
+            ->with($this->equalTo(($canChangeUser || !$shouldHideDetails)));
 		
 		$initializer = new NewReservationInitializer($page, $this->scheduleRepository, $this->userRepository, $this->resourceService, $this->reservationAuthorization, $this->fakeUser);
 

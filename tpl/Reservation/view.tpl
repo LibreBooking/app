@@ -25,7 +25,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="reservationDetails">
 			<ul class="no-style">
 				<li>
-					<label>{translate key='User'}</label> {$UserName}
+					<label>{translate key='User'}</label>
+				{if $ShowUserDetails}
+					{$UserName}
+				{else}
+					{translate key=Private}
+				{/if}
 				</li>
 				<li>
 					<label>{translate key='Resources'}</label> {$ResourceName}
@@ -91,25 +96,28 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 				</li>
 		</div>
+
 		<div id="reservationParticipation">
 			<ul class="no-style">
-				<li class="section">
-					<label>{translate key='ParticipantList'}</label>
-					{foreach from=$Participants item=participant}
-						<br/>{$participant->FullName}
-					{foreachelse}
-						<span class="no-data">{translate key='None'}</span>
-					{/foreach}
-				</li>
+				{if $ShowUserDetails}
+					<li class="section">
+						<label>{translate key='ParticipantList'}</label>
+						{foreach from=$Participants item=participant}
+							<br/>{$participant->FullName}
+						{foreachelse}
+							<span class="no-data">{translate key='None'}</span>
+						{/foreach}
+					</li>
 
-				<li>
-					<label>{translate key='InvitationList'}</label>
-					{foreach from=$Invitees item=invitee}
-						<br/>{$invitee->FullName}
-					{foreachelse}
-						<span class="no-data">{translate key='None'}</span>
-					{/foreach}
-				</li>
+					<li>
+						<label>{translate key='InvitationList'}</label>
+						{foreach from=$Invitees item=invitee}
+							<br/>{$invitee->FullName}
+						{foreachelse}
+							<span class="no-data">{translate key='None'}</span>
+						{/foreach}
+					</li>
+				{/if}
 				<li>
 					{if $IAmParticipating}
 						{translate key=CancelParticipation}?

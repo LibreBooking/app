@@ -174,40 +174,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</ul>
 	</div>
 
-	<div id="reservationParticipation">
-		<ul class="no-style">
-			<li>
-				<label>{translate key="ParticipantList"}<br/>
-					{translate key=Add} <input type="text" id="participantAutocomplete" class="input" style="width:250px;"/>
-					or
-					<button id="promptForParticipants" type="button" class="button" style="display:inline">
-						<img src="img/user-plus.png"/>
-					{translate key='AllUsers'}
-					</button>
-				</label>
-
-				<div id="participantList">
-					<ul/>
-				</div>
-				<div id="participantDialog" title="{translate key=AddParticipants}" class="dialog"></div>
-			</li>
-			<li>
-				<label>{translate key="InvitationList"}<br/>
-					{translate key=Add} <input type="text" id="inviteeAutocomplete" class="input" style="width:250px;"/>
-					or
-					<button id="promptForInvitees" type="button" class="button" style="display:inline">
-						{html_image src="user-plus.png"}
-					{translate key='AllUsers'}
-					</button>
-				</label>
-
-				<div id="inviteeList">
-					<ul/>
-				</div>
-				<div id="inviteeDialog" title="{translate key=InviteOthers}" class="dialog"></div>
-			</li>
-		</ul>
-	</div>
+	{if $ShowUserDetails}
+		{include file="Reservation/participation.tpl"}
+	{else}
+		{include file="Reservation/private-participation.tpl"}
+	{/if}
 
 	<div style="clear:both;">&nbsp;</div>
 	<input type="hidden" {formname key=reservation_id} value="{$ReservationId}"/>
