@@ -19,7 +19,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-class ConfigKeys {
+class ConfigKeys
+{
     const ADMIN_EMAIL = 'admin.email';
     const ALLOW_REGISTRATION = 'allow.self.registration';
     const DEFAULT_PAGE_SIZE = 'default.page.size';
@@ -56,13 +57,18 @@ class ConfigKeys {
 
     const INSTALLATION_PASSWORD = 'install.password';
 
-    const SUBSCRIPTION_KEY = 'subscription.key';
+    const ICS_SUBSCRIPTION_KEY = 'subscription.key';
+
+    const PRIVACY_VIEW_RESERVATIONS = 'view.reservations';
+    const PRIVACY_VIEW_SCHEDULES = 'view.schedules';
 }
 
-class ConfigSection {
+class ConfigSection
+{
     const DATABASE = 'database';
     const ICS = 'ics';
     const PLUGINS = 'plugins';
+    const PRIVACY = 'privacy';
     const RESERVATION = 'reservation';
     const SCHEDULE = 'schedule';
 }

@@ -125,6 +125,11 @@ class SchedulePage extends SecurePage implements ISchedulePage
 		// TODO: Clean date
 		return $this->server->GetQuerystring(QueryStringKeys::START_DATE);
 	}
+
+    public function ShowInaccessibleResources()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
+    }
 }
 
 class DisplaySlotFactory
@@ -246,5 +251,7 @@ interface ISchedulePage
 	 * @return string
 	 */
 	public function GetSelectedDate();
+
+    public function ShowInaccessibleResources();
 }
 ?>

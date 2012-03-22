@@ -69,8 +69,14 @@ class SchedulePresenter implements ISchedulePresenter {
      * @param IDailyLayoutFactory $dailyLayoutFactory
      */
     public function __construct(
-    ISchedulePage $page, IScheduleRepository $scheduleRepository, IResourceService $resourceService, ISchedulePageBuilder $schedulePageBuilder, IReservationService $reservationService, IDailyLayoutFactory $dailyLayoutFactory
-    ) {
+        ISchedulePage $page,
+        IScheduleRepository $scheduleRepository,
+        IResourceService $resourceService,
+        ISchedulePageBuilder $schedulePageBuilder,
+        IReservationService $reservationService,
+        IDailyLayoutFactory $dailyLayoutFactory
+    )
+    {
         $this->_page = $page;
         $this->_scheduleRepository = $scheduleRepository;
         $this->_resourceService = $resourceService;
@@ -79,10 +85,11 @@ class SchedulePresenter implements ISchedulePresenter {
         $this->_dailyLayoutFactory = $dailyLayoutFactory;
     }
 
-    public function PageLoad(UserSession $user) {
+    public function PageLoad(UserSession $user)
+    {
         $targetTimezone = $user->Timezone;
 
-        $showInaccessibleResources = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
+        $showInaccessibleResources = $this->_page->ShowInaccessibleResources();
 
         $schedules = $this->_scheduleRepository->GetAll();
         $currentSchedule = $this->_builder->GetCurrentSchedule($this->_page, $schedules);

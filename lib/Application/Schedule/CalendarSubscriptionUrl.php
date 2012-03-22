@@ -36,7 +36,7 @@ class CalendarSubscriptionUrl
         $url->AddQueryString(QueryStringKeys::USER_ID, $userId);
         $url->AddQueryString(QueryStringKeys::SCHEDULE_ID, $scheduleId);
         $url->AddQueryString(QueryStringKeys::RESOURCE_ID, $resourceId);
-        $url->AddQueryString(QueryStringKeys::SUBSCRIPTION_KEY, $config->GetSectionKey(ConfigSection::ICS, ConfigKeys::SUBSCRIPTION_KEY));
+        $url->AddQueryString(QueryStringKeys::SUBSCRIPTION_KEY, $config->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY));
         $this->url = $url;
     }
 

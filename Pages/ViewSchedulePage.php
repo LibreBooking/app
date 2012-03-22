@@ -124,5 +124,10 @@ class ViewSchedulePage extends Page implements ISchedulePage
 		// TODO: Clean date
 		return $this->server->GetQuerystring(QueryStringKeys::START_DATE);
 	}
+
+    public function ShowInaccessibleResources()
+    {
+        return true;
+    }
 }
 ?>

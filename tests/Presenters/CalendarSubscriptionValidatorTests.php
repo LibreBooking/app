@@ -122,7 +122,7 @@ class CalendarSubscriptionValidatorTests extends TestBase
             ->method('GetSubscriptionKey')
             ->will($this->returnValue('12'));
 
-        $this->fakeConfig->SetSectionKey(ConfigSection::ICS, ConfigKeys::SUBSCRIPTION_KEY, '123');
+        $this->fakeConfig->SetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY, '123');
 
         $isValid = $this->validator->IsValid();
 
@@ -131,7 +131,7 @@ class CalendarSubscriptionValidatorTests extends TestBase
 
     public function testIsNotValidWhenSubscriptionKeyIsNotConfigured()
     {
-        $this->fakeConfig->SetSectionKey(ConfigSection::ICS, ConfigKeys::SUBSCRIPTION_KEY, '');
+        $this->fakeConfig->SetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY, '');
 
         $isValid = $this->validator->IsValid();
 
@@ -144,7 +144,7 @@ class CalendarSubscriptionValidatorTests extends TestBase
             ->method('GetSubscriptionKey')
             ->will($this->returnValue('123'));
 
-        $this->fakeConfig->SetSectionKey(ConfigSection::ICS, ConfigKeys::SUBSCRIPTION_KEY, '123');
+        $this->fakeConfig->SetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY, '123');
     }
 }
 

@@ -38,6 +38,8 @@ $conf['settings']['registration.captcha.enabled'] = 'true';     // recommended, 
 $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out
 $conf['settings']['ics']['require.login'] = 'true';             // recommended, if the user must be logged in to access ics files
 $conf['settings']['ics']['subscription.key'] = '';              // must be set to allow webcal subscriptions
+$conf['settings']['privacy']['view.schedules'] = 'false';       // if unauthenticated users can view schedules
+$conf['settings']['privacy']['view.reservations'] = 'false';    // if unauthenticated users can view reservations
 /**
  * Database configuration
  */

@@ -23,7 +23,11 @@ define('ROOT_DIR', '../');
 require_once(ROOT_DIR . 'Pages/ReadOnlyReservationPage.php');
 
 $page = new ReadOnlyReservationPage();
-$page->PageLoad();
 
+if (!Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter()))
+{
+    $page = new SecurePageDecorator($page);
+}
+$page->PageLoad();
 
 ?>
