@@ -31,14 +31,15 @@ class es extends Language
     {
         $dates = array();
 
-        $dates['general_date'] = 'd/m/Y';
+		$dates['general_date'] = 'd/m/Y';
         $dates['general_datetime'] = 'd/m/Y H:i:s';
         $dates['schedule_daily'] = 'l, d/m/Y';
         $dates['reservation_email'] = 'd/m/Y @ g:i A (e)';
         $dates['res_popup'] = 'd/m/Y g:i A';
-        $dates['dashboard'] = 'l, d/m/Y g:i A';
+        $dates['dashboard'] = 'd/m/Y g:i A';
         $dates['period_time'] = "g:i A";
 		$dates['general_date_js'] = "dd/mm/yy";
+
 
         $this->Dates = $dates;
     }
@@ -127,7 +128,7 @@ class es extends Language
         $strings['ReferenceNumber'] = 'N&uacute;mero de Referencia';
         $strings['Tomorrow'] = 'Ma&ntilde;ana';
         $strings['LaterThisWeek'] = 'M&aacute;s Tarde Esta Semana';
-        $strings['NextWeek'] = 'Next Week';
+        $strings['NextWeek'] = 'Siguiente Semana';
         $strings['SignOut'] = 'Cerrar';
         $strings['LayoutDescription'] = 'Empieza en %s, mostrando %s d&iacute;as cada vez';
         $strings['AllResources'] = 'Todos Los Recursos';
@@ -230,21 +231,21 @@ class es extends Language
         $strings['EmailAddress'] = 'Direci&oacute;n de Correo';
         $strings['Phone'] = 'Tel&eacute;fono';
         $strings['Organization'] = 'Organizaci&oacute;n';
-        $strings['Position'] = 'Posici&oacute;n';
+        $strings['Position'] = 'Nº de Socio';
         $strings['Language'] = 'Lenguaje';
         $strings['Permissions'] = 'Permisos';
         $strings['Reset'] = 'Reiniciar';
         $strings['FindGroup'] = 'Encontrar Grupo';
         $strings['Manage'] = 'Gestionar';
         $strings['None'] = 'Ninguno';
-        $strings['AddToOutlook'] = 'A&ntilde; a Outlook';
+        $strings['AddToOutlook'] = 'A&ntilde;adir a Outlook';
         $strings['Done'] = 'Hecho';
         $strings['RememberMe'] = 'Recu&eacute;rdame';
-        $strings['FirstTimeUser?'] = 'First Time User?';
+        $strings['FirstTimeUser?'] = '¿Eres un usuario nuevo?';
         $strings['CreateAnAccount'] = 'Crear Cuenta';
         $strings['ViewSchedule'] = 'Ver Planificaci&oacute;n';
         $strings['ForgotMyPassword'] = 'He Olvidado Mi Contrase&ntilde;a';
-        $strings['YouWillBeEmailedANewPassword'] = 'Se te enviar&acute; una contrase&ntilde;a generada aleatoriamente';
+        $strings['YouWillBeEmailedANewPassword'] = 'Se te enviar&aacute; una contrase&ntilde;a generada aleatoriamente.';
         $strings['Close'] = 'Cerrar';
         $strings['ExportToCSV'] = 'Exportar a CSV';
         $strings['OK'] = 'OK';
@@ -282,7 +283,7 @@ class es extends Language
         $strings['DeleteWarning'] = '¡Esta acci&oacute;n es permanente e irecuperable!';
         $strings['DeleteAccessoryWarning'] = 'Al borrar este accesorio se eliminará de todas las reservas.';
         $strings['AddAccessory'] = 'A&ntilde;adir Accesorio';
-        $strings['AddBlackout'] = 'A&ntilde;adir Blackout';
+        $strings['AddBlackout'] = 'A&ntilde;adir No Disponibilidad';
         $strings['AllResourcesOn'] = 'Todos los Recursos Habilitados';
         $strings['Reason'] = 'Razón';
         $strings['BlackoutShowMe'] = 'Muéstrame reservas en conflicto';
@@ -290,9 +291,9 @@ class es extends Language
         $strings['Filter'] = 'Filtrar';
         $strings['Between'] = 'Entre';
         $strings['CreatedBy'] = 'Creada Por';
-        $strings['BlackoutCreated'] = 'Blackout Created!';
-        $strings['BlackoutNotCreated'] = 'Blackout could not be created!';
-        $strings['BlackoutConflicts'] = 'There are conflicting blackout times';
+        $strings['BlackoutCreated'] = 'No Disponibilidad Creada';
+        $strings['BlackoutNotCreated'] = 'No se ha podido crar la No Dispinibilidad';
+        $strings['BlackoutConflicts'] = 'Hay conflictos en la temporización de No Disponibilidad';
         $strings['ReservationConflicts'] = 'Hay tiempos de reserva en conflicto';
         $strings['UsersInGroup'] = 'Usuarios en este grupo';
         $strings['Browse'] = 'Navegar';
@@ -339,7 +340,9 @@ class es extends Language
         $strings['Past'] = 'Pasado';
         $strings['Restricted'] = 'Restringido';
 		$strings['ViewAll'] = 'View All';
-		$strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
+		$strings['MoveResourcesAndReservations'] = 'Mover recursos y reservas a';
+		$strings['WeekOf'] = 'Semana de';
+		$strings['Of']='de';
 
         // Errors
         $strings['LoginError'] = 'No se encontrado una correspondencia para tu nombre de usuario y password';
@@ -369,10 +372,10 @@ class es extends Language
         $strings['ManageUsers'] = 'Usuarios';
         $strings['ManageGroups'] = 'Grupos';
         $strings['ManageQuotas'] = 'Cuotas';
-        $strings['ManageBlackouts'] = 'Blackout Times';
-        $strings['MyDashboard'] = 'Mí Dashboard';
+        $strings['ManageBlackouts'] = 'Agenda de No Disponibilidad';
+        $strings['MyDashboard'] = 'Mi Tablón';
         $strings['ServerSettings'] = 'Ajustes De Servidor';
-        $strings['Dashboard'] = 'Dashboard';
+        $strings['Dashboard'] = 'Tablón';
         $strings['Help'] = 'Ayuda';
         $strings['Bookings'] = 'Reservas';
         $strings['Schedule'] = 'Planificación';
@@ -385,7 +388,7 @@ class es extends Language
         $strings['ResourceCalendar'] = 'Calendario de Recursos';
         $strings['Reservation'] = 'Nueva Reserva';
         $strings['Install'] = 'Instalación';
-        $strings['ChangePassword'] = 'Cambias Contraseña';
+        $strings['ChangePassword'] = 'Cambiar Contraseña';
         $strings['MyAccount'] = 'Mi Cuenta';
         $strings['Profile'] = 'Perfil';
         $strings['ApplicationManagement'] = 'Gestión de la Aplicación';
@@ -457,9 +460,9 @@ class es extends Language
         and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+        $months['full'] = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Deciembre');
         // The three letter month name
-        $months['abbr'] = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+        $months['abbr'] = array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic');
 
         $this->Months = $months;
     }
