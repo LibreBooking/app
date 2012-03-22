@@ -332,8 +332,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>show.inaccessible.resources</span>Whether or not resources that are not accessible to the user
 	are displayed in the schedule</p>
 
-<p class="setting"><span>notify.created</span>Whether or not application administrators should receive emails when new
-	reservations are booked</p>
+<p class="setting"><span>reservation.label</span>The value to display for the reservation on the Bookings page. Options
+	are 'name', 'title', or 'none'. Default is 'name'.</p>
 
 <p class="setting"><span>image.upload.directory</span>The physical directory relative to the phpScheduleIt directory to
 	store images. This directory will need to be writable.</p>
@@ -348,6 +348,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	account registration</p>
 
 <p class="setting"><span>inactivity.timeout</span>Number of minutes before the user is automatically logged out</p>
+
+<p class="setting"><span>name.format</span>Display format for first name and last name. Default is '{first} {last}'.</p>
 
 <p class="setting"><span>['database']['type']</span>Any PEAR::MDB2 supported type</p>
 
@@ -366,6 +368,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>['ics']['subscription.key']</span>If you want to allow webcal subscriptions, set this to a
 	difficult to guess value. If nothing is set then webcal subscriptions will be disabled.</p>
+
+<p class="setting"><span>['privacy']['view.schedules']</span>If non-authenticated users can view the booking schedules.
+	Default is false.</p>
+
+<p class="setting"><span>['privacy']['view.reservations']</span>If non-authenticated users can view reservation details.
+	Default is false.</p>
+
+<p class="setting"><span>['privacy']['hide.user.details']</span>If non-adminstrators can view personal information about
+	other users. Default is false.</p>
 
 <h2>Plugins</h2>
 

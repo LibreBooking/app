@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'lib/Application/Schedule/SlotLabelFactory.php');
 
 class ReservationSlot implements IReservationSlot
 {
@@ -112,7 +113,7 @@ class ReservationSlot implements IReservationSlot
 
 	public function Label()
 	{
-		return $this->_reservation->FirstName . ' ' . $this->_reservation->LastName;
+        return SlotLabelFactory::Create($this->_reservation);
 	}
 
 	public function IsReservable()

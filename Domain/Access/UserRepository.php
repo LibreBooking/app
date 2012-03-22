@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Domain/User.php');
 require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
+require_once(ROOT_DIR . 'Domain/Values/FullName.php');
 
 interface IUserRepository extends IUserViewRepository
 {
@@ -455,7 +456,8 @@ class UserDto
 
     public function FullName()
     {
-        return $this->FirstName() . ' ' . $this->LastName();
+        $name = new FullName($this->FirstName(), $this->LastName());
+        return $name->__toString();
     }
 
     public function EmailAddress()

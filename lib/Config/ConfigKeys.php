@@ -27,6 +27,7 @@ class ConfigKeys
     const ENABLE_EMAIL = 'enable.email';
 	const INACTIVITY_TIMEOUT = 'inactivity.timeout';
     const LANGUAGE = 'default.language';
+    const NAME_FORMAT = 'name.format';
     const PASSWORD_PATTERN = 'password.pattern';
     const SCRIPT_URL = 'script.url';
     const SERVER_TIMEZONE = 'server.timezone';
@@ -34,6 +35,7 @@ class ConfigKeys
     const VERSION = 'version';
 
     const SCHEDULE_SHOW_INACCESSIBLE_RESOURCES = 'show.inaccessible.resources';
+    const SCHEDULE_RESERVATION_LABEL = 'reservation.label';
 
     const DATABASE_TYPE = 'type';
     const DATABASE_USER = 'user';
