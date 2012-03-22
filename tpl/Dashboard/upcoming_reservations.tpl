@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {function name=displayReservation}
 <tr class="reservation" id="{$reservation->ReferenceNumber}">
 	<td style="min-width: 250px;">{$reservation->Title|default:$DefaultTitle}</td>
-	<td style="min-width:150px;">{$reservation->FirstName} {$reservation->LastName}</td>
+	<td style="min-width:150px;">{fullname first=$reservation->FirstName last=$reservation->LastName}</td>
 	<td width="200px">{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}</td>
 	<td width="200px">{formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</td>
 	<td style="min-width: 150px; max-width: 250px;">{$reservation->ResourceName}</td>

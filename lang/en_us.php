@@ -351,6 +351,8 @@ class en_us extends Language
         $strings['WhoCanManageThisResource'] = 'Who Can Manage This Resource?';
         $strings['ResourceAdministrator'] = 'Resource Administrator';
         $strings['Private'] = 'Private';
+        $strings['Accept'] = 'Accept';
+        $strings['Decline'] = 'Decline';
         // End Strings
 
         // Errors

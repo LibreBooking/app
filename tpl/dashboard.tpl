@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/dashboard.css,css/jquery.qtip.css'}
+{include file='globalheader.tpl' cssFiles='css/dashboard.css,css/jquery.qtip.min.css'}
 
 <ul id="dashboardList">
 {foreach from=$items item=dashboardItem}

@@ -38,7 +38,7 @@ $(document).ready(function() {
 	{foreach from=$Calendar->Reservations() item=reservation}
 		reservations.push({
 			id: '{$reservation->ReferenceNumber}',
-			title: '{$reservation->OwnerName} - {$reservation->ResourceName} {$reservation->Title}',
+			title: '{fullname first=$reservation->OwnerName last=$reservation->ResourceName} {$reservation->Title}',
 			start: '{format_date date=$reservation->StartDate key=fullcalendar}',
 			end: '{format_date date=$reservation->EndDate key=fullcalendar}',
 			url: '{Pages::RESERVATION}?rn={$reservation->ReferenceNumber}',

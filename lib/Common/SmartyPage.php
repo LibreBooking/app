@@ -166,6 +166,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'pagination', array($this, 'CreatePagination'));
 		$this->registerPlugin('function', 'js_array', array($this, 'CreateJavascriptArray'));
 		$this->registerPlugin('function', 'async_validator', array($this, 'AsyncValidator'));
+		$this->registerPlugin('function', 'fullname', array($this, 'DisplayFullName'));
 
 		/**
 		 * PageValidators
@@ -538,7 +539,7 @@ class SmartyPage extends Smarty
 		return $newUrl;
 	}
 
-	function CreateJavascriptArray($params, &$smarty)
+	public function CreateJavascriptArray($params, &$smarty)
 	{
 		$array = $params['array'];
 
@@ -546,6 +547,20 @@ class SmartyPage extends Smarty
 
 		return "[\"$string\"]";
 	}
+
+    public function DisplayFullName($params, &$smarty)
+    {
+        $config = Configuration::Instance();
+
+        if ($config->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter()))
+        {
+            return $this->Resources->GetString('Private');
+        }
+
+        $fullName = new FullName($params['first'], $params['last']);
+
+        return $fullName->__toString();
+    }
 
 }
 

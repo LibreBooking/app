@@ -16,9 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{if $authorized == true}
+{if $authorized}
 <div class="res_popup_details">
-	<div class="user">{$fname} {$lname}</div>
+	<div class="user">{fullname first=$fname last=$lname}</div>
 	<div class="dates">{formatdate date=$startDate key=res_popup} - {formatdate date=$endDate key=res_popup}</div>	
 
     <div class="title">{$title}</div>
@@ -35,7 +35,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{translate key="Participants"} ({$participants|@count})
 	{foreach from=$participants item=user name=participant_loop}
 		{if !$user->IsOwner()}
-			{$user->FirstName} {$user->LastName}
+			{fullname first=$user->FirstName last=$user->LastName}
 		{/if}
 		{if !$smarty.foreach.participant_loop.last},{/if}
 	{/foreach}

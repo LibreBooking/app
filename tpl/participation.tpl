@@ -16,13 +16,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/participation.css,css/jquery.qtip.css'}
+{include file='globalheader.tpl' cssFiles='css/participation.css,css/jquery.qtip.min.css'}
 <h1>{translate key=OpenInvitations} ({$Reservations|count})</h1>
 
 <ul class="no-style participation">
 {foreach from=$Reservations item=reservation name=invitations}
 	{assign var=referenceNumber value=$reservation->ReferenceNumber}
 	<li class="actions row{$smarty.foreach.invitations.index%2}">
+		<h3>{$reservation->Title}</h3>
 		<h3><a href="{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}={$referenceNumber}" class="reservation" referenceNumber="{$referenceNumber}">
 		{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard} - {formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</a></h3>
 		<input type="hidden" value="{$referenceNumber}" class="referenceNumber" />
