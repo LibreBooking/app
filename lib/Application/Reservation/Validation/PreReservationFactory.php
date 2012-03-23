@@ -96,16 +96,19 @@ class PreReservationFactory implements IPreReservationFactory
     {
         $resourceRepository = new ResourceRepository();
         $reservationRepository = new ReservationViewRepository();
+        $scheduleRepository = new ScheduleRepository();
+        $userRepository = new UserRepository();
+
         // Common rules
         $rules = array();
         $rules[] = new ReservationDateTimeRule();
-        $rules[] = new AdminExcludedRule(new ReservationStartTimeRule(), $userSession);
+        $rules[] = new AdminExcludedRule(new ReservationStartTimeRule($scheduleRepository), $userSession);
         $rules[] = new AdminExcludedRule(new PermissionValidationRule(new PermissionServiceFactory()), $userSession);
         $rules[] = new AdminExcludedRule(new ResourceMinimumNoticeRule($resourceRepository), $userSession);
         $rules[] = new AdminExcludedRule(new ResourceMaximumNoticeRule($resourceRepository), $userSession);
         $rules[] = new AdminExcludedRule(new ResourceMinimumDurationRule($resourceRepository), $userSession);
         $rules[] = new AdminExcludedRule(new ResourceMaximumDurationRule($resourceRepository), $userSession);
-        $rules[] = new AdminExcludedRule(new QuotaRule(new QuotaRepository(), $reservationRepository, new UserRepository(), new ScheduleRepository()), $userSession);
+        $rules[] = new AdminExcludedRule(new QuotaRule(new QuotaRepository(), $reservationRepository, $userRepository, $scheduleRepository), $userSession);
         $rules[] = new ResourceAvailabilityRule(new ResourceBlackoutAvailability($reservationRepository), $userSession->Timezone);
 
         return new ReservationValidationRuleProcessor($rules);

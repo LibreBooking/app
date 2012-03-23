@@ -22,6 +22,8 @@ require_once ROOT_DIR . '/Domain/namespace.php';
 
 class TestReservationSeries extends ReservationSeries
 {
+    private $_scheduleId;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -68,5 +70,20 @@ class TestReservationSeries extends ReservationSeries
 	{
 		$this->AddNewInstance($dateRange);
 	}
+
+    public function WithScheduleId($scheudleId)
+    {
+        $this->_scheduleId = $scheudleId;
+    }
+
+    public function ScheduleId()
+    {
+        if (!empty($this->_scheduleId))
+        {
+            return $this->_scheduleId;
+        }
+
+        return parent::ScheduleId();
+    }
 }
 ?>

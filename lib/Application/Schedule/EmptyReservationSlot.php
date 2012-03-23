@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'Domain/Values/ReservationStartTimeConstraint.php');
 
 class EmptyReservationSlot implements IReservationSlot
 {
@@ -139,7 +140,24 @@ class EmptyReservationSlot implements IReservationSlot
 	
 	public function IsPastDate(Date $date)
 	{
-		return $this->_date->SetTime($this->Begin())->LessThan($date);
+        $constraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
+
+        if (empty($constraint))
+        {
+            $constraint = ReservationStartTimeConstraint::_DEFAULT;
+        }
+
+        if ($constraint == ReservationStartTimeConstraint::NONE)
+        {
+            return false;
+        }
+
+        if ($constraint == ReservationStartTimeConstraint::CURRENT)
+        {
+		    return $this->_date->SetTime($this->End(), true)->LessThan($date);
+        }
+
+        return $this->_date->SetTime($this->Begin())->LessThan($date);
 	}
 	
 	public function ToTimezone($timezone)

@@ -51,6 +51,7 @@ class ConfigKeys
 
     const RESERVATION_NOTIFY_CREATED = 'notify.created';
     const RESERVATION_NOTIFY_UPDATED = 'notify.updated';
+    const RESERVATION_START_TIME_CONSTRAINT = 'start.time.constraint';
 
     const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
     const IMAGE_UPLOAD_URL = 'image.upload.url';

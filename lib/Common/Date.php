@@ -371,20 +371,32 @@ class Date
 
     /**
      * @param Time $time
+     * @param bool $isEndTime
      * @return Date
      */
-    public function SetTime(Time $time)
+    public function SetTime(Time $time, $isEndTime = false)
     {
-        return Date::Create($this->Year(), $this->Month(), $this->Day(), $time->Hour(), $time->Minute(), $time->Second(), $this->Timezone());
+        $date = Date::Create($this->Year(), $this->Month(), $this->Day(), $time->Hour(), $time->Minute(), $time->Second(), $this->Timezone());
+
+        if ($isEndTime)
+        {
+            if ($time->Hour() == 0 && $time->Minute() == 0 && $time->Second() == 0)
+            {
+                return $date->AddDays(1);
+            }
+        }
+
+        return $date;
     }
 
     /**
      * @param string $time
+     * @param bool $isEndTime
      * @return Date
      */
-    public function SetTimeString($time)
+    public function SetTimeString($time, $isEndTime = false)
     {
-        return $this->SetTime(Time::Parse($time, $this->Timezone()));
+        return $this->SetTime(Time::Parse($time, $this->Timezone()), $isEndTime);
     }
 
     /**

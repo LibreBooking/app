@@ -145,40 +145,6 @@ class ScheduleLayoutTests extends TestBase
 		$this->assertEquals($period3, $periods[2]);
 	}
 	
-	public function testCreatingScheduleLayoutForDatabaseConvertsToGmtAndAddsTimesIfNeeded()
-	{
-		$this->markTestIncomplete('probably dont need this');
-		
-		$timezone = 'CST';
-		
-		$time1 = Time::Parse('07:00', $timezone);
-		$time2 = Time::Parse('07:45', $timezone);
-		$time3 = Time::Parse('08:30', $timezone);
-		$time4 = Time::Parse('13:00', $timezone);
-		
-		$time1Gmt = $time1->ToUtc();
-		$time2Gmt = $time2->ToUtc();
-		$time3Gmt = $time3->ToUtc();
-		$time4Gmt = $time4->ToUtc();
-		
-		$layout = new ScheduleLayout($timezone);
-		
-		$layout->AppendPeriod($time1, $time2);
-		$layout->AppendPeriod($time3, $time4);
-		$layout->AppendPeriod($time2, $time3, 'Period 1');
-		
-		$layoutForDb = new DatabaseScheduleLayout($layout);
-		
-		$periods = $layoutForDb->GetLayout($this->date);
-		
-		$this->assertEquals(5, count($periods));
-		$this->assertEquals(new NonSchedulePeriod(Time::Parse('00:00')->ToUtc(), $time1Gmt), $periods[0], $periods[0]);
-		$this->assertEquals(new SchedulePeriod($time1Gmt, $time2Gmt), $periods[1]);
-		$this->assertEquals(new SchedulePeriod($time2Gmt, $time3Gmt, 'Period 1'), $periods[2]);
-		$this->assertEquals(new SchedulePeriod($time3Gmt, $time4Gmt), $periods[3]);
-		$this->assertEquals(new NonSchedulePeriod($time4Gmt, Time::Parse('00:00')->ToUtc()), $periods[4]);
-	}
-	
 	public function testCreatesScheduleLayoutForSpecifiedTimezone()
 	{
 		$layout = new ScheduleLayout('CST');
@@ -231,5 +197,21 @@ class ScheduleLayoutTests extends TestBase
 		$this->assertEquals(new LayoutPeriod($start4, $end4, PeriodTypes::NONRESERVABLE, $label4), $slots[4]);
 		
 	}
+
+    public function testCanGetPeriodForTime()
+    {
+        $timezone = 'America/Chicago';
+        $reservableSlots = "00:00 - 01:00 Label 1 A\n1:00- 2:00\r\n02:00 -3:30\n03:30-12:00\r\n";
+        $blockedSlots = "12:00 - 15:00 Blocked 1 A\n15:00- 20:00\r\n20:00 -0:00\n";
+
+        $layout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
+
+        $actual1 = $layout->GetPeriod(Date::Parse('2012-01-01 15:30:00', $timezone));
+        $actual2 = $layout->GetPeriod(Date::Parse('2012-01-01 02:00:00', $timezone));
+
+        $this->assertEquals(new NonSchedulePeriod(Date::Parse('2012-01-01 15:00', $timezone), Date::Parse('2012-01-01 20:00', $timezone)), $actual1);
+        $this->assertEquals(new SchedulePeriod(Date::Parse('2012-01-01 02:00', $timezone), Date::Parse('2012-01-01 03:30', $timezone)), $actual2);
+    }
+
 }
 ?>

@@ -43,6 +43,7 @@ $conf['settings']['ics']['subscription.key'] = '';              // must be set t
 $conf['settings']['privacy']['view.schedules'] = 'false';       // if unauthenticated users can view schedules
 $conf['settings']['privacy']['view.reservations'] = 'false';    // if unauthenticated users can view reservations
 $conf['settings']['privacy']['hide.user.details'] = 'false';    // if personal user details should be displayed to non-administrators
+$conf['settings']['reservation']['start.time.constraint'] = 'future';        // when reservations can be created or edited. options are future, current, none
 /**
  * Database configuration
  */
