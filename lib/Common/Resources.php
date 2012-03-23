@@ -225,8 +225,7 @@ class Resources implements IResourceLocalization
 			return true;
 		}
 
-        if (
-           ($this->AvailableLanguages[$languageCode]) &&
+        if (array_key_exists($languageCode, $this->AvailableLanguages) &&
             file_exists($this->LanguageDirectory . $this->AvailableLanguages[$languageCode]->LanguageFile))
 		{
 			$languageSettings = $this->AvailableLanguages[$languageCode];
