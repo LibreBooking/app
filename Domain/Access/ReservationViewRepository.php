@@ -744,9 +744,9 @@ class ReservationItemView implements IReservedItemView
             $row[ColumnNames::RESERVATION_TITLE],
             $row[ColumnNames::RESERVATION_DESCRIPTION],
             $row[ColumnNames::SCHEDULE_ID],
-            $row[ColumnNames::FIRST_NAME],
-            $row[ColumnNames::LAST_NAME],
-            $row[ColumnNames::USER_ID]
+            $row[ColumnNames::OWNER_FIRST_NAME],
+            $row[ColumnNames::OWNER_LAST_NAME],
+            $row[ColumnNames::OWNER_USER_ID]
         );
 
         if (isset($row[ColumnNames::RESERVATION_CREATED]))

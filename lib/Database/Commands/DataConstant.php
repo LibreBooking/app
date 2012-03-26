@@ -498,14 +498,15 @@ class Queries
 		ORDER BY ri.start_date ASC';
 
     const GET_RESERVATION_LIST =
-            'SELECT *, rs.status_id as status_id
+            'SELECT *, rs.status_id as status_id, owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
 		INNER JOIN reservation_resources rr ON rr.series_id = rs.series_id
 		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
 		INNER JOIN resources r on rr.resource_id = r.resource_id
 		INNER JOIN users u ON u.user_id = ru.user_id
-		WHERE 
+		INNER JOIN users owner ON owner.user_id = rs.owner_id
+		WHERE
 			(
 				(ri.start_date >= @startDate AND ri.start_date <= @endDate)
 				OR
@@ -980,6 +981,9 @@ class ColumnNames
 
     // dynamic
     const TOTAL = 'total';
+    const OWNER_FIRST_NAME = 'ownerFname';
+    const OWNER_LAST_NAME = 'ownerLname';
+    const OWNER_USER_ID = 'owner_id';
 
     // shared
     const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';
