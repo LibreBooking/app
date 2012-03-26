@@ -833,7 +833,7 @@ class Queries
     const VALIDATE_USER =
             'SELECT user_id, password, salt, legacypassword
 		FROM users 
-		WHERE (username = @username OR email = @username)';
+		WHERE (username = @username OR email = @username) AND status_id = 1';
 }
 
 class ColumnNames

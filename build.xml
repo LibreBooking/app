@@ -99,9 +99,11 @@
 		<tstamp/>
 
 		<property name="zip.file.name" value="${zipdirectory}/${packagename}.zip"/>
+        <echo message="Is pre-release: ${is.pre.release}" />
 		<if>
-			<equals arg1="${is.pre.release}" arg2="true"/>
+			<equals arg1="${is.pre.release}" arg2="1"/>
 			<then>
+                <echo message="Packaging pre-release version" />
 				<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip"/>
 			</then>
 		</if>
