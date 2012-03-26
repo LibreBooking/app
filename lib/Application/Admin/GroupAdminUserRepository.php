@@ -22,38 +22,36 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class GroupAdminUserRepository extends UserRepository
 {
-	/**
-	 * @var IGroupViewRepository
-	 */
-	private $groupRepository;
+    /**
+     * @var IGroupViewRepository
+     */
+    private $groupRepository;
 
-	/**
-	 * @var UserSession
-	 */
-	private $userSession;
+    /**
+     * @var UserSession
+     */
+    private $userSession;
 
-	public function __construct(IGroupViewRepository $groupRepository, UserSession $userSession)
-	{
-		$this->groupRepository = $groupRepository;
-		$this->userSession = $userSession;
-		parent::__construct();
-	}
+    public function __construct(IGroupViewRepository $groupRepository, UserSession $userSession)
+    {
+        $this->groupRepository = $groupRepository;
+        $this->userSession = $userSession;
+        parent::__construct();
+    }
 
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
-	{
-		$user = $this->LoadById($this->userSession->UserId);
+    public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+    {
+        $user = $this->LoadById($this->userSession->UserId);
 
-		$groupIds = array();
+        $groupIds = array();
 
-		foreach ($user->Groups() as $group)
-		{
-			if ($group->IsGroupAdmin)
-			{
-				$groupIds[] = $group->GroupId;
-			}
-		}
-		return $this->groupRepository->GetUsersInGroup($groupIds, $pageNumber, $pageSize, $sortField, $sortDirection, $filter);
-	}
+        foreach ($user->GetAdminGroups() as $group)
+        {
+            $groupIds[] = $group->GroupId;
+        }
+
+        return $this->groupRepository->GetUsersInGroup($groupIds, $pageNumber, $pageSize, $sortField, $sortDirection, $filter);
+    }
 }
 
 ?>

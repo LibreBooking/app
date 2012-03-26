@@ -26,8 +26,9 @@ class GroupAdminManageReservationsServiceTests extends TestBase
     {
         $user = new User();
         $adminGroup1 = new UserGroup(1, null, null, RoleLevel::GROUP_ADMIN);
-        $adminGroup2 = new UserGroup(2, null, null, RoleLevel::GROUP_ADMIN);
-        $user->WithGroups(array($adminGroup1, $adminGroup2));
+        $adminGroup2 = new UserGroup(2, null, 1, RoleLevel::NONE);
+        $adminGroup3 = new UserGroup(3, null, 1, RoleLevel::NONE);
+        $user->WithGroups(array($adminGroup1, $adminGroup2, $adminGroup3));
 
         $userRepo = $this->getMock('IUserRepository');
         $userRepo->expects($this->once())
@@ -44,7 +45,7 @@ class GroupAdminManageReservationsServiceTests extends TestBase
         $filter = new ReservationFilter();
         $results = $service->LoadFiltered(1, 2, $filter, $this->fakeUser);
 
-        $getGroupReservationsCommand = new GetFullGroupReservationListCommand(array(1, 2));
+        $getGroupReservationsCommand = new GetFullGroupReservationListCommand(array(2, 3));
 
         $filterCommand = new FilterCommand($getGroupReservationsCommand, $filter->GetFilter());
         $countCommand = new CountCommand($filterCommand);

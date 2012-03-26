@@ -120,6 +120,11 @@ class User
 	 */
 	protected $groups = array();
 
+    /**
+     * @var array|UserGroup[]
+     */
+    protected $groupsICanAdminister = array();
+
 	/**
 	 * @return array|UserGroup[]
 	 */
@@ -235,11 +240,15 @@ class User
 	 */
 	public function WithGroups($groups = array())
 	{
+        $adminGroupIds = array();
+        $groupsWithAdminId = array();
+
 		foreach ($groups as $group)
 		{
 			if ($group->IsGroupAdmin)
 			{
 				$this->isGroupAdmin = true;
+                $adminGroupIds[$group->GroupId] = true;
 			}
 			if ($group->IsApplicationAdmin)
 			{
@@ -249,8 +258,22 @@ class User
 			{
 				$this->isResourceAdmin = true;
 			}
+
+            if (!empty($group->AdminGroupId))
+            {
+                $groupsWithAdminId[] = $group;
+            }
 		}
-		$this->groups = $groups;
+
+        $this->groups = $groups;
+
+        foreach ($groupsWithAdminId as $g)
+        {
+            if (array_key_exists($g->AdminGroupId, $adminGroupIds))
+            {
+                $this->groupsICanAdminister[] = $g;
+            }
+        }
 	}
 
 	public function ChangePermissions($allowedResourceIds = array())
@@ -573,17 +596,18 @@ class User
      */
     public function GetAdminGroups()
     {
-        $adminGroups = array();
-
-        foreach ($this->Groups() as $group)
-        {
-            if ($group->IsGroupAdmin)
-            {
-                $adminGroups[] = $group;
-            }
-        }
-
-        return $adminGroups;
+        return $this->groupsICanAdminister;
+//        $adminGroups = array();
+//
+//        foreach ($this->Groups() as $group)
+//        {
+//            if ($group->IsGroupAdmin)
+//            {
+//                $adminGroups[] = $group;
+//            }
+//        }
+//
+//        return $adminGroups;
     }
 }
 

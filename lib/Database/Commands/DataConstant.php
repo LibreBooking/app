@@ -364,9 +364,12 @@ class Queries
     const GET_ALL_GROUP_USERS =
             'SELECT *
 		FROM users u
-		INNER JOIN user_groups ug ON u.user_id = ug.user_id
-		INNER JOIN groups g ON g.group_id = ug.group_id
-		WHERE g.group_id IN (@groupid) AND (0 = @user_statusid OR status_id = @user_statusid)
+		WHERE u.user_id IN (
+		  SELECT DISTINCT (ug.user_id) FROM user_groups ug
+		  INNER JOIN groups g ON g.group_id = ug.group_id
+		  WHERE g.group_id IN (@groupid)
+		  )
+		AND (0 = @user_statusid OR u.status_id = @user_statusid)
 		ORDER BY u.lname, u.fname';
 
     const GET_ALL_QUOTAS =

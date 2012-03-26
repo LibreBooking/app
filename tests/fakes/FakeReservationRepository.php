@@ -48,6 +48,9 @@ class FakeReservationRepository
                     ColumnNames::RESOURCE_NAME => 'rn',
                     ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::OWNER,
                     ColumnNames::SCHEDULE_ID => 1,
+                    ColumnNames::OWNER_FIRST_NAME => 'first',
+                    ColumnNames::OWNER_LAST_NAME => 'last',
+                    ColumnNames::OWNER_USER_ID => 1,
 					);
 					
 		$row2 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 1, 
@@ -68,6 +71,9 @@ class FakeReservationRepository
                     ColumnNames::RESOURCE_NAME => 'rn',
                     ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::OWNER,
                     ColumnNames::SCHEDULE_ID => 1,
+                    ColumnNames::OWNER_FIRST_NAME => 'first',
+                    ColumnNames::OWNER_LAST_NAME => 'last',
+                    ColumnNames::OWNER_USER_ID => 1,
 					);
 					
 		$row3 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 2, 
@@ -88,6 +94,9 @@ class FakeReservationRepository
                     ColumnNames::RESOURCE_NAME => 'rn',
                     ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::OWNER,
                     ColumnNames::SCHEDULE_ID => 1,
+                    ColumnNames::OWNER_FIRST_NAME => 'first',
+                    ColumnNames::OWNER_LAST_NAME => 'last',
+                    ColumnNames::OWNER_USER_ID => 1,
 					);
 		
 		return array(
