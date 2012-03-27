@@ -156,8 +156,15 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$this->Set('Timezone', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
-		$this->Display('Admin/manage_users.tpl');
+        $this->Set('ManageReservationsUrl', Pages::MANAGE_RESERVATIONS);
+
+        $this->RenderTemplate();
 	}
+
+    protected function RenderTemplate()
+    {
+        $this->Display('Admin/manage_users.tpl');
+    }
 
 	public function BindPageInfo(PageInfo $pageInfo)
 	{

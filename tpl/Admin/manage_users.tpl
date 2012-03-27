@@ -237,7 +237,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	submitUrl: '{$smarty.server.SCRIPT_NAME}',
 	saveRedirect: '{$smarty.server.SCRIPT_NAME}',
 	selectUserUrl: '{$smarty.server.SCRIPT_NAME}?uid=',
-	actions: actions
+	actions: actions,
+	manageReservationsUrl: '{$ManageReservationsUrl}'
 	};
 
 	var userManagement = new UserManagement(userOptions);

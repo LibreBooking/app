@@ -489,12 +489,14 @@ class Queries
 			rs.status_id <> 2';
 
     const GET_RESERVATION_LIST_FULL =
-            'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.status_id as status_id
+            'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.status_id as status_id,
+              owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
 		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
 		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
 		INNER JOIN users ON users.user_id = rs.owner_id
+		INNER JOIN users owner ON owner.user_id = rs.owner_id
 		INNER JOIN resources on rr.resource_id = resources.resource_id
 		WHERE rs.status_id <> 2
 			AND ru.reservation_user_level = @levelid

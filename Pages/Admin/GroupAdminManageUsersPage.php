@@ -35,6 +35,14 @@ class GroupAdminManageUsersPage extends ManageUsersPage
 					new PasswordEncryption(),
 		            new Registration());
 	}
+
+
+    protected function RenderTemplate()
+    {
+        $this->Set('ManageReservationsUrl', Pages::MANAGE_GROUP_RESERVATIONS);
+        parent::RenderTemplate();
+    }
+
 }
 
 ?>

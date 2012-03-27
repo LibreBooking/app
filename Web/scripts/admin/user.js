@@ -66,7 +66,9 @@ function UserManagement(opts) {
 
 		elements.userList.delegate('.viewReservations', 'click', function(e) {
 			var user = getActiveUser();
-			window.location.href = 'manage_reservations.php?uid=' + user.id + '&un=' + user.first + ' ' + user.last;
+            var name = encodeURI(user.first + ' ' + user.last);
+            var url = options.manageReservationsUrl + '?uid=' + user.id + '&un=' + name;
+            window.location.href = url;
 		});
 
 		elements.userAutocomplete.userAutoComplete(options.userAutocompleteUrl, function(ui) {

@@ -29,6 +29,8 @@ class Pages {
     const DEFAULT_LOGIN = 'dashboard.php';
     const INVITATION_RESPONSES = 'participation.php';
     const LOGIN = 'index.php';
+    const MANAGE_RESERVATIONS = 'manage_reservations.php';
+    const MANAGE_GROUP_RESERVATIONS = 'manage_group_reservations.php';
     const MY_CALENDAR = 'my-calendar.php';
     const OPENINGS = 'openings.php';
     const NOTIFICATION_PREFERENCES = 'notification-preferences.php';
