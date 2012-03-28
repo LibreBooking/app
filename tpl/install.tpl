@@ -62,8 +62,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 <li>&nbsp;</li>
 				{if $ShowInstallOptions}
 					<li>3)<i>The following options will probably not work in a hosted environment.  Please set up the database and user through your provider's database tools.</i></li>
-					<li><input type="checkbox" name="create_database" /> Create the database based on configruation /config/config.php ({$dbname}) <span style="color:Red;">Warning: This will delete all existing data</span></span> </li>
-					<li><input type="checkbox" name="create_user" /> Create the user based on configruation /config/config.php ({$dbuser})</li>
+					<li><input type="checkbox" name="create_database" /> Create the database based on configuration /config/config.php ({$dbname}) <span style="color:Red;">Warning: This will delete all existing data</span></span> </li>
+					<li><input type="checkbox" name="create_user" /> Create the user based on configuration /config/config.php ({$dbuser})</li>
 					<li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and user/password for user</li>
 					<li>
 						<br/><button type="submit" name="run_install" class="button" value="submit">Run Installation {html_image src="arrow_large_right.png"}<br/>
