@@ -93,6 +93,10 @@ function ReservationManagement(opts, approval)
 			{
 				form.find('.delResResponse').text(response.errors.join('<br/>'));
 			}
+            else
+            {
+                window.location.reload();
+            }
 		};
 
 		ConfigureAdminForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHander, {dataType: 'json'});

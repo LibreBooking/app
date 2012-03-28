@@ -95,7 +95,8 @@ class ReservationHandler implements IReservationHandler
 		$validationResult = $this->validationService->Validate($reservationSeries);
 		$result = $validationResult->CanBeSaved();
 
-		if ($validationResult->CanBeSaved()) {
+		if ($validationResult->CanBeSaved())
+        {
 			try
 			{
 				$this->persistenceService->Persist($reservationSeries);
