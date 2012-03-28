@@ -230,6 +230,47 @@ class SchedulePresenterTests extends TestBase
 		$this->assertEquals($s2, $actual);
 	}
 
+    public function testStartsOnCurrentDateIfShowingLessThanAWeekOfData()
+    {
+        $timezone = 'CST';
+
+        // saturday
+        $currentServerDate = Date::Create(2009, 07, 18, 11, 00, 00, 'CST');
+        Date::_SetNow($currentServerDate);
+
+        $startDay = 0;
+        $daysVisible = 6;
+
+        // previous sunday
+        $expectedStart = Date::Create(2009, 07, 18, 00, 00, 00, $timezone);
+        $expectedEnd = $expectedStart->AddDays($daysVisible);
+        $expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
+
+        $user = new UserSession(1);
+        $user->Timezone = $timezone;
+        $this->fakeConfig->SetTimezone('CST');
+
+        $schedule = $this->getMock('ISchedule');
+        $schedulePage = $this->getMock('ISchedulePage');
+
+        $schedulePage->expects($this->once())
+            ->method('GetSelectedDate')
+            ->will($this->returnValue(null));
+
+        $schedule->expects($this->once())
+            ->method('GetWeekdayStart')
+            ->will($this->returnValue($startDay));
+
+        $schedule->expects($this->once())
+            ->method('GetDaysVisible')
+            ->will($this->returnValue($daysVisible));
+
+        $pageBuilder = new SchedulePageBuilder();
+        $dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
+
+        $this->assertEquals($expectedScheduleDates, $dates);
+    }
+
 	public function testGetScheduleDatesStartsOnConfiguredDayOfWeekWhenStartDayIsPriorToToday()
 	{
 		$timezone = 'CST';
@@ -239,7 +280,7 @@ class SchedulePresenterTests extends TestBase
 		Date::_SetNow($currentServerDate);
 		
 		$startDay = 0;
-		$daysVisible = 6;
+		$daysVisible = 7;
 		
 		// previous sunday
 		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, $timezone);
@@ -268,9 +309,6 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder = new SchedulePageBuilder();
 		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
 		
-		//echo $expectedScheduleDates->ToString();
-		//echo $utcDates->ToString();
-		
 		$this->assertEquals($expectedScheduleDates, $dates);
 	}
 	
@@ -282,7 +320,7 @@ class SchedulePresenterTests extends TestBase
 		Date::_SetNow($currentServerDate);
 		
 		$startDay = 3;
-		$daysVisible = 6;
+		$daysVisible = 7;
 		
 		// previous wednesday
 		$expectedStart = Date::Create(2009, 07, 8, 00, 00, 00, $timezone);
@@ -325,7 +363,7 @@ class SchedulePresenterTests extends TestBase
 		Date::_SetNow($currentServerDate);
 		
 		$startDay = 0;
-		$daysVisible = 5;
+		$daysVisible = 7;
 		
 		// sunday of next week
 		$expectedStart = Date::Create(2009, 07, 19, 00, 00, 00, $timezone);
@@ -368,7 +406,7 @@ class SchedulePresenterTests extends TestBase
 		Date::_SetNow($currentServerDate);
 		
 		$startDay = 0;
-		$daysVisible = 3;
+		$daysVisible = 7;
 		
 		// previous sunday
 		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, $timezone);
@@ -407,7 +445,7 @@ class SchedulePresenterTests extends TestBase
 		$selectedDate = Date::Create(2009, 07, 18, 00, 00, 00, 'CST');
 		
 		$startDay = 0;
-		$daysVisible = 6;
+		$daysVisible = 7;
 		
 		// previous sunday
 		$expectedStart = Date::Create(2009, 07, 12, 00, 00, 00, $timezone);
@@ -523,8 +561,8 @@ class SchedulePresenterTests extends TestBase
 		
 		$schedule = new Schedule(1, null, true, 1, 5);
 		
-		$expectedPrevious = Date::Parse('2011-03-28', $tz);
-		$expectedNext = Date::Parse('2011-04-11', $tz);
+		$expectedPrevious = Date::Parse('2011-03-30', $tz);
+		$expectedNext = Date::Parse('2011-04-09', $tz);
 		
 		$page = $this->getMock('ISchedulePage');
 		$page->expects($this->once())
