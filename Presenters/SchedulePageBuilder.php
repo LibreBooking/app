@@ -16,10 +16,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 
-interface ISchedulePageBuilder {
+interface ISchedulePageBuilder
+{
 
     /**
      * @param ISchedulePage $page
@@ -65,12 +66,15 @@ interface ISchedulePageBuilder {
     public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange);
 }
 
-class SchedulePageBuilder implements ISchedulePageBuilder {
-
+class SchedulePageBuilder implements ISchedulePageBuilder
+{
     /**
-     * @see ISchedulePageBuilder::BindSchedules()
+     * @param ISchedulePage $page
+     * @param array[int]ISchedule $schedules
+     * @param ISchedule $currentSchedule
      */
-    public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule) {
+    public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule)
+    {
         $page->SetSchedules($schedules);
         $page->SetScheduleId($currentSchedule->GetId());
         $page->SetScheduleName($currentSchedule->GetName());
@@ -78,12 +82,17 @@ class SchedulePageBuilder implements ISchedulePageBuilder {
     }
 
     /**
-     * @see ISchedulePageBuilder::GetCurrentSchedule()
+     * @param ISchedulePage $page
+     * @param $schedules
+     * @return Schedule
      */
-    public function GetCurrentSchedule(ISchedulePage $page, $schedules) {
-        if ($page->IsPostBack()) {
+    public function GetCurrentSchedule(ISchedulePage $page, $schedules)
+    {
+        if ($page->IsPostBack())
+        {
             $schedule = $this->GetSchedule($schedules, $page->GetScheduleId());
-        } else {
+        } else
+        {
             $schedule = $this->GetDefaultSchedule($schedules);
         }
 
@@ -93,7 +102,8 @@ class SchedulePageBuilder implements ISchedulePageBuilder {
     /**
      * @see ISchedulePageBuilder::GetScheduleDates()
      */
-    public function GetScheduleDates(UserSession $user, ISchedule $schedule, ISchedulePage $page) {
+    public function GetScheduleDates(UserSession $user, ISchedule $schedule, ISchedulePage $page)
+    {
         $userTimezone = $user->Timezone;
         $selectedDate = $page->GetSelectedDate();
         $date = empty($selectedDate) ? Date::Now() : new Date($selectedDate, $userTimezone);
@@ -114,21 +124,29 @@ class SchedulePageBuilder implements ISchedulePageBuilder {
          *  if we are on 3 and we need to start on 1, we need to go back 2 days
          *  if we are on 3 and we need to start on 0, we need to go back 3 days
          */
-        $adjustedDays = ($startDay - $currentWeekDay);
+        if ($scheduleLength > 6)
+        {
+            $adjustedDays = ($startDay - $currentWeekDay);
 
-        if ($currentWeekDay < $startDay) {
-            $adjustedDays = $adjustedDays - 7;
+            if ($currentWeekDay < $startDay)
+            {
+                $adjustedDays = $adjustedDays - 7;
+            }
+
+            $startDate = $currentDate->AddDays($adjustedDays);
         }
-
-        $startDate = $currentDate->AddDays($adjustedDays);
-
+        else
+        {
+            $startDate = $currentDate;
+        }
         return new DateRange($startDate, $startDate->AddDays($scheduleLength));
     }
 
     /**
      * @see ISchedulePageBuilder::BindDisplayDates()
      */
-    public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession, ISchedule $schedule) {
+    public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession, ISchedule $schedule)
+    {
         $scheduleLength = $schedule->GetDaysVisible();
         // we don't want to display the last date in the range (it will be midnight of the last day)
         $adjustedDateRange = new DateRange($dateRange->GetBegin()->ToTimezone($userSession->Timezone), $dateRange->GetEnd()->ToTimezone($userSession->Timezone)->AddDays(-1));
@@ -137,16 +155,24 @@ class SchedulePageBuilder implements ISchedulePageBuilder {
 
         $startDate = $adjustedDateRange->GetBegin();
 
-        $adjustment = max($scheduleLength, 7);
-
-        $prevAdjustment = 7 * floor($adjustment / 7); // ie, if 10, we only want to go back 7 days so there is overlap
+        if ($scheduleLength >6)
+        {
+            $adjustment = max($scheduleLength, 7);
+            $prevAdjustment = 7 * floor($adjustment / 7); // ie, if 10, we only want to go back 7 days so there is overlap
+        }
+        else
+        {
+            $adjustment = $scheduleLength;
+            $prevAdjustment = $scheduleLength;
+        }
         $page->SetPreviousNextDates($startDate->AddDays(-$prevAdjustment), $startDate->AddDays($adjustment));
     }
 
     /**
      * @see ISchedulePageBuilder::BindReservations()
      */
-    public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout) {
+    public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout)
+    {
         $page->SetResources($resources);
         $page->SetDailyLayout($dailyLayout);
     }
@@ -154,7 +180,8 @@ class SchedulePageBuilder implements ISchedulePageBuilder {
     /**
      * @see ISchedulePageBuilder::BindLayout()
      */
-    public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange) {
+    public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange)
+    {
         $page->SetLayout($layout->GetLabels($dateRange->GetBegin()));
     }
 
@@ -162,9 +189,12 @@ class SchedulePageBuilder implements ISchedulePageBuilder {
      * @param array[int]Schedule $schedules
      * @return Schedule
      */
-    private function GetDefaultSchedule($schedules) {
-        foreach ($schedules as $schedule) {
-            if ($schedule->GetIsDefault()) {
+    private function GetDefaultSchedule($schedules)
+    {
+        foreach ($schedules as $schedule)
+        {
+            if ($schedule->GetIsDefault())
+            {
                 return $schedule;
             }
         }
@@ -175,10 +205,13 @@ class SchedulePageBuilder implements ISchedulePageBuilder {
      * @param int $scheduleId
      * @return Schedule
      */
-    private function GetSchedule($schedules, $scheduleId) {
-        foreach ($schedules as $schedule) {
+    private function GetSchedule($schedules, $scheduleId)
+    {
+        foreach ($schedules as $schedule)
+        {
             /** @var $schedule Schedule */
-            if ($schedule->GetId() == $scheduleId) {
+            if ($schedule->GetId() == $scheduleId)
+            {
                 return $schedule;
             }
         }
