@@ -109,7 +109,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         <p>
             <img src="{$CaptchaImageUrl}" alt='captcha' /><br/>
             <label class="reg">{translate key="SecurityCode"}<br />
-            <input type="text" class="input" {formname key=CAPTCHA} size="20"  />
+            <input type="text" class="input" {formname key=CAPTCHA} size="20" tabindex="230"  />
         </p>
         {else}
             <input type="hidden" {formname key=CAPTCHA} value=""  />

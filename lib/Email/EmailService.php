@@ -91,7 +91,7 @@ class EmailService implements IEmailService
 			Log::Error('Failed sending email. Exception: %s', $ex);
 		}
 		
-		Log::Debug('Send success: %d. %s', $success, $this->phpMailer->ErrorInfo);
+		Log::Debug('Email send success: %d. %s', $success, $this->phpMailer->ErrorInfo);
 	}
 
 	/**
