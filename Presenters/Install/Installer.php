@@ -264,7 +264,7 @@ class Installer
             {
                 if ($entry != "." && $entry != "..")
                 {
-                    unlink($entry);
+                    @unlink($templateDirectory . '/' . $entry);
                 }
             }
             $d->close();

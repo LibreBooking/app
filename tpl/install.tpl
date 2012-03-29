@@ -54,7 +54,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </ul>
                 </li>
                 <li>&nbsp;</li>
-                <li>2) You MUST provide credentials of a MySQL user who has privileges create databases. If you do not know, contact your database admin.</li>
+                <li>2) You MUST provide credentials of a MySQL user who has privileges to create databases. If you do not know, contact your database admin.</li>
                 <li>MySQL User</li>
                 <li>{textbox name="INSTALL_DB_USER" class="textbox" size="20"}</li>
                 <li>Password</li>
@@ -84,7 +84,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 {if $result->WasSuccessful()}
                     <li style="background-color: #9acd32">Succeeded!</li>
                 {else}
-                    <li style="border: solid red 5px;">
+                    <li style="border: solid red 5px;padding:10px;">
                         Failed!  Details...
                         <ul class='no-style'>
                             <li>SQL Statement: <pre>{$result->sqlText}</pre></li>
@@ -100,15 +100,18 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     Summary: <br/> Installation completed successfully! <br/>
                     1) <a href="{$Path}{Pages::LOGIN}">Login</a> with admin/password for admin user Or user/password for basic user. This is sample data chosen to installed in previous page. Or <br/>
                     2) <a href="{$Path}{Pages::REGISTRATION}">Register</a> your admin user/basic user. This is email authentication method and it requires mail server configured to work successfully.
-                {/if}
+				{/if}
 				{if $UpgradeCompletedSuccessfully}
 					You are now running version {$TargetVersion} of phpScheduleIt
+					<h3>It is recommended to <a href="configure.php">upgrade your config file</a></h3>
 				{/if}
                 {if $InstallFailed}
                     Summary: <br/> There were problems with the installation.  Please correct them and retry the installation.
                 {/if}
             </li>
         </ul>
+		
+
     </form>
 </div>
 

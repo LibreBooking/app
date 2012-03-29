@@ -45,7 +45,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         {/if}
 
 		{if $ShowConfigSuccess}
-			Your config file is updated!
+			<h3>Your config file is now up to date!</h3>
 		{/if}
 
 		{if $ShowManualConfig}
