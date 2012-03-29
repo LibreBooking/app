@@ -307,76 +307,149 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Some of phpScheduleIt's functionality can only be controlled by editing the config file.</p>
 
-<p class="setting"><span>server.timezone</span>This must reflect the timezone of the server that phpScheduleIt is hosted
+<p class="setting"><span>$conf['settings']['server.timezone']</span>This must reflect the timezone of the server that
+	phpScheduleIt is hosted
 	on. You can view the current timezone from the Server Settings menu item. Possible values are located here:
 	http://php.net/manual/en/timezones.php</p>
 
-<p class="setting"><span>allow.self.registration</span>If users are allowed to register new accounts.</p>
+<p class="setting"><span>$conf['settings']['allow.self.registration']</span>If users are allowed to register new
+	accounts.</p>
 
-<p class="setting"><span>admin.email</span>The email address of the main application administrator</p>
-
-<p class="setting"><span>default.page.size</span>The initial number of rows for any page that displays a list of data
+<p class="setting"><span>$conf['settings']['admin.email']</span>The email address of the main application administrator
 </p>
 
-<p class="setting"><span>enable.email</span>Whether or not any emails are sent out of phpScheduleIt</p>
+<p class="setting"><span>$conf['settings']['default.page.size']</span>The initial number of rows for any page that
+	displays a list of data
+</p>
 
-<p class="setting"><span>default.language</span>Default language for all users. This can be any language in the
+<p class="setting"><span>$conf['settings']['enable.email']</span>Whether or not any emails are sent out of phpScheduleIt
+</p>
+
+<p class="setting"><span>$conf['settings']['default.language']</span>Default language for all users. This can be any
+	language in the
 	phpScheduleIt lang directory</p>
 
-<p class="setting"><span>script.url</span>The full public URL to the root of this instance of phpScheduleIt. This should
+<p class="setting"><span>$conf['settings']['script.url']</span>The full public URL to the root of this instance of
+	phpScheduleIt. This should
 	be the Web directory which contains files like bookings.php and calendar.php</p>
 
-<p class="setting"><span>password.pattern</span>A regular expression to enforce password complexity during user account
+<p class="setting"><span>$conf['settings']['password.pattern']</span>A regular expression to enforce password complexity
+	during user account
 	registration</p>
 
-<p class="setting"><span>show.inaccessible.resources</span>Whether or not resources that are not accessible to the user
+<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Whether or not resources
+	that are not
+	accessible to the user
 	are displayed in the schedule</p>
 
-<p class="setting"><span>reservation.label</span>The value to display for the reservation on the Bookings page. Options
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The value to display for the
+	reservation on the
+	Bookings page. Options
 	are 'name', 'title', or 'none'. Default is 'name'.</p>
 
-<p class="setting"><span>image.upload.directory</span>The physical directory relative to the phpScheduleIt directory to
+<p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory relative to the
+	phpScheduleIt directory to
 	store images. This directory will need to be writable.</p>
 
-<p class="setting"><span>image.upload.url</span>The URL relative to script.url where uploaded images can be viewed from
+<p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL relative to script.url where uploaded
+	images can be viewed from
 </p>
 
-<p class="setting"><span>cache.templates</span>Whether or not templates are cached. It is recommended to set this to
+<p class="setting"><span>$conf['settings']['cache.templates']</span>Whether or not templates are cached. It is
+	recommended to set this to
 	true, as long as tpl_c is writable</p>
 
-<p class="setting"><span>registration.captcha.enabled</span>Whether or not captcha image security is enabled during user
+<p class="setting"><span>$conf['settings']['registration.captcha.enabled']</span>Whether or not captcha image security
+	is enabled during user
 	account registration</p>
 
-<p class="setting"><span>inactivity.timeout</span>Number of minutes before the user is automatically logged out</p>
+<p class="setting"><span>$conf['settings']['inactivity.timeout']</span>Number of minutes before the user is
+	automatically logged out</p>
 
-<p class="setting"><span>name.format</span>Display format for first name and last name. Default is '{first} {last}'.</p>
+<p class="setting"><span>$conf['settings']['name.format']</span>Display format for first name and last name. Default
+	is {literal}'{first} {last}'{/literal}.</p>
 
-<p class="setting"><span>['database']['type']</span>Any PEAR::MDB2 supported type</p>
-
-<p class="setting"><span>['database']['user']</span>Database user with access to the configured database</p>
-
-<p class="setting"><span>['database']['password']</span>Password for the database user</p>
-
-<p class="setting"><span>['database']['hostspec']</span>Database host URL or named pipe</p>
-
-<p class="setting"><span>['database']['name']</span>Name of phpScheduleIt database</p>
-
-<p class="setting"><span>['phpmailer']['mailer']</span>PHP email library. Options are mail, smtp, sendmail, qmail</p>
-
-<p class="setting"><span>['ics']['require.login']</span>If users should be required to log in to add a reservation to
+<p class="setting"><span>$conf['settings']['ics']['require.login']</span>If users should be required to log in to add a
+	reservation to
 	Outlook.</p>
 
-<p class="setting"><span>['ics']['subscription.key']</span>If you want to allow webcal subscriptions, set this to a
+<p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>If you want to allow webcal subscriptions,
+	set this to a
 	difficult to guess value. If nothing is set then webcal subscriptions will be disabled.</p>
 
-<p class="setting"><span>['privacy']['view.schedules']</span>If non-authenticated users can view the booking schedules.
+<p class="setting"><span>$conf['settings']['privacy']['view.schedules']</span>If non-authenticated users can view the
+	booking schedules.
 	Default is false.</p>
 
-<p class="setting"><span>['privacy']['view.reservations']</span>If non-authenticated users can view reservation details.
+<p class="setting"><span>$conf['settings']['privacy']['view.reservations']</span>If non-authenticated users can view
+	reservation details.
 	Default is false.</p>
 
-<p class="setting"><span>['privacy']['hide.user.details']</span>If non-adminstrators can view personal information about
+<p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>If non-adminstrators can view personal
+	information about
 	other users. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['reservation']['start.time.constraint']</span>When reservations can be
+	created or edited.
+	Options are future, current, none. Future means reservations cannot be created or modified if the starting time of
+	the selected slot is in the past. Current means reservations can be created or modified if the ending time of the
+	selected slot is not in the past. None means that there is no restriction on when reservations can be created or
+	modified. Default is future.</p>
+
+<p class="setting"><span>$conf['settings']['database']['type']</span>Any PEAR::MDB2 supported type</p>
+
+<p class="setting"><span>$conf['settings']['database']['user']</span>Database user with access to the configured
+	database</p>
+
+<p class="setting"><span>$conf['settings']['database']['password']</span>Password for the database user</p>
+
+<p class="setting"><span>$conf['settings']['database']['hostspec']</span>Database host URL or named pipe</p>
+
+<p class="setting"><span>$conf['settings']['database']['name']</span>Name of phpScheduleIt database</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>PHP email library. Options are mail, smtp,
+	sendmail, qmail</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.host']</span>SMTP host, if using smtp</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.port']</span>SMTP port, if using smtp, usually 25</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.secure']</span>SMTP security, if using smtp. Options are
+	'', ssl or tls</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.auth']</span>SMTP requies authentication, if using smtp.
+	Options are true
+	or false</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.username']</span>SMTP username, if using smtp</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.password']</span>SMTP password, if using smtp</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['sendmail.path']</span>Path to sendmail, if using sendmail</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['Authentication']</span>Name of authentication plugin to use. For
+	more on plugins,
+	see Plugins below</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['Authorization']</span>Name of authorization plugin to use. For
+	more on plugins,
+	see Plugins below</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['Permission']</span>Name of permission plugin to use. For more on
+	plugins, see
+	Plugins below</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['PreReservation']</span>Name of prereservation plugin to use. For
+	more on plugins,
+	see Plugins below</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['PostReservation']</span>Name of postreservation plugin to use.
+	For more on
+	plugins, see Plugins below</p>
+
+<p class="setting"><span>$conf['settings']['install.password']</span>If you are running an installation or upgrade, you
+	will be required to
+	provide a value here</p>
 
 <h2>Plugins</h2>
 
