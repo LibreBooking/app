@@ -18,30 +18,27 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Presenters/Install/Installer.php');
+require_once(ROOT_DIR . 'Presenters/Install/MySqlScript.php');
+require_once(ROOT_DIR . 'Presenters/Install/InstallationResult.php');
+require_once(ROOT_DIR . 'Presenters/Install/InstallSecurityGuard.php');
 
-/**
- *
- */
-require_once(ROOT_DIR . 'Presenters/Installer.php');
-require_once(ROOT_DIR . 'Presenters/MySqlScript.php');
-require_once(ROOT_DIR . 'Presenters/InstallationResult.php');
-
-/**
- * Installation Presenter class
- */
 class InstallPresenter
 {
-
 	/**
-	 * @var \IInstallPage
+	 * @var IInstallPage
 	 */
 	private $page;
 
-	const VALIDATED_INSTALL = 'validated_install';
+	/**
+	 * @var InstallSecurityGuard
+	 */
+	private $securityGuard;
 
-	public function __construct(IInstallPage $page)
+	public function __construct(IInstallPage $page, InstallSecurityGuard $securityGuard)
 	{
 		$this->page = $page;
+		$this->securityGuard = $securityGuard;
 	}
 
 	/**
@@ -76,20 +73,12 @@ class InstallPresenter
 
 	public function CheckForInstallPasswordInConfig()
 	{
-		$installPassword = Configuration::Instance()->GetKey(ConfigKeys::INSTALLATION_PASSWORD);
-
-		if (empty($installPassword))
-		{
-			$this->page->SetInstallPasswordMissing(true);
-			return;
-		}
-
-		$this->page->SetInstallPasswordMissing(false);
+		$this->page->SetInstallPasswordMissing(!$this->securityGuard->CheckForInstallPasswordInConfig());
 	}
 
 	private function CheckForInstallPasswordProvided()
 	{
-		if ($this->IsAuthenticated())
+		if ($this->securityGuard->IsAuthenticated())
 		{
 			return;
 		}
@@ -116,7 +105,7 @@ class InstallPresenter
 
 	private function CheckForAuthentication()
 	{
-		if ($this->IsAuthenticated())
+		if ($this->securityGuard->IsAuthenticated())
 		{
 			$this->page->SetShowDatabasePrompt(true);
 			return;
@@ -125,24 +114,10 @@ class InstallPresenter
 		$this->page->SetShowDatabasePrompt(false);
 	}
 
-	private function IsAuthenticated()
-	{
-		return ServiceLocator::GetServer()->GetSession(SessionKeys::INSTALLATION) == self::VALIDATED_INSTALL;
-	}
 
 	private function Validate($installPassword)
 	{
-		$validated = $installPassword == Configuration::Instance()->GetKey(ConfigKeys::INSTALLATION_PASSWORD);
-
-		if ($validated)
-		{
-			ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, self::VALIDATED_INSTALL);
-		} else
-		{
-			ServiceLocator::GetServer()->SetSession(SessionKeys::INSTALLATION, null);
-		}
-
-		return $validated;
+		return $this->securityGuard->ValidatePassword($installPassword);
 	}
 
 	private function RunInstall()

@@ -29,7 +29,8 @@ if (SmartyPermissionsAreOk($smartyTemplateCacheDir))
 	require_once(ROOT_DIR . 'Pages/InstallPage.php');
 	$page = new InstallPage();
 	$page->PageLoad();
-} else
+}
+else
 {
 	echo "The web server (such as _www on Mac or apache on Linux) must have write access to $smartyTemplateCacheDir. ";
 	echo "<br/>The permissions are currently set is " . substr(sprintf('%o', fileperms($smartyTemplateCacheDir)), -4);

@@ -18,9 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 require_once(ROOT_DIR . 'Pages/Page.php');
-require_once(ROOT_DIR . 'Presenters/InstallPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Install/InstallPresenter.php');
 
 interface IInstallPage
 {
@@ -161,7 +160,7 @@ class InstallPage extends Page implements IInstallPage
 	{
 		parent::__construct('Install', 1);
 
-		$this->presenter = new InstallPresenter($this);
+		$this->presenter = new InstallPresenter($this, new InstallSecurityGuard());
 	}
 
 	/**

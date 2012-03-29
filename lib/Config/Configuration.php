@@ -104,7 +104,7 @@ class Configuration implements IConfiguration
         }
 
 		$config = new Config();
-		$container = $config->parseConfig($configFile, "PHPArray");
+		$container = $config->parseConfig($configFile, 'PHPArray');
 		
 		if (PEAR::isError($container))
 		{
