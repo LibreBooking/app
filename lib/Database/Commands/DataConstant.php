@@ -489,7 +489,7 @@ class Queries
 			rs.status_id <> 2';
 
     const GET_RESERVATION_LIST_FULL =
-            'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.status_id as status_id,
+            'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id,
               owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
@@ -503,7 +503,8 @@ class Queries
 		ORDER BY ri.start_date ASC';
 
     const GET_RESERVATION_LIST =
-            'SELECT *, rs.status_id as status_id, owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id
+            'SELECT *, rs.status_id as status_id, rs.description as description,
+              owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
 		INNER JOIN reservation_resources rr ON rr.series_id = rs.series_id
