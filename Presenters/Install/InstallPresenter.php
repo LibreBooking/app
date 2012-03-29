@@ -125,6 +125,7 @@ class InstallPresenter
 		$install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
 
 		$results = $install->InstallFresh($this->page->GetShouldCreateDatabase(), $this->page->GetShouldCreateUser(), $this->page->GetShouldCreateSampleData());
+        $install->ClearCachedTemplates();
 
 		$this->page->SetInstallResults($results);
 	}
@@ -134,6 +135,7 @@ class InstallPresenter
 		$install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
 
 		$results = $install->Upgrade();
+        $install->ClearCachedTemplates();
 
 		$this->page->SetUpgradeResults($results, Configuration::VERSION);
 	}
