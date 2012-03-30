@@ -46,6 +46,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p> (Dutch)</p>
 <p>Julio Guedimin (Spanish)</p>
 <p>Jordi Divins (Catalan)</p>
+<p>Daniele Cordella (Italian)</p>
 
 <h3>Thank you to the following projects and libraries</h3>
 
