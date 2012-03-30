@@ -34,6 +34,7 @@ class AvailableLanguages
         			'en_gb' => new AvailableLanguage('en_gb', 'en_gb.php', 'English GB'),
         			'es' => new AvailableLanguage('es', 'es.php', 'Espa&ntilde;ol'),
         			'fr_fr' => new AvailableLanguage('fr_fr', 'fr_fr.php', 'Fran&ccedil;ais'),
+        			'it_it' => new AvailableLanguage('it_it', 'it_it.php', 'Italiano'),
         			'ja_jp' => new AvailableLanguage('ja_jp', 'ja_jp.php', 'Japanese'),
 					'pl' => new AvailableLanguage('pl', 'pl.php', 'Polski'),
         		);
