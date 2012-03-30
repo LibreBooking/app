@@ -30,17 +30,19 @@ class en_gb extends en_us
 
     protected function _LoadDates()
     {
-        parent::_LoadDates();
+        $dates = parent::_LoadDates();
 
         // change defaults here
-        $this->Dates['general_date'] = 'd/m/Y';
-        $this->Dates['general_datetime'] = 'd/m/Y H:i:s';
-        $this->Dates['schedule_daily'] = 'l, d/m/Y';
-        $this->Dates['reservation_email'] = 'd/m/Y @ g:i A (e)';
-        $this->Dates['res_popup'] = 'd/m/Y g:i A';
-        $this->Dates['dashboard'] = 'l, d/m/Y g:i A';
-        $this->Dates['period_time'] = "g:i A";
-        $this->Dates['general_date_js'] = "dd/mm/yy";
+        $dates['general_date'] = 'd/m/Y';
+        $dates['general_datetime'] = 'd/m/Y H:i:s';
+        $dates['schedule_daily'] = 'l, d/m/Y';
+        $dates['reservation_email'] = 'd/m/Y @ g:i A (e)';
+        $dates['res_popup'] = 'd/m/Y g:i A';
+        $dates['dashboard'] = 'l, d/m/Y g:i A';
+        $dates['period_time'] = "g:i A";
+        $dates['general_date_js'] = "dd/mm/yy";
+
+        $this->Dates = $dates;
     }
 
     protected function _LoadStrings()

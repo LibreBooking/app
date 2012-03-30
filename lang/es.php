@@ -19,8 +19,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
+require_once('en_us.php');
 
-class es extends Language
+class es extends en_us
 {
     public function __construct()
     {
@@ -29,7 +30,7 @@ class es extends Language
 
     protected function _LoadDates()
     {
-        $dates = array();
+        $dates = parent::_LoadDates();
 
 		$dates['general_date'] = 'd/m/Y';
         $dates['general_datetime'] = 'd/m/Y H:i:s';
@@ -46,7 +47,7 @@ class es extends Language
 
     protected function _LoadStrings()
     {
-        $strings = array();
+        $strings = parent::_LoadStrings();
 
         $strings['FirstName'] = 'Nombre';
         $strings['LastName'] = 'Apellido';
@@ -431,7 +432,7 @@ class es extends Language
 
     protected function _LoadDays()
     {
-        $days = array();
+        $days = parent::_LoadDays();
 
         /***
         DAY NAMES
@@ -452,7 +453,7 @@ class es extends Language
 
     protected function _LoadMonths()
     {
-        $months = array();
+        $months = parent::_LoadMonths();
 
         /***
         MONTH NAMES

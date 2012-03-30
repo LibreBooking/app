@@ -27,6 +27,9 @@ class en_us extends Language
         parent::__construct();
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadDates()
     {
         $dates = array();
@@ -43,8 +46,13 @@ class en_us extends Language
 		$dates['calendar_dates'] = 'M/d';
 
         $this->Dates = $dates;
+
+        return $this->Dates;
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadStrings()
     {
         $strings = array();
@@ -441,8 +449,13 @@ class en_us extends Language
         //
 
         $this->Strings = $strings;
+
+        return $this->Strings;
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadDays()
     {
         $days = array();
@@ -462,8 +475,13 @@ class en_us extends Language
         $days['letter'] = array('S', 'M', 'T', 'W', 'T', 'F', 'S');
 
         $this->Days = $days;
+
+        return $this->Days;
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadMonths()
     {
         $months = array();
@@ -479,11 +497,18 @@ class en_us extends Language
         $months['abbr'] = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
 
         $this->Months = $months;
+
+        return $this->Months;
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadLetters()
     {
         $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+        return $this->Letters;
     }
 
     protected function _GetHtmlLangCode()

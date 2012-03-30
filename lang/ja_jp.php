@@ -19,8 +19,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
+require_once('en_us.php');
 
-class ja_jp extends Language
+class ja_jp extends en_us
 {
     public function __construct()
     {
@@ -29,7 +30,7 @@ class ja_jp extends Language
 
     protected function _LoadDates()
     {
-        $dates = array();
+        $dates = parent::_LoadDates();
 
         $dates['general_date'] = 'Y/m/d';
         $dates['general_datetime'] = 'Y/m/d H:i:s';
@@ -45,7 +46,7 @@ class ja_jp extends Language
 
     protected function _LoadStrings()
     {
-        $strings = array();
+        $strings = parent::_LoadStrings();
 
         $strings['FirstName'] = '名';
         $strings['LastName'] = '姓';
@@ -428,7 +429,7 @@ class ja_jp extends Language
 
     protected function _LoadDays()
     {
-        $days = array();
+        $days = parent::_LoadDays();
 
         /***
         DAY NAMES
@@ -449,7 +450,7 @@ class ja_jp extends Language
 
     protected function _LoadMonths()
     {
-        $months = array();
+        $months = parent::_LoadMonths();
 
         /***
         MONTH NAMES

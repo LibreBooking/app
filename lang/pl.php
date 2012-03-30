@@ -20,8 +20,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
+require_once('en_us.php');
 
-class pl extends Language
+class pl extends en_us
 {
     public function __construct()
     {
@@ -30,7 +31,7 @@ class pl extends Language
 
     protected function _LoadDates()
     {
-        $dates = array();
+        $dates = parent::_LoadDates();
 
         $dates['general_date'] = 'Y-m-d';
         $dates['general_datetime'] = 'Y-m-d H:i:s';
@@ -46,15 +47,15 @@ class pl extends Language
 
     protected function _LoadStrings()
     {
-        $strings = array();
+        $strings = parent::_LoadStrings();
 
-        $strings['FirstName'] = 'Imiê';
+        $strings['FirstName'] = 'Imiï¿½';
         $strings['LastName'] = 'Nazwisko';
         $strings['Timezone'] = 'Strefa czasowa';
         $strings['Edit'] = 'Edycja';
-        $strings['Change'] = 'Zmieñ';
-        $strings['Rename'] = 'Zmieñ nazwê';
-        $strings['Remove'] = 'Usuñ';
+        $strings['Change'] = 'Zmieï¿½';
+        $strings['Rename'] = 'Zmieï¿½ nazwï¿½';
+        $strings['Remove'] = 'Usuï¿½';
         $strings['Delete'] = 'Skasuj';
         $strings['Update'] = 'Aktualizuj';
         $strings['Cancel'] = 'Anuluj';
@@ -62,81 +63,81 @@ class pl extends Language
         $strings['Name'] = 'Nazwa';
         $strings['Yes'] = 'Tak';
         $strings['No'] = 'Nie';
-        $strings['FirstNameRequired'] = 'Wymagane jest imiê.';
+        $strings['FirstNameRequired'] = 'Wymagane jest imiï¿½.';
         $strings['LastNameRequired'] = 'Wymagane jest nazwisko.';
-        $strings['PwMustMatch'] = 'Has³o potwierdzaj¹ce musi byæ identyczne.';
-        $strings['PwComplexity'] = 'Has³o musi mieæ co najmniej 6 znaków, w tym ma³e i du¿e litery oraz cyfry.';
+        $strings['PwMustMatch'] = 'Hasï¿½o potwierdzajï¿½ce musi byï¿½ identyczne.';
+        $strings['PwComplexity'] = 'Hasï¿½o musi mieï¿½ co najmniej 6 znakï¿½w, w tym maï¿½e i duï¿½e litery oraz cyfry.';
         $strings['ValidEmailRequired'] = 'Wymagany poprawny adres mailowy.';
-        $strings['UniqueEmailRequired'] = 'Wybrany adres mailowy ju¿ istnieje w bazie.';
-        $strings['UniqueUsernameRequired'] = 'Wybrany u¿ytkownik ju¿ istnieje w bazie.';
-        $strings['UserNameRequired'] = 'Wymagana jest nazwa u¿ytkownika.';
-        $strings['CaptchaMustMatch'] = 'WprowadŸ znaki z pokazanego obrazka.';
-        $strings['Today'] = 'Dziœ';
-        $strings['Week'] = 'Tydzieñ';
-        $strings['Month'] = 'Miesi¹c';
-        $strings['BackToCalendar'] = 'Powrót do kalendarza';
-        $strings['BeginDate'] = 'Pocz¹tek';
+        $strings['UniqueEmailRequired'] = 'Wybrany adres mailowy juï¿½ istnieje w bazie.';
+        $strings['UniqueUsernameRequired'] = 'Wybrany uï¿½ytkownik juï¿½ istnieje w bazie.';
+        $strings['UserNameRequired'] = 'Wymagana jest nazwa uï¿½ytkownika.';
+        $strings['CaptchaMustMatch'] = 'Wprowadï¿½ znaki z pokazanego obrazka.';
+        $strings['Today'] = 'Dziï¿½';
+        $strings['Week'] = 'Tydzieï¿½';
+        $strings['Month'] = 'Miesiï¿½c';
+        $strings['BackToCalendar'] = 'Powrï¿½t do kalendarza';
+        $strings['BeginDate'] = 'Poczï¿½tek';
         $strings['EndDate'] = 'Koniec';
-        $strings['Username'] = 'Nazwa u¿ytkownika';
-        $strings['Password'] = 'Has³o';
-        $strings['PasswordConfirmation'] = 'PotwierdŸ has³o';
-        $strings['DefaultPage'] = 'Domyœlna strona g³ówna';
-        $strings['MyCalendar'] = 'Mój kalendarz';
+        $strings['Username'] = 'Nazwa uï¿½ytkownika';
+        $strings['Password'] = 'Hasï¿½o';
+        $strings['PasswordConfirmation'] = 'Potwierdï¿½ hasï¿½o';
+        $strings['DefaultPage'] = 'Domyï¿½lna strona gï¿½ï¿½wna';
+        $strings['MyCalendar'] = 'Mï¿½j kalendarz';
         $strings['ScheduleCalendar'] = 'Terminarz';
         $strings['Registration'] = 'Rejestracja';
-        $strings['NoAnnouncements'] = 'Brak powiadomieñ';
+        $strings['NoAnnouncements'] = 'Brak powiadomieï¿½';
         $strings['Announcements'] = 'Powiadomienia';
-        $strings['NoUpcomingReservations'] = 'Nie masz ¿adnych zbli¿aj¹cych siê rezerwacji';
-        $strings['UpcomingReservations'] = 'Zbli¿aj¹ce siê rezerwacje';
-        $strings['ShowHide'] = 'Poka¿/Ukryj';
-        $strings['Error'] = 'B³¹d';
-        $strings['ReturnToPreviousPage'] = 'Wróc do poprzedniej strony...';
-        $strings['UnknownError'] = 'Nieznany b³¹d';
-        $strings['InsufficientPermissionsError'] = 'Nie masz uprawnieñ do tego zasobu';
-        $strings['MissingReservationResourceError'] = 'Zasób nie zosta³ wybrany';
-        $strings['MissingReservationScheduleError'] = 'Termin nie zosta³ wybrany';
+        $strings['NoUpcomingReservations'] = 'Nie masz ï¿½adnych zbliï¿½ajï¿½cych siï¿½ rezerwacji';
+        $strings['UpcomingReservations'] = 'Zbliï¿½ajï¿½ce siï¿½ rezerwacje';
+        $strings['ShowHide'] = 'Pokaï¿½/Ukryj';
+        $strings['Error'] = 'Bï¿½ï¿½d';
+        $strings['ReturnToPreviousPage'] = 'Wrï¿½c do poprzedniej strony...';
+        $strings['UnknownError'] = 'Nieznany bï¿½ï¿½d';
+        $strings['InsufficientPermissionsError'] = 'Nie masz uprawnieï¿½ do tego zasobu';
+        $strings['MissingReservationResourceError'] = 'Zasï¿½b nie zostaï¿½ wybrany';
+        $strings['MissingReservationScheduleError'] = 'Termin nie zostaï¿½ wybrany';
         $strings['DoesNotRepeat'] = 'Bez powtarzania';
         $strings['Daily'] = 'Dziennie';
         $strings['Weekly'] = 'Tygodniowo';
-        $strings['Monthly'] = 'Miesiêcznie';
+        $strings['Monthly'] = 'Miesiï¿½cznie';
         $strings['Yearly'] = 'Rocznie';
-        $strings['RepeatPrompt'] = 'Powtórka';
+        $strings['RepeatPrompt'] = 'Powtï¿½rka';
         $strings['hours'] = 'godziny';
         $strings['days'] = 'dni';
         $strings['weeks'] = 'tygodnie';
-        $strings['months'] = 'miesi¹ce';
+        $strings['months'] = 'miesiï¿½ce';
         $strings['years'] = 'lata';
-        $strings['day'] = 'dzieñ';
-        $strings['week'] = 'tydzieñ';
-        $strings['month'] = 'miesi¹c';
+        $strings['day'] = 'dzieï¿½';
+        $strings['week'] = 'tydzieï¿½';
+        $strings['month'] = 'miesiï¿½c';
         $strings['year'] = 'rok';
-        $strings['repeatDayOfMonth'] = 'dnia miesi¹ca';
+        $strings['repeatDayOfMonth'] = 'dnia miesiï¿½ca';
         $strings['repeatDayOfWeek'] = 'dnia tygodnia';
         $strings['RepeatUntilPrompt'] = 'Do kiedy';
-        $strings['RepeatEveryPrompt'] = 'Ka¿dego';
-        $strings['RepeatDaysPrompt'] = 'W³¹czone';
-        $strings['CreateReservationHeading'] = 'Stwórz now¹ rezerwacjê';
-        $strings['EditReservationHeading'] = 'Edytuj rezerwacjê %s';
-        $strings['ViewReservationHeading'] = 'Podgl¹d rezerwacji %s';
-        $strings['ReservationErrors'] = 'Zmieñ rezerwacjê';
-        $strings['Create'] = 'Stwórz';
-        $strings['ThisInstance'] = 'Tylko to wyst¹pienie';
-        $strings['AllInstances'] = 'Wszystkie wyst¹pienia';
-        $strings['FutureInstances'] = 'Przysz³e wyst¹pienia';
+        $strings['RepeatEveryPrompt'] = 'Kaï¿½dego';
+        $strings['RepeatDaysPrompt'] = 'Wï¿½ï¿½czone';
+        $strings['CreateReservationHeading'] = 'Stwï¿½rz nowï¿½ rezerwacjï¿½';
+        $strings['EditReservationHeading'] = 'Edytuj rezerwacjï¿½ %s';
+        $strings['ViewReservationHeading'] = 'Podglï¿½d rezerwacji %s';
+        $strings['ReservationErrors'] = 'Zmieï¿½ rezerwacjï¿½';
+        $strings['Create'] = 'Stwï¿½rz';
+        $strings['ThisInstance'] = 'Tylko to wystï¿½pienie';
+        $strings['AllInstances'] = 'Wszystkie wystï¿½pienia';
+        $strings['FutureInstances'] = 'Przyszï¿½e wystï¿½pienia';
         $strings['Print'] = 'Drukuj';
-        $strings['ShowHideNavigation'] = 'Poka¿/Ukryj Nawigacjê';
+        $strings['ShowHideNavigation'] = 'Pokaï¿½/Ukryj Nawigacjï¿½';
         $strings['ReferenceNumber'] = 'Numer referencyjny';
         $strings['Tomorrow'] = 'Jutro';
         $strings['LaterThisWeek'] = 'Jeszcze w tym tygodniu';
-        $strings['NextWeek'] = 'Nastêpny tydzieñ';
-        $strings['SignOut'] = 'Wyloguj siê';
-        $strings['LayoutDescription'] = 'Rozpoczyna siê %s, trwa %s dni';
+        $strings['NextWeek'] = 'Nastï¿½pny tydzieï¿½';
+        $strings['SignOut'] = 'Wyloguj siï¿½';
+        $strings['LayoutDescription'] = 'Rozpoczyna siï¿½ %s, trwa %s dni';
         $strings['AllResources'] = 'Wszystkie zasoby';
         $strings['TakeOffline'] = 'Deaktywuj';
         $strings['BringOnline'] = 'Aktywuj';
         $strings['AddImage'] = 'Dodaj obraz';
         $strings['NoImage'] = 'Brak przypisanego obrazu';
-        $strings['Move'] = 'Przesuñ';
+        $strings['Move'] = 'Przesuï¿½';
         $strings['AppearsOn'] = 'Utworzone dnia %s';
         $strings['Location'] = 'Lokalizacja';
         $strings['NoLocationLabel'] = '(brak ustawionej lokalizacji)';
@@ -146,70 +147,70 @@ class pl extends Language
         $strings['NoDescriptionLabel'] = '(brak opisu)';
         $strings['Notes'] = 'Notatki';
         $strings['NoNotesLabel'] = '(brak notatek)';
-        $strings['NoTitleLabel'] = '(brak tytu³u)';
-        $strings['UsageConfiguration'] = 'Konfiguracja u¿ycia';
-        $strings['ChangeConfiguration'] = 'Zmieñ konfiguracjê';
-        $strings['ResourceMinLength'] = 'Rezerwacja musi trwaæ co najmniej %s';
+        $strings['NoTitleLabel'] = '(brak tytuï¿½u)';
+        $strings['UsageConfiguration'] = 'Konfiguracja uï¿½ycia';
+        $strings['ChangeConfiguration'] = 'Zmieï¿½ konfiguracjï¿½';
+        $strings['ResourceMinLength'] = 'Rezerwacja musi trwaï¿½ co najmniej %s';
         $strings['ResourceMinLengthNone'] = 'Brak minimalnego czasu rezerwacji';
-        $strings['ResourceMaxLength'] = 'Rezerwacja nie mo¿e trwaæ wiêcej ni¿ %s';
+        $strings['ResourceMaxLength'] = 'Rezerwacja nie moï¿½e trwaï¿½ wiï¿½cej niï¿½ %s';
         $strings['ResourceMaxLengthNone'] = 'Brak maksymalnego czasu rezerwacji';
-        $strings['ResourceRequiresApproval'] = 'Rezerwacja musi byæ zatwierdzana';
+        $strings['ResourceRequiresApproval'] = 'Rezerwacja musi byï¿½ zatwierdzana';
         $strings['ResourceRequiresApprovalNone'] = 'Rezerwacja nie wymaga zatwierdzania';
-        $strings['ResourcePermissionAutoGranted'] = 'Uprawnienia s¹ automatycznie nadawane';
-        $strings['ResourcePermissionNotAutoGranted'] = 'Uprawnienia nie s¹ automatycznie nadawane';
-        $strings['ResourceMinNotice'] = 'Rezerwacje musz¹ byæ dokonane co najmniej %s przed rozpoczêciem';
-        $strings['ResourceMinNoticeNone'] = 'Rezerwacje mo¿na dokonaæ a¿ do chwili rozpoczêcia';
-        $strings['ResourceMaxNotice'] = 'Rezerwacja nie mo¿e trwaæ d³u¿ej ni¿ %s od momentu rozpoczecia';
-        $strings['ResourceMaxNoticeNone'] = 'Rezerwacja nie s¹ ograniczane czasowo';
-        $strings['ResourceAllowMultiDay'] = 'Rezerwacje mo¿na dokonaæ na wiele dni';
-        $strings['ResourceNotAllowMultiDay'] = 'Rezerwacje nie mo¿na dokonaæ na wiele dni';
-        $strings['ResourceCapacity'] = 'Ten zasób mo¿e pomieœciæ maksymalnie osób: %s ';
-        $strings['ResourceCapacityNone'] = 'Ten zasób ma nieograniczon¹ pojemnoœæ';
-        $strings['AddNewResource'] = 'Dodaj nowy zasób';
-        $strings['AddNewUser'] = 'Dodaj nowego u¿ytkownika';
-        $strings['AddUser'] = 'Dodaj u¿ytkownika';
+        $strings['ResourcePermissionAutoGranted'] = 'Uprawnienia sï¿½ automatycznie nadawane';
+        $strings['ResourcePermissionNotAutoGranted'] = 'Uprawnienia nie sï¿½ automatycznie nadawane';
+        $strings['ResourceMinNotice'] = 'Rezerwacje muszï¿½ byï¿½ dokonane co najmniej %s przed rozpoczï¿½ciem';
+        $strings['ResourceMinNoticeNone'] = 'Rezerwacje moï¿½na dokonaï¿½ aï¿½ do chwili rozpoczï¿½cia';
+        $strings['ResourceMaxNotice'] = 'Rezerwacja nie moï¿½e trwaï¿½ dï¿½uï¿½ej niï¿½ %s od momentu rozpoczecia';
+        $strings['ResourceMaxNoticeNone'] = 'Rezerwacja nie sï¿½ ograniczane czasowo';
+        $strings['ResourceAllowMultiDay'] = 'Rezerwacje moï¿½na dokonaï¿½ na wiele dni';
+        $strings['ResourceNotAllowMultiDay'] = 'Rezerwacje nie moï¿½na dokonaï¿½ na wiele dni';
+        $strings['ResourceCapacity'] = 'Ten zasï¿½b moï¿½e pomieï¿½ciï¿½ maksymalnie osï¿½b: %s ';
+        $strings['ResourceCapacityNone'] = 'Ten zasï¿½b ma nieograniczonï¿½ pojemnoï¿½ï¿½';
+        $strings['AddNewResource'] = 'Dodaj nowy zasï¿½b';
+        $strings['AddNewUser'] = 'Dodaj nowego uï¿½ytkownika';
+        $strings['AddUser'] = 'Dodaj uï¿½ytkownika';
         $strings['Schedule'] = 'Terminarz';
-        $strings['AddResource'] = 'Dodaj zasób';
-        $strings['Capacity'] = 'Pojemnoœæ';
-        $strings['Access'] = 'Dostêp';
+        $strings['AddResource'] = 'Dodaj zasï¿½b';
+        $strings['Capacity'] = 'Pojemnoï¿½ï¿½';
+        $strings['Access'] = 'Dostï¿½p';
         $strings['Duration'] = 'Czas trwania';
         $strings['Active'] = 'Aktywuj';
         $strings['Inactive'] = 'Deaktywuj';
-        $strings['ResetPassword'] = 'Reset Has³a';
+        $strings['ResetPassword'] = 'Reset Hasï¿½a';
         $strings['LastLogin'] = 'Ostatnie logowanie';
         $strings['Search'] = 'Szukaj';
-        $strings['ResourcePermissions'] = 'Uprawnienia do zasobów';
+        $strings['ResourcePermissions'] = 'Uprawnienia do zasobï¿½w';
         $strings['Reservations'] = 'Rezerwacje';
         $strings['Groups'] = 'Grupy';
-        $strings['ResetPassword'] = 'Reset Has³a';
-        $strings['AllUsers'] = 'Wszyscy u¿ytkownicy';
+        $strings['ResetPassword'] = 'Reset Hasï¿½a';
+        $strings['AllUsers'] = 'Wszyscy uï¿½ytkownicy';
         $strings['AllGroups'] = 'Wszystkie grupy';
         $strings['AllSchedules'] = 'Wszystkie rezerwacje';
-        $strings['UsernameOrEmail'] = 'Nazwa u¿ytkownika lub adres mailowy';
-        $strings['Members'] = 'Cz³onkowie';
-        $strings['QuickSlotCreation'] = 'Twórz wpisy co %s minut, pomiêdzy %s i %s';
+        $strings['UsernameOrEmail'] = 'Nazwa uï¿½ytkownika lub adres mailowy';
+        $strings['Members'] = 'Czï¿½onkowie';
+        $strings['QuickSlotCreation'] = 'Twï¿½rz wpisy co %s minut, pomiï¿½dzy %s i %s';
         $strings['ApplyUpdatesTo'] = 'Uaktualnij';
         $strings['CancelParticipation'] = 'Anuluj uczestnictwo';
         $strings['Attending'] = 'Uczestnictwo';
-        $strings['QuotaConfiguration'] = 'Na %s dla %s u¿ytkowników w %s jest limitowana do %s %s przez %s';
+        $strings['QuotaConfiguration'] = 'Na %s dla %s uï¿½ytkownikï¿½w w %s jest limitowana do %s %s przez %s';
         $strings['reservations'] = 'rezerwacje';
-        $strings['ChangeCalendar'] = 'Zmieñ kalendarz';
+        $strings['ChangeCalendar'] = 'Zmieï¿½ kalendarz';
         $strings['AddQuota'] = 'Dodaj Quota';
-        $strings['FindUser'] = 'ZnajdŸ u¿ytkownika';
+        $strings['FindUser'] = 'Znajdï¿½ uï¿½ytkownika';
         $strings['Created'] = 'Stworzony';
         $strings['LastModified'] = 'Ostatnia modyfikacja';
         $strings['GroupName'] = 'Nazwa grupy';
-        $strings['GroupMembers'] = 'Cz³onkowie grupy';
+        $strings['GroupMembers'] = 'Czï¿½onkowie grupy';
         $strings['GroupRoles'] = 'Role grup';
-        $strings['GroupAdmin'] = 'Grupa administratorów';
+        $strings['GroupAdmin'] = 'Grupa administratorï¿½w';
         $strings['Actions'] = 'Akcje';
-        $strings['CurrentPassword'] = 'Aktualne has³o';
-        $strings['NewPassword'] = 'Nowe has³o';
-        $strings['InvalidPassword'] = 'Wprwadzone has³o jest niepoprawne';
-        $strings['PasswordChangedSuccessfully'] = 'Twoje has³o zosta³o zmienione';
+        $strings['CurrentPassword'] = 'Aktualne hasï¿½o';
+        $strings['NewPassword'] = 'Nowe hasï¿½o';
+        $strings['InvalidPassword'] = 'Wprwadzone hasï¿½o jest niepoprawne';
+        $strings['PasswordChangedSuccessfully'] = 'Twoje hasï¿½o zostaï¿½o zmienione';
         $strings['SignedInAs'] = 'Zalogowany jako';
-        $strings['NotSignedIn'] = 'Nie jesteœ zalogowany';
-        $strings['ReservationTitle'] = 'Tytu³ rezerwacji';
+        $strings['NotSignedIn'] = 'Nie jesteï¿½ zalogowany';
+        $strings['ReservationTitle'] = 'Tytuï¿½ rezerwacji';
         $strings['ReservationDescription'] = 'Opis rezerwacji';
         $strings['ResourceList'] = 'Zasoby do zarezerwowania';
         $strings['Accessories'] = 'Akcesoria';
@@ -217,13 +218,13 @@ class pl extends Language
         $strings['ParticipantList'] = 'Uczestnicy';
         $strings['InvitationList'] = 'Zaproszenia';
         $strings['AccessoryName'] = 'Nazwa akcesoria';
-        $strings['QuantityAvailable'] = 'Dostepna iloœæ';
+        $strings['QuantityAvailable'] = 'Dostepna iloï¿½ï¿½';
         $strings['Resources'] = 'Zasoby';
         $strings['Participants'] = 'Uczestnicy';
         $strings['User'] = 'Uzytkownik';
-        $strings['Resource'] = 'Zasób';
+        $strings['Resource'] = 'Zasï¿½b';
         $strings['Status'] = 'Status';
-        $strings['Approve'] = 'ZatwierdŸ';
+        $strings['Approve'] = 'Zatwierdï¿½';
         $strings['Page'] = 'Strona';
         $strings['Rows'] = 'Wierszy';
         $strings['Unlimited'] = 'Bez limitu';
@@ -232,148 +233,148 @@ class pl extends Language
         $strings['Phone'] = 'Telefon';
         $strings['Organization'] = 'Firma';
         $strings['Position'] = 'Stanowisko';
-        $strings['Language'] = 'Jêzyk';
+        $strings['Language'] = 'Jï¿½zyk';
         $strings['Permissions'] = 'Uprawnienia';
         $strings['Reset'] = 'Reset';
-        $strings['FindGroup'] = 'ZnajdŸ grupê';
-        $strings['Manage'] = 'Zarz¹dzaj';
+        $strings['FindGroup'] = 'Znajdï¿½ grupï¿½';
+        $strings['Manage'] = 'Zarzï¿½dzaj';
         $strings['None'] = 'Brak';
         $strings['AddToOutlook'] = 'Dodaj do programu Microsoft Outlook';
         $strings['Done'] = 'Wykonaj';
-        $strings['RememberMe'] = 'Zapamiêtaj mnie';
+        $strings['RememberMe'] = 'Zapamiï¿½taj mnie';
         $strings['FirstTimeUser?'] = 'Pierwszy raz tutaj?';
-        $strings['CreateAnAccount'] = 'Zarejestruj siê';
-        $strings['ViewSchedule'] = 'Podgl¹d rezerwacji';
-        $strings['ForgotMyPassword'] = 'Zapomnia³eœ has³a?';
-        $strings['YouWillBeEmailedANewPassword'] = 'Zostanie wys³ane nowo wygenerowane has³o na twój adres mailowy';
+        $strings['CreateAnAccount'] = 'Zarejestruj siï¿½';
+        $strings['ViewSchedule'] = 'Podglï¿½d rezerwacji';
+        $strings['ForgotMyPassword'] = 'Zapomniaï¿½eï¿½ hasï¿½a?';
+        $strings['YouWillBeEmailedANewPassword'] = 'Zostanie wysï¿½ane nowo wygenerowane hasï¿½o na twï¿½j adres mailowy';
         $strings['Close'] = 'Zamknij';
         $strings['ExportToCSV'] = 'Eksportuj do CSV';
         $strings['OK'] = 'OK';
         $strings['Working'] = 'Pracuje...';
         $strings['Login'] = 'Logowanie';
         $strings['AdditionalInformation'] = 'Dodatkowe informacje';
-        $strings['AllFieldsAreRequired'] = 'wszystkie pola s¹ wymagane';
+        $strings['AllFieldsAreRequired'] = 'wszystkie pola sï¿½ wymagane';
         $strings['Optional'] = 'opcjonalnie';
-        $strings['YourProfileWasUpdated'] = 'Twój profil zosta³ zaktualizowany';
-        $strings['YourSettingsWereUpdated'] = 'Twoje ustawenia zosta³y zmienione';
+        $strings['YourProfileWasUpdated'] = 'Twï¿½j profil zostaï¿½ zaktualizowany';
+        $strings['YourSettingsWereUpdated'] = 'Twoje ustawenia zostaï¿½y zmienione';
         $strings['Register'] = 'Rejestruj';
-        $strings['SecurityCode'] = 'Kod zabezpieczaj¹cy';
-        $strings['ReservationCreatedPreference'] = 'Kiedy tworzê rezerwacjê lub rezerwacja jest tworzona za mnie';
-        $strings['ReservationUpdatedPreference'] = 'Kiedy aktualizujê rezerwacjê lub rezerwacja jest aktualizowana za mnie';
+        $strings['SecurityCode'] = 'Kod zabezpieczajï¿½cy';
+        $strings['ReservationCreatedPreference'] = 'Kiedy tworzï¿½ rezerwacjï¿½ lub rezerwacja jest tworzona za mnie';
+        $strings['ReservationUpdatedPreference'] = 'Kiedy aktualizujï¿½ rezerwacjï¿½ lub rezerwacja jest aktualizowana za mnie';
         $strings['ReservationApprovalPreference'] = 'Kiedy moje rezerwacja zostatnie zatwierdzona';
         $strings['PreferenceSendEmail'] = 'Powiadom mnie mailem';
         $strings['PreferenceNoEmail'] = 'Nie powiadamiaj mnie';
-        $strings['ReservationCreated'] = 'Twoja rezerwacja zosta³a pomyœlnie utworzona!';
-        $strings['ReservationUpdated'] = 'Twoja rezerwacja zosta³a pomyœlnie zaktualizowana!';
-        $strings['ReservationRemoved'] = 'Twoja rezerwacja zosta³a pomyœlnie usuniêta';
+        $strings['ReservationCreated'] = 'Twoja rezerwacja zostaï¿½a pomyï¿½lnie utworzona!';
+        $strings['ReservationUpdated'] = 'Twoja rezerwacja zostaï¿½a pomyï¿½lnie zaktualizowana!';
+        $strings['ReservationRemoved'] = 'Twoja rezerwacja zostaï¿½a pomyï¿½lnie usuniï¿½ta';
         $strings['YourReferenceNumber'] = 'Numer twojej rezerwacji to %s';
         $strings['UpdatingReservation'] = 'Aktualizowanie rezerwacji';
-        $strings['ChangeUser'] = 'Zmiana u¿ytkownika';
-        $strings['MoreResources'] = 'Wiêcej zasobów';
-        $strings['ReservationLength'] = 'D³ugoœæ rezerwacji';
-        $strings['ParticipantList'] = 'Lista uczestników';
-        $strings['AddParticipants'] = 'Dodaj uczestników';
-        $strings['InviteOthers'] = 'Zaproœ innych';
-        $strings['AddResources'] = 'Dodaj zasób';
+        $strings['ChangeUser'] = 'Zmiana uï¿½ytkownika';
+        $strings['MoreResources'] = 'Wiï¿½cej zasobï¿½w';
+        $strings['ReservationLength'] = 'Dï¿½ugoï¿½ï¿½ rezerwacji';
+        $strings['ParticipantList'] = 'Lista uczestnikï¿½w';
+        $strings['AddParticipants'] = 'Dodaj uczestnikï¿½w';
+        $strings['InviteOthers'] = 'Zaproï¿½ innych';
+        $strings['AddResources'] = 'Dodaj zasï¿½b';
         $strings['AddAccessories'] = 'Dodaj akcesoria';
         $strings['Accessory'] = 'Akcesorium';
-        $strings['QuantityRequested'] = 'Wymagana iloœæ';
+        $strings['QuantityRequested'] = 'Wymagana iloï¿½ï¿½';
         $strings['CreatingReservation'] = 'Tworzenie rezerwacji';
         $strings['UpdatingReservation'] = 'Aktualizowanie rezerwacji';
-        $strings['DeleteWarning'] = 'Tak akcja jest trwa³a i bez mo¿liwoœci powrotu!';
-        $strings['DeleteAccessoryWarning'] = 'Usuniêcie tego akcesorium spowoduje usuniêcie go ze wszystkich rezerwacji.';
+        $strings['DeleteWarning'] = 'Tak akcja jest trwaï¿½a i bez moï¿½liwoï¿½ci powrotu!';
+        $strings['DeleteAccessoryWarning'] = 'Usuniï¿½cie tego akcesorium spowoduje usuniï¿½cie go ze wszystkich rezerwacji.';
         $strings['AddAccessory'] = 'Dodaj akcesorium';
-        $strings['AddBlackout'] = 'Dodaj niedostêpnoœæ';
-        $strings['AllResourcesOn'] = 'Wszystkie zasoby w³¹czone';
-        $strings['Reason'] = 'Powód';
-        $strings['BlackoutShowMe'] = 'Poka¿ mi rezerwacje z konfliktem';
-        $strings['BlackoutDeleteConflicts'] = 'Usuñ rezerwacje z konfliktem';
+        $strings['AddBlackout'] = 'Dodaj niedostï¿½pnoï¿½ï¿½';
+        $strings['AllResourcesOn'] = 'Wszystkie zasoby wï¿½ï¿½czone';
+        $strings['Reason'] = 'Powï¿½d';
+        $strings['BlackoutShowMe'] = 'Pokaï¿½ mi rezerwacje z konfliktem';
+        $strings['BlackoutDeleteConflicts'] = 'Usuï¿½ rezerwacje z konfliktem';
         $strings['Filter'] = 'Filtr';
-        $strings['Between'] = 'Pomiêdzy';
+        $strings['Between'] = 'Pomiï¿½dzy';
         $strings['CreatedBy'] = 'Utworzone przez';
-        $strings['BlackoutCreated'] = 'Niedostêpnoœæ utworzona!';
-        $strings['BlackoutNotCreated'] = 'Niedostêpnoœc nie mog³a zostaæ utworzona!';
-        $strings['BlackoutConflicts'] = 'Istniej¹ konflikty niedostêpnoœci';
-        $strings['ReservationConflicts'] = 'Istniej¹ konflikty rezerwacji';
+        $strings['BlackoutCreated'] = 'Niedostï¿½pnoï¿½ï¿½ utworzona!';
+        $strings['BlackoutNotCreated'] = 'Niedostï¿½pnoï¿½c nie mogï¿½a zostaï¿½ utworzona!';
+        $strings['BlackoutConflicts'] = 'Istniejï¿½ konflikty niedostï¿½pnoï¿½ci';
+        $strings['ReservationConflicts'] = 'Istniejï¿½ konflikty rezerwacji';
         $strings['UsersInGroup'] = 'Uzytkownicy w tej grupie';
-        $strings['Browse'] = 'Przegl¹daj';
-        $strings['DeleteGroupWarning'] = 'Usuniêcie tej grupy spowoduje wykasowanie wszystkich uprawnieñ do zasobów. U¿ytkownicy z tej grupy, mog¹ utraciæ uprawnienia do zasobów.';
-        $strings['WhatRolesApplyToThisGroup'] = 'Jakie dodaæ role dla tej grupy?';
-        $strings['WhoCanManageThisGroup'] = 'Kto mo¿e zarz¹dzaæ t¹ grup¹?';
-        $strings['AddGroup'] = 'Dodaj grupê';
+        $strings['Browse'] = 'Przeglï¿½daj';
+        $strings['DeleteGroupWarning'] = 'Usuniï¿½cie tej grupy spowoduje wykasowanie wszystkich uprawnieï¿½ do zasobï¿½w. Uï¿½ytkownicy z tej grupy, mogï¿½ utraciï¿½ uprawnienia do zasobï¿½w.';
+        $strings['WhatRolesApplyToThisGroup'] = 'Jakie dodaï¿½ role dla tej grupy?';
+        $strings['WhoCanManageThisGroup'] = 'Kto moï¿½e zarzï¿½dzaï¿½ tï¿½ grupï¿½?';
+        $strings['AddGroup'] = 'Dodaj grupï¿½';
         $strings['AllQuotas'] = 'Dodaj Quotas';
-        $strings['QuotaReminder'] = 'Pamiêtaj: Quotas s¹ egzekwowane na podstawie strefy czasowej harmonogramu';
+        $strings['QuotaReminder'] = 'Pamiï¿½taj: Quotas sï¿½ egzekwowane na podstawie strefy czasowej harmonogramu';
         $strings['AllReservations'] = 'Wszystkie rezerwacje';
-        $strings['PendingReservations'] = 'Oczekuj¹ce reserwacje';
-        $strings['Approving'] = 'ZatwierdŸ';
-        $strings['MoveToSchedule'] = 'Przenieœ do rezerwacji';
-        $strings['DeleteResourceWarning'] = 'Usuniêcie tego zasobu spowoduje wykasowanie wszystkich danych, w³¹cznie z';
-        $strings['DeleteResourceWarningReservations'] = 'jego wszystkimi przesz³ymi, obecnymi i przysz³ymi rezerwacjami';
+        $strings['PendingReservations'] = 'Oczekujï¿½ce reserwacje';
+        $strings['Approving'] = 'Zatwierdï¿½';
+        $strings['MoveToSchedule'] = 'Przenieï¿½ do rezerwacji';
+        $strings['DeleteResourceWarning'] = 'Usuniï¿½cie tego zasobu spowoduje wykasowanie wszystkich danych, wï¿½ï¿½cznie z';
+        $strings['DeleteResourceWarningReservations'] = 'jego wszystkimi przeszï¿½ymi, obecnymi i przyszï¿½ymi rezerwacjami';
         $strings['DeleteResourceWarningPermissions'] = 'wszystkimi przypisanymi uprawnieniami';
-        $strings['DeleteResourceWarningReassign'] = 'Proszê przemysleæ dok³adnie zanim coœ zostanie usuniête';
-        $strings['ScheduleLayout'] = 'Wygl¹d (zawsze %s)';
-        $strings['ReservableTimeSlots'] = 'Lista wolnych terminów rezerwacji';
-        $strings['BlockedTimeSlots'] = 'Lista zablokowanych terminów rezerwacji';
-        $strings['ThisIsTheDefaultSchedule'] = 'To jest domyœlna rezerwacja';
-        $strings['DefaultScheduleCannotBeDeleted'] = 'Domyœlna rezerwacja nie mo¿e zostaæ usuniêta';
-        $strings['MakeDefault'] = 'Zrób domyœln¹';
-        $strings['BringDown'] = 'OpóŸnij';
-        $strings['ChangeLayout'] = 'Zmiana wygl¹du';
-        $strings['AddSchedule'] = 'Dodaj rezerwacjê';
-        $strings['StartsOn'] = 'Rozpoczyna siê';
+        $strings['DeleteResourceWarningReassign'] = 'Proszï¿½ przemysleï¿½ dokï¿½adnie zanim coï¿½ zostanie usuniï¿½te';
+        $strings['ScheduleLayout'] = 'Wyglï¿½d (zawsze %s)';
+        $strings['ReservableTimeSlots'] = 'Lista wolnych terminï¿½w rezerwacji';
+        $strings['BlockedTimeSlots'] = 'Lista zablokowanych terminï¿½w rezerwacji';
+        $strings['ThisIsTheDefaultSchedule'] = 'To jest domyï¿½lna rezerwacja';
+        $strings['DefaultScheduleCannotBeDeleted'] = 'Domyï¿½lna rezerwacja nie moï¿½e zostaï¿½ usuniï¿½ta';
+        $strings['MakeDefault'] = 'Zrï¿½b domyï¿½lnï¿½';
+        $strings['BringDown'] = 'Opï¿½nij';
+        $strings['ChangeLayout'] = 'Zmiana wyglï¿½du';
+        $strings['AddSchedule'] = 'Dodaj rezerwacjï¿½';
+        $strings['StartsOn'] = 'Rozpoczyna siï¿½';
         $strings['NumberOfDaysVisible'] = 'Liczba widocznych dni';
-        $strings['UseSameLayoutAs'] = 'U¿yj tego samego wygl¹du jako';
+        $strings['UseSameLayoutAs'] = 'Uï¿½yj tego samego wyglï¿½du jako';
         $strings['Format'] = 'Format';
         $strings['OptionalLabel'] = 'Opcjonalna nazwa';
-        $strings['LayoutInstructions'] = 'Dodawaj jeden wpis w linii.  Wpisy musz¹ byæ uzupe³nione dla wszystkich 24 godzin od rozpoczêcia dnia a¿ do pó³nocy.';
-        $strings['AddUser'] = 'Dodaj u¿ytkownika';
-        $strings['UserPermissionInfo'] = 'Aktualny dostep do zasobu mo¿e byæ inny w zale¿noœci od roli u¿ytkownika, uprawnieñ grupy lub zewnêtrznych ustawieñ uprawnieñ';
-        $strings['DeleteUserWarning'] = 'Usuniêcie tego u¿ytkownika spowoduje usuniêcie wszystkich kiedykolwiek utworzonych rezerwacji.';
+        $strings['LayoutInstructions'] = 'Dodawaj jeden wpis w linii.  Wpisy muszï¿½ byï¿½ uzupeï¿½nione dla wszystkich 24 godzin od rozpoczï¿½cia dnia aï¿½ do pï¿½nocy.';
+        $strings['AddUser'] = 'Dodaj uï¿½ytkownika';
+        $strings['UserPermissionInfo'] = 'Aktualny dostep do zasobu moï¿½e byï¿½ inny w zaleï¿½noï¿½ci od roli uï¿½ytkownika, uprawnieï¿½ grupy lub zewnï¿½trznych ustawieï¿½ uprawnieï¿½';
+        $strings['DeleteUserWarning'] = 'Usuniï¿½cie tego uï¿½ytkownika spowoduje usuniï¿½cie wszystkich kiedykolwiek utworzonych rezerwacji.';
         $strings['AddAnnouncement'] = 'Dodaj powiadomienie';
         $strings['Announcement'] = 'Powiadomienie';
-        $strings['Priority'] = 'Wa¿noœæ';
-        $strings['Reservable'] = 'Zastrze¿one';
-        $strings['Unreservable'] = 'Niezastrze¿one';
+        $strings['Priority'] = 'Waï¿½noï¿½ï¿½';
+        $strings['Reservable'] = 'Zastrzeï¿½one';
+        $strings['Unreservable'] = 'Niezastrzeï¿½one';
         $strings['Reserved'] = 'Zarezerwowane';
         $strings['MyReservation'] = 'Moje rezerwacje';
         $strings['Pending'] = 'W oczekiwaniu';
-        $strings['Past'] = 'Przesz³e';
+        $strings['Past'] = 'Przeszï¿½e';
         $strings['Restricted'] = 'Ograniczone';
-        $strings['ViewAll'] = 'Podgl¹d wszystkich';
-        $strings['MoveResourcesAndReservations'] = 'Przenieœ zasoby i rezerwacje do';
+        $strings['ViewAll'] = 'Podglï¿½d wszystkich';
+        $strings['MoveResourcesAndReservations'] = 'Przenieï¿½ zasoby i rezerwacje do';
 
         // Errors
-        $strings['LoginError'] = 'Nie mo¿emy odnaleŸæ twojej nazwy u¿ytkownika lub has³a';
-        $strings['ReservationFailed'] = 'Twoja rezerwacja nie mog³a zostaæ utworzona';
-        $strings['MinNoticeError'] = 'Ta rezerwacja wymaga dodatkowej uwagi.  Najwczeœniejsza data, która mo¿e byæ zarezerwowana to %s.';
-        $strings['MaxNoticeError'] = 'Ta rezerwacja nie mo¿e byæ utworzona w tak odleg³ej przysz³oœci.  Najdalsz¹ dat¹ jest %s.';
-        $strings['MinDurationError'] = 'Ta rezerwacja musi trwaæ co najmniej %s.';
-        $strings['MaxDurationError'] = 'Ta rezerwacja nie mo¿e trwaæ d³u¿ej ni¿ %s.';
-        $strings['ConflictingAccessoryDates'] = 'Brak wymaganej iloœci akcesoriów:';
-        $strings['NoResourcePermission'] = 'Nie posiadasz uprawnieñ do co najmniej jednego zasobu z wybranych';
-        $strings['ConflictingReservationDates'] = 'Istniej¹ konflikty rezerwacji w podanych dniach:';
-        $strings['StartDateBeforeEndDateRule'] = 'Data rozpoczêcia musi byæ wczeœniejsza ni¿ data zakoñczenia';
-        $strings['StartIsInPast'] = 'Data rozpoczêcia nie mo¿e byæ dat¹ z przesz³oœci';
-        $strings['EmailDisabled'] = 'Administrator wy³¹czy³ powiadomienia mailowe';
-        $strings['ValidLayoutRequired'] = 'Wpisy musz¹ byæ uzupe³nione dla wszystkich 24 godzin od rozpoczêcia dnia a¿ do pó³nocy.';
+        $strings['LoginError'] = 'Nie moï¿½emy odnaleï¿½ï¿½ twojej nazwy uï¿½ytkownika lub hasï¿½a';
+        $strings['ReservationFailed'] = 'Twoja rezerwacja nie mogï¿½a zostaï¿½ utworzona';
+        $strings['MinNoticeError'] = 'Ta rezerwacja wymaga dodatkowej uwagi.  Najwczeï¿½niejsza data, ktï¿½ra moï¿½e byï¿½ zarezerwowana to %s.';
+        $strings['MaxNoticeError'] = 'Ta rezerwacja nie moï¿½e byï¿½ utworzona w tak odlegï¿½ej przyszï¿½oï¿½ci.  Najdalszï¿½ datï¿½ jest %s.';
+        $strings['MinDurationError'] = 'Ta rezerwacja musi trwaï¿½ co najmniej %s.';
+        $strings['MaxDurationError'] = 'Ta rezerwacja nie moï¿½e trwaï¿½ dï¿½uï¿½ej niï¿½ %s.';
+        $strings['ConflictingAccessoryDates'] = 'Brak wymaganej iloï¿½ci akcesoriï¿½w:';
+        $strings['NoResourcePermission'] = 'Nie posiadasz uprawnieï¿½ do co najmniej jednego zasobu z wybranych';
+        $strings['ConflictingReservationDates'] = 'Istniejï¿½ konflikty rezerwacji w podanych dniach:';
+        $strings['StartDateBeforeEndDateRule'] = 'Data rozpoczï¿½cia musi byï¿½ wczeï¿½niejsza niï¿½ data zakoï¿½czenia';
+        $strings['StartIsInPast'] = 'Data rozpoczï¿½cia nie moï¿½e byï¿½ datï¿½ z przeszï¿½oï¿½ci';
+        $strings['EmailDisabled'] = 'Administrator wyï¿½ï¿½czyï¿½ powiadomienia mailowe';
+        $strings['ValidLayoutRequired'] = 'Wpisy muszï¿½ byï¿½ uzupeï¿½nione dla wszystkich 24 godzin od rozpoczï¿½cia dnia aï¿½ do pï¿½nocy.';
 
         // Page Titles
         $strings['CreateReservation'] = 'Tworzenie rezerwacji';
         $strings['EditReservation'] = 'Edycja rezerwacji';
         $strings['LogIn'] = 'Logowanie';
         $strings['ManageReservations'] = 'Rezerwacje';
-        $strings['AwaitingActivation'] = 'W oczekiwaniu na aktywacjê';
+        $strings['AwaitingActivation'] = 'W oczekiwaniu na aktywacjï¿½';
         $strings['PendingApproval'] = 'W oczekiwaniu na zatwierdzenie';
         $strings['ManageSchedules'] = 'Rezerwacje';
         $strings['ManageResources'] = 'Zasoby';
         $strings['ManageAccessories'] = 'Akcesoria';
-        $strings['ManageUsers'] = 'U¿ytkownicy';
+        $strings['ManageUsers'] = 'Uï¿½ytkownicy';
         $strings['ManageGroups'] = 'Grupy';
         $strings['ManageQuotas'] = 'Quotas';
-        $strings['ManageBlackouts'] = 'Zarz¹dzanie niedostêpnoœciami';
+        $strings['ManageBlackouts'] = 'Zarzï¿½dzanie niedostï¿½pnoï¿½ciami';
         $strings['MyDashboard'] = 'Moja strona';
         $strings['ServerSettings'] = 'Ustawienia serwera';
-        $strings['Dashboard'] = 'Strona g³ówna';
+        $strings['Dashboard'] = 'Strona gï¿½ï¿½wna';
         $strings['Help'] = 'Pomoc';
         $strings['Bookings'] = 'Terminarze';
         $strings['Schedule'] = 'Rezerwacja';
@@ -381,25 +382,25 @@ class pl extends Language
         $strings['Account'] = 'Konto';
         $strings['EditProfile'] = 'Edycja mojego profilu';
         $strings['FindAnOpening'] = 'Znajdowanie otwarcia';
-        $strings['OpenInvitations'] = 'Otwórz zaproszenia';
-        $strings['MyCalendar'] = 'Mój kalendarz';
+        $strings['OpenInvitations'] = 'Otwï¿½rz zaproszenia';
+        $strings['MyCalendar'] = 'Mï¿½j kalendarz';
         $strings['ResourceCalendar'] = 'Kalendarz zasobu';
         $strings['Reservation'] = 'Nowa rezerwacja';
         $strings['Install'] = 'Instalacja';
-        $strings['ChangePassword'] = 'Zmiana has³a';
+        $strings['ChangePassword'] = 'Zmiana hasï¿½a';
         $strings['MyAccount'] = 'Moje konto';
         $strings['Profile'] = 'Profil';
-        $strings['ApplicationManagement'] = 'Zarz¹dzanie aplikacj¹';
-        $strings['ForgotPassword'] = 'Przypomnienie has³a';
-        $strings['NotificationPreferences'] = 'Ustawienia powiadomieñ';
-        $strings['ManageAnnouncements'] = 'Og³oszenia';
+        $strings['ApplicationManagement'] = 'Zarzï¿½dzanie aplikacjï¿½';
+        $strings['ForgotPassword'] = 'Przypomnienie hasï¿½a';
+        $strings['NotificationPreferences'] = 'Ustawienia powiadomieï¿½';
+        $strings['ManageAnnouncements'] = 'Ogï¿½oszenia';
         //
 
         // Day representations
         $strings['DaySundaySingle'] = 'N';
         $strings['DayMondaySingle'] = 'Po';
         $strings['DayTuesdaySingle'] = 'W';
-        $strings['DayWednesdaySingle'] = 'Œr';
+        $strings['DayWednesdaySingle'] = 'ï¿½r';
         $strings['DayThursdaySingle'] = 'Cz';
         $strings['DayFridaySingle'] = 'Pi';
         $strings['DaySaturdaySingle'] = 'S';
@@ -407,21 +408,21 @@ class pl extends Language
         $strings['DaySundayAbbr'] = 'Nie';
         $strings['DayMondayAbbr'] = 'Pon';
         $strings['DayTuesdayAbbr'] = 'Wto';
-        $strings['DayWednesdayAbbr'] = 'Œro';
+        $strings['DayWednesdayAbbr'] = 'ï¿½ro';
         $strings['DayThursdayAbbr'] = 'Czw';
-        $strings['DayFridayAbbr'] = 'Pi¹';
+        $strings['DayFridayAbbr'] = 'Piï¿½';
         $strings['DaySaturdayAbbr'] = 'Sob';
 
         // Email Subjects
-        $strings['ReservationApprovedSubject'] = 'Twoja rezerwacja zosta³a zatwierdzona';
-        $strings['ReservationCreatedSubject'] = 'Twoja rezerwacja zosta³a utworzona';
-        $strings['ReservationUpdatedSubject'] = 'Twoja rezerwacja zosta³a zaktualizowana';
-        $strings['ReservationCreatedAdminSubject'] = 'Powiadomienie: rezerwacja zosta³a utworzona';
-        $strings['ReservationUpdatedAdminSubject'] = 'Powiadomienie: rezerwacja zosta³a zaktualizowana';
-        $strings['ParticipantAddedSubject'] = 'Zg³oszenie udzia³u uczestnictwa';
+        $strings['ReservationApprovedSubject'] = 'Twoja rezerwacja zostaï¿½a zatwierdzona';
+        $strings['ReservationCreatedSubject'] = 'Twoja rezerwacja zostaï¿½a utworzona';
+        $strings['ReservationUpdatedSubject'] = 'Twoja rezerwacja zostaï¿½a zaktualizowana';
+        $strings['ReservationCreatedAdminSubject'] = 'Powiadomienie: rezerwacja zostaï¿½a utworzona';
+        $strings['ReservationUpdatedAdminSubject'] = 'Powiadomienie: rezerwacja zostaï¿½a zaktualizowana';
+        $strings['ParticipantAddedSubject'] = 'Zgï¿½oszenie udziaï¿½u uczestnictwa';
         $strings['InviteeAddedSubject'] = 'Zaproszenie do uczestnictwa';
-        $strings['ResetPassword'] = 'Zmiana has³a';
-        $strings['ForgotPasswordEmailSent'] = 'Wiadomoœæ mailowa zosta³a wys³ana do odbiorcy z instrukcj¹ zresetowania has³a';
+        $strings['ResetPassword'] = 'Zmiana hasï¿½a';
+        $strings['ForgotPasswordEmailSent'] = 'Wiadomoï¿½ï¿½ mailowa zostaï¿½a wysï¿½ana do odbiorcy z instrukcjï¿½ zresetowania hasï¿½a';
         //
 
         $this->Strings = $strings;
@@ -429,7 +430,7 @@ class pl extends Language
 
     protected function _LoadDays()
     {
-        $days = array();
+        $days = parent::_LoadDays();
 
         /***
         DAY NAMES
@@ -437,20 +438,20 @@ class pl extends Language
         and go through the seven day week, ending on Saturday
          ***/
         // The full day name
-        $days['full'] = array('Niedziela', 'Poniedzia³ek', 'Wtorek', 'Œroda', 'Czwartek', 'Pi¹tek', 'Sobota');
+        $days['full'] = array('Niedziela', 'Poniedziaï¿½ek', 'Wtorek', 'ï¿½roda', 'Czwartek', 'Piï¿½tek', 'Sobota');
         // The three letter abbreviation
-        $days['abbr'] = array('Nie', 'Pon', 'Wto', 'Œro', 'Czw', 'Pi¹', 'Sob');
+        $days['abbr'] = array('Nie', 'Pon', 'Wto', 'ï¿½ro', 'Czw', 'Piï¿½', 'Sob');
         // The two letter abbreviation
-        $days['two'] = array('Nd', 'Pn', 'Wt', 'Œr', 'Cz', 'Pt', 'Sb');
+        $days['two'] = array('Nd', 'Pn', 'Wt', 'ï¿½r', 'Cz', 'Pt', 'Sb');
         // The one letter abbreviation
-        $days['letter'] = array('N', 'Pn', 'W', 'Œ', 'Cz', 'Pt', 'S');
+        $days['letter'] = array('N', 'Pn', 'W', 'ï¿½', 'Cz', 'Pt', 'S');
 
         $this->Days = $days;
     }
 
     protected function _LoadMonths()
     {
-        $months = array();
+        $months = parent::_LoadMonths();
 
         /***
         MONTH NAMES
@@ -458,16 +459,16 @@ class pl extends Language
         and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = array('Styczeñ', 'Luty', 'Marzec', 'Kwieceñ', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpieñ', 'Wrzesieñ', 'PaŸdziernik', 'Listopad', 'Grudzieñ');
+        $months['full'] = array('Styczeï¿½', 'Luty', 'Marzec', 'Kwieceï¿½', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpieï¿½', 'Wrzesieï¿½', 'Paï¿½dziernik', 'Listopad', 'Grudzieï¿½');
         // The three letter month name
-        $months['abbr'] = array('Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'PaŸ', 'Lis', 'Gru');
+        $months['abbr'] = array('Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paï¿½', 'Lis', 'Gru');
 
         $this->Months = $months;
     }
 
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'Æ', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', '£', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'Œ', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '¯', '');
+        $this->Letters = array('A', 'B', 'C', 'ï¿½', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'ï¿½', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'ï¿½', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'ï¿½', 'ï¿½');
     }
 
     protected function _GetHtmlLangCode()

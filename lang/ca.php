@@ -19,8 +19,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
+require_once('en_us.php');
 
-class ca extends Language
+class ca extends en_us
 {
     public function __construct()
     {
@@ -29,7 +30,7 @@ class ca extends Language
 
     protected function _LoadDates()
     {
-        $dates = array();
+        $dates = parent::_LoadDates();
 
         $dates['general_date'] = 'd/m/Y';
         $dates['general_datetime'] = 'd/m/Y H:i:s';
@@ -45,7 +46,7 @@ class ca extends Language
 
     protected function _LoadStrings()
     {
-        $strings = array();
+        $strings = parent::_LoadStrings();
 
         $strings['FirstName'] = 'Nom';
         $strings['LastName'] = 'Cognom';
@@ -339,7 +340,7 @@ class ca extends Language
         $strings['Past'] = 'Passat';
         $strings['Restricted'] = 'Restringit';
 		$strings['ViewAll'] = 'Veure-ho tot';
-		$strings['MoveResourcesAndReservations'] = 'Moure també Recursos i Reserves';
+		$strings['MoveResourcesAndReservations'] = 'Moure tambï¿½ Recursos i Reserves';
 
         // Errors
         $strings['LoginError'] = 'No s\'ha trobat una correspond&egrave;ncia pel teu nom d\'usuari i contrasenya';
@@ -428,7 +429,7 @@ class ca extends Language
 
     protected function _LoadDays()
     {
-        $days = array();
+        $days = parent::_LoadDays();
 
         /***
         DAY NAMES
@@ -449,7 +450,7 @@ class ca extends Language
 
     protected function _LoadMonths()
     {
-        $months = array();
+        $months = parent::_LoadMonths();
 
         /***
         MONTH NAMES
