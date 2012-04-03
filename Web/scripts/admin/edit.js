@@ -153,3 +153,8 @@
 	{
 		element.find('.asyncValidation').hide();
 	}
+
+	function HtmlDecode(encoded)
+	{
+		return $('<textarea/>').html(encoded).val();
+	}

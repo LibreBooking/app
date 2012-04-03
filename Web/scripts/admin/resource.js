@@ -213,13 +213,13 @@ function ResourceManagement(opts)
 	
 	var showChangeDescription = function(e)
 	{
-		$('#editDescription').val(getActiveResource().description);
+		$('#editDescription').val(HtmlDecode(getActiveResource().description));
 		elements.descriptionDialog.dialog("open");
 	};
 	
 	var showChangeNotes = function(e)
 	{
-		$('#editNotes').val(getActiveResource().notes);
+		$('#editNotes').val(HtmlDecode(getActiveResource().notes));
 		elements.notesDialog.dialog("open");
 	};
 

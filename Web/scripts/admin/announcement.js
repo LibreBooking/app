@@ -67,7 +67,7 @@ function AnnouncementManagement(opts) {
 
 	var editAnnouncement = function() {
 		var announcement = getActiveAnnouncement();
-		elements.editText.val(announcement.text);
+		elements.editText.val(HtmlDecode(announcement.text));
 		elements.editBegin.val(announcement.start);
         elements.editBegin.trigger('change');
 		elements.editEnd.val(announcement.end);

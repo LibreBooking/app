@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<ul>
 			<li>{translate key=Description}
 				{if $description neq ''}
-					{$description|url2link|nl2br}
+					{$description|html_entity_decode|url2link|nl2br}
 				{else}
 					{translate key=NoDescriptionLabel}
 				{/if}
@@ -29,7 +29,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<li>
 				{translate key=Notes}
 				{if $notes neq ''}
-					{$notes|url2link|nl2br}
+					{$notes|html_entity_decode|url2link|nl2br}
 				{else}
 					{translate key=NoNotesLabel}
 				{/if}
