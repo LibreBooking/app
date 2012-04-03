@@ -89,6 +89,10 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 		$dateTimeString = $this->server->GetQuerystring(QueryStringKeys::RESERVATION_DATE);
 
+		if (empty($dateTimeString))
+		{
+			return null;
+		}
 		return new Date($dateTimeString, $timezone);
 	}
 	
@@ -96,7 +100,11 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 	{
 		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 		$dateTimeString = $this->server->GetQuerystring(QueryStringKeys::START_DATE);
-		
+
+		if (empty($dateTimeString))
+		{
+			return null;
+		}
 		return new Date($dateTimeString, $timezone);
 	}
 	
@@ -105,6 +113,10 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 		$dateTimeString = $this->server->GetQuerystring(QueryStringKeys::END_DATE);
 
+		if (empty($dateTimeString))
+		{
+			return null;
+		}
 		return new Date($dateTimeString, $timezone);
 	}
 }

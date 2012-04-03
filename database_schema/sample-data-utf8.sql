@@ -1,4 +1,3 @@
-
 delete from groups where admin_group_id is not null;
 delete from groups;
 alter table groups AUTO_INCREMENT = 1;
@@ -13,7 +12,6 @@ insert into groups (group_id, name) values (1, 'Group Administrators'), (2, 'App
 
 insert into group_roles values (1, 1);
 insert into group_roles values (2, 2);
-insert into group_roles values (3, 3);
 
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language, organization)
 	values ('User', 'User', 'user@example.com', 'user', '7b6aec38ff9b7650d64d0374194307bdde711425', '3b3dbb9b', 'America/Chicago', '2008-09-16 01:59:00', 1, now(), 'en_us', 'XYZ Org Inc.');

@@ -51,17 +51,17 @@
 			</then>
 		</if>
 
-		<echo message="Create file: ${sql.file.create.db}"/>
+		<echo message="Create db file: ${sql.file.create.db}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create.db}"
 			  checkreturn="true"
 			  dir="${mysql.bin}"/>
 
-		<echo message="Create file: ${sql.file.create.schema}"/>
+		<echo message="Create schema file: ${sql.file.create.schema}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create.schema}"
 			  checkreturn="true"
 			  dir="${mysql.bin}"/>
 
-		<echo message="Create file: ${sql.file.create.user}"/>
+		<echo message="Create user file: ${sql.file.create.user}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create.user}"
 			  checkreturn="true"
 			  dir="${mysql.bin}"/>
