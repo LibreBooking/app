@@ -23,6 +23,7 @@ class ConfigKeys
 {
     const ADMIN_EMAIL = 'admin.email';
     const ALLOW_REGISTRATION = 'allow.self.registration';
+	const CSS_EXTENSION_FILE = 'css.extension.file';
     const DEFAULT_PAGE_SIZE = 'default.page.size';
     const ENABLE_EMAIL = 'enable.email';
 	const INACTIVITY_TIMEOUT = 'inactivity.timeout';

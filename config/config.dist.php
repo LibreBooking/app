@@ -44,6 +44,7 @@ $conf['settings']['privacy']['view.schedules'] = 'false';       // if unauthenti
 $conf['settings']['privacy']['view.reservations'] = 'false';    // if unauthenticated users can view reservations
 $conf['settings']['privacy']['hide.user.details'] = 'false';    // if personal user details should be displayed to non-administrators
 $conf['settings']['reservation']['start.time.constraint'] = 'future';        // when reservations can be created or edited. options are future, current, none
+$conf['settings']['css.extension.file'] = ''; 			      	// full or relative url to an additional css file to include. this can be used to override the default style
 /**
  * Database configuration
  */

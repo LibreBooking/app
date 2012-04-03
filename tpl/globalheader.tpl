@@ -45,6 +45,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			@import url({$Path}{$cssFile});
 			{/foreach}
 		{/if}
+		{if $CssExtensionFile neq ''}
+			@import url('{$CssExtensionFile}');
+		{/if}
 	</style>
 
 	<script type="text/javascript">

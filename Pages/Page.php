@@ -85,6 +85,7 @@ abstract class Page implements IPage
         $timeout = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT);
 		$this->smarty->assign('SessionTimeoutSeconds', max($timeout, 1) * 60);
         $this->smarty->assign('ShouldLogout', $this->GetShouldAutoLogout());
+        $this->smarty->assign('CssExtensionFile', Configuration::Instance()->GetKey(ConfigKeys::CSS_EXTENSION_FILE));
 	}
 
 	protected function SetTitle($title)

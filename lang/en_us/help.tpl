@@ -396,6 +396,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	selected slot is not in the past. None means that there is no restriction on when reservations can be created or
 	modified. Default is future.</p>
 
+<p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
+	include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
+	are not extending the style of phpScheduleIt.</p>
+
 <p class="setting"><span>$conf['settings']['database']['type']</span>Any PEAR::MDB2 supported type</p>
 
 <p class="setting"><span>$conf['settings']['database']['user']</span>Database user with access to the configured
