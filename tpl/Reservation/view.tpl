@@ -63,7 +63,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<label>{translate key='EndDate'}</label> {formatdate date=$EndDate}
 				{foreach from=$Periods item=period}
 					{if $period eq $SelectedEnd}
-						{$period->Label()} <br/>
+						{$period->LabelEnd()} <br/>
 					{/if}
 				{/foreach}
 				</li>
