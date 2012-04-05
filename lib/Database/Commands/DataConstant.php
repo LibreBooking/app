@@ -236,7 +236,7 @@ class Queries
 		VALUES (@userid, @resourceid)';
 
     const AUTO_ASSIGN_PERMISSIONS =
-       'INSERT INTO
+            'INSERT INTO
           user_resource_permissions (user_id, resource_id)
 		SELECT 
 			@userid as user_id, resource_id 
@@ -246,7 +246,7 @@ class Queries
 			autoassign=1';
 
     const AUTO_ASSIGN_RESOURCE_PERMISSIONS =
-       'INSERT INTO
+            'INSERT INTO
             user_resource_permissions (user_id, resource_id)
         SELECT
             user_id, @resourceid as resource_id
@@ -254,7 +254,7 @@ class Queries
             users';
 
     const CHECK_EMAIL =
-       'SELECT user_id
+            'SELECT user_id
 		FROM users
 		WHERE email = @email';
 
@@ -320,7 +320,7 @@ class Queries
     const LOGIN_USER =
             'SELECT * FROM users WHERE (username = @username OR email = @username)';
 
-    const GET_ACCESSORY_BY_ID =  'SELECT * FROM accessories WHERE accessory_id = @accessoryid';
+    const GET_ACCESSORY_BY_ID = 'SELECT * FROM accessories WHERE accessory_id = @accessoryid';
 
     const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
 
@@ -347,6 +347,17 @@ class Queries
 
     const GET_ALL_ANNOUNCEMENTS = 'SELECT * FROM announcements ORDER BY start_date';
 
+    const GET_ALL_APPLICATION_ADMINS = 'SELECT *
+            FROM users
+            WHERE status_id = @user_statusid AND
+            user_id IN (
+                SELECT user_id
+                FROM user_groups ug
+                INNER JOIN groups g ON ug.group_id = g.group_id
+                INNER JOIN group_roles gr ON g.group_id = gr.group_id
+                INNER JOIN roles ON roles.role_id = gr.role_id AND roles.role_level = @role_level
+              )';
+
     const GET_ALL_GROUPS =
             'SELECT g.*, admin_group.name as admin_group_name
 		FROM groups g
@@ -360,6 +371,14 @@ class Queries
 		INNER JOIN roles r ON r.role_id = gr.role_id
 		WHERE r.role_level = @role_level
 		ORDER BY g.name';
+
+    const GET_ALL_GROUP_ADMINS =
+            'SELECT u.* FROM users u
+        INNER JOIN user_groups ug ON u.user_id = ug.user_id
+        WHERE status_id = @user_statusid AND ug.group_id IN (
+          SELECT g.admin_group_id FROM user_groups ug
+          INNER JOIN groups g ON ug.group_id = g.group_id
+          WHERE ug.user_id = @userid AND g.admin_group_id IS NOT NULL)';
 
     const GET_ALL_GROUP_USERS =
             'SELECT *
@@ -943,7 +962,7 @@ class ColumnNames
     const RESOURCE_MAXNOTICE = 'max_notice_time';
     const RESOURCE_IMAGE_NAME = 'image_name';
     const RESOURCE_ISACTIVE = 'isactive';
-	const RESOURCE_ADMIN_GROUP_ID = 'admin_group_id';
+    const RESOURCE_ADMIN_GROUP_ID = 'admin_group_id';
 
     // RESERVATION RESOURCES
     const RESOURCE_LEVEL_ID = 'resource_level_id';

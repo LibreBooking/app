@@ -384,6 +384,57 @@ class UserRepositoryTests extends TestBase
         $this->assertEquals($command, $this->db->_LastCommand);
     }
 
+    public function testGetsApplicationAdmins()
+    {
+        $repo = new UserRepository();
+
+        $command = new GetAllApplicationAdminsCommand();
+        $userRows = array
+        (
+            $this->GetUserRow(1, 'admin', 'guy', 'email'),
+            $this->GetUserRow(),
+            $this->GetUserRow(),
+        );
+
+        $this->db->SetRows($userRows);
+
+        $admins = $repo->GetApplicationAdmins();
+
+        $admin = $admins[0];
+
+        $this->assertEquals(3, count($admins));
+        $this->assertEquals(1, $admin->Id());
+        $this->assertEquals('admin', $admin->FirstName());
+        $this->assertEquals('guy', $admin->LastName());
+        $this->assertEquals($command, $this->db->_LastCommand);
+    }
+
+    public function testGetsGroupAdmins()
+    {
+        $userId = 1232;
+        $repo = new UserRepository();
+
+        $command = new GetAllGroupAdminsCommand($userId);
+        $userRows = array
+        (
+            $this->GetUserRow(1, 'admin', 'guy', 'email'),
+            $this->GetUserRow(),
+            $this->GetUserRow(),
+        );
+
+        $this->db->SetRows($userRows);
+
+        $admins = $repo->GetGroupAdmins($userId);
+
+        $admin = $admins[0];
+
+        $this->assertEquals(3, count($admins));
+        $this->assertEquals(1, $admin->Id());
+        $this->assertEquals('admin', $admin->FirstName());
+        $this->assertEquals('guy', $admin->LastName());
+        $this->assertEquals($command, $this->db->_LastCommand);
+    }
+
     private function GetUserRow($userId = 1, $first = 'first', $last = 'last', $email = 'e@mail.com', $userName = 'username', $lastLogin = null, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
     {
         $row =

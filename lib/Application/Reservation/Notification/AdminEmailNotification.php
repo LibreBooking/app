@@ -16,17 +16,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmailAdmin.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmailAdmin.php');
 
 abstract class AdminEmailNotification implements IReservationNotification
 {
-	/**
-	 * @var IUserRepository
-	 */
-	private $userRepo;
+    /**
+     * @var IUserRepository
+     */
+    private $userRepo;
 
     /**
      * @var IUserViewRepository
@@ -37,68 +37,141 @@ abstract class AdminEmailNotification implements IReservationNotification
      * @param IUserRepository $userRepo
      * @param IUserViewRepository $userViewRepo
      */
-	public function __construct(IUserRepository $userRepo, IUserViewRepository $userViewRepo)
-	{
-		$this->userRepo = $userRepo;
-		$this->userViewRepo = $userViewRepo;
-	}
+    public function __construct(IUserRepository $userRepo, IUserViewRepository $userViewRepo)
+    {
+        $this->userRepo = $userRepo;
+        $this->userViewRepo = $userViewRepo;
+    }
 
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @return
-	 */
-	public function Notify($reservationSeries)
-	{
-		if (!$this->ShouldSend())
-		{
-			return;
-		}
+    /**
+     * @param ReservationSeries $reservationSeries
+     * @return
+     */
+    public function Notify($reservationSeries)
+    {
+        $resourceAdmins = array();
+        $applicationAdmins = array();
+        $groupAdmins = array();
 
-		$admins = $this->userViewRepo->GetResourceAdmins($reservationSeries->ResourceId());
-		$owner = $this->userRepo->LoadById($reservationSeries->UserId());
-		$resource = $reservationSeries->Resource();
-			
-		foreach ($admins as $admin)
-		{
-			$message = $this->GetMessage($admin, $owner, $reservationSeries, $resource);
-			ServiceLocator::GetEmailService()->Send($message);
-		}
-	}
+        if ($this->SendForResourceAdmins())
+        {
+            $resourceAdmins = $this->userViewRepo->GetResourceAdmins($reservationSeries->ResourceId());
+        }
+        if ($this->SendForApplicationAdmins())
+        {
+            $applicationAdmins = $this->userViewRepo->GetApplicationAdmins();
+        }
+        if ($this->SendForGroupAdmins())
+        {
+            $groupAdmins = $this->userViewRepo->GetGroupAdmins($reservationSeries->UserId());
+        }
 
-	/**
-	 * @return IEmailMessage
-	 */
-	protected abstract function GetMessage($admin, $owner, $reservationSeries, $resource);
+        $admins = array_merge($resourceAdmins, $applicationAdmins, $groupAdmins);
 
-	/**
-	 * @return bool
-	 */
-	protected abstract function ShouldSend();
+        if (count($admins) == 0)
+        {
+            // skip if there is nobody to send to
+            return;
+        }
+
+        $owner = $this->userRepo->LoadById($reservationSeries->UserId());
+        $resource = $reservationSeries->Resource();
+
+        $adminIds = array();
+        /** @var $admin UserDto */
+        foreach ($admins as $admin)
+        {
+            $id = $admin->Id();
+            if (array_key_exists($id, $adminIds))
+            {
+                // only send to each person once
+                continue;
+            }
+            $adminIds[$id] = true;
+
+            $message = $this->GetMessage($admin, $owner, $reservationSeries, $resource);
+            ServiceLocator::GetEmailService()->Send($message);
+        }
+    }
+
+    /**
+     * @return IEmailMessage
+     */
+    protected abstract function GetMessage($admin, $owner, $reservationSeries, $resource);
+
+    /**
+     * @return bool
+     */
+    protected abstract function SendForResourceAdmins();
+
+    /**
+     * @return bool
+     */
+    protected abstract function SendForApplicationAdmins();
+
+    /**
+     * @return bool
+     */
+    protected abstract function SendForGroupAdmins();
 }
 
 class AdminEmailCreatedNotification extends AdminEmailNotification
 {
-	protected function GetMessage($admin, $owner, $reservationSeries, $resource)
-	{
-		return new ReservationCreatedEmailAdmin($admin, $owner, $reservationSeries, $resource);
-	}
-	
-	protected function ShouldSend()
-	{
-		return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_NOTIFY_CREATED, new BooleanConverter());
-	}
+    protected function GetMessage($admin, $owner, $reservationSeries, $resource)
+    {
+        return new ReservationCreatedEmailAdmin($admin, $owner, $reservationSeries, $resource);
+    }
+
+    protected function SendForResourceAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_CREATE_RESOURCE_ADMINS,
+                                                        new BooleanConverter());
+    }
+
+    protected function SendForApplicationAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_CREATE_APPLICATION_ADMINS,
+                                                        new BooleanConverter());
+    }
+
+    protected function SendForGroupAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_CREATE_GROUP_ADMINS,
+                                                        new BooleanConverter());
+    }
 }
 
 class AdminEmailUpdatedNotification extends AdminEmailNotification
 {
-	protected function GetMessage($admin, $owner, $reservationSeries, $resource)
-	{
-		return new ReservationUpdatedEmailAdmin($admin, $owner, $reservationSeries, $resource);
-	}
-	
-	protected function ShouldSend()
-	{
-		return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_NOTIFY_UPDATED, new BooleanConverter());
-	}
+    protected function GetMessage($admin, $owner, $reservationSeries, $resource)
+    {
+        return new ReservationUpdatedEmailAdmin($admin, $owner, $reservationSeries, $resource);
+    }
+
+    protected function SendForResourceAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_UPDATE_RESOURCE_ADMINS,
+                                                        new BooleanConverter());
+    }
+
+
+    protected function SendForApplicationAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_UPDATE_APPLICATION_ADMINS,
+                                                        new BooleanConverter());
+    }
+
+    protected function SendForGroupAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_UPDATE_GROUP_ADMINS,
+                                                        new BooleanConverter());
+    }
 }
+
 ?>

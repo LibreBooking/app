@@ -87,6 +87,16 @@ interface IUserViewRepository
      */
     function GetResourceAdmins($resourceId);
 
+    /**
+     * @return array|UserDto[]
+     */
+    function GetApplicationAdmins();
+
+    /**
+     * @param int $userId
+     * @return array|UserDto[]
+     */
+    function GetGroupAdmins($userId);
 
     /**
      * @abstract
@@ -187,7 +197,7 @@ class UserRepository implements IUserRepository
 
                 $this->_cache->Add($userId, $user);
             }
-			else
+            else
             {
                 return User::Null();
             }
@@ -246,7 +256,7 @@ class UserRepository implements IUserRepository
             $user->WithPermissions($permissions);
             $user->WithGroups($groups);
 
-			$this->_cache->Add($userId, $user);
+            $this->_cache->Add($userId, $user);
             return $user;
         }
         else
@@ -359,6 +369,41 @@ class UserRepository implements IUserRepository
         return $users;
     }
 
+    /**
+     * @return array|UserDto[]
+     */
+    public function GetApplicationAdmins()
+    {
+        $command = new GetAllApplicationAdminsCommand();
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+        $users = array();
+
+        while ($row = $reader->GetRow())
+        {
+            $users[] = new UserDto($row[ColumnNames::USER_ID], $row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME], $row[ColumnNames::EMAIL], $row[ColumnNames::TIMEZONE_NAME], $row[ColumnNames::LANGUAGE_CODE]);
+        }
+
+        return $users;
+    }
+
+    /**
+     * @param int $userId
+     * @return array|UserDto[]
+     */
+    public function GetGroupAdmins($userId)
+    {
+        $command = new GetAllGroupAdminsCommand($userId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+        $users = array();
+
+        while ($row = $reader->GetRow())
+        {
+            $users[] = new UserDto($row[ColumnNames::USER_ID], $row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME], $row[ColumnNames::EMAIL], $row[ColumnNames::TIMEZONE_NAME], $row[ColumnNames::LANGUAGE_CODE]);
+        }
+
+        return $users;
+    }
+
     private function LoadPermissions($userId)
     {
         $allowedResourceIds = array();
@@ -376,9 +421,9 @@ class UserRepository implements IUserRepository
 
     public function LoadGroups($userId, $roleLevel = null)
     {
-		/**
-		 * @var $groups array|UserGroup[]
-		 */
+        /**
+         * @var $groups array|UserGroup[]
+         */
         $groups = array();
 
         $command = new GetUserGroupsCommand($userId, $roleLevel);

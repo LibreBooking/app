@@ -50,8 +50,6 @@ class ConfigKeys
     const PLUGIN_PRERESERVATION = 'PreReservation';
     const PLUGIN_POSTRESERVATION = 'PostReservation';
 
-    const RESERVATION_NOTIFY_CREATED = 'notify.created';
-    const RESERVATION_NOTIFY_UPDATED = 'notify.updated';
     const RESERVATION_START_TIME_CONSTRAINT = 'start.time.constraint';
 
     const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
@@ -66,6 +64,14 @@ class ConfigKeys
     const PRIVACY_HIDE_USER_DETAILS = 'hide.user.details';
     const PRIVACY_VIEW_RESERVATIONS = 'view.reservations';
     const PRIVACY_VIEW_SCHEDULES = 'view.schedules';
+
+    const NOTIFY_CREATE_RESOURCE_ADMINS = 'resource.admin.add';
+    const NOTIFY_CREATE_APPLICATION_ADMINS = 'application.admin.add';
+    const NOTIFY_CREATE_GROUP_ADMINS = 'group.admin.add';
+
+    const NOTIFY_UPDATE_RESOURCE_ADMINS = 'resource.admin.update';
+    const NOTIFY_UPDATE_APPLICATION_ADMINS = 'application.admin.update';
+    const NOTIFY_UPDATE_GROUP_ADMINS = 'group.admin.update';
 }
 
 class ConfigSection
@@ -75,6 +81,7 @@ class ConfigSection
     const PLUGINS = 'plugins';
     const PRIVACY = 'privacy';
     const RESERVATION = 'reservation';
+    const RESERVATION_NOTIFY = 'reservation.notify';
     const SCHEDULE = 'schedule';
 }
 

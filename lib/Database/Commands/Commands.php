@@ -548,6 +548,16 @@ class GetAllAnnouncementsCommand extends SqlCommand
     }
 }
 
+class GetAllApplicationAdminsCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_APPLICATION_ADMINS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, AccountStatus::ACTIVE));
+        $this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, RoleLevel::APPLICATION_ADMIN));
+    }
+}
+
 class GetAllGroupsCommand extends SqlCommand
 {
     public function __construct()
@@ -565,6 +575,16 @@ class GetAllGroupsByRoleCommand extends SqlCommand
     {
         parent::__construct(Queries::GET_ALL_GROUPS_BY_ROLE);
         $this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, $roleLevel));
+    }
+}
+
+class GetAllGroupAdminsCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_ALL_GROUP_ADMINS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, AccountStatus::ACTIVE));
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
     }
 }
 
@@ -586,6 +606,7 @@ class GetAllGroupPermissionsCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
     }
 }
+
 
 class GetAllGroupRolesCommand extends SqlCommand
 {
