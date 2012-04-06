@@ -25,7 +25,7 @@ class EmailLogger implements IEmailService
      */
     function Send(IEmailMessage $emailMessage)
     {
-       Log::Debug("Sending Email. To: %s\nFrom: %s\nSubject: %s\nBody: %s", $emailMessage->To(), $emailMessage->From(), $emailMessage->Subject(), $emailMessage->Body());
+       Log::Debug("Sending Email. To: %s\nFrom: %s\nSubject: %s\nBody: %s", implode(', ', $emailMessage->To()), $emailMessage->From(), $emailMessage->Subject(), $emailMessage->Body());
     }
 }
 

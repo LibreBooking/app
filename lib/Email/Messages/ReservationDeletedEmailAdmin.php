@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -16,21 +16,21 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNotificationService.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmailAdmin.php');
 
-class DeleteReservationNotificationService extends ReservationNotificationService
+class ReservationDeletedEmailAdmin extends ReservationCreatedEmailAdmin
 {
-	public function __construct(IUserRepository $userRepo, IResourceRepository $resourceRepo)
-	{
-		$notifications = array();
+    public function Subject()
+    {
+        return $this->Translate('ReservationDeleteAdminSubject');
+    }
 
-        $notifications[] = new OwnerEmailDeletedNotification($userRepo);
-        $notifications[] = new ParticipantDeletedEmailNotification($userRepo);
-        $notifications[] = new AdminEmailDeletedNotification($userRepo, $userRepo);
-
-		parent::__construct($notifications);
-	}
+    protected function GetTemplateName()
+    {
+       return 'ReservationDeleted.tpl';
+    }
 }
+
 ?>

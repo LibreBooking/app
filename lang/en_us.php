@@ -441,6 +441,7 @@ class en_us extends Language
         $strings['ReservationDeletedSubject'] = 'Your Reservation Was Removed';
         $strings['ReservationCreatedAdminSubject'] = 'Notification: A Reservation Was Created';
         $strings['ReservationUpdatedAdminSubject'] = 'Notification: A Reservation Was Updated';
+        $strings['ReservationDeleteAdminSubject'] = 'Notification: A Reservation Was Removed';
         $strings['ParticipantAddedSubject'] = 'Reservation Participation Notification';
         $strings['ParticipantDeletedSubject'] = 'Reservation Removed';
         $strings['InviteeAddedSubject'] = 'Reservation Invitation';

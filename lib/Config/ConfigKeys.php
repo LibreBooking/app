@@ -72,6 +72,10 @@ class ConfigKeys
     const NOTIFY_UPDATE_RESOURCE_ADMINS = 'resource.admin.update';
     const NOTIFY_UPDATE_APPLICATION_ADMINS = 'application.admin.update';
     const NOTIFY_UPDATE_GROUP_ADMINS = 'group.admin.update';
+
+    const NOTIFY_DELETE_RESOURCE_ADMINS = 'resource.admin.delete';
+    const NOTIFY_DELETE_APPLICATION_ADMINS = 'application.admin.delete';
+    const NOTIFY_DELETE_GROUP_ADMINS = 'group.admin.delete';
 }
 
 class ConfigSection

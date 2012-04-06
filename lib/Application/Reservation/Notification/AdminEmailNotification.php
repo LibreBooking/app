@@ -20,6 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmailAdmin.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmailAdmin.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationDeletedEmailAdmin.php');
 
 abstract class AdminEmailNotification implements IReservationNotification
 {
@@ -174,4 +175,33 @@ class AdminEmailUpdatedNotification extends AdminEmailNotification
     }
 }
 
+class AdminEmailDeletedNotification extends AdminEmailNotification
+{
+    protected function GetMessage($admin, $owner, $reservationSeries, $resource)
+    {
+        return new ReservationDeletedEmailAdmin($admin, $owner, $reservationSeries, $resource);
+    }
+
+    protected function SendForResourceAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_DELETE_RESOURCE_ADMINS,
+                                                        new BooleanConverter());
+    }
+
+
+    protected function SendForApplicationAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_DELETE_APPLICATION_ADMINS,
+                                                        new BooleanConverter());
+    }
+
+    protected function SendForGroupAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_DELETE_GROUP_ADMINS,
+                                                        new BooleanConverter());
+    }
+}
 ?>

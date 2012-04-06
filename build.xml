@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="phpScheduleIt" default="package">
-	<property name="version" value="2.1"/>
+	<property name="version" value="2.1-preview"/>
 	<property name="is.pre.release" value="true"/>
 	<property name="packagename" value="phpScheduleIt-${version}"/>
 	<property name="zipdirectory" value="../phpScheduleIt_archive/zip/${version}"/>
@@ -12,7 +12,7 @@
 
 	<available file="C:/Program Files/MySQL/MySQL Server 5.1/bin" property="mysql.bin"
 			   value="C:/Program Files/MySQL/MySQL Server 5.1/bin"/>
-	<available file="C:/xampp/mysql/bin" property="mysql.bin" value="C:/xampp/mysql/bin"/>
+	<available file="C:/wamp/bin/mysql/mysql5.5.20/bin" property="mysql.bin" value="C:/wamp/bin/mysql/mysql5.5.20/bin"/>
 	<property name="mysql.bin.64bit" value="C:/Program Files (x86)/MySQL/MySQL Server 5.1/bin"/>
 	<property name="mysql.username" value="root"/>
 	<property name="mysql.password" value=""/>
@@ -51,8 +51,9 @@
 			</then>
 		</if>
 
+        <echo message="Using MySQL from ${mysql.bin}" />
 		<echo message="Create db file: ${sql.file.create.db}"/>
-		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.create.db}"
+		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} mysql &lt; ${application.startdir}/${sql.file.create.db}"
 			  checkreturn="true"
 			  dir="${mysql.bin}"/>
 
@@ -104,7 +105,7 @@
 			<equals arg1="${is.pre.release}" arg2="1"/>
 			<then>
                 <echo message="Packaging pre-release version" />
-				<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip"/>
+				<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip" override="true"/>
 			</then>
 		</if>
 

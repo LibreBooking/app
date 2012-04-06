@@ -27,4 +27,5 @@ class ReservationUpdatedEmailAdmin extends ReservationCreatedEmailAdmin
 		return $this->Translate('ReservationUpdatedAdminSubject');
 	}
 }
+
 ?>

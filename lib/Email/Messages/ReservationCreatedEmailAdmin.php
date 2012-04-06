@@ -49,7 +49,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	 * @param ReservationSeries $reservationSeries
 	 * @param IResource $primaryResource
 	 */
-	public function __construct($adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource)
+	public function __construct(UserDto $adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource)
 	{
 		parent::__construct($adminDto->Language());
 		
@@ -85,9 +85,14 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	public function Body()
 	{
 		$this->PopulateTemplate();
-		return $this->FetchTemplate("ReservationCreatedAdmin.tpl"); 
+		return $this->FetchTemplate($this->GetTemplateName());
 	}
-	
+
+    protected function GetTemplateName()
+    {
+        return 'ReservationCreatedAdmin.tpl';
+    }
+
 	private function PopulateTemplate()
 	{	
 		$this->Set('UserName', $this->reservationOwner->FullName());
