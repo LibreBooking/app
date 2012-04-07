@@ -47,7 +47,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         <li>Group admin designations will not be migrated, only the user accounts</li>
         <li>Open reservation invitations will be removed</li>
         <li>User timezones will all be set to the server's timezone</li>
-        <li>At the time of writing, phpScheduleIt 2.0 is only available in English (US). User language preferences will be migrated but will have no immediate effect</li>
+        <li>At the time of writing, phpScheduleIt 2 is not available in all of the same languages that 1.2 was. User language preferences will be migrated but may have no immediate effect</li>
         <li>User email preferences will not be migrated</li>
     </ul>
     </div>

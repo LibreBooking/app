@@ -54,7 +54,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </ul>
                 </li>
                 <li>&nbsp;</li>
-                <li>2) You MUST provide credentials of a MySQL user who has privileges to create databases. If you do not know, contact your database admin.</li>
+                <li>2) You MUST provide credentials of a MySQL user who has privileges to create databases. If you do not know, contact your database admin. In many cases, root will work.</li>
                 <li>MySQL User</li>
                 <li>{textbox name="INSTALL_DB_USER" class="textbox" size="20"}</li>
                 <li>Password</li>

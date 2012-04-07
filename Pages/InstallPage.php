@@ -169,7 +169,7 @@ class InstallPage extends Page implements IInstallPage
 	public function PageLoad()
 	{
 		$this->presenter->PageLoad();
-		$this->Display('install.tpl');
+		$this->Display('Install/install.tpl');
 	}
 
 	public function SetInstallPasswordMissing($isMissing)

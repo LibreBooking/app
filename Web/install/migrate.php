@@ -53,12 +53,12 @@ class MigrationPage extends Page
     public function DisplayResults()
     {
         $this->Set('ShowResults', true);
-        $this->Display('migrate.tpl');
+        $this->Display('Install/migrate.tpl');
     }
 
     public function DisplayMigrationPrompt()
     {
-        $this->Display('migrate.tpl');
+        $this->Display('Install/migrate.tpl');
     }
 
     public function GetLegacyUserName()
