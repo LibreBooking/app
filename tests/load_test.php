@@ -21,10 +21,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 define('ROOT_DIR', dirname(__FILE__) . '/../');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
+require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');
 
-$numberOfResources = 30;
-$numberOfUsers = 500;
-$numberOfReservations = 5000;
+echo "<h1>phpScheduleIt Data Load</h1>";
+
+$stopWatch = new StopWatch();
+$stopWatch->Start();
+
+$numberOfResources = 10;
+$numberOfUsers = 50;
+$numberOfReservations = 200;
+$numberOfAccessories = 100;
 
 $users = array();
 $resources = array();
@@ -36,10 +43,12 @@ $db->Execute(new AdHocCommand("delete from users where fname ='load' and lname =
 $userRepo = new UserRepository();
 for ($i = 0; $i < $numberOfUsers; $i++)
 {
-	$user = User::Create("load", "test", "email $i", "username $i", "en_us", "America/Chicago", "7b6aec38ff9b7650d64d0374194307bdde711425", "3b3dbb9b");
+	$user = User::Create("load$i", "test$i", "email $i", "username $i", "en_us", "America/Chicago", "7b6aec38ff9b7650d64d0374194307bdde711425", "3b3dbb9b");
 	$userId = $userRepo->Add($user);
 	$users[] = $user;
 }
+
+echo "Loaded $numberOfUsers users<br/>";
 
 // RESOURCES
 $db->Execute(new AdHocCommand("delete from resources where name like 'load%'"));
@@ -50,6 +59,19 @@ for ($i = 0; $i < $numberOfResources; $i++)
 	$resourceId = $resourceRepo->Add($resource);
 	$resources[] = $resource;
 }
+
+echo "Loaded $numberOfResources resources<br/>";
+
+// ACCESSORIES
+$db->Execute(new AdHocCommand("delete from accessories where accessory_name like 'load%'"));
+$accessoryRepo = new AccessoryRepository();
+for ($i = 0; $i < $numberOfAccessories; $i++)
+{
+	$accessory = new Accessory(0, "Load $i", 10);
+	$id = $accessoryRepo->Add($accessory);
+}
+
+echo "Loaded $numberOfAccessories accessories<br/>";
 
 // RESERVATIONS
 $db->Execute(new AdHocCommand("delete from reservation_series where title like 'load%'"));
@@ -79,6 +101,11 @@ while ($i < $numberOfReservations)
 
 	$currentDate = $currentDate->AddDays(1);
 }
+
+echo "Loaded $numberOfReservations reservations<br/>";
+$stopWatch->Stop();
+
+echo "<h5>Took " . $stopWatch->GetTotalSeconds() . " seconds</h5>";
 
 /**
  * @param array|User[] $users

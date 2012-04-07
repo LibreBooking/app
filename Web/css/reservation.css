@@ -75,6 +75,11 @@
 	border: solid 1px #ededed;
 }
 
+#accessories {
+	max-height: 200px;
+	overflow: auto;
+}
+
 #accessories p
 {
 	margin: 1px;
