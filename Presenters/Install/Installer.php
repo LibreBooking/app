@@ -81,15 +81,16 @@ class Installer
 
         $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_data);
 
-        /**
-         * Populate sample data given in /phpScheduleIt/database_schema/sample-data-utf8.sql
-         */
-        if ($should_create_sample_data)
-        {
-            $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_sample_data);
-        }
-
         $upgradeResults = $this->Upgrade();
+
+		/**
+		 * Populate sample data given in /phpScheduleIt/database_schema/sample-data-utf8.sql
+		 */
+		if ($should_create_sample_data)
+		{
+			$results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_sample_data);
+		}
+
         $results = array_merge($results, $upgradeResults);
         return $results;
     }
