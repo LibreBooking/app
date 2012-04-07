@@ -364,7 +364,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	account registration</p>
 
 <p class="setting"><span>$conf['settings']['inactivity.timeout']</span>Number of minutes before the user is
-	automatically logged out</p>
+	automatically logged out. Leave this blank if you do not want users automatically logged out.</p>
 
 <p class="setting"><span>$conf['settings']['name.format']</span>Display format for first name and last name. Default
 	is {literal}'{first} {last}'{/literal}.</p>
@@ -395,6 +395,33 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	the selected slot is in the past. Current means reservations can be created or modified if the ending time of the
 	selected slot is not in the past. None means that there is no restriction on when reservations can be created or
 	modified. Default is future.</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or not to send an
+	email to all resource administrators when a reservation is created. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.update']</span>Whether or not to send an
+	email to all resource administrators when a reservation is updated. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.delete']</span>Whether or not to send an
+	email to all resource administrators when a reservation is deleted. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.add']</span>Whether or not to send an
+	email to all application administrators when a reservation is created. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.update']</span>Whether or not to send an
+	email to all application administrators when a reservation is updated. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.delete']</span>Whether or not to send an
+	email to all application administrators when a reservation is deleted. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.add']</span>Whether or not to send an
+	email to all group administrators when a reservation is created. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.update']</span>Whether or not to send an
+	email to all group administrators when a reservation is updated. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.delete']</span>Whether or not to send an
+	email to all group administrators when a reservation is deleted. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
 	include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
