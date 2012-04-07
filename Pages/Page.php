@@ -83,8 +83,11 @@ abstract class Page implements IPage
 		$this->smarty->assign('CanViewResourceAdmin', $userSession->IsResourceAdmin);
 		$this->smarty->assign('CanViewResponsibilities', ($userSession->IsGroupAdmin || $userSession->IsResourceAdmin));
         $timeout = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT);
-		$this->smarty->assign('SessionTimeoutSeconds', max($timeout, 1) * 60);
-        $this->smarty->assign('ShouldLogout', $this->GetShouldAutoLogout());
+		if (!empty($timeout))
+		{
+			$this->smarty->assign('SessionTimeoutSeconds', max($timeout, 1) * 60);
+		}
+		$this->smarty->assign('ShouldLogout', $this->GetShouldAutoLogout());
         $this->smarty->assign('CssExtensionFile', Configuration::Instance()->GetKey(ConfigKeys::CSS_EXTENSION_FILE));
 	}
 
@@ -264,7 +267,9 @@ abstract class Page implements IPage
 
     protected function GetShouldAutoLogout()
     {
-        return true;
+        $timeout = $this->GetVar('SessionTimeoutSeconds');
+
+		return !empty($timeout);
     }
 }
 
