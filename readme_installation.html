@@ -49,9 +49,10 @@
 	<li>Web server (Apache2, IIS).</li>
 	<li>OS - Windows, Mac, *nix</li>
 </ul>
-<div STYLE="color:red">
-	Note: for users without web hosting service or existing environment, <a
-		href="http://www.apachefriends.org/en/index.html">XAMMP</a> can help you get set up quicky.<br/>
+<div STYLE="font-style: italic;">
+	Note: for users without web hosting service or existing environment, packages like <a
+		href="http://www.apachefriends.org/en/index.html">XAMMP</a> or <a href="http://www.wampserver.com/en/">WampServer</a>
+	can help you get set up quicky.<br/>
 </div>
 
 <h1 class="section">Fresh Installation</h1>
@@ -65,10 +66,14 @@
 			then transfer the extracted directory to your web server's document root using FTP or <a
 					href="http://sourceforge.net/projects/winscp/">WinSCP</a>.
 		</li>
-		<li>Copy /config/config.dist.php to config.php and adjust the settings for your environment.</li>
+		<li>Copy /config/config.dist.php to /config/config.php and adjust the settings for your environment.</li>
 		<li><span STYLE="color:red">Important!</span> The web server must have write access (0770) to
 			/your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl
-			<a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(want to know why?)</a></li>
+			<a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(want to know why?)</a>
+			<ul>
+				<li>If using an FTP client, check read/write/execute for Owner and Group on /tpl, /tpl_c, and /uploads</li>
+			</ul>
+		</li>
 	</ul>
 </div>
 
@@ -76,28 +81,25 @@
 
 <div>
 	You can configure phpScheduleIt to fit your environments and needs, or use the minimal default settings which should
-	be enough for the application to work.
-	We recommend you to change according to your specifics.
+	be enough for the application to work. We recommend you to change according to your specifics. Additional
+	information on all configuration settings can be found in the application help page.
 	<ul>
-		<li>In addition, to allow resource image uploads, the web-server must also have read/write
-			access to your configurable uploads directory of <span class="setting">$conf['settings']['image.upload.directory']</span>
-			in the
-			config.php.
-		</li>
 		<li>To configure the application, you can open /config/config.php and alter any settings accordingly.
 			The admin email address can be set in the phpScheduleIt/config/config.php file of setting
 			<span class="setting">$conf['settings']['admin.email']</span>.<br/>
 			When later register an account with admin email address the user will be given admin privilege.
 		</li>
-		<li>In addition to the default email authentication method is <span STYLE="color:red">LDAP</span> (a system can
-			have both, email authentication will fail over to LDAP as a secondary).
-			<br/>To configure LDAP authentication, you can open /config/config.php and alter any settings accordingly.
-			Examples are shown next to the parameters.
+		<li>In addition, to allow resource image uploads, the web-server must also have read/write
+			access to your configurable uploads directory of <span class="setting">$conf['settings']['image.upload.directory']</span>
+			in the config.php.
+		</li>
+		<li>By default, phpScheduleIt uses standard username/password for user authentication. Alternatively, you can
+			use LDAP authentication.
+			<br/>See the plugins section of the application help page for more details.
 		</li>
 	</ul>
 	Note: If you try to load the application at this time (eg. http://yourhostname/phpScheduleIt/Web/), you will
-	probably get a white page.
-	This is because there is no backend database configured yet. So continue on ...
+	probably get a white page. This is because there is no backend database configured yet. So continue on ...
 </div>
 
 <h2>Database Setup</h2>
@@ -135,6 +137,7 @@ OR<br/>
 
 <div>
 	<h4>On a remote host</h4>
+
 	<p>If you are installing phpScheduleIt on a remote host, please follow these steps. These steps assume you are using
 		cPanel.</p>
 
@@ -185,7 +188,7 @@ OR<br/>
 	</ul>
 
 	<span STYLE="color:green;">You are done. Congratulations!</span>
-				Try to load the application at (eg. http://yourhostname/phpScheduleIt/Web/).
+	Try to load the application at (eg. http://yourhostname/phpScheduleIt/Web/).
 </div>
 
 
@@ -205,6 +208,7 @@ OR<br/>
 
 	<p>After the new files are uploaded, copy your old config/config.php file to the config directory in the new
 		version. Then run /Web/install/configure.php to bring your config file up to date.</p>
+
 	<p>If you have any uploaded resource images you will need to copy them from their old location to the new
 		one.</p>
 
@@ -256,25 +260,30 @@ OR<br/>
 		changes or addition via the application.
 	</li>
 	<li>If not, you will need to register an account with your configured admin email address. The admin email address
-		can be set in the
-		phpScheduleIt/config/config.php file of setting <span class="setting">$conf['settings']['admin.email']</span>.
-		Other self registration
-		accounts are defaulted to normal users.<br/>
+		can be set in the phpScheduleIt/config/config.php file of setting <span class="setting">$conf['settings']['admin.email']</span>.
+		Other self registration accounts are defaulted to normal users.<br/>
 		After registration you will be logged in automatically. <span STYLE="color:red">Important!</span> At this time,
-		it is recommended to change your password immediately.
-		Notice that an email address is required to register for an account.
+		it is recommended to change your password immediately. Notice that an email address is required to register for
+		an account.
 	</li>
 	<li>For LDAP authentication please login with your LDAP username/password.</li>
 </ul>
 
 <h2>Log Files</h2>
 phpScheduleIt logs multiple levels of information categorized into either application or database logs. To do this, the
-log4php library is used.
-By default, logging is turned OFF.
+log4php library is used. By default, logging is turned OFF.
 <ul>
 	<li>First, rename /config/log4php.config.dist.xml to /config/log4php.config.xml</li>
-	<li>To allow application logging, the PHP account requires write access (0770) to your configured log directory
-	<li>Logging is configured in /config/log4php.config.xml</li>
+	<li>To allow application logging, the PHP account requires write access (0755) to your configured log directory.
+	</li>
+	<li>Logging is configured in /config/log4php.config.xml
+		<ul>
+			<li>For Windows, set the path to something similar to &lt;param name=&quot;file&quot; value=&quot;c:/temp/log_%s.log&quot;
+				/&gt;</li>
+			<li>For Unix, set the path to something similar to &lt;param name=&quot;file&quot; value=&quot;/tmp/phpscheduleit/log_%s.log&quot;
+				/&gt;</li>
+		</ul>
+	</li>
 	<li>Logging is controlled by changing the &lt;level&gt; of each &lt;logger&gt;</li>
 	<li>Levels used by phpScheduleIt are OFF, DEBUG, ERROR. For normal operation, ERROR is appropriate. If trace logs
 		are needed, DEBUG is appropriate.
@@ -289,7 +298,7 @@ By default, logging is turned OFF.
 <h4>Support</h4>
 
 <div>
-	Please post any questions or issues under the phpScheduleIt 2.0 section of the forums on
+	Please post any questions or issues under the phpScheduleIt 2 section of the forums on
 	<a href="http://php.brickhost.com/forums">http://php.brickhost.com/forums</a>. Here you may also find some answers
 	to your questions previously asked by other people.
 </div>
