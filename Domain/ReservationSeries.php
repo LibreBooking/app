@@ -455,5 +455,15 @@ class ReservationSeries
 	{
 		$this->_accessories[] = $accessory;
 	}
+
+	public function IsMarkedForDelete($reservationId)
+	{
+		return false;
+	}
+
+	public function IsMarkedForUpdate($reservationId)
+	{
+		return false;
+	}
 }
 ?>

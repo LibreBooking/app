@@ -230,6 +230,10 @@ div.registrationHeader, div.forgot_pwdHeader, .reservationHeader, div.box-form d
     width: 650px;
 }
 
+#notificationPreferences label {
+	margin-left:0.3em;
+}
+
 form.box-form li {
     list-style: none;
 }

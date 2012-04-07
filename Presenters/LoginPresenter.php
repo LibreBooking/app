@@ -159,17 +159,19 @@ class LoginPresenter
         $languageHeader = ServiceLocator::GetServer()->GetLanguage();
         $languageCode = Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE);
 
-        if (!empty($languageCookie))
+		$resources = Resources::GetInstance($languageCookie);
+
+        if ($resources->IsLanguageSupported($languageCookie))
         {
             $languageCode = $languageCookie;
         }
-        else if (!empty($languageHeader))
+        else if ($resources->IsLanguageSupported($languageHeader))
         {
             $languageCode = $languageHeader;
         }
 
 		$this->_page->SetSelectedLanguage(strtolower($languageCode));
-        Resources::GetInstance()->SetLanguage($languageCode);
+		$resources->SetLanguage($languageCode);
     }
 }
 
