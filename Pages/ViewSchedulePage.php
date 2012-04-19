@@ -129,5 +129,20 @@ class ViewSchedulePage extends Page implements ISchedulePage
     {
         return true;
     }
+
+	/**
+	 * @param bool $showShowFullWeekToggle
+	 */
+	public function ShowFullWeekToggle($showShowFullWeekToggle)
+	{
+		$this->Set('ShowFullWeekLink', $showShowFullWeekToggle);
+	}
+
+	public function GetShowFullWeek()
+	{
+		$showFullWeek = $this->GetQuerystring(QueryStringKeys::SHOW_FULL_WEEK);
+
+		return !empty($showFullWeek);
+	}
 }
 ?>
