@@ -159,6 +159,7 @@ class InstallPresenter
 		}
 		else
 		{
+			$this->page->ShowUpToDate(true);
 			$this->page->ShowInstallOptions(true);
 		}
 	}

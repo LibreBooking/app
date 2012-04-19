@@ -143,7 +143,11 @@ interface IInstallPage
 	 */
 	public function ShowInstallOptions($showInstallOptions);
 
-
+	/**
+	 * @abstract
+	 * @param $showUpToDateMessage
+	 */
+	public function ShowUpToDate($showUpToDateMessage);
 }
 
 /**
@@ -325,6 +329,14 @@ class InstallPage extends Page implements IInstallPage
 	public function ShowInstallOptions($showInstallOptions)
 	{
 		$this->Set('ShowInstallOptions', $showInstallOptions);
+	}
+
+	/**
+	 * @param $showUpToDateMessage
+	 */
+	public function ShowUpToDate($showUpToDateMessage)
+	{
+		$this->Set('ShowUpToDateMessage', $showUpToDateMessage);
 	}
 }
 
