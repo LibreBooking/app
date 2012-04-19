@@ -291,11 +291,20 @@ class UserRepository implements IUserRepository
         $userId = $user->Id();
 
         $db = ServiceLocator::GetDatabase();
-        $updateUserCommand = new UpdateUserCommand($user->Id(), $user->StatusId(), $user->encryptedPassword,
-            $user->passwordSalt, $user->FirstName(), $user->LastName(),
-            $user->EmailAddress(), $user->Username(), $user->Homepage(),
-            $user->Timezone(), $user->LastLogin(),
-            $user->GetIsCalendarSubscriptionAllowed(), $user->GetPublicId());
+        $updateUserCommand = new UpdateUserCommand($user->Id(),
+			$user->StatusId(),
+			$user->encryptedPassword,
+            $user->passwordSalt,
+			$user->FirstName(),
+			$user->LastName(),
+            $user->EmailAddress(),
+			$user->Username(),
+			$user->Homepage(),
+            $user->Timezone(),
+			$user->LastLogin(),
+            $user->GetIsCalendarSubscriptionAllowed(),
+			$user->GetPublicId(),
+			$user->Language());
         $db->Execute($updateUserCommand);
 
         $removedPermissions = $user->GetRemovedPermissions();

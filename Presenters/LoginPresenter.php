@@ -143,7 +143,7 @@ class LoginPresenter
 
     private function IsCookieLogin($loginCookie)
     {
-        return !is_null($loginCookie);
+		return !empty($loginCookie);
     }
 
     private function SetSelectedLanguage()

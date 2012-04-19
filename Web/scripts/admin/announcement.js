@@ -46,7 +46,7 @@ function AnnouncementManagement(opts) {
 		});
 
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add));
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.delete));
+		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAnnouncement));
 		ConfigureAdminForm(elements.editForm, getSubmitCallback(options.actions.edit));
 	};
 

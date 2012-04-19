@@ -26,7 +26,8 @@ function Calendar(opts, reservations)
 			    week: 'dddd ' + _options.dayMonth,
 			    day: 'dddd ' + _options.dayMonth
 			},
-			axisFormat: _options.timeFormat
+			axisFormat: _options.timeFormat,
+			firstDay: _options.firstDay
 		});
 
 		$('.fc-widget-content').hover(

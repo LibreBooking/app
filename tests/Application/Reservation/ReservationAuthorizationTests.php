@@ -53,26 +53,70 @@ class ReservationAuthorizationTests extends TestBase
 		$this->reservationAuthorization = new ReservationAuthorization($this->authorizationService);
 	}
 
-	public function testCanEditIfTheCurrentUserIsTheOwnerIfReservationHasNotEnded()
+	public function testCanEditIfTheCurrentUserIsTheOwnerIfReservationHasNotBegun()
 	{
-		$endsInFuture = Date::Now()->AddDays(1);
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::FUTURE);
+		$futureDate = Date::Now()->AddDays(1);
 
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = $this->currentUser->UserId;
-		$reservationView->EndDate = $endsInFuture;
+		$reservationView->StartDate = $futureDate;
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
 		$this->assertTrue($isEditable);
 	}
 
-	public function testIsNotEditableIfReservationHasEndedAndCurrentUserIsNotAdmin()
+	public function testCanEditIfTheCurrentUserIsTheOwnerIfReservationHasNotEnded()
 	{
-		$endsInPast = Date::Now()->AddDays(-1);
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::CURRENT);
+		$future = Date::Now()->AddDays(1);
 
 		$reservationView = new ReservationView();
 		$reservationView->OwnerId = $this->currentUser->UserId;
-		$reservationView->EndDate = $endsInPast;
+		$reservationView->EndDate = $future;
+
+		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
+
+		$this->assertTrue($isEditable);
+	}
+
+	public function testCanEditIfTheCurrentUserIsTheOwnerAndThereIsNoConstraint()
+	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::NONE);
+		$past = Date::Now()->AddDays(-11);
+
+		$reservationView = new ReservationView();
+		$reservationView->OwnerId = $this->currentUser->UserId;
+		$reservationView->EndDate = $past;
+
+		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
+
+		$this->assertTrue($isEditable);
+	}
+
+	public function testIsNotEditableIfReservationHasBegunAndCurrentUserIsNotAdmin()
+	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::FUTURE);
+		$past = Date::Now()->AddDays(-1);
+
+		$reservationView = new ReservationView();
+		$reservationView->OwnerId = $this->currentUser->UserId;
+		$reservationView->StartDate = $past;
+
+		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
+
+		$this->assertFalse($isEditable);
+	}
+
+	public function testIsNotEditableIfReservationHasEndedAndCurrentUserIsNotAdmin()
+	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::CURRENT);
+		$past = Date::Now()->AddDays(-1);
+
+		$reservationView = new ReservationView();
+		$reservationView->OwnerId = $this->currentUser->UserId;
+		$reservationView->EndDate = $past;
 
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 

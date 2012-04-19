@@ -227,7 +227,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 	 */
 	public function SetReservationUser(UserDto $user)
 	{
-		$this->Set('UserName', $user->FullName());
+		$this->Set('ReservationUserName', $user->FullName());
 		$this->Set('UserId', $user->Id());
 	}
 	

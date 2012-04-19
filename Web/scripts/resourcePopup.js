@@ -51,21 +51,9 @@ $.fn.bindResourceDetails = function(resourceId, options)
 				delay: 500
 			},
 			style: {
-                //classes: ''
-				//classes: 'ui-tooltip-shadow ui-tooltip-blue',// resourceQtip',
-                //width: 700
-//				tip: {
-//					corner: true
-//				},
-//                border: {
-//                         width: 7,
-//                         radius: 5
-//                }
 			},
 			hide: {
 				delay: 500
-				//fixed: true,
-				//when: 'mouseout'
 			}
 		});
 	}

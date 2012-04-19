@@ -64,6 +64,7 @@ $(document).ready(function() {
 					monthNamesShort: {js_array array=$MonthNamesShort},
 					timeFormat: '{$TimeFormat}',
 					dayMonth: '{$DateFormat}',
+					firstDay: 0,
 					subscriptionEnableUrl: '{Pages::MY_CALENDAR}?{QueryStringKeys::ACTION}={PersonalCalendarActions::ActionEnableSubscription}',
 					subscriptionDisableUrl: '{Pages::MY_CALENDAR}?{QueryStringKeys::ACTION}={PersonalCalendarActions::ActionDisableSubscription}',
 				};

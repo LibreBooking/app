@@ -135,7 +135,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	var actions = {
 		add: '{ManageAnnouncementsActions::Add}',
 		edit: '{ManageAnnouncementsActions::Change}',
-		delete: '{ManageAnnouncementsActions::Delete}'
+		deleteAnnouncement: '{ManageAnnouncementsActions::Delete}'
 	};
 
 	var accessoryOptions = {

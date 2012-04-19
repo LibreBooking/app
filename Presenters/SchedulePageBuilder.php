@@ -22,200 +22,205 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 interface ISchedulePageBuilder
 {
 
-    /**
-     * @param ISchedulePage $page
-     * @param array[int]ISchedule $schedules
-     * @param ISchedule $currentSchedule
-     */
-    public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule);
+	/**
+	 * @param ISchedulePage $page
+	 * @param array[int]ISchedule $schedules
+	 * @param ISchedule $currentSchedule
+	 */
+	public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule);
 
-    /**
-     * @param ISchedulePage $page
-     * @param array[int]ISchedule $schedules
-     * @return ISchedule
-     */
-    public function GetCurrentSchedule(ISchedulePage $page, $schedules);
+	/**
+	 * @param ISchedulePage $page
+	 * @param array[int]ISchedule $schedules
+	 * @return ISchedule
+	 */
+	public function GetCurrentSchedule(ISchedulePage $page, $schedules);
 
-    /**
-     * Returns range of dates to bind in UTC
-     * @param UserSession $userSession
-     * @param ISchedule $schedule
-     * @param ISchedulePage $page
-     * @return DateRange
-     */
-    public function GetScheduleDates(UserSession $userSession, ISchedule $schedule, ISchedulePage $page);
+	/**
+	 * Returns range of dates to bind in UTC
+	 * @param UserSession $userSession
+	 * @param ISchedule $schedule
+	 * @param ISchedulePage $page
+	 * @return DateRange
+	 */
+	public function GetScheduleDates(UserSession $userSession, ISchedule $schedule, ISchedulePage $page);
 
-    /**
-     * @param ISchedulePage $page
-     * @param DateRange $dateRange display dates
-     * @param UserSession $user
-     */
-    public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession, ISchedule $schedule);
+	/**
+	 * @param ISchedulePage $page
+	 * @param DateRange $dateRange display dates
+	 * @param UserSession $user
+	 */
+	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession,
+									 ISchedule $schedule);
 
-    /**
-     * @param ISchedulePage $page
-     * @param array[int]ResourceDto $resources
-     * @param IDailyLayout $dailyLayout
-     */
-    public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout);
+	/**
+	 * @param ISchedulePage $page
+	 * @param array[int]ResourceDto $resources
+	 * @param IDailyLayout $dailyLayout
+	 */
+	public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout);
 
-    /**
-     * @param ISchedulePage $page
-     * @param IDailyLayout $layout
-     */
-    public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange);
+	/**
+	 * @param ISchedulePage $page
+	 * @param IDailyLayout $layout
+	 */
+	public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
 {
-    /**
-     * @param ISchedulePage $page
-     * @param array[int]ISchedule $schedules
-     * @param ISchedule $currentSchedule
-     */
-    public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule)
-    {
-        $page->SetSchedules($schedules);
-        $page->SetScheduleId($currentSchedule->GetId());
-        $page->SetScheduleName($currentSchedule->GetName());
-        $page->SetFirstWeekday($currentSchedule->GetWeekdayStart());
-    }
+	/**
+	 * @param ISchedulePage $page
+	 * @param array[int]ISchedule $schedules
+	 * @param ISchedule $currentSchedule
+	 */
+	public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule)
+	{
+		$page->SetSchedules($schedules);
+		$page->SetScheduleId($currentSchedule->GetId());
+		$page->SetScheduleName($currentSchedule->GetName());
+		$page->SetFirstWeekday($currentSchedule->GetWeekdayStart());
+	}
 
-    /**
-     * @param ISchedulePage $page
-     * @param $schedules
-     * @return Schedule
-     */
-    public function GetCurrentSchedule(ISchedulePage $page, $schedules)
-    {
-        if ($page->IsPostBack())
-        {
-            $schedule = $this->GetSchedule($schedules, $page->GetScheduleId());
-        } else
-        {
-            $schedule = $this->GetDefaultSchedule($schedules);
-        }
+	/**
+	 * @param ISchedulePage $page
+	 * @param $schedules
+	 * @return Schedule
+	 */
+	public function GetCurrentSchedule(ISchedulePage $page, $schedules)
+	{
+		if ($page->IsPostBack())
+		{
+			$schedule = $this->GetSchedule($schedules, $page->GetScheduleId());
+		} else
+		{
+			$schedule = $this->GetDefaultSchedule($schedules);
+		}
 
-        return $schedule;
-    }
+		return $schedule;
+	}
 
-    /**
-     * @see ISchedulePageBuilder::GetScheduleDates()
-     */
-    public function GetScheduleDates(UserSession $user, ISchedule $schedule, ISchedulePage $page)
-    {
-        $userTimezone = $user->Timezone;
-        $selectedDate = $page->GetSelectedDate();
-        $date = empty($selectedDate) ? Date::Now() : new Date($selectedDate, $userTimezone);
-        $currentDate = $date->ToTimezone($userTimezone)->GetDate();
-        $currentWeekDay = $currentDate->Weekday();
-        $scheduleLength = $schedule->GetDaysVisible();
+	/**
+	 * @see ISchedulePageBuilder::GetScheduleDates()
+	 */
+	public function GetScheduleDates(UserSession $user, ISchedule $schedule, ISchedulePage $page)
+	{
+		$userTimezone = $user->Timezone;
+		$providedDate = $page->GetSelectedDate();
+		$date = empty($providedDate) ? Date::Now() : new Date($providedDate, $userTimezone);
+		$selectedDate = $date->ToTimezone($userTimezone)->GetDate();
+		$selectedWeekday = $selectedDate->Weekday();
 
-        $startDay = $schedule->GetWeekdayStart();
+		$scheduleLength = $schedule->GetDaysVisible();
 
-        /**
-         *  Examples
-         *
-         *  if we are on 3 and we need to start on 6, we need to go back 4 days
-         *  if we are on 3 and we need to start on 5, we need to go back 5 days
-         *  if we are on 3 and we need to start on 4, we need to go back 6 days
-         *  if we are on 3 and we need to start on 3, we need to go back 0 days
-         *  if we are on 3 and we need to start on 2, we need to go back 1 days
-         *  if we are on 3 and we need to start on 1, we need to go back 2 days
-         *  if we are on 3 and we need to start on 0, we need to go back 3 days
-         */
-        if ($scheduleLength > 6)
-        {
-            $adjustedDays = ($startDay - $currentWeekDay);
+		if ($page->GetShowFullWeek())
+		{
+			$scheduleLength = 7;
+		}
 
-            if ($currentWeekDay < $startDay)
-            {
-                $adjustedDays = $adjustedDays - 7;
-            }
+		$startDay = $schedule->GetWeekdayStart();
 
-            $startDate = $currentDate->AddDays($adjustedDays);
-        }
-        else
-        {
-            $startDate = $currentDate;
-        }
-        return new DateRange($startDate, $startDate->AddDays($scheduleLength));
-    }
+		/**
+		 *  Examples
+		 *
+		 *  if we are on 3 and we need to start on 6, we need to go back 4 days
+		 *  if we are on 3 and we need to start on 5, we need to go back 5 days
+		 *  if we are on 3 and we need to start on 4, we need to go back 6 days
+		 *  if we are on 3 and we need to start on 3, we need to go back 0 days
+		 *  if we are on 3 and we need to start on 2, we need to go back 1 days
+		 *  if we are on 3 and we need to start on 1, we need to go back 2 days
+		 *  if we are on 3 and we need to start on 0, we need to go back 3 days
+		 */
 
-    /**
-     * @see ISchedulePageBuilder::BindDisplayDates()
-     */
-    public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession, ISchedule $schedule)
-    {
-        $scheduleLength = $schedule->GetDaysVisible();
-        // we don't want to display the last date in the range (it will be midnight of the last day)
-        $adjustedDateRange = new DateRange($dateRange->GetBegin()->ToTimezone($userSession->Timezone), $dateRange->GetEnd()->ToTimezone($userSession->Timezone)->AddDays(-1));
+		$adjustedDays = ($startDay - $selectedWeekday);
 
-        $page->SetDisplayDates($adjustedDateRange);
+		if ($selectedWeekday < $startDay)
+		{
+			$adjustedDays = $adjustedDays - 7;
+		}
 
-        $startDate = $adjustedDateRange->GetBegin();
+		$startDate = $selectedDate->AddDays($adjustedDays);
+		$applicableDates = new DateRange($startDate, $startDate->AddDays($scheduleLength));
 
-        if ($scheduleLength >6)
-        {
-            $adjustment = max($scheduleLength, 7);
-            $prevAdjustment = 7 * floor($adjustment / 7); // ie, if 10, we only want to go back 7 days so there is overlap
-        }
-        else
-        {
-            $adjustment = $scheduleLength;
-            $prevAdjustment = $scheduleLength;
-        }
-        $page->SetPreviousNextDates($startDate->AddDays(-$prevAdjustment), $startDate->AddDays($adjustment));
-    }
+		return $applicableDates;
+	}
 
-    /**
-     * @see ISchedulePageBuilder::BindReservations()
-     */
-    public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout)
-    {
-        $page->SetResources($resources);
-        $page->SetDailyLayout($dailyLayout);
-    }
+	/**
+	 * @see ISchedulePageBuilder::BindDisplayDates()
+	 */
+	public function BindDisplayDates(ISchedulePage $page,
+									 DateRange $dateRange,
+									 UserSession $userSession,
+									 ISchedule $schedule)
+	{
+		$scheduleLength = $schedule->GetDaysVisible();
+		if ($page->GetShowFullWeek())
+		{
+			$scheduleLength = 7;
+		}
 
-    /**
-     * @see ISchedulePageBuilder::BindLayout()
-     */
-    public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange)
-    {
-        $page->SetLayout($layout->GetLabels($dateRange->GetBegin()));
-    }
+		// we don't want to display the last date in the range (it will be midnight of the last day)
+		$adjustedDateRange = new DateRange($dateRange->GetBegin()->ToTimezone($userSession->Timezone), $dateRange->GetEnd()->ToTimezone($userSession->Timezone)->AddDays(-1));
 
-    /**
-     * @param array[int]Schedule $schedules
-     * @return Schedule
-     */
-    private function GetDefaultSchedule($schedules)
-    {
-        foreach ($schedules as $schedule)
-        {
-            if ($schedule->GetIsDefault())
-            {
-                return $schedule;
-            }
-        }
-    }
+		$page->SetDisplayDates($adjustedDateRange);
 
-    /**
-     * @param array[int]Schedule $schedules
-     * @param int $scheduleId
-     * @return Schedule
-     */
-    private function GetSchedule($schedules, $scheduleId)
-    {
-        foreach ($schedules as $schedule)
-        {
-            /** @var $schedule Schedule */
-            if ($schedule->GetId() == $scheduleId)
-            {
-                return $schedule;
-            }
-        }
-    }
+		$startDate = $adjustedDateRange->GetBegin();
+
+		$adjustment = max($scheduleLength, 7);
+		$prevAdjustment = 7 * floor($adjustment / 7); // ie, if 10, we only want to go back 7 days so there is overlap
+
+		$page->SetPreviousNextDates($startDate->AddDays(-$prevAdjustment), $startDate->AddDays($adjustment));
+		$page->ShowFullWeekToggle($scheduleLength < 7);
+	}
+
+	/**
+	 * @see ISchedulePageBuilder::BindReservations()
+	 */
+	public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout)
+	{
+		$page->SetResources($resources);
+		$page->SetDailyLayout($dailyLayout);
+	}
+
+	/**
+	 * @see ISchedulePageBuilder::BindLayout()
+	 */
+	public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange)
+	{
+		$page->SetLayout($layout->GetLabels($dateRange->GetBegin()));
+	}
+
+	/**
+	 * @param array[int]Schedule $schedules
+	 * @return Schedule
+	 */
+	private function GetDefaultSchedule($schedules)
+	{
+		foreach ($schedules as $schedule)
+		{
+			if ($schedule->GetIsDefault())
+			{
+				return $schedule;
+			}
+		}
+	}
+
+	/**
+	 * @param array[int]Schedule $schedules
+	 * @param int $scheduleId
+	 * @return Schedule
+	 */
+	private function GetSchedule($schedules, $scheduleId)
+	{
+		foreach ($schedules as $schedule)
+		{
+			/** @var $schedule Schedule */
+			if ($schedule->GetId() == $scheduleId)
+			{
+				return $schedule;
+			}
+		}
+	}
 
 }
 

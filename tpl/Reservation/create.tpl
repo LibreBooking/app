@@ -29,7 +29,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="reservationDetails">
 		<ul class="no-style">
 			<li>
-			<span id="userName">{$UserName}</span> <input id="userId" type="hidden" {formname key=USER_ID} value="{$UserId}"/>
+			<span id="userName">{$ReservationUserName}</span> <input id="userId" type="hidden" {formname key=USER_ID} value="{$UserId}"/>
 			{if $CanChangeUser}
 				<a href="#" id="showChangeUsers">({translate key=Change})</a>
 				<div id="changeUserDialog" title="{translate key=ChangeUser}" class="dialog"></div>

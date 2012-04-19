@@ -320,6 +320,52 @@ class ExistingReservationTests extends TestBase
 		$this->assertTrue(in_array(new ResourceRemovedEvent($currentResource, $series), $events));
 		$this->assertTrue(in_array(new ResourceAddedEvent($newResource, ResourceLevel::Primary, $series), $events));
 	}
+
+	public function testWhenApplyingSimpleUpdatesToFullSeriesCurrentTimesCanBeEdited()
+	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::CURRENT);
+		$timezone = 'UTC';
+		$currentResource = new FakeBookableResource(8);
+		$newResource = new FakeBookableResource(10);
+
+		$dateRange = DateRange::Create('2010-01-01 00:00', '2010-01-01 5:00', $timezone);
+		Date::_SetNow(Date::Parse('2010-01-01 2:00', $timezone));
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithPrimaryResource($currentResource);
+		$builder->WithCurrentInstance(new TestReservation('1', $dateRange));
+
+		$series = $builder->Build();
+		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+
+		$series->Update($series->UserId(), $newResource, 'new', 'new', new FakeUserSession());
+
+		$this->assertEquals($newResource, $series->Resource());
+		$this->assertEquals(1, count($series->Instances()));
+	}
+
+	public function testWhenApplyingSimpleUpdatesToFullSeriesAndThereIsNoStartTimeConstraint()
+	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::NONE);
+		$timezone = 'UTC';
+		$currentResource = new FakeBookableResource(8);
+		$newResource = new FakeBookableResource(10);
+
+		$dateRange = DateRange::Create('2010-01-01 00:00', '2010-01-01 5:00', $timezone);
+		Date::_SetNow(Date::Parse('2010-01-05 2:00', $timezone));
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithPrimaryResource($currentResource);
+		$builder->WithCurrentInstance(new TestReservation('1', $dateRange));
+
+		$series = $builder->Build();
+		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+
+		$series->Update($series->UserId(), $newResource, 'new', 'new', new FakeUserSession());
+
+		$this->assertEquals($newResource, $series->Resource());
+		$this->assertEquals(1, count($series->Instances()));
+	}
 	
 	public function testChangingTimeForFullSeriesUpdatesAllInstanceTimes()
 	{

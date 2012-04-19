@@ -51,6 +51,7 @@ class QueryStringKeys
 	const RESPONSE_TYPE = 'rs';
 	const RESOURCE_ID = 'rid';
 	const SCHEDULE_ID = 'sid';
+	const SHOW_FULL_WEEK = 'sfw';
 	const START_DATE = 'sd';
     const SUBSCRIPTION_KEY = 'icskey';
 	const USER_ID = 'uid';

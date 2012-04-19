@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="phpScheduleIt" default="package">
-	<property name="version" value="2.1"/>
+	<property name="version" value="2.1.2"/>
 	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="phpScheduleIt-${version}"/>
 	<property name="zipdirectory" value="../phpScheduleIt_archive/zip/${version}"/>

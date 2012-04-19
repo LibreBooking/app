@@ -80,47 +80,48 @@ function Schedule(opts)
 	{
 		$('td.reserved').each(function ()
 		{
-			var resid = $(this).attr('id').split('|')[0];
-			var pattern = 'td[id^="' + resid + '|"]';
-
-			$(this).qtip({
-				position:{
-					my:'bottom left',
-					at:'top left',
-					target:$(this)
-				},
-				content:{
-					text:'Loading...',
-					ajax:{
-						url:options.summaryPopupUrl,
-						type:'GET',
-						data:{ id:resid },
-						dataType:'html'
-					}
-				},
-				show:{
-					delay:700
-				},
-				style:{
-					classes:''
-				}
-			});
+			var resid = $(this).attr('resid');
+			var pattern = 'td[resid="' + resid + '"]';
 
 			$(this).hover(
-					function ()
-					{
-						$(pattern).addClass('hilite');
-					},
-					function ()
-					{
-						$(pattern).removeClass('hilite');
-					}
+				function ()
+				{
+					$(pattern).addClass('hilite');
+				},
+				function ()
+				{
+					$(pattern).removeClass('hilite');
+				}
 			);
 
 			$(this).click(function ()
 			{
 				var reservationUrl = options.reservationUrlTemplate.replace("[referenceNumber]", resid);
 				window.location = reservationUrl;
+			});
+
+			$(this).qtip({
+				position:{
+					my: 'bottom left',
+					at: 'top left',
+					viewport: $(window),
+					effect: false
+				},
+				content:{
+					text: 'Loading...',
+					ajax:{
+						url: options.summaryPopupUrl,
+						type: 'GET',
+						data: { id:resid },
+						dataType: 'html'
+					}
+				},
+				show:{
+					delay:700,
+					event: 'mouseenter'
+				},
+				style:{
+				}
 			});
 		});
 	};

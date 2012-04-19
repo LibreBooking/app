@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
 Copyright 2011-2012 Nick Korbel
 
@@ -28,6 +28,9 @@ class ja_jp extends en_us
         parent::__construct();
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadDates()
     {
         $dates = parent::_LoadDates();
@@ -39,11 +42,18 @@ class ja_jp extends en_us
         $dates['res_popup'] = 'Y/m/d g:i A';
         $dates['dashboard'] = 'l, Y/m/d g:i A';
         $dates['period_time'] = "g:i A";
-		$dates['general_date_js'] = "yy/mm/dd";
+        $dates['general_date_js'] = "yy/mm/dd";
+        $dates['calendar_time'] = 'h:mmt';
+        $dates['calendar_dates'] = 'M/d';
 
         $this->Dates = $dates;
+
+        return $this->Dates;
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadStrings()
     {
         $strings = parent::_LoadStrings();
@@ -171,8 +181,8 @@ class ja_jp extends en_us
         $strings['Schedule'] = 'スケジュール';
         $strings['AddResource'] = 'リソース追加';
         $strings['Capacity'] = '人数制限';
-        $strings['Access'] = 'Access';
-        $strings['Duration'] = 'Duration';
+        $strings['Access'] = 'アクセス';
+        $strings['Duration'] = '期間';
         $strings['Active'] = 'アクティブ';
         $strings['Inactive'] = 'インアクティブ';
         $strings['ResetPassword'] = 'パスワードをリセット';
@@ -258,8 +268,9 @@ class ja_jp extends en_us
         $strings['YourSettingsWereUpdated'] = '設定を更新しました';
         $strings['Register'] = '登録';
         $strings['SecurityCode'] = 'セキュリティコード';
-        $strings['ReservationCreatedPreference'] = '私自身または誰かが代わりに予約をしたとき';
-        $strings['ReservationUpdatedPreference'] = '私自身または誰かが代わりに予約を変更したとき';
+        $strings['ReservationCreatedPreference'] = '私または誰かが代わりに予約をしたとき';
+        $strings['ReservationDeletedPreference'] = '私または誰かが代わりに予約を取り消したとき';
+        $strings['ReservationUpdatedPreference'] = '私または誰かが代わりに予約を変更したとき';
         $strings['ReservationApprovalPreference'] = '私の予約が承認されたとき';
         $strings['PreferenceSendEmail'] = '私にメールを送ってください';
         $strings['PreferenceNoEmail'] = '通知はいりません';
@@ -341,6 +352,17 @@ class ja_jp extends en_us
         $strings['Restricted'] = '予約できません';
         $strings['ViewAll'] = '全て表示';
         $strings['MoveResourcesAndReservations'] = 'リソースと予約を移動';
+        $strings['TurnOffSubscription'] = 'カレンダーの購読を禁止する';
+        $strings['TurnOnSubscription'] = 'このカレンダーの購読を許可する';
+        $strings['SubscribeToCalendar'] = 'このカレンダーを購読する';
+        $strings['SubscriptionsAreDisabled'] = '管理者がカレンダーの購読を無効にしています';
+        $strings['NoResourceAdministratorLabel'] = '(リソースの管理者はいません)';
+        $strings['WhoCanManageThisResource'] = 'だれがこのリソースを管理できますか?';
+        $strings['ResourceAdministrator'] = 'リソース管理者';
+        $strings['Private'] = 'プライベート';
+        $strings['Accept'] = '受理';
+        $strings['Decline'] = '辞退';
+        // End Strings
 
         // Errors
         $strings['LoginError'] = 'ユーザー名またはパスワードが一致しません';
@@ -356,6 +378,7 @@ class ja_jp extends en_us
         $strings['StartIsInPast'] = '開始時刻を過ぎていいます。';
         $strings['EmailDisabled'] = '管理者がメールでの通知を無効にしています。';
         $strings['ValidLayoutRequired'] = '時間枠は一日の最初から最後(12:00 AM)までの24時間全てを網羅するようにしてください。';
+        // End Errors
 
         // Page Titles
         $strings['CreateReservation'] = '予約の作成';
@@ -393,7 +416,7 @@ class ja_jp extends en_us
         $strings['ForgotPassword'] = 'パスワードを忘れました';
         $strings['NotificationPreferences'] = '通知設定';
         $strings['ManageAnnouncements'] = 'お知らせ';
-        //
+        // End Page Titles
 
         // Day representations
         $strings['DaySundaySingle'] = '日';
@@ -416,17 +439,25 @@ class ja_jp extends en_us
         $strings['ReservationApprovedSubject'] = '予約が承認されました';
         $strings['ReservationCreatedSubject'] = '予約されました';
         $strings['ReservationUpdatedSubject'] = '予約が変更されました';
+        $strings['ReservationDeletedSubject'] = 'Your Reservation Was Removed';
         $strings['ReservationCreatedAdminSubject'] = 'Notification: 予約作成';
         $strings['ReservationUpdatedAdminSubject'] = 'Notification: 予約変更';
+        $strings['ReservationDeleteAdminSubject'] = 'Notification: 予約削除';
         $strings['ParticipantAddedSubject'] = '出席登録のお知らせ';
+        $strings['ParticipantDeletedSubject'] = '予約は取り消されました';
         $strings['InviteeAddedSubject'] = '参加のお願い';
         $strings['ResetPassword'] = 'パスワードリセット要求';
         $strings['ForgotPasswordEmailSent'] = '指定されたメールアドレスへパスワードのリセット方法を送信しました。';
         //
 
         $this->Strings = $strings;
+
+        return $this->Strings;
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadDays()
     {
         $days = parent::_LoadDays();
@@ -446,11 +477,16 @@ class ja_jp extends en_us
         $days['letter'] = array('日', '月', '火', '水', '木', '金', '土');
 
         $this->Days = $days;
+
+        return $this->Days;
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadMonths()
     {
-        $months = parent::_LoadMonths();
+         $months = parent::_LoadMonths();
 
         /***
         MONTH NAMES
@@ -463,11 +499,18 @@ class ja_jp extends en_us
         $months['abbr'] = array('1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月');
 
         $this->Months = $months;
+
+        return $this->Months;
     }
 
+    /**
+     * @return array
+     */
     protected function _LoadLetters()
     {
         $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+
+        return $this->Letters;
     }
 
     protected function _GetHtmlLangCode()

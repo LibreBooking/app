@@ -140,7 +140,7 @@
 		$.post(
 			urlCallback(), 
 			function(data) {
-				if (data.trim() != "")
+				if (data && (data.trim() != ""))
 				{
 					alert(data);
 				}

@@ -138,7 +138,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>過去の予約を削除することができるのはアプリケーション管理者だけです。</p>
 
-<h2>Outlook &reg;に予約を追加する</h2>
+<h2>Outlook&reg;に予約を追加する</h2>
 
 <p>
 予約の表示、更新の際に「Outlookへ追加」ボタンがあるのが分かると思います。
@@ -146,6 +146,38 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 インストールされていない場合は .iscファイルをダウンロードするかどうか尋ねられることになるでしょう。
 これはカレンダーアプリの標準的なフォーマットです。
 iCalendarファイル形式をサポートしているアプリケーションで使用できます。
+</p>
+<h2>カレンダーの購読 Subscribing to Calendars</h2>
+
+<p>スケジュール、リソース、ユーザーのカレンダーを公開することができます。
+この機能を有効にするには、管理者が設定ファイル中で購読キーワード(subscription key)を設定しなくてはなりません。
+スケジュールまたはリソースのカレンダーを購読できるようにするには、そのスケジュールまたはリソースを管理する際に機能をオンにするだけです。
+個人のカレンダーを購読できるようにするには「スケジュール」→「マイカレンダー」を開きます。
+ページの右側にカレンダーの購読を「許可する」または「禁止する」というリンクがあります。
+</p>
+
+<p>スケジュールのカレンダーを購読するには「スケジュール」→「リソースカレンダー」を開き、 希望のスケジュールを選びます。
+ページの右側にカレンダーを購読するリンクがあります。
+リソースのカレンダーを購読するのも同じ手順です。
+あなたの個人カレンダーを購読するには「スケジュール」→「マイカレンダー」を開きます。
+ページの右側に、カレンダーを購読するリンクがあります。
+</p>
+
+<h3>Outlook&reg;</h3>
+
+<p>Outlookを使っている場合、たいていは「このカレンダーを購読する」をクリックするだけで購読は自動的にセットアップされます。
+もし、自動的にカレンダー購読が追加されない場合、Outlookのカレンダービューを開いてください。
+マイカレンダー(My Calendars)を右クリックし「カレンダーを追加」→「インターネットから」を選択します。
+phpScheduleItの「カレンダーを購読する」リンクの下に表示されているURLをペーストします。
+</p>
+
+<h3>Google&reg; Calendar</h3>
+
+<p>Googleカレンダーの設定を開きます。
+カレンダータブをクリックします。
+「他のカレンダー」をクリックします。
+「URLで追加」をクリックします。
+phpScheduleItの「カレンダーを購読する」リンクの下に表示されているURLをペーストします。
 </p>
 
 <h2>予約量の制限</h2>
@@ -335,48 +367,113 @@ phpScheduleItの量制限システムは柔軟にできていて、予約時間�
 
 <p>phpScheduleItの機能の一部は設定ファイルを編集して設定するしかありません。</p>
 
-<p class="setting"><span>server.timezone</span>phpScheduleItが動作しているサーバーのタイムゾーンに合わせること。メニューの「サーバー設定」で現在の設定を確認することができる。可能な値は以下に示すサイトにある。http://php.net/manual/en/timezones.php
+<p class="setting"><span>$conf['settings']['server.timezone']</span>phpScheduleItが動作しているサーバーのタイムゾーンに合わせること。メニューの「サーバー設定」で現在の設定を確認することができる。可能な値は以下に示すサイトにある。http://php.net/manual/en/timezones.php
 </p>
 
-<p class="setting"><span>allow.self.registration</span>ユーザー自身でアカウントを作成できるか否か</p>
+<p class="setting"><span>$conf['settings']['allow.self.registration']</span>ユーザー自身でアカウントを作成できるか否か</p>
 
-<p class="setting"><span>admin.email</span>アプリケーション管理者のメールアドレス</p>
+<p class="setting"><span>$conf['settings']['admin.email']</span>アプリケーション管理者のメールアドレス</p>
 
-<p class="setting"><span>default.page.size</span>データのリストを表示する際のページあたりの表示数の初期値</p>
+<p class="setting"><span>$conf['settings']['default.page.size']</span>データのリストを表示する際のページあたりの表示数の初期値</p>
 
-<p class="setting"><span>enable.email</span>phpScheduleItがメールを送信するか否か</p>
+<p class="setting"><span>$conf['settings']['enable.email']</span>phpScheduleItがメールを送信するか否か</p>
 
-<p class="setting"><span>default.language</span>ユーザーのデフォルトの言語。phpScheduleItのlangディレクトリにある言語ならどれでも可</p>
+<p class="setting"><span>$conf['settings']['default.language']</span>ユーザーのデフォルトの言語。phpScheduleItのlangディレクトリにある言語ならどれでも可</p>
 
-<p class="setting"><span>script.url</span>phpScheduleItインスタンスのルートへの完全な公開URL。これはbookings.php、calendar.phpのようなファイルを含んでいるWebという名のディレクトリがあるので、それにしておくこと</p>
+<p class="setting"><span>$conf['settings']['script.url']</span>phpScheduleItインスタンスのルートへの完全な公開URL。これはbookings.php、calendar.phpのようなファイルを含んでいるWebという名のディレクトリがあるので、それにしておくこと</p>
 
-<p class="setting"><span>password.pattern</span>ユーザーアカウントを登録する際のパスワードに複雑さを強制する正規表現</p>
+<p class="setting"><span>$conf['settings']['password.pattern']</span>ユーザーアカウントを登録する際のパスワードに複雑さを強制する正規表現</p>
 
-<p class="setting"><span>show.inaccessible.resources</span>ユーザーが予約できないリソースをスケジュール中に表示するか否か</p>
+<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>ユーザーが予約できないリソースをスケジュール中に表示するか否か</p>
 
-<p class="setting"><span>notify.created</span>新しい予約が作成されたとき、アプリケーション管理者にメールを送るか否か</p>
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>予約状況ページで各予約に表示する値。'name'、'title'、'none'。デフォルトは 'name'.</p>
 
-<p class="setting"><span>image.upload.directory</span>画像を保存する物理的なディレクトリの、phpScheduleItディレクトリからの相対パス。このディレクトリに書き込みできる必要がある。</p>
+<p class="setting"><span>$conf['settings']['image.upload.directory']</span>画像を保存する物理的なディレクトリの、phpScheduleItディレクトリからの相対パス。このディレクトリに書き込みできる必要がある。</p>
 
-<p class="setting"><span>image.upload.url</span>そこからアップロードされた画像を表示することができるscript.urlへの相対URL</p>
+<p class="setting"><span>$conf['settings']['image.upload.url']</span>そこにアップロードされた画像を表示することができるディレクトリのscript.urlからの相対URL</p>
 
-<p class="setting"><span>cache.templates</span>テンプレートをキャッシュするか否か。tpl_cが書き込み可能なら、trueにすることが推奨される。</p>
+<p class="setting"><span>$conf['settings']['cache.templates']</span>テンプレートをキャッシュするか否か。tpl_cが書き込み可能なら、trueにすることが推奨される。</p>
 
-<p class="setting"><span>registration.captcha.enabled</span>ユーザーアカウントの登録時にキャプッチャを使うか否か</p>
+<p class="setting"><span>$conf['settings']['registration.captcha.enabled']</span>ユーザーアカウントの登録時にキャプッチャを使うか否か</p>
 
-<p class="setting"><span>inactivity.timeout</span>ユーザーが自動的にログアウトするまでの時間を分で指定する</p>
+<p class="setting"><span>$conf['settings']['inactivity.timeout']</span>ユーザーが自動的にログアウトするまでの時間を分で指定する。自動ログアウトを無効にしたいときは空文字列にすること。</p>
 
-<p class="setting"><span>['database']['type']</span>PEAR::MDB2 でサポートされている型の何れか</p>
+<p class="setting"><span>$conf['settings']['name.format']</span>first name、last nameの表示フォーマット。デフォルトは {literal}'{first} {last}'{/literal}。</p>
 
-<p class="setting"><span>['database']['user']</span>データベースにアクセスするユーザー</p>
+<p class="setting"><span>$conf['settings']['ics']['require.login']</span>予約をOutlookへ追加するのにログインする必要があるかどうか。</p>
 
-<p class="setting"><span>['database']['password']</span>データベースユーザーのパスワード</p>
+<p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>webcalによる購読を有効にしたいなら、推測困難な文字列を設定する。何も設定されていなければwebcalによる購読は無効。</p>
 
-<p class="setting"><span>['database']['hostspec']</span>データベースのホストのURLまたは名前付きパイプ</p>
+<p class="setting"><span>$conf['settings']['privacy']['view.schedules']</span>認証されていないユーザーが予約状況を見ることができるかどうか。デフォルトは false。</p>
 
-<p class="setting"><span>['database']['name']</span>phpScheduleItが使うのデータベース名</p>
+<p class="setting"><span>$conf['settings']['privacy']['view.reservations']</span>認証されていないユーザーが予約の詳細を見ることができるかどうか。デフォルトは false。</p>
 
-<p class="setting"><span>['phpmailer']['mailer']</span>PHPのメールライブラリ。mail、smtp、sendmail、qmail から選ぶ</p>
+<p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>管理者でなくても他のユーザーの情報を見ることができるかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['reservation']['start.time.constraint']</span>
+予約を作成したり編集したりできるタイミング。設定できるのは future、current、none。
+future にすると、まだ、選択した予約(時間の)枠の開始時刻になっていなければ、作成、変更できる。
+current にすると、まだ、選択した予約(時間の)枠の終了時刻になっていなければ、作成、変更できる。
+none にすると予約の作成、変更に現在時刻による制限はない。
+デフォルトは future。</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>予約が作成されたとき、全てのリソース管理者にメールを送るかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.update']</span>予約が更新されたとき、全てのリソース管理者にメールを送るかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.delete']</span>予約が削除されたとき、全てのリソース管理者にメールを送るかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.add']</span>予約が作成されたとき、全てのアプリケーション管理者にメールを送るかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.update']</span>予約が更新されたとき、全てのアプリケーション管理者にメールを送るかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.delete']</span>予約が削除されたとき、全てのアプリケーション管理者にメールを送るかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.add']</span>予約が作成されたとき、全てのグループ管理者にメールを送るかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.update']</span>予約が更新されたとき、全てのグループ管理者にメールを送るかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.delete']</span>予約が削除されたとき、全てのグループ管理者にメールを送るかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['css.extension.file']</span>インクルードしたい追加CSSの、完全または相対URL。デフォルトのスタイルを調整する程度から完全なテーマにまで上書きすることができる。phpScheduleItのスタイルを拡張しないなら空文字列にしておく。</p>
+
+<p class="setting"><span>$conf['settings']['database']['type']</span>PEAR::MDB2 でサポートされている型の何れか</p>
+
+<p class="setting"><span>$conf['settings']['database']['user']</span>データベースにアクセスするユーザー</p>
+
+<p class="setting"><span>$conf['settings']['database']['password']</span>データベースユーザーのパスワード</p>
+
+<p class="setting"><span>$conf['settings']['database']['hostspec']</span>データベースホストのURLまたは名前付きパイプ</p>
+
+<p class="setting"><span>$conf['settings']['database']['name']</span>phpScheduleItが使うデータベース名</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>PHPのメールライブラリ。mail、smtp、sendmail、qmail から選ぶ</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.host']</span>smpt を使う場合の SMTPホスト</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.port']</span>smtp を使う場合の SMTPポート。通常は25</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.secure']</span>smtp を使う場合の SMTP セキュリティ。''(空文字列)、ssl 、tls のいずれか</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.auth']</span>smtp を使う場合に SMTP 認証が必要かどうか。true または false</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.username']</span>smtp を使う場合の SMTP ユーザー名</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.password']</span>smtp を使う場合の SMTP パスワード</p>
+
+<p class="setting"><span>$conf['settings']['phpmailer']['sendmail.path']</span>sendmail コマンドを使う場合の sendmail コマンドのパス</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['Authentication']</span>使用する認証(authentication)プラグインの名称。詳しくは下記のプラグインの項で。</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['Authorization']</span>使用する権限(authorization)プラグインの名称。詳しくは下記のプラグインの項で。</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['Permission']</span>使用する許可(permission)プラグインの名称。詳しくは下記のプラグインの項で。</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['PreReservation']</span>使用する予約前実行(prereservation)プラグインの名称。詳しくは下記のプラグインの項で。</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['PostReservation']</span>使用する予約後実行(postreservation)プラグインの名称。詳しくは下記のプラグインの項で。</p>
+
+<p class="setting"><span>$conf['settings']['install.password']</span>インストールもしくはアップグレードを実行しようとするとき、何かパスワードを設定しておく必要がある。</p>
 
 <h2>プラグイン</h2>
 

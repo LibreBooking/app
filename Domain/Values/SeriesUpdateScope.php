@@ -91,21 +91,23 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 	 * @var ISeriesDistinction
 	 */
 	protected $series;
-	
-	/**
-	 * @param ISeriesDistinction $reservationSeries
-	 */
+
 	protected function __construct()
 	{
 	}
-	
+
+	/**
+	 * @param ExistingReservationSeries $series
+	 * @param Date $compareDate
+	 * @return array
+	 */
 	protected function AllInstancesGreaterThan($series, $compareDate)
 	{
 		$instances = array();
 		
 		foreach ($series->_Instances() as $instance)
 		{
-			if ($instance->StartDate()->Compare($compareDate) >= 0)
+			if ($compareDate == null || $instance->StartDate()->Compare($compareDate) >= 0)
 			{
 				$instances[] = $instance;
 			}
@@ -208,10 +210,27 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 		
 		return $this->AllInstancesGreaterThan($series, $this->EarliestDateToKeep($series));
 	}
-	
+
+	/**
+	 * @param ExistingReservationSeries $series
+	 * @return mixed
+	 */
 	public function EarliestDateToKeep($series)
 	{
+		$startTimeConstraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
+
+		if ($startTimeConstraint == ReservationStartTimeConstraint::CURRENT)
+		{
+			return $series->CurrentInstance()->StartDate();
+		}
+
+		if ($startTimeConstraint == ReservationStartTimeConstraint::NONE)
+		{
+			return null;
+		}
+
 		return Date::Now();
+
 	}
 
 	/**

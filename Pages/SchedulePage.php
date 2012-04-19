@@ -130,6 +130,21 @@ class SchedulePage extends SecurePage implements ISchedulePage
     {
         return Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
     }
+
+	/**
+	 * @param bool $showShowFullWeekToggle
+	 */
+	public function ShowFullWeekToggle($showShowFullWeekToggle)
+	{
+		$this->Set('ShowFullWeekLink', $showShowFullWeekToggle);
+	}
+
+	public function GetShowFullWeek()
+	{
+		$showFullWeek = $this->GetQuerystring(QueryStringKeys::SHOW_FULL_WEEK);
+
+		return !empty($showFullWeek);
+	}
 }
 
 class DisplaySlotFactory
@@ -252,6 +267,21 @@ interface ISchedulePage
 	 */
 	public function GetSelectedDate();
 
+	/**
+	 * @abstract
+	 */
     public function ShowInaccessibleResources();
+
+	/**
+	 * @abstract
+	 * @param bool $showShowFullWeekToggle
+	 */
+	public function ShowFullWeekToggle($showShowFullWeekToggle);
+
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function GetShowFullWeek();
 }
 ?>

@@ -28,6 +28,9 @@ class FakeServer extends Server
 	public $Get = array();
 	public $Form = array();
 
+	public $_DeletedCookie;
+	public $_EndedSession;
+
 	/**
 	 * @var UserSession
 	 */
@@ -42,6 +45,12 @@ class FakeServer extends Server
 	public function SetCookie(Cookie $cookie)
 	{
 		$this->Cookies[$cookie->Name] = $cookie;
+	}
+
+	public function DeleteCookie(Cookie $cookie)
+	{
+		unset($this->Cookies[$cookie->Name]);
+		$this->_DeletedCookie = $cookie;
 	}
 
     /**
@@ -71,6 +80,12 @@ class FakeServer extends Server
 			return $this->Session[$name];
 		}
 		return null;
+	}
+
+	public function EndSession($name)
+	{
+		$this->SetSession($name, null);
+		$this->_EndedSession = $name;
 	}
 
 	public function SetQuerystring($name, $value)

@@ -752,6 +752,7 @@ class ReservationItemView implements IReservedItemView
         if (isset($row[ColumnNames::RESERVATION_CREATED]))
         {
             $view->CreatedDate = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
+            $view->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
         }
 
         if (isset($row[ColumnNames::RESERVATION_MODIFIED]))

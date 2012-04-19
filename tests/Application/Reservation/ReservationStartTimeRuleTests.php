@@ -117,7 +117,43 @@ class ReservationStartTimeRuleTests extends TestBase
         $start = $now->AddDays(-5);
         $end = $now->AddDays(5);
 
-        $periodStart = $now->AddDays(-5);
+        $periodStart =  Date::Parse('2011-04-04 12:13:16', 'UTC');
+        $periodEnd = Date::Parse('2011-04-04 12:13:17', 'UTC');
+
+        $reservation = new TestReservationSeries();
+        $reservation->WithScheduleId($scheduleId);
+        $reservation->WithCurrentInstance(new TestReservation('1',new DateRange($start, $end)));
+
+        $this->scheduleRepository->expects($this->once())
+            ->method('GetLayout')
+            ->with($this->equalTo($scheduleId), $this->equalTo(new ScheduleLayoutFactory('UTC')))
+            ->will($this->returnValue($this->layout));
+
+        $period = new SchedulePeriod($periodStart, $periodEnd);
+        $this->layout->expects($this->once())
+                ->method('GetPeriod')
+                ->with($this->equalTo($end))
+                ->will($this->returnValue($period));
+
+
+        $rule = new ReservationStartTimeRule($this->scheduleRepository);
+        $result = $rule->Validate($reservation);
+
+        $this->assertTrue($result->IsValid());
+    }
+
+    public function testWhenPeriodStartTimeIsInPast()
+    {
+        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::CURRENT);
+
+        $scheduleId = 123;
+        $now = Date::Parse('2011-04-04 12:13:15', 'UTC');
+        Date::_SetNow($now);
+
+        $start = $now->AddDays(-5);
+        $end = $now->AddDays(5);
+
+        $periodStart = Date::Parse('2011-04-04 12:13:14', 'UTC');
         $periodEnd = Date::Parse('2011-04-04 12:13:16', 'UTC');
 
         $reservation = new TestReservationSeries();
@@ -132,43 +168,7 @@ class ReservationStartTimeRuleTests extends TestBase
         $period = new SchedulePeriod($periodStart, $periodEnd);
         $this->layout->expects($this->once())
                 ->method('GetPeriod')
-                ->with($this->equalTo($start))
-                ->will($this->returnValue($period));
-
-
-        $rule = new ReservationStartTimeRule($this->scheduleRepository);
-        $result = $rule->Validate($reservation);
-
-        $this->assertTrue($result->IsValid());
-    }
-
-    public function testWhenPeriodEndTimeIsInPast()
-    {
-        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::CURRENT);
-
-        $scheduleId = 123;
-        $now = Date::Parse('2011-04-04 12:13:15', 'UTC');
-        Date::_SetNow($now);
-
-        $start = $now->AddDays(-5);
-        $end = $now->AddDays(5);
-
-        $periodStart = $now->AddDays(-5);
-        $periodEnd = Date::Parse('2011-04-04 12:13:14', 'UTC');
-
-        $reservation = new TestReservationSeries();
-        $reservation->WithScheduleId($scheduleId);
-        $reservation->WithCurrentInstance(new TestReservation('1',new DateRange($start, $end)));
-
-        $this->scheduleRepository->expects($this->once())
-            ->method('GetLayout')
-            ->with($this->equalTo($scheduleId), $this->equalTo(new ScheduleLayoutFactory('UTC')))
-            ->will($this->returnValue($this->layout));
-
-        $period = new SchedulePeriod($periodStart, $periodEnd);
-        $this->layout->expects($this->once())
-                ->method('GetPeriod')
-                ->with($this->equalTo($start))
+                ->with($this->equalTo($end))
                 ->will($this->returnValue($period));
 
 

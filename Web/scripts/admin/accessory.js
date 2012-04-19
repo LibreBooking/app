@@ -48,7 +48,7 @@ function AccessoryManagement(opts) {
 		});
 
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add));
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.delete));
+		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAccessory));
 		ConfigureAdminForm(elements.editForm, getSubmitCallback(options.actions.edit));
 
 		WireUpUnlimited(elements.addUnlimited, elements.addQuantity);

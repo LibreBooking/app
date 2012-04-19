@@ -57,7 +57,8 @@ $(document).ready(function() {
 					monthNames: {js_array array=$MonthNames},
 					monthNamesShort: {js_array array=$MonthNamesShort},
 					timeFormat: '{$TimeFormat}',
-					dayMonth: '{$DateFormat}'
+					dayMonth: '{$DateFormat}',
+					firstDay: 0
 				};
 		
 	var calendar = new Calendar(options, reservations);

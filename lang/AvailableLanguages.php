@@ -33,6 +33,7 @@ class AvailableLanguages
         			'en_us' => new AvailableLanguage('en_us', 'en_us.php', 'English US'),
         			'en_gb' => new AvailableLanguage('en_gb', 'en_gb.php', 'English GB'),
         			'es' => new AvailableLanguage('es', 'es.php', 'Espa&ntilde;ol'),
+        			'fi_fi' => new AvailableLanguage('fi_fi', 'fi_fi.php', 'Suomi'),
         			'fr_fr' => new AvailableLanguage('fr_fr', 'fr_fr.php', 'Fran&ccedil;ais'),
         			'it_it' => new AvailableLanguage('it_it', 'it_it.php', 'Italiano'),
         			'ja_jp' => new AvailableLanguage('ja_jp', 'ja_jp.php', 'Japanese'),

@@ -167,6 +167,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'js_array', array($this, 'CreateJavascriptArray'));
 		$this->registerPlugin('function', 'async_validator', array($this, 'AsyncValidator'));
 		$this->registerPlugin('function', 'fullname', array($this, 'DisplayFullName'));
+		$this->registerPlugin('function', 'add_querystring', array($this, 'AddQueryString'));
 
 		/**
 		 * PageValidators
@@ -562,6 +563,14 @@ class SmartyPage extends Smarty
         return $fullName->__toString();
     }
 
+	public function AddQueryString($params, &$smarty)
+	{
+		$url = new Url(ServiceLocator::GetServer()->GetUrl());
+		$name = constant(sprintf('QueryStringKeys::%s', $params['key']));
+		$url->AddQueryString($name, $params['value']);
+
+		return $url->ToString();
+	}
 }
 
 ?>

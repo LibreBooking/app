@@ -130,10 +130,7 @@ class Authentication implements IAuthentication
         Log::Debug('Logout userId: %s', $userSession->UserId);
 
         $this->DeleteLoginCookie($userSession->UserId);
-        ServiceLocator::GetServer()->SetSession(SessionKeys::USER_SESSION, null);
-
-        @session_unset();
-        @session_destroy();
+        ServiceLocator::GetServer()->EndSession(SessionKeys::USER_SESSION);
     }
 
     public function CookieLogin($cookieValue, $loginContext)
@@ -151,6 +148,8 @@ class Authentication implements IAuthentication
                 $this->Login($validEmail, $loginContext);
             }
         }
+
+		Log::Debug('Cookie login. IsValid: %s', $valid);
 
         return $valid;
     }
@@ -198,8 +197,7 @@ class Authentication implements IAuthentication
 
     private function DeleteLoginCookie($userid)
     {
-        $cookie = new LoginCookie($userid, null);
-        ServiceLocator::GetServer()->SetCookie($cookie);
+        ServiceLocator::GetServer()->DeleteCookie(new LoginCookie($userid, null));
     }
 
     private function ValidateCookie($loginCookie)

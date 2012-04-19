@@ -30,6 +30,11 @@ class Server
         setcookie($cookie->Name, $cookie->Value, $cookie->Expiration, $cookie->Path);
     }
 
+	public function DeleteCookie(Cookie $cookie)
+	{
+		setcookie($cookie->Name, null, time() - 3600, $cookie->Path);
+	}
+
     public function GetCookie($name)
     {
         if (isset($_COOKIE[$name]))
@@ -58,6 +63,13 @@ class Server
         }
         return null;
     }
+
+	public function EndSession($name)
+	{
+		$this->SetSession($name, null);
+		@session_unset();
+		@session_destroy();
+	}
 
     public function GetQuerystring($name)
     {

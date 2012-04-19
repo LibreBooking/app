@@ -143,15 +143,15 @@ class RepeatOptionsTests extends TestBase
 		$duration = new DateRange($reservationStart, $reservationEnd);
 		
 		$interval = 1;
-		$terminiationDate = Date::Parse('2010-10-01', $timezone);
+		$terminiationDate = Date::Parse('2011-10-01', $timezone);
 		
 		$repeatOptions = new RepeatDayOfMonth($interval, $terminiationDate);
 		$repeatedDates = $repeatOptions->GetDates($duration);
 		
-		$totalDates = 7;
+		$totalDates = 19;
 		$firstDate = DateRange::Create('2010-03-11 08:30', '2010-03-11 10:30', $timezone);
 		$secondDate = DateRange::Create('2010-04-11 08:30', '2010-04-11 10:30', $timezone);
-		$lastDate = DateRange::Create('2010-09-11 08:30', '2010-09-11 10:30', $timezone);
+		$lastDate = DateRange::Create('2011-09-11 08:30', '2011-09-11 10:30', $timezone);
 		
 		$this->assertEquals($totalDates, count($repeatedDates));
 		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
@@ -192,15 +192,15 @@ class RepeatOptionsTests extends TestBase
 		$duration = new DateRange($reservationStart, $reservationEnd);
 		
 		$interval = 1;
-		$terminiationDate = Date::Parse('2010-10-01', $timezone);
+		$terminiationDate = Date::Parse('2011-10-01', $timezone);
 		
 		$repeatOptions = new RepeatWeekDayOfMonth($interval, $terminiationDate);
 		$repeatedDates = $repeatOptions->GetDates($duration);
 	
-		$totalDates = 6;
+		$totalDates = 18;
 		$firstDate = DateRange::Create('2010-04-05 08:30', '2010-04-05 10:30', $timezone);
 		$secondDate = DateRange::Create('2010-05-03 08:30', '2010-05-03 10:30', $timezone);
-		$lastDate = DateRange::Create('2010-09-06 08:30', '2010-09-06 10:30', $timezone);
+		$lastDate = DateRange::Create('2011-09-05 08:30', '2011-09-05 10:30', $timezone);
 		
 		$this->assertEquals($totalDates, count($repeatedDates));
 		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
@@ -349,6 +349,11 @@ class RepeatOptionsTests extends TestBase
 		$this->assertEquals(RepeatType::Yearly, $config->Type);
 		$this->assertEquals(10, $config->Interval);
 		$this->assertEquals($terminationDate, $config->TerminationDate);
+	}
+
+	public function testRepeatDayOfMonth()
+	{
+		
 	}
 }
 ?>

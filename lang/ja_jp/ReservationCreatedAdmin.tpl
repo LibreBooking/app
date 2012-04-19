@@ -25,6 +25,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	ユーザー: {$UserName}
 	開始: {formatdate date=$StartDate key=reservation_email}<br/>
 	終了: {formatdate date=$EndDate key=reservation_email}<br/>
+	リソース: {$ResourceName}<br/>
 	件名: {$Title}<br/>
 	説明: {$Description}<br/>
 	

@@ -58,7 +58,19 @@ class ReservationAuthorization implements IReservationAuthorization
 
 	public function CanEdit(ReservationView $reservationView, UserSession $currentUser)
 	{
-		$ongoingReservation = Date::Now()->LessThan($reservationView->EndDate);
+		$ongoingReservation = true;
+		$startTimeConstraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
+
+		if ($startTimeConstraint == ReservationStartTimeConstraint::CURRENT)
+		{
+			$ongoingReservation = Date::Now()->LessThan($reservationView->EndDate);
+		}
+
+		if ($startTimeConstraint == ReservationStartTimeConstraint::FUTURE)
+		{
+			$ongoingReservation = Date::Now()->LessThan($reservationView->StartDate);
+		}
+
 
 		if ($ongoingReservation)
 		{

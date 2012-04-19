@@ -216,9 +216,9 @@ class UserRepositoryTests extends TestBase
     {
         $userId = 987;
         $loginTime = '2010-01-01';
+		$language = 'en_gb';
         $user = new User();
         $user->WithId($userId);
-        $user->WithLastLogin($loginTime);
 
         $password = 'password';
         $salt = 'salt';
@@ -236,9 +236,10 @@ class UserRepositoryTests extends TestBase
         $user->ChangeDefaultHomePage($homepageId);
         $user->ChangeTimezone($timezone);
         $user->EnableSubscription();
+		$user->Login($loginTime, $language);
         $publicId = $user->GetPublicId();
 
-        $command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime, true, $publicId);
+        $command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime, true, $publicId, $language);
 
         $repo = new UserRepository();
         $repo->Update($user);

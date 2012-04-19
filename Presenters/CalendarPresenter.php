@@ -130,7 +130,7 @@ class CalendarPresenter
 	private function GetScheduleId($schedules)
 	{
 		$scheduleId = $this->page->GetScheduleId();
-		if (!is_null($scheduleId))
+		if (!empty($scheduleId))
 		{
 			return $scheduleId;
 		}

@@ -266,6 +266,20 @@ class AuthenticationTests extends TestBase
 		$this->assertFalse($valid, 'should not be valid if cookie does not match');
 		$this->assertEquals(1, count($this->db->_Commands));
 	}
+	
+	public function testLogsUserOut()
+	{
+		$userId = 100;
+		$userSession = new FakeUserSession();
+		$userSession->UserId = $userId;
+
+		$loginCookie = new LoginCookie($userId, null);
+
+		$this->auth->Logout($userSession);
+
+		$this->assertEquals($loginCookie, $this->fakeServer->_DeletedCookie);
+		$this->assertEquals(SessionKeys::USER_SESSION, $this->fakeServer->_EndedSession);
+	}
 }
 
 class FakeMigration extends PasswordMigration

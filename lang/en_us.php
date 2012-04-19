@@ -361,6 +361,7 @@ class en_us extends Language
         $strings['Private'] = 'Private';
         $strings['Accept'] = 'Accept';
         $strings['Decline'] = 'Decline';
+        $strings['ShowFullWeek'] = 'Show Full Week';
         // End Strings
 
         // Errors
