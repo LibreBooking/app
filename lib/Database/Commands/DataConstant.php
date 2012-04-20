@@ -172,6 +172,10 @@ class Queries
             'INSERT INTO announcements (announcement_text, priority, start_date, end_date)
 		VALUES (@text, @priority, @startDate, @endDate)';
 
+	const ADD_ATTRIBUTE =
+			'INSERT INTO custom_attributes (display_label, display_type, attribute_scope, validation_regex, is_required, possible_values)
+		VALUES (@display_label, @display_type, @attribute_scope, @validation_regex, @is_required, @possible_values)';
+
     const ADD_BLACKOUT_INSTANCE =
             'INSERT INTO blackout_instances (start_date, end_date, blackout_series_id)
 		VALUES (@startDate, @endDate, @seriesid)';

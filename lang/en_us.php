@@ -362,6 +362,7 @@ class en_us extends Language
         $strings['Accept'] = 'Accept';
         $strings['Decline'] = 'Decline';
         $strings['ShowFullWeek'] = 'Show Full Week';
+        $strings['CustomAttributes'] = 'Custom Attributes';
         // End Strings
 
         // Errors
@@ -416,6 +417,8 @@ class en_us extends Language
         $strings['ForgotPassword'] = 'Forgot Password';
         $strings['NotificationPreferences'] = 'Notification Preferences';
         $strings['ManageAnnouncements'] = 'Announcements';
+        $strings['Customization'] = 'Customization';
+        $strings['Attributes'] = 'Attributes';
         // End Page Titles
 
         // Day representations

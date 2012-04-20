@@ -39,6 +39,7 @@ require_once(ROOT_DIR . 'tests/Application/Schedule/Application_Schedule_Suite.p
 require_once(ROOT_DIR . 'tests/Application/Resource/Application_Resource_Suite.php');
 
 require_once(ROOT_DIR . 'tests/Domain/Announcement/Domain_Announcement_Suite.php');
+require_once(ROOT_DIR . 'tests/Domain/Attribute/Domain_Attribute_Suite.php');
 require_once(ROOT_DIR . 'tests/Domain/Reservation/Domain_Reservation_Suite.php');
 require_once(ROOT_DIR . 'tests/Domain/Resource/Domain_Resource_Suite.php');
 require_once(ROOT_DIR . 'tests/Domain/Schedule/Domain_Schedule_Suite.php');

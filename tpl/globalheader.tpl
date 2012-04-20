@@ -119,6 +119,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
 						<li class="menuitem"><a
 								href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
+						<li class="menuitem"><a href="#">{translate key="Customization"}</a>
+								<ul>
+									<li class="menuitem"><a
+											href="{$Path}admin/manage_attributes.php">{translate key="Attributes"}</a>
+								</ul>
+							</li>
 						<li class="menuitem"><a
 								href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
 					</ul>

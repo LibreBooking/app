@@ -12,7 +12,7 @@
 		formElement.submit(function() {
 			
 			var submitOptions = { 
-				url: urlCallback(),
+				url: urlCallback(formElement),
 		        beforeSubmit: opts.onBeforeSubmit,
 		        beforeSerialize: opts.onBeforeSerialize,
 				dataType: opts.dataType,
