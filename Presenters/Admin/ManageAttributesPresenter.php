@@ -33,12 +33,17 @@ class ManageAttributesPresenter extends ActionPresenter
 	 */
 	private $page;
 
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $attributeRepository;
 
-	public function __construct(IManageAttributesPage $page)
+	public function __construct(IManageAttributesPage $page, IAttributeRepository $attributeRepository)
 	{
 		parent::__construct($page);
 
 		$this->page = $page;
+		$this->attributeRepository = $attributeRepository;
 
         $this->AddAction(ManageAttributesActions::AddAttribute, 'AddAttribute');
 	}
@@ -50,10 +55,17 @@ class ManageAttributesPresenter extends ActionPresenter
 
     public function AddAttribute()
     {
-        $attributeName = $this->page->GetAttributeName();
+        $attributeName = $this->page->GetLabel();
+		$type = $this->page->GetType();
+		$scope = $this->page->GetCategory();
+		$regex = $this->page->GetValidationExpression();
+		$required = $this->page->GetIsRequired();
+		$possibleValues = $this->page->GetPossibleValues();
+
         Log::Debug('Adding new attribute named: %s', $attributeName);
 
-        $attribute = CustomAttribute::Create($name, $type, $scope);
+        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues);
+		$this->attributeRepository->Add($attribute);
     }
 }
 ?>

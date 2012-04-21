@@ -19,5 +19,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/Database/Commands/Commands.php');
-require_once(ROOT_DIR . 'lib/Database/Commands/DataConstant.php');
+require_once(ROOT_DIR . 'lib/Database/Commands/Queries.php');
+require_once(ROOT_DIR . 'lib/Database/Commands/ParameterNames.php');
+require_once(ROOT_DIR . 'lib/Database/Commands/ColumnNames.php');
+require_once(ROOT_DIR . 'lib/Database/Commands/TableNames.php');
 ?>

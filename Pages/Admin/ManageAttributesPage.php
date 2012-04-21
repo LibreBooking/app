@@ -23,6 +23,41 @@ require_once(ROOT_DIR . 'Presenters/Admin/ManageAttributesPresenter.php');
 
 interface IManageAttributesPage extends IActionPage
 {
+	/**
+	 * @abstract
+	 * return string
+	 */
+	public function GetLabel();
+
+	/**
+	 * @abstract
+	 * return int|CustomAttributeTypes
+	 */
+	public function GetType();
+
+	/**
+	 * @abstract
+	 * return int|CustomAttributeScope
+	 */
+	public function GetCategory();
+
+	/**
+	 * @abstract
+	 * return string
+	 */
+	public function GetValidationExpression();
+
+	/**
+	 * @abstract
+	 * return bool
+	 */
+	public function GetIsRequired();
+
+	/**
+	 * @abstract
+	 * return string
+	 */
+	public function GetPossibleValues();
 }
 
 class ManageAttributesPage extends AdminPage implements IManageAttributesPage
@@ -35,7 +70,7 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 	public function __construct()
 	{
 		parent::__construct('CustomAttributes');
-		$this->presenter = new ManageAttributesPresenter($this);
+		$this->presenter = new ManageAttributesPresenter($this, new AttributeRepository());
 	}
 
 	public function PageLoad()
@@ -49,6 +84,37 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 	public function ProcessAction()
 	{
 		$this->presenter->ProcessAction();
+	}
+
+	public function GetLabel()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_LABEL);
+	}
+
+	public function GetType()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_TYPE);
+	}
+
+	public function GetCategory()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_CATEGORY);
+	}
+
+	public function GetValidationExpression()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_VALIDATION_EXPRESSION);
+	}
+
+	public function GetIsRequired()
+	{
+		$required = $this->GetForm(FormKeys::ATTRIBUTE_IS_REQUIRED);
+		return !empty($required);
+	}
+
+	public function GetPossibleValues()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_POSSIBLE_VALUES);
 	}
 }
 

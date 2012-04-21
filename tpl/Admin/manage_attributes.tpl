@@ -20,36 +20,38 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h1>{translate key=CustomAttributes}</h1>
 
-Category:
-<select>
-	<option>Reservation</option>
+<form id="addAttributeForm" ajaxAction="{ManageAttributesActions::AddAttribute}" method="post">
+<label>Category:
+<select {formname key=ATTRIBUTE_CATEGORY}>
+	<option value="{CustomAttributeCategory::RESERVATION}">Reservation</option>
 	<option>User</option>
 	<option>Group</option>
 	<option>Resource</option>
 </select>
+</label>
 
 <a href="#">{html_image src='plus-circle-frame.png'} Add an Attribute</a>
 
 <div id="addAttribute">
 
-	<form id="addAttributeForm" ajaxAction="{ManageAttributesActions::AddAttribute}" method="post">
-		<span class="wideLabel">Type:</span><select>
-			<option>Single Line Textbox</option>
+
+		<span class="wideLabel">Type:</span><select {formname key=ATTRIBUTE_TYPE}>
+			<option value="{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}">Single Line Textbox</option>
 			<option>Multiple Line Textbox</option>
 			<option>Select List</option>
 			<option>Checkbox</option>
 		</select>
 
-		<div><span class="wideLabel">Label:</span><input type="textbox" /></div>
+		<div><span class="wideLabel">Label:</span>{textbox name=ATTRIBUTE_LABEL}</div>
 		<div id="textBoxOptions">
-			<div><span class="wideLabel">Required:</span><input type="checkbox" /></div>
-			<div><span class="wideLabel">Validation Expression:</span><input type="textbox" /></div>
+			<div><span class="wideLabel">Required:</span><input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} /></div>
+			<div><span class="wideLabel">Validation Expression:</span>{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}</div>
 		</div>
 
 		<button type="button" class="button save" style="float:right;">{html_image src="plus-button.png"} {translate key=Add}</button>
-	</form>
-</div>
 
+</div>
+</form>
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>

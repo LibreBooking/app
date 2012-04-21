@@ -33,6 +33,12 @@ class FormKeys
     const ANNOUNCEMENT_START = 'announcementStart';
     const ANNOUNCEMENT_END = 'announcementEnd';
     const ANNOUNCEMENT_PRIORITY = 'announcementPriority';
+	const ATTRIBUTE_LABEL = 'attributeLabel';
+	const ATTRIBUTE_TYPE = 'attributeType';
+	const ATTRIBUTE_CATEGORY = 'attributeScope';
+	const ATTRIBUTE_VALIDATION_EXPRESSION = 'attributeRegex';
+	const ATTRIBUTE_IS_REQUIRED = 'attributeRequired';
+	const ATTRIBUTE_POSSIBLE_VALUES = 'attributePossibleValues';
 	const AUTO_ASSIGN = 'autoAssign';
 
 	const BEGIN_DATE = 'beginDate';
@@ -142,5 +148,7 @@ class FormKeys
 		$key = strtoupper($formKey);
 		return eval("return FormKeys::$key;");
 	}
+
+
 }
 ?>

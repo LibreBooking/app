@@ -23,18 +23,113 @@ class CustomAttributeTypes
 	const SINGLE_LINE_TEXTBOX = 1;
 }
 
-class CustomAttributeScope
+class CustomAttributeCategory
 {
 	const RESERVATION = 1;
 }
 
 class CustomAttribute
 {
+	/**
+	 * @var string
+	 */
+	protected $label;
 
-    public static function Create()
-    {
-		return new CustomAttribute();
-    }
+	/**
+	 * @var CustomAttributeTypes|int
+	 */
+	protected $type;
+
+	/**
+	 * @var CustomAttributeCategory|int
+	 */
+	protected $category;
+
+	/**
+	 * @var string
+	 */
+	protected $regex;
+
+	/**
+	 * @var bool
+	 */
+	protected $required;
+
+	/**
+	 * @var string
+	 */
+	protected $possibleValues;
+
+	/**
+	 * @return string
+	 */
+	public function Label()
+	{
+		return $this->label;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function PossibleValues()
+	{
+		return $this->possibleValues;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Regex()
+	{
+		return $this->regex;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function Required()
+	{
+		return $this->required;
+	}
+
+	/**
+	 * @return \CustomAttributeCategory|int
+	 */
+	public function Category()
+	{
+		return $this->category;
+	}
+
+	/**
+	 * @return \CustomAttributeTypes|int
+	 */
+	public function Type()
+	{
+		return $this->type;
+	}
+
+	/**
+	 * @static
+	 * @param string $label
+	 * @param CustomAttributeTypes|int $type
+	 * @param CustomAttributeCategory|int $category
+	 * @param string $regex
+	 * @param bool $required
+	 * @param string $possibleValues
+	 * @return CustomAttribute
+	 */
+	public static function Create($label, $type, $category, $regex, $required, $possibleValues)
+	{
+		$attribute = new CustomAttribute();
+		$attribute->label = $label;
+		$attribute->type = $type;
+		$attribute->category = $category;
+		$attribute->regex = $regex;
+		$attribute->required = $required;
+		$attribute->possibleValues = $possibleValues;
+
+		return $attribute;
+	}
 }
 
 ?>

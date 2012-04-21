@@ -35,4 +35,5 @@ require_once(ROOT_DIR . 'Domain/Access/QuotaRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/AccessoryRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/BlackoutRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/AnnouncementRepository.php');
+require_once(ROOT_DIR . 'Domain/Access/AttributeRepository.php');
 ?>

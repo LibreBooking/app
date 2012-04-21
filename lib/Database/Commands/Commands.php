@@ -62,12 +62,12 @@ class AddAnnouncementCommand extends SqlCommand
 
 class AddAttributeCommand extends SqlCommand
 {
-	public function __construct($label, $type, $scope, $regex, $required, $possibleValues)
+	public function __construct($label, $type, $category, $regex, $required, $possibleValues)
 	{
 		parent::__construct(Queries::ADD_ATTRIBUTE);
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_LABEL, $label));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_TYPE, (int)$type));
-		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SCOPE, (int)$scope));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, (int)$category));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_REGEX, $regex));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_REQUIRED, (int)$required));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_POSSIBLE_VALUES, $possibleValues));

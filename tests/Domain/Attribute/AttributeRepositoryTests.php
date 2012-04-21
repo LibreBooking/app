@@ -43,7 +43,7 @@ class AttributeRepositoryTests extends TestBase
     {
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
-		$scope = CustomAttributeScope::RESERVATION;
+		$scope = CustomAttributeCategory::RESERVATION;
 		$regex = 'regex';
 		$required = false;
 		$possibleValues = '';

@@ -16,17 +16,16 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/CustomAttribute.php');
 
 interface IAttributeRepository
 {
-
 	/**
 	 * @abstract
 	 * @param CustomAttribute $attribute
-     * @return int
+	 * @return int
 	 */
 	public function Add(CustomAttribute $attribute);
 
@@ -36,9 +35,11 @@ class AttributeRepository implements IAttributeRepository
 {
 	public function Add(CustomAttribute $attribute)
 	{
-		return ServiceLocator::GetDatabase()->ExecuteInsert(new AddAccessoryCommand($accessory->GetName(), $accessory->GetQuantityAvailable()));
+		return ServiceLocator::GetDatabase()->ExecuteInsert(
+			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues()));
 	}
 
-	
+
 }
+
 ?>
