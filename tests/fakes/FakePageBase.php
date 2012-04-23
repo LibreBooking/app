@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Pages/IPage.php');
+require_once(ROOT_DIR . 'Pages/ActionPage.php');
 
 class FakePageBase implements IPage
 {
@@ -65,3 +66,28 @@ class FakePageBase implements IPage
 		// TODO: Implement PageLoad() method.
 	}
 }
+
+class FakeActionPageBase extends FakePageBase implements IActionPage
+{
+
+	public function TakingAction()
+	{
+		// TODO: Implement TakingAction() method.
+	}
+
+	public function GetAction()
+	{
+		// TODO: Implement GetAction() method.
+	}
+
+	public function RequestingData()
+	{
+		// TODO: Implement RequestingData() method.
+	}
+
+	public function GetDataRequest()
+	{
+		// TODO: Implement GetDataRequest() method.
+	}
+}
+?>

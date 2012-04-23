@@ -64,38 +64,14 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_regex = $regex;
 		$this->page->_possibleValues = $possibleValues;
 
-		$this->presenter->AddAttribute();
-
 		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues);
 
 		$this->attributeRepository->expects($this->once())
 					->method('Add')
 					->with($this->equalTo($expectedAttribute))
 					->will($this->returnValue(1));
-	}
-}
 
-class FakeActionPageBase extends FakePageBase implements IActionPage
-{
-
-	public function TakingAction()
-	{
-		// TODO: Implement TakingAction() method.
-	}
-
-	public function GetAction()
-	{
-		// TODO: Implement GetAction() method.
-	}
-
-	public function RequestingData()
-	{
-		// TODO: Implement RequestingData() method.
-	}
-
-	public function GetDataRequest()
-	{
-		// TODO: Implement GetDataRequest() method.
+		$this->presenter->AddAttribute();
 	}
 }
 

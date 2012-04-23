@@ -29,11 +29,6 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/NewReservationInitializer.p
 class ReservationInitializationTests extends TestBase
 {
 	/**
-	 * @var UserSession
-	 */
-	private $user;
-
-	/**
 	 * @var int
 	 */
 	private $userId;

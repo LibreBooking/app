@@ -60,9 +60,6 @@ class EditReservationPresenterTests extends TestBase
 		$this->userId = $this->user->UserId;
 
 		$this->page = $this->getMock('IExistingReservationPage');
-		$this->scheduleRepository = $this->getMock('IScheduleRepository');
-		$this->scheduleUserRepository = $this->getMock('IScheduleUserRepository');
-		$this->userRepository = $this->getMock('IUserRepository');
 		
 		$this->initializerFactory = $this->getMock('IReservationInitializerFactory');
 		$this->initializer = $this->getMock('IReservationInitializer');
@@ -79,24 +76,6 @@ class EditReservationPresenterTests extends TestBase
 	public function testPullsReservationViewFromRepository()
 	{
 		$referenceNumber = '1234';
-		$timezone = $this->user->Timezone;
-
-		$resourceId = 10;
-		$scheduleId = 100;
-		$reservationId = 298;
-		$startDateUtc = '2010-01-01 10:11:12';
-		$endDateUtc = '2010-01-02 10:11:12';
-		$ownerId = 987;
-		$additionalResourceIds = array (10, 20, 30);	
-		$participantIds = array (11, 22, 33);
-		$title = 'title';
-		$description = 'description';
-
-		$firstName = 'fname';
-		$lastName = 'lastName';
-
-		$expectedStartDate = Date::Parse($startDateUtc, 'UTC');
-		$expectedEndDate = Date::Parse($endDateUtc, 'UTC');	
 				
 		$reservationView = new ReservationView();
 		
