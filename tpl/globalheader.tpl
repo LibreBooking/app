@@ -131,21 +131,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			{/if}
 			{if $CanViewResponsibilities}
-				<li class="menubaritem"><a href="#">Responsibilities</a>
+				<li class="menubaritem"><a href="#">{translate key=Responsibilities}</a>
 					<ul>
 						{if $CanViewGroupAdmin}
 
 							<li class="menuitem"><a
 									href="{$Path}admin/manage_group_users.php">{translate key="ManageUsers"}</a></li>
-							<li class="menuitem"><a href="{$Path}admin/manage_group_reservations.php">Group Reservations</a>
+							<li class="menuitem"><a href="{$Path}admin/manage_group_reservations.php">{translate key=GroupReservations}</a>
 							</li>
 
 						{/if}
 						{if $CanViewResourceAdmin}
 							<li class="menuitem"><a
 									href="{$Path}admin/manage_admin_resources.php">{translate key="ManageResources"}</a></li>
-							<li class="menuitem"><a href="{$Path}admin/manage_resource_reservations.php">Resource
-								Reservations</a>
+							<li class="menuitem"><a href="{$Path}admin/manage_resource_reservations.php">{translate key=ResourceReservations}</a>
 							</li>
 
 						{/if}

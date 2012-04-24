@@ -82,7 +82,14 @@ class Configurator
 		{
 			if (array_key_exists($key, $newSettings))
 			{
-				$newSettings[$key] = $value;
+				if (is_array($value))
+				{
+					$newSettings[$key] = array_merge($value, $newSettings[$key]);
+				}
+				else
+				{
+					$newSettings[$key] = $value;
+				}
 			}
 		}
 

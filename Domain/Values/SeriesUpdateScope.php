@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'Domain/Values/ReservationStartTimeConstraint.php');
+
 class SeriesUpdateScope
 {
 	private function __construct()
@@ -104,7 +106,7 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 	protected function AllInstancesGreaterThan($series, $compareDate)
 	{
 		$instances = array();
-		
+		Log::Debug('foo '. $compareDate);
 		foreach ($series->_Instances() as $instance)
 		{
 			if ($compareDate == null || $instance->StartDate()->Compare($compareDate) >= 0)
@@ -219,18 +221,17 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 	{
 		$startTimeConstraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
 
-		if ($startTimeConstraint == ReservationStartTimeConstraint::CURRENT)
+		if (ReservationStartTimeConstraint::IsCurrent($startTimeConstraint))
 		{
 			return $series->CurrentInstance()->StartDate();
 		}
 
-		if ($startTimeConstraint == ReservationStartTimeConstraint::NONE)
+		if (ReservationStartTimeConstraint::IsNone($startTimeConstraint))
 		{
 			return null;
 		}
 
 		return Date::Now();
-
 	}
 
 	/**

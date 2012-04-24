@@ -72,11 +72,18 @@ class CalendarExportPresenter
         {
             if (!empty($scheduleId) || !empty($resourceId))
             {
+				$seriesIds = array();
                 $res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, null, null, $scheduleId, $resourceId);
 
                 foreach ($res as $r)
                 {
-                    $reservations[] = new iCalendarReservationView($r);
+					$seriesId = $r->SeriesId;
+					if (!array_key_exists($seriesId, $seriesIds))
+					{
+                    	$reservations[] = new iCalendarReservationView($r);
+					}
+
+					$seriesIds[$r->SeriesId] = true;
                 }
             }
         }

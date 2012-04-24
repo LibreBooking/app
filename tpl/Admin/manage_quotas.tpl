@@ -98,7 +98,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			
 		{capture name="groups" assign="groups"}
 			<select class='textbox' {formname key=GROUP}>
-				<option selected="selected" value=''>{translate key=AllGroups}</option>
+				<option selected='selected' value=''>{translate key=AllGroups}</option>
 			{foreach from=$Groups item=group}
 				<option value='{$group->Id}'>{$group->Name}</option>
 			{/foreach}

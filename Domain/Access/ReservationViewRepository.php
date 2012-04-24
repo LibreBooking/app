@@ -676,7 +676,12 @@ class ReservationItemView implements IReservedItemView
 	 */
 	public $OwnerEmailAddress;
 
-    /**
+	/**
+	 * @var int
+	 */
+	public $SeriesId;
+
+	/**
      * @param $referenceNumber string
      * @param $startDate Date
      * @param $endDate Date
@@ -781,6 +786,11 @@ class ReservationItemView implements IReservedItemView
 		if (isset($row[ColumnNames::EMAIL]))
 		{
 			$view->OwnerEmailAddress = $row[ColumnNames::EMAIL];
+		}
+
+		if (isset($row[ColumnNames::SERIES_ID]))
+		{
+			$view->SeriesId = $row[ColumnNames::SERIES_ID];
 		}
 
         return $view;

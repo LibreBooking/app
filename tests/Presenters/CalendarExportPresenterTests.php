@@ -125,6 +125,35 @@ class CalendarExportPresenterTests extends TestBase
 
         $this->presenter->PageLoad();
     }
+
+	public function testOnlyAddsTheFirstReservationOfARepeatedSeries()
+    {
+        $resourceId = '1';
+		$r1 = new TestReservationItemView(1, Date::Now(), Date::Now());
+		$r1->WithSeriesId(10);
+
+		$r2 = new TestReservationItemView(2, Date::Now(), Date::Now());
+		$r2->WithSeriesId(10);
+        $reservationResult = array($r1, $r2);
+
+        $weekAgo = Date::Now()->AddDays(-7);
+        $nextYear = Date::Now()->AddDays(365);
+
+        $this->page->expects($this->once())
+                ->method('GetResourceId')
+                ->will($this->returnValue($resourceId));
+
+        $this->repo->expects($this->once())
+                ->method('GetReservationList')
+                ->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $resourceId)
+                ->will($this->returnValue($reservationResult));
+
+        $this->page->expects($this->once())
+                ->method('SetReservations')
+                ->with($this->equalTo(array(new iCalendarReservationView($r1))));
+
+        $this->presenter->PageLoad();
+    }
 }
 
 ?>

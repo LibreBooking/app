@@ -315,7 +315,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	 */
 	public function SetUserId($userId)
 	{
-		$this->Set('UserId', $userId);
+		$this->Set('UserIdFilter', $userId);
 	}
 
 	/**
@@ -324,7 +324,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	 */
 	public function SetUserName($userName)
 	{
-		$this->Set('UserName', $userName);
+		$this->Set('UserNameFilter', $userName);
 	}
 
 	/**

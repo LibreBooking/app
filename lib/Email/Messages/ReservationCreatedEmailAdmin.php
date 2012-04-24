@@ -101,7 +101,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		
 		$this->Set('StartDate', $currentInstance->StartDate()->ToTimezone($this->timezone));
 		$this->Set('EndDate', $currentInstance->EndDate()->ToTimezone($this->timezone));
-		
+		$this->Set('ResourceName', $this->resource->GetName());
 		$this->Set('Title', $this->reservationSeries->Title());
 		$this->Set('Description', $this->reservationSeries->Description());
 		

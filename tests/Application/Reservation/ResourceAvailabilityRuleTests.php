@@ -222,5 +222,11 @@ class TestReservationItemView extends ReservationItemView
 		$this->Date = new DateRange($startDate, $endDate);
 		$this->RepeatType = RepeatType::None;
 	}
+
+	public function WithSeriesId($seriesId)
+	{
+		$this->SeriesId = $seriesId;
+		return $this;
+	}
 }
 ?>
