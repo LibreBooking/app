@@ -89,11 +89,11 @@ class ReservationInitializationTests extends TestBase
 			
 		$page = $this->getMock('INewReservationPage');
 
-		$page->expects($this->once())
+		$page->expects($this->atLeastOnce())
 			->method('GetRequestedResourceId')
 			->will($this->returnValue($resourceId));
 			
-		$page->expects($this->once())
+		$page->expects($this->atLeastOnce())
 			->method('GetRequestedScheduleId')
 			->will($this->returnValue($scheduleId));
 

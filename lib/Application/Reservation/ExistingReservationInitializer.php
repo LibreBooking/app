@@ -67,13 +67,21 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 	public function Initialize()
 	{
 		parent::Initialize();
-		
+
+		$this->BindReservationDetails();
+
+		$this->page->SetIsEditable($this->reservationAuthorization->CanEdit($this->reservationView, $this->currentUser));
+		$this->page->SetIsApprovable($this->reservationAuthorization->CanApprove($this->reservationView, $this->currentUser));
+	}
+
+	private function BindReservationDetails()
+	{
 		$this->page->SetAdditionalResources($this->reservationView->AdditionalResourceIds);
 		$this->page->SetTitle($this->reservationView->Title);
 		$this->page->SetDescription($this->reservationView->Description);
 		$this->page->SetReferenceNumber($this->reservationView->ReferenceNumber);
 		$this->page->SetReservationId($this->reservationView->ReservationId);
-		
+
 		$this->page->SetIsRecurring($this->reservationView->IsRecurring());
 		$this->page->SetRepeatType($this->reservationView->RepeatType);
 		$this->page->SetRepeatInterval($this->reservationView->RepeatInterval);
@@ -84,12 +92,10 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		}
 		$this->page->SetRepeatWeekdays($this->reservationView->RepeatWeekdays);
 
-		$this->page->SetIsEditable($this->reservationAuthorization->CanEdit($this->reservationView, $this->currentUser));
-		$this->page->SetIsApprovable($this->reservationAuthorization->CanApprove($this->reservationView, $this->currentUser));
 
 		$participants = $this->GetParticipants();
 		$invitees = $this->GetInvitees();
-		
+
 		$this->page->SetParticipants($participants);
 		$this->page->SetInvitees($invitees);
 		$this->page->SetAccessories($this->reservationView->Accessories);
@@ -97,7 +103,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		$this->page->SetCurrentUserParticipating($this->IsCurrentUserParticipating());
 		$this->page->SetCurrentUserInvited($this->IsCurrentUserInvited());
 	}
-	
+
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
 	{
 		$timezone = $this->GetTimezone();		
@@ -107,37 +113,37 @@ class ExistingReservationInitializer extends ReservationInitializerBase
 		parent::SetSelectedDates($startDate, $endDate, $schedulePeriods);
 	}
 	
-	protected function GetOwnerId()
+	public function GetOwnerId()
 	{
 		return $this->reservationView->OwnerId;
 	}
 	
-	protected function GetResourceId()
+	public function GetResourceId()
 	{
 		return $this->reservationView->ResourceId;
 	}
 	
-	protected function GetScheduleId()
+	public function GetScheduleId()
 	{
 		return $this->reservationView->ScheduleId;
 	}
 	
-	protected function GetReservationDate()
+	public function GetReservationDate()
 	{
 		return $this->reservationView->StartDate;
 	}
 	
-	protected function GetStartDate()
+	public function GetStartDate()
 	{
 		return $this->reservationView->StartDate;
 	}
 	
-	protected function GetEndDate()
+	public function GetEndDate()
 	{
 		return $this->reservationView->EndDate;
 	}
 	
-	protected function GetTimezone()
+	public function GetTimezone()
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
 	}

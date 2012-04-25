@@ -59,37 +59,37 @@ class NewReservationInitializer extends ReservationInitializerBase
 		$this->basePage->SetRepeatTerminationDate($endDate);
 	}
 	
-	protected function GetOwnerId()
+	public function GetOwnerId()
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->UserId;
 	}
 	
-	protected function GetResourceId()
+	public function GetResourceId()
 	{
 		return $this->_page->GetRequestedResourceId();
 	}
 	
-	protected function GetScheduleId()
+	public function GetScheduleId()
 	{
 		return $this->_page->GetRequestedScheduleId();
 	}
 	
-	protected function GetReservationDate()
+	public function GetReservationDate()
 	{
 		return $this->_page->GetReservationDate();
 	}
 	
-	protected function GetStartDate()
+	public function GetStartDate()
 	{
 		return $this->_page->GetStartDate();
 	}
 	
-	protected function GetEndDate()
+	public function GetEndDate()
 	{
 		return $this->_page->GetEndDate();
 	}
 	
-	protected function GetTimezone()
+	public function GetTimezone()
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
 	}

@@ -23,6 +23,7 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationComponentBinder.php');
 
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 
@@ -91,85 +92,70 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	
 	public function Initialize()
 	{
-		$requestedResourceId = $this->GetResourceId();
 		$requestedScheduleId = $this->GetScheduleId();
-		$reservationDate = $this->GetReservationDate();
-		$requestedStartDate = $this->GetStartDate();
-		$requestedEndDate = $this->GetEndDate();
-		
-		$userId = $this->GetOwnerId();
-		$timezone = $this->GetTimezone();
-		
-		$requestedDate = ($reservationDate == null) ? Date::Now()->ToTimezone($timezone) : $reservationDate->ToTimezone($timezone);
-		
-		$startDate = ($requestedStartDate == null) ? $requestedDate : $requestedStartDate->ToTimezone($timezone);
-		$endDate = ($requestedEndDate == null) ? $requestedDate : $requestedEndDate->ToTimezone($timezone);
-		
-		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
-		$schedulePeriods = $layout->GetLayout($requestedDate);
-		$this->basePage->BindPeriods($schedulePeriods);
-
-		$resources = $this->resourceService->GetScheduleResources($requestedScheduleId, true, $this->currentUser);
-
-        $canChangeUser = $this->reservationAuthorization->CanChangeUsers($this->currentUser);
-        $this->basePage->SetCanChangeUser($canChangeUser);
-
-		$bindableResourceData = $this->GetBindableResourceData($resources, $requestedResourceId);
-		$reservationUser = $this->userRepository->GetById($userId);
-		$this->basePage->SetReservationUser($reservationUser);
-		
-		$this->basePage->BindAvailableResources($bindableResourceData->AvailableResources);
-		$accessories = $this->resourceService->GetAccessories();
-		$this->basePage->BindAvailableAccessories($accessories);
-		$this->basePage->ShowAdditionalResources($bindableResourceData->NumberAccessible > 0);
-
-		$this->SetSelectedDates($startDate, $endDate, $schedulePeriods);
-		
-		$this->basePage->SetReservationResource($bindableResourceData->ReservationResource);
 		$this->basePage->SetScheduleId($requestedScheduleId);
 
-        $shouldHideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
-        $this->basePage->ShowUserDetails(!$shouldHideDetails || $canChangeUser);
+		$this->BindDates();
+		$this->BindResourceAndAccessories();
+		$this->BindUser();
+	}
+
+	protected function BindUser()
+	{
+		$userBinder = new ReservationUserBinder($this->userRepository, $this->reservationAuthorization);
+		$userBinder->Bind($this);
+	}
+
+	protected function BindResourceAndAccessories()
+	{
+		$resourceBinder = new ReservationResourceBinder($this->resourceService);
+		$resourceBinder->Bind($this);
+	}
+
+	protected function BindDates()
+	{
+		$dateBinder = new ReservationDateBinder($this->scheduleRepository);
+		$dateBinder->Bind($this);
 	}
 
 	/**
 	 * @abstract
 	 * @return int
 	 */
-	protected abstract function GetResourceId();
+	public abstract function GetResourceId();
 
 	/**
 	 * @abstract
 	 * @return int
 	 */
-	protected abstract function GetScheduleId();
+	public abstract function GetScheduleId();
 	
 	/**
 	 * @return Date
 	 */
-	protected abstract function GetStartDate();
+	public abstract function GetStartDate();
 	
 	/**
 	 * @return Date
 	 */
-	protected abstract function GetEndDate();
+	public abstract function GetEndDate();
 	
 	/**
 	 * @return Date
 	 */
-	protected abstract function GetReservationDate();
+	public abstract function GetReservationDate();
 
 	/**
 	 * @abstract
 	 * @return int
 	 */
-	protected abstract function GetOwnerId();
+	public abstract function GetOwnerId();
 
 	/**
 	 * @abstract
 	 * @return string
 	 */
-	protected abstract function GetTimezone();
+	public abstract function GetTimezone();
 	
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
 	{
@@ -231,28 +217,78 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	}
 
 	/**
-	 * @param $resources array|ResourceDto[]
-	 * @param $requestedResourceId int
-	 * @return BindableResourceData
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param $schedulePeriods array|SchedulePeriod[]
 	 */
-	private function GetBindableResourceData($resources, $requestedResourceId)
+	public function SetDates(Date $startDate, Date $endDate, $schedulePeriods)
 	{
-		$bindableResourceData = new BindableResourceData();
+		$this->basePage->BindPeriods($schedulePeriods);
+		$this->SetSelectedDates($startDate, $endDate, $schedulePeriods);
+	}
 
-		/** @var $resource ResourceDto */
-		foreach ($resources as $resource)
-		{
-			if ($resource->Id != $requestedResourceId)
-			{
-				$bindableResourceData->AddAvailableResource($resource);
-			}
-			else
-			{
-				$bindableResourceData->SetReservationResource($resource);
-			}
-		}
-		
-		return $bindableResourceData;
+	/**
+	 * @return UserSession
+	 */
+	public function CurrentUser()
+	{
+		return $this->currentUser;
+	}
+
+	/**
+	 * @param $canChangeUser bool
+	 */
+	public function SetCanChangeUser($canChangeUser)
+	{
+		$this->basePage->SetCanChangeUser($canChangeUser);
+	}
+
+	/**
+	 * @param $reservationUser bool
+	 */
+	public function SetReservationUser($reservationUser)
+	{
+		$this->basePage->SetReservationUser($reservationUser);
+	}
+
+	/**
+	 * @param $showUserDetails bool
+	 */
+	public function ShowUserDetails($showUserDetails)
+	{
+		$this->basePage->ShowUserDetails($showUserDetails);
+	}
+
+	/**
+	 * @param $resources array|ResourceDto[]
+	 */
+	public function BindAvailableResources($resources)
+	{
+		$this->basePage->BindAvailableResources($resources);
+	}
+
+	/**
+	 * @param $accessories array|AccessoryDto[]
+	 */
+	public function BindAvailableAccessories($accessories)
+	{
+		$this->basePage->BindAvailableAccessories($accessories);
+	}
+
+	/**
+	 * @param $shouldShow bool
+	 */
+	public function ShowAdditionalResources($shouldShow)
+	{
+		$this->basePage->ShowAdditionalResources($shouldShow);
+	}
+
+	/**
+	 * @param $resource ResourceDto
+	 */
+	public function SetReservationResource($resource)
+	{
+		$this->basePage->SetReservationResource($resource);
 	}
 }
 ?>
