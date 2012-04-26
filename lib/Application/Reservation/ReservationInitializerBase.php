@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -27,13 +27,102 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationComponentBinder.
 
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 
-abstract class ReservationInitializerBase implements IReservationInitializer
+interface IReservationComponentInitializer
+{
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetResourceId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetScheduleId();
+
+	/**
+	 * @return Date
+	 */
+	public function GetStartDate();
+
+	/**
+	 * @return Date
+	 */
+	public function GetEndDate();
+
+	/**
+	 * @return Date
+	 */
+	public function GetReservationDate();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetOwnerId();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetTimezone();
+
+	/**
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param $schedulePeriods array|SchedulePeriod[]
+	 */
+	public function SetDates(Date $startDate, Date $endDate, $schedulePeriods);
+
+	/**
+	 * @return UserSession
+	 */
+	public function CurrentUser();
+
+	/**
+	 * @param $canChangeUser bool
+	 */
+	public function SetCanChangeUser($canChangeUser);
+
+	/**
+	 * @param $reservationUser UserDto
+	 */
+	public function SetReservationUser($reservationUser);
+
+	/**
+	 * @param $showUserDetails bool
+	 */
+	public function ShowUserDetails($showUserDetails);
+
+	/**
+	 * @param $resources array|ResourceDto[]
+	 */
+	public function BindAvailableResources($resources);
+
+	/**
+	 * @param $accessories array|AccessoryDto[]
+	 */
+	public function BindAvailableAccessories($accessories);
+
+	/**
+	 * @param $shouldShow bool
+	 */
+	public function ShowAdditionalResources($shouldShow);
+
+	/**
+	 * @param $resource ResourceDto
+	 */
+	public function SetReservationResource($resource);
+}
+
+abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
 {
 	/**
 	 * @var IReservationPage
 	 */
 	protected $basePage;
-	
+
 	/**
 	 * @var IScheduleRepository
 	 */
@@ -73,13 +162,13 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 * @param $userSession UserSession
 	 */
 	public function __construct(
-		$page, 
+		$page,
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
 		IReservationAuthorization $reservationAuthorization,
 		UserSession $userSession
-		)
+	)
 	{
 		$this->basePage = $page;
 		$this->scheduleRepository = $scheduleRepository;
@@ -89,7 +178,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$this->currentUser = $userSession;
 		$this->currentUserId = $this->currentUser->UserId;
 	}
-	
+
 	public function Initialize()
 	{
 		$requestedScheduleId = $this->GetScheduleId();
@@ -118,45 +207,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$dateBinder->Bind($this);
 	}
 
-	/**
-	 * @abstract
-	 * @return int
-	 */
-	public abstract function GetResourceId();
-
-	/**
-	 * @abstract
-	 * @return int
-	 */
-	public abstract function GetScheduleId();
-	
-	/**
-	 * @return Date
-	 */
-	public abstract function GetStartDate();
-	
-	/**
-	 * @return Date
-	 */
-	public abstract function GetEndDate();
-	
-	/**
-	 * @return Date
-	 */
-	public abstract function GetReservationDate();
-
-	/**
-	 * @abstract
-	 * @return int
-	 */
-	public abstract function GetOwnerId();
-
-	/**
-	 * @abstract
-	 * @return string
-	 */
-	public abstract function GetTimezone();
-	
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
 	{
 		$startPeriod = $this->GetStartSlotClosestTo($schedulePeriods, $startDate);
@@ -195,12 +245,12 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	 */
 	private function GetEndSlotClosestTo($periods, $date)
 	{
-        $lastIndex = count($periods) - 1;
+		$lastIndex = count($periods) - 1;
 
-        if ($periods[$lastIndex]->EndDate()->CompareTime($date) == 0)
-        {
-            return $periods[$lastIndex];
-        }
+		if ($periods[$lastIndex]->EndDate()->CompareTime($date) == 0)
+		{
+			return $periods[$lastIndex];
+		}
 
 		for ($i = 0; $i < count($periods); $i++)
 		{
@@ -244,7 +294,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 	}
 
 	/**
-	 * @param $reservationUser bool
+	 * @param $reservationUser UserDto
 	 */
 	public function SetReservationUser($reservationUser)
 	{
@@ -291,4 +341,5 @@ abstract class ReservationInitializerBase implements IReservationInitializer
 		$this->basePage->SetReservationResource($resource);
 	}
 }
+
 ?>

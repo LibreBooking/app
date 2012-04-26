@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 interface IReservationComponentBinder
 {
-	function Bind(ReservationInitializerBase $initializer);
+	function Bind(IReservationComponentInitializer $initializer);
 }
 
 class ReservationDateBinder implements IReservationComponentBinder
@@ -35,7 +35,7 @@ class ReservationDateBinder implements IReservationComponentBinder
 	    $this->scheduleRepository = $scheduleRepository;
 	}
 
-	public function Bind(ReservationInitializerBase $initializer)
+	public function Bind(IReservationComponentInitializer $initializer)
 	{
 		$timezone = $initializer->GetTimezone();
 		$reservationDate = $initializer->GetReservationDate();
@@ -76,7 +76,7 @@ class ReservationUserBinder implements IReservationComponentBinder
 		$this->reservationAuthorization = $reservationAuthorization;
 	}
 
-	public function Bind(ReservationInitializerBase $initializer)
+	public function Bind(IReservationComponentInitializer $initializer)
 	{
 		$userId = $initializer->GetOwnerId();
 		$canChangeUser = $this->reservationAuthorization->CanChangeUsers($initializer->CurrentUser());
@@ -102,7 +102,7 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	{
 		$this->resourceService = $resourceService;
 	}
-	public function Bind(ReservationInitializerBase $initializer)
+	public function Bind(IReservationComponentInitializer $initializer)
 	{
 		$requestedScheduleId = $initializer->GetScheduleId();
 		$requestedResourceId = $initializer->GetResourceId();
