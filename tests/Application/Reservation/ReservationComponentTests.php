@@ -113,6 +113,60 @@ class ReservationComponentTests extends TestBase
 		$binder = new ReservationUserBinder($this->userRepository, $this->reservationAuthorization);
 		$binder->Bind($this->initializer);
 	}
+
+	public function testBindsResourceData()
+	{
+		$requestedScheduleId = 10;
+		$requestedResourceId = 90;
+
+		$this->initializer->expects($this->once())
+						->method('GetScheduleId')
+						->will($this->returnValue($requestedScheduleId));
+
+		$this->initializer->expects($this->once())
+						->method('GetResourceId')
+						->will($this->returnValue($requestedResourceId));
+
+		$this->initializer->expects($this->once())
+						->method('CurrentUser')
+						->will($this->returnValue($this->fakeUser));
+
+		$bookedResource = new ResourceDto($requestedResourceId, 'resource 1');
+		$otherResource = new ResourceDto(2, 'resource 2');
+		$otherResource2 = new ResourceDto(100, 'something', false);
+		$resourceList = array($otherResource, $bookedResource, $otherResource2);
+
+		$this->resourceService->expects($this->once())
+			->method('GetScheduleResources')
+			->with($this->equalTo($requestedScheduleId), $this->equalTo(true), $this->equalTo($this->fakeUser))
+			->will($this->returnValue($resourceList));
+
+		// accessories
+		$accessoryList = array(new AccessoryDto(1, 'a1', 30), new AccessoryDto(2, 'a2', 20));
+		$this->resourceService->expects($this->once())
+			->method('GetAccessories')
+			->will($this->returnValue($accessoryList));
+
+		$resourceListWithoutReservationResource = array($otherResource, $otherResource2);
+		$this->initializer->expects($this->once())
+			->method('BindAvailableResources')
+			->with($this->equalTo($resourceListWithoutReservationResource));
+
+		$this->initializer->expects($this->once())
+			->method('ShowAdditionalResources')
+			->with($this->equalTo(true));
+
+		$this->initializer->expects($this->once())
+			->method('BindAvailableAccessories')
+			->with($this->equalTo($accessoryList));
+
+		$this->initializer->expects($this->once())
+					->method('SetReservationResource')
+					->with($this->equalTo($bookedResource));
+
+		$binder = new ReservationResourceBinder($this->resourceService);
+		$binder->Bind($this->initializer);
+	}
 }
 
 ?>
