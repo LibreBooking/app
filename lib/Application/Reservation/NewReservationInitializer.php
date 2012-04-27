@@ -30,10 +30,9 @@ class NewReservationInitializer extends ReservationInitializerBase
 	
 	public function __construct(
 		INewReservationPage $page, 
-		IScheduleRepository $scheduleRepository,
-		IUserRepository $userRepository,
-		IResourceService $resourceService,
-		IReservationAuthorization $reservationAuthorization,
+		IReservationComponentBinder $userBinder,
+		IReservationComponentBinder $dateBinder,
+		IReservationComponentBinder $resourceBinder,
 		UserSession $userSession
 		)
 	{
@@ -41,10 +40,9 @@ class NewReservationInitializer extends ReservationInitializerBase
 		
 		parent::__construct(
 						$page, 
-						$scheduleRepository, 
-						$userRepository,
-						$resourceService,
-						$reservationAuthorization,
+						$userBinder,
+						$dateBinder,
+						$resourceBinder,
 						$userSession);
 	}
 	

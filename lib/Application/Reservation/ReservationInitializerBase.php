@@ -124,24 +124,19 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	protected $basePage;
 
 	/**
-	 * @var IScheduleRepository
+	 * @var IReservationComponentBinder
 	 */
-	protected $scheduleRepository;
+	protected $userBinder;
 
 	/**
-	 * @var IUserRepository
+	 * @var IReservationComponentBinder
 	 */
-	protected $userRepository;
+	protected $dateBinder;
 
 	/**
-	 * @var IResourceService
+	 * @var IReservationComponentBinder
 	 */
-	protected $resourceService;
-
-	/**
-	 * @var IReservationAuthorization
-	 */
-	protected $reservationAuthorization;
+	protected $resourceBinder;
 
 	/**
 	 * @var int
@@ -155,26 +150,23 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 
 	/**
 	 * @param $page IReservationPage
-	 * @param $scheduleRepository IScheduleRepository
-	 * @param $userRepository IUserRepository
-	 * @param $resourceService IResourceService
-	 * @param $reservationAuthorization IReservationAuthorization
+	 * @param $userBinder IReservationComponentBinder
+	 * @param $dateBinder IReservationComponentBinder
+	 * @param $resourceBinder IReservationComponentBinder
 	 * @param $userSession UserSession
 	 */
 	public function __construct(
 		$page,
-		IScheduleRepository $scheduleRepository,
-		IUserRepository $userRepository,
-		IResourceService $resourceService,
-		IReservationAuthorization $reservationAuthorization,
+		IReservationComponentBinder $userBinder,
+		IReservationComponentBinder $dateBinder,
+		IReservationComponentBinder $resourceBinder,
 		UserSession $userSession
 	)
 	{
 		$this->basePage = $page;
-		$this->scheduleRepository = $scheduleRepository;
-		$this->userRepository = $userRepository;
-		$this->resourceService = $resourceService;
-		$this->reservationAuthorization = $reservationAuthorization;
+		$this->userBinder = $userBinder;
+		$this->dateBinder = $dateBinder;
+		$this->resourceBinder = $resourceBinder;
 		$this->currentUser = $userSession;
 		$this->currentUserId = $this->currentUser->UserId;
 	}
@@ -191,20 +183,20 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 
 	protected function BindUser()
 	{
-		$userBinder = new ReservationUserBinder($this->userRepository, $this->reservationAuthorization);
-		$userBinder->Bind($this);
+		//$userBinder = new ReservationUserBinder($this->userRepository, $this->reservationAuthorization);
+		$this->userBinder->Bind($this);
 	}
 
 	protected function BindResourceAndAccessories()
 	{
-		$resourceBinder = new ReservationResourceBinder($this->resourceService);
-		$resourceBinder->Bind($this);
+		//$resourceBinder = new ReservationResourceBinder($this->resourceService);
+		$this->resourceBinder->Bind($this);
 	}
 
 	protected function BindDates()
 	{
-		$dateBinder = new ReservationDateBinder($this->scheduleRepository);
-		$dateBinder->Bind($this);
+		//$dateBinder = new ReservationDateBinder($this->scheduleRepository);
+		$this->dateBinder->Bind($this);
 	}
 
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)

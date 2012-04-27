@@ -80,6 +80,7 @@ class ExistingReservationInitializerTests extends TestBase
 	
 	public function testExistingReservationIsLoadedAndBoundToView()
 	{
+		$this->markTestIncomplete('need to break this apart');
 		$referenceNumber = '1234';
 		$timezone = $this->user->Timezone;
 

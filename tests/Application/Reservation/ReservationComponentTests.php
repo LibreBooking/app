@@ -167,6 +167,59 @@ class ReservationComponentTests extends TestBase
 		$binder = new ReservationResourceBinder($this->resourceService);
 		$binder->Bind($this->initializer);
 	}
+
+	public function testBindsDates()
+	{
+		$timezone = 'UTC';
+		$scheduleId = 1;
+		$dateString = Date::Now()->AddDays(1)->SetTimeString('02:55:22')->Format('Y-m-d H:i:s');
+		$endDateString = Date::Now()->AddDays(1)->SetTimeString('4:55:22')->Format('Y-m-d H:i:s');
+		$dateInUserTimezone = Date::Parse($dateString, $timezone);
+
+		$startDate = Date::Parse($dateString, $timezone);
+		$endDate = Date::Parse($endDateString, $timezone);
+
+		$this->initializer->expects($this->any())
+			->method('GetTimezone')
+			->will($this->returnValue($timezone));
+
+		$this->initializer->expects($this->any())
+			->method('GetReservationDate')
+			->will($this->returnValue($dateInUserTimezone));
+
+		$this->initializer->expects($this->any())
+			->method('GetStartDate')
+			->will($this->returnValue($startDate));
+
+		$this->initializer->expects($this->any())
+			->method('GetEndDate')
+			->will($this->returnValue($endDate));
+
+		$this->initializer->expects($this->any())
+			->method('GetScheduleId')
+			->will($this->returnValue($scheduleId));
+
+		$periods = array();
+		$layout = $this->getMock('IScheduleLayout');
+
+		$this->scheduleRepository->expects($this->once())
+			->method('GetLayout')
+			->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
+			->will($this->returnValue($layout));
+
+		$layout->expects($this->once())
+			->method('GetLayout')
+			->with($this->equalTo($dateInUserTimezone))
+			->will($this->returnValue($periods));
+
+		$this->initializer->expects($this->once())
+			->method('SetDates')
+			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($periods));
+
+
+		$binder = new ReservationDateBinder($this->scheduleRepository);
+		$binder->Bind($this->initializer);
+	}
 }
 
 ?>
