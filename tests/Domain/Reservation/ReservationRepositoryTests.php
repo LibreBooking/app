@@ -61,6 +61,7 @@ class ReservationRepositoryTests extends TestBase
 		$participantIds = array(2, 9);
 		$inviteeIds = array(20, 90);
 		$accessory = new ReservationAccessory(928, 3);
+		$attribute = new AttributeValue(1, 'value');
 
 		$startUtc = Date::Parse($startCst, 'CST')->ToUtc();
 		$endUtc = Date::Parse($endCst, 'CST')->ToUtc();
@@ -89,6 +90,7 @@ class ReservationRepositoryTests extends TestBase
 		$reservation->ChangeParticipants($participantIds);
 		$reservation->ChangeInvitees($inviteeIds);
 		$reservation->AddAccessory($accessory);
+		$reservation->AddAttributeValue($attribute);
 
 		$this->repository->Add($reservation);
 
@@ -119,6 +121,7 @@ class ReservationRepositoryTests extends TestBase
 			$levelId);
 
 		$insertReservationAccessory = new AddReservationAccessoryCommand($accessory->AccessoryId, $accessory->QuantityReserved, $seriesId);
+		$insertReservationAttribute = new AddAttributeValueCommand($attribute->AttributeId, $attribute->Value, $seriesId, CustomAttributeCategory::RESERVATION);
 
 		$insertParticipant1 = $this->GetAddUserCommand($reservationId, $participantIds[0], ReservationUserLevel::PARTICIPANT);
 		$insertParticipant2 = $this->GetAddUserCommand($reservationId, $participantIds[1], ReservationUserLevel::PARTICIPANT);
@@ -126,7 +129,7 @@ class ReservationRepositoryTests extends TestBase
 		$insertInvitee1 = $this->GetAddUserCommand($reservationId, $inviteeIds[0], ReservationUserLevel::INVITEE);
 		$insertInvitee2 = $this->GetAddUserCommand($reservationId, $inviteeIds[1], ReservationUserLevel::INVITEE);
 
-		$this->assertEquals(9, count($this->db->_Commands));
+		$this->assertEquals(10, count($this->db->_Commands));
 
 		$this->assertEquals($insertReservationSeries, $this->db->_Commands[0]);
 		$this->assertEquals($insertReservationResource, $this->db->_Commands[1]);
@@ -137,6 +140,7 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($insertInvitee1));
 		$this->assertTrue($this->db->ContainsCommand($insertInvitee2));
 		$this->assertTrue($this->db->ContainsCommand($insertReservationAccessory));
+		$this->assertTrue($this->db->ContainsCommand($insertReservationAttribute));
 	}
 
 	public function testRepeatedDatesAreSaved()

@@ -52,6 +52,10 @@ class Queries
 			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values)
 		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values)';
 
+	const ADD_ATTRIBUTE_VALUE =
+			'INSERT INTO custom_attribute_values (custom_attribute_id, attribute_category, attribute_value, entity_id)
+			VALUES (@custom_attribute_id, @attribute_category, @attribute_value, @entity_id)';
+
     const ADD_BLACKOUT_INSTANCE =
             'INSERT INTO blackout_instances (start_date, end_date, blackout_series_id)
 		VALUES (@startDate, @endDate, @seriesid)';

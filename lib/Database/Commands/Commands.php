@@ -74,6 +74,18 @@ class AddAttributeCommand extends SqlCommand
 	}
 }
 
+class AddAttributeValueCommand extends SqlCommand
+{
+	public function __construct($attributeId, $value, $entityId, $attributeCategory)
+	{
+		parent::__construct(Queries::ADD_ATTRIBUTE_VALUE);
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_VALUE, $value));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategory));
+	}
+}
+
 class AddBlackoutCommand extends SqlCommand
 {
     public function __construct($userId, $resourceId, $title)

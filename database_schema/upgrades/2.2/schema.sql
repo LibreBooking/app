@@ -11,3 +11,14 @@ CREATE TABLE `custom_attributes` (
   INDEX (`attribute_category`),
   INDEX (`display_label`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `custom_attribute_values`;
+CREATE TABLE `custom_attribute_values` (
+ `custom_attribute_value_id` mediumint(8) unsigned NOT NULL auto_increment,
+ `custom_attribute_id` mediumint(8) unsigned NOT NULL,
+ `attribute_value` text NOT NULL,
+ `entity_id` mediumint(8) unsigned NOT NULL,
+ `attribute_category`  tinyint(2) unsigned NOT NULL,
+  PRIMARY KEY (`custom_attribute_value_id`),
+  INDEX `entity_category` (`entity_id`, `attribute_category`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;

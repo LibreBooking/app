@@ -133,6 +133,14 @@ class ReservationRepository implements IReservationRepository
             $database->Execute($insertAccessory);
         }
 
+		foreach ($reservationSeries->AttributeValues() as $attribute)
+        {
+            $insertAttributeValue = new AddAttributeValueCommand($attribute->AttributeId, $attribute->Value, $reservationSeriesId, CustomAttributeCategory::RESERVATION);
+            $database->Execute($insertAttributeValue);
+        }
+
+
+
         return $reservationSeriesId;
     }
 

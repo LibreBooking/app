@@ -34,12 +34,15 @@ class ParameterNames
     const ANNOUNCEMENT_TEXT = '@text';
     const ANNOUNCEMENT_PRIORITY = '@priority';
 
+	const ATTRIBUTE_ID = '@custom_attribute_id';
 	const ATTRIBUTE_CATEGORY = '@attribute_category';
 	const ATTRIBUTE_LABEL = '@display_label';
 	const ATTRIBUTE_POSSIBLE_VALUES = '@possible_values';
 	const ATTRIBUTE_REGEX = '@validation_regex';
 	const ATTRIBUTE_REQUIRED = '@is_required';
 	const ATTRIBUTE_TYPE = '@display_type';
+	const ATTRIBUTE_VALUE = '@attribute_value';
+	const ATTRIBUTE_ENTITY_ID = '@entity_id';
 
     const CURRENT_DATE = '@current_date';
     const CURRENT_SERIES_ID = '@currentSeriesId';

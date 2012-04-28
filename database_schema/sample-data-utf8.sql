@@ -34,5 +34,5 @@ insert into user_resource_permissions values (1,1,1),(1,2,1),(2,1,1),(2,2,1);
 
 truncate table custom_attributes;
 insert into custom_attributes(`custom_attribute_id`,`display_label`,`display_type`,`attribute_category`,`validation_regex`,`is_required`,`possible_values`) VALUES
-(1, 'Test Number', 1, 1, '/\d+/', true, '1,2,4'),
-(2, 'Test String', 1, 1, '/\s[1,50]/', false, '');
+(1, 'Test Number', 1, 1, null, true, null),
+(2, 'Test String', 1, 1, null, false, null);
