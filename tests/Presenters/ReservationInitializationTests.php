@@ -72,7 +72,7 @@ class ReservationInitializationTests extends TestBase
 		$initializer->Initialize();
 	}
 
-	public function testBindsToClosetPeriod()
+	public function testBindsToClosestPeriod()
 	{
 		$page = $this->getMock('INewReservationPage');
 		$binder = $this->getMock('IReservationComponentBinder');

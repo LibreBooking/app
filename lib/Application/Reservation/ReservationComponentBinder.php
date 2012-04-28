@@ -142,4 +142,84 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		return $bindableResourceData;
 	}
 }
+
+interface IExistingReservationComponentBinder
+{
+	public function Bind(IReservationComponentInitializer $initializer, IExistingReservationPage $page, ReservationView $reservationView);
+}
+
+class ReservationDetailsBinder implements IExistingReservationComponentBinder
+{
+	/**
+	 * @var IReservationAuthorization
+	 */
+	private $reservationAuthorization;
+
+	public function __construct(IReservationAuthorization $reservationAuthorization)
+	{
+		$this->reservationAuthorization = $reservationAuthorization;
+	}
+
+	public function Bind(IReservationComponentInitializer $initializer, IExistingReservationPage $page, ReservationView $reservationView)
+	{
+		$page->SetAdditionalResources($reservationView->AdditionalResourceIds);
+		$page->SetTitle($reservationView->Title);
+		$page->SetDescription($reservationView->Description);
+		$page->SetReferenceNumber($reservationView->ReferenceNumber);
+		$page->SetReservationId($reservationView->ReservationId);
+
+		$page->SetIsRecurring($reservationView->IsRecurring());
+		$page->SetRepeatType($reservationView->RepeatType);
+		$page->SetRepeatInterval($reservationView->RepeatInterval);
+		$page->SetRepeatMonthlyType($reservationView->RepeatMonthlyType);
+
+		if ($reservationView->RepeatTerminationDate != null)
+		{
+			$page->SetRepeatTerminationDate($reservationView->RepeatTerminationDate->ToTimezone($initializer->GetTimezone()));
+		}
+		$page->SetRepeatWeekdays($reservationView->RepeatWeekdays);
+
+
+		$participants = $reservationView->Participants;
+		$invitees = $reservationView->Invitees;
+
+		$page->SetParticipants($participants);
+		$page->SetInvitees($invitees);
+		$page->SetAccessories($reservationView->Accessories);
+
+		$currentUser = $initializer->CurrentUser();
+
+		$page->SetCurrentUserParticipating($this->IsCurrentUserParticipating($reservationView, $currentUser->UserId));
+		$page->SetCurrentUserInvited($this->IsCurrentUserInvited($reservationView, $currentUser->UserId));
+
+		$page->SetIsEditable($this->reservationAuthorization->CanEdit($reservationView, $currentUser));
+		$page->SetIsApprovable($this->reservationAuthorization->CanApprove($reservationView, $currentUser));
+	}
+
+	private function IsCurrentUserParticipating(ReservationView $reservationView, $currentUserId)
+	{
+		/** @var $user ReservationUserView */
+		foreach ($reservationView->Participants as $user)
+		{
+			if ($user->UserId == $currentUserId)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private function IsCurrentUserInvited(ReservationView $reservationView, $currentUserId)
+	{
+		/** @var $user ReservationUserView */
+		foreach ($reservationView->Invitees as $user)
+		{
+			if ($user->UserId == $currentUserId)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+}
 ?>

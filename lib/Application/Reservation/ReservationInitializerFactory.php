@@ -17,37 +17,35 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
- 
 
 class ReservationInitializerFactory implements IReservationInitializerFactory
 {
 	/**
-	 * @var IScheduleUserRepository
+	 * @var ReservationUserBinder
 	 */
-	private $_scheduleUserRepository;
+	private $userBinder;
 
 	/**
-	 * @var IScheduleRepository
+	 * @var ReservationDateBinder
 	 */
-	private $_scheduleRepository;
+	private $dateBinder;
 
 	/**
-	 * @var IUserRepository
+	 * @var ReservationResourceBinder
 	 */
-	private $_userRepository;
+	private $resourceBinder;
 
 	/**
-	 * @var IResourceService
+	 * @var ReservationDetailsBinder
 	 */
-	private $_resourceService;
+	private $reservationBinder;
 
 	/**
-	 * @var IReservationAuthorization
+	 * @var UserSession
 	 */
-	private $_reservationAuthorization;
+	private $user;
 
 	public function __construct(
-		IScheduleUserRepository $scheduleUserRepository,
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
@@ -55,33 +53,32 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 		UserSession $userSession
 	)
 	{
-		$this->_scheduleUserRepository = $scheduleUserRepository;
-		$this->_scheduleRepository = $scheduleRepository;
-		$this->_userRepository = $userRepository;
-		$this->_resourceService = $resourceService;
-		$this->_reservationAuthorization = $reservationAuthorization;
-		$this->_user = $userSession;
+		$this->user = $userSession;
+
+		$this->userBinder = new ReservationUserBinder($userRepository, $reservationAuthorization);
+		$this->dateBinder = new ReservationDateBinder($scheduleRepository);
+		$this->resourceBinder = new ReservationResourceBinder($resourceService);
+		$this->reservationBinder = new ReservationDetailsBinder($reservationAuthorization);
 	}
 
 	public function GetNewInitializer(INewReservationPage $page)
 	{
 		return new NewReservationInitializer($page,
-			$this->_scheduleRepository,
-			$this->_userRepository,
-			$this->_resourceService,
-			$this->_reservationAuthorization,
-			$this->_user);
+			$this->userBinder,
+			$this->dateBinder,
+			$this->resourceBinder,
+			$this->user);
 	}
 
 	public function GetExisitingInitializer(IExistingReservationPage $page, ReservationView $reservationView)
 	{
 		return new ExistingReservationInitializer($page,
-			$this->_scheduleRepository,
-			$this->_userRepository,
-			$this->_resourceService,
+			$this->userBinder,
+			$this->dateBinder,
+			$this->resourceBinder,
+			$this->reservationBinder,
 			$reservationView,
-			$this->_reservationAuthorization,
-			$this->_user);
+			$this->user);
 	}
 }
 

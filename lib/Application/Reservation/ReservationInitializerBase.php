@@ -183,19 +183,16 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 
 	protected function BindUser()
 	{
-		//$userBinder = new ReservationUserBinder($this->userRepository, $this->reservationAuthorization);
 		$this->userBinder->Bind($this);
 	}
 
 	protected function BindResourceAndAccessories()
 	{
-		//$resourceBinder = new ReservationResourceBinder($this->resourceService);
 		$this->resourceBinder->Bind($this);
 	}
 
 	protected function BindDates()
 	{
-		//$dateBinder = new ReservationDateBinder($this->scheduleRepository);
 		$this->dateBinder->Bind($this);
 	}
 
