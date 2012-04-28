@@ -16,11 +16,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{translate key=ReservationFailed}
-<ul>
-{foreach from=$Errors item=each}
-	<li>{$each}</li>
-{/foreach}
-</ul>
+<div>
+	{html_image src="dialog-warning.png"}<br/>
 
-<input type="button" id="btnSaveFailed" value="{translate key='CorrectErrors'}" class="button" />
+	{translate key=ReservationFailed}
+	<ul>
+	{foreach from=$Errors item=each}
+		<li>{$each}</li>
+	{/foreach}
+	</ul>
+
+	<input type="button" id="btnSaveFailed" value="{translate key='CorrectErrors'}" class="button" />
+</div>

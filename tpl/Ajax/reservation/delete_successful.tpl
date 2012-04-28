@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div style="text-align:center;">
+<div>
 	<div>{translate key=ReservationRemoved}</div>
 	
 	<input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="button" />

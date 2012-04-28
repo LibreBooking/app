@@ -1,16 +1,13 @@
-#additionalResources
-{
-	display:inline;
+#additionalResources {
+	display: inline;
 }
 
-#additionalResources p
-{
-	margin:0px;
+#additionalResources p {
+	margin: 0px;
 	font-style: italic;
 }
 
-.durationText
-{
+.durationText {
 	font-size: 13px;
 	font-weight: bold;
 	display: inline;
@@ -23,13 +20,13 @@
 }
 
 #reservationbox .input {
-        font-size: 18px;
-        width: 98%;
-        padding: 3px;
-        margin: 2px 0 5px 0;
-        border: 1px solid #e5e5e5;
-        background: #fbfbfb;
-        color: #777;
+	font-size: 18px;
+	width: 98%;
+	padding: 3px;
+	margin: 2px 0 5px 0;
+	border: 1px solid #e5e5e5;
+	background: #fbfbfb;
+	color: #777;
 }
 
 #reservationbox.readonly label {
@@ -52,14 +49,12 @@
 	font-size: 15px;
 }
 
-#reservationDetails
-{
+#reservationDetails {
 	float: left;
 	width: 50%;
 }
 
-#reservationParticipation
-{
+#reservationParticipation {
 	float: right;
 	width: 45%;
 	border-left: solid 1px #ccc;
@@ -67,8 +62,7 @@
 	height: 100%;
 }
 
-#participantList, #inviteeList
-{
+#participantList, #inviteeList {
 	height: 100px;
 	width: 100%;
 	overflow-y: auto;
@@ -80,12 +74,27 @@
 	overflow: auto;
 }
 
-#accessories p
-{
+#accessories p {
 	margin: 1px;
 }
 
-#reservationbox a
-{
+#reservationbox a {
 	font-size: 12pt;
+}
+
+#dialogSave ul {
+	list-style: none;
+}
+
+#dialogSave h2 {
+	font-size: 18pt;
+}
+
+#dialogSave div {
+	font-size: 16pt;
+	text-align: center;
+}
+
+#dialogSave input, #dialogSave button {
+	font-size: 11pt;
 }
