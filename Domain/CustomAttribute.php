@@ -90,6 +90,14 @@ class CustomAttribute
 	}
 
 	/**
+	 * @return array|string[]
+	 */
+	public function PossibleValueList()
+	{
+		return explode(',', $this->possibleValues);
+	}
+
+	/**
 	 * @return string
 	 */
 	public function Regex()
@@ -139,7 +147,10 @@ class CustomAttribute
 		$this->category = $category;
 		$this->regex = $regex;
 		$this->required = $required;
-		$this->possibleValues = $possibleValues;
+		if (!empty($possibleValues))
+		{
+			$this->possibleValues = preg_replace('/\s*,\s*/', ',',trim($possibleValues));
+		}
 	}
 
 	/**
@@ -181,7 +192,13 @@ class CustomAttribute
 	 */
 	public function SatisifiesRequired($value)
 	{
-		return false;
+		if (!$this->required)
+		{
+			return true;
+		}
+
+		$trimmed = trim($value);
+		return !empty($trimmed);
 	}
 
 	/**
@@ -190,9 +207,19 @@ class CustomAttribute
 	 */
 	public function SatisifiesConstraint($value)
 	{
-		return false;
-	}
+		if (!empty($this->regex))
+		{
+			return preg_match($this->regex, $value) > 0;
+		}
 
+		if (!empty($this->possibleValues))
+		{
+			$list = $this->PossibleValueList();
+			return in_array($value, $list);
+		}
+
+		return true;
+	}
 }
 
 ?>

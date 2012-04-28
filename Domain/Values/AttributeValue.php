@@ -37,7 +37,7 @@ class AttributeValue
 	public function __construct($attributeId, $value)
 	{
 		$this->AttributeId = $attributeId;
-		$this->Value = $value;
+		$this->Value = trim($value);
 	}
 }
 

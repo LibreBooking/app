@@ -71,6 +71,7 @@ class AllTests
         $suite->addTest(Application_Resource_Suite::suite());
         
         $suite->addTest(Domain_Announcement_Suite::suite());
+        $suite->addTest(Domain_Attribute_Suite::suite());
         $suite->addTest(Domain_Reservation_Suite::suite());
         $suite->addTest(Domain_Resource_Suite::suite());
         $suite->addTest(Domain_Schedule_Suite::suite());
