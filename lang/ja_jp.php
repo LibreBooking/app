@@ -92,7 +92,7 @@ class ja_jp extends en_us
         $strings['PasswordConfirmation'] = 'パスワード確認';
         $strings['DefaultPage'] = 'デフォルトページ';
         $strings['MyCalendar'] = 'マイ カレンダー';
-        $strings['ScheduleCalendar'] = 'Schedule Calendar';
+        $strings['ScheduleCalendar'] = 'スケジュール カレンダー';
         $strings['Registration'] = '登録(Registration)';
         $strings['NoAnnouncements'] = 'お知らせはありません';
         $strings['Announcements'] = 'お知らせ';
@@ -185,7 +185,7 @@ class ja_jp extends en_us
         $strings['Duration'] = '期間';
         $strings['Active'] = 'アクティブ';
         $strings['Inactive'] = 'インアクティブ';
-        $strings['ResetPassword'] = 'パスワードをリセット';
+ 
         $strings['LastLogin'] = '直近のログイン';
         $strings['Search'] = '検索';
         $strings['ResourcePermissions'] = 'リソース利用権限';
@@ -362,6 +362,7 @@ class ja_jp extends en_us
         $strings['Private'] = 'プライベート';
         $strings['Accept'] = '受理';
         $strings['Decline'] = '辞退';
+        $strings['ShowFullWeek'] = '1週間すべてを表示';
         // End Strings
 
         // Errors
@@ -416,6 +417,9 @@ class ja_jp extends en_us
         $strings['ForgotPassword'] = 'パスワードを忘れました';
         $strings['NotificationPreferences'] = '通知設定';
         $strings['ManageAnnouncements'] = 'お知らせ';
+        $strings['Responsibilities'] = '責任';
+        $strings['GroupReservations'] = 'グループ予約';
+        $strings['ResourceReservations'] = 'リソース予約';
         // End Page Titles
 
         // Day representations
@@ -439,7 +443,7 @@ class ja_jp extends en_us
         $strings['ReservationApprovedSubject'] = '予約が承認されました';
         $strings['ReservationCreatedSubject'] = '予約されました';
         $strings['ReservationUpdatedSubject'] = '予約が変更されました';
-        $strings['ReservationDeletedSubject'] = 'Your Reservation Was Removed';
+        $strings['ReservationDeletedSubject'] = '予約は取り消されました';
         $strings['ReservationCreatedAdminSubject'] = 'Notification: 予約作成';
         $strings['ReservationUpdatedAdminSubject'] = 'Notification: 予約変更';
         $strings['ReservationDeleteAdminSubject'] = 'Notification: 予約削除';
