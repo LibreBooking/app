@@ -36,29 +36,36 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 	private $resourceBinder;
 
 	/**
-	 * @var ReservationDetailsBinder
-	 */
-	private $reservationBinder;
-
-	/**
 	 * @var UserSession
 	 */
 	private $user;
+
+	/**
+	 * @var IReservationAuthorization
+	 */
+	private $reservationAuthorization;
+
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $attributeRepository;
 
 	public function __construct(
 		IScheduleRepository $scheduleRepository,
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
 		IReservationAuthorization $reservationAuthorization,
+		IAttributeRepository $attributeRepository,
 		UserSession $userSession
 	)
 	{
 		$this->user = $userSession;
+		$this->reservationAuthorization = $reservationAuthorization;
+		$this->attributeRepository = $attributeRepository;
 
 		$this->userBinder = new ReservationUserBinder($userRepository, $reservationAuthorization);
 		$this->dateBinder = new ReservationDateBinder($scheduleRepository);
 		$this->resourceBinder = new ReservationResourceBinder($resourceService);
-		$this->reservationBinder = new ReservationDetailsBinder($reservationAuthorization);
 	}
 
 	public function GetNewInitializer(INewReservationPage $page)
@@ -67,6 +74,7 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 			$this->userBinder,
 			$this->dateBinder,
 			$this->resourceBinder,
+			new ReservationCustomAttributeBinder($this->attributeRepository),
 			$this->user);
 	}
 
@@ -76,7 +84,8 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 			$this->userBinder,
 			$this->dateBinder,
 			$this->resourceBinder,
-			$this->reservationBinder,
+			new ReservationDetailsBinder($this->reservationAuthorization, $page, $reservationView),
+			new ReservationCustomAttributeValueBinder($this->attributeRepository, $page, $reservationView),
 			$reservationView,
 			$this->user);
 	}

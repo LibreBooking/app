@@ -199,6 +199,19 @@ class ReservationSeries
 	{
 		return $this->_accessories;
 	}
+
+	/**
+	 * @var array|AttributeValue[]
+	 */
+	protected $_attributeValues = array();
+
+	/**
+	 * @return array|AttributeValue[]
+	 */
+	public function AttributeValues()
+	{
+		return $this->_attributeValues;
+	}
 	
 	/**
 	 * @var Date
@@ -456,6 +469,28 @@ class ReservationSeries
 		$this->_accessories[] = $accessory;
 	}
 
+	/**
+	 * @param AttributeValue $attributeValue
+	 */
+	public function AddAttributeValue(AttributeValue $attributeValue)
+	{
+		$this->_attributeValues[$attributeValue->AttributeId] = $attributeValue;
+	}
+
+	/**
+	 * @param $customAttributeId
+	 * @return mixed
+	 */
+	public function GetAttributeValue($customAttributeId)
+	{
+		if (array_key_exists($customAttributeId, $this->_attributeValues))
+		{
+			return $this->_attributeValues[$customAttributeId]->Value;
+		}
+
+		return null;
+	}
+
 	public function IsMarkedForDelete($reservationId)
 	{
 		return false;
@@ -465,5 +500,7 @@ class ReservationSeries
 	{
 		return false;
 	}
+
+
 }
 ?>

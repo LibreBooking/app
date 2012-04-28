@@ -83,7 +83,11 @@
 }
 
 #dialogSave ul {
-	list-style: none;
+	text-align: left;
+}
+
+#dialogSave .error {
+	background-image: none;
 }
 
 #dialogSave h2 {

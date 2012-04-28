@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 interface IReservationComponentBinder
 {
-	function Bind(IReservationComponentInitializer $initializer);
+	public function Bind(IReservationComponentInitializer $initializer);
 }
 
 class ReservationDateBinder implements IReservationComponentBinder
@@ -102,6 +102,7 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	{
 		$this->resourceService = $resourceService;
 	}
+
 	public function Bind(IReservationComponentInitializer $initializer)
 	{
 		$requestedScheduleId = $initializer->GetScheduleId();
@@ -143,63 +144,102 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	}
 }
 
-interface IExistingReservationComponentBinder
+class ReservationCustomAttributeBinder implements IReservationComponentBinder
 {
-	public function Bind(IReservationComponentInitializer $initializer, IExistingReservationPage $page, ReservationView $reservationView);
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $repository;
+
+	public function __construct(IAttributeRepository $repository)
+	{
+		$this->repository = $repository;
+	}
+
+	public function Bind(IReservationComponentInitializer $initializer)
+	{
+		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
+
+		foreach ($attributes as $attribute)
+		{
+			$initializer->AddAttribute($attribute, null);
+		}
+	}
 }
 
-class ReservationDetailsBinder implements IExistingReservationComponentBinder
+class ReservationCustomAttributeValueBinder implements IReservationComponentBinder
+{
+
+	public function Bind(IReservationComponentInitializer $initializer)
+	{
+		// TODO: Implement Bind() method.
+	}
+}
+
+class ReservationDetailsBinder implements IReservationComponentBinder
 {
 	/**
 	 * @var IReservationAuthorization
 	 */
 	private $reservationAuthorization;
 
-	public function __construct(IReservationAuthorization $reservationAuthorization)
+	/**
+	 * @var IExistingReservationPage
+	 */
+	private $page;
+
+	/**
+	 * @var ReservationView
+	 */
+	private $reservationView;
+
+	public function __construct(IReservationAuthorization $reservationAuthorization, IExistingReservationPage $page, ReservationView $reservationView)
 	{
 		$this->reservationAuthorization = $reservationAuthorization;
+		$this->page = $page;
+		$this->reservationView = $reservationView;
 	}
 
-	public function Bind(IReservationComponentInitializer $initializer, IExistingReservationPage $page, ReservationView $reservationView)
+	public function Bind(IReservationComponentInitializer $initializer)
 	{
-		$page->SetAdditionalResources($reservationView->AdditionalResourceIds);
-		$page->SetTitle($reservationView->Title);
-		$page->SetDescription($reservationView->Description);
-		$page->SetReferenceNumber($reservationView->ReferenceNumber);
-		$page->SetReservationId($reservationView->ReservationId);
+		$this->page->SetAdditionalResources($this->reservationView->AdditionalResourceIds);
+		$this->page->SetTitle($this->reservationView->Title);
+		$this->page->SetDescription($this->reservationView->Description);
+		$this->page->SetReferenceNumber($this->reservationView->ReferenceNumber);
+		$this->page->SetReservationId($this->reservationView->ReservationId);
 
-		$page->SetIsRecurring($reservationView->IsRecurring());
-		$page->SetRepeatType($reservationView->RepeatType);
-		$page->SetRepeatInterval($reservationView->RepeatInterval);
-		$page->SetRepeatMonthlyType($reservationView->RepeatMonthlyType);
+		$this->page->SetIsRecurring($this->reservationView->IsRecurring());
+		$this->page->SetRepeatType($this->reservationView->RepeatType);
+		$this->page->SetRepeatInterval($this->reservationView->RepeatInterval);
+		$this->page->SetRepeatMonthlyType($this->reservationView->RepeatMonthlyType);
 
-		if ($reservationView->RepeatTerminationDate != null)
+		if ($this->reservationView->RepeatTerminationDate != null)
 		{
-			$page->SetRepeatTerminationDate($reservationView->RepeatTerminationDate->ToTimezone($initializer->GetTimezone()));
+			$this->page->SetRepeatTerminationDate($this->reservationView->RepeatTerminationDate->ToTimezone($initializer->GetTimezone()));
 		}
-		$page->SetRepeatWeekdays($reservationView->RepeatWeekdays);
+		$this->page->SetRepeatWeekdays($this->reservationView->RepeatWeekdays);
 
 
-		$participants = $reservationView->Participants;
-		$invitees = $reservationView->Invitees;
+		$participants = $this->reservationView->Participants;
+		$invitees = $this->reservationView->Invitees;
 
-		$page->SetParticipants($participants);
-		$page->SetInvitees($invitees);
-		$page->SetAccessories($reservationView->Accessories);
+		$this->page->SetParticipants($participants);
+		$this->page->SetInvitees($invitees);
+		$this->page->SetAccessories($this->reservationView->Accessories);
 
 		$currentUser = $initializer->CurrentUser();
 
-		$page->SetCurrentUserParticipating($this->IsCurrentUserParticipating($reservationView, $currentUser->UserId));
-		$page->SetCurrentUserInvited($this->IsCurrentUserInvited($reservationView, $currentUser->UserId));
+		$this->page->SetCurrentUserParticipating($this->IsCurrentUserParticipating($currentUser->UserId));
+		$this->page->SetCurrentUserInvited($this->IsCurrentUserInvited($currentUser->UserId));
 
-		$page->SetIsEditable($this->reservationAuthorization->CanEdit($reservationView, $currentUser));
-		$page->SetIsApprovable($this->reservationAuthorization->CanApprove($reservationView, $currentUser));
+		$this->page->SetIsEditable($this->reservationAuthorization->CanEdit($this->reservationView, $currentUser));
+		$this->page->SetIsApprovable($this->reservationAuthorization->CanApprove($this->reservationView, $currentUser));
 	}
 
-	private function IsCurrentUserParticipating(ReservationView $reservationView, $currentUserId)
+	private function IsCurrentUserParticipating($currentUserId)
 	{
 		/** @var $user ReservationUserView */
-		foreach ($reservationView->Participants as $user)
+		foreach ($this->reservationView->Participants as $user)
 		{
 			if ($user->UserId == $currentUserId)
 			{
@@ -209,10 +249,10 @@ class ReservationDetailsBinder implements IExistingReservationComponentBinder
 		return false;
 	}
 
-	private function IsCurrentUserInvited(ReservationView $reservationView, $currentUserId)
+	private function IsCurrentUserInvited($currentUserId)
 	{
 		/** @var $user ReservationUserView */
-		foreach ($reservationView->Invitees as $user)
+		foreach ($this->reservationView->Invitees as $user)
 		{
 			if ($user->UserId == $currentUserId)
 			{

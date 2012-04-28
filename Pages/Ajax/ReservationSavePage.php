@@ -111,9 +111,15 @@ interface IReservationSavePage extends IReservationSaveResultsPage
 
 	/**
 	 * @abstract
-	 * @return AccessoryFormElement[]
+	 * @return AccessoryFormElement[]|array
 	 */
 	public function GetAccessories();
+
+	/**
+	 * @abstract
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetAttributes();
 }
 
 class ReservationSavePage extends SecurePage implements IReservationSavePage
@@ -365,6 +371,26 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 
 		return array();
 	}
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetAttributes()
+	{
+		$attributes = $this->GetForm(FormKeys::ATTRIBUTE_PREFIX);
+		if (is_array($attributes)) {
+			$af = array();
+
+			foreach ($attributes as $id => $value)
+			{
+				$af[] = new AttributeFormElement($id, $value);
+			}
+
+			return $af;
+		}
+
+		return array();
+	}
 }
 
 class AccessoryFormElement
@@ -385,4 +411,22 @@ class AccessoryFormElement
 	}
 }
 
+class AttributeFormElement
+{
+	/**
+	 * @var int
+	 */
+	public $Id;
+
+	/**
+	 * @var mixed
+	 */
+	public $Value;
+
+	public function __construct($id, $value)
+	{
+		$this->Id = $id;
+		$this->Value = $value;
+	}
+}
 ?>

@@ -536,6 +536,15 @@ class GetAnnouncementByIdCommand extends SqlCommand
     }
 }
 
+class GetAttributesByCategoryCommand extends SqlCommand
+{
+	public function __construct($attributeCategoryId)
+	    {
+	        parent::__construct(Queries::GET_ATTRIBUTES_BY_CATEGORY);
+	        $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
+	    }
+}
+
 class GetAccessoryListCommand extends SqlCommand
 {
     public function __construct(Date $startDate, Date $endDate)

@@ -99,6 +99,7 @@ class ReservationSavePresenterTests extends TestBase
 		$endTime = $this->page->GetEndTime();
 		$additionalResources = $this->page->GetResources();
 		$pageAccessories = $this->page->GetAccessories();
+		$pageAttributes = $this->page->GetAttributes();
 
 		$repeatOptions = $this->page->GetRepeatOptions();
 
@@ -114,7 +115,13 @@ class ReservationSavePresenterTests extends TestBase
 		{
 			$accessories[] = new ReservationAccessory($pa->Id, $pa->Quantity);
 		}
-		
+
+		$expectedAttributes = array();
+		foreach ($pageAttributes as $attr)
+		{
+			$expectedAttributes[] = new AttributeValue($attr->Id, $attr->Value);
+		}
+
 		$this->resourceRepository->expects($this->at(0))
 			->method('LoadById')
 			->with($this->equalTo($resourceId))
@@ -143,6 +150,7 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals($participants, $actualReservation->CurrentInstance()->AddedParticipants());
 		$this->assertEquals($invitees, $actualReservation->CurrentInstance()->AddedInvitees());
 		$this->assertEquals($accessories, $actualReservation->Accessories());
+		$this->assertTrue(in_array($expectedAttributes[0], $actualReservation->AttributeValues()));
 	}
 
 	public function testHandlingReservationCreationDelegatesToHandler()
@@ -187,6 +195,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $participants = array(10, 20, 40);
 	public $invitees = array(11, 21, 41);
 	public $accessories = array();
+	public $attributes = array();
 
 	public function __construct()
 	{
@@ -196,6 +205,7 @@ class FakeReservationSavePage implements IReservationSavePage
 		$this->repeatTerminationDate = $now->AddDays(60)->Format('Y-m-d');
 		$this->repeatOptions = new RepeatNone();
 		$this->accessories = array(new FakeAccessoryFormElement(1, 2));
+		$this->attributes = array(new AttributeFormElement(1, "something"));
 	}
 	
 	public function GetUserId()
@@ -314,6 +324,14 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetAccessories()
 	{
 		return $this->accessories;
+	}
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetAttributes()
+	{
+		return $this->attributes;
 	}
 }
 

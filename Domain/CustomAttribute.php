@@ -31,6 +31,11 @@ class CustomAttributeCategory
 class CustomAttribute
 {
 	/**
+	 * @var int
+	 */
+	protected $id;
+
+	/**
 	 * @var string
 	 */
 	protected $label;
@@ -59,6 +64,14 @@ class CustomAttribute
 	 * @var string
 	 */
 	protected $possibleValues;
+
+	/**
+	 * @return int
+	 */
+	public function Id()
+	{
+		return $this->id;
+	}
 
 	/**
 	 * @return string
@@ -109,6 +122,27 @@ class CustomAttribute
 	}
 
 	/**
+	 * @param int $id
+	 * @param string $label
+	 * @param CustomAttributeTypes|int $type
+	 * @param CustomAttributeCategory|int $category
+	 * @param string $regex
+	 * @param bool $required
+	 * @param string $possibleValues
+	 * @return CustomAttribute
+	 */
+	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues)
+	{
+		$this->id = $id;
+		$this->label = $label;
+		$this->type = $type;
+		$this->category = $category;
+		$this->regex = $regex;
+		$this->required = $required;
+		$this->possibleValues = $possibleValues;
+	}
+
+	/**
 	 * @static
 	 * @param string $label
 	 * @param CustomAttributeTypes|int $type
@@ -120,16 +154,45 @@ class CustomAttribute
 	 */
 	public static function Create($label, $type, $category, $regex, $required, $possibleValues)
 	{
-		$attribute = new CustomAttribute();
-		$attribute->label = $label;
-		$attribute->type = $type;
-		$attribute->category = $category;
-		$attribute->regex = $regex;
-		$attribute->required = $required;
-		$attribute->possibleValues = $possibleValues;
-
-		return $attribute;
+		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues);
 	}
+
+	/**
+	 * @static
+	 * @param $row array
+	 * @return Attribute
+	 */
+	public static function FromRow($row)
+	{
+		return new CustomAttribute(
+			$row[ColumnNames::ATTRIBUTE_ID],
+			$row[ColumnNames::ATTRIBUTE_LABEL],
+			$row[ColumnNames::ATTRIBUTE_TYPE],
+			$row[ColumnNames::ATTRIBUTE_CATEGORY],
+			$row[ColumnNames::ATTRIBUTE_CONSTRAINT],
+			$row[ColumnNames::ATTRIBUTE_REQUIRED],
+			$row[ColumnNames::ATTRIBUTE_POSSIBLE_VALUES]
+		);
+	}
+
+	/**
+	 * @param $value mixed
+	 * @return bool
+	 */
+	public function SatisifiesRequired($value)
+	{
+		return false;
+	}
+
+	/**
+	 * @param $value mixed
+	 * @return bool
+	 */
+	public function SatisifiesConstraint($value)
+	{
+		return false;
+	}
+
 }
 
 ?>

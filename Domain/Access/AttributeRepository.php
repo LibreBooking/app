@@ -29,6 +29,12 @@ interface IAttributeRepository
 	 */
 	public function Add(CustomAttribute $attribute);
 
+	/**
+	 * @abstract
+	 * @param int|CustomAttributeCategory $category
+	 * @return array|CustomAttribute[]
+	 */
+	public function GetByCategory($category);
 }
 
 class AttributeRepository implements IAttributeRepository
@@ -39,7 +45,22 @@ class AttributeRepository implements IAttributeRepository
 			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues()));
 	}
 
+	/**
+	 * @param int|CustomAttributeCategory $category
+	 * @return array|CustomAttribute[]
+	 */
+	public function GetByCategory($category)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAttributesByCategoryCommand($category));
 
+		$attributes = array();
+		while($row = $reader->GetRow())
+		{
+			$attributes[] = CustomAttribute::FromRow($row);
+		}
+
+		return $attributes;
+	}
 }
 
 ?>

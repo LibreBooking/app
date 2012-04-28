@@ -161,6 +161,15 @@ class ColumnNames
     const BLACKOUT_DESCRIPTION = 'description';
     const BLACKOUT_SERIES_ID = 'blackout_series_id';
 
+	// ATTRIBUTES //
+	const ATTRIBUTE_ID = 'custom_attribute_id';
+	const ATTRIBUTE_LABEL = 'display_label';
+	const ATTRIBUTE_TYPE = 'display_type';
+	const ATTRIBUTE_CATEGORY = 'attribute_category';
+	const ATTRIBUTE_CONSTRAINT = 'validation_regex';
+	const ATTRIBUTE_REQUIRED = 'is_required';
+	const ATTRIBUTE_POSSIBLE_VALUES = 'possible_values';
+
     // dynamic
     const TOTAL = 'total';
     const OWNER_FIRST_NAME = 'ownerFname';

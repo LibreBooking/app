@@ -202,8 +202,6 @@ class Queries
 
     const GET_ACCESSORY_BY_ID = 'SELECT * FROM accessories WHERE accessory_id = @accessoryid';
 
-    const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
-
     const GET_ACCESSORY_LIST =
             'SELECT *, rs.status_id as status_id
 		FROM reservation_instances ri
@@ -306,6 +304,10 @@ class Queries
             'SELECT *
 		FROM users
 		WHERE (0 = @user_statusid OR status_id = @user_statusid)';
+
+	const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
+
+	const GET_ATTRIBUTES_BY_CATEGORY = 'SELECT * FROM custom_attributes WHERE attribute_category = @attribute_category ORDER BY display_label';
 
     const GET_BLACKOUT_LIST =
             'SELECT *

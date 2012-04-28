@@ -23,6 +23,7 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationComponentBinder.php');
 
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
@@ -114,6 +115,13 @@ interface IReservationComponentInitializer
 	 * @param $resource ResourceDto
 	 */
 	public function SetReservationResource($resource);
+
+	/**
+	 * @abstract
+	 * @param $attribute CustomAttribute
+	 * @param $value mixed
+	 */
+	public function AddAttribute($attribute, $value);
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
@@ -139,6 +147,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	protected $resourceBinder;
 
 	/**
+	 * @var IReservationComponentBinder
+	 */
+	protected $attributeBinder;
+
+	/**
 	 * @var int
 	 */
 	protected $currentUserId;
@@ -149,10 +162,16 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	protected $currentUser;
 
 	/**
+	 * @var array|Attribute[]
+	 */
+	private $customAttributes = array();
+
+	/**
 	 * @param $page IReservationPage
 	 * @param $userBinder IReservationComponentBinder
 	 * @param $dateBinder IReservationComponentBinder
 	 * @param $resourceBinder IReservationComponentBinder
+	 * @param $attributeBinder IReservationComponentBinder
 	 * @param $userSession UserSession
 	 */
 	public function __construct(
@@ -160,6 +179,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		IReservationComponentBinder $userBinder,
 		IReservationComponentBinder $dateBinder,
 		IReservationComponentBinder $resourceBinder,
+		IReservationComponentBinder $attributeBinder,
 		UserSession $userSession
 	)
 	{
@@ -167,6 +187,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->userBinder = $userBinder;
 		$this->dateBinder = $dateBinder;
 		$this->resourceBinder = $resourceBinder;
+		$this->attributeBinder = $attributeBinder;
 		$this->currentUser = $userSession;
 		$this->currentUserId = $this->currentUser->UserId;
 	}
@@ -179,6 +200,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->BindDates();
 		$this->BindResourceAndAccessories();
 		$this->BindUser();
+		$this->BindAttributes();
 	}
 
 	protected function BindUser()
@@ -194,6 +216,12 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	protected function BindDates()
 	{
 		$this->dateBinder->Bind($this);
+	}
+
+	protected function BindAttributes()
+	{
+		$this->attributeBinder->Bind($this);
+		$this->basePage->SetCustomAttributes($this->customAttributes);
 	}
 
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
@@ -328,6 +356,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function SetReservationResource($resource)
 	{
 		$this->basePage->SetReservationResource($resource);
+	}
+
+	public function AddAttribute($attribute, $value)
+	{
+		$this->customAttributes[] = new Attribute($attribute, $value);
 	}
 }
 

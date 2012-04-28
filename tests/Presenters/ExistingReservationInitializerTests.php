@@ -54,7 +54,8 @@ class ExistingReservationInitializerTests extends TestBase
 		$userBinder = $this->getMock('IReservationComponentBinder');
 		$dateBinder = $this->getMock('IReservationComponentBinder');
 		$resourceBinder = $this->getMock('IReservationComponentBinder');
-		$reservationBinder = $this->getMock('IExistingReservationComponentBinder');
+		$reservationBinder = $this->getMock('IReservationComponentBinder');
+		$attributeBinder = $this->getMock('IReservationComponentBinder');
 		$page = $this->getMock('IExistingReservationPage');
 
 		$reservationView = new ReservationView();
@@ -65,6 +66,7 @@ class ExistingReservationInitializerTests extends TestBase
 			$dateBinder,
 			$resourceBinder,
 			$reservationBinder,
+			$attributeBinder,
 			$reservationView,
 			$this->fakeUser);
 
@@ -97,7 +99,6 @@ class ExistingReservationInitializerTests extends TestBase
 	{
 		$page = $this->getMock('IExistingReservationPage');
 		$binder = $this->getMock('IReservationComponentBinder');
-		$reservationBinder = $this->getMock('IExistingReservationComponentBinder');
 
 		$timezone = $this->fakeUser->Timezone;
 
@@ -139,7 +140,8 @@ class ExistingReservationInitializerTests extends TestBase
 			$binder,
 			$binder,
 			$binder,
-			$reservationBinder,
+			$binder,
+			$binder,
 			$reservationView,
 			$this->fakeUser);
 		$initializer->SetDates($anything, $anything, $periods);

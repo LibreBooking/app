@@ -113,6 +113,12 @@ interface IReservationPage extends IPage
      * @param bool $canShowUserDetails
      */
     function ShowUserDetails($canShowUserDetails);
+
+	/**
+	 * @abstract
+	 * @param $attributes array|Attribute[]
+	 */
+	function SetCustomAttributes($attributes);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -139,6 +145,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 			new UserRepository(),
 			new ResourceService(new ResourceRepository(), $this->permissionServiceFactory->GetPermissionService()),
 			new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService()),
+			new AttributeRepository(),
 			ServiceLocator::GetServer()->GetUserSession()
 			);
 
@@ -274,5 +281,10 @@ abstract class ReservationPage extends Page implements IReservationPage
     {
         $this->Set('ShowUserDetails', $canShowUserDetails);
     }
+
+	public function SetCustomAttributes($attributes)
+	{
+		$this->Set('Attributes', $attributes);
+	}
 }
 ?>

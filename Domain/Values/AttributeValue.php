@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -16,30 +16,29 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-class StringBuilder 
+class AttributeValue
 {
-	private $_string = array();
-	
-	public function Append($string) 
-	{
-		$this->_string[] = $string;
-	}
+	/**
+	 * @var int
+	 */
+	public $AttributeId;
 
-	public function AppendLine($string = '')
-	{
-		$this->_string[] = $string . "\n";
-	}
+	/**
+	 * @var mixed
+	 */
+	public $Value;
 
-	public function PrependLine($string = '')
+	/**
+	 * @param $attributeId int
+	 * @param $value mixed
+	 */
+	public function __construct($attributeId, $value)
 	{
-		array_unshift($this->_string, $string . "\n");
-	}
-
-	public function ToString() 
-	{
-		return join('', $this->_string);
+		$this->AttributeId = $attributeId;
+		$this->Value = $value;
 	}
 }
+
 ?>

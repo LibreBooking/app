@@ -31,7 +31,14 @@ class FakeResources extends Resources
 	
 	public function GetString($key, $args = array())
 	{
-		return $key;
+		if (!is_array($args))
+		{
+			$args = array($args);
+		}
+
+		$argstring = implode(',', $args);
+
+		return $key . $argstring;
 	}
 	
 	public function GetDateFormat($key)

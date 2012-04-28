@@ -85,5 +85,13 @@ class TestReservationSeries extends ReservationSeries
 
         return parent::ScheduleId();
     }
+
+	/**
+	 * @param $attributeValue AttributeValue
+	 */
+	public function WithAttributeValue($attributeValue)
+	{
+		$this->AddAttributeValue($attributeValue);
+	}
 }
 ?>

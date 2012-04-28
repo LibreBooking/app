@@ -56,8 +56,6 @@ class ReservationSavePresenter
 	
 	public function BuildReservation()
 	{
-		//TODO: reminders
-
 		$userId = $this->_page->GetUserId();
 		$resource = $this->_resourceRepository->LoadById($this->_page->GetResourceId());
 		$title = $this->_page->GetTitle();
@@ -68,17 +66,21 @@ class ReservationSavePresenter
 		$reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, ServiceLocator::GetServer()->GetUserSession());
 		
 		$resourceIds = $this->_page->GetResources();
-		
 		foreach ($resourceIds as $resourceId)
 		{
 			$reservationSeries->AddResource($this->_resourceRepository->LoadById($resourceId));
 		}
 
 		$accessories = $this->_page->GetAccessories();
-
 		foreach ($accessories as $accessory)
 		{
 			$reservationSeries->AddAccessory(new ReservationAccessory($accessory->Id, $accessory->Quantity));
+		}
+
+		$attributes = $this->_page->GetAttributes();
+		foreach ($attributes as $attribute)
+		{
+			$reservationSeries->AddAttributeValue(new AttributeValue($attribute->Id, $attribute->Value));
 		}
 
 		$participantIds = $this->_page->GetParticipants();

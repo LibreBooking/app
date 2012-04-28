@@ -368,17 +368,20 @@ class en_us extends Language
         // Errors
         $strings['LoginError'] = 'We could not match your username or password';
         $strings['ReservationFailed'] = 'Your reservation could not be made';
-        $strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date that can be reserved is %s.';
-        $strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date that can be reserved is %s.';
+        $strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date and time that can be reserved is %s.';
+        $strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date and time that can be reserved is %s.';
         $strings['MinDurationError'] = 'This reservation must last at least %s.';
         $strings['MaxDurationError'] = 'This reservation cannot last longer than %s.';
         $strings['ConflictingAccessoryDates'] = 'There are not enough of the following accessories:';
         $strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources';
         $strings['ConflictingReservationDates'] = 'There are conflicting reservations on the following dates:';
-        $strings['StartDateBeforeEndDateRule'] = 'The start date must be before the end date';
-        $strings['StartIsInPast'] = 'The start date cannot be in the past';
+        $strings['StartDateBeforeEndDateRule'] = 'The start date and time must be before the end date and time';
+        $strings['StartIsInPast'] = 'The start date and time cannot be in the past';
         $strings['EmailDisabled'] = 'The administrator has disabled email notifications';
         $strings['ValidLayoutRequired'] = 'Slots must be provided for all 24 hours of the day beginning and ending at 12:00 AM.';
+        $strings['CustomAttributeErrors'] = 'There are problems with the additional attributes you provided:';
+        $strings['CustomAttributeRequired'] = '%s is a required field';
+        $strings['CustomAttributeInvalid'] = 'The value provided for %s is invalid';
         // End Errors
 
         // Page Titles

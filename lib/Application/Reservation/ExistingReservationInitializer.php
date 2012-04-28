@@ -43,7 +43,8 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 	 * @param IReservationComponentBinder $userBinder
 	 * @param IReservationComponentBinder $dateBinder
 	 * @param IReservationComponentBinder $resourceBinder
-	 * @param IExistingReservationComponentBinder $reservationBinder
+	 * @param IReservationComponentBinder $reservationBinder
+	 * @param IReservationComponentBinder $attributeBinder
 	 * @param ReservationView $reservationView
 	 * @param UserSession $userSession
 	 */
@@ -52,7 +53,8 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 		IReservationComponentBinder $userBinder,
 		IReservationComponentBinder $dateBinder,
 		IReservationComponentBinder $resourceBinder,
-		IExistingReservationComponentBinder $reservationBinder,
+		IReservationComponentBinder $reservationBinder,
+		IReservationComponentBinder $attributeBinder,
 		ReservationView $reservationView,
 		UserSession $userSession
 		)
@@ -66,6 +68,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 						$userBinder,
 						$dateBinder,
 						$resourceBinder,
+						$attributeBinder,
 						$userSession);
 	}
 	

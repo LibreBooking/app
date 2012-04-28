@@ -37,6 +37,11 @@ class ReservationComponentTests extends TestBase
 	private $scheduleRepository;
 
 	/**
+	 * @var IAttributeRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $attributeRepository;
+
+	/**
 	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $userRepository;
@@ -63,6 +68,7 @@ class ReservationComponentTests extends TestBase
 		$this->userId = $this->fakeUser->UserId;
 
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
+		$this->attributeRepository = $this->getMock('IAttributeRepository');
 		$this->userRepository = $this->getMock('IUserRepository');
 
 		$this->resourceService = $this->getMock('IResourceService');
@@ -221,7 +227,7 @@ class ReservationComponentTests extends TestBase
 		$binder->Bind($this->initializer);
 	}
 
-	public function testReservationBinder()
+	public function testBindsReservationDetails()
 	{
 		$page = $this->getMock('IExistingReservationPage');
 		$reservationAuthorization = $this->getMock('IReservationAuthorization');
@@ -370,8 +376,33 @@ class ReservationComponentTests extends TestBase
 				->method('CurrentUser')
 				->will($this->returnValue($this->fakeUser));
 
-		$binder = new ReservationDetailsBinder($reservationAuthorization);
-		$binder->Bind($initializer, $page, $reservationView);
+		$binder = new ReservationDetailsBinder($reservationAuthorization, $page, $reservationView);
+		$binder->Bind($initializer);
+	}
+
+	public function testBindsCustomAttributes()
+	{
+		$binder = new ReservationCustomAttributeBinder($this->attributeRepository);
+
+		$attributes = array(
+			CustomAttribute::Create('1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, ''),
+			CustomAttribute::Create('2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, ''),
+		);
+
+		$this->attributeRepository->expects($this->once())
+						->method('GetByCategory')
+						->with($this->equalTo(CustomAttributeCategory::RESERVATION))
+						->will($this->returnValue($attributes));
+
+		$this->initializer->expects($this->at(0))
+						->method('AddAttribute')
+						->with($this->equalTo($attributes[0]), $this->equalTo(null));
+
+		$this->initializer->expects($this->at(1))
+						->method('AddAttribute')
+						->with($this->equalTo($attributes[1]), $this->equalTo(null));
+
+		$binder->Bind($this->initializer);
 	}
 }
 

@@ -39,6 +39,7 @@ class FormKeys
 	const ATTRIBUTE_VALIDATION_EXPRESSION = 'attributeRegex';
 	const ATTRIBUTE_IS_REQUIRED = 'attributeRequired';
 	const ATTRIBUTE_POSSIBLE_VALUES = 'attributePossibleValues';
+	const ATTRIBUTE_PREFIX = 'psiattribute';
 	const AUTO_ASSIGN = 'autoAssign';
 
 	const BEGIN_DATE = 'beginDate';

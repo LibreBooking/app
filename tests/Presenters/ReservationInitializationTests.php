@@ -43,11 +43,12 @@ class ReservationInitializationTests extends TestBase
 		$userBinder = $this->getMock('IReservationComponentBinder');
 		$dateBinder = $this->getMock('IReservationComponentBinder');
 		$resourceBinder = $this->getMock('IReservationComponentBinder');
+		$attributeBinder = $this->getMock('IReservationComponentBinder');
 		$page = $this->getMock('INewReservationPage');
 
 		$scheduleId = 1;
 
-		$initializer = new NewReservationInitializer($page, $userBinder, $dateBinder, $resourceBinder, $this->fakeUser);
+		$initializer = new NewReservationInitializer($page, $userBinder, $dateBinder, $resourceBinder, $attributeBinder, $this->fakeUser);
 
 		$page->expects($this->once())
 				->method('GetRequestedScheduleId')
@@ -56,6 +57,10 @@ class ReservationInitializationTests extends TestBase
 		$page->expects($this->once())
 				->method('SetScheduleId')
 				->with($this->equalTo($scheduleId));
+
+		$page->expects($this->once())
+			->method('SetCustomAttributes')
+			->with($this->anything());
 
 		$userBinder->expects($this->once())
 				->method('Bind')
@@ -66,6 +71,10 @@ class ReservationInitializationTests extends TestBase
 				->with($this->equalTo($initializer));
 
 		$resourceBinder->expects($this->once())
+				->method('Bind')
+				->with($this->equalTo($initializer));
+
+		$attributeBinder->expects($this->once())
 				->method('Bind')
 				->with($this->equalTo($initializer));
 
@@ -110,7 +119,7 @@ class ReservationInitializationTests extends TestBase
 				->method('SetRepeatTerminationDate')
 				->with($this->equalTo($endDate));
 
-		$initializer = new NewReservationInitializer($page, $binder, $binder, $binder, $this->fakeUser);
+		$initializer = new NewReservationInitializer($page, $binder, $binder, $binder, $binder, $this->fakeUser);
 		$initializer->SetDates($startDate, $endDate, $periods);
 	}
 }

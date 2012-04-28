@@ -16,65 +16,90 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/Access/AttributeRepository.php');
 
 class AttributeRepositoryTests extends TestBase
 {
-    /**
-     * @var AttributeRepository
-     */
-    private $repository;
+	/**
+	 * @var AttributeRepository
+	 */
+	private $repository;
 
-    public function setup()
-    {
-        parent::setup();
+	public function setup()
+	{
+		parent::setup();
 
-        $this->repository = new AttributeRepository();
-    }
+		$this->repository = new AttributeRepository();
+	}
 
-    public function teardown()
-    {
-        parent::teardown();
-    }
+	public function teardown()
+	{
+		parent::teardown();
+	}
 
-    public function testAddsAttribute()
-    {
+	public function testAddsAttribute()
+	{
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
-		$scope = CustomAttributeCategory::RESERVATION;
+		$category = CustomAttributeCategory::RESERVATION;
 		$regex = 'regex';
 		$required = false;
 		$possibleValues = '';
 
-        $attribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues);
+		$attribute = CustomAttribute::Create($label, $type, $category, $regex, $required, $possibleValues);
 
-        $this->repository->Add($attribute);
-        $this->assertEquals(new AddAttributeCommand($label, $type, $scope, $regex, $required, $possibleValues), $this->db->_LastCommand);
-    }
+		$this->repository->Add($attribute);
+		$this->assertEquals(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues), $this->db->_LastCommand);
+	}
 
-    public function testDeletesAttribute()
-    {
+	public function testDeletesAttribute()
+	{
 
-    }
+	}
 
-    public function testLoadsAttribute()
-    {
+	public function testLoadsAttributes()
+	{
+		$id = 12098;
+		$label = 'label';
+		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
+		$category = CustomAttributeCategory::RESERVATION;
+		$regex = 'regex';
+		$required = false;
+		$possibleValues = 'val1,val2,val3';
 
-    }
+		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues);
+		$row2 = $this->GetAttributeRow(2);
+		
+		$this->db->SetRows(array($row1, $row2));
 
+		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
 
+		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues);
 
-//    private function GetAnnouncementRow($id, $text, $startDate, $endDate, $priority)
-//    {
-//        return array(
-//            ColumnNames::ANNOUNCEMENT_ID => $id,
-//            ColumnNames::ANNOUNCEMENT_TEXT => $text,
-//            ColumnNames::ANNOUNCEMENT_START => $startDate,
-//            ColumnNames::ANNOUNCEMENT_END => $endDate,
-//            ColumnNames::ANNOUNCEMENT_PRIORITY => $priority);
-//    }
+		$this->assertEquals(2, count($attributes));
+		$this->assertEquals($expectedFirstAttribute, $attributes[0]);
+		$this->assertEquals(new GetAttributesByCategoryCommand(CustomAttributeCategory::RESERVATION), $this->db->_LastCommand);
+	}
+
+	private function GetAttributeRow($id,
+									 $label = '',
+									 $type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
+									 $category = CustomAttributeCategory::RESERVATION,
+									 $regex = null,
+									 $required = true,
+									 $possibleValues = null)
+	{
+		return array(
+			ColumnNames::ATTRIBUTE_ID => $id,
+			ColumnNames::ATTRIBUTE_LABEL => $label,
+			ColumnNames::ATTRIBUTE_TYPE => $type,
+			ColumnNames::ATTRIBUTE_CATEGORY => $category,
+			ColumnNames::ATTRIBUTE_CONSTRAINT => $regex,
+			ColumnNames::ATTRIBUTE_REQUIRED => $required,
+			ColumnNames::ATTRIBUTE_POSSIBLE_VALUES => $possibleValues);
+	}
 }
 
 ?>
