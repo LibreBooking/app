@@ -143,6 +143,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div style="clear:both;">&nbsp;</div>
 
+		{if $Attributes|count > 0}
+		<div id="customAttributes">
+			<h3>Additional Attributes</h3>
+			<ul>
+			{foreach from=$Attributes item=attribute}
+				<li class="customAttribute">
+					<label class="customAttribute">{$attribute->Label()}:</label> {$attribute->Value()|escape}
+				</li>
+			{/foreach}
+			</ul>
+		</div>
+		<div style="clear:both;">&nbsp;</div>
+		{/if}
+
 		<div style="float:left;">
 			{block name="deleteButtons"}
 				<a href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">

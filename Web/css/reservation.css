@@ -102,3 +102,31 @@
 #dialogSave input, #dialogSave button {
 	font-size: 11pt;
 }
+
+#customAttributes {
+	clear:both;
+}
+
+.customAttribute {
+	font-size: 9pt;
+}
+
+#customAttributes label.customAttribute {
+	font-weight: bold;
+	font-size: 9pt;
+}
+
+#customAttributes h3 {
+	border-bottom: solid 1px #eee;
+}
+
+#customAttributes ul {
+	padding-top: 2px;
+	list-style: none outside none;
+}
+
+#customAttributes li {
+	float: left;
+	position: relative;
+	padding-right: 10px;
+}

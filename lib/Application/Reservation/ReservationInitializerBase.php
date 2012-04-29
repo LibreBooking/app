@@ -358,6 +358,10 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->basePage->SetReservationResource($resource);
 	}
 
+	/**
+	 * @param $attribute CustomAttribute
+	 * @param $value mixed
+	 */
 	public function AddAttribute($attribute, $value)
 	{
 		$this->customAttributes[] = new Attribute($attribute, $value);
