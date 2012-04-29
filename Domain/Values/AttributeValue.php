@@ -31,13 +31,33 @@ class AttributeValue
 	public $Value;
 
 	/**
+	 * @var string
+	 */
+	public $AttributeLabel;
+
+	/**
 	 * @param $attributeId int
 	 * @param $value mixed
+	 * @param $attributeLabel string|null
 	 */
-	public function __construct($attributeId, $value)
+	public function __construct($attributeId, $value, $attributeLabel = null)
 	{
 		$this->AttributeId = $attributeId;
 		$this->Value = trim($value);
+		$this->AttributeLabel = $attributeLabel;
+	}
+
+	public function __toString()
+	{
+		return sprintf("AttributeValue id:%d value:%d", $this->AttributeId, $this->Value);
+	}
+}
+
+class NullAttributeValue extends AttributeValue
+{
+	public function __construct()
+	{
+		parent::__construct(null, null);
 	}
 }
 

@@ -169,10 +169,30 @@ class ReservationCustomAttributeBinder implements IReservationComponentBinder
 
 class ReservationCustomAttributeValueBinder implements IReservationComponentBinder
 {
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $repository;
+
+	/**
+	 * @var ReservationView
+	 */
+	private $reservationView;
+
+	public function __construct(IAttributeRepository $repository, ReservationView $reservationView)
+	{
+		$this->repository = $repository;
+		$this->reservationView = $reservationView;
+	}
 
 	public function Bind(IReservationComponentInitializer $initializer)
 	{
-		// TODO: Implement Bind() method.
+		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
+
+		foreach ($attributes as $attribute)
+		{
+			$initializer->AddAttribute($attribute, $this->reservationView->GetAttributeValue($attribute->Id()));
+		}
 	}
 }
 

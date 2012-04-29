@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -263,6 +263,11 @@ class ReservationRepositoryTests extends TestBase
 		$quantity1 = 11;
 		$quantity2 = 22;
 
+		$attributeId1 = 908;
+		$attributeValue1 = 'custom1';
+		$attributeId2 = 999;
+		$attributeValue2 = 'custom2';
+
 		$expected = new ExistingReservationSeries();
 		$expected->WithId($seriesId);
 		$expected->WithOwner($ownerId);
@@ -275,6 +280,8 @@ class ReservationRepositoryTests extends TestBase
 		$expected->WithStatus($statusId);
 		$expected->WithAccessory(new ReservationAccessory($accessoryId1, $quantity1));
 		$expected->WithAccessory(new ReservationAccessory($accessoryId2, $quantity2));
+		$expected->WithAttribute(new AttributeValue($attributeId1, $attributeValue1));
+		$expected->WithAttribute(new AttributeValue($attributeId2, $attributeValue2));
 
 		$instance1 = new Reservation($expected, $duration->AddDays(10));
 		$instance1->SetReferenceNumber('instance1');
@@ -330,14 +337,19 @@ class ReservationRepositoryTests extends TestBase
 				->WithInvitees($instance2, $instance2Invitees);
 
 		$reservationAccessoryRow = new ReservationAccessoryRow();
-			$reservationAccessoryRow->WithAccessory($accessoryId1, $quantity1)
+		$reservationAccessoryRow->WithAccessory($accessoryId1, $quantity1)
 				->WithAccessory($accessoryId2, $quantity2);
+
+		$attributeValueRow = new CustomAttributeValueRow();
+		$attributeValueRow->With($attributeId1, $attributeValue1)
+				->With($attributeId2, $attributeValue2);
 
 		$this->db->SetRow(0, $reservationRow->Rows());
 		$this->db->SetRow(1, $reservationInstanceRow->Rows());
 		$this->db->SetRow(2, $reservationResourceRow->Rows());
 		$this->db->SetRow(3, $reservationUserRow->Rows());
 		$this->db->SetRow(4, $reservationAccessoryRow->Rows());
+		$this->db->SetRow(5, $attributeValueRow->Rows());
 
 		$actualReservation = $this->repository->LoadById($reservationId);
 
@@ -348,12 +360,14 @@ class ReservationRepositoryTests extends TestBase
 		$getResources = new GetReservationResourcesCommand($seriesId);
 		$getParticipants = new GetReservationSeriesParticipantsCommand($seriesId);
 		$getAccessories = new GetReservationAccessoriesCommand($seriesId);
+		$getAttributeValues = new GetAttributeValuesCommand($seriesId, CustomAttributeCategory::RESERVATION);
 
-		$this->assertTrue(in_array($getReservation, $this->db->_Commands));
-		$this->assertTrue(in_array($getInstances, $this->db->_Commands));
-		$this->assertTrue(in_array($getResources, $this->db->_Commands));
-		$this->assertTrue(in_array($getParticipants, $this->db->_Commands));
-		$this->assertTrue(in_array($getAccessories, $this->db->_Commands));
+		$this->assertTrue($this->db->ContainsCommand($getReservation));
+		$this->assertTrue($this->db->ContainsCommand($getInstances));
+		$this->assertTrue($this->db->ContainsCommand($getResources));
+		$this->assertTrue($this->db->ContainsCommand($getParticipants));
+		$this->assertTrue($this->db->ContainsCommand($getAccessories));
+		$this->assertTrue($this->db->ContainsCommand($getAttributeValues));
 	}
 
 	public function testChangingOnlySharedInformationForFullSeriesJustUpdatesSeriesTable()
@@ -667,33 +681,33 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($removeCommand));
 	}
 
-    public function testChangesOwner()
-    {
-        $currentOwner = 1111;
-        $newOwner = 2222;
-        $instanceId1 = 100;
-        $reservation1 = new TestReservation(null, null, $instanceId1);
+	public function testChangesOwner()
+	{
+		$currentOwner = 1111;
+		$newOwner = 2222;
+		$instanceId1 = 100;
+		$reservation1 = new TestReservation(null, null, $instanceId1);
 
-        $instanceId2 = 101;
-        $reservation2 = new TestReservation(null, null, $instanceId2);
+		$instanceId2 = 101;
+		$reservation2 = new TestReservation(null, null, $instanceId2);
 
-        $builder = new ExistingReservationSeriesBuilder();
-        $builder->WithInstance($reservation1);
-        $builder->WithInstance($reservation2);
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($reservation1);
+		$builder->WithInstance($reservation2);
 
-        $series = $builder->Build();
-        $series->WithOwner($currentOwner);
-        $series->Update($newOwner, $series->Resource(), '', '', $this->fakeUser);
-        $this->repository->Update($series);
+		$series = $builder->Build();
+		$series->WithOwner($currentOwner);
+		$series->Update($newOwner, $series->Resource(), '', '', $this->fakeUser);
+		$this->repository->Update($series);
 
-        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, $currentOwner)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, $newOwner)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, $newOwner, ReservationUserLevel::OWNER)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, $currentOwner)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId1, $newOwner)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId1, $newOwner, ReservationUserLevel::OWNER)));
 
-        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, $currentOwner)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, $newOwner)));
-        $this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, $newOwner, ReservationUserLevel::OWNER)));
-    }
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, $currentOwner)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetRemoveUserCommand($instanceId2, $newOwner)));
+		$this->assertTrue($this->db->ContainsCommand($this->GetAddUserCommand($instanceId2, $newOwner, ReservationUserLevel::OWNER)));
+	}
 
 	public function testEventsWhichAreNotNecessaryWhenSeriesIsBranchedAreIgnored()
 	{
@@ -722,10 +736,38 @@ class ReservationRepositoryTests extends TestBase
 		$deleteAccessories = $this->db->GetCommandsOfType('RemoveReservationAccessoryCommand');
 
 		$this->assertTrue($this->db->ContainsCommand(new AddReservationUserCommand($instance->ReservationId(), $newUserId, ReservationUserLevel::OWNER)));
-		$this->assertEquals(count($series->AdditionalResources()) +1, count($addResources), "dont want to double add");
+		$this->assertEquals(count($series->AdditionalResources()) + 1, count($addResources), "dont want to double add");
 		$this->assertEquals(count($series->Accessories()), count($addAccessories));
 		$this->assertEquals(0, count($deleteResources));
 		$this->assertEquals(0, count($deleteAccessories));
+	}
+
+	public function testChangesAttributeValues()
+	{
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->BuildTestVersion();
+		$series->WithAttribute(new AttributeValue(1, '1'));
+		$series->WithAttribute(new AttributeValue(2, '2'));
+		$series->WithAttribute(new AttributeValue(3, '3'));
+		$updatedAttributes = array(
+			new AttributeValue(2, '22'),
+			new AttributeValue(3, '3'),
+			new AttributeValue(4, '4'),
+		);
+		$series->ChangeAttributes($updatedAttributes);
+
+		$seriesId = $series->SeriesId();
+		$this->repository->Update($series);
+
+		$addNewCommand = new AddAttributeValueCommand(4, '4', $seriesId, CustomAttributeCategory::RESERVATION);
+		$removeOldCommand = new RemoveAttributeValueCommand(1, $seriesId);
+		$removeUpdated = new RemoveAttributeValueCommand(2, $seriesId);
+		$addUpdated = new AddAttributeValueCommand(2, '22', $seriesId, CustomAttributeCategory::RESERVATION);
+
+		$this->assertTrue($this->db->ContainsCommand($addNewCommand));
+		$this->assertTrue($this->db->ContainsCommand($removeOldCommand));
+		$this->assertTrue($this->db->ContainsCommand($addUpdated));
+		$this->assertTrue($this->db->ContainsCommand($removeUpdated));
 	}
 
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
@@ -844,19 +886,19 @@ class ReservationResourceRow
 	}
 
 	public function __construct($seriesId,
-		$resourceName = null,
-		$location = null,
-		$contact = null,
-		$notes = null,
-		$minLength = null,
-		$maxLength = null,
-		$autoAssign = null,
-		$requiresApproval = null,
-		$allowMultiDay = null,
-		$maxParticipants = null,
-		$minNotice = null,
-		$maxNotice = null,
-		$scheduleId = null)
+								$resourceName = null,
+								$location = null,
+								$contact = null,
+								$notes = null,
+								$minLength = null,
+								$maxLength = null,
+								$autoAssign = null,
+								$requiresApproval = null,
+								$allowMultiDay = null,
+								$maxParticipants = null,
+								$minNotice = null,
+								$maxNotice = null,
+								$scheduleId = null)
 	{
 		$this->seriesId = $seriesId;
 		$this->resourceName = $resourceName;
@@ -872,7 +914,7 @@ class ReservationResourceRow
 		$this->minNotice = $minNotice;
 		$this->maxNotice = $maxNotice;
 		$this->scheduleId = $scheduleId;
-        $this->description = null;
+		$this->description = null;
 	}
 
 	public function WithPrimary($resourceId)
@@ -968,9 +1010,31 @@ class ReservationAccessoryRow
 
 	public function WithAccessory($accessoryId, $quantity, $name = null)
 	{
-		$this->rows[] = array(ColumnNames::ACCESSORY_ID => $accessoryId, ColumnNames::QUANTITY => $quantity, ColumnNames::ACCESSORY_NAME => $name);
-		
+		$this->rows[] = array(ColumnNames::ACCESSORY_ID => $accessoryId,
+							  ColumnNames::QUANTITY => $quantity,
+							  ColumnNames::ACCESSORY_NAME => $name);
+
 		return $this;
 	}
 }
+
+class CustomAttributeValueRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($attributeId, $value, $attributeLabel = null)
+	{
+		$this->rows[] = array(ColumnNames::ATTRIBUTE_ID => $attributeId,
+							  ColumnNames::ATTRIBUTE_VALUE => $value,
+							  ColumnNames::ATTRIBUTE_LABEL => $attributeLabel);
+
+		return $this;
+	}
+}
+
 ?>

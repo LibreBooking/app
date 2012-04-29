@@ -51,6 +51,7 @@ class ReservationRepository implements IReservationRepository
         $this->PopulateResources($series);
         $this->PopulateParticipants($series);
         $this->PopulateAccessories($series);
+		$this->PopulateAttributeValues($series);
 
         return $series;
     }
@@ -138,8 +139,6 @@ class ReservationRepository implements IReservationRepository
             $insertAttributeValue = new AddAttributeValueCommand($attribute->AttributeId, $attribute->Value, $reservationSeriesId, CustomAttributeCategory::RESERVATION);
             $database->Execute($insertAttributeValue);
         }
-
-
 
         return $reservationSeriesId;
     }
@@ -281,6 +280,17 @@ class ReservationRepository implements IReservationRepository
         $reader->Free();
     }
 
+	private function PopulateAttributeValues(ExistingReservationSeries $series)
+	{
+		$getAttributes = new GetAttributeValuesCommand($series->SeriesId(), CustomAttributeCategory::RESERVATION);
+		$reader = ServiceLocator::GetDatabase()->Query($getAttributes);
+		while ($row = $reader->GetRow())
+		{
+			$series->WithAttribute(new AttributeValue($row[ColumnNames::ATTRIBUTE_ID], $row[ColumnNames::ATTRIBUTE_VALUE]));
+		}
+		$reader->Free();
+	}
+
     private function BuildRepeatOptions($repeatType, $configurationString)
     {
         $configuration = RepeatConfiguration::Create($repeatType, $configurationString);
@@ -311,6 +321,9 @@ class ReservationEventMapper
 
         $this->buildMethods['AccessoryAddedEvent'] = 'BuildAddAccessoryCommand';
         $this->buildMethods['AccessoryRemovedEvent'] = 'BuildRemoveAccessoryCommand';
+
+		$this->buildMethods['AttributeAddedEvent'] = 'BuildAddAttributeCommand';
+        $this->buildMethods['AttributeRemovedEvent'] = 'BuildRemoveAttributeCommand';
     }
 
     /**
@@ -383,6 +396,16 @@ class ReservationEventMapper
     private function BuildRemoveAccessoryCommand(AccessoryRemovedEvent $event, ExistingReservationSeries $series)
     {
         return new EventCommand(new RemoveReservationAccessoryCommand($series->SeriesId(), $event->AccessoryId()), $series);
+    }
+
+	private function BuildAddAttributeCommand(AttributeAddedEvent $event, ExistingReservationSeries $series)
+    {
+        return new EventCommand(new AddAttributeValueCommand($event->AttributeId(), $event->Value(), $series->SeriesId(), CustomAttributeCategory::RESERVATION), $series);
+    }
+
+    private function BuildRemoveAttributeCommand(AttributeRemovedEvent $event, ExistingReservationSeries $series)
+    {
+        return new EventCommand(new RemoveAttributeValueCommand($event->AttributeId(), $series->SeriesId()), $series);
     }
 
     private function OwnerChangedCommand(OwnerChangedEvent $event, ExistingReservationSeries $series)

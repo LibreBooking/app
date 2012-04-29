@@ -313,6 +313,11 @@ class Queries
 
 	const GET_ATTRIBUTES_BY_CATEGORY = 'SELECT * FROM custom_attributes WHERE attribute_category = @attribute_category ORDER BY display_label';
 
+	const GET_ATTRIBUTE_VALUES = 'SELECT cav.*, ca.display_label
+		FROM custom_attribute_values cav
+		INNER JOIN custom_attributes ca ON ca.custom_attribute_id = cav.custom_attribute_id
+		WHERE cav.attribute_category = @attribute_category AND cav.entity_id = @entity_id';
+
     const GET_BLACKOUT_LIST =
             'SELECT *
 		FROM blackout_instances bi
@@ -575,6 +580,9 @@ class Queries
 			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created)
 		VALUES
 			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated)';
+
+	const REMOVE_ATTRIBUTE_VALUE =
+			'DELETE FROM custom_attribute_values WHERE custom_attribute_id = @custom_attribute_id AND entity_id = @entity_id';
 
     const REMOVE_RESERVATION_ACCESSORY =
             'DELETE FROM reservation_accessories WHERE accessory_id = @accessoryid AND series_id = @seriesid';

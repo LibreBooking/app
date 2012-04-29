@@ -20,5 +20,7 @@ CREATE TABLE `custom_attribute_values` (
  `entity_id` mediumint(8) unsigned NOT NULL,
  `attribute_category`  tinyint(2) unsigned NOT NULL,
   PRIMARY KEY (`custom_attribute_value_id`),
-  INDEX `entity_category` (`entity_id`, `attribute_category`)
+  INDEX (`custom_attribute_id`),
+  INDEX `entity_category` (`entity_id`, `attribute_category`),
+  INDEX `entity_attribute` (`entity_id`, `custom_attribute_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;

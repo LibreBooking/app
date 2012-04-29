@@ -89,6 +89,7 @@ class ReservationViewRepositoryTests extends TestBase
         $getReservationResources = new GetReservationResourcesCommand($seriesId);
         $getParticipants = new GetReservationParticipantsCommand($reservationId);
         $getAccessories = new GetReservationAccessoriesCommand($seriesId);
+		$getAttributes = new GetAttributeValuesCommand($seriesId, CustomAttributeCategory::RESERVATION);
 
         $reservationRow = array(
             ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
@@ -129,24 +130,37 @@ class ReservationViewRepositoryTests extends TestBase
         $accessoryName1 = 'a1';
         $accessoryName2 = 'a2';
 
+		$attributeId1 = 9292;
+		$attributeId2 = 884;
+		$attributeValue1 = 'v1';
+		$attributeValue2 = 'v1';
+		$attributeLabel1 = 'al1';
+		$attributeLabel2 = 'al2';
+
         $accessoryRows = new ReservationAccessoryRow();
         $accessoryRows->WithAccessory($accessory1, $quantity1, $accessoryName1)
                 ->WithAccessory($accessory2, $quantity2, $accessoryName2);
+
+		$attributeRows = new CustomAttributeValueRow();
+		$attributeRows->With($attributeId1, $attributeValue1, $attributeLabel1)
+			->With($attributeId2, $attributeValue2, $attributeLabel2);
 
         $this->db->SetRow(0, array($reservationRow));
         $this->db->SetRow(1, $resourceRows);
         $this->db->SetRow(2, $participantRows);
         $this->db->SetRow(3, $accessoryRows->Rows());
+        $this->db->SetRow(4, $attributeRows->Rows());
 
         $reservationView = $this->repository->GetReservationForEditing($referenceNumber);
 
         $commands = $this->db->_Commands;
 
-        $this->assertEquals(count($commands), 4);
+        $this->assertEquals(count($commands), 5);
         $this->assertEquals($getReservationForEditingCommand, $commands[0]);
         $this->assertEquals($getReservationResources, $commands[1]);
         $this->assertEquals($getParticipants, $commands[2]);
         $this->assertEquals($getAccessories, $commands[3]);
+        $this->assertEquals($getAttributes, $commands[4]);
 
         $expectedView = new ReservationView();
         $expectedView->AdditionalResourceIds = array($resourceId1, $resourceId2);
@@ -186,6 +200,9 @@ class ReservationViewRepositoryTests extends TestBase
             new ReservationAccessory($accessory1, $quantity1, $accessoryName1),
             new ReservationAccessory($accessory2, $quantity2, $accessoryName2),
         );
+
+		$expectedView->AddAttribute(new AttributeValue($attributeId1, $attributeValue1, $attributeLabel1));
+		$expectedView->AddAttribute(new AttributeValue($attributeId2, $attributeValue2, $attributeLabel2));
 
         $this->assertEquals($expectedView, $reservationView);
     }

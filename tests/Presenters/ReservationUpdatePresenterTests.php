@@ -100,6 +100,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$expectedSeries->WithCurrentInstance($reservation);
 		$expectedSeries->WithPrimaryResource($resource);
 		$expectedSeries->WithResource(new FakeBookableResource($removedResourceId));
+		$expectedSeries->WithAttribute(new AttributeValue(100, 'to be removed'));
 
 		$reservationId = $this->page->reservationId;
 		
@@ -135,6 +136,8 @@ class ReservationUpdatePresenterTests extends TestBase
 		$existingSeries = $this->presenter->BuildReservation();
 
 		$expectedAccessories = array(new ReservationAccessory(1, 2));
+		$expectedAttributes = array(1 => new AttributeValue(1, 'something'));
+
 		$this->assertEquals($seriesId, $existingSeries->SeriesId());
 		$this->assertEquals($this->page->seriesUpdateScope, $existingSeries->SeriesUpdateScope());
 		$this->assertEquals($this->page->title, $existingSeries->Title());
@@ -148,6 +151,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()), "Expected: $expectedDuration Actual: {$existingSeries->CurrentInstance()->Duration()}");
 		$this->assertEquals($this->user, $expectedSeries->BookedBy());
 		$this->assertEquals($expectedAccessories, $existingSeries->Accessories());
+		$this->assertEquals($expectedAttributes, $existingSeries->AttributeValues());
 	}
 
 	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()

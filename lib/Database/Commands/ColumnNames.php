@@ -169,6 +169,7 @@ class ColumnNames
 	const ATTRIBUTE_CONSTRAINT = 'validation_regex';
 	const ATTRIBUTE_REQUIRED = 'is_required';
 	const ATTRIBUTE_POSSIBLE_VALUES = 'possible_values';
+	const ATTRIBUTE_VALUE = 'attribute_value';
 
     // dynamic
     const TOTAL = 'total';

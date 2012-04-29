@@ -404,6 +404,38 @@ class ReservationComponentTests extends TestBase
 
 		$binder->Bind($this->initializer);
 	}
+
+	public function testBindsCustomAttributesWithValues()
+	{
+		$val1 = 'v1';
+		$val2 = 'v2';
+
+		$reservationView = new ReservationView();
+		$reservationView->AddAttribute(new AttributeValue(10, $val1));
+		$reservationView->AddAttribute(new AttributeValue(20, $val2));
+
+		$binder = new ReservationCustomAttributeValueBinder($this->attributeRepository, $reservationView);
+
+		$attributes = array(
+			new CustomAttribute(10, '1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, ''),
+			new CustomAttribute(20, '2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, ''),
+		);
+
+		$this->attributeRepository->expects($this->once())
+						->method('GetByCategory')
+						->with($this->equalTo(CustomAttributeCategory::RESERVATION))
+						->will($this->returnValue($attributes));
+
+		$this->initializer->expects($this->at(0))
+						->method('AddAttribute')
+						->with($this->equalTo($attributes[0]), $this->equalTo($val1));
+
+		$this->initializer->expects($this->at(1))
+						->method('AddAttribute')
+						->with($this->equalTo($attributes[1]), $this->equalTo($val2));
+
+		$binder->Bind($this->initializer);
+	}
 }
 
 ?>

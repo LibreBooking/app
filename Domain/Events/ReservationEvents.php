@@ -399,6 +399,70 @@ class AccessoryRemovedEvent extends SeriesEvent
     }
 }
 
+class AttributeAddedEvent extends SeriesEvent
+{
+	/**
+	 * @return int
+	 */
+	public function AttributeId()
+	{
+		return $this->attribute->AttributeId;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function Value()
+	{
+		return $this->attribute->Value;
+	}
+
+	/**
+	 * @var \AttributeValue
+	 */
+	private $attribute;
+
+	public function __construct(AttributeValue $attribute, ExistingReservationSeries $series)
+	{
+		$this->attribute = $attribute;
+
+		parent::__construct($series, SeriesEventPriority::Low);
+	}
+
+	public function __toString()
+	{
+        return sprintf("%s%s", get_class($this), $this->attribute->__toString());
+    }
+}
+
+class AttributeRemovedEvent extends SeriesEvent
+{
+	/**
+	 * @return int
+	 */
+	public function AttributeId()
+	{
+		return $this->attribute->AttributeId;
+	}
+
+	/**
+	 * @var \AttributeValue
+	 */
+	private $attribute;
+
+	public function __construct(AttributeValue $attribute, ExistingReservationSeries $series)
+	{
+		$this->attribute = $attribute;
+
+		parent::__construct($series, SeriesEventPriority::Highest);
+	}
+
+	public function __toString()
+	{
+        return sprintf("%s%s", get_class($this), $this->attribute->__toString());
+    }
+}
+
 class OwnerChangedEvent extends SeriesEvent
 {
     /**

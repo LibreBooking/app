@@ -133,6 +133,7 @@ class ReservationViewRepository implements IReservationViewRepository
             $this->SetResources($reservationView);
             $this->SetParticipants($reservationView);
             $this->SetAccessories($reservationView);
+            $this->SetAttributes($reservationView);
         }
 
         return $reservationView;
@@ -245,6 +246,18 @@ class ReservationViewRepository implements IReservationViewRepository
         while ($row = $result->GetRow())
         {
             $reservationView->Accessories[] = new ReservationAccessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY], $row[ColumnNames::ACCESSORY_NAME]);
+        }
+    }
+
+	private function SetAttributes(ReservationView $reservationView)
+    {
+        $getAttributes = new GetAttributeValuesCommand($reservationView->SeriesId, CustomAttributeCategory::RESERVATION);
+
+        $result = ServiceLocator::GetDatabase()->Query($getAttributes);
+
+        while ($row = $result->GetRow())
+        {
+            $reservationView->AddAttribute(new AttributeValue($row[ColumnNames::ATTRIBUTE_ID], $row[ColumnNames::ATTRIBUTE_VALUE], $row[ColumnNames::ATTRIBUTE_LABEL]));
         }
     }
 
@@ -492,6 +505,33 @@ class ReservationView
      * @var array|ReservationAccessory[]
      */
     public $Accessories = array();
+
+	/**
+	 * @var array|AttributeValue[]
+	 */
+    private $Attributes = array();
+
+	/**
+	 * @param AttributeValue $attribute
+	 */
+	public function AddAttribute(AttributeValue $attribute)
+	{
+		$this->Attributes[$attribute->AttributeId] = $attribute;
+	}
+
+	/**
+	 * @param $attributeId int
+	 * @return mixed
+	 */
+	public function GetAttributeValue($attributeId)
+	{
+		if (array_key_exists($attributeId, $this->Attributes))
+		{
+			return $this->Attributes[$attributeId]->Value;
+		}
+
+		return null;
+	}
 
     /**
      * @return bool

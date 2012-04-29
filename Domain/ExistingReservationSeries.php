@@ -148,6 +148,14 @@ class ExistingReservationSeries extends ReservationSeries
 	}
 
 	/**
+	 * @param AttributeValue $attributeValue
+	 */
+	public function WithAttribute(AttributeValue $attributeValue)
+	{
+		$this->AddAttributeValue($attributeValue);
+	}
+
+	/**
 	 * @internal
 	 */
 	public function RemoveInstance(Reservation $reservation)
@@ -536,6 +544,35 @@ class ExistingReservationSeries extends ReservationSeries
 		}
 
 		$this->_accessories = $accessories;
+	}
+
+	/**
+	 * @param $attributes AttributeValue[]|array
+	 */
+	public function ChangeAttributes($attributes)
+	{
+		$diff = new ArrayDiff($this->_attributeValues, $attributes);
+
+		$added = $diff->GetAddedToArray1();
+		$removed = $diff->GetRemovedFromArray1();
+
+		/** @var $attribute AttributeValue */
+		foreach ($added as $attribute)
+		{
+			$this->AddEvent(new AttributeAddedEvent($attribute, $this));
+		}
+
+		/** @var $accessory ReservationAccessory */
+		foreach ($removed as $attribute)
+		{
+			$this->AddEvent(new AttributeRemovedEvent($attribute, $this));
+		}
+
+		$this->_attributeValues = array();
+		foreach ($attributes as $attribute)
+		{
+			$this->AddAttributeValue($attribute);
+		}
 	}
 }
 ?>

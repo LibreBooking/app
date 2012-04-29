@@ -33,16 +33,31 @@ class Attribute
 	public function __construct(CustomAttribute $attributeDefinition, $value)
 	{
 		$this->attributeDefinition = $attributeDefinition;
+		$this->value = $value;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function Label()
 	{
 		return $this->attributeDefinition->Label();
 	}
 
+	/**
+	 * @return int
+	 */
 	public function Id()
 	{
 		return $this->attributeDefinition->Id();
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function Value()
+	{
+		return $this->value;
 	}
 }
 

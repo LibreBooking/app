@@ -551,12 +551,21 @@ class GetAnnouncementByIdCommand extends SqlCommand
 class GetAttributesByCategoryCommand extends SqlCommand
 {
 	public function __construct($attributeCategoryId)
-	    {
-	        parent::__construct(Queries::GET_ATTRIBUTES_BY_CATEGORY);
-	        $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
-	    }
+	{
+		parent::__construct(Queries::GET_ATTRIBUTES_BY_CATEGORY);
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
+	}
 }
 
+class GetAttributeValuesCommand extends SqlCommand
+{
+	public function __construct($entityId, $attributeCategoryId)
+	{
+		parent::__construct(Queries::GET_ATTRIBUTE_VALUES);
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
+	}
+}
 class GetAccessoryListCommand extends SqlCommand
 {
     public function __construct(Date $startDate, Date $endDate)
@@ -1032,6 +1041,17 @@ class RegisterUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
         $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
     }
+}
+
+class RemoveAttributeValueCommand extends SqlCommand
+{
+	public function __construct($attributeId, $entityId)
+	{
+		parent::__construct(Queries::REMOVE_ATTRIBUTE_VALUE);
+
+        $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+        $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
+	}
 }
 
 class RemoveReservationAccessoryCommand extends SqlCommand
