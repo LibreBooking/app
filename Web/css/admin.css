@@ -161,12 +161,12 @@ tr.pending {
 
 .wideLabel { display:inline-block; min-width: 100px;}
 
-#addAttribute {
-    width: 300px;
-}
+/*#addAttribute {*/
+    /*width: 300px;*/
+/*}*/
 
-#addAttribute span {
-    min-width: 120px;
+#addAttributeDialog span {
+    min-width: 150px;
     text-align: right;
     padding-right: 4px;
 }

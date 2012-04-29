@@ -20,16 +20,22 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h3>{$Attributes|count} Attributes</h3>
 {if $Attributes|count > 0}
 <table class="list">
-	<tr><th>Label</th><th>Type</th><th>Required</th><th>Validation Expression</th><th>Possible Values</th></tr>
-	{foreach from=$Attributes item=attribute}
-	{cycle values='row0,row1' assign=rowCss}
-	<tr class="{$rowCss} editable">
-		<td>{$attribute->Label()}</td>
-		<td>{$attribute->Type()}</td>
-		<td>{$attribute->Required()}</td>
-		<td>{$attribute->Regex()}</td>
-		<td>{$attribute->PossibleValues()}</td>
+	<tr>
+		<th>{translate key=DisplayLabel}</th>
+		<th>{translate key=Type}</th>
+		<th>{translate key=Required}</th>
+		<th>{translate key=ValidationExpression}</th>
+		<th>{translate key=PossibleValues}</th>
 	</tr>
+	{foreach from=$Attributes item=attribute}
+		{cycle values='row0,row1' assign=rowCss}
+		<tr class="{$rowCss} editable">
+			<td>{$attribute->Label()}</td>
+			<td>{$attribute->Type()}</td>
+			<td>{$attribute->Required()}</td>
+			<td>{$attribute->Regex()}</td>
+			<td>{$attribute->PossibleValues()}</td>
+		</tr>
 	{/foreach}
 </table>
 {/if}

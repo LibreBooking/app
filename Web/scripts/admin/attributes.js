@@ -12,7 +12,7 @@ function AttributeManagement(opts) {
 		editUnlimited:$('#chkUnlimitedEdit'),
 		editQuantity:$('#editQuantity'),
 
-		editDialog:$('#editDialog'),
+		addDialog:$('#addAttributeDialog'),
 		deleteDialog:$('#deleteDialog'),
 
 		addForm:$('#addAttributeForm'),
@@ -41,7 +41,7 @@ function AttributeManagement(opts) {
 
 	AttributeManagement.prototype.init = function () {
 
-//		ConfigureAdminDialog(elements.editDialog, 450, 200);
+		ConfigureAdminDialog(elements.addDialog, 450, 200);
 //		ConfigureAdminDialog(elements.deleteDialog,  500, 200);
 
 //		elements.accessoryList.delegate('a.update', 'click', function(e) {
@@ -70,10 +70,23 @@ function AttributeManagement(opts) {
 			RefreshAttributeList();
 		});
 
-		ConfigureAdminForm(elements.addForm, defaultSubmitCallback);
+		$('#addAttributeButton').click(function(e) {
+			e.preventDefault();
+			elements.addDialog.dialog('open');
+			elements.addDialog.parent().appendTo(elements.addForm);
+		});
+
+		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
 //		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAccessory));
 //		ConfigureAdminForm(elements.editForm, getSubmitCallback(options.actions.edit));
 
+	};
+
+	var addAttributeHandler = function()
+	{
+		elements.addForm.resetForm();
+		elements.addDialog.dialog('close');
+		RefreshAttributeList();
 	};
 
 	var defaultSubmitCallback = function (form) {

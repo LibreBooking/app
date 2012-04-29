@@ -363,6 +363,12 @@ class en_us extends Language
         $strings['Decline'] = 'Decline';
         $strings['ShowFullWeek'] = 'Show Full Week';
         $strings['CustomAttributes'] = 'Custom Attributes';
+        $strings['AddAttribute'] = 'Add an Attribute';
+        $strings['DisplayLabel'] = 'Display Label';
+        $strings['Type'] = 'Type';
+        $strings['Required'] = 'Required';
+        $strings['ValidationExpression'] = 'Validation Expression';
+        $strings['PossibleValues'] = 'Possible Values';
         // End Strings
 
         // Errors
