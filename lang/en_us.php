@@ -369,6 +369,10 @@ class en_us extends Language
         $strings['Required'] = 'Required';
         $strings['ValidationExpression'] = 'Validation Expression';
         $strings['PossibleValues'] = 'Possible Values';
+        $strings['SingleLineTextbox'] = 'Single Line Textbox';
+        $strings['MultiLineTextbox'] = 'Multiple Line Textbox';
+        $strings['Checkbox'] = 'Checkbox';
+        $strings['SelectList'] = 'Select List';
         // End Strings
 
         // Errors

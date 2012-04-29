@@ -21,6 +21,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class CustomAttributeTypes
 {
 	const SINGLE_LINE_TEXTBOX = 1;
+	const MULTI_LINE_TEXTBOX = 2;
+	const SELECT_LIST = 3;
+	const CHECKBOX = 4;
 }
 
 class CustomAttributeCategory

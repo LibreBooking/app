@@ -34,18 +34,26 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="addAttributeDialog" class="dialog" title="{translate key=AddAttribute}">
 
-		<span class="wideLabel">{translate key=Type}:</span><select {formname key=ATTRIBUTE_TYPE}>
-		<option value="{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}">Single Line Textbox</option>
-		<option>Multiple Line Textbox</option>
-		<option>Select List</option>
-		<option>Checkbox</option>
+		<span class="wideLabel">{translate key=Type}:</span><select {formname key=ATTRIBUTE_TYPE} id="attributeType">
+		<option value="{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::SINGLE_LINE_TEXTBOX]}</option>
+		<option value="{CustomAttributeTypes::MULTI_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::MULTI_LINE_TEXTBOX]}</option>
+		<option value="{CustomAttributeTypes::SELECT_LIST}">{translate key=$Types[CustomAttributeTypes::SELECT_LIST]}</option>
+		<option value="{CustomAttributeTypes::CHECKBOX}">{translate key=$Types[CustomAttributeTypes::CHECKBOX]}</option>
 	</select>
 
-		<div><span class="wideLabel">{translate key=DisplayLabel}:</span>{textbox name=ATTRIBUTE_LABEL}</div>
+
 		<div id="textBoxOptions">
-			<div><span class="wideLabel">{translate key=Required}:</span><input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} />
+			<div id="attributeLabel">
+				<span class="wideLabel">{translate key=DisplayLabel}:</span>{textbox name=ATTRIBUTE_LABEL}
 			</div>
-			<div><span class="wideLabel">{translate key=ValidationExpression}:</span>{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}
+			<div id="attributeRequired">
+				<span class="wideLabel">{translate key=Required}:</span><input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} />
+			</div>
+			<div id="attributeValidationExpression">
+				<span class="wideLabel">{translate key=ValidationExpression}:</span>{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}
+			</div>
+			<div id="attributePossibleValues" style="display:none">
+				<span class="wideLabel">{translate key=PossibleValues}:</span>{textbox name=ATTRIBUTE_POSSIBLE_VALUES} <span class="note">(comma separated)</span>
 			</div>
 		</div>
 
@@ -68,8 +76,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	$(document).ready(function () {
 	var attributeOptions = {
-	submitUrl: '{$smarty.server.SCRIPT_NAME}',
-	changeCategoryUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::DATA_REQUEST}=attributes&{QueryStringKeys::ATTRIBUTE_CATEGORY}='
+		submitUrl: '{$smarty.server.SCRIPT_NAME}',
+		changeCategoryUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::DATA_REQUEST}=attributes&{QueryStringKeys::ATTRIBUTE_CATEGORY}=',
+		singleLine: '{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}',
+		multiLine: '{CustomAttributeTypes::MULTI_LINE_TEXTBOX}',
+		selectList: '{CustomAttributeTypes::SELECT_LIST}',
+		checkbox: '{CustomAttributeTypes::CHECKBOX}'
 	};
 
 	var attributeManagement = new AttributeManagement(attributeOptions);

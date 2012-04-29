@@ -91,6 +91,21 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 		$this->presenter = new ManageAttributesPresenter($this, new AttributeRepository());
 	}
 
+	public function PageLoad()
+	{
+		$typeLookup = array(
+							CustomAttributeTypes::SINGLE_LINE_TEXTBOX => 'SingleLineTextbox',
+							CustomAttributeTypes::MULTI_LINE_TEXTBOX => 'MultiLineTextbox',
+							CustomAttributeTypes::CHECKBOX => 'Checkbox',
+							CustomAttributeTypes::SELECT_LIST => 'SelectList'
+						);
+
+				$this->Set('Types', $typeLookup);
+		parent::PageLoad();
+
+
+	}
+
 	public function HandlePageLoad()
 	{
 		$this->presenter->PageLoad();

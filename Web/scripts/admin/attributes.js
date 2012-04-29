@@ -33,7 +33,7 @@ function AttributeManagement(opts) {
 				$('#attributeList').html('');
 			}
 		})
-		.done(function (data) {
+				.done(function (data) {
 					$('.indicator').hide();
 					$('#attributeList').html(data)
 				});
@@ -70,10 +70,14 @@ function AttributeManagement(opts) {
 			RefreshAttributeList();
 		});
 
-		$('#addAttributeButton').click(function(e) {
+		$('#addAttributeButton').click(function (e) {
 			e.preventDefault();
 			elements.addDialog.dialog('open');
 			elements.addDialog.parent().appendTo(elements.addForm);
+		});
+
+		$('#attributeType').change(function () {
+			showRelevantAttributeOptions($(this));
 		});
 
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
@@ -82,8 +86,23 @@ function AttributeManagement(opts) {
 
 	};
 
-	var addAttributeHandler = function()
-	{
+	var showRelevantAttributeOptions = function (typeElement) {
+		var selectedType = typeElement.val();
+		$('div', "#textBoxOptions").show();
+
+		if (selectedType != opts.selectList)
+		{
+			$('#attributePossibleValues').hide();
+		}
+
+		if(selectedType == opts.checkbox)
+		{
+			$('div', "#textBoxOptions").hide();
+			$('#attributeLabel').show();
+		}
+	};
+
+	var addAttributeHandler = function () {
 		elements.addForm.resetForm();
 		elements.addDialog.dialog('close');
 		RefreshAttributeList();
