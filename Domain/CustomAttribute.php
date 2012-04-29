@@ -26,6 +26,9 @@ class CustomAttributeTypes
 class CustomAttributeCategory
 {
 	const RESERVATION = 1;
+	const USER = 2;
+	const GROUP = 3;
+	const RESOURCE = 4;
 }
 
 class CustomAttribute

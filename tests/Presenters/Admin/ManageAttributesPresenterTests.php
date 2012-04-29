@@ -48,6 +48,23 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->presenter = new ManageAttributesPresenter($this->page, $this->attributeRepository);
 	}
 	
+	public function testBindsAttributesForRequestedCategory()
+	{
+		$categoryId = CustomAttributeCategory::RESERVATION;
+		$this->page->_requestedCategoryId = $categoryId;
+
+		$attributes = array(CustomAttribute::Create('abc', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, null, false, null));
+
+		$this->attributeRepository->expects($this->once())
+							->method('GetByCategory')
+							->with($this->equalTo($categoryId))
+							->will($this->returnValue($attributes));
+
+		$this->presenter->PageLoad();
+
+		$this->assertSame($attributes, $this->page->_boundAttributes);
+	}
+	
 	public function testAddsNewAttribute()
 	{
 		$label = 'new label';
@@ -83,6 +100,8 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public $_required;
 	public $_regex;
 	public $_possibleValues;
+	public $_requestedCategoryId;
+	public $_boundAttributes;
 
 	public function GetLabel()
 	{
@@ -112,6 +131,24 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public function GetPossibleValues()
 	{
 		return $this->_possibleValues;
+	}
+
+	public function GetRequestedCategory()
+	{
+		return $this->_requestedCategoryId;
+	}
+
+	public function BindAttributes($attributes)
+	{
+		$this->_boundAttributes = $attributes;
+	}
+
+	/**
+	 * @param $categoryId int|CustomAttributeCategory
+	 */
+	public function SetCategory($categoryId)
+	{
+		// TODO: Implement SetCategory() method.
 	}
 }
 

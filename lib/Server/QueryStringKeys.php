@@ -27,6 +27,7 @@ class QueryStringKeys
 	const ACCESSORY_ID = 'aid';
 	const ACTION = 'action';
 	const ANNOUNCEMENT_ID = 'aid';
+	const ATTRIBUTE_CATEGORY = 'ac';
 	const AUTOCOMPLETE_TERM = 'term';
 	const AUTOCOMPLETE_TYPE = 'type';
 	const BLACKOUT_ID = 'bid';

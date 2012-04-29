@@ -23,12 +23,6 @@ define('ROOT_DIR', '../../');
 require_once(ROOT_DIR . 'Pages/Admin/ManageAttributesPage.php');
 
 $page = new ManageAttributesPage();
-if ($page->TakingAction())
-{
-	$page->ProcessAction();
-}
-else
-{
-	$page->PageLoad();
-}
+$page->PageLoad();
+
 ?>

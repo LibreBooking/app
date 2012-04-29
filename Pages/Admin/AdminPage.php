@@ -97,6 +97,22 @@ abstract class AdminPage extends SecurePage implements IActionPage
 		}
 	}
 
+	public function PageLoad()
+	{
+		if ($this->TakingAction())
+		{
+			$this->ProcessAction();
+		}
+		else if ($this->RequestingData())
+		{
+			$this->HandleDataRequest($this->GetDataRequest());
+		}
+		else
+		{
+			$this->HandlePageLoad();
+		}
+	}
+
 	public function Display($adminTemplateName)
 	{
 		parent::Display('Admin/' . $adminTemplateName);
@@ -142,6 +158,16 @@ abstract class AdminPage extends SecurePage implements IActionPage
 
 		$this->SetJson($errors);
 		return false;
+	}
+
+	protected function HandleDataRequest($dataRequest)
+	{
+		// hook for override
+	}
+
+	protected function HandlePageLoad()
+	{
+		// hook for override
 	}
 
 	public abstract function ProcessAction();

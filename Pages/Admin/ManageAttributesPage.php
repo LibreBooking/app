@@ -37,7 +37,7 @@ interface IManageAttributesPage extends IActionPage
 
 	/**
 	 * @abstract
-	 * return int|CustomAttributeScope
+	 * return int|CustomAttributeCategory
 	 */
 	public function GetCategory();
 
@@ -58,6 +58,24 @@ interface IManageAttributesPage extends IActionPage
 	 * return string
 	 */
 	public function GetPossibleValues();
+
+	/**
+	 * @abstract
+	 * return int|CustomAttributeCategory
+	 */
+	public function GetRequestedCategory();
+
+	/**
+	 * @abstract
+	 * @param $attributes CustomAttribute[]|array
+	 */
+	public function BindAttributes($attributes);
+
+	/**
+	 * @abstract
+	 * @param $categoryId int|CustomAttributeCategory
+	 */
+	public function SetCategory($categoryId);
 }
 
 class ManageAttributesPage extends AdminPage implements IManageAttributesPage
@@ -73,13 +91,16 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 		$this->presenter = new ManageAttributesPresenter($this, new AttributeRepository());
 	}
 
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$this->presenter->PageLoad();
-
 		$this->Display('manage_attributes.tpl');
 	}
 
+	public function HandleDataRequest($dataRequest)
+	{
+		$this->presenter->HandleDataRequest($dataRequest);
+	}
 
 	public function ProcessAction()
 	{
@@ -115,6 +136,22 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 	public function GetPossibleValues()
 	{
 		return $this->GetForm(FormKeys::ATTRIBUTE_POSSIBLE_VALUES);
+	}
+
+	public function GetRequestedCategory()
+	{
+		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_CATEGORY);
+	}
+
+	public function BindAttributes($attributes)
+	{
+		$this->Set('Attributes', $attributes);
+		$this->Display('Attributes/attribute-list.tpl');
+	}
+
+	public function SetCategory($categoryId)
+	{
+		$this->Set('Category', $categoryId);
 	}
 }
 

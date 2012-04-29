@@ -50,7 +50,6 @@ class ManageAttributesPresenter extends ActionPresenter
 
 	public function PageLoad()
 	{
-
 	}
 
     public function AddAttribute()
@@ -67,5 +66,17 @@ class ManageAttributesPresenter extends ActionPresenter
         $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues);
 		$this->attributeRepository->Add($attribute);
     }
+
+	public function HandleDataRequest($dataRequest)
+	{
+		$categoryId = $this->page->GetRequestedCategory();
+
+		if (empty($categoryId))
+		{
+			$categoryId = CustomAttributeCategory::RESERVATION;
+		}
+
+		$this->page->BindAttributes($this->attributeRepository->GetByCategory($categoryId));
+	}
 }
 ?>
