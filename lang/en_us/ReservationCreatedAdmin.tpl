@@ -31,7 +31,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		The reservation was occurs on the following dates:
+		The reservation occurs on the following dates:
 		<br/>
 	{/if}
 	

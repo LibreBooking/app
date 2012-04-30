@@ -83,7 +83,7 @@ abstract class AdminEmailNotification implements IReservationNotification
         foreach ($admins as $admin)
         {
             $id = $admin->Id();
-            if (array_key_exists($id, $adminIds))
+            if (array_key_exists($id, $adminIds) || $id == $owner->Id())
             {
                 // only send to each person once
                 continue;
