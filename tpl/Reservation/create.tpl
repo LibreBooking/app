@@ -188,7 +188,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<ul>
 			{foreach from=$Attributes item=attribute}
 				<li class="customAttribute">
-					<label class="customAttribute">{$attribute->Label()} <input type="textbox" name="{FormKeys::ATTRIBUTE_PREFIX}[{$attribute->Id()}]" value="{$attribute->Value()|escape}" /></label>
+					{control type="AttributeControl" attribute=$attribute}
 				</li>
 			{/foreach}
 		</ul>

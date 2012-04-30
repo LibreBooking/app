@@ -373,6 +373,7 @@ class en_us extends Language
         $strings['MultiLineTextbox'] = 'Multiple Line Textbox';
         $strings['Checkbox'] = 'Checkbox';
         $strings['SelectList'] = 'Select List';
+        $strings['CommaSeparated'] = 'comma separated';
         // End Strings
 
         // Errors

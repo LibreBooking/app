@@ -53,7 +53,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="wideLabel">{translate key=ValidationExpression}:</span>{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}
 			</div>
 			<div id="attributePossibleValues" style="display:none">
-				<span class="wideLabel">{translate key=PossibleValues}:</span>{textbox name=ATTRIBUTE_POSSIBLE_VALUES} <span class="note">(comma separated)</span>
+				<span class="wideLabel">{translate key=PossibleValues}:</span>{textbox name=ATTRIBUTE_POSSIBLE_VALUES} <span class="note">({translate key=CommaSeparated})</span>
 			</div>
 		</div>
 
