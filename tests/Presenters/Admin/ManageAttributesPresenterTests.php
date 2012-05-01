@@ -60,7 +60,7 @@ class ManageAttributesPresenterTests extends TestBase
 							->with($this->equalTo($categoryId))
 							->will($this->returnValue($attributes));
 
-		$this->presenter->PageLoad();
+		$this->presenter->HandleDataRequest('');
 
 		$this->assertSame($attributes, $this->page->_boundAttributes);
 	}

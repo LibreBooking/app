@@ -759,10 +759,10 @@ class ReservationRepositoryTests extends TestBase
 		$seriesId = $series->SeriesId();
 		$this->repository->Update($series);
 
-		$addNewCommand = new AddAttributeValueCommand(4, '4', $seriesId, CustomAttributeCategory::RESERVATION);
+		$addNewCommand = new AddAttributeValueCommand(4, '4abc', $seriesId, CustomAttributeCategory::RESERVATION);
 		$removeOldCommand = new RemoveAttributeValueCommand(1, $seriesId);
 		$removeUpdated = new RemoveAttributeValueCommand(2, $seriesId);
-		$addUpdated = new AddAttributeValueCommand(2, '22', $seriesId, CustomAttributeCategory::RESERVATION);
+		$addUpdated = new AddAttributeValueCommand(2, '22abc', $seriesId, CustomAttributeCategory::RESERVATION);
 
 		$this->assertTrue($this->db->ContainsCommand($addNewCommand));
 		$this->assertTrue($this->db->ContainsCommand($removeOldCommand));

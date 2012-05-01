@@ -74,7 +74,6 @@ class CalendarExportPresenter
             {
 				$seriesIds = array();
                 $res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, null, null, $scheduleId, $resourceId);
-
                 foreach ($res as $r)
                 {
 					$seriesId = $r->SeriesId;
@@ -83,7 +82,7 @@ class CalendarExportPresenter
                     	$reservations[] = new iCalendarReservationView($r);
 					}
 
-					$seriesIds[$r->SeriesId] = true;
+					$seriesIds[$seriesId] = true;
                 }
             }
         }

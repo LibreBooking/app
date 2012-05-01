@@ -134,7 +134,10 @@ class CalendarExportPresenterTests extends TestBase
 
 		$r2 = new TestReservationItemView(2, Date::Now(), Date::Now());
 		$r2->WithSeriesId(10);
-        $reservationResult = array($r1, $r2);
+
+		$r3 = new TestReservationItemView(2, Date::Now(), Date::Now());
+		$r3->WithSeriesId(10);
+        $reservationResult = array($r1, $r2, $r3);
 
         $weekAgo = Date::Now()->AddDays(-7);
         $nextYear = Date::Now()->AddDays(365);

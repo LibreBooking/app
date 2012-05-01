@@ -24,83 +24,90 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class CalendarSubscriptionPresenter
 {
-    /**
-     * @var \ICalendarExportPage
-     */
-    private $page;
+	/**
+	 * @var \ICalendarExportPage
+	 */
+	private $page;
 
-    /**
-     * @var IReservationViewRepository
-     */
-    private $reservationViewRepository;
+	/**
+	 * @var IReservationViewRepository
+	 */
+	private $reservationViewRepository;
 
-    /**
-     * @var ICalendarExportValidator
-     */
-    private $validator;
+	/**
+	 * @var ICalendarExportValidator
+	 */
+	private $validator;
 
-    /**
-     * @var ICalendarSubscriptionService
-     */
-    private $subscriptionService;
+	/**
+	 * @var ICalendarSubscriptionService
+	 */
+	private $subscriptionService;
 
-    public function __construct(ICalendarSubscriptionPage $page,
-                                IReservationViewRepository $reservationViewRepository,
-                                ICalendarExportValidator $validator,
-                                ICalendarSubscriptionService $subscriptionService)
-    {
-        $this->page = $page;
-        $this->reservationViewRepository = $reservationViewRepository;
-        $this->validator = $validator;
-        $this->subscriptionService = $subscriptionService;
-    }
+	public function __construct(ICalendarSubscriptionPage $page,
+								IReservationViewRepository $reservationViewRepository,
+								ICalendarExportValidator $validator,
+								ICalendarSubscriptionService $subscriptionService)
+	{
+		$this->page = $page;
+		$this->reservationViewRepository = $reservationViewRepository;
+		$this->validator = $validator;
+		$this->subscriptionService = $subscriptionService;
+	}
 
-    public function PageLoad()
-    {
-        if (!$this->validator->IsValid())
-        {
-            return;
-        }
+	public function PageLoad()
+	{
+		if (!$this->validator->IsValid())
+		{
+			return;
+		}
 
-        $userId = $this->page->GetUserId();
-        $scheduleId = $this->page->GetScheduleId();
-        $resourceId = $this->page->GetResourceId();
+		$userId = $this->page->GetUserId();
+		$scheduleId = $this->page->GetScheduleId();
+		$resourceId = $this->page->GetResourceId();
 
-        $weekAgo = Date::Now()->AddDays(-7);
-        $nextYear = Date::Now()->AddDays(365);
+		$weekAgo = Date::Now()->AddDays(-7);
+		$nextYear = Date::Now()->AddDays(365);
 
-        $sid = null;
-        $rid = null;
-        $uid = null;
+		$sid = null;
+		$rid = null;
+		$uid = null;
 
-        $reservations = array();
-        if (!empty($scheduleId))
-        {
-            $schedule = $this->subscriptionService->GetSchedule($scheduleId);
-            $sid = $schedule->GetId();
-        }
-        if (!empty($resourceId))
-        {
-            $resource = $this->subscriptionService->GetResource($resourceId);
-            $rid = $resource->GetId();
-        }
-        if (!empty($userId))
-        {
-            $user = $this->subscriptionService->GetUser($userId);
-            $uid = $user->Id();
-        }
+		$reservations = array();
+		if (!empty($scheduleId))
+		{
+			$schedule = $this->subscriptionService->GetSchedule($scheduleId);
+			$sid = $schedule->GetId();
+		}
+		if (!empty($resourceId))
+		{
+			$resource = $this->subscriptionService->GetResource($resourceId);
+			$rid = $resource->GetId();
+		}
+		if (!empty($userId))
+		{
+			$user = $this->subscriptionService->GetUser($userId);
+			$uid = $user->Id();
+		}
 
-        $res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, $uid, null, $sid, $rid);
+		$res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, $uid, null, $sid, $rid);
 
-        Log::Debug('Loading calendar subscription for userId %s, scheduleId %s, resourceId %s. Found %s reservations.', $userId, $scheduleId, $resourceId, count($res));
+		Log::Debug('Loading calendar subscription for userId %s, scheduleId %s, resourceId %s. Found %s reservations.', $userId, $scheduleId, $resourceId, count($res));
 
-        foreach ($res as $r)
-        {
-            $reservations[] = new iCalendarReservationView($r);
-        }
+		$seriesIds = array();
+		foreach ($res as $r)
+		{
+			$seriesId = $r->SeriesId;
+			if (!array_key_exists($seriesId, $seriesIds))
+			{
+				$reservations[] = new iCalendarReservationView($r);
+			}
 
-        $this->page->SetReservations($reservations);
-    }
+			$seriesIds[$seriesId] = true;
+		}
+
+		$this->page->SetReservations($reservations);
+	}
 }
 
 ?>
