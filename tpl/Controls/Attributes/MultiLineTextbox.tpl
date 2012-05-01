@@ -16,6 +16,5 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<label class="customAttribute">{$attribute->Label()}
-<textarea name="{FormKeys::ATTRIBUTE_PREFIX}[{$attribute->Id()}]">{$attribute->Value()|escape}</textarea>
-</label>
+<label class="customAttribute" for="{$attributeName}">{$attribute->Label()}</label>
+<textarea id="{$attributeName}" name="{$attributeName}" class="customAttribute">{$attribute->Value()|escape}</textarea>

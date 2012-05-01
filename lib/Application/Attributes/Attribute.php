@@ -59,6 +59,30 @@ class Attribute
 	{
 		return $this->value;
 	}
+
+	/**
+	 * @return CustomAttributeTypes|int
+	 */
+	public function Type()
+	{
+		return $this->attributeDefinition->Type();
+	}
+
+	/**
+	 * @return array|string[]
+	 */
+	public function PossibleValueList()
+	{
+		return $this->attributeDefinition->PossibleValueList();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function Required()
+	{
+		return $this->attributeDefinition->Required();
+	}
 }
 
 ?>

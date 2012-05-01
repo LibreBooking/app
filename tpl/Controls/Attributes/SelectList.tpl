@@ -16,13 +16,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<label class="customAttribute">{$attribute->Label()}
-<select name="{FormKeys::ATTRIBUTE_PREFIX}[{$attribute->Id()}]">
-	{if !$attribute->Requred()}
+<label class="customAttribute" for="{$attributeName}">{$attribute->Label()}</label>
+<select id="{$attributeName}" name="{$attributeName}" class="customAttribute">
+	{if !$attribute->Required()}
 	<option value="">--</option>
 	{/if}
-	{foreach from=$attribute->PossibleValuesList item=value}
-	<option value="{$value}" {if $attribute->Value() == $value}selected="selected"{/if}>$value</option>
+	{foreach from=$attribute->PossibleValueList() item=value}
+	<option value="{$value}" {if $attribute->Value() == $value}selected="selected"{/if}>{$value}</option>
 	{/foreach}
 </select>
-</label>

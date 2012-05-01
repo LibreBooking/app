@@ -746,13 +746,13 @@ class ReservationRepositoryTests extends TestBase
 	{
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->BuildTestVersion();
-		$series->WithAttribute(new AttributeValue(1, '1'));
-		$series->WithAttribute(new AttributeValue(2, '2'));
-		$series->WithAttribute(new AttributeValue(3, '3'));
+		$series->WithAttribute(new AttributeValue(1, '1abc'));
+		$series->WithAttribute(new AttributeValue(2, '2abc'));
+		$series->WithAttribute(new AttributeValue(3, '3abc'));
 		$updatedAttributes = array(
-			new AttributeValue(2, '22'),
-			new AttributeValue(3, '3'),
-			new AttributeValue(4, '4'),
+			new AttributeValue(2, '22abc'),
+			new AttributeValue(3, '3abc'),
+			new AttributeValue(4, '4abc'),
 		);
 		$series->ChangeAttributes($updatedAttributes);
 

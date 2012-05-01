@@ -16,6 +16,5 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<label class="customAttribute">{$attribute->Label()}
-<input type="checkbox" value="1" name="{FormKeys::ATTRIBUTE_PREFIX}[{$attribute->Id()}]" {if $attribute->Value() == "1"}checked="checked"{/if} />
-</label>
+<label class="customAttribute" for="{$attributeName}">{$attribute->Label()}</label>
+<input type="checkbox" value="1" id="{$attributeName}" name="{$attributeName}" {if $attribute->Value() == "1"}checked="checked"{/if} />

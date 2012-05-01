@@ -29,8 +29,15 @@ class AttributeControl extends Control
 	
 	public function PageLoad()
 	{
-		//$this->Set('attribute', $attribute);
-		$this->Display('Controls/Attribute.tpl');
+		$templates[CustomAttributeTypes::CHECKBOX] = 'Checkbox.tpl';
+		$templates[CustomAttributeTypes::MULTI_LINE_TEXTBOX] = 'MultiLineTextbox.tpl';
+		$templates[CustomAttributeTypes::SELECT_LIST] = 'SelectList.tpl';
+		$templates[CustomAttributeTypes::SINGLE_LINE_TEXTBOX] = 'SingleLineTextbox.tpl';
+		/** @var $attribute Attribute */
+		$attribute = $this->Get('attribute');
+
+		$this->Set('attributeName', sprintf('%s[%s]', FormKeys::ATTRIBUTE_PREFIX, $attribute->Id()));
+		$this->Display('Controls/Attributes/' . $templates[$attribute->Type()]);
 	}
 }
 ?>

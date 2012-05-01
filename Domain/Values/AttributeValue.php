@@ -49,7 +49,7 @@ class AttributeValue
 
 	public function __toString()
 	{
-		return sprintf("AttributeValue id:%d value:%d", $this->AttributeId, $this->Value);
+		return sprintf("AttributeValue id:%s value:%s", $this->AttributeId, $this->Value);
 	}
 }
 

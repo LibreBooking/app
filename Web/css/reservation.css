@@ -103,6 +103,7 @@
 	font-size: 11pt;
 }
 
+
 #customAttributes {
 	clear:both;
 }
@@ -129,4 +130,22 @@
 	float: left;
 	position: relative;
 	padding-right: 10px;
+	vertical-align: top;
+}
+
+#customAttributes label {
+	vertical-align: top;
+}
+
+input.customAttribute {
+	width: 150px;
+}
+
+textarea.customAttribute {
+	width: 150px;
+	height: 50px;
+}
+
+select.customAttribute {
+
 }
