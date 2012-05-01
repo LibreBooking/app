@@ -128,6 +128,21 @@
 		<delete dir="${staging}" failonerror="false"/>
 	</target>
 
+    <target name="create.demo" depends="stage.files">
+    		<delete dir="${demo.dir}" failonerror="false"/>
+    		<mkdir dir="${demo.dir}"/>
+    		<copy todir="${demo.dir}" includeemptydirs="true">
+    			<fileset dir="${stagingdir}">
+    				<include name="**/*"/>
+    			</fileset>
+    		</copy>
+
+            <delete file="C:/work/demo/reload.v2.sql" failonerror="false" />
+    		<append destFile="C:/work/demo/reload.v2.sql">
+                <filelist dir="${demo.dir}/database_schema" files="schema-utf8.sql,data-utf8.sql,sample-data-utf8.sql"/>
+    		</append>
+    	</target>
+
 	<target name="stage.files" >
 		<delete dir="${staging}" failonerror="false"/>
 		<mkdir dir="${staging}"/>
@@ -170,21 +185,6 @@
 		<combinedbfiles schemadir="${stagingdir}/database_schema"
 						schemaFile="${stagingdir}/${sql.file.create.schema}"
 						dataFile="${stagingdir}/${sql.file.data}"/>
-	</target>
-
-	<target name="create.demo" depends="stage.files">
-		<delete dir="${demo.dir}" failonerror="false"/>
-		<mkdir dir="${demo.dir}"/>
-		<copy todir="${demo.dir}" includeemptydirs="true">
-			<fileset dir="${stagingdir}">
-				<include name="**/*"/>
-			</fileset>
-		</copy>
-
-        <delete file="C:/work/demo/reload.v2.sql" failonerror="false" />
-		<append destFile="C:/work/demo/reload.v2.sql">
-            <filelist dir="${demo.dir}/database_schema" files="schema-utf8.sql,data-utf8.sql,sample-data-utf8.sql"/>
-		</append>
 	</target>
 
 	<target name="minify" description="minify javascript and css files">

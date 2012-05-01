@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
 
-class NullPermissionService implements IPermissionService
+class ViewSchedulePermissionService implements IPermissionService
 {
 	/**
 	 * @param IResource $resource
@@ -30,7 +30,7 @@ class NullPermissionService implements IPermissionService
 	 */
 	public function CanAccessResource(IResource $resource, UserSession $user)
 	{
-		return false;
+		return true;
 	}
 }
 
@@ -39,9 +39,9 @@ class ViewSchedulePage extends Page implements ISchedulePage
 	public function __construct()
 	{
 		parent::__construct('Schedule');
-		
+
 		$scheduleRepository = new ScheduleRepository();
-		$resourceService = new ResourceService(new ResourceRepository(), new NullPermissionService());
+		$resourceService = new ResourceService(new ResourceRepository(), new ViewSchedulePermissionService());
 		$pageBuilder = new SchedulePageBuilder();
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();

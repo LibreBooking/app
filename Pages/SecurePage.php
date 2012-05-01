@@ -30,14 +30,14 @@ abstract class SecurePage extends Page
 
 		if (!$this->IsAuthenticated())
 		{
-			$this->Redirect($this->GetResumeUrl());
+			$this->RedirectResume($this->GetResumeUrl());
 			die();
 		}
 	}
 	
 	protected function GetResumeUrl()
 	{
-		return sprintf("%s%s?%s=%s", $this->path, Pages::LOGIN, QueryStringKeys::REDIRECT, $this->server->GetUrl());
+		return sprintf("%s%s?%s=%s", $this->path, Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($this->server->GetUrl()));
 	}
 }
 
@@ -54,7 +54,7 @@ class SecureActionPageDecorator extends ActionPage
 
 		if (!$this->page->IsAuthenticated())
 		{
-			$this->Redirect($this->GetResumeUrl());
+			$this->RedirectResume($this->GetResumeUrl());
 			die();
 		}
 	}
@@ -76,7 +76,7 @@ class SecureActionPageDecorator extends ActionPage
 
 	protected function GetResumeUrl()
 	{
-		return sprintf("%s%s?%s=%s", $this->page->path, Pages::LOGIN, QueryStringKeys::REDIRECT, $this->page->server->GetUrl());
+		return sprintf("%s%s?%s=%s", $this->page->path, Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($this->page->server->GetUrl()));
 	}
 
 	public function TakingAction()
@@ -143,7 +143,7 @@ class SecurePageDecorator extends Page implements IPage
 
 		if (!$this->page->IsAuthenticated())
 		{
-			$this->Redirect($this->GetResumeUrl());
+			$this->RedirectResume($this->GetResumeUrl());
 			die();
 		}
 	}
@@ -185,7 +185,7 @@ class SecurePageDecorator extends Page implements IPage
 
 	protected function GetResumeUrl()
 	{
-		return sprintf("%s%s?%s=%s", $this->page->path, Pages::LOGIN, QueryStringKeys::REDIRECT, $this->page->server->GetUrl());
+		return sprintf("%s%s?%s=%s", $this->page->path, Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($this->page->server->GetUrl()));
 	}
 }
 ?>
