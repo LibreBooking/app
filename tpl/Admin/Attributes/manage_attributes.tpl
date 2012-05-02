@@ -44,7 +44,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		<div id="textBoxOptions">
 			<div id="attributeLabel">
-				<span class="wideLabel">{translate key=DisplayLabel}:</span>{textbox name=ATTRIBUTE_LABEL}
+				<span class="wideLabel">{translate key=DisplayLabel}:</span>{textbox name=ATTRIBUTE_LABEL class="required"}
 			</div>
 			<div id="attributeRequired">
 				<span class="wideLabel">{translate key=Required}:</span><input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} />
@@ -53,7 +53,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="wideLabel">{translate key=ValidationExpression}:</span>{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}
 			</div>
 			<div id="attributePossibleValues" style="display:none">
-				<span class="wideLabel">{translate key=PossibleValues}:</span>{textbox name=ATTRIBUTE_POSSIBLE_VALUES} <span class="note">({translate key=CommaSeparated})</span>
+				<span class="wideLabel">{translate key=PossibleValues}:</span>{textbox name=ATTRIBUTE_POSSIBLE_VALUES class="required"} <span class="note">({translate key=CommaSeparated})</span>
 			</div>
 		</div>
 

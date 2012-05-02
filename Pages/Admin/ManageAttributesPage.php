@@ -109,7 +109,7 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 	public function HandlePageLoad()
 	{
 		$this->presenter->PageLoad();
-		$this->Display('manage_attributes.tpl');
+		$this->Display('Attributes/manage_attributes.tpl');
 	}
 
 	public function HandleDataRequest($dataRequest)

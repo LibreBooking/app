@@ -102,10 +102,13 @@
 	{
 		var isValid = true;
 		$(jqForm).find('.required').each(function(){
-			if ($(this).val() == '')
+			if ($(this).is(':visible') && $(this).val() == '')
 			{
 				isValid = false;
-				$(this).after('<span class="error">*</span>');
+				if ($(this).next('span.error').length == 0)
+				{
+					$(this).after('<span class="error">*</span>');
+				}
 			}
 		});
 		

@@ -41,7 +41,7 @@ function AttributeManagement(opts) {
 
 	AttributeManagement.prototype.init = function () {
 
-		ConfigureAdminDialog(elements.addDialog, 450, 200);
+		ConfigureAdminDialog(elements.addDialog, 480, 200);
 //		ConfigureAdminDialog(elements.deleteDialog,  500, 200);
 
 //		elements.accessoryList.delegate('a.update', 'click', function(e) {
@@ -72,6 +72,7 @@ function AttributeManagement(opts) {
 
 		$('#addAttributeButton').click(function (e) {
 			e.preventDefault();
+			$('span.error', elements.addDialog).remove();
 			elements.addDialog.dialog('open');
 			elements.addDialog.parent().appendTo(elements.addForm);
 		});
@@ -93,6 +94,11 @@ function AttributeManagement(opts) {
 		if (selectedType != opts.selectList)
 		{
 			$('#attributePossibleValues').hide();
+		}
+
+		if (selectedType == opts.selectList)
+		{
+			$('#attributeValidationExpression').hide();
 		}
 
 		if(selectedType == opts.checkbox)
