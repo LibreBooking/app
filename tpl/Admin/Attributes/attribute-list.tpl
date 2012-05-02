@@ -29,7 +29,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</tr>
 	{foreach from=$Attributes item=attribute}
 		{cycle values='row0,row1' assign=rowCss}
-		<tr class="{$rowCss} editable">
+		<tr class="{$rowCss} editable" attributeId="{$attribute->Id()}">
 			<td>{$attribute->Label()}</td>
 			<td>{translate key=$Types[$attribute->Type()]}</td>
 			<td>{if $attribute->Required()}
@@ -43,3 +43,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/foreach}
 </table>
 {/if}
+
+<script type="text/javascript">
+	var attributeList = [];
+
+	{foreach from=$Attributes item=attribute}
+		attributeList.push({$attribute->Id()});
+	{/foreach}
+
+	$.data($('table.list'), 'list', attributeList);
+
+	alert($.data($('table.list'), 'list'));
+</script>

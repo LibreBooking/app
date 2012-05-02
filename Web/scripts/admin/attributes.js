@@ -3,7 +3,7 @@ function AttributeManagement(opts) {
 
 	var elements = {
 		activeId:$('#activeId'),
-		accessoryList:$('table.list'),
+		attributeList: $('table.list'),
 
 		addUnlimited:$('#chkUnlimitedAdd'),
 		addQuantity:$('#addQuantity'),
@@ -79,6 +79,11 @@ function AttributeManagement(opts) {
 
 		$('#attributeType').change(function () {
 			showRelevantAttributeOptions($(this));
+		});
+
+		elements.attributeList.delegate('.editable', 'click', function(){
+			var dataList = $.data(elements.attributeList, 'list');
+			alert(dataList);
 		});
 
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
