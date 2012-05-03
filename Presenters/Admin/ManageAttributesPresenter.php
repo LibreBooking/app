@@ -24,6 +24,7 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 class ManageAttributesActions
 {
     const AddAttribute = 'addAttribute';
+    const UpdateAttribute = 'updateAttribute';
 }
 
 class ManageAttributesPresenter extends ActionPresenter
@@ -46,6 +47,7 @@ class ManageAttributesPresenter extends ActionPresenter
 		$this->attributeRepository = $attributeRepository;
 
         $this->AddAction(ManageAttributesActions::AddAttribute, 'AddAttribute');
+        $this->AddAction(ManageAttributesActions::UpdateAttribute, 'UpdateAttribute');
 	}
 
 	public function PageLoad()
@@ -67,6 +69,22 @@ class ManageAttributesPresenter extends ActionPresenter
 		$this->attributeRepository->Add($attribute);
     }
 
+	public function UpdateAttribute()
+	{
+		$attributeId = $this->page->GetAttributeId();
+		$attributeName = $this->page->GetLabel();
+		$regex = $this->page->GetValidationExpression();
+		$required = $this->page->GetIsRequired();
+		$possibleValues = $this->page->GetPossibleValues();
+
+		Log::Debug('Updating attribute with id: %s', $attributeId);
+
+		$attribute = $this->attributeRepository->LoadById($attributeId);
+		$attribute->Update($attributeName, $regex, $required, $possibleValues);
+
+		$this->attributeRepository->Update($attribute);
+	}
+
 	public function HandleDataRequest($dataRequest)
 	{
 		$categoryId = $this->page->GetRequestedCategory();
@@ -78,5 +96,7 @@ class ManageAttributesPresenter extends ActionPresenter
 
 		$this->page->BindAttributes($this->attributeRepository->GetByCategory($categoryId));
 	}
+
+
 }
 ?>

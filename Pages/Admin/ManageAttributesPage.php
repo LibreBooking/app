@@ -76,6 +76,8 @@ interface IManageAttributesPage extends IActionPage
 	 * @param $categoryId int|CustomAttributeCategory
 	 */
 	public function SetCategory($categoryId);
+
+	public function GetAttributeId();
 }
 
 class ManageAttributesPage extends AdminPage implements IManageAttributesPage
@@ -167,6 +169,11 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 	public function SetCategory($categoryId)
 	{
 		$this->Set('Category', $categoryId);
+	}
+
+	public function GetAttributeId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_ID);
 	}
 }
 

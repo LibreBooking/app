@@ -31,6 +31,19 @@ interface IAttributeRepository
 
 	/**
 	 * @abstract
+	 * @param $attributeId int
+	 * @return CustomAttribute
+	 */
+	public function LoadById($attributeId);
+
+	/**
+	 * @abstract
+	 * @param CustomAttribute $attribute
+	 */
+	public function Update(CustomAttribute $attribute);
+
+	/**
+	 * @abstract
 	 * @param int|CustomAttributeCategory $category
 	 * @return array|CustomAttribute[]
 	 */
@@ -54,12 +67,29 @@ class AttributeRepository implements IAttributeRepository
 		$reader = ServiceLocator::GetDatabase()->Query(new GetAttributesByCategoryCommand($category));
 
 		$attributes = array();
-		while($row = $reader->GetRow())
+		while ($row = $reader->GetRow())
 		{
 			$attributes[] = CustomAttribute::FromRow($row);
 		}
 
 		return $attributes;
+	}
+
+	/**
+	 * @param $attributeId int
+	 * @return CustomAttribute
+	 */
+	public function LoadById($attributeId)
+	{
+		throw new Exception('not implemented');
+	}
+
+	/**
+	 * @param CustomAttribute $attribute
+	 */
+	public function Update(CustomAttribute $attribute)
+	{
+		throw new Exception('not implemented');
 	}
 }
 

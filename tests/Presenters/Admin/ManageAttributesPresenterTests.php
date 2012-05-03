@@ -47,7 +47,7 @@ class ManageAttributesPresenterTests extends TestBase
 
 		$this->presenter = new ManageAttributesPresenter($this->page, $this->attributeRepository);
 	}
-	
+
 	public function testBindsAttributesForRequestedCategory()
 	{
 		$categoryId = CustomAttributeCategory::RESERVATION;
@@ -56,15 +56,15 @@ class ManageAttributesPresenterTests extends TestBase
 		$attributes = array(CustomAttribute::Create('abc', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, null, false, null));
 
 		$this->attributeRepository->expects($this->once())
-							->method('GetByCategory')
-							->with($this->equalTo($categoryId))
-							->will($this->returnValue($attributes));
+				->method('GetByCategory')
+				->with($this->equalTo($categoryId))
+				->will($this->returnValue($attributes));
 
 		$this->presenter->HandleDataRequest('');
 
 		$this->assertSame($attributes, $this->page->_boundAttributes);
 	}
-	
+
 	public function testAddsNewAttribute()
 	{
 		$label = 'new label';
@@ -76,7 +76,7 @@ class ManageAttributesPresenterTests extends TestBase
 
 		$this->page->_label = $label;
 		$this->page->_type = $type;
-		$this->page->_scope = $scope;
+		$this->page->_category = $scope;
 		$this->page->_required = $required;
 		$this->page->_regex = $regex;
 		$this->page->_possibleValues = $possibleValues;
@@ -84,11 +84,45 @@ class ManageAttributesPresenterTests extends TestBase
 		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues);
 
 		$this->attributeRepository->expects($this->once())
-					->method('Add')
-					->with($this->equalTo($expectedAttribute))
-					->will($this->returnValue(1));
+				->method('Add')
+				->with($this->equalTo($expectedAttribute))
+				->will($this->returnValue(1));
 
 		$this->presenter->AddAttribute();
+	}
+
+	public function testUpdatesAttribute()
+	{
+		$attributeId = 1091;
+		$label = 'new label';
+		$category = CustomAttributeCategory::RESERVATION;
+		$required = true;
+		$regex = '/$\d^/';
+		$possibleValues = '1,2,3';
+
+		$this->page->_label = $label;
+		$this->page->_required = $required;
+		$this->page->_regex = $regex;
+		$this->page->_possibleValues = $possibleValues;
+		$this->page->_attributeId = $attributeId;
+
+		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::GROUP, null, false, null);
+
+		$this->attributeRepository->expects($this->once())
+				->method('LoadById')
+				->with($this->equalTo($attributeId))
+				->will($this->returnValue($expectedAttribute));
+
+		$this->attributeRepository->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($expectedAttribute));
+
+		$this->presenter->UpdateAttribute();
+
+		$this->assertEquals($label, $expectedAttribute->Label());
+		$this->assertEquals($regex, $expectedAttribute->Regex());
+		$this->assertEquals($required, $expectedAttribute->Required());
+		$this->assertEquals($possibleValues, $expectedAttribute->PossibleValues());
 	}
 }
 
@@ -96,12 +130,13 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 {
 	public $_label;
 	public $_type;
-	public $_scope;
+	public $_category;
 	public $_required;
 	public $_regex;
 	public $_possibleValues;
 	public $_requestedCategoryId;
 	public $_boundAttributes;
+	public $_attributeId;
 
 	public function GetLabel()
 	{
@@ -115,7 +150,7 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 
 	public function GetCategory()
 	{
-		return $this->_scope;
+		return $this->_category;
 	}
 
 	public function GetValidationExpression()
@@ -149,6 +184,11 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public function SetCategory($categoryId)
 	{
 		// TODO: Implement SetCategory() method.
+	}
+
+	public function GetAttributeId()
+	{
+		return $this->_attributeId;
 	}
 }
 

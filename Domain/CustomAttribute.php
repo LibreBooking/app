@@ -155,7 +155,7 @@ class CustomAttribute
 		$this->required = $required;
 		if (!empty($possibleValues))
 		{
-			$this->possibleValues = preg_replace('/\s*,\s*/', ',',trim($possibleValues));
+			$this->possibleValues = preg_replace('/\s*,\s*/', ',', trim($possibleValues));
 		}
 	}
 
@@ -225,6 +225,20 @@ class CustomAttribute
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param string $label
+	 * @param string $regex
+	 * @param bool $required
+	 * @param string $possibleValues
+	 */
+	public function Update($label, $regex, $required, $possibleValues)
+	{
+		$this->label = $label;
+		$this->regex = $regex;
+		$this->required = $required;
+		$this->possibleValues = $possibleValues;
 	}
 }
 
