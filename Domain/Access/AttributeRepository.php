@@ -81,7 +81,15 @@ class AttributeRepository implements IAttributeRepository
 	 */
 	public function LoadById($attributeId)
 	{
-		throw new Exception('not implemented');
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAttributeByIdCommand($attributeId));
+
+		$attribute = null;
+		if ($row = $reader->GetRow())
+		{
+			$attribute = CustomAttribute::FromRow($row);
+		}
+
+		return $attribute;
 	}
 
 	/**
@@ -89,7 +97,9 @@ class AttributeRepository implements IAttributeRepository
 	 */
 	public function Update(CustomAttribute $attribute)
 	{
-		throw new Exception('not implemented');
+		ServiceLocator::GetDatabase()->Execute(
+			new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
+				$attribute->Regex(), $attribute->Required(), $attribute->PossibleValues()));
 	}
 }
 

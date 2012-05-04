@@ -364,6 +364,7 @@ class en_us extends Language
         $strings['ShowFullWeek'] = 'Show Full Week';
         $strings['CustomAttributes'] = 'Custom Attributes';
         $strings['AddAttribute'] = 'Add an Attribute';
+        $strings['EditAttribute'] = 'Update an Attribute';
         $strings['DisplayLabel'] = 'Display Label';
         $strings['Type'] = 'Type';
         $strings['Required'] = 'Required';
@@ -374,6 +375,9 @@ class en_us extends Language
         $strings['Checkbox'] = 'Checkbox';
         $strings['SelectList'] = 'Select List';
         $strings['CommaSeparated'] = 'comma separated';
+        $strings['Category'] = 'Category';
+        $strings['CategoryReservation'] = 'Reservation';
+        $strings['CategoryGroup'] = 'Group';
         // End Strings
 
         // Errors

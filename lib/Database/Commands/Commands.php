@@ -557,6 +557,15 @@ class GetAttributesByCategoryCommand extends SqlCommand
 	}
 }
 
+class GetAttributeByIdCommand extends SqlCommand
+{
+	public function __construct($attributeId)
+	{
+		parent::__construct(Queries::GET_ATTRIBUTE_BY_ID);
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+	}
+}
+
 class GetAttributeValuesCommand extends SqlCommand
 {
 	public function __construct($entityId, $attributeCategoryId)
@@ -1161,6 +1170,21 @@ class UpdateAnnouncementCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::START_DATE, $start->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::END_DATE, $end->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_PRIORITY, $priority));
+    }
+}
+
+class UpdateAttributeCommand extends SqlCommand
+{
+    public function __construct($attributeId, $label, $type, $category, $regex, $required, $possibleValues)
+    {
+        parent::__construct(Queries::UPDATE_ATTRIBUTE);
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_LABEL, $label));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_TYPE, (int)$type));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, (int)$category));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_REGEX, $regex));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_REQUIRED, (int)$required));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_POSSIBLE_VALUES, $possibleValues));
     }
 }
 

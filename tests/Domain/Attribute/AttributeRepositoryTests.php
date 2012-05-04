@@ -54,12 +54,47 @@ class AttributeRepositoryTests extends TestBase
 		$this->assertEquals(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues), $this->db->_LastCommand);
 	}
 
-	public function testDeletesAttribute()
+	public function testLoadsAttributeById()
 	{
+		$id = 12098;
+		$label = 'label';
+		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
+		$category = CustomAttributeCategory::RESERVATION;
+		$regex = 'regex';
+		$required = false;
+		$possibleValues = 'val1,val2,val3';
+
+		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues);
+
+		$this->db->SetRows(array($row1));
+
+		$attribute = $this->repository->LoadById($id);
+
+		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues);
+
+		$this->assertEquals($expectedFirstAttribute, $attribute);
+		$this->assertEquals(new GetAttributeByIdCommand($id), $this->db->_LastCommand);
 
 	}
 
-	public function testLoadsAttributes()
+	public function testUpdatesAttribute()
+	{
+		$id = 12098;
+		$label = 'label';
+		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
+		$category = CustomAttributeCategory::RESERVATION;
+		$regex = 'regex';
+		$required = false;
+		$possibleValues = 'val1,val2,val3';
+
+		$attribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues);
+
+		$this->repository->Update($attribute);
+
+		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues), $this->db->_LastCommand);
+	}
+
+	public function testLoadsAttributesByCategory()
 	{
 		$id = 12098;
 		$label = 'label';
