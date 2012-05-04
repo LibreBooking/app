@@ -44,14 +44,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </table>
 {/if}
 
+
 <script type="text/javascript">
-	var attributeList = [];
+	var attributeList = new Object();
 
 	{foreach from=$Attributes item=attribute}
-		attributeList.push({$attribute->Id()});
+		attributeList[{$attribute->Id()}] = {
+						id: {$attribute->Id()},
+						label: "{$attribute->Label()|escape:'javascript'}",
+						required: {$attribute->Required()},
+						regex: "{$attribute->Regex()|escape:'javascript'}",
+						possibleValues: "{$attribute->PossibleValues()|escape:'javascript'}",
+						type: "{$attribute->Type()}"
+					};
 	{/foreach}
 
-	$.data($('table.list'), 'list', attributeList);
-
-	alert($.data($('table.list'), 'list'));
+	$('#attributeList').data('list', attributeList);
 </script>

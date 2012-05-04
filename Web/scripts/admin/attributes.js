@@ -3,7 +3,7 @@ function AttributeManagement(opts) {
 
 	var elements = {
 		activeId:$('#activeId'),
-		attributeList: $('table.list'),
+		attributeList: $('#attributeList'),
 
 		addUnlimited:$('#chkUnlimitedAdd'),
 		addQuantity:$('#addQuantity'),
@@ -13,6 +13,7 @@ function AttributeManagement(opts) {
 		editQuantity:$('#editQuantity'),
 
 		addDialog:$('#addAttributeDialog'),
+		editDialog:$('#editAttributeDialog'),
 		deleteDialog:$('#deleteDialog'),
 
 		addForm:$('#addAttributeForm'),
@@ -42,7 +43,7 @@ function AttributeManagement(opts) {
 	AttributeManagement.prototype.init = function () {
 
 		ConfigureAdminDialog(elements.addDialog, 480, 200);
-//		ConfigureAdminDialog(elements.deleteDialog,  500, 200);
+		ConfigureAdminDialog(elements.editDialog,  500, 200);
 
 //		elements.accessoryList.delegate('a.update', 'click', function(e) {
 //			setActiveId($(this));
@@ -78,12 +79,15 @@ function AttributeManagement(opts) {
 		});
 
 		$('#attributeType').change(function () {
-			showRelevantAttributeOptions($(this));
+			showRelevantAttributeOptions($(this).val(), elements.addDialog);
 		});
 
 		elements.attributeList.delegate('.editable', 'click', function(){
-			var dataList = $.data(elements.attributeList, 'list');
-			alert(dataList);
+			var attributeId = $(this).attr('attributeId');
+			var dataList = elements.attributeList.data('list');
+			var selectedAttribute = dataList[attributeId];
+
+			showEditDialog(selectedAttribute);
 		});
 
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
@@ -92,24 +96,24 @@ function AttributeManagement(opts) {
 
 	};
 
-	var showRelevantAttributeOptions = function (typeElement) {
-		var selectedType = typeElement.val();
-		$('div', "#textBoxOptions").show();
+	var showRelevantAttributeOptions = function (selectedType, optionsDiv) {
+		//var selectedType = typeElement.val();
+		$('.textBoxOptions', optionsDiv).find('div').show();
 
 		if (selectedType != opts.selectList)
 		{
-			$('#attributePossibleValues').hide();
+			$('.attributePossibleValues').hide();
 		}
 
 		if (selectedType == opts.selectList)
 		{
-			$('#attributeValidationExpression').hide();
+			$('.attributeValidationExpression').hide();
 		}
 
 		if(selectedType == opts.checkbox)
 		{
-			$('div', "#textBoxOptions").hide();
-			$('#attributeLabel').show();
+			$('div', ".textBoxOptions").hide();
+			$('.attributeLabel').show();
 		}
 	};
 
@@ -117,6 +121,24 @@ function AttributeManagement(opts) {
 		elements.addForm.resetForm();
 		elements.addDialog.dialog('close');
 		RefreshAttributeList();
+	};
+
+	var showEditDialog = function(selectedAttribute){
+		showRelevantAttributeOptions(selectedAttribute.type, elements.editDialog);
+
+		$('.editAttributeType', elements.editDialog).hide();
+		$('#editType' + selectedAttribute.type).show();
+
+		$('#editAttributeLabel').val(selectedAttribute.label);
+		$('#editAttributeRequired').removeAttr('checked');
+		if (selectedAttribute.required)
+		{
+			$('#editAttributeRequired').attr('checked', 'checked');
+		}
+		$('#editAttributeRegex').val(selectedAttribute.regex);
+		$('#editAttributePossibleValues').val(selectedAttribute.possibleValues);
+
+		elements.editDialog.dialog('open');
 	};
 
 	var defaultSubmitCallback = function (form) {
@@ -137,29 +159,5 @@ function AttributeManagement(opts) {
 	function getActiveId() {
 		return elements.activeId.val();
 	}
-
-	var editAccessory = function () {
-		var accessory = getActiveAccessory();
-		elements.editName.val(accessory.name);
-		elements.editQuantity.val(accessory.quantity);
-
-		if (accessory.quantity == '') {
-			elements.editUnlimited.attr('checked', 'checked');
-		}
-		else {
-			elements.editUnlimited.removeAttr('checked');
-		}
-
-		elements.editUnlimited.trigger('change');
-		elements.editDialog.dialog('open');
-	};
-
-	var deleteAccessory = function () {
-		elements.deleteDialog.dialog('open');
-	};
-
-	var getActiveAccessory = function () {
-		return accessories[getActiveId()];
-	};
 
 }

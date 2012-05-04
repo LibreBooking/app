@@ -32,7 +32,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	<a href="#" id="addAttributeButton">{html_image src='plus-circle-frame.png'} {translate key=AddAttribute}</a>
 
-	<div id="addAttributeDialog" class="dialog" title="{translate key=AddAttribute}">
+	<div id="addAttributeDialog" class="dialog attributeDialog" title="{translate key=AddAttribute}">
 
 		<span class="wideLabel">{translate key=Type}:</span>
 		<select {formname key=ATTRIBUTE_TYPE} id="attributeType">
@@ -42,29 +42,59 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<option value="{CustomAttributeTypes::CHECKBOX}">{translate key=$Types[CustomAttributeTypes::CHECKBOX]}</option>
 		</select>
 
-		<div id="textBoxOptions">
-			<div id="attributeLabel">
-				<span class="wideLabel">{translate key=DisplayLabel}
-					:</span>{textbox name=ATTRIBUTE_LABEL class="required"}
+		<div class="textBoxOptions">
+			<div class="attributeLabel">
+				<span class="wideLabel">{translate key=DisplayLabel}:</span>
+			{textbox name=ATTRIBUTE_LABEL class="required"}
 			</div>
-			<div id="attributeRequired">
-				<span class="wideLabel">{translate key=Required}:</span><input
-					type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} />
+			<div class="attributeRequired">
+				<span class="wideLabel">{translate key=Required}:</span>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} />
 			</div>
-			<div id="attributeValidationExpression">
-				<span class="wideLabel">{translate key=ValidationExpression}
-					:</span>{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}
+			<div class="attributeValidationExpression">
+				<span class="wideLabel">{translate key=ValidationExpression}:</span>
+				{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}
 			</div>
-			<div id="attributePossibleValues" style="display:none">
-				<span class="wideLabel">{translate key=PossibleValues}
-					:</span>{textbox name=ATTRIBUTE_POSSIBLE_VALUES class="required"} <span
-					class="note">({translate key=CommaSeparated})</span>
+			<div class="attributePossibleValues" style="display:none">
+				<span class="wideLabel">{translate key=PossibleValues}:</span>
+				{textbox name=ATTRIBUTE_POSSIBLE_VALUES class="required"} <span class="note">({translate key=CommaSeparated})</span>
 			</div>
 		</div>
 
 		<button type="button" class="button save">{html_image src="plus-button.png"} {translate key=Add}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</div>
+
+	<div id="editAttributeDialog" class="dialog attributeDialog" title="{translate key=AddAttribute}">
+
+			<span class="wideLabel">{translate key=Type}:</span>
+			<span class='editAttributeType' id="editType{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::SINGLE_LINE_TEXTBOX]}</span>
+			<span class='editAttributeType' id="editType{CustomAttributeTypes::MULTI_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::MULTI_LINE_TEXTBOX]}</span>
+			<span class='editAttributeType' id="editType{CustomAttributeTypes::SELECT_LIST}">{translate key=$Types[CustomAttributeTypes::SELECT_LIST]}</span>
+			<span class='editAttributeType' id="editType{CustomAttributeTypes::CHECKBOX}">{translate key=$Types[CustomAttributeTypes::CHECKBOX]}</span>
+
+			<div class="textBoxOptions">
+				<div class="attributeLabel">
+					<span class="wideLabel">{translate key=DisplayLabel}:</span>
+				{textbox name=ATTRIBUTE_LABEL class="required" id='editAttributeLabel'}
+				</div>
+				<div class="attributeRequired">
+					<span class="wideLabel">{translate key=Required}:</span>
+					<input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} id='editAttributeRequired' />
+				</div>
+				<div class="attributeValidationExpression">
+					<span class="wideLabel">{translate key=ValidationExpression}:</span>
+					{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION id='editAttributeRegex'}
+				</div>
+				<div class="attributePossibleValues" style="display:none">
+					<span class="wideLabel">{translate key=PossibleValues}:</span>
+					{textbox name=ATTRIBUTE_POSSIBLE_VALUES class="required" id="editAttributePossibleValues"} <span class="note">({translate key=CommaSeparated})</span>
+				</div>
+			</div>
+
+			<button type="button" class="button save">{html_image src="plus-button.png"} {translate key=Update}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	<div style="clear:both"></div>
 </form>
 
