@@ -26,7 +26,7 @@ interface IManageReservationsService
 	 * @param $pageSize int
 	 * @param $filter ReservationFilter
 	 * @param $user UserSession
-	 * @return PageableData
+	 * @return PageableData|ReservationItemView[]
 	 */
 	public function LoadFiltered($pageNumber, $pageSize, $filter, $user);
 }

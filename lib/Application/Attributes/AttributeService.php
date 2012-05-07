@@ -18,8 +18,29 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/Application/Attributes/Attribute.php');
-require_once(ROOT_DIR . 'lib/Application/Attributes/AttributeList.php');
-require_once(ROOT_DIR . 'lib/Application/Attributes/AttributeService.php');
+interface IAttributeService
+{
+	/**
+	 * @abstract
+	 * @param $category CustomAttributeCategory|int
+	 * @param $entityIds array|int[]
+	 * @return AttributeList
+	 */
+	public function GetAttributes($category, $entityIds);
+}
+
+class AttributeService implements IAttributeService
+{
+
+	/**
+	 * @param $category CustomAttributeCategory|int
+	 * @param $entityIds array|int[]
+	 * @return AttributeList
+	 */
+	public function GetAttributes($category, $entityIds)
+	{
+		return new AttributeList();
+	}
+}
 
 ?>

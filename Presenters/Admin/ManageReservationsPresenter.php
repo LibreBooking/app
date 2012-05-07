@@ -45,11 +45,17 @@ class ManageReservationsPresenter extends ActionPresenter
 	 */
 	private $resourceRepository;
 
+	/**
+	 * @var IAttributeService
+	 */
+	private $attributeService;
+
 	public function __construct(
 		IManageReservationsPage $page,
 		IManageReservationsService $manageReservationsService,
 		IScheduleRepository $scheduleRepository,
-		IResourceRepository $resourceRepository)
+		IResourceRepository $resourceRepository,
+		IAttributeService $attributeService)
 	{
 		parent::__construct($page);
 
@@ -57,6 +63,7 @@ class ManageReservationsPresenter extends ActionPresenter
 		$this->manageReservationsService = $manageReservationsService;
 		$this->scheduleRepository = $scheduleRepository;
 		$this->resourceRepository = $resourceRepository;
+		$this->attributeService = $attributeService;
 	}
 
 	public function PageLoad($userTimezone)
@@ -94,8 +101,19 @@ class ManageReservationsPresenter extends ActionPresenter
 																	   $filter,
 																	   $session);
 
-		$this->page->BindReservations($reservations->Results());
+		$reservationList = $reservations->Results();
+		$this->page->BindReservations($reservationList);
 		$this->page->BindPageInfo($reservations->PageInfo());
+
+		$seriesIds = array();
+		/** @var $reservationItemView ReservationItemView */
+		foreach ($reservationList as $reservationItemView)
+		{
+			$seriesIds[] = $reservationItemView->SeriesId;
+		}
+
+		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESERVATION, $seriesIds);
+		$this->page->SetAttributes($attributeList);
 
 		if ($this->page->GetFormat() == 'csv')
 		{

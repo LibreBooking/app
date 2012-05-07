@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageReservationsPresenter.php');
 
@@ -47,6 +47,11 @@ class ManageReservationsPresenterTests extends TestBase
 	 */
 	private $resourceRepository;
 
+	/**
+	 * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $attributeService;
+
 	public function setup()
 	{
 		parent::setup();
@@ -55,13 +60,15 @@ class ManageReservationsPresenterTests extends TestBase
 		$this->reservationsService = $this->getMock('IManageReservationsService');
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->attributeService = $this->getMock('IAttributeService');
 
 		$this->presenter = new ManageReservationsPresenter($this->page,
-											$this->reservationsService,
-											$this->scheduleRepository,
-											$this->resourceRepository);
+			$this->reservationsService,
+			$this->scheduleRepository,
+			$this->resourceRepository,
+			$this->attributeService);
 	}
-	
+
 	public function testUsesTwoWeekSpanWhenNoDateFilterProvided()
 	{
 		$userTimezone = 'America/Chicago';
@@ -83,35 +90,41 @@ class ManageReservationsPresenterTests extends TestBase
 				->will($this->returnValue(null));
 
 		$this->page->expects($this->once())
-			->method('GetScheduleId')
-			->will($this->returnValue($searchedScheduleId));
+				->method('GetScheduleId')
+				->will($this->returnValue($searchedScheduleId));
 
 		$this->page->expects($this->once())
-			->method('GetResourceId')
-			->will($this->returnValue($searchedResourceId));
+				->method('GetResourceId')
+				->will($this->returnValue($searchedResourceId));
 
 		$this->page->expects($this->once())
-			->method('GetReservationStatusId')
-			->will($this->returnValue($searchedStatusId));
+				->method('GetReservationStatusId')
+				->will($this->returnValue($searchedStatusId));
 
 		$this->page->expects($this->once())
-			->method('GetUserId')
-			->will($this->returnValue($searchedUserId));
+				->method('GetUserId')
+				->will($this->returnValue($searchedUserId));
 
 		$this->page->expects($this->once())
-			->method('GetUserName')
-			->will($this->returnValue($searchedUserName));
+				->method('GetUserName')
+				->will($this->returnValue($searchedUserName));
 
 		$this->page->expects($this->once())
-			->method('GetReferenceNumber')
-			->will($this->returnValue($searchedReferenceNumber));
+				->method('GetReferenceNumber')
+				->will($this->returnValue($searchedReferenceNumber));
 
 		$filter = $this->GetExpectedFilter($defaultStart, $defaultEnd, $searchedReferenceNumber, $searchedScheduleId, $searchedResourceId, $searchedUserId, $searchedStatusId);
-		$data = new PageableData();
+		$data = new PageableData($this->getReservations());
 		$this->reservationsService->expects($this->once())
 				->method('LoadFiltered')
 				->with($this->anything(), $this->anything(), $this->equalTo($filter), $this->equalTo($this->fakeUser))
 				->will($this->returnValue($data));
+
+		$attributeList = new AttributeList();
+		$this->attributeService->expects($this->once())
+						->method('GetAttributes')
+						->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo(range(1,10)))
+						->will($this->returnValue($attributeList));
 
 		$this->page->expects($this->once())
 				->method('SetStartDate')
@@ -122,29 +135,33 @@ class ManageReservationsPresenterTests extends TestBase
 				->with($this->equalTo($defaultEnd));
 
 		$this->page->expects($this->once())
-			->method('SetReferenceNumber')
-			->with($this->equalTo($searchedReferenceNumber));
+				->method('SetReferenceNumber')
+				->with($this->equalTo($searchedReferenceNumber));
 
 		$this->page->expects($this->once())
-			->method('SetScheduleId')
-			->with($this->equalTo($searchedScheduleId));
+				->method('SetScheduleId')
+				->with($this->equalTo($searchedScheduleId));
 
 		$this->page->expects($this->once())
-			->method('SetResourceId')
-			->with($this->equalTo($searchedResourceId));
+				->method('SetResourceId')
+				->with($this->equalTo($searchedResourceId));
 
 		$this->page->expects($this->once())
-			->method('SetReservationStatusId')
-			->with($this->equalTo($searchedStatusId));
+				->method('SetReservationStatusId')
+				->with($this->equalTo($searchedStatusId));
 
 		$this->page->expects($this->once())
-			->method('SetUserId')
-			->with($this->equalTo($searchedUserId));
+				->method('SetUserId')
+				->with($this->equalTo($searchedUserId));
 
 		$this->page->expects($this->once())
-			->method('SetUserName')
-			->with($this->equalTo($searchedUserName));
-		
+				->method('SetUserName')
+				->with($this->equalTo($searchedUserName));
+
+		$this->page->expects($this->once())
+			->method('SetAttributes')
+			->with($this->equalTo($attributeList));
+
 		$this->presenter->PageLoad($userTimezone);
 	}
 
@@ -161,6 +178,20 @@ class ManageReservationsPresenterTests extends TestBase
 	private function GetExpectedFilter($startDate = null, $endDate = null, $referenceNumber = null, $scheduleId = null, $resourceId = null, $userId = null, $statusId = null)
 	{
 		return new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId, $statusId);
+	}
+
+	private function getReservations()
+	{
+		$reservations = array();
+		for ($i = 1; $i <= 10; $i++)
+		{
+			$r1 = new ReservationItemView();
+			$r1->SeriesId = $i;
+			$reservations[] = $r1;
+		}
+
+		return $reservations;
+
 	}
 }
 

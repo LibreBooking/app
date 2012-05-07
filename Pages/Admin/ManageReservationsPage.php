@@ -186,6 +186,12 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @return string
 	 */
 	public function GetFormat();
+
+	/**
+	 * @abstract
+	 * @param $attributeList AttributeList
+	 */
+	public function SetAttributes($attributeList);
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -207,7 +213,8 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 		$this->presenter = new ManageReservationsPresenter($this,
 			new ManageReservationsService(new ReservationViewRepository()),
 			new ScheduleRepository(),
-			new ResourceRepository());
+			new ResourceRepository(),
+			new AttributeService());
 
 		$this->pageablePage = new PageablePage($this);
 	}
@@ -452,6 +459,14 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	public function ProcessDataRequest()
 	{
 		// no-op
+	}
+
+	/**
+	 * @param $attributeList AttributeList
+	 */
+	public function SetAttributes($attributeList)
+	{
+		$this->Set('AttributeList', $attributeList);
 	}
 }
 ?>
