@@ -18,9 +18,117 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AttributeList
+interface IEntityAttributeList
 {
+	/**
+	 * @return array|string[]
+	 */
+	public function GetLabels();
 
+	/**
+	 * @param $entityId int
+	 * @return array|string[]
+	 */
+	public function GetValues($entityId);
+}
+
+class AttributeList implements IEntityAttributeList
+{
+	/**
+	 * @var array|string[]
+	 */
+	private $labels = array();
+
+	/**
+	 * @var array|string[]
+	 */
+	private $values = array();
+
+	/**
+	 * @var array|int[]
+	 */
+	private $attributeOrder = array();
+
+	/**
+	 * @var array|string[]
+	 */
+	private $initialValues = array();
+
+	public function AddDefinition(CustomAttribute $attribute)
+	{
+		$this->labels[] = $attribute->Label();
+		$this->attributeOrder[$attribute->Id()] = count($this->attributeOrder);
+	}
+
+	/**
+	 * @return array|string[]
+	 */
+	public function GetLabels()
+	{
+		return $this->labels;
+	}
+
+	/**
+	 * @param $attributeEntityValue AttributeEntityValue
+	 */
+	public function AddValue($attributeEntityValue)
+	{
+		$entityId = $attributeEntityValue->EntityId;
+		$attributeId = $attributeEntityValue->AttributeId;
+
+		if (!array_key_exists($entityId, $this->values))
+		{
+			$this->values[$entityId] = $this->GetInitialValues();
+		}
+
+		if ($this->AttributeExists($attributeId))
+		{
+			$this->values[$entityId][$this->GetAttributeIndex($attributeId)] = $attributeEntityValue->Value;
+		}
+	}
+
+	/**
+	 * @param $entityId int
+	 * @return array|string[]
+	 */
+	public function GetValues($entityId)
+	{
+		return $this->values[$entityId];
+	}
+
+	/**
+	 * @return array|string[]
+	 */
+	private function GetInitialValues()
+	{
+		if (empty($this->initialValues))
+		{
+			for ($i = 0; $i < count($this->attributeOrder); $i++)
+			{
+				$this->initialValues[$i] = null;
+			}
+		}
+
+		return $this->initialValues;
+	}
+
+	/**
+	 * @param $attributeId int
+	 * @return bool
+	 */
+	private function AttributeExists($attributeId)
+	{
+		return array_key_exists($attributeId, $this->attributeOrder);
+	}
+
+	/**
+	 * @param $attributeId int
+	 * @return int
+	 */
+	private function GetAttributeIndex($attributeId)
+	{
+		return $this->attributeOrder[$attributeId];
+	}
 }
 
 ?>

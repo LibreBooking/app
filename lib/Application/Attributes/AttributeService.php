@@ -24,22 +24,40 @@ interface IAttributeService
 	 * @abstract
 	 * @param $category CustomAttributeCategory|int
 	 * @param $entityIds array|int[]
-	 * @return AttributeList
+	 * @return IEntityAttributeList
 	 */
 	public function GetAttributes($category, $entityIds);
 }
 
 class AttributeService implements IAttributeService
 {
-
 	/**
-	 * @param $category CustomAttributeCategory|int
-	 * @param $entityIds array|int[]
-	 * @return AttributeList
+	 * @var IAttributeRepository
 	 */
+	private $attributeRepository;
+
+	public function __construct(IAttributeRepository $attributeRepository)
+	{
+		$this->attributeRepository = $attributeRepository;
+	}
+
 	public function GetAttributes($category, $entityIds)
 	{
-		return new AttributeList();
+		$attributeList = new AttributeList();
+		$attributes = $this->attributeRepository->GetByCategory($category);
+		$values = $this->attributeRepository->GetEntityValues($category, $entityIds);
+
+		foreach ($attributes as $attribute)
+		{
+			$attributeList->AddDefinition($attribute);
+		}
+
+		foreach ($values as $value)
+		{
+			$attributeList->AddValue($value);
+		}
+
+		return $attributeList;
 	}
 }
 

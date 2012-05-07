@@ -48,6 +48,14 @@ interface IAttributeRepository
 	 * @return array|CustomAttribute[]
 	 */
 	public function GetByCategory($category);
+
+	/**
+	 * @abstract
+	 * @param int|CustomAttributeCategory $category
+	 * @param array|int[] $entityIds
+	 * @return array|AttributeEntityValue[]
+	 */
+	public function GetEntityValues($category, $entityIds);
 }
 
 class AttributeRepository implements IAttributeRepository
@@ -100,6 +108,29 @@ class AttributeRepository implements IAttributeRepository
 		ServiceLocator::GetDatabase()->Execute(
 			new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
 				$attribute->Regex(), $attribute->Required(), $attribute->PossibleValues()));
+	}
+
+	/**
+	 * @param int|CustomAttributeCategory $category
+	 * @param array|int[] $entityIds
+	 * @return array|AttributeEntityValue[]
+	 */
+	public function GetEntityValues($category, $entityIds)
+	{
+		$values = array();
+
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAttributeMultipleValuesCommand($category, $entityIds));
+
+		$attribute = null;
+		while ($row = $reader->GetRow())
+		{
+			$values[] = new AttributeEntityValue(
+				$row[ColumnNames::ATTRIBUTE_ID],
+				$row[ColumnNames::ATTRIBUTE_ENTITY_ID],
+				$row[ColumnNames::ATTRIBUTE_VALUE]);
+		}
+
+		return $values;
 	}
 }
 

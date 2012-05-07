@@ -170,6 +170,7 @@ class ColumnNames
 	const ATTRIBUTE_REQUIRED = 'is_required';
 	const ATTRIBUTE_POSSIBLE_VALUES = 'possible_values';
 	const ATTRIBUTE_VALUE = 'attribute_value';
+	const ATTRIBUTE_ENTITY_ID = 'entity_id';
 
     // dynamic
     const TOTAL = 'total';

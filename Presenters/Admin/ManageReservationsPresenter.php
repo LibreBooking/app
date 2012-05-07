@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Pages/Admin/ManageReservationsPage.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 class ManageReservationsPresenter extends ActionPresenter
 {

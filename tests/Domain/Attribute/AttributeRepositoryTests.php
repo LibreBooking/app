@@ -118,6 +118,33 @@ class AttributeRepositoryTests extends TestBase
 		$this->assertEquals(new GetAttributesByCategoryCommand(CustomAttributeCategory::RESERVATION), $this->db->_LastCommand);
 	}
 
+	public function testGetsAttributeEntityValues()
+	{
+		$a1 = 1;
+		$a2 = 2;
+		$e1 = 10;
+		$v1 = '13';
+		$v2 = '222';
+
+		$category = CustomAttributeCategory::GROUP;
+		$entityIds = array(1,4,6, $e1);
+
+		$row1 = $this->GetAttributeValueRow($a1, $e1, $v1);
+		$row2 = $this->GetAttributeValueRow($a2, $e1, $v2);
+
+		$this->db->SetRows(array($row1, $row2));
+
+		$values = $this->repository->GetEntityValues($category, $entityIds);
+
+		$this->assertEquals(new GetAttributeMultipleValuesCommand($category, $entityIds), $this->db->_LastCommand);
+		$this->assertEquals($a1, $values[0]->AttributeId);
+		$this->assertEquals($e1, $values[0]->EntityId);
+		$this->assertEquals($v1, $values[0]->Value);
+		$this->assertEquals($a2, $values[1]->AttributeId);
+		$this->assertEquals($e1, $values[1]->EntityId);
+		$this->assertEquals($v2, $values[1]->Value);
+	}
+
 	private function GetAttributeRow($id,
 									 $label = '',
 									 $type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
@@ -134,6 +161,14 @@ class AttributeRepositoryTests extends TestBase
 			ColumnNames::ATTRIBUTE_CONSTRAINT => $regex,
 			ColumnNames::ATTRIBUTE_REQUIRED => $required,
 			ColumnNames::ATTRIBUTE_POSSIBLE_VALUES => $possibleValues);
+	}
+
+	private function GetAttributeValueRow($attributeid, $entityId, $value)
+	{
+		return array(
+			ColumnNames::ATTRIBUTE_ID => $attributeid,
+			ColumnNames::ATTRIBUTE_ENTITY_ID => $entityId,
+			ColumnNames::ATTRIBUTE_VALUE => $value);
 	}
 }
 
