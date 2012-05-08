@@ -316,7 +316,7 @@ class Queries
 	const GET_ATTRIBUTE_BY_ID = 'SELECT * FROM custom_attributes WHERE custom_attribute_id = @custom_attribute_id';
 
 	const GET_ATTRIBUTE_MULTIPLE_VALUES = 'SELECT *
-		FROM custom_attribute_values WHERE entity_id IN (@entityIds) AND custom_attribute_id = @attribute_category';
+		FROM custom_attribute_values WHERE entity_id IN (@entity_ids) AND attribute_category = @attribute_category';
 
 	const GET_ATTRIBUTE_VALUES = 'SELECT cav.*, ca.display_label
 		FROM custom_attribute_values cav

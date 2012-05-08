@@ -93,7 +93,12 @@ class AttributeList implements IEntityAttributeList
 	 */
 	public function GetValues($entityId)
 	{
-		return $this->values[$entityId];
+		if (array_key_exists($entityId, $this->values))
+		{
+			return $this->values[$entityId];
+		}
+
+		return $this->GetInitialValues();
 	}
 
 	/**

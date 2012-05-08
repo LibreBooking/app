@@ -49,6 +49,8 @@ class EmailService implements IEmailService
 	
 	public function Send(IEmailMessage $emailMessage)
 	{
+		$this->phpMailer->ClearAllRecipients();
+		$this->phpMailer->ClearReplyTos();
 		$this->phpMailer->CharSet = $emailMessage->Charset();
 		$this->phpMailer->Subject = $emailMessage->Subject();
 		$this->phpMailer->Body = $emailMessage->Body();

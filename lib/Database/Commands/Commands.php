@@ -569,11 +569,11 @@ class GetAttributeByIdCommand extends SqlCommand
 class GetAttributeMultipleValuesCommand extends SqlCommand
 {
 	public function __construct($attributeCategoryId, $entityIds)
-		{
-			parent::__construct(Queries::GET_ATTRIBUTE_MULTIPLE_VALUES);
-			$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_IDS, $entityIds));
-			$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
-		}
+	{
+		parent::__construct(Queries::GET_ATTRIBUTE_MULTIPLE_VALUES);
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_IDS, $entityIds));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
+	}
 }
 
 class GetAttributeValuesCommand extends SqlCommand

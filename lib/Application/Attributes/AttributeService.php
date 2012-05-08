@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'lib/Common/Helpers/StopWatch.php');
+
 interface IAttributeService
 {
 	/**
@@ -45,6 +47,9 @@ class AttributeService implements IAttributeService
 	{
 		$attributeList = new AttributeList();
 		$attributes = $this->attributeRepository->GetByCategory($category);
+
+		$stopwatch = new StopWatch();
+		$stopwatch->Start();
 		$values = $this->attributeRepository->GetEntityValues($category, $entityIds);
 
 		foreach ($attributes as $attribute)
@@ -56,6 +61,9 @@ class AttributeService implements IAttributeService
 		{
 			$attributeList->AddValue($value);
 		}
+		$stopwatch->Stop();
+
+		Log::Debug('Took %d seconds to load custom attributes for category %s', $stopwatch->GetTotalSeconds(), $category);
 
 		return $attributeList;
 	}

@@ -86,6 +86,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key='Created'}</th>
 		<th>{translate key='LastModified'}</th>
 		<th>{translate key='ReferenceNumber'}</th>
+		{foreach from=$AttributeList->GetLabels() item=label}
+		<th>{$label}</th>
+		{/foreach}
 		<th>{translate key='Delete'}</th>
 		<th>{translate key='Approve'}</th>
 	</tr>
@@ -103,6 +106,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
 		<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
 		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
+		{foreach from=$AttributeList->GetValues($reservation->SeriesId) item=value}
+		<td>{$value}</td>
+		{/foreach}
 		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 		<td align="center">
 			{if $reservation->RequiresApproval}
