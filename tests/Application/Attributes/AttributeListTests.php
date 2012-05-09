@@ -36,6 +36,7 @@ class AttributeListTests extends TestBase
 		$labels = $list->GetLabels();
 
 		$this->assertEquals(array('a1', 'a2', 'a3'), $labels);
+		$this->assertEquals(array($attribute1, $attribute2, $attribute3), $list->GetDefinitions());
 	}
 
 	public function testGetsValuesForEntity()

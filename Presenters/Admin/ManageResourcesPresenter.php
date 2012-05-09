@@ -70,12 +70,18 @@ class ManageResourcesPresenter extends ActionPresenter
      */
     private $groupRepository;
 
+	/**
+	 * @var IAttributeService
+	 */
+    private $attributeService;
+
     public function __construct(
         IManageResourcesPage $page,
         IResourceRepository $resourceRepository,
         IScheduleRepository $scheduleRepository,
         IImageFactory $imageFactory,
-        IGroupViewRepository $groupRepository)
+        IGroupViewRepository $groupRepository,
+		IAttributeService $attributeService)
     {
         parent::__construct($page);
 
@@ -84,6 +90,7 @@ class ManageResourcesPresenter extends ActionPresenter
         $this->scheduleRepository = $scheduleRepository;
         $this->imageFactory = $imageFactory;
         $this->groupRepository = $groupRepository;
+        $this->attributeService = $attributeService;
 
         $this->AddAction(ManageResourcesActions::ActionAdd, 'Add');
         $this->AddAction(ManageResourcesActions::ActionChangeAdmin, 'ChangeAdmin');
@@ -119,6 +126,14 @@ class ManageResourcesPresenter extends ActionPresenter
 
         $groups = $this->groupRepository->GetGroupsByRole(RoleLevel::RESOURCE_ADMIN);
         $this->page->BindAdminGroups($groups);
+
+		$resourceIds = array();
+		foreach ($resources as $resource)
+		{
+			$resourceIds[] = $resource->GetId();
+		}
+		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, $resourceIds);
+		$this->page->BindAttributeList($attributeList);
     }
 
     /**

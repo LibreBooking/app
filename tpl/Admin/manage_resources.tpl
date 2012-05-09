@@ -18,6 +18,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='css/admin.css'}
 
+{foreach from=$Definitions item=attribute}
+	{control type="AttributeControl" attribute=$attribute}
+{/foreach}
 <h1>{translate key='ManageResources'}</h1>
 
 <div id="globalError" class="error" style="display:none"></div>

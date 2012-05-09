@@ -49,6 +49,7 @@ class AttributeServiceTests extends TestBase
 		$this->assertEquals(array('value1', 'value2'), $attributeList->GetValues(1));
 		$this->assertEquals(array('label1', 'label2'), $attributeList->GetLabels());
 	}
+
 }
 
 ?>

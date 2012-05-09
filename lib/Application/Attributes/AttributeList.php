@@ -26,6 +26,11 @@ interface IEntityAttributeList
 	public function GetLabels();
 
 	/**
+	 * @return array|CustomAttribute[]
+	 */
+	public function GetDefinitions();
+
+	/**
 	 * @param $entityId int
 	 * @return array|string[]
 	 */
@@ -54,9 +59,15 @@ class AttributeList implements IEntityAttributeList
 	 */
 	private $initialValues = array();
 
+	/**
+	 * @var array|CustomAttribute[]
+	 */
+	private $definitions = array();
+
 	public function AddDefinition(CustomAttribute $attribute)
 	{
 		$this->labels[] = $attribute->Label();
+		$this->definitions[] = $attribute;
 		$this->attributeOrder[$attribute->Id()] = count($this->attributeOrder);
 	}
 
@@ -66,6 +77,14 @@ class AttributeList implements IEntityAttributeList
 	public function GetLabels()
 	{
 		return $this->labels;
+	}
+
+	/**
+	 * @return array|CustomAttribute[]
+	 */
+	public function GetDefinitions()
+	{
+		return $this->definitions;
 	}
 
 	/**

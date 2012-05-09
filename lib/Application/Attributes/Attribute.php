@@ -30,7 +30,7 @@ class Attribute
 	 */
 	private $value;
 
-	public function __construct(CustomAttribute $attributeDefinition, $value)
+	public function __construct(CustomAttribute $attributeDefinition, $value = null)
 	{
 		$this->attributeDefinition = $attributeDefinition;
 		$this->value = $value;

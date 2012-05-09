@@ -379,6 +379,7 @@ class en_us extends Language
         $strings['CategoryReservation'] = 'Reservation';
         $strings['CategoryGroup'] = 'Group';
         $strings['Title'] = 'Title';
+        $strings['AdditionalAttributes'] = 'Additional Attributes';
         // End Strings
 
         // Errors

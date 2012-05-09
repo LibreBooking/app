@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageSchedulesPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ScheduleRepository.php');
+require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 interface IUpdateResourcePage
 {	
@@ -117,19 +118,25 @@ interface IManageResourcesPage extends IUpdateResourcePage
 	/**
 	 * @param BookableResource[] $resources
 	 */
-	function BindResources($resources);
+	public function BindResources($resources);
 	
 	/**
 	 * @param array $scheduleList array of (id, schedule name)
 	 */
-	function BindSchedules($scheduleList);
+	public function BindSchedules($scheduleList);
 
 	/**
 	 * @abstract
 	 * @param $adminGroups GroupItemView[]|array
 	 * @return void
 	 */
-	function BindAdminGroups($adminGroups);
+	public function BindAdminGroups($adminGroups);
+
+	/**
+	 * @abstract
+	 * @param $attributeList IEntityAttributeList
+	 */
+	public function BindAttributeList($attributeList);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -147,7 +154,8 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 								new ResourceRepository(),
 								new ScheduleRepository(),
 								new ImageFactory(),
-								new GroupRepository()
+								new GroupRepository(),
+								new AttributeService(new AttributeRepository())
 								);
 								
 		$this->Set('ImageUploadPath', $this->path . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/');
@@ -305,6 +313,19 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function ProcessDataRequest()
 	{
 		// noop
+	}
+
+	/**
+	 * @param $attributeList IEntityAttributeList
+	 */
+	public function BindAttributeList($attributeList)
+	{
+		$defList = array();
+		foreach ($attributeList->GetDefinitions() as $def )
+		{
+			$defList[] = new Attribute($def);
+		}
+		$this->Set('Definitions', $defList);
 	}
 }
 
