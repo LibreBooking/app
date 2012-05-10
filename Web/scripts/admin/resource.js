@@ -14,7 +14,8 @@ function ResourceManagement(opts)
 		deleteDialog: $('#deleteDialog'),
 		configurationDialog: $('#configurationDialog'),
 		groupAdminDialog: $('#groupAdminDialog'),
-		
+		attributeDialog: $('#attributeDialog'),
+
 		renameForm: $('#renameForm'),
 		imageForm: $('#imageForm'),
 		scheduleForm: $('#scheduleForm'),
@@ -45,12 +46,14 @@ function ResourceManagement(opts)
 		ConfigureAdminDialog(elements.deleteDialog, 500, 300);
 		ConfigureAdminDialog(elements.configurationDialog, 500, 500);
 		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
+		ConfigureAdminDialog(elements.attributeDialog, 300, 125);
 
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
 			var indicator = $('.indicator');
 			
-			$(this).find('a.update').click(function() {
+			$(this).find('a.update').click(function(e) {
+				e.preventDefault();
 				setActiveResourceId(id);				
 			});
 			
@@ -121,6 +124,11 @@ function ResourceManagement(opts)
 			
 			$(this).find('.changeConfigurationButton').click(function(e) {
 				showConfigurationPrompt(e);
+				return false;
+			});
+
+			$(this).find('.changeAttributes').click(function(e) {
+				elements.attributeDialog.dialog('open');
 				return false;
 			});
 		});

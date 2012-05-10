@@ -144,12 +144,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<div style="clear:both;">&nbsp;</div>
 
 		{if $Attributes|count > 0}
-		<div id="customAttributes">
-			<h3>Additional Attributes</h3>
+		<div class="customAttributes">
+			<h3>{translate key=AdditionalAttributes}</h3>
 			<ul>
 			{foreach from=$Attributes item=attribute}
 				<li class="customAttribute">
-					<label class="customAttribute">{$attribute->Label()}:</label> {$attribute->Value()|escape}
+					{control type="AttributeControl" attribute=$attribute readonly=true}
 				</li>
 			{/foreach}
 			</ul>

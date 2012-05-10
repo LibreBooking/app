@@ -18,9 +18,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='css/admin.css'}
 
-{foreach from=$Definitions item=attribute}
-	{control type="AttributeControl" attribute=$attribute}
-{/foreach}
 <h1>{translate key='ManageResources'}</h1>
 
 <div id="globalError" class="error" style="display:none"></div>
@@ -194,6 +191,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</ul>
 			</div>
 		</div>
+		{if $Definitions|count > 0}
+		<div class="customAttributes">
+			<h3>{translate key=AdditionalAttributes} <a href="#" class="update changeAttributes">{translate key=Edit}</a></h3>
+			<ul>
+				{foreach from=$AttributeList->GetAttributeValues($id) item=attribute}
+					<li class="customAttribute" attributeId="{$attribute->Id()}">
+						{control type="AttributeControl" attribute=$attribute readonly=true}
+					</li>
+				{/foreach}
+			</ul>
+		</div>
+		<div style="clear:both;">&nbsp;</div>
+		{/if}
 		<div class="actions">&nbsp;</div>
 	</div>
 {/foreach}
@@ -471,6 +481,18 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
+</div>
+
+<div id="attributeDialog" class="dialog" title="{translate key=AdditionalAttributes}">
+	<div class="customAttributes">
+		<ul>
+			{foreach from=$Definitions item=attribute}
+				<li class="customAttribute">
+					{control type="AttributeControl" attribute=$attribute}
+				</li>
+			{/foreach}
+		</ul>
+	</div>
 </div>
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}

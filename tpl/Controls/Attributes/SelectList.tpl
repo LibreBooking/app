@@ -17,6 +17,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <label class="customAttribute" for="{$attributeName}">{$attribute->Label()}</label>
+{if $readonly}
+<span class="attributeValue">{$attribute->Value()}</span>
+{else}
 <select id="{$attributeName}" name="{$attributeName}" class="customAttribute">
 	{if !$attribute->Required()}
 	<option value="">--</option>
@@ -25,3 +28,4 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<option value="{$value}" {if $attribute->Value() == $value}selected="selected"{/if}>{$value}</option>
 	{/foreach}
 </select>
+{/if}

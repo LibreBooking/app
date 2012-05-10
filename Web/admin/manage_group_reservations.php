@@ -31,7 +31,8 @@ class GroupAdminManageReservationsPage extends ManageReservationsPage
         $this->presenter = new ManageReservationsPresenter($this,
                     new GroupAdminManageReservationsService(new UserRepository()),
                     new ScheduleRepository(),
-                    new ResourceRepository());
+                    new ResourceRepository(),
+					new AttributeService(new AttributeRepository()));
     }
 }
 

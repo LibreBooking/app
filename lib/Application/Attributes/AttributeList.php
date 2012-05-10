@@ -60,6 +60,16 @@ class AttributeList implements IEntityAttributeList
 	private $initialValues = array();
 
 	/**
+	 * @var array|Attribute[]
+	 */
+	private $initialAttributes = array();
+
+	/**
+	 * @var array|Attribute[]
+	 */
+	private $entityValues = array();
+
+	/**
 	 * @var array|CustomAttribute[]
 	 */
 	private $definitions = array();
@@ -67,7 +77,7 @@ class AttributeList implements IEntityAttributeList
 	public function AddDefinition(CustomAttribute $attribute)
 	{
 		$this->labels[] = $attribute->Label();
-		$this->definitions[] = $attribute;
+		$this->definitions[$attribute->Id()] = $attribute;
 		$this->attributeOrder[$attribute->Id()] = count($this->attributeOrder);
 	}
 
@@ -98,11 +108,13 @@ class AttributeList implements IEntityAttributeList
 		if (!array_key_exists($entityId, $this->values))
 		{
 			$this->values[$entityId] = $this->GetInitialValues();
+			$this->entityValues[$entityId] = $this->GetInitialAttributes();
 		}
 
 		if ($this->AttributeExists($attributeId))
 		{
 			$this->values[$entityId][$this->GetAttributeIndex($attributeId)] = $attributeEntityValue->Value;
+			$this->entityValues[$entityId][$this->GetAttributeIndex($attributeId)] = new Attribute($this->definitions[$attributeId], $attributeEntityValue->Value);
 		}
 	}
 
@@ -121,19 +133,49 @@ class AttributeList implements IEntityAttributeList
 	}
 
 	/**
+	 * @param $entityId int
+	 * @return array|Attribute[]
+	 */
+	public function GetAttributeValues($entityId)
+	{
+		if (array_key_exists($entityId, $this->entityValues))
+		{
+			return $this->entityValues[$entityId];
+		}
+
+		return $this->GetInitialAttributes();
+	}
+
+	/**
 	 * @return array|string[]
 	 */
 	private function GetInitialValues()
 	{
 		if (empty($this->initialValues))
 		{
-			for ($i = 0; $i < count($this->attributeOrder); $i++)
+			foreach ($this->attributeOrder as $id => $i)
 			{
 				$this->initialValues[$i] = null;
 			}
 		}
 
 		return $this->initialValues;
+	}
+
+	/**
+	 * @return array|Attribute[]
+	 */
+	private function GetInitialAttributes()
+	{
+		if (empty($this->initialAttributes))
+			{
+				foreach ($this->attributeOrder as $id => $i)
+				{
+					$this->initialAttributes[$i] = new Attribute($this->definitions[$id]);
+				}
+			}
+
+			return $this->initialAttributes;
 	}
 
 	/**
