@@ -40,6 +40,7 @@ class ManageResourcesActions
     const ActionTakeOffline = 'takeOffline';
     const ActionEnableSubscription = 'enableSubscription';
     const ActionDisableSubscription = 'disableSubscription';
+    const ActionChangeAttributes = 'changeAttributes';
 }
 
 
@@ -107,6 +108,7 @@ class ManageResourcesPresenter extends ActionPresenter
         $this->AddAction(ManageResourcesActions::ActionBringOnline, 'BringOnline');
         $this->AddAction(ManageResourcesActions::ActionEnableSubscription, 'EnableSubscription');
         $this->AddAction(ManageResourcesActions::ActionDisableSubscription, 'DisableSubscription');
+        $this->AddAction(ManageResourcesActions::ActionChangeAttributes, 'ChangeAttributes');
     }
 
     public function PageLoad()
@@ -296,7 +298,11 @@ class ManageResourcesPresenter extends ActionPresenter
 
     public function ChangeSchedule()
     {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resourceId = $this->page->GetResourceId();
+		Log::Debug('Changing schedule for resource %s', $resourceId);
+
+		$resource = $this->resourceRepository->LoadById($resourceId);
+
         $scheduleId = $this->page->GetScheduleId();
         $resource->SetScheduleId($scheduleId);
         $this->resourceRepository->Update($resource);
@@ -304,7 +310,10 @@ class ManageResourcesPresenter extends ActionPresenter
 
     public function ChangeAdmin()
     {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resourceId = $this->page->GetResourceId();
+		Log::Debug('Changing resource admin for resource %s', $resourceId);
+
+        $resource = $this->resourceRepository->LoadById($resourceId);
         $adminGroupId = $this->page->GetAdminGroupId();
         $resource->SetAdminGroupId($adminGroupId);
         $this->resourceRepository->Update($resource);
@@ -312,17 +321,30 @@ class ManageResourcesPresenter extends ActionPresenter
 
     public function EnableSubscription()
     {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resourceId = $this->page->GetResourceId();
+		Log::Debug('Enable calendar subscription for resource %s', $resourceId);
+
+        $resource = $this->resourceRepository->LoadById($resourceId);
         $resource->EnableSubscription();
         $this->resourceRepository->Update($resource);
     }
 
     public function DisableSubscription()
     {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resourceId = $this->page->GetResourceId();
+		Log::Debug('Disable calendar subscription for resource %s', $resourceId);
+
+        $resource = $this->resourceRepository->LoadById($resourceId);
         $resource->DisableSubscription();
         $this->resourceRepository->Update($resource);
     }
+
+	public function ChangeAttributes()
+	{
+		$resourceId = $this->page->GetResourceId();
+		Log::Debug('Changing attributes for resource %s', $resourceId);
+
+	}
 
     private function SaveResourceImage($fileName)
     {

@@ -25,6 +25,7 @@ function ResourceManagement(opts)
 		deleteForm: $('#deleteForm'),
 		configurationForm: $('#configurationForm'),
 		groupAdminForm: $('#groupAdminForm'),
+		attributeForm: $('#attributesForm'),
 
 		addForm: $('#addResourceForm')
 	};
@@ -46,7 +47,7 @@ function ResourceManagement(opts)
 		ConfigureAdminDialog(elements.deleteDialog, 500, 300);
 		ConfigureAdminDialog(elements.configurationDialog, 500, 500);
 		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
-		ConfigureAdminDialog(elements.attributeDialog, 300, 125);
+		ConfigureAdminDialog(elements.attributeDialog, 500, 270);
 
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -165,6 +166,7 @@ function ResourceManagement(opts)
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource));
 		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, errorHandler, {onBeforeSerialize: combineIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.actions.changeAdmin));
+		ConfigureAdminForm(elements.attributeForm, getSubmitCallback(options.actions.changeAttributes));
 
 	};
 

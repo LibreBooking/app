@@ -485,6 +485,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="attributeDialog" class="dialog" title="{translate key=AdditionalAttributes}">
 	<div class="customAttributes">
+		<form method="post" id="attributesForm">
 		<ul>
 			{foreach from=$Definitions item=attribute}
 				<li class="customAttribute">
@@ -492,6 +493,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			{/foreach}
 		</ul>
+
+		<br/><br/>
+		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</form>
 	</div>
 </div>
 
@@ -520,7 +526,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	changeConfiguration: '{ManageResourcesActions::ActionChangeConfiguration}',
 	changeAdmin: '{ManageResourcesActions::ActionChangeAdmin}',
 	enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
-	disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}'
+	disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}',
+	changeAttributes: '{ManageResourcesActions::ActionChangeAttributes}'
 	};
 
 	var opts = {
