@@ -380,6 +380,8 @@ class en_us extends Language
         $strings['CategoryGroup'] = 'Group';
         $strings['Title'] = 'Title';
         $strings['AdditionalAttributes'] = 'Additional Attributes';
+        $strings['True'] = 'True';
+        $strings['False'] = 'False';
         // End Strings
 
         // Errors

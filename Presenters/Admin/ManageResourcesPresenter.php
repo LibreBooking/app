@@ -25,109 +25,109 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
 class ManageResourcesActions
 {
-    const ActionAdd = 'add';
-    const ActionChangeAdmin = 'changeAdmin';
-    const ActionChangeConfiguration = 'configuration';
-    const ActionChangeDescription = 'description';
-    const ActionChangeImage = 'image';
-    const ActionChangeLocation = 'location';
-    const ActionChangeNotes = 'notes';
-    const ActionChangeSchedule = 'schedule';
-    const ActionRemoveImage = 'removeImage';
-    const ActionRename = 'rename';
-    const ActionDelete = 'delete';
-    const ActionBringOnline = 'bringOnline';
-    const ActionTakeOffline = 'takeOffline';
-    const ActionEnableSubscription = 'enableSubscription';
-    const ActionDisableSubscription = 'disableSubscription';
-    const ActionChangeAttributes = 'changeAttributes';
+	const ActionAdd = 'add';
+	const ActionChangeAdmin = 'changeAdmin';
+	const ActionChangeConfiguration = 'configuration';
+	const ActionChangeDescription = 'description';
+	const ActionChangeImage = 'image';
+	const ActionChangeLocation = 'location';
+	const ActionChangeNotes = 'notes';
+	const ActionChangeSchedule = 'schedule';
+	const ActionRemoveImage = 'removeImage';
+	const ActionRename = 'rename';
+	const ActionDelete = 'delete';
+	const ActionBringOnline = 'bringOnline';
+	const ActionTakeOffline = 'takeOffline';
+	const ActionEnableSubscription = 'enableSubscription';
+	const ActionDisableSubscription = 'disableSubscription';
+	const ActionChangeAttributes = 'changeAttributes';
 }
 
 
 class ManageResourcesPresenter extends ActionPresenter
 {
-    /**
-     * @var IManageResourcesPage
-     */
-    private $page;
+	/**
+	 * @var IManageResourcesPage
+	 */
+	private $page;
 
-    /**
-     * @var IResourceRepository
-     */
-    private $resourceRepository;
+	/**
+	 * @var IResourceRepository
+	 */
+	private $resourceRepository;
 
-    /**
-     * @var IScheduleRepository
-     */
-    private $scheduleRepository;
+	/**
+	 * @var IScheduleRepository
+	 */
+	private $scheduleRepository;
 
-    /**
-     * @var IImageFactory
-     */
-    private $imageFactory;
+	/**
+	 * @var IImageFactory
+	 */
+	private $imageFactory;
 
-    /**
-     * @var IGroupViewRepository
-     */
-    private $groupRepository;
+	/**
+	 * @var IGroupViewRepository
+	 */
+	private $groupRepository;
 
 	/**
 	 * @var IAttributeService
 	 */
-    private $attributeService;
+	private $attributeService;
 
-    public function __construct(
-        IManageResourcesPage $page,
-        IResourceRepository $resourceRepository,
-        IScheduleRepository $scheduleRepository,
-        IImageFactory $imageFactory,
-        IGroupViewRepository $groupRepository,
+	public function __construct(
+		IManageResourcesPage $page,
+		IResourceRepository $resourceRepository,
+		IScheduleRepository $scheduleRepository,
+		IImageFactory $imageFactory,
+		IGroupViewRepository $groupRepository,
 		IAttributeService $attributeService)
-    {
-        parent::__construct($page);
+	{
+		parent::__construct($page);
 
-        $this->page = $page;
-        $this->resourceRepository = $resourceRepository;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->imageFactory = $imageFactory;
-        $this->groupRepository = $groupRepository;
-        $this->attributeService = $attributeService;
+		$this->page = $page;
+		$this->resourceRepository = $resourceRepository;
+		$this->scheduleRepository = $scheduleRepository;
+		$this->imageFactory = $imageFactory;
+		$this->groupRepository = $groupRepository;
+		$this->attributeService = $attributeService;
 
-        $this->AddAction(ManageResourcesActions::ActionAdd, 'Add');
-        $this->AddAction(ManageResourcesActions::ActionChangeAdmin, 'ChangeAdmin');
-        $this->AddAction(ManageResourcesActions::ActionChangeConfiguration, 'ChangeConfiguration');
-        $this->AddAction(ManageResourcesActions::ActionChangeDescription, 'ChangeDescription');
-        $this->AddAction(ManageResourcesActions::ActionChangeImage, 'ChangeImage');
-        $this->AddAction(ManageResourcesActions::ActionChangeLocation, 'ChangeLocation');
-        $this->AddAction(ManageResourcesActions::ActionChangeNotes, 'ChangeNotes');
-        $this->AddAction(ManageResourcesActions::ActionChangeSchedule, 'ChangeSchedule');
-        $this->AddAction(ManageResourcesActions::ActionRemoveImage, 'RemoveImage');
-        $this->AddAction(ManageResourcesActions::ActionRename, 'Rename');
-        $this->AddAction(ManageResourcesActions::ActionDelete, 'Delete');
-        $this->AddAction(ManageResourcesActions::ActionTakeOffline, 'TakeOffline');
-        $this->AddAction(ManageResourcesActions::ActionBringOnline, 'BringOnline');
-        $this->AddAction(ManageResourcesActions::ActionEnableSubscription, 'EnableSubscription');
-        $this->AddAction(ManageResourcesActions::ActionDisableSubscription, 'DisableSubscription');
-        $this->AddAction(ManageResourcesActions::ActionChangeAttributes, 'ChangeAttributes');
-    }
+		$this->AddAction(ManageResourcesActions::ActionAdd, 'Add');
+		$this->AddAction(ManageResourcesActions::ActionChangeAdmin, 'ChangeAdmin');
+		$this->AddAction(ManageResourcesActions::ActionChangeConfiguration, 'ChangeConfiguration');
+		$this->AddAction(ManageResourcesActions::ActionChangeDescription, 'ChangeDescription');
+		$this->AddAction(ManageResourcesActions::ActionChangeImage, 'ChangeImage');
+		$this->AddAction(ManageResourcesActions::ActionChangeLocation, 'ChangeLocation');
+		$this->AddAction(ManageResourcesActions::ActionChangeNotes, 'ChangeNotes');
+		$this->AddAction(ManageResourcesActions::ActionChangeSchedule, 'ChangeSchedule');
+		$this->AddAction(ManageResourcesActions::ActionRemoveImage, 'RemoveImage');
+		$this->AddAction(ManageResourcesActions::ActionRename, 'Rename');
+		$this->AddAction(ManageResourcesActions::ActionDelete, 'Delete');
+		$this->AddAction(ManageResourcesActions::ActionTakeOffline, 'TakeOffline');
+		$this->AddAction(ManageResourcesActions::ActionBringOnline, 'BringOnline');
+		$this->AddAction(ManageResourcesActions::ActionEnableSubscription, 'EnableSubscription');
+		$this->AddAction(ManageResourcesActions::ActionDisableSubscription, 'DisableSubscription');
+		$this->AddAction(ManageResourcesActions::ActionChangeAttributes, 'ChangeAttributes');
+	}
 
-    public function PageLoad()
-    {
-        $resources = $this->resourceRepository->GetResourceList();
-        $this->page->BindResources($resources);
+	public function PageLoad()
+	{
+		$resources = $this->resourceRepository->GetResourceList();
+		$this->page->BindResources($resources);
 
-        $schedules = $this->scheduleRepository->GetAll();
-        $scheduleList = array();
+		$schedules = $this->scheduleRepository->GetAll();
+		$scheduleList = array();
 
-        /* @var $schedule Schedule */
-        foreach ($schedules as $schedule)
-        {
-            $scheduleList[$schedule->GetId()] = $schedule->GetName();
-        }
-        $this->page->BindSchedules($scheduleList);
+		/* @var $schedule Schedule */
+		foreach ($schedules as $schedule)
+		{
+			$scheduleList[$schedule->GetId()] = $schedule->GetName();
+		}
+		$this->page->BindSchedules($scheduleList);
 
-        $groups = $this->groupRepository->GetGroupsByRole(RoleLevel::RESOURCE_ADMIN);
-        $this->page->BindAdminGroups($groups);
+		$groups = $this->groupRepository->GetGroupsByRole(RoleLevel::RESOURCE_ADMIN);
+		$this->page->BindAdminGroups($groups);
 
 		$resourceIds = array();
 		foreach ($resources as $resource)
@@ -136,224 +136,234 @@ class ManageResourcesPresenter extends ActionPresenter
 		}
 		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, $resourceIds);
 		$this->page->BindAttributeList($attributeList);
-    }
+	}
 
-    /**
-     * @internal should only be used for testing
-     */
-    public function Add()
-    {
-        $name = $this->page->GetResourceName();
-        $scheduleId = $this->page->GetScheduleId();
-        $autoAssign = $this->page->GetAutoAssign();
-        $resourceAdminGroupId = $this->page->GetAdminGroupId();
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function Add()
+	{
+		$name = $this->page->GetResourceName();
+		$scheduleId = $this->page->GetScheduleId();
+		$autoAssign = $this->page->GetAutoAssign();
+		$resourceAdminGroupId = $this->page->GetAdminGroupId();
 
-        Log::Debug("Adding new resource with name: %s, scheduleId: %s, autoAssign: %s, resourceAdminGroupId %s", $name, $scheduleId, $autoAssign, $resourceAdminGroupId);
+		Log::Debug("Adding new resource with name: %s, scheduleId: %s, autoAssign: %s, resourceAdminGroupId %s", $name, $scheduleId, $autoAssign, $resourceAdminGroupId);
 
-        $resource = BookableResource::CreateNew($name, $scheduleId, $autoAssign);
-        $resource->SetAdminGroupId($resourceAdminGroupId);
-        $this->resourceRepository->Add($resource);
-    }
+		$resource = BookableResource::CreateNew($name, $scheduleId, $autoAssign);
+		$resource->SetAdminGroupId($resourceAdminGroupId);
+		$this->resourceRepository->Add($resource);
+	}
 
-    /**
-     * @internal should only be used for testing
-     */
-    public function ChangeConfiguration()
-    {
-        $resourceId = $this->page->GetResourceId();
-        $minDuration = $this->page->GetMinimumDuration();
-        $maxDuration = $this->page->GetMaximumDuration();
-        $allowMultiDay = $this->page->GetAllowMultiday();
-        $requiresApproval = $this->page->GetRequiresApproval();
-        $autoAssign = $this->page->GetAutoAssign();
-        $minNotice = $this->page->GetStartNoticeMinutes();
-        $maxNotice = $this->page->GetEndNoticeMinutes();
-        $maxParticipants = $this->page->GetMaxParticipants();
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function ChangeConfiguration()
+	{
+		$resourceId = $this->page->GetResourceId();
+		$minDuration = $this->page->GetMinimumDuration();
+		$maxDuration = $this->page->GetMaximumDuration();
+		$allowMultiDay = $this->page->GetAllowMultiday();
+		$requiresApproval = $this->page->GetRequiresApproval();
+		$autoAssign = $this->page->GetAutoAssign();
+		$minNotice = $this->page->GetStartNoticeMinutes();
+		$maxNotice = $this->page->GetEndNoticeMinutes();
+		$maxParticipants = $this->page->GetMaxParticipants();
 
-        Log::Debug('Updating resource id %s. MaxNotice: %s', $resourceId, $maxNotice);
+		Log::Debug('Updating resource id %s. MaxNotice: %s', $resourceId, $maxNotice);
 
-        $resource = $this->resourceRepository->LoadById($resourceId);
+		$resource = $this->resourceRepository->LoadById($resourceId);
 
-        $resource->SetMinLength($minDuration);
-        $resource->SetMaxLength($maxDuration);
-        $resource->SetAllowMultiday($allowMultiDay);
-        $resource->SetRequiresApproval($requiresApproval);
-        $resource->SetAutoAssign($autoAssign);
-        $resource->SetMinNotice($minNotice);
-        $resource->SetMaxNotice($maxNotice);
-        $resource->SetMaxParticipants($maxParticipants);
+		$resource->SetMinLength($minDuration);
+		$resource->SetMaxLength($maxDuration);
+		$resource->SetAllowMultiday($allowMultiDay);
+		$resource->SetRequiresApproval($requiresApproval);
+		$resource->SetAutoAssign($autoAssign);
+		$resource->SetMinNotice($minNotice);
+		$resource->SetMaxNotice($maxNotice);
+		$resource->SetMaxParticipants($maxParticipants);
 
-        $this->resourceRepository->Update($resource);
-    }
+		$this->resourceRepository->Update($resource);
+	}
 
-    /**
-     * @internal should only be used for testing
-     */
-    public function Delete()
-    {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
-        $this->resourceRepository->Delete($resource);
-    }
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function Delete()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$this->resourceRepository->Delete($resource);
+	}
 
-    /**
-     * @internal should only be used for testing
-     */
-    public function ChangeDescription()
-    {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function ChangeDescription()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 
-        $resource->SetDescription($this->page->GetDescription());
+		$resource->SetDescription($this->page->GetDescription());
 
-        $this->resourceRepository->Update($resource);
-    }
+		$this->resourceRepository->Update($resource);
+	}
 
-    /**
-     * @internal should only be used for testing
-     */
-    public function ChangeNotes()
-    {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function ChangeNotes()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 
-        $resource->SetNotes($this->page->GetNotes());
+		$resource->SetNotes($this->page->GetNotes());
 
-        $this->resourceRepository->Update($resource);
-    }
+		$this->resourceRepository->Update($resource);
+	}
 
-    /**
-     * @internal should only be used for testing
-     */
-    public function Rename()
-    {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function Rename()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 
-        $resource->SetName($this->page->GetResourceName());
+		$resource->SetName($this->page->GetResourceName());
 
-        $this->resourceRepository->Update($resource);
-    }
+		$this->resourceRepository->Update($resource);
+	}
 
-    /**
-     * @internal should only be used for testing
-     */
-    public function ChangeLocation()
-    {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function ChangeLocation()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 
-        $resource->SetLocation($this->page->GetLocation());
-        $resource->SetContact($this->page->GetContact());
+		$resource->SetLocation($this->page->GetLocation());
+		$resource->SetContact($this->page->GetContact());
 
-        $this->resourceRepository->Update($resource);
-    }
+		$this->resourceRepository->Update($resource);
+	}
 
-    public function ChangeImage()
-    {
-        Log::Debug("Changing resource image for resource id %s", $this->page->GetResourceId());
+	public function ChangeImage()
+	{
+		Log::Debug("Changing resource image for resource id %s", $this->page->GetResourceId());
 
-        $uploadedImage = $this->page->GetUploadedImage();
+		$uploadedImage = $this->page->GetUploadedImage();
 
-        if ($uploadedImage->IsError())
-        {
-            die("Image error: " . $uploadedImage->Error());
-        }
+		if ($uploadedImage->IsError())
+		{
+			die("Image error: " . $uploadedImage->Error());
+		}
 
-        $fileType = strtolower($uploadedImage->Extension());
+		$fileType = strtolower($uploadedImage->Extension());
 
-        $supportedTypes = array('jpeg', 'gif', 'png', 'jpg');
+		$supportedTypes = array('jpeg', 'gif', 'png', 'jpg');
 
-        if (!in_array($fileType, $supportedTypes))
-        {
-            die("Invalid image type: $fileType");
-        }
+		if (!in_array($fileType, $supportedTypes))
+		{
+			die("Invalid image type: $fileType");
+		}
 
-        $image = $this->imageFactory->Load($uploadedImage->TemporaryName());
-        $image->ResizeToWidth(300);
+		$image = $this->imageFactory->Load($uploadedImage->TemporaryName());
+		$image->ResizeToWidth(300);
 
-        $fileName = "resource{$this->page->GetResourceId()}.$fileType";
-        $path = ROOT_DIR . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . "/$fileName";
+		$fileName = "resource{$this->page->GetResourceId()}.$fileType";
+		$path = ROOT_DIR . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . "/$fileName";
 
-        Log::Debug("Saving resource image $path");
+		Log::Debug("Saving resource image $path");
 
-        $image->Save($path);
+		$image->Save($path);
 
-        $this->SaveResourceImage($fileName);
-    }
+		$this->SaveResourceImage($fileName);
+	}
 
-    public function RemoveImage()
-    {
-        $this->SaveResourceImage(null);
-    }
+	public function RemoveImage()
+	{
+		$this->SaveResourceImage(null);
+	}
 
-    public function TakeOffline()
-    {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
-        $resource->TakeOffline();
-        $this->resourceRepository->Update($resource);
-    }
+	public function TakeOffline()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resource->TakeOffline();
+		$this->resourceRepository->Update($resource);
+	}
 
-    public function BringOnline()
-    {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
-        $resource->BringOnline();
-        $this->resourceRepository->Update($resource);
-    }
+	public function BringOnline()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resource->BringOnline();
+		$this->resourceRepository->Update($resource);
+	}
 
-    public function ChangeSchedule()
-    {
+	public function ChangeSchedule()
+	{
 		$resourceId = $this->page->GetResourceId();
 		Log::Debug('Changing schedule for resource %s', $resourceId);
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
-        $scheduleId = $this->page->GetScheduleId();
-        $resource->SetScheduleId($scheduleId);
-        $this->resourceRepository->Update($resource);
-    }
+		$scheduleId = $this->page->GetScheduleId();
+		$resource->SetScheduleId($scheduleId);
+		$this->resourceRepository->Update($resource);
+	}
 
-    public function ChangeAdmin()
-    {
+	public function ChangeAdmin()
+	{
 		$resourceId = $this->page->GetResourceId();
 		Log::Debug('Changing resource admin for resource %s', $resourceId);
 
-        $resource = $this->resourceRepository->LoadById($resourceId);
-        $adminGroupId = $this->page->GetAdminGroupId();
-        $resource->SetAdminGroupId($adminGroupId);
-        $this->resourceRepository->Update($resource);
-    }
+		$resource = $this->resourceRepository->LoadById($resourceId);
+		$adminGroupId = $this->page->GetAdminGroupId();
+		$resource->SetAdminGroupId($adminGroupId);
+		$this->resourceRepository->Update($resource);
+	}
 
-    public function EnableSubscription()
-    {
+	public function EnableSubscription()
+	{
 		$resourceId = $this->page->GetResourceId();
 		Log::Debug('Enable calendar subscription for resource %s', $resourceId);
 
-        $resource = $this->resourceRepository->LoadById($resourceId);
-        $resource->EnableSubscription();
-        $this->resourceRepository->Update($resource);
-    }
+		$resource = $this->resourceRepository->LoadById($resourceId);
+		$resource->EnableSubscription();
+		$this->resourceRepository->Update($resource);
+	}
 
-    public function DisableSubscription()
-    {
+	public function DisableSubscription()
+	{
 		$resourceId = $this->page->GetResourceId();
 		Log::Debug('Disable calendar subscription for resource %s', $resourceId);
 
-        $resource = $this->resourceRepository->LoadById($resourceId);
-        $resource->DisableSubscription();
-        $this->resourceRepository->Update($resource);
-    }
+		$resource = $this->resourceRepository->LoadById($resourceId);
+		$resource->DisableSubscription();
+		$this->resourceRepository->Update($resource);
+	}
 
 	public function ChangeAttributes()
 	{
 		$resourceId = $this->page->GetResourceId();
 		Log::Debug('Changing attributes for resource %s', $resourceId);
 
+		$resource = $this->resourceRepository->LoadById($resourceId);
+
+		$attributes = array();
+		foreach ($this->page->GetAttributes() as $attribute)
+		{
+			$attributes[] = new AttributeValue($attribute->Id, $attribute->Value);
+		}
+
+		$resource->ChangeAttributes($attributes);
+		$this->resourceRepository->Update($resource);
 	}
 
-    private function SaveResourceImage($fileName)
-    {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+	private function SaveResourceImage($fileName)
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 
-        $resource->SetImage($fileName);
+		$resource->SetImage($fileName);
 
-        $this->resourceRepository->Update($resource);
-    }
+		$this->resourceRepository->Update($resource);
+	}
 }
 
 ?>

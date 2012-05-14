@@ -130,7 +130,7 @@ class CalendarReservation
     /**
      * @static
      * @param $reservations array|ReservationItemView[]
-     * @param $resources array|BookableResources[]
+     * @param $resources array|BookableResource[]
      * @param $timezone string
      * @return array|CalendarReservation[]
      */

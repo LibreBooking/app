@@ -47,7 +47,7 @@ function ResourceManagement(opts)
 		ConfigureAdminDialog(elements.deleteDialog, 500, 300);
 		ConfigureAdminDialog(elements.configurationDialog, 500, 500);
 		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
-		ConfigureAdminDialog(elements.attributeDialog, 500, 270);
+		ConfigureAdminDialog(elements.attributeDialog, 300, 300);
 
 		$('.resourceDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();

@@ -89,7 +89,7 @@ interface IResourceService
 	public function GetAccessories();
 }
 
-class ResourceDto
+class ResourceDto implements IResource
 {
 	public function __construct($id, $name, $canAccess = true)
 	{
@@ -112,5 +112,38 @@ class ResourceDto
 	 * @var bool
 	 */
 	public $CanAccess;
+
+	/**
+	 * alias of GetId()
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		// TODO: Implement GetResourceId() method.
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetId()
+	{
+		// TODO: Implement GetId() method.
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetName()
+	{
+		// TODO: Implement GetName() method.
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetAdminGroupId()
+	{
+		// TODO: Implement GetAdminGroupId() method.
+	}
 }
 ?>

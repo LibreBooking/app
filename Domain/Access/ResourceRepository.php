@@ -78,17 +78,7 @@ class ResourceRepository implements IResourceRepository
 	{
 		if (!$this->_cache->Exists($resourceId))
 		{
-			$command = new GetResourceByIdCommand($resourceId);
-	
-			$reader = ServiceLocator::GetDatabase()->Query($command);
-
-            $resource = null;
-			if ($row = $reader->GetRow())
-			{
-				$resource = BookableResource::Create($row);
-			}
-			
-			$reader->Free();
+			$resource = $this->LoadResource(new GetResourceByIdCommand($resourceId));
 			
 			$this->_cache->Add($resourceId, $resource);
 		}
@@ -102,18 +92,37 @@ class ResourceRepository implements IResourceRepository
      */
     public function LoadByPublicId($publicId)
     {
-        $command = new GetResourceByPublicIdCommand($publicId);
-
-        $reader = ServiceLocator::GetDatabase()->Query($command);
-
-        $resource = BookableResource::Null();
-        if ($row = $reader->GetRow())
-        {
-            $resource = BookableResource::Create($row);
-        }
-
-        return $resource;
+		return $this->LoadResource(new GetResourceByPublicIdCommand($publicId));
     }
+
+	/**
+	 * @param $command SqlCommand
+	 * @return BookableResource
+	 */
+	private function LoadResource($command)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		$resource = BookableResource::Null();
+		if ($row = $reader->GetRow())
+		{
+			$resource = BookableResource::Create($row);
+
+			$getAttributes = new GetAttributeValuesCommand($resource->GetId(), CustomAttributeCategory::RESOURCE);
+			$attributeReader = ServiceLocator::GetDatabase()->Query($getAttributes);
+
+			while ($attributeRow = $attributeReader->GetRow())
+			{
+				$resource->WithAttribute(new AttributeValue($attributeRow[ColumnNames::ATTRIBUTE_ID], $attributeRow[ColumnNames::ATTRIBUTE_VALUE]));
+			}
+
+			$attributeReader->Free();
+		}
+
+		$reader->Free();
+
+		return $resource;
+	}
 
 	public function Add(BookableResource $resource)
 	{
@@ -162,6 +171,17 @@ class ResourceRepository implements IResourceRepository
 		);
 								
 		$db->Execute($updateResourceCommand);
+
+
+		foreach ($resource->GetRemovedAttributes() as $removed)
+		{
+			$db->Execute(new RemoveAttributeValueCommand($removed->AttributeId, $resource->GetId()));
+		}
+
+		foreach ($resource->GetAddedAttributes() as $added)
+		{
+			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $resource->GetId(), CustomAttributeCategory::RESOURCE));
+		}
 	}
 	
 	public function Delete(BookableResource $resource)

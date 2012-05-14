@@ -377,19 +377,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	 */
 	public function GetAttributes()
 	{
-		$attributes = $this->GetForm(FormKeys::ATTRIBUTE_PREFIX);
-		if (is_array($attributes)) {
-			$af = array();
-
-			foreach ($attributes as $id => $value)
-			{
-				$af[] = new AttributeFormElement($id, $value);
-			}
-
-			return $af;
-		}
-
-		return array();
+		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
 	}
 }
 
@@ -411,22 +399,4 @@ class AccessoryFormElement
 	}
 }
 
-class AttributeFormElement
-{
-	/**
-	 * @var int
-	 */
-	public $Id;
-
-	/**
-	 * @var mixed
-	 */
-	public $Value;
-
-	public function __construct($id, $value)
-	{
-		$this->Id = $id;
-		$this->Value = $value;
-	}
-}
 ?>

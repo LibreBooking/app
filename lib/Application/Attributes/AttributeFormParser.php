@@ -17,10 +17,48 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
+class AttributeFormElement
+{
+	/**
+	 * @var int
+	 */
+	public $Id;
 
-require_once(ROOT_DIR . 'lib/Application/Attributes/Attribute.php');
-require_once(ROOT_DIR . 'lib/Application/Attributes/AttributeList.php');
-require_once(ROOT_DIR . 'lib/Application/Attributes/AttributeService.php');
-require_once(ROOT_DIR . 'lib/Application/Attributes/AttributeFormParser.php');
+	/**
+	 * @var mixed
+	 */
+	public $Value;
 
+	public function __construct($id, $value)
+	{
+		$this->Id = $id;
+		$this->Value = $value;
+	}
+}
+
+class AttributeFormParser
+{
+	/**
+	 * @static
+	 * @param $attributes string|string[]|null The result of $this->GetForm(FormKeys::ATTRIBUTE_PREFIX)
+	 * @return array
+	 */
+	public static function GetAttributes($attributes)
+	{
+
+		if (is_array($attributes))
+		{
+			$af = array();
+
+			foreach ($attributes as $id => $value)
+			{
+				$af[] = new AttributeFormElement($id, $value);
+			}
+
+			return $af;
+		}
+
+		return array();
+	}
+}
 ?>

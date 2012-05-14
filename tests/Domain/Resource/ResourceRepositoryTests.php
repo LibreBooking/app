@@ -177,9 +177,11 @@ class ResourceRepositoryTests extends TestBase
 
     public function testGetsAccessories()
     {
-        $accessoryRows = array($this->GetAccessoryRow(1, "name", 3), $this->GetAccessoryRow(2, "slkjdf", 23));
+		$ar = new ReservationAccessoryRow();
+		$ar->WithAccessory(1, 3, "name")
+				->WithAccessory(2, 23, "slkjdf");
 
-        $this->db->SetRows($accessoryRows);
+        $this->db->SetRows($ar->Rows());
 
         $getAccessoriesCommand = new GetAllAccessoriesCommand();
 
@@ -200,23 +202,78 @@ class ResourceRepositoryTests extends TestBase
 
         $fr = new FakeResourceAccess();
         $rows = $fr->GetRows();
-        $this->db->SetRows($rows);
+        $this->db->SetRow(0, $rows);
+
+		$car = new CustomAttributeValueRow();
+		$car->With(1, 'value')
+			->With(2, 'value2');
+        $this->db->SetRow(1, $car->Rows());
         $loadResourceCommand = new GetResourceByPublicIdCommand($publicId);
+        $attributes = new GetAttributeValuesCommand(1, CustomAttributeCategory::RESOURCE);
 
         $resourceRepository = new ResourceRepository();
         $resource = $resourceRepository->LoadByPublicId($publicId);
 
         $this->assertTrue($this->db->ContainsCommand($loadResourceCommand));
+        $this->assertTrue($this->db->ContainsCommand($attributes));
         $this->assertNotNull($resource);
+        $this->assertEquals('value', $resource->GetAttributeValue(1));
+        $this->assertEquals('value2', $resource->GetAttributeValue(2));
     }
 
-    private function GetAccessoryRow($accessoryId, $name, $quantity)
-    {
-        return array(
-            ColumnNames::ACCESSORY_ID => $accessoryId,
-            ColumnNames::ACCESSORY_NAME => $name,
-            ColumnNames::ACCESSORY_QUANTITY => $quantity);
-    }
+	public function testLoadsResourceById()
+	{
+		$id = 1;
+
+		$fr = new FakeResourceAccess();
+		$rows = $fr->GetRows();
+		$this->db->SetRow(0, $rows);
+
+		$car = new CustomAttributeValueRow();
+		$car->With(1, 'value')
+			->With(2, 'value2');
+		$this->db->SetRow(1, $car->Rows());
+		$loadResourceCommand = new GetResourceByIdCommand($id);
+		$attributes = new GetAttributeValuesCommand(1, CustomAttributeCategory::RESOURCE);
+
+		$resourceRepository = new ResourceRepository();
+		$resource = $resourceRepository->LoadById($id);
+
+		$this->assertTrue($this->db->ContainsCommand($loadResourceCommand));
+		$this->assertTrue($this->db->ContainsCommand($attributes));
+		$this->assertNotNull($resource);
+		$this->assertEquals('value', $resource->GetAttributeValue(1));
+		$this->assertEquals('value2', $resource->GetAttributeValue(2));
+	}
+
+	public function testUpdatesAttributes()
+	{
+		$id = 11;
+		$unchanged = new AttributeValue(1, 'value');
+		$toChange = new AttributeValue(2, 'value');
+		$toAdd = new AttributeValue(3, 'value');
+
+		$resource = new FakeBookableResource($id);
+		$resource->WithAttribute($unchanged);
+		$resource->WithAttribute(new AttributeValue(100, 'should be removed'));
+		$resource->WithAttribute(new AttributeValue(2, 'new value'));
+
+		$attributes = array($unchanged, $toChange, $toAdd);
+		$resource->ChangeAttributes($attributes);
+
+		$resourceRepository = new ResourceRepository();
+		$resourceRepository->Update($resource);
+
+		$addNewCommand = new AddAttributeValueCommand($toAdd->AttributeId, $toAdd->Value, $id, CustomAttributeCategory::RESOURCE);
+		$removeOldCommand = new RemoveAttributeValueCommand(100, $id);
+		$removeUpdated = new RemoveAttributeValueCommand($toChange->AttributeId, $id);
+		$addUpdated = new AddAttributeValueCommand($toChange->AttributeId, $toChange->Value, $id, CustomAttributeCategory::RESOURCE);
+
+		$this->assertEquals($removeOldCommand, $this->db->_Commands[1]);
+		$this->assertEquals($removeUpdated, $this->db->_Commands[2], "need to remove before adding to make sure changed values are not immediately deleted");
+		$this->assertEquals($addUpdated, $this->db->_Commands[3]);
+		$this->assertEquals($addNewCommand, $this->db->_Commands[4]);
+	}
 }
 
 ?>

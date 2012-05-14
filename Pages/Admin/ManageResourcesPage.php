@@ -137,6 +137,12 @@ interface IManageResourcesPage extends IUpdateResourcePage
 	 * @param $attributeList IEntityAttributeList
 	 */
 	public function BindAttributeList($attributeList);
+
+	/**
+	 * @abstract
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetAttributes();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -329,6 +335,16 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		$this->Set('Definitions', $defList);
 		$this->Set('AttributeList', $attributeList);
 	}
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetAttributes()
+	{
+		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+	}
 }
+
+
 
 ?>

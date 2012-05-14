@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'tests/fakes/DBFakes.php');
+require_once(ROOT_DIR . 'tests/fakes/DBRows.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeAuth.php');
 require_once(ROOT_DIR . 'tests/fakes/FakePageBase.php');
 require_once(ROOT_DIR . 'tests/fakes/FakePasswordEncryption.php');
