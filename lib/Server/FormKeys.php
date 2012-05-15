@@ -40,6 +40,7 @@ class FormKeys
 	const ATTRIBUTE_IS_REQUIRED = 'attributeRequired';
 	const ATTRIBUTE_POSSIBLE_VALUES = 'attributePossibleValues';
 	const ATTRIBUTE_PREFIX = 'psiattribute';
+	const ATTRIBUTE_SORT_ORDER = 'attributeOrder';
 	const AUTO_ASSIGN = 'autoAssign';
 
 	const BEGIN_DATE = 'beginDate';

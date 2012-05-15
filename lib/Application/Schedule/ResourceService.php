@@ -89,7 +89,7 @@ interface IResourceService
 	public function GetAccessories();
 }
 
-class ResourceDto implements IResource
+class ResourceDto
 {
 	public function __construct($id, $name, $canAccess = true)
 	{

@@ -62,10 +62,11 @@ class ManageAttributesPresenter extends ActionPresenter
 		$regex = $this->page->GetValidationExpression();
 		$required = $this->page->GetIsRequired();
 		$possibleValues = $this->page->GetPossibleValues();
+		$sortOrder = $this->page->GetSortOrder();
 
         Log::Debug('Adding new attribute named: %s', $attributeName);
 
-        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues);
+        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder);
 		$this->attributeRepository->Add($attribute);
     }
 
@@ -76,11 +77,12 @@ class ManageAttributesPresenter extends ActionPresenter
 		$regex = $this->page->GetValidationExpression();
 		$required = $this->page->GetIsRequired();
 		$possibleValues = $this->page->GetPossibleValues();
+		$sortOrder = $this->page->GetSortOrder();
 
 		Log::Debug('Updating attribute with id: %s', $attributeId);
 
 		$attribute = $this->attributeRepository->LoadById($attributeId);
-		$attribute->Update($attributeName, $regex, $required, $possibleValues);
+		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder);
 
 		$this->attributeRepository->Update($attribute);
 	}

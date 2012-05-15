@@ -59,6 +59,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="wideLabel">{translate key=PossibleValues}:</span>
 			{textbox name=ATTRIBUTE_POSSIBLE_VALUES class="required"} <span class="note">({translate key=CommaSeparated})</span>
 			</div>
+			<div class="attributeSortOrder">
+				<span class="wideLabel">{translate key=SortOrder}:</span>
+				{textbox name=ATTRIBUTE_SORT_ORDER  maxlength=3 width="40px"}
+			</div>
 		</div>
 
 		<button type="button" class="button save">{html_image src="plus-button.png"} {translate key=Add}</button>
@@ -98,6 +102,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="wideLabel">{translate key=PossibleValues}:</span>
 			{textbox name=ATTRIBUTE_POSSIBLE_VALUES class="required" id="editAttributePossibleValues"} <span
 					class="note">({translate key=CommaSeparated})</span>
+			</div>
+			<div class="attributeSortOrder">
+				<span class="wideLabel">{translate key=SortOrder}:</span>
+				{textbox name=ATTRIBUTE_SORT_ORDER  maxlength=3 width="40px" id="editAttributeSortOrder"}
 			</div>
 		</div>
 

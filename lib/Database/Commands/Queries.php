@@ -49,8 +49,8 @@ class Queries
 		VALUES (@text, @priority, @startDate, @endDate)';
 
 	const ADD_ATTRIBUTE =
-			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values)
-		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values)';
+			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order)
+		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order)';
 
 	const ADD_ATTRIBUTE_VALUE =
 			'INSERT INTO custom_attribute_values (custom_attribute_id, attribute_category, attribute_value, entity_id)
@@ -311,7 +311,8 @@ class Queries
 
 	const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
 
-	const GET_ATTRIBUTES_BY_CATEGORY = 'SELECT * FROM custom_attributes WHERE attribute_category = @attribute_category ORDER BY display_label';
+	const GET_ATTRIBUTES_BY_CATEGORY = 'SELECT * FROM custom_attributes
+		WHERE attribute_category = @attribute_category ORDER BY sort_order, display_label';
 
 	const GET_ATTRIBUTE_BY_ID = 'SELECT * FROM custom_attributes WHERE custom_attribute_id = @custom_attribute_id';
 
@@ -629,7 +630,7 @@ class Queries
 	const UPDATE_ATTRIBUTE =
 			'UPDATE custom_attributes
 				SET display_label = @display_label, display_type = @display_type, attribute_category = @attribute_category,
-				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values
+				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values, sort_order = @sort_order
 			WHERE custom_attribute_id = @custom_attribute_id';
 
 	const UPDATE_GROUP =

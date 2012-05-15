@@ -171,6 +171,7 @@ class ColumnNames
 	const ATTRIBUTE_POSSIBLE_VALUES = 'possible_values';
 	const ATTRIBUTE_VALUE = 'attribute_value';
 	const ATTRIBUTE_ENTITY_ID = 'entity_id';
+	const ATTRIBUTE_SORT_ORDER = 'sort_order';
 
     // dynamic
     const TOTAL = 'total';

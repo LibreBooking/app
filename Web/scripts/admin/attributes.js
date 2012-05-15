@@ -125,7 +125,7 @@ function AttributeManagement(opts) {
 		}
 		$('#editAttributeRegex').val(selectedAttribute.regex);
 		$('#editAttributePossibleValues').val(selectedAttribute.possibleValues);
-
+		$('#editAttributeSortOrder').val(selectedAttribute.sortOrder);
 		setActiveId(selectedAttribute.id);
 
 		elements.editDialog.dialog('open');

@@ -63,7 +63,7 @@ class AttributeRepository implements IAttributeRepository
 	public function Add(CustomAttribute $attribute)
 	{
 		return ServiceLocator::GetDatabase()->ExecuteInsert(
-			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues()));
+			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder()));
 	}
 
 	/**
@@ -107,7 +107,7 @@ class AttributeRepository implements IAttributeRepository
 	{
 		ServiceLocator::GetDatabase()->Execute(
 			new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
-				$attribute->Regex(), $attribute->Required(), $attribute->PossibleValues()));
+				$attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder()));
 	}
 
 	/**

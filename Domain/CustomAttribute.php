@@ -136,6 +136,14 @@ class CustomAttribute
 	}
 
 	/**
+	 * @return int
+	 */
+	public function SortOrder()
+	{
+		return $this->sortOrder;
+	}
+
+	/**
 	 * @param int $id
 	 * @param string $label
 	 * @param CustomAttributeTypes|int $type
@@ -143,9 +151,10 @@ class CustomAttribute
 	 * @param string $regex
 	 * @param bool $required
 	 * @param string $possibleValues
+	 * @param int $sortOrder
 	 * @return CustomAttribute
 	 */
-	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues)
+	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder)
 	{
 		$this->id = $id;
 		$this->label = $label;
@@ -153,10 +162,8 @@ class CustomAttribute
 		$this->category = $category;
 		$this->regex = $regex;
 		$this->required = $required;
-		if (!empty($possibleValues))
-		{
-			$this->possibleValues = preg_replace('/\s*,\s*/', ',', trim($possibleValues));
-		}
+		$this->SetSortOrder($sortOrder);
+		$this->SetPossibleValues($possibleValues);
 	}
 
 	/**
@@ -167,11 +174,12 @@ class CustomAttribute
 	 * @param string $regex
 	 * @param bool $required
 	 * @param string $possibleValues
+	 * @param int $sortOrder
 	 * @return CustomAttribute
 	 */
-	public static function Create($label, $type, $category, $regex, $required, $possibleValues)
+	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder)
 	{
-		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues);
+		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder);
 	}
 
 	/**
@@ -188,7 +196,8 @@ class CustomAttribute
 			$row[ColumnNames::ATTRIBUTE_CATEGORY],
 			$row[ColumnNames::ATTRIBUTE_CONSTRAINT],
 			$row[ColumnNames::ATTRIBUTE_REQUIRED],
-			$row[ColumnNames::ATTRIBUTE_POSSIBLE_VALUES]
+			$row[ColumnNames::ATTRIBUTE_POSSIBLE_VALUES],
+			$row[ColumnNames::ATTRIBUTE_SORT_ORDER]
 		);
 	}
 
@@ -196,7 +205,7 @@ class CustomAttribute
 	 * @param $value mixed
 	 * @return bool
 	 */
-	public function SatisifiesRequired($value)
+	public function SatisfiesRequired($value)
 	{
 		if (!$this->required)
 		{
@@ -211,7 +220,7 @@ class CustomAttribute
 	 * @param $value mixed
 	 * @return bool
 	 */
-	public function SatisifiesConstraint($value)
+	public function SatisfiesConstraint($value)
 	{
 		if (!empty($this->regex))
 		{
@@ -233,12 +242,32 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 */
-	public function Update($label, $regex, $required, $possibleValues)
+	public function Update($label, $regex, $required, $possibleValues, $sortOrder)
 	{
 		$this->label = $label;
 		$this->regex = $regex;
 		$this->required = $required;
-		$this->possibleValues = $possibleValues;
+		$this->SetPossibleValues($possibleValues);
+		$this->SetSortOrder($sortOrder);
+	}
+
+	/**
+	 * @param string $possibleValues
+	 */
+	private function SetPossibleValues($possibleValues)
+	{
+		if (!empty($possibleValues))
+		{
+			$this->possibleValues = preg_replace('/\s*,\s*/', ',', trim($possibleValues));
+		}
+	}
+
+	/**
+	 * @param int $sortOrder
+	 */
+	private function SetSortOrder($sortOrder)
+	{
+		$this->sortOrder = intval($sortOrder);
 	}
 }
 

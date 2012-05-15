@@ -140,13 +140,13 @@ class FakeCustomAttribute extends CustomAttribute
 		$this->_IsConstraintSatisfied = $isRegexOk;
 	}
 
-	public function SatisifiesRequired($value)
+	public function SatisfiesRequired($value)
 	{
 		$this->_RequiredValueChecked = $value;
 		return $this->_IsRequiredSatisfied;
 	}
 
-	public function SatisifiesConstraint($value)
+	public function SatisfiesConstraint($value)
 	{
 		$this->_ConstraintValueChecked = $value;
 		return $this->_IsConstraintSatisfied;

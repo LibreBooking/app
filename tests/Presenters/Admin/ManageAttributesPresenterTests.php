@@ -53,7 +53,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$categoryId = CustomAttributeCategory::RESERVATION;
 		$this->page->_requestedCategoryId = $categoryId;
 
-		$attributes = array(CustomAttribute::Create('abc', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, null, false, null));
+		$attributes = array(CustomAttribute::Create('abc', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, null, false, null, null));
 
 		$this->attributeRepository->expects($this->once())
 				->method('GetByCategory')
@@ -73,6 +73,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$required = true;
 		$regex = '/$\d^/';
 		$possibleValues = '1,2,3';
+		$sortOrder = "5";
 
 		$this->page->_label = $label;
 		$this->page->_type = $type;
@@ -80,8 +81,9 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_required = $required;
 		$this->page->_regex = $regex;
 		$this->page->_possibleValues = $possibleValues;
+		$this->page->_sortOrder = $sortOrder;
 
-		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues);
+		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder);
 
 		$this->attributeRepository->expects($this->once())
 				->method('Add')
@@ -95,18 +97,19 @@ class ManageAttributesPresenterTests extends TestBase
 	{
 		$attributeId = 1091;
 		$label = 'new label';
-		$category = CustomAttributeCategory::RESERVATION;
 		$required = true;
 		$regex = '/$\d^/';
 		$possibleValues = '1,2,3';
+		$sortOrder = "5";
 
 		$this->page->_label = $label;
 		$this->page->_required = $required;
 		$this->page->_regex = $regex;
 		$this->page->_possibleValues = $possibleValues;
 		$this->page->_attributeId = $attributeId;
+		$this->page->_sortOrder = $sortOrder;
 
-		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::GROUP, null, false, null);
+		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::GROUP, null, false, null, $sortOrder);
 
 		$this->attributeRepository->expects($this->once())
 				->method('LoadById')
@@ -123,6 +126,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->assertEquals($regex, $expectedAttribute->Regex());
 		$this->assertEquals($required, $expectedAttribute->Required());
 		$this->assertEquals($possibleValues, $expectedAttribute->PossibleValues());
+		$this->assertEquals($sortOrder, $expectedAttribute->SortOrder());
 	}
 }
 
@@ -137,6 +141,7 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public $_requestedCategoryId;
 	public $_boundAttributes;
 	public $_attributeId;
+	public $_sortOrder;
 
 	public function GetLabel()
 	{
@@ -171,6 +176,11 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public function GetRequestedCategory()
 	{
 		return $this->_requestedCategoryId;
+	}
+
+	public function GetSortOrder()
+	{
+		return $this->_sortOrder;
 	}
 
 	public function BindAttributes($attributes)

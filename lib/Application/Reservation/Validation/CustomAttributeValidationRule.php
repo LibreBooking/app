@@ -41,13 +41,13 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 			$value = $reservationSeries->GetAttributeValue($attribute->Id());
 			$label = $attribute->Label();
 
-			if (!$attribute->SatisifiesRequired($value))
+			if (!$attribute->SatisfiesRequired($value))
 			{
 				$isValid = false;
 				$errorMessage->AppendLine($resources->GetString('CustomAttributeRequired', $label));
 			}
 
-			if (!$attribute->SatisifiesConstraint($value))
+			if (!$attribute->SatisfiesConstraint($value))
 			{
 				$isValid = false;
 				$errorMessage->AppendLine($resources->GetString('CustomAttributeInvalid', $label));

@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {if $Attributes|count > 0}
 <table class="list">
 	<tr>
+		<th>{translate key=SortOrder}</th>
 		<th>{translate key=DisplayLabel}</th>
 		<th>{translate key=Type}</th>
 		<th>{translate key=Required}</th>
@@ -30,6 +31,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{foreach from=$Attributes item=attribute}
 		{cycle values='row0,row1' assign=rowCss}
 		<tr class="{$rowCss} editable" attributeId="{$attribute->Id()}">
+			<td>{$attribute->SortOrder()}</td>
 			<td>{$attribute->Label()}</td>
 			<td>{translate key=$Types[$attribute->Type()]}</td>
 			<td>{if $attribute->Required()}
@@ -55,7 +57,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						required: {$attribute->Required()},
 						regex: "{$attribute->Regex()|escape:'javascript'}",
 						possibleValues: "{$attribute->PossibleValues()|escape:'javascript'}",
-						type: "{$attribute->Type()}"
+						type: "{$attribute->Type()}",
+						sortOrder: "{$attribute->SortOrder()}"
 					};
 	{/foreach}
 

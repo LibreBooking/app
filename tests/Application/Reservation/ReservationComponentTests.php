@@ -385,8 +385,8 @@ class ReservationComponentTests extends TestBase
 		$binder = new ReservationCustomAttributeBinder($this->attributeRepository);
 
 		$attributes = array(
-			CustomAttribute::Create('1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, ''),
-			CustomAttribute::Create('2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, ''),
+			CustomAttribute::Create('1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 1),
+			CustomAttribute::Create('2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 2),
 		);
 
 		$this->attributeRepository->expects($this->once())
@@ -417,8 +417,8 @@ class ReservationComponentTests extends TestBase
 		$binder = new ReservationCustomAttributeValueBinder($this->attributeRepository, $reservationView);
 
 		$attributes = array(
-			new CustomAttribute(10, '1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, ''),
-			new CustomAttribute(20, '2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, ''),
+			new CustomAttribute(10, '1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 1),
+			new CustomAttribute(20, '2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 2),
 		);
 
 		$this->attributeRepository->expects($this->once())

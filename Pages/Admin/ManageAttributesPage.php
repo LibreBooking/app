@@ -67,6 +67,12 @@ interface IManageAttributesPage extends IActionPage
 
 	/**
 	 * @abstract
+	 * @return int
+	 */
+	public function GetSortOrder();
+
+	/**
+	 * @abstract
 	 * @param $attributes CustomAttribute[]|array
 	 */
 	public function BindAttributes($attributes);
@@ -153,6 +159,14 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 	public function GetPossibleValues()
 	{
 		return $this->GetForm(FormKeys::ATTRIBUTE_POSSIBLE_VALUES);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetSortOrder()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_SORT_ORDER);
 	}
 
 	public function GetRequestedCategory()

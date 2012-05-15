@@ -7,6 +7,7 @@ CREATE TABLE `custom_attributes` (
  `validation_regex` varchar(50),
  `is_required` tinyint(1) unsigned NOT NULL,
  `possible_values` text,
+ `sort_order` tinyint(2) unsigned,
   PRIMARY KEY (`custom_attribute_id`),
   INDEX (`attribute_category`),
   INDEX (`display_label`)

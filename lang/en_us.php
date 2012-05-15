@@ -378,6 +378,7 @@ class en_us extends Language
         $strings['Category'] = 'Category';
         $strings['CategoryReservation'] = 'Reservation';
         $strings['CategoryGroup'] = 'Group';
+        $strings['SortOrder'] = 'Sort Order';
         $strings['Title'] = 'Title';
         $strings['AdditionalAttributes'] = 'Additional Attributes';
         $strings['True'] = 'True';

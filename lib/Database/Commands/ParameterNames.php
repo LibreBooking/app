@@ -40,6 +40,7 @@ class ParameterNames
 	const ATTRIBUTE_POSSIBLE_VALUES = '@possible_values';
 	const ATTRIBUTE_REGEX = '@validation_regex';
 	const ATTRIBUTE_REQUIRED = '@is_required';
+	const ATTRIBUTE_SORT_ORDER = '@sort_order';
 	const ATTRIBUTE_TYPE = '@display_type';
 	const ATTRIBUTE_VALUE = '@attribute_value';
 	const ATTRIBUTE_ENTITY_ID = '@entity_id';
