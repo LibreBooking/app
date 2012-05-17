@@ -33,9 +33,10 @@ $.fn.bindResourceDetails = function(resourceId, options)
 
 		resourceNameElement.qtip({
 			position: {
-				my: 'top left',  // Position my top left...
-				at: 'bottom left', // at the bottom right of...
-				target: resourceNameElement // my target
+				my: 'bottom left',
+				at: 'top left',
+				target: resourceNameElement,
+				effect: false
 			},
 			content: {
 				text: 'Loading...',

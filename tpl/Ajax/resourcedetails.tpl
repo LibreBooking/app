@@ -106,6 +106,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					{translate key='ResourceCapacityNone'}
 				{/if}
 			</li>
+			{if $Attributes|count > 0}
+				{foreach from=$Attributes item=attribute}
+				<li>
+					{control type="AttributeControl" attribute=$attribute readonly=true}
+				</li>
+				{/foreach}
+			{/if}
 		</ul>
 	</div>
 
