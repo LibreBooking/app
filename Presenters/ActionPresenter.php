@@ -100,10 +100,12 @@ abstract class ActionPresenter
 class ActionErrors
 {
     public $ErrorIds = array();
+	public $Messages = array();
 
-    public function AddId($id)
+    public function Add($id, $messages = array())
     {
         $this->ErrorIds[] = $id;
+		$this->Messages[$id] = $messages;
     }
 }
 ?>

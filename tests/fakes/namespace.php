@@ -40,6 +40,7 @@ require_once(ROOT_DIR . 'tests/fakes/FakeResource.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeEmailService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeUser.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeSchedule.php');
+require_once(ROOT_DIR . 'tests/fakes/TestCustomAttribute.php');
 
 require_once(ROOT_DIR . 'tests/fakes/TestDateRange.php');
 require_once(ROOT_DIR . 'tests/fakes/TestReservation.php');

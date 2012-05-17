@@ -30,6 +30,12 @@ interface IValidator
 	 * @return void
 	 */
 	public function Validate();
+
+	/**
+	 * @abstract
+	 * @return string[]|null
+	 */
+	public function Messages();
 }
 
 ?>

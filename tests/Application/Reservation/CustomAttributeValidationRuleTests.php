@@ -104,53 +104,5 @@ class CustomAttributeValidationRuleTests extends TestBase
 	}
 }
 
-class FakeCustomAttribute extends CustomAttribute
-{
-	/**
-	 * @var bool
-	 */
-	public $_IsRequiredSatisfied = true;
-
-	/**
-	 * @var bool
-	 */
-	public $_IsConstraintSatisfied = true;
-
-	/**
-	 * @var mixed
-	 */
-	public $_RequiredValueChecked;
-
-	/**
-	 * @var mixed
-	 */
-	public $_ConstraintValueChecked;
-
-	/**
-	 * @param int $id
-	 * @param bool $isRequiredOk
-	 * @param bool $isRegexOk
-	 */
-	public function __construct($id = 1, $isRequiredOk = true, $isRegexOk = true)
-	{
-		$this->id = $id;
-		$this->label = "fakeCustomAttribute$id";
-
-		$this->_IsRequiredSatisfied = $isRequiredOk;
-		$this->_IsConstraintSatisfied = $isRegexOk;
-	}
-
-	public function SatisfiesRequired($value)
-	{
-		$this->_RequiredValueChecked = $value;
-		return $this->_IsRequiredSatisfied;
-	}
-
-	public function SatisfiesConstraint($value)
-	{
-		$this->_ConstraintValueChecked = $value;
-		return $this->_IsConstraintSatisfied;
-	}
-}
 
 ?>

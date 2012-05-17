@@ -27,7 +27,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 {foreach from=$Resources item=resource}
 	{assign var=id value=$resource->GetResourceId()}
-	<div class="resourceDetails">
+	<div class="resourceDetails" resourceId="{$id}">
 		<div style="float:left;max-width:50%;">
 			<input type="hidden" class="id" value="{$id}"/>
 
@@ -484,6 +484,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="attributeDialog" class="dialog" title="{translate key=AdditionalAttributes}">
+	<div class="validationSummary">
+		<ul>{async_validator id="attributeValidator" key=""}
+		</ul>
+	</div>
+
 	<div class="customAttributes">
 		<form method="post" id="attributesForm">
 		<ul>
@@ -493,8 +498,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			{/foreach}
 		</ul>
-
-		<br/><br/>
+		<div style="clear:both;"></div>
+		<br/>
 		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 		</form>

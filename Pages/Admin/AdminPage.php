@@ -150,10 +150,10 @@ abstract class AdminPage extends SecurePage implements IActionPage
 
 		$errors = new ActionErrors();
 
-		foreach ($this->smarty->failedValidatorIds as $validator)
+		foreach ($this->smarty->failedValidators as $validator)
 		{
 			Log::Debug('Failed validator %s', $validator);
-			$errors->AddId($validator);
+			$errors->Add($validator);
 		}
 
 		$this->SetJson($errors);

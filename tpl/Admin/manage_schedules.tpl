@@ -176,11 +176,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="changeLayoutDialog" class="dialog" style="display:none;">
-	<div>
-		<ul>{async_validator id="layoutValidator" key="ValidLayoutRequired"}
-		</ul>
-	</div>
+
 	<form id="changeLayoutForm" method="post">
+		<div class="validationSummary">
+			<ul>{async_validator id="layoutValidator" key="ValidLayoutRequired"}
+			</ul>
+		</div>
+
 		<div style="float:left;">
 			<h5>{translate key=ReservableTimeSlots}</h5>
 			<textarea id="reservableEdit" {formname key=SLOTS_RESERVABLE}></textarea>

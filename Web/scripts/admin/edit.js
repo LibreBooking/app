@@ -1,5 +1,9 @@
-	
-	function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHandler, options)
+function HasResponseText(responseText) {
+	return (
+			(responseText.trim != undefined && responseText.trim() != '') || (responseText.constructor == Object)
+			);
+}
+function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHandler, options)
 	{
 		var opts = $.extend(
 				{
@@ -22,12 +26,21 @@
 					formElement.find('.indicator').hide();
 					formElement.find('button').show();
 					
-					if (responseHandler && (
-							(responseText.trim != undefined && responseText.trim() != '') || (responseText.constructor == Object)
-						)
-					)
+					if (responseHandler && HasResponseText(responseText))
 					{
 						responseHandler(responseText, form);
+					}
+					else if (formElement.has('.validationSummary') && HasResponseText(responseText))
+					{
+						$('.asyncValidation').hide();
+						$.each(responseText.ErrorIds, function(index, errorId) {
+							var errorElement = $('#' + errorId);
+							if (responseText.Messages[errorId].length > 0)
+							{
+								errorElement.text("" + responseText.Messages[errorId]);
+							}
+							errorElement.show();
+						});
 					}
 					else
 					{

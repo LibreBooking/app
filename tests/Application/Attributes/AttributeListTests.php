@@ -88,13 +88,4 @@ class AttributeListTests extends TestBase
 		$this->assertEquals(array(new Attribute($attribute1, 'att1'), new Attribute($attribute2, null), new Attribute($attribute3, 'att3')), $values);
 	}
 }
-
-class TestCustomAttribute extends CustomAttribute
-{
-	public function __construct($id, $label)
-	{
-		$this->id = $id;
-		$this->label = $label;
-	}
-}
 ?>

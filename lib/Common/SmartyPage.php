@@ -189,13 +189,17 @@ class SmartyPage extends Smarty
 	}
 
 	/**
-	 * @var array|string[]
+	 * @var array|IValidator[]
 	 */
-	public $failedValidatorIds = array();
+	public $failedValidators = array();
 
-	public function AddFailedValidation($validatorId)
+	/**
+	 * @param $id int
+	 * @param $validator IValidator
+	 */
+	public function AddFailedValidation($id, $validator)
 	{
-		$this->failedValidatorIds[] = $validatorId;
+		$this->failedValidators[$id] = $validator;
 	}
 
 	private function AppendAttributes($params, $knownAttributes)
@@ -354,7 +358,12 @@ class SmartyPage extends Smarty
 
 	public function AsyncValidator($params, &$smarty)
 	{
-		return sprintf('<li class="asyncValidation" id="%s">%s</li>', $params['id'], $this->SmartyTranslate(array('key' => $params['key']), $smarty));
+		$message = '';
+		if (isset($params['key']) && !empty($params['key']))
+		{
+			$message = $this->SmartyTranslate(array('key' => $params['key']), $smarty);
+		}
+		return sprintf('<li class="asyncValidation" id="%s">%s</li>', $params['id'], $message);
 	}
 
 	public function Textbox($params, &$smarty)

@@ -29,6 +29,13 @@ interface IAttributeService
 	 * @return IEntityAttributeList
 	 */
 	public function GetAttributes($category, $entityIds);
+
+	/**
+	 * @param $category int|CustomAttributeCategory
+	 * @param $attributeValues AttributeValue[]|array
+	 * @return AttributeServiceValidationResult
+	 */
+	public function Validate($category, $attributeValues);
 }
 
 class AttributeService implements IAttributeService
@@ -66,6 +73,74 @@ class AttributeService implements IAttributeService
 		Log::Debug('Took %d seconds to load custom attributes for category %s', $stopwatch->GetTotalSeconds(), $category);
 
 		return $attributeList;
+	}
+
+	public function Validate($category, $attributeValues)
+	{
+		$isValid = true;
+		$errors = array();
+
+		$resources = Resources::GetInstance();
+
+		$values = array();
+		foreach ($attributeValues as $av)
+		{
+			$values[$av->AttributeId] = $av->Value;
+		}
+
+		$attributes = $this->attributeRepository->GetByCategory($category);
+		foreach ($attributes as $attribute)
+		{
+			$value = $values[$attribute->Id()];
+			$label = $attribute->Label();
+
+			if (!$attribute->SatisfiesRequired($value))
+			{
+				$isValid = false;
+				$errors[] = $resources->GetString('CustomAttributeRequired', $label);
+			}
+
+			if (!$attribute->SatisfiesConstraint($value))
+			{
+				$isValid = false;
+				$errors[] = $resources->GetString('CustomAttributeInvalid', $label);
+			}
+		}
+
+		return new AttributeServiceValidationResult($isValid, $errors);
+	}
+}
+
+class AttributeServiceValidationResult
+{
+	/**
+	 * @var int
+	 */
+	private $isValid;
+
+	/**
+	 * @var array|string[]
+	 */
+	private $errors;
+
+	/**
+	 * @param $isValid int
+	 * @param $errors string[]|array
+	 */
+	public function __construct($isValid, $errors)
+	{
+		$this->isValid = $isValid;
+		$this->errors = $errors;
+	}
+
+	public function IsValid()
+	{
+		return $this->isValid;
+	}
+
+	public function Errors()
+	{
+		return $this->errors;
 	}
 }
 

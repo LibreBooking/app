@@ -346,14 +346,20 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
+		$attributes = $this->GetAttributeValues();
+
+		$resource->ChangeAttributes($attributes);
+		$this->resourceRepository->Update($resource);
+	}
+
+	private function GetAttributeValues()
+	{
 		$attributes = array();
 		foreach ($this->page->GetAttributes() as $attribute)
 		{
 			$attributes[] = new AttributeValue($attribute->Id, $attribute->Value);
 		}
-
-		$resource->ChangeAttributes($attributes);
-		$this->resourceRepository->Update($resource);
+		return $attributes;
 	}
 
 	private function SaveResourceImage($fileName)
@@ -363,6 +369,15 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resource->SetImage($fileName);
 
 		$this->resourceRepository->Update($resource);
+	}
+
+	protected function LoadValidators($action)
+	{
+		if ($action == ManageResourcesActions::ActionChangeAttributes)
+		{
+			$attributes = $this->GetAttributeValues();
+			$this->page->RegisterValidator('attributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes));
+		}
 	}
 }
 

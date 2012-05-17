@@ -113,7 +113,7 @@ interface IUpdateResourcePage
 }
 
 
-interface IManageResourcesPage extends IUpdateResourcePage
+interface IManageResourcesPage extends IUpdateResourcePage, IActionPage
 {
 	/**
 	 * @param BookableResource[] $resources

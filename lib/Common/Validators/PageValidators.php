@@ -54,7 +54,7 @@ class PageValidators
 
 			if (!$validator->IsValid())
 			{
-				$this->page->AddFailedValidation($id);
+				$this->page->AddFailedValidation($id, $validator);
 			}
 		}
 

@@ -30,5 +30,10 @@ abstract class ValidatorBase implements IValidator
 	{
 		return $this->isValid;
 	}
+
+	public function Messages()
+	{
+		return array();
+	}
 }
 ?>
