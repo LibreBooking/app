@@ -20,6 +20,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class LoginTime
 {
+	/**
+	 * @var null
+	 * Only for testing
+	 */
 	public static $Now = null;
 	
 	private static $_format = 'Y-m-d H:i:s';
@@ -28,8 +32,7 @@ class LoginTime
 	{
 		if (empty(self::$Now))
 		{
-			$date = new Date();
-			return $date->Format(self::$_format);
+			return Date::Now()->ToDatabase();
 		}
 		else 
 		{
