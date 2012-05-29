@@ -733,7 +733,8 @@ class Queries
 			timezone = @timezone,
 			allow_calendar_subscription = @allow_calendar_subscription,
 			public_id = @publicid,
-			language = @language
+			language = @language,
+			lastlogin = @lastlogin
 		WHERE
 			user_id = @userid';
 
