@@ -27,7 +27,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<li>
 					<label>{translate key='User'}</label>
 				{if $ShowUserDetails}
-					{$UserName}
+					{$ReservationUserName}
 				{else}
 					{translate key=Private}
 				{/if}
