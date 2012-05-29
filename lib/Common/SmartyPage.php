@@ -569,7 +569,7 @@ class SmartyPage extends Smarty
 
         $fullName = new FullName($params['first'], $params['last']);
 
-        return $fullName->__toString();
+        return htmlspecialchars($fullName->__toString());
     }
 
 	public function AddQueryString($params, &$smarty)
