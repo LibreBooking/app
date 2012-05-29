@@ -119,6 +119,11 @@ class AttributeRepository implements IAttributeRepository
 	{
 		$values = array();
 
+		if (!is_array($entityIds) && !empty($entityIds))
+		{
+			$entityIds = array($entityIds);
+		}
+
 		$reader = ServiceLocator::GetDatabase()->Query(new GetAttributeMultipleValuesCommand($category, $entityIds));
 
 		$attribute = null;

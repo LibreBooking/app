@@ -351,9 +351,25 @@ class SmartyPage extends Smarty
 		$validator = $this->Validators->Get($params['id']);
 		if (!$validator->IsValid())
 		{
-			return '<li>' . $this->SmartyTranslate(array('key' => $params['key']), $smarty) . '</li>';
+			if (isset($params['key']) && !empty($params['key']))
+			{
+				return '<li>' . $this->SmartyTranslate(array('key' => $params['key']), $smarty) . '</li>';
+			}
+
+			$messages = $validator->Messages();
+			if (!empty($messages))
+			{
+				$errors = '';
+				foreach ($messages as $message)
+				{
+					$errors .= sprintf('<li id="%s">%s</li>', $params['id'], $message);
+				}
+
+				return $errors;
+			}
+
 		}
-		return;
+		return '';
 	}
 
 	public function AsyncValidator($params, &$smarty)
@@ -463,11 +479,6 @@ class SmartyPage extends Smarty
 		return $string;
 	}
 
-	/**
-	 * @param array $params
-	 * @param Smarty $smarty
-	 * @return string
-	 */
 	public function CreatePagination($params, &$smarty)
 	{
 		/** @var PageInfo $pageInfo */
@@ -504,11 +515,6 @@ class SmartyPage extends Smarty
 		return $sb->ToString();
 	}
 
-	/**
-	 * @param array $params
-	 * @param Smarty $smarty
-	 * @return string
-	 */
 	public function CreatePageLink($params, &$smarty)
 	{
 		$url = $_SERVER['REQUEST_URI'];

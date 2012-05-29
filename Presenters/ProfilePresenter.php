@@ -22,11 +22,12 @@ require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 class ProfilePresenter
 {
 	/**
-	 * @var \IProfilePage
+	 * @var IProfilePage
 	 */
 	private $page;
 
@@ -35,10 +36,16 @@ class ProfilePresenter
 	 */
 	private $userRepository;
 
-	public function __construct(IProfilePage $page, IUserRepository $userRepository)
+	/**
+	 * @var IAttributeService
+	 */
+	private $attributeService;
+
+	public function __construct(IProfilePage $page, IUserRepository $userRepository, IAttributeService $attributeService)
 	{
 		$this->page = $page;
 		$this->userRepository = $userRepository;
+		$this->attributeService = $attributeService;
 	}
 
 	public function PageLoad()
@@ -70,6 +77,15 @@ class ProfilePresenter
 			$this->page->SetPhone($user->GetAttribute(UserAttribute::Phone));
 			$this->page->SetOrganization($user->GetAttribute(UserAttribute::Organization));
 			$this->page->SetPosition($user->GetAttribute(UserAttribute::Position));
+
+			$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
+			$attributeValues = array();
+			foreach ($attributes as $attribute)
+			{
+				$attributeValues[] = new Attribute($attribute, null);
+			}
+
+			$this->page->SetAttributes($attributeValues);
 		}
 
 		$this->PopulateTimezones();
@@ -141,6 +157,17 @@ class ProfilePresenter
 		$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
 		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail(), $userId));
 		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetLoginName(), $userId));
+		$this->page->RegisterValidator('additionalattributes', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
+	}
+
+	private function GetAttributeValues()
+	{
+		$attributes = array();
+		foreach ($this->page->GetAttributes() as $attribute)
+		{
+			$attributes[] = new AttributeValue($attribute->Id, $attribute->Value);
+		}
+		return $attributes;
 	}
 }
 

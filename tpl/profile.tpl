@@ -29,6 +29,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{validator id="emailformat" key="ValidEmailRequired"}
 			{validator id="uniqueemail" key="UniqueEmailRequired"}
 			{validator id="uniqueusername" key="UniqueUsernameRequired"}
+			{validator id="additionalattributes" key=""}
 	{/validation_group}
 
 <div id="registrationbox">
@@ -87,6 +88,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</label>
 	</p>
 
+	{if $Attributes|count > 0}
+	<div class="registrationHeader"><h3>{translate key=AdditionalAttributes}</h3></div>
+		{foreach from=$Attributes item=attribute}
+		<p class="customAttribute">
+			{control type="AttributeControl" attribute=$attribute}
+		</p>
+		{/foreach}
+	{/if}
 
 	<p class="regsubmit">
         <button type="submit" class="button update prompt" name="{Actions::SAVE}">

@@ -36,6 +36,13 @@ interface IAttributeService
 	 * @return AttributeServiceValidationResult
 	 */
 	public function Validate($category, $attributeValues);
+
+	/**
+	 * @abstract
+	 * @param $category int|CustomAttributeCategory
+	 * @return array|CustomAttribute[]
+	 */
+	public function GetByCategory($category);
 }
 
 class AttributeService implements IAttributeService
@@ -108,6 +115,15 @@ class AttributeService implements IAttributeService
 		}
 
 		return new AttributeServiceValidationResult($isValid, $errors);
+	}
+
+	/**
+	 * @param $category int|CustomAttributeCategory
+	 * @return array|CustomAttribute[]
+	 */
+	public function GetByCategory($category)
+	{
+		return $this->attributeRepository->GetByCategory($category);
 	}
 }
 

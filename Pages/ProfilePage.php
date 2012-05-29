@@ -65,6 +65,10 @@ interface IProfilePage extends IPage
 	public function SetOrganization($organization);
 
 	public function SetPosition($position);
+
+	public function SetAttributes($attributes);
+
+	public function GetAttributes();
 }
 
 class ProfilePage extends SecurePage implements IProfilePage
@@ -77,7 +81,7 @@ class ProfilePage extends SecurePage implements IProfilePage
 	public function __construct()
 	{
 	    parent::__construct('EditProfile');
-		$this->presenter = new ProfilePresenter($this, new UserRepository());
+		$this->presenter = new ProfilePresenter($this, new UserRepository(), new AttributeService(new AttributeRepository()));
 	}
 
 	public function PageLoad()
@@ -191,6 +195,16 @@ class ProfilePage extends SecurePage implements IProfilePage
 	public function SetPosition($position)
 	{
 		$this->Set('Position', $position);
+	}
+
+	public function SetAttributes($attributes)
+	{
+		$this->Set('Attributes', $attributes);
+	}
+
+	public function GetAttributes()
+	{
+		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
 	}
 }
 
