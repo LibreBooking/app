@@ -517,6 +517,22 @@ class QuotaTests extends TestBase
 		$this->assertFalse($exceeds);
 	}
 
+	public function testChecksWhenAtLeastOneResourceApplies()
+	{
+		$resourceId = 100;
+		$startDate = Date::Parse('2011-07-31 21:30', $this->tz);
+		$endDate = Date::Parse('2011-08-01 2:30', $this->tz);
+
+		$quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitCount(0), $resourceId, null, null);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate, 101, $resourceId);
+		$this->SearchReturns(array());
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertTrue($exceeds);
+	}
+
 	public function testDoesNotCheckWhenNoGroupsApply()
 	{
 		$g1 = new UserGroup(1, null);
@@ -534,6 +550,27 @@ class QuotaTests extends TestBase
 		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertFalse($exceeds);
+	}
+
+	public function testChecksWhenAtLeastOneGroupApplies()
+	{
+		$g1 = new UserGroup(1, null);
+		$g2 = new UserGroup(2, null);
+		$g4 = new UserGroup(4, null);
+		$this->user->SetGroups(array($g1,$g2,$g4));
+
+		$groupId = 4;
+		$startDate = Date::Parse('2011-07-31 21:30', $this->tz);
+		$endDate = Date::Parse('2011-08-01 2:30', $this->tz);
+
+		$quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitCount(0), null, $groupId, null);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate, 101, 102);
+		$this->SearchReturns(array());
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertTrue($exceeds);
 	}
 
 	public function testDoesNotCheckWhenNoSchedulesApply()

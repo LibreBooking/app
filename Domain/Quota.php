@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 
 interface IQuota
@@ -73,7 +73,7 @@ class Quota implements IQuota
 	 */
 	public function __construct($quotaId, $duration, $limit, $resourceId = null, $groupId = null, $scheduleId = null)
 	{
-	    $this->quotaId = $quotaId;
+		$this->quotaId = $quotaId;
 		$this->duration = $duration;
 		$this->limit = $limit;
 		$this->resourceId = empty($resourceId) ? null : $resourceId;
@@ -143,17 +143,36 @@ class Quota implements IQuota
 	{
 		$timezone = $schedule->GetTimezone();
 
-		foreach ($reservationSeries->AllResourceIds() as $resourceId)
+		if (!is_null($this->resourceId))
 		{
-			if (!$this->AppliesToResource($resourceId))
+			$appliesToResource = false;
+
+			foreach ($reservationSeries->AllResourceIds() as $resourceId)
+			{
+				if (!$appliesToResource && $this->AppliesToResource($resourceId))
+				{
+					$appliesToResource = true;
+				}
+			}
+
+			if (!$appliesToResource)
 			{
 				return false;
 			}
 		}
 
-		foreach ($user->Groups() as $group)
+		if (!is_null($this->groupId))
 		{
-			if (!$this->AppliesToGroup($group->GroupId))
+			$appliesToGroup = false;
+			foreach ($user->Groups() as $group)
+			{
+				if (!$appliesToGroup && $this->AppliesToGroup($group->GroupId))
+				{
+					$appliesToGroup = true;
+				}
+			}
+
+			if (!$appliesToGroup)
 			{
 				return false;
 			}
@@ -168,7 +187,7 @@ class Quota implements IQuota
 		{
 			return false;
 		}
-		
+
 		$dates = $this->duration->GetSearchDates($reservationSeries, $timezone);
 		$reservationsWithinRange = $reservationViewRepository->GetReservationList($dates->Start(), $dates->End(), $reservationSeries->UserId(), ReservationUserLevel::OWNER);
 
@@ -183,12 +202,12 @@ class Quota implements IQuota
 
 		return false;
 	}
-	
+
 	public function __toString()
 	{
 		return $this->quotaId . '';
 	}
-	
+
 	/**
 	 * @return IQuotaLimit
 	 */
@@ -275,7 +294,7 @@ class Quota implements IQuota
 	private function CheckAll($reservationsWithinRange, $series, $timezone)
 	{
 		$toBeSkipped = array();
-		
+
 		/** @var $instance Reservation */
 		foreach ($series->Instances() as $instance)
 		{
@@ -302,8 +321,9 @@ class Quota implements IQuota
 		foreach ($reservationsWithinRange as $reservation)
 		{
 			if (($series->ContainsResource($reservation->ResourceId) || $series->ScheduleId() == $reservation->ScheduleId) &&
-				!array_key_exists($reservation->ReferenceNumber, $toBeSkipped) &&
-				!$this->willBeDeleted($series, $reservation->ReservationId))
+					!array_key_exists($reservation->ReferenceNumber, $toBeSkipped) &&
+					!$this->willBeDeleted($series, $reservation->ReservationId)
+			)
 			{
 				$this->AddExisting($reservation, $timezone);
 			}
@@ -317,7 +337,7 @@ class Quota implements IQuota
 	 */
 	private function willBeDeleted($series, $reservationId)
 	{
-		if (method_exists($series , 'IsMarkedForDelete'))
+		if (method_exists($series, 'IsMarkedForDelete'))
 		{
 			return $series->IsMarkedForDelete($reservationId);
 		}
@@ -397,7 +417,7 @@ class QuotaSearchDates
 	 * @var \Date
 	 */
 	private $end;
-	
+
 	public function __construct(Date $start, Date $end)
 	{
 		$this->start = $start;
@@ -431,7 +451,7 @@ class QuotaDurationDay extends QuotaDuration implements IQuotaDuration
 	public function GetSearchDates(ReservationSeries $reservationSeries, $timezone)
 	{
 		$dates = $this->GetFirstAndLastReservationDates($reservationSeries);
-		
+
 		$startDate = $dates[0]->ToTimezone($timezone)->GetDate();
 		$endDate = $dates[1]->ToTimezone($timezone)->AddDays(1)->GetDate();
 
@@ -442,7 +462,7 @@ class QuotaDurationDay extends QuotaDuration implements IQuotaDuration
 	{
 		$start = $dateRange->GetBegin();
 		$end = $dateRange->GetEnd();
-		
+
 		$ranges = array();
 
 		if (!$start->DateEquals($end))
@@ -491,7 +511,7 @@ abstract class QuotaDuration
 	const Day = 'day';
 	const Week = 'week';
 	const Month = 'month';
-	
+
 	/**
 	 * @param ReservationSeries $reservationSeries
 	 * @return array|Date[]
@@ -502,7 +522,7 @@ abstract class QuotaDuration
 		$instances = $reservationSeries->Instances();
 		usort($instances, array('Reservation', 'Compare'));
 
-		return array($instances[0]->StartDate(), $instances[count($instances)-1]->EndDate());
+		return array($instances[0]->StartDate(), $instances[count($instances) - 1]->EndDate());
 	}
 }
 
@@ -516,7 +536,7 @@ class QuotaDurationWeek extends QuotaDuration implements IQuotaDuration
 	public function GetSearchDates(ReservationSeries $reservationSeries, $timezone)
 	{
 		$dates = $this->GetFirstAndLastReservationDates($reservationSeries);
-		
+
 		$startDate = $dates[0]->ToTimezone($timezone);
 		$daysFromWeekStart = $startDate->Weekday();
 		$startDate = $startDate->AddDays(-$daysFromWeekStart)->GetDate();
@@ -569,7 +589,7 @@ class QuotaDurationWeek extends QuotaDuration implements IQuotaDuration
 					{
 						$ranges[] = new DateRange($nextWeek, $end);
 					}
-					
+
 					$nextWeek = $thisEnd;
 				}
 			}
@@ -624,7 +644,7 @@ class QuotaDurationMonth extends QuotaDuration implements IQuotaDuration
 		$end = $minMax[1]->ToTimezone($timezone);
 
 		$searchStart = Date::Create($start->Year(), $start->Month(), 1, 0, 0, 0, $timezone);
-		$searchEnd = Date::Create($end->Year(), $end->Month()+1, 1, 0, 0, 0, $timezone);
+		$searchEnd = Date::Create($end->Year(), $end->Month() + 1, 1, 0, 0, 0, $timezone);
 
 		return new QuotaSearchDates($searchStart, $searchEnd);
 	}
@@ -636,7 +656,7 @@ class QuotaDurationMonth extends QuotaDuration implements IQuotaDuration
 	public function Split(DateRange $dateRange)
 	{
 		$ranges = array();
-		
+
 		$start = $dateRange->GetBegin();
 		$end = $dateRange->GetEnd();
 
@@ -683,7 +703,7 @@ class QuotaDurationMonth extends QuotaDuration implements IQuotaDuration
 	 */
 	private function SameMonth(Date $d1, Date $d2)
 	{
-		return ($d1->Month() == $d2->Month()) && ($d1->Year()== $d2->Year());
+		return ($d1->Month() == $d2->Month()) && ($d1->Year() == $d2->Year());
 	}
 
 	/**
@@ -748,21 +768,21 @@ class QuotaLimitCount implements IQuotaLimit
 	{
 		$this->totalAllowed = $totalAllowed;
 	}
-	
+
 	public function TryAdd($start, $end, $key)
 	{
 		if (array_key_exists($key, $this->aggregateCounts))
 		{
-			$this->aggregateCounts[$key] = $this->aggregateCounts[$key]+1;
-
-			if ($this->aggregateCounts[$key] > $this->totalAllowed)
-			{
-				throw new QuotaExceededException("Only {$this->totalAllowed} reservations are allowed for this duration");
-			}
+			$this->aggregateCounts[$key] = $this->aggregateCounts[$key] + 1;
 		}
 		else
 		{
 			$this->aggregateCounts[$key] = 1;
+		}
+
+		if ($this->aggregateCounts[$key] > $this->totalAllowed)
+		{
+			throw new QuotaExceededException("Only {$this->totalAllowed} reservations are allowed for this duration");
 		}
 	}
 
@@ -799,7 +819,7 @@ class QuotaLimitHours implements IQuotaLimit
 	 * @var decimal
 	 */
 	private $allowedHours;
-	
+
 	/**
 	 * @param decimal $allowedHours
 	 */
@@ -851,6 +871,7 @@ class QuotaLimitHours implements IQuotaLimit
 		return QuotaUnit::Hours;
 	}
 }
+
 class QuotaExceededException extends Exception
 {
 	/**
