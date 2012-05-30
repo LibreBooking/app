@@ -68,27 +68,31 @@ class UserRepositoryTests extends TestBase
         $loadEmailPreferencesCommand = new GetUserEmailPreferencesCommand($userId);
         $loadPermissionsCommand = new GetUserPermissionsCommand($userId);
         $loadGroupsCommand = new GetUserGroupsCommand($userId, null);
+		$attributesCommand = new GetAttributeValuesCommand($userId, CustomAttributeCategory::USER);
 
-        $userRow = $this->GetUserRow();
+        $userRow = $this->GetUserRow($userId);
         $emailPrefRows = $this->GetEmailPrefRows();
         $permissionsRows = $this->GetPermissionsRows();
         $groupsRows = $this->GetGroupsRows();
+		$attributeRows = $this->GetAttributeRows();
 
         $this->db->SetRow(0, array($userRow));
         $this->db->SetRow(1, $emailPrefRows);
         $this->db->SetRow(2, $permissionsRows);
         $this->db->SetRow(3, $groupsRows);
+		$this->db->SetRow(4, $attributeRows);
 
         $row = $userRow;
 
         $userRepository = new UserRepository();
         $user = $userRepository->LoadById($userId);
 
-        $this->assertEquals(4, count($this->db->_Commands));
+        $this->assertEquals(5, count($this->db->_Commands));
         $this->assertTrue($this->db->ContainsCommand($loadByIdCommand));
         $this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
         $this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
         $this->assertTrue($this->db->ContainsCommand($loadGroupsCommand));
+        $this->assertTrue($this->db->ContainsCommand($attributesCommand));
 
         $this->assertEquals($row[ColumnNames::FIRST_NAME], $user->FirstName());
         $this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
@@ -107,6 +111,8 @@ class UserRepositoryTests extends TestBase
         $this->assertEquals(2, count($groups));
         $this->assertTrue(in_array($group1, $groups));
         $this->assertTrue(in_array($group2, $groups));
+		$this->assertEquals('value', $user->GetAttributeValue(1));
+		$this->assertEquals('value2', $user->GetAttributeValue(2));
     }
 
     public function testLoadsUserByPublicId()
@@ -115,11 +121,13 @@ class UserRepositoryTests extends TestBase
         $emailPrefRows = $this->GetEmailPrefRows();
         $permissionsRows = $this->GetPermissionsRows();
         $groupsRows = $this->GetGroupsRows();
+		$attributeRows = $this->GetAttributeRows();
 
         $this->db->SetRow(0, array($userRow));
         $this->db->SetRow(1, $emailPrefRows);
         $this->db->SetRow(2, $permissionsRows);
         $this->db->SetRow(3, $groupsRows);
+		$this->db->SetRow(4, $attributeRows);
 
         $publicId = uniqid();
         $userRepository = new UserRepository();
@@ -127,7 +135,7 @@ class UserRepositoryTests extends TestBase
         $user = $userRepository->LoadByPublicId($publicId);
 
         $loadByIdCommand = new GetUserByPublicIdCommand($publicId);
-        $this->assertEquals(4, count($this->db->_Commands));
+        $this->assertEquals(5, count($this->db->_Commands));
         $this->assertTrue($this->db->ContainsCommand($loadByIdCommand));
 
         $this->assertNotNull($user);
@@ -142,12 +150,13 @@ class UserRepositoryTests extends TestBase
         $this->db->SetRow(1, $this->GetEmailPrefRows());
         $this->db->SetRow(2, $this->GetPermissionsRows());
         $this->db->SetRow(3, $this->GetGroupsRows());
+        $this->db->SetRow(4, $this->GetAttributeRows());
 
         $userRepository = new UserRepository();
         $user = $userRepository->LoadById($userId);
         $user = $userRepository->LoadById($userId); // 2nd call should load from cache
 
-        $this->assertEquals(4, count($this->db->_Commands));
+        $this->assertEquals(5, count($this->db->_Commands));
     }
 
     public function testCanLoadUserByUserName()
@@ -163,16 +172,18 @@ class UserRepositoryTests extends TestBase
         $emailPrefRows = $this->GetEmailPrefRows();
         $permissionsRows = $this->GetPermissionsRows();
         $groupsRows = $this->GetGroupsRows();
+		$attributeRows = $this->GetAttributeRows();
 
         $this->db->SetRow(0, array($userRow));
         $this->db->SetRow(1, $emailPrefRows);
         $this->db->SetRow(2, $permissionsRows);
         $this->db->SetRow(3, $groupsRows);
+        $this->db->SetRow(4, $attributeRows);
 
         $userRepository = new UserRepository();
         $user = $userRepository->LoadByUsername($userName);
 
-        $this->assertEquals(4, count($this->db->_Commands));
+        $this->assertEquals(5, count($this->db->_Commands));
         $this->assertTrue($this->db->ContainsCommand($loginCommand));
         $this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
         $this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
@@ -292,6 +303,36 @@ class UserRepositoryTests extends TestBase
         $updateAttributesCommand = new UpdateUserAttributesCommand($userId, $phone, $organization, $position);
         $this->assertTrue($this->db->ContainsCommand($updateAttributesCommand));
     }
+
+	public function testUpdatesCustomAttributes()
+	{
+		$userId = 11;
+		$unchanged = new AttributeValue(1, 'value');
+		$toChange = new AttributeValue(2, 'value');
+		$toAdd = new AttributeValue(3, 'value');
+
+		$user = new User();
+		$user->WithId($userId);
+		$user->WithAttribute($unchanged);
+		$user->WithAttribute(new AttributeValue(100, 'should be removed'));
+		$user->WithAttribute(new AttributeValue(2, 'new value'));
+
+		$attributes = array($unchanged, $toChange, $toAdd);
+		$user->ChangeCustomAttributes($attributes);
+
+		$repo = new UserRepository();
+  		$repo->Update($user);
+
+		$addNewCommand = new AddAttributeValueCommand($toAdd->AttributeId, $toAdd->Value, $userId, CustomAttributeCategory::USER);
+		$removeOldCommand = new RemoveAttributeValueCommand(100, $userId);
+		$removeUpdated = new RemoveAttributeValueCommand($toChange->AttributeId, $userId);
+		$addUpdated = new AddAttributeValueCommand($toChange->AttributeId, $toChange->Value, $userId, CustomAttributeCategory::USER);
+
+		$this->assertEquals($removeOldCommand, $this->db->_Commands[1]);
+		$this->assertEquals($removeUpdated, $this->db->_Commands[2], "need to remove before adding to make sure changed values are not immediately deleted");
+		$this->assertEquals($addUpdated, $this->db->_Commands[3]);
+		$this->assertEquals($addNewCommand, $this->db->_Commands[4]);
+	}
 
     public function testDeletesUserById()
     {
@@ -493,6 +534,14 @@ class UserRepositoryTests extends TestBase
             array(ColumnNames::GROUP_ID => $groupId2, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => $groupId1, ColumnNames::ROLE_LEVEL => RoleLevel::NONE),
         );
     }
+
+	private function GetAttributeRows()
+	{
+		$car = new CustomAttributeValueRow();
+				$car->With(1, 'value')
+					->With(2, 'value2');
+		return $car->Rows();
+	}
 }
 
 ?>

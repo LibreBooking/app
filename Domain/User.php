@@ -120,10 +120,10 @@ class User
 	 */
 	protected $groups = array();
 
-    /**
-     * @var array|UserGroup[]
-     */
-    protected $groupsICanAdminister = array();
+	/**
+	 * @var array|UserGroup[]
+	 */
+	protected $groupsICanAdminister = array();
 
 	/**
 	 * @return array|UserGroup[]
@@ -133,55 +133,55 @@ class User
 		return $this->groups;
 	}
 
-    private $isCalendarSubscriptionAllowed = false;
+	private $isCalendarSubscriptionAllowed = false;
 
-    /**
-     * @param bool $isAllowed
-     */
-    protected function SetIsCalendarSubscriptionAllowed($isAllowed)
-    {
-        $this->isCalendarSubscriptionAllowed = $isAllowed;
-    }
+	/**
+	 * @param bool $isAllowed
+	 */
+	protected function SetIsCalendarSubscriptionAllowed($isAllowed)
+	{
+		$this->isCalendarSubscriptionAllowed = $isAllowed;
+	}
 
-    /**
-     * @return bool
-     */
-    public function GetIsCalendarSubscriptionAllowed()
-    {
-        return $this->isCalendarSubscriptionAllowed;
-    }
+	/**
+	 * @return bool
+	 */
+	public function GetIsCalendarSubscriptionAllowed()
+	{
+		return $this->isCalendarSubscriptionAllowed;
+	}
 
-    private $publicId;
+	private $publicId;
 
-    /**
-     * @param string $publicId
-     */
-    protected function SetPublicId($publicId)
-    {
-        $this->publicId = $publicId;
-    }
+	/**
+	 * @param string $publicId
+	 */
+	protected function SetPublicId($publicId)
+	{
+		$this->publicId = $publicId;
+	}
 
-    /**
-     * @return string
-     */
-    public function GetPublicId()
-    {
-        return $this->publicId;
-    }
+	/**
+	 * @return string
+	 */
+	public function GetPublicId()
+	{
+		return $this->publicId;
+	}
 
-    public function EnableSubscription()
-    {
-        $this->SetIsCalendarSubscriptionAllowed(true);
-        if (empty($this->publicId))
-        {
-            $this->SetPublicId(uniqid());
-        }
-    }
+	public function EnableSubscription()
+	{
+		$this->SetIsCalendarSubscriptionAllowed(true);
+		if (empty($this->publicId))
+		{
+			$this->SetPublicId(uniqid());
+		}
+	}
 
-    public function DisableSubscription()
-    {
-        $this->SetIsCalendarSubscriptionAllowed(false);
-    }
+	public function DisableSubscription()
+	{
+		$this->SetIsCalendarSubscriptionAllowed(false);
+	}
 
 	public function Activate()
 	{
@@ -240,15 +240,15 @@ class User
 	 */
 	public function WithGroups($groups = array())
 	{
-        $adminGroupIds = array();
-        $groupsWithAdminId = array();
+		$adminGroupIds = array();
+		$groupsWithAdminId = array();
 
 		foreach ($groups as $group)
 		{
 			if ($group->IsGroupAdmin)
 			{
 				$this->isGroupAdmin = true;
-                $adminGroupIds[$group->GroupId] = true;
+				$adminGroupIds[$group->GroupId] = true;
 			}
 			if ($group->IsApplicationAdmin)
 			{
@@ -259,21 +259,21 @@ class User
 				$this->isResourceAdmin = true;
 			}
 
-            if (!empty($group->AdminGroupId))
-            {
-                $groupsWithAdminId[] = $group;
-            }
+			if (!empty($group->AdminGroupId))
+			{
+				$groupsWithAdminId[] = $group;
+			}
 		}
 
-        $this->groups = $groups;
+		$this->groups = $groups;
 
-        foreach ($groupsWithAdminId as $g)
-        {
-            if (array_key_exists($g->AdminGroupId, $adminGroupIds))
-            {
-                $this->groupsICanAdminister[] = $g;
-            }
-        }
+		foreach ($groupsWithAdminId as $g)
+		{
+			if (array_key_exists($g->AdminGroupId, $adminGroupIds))
+			{
+				$this->groupsICanAdminister[] = $g;
+			}
+		}
 	}
 
 	public function ChangePermissions($allowedResourceIds = array())
@@ -374,8 +374,8 @@ class User
 		$user->passwordSalt = $row[ColumnNames::SALT];
 		$user->homepageId = $row[ColumnNames::HOMEPAGE_ID];
 		$user->lastLogin = $row[ColumnNames::LAST_LOGIN];
-        $user->isCalendarSubscriptionAllowed = $row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION];
-        $user->publicId = $row[ColumnNames::PUBLIC_ID];
+		$user->isCalendarSubscriptionAllowed = $row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION];
+		$user->publicId = $row[ColumnNames::PUBLIC_ID];
 
 		$user->attributes[UserAttribute::Phone] = $row[ColumnNames::PHONE_NUMBER];
 		$user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
@@ -504,10 +504,10 @@ class User
 		return $this->isGroupAdmin;
 	}
 
-    /**
-     * @param User $user
-     * @return bool
-     */
+	/**
+	 * @param User $user
+	 * @return bool
+	 */
 	public function IsAdminFor(User $user)
 	{
 		if (!$this->isGroupAdmin)
@@ -538,27 +538,27 @@ class User
 		return false;
 	}
 
-    /**
-     * @param IResource $resource
-     * @return bool
-     */
-    public function IsResourceAdminFor(IResource $resource)
-    {
-       if (!$this->isResourceAdmin)
-       {
-           return false;
-       }
+	/**
+	 * @param IResource $resource
+	 * @return bool
+	 */
+	public function IsResourceAdminFor(IResource $resource)
+	{
+		if (!$this->isResourceAdmin)
+		{
+			return false;
+		}
 
-        foreach ($this->groups as $group)
-        {
-            if ($group->GroupId == $resource->GetAdminGroupId())
-            {
-                return true;
-            }
-        }
+		foreach ($this->groups as $group)
+		{
+			if ($group->GroupId == $resource->GetAdminGroupId())
+			{
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	/**
 	 * @param int|RoleLevel $roleLevel
@@ -591,24 +591,91 @@ class User
 		return new NullUser();
 	}
 
-    /**
-     * @return array|UserGroup[]
-     */
-    public function GetAdminGroups()
-    {
-        return $this->groupsICanAdminister;
-//        $adminGroups = array();
-//
-//        foreach ($this->Groups() as $group)
-//        {
-//            if ($group->IsGroupAdmin)
-//            {
-//                $adminGroups[] = $group;
-//            }
-//        }
-//
-//        return $adminGroups;
-    }
+	/**
+	 * @return array|UserGroup[]
+	 */
+	public function GetAdminGroups()
+	{
+		return $this->groupsICanAdminister;
+	}
+
+	/**
+	 * @param $attribute AttributeValue
+	 */
+	public function WithAttribute(AttributeValue $attribute)
+	{
+		$this->_attributeValues[$attribute->AttributeId] = $attribute;
+	}
+
+	/**
+	 * @var array|AttributeValue[]
+	 */
+	private $_attributeValues = array();
+
+	/**
+	 * @var array|AttributeValue[]
+	 */
+	private $_addedAttributeValues = array();
+
+	/**
+	 * @var array|AttributeValue[]
+	 */
+	private $_removedAttributeValues = array();
+
+	/**
+	 * @param $attributes AttributeValue[]|array
+	 */
+	public function ChangeCustomAttributes($attributes)
+	{
+		$diff = new ArrayDiff($this->_attributeValues, $attributes);
+
+		$added = $diff->GetAddedToArray1();
+		$removed = $diff->GetRemovedFromArray1();
+
+		/** @var $attribute AttributeValue */
+		foreach ($added as $attribute)
+		{
+			$this->_addedAttributeValues[] = $attribute;
+		}
+
+		/** @var $accessory AttributeValue */
+		foreach ($removed as $attribute)
+		{
+			$this->_removedAttributeValues[] = $attribute;
+		}
+
+		$this->_attributeValues = $attributes;
+	}
+
+	/**
+	 * @return array|AttributeValue[]
+	 */
+	public function GetAddedAttributes()
+	{
+		return $this->_addedAttributeValues;
+	}
+
+	/**
+	 * @return array|AttributeValue[]
+	 */
+	public function GetRemovedAttributes()
+	{
+		return $this->_removedAttributeValues;
+	}
+
+	/**
+	 * @param $customAttributeId
+	 * @return mixed
+	 */
+	public function GetAttributeValue($customAttributeId)
+	{
+		if (array_key_exists($customAttributeId, $this->_attributeValues))
+		{
+			return $this->_attributeValues[$customAttributeId]->Value;
+		}
+
+		return null;
+	}
 }
 
 class NullUser extends User

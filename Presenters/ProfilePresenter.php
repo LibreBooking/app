@@ -60,83 +60,44 @@ class ProfilePresenter extends ActionPresenter
 
 	public function PageLoad()
 	{
-//		/// TODO: Make this async
-//		if ($this->page->IsPostBack())
-//		{
-//			$this->LoadValidators();
-//			$this->UpdateProfile();
-//
-//			// reset after post back
-//			$this->page->SetTimezone($this->page->GetTimezone());
-//			$this->page->SetHomepage($this->page->GetHomepage());
-//		}
-//		else
-//		{
-			$userSession = ServiceLocator::GetServer()->GetUserSession();
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
 
-			Log::Debug('ProfilePresenter loading user %s', $userSession->UserId);
+		Log::Debug('ProfilePresenter loading user %s', $userSession->UserId);
 
-			$user = $this->userRepository->LoadById($userSession->UserId);
+		$user = $this->userRepository->LoadById($userSession->UserId);
 
-			$this->page->SetUsername($user->Username());
-			$this->page->SetFirstName($user->FirstName());
-			$this->page->SetLastName($user->LastName());
-			$this->page->SetEmail($user->EmailAddress());
-			$this->page->SetTimezone($user->Timezone());
-			$this->page->SetHomepage($user->Homepage());
+		$this->page->SetUsername($user->Username());
+		$this->page->SetFirstName($user->FirstName());
+		$this->page->SetLastName($user->LastName());
+		$this->page->SetEmail($user->EmailAddress());
+		$this->page->SetTimezone($user->Timezone());
+		$this->page->SetHomepage($user->Homepage());
 
-			$this->page->SetPhone($user->GetAttribute(UserAttribute::Phone));
-			$this->page->SetOrganization($user->GetAttribute(UserAttribute::Organization));
-			$this->page->SetPosition($user->GetAttribute(UserAttribute::Position));
+		$this->page->SetPhone($user->GetAttribute(UserAttribute::Phone));
+		$this->page->SetOrganization($user->GetAttribute(UserAttribute::Organization));
+		$this->page->SetPosition($user->GetAttribute(UserAttribute::Position));
 
-			$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
-			$attributeValues = array();
-			foreach ($attributes as $attribute)
-			{
-				$attributeValues[] = new Attribute($attribute, null);
-			}
+		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
+		$attributeValues = array();
+		foreach ($attributes as $attribute)
+		{
+			$attributeValues[] = new Attribute($attribute, $user->GetAttributeValue($attribute->Id()));
+		}
 
-			$this->page->SetAttributes($attributeValues);
-//		}
+		$this->page->SetAttributes($attributeValues);
 
 		$this->PopulateTimezones();
 		$this->PopulateHomepages();
 	}
 
-	private function PopulateTimezones()
-	{
-		$timezoneValues = array();
-		$timezoneOutput = array();
-
-		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
-		{
-			$timezoneValues[] = $timezone;
-			$timezoneOutput[] = $timezone;
-		}
-
-		$this->page->SetTimezones($timezoneValues, $timezoneOutput);
-	}
-
-	private function PopulateHomepages()
-	{
-		$homepageValues = array();
-		$homepageOutput = array();
-
-		$pages = Pages::GetAvailablePages();
-		foreach($pages as $pageid => $page)
-		{
-			$homepageValues[] = $pageid;
-			$homepageOutput[] = Resources::GetInstance()->GetString($page['name']);
-		}
-
-		$this->page->SetHomepages($homepageValues, $homepageOutput);
-	}
 
 	public function UpdateProfile()
 	{
 		if ($this->page->IsValid())
 		{
 			$userSession = ServiceLocator::GetServer()->GetUserSession();
+			Log::Debug('ProfilePresenter updating profile for user %s', $userSession->UserId);
+
 			$user = $this->userRepository->LoadById($userSession->UserId);
 
 			$user->ChangeName($this->page->GetFirstName(), $this->page->GetLastName());
@@ -145,6 +106,7 @@ class ProfilePresenter extends ActionPresenter
 			$user->ChangeDefaultHomePage($this->page->GetHomepage());
 			$user->ChangeTimezone($this->page->GetTimezone());
 			$user->ChangeAttributes($this->page->GetPhone(), $this->page->GetOrganization(), $this->page->GetPosition());
+			$user->ChangeCustomAttributes($this->GetAttributeValues());
 
 			$userSession->Email = $this->page->GetEmail();
 			$userSession->FirstName = $this->page->GetFirstName();
@@ -180,6 +142,36 @@ class ProfilePresenter extends ActionPresenter
 			$attributes[] = new AttributeValue($attribute->Id, $attribute->Value);
 		}
 		return $attributes;
+	}
+
+
+	private function PopulateTimezones()
+	{
+		$timezoneValues = array();
+		$timezoneOutput = array();
+
+		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
+		{
+			$timezoneValues[] = $timezone;
+			$timezoneOutput[] = $timezone;
+		}
+
+		$this->page->SetTimezones($timezoneValues, $timezoneOutput);
+	}
+
+	private function PopulateHomepages()
+	{
+		$homepageValues = array();
+		$homepageOutput = array();
+
+		$pages = Pages::GetAvailablePages();
+		foreach($pages as $pageid => $page)
+		{
+			$homepageValues[] = $pageid;
+			$homepageOutput[] = Resources::GetInstance()->GetString($page['name']);
+		}
+
+		$this->page->SetHomepages($homepageValues, $homepageOutput);
 	}
 }
 
