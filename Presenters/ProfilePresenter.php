@@ -23,8 +23,14 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
+require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
-class ProfilePresenter
+class ProfileActions
+{
+	const Update = 'update';
+}
+
+class ProfilePresenter extends ActionPresenter
 {
 	/**
 	 * @var IProfilePage
@@ -43,24 +49,29 @@ class ProfilePresenter
 
 	public function __construct(IProfilePage $page, IUserRepository $userRepository, IAttributeService $attributeService)
 	{
+		parent::__construct($page);
+
 		$this->page = $page;
 		$this->userRepository = $userRepository;
 		$this->attributeService = $attributeService;
+
+		$this->AddAction(ProfileActions::Update, 'UpdateProfile');
 	}
 
 	public function PageLoad()
 	{
-		if ($this->page->IsPostBack())
-		{
-			$this->LoadValidators();
-			$this->UpdateProfile();
-
-			// reset after post back
-			$this->page->SetTimezone($this->page->GetTimezone());
-			$this->page->SetHomepage($this->page->GetHomepage());
-		}
-		else
-		{
+//		/// TODO: Make this async
+//		if ($this->page->IsPostBack())
+//		{
+//			$this->LoadValidators();
+//			$this->UpdateProfile();
+//
+//			// reset after post back
+//			$this->page->SetTimezone($this->page->GetTimezone());
+//			$this->page->SetHomepage($this->page->GetHomepage());
+//		}
+//		else
+//		{
 			$userSession = ServiceLocator::GetServer()->GetUserSession();
 
 			Log::Debug('ProfilePresenter loading user %s', $userSession->UserId);
@@ -86,7 +97,7 @@ class ProfilePresenter
 			}
 
 			$this->page->SetAttributes($attributeValues);
-		}
+//		}
 
 		$this->PopulateTimezones();
 		$this->PopulateHomepages();
@@ -121,7 +132,7 @@ class ProfilePresenter
 		$this->page->SetHomepages($homepageValues, $homepageOutput);
 	}
 
-	private function UpdateProfile()
+	public function UpdateProfile()
 	{
 		if ($this->page->IsValid())
 		{
@@ -143,12 +154,10 @@ class ProfilePresenter
 			
 			$this->userRepository->Update($user);
 			ServiceLocator::GetServer()->SetUserSession($userSession);
-			
-			$this->page->SetProfileUpdated();
 		}
 	}
 
-	private function LoadValidators()
+	protected function LoadValidators($action)
 	{
 		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
 		$this->page->RegisterValidator('fname', new RequiredValidator($this->page->GetFirstName()));
@@ -160,6 +169,9 @@ class ProfilePresenter
 		$this->page->RegisterValidator('additionalattributes', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
 	}
 
+	/**
+	 * @return array|AttributeValue[]
+	 */
 	private function GetAttributeValues()
 	{
 		$attributes = array();

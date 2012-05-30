@@ -427,7 +427,8 @@ class SmartyPage extends Smarty
 		if ($type == 'password')
 		{
 			$textbox = new SmartyPasswordbox($params['name'], $id, $value, $attributes, $smarty);
-		} else
+		}
+		else
 		{
 			$textbox = new SmartyTextbox($params['name'], $id, $value, $attributes, $smarty);
 		}

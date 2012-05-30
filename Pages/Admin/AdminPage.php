@@ -46,26 +46,6 @@ class AdminPageDecorator extends ActionPage implements IActionPage
 		$this->page->PageLoad();
 	}
 
-	public function TakingAction()
-	{
-		return $this->page->TakingAction();
-	}
-
-	public function RequestingData()
-	{
-		return $this->page->RequestingData();
-	}
-
-	public function GetAction()
-	{
-		return $this->page->GetAction(QueryStringKeys::ACTION);
-	}
-
-	public function GetDataRequest()
-	{
-		return $this->page->GetDataRequest(QueryStringKeys::DATA_REQUEST);
-	}
-
 	public function IsValid()
 	{
 		return $this->page->IsValid();
@@ -94,22 +74,6 @@ abstract class AdminPage extends SecurePage implements IActionPage
 		{
 			$this->Redirect($this->GetResumeUrl());
 			die();
-		}
-	}
-
-	public function PageLoad()
-	{
-		if ($this->TakingAction())
-		{
-			$this->ProcessAction();
-		}
-		else if ($this->RequestingData())
-		{
-			$this->HandleDataRequest($this->GetDataRequest());
-		}
-		else
-		{
-			$this->HandlePageLoad();
 		}
 	}
 
@@ -159,18 +123,6 @@ abstract class AdminPage extends SecurePage implements IActionPage
 		$this->SetJson($errors);
 		return false;
 	}
-
-	protected function HandleDataRequest($dataRequest)
-	{
-		// hook for override
-	}
-
-	protected function HandlePageLoad()
-	{
-		// hook for override
-	}
-
-	public abstract function ProcessAction();
 }
 
 ?>

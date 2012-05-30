@@ -22,7 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/ProfilePresenter.php');
 
-interface IProfilePage extends IPage
+interface IProfilePage extends IPage, IActionPage
 {
 	public function SetFirstName($firstName);
 
@@ -39,8 +39,6 @@ interface IProfilePage extends IPage
 	public function SetTimezones($timezoneValues, $timezoneOutput);
 
 	public function SetHomepages($homepageValues, $homepageOutput);
-
-	public function SetProfileUpdated();
 
 	public function GetFirstName();
 
@@ -71,7 +69,7 @@ interface IProfilePage extends IPage
 	public function GetAttributes();
 }
 
-class ProfilePage extends SecurePage implements IProfilePage
+class ProfilePage extends ActionPage implements IProfilePage
 {
 	/**
 	 * @var \ProfilePresenter
@@ -84,7 +82,7 @@ class ProfilePage extends SecurePage implements IProfilePage
 		$this->presenter = new ProfilePresenter($this, new UserRepository(), new AttributeService(new AttributeRepository()));
 	}
 
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$this->presenter->PageLoad();
 		$this->Display('profile.tpl');
@@ -130,11 +128,6 @@ class ProfilePage extends SecurePage implements IProfilePage
 	public function SetUsername($username)
 	{
 		$this->Set('Username', $username);
-	}
-
-	public function SetProfileUpdated()
-	{
-		$this->Set('ProfileUpdated', true);
 	}
 
 	public function GetEmail()
@@ -205,6 +198,22 @@ class ProfilePage extends SecurePage implements IProfilePage
 	public function GetAttributes()
 	{
 		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+	}
+
+	/**
+	 * @return void
+	 */
+	public function ProcessAction()
+	{
+		$this->presenter->ProcessAction();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// TODO: Implement ProcessDataRequest() method.
 	}
 }
 

@@ -25,7 +25,12 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 
 					formElement.find('.indicator').hide();
 					formElement.find('button').show();
-					
+
+					if (formElement.has('.validationSummary'))
+					{
+						$('.validationSummary').hide();
+					}
+
 					if (responseHandler && HasResponseText(responseText))
 					{
 						responseHandler(responseText, form);
@@ -41,6 +46,11 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 							}
 							errorElement.show();
 						});
+
+						if (responseText.ErrorIds.length > 0)
+						{
+							$('.validationSummary').show();
+						}
 					}
 					else
 					{
@@ -53,6 +63,8 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 							window.location.reload();
 						}
 					}
+
+					formElement.trigger('onAfterSuccess');
 		        }
 			};
 			

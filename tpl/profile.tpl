@@ -16,24 +16,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl'}
+{include file='globalheader.tpl' cssFiles='scripts/css/colorbox.css'}
 
-{if $ProfileUpdated}
-	<div class="success">{translate key=YourProfileWasUpdated}</div>
-{/if}
+<div class="success" style="display:none" id="profileUpdatedMessage">{translate key=YourProfileWasUpdated}</div>
 
-	{validation_group class="error"}
-			{validator id="fname" key="FirstNameRequired"}
-			{validator id="lname" key="LastNameRequired"}
-			{validator id="username" key="UserNameRequired"}
-			{validator id="emailformat" key="ValidEmailRequired"}
-			{validator id="uniqueemail" key="UniqueEmailRequired"}
-			{validator id="uniqueusername" key="UniqueUsernameRequired"}
-			{validator id="additionalattributes" key=""}
-	{/validation_group}
+<div class="validationSummary error" id="validationErrors">
+	<ul>
+		{async_validator id="fname" key="FirstNameRequired"}
+		{async_validator id="lname" key="LastNameRequired"}
+		{async_validator id="username" key="UserNameRequired"}
+		{async_validator id="emailformat" key="ValidEmailRequired"}
+		{async_validator id="uniqueemail" key="UniqueEmailRequired"}
+		{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
+		{async_validator id="additionalattributes" key=""}
+	</ul>
+</div>
 
 <div id="registrationbox">
-<form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
+<form class="register" method="post" ajaxAction="{ProfileActions::Update}" id="frmRegister" action="{$smarty.server.SCRIPT_NAME}">
     <div class="registrationHeader"><h3>{translate key=Login} ({translate key=AllFieldsAreRequired})</h3></div>
 	<p>
 		<label class="reg">{translate key="Username"}<br />
@@ -98,11 +98,34 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 
 	<p class="regsubmit">
-        <button type="submit" class="button update prompt" name="{Actions::SAVE}">
+        <button type="button" class="button update" name="{Actions::SAVE}" id="btnUpdate">
 			<img src="img/tick-circle.png" />{translate key='Update'}
 	    </button>
 	</p>
 </form>
 </div>
 {setfocus key='FIRST_NAME'}
+
+{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.colorbox-min.js"></script>
+<script type="text/javascript" src="{$Path}scripts/profile.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function () {
+	var profilePage = new Profile();
+	profilePage.init();
+});
+
+</script>
+
+<div id="createDiv" style="display:none;text-align:center; top:15%;position:relative;">
+	<div id="creating">
+		<h3>{translate key=Working}...</h3>
+		{html_image src="reservation_submitting.gif"}
+	</div>
+</div>
+
 {include file='globalfooter.tpl'}

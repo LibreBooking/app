@@ -108,10 +108,8 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 							CustomAttributeTypes::SELECT_LIST => 'SelectList'
 						);
 
-				$this->Set('Types', $typeLookup);
+		$this->Set('Types', $typeLookup);
 		parent::PageLoad();
-
-
 	}
 
 	public function HandlePageLoad()

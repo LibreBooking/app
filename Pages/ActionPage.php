@@ -33,33 +33,80 @@ interface IActionPage extends IPage
 
 abstract class ActionPage extends Page implements IActionPage
 {
-	public function __construct($titleKey, $pageDepth)
+	public function __construct($titleKey, $pageDepth = 0)
 	{
 		parent::__construct($titleKey, $pageDepth);
 	}
 
+	public function PageLoad()
+	{
+		if ($this->TakingAction())
+		{
+			$this->ProcessAction();
+		}
+		else
+		{
+			if ($this->RequestingData())
+			{
+				$this->HandleDataRequest($this->GetDataRequest());
+			}
+			else
+			{
+				$this->HandlePageLoad();
+			}
+		}
+	}
+
+	protected function HandleDataRequest($dataRequest)
+	{
+		// hook for override
+	}
+
+	/**
+	 *
+	 */
+	protected function HandlePageLoad()
+	{
+		// hook for override
+	}
+
+	/**
+	 * @return bool
+	 */
 	public function TakingAction()
 	{
 		$action = $this->GetAction();
 		return !empty($action);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function RequestingData()
 	{
 		$dataRequest = $this->GetDataRequest();
 		return !empty($dataRequest);
 	}
 
+	/**
+	 * @return null|string
+	 */
 	public function GetAction()
 	{
 		return $this->GetQuerystring(QueryStringKeys::ACTION);
 	}
 
+	/**
+	 * @return null|string
+	 */
 	public function GetDataRequest()
 	{
 		return $this->GetQuerystring(QueryStringKeys::DATA_REQUEST);
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function IsValid()
 	{
 		if (parent::IsValid())
@@ -92,4 +139,5 @@ abstract class ActionPage extends Page implements IActionPage
 	 */
 	public abstract function ProcessDataRequest();
 }
+
 ?>

@@ -621,3 +621,7 @@ textarea.customAttribute {
 select.customAttribute {
 
 }
+
+.validationSummary {
+    display: none;
+}

@@ -66,8 +66,6 @@ function ScheduleManagement(opts)
 			
 			$(this).find('.makeDefaultButton').click(function(e) {
                 PerformAsyncAction($(this), getSubmitCallback(options.makeDefaultAction), $('.indicator'));
-//                elements.placeholderForm.submit();
-//				$(this).after($('.indicator'));
 			});
 
             $(this).find('.enableSubscription').click(function(e) {
@@ -115,7 +113,6 @@ function ScheduleManagement(opts)
 		ConfigureAdminForm(elements.settingsForm, getSubmitCallback(options.changeSettingsAction));
 		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction), null, handleLayoutUpdate);
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
-		//ConfigureAdminForm(elements.placeholderForm, getSubmitCallback(options.makeDefaultAction));
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
 	};
 
