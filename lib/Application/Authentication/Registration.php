@@ -19,76 +19,96 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 class Registration implements IRegistration
 {
-    private $_passwordEncryption;
+	/**
+	 * @var PasswordEncryption
+	 */
+	private $_passwordEncryption;
 
-    public function __construct($passwordEncryption = null)
-    {
-        $this->_passwordEncryption = $passwordEncryption;
+	/**
+	 * @var IUserRepository
+	 */
+	private $_userRepository;
 
-        if ($passwordEncryption == null)
-        {
-            $this->_passwordEncryption = new PasswordEncryption();
-        }
-    }
+	public function __construct($passwordEncryption = null, $userRepository = null)
+	{
+		$this->_passwordEncryption = $passwordEncryption;
+		$this->_userRepository = $userRepository;
 
-    public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
-                             $homepageId,
-                             $additionalFields = array())
-    {
-        $encryptedPassword = $this->_passwordEncryption->EncryptPassword($password);
+		if ($passwordEncryption == null)
+		{
+			$this->_passwordEncryption = new PasswordEncryption();
+		}
 
-        $attributes = new UserAttribute($additionalFields);
+		if ($userRepository == null)
+		{
+			$this->_userRepository = new UserRepository();
+		}
+	}
 
-        $registerCommand = new RegisterUserCommand($username, $email, $firstName, $lastName,
-            $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $timezone, $language, $homepageId,
-            $attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position),
-            AccountStatus::ACTIVE);
+	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
+							 $homepageId, $additionalFields = array(), $attributeValues = array())
+	{
+		$encryptedPassword = $this->_passwordEncryption->EncryptPassword($password);
 
-        $userId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);
-        $this->AutoAssignPermissions($userId);
-    }
+		$attributes = new UserAttribute($additionalFields);
+		$user = User::Create($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
+		$user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
+		$user->ChangeCustomAttributes($attributeValues);
 
-    public function UserExists($loginName, $emailAddress)
-    {
-        $exists = false;
-        $reader = ServiceLocator::GetDatabase()->Query(new CheckUserExistanceCommand($loginName, $emailAddress));
+		$userId = $this->_userRepository->Add($user);
+//
+//
+//		$registerCommand = new RegisterUserCommand($username, $email, $firstName, $lastName,
+//												   $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $timezone, $language, $homepageId,
+//												   $attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position),
+//												   AccountStatus::ACTIVE);
 
-        if ($row = $reader->GetRow())
-        {
-            $exists = true;
-        }
+//		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);
+		$this->AutoAssignPermissions($userId);
+	}
 
-        return $exists;
-    }
+	public function UserExists($loginName, $emailAddress)
+	{
+		$exists = false;
+		$reader = ServiceLocator::GetDatabase()->Query(new CheckUserExistanceCommand($loginName, $emailAddress));
 
-    public function Synchronize(AuthenticatedUser $user)
-    {
-        if ($this->UserExists($user->UserName(), $user->Email()))
-        {
-            $encryptedPassword = $this->_passwordEncryption->EncryptPassword($user->Password());
-            $command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $user->Phone(), $user->Organization(), $user->Title());
+		if ($row = $reader->GetRow())
+		{
+			$exists = true;
+		}
 
-            ServiceLocator::GetDatabase()->Execute($command);
-        }
-        else
-        {
-            $additionalFields = array('phone' => $user->Phone(), 'organization' => $user->Organization(), 'position' => $user->Title());
-            $this->Register($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $user->Password(),
-                            $user->TimezoneName(),
-                            $user->LanguageCode(),
-                            Pages::DEFAULT_HOMEPAGE_ID,
-                            $additionalFields);
-        }
-    }
+		return $exists;
+	}
 
-    private function AutoAssignPermissions($userId)
-    {
-        $autoAssignCommand = new AutoAssignPermissionsCommand($userId);
-        ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
-    }
+	public function Synchronize(AuthenticatedUser $user)
+	{
+		if ($this->UserExists($user->UserName(), $user->Email()))
+		{
+			$encryptedPassword = $this->_passwordEncryption->EncryptPassword($user->Password());
+			$command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $user->Phone(), $user->Organization(), $user->Title());
+
+			ServiceLocator::GetDatabase()->Execute($command);
+		}
+		else
+		{
+			$additionalFields = array('phone' => $user->Phone(), 'organization' => $user->Organization(), 'position' => $user->Title());
+			$this->Register($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $user->Password(),
+							$user->TimezoneName(),
+							$user->LanguageCode(),
+							Pages::DEFAULT_HOMEPAGE_ID,
+							$additionalFields);
+		}
+	}
+
+	private function AutoAssignPermissions($userId)
+	{
+		$autoAssignCommand = new AutoAssignPermissionsCommand($userId);
+		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
+	}
 }
 
 ?>

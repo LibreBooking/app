@@ -18,18 +18,18 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'Pages/ActionPage.php');
 require_once(ROOT_DIR . 'Presenters/RegistrationPresenter.php');
 require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-interface IRegistrationPage extends IPage
+interface IRegistrationPage extends IPage, IActionPage
 {
 	public function RegisterClicked();
 	
 	public function SetTimezones($timezoneValues, $timezoneOutput);
 	public function SetTimezone($timezone);
-	public function SetHomepages($hompeageValues, $homepageOutput);
+	public function SetHomepages($homepageValues, $homepageOutput);
 	public function SetHomepage($homepage);
 	public function SetLoginName($loginName);	
 	public function SetEmail($email);
@@ -54,9 +54,21 @@ interface IRegistrationPage extends IPage
 	public function GetPassword();
 	public function GetPasswordConfirm();
 	public function GetCaptcha();
+
+	/**
+	 * @abstract
+	 * @param $attributeValues array|Attribute[]
+	 */
+	public function SetAttributes($attributeValues);
+
+	/**
+	 * @abstract
+	 * @return AttributeFormElement[]
+	 */
+	public function GetAttributes();
 }
 
-class RegistrationPage extends Page implements IRegistrationPage
+class RegistrationPage extends ActionPage implements IRegistrationPage
 {
 	public function __construct()
 	{
@@ -65,7 +77,7 @@ class RegistrationPage extends Page implements IRegistrationPage
 		$this->_presenter = new RegistrationPresenter($this);			
 	}
 	
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
         $this->Set('EnableCaptcha', Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_ENABLE_CAPTCHA, new BooleanConverter()));
 		$this->_presenter->PageLoad();
@@ -209,5 +221,36 @@ class RegistrationPage extends Page implements IRegistrationPage
     {
         return $this->GetForm(FormKeys::CAPTCHA);
     }
+
+	/**
+	 * @return void
+	 */
+	public function ProcessAction()
+	{
+		$this->_presenter->ProcessAction();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// no-op
+	}
+
+	public function SetAttributes($attributeValues)
+	{
+		$this->Set('Attributes', $attributeValues);
+	}
+
+	public function Redirect($url)
+	{
+		$this->SetJson(array('url', $url));
+	}
+
+	public function GetAttributes()
+	{
+		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+	}
 }
 ?>

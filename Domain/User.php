@@ -384,7 +384,7 @@ class User
 		return $user;
 	}
 
-	public static function Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt)
+	public static function Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt, $homepageId = Pages::DEFAULT_HOMEPAGE_ID)
 	{
 		$user = new User();
 		$user->firstName = $firstName;
@@ -395,7 +395,7 @@ class User
 		$user->timezone = $timezone;
 		$user->encryptedPassword = $password;
 		$user->passwordSalt = $passwordSalt;
-		$user->homepageId = Pages::DEFAULT_HOMEPAGE_ID;
+		$user->homepageId = $homepageId;
 		return $user;
 	}
 
@@ -489,7 +489,7 @@ class User
 	 */
 	public function GetAttribute($attributeName)
 	{
-		if (key_exists($attributeName, $this->attributes))
+		if (array_key_exists($attributeName, $this->attributes))
 		{
 			return $this->attributes[$attributeName];
 		}

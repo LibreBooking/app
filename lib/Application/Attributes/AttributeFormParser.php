@@ -41,7 +41,7 @@ class AttributeFormParser
 	/**
 	 * @static
 	 * @param $attributes string|string[]|null The result of $this->GetForm(FormKeys::ATTRIBUTE_PREFIX)
-	 * @return array
+	 * @return array|AttributeFormElement[]
 	 */
 	public static function GetAttributes($attributes)
 	{

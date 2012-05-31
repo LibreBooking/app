@@ -16,16 +16,36 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 define('ROOT_DIR', '../../../');
-require_once(ROOT_DIR . 'lib/WebService/RestRequestProcessor.php');
-require_once(ROOT_DIR . 'lib/WebService/JsonRestServer.php');
-require_once(ROOT_DIR . 'WebServices/CaptchaWebService.php');
 
-$captchaWebService = new CaptchaWebService();
-$service = new RestRequestProcessor($captchaWebService, new JsonRestServer());
-$service->ProcessRequest();
+require_once(ROOT_DIR . 'lib/Common/namespace.php');
+
+try
+{
+	require_once(ROOT_DIR . 'lib/external/securimage/securimage.php');
+
+	$img = new securimage();
+
+	// configure the captcha display
+	$img->image_width = 280;
+	$img->image_height = 100;
+	$img->perturbation = 0.9; // high level of distortion
+	$img->code_length = rand(5, 6); // random code length
+	$img->image_bg_color = new Securimage_Color("#ffffff");
+	$img->num_lines = 12;
+	$img->noise_level = 5;
+	$img->text_color = new Securimage_Color("#000000");
+	$img->noise_color = $img->text_color;
+	$img->line_color = new Securimage_Color("#cccccc");
+
+	$img->show();
+}
+catch (Exception $ex)
+{
+	Log::Error('Error showing captcha image', $ex);
+}
 
 
 ?>

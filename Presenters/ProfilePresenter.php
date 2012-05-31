@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -90,33 +90,30 @@ class ProfilePresenter extends ActionPresenter
 		$this->PopulateHomepages();
 	}
 
-
 	public function UpdateProfile()
 	{
-		if ($this->page->IsValid())
-		{
-			$userSession = ServiceLocator::GetServer()->GetUserSession();
-			Log::Debug('ProfilePresenter updating profile for user %s', $userSession->UserId);
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
+		Log::Debug('ProfilePresenter updating profile for user %s', $userSession->UserId);
 
-			$user = $this->userRepository->LoadById($userSession->UserId);
+		$user = $this->userRepository->LoadById($userSession->UserId);
 
-			$user->ChangeName($this->page->GetFirstName(), $this->page->GetLastName());
-			$user->ChangeEmailAddress($this->page->GetEmail());
-			$user->ChangeUsername($this->page->GetLoginName());
-			$user->ChangeDefaultHomePage($this->page->GetHomepage());
-			$user->ChangeTimezone($this->page->GetTimezone());
-			$user->ChangeAttributes($this->page->GetPhone(), $this->page->GetOrganization(), $this->page->GetPosition());
-			$user->ChangeCustomAttributes($this->GetAttributeValues());
+		$user->ChangeName($this->page->GetFirstName(), $this->page->GetLastName());
+		$user->ChangeEmailAddress($this->page->GetEmail());
+		$user->ChangeUsername($this->page->GetLoginName());
+		$user->ChangeDefaultHomePage($this->page->GetHomepage());
+		$user->ChangeTimezone($this->page->GetTimezone());
+		$user->ChangeAttributes($this->page->GetPhone(), $this->page->GetOrganization(), $this->page->GetPosition());
+		$user->ChangeCustomAttributes($this->GetAttributeValues());
 
-			$userSession->Email = $this->page->GetEmail();
-			$userSession->FirstName = $this->page->GetFirstName();
-			$userSession->LastName = $this->page->GetLastName();
-			$userSession->HomepageId = $this->page->GetHomepage();
-			$userSession->Timezone = $this->page->GetTimezone();
-			
-			$this->userRepository->Update($user);
-			ServiceLocator::GetServer()->SetUserSession($userSession);
-		}
+		$userSession->Email = $this->page->GetEmail();
+		$userSession->FirstName = $this->page->GetFirstName();
+		$userSession->LastName = $this->page->GetLastName();
+		$userSession->HomepageId = $this->page->GetHomepage();
+		$userSession->Timezone = $this->page->GetTimezone();
+
+		$this->userRepository->Update($user);
+		ServiceLocator::GetServer()->SetUserSession($userSession);
+
 	}
 
 	protected function LoadValidators($action)
@@ -150,7 +147,7 @@ class ProfilePresenter extends ActionPresenter
 		$timezoneValues = array();
 		$timezoneOutput = array();
 
-		foreach($GLOBALS['APP_TIMEZONES'] as $timezone)
+		foreach ($GLOBALS['APP_TIMEZONES'] as $timezone)
 		{
 			$timezoneValues[] = $timezone;
 			$timezoneOutput[] = $timezone;
@@ -165,7 +162,7 @@ class ProfilePresenter extends ActionPresenter
 		$homepageOutput = array();
 
 		$pages = Pages::GetAvailablePages();
-		foreach($pages as $pageid => $page)
+		foreach ($pages as $pageid => $page)
 		{
 			$homepageValues[] = $pageid;
 			$homepageOutput[] = Resources::GetInstance()->GetString($page['name']);

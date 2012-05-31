@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/ProfilePresenter.php');
 
@@ -66,6 +65,10 @@ interface IProfilePage extends IPage, IActionPage
 
 	public function SetAttributes($attributes);
 
+	/**
+	 * @abstract
+	 * @return AttributeFormElement[]
+	 */
 	public function GetAttributes();
 }
 

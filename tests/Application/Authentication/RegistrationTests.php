@@ -32,23 +32,36 @@ class RegistrationTests extends TestBase
 	 */
 	private $fakeEncryption;
 
+	/**
+	 * @var IUserRepository
+	 */
+	private $userRepository;
+
 	private $login = 'testlogin';
 	private $email = 'test@test.com';
 	private $fname = 'First';
 	private $lname = 'Last';
-	private $additionalFields = array('phone' => '123.123.1234', 'organization' => '', 'position' => '');
+	private $phone = '123.123.1234';
+	private $organization = 'organization';
+	private $position = 'position';
+	private $additionalFields = array();
 	private $password = 'password';
-	private $confirm = 'password';
 	private $timezone = 'US/Eastern';
 	private $language = 'en_US';
 	private $homepageId = 1;
+	private $attributes = array();
 
 	public function setUp()
 	{
 		parent::setup();
 
+		$this->userRepository = $this->getMock('IUserRepository');
+
 		$this->fakeEncryption = new FakePasswordEncryption();
-		$this->registration = new Registration($this->fakeEncryption);
+		$this->registration = new Registration($this->fakeEncryption, $this->userRepository);
+
+		$this->additionalFields = array('phone' => $this->phone, 'organization' => $this->organization, 'position' => $this->position);
+		$this->attributes = array(new AttributeValue(1, 1));
 	}
 
 	public function tearDown()
@@ -59,34 +72,52 @@ class RegistrationTests extends TestBase
 
 	public function testRegistersUser()
 	{
-		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
+		$user = User::Create($this->fname,
+							 $this->lname,
+							 $this->email,
+							 $this->login,
+							 $this->language,
+							 $this->timezone,
+							 $this->fakeEncryption->_Encrypted,
+							 $this->fakeEncryption->_Salt,
+							 $this->homepageId);
 
-		$command = new RegisterUserCommand($this->login, $this->email, $this->fname, $this->lname, $this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->language, $this->homepageId, $this->additionalFields['phone'], $this->additionalFields['organization'], $this->additionalFields['position'], AccountStatus::ACTIVE);
+		$user->ChangeAttributes($this->phone, $this->organization, $this->position);
+		$user->ChangeCustomAttributes($this->attributes);
 
-		$this->assertEquals($command, $this->db->_Commands[0]);
+		$this->userRepository->expects($this->once())
+					->method('Add')
+					->with($this->equalTo($user));
+
+		$this->registration->Register(
+			$this->login,
+			$this->email,
+			$this->fname,
+			$this->lname,
+			$this->password,
+			$this->timezone,
+			$this->language,
+			$this->homepageId,
+			$this->additionalFields,
+			$this->attributes);
+
 		$this->assertTrue($this->fakeEncryption->_EncryptPasswordCalled);
 		$this->assertEquals($this->password, $this->fakeEncryption->_LastPassword);
 	}
 
-    public function testHandlesWhenAttributeDoesNotExist()
-    {
-        $this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId);
-
-        $command = new RegisterUserCommand($this->login, $this->email, $this->fname, $this->lname, $this->fakeEncryption->_Encrypted, $this->fakeEncryption->_Salt, $this->timezone, $this->language, $this->homepageId, null, null, null, AccountStatus::ACTIVE);
-
-        $this->assertEquals($command, $this->db->_Commands[0]);
-    }
-
 	public function testAutoAssignsAllResourcesForThisUser()
 	{
 		$expectedUserId = 100;
+		$this->userRepository->expects($this->once())
+							->method('Add')
+							->with($this->anything())
+							->will($this->returnValue($expectedUserId));
 
-		$this->db->_ExpectedInsertId = $expectedUserId;
 		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
 
 		$command = new AutoAssignPermissionsCommand($expectedUserId);
 
-		$this->assertEquals($command, $this->db->_Commands[1]);
+		$this->assertEquals($command, $this->db->_Commands[0]);
 	}
 
 	public function testSynchronizeUpdatesExistingUser()
@@ -127,11 +158,24 @@ class RegistrationTests extends TestBase
 		$salt = $this->fakeEncryption->_Salt;
 		
 		$user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', $langCode, $timezone, $phone, $inst, $title);
-		$expectedCommand = new RegisterUserCommand($username, $email, $fname, $lname, $encryptedPassword, $salt, $timezone, $langCode, Pages::DEFAULT_HOMEPAGE_ID, $phone, $inst, $title, AccountStatus::ACTIVE);
+
+		$expectedUser = User::Create($fname,
+							 $lname,
+							 $email,
+							 $username,
+							 $langCode,
+							 $timezone,
+							 $encryptedPassword,
+							 $salt,
+							 Pages::DEFAULT_HOMEPAGE_ID);
+
+		$expectedUser->ChangeAttributes($phone, $inst, $title);
+
+		$this->userRepository->expects($this->once())
+					->method('Add')
+					->with($this->equalTo($expectedUser));
 
 		$this->registration->Synchronize($user);
-
-		$this->assertTrue($this->db->ContainsCommand($expectedCommand), 'Expected  ' . $expectedCommand);
 	}
 }
 

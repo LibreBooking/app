@@ -139,6 +139,11 @@ div.error li {
     color: red;
 }
 
+.error .asyncValidation
+{
+    color: black;
+}
+
 #wrapper {
 	min-height: 100%;
 	height: auto !important;

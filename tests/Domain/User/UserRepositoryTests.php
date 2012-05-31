@@ -384,8 +384,12 @@ class UserRepositoryTests extends TestBase
         $organization = 'o';
         $position = 'po';
 
+		$attr1 = new AttributeValue(3, 'value');
+		$attr2 = new AttributeValue(4, 'value');
+
         $user = User::Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt);
         $user->ChangeAttributes($phone, $organization, $position);
+		$user->ChangeCustomAttributes(array($attr1, $attr2));
 
         $this->db->_ExpectedInsertId = $expectedId;
         $repo = new UserRepository();
@@ -394,7 +398,12 @@ class UserRepositoryTests extends TestBase
         $command = new RegisterUserCommand($userName, $emailAddress, $firstName, $lastName, $password, $passwordSalt,
             $timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE);
 
+		$addAttr1Command = new AddAttributeValueCommand($attr1->AttributeId, $attr1->Value, $expectedId, CustomAttributeCategory::USER);
+		$addAttr2Command = new AddAttributeValueCommand($attr2->AttributeId, $attr2->Value, $expectedId, CustomAttributeCategory::USER);
+
         $this->assertTrue($this->db->ContainsCommand($command));
+        $this->assertTrue($this->db->ContainsCommand($addAttr1Command));
+        $this->assertTrue($this->db->ContainsCommand($addAttr2Command));
 
         $this->assertEquals($expectedId, $newId);
         $this->assertEquals($expectedId, $user->Id());

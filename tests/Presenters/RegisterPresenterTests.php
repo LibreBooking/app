@@ -49,6 +49,11 @@ class RegisterPresenterTests extends TestBase
      * @var ICaptchaService
      */
     private $captcha;
+
+	/**
+	 * @var IAttributeService
+	 */
+	private $attributeService;
 	
 	private $login = 'testlogin';
 	private $email = 'test@test.com';
@@ -68,8 +73,9 @@ class RegisterPresenterTests extends TestBase
 		$this->fakeReg = new FakeRegistration();
         $this->fakeAuth = new FakeAuth();
         $this->captcha = $this->getMock('ICaptchaService');
-		
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth, $this->captcha);
+        $this->attributeService = $this->getMock('IAttributeService');
+
+		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth, $this->captcha, $this->attributeService);
 	}
 	
 	public function teardown()
@@ -87,6 +93,9 @@ class RegisterPresenterTests extends TestBase
 		
 		$this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, $expectedTimezone);
 		$this->page->_IsPostBack = false;
+
+		$this->ExpectAttributeServiceCalled();
+
 		$this->presenter->PageLoad();
 		
 		$this->assertEquals($this->page->_Timezone, $expectedTimezone);
@@ -97,6 +106,9 @@ class RegisterPresenterTests extends TestBase
 		$expectedTimezone = "America/New_York";
 		$this->page->SetTimezone($expectedTimezone);
 		$this->page->_IsPostBack = true;
+
+		$this->ExpectAttributeServiceCalled();
+
 		$this->presenter->PageLoad();
 		
 		$this->assertEquals($this->page->_Timezone, $expectedTimezone);
@@ -105,6 +117,9 @@ class RegisterPresenterTests extends TestBase
 	public function testLoadsAllTimezones()
 	{
 		$numberOfTimezones = count($GLOBALS[GlobalKeys::TIMEZONES]);
+
+		$this->ExpectAttributeServiceCalled();
+
 		$this->presenter->PageLoad();
 		
 		$this->assertEquals($numberOfTimezones, count($this->page->_TimezoneValues));
@@ -115,6 +130,9 @@ class RegisterPresenterTests extends TestBase
 	{
 		$pages = Pages::GetAvailablePages();
 		$numberOfPages = count($pages);
+
+		$this->ExpectAttributeServiceCalled();
+
 		$this->presenter->PageLoad();
 		
 		$this->assertEquals($numberOfPages, count($this->page->_HomepageValues));
@@ -128,6 +146,9 @@ class RegisterPresenterTests extends TestBase
 		$expectedHomepage = 1;
 		
 		$this->page->_IsPostBack = false;
+
+		$this->ExpectAttributeServiceCalled();
+
 		$this->presenter->PageLoad();
 		
 		$this->assertEquals($this->page->_Homepage, $expectedHomepage);
@@ -138,6 +159,9 @@ class RegisterPresenterTests extends TestBase
 		$expectedHomepage = 2;
 		$this->page->SetHomepage($expectedHomepage);
 		$this->page->_IsPostBack = true;
+
+		$this->ExpectAttributeServiceCalled();
+
 		$this->presenter->PageLoad();
 		
 		$this->assertEquals($this->page->_Homepage, $expectedHomepage);
@@ -151,13 +175,17 @@ class RegisterPresenterTests extends TestBase
             ->method('GetImageUrl')
             ->will($this->returnValue($url));
 
+		$this->ExpectAttributeServiceCalled();
+
         $this->presenter->PageLoad();
 
         $this->assertEquals($url, $this->page->_CaptchaUrl);
     }
 	
 	public function testPresenterRegistersIfAllFieldsAreValid()
-	{		
+	{
+		$pattern = '/^[^\s]{6,}$/i';
+		$this->fakeConfig->SetKey(ConfigKeys::PASSWORD_PATTERN, '/^[^\s]{6,}$/i');
 		$this->LoadPageValues();
 		
 		$additionalFields = array(
@@ -166,10 +194,9 @@ class RegisterPresenterTests extends TestBase
 					'position' => ''
 					);
 		
-		$this->page->_IsValid = true;
+		$this->page->_Action = RegisterActions::Register;
 		
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
-		$this->presenter->Register();
+		$this->presenter->ProcessAction();
 		
 		$this->assertTrue($this->fakeReg->_RegisterCalled);
 		$this->assertEquals($this->login, $this->fakeReg->_Login);
@@ -179,23 +206,13 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($this->password, $this->fakeReg->_Password);
 		$this->assertEquals($this->timezone, $this->fakeReg->_Timezone);
 		$this->assertEquals(intval($this->homepageId), $this->fakeReg->_HomepageId);
-		
+		$this->assertEquals($this->page->_AttributeValues, $this->fakeReg->_AttributeValues);
+
 		$this->assertEquals($additionalFields['phone'], $this->fakeReg->_AdditionalFields['phone']);
-	}
-	
-	public function testRegistersAllValidators()
-	{
-		$username = 'un';
-		$pattern = '/^[^\s]{6,}$/i';
-		$this->fakeConfig->SetKey(ConfigKeys::PASSWORD_PATTERN, '/^[^\s]{6,}$/i');
-		
-		$this->LoadPageValues();
-		$this->page->_IsPostBack = true;
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
-		
+
 		$v = $this->page->_Validators;
-		
-		$this->assertEquals(9, count($v));
+
+		$this->assertEquals(10, count($v));
 		$this->assertEquals($v['fname'], new RequiredValidator($this->fname));
 		$this->assertEquals($v['lname'], new RequiredValidator($this->lname));
 		$this->assertEquals($v['username'], new RequiredValidator($this->login));
@@ -204,13 +221,15 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($v['emailformat'], new EmailValidator($this->email));
 		$this->assertEquals($v['uniqueemail'], new UniqueEmailValidator($this->email));
 		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator($this->login));
+		$this->assertEquals($v['additionalattributes'], new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->page->_AttributeValues));
 	}
     
     public function testDoesNotRegisterIfPageIsNotValid()
     {   
         $this->page->_IsValid = false;
-        $this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
-        $this->presenter->Register();
+		$this->page->_Action = RegisterActions::Register;
+
+        $this->presenter->ProcessAction();
         
         $this->assertFalse($this->fakeReg->_RegisterCalled);
         $this->assertFalse($this->fakeAuth->_LoginCalled);      
@@ -223,7 +242,6 @@ class RegisterPresenterTests extends TestBase
 		$this->page->_Email = $this->email;
 		$this->page->_Homepage = 2;
 		
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
 		$this->presenter->Register();
 		
 		$this->assertTrue($this->fakeReg->_RegisterCalled);
@@ -243,7 +261,27 @@ class RegisterPresenterTests extends TestBase
 		
 		$this->assertEquals(Pages::LOGIN, $this->page->_RedirectDestination);
 	}
-	
+
+	public function testLoadsCustomAttributes()
+	{
+		$attributes = array(new FakeCustomAttribute(1), new FakeCustomAttribute(2));
+
+		$this->ExpectAttributeServiceCalled($attributes);
+
+		$this->presenter->PageLoad();
+
+		$expectedAttributes = array(new Attribute($attributes[0]), new Attribute($attributes[1]));
+		$this->assertEquals($expectedAttributes, $this->page->_Attributes);
+	}
+
+	private function ExpectAttributeServiceCalled($attributes = array())
+	{
+		$this->attributeService->expects($this->once())
+				->method('GetByCategory')
+				->with($this->equalTo(CustomAttributeCategory::USER))
+				->will($this->returnValue($attributes));
+	}
+
 	private function LoadPageValues()
 	{
 		$this->page->SetLoginName($this->login);
@@ -275,7 +313,10 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	public $_PasswordConfirm;
 	public $_UseLoginName;
     public $_CaptchaUrl;
-	
+	public $_Action;
+	public $_Attributes = array();
+	public $_AttributeValues = array();
+
 	public function RegisterClicked()
 	{
 		return false;	
@@ -297,9 +338,9 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 		$this->_TimezoneOutput = $timezoneOutput;
 	}
 	
-	public function SetHomepages($hompeageValues, $homepageOutput)
+	public function SetHomepages($homepageValues, $homepageOutput)
 	{
-		$this->_HomepageValues = $hompeageValues;
+		$this->_HomepageValues = $homepageValues;
 		$this->_HomepageOutput = $homepageOutput;
 	}
 	
@@ -427,5 +468,38 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
     {
         // TODO: Implement GetCaptcha() method.
     }
+
+	public function TakingAction()
+	{
+		return !empty($this->_Action);
+	}
+
+	public function GetAction()
+	{
+		return $this->_Action;
+	}
+
+	public function RequestingData()
+	{
+		// TODO: Implement RequestingData() method.
+	}
+
+	public function GetDataRequest()
+	{
+		// TODO: Implement GetDataRequest() method.
+	}
+
+	public function SetAttributes($attributeValues)
+	{
+		$this->_Attributes = $attributeValues;
+	}
+
+	/**
+	 * @return array|AttributeValue[]
+	 */
+	public function GetAttributes()
+	{
+		return $this->_AttributeValues;
+	}
 }
 ?>

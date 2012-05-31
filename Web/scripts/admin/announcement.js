@@ -9,7 +9,7 @@ function AnnouncementManagement(opts) {
 		deleteDialog: $('#deleteDialog'),
 
 		addForm: $('#addForm'),
-		editForm: $('#editForm'),
+		profileForm: $('#editForm'),
 		deleteForm: $('#deleteForm'),
 
         editText: $('#editText'),
@@ -47,7 +47,7 @@ function AnnouncementManagement(opts) {
 
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add));
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAnnouncement));
-		ConfigureAdminForm(elements.editForm, getSubmitCallback(options.actions.edit));
+		ConfigureAdminForm(elements.profileForm, getSubmitCallback(options.actions.edit));
 	};
 
 	var getSubmitCallback = function(action) {

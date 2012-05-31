@@ -16,193 +16,235 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
+require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
-class RegistrationPresenter
+class RegisterActions
 {
-    /**
-     * @var IRegistrationPage
-     */
-    private $page;
+	const Register = 'register';
+}
 
-    /**
-     * @var IRegistration
-     */
-    private $registration;
+class RegistrationPresenter extends ActionPresenter
+{
+	/**
+	 * @var IRegistrationPage
+	 */
+	private $page;
 
-    /**
-     * @var IAuthentication
-     */
-    private $auth;
+	/**
+	 * @var IRegistration
+	 */
+	private $registration;
 
-    /**
-     * @var ICaptchaService
-     */
-    private $captchaService;
+	/**
+	 * @var IAuthentication
+	 */
+	private $auth;
 
-    /**
-     * @param IRegistrationPage $page
-     * @param IRegistration|null $registration
-     * @param IAuthentication|null $authentication
-     * @param ICaptchaService|null $captchaService
-     */
-    public function __construct(IRegistrationPage $page, $registration = null, $authentication = null, $captchaService = null)
-    {
-        $this->page = $page;
-        $this->SetRegistration($registration);
-        $this->SetAuthentication($authentication);
-        $this->SetCaptchaService($captchaService);
+	/**
+	 * @var ICaptchaService
+	 */
+	private $captchaService;
 
-        if ($page->IsPostBack())
-        {
-            $this->LoadValidators();
-        }
-    }
+	/**
+	 * @var IAttributeService
+	 */
+	private $attributeService;
 
-    private function SetRegistration($registration)
-    {
-        if (is_null($registration))
-        {
-            $this->registration = new Registration();
-        }
-        else
-        {
-            $this->registration = $registration;
-        }
-    }
+	/**
+	 * @param IRegistrationPage $page
+	 * @param IRegistration|null $registration
+	 * @param IAuthentication|null $authentication
+	 * @param ICaptchaService|null $captchaService
+	 * @param IAttributeService|null $attributeService
+	 */
+	public function __construct(IRegistrationPage $page, $registration = null, $authentication = null, $captchaService = null, $attributeService = null)
+	{
+		parent::__construct($page);
 
-    private function SetAuthentication($authorization)
-    {
-        if (is_null($authorization))
-        {
-            $this->auth = PluginManager::Instance()->LoadAuthentication();
-        }
-        else
-        {
-            $this->auth = $authorization;
-        }
-    }
+		$this->page = $page;
+		$this->SetRegistration($registration);
+		$this->SetAuthentication($authentication);
+		$this->SetCaptchaService($captchaService);
+		$this->SetAttributeService($attributeService);
 
-    private function SetCaptchaService($captchaService)
-    {
-        if (is_null($captchaService))
-        {
-            $this->captchaService = CaptchaService::Create(ServiceLocator::GetServer()->GetRemoteAddress());
-        }
-        else
-        {
-            $this->captchaService = $captchaService;
-        }
-    }
+		$this->AddAction(RegisterActions::Register, 'Register');
+	}
 
-    public function PageLoad()
-    {
-        $this->BounceIfNotAllowingRegistration();
+	private function SetRegistration($registration)
+	{
+		if (is_null($registration))
+		{
+			$this->registration = new Registration();
+		}
+		else
+		{
+			$this->registration = $registration;
+		}
+	}
 
-        if ($this->page->RegisterClicked())
-        {
-            $this->Register();
-        }
+	private function SetAuthentication($authorization)
+	{
+		if (is_null($authorization))
+		{
+			$this->auth = PluginManager::Instance()->LoadAuthentication();
+		}
+		else
+		{
+			$this->auth = $authorization;
+		}
+	}
 
-        $this->page->SetCaptchaImageUrl($this->captchaService->GetImageUrl());
-        $this->PopulateTimezones();
-        $this->PopulateHomepages();
-    }
+	private function SetCaptchaService($captchaService)
+	{
+		if (is_null($captchaService))
+		{
+			$this->captchaService = CaptchaService::Create();
+		}
+		else
+		{
+			$this->captchaService = $captchaService;
+		}
+	}
 
-    public function Register()
-    {
-        if ($this->page->IsValid())
-        {
-            $additionalFields = array('phone' => $this->page->GetPhone(),
-                'organization' => $this->page->GetOrganization(),
-                'position' => $this->page->GetPosition());
+	private function SetAttributeService($attributeService)
+	{
+		if (is_null($attributeService))
+		{
+			$this->attributeService = new AttributeService(new AttributeRepository());
+		}
+		else
+		{
+			$this->attributeService = $attributeService;
+		}
+	}
 
-			$language = Resources::GetInstance()->CurrentLanguage;
-			$this->registration->Register(
-                $this->page->GetLoginName(),
-                $this->page->GetEmail(),
-                $this->page->GetFirstName(),
-                $this->page->GetLastName(),
-                $this->page->GetPassword(),
-                $this->page->GetTimezone(),
-				$language,
-                intval($this->page->GetHomepage()),
-                $additionalFields);
+	public function PageLoad()
+	{
+		$this->BounceIfNotAllowingRegistration();
 
-			$context = new WebLoginContext(ServiceLocator::GetServer(), new LoginData(false, $language));
-            $this->auth->Login($this->page->GetEmail(), $context);
-            $this->page->Redirect(Pages::UrlFromId($this->page->GetHomepage()));
-        }
-    }
+		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
+		$attributeValues = array();
+		foreach ($attributes as $attribute)
+		{
+			$attributeValues[] = new Attribute($attribute, null);
+		}
 
-    private function BounceIfNotAllowingRegistration()
-    {
-        if (!Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter()))
-        {
-            $this->page->Redirect(Pages::LOGIN);
-        }
-    }
+		$this->page->SetAttributes($attributeValues);
 
-    private function PopulateTimezones()
-    {
-        $timezoneValues = array();
-        $timezoneOutput = array();
+		$this->page->SetCaptchaImageUrl($this->captchaService->GetImageUrl());
+		$this->PopulateTimezones();
+		$this->PopulateHomepages();
+	}
 
-        foreach ($GLOBALS['APP_TIMEZONES'] as $timezone)
-        {
-            $timezoneValues[] = $timezone;
-            $timezoneOutput[] = $timezone;
-        }
+	public function Register()
+	{
 
-        $this->page->SetTimezones($timezoneValues, $timezoneOutput);
+		$additionalFields = array('phone' => $this->page->GetPhone(),
+								  'organization' => $this->page->GetOrganization(),
+								  'position' => $this->page->GetPosition());
 
-        $timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
-        if ($this->page->IsPostBack())
-        {
-            $timezone = $this->page->GetTimezone();
-        }
+		$language = Resources::GetInstance()->CurrentLanguage;
+		$this->registration->Register(
+			$this->page->GetLoginName(),
+			$this->page->GetEmail(),
+			$this->page->GetFirstName(),
+			$this->page->GetLastName(),
+			$this->page->GetPassword(),
+			$this->page->GetTimezone(),
+			$language,
+			intval($this->page->GetHomepage()),
+			$additionalFields);
 
-        $this->page->SetTimezone($timezone);
-    }
+		$context = new WebLoginContext(ServiceLocator::GetServer(), new LoginData(false, $language));
+		$this->auth->Login($this->page->GetEmail(), $context);
 
-    private function PopulateHomepages()
-    {
-        $homepageValues = array();
-        $homepageOutput = array();
+		$this->page->Redirect(Pages::UrlFromId($this->page->GetHomepage()));
+	}
 
-        $pages = Pages::GetAvailablePages();
-        foreach ($pages as $pageid => $page)
-        {
-            $homepageValues[] = $pageid;
-            $homepageOutput[] = Resources::GetInstance()->GetString($page['name']);
-        }
+	/**
+	 * @return array|AttributeValue[]
+	 */
+	private function GetAttributeValues()
+	{
+		$attributes = array();
+		foreach ($this->page->GetAttributes() as $attribute)
+		{
+			$attributes[] = new AttributeValue($attribute->Id, $attribute->Value);
+		}
+		return $attributes;
+	}
 
-        $this->page->SetHomepages($homepageValues, $homepageOutput);
+	private function BounceIfNotAllowingRegistration()
+	{
+		if (!Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter()))
+		{
+			$this->page->Redirect(Pages::LOGIN);
+		}
+	}
 
-        $homepageId = 1;
-        if ($this->page->IsPostBack())
-        {
-            $homepageId = $this->page->GetHomepage();
-        }
+	private function PopulateTimezones()
+	{
+		$timezoneValues = array();
+		$timezoneOutput = array();
 
-        $this->page->SetHomepage($homepageId);
-    }
+		foreach ($GLOBALS['APP_TIMEZONES'] as $timezone)
+		{
+			$timezoneValues[] = $timezone;
+			$timezoneOutput[] = $timezone;
+		}
 
-    private function LoadValidators()
-    {
-        $this->page->RegisterValidator('fname', new RequiredValidator($this->page->GetFirstName()));
-        $this->page->RegisterValidator('lname', new RequiredValidator($this->page->GetLastName()));
-        $this->page->RegisterValidator('username', new RequiredValidator($this->page->GetLoginName()));
-        $this->page->RegisterValidator('passwordmatch', new EqualValidator($this->page->GetPassword(), $this->page->GetPasswordConfirm()));
-        $this->page->RegisterValidator('passwordcomplexity', new RegexValidator($this->page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
-        $this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
-        $this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
-        $this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetLoginName()));
-        $this->page->RegisterValidator('captcha', new CaptchaValidator($this->page->GetCaptcha(), $this->captchaService));
-    }
+		$this->page->SetTimezones($timezoneValues, $timezoneOutput);
+
+		$timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+		if ($this->page->IsPostBack())
+		{
+			$timezone = $this->page->GetTimezone();
+		}
+
+		$this->page->SetTimezone($timezone);
+	}
+
+	private function PopulateHomepages()
+	{
+		$homepageValues = array();
+		$homepageOutput = array();
+
+		$pages = Pages::GetAvailablePages();
+		foreach ($pages as $pageid => $page)
+		{
+			$homepageValues[] = $pageid;
+			$homepageOutput[] = Resources::GetInstance()->GetString($page['name']);
+		}
+
+		$this->page->SetHomepages($homepageValues, $homepageOutput);
+
+		$homepageId = 1;
+		if ($this->page->IsPostBack())
+		{
+			$homepageId = $this->page->GetHomepage();
+		}
+
+		$this->page->SetHomepage($homepageId);
+	}
+
+	protected function LoadValidators($action)
+	{
+		$this->page->RegisterValidator('fname', new RequiredValidator($this->page->GetFirstName()));
+		$this->page->RegisterValidator('lname', new RequiredValidator($this->page->GetLastName()));
+		$this->page->RegisterValidator('username', new RequiredValidator($this->page->GetLoginName()));
+		$this->page->RegisterValidator('passwordmatch', new EqualValidator($this->page->GetPassword(), $this->page->GetPasswordConfirm()));
+		$this->page->RegisterValidator('passwordcomplexity', new RegexValidator($this->page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
+		$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
+		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
+		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetLoginName()));
+		$this->page->RegisterValidator('captcha', new CaptchaValidator($this->page->GetCaptcha(), $this->captchaService));
+		$this->page->RegisterValidator('additionalattributes', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
+	}
 }
 
 ?>

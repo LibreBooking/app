@@ -41,13 +41,16 @@
  * @link http://www.phpcaptcha.org/Securimage_Docs/ Online Documentation
  * @copyright 2011 Drew Phillips
  * @author Drew Phillips <drew@drew-phillips.com>
- * @version 3.0 (October 2011)
+ * @version 3.0.1 (January 2012)
  * @package Securimage
  *
  */
 
 /**
  ChangeLog
+
+ 3.1
+ - Bugfix: removed use of deprecated variable in addSignature method that would cause errors with display_errors on
  
  3.0
  - Rewrite class using PHP5 OOP
@@ -118,10 +121,10 @@
  */
 class Securimage
 {
-	// All of the public variables below are securimage options
-	// They can be passed as an array to the Securimage constructor, set below,
-	// or set from securimage_show.php and securimage_play.php
-	
+    // All of the public variables below are securimage options
+    // They can be passed as an array to the Securimage constructor, set below,
+    // or set from securimage_show.php and securimage_play.php
+    
     /**
      * Renders captcha as a JPEG image
      * @var int
@@ -341,11 +344,6 @@ class Securimage
     protected $gdtextcolor;
     protected $gdlinecolor;
     protected $gdsignaturecolor;
-
-    /**
-     * @var string
-     */
-    protected $ip;
     
     /**
      * Create a new securimage object, pass options to set in the constructor.<br />
@@ -363,12 +361,10 @@ class Securimage
      * $img = new Securimage($options);
      * </code>
      */
-    public function __construct($options = array(), $ip)
+    public function __construct($options = array())
     {
         $this->securimage_path = dirname(__FILE__);
-
-        $this->ip = $ip;
-
+        
         if (is_array($options) && sizeof($options) > 0) {
             foreach($options as $prop => $val) {
                 $this->$prop = $val;
@@ -870,22 +866,17 @@ class Securimage
         */
     }
     
-	/**
-	* Print signature text on image
-	*/
+    /**
+    * Print signature text on image
+    */
     protected function addSignature()
-    {
-        if ($this->use_gd_font) {
-            imagestring($this->im, 5, $this->image_width - (strlen($this->image_signature) * 10), $this->image_height - 20, $this->image_signature, $this->gdsignaturecolor);
-        } else {
+    { 
+        $bbox = imagettfbbox(10, 0, $this->signature_font, $this->image_signature);
+        $textlen = $bbox[2] - $bbox[0];
+        $x = $this->image_width - $textlen - 5;
+        $y = $this->image_height - 3;
              
-            $bbox = imagettfbbox(10, 0, $this->signature_font, $this->image_signature);
-            $textlen = $bbox[2] - $bbox[0];
-            $x = $this->image_width - $textlen - 5;
-            $y = $this->image_height - 3;
-             
-            imagettftext($this->im, 10, 0, $x, $y, $this->gdsignaturecolor, $this->signature_font, $this->image_signature);
-        }
+        imagettftext($this->im, 10, 0, $x, $y, $this->gdsignaturecolor, $this->signature_font, $this->image_signature); 
     }
     
     /**
@@ -998,6 +989,8 @@ class Securimage
     protected function validate()
     {
         $code = $this->getCode();
+
+		Log::Debug('Stored captcha code: %s', $code);
         // returns stored code, or an empty string if no stored code was found
         // checks the session and sqlite database if enabled
         
@@ -1011,7 +1004,7 @@ class Securimage
                                                        : strtolower($this->code_entered))
                         );
         $this->correct_code = false;
-
+        
         if ($code != '') {
             if ($code == $code_entered) {
                 $this->correct_code = true;
@@ -1031,17 +1024,14 @@ class Securimage
         
         if (isset($_SESSION['securimage_code_value'][$this->namespace]) &&
          trim($_SESSION['securimage_code_value'][$this->namespace]) != '') {
-//            Log::Debug('securimage: Getting from session');
             if ($this->isCodeExpired(
             $_SESSION['securimage_code_ctime'][$this->namespace]) == false) {
                 $code = $_SESSION['securimage_code_value'][$this->namespace];
             }
         } else if ($this->use_sqlite_db == true && function_exists('sqlite_open')) {
-//            Log::Debug('securimage: Getting from database');
             // no code in session - may mean user has cookies turned off
             $this->openDatabase();
             $code = $this->getCodeFromDatabase();
-//            Log::Debug('securimage: Code from database: %s', $code);
         } else { /* no code stored in session or sqlite database, validation will fail */ }
         
         return $code;
@@ -1052,7 +1042,6 @@ class Securimage
      */
     protected function saveData()
     {
-        @session_start();
         $_SESSION['securimage_code_value'][$this->namespace] = $this->code;
         $_SESSION['securimage_code_ctime'][$this->namespace] = time();
         
@@ -1069,7 +1058,7 @@ class Securimage
         $this->openDatabase();
         
         if ($this->use_sqlite_db && $this->sqlite_handle !== false) {
-            $ip      = $this->ip;   //$_SERVER['REMOTE_ADDR'];
+            $ip      = $_SERVER['REMOTE_ADDR'];
             $time    = time();
             $code    = $_SESSION['securimage_code_value'][$this->namespace]; // if cookies are disabled the session still exists at this point
             $success = sqlite_query($this->sqlite_handle,
@@ -1111,7 +1100,7 @@ class Securimage
         $code = '';
 
         if ($this->use_sqlite_db && $this->sqlite_handle !== false) {
-            $ip = $this->ip;    //$_SERVER['REMOTE_ADDR'];
+            $ip = $_SERVER['REMOTE_ADDR'];
             $ns = sqlite_escape_string($this->namespace);
 
             $res = sqlite_query($this->sqlite_handle, "SELECT * FROM codes WHERE ip = '$ip' AND namespace = '$ns'");
@@ -1132,7 +1121,7 @@ class Securimage
     protected function clearCodeFromDatabase()
     {
         if (is_resource($this->sqlite_handle)) {
-            $ip = $this->ip;    //$_SERVER['REMOTE_ADDR'];
+            $ip = $_SERVER['REMOTE_ADDR'];
             $ns = sqlite_escape_string($this->namespace);
             
             sqlite_query($this->sqlite_handle, "DELETE FROM codes WHERE ip = '$ip' AND namespace = '$ns'");

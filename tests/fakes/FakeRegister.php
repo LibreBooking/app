@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 class FakeRegistration implements IRegistration
 {
@@ -35,8 +35,12 @@ class FakeRegistration implements IRegistration
 	public $_AdditionalFields;
 	public $_HomepageId;
 	public $_LastSynchronizedUser;
-	
-	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array())
+	/**
+	 * @var array|AttributeValue[]
+	 */
+	public $_AttributeValues = array();
+
+	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array(), $attributes = array())
 	{
 		$this->_RegisterCalled = true;
 		$this->_Login = $login;
@@ -47,6 +51,7 @@ class FakeRegistration implements IRegistration
 		$this->_Timezone = $timezone;
 		$this->_HomepageId = $homepageId;
 		$this->_AdditionalFields = $additionalFields;
+		$this->_AttributeValues = $attributes;
 	}
 	
 	public function UserExists($loginName, $emailAddress)

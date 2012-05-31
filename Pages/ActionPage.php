@@ -140,4 +140,15 @@ abstract class ActionPage extends Page implements IActionPage
 	public abstract function ProcessDataRequest();
 }
 
+class ActionErrors
+{
+    public $ErrorIds = array();
+	public $Messages = array();
+
+    public function Add($id, $messages = array())
+    {
+        $this->ErrorIds[] = $id;
+		$this->Messages[$id] = $messages;
+    }
+}
 ?>

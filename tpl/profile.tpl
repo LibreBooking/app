@@ -106,7 +106,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 {setfocus key='FIRST_NAME'}
 
-{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.colorbox-min.js"></script>
@@ -121,11 +120,9 @@ $(document).ready(function () {
 
 </script>
 
-<div id="createDiv" style="display:none;text-align:center; top:15%;position:relative;">
-	<div id="creating">
-		<h3>{translate key=Working}...</h3>
-		{html_image src="reservation_submitting.gif"}
-	</div>
+<div id="modalDiv" style="display:none;text-align:center; top:15%;position:relative;">
+	<h3>{translate key=Working}...</h3>
+	{html_image src="reservation_submitting.gif"}
 </div>
 
 {include file='globalfooter.tpl'}

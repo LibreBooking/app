@@ -50,6 +50,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 						if (responseText.ErrorIds.length > 0)
 						{
 							$('.validationSummary').show();
+							formElement.trigger('onValidationFailed', responseText);
 						}
 					}
 					else
@@ -64,7 +65,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 						}
 					}
 
-					formElement.trigger('onAfterSuccess');
+					formElement.trigger('onAfterSuccess', responseText);
 		        }
 			};
 			

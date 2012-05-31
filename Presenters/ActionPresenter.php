@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'Pages/ActionPage.php');
+
 abstract class ActionPresenter
 {
 	/**
@@ -95,17 +97,5 @@ abstract class ActionPresenter
 			Log::Error("Unknown action %s", $action);
 		}
 	}
-}
-
-class ActionErrors
-{
-    public $ErrorIds = array();
-	public $Messages = array();
-
-    public function Add($id, $messages = array())
-    {
-        $this->ErrorIds[] = $id;
-		$this->Messages[$id] = $messages;
-    }
 }
 ?>

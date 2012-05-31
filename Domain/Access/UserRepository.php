@@ -48,7 +48,14 @@ interface IUserRepository extends IUserViewRepository
 	 * @param User $user
 	 * @return void
 	 */
-	function Update($user);
+	function Update(User $user);
+
+	/**
+	 * @abstract
+	 * @param User $user
+	 * @return int
+	 */
+	function Add(User $user);
 
 	/**
 	 * @abstract
@@ -256,6 +263,11 @@ class UserRepository implements IUserRepository
 
 		$user->WithId($id);
 
+		foreach ($user->GetAddedAttributes() as $added)
+		{
+			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $user->Id(), CustomAttributeCategory::USER));
+		}
+
 		return $id;
 	}
 
@@ -263,7 +275,7 @@ class UserRepository implements IUserRepository
 	 * @param User $user
 	 * @return void
 	 */
-	public function Update($user)
+	public function Update(User $user)
 	{
 		$userId = $user->Id();
 

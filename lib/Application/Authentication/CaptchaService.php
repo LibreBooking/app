@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/WebService/RestAction.php');
+require_once(ROOT_DIR . 'lib/external/securimage/securimage.php');
 
 interface ICaptchaService
 {
@@ -58,55 +58,32 @@ class NullCaptchaService implements ICaptchaService
 
 class CaptchaService implements ICaptchaService
 {
-    /**
-     * @var string
-     */
-    private $ipAddress;
-
-    protected function __construct($ipAddress)
-    {
-        $this->ipAddress = $ipAddress;
-    }
-
     public function GetImageUrl()
     {
-        $url = new Url(RestAction::Captcha(WebServiceAction::Create)->ToUrl());
-        $url->AddQueryString('rand', uniqid())
-                ->AddQueryString('ip', $this->ipAddress);
+        $url = new Url(Configuration::Instance()->GetScriptUrl() . '/Services/Authentication/show-captcha.php');
+        $url->AddQueryString('show', 'true');
         return $url->__toString();
     }
 
     public function IsCorrect($captchaValue)
     {
-        $jsonResponse = '';
+		$img = new securimage();
+		$isValid = $img->check($captchaValue);
 
-        $url = new Url(RestAction::Captcha(WebServiceAction::Validate)->ToUrl());
-        $url->AddQueryString('captcha', $captchaValue)
-                ->AddQueryString('ip', $this->ipAddress);
+		Log::Debug('Checking captcha value. Value entered: %s. IsValid: %s', $captchaValue, (int)$isValid);
 
-        $handle = fopen($url->__toString(), 'r');
-        while (!feof($handle))
-        {
-            $jsonResponse .= fgets($handle);
-        }
-        fclose($handle);
-
-        /** @var $response RestResponse */
-        $response = json_decode($jsonResponse);
-
-        return $response->Body->isValid;
+		return $isValid;
     }
 
     /**
      * @static
-     * @param string $ipAddress
      * @return CaptchaService|NullCaptchaService
      */
-    public static function Create($ipAddress)
+    public static function Create()
     {
         if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_ENABLE_CAPTCHA, new BooleanConverter()))
         {
-            return new CaptchaService($ipAddress);
+            return new CaptchaService();
         }
 
         return new NullCaptchaService();

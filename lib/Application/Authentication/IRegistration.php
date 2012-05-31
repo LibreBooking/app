@@ -30,8 +30,9 @@ interface IRegistration
 	 * @param string $language preferred language code
 	 * @param int $homepageId lookup id of the page to redirect the user to on login
 	 * @param array $additionalFields key value pair of additional fields to use during registration
+	 * @param array|AttributeValue[] $attributeValues
 	 */
-	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array());
+	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array(), $attributeValues = array());
 	
 	/**
 	 * @param string $loginName

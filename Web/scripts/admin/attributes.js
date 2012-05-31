@@ -17,7 +17,7 @@ function AttributeManagement(opts) {
 		deleteDialog:$('#deleteDialog'),
 
 		addForm:$('#addAttributeForm'),
-		editForm:$('#editAttributeForm'),
+		profileForm:$('#editAttributeForm'),
 		deleteForm:$('#deleteForm')
 	};
 
@@ -78,7 +78,7 @@ function AttributeManagement(opts) {
 		});
 
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
-		ConfigureAdminForm(elements.editForm, defaultSubmitCallback, editAttributeHandler);
+		ConfigureAdminForm(elements.profileForm, defaultSubmitCallback, editAttributeHandler);
 
 	};
 
@@ -107,7 +107,7 @@ function AttributeManagement(opts) {
 	};
 
 	var editAttributeHandler = function () {
-		elements.editForm.resetForm();
+		elements.profileForm.resetForm();
 		elements.editDialog.dialog('close');
 		RefreshAttributeList();
 	};

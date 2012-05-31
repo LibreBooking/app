@@ -1,7 +1,13 @@
-function Profile() {
+function Profile(options) {
 	var elements = {
-		editForm: $('#frmRegister')
+		profileForm: $('#frmRegister')
 	};
+
+	var opts = $.extend(
+					{
+						handleValidationFailed: handleValidationFailed,
+						handleUpdateSuccess: handleUpdateSuccess
+					}, options);
 
 	Profile.prototype.init = function () {
 
@@ -10,34 +16,55 @@ function Profile() {
 			$('#frmRegister').submit();
 		});
 
-		$('#frmRegister').bind('onAfterSuccess', hideModal);
+		elements.profileForm.bind('onAfterSuccess', onUpdateSuccess);
+		elements.profileForm.bind('onValidationFailed', onValidationFailed);
 
-		ConfigureAdminForm(elements.editForm, defaultSubmitCallback, onUpdateSuccess, null, {onBeforeSubmit: onBeforeAddSubmit});
+		ConfigureAdminForm(elements.profileForm, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
 	};
 
 	var defaultSubmitCallback = function (form) {
 		return form.attr('action') + "?action=" + form.attr('ajaxAction');
 	};
 
-	function onUpdateSuccess()
+	function handleUpdateSuccess(response)
 	{
 		hideModal();
 		$('#profileUpdatedMessage').show();
+	}
+
+	function handleValidationFailed(response)
+	{
+		// hook method
+	}
+
+	function onValidationFailed(event)
+	{
+		opts.handleValidationFailed(event.data)
+	}
+
+	function onUpdateSuccess(event)
+	{
+		opts.handleUpdateSuccess(event.data)
 	}
 
 	function onBeforeAddSubmit(formData, jqForm, opts)
 	{
 		$('#profileUpdatedMessage').hide();
 
-		$.colorbox({inline:true, href:"#createDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
-		$('#creating, #createDiv').show();
+		$.colorbox({inline:true, href:"#modalDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
+		$('#modalDiv').show();
 
 		return true;
 	}
 
+	function successHandler()
+	{
+		// no op
+	}
+
 	function hideModal()
 	{
-		$('#creating, #createDiv').hide();
+		$('#modalDiv').hide();
 		$.colorbox.close();
 
 		var top = $("#registrationbox").scrollTop();
