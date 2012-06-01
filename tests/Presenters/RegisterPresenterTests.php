@@ -197,7 +197,8 @@ class RegisterPresenterTests extends TestBase
 		$this->page->_Action = RegisterActions::Register;
 		
 		$this->presenter->ProcessAction();
-		
+
+		$expectedAttributeValues = array(new AttributeValue(1,2));
 		$this->assertTrue($this->fakeReg->_RegisterCalled);
 		$this->assertEquals($this->login, $this->fakeReg->_Login);
 		$this->assertEquals($this->email, $this->fakeReg->_Email);
@@ -206,7 +207,7 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($this->password, $this->fakeReg->_Password);
 		$this->assertEquals($this->timezone, $this->fakeReg->_Timezone);
 		$this->assertEquals(intval($this->homepageId), $this->fakeReg->_HomepageId);
-		$this->assertEquals($this->page->_AttributeValues, $this->fakeReg->_AttributeValues);
+		$this->assertEquals($expectedAttributeValues, $this->fakeReg->_AttributeValues);
 
 		$this->assertEquals($additionalFields['phone'], $this->fakeReg->_AdditionalFields['phone']);
 
@@ -221,7 +222,7 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($v['emailformat'], new EmailValidator($this->email));
 		$this->assertEquals($v['uniqueemail'], new UniqueEmailValidator($this->email));
 		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator($this->login));
-		$this->assertEquals($v['additionalattributes'], new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->page->_AttributeValues));
+		$this->assertEquals($v['additionalattributes'], new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $expectedAttributeValues));
 	}
     
     public function testDoesNotRegisterIfPageIsNotValid()
@@ -315,7 +316,16 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
     public $_CaptchaUrl;
 	public $_Action;
 	public $_Attributes = array();
+
+	/**
+	 * @var array|AttributeFormElement[]
+	 */
 	public $_AttributeValues = array();
+
+	public function __construct()
+	{
+		$this->_AttributeValues = array(new AttributeFormElement(1,2));
+	}
 
 	public function RegisterClicked()
 	{

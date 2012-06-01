@@ -245,7 +245,7 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 
 	public function Redirect($url)
 	{
-		$this->SetJson(array('url', $url));
+		$this->SetJson(array('url' => $url));
 	}
 
 	public function GetAttributes()

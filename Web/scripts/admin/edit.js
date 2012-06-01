@@ -1,6 +1,6 @@
 function HasResponseText(responseText) {
 	return (
-			(responseText.trim != undefined && responseText.trim() != '') || (responseText.constructor == Object)
+			(responseText.trim != undefined && responseText.trim() != '') || (responseText.constructor == Object && responseText.ErrorIds)
 			);
 }
 function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHandler, options)

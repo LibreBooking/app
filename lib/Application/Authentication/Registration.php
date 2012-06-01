@@ -59,7 +59,6 @@ class Registration implements IRegistration
 		$user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
 		$user->ChangeCustomAttributes($attributeValues);
 
-		Log::Debug(var_export($attributeValues, true));
 		$userId = $this->_userRepository->Add($user);
 		$this->AutoAssignPermissions($userId);
 	}

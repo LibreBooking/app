@@ -39,25 +39,25 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="registrationHeader"><h3>{translate key=Login} ({translate key=AllFieldsAreRequired})</h3></div>
 		<p>
 			<label class="reg">{translate key="Username"}<br/>
-			{textbox name="LOGIN" class="input" value="Login" size="20" tabindex="110"}
+			{textbox name="LOGIN" class="input" value="Login" size="20"}
 			</label>
 		</p>
 
 		<p>
 			<label class="reg">{translate key="Password"}<br/>
-			{textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="120"}
+			{textbox type="password" name="PASSWORD" class="input" value="" size="20"}
 			</label>
 		</p>
 
 		<p>
 			<label class="reg">{translate key="PasswordConfirmation"}<br/>
-			{textbox type="password" name="PASSWORD_CONFIRM" class="input" value="" size="20" tabindex="130"}
+			{textbox type="password" name="PASSWORD_CONFIRM" class="input" value="" size="20"}
 			</label>
 		</p>
 
 		<p>
 			<label class="reg">{translate key="DefaultPage"}<br/>
-				<select {formname key='DEFAULT_HOMEPAGE'} class="input" tabindex="140">
+				<select {formname key='DEFAULT_HOMEPAGE'} class="input">
 				{html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}
 				</select>
 			</label>
@@ -66,25 +66,25 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="registrationHeader"><h3>{translate key=Profile} ({translate key=AllFieldsAreRequired})</h3></div>
 		<p>
 			<label class="reg">{translate key="FirstName"}<br/>
-			{textbox name="FIRST_NAME" class="input" value="FirstName" size="20" tabindex="150"}
+			{textbox name="FIRST_NAME" class="input" value="FirstName" size="20"}
 			</label>
 		</p>
 
 		<p>
 			<label class="reg">{translate key="LastName"}<br/>
-			{textbox name="LAST_NAME" class="input" value="LastName" size="20" tabindex="160"}
+			{textbox name="LAST_NAME" class="input" value="LastName" size="20"}
 			</label>
 		</p>
 
 		<p>
 			<label class="reg">{translate key="Email"}<br/>
-			{textbox name="EMAIL" class="input" value="Email" size="20" tabindex="170"}
+			{textbox name="EMAIL" class="input" value="Email" size="20"}
 			</label>
 		</p>
 
 		<p>
 			<label class="reg">{translate key="Timezone"}<br/>
-				<select {formname key='TIMEZONE'} class="input" tabindex="180" id="timezoneDropDown">
+				<select {formname key='TIMEZONE'} class="input" id="timezoneDropDown">
 				{html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
 				</select>
 			</label>
@@ -92,7 +92,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		<p style="display:none">
 			<label class="reg">{translate key="Language"}<br/>
-				<select {formname key='LANGUAGE'} class="input" tabindex="190">
+				<select {formname key='LANGUAGE'} class="input">
 				{html_options values=$LanguageValues output=$LanguageOutput selected=$Language}
 				</select>
 			</label>
@@ -102,19 +102,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<p>
 			<label class="reg">{translate key="Phone"}<br/>
-			{textbox name="PHONE" class="input" value="Phone" size="20" tabindex="200"}
+			{textbox name="PHONE" class="input" value="Phone" size="20"}
 			</label>
 		</p>
 
 		<p>
 			<label class="reg">{translate key="Organization"}<br/>
-			{textbox name="ORGANIZATION" class="input" value="Organization" size="20" tabindex="210"}
+			{textbox name="ORGANIZATION" class="input" value="Organization" size="20"}
 			</label>
 		</p>
 
 		<p>
 			<label class="reg">{translate key="Position"}<br/>
-			{textbox name="POSITION" class="input" value="Position" size="20" tabindex="220"}
+			{textbox name="POSITION" class="input" value="Position" size="20"}
 			</label>
 		</p>
 
@@ -132,14 +132,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<p>
 			<img src="{$CaptchaImageUrl}" alt='captcha' id="captchaImg"/><br/>
 			<label class="reg">{translate key="SecurityCode"}<br/>
-				<input type="text" class="input" {formname key=CAPTCHA} size="20" tabindex="230" id="captchaValue"/>
+				<input type="text" class="input" {formname key=CAPTCHA} size="20" id="captchaValue"/>
 		</p>
 		{else}
 		<input type="hidden" {formname key=CAPTCHA} value=""/>
 	{/if}
 
 		<p class="regsubmit">
-			<button type="button" name="{Actions::REGISTER}" value="{translate key='Register'}" tabindex="300"
+			<button type="button" name="{Actions::REGISTER}" value="{translate key='Register'}"
 					class="button" id="btnUpdate">
 				<img src="img/tick-circle.png"/> {translate key='Register'}
 			</button>

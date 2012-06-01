@@ -143,7 +143,6 @@ class RegistrationPresenter extends ActionPresenter
 
 	public function Register()
 	{
-
 		$additionalFields = array('phone' => $this->page->GetPhone(),
 								  'organization' => $this->page->GetOrganization(),
 								  'position' => $this->page->GetPosition());
@@ -158,7 +157,8 @@ class RegistrationPresenter extends ActionPresenter
 			$this->page->GetTimezone(),
 			$language,
 			intval($this->page->GetHomepage()),
-			$additionalFields);
+			$additionalFields,
+			$this->GetAttributeValues());
 
 		$context = new WebLoginContext(ServiceLocator::GetServer(), new LoginData(false, $language));
 		$this->auth->Login($this->page->GetEmail(), $context);
