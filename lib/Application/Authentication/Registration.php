@@ -59,15 +59,8 @@ class Registration implements IRegistration
 		$user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
 		$user->ChangeCustomAttributes($attributeValues);
 
+		Log::Debug(var_export($attributeValues, true));
 		$userId = $this->_userRepository->Add($user);
-//
-//
-//		$registerCommand = new RegisterUserCommand($username, $email, $firstName, $lastName,
-//												   $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $timezone, $language, $homepageId,
-//												   $attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position),
-//												   AccountStatus::ACTIVE);
-
-//		$userId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);
 		$this->AutoAssignPermissions($userId);
 	}
 

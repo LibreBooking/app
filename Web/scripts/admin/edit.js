@@ -57,15 +57,13 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 					{
 						if (successHandler)
 						{
-							successHandler();
+							successHandler(responseText);
 						}
 						else
 						{
 							window.location.reload();
 						}
 					}
-
-					formElement.trigger('onAfterSuccess', responseText);
 		        }
 			};
 			

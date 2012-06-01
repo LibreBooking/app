@@ -1,13 +1,7 @@
-function Profile(options) {
+function Profile() {
 	var elements = {
 		profileForm: $('#frmRegister')
 	};
-
-	var opts = $.extend(
-					{
-						handleValidationFailed: handleValidationFailed,
-						handleUpdateSuccess: handleUpdateSuccess
-					}, options);
 
 	Profile.prototype.init = function () {
 
@@ -16,7 +10,6 @@ function Profile(options) {
 			$('#frmRegister').submit();
 		});
 
-		elements.profileForm.bind('onAfterSuccess', onUpdateSuccess);
 		elements.profileForm.bind('onValidationFailed', onValidationFailed);
 
 		ConfigureAdminForm(elements.profileForm, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
@@ -26,25 +19,15 @@ function Profile(options) {
 		return form.attr('action') + "?action=" + form.attr('ajaxAction');
 	};
 
-	function handleUpdateSuccess(response)
+	function onValidationFailed(event, data)
+	{
+		hideModal();
+	}
+
+	function successHandler(response)
 	{
 		hideModal();
 		$('#profileUpdatedMessage').show();
-	}
-
-	function handleValidationFailed(response)
-	{
-		// hook method
-	}
-
-	function onValidationFailed(event)
-	{
-		opts.handleValidationFailed(event.data)
-	}
-
-	function onUpdateSuccess(event)
-	{
-		opts.handleUpdateSuccess(event.data)
 	}
 
 	function onBeforeAddSubmit(formData, jqForm, opts)
@@ -55,11 +38,6 @@ function Profile(options) {
 		$('#modalDiv').show();
 
 		return true;
-	}
-
-	function successHandler()
-	{
-		// no op
 	}
 
 	function hideModal()
