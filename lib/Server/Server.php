@@ -44,6 +44,8 @@ class Server
         return null;
     }
 
+	const sessionId = 'phpScheduleIt';
+
     public function SetSession($name, $value)
     {
         if (!is_null($value))
@@ -51,15 +53,15 @@ class Server
             @session_start();
         }
 
-        $_SESSION[$name] = $value;
+        $_SESSION[self::sessionId][$name] = $value;
     }
 
     public function GetSession($name)
     {
         @session_start();
-        if (isset($_SESSION[$name]))
+        if (isset($_SESSION[self::sessionId][$name]))
         {
-            return $_SESSION[$name];
+            return $_SESSION[self::sessionId][$name];
         }
         return null;
     }

@@ -16,265 +16,373 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
 require_once(ROOT_DIR . 'Pages/Admin/ManageUsersPage.php');
 
 class ManageUsersPresenterTests extends TestBase
 {
-    /**
-     * @var IManageUsersPage|PHPUnit_Framework_MockObject_MockObject
-     */
-    private $page;
+	/**
+	 * @var IManageUsersPage|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $page;
 
-    /**
-     * @var UserRepository|PHPUnit_Framework_MockObject_MockObject
-     */
-    public $userRepo;
+	/**
+	 * @var UserRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	public $userRepo;
 
-    /**
-     * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
-     */
-    public $resourceRepo;
+	/**
+	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	public $resourceRepo;
 
-    /**
-     * @var IRegistration|PHPUnit_Framework_MockObject_MockObject
-     */
-    public $registration;
+	/**
+	 * @var IRegistration|PHPUnit_Framework_MockObject_MockObject
+	 */
+	public $registration;
 
-    /**
-     * @var ManageUsersPresenter|PHPUnit_Framework_MockObject_MockObject
-     */
-    public $presenter;
+	/**
+	 * @var ManageUsersPresenter
+	 */
+	public $presenter;
 
-    /**
-     * @var PasswordEncryption
-     */
-    public $encryption;
+	/**
+	 * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	public $attributeService;
 
-    public function setup()
-    {
-        parent::setup();
+	/**
+	 * @var PasswordEncryption
+	 */
+	public $encryption;
 
-        $this->page = $this->getMock('IManageUsersPage');
-        $this->userRepo = $this->getMock('UserRepository');
-        $this->resourceRepo = $this->getMock('IResourceRepository');
-        $this->encryption = $this->getMock('PasswordEncryption');
-        $this->registration = $this->getMock('IRegistration');
+	public function setup()
+	{
+		parent::setup();
 
-        $this->presenter = new ManageUsersPresenter($this->page, $this->userRepo, $this->resourceRepo, $this->encryption, $this->registration);
-    }
+		$this->page = $this->getMock('IManageUsersPage');
+		$this->userRepo = $this->getMock('UserRepository');
+		$this->resourceRepo = $this->getMock('IResourceRepository');
+		$this->encryption = $this->getMock('PasswordEncryption');
+		$this->registration = $this->getMock('IRegistration');
+		$this->attributeService = $this->getMock('IAttributeService');
 
-    public function teardown()
-    {
-        parent::teardown();
-    }
+		$this->presenter = new ManageUsersPresenter($this->page, $this->userRepo, $this->resourceRepo, $this->encryption, $this->registration, $this->attributeService);
+	}
 
-    public function testGetsSelectedResourcesFromPageAndAssignsPermission()
-    {
-        $resourceIds = array(1, 2, 4);
+	public function teardown()
+	{
+		parent::teardown();
+	}
 
-        $userId = 9928;
+	public function testBindsUsersAndAttributes()
+	{
+		$userId = 123;
+		$pageNumber = 1;
+		$pageSize = 10;
 
-        $this->page->expects($this->atLeastOnce())
-                ->method('GetUserId')
-                ->will($this->returnValue($userId));
+		$result = new UserItemView();
+		$result->Id = $userId;
+		$results = array($result);
+		$userList = new PageableData($results);
 
-        $this->page->expects($this->atLeastOnce())
-                ->method('GetAllowedResourceIds')
-                ->will($this->returnValue($resourceIds));
+		$resourceList = array(new FakeBookableResource(1));
 
-        $user = new User();
+		$attributeList = new AttributeList();
 
-        $this->userRepo->expects($this->once())
-                ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($user));
+		$this->page
+				->expects($this->once())
+				->method('GetPageNumber')
+				->will($this->returnValue($pageNumber));
 
-        $this->userRepo->expects($this->once())
-                ->method('Update')
-                ->with($this->equalTo($user));
+		$this->page
+				->expects($this->once())
+				->method('GetPageSize')
+				->will($this->returnValue($pageSize));
 
-        $this->presenter->ChangePermissions();
+		$this->userRepo
+				->expects($this->once())
+				->method('GetList')
+				->with($this->equalTo($pageNumber), $this->equalTo($pageSize))
+				->will($this->returnValue($userList));
 
-    }
+		$this->page
+				->expects($this->once())
+				->method('BindUsers')
+				->with($this->equalTo($userList->Results()));
 
-    public function testResetPasswordEncryptsAndUpdates()
-    {
-        $password = 'password';
-        $salt = 'salt';
-        $encrypted = 'encrypted';
-        $userId = 123;
+		$this->page
+				->expects($this->once())
+				->method('BindPageInfo')
+				->with($this->equalTo($userList->PageInfo()));
 
-        $this->page->expects($this->atLeastOnce())
-                ->method('GetUserId')
-                ->will($this->returnValue($userId));
+		$this->resourceRepo
+				->expects($this->once())
+				->method('GetResourceList')
+				->will($this->returnValue($resourceList));
 
-        $this->page->expects($this->once())
-                ->method('GetPassword')
-                ->will($this->returnValue($password));
-
-        $this->encryption->expects($this->once())
-                ->method('Salt')
-                ->will($this->returnValue($salt));
-
-        $this->encryption->expects($this->once())
-                ->method('Encrypt')
-                ->with($this->equalTo($password), $this->equalTo($salt))
-                ->will($this->returnValue($encrypted));
-
-        $user = new User();
-
-        $this->userRepo->expects($this->once())
-                ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($user));
-
-        $this->userRepo->expects($this->once())
-                ->method('Update')
-                ->with($this->equalTo($user));
-
-        $this->presenter->ResetPassword();
-
-        $this->assertEquals($encrypted, $user->encryptedPassword);
-        $this->assertEquals($salt, $user->passwordSalt);
-    }
-
-    public function testCanUpdateUser()
-    {
-        $user = new User();
-        $userId = 1029380;
-        $fname = 'f';
-        $lname = 'l';
-        $username = 'un';
-        $email = 'e@mail.com';
-        $timezone = 'America/Chicago';
-        $phone = '123-123-1234';
-        $organization = 'ou';
-        $position = 'position';
-
-        $this->page->expects($this->atLeastOnce())
-                ->method('GetUserId')
-                ->will($this->returnValue($userId));
-
-        $this->page->expects($this->once())
-                ->method('GetFirstName')
-                ->will($this->returnValue($fname));
-
-        $this->page->expects($this->once())
-                ->method('GetLastName')
-                ->will($this->returnValue($lname));
-
-        $this->page->expects($this->once())
-                ->method('GetUserName')
-                ->will($this->returnValue($username));
-
-        $this->page->expects($this->once())
-                ->method('GetEmail')
-                ->will($this->returnValue($email));
-
-        $this->page->expects($this->once())
-                ->method('GetTimezone')
-                ->will($this->returnValue($timezone));
-
-        $this->page->expects($this->once())
-                ->method('GetPhone')
-                ->will($this->returnValue($phone));
-
-        $this->page->expects($this->once())
-                ->method('GetOrganization')
-                ->will($this->returnValue($organization));
-
-        $this->page->expects($this->once())
-                ->method('GetPosition')
-                ->will($this->returnValue($position));
+		$this->page
+				->expects($this->once())
+				->method('BindResources')
+				->with($this->equalTo($resourceList));
 
 
-        $this->userRepo->expects($this->once())
-                ->method('LoadById')
-                ->with($this->equalTo($userId))
-                ->will($this->returnValue($user));
+		$this->attributeService
+				->expects($this->once())
+				->method('GetAttributes')
+				->with($this->equalTo(CustomAttributeCategory::USER), $this->equalTo(array($userId)))
+				->will($this->returnValue($attributeList));
 
-        $this->userRepo->expects($this->once())
-                ->method('Update')
-                ->with($this->equalTo($user));
+		$this->page
+				->expects($this->once())
+				->method('BindAttributeList')
+				->with($this->equalTo($attributeList));
 
-        $this->presenter->UpdateUser();
+		$this->presenter->PageLoad();
+	}
 
-        $this->assertEquals($fname, $user->FirstName());
-        $this->assertEquals($lname, $user->LastName());
-        $this->assertEquals($timezone, $user->Timezone());
+	public function testGetsSelectedResourcesFromPageAndAssignsPermission()
+	{
+		$resourceIds = array(1, 2, 4);
 
-        $this->assertEquals($username, $user->Username());
-        $this->assertEquals($email, $user->EmailAddress());
-        $this->assertEquals($phone, $user->GetAttribute(UserAttribute::Phone));
-        $this->assertEquals($organization, $user->GetAttribute(UserAttribute::Organization));
-        $this->assertEquals($position, $user->GetAttribute(UserAttribute::Position));
-    }
+		$userId = 9928;
 
-    public function testDeleteDelegatesToRepository()
-    {
-        $userId = 809;
-        $this->page->expects($this->once())
-                ->method('GetUserId')
-                ->will($this->returnValue($userId));
+		$this->page->expects($this->atLeastOnce())
+				->method('GetUserId')
+				->will($this->returnValue($userId));
 
-        $this->userRepo->expects($this->once())
-                ->method('DeleteById')
-                ->with($this->equalTo($userId));
+		$this->page->expects($this->atLeastOnce())
+				->method('GetAllowedResourceIds')
+				->will($this->returnValue($resourceIds));
 
-        $this->presenter->DeleteUser();
-    }
+		$user = new User();
 
-    public function testAddsUser()
-    {
-        $fname = 'f';
-        $lname = 'l';
-        $username = 'un';
-        $email = 'e@mail.com';
-        $timezone = 'America/Chicago';
-        $lang = 'foo';
-        $password = 'pw';
-        $this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
+		$this->userRepo->expects($this->once())
+				->method('LoadById')
+				->with($this->equalTo($userId))
+				->will($this->returnValue($user));
 
-        $this->page->expects($this->once())
-                ->method('GetFirstName')
-                ->will($this->returnValue($fname));
+		$this->userRepo->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($user));
 
-        $this->page->expects($this->once())
-                ->method('GetLastName')
-                ->will($this->returnValue($lname));
+		$this->presenter->ChangePermissions();
 
-        $this->page->expects($this->once())
-                ->method('GetUserName')
-                ->will($this->returnValue($username));
+	}
 
-        $this->page->expects($this->once())
-                ->method('GetEmail')
-                ->will($this->returnValue($email));
+	public function testResetPasswordEncryptsAndUpdates()
+	{
+		$password = 'password';
+		$salt = 'salt';
+		$encrypted = 'encrypted';
+		$userId = 123;
 
-        $this->page->expects($this->once())
-                ->method('GetTimezone')
-                ->will($this->returnValue($timezone));
+		$this->page->expects($this->atLeastOnce())
+				->method('GetUserId')
+				->will($this->returnValue($userId));
 
-        $this->page->expects($this->once())
-                ->method('GetPassword')
-                ->will($this->returnValue($password));
+		$this->page->expects($this->once())
+				->method('GetPassword')
+				->will($this->returnValue($password));
 
-        $this->registration->expects($this->once())
-                ->method('Register')
-                ->with($this->equalTo($username),
-                       $this->equalTo($email),
-                       $this->equalTo($fname),
-                       $this->equalTo($lname),
-                       $this->equalTo($password),
-                       $this->equalTo($timezone),
-                       $this->equalTo($lang),
-                       $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID));
+		$this->encryption->expects($this->once())
+				->method('Salt')
+				->will($this->returnValue($salt));
 
-        $this->presenter->AddUser();
-    }
+		$this->encryption->expects($this->once())
+				->method('Encrypt')
+				->with($this->equalTo($password), $this->equalTo($salt))
+				->will($this->returnValue($encrypted));
+
+		$user = new User();
+
+		$this->userRepo->expects($this->once())
+				->method('LoadById')
+				->with($this->equalTo($userId))
+				->will($this->returnValue($user));
+
+		$this->userRepo->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($user));
+
+		$this->presenter->ResetPassword();
+
+		$this->assertEquals($encrypted, $user->encryptedPassword);
+		$this->assertEquals($salt, $user->passwordSalt);
+	}
+
+	public function testCanUpdateUser()
+	{
+		$user = new User();
+		$userId = 1029380;
+		$fname = 'f';
+		$lname = 'l';
+		$username = 'un';
+		$email = 'e@mail.com';
+		$timezone = 'America/Chicago';
+		$phone = '123-123-1234';
+		$organization = 'ou';
+		$position = 'position';
+
+		$this->page->expects($this->atLeastOnce())
+				->method('GetUserId')
+				->will($this->returnValue($userId));
+
+		$this->page->expects($this->once())
+				->method('GetFirstName')
+				->will($this->returnValue($fname));
+
+		$this->page->expects($this->once())
+				->method('GetLastName')
+				->will($this->returnValue($lname));
+
+		$this->page->expects($this->once())
+				->method('GetUserName')
+				->will($this->returnValue($username));
+
+		$this->page->expects($this->once())
+				->method('GetEmail')
+				->will($this->returnValue($email));
+
+		$this->page->expects($this->once())
+				->method('GetTimezone')
+				->will($this->returnValue($timezone));
+
+		$this->page->expects($this->once())
+				->method('GetPhone')
+				->will($this->returnValue($phone));
+
+		$this->page->expects($this->once())
+				->method('GetOrganization')
+				->will($this->returnValue($organization));
+
+		$this->page->expects($this->once())
+				->method('GetPosition')
+				->will($this->returnValue($position));
+
+
+		$this->userRepo->expects($this->once())
+				->method('LoadById')
+				->with($this->equalTo($userId))
+				->will($this->returnValue($user));
+
+		$this->userRepo->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($user));
+
+		$this->presenter->UpdateUser();
+
+		$this->assertEquals($fname, $user->FirstName());
+		$this->assertEquals($lname, $user->LastName());
+		$this->assertEquals($timezone, $user->Timezone());
+
+		$this->assertEquals($username, $user->Username());
+		$this->assertEquals($email, $user->EmailAddress());
+		$this->assertEquals($phone, $user->GetAttribute(UserAttribute::Phone));
+		$this->assertEquals($organization, $user->GetAttribute(UserAttribute::Organization));
+		$this->assertEquals($position, $user->GetAttribute(UserAttribute::Position));
+	}
+
+	public function testDeleteDelegatesToRepository()
+	{
+		$userId = 809;
+		$this->page->expects($this->once())
+				->method('GetUserId')
+				->will($this->returnValue($userId));
+
+		$this->userRepo->expects($this->once())
+				->method('DeleteById')
+				->with($this->equalTo($userId));
+
+		$this->presenter->DeleteUser();
+	}
+
+	public function testUpdatesAttributes()
+	{
+		$attributeId = 1;
+		$attributeValue = 'value';
+		$userId = 111;
+		$attributeFormElements = array(new AttributeFormElement($attributeId, $attributeValue));
+
+		$user = new FakeUser($userId);
+
+		$this->page
+				->expects($this->once())
+				->method('GetAttributes')
+				->will($this->returnValue($attributeFormElements));
+
+		$this->page
+				->expects($this->once())
+				->method('GetUserId')
+				->will($this->returnValue($userId));
+
+		$this->userRepo
+				->expects($this->once())
+				->method('LoadById')
+				->with($this->equalTo($userId))
+				->will($this->returnValue($user));
+
+		$this->userRepo
+				->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($user));
+
+		$this->presenter->ChangeAttributes();
+
+		$this->assertEquals(1, count($user->GetAddedAttributes()));
+		$this->assertEquals($attributeValue, $user->GetAttributeValue($attributeId));
+	}
+
+	public function testAddsUser()
+	{
+		$fname = 'f';
+		$lname = 'l';
+		$username = 'un';
+		$email = 'e@mail.com';
+		$timezone = 'America/Chicago';
+		$lang = 'foo';
+		$password = 'pw';
+		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
+
+		$this->page->expects($this->once())
+				->method('GetFirstName')
+				->will($this->returnValue($fname));
+
+		$this->page->expects($this->once())
+				->method('GetLastName')
+				->will($this->returnValue($lname));
+
+		$this->page->expects($this->once())
+				->method('GetUserName')
+				->will($this->returnValue($username));
+
+		$this->page->expects($this->once())
+				->method('GetEmail')
+				->will($this->returnValue($email));
+
+		$this->page->expects($this->once())
+				->method('GetTimezone')
+				->will($this->returnValue($timezone));
+
+		$this->page->expects($this->once())
+				->method('GetPassword')
+				->will($this->returnValue($password));
+
+		$this->registration->expects($this->once())
+				->method('Register')
+				->with($this->equalTo($username),
+					   $this->equalTo($email),
+					   $this->equalTo($fname),
+					   $this->equalTo($lname),
+					   $this->equalTo($password),
+					   $this->equalTo($timezone),
+					   $this->equalTo($lang),
+					   $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID));
+
+		$this->presenter->AddUser();
+	}
 }
 
 ?>

@@ -151,6 +151,12 @@ table.list, .list td, .list th {
 	background-color: #FFFF33;
 }
 
+.userList .customAttributes {
+
+    font-size: 9pt;
+    font-weight: normal;
+}
+
 tr.pending {
 	background-color: #ffb540;
 }

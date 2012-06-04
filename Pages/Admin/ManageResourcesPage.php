@@ -345,6 +345,4 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	}
 }
 
-
-
 ?>

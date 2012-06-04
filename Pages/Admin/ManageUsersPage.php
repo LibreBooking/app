@@ -24,6 +24,7 @@ require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 interface IManageUsersPage extends IPageable, IActionPage
 {
@@ -119,6 +120,16 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @return string
 	 */
 	public function GetLanguage();
+
+	/**
+	 * @param $attributeList IEntityAttributeList
+	 */
+	public function BindAttributeList($attributeList);
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetAttributes();
 }
 
 
@@ -142,12 +153,13 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 			new UserRepository(),
 			new ResourceRepository(),
 			new PasswordEncryption(),
-            new Registration());
+            new Registration(),
+			new AttributeService(new AttributeRepository()));
 
 		$this->pageable = new PageablePage($this);
 	}
 	
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$this->_presenter->PageLoad();
 
@@ -287,6 +299,22 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	public function GetLanguage()
 	{
 		return $this->GetForm(FormKeys::LANGUAGE);
+	}
+
+	public function BindAttributeList($attributeList)
+	{
+		$defList = array();
+		foreach ($attributeList->GetDefinitions() as $def )
+		{
+			$defList[] = new Attribute($def);
+		}
+		$this->Set('Definitions', $defList);
+		$this->Set('AttributeList', $attributeList);
+	}
+
+	public function GetAttributes()
+	{
+		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
 	}
 }
 ?>

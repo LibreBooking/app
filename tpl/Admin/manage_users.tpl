@@ -26,7 +26,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		   size="40"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllUsers}
 </div>
 
-<table class="list">
+<table class="list userList">
 	<tr>
 		<th class="id">&nbsp;</th>
 		<th>{translate key='Name'}</th>
@@ -40,7 +40,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key='Timezone'}</th>
 		<th>{translate key='Language'}</th>
 		<th>{translate key='Status'}</th>
-		<!--<th>{translate key='Groups'}</th>-->
 		<th>{translate key='Permissions'}</th>
 		<th>{translate key='Reservations'}</th>
 		<th>{translate key='Password'}</th>
@@ -60,13 +59,28 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td>{$user->LastLogin}</td>
 		<td>{$user->Timezone}</td>
 		<td>{$user->Language}</td>
-		<td align="center"><a href="#"
-							  class="update changeStatus">{translate key=$statusDescriptions[$user->StatusId]}</a></td>
-		<!--<td align="center"><a href="#" class="update changeGroups">{translate key='Edit'}</a></td>-->
+		<td align="center"><a href="#" class="update changeStatus">{translate key=$statusDescriptions[$user->StatusId]}</a></td>
 		<td align="center"><a href="#" class="update changePermissions">{translate key='Edit'}</a></td>
 		<td align="center"><a href="#" class="update viewReservations">{translate key='Search'}</a></td>
 		<td align="center"><a href="#" class="update resetPassword">{translate key='Reset'}</a></td>
 		<td align="center"><a href="#" class="update delete">{html_image src="cross-button.png"}</a></td>
+	</tr>
+	<tr>
+		<td class="id"><input type="hidden" class="id" value="{$user->Id}"/></td>
+		<td colspan="15" class="{$rowCss} customAttributes" userId="{$user->Id}">
+			{if $Definitions|count > 0}
+			<div class="customAttributes">
+				<p>{translate key=AdditionalAttributes} <a href="#" class="update changeAttributes">{translate key=Edit}</a></p>
+				<ul>
+					{foreach from=$AttributeList->GetAttributeValues($user->Id) item=attribute}
+						<li class="customAttribute" attributeId="{$attribute->Id()}">
+							{control type="AttributeControl" attribute=$attribute readonly=true}
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+			{/if}
+		</td>
 	</tr>
 {/foreach}
 </table>
@@ -210,6 +224,29 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
+<div id="attributeDialog" class="dialog" title="{translate key=AdditionalAttributes}">
+	<div class="validationSummary">
+		<ul>{async_validator id="attributeValidator" key=""}
+		</ul>
+	</div>
+
+	<div class="customAttributes">
+		<form method="post" id="attributesForm">
+		<ul>
+			{foreach from=$Definitions item=attribute}
+				<li class="customAttribute">
+					{control type="AttributeControl" attribute=$attribute}
+				</li>
+			{/foreach}
+		</ul>
+		<div style="clear:both;"></div>
+		<br/>
+		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</form>
+	</div>
+</div>
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
@@ -227,7 +264,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	password: '{ManageUsersActions::Password}',
 	deleteUser: '{ManageUsersActions::DeleteUser}',
 	updateUser: '{ManageUsersActions::UpdateUser}',
-	addUser: '{ManageUsersActions::AddUser}'
+	addUser: '{ManageUsersActions::AddUser}',
+	changeAttributes: '{ManageUsersActions::ChangeAttributes}'
 	};
 
 	var userOptions = {

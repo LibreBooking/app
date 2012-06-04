@@ -92,6 +92,15 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 		$this->Set('startDate', $startDate);
 		$this->Set('endDate', $endDate);
 	}
+
+	/**
+	 * @param $accessories ReservationAccessory[]
+	 * @return mixed
+	 */
+	public function SetAccessories($accessories)
+	{
+		$this->Set('accessories', $accessories);
+	}
 }
 
 interface IReservationPopupPage
@@ -132,6 +141,13 @@ interface IReservationPopupPage
 	 * @param $endDate Date
 	 */
 	function SetDates($startDate, $endDate);
+
+	/**
+	 * @abstract
+	 * @param $accessories ReservationAccessory[]
+	 * @return mixed
+	 */
+	public function SetAccessories($accessories);
 }
 
 class ReservationPopupPresenter
@@ -165,6 +181,7 @@ class ReservationPopupPresenter
 		$this->_page->SetParticipants($reservation->Participants);
 		$this->_page->SetSummary($reservation->Description);
 		$this->_page->SetTitle($reservation->Title);
+		$this->_page->SetAccessories($reservation->Accessories);
 
 		$this->_page->SetDates($startDate, $endDate);
 	}

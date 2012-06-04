@@ -26,6 +26,7 @@ class ManageUsersActions
 {
     const Activate = 'activate';
     const AddUser = 'addUser';
+    const ChangeAttributes = 'changeAttributes';
     const Deactivate = 'deactivate';
     const DeleteUser = 'deleteUser';
     const Password = 'password';
@@ -60,18 +61,25 @@ class ManageUsersPresenter extends ActionPresenter
      */
     private $registration;
 
+	/**
+	 * @var IAttributeService
+	 */
+	private $attributeService;
+
     /**
      * @param IManageUsersPage $page
      * @param UserRepository $userRepository
      * @param IResourceRepository $resourceRepository
      * @param PasswordEncryption $passwordEncryption
      * @param IRegistration $registration
+     * @param IAttributeService $attributeService
      */
     public function __construct(IManageUsersPage $page,
                                 UserRepository $userRepository,
                                 IResourceRepository $resourceRepository,
                                 PasswordEncryption $passwordEncryption,
-                                IRegistration $registration)
+                                IRegistration $registration,
+								IAttributeService $attributeService)
     {
         parent::__construct($page);
 
@@ -80,6 +88,7 @@ class ManageUsersPresenter extends ActionPresenter
         $this->resourceRepository = $resourceRepository;
         $this->passwordEncryption = $passwordEncryption;
         $this->registration = $registration;
+        $this->attributeService = $attributeService;
 
         $this->AddAction(ManageUsersActions::Activate, 'Activate');
         $this->AddAction(ManageUsersActions::AddUser, 'AddUser');
@@ -88,6 +97,7 @@ class ManageUsersPresenter extends ActionPresenter
         $this->AddAction(ManageUsersActions::Password, 'ResetPassword');
         $this->AddAction(ManageUsersActions::Permissions, 'ChangePermissions');
         $this->AddAction(ManageUsersActions::UpdateUser, 'UpdateUser');
+        $this->AddAction(ManageUsersActions::ChangeAttributes, 'ChangeAttributes');
     }
 
     public function PageLoad()
@@ -105,6 +115,15 @@ class ManageUsersPresenter extends ActionPresenter
         $this->page->BindPageInfo($userList->PageInfo());
 
         $this->page->BindResources($this->resourceRepository->GetResourceList());
+
+		$userIds = array();
+		/** @var $user UserItemView */
+		foreach ($userList->Results() as $user)
+		{
+			$userIds[] = $user->Id;
+		}
+		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::USER, $userIds);
+		$this->page->BindAttributeList($attributeList);
     }
 
     public function Deactivate()
@@ -178,16 +197,16 @@ class ManageUsersPresenter extends ActionPresenter
         $this->userRepository->Update($user);
     }
 
+	public function ChangeAttributes()
+	{
+		$user = $this->userRepository->LoadById($this->page->GetUserId());
+        $user->ChangeCustomAttributes($this->GetAttributeValues());
+        $this->userRepository->Update($user);
+	}
+
     public function ProcessDataRequest()
     {
-        if ($this->page->GetDataRequest() == 'groupMembers')
-        {
-            $this->page->SetJsonResponse($users);
-        }
-        else
-        {
-            $this->page->SetJsonResponse($this->GetUserResourcePermissions());
-        }
+        $this->page->SetJsonResponse($this->GetUserResourcePermissions());
     }
 
     /**
@@ -198,6 +217,19 @@ class ManageUsersPresenter extends ActionPresenter
         $user = $this->userRepository->LoadById($this->page->GetUserId());
         return $user->AllowedResourceIds();
     }
+
+	/**
+	 * @return array|AttributeValue[]
+	 */
+	private function GetAttributeValues()
+	{
+		$attributes = array();
+		foreach ($this->page->GetAttributes() as $attribute)
+		{
+			$attributes[] = new AttributeValue($attribute->Id, $attribute->Value);
+		}
+		return $attributes;
+	}
 
     protected function LoadValidators($action)
     {
@@ -218,6 +250,13 @@ class ManageUsersPresenter extends ActionPresenter
             $this->page->RegisterValidator('addUserUniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
             $this->page->RegisterValidator('addUserUsername', new UniqueUserNameValidator($this->page->GetUserName()));
         }
+
+		if ($action == ManageUsersActions::ChangeAttributes)
+		{
+			Log::Debug('Loading validators for %s', $action);
+
+			$this->page->RegisterValidator('attributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
+		}
     }
 }
 ?>

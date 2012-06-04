@@ -40,6 +40,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{if !$smarty.foreach.participant_loop.last},{/if}
 	{/foreach}
 	</div>
+
+	<div class="accessories">
+	{translate key="Accessories"} ({$accessories|@count})
+	{foreach from=$accessories item=accessory name=accessory_loop}
+		{$accessory->Name} ({$accessory->QuantityReserved})
+		{if !$smarty.foreach.accessory_loop.last},{/if}
+	{/foreach}
+	</div>
 	
 	<div class="summary">{$summary|truncate:300:"..."|nl2br}</div>	
 	<!-- {$ReservationId} -->
