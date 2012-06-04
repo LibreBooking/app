@@ -188,7 +188,7 @@ interface IManageBlackoutsPage extends IPageable, IActionPage
 	public function ShowAddResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations, $conflictingBlackouts, $timezone);
 }
 
-class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
+class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 {
 	/**
 	 * @var \ManageBlackoutsPresenter
@@ -202,7 +202,7 @@ class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
 
 	public function __construct()
 	{
-	    parent::__construct('ManageBlackouts');
+	    parent::__construct('ManageBlackouts', 1);
 
 		$this->presenter = new ManageBlackoutsPresenter($this,
 			new ManageBlackoutsService(new ReservationViewRepository(), new BlackoutRepository()),
@@ -217,7 +217,7 @@ class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
 		$this->presenter->ProcessAction();
 	}
 
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$userTimezone = $this->server->GetUserSession()->Timezone;
 
@@ -229,7 +229,7 @@ class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
 
 	public function ShowPage()
 	{
-		$this->Display('manage_blackouts.tpl');
+		$this->Display('Admin/manage_blackouts.tpl');
 	}
 
 	public function ShowAddResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations, $conflictingBlackouts, $timezone)
@@ -447,5 +447,13 @@ class ManageBlackoutsPage extends AdminPage implements IManageBlackoutsPage
     {
         return $this->GetQuerystring(QueryStringKeys::BLACKOUT_ID);
     }
+
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// no-op
+	}
 }
 ?>

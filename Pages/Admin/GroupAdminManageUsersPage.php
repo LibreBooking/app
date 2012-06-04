@@ -33,7 +33,8 @@ class GroupAdminManageUsersPage extends ManageUsersPage
 					new GroupAdminUserRepository(new GroupRepository(), ServiceLocator::GetServer()->GetUserSession()),
 					new ResourceRepository(),
 					new PasswordEncryption(),
-		            new Registration());
+		            new Registration(),
+					new AttributeService(new AttributeRepository()));
 	}
 
 

@@ -224,7 +224,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 		$this->presenter->ProcessAction();
 	}
 
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$userTimezone = $this->server->GetUserSession()->Timezone;
 

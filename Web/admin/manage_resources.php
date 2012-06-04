@@ -24,12 +24,5 @@ require_once(ROOT_DIR . 'Pages/Admin/ManageResourcesPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageResourcesPresenter.php');
 
 $page = new AdminPageDecorator(new ManageResourcesPage());
-if ($page->TakingAction())
-{
-	$page->ProcessAction();
-}
-else 
-{
-	$page->PageLoad();
-}
+$page->PageLoad();
 ?>

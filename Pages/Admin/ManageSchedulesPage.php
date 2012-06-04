@@ -70,7 +70,6 @@ interface IUpdateSchedulePage
     function GetTargetScheduleId();
 }
 
-
 interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
 {
 	/**
@@ -82,21 +81,21 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
 	function SetTimezones($timezoneValues, $timezoneOutput);
 }
 
-class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
+class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 {
 	public function __construct()
 	{
-		parent::__construct('ManageSchedules');
+		parent::__construct('ManageSchedules', 1);
 		$this->_presenter = new ManageSchedulesPresenter($this, new ManageScheduleService(new ScheduleRepository(), new ResourceRepository()));
 	}
 	
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$this->_presenter->PageLoad();
 		
 		$daynames = Resources::GetInstance()->GetDays('full');
 		$this->Set('DayNames', $daynames);
-		$this->Display('manage_schedules.tpl');		
+		$this->Display('Admin/manage_schedules.tpl');
 	}
 
 	public function ProcessAction()
@@ -160,6 +159,14 @@ class ManageSchedulesPage extends AdminPage implements IManageSchedulesPage
     {
         return $this->server->GetForm(FormKeys::SCHEDULE_ID);
     }
+
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// no-op
+	}
 }
 
 ?>

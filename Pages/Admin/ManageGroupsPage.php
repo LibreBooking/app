@@ -116,7 +116,7 @@ interface IManageGroupsPage extends IActionPage
 	public function GetAdminGroupId();
 }
 
-class ManageGroupsPage extends AdminPage implements IManageGroupsPage
+class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 {
 	/**
 	 * @var ManageGroupsPresenter
@@ -130,17 +130,17 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 
 	public function __construct()
 	{
-		parent::__construct('ManageGroups');
+		parent::__construct('ManageGroups', 1);
 		$this->presenter = new ManageGroupsPresenter($this, new GroupRepository(), new ResourceRepository());
 
 		$this->pageable = new PageablePage($this);
 	}
 	
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$this->presenter->PageLoad();
 
-		$this->Display('manage_groups.tpl');
+		$this->Display('Admin/manage_groups.tpl');
 	}
 
 	public function BindPageInfo(PageInfo $pageInfo)
@@ -234,6 +234,14 @@ class ManageGroupsPage extends AdminPage implements IManageGroupsPage
 	public function GetAdminGroupId()
 	{
 		return $this->GetForm(FormKeys::GROUP_ADMIN);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// no-op
 	}
 }
 ?>

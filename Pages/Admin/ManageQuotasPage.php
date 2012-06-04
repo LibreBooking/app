@@ -97,7 +97,7 @@ interface IManageQuotasPage extends IActionPage
 
 }
 
-class ManageQuotasPage extends AdminPage implements IManageQuotasPage
+class ManageQuotasPage extends ActionPage implements IManageQuotasPage
 {
 	/**
 	 * @var \ManageQuotasPresenter
@@ -106,7 +106,7 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 	
 	public function __construct()
 	{
-		parent::__construct('ManageQuotas');
+		parent::__construct('ManageQuotas', 1);
 		$this->presenter = new ManageQuotasPresenter(
 			$this,
 			new ResourceRepository(),
@@ -115,11 +115,11 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 			new QuotaRepository());
 	}
 	
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$this->presenter->PageLoad();
 
-		$this->Display('manage_quotas.tpl');
+		$this->Display('Admin/manage_quotas.tpl');
 	}
 
 	public function ProcessAction()
@@ -225,5 +225,12 @@ class ManageQuotasPage extends AdminPage implements IManageQuotasPage
 		return $this->GetForm(FormKeys::SCHEDULE_ID);
 	}
 
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// no-op
+	}
 }
 ?>

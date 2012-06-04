@@ -31,7 +31,8 @@ class ResourceAdminManageReservationsPage extends ManageReservationsPage
 		$this->presenter = new ManageReservationsPresenter($this,
 					new ResourceAdminManageReservationsService(new ReservationViewRepository(), $userRepository),
 					new ScheduleRepository(),
-					new ResourceAdminResourceRepository($userRepository, ServiceLocator::GetServer()->GetUserSession()));
+					new ResourceAdminResourceRepository($userRepository, ServiceLocator::GetServer()->GetUserSession()),
+					new AttributeService(new AttributeRepository()));
 	}
 }
 

@@ -23,17 +23,6 @@ define('ROOT_DIR', '../../');
 require_once(ROOT_DIR . 'Pages/Admin/GroupAdminManageUsersPage.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-$page = new SecureActionPageDecorator(new GroupAdminManageUsersPage());
-if ($page->TakingAction())
-{
-	$page->ProcessAction();
-}
-else if ($page->RequestingData())
-{
-	$page->ProcessDataRequest();
-}
-else
-{
-	$page->PageLoad();
-}
+$page = new AdminPageDecorator(new GroupAdminManageUsersPage());
+$page->PageLoad();
 ?>

@@ -638,13 +638,24 @@ class User
 			$this->_addedAttributeValues[] = $attribute;
 		}
 
-		/** @var $accessory AttributeValue */
+		/** @var $attribute AttributeValue */
 		foreach ($removed as $attribute)
 		{
 			$this->_removedAttributeValues[] = $attribute;
 		}
 
-		$this->_attributeValues = $attributes;
+		foreach ($attributes as $attribute)
+		{
+			$this->AddAttributeValue($attribute);
+		}
+	}
+
+	/**
+	 * @param $attributeValue AttributeValue
+	 */
+	public function AddAttributeValue($attributeValue)
+	{
+		$this->_attributeValues[$attributeValue->AttributeId] = $attributeValue;
 	}
 
 	/**

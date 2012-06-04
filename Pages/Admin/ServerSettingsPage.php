@@ -33,7 +33,7 @@ class ServerSettingsPage extends AdminPage
 		{
 			$this->ProcessAction();
 		}
-		
+
 		$uploadDir = ROOT_DIR . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY);
 
 		$this->Set('currentTime', date('Y-m-d, H:i:s (e P)'));

@@ -167,7 +167,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		$this->Set('ImageUploadPath', $this->path . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/');
 	}
 	
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$this->_presenter->PageLoad();
 		

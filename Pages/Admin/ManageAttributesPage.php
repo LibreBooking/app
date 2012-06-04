@@ -194,7 +194,7 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 	 */
 	public function ProcessDataRequest()
 	{
-		// TODO: Implement ProcessDataRequest() method.
+		// no-op
 	}
 }
 

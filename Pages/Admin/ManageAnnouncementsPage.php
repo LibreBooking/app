@@ -61,7 +61,7 @@ interface IManageAnnouncementsPage extends IActionPage
 	public function BindAnnouncements($announcements);
 }
 
-class ManageAnnouncementsPage extends AdminPage implements IManageAnnouncementsPage
+class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncementsPage
 {
 	/**
 	 * @var ManageAnnouncementsPresenter
@@ -70,18 +70,18 @@ class ManageAnnouncementsPage extends AdminPage implements IManageAnnouncementsP
 
 	public function __construct()
 	{
-		parent::__construct('ManageAnnouncements');
+		parent::__construct('ManageAnnouncements', 1);
 		$this->presenter = new ManageAnnouncementsPresenter($this, new AnnouncementRepository());
 	}
 
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$this->presenter->PageLoad();
 
         $this->Set('priorities', range(1,10));
         $this->Set('timezone', ServiceLocator::GetServer()->GetUserSession()->Timezone);
 
-		$this->Display('manage_announcements.tpl');
+		$this->Display('Admin/manage_announcements.tpl');
 	}
 
 	public function BindAnnouncements($announcements)
@@ -134,6 +134,14 @@ class ManageAnnouncementsPage extends AdminPage implements IManageAnnouncementsP
     {
         return $this->GetForm(FormKeys::ANNOUNCEMENT_PRIORITY);
     }
+
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// no-op
+	}
 }
 
 ?>

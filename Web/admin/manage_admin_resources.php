@@ -22,13 +22,6 @@ define('ROOT_DIR', '../../');
 
 require_once(ROOT_DIR . 'Pages/Admin/ResourceAdminManageResourcesPage.php');
 
-$page = new SecureActionPageDecorator(new ResourceAdminManageResourcesPage());
-if ($page->TakingAction())
-{
-	$page->ProcessAction();
-}
-else
-{
-	$page->PageLoad();
-}
+$page = new AdminPageDecorator(new ResourceAdminManageResourcesPage());
+$page->PageLoad();
 ?>

@@ -48,7 +48,7 @@ interface IManageAccessoriesPage extends IActionPage
 	public function BindAccessories($accessories);
 }
 
-class ManageAccessoriesPage extends AdminPage implements IManageAccessoriesPage
+class ManageAccessoriesPage extends ActionPage implements IManageAccessoriesPage
 {
 	/**
 	 * @var ManageAccessoriesPresenter
@@ -57,15 +57,15 @@ class ManageAccessoriesPage extends AdminPage implements IManageAccessoriesPage
 
 	public function __construct()
 	{
-		parent::__construct('ManageAccessories');
+		parent::__construct('ManageAccessories', 1);
 		$this->presenter = new ManageAccessoriesPresenter($this, new ResourceRepository(), new AccessoryRepository());
 	}
 
-	public function PageLoad()
+	public function HandlePageLoad()
 	{
 		$this->presenter->PageLoad();
 
-		$this->Display('manage_accessories.tpl');
+		$this->Display('Admin/manage_accessories.tpl');
 	}
 
 	public function BindAccessories($accessories)
@@ -100,6 +100,14 @@ class ManageAccessoriesPage extends AdminPage implements IManageAccessoriesPage
 	public function GetQuantityAvailable()
 	{
 		return $this->GetForm(FormKeys::ACCESSORY_QUANTITY_AVAILABLE);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// no-op
 	}
 }
 
