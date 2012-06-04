@@ -136,7 +136,7 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 		$this->pageable = new PageablePage($this);
 	}
 	
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
 

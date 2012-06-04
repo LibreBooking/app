@@ -159,7 +159,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$this->pageable = new PageablePage($this);
 	}
 	
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
 		$this->_presenter->PageLoad();
 

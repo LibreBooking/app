@@ -52,7 +52,7 @@ abstract class ActionPage extends Page implements IActionPage
 			}
 			else
 			{
-				$this->HandlePageLoad();
+				$this->ProcessPageLoad();
 			}
 		}
 	}
@@ -130,7 +130,7 @@ abstract class ActionPage extends Page implements IActionPage
 	 * @abstract
 	 * @return void
 	 */
-	public abstract function HandlePageLoad();
+	public abstract function ProcessPageLoad();
 }
 
 class ActionErrors

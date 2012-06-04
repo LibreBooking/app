@@ -89,7 +89,7 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 		$this->_presenter = new ManageSchedulesPresenter($this, new ManageScheduleService(new ScheduleRepository(), new ResourceRepository()));
 	}
 	
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
 		$this->_presenter->PageLoad();
 		

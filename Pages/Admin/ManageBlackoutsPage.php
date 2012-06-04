@@ -217,7 +217,7 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		$this->presenter->ProcessAction();
 	}
 
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
 		$userTimezone = $this->server->GetUserSession()->Timezone;
 
@@ -448,9 +448,6 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
         return $this->GetQuerystring(QueryStringKeys::BLACKOUT_ID);
     }
 
-	/**
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op

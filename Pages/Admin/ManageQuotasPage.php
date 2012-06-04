@@ -115,7 +115,7 @@ class ManageQuotasPage extends ActionPage implements IManageQuotasPage
 			new QuotaRepository());
 	}
 	
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
 
@@ -225,9 +225,6 @@ class ManageQuotasPage extends ActionPage implements IManageQuotasPage
 		return $this->GetForm(FormKeys::SCHEDULE_ID);
 	}
 
-	/**
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op

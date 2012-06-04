@@ -77,7 +77,7 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 		$this->_presenter = new RegistrationPresenter($this);			
 	}
 	
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
         $this->Set('EnableCaptcha', Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_ENABLE_CAPTCHA, new BooleanConverter()));
 		$this->_presenter->PageLoad();

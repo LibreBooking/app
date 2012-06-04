@@ -132,9 +132,9 @@ class SecureActionPageDecorator extends ActionPage
 	/**
 	 * @return void
 	 */
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
-		$this->page->HandlePageLoad();
+		$this->page->ProcessPageLoad();
 	}
 }
 

@@ -113,15 +113,10 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 		parent::PageLoad();
 	}
 
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
 		$this->Display('Admin/Attributes/manage_attributes.tpl');
-	}
-
-	public function HandleDataRequest($dataRequest)
-	{
-		$this->presenter->HandleDataRequest($dataRequest);
 	}
 
 	public function ProcessAction()
@@ -189,12 +184,9 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_ID);
 	}
 
-	/**
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
-		// no-op
+		$this->presenter->HandleDataRequest($dataRequest);
 	}
 }
 

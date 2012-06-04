@@ -85,7 +85,7 @@ class ProfilePage extends ActionPage implements IProfilePage
 		$this->presenter = new ProfilePresenter($this, new UserRepository(), new AttributeService(new AttributeRepository()));
 	}
 
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
 		$this->Display('profile.tpl');

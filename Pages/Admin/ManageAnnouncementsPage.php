@@ -74,7 +74,7 @@ class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncements
 		$this->presenter = new ManageAnnouncementsPresenter($this, new AnnouncementRepository());
 	}
 
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
 
@@ -101,7 +101,6 @@ class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncements
 	{
 		return $this->GetQuerystring(QueryStringKeys::ANNOUNCEMENT_ID);
 	}
-
 
     /**
      * @return string
@@ -135,9 +134,6 @@ class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncements
         return $this->GetForm(FormKeys::ANNOUNCEMENT_PRIORITY);
     }
 
-	/**
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op

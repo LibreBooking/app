@@ -61,7 +61,7 @@ class ManageAccessoriesPage extends ActionPage implements IManageAccessoriesPage
 		$this->presenter = new ManageAccessoriesPresenter($this, new ResourceRepository(), new AccessoryRepository());
 	}
 
-	public function HandlePageLoad()
+	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
 
