@@ -203,7 +203,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$this->_presenter->ProcessAction();
 	}
 
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		$this->_presenter->ProcessDataRequest();
 	}

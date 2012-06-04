@@ -48,7 +48,7 @@ abstract class ActionPage extends Page implements IActionPage
 		{
 			if ($this->RequestingData())
 			{
-				$this->HandleDataRequest($this->GetDataRequest());
+				$this->ProcessDataRequest($this->GetDataRequest());
 			}
 			else
 			{
@@ -56,20 +56,6 @@ abstract class ActionPage extends Page implements IActionPage
 			}
 		}
 	}
-
-	protected function HandleDataRequest($dataRequest)
-	{
-		// hook for override
-	}
-
-	/**
-	 *
-	 */
-	protected function HandlePageLoad()
-	{
-		// hook for override
-	}
-
 	/**
 	 * @return bool
 	 */
@@ -135,9 +121,16 @@ abstract class ActionPage extends Page implements IActionPage
 
 	/**
 	 * @abstract
+	 * @param $dataRequest string
 	 * @return void
 	 */
-	public abstract function ProcessDataRequest();
+	public abstract function ProcessDataRequest($dataRequest);
+
+	/**
+	 * @abstract
+	 * @return void
+	 */
+	public abstract function HandlePageLoad();
 }
 
 class ActionErrors

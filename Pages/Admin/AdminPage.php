@@ -56,9 +56,14 @@ class AdminPageDecorator extends ActionPage implements IActionPage
 		$this->page->ProcessAction();
 	}
 
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
-		$this->page->ProcessDataRequest();
+		$this->page->ProcessDataRequest($dataRequest);
+	}
+
+	public function HandlePageLoad()
+	{
+		$this->page->HandlePageLoad();
 	}
 }
 

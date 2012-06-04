@@ -176,11 +176,6 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 		return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
 	}
 
-	public function FulfilDataRequest()
-	{
-		$this->presenter->ProcessDataRequest();
-	}
-
 	public function SetJsonResponse($response)
 	{
 		parent::SetJson($response);
@@ -237,11 +232,12 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 	}
 
 	/**
+	 * @param $dataRequest string
 	 * @return void
 	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
-		// no-op
+		$this->presenter->ProcessDataRequest();
 	}
 }
 ?>

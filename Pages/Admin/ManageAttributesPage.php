@@ -192,7 +192,7 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 	/**
 	 * @return void
 	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
 	}

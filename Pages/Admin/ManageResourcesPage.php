@@ -316,9 +316,9 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		$this->Set('GroupLookup', $groupLookup);
 	}
 
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
-		// noop
+		// no-op
 	}
 
 	/**

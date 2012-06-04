@@ -456,7 +456,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	/**
 	 * @return void
 	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
 	}

@@ -451,7 +451,7 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 	/**
 	 * @return void
 	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
 	}

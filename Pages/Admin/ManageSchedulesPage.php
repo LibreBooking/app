@@ -160,10 +160,7 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
         return $this->server->GetForm(FormKeys::SCHEDULE_ID);
     }
 
-	/**
-	 * @return void
-	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
 	}

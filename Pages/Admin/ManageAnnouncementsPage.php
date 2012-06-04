@@ -138,7 +138,7 @@ class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncements
 	/**
 	 * @return void
 	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
 	}

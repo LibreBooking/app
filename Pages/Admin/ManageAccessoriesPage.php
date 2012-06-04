@@ -102,10 +102,7 @@ class ManageAccessoriesPage extends ActionPage implements IManageAccessoriesPage
 		return $this->GetForm(FormKeys::ACCESSORY_QUANTITY_AVAILABLE);
 	}
 
-	/**
-	 * @return void
-	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
 	}

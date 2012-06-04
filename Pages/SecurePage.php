@@ -64,9 +64,9 @@ class SecureActionPageDecorator extends ActionPage
 		$this->page->ProcessAction();
 	}
 
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
-		$this->page->ProcessDataRequest();
+		$this->page->ProcessDataRequest($dataRequest);
 	}
 
 	public function PageLoad()
@@ -127,6 +127,14 @@ class SecureActionPageDecorator extends ActionPage
 	public function RegisterValidator($validatorId, $validator)
 	{
 		$this->page->RegisterValidator($validatorId, $validator);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function HandlePageLoad()
+	{
+		$this->page->HandlePageLoad();
 	}
 }
 

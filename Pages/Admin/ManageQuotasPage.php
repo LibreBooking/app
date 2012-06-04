@@ -228,7 +228,7 @@ class ManageQuotasPage extends ActionPage implements IManageQuotasPage
 	/**
 	 * @return void
 	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
 	}
