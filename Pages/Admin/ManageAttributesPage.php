@@ -86,7 +86,7 @@ interface IManageAttributesPage extends IActionPage
 	public function GetAttributeId();
 }
 
-class ManageAttributesPage extends AdminPage implements IManageAttributesPage
+class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 {
 	/**
 	 * @var ManageAttributesPresenter
@@ -95,7 +95,7 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 
 	public function __construct()
 	{
-		parent::__construct('CustomAttributes');
+		parent::__construct('CustomAttributes', 1);
 		$this->presenter = new ManageAttributesPresenter($this, new AttributeRepository());
 	}
 
@@ -109,13 +109,14 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 						);
 
 		$this->Set('Types', $typeLookup);
+
 		parent::PageLoad();
 	}
 
 	public function HandlePageLoad()
 	{
 		$this->presenter->PageLoad();
-		$this->Display('Attributes/manage_attributes.tpl');
+		$this->Display('Admin/Attributes/manage_attributes.tpl');
 	}
 
 	public function HandleDataRequest($dataRequest)
@@ -175,7 +176,7 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 	public function BindAttributes($attributes)
 	{
 		$this->Set('Attributes', $attributes);
-		$this->Display('Attributes/attribute-list.tpl');
+		$this->Display('Admin/Attributes/attribute-list.tpl');
 	}
 
 	public function SetCategory($categoryId)
@@ -186,6 +187,14 @@ class ManageAttributesPage extends AdminPage implements IManageAttributesPage
 	public function GetAttributeId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_ID);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function ProcessDataRequest()
+	{
+		// TODO: Implement ProcessDataRequest() method.
 	}
 }
 

@@ -96,6 +96,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		    {async_validator id="addUserEmailformat" key="ValidEmailRequired"}
 			{async_validator id="addUserUniqueemail" key="UniqueEmailRequired"}
 			{async_validator id="addUserUsername" key="UniqueUsernameRequired"}
+			{async_validator id="addAttributeValidator" key=""}
 		</ul>
 		<form id="addUserForm" method="post">
 			<div style="display: table-row">
@@ -141,6 +142,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<li>{textbox name="PASSWORD" class="required textbox" size="40" id="addPassword"}</li>
 					</ul>
 				</div>
+			</div>
+
+			<div class="customAttributes">
+				<ul>
+					{foreach from=$Definitions item=attribute}
+						<li class="customAttribute">
+							{control type="AttributeControl" attribute=$attribute algin=vertical}
+						</li>
+					{/foreach}
+				</ul>
+				<div style="clear:both;"></div>
 			</div>
 
 			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='AddUser'}</button>

@@ -31,7 +31,7 @@ function UserManagement(opts) {
 
 		ConfigureAdminDialog(elements.permissionsDialog, 430, 500);
 		ConfigureAdminDialog(elements.passwordDialog, 400, 150);
-		ConfigureAdminDialog(elements.userDialog, 320, 560);
+		ConfigureAdminDialog(elements.userDialog, 350, 560);
 		ConfigureAdminDialog(elements.deleteDialog, 600, 200);
 		ConfigureAdminDialog(elements.attributeDialog, 300, 300);
 
@@ -109,20 +109,13 @@ function UserManagement(opts) {
 			dialogElement.dialog('close');
 		};
 
-		var handleUserUpdate = function(response) {
-            $('.asyncValidation').hide();
-			$.each(response.ErrorIds, function(index, errorId) {
-				$('#' + errorId).show();
-			});
-		};
-		
 		var error = function(errorText) { alert(errorText);};
 		
 		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
 		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
-		ConfigureAdminForm(elements.userForm, getSubmitCallback(options.actions.updateUser), hideDialog(elements.userDialog), handleUserUpdate);
+		ConfigureAdminForm(elements.userForm, getSubmitCallback(options.actions.updateUser), hideDialog(elements.userDialog));
 		ConfigureAdminForm(elements.deleteUserForm, getSubmitCallback(options.actions.deleteUser), hideDialog(elements.deleteDialog), error);
-		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), null, handleUserUpdate);
+		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser));
 		ConfigureAdminForm(elements.attributeForm, getSubmitCallback(options.actions.changeAttributes));
 	};
 

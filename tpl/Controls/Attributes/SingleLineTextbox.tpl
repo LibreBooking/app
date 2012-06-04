@@ -17,8 +17,11 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
+{if $align='vertical'}
+<br/>
+{/if}
 {if $readonly}
 <span class="attributeValue">{$attribute->Value()|escape}</span>
 {else}
-<input type="text" id="{$attributeName}" name="{$attributeName}" value="{$attribute->Value()|escape}" class="customAttribute" />
+<input type="text" id="{$attributeName}" name="{$attributeName}" value="{$attribute->Value()|escape}" class="customAttribute textbox" />
 {/if}

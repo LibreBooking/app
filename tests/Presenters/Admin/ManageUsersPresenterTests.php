@@ -344,6 +344,11 @@ class ManageUsersPresenterTests extends TestBase
 		$timezone = 'America/Chicago';
 		$lang = 'foo';
 		$password = 'pw';
+
+		$attributeId = 1;
+		$attributeValue = 'value';
+		$attributeFormElements = array(new AttributeFormElement($attributeId, $attributeValue));
+
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
 
 		$this->page->expects($this->once())
@@ -370,6 +375,11 @@ class ManageUsersPresenterTests extends TestBase
 				->method('GetPassword')
 				->will($this->returnValue($password));
 
+		$this->page
+				->expects($this->once())
+				->method('GetAttributes')
+				->will($this->returnValue($attributeFormElements));
+
 		$this->registration->expects($this->once())
 				->method('Register')
 				->with($this->equalTo($username),
@@ -379,7 +389,9 @@ class ManageUsersPresenterTests extends TestBase
 					   $this->equalTo($password),
 					   $this->equalTo($timezone),
 					   $this->equalTo($lang),
-					   $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID));
+					   $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
+					   $this->equalTo(array()),
+					   $this->equalTo(array(new AttributeValue($attributeId, $attributeValue))));
 
 		$this->presenter->AddUser();
 	}

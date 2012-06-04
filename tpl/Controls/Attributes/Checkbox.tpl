@@ -17,6 +17,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
+{if $align='vertical'}
+<br/>
+{/if}
 {if $readonly}
 	<span class="attributeValue">{if $attribute->Value() == "1"}{translate key='True'}{else}{translate key='False'}{/if}</span>
 {else}

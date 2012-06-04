@@ -150,7 +150,9 @@ class ManageUsersPresenter extends ActionPresenter
             $this->page->GetPassword(),
             $this->page->GetTimezone(),
             Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-            Pages::DEFAULT_HOMEPAGE_ID);
+            Pages::DEFAULT_HOMEPAGE_ID,
+			array(),
+			$this->GetAttributeValues());
     }
 
     public function UpdateUser()
@@ -249,6 +251,7 @@ class ManageUsersPresenter extends ActionPresenter
             $this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
             $this->page->RegisterValidator('addUserUniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
             $this->page->RegisterValidator('addUserUsername', new UniqueUserNameValidator($this->page->GetUserName()));
+            $this->page->RegisterValidator('addAttributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
         }
 
 		if ($action == ManageUsersActions::ChangeAttributes)
