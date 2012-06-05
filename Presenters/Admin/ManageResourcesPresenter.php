@@ -43,7 +43,6 @@ class ManageResourcesActions
 	const ActionChangeAttributes = 'changeAttributes';
 }
 
-
 class ManageResourcesPresenter extends ActionPresenter
 {
 	/**
@@ -268,8 +267,20 @@ class ManageResourcesPresenter extends ActionPresenter
 		$image->ResizeToWidth(300);
 
 		$fileName = "resource{$this->page->GetResourceId()}.$fileType";
-		$path = ROOT_DIR . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY) . "/$fileName";
+		$imageUploadDirectory = Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY);
 
+		$path = '';
+
+		if (is_dir($imageUploadDirectory))
+		{
+			$path = $imageUploadDirectory;
+		}
+		else if (is_dir(ROOT_DIR . $imageUploadDirectory))
+		{
+			$path = ROOT_DIR . $imageUploadDirectory ;
+		}
+
+		$path = "$path/$fileName";
 		Log::Debug("Saving resource image $path");
 
 		$image->Save($path);

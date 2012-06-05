@@ -32,7 +32,6 @@ require_once(ROOT_DIR . 'lib/Common/SmartyControls/namespace.php');
 
 class SmartyPage extends Smarty
 {
-
 	/**
 	 * @var PageValidators
 	 */
@@ -168,6 +167,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'async_validator', array($this, 'AsyncValidator'));
 		$this->registerPlugin('function', 'fullname', array($this, 'DisplayFullName'));
 		$this->registerPlugin('function', 'add_querystring', array($this, 'AddQueryString'));
+		$this->registerPlugin('function', 'resource_image', array($this, 'GetResourceImage'));
 
 		/**
 		 * PageValidators
@@ -586,6 +586,18 @@ class SmartyPage extends Smarty
 		$url->AddQueryString($name, $params['value']);
 
 		return $url->ToString();
+	}
+
+	public function GetResourceImage($params, &$smarty)
+	{
+		$imageUrl = Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL);
+
+		if (strpos($imageUrl, 'http://') === false)
+		{
+			$imageUrl = Configuration::Instance()->GetScriptUrl() . "/$imageUrl";
+		}
+
+		return "$imageUrl/{$params['image']}";
 	}
 }
 

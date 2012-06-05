@@ -163,8 +163,6 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 								new GroupRepository(),
 								new AttributeService(new AttributeRepository())
 								);
-								
-		$this->Set('ImageUploadPath', $this->path . Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/');
 	}
 	
 	public function ProcessPageLoad()

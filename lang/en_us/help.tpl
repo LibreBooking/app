@@ -347,12 +347,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	Bookings page. Options
 	are 'name', 'title', or 'none'. Default is 'name'.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory relative to the
-	phpScheduleIt directory to
-	store images. This directory will need to be writable.</p>
+<p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
+	This directory will need to be writable. This can be the full directory or relative to the
+		phpScheduleIt root directory.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL relative to script.url where uploaded
-	images can be viewed from
+<p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL where uploaded
+	images can be viewed from. This can be the full URL or relative to $conf['settings']['script.url'].
 </p>
 
 <p class="setting"><span>$conf['settings']['cache.templates']</span>Whether or not templates are cached. It is

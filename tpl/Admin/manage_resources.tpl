@@ -33,7 +33,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div style="float:left; text-align:center; width:110px;;">
 				{if $resource->HasImage()}
-					<img src="{$ImageUploadPath}{$resource->GetImage()}" alt="Resource Image" class="image"/><br/>
+					<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/><br/>
 					<a class="update imageButton" href="javascript: void(0);">{translate key='Change'}</a> |
 					<a class="update removeImageButton" href="javascript: void(0);">{translate key='Remove'}</a>
 				{else}
