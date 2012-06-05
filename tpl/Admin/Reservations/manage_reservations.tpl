@@ -82,6 +82,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th style="max-width: 120px;">{translate key='User'}</th>
 		<th style="max-width: 120px;">{translate key='Resource'}</th>
 		<th style="max-width: 120px;">{translate key='Title'}</th>
+		<th style="max-width: 120px;">{translate key='Description'}</th>
 		<th>{translate key='BeginDate'}</th>
 		<th>{translate key='EndDate'}</th>
 		<th>{translate key='Created'}</th>
@@ -103,6 +104,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td>{fullname first=$reservation->FirstName last=$reservation->LastName}</td>
 		<td>{$reservation->ResourceName}</td>
 		<td>{$reservation->Title}</td>
+		<td>{$reservation->Description}</td>
 		<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
 		<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
 		<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
