@@ -19,9 +19,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/ActiveDirectory.php');
-require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/LdapOptions.php');
-require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/LdapConfig.php');
-require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/ILdap.php');
-require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/LdapUser.php');
+require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/ActiveDirectoryOptions.php');
+require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/ActiveDirectoryConfig.php');
+require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/IActiveDirectory.php');
+require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/ActiveDirectoryUser.php');
 require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/AdLdapWrapper.php');
 ?>

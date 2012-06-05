@@ -18,12 +18,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-/**
- * Do not modify this file. This is constance declaration. Leave it as is.
- */
-class LdapConfig {
-    const CONFIG_ID = 'ldap';
+class ActiveDirectoryConfig
+{
+    const CONFIG_ID = 'activeDirectory';
     const PORT = 'port';
     const USERNAME = 'username';
     const PASSWORD = 'password';

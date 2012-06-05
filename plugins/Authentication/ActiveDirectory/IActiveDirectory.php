@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-interface ILdap
+interface IActiveDirectory
 {
 	/**
 	 * @return bool If connection was successful
@@ -31,7 +31,7 @@ interface ILdap
 	public function Authenticate($username, $password);
 	
 	/**
-	 * @return LdapUser The details for the user
+	 * @return ActiveDirectoryUser The details for the user
 	 */
 	public function GetLdapUser($username);
 }

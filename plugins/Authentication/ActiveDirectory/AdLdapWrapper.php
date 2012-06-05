@@ -20,10 +20,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/adLDAP.php');
 
-class AdLdapWrapper implements ILdap
+class AdLdapWrapper implements IActiveDirectory
 {
 	/**
-	 * @var LdapOptions
+	 * @var ActiveDirectoryOptions
 	 */
 	private $options;
 
@@ -33,7 +33,7 @@ class AdLdapWrapper implements ILdap
 	private $ldap;
 
 	/**
-	 * @param LdapOptions $ldapOptions
+	 * @param ActiveDirectoryOptions $ldapOptions
 	 */
 	public function __construct($ldapOptions)
 	{
@@ -79,7 +79,7 @@ class AdLdapWrapper implements ILdap
 		$entries = $this->ldap->user()->infoCollection($username, $attributes);
 		if (count($entries) > 0)
 		{
-			return new LdapUser($entries);
+			return new ActiveDirectoryUser($entries);
 		}
 
 		return null;

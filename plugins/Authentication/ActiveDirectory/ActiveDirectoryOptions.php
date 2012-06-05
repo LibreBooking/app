@@ -20,37 +20,37 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . '/lib/Config/namespace.php');
 
-class LdapOptions
+class ActiveDirectoryOptions
 {
 	private $_options = array();
 	
 	public function __construct()
 	{
-        require_once(dirname(__FILE__) . '/Ldap.config.php');
+        require_once(dirname(__FILE__) . '/ActiveDirectory.config.php');
 
 		Configuration::Instance()->Register(
 					dirname(__FILE__) . '/ActiveDirectory.config.php',
-					LdapConfig::CONFIG_ID);
+					ActiveDirectoryConfig::CONFIG_ID);
 	}
 	
 	public function AdLdapOptions()
 	{
 		$hosts = $this->GetHosts();
 		$this->SetOption('domain_controllers', $hosts);
-		$this->SetOption('ad_port', $this->GetConfig(LdapConfig::PORT), new IntConverter());
-		$this->SetOption('admin_username', $this->GetConfig(LdapConfig::USERNAME));
-		$this->SetOption('admin_password', $this->GetConfig(LdapConfig::PASSWORD));
-		$this->SetOption('base_dn', $this->GetConfig(LdapConfig::BASEDN));
-		$this->SetOption('use_ssl', $this->GetConfig(LdapConfig::USE_SSL, new BooleanConverter()));
-		$this->SetOption('account_suffix', $this->GetConfig(LdapConfig::ACCOUNT_SUFFIX));
-		$this->SetOption('ldap_version', $this->GetConfig(LdapConfig::VERSION), new IntConverter());
+		$this->SetOption('ad_port', $this->GetConfig(ActiveDirectoryConfig::PORT), new IntConverter());
+		$this->SetOption('admin_username', $this->GetConfig(ActiveDirectoryConfig::USERNAME));
+		$this->SetOption('admin_password', $this->GetConfig(ActiveDirectoryConfig::PASSWORD));
+		$this->SetOption('base_dn', $this->GetConfig(ActiveDirectoryConfig::BASEDN));
+		$this->SetOption('use_ssl', $this->GetConfig(ActiveDirectoryConfig::USE_SSL, new BooleanConverter()));
+		$this->SetOption('account_suffix', $this->GetConfig(ActiveDirectoryConfig::ACCOUNT_SUFFIX));
+		$this->SetOption('ldap_version', $this->GetConfig(ActiveDirectoryConfig::VERSION), new IntConverter());
 		
 		return $this->_options;
 	}
 	
 	public function RetryAgainstDatabase()
 	{
-		return $this->GetConfig(LdapConfig::RETRY_AGAINST_DATABASE, new BooleanConverter());
+		return $this->GetConfig(ActiveDirectoryConfig::RETRY_AGAINST_DATABASE, new BooleanConverter());
 	}
 	
 	public function Controllers()
@@ -70,12 +70,12 @@ class LdapOptions
 	
 	private function GetConfig($keyName, $converter = null)
 	{
-		return Configuration::Instance()->File(LdapConfig::CONFIG_ID)->GetKey($keyName, $converter);
+		return Configuration::Instance()->File(ActiveDirectoryConfig::CONFIG_ID)->GetKey($keyName, $converter);
 	}
 	
 	private function GetHosts()
 	{
-		$hosts = explode(',', $this->GetConfig(LdapConfig::DOMAIN_CONTROLLERS));
+		$hosts = explode(',', $this->GetConfig(ActiveDirectoryConfig::DOMAIN_CONTROLLERS));
 
 		for ($i = 0; $i < count($hosts); $i++)
 		{

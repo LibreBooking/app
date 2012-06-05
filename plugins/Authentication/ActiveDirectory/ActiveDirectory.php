@@ -22,10 +22,10 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/namespace.php');
 
 /**
- * Provides LDAP authentication/synchronization for phpScheduleIt
+ * Provides ActiveDirectory LDAP authentication/synchronization for phpScheduleIt
  * @see IAuthorization
  */
-class Ldap extends Authentication implements IAuthentication
+class ActiveDirectory extends Authentication implements IAuthentication
 {
 	/**
 	 * @var IAuthentication
@@ -33,12 +33,12 @@ class Ldap extends Authentication implements IAuthentication
 	private $authToDecorate;
 
 	/**
-	 * @var AdLdapWrapper
+	 * @var AdActiveDirectoryWrapper
 	 */
 	private $ldap;
 
 	/**
-	 * @var LdapOptions
+	 * @var ActiveDirectoryOptions
 	 */
 	private $options;
 
@@ -53,7 +53,7 @@ class Ldap extends Authentication implements IAuthentication
 	private $_encryption;
 
 	/**
-	 * @var LdapUser
+	 * @var ActiveDirectoryUser
 	 */
 	private $user;
 
@@ -95,8 +95,8 @@ class Ldap extends Authentication implements IAuthentication
 
 	/**
 	 * @param IAuthentication $authentication Authentication class to decorate
-	 * @param ILdap $ldapImplementation The actual LDAP implementation to work against
-	 * @param LdapOptions $ldapOptions Options to use for LDAP configuration
+	 * @param IActiveDirectory $ldapImplementation The actual LDAP implementation to work against
+	 * @param ActiveDirectoryOptions $ldapOptions Options to use for LDAP configuration
 	 */
 	public function __construct(IAuthentication $authentication, $ldapImplementation = null, $ldapOptions = null)
 	{
@@ -105,7 +105,7 @@ class Ldap extends Authentication implements IAuthentication
 		$this->options = $ldapOptions;
 		if ($ldapOptions == null)
 		{
-			$this->options = new LdapOptions();
+			$this->options = new ActiveDirectoryOptions();
 		}
 
 		$this->ldap = $ldapImplementation;
@@ -123,11 +123,11 @@ class Ldap extends Authentication implements IAuthentication
 
         if (!$connected)
         {
-            throw new Exception("Could not connect to LDAP server. Please check your LDAP configuration settings");
+            throw new Exception("Could not connect to ActiveDirectory LDAP server. Please check your ActiveDirectory LDAP configuration settings");
         }
 
         $isValid = $this->ldap->Authenticate($username, $password);
-        Log::Debug("Result of LDAP Authenticate for user %s: %d", $username, $isValid);
+        Log::Debug("Result of ActiveDirectory LDAP Authenticate for user %s: %d", $username, $isValid);
 
         if ($isValid)
         {
@@ -136,7 +136,7 @@ class Ldap extends Authentication implements IAuthentication
 
             if (!$userLoaded)
             {
-                Log::Error("Could not load user details from LDAP. Check your basedn setting. User: %s", $username);
+                Log::Error("Could not load user details from ActiveDirectory LDAP. Check your basedn setting. User: %s", $username);
             }
             return $userLoaded;
         }

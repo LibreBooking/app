@@ -66,7 +66,7 @@ $tests = array(
 //'DashboardPresenterTests.php',
 'PluginManagerTests.php',
 'ConfigTests.php',
-'LdapTests.php',
+'ActiveDirectoryTests.php',
 'RegisterPresenterTests.php',
 'ValidatorTests.php',
 'PasswordMigrationTests.php',

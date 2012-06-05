@@ -29,7 +29,7 @@ require_once 'PHPUnit/Autoload.php';
 require_once(ROOT_DIR . 'tests/TestBase.php');
 require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 
-require_once(ROOT_DIR . 'tests/Plugins/Authentication/ActiveDirectory/Plugins_Auth_Ldap_Suite.php');
+require_once(ROOT_DIR . 'tests/Plugins/Authentication/ActiveDirectory/Plugins_Auth_ActiveDirectory_Suite.php');
 
 require_once(ROOT_DIR . 'tests/Application/Admin/Application_Admin_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Attributes/Application_Attributes_Suite.php');

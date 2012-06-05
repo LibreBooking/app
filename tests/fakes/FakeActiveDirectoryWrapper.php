@@ -18,9 +18,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/ILdap.php');
+require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/IActiveDirectory.php');
 
-class FakeLdapWrapper implements ILdap
+class FakeActiveDirectoryWrapper implements IActiveDirectory
 {
 	public $_ExpectedConnect = true;
 	public $_ConnectCalled = true;
