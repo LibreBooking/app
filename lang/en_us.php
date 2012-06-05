@@ -247,7 +247,7 @@ class en_us extends Language
         $strings['FindGroup'] = 'Find Group';
         $strings['Manage'] = 'Manage';
         $strings['None'] = 'None';
-        $strings['AddToOutlook'] = 'Add to Outlook';
+        $strings['AddToOutlook'] = 'Add to Calendar';
         $strings['Done'] = 'Done';
         $strings['RememberMe'] = 'Remember Me';
         $strings['FirstTimeUser?'] = 'First Time User?';
