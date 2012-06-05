@@ -158,9 +158,9 @@ function Reservation(opts) {
 	var AddAccessories = function() {
 		elements.accessoriesList.empty();
 		
-		elements.accessoriesDialog.find('input:text').each(function() {
+		elements.accessoriesDialog.find('input:text, :checked').each(function() {
 			AddAccessory($(this).siblings('.name').val(), $(this).siblings('.id').val(), $(this).val());
-		})
+		});
 	};
 
 	Reservation.prototype.addAccessory = function (accessoryId, quantity, name)
@@ -177,7 +177,12 @@ function Reservation(opts) {
 			var params = y[1].split(',');
 			var id = params[0].split('=')[1];
 			var quantity = params[1].split('=')[1];
-			elements.accessoriesDialog.find('[name="accessory' + id + '"]').val(quantity);
+			var quantityElement = elements.accessoriesDialog.find('[name="accessory' + id + '"]')
+			quantityElement.val(quantity);
+			if (quantity > 0)
+			{
+				quantityElement.attr('checked', 'checked');
+			}
 		});
 		elements.accessoriesDialog.dialog('open');
 	};
@@ -419,46 +424,6 @@ function Reservation(opts) {
 	function GetEndDate() {
 		return new Date(elements.endDate.val() + ' ' + elements.endTime.val());
 	}
-
-//	function bindResourceDetails(resourceNameElement) {
-//		resourceNameElement.click(function(e) {
-//			e.preventDefault();
-//		});
-//
-//		var resourceId = resourceNameElement.siblings(".resourceId").val();
-//
-//		resourceNameElement.qtip({
-//			position: {
-//				my: 'top left',  // Position my top left...
-//				at: 'bottom left', // at the bottom right of...
-//				target: resourceNameElement // my target
-//			},
-//			content: {
-//				text: 'Loading...',
-//				ajax: {
-//					url: "ajax/resource_details.php",
-//					type: 'GET',
-//					data: { rid: resourceId },
-//					dataType: 'html'
-//				}
-//			},
-//			show: {
-//				ready: true,
-//				delay: 500
-//			},
-//			style: {
-//				classes: 'ui-tooltip-shadow ui-tooltip-blue resourceQtip',
-//				tip: {
-//					corner: true
-//				}
-//			},
-//			hide: {
-//				delay: 500,
-//				fixed: true,
-//				when: 'mouseout'
-//			}
-//		});
-//	}
 
 	function InitializeCheckboxes(dialogBoxId, displayDivId) {
 		var selectedItems = [];

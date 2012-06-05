@@ -253,7 +253,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<td>
 					<input type="hidden" class="name" value="{$accessory->Name}" />
 					<input type="hidden" class="id" value="{$accessory->Id}"}" />
-					<input type="text" name="accessory{$accessory->Id}" value="0" size="3" />
+					{if $accessory->QuantityAvailable == 1}
+						<input type="checkbox" name="accessory{$accessory->Id}" value="1" size="3" />
+					{else}
+						<input type="text" name="accessory{$accessory->Id}" value="0" size="3" />
+					{/if}
 				</td>
 				<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
 			</tr>
