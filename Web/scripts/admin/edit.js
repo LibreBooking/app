@@ -26,7 +26,8 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 					formElement.find('.indicator').hide();
 					formElement.find('button').show();
 
-					if (formElement.has('.validationSummary'))
+					var hasValidationSummary = formElement.find('.validationSummary').length > 0;
+					if (hasValidationSummary)
 					{
 						$('.validationSummary').hide();
 					}
@@ -35,7 +36,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 					{
 						responseHandler(responseText, form);
 					}
-					else if (formElement.has('.validationSummary') && HasResponseText(responseText))
+					else if (hasValidationSummary && HasResponseText(responseText))
 					{
 						$('.asyncValidation').hide();
 						$.each(responseText.ErrorIds, function(index, errorId) {

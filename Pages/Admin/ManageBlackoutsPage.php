@@ -239,7 +239,7 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		$this->Set('Reservations', $conflictingReservations);
 		$this->Set('Blackouts', $conflictingBlackouts);
 		$this->Set('Timezone', $timezone);
-		$this->Display('manage_blackouts_response.tpl');
+		$this->Display('Admin/manage_blackouts_response.tpl');
 	}
 	
 	public function BindBlackouts($blackouts)

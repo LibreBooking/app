@@ -167,7 +167,6 @@ $(document).ready(function() {
 	var actions = {};
 		
 	var blackoutOpts = {
-		reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
 		updateScope: updateScope,
 		actions: actions,
 		deleteUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE}&{QueryStringKeys::BLACKOUT_ID}=',
