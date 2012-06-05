@@ -130,7 +130,7 @@ class AttributeRepositoryTests extends TestBase
 		$v1 = '13';
 		$v2 = '222';
 
-		$category = CustomAttributeCategory::GROUP;
+		$category = CustomAttributeCategory::USER;
 		$entityIds = array(1,4,6, $e1);
 
 		$row1 = $this->GetAttributeValueRow($a1, $e1, $v1);

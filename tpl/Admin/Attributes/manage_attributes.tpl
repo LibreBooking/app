@@ -24,7 +24,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<select id="attributeCategory">
 		<option value="{CustomAttributeCategory::RESERVATION}">{translate key=CategoryReservation}</option>
 		<option value="{CustomAttributeCategory::USER}">{translate key=User}</option>
-		<option value="{CustomAttributeCategory::GROUP}">{translate key=CategoryGroup}</option>
+
 		<option value="{CustomAttributeCategory::RESOURCE}">{translate key=Resource}</option>
 	</select>
 </label>

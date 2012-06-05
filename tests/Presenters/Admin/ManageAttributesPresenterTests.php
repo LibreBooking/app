@@ -109,7 +109,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_attributeId = $attributeId;
 		$this->page->_sortOrder = $sortOrder;
 
-		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::GROUP, null, false, null, $sortOrder);
+		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder);
 
 		$this->attributeRepository->expects($this->once())
 				->method('LoadById')
