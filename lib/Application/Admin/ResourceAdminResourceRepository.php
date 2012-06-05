@@ -36,6 +36,7 @@ class ResourceAdminResourceRepository extends ResourceRepository
     {
         $this->repo = $repo;
         $this->user = $userSession;
+		parent::__construct();
     }
 
     /**
