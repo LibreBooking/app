@@ -101,6 +101,7 @@ class ManageScheduleService
      */
     public function ChangeSettings($scheduleId, $startDay, $daysVisible)
     {
+		Log::Debug('Changing scheduleId %s, WeekdayStart: %s, DaysVisible %s', $scheduleId, $startDay, $daysVisible);
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
         $schedule->SetWeekdayStart($startDay);
         $schedule->SetDaysVisible($daysVisible);

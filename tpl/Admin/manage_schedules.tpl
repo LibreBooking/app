@@ -29,6 +29,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{assign var=daysVisible value=$schedule->GetDaysVisible()}
 	{assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
 	{assign var=dayName value=$DayNames[$dayOfWeek]}
+	{if $dayOfWeek == Schedule::Today}
+		{assign var=dayName value=$Today}
+	{/if}
 	<div class="scheduleDetails">
 		<div style="float:left;">
 			<input type="hidden" class="id" value="{$id}"/>
@@ -101,6 +104,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 													 class="textbox required" {formname key=SCHEDULE_NAME} /></li>
 				<li>{translate key=StartsOn}<br/>
 					<select {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
+						<option value="{Schedule::Today}">{$Today}</option>
 					{foreach from=$DayNames item="dayName" key="dayIndex"}
 						<option value="{$dayIndex}">{$dayName}</option>
 					{/foreach}
@@ -161,7 +165,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="changeSettingsDialog" class="dialog" style="display:none;">
 	<form id="settingsForm" method="post">
-	{translate key=StartsOn}: <select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
+	{translate key=StartsOn}:
+	<select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
+		<option value="{Schedule::Today}">{$Today}</option>
 	{foreach from=$DayNames item="dayName" key="dayIndex"}
 		<option value="{$dayIndex}">{$dayName}</option>
 	{/foreach}

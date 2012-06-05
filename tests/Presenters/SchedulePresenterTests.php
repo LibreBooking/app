@@ -271,6 +271,45 @@ class SchedulePresenterTests extends TestBase
         $this->assertEquals($expectedScheduleDates, $dates);
     }
 
+	public function testStartsToday()
+    {
+        $timezone = 'America/Chicago';
+		$this->fakeConfig->SetTimezone($timezone);
+
+        $currentServerDate = Date::Create(2009, 07, 18, 11, 00, 00, $timezone);
+        Date::_SetNow($currentServerDate);
+
+        $startDay = Schedule::Today;
+        $daysVisible = 6;
+
+        $expectedStart = $currentServerDate->GetDate();
+        $expectedEnd = $expectedStart->AddDays($daysVisible);
+        $expectedScheduleDates = new DateRange($expectedStart, $expectedEnd);
+
+        $user = new UserSession(1);
+        $user->Timezone = $timezone;
+
+        $schedule = $this->getMock('ISchedule');
+        $schedulePage = $this->getMock('ISchedulePage');
+
+        $schedulePage->expects($this->once())
+            ->method('GetSelectedDate')
+            ->will($this->returnValue(null));
+
+        $schedule->expects($this->once())
+            ->method('GetWeekdayStart')
+            ->will($this->returnValue($startDay));
+
+        $schedule->expects($this->once())
+            ->method('GetDaysVisible')
+            ->will($this->returnValue($daysVisible));
+
+        $pageBuilder = new SchedulePageBuilder();
+        $dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
+
+        $this->assertEquals($expectedScheduleDates, $dates);
+    }
+
 	public function testGetScheduleDatesStartsOnConfiguredDayOfWeekWhenStartDayIsPriorToToday()
 	{
 		$timezone = 'CST';

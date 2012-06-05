@@ -118,8 +118,6 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 			$scheduleLength = 7;
 		}
 
-		$startDay = $schedule->GetWeekdayStart();
-
 		/**
 		 *  Examples
 		 *
@@ -132,14 +130,24 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		 *  if we are on 3 and we need to start on 0, we need to go back 3 days
 		 */
 
-		$adjustedDays = ($startDay - $selectedWeekday);
+		$startDay = $schedule->GetWeekdayStart();
 
-		if ($selectedWeekday < $startDay)
+		if ($startDay == Schedule::Today)
 		{
-			$adjustedDays = $adjustedDays - 7;
+			$startDate = $selectedDate;
+		}
+		else
+		{
+			$adjustedDays = ($startDay - $selectedWeekday);
+
+			if ($selectedWeekday < $startDay)
+			{
+				$adjustedDays = $adjustedDays - 7;
+			}
+
+			$startDate = $selectedDate->AddDays($adjustedDays);
 		}
 
-		$startDate = $selectedDate->AddDays($adjustedDays);
 		$applicableDates = new DateRange($startDate, $startDate->AddDays($scheduleLength));
 
 		return $applicableDates;

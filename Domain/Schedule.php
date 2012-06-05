@@ -43,6 +43,8 @@ class Schedule implements ISchedule
     private $_isCalendarSubscriptionAllowed = false;
     private $_publicId;
 
+	const Today = 100;
+
 	public function __construct(
 		$id, 
 		$name, 

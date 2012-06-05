@@ -95,6 +95,7 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 		
 		$daynames = Resources::GetInstance()->GetDays('full');
 		$this->Set('DayNames', $daynames);
+		$this->Set('Today',  Resources::GetInstance()->GetString('Today'));
 		$this->Display('Admin/manage_schedules.tpl');
 	}
 
