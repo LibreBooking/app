@@ -211,10 +211,7 @@ class ProfilePage extends ActionPage implements IProfilePage
 		$this->presenter->ProcessAction();
 	}
 
-	/**
-	 * @return void
-	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		// TODO: Implement ProcessDataRequest() method.
 	}

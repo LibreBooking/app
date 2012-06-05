@@ -19,7 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
-require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
+require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/namespace.php');
 
 /**
  * Provides LDAP authentication/synchronization for phpScheduleIt

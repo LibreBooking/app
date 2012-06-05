@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once(ROOT_DIR . 'plugins/Authentication/Ldap/LdapOptions.php');
+require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/LdapOptions.php');
 
 class FakeLdapOptions extends LdapOptions
 {

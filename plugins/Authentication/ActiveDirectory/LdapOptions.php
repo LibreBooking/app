@@ -29,7 +29,7 @@ class LdapOptions
         require_once(dirname(__FILE__) . '/Ldap.config.php');
 
 		Configuration::Instance()->Register(
-					dirname(__FILE__) . '/Ldap.config.php',
+					dirname(__FILE__) . '/ActiveDirectory.config.php',
 					LdapConfig::CONFIG_ID);
 	}
 	

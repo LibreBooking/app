@@ -37,7 +37,7 @@ class ConfigTests extends TestBase
 		$this->assertEquals(true, Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter()));
 		
 		$this->assertEquals('mysql', Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_TYPE ));
-		$this->assertEquals('Ldap', Configuration::Instance()->GetSectionKey('plugins', ConfigKeys::PLUGIN_AUTHENTICATION));
+		$this->assertEquals('ActiveDirectory', Configuration::Instance()->GetSectionKey('plugins', ConfigKeys::PLUGIN_AUTHENTICATION));
 	}
 	
 	function testRegistersMultipleConfigFiles()
