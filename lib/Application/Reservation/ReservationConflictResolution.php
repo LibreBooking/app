@@ -83,6 +83,7 @@ class ReservationConflictDelete extends ReservationConflictResolution
 	public function Handle(ReservationItemView $existingReservation)
 	{
         $reservation = $this->repository->LoadById($existingReservation->GetId());
+		$reservation->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
         $reservation->Delete(ServiceLocator::GetServer()->GetUserSession());
         $this->repository->Delete($reservation);
 

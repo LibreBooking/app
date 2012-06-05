@@ -51,6 +51,8 @@ class ReservationConflictResolutionTests extends TestBase
         $handled = $handler->Handle($reservationView);
 
         $this->assertTrue($handled);
+
+		$this->assertEquals(SeriesUpdateScope::ThisInstance, $reservation->SeriesUpdateScope());
     }
 }
 ?>
