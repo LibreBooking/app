@@ -13,11 +13,11 @@ To create a new Authentication plugin:
 - Within this source file, require the Authentication namespace and implement the IAuthentication interface
 	<?php
 	require_once(ROOT_DIR . 'lib/Authentication/namespace.php');
-	class Ldap implements IAuthentication { ... }
+	class Ldap implements Authentication { ... }
 	?>
 - In the phpScheduleIt configuration file, set $conf['settings']['plugins']['Authentication'] to the folder name. For example, $conf['settings']['plugins']['Authentication'] = 'Ldap';
 
-This class is intended to decorate an IAuthentication instance, so in most cases you would want to create a new Authentication() class in the constructor if one isn't supplied as a parameter.  
+This class is intended to decorate an IAuthentication instance, so in most cases you would want to create a new Authentication() class in the constructor if one isn't supplied as a parameter.
 This class must support parameterless instantiation.
 
 There are three methods which need to be implemented:

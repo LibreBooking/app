@@ -55,7 +55,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
         $this->presenter = new PersonalCalendarPresenter($this, new ReservationViewRepository(), new CalendarFactory(), $subscriptionService, $userRepository);
 	}
 
-	public function PageLoad()
+	public function ProcessPageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
 		$this->presenter->PageLoad($user->UserId, $user->Timezone);
@@ -130,10 +130,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
        $this->presenter->ProcessAction();
     }
 
-    /**
-     * @return void
-     */
-    public function ProcessDataRequest()
+    public function ProcessDataRequest($dataRequest)
     {
         // no-op
     }

@@ -109,9 +109,19 @@ class LoginPresenterTests extends TestBase
 	{
 		$this->fakeConfig->SetKey(ConfigKeys::ALLOW_REGISTRATION, 'true');
 
+		$this->auth->_ShowUsernamePrompt = true;
+		$this->auth->_ShowPasswordPrompt = true;
+		$this->auth->_ShowPersistLoginPrompt = true;
+		$this->auth->_ShowForgotPasswordPrompt = true;
+
         $this->presenter->PageLoad();
 		
 		$this->assertEquals(true, $this->page->GetShowRegisterLink());
+
+		$this->assertEquals(true, $this->page->_ShowUsernamePrompt);
+		$this->assertEquals(true, $this->page->_ShowPasswordPrompt);
+		$this->assertEquals(true, $this->page->_ShowPersistLoginPrompt);
+		$this->assertEquals(true, $this->page->_ShowForgotPasswordPrompt);
 	}
 	
 	public function testPageLoadSetsLanguagesCorrect()
@@ -191,8 +201,12 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
     public $_requestedLanguage;
     public $_selectedLanguage;
     public $_CurrentCode = '';
+	public $_ShowUsernamePrompt = false;
+	public $_ShowPasswordPrompt = false;
+	public $_ShowPersistLoginPrompt = false;
+	public $_ShowForgotPasswordPrompt = false;
 
-    public function PageLoad()
+	public function PageLoad()
 	{
 		$this->_PageLoadWasCalled = true;
 	}
@@ -271,5 +285,25 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
     {
         $this->_selectedLanguage = $languageCode;
     }
+
+	public function ShowUsernamePrompt($shouldShow)
+	{
+		$this->_ShowUsernamePrompt = $shouldShow;
+	}
+
+	public function ShowPasswordPrompt($shouldShow)
+	{
+		$this->_ShowPasswordPrompt = $shouldShow;
+	}
+
+	public function ShowPersistLoginPrompt($shouldShow)
+	{
+		$this->_ShowPersistLoginPrompt = $shouldShow;
+	}
+
+	public function ShowForgotPasswordPrompt($shouldShow)
+	{
+		$this->_ShowForgotPasswordPrompt = $shouldShow;
+	}
 }
 ?>

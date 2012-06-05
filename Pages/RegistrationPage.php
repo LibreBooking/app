@@ -233,7 +233,7 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 	/**
 	 * @return void
 	 */
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
 	}

@@ -25,7 +25,7 @@ require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
  * Provides LDAP authentication/synchronization for phpScheduleIt
  * @see IAuthorization
  */
-class Ldap implements IAuthentication
+class Ldap extends Authentication implements IAuthentication
 {
 	/**
 	 * @var IAuthentication

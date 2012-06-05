@@ -21,9 +21,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-/**
- * An interface extending IPage interface to be implemented by class
- */
 interface ILoginPage extends IPage
 {
 	/**
@@ -72,12 +69,37 @@ interface ILoginPage extends IPage
 
 	public function SetShowLoginError();
 
+	/**
+	 * @abstract
+	 * @param $languageCode string
+	 */
 	public function SetSelectedLanguage($languageCode);
+
+	/**
+	 * @abstract
+	 * @param $shouldShow bool
+	 */
+	public function ShowUsernamePrompt($shouldShow);
+
+	/**
+	 * @abstract
+	 * @param $shouldShow bool
+	 */
+	public function ShowPasswordPrompt($shouldShow);
+
+	/**
+	 * @abstract
+	 * @param $shouldShow bool
+	 */
+	public function ShowPersistLoginPrompt($shouldShow);
+
+	/**
+	 * @abstract
+	 * @param $shouldShow bool
+	 */
+	public function ShowForgotPasswordPrompt($shouldShow);
 }
 
-/**
- * Class to implement login page
- */
 class LoginPage extends Page implements ILoginPage
 {
 	protected $presenter = null;
@@ -92,10 +114,6 @@ class LoginPage extends Page implements ILoginPage
 		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
 	}
 
-	/**
-	 * Present appropriate page by calling PageLoad method.
-	 * Call template engine Smarty object to display login template.
-	 */
 	public function PageLoad()
 	{
 		$this->presenter->PageLoad();
@@ -170,11 +188,6 @@ class LoginPage extends Page implements ILoginPage
 		return !empty($lang);
 	}
 
-	/**
-	 * Calling upon _presenter->Login() for authentication to a requested page.
-	 * (Notice that this is not the Login Page, better understand the Login Page is an extension of Page).
-	 * $this->_presenter = new LoginPresenter($this): is infact an extension of Page class
-	 */
 	public function Login()
 	{
 		$this->presenter->Login();
@@ -200,10 +213,30 @@ class LoginPage extends Page implements ILoginPage
 		$this->Set('SelectedLanguage', $languageCode);
 	}
 
-    protected function GetShouldAutoLogout()
-    {
-        return false;
-    }
+	protected function GetShouldAutoLogout()
+	{
+		return false;
+	}
+
+	public function ShowUsernamePrompt($shouldShow)
+	{
+		$this->Set('ShowUsernamePrompt', $shouldShow);
+	}
+
+	public function ShowPasswordPrompt($shouldShow)
+	{
+		$this->Set('ShowPasswordPrompt', $shouldShow);
+	}
+
+	public function ShowPersistLoginPrompt($shouldShow)
+	{
+		$this->Set('ShowPersistLoginPrompt', $shouldShow);
+	}
+
+	public function ShowForgotPasswordPrompt($shouldShow)
+	{
+		$this->Set('ShowForgotPasswordPrompt', $shouldShow);
+	}
 }
 
 ?>

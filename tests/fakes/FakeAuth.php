@@ -36,7 +36,12 @@ class FakeAuth implements IAuthentication
 	public $_LoginCalled = false;
     
 	public $_ValidateResult = false;
-	
+
+	public $_ShowUsernamePrompt = false;
+	public $_ShowPasswordPrompt = false;
+	public $_ShowPersistLoginPrompt = false;
+	public $_ShowForgotPasswordPrompt = false;
+
 	public function Validate($username, $password)
 	{
 		$this->_LastLogin = $username;
@@ -74,6 +79,38 @@ class FakeAuth implements IAuthentication
 	public function HandleLoginFailure(ILoginPage $loginPage)
 	{
 		
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function ShowUsernamePrompt()
+	{
+		return $this->_ShowUsernamePrompt;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function ShowPasswordPrompt()
+	{
+		return $this->_ShowPasswordPrompt;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function ShowPersistLoginPrompt()
+	{
+		return $this->_ShowPersistLoginPrompt;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function ShowForgotPasswordPrompt()
+	{
+		return $this->_ShowForgotPasswordPrompt;
 	}
 }
 ?>

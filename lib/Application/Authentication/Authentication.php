@@ -213,6 +213,25 @@ class Authentication implements IAuthentication
         return $valid ? $row[ColumnNames::EMAIL] : null;
     }
 
+	public function ShowUsernamePrompt()
+	{
+		return true;
+	}
+
+	public function ShowPasswordPrompt()
+	{
+		return true;
+	}
+
+	public function ShowPersistLoginPrompt()
+	{
+		return true;
+	}
+
+	public function ShowForgotPasswordPrompt()
+	{
+		return true;
+	}
 }
 
 ?>

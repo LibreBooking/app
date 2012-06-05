@@ -57,9 +57,6 @@ class LoginPresenter
         }
     }
 
-    /**
-     * User validation, assigning cookie, check cookie, and whether to show registration link
-     */
     public function PageLoad()
     {
         $this->SetSelectedLanguage();
@@ -82,11 +79,13 @@ class LoginPresenter
 
         $allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
         $this->_page->SetShowRegisterLink($allowRegistration);
+
+		$this->_page->ShowForgotPasswordPrompt($this->authentication->ShowForgotPasswordPrompt());
+		$this->_page->ShowPasswordPrompt($this->authentication->ShowPasswordPrompt());
+		$this->_page->ShowPersistLoginPrompt($this->authentication->ShowPersistLoginPrompt());
+		$this->_page->ShowUsernamePrompt($this->authentication->ShowUsernamePrompt());
     }
 
-    /**
-     * Validating the login submission form.
-     */
     public function Login()
     {
         /**
@@ -119,7 +118,7 @@ class LoginPresenter
 
     public function Logout()
     {
-        $url =  htmlspecialchars_decode($this->_page->GetResumeUrl());
+        $url = htmlspecialchars_decode($this->_page->GetResumeUrl());
 
 		$url = sprintf('%s?%s=%s', Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($url));
         $this->authentication->Logout(ServiceLocator::GetServer()->GetUserSession());

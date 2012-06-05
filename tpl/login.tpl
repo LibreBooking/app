@@ -28,15 +28,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<!--This "$smarty.server.SCRIPT_NAME" sets up the form to post back to the same page that it is on.-->
 	<form class="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
 		<div>
+			{if $ShowUsernamePrompt}
 			<p>
 				<label class="login">{translate key='UsernameOrEmail'}<br/>
 				{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
 			</p>
+			{/if}
 
+			{if $ShowPasswordPrompt}
 			<p>
 				<label class="login">{translate key='Password'}<br/>
 				{textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}</label>
 			</p>
+			{/if}
 
 			<p>
 				<label class="login">{translate key='Language'}<br/>
@@ -45,11 +49,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					</select>
 			</p>
 
+			{if $ShowPersistLoginPrompt}
 			<p class="stayloggedin">
 				<label class="login"><input type="checkbox" name="{FormKeys::PERSIST_LOGIN}" value="true"
 											tabindex="30"/> {translate key='RememberMe'}</label>
 
 			</p>
+			{/if}
 
 			<p class="loginsubmit">
 				<button type="submit" name="{Actions::LOGIN}" class="button" tabindex="100" value="submit"><img
@@ -70,8 +76,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="login-links">
 	<p>
 		<a href="view-schedule.php">{translate key='ViewSchedule'}</a>
+		{if $ShowForgotPasswordPrompt}
 		|
 		<a href="forgot.php">{translate key='ForgotMyPassword'}</a>
+		{/if}
 	</p>
 </div>
 

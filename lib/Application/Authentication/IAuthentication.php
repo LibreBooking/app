@@ -16,9 +16,9 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-interface IAuthentication
+interface IAuthentication extends IAuthenticationPromptOptions
 {
 	/**
 	 * @abstract
@@ -27,7 +27,7 @@ interface IAuthentication
 	 * @return bool If user is valid
 	 */
 	public function Validate($username, $password);
-	
+
 	/**
 	 * @abstract
 	 * @param string $username
@@ -35,29 +35,57 @@ interface IAuthentication
 	 * @return void
 	 */
 	public function Login($username, $loginContext);
-	
+
 	/**
 	 * @param UserSession $user
 	 * @return void
 	 */
 	public function Logout(UserSession $user);
-	
+
 	/**
 	 * @param string $cookieValue phpScheduleIt authentication cookie value
 	 * @param ILoginContext $loginContext
-	 * @return void
+	 * @return bool If the login was successful
 	 */
 	public function CookieLogin($cookieValue, $loginContext);
-	
+
 	/**
 	 * @return bool
 	 */
 	public function AreCredentialsKnown();
-	
+
 	/**
 	 * @param ILoginPage $loginPage
 	 * @return void
 	 */
 	public function HandleLoginFailure(ILoginPage $loginPage);
 }
+
+interface IAuthenticationPromptOptions
+{
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function ShowUsernamePrompt();
+
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function ShowPasswordPrompt();
+
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function ShowPersistLoginPrompt();
+
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function ShowForgotPasswordPrompt();
+}
+
 ?>
