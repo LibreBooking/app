@@ -625,3 +625,7 @@ select.customAttribute {
 .validationSummary {
     display: none;
 }
+
+ul.indented li {
+     margin-left: 25px;
+}

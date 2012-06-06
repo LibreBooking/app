@@ -29,14 +29,17 @@ class ServerSettingsPage extends AdminPage
 
 	public function PageLoad()
 	{
+
 		if ($this->TakingAction())
 		{
 			$this->ProcessAction();
 		}
 
+		$plugins = $this->GetPlugins();
+
 		$uploadDir = new ImageUploadDirectory();
 
-
+		$this->Set('plugins', $plugins);
 		$this->Set('currentTime', date('Y-m-d, H:i:s (e P)'));
 		$this->Set('imageUploadDirPermissions', substr(sprintf('%o', fileperms($uploadDir->GetDirectory())), -4));
 		$this->Set('imageUploadDirectory', $uploadDir->GetDirectory());
@@ -48,6 +51,31 @@ class ServerSettingsPage extends AdminPage
 		$uploadDir = new ImageUploadDirectory();
 		$uploadDir->MakeWriteable();
 
+	}
+
+	private function GetPlugins()
+	{
+		$plugins = array();
+		$dit = new RecursiveDirectoryIterator(ROOT_DIR . 'plugins');
+
+		/** @var $path SplFileInfo  */
+		foreach($dit as $path)
+		{
+			if ($path->IsDir() )
+			{
+				$plugins[basename($path->getPathname())] = array();
+				/** @var $plugin SplFileInfo  */
+				foreach (new RecursiveDirectoryIterator($path) as $plugin)
+				{
+					if ($plugin->isDir())
+					{
+						$plugins[basename($path->getPathname())][] = basename($plugin->getPathname());
+					}
+				}
+			}
+		}
+
+		return $plugins;
 	}
 }
 
