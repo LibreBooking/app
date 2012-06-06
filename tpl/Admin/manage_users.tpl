@@ -49,7 +49,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{cycle values='row0,row1' assign=rowCss}
 	<tr class="{$rowCss} editable">
 		<td class="id"><input type="hidden" class="id" value="{$user->Id}"/></td>
-		<td>{$user->First} {$user->Last}</td>
+		<td>{fullname first=$user->First last=$user->Last}</td>
 		<td>{$user->Username}</td>
 		<td><a href="mailto:{$user->Email}">{$user->Email}</a></td>
 		<td>{$user->Phone}</td>

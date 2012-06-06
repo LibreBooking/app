@@ -51,7 +51,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayUnreservable}
-    <td colspan="{$Slot->PeriodSpan()}" class="unreservable slot">&nbsp;</td>
+    <td colspan="{$Slot->PeriodSpan()}" class="unreservable slot">{$Slot->Label()}</td>
 {/function}
 
 {function name=displaySlot}

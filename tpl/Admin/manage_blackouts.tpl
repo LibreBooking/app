@@ -115,6 +115,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key=Resource}</th>
 		<th>{translate key=BeginDate}</th>
 		<th>{translate key=EndDate}</th>
+		<th>{translate key=Reason}</th>
 		<th>{translate key=CreatedBy}</th>
 		<th>{translate key=Delete}</th>
 	</tr>
@@ -125,7 +126,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td>{$blackout->ResourceName}</td>
 		<td>{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
 		<td>{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
-		<td>{$blackout->FirstName} {$blackout->LastName}</td>
+		<td>{$blackout->Title}</td>
+		<td>{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
 		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 	</tr>
 	{/foreach}

@@ -55,7 +55,6 @@ class BlackoutSlot implements IReservationSlot
 	 */
 	public function __construct(Date $begin, Date $end, Date $displayDate, $periodSpan, BlackoutItemView $blackout)
 	{
-		//echo $blackout->Date->__toString();
 		$this->blackout = $blackout;
 		$this->begin = $begin;
 		$this->displayDate = $displayDate;
@@ -116,7 +115,7 @@ class BlackoutSlot implements IReservationSlot
 	 */
 	public function Label()
 	{
-		return '&nbsp;';
+		return $this->blackout->Title;
 	}
 	
 	/**
