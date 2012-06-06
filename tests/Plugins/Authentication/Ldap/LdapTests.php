@@ -16,11 +16,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/namespace.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
 
-class ActiveDirectoryTests extends TestBase
+class LdapTests extends TestBase
 {
 	/**
 	 * @var FakeAuth
@@ -28,17 +28,17 @@ class ActiveDirectoryTests extends TestBase
 	private $fakeAuth;
 
 	/**
-	 * @var FakeActiveDirectoryOptions
+	 * @var FakeLdapOptions
 	 */
 	private $fakeLdapOptions;
 
 	/**
-	 * @var FakeActiveDirectoryWrapper
+	 * @var FakeLdapWrapper
 	 */
 	private $fakeLdap;
 
 	/**
-	 * @var ActiveDirectoryUser
+	 * @var LdapUser
 	 */
 	private $ldapUser;
 
@@ -65,20 +65,20 @@ class ActiveDirectoryTests extends TestBase
 		parent::setup();
 
 		$this->fakeAuth = new FakeAuth();
-		$this->fakeLdapOptions = new FakeActiveDirectoryOptions();
-		$this->fakeLdap = new FakeActiveDirectoryWrapper();
+		$this->fakeLdapOptions = new FakeLdapOptions();
+		$this->fakeLdap = new FakeLdapWrapper();
 		$this->fakeRegistration = new FakeRegistration();
 		$this->encryption = new FakePasswordEncryption();
 
-        $ldapEntry = new TestAdLdapEntry();
-		$ldapEntry->sn = 'user';
-        $ldapEntry->givenname = 'test';
-        $ldapEntry->mail = 'ldap@user.com';
-        $ldapEntry->telephonenumber = '000-000-0000';
-        $ldapEntry->physicaldeliveryofficename = '';
-        $ldapEntry->title = '';
+		$ldapEntry = new TestLdapEntry();
+		$ldapEntry->Set('sn', 'user');
+		$ldapEntry->Set('givenname', 'test');
+		$ldapEntry->Set('mail', 'ldap@user.com');
+		$ldapEntry->Set('telephonenumber', '000-000-0000');
+		$ldapEntry->Set('physicaldeliveryofficename', '');
+		$ldapEntry->Set('title', '');
 
-		$this->ldapUser = new ActiveDirectoryUser($ldapEntry);
+		$this->ldapUser = new LdapUser($ldapEntry);
 
 		$this->fakeLdap->_ExpectedLdapUser = $this->ldapUser;
 
@@ -91,7 +91,7 @@ class ActiveDirectoryTests extends TestBase
 		$expectedResult = true;
 		$this->fakeLdap->_ExpectedAuthenticate = $expectedResult;
 
-		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 		$isValid = $auth->Validate($this->username, $this->password);
 
 		$this->assertEquals($expectedResult, $isValid);
@@ -104,7 +104,7 @@ class ActiveDirectoryTests extends TestBase
 	public function testNotValidIfCannotFindUser()
 	{
 		$this->fakeLdap->_ExpectedLdapUser = null;
-		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 		$isValid = $auth->Validate($this->username, $this->password);
 
 		$this->assertFalse($isValid);
@@ -112,15 +112,15 @@ class ActiveDirectoryTests extends TestBase
 		$this->assertTrue($this->fakeLdap->_AuthenticateCalled);
 	}
 
-    public function testDoesNotTryToLoadUserDetailsIfNotValid()
-    {
-        $this->fakeLdap->_ExpectedAuthenticate = false;
-        $auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
-        $isValid = $auth->Validate($this->username, $this->password);
+	public function testDoesNotTryToLoadUserDetailsIfNotValid()
+	{
+		$this->fakeLdap->_ExpectedAuthenticate = false;
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$isValid = $auth->Validate($this->username, $this->password);
 
-        $this->assertFalse($this->fakeLdap->_GetLdapUserCalled);
-        $this->assertFalse($isValid);
-    }
+		$this->assertFalse($this->fakeLdap->_GetLdapUserCalled);
+		$this->assertFalse($isValid);
+	}
 
 	public function testNotValidIfValidateFailsAndNotFailingOverToDb()
 	{
@@ -128,7 +128,7 @@ class ActiveDirectoryTests extends TestBase
 		$expectedResult = false;
 		$this->fakeLdap->_ExpectedAuthenticate = $expectedResult;
 
-		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 		$isValid = $auth->Validate($this->username, $this->password);
 
 		$this->assertEquals($expectedResult, $isValid);
@@ -142,7 +142,7 @@ class ActiveDirectoryTests extends TestBase
 		$authResult = true;
 		$this->fakeAuth->_ValidateResult = $authResult;
 
-		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 		$isValid = $auth->Validate($this->username, $this->password);
 
 		$this->assertEquals($authResult, $isValid);
@@ -165,13 +165,13 @@ class ActiveDirectoryTests extends TestBase
 			$this->ldapUser->GetLastName(),
 			$this->password,
 			$languageCode,
-            $timezone,
+			$timezone,
 			$this->ldapUser->GetPhone(),
 			$this->ldapUser->GetInstitution(),
 			$this->ldapUser->GetTitle());
 
 
-		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 		$auth->SetRegistration($this->fakeRegistration);
 
 		$auth->Validate($this->username, $this->password);
@@ -186,7 +186,7 @@ class ActiveDirectoryTests extends TestBase
 	{
 		$this->fakeLdap->_ExpectedLdapUser = null;
 
-		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 
 		$auth->Validate($this->username, $this->password);
 		$auth->Login($this->username, $this->loginContext);
@@ -195,41 +195,44 @@ class ActiveDirectoryTests extends TestBase
 		$this->assertEquals($this->loginContext, $this->loginContext);
 	}
 
-	public function testAdLdapConstructsOptionsCorrectly()
+	public function testConstructsOptionsCorrectly()
 	{
-		$controllers = 'localhost, localhost.2';
+		$hosts = 'localhost, localhost.2';
 		$port = '389';
-		$username = 'uname';
+		$binddn = 'cn=admin,ou=users,dc=example,dc=org';
 		$password = 'pw';
-		$base = '';
-		$usessl = 'false';
+		$base = 'dc=example,dc=org';
+		$starttls = 'false';
 		$version = '3';
-		$accountSuffix = '';
+		$filter = '(objectClass=*)';
+		$scope = 'sub';
 
 		$configFile = new FakeConfigFile();
-		$configFile->SetKey(ActiveDirectoryConfig::DOMAIN_CONTROLLERS, $controllers);
-		$configFile->SetKey(ActiveDirectoryConfig::PORT, $port);
-		$configFile->SetKey(ActiveDirectoryConfig::USERNAME, $username);
-		$configFile->SetKey(ActiveDirectoryConfig::PASSWORD, $password);
-		$configFile->SetKey(ActiveDirectoryConfig::BASEDN, $base);
-		$configFile->SetKey(ActiveDirectoryConfig::USE_SSL, $usessl);
-		$configFile->SetKey(ActiveDirectoryConfig::VERSION, $version);
-		$configFile->SetKey(ActiveDirectoryConfig::ACCOUNT_SUFFIX, $accountSuffix);
+		$configFile->SetKey(LdapConfig::HOST, $hosts);
+		$configFile->SetKey(LdapConfig::PORT, $port);
+		$configFile->SetKey(LdapConfig::BINDDN, $binddn);
+		$configFile->SetKey(LdapConfig::BINDPW, $password);
+		$configFile->SetKey(LdapConfig::BASEDN, $base);
+		$configFile->SetKey(LdapConfig::STARTTLS, $starttls);
+		$configFile->SetKey(LdapConfig::VERSION, $version);
+		$configFile->SetKey(LdapConfig::FILTER, $filter);
+		$configFile->SetKey(LdapConfig::SCOPE, $scope);
 
-		$this->fakeConfig->SetFile(ActiveDirectoryConfig::CONFIG_ID, $configFile);
+		$this->fakeConfig->SetFile(LdapConfig::CONFIG_ID, $configFile);
 
-		$ldapOptions = new ActiveDirectoryOptions();
-		$options = $ldapOptions->AdLdapOptions();
+		$ldapOptions = new LdapOptions();
+		$options = $ldapOptions->Ldap2Config();
 
-		$this->assertNotNull($this->fakeConfig->_RegisteredFiles[ActiveDirectoryConfig::CONFIG_ID]);
-		$this->assertEquals('localhost', $options['domain_controllers'][0], 'domain_controllers must be an array');
-		$this->assertEquals(intval($port), $options['ad_port'], 'port should be int');
-		$this->assertEquals($username, $options['admin_username']);
-		$this->assertEquals($password, $options['admin_password']);
-		$this->assertEquals($base, $options['base_dn']);
-		$this->assertEquals(false, $options['use_ssl']);
-		$this->assertEquals($accountSuffix, $options['account_suffix']);
-		$this->assertEquals(intval($version), $options['ldap_version'], "version should be int");
+		$this->assertNotNull($this->fakeConfig->_RegisteredFiles[LdapConfig::CONFIG_ID]);
+		$this->assertEquals('localhost', $options['host'][0], 'domain_controllers must be an array');
+		$this->assertEquals(intval($port), $options['port'], 'port should be int');
+		$this->assertEquals($binddn, $options['binddn']);
+		$this->assertEquals($password, $options['bindpw']);
+		$this->assertEquals($base, $options['basedn']);
+		$this->assertEquals(false, $options['starttls']);
+		$this->assertEquals($filter, $options['filter']);
+		$this->assertEquals($scope, $options['scope']);
+		$this->assertEquals(intval($version), $options['version'], "version should be int");
 	}
 
 	public function testGetAllHosts()
@@ -237,24 +240,85 @@ class ActiveDirectoryTests extends TestBase
 		$controllers = 'localhost, localhost.2';
 
 		$configFile = new FakeConfigFile();
-		$configFile->SetKey(ActiveDirectoryConfig::DOMAIN_CONTROLLERS, $controllers);
-		$this->fakeConfig->SetFile(ActiveDirectoryConfig::CONFIG_ID, $configFile);
+		$configFile->SetKey(LdapConfig::HOST, $controllers);
+		$this->fakeConfig->SetFile(LdapConfig::CONFIG_ID, $configFile);
 
-		$options = new ActiveDirectoryOptions();
+		$options = new LdapOptions();
 
 		$this->assertEquals(array('localhost', 'localhost.2'), $options->Controllers(), "comma separated values should become array");
 	}
 }
 
-class TestAdLdapEntry
+class FakeLdapOptions extends LdapOptions
 {
+	public $_RetryAgainstDatabase = false;
 
-    public $sn;
-    public $givenname;
-    public $mail;
-    public $telephonenumber;
-    public $physicaldeliveryofficename;
-    public $title;
+	public function RetryAgainstDatabase()
+	{
+		return $this->_RetryAgainstDatabase;
+	}
+}
+
+class FakeLdapWrapper extends Ldap2Wrapper
+{
+	public function __construct()
+	{
+
+	}
+
+	public $_ExpectedConnect = true;
+	public $_ExpectedAuthenticate = true;
+
+	public $_AuthenticateCalled = false;
+	public $_GetLdapUserCalled = false;
+	public $_ConnectCalled;
+
+	public $_LastPassword;
+	public $_LastUsername;
+
+	public $_ExpectedLdapUser;
+
+	public function Connect()
+	{
+		$this->_ConnectCalled = true;
+		return $this->_ExpectedConnect;
+	}
+
+	public function Authenticate($username, $password)
+	{
+		$this->_AuthenticateCalled = true;
+		$this->_LastUsername = $username;
+		$this->_LastPassword = $password;
+
+		return $this->_ExpectedAuthenticate;
+	}
+
+	public function GetLdapUser($username)
+	{
+		$this->_GetLdapUserCalled = true;
+
+		return $this->_ExpectedLdapUser;
+	}
+}
+
+class TestLdapEntry extends Net_LDAP2_Entry
+{
+	private $_values = array();
+
+	public function __construct()
+	{
+
+	}
+
+	public function getValue($attr)
+	{
+		return $this->_values[$attr];
+	}
+
+	public function Set($attr, $value)
+	{
+		$this->_values[$attr] = $value;
+	}
 }
 
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ActiveDirectoryUser
+class LdapUser
 {
 	private $fname;
 	private $lname;
@@ -28,16 +28,16 @@ class ActiveDirectoryUser
 	private $title;
 
 	/**
-	 * @param adLDAPUserCollection $entry
+	 * @param $entry Net_LDAP2_Entry
 	 */
 	public function __construct($entry)
 	{
-		$this->fname = $entry->givenname;
-		$this->lname = $entry->sn;
-		$this->mail = strtolower($entry->mail);
-		$this->phone = $entry->telephonenumber;
-		$this->institution = $entry->physicaldeliveryofficename;
-		$this->title = $entry->title;
+		$this->fname = $entry->getValue('givenname');
+		$this->lname = $entry->getValue('sn');
+		$this->mail = strtolower($entry->getValue('mail'));
+		$this->phone = $entry->getValue('telephonenumber');
+		$this->institution = $entry->getValue('physicaldeliveryofficename');
+		$this->title = $entry->getValue('title');
 	}
 
 	public function GetFirstName()

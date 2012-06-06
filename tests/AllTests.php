@@ -30,6 +30,7 @@ require_once(ROOT_DIR . 'tests/TestBase.php');
 require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 
 require_once(ROOT_DIR . 'tests/Plugins/Authentication/ActiveDirectory/Plugins_Auth_ActiveDirectory_Suite.php');
+require_once(ROOT_DIR . 'tests/Plugins/Authentication/Ldap/Plugins_Auth_Ldap_Suite.php');
 
 require_once(ROOT_DIR . 'tests/Application/Admin/Application_Admin_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Attributes/Application_Attributes_Suite.php');
@@ -83,8 +84,9 @@ class AllTests
         $suite->addTest(Infrastructure_Config_Suite::suite());
         $suite->addTest(Infrastructure_Database_Suite::suite());
         
+        $suite->addTest(Plugins_Auth_ActiveDirectory_Suite::suite());
         $suite->addTest(Plugins_Auth_Ldap_Suite::suite());
-        
+
         $suite->addTest(Presenters_Suite::suite());
         $suite->addTest(DashboardPresenters_Suite::suite());
         $suite->addTest(AdminPresenters_Suite::suite());

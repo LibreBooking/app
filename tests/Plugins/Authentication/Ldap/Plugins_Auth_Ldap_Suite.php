@@ -20,11 +20,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  
 require_once(ROOT_DIR . 'tests/AllTests.php');
 
-class Plugins_Auth_ActiveDirectory_Suite
+class Plugins_Auth_Ldap_Suite
 {
 	public static function suite()
     {
-    	return TestHelper::GetSuite('tests/Plugins/Authentication/ActiveDirectory', array(__CLASS__, "IsIgnored"));
+    	return TestHelper::GetSuite('tests/Plugins/Authentication/Ldap', array(__CLASS__, "IsIgnored"));
     }
     
     public static function IsIgnored($fileName)

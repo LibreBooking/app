@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -17,19 +17,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
- 
-require_once(ROOT_DIR . 'tests/AllTests.php');
 
-class Plugins_Auth_ActiveDirectory_Suite
-{
-	public static function suite()
-    {
-    	return TestHelper::GetSuite('tests/Plugins/Authentication/ActiveDirectory', array(__CLASS__, "IsIgnored"));
-    }
-    
-    public static function IsIgnored($fileName)
-    {
-    	return false;
-    }
-}
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/Ldap.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/LdapOptions.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/LdapConfig.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/LdapUser.php');
+require_once(ROOT_DIR . 'plugins/Authentication/Ldap/Ldap2Wrapper.php');
 ?>
