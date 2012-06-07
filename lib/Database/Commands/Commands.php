@@ -499,6 +499,7 @@ class DeleteSeriesCommand extends SqlCommand
     {
         parent::__construct(Queries::DELETE_SERIES);
         $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+        $this->AddParameter(new Parameter(ParameterNames::STATUS_ID, ReservationStatus::Deleted));
     }
 }
 
