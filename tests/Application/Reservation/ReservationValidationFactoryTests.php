@@ -85,25 +85,4 @@ class ReservationValidationFactoryTests extends TestBase
     }
 }
 
-class FakePluginManager extends PluginManager
-{
-    public function __construct()
-    {
-
-    }
-
-    public $preResPlugin = null;
-    public $postResPlugin = null;
-
-    public function LoadPreReservation()
-    {
-        return $this->preResPlugin;
-    }
-
-    public function LoadPostReservation()
-    {
-        return $this->postResPlugin;
-    }
-}
-
 ?>

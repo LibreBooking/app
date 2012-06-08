@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -16,41 +16,30 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-class FakeUser extends User
+class AccountActivationTests extends TestBase
 {
-	public function __construct($userId = null)
+	public function setup()
 	{
-		$this->timezone = 'America/Chicago';
-		$this->language = 'en_us';
-		$this->emailAddress = 'test@test.com';
-        $this->id = $userId;
-		$this->statusId = AccountStatus::ACTIVE;
+		parent::setup();
 	}
 
-	public function SetStatus($statusId)
+	public function testGetsActivationCodeAndSendsEmail()
 	{
-		$this->statusId = $statusId;
-	}
-	
-	public function SetLanguage($language)
-	{
-		$this->language = $language;
-	}
-	
-	public function SetTimezone($timezone)
-	{
-		$this->timezone = $timezone;
-	}
+		$userId = 100;
+		$user = new FakeUser($userId);
+		$userRepository = $this->getMock('IAccountActivationRepository');
 
-	/**
-	 * @param $groups array|UserGroup[]
-	 * @return void
-	 */
-	public function SetGroups($groups)
-	{
-		$this->groups = $groups;
+		$userRepository->expects($this->once())
+					->method('AddActivation')
+					->with($this->equalTo($userId), $this->anything());
+		
+		$activation = new AccountActivation($userRepository);
+		$activation->Notify($user);
+
+		$this->assertInstanceOf('AccountActivationEmail', $this->fakeEmailService->_LastMessage);
 	}
 }
+
 ?>

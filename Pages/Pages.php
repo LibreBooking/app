@@ -22,6 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class Pages {
     const DEFAULT_HOMEPAGE_ID = 1;
 
+	const ACTIVATION = 'activate.php';
     const CALENDAR = 'calendar.php';
     const CALENDAR_EXPORT = 'ical.php';
     const CALENDAR_SUBSCRIBE = 'ical-subscribe.php';

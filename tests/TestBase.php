@@ -50,6 +50,11 @@ class TestBase extends PHPUnit_Framework_TestCase
 	 * @var UserSession
 	 */
 	public $fakeUser;
+
+	/**
+	 * @var FakePluginManager
+	 */
+	public $fakePluginManager;
 	
 	public function setup()
 	{
@@ -62,14 +67,15 @@ class TestBase extends PHPUnit_Framework_TestCase
         $this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, 'America/Chicago');
                 
 		$this->fakeResources = new FakeResources();
-		
 		$this->fakeUser = $this->fakeServer->UserSession;
-		
+		$this->fakePluginManager = new FakePluginManager();
+
 		ServiceLocator::SetDatabase($this->db);
 		ServiceLocator::SetServer($this->fakeServer);
 		ServiceLocator::SetEmailService($this->fakeEmailService);
 		Configuration::SetInstance($this->fakeConfig);
 		Resources::SetInstance($this->fakeResources);
+		PluginManager::SetInstance($this->fakePluginManager);
 	}
 	
 	public function teardown()

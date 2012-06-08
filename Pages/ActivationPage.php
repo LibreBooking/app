@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -18,39 +18,31 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class FakeUser extends User
+require_once(ROOT_DIR . 'Pages/ActionPage.php');
+require_once(ROOT_DIR . 'Presenters/ActivationPresenter.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+
+interface IActivationPage extends IPage
 {
-	public function __construct($userId = null)
-	{
-		$this->timezone = 'America/Chicago';
-		$this->language = 'en_us';
-		$this->emailAddress = 'test@test.com';
-        $this->id = $userId;
-		$this->statusId = AccountStatus::ACTIVE;
-	}
+}
 
-	public function SetStatus($statusId)
+class ActivationPage extends Page implements IActivationPage
+{
+	public function __construct()
 	{
-		$this->statusId = $statusId;
+		parent::__construct('Activation');
+		
+		$this->_presenter = new ActivationPage($this);
 	}
 	
-	public function SetLanguage($language)
+	public function PageLoad()
 	{
-		$this->language = $language;
+        $this->_presenter->PageLoad();
 	}
 	
-	public function SetTimezone($timezone)
+	public function ShowError()
 	{
-		$this->timezone = $timezone;
-	}
-
-	/**
-	 * @param $groups array|UserGroup[]
-	 * @return void
-	 */
-	public function SetGroups($groups)
-	{
-		$this->groups = $groups;
+		$this->Display('activation-error.tpl');
 	}
 }
 ?>

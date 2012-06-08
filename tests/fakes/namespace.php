@@ -41,13 +41,9 @@ require_once(ROOT_DIR . 'tests/fakes/FakeEmailService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeUser.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeSchedule.php');
 require_once(ROOT_DIR . 'tests/fakes/TestCustomAttribute.php');
-
 require_once(ROOT_DIR . 'tests/fakes/TestDateRange.php');
 require_once(ROOT_DIR . 'tests/fakes/TestReservation.php');
-
-//require_once('EmailFakes.php');
-//require_once('FakeReminder.php');
-//require_once('FakeReservation.php');
-//require_once('FakeResource.php');
-//require_once('FakeUser.php');
+require_once(ROOT_DIR . 'tests/fakes/FakePluginManager.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeRegistrationPage.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeActivation.php');
 ?>

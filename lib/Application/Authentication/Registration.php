@@ -55,12 +55,30 @@ class Registration implements IRegistration
 		$encryptedPassword = $this->_passwordEncryption->EncryptPassword($password);
 
 		$attributes = new UserAttribute($additionalFields);
-		$user = User::Create($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
+
+		if ($this->CreatePending())
+		{
+			$user = User::CreatePending($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
+		}
+		else
+		{
+			$user = User::Create($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
+		}
 		$user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
 		$user->ChangeCustomAttributes($attributeValues);
 
 		$userId = $this->_userRepository->Add($user);
 		$this->AutoAssignPermissions($userId);
+
+		return $user;
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function CreatePending()
+	{
+		return Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_REQUIRE_ACTIVATION, new BooleanConverter());
 	}
 
 	public function UserExists($loginName, $emailAddress)
@@ -100,6 +118,14 @@ class Registration implements IRegistration
 	{
 		$autoAssignCommand = new AutoAssignPermissionsCommand($userId);
 		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
+	}
+}
+
+class AdminRegistration extends Registration
+{
+	protected function CreatePending()
+	{
+		return false;
 	}
 }
 

@@ -148,7 +148,7 @@ class RegistrationPresenter extends ActionPresenter
 								  'position' => $this->page->GetPosition());
 
 		$language = Resources::GetInstance()->CurrentLanguage;
-		$this->registration->Register(
+		$user = $this->registration->Register(
 			$this->page->GetLoginName(),
 			$this->page->GetEmail(),
 			$this->page->GetFirstName(),
@@ -161,9 +161,8 @@ class RegistrationPresenter extends ActionPresenter
 			$this->GetAttributeValues());
 
 		$context = new WebLoginContext(ServiceLocator::GetServer(), new LoginData(false, $language));
-		$this->auth->Login($this->page->GetEmail(), $context);
-
-		$this->page->Redirect(Pages::UrlFromId($this->page->GetHomepage()));
+		$plugin = PluginManager::Instance()->LoadPostRegistration();
+		$plugin->HandleSelfRegistration($user, $this->page, $context);
 	}
 
 	/**

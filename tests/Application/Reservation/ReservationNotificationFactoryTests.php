@@ -34,15 +34,14 @@ class ReservationNotificationFactoryTests extends TestBase
 
     public function setup()
     {
+		parent::setup();
+
         $this->plugin = $this->getMock('IPostReservationFactory');
         $pluginManager = new FakePluginManager();
         $pluginManager->postResPlugin = $this->plugin;
         $this->service = $this->getMock('IReservationNotificationService');
 
         PluginManager::SetInstance($pluginManager);
-
-        parent::setup();
-
     }
 
     public function testLoadsAddFromPlugins()

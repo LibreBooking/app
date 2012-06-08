@@ -25,3 +25,14 @@ CREATE TABLE `custom_attribute_values` (
   INDEX `entity_category` (`entity_id`, `attribute_category`),
   INDEX `entity_attribute` (`entity_id`, `custom_attribute_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `account_activation`;
+CREATE TABLE `account_activation` (
+ `account_activation_id` mediumint(8) unsigned NOT NULL auto_increment,
+ `user_id` mediumint(8) unsigned NOT NULL,
+ `activation_code` varchar(30) NOT NULL,
+ `date_created` datetime NOT NULL,
+  PRIMARY KEY (`account_activation_id`),
+  INDEX (`activation_code`),
+  UNIQUE KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;

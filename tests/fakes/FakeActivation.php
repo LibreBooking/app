@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -16,26 +16,27 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-interface IRegistrationMini
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+
+class FakeActivation implements IAccountActivation
 {
 	/**
-	 * @param string $login
-	 * @param string $email
-	 * @param string $firstName
-	 * @param string $lastName
-	 * @param string $password unencrypted password
-     * @param string $timezone name of timezone
-     * @param string $language preferred language code
+	 * @var bool
 	 */
-  public function RegisterMini($login, $email, $firstName, $lastName, $password, $timezone, $language);
-	
+	public $_NotifyCalled = false;
+
 	/**
-	 * @param string $loginName
-	 * @param string $emailAddress
-	 * @return bool if the user exists or not
+	 * @var User
 	 */
-	public function UserExists($loginName, $emailAddress);
+	public $_NotifiedUser;
+
+	public function Notify(User $user)
+	{
+		$this->_NotifyCalled = true;
+		$this->_NotifiedUser = $user;
+	}
 }
+
 ?>

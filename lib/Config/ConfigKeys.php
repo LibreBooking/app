@@ -33,6 +33,7 @@ class ConfigKeys
     const SCRIPT_URL = 'script.url';
     const SERVER_TIMEZONE = 'server.timezone';
     const REGISTRATION_ENABLE_CAPTCHA = 'registration.captcha.enabled';
+    const REGISTRATION_REQUIRE_ACTIVATION = 'registration.require.email.activation';
     const VERSION = 'version';
 
     const SCHEDULE_SHOW_INACCESSIBLE_RESOURCES = 'show.inaccessible.resources';
@@ -47,6 +48,7 @@ class ConfigKeys
     const PLUGIN_AUTHENTICATION = 'Authentication';
     const PLUGIN_AUTHORIZATION = 'Authorization';
     const PLUGIN_PERMISSION = 'Permission';
+    const PLUGIN_POSTREGISTRATION = 'PostRegistration';
     const PLUGIN_PRERESERVATION = 'PreReservation';
     const PLUGIN_POSTRESERVATION = 'PostReservation';
 

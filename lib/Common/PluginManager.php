@@ -26,181 +26,189 @@ require_once(ROOT_DIR . 'lib/Config/namespace.php'); // namespace.php is an incl
 
 class PluginManager
 {
+	/**
+	 * @var PluginManager
+	 */
+	private static $_instance = null;
 
-    /**
-     * @var PluginManager
-     */
-    private static $_instance = null;
+	private function __construct()
+	{
+	}
 
-    /**
-     * Empty constructor is legal
-     */
-    private function __construct()
-    {
+	/**
+	 * @static
+	 * @return PluginManager
+	 */
+	public static function Instance()
+	{
+		if (is_null(self::$_instance))
+		{
+			self::$_instance = new PluginManager();
+		}
+		return self::$_instance;
+	}
 
-    }
+	/**
+	 * @static
+	 * @param $pluginManager PluginManager
+	 * @return void
+	 */
+	public static function SetInstance($pluginManager)
+	{
+		self::$_instance = $pluginManager;
+	}
 
-    /**
-     * @static
-     * @return PluginManager
-     */
-    public static function Instance()
-    {
-        /**
-         * $_instance variable seems to be always Null.
-         */
-        if (is_null(self::$_instance))
-        {
-            self::$_instance = new PluginManager();
-        }
-        return self::$_instance;
-    }
+	/**
+	 * Loads the configured Authentication plugin, if one exists
+	 * If no plugin exists, the default Authentication class is returned
+	 *
+	 * @return IAuthentication the authorization class to use
+	 */
+	public function LoadAuthentication()
+	{
+		require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+		require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+		$authentication = new Authentication($this->LoadAuthorization(), new UserRepository());
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHENTICATION, 'Authentication', $authentication);
 
-    /**
-     * @static
-     * @param $pluginManager PluginManager
-     * @return void
-     */
-    public static function SetInstance($pluginManager)
-    {
-        self::$_instance = $pluginManager;
-    }
+		if (!is_null($plugin))
+		{
+			return $plugin;
+		}
 
-    /**
-     * Loads the configured Authentication plugin, if one exists
-     * If no plugin exists, the default Authentication class is returned
-     *
-     * @return IAuthentication the authorization class to use
-     */
-    public function LoadAuthentication()
-    {
-        require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
-        require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-        /**
-         * Instantiate Authentication class object with
-         */
-        $authentication = new Authentication($this->LoadAuthorization(), new UserRepository());
-        $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHENTICATION, 'Authentication', $authentication);
+		return $authentication;
+	}
 
-        if (!is_null($plugin))
-        {
-            /**
-             * Returning authentication plugin
-             */
-            return $plugin;
-        }
+	/**
+	 * Loads the configured Permission plugin, if one exists
+	 * If no plugin exists, the default PermissionService class is returned
+	 *
+	 * @return IPermissionService
+	 */
+	public function LoadPermission()
+	{
+		require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
-        return $authentication;
-    }
+		$resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
+		$permissionService = new PermissionService($resourcePermissionStore);
 
-    /**
-     * Loads the configured Permission plugin, if one exists
-     * If no plugin exists, the default PermissionService class is returned
-     *
-     * @return IPermissionService
-     */
-    public function LoadPermission()
-    {
-        require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_PERMISSION, 'Permission', $permissionService);
 
-        $resourcePermissionStore = new ResourcePermissionStore(new ScheduleUserRepository());
-        $permissionService = new PermissionService($resourcePermissionStore);
+		if (!is_null($plugin))
+		{
+			return $plugin;
+		}
 
-        $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_PERMISSION, 'Permission', $permissionService);
+		return $permissionService;
+	}
 
-        if (!is_null($plugin))
-        {
-            return $plugin;
-        }
+	/**
+	 * Loads the configured Authorization plugin, if one exists
+	 * If no plugin exists, the default PermissionService class is returned
+	 *
+	 * @return IAuthorizationService
+	 */
+	public function LoadAuthorization()
+	{
+		require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
-        return $permissionService;
-    }
+		$authorizationService = new AuthorizationService(new UserRepository());
 
-    /**
-     * Loads the configured Authorization plugin, if one exists
-     * If no plugin exists, the default PermissionService class is returned
-     *
-     * @return IAuthorizationService
-     */
-    public function LoadAuthorization()
-    {
-        require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHORIZATION, 'Authorization', $authorizationService);
 
-        $authorizationService = new AuthorizationService(new UserRepository());
+		if (!is_null($plugin))
+		{
+			return $plugin;
+		}
 
-        $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHORIZATION, 'Authorization', $authorizationService);
+		return $authorizationService;
+	}
 
-        if (!is_null($plugin))
-        {
-            return $plugin;
-        }
+	/**
+	 * Loads the configured PreReservation plugin, if one exists
+	 * If no plugin exists, the default PreReservationFactory class is returned
+	 *
+	 * @return IPreReservationFactory
+	 */
+	public function LoadPreReservation()
+	{
+		require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 
-        return $authorizationService;
-    }
+		$factory = new PreReservationFactory();
 
-    /**
-     * Loads the configured PreReservation plugin, if one exists
-     * If no plugin exists, the default PreReservationFactory class is returned
-     *
-     * @return IPreReservationFactory
-     */
-    public function LoadPreReservation()
-    {
-        require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_PRERESERVATION, 'PreReservation', $factory);
 
-        $factory = new PreReservationFactory();
+		if (!is_null($plugin))
+		{
+			return $plugin;
+		}
 
-        $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_PRERESERVATION, 'PreReservation', $factory);
+		return $factory;
+	}
 
-        if (!is_null($plugin))
-        {
-            return $plugin;
-        }
+	/**
+	 * Loads the configured PreReservation plugin, if one exists
+	 * If no plugin exists, the default PreReservationFactory class is returned
+	 *
+	 * @return IPostReservationFactory
+	 */
+	public function LoadPostReservation()
+	{
+		require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
 
-        return $factory;
-    }
+		$factory = new PostReservationFactory();
 
-    /**
-        * Loads the configured PreReservation plugin, if one exists
-        * If no plugin exists, the default PreReservationFactory class is returned
-        *
-        * @return IPostReservationFactory
-        */
-       public function LoadPostReservation()
-       {
-           require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_POSTRESERVATION, 'PostReservation', $factory);
 
-           $factory = new PostReservationFactory();
+		if (!is_null($plugin))
+		{
+			return $plugin;
+		}
 
-           $plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_POSTRESERVATION, 'PostReservation', $factory);
+		return $factory;
+	}
 
-           if (!is_null($plugin))
-           {
-               return $plugin;
-           }
+	/**
+	 * Loads the configured PostRegistration plugin, if one exists
+	 * If no plugin exists, the default PostRegistration class is returned
+	 *
+	 * @return IPostRegistration
+	 */
+	public function LoadPostRegistration()
+	{
+		require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
-           return $factory;
-       }
+		$postRegistration = new PostRegistration(self::LoadAuthentication(), new AccountActivation());
 
-    /**
-     * @param string $configKey key to use
-     * @param string $pluginSubDirectory subdirectory name under 'plugins'
-     * @param mixed $baseImplementation the base implementation of the plugin.  allows decorating
-     * @return mixed|null plugin implementation
-     */
-    private function LoadPlugin($configKey, $pluginSubDirectory, $baseImplementation)
-    {
-        $plugin = Configuration::Instance()->GetSectionKey(ConfigSection::PLUGINS, $configKey);
-        $pluginFile = ROOT_DIR . "plugins/$pluginSubDirectory/$plugin/$plugin.php";
+		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_POSTREGISTRATION, 'PostRegistration', $postRegistration);
 
-        if (!empty($plugin) && file_exists($pluginFile))
-        {
-            require_once($pluginFile);
-            return new $plugin($baseImplementation);
-        }
+		if (!is_null($plugin))
+		{
+			return $plugin;
+		}
 
-        return null;
-    }
+		return $postRegistration;
+	}
+
+	/**
+	 * @param string $configKey key to use
+	 * @param string $pluginSubDirectory subdirectory name under 'plugins'
+	 * @param mixed $baseImplementation the base implementation of the plugin.  allows decorating
+	 * @return mixed|null plugin implementation
+	 */
+	private function LoadPlugin($configKey, $pluginSubDirectory, $baseImplementation)
+	{
+		$plugin = Configuration::Instance()->GetSectionKey(ConfigSection::PLUGINS, $configKey);
+		$pluginFile = ROOT_DIR . "plugins/$pluginSubDirectory/$plugin/$plugin.php";
+
+		if (!empty($plugin) && file_exists($pluginFile))
+		{
+			require_once($pluginFile);
+			return new $plugin($baseImplementation);
+		}
+
+		return null;
+	}
 
 }
 

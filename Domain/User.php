@@ -96,7 +96,9 @@ class User
 
 	protected $statusId;
 
-
+	/**
+	 * @return int|null|AccountStatus
+	 */
 	public function StatusId()
 	{
 		return $this->statusId;
@@ -384,6 +386,10 @@ class User
 		return $user;
 	}
 
+	/**
+	 * @static
+	 * @return User
+	 */
 	public static function Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt, $homepageId = Pages::DEFAULT_HOMEPAGE_ID)
 	{
 		$user = new User();
@@ -396,6 +402,18 @@ class User
 		$user->encryptedPassword = $password;
 		$user->passwordSalt = $passwordSalt;
 		$user->homepageId = $homepageId;
+		$user->statusId = AccountStatus::ACTIVE;
+		return $user;
+	}
+
+	/**
+	 * @static
+	 * @return User
+	 */
+	public static function CreatePending($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt, $homepageId = Pages::DEFAULT_HOMEPAGE_ID)
+	{
+		$user = self::Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt, $homepageId);
+		$user->statusId = AccountStatus::AWAITING_ACTIVATION;
 		return $user;
 	}
 

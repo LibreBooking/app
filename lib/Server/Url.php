@@ -36,8 +36,24 @@ class Url
     public function __construct($url)
     {
         $this->url = $url;
-        $this->hasQuestionMark = strpos($url, '?') !== false;
+        $this->hasQuestionMark = StringHelper::Contains($url, '?');
     }
+
+	/**
+	 * @param $urlFragment string
+	 * @return Url
+	 */
+	public function Add($urlFragment)
+	{
+		if (!StringHelper::EndsWith($this->url, '/'))
+		{
+			$this->url .= '/';
+		}
+
+		$this->url .= urlencode($urlFragment);
+
+		return $this;
+	}
 
     /**
      * @param string $name
@@ -70,6 +86,7 @@ class Url
     {
         return $this->url;
     }
+
 }
 
 ?>

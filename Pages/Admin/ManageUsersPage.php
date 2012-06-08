@@ -153,7 +153,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 			new UserRepository(),
 			new ResourceRepository(),
 			new PasswordEncryption(),
-            new Registration(),
+            new AdminRegistration(),
 			new AttributeService(new AttributeRepository()));
 
 		$this->pageable = new PageablePage($this);

@@ -36,6 +36,7 @@ $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // full or r
 $conf['settings']['image.upload.url'] = 'uploads/images';       // full or relative path to show uploaded images from
 $conf['settings']['cache.templates'] = 'true';                  // recommended, caching template files helps web pages render faster
 $conf['settings']['registration.captcha.enabled'] = 'true';     // recommended, requires php_gd2 enabled in php.ini
+$conf['settings']['registration.require.email.activation'] = 'false';     // requires enable.email = true
 $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out
 $conf['settings']['name.format'] = '{first} {last}';     		// display format when showing user names
 $conf['settings']['ics']['require.login'] = 'true';             // recommended, if the user must be logged in to access ics files
@@ -79,6 +80,7 @@ $conf['settings']['phpmailer']['sendmail.path'] = '/usr/sbin/sendmail';
 $conf['settings']['plugins']['Authentication'] = '';
 $conf['settings']['plugins']['Authorization'] = '';
 $conf['settings']['plugins']['Permission'] = '';
+$conf['settings']['plugins']['PostRegistration'] = '';
 $conf['settings']['plugins']['PreReservation'] = '';
 $conf['settings']['plugins']['PostReservation'] = '';
 /**

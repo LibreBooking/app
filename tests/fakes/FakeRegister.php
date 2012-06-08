@@ -35,6 +35,12 @@ class FakeRegistration implements IRegistration
 	public $_AdditionalFields;
 	public $_HomepageId;
 	public $_LastSynchronizedUser;
+	public $_RegisteredUser;
+
+	public function __construct()
+	{
+		$this->_RegisteredUser = new FakeUser(1);
+	}
 	/**
 	 * @var array|AttributeValue[]
 	 */
@@ -52,6 +58,8 @@ class FakeRegistration implements IRegistration
 		$this->_HomepageId = $homepageId;
 		$this->_AdditionalFields = $additionalFields;
 		$this->_AttributeValues = $attributes;
+
+		return $this->_RegisteredUser;
 	}
 	
 	public function UserExists($loginName, $emailAddress)

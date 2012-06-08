@@ -445,6 +445,7 @@ class en_us extends Language
         $strings['ResourceReservations'] = 'Resource Reservations';
         $strings['Customization'] = 'Customization';
         $strings['Attributes'] = 'Attributes';
+		$strings['ForgotPasswordEmailSent'] = 'An email has been sent to the address provided with instructions for resetting your password';
         // End Page Titles
 
         // Day representations
@@ -463,6 +464,7 @@ class en_us extends Language
         $strings['DayThursdayAbbr'] = 'Thu';
         $strings['DayFridayAbbr'] = 'Fri';
         $strings['DaySaturdayAbbr'] = 'Sat';
+		// End Day representations
 
         // Email Subjects
         $strings['ReservationApprovedSubject'] = 'Your Reservation Has Been Approved';
@@ -476,8 +478,8 @@ class en_us extends Language
         $strings['ParticipantDeletedSubject'] = 'Reservation Removed';
         $strings['InviteeAddedSubject'] = 'Reservation Invitation';
         $strings['ResetPassword'] = 'Password Reset Request';
-        $strings['ForgotPasswordEmailSent'] = 'An email has been sent to the address provided with instructions for resetting your password';
-        //
+        $strings['ActivateYourAccount'] = 'Please Activate Your Account';
+        // End Email Subjects
 
         $this->Strings = $strings;
 
