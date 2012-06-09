@@ -18,17 +18,27 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'lib/Email/Messages/AccountActivationEmail.php');
+
 class AccountActivation implements IAccountActivation
 {
+	/**
+	 * @var IAccountActivationRepository
+	 */
+	private $activationRepository;
 
-	public function __construct(IAccountActivationRepository $repository)
+	public function __construct(IAccountActivationRepository $activationRepository, IUserRepository $userRepository)
 	{
-
+		$this->activationRepository = $activationRepository;
 	}
 	
 	public function Notify(User $user)
 	{
-		// TODO: Implement Notify() method.
+		$activationCode = uniqid();
+
+		$this->activationRepository->AddActivation($user, $activationCode);
+
+		ServiceLocator::GetEmailService()->Send(new AccountActivationEmail($user, $activationCode));
 	}
 }
 

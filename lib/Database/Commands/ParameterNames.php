@@ -28,6 +28,8 @@ class ParameterNames
     const ACCESSORY_NAME = '@accessoryname';
     const ACCESSORY_QUANTITY = '@quantity';
 
+	const ACTIVATION_CODE = '@activation_code';
+
     const ALLOW_CALENDAR_SUBSCRIPTION = '@allow_calendar_subscription';
 
     const ANNOUNCEMENT_ID = '@announcementid';

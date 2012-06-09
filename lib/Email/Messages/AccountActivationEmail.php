@@ -18,11 +18,24 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class AccountActivationEmail extends EmailMessage
+require_once(ROOT_DIR . 'lib/Email/namespace.php');
+
+class AccountActivationEmail extends EmailMessage
 {
+	/**
+	 * @var User
+	 */
+	private $user;
+
+	/**
+	 * @var string
+	 */
+	private $activationCode;
+
 	public function __construct(User $user, $activationCode)
 	{
 		$this->user = $user;
+		$this->activationCode = $activationCode;
 		parent::__construct($user->Language());
 	}
 
@@ -56,5 +69,4 @@ public class AccountActivationEmail extends EmailMessage
 		return $this->FetchTemplate('AccountActivation.tpl');
 	}
 }
-
 ?>

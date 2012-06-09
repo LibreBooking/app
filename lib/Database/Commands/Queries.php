@@ -24,25 +24,12 @@ class Queries
 	{
 	}
 
-	//MPinnegar
-	//TO-DO: Put this in alphabetical order
-	//Words following @symbols are variables that will be used by the SQL statement. In this case we will be taking in the userId and using that to find out the reservations that the person represented by the userId has
-	//So the only symbol is the @userId. All of these can be found in the ParameterNames class above
-
-	//Inside of the statement, besides using the funky @ symbol for variables, everything else is like a normal SQL statement. You use the table and column names from the SQL database.
-	//The below constants will be used inside of Commands.php in the style of "parent::__construct(Queries::GET_ALL_RESERVATIONS_BY_USER)"
-	//I am lame, and have not actually tested this. I need to populate my database and give this one a whirl. However, running it on the empty database was successful, so there aren't any simple syntax errors :)
-	const GET_ALL_RESERVATIONS_BY_USER =
-			'SELECT
-			reservation_series.*
-		FROM
-			reservation_users JOIN reservation_series
-		WHERE
-			(@userid = reservation_users.user_id AND reservation_users.series_id = reservation_series.series_id)';
-
 	const ADD_ACCESSORY =
 			'INSERT INTO accessories (accessory_name, accessory_quantity)
 		VALUES (@accessoryname, @quantity)';
+
+	const ADD_ACCOUNT_ACTIVATION =
+			'INSERT INTO account_activation (user_id, activation_code, date_created) VALUES (@userid, @activation_code, @dateCreated)';
 
 	const ADD_ANNOUNCEMENT =
 			'INSERT INTO announcements (announcement_text, priority, start_date, end_date)

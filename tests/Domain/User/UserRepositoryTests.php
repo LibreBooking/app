@@ -486,6 +486,21 @@ class UserRepositoryTests extends TestBase
         $this->assertEquals($command, $this->db->_LastCommand);
     }
 
+	public function testAddsAccountActivation()
+	{
+		$userId = 11;
+		$code = uniqid();
+
+		$user = new FakeUser($userId);
+		$repo = new UserRepository();
+
+		$repo->AddActivation($user, $code);
+
+		$command = new AddAccountActivationCommand($userId, $code);
+
+		$this->assertEquals($command, $this->db->_LastCommand);
+	}
+
     private function GetUserRow($userId = 1, $first = 'first', $last = 'last', $email = 'e@mail.com', $userName = 'username', $lastLogin = null, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
     {
         $row =

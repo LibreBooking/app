@@ -20,24 +20,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Database/SqlCommand.php');
 
-
-//MPinnegar
-//TO-DO: Move this into alphabetical order
-class GetAllReservationsByUserCommand /*Give it a very literal name describing what the command is going to do*/
-    extends SqlCommand
-{
-    //You need to build the constructor so that the command can be put together. The "heavy lifting" is done by SqlCommand.php and the info comes from DataConstant.php
-    public function __contruct($userId) //List each parameter to your query. Generally if you are "getting" something from the database you'll only need to pass in whatever columns are the primary keys. Later on down the line these variables you pass in to the constructor will be used to replace @ symbol variables in the SQL query
-    {
-        //Use the method on the superclass parent so that the query will be put together properly. The GET_ALL_RESERVATIONS_BY_USER is where the actual text of the SQL query is written
-        parent::__construct(Queries::GET_ALL_RESERVATIONS_BY_USER);
-        //Here we add the variable to the SQL statement. I assume behind the scenes that the @userId is replaced by the actual userId that we pass in as a string
-        //The Parameter::USERNAME tells the Parameter constructor which of the @symbols to replace with the string contained inside of $userId. In this case it will replace @userId
-        $this->AddParameter(new Parameter(ParameterNames::USERNAME, $userId));
-        //Now you're done! You've essentially "built" the query by first constructing the SQL query with a bunch of empty variables in it, and then by using AddParameter() to replace those variables with actual values
-    }
-}
-
 class AddAccessoryCommand extends SqlCommand
 {
     public function __construct($accessoryName, $quantityAvailable)
@@ -46,6 +28,17 @@ class AddAccessoryCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_NAME, $accessoryName));
         $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_QUANTITY, $quantityAvailable));
     }
+}
+
+class AddAccountActivationCommand extends SqlCommand
+{
+	public function __construct($userId, $activationCode)
+	{
+		parent::__construct(Queries::ADD_ACCOUNT_ACTIVATION);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::ACTIVATION_CODE, $activationCode));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+	}
 }
 
 class AddAnnouncementCommand extends SqlCommand

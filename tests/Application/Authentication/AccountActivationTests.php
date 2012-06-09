@@ -27,15 +27,15 @@ class AccountActivationTests extends TestBase
 
 	public function testGetsActivationCodeAndSendsEmail()
 	{
-		$userId = 100;
-		$user = new FakeUser($userId);
-		$userRepository = $this->getMock('IAccountActivationRepository');
+		$user = new FakeUser(100);
+		$activationRepo = $this->getMock('IAccountActivationRepository');
+		$userRepo = $this->getMock('IUserRepository');
 
-		$userRepository->expects($this->once())
+		$activationRepo->expects($this->once())
 					->method('AddActivation')
-					->with($this->equalTo($userId), $this->anything());
+					->with($this->equalTo($user), $this->anything());
 		
-		$activation = new AccountActivation($userRepository);
+		$activation = new AccountActivation($activationRepo, $userRepo);
 		$activation->Notify($user);
 
 		$this->assertInstanceOf('AccountActivationEmail', $this->fakeEmailService->_LastMessage);

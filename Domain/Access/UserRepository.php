@@ -114,7 +114,12 @@ interface IUserViewRepository
 	function LoadGroups($userId, $roleLevel = null);
 }
 
-class UserRepository implements IUserRepository
+interface IAccountActivationRepository
+{
+	public function AddActivation(User $user, $activationCode);
+}
+
+class UserRepository implements IUserRepository, IAccountActivationRepository
 {
 	/**
 	 * @var DomainCache
@@ -486,6 +491,11 @@ class UserRepository implements IUserRepository
 		}
 
 		$attributeReader->Free();
+	}
+
+	public function AddActivation(User $user, $activationCode)
+	{
+		ServiceLocator::GetDatabase()->ExecuteInsert(new AddAccountActivationCommand($user->Id(), $activationCode));
 	}
 }
 

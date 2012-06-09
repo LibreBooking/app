@@ -178,7 +178,8 @@ class PluginManager
 	{
 		require_once(ROOT_DIR . 'lib/Application/Authorization/namespace.php');
 
-		$postRegistration = new PostRegistration(self::LoadAuthentication(), new AccountActivation());
+		$userRepository = new UserRepository();
+		$postRegistration = new PostRegistration(self::LoadAuthentication(), new AccountActivation($userRepository, $userRepository));
 
 		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_POSTREGISTRATION, 'PostRegistration', $postRegistration);
 

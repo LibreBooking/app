@@ -34,5 +34,6 @@ CREATE TABLE `account_activation` (
  `date_created` datetime NOT NULL,
   PRIMARY KEY (`account_activation_id`),
   INDEX (`activation_code`),
-  UNIQUE KEY (`user_id`)
+  UNIQUE KEY (`user_id`),
+  UNIQUE KEY (`activation_code`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
