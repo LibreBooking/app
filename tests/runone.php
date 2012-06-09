@@ -95,8 +95,8 @@ $passed = true;
 $totalRun = 0;
 $totalPassed = 0;
 $totalFailed = 0;
-$totalTimer = new Timer();
-$totalTimer->start();
+$totalTimer = new StopWatch();
+$totalTimer->Start();
 
 $suite = new PHPUnit_Framework_TestSuite('PHPUnit Framework');
 
@@ -119,7 +119,7 @@ for ($i = 0; $i < count($tests); $i++)
 
 PHPUnit_TextUI_TestRunner::run($suite);
 
-$totalTimer->stop();
+$totalTimer->Stop();
 
 
 

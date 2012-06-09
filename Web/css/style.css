@@ -182,7 +182,7 @@ div.push {
     color: #aaa;
 }
 
-form.login, form.forgot, form.register, #reservationForm, form.box-form {
+form.login, form.forgot, form.register, #reservationForm, form.box-form, #activation-body {
     margin: 0 0 0 8px;
     padding: 20px 16px 48px 16px;
     font-weight: normal;

@@ -222,17 +222,11 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
         return $this->GetForm(FormKeys::CAPTCHA);
     }
 
-	/**
-	 * @return void
-	 */
 	public function ProcessAction()
 	{
 		$this->_presenter->ProcessAction();
 	}
 
-	/**
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op

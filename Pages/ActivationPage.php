@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Pages/ActionPage.php');
 require_once(ROOT_DIR . 'Presenters/ActivationPresenter.php');
@@ -24,25 +24,46 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 interface IActivationPage extends IPage
 {
+	public function ShowSent();
+	public function ShowError();
 }
 
-class ActivationPage extends Page implements IActivationPage
+class ActivationPage extends ActionPage implements IActivationPage
 {
 	public function __construct()
 	{
 		parent::__construct('Activation');
-		
-		$this->_presenter = new ActivationPage($this);
+
+		$userRepo = new UserRepository();
+		$this->_presenter = new ActivationPresenter($this, new AccountActivation($userRepo, $userRepo));
 	}
-	
-	public function PageLoad()
+
+	public function ProcessPageLoad()
 	{
-        $this->_presenter->PageLoad();
+		$this->_presenter->PageLoad();
 	}
-	
+
+	public function ProcessAction()
+	{
+		$this->_presenter->Resend();
+	}
+
+	public function ProcessDataRequest($dataRequest)
+	{
+		// no-op
+	}
+
+	public function ShowSent()
+	{
+		$this->Display('Activation/activation-sent.tpl');
+	}
+
 	public function ShowError()
 	{
-		$this->Display('activation-error.tpl');
+		$this->Display('Activation/activation-error.tpl');
 	}
+
+
 }
+
 ?>
