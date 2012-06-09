@@ -18,15 +18,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='scripts/css/colorbox.css'}
 <div id='activation-body'>
-	<h2 align="center">You will receive an activation email soon.</h2>
-	<!--
-	<br/>
-	<br/>
-	<form>
-		If you did not receive your activation email, please enter you email address<br/>
-		{textbox name="EMAIL" class="textbox" size=30}<br/>
-		<input type="submit" value="Resend my activation email" class="button" />
-	</form>
-	-->
+	<h2 align="center">{translate key=ActivationEmailSent}</h2>
 </div>
 {include file='globalfooter.tpl'}

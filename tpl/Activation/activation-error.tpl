@@ -18,6 +18,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='scripts/css/colorbox.css'}
 <div id='activation-body'>
-	<h2 align="center">Sorry, we could not activate your account.</h2>
+	<h2 align="center">{translate key=AccountActivationError}</h2>
 </div>
 {include file='globalfooter.tpl'}

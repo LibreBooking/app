@@ -384,6 +384,8 @@ class en_us extends Language
         $strings['True'] = 'True';
         $strings['False'] = 'False';
 		$strings['ForgotPasswordEmailSent'] = 'An email has been sent to the address provided with instructions for resetting your password';
+		$strings['ActivationEmailSent'] = 'You will receive an activation email soon.';
+		$strings['AccountActivationError'] = 'Sorry, we could not activate your account.';
         // End Strings
 
         // Errors
