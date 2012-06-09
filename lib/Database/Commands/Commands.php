@@ -657,11 +657,11 @@ class GetAllGroupAdminsCommand extends SqlCommand
 
 class GetAllGroupUsersCommand extends SqlCommand
 {
-    public function __construct($groupId)
+    public function __construct($groupId, $statusId = AccountStatus::ACTIVE)
     {
         parent::__construct(Queries::GET_ALL_GROUP_USERS);
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
-        $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, AccountStatus::ACTIVE));
+        $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $statusId));
     }
 }
 

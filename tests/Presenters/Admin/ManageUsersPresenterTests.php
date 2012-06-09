@@ -102,10 +102,15 @@ class ManageUsersPresenterTests extends TestBase
 				->method('GetPageSize')
 				->will($this->returnValue($pageSize));
 
+		$this->page
+				->expects($this->once())
+				->method('GetFilterStatusId')
+				->will($this->returnValue(AccountStatus::ALL));
+
 		$this->userRepo
 				->expects($this->once())
 				->method('GetList')
-				->with($this->equalTo($pageNumber), $this->equalTo($pageSize))
+				->with($this->equalTo($pageNumber), $this->equalTo($pageSize), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo(AccountStatus::ALL))
 				->will($this->returnValue($userList));
 
 		$this->page

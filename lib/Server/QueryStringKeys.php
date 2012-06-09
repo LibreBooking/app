@@ -27,6 +27,7 @@ class QueryStringKeys
 	const ACCESSORY_ID = 'aid';
 	const ACTION = 'action';
 	const ACCOUNT_ACTIVATION_CODE = 'ac';
+	const ACCOUNT_STATUS = 'as';
 	const ANNOUNCEMENT_ID = 'aid';
 	const ATTRIBUTE_CATEGORY = 'ac';
 	const ATTRIBUTE_ID = 'aid';

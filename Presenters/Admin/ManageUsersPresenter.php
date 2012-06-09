@@ -108,7 +108,7 @@ class ManageUsersPresenter extends ActionPresenter
         }
         else
         {
-            $userList = $this->userRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
+            $userList = $this->userRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize(), null, null, null, $this->page->GetFilterStatusId());
         }
 
         $this->page->BindUsers($userList->Results());

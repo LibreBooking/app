@@ -39,7 +39,7 @@ class GroupAdminUserRepository extends UserRepository
         parent::__construct();
     }
 
-    public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+    public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null, $accountStatus = AccountStatus::ALL)
     {
         $user = $this->LoadById($this->userSession->UserId);
 
@@ -50,7 +50,7 @@ class GroupAdminUserRepository extends UserRepository
             $groupIds[] = $group->GroupId;
         }
 
-        return $this->groupRepository->GetUsersInGroup($groupIds, $pageNumber, $pageSize, $sortField, $sortDirection, $filter);
+        return $this->groupRepository->GetUsersInGroup($groupIds, $pageNumber, $pageSize, $sortField, $sortDirection, $filter, $accountStatus);
     }
 }
 

@@ -21,9 +21,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h1>{translate key=ManageUsers}</h1>
 
 <div style="padding: 10px 0px;">
-	<label for="userSearch">{translate key=FindUser}:</label><br/>
-	<input type="text" id="userSearch" class="textbox"
-		   size="40"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllUsers}
+	<table>
+		<tr>
+			<td><label for="userSearch">{translate key=FindUser}:</label></td>
+			<td><label for="filterStatusId">{translate key=Status}:</label></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="userSearch" class="textbox"
+					   size="40"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllUsers}</td>
+			<td><select id="filterStatusId" class="textbox">
+				{html_options selected=$FilterStatusId options=$statusDescriptions}
+				</select></td>
+		</tr>
+
+	</table>
 </div>
 
 <table class="list userList">
@@ -65,10 +76,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td align="center"><a href="#" class="update resetPassword">{translate key='Reset'}</a></td>
 		<td align="center"><a href="#" class="update delete">{html_image src="cross-button.png"}</a></td>
 	</tr>
+	{if $Definitions|count > 0}
 	<tr>
 		<td class="id"><input type="hidden" class="id" value="{$user->Id}"/></td>
 		<td colspan="15" class="{$rowCss} customAttributes" userId="{$user->Id}">
-			{if $Definitions|count > 0}
 			<div class="customAttributes">
 				<p>{translate key=AdditionalAttributes} <a href="#" class="update changeAttributes">{translate key=Edit}</a></p>
 				<ul>
@@ -79,9 +90,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					{/foreach}
 				</ul>
 			</div>
-			{/if}
+
 		</td>
 	</tr>
+	{/if}
 {/foreach}
 </table>
 
@@ -287,6 +299,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	submitUrl: '{$smarty.server.SCRIPT_NAME}',
 	saveRedirect: '{$smarty.server.SCRIPT_NAME}',
 	selectUserUrl: '{$smarty.server.SCRIPT_NAME}?uid=',
+	filterUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACCOUNT_STATUS}=',
 	actions: actions,
 	manageReservationsUrl: '{$ManageReservationsUrl}'
 	};

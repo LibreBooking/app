@@ -68,9 +68,10 @@ interface IGroupViewRepository
 	 * @param int $pageNumber
 	 * @param int $pageSize
 	 * @param ISqlFilter $filter
+	 * @param AccountStatus|int $accountStatus
 	 * @return PageableData of GroupUserView
 	 */
-	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null);
+	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ALL);
 
 	/**
 	 * @abstract
@@ -113,9 +114,9 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 
-	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null)
+	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ACTIVE)
 	{
-		$command = new GetAllGroupUsersCommand($groupIds);
+		$command = new GetAllGroupUsersCommand($groupIds, $accountStatus);
 
 		if ($filter != null)
 		{
@@ -143,7 +144,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		}
 		$reader->Free();
 
-		$reader = $db->Query(new GetAllGroupUsersCommand($groupId));
+		$reader = $db->Query(new GetAllGroupUsersCommand($groupId, AccountStatus::ACTIVE));
 		while ($row = $reader->GetRow())
 		{
 			$group->WithUser($row[ColumnNames::USER_ID]);

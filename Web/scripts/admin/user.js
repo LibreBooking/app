@@ -6,6 +6,7 @@ function UserManagement(opts) {
 		userList: $('table.list'),
 
 		userAutocomplete: $('#userSearch'),
+		filterStatusId: $('#filterStatusId'),
 
 		permissionsDialog: $('#permissionsDialog'),
 		passwordDialog: $('#passwordDialog'),
@@ -83,6 +84,13 @@ function UserManagement(opts) {
 		elements.userAutocomplete.userAutoComplete(options.userAutocompleteUrl, function(ui) {
 			elements.userAutocomplete.val( ui.item.label );
 			window.location.href = options.selectUserUrl + ui.item.value
+		});
+
+		elements.filterStatusId.change(function()
+		{
+			var statusid = $(this).val();
+			var url = options.filterUrl + statusid;
+		    window.location.href = url;
 		});
 
 		$(".save").click(function() {

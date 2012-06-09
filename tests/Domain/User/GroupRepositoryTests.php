@@ -81,7 +81,7 @@ class GroupRepositoryTests extends TestBase
 
 		$actualCommand = $this->db->_LastCommand;
 
-		$this->assertEquals(new GetAllGroupUsersCommand($groupId), $actualCommand);
+		$this->assertEquals(new GetAllGroupUsersCommand($groupId, AccountStatus::ACTIVE), $actualCommand);
 
 		$results = $users->Results();
 		$this->assertEquals(2, count($results));
@@ -117,7 +117,7 @@ class GroupRepositoryTests extends TestBase
 		$group = $this->repository->LoadById($groupId);
 
 		$expectedGroupCommand = new GetGroupByIdCommand($groupId);
-		$expectedUsersCommand = new GetAllGroupUsersCommand($groupId);
+		$expectedUsersCommand = new GetAllGroupUsersCommand($groupId, AccountStatus::ACTIVE);
 		$expectedPermissionsCommand = new GetAllGroupPermissionsCommand($groupId);
 		$expectedRolesCommand = new GetAllGroupRolesCommand($groupId);
 

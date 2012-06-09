@@ -130,6 +130,12 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @return AttributeFormElement[]|array
 	 */
 	public function GetAttributes();
+
+	/**
+	 * @abstract
+	 * @return AccountStatus|int
+	 */
+	public function GetFilterStatusId();
 }
 
 
@@ -163,12 +169,14 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	{
 		$this->_presenter->PageLoad();
 
-		$this->Set('statusDescriptions', array(AccountStatus::ACTIVE => 'Active', AccountStatus::AWAITING_ACTIVATION => 'Pending', AccountStatus::INACTIVE => 'Inactive'));
+		$this->Set('statusDescriptions', array(AccountStatus::ALL => 'All', AccountStatus::ACTIVE => 'Active', AccountStatus::AWAITING_ACTIVATION => 'Pending', AccountStatus::INACTIVE => 'Inactive'));
 
 		$this->Set('Timezone', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
         $this->Set('ManageReservationsUrl', Pages::MANAGE_RESERVATIONS);
+		$this->Set('FilterStatusId', $this->GetFilterStatusId());
+		//$this->Set('FilterOptions')
 
         $this->RenderTemplate();
 	}
@@ -315,6 +323,15 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	public function GetAttributes()
 	{
 		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+	}
+
+	/**
+	 * @return AccountStatus|int
+	 */
+	public function GetFilterStatusId()
+	{
+		$statusId = $this->GetQuerystring(QueryStringKeys::ACCOUNT_STATUS);
+		return empty($statusId) ? AccountStatus::ALL : $statusId;
 	}
 }
 ?>

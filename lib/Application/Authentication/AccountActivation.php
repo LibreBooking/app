@@ -50,13 +50,13 @@ class AccountActivation implements IAccountActivation
 	public function Activate($activationCode)
 	{
 		$userId = $this->activationRepository->FindUserIdByCode($activationCode);
+		$this->activationRepository->DeleteActivation($activationCode);
+
 		if ($userId != null)
 		{
 			$user = $this->userRepository->LoadById($userId);
 			$user->Activate();
 			$this->userRepository->Update($user);
-			$this->activationRepository->DeleteActivation($activationCode);
-
 			return new ActivationResult(true, $user);
 		}
 

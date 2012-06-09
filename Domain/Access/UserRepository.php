@@ -84,9 +84,10 @@ interface IUserViewRepository
 	 * @param null|string $sortField
 	 * @param null|string $sortDirection
 	 * @param null|ISqlFilter $filter
+	 * @param AccountStatus|int $accountStatus
 	 * @return PageableData|UserItemView[]
 	 */
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null, $accountStatus = AccountStatus::ALL);
 
 	/**
 	 * @param int $resourceId
@@ -184,17 +185,9 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		return null;
 	}
 
-	/**
-	 * @param int $pageNumber
-	 * @param int $pageSize
-	 * @param null $sortField
-	 * @param null $sortDirection
-	 * @param ISqlFilter $filter
-	 * @return PageableData|UserItemView[]
-	 */
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null, $accountStatus = AccountStatus::ALL)
 	{
-		$command = new GetAllUsersByStatusCommand();
+		$command = new GetAllUsersByStatusCommand($accountStatus);
 
 		if ($filter != null)
 		{
