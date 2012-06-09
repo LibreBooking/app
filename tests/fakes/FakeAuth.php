@@ -22,6 +22,9 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class FakeAuth implements IAuthentication
 {
+	/**
+	 * @var string
+	 */
 	public $_LastLogin;
 	public $_LastPassword;
 

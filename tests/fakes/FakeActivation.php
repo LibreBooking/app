@@ -32,10 +32,30 @@ class FakeActivation implements IAccountActivation
 	 */
 	public $_NotifiedUser;
 
+	/**
+	 * @var string
+	 */
+	public $_LastActivationCode;
+
+	/**
+	 * @var ActivationResult
+	 */
+	public $_ActivationResult;
+
 	public function Notify(User $user)
 	{
 		$this->_NotifyCalled = true;
 		$this->_NotifiedUser = $user;
+	}
+
+	/**
+	 * @param string $activationCode
+	 * @return ActivationResult
+	 */
+	public function Activate($activationCode)
+	{
+		$this->_LastActivationCode = $activationCode;
+		return $this->_ActivationResult;
 	}
 }
 

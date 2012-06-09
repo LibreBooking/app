@@ -392,6 +392,15 @@ class DeleteAccessoryCommand extends SqlCommand
     }
 }
 
+class DeleteAccountActivationCommand extends SqlCommand
+{
+    public function __construct($activationCode)
+    {
+        parent::__construct(Queries::DELETE_ACCOUNT_ACTIVATION);
+        $this->AddParameter(new Parameter(ParameterNames::ACTIVATION_CODE, $activationCode));
+    }
+}
+
 class DeleteAnnouncementCommand extends SqlCommand
 {
     public function __construct($announcementId)
@@ -925,6 +934,16 @@ class GetScheduleResourcesCommand extends SqlCommand
     {
         parent::__construct(Queries::GET_SCHEDULE_RESOURCES);
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+    }
+}
+
+class GetUserIdByActivationCodeCommand extends SqlCommand
+{
+    public function __construct($activationCode)
+    {
+        parent::__construct(Queries::GET_USERID_BY_ACTIVATION_CODE);
+        $this->AddParameter(new Parameter(ParameterNames::ACTIVATION_CODE, $activationCode));
+        $this->AddParameter(new Parameter(ParameterNames::STATUS_ID, AccountStatus::AWAITING_ACTIVATION));
     }
 }
 

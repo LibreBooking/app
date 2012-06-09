@@ -383,6 +383,7 @@ class en_us extends Language
         $strings['AdditionalAttributes'] = 'Additional Attributes';
         $strings['True'] = 'True';
         $strings['False'] = 'False';
+		$strings['ForgotPasswordEmailSent'] = 'An email has been sent to the address provided with instructions for resetting your password';
         // End Strings
 
         // Errors
@@ -445,7 +446,7 @@ class en_us extends Language
         $strings['ResourceReservations'] = 'Resource Reservations';
         $strings['Customization'] = 'Customization';
         $strings['Attributes'] = 'Attributes';
-		$strings['ForgotPasswordEmailSent'] = 'An email has been sent to the address provided with instructions for resetting your password';
+		$strings['AccountActivation'] = 'Account Activation';
         // End Page Titles
 
         // Day representations

@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Presenters/ActivationPresenter.php');
+
 class ActivationPresenterTests extends TestBase
 {
 	/**
@@ -31,31 +33,64 @@ class ActivationPresenterTests extends TestBase
 	private $page;
 
 	/**
-	 * @var IAccountActivation|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeActivation
 	 */
 	private $accountActivation;
+
+	/**
+	 * @var FakeAuth
+	 */
+	private $auth;
 
 	public function setup()
 	{
 		parent::setup();
 
-		$this->presenter = new ActivationPresenter($this->page, $this->accountActivation);
+		$this->page = $this->getMock('IActivationPage');
+		$this->accountActivation = new FakeActivation();
+		$this->auth = new FakeAuth();
+
+		$this->presenter = new ActivationPresenter($this->page, $this->accountActivation, $this->auth);
 	}
 
-	public function testResendEmail()
-	{
-		
-		
-	}
-	
 	public function testActivatesAccount()
 	{
-		
+		$user = new FakeUser(12);
+
+		$activationSuccess = new ActivationResult(true, $user);
+		$this->accountActivation->_ActivationResult = $activationSuccess;
+		$activationCode = uniqid();
+
+		$this->page->expects($this->once())
+				->method('GetActivationCode')
+				->will($this->returnValue($activationCode));
+
+		$this->page->expects($this->once())
+				->method('Redirect')
+				->with($this->equalTo(Pages::UrlFromId($user->Homepage())));
+
+		$this->presenter->PageLoad();
+
+		$this->assertEquals($activationCode, $this->accountActivation->_LastActivationCode);
+		$this->assertTrue($this->auth->_LoginCalled);
+		$this->assertEquals($user->EmailAddress(), $this->auth->_LastLogin);
+		$this->assertEquals(new WebLoginContext($this->fakeServer, new LoginData(false, $user->Language())), $this->auth->_LastLoginContext);
 	}
 
 	public function testWhenAccountCannotBeActivated()
 	{
+		$activationFailed = new ActivationResult(false);
+		$this->accountActivation->_ActivationResult = $activationFailed;
+		$activationCode = uniqid();
 
+		$this->page->expects($this->once())
+				->method('GetActivationCode')
+				->will($this->returnValue($activationCode));
+
+		$this->page->expects($this->once())
+				->method('ShowError');
+
+		$this->presenter->PageLoad();
 	}
 }
 

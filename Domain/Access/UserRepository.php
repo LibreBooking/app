@@ -116,7 +116,27 @@ interface IUserViewRepository
 
 interface IAccountActivationRepository
 {
+	/**
+	 * @abstract
+	 * @param User $user
+	 * @param string $activationCode
+	 * @return void
+	 */
 	public function AddActivation(User $user, $activationCode);
+
+	/**
+	 * @abstract
+	 * @param string $activationCode
+	 * @return int|null
+	 */
+	public function FindUserIdByCode($activationCode);
+
+	/**
+	 * @abstract
+	 * @param string $activationCode
+	 * @return void
+	 */
+	public function DeleteActivation($activationCode);
 }
 
 class UserRepository implements IUserRepository, IAccountActivationRepository
@@ -210,8 +230,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$this->_cache->Add($userId, $user);
 
 			return $user;
-		}
-		else
+		} else
 		{
 			return User::Null();
 		}
@@ -227,8 +246,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		{
 			$command = new GetUserByIdCommand($userId);
 			return $this->Load($command);
-		}
-		else
+		} else
 		{
 			return $this->_cache->Get($userId);
 		}
@@ -262,9 +280,9 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 	{
 		$db = ServiceLocator::GetDatabase();
 		$id = $db->ExecuteInsert(new RegisterUserCommand($user->Username(), $user->EmailAddress(), $user->FirstName(),
-														 $user->LastName(), $user->encryptedPassword, $user->passwordSalt, $user->Timezone(), $user->Language(),
-														 $user->Homepage(), $user->GetAttribute(UserAttribute::Phone), $user->GetAttribute(UserAttribute::Organization),
-														 $user->GetAttribute(UserAttribute::Position), $user->StatusId()));
+			$user->LastName(), $user->encryptedPassword, $user->passwordSalt, $user->Timezone(), $user->Language(),
+			$user->Homepage(), $user->GetAttribute(UserAttribute::Phone), $user->GetAttribute(UserAttribute::Organization),
+			$user->GetAttribute(UserAttribute::Position), $user->StatusId()));
 
 		$user->WithId($id);
 
@@ -286,19 +304,19 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 		$db = ServiceLocator::GetDatabase();
 		$updateUserCommand = new UpdateUserCommand($user->Id(),
-												   $user->StatusId(),
-												   $user->encryptedPassword,
-												   $user->passwordSalt,
-												   $user->FirstName(),
-												   $user->LastName(),
-												   $user->EmailAddress(),
-												   $user->Username(),
-												   $user->Homepage(),
-												   $user->Timezone(),
-												   $user->LastLogin(),
-												   $user->GetIsCalendarSubscriptionAllowed(),
-												   $user->GetPublicId(),
-												   $user->Language());
+			$user->StatusId(),
+			$user->encryptedPassword,
+			$user->passwordSalt,
+			$user->FirstName(),
+			$user->LastName(),
+			$user->EmailAddress(),
+			$user->Username(),
+			$user->Homepage(),
+			$user->Timezone(),
+			$user->LastLogin(),
+			$user->GetIsCalendarSubscriptionAllowed(),
+			$user->GetPublicId(),
+			$user->Language());
 		$db->Execute($updateUserCommand);
 
 		$removedPermissions = $user->GetRemovedPermissions();
@@ -417,7 +435,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		return $users;
 	}
 
-	private	function LoadPermissions($userId)
+	private function LoadPermissions($userId)
 	{
 		$allowedResourceIds = array();
 
@@ -496,6 +514,30 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 	public function AddActivation(User $user, $activationCode)
 	{
 		ServiceLocator::GetDatabase()->ExecuteInsert(new AddAccountActivationCommand($user->Id(), $activationCode));
+	}
+
+	/**
+	 * @param string $activationCode
+	 * @return int|null
+	 */
+	public function FindUserIdByCode($activationCode)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new GetUserIdByActivationCodeCommand($activationCode));
+		if ($row = $reader->GetRow())
+		{
+			return $row[ColumnNames::USER_ID];
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param string $activationCode
+	 * @return void
+	 */
+	public function DeleteActivation($activationCode)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteAccountActivationCommand($activationCode));
 	}
 }
 

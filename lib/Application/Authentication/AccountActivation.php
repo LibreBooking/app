@@ -27,11 +27,17 @@ class AccountActivation implements IAccountActivation
 	 */
 	private $activationRepository;
 
+	/**
+	 * @var IUserRepository
+	 */
+	private $userRepository;
+
 	public function __construct(IAccountActivationRepository $activationRepository, IUserRepository $userRepository)
 	{
 		$this->activationRepository = $activationRepository;
+		$this->userRepository = $userRepository;
 	}
-	
+
 	public function Notify(User $user)
 	{
 		$activationCode = uniqid();
@@ -40,6 +46,60 @@ class AccountActivation implements IAccountActivation
 
 		ServiceLocator::GetEmailService()->Send(new AccountActivationEmail($user, $activationCode));
 	}
+
+	public function Activate($activationCode)
+	{
+		$userId = $this->activationRepository->FindUserIdByCode($activationCode);
+		if ($userId != null)
+		{
+			$user = $this->userRepository->LoadById($userId);
+			$user->Activate();
+			$this->userRepository->Update($user);
+			$this->activationRepository->DeleteActivation($activationCode);
+
+			return new ActivationResult(true, $user);
+		}
+
+		return new ActivationResult(false);
+	}
 }
 
+class ActivationResult
+{
+	/**
+	 * @var bool
+	 */
+	private $activated;
+
+	/**
+	 * @var null|User
+	 */
+	private $user;
+
+	/**
+	 * @param bool $activated
+	 * @param User|null $user
+	 */
+	public function __construct($activated, $user = null)
+	{
+		$this->activated = $activated;
+		$this->user = $user;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function Activated()
+	{
+		return $this->activated;
+	}
+
+	/**
+	 * @return null|User
+	 */
+	public function User()
+	{
+		return $this->user;
+	}
+}
 ?>

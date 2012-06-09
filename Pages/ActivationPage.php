@@ -26,16 +26,22 @@ interface IActivationPage extends IPage
 {
 	public function ShowSent();
 	public function ShowError();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetActivationCode();
 }
 
 class ActivationPage extends ActionPage implements IActivationPage
 {
 	public function __construct()
 	{
-		parent::__construct('Activation');
+		parent::__construct('AccountActivation');
 
 		$userRepo = new UserRepository();
-		$this->_presenter = new ActivationPresenter($this, new AccountActivation($userRepo, $userRepo));
+		$this->_presenter = new ActivationPresenter($this, new AccountActivation($userRepo, $userRepo), PluginManager::Instance()->LoadAuthentication());
 	}
 
 	public function ProcessPageLoad()
@@ -45,7 +51,7 @@ class ActivationPage extends ActionPage implements IActivationPage
 
 	public function ProcessAction()
 	{
-		$this->_presenter->Resend();
+		//$this->_presenter->Resend();
 	}
 
 	public function ProcessDataRequest($dataRequest)
@@ -64,6 +70,13 @@ class ActivationPage extends ActionPage implements IActivationPage
 	}
 
 
+	/**
+	 * @return string
+	 */
+	public function GetActivationCode()
+	{
+		return $this->GetQuerystring(QueryStringKeys::ACCOUNT_ACTIVATION_CODE);
+	}
 }
 
 ?>

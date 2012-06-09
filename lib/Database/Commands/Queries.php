@@ -147,6 +147,9 @@ class Queries
 	const DELETE_ACCESSORY =
 			'DELETE FROM accessories WHERE accessory_id = @accessoryid';
 
+	const DELETE_ACCOUNT_ACTIVATION =
+			'DELETE FROM account_activation WHERE activation_code = @activation_code';
+
 	const DELETE_ANNOUNCEMENT =
 			'DELETE FROM announcements WHERE announcementid = @announcementid';
 
@@ -500,6 +503,11 @@ class Queries
 			r.schedule_id = @scheduleid AND
 			r.isactive = 1
 		ORDER BY r.name';
+
+	const GET_USERID_BY_ACTIVATION_CODE =
+			'SELECT a.user_id FROM account_activation a
+			INNER JOIN users u ON u.user_id = a.user_id
+			WHERE activation_code = @activation_code AND u.status_id = @statusid';
 
 	const GET_USER_BY_ID =
 			'SELECT * FROM users WHERE user_id = @userid';

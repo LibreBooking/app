@@ -27,6 +27,7 @@ class FakeUser extends User
 		$this->emailAddress = 'test@test.com';
         $this->id = $userId;
 		$this->statusId = AccountStatus::ACTIVE;
+		$this->homepageId = Pages::CALENDAR;
 	}
 
 	public function SetStatus($statusId)

@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Pages/ActivationPage.php');
+
 class ActivationPresenter
 {
 	/**
@@ -25,14 +27,45 @@ class ActivationPresenter
 	 */
 	private $page;
 
-	public function __construct(IActivationPage $page, IAccountActivation $accountActivation)
+	/**
+	 * @var IAccountActivation
+	 */
+	private $accountActivation;
+
+	/**
+	 * @var IAuthentication
+	 */
+	private $authentication;
+
+	public function __construct(IActivationPage $page, IAccountActivation $accountActivation, IAuthentication $authentication)
 	{
 		$this->page = $page;
+		$this->accountActivation = $accountActivation;
+		$this->authentication = $authentication;
 	}
 
 	public function PageLoad()
 	{
-		$this->page->ShowSent();
+		$activationCode = $this->page->GetActivationCode();
+		if(empty($activationCode))
+		{
+			$this->page->ShowSent();
+		}
+		else
+		{
+			$activationResult =	$this->accountActivation->Activate($activationCode);
+
+			if ($activationResult->Activated())
+			{
+				$user = $activationResult->User();
+				$this->authentication->Login($user->EmailAddress(), new WebLoginContext(ServiceLocator::GetServer(), new LoginData(false, $user->Language())));
+				$this->page->Redirect(Pages::UrlFromId($user->Homepage()));
+			}
+			else
+			{
+				$this->page->ShowError();
+			}
+		}
 	}
 }
 
