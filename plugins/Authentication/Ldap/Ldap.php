@@ -108,6 +108,11 @@ class Ldap extends Authentication implements IAuthentication
 			$this->options = new LdapOptions();
 		}
 
+		if ($ldapOptions->IsLdapDebugOn())
+		{
+			ldap_set_option(NULL, LDAP_OPT_DEBUG_LEVEL, 7);
+		}
+
 		$this->ldap = $ldapImplementation;
 		if ($ldapImplementation == null)
 		{

@@ -58,7 +58,10 @@ class Ldap2Wrapper
 	private function GetDnWithUid($username)
 	{
 		$baseDn = $this->options->BaseDn();
-		return "uid=$username,$baseDn";
+		$fullDn = "uid=$username,$baseDn";
+		Log::Debug('Using %s to find user %s', $fullDn, $username);
+
+		return $fullDn;
 	}
 
 	/**

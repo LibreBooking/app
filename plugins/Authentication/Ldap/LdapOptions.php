@@ -91,5 +91,10 @@ class LdapOptions
 		return $this->_options[LdapConfig::BASEDN];
 	}
 
+	public function IsLdapDebugOn()
+	{
+		return $this->GetConfig('ldap.debug.enabled', new BooleanConverter());
+	}
+
 }
 ?>

@@ -26,8 +26,9 @@ $conf['settings']['version'] = '3';		// LDAP protocol version
 $conf['settings']['starttls'] = 'false';	// TLS is started after connecting
 $conf['settings']['binddn'] = '';	// The distinguished name to bind as (username). If you don't supply this, an anonymous bind will be established.
 $conf['settings']['bindpw'] = '';	// Password for the binddn. If the credentials are wrong, the bind will fail server-side and an anonymous bind will be established instead. An empty bindpw string requests an unauthenticated bind.
-$conf['settings']['basedn'] = '';	// LDAP base name
+$conf['settings']['basedn'] = '';	// LDAP base name for searching and authenticating users. ie) ou=uidauthent,o=domain.com
 $conf['settings']['filter'] = '';	// Default search filter
-$conf['settings']['scope'] = '';	// TLS is started after connecting
-$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against phpScheudleIt database
+$conf['settings']['scope'] = '';	// Default search scope
+$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against phpScheduleIt database
+$conf['settings']['ldap.debug.enabled'] = 'false';	// if we should turn on ldap library debugging
 ?>
