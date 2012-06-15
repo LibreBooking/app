@@ -322,15 +322,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	reservation.init('{$UserId}');
 
 	{foreach from=$Participants item=user}
-		reservation.addParticipant('{$user->FullName}', '{$user->UserId}');
+		reservation.addParticipant("{$user->FullName|escape:'javascript'}", "{$user->UserId|escape:'javascript'}");
 	{/foreach}
 
 	{foreach from=$Invitees item=user}
-		reservation.addInvitee('{$user->FullName}', '{$user->UserId}');
+		reservation.addInvitee("{$user->FullName|escape:'javascript'}", '{$user->UserId}');
 	{/foreach}
 
 	{foreach from=$Accessories item=accessory}
-		reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}', '{$accessory->Name}');
+		reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}', "{$accessory->Name|escape:'javascript'}");
 	{/foreach}
 
 	var options = {

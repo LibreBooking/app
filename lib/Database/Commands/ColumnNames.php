@@ -173,6 +173,14 @@ class ColumnNames
 	const ATTRIBUTE_ENTITY_ID = 'entity_id';
 	const ATTRIBUTE_SORT_ORDER = 'sort_order';
 
+	// RESERVATION FILES //
+	const FILE_ID = 'file_id';
+	const FILE_NAME = 'file_name';
+	const FILE_TYPE = 'file_type';
+	const FILE_SIZE = 'file_size';
+	const FILE_CONTENT = 'file_content';
+	const FILE_EXTENSION = 'file_extension';
+
     // dynamic
     const TOTAL = 'total';
     const OWNER_FIRST_NAME = 'ownerFname';

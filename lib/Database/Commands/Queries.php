@@ -81,6 +81,10 @@ class Queries
 			'INSERT INTO reservation_accessories (series_id, accessory_id, quantity)
 		VALUES (@seriesid, @accessoryid, @quantity)';
 
+	const ADD_RESERVATION_ATTACHMENT =
+			'INSERT INTO reservation_files (series_id, file_name, file_type, file_size, file_content, file_extension)
+		VALUES (@seriesid, @file_name, @file_type, @file_size, @file_content, @file_extension)';
+
 	const ADD_RESERVATION_RESOURCE =
 			'INSERT INTO reservation_resources (series_id, resource_id, resource_level_id)
 		VALUES (@seriesid, @resourceid, @resourceLevelId)';
@@ -439,6 +443,8 @@ class Queries
 		FROM reservation_accessories ra
 		INNER JOIN accessories a ON ra.accessory_id = a.accessory_id
 		WHERE ra.series_id = @seriesid';
+
+	const GET_RESERVATION_ATTACHMENT = 'SELECT * FROM reservation_files WHERE file_id = @file_id';
 
 	const GET_RESERVATION_PARTICIPANTS =
 			'SELECT

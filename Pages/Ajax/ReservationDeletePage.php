@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
-require_once(ROOT_DIR . 'Presenters/ReservationDeletePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationDeletePresenter.php');
 
 interface IReservationDeletePage extends IReservationSaveResultsPage
 {

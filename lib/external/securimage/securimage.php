@@ -990,7 +990,7 @@ class Securimage
     {
         $code = $this->getCode();
 
-		Log::Debug('Stored captcha code: %s', $code);
+		Log::Debug('securimage validate() - stored captcha code: %s', $code);
         // returns stored code, or an empty string if no stored code was found
         // checks the session and sqlite database if enabled
         
@@ -1022,17 +1022,23 @@ class Securimage
     {
         $code = '';
         
-        if (isset($_SESSION['securimage_code_value'][$this->namespace]) &&
-         trim($_SESSION['securimage_code_value'][$this->namespace]) != '') {
-            if ($this->isCodeExpired(
-            $_SESSION['securimage_code_ctime'][$this->namespace]) == false) {
+        if (isset($_SESSION['securimage_code_value'][$this->namespace]) && trim($_SESSION['securimage_code_value'][$this->namespace]) != '')
+		{
+            if ($this->isCodeExpired($_SESSION['securimage_code_ctime'][$this->namespace]) == false)
+			{
                 $code = $_SESSION['securimage_code_value'][$this->namespace];
+				Log::Debug('securimage - code is expired');
             }
-        } else if ($this->use_sqlite_db == true && function_exists('sqlite_open')) {
+        }
+		else if ($this->use_sqlite_db == true && function_exists('sqlite_open')) {
             // no code in session - may mean user has cookies turned off
             $this->openDatabase();
             $code = $this->getCodeFromDatabase();
-        } else { /* no code stored in session or sqlite database, validation will fail */ }
+        }
+		else
+		{
+			Log::Debug('securimage - no code found in session');/* no code stored in session or sqlite database, validation will fail */
+		}
         
         return $code;
     }
@@ -1042,10 +1048,12 @@ class Securimage
      */
     protected function saveData()
     {
+		@session_start();
         $_SESSION['securimage_code_value'][$this->namespace] = $this->code;
         $_SESSION['securimage_code_ctime'][$this->namespace] = time();
-        
-        $this->saveCodeToDatabase();
+
+		Log::Debug('securimage - saving code to session: %s', $this->code);
+       // $this->saveCodeToDatabase();
     }
     
     /**

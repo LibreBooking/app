@@ -114,6 +114,7 @@ class FormKeys
 	const REPORT_END = 'reportEnd';
 	const REQUIRES_APPROVAL = 'requiresApproval';
 	const RESERVATION_ACTION = 'reservationAction';
+	const RESERVATION_FILE = 'reservationFile';
 	const RESERVATION_ID = 'reservationId';
 	const RESERVATION_TITLE = 'reservationTitle';
 	const RESOURCE = 'resource';

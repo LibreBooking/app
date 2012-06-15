@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once(ROOT_DIR . 'Presenters/ReservationDeletePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationDeletePresenter.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationDeletePage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 

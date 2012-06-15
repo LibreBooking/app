@@ -39,3 +39,18 @@ CREATE TABLE `account_activation` (
 	REFERENCES users(`user_id`)
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `reservation_files`;
+CREATE TABLE IF NOT EXISTS `reservation_files` (
+  `file_id` int unsigned NOT NULL auto_increment,
+  `series_id` int unsigned NOT NULL,
+  `file_name` varchar(250) NOT NULL,
+  `file_type` varchar(15) NOT NULL,
+  `file_size` varchar(45) NOT NULL,
+  `file_content` longblob NOT NULL,
+  `file_extension` varchar(10) NOT NULL,
+  PRIMARY KEY  (`file_id`),
+  FOREIGN KEY (`series_id`)
+  	REFERENCES reservation_series(`series_id`)
+  	ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;

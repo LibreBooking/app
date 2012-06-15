@@ -29,6 +29,7 @@ class QueryStringKeys
 	const ACCOUNT_ACTIVATION_CODE = 'ac';
 	const ACCOUNT_STATUS = 'as';
 	const ANNOUNCEMENT_ID = 'aid';
+	const ATTACHMENT_FILE_ID = 'afid';
 	const ATTRIBUTE_CATEGORY = 'ac';
 	const ATTRIBUTE_ID = 'aid';
 	const AUTOCOMPLETE_TERM = 'term';

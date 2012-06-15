@@ -19,7 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenter.php');
 
 interface IReservationPage extends IPage
 {

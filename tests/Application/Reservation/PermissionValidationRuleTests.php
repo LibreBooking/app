@@ -78,32 +78,4 @@ class PermissionValidationRuleTests extends TestBase
 	}
 }
 
-class FakePermissionService implements IPermissionService
-{
-	/**
-	 * @var array|IResource[]
-	 */
-	public $Resources;
-
-	/**
-	 * @var UserSession
-	 */
-	public $User;
-	
-	public $ReturnValues;
-	
-	private $_invocationCount = 0;
-	public function __construct($returnValues)
-	{
-		$this->ReturnValues = $returnValues;
-	}
-	
-	public function CanAccessResource(IResource $resource, UserSession $user)
-	{
-		$this->Resources[] = $resource;
-		$this->User = $user;
-		
-		return $this->ReturnValues[$this->_invocationCount++];
-	}
-}
 ?>

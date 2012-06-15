@@ -1,6 +1,6 @@
 function HasResponseText(responseText) {
 	return (
-			(responseText.trim != undefined && responseText.trim() != '') || (responseText.constructor == Object && responseText.ErrorIds)
+			(responseText.trim != undefined && responseText.trim() != '') || (responseText.constructor == Object && responseText.ErrorIds != undefined)
 			);
 }
 function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHandler, options)
@@ -26,17 +26,19 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 					formElement.find('.indicator').hide();
 					formElement.find('button').show();
 
-					var hasValidationSummary = formElement.find('.validationSummary').length > 0;
+					var validationSummary = $('.validationSummary');
+					var hasValidationSummary = validationSummary.length > 0;
+					var hasResponseText = HasResponseText(responseText);
+
 					if (hasValidationSummary)
 					{
-						$('.validationSummary').hide();
+						validationSummary.hide();
 					}
-
-					if (responseHandler && HasResponseText(responseText))
+					if (responseHandler && hasResponseText)
 					{
 						responseHandler(responseText, form);
 					}
-					else if (hasValidationSummary && HasResponseText(responseText))
+					else if (hasValidationSummary && hasResponseText)
 					{
 						$('.asyncValidation').hide();
 						$.each(responseText.ErrorIds, function(index, errorId) {
@@ -50,7 +52,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 
 						if (responseText.ErrorIds.length > 0)
 						{
-							$('.validationSummary').show();
+							validationSummary.show();
 							formElement.trigger('onValidationFailed', responseText);
 						}
 					}

@@ -54,6 +54,7 @@ require_once(ROOT_DIR . 'tests/Infrastructure/Database/Infrastructure_Database_S
 require_once(ROOT_DIR . 'tests/Presenters/Presenters_Suite.php');
 require_once(ROOT_DIR . 'tests/Presenters/Dashboard/DashboardPresenters_Suite.php');
 require_once(ROOT_DIR . 'tests/Presenters/Admin/AdminPresenters_Suite.php');
+require_once(ROOT_DIR . 'tests/Presenters/Reservation/ReservationPresenters_Suite.php');
 
 require_once(ROOT_DIR . 'tests/WebService/WebService_Suite.php');
 require_once(ROOT_DIR . 'tests/WebServices/WebServices_Suite.php');
@@ -90,6 +91,7 @@ class AllTests
         $suite->addTest(Presenters_Suite::suite());
         $suite->addTest(DashboardPresenters_Suite::suite());
         $suite->addTest(AdminPresenters_Suite::suite());
+        $suite->addTest(ReservationPresenters_Suite::suite());
 
         $suite->addTest(WebService_Suite::suite());
         $suite->addTest(WebServices_Suite::suite());

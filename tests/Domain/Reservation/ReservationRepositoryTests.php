@@ -770,6 +770,59 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($removeUpdated));
 	}
 
+	public function testAddAttachment()
+	{
+		$expectedFileId = 5346;
+
+		$fileName = 'fn';
+		$fileType = 'doc';
+		$fileSize = 100;
+		$fileContent = 'contents';
+		$fileExtension = 'doc';
+		$seriesId = 10;
+
+		$attachment = ReservationAttachment::Create($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
+		$command = new AddReservationAttachmentCommand($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
+
+		$this->db->_ExpectedInsertId = $expectedFileId;
+
+		$fileId = $this->repository->AddReservationAttachment($attachment);
+
+		$this->assertEquals($command, $this->db->_LastCommand);
+		$this->assertEquals($expectedFileId, $fileId);
+		$this->assertEquals($expectedFileId, $attachment->FileId());
+	}
+
+	public function testLoadsAttachment()
+	{
+		$attachmentId = 1;
+		$fileName = 'fn';
+		$fileType = 'doc';
+		$fileSize = 100;
+		$fileContent = 'contents';
+		$fileExtension = 'doc';
+		$seriesId = 10;
+
+		$expectedAttachment = ReservationAttachment::Create($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
+		$expectedAttachment->WithFileId($attachmentId);
+
+		$this->db->SetRows(array(array(
+								ColumnNames::FILE_ID => $attachmentId,
+								ColumnNames::FILE_CONTENT => $fileContent,
+								ColumnNames::FILE_EXTENSION => $fileExtension,
+								ColumnNames::FILE_NAME => $fileName,
+								ColumnNames::FILE_SIZE => $fileSize,
+								ColumnNames::FILE_TYPE => $fileType,
+						   		ColumnNames::SERIES_ID => $seriesId)
+		));
+
+		$command = new GetReservationAttachmentCommand($attachmentId);
+		$actualAttachment = $this->repository->LoadReservationAttachment($attachmentId);
+
+		$this->assertEquals($command, $this->db->_LastCommand);
+		$this->assertEquals($expectedAttachment, $actualAttachment);
+	}
+
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)
 	{
 		return new UpdateReservationCommand(

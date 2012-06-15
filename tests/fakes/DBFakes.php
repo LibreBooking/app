@@ -43,7 +43,7 @@ class FakeDatabase extends Database
 
 	public function SetReader($readerCount, IReader &$reader)
 	{
-		$this->reader[$readerCount] = &$reader;
+		$this->reader[$readerCount] = $reader;
 	}
 
 	public function &Query(ISqlCommand &$command) 
@@ -97,7 +97,11 @@ class FakeDatabase extends Database
 	{
 		array_push($this->_Commands, $command);
 	}
-	
+
+	/**
+	 * Set this to array(array())
+	 * @param $rows
+	 */
 	public function SetRows($rows)
 	{
 		$this->SetRow(0, $rows);

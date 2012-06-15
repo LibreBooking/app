@@ -216,6 +216,21 @@ class AddReservationAccessoryCommand extends SqlCommand
     }
 }
 
+class AddReservationAttachmentCommand extends SqlCommand
+{
+	public function __construct($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId)
+	{
+		parent::__construct(Queries::ADD_RESERVATION_ATTACHMENT);
+
+		$this->AddParameter(new Parameter(ParameterNames::FILE_NAME, $fileName));
+		$this->AddParameter(new Parameter(ParameterNames::FILE_TYPE, $fileType));
+		$this->AddParameter(new Parameter(ParameterNames::FILE_SIZE, $fileSize));
+		$this->AddParameter(new Parameter(ParameterNames::FILE_CONTENT, $fileContent));
+		$this->AddParameter(new Parameter(ParameterNames::FILE_EXTENSION, $fileExtension));
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+	}
+}
+
 class AddReservationResourceCommand extends SqlCommand
 {
     public function __construct($seriesId, $resourceId, $resourceLevelId)
@@ -835,6 +850,15 @@ class GetReservationAccessoriesCommand extends SqlCommand
     {
         parent::__construct(Queries::GET_RESERVATION_ACCESSORIES);
         $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+    }
+}
+
+class GetReservationAttachmentCommand extends SqlCommand
+{
+    public function __construct($fileId)
+    {
+        parent::__construct(Queries::GET_RESERVATION_ATTACHMENT);
+        $this->AddParameter(new Parameter(ParameterNames::FILE_ID, $fileId));
     }
 }
 

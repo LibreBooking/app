@@ -20,9 +20,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 define('ROOT_DIR', './');
 
-foreach (DateTimeZone::listIdentifiers() as $tz)
-{
-	echo "AddTimezone('$tz');<br/>";
-}
+header("Content-Type: application/octet-stream");
+header("Content-Disposition: inline; filename=vsm2011.xlsx");
 
+ob_clean();
+flush();
+readfile('C:/Users/nkorbel/Desktop/archive/vsm2011.xlsx');
 ?>

@@ -19,7 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationApprovalPage.php');
-require_once(ROOT_DIR . 'Presenters/ReservationApprovalPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationApprovalPresenter.php');
 
 class ReservationApprovalPresenterTests extends TestBase
 {

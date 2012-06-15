@@ -204,8 +204,6 @@ class LdapTests extends TestBase
 		$base = 'dc=example,dc=org';
 		$starttls = 'false';
 		$version = '3';
-		$filter = '(objectClass=*)';
-		$scope = 'sub';
 
 		$configFile = new FakeConfigFile();
 		$configFile->SetKey(LdapConfig::HOST, $hosts);
@@ -215,8 +213,6 @@ class LdapTests extends TestBase
 		$configFile->SetKey(LdapConfig::BASEDN, $base);
 		$configFile->SetKey(LdapConfig::STARTTLS, $starttls);
 		$configFile->SetKey(LdapConfig::VERSION, $version);
-		$configFile->SetKey(LdapConfig::FILTER, $filter);
-		$configFile->SetKey(LdapConfig::SCOPE, $scope);
 
 		$this->fakeConfig->SetFile(LdapConfig::CONFIG_ID, $configFile);
 
@@ -230,8 +226,6 @@ class LdapTests extends TestBase
 		$this->assertEquals($password, $options['bindpw']);
 		$this->assertEquals($base, $options['basedn']);
 		$this->assertEquals(false, $options['starttls']);
-		$this->assertEquals($filter, $options['filter']);
-		$this->assertEquals($scope, $options['scope']);
 		$this->assertEquals(intval($version), $options['version'], "version should be int");
 	}
 
@@ -256,6 +250,11 @@ class FakeLdapOptions extends LdapOptions
 	public function RetryAgainstDatabase()
 	{
 		return $this->_RetryAgainstDatabase;
+	}
+
+	public function IsLdapDebugOn()
+	{
+		return false;
 	}
 }
 

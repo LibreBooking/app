@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
-require_once(ROOT_DIR . 'Presenters/ReservationPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenter.php');
 
 interface INewReservationPage extends IReservationPage
 {

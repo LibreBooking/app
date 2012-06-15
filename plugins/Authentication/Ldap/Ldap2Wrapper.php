@@ -33,6 +33,11 @@ class Ldap2Wrapper
 	private $ldap;
 
 	/**
+	 * @var string
+	 */
+	private $successfulDn;
+
+	/**
 	 * @param LdapOptions $ldapOptions
 	 */
 	public function __construct($ldapOptions)
@@ -47,21 +52,27 @@ class Ldap2Wrapper
 		$this->ldap = Net_LDAP2::connect($this->options->Ldap2Config());
 		if (PEAR::isError($this->ldap))
 		{
-			$message = 'Could not connect to LDAP server. Check your settings in Ldap.config.php : '.$this->ldap->getMessage();
+			$message = 'Could not connect to LDAP server. Check your settings in Ldap.config.php : ' . $this->ldap->getMessage();
 			Log::Error($message);
-		    throw new Exception($message);
+			throw new Exception($message);
 		}
 
 		return true;
 	}
 
-	private function GetDnWithUid($username)
+	/**
+	 * @param string $username
+	 * @return array|string[]
+	 */
+	private function GetDnsWithUid($username)
 	{
-		$baseDn = $this->options->BaseDn();
-		$fullDn = "uid=$username,$baseDn";
-		Log::Debug('Using %s to find user %s', $fullDn, $username);
-
-		return $fullDn;
+		$fullDns = array();
+		$baseDns = $this->options->BaseDns();
+		foreach ($baseDns as $baseDn)
+		{
+			$fullDns[] = "uid=$username,$baseDn";
+		}
+		return $fullDns;
 	}
 
 	/**
@@ -72,22 +83,24 @@ class Ldap2Wrapper
 	public function Authenticate($username, $password)
 	{
 		Log::Debug('Trying to authenticate user %s against ldap', $username);
-		$result = $this->ldap->bind($this->GetDnWithUid($username), $password);
-
-		if ($result === true)
+		foreach ($this->GetDnsWithUid($username) as $dn)
 		{
-			return true;
-		}
-		else
-		{
-			if (Net_LDAP2::isError($result))
+			Log::Debug('Using %s to authenticate user %s', $dn, $username);
+			$result = $this->ldap->bind($dn, $password);
+			if ($result === true)
 			{
-				$message = 'Could not authenticate user against ldap %s: '.$result->getMessage();
-				Log::Error($message, $username);
+				Log::Debug('Authentication was successful');
+				$this->successfulDn = $dn;
+				return true;
 			}
 
-			return false;
+			if (Net_LDAP2::isError($result))
+			{
+				$message = 'Could not authenticate user against ldap %s: ' . $result->getMessage();
+				Log::Error($message, $username);
+			}
 		}
+		return false;
 	}
 
 	/**
@@ -98,13 +111,13 @@ class Ldap2Wrapper
 	{
 		Log::Debug('Getting ldap user entry for user %s', $username);
 
-		$attributes = array( 'sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title' );
+		$attributes = array('sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title');
 
-		$entry = $this->ldap->getEntry($this->GetDnWithUid($username),$attributes);
+		$entry = $this->ldap->getEntry($this->successfulDn, $attributes);
 
 		if (Net_LDAP2::isError($entry))
 		{
-		    $message = 'Could not fetch ldap entry for user %s: '.$entry->getMessage();
+			$message = 'Could not fetch ldap entry for user %s: ' . $entry->getMessage();
 			Log::Error($message, $username);
 			return null;
 		}

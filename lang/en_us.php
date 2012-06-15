@@ -405,6 +405,7 @@ class en_us extends Language
         $strings['CustomAttributeErrors'] = 'There are problems with the additional attributes you provided:';
         $strings['CustomAttributeRequired'] = '%s is a required field';
         $strings['CustomAttributeInvalid'] = 'The value provided for %s is invalid';
+        $strings['AttachmentLoadingError'] = 'Sorry, there was a problem loading the requested file.';
         // End Errors
 
         // Page Titles

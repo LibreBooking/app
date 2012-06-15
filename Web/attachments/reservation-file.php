@@ -18,17 +18,10 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class LdapConfig
-{
-    const CONFIG_ID = 'ldap';
-    const HOST = 'host';
-    const PORT = 'port';
-    const VERSION = 'version';
-    const STARTTLS = 'starttls';
-    const BINDDN = 'binddn';
-    const BINDPW = 'bindpw';
-    const BASEDN = 'basedn';
-    const RETRY_AGAINST_DATABASE = 'database.auth.when.ldap.user.not.found';
-}
+define('ROOT_DIR', '../../');
 
+require_once(ROOT_DIR . 'Pages/Reservation/ReservationAttachmentPage.php');
+
+$page = new ReservationAttachmentPage();
+$page->PageLoad();
 ?>

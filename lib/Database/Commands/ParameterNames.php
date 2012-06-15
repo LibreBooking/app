@@ -61,6 +61,12 @@ class ParameterNames
     const EVENT_CATEGORY = '@event_category';
     const EVENT_TYPE = '@event_type';
 
+	const FILE_ID = '@file_id';
+	const FILE_NAME = '@file_name';
+	const FILE_TYPE = '@file_type';
+	const FILE_SIZE = '@file_size';
+	const FILE_CONTENT = '@file_content';
+	const FILE_EXTENSION = '@file_extension';
     const FIRST_NAME = '@fname';
 
     const GROUP_ID = '@groupid';
