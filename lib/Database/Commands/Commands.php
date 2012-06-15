@@ -862,6 +862,15 @@ class GetReservationAttachmentCommand extends SqlCommand
     }
 }
 
+class GetReservationAttachmentsCommand extends SqlCommand
+{
+    public function __construct($seriesId)
+    {
+        parent::__construct(Queries::GET_RESERVATION_ATTACHMENTS_FOR_SERIES);
+        $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+    }
+}
+
 class GetReservationParticipantsCommand extends SqlCommand
 {
     public function __construct($instanceId)

@@ -67,6 +67,19 @@ class UploadedFile
 		$info = pathinfo($this->OriginalName());
 		return $info['extension'];
 	}
+
+	/**
+	 * @return string
+	 */
+	public function Contents()
+	{
+		$tmpName = $this->TemporaryName();
+		$fp = fopen($tmpName, 'r');
+		$content = fread($fp, filesize($tmpName));
+		fclose($fp);
+
+		return $content;
+	}
 	
 	public function IsError()
 	{

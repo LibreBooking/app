@@ -267,6 +267,10 @@ class ReservationComponentTests extends TestBase
 			new ReservationAccessory(1, 2)
 		);
 
+		$attachments = array(
+			new ReservationAttachmentView(1, 2, 'filename')
+		);
+
 		$expectedStartDate = Date::Parse($startDateUtc, 'UTC');
 		$expectedEndDate = Date::Parse($endDateUtc, 'UTC');
 
@@ -292,6 +296,7 @@ class ReservationComponentTests extends TestBase
 		$reservationView->RepeatTerminationDate = $repeatTerminationDate;
 		$reservationView->StatusId = ReservationStatus::Pending;
 		$reservationView->Accessories = $accessories;
+		$reservationView->Attachments = $attachments;
 
 		$page->expects($this->once())
 				->method('SetAdditionalResources')
@@ -336,6 +341,10 @@ class ReservationComponentTests extends TestBase
 		$page->expects($this->once())
 				->method('SetAccessories')
 				->with($this->equalTo($accessories));
+
+		$page->expects($this->once())
+				->method('SetAttachments')
+				->with($this->equalTo($attachments));
 
 		$isEditable = true;
 

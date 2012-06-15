@@ -22,7 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="reservationbox">
 
-<form id="reservationForm" method="post">
+<form id="reservationForm" method="post" enctype="multipart/form-data">
 	<div class="reservationHeader">
 		<h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
 	</div>
@@ -171,6 +171,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 							  tabindex="110">{$Description}</textarea>
 				</label>
 			</li>
+			<li>
+				<label>{translate key=AttachFile}
+						<input type="file" {formname key=RESERVATION_FILE} />
+					</label>
+			</li>
 		</ul>
 	</div>
 
@@ -218,6 +223,18 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key='Cancel'}
 		</button>
 	</div>
+
+	<div style="clear:both">&nbsp;</div>
+
+	<div class="res-attachments">
+	<span class="heading">{translate key=Attachments}</span>
+	{if $Attachments|count > 0}
+		<a href="#" class="remove" id="btnRemoveAttachment">({translate key="Remove"})</a><br/>
+		{foreach from=$Attachments item=attachment}
+			<a href="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}" target="_blank">{$attachment->FileName()}</a>&nbsp;
+		{/foreach}
+	</div>
+	{/if}
 </form>
 
 <div id="dialogAddResources" class="dialog" title="{translate key=AddResources}" style="display:none;">
@@ -286,7 +303,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript" src="scripts/js/jquery.textarea-expander.js"></script>
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="scripts/js/jquery.form-2.43.js"></script>
+<script type="text/javascript" src="scripts/js/jquery.form-3.09.js"></script>
 <script type="text/javascript" src="scripts/resourcePopup.js"></script>
 <script type="text/javascript" src="scripts/reservation.js"></script>
 <script type="text/javascript" src="scripts/autocomplete.js"></script>

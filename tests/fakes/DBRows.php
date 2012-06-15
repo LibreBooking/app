@@ -254,4 +254,23 @@ class ReservationAccessoryRow
 		return $this;
 	}
 }
+
+class ReservationAttachmentItemRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($fileId, $seriesId, $fileName)
+	{
+		$this->rows[] = array(ColumnNames::FILE_ID => $fileId,
+							  ColumnNames::SERIES_ID => $seriesId,
+							  ColumnNames::FILE_NAME => $fileName);
+
+		return $this;
+	}
+}
 ?>

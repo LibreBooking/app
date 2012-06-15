@@ -118,6 +118,8 @@ class ReservationRepository implements IReservationRepository
 
 		$reservationSeriesId = $database->ExecuteInsert($insertReservationSeries);
 
+		$reservationSeries->WithSeriesId($reservationSeriesId);
+
 		$insertReservationResource = new AddReservationResourceCommand($reservationSeriesId, $reservationSeries->ResourceId(), ResourceLevel::Primary);
 
 		$database->Execute($insertReservationResource);
@@ -139,6 +141,11 @@ class ReservationRepository implements IReservationRepository
 		{
 			$insertAttributeValue = new AddAttributeValueCommand($attribute->AttributeId, $attribute->Value, $reservationSeriesId, CustomAttributeCategory::RESERVATION);
 			$database->Execute($insertAttributeValue);
+		}
+
+		if ($reservationSeries->AddedAttachment() != null)
+		{
+			$this->AddReservationAttachment($reservationSeries->AddedAttachment());
 		}
 
 		return $reservationSeriesId;

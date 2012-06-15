@@ -39,6 +39,7 @@ class Pages
 	const PASSWORD = 'password.php';
 	const PROFILE = 'profile.php';
 	const RESERVATION = 'reservation.php';
+	const RESERVATION_FILE = 'reservation-file.php';
 	const REGISTRATION = 'register.php';
 	const SCHEDULE = 'schedule.php';
 

@@ -62,6 +62,7 @@ class ReservationRepositoryTests extends TestBase
 		$inviteeIds = array(20, 90);
 		$accessory = new ReservationAccessory(928, 3);
 		$attribute = new AttributeValue(1, 'value');
+		$attachment = new FakeReservationAttachment(1);
 
 		$startUtc = Date::Parse($startCst, 'CST')->ToUtc();
 		$endUtc = Date::Parse($endCst, 'CST')->ToUtc();
@@ -69,8 +70,10 @@ class ReservationRepositoryTests extends TestBase
 		$dateCreatedUtc = Date::Parse('2010-01-01 12:14:16', 'UTC');
 		Date::_SetNow($dateCreatedUtc);
 
+		$attachmentId = 499;
 		$this->db->_ExpectedInsertIds[0] = $seriesId;
-		$this->db->_ExpectedInsertIds[1] = $reservationId;
+		$this->db->_ExpectedInsertIds[1] = $attachmentId;
+		$this->db->_ExpectedInsertIds[2] = $reservationId;
 
 		$userSession = new FakeUserSession();
 
@@ -91,6 +94,7 @@ class ReservationRepositoryTests extends TestBase
 		$reservation->ChangeInvitees($inviteeIds);
 		$reservation->AddAccessory($accessory);
 		$reservation->AddAttributeValue($attribute);
+		$reservation->AddAttachment($attachment);
 
 		$this->repository->Add($reservation);
 
@@ -129,7 +133,8 @@ class ReservationRepositoryTests extends TestBase
 		$insertInvitee1 = $this->GetAddUserCommand($reservationId, $inviteeIds[0], ReservationUserLevel::INVITEE);
 		$insertInvitee2 = $this->GetAddUserCommand($reservationId, $inviteeIds[1], ReservationUserLevel::INVITEE);
 
-		$this->assertEquals(10, count($this->db->_Commands));
+		$addAttachment = new AddReservationAttachmentCommand($attachment->FileName(), $attachment->FileType(), $attachment->FileSize(), $attachment->FileContents(), $attachment->FileExtension(), $seriesId);
+		$this->assertEquals(11, count($this->db->_Commands));
 
 		$this->assertEquals($insertReservationSeries, $this->db->_Commands[0]);
 		$this->assertEquals($insertReservationResource, $this->db->_Commands[1]);
@@ -141,6 +146,7 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($insertInvitee2));
 		$this->assertTrue($this->db->ContainsCommand($insertReservationAccessory));
 		$this->assertTrue($this->db->ContainsCommand($insertReservationAttribute));
+		$this->assertTrue($this->db->ContainsCommand($addAttachment));
 	}
 
 	public function testRepeatedDatesAreSaved()

@@ -146,6 +146,14 @@ class ReservationAttachment
 	{
 		$this->fileId = $fileId;
 	}
+
+	/**
+	 * @param $seriesId int
+	 */
+	public function WithSeriesId($seriesId)
+	{
+		$this->seriesId = $seriesId;
+	}
 }
 
 ?>

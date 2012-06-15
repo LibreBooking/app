@@ -48,4 +48,5 @@ require_once(ROOT_DIR . 'tests/fakes/FakeRegistrationPage.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeActivation.php');
 require_once(ROOT_DIR . 'tests/fakes/FakePermissionService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationAttachment.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeUploadedFile.php');
 ?>

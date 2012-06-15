@@ -102,3 +102,19 @@
 #dialogSave input, #dialogSave button {
 	font-size: 11pt;
 }
+
+.res-attachments {
+
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid #dedede;
+}
+
+.res-attachments .heading {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+#reservationbox .res-attachments a {
+    font-size: 9pt;
+}

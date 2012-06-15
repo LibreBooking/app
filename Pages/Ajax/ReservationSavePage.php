@@ -120,6 +120,12 @@ interface IReservationSavePage extends IReservationSaveResultsPage
 	 * @return AttributeFormElement[]|array
 	 */
 	public function GetAttributes();
+
+	/**
+	 * @abstract
+	 * @return UploadedFile
+	 */
+	public function GetAttachment();
 }
 
 class ReservationSavePage extends SecurePage implements IReservationSavePage
@@ -378,6 +384,14 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function GetAttributes()
 	{
 		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+	}
+
+	/**
+	 * @return UploadedFile
+	 */
+	public function GetAttachment()
+	{
+		return $this->server->GetFile(FormKeys::RESERVATION_FILE);
 	}
 }
 

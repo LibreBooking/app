@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'Domain/BookableResource.php');
 require_once(ROOT_DIR . 'Domain/Reservation.php');
 require_once(ROOT_DIR . 'Domain/Values/ReservationAccessory.php');
+require_once(ROOT_DIR . 'Domain/ReservationAttachment.php');
 
 class ReservationSeries
 {
@@ -152,6 +153,11 @@ class ReservationSeries
 	{
 		return $this->_additionalResources;
 	}
+
+	/**
+	 * @var ReservationAttachment|null
+	 */
+	protected $addedAttachment;
 	
 	/**
 	 * @return int[]
@@ -501,6 +507,30 @@ class ReservationSeries
 		return false;
 	}
 
+	/**
+	 * @return ReservationAttachment|null
+	 */
+	public function AddedAttachment()
+	{
+		return $this->addedAttachment;
+	}
+
+	/**
+	 * @param ReservationAttachment $attachment
+	 */
+	public function AddAttachment(ReservationAttachment $attachment)
+	{
+		$this->addedAttachment = $attachment;
+	}
+
+	public function WithSeriesId($seriesId)
+	{
+		$this->seriesId = $seriesId;
+		if ($this->addedAttachment != null)
+		{
+			$this->addedAttachment->WithSeriesId($seriesId);
+		}
+	}
 
 }
 ?>

@@ -134,6 +134,7 @@ class ReservationViewRepository implements IReservationViewRepository
             $this->SetParticipants($reservationView);
             $this->SetAccessories($reservationView);
             $this->SetAttributes($reservationView);
+			$this->SetAttachments($reservationView);
         }
 
         return $reservationView;
@@ -261,6 +262,18 @@ class ReservationViewRepository implements IReservationViewRepository
         }
     }
 
+	private function SetAttachments(ReservationView $reservationView)
+	{
+		$getAttachments = new GetReservationAttachmentsCommand($reservationView->SeriesId);
+
+		$result = ServiceLocator::GetDatabase()->Query($getAttachments);
+
+		while ($row = $result->GetRow())
+		{
+			$reservationView->AddAttachment(new ReservationAttachmentView($row[ColumnNames::FILE_ID], $row[ColumnNames::SERIES_ID], $row[ColumnNames::FILE_NAME]));
+		}
+	}
+
     public function GetAccessoriesWithin(DateRange $dateRange)
     {
         $getAccessoriesCommand = new GetAccessoryListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
@@ -312,6 +325,8 @@ class ReservationViewRepository implements IReservationViewRepository
         $builder = array('BlackoutItemView', 'Populate');
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
     }
+
+
 }
 
 class ReservationResourceView implements IResource
@@ -509,7 +524,12 @@ class ReservationView
 	/**
 	 * @var array|AttributeValue[]
 	 */
-    private $Attributes = array();
+	public $Attributes = array();
+
+	/**
+	 * @var array|ReservationAttachmentView[]
+	 */
+	public $Attachments = array();
 
 	/**
 	 * @param AttributeValue $attribute
@@ -556,6 +576,14 @@ class ReservationView
     {
         return $this->StatusId == ReservationStatus::Pending;
     }
+
+	/**
+	 * @param ReservationAttachmentView $attachment
+	 */
+	public function AddAttachment(ReservationAttachmentView $attachment)
+	{
+		$this->Attachments[] = $attachment;
+	}
 }
 
 interface IReservedItemView
@@ -1148,4 +1176,42 @@ class AccessoryReservation
     }
 }
 
+class ReservationAttachmentView
+{
+	/**
+	 * @param int $fileId
+	 * @param int $seriesId
+	 * @param string $fileName
+	 */
+	public function __construct($fileId, $seriesId, $fileName)
+	{
+		$this->fileId = $fileId;
+		$this->seriesId = $seriesId;
+		$this->fileName = $fileName;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function FileId()
+	{
+		return $this->fileId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function FileName()
+	{
+		return $this->fileName;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function SeriesId()
+	{
+		return $this->seriesId;
+	}
+}
 ?>

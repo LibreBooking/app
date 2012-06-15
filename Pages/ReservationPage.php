@@ -97,6 +97,13 @@ interface IReservationPage extends IPage
 
 	/**
 	 * @abstract
+	 * @param $attachments ReservationAttachmentView[]|array
+	 * @return void
+	 */
+	function SetAttachments($attachments);
+
+	/**
+	 * @abstract
 	 * @param $canChangeUser
 	 * @return void
 	 */
@@ -270,6 +277,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function SetAccessories($accessories)
 	{
 		$this->Set('Accessories', $accessories);
+	}
+
+	public function SetAttachments($attachments)
+	{
+		$this->Set('Attachments', $attachments);
 	}
 
 	public function SetCanChangeUser($canChangeUser)

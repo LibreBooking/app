@@ -254,6 +254,8 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 		$this->page->SetIsEditable($this->reservationAuthorization->CanEdit($this->reservationView, $currentUser));
 		$this->page->SetIsApprovable($this->reservationAuthorization->CanApprove($this->reservationView, $currentUser));
+
+		$this->page->SetAttachments($this->reservationView->Attachments);
 	}
 
 	private function IsCurrentUserParticipating($currentUserId)

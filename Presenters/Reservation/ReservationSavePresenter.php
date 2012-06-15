@@ -89,6 +89,20 @@ class ReservationSavePresenter
 		$inviteeIds = $this->_page->GetInvitees();
 		$reservationSeries->ChangeInvitees($inviteeIds);
 
+		$attachment = $this->_page->GetAttachment();
+		if ($attachment != null)
+		{
+			if ($attachment->IsError())
+			{
+				Log::Error('Error attaching file %s. %s', $attachment->OriginalName(), $attachment->Error());
+			}
+			else
+			{
+				$att = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), 0);
+				$reservationSeries->AddAttachment($att);
+			}
+		}
+
 		return $reservationSeries;
 	}
 	

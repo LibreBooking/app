@@ -177,6 +177,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{translate key='Print'}
 			</button>
 		</div>
+
+		{if $Attachments|count > 0}
+			<div style="clear:both">&nbsp;</div>
+			<div class="res-attachments">
+			<span class="heading">{translate key=Attachments}</span>
+				{foreach from=$Attachments item=attachment}
+					<a href="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}" target="_blank">{$attachment->FileName()}</a>&nbsp;
+				{/foreach}
+			</div>
+		{/if}
 		<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
 	</div>
 </div>

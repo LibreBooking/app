@@ -446,6 +446,8 @@ class Queries
 
 	const GET_RESERVATION_ATTACHMENT = 'SELECT * FROM reservation_files WHERE file_id = @file_id';
 
+	const GET_RESERVATION_ATTACHMENTS_FOR_SERIES = 'SELECT file_id, series_id, file_name FROM reservation_files WHERE series_id = @seriesid';
+
 	const GET_RESERVATION_PARTICIPANTS =
 			'SELECT
 			u.user_id, 

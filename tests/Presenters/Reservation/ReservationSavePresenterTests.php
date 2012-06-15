@@ -105,6 +105,7 @@ class ReservationSavePresenterTests extends TestBase
 
 		$participants = $this->page->GetParticipants();
 		$invitees = $this->page->GetInvitees();
+		$attachment = new FakeUploadedFile();
 
 		$resource = new FakeBookableResource($resourceId, 'r1');
 		$additionalResource1 = new FakeBookableResource($additionalResources[0], 'r2');
@@ -151,6 +152,8 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals($invitees, $actualReservation->CurrentInstance()->AddedInvitees());
 		$this->assertEquals($accessories, $actualReservation->Accessories());
 		$this->assertTrue(in_array($expectedAttributes[0], $actualReservation->AttributeValues()));
+		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), 0);
+		$this->assertEquals($expectedAttachment, $actualReservation->AddedAttachment());
 	}
 
 	public function testHandlingReservationCreationDelegatesToHandler()
@@ -196,6 +199,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $invitees = array(11, 21, 41);
 	public $accessories = array();
 	public $attributes = array();
+	public $attachment;
 
 	public function __construct()
 	{
@@ -206,6 +210,7 @@ class FakeReservationSavePage implements IReservationSavePage
 		$this->repeatOptions = new RepeatNone();
 		$this->accessories = array(new FakeAccessoryFormElement(1, 2));
 		$this->attributes = array(new AttributeFormElement(1, "something"));
+		$this->attachment = new FakeUploadedFile();
 	}
 	
 	public function GetUserId()
@@ -316,6 +321,11 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetInvitees()
 	{
 		return $this->invitees;
+	}
+
+	public function GetAttachment()
+	{
+		return $this->attachment;
 	}
 
 	/**
