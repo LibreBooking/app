@@ -28,6 +28,8 @@ class LdapConfig
     const BINDDN = 'binddn';
     const BINDPW = 'bindpw';
     const BASEDN = 'basedn';
+    const FILTER = 'filter';
+    const SCOPE = 'scope';
     const RETRY_AGAINST_DATABASE = 'database.auth.when.ldap.user.not.found';
 }
 

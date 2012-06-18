@@ -33,9 +33,9 @@ class Ldap2Wrapper
 	private $ldap;
 
 	/**
-	 * @var string
+	 * @var LdapUser|null
 	 */
-	private $successfulDn;
+	private $user;
 
 	/**
 	 * @param LdapOptions $ldapOptions
@@ -43,6 +43,7 @@ class Ldap2Wrapper
 	public function __construct($ldapOptions)
 	{
 		$this->options = $ldapOptions;
+		$this->user = null;
 	}
 
 	public function Connect()
@@ -61,46 +62,65 @@ class Ldap2Wrapper
 	}
 
 	/**
-	 * @param string $username
-	 * @return array|string[]
-	 */
-	private function GetDnsWithUid($username)
-	{
-		$fullDns = array();
-		$baseDns = $this->options->BaseDns();
-		foreach ($baseDns as $baseDn)
-		{
-			$fullDns[] = "uid=$username,$baseDn";
-		}
-		return $fullDns;
-	}
-
-	/**
 	 * @param $username string
 	 * @param $password string
 	 * @return bool
 	 */
 	public function Authenticate($username, $password)
 	{
-		Log::Debug('Trying to authenticate user %s against ldap', $username);
-		foreach ($this->GetDnsWithUid($username) as $dn)
-		{
-			Log::Debug('Using %s to authenticate user %s', $dn, $username);
-			$result = $this->ldap->bind($dn, $password);
-			if ($result === true)
-			{
-				Log::Debug('Authentication was successful');
-				$this->successfulDn = $dn;
-				return true;
-			}
+		$this->PopulateUser($username);
 
-			if (Net_LDAP2::isError($result))
-			{
-				$message = 'Could not authenticate user against ldap %s: ' . $result->getMessage();
-				Log::Error($message, $username);
-			}
+		if ($this->user == null)
+		{
+			return false;
+		}
+
+		Log::Debug('Trying to authenticate user %s against ldap with dn %s', $username, $this->user->GetDn());
+
+		$result = $this->ldap->bind($this->user->GetDn(), $password);
+		if ($result === true)
+		{
+			Log::Debug('Authentication was successful');
+
+			return true;
+		}
+
+		if (Net_LDAP2::isError($result))
+		{
+			$message = 'Could not authenticate user against ldap %s: ' . $result->getMessage();
+			Log::Error($message, $username);
 		}
 		return false;
+	}
+
+	/**
+	 * @param $username string
+	 * @return void
+	 */
+	private function PopulateUser($username)
+	{
+		$filter = Net_LDAP2_Filter::create('uid', 'equals', $username);
+		$attributes = array('sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title', 'dn');
+		$options = array('attributes' => $attributes);
+
+		Log::Debug('Searching ldap for user %s', $username);
+		$searchResult = $this->ldap->search(null, $filter, $options);
+
+		if (Net_LDAP2::isError($searchResult))
+		{
+			$message = 'Could not search ldap for user %s: ' . $searchResult->getMessage();
+			Log::Error($message, $username);
+		}
+
+		$currentResult = $searchResult->current();
+		if ($searchResult->count() == 1 && $currentResult !== false)
+		{
+			Log::Debug('Found user %s', $username);
+			/** @var Net_LDAP2_Entry $entry  */
+			$this->user = new LdapUser($currentResult);
+		}
+
+		Log::Debug('Could not find user %s', $username);
 	}
 
 	/**
@@ -109,21 +129,7 @@ class Ldap2Wrapper
 	 */
 	public function GetLdapUser($username)
 	{
-		Log::Debug('Getting ldap user entry for user %s', $username);
-
-		$attributes = array('sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title');
-
-		$entry = $this->ldap->getEntry($this->successfulDn, $attributes);
-
-		if (Net_LDAP2::isError($entry))
-		{
-			$message = 'Could not fetch ldap entry for user %s: ' . $entry->getMessage();
-			Log::Error($message, $username);
-			return null;
-		}
-
-		/** @var Net_LDAP2_Entry $entry  */
-		return new LdapUser($entry);
+		return $this->user;
 	}
 }
 

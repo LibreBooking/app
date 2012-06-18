@@ -43,6 +43,8 @@ class LdapOptions
 		$this->SetOption('binddn', $this->GetConfig(LdapConfig::BINDDN));
 		$this->SetOption('bindpw', $this->GetConfig(LdapConfig::BINDPW));
 		$this->SetOption('basedn', $this->GetConfig(LdapConfig::BASEDN));
+		$this->SetOption('filter', $this->GetConfig(LdapConfig::FILTER));
+		$this->SetOption('scope', $this->GetConfig(LdapConfig::SCOPE));
 		
 		return $this->_options;
 	}
@@ -84,13 +86,9 @@ class LdapOptions
 		return $hosts;
 	}
 
-	public function BaseDns()
+	public function BaseDn()
 	{
-		$dns = $this->_options[LdapConfig::BASEDN];
-		if (!is_array($dns))
-		{
-			return array($dns);
-		}
+		return $this->_options[LdapConfig::BASEDN];
 	}
 
 	public function IsLdapDebugOn()

@@ -26,6 +26,7 @@ class LdapUser
 	private $phone;
 	private $institution;
 	private $title;
+	private $dn;
 
 	/**
 	 * @param $entry Net_LDAP2_Entry
@@ -38,6 +39,7 @@ class LdapUser
 		$this->phone = $entry->getValue('telephonenumber');
 		$this->institution = $entry->getValue('physicaldeliveryofficename');
 		$this->title = $entry->getValue('title');
+		$this->dn = $entry->getValue('dn');
 	}
 
 	public function GetFirstName()
@@ -70,6 +72,10 @@ class LdapUser
 		return $this->title;
 	}
 
+	public function GetDn()
+	{
+		return $this->dn;
+	}
 }
 
 ?>
