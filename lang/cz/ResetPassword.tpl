@@ -22,8 +22,8 @@ Here is your temporary phpScheduleIt password: {$TemporaryPassword}
 
 <br/>
 
-Your old password will no longer work.
+Vaše staré heslo již dále nebude funkční
 
-Please <a href="{$ScriptUrl}">Log in to phpScheduleIt</a> and change your password as soon as possible.
+Prosím <a href="{$ScriptUrl}">přihlašte se</a> a změňte si vaše heslo co nejdříve.
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

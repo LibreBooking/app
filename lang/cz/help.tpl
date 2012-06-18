@@ -135,7 +135,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Only Application Administrators can delete reservations in the past.</p>
 
-<h2>Adding a Reservation to Outlook&reg;</h2>
+<h2>Adding a Reservation to Calendar (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h2>
 
 <p>When viewing or updating a reservation you will see a button to Add to Outlook. If Outlook is installed on your
 	computer then you should be asked to add the meeting. If it is not installed you will be prompted to download an
@@ -156,10 +156,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	calendar follows the same steps. To subscribe to your personal calendar, open Scheudle -> My Calendar. On the
 	right side of the page, you will find a link to subscribe to the current calendar.</p>
 
-<h3>Outlook&reg;</h3>
+<h3>Calendar client (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
 
 <p>In most cases, simply clicking the Subscribe to this Calendar link will automatically set up the subscription in
-	Outlook. If it does not automatically add, open the Calendar view in Outlook. Right click My Calendars and choose
+	your calendar Client. For Outlook, if it does not automatically add, open the Calendar view, then right click My Calendars and choose
 	Add Calendar -> From Internet. Paste in the URL printed under the Subscribe to this Calendar link in
 	phpScheduleIt.</p>
 
@@ -347,12 +347,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	Bookings page. Options
 	are 'name', 'title', or 'none'. Default is 'name'.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory relative to the
-	phpScheduleIt directory to
-	store images. This directory will need to be writable.</p>
+<p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
+	This directory will need to be writable. This can be the full directory or relative to the
+		phpScheduleIt root directory.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL relative to script.url where uploaded
-	images can be viewed from
+<p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL where uploaded
+	images can be viewed from. This can be the full URL or relative to $conf['settings']['script.url'].
 </p>
 
 <p class="setting"><span>$conf['settings']['cache.templates']</span>Whether or not templates are cached. It is

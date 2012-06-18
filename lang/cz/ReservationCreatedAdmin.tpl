@@ -18,20 +18,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 	
-	Reservation Details: 
+	Byly vytvořeny tyto nové rezervace: 
 	<br/>
 	<br/>
 	
-	User: {$UserName}
-	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
-	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
-	Resource: {$ResourceName}<br/>
-	Title: {$Title}<br/>
-	Description: {$Description}<br/>
+	Uživatel: {$UserName}
+	Začátek: {formatdate date=$StartDate key=reservation_email}<br/>
+	Konec: {formatdate date=$EndDate key=reservation_email}<br/>
+	Zdroj: {$ResourceName}<br/>
+	Nadpis: {$Title}<br/>
+	Popis: {$Description|nl2br}<br/>
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		The reservation was occurs on the following dates:
+		Byly rezervovány všechny tyto termíny:
 		<br/>
 	{/if}
 	
@@ -41,10 +41,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		One or more of the resources reserved require approval before usage.  Please ensure that this reservation request is approved or rejected.
+		Jedna nebo více rezervací vyžaduje schválení od administrátora. Do té doby bude Vaše rezervace ve stavu schvalování.
 	{/if}
 	
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">View this reservation</a> | <a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
+	<a href="{$ScriptUrl}{$ReservationUrl}">Zobrazit rezervaci v systému</a> | <a href="{$ScriptUrl}">Přihlásit se do systému</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

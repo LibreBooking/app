@@ -288,6 +288,7 @@ class ReservationRepositoryTests extends TestBase
 		$expected->WithAccessory(new ReservationAccessory($accessoryId2, $quantity2));
 		$expected->WithAttribute(new AttributeValue($attributeId1, $attributeValue1));
 		$expected->WithAttribute(new AttributeValue($attributeId2, $attributeValue2));
+		$expected->WithAttachmentId($fileId);
 
 		$instance1 = new Reservation($expected, $duration->AddDays(10));
 		$instance1->SetReferenceNumber('instance1');

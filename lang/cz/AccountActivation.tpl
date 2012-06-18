@@ -17,27 +17,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
-	Administrátorem byly smazány tyto rezervace:
-	<br/>
-	<br/>
-	
-	Začátek: {formatdate date=$StartDate key=reservation_email}<br/>
-	Konec: {formatdate date=$EndDate key=reservation_email}<br/>
-	Zdroj: {$ResourceName}<br/>
-	Nadpis: {$Title}<br/>
-	Popis: {$Description|nl2br}<br/>
-	
-	{if count($RepeatDates) gt 0}
-		<br/>
-		Došlo ke smazání všech těchto rezervovaných termínů:
-		<br/>
-	{/if}
-	
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
-	{/foreach}
 
-	<a href="{$ScriptUrl}">Přihlásit se do rezervačního systému</a>
+{$FirstName},
+Děkujeme že jste se registrovali do našeho rezervačního systému. Nyní stačí jen <a href="{$ActivationUrl}">aktivovat svůj účet</a>.
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

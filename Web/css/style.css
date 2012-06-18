@@ -109,6 +109,7 @@ div.success {
     border: solid 1px #8CC739;
     background-color: #BCE27F;
     text-align: center;
+    url("../img/tick-circle.png");
 }
 
 div.error table {

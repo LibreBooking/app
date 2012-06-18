@@ -17,19 +17,19 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	Reservation Details:
+	Pozvánka do vytvořené rezervace:
 	<br/>
 	<br/>
 	
-	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
-	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
-	Resource: {$ResourceName}<br/>
-	Title: {$Title}<br/>
-	Description: {$Description|nl2br}<br/>
+	Začátek: {formatdate date=$StartDate key=reservation_email}<br/>
+	Konec: {formatdate date=$EndDate key=reservation_email}<br/>
+	Zdroj: {$ResourceName}<br/>
+	Nadpis: {$Title}<br/>
+	Popis: {$Description|nl2br}<br/>
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		The reservation occurs on the following dates:
+		Byly rezervovány všechny tyto termíny:
 		<br/>
 	{/if}
 	
@@ -39,15 +39,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
+		Jedna nebo více rezervací vyžaduje schválení od administrátora. Do té doby bude Vaše rezervace ve stavu schvalování.
 	{/if}
 	
 	<br/>
-	Attending? <a href="{$ScriptUrl}/{$AcceptUrl}">Yes</a> <a href="{$ScriptUrl}/{$DeclineUrl}">No</a>
+	Účastnit se? <a href="{$ScriptUrl}/{$AcceptUrl}">Ano</a> <a href="{$ScriptUrl}/{$DeclineUrl}">Ne</a>
 	<br/>
 
-	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Add to Outlook</a> |
-	<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Zobrazit tuto rezrvaci v systému</a> |
+	<a href="{$ScriptUrl}/{$ICalUrl}">Přidat do Outlook</a> |
+	<a href="{$ScriptUrl}">Přihlásit se do rezervačního systému</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}
