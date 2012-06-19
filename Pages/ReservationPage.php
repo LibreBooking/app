@@ -198,6 +198,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 								)
 		);
 		$this->Set('ReservationAction', $this->GetReservationAction());
+		$this->Set('MaxUploadSize', UploadedFile::GetMaxSize());
 		
 		$this->Display($this->GetTemplateName());
 	}

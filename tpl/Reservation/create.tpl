@@ -173,7 +173,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 			<li>
 				<label>{translate key=AttachFile}
-						<input type="file" {formname key=RESERVATION_FILE} />
+						<input type="file" {formname key=RESERVATION_FILE} /> <span class="note">({$MaxUploadSize}MB {translate key=Maximum})</span>
 					</label>
 			</li>
 		</ul>

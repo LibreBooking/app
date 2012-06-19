@@ -18,10 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 class ServiceLocator
 {
-
     /**
      * @var Database
      */
@@ -35,7 +33,12 @@ class ServiceLocator
     /**
      * @var IEmailService
      */
-    private static $_emailSerivce = null;
+    private static $_emailService = null;
+
+	/**
+	 * @var IFileSystem
+	 */
+	private static $_fileSystem = null;
 
     /**
      * @return Database
@@ -57,7 +60,6 @@ class ServiceLocator
     }
 
     /**
-     * Returning a server object
      * @return Server
      */
     public static function GetServer()
@@ -76,29 +78,54 @@ class ServiceLocator
         self::$_server = $server;
     }
 
-    public static function GetEmailService()
+	/**
+	 * @static
+	 * @return IEmailService
+	 */
+	public static function GetEmailService()
     {
         require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
-        if (self::$_emailSerivce == null)
+        if (self::$_emailService == null)
         {
             if (Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter()))
             {
-                self::$_emailSerivce = new EmailService();
+                self::$_emailService = new EmailService();
 //                self::$_emailSerivce = new EmailLogger();
             }
             else
             {
-                self::$_emailSerivce = new NullEmailService();
+                self::$_emailService = new NullEmailService();
             }
         }
-        return self::$_emailSerivce;
+        return self::$_emailService;
     }
 
     public static function SetEmailService(IEmailService $emailService)
     {
-        self::$_emailSerivce = $emailService;
+        self::$_emailService = $emailService;
     }
+
+	/**
+	 * @static
+	 * @return IFileSystem
+	 */
+	public static function GetFileSystem()
+	{
+		require_once(ROOT_DIR . 'lib/FileSystem/namespace.php');
+
+		if (self::$_fileSystem == null)
+		{
+			self::$_fileSystem = new FileSystem();
+		}
+
+		return self::$_fileSystem;
+	}
+
+	public static function SetFileSystem(IFileSystem $fileSystem)
+	{
+		self::$_fileSystem = $fileSystem;
+	}
 
 }
 

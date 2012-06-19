@@ -104,6 +104,7 @@ class ReservationUpdatePresenter
 			}
 			else
 			{
+				Log::Debug('Attaching file %s to series %s', $attachment->OriginalName(), $existingSeries->SeriesId());
 				$att = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), $existingSeries->SeriesId());
 				$existingSeries->AddAttachment($att);
 			}

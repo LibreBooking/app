@@ -133,7 +133,7 @@ class ReservationRepositoryTests extends TestBase
 		$insertInvitee1 = $this->GetAddUserCommand($reservationId, $inviteeIds[0], ReservationUserLevel::INVITEE);
 		$insertInvitee2 = $this->GetAddUserCommand($reservationId, $inviteeIds[1], ReservationUserLevel::INVITEE);
 
-		$addAttachment = new AddReservationAttachmentCommand($attachment->FileName(), $attachment->FileType(), $attachment->FileSize(), $attachment->FileContents(), $attachment->FileExtension(), $seriesId);
+		$addAttachment = new AddReservationAttachmentCommand($attachment->FileName(), $attachment->FileType(), $attachment->FileSize(), $attachment->FileExtension(), $seriesId);
 		$this->assertEquals(11, count($this->db->_Commands));
 
 		$this->assertEquals($insertReservationSeries, $this->db->_Commands[0]);
@@ -147,6 +147,8 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($insertReservationAccessory));
 		$this->assertTrue($this->db->ContainsCommand($insertReservationAttribute));
 		$this->assertTrue($this->db->ContainsCommand($addAttachment));
+		$this->assertEquals($attachment->FileContents(), $this->fileSystem->_AddedFileContents);
+
 	}
 
 	public function testRepeatedDatesAreSaved()
@@ -797,7 +799,7 @@ class ReservationRepositoryTests extends TestBase
 		$seriesId = 10;
 
 		$attachment = ReservationAttachment::Create($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
-		$command = new AddReservationAttachmentCommand($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
+		$command = new AddReservationAttachmentCommand($fileName, $fileType, $fileSize, $fileExtension, $seriesId);
 
 		$this->db->_ExpectedInsertId = $expectedFileId;
 
@@ -806,6 +808,9 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertEquals($command, $this->db->_LastCommand);
 		$this->assertEquals($expectedFileId, $fileId);
 		$this->assertEquals($expectedFileId, $attachment->FileId());
+		$this->assertEquals($fileContent, $this->fileSystem->_AddedFileContents);
+		$this->assertEquals("$fileId.$fileExtension", $this->fileSystem->_AddedFileName);
+		$this->assertEquals(Paths::ReservationAttachments(), $this->fileSystem->_AddedFilePath);
 	}
 
 	public function testLoadsAttachment()
@@ -821,9 +826,10 @@ class ReservationRepositoryTests extends TestBase
 		$expectedAttachment = ReservationAttachment::Create($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
 		$expectedAttachment->WithFileId($attachmentId);
 
+		$this->fileSystem->_ExpectedContents = $fileContent;
+
 		$this->db->SetRows(array(array(
 								ColumnNames::FILE_ID => $attachmentId,
-								ColumnNames::FILE_CONTENT => $fileContent,
 								ColumnNames::FILE_EXTENSION => $fileExtension,
 								ColumnNames::FILE_NAME => $fileName,
 								ColumnNames::FILE_SIZE => $fileSize,
@@ -836,6 +842,7 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->assertEquals($command, $this->db->_LastCommand);
 		$this->assertEquals($expectedAttachment, $actualAttachment);
+		$this->assertEquals(Paths::ReservationAttachments() . "$attachmentId.$fileExtension", $this->fileSystem->_ContentsPath);
 	}
 
 	public function testAddAttachmentToExistingReservation()
@@ -856,7 +863,7 @@ class ReservationRepositoryTests extends TestBase
 		$attachment = ReservationAttachment::Create($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
 		$series->AddAttachment($attachment);
 
-		$command = new AddReservationAttachmentCommand($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
+		$command = new AddReservationAttachmentCommand($fileName, $fileType, $fileSize, $fileExtension, $seriesId);
 		$this->db->_ExpectedInsertId = $expectedFileId;
 
 		$this->repository->Update($series);

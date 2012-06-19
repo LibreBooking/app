@@ -82,8 +82,8 @@ class Queries
 		VALUES (@seriesid, @accessoryid, @quantity)';
 
 	const ADD_RESERVATION_ATTACHMENT =
-			'INSERT INTO reservation_files (series_id, file_name, file_type, file_size, file_content, file_extension)
-		VALUES (@seriesid, @file_name, @file_type, @file_size, @file_content, @file_extension)';
+			'INSERT INTO reservation_files (series_id, file_name, file_type, file_size, file_extension)
+		VALUES (@seriesid, @file_name, @file_type, @file_size, @file_extension)';
 
 	const ADD_RESERVATION_RESOURCE =
 			'INSERT INTO reservation_resources (series_id, resource_id, resource_level_id)

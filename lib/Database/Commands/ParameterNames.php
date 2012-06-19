@@ -65,7 +65,6 @@ class ParameterNames
 	const FILE_NAME = '@file_name';
 	const FILE_TYPE = '@file_type';
 	const FILE_SIZE = '@file_size';
-	const FILE_CONTENT = '@file_content';
 	const FILE_EXTENSION = '@file_extension';
     const FIRST_NAME = '@fname';
 

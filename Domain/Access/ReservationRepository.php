@@ -337,13 +337,16 @@ class ReservationRepository implements IReservationRepository
 
 		if ($row = $reader->GetRow())
 		{
+			$fileId = $row[ColumnNames::FILE_ID];
+			$extension = $row[ColumnNames::FILE_EXTENSION];
+			$contents = ServiceLocator::GetFileSystem()->GetFileContents(Paths::ReservationAttachments() . "$fileId.$extension");
 			$attachment = ReservationAttachment::Create($row[ColumnNames::FILE_NAME],
 														$row[ColumnNames::FILE_TYPE],
 														$row[ColumnNames::FILE_SIZE],
-														$row[ColumnNames::FILE_CONTENT],
+														$contents,
 														$row[ColumnNames::FILE_EXTENSION],
 														$row[ColumnNames::SERIES_ID]);
-			$attachment->WithFileId($row[ColumnNames::FILE_ID]);
+			$attachment->WithFileId($fileId);
 
 			return $attachment;
 		}
@@ -357,9 +360,12 @@ class ReservationRepository implements IReservationRepository
 	 */
 	public function AddReservationAttachment(ReservationAttachment $attachmentFile)
 	{
-		$command = new AddReservationAttachmentCommand($attachmentFile->FileName(), $attachmentFile->FileType(), $attachmentFile->FileSize(), $attachmentFile->FileContents(), $attachmentFile->FileExtension(), $attachmentFile->SeriesId());
+		$command = new AddReservationAttachmentCommand($attachmentFile->FileName(), $attachmentFile->FileType(), $attachmentFile->FileSize(), $attachmentFile->FileExtension(), $attachmentFile->SeriesId());
 		$id = ServiceLocator::GetDatabase()->ExecuteInsert($command);
+		$extension = $attachmentFile->FileExtension();
 		$attachmentFile->WithFileId($id);
+
+		ServiceLocator::GetFileSystem()->Add(Paths::ReservationAttachments(), "$id.$extension", $attachmentFile->FileContents());
 
 		return $id;
 	}

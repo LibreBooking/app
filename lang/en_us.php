@@ -388,6 +388,7 @@ class en_us extends Language
 		$strings['AccountActivationError'] = 'Sorry, we could not activate your account.';
 		$strings['Attachments'] = 'Attachments';
 		$strings['AttachFile'] = 'Attach File';
+		$strings['Maximum'] = 'max';
         // End Strings
 
         // Errors

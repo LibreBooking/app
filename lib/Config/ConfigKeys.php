@@ -78,6 +78,8 @@ class ConfigKeys
     const NOTIFY_DELETE_RESOURCE_ADMINS = 'resource.admin.delete';
     const NOTIFY_DELETE_APPLICATION_ADMINS = 'application.admin.delete';
     const NOTIFY_DELETE_GROUP_ADMINS = 'group.admin.delete';
+
+	const UPLOAD_RESERVATION_ATTACHMENTS = 'reservation.attachments';
 }
 
 class ConfigSection
@@ -89,6 +91,7 @@ class ConfigSection
     const RESERVATION = 'reservation';
     const RESERVATION_NOTIFY = 'reservation.notify';
     const SCHEDULE = 'schedule';
+	const UPLOADS = 'uploads';
 }
 
 ?>

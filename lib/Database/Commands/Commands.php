@@ -218,14 +218,13 @@ class AddReservationAccessoryCommand extends SqlCommand
 
 class AddReservationAttachmentCommand extends SqlCommand
 {
-	public function __construct($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId)
+	public function __construct($fileName, $fileType, $fileSize, $fileExtension, $seriesId)
 	{
 		parent::__construct(Queries::ADD_RESERVATION_ATTACHMENT);
 
 		$this->AddParameter(new Parameter(ParameterNames::FILE_NAME, $fileName));
 		$this->AddParameter(new Parameter(ParameterNames::FILE_TYPE, $fileType));
 		$this->AddParameter(new Parameter(ParameterNames::FILE_SIZE, $fileSize));
-		$this->AddParameter(new Parameter(ParameterNames::FILE_CONTENT, $fileContent));
 		$this->AddParameter(new Parameter(ParameterNames::FILE_EXTENSION, $fileExtension));
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
 	}

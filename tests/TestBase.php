@@ -55,6 +55,11 @@ class TestBase extends PHPUnit_Framework_TestCase
 	 * @var FakePluginManager
 	 */
 	public $fakePluginManager;
+
+	/**
+	 * @var FakeFileSystem
+	 */
+	public $fileSystem;
 	
 	public function setup()
 	{
@@ -69,10 +74,12 @@ class TestBase extends PHPUnit_Framework_TestCase
 		$this->fakeResources = new FakeResources();
 		$this->fakeUser = $this->fakeServer->UserSession;
 		$this->fakePluginManager = new FakePluginManager();
+		$this->fileSystem = new FakeFileSystem();
 
 		ServiceLocator::SetDatabase($this->db);
 		ServiceLocator::SetServer($this->fakeServer);
 		ServiceLocator::SetEmailService($this->fakeEmailService);
+		ServiceLocator::SetFileSystem($this->fileSystem);
 		Configuration::SetInstance($this->fakeConfig);
 		Resources::SetInstance($this->fakeResources);
 		PluginManager::SetInstance($this->fakePluginManager);
