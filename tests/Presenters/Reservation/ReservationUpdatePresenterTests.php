@@ -132,7 +132,10 @@ class ReservationUpdatePresenterTests extends TestBase
 			$this->page->GetStartDate() . " " . $this->page->GetStartTime(),
 			$this->page->GetEndDate() . " " . $this->page->GetEndTime(),
 			$timezone);
-			
+
+		$attachment = new FakeUploadedFile();
+		$this->page->attachment = $attachment;
+
 		$existingSeries = $this->presenter->BuildReservation();
 
 		$expectedAccessories = array(new ReservationAccessory(1, 2));
@@ -152,6 +155,8 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($this->user, $expectedSeries->BookedBy());
 		$this->assertEquals($expectedAccessories, $existingSeries->Accessories());
 		$this->assertEquals($expectedAttributes, $existingSeries->AttributeValues());
+		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), $seriesId);
+		$this->assertEquals($expectedAttachment, $expectedSeries->AddedAttachment());
 	}
 
 	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()

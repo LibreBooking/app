@@ -106,6 +106,7 @@ class ReservationSavePresenterTests extends TestBase
 		$participants = $this->page->GetParticipants();
 		$invitees = $this->page->GetInvitees();
 		$attachment = new FakeUploadedFile();
+		$this->page->attachment = $attachment;
 
 		$resource = new FakeBookableResource($resourceId, 'r1');
 		$additionalResource1 = new FakeBookableResource($additionalResources[0], 'r2');

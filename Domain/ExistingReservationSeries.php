@@ -36,6 +36,11 @@ class ExistingReservationSeries extends ReservationSeries
 	private $_deleteRequestIds = array();
 	private $_updateRequestIds = array();
 
+	/**
+	 * @var array|int[]
+	 */
+	protected $attachmentIds = array();
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -153,6 +158,14 @@ class ExistingReservationSeries extends ReservationSeries
 	public function WithAttribute(AttributeValue $attributeValue)
 	{
 		$this->AddAttributeValue($attributeValue);
+	}
+
+	/**
+	 * @param $fileId int
+	 */
+	public function WithAttachmentId($fileId)
+	{
+		$this->attachmentIds[] = $fileId;
 	}
 
 	/**

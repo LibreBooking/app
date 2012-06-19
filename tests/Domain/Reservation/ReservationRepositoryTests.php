@@ -274,6 +274,8 @@ class ReservationRepositoryTests extends TestBase
 		$attributeId2 = 999;
 		$attributeValue2 = 'custom2';
 
+		$fileId = 100;
+
 		$expected = new ExistingReservationSeries();
 		$expected->WithId($seriesId);
 		$expected->WithOwner($ownerId);
@@ -351,12 +353,16 @@ class ReservationRepositoryTests extends TestBase
 		$attributeValueRow->With($attributeId1, $attributeValue1)
 				->With($attributeId2, $attributeValue2);
 
+		$attachmentRow = new ReservationAttachmentItemRow();
+		$attachmentRow->With($fileId, $seriesId, null);
+
 		$this->db->SetRow(0, $reservationRow->Rows());
 		$this->db->SetRow(1, $reservationInstanceRow->Rows());
 		$this->db->SetRow(2, $reservationResourceRow->Rows());
 		$this->db->SetRow(3, $reservationUserRow->Rows());
 		$this->db->SetRow(4, $reservationAccessoryRow->Rows());
 		$this->db->SetRow(5, $attributeValueRow->Rows());
+		$this->db->SetRow(6, $attachmentRow->Rows());
 
 		$actualReservation = $this->repository->LoadById($reservationId);
 
@@ -368,6 +374,7 @@ class ReservationRepositoryTests extends TestBase
 		$getParticipants = new GetReservationSeriesParticipantsCommand($seriesId);
 		$getAccessories = new GetReservationAccessoriesCommand($seriesId);
 		$getAttributeValues = new GetAttributeValuesCommand($seriesId, CustomAttributeCategory::RESERVATION);
+		$getAttachments = new GetReservationAttachmentsCommand($seriesId);
 
 		$this->assertTrue($this->db->ContainsCommand($getReservation));
 		$this->assertTrue($this->db->ContainsCommand($getInstances));
@@ -375,6 +382,7 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($getParticipants));
 		$this->assertTrue($this->db->ContainsCommand($getAccessories));
 		$this->assertTrue($this->db->ContainsCommand($getAttributeValues));
+		$this->assertTrue($this->db->ContainsCommand($getAttachments));
 	}
 
 	public function testChangingOnlySharedInformationForFullSeriesJustUpdatesSeriesTable()
@@ -828,6 +836,33 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->assertEquals($command, $this->db->_LastCommand);
 		$this->assertEquals($expectedAttachment, $actualAttachment);
+	}
+
+	public function testAddAttachmentToExistingReservation()
+	{
+		$seriesId = 10;
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->WithId($seriesId)->Build();
+
+		$expectedFileId = 5346;
+
+		$fileName = 'fn';
+		$fileType = 'doc';
+		$fileSize = 100;
+		$fileContent = 'contents';
+		$fileExtension = 'doc';
+
+		$attachment = ReservationAttachment::Create($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
+		$series->AddAttachment($attachment);
+
+		$command = new AddReservationAttachmentCommand($fileName, $fileType, $fileSize, $fileContent, $fileExtension, $seriesId);
+		$this->db->_ExpectedInsertId = $expectedFileId;
+
+		$this->repository->Update($series);
+
+		$this->assertEquals($command, $this->db->_LastCommand);
+		$this->assertEquals($expectedFileId, $attachment->FileId());
 	}
 
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)

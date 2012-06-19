@@ -226,8 +226,8 @@ class ScheduleLayoutTests extends TestBase
 
 		$l = $layout->GetLayout(Date::Parse('2012-06-18', 'America/New_York'));
 
-		$this->assertTrue($l[0]->BeginDate(), Date::Parse('2012-06-18', 'America/New_York'));
-		$this->assertTrue($l[count($l)-1]->EndDate(), Date::Parse('2012-06-19', 'America/New_York'));
+		$this->assertEquals($l[0]->BeginDate(), Date::Parse('2012-06-18', 'America/New_York'));
+		$this->assertEquals($l[count($l)-1]->EndDate(), Date::Parse('2012-06-19', 'America/New_York'));
 	}
 }
 ?>

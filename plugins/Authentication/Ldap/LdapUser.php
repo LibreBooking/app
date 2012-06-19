@@ -39,7 +39,7 @@ class LdapUser
 		$this->phone = $entry->getValue('telephonenumber');
 		$this->institution = $entry->getValue('physicaldeliveryofficename');
 		$this->title = $entry->getValue('title');
-		$this->dn = $entry->getValue('dn');
+		$this->dn = $entry->dn();
 	}
 
 	public function GetFirstName()

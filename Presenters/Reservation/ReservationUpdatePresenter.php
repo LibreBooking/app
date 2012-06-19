@@ -95,6 +95,20 @@ class ReservationUpdatePresenter
 		$existingSeries->ChangeAccessories($this->GetAccessories());
 		$existingSeries->ChangeAttributes($this->GetAttributes());
 
+		$attachment = $this->page->GetAttachment();
+		if ($attachment != null)
+		{
+			if ($attachment->IsError())
+			{
+				Log::Error('Error attaching file %s. %s', $attachment->OriginalName(), $attachment->Error());
+			}
+			else
+			{
+				$att = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), $existingSeries->SeriesId());
+				$existingSeries->AddAttachment($att);
+			}
+		}
+
 		return $existingSeries;
 	}
 

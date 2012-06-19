@@ -119,8 +119,10 @@ class Ldap2Wrapper
 			/** @var Net_LDAP2_Entry $entry  */
 			$this->user = new LdapUser($currentResult);
 		}
-
-		Log::Debug('Could not find user %s', $username);
+		else
+		{
+			Log::Debug('Could not find user %s', $username);
+		}
 	}
 
 	/**

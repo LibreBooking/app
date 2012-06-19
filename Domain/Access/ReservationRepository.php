@@ -52,6 +52,7 @@ class ReservationRepository implements IReservationRepository
 		$this->PopulateParticipants($series);
 		$this->PopulateAccessories($series);
 		$this->PopulateAttributeValues($series);
+		$this->PopulateAttachmentIds($series);
 
 		return $series;
 	}
@@ -100,6 +101,11 @@ class ReservationRepository implements IReservationRepository
 			$updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions()->RepeatType(), $reservationSeries->RepeatOptions()->ConfigurationString(), Date::Now(), $reservationSeries->StatusId(), $reservationSeries->UserId());
 
 			$database->Execute($updateSeries);
+
+			if ($reservationSeries->AddedAttachment() != null)
+			{
+				$this->AddReservationAttachment($reservationSeries->AddedAttachment());
+			}
 		}
 
 		$this->ExecuteEvents($reservationSeries);
@@ -300,6 +306,16 @@ class ReservationRepository implements IReservationRepository
 		$reader->Free();
 	}
 
+	private function PopulateAttachmentIds(ExistingReservationSeries $series)
+	{
+		$getAttachments = new GetReservationAttachmentsCommand($series->SeriesId());
+		$reader = ServiceLocator::GetDatabase()->Query($getAttachments);
+		while ($row = $reader->GetRow())
+		{
+			$series->WithAttachmentId($row[ColumnNames::FILE_ID]);
+		}
+		$reader->Free();
+	}
 	private function BuildRepeatOptions($repeatType, $configurationString)
 	{
 		$configuration = RepeatConfiguration::Create($repeatType, $configurationString);
