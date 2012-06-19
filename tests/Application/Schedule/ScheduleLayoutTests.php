@@ -213,5 +213,21 @@ class ScheduleLayoutTests extends TestBase
         $this->assertEquals(new SchedulePeriod(Date::Parse('2012-01-01 02:00', $timezone), Date::Parse('2012-01-01 03:30', $timezone)), $actual2);
     }
 
+	public function testTokyoDefect()
+	{
+		$tokyo = 'Asia/Tokyo';
+		$layout = new ScheduleLayout('America/New_York');
+		$layout->AppendBlockedPeriod(Time::Parse("00:00", $tokyo), Time::Parse("08:00", $tokyo));
+		for ($i = 8; $i < 20; $i++)
+		{
+			$layout->AppendPeriod(Time::Parse("$i:00", $tokyo), Time::Parse($i + 1 . ":00", $tokyo));
+		}
+		$layout->AppendBlockedPeriod(Time::Parse("20:00", $tokyo), Time::Parse("00:00", $tokyo));
+
+		$l = $layout->GetLayout(Date::Parse('2012-06-18', 'America/New_York'));
+
+		$this->assertTrue($l[0]->BeginDate(), Date::Parse('2012-06-18', 'America/New_York'));
+		$this->assertTrue($l[count($l)-1]->EndDate(), Date::Parse('2012-06-19', 'America/New_York'));
+	}
 }
 ?>

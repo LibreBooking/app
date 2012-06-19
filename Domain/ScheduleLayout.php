@@ -180,7 +180,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
                 $periodEnd = $layoutDate->SetTime($endTime);
             }
 
-            if ($this->SpansMidnight($periodStart, $periodEnd))
+            if ($this->SpansMidnight($periodStart, $periodEnd, $layoutDate))
             {
                 if ($periodStart->LessThan($midnight))
                 {
@@ -197,6 +197,12 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
                     $list->Add($this->BuildPeriod($periodType, $start, $end, $label, $labelEnd));
                 }
             }
+
+			if ($periodStart->LessThan($layoutDate) && $periodEnd->DateEquals($layoutDate) && $periodEnd->IsMidnight())
+			{
+				$periodStart = $periodStart->AddDays(1);
+				$periodEnd = $periodEnd->AddDays(1);
+			}
 
             $list->Add($this->BuildPeriod($periodType, $periodStart, $periodEnd, $label, $labelEnd));
         }
@@ -340,24 +346,24 @@ class LayoutParser
         return $this->layout;
     }
 
-    private function appendPeriod(Time $start, Time $end, $label)
+    private function appendPeriod($start, $end, $label)
     {
         $this->layout->AppendPeriod(Time::Parse($start, $this->timezone), Time::Parse($end, $this->timezone), $label);
     }
 
-    private function appendBlocked(Time $start, Time $end, $label)
+    private function appendBlocked($start, $end, $label)
     {
         $this->layout->AppendBlockedPeriod(Time::Parse($start, $this->timezone), Time::Parse($end, $this->timezone), $label);
     }
 
     private function ParseSlots($allSlots, $callback)
     {
-        $lines = preg_split("/[\r\n]/", $allSlots, -1, PREG_SPLIT_NO_EMPTY);
+        $lines = preg_split("/[\n]/", $allSlots, -1, PREG_SPLIT_NO_EMPTY);
 
         foreach ($lines as $slotLine)
         {
             $label = null;
-            $parts = preg_split('/(\d?\d:\d\d\s*\-\s*\d?\d:\d\d)(.*)/', $slotLine, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+            $parts = preg_split('/(\d?\d:\d\d\s*\-\s*\d?\d:\d\d)(.*)/', trim($slotLine), -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
             $times = explode('-', $parts[0]);
             $start = trim($times[0]);
             $end = trim($times[1]);
@@ -367,7 +373,7 @@ class LayoutParser
                 $label = trim($parts[1]);
             }
 
-            call_user_func($callback, Time::Parse($start, $this->timezone), Time::Parse($end, $this->timezone), $label);
+            call_user_func($callback, $start, $end, $label);
         }
     }
 }

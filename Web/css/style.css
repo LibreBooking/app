@@ -68,10 +68,10 @@ h1 {
 .button {
     display: inline;
     margin: 0 7px 0 0;
-    background-color: #f5f5f5;
-    border: 1px solid #dedede;
-    border-top: 1px solid #eee;
-    border-left: 1px solid #eee;
+    background-color: #f0f0f0;
+    border: 1px solid #bbb;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
     font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
     font-size: 12px;
     line-height: 130%;
@@ -83,7 +83,7 @@ h1 {
 }
 
 .button:hover {
-    background-color: #f0f0f0;
+    background-color: #e0e0e0;
 }
 
 /*********************************************************/
@@ -107,9 +107,8 @@ div.error, div.success {
 
 div.success {
     border: solid 1px #8CC739;
-    background-color: #BCE27F;
     text-align: center;
-    url("../img/tick-circle.png");
+    background: #BCE27F  url("../img/tick-circle.png") no-repeat scroll 5px 5px;
 }
 
 div.error table {
@@ -249,7 +248,7 @@ form.box-form li {
     width: 97%;
     padding: 3px;
     margin: 2px 0 5px 0;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #e0e0e0;
     background: #fbfbfb;
     color: #777;
 }
@@ -264,7 +263,7 @@ form.box-form li {
     width: 97%;
     padding: 3px;
     margin: 2px 6px 20px 0;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #e0e0e0;
     background: #fbfbfb;
     color: #777
 }
@@ -275,7 +274,7 @@ form.box-form li {
     width: 97%;
     padding: 3px;
     margin: 2px 6px 20px 0;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #e0e0e0;
     background: #fbfbfb;
     color: #777
 }
@@ -356,7 +355,7 @@ textarea.input-area {
     width: 98%;
     padding: 3px;
     margin: 2px 0 5px 0;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #e0e0e0;
     background: #fbfbfb;
     color: #777;
     overflow: hidden;
@@ -434,7 +433,7 @@ textarea.input-areashow {
     width: 98%;
     padding: 3px;
     margin: 2px 0 5px 0;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #e0e0e0;
     background: #fbfbfb;
     color: #777;
 }
@@ -448,7 +447,7 @@ textarea.input-areashow {
     width: 100px;
     padding: 3px;
     margin: 2px 0 5px 0;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #e0e0e0;
     background: #fbfbfb;
     color: #777;
     text-align: center;
@@ -459,7 +458,7 @@ textarea.input-areashow {
     width: 100px;
     padding: 3px;
     margin: 2px 0 5px 0;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #e0e0e0;
     background: #fbfbfb;
     color: #777;
 }
