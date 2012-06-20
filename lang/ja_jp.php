@@ -363,6 +363,32 @@ class ja_jp extends en_us
         $strings['Accept'] = '受理';
         $strings['Decline'] = '辞退';
         $strings['ShowFullWeek'] = '1週間すべてを表示';
+        $strings['CustomAttributes'] = 'カスタム属性';
+        $strings['AddAttribute'] = '属性を追加';
+        $strings['EditAttribute'] = '属性を更新';
+        $strings['DisplayLabel'] = 'ラベルを表示';
+        $strings['Type'] = '型';
+        $strings['Required'] = '必須';
+        $strings['ValidationExpression'] = '検証評価式';
+        $strings['PossibleValues'] = '可能な値';
+        $strings['SingleLineTextbox'] = '一行のテキストボックス';
+        $strings['MultiLineTextbox'] = '複数行のテキストボックス';
+        $strings['Checkbox'] = 'チェックボックス';
+        $strings['SelectList'] = '選択リスト';
+        $strings['CommaSeparated'] = 'カンマ(,)区切り';
+        $strings['Category'] = 'カテゴリー';
+        $strings['CategoryReservation'] = '予約';
+        $strings['CategoryGroup'] = 'グループ';
+        $strings['SortOrder'] = '並び替え順';
+        $strings['Title'] = '件名';
+        $strings['AdditionalAttributes'] = '追加属性';
+        $strings['True'] = 'True';
+        $strings['False'] = 'False';
+		$strings['ForgotPasswordEmailSent'] = 'パスワードをリセットする方法を書いたeメールを送信しました。';
+		$strings['ActivationEmailSent'] = 'アクティベートのためのeメールが、すぐに届くはずです。';
+		$strings['AccountActivationError'] = '申し訳ありません。あなたのアカウントをアクティベート出来ませんでした。';
+		$strings['Attachments'] = '添付';
+		$strings['AttachFile'] = 'ファイルを添付する';
         // End Strings
 
         // Errors
@@ -379,6 +405,10 @@ class ja_jp extends en_us
         $strings['StartIsInPast'] = '開始時刻を過ぎていいます。';
         $strings['EmailDisabled'] = '管理者がメールでの通知を無効にしています。';
         $strings['ValidLayoutRequired'] = '時間枠は一日の最初から最後(12:00 AM)までの24時間全てを網羅するようにしてください。';
+        $strings['CustomAttributeErrors'] = '指定された属性には問題点があります:';
+        $strings['CustomAttributeRequired'] = '%s は必須項目です';
+        $strings['CustomAttributeInvalid'] = '%s の指定値が無効です';
+        $strings['AttachmentLoadingError'] = '申し訳ないのですが、指定されたファイルを読み込むさいに問題が発生してしまいました。';
         // End Errors
 
         // Page Titles
@@ -420,6 +450,9 @@ class ja_jp extends en_us
         $strings['Responsibilities'] = '責任';
         $strings['GroupReservations'] = 'グループ予約';
         $strings['ResourceReservations'] = 'リソース予約';
+        $strings['Customization'] = 'カスタマイズ';
+        $strings['Attributes'] = '属性';
+		$strings['AccountActivation'] = 'アカウントのアクティベート';
         // End Page Titles
 
         // Day representations

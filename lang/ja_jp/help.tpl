@@ -138,7 +138,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>過去の予約を削除することができるのはアプリケーション管理者だけです。</p>
 
-<h2>Outlook&reg;に予約を追加する</h2>
+<h2>カレンダーアプリ(Outlook&reg;、iClal、Mozilla Lightning、Evolution)に予約を追加する</h2>
 
 <p>
 予約の表示、更新の際に「Outlookへ追加」ボタンがあるのが分かると思います。
@@ -163,10 +163,10 @@ iCalendarファイル形式をサポートしているアプリケーション�
 ページの右側に、カレンダーを購読するリンクがあります。
 </p>
 
-<h3>Outlook&reg;</h3>
+<h3>カレンダークライアント(Outlook&reg;、iClal、Mozilla Lightning、Evolution)</h3>
 
-<p>Outlookを使っている場合、たいていは「このカレンダーを購読する」をクリックするだけで購読は自動的にセットアップされます。
-もし、自動的にカレンダー購読が追加されない場合、Outlookのカレンダービューを開いてください。
+<p>たいていは「このカレンダーを購読する」をクリックするだけでカレンダークライアントでの購読が、自動的にセットアップされます。
+Outlookでカレンダー購読が自動的に追加されない場合、カレンダービューを開いてください。
 マイカレンダー(My Calendars)を右クリックし「カレンダーを追加」→「インターネットから」を選択します。
 phpScheduleItの「カレンダーを購読する」リンクの下に表示されているURLをペーストします。
 </p>
@@ -388,9 +388,9 @@ phpScheduleItの量制限システムは柔軟にできていて、予約時間�
 
 <p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>予約状況ページで各予約に表示する値。'name'、'title'、'none'。デフォルトは 'name'.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.directory']</span>画像を保存する物理的なディレクトリの、phpScheduleItディレクトリからの相対パス。このディレクトリに書き込みできる必要がある。</p>
+<p class="setting"><span>$conf['settings']['image.upload.directory']</span>画像を保存する物理的なディレクトリのパス。このディレクトリに書き込みできる必要がある。この指定は完全ディレクトリ名(フルパス)またはphpScheduleItのルートディレクトリからの相対パスのいずれでもよい。</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.url']</span>そこにアップロードされた画像を表示することができるディレクトリのscript.urlからの相対URL</p>
+<p class="setting"><span>$conf['settings']['image.upload.url']</span>そこにアップロードされた画像を表示することができるディレクトリのURL。完全なURLまたは$conf['settings']['script.url']からの相対URLのいずれでもよい。</p>
 
 <p class="setting"><span>$conf['settings']['cache.templates']</span>テンプレートをキャッシュするか否か。tpl_cが書き込み可能なら、trueにすることが推奨される。</p>
 
