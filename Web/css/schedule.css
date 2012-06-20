@@ -142,10 +142,11 @@ select.schedule_list {
 	list-style: none;
 	position: absolute;
 	padding: 0;
-	margin: 0;
-	width: 125px;
-	border: solid 1px black;
+	margin-left: -16px;
+	border: solid 1px #666;
 	background-color: white;
+    z-index: 1000;
+    min-width: 125px;
 }
 
 .schedule_drop ul li {
@@ -153,18 +154,24 @@ select.schedule_list {
 	padding: 4px;
 	text-align: left;
 }
+.schedule_drop ul li:hover {
+    background-color: #ededed;
+}
+
+.schedule_drop ul li:hover a
+{
+    color: #000;
+}
 
 .schedule_drop a {
+    display: block;
+    min-width: 125px;
 	text-decoration: none;
 }
 
 .schedule_drop ul li a {
 	color: #666;
-	width: 125px;
-}
-
-.schedule_drop ul li a:hover {
-	color: #000;
+    padding-right: 15px;
 }
 
 .schedule_title {

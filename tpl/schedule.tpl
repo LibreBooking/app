@@ -70,7 +70,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<span>{$ScheduleName}</span>
 	{if $Schedules|@count gt 0}
 	<ul class="schedule_drop">
-		<li><a href="#" id="show_schedule">{html_image src="down_sm_blue.png" alt="Change Schedule"}</a></li>
+		<li id="show_schedule">{html_image src="down_sm_blue.png" alt="Change Schedule"}</li>
 		<ul style="display:none;" id="schedule_list">
 		{foreach from=$Schedules item=schedule}
 			<li><a href="#" onclick="ChangeSchedule({$schedule->GetId()}); return false;">{$schedule->GetName()}</a></li>

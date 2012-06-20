@@ -41,13 +41,7 @@ function Schedule(opts)
 
 	this.initNavigation = function ()
 	{
-		$('#show_schedule').click(function (e)
-		{
-			$("#schedule_list").show();
-			e.preventDefault();
-		});
-
-		$('#schedule_list li').hover(
+		$('.schedule_drop').hover(
 				function ()
 				{
 					$("#schedule_list").show()
