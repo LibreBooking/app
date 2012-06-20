@@ -20,9 +20,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/FileSystem/namespace.php');
 
-/**
- * @property string _ExpectedContents
- */
 class FakeFileSystem implements IFileSystem
 {
 	/**
@@ -50,6 +47,11 @@ class FakeFileSystem implements IFileSystem
 	 */
 	public $_ContentsPath;
 
+	/**
+	 * @var string[]
+	 */
+	public $_RemovedFiles = array();
+
 	public function Add($path, $fileName, $fileContents)
 	{
 		$this->_AddedFilePath = $path;
@@ -61,6 +63,11 @@ class FakeFileSystem implements IFileSystem
 	{
 		$this->_ContentsPath = $fullPath;
 		return $this->_ExpectedContents;
+	}
+
+	public function RemoveFile($fullPath)
+	{
+		$this->_RemovedFiles[] = $fullPath;
 	}
 }
 

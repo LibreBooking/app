@@ -33,8 +33,20 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	protected $events = array();
 
+	/**
+	 * @var array|int[]
+	 */
 	private $_deleteRequestIds = array();
+
+	/**
+	 * @var array|int[]
+	 */
 	private $_updateRequestIds = array();
+
+	/**
+	 * @var array|int[]
+	 */
+	private $_removedAttachmentIds = array();
 
 	/**
 	 * @var array|int[]
@@ -162,10 +174,11 @@ class ExistingReservationSeries extends ReservationSeries
 
 	/**
 	 * @param $fileId int
+	 * @param $extension string
 	 */
-	public function WithAttachmentId($fileId)
+	public function WithAttachment($fileId, $extension)
 	{
-		$this->attachmentIds[] = $fileId;
+		$this->attachmentIds[$fileId] = $extension;
 	}
 
 	/**
@@ -586,6 +599,23 @@ class ExistingReservationSeries extends ReservationSeries
 		{
 			$this->AddAttributeValue($attribute);
 		}
+	}
+
+	/**
+	 * @param $fileId int
+	 */
+	public function RemoveAttachment($fileId)
+	{
+		$this->AddEvent(new AttachmentRemovedEvent($this, $fileId, $this->attachmentIds[$fileId]));
+		$this->_removedAttachmentIds[] = $fileId;
+	}
+
+	/**
+	 * @return array|int[]
+	 */
+	public function RemovedAttachmentIds()
+	{
+		return $this->_removedAttachmentIds;
 	}
 }
 ?>

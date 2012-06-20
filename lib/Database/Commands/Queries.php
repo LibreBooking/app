@@ -446,7 +446,7 @@ class Queries
 
 	const GET_RESERVATION_ATTACHMENT = 'SELECT * FROM reservation_files WHERE file_id = @file_id';
 
-	const GET_RESERVATION_ATTACHMENTS_FOR_SERIES = 'SELECT file_id, series_id, file_name FROM reservation_files WHERE series_id = @seriesid';
+	const GET_RESERVATION_ATTACHMENTS_FOR_SERIES = 'SELECT * FROM reservation_files WHERE series_id = @seriesid';
 
 	const GET_RESERVATION_PARTICIPANTS =
 			'SELECT
@@ -595,6 +595,9 @@ class Queries
 
 	const REMOVE_RESERVATION_ACCESSORY =
 			'DELETE FROM reservation_accessories WHERE accessory_id = @accessoryid AND series_id = @seriesid';
+
+	const REMOVE_RESERVATION_ATTACHMENT =
+			'DELETE FROM reservation_files WHERE file_id = @file_id';
 
 	const REMOVE_RESERVATION_INSTANCE =
 			'DELETE FROM reservation_instances WHERE reference_number = @referenceNumber';

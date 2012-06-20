@@ -35,6 +35,13 @@ interface IFileSystem
 	 * @return string
 	 */
 	public function GetFileContents($fullPath);
+
+	/**
+	 * @abstract
+	 * @param $fullPath string
+	 * @return void
+	 */
+	public function RemoveFile($fullPath);
 }
 
 class FileSystem implements IFileSystem
@@ -64,6 +71,19 @@ class FileSystem implements IFileSystem
 		}
 
 		return $contents;
+	}
+
+	/**
+	 * @param $fullPath string
+	 * @return void
+	 */
+	public function RemoveFile($fullPath)
+	{
+		Log::Debug('Deleting file: %s', $fullPath);
+		if (unlink($fullPath) === false)
+		{
+			Log::Error('Could not delete file: %s', $fullPath);
+		}
 	}
 }
 ?>

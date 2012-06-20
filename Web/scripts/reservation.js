@@ -100,6 +100,10 @@ function Reservation(opts) {
 			$(this).bindResourceDetails(resourceId);
 		});
 
+		$('#btnRemoveAttachment').click(function(e){
+			e.preventDefault();
+			$('input:checkbox', '#attachmentDiv').toggle();
+		});
 		// CHANGE USERS //
 
 		changeUser.init();

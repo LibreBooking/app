@@ -180,6 +180,8 @@ class ReservationRepository implements IReservationRepository
 	}
 
 	/**
+	 * @param SeriesEvent $event
+	 * @param ExistingReservationSeries $series
 	 * @return EventCommand
 	 */
 	private function GetReservationCommand($event, $series)
@@ -312,7 +314,7 @@ class ReservationRepository implements IReservationRepository
 		$reader = ServiceLocator::GetDatabase()->Query($getAttachments);
 		while ($row = $reader->GetRow())
 		{
-			$series->WithAttachmentId($row[ColumnNames::FILE_ID]);
+			$series->WithAttachment($row[ColumnNames::FILE_ID], $row[ColumnNames::FILE_EXTENSION]);
 		}
 		$reader->Free();
 	}
@@ -393,6 +395,8 @@ class ReservationEventMapper
 
 		$this->buildMethods['AttributeAddedEvent'] = 'BuildAddAttributeCommand';
 		$this->buildMethods['AttributeRemovedEvent'] = 'BuildRemoveAttributeCommand';
+
+		$this->buildMethods['AttachmentRemovedEvent'] = 'BuildAttachmentRemovedEvent';
 	}
 
 	/**
@@ -480,6 +484,11 @@ class ReservationEventMapper
 	private function OwnerChangedCommand(OwnerChangedEvent $event, ExistingReservationSeries $series)
 	{
 		return new OwnerChangedEventCommand($event);
+	}
+
+	private function BuildAttachmentRemovedEvent(AttachmentRemovedEvent $event, ExistingReservationSeries $series)
+	{
+		return new AttachmentRemovedCommand($event);
 	}
 }
 
@@ -679,6 +688,24 @@ class OwnerChangedEventCommand extends EventCommand
 	}
 }
 
+class AttachmentRemovedCommand extends EventCommand
+{
+	/**
+	 * @var AttachmentRemovedEvent
+	 */
+	private $event;
+
+	public function __construct(AttachmentRemovedEvent $event)
+	{
+		$this->event = $event;
+	}
+
+	public function Execute(Database $database)
+	{
+		$database->Execute(new RemoveReservationAttachmentCommand($this->event->FileId()));
+		ServiceLocator::GetFileSystem()->RemoveFile(Paths::ReservationAttachments() . $this->event->FileName());
+	}
+}
 interface IReservationRepository
 {
 	/**

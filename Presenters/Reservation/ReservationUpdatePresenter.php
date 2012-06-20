@@ -110,6 +110,11 @@ class ReservationUpdatePresenter
 			}
 		}
 
+		foreach ($this->page->GetRemovedAttachmentIds() as $fileId)
+		{
+			$existingSeries->RemoveAttachment($fileId);
+		}
+
 		return $existingSeries;
 	}
 

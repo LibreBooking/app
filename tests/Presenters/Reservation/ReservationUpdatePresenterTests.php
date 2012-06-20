@@ -157,6 +157,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($expectedAttributes, $existingSeries->AttributeValues());
 		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), $seriesId);
 		$this->assertEquals($expectedAttachment, $expectedSeries->AddedAttachment());
+		$this->assertEquals($this->page->removedFileIds, $existingSeries->RemovedAttachmentIds());
 	}
 
 	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()
@@ -209,6 +210,7 @@ class FakeReservationUpdatePage extends FakeReservationSavePage implements IRese
 {
 	public $reservationId = 100;
 	public $seriesUpdateScope = SeriesUpdateScope::FullSeries;
+	public $removedFileIds = array(1,2,3);
 
 	public function __construct()
 	{
@@ -223,6 +225,11 @@ class FakeReservationUpdatePage extends FakeReservationSavePage implements IRese
 	public function GetSeriesUpdateScope()
 	{
 		return $this->seriesUpdateScope;
+	}
+
+	public function GetRemovedAttachmentIds()
+	{
+		return $this->removedFileIds;
 	}
 }
 ?>

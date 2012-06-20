@@ -264,11 +264,12 @@ class ReservationAttachmentItemRow
 		return $this->rows;
 	}
 
-	public function With($fileId, $seriesId, $fileName)
+	public function With($fileId, $seriesId, $fileName = null, $extension = null)
 	{
 		$this->rows[] = array(ColumnNames::FILE_ID => $fileId,
 							  ColumnNames::SERIES_ID => $seriesId,
-							  ColumnNames::FILE_NAME => $fileName);
+							  ColumnNames::FILE_NAME => $fileName,
+							  ColumnNames::FILE_EXTENSION => $extension);
 
 		return $this;
 	}

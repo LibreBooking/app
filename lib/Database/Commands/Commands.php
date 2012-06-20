@@ -1131,6 +1131,16 @@ class RemoveReservationAccessoryCommand extends SqlCommand
     }
 }
 
+class RemoveReservationAttachmentCommand extends SqlCommand
+{
+	public function __construct($fileId)
+    {
+        parent::__construct(Queries::REMOVE_RESERVATION_ATTACHMENT);
+
+        $this->AddParameter(new Parameter(ParameterNames::FILE_ID, $fileId));
+    }
+}
+
 class RemoveReservationCommand extends SqlCommand
 {
     public function __construct($referenceNumber)

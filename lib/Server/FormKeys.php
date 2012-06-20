@@ -100,6 +100,7 @@ class FormKeys
 	const POSITION = 'position';
 
 	const REFERENCE_NUMBER = 'referenceNumber';
+	const REMOVED_FILE_IDS = 'removeFile';
 	const REPEAT_OPTIONS = 'repeatOptions';
 	const REPEAT_EVERY = 'repeatEvery';
 	const REPEAT_SUNDAY = 'repeatSunday';

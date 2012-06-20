@@ -45,7 +45,6 @@ class AttributeFormParser
 	 */
 	public static function GetAttributes($attributes)
 	{
-
 		if (is_array($attributes))
 		{
 			$af = array();

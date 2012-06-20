@@ -515,4 +515,51 @@ class OwnerChangedEvent extends SeriesEvent
         return sprintf("%s%s%s%s", get_class($this), $this->OldOwnerId(), $this->NewOwnerId(), $this->series->SeriesId());
     }
 }
+
+class AttachmentRemovedEvent extends SeriesEvent
+{
+	/**
+	 * @var int
+	 */
+	private $fileId;
+
+	/**
+	 * @var string
+	*/
+	private $extension;
+
+	/**
+	 * @param ExistingReservationSeries $series
+	 * @param int $fileId
+	 * @param string $extension
+	 */
+	public function __construct(ExistingReservationSeries $series, $fileId, $extension)
+	{
+		parent::__construct($series, SeriesEventPriority::Lowest);
+
+		$this->fileId = $fileId;
+		$this->extension = $extension;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function FileId()
+	{
+		return $this->fileId;
+	}
+
+	/**
+	 * return string
+	 */
+	public function FileName()
+	{
+		return $this->fileId . '.' . $this->extension;
+	}
+
+	public function __toString()
+    {
+        return sprintf("%s%s%s", get_class($this), $this->FileId(), $this->series->SeriesId());
+    }
+}
 ?>

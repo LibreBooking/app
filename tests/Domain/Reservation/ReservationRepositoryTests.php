@@ -148,7 +148,6 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($insertReservationAttribute));
 		$this->assertTrue($this->db->ContainsCommand($addAttachment));
 		$this->assertEquals($attachment->FileContents(), $this->fileSystem->_AddedFileContents);
-
 	}
 
 	public function testRepeatedDatesAreSaved()
@@ -292,7 +291,7 @@ class ReservationRepositoryTests extends TestBase
 		$expected->WithAccessory(new ReservationAccessory($accessoryId2, $quantity2));
 		$expected->WithAttribute(new AttributeValue($attributeId1, $attributeValue1));
 		$expected->WithAttribute(new AttributeValue($attributeId2, $attributeValue2));
-		$expected->WithAttachmentId($fileId);
+		$expected->WithAttachment($fileId, 'doc');
 
 		$instance1 = new Reservation($expected, $duration->AddDays(10));
 		$instance1->SetReferenceNumber('instance1');
@@ -356,7 +355,7 @@ class ReservationRepositoryTests extends TestBase
 				->With($attributeId2, $attributeValue2);
 
 		$attachmentRow = new ReservationAttachmentItemRow();
-		$attachmentRow->With($fileId, $seriesId, null);
+		$attachmentRow->With($fileId, $seriesId, null, 'doc');
 
 		$this->db->SetRow(0, $reservationRow->Rows());
 		$this->db->SetRow(1, $reservationInstanceRow->Rows());
@@ -870,6 +869,32 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->assertEquals($command, $this->db->_LastCommand);
 		$this->assertEquals($expectedFileId, $attachment->FileId());
+	}
+	
+	public function testRemovesAttachments()
+	{
+		$fileId1 = 100;
+		$fileId2 = 200;
+		$seriesId = 99;
+		$fileExt1 = 'doc';
+		$fileExt2 = 'txt';
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->WithId($seriesId)->Build();
+		$series->WithAttachment($fileId1, $fileExt1);
+		$series->WithAttachment($fileId2, $fileExt2);
+		$series->RemoveAttachment($fileId1);
+		$series->RemoveAttachment($fileId2);
+
+		$command1 = new RemoveReservationAttachmentCommand($fileId1);
+		$command2 = new RemoveReservationAttachmentCommand($fileId2);
+
+		$this->repository->Update($series);
+
+		$this->assertTrue($this->db->ContainsCommand($command1));
+		$this->assertTrue($this->db->ContainsCommand($command2));
+		$this->assertEquals(2, count($this->fileSystem->_RemovedFiles));
+		$this->assertTrue(in_array(Paths::ReservationAttachments() . "$fileId2.$fileExt2", $this->fileSystem->_RemovedFiles));
 	}
 
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)

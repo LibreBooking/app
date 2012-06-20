@@ -32,6 +32,11 @@ interface IReservationUpdatePage extends IReservationSavePage
 	 * @return SeriesUpdateScope
 	 */
 	public function GetSeriesUpdateScope();
+
+	/*
+	 * @return array|int[]
+	 */
+	public function GetRemovedAttachmentIds();
 }
 
 class ReservationUpdatePage extends ReservationSavePage implements IReservationUpdatePage
@@ -104,6 +109,17 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 	public function GetSeriesUpdateScope()
 	{
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
+	}
+
+	public function GetRemovedAttachmentIds()
+	{
+		$fileIds = $this->GetForm(FormKeys::REMOVED_FILE_IDS);
+		if (is_array($fileIds))
+		{
+			return array_keys($fileIds);
+		}
+
+		return array();
 	}
 }
 
