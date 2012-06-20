@@ -27,10 +27,37 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name=deleteButtons}
-	<button type="button" class="button delete save">
-		<img src="img/cross-button.png" />
-		{translate key='Delete'}
-	</button>
+	{if $IsRecurring}
+		<a href="#" class="delete prompt">
+			{html_image src="cross-button.png"}
+			{translate key='Delete'}
+		</a>
+		<div id="updateButtons" style="display:none;" title="{translate key=ApplyUpdatesTo}">
+			<div style="text-align: center;line-height:50px;">
+				<button type="button" id="btnUpdateThisInstance" class="button save">
+					{html_image src="disk-black.png"}
+					{translate key='ThisInstance'}
+				</button>
+				<button type="button" id="btnUpdateAllInstances" class="button save">
+					{html_image src="disks-black.png"}
+					{translate key='AllInstances'}
+				</button>
+				<button type="button" id="btnUpdateFutureInstances" class="button save">
+					{html_image src="disk-arrow.png"}
+					{translate key='FutureInstances'}
+				</button>
+				<button type="button" class="button">
+					{html_image src="slash.png"}
+					{translate key='Cancel'}
+				</button>
+			</div>
+		</div>
+	{else}
+		<a href="#" class="delete save">
+			{html_image src="cross-button.png"}
+			{translate key='Delete'}
+		</a>
+	{/if}
 {/block}
 
 {block name=submitButtons}

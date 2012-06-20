@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' TitleKey='ViewReservationHeading' TitleArgs=$ReferenceNumber cssFiles='css/reservation.css'}
 <div id="reservationbox" class="readonly">
-	<div id="reservationForm">
+	<div id="reservationFormDiv">
 		<div class="reservationHeader">
 			<h3>{translate key="ViewReservationHeading" args=$ReferenceNumber}</h3>
 		</div>
@@ -190,8 +190,30 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
 	</div>
 </div>
+
+<div id="dialogSave" style="display:none;">
+	<div id="creatingNotification" style="position:relative; top:170px;">
+	{block name="ajaxMessage"}
+		{translate key=UpdatingReservation}...<br/>
+	{/block}
+		<img src="{$Path}img/reservation_submitting.gif" alt="Creating reservation"/>
+	</div>
+	<div id="result" style="display:none;"></div>
+</div>
+
+<div style="display: none">
+	<form id="reservationForm" method="post" enctype="application/x-www-form-urlencoded">
+		<input type="hidden" {formname key=reservation_id} value="{$ReservationId}"/>
+		<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}"/>
+		<input type="hidden" {formname key=reservation_action} value="{$ReservationAction}"/>
+		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
+	</form>
+</div>
 	<script type="text/javascript" src="scripts/participation.js"></script>
 	<script type="text/javascript" src="scripts/approval.js"></script>
+	<script type="text/javascript" src="scripts/js/jquery.form-3.09.js"></script>
+	<script type="text/javascript" src="scripts/reservation.js"></script>
+	<script type="text/javascript" src="scripts/autocomplete.js"></script>
 	<script type="text/javascript">
 
 	$(document).ready(function() {
@@ -210,6 +232,33 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		var approval = new Approval(approvalOptions);
 		approval.initReservation();
+
+		var scopeOptions = {
+				instance: '{SeriesUpdateScope::ThisInstance}',
+				full: '{SeriesUpdateScope::FullSeries}',
+				future: '{SeriesUpdateScope::FutureInstances}'
+			};
+
+		var reservationOpts = {
+			returnUrl: '{$ReturnUrl}',
+			scopeOpts: scopeOptions,
+			deleteUrl: 'ajax/reservation_delete.php',
+			userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}",
+			changeUserAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::MyUsers}"
+		};
+		var reservation = new Reservation(reservationOpts);
+		reservation.init('{$UserId}');
+
+		var options = {
+				target: '#result',   // target element(s) to be updated with server response
+				beforeSubmit: reservation.preSubmit,  // pre-submit callback
+				success: reservation.showResponse  // post-submit callback
+			};
+
+			$('#reservationForm').submit(function() {
+				$(this).ajaxSubmit(options);
+				return false;
+			});
 	});
 
 	</script>
