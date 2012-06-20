@@ -159,7 +159,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h3>Calendar client (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
 
 <p>In most cases, simply clicking the Subscribe to this Calendar link will automatically set up the subscription in
-	your calendar Client. For Outlook, if it does not automatically add, open the Calendar view, then right click My Calendars and choose
+	your calendar Client. For Outlook, if it does not automatically add, open the Calendar view, then right click My
+	Calendars and choose
 	Add Calendar -> From Internet. Paste in the URL printed under the Subscribe to this Calendar link in
 	phpScheduleIt.</p>
 
@@ -349,7 +350,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
 	This directory will need to be writable. This can be the full directory or relative to the
-		phpScheduleIt root directory.</p>
+	phpScheduleIt root directory.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL where uploaded
 	images can be viewed from. This can be the full URL or relative to $conf['settings']['script.url'].
@@ -399,19 +400,24 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or not to send an
 	email to all resource administrators when a reservation is created. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.update']</span>Whether or not to send an
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.update']</span>Whether or not to send
+	an
 	email to all resource administrators when a reservation is updated. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.delete']</span>Whether or not to send an
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.delete']</span>Whether or not to send
+	an
 	email to all resource administrators when a reservation is deleted. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.add']</span>Whether or not to send an
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.add']</span>Whether or not to send
+	an
 	email to all application administrators when a reservation is created. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.update']</span>Whether or not to send an
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.update']</span>Whether or not to
+	send an
 	email to all application administrators when a reservation is updated. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.delete']</span>Whether or not to send an
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.delete']</span>Whether or not to
+	send an
 	email to all application administrators when a reservation is deleted. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.add']</span>Whether or not to send an
@@ -426,6 +432,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
 	include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
 	are not extending the style of phpScheduleIt.</p>
+
+<p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>If users are allowed to
+	attach files to reservations. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>The full or relative
+	filesystem path (relative to the root of your phpScheduleIt directory) to store reservation attachments. This
+	directory must be writable by PHP. Default is uploads/reservation</p>
 
 <p class="setting"><span>$conf['settings']['database']['type']</span>Any PEAR::MDB2 supported type</p>
 
