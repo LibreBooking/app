@@ -55,7 +55,8 @@ $conf['settings']['reservation.notify']['group.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.delete'] = 'false';
 $conf['settings']['css.extension.file'] = ''; 			      	// full or relative url to an additional css file to include. this can be used to override the default style
-$conf['settings']['uploads']['reservation.attachments'] = 'uploads/reservation'; 	// full or relative (to the root of your phpScheduleIt directory) filesystem path to store reservation attachments
+$conf['settings']['uploads']['enable.reservation.attachments'] = 'false'; 	// if reservation attachments can be uploaded
+$conf['settings']['uploads']['reservation.attachment.path'] = 'uploads/reservation'; 	// full or relative (to the root of your phpScheduleIt directory) filesystem path to store reservation attachments
 /**
  * Database configuration
  */

@@ -171,11 +171,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 							  tabindex="110">{$Description}</textarea>
 				</label>
 			</li>
+			{if $UploadsEnabled}
 			<li>
 				<label>{translate key=AttachFile}
 						<input type="file" {formname key=RESERVATION_FILE} /> <span class="note">({$MaxUploadSize}MB {translate key=Maximum})</span>
 					</label>
 			</li>
+			{/if}
 		</ul>
 	</div>
 
@@ -224,8 +226,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</button>
 	</div>
 
+	{if $UploadsEnabled}
 	{block name='attachments'}
 	{/block}
+	{/if}
 </form>
 
 <div id="dialogAddResources" class="dialog" title="{translate key=AddResources}" style="display:none;">

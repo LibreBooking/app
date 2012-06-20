@@ -391,7 +391,16 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	 */
 	public function GetAttachment()
 	{
-		return $this->server->GetFile(FormKeys::RESERVATION_FILE);
+		if ($this->AttachmentsEnabled())
+		{
+			return $this->server->GetFile(FormKeys::RESERVATION_FILE);
+		}
+		return null;
+	}
+
+	private function AttachmentsEnabled()
+	{
+		return Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS, new BooleanConverter());
 	}
 }
 

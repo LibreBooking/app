@@ -79,7 +79,8 @@ class ConfigKeys
     const NOTIFY_DELETE_APPLICATION_ADMINS = 'application.admin.delete';
     const NOTIFY_DELETE_GROUP_ADMINS = 'group.admin.delete';
 
-	const UPLOAD_RESERVATION_ATTACHMENTS = 'reservation.attachments';
+	const UPLOAD_ENABLE_RESERVATION_ATTACHMENTS = 'enable.reservation.attachments';
+	const UPLOAD_RESERVATION_ATTACHMENTS = 'reservation.attachment.path';
 }
 
 class ConfigSection
