@@ -57,11 +57,12 @@ $conf['settings']['reservation.notify']['group.admin.delete'] = 'false';
 $conf['settings']['css.extension.file'] = ''; 			      	// full or relative url to an additional css file to include. this can be used to override the default style
 $conf['settings']['uploads']['enable.reservation.attachments'] = 'false'; 	// if reservation attachments can be uploaded
 $conf['settings']['uploads']['reservation.attachment.path'] = 'uploads/reservation'; 	// full or relative (to the root of your phpScheduleIt directory) filesystem path to store reservation attachments
+$conf['settings']['uploads']['reservation.attachment.extensions'] = 'txt,jpg,gif,png,doc,docx,pdf,xls,xlsx,ppt,pptx,csv'; 	// comma separated list of file extensions that users are allowed to attach. leave empty to allow all extensions
 /**
  * Database configuration
  */
 $conf['settings']['database']['type'] = 'mysql';
-$conf['settings']['database']['user'] = 'schedule_user';        // database user with permission to the phpScheduleIt database
+$conf['settings']['database']['user'] = 'schedule_user111';        // database user with permission to the phpScheduleIt database
 $conf['settings']['database']['password'] = 'password';
 $conf['settings']['database']['hostspec'] = '127.0.0.1';        // ip, dns or named pipe
 $conf['settings']['database']['name'] = 'phpscheduleit2';

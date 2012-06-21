@@ -31,5 +31,10 @@ class FakeReservationAttachment extends ReservationAttachment
 	{
 		$this->seriesId = $seriesId;
 	}
+
+	public function SetExtension($extension)
+	{
+		$this->fileExtension = $extension;
+	}
 }
 ?>

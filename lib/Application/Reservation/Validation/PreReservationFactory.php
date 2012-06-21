@@ -119,6 +119,7 @@ class PreReservationFactory implements IPreReservationFactory
         $rules[] = new AdminExcludedRule(new ResourceMinimumNoticeRule($this->resourceRepository), $userSession);
         $rules[] = new AdminExcludedRule(new ResourceMaximumNoticeRule($this->resourceRepository), $userSession);
         $rules[] = new CustomAttributeValidationRule(new AttributeRepository());
+        $rules[] = new ReservationAttachmentRule();
 
         return new ReservationValidationRuleProcessor($rules);
     }

@@ -409,6 +409,7 @@ class en_us extends Language
         $strings['CustomAttributeRequired'] = '%s is a required field';
         $strings['CustomAttributeInvalid'] = 'The value provided for %s is invalid';
         $strings['AttachmentLoadingError'] = 'Sorry, there was a problem loading the requested file.';
+        $strings['InvalidAttachmentExtension'] = 'You can only upload files of type: %s';
         // End Errors
 
         // Page Titles

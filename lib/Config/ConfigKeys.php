@@ -81,6 +81,7 @@ class ConfigKeys
 
 	const UPLOAD_ENABLE_RESERVATION_ATTACHMENTS = 'enable.reservation.attachments';
 	const UPLOAD_RESERVATION_ATTACHMENTS = 'reservation.attachment.path';
+	const UPLOAD_RESERVATION_EXTENSIONS = 'reservation.attachment.extensions';
 }
 
 class ConfigSection

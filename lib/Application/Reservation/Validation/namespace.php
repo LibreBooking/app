@@ -44,6 +44,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMaximumD
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/QuotaRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AccessoryAvailabilityRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/CustomAttributeValidationRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationAttachmentRule.php');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AddReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/UpdateReservationValidationService.php');

@@ -98,7 +98,7 @@ class ReservationAttachmentPage extends SecurePage implements IReservationAttach
 	public function BindAttachment(ReservationAttachment $attachment)
 	{
 		header('Content-Type: ' . $attachment->FileType());
-		header('Content-Disposition: inline; filename="' . $attachment->FileName() . '"');
+		header('Content-Disposition: attachment; filename="' . $attachment->FileName() . '"');
 		ob_clean();
 		flush();
 		echo $attachment->FileContents();
