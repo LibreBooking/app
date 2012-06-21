@@ -440,6 +440,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	filesystem path (relative to the root of your phpScheduleIt directory) to store reservation attachments. This
 	directory must be writable by PHP. Default is uploads/reservation</p>
 
+<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>Comma separated list of
+	safe file extensions. Leaving this blank will allow all file types (not recommended).</p>
+
 <p class="setting"><span>$conf['settings']['database']['type']</span>Any PEAR::MDB2 supported type</p>
 
 <p class="setting"><span>$conf['settings']['database']['user']</span>Database user with access to the configured
