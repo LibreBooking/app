@@ -10,7 +10,8 @@ $.fn.attachReservationPopup = function(refNum, detailsUrl)
 		{
 			  my: 'bottom left',
 			  at: 'top left',
-			  target: $(this)
+			  target: $(this),
+			  effect: false
 		},
 
 		content:

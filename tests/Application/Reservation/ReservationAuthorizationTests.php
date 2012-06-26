@@ -287,5 +287,28 @@ class ReservationAuthorizationTests extends TestBase
 
 		$this->assertFalse($canApprove);
 	}
+
+	public function testCanSeeDetailsIfCanBeReserved()
+	{
+		$reservationView = new ReservationView();
+		$ownerId = 92929;
+		$reservationView->OwnerId = $ownerId;
+		$resource1 = new ReservationResourceView(1, '', 1);
+		$reservationView->Resources = array($resource1);
+
+		$this->authorizationService->expects($this->atLeastOnce())
+			->method('CanReserveFor')
+			->with($this->equalTo($this->currentUser), $this->equalTo($ownerId))
+			->will($this->returnValue(false));
+
+		$this->authorizationService->expects($this->once())
+			->method('CanEditForResource')
+			->with($this->equalTo($this->currentUser), $this->equalTo($resource1))
+			->will($this->returnValue(true));
+
+		$canSeeDetails = $this->reservationAuthorization->CanViewDetails($reservationView, $this->currentUser);
+
+		$this->assertTrue($canSeeDetails);
+	}
 }
 ?>

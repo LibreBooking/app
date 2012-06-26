@@ -109,10 +109,6 @@ class ReservationComponentTests extends TestBase
 				->with($this->equalTo(true));
 
 		$this->initializer->expects($this->once())
-				->method('ShowUserDetails')
-				->with($this->equalTo(true));
-
-		$this->initializer->expects($this->once())
 				->method('SetReservationUser')
 				->with($this->equalTo($userDto));
 
@@ -346,7 +342,7 @@ class ReservationComponentTests extends TestBase
 				->method('SetAttachments')
 				->with($this->equalTo($attachments));
 
-		$isEditable = true;
+		$isEditable = false;
 
 		$reservationAuthorization->expects($this->once())
 				->method('CanEdit')
@@ -385,6 +381,23 @@ class ReservationComponentTests extends TestBase
 				->method('CurrentUser')
 				->will($this->returnValue($this->fakeUser));
 
+		$canViewDetails = true;
+		$reservationAuthorization->expects($this->once())
+				->method('CanViewDetails')
+				->with($this->equalTo($reservationView), $this->equalTo($this->fakeUser))
+				->will($this->returnValue($canViewDetails));
+
+		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, 'true');
+		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'true');
+
+		$initializer->expects($this->once())
+				->method('ShowUserDetails')
+				->with($this->equalTo($canViewDetails));
+
+		$initializer->expects($this->once())
+				->method('ShowReservationDetails')
+				->with($this->equalTo($canViewDetails));
+
 		$binder = new ReservationDetailsBinder($reservationAuthorization, $page, $reservationView);
 		$binder->Bind($initializer);
 	}
@@ -399,17 +412,17 @@ class ReservationComponentTests extends TestBase
 		);
 
 		$this->attributeRepository->expects($this->once())
-						->method('GetByCategory')
-						->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-						->will($this->returnValue($attributes));
+				->method('GetByCategory')
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION))
+				->will($this->returnValue($attributes));
 
 		$this->initializer->expects($this->at(0))
-						->method('AddAttribute')
-						->with($this->equalTo($attributes[0]), $this->equalTo(null));
+				->method('AddAttribute')
+				->with($this->equalTo($attributes[0]), $this->equalTo(null));
 
 		$this->initializer->expects($this->at(1))
-						->method('AddAttribute')
-						->with($this->equalTo($attributes[1]), $this->equalTo(null));
+				->method('AddAttribute')
+				->with($this->equalTo($attributes[1]), $this->equalTo(null));
 
 		$binder->Bind($this->initializer);
 	}
@@ -431,17 +444,17 @@ class ReservationComponentTests extends TestBase
 		);
 
 		$this->attributeRepository->expects($this->once())
-						->method('GetByCategory')
-						->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-						->will($this->returnValue($attributes));
+				->method('GetByCategory')
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION))
+				->will($this->returnValue($attributes));
 
 		$this->initializer->expects($this->at(0))
-						->method('AddAttribute')
-						->with($this->equalTo($attributes[0]), $this->equalTo($val1));
+				->method('AddAttribute')
+				->with($this->equalTo($attributes[0]), $this->equalTo($val1));
 
 		$this->initializer->expects($this->at(1))
-						->method('AddAttribute')
-						->with($this->equalTo($attributes[1]), $this->equalTo($val2));
+				->method('AddAttribute')
+				->with($this->equalTo($attributes[1]), $this->equalTo($val2));
 
 		$binder->Bind($this->initializer);
 	}

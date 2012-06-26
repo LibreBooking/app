@@ -85,9 +85,6 @@ class ReservationUserBinder implements IReservationComponentBinder
 
 		$reservationUser = $this->userRepository->GetById($userId);
 		$initializer->SetReservationUser($reservationUser);
-
-		$shouldHideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
-		$initializer->ShowUserDetails(!$shouldHideDetails || $canChangeUser);
 	}
 }
 
@@ -252,10 +249,28 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		$this->page->SetCurrentUserParticipating($this->IsCurrentUserParticipating($currentUser->UserId));
 		$this->page->SetCurrentUserInvited($this->IsCurrentUserInvited($currentUser->UserId));
 
-		$this->page->SetIsEditable($this->reservationAuthorization->CanEdit($this->reservationView, $currentUser));
+		$canBeEdited = $this->reservationAuthorization->CanEdit($this->reservationView, $currentUser);
+		$this->page->SetIsEditable($canBeEdited);
 		$this->page->SetIsApprovable($this->reservationAuthorization->CanApprove($this->reservationView, $currentUser));
 
 		$this->page->SetAttachments($this->reservationView->Attachments);
+
+		$canViewDetails = true;
+		$shouldHideUser = false;
+		$shouldHideDetails = false;
+
+		if (!$canBeEdited)
+		{
+			$shouldHideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
+			$shouldHideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
+
+			if ($shouldHideUser || $shouldHideDetails)
+			{
+				$canViewDetails = $this->reservationAuthorization->CanViewDetails($this->reservationView, $initializer->CurrentUser());
+			}
+		}
+		$initializer->ShowUserDetails(!$shouldHideUser || $canViewDetails);
+		$initializer->ShowReservationDetails(!$shouldHideDetails || $canViewDetails);
 	}
 
 	private function IsCurrentUserParticipating($currentUserId)

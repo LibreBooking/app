@@ -42,6 +42,14 @@ interface IReservationAuthorization
 	 * @return bool
 	 */
 	function CanApprove(ReservationView $reservationView, UserSession $currentUser);
+
+	/**
+	 * @abstract
+	 * @param ReservationView $reservationView
+	 * @param UserSession $currentUser
+	 * @return bool
+	 */
+	function CanViewDetails(ReservationView $reservationView, UserSession $currentUser);
 }
 
 class ReservationAuthorization implements IReservationAuthorization
@@ -71,28 +79,11 @@ class ReservationAuthorization implements IReservationAuthorization
 			$ongoingReservation = Date::Now()->LessThan($reservationView->StartDate);
 		}
 
-
 		if ($ongoingReservation)
 		{
-			if ($reservationView->OwnerId == $currentUser->UserId)
+			if ($this->IsAccessibleTo($reservationView, $currentUser))
 			{
 				return true;
-			}
-			else
-			{
-				$canReserveForUser = $this->authorizationService->CanReserveFor($currentUser, $reservationView->OwnerId);
-                if ($canReserveForUser)
-                {
-                    return true;
-                }
-
-                foreach ($reservationView->Resources as $resource)
-                {
-                    if ($this->authorizationService->CanEditForResource($currentUser, $resource))
-                    {
-                        return true;
-                    }
-                }
 			}
 		}
 
@@ -132,5 +123,43 @@ class ReservationAuthorization implements IReservationAuthorization
 
         return false;
 	}
+
+	public function CanViewDetails(ReservationView $reservationView, UserSession $currentUser)
+	{
+		return $this->IsAccessibleTo($reservationView, $currentUser);
+	}
+
+	/**
+	 * @param ReservationView $reservationView
+	 * @param UserSession $currentUser
+	 * @return bool
+	 */
+	private function IsAccessibleTo(ReservationView $reservationView, UserSession $currentUser)
+	{
+		if ($reservationView->OwnerId == $currentUser->UserId || $currentUser->IsAdmin)
+		{
+			return true;
+		}
+		else
+		{
+			$canReserveForUser = $this->authorizationService->CanReserveFor($currentUser, $reservationView->OwnerId);
+			if ($canReserveForUser)
+			{
+				return true;
+			}
+
+			foreach ($reservationView->Resources as $resource)
+			{
+				if ($this->authorizationService->CanEditForResource($currentUser, $resource))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+
 }
 ?>

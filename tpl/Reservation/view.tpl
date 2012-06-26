@@ -81,20 +81,26 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<br/><label>{translate key='RepeatUntilPrompt'}</label> {formatdate date=$RepeatTerminationDate}
 					</div>
 				{/if}
-				</li>
-				<li class="section">
-					<label>{translate key='ReservationTitle'}</label>
-				{if $ReservationTitle neq ''}{$ReservationTitle}
-					{else}<span class="no-data">{translate key='None'}</span>
-				{/if}
-				</li>
+				{if $ShowReservationDetails}
+					</li>
+					<li class="section">
+						<label>{translate key='ReservationTitle'}</label>
+						{if $ReservationTitle neq ''}
+							{$ReservationTitle}
+						{else}
+							<span class="no-data">{translate key='None'}</span>
+						{/if}
+					</li>
 
-				<li>
-					<label>{translate key='ReservationDescription'}</label>
-				{if $Description neq ''}<br/>{$Description|nl2br}
-					{else}<span class="no-data">{translate key='None'}</span>
+					<li>
+						<label>{translate key='ReservationDescription'}</label>
+						{if $Description neq ''}
+							<br/>{$Description|nl2br}
+						{else}
+							<span class="no-data">{translate key='None'}</span>
+						{/if}
+					</li>
 				{/if}
-				</li>
 		</div>
 
 		<div id="reservationParticipation">
@@ -143,27 +149,31 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div style="clear:both;">&nbsp;</div>
 
-		{if $Attributes|count > 0}
-		<div class="customAttributes">
-			<h3>{translate key=AdditionalAttributes}</h3>
-			<ul>
-			{foreach from=$Attributes item=attribute}
-				<li class="customAttribute">
-					{control type="AttributeControl" attribute=$attribute readonly=true}
-				</li>
-			{/foreach}
-			</ul>
-		</div>
-		<div style="clear:both;">&nbsp;</div>
+		{if $ShowReservationDetails}
+			{if $Attributes|count > 0}
+			<div class="customAttributes">
+				<h3>{translate key=AdditionalAttributes}</h3>
+				<ul>
+				{foreach from=$Attributes item=attribute}
+					<li class="customAttribute">
+						{control type="AttributeControl" attribute=$attribute readonly=true}
+					</li>
+				{/foreach}
+				</ul>
+			</div>
+			<div style="clear:both;">&nbsp;</div>
+			{/if}
 		{/if}
 
-		<div style="float:left;">
-			{block name="deleteButtons"}
-				<a href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
-				{html_image src="calendar-plus.png"}
-				{translate key=AddToOutlook}</a>
-			{/block}
-		</div>
+		{if $ShowReservationDetails}
+			<div style="float:left;">
+				{block name="deleteButtons"}
+					<a href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
+					{html_image src="calendar-plus.png"}
+					{translate key=AddToOutlook}</a>
+				{/block}
+			</div>
+		{/if}
 		<div style="float:right;">
 			{block name="submitButtons"}
 				&nbsp
@@ -178,14 +188,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</button>
 		</div>
 
-		{if $Attachments|count > 0}
-			<div style="clear:both">&nbsp;</div>
-			<div class="res-attachments">
-			<span class="heading">{translate key=Attachments}</span>
-				{foreach from=$Attachments item=attachment}
-					<a href="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}" target="_blank">{$attachment->FileName()}</a>&nbsp;
-				{/foreach}
-			</div>
+		{if $ShowReservationDetails}
+			{if $Attachments|count > 0}
+				<div style="clear:both">&nbsp;</div>
+				<div class="res-attachments">
+				<span class="heading">{translate key=Attachments}</span>
+					{foreach from=$Attachments item=attachment}
+						<a href="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}" target="_blank">{$attachment->FileName()}</a>&nbsp;
+					{/foreach}
+				</div>
+			{/if}
 		{/if}
 		<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
 	</div>

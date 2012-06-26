@@ -25,7 +25,7 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 class CalendarExportPresenter
 {
     /**
-     * @var \ICalendarExportPage
+     * @var ICalendarExportPage
      */
     private $page;
 

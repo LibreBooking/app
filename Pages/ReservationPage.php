@@ -123,6 +123,12 @@ interface IReservationPage extends IPage
 
 	/**
 	 * @abstract
+	 * @param bool $showReservationDetails
+	 */
+	function ShowReservationDetails($showReservationDetails);
+
+	/**
+	 * @abstract
 	 * @param $attributes array|Attribute[]
 	 */
 	function SetCustomAttributes($attributes);
@@ -293,6 +299,11 @@ abstract class ReservationPage extends Page implements IReservationPage
     public function ShowUserDetails($canShowUserDetails)
     {
         $this->Set('ShowUserDetails', $canShowUserDetails);
+    }
+
+	public function ShowReservationDetails($showReservationDetails)
+    {
+        $this->Set('ShowReservationDetails', $showReservationDetails);
     }
 
 	public function SetCustomAttributes($attributes)

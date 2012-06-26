@@ -97,6 +97,12 @@ interface IReservationComponentInitializer
 	public function ShowUserDetails($showUserDetails);
 
 	/**
+	 * @abstract
+	 * @param $showReservationDetails bool
+	 */
+	public function ShowReservationDetails($showReservationDetails);
+
+	/**
 	 * @param $resources array|ResourceDto[]
 	 */
 	public function BindAvailableResources($resources);
@@ -324,6 +330,14 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function ShowUserDetails($showUserDetails)
 	{
 		$this->basePage->ShowUserDetails($showUserDetails);
+	}
+
+	/**
+	 * @param $showReservationDetails bool
+	 */
+	public function ShowReservationDetails($showReservationDetails)
+	{
+		$this->basePage->ShowReservationDetails($showReservationDetails);
 	}
 
 	/**

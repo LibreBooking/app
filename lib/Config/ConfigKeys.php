@@ -64,6 +64,7 @@ class ConfigKeys
     const ICS_SUBSCRIPTION_KEY = 'subscription.key';
 
     const PRIVACY_HIDE_USER_DETAILS = 'hide.user.details';
+    const PRIVACY_HIDE_RESERVATION_DETAILS = 'hide.reservation.details';
     const PRIVACY_VIEW_RESERVATIONS = 'view.reservations';
     const PRIVACY_VIEW_SCHEDULES = 'view.schedules';
 
