@@ -408,12 +408,12 @@ class Securimage
         }
 
         // Initialize session or attach to existing
-        if ( session_id() == '' ) { // no session has been started yet, which is needed for validation
-            if ($this->session_name != null && trim($this->session_name) != '') {
-                session_name(trim($this->session_name)); // set session name if provided
-            }
-            session_start();
-        }
+//        if ( session_id() == '' ) { // no session has been started yet, which is needed for validation
+//            if ($this->session_name != null && trim($this->session_name) != '') {
+//                session_name(trim($this->session_name)); // set session name if provided
+//            }
+//            session_start();
+//        }
     }
     
     /**
@@ -1008,9 +1008,11 @@ class Securimage
         if ($code != '') {
             if ($code == $code_entered) {
                 $this->correct_code = true;
-                $_SESSION['securimage_code_value'][$this->namespace] = '';
-                $_SESSION['securimage_code_ctime'][$this->namespace] = '';
-                $this->clearCodeFromDatabase();
+				ServiceLocator::GetServer()->SetSession('securimage_code_value', null);
+				ServiceLocator::GetServer()->SetSession('securimage_code_ctime', null);
+//                $_SESSION['securimage_code_value'][$this->namespace] = '';
+//                $_SESSION['securimage_code_ctime'][$this->namespace] = '';
+//                $this->clearCodeFromDatabase();
             }
         }
     }
@@ -1020,20 +1022,16 @@ class Securimage
      */
     protected function getCode()
     {
-        $code = '';
-        
-        if (isset($_SESSION['securimage_code_value'][$this->namespace]) && trim($_SESSION['securimage_code_value'][$this->namespace]) != '')
+        $code = ServiceLocator::GetServer()->GetSession('securimage_code_value');
+
+        if ($code != null && trim($code) != '')
 		{
-            if ($this->isCodeExpired($_SESSION['securimage_code_ctime'][$this->namespace]) == false)
+			Log::Debug('Code found in session: %s', $code);
+            if ($this->isCodeExpired(ServiceLocator::GetServer()->GetSession('securimage_code_ctime')) == false)
 			{
-                $code = $_SESSION['securimage_code_value'][$this->namespace];
+                //$code = $_SESSION['securimage_code_value'][$this->namespace];
 				Log::Debug('securimage - code is expired');
             }
-        }
-		else if ($this->use_sqlite_db == true && function_exists('sqlite_open')) {
-            // no code in session - may mean user has cookies turned off
-            $this->openDatabase();
-            $code = $this->getCodeFromDatabase();
         }
 		else
 		{
@@ -1048,9 +1046,10 @@ class Securimage
      */
     protected function saveData()
     {
-		@session_start();
-        $_SESSION['securimage_code_value'][$this->namespace] = $this->code;
-        $_SESSION['securimage_code_ctime'][$this->namespace] = time();
+		ServiceLocator::GetServer()->SetSession('securimage_code_value', $this->code);
+		ServiceLocator::GetServer()->SetSession('securimage_code_ctime', time());
+//        $_SESSION['securimage_code_value'][$this->namespace] = $this->code;
+//        $_SESSION['securimage_code_ctime'][$this->namespace] = time();
 
 		Log::Debug('securimage - saving code to session: %s', $this->code);
        // $this->saveCodeToDatabase();
