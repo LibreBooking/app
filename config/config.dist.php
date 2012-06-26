@@ -62,7 +62,7 @@ $conf['settings']['uploads']['reservation.attachment.extensions'] = 'txt,jpg,gif
  * Database configuration
  */
 $conf['settings']['database']['type'] = 'mysql';
-$conf['settings']['database']['user'] = 'schedule_user111';        // database user with permission to the phpScheduleIt database
+$conf['settings']['database']['user'] = 'schedule_user';        // database user with permission to the phpScheduleIt database
 $conf['settings']['database']['password'] = 'password';
 $conf['settings']['database']['hostspec'] = '127.0.0.1';        // ip, dns or named pipe
 $conf['settings']['database']['name'] = 'phpscheduleit2';
