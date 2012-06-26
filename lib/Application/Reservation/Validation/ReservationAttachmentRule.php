@@ -27,10 +27,10 @@ class ReservationAttachmentRule implements IReservationValidationRule
 	public function Validate($reservationSeries)
 	{
 		$attachment = $reservationSeries->AddedAttachment();
-		
+
 		$allowedExtensionsConfig = Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_RESERVATION_EXTENSIONS);
 
-		if (empty($allowedExtensionsConfig))
+		if (empty($allowedExtensionsConfig) || ($attachment == null))
 		{
 			return new ReservationRuleResult();
 		}
