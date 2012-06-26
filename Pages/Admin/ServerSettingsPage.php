@@ -29,7 +29,6 @@ class ServerSettingsPage extends AdminPage
 
 	public function PageLoad()
 	{
-
 		if ($this->TakingAction())
 		{
 			$this->ProcessAction();
@@ -38,18 +37,28 @@ class ServerSettingsPage extends AdminPage
 		$plugins = $this->GetPlugins();
 
 		$uploadDir = new ImageUploadDirectory();
+		$cacheDir = new TemplateCacheDirectory();
 
 		$this->Set('plugins', $plugins);
 		$this->Set('currentTime', date('Y-m-d, H:i:s (e P)'));
 		$this->Set('imageUploadDirPermissions', substr(sprintf('%o', fileperms($uploadDir->GetDirectory())), -4));
 		$this->Set('imageUploadDirectory', $uploadDir->GetDirectory());
+		$this->Set('tempalteCacheDirectory', $cacheDir->GetDirectory());
 		$this->Display('server_settings.tpl');
 	}
 
 	function ProcessAction()
 	{
-		$uploadDir = new ImageUploadDirectory();
-		$uploadDir->MakeWriteable();
+		if ($this->GetAction() == 'changePermissions')
+		{
+			$uploadDir = new ImageUploadDirectory();
+			$uploadDir->MakeWriteable();
+		}
+		else
+		{
+			$cacheDir = new TemplateCacheDirectory();
+			$cacheDir->Flush();
+		}
 
 	}
 
@@ -99,4 +108,32 @@ class ImageUploadDirectory
 
 }
 
+class TemplateCacheDirectory
+{
+	public function Flush()
+	{
+		try
+		{
+			$dirName = $this->GetDirectory();
+			$cacheDir = opendir($dirName);
+		    while (false !== ($file = readdir($cacheDir)))
+			{
+		        if($file != "." && $file != "..")
+				{
+		            unlink($dirName . $file);
+		        }
+		    }
+		    closedir($cacheDir);
+		}
+		catch(Exception $ex)
+		{
+			Log::Error('Could not flush template cache directory', $ex);
+		}
+	}
+
+	public function GetDirectory()
+	{
+		return ROOT_DIR . 'tpl_c/';
+	}
+}
 ?>

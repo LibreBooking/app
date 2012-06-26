@@ -23,6 +23,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <ul class="indented">
 	<li>Current Time: {$currentTime}</li>
 	<li>Image Upload Physical Directory: {$imageUploadDirectory} ({translate key=Permissions}: {$imageUploadDirPermissions}) <a href="{$smarty.server.SCRIPT_URL}?{QueryStringKeys::ACTION}=changePermissions">Try to apply correct permissions</a></li>
+	<li>Template Cache Directory: {$tempalteCacheDirectory} <a href="{$smarty.server.SCRIPT_URL}?{QueryStringKeys::ACTION}=flush">Try to flush cached files</a></li>
 </ul>
 
 <h3 style="margin-top: 20px;">Plugins</h3>
