@@ -72,6 +72,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
+<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
+	<form id="deleteForm"  ajaxAction="{ManageAttributesActions::DeleteAttribute}" method="post">
+		<div class="error" style="margin-bottom: 25px;">
+			<h3>{translate key=DeleteWarning}</h3>
+		</div>
+		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
 <div id="editAttributeDialog" class="dialog attributeDialog" title="{translate key=EditAttribute}">
 
 	<form id="editAttributeForm" ajaxAction="{ManageAttributesActions::UpdateAttribute}" method="post">

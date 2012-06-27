@@ -151,6 +151,12 @@ class Queries
 	const DELETE_ACCESSORY =
 			'DELETE FROM accessories WHERE accessory_id = @accessoryid';
 
+	const DELETE_ATTRIBUTE =
+			'DELETE FROM custom_attributes WHERE custom_attribute_id = @custom_attribute_id';
+
+	const DELETE_ATTRIBUTE_VALUES =
+			'DELETE FROM custom_attribute_values WHERE custom_attribute_id = @custom_attribute_id';
+
 	const DELETE_ACCOUNT_ACTIVATION =
 			'DELETE FROM account_activation WHERE activation_code = @activation_code';
 

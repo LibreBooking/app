@@ -405,6 +405,23 @@ class DeleteAccessoryCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
     }
 }
+class DeleteAttributeCommand extends SqlCommand
+{
+    public function __construct($attributeId)
+    {
+        parent::__construct(Queries::DELETE_ATTRIBUTE);
+        $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+    }
+}
+
+class DeleteAttributeValuesCommand extends SqlCommand
+{
+    public function __construct($attributeId)
+    {
+        parent::__construct(Queries::DELETE_ATTRIBUTE_VALUES);
+        $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+    }
+}
 
 class DeleteAccountActivationCommand extends SqlCommand
 {

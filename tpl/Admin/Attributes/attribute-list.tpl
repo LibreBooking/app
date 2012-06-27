@@ -27,6 +27,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key=Required}</th>
 		<th>{translate key=ValidationExpression}</th>
 		<th>{translate key=PossibleValues}</th>
+		<th>{translate key=Delete}</th>
 	</tr>
 	{foreach from=$Attributes item=attribute}
 		{cycle values='row0,row1' assign=rowCss}
@@ -41,6 +42,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}</td>
 			<td>{$attribute->Regex()}</td>
 			<td>{$attribute->PossibleValues()}</td>
+			<td align="center"><a href="#" class="update delete" attributeId="{$attribute->Id()}">{html_image src='cross-button.png'}</a></td>
 		</tr>
 	{/foreach}
 </table>

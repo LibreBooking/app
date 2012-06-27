@@ -76,7 +76,6 @@ class AttributeRepositoryTests extends TestBase
 
 		$this->assertEquals($expectedFirstAttribute, $attribute);
 		$this->assertEquals(new GetAttributeByIdCommand($id), $this->db->_LastCommand);
-
 	}
 
 	public function testUpdatesAttribute()
@@ -95,6 +94,15 @@ class AttributeRepositoryTests extends TestBase
 		$this->repository->Update($attribute);
 
 		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder), $this->db->_LastCommand);
+	}
+
+	public function testDeletesAttributeById()
+	{
+		$id = 12098;
+
+		$this->repository->DeleteById($id);
+		$this->assertEquals(new DeleteAttributeCommand($id), $this->db->_Commands[0]);
+		$this->assertEquals(new DeleteAttributeValuesCommand($id), $this->db->_Commands[1]);
 	}
 
 	public function testLoadsAttributesByCategory()

@@ -128,6 +128,19 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->assertEquals($possibleValues, $expectedAttribute->PossibleValues());
 		$this->assertEquals($sortOrder, $expectedAttribute->SortOrder());
 	}
+	
+	public function testDeletesAttributeById()
+	{
+		$attributeId = 1091;
+		$this->page->_attributeId = $attributeId;
+
+		$this->attributeRepository->expects($this->once())
+						->method('DeleteById')
+						->with($this->equalTo($attributeId));
+
+		$this->presenter->DeleteAttribute();
+	}
+
 }
 
 class FakeAttributePage extends FakeActionPageBase implements IManageAttributesPage

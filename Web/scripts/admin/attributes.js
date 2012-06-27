@@ -43,6 +43,7 @@ function AttributeManagement(opts) {
 
 		ConfigureAdminDialog(elements.addDialog, 480, 200);
 		ConfigureAdminDialog(elements.editDialog, 500, 200);
+		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
 
 		$(".save").click(function () {
 			$(this).closest('form').submit();
@@ -58,6 +59,11 @@ function AttributeManagement(opts) {
 			RefreshAttributeList();
 		});
 
+		elements.attributeList.delegate('a.update', 'click', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+		});
+
 		$('#addAttributeButton').click(function (e) {
 			e.preventDefault();
 			$('span.error', elements.addDialog).remove();
@@ -69,7 +75,8 @@ function AttributeManagement(opts) {
 			showRelevantAttributeOptions($(this).val(), elements.addDialog);
 		});
 
-		elements.attributeList.delegate('.editable', 'click', function () {
+		elements.attributeList.delegate('.editable', 'click', function (e) {
+			e.preventDefault();
 			var attributeId = $(this).attr('attributeId');
 			var dataList = elements.attributeList.data('list');
 			var selectedAttribute = dataList[attributeId];
@@ -77,8 +84,16 @@ function AttributeManagement(opts) {
 			showEditDialog(selectedAttribute);
 		});
 
+		elements.attributeList.delegate('.delete', 'click', function (e) {
+			e.preventDefault();
+			var attributeId = $(this).attr('attributeId');
+
+			showDeleteDialog(attributeId);
+		});
+
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
 		ConfigureAdminForm(elements.profileForm, defaultSubmitCallback, editAttributeHandler);
+		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback, deleteAttributeHandler);
 
 	};
 
@@ -112,6 +127,11 @@ function AttributeManagement(opts) {
 		RefreshAttributeList();
 	};
 
+	var deleteAttributeHandler = function() {
+		elements.deleteDialog.dialog('close');
+		RefreshAttributeList();
+	};
+
 	var showEditDialog = function (selectedAttribute) {
 		showRelevantAttributeOptions(selectedAttribute.type, elements.editDialog);
 
@@ -129,6 +149,11 @@ function AttributeManagement(opts) {
 		setActiveId(selectedAttribute.id);
 
 		elements.editDialog.dialog('open');
+	};
+
+	var showDeleteDialog = function(selectedAttributeId) {
+		setActiveId(selectedAttributeId);
+		elements.deleteDialog.dialog('open');
 	};
 
 	var defaultSubmitCallback = function (form) {

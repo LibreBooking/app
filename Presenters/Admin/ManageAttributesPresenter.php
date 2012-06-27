@@ -24,6 +24,7 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 class ManageAttributesActions
 {
     const AddAttribute = 'addAttribute';
+    const DeleteAttribute = 'deleteAttribute';
     const UpdateAttribute = 'updateAttribute';
 }
 
@@ -47,6 +48,7 @@ class ManageAttributesPresenter extends ActionPresenter
 		$this->attributeRepository = $attributeRepository;
 
         $this->AddAction(ManageAttributesActions::AddAttribute, 'AddAttribute');
+        $this->AddAction(ManageAttributesActions::DeleteAttribute, 'DeleteAttribute');
         $this->AddAction(ManageAttributesActions::UpdateAttribute, 'UpdateAttribute');
 	}
 
@@ -69,6 +71,13 @@ class ManageAttributesPresenter extends ActionPresenter
         $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder);
 		$this->attributeRepository->Add($attribute);
     }
+
+	public function DeleteAttribute()
+	{
+		$attributeId = $this->page->GetAttributeId();
+		Log::Debug('Deleting attribute with id: %s', $attributeId);
+		$this->attributeRepository->DeleteById($attributeId);
+	}
 
 	public function UpdateAttribute()
 	{

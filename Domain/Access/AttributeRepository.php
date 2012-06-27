@@ -44,6 +44,13 @@ interface IAttributeRepository
 
 	/**
 	 * @abstract
+	 * @param $attributeId int
+	 * @return void
+	 */
+	public function DeleteById($attributeId);
+
+	/**
+	 * @abstract
 	 * @param int|CustomAttributeCategory $category
 	 * @return array|CustomAttribute[]
 	 */
@@ -56,6 +63,7 @@ interface IAttributeRepository
 	 * @return array|AttributeEntityValue[]
 	 */
 	public function GetEntityValues($category, $entityIds);
+
 }
 
 class AttributeRepository implements IAttributeRepository
@@ -136,6 +144,16 @@ class AttributeRepository implements IAttributeRepository
 		}
 
 		return $values;
+	}
+
+	/**
+	 * @param $attributeId int
+	 * @return void
+	 */
+	public function DeleteById($attributeId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteAttributeCommand($attributeId));
+		ServiceLocator::GetDatabase()->Execute(new DeleteAttributeValuesCommand($attributeId));
 	}
 }
 
