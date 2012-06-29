@@ -40,6 +40,13 @@ interface IRoleService
 	 * @return bool
 	 */
 	public function IsGroupAdministrator(User $user);
+
+	/**
+	 * @abstract
+	 * @param User $user
+	 * @return bool
+	 */
+	public function IsScheduleAdministrator(User $user);
 }
 
 interface IAuthorizationService extends IRoleService
@@ -161,6 +168,15 @@ class AuthorizationService implements IAuthorizationService
     public function IsGroupAdministrator(User $user)
     {
         return $user->IsInRole(RoleLevel::GROUP_ADMIN);
+    }
+
+	/**
+     * @param User $user
+     * @return bool
+     */
+    public function IsScheduleAdministrator(User $user)
+    {
+        return $user->IsInRole(RoleLevel::SCHEDULE_ADMIN);
     }
 
 	/**

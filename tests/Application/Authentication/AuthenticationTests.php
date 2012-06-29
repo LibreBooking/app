@@ -158,6 +158,11 @@ class AuthenticationTests extends TestBase
 				->with($this->equalTo($this->user))
 				->will($this->returnValue(true));
 
+		$this->authorization->expects($this->once())
+				->method('IsScheduleAdministrator')
+				->with($this->equalTo($this->user))
+				->will($this->returnValue(true));
+
 		$context = new WebLoginContext($this->fakeServer, new LoginData(false, $language));
 		$this->auth->Login($this->username, $context);
 
@@ -171,6 +176,7 @@ class AuthenticationTests extends TestBase
 		$user->IsAdmin = true;
 		$user->IsGroupAdmin = true;
 		$user->IsResourceAdmin = true;
+		$user->IsScheduleAdmin = true;
 
 		$this->assertEquals($user, $this->fakeServer->GetUserSession());
 	}

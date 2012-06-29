@@ -206,7 +206,7 @@ class ReservationViewRepository implements IReservationViewRepository
             {
                 $reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
             }
-			$reservationView->Resources[] = new ReservationResourceView($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME], $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID]);
+			$reservationView->Resources[] = new ReservationResourceView($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME], $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID], $row[ColumnNames::SCHEDULE_ID]);
         }
     }
 
@@ -334,12 +334,14 @@ class ReservationResourceView implements IResource
     private $_id;
     private $_resourceName;
     private $_adminGroupId;
+    private $_scheduleId;
 
-	public function __construct($resourceId, $resourceName = '', $adminGroupId)
+	public function __construct($resourceId, $resourceName, $adminGroupId, $scheduleId)
     {
         $this->_id = $resourceId;
         $this->_resourceName = $resourceName;
         $this->_adminGroupId = $adminGroupId;
+		$this->_scheduleId = $scheduleId;
     }
 
     /**
@@ -390,6 +392,14 @@ class ReservationResourceView implements IResource
     {
         return $this->Name();
     }
+
+	/**
+	 * @return int
+	 */
+	public function GetScheduleId()
+	{
+		return $this->_scheduleId;
+	}
 }
 
 class ReservationUserView

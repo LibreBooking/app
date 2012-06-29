@@ -60,6 +60,19 @@ class UserTests extends TestBase
 
 		$this->assertTrue($user->IsInRole(RoleLevel::RESOURCE_ADMIN));
 	}
+
+	public function testUserIsScheduleAdminIfAtLeastOneGroupIsAnAdminGroup()
+	{
+		$user = new User();
+
+		$nonAdminGroup = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
+		$adminGroup = new UserGroup(2, 'admin', null, RoleLevel::SCHEDULE_ADMIN);
+		$groups = array($nonAdminGroup, $adminGroup);
+
+		$user->WithGroups($groups);
+
+		$this->assertTrue($user->IsInRole(RoleLevel::SCHEDULE_ADMIN));
+	}
 	
 	public function testWhenUserIsInAGroupThatCanAdminAnotherGroup()
 	{
@@ -106,7 +119,7 @@ class UserTests extends TestBase
 		$this->assertFalse($adminUser->IsAdminFor($user), 'admin is not in any group that can admin group 1 or 2');
 	}
 
-    public function testWherUserIsInAdminGroupForResource()
+    public function testWhenUserIsInAdminGroupForResource()
     {
         $adminGroupId = 223;
         $resource = new ReservationResource(1, 'n', $adminGroupId);
@@ -126,8 +139,31 @@ class UserTests extends TestBase
 
         $this->assertTrue($adminUser->IsResourceAdminFor($resource));
         $this->assertFalse($regularUser->IsResourceAdminFor($resource));
-
     }
+
+	public function testWhenUserIsInAdminGroupForSchedule()
+	{
+		$scheduleId = 123;
+		$adminGroupId = 223;
+		$schedule = new FakeSchedule($scheduleId);
+		$schedule->SetAdminGroupId($adminGroupId);
+
+		$adminUser = new User();
+		$regularUser = new User();
+
+		$adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::SCHEDULE_ADMIN);
+		$group1 = new UserGroup(1, 'random group');
+		$group2 = new UserGroup(2, 'group with admin');
+
+		$adminUserGroups = array($group1, $adminGroup);
+		$userGroups = array($group1, $group2);
+
+		$adminUser->WithGroups($adminUserGroups);
+		$regularUser->WithGroups($userGroups);
+
+		$this->assertTrue($adminUser->IsScheduleAdminFor($schedule));
+		$this->assertFalse($regularUser->IsScheduleAdminFor($schedule));
+	}
 
     public function testCanGetGroupsThatUserHasAdminOver()
     {

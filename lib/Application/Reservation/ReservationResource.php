@@ -53,5 +53,13 @@ class ReservationResource implements IResource
     {
         return $this->_adminGroupId;
     }
+
+	/**
+	 * @return int
+	 */
+	public function GetScheduleId()
+	{
+		throw new Exception('NK: 2012-06-29 can we get here? If so, we have a bad interface');
+	}
 }
 ?>

@@ -225,6 +225,7 @@ class User
 	private $isGroupAdmin = false;
 	private $isApplicationAdmin = false;
 	private $isResourceAdmin = false;
+	private $isScheduleAdmin = false;
 
 	/**
 	 * @param array|int[] $allowedResourceIds
@@ -259,6 +260,10 @@ class User
 			if ($group->IsResourceAdmin)
 			{
 				$this->isResourceAdmin = true;
+			}
+			if ($group->IsScheduleAdmin)
+			{
+				$this->isScheduleAdmin = true;
 			}
 
 			if (!empty($group->AdminGroupId))
@@ -579,6 +584,28 @@ class User
 	}
 
 	/**
+	 * @param ISchedule $schedule
+	 * @return bool
+	 */
+	public function IsScheduleAdminFor(ISchedule $schedule)
+	{
+		if (!$this->isScheduleAdmin)
+		{
+			return false;
+		}
+
+		foreach ($this->groups as $group)
+		{
+			if ($group->GroupId == $schedule->GetAdminGroupId())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * @param int|RoleLevel $roleLevel
 	 * @return bool
 	 */
@@ -595,6 +622,10 @@ class User
 		if ($roleLevel == RoleLevel::RESOURCE_ADMIN)
 		{
 			return $this->isResourceAdmin;
+		}
+		if ($roleLevel == RoleLevel::SCHEDULE_ADMIN)
+		{
+			return $this->isScheduleAdmin;
 		}
 
 		return false;
@@ -705,6 +736,7 @@ class User
 
 		return null;
 	}
+
 }
 
 class NullUser extends User
@@ -775,6 +807,11 @@ class UserGroup
 	public $IsResourceAdmin = false;
 
 	/**
+	 * @var bool
+	 */
+	public $IsScheduleAdmin = false;
+
+	/**
 	 * @param int $groupId
 	 * @param string $groupName
 	 * @param int|null $adminGroupId
@@ -804,6 +841,10 @@ class UserGroup
 		if ($roleLevel == RoleLevel::RESOURCE_ADMIN)
 		{
 			$this->IsResourceAdmin = true;
+		}
+		if ($roleLevel == RoleLevel::SCHEDULE_ADMIN)
+		{
+			$this->IsScheduleAdmin = true;
 		}
 	}
 }

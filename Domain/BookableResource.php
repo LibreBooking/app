@@ -40,6 +40,11 @@ interface IResource
 	 * @return int
 	 */
 	public function GetAdminGroupId();
+
+	/**
+	 * @return int
+	 */
+	public function GetScheduleId();
 }
 
 class BookableResource implements IResource

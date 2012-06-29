@@ -29,6 +29,7 @@ interface ISchedule
 	public function GetLayoutId();
     public function GetIsCalendarSubscriptionAllowed();
     public function GetPublicId();
+	public function GetAdminGroupId();
 }
 
 class Schedule implements ISchedule

@@ -180,6 +180,7 @@ class Authentication implements IAuthentication
 		$userSession->IsAdmin = $this->roleService->IsApplicationAdministrator($user);
 		$userSession->IsGroupAdmin = $this->roleService->IsGroupAdministrator($user);
 		$userSession->IsResourceAdmin = $this->roleService->IsResourceAdministrator($user);
+		$userSession->IsScheduleAdmin = $this->roleService->IsScheduleAdministrator($user);
 
         $server->SetUserSession($userSession);
     }

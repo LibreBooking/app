@@ -30,6 +30,7 @@ class UserSession
 	public $IsAdmin = false;
 	public $IsGroupAdmin = false;
 	public $IsResourceAdmin = false;
+	public $IsScheduleAdmin = false;
 
 	public function __construct($id)
 	{

@@ -114,8 +114,8 @@ class ReservationViewRepositoryTests extends TestBase
         );
 
         $resourceRows = array(
-            $this->GetResourceRow($reservationId, $resourceId1, $resourceName1, $adminGroupId1),
-            $this->GetResourceRow($reservationId, $resourceId2, $resourceName2, null),
+            $this->GetResourceRow($reservationId, $resourceId1, $resourceName1, $adminGroupId1, $scheduleId),
+            $this->GetResourceRow($reservationId, $resourceId2, $resourceName2, null, $scheduleId),
         );
 
         $participantRows = array(
@@ -204,8 +204,8 @@ class ReservationViewRepositoryTests extends TestBase
         );
 
         $expectedView->Resources = array(
-            new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1),
-            new ReservationResourceView($resourceId2, $resourceName2, null),
+            new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1, $scheduleId),
+            new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId),
         );
 
         $expectedView->Accessories = array(
@@ -340,14 +340,15 @@ class ReservationViewRepositoryTests extends TestBase
         );
     }
 
-    private function GetResourceRow($reservationId, $resourceId, $resourceName, $adminGroupId = null)
+    private function GetResourceRow($reservationId, $resourceId, $resourceName, $adminGroupId, $scheduleId)
     {
         return array(
             ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
             ColumnNames::RESOURCE_ID => $resourceId,
             ColumnNames::RESOURCE_NAME => $resourceName,
             ColumnNames::RESOURCE_LEVEL_ID => ResourceLevel::Additional,
-            ColumnNames::RESOURCE_ADMIN_GROUP_ID => $adminGroupId
+            ColumnNames::RESOURCE_ADMIN_GROUP_ID => $adminGroupId,
+			ColumnNames::SCHEDULE_ID => $scheduleId
         );
 
     }
