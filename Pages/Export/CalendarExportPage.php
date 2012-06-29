@@ -32,8 +32,9 @@ interface ICalendarExportPage
 	/**
 	 * @abstract
 	 * @param array|iCalendarReservationView[] $reservations
+	 * @param bool $hideDetails
 	 */
-	public function SetReservations($reservations);
+	public function SetReservations($reservations, $hideDetails);
 
     /**
      * @abstract
@@ -55,15 +56,20 @@ class CalendarExportPage extends Page implements ICalendarExportPage
 	 */
 	private $presenter;
 
+	/**
+	 * @var bool
+	 */
+	private $hideDetails = false;
+
 	public function __construct()
 	{
-		$this->presenter = new CalendarExportPresenter($this, new ReservationViewRepository(), new NullCalendarExportValidator());
+		$this->presenter = new CalendarExportPresenter($this, new ReservationViewRepository(), new NullCalendarExportValidator(), new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
 		parent::__construct('', 1);
 	}
 
 	public function PageLoad()
 	{
-		$this->presenter->PageLoad();
+		$this->presenter->PageLoad(ServiceLocator::GetServer()->GetUserSession());
 
 		header("Content-Type: text/Calendar");
 		header("Content-Disposition: inline; filename=calendar.ics");
@@ -74,7 +80,14 @@ class CalendarExportPage extends Page implements ICalendarExportPage
 		$this->Set('DateStamp', Date::Now());
 		$this->Set('ScriptUrl', $config->GetScriptUrl());
 
-		$this->Display('Export/ical.tpl');
+		if ($this->hideDetails)
+		{
+			$this->Display('Export/ical-private.tpl');
+		}
+		else
+		{
+			$this->Display('Export/ical.tpl');
+		}
 	}
 
 	public function GetReferenceNumber()
@@ -82,25 +95,17 @@ class CalendarExportPage extends Page implements ICalendarExportPage
 		return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
 	}
 
-	/**
-	 * @param array|iCalendarReservationView[] $reservations
-	 */
-	public function SetReservations($reservations)
+	public function SetReservations($reservations, $hideDetails)
 	{
 		$this->Set('Reservations', $reservations);
+		$this->hideDetails = $hideDetails;
 	}
 
-    /**
-     * @return int
-     */
     public function GetScheduleId()
     {
         return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
     }
 
-    /**
-     * @return int
-     */
     public function GetResourceId()
     {
         return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
@@ -109,9 +114,6 @@ class CalendarExportPage extends Page implements ICalendarExportPage
 
 class NullCalendarExportValidator implements ICalendarExportValidator
 {
-    /**
-     * @return bool
-     */
     function IsValid()
     {
         return true;

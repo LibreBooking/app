@@ -21,6 +21,69 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
+
+
+interface IReservationPopupPage
+{
+	/**
+	 * @return string
+	 */
+	function GetReservationId();
+
+	/**
+	 * @param $first string
+	 * @param $last string
+	 */
+	function SetName($first, $last);
+
+	/**
+	 * @param $resources ScheduleResource[]
+	 */
+	function SetResources($resources);
+
+	/**
+	 * @param $users ReservationUser[]
+	 */
+	function SetParticipants($users);
+
+	/**
+	 * @param $summary string
+	 */
+	function SetSummary($summary);
+
+    /**
+	 * @param $title string
+	 */
+	function SetTitle($title);
+
+	/**
+	 * @param $startDate Date
+	 * @param $endDate Date
+	 */
+	function SetDates($startDate, $endDate);
+
+	/**
+	 * @abstract
+	 * @param $accessories ReservationAccessory[]
+	 * @return mixed
+	 */
+	public function SetAccessories($accessories);
+
+	/**
+	 * @abstract
+	 * @param bool $hideReservationDetails
+	 * @return void
+	 */
+	public function SetHideDetails($hideReservationDetails);
+
+	/**
+	 * @abstract
+	 * @param bool $hideUserInfo
+	 * @return void
+	 */
+	public function SetHideUser($hideUserInfo);
+}
 
 class ReservationPopupPage extends Page implements IReservationPopupPage
 {
@@ -33,7 +96,7 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		parent::__construct();
 		
-		$this->_presenter = new ReservationPopupPresenter($this, new ReservationViewRepository());
+		$this->_presenter = new ReservationPopupPresenter($this, new ReservationViewRepository(), new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
 	}
 	
 	public function PageLoad()
@@ -63,8 +126,7 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	
 	function SetName($first, $last)
 	{
-		$this->Set('fname', $first);
-		$this->Set('lname', $last);
+		$this->Set('fullName', new FullName($first, $last));
 	}
 	
 	function SetResources($resources)
@@ -101,54 +163,26 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		$this->Set('accessories', $accessories);
 	}
+
+	/**
+	 * @param bool $hideReservationDetails
+	 * @return void
+	 */
+	public function SetHideDetails($hideReservationDetails)
+	{
+		$this->Set('hideDetails', $hideReservationDetails);
+	}
+
+	/**
+	 * @param bool $hideUserInfo
+	 * @return void
+	 */
+	public function SetHideUser($hideUserInfo)
+	{
+		$this->Set('hideUserInfo', $hideUserInfo);
+	}
 }
 
-interface IReservationPopupPage
-{
-	/**
-	 * @return string
-	 */
-	function GetReservationId();
-	
-	/**
-	 * @param $first string
-	 * @param $last string
-	 */
-	function SetName($first, $last);
-	
-	/**
-	 * @param $resources ScheduleResource[]
-	 */
-	function SetResources($resources);
-	
-	/**
-	 * @param $users ReservationUser[]
-	 */
-	function SetParticipants($users);
-	
-	/**
-	 * @param $summary string
-	 */
-	function SetSummary($summary);
-
-    /**
-	 * @param $title string
-	 */
-	function SetTitle($title);
-	
-	/**
-	 * @param $startDate Date
-	 * @param $endDate Date
-	 */
-	function SetDates($startDate, $endDate);
-
-	/**
-	 * @abstract
-	 * @param $accessories ReservationAccessory[]
-	 * @return mixed
-	 */
-	public function SetAccessories($accessories);
-}
 
 class ReservationPopupPresenter
 {
@@ -161,18 +195,38 @@ class ReservationPopupPresenter
 	 * @var IReservationViewRepository
 	 */
 	private $_reservationRepository;
+
+	/**
+	 * @var IReservationAuthorization
+	 */
+	private $_reservationAuthorization;
 	 
-	public function __construct(IReservationPopupPage $page, IReservationViewRepository $reservationRepository)
+	public function __construct(IReservationPopupPage $page, IReservationViewRepository $reservationRepository, IReservationAuthorization $reservationAuthorization)
 	{
 		$this->_page = $page;
 		$this->_reservationRepository = $reservationRepository;
+		$this->_reservationAuthorization = $reservationAuthorization;
 	}
 	
 	public function PageLoad()
 	{
+		$hideUserInfo = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
+		$hideReservationDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
+
 		$tz = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 		
 		$reservation = $this->_reservationRepository->GetReservationForEditing($this->_page->GetReservationId());
+
+		if ($hideReservationDetails || $hideUserInfo)
+		{
+			$canViewDetails = $this->_reservationAuthorization->CanViewDetails($reservation, ServiceLocator::GetServer()->GetUserSession());
+
+			$hideReservationDetails = !$canViewDetails && $hideReservationDetails;
+			$hideUserInfo = !$canViewDetails && $hideUserInfo;
+		}
+		$this->_page->SetHideDetails($hideReservationDetails);
+		$this->_page->SetHideUser($hideUserInfo);
+
 		$startDate = $reservation->StartDate->ToTimezone($tz);
 		$endDate = $reservation->EndDate->ToTimezone($tz);
 

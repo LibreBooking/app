@@ -22,113 +22,119 @@ require_once(ROOT_DIR . 'Presenters/CalendarExportPresenter.php');
 
 class CalendarExportPresenterTests extends TestBase
 {
-    /**
-     * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
-     */
-    private $repo;
+	/**
+	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $repo;
 
-    /**
-     * @var ICalendarExportPage|PHPUnit_Framework_MockObject_MockObject
-     */
-    private $page;
+	/**
+	 * @var ICalendarExportPage|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $page;
 
-    /**
-     * @var CalendarExportPresenter
-     */
-    private $presenter;
+	/**
+	 * @var CalendarExportPresenter
+	 */
+	private $presenter;
 
-    /**
-     * @var ICalendarExportValidator|PHPUnit_Framework_MockObject_MockObject
-     */
-    private $validator;
+	/**
+	 * @var ICalendarExportValidator|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $validator;
 
-    public function setup()
-    {
-        parent::setup();
+	/**
+	 * @var IReservationAuthorization|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $reservationAuth;
 
-        $this->repo = $this->getMock('IReservationViewRepository');
-        $this->page = $this->getMock('ICalendarExportPage');
-        $this->validator = $this->getMock('ICalendarExportValidator');
+	public function setup()
+	{
+		parent::setup();
 
-        $this->validator->expects($this->atLeastOnce())
-            ->method('IsValid')
-            ->will($this->returnValue(true));
+		$this->repo = $this->getMock('IReservationViewRepository');
+		$this->page = $this->getMock('ICalendarExportPage');
+		$this->validator = $this->getMock('ICalendarExportValidator');
+		$this->reservationAuth = $this->getMock('IReservationAuthorization');
 
-        $this->presenter = new CalendarExportPresenter($this->page, $this->repo, $this->validator);
-    }
+		$this->validator->expects($this->atLeastOnce())
+				->method('IsValid')
+				->will($this->returnValue(true));
 
-    public function testLoadsReservationByReferenceNumber()
-    {
-        $referenceNumber = 'ref';
-        $reservationResult = new ReservationView();
+		$this->presenter = new CalendarExportPresenter($this->page, $this->repo, $this->validator, $this->reservationAuth);
+	}
 
-        $this->page->expects($this->once())
-                ->method('GetReferenceNumber')
-                ->will($this->returnValue($referenceNumber));
+	public function testLoadsReservationByReferenceNumber()
+	{
+		$referenceNumber = 'ref';
+		$reservationResult = new ReservationView();
 
-        $this->repo->expects($this->once())
-                ->method('GetReservationForEditing')
-                ->with($this->equalTo($referenceNumber))
-                ->will($this->returnValue($reservationResult));
+		$this->page->expects($this->once())
+				->method('GetReferenceNumber')
+				->will($this->returnValue($referenceNumber));
 
-        $this->page->expects($this->once())
-                ->method('SetReservations')
-                ->with($this->arrayHasKey(0));
+		$this->repo->expects($this->once())
+				->method('GetReservationForEditing')
+				->with($this->equalTo($referenceNumber))
+				->will($this->returnValue($reservationResult));
 
-        $this->presenter->PageLoad();
-    }
+		$this->page->expects($this->once())
+				->method('SetReservations')
+				->with($this->arrayHasKey(0), $this->equalTo(false));
 
-    public function testGetsScheduleReservationsForTheNextYearByScheduleId()
-    {
-        $scheduleId = '1';
-        $reservationResult = array(new TestReservationItemView(1, Date::Now(), Date::Now()));
+		$this->presenter->PageLoad($this->fakeUser);
+	}
 
-        $weekAgo = Date::Now()->AddDays(-7);
-        $nextYear = Date::Now()->AddDays(365);
+	public function testGetsScheduleReservationsForTheNextYearByScheduleId()
+	{
+		$scheduleId = '1';
+		$reservationResult = array(new TestReservationItemView(1, Date::Now(), Date::Now()));
 
-        $this->page->expects($this->once())
-                ->method('GetScheduleId')
-                ->will($this->returnValue($scheduleId));
+		$weekAgo = Date::Now()->AddDays(-7);
+		$nextYear = Date::Now()->AddDays(365);
 
-        $this->repo->expects($this->once())
-                ->method('GetReservationList')
-                ->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $scheduleId, $this->isNull())
-                ->will($this->returnValue($reservationResult));
+		$this->page->expects($this->once())
+				->method('GetScheduleId')
+				->will($this->returnValue($scheduleId));
 
-        $this->page->expects($this->once())
-                ->method('SetReservations')
-                ->with($this->arrayHasKey(0));
+		$this->repo->expects($this->once())
+				->method('GetReservationList')
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $scheduleId, $this->isNull())
+				->will($this->returnValue($reservationResult));
 
-        $this->presenter->PageLoad();
-    }
+		$this->page->expects($this->once())
+				->method('SetReservations')
+				->with($this->arrayHasKey(0), $this->equalTo(false));
 
-    public function testGetsScheduleReservationsForTheNextYearByResourceId()
-    {
-        $resourceId = '1';
-        $reservationResult = array(new TestReservationItemView(1, Date::Now(), Date::Now()));
+		$this->presenter->PageLoad($this->fakeUser);
+	}
 
-        $weekAgo = Date::Now()->AddDays(-7);
-        $nextYear = Date::Now()->AddDays(365);
+	public function testGetsScheduleReservationsForTheNextYearByResourceId()
+	{
+		$resourceId = '1';
+		$reservationResult = array(new TestReservationItemView(1, Date::Now(), Date::Now()));
 
-        $this->page->expects($this->once())
-                ->method('GetResourceId')
-                ->will($this->returnValue($resourceId));
+		$weekAgo = Date::Now()->AddDays(-7);
+		$nextYear = Date::Now()->AddDays(365);
 
-        $this->repo->expects($this->once())
-                ->method('GetReservationList')
-                ->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $resourceId)
-                ->will($this->returnValue($reservationResult));
+		$this->page->expects($this->once())
+				->method('GetResourceId')
+				->will($this->returnValue($resourceId));
 
-        $this->page->expects($this->once())
-                ->method('SetReservations')
-                ->with($this->arrayHasKey(0));
+		$this->repo->expects($this->once())
+				->method('GetReservationList')
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $resourceId)
+				->will($this->returnValue($reservationResult));
 
-        $this->presenter->PageLoad();
-    }
+		$this->page->expects($this->once())
+				->method('SetReservations')
+				->with($this->arrayHasKey(0), $this->equalTo(false));
+
+		$this->presenter->PageLoad($this->fakeUser);
+	}
 
 	public function testOnlyAddsTheFirstReservationOfARepeatedSeries()
-    {
-        $resourceId = '1';
+	{
+		$resourceId = '1';
 		$r1 = new TestReservationItemView(1, Date::Now(), Date::Now());
 		$r1->WithSeriesId(10);
 
@@ -137,26 +143,81 @@ class CalendarExportPresenterTests extends TestBase
 
 		$r3 = new TestReservationItemView(2, Date::Now(), Date::Now());
 		$r3->WithSeriesId(10);
-        $reservationResult = array($r1, $r2, $r3);
+		$reservationResult = array($r1, $r2, $r3);
 
-        $weekAgo = Date::Now()->AddDays(-7);
-        $nextYear = Date::Now()->AddDays(365);
+		$weekAgo = Date::Now()->AddDays(-7);
+		$nextYear = Date::Now()->AddDays(365);
 
-        $this->page->expects($this->once())
-                ->method('GetResourceId')
-                ->will($this->returnValue($resourceId));
+		$this->page->expects($this->once())
+				->method('GetResourceId')
+				->will($this->returnValue($resourceId));
 
-        $this->repo->expects($this->once())
-                ->method('GetReservationList')
-                ->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $resourceId)
-                ->will($this->returnValue($reservationResult));
+		$this->repo->expects($this->once())
+				->method('GetReservationList')
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $resourceId)
+				->will($this->returnValue($reservationResult));
 
-        $this->page->expects($this->once())
-                ->method('SetReservations')
-                ->with($this->equalTo(array(new iCalendarReservationView($r1))));
+		$this->page->expects($this->once())
+				->method('SetReservations')
+				->with($this->equalTo(array(new iCalendarReservationView($r1))), $this->equalTo(false));
 
-        $this->presenter->PageLoad();
-    }
+		$this->presenter->PageLoad($this->fakeUser);
+	}
+
+	public function testCannotSeeReservationDetailsIfConfiguredOff()
+	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'true');
+
+		$referenceNumber = 'ref';
+		$reservationResult = new ReservationView();
+
+		$this->page->expects($this->once())
+				->method('GetReferenceNumber')
+				->will($this->returnValue($referenceNumber));
+
+		$this->repo->expects($this->once())
+				->method('GetReservationForEditing')
+				->with($this->equalTo($referenceNumber))
+				->will($this->returnValue($reservationResult));
+
+		$this->reservationAuth->expects($this->once())
+						->method('CanViewDetails')
+						->with($this->equalTo($reservationResult), $this->equalTo($this->fakeUser))
+						->will($this->returnValue(false));
+
+		$this->page->expects($this->once())
+				->method('SetReservations')
+				->with($this->arrayHasKey(0), $this->equalTo(true));
+
+		$this->presenter->PageLoad($this->fakeUser);
+	}
+
+	public function testCannotSeeReservationDetailsInListIfConfiguredOffAndNotAdmin()
+	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'true');
+		$this->fakeUser->IsAdmin = false;
+
+		$resourceId = '1';
+		$reservationResult = array(new TestReservationItemView(1, Date::Now(), Date::Now()));
+
+		$weekAgo = Date::Now()->AddDays(-7);
+		$nextYear = Date::Now()->AddDays(365);
+
+		$this->page->expects($this->once())
+				->method('GetResourceId')
+				->will($this->returnValue($resourceId));
+
+		$this->repo->expects($this->once())
+				->method('GetReservationList')
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $resourceId)
+				->will($this->returnValue($reservationResult));
+
+		$this->page->expects($this->once())
+				->method('SetReservations')
+				->with($this->arrayHasKey(0), $this->equalTo(true));
+
+		$this->presenter->PageLoad($this->fakeUser);
+	}
 }
 
 ?>

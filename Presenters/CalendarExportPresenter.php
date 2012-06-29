@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Pages/Export/CalendarExportPage.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class CalendarExportPresenter
 {
@@ -39,23 +40,32 @@ class CalendarExportPresenter
      */
     private $validator;
 
+	/**
+	 * @var IReservationAuthorization
+	 */
+	private $authorization;
+
     public function __construct(ICalendarExportPage $page,
                                 IReservationViewRepository $reservationViewRepository,
-                                ICalendarExportValidator $validator)
+                                ICalendarExportValidator $validator,
+								IReservationAuthorization $authorization)
     {
         $this->page = $page;
         $this->reservationViewRepository = $reservationViewRepository;
         $this->validator = $validator;
+		$this->authorization = $authorization;
     }
 
-    public function PageLoad()
+    public function PageLoad(UserSession $currentUser)
     {
         if (!$this->validator->IsValid())
         {
             return;
         }
 
-        $referenceNumber = $this->page->GetReferenceNumber();
+		$shouldHideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
+
+		$referenceNumber = $this->page->GetReferenceNumber();
         $scheduleId = $this->page->GetScheduleId();
         $resourceId = $this->page->GetResourceId();
 
@@ -67,11 +77,18 @@ class CalendarExportPresenter
         {
             $res = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
             $reservations = array(new iCalendarReservationView($res));
+
+			if ($shouldHideDetails)
+			{
+				$shouldHideDetails = !$this->authorization->CanViewDetails($res, $currentUser);
+			}
         }
         else
         {
             if (!empty($scheduleId) || !empty($resourceId))
             {
+				$shouldHideDetails = $shouldHideDetails && !$currentUser->IsAdmin;
+
 				$seriesIds = array();
                 $res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, null, null, $scheduleId, $resourceId);
                 foreach ($res as $r)
@@ -87,7 +104,7 @@ class CalendarExportPresenter
             }
         }
 
-        $this->page->SetReservations($reservations);
+        $this->page->SetReservations($reservations, $shouldHideDetails);
     }
 
 }

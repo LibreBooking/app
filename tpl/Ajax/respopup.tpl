@@ -18,10 +18,18 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {if $authorized}
 <div class="res_popup_details">
-	<div class="user">{fullname first=$fname last=$lname}</div>
+	<div class="user">
+		{if $hideUserInfo}
+			{translate key=Private}
+		{else}
+			{$fullName}
+		{/if}
+	</div>
 	<div class="dates">{formatdate date=$startDate key=res_popup} - {formatdate date=$endDate key=res_popup}</div>	
 
-    <div class="title">{$title}</div>
+	{if !$hideDetails}
+    <div class="title">{if $title neq ''}{$title}{else}{translate key=NoTitleLabel}{/if}</div>
+	{/if}
 
 	<div class="resources">
 	{translate key="Resources"} ({$resources|@count})
@@ -30,7 +38,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{if !$smarty.foreach.resource_loop.last},{/if}
 	{/foreach}
 	</div>
-	
+
+	{if !$hideUserInfo}
 	<div class="users">
 	{translate key="Participants"} ({$participants|@count})
 	{foreach from=$participants item=user name=participant_loop}
@@ -40,6 +49,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{if !$smarty.foreach.participant_loop.last},{/if}
 	{/foreach}
 	</div>
+	{/if}
 
 	<div class="accessories">
 	{translate key="Accessories"} ({$accessories|@count})
@@ -48,8 +58,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{if !$smarty.foreach.accessory_loop.last},{/if}
 	{/foreach}
 	</div>
-	
-	<div class="summary">{$summary|truncate:300:"..."|nl2br}</div>	
+
+	{if !$hideDetails}
+	<div class="summary">{if $summary neq ''}{$summary|truncate:300:"..."|nl2br}{else}{translate key=NoDescriptionLabel}{/if}</div>
+	{/if}
 	<!-- {$ReservationId} -->
 </div>
 {else}

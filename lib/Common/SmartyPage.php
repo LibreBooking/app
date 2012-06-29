@@ -569,7 +569,7 @@ class SmartyPage extends Smarty
     {
         $config = Configuration::Instance();
 
-        if ($config->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter()))
+        if ($config->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter()) && !ServiceLocator::GetServer()->GetUserSession()->IsAdmin)
         {
             return $this->Resources->GetString('Private');
         }
