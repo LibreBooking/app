@@ -85,6 +85,10 @@ class ReservationUserBinder implements IReservationComponentBinder
 
 		$reservationUser = $this->userRepository->GetById($userId);
 		$initializer->SetReservationUser($reservationUser);
+
+		$hideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
+
+		$initializer->ShowUserDetails(!$hideUser || $initializer->CurrentUser()->IsAdmin);
 	}
 }
 
