@@ -1,0 +1,2 @@
+ALTER TABLE `schedules` ADD COLUMN `admin_group_id` SMALLINT(5) unsigned;
+ALTER TABLE `schedules` ADD CONSTRAINT `admin_group_id` FOREIGN KEY (`admin_group_id`) REFERENCES groups(`group_id`) ON DELETE SET NULL;

@@ -307,7 +307,7 @@ class Queries
 	const GET_ALL_USERS_BY_STATUS =
 			'SELECT *
 		FROM users
-		WHERE (0 = @user_statusid OR status_id = @user_statusid)';
+		WHERE (0 = @user_statusid OR status_id = @user_statusid) ORDER BY lname, fname';
 
 	const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
 
@@ -719,7 +719,8 @@ class Queries
 			weekdaystart = @scheduleWeekdayStart,
 			daysvisible = @scheduleDaysVisible,
 			allow_calendar_subscription = @allow_calendar_subscription,
-			public_id = @publicid
+			public_id = @publicid,
+			admin_group_id = @admin_group_id
 		WHERE
 			schedule_id = @scheduleid';
 

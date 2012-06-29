@@ -9,12 +9,14 @@ function ScheduleManagement(opts)
 		layoutDialog: $('#changeLayoutDialog'),
 		changeSettingsDialog: $('#changeSettingsDialog'),
 		deleteDialog: $('#deleteDialog'),
+		groupAdminDialog:$('#groupAdminDialog'),
 
 		renameForm: $('#renameForm'),
 		settingsForm: $('#settingsForm'),
 		changeLayoutForm: $('#changeLayoutForm'),
         placeholderForm: $('#placeholderForm'),
 		deleteForm: $('#deleteForm'),
+		groupAdminForm:$('#groupAdminForm'),
 
 		addForm: $('#addScheduleForm'),
 		
@@ -36,6 +38,7 @@ function ScheduleManagement(opts)
 		ConfigureAdminDialog(elements.changeSettingsDialog, 300, 140);
 		ConfigureAdminDialog(elements.layoutDialog, 730, 550);
 		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
+		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
 
 		$('.scheduleDetails').each(function() {
 			var id = $(this).find(':hidden.id').val();
@@ -80,6 +83,11 @@ function ScheduleManagement(opts)
                 showDeleteDialog(e);
                 return false;
             });
+
+			$(this).find('.adminButton').click(function (e) {
+				showScheduleAdmin(e, $(this).attr('adminId'));
+				return false;
+			});
 		});
 
 		$(".save").click(function() {
@@ -114,6 +122,7 @@ function ScheduleManagement(opts)
 		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction), null, handleLayoutUpdate);
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
+		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.adminAction));
 	};
 
 	var getSubmitCallback = function(action) {
@@ -230,6 +239,11 @@ function ScheduleManagement(opts)
 
         elements.deleteDialog.dialog('open');
     };
+
+	var showScheduleAdmin = function (e, adminGroupId) {
+		$('#adminGroupId').val(adminGroupId);
+		elements.groupAdminDialog.dialog("open");
+	};
 	
 	var reformatTimeSlots = function(div) {
 		var text = $.trim(div.text());

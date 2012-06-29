@@ -40,6 +40,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<h4>{$schedule->GetName()}</h4> <a class="update renameButton" href="javascript: void(0);">{translate key=Rename}</a><br/>
 			{translate key="LayoutDescription" args="$dayName, $daysVisible"}
 			<a class="update changeButton" href="javascript:void(0);">{translate key=Change}</a><br/>
+			{translate key='ScheduleAdministrator'}
+			{if $schedule->HasAdminGroup()}
+				{$GroupLookup[$schedule->GetAdminGroupId()]->Name}
+			{else}
+				<span class="note">{translate key='NoScheduleAdministratorLabel'}</span>
+			{/if}
+			{if $AdminGroups|count > 0}
+				<a class="update adminButton" href="javascript: void(0);" adminId="{$schedule->GetAdminGroupId()}">{translate key='Edit'}</a>
+			{/if}
 		</div>
 		<div class="layout">
 			{translate key=ScheduleLayout args=$schedule->GetTimezone()}:<br/>
@@ -235,6 +244,22 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
+
+<div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisSchedule}">
+	<form method="post" id="groupAdminForm">
+		<select id="adminGroupId" {formname key=SCHEDULE_ADMIN_GROUP_ID} class="textbox">
+			<option value="">-- {translate key=None} --</option>
+			{foreach from=$AdminGroups item=adminGroup}
+				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+			{/foreach}
+		</select>
+		<br/><br/>
+		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/schedule.js"></script>
@@ -253,6 +278,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	addAction: '{ManageSchedules::ActionAdd}',
 	makeDefaultAction: '{ManageSchedules::ActionMakeDefault}',
 	deleteAction: '{ManageSchedules::ActionDelete}',
+	adminAction: '{ManageSchedules::ChangeAdminGroup}',
 	enableSubscriptionAction: '{ManageSchedules::ActionEnableSubscription}',
 	disableSubscriptionAction: '{ManageSchedules::ActionDisableSubscription}'
 	};

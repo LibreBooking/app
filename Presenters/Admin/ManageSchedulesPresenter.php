@@ -34,6 +34,7 @@ class ManageSchedules
     const ActionDelete = 'delete';
     const ActionEnableSubscription = 'enableSubscription';
     const ActionDisableSubscription = 'disableSubscription';
+    const ChangeAdminGroup = 'changeAdminGroup';
 }
 
 class ManageScheduleService
@@ -168,6 +169,17 @@ class ManageScheduleService
         $schedule->DisableSubscription();
         $this->scheduleRepository->Update($schedule);
     }
+
+	/**
+	 * @param int $scheduleId
+	 * @param int $adminGroupId
+	 */
+	public function ChangeAdminGroup($scheduleId, $adminGroupId)
+	{
+		$schedule = $this->scheduleRepository->LoadById($scheduleId);
+		$schedule->SetAdminGroupId($adminGroupId);
+		$this->scheduleRepository->Update($schedule);
+	}
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
@@ -182,11 +194,17 @@ class ManageSchedulesPresenter extends ActionPresenter
      */
     private $manageSchedulesService;
 
-    public function __construct(IManageSchedulesPage $page, ManageScheduleService $manageSchedulesService)
+	/**
+	 * @var IGroupViewRepository
+	 */
+	private $groupViewRepository;
+
+    public function __construct(IManageSchedulesPage $page, ManageScheduleService $manageSchedulesService, IGroupViewRepository $groupViewRepository)
     {
         parent::__construct($page);
         $this->page = $page;
         $this->manageSchedulesService = $manageSchedulesService;
+		$this->groupViewRepository = $groupViewRepository;
 
         $this->AddAction(ManageSchedules::ActionAdd, 'Add');
         $this->AddAction(ManageSchedules::ActionChangeLayout, 'ChangeLayout');
@@ -196,6 +214,7 @@ class ManageSchedulesPresenter extends ActionPresenter
         $this->AddAction(ManageSchedules::ActionDelete, 'Delete');
         $this->AddAction(ManageSchedules::ActionEnableSubscription, 'EnableSubscription');
         $this->AddAction(ManageSchedules::ActionDisableSubscription, 'DisableSubscription');
+        $this->AddAction(ManageSchedules::ChangeAdminGroup, 'ChangeAdminGroup');
     }
 
     public function PageLoad()
@@ -209,6 +228,8 @@ class ManageSchedulesPresenter extends ActionPresenter
             $layout = $this->manageSchedulesService->GetLayout($schedule);
             $layouts[$schedule->GetId()] = $layout->GetLayout(Date::Now());
         }
+
+		$this->page->BindGroups($this->groupViewRepository->GetGroupsByRole(RoleLevel::SCHEDULE_ADMIN));
 
         $this->page->BindSchedules($schedules, $layouts);
         $this->PopulateTimezones();
@@ -271,6 +292,14 @@ class ManageSchedulesPresenter extends ActionPresenter
         $timezone = $this->page->GetLayoutTimezone();
 
         $this->manageSchedulesService->ChangeLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots);
+    }
+
+	/**
+     * @internal should only be used for testing
+     */
+    public function ChangeAdminGroup()
+    {
+		$this->manageSchedulesService->ChangeAdminGroup($this->page->GetScheduleId(), $this->page->GetAdminGroupId());
     }
 
     /**

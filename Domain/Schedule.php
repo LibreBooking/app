@@ -42,6 +42,7 @@ class Schedule implements ISchedule
 	private $_layoutId;
     private $_isCalendarSubscriptionAllowed = false;
     private $_publicId;
+	private $_adminGroupId;
 
 	const Today = 100;
 
@@ -162,6 +163,30 @@ class Schedule implements ISchedule
         $this->SetIsCalendarSubscriptionAllowed(false);
     }
 
+	/**
+	 * @param int|null $adminGroupId
+	 */
+	public function SetAdminGroupId($adminGroupId)
+	{
+		$this->_adminGroupId = $adminGroupId;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetAdminGroupId()
+	{
+		return $this->_adminGroupId;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasAdminGroup()
+	{
+		return !empty($this->_adminGroupId);
+	}
+
     /**
      * @static
      * @return Schedule
@@ -188,8 +213,9 @@ class Schedule implements ISchedule
 
         $schedule->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
         $schedule->WithPublicId($row[ColumnNames::PUBLIC_ID]);
+		$schedule->SetAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
 
-        return $schedule;
+		return $schedule;
     }
 
     /**

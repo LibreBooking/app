@@ -38,6 +38,11 @@ class ManageSchedulesPresenterTests extends TestBase
      */
     private $resourceRepo;
 
+	/**
+	 * @var IGroupViewRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+    private $groupRepo;
+
     /**
      * @var ManageScheduleService
      */
@@ -50,6 +55,7 @@ class ManageSchedulesPresenterTests extends TestBase
         $this->page = $this->getMock('IManageSchedulesPage');
         $this->scheduleRepo = $this->getMock('IScheduleRepository');
         $this->resourceRepo = $this->getMock('IResourceRepository');
+        $this->groupRepo = $this->getMock('IGroupViewRepository');
 
         $this->service = new ManageScheduleService($this->scheduleRepo, $this->resourceRepo);
     }
@@ -88,7 +94,7 @@ class ManageSchedulesPresenterTests extends TestBase
                 ->method('AddScheduleLayout')
                 ->with($this->equalTo($scheduleId), $this->equalTo($expectedLayout));
 
-        $presenter = new ManageSchedulesPresenter($this->page, $this->service);
+        $presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
         $presenter->ChangeLayout();
     }
 
@@ -121,7 +127,7 @@ class ManageSchedulesPresenterTests extends TestBase
                 ->method('Add')
                 ->with($this->equalTo($expectedSchedule), $this->equalTo($sourceScheduleId));
 
-        $presenter = new ManageSchedulesPresenter($this->page, $this->service);
+        $presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
         $presenter->Add();
     }
 
@@ -169,7 +175,7 @@ class ManageSchedulesPresenterTests extends TestBase
                         ->method('Update')
                         ->with($this->equalTo($resource2));
 
-        $presenter = new ManageSchedulesPresenter($this->page, $this->service);
+        $presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
 
         $presenter->Delete();
     }

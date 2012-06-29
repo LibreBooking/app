@@ -310,6 +310,7 @@ class en_us extends Language
         $strings['DeleteGroupWarning'] = 'Deleting this group will remove all associated resource permissions.  Users in this group may lose access to resources.';
         $strings['WhatRolesApplyToThisGroup'] = 'What roles apply to this group?';
         $strings['WhoCanManageThisGroup'] = 'Who can manage this group?';
+        $strings['WhoCanManageThisSchedule'] = 'Who can manage this schedule?';
         $strings['AddGroup'] = 'Add Group';
         $strings['AllQuotas'] = 'All Quotas';
         $strings['QuotaReminder'] = 'Remember: Quotas are enforced based on the schedule\'s timezone.';
@@ -389,6 +390,8 @@ class en_us extends Language
 		$strings['Attachments'] = 'Attachments';
 		$strings['AttachFile'] = 'Attach File';
 		$strings['Maximum'] = 'max';
+		$strings['NoScheduleAdministratorLabel'] = 'No Schedule Administrator';
+		$strings['ScheduleAdministrator'] = 'Schedule Administrator';
         // End Strings
 
         // Errors

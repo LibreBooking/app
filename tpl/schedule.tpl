@@ -165,7 +165,8 @@ $(document).ready(function() {
 	};
 
 	var schedule = new Schedule(scheduleOpts);
-	schedule.init(); 
+	schedule.init();
+
 });
 </script>
 

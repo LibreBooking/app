@@ -61,14 +61,16 @@ class FakeScheduleRepository
 		
 		foreach ($rows as $item)
 		{
-			$expected[] = new Schedule(
-							$item[ColumnNames::SCHEDULE_ID],
-							$item[ColumnNames::SCHEDULE_NAME],
-							$item[ColumnNames::SCHEDULE_DEFAULT],
-							$item[ColumnNames::SCHEDULE_WEEKDAY_START],
-							$item[ColumnNames::SCHEDULE_DAYS_VISIBLE],
-							$item[ColumnNames::TIMEZONE_NAME]
-						);
+			$schedule = new Schedule(
+				$item[ColumnNames::SCHEDULE_ID],
+				$item[ColumnNames::SCHEDULE_NAME],
+				$item[ColumnNames::SCHEDULE_DEFAULT],
+				$item[ColumnNames::SCHEDULE_WEEKDAY_START],
+				$item[ColumnNames::SCHEDULE_DAYS_VISIBLE],
+				$item[ColumnNames::TIMEZONE_NAME]
+			);
+			$schedule->SetAdminGroupId($item[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
+			$expected[] = $schedule;
 		}
 		
 		return $expected;
@@ -109,7 +111,8 @@ class FakeScheduleRepository
         $timezone = 'America/Chicago',
         $layoutId = null,
         $allowCalendarSubscription = false,
-        $publicId = null)
+        $publicId = null,
+		$adminId = null)
 	{
 		return array(
 				ColumnNames::SCHEDULE_ID => $id,
@@ -120,7 +123,8 @@ class FakeScheduleRepository
 				ColumnNames::TIMEZONE_NAME => $timezone,
 				ColumnNames::LAYOUT_ID => $layoutId,
                 ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => $allowCalendarSubscription,
-                ColumnNames::PUBLIC_ID => $publicId
+                ColumnNames::PUBLIC_ID => $publicId,
+                ColumnNames::SCHEDULE_ADMIN_GROUP_ID => $adminId
 			);
 	}
 }

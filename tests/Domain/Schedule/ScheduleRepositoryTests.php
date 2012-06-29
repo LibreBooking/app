@@ -51,14 +51,16 @@ class ScheduleRepositoryTests extends TestBase
 		$expected = array();
 		foreach ($rows as $item)
 		{
-			$expected[] = new Schedule(
-							$item[ColumnNames::SCHEDULE_ID],
-							$item[ColumnNames::SCHEDULE_NAME],
-							$item[ColumnNames::SCHEDULE_DEFAULT],
-							$item[ColumnNames::SCHEDULE_WEEKDAY_START],
-							$item[ColumnNames::SCHEDULE_DAYS_VISIBLE],
-							$item[ColumnNames::TIMEZONE_NAME]
-						);
+			$schedule = new Schedule(
+				$item[ColumnNames::SCHEDULE_ID],
+				$item[ColumnNames::SCHEDULE_NAME],
+				$item[ColumnNames::SCHEDULE_DEFAULT],
+				$item[ColumnNames::SCHEDULE_WEEKDAY_START],
+				$item[ColumnNames::SCHEDULE_DAYS_VISIBLE],
+				$item[ColumnNames::TIMEZONE_NAME]
+			);
+			$schedule->SetAdminGroupId($item[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
+			$expected[] = $schedule;
 		}
 		
 		$actualSchedules = $this->scheduleRepository->GetAll();
@@ -177,6 +179,7 @@ class ScheduleRepositoryTests extends TestBase
 		$weekdayStart = 5;
 		$daysVisible = 3;
         $subscriptionEnabled = true;
+		$adminGroupId = 123;
 
 		$schedule = new Schedule($id, 
 								$name, 
@@ -186,10 +189,11 @@ class ScheduleRepositoryTests extends TestBase
 
         $schedule->EnableSubscription();
         $publicId = $schedule->GetPublicId();
+		$schedule->SetAdminGroupId($adminGroupId);
 
 		$this->scheduleRepository->Update($schedule);
 		
-		$this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible, $subscriptionEnabled, $publicId), $this->db->_LastCommand);
+		$this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible, $subscriptionEnabled, $publicId, $adminGroupId), $this->db->_LastCommand);
 	}
 	
 	public function testCanChangeLayout()

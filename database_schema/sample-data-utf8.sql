@@ -8,10 +8,11 @@ alter table accessories AUTO_INCREMENT = 1;
 delete from users;
 alter table users AUTO_INCREMENT = 1;
 
-insert into groups (group_id, name) values (1, 'Group Administrators'), (2, 'Application Administrators'), (3, 'Resource Administrators');
+insert into groups (group_id, name) values (1, 'Group Administrators'), (2, 'Application Administrators'), (3, 'Resource Administrators'), (4, 'Schedule Administrators');
 
 insert into group_roles values (1, 1);
 insert into group_roles values (2, 2);
+insert into group_roles values (4, 4);
 
 insert into users (fname, lname, email, username, password, salt, timezone, lastlogin, status_id, date_created, language, organization)
 	values ('User', 'User', 'user@example.com', 'user', '7b6aec38ff9b7650d64d0374194307bdde711425', '3b3dbb9b', 'America/Chicago', '2008-09-16 01:59:00', 1, now(), 'en_us', 'XYZ Org Inc.');

@@ -139,6 +139,7 @@ class FormKeys
 	const SLOTS_BLOCKED = 'blockedSlots';
 	const SLOTS_RESERVABLE = 'reservableSlots';
 	const SUMMARY = 'summary';
+	const SCHEDULE_ADMIN_GROUP_ID = 'adminGroupId';
 
 	const TIMEZONE = 'timezone';
 

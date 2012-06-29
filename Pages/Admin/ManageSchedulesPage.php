@@ -76,9 +76,21 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
 	 * @param Schedule[] $schedules 
 	 * @param array $layouts 
 	 */
-	function BindSchedules($schedules, $layouts);
+	public function BindSchedules($schedules, $layouts);
+
+	/**
+	 * @abstract
+	 * @param GroupItemView[] $groups
+	 */
+	public function BindGroups($groups);
 	
-	function SetTimezones($timezoneValues, $timezoneOutput);
+	public function SetTimezones($timezoneValues, $timezoneOutput);
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetAdminGroupId();
 }
 
 class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
@@ -86,7 +98,7 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 	public function __construct()
 	{
 		parent::__construct('ManageSchedules', 1);
-		$this->_presenter = new ManageSchedulesPresenter($this, new ManageScheduleService(new ScheduleRepository(), new ResourceRepository()));
+		$this->_presenter = new ManageSchedulesPresenter($this, new ManageScheduleService(new ScheduleRepository(), new ResourceRepository()), new GroupRepository());
 	}
 	
 	public function ProcessPageLoad()
@@ -164,6 +176,28 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
+	}
+
+	/**
+	 * @param GroupItemView[] $groups
+	 */
+	public function BindGroups($groups)
+	{
+		$this->Set('AdminGroups', $groups);
+		$groupLookup = array();
+		foreach ($groups as $group)
+		{
+			$groupLookup[$group->Id] = $group;
+		}
+		$this->Set('GroupLookup', $groupLookup);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetAdminGroupId()
+	{
+		return $this->server->GetForm(FormKeys::SCHEDULE_ADMIN_GROUP_ID);
 	}
 }
 
