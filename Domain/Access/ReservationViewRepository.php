@@ -206,7 +206,13 @@ class ReservationViewRepository implements IReservationViewRepository
             {
                 $reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
             }
-			$reservationView->Resources[] = new ReservationResourceView($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME], $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID], $row[ColumnNames::SCHEDULE_ID]);
+			$reservationView->Resources[] = new ReservationResourceView(
+				$row[ColumnNames::RESOURCE_ID],
+				$row[ColumnNames::RESOURCE_NAME],
+				$row[ColumnNames::RESOURCE_ADMIN_GROUP_ID],
+				$row[ColumnNames::SCHEDULE_ID],
+				$row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS]
+			);
         }
     }
 
@@ -325,8 +331,6 @@ class ReservationViewRepository implements IReservationViewRepository
         $builder = array('BlackoutItemView', 'Populate');
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
     }
-
-
 }
 
 class ReservationResourceView implements IResource
@@ -335,13 +339,15 @@ class ReservationResourceView implements IResource
     private $_resourceName;
     private $_adminGroupId;
     private $_scheduleId;
+	private $_scheduleAdminGroupId;
 
-	public function __construct($resourceId, $resourceName, $adminGroupId, $scheduleId)
+	public function __construct($resourceId, $resourceName, $adminGroupId, $scheduleId, $scheduleAdminGroupId)
     {
         $this->_id = $resourceId;
         $this->_resourceName = $resourceName;
         $this->_adminGroupId = $adminGroupId;
 		$this->_scheduleId = $scheduleId;
+		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
     }
 
     /**
@@ -399,6 +405,14 @@ class ReservationResourceView implements IResource
 	public function GetScheduleId()
 	{
 		return $this->_scheduleId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetScheduleAdminGroupId()
+	{
+		return $this->_scheduleAdminGroupId;
 	}
 }
 

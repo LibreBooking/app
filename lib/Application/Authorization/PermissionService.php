@@ -21,11 +21,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 interface IPermissionService
 {
 	/**
-	 * @param IResource $resource
+	 * @param IPermissibleResource $resource
 	 * @param UserSession $user
 	 * @return bool
 	 */
-	public function CanAccessResource(IResource $resource, UserSession $user);
+	public function CanAccessResource(IPermissibleResource $resource, UserSession $user);
 }
 
 class PermissionService implements IPermissionService
@@ -46,11 +46,11 @@ class PermissionService implements IPermissionService
 	}
 
 	/**
-	 * @param IResource $resource
+	 * @param IPermissibleResource $resource
 	 * @param UserSession $user
 	 * @return bool
 	 */
-	public function CanAccessResource(IResource $resource, UserSession $user)
+	public function CanAccessResource(IPermissibleResource $resource, UserSession $user)
 	{
 		if ($this->_allowedResourceIds == null)
 		{

@@ -18,17 +18,15 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class ReservationResource implements IResource
+class ReservationResource implements IPermissibleResource
 {
 	private $_id;
 	private $_resourceName;
-	private $_adminGroupId;
 
-	public function __construct($resourceId, $resourceName = '', $adminGroupId = null)
+	public function __construct($resourceId, $resourceName = '')
 	{
 		$this->_id = $resourceId;
         $this->_resourceName = $resourceName;
-        $this->_adminGroupId = $adminGroupId;
 	}
 
 	public function GetResourceId()
@@ -44,22 +42,6 @@ class ReservationResource implements IResource
 	public function GetId()
 	{
 		return $this->_id;
-	}
-
-    /**
-     * @return int
-     */
-    public function GetAdminGroupId()
-    {
-        return $this->_adminGroupId;
-    }
-
-	/**
-	 * @return int
-	 */
-	public function GetScheduleId()
-	{
-		throw new Exception('NK: 2012-06-29 can we get here? If so, we have a bad interface');
 	}
 }
 ?>

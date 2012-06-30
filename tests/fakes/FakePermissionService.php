@@ -47,7 +47,7 @@ class FakePermissionService implements IPermissionService
 		$this->ReturnValues = $returnValues;
 	}
 
-	public function CanAccessResource(IResource $resource, UserSession $user)
+	public function CanAccessResource(IPermissibleResource $resource, UserSession $user)
 	{
 		$this->Resources[] = $resource;
 		$this->User = $user;

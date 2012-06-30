@@ -35,7 +35,7 @@ class UserTests extends TestBase
 		$this->assertTrue($user->IsGroupAdmin());
 	}
 
-	public function testUserIsApplicaitonAdminIfAtLeastOneGroupIsAnAdminGroup()
+	public function testUserIsApplicationAdminIfAtLeastOneGroupIsAnAdminGroup()
 	{
 		$user = new User();
 
@@ -122,7 +122,8 @@ class UserTests extends TestBase
     public function testWhenUserIsInAdminGroupForResource()
     {
         $adminGroupId = 223;
-        $resource = new ReservationResource(1, 'n', $adminGroupId);
+        $resource = new FakeBookableResource(1, 'n');
+		$resource->SetAdminGroupId($adminGroupId);
 
         $adminUser = new User();
         $regularUser = new User();
@@ -140,6 +141,29 @@ class UserTests extends TestBase
         $this->assertTrue($adminUser->IsResourceAdminFor($resource));
         $this->assertFalse($regularUser->IsResourceAdminFor($resource));
     }
+
+	public function testWhenUserIsInAdminGroupForResourcesSchedule()
+	{
+		$adminGroupId = 223;
+		$resource = new FakeBookableResource(1, 'n');
+		$resource->SetScheduleAdminGroupId($adminGroupId);
+
+		$adminUser = new User();
+		$regularUser = new User();
+
+		$adminGroup = new UserGroup($adminGroupId, 'admin', null, RoleLevel::SCHEDULE_ADMIN);
+		$group1 = new UserGroup(1, 'random group');
+		$group2 = new UserGroup(2, 'group with admin');
+
+		$adminUserGroups = array($group1, $adminGroup);
+		$userGroups = array($group1, $group2);
+
+		$adminUser->WithGroups($adminUserGroups);
+		$regularUser->WithGroups($userGroups);
+
+		$this->assertTrue($adminUser->IsResourceAdminFor($resource));
+		$this->assertFalse($regularUser->IsResourceAdminFor($resource));
+	}
 
 	public function testWhenUserIsInAdminGroupForSchedule()
 	{

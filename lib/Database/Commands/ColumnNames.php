@@ -132,6 +132,7 @@ class ColumnNames
     const SCHEDULE_DAYS_VISIBLE = 'daysvisible';
     const LAYOUT_ID = 'layout_id';
 	const SCHEDULE_ADMIN_GROUP_ID = 'admin_group_id';
+	const SCHEDULE_ADMIN_GROUP_ID_ALIAS = 's_admin_group_id';
 
     // EMAIL PREFERENCES //
     const EVENT_CATEGORY = 'event_category';

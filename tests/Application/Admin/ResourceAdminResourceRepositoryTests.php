@@ -35,20 +35,24 @@ class ResourceAdminResourceRepositoryTests extends TestBase
 	}
 	public function testOnlyGetsResourcesWhereUserIsAdmin()
 	{
-		$groups = array(
-			new UserGroup(1, '1'),
-			new UserGroup(5, '5'),
-			new UserGroup(9, '9'),
-			new UserGroup(22, '22'),
-		);
-
+		$user = $this->getMock('User');
 		$this->userRepository->expects($this->once())
-				->method('LoadGroups')
-				->with($this->equalTo($this->fakeUser->UserId), $this->equalTo(RoleLevel::RESOURCE_ADMIN))
-				->will($this->returnValue($groups));
+						->method('LoadById')
+						->with($this->equalTo($this->fakeUser->UserId))
+						->will($this->returnValue($user));
 
 		$ra = new FakeResourceAccess();
 		$this->db->SetRows($ra->GetRows());
+
+		$user->expects($this->at(0))
+					->method('IsResourceAdminFor')
+					->with($this->equalTo($ra->_Resources[0]))
+					->will($this->returnValue(false));
+
+		$user->expects($this->at(1))
+					->method('IsResourceAdminFor')
+					->with($this->equalTo($ra->_Resources[1]))
+					->will($this->returnValue(true));
 
 		$repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
 		$resources = $repo->GetResourceList();
@@ -60,11 +64,20 @@ class ResourceAdminResourceRepositoryTests extends TestBase
 
     public function testDoesNotUpdateResourceIfUserDoesNotHaveAccess()
     {
-        $this->fakeUser->IsResourceAdmin = false;
+		$user = $this->getMock('User');
+		$this->userRepository->expects($this->once())
+						->method('LoadById')
+						->with($this->equalTo($this->fakeUser->UserId))
+						->will($this->returnValue($user));
 
         $repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
         $resource = new FakeBookableResource(1);
         $resource->SetAdminGroupId(2);
+
+		$user->expects($this->at(0))
+							->method('IsResourceAdminFor')
+							->with($this->equalTo($resource))
+							->will($this->returnValue(false));
 
         $actualEx = null;
         try

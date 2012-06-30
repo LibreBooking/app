@@ -18,14 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface IResource
+interface IResource extends IPermissibleResource
 {
-	/**
-	 * alias of GetId()
-	 * @return int
-	 */
-	public function GetResourceId();
-
 	/**
 	 * @return int
 	 */
@@ -45,6 +39,21 @@ interface IResource
 	 * @return int
 	 */
 	public function GetScheduleId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetScheduleAdminGroupId();
+}
+
+interface IPermissibleResource
+{
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetResourceId();
 }
 
 class BookableResource implements IResource
@@ -81,6 +90,7 @@ class BookableResource implements IResource
 	protected $_adminGroupId;
 	protected $_isCalendarSubscriptionAllowed = false;
 	protected $_publicId;
+	protected $_scheduleAdminGroupId;
 	/**
 	 * @var array|AttributeValue[]
 	 */
@@ -180,6 +190,7 @@ class BookableResource implements IResource
 
 		$resource->WithPublicId($row[ColumnNames::PUBLIC_ID]);
 		$resource->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
+		$resource->WithScheduleAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS]);
 
 		return $resource;
 	}
@@ -687,6 +698,19 @@ class BookableResource implements IResource
 	protected function WithSubscription($isAllowed)
 	{
 		$this->SetIsCalendarSubscriptionAllowed($isAllowed);
+	}
+
+	/**
+	 * @param $scheduleAdminGroupId int
+	 */
+	protected function WithScheduleAdminGroupId($scheduleAdminGroupId)
+	{
+		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
+	}
+
+	public function GetScheduleAdminGroupId()
+	{
+		return $this->_scheduleAdminGroupId;
 	}
 }
 

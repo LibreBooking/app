@@ -44,7 +44,7 @@ class FakeResourceAccess extends ResourceRepository
 		$rows = $this->GetRows();
 		foreach ($rows as $row)
 		{
-			$_Resources[] = BookableResource::Create($row);
+			$this->_Resources[] = BookableResource::Create($row);
 		}
 	}
 	
@@ -69,6 +69,7 @@ class FakeResourceAccess extends ResourceRepository
 					ColumnNames::RESOURCE_ADMIN_GROUP_ID => null,
 					ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
 					ColumnNames::PUBLIC_ID => '1232',
+					ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => 1154,
 					);
 					
 		$row2 =  array(ColumnNames::RESOURCE_ID => 2, 
@@ -90,6 +91,7 @@ class FakeResourceAccess extends ResourceRepository
 					ColumnNames::RESOURCE_ADMIN_GROUP_ID => 1,
                     ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 0,
             	    ColumnNames::PUBLIC_ID => null,
+					ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => 9292,
 					);	
 		
 		return array($row1, $row2);								

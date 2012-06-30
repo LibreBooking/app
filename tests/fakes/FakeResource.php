@@ -30,5 +30,10 @@ class FakeBookableResource extends BookableResource
 	{
 		$this->_requiresApproval = $requiresApproval;
 	}
+
+	public function SetScheduleAdminGroupId($scheduleAdminGroupId)
+	{
+		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
+	}
 }
 ?>

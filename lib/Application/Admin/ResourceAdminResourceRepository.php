@@ -44,18 +44,13 @@ class ResourceAdminResourceRepository extends ResourceRepository
      */
     public function GetResourceList()
     {
-        $ids = array();
-        $groups = $this->repo->LoadGroups($this->user->UserId, RoleLevel::RESOURCE_ADMIN);
-        foreach ($groups as $group)
-        {
-            $ids[$group->GroupId] = $group->GroupId;
-        }
+		$user = $this->repo->LoadById($this->user->UserId);
         $resources = parent::GetResourceList();
         $filteredResources = array();
         /** @var $resource BookableResource */
         foreach ($resources as $resource)
         {
-            if (array_key_exists($resource->GetAdminGroupId(), $ids))
+            if ($user->IsResourceAdminFor($resource))
             {
                 $filteredResources[] = $resource;
             }
@@ -69,7 +64,8 @@ class ResourceAdminResourceRepository extends ResourceRepository
      */
     public function Update(BookableResource $resource)
     {
-        if (!$this->user->IsResourceAdmin)
+		$user = $this->repo->LoadById($this->user->UserId);
+        if (!$user->IsResourceAdminFor($resource))
         {
             // if we got to this point, the user does not have the ability to update the resource
             throw new Exception(sprintf('Resource Update Failed. User %s does not have admin access to resource %s.', $this->user->UserId, $resource->GetId()));

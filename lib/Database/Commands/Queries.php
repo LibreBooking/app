@@ -372,10 +372,16 @@ class Queries
 		WHERE gr.group_id = @groupid';
 
 	const GET_RESOURCE_BY_ID =
-			'SELECT * FROM resources r WHERE r.resource_id = @resourceid';
+			'SELECT r.*, s.admin_group_id as s_admin_group_id
+			FROM resources r
+			INNER JOIN r.schedule_id = s.schedule_id
+			WHERE r.resource_id = @resourceid';
 
 	const GET_RESOURCE_BY_PUBLIC_ID =
-			'SELECT * FROM resources r WHERE r.public_id = @publicid';
+			'SELECT r.*, s.admin_group_id as s_admin_group_id
+			FROM resources r
+			INNER JOIN r.schedule_id = s.schedule_id
+			WHERE r.public_id = @publicid';
 
 	const GET_RESERVATION_BY_ID =
 			'SELECT *
@@ -466,9 +472,10 @@ class Queries
 		WHERE reservation_instance_id = @reservationid';
 
 	const GET_RESERVATION_RESOURCES =
-			'SELECT r.*, rr.resource_level_id
+			'SELECT r.*, rr.resource_level_id, s.admin_group_id as s_admin_group_id
 		FROM reservation_resources rr
 		INNER JOIN resources r ON rr.resource_id = r.resource_id
+		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		WHERE rr.series_id = @seriesid
 		ORDER BY resource_level_id, r.name';
 
@@ -512,7 +519,8 @@ class Queries
         WHERE public_id = @publicid';
 
 	const GET_SCHEDULE_RESOURCES =
-			'SELECT * FROM  resources r
+			'SELECT r.*, s.admin_group_id as s_admin_group_id FROM  resources r
+		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		WHERE 
 			r.schedule_id = @scheduleid AND
 			r.isactive = 1

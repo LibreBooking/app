@@ -182,7 +182,7 @@ class ReservationAuthorizationTests extends TestBase
         $ownerId = 92929;
         $reservationView->OwnerId = $ownerId;
         $reservationView->EndDate = $endsInFuture;
-        $resource1 = new ReservationResourceView(1, '', 1, 1);
+        $resource1 = new ReservationResourceView(1, '', 1, 1, 1);
         $reservationView->Resources = array($resource1);
 
         $this->authorizationService->expects($this->atLeastOnce())
@@ -209,7 +209,7 @@ class ReservationAuthorizationTests extends TestBase
         $reservationView->OwnerId = $ownerId;
         $reservationView->EndDate = $endsInFuture;
         $reservationView->StatusId = ReservationStatus::Pending;
-        $resource1 = new ReservationResourceView(1, '', 1, 1);
+        $resource1 = new ReservationResourceView(1, '', 1, 1, 1);
         $reservationView->Resources = array($resource1);
 
         $this->authorizationService->expects($this->atLeastOnce())
@@ -226,11 +226,6 @@ class ReservationAuthorizationTests extends TestBase
 
         $this->assertTrue($canBeApproved);
     }
-
-	public function testChecksResourceScheduleAdminGroup()
-	{
-		throw new Exception('should we load and check the resources schedule admin group id');
-	}
 
 	public function testCanChangeUsersIfTheCurrentUserIsAnAdminOrIsAuthorized()
 	{
@@ -298,7 +293,7 @@ class ReservationAuthorizationTests extends TestBase
 		$reservationView = new ReservationView();
 		$ownerId = 92929;
 		$reservationView->OwnerId = $ownerId;
-		$resource1 = new ReservationResourceView(1, '', 1, 1);
+		$resource1 = new ReservationResourceView(1, '', 1, 1, 1);
 		$reservationView->Resources = array($resource1);
 
 		$this->authorizationService->expects($this->atLeastOnce())

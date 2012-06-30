@@ -567,16 +567,17 @@ class User
 	 */
 	public function IsResourceAdminFor(IResource $resource)
 	{
-		if (!$this->isResourceAdmin)
+		if ($this->isResourceAdmin || $this->isScheduleAdmin)
 		{
-			return false;
-		}
-
-		foreach ($this->groups as $group)
-		{
-			if ($group->GroupId == $resource->GetAdminGroupId())
+			foreach ($this->groups as $group)
 			{
-				return true;
+				if (
+					($group->GroupId == $resource->GetAdminGroupId()) ||
+					($group->GroupId == $resource->GetScheduleAdminGroupId())
+				)
+				{
+					return true;
+				}
 			}
 		}
 
