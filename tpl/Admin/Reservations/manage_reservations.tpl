@@ -101,7 +101,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	<tr class="{$rowCss} editable">
 		<td class="id">{$reservation->ReservationId}</td>
-		<td>{fullname first=$reservation->FirstName last=$reservation->LastName}</td>
+		<td>{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=true}</td>
 		<td>{$reservation->ResourceName}</td>
 		<td>{$reservation->Title}</td>
 		<td>{$reservation->Description}</td>

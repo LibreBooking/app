@@ -18,7 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ResourceAdminManageReservationsService implements IManageReservationsService
+
+class ScheduleAdminManageReservationsService implements IManageReservationsService
 {
 	/**
 	 * @var IReservationViewRepository
@@ -46,16 +47,15 @@ class ResourceAdminManageReservationsService implements IManageReservationsServi
 	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
 	{
 		$groupIds = array();
-		$groups = $this->userRepository->LoadGroups($user->UserId, RoleLevel::RESOURCE_ADMIN);
+		$groups = $this->userRepository->LoadGroups($user->UserId, RoleLevel::SCHEDULE_ADMIN);
 		foreach ($groups as $group)
 		{
 			$groupIds[] = $group->GroupId;
 		}
 
-		$filter->_And(new SqlFilterIn(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_ADMIN_GROUP_ID), $groupIds));
+		$filter->_And(new SqlFilterIn(new SqlFilterColumn(TableNames::SCHEDULES, ColumnNames::SCHEDULE_ADMIN_GROUP_ID), $groupIds));
 		return $this->reservationViewRepository->GetList($pageNumber, $pageSize, null, null, $filter->GetFilter());
 	}
 }
-
 
 ?>

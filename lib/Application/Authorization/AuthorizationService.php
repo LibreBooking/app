@@ -215,7 +215,7 @@ class AuthorizationService implements IAuthorizationService
             return true;
         }
 
-        if (!$user->IsResourceAdmin)
+        if (!$user->IsResourceAdmin && !$user->IsScheduleAdmin)
         {
             return false;
         }

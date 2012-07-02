@@ -568,8 +568,13 @@ class SmartyPage extends Smarty
     public function DisplayFullName($params, &$smarty)
     {
         $config = Configuration::Instance();
+		$ignorePrivacy = false;
+		if (isset($params['ignorePrivacy']) && strtolower($params['ignorePrivacy'] == 'true'))
+		{
+			$ignorePrivacy = true;
+		}
 
-        if ($config->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter()) && !ServiceLocator::GetServer()->GetUserSession()->IsAdmin)
+        if (!$ignorePrivacy && $config->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter()) && !ServiceLocator::GetServer()->GetUserSession()->IsAdmin)
         {
             return $this->Resources->GetString('Private');
         }

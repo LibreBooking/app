@@ -20,8 +20,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  
 define('ROOT_DIR', '../../');
 
-require_once(ROOT_DIR . 'Pages/Admin/ResourceAdminManageReservationsPage.php');
+require_once(ROOT_DIR . 'Pages/Admin/ScheduleAdminManageReservationsPage.php');
 
-$page = new RoleRestrictedPageDecorator(new ResourceAdminManageReservationsPage(), array(RoleLevel::RESOURCE_ADMIN));
+$page = new RoleRestrictedPageDecorator(new ScheduleAdminManageReservationsPage(), array(RoleLevel::SCHEDULE_ADMIN));
 $page->PageLoad();
 ?>

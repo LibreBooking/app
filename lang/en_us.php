@@ -457,6 +457,7 @@ class en_us extends Language
         $strings['Customization'] = 'Customization';
         $strings['Attributes'] = 'Attributes';
 		$strings['AccountActivation'] = 'Account Activation';
+		$strings['ScheduleReservations'] = 'Schedule Reservations';
         // End Page Titles
 
         // Day representations

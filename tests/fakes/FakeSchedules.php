@@ -23,6 +23,10 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 class FakeScheduleRepository
 {	
 	public $_GetAllCalled = false;
+
+	/**
+	 * @var array|Schedule[]
+	 */
 	public $_AllRows = array();
 	
 	public $_DefaultScheduleId = 1;

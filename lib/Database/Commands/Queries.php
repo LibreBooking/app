@@ -413,7 +413,7 @@ class Queries
 
 	const GET_RESERVATION_LIST_FULL =
 			'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id,
-              owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id
+              owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id, schedules.schedule_id as schedule_id
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
 		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
@@ -421,6 +421,7 @@ class Queries
 		INNER JOIN users ON users.user_id = rs.owner_id
 		INNER JOIN users owner ON owner.user_id = rs.owner_id
 		INNER JOIN resources on rr.resource_id = resources.resource_id
+		INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
 		WHERE rs.status_id <> 2
 			AND ru.reservation_user_level = @levelid
 		ORDER BY ri.start_date ASC';
