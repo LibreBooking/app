@@ -295,14 +295,22 @@ class ManageResourcesPresenter extends ActionPresenter
 
 	public function TakeOffline()
 	{
-		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resourceId = $this->page->GetResourceId();
+		$resource = $this->resourceRepository->LoadById($resourceId);
+
+		Log::Debug('Taking resource offline. ResourceId: %s', $resourceId);
+
 		$resource->TakeOffline();
 		$this->resourceRepository->Update($resource);
 	}
 
 	public function BringOnline()
 	{
-		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+		$resourceId = $this->page->GetResourceId();
+		$resource = $this->resourceRepository->LoadById($resourceId);
+
+		Log::Debug('Bringing resource online. ResourceId: %s', $resourceId);
+
 		$resource->BringOnline();
 		$this->resourceRepository->Update($resource);
 	}

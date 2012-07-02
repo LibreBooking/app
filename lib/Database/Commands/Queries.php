@@ -375,13 +375,13 @@ class Queries
 	const GET_RESOURCE_BY_ID =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id
 			FROM resources r
-			INNER JOIN r.schedule_id = s.schedule_id
+			INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 			WHERE r.resource_id = @resourceid';
 
 	const GET_RESOURCE_BY_PUBLIC_ID =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id
 			FROM resources r
-			INNER JOIN r.schedule_id = s.schedule_id
+			INNER JOIN  schedules s ON r.schedule_id = s.schedule_id
 			WHERE r.public_id = @publicid';
 
 	const GET_RESERVATION_BY_ID =
