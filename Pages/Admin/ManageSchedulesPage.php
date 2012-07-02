@@ -95,6 +95,11 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
 
 class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 {
+	/**
+	 * @var ManageSchedulesPresenter
+	 */
+	protected $_presenter;
+
 	public function __construct()
 	{
 		parent::__construct('ManageSchedules', 1);
@@ -104,7 +109,7 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 	public function ProcessPageLoad()
 	{
 		$this->_presenter->PageLoad();
-		
+
 		$daynames = Resources::GetInstance()->GetDays('full');
 		$this->Set('DayNames', $daynames);
 		$this->Set('Today',  Resources::GetInstance()->GetString('Today'));
@@ -115,54 +120,54 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 	{
 		$this->_presenter->ProcessAction();
 	}
-	
+
 	public function SetTimezones($timezoneValues, $timezoneOutput)
 	{
 		$this->Set('TimezoneValues', $timezoneValues);
 		$this->Set('TimezoneOutput', $timezoneOutput);
 	}
-	
+
 	public function BindSchedules($schedules, $layouts)
 	{
 		$this->Set('Schedules', $schedules);
 		$this->Set('Layouts', $layouts);
 	}
-	
+
 	public function GetScheduleId()
 	{
 		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 	}
-	
+
 	public function GetScheduleName()
 	{
 		return $this->server->GetForm(FormKeys::SCHEDULE_NAME);
 	}
-	
+
 	function GetStartDay()
 	{
 		return $this->server->GetForm(FormKeys::SCHEDULE_WEEKDAY_START);
 	}
-	
+
 	function GetDaysVisible()
 	{
 		return $this->server->GetForm(FormKeys::SCHEDULE_DAYS_VISIBLE);
 	}
-	
+
 	public function GetReservableSlots()
 	{
 		return $this->server->GetForm(FormKeys::SLOTS_RESERVABLE);
 	}
-	
+
 	public function GetBlockedSlots()
 	{
 		return $this->server->GetForm(FormKeys::SLOTS_BLOCKED);
 	}
-	
+
 	public function GetLayoutTimezone()
 	{
 		return $this->server->GetForm(FormKeys::TIMEZONE);
 	}
-	
+
 	public function GetSourceScheduleId()
 	{
 		return $this->server->GetForm(FormKeys::SCHEDULE_ID);
