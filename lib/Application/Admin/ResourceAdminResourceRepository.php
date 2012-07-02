@@ -45,11 +45,14 @@ class ResourceAdminResourceRepository extends ResourceRepository
     public function GetResourceList()
     {
 		$user = $this->repo->LoadById($this->user->UserId);
+
+		//print_r($user->Groups());
         $resources = parent::GetResourceList();
         $filteredResources = array();
         /** @var $resource BookableResource */
         foreach ($resources as $resource)
         {
+			echo $resource->GetScheduleAdminGroupId();
             if ($user->IsResourceAdminFor($resource))
             {
                 $filteredResources[] = $resource;

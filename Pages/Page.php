@@ -71,7 +71,8 @@ abstract class Page implements IPage
 		$this->smarty->assign('CanViewAdmin', $userSession->IsAdmin);
 		$this->smarty->assign('CanViewGroupAdmin', $userSession->IsGroupAdmin);
 		$this->smarty->assign('CanViewResourceAdmin', $userSession->IsResourceAdmin);
-		$this->smarty->assign('CanViewResponsibilities', ($userSession->IsGroupAdmin || $userSession->IsResourceAdmin));
+		$this->smarty->assign('CanViewScheduleAdmin', $userSession->IsScheduleAdmin);
+		$this->smarty->assign('CanViewResponsibilities', ($userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
         $timeout = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT);
 		if (!empty($timeout))
 		{

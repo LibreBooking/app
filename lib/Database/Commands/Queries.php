@@ -281,8 +281,9 @@ class Queries
 		LEFT JOIN schedules s ON s.schedule_id = q.schedule_id';
 
 	const GET_ALL_RESOURCES =
-			'SELECT *
+			'SELECT r.*, s.admin_group_id as s_admin_group_id
 		FROM resources r
+		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		ORDER BY r.name';
 
 	const GET_ALL_RESOURCE_ADMINS =
