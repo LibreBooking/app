@@ -22,6 +22,6 @@ define('ROOT_DIR', '../../');
 
 require_once(ROOT_DIR . 'Pages/Admin/ResourceAdminManageReservationsPage.php');
 
-$page = new SecureActionPageDecorator(new ResourceAdminManageReservationsPage());
+$page = new RoleRestrictedPageDecorator(new ResourceAdminManageReservationsPage(), array(RoleLevel::RESOURCE_ADMIN, RoleLevel::SCHEDULE_ADMIN));
 $page->PageLoad();
 ?>

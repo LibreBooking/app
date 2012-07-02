@@ -138,6 +138,43 @@ class SecureActionPageDecorator extends ActionPage
 	}
 }
 
+class RoleRestrictedPageDecorator extends SecureActionPageDecorator
+{
+	public function __construct(ActionPage $page, $requiredRoles = array())
+	{
+		parent::__construct($page);
+
+		$user = ServiceLocator::GetServer()->GetUserSession();
+		$isAllowed = false;
+
+		foreach ($requiredRoles as $roleId)
+		{
+			if ($user->IsAdmin)
+			{
+				$isAllowed = true;
+			}
+			if ($roleId == RoleLevel::GROUP_ADMIN && $user->IsGroupAdmin)
+			{
+				$isAllowed = true;
+			}
+			if ($roleId == RoleLevel::RESOURCE_ADMIN && $user->IsResourceAdmin)
+			{
+				$isAllowed = true;
+			}
+			if ($roleId == RoleLevel::SCHEDULE_ADMIN && $user->IsScheduleAdmin)
+			{
+				$isAllowed = true;
+			}
+		}
+
+		if (!$isAllowed)
+		{
+			$this->RedirectResume($this->GetResumeUrl());
+			die();
+		}
+	}
+}
+
 class SecurePageDecorator extends Page implements IPage
 {
 	/**
