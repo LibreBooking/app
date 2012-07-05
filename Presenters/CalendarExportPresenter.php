@@ -1,7 +1,6 @@
 <?php
 /**
 Copyright 2012 Nick Korbel
-Copyright 2012 Alois Schloegl, IST Austria
 
 This file is part of phpScheduleIt.
 
@@ -67,12 +66,6 @@ class CalendarExportPresenter
 		$shouldHideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
 
 		$referenceNumber = $this->page->GetReferenceNumber();
-		$scheduleId = $this->page->GetScheduleId();
-		$resourceId = $this->page->GetResourceId();
-		$accessoryName = $this->page->GetAccessoryName();
-
-		$weekAgo = Date::Now()->AddDays(-7);
-		$nextYear = Date::Now()->AddDays(365);
 
 		$reservations = array();
 		if (!empty($referenceNumber))
@@ -85,37 +78,9 @@ class CalendarExportPresenter
 				$shouldHideDetails = !$this->authorization->CanViewDetails($res, $currentUser);
 			}
 		}
-		else
-		{
-			$shouldHideDetails = $shouldHideDetails && !$currentUser->IsAdmin;
-
-			$res = array();
-
-			if (!empty($accessoryName))
-			{
-				$res = $this->reservationViewRepository->GetAccessoryReservationList($weekAgo, $nextYear, $accessoryName);
-
-			}
-			elseif (!empty($scheduleId) || !empty($resourceId))
-			{
-
-				$res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, null, null, $scheduleId, $resourceId);
-			}
-			foreach ($res as $r)
-			{
-				$seriesIds = array();
-				$seriesId = $r->SeriesId;
-				if (!array_key_exists($seriesId, $seriesIds))
-				{
-					$reservations[] = new iCalendarReservationView($r);
-				}
-				$seriesIds[$seriesId] = true;
-			}
-		}
 
 		$this->page->SetReservations($reservations, $shouldHideDetails);
 	}
-
 }
 
 ?>

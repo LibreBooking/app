@@ -86,7 +86,6 @@ class CalendarSubscriptionPresenter
 		{
 			$resource = $this->subscriptionService->GetResource($resourceId);
 			$rid = $resource->GetId();
-			Log::Debug("Presenters/CalendarSubscriptionPresenter.php: resourceId %s, resource %s, rid %s\n", $resourceId, $resource, $rid);
 		}
 		if (!empty($accessoryIds))
 		{
@@ -106,6 +105,7 @@ class CalendarSubscriptionPresenter
 		}
 		else
 		{
+			throw new Exception('need to give an accessory a public id, allow subscriptions');
 			$res = $this->reservationViewRepository->GetAccessoryReservationList($weekAgo, $nextYear, $accessoryIds);
 		}
 

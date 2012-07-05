@@ -52,7 +52,7 @@ class CalendarSubscriptionValidator implements ICalendarExportValidator
 
         if (empty($key) || $providedKey != $key)
         {
-            Log::Debug('Empty or invalid subscription key');
+            Log::Debug('Empty or invalid subscription key. Key provided: %s', $providedKey);
 
             return false;
         }
