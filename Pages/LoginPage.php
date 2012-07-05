@@ -125,7 +125,7 @@ class LoginPage extends Page implements ILoginPage
 	public function GetEmailAddress()
 	{
                 // TODO: conf.settings can not be resolved
-                if ($conf['settings']['plugins']['Authentication'] == 'Krb5')
+                if (0) #($conf['settings']['plugins']['Authentication'] == 'Krb5')
                 {
 			### Required when using Krb5, its excluded because of possible conflict with other methods
                 	### TODO: this should be done in a more generic way. 
@@ -164,7 +164,7 @@ class LoginPage extends Page implements ILoginPage
 	public function SetUseLogonName($value)
 	{
 		// TODO: conf.settings can not be resolved
-		if ($conf['settings']['plugins']['Authentication'] == 'Krb5') 
+		if (0) # ($conf['settings']['plugins']['Authentication'] == 'Krb5') 
 		{
 			### Required when using Krb5, its excluded because of possible conflict with other methods
 			### TODO: this should be done in a more generic way
