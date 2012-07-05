@@ -828,6 +828,17 @@ class GetFullReservationListCommand extends SqlCommand
     }
 }
 
+class GetFullAccessoryReservationListCommand extends SqlCommand
+{
+    // Copyright (C) 2012 Alois Schloegl, IST Austria
+    // Copyright (C) 2012 Moritz Schepp, IST Austria
+    public function __construct(Date $startDate, Date $endDate, $scheduleId, $resourceId, $accessoryName)
+    {
+        parent::__construct(Queries::GET_ACCESSORY_RESERVATION_LIST_FULL);
+        $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_NAME, $accessoryName)); 
+    }
+}
+
 class GetFullGroupReservationListCommand extends GetFullReservationListCommand
 {
     public function __construct($groupIds = array())

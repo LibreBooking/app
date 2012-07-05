@@ -53,6 +53,12 @@ interface ICalendarSubscriptionPage
      * @return int
      */
     function GetResourceId();
+
+    /**
+     * @abstract
+     * @return int
+     */
+    function GetAccessoryIds();
 }
 
 class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
@@ -121,6 +127,18 @@ class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
     public function GetResourceId()
     {
         return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+    }
+
+    // Copyright 2012, Alois Schloegl, IST Austria
+    /**
+     * @return int
+     */
+    public function GetAccessoryIds()
+    {
+        ## TODO: selecting group of Accessories 
+        $tmp = $this->GetQuerystring(QueryStringKeys::ACCESSORY_ID);
+        Log::Debug("GetAccessoryIds %s",$tmp);
+        return $tmp; 
     }
 }
 

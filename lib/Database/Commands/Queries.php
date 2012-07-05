@@ -1,6 +1,8 @@
 <?php
 /**
 Copyright 2011-2012 Nick Korbel
+Copyright 2012, Moritz Schepp, IST Austria
+Copyright 2012, Alois Schloegl, IST Austria
 
 This file is part of phpScheduleIt.
 
@@ -424,6 +426,22 @@ class Queries
 		INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
 		WHERE rs.status_id <> 2
 			AND ru.reservation_user_level = @levelid
+		ORDER BY ri.start_date ASC';
+
+	const GET_ACCESSORY_RESERVATION_LIST_FULL =
+			'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id,
+              owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id, resources.name, resources.resource_id, resources.schedule_id, rs.title, ru.reservation_user_level
+		FROM reservation_instances ri
+		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
+		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
+		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
+		INNER JOIN reservation_accessories ar ON rs.series_id = ar.series_id
+		INNER JOIN accessories a ON ar.accessory_id = a.accessory_id
+		INNER JOIN users ON users.user_id = rs.owner_id
+		INNER JOIN users owner ON owner.user_id = rs.owner_id
+		INNER JOIN resources on rr.resource_id = resources.resource_id
+		WHERE rs.status_id <> 2
+			AND a.accessory_name LIKE @accessoryname
 		ORDER BY ri.start_date ASC';
 
 	const GET_RESERVATION_LIST =

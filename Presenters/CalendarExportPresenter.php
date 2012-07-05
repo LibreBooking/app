@@ -1,6 +1,7 @@
 <?php
 /**
 Copyright 2012 Nick Korbel
+Copyright 2012 Alois Schloegl, IST Austria
 
 This file is part of phpScheduleIt.
 
@@ -68,6 +69,7 @@ class CalendarExportPresenter
 		$referenceNumber = $this->page->GetReferenceNumber();
         $scheduleId = $this->page->GetScheduleId();
         $resourceId = $this->page->GetResourceId();
+        $accessoryId = $this->page->GetAccessoryId();
 
         $weekAgo = Date::Now()->AddDays(-7);
         $nextYear = Date::Now()->AddDays(365);
@@ -82,6 +84,20 @@ class CalendarExportPresenter
 			{
 				$shouldHideDetails = !$this->authorization->CanViewDetails($res, $currentUser);
 			}
+        }
+        else if (!empty($accessoryId)) 
+        {
+		$seriesIds = array();
+                $res = $this->reservationViewRepository->GetAccessoryReservationList($weekAgo, $nextYear, null, null, null, null,$accessoryId);        
+                foreach ($res as $r)
+                {
+			$seriesId = $r->SeriesId;
+			if (!array_key_exists($seriesId, $seriesIds))
+			{
+                    	    $reservations[] = new iCalendarReservationView($r);
+			}
+			$seriesIds[$seriesId] = true;
+                }
         }
         else
         {

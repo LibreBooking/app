@@ -1,6 +1,7 @@
 <?php
 /**
 Copyright 2011-2012 Nick Korbel
+Copyright 2012 Alois Schloegl
 
 This file is part of phpScheduleIt.
 
@@ -48,6 +49,13 @@ interface IReservationViewRepository
         $userLevel = ReservationUserLevel::OWNER,
         $scheduleId = ReservationViewRepository::ALL_SCHEDULES,
         $resourceId = ReservationViewRepository::ALL_RESOURCES);
+
+    public function GetFullAccessoryReservationListCommand(
+        Date $startDate,
+        Date $endDate,
+        $scheduleId  = ReservationViewRepository::ALL_SCHEDULES,
+        $resourceId  = ReservationViewRepository::ALL_RESOURCES,
+        $accessoryId = ReservationViewRepository::ALL_ACCESSORIES);
 
     /**
      * @abstract
@@ -166,6 +174,45 @@ class ReservationViewRepository implements IReservationViewRepository
         }
 
         $getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleId, $resourceId);
+
+        $result = ServiceLocator::GetDatabase()->Query($getReservations);
+
+        $reservations = array();
+
+        while ($row = $result->GetRow())
+        {
+            $reservations[] = ReservationItemView::Populate($row);
+        }
+
+        $result->Free();
+
+        return $reservations;
+    }
+
+    public function GetFullAccessoryReservationListCommand(
+        Date $startDate,
+        Date $endDate,
+        $scheduleId = self::ALL_SCHEDULES,
+        $resourceId = self::ALL_RESOURCES,
+        $accessoryName = self::ALL_ACCESSORIES)
+
+    {
+        if (empty($scheduleId))
+        {
+            $scheduleId = self::ALL_SCHEDULES;
+        }
+        if (empty($resourceId))
+        {
+            $resourceId = self::ALL_RESOURCES;
+        }
+        if (empty($accessoryName))
+        {    
+            $accessoryName = self::ALL_ACCESSORIES;
+        }
+
+        Log::Debug("Domain/Access/ReservationViewRepository.php line 218:  scheduleId %s, resourceId %s, accessoryName %s\n", $scheduleId, $resourceId, $accessoryName);
+
+        $getReservations = new GetFullAccessoryReservationListCommand($startDate, $endDate, $scheduleId, $resourceId, $accessoryName);
 
         $result = ServiceLocator::GetDatabase()->Query($getReservations);
 
