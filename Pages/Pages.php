@@ -38,6 +38,7 @@ class Pages
 	const PARTICIPATION = 'participation.php';
 	const PASSWORD = 'password.php';
 	const PROFILE = 'profile.php';
+	const REPORTS_GENERATE = 'generate-report.php';
 	const RESERVATION = 'reservation.php';
 	const RESERVATION_FILE = 'reservation-file.php';
 	const REGISTRATION = 'register.php';

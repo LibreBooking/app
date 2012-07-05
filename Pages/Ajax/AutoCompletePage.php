@@ -91,7 +91,7 @@ class AutoCompletePage extends SecurePage
 
 	private function GetGroups($term)
 	{
-		$filter = new SqlFilterLike(ColumnNames::GROUP_NAME, $term);
+		$filter = new SqlFilterLike(new SqlFilterColumn(TableNames::GROUPS_ALIAS,ColumnNames::GROUP_NAME), $term);
 		$r = new GroupRepository();
 		return $r->GetList(1, 100, null, null, $filter)->Results();
 	}

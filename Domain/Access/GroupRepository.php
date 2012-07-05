@@ -99,7 +99,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	 * @param string $sortField
 	 * @param string $sortDirection
 	 * @param ISqlFilter $filter
-	 * @return PageableData of GroupItemView
+	 * @return PageableData|GroupItemView[]
 	 */
 	public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null, $filter = null)
 	{

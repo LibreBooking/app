@@ -1,0 +1,14 @@
+#custom-report-input {
+    font-size: 10pt;
+}
+#custom-report-input .label
+{
+    display: inline-block;
+    width: 80px;
+    font-size: 11pt;
+}
+
+#custom-report-input .input-set {
+    /*float: left;*/
+    padding-right: 15px;
+}

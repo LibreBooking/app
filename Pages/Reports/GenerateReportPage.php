@@ -19,12 +19,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 
 class GenerateReportPage extends Page
 {
 	public function __construct()
 	{
-		parent::__construct('', 1);
+		parent::__construct('Reports', 1);
 	}
 
 	public function PageLoad()
