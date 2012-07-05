@@ -17,133 +17,99 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
-#require_once(ROOT_DIR . 'plugins/Authentication/Krb5/Krb5.config.php');
-
 
 class Krb5 implements IAuthentication
 {
-    /**
-	 * @var IAuthentication
-	 */
 	private $authToDecorate;
-	
-	/**
-	 * @var IRegistration
-	 */
 	private $_registration;
 
-	/**
-	* Needed to register user if they are logging in to Drupal but do not have a phpScheduleIt account yet
-	*/
 	private function GetRegistration()
 	{
 		if ($this->_registration == null)
 		{
 			$this->_registration = new Registration();
 		}
-		
+
 		return $this->_registration;
 	}
-	
-	/**
-	 * @param IAuthentication $authentication Authentication class to decorate
-	 */
-	public function __construct(IAuthentication $authentication)
+
+	public function __construct(Authentication $authentication)
 	{
 		$this->authToDecorate = $authentication;
 	}
-	
-	/**
-	* Called first to validate credentials
-	* @see IAuthorization::Validate()
-	*/
+
 	public function Validate($username, $password)
 	{
 		$ru = explode('@', $_SERVER['REMOTE_USER']);
-		$user   = $ru[0];
+		$user = $ru[0];
 		$domain = $ru[1];
-                ## TODO: supported realm should be obtained from configuration file
-		if ($domain == 'IST.LOCAL' || $domain == 'ISTA.LOCAL') {
-		        $lu = explode('@', $username);
-			return ($lu[0]==$user);
+		## TODO: supported realm should be obtained from configuration file
+		if ($domain == 'IST.LOCAL' || $domain == 'ISTA.LOCAL')
+		{
+			$lu = explode('@', $username);
+			return ($lu[0] == $user);
 		}
-                return false; 
+		return false;
 	}
-	
-	/**
-	* Called after Validate returns true
-	* @see IAuthorization::Login()
-	*/
+
 	public function Login($username, $loginContext)
 	{
 		$lu = explode('@', $username);
-		$username = $lu[0]; 
-		
-		$server = ServiceLocator::GetServer();
-		$userRepository = new UserRepository();
-		$user = $userRepository->LoadByUsername($username);
+		$username = $lu[0];
 
-		$this->authToDecorate->SetUserSession($user, $server);
+		$this->authToDecorate->Login($username, $loginContext);
 	}
-	
-	/**
-	 * @see IAuthorization::Logout()
-	 */
+
 	public function Logout(UserSession $user)
 	{
 		$this->authToDecorate->Logout($user);
 	}
-	
-	/**
-	 * @see IAuthorization::CookieLogin()
-	 */
+
 	public function CookieLogin($cookieValue, $loginContext)
 	{
-		// Do anything Drupal-specific
-		  //MPinnegar - I don't think we need to do anything specific to Drupal? It shouldn't care about cookies set by phpScheduleIt
-		// Always call decorated Authentication so proper phpScheduleIt functionality is executed
 		$this->authToDecorate->CookieLogin($cookieValue, $loginContext);
 	}
-	
-	/**
-	 * @see IAuthorization::AreCredentialsKnown()
-	 */
+
 	public function AreCredentialsKnown()
 	{
 		$ru = $_SERVER['REMOTE_USER'];
-		if ($ru) {
+		if ($ru)
+		{
 			return (bool)$ru;
-		} else {
+		}
+		else
+		{
 			return false;
 		}
 	}
-	
-	/**
-	 * @see IAuthorization::HandleLoginFailure()
-	 */
+
 	public function HandleLoginFailure(ILoginPage $loginPage)
 	{
 		$this->authToDecorate->HandleLoginFailure($loginPage);
 	}
 
-        public function ShowUsernamePrompt() {
-                return false;
-        }
+	public function ShowUsernamePrompt()
+	{
+		return false;
+	}
 
-        public function ShowPasswordPrompt() {
-                return false;
-        }
+	public function ShowPasswordPrompt()
+	{
+		return false;
+	}
 
-        public function ShowPersistLoginPrompt() {
-                return false;
-        }
+	public function ShowPersistLoginPrompt()
+	{
+		return false;
+	}
 
-        public function ShowForgotPasswordPrompt() {
-                return false;
-        }
+	public function ShowForgotPasswordPrompt()
+	{
+		return false;
+	}
 }
 
 ?>

@@ -169,9 +169,7 @@ class Authentication implements IAuthentication
      * @param User $user
      * @param Server $server
      */
-    ## TODO: changed from private to public for Krb5 Authentication method 
-    ##       perhaps there is an alternative way of doing this ??? 
-    public function SetUserSession(User $user, $server)
+    private function SetUserSession(User $user, $server)
     {
         $userSession = new UserSession($user->Id());
         $userSession->Email = $user->EmailAddress();

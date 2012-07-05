@@ -24,11 +24,11 @@ require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
 class ViewSchedulePermissionService implements IPermissionService
 {
 	/**
-	 * @param IResource $resource
+	 * @param IPermissibleResource $resource
 	 * @param UserSession $user
 	 * @return bool
 	 */
-	public function CanAccessResource(IResource $resource, UserSession $user)
+	public function CanAccessResource(IPermissibleResource $resource, UserSession $user)
 	{
 		return true;
 	}

@@ -36,17 +36,23 @@ interface ICalendarExportPage
 	 */
 	public function SetReservations($reservations, $hideDetails);
 
-    /**
-     * @abstract
-     * @return int
-     */
-    public function GetScheduleId();
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetScheduleId();
 
-    /**
-     * @abstract
-     * @return int
-     */
-    public function GetResourceId();
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetResourceId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetAccessoryName();
 }
 
 class CalendarExportPage extends Page implements ICalendarExportPage
@@ -101,22 +107,28 @@ class CalendarExportPage extends Page implements ICalendarExportPage
 		$this->hideDetails = $hideDetails;
 	}
 
-    public function GetScheduleId()
-    {
-        return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
-    }
+	public function GetScheduleId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+	}
 
-    public function GetResourceId()
-    {
-        return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
-    }
+	public function GetResourceId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+
+	public function GetAccessoryName()
+	{
+		return $this->GetQuerystring(QueryStringKeys::ACCESSORY_NAME);
+	}
 }
 
 class NullCalendarExportValidator implements ICalendarExportValidator
 {
-    function IsValid()
-    {
-        return true;
-    }
+	function IsValid()
+	{
+		return true;
+	}
 }
+
 ?>

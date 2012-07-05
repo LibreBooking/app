@@ -413,62 +413,23 @@ class Queries
 			reference_number = @referenceNumber AND
 			rs.status_id <> 2';
 
-	const GET_RESERVATION_LIST_FULL =
-			'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id,
-              owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id, schedules.schedule_id as schedule_id
-		FROM reservation_instances ri
-		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
-		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
-		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
-		INNER JOIN users ON users.user_id = rs.owner_id
-		INNER JOIN users owner ON owner.user_id = rs.owner_id
-		INNER JOIN resources on rr.resource_id = resources.resource_id
-		INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
-		WHERE rs.status_id <> 2
-			AND ru.reservation_user_level = @levelid
-		ORDER BY ri.start_date ASC';
-
-	const GET_ACCESSORY_RESERVATION_LIST_FULL =
-			'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id,
-              owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id, resources.name, resources.resource_id, resources.schedule_id, rs.title, ru.reservation_user_level
-		FROM reservation_instances ri
-		INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
-		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
-		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
-		INNER JOIN reservation_accessories ar ON rs.series_id = ar.series_id
-		INNER JOIN accessories a ON ar.accessory_id = a.accessory_id
-		INNER JOIN users ON users.user_id = rs.owner_id
-		INNER JOIN users owner ON owner.user_id = rs.owner_id
-		INNER JOIN resources on rr.resource_id = resources.resource_id
-		WHERE rs.status_id <> 2
-			AND a.accessory_name LIKE @accessoryname
-		ORDER BY ri.start_date ASC';
-
-	const GET_RESERVATION_LIST =
-			'SELECT *, rs.status_id as status_id, rs.description as description, rs.date_created as date_created,
-              owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id
-		FROM reservation_instances ri
-		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
-		INNER JOIN reservation_resources rr ON rr.series_id = rs.series_id
-		INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
-		INNER JOIN resources r on rr.resource_id = r.resource_id
-		INNER JOIN users u ON u.user_id = ru.user_id
-		INNER JOIN users owner ON owner.user_id = rs.owner_id
-		WHERE
-			(
-				(ri.start_date >= @startDate AND ri.start_date <= @endDate)
-				OR
-				(ri.end_date >= @startDate AND ri.end_date <= @endDate)
-				OR
-				(ri.start_date <= @startDate AND ri.end_date >= @endDate)
-			) AND
-			(@userid = -1 OR ru.user_id = @userid) AND
-			(@levelid = 0 OR ru.reservation_user_level = @levelid) AND
-			(@scheduleid = -1 OR r.schedule_id = @scheduleid) AND
-			(@resourceid = -1 OR rr.resource_id = @resourceid) AND
-			rs.status_id <> 2
-		ORDER BY 
-			ri.start_date ASC';
+	const GET_RESERVATION_LIST_TEMPLATE =
+			'SELECT *, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description,
+				rs.status_id as status_id, owner.fname as ownerFname, owner.lname as ownerLname, owner.user_id as owner_id,
+				resources.name, resources.resource_id, resources.schedule_id, rs.title, ru.reservation_user_level
+				[SELECT_TOKEN]
+			FROM reservation_instances ri
+			INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
+			INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
+			INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
+			INNER JOIN users ON users.user_id = rs.owner_id
+			INNER JOIN users owner ON owner.user_id = rs.owner_id
+			INNER JOIN resources on rr.resource_id = resources.resource_id
+			INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
+			[JOIN_TOKEN]
+			WHERE rs.status_id <> 2
+			[AND_TOKEN]
+			ORDER BY ri.start_date ASC';
 
 	const GET_RESERVATION_ACCESSORIES =
 			'SELECT *
@@ -810,4 +771,36 @@ class Queries
 		WHERE (username = @username OR email = @username) AND status_id = 1';
 }
 
+class QueryBuilder
+{
+	private static $DATE_FRAGMENT = '((ri.start_date >= @startDate AND ri.start_date <= @endDate) OR
+					(ri.end_date >= @startDate AND ri.end_date <= @endDate) OR
+					(ri.start_date <= @startDate AND ri.end_date >= @endDate))';
+
+	private static function Build($selectValue, $joinValue, $andValue)
+	{
+		return str_replace('[AND_TOKEN]', $andValue, str_replace('[JOIN_TOKEN]', $joinValue, str_replace('[SELECT_TOKEN]', $selectValue, Queries::GET_RESERVATION_LIST_TEMPLATE)));
+	}
+
+	public static function GET_RESERVATION_LIST()
+	{
+		return self::Build(null, null, 'AND '  .self::$DATE_FRAGMENT . ' AND
+					(@userid = -1 OR ru.user_id = @userid) AND
+					(@levelid = 0 OR ru.reservation_user_level = @levelid) AND
+					(@scheduleid = -1 OR resources.schedule_id = @scheduleid) AND
+					(@resourceid = -1 OR rr.resource_id = @resourceid)');
+	}
+
+	public static function GET_RESERVATION_LIST_FULL()
+	{
+		return self::Build(null, null, 'AND ru.reservation_user_level = @levelid');
+	}
+
+	public static function GET_RESERVATIONS_BY_ACCESSORY_NAME()
+	{
+		return self::Build(null,
+						   'INNER JOIN reservation_accessories ar ON rs.series_id = ar.series_id INNER JOIN accessories a ON ar.accessory_id = a.accessory_id',
+						   'AND ' . self::$DATE_FRAGMENT . ' AND a.accessory_name LIKE @accessoryname');
+	}
+}
 ?>

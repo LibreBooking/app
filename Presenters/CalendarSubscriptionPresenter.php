@@ -74,7 +74,7 @@ class CalendarSubscriptionPresenter
 		$sid = null;
 		$rid = null;
 		$uid = null;
-		$aid = null; 
+		$aid = null;
 
 		$reservations = array();
 		if (!empty($scheduleId))
@@ -84,12 +84,10 @@ class CalendarSubscriptionPresenter
 		}
 		if (!empty($resourceId))
 		{
-                        #$resource = $this->subscriptionService->GetResource($resourceId);
-                        #$rid = $resource->GetId();     # this returns the string "BookableResource" but not the correct $rid
-                        ### HACK: this seems to solve the problem.   
-                        $rid = $resourceId;
-                        Log::Debug("Presenters/CalendarSubscriptionPresenter.php: resourceId %s, resource %s, rid %s\n", $resourceId, $resource, $rid);
-                }
+			$resource = $this->subscriptionService->GetResource($resourceId);
+			$rid = $resource->GetId();
+			Log::Debug("Presenters/CalendarSubscriptionPresenter.php: resourceId %s, resource %s, rid %s\n", $resourceId, $resource, $rid);
+		}
 		if (!empty($accessoryIds))
 		{
 			## No transformation is implemented. It is assumed the accessoryIds is provided as AccessoryName 
@@ -102,14 +100,14 @@ class CalendarSubscriptionPresenter
 			$uid = $user->Id();
 		}
 
-		if (empty($aid)) 
+		if (empty($aid))
 		{
 			$res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, $uid, null, $sid, $rid);
 		}
-		else 
-		{	
-                        $res = $this->reservationViewRepository->GetFullAccessoryReservationListCommand($weekAgo, $nextYear, $sid, $rid, $accessoryIds);
-		}		
+		else
+		{
+			$res = $this->reservationViewRepository->GetAccessoryReservationList($weekAgo, $nextYear, $accessoryIds);
+		}
 
 		Log::Debug('Loading calendar subscription for userId %s, scheduleId %s, resourceId %s. Found %s reservations.', $userId, $scheduleId, $resourceId, count($res));
 

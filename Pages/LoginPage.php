@@ -19,7 +19,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#require_once(ROOT_DIR . 'config/config.php');
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
@@ -124,15 +123,6 @@ class LoginPage extends Page implements ILoginPage
 
 	public function GetEmailAddress()
 	{
-                // TODO: conf.settings can not be resolved
-                if (0) #($conf['settings']['plugins']['Authentication'] == 'Krb5')
-                {
-			### Required when using Krb5, its excluded because of possible conflict with other methods
-                	### TODO: this should be done in a more generic way. 
-                	$ru = explode('@', $_SERVER['REMOTE_USER']);
-                	$value =  $ru[0].'@ist.ac.at';
-                	return $value;
-		}
 		return $this->GetForm(FormKeys::EMAIL);
 	}
 
@@ -163,14 +153,6 @@ class LoginPage extends Page implements ILoginPage
 
 	public function SetUseLogonName($value)
 	{
-		// TODO: conf.settings can not be resolved
-		if (0) # ($conf['settings']['plugins']['Authentication'] == 'Krb5') 
-		{
-			### Required when using Krb5, its excluded because of possible conflict with other methods
-			### TODO: this should be done in a more generic way
-			$ru = explode('@', $_SERVER['REMOTE_USER']);
-			$value = $ru[0];
-		}
 		$this->Set('UseLogonName', $value);
 	}
 

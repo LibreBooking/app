@@ -18,13 +18,13 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 class QueryStringKeys
 {
 	private function __construct()
 	{}
 
 	const ACCESSORY_ID = 'aid';
+	const ACCESSORY_NAME = 'an';
 	const ACTION = 'action';
 	const ACCOUNT_ACTIVATION_CODE = 'ac';
 	const ACCOUNT_STATUS = 'as';

@@ -823,19 +823,19 @@ class GetFullReservationListCommand extends SqlCommand
 {
     public function __construct()
     {
-        parent::__construct(Queries::GET_RESERVATION_LIST_FULL);
+        parent::__construct(QueryBuilder::GET_RESERVATION_LIST_FULL());
         $this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, ReservationUserLevel::OWNER));
     }
 }
 
-class GetFullAccessoryReservationListCommand extends SqlCommand
+class GetReservationsByAccessoryNameCommand extends SqlCommand
 {
-    // Copyright (C) 2012 Alois Schloegl, IST Austria
-    // Copyright (C) 2012 Moritz Schepp, IST Austria
-    public function __construct(Date $startDate, Date $endDate, $scheduleId, $resourceId, $accessoryName)
+    public function __construct(Date $startDate, Date $endDate, $accessoryName)
     {
-        parent::__construct(Queries::GET_ACCESSORY_RESERVATION_LIST_FULL);
-        $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_NAME, $accessoryName)); 
+        parent::__construct(QueryBuilder::GET_RESERVATIONS_BY_ACCESSORY_NAME());
+        $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::ACCESSORY_NAME, $accessoryName));
     }
 }
 
@@ -861,7 +861,7 @@ class GetReservationListCommand extends SqlCommand
 {
     public function __construct(Date $startDate, Date $endDate, $userId, $userLevelId, $scheduleId, $resourceId)
     {
-        parent::__construct(Queries::GET_RESERVATION_LIST);
+        parent::__construct(QueryBuilder::GET_RESERVATION_LIST());
         $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
