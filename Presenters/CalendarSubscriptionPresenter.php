@@ -81,8 +81,11 @@ class CalendarSubscriptionPresenter
 		}
 		if (!empty($resourceId))
 		{
-			$resource = $this->subscriptionService->GetResource($resourceId);
-			$rid = $resource->GetId();
+			#$resource = $this->subscriptionService->GetResource($resourceId);
+			#$rid = $resource->GetId();     # this returns the string "BookableResource" but not the correct $rid
+			### HACK: this seems to solve the problem.   
+			$rid = $resourceId;
+			Log::Debug("Presenters/CalendarSubscriptionPresenter.php: resourceId %s, resource %s, rid %s\n", $resourceId, $resource, $rid);
 		}
 		if (!empty($userId))
 		{
