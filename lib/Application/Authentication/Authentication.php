@@ -1,6 +1,7 @@
 <?php
 /**
 Copyright 2011-2012 Nick Korbel
+Copyright 2012 Moritz Schepp, IST Austria
 
 This file is part of phpScheduleIt.
 
@@ -168,7 +169,9 @@ class Authentication implements IAuthentication
      * @param User $user
      * @param Server $server
      */
-    private function SetUserSession(User $user, $server)
+    ## TODO: changed from private to public for Krb5 Authentication method 
+    ##       perhaps there is an alternative way of doing this ??? 
+    public function SetUserSession(User $user, $server)
     {
         $userSession = new UserSession($user->Id());
         $userSession->Email = $user->EmailAddress();
