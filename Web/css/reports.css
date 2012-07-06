@@ -12,3 +12,9 @@
     /*float: left;*/
     padding-right: 15px;
 }
+
+#custom-report-input input
+{
+    margin-right: 5px;
+    margin-left: 15px;
+}

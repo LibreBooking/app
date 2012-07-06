@@ -33,27 +33,27 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="custom-report-input">
 	<div class="input-set">
 		<span class="label">Select</span>
-		<input type="radio" name="results" value="list" id="results_list" checked="checked"/><label
+		<input type="radio" name="results" value="{Report_ResultSelection::FULL_LIST}" id="results_list" checked="checked"/><label
 			for="results_list">List</label>
-		<input type="radio" name="results" value="time" id="results_time"/><label for="results_time">Time</label>
-		<input type="radio" name="results" value="count" id="results_count"/><label for="results_count">Count</label>
+		<input type="radio" name="results" value="{Report_ResultSelection::TIME}" id="results_time"/><label for="results_time">Time</label>
+		<input type="radio" name="results" value="{Report_ResultSelection::COUNT}" id="results_count"/><label for="results_count">Count</label>
 	</div>
 	<div class="input-set">
 		<span class="label">Group By</span>
-		<input type="radio" name="groupby" value="none" id="groupby_none" checked="checked"/><label
+		<input type="radio" name="groupby" value="{Report_GroupBy::NONE}" id="groupby_none" checked="checked"/><label
 			for="groupby_none">None</label>
-		<input type="radio" name="groupby" value="list" id="groupby_resource"/><label
+		<input type="radio" name="groupby" value="{Report_GroupBy::RESOURCE}" id="groupby_resource"/><label
 			for="groupby_resource">Resource</label>
-		<input type="radio" name="groupby" value="time" id="groupby_schedule"/><label
+		<input type="radio" name="groupby" value="{Report_GroupBy::SCHEDULE}" id="groupby_schedule"/><label
 			for="groupby_schedule">Schedule</label>
-		<input type="radio" name="groupby" value="count" id="groupby_user"/><label for="groupby_user">User</label>
-		<input type="radio" name="groupby" value="count" id="groupby_group"/><label for="groupby_group">Group</label>
+		<input type="radio" name="groupby" value="{Report_GroupBy::USER}" id="groupby_user"/><label for="groupby_user">User</label>
+		<input type="radio" name="groupby" value="{Report_GroupBy::GROUP}" id="groupby_group"/><label for="groupby_group">Group</label>
 	</div>
 	<div class="input-set">
 		<span class="label">Range</span>
-		<input type="radio" name="range" value="all" id="range_all" checked="checked"/><label for="range_all">All
+		<input type="radio" name="range" value="{Report_Range::ALL_TIME}" id="range_all" checked="checked"/><label for="range_all">All
 		Time</label>
-		<input type="radio" name="range" value="within" id="range_within"/><label for="range_within">Between</label>
+		<input type="radio" name="range" value="{Report_Range::DATE_RANGE}" id="range_within"/><label for="range_within">Between</label>
 		<input type="input" class="textbox datepicker"/> and <input type="input" class="textbox datepicker"/>
 	</div>
 	<div class="input-set">

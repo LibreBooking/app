@@ -20,6 +20,66 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
+require_once(ROOT_DIR . 'Presenters/Reports/GenerateReportPresenter.php');
+
+interface IGenerateReportPage
+{
+	/**
+	 * @abstract
+	 * @return string|Report_ResultSelection
+	 */
+	public function GetResultSelection();
+
+	/**
+	 * @abstract
+	 * @return string|Report_GroupBy
+	 */
+	public function GetGroupBy();
+
+	/**
+	 * @abstract
+	 * @return string|Report_Range
+	 */
+	public function GetRange();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetStart();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetEnd();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetResourceId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetScheduleId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetUserId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetGroupId();
+
+	public function BindReport(IReport $report);
+}
 
 class GenerateReportPage extends Page
 {

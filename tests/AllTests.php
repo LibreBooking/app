@@ -39,6 +39,7 @@ require_once(ROOT_DIR . 'tests/Application/Authentication/Application_Authentica
 require_once(ROOT_DIR . 'tests/Application/Reservation/Application_Reservation_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Schedule/Application_Schedule_Suite.php');
 require_once(ROOT_DIR . 'tests/Application/Resource/Application_Resource_Suite.php');
+require_once(ROOT_DIR . 'tests/Application/Reporting/Application_Reporting_Suite.php');
 
 require_once(ROOT_DIR . 'tests/Domain/Announcement/Domain_Announcement_Suite.php');
 require_once(ROOT_DIR . 'tests/Domain/Attribute/Domain_Attribute_Suite.php');
@@ -55,6 +56,7 @@ require_once(ROOT_DIR . 'tests/Presenters/Presenters_Suite.php');
 require_once(ROOT_DIR . 'tests/Presenters/Dashboard/DashboardPresenters_Suite.php');
 require_once(ROOT_DIR . 'tests/Presenters/Admin/AdminPresenters_Suite.php');
 require_once(ROOT_DIR . 'tests/Presenters/Reservation/ReservationPresenters_Suite.php');
+require_once(ROOT_DIR . 'tests/Presenters/Reports/Presenters_Reports_Suite.php');
 
 require_once(ROOT_DIR . 'tests/WebService/WebService_Suite.php');
 require_once(ROOT_DIR . 'tests/WebServices/WebServices_Suite.php');
@@ -73,7 +75,8 @@ class AllTests
         $suite->addTest(Application_Schedule_Suite::suite());
         $suite->addTest(Application_Reservation_Suite::suite());
         $suite->addTest(Application_Resource_Suite::suite());
-        
+        $suite->addTest(Application_Reporting_Suite::suite());
+
         $suite->addTest(Domain_Announcement_Suite::suite());
         $suite->addTest(Domain_Attribute_Suite::suite());
         $suite->addTest(Domain_Reservation_Suite::suite());
@@ -92,6 +95,7 @@ class AllTests
         $suite->addTest(DashboardPresenters_Suite::suite());
         $suite->addTest(AdminPresenters_Suite::suite());
         $suite->addTest(ReservationPresenters_Suite::suite());
+        $suite->addTest(Presenters_Reports_Suite::suite());
 
         $suite->addTest(WebService_Suite::suite());
         $suite->addTest(WebServices_Suite::suite());
