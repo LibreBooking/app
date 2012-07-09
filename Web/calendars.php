@@ -26,6 +26,7 @@ $hostname = $conf['settings']['database']['hostspec'];
 $username = $conf['settings']['database']['user'];  
 $password = $conf['settings']['database']['password'];  
 $database = $conf['settings']['database']['name'];  
+$icskey   = $conf['settings']['ics']['subscription.key'];
 
 header("Exported calendars of phpScheduleIt");
 
@@ -51,37 +52,36 @@ else
 
 // Open data base connection 
 $link = mysql_connect( $hostname, $username, $password);
-mysql_select_db($database); 
+#mysql_select_db($database); 
 if (!$link) {
     die('Could not connect: ' . mysql_error());
 }
 
 // Get Urls for Schedule calendars
 echo "<H3>URLs for all schedules </H3>";
-$result = mysql_query("SELECT schedule_id, name FROM phpscheduleit2.schedules ORDER BY name ");
+$result = mysql_query('SELECT public_id, name FROM '.$database.'.schedules ORDER BY name ');
 while ($row = mysql_fetch_assoc($result)) {
-    echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=',$row['schedule_id'],'&rid=&icskey=true">',$row['name'].'</a><br>';
+    echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=',$row['public_id'],'&rid=&icskey=',$icskey,'">',$row['name'].'</a><br>';
 }
 
 // Get Urls for resource calendars
-$result = mysql_query("SELECT resource_id, name FROM phpscheduleit2.resources ORDER BY name");
+$result = mysql_query('SELECT public_id, name FROM '.$database.'.resources ORDER BY name');
 echo "<H3>URLs for resources </H3>";
-
 while ($row = mysql_fetch_assoc($result)) {
-    echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=&rid=',$row['resource_id'],'&icskey=true">',$row['name'].'</a><br>';
+    echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=&rid=',$row['public_id'],'&icskey=',$icskey,'">',$row['name'].'</a><br>';
 }
 
 echo "<H3>URLs for accessories </H3>";
-$result = mysql_query("SELECT accessory_name FROM phpscheduleit2.accessories");
+$result = mysql_query('SELECT accessory_name FROM '.$database.'.accessories');
 while ($row = mysql_fetch_assoc($result)) {
-    echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=&rid=&aid=',$row['accessory_name'],'&icskey=true">',$row['accessory_name'].'</a><br>';
+    echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=&rid=&aid=',$row['accessory_name'],'&icskey=',$icskey,'">',$row['accessory_name'].'</a><br>';
 }
 
 // get Urls for resource calendars
 ### TODO: this is specific to IST Austria, its generic use should be documented somewhere else. 
-echo "<H3>Several accessory calendars can be combined into a single calendar using wildcards (%)</H3>";
+echo "<H3>Accessory calendars (combined)</H3>";
 foreach (array("IT%","Announce%","Catering%","Tech%") as $cal) {
-    echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=&rid=&aid=',$cal,'&icskey=true">',$cal,'</a><br>';
+    echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=&rid=&aid=',$cal,'&icskey=',$icskey,'">',$cal,'</a><br>';
 }
 
 
