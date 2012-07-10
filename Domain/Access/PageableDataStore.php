@@ -38,6 +38,7 @@ class PageableDataStore
 		$results = array();
 		$db = ServiceLocator::GetDatabase();
 
+		// TODO this can be moved into else clause, dont need to run 2 queries
 		$totalReader = $db->Query(new CountCommand($command));
 		if ($row = $totalReader->GetRow())
 		{

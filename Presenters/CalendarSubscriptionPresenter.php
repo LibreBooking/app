@@ -77,6 +77,7 @@ class CalendarSubscriptionPresenter
 		$aid = null;
 
 		$reservations = array();
+		$res = array();
 		if (!empty($scheduleId))
 		{
 			$schedule = $this->subscriptionService->GetSchedule($scheduleId);
@@ -99,11 +100,11 @@ class CalendarSubscriptionPresenter
 			$uid = $user->Id();
 		}
 
-		if (empty($aid))
+		if (!empty($uid) || !empty($sid) || !empty($rid))
 		{
 			$res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, $uid, null, $sid, $rid);
 		}
-		else
+		elseif (!empty($aid))
 		{
 			throw new Exception('need to give an accessory a public id, allow subscriptions');
 			$res = $this->reservationViewRepository->GetAccessoryReservationList($weekAgo, $nextYear, $accessoryIds);

@@ -57,6 +57,7 @@ class GenerateReportPresenter extends ActionPresenter
 
 	public function GenerateCustomReport()
 	{
+		$usage = new Report_Usage($this->page->GetUsage());
 		$selection = new Report_ResultSelection($this->page->GetResultSelection());
 		$groupBy = new Report_GroupBy($this->page->GetGroupBy());
 		$start = Date::Parse($this->page->GetStart(), $this->user->Timezone);
@@ -64,7 +65,7 @@ class GenerateReportPresenter extends ActionPresenter
 		$range = new Report_Range($this->page->GetRange(), $start, $end);
 		$filter = new Report_Filter($this->page->GetResourceId(), $this->page->GetScheduleId(), $this->page->GetUserId(), $this->page->GetGroupId());
 
-		$report = $this->reportingService->GenerateCustomReport($selection, $groupBy, $range, $filter);
+		$report = $this->reportingService->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter);
 
 		$this->page->BindReport($report);
 	}

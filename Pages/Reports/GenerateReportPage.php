@@ -26,6 +26,12 @@ interface IGenerateReportPage
 {
 	/**
 	 * @abstract
+	 * @return string|Report_Usage
+	 */
+	public function GetUsage();
+
+	/**
+	 * @abstract
 	 * @return string|Report_ResultSelection
 	 */
 	public function GetResultSelection();

@@ -184,8 +184,8 @@ class ColumnNames
 
     // dynamic
     const TOTAL = 'total';
-    const OWNER_FIRST_NAME = 'ownerFname';
-    const OWNER_LAST_NAME = 'ownerLname';
+    const OWNER_FIRST_NAME = 'owner_fname';
+    const OWNER_LAST_NAME = 'owner_lname';
     const OWNER_USER_ID = 'owner_id';
 
     // shared

@@ -32,10 +32,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="custom-report-input">
 	<div class="input-set">
+		<span class="label">Usage</span>
+		<input type="radio" name="find" value="{Report_Usage::RESOURCES}" id="usage_resources" checked="checked"><label for="usage_resources">{translate key=Resources}</label>
+		<input type="radio" name="find" value="{Report_Usage::ACCESSORIES}" id="usage_accessories"><label for="usage_accessories">{translate key=Accessories}</label>
+	</div>
+	<div class="input-set">
 		<span class="label">Select</span>
 		<input type="radio" name="results" value="{Report_ResultSelection::FULL_LIST}" id="results_list" checked="checked"/><label
 			for="results_list">List</label>
-		<input type="radio" name="results" value="{Report_ResultSelection::TIME}" id="results_time"/><label for="results_time">Time</label>
+		<input type="radio" name="results" value="{Report_ResultSelection::TIME}" id="results_time"/><label for="results_time">Total Time</label>
 		<input type="radio" name="results" value="{Report_ResultSelection::COUNT}" id="results_count"/><label for="results_count">Count</label>
 	</div>
 	<div class="input-set">
@@ -54,7 +59,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="radio" name="range" value="{Report_Range::ALL_TIME}" id="range_all" checked="checked"/><label for="range_all">All
 		Time</label>
 		<input type="radio" name="range" value="{Report_Range::DATE_RANGE}" id="range_within"/><label for="range_within">Between</label>
-		<input type="input" class="textbox datepicker"/> and <input type="input" class="textbox datepicker"/>
+		<input type="input" class="textbox dateinput" id="startDate"/> and <input type="input" class="textbox dateinput" id="endDate"/>
 	</div>
 	<div class="input-set">
 		<span class="label">Filter By</span>
@@ -64,18 +69,26 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<select class="textbox">
 			<option>{translate key=AllSchedules}</option>
 		</select>
-		{translate key=User}<input id="user_filter" type="text" class="textbox"/>
-		{translate key=Group}<input id="group_filter" type="text" class="textbox"/>
+		<a href="#">{translate key=AllUsers}</a>
+		<a href="#">{translate key=AllGroups}</a>
+
 		<input id="user_id" type="hidden"/>
 	</div>
+</div>
+
+<div class="dialog" id="userPopup">
+{translate key=User}<input id="user_filter" type="text" class="textbox"/>
+</div>
+
+<div class="dialog" id="groupPopup">
+{translate key=Group}<input id="group_filter" type="text" class="textbox"/>
 </div>
 
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('.datepicker').datepicker();
-		$('.datepicker').click(function () {
+		$('.dateinput').click(function () {
 			$('#range_within').attr('checked', 'checked');
 		});
 
@@ -90,5 +103,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		$("#group_filter").userAutoComplete(reportOptions.groupAutocompleteUrl);
 	});
 </script>
+
+{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedBeginDate"}
+{control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate"}
 
 {include file='globalfooter.tpl'}

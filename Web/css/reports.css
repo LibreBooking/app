@@ -4,16 +4,17 @@
 #custom-report-input .label
 {
     display: inline-block;
-    width: 80px;
+    width: 95px;
     font-size: 11pt;
 }
 
 #custom-report-input .input-set {
     /*float: left;*/
     padding-right: 15px;
+    padding-bottom: 2px;
 }
 
-#custom-report-input input
+#custom-report-input input, #custom-report-input select
 {
     margin-right: 5px;
     margin-left: 15px;

@@ -59,6 +59,7 @@ class GenerateReportPresenterTests extends TestBase
 		$userId = 40;
 		$groupId = 50;
 
+		$this->page->_Usage = Report_Usage::ACCESSORIES;
 		$this->page->_ResultSelection = Report_ResultSelection::COUNT;
 		$this->page->_GroupBy = Report_GroupBy::USER;
 		$this->page->_Range = Report_Range::DATE_RANGE;
@@ -71,6 +72,7 @@ class GenerateReportPresenterTests extends TestBase
 
 		$expectedReport = $this->getMock('IReport');
 
+		$usage = new Report_Usage($this->page->_Usage);
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
 		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd);
@@ -78,7 +80,7 @@ class GenerateReportPresenterTests extends TestBase
 
 		$this->reportingService->expects($this->once())
 					->method('GenerateCustomReport')
-					->with($this->equalTo($selection), $this->equalTo($groupBy), $this->equalTo($range), $this->equalTo($filter))
+					->with($this->equalTo($usage), $this->equalTo($selection), $this->equalTo($groupBy), $this->equalTo($range), $this->equalTo($filter))
 					->will($this->returnValue($expectedReport));
 
 		$this->presenter->GenerateCustomReport();
@@ -138,6 +140,11 @@ class FakeGenerateReportPage implements IGenerateReportPage
 	 * @var IReport
 	 */
 	public $_BoundReport;
+
+	/**
+	 * @var Report_Usage
+	 */
+	public $_Usage;
 
 	/**
 	 * @return string|Report_ResultSelection
@@ -214,6 +221,14 @@ class FakeGenerateReportPage implements IGenerateReportPage
 	public function BindReport(IReport $report)
 	{
 		$this->_BoundReport = $report;
+	}
+
+	/**
+	 * @return string|Report_Usage
+	 */
+	public function GetUsage()
+	{
+		return $this->_Usage;
 	}
 }
 
