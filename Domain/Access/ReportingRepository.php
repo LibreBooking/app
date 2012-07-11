@@ -20,35 +20,155 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReportCommandBuilder
 {
-	const REPORT_TEMPLATE = 'SELECT [SELECT_TOKEN] FROM reservation_instances ri
+	const REPORT_TEMPLATE = 'SELECT [SELECT_TOKEN]
+				FROM reservation_instances ri
 				INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
-				INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
-				INNER JOIN users ON users.user_id = rs.owner_id
 				INNER JOIN users owner ON owner.user_id = rs.owner_id
 				[JOIN_TOKEN]
-				WHERE rs.status_id <> 2 AND ru.reservation_user_level = 1
+				WHERE rs.status_id <> 2
 				[AND_TOKEN]
+				[GROUP_BY_TOKEN]
 				[ORDER_TOKEN]';
 
-	const COMMON_LIST_FRAGMENT = 'rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.title as title
-						rs.status_id as status_id, owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id';
+	const RESERVATION_LIST_FRAGMENT = 'rs.date_created as date_created, rs.last_modified as last_modified, rs.repeat_type,
+		rs.description as description, rs.title as title, rs.status_id as status_id, ri.reference_number, ri.start_date, ri.end_date';
 
-	const RESOURCE_LIST_FRAGMENT = 'resources.name, resources.resource_id, resources.schedule_id, schedules.name as schedule_name';
+	const COUNT_FRAGMENT = 'count(1) as total';
+
+	const RESOURCE_LIST_FRAGMENT = 'resources.name as resource_name, resources.resource_id';
+
+	const SCHEDULE_LIST_FRAGMENT = 'schedules.schedule_id, schedules.name as schedule_name';
 
 	const ACCESSORY_LIST_FRAGMENT = 'accessories.accessory_name, accessories.accessory_id';
 
+	const USER_LIST_FRAGMENT = 'owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id';
+
+	const GROUP_LIST_FRAGMENT = 'groups.name as group_name, groups.group_id';
+
 	const RESOURCE_JOIN_FRAGMENT = 'INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
-				INNER JOIN resources on rr.resource_id = resources.resource_id
+				INNER JOIN resources ON rr.resource_id = resources.resource_id
 				INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id';
 
 	const ACCESSORY_JOIN_FRAGMENT = 'INNER JOIN reservation_accessories ar ON rs.series_id = ar.series_id
 				INNER JOIN accessories ON ar.accessory_id = accessories.accessory_id';
 
+	const GROUP_JOIN_FRAGMENT = 'INNER JOIN user_groups ug ON ug.user_id = owner.user_id
+				INNER JOIN groups ON groups.group_id = ug.group_id';
+
 	const ORDER_BY_FRAGMENT = 'ORDER BY ri.start_date ASC';
 
+	const SCHEDULE_ID_FRAGMENT = 'AND schedule.schedule_id = @scheduleid';
+
+	const RESOURCE_ID_FRAGMENT = 'AND resources.resource_id = @resourceid';
+
+	const USER_ID_FRAGMENT = 'AND owner.user_id = @userid';
+
+	const GROUP_ID_FRAGMENT = 'AND ug.group_id = @groupid';
+
+	const DATE_FRAGMENT = 'AND ((ri.start_date >= @startDate AND ri.start_date <= @endDate) OR
+						(ri.end_date >= @startDate AND ri.end_date <= @endDate) OR
+						(ri.start_date <= @startDate AND ri.end_date >= @endDate))';
+
+	const GROUP_BY_GROUP_FRAGMENT = 'GROUP BY groups.group_id';
+
+	const GROUP_BY_RESOURCE_FRAGMENT = 'GROUP BY resources.resource_id';
+
+	const GROUP_BY_SCHEDULE_FRAGMENT = 'GROUP BY schedules.schedule_id';
+
+	const GROUP_BY_USER_FRAGMENT = 'GROUP BY owner.user_id';
+
+	/**
+	 * @var bool
+	 */
 	private $fullList = false;
-	private $resources = false;
-	private $accessories = false;
+	/**
+	 * @var bool
+	 */
+	private $count = false;
+	/**
+	 * @var bool
+	 */
+	private $time = false;
+	/**
+	 * @var bool
+	 */
+	private $joinResources = false;
+	/**
+	 * @var bool
+	 */
+	private $joinGroups = false;
+	/**
+	 * @var bool
+	 */
+	private $joinAccessories = false;
+	/**
+	 * @var bool
+	 */
+	private $listResources = false;
+	/**
+	 * @var bool
+	 */
+	private $listSchedules = false;
+	/**
+	 * @var bool
+	 */
+	private $listGroups = false;
+	/** @var bool
+	 */
+	private $listUsers = false;
+	/**
+	 * @var bool
+	 */
+	private $listAccessories = false;
+	/**
+	 * @var bool
+	 */
+	private $limitWithin = false;
+	/**
+	 * @var null|int
+	 */
+	private $scheduleId = null;
+	/**
+	 * @var null|int
+	 */
+	private $userId = null;
+	/**
+	 * @var null|int
+	 */
+	private $resourceId = null;
+	/**
+	 * @var null|int
+	 */
+	private $groupId = null;
+	/**
+	 * @var null|Date
+	 */
+	private $startDate = null;
+	/**
+	 * @var null|Date
+	 */
+	private $endDate = null;
+	/**
+	 * @var bool
+	 */
+	private $groupByGroup = false;
+	/**
+	 * @var bool
+	 */
+	private $groupByResource = false;
+	/**
+	 * @var bool
+	 */
+	private $groupBySchedule = false;
+	/**
+	 * @var bool
+	 */
+	private $groupByUser = false;
+	/**
+	 * @var array|Parameter[]
+	 */
+	private $parameters = array();
+
 
 	/**
 	 * @return ReportCommandBuilder
@@ -56,6 +176,25 @@ class ReportCommandBuilder
 	public function SelectFullList()
 	{
 		$this->fullList = true;
+		$this->listUsers = true;
+		return $this;
+	}
+
+	/**
+	 * @return ReportCommandBuilder
+	 */
+	public function SelectCount()
+	{
+		$this->count = true;
+		return $this;
+	}
+
+	/**
+	 * @return ReportCommandBuilder
+	 */
+	public function SelectTime()
+	{
+		$this->time = true;
 		return $this;
 	}
 
@@ -64,7 +203,8 @@ class ReportCommandBuilder
 	 */
 	public function OfResources()
 	{
-		$this->resources = true;
+		$this->joinResources = true;
+		$this->listResources = true;
 		return $this;
 	}
 
@@ -73,7 +213,8 @@ class ReportCommandBuilder
 	 */
 	public function OfAccessories()
 	{
-		$this->accessories = true;
+		$this->joinAccessories = true;
+		$this->listAccessories = true;
 		return $this;
 	}
 
@@ -84,6 +225,9 @@ class ReportCommandBuilder
 	 */
 	public function Within(Date $start, Date $end)
 	{
+		$this->limitWithin = true;
+		$this->startDate = $start;
+		$this->endDate = $end;
 		return $this;
 	}
 
@@ -93,6 +237,8 @@ class ReportCommandBuilder
 	 */
 	public function WithResourceId($resourceId)
 	{
+		$this->joinResources = true;
+		$this->resourceId = $resourceId;
 		return $this;
 	}
 
@@ -102,6 +248,7 @@ class ReportCommandBuilder
 	 */
 	public function WithUserId($userId)
 	{
+		$this->userId = $userId;
 		return $this;
 	}
 
@@ -111,6 +258,8 @@ class ReportCommandBuilder
 	 */
 	public function WithScheduleId($scheduleId)
 	{
+		$this->joinResources = true;
+		$this->scheduleId = $scheduleId;
 		return $this;
 	}
 
@@ -120,6 +269,8 @@ class ReportCommandBuilder
 	 */
 	public function WithGroupId($groupId)
 	{
+		$this->joinGroups = true;
+		$this->groupId = $groupId;
 		return $this;
 	}
 
@@ -128,6 +279,41 @@ class ReportCommandBuilder
 	 */
 	public function GroupByGroup()
 	{
+		$this->joinGroups = true;
+		$this->listGroups = true;
+		$this->groupByGroup = true;
+		return $this;
+	}
+
+	/**
+	 * @return ReportCommandBuilder
+	 */
+	public function GroupByResource()
+	{
+		$this->joinResources = true;
+		$this->listResources = true;
+		$this->groupByResource = true;
+		return $this;
+	}
+
+	/**
+	 * @return ReportCommandBuilder
+	 */
+	public function GroupByUser()
+	{
+		$this->listUsers = true;
+		$this->groupByUser = true;
+		return $this;
+	}
+
+	/**
+	 * @return ReportCommandBuilder
+	 */
+	public function GroupBySchedule()
+	{
+		$this->joinResources = true;
+		$this->listSchedules = true;
+		$this->groupBySchedule = true;
 		return $this;
 	}
 
@@ -139,69 +325,221 @@ class ReportCommandBuilder
 		$sql = self::REPORT_TEMPLATE;
 		$sql = str_replace('[SELECT_TOKEN]', $this->GetSelectList(), $sql);
 		$sql = str_replace('[JOIN_TOKEN]', $this->GetJoin(), $sql);
-		$sql = str_replace('[AND_TOKEN]', '', $sql);
-		$sql = str_replace('[ORDER_TOKEN]', self::ORDER_BY_FRAGMENT, $sql);
-
+		$sql = str_replace('[AND_TOKEN]', $this->GetWhereAnd(), $sql);
+		$sql = str_replace('[GROUP_BY_TOKEN]', $this->GetGroupBy(), $sql);
+		$sql = str_replace('[ORDER_TOKEN]', $this->GetOrderBy(), $sql);
 
 		$query = new AdHocCommand($sql);
-		//$query->AddParameter()
+		foreach ($this->parameters as $parameter)
+		{
+			$query->AddParameter($parameter);
+		}
 
 		return $query;
 	}
 
 	/**
-	 * @return string
+	 * @return ReportQueryFragment
 	 */
 	private function GetSelectList()
 	{
-		$selectSql = '';
+		$selectSql = new ReportQueryFragment();
 
 		if ($this->fullList)
 		{
-			$selectSql = self::COMMON_LIST_FRAGMENT;
-			if ($this->resources)
-			{
-				return $selectSql . ',' . self::RESOURCE_LIST_FRAGMENT;
-			}
+			$selectSql->Append(self::RESERVATION_LIST_FRAGMENT);
+		}
 
-			if ($this->accessories)
-			{
-				return $selectSql . ',' . self::ACCESSORY_LIST_FRAGMENT;
-			}
+		if ($this->count)
+		{
+			$selectSql->Append(self::COUNT_FRAGMENT);
+		}
+
+		if ($this->listResources && ($this->fullList || $this->groupByResource))
+		{
+			$selectSql->AppendSelect(self::RESOURCE_LIST_FRAGMENT);
+		}
+
+		if ($this->listAccessories && $this->fullList)
+		{
+			$selectSql->AppendSelect(self::ACCESSORY_LIST_FRAGMENT);
+		}
+
+		if ($this->listGroups)
+		{
+			$selectSql->AppendSelect(self::GROUP_LIST_FRAGMENT);
+		}
+
+		if ($this->listUsers)
+		{
+			$selectSql->AppendSelect(self::USER_LIST_FRAGMENT);
+		}
+
+		if ($this->listSchedules)
+		{
+			$selectSql->AppendSelect(self::SCHEDULE_LIST_FRAGMENT);
 		}
 
 		return $selectSql;
 	}
 
 	/**
-	 * @return string
+	 * @return ReportQueryFragment
 	 */
 	private function GetJoin()
 	{
-		if ($this->resources)
+		$join = new ReportQueryFragment();
+
+		if ($this->joinResources)
 		{
-			return self::RESOURCE_JOIN_FRAGMENT;
+			$join->Append(self::RESOURCE_JOIN_FRAGMENT);
 		}
 
-		if ($this->accessories)
+		if ($this->joinAccessories)
 		{
-			return self::ACCESSORY_JOIN_FRAGMENT;
+			$join->Append(self::ACCESSORY_JOIN_FRAGMENT);
 		}
 
-		return '';
+		if ($this->joinGroups)
+		{
+			$join->Append(self::GROUP_JOIN_FRAGMENT);
+		}
+
+		return $join;
+	}
+
+	/**
+	 * @return ReportQueryFragment
+	 */
+	private function GetWhereAnd()
+	{
+		$and = new ReportQueryFragment();
+
+		if (!empty($this->scheduleId))
+		{
+			$and->Append(self::SCHEDULE_ID_FRAGMENT);
+			$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $this->scheduleId));
+		}
+
+		if (!empty($this->userId))
+		{
+			$and->Append(self::USER_ID_FRAGMENT);
+			$this->AddParameter(new Parameter(ParameterNames::USER_ID, $this->userId));
+		}
+
+		if (!empty($this->groupId))
+		{
+			$and->Append(self::GROUP_ID_FRAGMENT);
+			$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $this->groupId));
+		}
+
+		if (!empty($this->resourceId))
+		{
+			$and->Append(self::RESOURCE_ID_FRAGMENT);
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $this->resourceId));
+		}
+
+		if ($this->limitWithin)
+		{
+			$and->Append(self::DATE_FRAGMENT);
+			$this->AddParameter(new Parameter(ParameterNames::START_DATE, $this->startDate->ToDatabase()));
+			$this->AddParameter(new Parameter(ParameterNames::END_DATE, $this->endDate->ToDatabase()));
+		}
+
+		return $and;
+	}
+
+	/**
+	 * @return ReportQueryFragment
+	 */
+	private function GetGroupBy()
+	{
+		$groupBy = new ReportQueryFragment();
+		if ($this->groupByGroup)
+		{
+			$groupBy->Append(self::GROUP_BY_GROUP_FRAGMENT);
+		}
+
+		if ($this->groupByResource)
+		{
+			$groupBy->Append(self::GROUP_BY_RESOURCE_FRAGMENT);
+		}
+
+		if ($this->groupBySchedule)
+		{
+			$groupBy->Append(self::GROUP_BY_SCHEDULE_FRAGMENT);
+		}
+
+		if ($this->groupByUser)
+		{
+			$groupBy->Append(self::GROUP_BY_USER_FRAGMENT);
+		}
+
+		return $groupBy;
+	}
+
+	/**
+	 * @return ReportQueryFragment
+	 */
+	private function GetOrderBy()
+	{
+		$orderBy = new ReportQueryFragment();
+		if ($this->fullList)
+		{
+			$orderBy->Append(self::ORDER_BY_FRAGMENT);
+		}
+
+		return $orderBy;
+	}
+
+	private function AddParameter(Parameter $parameter)
+	{
+		$this->parameters[] = $parameter;
 	}
 
 
 }
 
+class ReportQueryFragment
+{
+	private $sql = '';
+
+	public function Append($sql)
+	{
+		$this->sql .= " $sql";
+	}
+
+	public function AppendSelect($selectSql)
+	{
+		$this->sql .= ",$selectSql";
+	}
+
+	public function __toString()
+	{
+		return $this->sql;
+	}
+}
+
 interface IReportingRepository
 {
-
+	/**
+	 * @abstract
+	 * @param ReportCommandBuilder $commandBuilder
+	 * @return array
+	 */
+	public function GetCustomReport(ReportCommandBuilder $commandBuilder);
 }
 
 class ReportingRepository implements IReportingRepository
 {
-
+	/**
+	 * @param ReportCommandBuilder $commandBuilder
+	 * @return array
+	 */
+	public function GetCustomReport(ReportCommandBuilder $commandBuilder)
+	{
+		// TODO: Implement GetCustomReport() method.
+	}
 }
 
 ?>

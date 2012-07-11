@@ -69,7 +69,11 @@ class ReportingServiceTests extends TestBase
 			->WithGroupId($groupId)
 			->GroupByGroup();
 
-		$rows = array(array('columname' => 'value'));
+		$rows = array(array(
+						  ColumnNames::OWNER_FIRST_NAME => 'value',
+						  ColumnNames::OWNER_LAST_NAME => 'value',
+						  ColumnNames::OWNER_USER_ID => 'value',
+					  ));
 
 		$this->reportingRepository->expects($this->once())
 					->method('GetCustomReport')
@@ -78,7 +82,12 @@ class ReportingServiceTests extends TestBase
 
 		$report = $this->rs->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter);
 
-		$this->assertEquals(ReportColumns::ResourceFullList(), $report->GetColumns());
+		$cols = new ReportColumns();
+		$cols->Add(ColumnNames::OWNER_FIRST_NAME);
+		$cols->Add(ColumnNames::OWNER_LAST_NAME);
+		$cols->Add(ColumnNames::OWNER_USER_ID);
+
+		$this->assertEquals($cols, $report->GetColumns());
 		$this->assertEquals(new CustomReportData($rows), $report->GetData());
 	}
 }

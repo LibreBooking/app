@@ -158,46 +158,6 @@ class CalendarSubscriptionPresenterTests extends TestBase
 
 		$this->presenter->PageLoad();
 	}
-
-	public function testOnlyAddsTheFirstReservationOfARepeatedSeries()
-	{
-		$r1 = new TestReservationItemView(1, Date::Now(), Date::Now());
-		$r1->WithSeriesId(10);
-
-		$r2 = new TestReservationItemView(2, Date::Now(), Date::Now());
-		$r2->WithSeriesId(10);
-
-		$r3 = new TestReservationItemView(2, Date::Now(), Date::Now());
-		$r3->WithSeriesId(10);
-		$reservationResult = array($r1, $r2, $r3);
-
-		$publicId = '1';
-		$resourceId = 999;
-		$resource = new FakeBookableResource($resourceId);
-
-		$weekAgo = Date::Now()->AddDays(-7);
-		$nextYear = Date::Now()->AddDays(365);
-
-		$this->page->expects($this->once())
-				->method('GetResourceId')
-				->will($this->returnValue($publicId));
-
-		$this->service->expects($this->once())
-				->method('GetResource')
-				->with($this->equalTo($publicId))
-				->will($this->returnValue($resource));
-
-		$this->repo->expects($this->once())
-				->method('GetReservationList')
-				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $resourceId)
-				->will($this->returnValue($reservationResult));
-
-		$this->page->expects($this->once())
-				->method('SetReservations')
-				->with($this->equalTo(array(new iCalendarReservationView($r1))));
-
-		$this->presenter->PageLoad();
-	}
 }
 
 ?>

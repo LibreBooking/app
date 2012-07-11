@@ -35,6 +35,18 @@ class Report_Usage
 	{
 		$this->usage = $usage;
 	}
+
+	public function Add(ReportCommandBuilder $builder)
+	{
+		if ($this->usage == self::ACCESSORIES)
+		{
+			$builder->OfAccessories();
+		}
+		else
+		{
+			$builder->OfResources();
+		}
+	}
 }
 
 class Report_ResultSelection
@@ -54,6 +66,22 @@ class Report_ResultSelection
 	public function __construct($selection)
 	{
 		$this->selection = $selection;
+	}
+
+	public function Add(ReportCommandBuilder $builder)
+	{
+		if ($this->selection == self::FULL_LIST)
+		{
+			$builder->SelectFullList();
+		}
+		if ($this->selection == self::COUNT)
+		{
+			$builder->SelectCount();
+		}
+		if ($this->selection == self::TIME)
+		{
+			$builder->SelectTime();
+		}
 	}
 }
 
@@ -77,6 +105,26 @@ class Report_GroupBy
 	{
 		$this->groupBy = $groupBy;
 	}
+
+	public function Add(ReportCommandBuilder $builder)
+	{
+		if ($this->groupBy == self::GROUP)
+		{
+			$builder->GroupByGroup();
+		}
+		if ($this->groupBy == self::SCHEDULE)
+		{
+			$builder->GroupBySchedule();
+		}
+		if ($this->groupBy == self::USER)
+		{
+			$builder->GroupByUser();
+		}
+		if ($this->groupBy == self::RESOURCE)
+		{
+			$builder->GroupByResource();
+		}
+	}
 }
 
 class Report_Range
@@ -90,6 +138,16 @@ class Report_Range
 	private $range;
 
 	/**
+	 * @var Date
+	 */
+	private $start;
+
+	/**
+	 * @var Date
+	 */
+	private $end;
+
+	/**
 	 * @param $range string|Report_Range
 	 * @param Date $start
 	 * @param Date $end
@@ -97,6 +155,16 @@ class Report_Range
 	public function __construct($range, Date $start, Date $end)
 	{
 		$this->range = $range;
+		$this->start = $start;
+		$this->end = $end;
+	}
+
+	public function Add(ReportCommandBuilder $builder)
+	{
+		if ($this->range == self::DATE_RANGE)
+		{
+			$builder->Within($this->start, $this->end);
+		}
 	}
 }
 
@@ -135,19 +203,93 @@ class Report_Filter
 		$this->userId = $userId;
 		$this->groupId = $groupId;
 	}
+
+	public function Add(ReportCommandBuilder $builder)
+	{
+		if (!empty($this->resourceId))
+		{
+			$builder->WithResourceId($this->resourceId);
+		}
+		if (!empty($this->scheduleId))
+		{
+			$builder->WithScheduleId($this->scheduleId);
+		}
+		if (!empty($this->userId))
+		{
+			$builder->WithUserId($this->userId);
+		}
+		if (!empty($this->groupId))
+		{
+			$builder->WithGroupId($this->groupId);
+		}
+	}
 }
 
 class ReportColumns implements IReportColumns
 {
-	public static function ResourceFullList()
+	private $allColumns = array(ColumnNames::TOTAL,
+								ColumnNames::RESERVATION_CREATED,
+								ColumnNames::RESERVATION_MODIFIED,
+								ColumnNames::REPEAT_TYPE,
+								ColumnNames::RESERVATION_DESCRIPTION,
+								ColumnNames::RESERVATION_TITLE,
+								ColumnNames::RESERVATION_STATUS,
+								ColumnNames::REFERENCE_NUMBER,
+								ColumnNames::RESERVATION_START,
+								ColumnNames::RESERVATION_END,
+								ColumnNames::RESOURCE_NAME_ALIAS,
+								ColumnNames::RESOURCE_ID,
+								ColumnNames::SCHEDULE_ID,
+								ColumnNames::SCHEDULE_NAME,
+								ColumnNames::OWNER_FIRST_NAME,
+								ColumnNames::OWNER_LAST_NAME,
+								ColumnNames::OWNER_USER_ID,
+								ColumnNames::GROUP_NAME_ALIAS,
+								ColumnNames::GROUP_ID,
+								ColumnNames::ACCESSORY_ID,
+								ColumnNames::ACCESSORY_NAME,
+	);
+
+	private $knownColumns = array();
+
+	/**
+	 * @param $columnName string
+	 */
+	public function Add($columnName)
 	{
-		return new ReportColumns();
+		if (in_array($columnName, $this->allColumns))
+		{
+			$this->knownColumns[] = $columnName;
+		}
+	}
+
+	public function Exists($columnName)
+	{
+		return in_array($columnName, $this->knownColumns);
+	}
+
+	/**
+	 * @return array|string
+	 */
+	public function GetAll()
+	{
+		return $this->knownColumns;
 	}
 }
 
 interface IReportColumns
 {
+	/**
+	 * @param $columnName string
+	 * @return bool
+	 */
+	public function Exists($columnName);
 
+	/**
+	 * @abstract
+	 * @return array|string
+	 */
+	public function GetAll();
 }
 
 interface IReportData
@@ -191,12 +333,29 @@ interface IReportingService
 
 class CustomReport implements IReport
 {
+	private $data = array();
+	private $cols;
+
+	public function __construct($rows)
+	{
+		$this->data = $rows;
+
+		$this->cols = new ReportColumns();
+		if (count($rows) > 0)
+		{
+			foreach ($rows[0] as $columnName => $value)
+			{
+				$this->cols->Add($columnName);
+			}
+		}
+	}
+
 	/**
 	 * @return IReportColumns
 	 */
 	public function GetColumns()
 	{
-		// TODO: Implement GetColumns() method.
+		return $this->cols;
 	}
 
 	/**
@@ -204,16 +363,37 @@ class CustomReport implements IReport
 	 */
 	public function GetData()
 	{
-		// TODO: Implement GetData() method.
+		return $this->data;
 	}
 }
 
 class ReportingService implements IReportingService
 {
+	/**
+	 * @var IReportingRepository
+	 */
+	private $repository;
+
+	public function __construct(IReportingRepository $repository)
+	{
+		$this->repository = $repository;
+	}
 
 	public function GenerateCustomReport(Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter)
 	{
-		return new CustomReport();
+		$builder = new ReportCommandBuilder();
+
+		$selection->Add($builder);
+		if ($selection == Report_ResultSelection::FULL_LIST)
+		{
+			$usage->Add($builder);
+		}
+		$groupBy->Add($builder);
+		$range->Add($builder);
+		$filter->Add($builder);
+
+		$data = $this->repository->GetCustomReport($builder);
+		return new CustomReport($data);
 	}
 }
 

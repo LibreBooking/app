@@ -27,7 +27,7 @@ class Parameters
 	
 	public function Add(Parameter &$parameter) 
 	{
-		$this->_parameters[] = &$parameter;
+		$this->_parameters[] = $parameter;
 		$this->_count++;
 	}
 	

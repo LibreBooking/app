@@ -187,6 +187,8 @@ class ColumnNames
     const OWNER_FIRST_NAME = 'owner_fname';
     const OWNER_LAST_NAME = 'owner_lname';
     const OWNER_USER_ID = 'owner_id';
+    const GROUP_NAME_ALIAS = 'group_name';
+    const RESOURCE_NAME_ALIAS = 'resource_name';
 
     // shared
     const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

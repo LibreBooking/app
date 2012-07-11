@@ -31,20 +31,22 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h2>Create Custom Report</h2>
 
 <div id="custom-report-input">
-	<div class="input-set">
-		<span class="label">Usage</span>
-		<input type="radio" name="find" value="{Report_Usage::RESOURCES}" id="usage_resources" checked="checked"><label for="usage_resources">{translate key=Resources}</label>
-		<input type="radio" name="find" value="{Report_Usage::ACCESSORIES}" id="usage_accessories"><label for="usage_accessories">{translate key=Accessories}</label>
-	</div>
-	<div class="input-set">
+	<div class="input-set" id="selectDiv">
 		<span class="label">Select</span>
 		<input type="radio" name="results" value="{Report_ResultSelection::FULL_LIST}" id="results_list" checked="checked"/><label
 			for="results_list">List</label>
 		<input type="radio" name="results" value="{Report_ResultSelection::TIME}" id="results_time"/><label for="results_time">Total Time</label>
 		<input type="radio" name="results" value="{Report_ResultSelection::COUNT}" id="results_count"/><label for="results_count">Count</label>
 	</div>
-	<div class="input-set">
-		<span class="label">Group By</span>
+
+	<div class="input-set select-toggle" id="listOfDiv">
+		<span class="label">Usage</span>
+		<input type="radio" name="find" value="{Report_Usage::RESOURCES}" id="usage_resources" checked="checked"><label for="usage_resources">{translate key=Resources}</label>
+		<input type="radio" name="find" value="{Report_Usage::ACCESSORIES}" id="usage_accessories"><label for="usage_accessories">{translate key=Accessories}</label>
+	</div>
+
+	<div class="input-set select-toggle" id="aggregateDiv" style="display:none;">
+		<span class="label">Aggregate By</span>
 		<input type="radio" name="groupby" value="{Report_GroupBy::NONE}" id="groupby_none" checked="checked"/><label
 			for="groupby_none">None</label>
 		<input type="radio" name="groupby" value="{Report_GroupBy::RESOURCE}" id="groupby_resource"/><label
@@ -85,22 +87,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
+<script type="text/javascript" src="{$Path}scripts/generate-reports.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('.dateinput').click(function () {
-			$('#range_within').attr('checked', 'checked');
-		});
-
 		var reportOptions = {
 			userAutocompleteUrl:"{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
 			groupAutocompleteUrl:"{$Path}ajax/autocomplete.php?type={AutoCompleteType::Group}"
 		};
 
-		$("#user_filter").userAutoComplete(reportOptions.userAutocompleteUrl, function (ui) {
-			$('#user_id').val(ui.item.value);
-		});
-		$("#group_filter").userAutoComplete(reportOptions.groupAutocompleteUrl);
+		var reports = new GenerateReports(reportOptions);
+		reports.init();
 	});
 </script>
 
