@@ -23,7 +23,7 @@ METHOD:REQUEST
 {foreach from=$Reservations item=reservation}
 BEGIN:VEVENT
 CREATED:{formatdate date=$reservation->DateCreated key=ical}
-DESCRIPTION:{$reservation->Description}
+DESCRIPTION:{$reservation->Description|regex_replace:"/[\r\n]/m":"\n "}
 DTEND:{formatdate date=$reservation->DateEnd key=ical}
 DTSTAMP:{formatdate date=$reservation->DateCreated key=ical}
 DTSTART:{formatdate date=$reservation->DateStart key=ical}
