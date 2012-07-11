@@ -27,7 +27,7 @@ DESCRIPTION:{translate key=Private}
 DTEND:{formatdate date=$reservation->DateEnd key=ical}
 DTSTAMP:{formatdate date=$reservation->DateCreated key=ical}
 DTSTART:{formatdate date=$reservation->DateStart key=ical}
-LOCATION:{$reservation->ResourceName}
+LOCATION:{$reservation->Location}
 ORGANIZER:MAILTO:{translate key=Private}
 {if $reservation->RecurRule neq ''}
 RRULE:{$reservation->RecurRule}
