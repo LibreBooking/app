@@ -41,7 +41,9 @@ class iCalendarReservationView
         $this->DateStart = $res->StartDate;
         $this->Description = $res->Description;
         $this->Organizer = $res->OwnerEmailAddress;
-        $this->RecurRule = $this->CreateRecurRule($res);
+        ### !!!  THIS DOES NOT WORK BECAUSE EXCEPTIONS TO RECURRENCE RULES ARE NOT PROPERLY HANDLED !!!
+        ### see bug report http://php.brickhost.com/forums/index.php?topic=11450.0
+        #$this->RecurRule = $this->CreateRecurRule($res);	
         $this->ReferenceNumber = $res->ReferenceNumber;
         $this->Summary = $res->Title;
         $this->ReservationUrl = sprintf("%s/%s?%s=%s", Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $res->ReferenceNumber);
@@ -52,6 +54,11 @@ class iCalendarReservationView
      * @param ReservationItemView|ReservationView $res
      * @return null|string
      */
+
+    /* 
+       ### !!!  THIS DOES NOT WORK BECAUSE EXCEPTIONS TO RECURRENCE RULES ARE NOT PROPERLY HANDLED !!!
+       ### see bug report http://php.brickhost.com/forums/index.php?topic=11450.0
+      
     private function CreateRecurRule($res)
     {
         if (empty($res->RepeatType) || $res->RepeatType == RepeatType::None)
@@ -88,6 +95,8 @@ class iCalendarReservationView
 
         return $rrule;
     }
+    */
+    
 }
 
 ?>

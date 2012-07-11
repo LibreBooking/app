@@ -112,6 +112,10 @@ class CalendarSubscriptionPresenter
 
 		Log::Debug('Loading calendar subscription for userId %s, scheduleId %s, resourceId %s. Found %s reservations.', $userId, $scheduleId, $resourceId, count($res));
 
+/*
+		### !!!  THIS DOES NOT WORK BECAUSE EXCEPTIONS TO RECURRENCE RULES ARE NOT PROPERLY HANDLED !!!
+		### see bug report http://php.brickhost.com/forums/index.php?topic=11450.0
+		
 		$seriesIds = array();
 		foreach ($res as $r)
 		{
@@ -122,6 +126,11 @@ class CalendarSubscriptionPresenter
 			}
 
 			$seriesIds[$seriesId] = true;
+		}
+*/
+		foreach ($res as $r)
+		{
+			$reservations[] = new iCalendarReservationView($r);
 		}
 
 		$this->page->SetReservations($reservations);
