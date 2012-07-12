@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{$Report->ResultCount()}
+Found: {$Report->ResultCount()}
 {if $Report->ResultCount() > 0}
 	<table width="100%">
 		<tr>

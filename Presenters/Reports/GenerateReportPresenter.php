@@ -60,11 +60,13 @@ class GenerateReportPresenter extends ActionPresenter
 		$usage = new Report_Usage($this->page->GetUsage());
 		$selection = new Report_ResultSelection($this->page->GetResultSelection());
 		$groupBy = new Report_GroupBy($this->page->GetGroupBy());
-		$start = Date::Parse($this->page->GetStart(), $this->user->Timezone);
-		$end = Date::Parse($this->page->GetEnd(), $this->user->Timezone);
+
+		$startString = $this->page->GetStart();
+		$endString = $this->page->GetEnd();
+		$start = empty($startString) ? Date::Min() : Date::Parse($startString, $this->user->Timezone);
+		$end = empty($endString) ? Date::Max() : Date::Parse($endString, $this->user->Timezone);
 		$range = new Report_Range($this->page->GetRange(), $start, $end);
 		$filter = new Report_Filter($this->page->GetResourceId(), $this->page->GetScheduleId(), $this->page->GetUserId(), $this->page->GetGroupId());
-
 
 		$report = $this->reportingService->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter);
 		$reportDefinition = new ReportDefinition($report, $this->user->Timezone);

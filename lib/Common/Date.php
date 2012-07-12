@@ -541,6 +541,23 @@ class Date
 	{
 		return $this->ToString();
 	}
+
+	/**
+	 * @static
+	 * @return Date
+	 */
+	public static function Min()
+	{
+		return Date::Parse('0001-01-01', 'UTC');
+	}
+	/**
+	 * @static
+	 * @return Date
+	 */
+	public static function Max()
+	{
+		return Date::Parse('9999-01-01', 'UTC');
+	}
 }
 
 class NullDate extends Date

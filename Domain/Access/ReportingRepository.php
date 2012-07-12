@@ -455,6 +455,10 @@ class ReportCommandBuilder
 	private function GetGroupBy()
 	{
 		$groupBy = new ReportQueryFragment();
+		if ($this->fullList)
+		{
+			return $groupBy;
+		}
 		if ($this->groupByGroup)
 		{
 			$groupBy->Append(self::GROUP_BY_GROUP_FRAGMENT);
