@@ -50,4 +50,5 @@ require_once(ROOT_DIR . 'tests/fakes/FakePermissionService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationAttachment.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeUploadedFile.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeFileSystem.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeReport.php');
 ?>

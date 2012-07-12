@@ -392,6 +392,7 @@ class en_us extends Language
 		$strings['Maximum'] = 'max';
 		$strings['NoScheduleAdministratorLabel'] = 'No Schedule Administrator';
 		$strings['ScheduleAdministrator'] = 'Schedule Administrator';
+		$strings['Total'] = 'Total';
         // End Strings
 
         // Errors

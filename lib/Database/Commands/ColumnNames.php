@@ -189,6 +189,7 @@ class ColumnNames
     const OWNER_USER_ID = 'owner_id';
     const GROUP_NAME_ALIAS = 'group_name';
     const RESOURCE_NAME_ALIAS = 'resource_name';
+    const SCHEDULE_NAME_ALIAS = 'schedule_name';
 
     // shared
     const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

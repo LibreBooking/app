@@ -56,7 +56,6 @@ class ReportingServiceTests extends TestBase
 		$selection = new Report_ResultSelection(Report_ResultSelection::FULL_LIST);
 		$groupBy = new Report_GroupBy(Report_GroupBy::GROUP);
 		$range = new Report_Range(Report_Range::DATE_RANGE, $start, $end);
-
 		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId);
 
 		$commandBuilder = new ReportCommandBuilder();

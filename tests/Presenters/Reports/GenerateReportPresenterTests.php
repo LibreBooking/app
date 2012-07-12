@@ -70,7 +70,7 @@ class GenerateReportPresenterTests extends TestBase
 		$this->page->_UserId = $userId;
 		$this->page->_GroupId = $groupId;
 
-		$expectedReport = $this->getMock('IReport');
+		$expectedReport = new FakeReport();
 
 		$usage = new Report_Usage($this->page->_Usage);
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
@@ -218,7 +218,7 @@ class FakeGenerateReportPage implements IGenerateReportPage
 		return $this->_GroupId;
 	}
 
-	public function BindReport(IReport $report)
+	public function BindReport(IReport $report, IReportDefinition $definition)
 	{
 		$this->_BoundReport = $report;
 	}

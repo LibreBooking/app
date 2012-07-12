@@ -66,6 +66,7 @@ class FormKeys
 	const FIRST_NAME = 'fname';
 
 	const GROUP = 'group';
+	const GROUP_ID = 'group_id';
 	const GROUP_NAME = 'group_name';
 	const GROUP_ADMIN = 'group_admin';
 
@@ -113,6 +114,10 @@ class FormKeys
 	const REPEAT_MONTHLY_TYPE = 'repeatMonthlyType';
 	const REPORT_START = 'reportStart';
 	const REPORT_END = 'reportEnd';
+	const REPORT_GROUPBY = 'REPORT_GROUPBY';
+	const REPORT_RANGE = 'REPORT_RANGE';
+	const REPORT_RESULTS = 'reportResults';
+	const REPORT_USAGE = 'REPORT_USAGE';
 	const REQUIRES_APPROVAL = 'requiresApproval';
 	const RESERVATION_ACTION = 'reservationAction';
 	const RESERVATION_FILE = 'reservationFile';

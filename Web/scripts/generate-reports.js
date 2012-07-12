@@ -33,6 +33,25 @@ function GenerateReports(reportOptions)
 		$('.dateinput').click(function () {
 			$('#range_within').attr('checked', 'checked');
 		});
+
+		$('#btnCustomReport').click(function(e)
+		{
+			e.preventDefault();
+
+			$.ajax({
+				type: 'POST',
+				data: $('#customReportInput').serialize(),
+				url: opts.customReportUrl,
+				cache:false,
+				beforeSend:function () {
+					$('#indicator').show().insertBefore($('#resultsDiv'));
+					$('#resultsDiv').html('');
+				}
+			}).done(function (data) {
+						$('#indicator').hide();
+						$('#resultsDiv').html(data)
+					});
+		});
 	}
 
 }

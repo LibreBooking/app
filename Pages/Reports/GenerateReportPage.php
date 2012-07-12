@@ -84,19 +84,132 @@ interface IGenerateReportPage
 	 */
 	public function GetGroupId();
 
-	public function BindReport(IReport $report);
+	public function BindReport(IReport $report, IReportDefinition $definition);
 }
 
-class GenerateReportPage extends Page
+class GenerateReportPage extends ActionPage implements IGenerateReportPage
 {
+	/**
+	 * @var GenerateReportPresenter
+	 */
+	private $presenter;
+
 	public function __construct()
 	{
 		parent::__construct('Reports', 1);
+		$this->presenter = new GenerateReportPresenter($this, ServiceLocator::GetServer()->GetUserSession(), new ReportingService(new ReportingRepository()));
 	}
 
-	public function PageLoad()
+	/**
+	 * @return void
+	 */
+	public function ProcessAction()
+	{
+		$this->presenter->ProcessAction();
+	}
+
+	/**
+	 * @param $dataRequest string
+	 * @return void
+	 */
+	public function ProcessDataRequest($dataRequest)
+	{
+		// TODO: Implement ProcessDataRequest() method.
+	}
+
+	/**
+	 * @return void
+	 */
+	public function ProcessPageLoad()
 	{
 		$this->Display('Reports/generate-report.tpl');
+	}
+
+	/**
+	 * @return string|Report_Usage
+	 */
+	public function GetUsage()
+	{
+		return $this->GetForm(FormKeys::REPORT_USAGE);
+	}
+
+	/**
+	 * @return string|Report_ResultSelection
+	 */
+	public function GetResultSelection()
+	{
+		return $this->GetForm(FormKeys::REPORT_RESULTS);
+	}
+
+	/**
+	 * @return string|Report_GroupBy
+	 */
+	public function GetGroupBy()
+	{
+		return $this->GetForm(FormKeys::REPORT_GROUPBY);
+	}
+
+	/**
+	 * @return string|Report_Range
+	 */
+	public function GetRange()
+	{
+		return $this->GetForm(FormKeys::REPORT_RANGE);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetStart()
+	{
+		return $this->GetForm(FormKeys::REPORT_START);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetEnd()
+	{
+		return $this->GetForm(FormKeys::REPORT_END);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetScheduleId()
+	{
+		return $this->GetForm(FormKeys::SCHEDULE_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetUserId()
+	{
+		return $this->GetForm(FormKeys::USER_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetGroupId()
+	{
+		return $this->GetForm(FormKeys::GROUP_ID);
+	}
+
+	public function BindReport(IReport $report, IReportDefinition $definition)
+	{
+		$this->Set('Definition', $definition);
+		$this->Set('Report', $report);
+		$this->Display('Reports/results-custom.tpl');
 	}
 }
 

@@ -83,6 +83,15 @@ class Report_ResultSelection
 			$builder->SelectTime();
 		}
 	}
+
+	/**
+	 * @param $selection string
+	 * @return bool
+	 */
+	public function Equals($selection)
+	{
+		return $this->selection == $selection;
+	}
 }
 
 class Report_GroupBy
@@ -240,7 +249,7 @@ class ReportColumns implements IReportColumns
 								ColumnNames::RESOURCE_NAME_ALIAS,
 								ColumnNames::RESOURCE_ID,
 								ColumnNames::SCHEDULE_ID,
-								ColumnNames::SCHEDULE_NAME,
+								ColumnNames::SCHEDULE_NAME_ALIAS,
 								ColumnNames::OWNER_FIRST_NAME,
 								ColumnNames::OWNER_LAST_NAME,
 								ColumnNames::OWNER_USER_ID,
@@ -294,12 +303,26 @@ interface IReportColumns
 
 interface IReportData
 {
-
+	/**
+	 * @abstract
+	 * @return array
+	 */
+	public function Rows();
 }
 
 class CustomReportData implements IReportData
 {
+	private $rows;
 
+	public function __construct($rows)
+	{
+		$this->rows = $rows;
+	}
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
 }
 
 interface IReport
@@ -315,6 +338,12 @@ interface IReport
 	 * @return IReportData
 	 */
 	public function GetData();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function ResultCount();
 }
 
 interface IReportingService
@@ -333,12 +362,23 @@ interface IReportingService
 
 class CustomReport implements IReport
 {
-	private $data = array();
+	/**
+	 * @var CustomReportData
+	 */
+	private $data;
+	/**
+	 * @var ReportColumns
+	 */
 	private $cols;
+	/**
+	 * @var int
+	 */
+	private $resultCount = 0;
 
 	public function __construct($rows)
 	{
-		$this->data = $rows;
+		$this->data = new CustomReportData($rows);
+		$this->resultCount = count($rows);
 
 		$this->cols = new ReportColumns();
 		if (count($rows) > 0)
@@ -365,6 +405,14 @@ class CustomReport implements IReport
 	{
 		return $this->data;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function ResultCount()
+	{
+		return $this->resultCount;
+	}
 }
 
 class ReportingService implements IReportingService
@@ -384,7 +432,7 @@ class ReportingService implements IReportingService
 		$builder = new ReportCommandBuilder();
 
 		$selection->Add($builder);
-		if ($selection == Report_ResultSelection::FULL_LIST)
+		if ($selection->Equals(Report_ResultSelection::FULL_LIST))
 		{
 			$usage->Add($builder);
 		}

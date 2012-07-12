@@ -496,8 +496,6 @@ class ReportCommandBuilder
 	{
 		$this->parameters[] = $parameter;
 	}
-
-
 }
 
 class ReportQueryFragment
@@ -538,7 +536,15 @@ class ReportingRepository implements IReportingRepository
 	 */
 	public function GetCustomReport(ReportCommandBuilder $commandBuilder)
 	{
-		// TODO: Implement GetCustomReport() method.
+		$reader = ServiceLocator::GetDatabase()->Query($commandBuilder->Build());
+		$rows = array();
+		while($row = $reader->GetRow())
+		{
+			$rows[] = $row;
+		}
+		$reader->Free();
+
+		return $rows;
 	}
 }
 
