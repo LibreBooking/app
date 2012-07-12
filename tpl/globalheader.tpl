@@ -157,11 +157,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
 			{if $CanViewResponsibilities || $CanViewAdmin}
 			<li class="menubaritem"><a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=Reports}</a>
-				{*<ul>
-					<li><a href="{$Path}/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a></li>
-					<li><a href="{$Path}/{Pages::REPORTS_GENERATE}">{translate key=MyReports}</a></li>
+				<ul>
+					<li><a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a></li>
+					<li><a href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a></li>
+					<li><a href="{$Path}reports/{Pages::REPORTS_COMMON}">{translate key=CommonReports}</a></li>
 				</ul>
-				*}
 			</li>
 			{/if}
 				<li class="menubaritem"><a href="{$Path}help.php">{translate key="Help"}</a></li>

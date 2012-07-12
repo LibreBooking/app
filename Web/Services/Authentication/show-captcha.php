@@ -44,7 +44,7 @@ try
 }
 catch (Exception $ex)
 {
-	Log::Error('Error showing captcha image', $ex);
+	Log::Error('Error showing captcha image: %s', $ex);
 }
 
 

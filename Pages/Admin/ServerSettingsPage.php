@@ -127,7 +127,7 @@ class TemplateCacheDirectory
 		}
 		catch(Exception $ex)
 		{
-			Log::Error('Could not flush template cache directory', $ex);
+			Log::Error('Could not flush template cache directory: %s', $ex);
 		}
 	}
 

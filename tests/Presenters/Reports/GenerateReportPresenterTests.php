@@ -58,6 +58,7 @@ class GenerateReportPresenterTests extends TestBase
 		$scheduleId = 30;
 		$userId = 40;
 		$groupId = 50;
+		$accessoryId = 60;
 
 		$this->page->_Usage = Report_Usage::ACCESSORIES;
 		$this->page->_ResultSelection = Report_ResultSelection::COUNT;
@@ -69,6 +70,7 @@ class GenerateReportPresenterTests extends TestBase
 		$this->page->_ScheduleId = $scheduleId;
 		$this->page->_UserId = $userId;
 		$this->page->_GroupId = $groupId;
+		$this->page->_AccessoryId = $accessoryId;
 
 		$expectedReport = new FakeReport();
 
@@ -76,7 +78,7 @@ class GenerateReportPresenterTests extends TestBase
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
 		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd);
-		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId);
+		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId);
 
 		$this->reportingService->expects($this->once())
 					->method('GenerateCustomReport')
@@ -266,6 +268,11 @@ class FakeGenerateReportPage implements IGenerateReportPage
 	public function BindSchedules($schedules)
 	{
 		// TODO: Implement BindSchedules() method.
+	}
+
+	public function DisplayError()
+	{
+		// TODO: Implement DisplayError() method.
 	}
 }
 

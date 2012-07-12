@@ -629,3 +629,7 @@ select.customAttribute {
 ul.indented li {
      margin-left: 25px;
 }
+
+.clear {
+    clear: both;
+}

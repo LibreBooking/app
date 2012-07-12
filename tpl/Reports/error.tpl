@@ -16,23 +16,4 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{if $Report->ResultCount() > 0}
-	<table width="100%" id="report-results">
-		<tr>
-		{foreach from=$Definition->GetColumnHeaders() item=column}
-			<th>{translate key=$column->TitleKey()}</th>
-		{/foreach}
-		</tr>
-		{foreach from=$Report->GetData()->Rows() item=row}
-			{cycle values=',alt' assign=rowCss}
-			<tr class="{$rowCss}">
-				{foreach from=$Definition->GetRow($row) item=data}
-					<td>{$data|escape}</td>
-				{/foreach}
-			</tr>
-		{/foreach}
-	</table>
-	<h4>{$Report->ResultCount()} {translate key=Rows}</h4>
-{else}
-	<h2 class="no-data" style="text-align: center;">No matching results found</h2>
-{/if}
+<div class='error'>There was an error generating the report.</div>

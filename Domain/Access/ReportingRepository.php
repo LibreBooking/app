@@ -59,7 +59,7 @@ class ReportCommandBuilder
 
 	const ORDER_BY_FRAGMENT = 'ORDER BY ri.start_date ASC';
 
-	const SCHEDULE_ID_FRAGMENT = 'AND schedule.schedule_id = @scheduleid';
+	const SCHEDULE_ID_FRAGMENT = 'AND schedules.schedule_id = @scheduleid';
 
 	const RESOURCE_ID_FRAGMENT = 'AND resources.resource_id = @resourceid';
 

@@ -1,11 +1,15 @@
 #custom-report-input {
     font-size: 10pt;
 }
-#custom-report-input .label
-{
+#custom-report-input .label {
     display: inline-block;
     width: 95px;
     font-size: 11pt;
+}
+
+#custom-report-input label {
+    display: inline-block;
+    width: 100px;
 }
 
 #custom-report-input .input-set {
@@ -14,8 +18,28 @@
     padding-bottom: 2px;
 }
 
-#custom-report-input input, #custom-report-input select
-{
+#custom-report-input input, #custom-report-input select {
     margin-right: 5px;
     margin-left: 15px;
+}
+
+#report-results {
+    margin-top: 15px;
+    width: 100%;
+    border-collapse: collapse;;
+}
+
+#report-results th {
+    text-align: left;
+    border-bottom: solid 3px #333;
+    font-size: 9pt;
+}
+
+#report-results td {
+    padding: 3px 2px;
+    border-bottom: solid 1px #ccc;
+}
+
+#report-results tr.alt td {
+    background-color: #ededed;
 }

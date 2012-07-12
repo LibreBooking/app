@@ -52,6 +52,11 @@ function GenerateReports(reportOptions)
 						$('#resultsDiv').html(data)
 					});
 		});
+
+		$('#showHideCustom').click(function(e){
+			e.preventDefault();
+			$('#customReportInput-container').toggle();
+		});
 	}
 
 }

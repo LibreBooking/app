@@ -18,18 +18,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles="css/reports.css"}
 
-<h2>Common Reports</h2>
-<ul>
-	<li>Usage</li>
-</ul>
-
-<h2>My Saved Reports</h2>
-<ul>
-	<li></li>
-</ul>
-
-<h2>Create Custom Report</h2>
-
+<h1>Create Custom Report</h1>
+<a href="#" id="showHideCustom">{translate key=ShowHide}</a>
+<fieldset id="customReportInput-container">
 <form id="customReportInput">
 	<div id="custom-report-input">
 		<div class="input-set" id="selectDiv">
@@ -102,13 +93,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<input id="group_id" type="hidden" {formname key=GROUP_ID}/>
 		</div>
 	</div>
-	<input type="submit" value="Go" class="button" id="btnCustomReport" asyncAction=""/>
+	<input type="submit" value="{translate key=GetReport}" class="button" id="btnCustomReport" asyncAction=""/>
 </form>
-
+</fieldset>
 <div id="resultsDiv">
 </div>
 
-<div id="indicator" style="display:none;">Creating...</div>
+<div id="indicator" style="display:none; text-align: center;"><h3>{translate key=Working}...</h3>{html_image src="admin-ajax-indicator.gif"}</div>
 
 <div class="dialog" id="userPopup">
 {translate key=User}<input id="user_filter" type="text" class="textbox"/>

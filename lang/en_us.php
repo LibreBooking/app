@@ -395,6 +395,7 @@ class en_us extends Language
 		$strings['Total'] = 'Total';
 		$strings['QuantityReserved'] = 'Quantity Reserved';
 		$strings['AllAccessories'] = 'All Accessories';
+		$strings['GetReport'] = 'Get Report';
         // End Strings
 
         // Errors
@@ -462,6 +463,9 @@ class en_us extends Language
 		$strings['AccountActivation'] = 'Account Activation';
 		$strings['ScheduleReservations'] = 'Schedule Reservations';
 		$strings['Reports'] = 'Reports';
+		$strings['GenerateReport'] = 'Create New Report';
+		$strings['MySavedReports'] = 'My Saved Reports';
+		$strings['CommonReports'] = 'Common Reports';
         // End Page Titles
 
         // Day representations

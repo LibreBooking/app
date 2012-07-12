@@ -71,7 +71,15 @@ class GenerateReportPresenter extends ActionPresenter
 
 	public function ProcessAction()
 	{
-		$this->GenerateCustomReport();
+		try
+		{
+			$this->GenerateCustomReport();
+		}
+		catch (Exception $ex)
+		{
+			Log::Error('Error getting report: %s', $ex);
+			$this->page->DisplayError();
+		}
 	}
 
 	public function GenerateCustomReport()
@@ -164,6 +172,7 @@ class ReportTimeColumn extends ReportColumn
 		return new TimeInterval($data);
 	}
 }
+
 interface IReportDefinition
 {
 	/**

@@ -109,6 +109,8 @@ interface IGenerateReportPage
 	 * @param array|Schedule[] $schedules
 	 */
 	public function BindSchedules($schedules);
+
+	public function DisplayError();
 }
 
 class GenerateReportPage extends ActionPage implements IGenerateReportPage
@@ -273,6 +275,11 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	{
 		return $this->GetForm(FormKeys::ACCESSORY_ID);
 
+	}
+
+	public function DisplayError()
+	{
+		$this->Display('Reports/error.tpl');
 	}
 }
 

@@ -39,6 +39,8 @@ class Pages
 	const PASSWORD = 'password.php';
 	const PROFILE = 'profile.php';
 	const REPORTS_GENERATE = 'generate-report.php';
+	const REPORTS_SAVED = 'saved-reports.php';
+	const REPORTS_COMMON = 'common-reports.php';
 	const RESERVATION = 'reservation.php';
 	const RESERVATION_FILE = 'reservation-file.php';
 	const REGISTRATION = 'register.php';
