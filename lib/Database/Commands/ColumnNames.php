@@ -184,6 +184,7 @@ class ColumnNames
 
     // dynamic
     const TOTAL = 'total';
+    const TOTAL_TIME = 'totalTime';
     const OWNER_FIRST_NAME = 'owner_fname';
     const OWNER_LAST_NAME = 'owner_lname';
     const OWNER_USER_ID = 'owner_id';

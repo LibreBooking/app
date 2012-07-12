@@ -33,7 +33,9 @@ class ReportCommandBuilder
 	const RESERVATION_LIST_FRAGMENT = 'rs.date_created as date_created, rs.last_modified as last_modified, rs.repeat_type,
 		rs.description as description, rs.title as title, rs.status_id as status_id, ri.reference_number, ri.start_date, ri.end_date';
 
-	const COUNT_FRAGMENT = 'count(1) as total';
+	const COUNT_FRAGMENT = 'COUNT(1) as total';
+
+	const TOTAL_TIME_FRAGMENT = 'SUM( UNIX_TIMESTAMP(LEAST(ri.end_date, @endDate)) - UNIX_TIMESTAMP(GREATEST(ri.start_date, @startDate)) ) AS totalTime';
 
 	const RESOURCE_LIST_FRAGMENT = 'resources.name as resource_name, resources.resource_id';
 
@@ -201,6 +203,9 @@ class ReportCommandBuilder
 	public function SelectTime()
 	{
 		$this->time = true;
+		$this->limitWithin = true;
+		$this->startDate = Date::Min();
+		$this->endDate = Date::Max();
 		return $this;
 	}
 
@@ -370,6 +375,11 @@ class ReportCommandBuilder
 		if ($this->count)
 		{
 			$selectSql->Append(self::COUNT_FRAGMENT);
+		}
+
+		if ($this->time)
+		{
+			$selectSql->Append(self::TOTAL_TIME_FRAGMENT);
 		}
 
 		if ($this->listResources && ($this->fullList || $this->groupByResource))

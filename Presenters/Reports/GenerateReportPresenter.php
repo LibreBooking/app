@@ -152,6 +152,18 @@ class ReportDateColumn extends ReportColumn
 	}
 }
 
+class ReportTimeColumn extends ReportColumn
+{
+	public function __construct($titleKey)
+	{
+		parent::__construct($titleKey);
+	}
+
+	public function GetData($data)
+	{
+		return new TimeInterval($data);
+	}
+}
 interface IReportDefinition
 {
 	/**
@@ -181,6 +193,7 @@ class ReportDefinition implements IReportDefinition
 			ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory'),
 			ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource'),
 			ColumnNames::TOTAL => new ReportStringColumn('Total'),
+			ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total'),
 			ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved'),
 			ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat),
 			ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateFormat),
