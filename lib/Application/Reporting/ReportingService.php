@@ -204,13 +204,15 @@ class Report_Filter
 	 * @param $scheduleId int|null
 	 * @param $userId int|null
 	 * @param $groupId int|null
+	 * @param $accessoryId int|null
 	 */
-	public function __construct($resourceId, $scheduleId, $userId, $groupId)
+	public function __construct($resourceId, $scheduleId, $userId, $groupId, $accessoryId)
 	{
 		$this->resourceId = $resourceId;
 		$this->scheduleId = $scheduleId;
 		$this->userId = $userId;
 		$this->groupId = $groupId;
+		$this->accessoryId = $accessoryId;
 	}
 
 	public function Add(ReportCommandBuilder $builder)
@@ -231,34 +233,15 @@ class Report_Filter
 		{
 			$builder->WithGroupId($this->groupId);
 		}
+		if (!empty($this->accessoryId))
+		{
+			$builder->WithAccessoryId($this->accessoryId);
+		}
 	}
 }
 
 class ReportColumns implements IReportColumns
 {
-	private $allColumns = array(ColumnNames::TOTAL,
-								ColumnNames::RESERVATION_CREATED,
-								ColumnNames::RESERVATION_MODIFIED,
-								ColumnNames::REPEAT_TYPE,
-								ColumnNames::RESERVATION_DESCRIPTION,
-								ColumnNames::RESERVATION_TITLE,
-								ColumnNames::RESERVATION_STATUS,
-								ColumnNames::REFERENCE_NUMBER,
-								ColumnNames::RESERVATION_START,
-								ColumnNames::RESERVATION_END,
-								ColumnNames::RESOURCE_NAME_ALIAS,
-								ColumnNames::RESOURCE_ID,
-								ColumnNames::SCHEDULE_ID,
-								ColumnNames::SCHEDULE_NAME_ALIAS,
-								ColumnNames::OWNER_FIRST_NAME,
-								ColumnNames::OWNER_LAST_NAME,
-								ColumnNames::OWNER_USER_ID,
-								ColumnNames::GROUP_NAME_ALIAS,
-								ColumnNames::GROUP_ID,
-								ColumnNames::ACCESSORY_ID,
-								ColumnNames::ACCESSORY_NAME,
-	);
-
 	private $knownColumns = array();
 
 	/**
@@ -266,10 +249,7 @@ class ReportColumns implements IReportColumns
 	 */
 	public function Add($columnName)
 	{
-		if (in_array($columnName, $this->allColumns))
-		{
 			$this->knownColumns[] = $columnName;
-		}
 	}
 
 	public function Exists($columnName)

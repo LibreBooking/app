@@ -70,6 +70,12 @@ interface IGenerateReportPage
 	 * @abstract
 	 * @return int
 	 */
+	public function GetAccessoryId();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
 	public function GetScheduleId();
 
 	/**
@@ -85,6 +91,24 @@ interface IGenerateReportPage
 	public function GetGroupId();
 
 	public function BindReport(IReport $report, IReportDefinition $definition);
+
+	/**
+	 * @abstract
+	 * @param array|BookableResource[] $resources
+	 */
+	public function BindResources($resources);
+
+	/**
+	 * @abstract
+	 * @param array|AccessoryDto[] $accessories
+	 */
+	public function BindAccessories($accessories);
+
+	/**
+	 * @abstract
+	 * @param array|Schedule[] $schedules
+	 */
+	public function BindSchedules($schedules);
 }
 
 class GenerateReportPage extends ActionPage implements IGenerateReportPage
@@ -97,7 +121,12 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	public function __construct()
 	{
 		parent::__construct('Reports', 1);
-		$this->presenter = new GenerateReportPresenter($this, ServiceLocator::GetServer()->GetUserSession(), new ReportingService(new ReportingRepository()));
+		$this->presenter = new GenerateReportPresenter(
+			$this,
+			ServiceLocator::GetServer()->GetUserSession(),
+			new ReportingService(new ReportingRepository()),
+			new ResourceRepository(),
+			new ScheduleRepository());
 	}
 
 	/**
@@ -122,6 +151,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function ProcessPageLoad()
 	{
+		$this->presenter->PageLoad();
 		$this->Display('Reports/generate-report.tpl');
 	}
 
@@ -210,6 +240,39 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 		$this->Set('Definition', $definition);
 		$this->Set('Report', $report);
 		$this->Display('Reports/results-custom.tpl');
+	}
+
+	/**
+	 * @param array|BookableResource[] $resources
+	 */
+	public function BindResources($resources)
+	{
+		$this->Set('Resources', $resources);
+	}
+
+	/**
+	 * @param array|AccessoryDto[] $accessories
+	 */
+	public function BindAccessories($accessories)
+	{
+		$this->Set('Accessories', $accessories);
+	}
+
+	/**
+	 * @param array|Schedule[] $schedules
+	 */
+	public function BindSchedules($schedules)
+	{
+		$this->Set('Schedules', $schedules);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetAccessoryId()
+	{
+		return $this->GetForm(FormKeys::ACCESSORY_ID);
+
 	}
 }
 

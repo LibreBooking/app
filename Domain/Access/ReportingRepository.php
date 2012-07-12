@@ -39,7 +39,7 @@ class ReportCommandBuilder
 
 	const SCHEDULE_LIST_FRAGMENT = 'schedules.schedule_id, schedules.name as schedule_name';
 
-	const ACCESSORY_LIST_FRAGMENT = 'accessories.accessory_name, accessories.accessory_id';
+	const ACCESSORY_LIST_FRAGMENT = 'accessories.accessory_name, accessories.accessory_id, ar.quantity';
 
 	const USER_LIST_FRAGMENT = 'owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id';
 
@@ -60,6 +60,8 @@ class ReportCommandBuilder
 	const SCHEDULE_ID_FRAGMENT = 'AND schedule.schedule_id = @scheduleid';
 
 	const RESOURCE_ID_FRAGMENT = 'AND resources.resource_id = @resourceid';
+
+	const ACCESSORY_ID_FRAGMENT = 'AND accessories.accessory_id = @accessoryid';
 
 	const USER_ID_FRAGMENT = 'AND owner.user_id = @userid';
 
@@ -136,6 +138,10 @@ class ReportCommandBuilder
 	 * @var null|int
 	 */
 	private $resourceId = null;
+	/**
+	 * @var null|int
+	 */
+	private $accessoryId = null;
 	/**
 	 * @var null|int
 	 */
@@ -271,6 +277,17 @@ class ReportCommandBuilder
 	{
 		$this->joinGroups = true;
 		$this->groupId = $groupId;
+		return $this;
+	}
+
+	/**
+	 * @param int $accessoryId
+	 * @return ReportCommandBuilder
+	 */
+	public function WithAccessoryId($accessoryId)
+	{
+		$this->joinAccessories = true;
+		$this->accessoryId = $accessoryId;
 		return $this;
 	}
 
@@ -439,6 +456,12 @@ class ReportCommandBuilder
 			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $this->resourceId));
 		}
 
+		if (!empty($this->accessoryId))
+		{
+			$and->Append(self::ACCESSORY_ID_FRAGMENT);
+			$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $this->accessoryId));
+		}
+
 		if ($this->limitWithin)
 		{
 			$and->Append(self::DATE_FRAGMENT);
@@ -500,6 +523,7 @@ class ReportCommandBuilder
 	{
 		$this->parameters[] = $parameter;
 	}
+
 }
 
 class ReportQueryFragment
@@ -542,7 +566,7 @@ class ReportingRepository implements IReportingRepository
 	{
 		$reader = ServiceLocator::GetDatabase()->Query($commandBuilder->Build());
 		$rows = array();
-		while($row = $reader->GetRow())
+		while ($row = $reader->GetRow())
 		{
 			$rows[] = $row;
 		}

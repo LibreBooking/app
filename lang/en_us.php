@@ -393,6 +393,8 @@ class en_us extends Language
 		$strings['NoScheduleAdministratorLabel'] = 'No Schedule Administrator';
 		$strings['ScheduleAdministrator'] = 'Schedule Administrator';
 		$strings['Total'] = 'Total';
+		$strings['QuantityReserved'] = 'Quantity Reserved';
+		$strings['AllAccessories'] = 'All Accessories';
         // End Strings
 
         // Errors

@@ -37,17 +37,36 @@ class GenerateReportPresenter extends ActionPresenter
 	 * @var IReportingService
 	 */
 	private $reportingService;
+	/**
+	 * @var IResourceRepository
+	 */
+	private $resourceRepo;
+	/**
+	 * @var IScheduleRepository
+	 */
+	private $scheduleRepo;
 
 	/**
 	 * @param IGenerateReportPage $page
 	 * @param UserSession $user
 	 * @param IReportingService $reportingService
+	 * @param IResourceRepository $resourceRepo
+	 * @param IScheduleRepository $scheduleRepo
 	 */
-	public function __construct(IGenerateReportPage $page, UserSession $user, IReportingService $reportingService)
+	public function __construct(IGenerateReportPage $page, UserSession $user, IReportingService $reportingService, IResourceRepository $resourceRepo, IScheduleRepository $scheduleRepo)
 	{
 		$this->page = $page;
 		$this->user = $user;
 		$this->reportingService = $reportingService;
+		$this->resourceRepo = $resourceRepo;
+		$this->scheduleRepo = $scheduleRepo;
+	}
+
+	public function PageLoad()
+	{
+		$this->page->BindResources($this->resourceRepo->GetResourceList());
+		$this->page->BindAccessories($this->resourceRepo->GetAccessoryList());
+		$this->page->BindSchedules($this->scheduleRepo->GetAll());
 	}
 
 	public function ProcessAction()
@@ -66,7 +85,7 @@ class GenerateReportPresenter extends ActionPresenter
 		$start = empty($startString) ? Date::Min() : Date::Parse($startString, $this->user->Timezone);
 		$end = empty($endString) ? Date::Max() : Date::Parse($endString, $this->user->Timezone);
 		$range = new Report_Range($this->page->GetRange(), $start, $end);
-		$filter = new Report_Filter($this->page->GetResourceId(), $this->page->GetScheduleId(), $this->page->GetUserId(), $this->page->GetGroupId());
+		$filter = new Report_Filter($this->page->GetResourceId(), $this->page->GetScheduleId(), $this->page->GetUserId(), $this->page->GetGroupId(), $this->page->GetAccessoryId());
 
 		$report = $this->reportingService->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter);
 		$reportDefinition = new ReportDefinition($report, $this->user->Timezone);
@@ -162,6 +181,7 @@ class ReportDefinition implements IReportDefinition
 			ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory'),
 			ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource'),
 			ColumnNames::TOTAL => new ReportStringColumn('Total'),
+			ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved'),
 			ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat),
 			ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateFormat),
 			ColumnNames::RESERVATION_TITLE => new ReportStringColumn('Title'),

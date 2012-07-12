@@ -137,6 +137,11 @@ class FakeGenerateReportPage implements IGenerateReportPage
 	public $_GroupId;
 
 	/**
+	 * @var int
+	 */
+	public $_AccessoryId;
+
+	/**
 	 * @var IReport
 	 */
 	public $_BoundReport;
@@ -229,6 +234,38 @@ class FakeGenerateReportPage implements IGenerateReportPage
 	public function GetUsage()
 	{
 		return $this->_Usage;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetAccessoryId()
+	{
+		return $this->_AccessoryId;
+	}
+
+	/**
+	 * @param array|BookableResource[] $resources
+	 */
+	public function BindResources($resources)
+	{
+		// TODO: Implement BindResources() method.
+	}
+
+	/**
+	 * @param array|AccessoryDto[] $accessories
+	 */
+	public function BindAccessories($accessories)
+	{
+		// TODO: Implement BindAccessories() method.
+	}
+
+	/**
+	 * @param array|Schedule[] $schedules
+	 */
+	public function BindSchedules($schedules)
+	{
+		// TODO: Implement BindSchedules() method.
 	}
 }
 
