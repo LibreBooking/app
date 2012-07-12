@@ -396,6 +396,8 @@ class en_us extends Language
 		$strings['QuantityReserved'] = 'Quantity Reserved';
 		$strings['AllAccessories'] = 'All Accessories';
 		$strings['GetReport'] = 'Get Report';
+		$strings['NoResultsFound'] = 'No matching results found';
+		$strings['SaveThisReport'] = 'Save This Report';
         // End Strings
 
         // Errors

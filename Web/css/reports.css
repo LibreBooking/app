@@ -43,3 +43,8 @@
 #report-results tr.alt td {
     background-color: #ededed;
 }
+
+#report-actions {
+    text-align: right;
+    margin: 15px;
+}

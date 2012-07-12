@@ -44,7 +44,7 @@ class GenerateReportPresenterTests extends TestBase
 		$this->page = new FakeGenerateReportPage();
 		$this->reportingService = $this->getMock('IReportingService');
 
-		$this->presenter = new GenerateReportPresenter($this->page, $this->fakeUser, $this->reportingService);
+		$this->presenter = new GenerateReportPresenter($this->page, $this->fakeUser, $this->reportingService, null, null);
 	}
 
 	public function testRunsCustomReport()
@@ -88,6 +88,11 @@ class GenerateReportPresenterTests extends TestBase
 		$this->presenter->GenerateCustomReport();
 
 		$this->assertEquals($expectedReport, $this->page->_BoundReport);
+	}
+	
+	public function testSavesReport()
+	{
+		throw new Exception('next to do');
 	}
 }
 
@@ -273,6 +278,76 @@ class FakeGenerateReportPage implements IGenerateReportPage
 	public function DisplayError()
 	{
 		// TODO: Implement DisplayError() method.
+	}
+
+	public function TakingAction()
+	{
+		// TODO: Implement TakingAction() method.
+	}
+
+	public function GetAction()
+	{
+		// TODO: Implement GetAction() method.
+	}
+
+	public function RequestingData()
+	{
+		// TODO: Implement RequestingData() method.
+	}
+
+	public function GetDataRequest()
+	{
+		// TODO: Implement GetDataRequest() method.
+	}
+
+	public function ShowResults()
+	{
+		// TODO: Implement ShowResults() method.
+	}
+
+	public function PrintReport()
+	{
+		// TODO: Implement PrintReport() method.
+	}
+
+	public function ShowCsv()
+	{
+		// TODO: Implement ShowCsv() method.
+	}
+
+	public function PageLoad()
+	{
+		// TODO: Implement PageLoad() method.
+	}
+
+	public function Redirect($url)
+	{
+		// TODO: Implement Redirect() method.
+	}
+
+	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
+	{
+		// TODO: Implement RedirectToError() method.
+	}
+
+	public function IsPostBack()
+	{
+		// TODO: Implement IsPostBack() method.
+	}
+
+	public function IsValid()
+	{
+		// TODO: Implement IsValid() method.
+	}
+
+	public function GetLastPage()
+	{
+		// TODO: Implement GetLastPage() method.
+	}
+
+	public function RegisterValidator($validatorId, $validator)
+	{
+		// TODO: Implement RegisterValidator() method.
 	}
 }
 

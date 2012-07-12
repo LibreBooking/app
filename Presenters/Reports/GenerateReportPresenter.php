@@ -55,11 +55,17 @@ class GenerateReportPresenter extends ActionPresenter
 	 */
 	public function __construct(IGenerateReportPage $page, UserSession $user, IReportingService $reportingService, IResourceRepository $resourceRepo, IScheduleRepository $scheduleRepo)
 	{
+		parent::__construct($page);
 		$this->page = $page;
 		$this->user = $user;
 		$this->reportingService = $reportingService;
 		$this->resourceRepo = $resourceRepo;
 		$this->scheduleRepo = $scheduleRepo;
+
+		$this->AddAction('customReport', 'GenerateCustomReport');
+		$this->AddAction('print', 'PrintReport');
+		$this->AddAction('csv', 'ExportToCsv');
+		$this->AddAction('save', 'SaveReport');
 	}
 
 	public function PageLoad()
@@ -73,7 +79,7 @@ class GenerateReportPresenter extends ActionPresenter
 	{
 		try
 		{
-			$this->GenerateCustomReport();
+			parent::ProcessAction();
 		}
 		catch (Exception $ex)
 		{
@@ -82,7 +88,31 @@ class GenerateReportPresenter extends ActionPresenter
 		}
 	}
 
+	public function PrintReport()
+	{
+		$this->BindReport();
+		$this->page->PrintReport();
+	}
+
 	public function GenerateCustomReport()
+	{
+		$this->BindReport();
+		$this->page->ShowResults();
+	}
+
+	public function ExportToCsv()
+	{
+		$this->BindReport();
+		$this->page->ShowCsv();
+	}
+
+	public function SaveReport()
+	{
+		$var = var_export($_POST, true);
+		Log::Debug('saving report %s', $var);
+	}
+
+	private function BindReport()
 	{
 		$usage = new Report_Usage($this->page->GetUsage());
 		$selection = new Report_ResultSelection($this->page->GetResultSelection());
@@ -97,6 +127,7 @@ class GenerateReportPresenter extends ActionPresenter
 
 		$report = $this->reportingService->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter);
 		$reportDefinition = new ReportDefinition($report, $this->user->Timezone);
+
 		$this->page->BindReport($report, $reportDefinition);
 	}
 }

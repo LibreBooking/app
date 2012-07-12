@@ -17,6 +17,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {if $Report->ResultCount() > 0}
+	<div id="report-actions">
+		<a href="#" id="btnSaveReportPrompt">{html_image src="disk-black.png"} {translate key=SaveThisReport}</a> | <a href="#" id="btnCsv">{html_image src="table-export.png"} {translate key=ExportToCSV}</a> | <a href="#" id="btnPrint">{html_image src="printer.png"}{translate key=Print}</a>
+	</div>
 	<table width="100%" id="report-results">
 		<tr>
 		{foreach from=$Definition->GetColumnHeaders() item=column}
@@ -34,5 +37,5 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</table>
 	<h4>{$Report->ResultCount()} {translate key=Rows}</h4>
 {else}
-	<h2 class="no-data" style="text-align: center;">No matching results found</h2>
+	<h2 class="no-data" style="text-align: center;">{translate key=NoResultsFound}</h2>
 {/if}

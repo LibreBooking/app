@@ -22,7 +22,7 @@ require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Reports/GenerateReportPresenter.php');
 
-interface IGenerateReportPage
+interface IGenerateReportPage extends IActionPage
 {
 	/**
 	 * @abstract
@@ -111,6 +111,12 @@ interface IGenerateReportPage
 	public function BindSchedules($schedules);
 
 	public function DisplayError();
+
+	public function ShowResults();
+
+	public function PrintReport();
+
+	public function ShowCsv();
 }
 
 class GenerateReportPage extends ActionPage implements IGenerateReportPage
@@ -162,7 +168,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetUsage()
 	{
-		return $this->GetForm(FormKeys::REPORT_USAGE);
+		return $this->GetValue(FormKeys::REPORT_USAGE);
 	}
 
 	/**
@@ -170,7 +176,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetResultSelection()
 	{
-		return $this->GetForm(FormKeys::REPORT_RESULTS);
+		return $this->GetValue(FormKeys::REPORT_RESULTS);
 	}
 
 	/**
@@ -178,7 +184,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetGroupBy()
 	{
-		return $this->GetForm(FormKeys::REPORT_GROUPBY);
+		return $this->GetValue(FormKeys::REPORT_GROUPBY);
 	}
 
 	/**
@@ -186,7 +192,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetRange()
 	{
-		return $this->GetForm(FormKeys::REPORT_RANGE);
+		return $this->GetValue(FormKeys::REPORT_RANGE);
 	}
 
 	/**
@@ -194,7 +200,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetStart()
 	{
-		return $this->GetForm(FormKeys::REPORT_START);
+		return $this->GetValue(FormKeys::REPORT_START);
 	}
 
 	/**
@@ -202,7 +208,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetEnd()
 	{
-		return $this->GetForm(FormKeys::REPORT_END);
+		return $this->GetValue(FormKeys::REPORT_END);
 	}
 
 	/**
@@ -210,7 +216,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetResourceId()
 	{
-		return $this->GetForm(FormKeys::RESOURCE_ID);
+		return $this->GetValue(FormKeys::RESOURCE_ID);
 	}
 
 	/**
@@ -218,7 +224,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetScheduleId()
 	{
-		return $this->GetForm(FormKeys::SCHEDULE_ID);
+		return $this->GetValue(FormKeys::SCHEDULE_ID);
 	}
 
 	/**
@@ -226,7 +232,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetUserId()
 	{
-		return $this->GetForm(FormKeys::USER_ID);
+		return $this->GetValue(FormKeys::USER_ID);
 	}
 
 	/**
@@ -234,15 +240,15 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetGroupId()
 	{
-		return $this->GetForm(FormKeys::GROUP_ID);
+		return $this->GetValue(FormKeys::GROUP_ID);
 	}
 
 	public function BindReport(IReport $report, IReportDefinition $definition)
 	{
 		$this->Set('Definition', $definition);
 		$this->Set('Report', $report);
-		$this->Display('Reports/results-custom.tpl');
 	}
+
 
 	/**
 	 * @param array|BookableResource[] $resources
@@ -273,13 +279,42 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function GetAccessoryId()
 	{
-		return $this->GetForm(FormKeys::ACCESSORY_ID);
+		return $this->GetValue(FormKeys::ACCESSORY_ID);
+	}
 
+
+	private function GetValue($key)
+	{
+		$postValue = $this->GetForm($key);
+
+		if (empty($postValue))
+		{
+			return $this->GetQuerystring($key);
+		}
+
+		return $postValue;
+	}
+
+	public function ShowCsv()
+	{
+		header("Content-Type: text/csv");
+		header("Content-Disposition: inline; filename=report.csv");
+		$this->Display('Reports/custom-csv.tpl');
 	}
 
 	public function DisplayError()
 	{
 		$this->Display('Reports/error.tpl');
+	}
+
+	public function ShowResults()
+	{
+		$this->Display('Reports/results-custom.tpl');
+	}
+
+	public function PrintReport()
+	{
+		$this->Display('Reports/print-custom-report.tpl');
 	}
 }
 

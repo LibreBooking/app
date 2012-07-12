@@ -119,6 +119,7 @@ class FormKeys
 	const REPORT_RANGE = 'REPORT_RANGE';
 	const REPORT_RESULTS = 'reportResults';
 	const REPORT_USAGE = 'REPORT_USAGE';
+	const REPORT_NAME = 'REPORT_NAME';
 	const REQUIRES_APPROVAL = 'requiresApproval';
 	const RESERVATION_ACTION = 'reservationAction';
 	const RESERVATION_FILE = 'reservationFile';
