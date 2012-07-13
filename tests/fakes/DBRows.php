@@ -274,4 +274,24 @@ class ReservationAttachmentItemRow
 		return $this;
 	}
 }
+
+class SavedReportRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($userId, $reportName, $dateCreated = null, $serialized = null)
+	{
+		$this->rows[] = array(ColumnNames::USER_ID => $userId,
+							  ColumnNames::REPORT_NAME => $reportName,
+							  ColumnNames::DATE_CREATED => $dateCreated,
+							  ColumnNames::REPORT_DETAILS => $serialized);
+
+		return $this;
+	}
+}
 ?>

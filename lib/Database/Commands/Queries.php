@@ -306,15 +306,12 @@ class Queries
             WHERE r.resource_id = @resourceid
           )';
 
-	const GET_ALL_SCHEDULES =
-			'SELECT *
-		FROM schedules s
-		INNER JOIN layouts l ON s.layout_id = l.layout_id';
+	const GET_ALL_SAVED_REPORTS = 'SELECT * FROM saved_reports WHERE user_id = @userid ORDER BY report_name, date_created';
+
+	const GET_ALL_SCHEDULES = 'SELECT * FROM schedules s INNER JOIN layouts l ON s.layout_id = l.layout_id';
 
 	const GET_ALL_USERS_BY_STATUS =
-			'SELECT *
-		FROM users
-		WHERE (0 = @user_statusid OR status_id = @user_statusid) ORDER BY lname, fname';
+			'SELECT * FROM users WHERE (0 = @user_statusid OR status_id = @user_statusid) ORDER BY lname, fname';
 
 	const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
 

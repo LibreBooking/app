@@ -111,6 +111,21 @@ class ReportingServiceTests extends TestBase
 		$this->rs->Save($reportName, $userId, $usage, $selection, $groupBy, $range, $filter);
 
 	}
+
+	public function testGetsSavedReports()
+	{
+		$reports = array();
+		$userId = 100;
+
+		$actualReports = $this->reportingRepository->expects($this->once())
+									->method('LoadSavedReportsForUser')
+									->with($this->equalTo($userId))
+									->will($this->returnValue($reports));
+
+		$this->rs->GetSavedReports($userId);
+
+		$this->assertEquals($reports,$actualReports);
+	}
 }
 
 ?>

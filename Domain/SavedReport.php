@@ -56,7 +56,6 @@ class SavedReport
 	 */
 	private $dateCreated;
 
-
 	public function __construct($reportName, $userId, Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter)
 	{
 		$this->reportName = $reportName;
@@ -179,6 +178,56 @@ class SavedReport
 	public function OwnerId()
 	{
 		return $this->userId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Serialize()
+	{
+		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s';
+
+		return sprintf($template,
+					   $this->Usage(),
+					   $this->Selection(),
+					   $this->GroupBy(),
+					   $this->Range(),
+					   $this->RangeStart()->ToDatabase(),
+					   $this->RangeEnd()->ToDatabase(),
+					   $this->ResourceId(),
+					   $this->ScheduleId(),
+					   $this->UserId(),
+					   $this->GroupId(),
+					   $this->AccessoryId());
+	}
+
+	/**
+	 * @param string $serialized
+	 */
+	private function Hydrate($serialized)
+	{
+
+	}
+
+	/**
+	 * @param Date $date
+	 */
+	public function WithDateCreated(Date $date)
+	{
+		$this->dateCreated = $date;
+	}
+
+	/**
+	 * @static
+	 * @param string $reportName
+	 * @param int $userId
+	 * @param Date $dateCreated
+	 * @param string $serialized
+	 * @return SavedReport
+	 */
+	public static function FromDatabase($reportName, $userId, Date $dateCreated, $serialized)
+	{
+		$savedReport = new SavedReport();
 	}
 }
 

@@ -76,5 +76,38 @@ class ReportingRepositoryTests extends TestBase
 
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
 	}
+
+	public function testLoadsAllReportsForUser()
+	{
+		$userId = 100;
+		$report1 = 'report1';
+		$report2 = 'report2';
+
+		$date = Date::Now();
+
+		$expectedReport1 = new SavedReport($report1, $userId,new Report_Usage(Report_Usage::ACCESSORIES),
+					new Report_ResultSelection(Report_ResultSelection::COUNT),
+					new Report_GroupBy(Report_GroupBy::GROUP),
+					new Report_Range(Report_Range::DATE_RANGE, Date::Now(), Date::Now()),
+					new Report_Filter(12, 11, 896, 123, 45234) );
+		$expectedReport1->WithDateCreated($date);
+
+		$serialized1 = $expectedReport1->Serialize();
+		$serialized2 = "corrupted";
+
+		$rows = new SavedReportRow();
+		$rows->With($userId, $report1, $date->ToDatabase(), $serialized1)
+			->With($userId, $report2, $date->ToDatabase(), $serialized2);
+
+		$this->db->SetRows($rows->Rows());
+
+		$reports = $this->repository->LoadSavedReportsForUser($userId);
+
+		$expectedCommand = new GetAllSavedReportsForUserCommand($userId);
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+		
+		$this->assertEquals(2, count($reports));
+		$this->assertEquals($expectedReport1, $reports[0]);
+	}
 }
 ?>

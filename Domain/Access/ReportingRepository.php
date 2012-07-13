@@ -32,9 +32,16 @@ interface IReportingRepository
 
 	/**
 	 * @abstract
-	 * @param ReportCommandBuilder $commandBuilder
+	 * @param SavedReport $savedReport
 	 */
-	public function SaveCustomReport(SavedReport $commandBuilder);
+	public function SaveCustomReport(SavedReport $savedReport);
+
+	/**
+	 * @abstract
+	 * @param $userId
+	 * @return array|SavedReport[]
+	 */
+	public function LoadSavedReportsForUser($userId);
 }
 
 class ReportingRepository implements IReportingRepository
@@ -58,23 +65,30 @@ class ReportingRepository implements IReportingRepository
 
 	public function SaveCustomReport(SavedReport $report)
 	{
-		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s';
-
-		$serialized = sprintf($template,
-							  $report->Usage(),
-							  $report->Selection(),
-							  $report->GroupBy(),
-							  $report->Range(),
-							  $report->RangeStart()->ToDatabase(),
-							  $report->RangeEnd()->ToDatabase(),
-							  $report->ResourceId(),
-							  $report->ScheduleId(),
-							  $report->UserId(),
-							  $report->GroupId(),
-							  $report->AccessoryId());
-
-
+		$serialized = $report->Serialize();
 		ServiceLocator::GetDatabase()->ExecuteInsert(new AddSavedReportCommand($report->ReportName(), $report->OwnerId(), $report->DateCreated(), $serialized));
+	}
+
+	/**
+	 * @param $userId
+	 * @return array|SavedReport[]
+	 */
+	public function LoadSavedReportsForUser($userId)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAllSavedReportsForUserCommand($userId));
+		$reports = array();
+		while ($row = $reader->GetRow())
+		{
+			$reports[] = SavedReport::FromDatabase(
+				$row[ColumnNames::REPORT_NAME],
+				$row[ColumnNames::USER_ID],
+				Date::FromDatabase($row[ColumnNames::DATE_CREATED]),
+				$row[ColumnNames::REPORT_DETAILS]
+			);
+		}
+		$reader->Free();
+
+		return $reports;
 	}
 }
 

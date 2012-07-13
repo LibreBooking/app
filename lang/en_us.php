@@ -398,6 +398,7 @@ class en_us extends Language
 		$strings['GetReport'] = 'Get Report';
 		$strings['NoResultsFound'] = 'No matching results found';
 		$strings['SaveThisReport'] = 'Save This Report';
+		$strings['ReportSaved'] = 'Report Saved!';
         // End Strings
 
         // Errors

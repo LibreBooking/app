@@ -182,6 +182,11 @@ class ColumnNames
 	const FILE_SIZE = 'file_size';
 	const FILE_EXTENSION = 'file_extension';
 
+	// SAVED REPORTS //
+	const REPORT_NAME = 'report_name';
+	const DATE_CREATED = 'date_created';
+	const REPORT_DETAILS = 'report_details';
+
     // dynamic
     const TOTAL = 'total';
     const TOTAL_TIME = 'totalTime';

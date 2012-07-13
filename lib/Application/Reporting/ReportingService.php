@@ -44,6 +44,13 @@ interface IReportingService
 	 * @param Report_Filter $filter
 	 */
 	public function Save($reportName, $userId, Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter);
+
+	/**
+	 * @abstract
+	 * @param int $userId
+	 * @return array|SavedReport[]
+	 */
+	public function GetSavedReports($userId);
 }
 
 
@@ -89,6 +96,15 @@ class ReportingService implements IReportingService
 	{
 		$report = new SavedReport($reportName, $userId, $usage, $selection, $groupBy, $range, $filter);
 		$this->repository->SaveCustomReport($report);
+	}
+
+	/**
+	 * @param int $userId
+	 * @return array|SavedReport[]
+	 */
+	public function GetSavedReports($userId)
+	{
+		return $this->repository->LoadSavedReportsForUser($userId);
 	}
 }
 

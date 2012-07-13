@@ -104,7 +104,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </fieldset>
 
 <div id="saveMessage" class="success" style="display:none">
-	Saved!
+	{translate key=ReportSaved} <a href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
 </div>
 
 <div id="resultsDiv">
