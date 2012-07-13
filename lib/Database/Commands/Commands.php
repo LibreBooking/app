@@ -300,6 +300,18 @@ class AddResourceCommand extends SqlCommand
     }
 }
 
+class AddSavedReportCommand extends SqlCommand
+{
+    public function __construct($reportName, $userId, Date $dateCreated, $serializedCriteria)
+    {
+        parent::__construct(Queries::ADD_SAVED_REPORT);
+        $this->AddParameter(new Parameter(ParameterNames::REPORT_NAME, $reportName));
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, $dateCreated->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::REPORT_DETAILS, $serializedCriteria));
+    }
+}
+
 class AddScheduleCommand extends SqlCommand
 {
     public function __construct($scheduleName, $isDefault, $weekdayStart, $daysVisible, $layoutId)

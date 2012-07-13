@@ -90,6 +90,12 @@ interface IGenerateReportPage extends IActionPage
 	 */
 	public function GetGroupId();
 
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetReportName();
+
 	public function BindReport(IReport $report, IReportDefinition $definition);
 
 	/**
@@ -249,7 +255,6 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 		$this->Set('Report', $report);
 	}
 
-
 	/**
 	 * @param array|BookableResource[] $resources
 	 */
@@ -282,6 +287,11 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 		return $this->GetValue(FormKeys::ACCESSORY_ID);
 	}
 
+
+	public function GetReportName()
+	{
+		return $this->GetForm(FormKeys::REPORT_NAME);
+	}
 
 	private function GetValue($key)
 	{
@@ -316,6 +326,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	{
 		$this->Display('Reports/print-custom-report.tpl');
 	}
+
 }
 
 ?>

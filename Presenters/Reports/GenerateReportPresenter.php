@@ -108,27 +108,74 @@ class GenerateReportPresenter extends ActionPresenter
 
 	public function SaveReport()
 	{
-		$var = var_export($_POST, true);
-		Log::Debug('saving report %s', $var);
+		$reportName = $this->page->GetReportName();
+		$usage = $this->GetUsage();
+		$selection = $this->GetSelection();
+		$groupBy = $this->GetGroupBy();
+		$range = $this->GetRange();
+		$filter = $this->GetFilter();
+
+		$userId = $this->user->UserId;
+
+		$this->reportingService->Save($reportName, $userId, $usage, $selection, $groupBy, $range, $filter);
 	}
 
 	private function BindReport()
 	{
-		$usage = new Report_Usage($this->page->GetUsage());
-		$selection = new Report_ResultSelection($this->page->GetResultSelection());
-		$groupBy = new Report_GroupBy($this->page->GetGroupBy());
-
-		$startString = $this->page->GetStart();
-		$endString = $this->page->GetEnd();
-		$start = empty($startString) ? Date::Min() : Date::Parse($startString, $this->user->Timezone);
-		$end = empty($endString) ? Date::Max() : Date::Parse($endString, $this->user->Timezone);
-		$range = new Report_Range($this->page->GetRange(), $start, $end);
-		$filter = new Report_Filter($this->page->GetResourceId(), $this->page->GetScheduleId(), $this->page->GetUserId(), $this->page->GetGroupId(), $this->page->GetAccessoryId());
+		$usage = $this->GetUsage();
+		$selection = $this->GetSelection();
+		$groupBy = $this->GetGroupBy();
+		$range = $this->GetRange();
+		$filter = $this->GetFilter();
 
 		$report = $this->reportingService->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter);
 		$reportDefinition = new ReportDefinition($report, $this->user->Timezone);
 
 		$this->page->BindReport($report, $reportDefinition);
+	}
+
+	/**
+	 * @return Report_Usage
+	 */
+	private function GetUsage()
+	{
+		return new Report_Usage($this->page->GetUsage());
+	}
+
+	/**
+	 * @return Report_ResultSelection
+	 */
+	private function GetSelection()
+	{
+		return new Report_ResultSelection($this->page->GetResultSelection());
+	}
+
+	/**
+	 * @return Report_GroupBy
+	 */
+	private function GetGroupBy()
+	{
+		return new Report_GroupBy($this->page->GetGroupBy());
+	}
+
+	/**
+	 * @return Report_Range
+	 */
+	private function GetRange()
+	{
+		$startString = $this->page->GetStart();
+		$endString = $this->page->GetEnd();
+		$start = empty($startString) ? Date::Min() : Date::Parse($startString, $this->user->Timezone);
+		$end = empty($endString) ? Date::Max() : Date::Parse($endString, $this->user->Timezone);
+		return new Report_Range($this->page->GetRange(), $start, $end);
+	}
+
+	/**
+	 * @return Report_Filter
+	 */
+	private function GetFilter()
+	{
+		return new Report_Filter($this->page->GetResourceId(), $this->page->GetScheduleId(), $this->page->GetUserId(), $this->page->GetGroupId(), $this->page->GetAccessoryId());
 	}
 }
 

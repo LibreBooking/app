@@ -43,81 +43,93 @@ class GenerateReportPresenterTests extends TestBase
 
 		$this->page = new FakeGenerateReportPage();
 		$this->reportingService = $this->getMock('IReportingService');
+		$resourceRepository = $this->getMock('IResourceRepository');
+		$scheduleRepository = $this->getMock('IScheduleRepository');
 
-		$this->presenter = new GenerateReportPresenter($this->page, $this->fakeUser, $this->reportingService, null, null);
+		$this->presenter = new GenerateReportPresenter($this->page, $this->fakeUser, $this->reportingService, $resourceRepository, $scheduleRepository);
 	}
 
 	public function testRunsCustomReport()
 	{
-		$startDate = '01/01/2001';
-		$endDate = '02/02/2002';
+		$this->SetupPage();
 
-		$expectedStart = Date::Parse($startDate, $this->fakeUser->Timezone);
-		$expectedEnd = Date::Parse($endDate, $this->fakeUser->Timezone);
-		$resourceId = 20;
-		$scheduleId = 30;
-		$userId = 40;
-		$groupId = 50;
-		$accessoryId = 60;
-
-		$this->page->_Usage = Report_Usage::ACCESSORIES;
-		$this->page->_ResultSelection = Report_ResultSelection::COUNT;
-		$this->page->_GroupBy = Report_GroupBy::USER;
-		$this->page->_Range = Report_Range::DATE_RANGE;
-		$this->page->_RangeStart = $startDate;
-		$this->page->_RangeEnd = $endDate;
-		$this->page->_ResourceId = $resourceId;
-		$this->page->_ScheduleId = $scheduleId;
-		$this->page->_UserId = $userId;
-		$this->page->_GroupId = $groupId;
-		$this->page->_AccessoryId = $accessoryId;
-
+		$expectedStart = Date::Parse($this->page->_RangeStart, $this->fakeUser->Timezone);
+		$expectedEnd = Date::Parse($this->page->_RangeEnd, $this->fakeUser->Timezone);
 		$expectedReport = new FakeReport();
 
 		$usage = new Report_Usage($this->page->_Usage);
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
 		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd);
-		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId);
+		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId);
 
 		$this->reportingService->expects($this->once())
-					->method('GenerateCustomReport')
-					->with($this->equalTo($usage), $this->equalTo($selection), $this->equalTo($groupBy), $this->equalTo($range), $this->equalTo($filter))
-					->will($this->returnValue($expectedReport));
+				->method('GenerateCustomReport')
+				->with($this->equalTo($usage), $this->equalTo($selection), $this->equalTo($groupBy), $this->equalTo($range), $this->equalTo($filter))
+				->will($this->returnValue($expectedReport));
 
 		$this->presenter->GenerateCustomReport();
 
 		$this->assertEquals($expectedReport, $this->page->_BoundReport);
 	}
-	
+
 	public function testSavesReport()
 	{
-		throw new Exception('next to do');
+		$this->SetupPage();
+		$reportName = 'report name';
+
+		$this->page->_ReportName = $reportName;
+
+		$expectedStart = Date::Parse($this->page->_RangeStart, $this->fakeUser->Timezone);
+		$expectedEnd = Date::Parse($this->page->_RangeEnd, $this->fakeUser->Timezone);
+
+		$usage = new Report_Usage($this->page->_Usage);
+		$selection = new Report_ResultSelection($this->page->_ResultSelection);
+		$groupBy = new Report_GroupBy($this->page->_GroupBy);
+		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd);
+		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId);
+
+		$this->reportingService->expects($this->once())
+				->method('Save')
+				->with($this->equalTo($reportName), $this->equalTo($this->fakeUser->UserId), $this->equalTo($usage), $this->equalTo($selection), $this->equalTo($groupBy), $this->equalTo($range), $this->equalTo($filter));
+
+		$this->presenter->SaveReport();
+	}
+
+	private function SetupPage()
+	{
+		$this->page->_Usage = Report_Usage::ACCESSORIES;
+		$this->page->_ResultSelection = Report_ResultSelection::COUNT;
+		$this->page->_GroupBy = Report_GroupBy::USER;
+		$this->page->_Range = Report_Range::DATE_RANGE;
+		$this->page->_RangeStart = '01/01/2001';
+		$this->page->_RangeEnd = '02/02/2002';
+		$this->page->_ResourceId = 20;
+		$this->page->_ScheduleId = 30;
+		$this->page->_UserId = 40;
+		$this->page->_GroupId = 50;
+		$this->page->_AccessoryId = 60;
 	}
 }
 
-class FakeGenerateReportPage implements IGenerateReportPage
+class FakeGenerateReportPage extends GenerateReportPage
 {
 	/**
 	 * @var Report_ResultSelection|string
 	 */
 	public $_ResultSelection = Report_ResultSelection::FULL_LIST;
-
 	/**
 	 * @var Report_GroupBy|string
 	 */
 	public $_GroupBy = Report_GroupBy::NONE;
-
 	/**
 	 * @var Report_Range|string
 	 */
 	public $_Range = Report_Range::ALL_TIME;
-
 	/**
 	 * @var string
 	 */
 	public $_RangeStart;
-
 	/**
 	 * @var string
 	 */
@@ -127,104 +139,104 @@ class FakeGenerateReportPage implements IGenerateReportPage
 	 * @var int
 	 */
 	public $_ResourceId;
-
 	/**
 	 * @var int
 	 */
 	public $_ScheduleId;
-
 	/**
 	 * @var int
 	 */
 	public $_UserId;
-
 	/**
 	 * @var int
 	 */
 	public $_GroupId;
-
 	/**
 	 * @var int
 	 */
 	public $_AccessoryId;
-
 	/**
 	 * @var IReport
 	 */
 	public $_BoundReport;
-
 	/**
 	 * @var Report_Usage
 	 */
 	public $_Usage;
 
 	/**
-	 * @return string|Report_ResultSelection
+	 * @var string
 	 */
+	public $_ReportName;
+	/**
+	 * @var BookableResource[]
+	 */
+	public $_BoundResources;
+	/**
+	 * @var AccessoryDto[]
+	 */
+	public $_BoundAccessories;
+	/**
+	 * @var Schedule[]
+	 */
+	public $_BoundSchedules;
+	/**
+	 * @var bool
+	 */
+	public $_ErrorDisplayed;
+	/**
+	 * @var bool
+	 */
+	public $_ResultsShown;
+	/**
+	 * @var bool
+	 */
+	public $_ReportPrinted;
+	/**
+	 * @var bool
+	 */
+	public $_CsvShown;
+
 	public function GetResultSelection()
 	{
 		return $this->_ResultSelection;
 	}
 
-	/**
-	 * @return string|Report_GroupBy
-	 */
 	public function GetGroupBy()
 	{
 		return $this->_GroupBy;
 	}
 
-	/**
-	 * @return string|Report_Range
-	 */
 	public function GetRange()
 	{
 		return $this->_Range;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetStart()
 	{
 		return $this->_RangeStart;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetEnd()
 	{
 		return $this->_RangeEnd;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetResourceId()
 	{
 		return $this->_ResourceId;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetScheduleId()
 	{
 		return $this->_ScheduleId;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetUserId()
 	{
 		return $this->_UserId;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetGroupId()
 	{
 		return $this->_GroupId;
@@ -235,120 +247,56 @@ class FakeGenerateReportPage implements IGenerateReportPage
 		$this->_BoundReport = $report;
 	}
 
-	/**
-	 * @return string|Report_Usage
-	 */
 	public function GetUsage()
 	{
 		return $this->_Usage;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetAccessoryId()
 	{
 		return $this->_AccessoryId;
 	}
 
-	/**
-	 * @param array|BookableResource[] $resources
-	 */
+	public function GetReportName()
+	{
+		return $this->_ReportName;
+	}
+
 	public function BindResources($resources)
 	{
-		// TODO: Implement BindResources() method.
+		$this->_BoundResources = $resources;
 	}
 
-	/**
-	 * @param array|AccessoryDto[] $accessories
-	 */
 	public function BindAccessories($accessories)
 	{
-		// TODO: Implement BindAccessories() method.
+		$this->_BoundAccessories = $accessories;
 	}
 
-	/**
-	 * @param array|Schedule[] $schedules
-	 */
 	public function BindSchedules($schedules)
 	{
-		// TODO: Implement BindSchedules() method.
+		$this->_BoundSchedules = $schedules;
 	}
 
 	public function DisplayError()
 	{
-		// TODO: Implement DisplayError() method.
-	}
-
-	public function TakingAction()
-	{
-		// TODO: Implement TakingAction() method.
-	}
-
-	public function GetAction()
-	{
-		// TODO: Implement GetAction() method.
-	}
-
-	public function RequestingData()
-	{
-		// TODO: Implement RequestingData() method.
-	}
-
-	public function GetDataRequest()
-	{
-		// TODO: Implement GetDataRequest() method.
+		$this->_ErrorDisplayed = true;
 	}
 
 	public function ShowResults()
 	{
-		// TODO: Implement ShowResults() method.
+		$this->_ResultsShown = true;
 	}
 
 	public function PrintReport()
 	{
-		// TODO: Implement PrintReport() method.
+		$this->_ReportPrinted = true;
 	}
 
 	public function ShowCsv()
 	{
-		// TODO: Implement ShowCsv() method.
+		$this->_CsvShown = true;
 	}
 
-	public function PageLoad()
-	{
-		// TODO: Implement PageLoad() method.
-	}
-
-	public function Redirect($url)
-	{
-		// TODO: Implement Redirect() method.
-	}
-
-	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
-	{
-		// TODO: Implement RedirectToError() method.
-	}
-
-	public function IsPostBack()
-	{
-		// TODO: Implement IsPostBack() method.
-	}
-
-	public function IsValid()
-	{
-		// TODO: Implement IsValid() method.
-	}
-
-	public function GetLastPage()
-	{
-		// TODO: Implement GetLastPage() method.
-	}
-
-	public function RegisterValidator($validatorId, $validator)
-	{
-		// TODO: Implement RegisterValidator() method.
-	}
 }
 
 ?>

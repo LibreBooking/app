@@ -47,5 +47,34 @@ class ReportingRepositoryTests extends TestBase
 		$this->assertEquals($expected, $this->db->_LastCommand);
 		$this->assertEquals($expectedRows, $rows);
 	}
+
+	public function testSavesCustomReport()
+	{
+		$reportName = 'reportName';
+		$ownerId = 12;
+		$startRange = Date::Parse('2010-01-01', 'America/Chicago');
+		$endRange = Date::Parse('2010-01-02', 'America/Chicago');
+		$resourceId = 1;
+		$scheduleId = 2;
+		$userId = 3;
+		$groupId = 4;
+		$accessoryId = 5;
+
+		$usage = new Report_Usage(Report_Usage::ACCESSORIES);
+		$selection = new Report_ResultSelection(Report_ResultSelection::COUNT);
+		$groupBy = new Report_GroupBy(Report_GroupBy::RESOURCE);
+		$range = new Report_Range(Report_Range::DATE_RANGE, $startRange, $endRange);
+		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId);
+
+		$report = new SavedReport($reportName, $ownerId, $usage, $selection, $groupBy, $range, $filter);
+
+		$this->repository->SaveCustomReport($report);
+
+		$serializedCriteria = "usage=ACCESSORIES;selection=COUNT;groupby=RESOURCE;range=DATE_RANGE;range_start={$startRange->ToDatabase()};range_end={$endRange->ToDatabase()};resourceid=$resourceId;scheduleid=$scheduleId;userid=$userId;groupid=$groupId;accessoryid=$accessoryId";
+
+		$expectedCommand = new AddSavedReportCommand($reportName, $ownerId, $report->DateCreated(), $serializedCriteria);
+
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
 }
 ?>

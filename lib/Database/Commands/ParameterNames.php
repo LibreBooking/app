@@ -99,6 +99,9 @@ class ParameterNames
     const REPEAT_OPTIONS = '@repeatOptions';
     const REPEAT_TYPE = '@repeatType';
 
+	const REPORT_NAME = '@report_name';
+	const REPORT_DETAILS = '@report_details';
+
     const RESERVATION_INSTANCE_ID = '@reservationid';
     const RESERVATION_USER_LEVEL_ID = '@levelid';
 

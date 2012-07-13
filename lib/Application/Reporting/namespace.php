@@ -18,6 +18,18 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'lib/Application/Reporting/IReport.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/IReportColumns.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/IReportData.php');
+
+require_once(ROOT_DIR . 'lib/Application/Reporting/CustomReport.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/CustomReportData.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/Report_Filter.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/Report_GroupBy.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/Report_Range.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/Report_ResultSelection.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/Report_Usage.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/ReportColumns.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/ReportingService.php');
 
 ?>
