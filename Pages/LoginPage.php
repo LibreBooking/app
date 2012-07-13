@@ -28,6 +28,12 @@ interface ILoginPage extends IPage
 	 * @abstract
 	 * @return string
 	 */
+	public function GetKrb5UserName();
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
 	public function GetEmailAddress();
 
 	/**
@@ -119,6 +125,12 @@ class LoginPage extends Page implements ILoginPage
 	{
 		$this->presenter->PageLoad();
 		$this->Display('login.tpl');
+	}
+
+	public function GetKrb5UserName()
+	{
+               	$ru = explode('@', $_SERVER['REMOTE_USER']);
+               	return $ru[0];
 	}
 
 	public function GetEmailAddress()

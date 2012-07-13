@@ -45,21 +45,17 @@ class Krb5 implements IAuthentication
 	{
 		$ru = explode('@', $_SERVER['REMOTE_USER']);
 		$user = $ru[0];
-		$domain = $ru[1];
+		$realm = $ru[1];
 		## TODO: supported realm should be obtained from configuration file
-		if ($domain == 'IST.LOCAL' || $domain == 'ISTA.LOCAL')
+		if ($realm == 'IST.LOCAL' || $realm == 'ISTA.LOCAL')
 		{
-			$lu = explode('@', $username);
-			return ($lu[0] == $user);
+			return ($username == $user);
 		}
 		return false;
 	}
 
 	public function Login($username, $loginContext)
 	{
-		$lu = explode('@', $username);
-		$username = $lu[0];
-
 		$this->authToDecorate->Login($username, $loginContext);
 	}
 
