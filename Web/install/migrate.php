@@ -515,7 +515,7 @@ class MigrationPresenter
             FROM reservations r INNER JOIN reservation_users ru ON r.resid = ru.resid AND owner = 1');
 
         $getLegacyReservationAccessories = new AdHocCommand('SELECT resid, resourceid from reservation_resources');
-        $getLegacyReservationParticipants = new AdHocCommand('SELECT resid, memberid, owner, invited  FROM reservation_users WHERE invited is null and owner is null');
+        $getLegacyReservationParticipants = new AdHocCommand('SELECT resid, memberid, owner, invited  FROM reservation_users WHERE owner is null');
 
         $getAccessoryMapping = new AdHocCommand('select accessory_id, legacyid from accessories');
         $getUserMapping = new AdHocCommand('select user_id, legacyid from users');
@@ -566,7 +566,7 @@ class MigrationPresenter
             {
                 $reservationParticipants[$resId] = array();
             }
-            $reservationParticipants[$resId][] = $row['memberid'];
+            $reservationParticipants[$resId][] = array ('id' => $row['memberid'], 'invited' => $row['invited']);
         }
 
         $legacyReservationReader = $legacyDatabase->Query($getLegacyReservations);
@@ -594,12 +594,21 @@ class MigrationPresenter
                 // handle reservation
 
                 $mappedParticipantIds = array();
+                $mappedInviteeIds = array();
                 if (array_key_exists($legacyId, $reservationParticipants))
                 {
                     $legacyParticipants = $reservationParticipants[$legacyId];
                     foreach ($legacyParticipants as $legacyParticipantId)
                     {
-                        $mappedParticipantIds[] = $mappedParticipantIds[$legacyParticipantId];
+						$userId = $userMapping[$legacyParticipantId['id']];
+						if (empty($legacyParticipantId['invited']))
+						{
+                       		$mappedParticipantIds[] = $userId;
+						}
+						else
+						{
+							$mappedInviteeIds[] = $userId;
+						}
                     }
                 }
 
@@ -625,6 +634,7 @@ class MigrationPresenter
                 }
 
                 $reservation->ChangeParticipants($mappedParticipantIds);
+                $reservation->ChangeInvitees($mappedInviteeIds);
 
                 $reservationRepository->Add($reservation);
 
