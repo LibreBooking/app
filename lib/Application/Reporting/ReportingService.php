@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Reporting/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/ReportingRepository.php');
 
 interface IReportingService
 {

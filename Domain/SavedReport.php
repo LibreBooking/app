@@ -181,35 +181,6 @@ class SavedReport
 	}
 
 	/**
-	 * @return string
-	 */
-	public function Serialize()
-	{
-		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s';
-
-		return sprintf($template,
-					   $this->Usage(),
-					   $this->Selection(),
-					   $this->GroupBy(),
-					   $this->Range(),
-					   $this->RangeStart()->ToDatabase(),
-					   $this->RangeEnd()->ToDatabase(),
-					   $this->ResourceId(),
-					   $this->ScheduleId(),
-					   $this->UserId(),
-					   $this->GroupId(),
-					   $this->AccessoryId());
-	}
-
-	/**
-	 * @param string $serialized
-	 */
-	private function Hydrate($serialized)
-	{
-
-	}
-
-	/**
 	 * @param Date $date
 	 */
 	public function WithDateCreated(Date $date)
@@ -218,16 +189,165 @@ class SavedReport
 	}
 
 	/**
+	 * @param int $reportId
+	 */
+	public function WithId($reportId)
+	{
+		$this->reportId = $reportId;
+	}
+
+	/**
 	 * @static
 	 * @param string $reportName
 	 * @param int $userId
 	 * @param Date $dateCreated
 	 * @param string $serialized
+	 * @param int $reportId
 	 * @return SavedReport
 	 */
-	public static function FromDatabase($reportName, $userId, Date $dateCreated, $serialized)
+	public static function FromDatabase($reportName, $userId, Date $dateCreated, $serialized, $reportId)
 	{
-		$savedReport = new SavedReport();
+		$savedReport = ReportSerializer::Deserialize($reportName, $userId, $serialized);
+		$savedReport->WithDateCreated($dateCreated);
+		$savedReport->WithId($reportId);
+		return $savedReport;
+	}
+}
+
+class ReportSerializer
+{
+	/**
+	 * @static
+	 * @param SavedReport $report
+	 * @return string
+	 */
+	public static function Serialize(SavedReport $report)
+	{
+		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s';
+
+		return sprintf($template,
+			$report->Usage(),
+			$report->Selection(),
+			$report->GroupBy(),
+			$report->Range(),
+			$report->RangeStart()->ToDatabase(),
+			$report->RangeEnd()->ToDatabase(),
+			$report->ResourceId(),
+			$report->ScheduleId(),
+			$report->UserId(),
+			$report->GroupId(),
+			$report->AccessoryId());
+	}
+
+	/**
+	 * @static
+	 * @param string $reportName
+	 * @param int $userId
+	 * @param string $serialized
+	 * @return SavedReport
+	 */
+	public static function Deserialize($reportName, $userId, $serialized)
+	{
+		$values = array();
+		$pairs = explode(';', $serialized);
+		foreach ($pairs as $pair)
+		{
+			$keyValue = explode('=', $pair);
+
+			$values[$keyValue[0]] = $keyValue[1];
+		}
+
+		return new SavedReport($reportName, $userId, self::GetUsage($values), self::GetSelection($values), self::GetGroupBy($values), self::GetRange($values), self::GetFilter($values));
+	}
+
+	/**
+	 * @static
+	 * @param array $values
+	 * @return Report_Usage
+	 */
+	private static function GetUsage($values)
+	{
+		if (array_key_exists('usage', $values))
+		{
+			return new Report_Usage($values['usage']);
+		}
+		else
+		{
+			return new Report_Usage(Report_Usage::RESOURCES);
+		}
+	}
+
+	/**
+	 * @static
+	 * @param array $values
+	 * @return Report_ResultSelection
+	 */
+	private static function GetSelection($values)
+	{
+		if (array_key_exists('selection', $values))
+		{
+			return new Report_ResultSelection($values['selection']);
+		}
+		else
+		{
+			return new Report_ResultSelection(Report_ResultSelection::FULL_LIST);
+		}
+	}
+
+	/**
+	 * @static
+	 * @param array $values
+	 * @return Report_GroupBy
+	 */
+	private static function GetGroupBy($values)
+	{
+		if (array_key_exists('groupby', $values))
+		{
+			return new Report_GroupBy($values['groupby']);
+		}
+		else
+		{
+			return new Report_GroupBy(Report_GroupBy::NONE);
+		}
+	}
+
+	/**
+	 * @static
+	 * @param array $values
+	 * @return Report_Range
+	 */
+	private static function GetRange($values)
+	{
+		if (array_key_exists('range', $values))
+		{
+			$start = $values['range_start'];
+			$end = $values['range_end'];
+
+			$startDate = empty($start) ? Date::Min() : Date::FromDatabase($start);
+			$endDate = empty($end) ? Date::Max() : Date::FromDatabase($end);
+
+			return new Report_Range($values['range'], $startDate, $endDate);
+		}
+		else
+		{
+			return Report_Range::AllTime();
+		}
+	}
+
+	/**
+	 * @static
+	 * @param array $values
+	 * @return Report_Filter
+	 */
+	private static function GetFilter($values)
+	{
+		$resourceId = $values['resourceid'];
+		$scheduleId = $values['scheduleid'];
+		$userId = $values['userid'];
+		$groupId = $values['groupid'];
+		$accessoryId = $values['accessoryid'];
+
+		return new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId);
 	}
 }
 

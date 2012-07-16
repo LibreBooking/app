@@ -78,6 +78,15 @@ class Report_Range
 	{
 		return $this->range;
 	}
+
+	/**
+	 * @static
+	 * @return Report_Range
+	 */
+	public static function AllTime()
+	{
+		return new Report_Range(Report_Range::ALL_TIME, Date::Min(), Date::Max());
+	}
 }
 
 

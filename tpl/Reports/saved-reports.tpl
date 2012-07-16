@@ -19,8 +19,24 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl' cssFiles="css/reports.css"}
 
 <h2>My Saved Reports</h2>
+{if $ReportList|count == 0}
+you have no saved reports <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>
+{else}
+<div id="report-list">
 <ul>
-	<li></li>
+	{foreach from=$ReportList item=report}
+		<li>{$report->ReportName()|default:$untitled} {translate key=Created}: {format_date date=$report->DateCreated()} <a href="#" reportId="{$report->Id()}">Run Now</a> <a href="#" reportId="{$report->Id()}">Schedule</a></li>
+	{/foreach}
 </ul>
+</div>
+{/if}
+
+<div id="resultsDiv">
+</div>
+
+<div id="indicator" style="display:none; text-align: center;">
+<h3>{translate key=Working}...</h3>
+{html_image src="admin-ajax-indicator.gif"}
+</div>
 
 {include file='globalfooter.tpl'}

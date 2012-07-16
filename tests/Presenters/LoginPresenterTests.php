@@ -305,5 +305,13 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 	{
 		$this->_ShowForgotPasswordPrompt = $shouldShow;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function GetKrb5UserName()
+	{
+		// TODO: Implement GetKrb5UserName() method.
+	}
 }
 ?>

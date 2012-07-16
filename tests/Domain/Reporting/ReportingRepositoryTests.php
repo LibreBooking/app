@@ -88,16 +88,17 @@ class ReportingRepositoryTests extends TestBase
 		$expectedReport1 = new SavedReport($report1, $userId,new Report_Usage(Report_Usage::ACCESSORIES),
 					new Report_ResultSelection(Report_ResultSelection::COUNT),
 					new Report_GroupBy(Report_GroupBy::GROUP),
-					new Report_Range(Report_Range::DATE_RANGE, Date::Now(), Date::Now()),
+					new Report_Range(Report_Range::DATE_RANGE, Date::Now()->ToUtc(), Date::Now()->ToUtc()),
 					new Report_Filter(12, 11, 896, 123, 45234) );
-		$expectedReport1->WithDateCreated($date);
+		$expectedReport1->WithDateCreated($date->ToUtc());
+		$expectedReport1->WithId(1);
 
-		$serialized1 = $expectedReport1->Serialize();
+		$serialized1 = ReportSerializer::Serialize($expectedReport1);
 		$serialized2 = "corrupted";
 
 		$rows = new SavedReportRow();
-		$rows->With($userId, $report1, $date->ToDatabase(), $serialized1)
-			->With($userId, $report2, $date->ToDatabase(), $serialized2);
+		$rows->With($userId, $report1, $date->ToDatabase(), $serialized1, 1)
+			->With($userId, $report2, $date->ToDatabase(), $serialized2, 2);
 
 		$this->db->SetRows($rows->Rows());
 
@@ -108,6 +109,7 @@ class ReportingRepositoryTests extends TestBase
 		
 		$this->assertEquals(2, count($reports));
 		$this->assertEquals($expectedReport1, $reports[0]);
+		$this->assertEquals(new Report_Usage(Report_Usage::RESOURCES), $reports[1]->Usage());
 	}
 }
 ?>

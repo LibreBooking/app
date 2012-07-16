@@ -284,12 +284,13 @@ class SavedReportRow
 		return $this->rows;
 	}
 
-	public function With($userId, $reportName, $dateCreated = null, $serialized = null)
+	public function With($userId, $reportName, $dateCreated = null, $serialized = null, $reportId = 1)
 	{
 		$this->rows[] = array(ColumnNames::USER_ID => $userId,
 							  ColumnNames::REPORT_NAME => $reportName,
 							  ColumnNames::DATE_CREATED => $dateCreated,
-							  ColumnNames::REPORT_DETAILS => $serialized);
+							  ColumnNames::REPORT_DETAILS => $serialized,
+							  ColumnNames::REPORT_ID => $reportId);
 
 		return $this;
 	}

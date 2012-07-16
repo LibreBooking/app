@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/ActionPage.php');
+require_once(ROOT_DIR . 'Presenters/Reports/SavedReportsPresenter.php');
 
 interface ISavedReportsPage extends IActionPage
 {
@@ -60,6 +61,7 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 	 */
 	public function ProcessPageLoad()
 	{
+		$this->Set('untitled', Resources::GetInstance()->GetString('NoTitleLabel'));
 		$this->presenter->PageLoad();
 		$this->Display('Reports/saved-reports.tpl');
 	}

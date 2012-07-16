@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/ReportCommandBuilder.php');
 require_once(ROOT_DIR . 'Domain/SavedReport.php');
 
@@ -65,7 +66,7 @@ class ReportingRepository implements IReportingRepository
 
 	public function SaveCustomReport(SavedReport $report)
 	{
-		$serialized = $report->Serialize();
+		$serialized = ReportSerializer::Serialize($report);
 		ServiceLocator::GetDatabase()->ExecuteInsert(new AddSavedReportCommand($report->ReportName(), $report->OwnerId(), $report->DateCreated(), $serialized));
 	}
 
@@ -83,7 +84,8 @@ class ReportingRepository implements IReportingRepository
 				$row[ColumnNames::REPORT_NAME],
 				$row[ColumnNames::USER_ID],
 				Date::FromDatabase($row[ColumnNames::DATE_CREATED]),
-				$row[ColumnNames::REPORT_DETAILS]
+				$row[ColumnNames::REPORT_DETAILS],
+				$row[ColumnNames::REPORT_ID]
 			);
 		}
 		$reader->Free();
