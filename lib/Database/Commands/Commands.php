@@ -993,6 +993,16 @@ class GetResourceByPublicIdCommand extends SqlCommand
 	}
 }
 
+class GetSavedReportForUserCommand extends SqlCommand
+{
+	public function __construct($reportId, $userId)
+		{
+			parent::__construct(Queries::GET_SAVED_REPORT);
+			$this->AddParameter(new Parameter(ParameterNames::REPORT_ID, $reportId));
+			$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		}
+}
+
 class GetScheduleByIdCommand extends SqlCommand
 {
 	public function __construct($scheduleId)

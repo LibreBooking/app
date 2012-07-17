@@ -19,10 +19,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'Pages/Reports/IDisplayableReportPage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Reports/GenerateReportPresenter.php');
 
-interface IGenerateReportPage extends IActionPage
+interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 {
 	/**
 	 * @abstract
@@ -96,8 +97,6 @@ interface IGenerateReportPage extends IActionPage
 	 */
 	public function GetReportName();
 
-	public function BindReport(IReport $report, IReportDefinition $definition);
-
 	/**
 	 * @abstract
 	 * @param array|BookableResource[] $resources
@@ -115,14 +114,6 @@ interface IGenerateReportPage extends IActionPage
 	 * @param array|Schedule[] $schedules
 	 */
 	public function BindSchedules($schedules);
-
-	public function DisplayError();
-
-	public function ShowResults();
-
-	public function PrintReport();
-
-	public function ShowCsv();
 }
 
 class GenerateReportPage extends ActionPage implements IGenerateReportPage
@@ -157,7 +148,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	 */
 	public function ProcessDataRequest($dataRequest)
 	{
-		// TODO: Implement ProcessDataRequest() method.
+		// no-op
 	}
 
 	/**

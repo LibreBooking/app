@@ -39,10 +39,18 @@ interface IReportingRepository
 
 	/**
 	 * @abstract
-	 * @param $userId
+	 * @param int $userId
 	 * @return array|SavedReport[]
 	 */
 	public function LoadSavedReportsForUser($userId);
+
+	/**
+	 * @abstract
+	 * @param int $reportId
+	 * @param int $userId
+	 * @return SavedReport
+	 */
+	public function LoadSavedReportForUser($reportId, $userId);
 }
 
 class ReportingRepository implements IReportingRepository
@@ -91,6 +99,31 @@ class ReportingRepository implements IReportingRepository
 		$reader->Free();
 
 		return $reports;
+	}
+
+	/**
+	 * @param int $reportId
+	 * @param int $userId
+	 * @return SavedReport
+	 */
+	public function LoadSavedReportForUser($reportId, $userId)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new GetSavedReportForUserCommand($reportId, $userId));
+
+		if ($row = $reader->GetRow())
+		{
+			return SavedReport::FromDatabase(
+				$row[ColumnNames::REPORT_NAME],
+				$row[ColumnNames::USER_ID],
+				Date::FromDatabase($row[ColumnNames::DATE_CREATED]),
+				$row[ColumnNames::REPORT_DETAILS],
+				$row[ColumnNames::REPORT_ID]
+			);
+		}
+		else
+		{
+			return null;
+		}
 	}
 }
 

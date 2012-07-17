@@ -488,6 +488,8 @@ class Queries
 			s.schedule_id = @scheduleid 
 		ORDER BY tb.start_time';
 
+	const GET_SAVED_REPORT = 'SELECT * FROM saved_reports WHERE saved_report_id = @report_id AND user_id = @userid';
+
 	const GET_SCHEDULE_BY_ID =
 			'SELECT * FROM schedules s
 		INNER JOIN layouts l ON s.layout_id = l.layout_id

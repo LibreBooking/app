@@ -141,10 +141,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		var reportOptions = {
 			userAutocompleteUrl:"{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
 			groupAutocompleteUrl:"{$Path}ajax/autocomplete.php?type={AutoCompleteType::Group}",
-			customReportUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=customReport",
-			printUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=print&",
-			csvUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=csv&",
-			saveUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=save"
+			customReportUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Generate}",
+			printUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::PrintReport}&",
+			csvUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Csv}&",
+			saveUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Save}"
 		};
 
 		var reports = new GenerateReports(reportOptions);

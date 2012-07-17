@@ -19,15 +19,22 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/ActionPage.php');
+require_once(ROOT_DIR . 'Pages/Reports/IDisplayableReportPage.php');
 require_once(ROOT_DIR . 'Presenters/Reports/SavedReportsPresenter.php');
 
-interface ISavedReportsPage extends IActionPage
+interface ISavedReportsPage extends IDisplayableReportPage, IActionPage
 {
 	/**
 	 * @abstract
 	 * @param SavedReport[] $reportList
 	 */
 	public function BindReportList($reportList);
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetReportId();
 }
 
 class SavedReportsPage extends ActionPage implements ISavedReportsPage
@@ -44,7 +51,7 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 	 */
 	public function ProcessAction()
 	{
-		// TODO: Implement ProcessAction() method.
+		$this->presenter->ProcessAction();
 	}
 
 	/**
@@ -53,7 +60,7 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 	 */
 	public function ProcessDataRequest($dataRequest)
 	{
-		// TODO: Implement ProcessDataRequest() method.
+		// no-op
 	}
 
 	/**
@@ -72,6 +79,42 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 	public function BindReportList($reportList)
 	{
 		$this->Set('ReportList', $reportList);
+	}
+
+	public function BindReport(IReport $report, IReportDefinition $definition)
+	{
+		$this->Set('Definition', $definition);
+		$this->Set('Report', $report);
+	}
+
+	public function ShowCsv()
+	{
+		header("Content-Type: text/csv");
+		header("Content-Disposition: inline; filename=report.csv");
+		$this->Display('Reports/custom-csv.tpl');
+	}
+
+	public function DisplayError()
+	{
+		$this->Display('Reports/error.tpl');
+	}
+
+	public function ShowResults()
+	{
+		$this->Display('Reports/results-custom.tpl');
+	}
+
+	public function PrintReport()
+	{
+		$this->Display('Reports/print-custom-report.tpl');
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetReportId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::REPORT_ID);
 	}
 }
 

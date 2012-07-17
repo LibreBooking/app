@@ -52,6 +52,14 @@ interface IReportingService
 	 * @return array|SavedReport[]
 	 */
 	public function GetSavedReports($userId);
+
+	/**
+	 * @abstract
+	 * @param int $reportId
+	 * @param int $userId
+	 * @return SavedReport
+	 */
+	public function GetSavedReport($reportId, $userId);
 }
 
 
@@ -106,6 +114,16 @@ class ReportingService implements IReportingService
 	public function GetSavedReports($userId)
 	{
 		return $this->repository->LoadSavedReportsForUser($userId);
+	}
+
+	/**
+	 * @param int $reportId
+	 * @param int $userId
+	 * @return SavedReport
+	 */
+	public function GetSavedReport($reportId, $userId)
+	{
+		return $this->repository->LoadSavedReportForUser($reportId, $userId);
 	}
 }
 

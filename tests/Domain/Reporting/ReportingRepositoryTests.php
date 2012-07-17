@@ -111,5 +111,35 @@ class ReportingRepositoryTests extends TestBase
 		$this->assertEquals($expectedReport1, $reports[0]);
 		$this->assertEquals(new Report_Usage(Report_Usage::RESOURCES), $reports[1]->Usage());
 	}
+
+	public function testLoadsSingleReportForUser()
+	{
+		$userId = 100;
+		$reportId = 'report1';
+		$reportName = 'report2';
+
+		$date = Date::Now();
+
+		$expectedReport1 = new SavedReport($reportName, $userId, new Report_Usage(Report_Usage::ACCESSORIES),
+					new Report_ResultSelection(Report_ResultSelection::COUNT),
+					new Report_GroupBy(Report_GroupBy::GROUP),
+					new Report_Range(Report_Range::DATE_RANGE, Date::Now()->ToUtc(), Date::Now()->ToUtc()),
+					new Report_Filter(12, 11, 896, 123, 45234) );
+		$expectedReport1->WithDateCreated($date->ToUtc());
+		$expectedReport1->WithId($reportId);
+
+		$serialized1 = ReportSerializer::Serialize($expectedReport1);
+
+		$rows = new SavedReportRow();
+		$rows->With($userId, $reportName, $date->ToDatabase(), $serialized1, $reportId);
+
+		$this->db->SetRows($rows->Rows());
+
+		$report = $this->repository->LoadSavedReportForUser($reportId, $userId);
+
+		$expectedCommand = new GetSavedReportForUserCommand($reportId, $userId);
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+		$this->assertEquals($expectedReport1, $report);
+	}
 }
 ?>

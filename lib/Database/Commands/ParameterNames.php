@@ -101,6 +101,7 @@ class ParameterNames
 
 	const REPORT_NAME = '@report_name';
 	const REPORT_DETAILS = '@report_details';
+	const REPORT_ID = "@report_id";
 
     const RESERVATION_INSTANCE_ID = '@reservationid';
     const RESERVATION_USER_LEVEL_ID = '@levelid';

@@ -21,6 +21,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class SavedReport
 {
 	/**
+	 * @var int
+	 */
+	private $reportId;
+	/**
 	 * @var string
 	 */
 	private $reportName;
@@ -68,6 +72,11 @@ class SavedReport
 		$this->dateCreated = Date::Now();
 	}
 
+	public function Id()
+	{
+		return $this->reportId;
+	}
+
 	/**
 	 * @return Date
 	 */
@@ -106,6 +115,14 @@ class SavedReport
 	public function Range()
 	{
 		return $this->range;
+	}
+
+	/**
+	 * @return Report_Filter
+	 */
+	public function Filter()
+	{
+		return $this->filter;
 	}
 
 	/**

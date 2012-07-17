@@ -25,7 +25,7 @@ you have no saved reports <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{tr
 <div id="report-list">
 <ul>
 	{foreach from=$ReportList item=report}
-		<li>{$report->ReportName()|default:$untitled} {translate key=Created}: {format_date date=$report->DateCreated()} <a href="#" reportId="{$report->Id()}">Run Now</a> <a href="#" reportId="{$report->Id()}">Schedule</a></li>
+		<li reportId="{$report->Id()}">{$report->ReportName()|default:$untitled} {translate key=Created}: {format_date date=$report->DateCreated()} <a href="#" class="runNow report">Run Now</a> <a href="#">Schedule</a> <a href="#">Delete</a> </li>
 	{/foreach}
 </ul>
 </div>
@@ -38,5 +38,20 @@ you have no saved reports <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{tr
 <h3>{translate key=Working}...</h3>
 {html_image src="admin-ajax-indicator.gif"}
 </div>
+
+<script type="text/javascript" src="{$Path}scripts/saved-reports.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		var reportOptions = {
+			generateUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Generate}&{QueryStringKeys::REPORT_ID}=",
+			printUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::PrintReport}&{QueryStringKeys::REPORT_ID}=",
+			csvUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Csv}&{QueryStringKeys::REPORT_ID}="
+		};
+
+		var reports = new SavedReports(reportOptions);
+		reports.init();
+	});
+</script>
 
 {include file='globalfooter.tpl'}
