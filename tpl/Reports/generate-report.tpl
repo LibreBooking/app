@@ -124,13 +124,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div class="dialog" id="saveDialog" title="{translate key=SaveThisReport}">
 	<label for="saveReportName">{translate key=Name}:</label>
 
-	<form id="saveReportForm">
+	<form id="saveReportForm" action="" method="post">
 		<input type="text" id="saveReportName" {formname key=REPORT_NAME} class="textbox">
+		<br/><br/>
+			<button type="button"
+					class="button save" id="btnSaveReport">{html_image src="disk-black.png"} {translate key='SaveThisReport'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
-	<br/><br/>
-	<button type="button"
-			class="button save" id="btnSaveReport">{html_image src="disk-black.png"} {translate key='SaveThisReport'}</button>
-	<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 </div>
 
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>

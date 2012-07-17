@@ -402,6 +402,7 @@ class en_us extends Language
 		$strings['EmailReport'] = 'Email Report';
 		$strings['ReportSent'] = 'Report Sent!';
 		$strings['RunReport'] = 'Run Report';
+		$strings['NoSavedReports'] = 'You have no saved reports.';
         // End Strings
 
         // Errors

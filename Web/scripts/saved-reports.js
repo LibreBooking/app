@@ -63,7 +63,7 @@ function SavedReports(reportOptions) {
 	var wireUpReportLinks = function () {
 		$('#report-list a.report').click(function (e) {
 			e.preventDefault();
-			reportId = $(this).parent().attr('reportId');
+			reportId = $(this).parents('li').attr('reportId');
 		});
 
 		$('.runNow').click(function (e) {

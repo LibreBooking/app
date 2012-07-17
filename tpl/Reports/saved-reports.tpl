@@ -20,25 +20,30 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h1>{translate key=MySavedReports} (<span id="reportCount">{$ReportList|count}</span>)</h1>
 {if $ReportList|count == 0}
-you have no saved reports <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>
+<h2 class="no-data" style="text-align: center;">{translate key=NoSavedReports}</h2><a
+		href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>
 	{else}
 <div id="report-list">
 	<ul>
 		{foreach from=$ReportList item=report}
-			<li reportId="{$report->Id()}">{$report->ReportName()|default:$untitled} {translate key=Created}
-				: {format_date date=$report->DateCreated()}
-				<a href="#" class="runNow report">{html_image src="control.png"}{translate key=RunReport}</a>
-				<a href="#" class="emailNow report">{html_image src="mail-send.png"}{translate key=EmailReport}</a>
+			{cycle values=',alt' assign=rowCss}
+			<li reportId="{$report->Id()}" class="{$rowCss}"><span class="report-title">{$report->ReportName()|default:$untitled}</span>
+				<span class="report-created-date">{format_date date=$report->DateCreated()}</span>
+				<span class="report-action"><a href="#"
+													 class="runNow report">{html_image src="control.png"}{translate key=RunReport}</a></span>
+				<span class="report-action"><a href="#"
+													 class="emailNow report">{html_image src="mail-send.png"}{translate key=EmailReport}</a></span>
+				<span class="report-action"><a href="#"
+													 class="delete report">{html_image src="cross-button.png"}{translate key=Delete}</a></span>
+			{*
+			   {if $report->IsScheduled()}
+				   Schedule: <a href="#" class="editSchedule report">{translate key=Edit}</a>
+				   {else}
+				   <a href="#" class="schedule report">Schedule</a>
+			   {/if}
+			   *}
 
-				{*
-				{if $report->IsScheduled()}
-					Schedule: <a href="#" class="editSchedule report">{translate key=Edit}</a>
-					{else}
-					<a href="#" class="schedule report">Schedule</a>
-				{/if}
-				*}
 
-				<a href="#" class="delete report">{html_image src="cross-button.png"}{translate key=Delete}</a>
 			</li>
 		{/foreach}
 	</ul>
@@ -50,15 +55,17 @@ you have no saved reports <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{tr
 </div>
 
 <div id="emailSent" style="display:none" class="success">
-	{translate key=ReportSent}
+{translate key=ReportSent}
 </div>
 
 <div id="emailDiv" class="dialog" title="{translate key=EmailReport}">
 	<form id="emailForm">
-		<label for="emailTo">{translate key=Email}</label> <input id="emailTo" type="text" {formname key=email} value="{$UserEmail}" class="textbox" />
+		<label for="emailTo">{translate key=Email}</label> <input id="emailTo" type="text" {formname key=email}
+																  value="{$UserEmail}" class="textbox"/>
 		<br/>
 		<br/>
-		<button type="button" id="btnSendEmail" class="button">{html_image src="mail-send.png"} {translate key=EmailReport}</button>
+		<button type="button" id="btnSendEmail"
+				class="button">{html_image src="mail-send.png"} {translate key=EmailReport}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 		<span id="sendEmailIndicator" style="display:none">{translate key=Working}...</span>
 	</form>
@@ -68,7 +75,8 @@ you have no saved reports <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{tr
 	<div class="error" style="margin-bottom: 25px;">
 		<h3>{translate key=DeleteWarning}</h3>
 	</div>
-	<button type="button" id="btnDeleteReport" class="button">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+	<button type="button" id="btnDeleteReport"
+			class="button">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 	<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 </div>
 
