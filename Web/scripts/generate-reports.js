@@ -77,18 +77,26 @@ function GenerateReports(reportOptions) {
 			$(this).closest('.dialog').dialog("close");
 		});
 
+		$('#saveReportForm').submit(function (e) {
+			handleSave(e);
+		});
+
 		$('#btnSaveReport').click(function (e) {
-			var before = function () {};
-
-			var after = function (data) {
-				elements.saveDialog.dialog('close');
-				$('#saveMessage').show().delay(3000).fadeOut(1000);
-			};
-
-			ajaxPost($('#customReportInput, #saveReportForm'), opts.saveUrl, before, after);
+			handleSave(e);
 		});
 	};
 
+	var handleSave = function (e) {
+		e.preventDefault();
+		var before = function () {
+		};
 
+		var after = function (data) {
+			elements.saveDialog.dialog('close');
+			$('#saveMessage').show().delay(3000).fadeOut(1000);
+		};
+
+		ajaxPost($('#customReportInput, #saveReportForm'), opts.saveUrl, before, after);
+	}
 
 }
