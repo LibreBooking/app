@@ -116,6 +116,7 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 
 	public function BindReport(IReport $report, IReportDefinition $definition)
 	{
+		$this->Set('HideSave', true);
 		$this->Set('Definition', $definition);
 		$this->Set('Report', $report);
 	}

@@ -48,6 +48,8 @@ class SavedReportsPresenter extends ActionPresenter
 
 		$this->AddAction(ReportActions::Generate, 'GenerateReport');
 		$this->AddAction(ReportActions::Email, 'EmailReport');
+		$this->AddAction(ReportActions::Csv, 'CreateCsv');
+		$this->AddAction(ReportActions::PrintReport, 'PrintReport');
 	}
 
 	public function PageLoad()
@@ -56,11 +58,23 @@ class SavedReportsPresenter extends ActionPresenter
 		$this->page->BindReportList($this->service->GetSavedReports($this->user->UserId));
 	}
 
-	public function GenerateReport()
+	public function ProcessAction()
+	{
+		try
+		{
+			parent::ProcessAction();
+		}
+		catch (Exception $ex)
+		{
+			Log::Error('Error getting report: %s', $ex);
+			$this->page->DisplayError();
+		}
+	}
+
+	private function GenerateAndDisplay($callback)
 	{
 		$reportId = $this->page->GetReportId();
 		$userId = $this->user->UserId;
-
 		$report = $this->service->GenerateSavedReport($reportId, $userId);
 
 		if ($report != null)
@@ -68,13 +82,29 @@ class SavedReportsPresenter extends ActionPresenter
 			Log::Debug('Loading saved report for userId: %s, reportId %s', $userId, $reportId);
 
 			$this->page->BindReport($report, new ReportDefinition($report, $this->user->Timezone));
-			$this->page->ShowResults();
+			call_user_func($callback);
 		}
 		else
 		{
 			Log::Debug('Report not found for userId: %s, reportId %s', $userId, $reportId);
 			$this->page->DisplayError();
 		}
+	}
+
+	public function GenerateReport()
+	{
+		$this->GenerateAndDisplay(array($this->page, 'ShowResults'));
+
+	}
+
+	public function CreateCsv()
+	{
+		$this->GenerateAndDisplay(array($this->page, 'ShowCsv'));
+	}
+
+	public function PrintReport()
+	{
+		$this->GenerateAndDisplay(array($this->page, 'PrintReport'));
 	}
 
 	public function EmailReport()

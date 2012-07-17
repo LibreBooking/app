@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {if $Report->ResultCount() > 0}
 	<div id="report-actions">
-		<a href="#" id="btnSaveReportPrompt">{html_image src="disk-black.png"} {translate key=SaveThisReport}</a> | <a href="#" id="btnCsv">{html_image src="table-export.png"} {translate key=ExportToCSV}</a> | <a href="#" id="btnPrint">{html_image src="printer.png"}{translate key=Print}</a>
+		{if !$HideSave}<a href="#" id="btnSaveReportPrompt">{html_image src="disk-black.png"} {translate key=SaveThisReport}</a> | {/if}<a href="#" id="btnCsv">{html_image src="table-export.png"} {translate key=ExportToCSV}</a> | <a href="#" id="btnPrint">{html_image src="printer.png"}{translate key=Print}</a>
 	</div>
 	<table width="100%" id="report-results">
 		<tr>
