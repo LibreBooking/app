@@ -33,12 +33,12 @@ class LdapUser
 	 */
 	public function __construct($entry)
 	{
-		$this->fname = $entry->getValue('givenname');
-		$this->lname = $entry->getValue('sn');
-		$this->mail = strtolower($entry->getValue('mail'));
-		$this->phone = $entry->getValue('telephonenumber');
-		$this->institution = $entry->getValue('physicaldeliveryofficename');
-		$this->title = $entry->getValue('title');
+		$this->fname = $this->Get($entry->getValue('givenname'));
+		$this->lname = $this->Get($entry->getValue('sn'));
+		$this->mail = strtolower($this->Get($entry->getValue('mail')));
+		$this->phone = $this->Get($entry->getValue('telephonenumber'));
+		$this->institution = $this->Get($entry->getValue('physicaldeliveryofficename'));
+		$this->title = $this->Get($entry->getValue('title'));
 		$this->dn = $entry->dn();
 	}
 
@@ -75,6 +75,20 @@ class LdapUser
 	public function GetDn()
 	{
 		return $this->dn;
+	}
+
+	/**
+	 * @param string|array $value
+	 * @return string
+	 */
+	private function Get($value)
+	{
+		if (is_array($value))
+		{
+			return $value[0];
+		}
+
+		return $value;
 	}
 }
 

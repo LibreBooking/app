@@ -241,6 +241,15 @@ class LdapTests extends TestBase
 
 		$this->assertEquals(array('localhost', 'localhost.2'), $options->Controllers(), "comma separated values should become array");
 	}
+
+	public function testUserHandlesArraysAsAttribute()
+	{
+		$ldapEntry = new TestLdapEntry();
+		$ldapEntry->Set('sn', array('user', 'user2'));
+		$user = new LdapUser($ldapEntry);
+
+		$this->assertEquals('user', $user->GetLastName());
+	}
 }
 
 class FakeLdapOptions extends LdapOptions
