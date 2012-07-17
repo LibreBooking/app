@@ -19,7 +19,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Presenters/Reports/ReportActions.php');
-require_once(ROOT_DIR . 'Presenters/Reports/ReportDefinition.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'Pages/Reports/SavedReportsPage.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/namespace.php');
@@ -48,10 +47,12 @@ class SavedReportsPresenter extends ActionPresenter
 		$this->page = $page;
 
 		$this->AddAction(ReportActions::Generate, 'GenerateReport');
+		$this->AddAction(ReportActions::Email, 'EmailReport');
 	}
 
 	public function PageLoad()
 	{
+		$this->page->SetEmailAddress($this->user->Email);
 		$this->page->BindReportList($this->service->GetSavedReports($this->user->UserId));
 	}
 
@@ -60,12 +61,11 @@ class SavedReportsPresenter extends ActionPresenter
 		$reportId = $this->page->GetReportId();
 		$userId = $this->user->UserId;
 
-		$savedReport = $this->service->GetSavedReport($reportId, $userId);
+		$report = $this->service->GenerateSavedReport($reportId, $userId);
 
-		if ($savedReport != null)
+		if ($report != null)
 		{
 			Log::Debug('Loading saved report for userId: %s, reportId %s', $userId, $reportId);
-			$report = $this->service->GenerateCustomReport($savedReport->Usage(), $savedReport->Selection(), $savedReport->GroupBy(), $savedReport->Range(), $savedReport->Filter());
 
 			$this->page->BindReport($report, new ReportDefinition($report, $this->user->Timezone));
 			$this->page->ShowResults();
@@ -74,6 +74,20 @@ class SavedReportsPresenter extends ActionPresenter
 		{
 			Log::Debug('Report not found for userId: %s, reportId %s', $userId, $reportId);
 			$this->page->DisplayError();
+		}
+	}
+
+	public function EmailReport()
+	{
+		$reportId = $this->page->GetReportId();
+		$userId = $this->user->UserId;
+		$report = $this->service->GenerateSavedReport($reportId, $userId);
+
+		if ($report != null)
+		{
+			Log::Debug('Loading saved report for userId: %s, reportId %s', $userId, $reportId);
+
+			$this->service->SendReport($report, new ReportDefinition($report, $this->user->Timezone), $this->page->GetEmailAddress(), $this->user);
 		}
 	}
 }

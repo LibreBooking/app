@@ -31,6 +31,7 @@ class UserSession
 	public $IsGroupAdmin = false;
 	public $IsResourceAdmin = false;
 	public $IsScheduleAdmin = false;
+	public $LanguageCode = '';
 
 	public function __construct($id)
 	{

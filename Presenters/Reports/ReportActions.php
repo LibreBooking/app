@@ -24,6 +24,8 @@ class ReportActions
 	const PrintReport = 'print';
 	const Csv = 'csv';
 	const Save = 'save';
+	const Email = 'email';
+	const Delete = 'delete';
 }
 
 ?>

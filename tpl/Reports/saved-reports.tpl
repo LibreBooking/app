@@ -18,33 +18,120 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles="css/reports.css"}
 
-<h2>My Saved Reports</h2>
+<h2>{translate key=MySavedReports} ({$ReportList|count})</h2>
 {if $ReportList|count == 0}
 you have no saved reports <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>
-{else}
+	{else}
 <div id="report-list">
-<ul>
-	{foreach from=$ReportList item=report}
-		<li reportId="{$report->Id()}">{$report->ReportName()|default:$untitled} {translate key=Created}: {format_date date=$report->DateCreated()} <a href="#" class="runNow report">Run Now</a> <a href="#">Schedule</a> <a href="#">Delete</a> </li>
-	{/foreach}
-</ul>
+	<ul>
+		{foreach from=$ReportList item=report}
+			<li reportId="{$report->Id()}">{$report->ReportName()|default:$untitled} {translate key=Created}
+				: {format_date date=$report->DateCreated()}
+				<a href="#" class="runNow report">{html_image src="control.png"}{translate key=RunReport}</a>
+				<a href="#" class="emailNow report">{html_image src="mail-send.png"}{translate key=EmailReport}</a>
+
+				{*
+				{if $report->IsScheduled()}
+					Schedule: <a href="#" class="editSchedule report">{translate key=Edit}</a>
+					{else}
+					<a href="#" class="schedule report">Schedule</a>
+				{/if}
+				*}
+
+				<a href="#" class="delete report">{html_image src="cross-button.png"}{translate key=Delete}</a>
+			</li>
+		{/foreach}
+	</ul>
 </div>
 {/if}
+
 
 <div id="resultsDiv">
 </div>
 
+<div id="emailSent" style="display:none" class="success">
+	{translate key=ReportSent}
+</div>
+
+<div id="emailDiv" class="dialog" title="{translate key=EmailReport}">
+	<form id="emailForm">
+		<label for="emailTo">{translate key=Email}</label> <input id="emailTo" type="text" {formname key=email} value="{$UserEmail}" class="textbox" />
+		<br/>
+		<br/>
+		<button id="btnSendEmail" class="button">{html_image src="mail-send.png"} {translate key=EmailReport}</button>
+		<button class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
+		<span id="sendEmailIndicator" style="display:none">{translate key=Working}...</span>
+	</form>
+</div>
+
 <div id="indicator" style="display:none; text-align: center;">
-<h3>{translate key=Working}...</h3>
+	<h3>{translate key=Working}...</h3>
 {html_image src="admin-ajax-indicator.gif"}
 </div>
 
+{*
+<div id="scheduleDiv" class="dialog" title="Schedule Report">
+	<label>Email Report</label>
+	<select id="repeatOptions" {formname key=repeat_options} class="pulldown">
+	{foreach from=$RepeatOptions key=k item=v}
+		<option value="{$k}">{translate key=$v['key']}</option>
+	{/foreach}
+	</select>
+
+	<div id="repeatEveryDiv" style="display:none;" class="days weeks months years">
+		<label>{translate key="RepeatEveryPrompt"}</label>
+		<select id="repeatInterval" {formname key=repeat_every} class="pulldown">
+		{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}
+		</select>
+		<span class="days">{translate key=$RepeatOptions['daily']['everyKey']}</span>
+		<span class="weeks">{translate key=$RepeatOptions['weekly']['everyKey']}</span>
+		<span class="months">{translate key=$RepeatOptions['monthly']['everyKey']}</span>
+		<span class="years">{translate key=$RepeatOptions['yearly']['everyKey']}</span>
+	</div>
+	<div id="repeatOnWeeklyDiv" style="display:none;" class="weeks">
+		<label>{translate key="RepeatDaysPrompt"}</label>
+		<input type="checkbox"
+			   id="repeatDay0" {formname key=repeat_sunday} /><label
+			for="repeatDay0">{translate key="DaySundaySingle"}</label>
+		<input type="checkbox"
+			   id="repeatDay1" {formname key=repeat_monday} /><label
+			for="repeatDay1">{translate key="DayMondaySingle"}</label>
+		<input type="checkbox"
+			   id="repeatDay2" {formname key=repeat_tuesday} /><label
+			for="repeatDay2">{translate key="DayTuesdaySingle"}</label>
+		<input type="checkbox"
+			   id="repeatDay3" {formname key=repeat_wednesday} /><label
+			for="repeatDay3">{translate key="DayWednesdaySingle"}</label>
+		<input type="checkbox"
+			   id="repeatDay4" {formname key=repeat_thursday} /><label
+			for="repeatDay4">{translate key="DayThursdaySingle"}</label>
+		<input type="checkbox"
+			   id="repeatDay5" {formname key=repeat_friday} /><label
+			for="repeatDay5">{translate key="DayFridaySingle"}</label>
+		<input type="checkbox"
+			   id="repeatDay6" {formname key=repeat_saturday} /><label
+			for="repeatDay6">{translate key="DaySaturdaySingle"}</label>
+	</div>
+	<div id="repeatOnMonthlyDiv" style="display:none;" class="months">
+		<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfMonth}"
+			   id="repeatMonthDay" checked="checked"/>
+		<label for="repeatMonthDay">{translate key="repeatDayOfMonth"}</label>
+		<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfWeek}"
+			   id="repeatMonthWeek"/>
+		<label for="repeatMonthWeek">{translate key="repeatDayOfWeek"}</label>
+	</div>
+</div>
+*}
+
+<script type="text/javascript" src="{$Path}scripts/ajax-helpers.js"></script>
 <script type="text/javascript" src="{$Path}scripts/saved-reports.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function () {
 		var reportOptions = {
 			generateUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Generate}&{QueryStringKeys::REPORT_ID}=",
+			emailUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Email}&{QueryStringKeys::REPORT_ID}=",
+			deleteUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Delete}&{QueryStringKeys::REPORT_ID}=",
 			printUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::PrintReport}&{QueryStringKeys::REPORT_ID}=",
 			csvUrl:"{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Csv}&{QueryStringKeys::REPORT_ID}="
 		};

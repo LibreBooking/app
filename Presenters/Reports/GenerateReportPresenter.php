@@ -19,7 +19,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Presenters/Reports/ReportActions.php');
-require_once(ROOT_DIR . 'Presenters/Reports/ReportDefinition.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/namespace.php');
 

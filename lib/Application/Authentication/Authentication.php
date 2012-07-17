@@ -177,6 +177,7 @@ class Authentication implements IAuthentication
         $userSession->LastName = $user->LastName();
         $userSession->Timezone = $user->Timezone();
         $userSession->HomepageId = $user->Homepage();
+		$userSession->LanguageCode = $user->Language();
 
 		$userSession->IsAdmin = $this->roleService->IsApplicationAdministrator($user);
 		$userSession->IsGroupAdmin = $this->roleService->IsGroupAdministrator($user);

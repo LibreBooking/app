@@ -48,3 +48,11 @@
     text-align: right;
     margin: 15px;
 }
+
+#report-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+#report-list ul {
+    list-style-type: none;
+}

@@ -22,6 +22,8 @@ require_once(ROOT_DIR . 'lib/Application/Reporting/IReport.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/IReportColumns.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/IReportData.php');
 
+require_once(ROOT_DIR . 'lib/Application/Reporting/ReportDefinition.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/GeneratedSavedReport.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/CustomReport.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/CustomReportData.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/Report_Filter.php');

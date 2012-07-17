@@ -65,21 +65,11 @@ class SavedReportsPresenterTests extends TestBase
 	{
 		$reportId = 100;
 		$this->page->_ReportId = $reportId;
-		$savedReport = new FakeSavedReport();
 		$report = new FakeReport();
 
 		$this->service->expects($this->once())
-				->method('GetSavedReport')
+				->method('GenerateSavedReport')
 				->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId))
-				->will($this->returnValue($savedReport));
-
-		$this->service->expects($this->once())
-				->method('GenerateCustomReport')
-				->with($this->equalTo($savedReport->Usage()),
-					   $this->equalTo($savedReport->Selection()),
-					   $this->equalTo($savedReport->GroupBy()),
-					   $this->equalTo($savedReport->Range()),
-					   $this->equalTo($savedReport->Filter()))
 				->will($this->returnValue($report));
 
 		$this->presenter->GenerateReport();
@@ -88,17 +78,40 @@ class SavedReportsPresenterTests extends TestBase
 		$this->assertEquals(new ReportDefinition($report, $this->fakeUser->Timezone), $this->page->_BoundDefinition);
 		$this->assertTrue($this->page->_ResultsDisplayed);
 	}
-	
+
 	public function testWhenReportIsNotFound()
 	{
 		$this->service->expects($this->once())
-						->method('GetSavedReport')
-						->with($this->anything(), $this->anything())
-						->will($this->returnValue(null));
+				->method('GenerateSavedReport')
+				->with($this->anything(), $this->anything())
+				->will($this->returnValue(null));
 
 		$this->presenter->GenerateReport();
 
 		$this->assertTrue($this->page->_ErrorDisplayed);
+	}
+
+	public function testEmailsReport()
+	{
+		$emailAddress = 'e@mail.com';
+		$reportId = 123;
+
+		$this->page->_EmailAddress = $emailAddress;
+		$this->page->_ReportId = $reportId;
+
+		$report = new FakeReport();
+		$definition = new ReportDefinition($report, $this->fakeUser->Timezone);
+
+		$this->service->expects($this->once())
+				->method('GenerateSavedReport')
+				->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId))
+				->will($this->returnValue($report));
+
+		$this->service->expects($this->once())
+				->method('SendReport')
+				->with($this->equalTo($report), $this->equalTo($definition), $this->equalTo($emailAddress), $this->equalTo($this->fakeUser));
+
+		$this->presenter->EmailReport();
 	}
 }
 
@@ -128,6 +141,10 @@ class FakeSavedReportsPage extends SavedReportsPage
 	 * @var bool
 	 */
 	public $_ResultsDisplayed = false;
+	/**
+	 * @var string
+	 */
+	public $_EmailAddress;
 
 	public function BindReportList($reportList)
 	{
@@ -153,6 +170,11 @@ class FakeSavedReportsPage extends SavedReportsPage
 	public function GetReportId()
 	{
 		return $this->_ReportId;
+	}
+
+	public function GetEmailAddress()
+	{
+		return $this->_EmailAddress;
 	}
 
 }

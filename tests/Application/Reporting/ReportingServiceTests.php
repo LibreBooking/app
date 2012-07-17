@@ -61,13 +61,13 @@ class ReportingServiceTests extends TestBase
 
 		$commandBuilder = new ReportCommandBuilder();
 		$commandBuilder->SelectFullList()
-			->OfResources()
-			->Within($start, $end)
-			->WithResourceId($resourceId)
-			->WithUserId($userId)
-			->WithScheduleId($scheduleId)
-			->WithGroupId($groupId)
-			->GroupByGroup();
+				->OfResources()
+				->Within($start, $end)
+				->WithResourceId($resourceId)
+				->WithUserId($userId)
+				->WithScheduleId($scheduleId)
+				->WithGroupId($groupId)
+				->GroupByGroup();
 
 		$rows = array(array(
 						  ColumnNames::OWNER_FIRST_NAME => 'value',
@@ -76,9 +76,9 @@ class ReportingServiceTests extends TestBase
 					  ));
 
 		$this->reportingRepository->expects($this->once())
-					->method('GetCustomReport')
-					->with($this->equalTo($commandBuilder))
-					->will($this->returnValue($rows));
+				->method('GetCustomReport')
+				->with($this->equalTo($commandBuilder))
+				->will($this->returnValue($rows));
 
 		$report = $this->rs->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter);
 
@@ -105,8 +105,8 @@ class ReportingServiceTests extends TestBase
 		$savedReport = new SavedReport($reportName, $userId, $usage, $selection, $groupBy, $range, $filter);
 
 		$this->reportingRepository->expects($this->once())
-							->method('SaveCustomReport')
-							->with($this->equalTo($savedReport));
+				->method('SaveCustomReport')
+				->with($this->equalTo($savedReport));
 
 		$this->rs->Save($reportName, $userId, $usage, $selection, $groupBy, $range, $filter);
 
@@ -118,13 +118,45 @@ class ReportingServiceTests extends TestBase
 		$userId = 100;
 
 		$actualReports = $this->reportingRepository->expects($this->once())
-									->method('LoadSavedReportsForUser')
-									->with($this->equalTo($userId))
-									->will($this->returnValue($reports));
+				->method('LoadSavedReportsForUser')
+				->with($this->equalTo($userId))
+				->will($this->returnValue($reports));
 
 		$this->rs->GetSavedReports($userId);
 
-		$this->assertEquals($reports,$actualReports);
+		$this->assertEquals($reports, $actualReports);
+	}
+
+	public function testGeneratesSavedReport()
+	{
+		$reportId = 1;
+		$userId = 2;
+
+		$savedReport = new FakeSavedReport();
+		$data = array();
+		$report = new CustomReport($data);
+
+		$this->reportingRepository->expects($this->once())
+				->method('LoadSavedReportForUser')
+				->with($this->equalTo($reportId), $this->equalTo($userId))
+				->will($this->returnValue($savedReport));
+
+		$this->reportingRepository->expects($this->once())
+				->method('GetCustomReport')
+				->with($this->isInstanceOf('ReportCommandBuilder'))
+				->will($this->returnValue($data));
+
+		$expectedReport = new GeneratedSavedReport($savedReport, $report);
+		$actualReport = $this->rs->GenerateSavedReport($reportId, $userId);
+
+		$this->assertEquals($expectedReport, $actualReport);
+	}
+
+	public function testEmailsReport()
+	{
+		$expectedMessage = new ReportEmailMessage();
+
+		$this->assertEquals($expectedMessage, $this->fakeEmailService->_LastMessage);
 	}
 }
 

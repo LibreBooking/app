@@ -19,6 +19,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Reporting/namespace.php');
+require_once(ROOT_DIR . 'lib/Email/namespace.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReportEmailMessage.php');
 require_once(ROOT_DIR . 'Domain/Access/ReportingRepository.php');
 
 interface IReportingService
@@ -57,9 +59,17 @@ interface IReportingService
 	 * @abstract
 	 * @param int $reportId
 	 * @param int $userId
-	 * @return SavedReport
+	 * @return IGeneratedSavedReport
 	 */
-	public function GetSavedReport($reportId, $userId);
+	public function GenerateSavedReport($reportId, $userId);
+
+	/**
+	 * @param IGeneratedSavedReport $report
+	 * @param IReportDefinition $definition
+	 * @param string $toAddress
+	 * @param UserSession $reportUser
+	 */
+	public function SendReport($report, $definition, $toAddress, $reportUser);
 }
 
 
@@ -92,39 +102,39 @@ class ReportingService implements IReportingService
 		return new CustomReport($data);
 	}
 
-	/**
-	 * @param string $reportName
-	 * @param int $userId
-	 * @param Report_Usage $usage
-	 * @param Report_ResultSelection $selection
-	 * @param Report_GroupBy $groupBy
-	 * @param Report_Range $range
-	 * @param Report_Filter $filter
-	 */
 	public function Save($reportName, $userId, Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter)
 	{
 		$report = new SavedReport($reportName, $userId, $usage, $selection, $groupBy, $range, $filter);
 		$this->repository->SaveCustomReport($report);
 	}
 
-	/**
-	 * @param int $userId
-	 * @return array|SavedReport[]
-	 */
 	public function GetSavedReports($userId)
 	{
 		return $this->repository->LoadSavedReportsForUser($userId);
 	}
 
-	/**
-	 * @param int $reportId
-	 * @param int $userId
-	 * @return SavedReport
-	 */
-	public function GetSavedReport($reportId, $userId)
+	public function GenerateSavedReport($reportId, $userId)
 	{
-		return $this->repository->LoadSavedReportForUser($reportId, $userId);
+		$savedReport = $this->repository->LoadSavedReportForUser($reportId, $userId);
+
+		if ($savedReport == null)
+		{
+			return null;
+		}
+
+		$report = $this->GenerateCustomReport($savedReport->Usage(), $savedReport->Selection(), $savedReport->GroupBy(), $savedReport->Range(), $savedReport->Filter());
+
+		return new GeneratedSavedReport($savedReport, $report);
+	}
+
+
+	public function SendReport($report, $definition, $toAddress, $reportUser)
+	{
+		$message = new ReportEmailMessage($report, $definition, $toAddress, $reportUser);
+		ServiceLocator::GetEmailService()->Send($message);
 	}
 }
+
+
 
 ?>

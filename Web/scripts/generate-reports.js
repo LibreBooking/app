@@ -89,18 +89,6 @@ function GenerateReports(reportOptions) {
 		});
 	};
 
-	function ajaxPost(formElement, url, onBefore, onAfter) {
-		$.ajax({
-			type: 'POST',
-			data: formElement.serialize(),
-			url: url,
-			cache: false,
-			beforeSend: function () {
-				onBefore();
-			}
-		}).done(function (data) {
-					onAfter(data);
-				});
-	}
+
 
 }

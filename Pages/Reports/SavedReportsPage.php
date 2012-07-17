@@ -35,6 +35,18 @@ interface ISavedReportsPage extends IDisplayableReportPage, IActionPage
 	 * @return int
 	 */
 	public function GetReportId();
+
+	/**
+	 * @abstract
+	 * @param string $emailAddress
+	 */
+	public function SetEmailAddress($emailAddress);
+
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetEmailAddress();
 }
 
 class SavedReportsPage extends ActionPage implements ISavedReportsPage
@@ -69,6 +81,27 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 	public function ProcessPageLoad()
 	{
 		$this->Set('untitled', Resources::GetInstance()->GetString('NoTitleLabel'));
+
+		$this->Set('RepeatEveryOptions', range(1, 20));
+		$this->Set('RepeatOptions', array(
+										 'none' => array('key' => 'Never', 'everyKey' => ''),
+										 'daily' => array('key' => 'Daily', 'everyKey' => 'days'),
+										 'weekly' => array('key' => 'Weekly', 'everyKey' => 'weeks'),
+										 'monthly' => array('key' => 'Monthly', 'everyKey' => 'months'),
+										 'yearly' => array('key' => 'Yearly', 'everyKey' => 'years'),
+									)
+		);
+		$this->Set('DayNames', array(
+									0 => 'DaySundayAbbr',
+									1 => 'DayMondayAbbr',
+									2 => 'DayTuesdayAbbr',
+									3 => 'DayWednesdayAbbr',
+									4 => 'DayThursdayAbbr',
+									5 => 'DayFridayAbbr',
+									6 => 'DaySaturdayAbbr',
+							   )
+		);
+
 		$this->presenter->PageLoad();
 		$this->Display('Reports/saved-reports.tpl');
 	}
@@ -115,6 +148,22 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 	public function GetReportId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::REPORT_ID);
+	}
+
+	/**
+	 * @param string $emailAddress
+	 */
+	public function SetEmailAddress($emailAddress)
+	{
+		$this->Set('UserEmail', $emailAddress);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetEmailAddress()
+	{
+		return $this->GetForm(FormKeys::EMAIL);
 	}
 }
 

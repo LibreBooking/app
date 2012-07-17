@@ -399,6 +399,9 @@ class en_us extends Language
 		$strings['NoResultsFound'] = 'No matching results found';
 		$strings['SaveThisReport'] = 'Save This Report';
 		$strings['ReportSaved'] = 'Report Saved!';
+		$strings['EmailReport'] = 'Email Report';
+		$strings['ReportSent'] = 'Report Sent!';
+		$strings['RunReport'] = 'Run Report';
         // End Strings
 
         // Errors
@@ -502,6 +505,7 @@ class en_us extends Language
         $strings['InviteeAddedSubject'] = 'Reservation Invitation';
         $strings['ResetPassword'] = 'Password Reset Request';
         $strings['ActivateYourAccount'] = 'Please Activate Your Account';
+        $strings['ReportSubject'] = 'Your Requested Report (%s)';
         // End Email Subjects
 
         $this->Strings = $strings;

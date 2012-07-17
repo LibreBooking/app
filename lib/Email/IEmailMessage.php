@@ -23,41 +23,66 @@ interface IEmailMessage
 	/**
 	 * @return string
 	 */
-	function Charset();
+	public function Charset();
 	
 	/**
 	 * @return array|EmailAddress[]|EmailAddress
 	 */
-	function To();
+	public function To();
 	
 	/**
 	 * @return EmailAddress
 	 */
-	function From();
+	public function From();
 	
 	/**
 	 * @return array|EmailAddress[]|EmailAddress
 	 */
-	function CC();
+	public function CC();
 	
 	/**
 	 * @return array|EmailAddress[]|EmailAddress
 	 */
-	function BCC();
+	public function BCC();
 	
 	/**
 	 * @return string
 	 */
-	function Subject();
+	public function Subject();
 	
 	/**
 	 * @return string
 	 */
-	function Body();
+	public function Body();
 	
 	/**
 	 * @return EmailAddress
 	 */
-	function ReplyTo();
+	public function ReplyTo();
+
+	/**
+	 * @abstract
+	 * @param string $contents
+	 * @param string $fileName
+	 */
+	public function AddStringAttachment($contents, $fileName);
+
+	/**
+	 * @abstract
+	 * @return bool
+	 */
+	public function HasStringAttachment();
+
+	/**
+	 * @abstract
+	 * @return string|null
+	 */
+	public function AttachmentContents();
+
+	/**
+	 * @abstract
+	 * @return string|null
+	 */
+	public function AttachmentFileName();
 }
 ?>

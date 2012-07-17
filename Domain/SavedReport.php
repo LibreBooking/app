@@ -18,7 +18,22 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class SavedReport
+interface ISavedReport
+{
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function ReportName();
+
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function Id();
+}
+
+class SavedReport implements ISavedReport
 {
 	/**
 	 * @var int
@@ -214,6 +229,14 @@ class SavedReport
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function IsScheduled()
+	{
+		return false;
+	}
+
+	/**
 	 * @static
 	 * @param string $reportName
 	 * @param int $userId
@@ -243,17 +266,17 @@ class ReportSerializer
 		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s';
 
 		return sprintf($template,
-			$report->Usage(),
-			$report->Selection(),
-			$report->GroupBy(),
-			$report->Range(),
-			$report->RangeStart()->ToDatabase(),
-			$report->RangeEnd()->ToDatabase(),
-			$report->ResourceId(),
-			$report->ScheduleId(),
-			$report->UserId(),
-			$report->GroupId(),
-			$report->AccessoryId());
+					   $report->Usage(),
+					   $report->Selection(),
+					   $report->GroupBy(),
+					   $report->Range(),
+					   $report->RangeStart()->ToDatabase(),
+					   $report->RangeEnd()->ToDatabase(),
+					   $report->ResourceId(),
+					   $report->ScheduleId(),
+					   $report->UserId(),
+					   $report->GroupId(),
+					   $report->AccessoryId());
 	}
 
 	/**

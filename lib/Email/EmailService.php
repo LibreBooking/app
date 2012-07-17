@@ -80,6 +80,12 @@ class EmailService implements IEmailService
 		{
 			$this->phpMailer->AddBCC($address->Address(), $address->Name());
 		}
+
+		if ($emailMessage->HasStringAttachment())
+		{
+			Log::Debug('Adding email attachment %s', $emailMessage->AttachmentFileName());
+			$this->phpMailer->AddStringAttachment($emailMessage->AttachmentContents(), $emailMessage->AttachmentFileName());
+		}
 		
 		Log::Debug('Sending %s email to: %s from: %s', get_class($emailMessage), $toAddresses->ToString(), $from->Address());
 
@@ -119,6 +125,7 @@ class EmailService implements IEmailService
 
 		return array($possibleArray);
 	}
+
 }
 
 class NullEmailService implements IEmailService
