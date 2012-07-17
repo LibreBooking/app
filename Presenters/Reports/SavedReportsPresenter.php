@@ -50,6 +50,7 @@ class SavedReportsPresenter extends ActionPresenter
 		$this->AddAction(ReportActions::Email, 'EmailReport');
 		$this->AddAction(ReportActions::Csv, 'CreateCsv');
 		$this->AddAction(ReportActions::PrintReport, 'PrintReport');
+		$this->AddAction(ReportActions::Delete, 'DeleteReport');
 	}
 
 	public function PageLoad()
@@ -94,7 +95,6 @@ class SavedReportsPresenter extends ActionPresenter
 	public function GenerateReport()
 	{
 		$this->GenerateAndDisplay(array($this->page, 'ShowResults'));
-
 	}
 
 	public function CreateCsv()
@@ -119,6 +119,15 @@ class SavedReportsPresenter extends ActionPresenter
 
 			$this->service->SendReport($report, new ReportDefinition($report, $this->user->Timezone), $this->page->GetEmailAddress(), $this->user);
 		}
+	}
+
+	public function DeleteReport()
+	{
+		$reportId = $this->page->GetReportId();
+		$userId = $this->user->UserId;
+
+		Log::Debug('Deleting saved report. reportId: %s, userId: %s', $reportId, $userId);
+		$this->service->DeleteSavedReport($reportId, $userId);
 	}
 }
 

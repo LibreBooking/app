@@ -113,6 +113,18 @@ class SavedReportsPresenterTests extends TestBase
 
 		$this->presenter->EmailReport();
 	}
+
+	public function testDeletesSavedReport()
+	{
+		$reportId = 100;
+		$this->page->_ReportId = $reportId;
+
+		$this->service->expects($this->once())
+				->method('DeleteSavedReport')
+				->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId));
+
+		$this->presenter->DeleteReport();
+	}
 }
 
 class FakeSavedReportsPage extends SavedReportsPage

@@ -51,6 +51,13 @@ interface IReportingRepository
 	 * @return SavedReport
 	 */
 	public function LoadSavedReportForUser($reportId, $userId);
+
+	/**
+	 * @abstract
+	 * @param int $reportId
+	 * @param int $userId
+	 */
+	public function DeleteSavedReport($reportId, $userId);
 }
 
 class ReportingRepository implements IReportingRepository
@@ -124,6 +131,11 @@ class ReportingRepository implements IReportingRepository
 		{
 			return null;
 		}
+	}
+
+	public function DeleteSavedReport($reportId, $userId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteSavedReportCommand($reportId, $userId));
 	}
 }
 

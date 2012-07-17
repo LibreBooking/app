@@ -177,6 +177,7 @@ class AuthenticationTests extends TestBase
 		$user->IsGroupAdmin = true;
 		$user->IsResourceAdmin = true;
 		$user->IsScheduleAdmin = true;
+		$user->LanguageCode = $language;
 
 		$this->assertEquals($user, $this->fakeServer->GetUserSession());
 	}

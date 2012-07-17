@@ -70,6 +70,13 @@ interface IReportingService
 	 * @param UserSession $reportUser
 	 */
 	public function SendReport($report, $definition, $toAddress, $reportUser);
+
+	/**
+	 * @abstract
+	 * @param int $reportId
+	 * @param int $userId
+	 */
+	public function DeleteSavedReport($reportId, $userId);
 }
 
 
@@ -132,6 +139,11 @@ class ReportingService implements IReportingService
 	{
 		$message = new ReportEmailMessage($report, $definition, $toAddress, $reportUser);
 		ServiceLocator::GetEmailService()->Send($message);
+	}
+
+	public function DeleteSavedReport($reportId, $userId)
+	{
+		$this->repository->DeleteSavedReport($reportId, $userId);
 	}
 }
 

@@ -46,7 +46,7 @@ class ReportDefinitionTests extends TestBase
 
 		$rows = array(array(
 						  ColumnNames::RESERVATION_END => $date,
-						  ColumnNames::GROUP_NAME => 'gn',
+						  ColumnNames::GROUP_NAME_ALIAS => 'gn',
 						  ColumnNames::ACCESSORY_NAME => 'an',
 							'unknown' => 'unknown'
 

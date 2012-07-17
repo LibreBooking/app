@@ -67,6 +67,7 @@ class ReportingServiceTests extends TestBase
 				->WithUserId($userId)
 				->WithScheduleId($scheduleId)
 				->WithGroupId($groupId)
+				->WithAccessoryId($accessoryId)
 				->GroupByGroup();
 
 		$rows = array(array(
@@ -117,12 +118,12 @@ class ReportingServiceTests extends TestBase
 		$reports = array();
 		$userId = 100;
 
-		$actualReports = $this->reportingRepository->expects($this->once())
+		$this->reportingRepository->expects($this->once())
 				->method('LoadSavedReportsForUser')
 				->with($this->equalTo($userId))
 				->will($this->returnValue($reports));
 
-		$this->rs->GetSavedReports($userId);
+		$actualReports = $this->rs->GetSavedReports($userId);
 
 		$this->assertEquals($reports, $actualReports);
 	}
@@ -154,9 +155,27 @@ class ReportingServiceTests extends TestBase
 
 	public function testEmailsReport()
 	{
-		$expectedMessage = new ReportEmailMessage();
+		$report = new GeneratedSavedReport(new FakeSavedReport(), new FakeReport());
+		$def = new ReportDefinition($report, null);
+		$to = 'email';
+		$user = $this->fakeUser;
 
-		$this->assertEquals($expectedMessage, $this->fakeEmailService->_LastMessage);
+		$expectedMessage = new ReportEmailMessage($report, $def, $to, $user);
+
+		$this->rs->SendReport($report, $def, $to, $user);
+		$this->assertInstanceOf('ReportEmailMessage', $this->fakeEmailService->_LastMessage);
+	}
+
+	public function testDeletesReport()
+	{
+		$reportId = 1;
+		$userId = 2;
+
+		$this->reportingRepository->expects($this->once())
+				->method('DeleteSavedReport')
+				->with($this->equalTo($reportId), $this->equalTo($userId));
+
+		$this->rs->DeleteSavedReport($reportId, $userId);
 	}
 }
 

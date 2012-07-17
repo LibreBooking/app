@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles="css/reports.css"}
 
-<h2>{translate key=MySavedReports} ({$ReportList|count})</h2>
+<h1>{translate key=MySavedReports} (<span id="reportCount">{$ReportList|count}</span>)</h1>
 {if $ReportList|count == 0}
 you have no saved reports <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>
 	{else}
@@ -58,10 +58,18 @@ you have no saved reports <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{tr
 		<label for="emailTo">{translate key=Email}</label> <input id="emailTo" type="text" {formname key=email} value="{$UserEmail}" class="textbox" />
 		<br/>
 		<br/>
-		<button id="btnSendEmail" class="button">{html_image src="mail-send.png"} {translate key=EmailReport}</button>
-		<button class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
+		<button type="button" id="btnSendEmail" class="button">{html_image src="mail-send.png"} {translate key=EmailReport}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 		<span id="sendEmailIndicator" style="display:none">{translate key=Working}...</span>
 	</form>
+</div>
+
+<div id="deleteDiv" class="dialog" title="{translate key=Delete}">
+	<div class="error" style="margin-bottom: 25px;">
+		<h3>{translate key=DeleteWarning}</h3>
+	</div>
+	<button type="button" id="btnDeleteReport" class="button">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+	<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 </div>
 
 <div id="indicator" style="display:none; text-align: center;">

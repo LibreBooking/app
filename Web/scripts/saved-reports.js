@@ -6,7 +6,8 @@ function SavedReports(reportOptions) {
 		resultsDiv:$('#resultsDiv'),
 		emailForm:$('#emailForm'),
 		sendEmailButton:$('#btnSendEmail'),
-		emailIndicator:$('#sendEmailIndicator')
+		emailIndicator:$('#sendEmailIndicator'),
+		deleteReportButton:$('#btnDeleteReport')
 	};
 
 	var reportId = 0;
@@ -49,6 +50,14 @@ function SavedReports(reportOptions) {
 
 			ajaxPost(elements.emailForm, opts.emailUrl + reportId, before, after);
 		});
+
+		elements.deleteReportButton.click(function(e){
+			var after = function (data) {
+				document.location.reload();
+			};
+
+			ajaxGet(opts.deleteUrl + reportId, null, after);
+		});
 	};
 
 	var wireUpReportLinks = function () {
@@ -75,6 +84,10 @@ function SavedReports(reportOptions) {
 			$('#emailDiv').dialog({modal:true});
 		});
 
+		$('.delete').click(function(e)
+		{
+			$('#deleteDiv').dialog({modal:true});
+		});
 
 	};
 

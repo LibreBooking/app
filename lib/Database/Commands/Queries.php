@@ -196,6 +196,8 @@ class Queries
 		INNER JOIN reservation_resources rs ON s.series_id = rs.series_id 
 		WHERE rs.resource_id = @resourceid';
 
+	const DELETE_SAVED_REPORT = 'DELETE FROM saved_reports WHERE saved_report_id = @report_id AND user_id = @userid';
+
 	const DELETE_SCHEDULE = 'DELETE FROM schedules WHERE schedule_id = @scheduleid';
 
 	const DELETE_SERIES = 'UPDATE reservation_series SET status_id = @statusid WHERE series_id = @seriesid';

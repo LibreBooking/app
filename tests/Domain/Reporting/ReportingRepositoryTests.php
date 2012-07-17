@@ -115,7 +115,7 @@ class ReportingRepositoryTests extends TestBase
 	public function testLoadsSingleReportForUser()
 	{
 		$userId = 100;
-		$reportId = 'report1';
+		$reportId = 1;
 		$reportName = 'report2';
 
 		$date = Date::Now();
@@ -140,6 +140,18 @@ class ReportingRepositoryTests extends TestBase
 		$expectedCommand = new GetSavedReportForUserCommand($reportId, $userId);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
 		$this->assertEquals($expectedReport1, $report);
+	}
+
+	public function testDeletesSavedReport()
+	{
+		$userId = 100;
+		$reportId = 1;
+
+		$expectedCommand = new DeleteSavedReportCommand($reportId, $userId);
+
+		$this->repository->DeleteSavedReport($reportId, $userId);
+
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
 	}
 }
 ?>
