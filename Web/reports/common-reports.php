@@ -1,4 +1,5 @@
-{*
+<?php
+/**
 Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
@@ -15,10 +16,13 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*}
-{include file='globalheader.tpl' cssFiles="css/reports.css"}
+ */
 
-<h2>Common Reports</h2>
-Under Development
+define('ROOT_DIR', '../../');
+require_once(ROOT_DIR . 'Pages/Reports/CommonReportsPage.php');
 
-{include file='globalfooter.tpl'}
+$page = new CommonReportsPage();
+$page->PageLoad();
+
+
+?>
