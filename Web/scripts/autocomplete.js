@@ -13,8 +13,13 @@ $.fn.userAutoComplete = function(url, selectionCallback)
 					},
 					success: function(data) {
 						response($.map(data, function(item) {
+							var l = item.Name;
+							if (item.Email)
+							{
+								l += " (" + item.Email + ")";
+							}
 							return {
-								label: item.Name,
+								label: l,
 								value: item.Id
 							}
 						}));

@@ -83,7 +83,7 @@ class AutoCompletePage extends SecurePage
 		/** @var $result UserItemView */
 		foreach($results as $result)
 		{
-			$users[] = new AutocompleteUser($result->Id	, $result->First, $result->Last);
+			$users[] = new AutocompleteUser($result->Id	, $result->First, $result->Last, $result->Email, $result->Username);
 		}
 
 		return $users;
@@ -131,7 +131,7 @@ class AutoCompletePage extends SecurePage
 			foreach ($results as $result)
 			{
 				// consolidates results by user id if the user is in multiple groups
-				$users[$result->Id] = new AutocompleteUser($result->Id, $result->First, $result->Last);
+				$users[$result->Id] = new AutocompleteUser($result->Id, $result->First, $result->Last, $result->Email, $result->Username);
 			}
 		}
 
@@ -145,13 +145,18 @@ class AutocompleteUser
 	public $First;
 	public $Last;
 	public $Name;
+	public $Email;
+	public $UserName;
 
-	public function __construct($userId, $firstName, $lastName)
+	public function __construct($userId, $firstName, $lastName, $email, $userName)
 	{
+		$full = new FullName($firstName, $lastName);
 		$this->Id = $userId;
 		$this->First = $firstName;
 		$this->Last = $lastName;
-		$this->Name = $firstName . ' ' . $lastName;
+		$this->Name = $full->__toString();
+		$this->Email = $email;
+		$this->UserName = $userName;
 	}
 }
 
