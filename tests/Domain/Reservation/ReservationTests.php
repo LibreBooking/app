@@ -100,24 +100,4 @@ class ReservationTests extends TestBase
 		$this->assertEquals($startDate, $instance->StartDate());
 		$this->assertEquals($endDate, $instance->EndDate());
 	}
-
-	public function testStatusIsCreatedWhenBookedByAdmin()
-	{
-		$resource = new FakeBookableResource(1);
-		$resource->RequiresApproval(true);
-		
-		$series = ReservationSeries::Create(1, $resource, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession(true));
-
-		$this->assertEquals(ReservationStatus::Created, $series->StatusId());
-	}
-
-	public function testStatusIsPendingWhenRequiresApprovalAndNotAdmin()
-	{
-		$resource = new FakeBookableResource(1);
-		$resource->RequiresApproval(true);
-
-		$series = ReservationSeries::Create(1, $resource, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession(false));
-
-		$this->assertEquals(ReservationStatus::Pending, $series->StatusId());
-	}
 }

@@ -180,18 +180,18 @@ class AuthorizationService implements IAuthorizationService
     }
 
 	/**
-	 * @param UserSession $user
+	 * @param UserSession $userSession
 	 * @param int $otherUserId
 	 * @return bool
 	 */
-	private function IsAdminFor(UserSession $user, $otherUserId)
+	private function IsAdminFor(UserSession $userSession, $otherUserId)
 	{
-		if ($user->IsAdmin)
+		if ($userSession->IsAdmin)
 		{
 			return true;
 		}
 
-        if (!$user->IsGroupAdmin)
+        if (!$userSession->IsGroupAdmin)
         {
             // dont even bother checking if the user isnt a group admin
             return false;
@@ -204,45 +204,45 @@ class AuthorizationService implements IAuthorizationService
 	}
 
     /**
-     * @param UserSession $user
+     * @param UserSession $userSession
      * @param IResource $resource
      * @return bool
      */
-    public function CanEditForResource(UserSession $user, IResource $resource)
+    public function CanEditForResource(UserSession $userSession, IResource $resource)
     {
-        if ($user->IsAdmin)
+        if ($userSession->IsAdmin)
         {
             return true;
         }
 
-        if (!$user->IsResourceAdmin && !$user->IsScheduleAdmin)
+        if (!$userSession->IsResourceAdmin && !$userSession->IsScheduleAdmin)
         {
             return false;
         }
 
-        $user = $this->userRepository->LoadById($user->UserId);
+        $user = $this->userRepository->LoadById($userSession->UserId);
 
         return $user->IsResourceAdminFor($resource);
     }
 
     /**
-     * @param UserSession $user
+     * @param UserSession $userSession
      * @param IResource $resource
      * @return bool
      */
-    public function CanApproveForResource(UserSession $user, IResource $resource)
+    public function CanApproveForResource(UserSession $userSession, IResource $resource)
     {
-        if ($user->IsAdmin)
+        if ($userSession->IsAdmin)
         {
             return true;
         }
 
-        if (!$user->IsResourceAdmin)
+        if (!$userSession->IsResourceAdmin)
         {
             return false;
         }
 
-        $user = $this->userRepository->LoadById($user->UserId);
+        $user = $this->userRepository->LoadById($userSession->UserId);
 
         return $user->IsResourceAdminFor($resource);
     }

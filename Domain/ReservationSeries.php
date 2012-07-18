@@ -223,7 +223,12 @@ class ReservationSeries
 	 * @var Date
 	 */
 	private $currentInstanceKey;
-	
+
+	/**
+	 * @var int|ReservationStatus
+	 */
+	protected $statusId = ReservationStatus::Created;
+
 	protected function __construct()
 	{
 		$this->_repeatOptions = new RepeatNone();
@@ -362,20 +367,15 @@ class ReservationSeries
 	 */
 	public function StatusId()
 	{
-		if ($this->_bookedBy->IsAdmin)
-		{
-			return ReservationStatus::Created;
-		}
+		return $this->statusId;
+	}
 
-		foreach ($this->AllResources() as $resource)
-		{
-			if ($resource->GetRequiresApproval())
-			{
-				return ReservationStatus::Pending;
-			}
-		}
-
-		return ReservationStatus::Created;
+	/**
+	 * @param int|ReservationStatus $statusId
+	 */
+	public function SetStatusId($statusId)
+	{
+		$this->statusId = $statusId;
 	}
 
 	public function RequiresApproval()

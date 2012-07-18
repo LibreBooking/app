@@ -144,15 +144,13 @@ class ExistingReservationSeries extends ReservationSeries
 		$this->AddInstance($reservation);
 	}
 
-	protected $_statusId;
-
 	/**
 	 * @param $statusId int|ReservationStatus
 	 * @return void
 	 */
 	public function WithStatus($statusId)
 	{
-		$this->_statusId = $statusId;
+		$this->statusId = $statusId;
 	}
 	
 	/**
@@ -208,7 +206,7 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function StatusId()
 	{
-		return $this->_statusId;
+		return $this->statusId;
 	}
 
 	/**
@@ -367,7 +365,7 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		$this->_bookedBy = $approvedBy;
 
-		$this->_statusId = ReservationStatus::Created;
+		$this->statusId = ReservationStatus::Created;
 		
 		Log::Debug("Approving series %s", $this->SeriesId());
 
