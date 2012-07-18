@@ -53,6 +53,7 @@ class ConfigKeys
     const PLUGIN_POSTRESERVATION = 'PostReservation';
 
     const RESERVATION_START_TIME_CONSTRAINT = 'start.time.constraint';
+    const RESERVATION_UPDATES_REQUIRE_APPROVAL = 'updates.require.approval';
 
     const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
     const IMAGE_UPLOAD_URL = 'image.upload.url';

@@ -46,6 +46,7 @@ $conf['settings']['privacy']['view.reservations'] = 'false';    // if unauthenti
 $conf['settings']['privacy']['hide.user.details'] = 'false';    // if personal user details should be displayed to non-administrators
 $conf['settings']['privacy']['hide.reservation.details'] = 'false';    // if reservation details should be displayed to non-administrators
 $conf['settings']['reservation']['start.time.constraint'] = 'future';        // when reservations can be created or edited. options are future, current, none
+$conf['settings']['reservation']['updates.require.approval'] = 'false';      // if updates to previously approved reservations require approval again
 $conf['settings']['reservation.notify']['resource.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.delete'] = 'false';
@@ -71,7 +72,7 @@ $conf['settings']['database']['name'] = 'phpscheduleit2';
  * Mail server configuration
  */
 $conf['settings']['phpmailer']['mailer'] = 'mail';              // options are 'mail', 'smtp' or 'sendmail'
-$conf['settings']['phpmailer']['smtp.host'] = '';               // 'smtp.university.ca'
+$conf['settings']['phpmailer']['smtp.host'] = '';               // 'smtp.company.com'
 $conf['settings']['phpmailer']['smtp.port'] = '25';
 $conf['settings']['phpmailer']['smtp.secure'] = '';             // options are '', 'ssl' or 'tls'
 $conf['settings']['phpmailer']['smtp.auth'] = 'true';           // options are 'true' or 'false'
