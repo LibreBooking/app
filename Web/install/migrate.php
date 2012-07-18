@@ -515,7 +515,7 @@ class MigrationPresenter
             FROM reservations r INNER JOIN reservation_users ru ON r.resid = ru.resid AND owner = 1');
 
         $getLegacyReservationAccessories = new AdHocCommand('SELECT resid, resourceid from reservation_resources');
-        $getLegacyReservationParticipants = new AdHocCommand('SELECT resid, memberid, owner, invited  FROM reservation_users WHERE owner is null');
+        $getLegacyReservationParticipants = new AdHocCommand('SELECT resid, memberid, owner, invited  FROM reservation_users WHERE (owner is null or owner = 0)');
 
         $getAccessoryMapping = new AdHocCommand('select accessory_id, legacyid from accessories');
         $getUserMapping = new AdHocCommand('select user_id, legacyid from users');
