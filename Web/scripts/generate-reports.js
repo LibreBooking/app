@@ -21,11 +21,8 @@ function GenerateReports(reportOptions) {
 			}
 		});
 
-		$("#user_filter").userAutoComplete(opts.userAutocompleteUrl, function (ui) {
-			$('#user_id').val(ui.item.value);
-		});
 
-		$("#group_filter").userAutoComplete(opts.groupAutocompleteUrl);
+		wireUpAutocompleteFilters();
 
 		$('.dateinput').click(function () {
 			$('#range_within').attr('checked', 'checked');
@@ -85,6 +82,41 @@ function GenerateReports(reportOptions) {
 			handleSave(e);
 		});
 	};
+
+	function wireUpAutocompleteFilters() {
+		$('.link-filter .all, .link-filter .selected').click(function (e) {
+			e.preventDefault();
+			var filter = $(this).siblings('.filter-input, .clear');
+			filter.val('');
+			filter.show();
+			$(this).hide();
+		});
+
+		$('.link-filter .clear').click(function (e) {
+			e.preventDefault();
+			$(this).siblings('.all').show();
+			var filter = $(this).siblings('.filter-input, .filter-id, .selected');
+			filter.val('');
+			filter.text('');
+			filter.hide();
+			$(this).hide();
+		});
+
+		var selectFilterItem = function (filterDiv, selectedId, selectedName) {
+			filterDiv.find('.filter-id').val(selectedId);
+			filterDiv.find('.selected').text(selectedName).show();
+			filterDiv.find('.filter-input').hide();
+
+		};
+
+		$("#user-filter").userAutoComplete(opts.userAutocompleteUrl, function (ui) {
+			selectFilterItem($('#user-filter-div'), ui.item.value, ui.item.label);
+		});
+
+		$("#group-filter").userAutoComplete(opts.groupAutocompleteUrl, function (ui) {
+			selectFilterItem($('#group-filter-div'), ui.item.value, ui.item.label);
+		});
+	}
 
 	var handleSave = function (e) {
 		e.preventDefault();

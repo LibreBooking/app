@@ -86,3 +86,11 @@
     text-align: center;
     font-size: 10pt;
 }
+
+.filter-off {
+    display:none;
+}
+
+.link-filter {
+    display:inline-block;
+}

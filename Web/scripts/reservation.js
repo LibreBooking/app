@@ -593,7 +593,7 @@ function Reservation(opts) {
 
 
 			$.map(allUserList, function(item) {
-				items.push('<li><a href="#" class="add" title="Add" userId="' + item.Id + '">' + item.Name + '</a></li>')
+				items.push('<li><a href="#" class="add" title="Add" userId="' + item.Id + '">' + item.DisplayName + '</a></li>')
 			});
 		}
 
@@ -682,7 +682,7 @@ function Reservation(opts) {
 			$.map(allUserList, function(item) {
 				items.push('<li><a href="#" class="add" title="Add"><input type="hidden" class="id" value="' + item.Id + '" />' +
 						'<img src="img/plus-button.png" /></a> ' +
-						item.Name + '</li>')
+						item.DisplayName + '</li>')
 			});
 		}
 

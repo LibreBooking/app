@@ -92,11 +92,26 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
 				{/foreach}
 				</select>
-				<a href="#">{translate key=AllUsers}</a>
-				<a href="#">{translate key=AllGroups}</a>
 
-				<input id="user_id" type="hidden" {formname key=USER_ID}/>
-				<input id="group_id" type="hidden" {formname key=GROUP_ID}/>
+				<div id="user-filter-div" class="link-filter">
+					<a href="#" class="all">{translate key=AllUsers}</a>
+					<a href="#" class="selected filter-off"></a>
+					<input id="user-filter" type="text" class="textbox filter-input filter-off"/>
+					{html_image src="minus-white.png" class="clear filter-off"}
+					<input id="user_id" class="filter-id" type="hidden" {formname key=USER_ID}/>
+				</div>
+
+				<div id="group-filter-div" class="link-filter">
+					<a href="#" class="all">{translate key=AllGroups}</a>
+					<a href="#" class="selected filter-off"></a>
+					<input id="group-filter" type="text" class="textbox filter-input filter-off"/>
+					{html_image src="minus-white.png" class="clear filter-off"}
+					<input id="group_id" class="filter-id" type="hidden" {formname key=GROUP_ID}/>
+				</div>
+
+
+
+
 			</div>
 		</div>
 		<input type="submit" value="{translate key=GetReport}" class="button" id="btnCustomReport" asyncAction=""/>
@@ -114,11 +129,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	...</h3>{html_image src="admin-ajax-indicator.gif"}</div>
 
 <div class="dialog" id="userPopup">
-{translate key=User}<input id="user_filter" type="text" class="textbox"/>
+{translate key=User}<a href="#" id="browseUser">Browse</a>
 </div>
 
 <div class="dialog" id="groupPopup">
 {translate key=Group}<input id="group_filter" type="text" class="textbox"/>
+</div>
+
+<div class="dialog" id="browseUserDialog">
+browse all users
 </div>
 
 <div class="dialog" id="saveDialog" title="{translate key=SaveThisReport}">

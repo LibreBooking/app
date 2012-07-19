@@ -2,6 +2,8 @@ $.fn.userAutoComplete = function(url, selectionCallback)
 {
 	var textbox = $(this);
 
+	//var options = $.extend({}, opts);
+
 	textbox.autocomplete(
 		{
 			source: function(request, response) {
@@ -14,9 +16,9 @@ $.fn.userAutoComplete = function(url, selectionCallback)
 					success: function(data) {
 						response($.map(data, function(item) {
 							var l = item.Name;
-							if (item.Email)
+							if (item.DisplayName)
 							{
-								l += " (" + item.Email + ")";
+								l = item.DisplayName
 							}
 							return {
 								label: l,
