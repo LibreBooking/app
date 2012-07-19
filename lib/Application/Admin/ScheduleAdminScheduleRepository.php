@@ -39,9 +39,6 @@ class ScheduleAdminScheduleRepository extends ScheduleRepository
 		parent::__construct();
 	}
 
-	/**
-	 * @return array|Schedule[]
-	 */
 	public function GetAll()
 	{
 		$user = $this->repo->LoadById($this->user->UserId);
@@ -60,9 +57,6 @@ class ScheduleAdminScheduleRepository extends ScheduleRepository
 		return $filteredList;
 	}
 
-	/**
-	 * @param Schedule $schedule
-	 */
 	public function Update(Schedule $schedule)
 	{
 		$user = $this->repo->LoadById($this->user->UserId);
@@ -73,6 +67,26 @@ class ScheduleAdminScheduleRepository extends ScheduleRepository
 		}
 
 		parent::Update($schedule);
+	}
+
+	public function Add(Schedule $schedule, $copyLayoutFromScheduleId)
+	{
+		$user = $this->repo->LoadById($this->user->UserId);
+		if (!$user->IsInRole(RoleLevel::SCHEDULE_ADMIN))
+		{
+			throw new Exception(sprintf('Schedule Add Failed. User %s does not have admin access.', $this->user->UserId));
+		}
+
+		foreach ($user->Groups() as $group)
+		{
+			if ($group->IsScheduleAdmin)
+			{
+				$schedule->SetAdminGroupId($group->GroupId);
+				break;
+			}
+		}
+
+		parent::Add($schedule, $copyLayoutFromScheduleId);
 	}
 }
 ?>

@@ -314,7 +314,7 @@ class AddSavedReportCommand extends SqlCommand
 
 class AddScheduleCommand extends SqlCommand
 {
-	public function __construct($scheduleName, $isDefault, $weekdayStart, $daysVisible, $layoutId)
+	public function __construct($scheduleName, $isDefault, $weekdayStart, $daysVisible, $layoutId, $adminGroupId = null)
 	{
 		parent::__construct(Queries::ADD_SCHEDULE);
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_NAME, $scheduleName));
@@ -322,6 +322,7 @@ class AddScheduleCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_WEEKDAYSTART, $weekdayStart));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DAYSVISIBLE, $daysVisible));
 		$this->AddParameter(new Parameter(ParameterNames::LAYOUT_ID, $layoutId));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
 	}
 }
 

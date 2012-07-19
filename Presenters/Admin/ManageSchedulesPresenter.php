@@ -49,7 +49,12 @@ class ManageScheduleService
      */
     private $resourceRepository;
 
-    public function __construct(IScheduleRepository $scheduleRepository, IResourceRepository $resourceRepository)
+	/**
+	 * @var array|Schedule[]
+	 */
+	private $_all;
+
+	public function __construct(IScheduleRepository $scheduleRepository, IResourceRepository $resourceRepository)
     {
         $this->scheduleRepository = $scheduleRepository;
         $this->resourceRepository = $resourceRepository;
@@ -60,8 +65,20 @@ class ManageScheduleService
      */
     public function GetAll()
     {
-        return $this->scheduleRepository->GetAll();
+        if (is_null($this->_all))
+		{
+			$this->_all = $this->scheduleRepository->GetAll();
+		}
+		return $this->_all;
     }
+
+	/**
+	 * @return array|Schedule[]
+	 */
+	public function GetSourceSchedules()
+	{
+		return $this->GetAll();
+	}
 
     /**
      * @param Schedule $schedule
@@ -180,6 +197,8 @@ class ManageScheduleService
 		$schedule->SetAdminGroupId($adminGroupId);
 		$this->scheduleRepository->Update($schedule);
 	}
+
+
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
@@ -220,6 +239,7 @@ class ManageSchedulesPresenter extends ActionPresenter
     public function PageLoad()
     {
         $schedules = $this->manageSchedulesService->GetAll();
+		$sourceSchedules = $this->manageSchedulesService->GetSourceSchedules();
 
         $layouts = array();
         /* @var $schedule Schedule */
@@ -231,7 +251,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 
 		$this->page->BindGroups($this->groupViewRepository->GetGroupsByRole(RoleLevel::SCHEDULE_ADMIN));
 
-        $this->page->BindSchedules($schedules, $layouts);
+        $this->page->BindSchedules($schedules, $layouts, $sourceSchedules);
         $this->PopulateTimezones();
 
     }

@@ -105,8 +105,8 @@ class Queries
 			VALUES (@report_name, @userid, @dateCreated, @report_details)';
 
 	const ADD_SCHEDULE =
-			'INSERT INTO schedules (name, isdefault, weekdaystart, daysvisible, layout_id)
-		VALUES (@scheduleName, @scheduleIsDefault, @scheduleWeekdayStart, @scheduleDaysVisible, @layoutid)';
+			'INSERT INTO schedules (name, isdefault, weekdaystart, daysvisible, layout_id, admin_group_id)
+		VALUES (@scheduleName, @scheduleIsDefault, @scheduleWeekdayStart, @scheduleDaysVisible, @layoutid, @admin_group_id)';
 
 	const ADD_USER_GROUP =
 			'INSERT INTO user_groups (user_id, group_id)

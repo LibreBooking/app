@@ -74,9 +74,10 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
 {
 	/**
 	 * @param Schedule[] $schedules 
-	 * @param array $layouts 
+	 * @param array $layouts
+	 * @param Schedule[] $sourceSchedules
 	 */
-	public function BindSchedules($schedules, $layouts);
+	public function BindSchedules($schedules, $layouts, $sourceSchedules);
 
 	/**
 	 * @abstract
@@ -127,10 +128,11 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 		$this->Set('TimezoneOutput', $timezoneOutput);
 	}
 
-	public function BindSchedules($schedules, $layouts)
+	public function BindSchedules($schedules, $layouts, $sourceSchedules)
 	{
 		$this->Set('Schedules', $schedules);
 		$this->Set('Layouts', $layouts);
+		$this->Set('SourceSchedules', $sourceSchedules);
 	}
 
 	public function GetScheduleId()

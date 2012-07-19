@@ -124,7 +124,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 				<li>{translate key=UseSameLayoutAs}<br/>
 					<select style="width:300px" class="textbox" {formname key=SCHEDULE_ID}>
-					{foreach from=$Schedules item=schedule}
+					{foreach from=$SourceSchedules item=schedule}
 						<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
 					{/foreach}
 					</select>

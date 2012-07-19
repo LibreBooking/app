@@ -219,7 +219,8 @@ class ScheduleRepository implements IScheduleRepository
                                       $schedule->GetIsDefault(),
                                       $schedule->GetWeekdayStart(),
                                       $schedule->GetDaysVisible(),
-                                      $source->GetLayoutId()
+                                      $source->GetLayoutId(),
+									  $schedule->GetAdminGroupId()
                                   ));
     }
 

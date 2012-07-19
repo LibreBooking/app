@@ -197,7 +197,7 @@ class AuthorizationService implements IAuthorizationService
             return false;
         }
 
-		$user1 = $this->userRepository->LoadById($user->UserId);
+		$user1 = $this->userRepository->LoadById($userSession->UserId);
 		$user2 = $this->userRepository->LoadById($otherUserId);
 
 		return $user1->IsAdminFor($user2);
