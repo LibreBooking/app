@@ -81,7 +81,7 @@ class ManageGroupsPresenter extends ActionPresenter
 	{
 		if ($this->page->GetGroupId() != null)
 		{
-			$groupList = $this->groupRepository->GetList(1, 1, null, null, new SqlFilterEquals(ColumnNames::GROUP_ID, $this->page->GeTGroupId()));
+			$groupList = $this->groupRepository->GetList(1, 1, null, null, new SqlFilterEquals(new SqlFilterColumn(TableNames::GROUPS_ALIAS, ColumnNames::GROUP_ID), $this->page->GetGroupId()));
 		}
 		else
 		{

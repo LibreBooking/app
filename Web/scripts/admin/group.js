@@ -90,7 +90,7 @@ function GroupManagement(opts) {
 					success: function(data) {
 						response($.map(data, function(item) {
 							return {
-								label: item.DisplayName,
+								label: item.Name,
 								value: item.Id
 							}
 						}));
