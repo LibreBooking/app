@@ -90,7 +90,7 @@ function GroupManagement(opts) {
 					success: function(data) {
 						response($.map(data, function(item) {
 							return {
-								label: item.Name,
+								label: item.DisplayName,
 								value: item.Id
 							}
 						}));
@@ -164,10 +164,10 @@ function GroupManagement(opts) {
 		var items = [];
 		$.map(allUserList, function(item) {
 			if (elements.groupUserList.data('userIds')[item.Id] == undefined) {
-				items.push('<li><a href="#" class="add"><img src="../img/plus-button.png" alt="Add To Group" /></a> ' + item.First + ' ' + item.Last + '<input type="hidden" class="id" value="' + item.Id + '"/></li></li>');
+				items.push('<li><a href="#" class="add"><img src="../img/plus-button.png" alt="Add To Group" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></li></li>');
 			}
 			else {
-				items.push('<li><img src="../img/tick-white.png" alt="Group Member" /> <span>' + item.First + ' ' + item.Last + '</span></li>');
+				items.push('<li><img src="../img/tick-white.png" alt="Group Member" /> <span>' + item.DisplayName + '</span></li>');
 			}
 		});
 
@@ -204,7 +204,7 @@ function GroupManagement(opts) {
 
 			$('#totalUsers').text(data.Total);
 			$.map(data.Users, function(item) {
-				items.push('<li><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.First + ' ' + item.Last + '<input type="hidden" class="id" value="' + item.Id + '"/></li>');
+				items.push('<li><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></li>');
 				userIds[item.Id] = item.Id;
 			});
 

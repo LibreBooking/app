@@ -245,13 +245,27 @@ class ManageGroupsPresenter extends ActionPresenter
 
 class UserGroupResults
 {
+	/**
+	 * @param UserItemView[] $users
+	 * @param int $totalUsers
+	 */
 	public function __construct($users, $totalUsers)
 	{
-		$this->Users = $users;
+		foreach ($users as $user)
+		{
+			$this->Users[] = new AutocompleteUser($user->Id, $user->First, $user->Last, $user->Email, $user->Username);
+		}
 		$this->Total = $totalUsers;
 	}
 
+	/**
+	 * @var int
+	 */
 	public $Total;
+
+	/**
+	 * @var AutocompleteUser[]
+	 */
 	public $Users;
 }
 

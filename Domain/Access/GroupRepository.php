@@ -114,6 +114,14 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 
+	/**
+	 * @param array|int|int[] $groupIds
+	 * @param null $pageNumber
+	 * @param null $pageSize
+	 * @param null $filter
+	 * @param AccountStatus|int $accountStatus
+	 * @return PageableData|UserItemView[]
+	 */
 	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ACTIVE)
 	{
 		$command = new GetAllGroupUsersCommand($groupIds, $accountStatus);

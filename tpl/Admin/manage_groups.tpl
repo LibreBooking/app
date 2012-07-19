@@ -109,7 +109,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisGroup}">
 	<form method="post" id="groupAdminForm">
 		<select {formname key=GROUP_ADMIN} class="textbox">

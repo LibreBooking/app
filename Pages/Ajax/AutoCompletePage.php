@@ -157,6 +157,7 @@ class AutocompleteUser
 		$this->Name = $full->__toString();
 		$this->Email = $email;
 		$this->UserName = $userName;
+		$this->DisplayName = "{$full} ($email)";
 	}
 }
 
