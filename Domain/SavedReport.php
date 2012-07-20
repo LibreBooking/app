@@ -363,10 +363,7 @@ class ReportSerializer
 			$start = $values['range_start'];
 			$end = $values['range_end'];
 
-			$startDate = empty($start) ? Date::Min() : Date::FromDatabase($start);
-			$endDate = empty($end) ? Date::Max() : Date::FromDatabase($end);
-
-			return new Report_Range($values['range'], $startDate, $endDate);
+			return new Report_Range($values['range'], $start, $end, 'UTC');
 		}
 		else
 		{

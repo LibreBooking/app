@@ -58,7 +58,7 @@ interface IGroupViewRepository
 	 * @param string $sortField
 	 * @param string $sortDirection
 	 * @param ISqlFilter $filter
-	 * @return PageableData of GroupItemView
+	 * @return PageableData|GroupItemView[]
 	 */
 	public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null, $filter = null);
 
@@ -69,7 +69,7 @@ interface IGroupViewRepository
 	 * @param int $pageSize
 	 * @param ISqlFilter $filter
 	 * @param AccountStatus|int $accountStatus
-	 * @return PageableData of GroupUserView
+	 * @return PageableData|GroupUserView[]
 	 */
 	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ALL);
 

@@ -44,8 +44,8 @@ class ReportingServiceTests extends TestBase
 
 	public function testBuildsCustomResourceReport()
 	{
-		$start = Date::Parse('2010-01-01');
-		$end = Date::Parse('2010-01-02');
+		$start = '2010-01-01';
+		$end = '2010-01-02';
 
 		$resourceId = 1;
 		$scheduleId = 2;
@@ -56,13 +56,13 @@ class ReportingServiceTests extends TestBase
 		$usage = new Report_Usage(Report_Usage::RESOURCES);
 		$selection = new Report_ResultSelection(Report_ResultSelection::FULL_LIST);
 		$groupBy = new Report_GroupBy(Report_GroupBy::GROUP);
-		$range = new Report_Range(Report_Range::DATE_RANGE, $start, $end);
+		$range = new Report_Range(Report_Range::DATE_RANGE, $start, $end, 'UTC');
 		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId);
 
 		$commandBuilder = new ReportCommandBuilder();
 		$commandBuilder->SelectFullList()
 				->OfResources()
-				->Within($start, $end)
+				->Within(Date::Parse($start, 'UTC'), Date::Parse($end, 'UTC'))
 				->WithResourceId($resourceId)
 				->WithUserId($userId)
 				->WithScheduleId($scheduleId)

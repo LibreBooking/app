@@ -52,8 +52,11 @@ class ReportingRepositoryTests extends TestBase
 	{
 		$reportName = 'reportName';
 		$ownerId = 12;
-		$startRange = Date::Parse('2010-01-01', 'America/Chicago');
-		$endRange = Date::Parse('2010-01-02', 'America/Chicago');
+		$startRange = '2010-01-01';
+		$endRange = '2010-01-02';
+		$timezone = 'America/Chicago';
+		$startDate = Date::Parse($startRange, $timezone);
+		$endDate = Date::Parse($endRange, $timezone);
 		$resourceId = 1;
 		$scheduleId = 2;
 		$userId = 3;
@@ -63,14 +66,14 @@ class ReportingRepositoryTests extends TestBase
 		$usage = new Report_Usage(Report_Usage::ACCESSORIES);
 		$selection = new Report_ResultSelection(Report_ResultSelection::COUNT);
 		$groupBy = new Report_GroupBy(Report_GroupBy::RESOURCE);
-		$range = new Report_Range(Report_Range::DATE_RANGE, $startRange, $endRange);
+		$range = new Report_Range(Report_Range::DATE_RANGE, $startRange, $endRange, $timezone);
 		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId);
 
 		$report = new SavedReport($reportName, $ownerId, $usage, $selection, $groupBy, $range, $filter);
 
 		$this->repository->SaveCustomReport($report);
 
-		$serializedCriteria = "usage=ACCESSORIES;selection=COUNT;groupby=RESOURCE;range=DATE_RANGE;range_start={$startRange->ToDatabase()};range_end={$endRange->ToDatabase()};resourceid=$resourceId;scheduleid=$scheduleId;userid=$userId;groupid=$groupId;accessoryid=$accessoryId";
+		$serializedCriteria = "usage=ACCESSORIES;selection=COUNT;groupby=RESOURCE;range=DATE_RANGE;range_start={$startDate->ToDatabase()};range_end={$endDate->ToDatabase()};resourceid=$resourceId;scheduleid=$scheduleId;userid=$userId;groupid=$groupId;accessoryid=$accessoryId";
 
 		$expectedCommand = new AddSavedReportCommand($reportName, $ownerId, $report->DateCreated(), $serializedCriteria);
 

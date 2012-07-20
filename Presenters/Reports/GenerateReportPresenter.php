@@ -46,6 +46,10 @@ class GenerateReportPresenter extends ActionPresenter
 	 * @var IScheduleRepository
 	 */
 	private $scheduleRepo;
+	/**
+	 * @var IGroupRepository
+	 */
+	private $groupRepo;
 
 	/**
 	 * @param IGenerateReportPage $page
@@ -53,8 +57,15 @@ class GenerateReportPresenter extends ActionPresenter
 	 * @param IReportingService $reportingService
 	 * @param IResourceRepository $resourceRepo
 	 * @param IScheduleRepository $scheduleRepo
+	 * @param IGroupViewRepository $groupRepo
 	 */
-	public function __construct(IGenerateReportPage $page, UserSession $user, IReportingService $reportingService, IResourceRepository $resourceRepo, IScheduleRepository $scheduleRepo)
+	public function __construct(
+		IGenerateReportPage $page,
+		UserSession $user,
+		IReportingService $reportingService,
+		IResourceRepository $resourceRepo,
+		IScheduleRepository $scheduleRepo,
+		IGroupViewRepository $groupRepo)
 	{
 		parent::__construct($page);
 		$this->page = $page;
@@ -62,6 +73,7 @@ class GenerateReportPresenter extends ActionPresenter
 		$this->reportingService = $reportingService;
 		$this->resourceRepo = $resourceRepo;
 		$this->scheduleRepo = $scheduleRepo;
+		$this->groupRepo = $groupRepo;
 
 		$this->AddAction(ReportActions::Generate, 'GenerateCustomReport');
 		$this->AddAction(ReportActions::PrintReport, 'PrintReport');
@@ -74,6 +86,7 @@ class GenerateReportPresenter extends ActionPresenter
 		$this->page->BindResources($this->resourceRepo->GetResourceList());
 		$this->page->BindAccessories($this->resourceRepo->GetAccessoryList());
 		$this->page->BindSchedules($this->scheduleRepo->GetAll());
+		$this->page->BindGroups($this->groupRepo->GetList()->Results());
 	}
 
 	public function ProcessAction()
@@ -166,9 +179,8 @@ class GenerateReportPresenter extends ActionPresenter
 	{
 		$startString = $this->page->GetStart();
 		$endString = $this->page->GetEnd();
-		$start = empty($startString) ? Date::Min() : Date::Parse($startString, $this->user->Timezone);
-		$end = empty($endString) ? Date::Max() : Date::Parse($endString, $this->user->Timezone);
-		return new Report_Range($this->page->GetRange(), $start, $end);
+
+		return new Report_Range($this->page->GetRange(), $startString, $endString, $this->user->Timezone);
 	}
 
 	/**

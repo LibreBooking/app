@@ -21,7 +21,6 @@ function GenerateReports(reportOptions) {
 			}
 		});
 
-
 		wireUpAutocompleteFilters();
 
 		$('.dateinput').click(function () {
@@ -84,7 +83,7 @@ function GenerateReports(reportOptions) {
 	};
 
 	function wireUpAutocompleteFilters() {
-		$('.link-filter .all, .link-filter .selected').click(function (e) {
+		$('#user-filter-div').find('.link-filter .all, .link-filter .selected').click(function (e) {
 			e.preventDefault();
 			var filter = $(this).siblings('.filter-input, .clear');
 			filter.val('');
@@ -92,7 +91,7 @@ function GenerateReports(reportOptions) {
 			$(this).hide();
 		});
 
-		$('.link-filter .clear').click(function (e) {
+		$('#user-filter-div').find('.link-filter .clear').click(function (e) {
 			e.preventDefault();
 			$(this).siblings('.all').show();
 			var filter = $(this).siblings('.filter-input, .filter-id, .selected');
@@ -106,7 +105,6 @@ function GenerateReports(reportOptions) {
 			filterDiv.find('.filter-id').val(selectedId);
 			filterDiv.find('.selected').text(selectedName).show();
 			filterDiv.find('.filter-input').hide();
-
 		};
 
 		$("#user-filter").userAutoComplete(opts.userAutocompleteUrl, function (ui) {

@@ -114,6 +114,12 @@ interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 	 * @param array|Schedule[] $schedules
 	 */
 	public function BindSchedules($schedules);
+
+	/**
+	 * @abstract
+	 * @param array|GroupItemView[] $groups
+	 */
+	public function BindGroups($groups);
 }
 
 class GenerateReportPage extends ActionPage implements IGenerateReportPage
@@ -131,7 +137,8 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 			ServiceLocator::GetServer()->GetUserSession(),
 			new ReportingService(new ReportingRepository()),
 			new ResourceRepository(),
-			new ScheduleRepository());
+			new ScheduleRepository(),
+			new GroupRepository());
 	}
 
 	/**
@@ -318,6 +325,13 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 		$this->Display('Reports/print-custom-report.tpl');
 	}
 
+	/**
+	 * @param array|GroupItemView[] $groups
+	 */
+	public function BindGroups($groups)
+	{
+		$this->Set('Groups', $groups);
+	}
 }
 
 ?>

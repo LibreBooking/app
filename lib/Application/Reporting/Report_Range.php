@@ -22,6 +22,9 @@ class Report_Range
 {
 	const DATE_RANGE = 'DATE_RANGE';
 	const ALL_TIME = 'ALL_TIME';
+	const CURRENT_MONTH = 'CURRENT_MONTH';
+	const CURRENT_WEEK = 'CURRENT_WEEK';
+	const TODAY = 'TODAY';
 
 	/**
 	 * @var Report_Range|string
@@ -40,19 +43,37 @@ class Report_Range
 
 	/**
 	 * @param $range string|Report_Range
-	 * @param Date $start
-	 * @param Date $end
+	 * @param $startString
+	 * @param $endString
+	 * @param string $timezone
 	 */
-	public function __construct($range, Date $start, Date $end)
+	public function __construct($range, $startString, $endString, $timezone = 'UTC')
 	{
 		$this->range = $range;
-		$this->start = $start;
-		$this->end = $end;
+		$this->start = empty($startString) ? Date::Min() : Date::Parse($startString, $timezone);
+		$this->end = empty($endString) ? Date::Max() : Date::Parse($endString, $timezone);
+
+		$now = Date::Now()->ToTimezone($timezone);
+		if ($this->range == self::CURRENT_MONTH)
+		{
+			$this->start = Date::Create($now->Year(), $now->Month(), 1, 0, 0, 0, $timezone);
+			$this->end = $this->start->AddMonths(1);
+		}
+		if ($this->range == self::CURRENT_WEEK)
+		{
+			$this->start = $now->AddDays(-$now->Weekday());
+			$this->end = $this->Start()->AddDays(8);
+		}
+		if ($this->range == self::TODAY)
+		{
+			$this->start = Date::Create($now->Year(), $now->Month(), $now->Day(), 0, 0, 0, $timezone);
+			$this->end = $this->start->AddDays(1);
+		}
 	}
 
 	public function Add(ReportCommandBuilder $builder)
 	{
-		if ($this->range == self::DATE_RANGE)
+		if ($this->range != self::ALL_TIME)
 		{
 			$builder->Within($this->start, $this->end);
 		}
