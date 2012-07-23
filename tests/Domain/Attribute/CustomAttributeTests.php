@@ -59,8 +59,8 @@ class CustomAttributeTests extends TestBase
 
 	public function testChecksForPossibleValues()
 	{
-		$customAttributeRequired = CustomAttribute::Create(null, 1, 1, null, false, '1,abc,1abc3', null);
-		$customAttributeNotRequired = CustomAttribute::Create(null, 1, 1, null, false, null, null);
+		$customAttributeRequired = CustomAttribute::Create(null, 1, 1, null, true, '1,abc,1abc3', null);
+		$customAttributeNotRequired = CustomAttribute::Create(null, 1, 1, null, false, 'something', null);
 
 		$this->assertFalse($customAttributeRequired->SatisfiesConstraint(''));
 		$this->assertFalse($customAttributeRequired->SatisfiesConstraint(' '));

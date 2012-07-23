@@ -229,6 +229,11 @@ class CustomAttribute
 
 		if (!empty($this->possibleValues))
 		{
+			if (!$this->required)
+			{
+				return true;
+			}
+
 			$list = $this->PossibleValueList();
 			return in_array($value, $list);
 		}
