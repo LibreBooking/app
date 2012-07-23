@@ -572,7 +572,7 @@ class UserDto
 	public function FullName()
 	{
 		$name = new FullName($this->FirstName(), $this->LastName());
-		return $name->__toString();
+		return $name->__toString(). " ({$this->emailAddress})";
 	}
 
 	public function EmailAddress()

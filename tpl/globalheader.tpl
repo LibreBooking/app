@@ -73,6 +73,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 			<ul id="nav" class="menubar">
+			{if $LoggedIn}
 				<li class="menubaritem first"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
 				<li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyAccount"}</a>
 					<ul>
@@ -163,6 +164,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<li><a href="{$Path}reports/{Pages::REPORTS_COMMON}">{translate key=CommonReports}</a></li>
 				</ul>
 			</li>
+			{/if}
 			{/if}
 				<li class="menubaritem"><a href="{$Path}help.php">{translate key="Help"}</a></li>
 			</ul>

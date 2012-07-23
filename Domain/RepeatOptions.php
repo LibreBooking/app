@@ -185,7 +185,10 @@ class RepeatWeekly extends RepeatOptionsAbstract
 		parent::__construct($interval, $terminationDate);
 
 		$this->_daysOfWeek = $daysOfWeek;
-		sort($this->_daysOfWeek);
+		if ($this->_daysOfWeek != null)
+		{
+			sort($this->_daysOfWeek);
+		}
 	}
 
 	public function GetDates(DateRange $startingRange)
