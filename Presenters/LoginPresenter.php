@@ -88,19 +88,8 @@ class LoginPresenter
 
     public function Login()
     {
-        /**
-         * If authentication is successful Log the user in and redirect to requested page.
-         */
-        $auth = Configuration::Instance()->GetSectionKey(ConfigSection::PLUGINS, ConfigKeys::PLUGIN_AUTHENTICATION);
-        if ($auth=='Krb5')
-        {
-            $id = $this->_page->GetKrb5UserName();
-        }
-        else
-        {
-            $id = $this->_page->GetEmailAddress();
-        } 
-         
+        $id = $this->_page->GetEmailAddress();
+
         if ($this->authentication->Validate($id, $this->_page->GetPassword()))
         {
             $context = new WebLoginContext(ServiceLocator::GetServer(), new LoginData($this->_page->GetPersistLogin(), $this->_page->GetSelectedLanguage()));

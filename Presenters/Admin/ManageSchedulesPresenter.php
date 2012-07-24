@@ -280,7 +280,7 @@ class ManageSchedulesPresenter extends ActionPresenter
         $weekdayStart = $this->page->GetStartDay();
         $daysVisible = $this->page->GetDaysVisible();
 
-        Log::Debug('Adding schedule with name $%s', $name);
+        Log::Debug('Adding schedule with name %s', $name);
 
         $this->manageSchedulesService->Add($name, $daysVisible, $weekdayStart, $copyLayoutFromScheduleId);
     }
