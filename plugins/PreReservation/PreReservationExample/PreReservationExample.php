@@ -18,53 +18,11 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class PreReservationRuleExample implements IReservationValidationService
-{
-    /**
-     * @var IReservationValidationService
-     */
-    private $serviceToDecorate;
+require_once(dirname(__FILE__) . '/PreReservationExampleValidation.php');
 
-    public function __construct(IReservationValidationService $serviceToDecorate)
-    {
-        $this->serviceToDecorate = $serviceToDecorate;
-    }
-
-    /**
-     * @param ReservationSeries|ExistingReservationSeries $series
-     * @return IReservationValidationResult
-     */
-    public function Validate($series)
-    {
-        $result = $this->serviceToDecorate->Validate($series);
-
-        // don't bother validating this rule if others have failed
-        if (!$result->CanBeSaved())
-        {
-            return $result;
-        }
-
-        if ($this->PassesCustomRule($series))
-        {
-            return new ReservationValidationResult();
-        }
-
-        return new ReservationValidationResult(false, "Custom validation failed");
-    }
-
-    /**
-     * @param ReservationSeries $series
-     * @return bool
-     */
-    private function PassesCustomRule($series)
-    {
-        // make your custom checks here
-        return true;
-    }
-}
 class PreReservationExample extends PreReservationFactory
 {
-    /**
+	/**
      * @var PreReservationFactory
      */
     private $factoryToDecorate;
@@ -72,18 +30,24 @@ class PreReservationExample extends PreReservationFactory
     public function __construct(PreReservationFactory $factoryToDecorate)
     {
         $this->factoryToDecorate = $factoryToDecorate;
+
+		require_once(dirname(__FILE__) . '/PreReservationExample.config.php');
+
+		Configuration::Instance()->Register(
+					dirname(__FILE__) . '/PreReservationExample.config.php',
+					'PreReservationExample');
     }
 
     public function CreatePreAddService(UserSession $userSession)
     {
         $base = $this->factoryToDecorate->CreatePreAddService($userSession);
-        return new PreReservationRuleExample($base);
+        return new PreReservationExampleValidation($base);
     }
 
     public function CreatePreUpdateService(UserSession $userSession)
     {
         $base =  $this->factoryToDecorate->CreatePreUpdateService($userSession);
-        return new PreReservationRuleExample($base);
+        return new PreReservationExampleValidation($base);
     }
 
     public function CreatePreDeleteService(UserSession $userSession)
