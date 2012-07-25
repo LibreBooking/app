@@ -55,7 +55,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
 	/**
 	 * @var ActiveDirectoryUser
 	 */
-	private $user;
+	private $user = null;
 
 	/**
 	 * @var string
@@ -123,11 +123,11 @@ class ActiveDirectory extends Authentication implements IAuthentication
 
         if (!$connected)
         {
-            throw new Exception("Could not connect to ActiveDirectory LDAP server. Please check your ActiveDirectory LDAP configuration settings");
+            throw new Exception('Could not connect to ActiveDirectory LDAP server. Please check your ActiveDirectory LDAP configuration settings');
         }
 
         $isValid = $this->ldap->Authenticate($username, $password);
-        Log::Debug("Result of ActiveDirectory LDAP Authenticate for user %s: %d", $username, $isValid);
+        Log::Debug('Result of ActiveDirectory LDAP Authenticate for user %s: %d', $username, $isValid);
 
         if ($isValid)
         {
@@ -136,7 +136,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
 
             if (!$userLoaded)
             {
-                Log::Error("Could not load user details from ActiveDirectory LDAP. Check your basedn setting. User: %s", $username);
+                Log::Error('Could not load user details from ActiveDirectory LDAP. Check your basedn setting. User: %s', $username);
             }
             return $userLoaded;
         }
@@ -153,9 +153,15 @@ class ActiveDirectory extends Authentication implements IAuthentication
 
 	public function Login($username, $loginContext)
 	{
+		Log::Debug('ActiveDirectory - Login() in with username: %s', $username);
 		if ($this->LdapUserExists())
 		{
+			Log::Debug('Running ActiveDirectory user synchronization for username: %s, Attributes: %s', $username, $this->user->__toString());
 			$this->Synchronize($username);
+		}
+		else
+		{
+			Log::Debug('Skipping ActiveDirectory user synchronization, user not loaded');
 		}
 
 		$this->authToDecorate->Login($username, $loginContext);

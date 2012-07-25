@@ -51,10 +51,17 @@ class AdLdapWrapper implements IActiveDirectory
 		{
 			try
 			{
-				$options['domain_controllers'] = array($hosts[$attempts]);
+				$host = $hosts[$attempts];
+				Log::Debug('ActiveDirectory - Trying to connect to host %s', $host);
+				$options['domain_controllers'] = array($host);
 				$attempts++;
 				$this->ldap = new adLdap($options);
 				$connected = true;
+
+				if ($connected)
+				{
+					Log::Debug('ActiveDirectory - Connection succeeded to host %s', $host);
+				}
 			}
 			catch (adLDAPException $ex)
 			{
@@ -68,7 +75,12 @@ class AdLdapWrapper implements IActiveDirectory
 
 	public function Authenticate($username, $password)
 	{
-		return $this->ldap->authenticate($username, $password);
+		$authenticated =  $this->ldap->authenticate($username, $password);
+		if (!$authenticated)
+		{
+			Log::Debug('ActiveDirectory - Authenticate for user %s failed with reason %s', $username, $this->ldap->getLastError());
+		}
+		return $authenticated;
 	}
 
 	public function GetLdapUser($username)
@@ -80,6 +92,10 @@ class AdLdapWrapper implements IActiveDirectory
 		if (count($entries) > 0)
 		{
 			return new ActiveDirectoryUser($entries);
+		}
+		else
+		{
+			Log::Debug('ActiveDirectory - Could not load user details for user %s. Reason %s', $username, $this->ldap->getLastError());
 		}
 
 		return null;

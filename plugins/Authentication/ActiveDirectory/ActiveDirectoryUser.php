@@ -70,6 +70,18 @@ class ActiveDirectoryUser
 		return $this->title;
 	}
 
+	public function __toString()
+	{
+		return sprintf('ActiveDirectoryUser - First Name: %s, Last Name: %s, Email: %s, Phone: %s, Institution: %s, Title: %s',
+			$this->fname,
+			$this->lname,
+			$this->mail,
+			$this->phone,
+			$this->institution,
+			$this->title);
+	}
+
+
 }
 
 ?>

@@ -24,6 +24,6 @@ interface IReservationValidationService
 	 * @param ReservationSeries|ExistingReservationSeries $series
 	 * @return IReservationValidationResult
 	 */
-	function Validate($series);
+	public function Validate($series);
 }
 ?>
