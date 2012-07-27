@@ -421,11 +421,11 @@ class Queries
 				[SELECT_TOKEN]
 			FROM reservation_instances ri
 			INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
-			INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
+			INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id AND ru.user_id = rs.owner_id
 			INNER JOIN users ON users.user_id = rs.owner_id
 			INNER JOIN users owner ON owner.user_id = rs.owner_id
 			INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
-			INNER JOIN resources on rr.resource_id = resources.resource_id
+			INNER JOIN resources ON rr.resource_id = resources.resource_id
 			INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
 			[JOIN_TOKEN]
 			WHERE rs.status_id <> 2
