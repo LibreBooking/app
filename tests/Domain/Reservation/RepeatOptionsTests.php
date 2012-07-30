@@ -251,7 +251,6 @@ class RepeatOptionsTests extends TestBase
 		$this->assertEquals($totalDates, count($repeatedDates));
 		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
 		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
-	
 	}
 	
 	public function testFactoryCreatesRepeatDailyOptions()
@@ -272,7 +271,6 @@ class RepeatOptionsTests extends TestBase
 	
 	public function testFactoryCreatesDayOfMonthRepeatOptions()
 	{
-		$intial = DateRange::Create('2010-01-01', '2010-01-01', 'cst');
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create('monthly', 1, null, null, 'dayOfMonth');
 		
@@ -281,7 +279,6 @@ class RepeatOptionsTests extends TestBase
 	
 	public function testFactoryCreatesWeekDayOfMonthRepeatOptions()
 	{
-		$intial = DateRange::Create('2010-01-01', '2010-01-01', 'cst');
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create('monthly', 1, null, null, null);
 		
@@ -351,9 +348,33 @@ class RepeatOptionsTests extends TestBase
 		$this->assertEquals($terminationDate, $config->TerminationDate);
 	}
 
-	public function testRepeatDayOfMonth()
+	public function testRepeatWhenRepeatingDayBeforeFirstDayOfMonth()
 	{
-		
+		// 2012-08 starts on wednesday, the 1st
+		$firstSunday = Date::Parse('2012-08-05');
+		$firstTuesday = Date::Parse('2012-08-07');
+		$secondTuesday = Date::Parse('2012-08-14');
+		$firstWednesday = Date::Parse('2012-08-01');
+		$secondWednesday = Date::Parse('2012-08-08');
+		$weekOfMonth = new RepeatWeekDayOfMonth(1, Date::Parse('2013-01-01'));
+
+		$repeatDatesForFirstSun = $weekOfMonth->GetDates(new DateRange($firstSunday, $firstSunday));
+		$repeatDatesForFirstTue = $weekOfMonth->GetDates(new DateRange($firstTuesday, $firstTuesday));
+		$repeatDatesForSecondTue = $weekOfMonth->GetDates(new DateRange($secondTuesday, $secondTuesday));
+		$repeatDatesForFirstWed = $weekOfMonth->GetDates(new DateRange($firstWednesday, $firstWednesday));
+		$repeatDatesForSecondWed = $weekOfMonth->GetDates(new DateRange($secondWednesday, $secondWednesday));
+
+		$firstRepeatedSun = $repeatDatesForFirstSun[0]->GetBegin();
+		$firstRepeatedTue = $repeatDatesForFirstTue[0]->GetBegin();
+		$secondRepeatedTue = $repeatDatesForSecondTue[0]->GetBegin();
+		$firstRepeatedWed = $repeatDatesForFirstWed[0]->GetBegin();
+		$secondRepeatedWed = $repeatDatesForSecondWed[0]->GetBegin();
+
+		$this->assertTrue(Date::Parse('2012-09-02')->Equals($firstRepeatedSun), $firstRepeatedSun->__toString());
+		$this->assertTrue(Date::Parse('2012-09-04')->Equals($firstRepeatedTue), $firstRepeatedTue->__toString());
+		$this->assertTrue(Date::Parse('2012-09-05')->Equals($firstRepeatedWed), $firstRepeatedWed->__toString());
+		$this->assertTrue(Date::Parse('2012-09-11')->Equals($secondRepeatedTue), $secondRepeatedTue->__toString());
+		$this->assertTrue(Date::Parse('2012-09-12')->Equals($secondRepeatedWed), $secondRepeatedWed->__toString());
 	}
 }
 ?>

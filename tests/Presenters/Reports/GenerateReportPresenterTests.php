@@ -45,22 +45,23 @@ class GenerateReportPresenterTests extends TestBase
 		$this->reportingService = $this->getMock('IReportingService');
 		$resourceRepository = $this->getMock('IResourceRepository');
 		$scheduleRepository = $this->getMock('IScheduleRepository');
+		$groupRepository = $this->getMock('IGroupViewRepository');
 
-		$this->presenter = new GenerateReportPresenter($this->page, $this->fakeUser, $this->reportingService, $resourceRepository, $scheduleRepository);
+		$this->presenter = new GenerateReportPresenter($this->page, $this->fakeUser, $this->reportingService, $resourceRepository, $scheduleRepository, $groupRepository);
 	}
 
 	public function testRunsCustomReport()
 	{
 		$this->SetupPage();
 
-		$expectedStart = Date::Parse($this->page->_RangeStart, $this->fakeUser->Timezone);
-		$expectedEnd = Date::Parse($this->page->_RangeEnd, $this->fakeUser->Timezone);
+		$expectedStart = $this->page->_RangeStart;
+		$expectedEnd = $this->page->_RangeEnd;
 		$expectedReport = new FakeReport();
 
 		$usage = new Report_Usage($this->page->_Usage);
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
-		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd);
+		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd, $this->fakeUser->Timezone);
 		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId);
 
 		$this->reportingService->expects($this->once())
@@ -80,13 +81,13 @@ class GenerateReportPresenterTests extends TestBase
 
 		$this->page->_ReportName = $reportName;
 
-		$expectedStart = Date::Parse($this->page->_RangeStart, $this->fakeUser->Timezone);
-		$expectedEnd = Date::Parse($this->page->_RangeEnd, $this->fakeUser->Timezone);
+		$expectedStart = $this->page->_RangeStart;
+		$expectedEnd = $this->page->_RangeEnd;
 
 		$usage = new Report_Usage($this->page->_Usage);
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
-		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd);
+		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd, $this->fakeUser->Timezone);
 		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId);
 
 		$this->reportingService->expects($this->once())

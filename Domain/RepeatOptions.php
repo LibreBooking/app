@@ -26,7 +26,7 @@ interface IRepeatOptions
 	 * Gets array of DateRange objects
 	 *
 	 * @param DateRange $startingDates
-	 * @return array[int]DateRange
+	 * @return array|DateRange[]
 	 */
 	function GetDates(DateRange $startingDates);
 
@@ -416,10 +416,10 @@ class RepeatWeekDayOfMonth extends RepeatOptionsAbstract
 	private function GetWeekNumber(Date $firstDate, $firstWeekdayOfMonth)
 	{
 		$week = ceil($firstDate->Day() / 7);
-		if ($firstWeekdayOfMonth > $firstDate->Weekday())
-		{
-			$week++;
-		}
+//		if ($firstWeekdayOfMonth > $firstDate->Weekday())
+//		{
+//			$week++;
+//		}
 
 		return $week;
 	}
