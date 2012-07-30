@@ -139,6 +139,8 @@ function Reservation(opts) {
 
 	// pre-submit callback 
 	Reservation.prototype.preSubmit = function(formData, jqForm, options) {
+
+		$('#dialogSave').dialog('open');
 		$('#result').hide();
 		$('#creatingNotification').show();
 
@@ -338,17 +340,22 @@ function Reservation(opts) {
 		var SetValue = function(value, disabled) {
 			elements.repeatOptions.val(value);
 			elements.repeatOptions.trigger('change');
-			$('select, input', elements.repeatDiv).attr("disabled", disabled);
+			if (disabled) {
+				$('select, input', elements.repeatDiv).attr("disabled", 'disabled');
+			}
+			else {
+				$('select, input', elements.repeatDiv).removeAttr("disabled");
+			}
 		};
 
 		if (MoreThanOneDayBetweenBeginAndEnd()) {
 			elements.repeatOptions.data["current"] = elements.repeatOptions.val();
 			repeatToggled = true;
-			SetValue('none', 'disabled');
+			SetValue('none', true);
 		}
 		else {
 			if (repeatToggled) {
-				SetValue(elements.repeatOptions.data["current"], '');
+				SetValue(elements.repeatOptions.data["current"], false);
 				repeatToggled = false;
 			}
 		}
@@ -415,7 +422,6 @@ function Reservation(opts) {
 		});
 
 		$('.save').click(function() {
-			$('#dialogSave').dialog('open');
 
 			$('#reservationForm').submit();
 		});

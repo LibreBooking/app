@@ -173,7 +173,7 @@ class RepeatWeekly extends RepeatOptionsAbstract
 	/**
 	 * @var array
 	 */
-	private $_daysOfWeek;
+	private $_daysOfWeek = array();
 
 	/**
 	 * @param int $interval
@@ -184,6 +184,10 @@ class RepeatWeekly extends RepeatOptionsAbstract
 	{
 		parent::__construct($interval, $terminationDate);
 
+		if ($daysOfWeek == null)
+		{
+			$daysOfWeek = array();
+		}
 		$this->_daysOfWeek = $daysOfWeek;
 		if ($this->_daysOfWeek != null)
 		{

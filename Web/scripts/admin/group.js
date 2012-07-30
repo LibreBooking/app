@@ -162,15 +162,17 @@ function GroupManagement(opts) {
 		}
 
 		var items = [];
-		$.map(allUserList, function(item) {
-			if (elements.groupUserList.data('userIds')[item.Id] == undefined) {
-				items.push('<li><a href="#" class="add"><img src="../img/plus-button.png" alt="Add To Group" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></li></li>');
-			}
-			else {
-				items.push('<li><img src="../img/tick-white.png" alt="Group Member" /> <span>' + item.DisplayName + '</span></li>');
-			}
-		});
-
+		if (allUserList != null)
+		{
+			$.map(allUserList, function(item) {
+				if (elements.groupUserList.data('userIds')[item.Id] == undefined) {
+					items.push('<li><a href="#" class="add"><img src="../img/plus-button.png" alt="Add To Group" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></li></li>');
+				}
+				else {
+					items.push('<li><img src="../img/tick-white.png" alt="Group Member" /> <span>' + item.DisplayName + '</span></li>');
+				}
+			});
+		}
 
 		$('<ul/>', {'class': '', html: items.join('')}).appendTo(elements.browseUserDialog);
 
@@ -203,10 +205,13 @@ function GroupManagement(opts) {
 			var userIds = [];
 
 			$('#totalUsers').text(data.Total);
-			$.map(data.Users, function(item) {
-				items.push('<li><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></li>');
-				userIds[item.Id] = item.Id;
-			});
+			if (data.Users != null)
+			{
+				$.map(data.Users, function(item) {
+					items.push('<li><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></li>');
+					userIds[item.Id] = item.Id;
+				});
+			}
 
 			elements.groupUserList.empty();
 			elements.groupUserList.data('userIds', userIds);
