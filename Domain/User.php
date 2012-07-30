@@ -243,15 +243,11 @@ class User
 	 */
 	public function WithGroups($groups = array())
 	{
-		$adminGroupIds = array();
-		$groupsWithAdminId = array();
-
 		foreach ($groups as $group)
 		{
 			if ($group->IsGroupAdmin)
 			{
 				$this->isGroupAdmin = true;
-				$adminGroupIds[$group->GroupId] = true;
 			}
 			if ($group->IsApplicationAdmin)
 			{
@@ -265,22 +261,17 @@ class User
 			{
 				$this->isScheduleAdmin = true;
 			}
-
-			if (!empty($group->AdminGroupId))
-			{
-				$groupsWithAdminId[] = $group;
-			}
 		}
 
 		$this->groups = $groups;
+	}
 
-		foreach ($groupsWithAdminId as $g)
-		{
-			if (array_key_exists($g->AdminGroupId, $adminGroupIds))
-			{
-				$this->groupsICanAdminister[] = $g;
-			}
-		}
+	/**
+	 * @param array|UserGroup[] $ownedGroups
+	 */
+	public function WithOwnedGroups($ownedGroups = array())
+	{
+		$this->groupsICanAdminister = $ownedGroups;
 	}
 
 	public function ChangePermissions($allowedResourceIds = array())

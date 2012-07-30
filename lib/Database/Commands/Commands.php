@@ -833,6 +833,15 @@ class GetGroupByIdCommand extends SqlCommand
 	}
 }
 
+class GetGroupsIManageCommand extends SqlCommand
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::GET_GROUPS_I_CAN_MANAGE);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
 class GetLayoutCommand extends SqlCommand
 {
 	public function __construct($scheduleId)

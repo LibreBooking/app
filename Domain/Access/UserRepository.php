@@ -218,6 +218,11 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$user->WithPermissions($permissions);
 			$user->WithGroups($groups);
 
+			if ($user->IsGroupAdmin())
+			{
+				$ownedGroups = $this->LoadOwnedGroups($userId);
+				$user->WithOwnedGroups($ownedGroups);
+			}
 			$this->LoadAttributes($userId, $user);
 
 			$this->_cache->Add($userId, $user);
@@ -531,6 +536,22 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 	public function DeleteActivation($activationCode)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteAccountActivationCommand($activationCode));
+	}
+
+	/**
+	 * @param int $userId
+	 * @return array|UserGroup[]
+	 */
+	private function LoadOwnedGroups($userId)
+	{
+		$groups = array();
+		$reader = ServiceLocator::GetDatabase()->Query(new GetGroupsIManageCommand($userId));
+		while ($row = $reader->GetRow())
+		{
+			$groups[] = new UserGroup($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME]);
+		}
+
+		return $groups;
 	}
 }
 

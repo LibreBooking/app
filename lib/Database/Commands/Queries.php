@@ -366,6 +366,12 @@ class Queries
 		FROM groups
 		WHERE group_id = @groupid';
 
+	const GET_GROUPS_I_CAN_MANAGE = 'SELECT g.group_id, g.name
+		FROM groups g
+		INNER JOIN groups a ON g.admin_group_id = a.group_id
+		INNER JOIN user_groups ug on ug.group_id = a.group_id
+		WHERE ug.user_id = @userid';
+
 	const GET_GROUP_RESOURCE_PERMISSIONS =
 			'SELECT *
 		FROM group_resource_permissions

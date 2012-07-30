@@ -69,30 +69,34 @@ class UserRepositoryTests extends TestBase
 		$loadPermissionsCommand = new GetUserPermissionsCommand($userId);
 		$loadGroupsCommand = new GetUserGroupsCommand($userId, null);
 		$attributesCommand = new GetAttributeValuesCommand($userId, CustomAttributeCategory::USER);
+		$loadOwnedGroups = new GetGroupsIManageCommand($userId);
 
 		$userRow = $this->GetUserRow($userId);
 		$emailPrefRows = $this->GetEmailPrefRows();
 		$permissionsRows = $this->GetPermissionsRows();
 		$groupsRows = $this->GetGroupsRows();
 		$attributeRows = $this->GetAttributeRows();
+		$ownedGroupRows = $this->GetOwnedGroupRows();
 
 		$this->db->SetRow(0, array($userRow));
 		$this->db->SetRow(1, $emailPrefRows);
 		$this->db->SetRow(2, $permissionsRows);
 		$this->db->SetRow(3, $groupsRows);
 		$this->db->SetRow(4, $attributeRows);
+		$this->db->SetRow(5, $ownedGroupRows);
 
 		$row = $userRow;
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 
-		$this->assertEquals(5, count($this->db->_Commands));
+		$this->assertEquals(6, count($this->db->_Commands));
 		$this->assertTrue($this->db->ContainsCommand($loadByIdCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadGroupsCommand));
 		$this->assertTrue($this->db->ContainsCommand($attributesCommand));
+		$this->assertTrue($this->db->ContainsCommand($loadOwnedGroups));
 
 		$this->assertEquals($row[ColumnNames::FIRST_NAME], $user->FirstName());
 		$this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
@@ -122,12 +126,14 @@ class UserRepositoryTests extends TestBase
 		$permissionsRows = $this->GetPermissionsRows();
 		$groupsRows = $this->GetGroupsRows();
 		$attributeRows = $this->GetAttributeRows();
+		$ownedGroupRows = $this->GetOwnedGroupRows();
 
 		$this->db->SetRow(0, array($userRow));
 		$this->db->SetRow(1, $emailPrefRows);
 		$this->db->SetRow(2, $permissionsRows);
 		$this->db->SetRow(3, $groupsRows);
 		$this->db->SetRow(4, $attributeRows);
+		$this->db->SetRow(5, $ownedGroupRows);
 
 		$publicId = uniqid();
 		$userRepository = new UserRepository();
@@ -135,7 +141,7 @@ class UserRepositoryTests extends TestBase
 		$user = $userRepository->LoadByPublicId($publicId);
 
 		$loadByIdCommand = new GetUserByPublicIdCommand($publicId);
-		$this->assertEquals(5, count($this->db->_Commands));
+		$this->assertEquals(6, count($this->db->_Commands));
 		$this->assertTrue($this->db->ContainsCommand($loadByIdCommand));
 
 		$this->assertNotNull($user);
@@ -151,12 +157,13 @@ class UserRepositoryTests extends TestBase
 		$this->db->SetRow(2, $this->GetPermissionsRows());
 		$this->db->SetRow(3, $this->GetGroupsRows());
 		$this->db->SetRow(4, $this->GetAttributeRows());
+		$this->db->SetRow(5, $this->GetOwnedGroupRows());
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 		$user = $userRepository->LoadById($userId); // 2nd call should load from cache
 
-		$this->assertEquals(5, count($this->db->_Commands));
+		$this->assertEquals(6, count($this->db->_Commands));
 	}
 
 	public function testCanLoadUserByUserName()
@@ -167,27 +174,31 @@ class UserRepositoryTests extends TestBase
 		$loadEmailPreferencesCommand = new GetUserEmailPreferencesCommand($userId);
 		$loadPermissionsCommand = new GetUserPermissionsCommand($userId);
 		$loadGroupsCommand = new GetUserGroupsCommand($userId, null);
+		$loadOwnedGroups = new GetGroupsIManageCommand($userId);
 
 		$userRow = $this->GetUserRow($userId);
 		$emailPrefRows = $this->GetEmailPrefRows();
 		$permissionsRows = $this->GetPermissionsRows();
 		$groupsRows = $this->GetGroupsRows();
 		$attributeRows = $this->GetAttributeRows();
+		$ownedGroupRows = $this->GetOwnedGroupRows();
 
 		$this->db->SetRow(0, array($userRow));
 		$this->db->SetRow(1, $emailPrefRows);
 		$this->db->SetRow(2, $permissionsRows);
 		$this->db->SetRow(3, $groupsRows);
 		$this->db->SetRow(4, $attributeRows);
+		$this->db->SetRow(5, $ownedGroupRows);
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadByUsername($userName);
 
-		$this->assertEquals(5, count($this->db->_Commands));
+		$this->assertEquals(6, count($this->db->_Commands));
 		$this->assertTrue($this->db->ContainsCommand($loginCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadGroupsCommand));
+		$this->assertTrue($this->db->ContainsCommand($loadOwnedGroups));
 
 		$this->assertEquals($userId, $user->Id());
 	}
@@ -585,6 +596,14 @@ class UserRepositoryTests extends TestBase
 			array(ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::RESOURCE_ADMIN),
 			array(ColumnNames::GROUP_ID => $groupId2, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => $groupId1, ColumnNames::ROLE_LEVEL => RoleLevel::NONE),
 		);
+	}
+
+	private function GetOwnedGroupRows()
+	{
+		return array(
+					array(ColumnNames::GROUP_ID => 10000, ColumnNames::GROUP_NAME => 'G1'),
+					array(ColumnNames::GROUP_ID => 20000, ColumnNames::GROUP_NAME => 'G2'),
+				);
 	}
 
 	private function GetAttributeRows()
