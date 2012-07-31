@@ -145,7 +145,7 @@ class Queries
 		WHERE username = @username';
 
 	const CHECK_USER_EXISTANCE =
-			'SELECT user_id
+			'SELECT *
 		FROM users
 		WHERE (username = @username OR email = @email)';
 

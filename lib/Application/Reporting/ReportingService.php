@@ -77,6 +77,13 @@ interface IReportingService
 	 * @param int $userId
 	 */
 	public function DeleteSavedReport($reportId, $userId);
+
+	/**
+	 * @abstract
+	 * @param ICannedReport $cannedReport
+	 * @return IReport
+	 */
+	public function GenerateCommonReport(ICannedReport $cannedReport);
 }
 
 
@@ -144,6 +151,12 @@ class ReportingService implements IReportingService
 	public function DeleteSavedReport($reportId, $userId)
 	{
 		$this->repository->DeleteSavedReport($reportId, $userId);
+	}
+
+	public function GenerateCommonReport(ICannedReport $cannedReport)
+	{
+		$data = $this->repository->GetCustomReport($cannedReport->GetBuilder());
+		return new CustomReport($data);
 	}
 }
 

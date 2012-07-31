@@ -239,6 +239,16 @@ class ReportCommandBuilderTests extends TestBase
 		$this->assertNotContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
 		$this->assertNotContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
 	}
+
+	public function testBuildsCommonReport()
+	{
+		$builder = new ReportCommandBuilder();
+		$builder->SelectCount()
+				->OfResources()
+				->GroupByResource();
+
+		$this->assertFalse($builder->Build());
+	}
 }
 
 ?>

@@ -20,6 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Pages/ActionPage.php');
 require_once(ROOT_DIR . 'Pages/Reports/IDisplayableReportPage.php');
+require_once(ROOT_DIR . 'Presenters/Reports/CommonReportsPresenter.php');
 
 interface ICommonReportsPage extends IDisplayableReportPage, IActionPage
 {
@@ -28,11 +29,16 @@ interface ICommonReportsPage extends IDisplayableReportPage, IActionPage
 
 class CommonReportsPage extends ActionPage implements ICommonReportsPage
 {
+	/**
+	 * @var CommonReportsPresenter
+	 */
+	private $presenter;
+
 	public function __construct()
 	{
 		parent::__construct('CommonReports', 1);
 
-
+		$this->presenter = new CommonReportsPresenter($this, ServiceLocator::GetServer()->GetUserSession(), new ReportingService(new ReportingRepository()));
 	}
 
 	/**
@@ -40,6 +46,7 @@ class CommonReportsPage extends ActionPage implements ICommonReportsPage
 	 */
 	public function ProcessAction()
 	{
+		$this->presenter->ProcessAction();
 	}
 
 	/**

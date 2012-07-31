@@ -33,5 +33,6 @@ require_once(ROOT_DIR . 'lib/Application/Reporting/Report_ResultSelection.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/Report_Usage.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/ReportColumns.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/ReportingService.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/CannedReport.php');
 
 ?>

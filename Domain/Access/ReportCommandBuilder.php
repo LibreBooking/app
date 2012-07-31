@@ -59,6 +59,10 @@ class ReportCommandBuilder
 
 	const ORDER_BY_FRAGMENT = 'ORDER BY ri.start_date ASC';
 
+	const TOTAL_ORDER_BY_FRAGMENT = 'ORDER BY total DESC';
+
+	const TIME_ORDER_BY_FRAGMENT = 'ORDER BY totalTime DESC';
+
 	const SCHEDULE_ID_FRAGMENT = 'AND schedules.schedule_id = @scheduleid';
 
 	const RESOURCE_ID_FRAGMENT = 'AND resources.resource_id = @resourceid';
@@ -524,6 +528,14 @@ class ReportCommandBuilder
 		if ($this->fullList)
 		{
 			$orderBy->Append(self::ORDER_BY_FRAGMENT);
+		}
+		else if ($this->count)
+		{
+			$orderBy->Append(self::TOTAL_ORDER_BY_FRAGMENT);
+		}
+		else
+		{
+			$orderBy->Append(self::TIME_ORDER_BY_FRAGMENT);
 		}
 
 		return $orderBy;
