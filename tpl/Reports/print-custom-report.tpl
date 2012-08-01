@@ -31,6 +31,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</tr>
 	{/foreach}
 </table>
+{$Report->ResultCount()} {translate key=Rows}
+{if $Definition->GetTotal() != ''}
+	| {$Definition->GetTotal()} {translate key=Total}
+{/if}
 
 <script type="text/javascript" >
 	window.print();

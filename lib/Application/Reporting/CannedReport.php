@@ -40,6 +40,12 @@ class CannedReport implements ICannedReport
 	const USER_COUNT_ALLTIME = 10;
 	const USER_COUNT_THISWEEK = 11;
 	const USER_COUNT_THISMONTH = 12;
+	const RESERVATIONS_TODAY = 13;
+	const RESERVATIONS_THISWEEK = 14;
+	const RESERVATIONS_THISMONTH = 15;
+	const ACCESSORIES_TODAY = 16;
+	const ACCESSORIES_THISWEEK = 17;
+	const ACCESSORIES_THISMONTH = 18;
 
 	const LIMIT = 20;
 
@@ -59,6 +65,12 @@ class CannedReport implements ICannedReport
 		self::USER_COUNT_ALLTIME => 'UserCountAllTime',
 		self::USER_COUNT_THISWEEK => 'UserCountThisWeek',
 		self::USER_COUNT_THISMONTH => 'UserCountThisMonth',
+		self::RESERVATIONS_TODAY => 'ReservationsToday',
+		self::RESERVATIONS_THISWEEK => 'ReservationsThisWeek',
+		self::RESERVATIONS_THISMONTH => 'ReservationsThisMonth',
+		self::ACCESSORIES_TODAY => 'AccessoriesToday',
+		self::ACCESSORIES_THISWEEK => 'AccessoriesThisWeek',
+		self::ACCESSORIES_THISMONTH => 'AccessoriesThisMonth',
 	);
 
 	/**
@@ -70,6 +82,11 @@ class CannedReport implements ICannedReport
 	 * @var string
 	 */
 	private $method;
+
+	/**
+	 * @var Report_Range
+	 */
+	private $todayRange;
 
 	/**
 	 * @var Report_Range
@@ -94,6 +111,7 @@ class CannedReport implements ICannedReport
 			throw new Exception("Unknown canned report: $type");
 		}
 
+		$this->todayRange = new Report_Range(Report_Range::TODAY, null, null, $this->user->Timezone);
 		$this->weekRange = new Report_Range(Report_Range::CURRENT_WEEK, null, null, $this->user->Timezone);
 		$this->monthRange = new Report_Range(Report_Range::CURRENT_MONTH, null, null, $this->user->Timezone);
 	}
@@ -105,6 +123,12 @@ class CannedReport implements ICannedReport
 	{
 		$methodName = $this->method;
 		return $this->$methodName();
+	}
+
+	private function LimitToToday(ReportCommandBuilder $builder)
+	{
+		$builder->Within($this->todayRange->Start(), $this->todayRange->End());
+		return $builder;
 	}
 
 	private function LimitToWeek(ReportCommandBuilder $builder)
@@ -199,6 +223,54 @@ class CannedReport implements ICannedReport
 	private function UserCountThisMonth()
 	{
 		return $this->LimitToMonth($this->UserCountAllTime());
+	}
+
+	private function ReservationsAllTime()
+	{
+		$builder = new ReportCommandBuilder();
+		$builder->SelectFullList()
+				->OfResources();
+
+		return $builder;
+	}
+
+	private function ReservationsToday()
+	{
+		return $this->LimitToToday($this->ReservationsAllTime());
+	}
+
+	private function ReservationsThisWeek()
+	{
+		return $this->LimitToWeek($this->ReservationsAllTime());
+	}
+
+	private function ReservationsThisMonth()
+	{
+		return $this->LimitToMonth($this->ReservationsAllTime());
+	}
+
+	private function AccessoriesAllTime()
+	{
+		$builder = new ReportCommandBuilder();
+		$builder->SelectFullList()
+				->OfAccessories();
+
+		return $builder;
+	}
+
+	private function AccessoriesToday()
+	{
+		return $this->LimitToToday($this->AccessoriesAllTime());
+	}
+
+	private function AccessoriesThisWeek()
+	{
+		return $this->LimitToWeek($this->AccessoriesAllTime());
+	}
+
+	private function AccessoriesThisMonth()
+	{
+		return $this->LimitToMonth($this->AccessoriesAllTime());
 	}
 }
 

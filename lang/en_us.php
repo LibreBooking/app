@@ -403,6 +403,17 @@ class en_us extends Language
 		$strings['ReportSent'] = 'Report Sent!';
 		$strings['RunReport'] = 'Run Report';
 		$strings['NoSavedReports'] = 'You have no saved reports.';
+		$strings['CurrentWeek'] = 'Current Week';
+		$strings['CurrentMonth'] = 'Current Month';
+		$strings['AllTime'] = 'All Time';
+		$strings['FilterBy'] = 'Filter By';
+		$strings['Select'] = 'Select';
+		$strings['List'] = 'List';
+		$strings['TotalTime'] = 'Total Time';
+		$strings['Count'] = 'Count';
+		$strings['Usage'] = 'Usage';
+		$strings['AggregateBy'] = 'Aggregate By';
+		$strings['Range'] = 'Range';
         // End Strings
 
         // Errors

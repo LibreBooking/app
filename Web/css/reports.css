@@ -83,7 +83,7 @@
 .report-action {
     display: inline-block;
     margin: 0 25px;
-    text-align: center;
+    text-align: left;
     font-size: 10pt;
 }
 
@@ -93,4 +93,8 @@
 
 .link-filter {
     display:inline-block;
+}
+
+#report-list .right {
+    float: right;
 }

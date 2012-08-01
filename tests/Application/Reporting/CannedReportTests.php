@@ -208,6 +208,96 @@ class CannedReportTests extends TestBase
 
 		$this->assertEquals($expected, $builder);
 	}
+
+	public function testTodaysReservations()
+	{
+		$report = new CannedReport(CannedReport::RESERVATIONS_TODAY, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::TODAY, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectFullList()
+				->OfResources()
+				->Within($range->Start(), $range->End());
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testThisWeeksReservations()
+	{
+		$report = new CannedReport(CannedReport::RESERVATIONS_THISWEEK, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::CURRENT_WEEK, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectFullList()
+				->OfResources()
+				->Within($range->Start(), $range->End());
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testThisMonthsReservations()
+	{
+		$report = new CannedReport(CannedReport::RESERVATIONS_THISMONTH, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::CURRENT_MONTH, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectFullList()
+				->OfResources()
+				->Within($range->Start(), $range->End());
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testTodaysAccessories()
+	{
+		$report = new CannedReport(CannedReport::ACCESSORIES_TODAY, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::TODAY, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectFullList()
+				->OfAccessories()
+				->Within($range->Start(), $range->End());
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testThisWeeksAccessories()
+	{
+		$report = new CannedReport(CannedReport::ACCESSORIES_THISWEEK, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::CURRENT_WEEK, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectFullList()
+				->OfAccessories()
+				->Within($range->Start(), $range->End());
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testThisMonthsAccessories()
+	{
+		$report = new CannedReport(CannedReport::ACCESSORIES_THISMONTH, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::CURRENT_MONTH, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectFullList()
+				->OfAccessories()
+				->Within($range->Start(), $range->End());
+
+		$this->assertEquals($expected, $builder);
+	}
 }
 
 ?>

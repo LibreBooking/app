@@ -28,13 +28,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$ReportList item=report}
 			{cycle values=',alt' assign=rowCss}
 			<li reportId="{$report->Id()}" class="{$rowCss}"><span class="report-title">{$report->ReportName()|default:$untitled}</span>
-				<span class="report-created-date">{format_date date=$report->DateCreated()}</span>
+				<span class="right"><span class="report-created-date">{format_date date=$report->DateCreated()}</span>
+
 				<span class="report-action"><a href="#"
 													 class="runNow report">{html_image src="control.png"}{translate key=RunReport}</a></span>
 				<span class="report-action"><a href="#"
 													 class="emailNow report">{html_image src="mail-send.png"}{translate key=EmailReport}</a></span>
 				<span class="report-action"><a href="#"
 													 class="delete report">{html_image src="cross-button.png"}{translate key=Delete}</a></span>
+				</span>
 			{*
 			   {if $report->IsScheduled()}
 				   Schedule: <a href="#" class="editSchedule report">{translate key=Edit}</a>
