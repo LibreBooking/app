@@ -34,7 +34,14 @@ class CannedReport implements ICannedReport
 	const RESOURCE_TIME_ALLTIME = 4;
 	const RESOURCE_TIME_THISWEEK = 5;
 	const RESOURCE_TIME_THISMONTH = 6;
+	const USER_TIME_ALLTIME = 7;
+	const USER_TIME_THISWEEK = 8;
+	const USER_TIME_THISMONTH = 9;
+	const USER_COUNT_ALLTIME = 10;
+	const USER_COUNT_THISWEEK = 11;
+	const USER_COUNT_THISMONTH = 12;
 
+	const LIMIT = 20;
 
 	/**
 	 * @var array
@@ -46,6 +53,12 @@ class CannedReport implements ICannedReport
 		self::RESOURCE_TIME_ALLTIME => 'ResourceTimeAllTime',
 		self::RESOURCE_TIME_THISWEEK => 'ResourceTimeThisWeek',
 		self::RESOURCE_TIME_THISMONTH => 'ResourceTimeThisMonth',
+		self::USER_TIME_ALLTIME => 'UserTimeAllTime',
+		self::USER_TIME_THISWEEK => 'UserTimeThisWeek',
+		self::USER_TIME_THISMONTH => 'UserTimeThisMonth',
+		self::USER_COUNT_ALLTIME => 'UserCountAllTime',
+		self::USER_COUNT_THISWEEK => 'UserCountThisWeek',
+		self::USER_COUNT_THISMONTH => 'UserCountThisMonth',
 	);
 
 	/**
@@ -57,6 +70,16 @@ class CannedReport implements ICannedReport
 	 * @var string
 	 */
 	private $method;
+
+	/**
+	 * @var Report_Range
+	 */
+	private $weekRange;
+
+	/**
+	 * @var Report_Range
+	 */
+	private $monthRange;
 
 	public function __construct($type, UserSession $userSession)
 	{
@@ -70,6 +93,9 @@ class CannedReport implements ICannedReport
 		{
 			throw new Exception("Unknown canned report: $type");
 		}
+
+		$this->weekRange = new Report_Range(Report_Range::CURRENT_WEEK, null, null, $this->user->Timezone);
+		$this->monthRange = new Report_Range(Report_Range::CURRENT_MONTH, null, null, $this->user->Timezone);
 	}
 
 	/**
@@ -79,6 +105,18 @@ class CannedReport implements ICannedReport
 	{
 		$methodName = $this->method;
 		return $this->$methodName();
+	}
+
+	private function LimitToWeek(ReportCommandBuilder $builder)
+	{
+		$builder->Within($this->weekRange->Start(), $this->weekRange->End());
+		return $builder;
+	}
+
+	private function LimitToMonth(ReportCommandBuilder $builder)
+	{
+		$builder->Within($this->monthRange->Start(), $this->monthRange->End());
+		return $builder;
 	}
 
 	private function ResourceCountAllTime()
@@ -93,20 +131,12 @@ class CannedReport implements ICannedReport
 
 	private function ResourceCountThisWeek()
 	{
-		$range = new Report_Range(Report_Range::CURRENT_WEEK, null, null, $this->user->Timezone);
-		$builder = $this->ResourceCountAllTime();
-		$builder->Within($range->Start(), $range->End());
-
-		return $builder;
+		return $this->LimitToWeek($this->ResourceCountAllTime());
 	}
 
 	private function ResourceCountThisMonth()
 	{
-		$range = new Report_Range(Report_Range::CURRENT_MONTH, null, null, $this->user->Timezone);
-		$builder = $this->ResourceCountAllTime();
-		$builder->Within($range->Start(), $range->End());
-
-		return $builder;
+		return $this->LimitToMonth($this->ResourceCountAllTime());
 	}
 
 	private function ResourceTimeAllTime()
@@ -121,20 +151,54 @@ class CannedReport implements ICannedReport
 
 	private function ResourceTimeThisWeek()
 	{
-		$range = new Report_Range(Report_Range::CURRENT_WEEK, null, null, $this->user->Timezone);
-		$builder = $this->ResourceTimeAllTime();
-		$builder->Within($range->Start(), $range->End());
-
-		return $builder;
+		return $this->LimitToWeek($this->ResourceTimeAllTime());
 	}
 
 	private function ResourceTimeThisMonth()
 	{
-		$range = new Report_Range(Report_Range::CURRENT_MONTH, null, null, $this->user->Timezone);
-		$builder = $this->ResourceTimeAllTime();
-		$builder->Within($range->Start(), $range->End());
+		return $this->LimitToMonth($this->ResourceTimeAllTime());
+	}
+
+	private function UserTimeAllTime()
+	{
+		$builder = new ReportCommandBuilder();
+		$builder->SelectTime()
+				->OfResources()
+				->GroupByUser()
+				->LimitedTo(self::LIMIT);
 
 		return $builder;
+	}
+
+	private function UserTimeThisWeek()
+	{
+		return $this->LimitToWeek($this->UserTimeAllTime());
+	}
+
+	private function UserTimeThisMonth()
+	{
+		return $this->LimitToMonth($this->UserTimeAllTime());
+	}
+
+	private function UserCountAllTime()
+	{
+		$builder = new ReportCommandBuilder();
+		$builder->SelectCount()
+				->OfResources()
+				->GroupByUser()
+				->LimitedTo(self::LIMIT);
+
+		return $builder;
+	}
+
+	private function UserCountThisWeek()
+	{
+		return $this->LimitToWeek($this->UserCountAllTime());
+	}
+
+	private function UserCountThisMonth()
+	{
+		return $this->LimitToMonth($this->UserCountAllTime());
 	}
 }
 

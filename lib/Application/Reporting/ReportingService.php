@@ -141,7 +141,6 @@ class ReportingService implements IReportingService
 		return new GeneratedSavedReport($savedReport, $report);
 	}
 
-
 	public function SendReport($report, $definition, $toAddress, $reportUser)
 	{
 		$message = new ReportEmailMessage($report, $definition, $toAddress, $reportUser);

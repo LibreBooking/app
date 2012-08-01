@@ -67,6 +67,7 @@ class CannedReportTests extends TestBase
 
 		$this->assertEquals($expected, $builder);
 	}
+
 	public function testGetsHighestTimeResourcesAllTime()
 	{
 		$report = new CannedReport(CannedReport::RESOURCE_TIME_ALLTIME, $this->fakeUser);
@@ -109,5 +110,104 @@ class CannedReportTests extends TestBase
 
 		$this->assertEquals($expected, $builder);
 	}
+
+	public function testGetsTopUsersByTimeReservedAllTime()
+	{
+		$report = new CannedReport(CannedReport::USER_TIME_ALLTIME, $this->fakeUser);
+
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectTime()
+				->OfResources()
+				->GroupByUser()
+				->LimitedTo(20);
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testGetsTopUsersByTimeReservedThisWeek()
+	{
+		$report = new CannedReport(CannedReport::USER_TIME_THISWEEK, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::CURRENT_WEEK, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectTime()
+				->OfResources()
+				->GroupByUser()
+				->Within($range->Start(), $range->End())
+				->LimitedTo(20);
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testGetsTopUsersByTimeReservedThisMonth()
+	{
+		$report = new CannedReport(CannedReport::USER_TIME_THISMONTH, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::CURRENT_MONTH, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectTime()
+				->OfResources()
+				->GroupByUser()
+				->Within($range->Start(), $range->End())
+				->LimitedTo(20);
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testGetsTopUsersByCountAllTime()
+	{
+		$report = new CannedReport(CannedReport::USER_COUNT_ALLTIME, $this->fakeUser);
+
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectCount()
+				->OfResources()
+				->GroupByUser()
+				->LimitedTo(20);
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testGetsTopUsersByCountThisWeek()
+	{
+		$report = new CannedReport(CannedReport::USER_COUNT_THISWEEK, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::CURRENT_WEEK, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectCount()
+				->OfResources()
+				->GroupByUser()
+				->Within($range->Start(), $range->End())
+				->LimitedTo(20);
+
+		$this->assertEquals($expected, $builder);
+	}
+
+	public function testGetsTopUsersByCountThisMonth()
+	{
+		$report = new CannedReport(CannedReport::USER_COUNT_THISMONTH, $this->fakeUser);
+
+		$range = new Report_Range(Report_Range::CURRENT_MONTH, null, null, $this->fakeUser->Timezone);
+		$builder = $report->GetBuilder();
+
+		$expected = new ReportCommandBuilder();
+		$expected->SelectCount()
+				->OfResources()
+				->GroupByUser()
+				->Within($range->Start(), $range->End())
+				->LimitedTo(20);
+
+		$this->assertEquals($expected, $builder);
+	}
 }
+
 ?>

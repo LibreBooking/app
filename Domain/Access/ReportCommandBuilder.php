@@ -28,7 +28,8 @@ class ReportCommandBuilder
 				WHERE rs.status_id <> 2
 				[AND_TOKEN]
 				[GROUP_BY_TOKEN]
-				[ORDER_TOKEN]';
+				[ORDER_TOKEN]
+				[LIMIT_TOKEN]';
 
 	const RESERVATION_LIST_FRAGMENT = 'rs.date_created as date_created, rs.last_modified as last_modified, rs.repeat_type,
 		rs.description as description, rs.title as title, rs.status_id as status_id, ri.reference_number, ri.start_date, ri.end_date';
@@ -177,10 +178,13 @@ class ReportCommandBuilder
 	 */
 	private $groupByUser = false;
 	/**
+	 * @var int
+	 */
+	private $limit = 0;
+	/**
 	 * @var array|Parameter[]
 	 */
 	private $parameters = array();
-
 
 	/**
 	 * @return ReportCommandBuilder
@@ -344,6 +348,15 @@ class ReportCommandBuilder
 	}
 
 	/**
+	 * @param int $limit
+	 * @return ReportCommandBuilder
+	 */
+	public function LimitedTo($limit)
+	{
+		$this->limit = $limit;
+	}
+
+	/**
 	 * @return ISqlCommand
 	 */
 	public function Build()
@@ -354,6 +367,7 @@ class ReportCommandBuilder
 		$sql = str_replace('[AND_TOKEN]', $this->GetWhereAnd(), $sql);
 		$sql = str_replace('[GROUP_BY_TOKEN]', $this->GetGroupBy(), $sql);
 		$sql = str_replace('[ORDER_TOKEN]', $this->GetOrderBy(), $sql);
+		$sql = str_replace('[LIMIT_TOKEN]', $this->GetLimit(), $sql);
 
 		$query = new AdHocCommand($sql);
 		foreach ($this->parameters as $parameter)
@@ -529,23 +543,38 @@ class ReportCommandBuilder
 		{
 			$orderBy->Append(self::ORDER_BY_FRAGMENT);
 		}
-		else if ($this->count)
-		{
-			$orderBy->Append(self::TOTAL_ORDER_BY_FRAGMENT);
-		}
-		else
-		{
-			$orderBy->Append(self::TIME_ORDER_BY_FRAGMENT);
+		else {
+			if ($this->count)
+			{
+				$orderBy->Append(self::TOTAL_ORDER_BY_FRAGMENT);
+			}
+			else
+			{
+				$orderBy->Append(self::TIME_ORDER_BY_FRAGMENT);
+			}
 		}
 
 		return $orderBy;
+	}
+
+	/**
+	 * @return ReportQueryFragment
+	 */
+	private function GetLimit()
+	{
+		$limit = new ReportQueryFragment();
+		if (!empty($this->limit))
+		{
+			$limit->Append("LIMIT 0 , {$this->limit}");
+		}
+
+		return $limit;
 	}
 
 	private function AddParameter(Parameter $parameter)
 	{
 		$this->parameters[] = $parameter;
 	}
-
 }
 
 class ReportQueryFragment

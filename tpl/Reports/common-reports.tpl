@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles="css/reports.css"}
 
-<h2>Common Reports</h2>
+<h1>{translate key=CommonReports}</h1>
 <div id="report-list">
 Resource Usage (Time Booked)
 	<a href="#" reportId="{CannedReport::RESOURCE_TIME_ALLTIME}" class="report runNow">All Time</a>
@@ -29,6 +29,16 @@ Resource Usage (Reservation Count)
 	<a href="#" reportId="{CannedReport::RESOURCE_COUNT_ALLTIME}" class="report runNow">All Time</a>
 	<a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISWEEK}" class="report runNow">This Week</a>
 	<a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISMONTH}" class="report runNow">This Month</a>
+<br/>
+Top 20 Users (Time Booked)
+		<a href="#" reportId="{CannedReport::USER_TIME_ALLTIME}" class="report runNow">All Time</a>
+		<a href="#" reportId="{CannedReport::USER_TIME_THISWEEK}" class="report runNow">This Week</a>
+		<a href="#" reportId="{CannedReport::USER_TIME_THISMONTH}" class="report runNow">This Month</a>
+<br/>
+Top 20 Users (Reservation Count)
+		<a href="#" reportId="{CannedReport::USER_COUNT_ALLTIME}" class="report runNow">All Time</a>
+		<a href="#" reportId="{CannedReport::USER_COUNT_THISWEEK}" class="report runNow">This Week</a>
+		<a href="#" reportId="{CannedReport::USER_COUNT_THISMONTH}" class="report runNow">This Month</a>
 </div>
 
 
