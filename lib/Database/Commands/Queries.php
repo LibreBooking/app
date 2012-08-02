@@ -292,7 +292,7 @@ class Queries
 			'SELECT r.*, s.admin_group_id as s_admin_group_id
 		FROM resources r
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
-		ORDER BY r.name';
+		ORDER BY r.sort_order, r.name';
 
 	const GET_ALL_RESOURCE_ADMINS =
 			'SELECT *
@@ -514,7 +514,7 @@ class Queries
 		WHERE 
 			r.schedule_id = @scheduleid AND
 			r.isactive = 1
-		ORDER BY r.name';
+		ORDER BY r.sort_order, r.name';
 
 	const GET_USERID_BY_ACTIVATION_CODE =
 			'SELECT a.user_id FROM account_activation a
@@ -705,7 +705,8 @@ class Queries
 			schedule_id = @scheduleid,
 			admin_group_id = @admin_group_id,
 			allow_calendar_subscription = @allow_calendar_subscription,
-			public_id = @publicid
+			public_id = @publicid,
+			sort_order = @sort_order
 		WHERE
 			resource_id = @resourceid';
 

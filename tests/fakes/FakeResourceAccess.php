@@ -70,6 +70,7 @@ class FakeResourceAccess extends ResourceRepository
 					ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
 					ColumnNames::PUBLIC_ID => '1232',
 					ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => 1154,
+					ColumnNames::RESOURCE_SORT_ORDER => 1,
 					);
 					
 		$row2 =  array(ColumnNames::RESOURCE_ID => 2, 
@@ -92,6 +93,7 @@ class FakeResourceAccess extends ResourceRepository
                     ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 0,
             	    ColumnNames::PUBLIC_ID => null,
 					ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => 9292,
+					ColumnNames::RESOURCE_SORT_ORDER => null,
 					);	
 		
 		return array($row1, $row2);								

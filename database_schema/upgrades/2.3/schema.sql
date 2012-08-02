@@ -13,3 +13,5 @@ CREATE TABLE `saved_reports` (
 	REFERENCES users(`user_id`)
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+ALTER TABLE `resources` ADD COLUMN `sort_order` TINYINT(2) unsigned;

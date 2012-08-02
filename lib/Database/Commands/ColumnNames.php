@@ -120,6 +120,7 @@ class ColumnNames
     const RESOURCE_IMAGE_NAME = 'image_name';
     const RESOURCE_ISACTIVE = 'isactive';
     const RESOURCE_ADMIN_GROUP_ID = 'admin_group_id';
+    const RESOURCE_SORT_ORDER = 'sort_order';
 
     // RESERVATION RESOURCES
     const RESOURCE_LEVEL_ID = 'resource_level_id';

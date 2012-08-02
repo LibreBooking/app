@@ -14,6 +14,7 @@ function ResourceManagement(opts) {
 		configurationDialog:$('#configurationDialog'),
 		groupAdminDialog:$('#groupAdminDialog'),
 		attributeDialog:$('#attributeDialog'),
+		sortOrderDialog:$('#sortOrderDialog'),
 
 		renameForm:$('#renameForm'),
 		imageForm:$('#imageForm'),
@@ -25,6 +26,7 @@ function ResourceManagement(opts) {
 		configurationForm:$('#configurationForm'),
 		groupAdminForm:$('#groupAdminForm'),
 		attributeForm:$('#attributesForm'),
+		sortOrderForm:$('#sortOrderForm'),
 
 		addForm:$('#addResourceForm')
 	};
@@ -46,6 +48,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminDialog(elements.configurationDialog, 500, 500);
 		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
 		ConfigureAdminDialog(elements.attributeDialog, 300, 300);
+		ConfigureAdminDialog(elements.sortOrderDialog, 300, 125);
 
 		$('.resourceDetails').each(function () {
 			var id = $(this).find(':hidden.id').val();
@@ -58,77 +61,66 @@ function ResourceManagement(opts) {
 
 			$(this).find('.imageButton').click(function (e) {
 				showChangeImage(e);
-				return false;
 			});
 
 			$(this).find('.removeImageButton').click(function (e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), indicator);
-				return false;
 			});
 
 			$(this).find('.takeOfflineButton').click(function (e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.takeOffline), indicator);
-				return false;
 			});
 
 			$(this).find('.bringOnlineButton').click(function (e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.bringOnline), indicator);
-				return false;
 			});
 
 			$(this).find('.enableSubscription').click(function (e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), indicator);
-				return false;
 			});
 
 			$(this).find('.disableSubscription').click(function (e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.disableSubscription), indicator);
-				return false;
 			});
 
 			$(this).find('.renameButton').click(function (e) {
 				showRename(e);
-				return false;
 			});
 
 			$(this).find('.changeScheduleButton').click(function (e) {
 				showScheduleMove(e);
-				return false;
 			});
 
 			$(this).find('.changeLocationButton').click(function (e) {
 				showChangeLocation(e);
-				return false;
 			});
 
 			$(this).find('.descriptionButton').click(function (e) {
 				showChangeDescription(e);
-				return false;
 			});
 
 			$(this).find('.notesButton').click(function (e) {
 				showChangeNotes(e);
-				return false;
 			});
 
 			$(this).find('.adminButton').click(function (e) {
 				showResourceAdmin(e);
-				return false;
 			});
 
 			$(this).find('.deleteButton').click(function (e) {
 				showDeletePrompt(e);
-				return false;
 			});
 
 			$(this).find('.changeConfigurationButton').click(function (e) {
 				showConfigurationPrompt(e);
-				return false;
 			});
 
 			$(this).find('.changeAttributes').click(function (e) {
 				showAttributesPrompt(e);
-				return false;
+			});
+
+			$(this).find('.changeSortOrder').click(function (e) {
+				showSortPrompt(e);
 			});
 		});
 
@@ -171,7 +163,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, errorHandler, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.actions.changeAdmin));
 		ConfigureAdminForm(elements.attributeForm, getSubmitCallback(options.actions.changeAttributes));
-
+		ConfigureAdminForm(elements.sortOrderForm, getSubmitCallback(options.actions.changeSortOrder));
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
@@ -277,6 +269,12 @@ function ResourceManagement(opts) {
 		});
 		elements.attributeDialog.dialog('open');
 	};
+
+	var showSortPrompt = function (e) {
+		$('#editSortOrder').val(getActiveResource().sortOrder);
+		elements.sortOrderDialog.dialog("open");
+	};
+
 
 	function setDaysHoursMinutes(elementPrefix, interval, attributeCheckbox) {
 		$(elementPrefix + 'Days').val(interval.days);

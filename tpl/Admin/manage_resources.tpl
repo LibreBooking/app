@@ -36,7 +36,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/><br/>
 					<a class="update imageButton" href="javascript: void(0);">{translate key='Change'}</a> |
 					<a class="update removeImageButton" href="javascript: void(0);">{translate key='Remove'}</a>
-				{else}
+					{else}
 					<div class="noImage">{translate key='NoImage'}</div>
 					<a class="update imageButton" href="javascript: void(0);">{translate key='AddImage'}</a>
 				{/if}
@@ -63,6 +63,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<li>
 						{translate key='AppearsOn' args=$Schedules[$resource->GetScheduleId()]} {translate key='Schedule'}
 						<a class="update changeScheduleButton" href="javascript: void(0);">{translate key='Move'}</a>
+					</li>
+					<li>
+						{translate key=SortOrder}
+						{$resource->GetSortOrder()|default:"-"}
+						<a class="update changeSortOrder" href="javascript: void(0);">{translate key='Edit'}</a>
 					</li>
 					<li>
 						{translate key='Location'}
@@ -103,7 +108,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						{translate key='ResourceAdministrator'}
 						{if $resource->HasAdminGroup()}
 							{$GroupLookup[$resource->GetAdminGroupId()]->Name}
-						{else}
+							{else}
 							<span class="note">{translate key='NoResourceAdministratorLabel'}</span>
 						{/if}
 						{if $AdminGroups|count > 0}
@@ -112,9 +117,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					</li>
 					<li>
 						{if $resource->GetIsCalendarSubscriptionAllowed()}
-							<a class="update disableSubscription" href="javascript: void(0);">{translate key=TurnOffSubscription}</a>
-						{else}
-							<a class="update enableSubscription" href="javascript: void(0);">{translate key=TurnOnSubscription}</a>
+							<a class="update disableSubscription"
+							   href="javascript: void(0);">{translate key=TurnOffSubscription}</a>
+							{else}
+							<a class="update enableSubscription"
+							   href="javascript: void(0);">{translate key=TurnOnSubscription}</a>
 						{/if}
 					</li>
 				</ul>
@@ -192,17 +199,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 		{if $Definitions|count > 0}
-		<div class="customAttributes">
-			<h3>{translate key=AdditionalAttributes} <a href="#" class="update changeAttributes">{translate key=Edit}</a></h3>
-			<ul>
-				{foreach from=$AttributeList->GetAttributeValues($id) item=attribute}
-					<li class="customAttribute" attributeId="{$attribute->Id()}">
-						{control type="AttributeControl" attribute=$attribute readonly=true}
-					</li>
-				{/foreach}
-			</ul>
-		</div>
-		<div style="clear:both;">&nbsp;</div>
+			<div class="customAttributes">
+				<h3>{translate key=AdditionalAttributes} <a href="#"
+															class="update changeAttributes">{translate key=Edit}</a>
+				</h3>
+				<ul>
+					{foreach from=$AttributeList->GetAttributeValues($id) item=attribute}
+						<li class="customAttribute" attributeId="{$attribute->Id()}">
+							{control type="AttributeControl" attribute=$attribute readonly=true}
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+			<div style="clear:both;">&nbsp;</div>
 		{/if}
 		<div class="actions">&nbsp;</div>
 	</div>
@@ -228,7 +237,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<tr>
 					<td><input type="text" class="textbox required" maxlength="85"
 							   style="width:250px" {formname key=RESOURCE_NAME} />
-                    </td>
+					</td>
 					<td>
 						<select class="textbox" {formname key=SCHEDULE_ID} style="width:100px">
 						{foreach from=$Schedules item=scheduleName key=scheduleId}
@@ -236,18 +245,18 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						{/foreach}
 						</select>
 					</td>
-                    <td>
-                        <select class="textbox" {formname key=AUTO_ASSIGN} style="width:170px">
-                            <option value="0">{translate key="None"}</option>
-                            <option value="1">{translate key="AllUsers"}</option>
-                        </select>
-                    </td>
+					<td>
+						<select class="textbox" {formname key=AUTO_ASSIGN} style="width:170px">
+							<option value="0">{translate key="None"}</option>
+							<option value="1">{translate key="AllUsers"}</option>
+						</select>
+					</td>
 					<td>
 						<select class="textbox" {formname key=RESOURCE_ADMIN_GROUP_ID} style="width:170px">
 							<option value="">{translate key=None}</option>
-							{foreach from=$AdminGroups item=adminGroup}
-								<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
-							{/foreach}
+						{foreach from=$AdminGroups item=adminGroup}
+							<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+						{/foreach}
 						</select>
 					</td>
 					<td>
@@ -268,7 +277,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<br/>
 		<span class="note">.gif, .jpg, or .png</span>
 		<br/><br/>
-		<button type="button" class="button uploadImage">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button"
+				class="button uploadImage">{html_image src="disk-black.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
@@ -285,7 +295,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="scheduleDialog" class="dialog" style="display:none;" title="{translate key=MoveToSchedule}">
 	<form id="scheduleForm" method="post">
-		{translate key=MoveToSchedule}:
+	{translate key=MoveToSchedule}:
 		<select id="editSchedule" class="textbox" {formname key=SCHEDULE_ID}>
 		{foreach from=$Schedules item=scheduleName key=scheduleId}
 			<option value="{$scheduleId}">{$scheduleName}</option>
@@ -299,10 +309,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="locationDialog" class="dialog" style="display:none;" title="{translate key=Location}">
 	<form id="locationForm" method="post">
-		{translate key=Location}:<br/>
+	{translate key=Location}:<br/>
 		<input id="editLocation" type="text" class="textbox" maxlength="85"
 			   style="width:250px" {formname key=RESOURCE_LOCATION} /><br/>
-		{translate key=Contact}:<br/>
+	{translate key=Contact}:<br/>
 		<input id="editContact" type="text" class="textbox" maxlength="85"
 			   style="width:250px" {formname key=RESOURCE_CONTACT} />
 		<br/><br/>
@@ -313,7 +323,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="descriptionDialog" class="dialog" style="display:none;" title="{translate key=Description}">
 	<form id="descriptionForm" method="post">
-		{translate key=Description}:<br/>
+	{translate key=Description}:<br/>
 		<textarea id="editDescription" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
 		<br/><br/>
@@ -324,7 +334,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="notesDialog" class="dialog" style="display:none;" title="{translate key=Notes}">
 	<form id="notesForm" method="post">
-		{translate key=Notes}:<br/>
+	{translate key=Notes}:<br/>
 		<textarea id="editNotes" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
 		<br/><br/>
@@ -455,9 +465,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<form method="post" id="groupAdminForm">
 		<select id="adminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">
 			<option value="">-- {translate key=None} --</option>
-			{foreach from=$AdminGroups item=adminGroup}
-				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
-			{/foreach}
+		{foreach from=$AdminGroups item=adminGroup}
+			<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+		{/foreach}
 		</select>
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
@@ -475,7 +485,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<li>{translate key=DeleteResourceWarningPermissions}</li>
 			</ul>
 			<br/>
-			{translate key=DeleteResourceWarningReassign}
+		{translate key=DeleteResourceWarningReassign}
 		</div>
 
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
@@ -491,20 +501,32 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div class="customAttributes">
 		<form method="post" id="attributesForm">
-		<ul>
+			<ul>
 			{foreach from=$Definitions item=attribute}
 				<li class="customAttribute">
 					{control type="AttributeControl" attribute=$attribute}
 				</li>
 			{/foreach}
-		</ul>
-		<div style="clear:both;"></div>
-		<br/>
-		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			</ul>
+			<div style="clear:both;"></div>
+			<br/>
+			<button type="button"
+					class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 		</form>
 	</div>
 </div>
+
+<div id="sortOrderDialog" class="dialog" style="display:none;" title="{translate key=SortOrder}">
+	<form id="sortOrderForm" method="post">
+	{translate key=SortOrder}:
+		<input type="text" id="editSortOrder" class="textbox" {formname key=RESOURCE_SORT_ORDER} maxlength="3" style="width:40px" />
+		<br/><br/>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
@@ -516,93 +538,96 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	$(document).ready(function() {
 
-	var actions = {
-	rename: '{ManageResourcesActions::ActionRename}',
-	changeImage: '{ManageResourcesActions::ActionChangeImage}',
-	removeImage: '{ManageResourcesActions::ActionRemoveImage}',
-	changeSchedule: '{ManageResourcesActions::ActionChangeSchedule}',
-	changeLocation: '{ManageResourcesActions::ActionChangeLocation}',
-	changeDescription: '{ManageResourcesActions::ActionChangeDescription}',
-	changeNotes: '{ManageResourcesActions::ActionChangeNotes}',
-	add: '{ManageResourcesActions::ActionAdd}',
-	deleteResource: '{ManageResourcesActions::ActionDelete}',
-	takeOffline: '{ManageResourcesActions::ActionTakeOffline}',
-	bringOnline: '{ManageResourcesActions::ActionBringOnline}',
-	changeConfiguration: '{ManageResourcesActions::ActionChangeConfiguration}',
-	changeAdmin: '{ManageResourcesActions::ActionChangeAdmin}',
-	enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
-	disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}',
-	changeAttributes: '{ManageResourcesActions::ActionChangeAttributes}'
-	};
+		var actions = {
+			rename:'{ManageResourcesActions::ActionRename}',
+			changeImage:'{ManageResourcesActions::ActionChangeImage}',
+			removeImage:'{ManageResourcesActions::ActionRemoveImage}',
+			changeSchedule:'{ManageResourcesActions::ActionChangeSchedule}',
+			changeLocation:'{ManageResourcesActions::ActionChangeLocation}',
+			changeDescription:'{ManageResourcesActions::ActionChangeDescription}',
+			changeNotes:'{ManageResourcesActions::ActionChangeNotes}',
+			add:'{ManageResourcesActions::ActionAdd}',
+			deleteResource:'{ManageResourcesActions::ActionDelete}',
+			takeOffline:'{ManageResourcesActions::ActionTakeOffline}',
+			bringOnline:'{ManageResourcesActions::ActionBringOnline}',
+			changeConfiguration:'{ManageResourcesActions::ActionChangeConfiguration}',
+			changeAdmin:'{ManageResourcesActions::ActionChangeAdmin}',
+			enableSubscription:'{ManageResourcesActions::ActionEnableSubscription}',
+			disableSubscription:'{ManageResourcesActions::ActionDisableSubscription}',
+			changeAttributes:'{ManageResourcesActions::ActionChangeAttributes}',
+			changeSortOrder:'{ManageResourcesActions::ActionChangeSort}'
+		};
 
-	var opts = {
-	submitUrl: '{$smarty.server.SCRIPT_NAME}',
-	saveRedirect: '{$smarty.server.SCRIPT_NAME}',
-	actions: actions
-	};
+		var opts = {
+			submitUrl:'{$smarty.server.SCRIPT_NAME}',
+			saveRedirect:'{$smarty.server.SCRIPT_NAME}',
+			actions:actions
+		};
 
-	var resourceManagement = new ResourceManagement(opts);
-	resourceManagement.init();
+		var resourceManagement = new ResourceManagement(opts);
+		resourceManagement.init();
 
 	{foreach from=$Resources item=resource}
 		var resource = {
-		id: '{$resource->GetResourceId()}',
-		name: "{$resource->GetName()|escape:'javascript'}",
-		location: "{$resource->GetLocation()|escape:'javascript'}",
-		contact: "{$resource->GetContact()|escape:'javascript'}",
-		description: "{$resource->GetDescription()|escape:'javascript'}",
-		notes: "{$resource->GetNotes()|escape:'javascript'}",
-		autoAssign: '{$resource->GetAutoAssign()}',
-		requiresApproval: '{$resource->GetRequiresApproval()}',
-		allowMultiday: '{$resource->GetAllowMultiday()}',
-		maxParticipants: '{$resource->GetMaxParticipants()}',
-		scheduleId: '{$resource->GetScheduleId()}',
-		minLength: {},
-		maxLength: {},
-		startNotice: {},
-		endNotice: {},
-		adminGroupId: '{$resource->GetAdminGroupId()}'
-		};
+			id:'{$resource->GetResourceId()}',
+			name:"{$resource->GetName()|escape:'javascript'}",
+			location:"{$resource->GetLocation()|escape:'javascript'}",
+			contact:"{$resource->GetContact()|escape:'javascript'}",
+			description:"{$resource->GetDescription()|escape:'javascript'}",
+			notes:"{$resource->GetNotes()|escape:'javascript'}",
+			autoAssign:'{$resource->GetAutoAssign()}',
+			requiresApproval:'{$resource->GetRequiresApproval()}',
+			allowMultiday:'{$resource->GetAllowMultiday()}',
+			maxParticipants:'{$resource->GetMaxParticipants()}',
+			scheduleId:'{$resource->GetScheduleId()}',
+			minLength: {},
+			maxLength: {},
+			startNotice: {},
+			endNotice: {},
+			adminGroupId: '{$resource->GetAdminGroupId()}',
+			sortOrder: '{$resource->GetSortOrder()}'
+	};
 
 		{if $resource->HasMinLength()}
 		resource.minLength = {
-							value: '{$resource->GetMinLength()}',
-							days: '{$resource->GetMinLength()->Days()}',
-							hours: '{$resource->GetMinLength()->Hours()}',
-							minutes: '{$resource->GetMinLength()->Minutes()}'
-							};
+			value:'{$resource->GetMinLength()}',
+			days:'{$resource->GetMinLength()->Days()}',
+			hours:'{$resource->GetMinLength()->Hours()}',
+			minutes:'{$resource->GetMinLength()->Minutes()}'
+		};
 		{/if}
 
 		{if $resource->HasMaxLength()}
 		resource.maxLength = {
-							value: '{$resource->GetMaxLength()}',
-							days: '{$resource->GetMaxLength()->Days()}',
-							hours: '{$resource->GetMaxLength()->Hours()}',
-							minutes: '{$resource->GetMaxLength()->Minutes()}'
-							};
+			value:'{$resource->GetMaxLength()}',
+			days:'{$resource->GetMaxLength()->Days()}',
+			hours:'{$resource->GetMaxLength()->Hours()}',
+			minutes:'{$resource->GetMaxLength()->Minutes()}'
+		};
 		{/if}
 
 		{if $resource->HasMinNotice()}
 		resource.startNotice = {
-							value: '{$resource->GetMinNotice()}',
-							days: '{$resource->GetMinNotice()->Days()}',
-							hours: '{$resource->GetMinNotice()->Hours()}',
-							minutes: '{$resource->GetMinNotice()->Minutes()}'
-							};
+			value:'{$resource->GetMinNotice()}',
+			days:'{$resource->GetMinNotice()->Days()}',
+			hours:'{$resource->GetMinNotice()->Hours()}',
+			minutes:'{$resource->GetMinNotice()->Minutes()}'
+		};
 		{/if}
 
 		{if $resource->HasMaxNotice()}
 		resource.endNotice = {
-							value: '{$resource->GetMaxNotice()}',
-							days: '{$resource->GetMaxNotice()->Days()}',
-							hours: '{$resource->GetMaxNotice()->Hours()}',
-							minutes: '{$resource->GetMaxNotice()->Minutes()}'
-							};
+			value:'{$resource->GetMaxNotice()}',
+			days:'{$resource->GetMaxNotice()->Days()}',
+			hours:'{$resource->GetMaxNotice()->Hours()}',
+			minutes:'{$resource->GetMaxNotice()->Minutes()}'
+		};
 		{/if}
 
 	resourceManagement.add(resource);
 	{/foreach}
-	});
+	})
+	;
 
 </script>
 

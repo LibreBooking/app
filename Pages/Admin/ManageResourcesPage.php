@@ -16,102 +16,107 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
- 
+ */
+
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageSchedulesPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ScheduleRepository.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 interface IUpdateResourcePage
-{	
+{
 	/**
 	 * @return int
 	 */
-	function GetResourceId();
-	
+	public function GetResourceId();
+
 	/**
 	 * @return int
 	 */
-	function GetScheduleId();
-	
+	public function GetScheduleId();
+
 	/**
 	 * @return string
 	 */
-	function GetResourceName();
-	
+	public function GetResourceName();
+
 	/**
 	 * @return UploadedFile
 	 */
-	function GetUploadedImage();
-	
+	public function GetUploadedImage();
+
 	/**
 	 * @return string
 	 */
-	function GetLocation();
-	
+	public function GetLocation();
+
 	/**
 	 * @return string
 	 */
-	function GetContact();
-	
+	public function GetContact();
+
 	/**
 	 * @return string
 	 */
-	function GetDescription();
-	
+	public function GetDescription();
+
 	/**
 	 * @return string
 	 */
-	function GetNotes();
-	
+	public function GetNotes();
+
 	/**
 	 * @return string
 	 */
-	function GetMinimumDuration();
-	
+	public function GetMinimumDuration();
+
 	/**
 	 * @return string
 	 */
-	function GetMaximumDuration();
-	
+	public function GetMaximumDuration();
+
 	/**
 	 * @return string
 	 */
-	function GetAllowMultiday();
-		
+	public function GetAllowMultiday();
+
 	/**
 	 * @return string
 	 */
-	function GetRequiresApproval();
-		
+	public function GetRequiresApproval();
+
 	/**
 	 * @return string
 	 */
-	function GetAutoAssign();
-		
+	public function GetAutoAssign();
+
 	/**
 	 * @return string
 	 */
-	function GetStartNoticeMinutes();
-		
+	public function GetStartNoticeMinutes();
+
 	/**
 	 * @return string
 	 */
-	function GetEndNoticeMinutes();
-		
+	public function GetEndNoticeMinutes();
+
 	/**
 	 * @return string
 	 */
-	function GetMaxParticipants();
+	public function GetMaxParticipants();
 
 	/**
 	 * @abstract
 	 * @return int
 	 */
-	function GetAdminGroupId();
-}
+	public function GetAdminGroupId();
 
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetSortOrder();
+}
 
 interface IManageResourcesPage extends IUpdateResourcePage, IActionPage
 {
@@ -119,7 +124,7 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage
 	 * @param BookableResource[] $resources
 	 */
 	public function BindResources($resources);
-	
+
 	/**
 	 * @param array $scheduleList array of (id, schedule name)
 	 */
@@ -156,57 +161,57 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		parent::__construct('ManageResources', 1);
 		$this->_presenter = new ManageResourcesPresenter(
-								$this, 
-								new ResourceRepository(),
-								new ScheduleRepository(),
-								new ImageFactory(),
-								new GroupRepository(),
-								new AttributeService(new AttributeRepository())
-								);
+			$this,
+			new ResourceRepository(),
+			new ScheduleRepository(),
+			new ImageFactory(),
+			new GroupRepository(),
+			new AttributeService(new AttributeRepository())
+		);
 	}
-	
+
 	public function ProcessPageLoad()
 	{
 		$this->_presenter->PageLoad();
-		
+
 		$this->Display('Admin/manage_resources.tpl');
 	}
-	
+
 	public function BindResources($resources)
 	{
 		$this->Set('Resources', $resources);
 	}
-	
+
 	public function BindSchedules($schedules)
 	{
 		$this->Set('Schedules', $schedules);
 	}
-	
+
 	public function ProcessAction()
 	{
 		$this->_presenter->ProcessAction();
 	}
-	
+
 	public function GetResourceId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
-	
+
 	public function GetScheduleId()
 	{
 		return $this->GetForm(FormKeys::SCHEDULE_ID);
 	}
-	
+
 	public function GetResourceName()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_NAME);
 	}
-	
+
 	public function GetUploadedImage()
 	{
 		return $this->server->GetFile(FormKeys::RESOURCE_IMAGE);
 	}
-	
+
 	public function GetLocation()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_LOCATION);
@@ -216,17 +221,17 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::RESOURCE_CONTACT);
 	}
-	
+
 	public function GetDescription()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_DESCRIPTION);
 	}
-	
+
 	public function GetNotes()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_NOTES);
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -234,7 +239,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::MIN_DURATION);
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -242,7 +247,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::MAX_DURATION);
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -250,7 +255,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::ALLOW_MULTIDAY);
 	}
-		
+
 	/**
 	 * @return string
 	 */
@@ -258,7 +263,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::REQUIRES_APPROVAL);
 	}
-		
+
 	/**
 	 * @return string
 	 */
@@ -266,7 +271,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::AUTO_ASSIGN);
 	}
-		
+
 	/**
 	 * @return string
 	 */
@@ -274,7 +279,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::MIN_NOTICE);
 	}
-		
+
 	/**
 	 * @return string
 	 */
@@ -282,7 +287,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::MAX_NOTICE);
 	}
-		
+
 	/**
 	 * @return string
 	 */
@@ -326,7 +331,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		// should bind labels and values per entity
 		$defList = array();
-		foreach ($attributeList->GetDefinitions() as $def )
+		foreach ($attributeList->GetDefinitions() as $def)
 		{
 			$defList[] = new Attribute($def);
 		}
@@ -340,6 +345,14 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetAttributes()
 	{
 		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetSortOrder()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_SORT_ORDER);
 	}
 }
 

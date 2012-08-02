@@ -134,6 +134,7 @@ class FormKeys
 	const RESOURCE_LOCATION = 'resourceLocation';
 	const RESOURCE_NAME = 'resourceName';
 	const RESOURCE_NOTES = 'resourceNotes';
+	const RESOURCE_SORT_ORDER = 'RESOURCE_SORT_ORDER';
 	const RESUME = 'resume';
 	const RETURN_URL = 'returnUrl';
 	const ROLE_ID = 'roleId';

@@ -72,6 +72,11 @@ class CustomAttribute
 	protected $possibleValues;
 
 	/**
+	 * @var int
+	 */
+	protected $sortOrder;
+
+	/**
 	 * @return int
 	 */
 	public function Id()
@@ -246,6 +251,7 @@ class CustomAttribute
 	 * @param string $regex
 	 * @param bool $required
 	 * @param string $possibleValues
+	 * @param int $sortOrder
 	 */
 	public function Update($label, $regex, $required, $possibleValues, $sortOrder)
 	{

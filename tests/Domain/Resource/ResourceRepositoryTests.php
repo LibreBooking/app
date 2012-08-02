@@ -78,6 +78,7 @@ class ResourceRepositoryTests extends TestBase
         $imageName = 'something.png';
         $adminGroupId = 232;
         $allowSubscription = true;
+		$sortOrder = 3;
 
         $resource = new BookableResource($id,
             $name,
@@ -98,6 +99,7 @@ class ResourceRepositoryTests extends TestBase
         $resource->BringOnline();
         $resource->SetAdminGroupId($adminGroupId);
         $resource->EnableSubscription();
+		$resource->SetSortOrder($sortOrder);
 
         $publicId = $resource->GetPublicId();
 
@@ -124,7 +126,8 @@ class ResourceRepositoryTests extends TestBase
             $scheduleId,
             $adminGroupId,
             $allowSubscription,
-            $publicId);
+            $publicId,
+			$sortOrder);
 
         $actualUpdateResourceCommand = $this->db->_Commands[0];
 

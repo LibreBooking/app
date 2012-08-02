@@ -125,6 +125,7 @@ class ParameterNames
     const RESOURCE_LEVEL_ID = '@resourceLevelId';
     const RESOURCE_IMAGE_NAME = '@imageName';
     const RESOURCE_ISACTIVE = '@isActive';
+    const RESOURCE_SORT_ORDER = '@sort_order';
 
     const ROLE_ID = '@roleid';
     const ROLE_LEVEL = '@role_level';

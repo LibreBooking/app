@@ -91,6 +91,7 @@ class BookableResource implements IResource
 	protected $_isCalendarSubscriptionAllowed = false;
 	protected $_publicId;
 	protected $_scheduleAdminGroupId;
+	protected $_sortOrder;
 	/**
 	 * @var array|AttributeValue[]
 	 */
@@ -136,9 +137,10 @@ class BookableResource implements IResource
 	 * @param string $resourceName
 	 * @param int $scheduleId
 	 * @param bool $autoAssign
+	 * @param int $order
 	 * @return BookableResource
 	 */
-	public static function CreateNew($resourceName, $scheduleId, $autoAssign = false)
+	public static function CreateNew($resourceName, $scheduleId, $autoAssign = false, $order = 0)
 	{
 		return new BookableResource(null,
 			$resourceName,
@@ -181,6 +183,7 @@ class BookableResource implements IResource
 
 		$resource->SetImage($row[ColumnNames::RESOURCE_IMAGE_NAME]);
 		$resource->SetAdminGroupId($row[ColumnNames::RESOURCE_ADMIN_GROUP_ID]);
+		$resource->SetSortOrder($row[ColumnNames::RESOURCE_SORT_ORDER]);
 
 		$resource->_isActive = true;
 		if (isset($row[ColumnNames::RESOURCE_ISACTIVE]))
@@ -708,9 +711,28 @@ class BookableResource implements IResource
 		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function GetScheduleAdminGroupId()
 	{
 		return $this->_scheduleAdminGroupId;
+	}
+
+	/**
+	 * @param int $sortOrder
+	 */
+	public function SetSortOrder($sortOrder)
+	{
+		$this->_sortOrder = intval($sortOrder);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetSortOrder()
+	{
+		return $this->_sortOrder;
 	}
 }
 
