@@ -173,7 +173,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 			{if $UploadsEnabled}
 			<li>
-				<label>{translate key=AttachFile}
+				<label>{translate key=AttachFile}<br/>
 						<input type="file" {formname key=RESERVATION_FILE} /> <span class="note">({$MaxUploadSize}MB {translate key=Maximum})</span>
 					</label>
 			</li>
@@ -238,6 +238,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{if $resource->CanAccess}
 		{assign var='checked' value=''}
 		{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
+			{assign var='checked' value='checked="checked"'}
+		{/if}
+		{if $resource->Id == $ResourceId}
 			{assign var='checked' value='checked="checked"'}
 		{/if}
 

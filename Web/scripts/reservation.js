@@ -212,10 +212,25 @@ function Reservation(opts) {
 	var AddSelected = function(dialogBoxId, displayDivId, inputId) {
 		$(displayDivId).empty();
 
-		$(dialogBoxId + ' :checked').each(function() {
-			$(displayDivId)
-					.append('<p><a href="#" class="resourceDetails">' + $(this).next().text() + '</a><input class="resourceId" type="hidden" name="' + inputId + '[]" value="' + $(this).val() + '"/></p>')
-		});
+		var resourceId = $('#resourceNames .resourceId').val();
+
+		var checkboxes = $(dialogBoxId + ' :checked');
+
+		if (checkboxes.length == 1)
+		{
+			$('#resourceNames .resourceDetails').text($(checkboxes[0]).next().text());
+			$('#resourceNames .resourceId').val($(checkboxes[0]).val());
+		}
+		else
+		{
+			checkboxes.each(function() {
+				if ($(this).val() != resourceId)
+				{
+					$(displayDivId)
+						.append('<p><a href="#" class="resourceDetails">' + $(this).next().text() + '</a><input class="resourceId" type="hidden" name="' + inputId + '[]" value="' + $(this).val() + '"/></p>');
+				}
+			});
+		}
 
 		$(dialogBoxId).dialog('close');
 	};
@@ -439,9 +454,11 @@ function Reservation(opts) {
 		var selectedItems = [];
 		$(displayDivId + ' p').each(function() { selectedItems.push($(this).text()) });
 
+		var resourceId = $('#resourceNames .resourceId').val();
+
 		$(dialogBoxId + ' :checkbox').each(function() {
 			var checkboxText = $(this).next().text();
-			if ($.inArray(checkboxText, selectedItems) >= 0) {
+			if ($.inArray(checkboxText, selectedItems) >= 0 || $(this).val() == resourceId) {
 				$(this).attr('checked', 'checked');
 			}
 			else {
