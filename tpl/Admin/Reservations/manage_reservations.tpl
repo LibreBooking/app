@@ -85,6 +85,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th style="max-width: 120px;">{translate key='Description'}</th>
 		<th>{translate key='BeginDate'}</th>
 		<th>{translate key='EndDate'}</th>
+		<th>{translate key='Duration'}</th>
 		<th>{translate key='Created'}</th>
 		<th>{translate key='LastModified'}</th>
 		<th>{translate key='ReferenceNumber'}</th>
@@ -107,6 +108,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td>{$reservation->Description}</td>
 		<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
 		<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
+		<td>{$reservation->GetDuration()->__toString()}</td>
 		<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
 		<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
 		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>

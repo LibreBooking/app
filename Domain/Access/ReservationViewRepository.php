@@ -970,6 +970,14 @@ class ReservationItemView implements IReservedItemView
     {
         return $this->GetReservationId();
     }
+
+	/**
+	 * @return DateDiff
+	 */
+	public function GetDuration()
+	{
+		return $this->StartDate->GetDifference($this->EndDate);
+	}
 }
 
 class BlackoutItemView implements IReservedItemView
