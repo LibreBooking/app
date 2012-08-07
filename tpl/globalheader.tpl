@@ -34,8 +34,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<script type="text/javascript" src="{$Path}scripts/js/jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.17.custom.min.js"></script>
 	{else}
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
 	{/if}
 	<script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/menubar.js"></script>
@@ -45,7 +45,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{if $UseLocalJquery}
 			@import url({$Path}scripts/css/smoothness/jquery-ui-1.8.17.custom.css);
 		{else}
-			@import url(http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/smoothness/jquery-ui.css);
+			@import url(//ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/smoothness/jquery-ui.css);
 		{/if}
 		{if $cssFiles neq ''}
 			{assign var='CssFileList' value=','|explode:$cssFiles}
