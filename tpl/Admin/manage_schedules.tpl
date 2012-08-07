@@ -263,7 +263,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/schedule.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.form-2.43.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
 
 <script type="text/javascript">
 

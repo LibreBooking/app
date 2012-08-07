@@ -35,6 +35,7 @@ $conf['settings']['schedule']['reservation.label'] = 'user';    // what to displ
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // full or relative path to where images will be stored
 $conf['settings']['image.upload.url'] = 'uploads/images';       // full or relative path to show uploaded images from
 $conf['settings']['cache.templates'] = 'true';                  // recommended, caching template files helps web pages render faster
+$conf['settings']['use.local.jquery'] = 'false';                // recommended, delivers jQuery from Google CDN, uses less bandwidth
 $conf['settings']['registration.captcha.enabled'] = 'true';     // recommended, requires php_gd2 enabled in php.ini
 $conf['settings']['registration.require.email.activation'] = 'false';     // requires enable.email = true
 $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out

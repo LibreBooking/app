@@ -301,7 +301,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript" src="scripts/js/jquery.textarea-expander.js"></script>
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="scripts/js/jquery.form-3.09.js"></script>
+<script type="text/javascript" src="scripts/js/jquery.form-3.09.min.js"></script>
 <script type="text/javascript" src="scripts/resourcePopup.js"></script>
 <script type="text/javascript" src="scripts/reservation.js"></script>
 <script type="text/javascript" src="scripts/autocomplete.js"></script>

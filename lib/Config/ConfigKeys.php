@@ -60,6 +60,8 @@ class ConfigKeys
 
     const CACHE_TEMPLATES = 'cache.templates';
 
+    const USE_LOCAL_JQUERY = 'use.local.jquery';
+
     const INSTALLATION_PASSWORD = 'install.password';
 
     const ICS_SUBSCRIPTION_KEY = 'subscription.key';

@@ -30,15 +30,23 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/if}
 	<link rel="shortcut icon" href="{$Path}favicon.ico"/>
 	<link rel="icon" href="{$Path}favicon.ico"/>
-	<script type="text/javascript" src="{$Path}scripts/js/jquery-1.7.1.min.js"></script>
-	<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.17.custom.min.js"></script>
-	<script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
+	{if $UseLocalJquery}
+		<script type="text/javascript" src="{$Path}scripts/js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.17.custom.min.js"></script>
+	{else}
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
+	{/if}
 	<script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/menubar.js"></script>
 	<style type="text/css">
 		@import url({$Path}css/nav.css);
 		@import url({$Path}css/style.css);
-		@import url({$Path}scripts/css/smoothness/jquery-ui-1.8.17.custom.css);
+		{if $UseLocalJquery}
+			@import url({$Path}scripts/css/smoothness/jquery-ui-1.8.17.custom.css);
+		{else}
+			@import url(http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/smoothness/jquery-ui.css);
+		{/if}
 		{if $cssFiles neq ''}
 			{assign var='CssFileList' value=','|explode:$cssFiles}
 			{foreach from=$CssFileList item=cssFile}

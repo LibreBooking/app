@@ -223,7 +223,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 	<script type="text/javascript" src="scripts/participation.js"></script>
 	<script type="text/javascript" src="scripts/approval.js"></script>
-	<script type="text/javascript" src="scripts/js/jquery.form-3.09.js"></script>
+	<script type="text/javascript" src="scripts/js/jquery.form-3.09.min.js"></script>
 	<script type="text/javascript" src="scripts/reservation.js"></script>
 	<script type="text/javascript" src="scripts/autocomplete.js"></script>
 	<script type="text/javascript">
