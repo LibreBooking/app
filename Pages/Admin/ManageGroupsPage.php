@@ -139,6 +139,7 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
+		$this->Set('chooseText', Resources::GetInstance()->GetString('Choose') . '...');
 
 		$this->Display('Admin/manage_groups.tpl');
 	}

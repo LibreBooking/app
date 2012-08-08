@@ -169,14 +169,14 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	{
 		$this->_presenter->PageLoad();
 
-		$this->Set('statusDescriptions', array(AccountStatus::ALL => 'All', AccountStatus::ACTIVE => 'Active', AccountStatus::AWAITING_ACTIVATION => 'Pending', AccountStatus::INACTIVE => 'Inactive'));
+		$resources = Resources::GetInstance();
+		$this->Set('statusDescriptions', array(AccountStatus::ALL => $resources->GetString('All'), AccountStatus::ACTIVE => $resources->GetString('Active'), AccountStatus::AWAITING_ACTIVATION => $resources->GetString('Pending'), AccountStatus::INACTIVE => $resources->GetString('Inactive')));
 
 		$this->Set('Timezone', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
         $this->Set('ManageReservationsUrl', Pages::MANAGE_RESERVATIONS);
 		$this->Set('FilterStatusId', $this->GetFilterStatusId());
-		//$this->Set('FilterOptions')
 
         $this->RenderTemplate();
 	}

@@ -43,7 +43,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td align="center"><a href="#" class="update members">{translate key='Manage'}</a></td>
 		<td align="center"><a href="#" class="update permissions">{translate key='Change'}</a></td>
 		<td align="center"><a href="#" class="update roles">{translate key='Change'}</a></td>
-		<td align="center"><a href="#" class="update groupAdmin">{$group->AdminGroupName|default:'Choose...'}</a></td>
+		<td align="center"><a href="#" class="update groupAdmin">{$group->AdminGroupName|default:$chooseText}</a></td>
 	</tr>
 {/foreach}
 </table>
