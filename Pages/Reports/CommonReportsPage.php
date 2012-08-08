@@ -82,9 +82,7 @@ class CommonReportsPage extends ActionPage implements ICommonReportsPage
 
 	public function ShowCsv()
 	{
-		header("Content-Type: text/csv");
-		header("Content-Disposition: inline; filename=report.csv");
-		$this->Display('Reports/custom-csv.tpl');
+		$this->DisplayCsv('Reports/custom-csv.tpl', 'report.csv');
 	}
 
 	public function DisplayError()

@@ -305,9 +305,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 
 	public function ShowCsv()
 	{
-		header("Content-Type: text/csv");
-		header("Content-Disposition: inline; filename=report.csv");
-		$this->Display('Reports/custom-csv.tpl');
+		$this->DisplayCsv('Reports/custom-csv.tpl', 'report.csv');
 	}
 
 	public function DisplayError()

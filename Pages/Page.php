@@ -243,6 +243,14 @@ abstract class Page implements IPage
 		$this->smarty->display($templateName);
 	}
 
+	protected function DisplayCsv($templateName, $fileName)
+	{
+		header("Content-Type: text/csv");
+		header("Content-Disposition: inline; filename=$fileName");
+		echo chr(239) . chr(187) . chr(191);
+		$this->Display($templateName);
+	}
+
 	/**
 	 * @param string $templateName
 	 * @param null $languageCode uses current language is nothing is passed in

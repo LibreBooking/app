@@ -240,9 +240,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 
 	public function ShowCsv()
 	{
-		header("Content-Type: text/csv");
-		header("Content-Disposition: inline; filename=reservations.csv");
-		$this->Display('Admin/Reservations/reservations_csv.tpl');
+		$this->DisplayCsv('Admin/Reservations/reservations_csv.tpl', 'reservations.csv');
 	}
 
 	public function BindReservations($reservations)
