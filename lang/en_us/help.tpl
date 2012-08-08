@@ -360,6 +360,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	recommended to set this to
 	true, as long as tpl_c is writable</p>
 
+<p class="setting"><span>$conf['settings']['use.local.jquery']</span>Whether or not a local version of jQuery files
+	should be used. If set to false, the files will be served from the Google CDN. It is recommended to set this to
+	false to improve performance and bandwidth usage. Default is false.</p>
+
 <p class="setting"><span>$conf['settings']['registration.captcha.enabled']</span>Whether or not captcha image security
 	is enabled during user
 	account registration</p>
