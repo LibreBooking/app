@@ -404,6 +404,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['reservation']['updates.require.approval']</span>Whether or not updates to
 	reservations which have previously been approved require approval again. Default is false.</p>
 
+<p class="setting"><span>$conf['settings']['reservation']['prevent.participation']</span>Whether or not users should be
+	prevented from adding and inviting others to a reservation. Default is false.</p>
+
 <p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or not to send an
 	email to all resource administrators when a reservation is created. Default is false.</p>
 

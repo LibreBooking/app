@@ -181,7 +181,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</ul>
 	</div>
 
-	{if $ShowUserDetails}
+	{if $ShowUserDetails && $ShowParticipation}
 		{include file="Reservation/participation.tpl"}
 	{else}
 		{include file="Reservation/private-participation.tpl"}

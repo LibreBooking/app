@@ -103,6 +103,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 		</div>
 
+		{if $ShowParticipation}
 		<div id="reservationParticipation">
 			<ul class="no-style">
 				{if $ShowUserDetails}
@@ -147,6 +148,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 			</ul>
 		</div>
+		{/if}
 		<div style="clear:both;">&nbsp;</div>
 
 		{if $ShowReservationDetails}

@@ -206,6 +206,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		$this->Set('MaxUploadSize', UploadedFile::GetMaxSize());
 		$this->Set('UploadsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS, new BooleanConverter()));
+		$this->Set('ShowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
 		$this->Display($this->GetTemplateName());
 	}
 	
