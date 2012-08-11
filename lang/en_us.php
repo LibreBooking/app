@@ -415,6 +415,7 @@ class en_us extends Language
 		$strings['AggregateBy'] = 'Aggregate By';
 		$strings['Range'] = 'Range';
 		$strings['Choose'] = 'Choose';
+		$strings['All'] = 'All';
         // End Strings
 
         // Errors

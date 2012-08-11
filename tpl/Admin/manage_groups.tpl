@@ -169,7 +169,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	var groupOptions = {
 		userAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::User}",
 		groupAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::Group}",
-		groupsUrl:  "{$Path}admin/manage_groups.php",
+		groupsUrl:  "{$smarty.server.SCRIPT_NAME}",
 		permissionsUrl:  '{$smarty.server.SCRIPT_NAME}',
 		rolesUrl:  '{$smarty.server.SCRIPT_NAME}',
 		submitUrl: '{$smarty.server.SCRIPT_NAME}',

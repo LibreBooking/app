@@ -56,15 +56,15 @@ class ManageGroupsPresenter extends ActionPresenter
 
 	/**
 	 * @param IManageGroupsPage $page
-	 * @param GroupRepository $accessoryRepository
+	 * @param GroupRepository $groupRepository
 	 * @param ResourceRepository $resourceRepository
 	 */
-	public function __construct(IManageGroupsPage $page, GroupRepository $accessoryRepository, ResourceRepository $resourceRepository)
+	public function __construct(IManageGroupsPage $page, GroupRepository $groupRepository, ResourceRepository $resourceRepository)
 	{
 		parent::__construct($page);
 
 		$this->page = $page;
-		$this->groupRepository = $accessoryRepository;
+		$this->groupRepository = $groupRepository;
 		$this->resourceRepository = $resourceRepository;
 
 		$this->AddAction(ManageGroupsActions::AddUser, 'AddUser');

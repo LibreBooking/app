@@ -149,6 +149,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		if ($row = $reader->GetRow())
 		{
 			$group = new Group($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME]);
+			$group->WithGroupAdmin($row[ColumnNames::GROUP_ADMIN_GROUP_ID]);
 		}
 		$reader->Free();
 
@@ -277,7 +278,7 @@ class GroupItemView
 	public static function Create($row)
 	{
 		$adminName = isset($row[ColumnNames::GROUP_ADMIN_GROUP_NAME]) ? $row[ColumnNames::GROUP_ADMIN_GROUP_NAME] : null;
-		
+
 		return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME], $adminName);
 	}
 

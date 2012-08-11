@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -16,9 +16,21 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
-for ($i = 0; $i < 1000000; $i++)
-{
+ */
 
+require_once(ROOT_DIR . 'Pages/Admin/ManageGroupsPage.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
+
+class GroupAdminManageGroupsPage extends ManageGroupsPage
+{
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->presenter = new ManageGroupsPresenter($this,
+					new GroupAdminGroupRepository(new UserRepository(), ServiceLocator::GetServer()->GetUserSession()),
+					new ResourceRepository());
+	}
 }
+
 ?>

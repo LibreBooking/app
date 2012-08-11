@@ -148,6 +148,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 									href="{$Path}admin/manage_group_users.php">{translate key="ManageUsers"}</a></li>
 							<li class="menuitem"><a href="{$Path}admin/manage_group_reservations.php">{translate key=GroupReservations}</a>
 							</li>
+							<li class="menuitem"><a href="{$Path}admin/manage_admin_groups.php">{translate key="ManageGroups"}</a>
 
 						{/if}
 						{if $CanViewResourceAdmin}

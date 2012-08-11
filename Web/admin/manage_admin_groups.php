@@ -17,8 +17,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
-for ($i = 0; $i < 1000000; $i++)
-{
 
-}
+define('ROOT_DIR', '../../');
+
+require_once(ROOT_DIR . 'Pages/Admin/GroupAdminManageGroupsPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
+
+$page =  new RoleRestrictedPageDecorator(new GroupAdminManageGroupsPage(), array(RoleLevel::GROUP_ADMIN));
+$page->PageLoad();
 ?>

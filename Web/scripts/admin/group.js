@@ -200,7 +200,7 @@ function GroupManagement(opts) {
 
 	var changeMembers = function() {
 		var groupId = getActiveId();
-		$.getJSON('manage_groups.php?dr=groupMembers', {gid: groupId}, function(data) {
+		$.getJSON(opts.groupsUrl + '?dr=groupMembers', {gid: groupId}, function(data) {
 			var items = [];
 			var userIds = [];
 

@@ -121,7 +121,7 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 	/**
 	 * @var ManageGroupsPresenter
 	 */
-	private $presenter;
+	protected $presenter;
 
 	/**
 	 * @var PageablePage

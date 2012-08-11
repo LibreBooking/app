@@ -47,9 +47,9 @@ class GroupRepositoryTests extends TestBase
 		$count = 1000;
 
 		$countRow = array(ColumnNames::TOTAL => $count);
-		$row1 = self::GetRow(1, 'g1');
-		$row2 = self::GetRow(2, 'g2');
-		$rows = array($row1, $row2);
+		$itemRows = new GroupItemRow();
+		$itemRows->With(1, 'g1')->With(2, 'g2');
+		$rows = $itemRows->Rows();
 
 		$this->db->SetRow(0, array($countRow));
 		$this->db->SetRow(1, $rows);
@@ -60,8 +60,8 @@ class GroupRepositoryTests extends TestBase
 		$list = $this->repository->GetList($pageNum, $pageSize, null, null, $filter);
 		
 		$results = $list->Results();
-		$this->assertEquals(GroupItemView::Create($row1), $results[0]);
-		$this->assertEquals(GroupItemView::Create($row2), $results[1]);
+		$this->assertEquals(GroupItemView::Create($rows[0]), $results[0]);
+		$this->assertEquals(GroupItemView::Create($rows[1]), $results[1]);
 		$this->assertEquals($this->db->ContainsCommand($expected), "missing select group command");
 
 		$pageInfo = $list->PageInfo();
@@ -92,9 +92,13 @@ class GroupRepositoryTests extends TestBase
 	{
 		$groupId = 98282;
 		$groupName = 'gn';
+		$groupAdminId = 1111;
 
 		$rows = array();
-		$rows[] = $this->GetRow($groupId, $groupName);
+		$rows[] = array(ColumnNames::GROUP_ID => $groupId,
+						ColumnNames::GROUP_NAME => $groupName,
+						ColumnNames::GROUP_ADMIN_GROUP_ID => $groupAdminId);
+
 		$groupUsers = array(
 			array(ColumnNames::USER_ID => 1),
 			array(ColumnNames::USER_ID => 2),
@@ -127,6 +131,7 @@ class GroupRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($expectedRolesCommand));
 		$this->assertEquals($groupId, $group->Id());
 		$this->assertEquals($groupName, $group->Name());
+		$this->assertEquals($groupAdminId, $group->AdminGroupId());
 		$this->assertTrue($group->HasMember(1));
 		$this->assertFalse($group->HasMember(3));
 		$this->assertTrue(in_array(1, $group->AllowedResourceIds()));
@@ -266,28 +271,19 @@ class GroupRepositoryTests extends TestBase
 	public function testCanGetListOfGroupsByRole()
 	{
 		$roleLevel = RoleLevel::GROUP_ADMIN;
-		$row1 = self::GetRow(1, 'g1');
-		$row2 = self::GetRow(2, 'g2');
-		$rows = array($row1, $row2);
+		$groupItemRow = new GroupItemRow();
+		$groupItemRow->With(1, 'g1')->With(2, 'g2');
 
+		$rows = $groupItemRow->Rows();
 		$this->db->SetRow(0, $rows);
 
 		$getGroupsCommand = new GetAllGroupsByRoleCommand($roleLevel);
 		$groups = $this->repository->GetGroupsByRole($roleLevel);
 
-		$this->assertEquals(GroupItemView::Create($row1), $groups[0]);
-		$this->assertEquals(GroupItemView::Create($row2), $groups[1]);
+		$this->assertEquals(GroupItemView::Create($rows[0]), $groups[0]);
+		$this->assertEquals(GroupItemView::Create($rows[1]), $groups[1]);
 
 		$this->assertEquals($this->db->ContainsCommand($getGroupsCommand), "missing select group command");
-	}
-	
-	public static function GetRow($groupId, $groupName)
-	{
-		return array(
-			ColumnNames::GROUP_ID => $groupId,
-			ColumnNames::GROUP_NAME => $groupName,
-			ColumnNames::GROUP_ADMIN_GROUP_NAME => 'group admin'
-		);
 	}
 
 	private function GetGroupUserRow($userId, $firstName, $lastName)

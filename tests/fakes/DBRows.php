@@ -295,4 +295,25 @@ class SavedReportRow
 		return $this;
 	}
 }
+
+class GroupItemRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($groupId, $groupName, $groupAdminName = 'group admin')
+	{
+		$this->rows[] = array(
+					ColumnNames::GROUP_ID => $groupId,
+					ColumnNames::GROUP_NAME => $groupName,
+					ColumnNames::GROUP_ADMIN_GROUP_NAME => $groupAdminName
+				);
+
+		return $this;
+	}
+}
 ?>

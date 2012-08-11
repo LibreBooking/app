@@ -26,9 +26,9 @@ class GroupAdminGroupsRepositoryTests extends TestBase
     {
         $user = new User();
         $adminGroup1 = new UserGroup(1, null, null, RoleLevel::GROUP_ADMIN);
-        $adminGroup2 = new UserGroup(2, null, 1, RoleLevel::NONE);
-        $adminGroup3 = new UserGroup(3, null, 1, RoleLevel::NONE);
-        $user->WithGroups(array($adminGroup1, $adminGroup2, $adminGroup3));
+        $adminGroup2 = new UserGroup(2, null, 1, RoleLevel::GROUP_ADMIN);
+        $adminGroup3 = new UserGroup(3, null, 1, RoleLevel::GROUP_ADMIN);
+        $user->WithOwnedGroups(array($adminGroup1, $adminGroup2, $adminGroup3));
 
         $userRepo = $this->getMock('IUserRepository');
         $userRepo->expects($this->once())
@@ -36,26 +36,29 @@ class GroupAdminGroupsRepositoryTests extends TestBase
                 ->with($this->equalTo($this->fakeUser->UserId))
                 ->will($this->returnValue($user));
 
-        $service = new GroupAdminGroupRepository($userRepo, $this->fakeUser);
+        $groupRepository = new GroupAdminGroupRepository($userRepo, $this->fakeUser);
 
-        $reservationRows = FakeReservationRepository::GetReservationRows();
+		$groupRows = new GroupItemRow();
+		$groupRows->With(1, '1');
+		$rows = $groupRows->Rows();
+
         $this->db->SetRow(0, array( array(ColumnNames::TOTAL => 4) ));
-        $this->db->SetRow(1, $reservationRows);
+        $this->db->SetRow(1, $rows);
 
-        $filter = new ReservationFilter();
-        $results = $service->LoadFiltered(1, 2, $filter, $this->fakeUser);
+        $filter = null;
+        $results = $groupRepository->GetList(1, 2, null, null, $filter);
 
-        $getGroupReservationsCommand = new GetFullGroupReservationListCommand(array(2, 3));
+        $getGroupsCommand = new GetAllGroupsCommand();
 
-        $filterCommand = new FilterCommand($getGroupReservationsCommand, $filter->GetFilter());
+        $filterCommand = new FilterCommand($getGroupsCommand, new SqlFilterIn(new SqlFilterColumn(TableNames::GROUPS_ALIAS, ColumnNames::GROUP_ID), array(1, 2, 3)));
         $countCommand = new CountCommand($filterCommand);
 
         $this->assertEquals($countCommand, $this->db->_Commands[0]);
         $this->assertEquals($filterCommand, $this->db->_Commands[1]);
 
         $resultList = $results->Results();
-        $this->assertEquals(count($reservationRows), count($resultList));
-        $this->assertInstanceOf('ReservationItemView', $resultList[0]);
+        $this->assertEquals(count($rows), count($resultList));
+        $this->assertInstanceOf('GroupItemView', $resultList[0]);
     }
 }
 
