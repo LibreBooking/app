@@ -41,10 +41,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Eine oder mehrere Ressourcen ben«Ótigen eine Genehmigung.  Diese Reservierung wird zur&uuml;ckgehalten, bis sie genehmigt ist.
+		Eine oder mehrere Ressourcen benï¿½ï¿½ï¿½tigen eine Genehmigung.  Diese Reservierung wird zur&uuml;ckgehalten, bis sie genehmigt ist.
 	{/if}
 		
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">Reservierung ansehen</a> | <a href="{$ScriptUrl}">Anmelden bei phpScheduleIt</a>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Reservierung ansehen</a> | <a href="{$ScriptUrl}">Anmelden bei phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

@@ -45,6 +45,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">予約の表示</a> | <a href="{$ScriptUrl}">phpScheduleItへログイン</a>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">予約の表示</a> | <a href="{$ScriptUrl}">phpScheduleItへログイン</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

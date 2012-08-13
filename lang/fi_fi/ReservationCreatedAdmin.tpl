@@ -45,6 +45,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">Näytä varaus</a> | <a href="{$ScriptUrl}">Kirjaudu sovellukseen phpScheduleIt</a>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Näytä varaus</a> | <a href="{$ScriptUrl}">Kirjaudu sovellukseen phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}
