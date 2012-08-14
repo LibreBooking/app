@@ -2,7 +2,9 @@ function Calendar(opts, reservations)
 {
 	var _options = opts;
 	var _reservations = reservations;
-	
+
+	var dayDialog = $('#dayDialog');
+
 	Calendar.prototype.init = function()
 	{
 		$('#calendar').fullCalendar({
@@ -14,7 +16,7 @@ function Calendar(opts, reservations)
 			date: _options.date,
 			events: _reservations,
 			eventRender: function(event, element) { element.attachReservationPopup(event.id); },
-			dayClick: function(date) { dayClick(date); },
+			dayClick: dayClick,
 			dayNames: _options.dayNames,
 			dayNamesShort: _options.dayNamesShort,
 			monthNames: _options.monthNames,
@@ -76,15 +78,65 @@ function Calendar(opts, reservations)
             e.preventDefault();
             PerformAsyncAction($(this), function(){return opts.subscriptionEnableUrl;});
         });
+
+		dayDialog.find('a').click(function(e){
+			e.preventDefault();
+		});
+
+		$('#dayDialogCancel').click(function(e){
+			dayDialog.dialog('close');
+		});
+
+		$('#dayDialogView').click(function(e){
+			drillDownClick();
+		});
+
+		$('#dayDialogCreate').click(function(e){
+			openNewReservation();
+		});
 	};
 
-	var dayClick = function(date)
+	var dateVar = null;
+
+	var dayClick = function(date, allDay, jsEvent, view)
 	{
-		var month =  date.getMonth()+1;
+		dateVar = date;
+
+		if (view.name.indexOf("Day") > 0)
+		{
+			handleTimeClick();
+		}
+		else
+		{
+			dayDialog.dialog({modal: false});
+			dayDialog.dialog("widget").position({
+						       my: 'left top',
+						       at: 'left bottom',
+						       of: jsEvent
+						    });
+		}
+	};
+
+	var handleTimeClick = function()
+	{
+		openNewReservation();
+	};
+
+	var drillDownClick = function()
+	{
+		var month =  dateVar.getMonth()+1;
 		var url =  _options.dayClickUrl;
-		url = url + '&y=' + date.getFullYear() + '&m=' + month + '&d=' + date.getDate();
+		url = url + '&y=' + dateVar.getFullYear() + '&m=' + month + '&d=' + dateVar.getDate();
 
 		window.location = url;
-	}
+	};
+
+	var openNewReservation = function(){
+		var month =  dateVar.getMonth()+1;
+		var reservationDate = dateVar.getFullYear() + "-" + month + "-" + dateVar.getDate() + " " + dateVar.getHours() + ":" + dateVar.getMinutes();
+		var url = _options.reservationUrl + "&rd=" + reservationDate;
+
+		window.location = url;
+	};
 
 }

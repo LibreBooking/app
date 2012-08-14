@@ -586,7 +586,7 @@ class RepeatConfiguration
 	{
 	}
 
-	private function Get($array, $key)
+	private static function Get($array, $key)
 	{
 		if (isset($array[$key]))
 		{
