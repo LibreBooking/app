@@ -61,6 +61,7 @@ function Calendar(opts, reservations)
 			}
 			else
 			{
+				scheduleId = '&sid=' + $(this).find(':selected').prevAll('.schedule').val();
 				resourceId = '&rid=' + $(this).val();
 			}
 
@@ -132,11 +133,18 @@ function Calendar(opts, reservations)
 	};
 
 	var openNewReservation = function(){
-		var month =  dateVar.getMonth()+1;
-		var reservationDate = dateVar.getFullYear() + "-" + month + "-" + dateVar.getDate() + " " + dateVar.getHours() + ":" + dateVar.getMinutes();
-		var url = _options.reservationUrl + "&sd=" + reservationDate;
+		var end = new Date(dateVar);
+		end.setMinutes(dateVar.getMinutes()+30);
+		
+		var url = _options.reservationUrl + "&sd=" + getUrlFormattedDate(dateVar) + "&ed=" + getUrlFormattedDate(end);
 
 		window.location = url;
 	};
+
+	var getUrlFormattedDate = function(d)
+	{
+		var month =  d.getMonth()+1;
+		return encodeURI(d.getFullYear() + "-" + month + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes());
+	}
 
 }

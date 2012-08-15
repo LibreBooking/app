@@ -49,7 +49,7 @@ class ReservationDateBinder implements IReservationComponentBinder
 		$endDate = ($requestedEndDate == null) ? $requestedDate : $requestedEndDate->ToTimezone($timezone);
 
 		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
-		$schedulePeriods = $layout->GetLayout($requestedDate);
+		$schedulePeriods = $layout->GetLayout($requestedDate); // TODO: this should probably use the start date
 		$initializer->SetDates($startDate, $endDate, $schedulePeriods);
 	}
 }
@@ -119,7 +119,8 @@ class ReservationResourceBinder implements IReservationComponentBinder
 
 		if ($bindableResourceData->NumberAccessible <= 0)
 		{
-			//init show error
+			$initializer->RedirectToError(ErrorMessages::INSUFFICIENT_PERMISSIONS);
+			return;
 		}
 
 		$initializer->BindAvailableResources($bindableResourceData->AvailableResources);

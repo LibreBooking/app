@@ -169,6 +169,38 @@ class ReservationComponentTests extends TestBase
 		$binder->Bind($this->initializer);
 	}
 
+	public function testRedirectsIfUserHasPermissionToZeroResources()
+	{
+		$requestedScheduleId = 10;
+		$requestedResourceId = null;
+
+		$this->initializer->expects($this->once())
+				->method('GetScheduleId')
+				->will($this->returnValue($requestedScheduleId));
+
+		$this->initializer->expects($this->once())
+				->method('GetResourceId')
+				->will($this->returnValue($requestedResourceId));
+
+		$this->initializer->expects($this->once())
+				->method('CurrentUser')
+				->will($this->returnValue($this->fakeUser));
+
+		$resourceList = array();
+
+		$this->resourceService->expects($this->once())
+				->method('GetScheduleResources')
+				->with($this->equalTo($requestedScheduleId), $this->equalTo(true), $this->equalTo($this->fakeUser))
+				->will($this->returnValue($resourceList));
+
+		$this->initializer->expects($this->once())
+						->method('RedirectToError')
+						->with($this->equalTo(ErrorMessages::INSUFFICIENT_PERMISSIONS));
+
+		$binder = new ReservationResourceBinder($this->resourceService);
+		$binder->Bind($this->initializer);
+	}
+
 	public function testBindsDates()
 	{
 		$timezone = 'UTC';

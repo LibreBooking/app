@@ -18,10 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-/**
- * An interface for Page class implementation
- */
 interface IPage {
 
 	public function PageLoad();

@@ -101,7 +101,6 @@ class CalendarPresenter
 
 		if (!empty($selectedResourceId))
 		{
-			$selectedScheduleId = null;
             $subscriptionDetails = $this->subscriptionService->ForResource($selectedResourceId);
 		}
         else

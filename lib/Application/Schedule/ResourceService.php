@@ -119,7 +119,7 @@ class ResourceDto
 	 */
 	public function GetResourceId()
 	{
-		// TODO: Implement GetResourceId() method.
+		return $this->Id;
 	}
 
 	/**
@@ -127,7 +127,7 @@ class ResourceDto
 	 */
 	public function GetId()
 	{
-		// TODO: Implement GetId() method.
+		return $this->Id;
 	}
 
 	/**
@@ -135,15 +135,7 @@ class ResourceDto
 	 */
 	public function GetName()
 	{
-		// TODO: Implement GetName() method.
-	}
-
-	/**
-	 * @return int
-	 */
-	public function GetAdminGroupId()
-	{
-		// TODO: Implement GetAdminGroupId() method.
+		return $this->Name;
 	}
 }
 ?>

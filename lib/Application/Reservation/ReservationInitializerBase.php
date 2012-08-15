@@ -128,6 +128,12 @@ interface IReservationComponentInitializer
 	 * @param $value mixed
 	 */
 	public function AddAttribute($attribute, $value);
+
+	/**
+	 * @abstract
+	 * @param ErrorMessages|int $errorMessageId
+	 */
+	public function RedirectToError($errorMessageId);
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
@@ -379,6 +385,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function AddAttribute($attribute, $value)
 	{
 		$this->customAttributes[] = new Attribute($attribute, $value);
+	}
+
+	public function RedirectToError($errorMessageId)
+	{
+		$this->basePage->RedirectToError($errorMessageId);
 	}
 }
 
