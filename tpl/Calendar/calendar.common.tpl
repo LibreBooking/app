@@ -28,9 +28,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="calendar"></div>
 
 <div id="dayDialog" class="dialog">
-	<a href="#" id="dayDialogCreate">Create Reservation</a>
-	<a href="#" id="dayDialogView">View Day</a>
-	<a href="#" id="dayDialogCancel">Cancel</a>
+	<a href="#" id="dayDialogCreate">{html_image src="tick.png"}{translate key=CreateReservation}</a>
+	<a href="#" id="dayDialogView">{html_image src="search.png"}{translate key=ViewDay}</a>
+	<a href="#" id="dayDialogCancel">{html_image src="slash.png"}{translate key=Cancel}</a>
 </div>
 
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
@@ -65,7 +65,8 @@ $(document).ready(function() {
 					timeFormat: '{$TimeFormat}',
 					dayMonth: '{$DateFormat}',
 					firstDay: 0,
-					reservationUrl: '{Pages::RESERVATION}?sid={$ScheduleId}&rid={$ResourceId}'
+					reservationUrl: '{Pages::RESERVATION}?sid={$ScheduleId}&rid={$ResourceId}',
+					reservable: true
 				};
 		
 	var calendar = new Calendar(options, reservations);

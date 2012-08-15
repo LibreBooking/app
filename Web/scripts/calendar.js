@@ -103,13 +103,19 @@ function Calendar(opts, reservations)
 	{
 		dateVar = date;
 
+		if (!opts.reservable)
+		{
+			drillDownClick();
+			return;
+		}
+
 		if (view.name.indexOf("Day") > 0)
 		{
 			handleTimeClick();
 		}
 		else
 		{
-			dayDialog.dialog({modal: false});
+			dayDialog.dialog({modal: false, height: 70, width: 'auto'});
 			dayDialog.dialog("widget").position({
 						       my: 'left top',
 						       at: 'left bottom',
@@ -135,7 +141,7 @@ function Calendar(opts, reservations)
 	var openNewReservation = function(){
 		var end = new Date(dateVar);
 		end.setMinutes(dateVar.getMinutes()+30);
-		
+
 		var url = _options.reservationUrl + "&sd=" + getUrlFormattedDate(dateVar) + "&ed=" + getUrlFormattedDate(end);
 
 		window.location = url;
