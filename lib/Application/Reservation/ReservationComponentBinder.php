@@ -117,6 +117,11 @@ class ReservationResourceBinder implements IReservationComponentBinder
 
 		$bindableResourceData = $this->GetBindableResourceData($resources, $requestedResourceId);
 
+		if ($bindableResourceData->NumberAccessible <= 0)
+		{
+			//init show error
+		}
+
 		$initializer->BindAvailableResources($bindableResourceData->AvailableResources);
 		$accessories = $this->resourceService->GetAccessories();
 		$initializer->BindAvailableAccessories($accessories);
@@ -140,10 +145,6 @@ class ReservationResourceBinder implements IReservationComponentBinder
 			if ($resource->Id == $requestedResourceId)
 			{
 				$bindableResourceData->SetReservationResource($resource);
-			}
-			else
-			{
-
 			}
 		}
 

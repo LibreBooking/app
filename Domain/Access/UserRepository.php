@@ -217,13 +217,13 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$user->WithEmailPreferences($emailPreferences);
 			$user->WithPermissions($permissions);
 			$user->WithGroups($groups);
+			$this->LoadAttributes($userId, $user);
 
 			if ($user->IsGroupAdmin())
 			{
 				$ownedGroups = $this->LoadOwnedGroups($userId);
 				$user->WithOwnedGroups($ownedGroups);
 			}
-			$this->LoadAttributes($userId, $user);
 
 			$this->_cache->Add($userId, $user);
 
@@ -244,7 +244,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		{
 			$command = new GetUserByIdCommand($userId);
 			return $this->Load($command);
-		} else
+		}
+		else
 		{
 			return $this->_cache->Get($userId);
 		}

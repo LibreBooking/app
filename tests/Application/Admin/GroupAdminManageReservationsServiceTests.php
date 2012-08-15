@@ -25,10 +25,9 @@ class GroupAdminManageReservationsServiceTests extends TestBase
     public function testGetsListOfReservationsThatThisUserCanAdminister()
     {
         $user = new User();
-        $adminGroup1 = new UserGroup(1, null, null, RoleLevel::GROUP_ADMIN);
-        $adminGroup2 = new UserGroup(2, null, 1, RoleLevel::NONE);
-        $adminGroup3 = new UserGroup(3, null, 1, RoleLevel::NONE);
-        $user->WithGroups(array($adminGroup1, $adminGroup2, $adminGroup3));
+        $adminGroup2 = new UserGroup(2, null, 1, RoleLevel::GROUP_ADMIN);
+        $adminGroup3 = new UserGroup(3, null, 1, RoleLevel::GROUP_ADMIN);
+        $user->WithOwnedGroups(array($adminGroup2, $adminGroup3));
 
         $userRepo = $this->getMock('IUserRepository');
         $userRepo->expects($this->once())

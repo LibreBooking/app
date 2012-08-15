@@ -134,7 +134,7 @@ function Calendar(opts, reservations)
 	var openNewReservation = function(){
 		var month =  dateVar.getMonth()+1;
 		var reservationDate = dateVar.getFullYear() + "-" + month + "-" + dateVar.getDate() + " " + dateVar.getHours() + ":" + dateVar.getMinutes();
-		var url = _options.reservationUrl + "&rd=" + reservationDate;
+		var url = _options.reservationUrl + "&sd=" + reservationDate;
 
 		window.location = url;
 	};

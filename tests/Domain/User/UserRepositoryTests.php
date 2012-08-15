@@ -91,7 +91,7 @@ class UserRepositoryTests extends TestBase
 		$user = $userRepository->LoadById($userId);
 
 		$this->assertEquals(6, count($this->db->_Commands));
-		$this->assertTrue($this->db->ContainsCommand($loadByIdCommand));
+		$this->assertEquals($loadByIdCommand, $this->db->_Commands[0]);
 		$this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadGroupsCommand));
@@ -610,7 +610,7 @@ class UserRepositoryTests extends TestBase
 	{
 		$car = new CustomAttributeValueRow();
 		$car->With(1, 'value')
-				->With(2, 'value2');
+			->With(2, 'value2');
 		return $car->Rows();
 	}
 }

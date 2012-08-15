@@ -193,18 +193,16 @@ class UserTests extends TestBase
     {
         $user = new User();
 
-        $nonAdminGroup1 = new UserGroup(1, 'non admin', 2, RoleLevel::NONE);
-        $nonAdminGroup2 = new UserGroup(2, 'resource admin', null, RoleLevel::RESOURCE_ADMIN);
         $adminGroup1 = new UserGroup(3, 'admin group', null, RoleLevel::GROUP_ADMIN);
         $adminGroup2 = new UserGroup(4, 'group i can admin', 3, RoleLevel::NONE);
 
-        $groups = array($adminGroup1, $adminGroup2, $nonAdminGroup1, $nonAdminGroup2);
+        $groups = array($adminGroup1, $adminGroup2);
 
-        $user->WithGroups($groups);
+        $user->WithOwnedGroups($groups);
 
         $adminGroups = $user->GetAdminGroups();
 
-        $this->assertEquals(1, count($adminGroups));
+        $this->assertEquals(2, count($adminGroups));
         $this->assertContains($adminGroup2, $adminGroups);
     }
 }

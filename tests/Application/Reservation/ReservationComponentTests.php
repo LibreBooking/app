@@ -149,10 +149,9 @@ class ReservationComponentTests extends TestBase
 				->method('GetAccessories')
 				->will($this->returnValue($accessoryList));
 
-		$resourceListWithoutReservationResource = array($otherResource, $otherResource2);
 		$this->initializer->expects($this->once())
 				->method('BindAvailableResources')
-				->with($this->equalTo($resourceListWithoutReservationResource));
+				->with($this->equalTo($resourceList));
 
 		$this->initializer->expects($this->once())
 				->method('ShowAdditionalResources')
