@@ -29,7 +29,7 @@ class ReportDefinitionTests extends TestBase
 
 	public function testGetsColumns()
 	{
-		$rows = array(array(ColumnNames::ACCESSORY_NAME => 'an', ColumnNames::RESOURCE_NAME_ALIAS => 'rn'),	'unknown' => 'unknown');
+		$rows = array(array(ColumnNames::ACCESSORY_NAME => 'an', ColumnNames::RESOURCE_NAME_ALIAS => 'rn'), 'unknown' => 'unknown');
 		$report = new CustomReport($rows);
 
 		$definition = new ReportDefinition($report, null);
@@ -43,25 +43,36 @@ class ReportDefinitionTests extends TestBase
 	{
 		$timezone = 'America/Chicago';
 		$date = '2012-02-14 08:12:31';
+		$oneHourThirtyMinutes = TimeInterval::Parse("1h30m");
 
 		$rows = array(array(
-						  ColumnNames::RESERVATION_END => $date,
+						  ColumnNames::RESERVATION_START => $date,
 						  ColumnNames::GROUP_NAME_ALIAS => 'gn',
 						  ColumnNames::ACCESSORY_NAME => 'an',
-							'unknown' => 'unknown'
-
+						  'unknown' => 'unknown',
+						  ColumnNames::TOTAL_TIME => $oneHourThirtyMinutes->TotalSeconds()
 					  ));
 		$report = new CustomReport($rows);
 
 		$definition = new ReportDefinition($report, $timezone);
 
+		/** @var $row ReportCell[] */
 		$row = $definition->GetRow($rows[0]);
 
-		$this->assertEquals(3, count($row));
-		$this->assertEquals('an', $row[0]);
+		$this->assertEquals(4, count($row));
+		$this->assertEquals('an', $row[0]->Value());
+
 		$format = Resources::GetInstance()->GeneralDateTimeFormat();
-		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->Format($format), $row[1]);
-		$this->assertEquals('gn', $row[2]);
+		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->Format($format), $row[1]->Value());
+		$this->assertEquals(ChartType::Date, $row[1]->ChartType());
+
+		$this->assertEquals('gn', $row[2]->Value());
+		$this->assertEquals('gn', $row[2]->ChartValue());
+		$this->assertEquals(ChartType::Label, $row[2]->ChartType());
+
+		$this->assertEquals(ChartType::Total, $row[3]->ChartType());
+		$this->assertEquals($oneHourThirtyMinutes, $row[3]->Value());
+		$this->assertEquals($oneHourThirtyMinutes->TotalSeconds(), $row[3]->ChartValue());
 	}
 }
 

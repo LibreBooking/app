@@ -10,8 +10,8 @@ function Chart() {
 		var series = new Array();
 		$('#report-results>tbody>tr').not(':first').each(function () {
 
-			var label = $(this).find('>td:nth-child(' + labelColumnIndex + ')').text();
-			var val = parseInt($(this).find('>td:nth-child(' + totalColumnIndex + ')').text());
+			var label = $(this).find('[chart-type="label"]').text();
+			var val = parseInt($(this).find('[chart-type="total"]').attr("chart-value"));
 			series.push([label, val]);
 		});
 

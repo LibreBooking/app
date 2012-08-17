@@ -41,7 +41,7 @@ class TimeInterval
 	/**
 	 * @static
 	 * @param string|int $interval string interval in format: #d#h#m ie: 22d4h12m or total seconds
-	 * @return DateDiff
+	 * @return TimeInterval
 	 */
 	public static function Parse($interval)
 	{
@@ -110,6 +110,14 @@ class TimeInterval
 		}
 
 		return null;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function TotalSeconds()
+	{
+		return $this->interval->TotalSeconds();
 	}
 
 	/**

@@ -30,7 +30,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{cycle values=',alt' assign=rowCss}
 			<tr class="{$rowCss}">
 				{foreach from=$Definition->GetRow($row) item=data}
-					<td>{$data|escape}</td>
+					<td chart-value="{$data->ChartValue()}" chart-type="{$data->ChartType()}">{$data->Value()|escape}</td>
 				{/foreach}
 			</tr>
 		{/foreach}

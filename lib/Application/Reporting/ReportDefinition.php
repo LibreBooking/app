@@ -18,6 +18,64 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+class ChartType
+{
+	const Label = 'label';
+	const Total = 'total';
+	const Date = 'date';
+}
+
+class ReportCell
+{
+	/**
+	 * @var string
+	 */
+	private $value;
+
+	/**
+	 * @var null|string
+	 */
+	private $chartValue;
+
+	/**
+	 * @var ChartType|string|null
+	 */
+	private $chartType;
+
+	/**
+	 * @param string $value
+	 * @param string|null $chartValue
+	 * @param ChartType|string|null $chartType
+	 */
+	public function __construct($value, $chartValue = null, $chartType = null)
+	{
+		$this->value = $value;
+		$this->chartValue = $chartValue;
+		$this->chartType = $chartType;
+	}
+
+	public function Value()
+	{
+		return $this->value;
+	}
+
+	public function ChartValue()
+	{
+		return $this->chartValue;
+	}
+
+	public function ChartType()
+	{
+		return $this->chartType;
+	}
+
+	public function __toString()
+	{
+		return $this->Value();
+	}
+}
+
 abstract class ReportColumn
 {
 	/**
@@ -26,11 +84,18 @@ abstract class ReportColumn
 	private $titleKey;
 
 	/**
-	 * @param $titleKey
+	 * @var ChartType|null|string
 	 */
-	public function __construct($titleKey)
+	private $chartType;
+
+	/**
+	 * @param $titleKey string
+	 * @param $chartType ChartType|string|null
+	 */
+	public function __construct($titleKey, $chartType = null)
 	{
 		$this->titleKey = $titleKey;
+		$this->chartType = $chartType;
 	}
 
 	/**
@@ -49,13 +114,30 @@ abstract class ReportColumn
 	{
 		return $data;
 	}
+
+	/**
+	 * @return ChartType|string|null
+	 */
+	public function GetChartType()
+	{
+		return $this->chartType;
+	}
+
+	/**
+	 * @param $data mixed
+	 * @return string
+	 */
+	public function GetChartData($data)
+	{
+		return $data;
+	}
 }
 
 class ReportStringColumn extends ReportColumn
 {
-	public function __construct($titleKey)
+	public function __construct($titleKey, $chartType = null)
 	{
-		parent::__construct($titleKey);
+		parent::__construct($titleKey, $chartType);
 	}
 }
 
@@ -64,9 +146,9 @@ class ReportDateColumn extends ReportColumn
 	private $timezone;
 	private $format;
 
-	public function __construct($titleKey, $timezone, $format)
+	public function __construct($titleKey, $timezone, $format, $chartType = null)
 	{
-		parent::__construct($titleKey);
+		parent::__construct($titleKey, $chartType);
 		$this->timezone = $timezone;
 		$this->format = $format;
 	}
@@ -79,14 +161,19 @@ class ReportDateColumn extends ReportColumn
 
 class ReportTimeColumn extends ReportColumn
 {
-	public function __construct($titleKey)
+	public function __construct($titleKey, $chartType = null)
 	{
-		parent::__construct($titleKey);
+		parent::__construct($titleKey, $chartType);
 	}
 
 	public function GetData($data)
 	{
 		return new TimeInterval($data);
+	}
+
+	public function GetChartData($data)
+	{
+		return $data;
 	}
 }
 
@@ -100,7 +187,7 @@ interface IReportDefinition
 	/**
 	 * @abstract
 	 * @param array $row
-	 * @return array
+	 * @return ReportCell[]|array
 	 */
 	public function GetRow($row);
 
@@ -132,21 +219,21 @@ class ReportDefinition implements IReportDefinition
 	{
 		$dateFormat = Resources::GetInstance()->GeneralDateTimeFormat();
 		$orderedColumns = array(
-			ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory'),
-			ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource'),
+			ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory', ChartType::Label),
+			ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartType::Label),
 			ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved'),
-			ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat),
+			ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat, ChartType::Date),
 			ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateFormat),
 			ColumnNames::RESERVATION_TITLE => new ReportStringColumn('Title'),
 			ColumnNames::RESERVATION_DESCRIPTION => new ReportStringColumn('Description'),
 			ColumnNames::REFERENCE_NUMBER => new ReportStringColumn('ReferenceNumber'),
-			ColumnNames::OWNER_FULL_NAME_ALIAS => new ReportStringColumn('User'),
-			ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group'),
-			ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule'),
+			ColumnNames::OWNER_FULL_NAME_ALIAS => new ReportStringColumn('User', ChartType::Label),
+			ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartType::Label),
+			ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartType::Label),
 			ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateFormat),
 			ColumnNames::RESERVATION_MODIFIED => new ReportDateColumn('LastModified', $timezone, $dateFormat),
-			ColumnNames::TOTAL => new ReportStringColumn('Total'),
-			ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total'),
+			ColumnNames::TOTAL => new ReportStringColumn('Total', ChartType::Total),
+			ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total', ChartType::Total),
 		);
 
 		$reportColumns = $report->GetColumns();
@@ -175,7 +262,7 @@ class ReportDefinition implements IReportDefinition
 				$this->sum += $row[$key];
 				$this->sumColumn = $column;
 			}
-			$formattedRow[] = $column->GetData($row[$key]);
+			$formattedRow[] = new ReportCell($column->GetData($row[$key]), $column->GetChartData($row[$key]), $column->GetChartType());
 		}
 
 		return $formattedRow;

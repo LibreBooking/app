@@ -73,6 +73,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>jsTimezoneDetect</p>
 
+<p>jqplot</p>
+
 <h2>License</h2>
 
 <p>phpScheduleIt free and open source, licenced under the GNU GENERAL PUBLIC LICENSE. Please see the included
