@@ -194,6 +194,7 @@ class ColumnNames
     const TOTAL_TIME = 'totalTime';
     const OWNER_FIRST_NAME = 'owner_fname';
     const OWNER_LAST_NAME = 'owner_lname';
+    const OWNER_FULL_NAME_ALIAS = 'owner_name';
     const OWNER_USER_ID = 'owner_id';
     const GROUP_NAME_ALIAS = 'group_name';
     const RESOURCE_NAME_ALIAS = 'resource_name';

@@ -40,7 +40,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			| {$Definition->GetTotal()} {translate key=Total}
 		{/if}
 	</h4>
-
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#report-results').trigger('loaded');
+		});
+	</script>
 {else}
 	<h2 class="no-data" style="text-align: center;">{translate key=NoResultsFound}</h2>
 {/if}

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles="css/reports.css"}
+{include file='globalheader.tpl' cssFiles="css/reports.css,scripts/js/jqplot/jquery.jqplot.min.css"}
 
 <h1>{translate key=CommonReports}</h1>
 <div id="report-list">
@@ -24,49 +24,67 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<li>
 			<span class="report-title">Reserved Resources</span>
 			<span class="right">
-				<a href="#" reportId="{CannedReport::RESERVATIONS_TODAY}" class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
-				<a href="#" reportId="{CannedReport::RESERVATIONS_THISWEEK}" class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-				<a href="#" reportId="{CannedReport::RESERVATIONS_THISMONTH}" class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+				<a href="#" reportId="{CannedReport::RESERVATIONS_TODAY}"
+				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
+				<a href="#" reportId="{CannedReport::RESERVATIONS_THISWEEK}"
+				   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+				<a href="#" reportId="{CannedReport::RESERVATIONS_THISMONTH}"
+				   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
 			</span>
 		</li>
 		<li class="alt">
 			<span class="report-title">Reserved Accessories</span>
 			<span class="right">
-				<a href="#" reportId="{CannedReport::ACCESSORIES_TODAY}" class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
-				<a href="#" reportId="{CannedReport::ACCESSORIES_THISWEEK}" class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-				<a href="#" reportId="{CannedReport::ACCESSORIES_THISMONTH}" class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+				<a href="#" reportId="{CannedReport::ACCESSORIES_TODAY}"
+				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
+				<a href="#" reportId="{CannedReport::ACCESSORIES_THISWEEK}"
+				   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+				<a href="#" reportId="{CannedReport::ACCESSORIES_THISMONTH}"
+				   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
 			</span>
 		</li>
 		<li>
 			<span class="report-title">Resource Usage - Time Booked</span>
 			<span class="right">
-				<a href="#" reportId="{CannedReport::RESOURCE_TIME_ALLTIME}" class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
-				<a href="#" reportId="{CannedReport::RESOURCE_TIME_THISWEEK}" class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-				<a href="#" reportId="{CannedReport::RESOURCE_TIME_THISMONTH}" class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+				<a href="#" reportId="{CannedReport::RESOURCE_TIME_ALLTIME}"
+				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
+				<a href="#" reportId="{CannedReport::RESOURCE_TIME_THISWEEK}"
+				   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+				<a href="#" reportId="{CannedReport::RESOURCE_TIME_THISMONTH}"
+				   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
 			</span>
 		</li>
 		<li class="alt">
 			<span class="report-title">Resource Usage - Reservation Count</span>
 			<span class="right">
-				<a href="#" reportId="{CannedReport::RESOURCE_COUNT_ALLTIME}" class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
-				<a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISWEEK}" class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-				<a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISMONTH}" class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+				<a href="#" reportId="{CannedReport::RESOURCE_COUNT_ALLTIME}"
+				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
+				<a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISWEEK}"
+				   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+				<a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISMONTH}"
+				   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
 			</span>
 		</li>
 		<li>
 			<span class="report-title">Top 20 Users - Time Booked</span>
 			<span class="right">
-				<a href="#" reportId="{CannedReport::USER_TIME_ALLTIME}" class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
-				<a href="#" reportId="{CannedReport::USER_TIME_THISWEEK}" class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-				<a href="#" reportId="{CannedReport::USER_TIME_THISMONTH}" class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+				<a href="#" reportId="{CannedReport::USER_TIME_ALLTIME}"
+				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
+				<a href="#" reportId="{CannedReport::USER_TIME_THISWEEK}"
+				   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+				<a href="#" reportId="{CannedReport::USER_TIME_THISMONTH}"
+				   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
 			</span>
 		</li>
 		<li class="alt">
 			<span class="report-title">Top 20 Users - Reservation Count</span>
 			<span class="right">
-				<a href="#" reportId="{CannedReport::USER_COUNT_ALLTIME}" class="report report-action  runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
-				<a href="#" reportId="{CannedReport::USER_COUNT_THISWEEK}" class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-				<a href="#" reportId="{CannedReport::USER_COUNT_THISMONTH}" class="report report-action  runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+				<a href="#" reportId="{CannedReport::USER_COUNT_ALLTIME}"
+				   class="report report-action  runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
+				<a href="#" reportId="{CannedReport::USER_COUNT_THISWEEK}"
+				   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+				<a href="#" reportId="{CannedReport::USER_COUNT_THISMONTH}"
+				   class="report report-action  runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
 			</span>
 		</li>
 	</ul>
@@ -81,8 +99,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {html_image src="admin-ajax-indicator.gif"}
 </div>
 
+{include file="Reports/chart.tpl"}
+
 <script type="text/javascript" src="{$Path}scripts/ajax-helpers.js"></script>
 <script type="text/javascript" src="{$Path}scripts/canned-reports.js"></script>
+<script type="text/javascript" src="{$Path}scripts/reports/chart.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -96,6 +117,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		var reports = new CannedReports(reportOptions);
 		reports.init();
+
+		var chart = new Chart();
+		$('#resultsDiv').on('loaded', '#report-results', function () {
+			chart.generate();
+		});
 	});
 </script>
 

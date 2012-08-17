@@ -487,6 +487,7 @@ class en_us extends Language
 		$strings['MySavedReports'] = 'My Saved Reports';
 		$strings['CommonReports'] = 'Common Reports';
 		$strings['ViewDay'] = 'View Day';
+		$strings['Group'] = 'Group';
         // End Page Titles
 
         // Day representations

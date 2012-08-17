@@ -1,5 +1,4 @@
-<?php
-/**
+{*
 Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
@@ -16,32 +15,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
- */
+*}
+<div class="clear"></div>
+<div id="chartdiv" style="padding-top: 50px;height:300px;width:80%"></div>
 
-class ReportColumns implements IReportColumns
-{
-	private $knownColumns = array();
-
-	/**
-	 * @param $columnName string
-	 */
-	public function Add($columnName)
-	{
-		$this->knownColumns[] = $columnName;
-	}
-
-	public function Exists($columnName)
-	{
-		return in_array($columnName, $this->knownColumns);
-	}
-
-	/**
-	 * @return array|string
-	 */
-	public function GetAll()
-	{
-		return $this->knownColumns;
-	}
-}
-
-?>
+<script type="text/javascript" src="../scripts/js/jqplot/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.pointLabels.min.js"></script>

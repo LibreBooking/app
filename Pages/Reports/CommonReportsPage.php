@@ -66,13 +66,6 @@ class CommonReportsPage extends ActionPage implements ICommonReportsPage
 		$this->Display('Reports/common-reports.tpl');
 	}
 
-	/**
-	 * @param SavedReport[] $reportList
-	 */
-	public function BindReportList($reportList)
-	{
-	}
-
 	public function BindReport(IReport $report, IReportDefinition $definition)
 	{
 		$this->Set('HideSave', true);
