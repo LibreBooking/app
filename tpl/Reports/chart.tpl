@@ -17,9 +17,11 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="clear"></div>
-<div id="chartdiv" style="padding-top: 50px;height:300px;width:80%"></div>
+<div id="chartdiv" style="margin:auto;padding-top: 50px;height:300px;width:80%"></div>
 
 <script type="text/javascript" src="../scripts/js/jqplot/jquery.jqplot.min.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.barRenderer.min.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+<script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.pointLabels.min.js"></script>
