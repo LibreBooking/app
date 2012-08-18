@@ -23,6 +23,7 @@ class ChartType
 {
 	const Label = 'label';
 	const Total = 'total';
+	const TotalTime = 'totalTime';
 	const Date = 'date';
 }
 
@@ -196,6 +197,12 @@ interface IReportDefinition
 	 * @return string
 	 */
 	public function GetTotal();
+
+	/**
+	 * @abstract
+	 * @return string|ChartType
+	 */
+	public function GetChartType();
 }
 
 class ReportDefinition implements IReportDefinition
@@ -275,6 +282,23 @@ class ReportDefinition implements IReportDefinition
 			return $this->sumColumn->GetData($this->sum);
 		}
 		return '';
+	}
+
+	/**
+	 * @return string|ChartType
+	 */
+	public function GetChartType()
+	{
+		if (array_key_exists(ColumnNames::TOTAL, $this->columns))
+		{
+			return ChartType::Total;
+		}
+		else if(array_key_exists(ColumnNames::TOTAL_TIME, $this->columns))
+		{
+			return ChartType::TotalTime;
+		}
+
+		return ChartType::Date;
 	}
 }
 

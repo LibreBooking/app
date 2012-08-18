@@ -74,13 +74,6 @@ class CustomReport implements IReport
 		return $this->resultCount;
 	}
 
-	/**
-	 * @return IReportChart
-	 */
-	public function GetChart()
-	{
-		return new TestChart();
-	}
 }
 
 ?>

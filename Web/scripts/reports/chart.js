@@ -1,19 +1,38 @@
+(function($) {
+    $.jqplot.TimeTickFormatter = function (format, val) {
+		var numdays = Math.floor(val / 86400);
+		var numhours = Math.floor((val % 86400) / 3600);
+		var numminutes = Math.floor(((val % 86400) % 3600) / 60);
+
+		$hoursAndMinutes = numhours + "h " + numminutes + "m ";
+
+		if (numdays > 0) {
+			return numdays + "d " + $hoursAndMinutes;
+		}
+		return $hoursAndMinutes;
+
+    };
+})(jQuery);
+
 function Chart() {
 	this.generate = function () {
 
 		var resultsDiv = $('#report-results');
-		var totalCol = resultsDiv.find("th:contains('Total')");
-
-		var labelColumnIndex = 1;
-		var totalColumnIndex = totalCol.parent("tr").children().index(totalCol) + 1;
-
+		var chartType = resultsDiv.attr('chart-type');
 		var series = new Array();
-		$('#report-results>tbody>tr').not(':first').each(function () {
+		var seriesLabels = new Array();
 
-			var label = $(this).find('[chart-type="label"]').text();
-			var val = parseInt($(this).find('[chart-type="total"]').attr("chart-value"));
+		$('#report-results>tbody>tr').not(':first').each(function () {
+			var label = $(this).find('td[chart-type="label"]').text();
+			var val = parseInt($(this).find('td[chart-type="total"]').attr("chart-value"));
 			series.push([label, val]);
 		});
+
+		var tickFormatter = $.jqplot.DefaultTickFormatter;
+		if (chartType == 'totalTime')
+		{
+			tickFormatter = $.jqplot.TimeTickFormatter;
+		}
 
 		var plot1 = $.jqplot('chartdiv', [series], {
 			axesDefaults:{
@@ -28,9 +47,7 @@ function Chart() {
 				pointLabels:{show:true}
 
 			},
-			series:[
-//				{ label:'Resources'}
-			],
+			series: seriesLabels,
 			legend:{
 //				show: true,
 //				placement: 'outsideGrid'
@@ -39,12 +56,12 @@ function Chart() {
 				xaxis:{
 					renderer:$.jqplot.CategoryAxisRenderer,
 					tickOptions:{
-						//angle:-30
+						angle:-30
 					}
 				},
 				yaxis:{
 					pad:1.05,
-					//tickOptions: { formatString: '%d'}
+					tickOptions: { formatString:'%d', formatter: tickFormatter},
 					min:0
 				}
 			}

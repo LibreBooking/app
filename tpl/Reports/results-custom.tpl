@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="report-actions">
 		{if !$HideSave}<a href="#" id="btnSaveReportPrompt">{html_image src="disk-black.png"} {translate key=SaveThisReport}</a> | {/if}<a href="#" id="btnCsv">{html_image src="table-export.png"} {translate key=ExportToCSV}</a> | <a href="#" id="btnPrint">{html_image src="printer.png"}{translate key=Print}</a>
 	</div>
-	<table width="100%" id="report-results">
+	<table width="100%" id="report-results" chart-type="{$Definition->GetChartType()}">
 		<tr>
 		{foreach from=$Definition->GetColumnHeaders() item=column}
 			<th>{translate key=$column->TitleKey()}</th>

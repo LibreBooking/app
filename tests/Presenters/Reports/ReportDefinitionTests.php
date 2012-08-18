@@ -74,6 +74,22 @@ class ReportDefinitionTests extends TestBase
 		$this->assertEquals($oneHourThirtyMinutes, $row[3]->Value());
 		$this->assertEquals($oneHourThirtyMinutes->TotalSeconds(), $row[3]->ChartValue());
 	}
+	
+	public function testGetChartTypeBasedOnReportData()
+	{
+		$timezone = 'UTC';
+		$totalReport = new CustomReport(array(array(ColumnNames::TOTAL => 1)));
+		$timeReport = new CustomReport(array(array(ColumnNames::TOTAL_TIME => 1)));
+		$reservationReport = new CustomReport(array(array(ColumnNames::RESERVATION_START => 1)));
+
+		$totalDefinition = new ReportDefinition($totalReport, $timezone);
+		$timeDefinition = new ReportDefinition($timeReport, $timezone);
+		$reservationDefinition = new ReportDefinition($reservationReport, $timezone);
+
+		$this->assertEquals(ChartType::Total, $totalDefinition->GetChartType());
+		$this->assertEquals(ChartType::TotalTime, $timeDefinition->GetChartType());
+		$this->assertEquals(ChartType::Date, $reservationDefinition->GetChartType());
+	}
 }
 
 ?>

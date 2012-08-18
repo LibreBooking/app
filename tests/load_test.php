@@ -29,9 +29,9 @@ $stopWatch = new StopWatch();
 $stopWatch->Start();
 
 $numberOfResources = 10;
-$numberOfUsers = 50;
-$numberOfReservations = 200;
-$numberOfAccessories = 100;
+$numberOfUsers = 500;
+$numberOfReservations = 300;
+$numberOfAccessories = 20;
 
 $users = array();
 $resources = array();
