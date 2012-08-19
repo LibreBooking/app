@@ -12,12 +12,19 @@ var TimeTickFormatter = function (format, val) {
 };
 
 function Chart() {
+	var chartDiv = $('#chartdiv');
+	var chartIndicator = $('#chart-indicator');
+
 	this.clear = function () {
-		$('#chartdiv').empty();
+		chartDiv.empty();
+		chartDiv.hide();
 	};
 
 	this.generate = function () {
 		var resultsDiv = $('#report-results');
+		chartDiv.show();
+		chartIndicator.show();
+
 		var chartType = resultsDiv.attr('chart-type');
 
 		var series = null;
@@ -69,6 +76,7 @@ function Chart() {
 			}
 		});
 		plot.replot({resetAxes:true});
+		chartIndicator.hide();
 	};
 
 	function Series() {
@@ -155,14 +163,15 @@ function Chart() {
 
 		this.Add = function (row) {
 			var date = row.find('td[chart-column-type="date"]').attr('chart-value');
-			var groupCell = row.find('td[chart-group="r"]');
+			var groupCell = row.find('td[chart-group="r"],td[chart-group="a"]');
 			var groupId = groupCell.attr('chart-value');
 			var groupName = groupCell.text();
+			var total = parseInt(row.find('td[chart-column-type="total"]').attr('chart-value'));
 
 			if (!this.groups[groupId]) {
 				this.groups[groupId] = new this.GroupSeries(groupName, groupId);
 			}
-			this.groups[groupId].AddDate(date);
+			this.groups[groupId].AddDate(date, total);
 
 			if (this.first) {
 				this.min = date;
@@ -209,12 +218,16 @@ function Chart() {
 			var series = new Array();
 			var id = groupId;
 
-			this.AddDate = function (date) {
+			this.AddDate = function (date, count) {
+				if (!count)
+				{
+					count = 1;
+				}
 				if (series[date]) {
-					series[date]++;
+					series[date ]+= count;
 				}
 				else {
-					series[date] = 1;
+					series[date] = count;
 				}
 			};
 

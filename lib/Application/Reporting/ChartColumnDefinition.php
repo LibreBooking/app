@@ -33,6 +33,7 @@ class ChartColumnType
 
 class ChartGroup
 {
+	const Accessory = 'a';
 	const Resource = 'r';
 	const User = 'u';
 }
@@ -70,7 +71,7 @@ class ChartColumnDefinition
 	 * @param string|ChartGroup $chartGroup
 	 * @return ChartColumnDefinition
 	 */
-	public static function Label($dataColumnName, $chartGroup)
+	public static function Label($dataColumnName, $chartGroup = null)
 	{
 		return new ChartColumnDefinition(ChartColumnType::Label, $dataColumnName, $chartGroup);
 	}

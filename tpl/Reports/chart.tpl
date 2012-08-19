@@ -17,6 +17,11 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="clear"></div>
+<div id="chart-indicator" style="display:none; text-align: center;">
+	<h3>{translate key=Working}...</h3>
+{html_image src="admin-ajax-indicator.gif"}
+</div>
+
 <div id="chartdiv" style="margin:auto;height:400px;width:80%"></div>
 
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
