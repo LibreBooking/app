@@ -46,6 +46,7 @@ class ResourceKeys
 {
 	const DATE_GENERAL = 'general_date';
 	const DATETIME_GENERAL = 'general_datetime';
+	const DATETIME_SYSTEM = 'system_datetime';
 }
 
 class Resources implements IResourceLocalization
@@ -88,6 +89,7 @@ class Resources implements IResourceLocalization
 		$this->LanguageDirectory = dirname(__FILE__) . '/../../lang/';
 
 		$this->systemDateKeys['js_general_date'] = 'mm/dd/yy';
+		$this->systemDateKeys['system_datetime'] = 'Y-m-d H:i:s';
 		$this->systemDateKeys['url'] = 'Y-m-d';
 		$this->systemDateKeys['ical'] = 'Ymd\THis\Z';
 		$this->systemDateKeys['system'] = 'Y/m/d';
@@ -202,6 +204,11 @@ class Resources implements IResourceLocalization
 	public function GeneralDateTimeFormat()
 	{
 		return $this->GetDateFormat(ResourceKeys::DATETIME_GENERAL);
+	}
+
+	public function SystemDateTimeFormat()
+	{
+		return $this->GetDateFormat(ResourceKeys::DATETIME_SYSTEM);
 	}
 
 	public function GetDays($key)

@@ -18,165 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-class ChartType
-{
-	const Label = 'label';
-	const Total = 'total';
-	const TotalTime = 'totalTime';
-	const Date = 'date';
-}
-
-class ReportCell
-{
-	/**
-	 * @var string
-	 */
-	private $value;
-
-	/**
-	 * @var null|string
-	 */
-	private $chartValue;
-
-	/**
-	 * @var ChartType|string|null
-	 */
-	private $chartType;
-
-	/**
-	 * @param string $value
-	 * @param string|null $chartValue
-	 * @param ChartType|string|null $chartType
-	 */
-	public function __construct($value, $chartValue = null, $chartType = null)
-	{
-		$this->value = $value;
-		$this->chartValue = $chartValue;
-		$this->chartType = $chartType;
-	}
-
-	public function Value()
-	{
-		return $this->value;
-	}
-
-	public function ChartValue()
-	{
-		return $this->chartValue;
-	}
-
-	public function ChartType()
-	{
-		return $this->chartType;
-	}
-
-	public function __toString()
-	{
-		return $this->Value();
-	}
-}
-
-abstract class ReportColumn
-{
-	/**
-	 * @var string
-	 */
-	private $titleKey;
-
-	/**
-	 * @var ChartType|null|string
-	 */
-	private $chartType;
-
-	/**
-	 * @param $titleKey string
-	 * @param $chartType ChartType|string|null
-	 */
-	public function __construct($titleKey, $chartType = null)
-	{
-		$this->titleKey = $titleKey;
-		$this->chartType = $chartType;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function TitleKey()
-	{
-		return $this->titleKey;
-	}
-
-	/**
-	 * @param $data mixed
-	 * @return string
-	 */
-	public function GetData($data)
-	{
-		return $data;
-	}
-
-	/**
-	 * @return ChartType|string|null
-	 */
-	public function GetChartType()
-	{
-		return $this->chartType;
-	}
-
-	/**
-	 * @param $data mixed
-	 * @return string
-	 */
-	public function GetChartData($data)
-	{
-		return $data;
-	}
-}
-
-class ReportStringColumn extends ReportColumn
-{
-	public function __construct($titleKey, $chartType = null)
-	{
-		parent::__construct($titleKey, $chartType);
-	}
-}
-
-class ReportDateColumn extends ReportColumn
-{
-	private $timezone;
-	private $format;
-
-	public function __construct($titleKey, $timezone, $format, $chartType = null)
-	{
-		parent::__construct($titleKey, $chartType);
-		$this->timezone = $timezone;
-		$this->format = $format;
-	}
-
-	public function GetData($data)
-	{
-		return Date::FromDatabase($data)->ToTimezone($this->timezone)->Format($this->format);
-	}
-}
-
-class ReportTimeColumn extends ReportColumn
-{
-	public function __construct($titleKey, $chartType = null)
-	{
-		parent::__construct($titleKey, $chartType);
-	}
-
-	public function GetData($data)
-	{
-		return new TimeInterval($data);
-	}
-
-	public function GetChartData($data)
-	{
-		return $data;
-	}
-}
+require_once(ROOT_DIR . 'lib/Application/Reporting/ChartColumnDefinition.php');
+require_once(ROOT_DIR . 'lib/Application/Reporting/ReportColumn.php');
 
 interface IReportDefinition
 {
@@ -226,21 +69,21 @@ class ReportDefinition implements IReportDefinition
 	{
 		$dateFormat = Resources::GetInstance()->GeneralDateTimeFormat();
 		$orderedColumns = array(
-			ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory', ChartType::Label),
-			ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartType::Label),
-			ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved'),
-			ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat, ChartType::Date),
-			ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateFormat),
-			ColumnNames::RESERVATION_TITLE => new ReportStringColumn('Title'),
-			ColumnNames::RESERVATION_DESCRIPTION => new ReportStringColumn('Description'),
-			ColumnNames::REFERENCE_NUMBER => new ReportStringColumn('ReferenceNumber'),
-			ColumnNames::OWNER_FULL_NAME_ALIAS => new ReportStringColumn('User', ChartType::Label),
-			ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartType::Label),
-			ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartType::Label),
-			ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateFormat),
-			ColumnNames::RESERVATION_MODIFIED => new ReportDateColumn('LastModified', $timezone, $dateFormat),
-			ColumnNames::TOTAL => new ReportStringColumn('Total', ChartType::Total),
-			ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total', ChartType::Total),
+			ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory', ChartColumnDefinition::Null()), //(ColumnNames::ACCESSORY_ID, ChartGroup::Accessory)),
+			ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
+			ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved', ChartColumnDefinition::Null()),
+			ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat, ChartColumnDefinition::Date()),
+			ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+			ColumnNames::RESERVATION_TITLE => new ReportStringColumn('Title', ChartColumnDefinition::Null()),
+			ColumnNames::RESERVATION_DESCRIPTION => new ReportStringColumn('Description', ChartColumnDefinition::Null()),
+			ColumnNames::REFERENCE_NUMBER => new ReportStringColumn('ReferenceNumber', ChartColumnDefinition::Null()),
+			ColumnNames::OWNER_FULL_NAME_ALIAS => new ReportStringColumn('User', ChartColumnDefinition::Label(ColumnNames::USER_ID, ChartGroup::User)),
+			ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartColumnDefinition::Null()), // ChartColumnDefinition::Label(ColumnNames::GROUP_ID)),
+			ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartColumnDefinition::Null()), //ChartColumnDefinition::Label(ColumnNames::SCHEDULE_ID)),
+			ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+			ColumnNames::RESERVATION_MODIFIED => new ReportDateColumn('LastModified', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+			ColumnNames::TOTAL => new ReportStringColumn('Total', ChartColumnDefinition::Total()),
+			ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total', ChartColumnDefinition::Total()),
 		);
 
 		$reportColumns = $report->GetColumns();
@@ -269,7 +112,7 @@ class ReportDefinition implements IReportDefinition
 				$this->sum += $row[$key];
 				$this->sumColumn = $column;
 			}
-			$formattedRow[] = new ReportCell($column->GetData($row[$key]), $column->GetChartData($row[$key]), $column->GetChartType());
+			$formattedRow[] = new ReportCell($column->GetData($row[$key]), $column->GetChartData($row, $key), $column->GetChartColumnType(), $column->GetChartGroup());
 		}
 
 		return $formattedRow;

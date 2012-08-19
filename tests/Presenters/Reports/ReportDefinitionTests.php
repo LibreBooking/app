@@ -44,10 +44,12 @@ class ReportDefinitionTests extends TestBase
 		$timezone = 'America/Chicago';
 		$date = '2012-02-14 08:12:31';
 		$oneHourThirtyMinutes = TimeInterval::Parse("1h30m");
+		$userId = 100;
 
 		$rows = array(array(
 						  ColumnNames::RESERVATION_START => $date,
-						  ColumnNames::GROUP_NAME_ALIAS => 'gn',
+						  ColumnNames::OWNER_FULL_NAME_ALIAS => 'un',
+						  ColumnNames::USER_ID => $userId,
 						  ColumnNames::ACCESSORY_NAME => 'an',
 						  'unknown' => 'unknown',
 						  ColumnNames::TOTAL_TIME => $oneHourThirtyMinutes->TotalSeconds()
@@ -63,18 +65,23 @@ class ReportDefinitionTests extends TestBase
 		$this->assertEquals('an', $row[0]->Value());
 
 		$format = Resources::GetInstance()->GeneralDateTimeFormat();
+		$systemFormat = Resources::GetInstance()->SystemDateTimeFormat();
+
 		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->Format($format), $row[1]->Value());
-		$this->assertEquals(ChartType::Date, $row[1]->ChartType());
+		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->Format($systemFormat), $row[1]->ChartValue());
+		$this->assertEquals(ChartColumnType::Date, $row[1]->GetChartColumnType());
+		$this->assertNull($row[1]->GetChartGroup());
 
-		$this->assertEquals('gn', $row[2]->Value());
-		$this->assertEquals('gn', $row[2]->ChartValue());
-		$this->assertEquals(ChartType::Label, $row[2]->ChartType());
+		$this->assertEquals('un', $row[2]->Value());
+		$this->assertEquals($userId, $row[2]->ChartValue());
+		$this->assertEquals(ChartColumnType::Label, $row[2]->GetChartColumnType());
+		$this->assertEquals(ChartGroup::User, $row[2]->GetChartGroup());
 
-		$this->assertEquals(ChartType::Total, $row[3]->ChartType());
 		$this->assertEquals($oneHourThirtyMinutes, $row[3]->Value());
 		$this->assertEquals($oneHourThirtyMinutes->TotalSeconds(), $row[3]->ChartValue());
+		$this->assertEquals(ChartColumnType::Total, $row[3]->GetChartColumnType());
 	}
-	
+
 	public function testGetChartTypeBasedOnReportData()
 	{
 		$timezone = 'UTC';

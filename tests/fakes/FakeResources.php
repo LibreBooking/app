@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class FakeResources extends Resources 
 {
-	private $_dateFormats = array();
+	private $_dateFormats = array(ResourceKeys::DATE_GENERAL => 'm/d/y', ResourceKeys::DATETIME_GENERAL => 'm/d/y h:i:s', ResourceKeys::DATETIME_SYSTEM => 'Y-m-d H:i:s');
 
     public $_SetCurrentLanguageResult = true;
 	

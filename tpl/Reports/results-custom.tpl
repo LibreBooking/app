@@ -29,8 +29,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$Report->GetData()->Rows() item=row}
 			{cycle values=',alt' assign=rowCss}
 			<tr class="{$rowCss}">
-				{foreach from=$Definition->GetRow($row) item=data}
-					<td chart-value="{$data->ChartValue()}" chart-type="{$data->ChartType()}">{$data->Value()|escape}</td>
+				{foreach from=$Definition->GetRow($row) item=cell}
+					<td chart-value="{$cell->ChartValue()}" chart-column-type="{$cell->GetChartColumnType()}" chart-group="{$cell->GetChartGroup()}">{$cell->Value()|escape}</td>
 				{/foreach}
 			</tr>
 		{/foreach}

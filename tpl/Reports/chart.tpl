@@ -20,9 +20,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="chartdiv" style="margin:auto;height:300px;width:80%"></div>
 
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
-<script type="text/javascript" src="../scripts/js/jqplot/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="../scripts/js/jqplot/jquery.jqplot.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.barRenderer.min.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.pointLabels.min.js"></script>
+<script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
