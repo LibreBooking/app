@@ -170,11 +170,17 @@ function Chart() {
 			}
 		};
 
+		this.dataLoaded = false;
 		this.GetData = function () {
 			var data = new Array();
-			for (var group in this.groups) {
-				data.push(this.groups[group].GetData());
-				this.labels.push({label:this.groups[group].GetLabel()})
+			if (!this.dataLoaded)
+			{
+				for (var group in this.groups) {
+					data.push(this.groups[group].GetData());
+
+					this.labels.push({label:this.groups[group].GetLabel()})
+				}
+				this.dataLoaded = true;
 			}
 
 			return data;
@@ -186,6 +192,7 @@ function Chart() {
 					this.labels.push({label:this.groups[group].GetLabel()})
 				}
 			}
+
 			return this.labels;
 		};
 

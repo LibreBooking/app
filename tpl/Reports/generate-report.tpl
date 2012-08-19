@@ -16,9 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles="css/reports.css"}
+{include file='globalheader.tpl' cssFiles="css/reports.css,scripts/js/jqplot/jquery.jqplot.min.css"}
 
-<h1>Create Custom Report</h1>
+<h1>{translate key=GenerateReport}</h1>
 <a href="#" id="showHideCustom">{translate key=ShowHide}</a>
 <fieldset id="customReportInput-container">
 	<form id="customReportInput">

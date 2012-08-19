@@ -30,7 +30,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('#resultsDiv').on('loaded', '#report-no-data, #report-results', function () {
+		$(document).on('loaded', '#report-no-data, #report-results', function () {
 			var chart = new Chart();
 			chart.clear();
 		});
