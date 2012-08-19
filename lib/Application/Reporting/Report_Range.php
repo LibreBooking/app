@@ -61,7 +61,7 @@ class Report_Range
 		}
 		if ($this->range == self::CURRENT_WEEK)
 		{
-			$this->start = $now->AddDays(-$now->Weekday());
+			$this->start = $now->GetDate()->AddDays(-$now->Weekday());
 			$this->end = $this->Start()->AddDays(8);
 		}
 		if ($this->range == self::TODAY)

@@ -122,6 +122,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		$('#resultsDiv').on('loaded', '#report-results', function () {
 			chart.generate();
 		});
+
+		$('#resultsDiv').on('loaded', '#report-no-data', function () {
+			chart.clear();
+		});
 	});
 </script>
 

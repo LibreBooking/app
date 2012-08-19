@@ -46,5 +46,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		});
 	</script>
 {else}
-	<h2 class="no-data" style="text-align: center;">{translate key=NoResultsFound}</h2>
+	<h2 id="report-no-data" class="no-data" style="text-align: center;">{translate key=NoResultsFound}</h2>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#report-no-data').trigger('loaded');
+		});
+	</script>
 {/if}

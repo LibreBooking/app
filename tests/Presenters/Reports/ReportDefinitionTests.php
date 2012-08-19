@@ -49,7 +49,7 @@ class ReportDefinitionTests extends TestBase
 		$rows = array(array(
 						  ColumnNames::RESERVATION_START => $date,
 						  ColumnNames::OWNER_FULL_NAME_ALIAS => 'un',
-						  ColumnNames::USER_ID => $userId,
+						  ColumnNames::OWNER_USER_ID => $userId,
 						  ColumnNames::ACCESSORY_NAME => 'an',
 						  'unknown' => 'unknown',
 						  ColumnNames::TOTAL_TIME => $oneHourThirtyMinutes->TotalSeconds()
@@ -65,7 +65,7 @@ class ReportDefinitionTests extends TestBase
 		$this->assertEquals('an', $row[0]->Value());
 
 		$format = Resources::GetInstance()->GeneralDateTimeFormat();
-		$systemFormat = Resources::GetInstance()->SystemDateTimeFormat();
+		$systemFormat = Resources::GetInstance()->GeneralDateFormat();
 
 		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->Format($format), $row[1]->Value());
 		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->Format($systemFormat), $row[1]->ChartValue());

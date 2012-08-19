@@ -170,7 +170,8 @@ class ReportDateColumn extends ReportColumn
 
 	public function GetChartData($row, $key)
 	{
-		return Date::FromDatabase($row[$key])->ToTimezone($this->timezone)->Format("r");
+		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
+		return Date::FromDatabase($row[$key])->ToTimezone($this->timezone)->GetDate()->Format($format);
 	}
 }
 

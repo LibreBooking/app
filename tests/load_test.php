@@ -84,18 +84,24 @@ $currentDate = Date::Now();
 $i = 0;
 while ($i < $numberOfReservations)
 {
-	$userId = getRandomUserId($users)->Id();
-	$resource = getRandomResource($resources);
 	$periods = $layout->GetLayout($currentDate);
 
 	foreach ($periods as $period)
 	{
-		if ($period->IsReservable())
+		$howManyResources = rand(1, count($resources));
+		$startResource = rand(0, $howManyResources);
+
+		for ($resourceNum = $startResource; $resourceNum <$howManyResources; $resourceNum++)
 		{
-			$date = new DateRange($period->BeginDate(), $period->EndDate(), 'America/Chicago');
-			$reservation = ReservationSeries::Create($userId, $resource, "load$i", null, $date, new RepeatNone(), $bookedBy);
-			$reservationRepo->Add($reservation);
-			$i++;
+			if ($period->IsReservable())
+			{
+				$userId = getRandomUserId($users)->Id();
+				$resource = $resources[$resourceNum];
+				$date = new DateRange($period->BeginDate(), $period->EndDate(), 'America/Chicago');
+				$reservation = ReservationSeries::Create($userId, $resource, "load$i", null, $date, new RepeatNone(), $bookedBy);
+				$reservationRepo->Add($reservation);
+				$i++;
+			}
 		}
 	}
 

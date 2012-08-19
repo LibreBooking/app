@@ -74,9 +74,9 @@ class ReportCommandBuilder
 
 	const GROUP_ID_FRAGMENT = 'AND ug.group_id = @groupid';
 
-	const DATE_FRAGMENT = 'AND ((ri.start_date >= @startDate AND ri.start_date <= @endDate) OR
+	const DATE_FRAGMENT = 'AND ((ri.start_date >= @startDate AND ri.start_date < @endDate) OR
 						(ri.end_date >= @startDate AND ri.end_date <= @endDate) OR
-						(ri.start_date <= @startDate AND ri.end_date >= @endDate))';
+						(ri.start_date <= @startDate AND ri.end_date > @endDate))';
 
 	const GROUP_BY_GROUP_FRAGMENT = 'GROUP BY groups.group_id';
 
