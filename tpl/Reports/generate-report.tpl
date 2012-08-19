@@ -131,6 +131,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="indicator" style="display:none; text-align: center;"><h3>{translate key=Working}
 	...</h3>{html_image src="admin-ajax-indicator.gif"}</div>
 
+{include file="Reports/chart.tpl"}
+
 <div class="dialog" id="userPopup">
 {translate key=User}<a href="#" id="browseUser">Browse</a>
 </div>
@@ -156,6 +158,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
 <script type="text/javascript" src="{$Path}scripts/ajax-helpers.js"></script>
 <script type="text/javascript" src="{$Path}scripts/generate-reports.js"></script>
+<script type="text/javascript" src="{$Path}scripts/reports/chart.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function () {

@@ -117,15 +117,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		var reports = new CannedReports(reportOptions);
 		reports.init();
-
-		var chart = new Chart();
-		$('#resultsDiv').on('loaded', '#report-results', function () {
-			chart.generate();
-		});
-
-		$('#resultsDiv').on('loaded', '#report-no-data', function () {
-			chart.clear();
-		});
 	});
 </script>
 

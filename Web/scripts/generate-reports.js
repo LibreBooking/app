@@ -48,25 +48,33 @@ function GenerateReports(reportOptions) {
 			$('#customReportInput-container').toggle();
 		});
 
-		$('#btnPrint').live('click', function (e) {
+		$(document).on('click', '#btnPrint',function (e) {
 			e.preventDefault();
 
 			var url = opts.printUrl + elements.customReportForm.serialize();
 			window.open(url);
 		});
 
-		$('#btnCsv').live('click', function (e) {
+		$(document).on('click', '#btnCsv', function (e) {
 			e.preventDefault();
 
 			var url = opts.csvUrl + elements.customReportForm.serialize();
 			window.open(url);
 		});
 
-		$('#btnSaveReportPrompt').live('click', function (e) {
+		$(document).on('click', '#btnSaveReportPrompt',  function(e) {
 			e.preventDefault();
 
 			elements.saveDialog.find(':text').val('');
 			elements.saveDialog.dialog({modal:true});
+		});
+
+		$(document).on('click', '#btnChart', function(e) {
+			e.preventDefault();
+
+			var chart = new Chart();
+			chart.generate();
+			$('#report-results').hide();
 		});
 
 		$('.dialog .cancel').click(function (e) {

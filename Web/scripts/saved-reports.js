@@ -16,18 +16,26 @@ function SavedReports(reportOptions) {
 
 		wireUpReportLinks();
 
-		$('#btnPrint').live('click', function (e) {
+		$(document).on('click', '#btnPrint',function (e) {
 			e.preventDefault();
 
 			var url = opts.printUrl + reportId;
 			window.open(url);
 		});
 
-		$('#btnCsv').live('click', function (e) {
+		$(document).on('click', '#btnCsv', function (e) {
 			e.preventDefault();
 
 			var url = opts.csvUrl + reportId;
 			window.open(url);
+		});
+
+		$(document).on('click', '#btnChart', function(e) {
+			e.preventDefault();
+
+			var chart = new Chart();
+			chart.generate();
+			$('#report-results').hide();
 		});
 
 		$('.cancel').click(function (e) {

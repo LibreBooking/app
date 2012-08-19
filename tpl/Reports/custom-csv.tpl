@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {foreach from=$Definition->GetColumnHeaders() item=column}"{translate key=$column->TitleKey()}",{/foreach}
 
-{foreach from=$Report->GetData()->Rows() item=row}{foreach from=$Definition->GetRow($row) item=data}"{$data|escape}",{/foreach}
+{foreach from=$Report->GetData()->Rows() item=row}{foreach from=$Definition->GetRow($row) item=data}"{$data->Value()|escape}",{/foreach}
 
 {/foreach}
 

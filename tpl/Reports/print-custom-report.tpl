@@ -26,7 +26,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{foreach from=$Report->GetData()->Rows() item=row}
 		<tr>
 			{foreach from=$Definition->GetRow($row) item=data}
-				<td>{$data|escape}&nbsp;</td>
+				<td>{$data->Value()|escape}&nbsp;</td>
 			{/foreach}
 		</tr>
 	{/foreach}

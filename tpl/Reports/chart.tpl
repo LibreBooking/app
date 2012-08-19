@@ -27,3 +27,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.pointLabels.min.js"></script>
 <script type="text/javascript" src="../scripts/js/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#resultsDiv').on('loaded', '#report-no-data, #report-results', function () {
+			var chart = new Chart();
+			chart.clear();
+		});
+	});
+</script>

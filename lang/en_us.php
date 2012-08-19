@@ -416,6 +416,7 @@ class en_us extends Language
 		$strings['Range'] = 'Range';
 		$strings['Choose'] = 'Choose';
 		$strings['All'] = 'All';
+		$strings['ViewAsChart'] = 'View As Chart';
         // End Strings
 
         // Errors
