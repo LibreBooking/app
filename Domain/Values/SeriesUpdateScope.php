@@ -228,7 +228,7 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 
 		if (ReservationStartTimeConstraint::IsNone($startTimeConstraint))
 		{
-			return null;
+			return Date::Min();
 		}
 
 		return Date::Now();
