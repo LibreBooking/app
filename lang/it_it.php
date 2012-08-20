@@ -35,10 +35,10 @@ class it_it extends en_us
         $dates['general_date'] = 'd/m/Y';
         $dates['general_datetime'] = 'd/m/Y H:i:s';
         $dates['schedule_daily'] = 'l, d/m/Y';
-        $dates['reservation_email'] = 'd/m/Y @ g:i A (e)';
-        $dates['res_popup'] = 'd/m/Y g:i A';
-        $dates['dashboard'] = 'l, d/m/Y g:i A';
-        $dates['period_time'] = "g:i A";
+        $dates['reservation_email'] = 'd/m/Y @ H:i (e)';
+        $dates['res_popup'] = 'd/m/Y H:i ';
+        $dates['dashboard'] = 'l, d/m/Y H:i';
+        $dates['period_time'] = "H:i";
 		$dates['general_date_js'] = "dd/mm/yy";
 
         $this->Dates = $dates;
@@ -260,6 +260,7 @@ class it_it extends en_us
         $strings['SecurityCode'] = 'Codice Sicurezza';
         $strings['ReservationCreatedPreference'] = 'Quando creo una prenotazione o una prenotazione viene creata a mio nome';
         $strings['ReservationUpdatedPreference'] = 'Quando modifico una prenotazione o una prenotazione viene modificata a mio nome';
+        $strings['ReservationDeletedPreference'] = 'Quando cancello una prenotazione o una prenotazione viene cancellata a mio nome';
         $strings['ReservationApprovalPreference'] = 'Quando la mia prenotazione pendente viene approvata';
         $strings['PreferenceSendEmail'] = 'Mandami una email';
         $strings['PreferenceNoEmail'] = 'Non avvisarmi';
@@ -341,6 +342,44 @@ class it_it extends en_us
         $strings['Restricted'] = 'Ristretto';
         $strings['ViewAll'] = 'Vedi tutte';
         $strings['MoveResourcesAndReservations'] = 'Sposta risorse e prenotazioni a';
+        $strings['TurnOffSubscription'] = 'Disabilita le sottoscrizioni del Calendario';
+        $strings['TurnOnSubscription'] = 'Permetti Sottoscrizioni a questo Calendario';
+        $strings['SubscribeToCalendar'] = 'Iscriviti a questo Calendario';
+        $strings['SubscriptionsAreDisabled'] = 'L\'amministratore ha disabilitato le sottoscrizioni calendario';
+        $strings['NoResourceAdministratorLabel'] = '(Nessun Amministratore Risorsa)';
+        $strings['WhoCanManageThisResource'] = 'Chi puo\' gestire questa Risorsa?';
+        $strings['ResourceAdministrator'] = 'Amministratore Risorsa';
+        $strings['Private'] = 'Privato';
+        $strings['Accept'] = 'Accetta';
+        $strings['Decline'] = 'Rifiuta';
+        $strings['ShowFullWeek'] = 'Mostra Intera Settimana';
+        $strings['CustomAttributes'] = 'Attributi Personalizzati';
+        $strings['AddAttribute'] = 'Aggiungi un Attributo';
+        $strings['EditAttribute'] = 'Modifica un Attributo';
+        $strings['DisplayLabel'] = 'Etichetta Visualizzata';
+        $strings['Type'] = 'Tipo';
+        $strings['Required'] = 'Obbligatorio';
+        $strings['ValidationExpression'] = 'Espressione di Validazione';
+        $strings['PossibleValues'] = 'Valori Possibili';
+        $strings['SingleLineTextbox'] = 'Casella di testo singola';
+        $strings['MultiLineTextbox'] = 'Casella di testo multipla';
+        $strings['Checkbox'] = 'Checkbox';
+        $strings['SelectList'] = 'Lista a tendina';
+        $strings['CommaSeparated'] = 'comma separated';
+        $strings['Category'] = 'Categoria';
+        $strings['CategoryReservation'] = 'Prenotazione';
+        $strings['CategoryGroup'] = 'Gruppo';
+        $strings['SortOrder'] = 'Ordinamento';
+        $strings['Title'] = 'Titolo';
+        $strings['AdditionalAttributes'] = 'Attributi Addizionali';
+        $strings['True'] = 'Vero';
+        $strings['False'] = 'Falso';
+		$strings['ForgotPasswordEmailSent'] = 'Una email e\' stata inviata all\'indirizzo fornito con le istruzioni per resettare la password';
+		$strings['ActivationEmailSent'] = 'Riceverai presto una email di attivazione.';
+		$strings['AccountActivationError'] = 'Scusa, non puoi attivare il tuo account.';
+		$strings['Attachments'] = 'Allegati';
+		$strings['AttachFile'] = 'File Allegato';
+		$strings['Maximum'] = 'max';
 
         // Errors
         $strings['LoginError'] = 'Username o password errate';
