@@ -64,8 +64,8 @@ class Installer
         $populate_sample_data = new MySqlScript(ROOT_DIR . 'database_schema/sample-data-utf8.sql');
         $populate_sample_data->Replace('phpscheduleit2', $database_name);
 
-        $create_schema = new MySqlScript(ROOT_DIR . 'database_schema/schema-utf8.sql');
-        $populate_data = new MySqlScript(ROOT_DIR . 'database_schema/data-utf8.sql');
+        $create_schema = new MySqlScript(ROOT_DIR . 'database_schema/create-schema.sql');
+        $populate_data = new MySqlScript(ROOT_DIR . 'database_schema/create-data.sql');
 
         if ($should_create_db)
         {

@@ -2,7 +2,7 @@
 		"http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>phpScheduleIt 2.1 Installation</title>
+	<title>phpScheduleIt Installation</title>
 	<style type="text/css">
 
 		h1.section {
@@ -39,7 +39,7 @@
 </head>
 
 <body>
-<h1>Welcome to phpScheduleIt 2.1!</h1>
+<h1>phpScheduleIt Installation</h1>
 
 <h2><span STYLE="color:#727E0A">Prerequisites</span></h2>
 
@@ -71,7 +71,8 @@
 			/your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl
 			<a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(want to know why?)</a>
 			<ul>
-				<li>If using an FTP client, check read/write/execute for Owner and Group on /tpl, /tpl_c, and /uploads</li>
+				<li>If using an FTP client, check read/write/execute for Owner and Group on /tpl, /tpl_c, and /uploads
+				</li>
 			</ul>
 		</li>
 	</ul>
@@ -149,7 +150,7 @@ OR<br/>
 			your phpScheduleIt config file.
 		</li>
 		<li>Create a new database with whatever name you choose. This will be the name of the database in your
-			phpScheduleIt config file. 'phpSchedlueIt2' is the recommended database name.
+			phpScheduleIt config file. 'phpScheduleIt2' is the recommended database name.
 		</li>
 		<li>Associate the new user with the new database, giving the user permission to SELECT, CREATE, UPDATE, INSERT
 			and DELETE. Click the 'Add User to Db' button.
@@ -162,28 +163,21 @@ OR<br/>
 		<li>Open phpMyAdmin.</li>
 		<li>Click on the database name that you just created in the left panel.</li>
 		<li>Click the SQL tab at the top of the page.</li>
-		<li>Import "/database_schema/schema-utf8.sql" to phpscheduleit2</li>
-		<li>Import "/database_schema/data-utf8.sql" to phpscheduleit2</li>
+		<li>Import "/database_schema/create-schema.sql" to phpscheduleit2</li>
+		<li>Import "/database_schema/create-data.sql" to phpscheduleit2</li>
 	</ul>
 
 </div>
 <div>
 	<h4>If you have access to MySQL</h4>
 	<ul>
-		<li>Run/import "/database_schema/create-db.sql" to mysql db (phpscheduleit2 db created)</li>
-		<li>Run/import "/database_schema/schema-utf8.sql" to phpscheduleit2 (db schema created)</li>
-		<li>Run/import "/database_schema/create-user.sql" to mysql db (schedule_user/password mysql account created to
-			match to your default configuration
-			and notice that this is not the application user!). <br/>
-			At this point with the aforementioned default configuration in your-phpScheduleIt/config/config.php
-			your application can connect to the database and loaded eg. see
-			http://localhost/your-phpScheduleIt/Web/index.php
-			but you can not login since there is no application data or user, so go to next step
+		<li>Open "/database_schema/full-install.sql" and edit the database name and username/password to match your
+			config.php values
 		</li>
-		<li>Run/import "/database_schema/data-utf8.sql" to phpscheduleit2 (initializing application database)</li>
+		<li>Run/import "/database_schema/full-install.sql" to mysql db</li>
 		<li>Optionally - run/import "/database_schema/testdata-utf8.sql" to phpscheduleit2 (sample application data will
-			be created with 2 users:
-			admin/password and user/password). These users are available for testing your installation.
+			be created with 2 users: admin/password and user/password). These users are available for testing your
+			installation.
 		</li>
 	</ul>
 
