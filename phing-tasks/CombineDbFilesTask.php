@@ -94,7 +94,7 @@ class CombineDbFilesTask extends Task
 		// schema
 		$schemaHandle = fopen($this->schemaFile, "a");
 		$upgradeSchema = $this->GetSchemaFileContents($upgradeDir);
-		$newContents = "$versionInfo\r\n\r\n$upgradeSchema";
+		$newContents = "$versionInfo\r\n\r\n$upgradeSchema\r\n\r\n";
 
 		fwrite($schemaHandle, $newContents);
 		fclose($schemaHandle);
@@ -102,7 +102,7 @@ class CombineDbFilesTask extends Task
 		// data
 		$dataHandle = fopen($this->dataFile, "a");
 		$upgradeData = $this->GetDataFileContents($upgradeDir);
-		$newContents = "$versionInfo\r\n\r\n$upgradeData";
+		$newContents = "$versionInfo\r\n\r\n$upgradeData\r\n\r\n";
 
 		fwrite($dataHandle, $newContents);
 		fclose($dataHandle);
@@ -115,7 +115,7 @@ class CombineDbFilesTask extends Task
 		$upgradeSchema = $this->GetSchemaFileContents($upgradeDir);
 		$upgradeData = $this->GetDataFileContents($upgradeDir);
 
-		fwrite($upgradeHandle, "$upgradeSchema\r\n\r\n$upgradeData");
+		fwrite($upgradeHandle, "$upgradeSchema\r\n\r\n$upgradeData\r\n\r\n");
 		fclose($upgradeHandle);
 	}
 
