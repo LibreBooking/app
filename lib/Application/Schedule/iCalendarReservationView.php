@@ -33,19 +33,26 @@ class iCalendarReservationView
 
 	/**
 	 * @param ReservationItemView|ReservationView $res
+	 * @param UserSession $currentUser
 	 */
-	public function __construct($res)
+	public function __construct($res, UserSession $currentUser)
 	{
 		$this->DateCreated = $res->DateCreated;
 		$this->DateEnd = $res->EndDate;
 		$this->DateStart = $res->StartDate;
 		$this->Description = $res->Description;
-		$this->Organizer = $res->OwnerEmailAddress;
+		$this->Organizer = new FullName($res->OwnerFirstName, $res->OwnerLastName);
+		$this->OrganizerEmail = $res->OwnerEmailAddress;
 		$this->RecurRule = $this->CreateRecurRule($res);
 		$this->ReferenceNumber = $res->ReferenceNumber;
 		$this->Summary = $res->Title;
 		$this->ReservationUrl = sprintf("%s/%s?%s=%s", Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $res->ReferenceNumber);
 		$this->Location = $res->ResourceName;
+
+		if ($res->OwnerId == $currentUser->UserId)
+		{
+			$this->OrganizerEmail = str_replace('@', '-noreply@', $res->OwnerEmailAddress);
+		}
 	}
 
 	/**

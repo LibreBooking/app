@@ -114,7 +114,7 @@ class CalendarSubscriptionPresenter
 
 		foreach ($res as $r)
 		{
-			$reservations[] = new iCalendarReservationView($r);
+			$reservations[] = new iCalendarReservationView($r, ServiceLocator::GetServer()->GetUserSession());
 		}
 
 		$this->page->SetReservations($reservations);

@@ -75,7 +75,7 @@ class AdLdapWrapper implements IActiveDirectory
 
 	public function Authenticate($username, $password)
 	{
-		$authenticated =  $this->ldap->authenticate($username, $password);
+		$authenticated = $this->ldap->authenticate($username, $password);
 		if (!$authenticated)
 		{
 			Log::Debug('ActiveDirectory - Authenticate for user %s failed with reason %s', $username, $this->ldap->getLastError());

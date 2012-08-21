@@ -204,7 +204,6 @@ class Server
     {
         return $this->GetHeader('REMOTE_ADDR');
     }
-
 }
 
 ?>

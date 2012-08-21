@@ -71,7 +71,7 @@ class CalendarExportPresenter
 		if (!empty($referenceNumber))
 		{
 			$res = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
-			$reservations = array(new iCalendarReservationView($res));
+			$reservations = array(new iCalendarReservationView($res, $currentUser));
 
 			if ($shouldHideDetails)
 			{

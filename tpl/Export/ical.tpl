@@ -28,7 +28,7 @@ DTEND:{formatdate date=$reservation->DateEnd key=ical}
 DTSTAMP:{formatdate date=$reservation->DateCreated key=ical}
 DTSTART:{formatdate date=$reservation->DateStart key=ical}
 LOCATION:{$reservation->Location}
-ORGANIZER:MAILTO:{$reservation->Organizer}
+ORGANIZER;CN={$reservation->Organizer}:MAILTO:{$reservation->OrganizerEmail}
 {if $reservation->RecurRule neq ''}
 RRULE:{$reservation->RecurRule}
 {/if}

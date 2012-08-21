@@ -75,7 +75,7 @@ class ReportDefinitionTests extends TestBase
 		$this->assertEquals('un', $row[2]->Value());
 		$this->assertEquals($userId, $row[2]->ChartValue());
 		$this->assertEquals(ChartColumnType::Label, $row[2]->GetChartColumnType());
-		$this->assertEquals(ChartGroup::User, $row[2]->GetChartGroup());
+		$this->assertEmpty($row[2]->GetChartGroup());
 
 		$this->assertEquals($oneHourThirtyMinutes, $row[3]->Value());
 		$this->assertEquals($oneHourThirtyMinutes->TotalSeconds(), $row[3]->ChartValue());

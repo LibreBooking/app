@@ -56,10 +56,6 @@ class CalendarExportPresenterTests extends TestBase
 		$this->validator = $this->getMock('ICalendarExportValidator');
 		$this->reservationAuth = $this->getMock('IReservationAuthorization');
 
-		$this->validator->expects($this->atLeastOnce())
-				->method('IsValid')
-				->will($this->returnValue(true));
-
 		$this->presenter = new CalendarExportPresenter($this->page, $this->repo, $this->validator, $this->reservationAuth);
 	}
 
@@ -67,6 +63,10 @@ class CalendarExportPresenterTests extends TestBase
 	{
 		$referenceNumber = 'ref';
 		$reservationResult = new ReservationView();
+
+		$this->validator->expects($this->atLeastOnce())
+				->method('IsValid')
+				->will($this->returnValue(true));
 
 		$this->page->expects($this->once())
 				->method('GetReferenceNumber')
@@ -91,6 +91,10 @@ class CalendarExportPresenterTests extends TestBase
 		$referenceNumber = 'ref';
 		$reservationResult = new ReservationView();
 
+		$this->validator->expects($this->atLeastOnce())
+				->method('IsValid')
+				->will($this->returnValue(true));
+
 		$this->page->expects($this->once())
 				->method('GetReferenceNumber')
 				->will($this->returnValue($referenceNumber));
@@ -110,6 +114,36 @@ class CalendarExportPresenterTests extends TestBase
 				->with($this->arrayHasKey(0), $this->equalTo(true));
 
 		$this->presenter->PageLoad($this->fakeUser);
+	}
+
+	public function testOrganizerIsOwnerIfCurrentUserIsNotOrganizer()
+	{
+		// this fixes a bug in outlook which prevents you from adding a meeting that you are the organizer of
+		$user = new FakeUserSession();
+		$res = new ReservationView();
+		$res->OwnerId = $user->UserId+1;
+		$res->OwnerFirstName = "f";
+		$res->OwnerLastName = "l";
+		$res->OwnerEmailAddress = "e@m.com";
+
+		$reservationView = new iCalendarReservationView($res, $user);
+		$this->assertEquals($res->OwnerEmailAddress, $reservationView->OrganizerEmail);
+		$this->assertEquals(new FullName($res->OwnerFirstName, $res->OwnerLastName), $reservationView->Organizer);
+	}
+
+	public function testOrganizerIsDefaultedIfCurrentUserIsOrganizer()
+	{
+		// this fixes a bug in outlook which prevents you from adding a meeting that you are the organizer of
+		$user = new FakeUserSession();
+		$res = new ReservationView();
+		$res->OwnerId = $user->UserId;
+		$res->OwnerFirstName = "f";
+		$res->OwnerLastName = "l";
+		$res->OwnerEmailAddress = "e@m.com";
+
+		$reservationView = new iCalendarReservationView($res, $user);
+		$this->assertEquals('e-noreply@m.com', $reservationView->OrganizerEmail);
+		$this->assertEquals(new FullName($res->OwnerFirstName, $res->OwnerLastName), $reservationView->Organizer);
 	}
 }
 
