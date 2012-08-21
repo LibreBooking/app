@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 class Server
 {
     public function __construct()
@@ -73,6 +72,10 @@ class Server
 		@session_destroy();
 	}
 
+	/**
+     * @param string $name
+     * @return string|null
+     */
     public function GetQuerystring($name)
     {
         if (isset($_GET[$name]))
@@ -83,25 +86,43 @@ class Server
     }
 
     /**
-     * This return null or an array of form elements such as email and password and submit
      * @param string $name
-     * @return string
+     * @return string|null
      */
     public function GetForm($name)
     {
-        if (isset($_POST[$name]))
-        {
-            if (is_array($_POST[$name]))
-            {
-                return $_POST[$name];
-            }
+		$value = $this->GetRawForm($name);
+		if (!empty($value))
+		{
+			return htmlspecialchars($value);
+		}
 
-            return htmlspecialchars($_POST[$name]);
-        }
-        return null;
+        return $value;
     }
 
-    public function GetFile($name)
+	/**
+	 * @param string $name
+	 * @return string|null
+	 */
+	public function GetRawForm($name)
+	{
+		if (isset($_POST[$name]))
+		{
+			if (is_array($_POST[$name]))
+			{
+				return $_POST[$name];
+			}
+
+			return $_POST[$name];
+		}
+		return null;
+	}
+
+	/**
+	 * @param string $name
+	 * @return null|UploadedFile
+	 */
+	public function GetFile($name)
     {
         if (isset($_FILES[$name]))
         {

@@ -191,19 +191,31 @@ abstract class Page implements IPage
 		$this->smarty->assign($var, $value);
 	}
 
+	/**
+	 * @param string $var
+	 * @return string
+	 */
 	protected function GetVar($var)
 	{
 		return $this->smarty->getTemplateVars($var);
 	}
 
 	/**
-	 * Get the current form(s) on this server
 	 * @param string $var
 	 * @return null|string
 	 */
 	protected function GetForm($var)
 	{
 		return $this->server->GetForm($var);
+	}
+
+	/**
+	 * @param string $var
+	 * @return null
+	 */
+	protected function GetRawForm($var)
+	{
+		return $this->server->GetRawForm($var);
 	}
 
 	/**

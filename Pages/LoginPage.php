@@ -128,7 +128,7 @@ class LoginPage extends Page implements ILoginPage
 
 	public function GetPassword()
 	{
-		return $this->GetForm(FormKeys::PASSWORD);
+		return $this->GetRawForm(FormKeys::PASSWORD);
 	}
 
 	public function GetPersistLogin()
