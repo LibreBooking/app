@@ -28,7 +28,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$Quotas item=quota}
 			{capture name="scheduleName" assign="scheduleName"}
 				<h4>{if $quota->ScheduleName ne ""}
-					{$quota->ScheduleName}
+					{$quota->ScheduleName|replace:',':' '}
 				{else}
 					{translate key="AllSchedules"}
 				{/if}
@@ -36,7 +36,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{/capture}
 			{capture name="resourceName" assign="resourceName"}
 				<h4>{if $quota->ResourceName ne ""}
-					{$quota->ResourceName}
+					{$quota->ResourceName|replace:',':' '}
 				{else}
 					{translate key="AllResources"}
 				{/if}
@@ -45,7 +45,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{capture name="groupName" assign="groupName"}
 				<h4>
 				{if $quota->GroupName ne ""}
-					{$quota->GroupName}
+					{$quota->GroupName|replace:',':' '}
 				{else}
 					{translate key="AllGroups"}
 				{/if}
@@ -82,7 +82,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<select class='textbox' {formname key=SCHEDULE_ID}>
 				<option selected='selected' value=''>{translate key=AllSchedules}</option>
 			{foreach from=$Schedules item=schedule}
-				<option value='{$schedule->GetId()}'>{$schedule->GetName()}</option>
+				<option value='{$schedule->GetId()}'>{$schedule->GetName()|replace:',':' '}</option>
 			{/foreach}
 			</select>
 		{/capture}
@@ -91,7 +91,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<select class='textbox' {formname key=RESOURCE_ID}>
 				<option selected='selected' value=''>{translate key=AllResources}</option>
 			{foreach from=$Resources item=resource}
-				<option value='{$resource->GetResourceId()}'>{$resource->GetName()}</option>
+				<option value='{$resource->GetResourceId()}'>{$resource->GetName()|replace:',':' '}</option>
 			{/foreach}
 			</select>
 		{/capture}
@@ -100,7 +100,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<select class='textbox' {formname key=GROUP}>
 				<option selected='selected' value=''>{translate key=AllGroups}</option>
 			{foreach from=$Groups item=group}
-				<option value='{$group->Id}'>{$group->Name}</option>
+				<option value='{$group->Id}'>{$group->Name|replace:',':' '}</option>
 			{/foreach}
 			</select>
 		{/capture}
@@ -108,12 +108,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{capture name="amount" assign="amount"}
 			<input type='text' class='textbox' value='0' size='5' {formname key=LIMIT} />
 		{/capture}
+
 		{capture name="unit" assign="unit"}
 			<select class='textbox' {formname key=UNIT}>
 				<option value='{QuotaUnit::Hours}'>{translate key=hours}</option>
 				<option value='{QuotaUnit::Reservations}'>{translate key=reservations}</option>
 			</select>
 		{/capture}
+
 		{capture name="duration" assign="duration"}
 			<select class='textbox' {formname key=DURATION}>
 				<option value='{QuotaDuration::Day}'>{translate key=day}</option>
