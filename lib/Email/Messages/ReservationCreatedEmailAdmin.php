@@ -113,6 +113,13 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		$this->Set('RequiresApproval', $this->reservationSeries->RequiresApproval());
 		$this->Set('RepeatDates', $repeatDates);
 		$this->Set('ReservationUrl', Pages::RESERVATION . "?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $currentInstance->ReferenceNumber());
+
+		$resourceNames = array();
+		foreach($this->reservationSeries->AllResources() as $resource)
+		{
+			$resourceNames[] = $resource->GetName();
+		}
+		$this->Set('ResourceNames', $resourceNames);
 	}
 }
 ?>

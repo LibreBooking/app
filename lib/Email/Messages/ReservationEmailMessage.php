@@ -97,6 +97,13 @@ abstract class ReservationEmailMessage extends EmailMessage
         $this->Set('RequiresApproval', $this->reservationSeries->RequiresApproval());
         $this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
         $this->Set('ICalUrl', sprintf("export/%s?%s=%s", Pages::CALENDAR_EXPORT, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
+
+		$resourceNames = array();
+		foreach($this->reservationSeries->AllResources() as $resource)
+		{
+			$resourceNames[] = $resource->GetName();
+		}
+		$this->Set('ResourceNames', $resourceNames);
     }
 }
 ?>

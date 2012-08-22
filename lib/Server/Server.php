@@ -92,7 +92,7 @@ class Server
     public function GetForm($name)
     {
 		$value = $this->GetRawForm($name);
-		if (!empty($value))
+		if (!empty($value) && !is_array($value))
 		{
 			return htmlspecialchars($value);
 		}
