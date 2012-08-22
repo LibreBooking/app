@@ -165,7 +165,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					</ul>
 				</li>
 			{/if}
-			{if $CanViewResponsibilities || $CanViewAdmin}
+			{if $CanViewReports}
 			<li class="menubaritem"><a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=Reports}</a>
 				<ul>
 					<li><a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a></li>

@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'Pages/ActionPage.php');
+require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Reports/IDisplayableReportPage.php');
 require_once(ROOT_DIR . 'Presenters/Reports/CommonReportsPresenter.php');
 

@@ -140,14 +140,14 @@ class SecureActionPageDecorator extends ActionPage
 
 class RoleRestrictedPageDecorator extends SecureActionPageDecorator
 {
-	public function __construct(ActionPage $page, $requiredRoles = array())
+	public function __construct(ActionPage $page, $allowedRoles = array())
 	{
 		parent::__construct($page);
 
 		$user = ServiceLocator::GetServer()->GetUserSession();
 		$isAllowed = false;
 
-		foreach ($requiredRoles as $roleId)
+		foreach ($allowedRoles as $roleId)
 		{
 			if ($user->IsAdmin)
 			{
