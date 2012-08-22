@@ -74,7 +74,7 @@ class ReservationSavePresenter
 		$accessories = $this->_page->GetAccessories();
 		foreach ($accessories as $accessory)
 		{
-			$reservationSeries->AddAccessory(new ReservationAccessory($accessory->Id, $accessory->Quantity));
+			$reservationSeries->AddAccessory(new ReservationAccessory($accessory->Id, $accessory->Quantity, $accessory->Name));
 		}
 
 		$attributes = $this->_page->GetAttributes();

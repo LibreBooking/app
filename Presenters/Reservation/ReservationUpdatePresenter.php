@@ -150,7 +150,7 @@ class ReservationUpdatePresenter
 		$accessories = array();
 		foreach ($this->page->GetAccessories() as $accessory)
 		{
-			$accessories[] = new ReservationAccessory($accessory->Id, $accessory->Quantity);
+			$accessories[] = new ReservationAccessory($accessory->Id, $accessory->Quantity, $accessory->Name);
 		}
 
 		return $accessories;

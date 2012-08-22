@@ -104,6 +104,7 @@ abstract class ReservationEmailMessage extends EmailMessage
 			$resourceNames[] = $resource->GetName();
 		}
 		$this->Set('ResourceNames', $resourceNames);
+		$this->Set('Accessories', $this->reservationSeries->Accessories());
     }
 }
 ?>

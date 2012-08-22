@@ -138,7 +138,7 @@ class ReservationUpdatePresenterTests extends TestBase
 
 		$existingSeries = $this->presenter->BuildReservation();
 
-		$expectedAccessories = array(new ReservationAccessory(1, 2));
+		$expectedAccessories = array(new ReservationAccessory(1, 2, 'accessoryname'));
 		$expectedAttributes = array(1 => new AttributeValue(1, 'something'));
 
 		$this->assertEquals($seriesId, $existingSeries->SeriesId());

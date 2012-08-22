@@ -115,7 +115,7 @@ class ReservationSavePresenterTests extends TestBase
 		$accessories = array();
 		foreach ($pageAccessories as $pa)
 		{
-			$accessories[] = new ReservationAccessory($pa->Id, $pa->Quantity);
+			$accessories[] = new ReservationAccessory($pa->Id, $pa->Quantity, $pa->Name);
 		}
 
 		$expectedAttributes = array();
@@ -209,7 +209,7 @@ class FakeReservationSavePage implements IReservationSavePage
 		$this->endDate = $now->AddDays(6)->Format('Y-m-d');
 		$this->repeatTerminationDate = $now->AddDays(60)->Format('Y-m-d');
 		$this->repeatOptions = new RepeatNone();
-		$this->accessories = array(new FakeAccessoryFormElement(1, 2));
+		$this->accessories = array(new FakeAccessoryFormElement(1, 2, 'accessoryname'));
 		$this->attributes = array(new AttributeFormElement(1, "something"));
 		$this->attachment = new FakeUploadedFile();
 	}
@@ -348,9 +348,10 @@ class FakeReservationSavePage implements IReservationSavePage
 
 class FakeAccessoryFormElement extends AccessoryFormElement
 {
-	public function __construct($id, $quantity)
+	public function __construct($id, $quantity, $name)
 	{
 		$this->Id = $id;
 		$this->Quantity = $quantity;
+		$this->Name = $name;
 	}
 }

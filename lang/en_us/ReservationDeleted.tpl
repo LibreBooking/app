@@ -24,8 +24,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	
 	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
 	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
-	{if $ResourceNames|count >0}
-		Resources:
+	{if $ResourceNames|count > 1}
+		Resources:<br/>
 		{foreach from=$ResourceNames item=resourceName}
 			{$resourceName}<br/>
 		{/foreach}
@@ -44,6 +44,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{foreach from=$RepeatDates item=date name=dates}
 		{formatdate date=$date}<br/>
 	{/foreach}
+
+	{if $Accessories|count > 0}
+		<br/>Accessories:<br/>
+		{foreach from=$Accessories item=accessory}
+			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
+		{/foreach}
+	{/if}
 
 	<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
 	

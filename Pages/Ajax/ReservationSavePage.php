@@ -371,7 +371,6 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 			{
 				$af[] = new AccessoryFormElement($a);
 			}
-
 			return $af;
 		}
 
@@ -416,9 +415,11 @@ class AccessoryFormElement
 		$params = explode(',', $y[1]);
 		$id = explode('=', $params[0]);
 		$quantity = explode('=', $params[1]);
+		$name = explode('=', $params[2]);
 
 		$this->Id = $id[1];
 		$this->Quantity = $quantity[1];
+		$this->Name = urldecode($name[1]);
 	}
 }
 
