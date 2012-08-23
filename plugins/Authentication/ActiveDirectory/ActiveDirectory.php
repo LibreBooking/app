@@ -119,6 +119,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
 	{
 		$this->password = $password;
 
+		$username = $this->CleanUsername($username);
 		$connected = $this->ldap->Connect();
 
         if (!$connected)
@@ -153,6 +154,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
 
 	public function Login($username, $loginContext)
 	{
+		$username = $this->CleanUsername($username);
 		Log::Debug('ActiveDirectory - Login() in with username: %s', $username);
 		if ($this->LdapUserExists())
 		{
@@ -208,6 +210,24 @@ class ActiveDirectory extends Authentication implements IAuthentication
 				$this->user->GetPhone(), $this->user->GetInstitution(),
                 $this->user->GetTitle())
 		);
+	}
+
+	private function CleanUsername($username)
+	{
+		if (StringHelper::Contains($username, '@'))
+		{
+			Log::Debug('ActiveDirectory - Username %s appears to be an email address. Cleaning...', $username);
+			$parts = explode('@', $username);
+			$username = $parts[0];
+		}
+		if (StringHelper::Contains($username, '\\'))
+		{
+			Log::Debug('ActiveDirectory - Username %s appears contain a domain. Cleaning...', $username);
+			$parts = explode('\\', $username);
+			$username = $parts[1];
+		}
+
+		return $username;
 	}
 }
 

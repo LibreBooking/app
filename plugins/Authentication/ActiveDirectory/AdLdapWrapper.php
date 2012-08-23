@@ -85,7 +85,9 @@ class AdLdapWrapper implements IActiveDirectory
 
 	public function GetLdapUser($username)
 	{
-		$attributes = array( 'sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title' );
+		$attributes = $this->options->Attributes();
+
+		Log::Debug('ActiveDirectory - Loading user attributes: %s', implode(', ', $attributes));
 
 		/** @var adLDAPUserCollection $entries  */
 		$entries = $this->ldap->user()->infoCollection($username, $attributes);

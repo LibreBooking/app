@@ -244,11 +244,58 @@ class ActiveDirectoryTests extends TestBase
 
 		$this->assertEquals(array('localhost', 'localhost.2'), $options->Controllers(), "comma separated values should become array");
 	}
+	
+	public function testConvertsEmailToUserName()
+	{
+		$email = 'user@email.com';
+		$expectedUsername = 'user';
+
+		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth->Validate($email, $this->password);
+
+		$this->assertEquals($expectedUsername, $this->fakeLdap->_LastUsername);
+	}
+	
+	public function testConvertsUserNameWithDomainToUserName()
+	{
+		$username = 'domain\user';
+		$expectedUsername = 'user';
+
+		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth->Validate($username, $this->password);
+
+		$this->assertEquals($expectedUsername, $this->fakeLdap->_LastUsername);
+	}
+	
+	public function testCanGetAttributeMapping()
+	{
+		$attributeMapping = "sn= sn,givenname =givenname,mail=email ,telephonenumber=phone, physicaldeliveryofficename=physicaldeliveryofficename";
+
+		$configFile = new FakeConfigFile();
+		$configFile->SetKey(ActiveDirectoryConfig::ATTRIBUTE_MAPPING, $attributeMapping);
+		$this->fakeConfig->SetFile(ActiveDirectoryConfig::CONFIG_ID, $configFile);
+
+		$options = new ActiveDirectoryOptions();
+
+		$expectedAttributes = array( 'sn', 'givenname', 'email', 'phone', 'physicaldeliveryofficename', 'title');
+		$this->assertEquals($expectedAttributes, $options->Attributes());
+	}
+
+	public function testGetsDefaultAttributes()
+	{
+		$configFile = new FakeConfigFile();
+		$configFile->SetKey(ActiveDirectoryConfig::ATTRIBUTE_MAPPING, '');
+		$this->fakeConfig->SetFile(ActiveDirectoryConfig::CONFIG_ID, $configFile);
+
+		$options = new ActiveDirectoryOptions();
+
+		$expectedAttributes = array( 'sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title');
+		$this->assertEquals($expectedAttributes, $options->Attributes());
+	}
 }
 
 class TestAdLdapEntry
 {
-
     public $sn;
     public $givenname;
     public $mail;

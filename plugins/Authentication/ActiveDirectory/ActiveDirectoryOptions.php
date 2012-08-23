@@ -23,7 +23,7 @@ require_once(ROOT_DIR . '/lib/Config/namespace.php');
 class ActiveDirectoryOptions
 {
 	private $_options = array();
-	
+
 	public function __construct()
 	{
         require_once(dirname(__FILE__) . '/ActiveDirectory.config.php');
@@ -44,7 +44,7 @@ class ActiveDirectoryOptions
 		$this->SetOption('use_ssl', $this->GetConfig(ActiveDirectoryConfig::USE_SSL, new BooleanConverter()));
 		$this->SetOption('account_suffix', $this->GetConfig(ActiveDirectoryConfig::ACCOUNT_SUFFIX));
 		$this->SetOption('ldap_version', $this->GetConfig(ActiveDirectoryConfig::VERSION), new IntConverter());
-		
+
 		return $this->_options;
 	}
 	
@@ -84,6 +84,28 @@ class ActiveDirectoryOptions
 		
 		return $hosts;
 	}
-	
+
+	public function Attributes()
+	{
+		$attributes = array( 'sn' => 'sn',
+							 'givenname' => 'givenname',
+							 'mail' => 'mail',
+							 'telephonenumber' => 'telephonenumber',
+							 'physicaldeliveryofficename' => 'physicaldeliveryofficename',
+							 'title' => 'title');
+		$configValue = $this->GetConfig(ActiveDirectoryConfig::ATTRIBUTE_MAPPING);
+
+		if (!empty($configValue))
+		{
+			$attributePairs = explode(',', $configValue);
+			foreach ($attributePairs as $attributePair)
+			{
+				$pair = explode('=', trim($attributePair));
+				$attributes[trim($pair[0])] = trim($pair[1]);
+			}
+		}
+
+		return array_values($attributes);
+	}
 }
 ?>

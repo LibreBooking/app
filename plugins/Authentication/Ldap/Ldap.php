@@ -124,6 +124,7 @@ class Ldap extends Authentication implements IAuthentication
 	{
 		$this->password = $password;
 
+		$username = $this->CleanUsername($username);
 		$connected = $this->ldap->Connect();
 
         if (!$connected)
@@ -158,6 +159,8 @@ class Ldap extends Authentication implements IAuthentication
 
 	public function Login($username, $loginContext)
 	{
+		$username = $this->CleanUsername($username);
+
 		if ($this->LdapUserExists())
 		{
 			$this->Synchronize($username);
@@ -207,6 +210,24 @@ class Ldap extends Authentication implements IAuthentication
 				$this->user->GetPhone(), $this->user->GetInstitution(),
                 $this->user->GetTitle())
 		);
+	}
+
+	private function CleanUsername($username)
+	{
+		if (StringHelper::Contains($username, '@'))
+		{
+			Log::Debug('LDAP - Username %s appears to be an email address. Cleaning...', $username);
+			$parts = explode('@', $username);
+			$username = $parts[0];
+		}
+		if (StringHelper::Contains($username, '\\'))
+		{
+			Log::Debug('LDAP - Username %s appears contain a domain. Cleaning...', $username);
+			$parts = explode('\\', $username);
+			$username = $parts[1];
+		}
+
+		return $username;
 	}
 }
 

@@ -99,8 +99,13 @@ class Ldap2Wrapper
 	 */
 	private function PopulateUser($username)
 	{
-		$filter = Net_LDAP2_Filter::create('uid', 'equals', $username);
-		$attributes = array('sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title', 'dn');
+		$uidAttribute = $this->options->GetUserIdAttribute();
+		Log::Debug('LDAP - uid attribute: %s', $uidAttribute);
+		$filter = Net_LDAP2_Filter::create($uidAttribute, 'equals', $username);
+
+		$attributes = $this->options->Attributes();
+		Log::Debug('LDAP - Loading user attributes: %s', implode(', ', $attributes));
+
 		$options = array('attributes' => $attributes);
 
 		Log::Debug('Searching ldap for user %s', $username);

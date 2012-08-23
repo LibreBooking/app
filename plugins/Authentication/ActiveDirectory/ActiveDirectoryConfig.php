@@ -31,6 +31,7 @@ class ActiveDirectoryConfig
     const ACCOUNT_SUFFIX = 'account.suffix';
     const SECTION_AD = 'ad';
     const RETRY_AGAINST_DATABASE = 'database.auth.when.ldap.user.not.found';
+	const ATTRIBUTE_MAPPING = 'attribute.mapping';
 }
 
 ?>

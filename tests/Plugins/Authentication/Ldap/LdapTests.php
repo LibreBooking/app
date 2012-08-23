@@ -250,6 +250,76 @@ class LdapTests extends TestBase
 
 		$this->assertEquals('user', $user->GetLastName());
 	}
+
+	public function testConvertsEmailToUserName()
+	{
+		$email = 'user@email.com';
+		$expectedUsername = 'user';
+
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth->Validate($email, $this->password);
+
+		$this->assertEquals($expectedUsername, $this->fakeLdap->_LastUsername);
+	}
+
+	public function testConvertsUserNameWithDomainToUserName()
+	{
+		$username = 'domain\user';
+		$expectedUsername = 'user';
+
+		$auth = new Ldap($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth->Validate($username, $this->password);
+
+		$this->assertEquals($expectedUsername, $this->fakeLdap->_LastUsername);
+	}
+
+	public function testCanGetAttributeMapping()
+	{
+		$attributeMapping = "sn= sn,givenname =givenname,mail=email ,telephonenumber=phone, physicaldeliveryofficename=physicaldeliveryofficename";
+
+		$configFile = new FakeConfigFile();
+		$configFile->SetKey(LdapConfig::ATTRIBUTE_MAPPING, $attributeMapping);
+		$this->fakeConfig->SetFile(LdapConfig::CONFIG_ID, $configFile);
+
+		$options = new LdapOptions();
+
+		$expectedAttributes = array( 'sn', 'givenname', 'email', 'phone', 'physicaldeliveryofficename', 'title');
+		$this->assertEquals($expectedAttributes, $options->Attributes());
+	}
+
+	public function testGetsDefaultAttributes()
+	{
+		$configFile = new FakeConfigFile();
+		$configFile->SetKey(LdapConfig::ATTRIBUTE_MAPPING, '');
+		$this->fakeConfig->SetFile(LdapConfig::CONFIG_ID, $configFile);
+
+		$options = new LdapOptions();
+
+		$expectedAttributes = array( 'sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title');
+		$this->assertEquals($expectedAttributes, $options->Attributes());
+	}
+	
+	public function testGetsUserIdAttribute()
+	{
+		$configFile = new FakeConfigFile();
+		$configFile->SetKey(LdapConfig::USER_ID_ATTRIBUTE, 'user_id');
+		$this->fakeConfig->SetFile(LdapConfig::CONFIG_ID, $configFile);
+
+		$options = new LdapOptions();
+
+		$this->assertEquals('user_id', $options->GetUserIdAttribute());
+	}
+
+	public function testGetsDefaultUserIdAttribute()
+	{
+		$configFile = new FakeConfigFile();
+		$configFile->SetKey(LdapConfig::USER_ID_ATTRIBUTE, '');
+		$this->fakeConfig->SetFile(LdapConfig::CONFIG_ID, $configFile);
+
+		$options = new LdapOptions();
+
+		$this->assertEquals('uid', $options->GetUserIdAttribute());
+	}
 }
 
 class FakeLdapOptions extends LdapOptions

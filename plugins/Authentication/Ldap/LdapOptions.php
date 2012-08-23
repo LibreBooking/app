@@ -96,5 +96,40 @@ class LdapOptions
 		return $this->GetConfig('ldap.debug.enabled', new BooleanConverter());
 	}
 
+	public function Attributes()
+	{
+		$attributes = array( 'sn' => 'sn',
+							 'givenname' => 'givenname',
+							 'mail' => 'mail',
+							 'telephonenumber' => 'telephonenumber',
+							 'physicaldeliveryofficename' => 'physicaldeliveryofficename',
+							 'title' => 'title');
+		$configValue = $this->GetConfig(LdapConfig::ATTRIBUTE_MAPPING);
+
+		if (!empty($configValue))
+		{
+			$attributePairs = explode(',', $configValue);
+			foreach ($attributePairs as $attributePair)
+			{
+				$pair = explode('=', trim($attributePair));
+				$attributes[trim($pair[0])] = trim($pair[1]);
+			}
+		}
+
+		return array_values($attributes);
+	}
+
+	public function GetUserIdAttribute()
+	{
+		$attribute = $this->GetConfig(LdapConfig::USER_ID_ATTRIBUTE);
+
+		if (empty($attribute))
+		{
+			return 'uid';
+		}
+
+		return $attribute;
+	}
+
 }
 ?>

@@ -27,5 +27,6 @@ $conf['settings']['basedn'] =  'ou=uidauthent,o=domain.com';   // The base dn fo
 $conf['settings']['version'] = '3';		// LDAP protocol version
 $conf['settings']['use.ssl'] = 'false'; // 'true' if 636 was used.
 $conf['settings']['account.suffix'] = '';	// The full account suffix for your domain. Example: @uidauthent.domain.com.
-$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against phpScheudleIt database
+$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against phpScheduleIt database
+$conf['settings']['attribute.mapping'] = 'sn=sn,givenname=givenname,mail=mail,telephonenumber=telephonenumber,physicaldeliveryofficename=physicaldeliveryofficename,title=title';	// mapping of required attributes to attribute names in your directory
 ?>
