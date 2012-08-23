@@ -82,7 +82,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{html_image src="calendar.png" altKey="ShowHideNavigation"}
 	</a>
 	</div>
-	
+
+	{capture name="date_navigation"}
 	<div class="schedule_dates">
 		{assign var=FirstDate value=$DisplayDates->GetBegin()}
 		{assign var=LastDate value=$DisplayDates->GetEnd()}
@@ -94,6 +95,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<a href="{add_querystring key=SHOW_FULL_WEEK value=1}" id="showFullWeek">({translate key=ShowFullWeek})</a>
 		{/if}
 	</div>
+	{/capture}
+
+	{$smarty.capture.date_navigation}
 </div>
 
 <div type="text" id="datepicker" style="display:none;"></div>
@@ -148,6 +152,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/foreach}
 
 {/block}
+
+{$smarty.capture.date_navigation}
 
 {block name="scripts"}
 
