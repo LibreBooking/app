@@ -29,7 +29,7 @@ $conf['settings']['bindpw'] = '';	// Password for the binddn. If the credentials
 $conf['settings']['basedn'] = '';	// LDAP base name
 $conf['settings']['filter'] = '';	// Default search filter
 $conf['settings']['scope'] = '';	// TLS is started after connecting
-$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against phpScheudleIt database
+$conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if ldap auth fails, authenticate against phpScheduleIt database
 $conf['settings']['ldap.debug.enabled'] = 'false';	// if LDAP2 should use debug logging
 $conf['settings']['attribute.mapping'] = 'sn=sn,givenname=givenname,mail=mail,telephonenumber=telephonenumber,physicaldeliveryofficename=physicaldeliveryofficename,title=title';	// mapping of required attributes to attribute names in your directory
 $conf['settings']['user.id.attribute'] = 'uid';	// the attribute name for user identification

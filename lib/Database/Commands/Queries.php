@@ -764,14 +764,14 @@ class Queries
 			'UPDATE
 			users 
 		SET 
-			email = @email,
+			email = COALESCE(@email, email),
 			password = @password,
 			salt = @salt,
-			fname = @fname,
-			lname = @lname,
-			phone = @phone,
-			organization = @organization,
-			position = @position
+			fname = COALESCE(@fname, fname),
+			lname = COALESCE(@lname, lname),
+			phone = COALESCE(@phone, phone),
+			organization = COALESCE(@organization, organization),
+			position = COALESCE(@position, position)
 		WHERE 
 			username = @username';
 

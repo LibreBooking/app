@@ -258,6 +258,26 @@ class RegistrationTests extends TestBase
 
 		$this->registration->Synchronize($user);
 	}
+	
+	public function testAuthenticatedUserReturnsNullsForAllBlankValues()
+	{
+		$username = 'un';
+		$email = 'em';
+		$fname = '';
+		$lname = ' ';
+		$phone = '   ';
+		$inst = 'or';
+		$title = 'title';
+		$langCode = 'en_US';
+		$timezone = 'UTC';
+
+		$user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', $langCode, $timezone, $phone, $inst, $title);
+
+		$this->assertNull($user->FirstName(), "needs to be null to make sure we do not clear values in the database");
+		$this->assertNull($user->LastName(), "needs to be null to make sure we do not clear values in the database");
+		$this->assertNull($user->Phone(), "needs to be null to make sure we do not clear values in the database");
+		$this->assertEquals($email, $user->Email());
+	}
 }
 
 ?>

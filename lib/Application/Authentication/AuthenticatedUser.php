@@ -102,7 +102,7 @@ class AuthenticatedUser
 	 */
 	public function Email()
 	{
-		return $this->email;
+		return $this->EnsureNull($this->email);
 	}
 
 	/**
@@ -110,7 +110,7 @@ class AuthenticatedUser
 	 */
 	public function FirstName()
 	{
-		return $this->fname;
+		return $this->EnsureNull($this->fname);
 	}
 
 	/**
@@ -118,7 +118,7 @@ class AuthenticatedUser
 	 */
 	public function LanguageCode()
 	{
-		return $this->languageCode;
+		return $this->EnsureNull($this->languageCode);
 	}
 
 	/**
@@ -126,7 +126,7 @@ class AuthenticatedUser
 	 */
 	public function LastName()
 	{
-		return $this->lname;
+		return $this->EnsureNull($this->lname);
 	}
 	
 	/**
@@ -134,7 +134,7 @@ class AuthenticatedUser
 	 */
 	public function Organization()
 	{
-		return $this->organization;
+		return $this->EnsureNull($this->organization);
 	}
 
 	/**
@@ -150,7 +150,7 @@ class AuthenticatedUser
 	 */
 	public function Phone()
 	{
-		return $this->phone;
+		return $this->EnsureNull($this->phone);
 	}
 
 	/**
@@ -166,9 +166,8 @@ class AuthenticatedUser
 	 */
 	public function Title()
 	{
-		return $this->title;
+		return $this->EnsureNull($this->title);
 	}
-
 
 	/**
 	 * @return string
@@ -176,6 +175,17 @@ class AuthenticatedUser
 	public function Username()
 	{
 		return $this->username;
+	}
+
+	private function EnsureNull($value)
+	{
+		$value = trim($value);
+		if (empty($value))
+		{
+			return null;
+		}
+
+		return trim($value);
 	}
 
 }
