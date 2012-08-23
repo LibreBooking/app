@@ -140,14 +140,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h2>カレンダーアプリ(Outlook&reg;、iClal、Mozilla Lightning、Evolution)に予約を追加する</h2>
 
-<p>
-予約の表示、更新の際に「Outlookへ追加」ボタンがあるのが分かると思います。
+<p>予約の表示、更新の際に「Outlookへ追加」ボタンがあるのが分かると思います。
 お使いのコンピューターにOutlookがインストールされていれば、ミーティングを追加するかどうか尋ねられることでしょう。
 インストールされていない場合は .iscファイルをダウンロードするかどうか尋ねられることになるでしょう。
 これはカレンダーアプリの標準的なフォーマットです。
-iCalendarファイル形式をサポートしているアプリケーションで使用できます。
-</p>
-<h2>カレンダーの購読 Subscribing to Calendars</h2>
+iCalendarファイル形式をサポートしているアプリケーションで使用できます。</p>
+
+<h2>カレンダーの購読</h2>
 
 <p>スケジュール、リソース、ユーザーのカレンダーを公開することができます。
 この機能を有効にするには、管理者が設定ファイル中で購読キーワード(subscription key)を設定しなくてはなりません。
@@ -299,25 +298,21 @@ phpScheduleItでの「リソース」とは、部屋や設備のような予約�
 
 <h3>予約量を制限する</h3>
 
-<p>
-限度を設定し、予約できる量を制限することができます。
+<p>限度を設定し、予約できる量を制限することができます。
 phpScheduleItの量制限システムは柔軟にできていて、予約時間と回数で制限をかけることができます。
 また、量制限は「重なり」ます。
 1日に5時間までという制限があり、また1日に4回までという制限もあるとします。
 ユーザーは4時間の予約を取ることはできますが、2時間の予約を3つは取れません。
-組み合わせて強力な制限を行うことができます。
-</p>
+これらを組み合わせて強力な制限を行うことができます。</p>
 
 <p>アプリケーション管理者は予約量の制限を受けません。</p>
 
 <h3>お知らせの設定</h3>
 
-<p>
-お知らせはphpScheduleItのユーザーに注意事項を知らせる簡単な方法です。
+<p>お知らせはphpScheduleItのユーザーに注意事項を知らせる簡単な方法です。
 メニューの「お知らせ」から、ユーザーのダッシュボードに表示されるお知らせを、管理することができます。
 お知らせにはオプションとして開始日と終了日があります。
-また任意で優先度を付けることができ、1から10の順に並べ替えて表示します。
-</p>
+また任意で優先度を付けることができ、1から10の順に並べ替えて表示します。</p>
 
 <p>お知らせのテキストではHTMLを使うことができ、リンクや画像を埋め込むことができます。</p>
 
@@ -335,40 +330,34 @@ phpScheduleItの量制限システムは柔軟にできていて、予約時間�
 
 <h3>予約の表示と管理</h3>
 
-<p>
-メニューの「予約」で予約の表示と管理を行うことができます。
+<p>メニューの「予約」で予約の表示と管理を行うことができます。
 デフォルトの設定では今日の前後7日間の予約が表示されます。
 見つけたいものによって粒度を大きくも小さくもできます。
 このツールで予約の様子をすばやく見ることができます。
-また予約のリストをCSV形式で出力することができます。
-</p>
+また予約のリストをCSV形式で出力することができます。</p>
 
 <h3>予約の承認</h3>
 
-<p>
-予約管理ツールで承認保留中の予約を見ることができます。
-保留中の予約はハイライト表示されています。
-</p>
+<p>予約管理ツールで承認保留中の予約を見ることができます。
+保留中の予約はハイライト表示されています。</p>
 
 <h3>ユーザーの表示と管理</h3>
 
-<p>
-メニューの「ユーザー」から、ユーザーを登録したりユーザーを一覧することができます。
+<p>メニューの「ユーザー」から、ユーザーを登録したりユーザーを一覧することができます。
 このツールでは次のようなことができます。
 ユーザー個々にリソースの使用権限を変更する。
 アカウントを使用不能にしたり削除する。
 ユーザーパスワードをリセットする。
 ユーザー情報の詳細を編集する。
 新規ユーザーを追加するのもここです。
-この機能には、ユーザー自身での登録を無効にしている場合、格段にお世話になります。
-</p>
+ユーザー自身での登録を無効にしている場合、この機能が格別に役に立ちます。</p>
 
 <h2>アプリケーションの設定</h2>
 
 <p>phpScheduleItの機能の一部は設定ファイルを編集して設定するしかありません。</p>
 
-<p class="setting"><span>$conf['settings']['server.timezone']</span>phpScheduleItが動作しているサーバーのタイムゾーンに合わせること。メニューの「サーバー設定」で現在の設定を確認することができる。可能な値は以下に示すサイトにある。http://php.net/manual/en/timezones.php
-</p>
+<p class="setting"><span>$conf['settings']['server.timezone']</span>phpScheduleIt が動作しているサーバーのタイムゾーンに合わせること。メニューの「サーバー設定」で現在の設定を確認することができる。可能な値は次に示すサイトにある。
+http://php.net/manual/en/timezones.php</p>
 
 <p class="setting"><span>$conf['settings']['allow.self.registration']</span>ユーザー自身でアカウントを作成できるか否か</p>
 
@@ -394,6 +383,8 @@ phpScheduleItの量制限システムは柔軟にできていて、予約時間�
 
 <p class="setting"><span>$conf['settings']['cache.templates']</span>テンプレートをキャッシュするか否か。tpl_cが書き込み可能なら、trueにすることが推奨される。</p>
 
+<p class="setting"><span>$conf['settings']['use.local.jquery']</span>jQueryファイルをローカルサーバーにあるものを使うようにするかどうか。falseにするとGoogle CDNにあるものを使うようになる。パフォーマンスや転送帯域の観点からfalseにすることを推奨。デフォルトは false。</p>
+
 <p class="setting"><span>$conf['settings']['registration.captcha.enabled']</span>ユーザーアカウントの登録時にキャプッチャを使うか否か</p>
 
 <p class="setting"><span>$conf['settings']['inactivity.timeout']</span>ユーザーが自動的にログアウトするまでの時間を分で指定する。自動ログアウトを無効にしたいときは空文字列にすること。</p>
@@ -416,6 +407,10 @@ future にすると、まだ、選択した予約(時間の)枠の開始時刻�
 current にすると、まだ、選択した予約(時間の)枠の終了時刻になっていなければ、作成、変更できる。
 none にすると予約の作成、変更に現在時刻による制限はない。
 デフォルトは future。</p>
+<p class="setting"><span>$conf['settings']['reservation']['updates.require.approval']</span>承認が必要であった予約を変更する場合に再度承認が必要かどうか。デフォルトは false</p>
+
+
+<p class="setting"><span>$conf['settings']['reservation']['prevent.participation']</span>ユーザーが別のユーザーを予約の参加者にしたり招待する機能を使わないようにするかどうか。デフォルトは false (なので有効)。</p>
 
 <p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>予約が作成されたとき、全てのリソース管理者にメールを送るかどうか。デフォルトは false。</p>
 
@@ -437,6 +432,13 @@ none にすると予約の作成、変更に現在時刻による制限はない
 
 <p class="setting"><span>$conf['settings']['css.extension.file']</span>インクルードしたい追加CSSの、完全または相対URL。デフォルトのスタイルを調整する程度から完全なテーマにまで上書きすることができる。phpScheduleItのスタイルを拡張しないなら空文字列にしておく。</p>
 
+
+<p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>ユーザーが予約にファイルを添付できるかどうか。デフォルトはfalse 。</p>
+
+<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>添付ファイルを保存するディレクトリの絶対パスまたは(phpScheduleItディレクトリのルートから)相対パス。ディレクトリにPHPが書き込みできなくてはならない。デフォルトは uploads/reservation</p>
+
+<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>安全とみなすファイル拡張子のカンマで区切ったリスト。空白にすれば全てのファイル拡張子がアップロードできる。(推奨しない)</p>
+
 <p class="setting"><span>$conf['settings']['database']['type']</span>PEAR::MDB2 でサポートされている型の何れか</p>
 
 <p class="setting"><span>$conf['settings']['database']['user']</span>データベースにアクセスするユーザー</p>
@@ -449,7 +451,7 @@ none にすると予約の作成、変更に現在時刻による制限はない
 
 <p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>PHPのメールライブラリ。mail、smtp、sendmail、qmail から選ぶ</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.host']</span>smpt を使う場合の SMTPホスト</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.host']</span>smtp を使う場合の SMTPホスト</p>
 
 <p class="setting"><span>$conf['settings']['phpmailer']['smtp.port']</span>smtp を使う場合の SMTPポート。通常は25</p>
 
@@ -500,8 +502,7 @@ LDAPの場合は、/plugins/Authentication/Ldap/Ldap.config.dist を/plugins/Aut
 
 <h3>プラグインのインストール</h3>
 
-<p>
-新しいプラグインをインストールするにはそれのフォルダをAuthentication、Authorization、Permissionディレクトリのいずれかにコピーします。
+<p>新しいプラグインをインストールするにはそれのフォルダをAuthentication、Authorization、Permissionディレクトリのいずれかにコピーします。
 そしてconfig.php の $conf['settings']['plugins']['Authentication']、$conf['settings']['plugins']['Authorization'] 、$conf['settings']['plugins']['Permission'] のいずれかの値をフォルダの名前に変更します。
 </p>
 

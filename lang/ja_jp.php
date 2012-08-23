@@ -79,9 +79,9 @@ class ja_jp extends en_us
         $strings['ValidEmailRequired'] = '有効なメールアドレスが必要です。';
         $strings['UniqueEmailRequired'] = 'そのメールアドレスはすでに登録されています。';
         $strings['UniqueUsernameRequired'] = 'そのユーザー名はすでに登録されています。';
-        $strings['UserNameRequired'] = 'ユーザー名が必要です。';
+        $strings['UserNameRequired'] = 'ユーザー名は必須です。';
         $strings['CaptchaMustMatch'] = 'セキュリティ画像の文字を正確に入力してください。';
-        $strings['Today'] = '今日へ移動';
+        $strings['Today'] = '今日';
         $strings['Week'] = '週を表示';
         $strings['Month'] = '月を表示';
         $strings['BackToCalendar'] = 'カレンダーに戻る';
@@ -185,7 +185,7 @@ class ja_jp extends en_us
         $strings['Duration'] = '期間';
         $strings['Active'] = 'アクティブ';
         $strings['Inactive'] = 'インアクティブ';
- 
+         $strings['ResetPassword'] = 'パスワードをリセット';
         $strings['LastLogin'] = '直近のログイン';
         $strings['Search'] = '検索';
         $strings['ResourcePermissions'] = 'リソース利用権限';
@@ -311,6 +311,7 @@ class ja_jp extends en_us
         $strings['DeleteGroupWarning'] = 'グループを削除するとグループによって与えられていた許可も削除されます。このグループのユーザーがリソースにアクセスできなくなることがあります。';
         $strings['WhatRolesApplyToThisGroup'] = '何のロールがこのこのグループに割り当てられるか?';
         $strings['WhoCanManageThisGroup'] = '誰がこのグループを管理するか?';
+        $strings['WhoCanManageThisSchedule'] = '誰がこのスケジュールを管理するか?';
         $strings['AddGroup'] = 'グループ追加';
         $strings['AllQuotas'] = '全ての量制限';
         $strings['QuotaReminder'] = '注意: 量制限はそれぞれのスケジュールのタイムゾーンによって計算されます。';
@@ -382,13 +383,41 @@ class ja_jp extends en_us
         $strings['SortOrder'] = '並び替え順';
         $strings['Title'] = '件名';
         $strings['AdditionalAttributes'] = '追加属性';
-        $strings['True'] = 'True';
-        $strings['False'] = 'False';
+        $strings['True'] = '真(True)';
+        $strings['False'] = '偽(False)';
 		$strings['ForgotPasswordEmailSent'] = 'パスワードをリセットする方法を書いたeメールを送信しました。';
 		$strings['ActivationEmailSent'] = 'アクティベートのためのeメールが、すぐに届くはずです。';
 		$strings['AccountActivationError'] = '申し訳ありません。あなたのアカウントをアクティベート出来ませんでした。';
 		$strings['Attachments'] = '添付';
 		$strings['AttachFile'] = 'ファイルを添付する';
+		$strings['Maximum'] = '最大';
+		$strings['NoScheduleAdministratorLabel'] = 'スケジュールの管理者ではない';
+		$strings['ScheduleAdministrator'] = 'スケジュールの管理者';
+		$strings['Total'] = '合計';
+		$strings['QuantityReserved'] = '予約された数量';
+		$strings['AllAccessories'] = '全ての備品';
+		$strings['GetReport'] = 'レポートを作成';
+		$strings['NoResultsFound'] = '該当するものがありません';
+		$strings['SaveThisReport'] = 'このレポートを保存';
+		$strings['ReportSaved'] = 'レポートを保存しました!';
+		$strings['EmailReport'] = 'レポートをメールで送る';
+		$strings['ReportSent'] = 'レポートを送信しました!';
+		$strings['RunReport'] = 'レポートを実行';
+		$strings['NoSavedReports'] = '保存されているレポートはありません。';
+		$strings['CurrentWeek'] = '今週';
+		$strings['CurrentMonth'] = '今月';
+		$strings['AllTime'] = '全期間';
+		$strings['FilterBy'] = '以下の条件で';
+		$strings['Select'] = '選択';
+		$strings['List'] = 'リスト';
+		$strings['TotalTime'] = '合計時間';
+		$strings['Count'] = '回数';
+		$strings['Usage'] = '使用量';
+		$strings['AggregateBy'] = '集計項目';
+		$strings['Range'] = '期間';
+		$strings['Choose'] = '選択';
+		$strings['All'] = '全て';
+		$strings['ViewAsChart'] = 'グラフで表示';
         // End Strings
 
         // Errors
@@ -405,10 +434,11 @@ class ja_jp extends en_us
         $strings['StartIsInPast'] = '開始時刻を過ぎていいます。';
         $strings['EmailDisabled'] = '管理者がメールでの通知を無効にしています。';
         $strings['ValidLayoutRequired'] = '時間枠は一日の最初から最後(12:00 AM)までの24時間全てを網羅するようにしてください。';
-        $strings['CustomAttributeErrors'] = '指定された属性には問題点があります:';
+        $strings['CustomAttributeErrors'] = '指定された属性には問題があります:';
         $strings['CustomAttributeRequired'] = '%s は必須項目です';
         $strings['CustomAttributeInvalid'] = '%s の指定値が無効です';
         $strings['AttachmentLoadingError'] = '申し訳ないのですが、指定されたファイルを読み込むさいに問題が発生してしまいました。';
+        $strings['InvalidAttachmentExtension'] = 'アップロード出来るファイルの種類は以下のものだけです: %s';
         // End Errors
 
         // Page Titles
@@ -453,6 +483,13 @@ class ja_jp extends en_us
         $strings['Customization'] = 'カスタマイズ';
         $strings['Attributes'] = '属性';
 		$strings['AccountActivation'] = 'アカウントのアクティベート';
+		$strings['ScheduleReservations'] = 'スケジュールの予約';
+		$strings['Reports'] = 'レポート';
+		$strings['GenerateReport'] = '新しいレポートを作る';
+		$strings['MySavedReports'] = '保存されたレポート';
+		$strings['CommonReports'] = '汎用のレポート';
+		$strings['ViewDay'] = '日表示';
+		$strings['Group'] = 'グループ';
         // End Page Titles
 
         // Day representations
@@ -471,6 +508,7 @@ class ja_jp extends en_us
         $strings['DayThursdayAbbr'] = '木曜';
         $strings['DayFridayAbbr'] = '金曜';
         $strings['DaySaturdayAbbr'] = '土曜';
+		// End Day representations
 
         // Email Subjects
         $strings['ReservationApprovedSubject'] = '予約が承認されました';
@@ -484,8 +522,9 @@ class ja_jp extends en_us
         $strings['ParticipantDeletedSubject'] = '予約は取り消されました';
         $strings['InviteeAddedSubject'] = '参加のお願い';
         $strings['ResetPassword'] = 'パスワードリセット要求';
-        $strings['ForgotPasswordEmailSent'] = '指定されたメールアドレスへパスワードのリセット方法を送信しました。';
-        //
+        $strings['ActivateYourAccount'] = 'アカウントをアクティベイト(有効化)してください';
+        $strings['ReportSubject'] = 'レポート送付 (%s)';
+        // End Email Subjects
 
         $this->Strings = $strings;
 
