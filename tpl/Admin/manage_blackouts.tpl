@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='scripts/css/colorbox.css,css/admin.css,css/jquery.qtip.min.css,scripts/css/timePicker.css'}
 
-<h1>{translate key=ManageReservations}</h1>
+<h1>{translate key=ManageBlackouts}</h1>
 
 <div class="admin">
 	<div class="title">
@@ -54,6 +54,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<label for="blackoutReason" class="wideLabel">{translate key=Reason}</label>
 					<input {formname key=SUMMARY} type="text" id="blackoutReason" class="textbox required" size="100" maxlength="85"/>
 				</li>
+				<!--<li>
+					{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
+				</li>
+				-->
 				<li>
 					<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting" name="existingReservations" checked="checked" value="{ReservationConflictResolution::Notify}" />
 					<label for="notifyExisting">{translate key=BlackoutShowMe}</label>
@@ -157,6 +161,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/blackouts.js"></script>
 
+<script type="text/javascript" src="{$Path}scripts/date-helper.js"></script>
+<script type="text/javascript" src="{$Path}scripts/recurrence.js"></script>
+
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -176,6 +183,16 @@ $(document).ready(function() {
         reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
 		popupUrl: "{$Path}ajax/respopup.php"
 	};
+
+	var recurOpts = {
+		repeatType:'{$RepeatType}',
+		repeatInterval:'{$RepeatInterval}',
+		repeatMonthlyType:'{$RepeatMonthlyType}',
+		repeatWeekdays:[{foreach from=$RepeatWeekdays item=day}{$day},{/foreach}]
+	};
+
+	var recurrence = new Recurrence(recurOpts);
+	recurrence.init();
 
 	
 	var blackoutManagement = new BlackoutManagement(blackoutOpts);

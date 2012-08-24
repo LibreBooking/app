@@ -29,9 +29,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="reservationDetails">
 		<ul class="no-style">
 			<li>
-			<span id="userName">{$ReservationUserName}</span> <input id="userId" type="hidden" {formname key=USER_ID} value="{$UserId}"/>
+				<span id="userName">{$ReservationUserName}</span> <input id="userId"
+																		 type="hidden" {formname key=USER_ID}
+																		 value="{$UserId}"/>
 			{if $CanChangeUser}
 				<a href="#" id="showChangeUsers">({translate key=Change})</a>
+
 				<div id="changeUserDialog" title="{translate key=ChangeUser}" class="dialog"></div>
 			{/if}
 			</li>
@@ -55,17 +58,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 							<input class="resourceId" type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
 							<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
 						</div>
-						{if $ShowAdditionalResources}
-							<a href="#" onclick="$('#dialogAddResources').dialog('open'); return false;">({translate key=MoreResources})</a>
-						{/if}
+					{if $ShowAdditionalResources}
+						<a href="#"
+						   onclick="$('#dialogAddResources').dialog('open'); return false;">({translate key=MoreResources}
+							)</a>
+					{/if}
 						<div id="additionalResources"></div>
 					</div>
 					<div style="float:right;">
-						{if $AvailableAccessories|count > 0}
-							<label>{translate key="Accessories"}</label>
-							<a href="#" id="addAccessoriesPrompt">({translate key='Add'})</a>
-							<div id="accessories"></div>
-						{/if}
+					{if $AvailableAccessories|count > 0}
+						<label>{translate key="Accessories"}</label>
+						<a href="#" id="addAccessoriesPrompt">({translate key='Add'})</a>
+
+						<div id="accessories"></div>
+					{/if}
 					</div>
 				</div>
 				<div style="clear:both;height:0;">&nbsp;</div>
@@ -73,7 +79,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<li>
 				<label for="BeginDate" style="width:50px;display:inline-block;">{translate key='BeginDate'}</label>
 				<input type="text" id="BeginDate" class="dateinput" value="{formatdate date=$StartDate}"/>
-				<input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE} value="{formatdate date=$StartDate key=system}"/>
+				<input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
+					   value="{formatdate date=$StartDate key=system}"/>
 				<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown" style="width:150px">
 				{foreach from=$Periods item=period}
 					{if $period->IsReservable()}
@@ -89,7 +96,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<li>
 				<label for="EndDate" style="width:50px;display:inline-block;">{translate key='EndDate'}</label>
 				<input type="text" id="EndDate" class="dateinput" value="{formatdate date=$EndDate}"/>
-				<input type="hidden" id="formattedEndDate" {formname key=END_DATE} value="{formatdate date=$EndDate key=system}"/>
+				<input type="hidden" id="formattedEndDate" {formname key=END_DATE}
+					   value="{formatdate date=$EndDate key=system}"/>
 				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
 				{foreach from=$Periods item=period}
 					{if $period->IsReservable()}
@@ -104,13 +112,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 			<li>
 				<label>{translate key=ReservationLength}</label>
+
 				<div class="durationText">
 					<span id="durationDays">0</span> {translate key=days},
 					<span id="durationHours">0</span> {translate key=hours}
 				</div>
 			</li>
 			<li>
-				{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
+			{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
 			</li>
 			<li class="rsv-req">
 				<label>{translate key="ReservationTitle"}<br/>
@@ -123,25 +132,26 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 							  tabindex="110">{$Description}</textarea>
 				</label>
 			</li>
-			{if $UploadsEnabled}
+		{if $UploadsEnabled}
 			<li>
 				<label>{translate key=AttachFile}<br/>
-						<input type="file" {formname key=RESERVATION_FILE} /> <span class="note">({$MaxUploadSize}MB {translate key=Maximum})</span>
-					</label>
+					<input type="file" {formname key=RESERVATION_FILE} /> <span class="note">({$MaxUploadSize}
+						MB {translate key=Maximum})</span>
+				</label>
 			</li>
-			{/if}
+		{/if}
 		</ul>
 	</div>
 
-	{if $ShowUserDetails && $ShowParticipation}
-		{include file="Reservation/participation.tpl"}
+{if $ShowUserDetails && $ShowParticipation}
+{include file="Reservation/participation.tpl"}
 	{else}
-		{include file="Reservation/private-participation.tpl"}
-	{/if}
+{include file="Reservation/private-participation.tpl"}
+{/if}
 
 	<div style="clear:both;">&nbsp;</div>
 
-	{if $Attributes|count > 0}
+{if $Attributes|count > 0}
 	<div class="customAttributes">
 		<h3>{translate key=AdditionalAttributes}</h3>
 		<ul>
@@ -153,12 +163,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</ul>
 	</div>
 	<div style="clear:both;">&nbsp;</div>
-	{/if}
+{/if}
 
 	<input type="hidden" {formname key=reservation_id} value="{$ReservationId}"/>
 	<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}"/>
 	<input type="hidden" {formname key=reservation_action} value="{$ReservationAction}"/>
-	<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
+	<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
+		   value="{SeriesUpdateScope::FullSeries}"/>
 
 	<div style="float:left;">
 	{block name="deleteButtons"}
@@ -173,15 +184,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</button>
 	{/block}
 		<button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
-			{html_image src="slash.png"}
+		{html_image src="slash.png"}
 		{translate key='Cancel'}
 		</button>
 	</div>
 
-	{if $UploadsEnabled}
+{if $UploadsEnabled}
 	{block name='attachments'}
 	{/block}
-	{/if}
+{/if}
 </form>
 
 <div id="dialogAddResources" class="dialog" title="{translate key=AddResources}" style="display:none;">
@@ -197,7 +208,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 
 		<p>
-			<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id}" value="{$resource->Id}" {$checked} />
+			<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id}"
+				   value="{$resource->Id}" {$checked} />
 			<label for="additionalResource{$resource->Id}">{$resource->Name}</label>
 		</p>
 	{/if}
@@ -214,21 +226,21 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<td>{translate key=QuantityRequested}</td>
 			<td>{translate key=QuantityAvailable}</td>
 		</tr>
-		{foreach from=$AvailableAccessories item=accessory}
-			<tr>
-				<td>{$accessory->Name}</td>
-				<td>
-					<input type="hidden" class="name" value="{$accessory->Name}" />
-					<input type="hidden" class="id" value="{$accessory->Id}" />
-					{if $accessory->QuantityAvailable == 1}
-						<input type="checkbox" name="accessory{$accessory->Id}" value="1" size="3" />
+	{foreach from=$AvailableAccessories item=accessory}
+		<tr>
+			<td>{$accessory->Name}</td>
+			<td>
+				<input type="hidden" class="name" value="{$accessory->Name}"/>
+				<input type="hidden" class="id" value="{$accessory->Id}"/>
+				{if $accessory->QuantityAvailable == 1}
+					<input type="checkbox" name="accessory{$accessory->Id}" value="1" size="3"/>
 					{else}
-						<input type="text" name="accessory{$accessory->Id}" value="0" size="3" />
-					{/if}
-				</td>
-				<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
-			</tr>
-		{/foreach}
+					<input type="text" name="accessory{$accessory->Id}" value="0" size="3"/>
+				{/if}
+			</td>
+			<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
+		</tr>
+	{/foreach}
 	</table>
 	<br/>
 	<button id="btnConfirmAddAccessories" class="button">{translate key='Done'}</button>
@@ -262,39 +274,37 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript">
 
-	$(document).ready(function() {
-	var scopeOptions = {
-		instance: '{SeriesUpdateScope::ThisInstance}',
-		full: '{SeriesUpdateScope::FullSeries}',
-		future: '{SeriesUpdateScope::FutureInstances}'
-	};
+	$(document).ready(function () {
+		var scopeOptions = {
+			instance:'{SeriesUpdateScope::ThisInstance}',
+			full:'{SeriesUpdateScope::FullSeries}',
+			future:'{SeriesUpdateScope::FutureInstances}'
+		};
 
-	var reservationOpts = {
-		additionalResourceElementId: '{FormKeys::ADDITIONAL_RESOURCES}',
-		accessoryListInputId: '{FormKeys::ACCESSORY_LIST}[]',
-		returnUrl: '{$ReturnUrl}',
-		scopeOpts: scopeOptions,
-		createUrl: 'ajax/reservation_save.php',
-		updateUrl: 'ajax/reservation_update.php',
-		deleteUrl: 'ajax/reservation_delete.php',
-		userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}",
-		changeUserAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::MyUsers}"
-	};
+		var reservationOpts = {
+			additionalResourceElementId:'{FormKeys::ADDITIONAL_RESOURCES}',
+			accessoryListInputId:'{FormKeys::ACCESSORY_LIST}[]',
+			returnUrl:'{$ReturnUrl}',
+			scopeOpts:scopeOptions,
+			createUrl:'ajax/reservation_save.php',
+			updateUrl:'ajax/reservation_update.php',
+			deleteUrl:'ajax/reservation_delete.php',
+			userAutocompleteUrl:"ajax/autocomplete.php?type={AutoCompleteType::User}",
+			changeUserAutocompleteUrl:"ajax/autocomplete.php?type={AutoCompleteType::MyUsers}"
+		};
 
-	var recurOpts = {
-		repeatType: '{$RepeatType}',
-		repeatInterval: '{$RepeatInterval}',
-		repeatMonthlyType: '{$RepeatMonthlyType}',
-		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day},{/foreach}]
-	};
+		var recurOpts = {
+			repeatType:'{$RepeatType}',
+			repeatInterval:'{$RepeatInterval}',
+			repeatMonthlyType:'{$RepeatMonthlyType}',
+			repeatWeekdays:[{foreach from=$RepeatWeekdays item=day}{$day},{/foreach}]
+		};
 
-	$('#description').TextAreaExpander();
+		var recurrence = new Recurrence(recurOpts);
+		recurrence.init();
 
-	var recurrence = new Recurrence(recurOpts);
-	recurrence.init();
-
-	var reservation = new Reservation(reservationOpts);
-	reservation.init('{$UserId}');
+		var reservation = new Reservation(reservationOpts);
+		reservation.init('{$UserId}');
 
 	{foreach from=$Participants item=user}
 		reservation.addParticipant("{$user->FullName|escape:'javascript'}", "{$user->UserId|escape:'javascript'}");
@@ -308,16 +318,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}', "{$accessory->Name|escape:'javascript'}");
 	{/foreach}
 
-	var ajaxOptions = {
-		target: '#result',   // target element(s) to be updated with server response
-		beforeSubmit: reservation.preSubmit,  // pre-submit callback
-		success: reservation.showResponse  // post-submit callback
-	};
+		var ajaxOptions = {
+			target:'#result', // target element(s) to be updated with server response
+			beforeSubmit:reservation.preSubmit, // pre-submit callback
+			success:reservation.showResponse  // post-submit callback
+		};
 
-	$('#reservationForm').submit(function() {
-		$(this).ajaxSubmit(ajaxOptions);
-		return false;
-	});
+		$('#reservationForm').submit(function () {
+			$(this).ajaxSubmit(ajaxOptions);
+			return false;
+		});
+		$('#description').TextAreaExpander();
 
 
 	});
