@@ -57,6 +57,6 @@ abstract class Control
 		$tpl->display();
 	}
 	
-	abstract function PageLoad();
+	public abstract function PageLoad();
 }
 ?>
