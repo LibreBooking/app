@@ -303,6 +303,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="scripts/js/jquery.form-3.09.min.js"></script>
 <script type="text/javascript" src="scripts/resourcePopup.js"></script>
+<script type="text/javascript" src="scripts/date-helper.js"></script>
+<script type="text/javascript" src="scripts/recurrence.js"></script>
 <script type="text/javascript" src="scripts/reservation.js"></script>
 <script type="text/javascript" src="scripts/autocomplete.js"></script>
 
@@ -318,10 +320,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	var reservationOpts = {
 		additionalResourceElementId: '{FormKeys::ADDITIONAL_RESOURCES}',
 		accessoryListInputId: '{FormKeys::ACCESSORY_LIST}[]',
-		repeatType: '{$RepeatType}',
-		repeatInterval: '{$RepeatInterval}',
-		repeatMonthlyType: '{$RepeatMonthlyType}',
-		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day},{/foreach}],
 		returnUrl: '{$ReturnUrl}',
 		scopeOpts: scopeOptions,
 		createUrl: 'ajax/reservation_save.php',
@@ -331,7 +329,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		changeUserAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::MyUsers}"
 	};
 
+	var recurOpts = {
+		repeatType: '{$RepeatType}',
+		repeatInterval: '{$RepeatInterval}',
+		repeatMonthlyType: '{$RepeatMonthlyType}',
+		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day},{/foreach}]
+	};
+
 	$('#description').TextAreaExpander();
+
+	var recurrence = new Recurrence(recurOpts);
+	recurrence.init();
 
 	var reservation = new Reservation(reservationOpts);
 	reservation.init('{$UserId}');
@@ -348,14 +356,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}', "{$accessory->Name|escape:'javascript'}");
 	{/foreach}
 
-	var options = {
+	var ajaxOptions = {
 		target: '#result',   // target element(s) to be updated with server response
 		beforeSubmit: reservation.preSubmit,  // pre-submit callback
 		success: reservation.showResponse  // post-submit callback
 	};
 
 	$('#reservationForm').submit(function() {
-		$(this).ajaxSubmit(options);
+		$(this).ajaxSubmit(ajaxOptions);
 		return false;
 	});
 

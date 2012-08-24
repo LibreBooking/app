@@ -304,6 +304,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	access permissions of individual users, deactivate or delete accounts, reset user passwords, and edit user details.
 	You can also add new users to phpScheduleIt. This is especially useful if self-registration is turned off.</p>
 
+<h3>Reporting</h3>
+
+<p>Reports are accessible to all application, group, resource and schedule administrators. </p>
+
 <h2>Configuration</h2>
 
 <p>Some of phpScheduleIt's functionality can only be controlled by editing the config file.</p>
