@@ -59,6 +59,7 @@ class ReservationUpdatePresenter
 	 */
 	public function BuildReservation()
 	{
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		$instanceId = $this->page->GetReservationId();
 		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
@@ -81,7 +82,9 @@ class ReservationUpdatePresenter
 			ServiceLocator::GetServer()->GetUserSession());
 
 		$existingSeries->UpdateDuration($this->GetReservationDuration());
-		$existingSeries->Repeats($this->page->GetRepeatOptions());
+		$roFactory = new RepeatOptionsFactory();
+
+		$existingSeries->Repeats($roFactory->CreateFromComposite($this->page, $userSession->Timezone));
 
 		$additionalResources = array();
 		foreach ($additionalResourceIds as $additionalResourceId)

@@ -41,6 +41,39 @@ interface IRepeatOptions
 	function TerminationDate();
 }
 
+interface IRepeatOptionsComposite
+{
+	/**
+	 * @abstract
+	 * @return string
+	 */
+	public function GetRepeatType();
+
+	/**
+	 * @abstract
+	 * @return string|null
+	 */
+	public function GetRepeatInterval();
+
+	/**
+	 * @abstract
+	 * @return string|null
+	 */
+	public function GetRepeatWeekdays();
+
+	/**
+	 * @abstract
+	 * @return string|null
+	 */
+	public function GetRepeatMonthlyType();
+
+	/**
+	 * @abstract
+	 * @return string|null
+	 */
+	public function GetRepeatTerminationDate();
+}
+
 abstract class RepeatOptionsAbstract implements IRepeatOptions
 {
 	/**
@@ -518,6 +551,22 @@ class RepeatOptionsFactory
 		}
 
 		return new RepeatNone();
+	}
+
+	/**
+	 * @param IRepeatOptionsComposite $composite
+	 * @param string $terminationDateTimezone
+	 * @return IRepeatOptions
+	 */
+	public function CreateFromComposite(IRepeatOptionsComposite $composite, $terminationDateTimezone)
+	{
+		$repeatType = $composite->GetRepeatType();
+		$interval = $composite->GetRepeatInterval();
+		$weekdays = $composite->GetRepeatWeekdays();
+		$monthlyType = $composite->GetRepeatMonthlyType();
+		$terminationDate = Date::Parse($composite->GetRepeatTerminationDate(), $terminationDateTimezone);
+
+		return $this->Create($repeatType, $interval, $terminationDate, $weekdays, $monthlyType);
 	}
 }
 

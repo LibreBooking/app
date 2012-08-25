@@ -56,11 +56,13 @@ class ReservationSavePresenter
 	
 	public function BuildReservation()
 	{
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		$userId = $this->_page->GetUserId();
 		$resource = $this->_resourceRepository->LoadById($this->_page->GetResourceId());
 		$title = $this->_page->GetTitle();
 		$description = $this->_page->GetDescription();
-		$repeatOptions = $this->_page->GetRepeatOptions();
+		$roFactory = new RepeatOptionsFactory();
+		$repeatOptions = $roFactory->CreateFromComposite($this->_page, $userSession->Timezone);
 		$duration = $this->GetReservationDuration();
 		
 		$reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, ServiceLocator::GetServer()->GetUserSession());
@@ -133,23 +135,6 @@ class ReservationSavePresenter
 		
 		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
-	}
-	
-	/**s
-	 * @return IRepeatOptions
-	 */
-	public function GetRepeatOptions()
-	{
-		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
-		$factory = new RepeatOptionsFactory();
-		
-		$repeatType = $this->_page->GetRepeatType();
-		$interval = $this->_page->GetRepeatInterval();
-		$weekdays = $this->_page->GetRepeatWeekdays();
-		$monthlyType = $this->_page->GetRepeatMonthlyType();
-		$terminationDate = Date::Parse($this->_page->GetRepeatTerminationDate(), $timezone);
-		
-		return $factory->Create($repeatType, $interval, $terminationDate, $weekdays, $monthlyType);
 	}
 }
 ?>

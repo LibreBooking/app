@@ -123,6 +123,9 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$title = 'out of service';
 		$conflictAction = ReservationConflictResolution::Delete;
 		$conflictResolution = ReservationConflictResolution::Create($conflictAction);
+//
+//		$roFactory = new RepeatOptionsFactory();
+//		$repeatOptions = $roFactory->CreateFromComposite($this->_page, $userSession->Timezone);
 
 		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
 

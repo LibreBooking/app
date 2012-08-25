@@ -22,7 +22,7 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
 
-interface IReservationSavePage extends IReservationSaveResultsPage
+interface IReservationSavePage extends IReservationSaveResultsPage, IRepeatOptionsComposite
 {
 	/**
 	 * @return int
@@ -73,24 +73,6 @@ interface IReservationSavePage extends IReservationSaveResultsPage
 	 * @return int[]
 	 */
 	public function GetResources();
-
-	/**
-	 * @return string
-	 */
-	public function GetRepeatType();
-
-	public function GetRepeatInterval();
-
-	public function GetRepeatWeekdays();
-
-	public function GetRepeatMonthlyType();
-
-	public function GetRepeatTerminationDate();
-
-	/**
-	 * @return IRepeatOptions
-	 */
-	public function GetRepeatOptions();
 
 	/**
 	 * @abstract

@@ -101,7 +101,8 @@ class ReservationSavePresenterTests extends TestBase
 		$pageAccessories = $this->page->GetAccessories();
 		$pageAttributes = $this->page->GetAttributes();
 
-		$repeatOptions = $this->page->GetRepeatOptions();
+		$roFactory = new RepeatOptionsFactory();
+		$repeatOptions = $roFactory->CreateFromComposite($this->page, $timezone);
 
 		$participants = $this->page->GetParticipants();
 		$invitees = $this->page->GetInvitees();
@@ -191,7 +192,6 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $repeatWeekdays = array(0, 1, 2);
 	public $repeatMonthlyType = RepeatMonthlyType::DayOfMonth;
 	public $repeatTerminationDate = '2010-10-10';
-	public $repeatOptions;
 	public $saveSuccessful = false;
 	public $errors = array();
 	public $warnings = array();
@@ -208,7 +208,6 @@ class FakeReservationSavePage implements IReservationSavePage
 		$this->startDate = $now->AddDays(5)->Format('Y-m-d');
 		$this->endDate = $now->AddDays(6)->Format('Y-m-d');
 		$this->repeatTerminationDate = $now->AddDays(60)->Format('Y-m-d');
-		$this->repeatOptions = new RepeatNone();
 		$this->accessories = array(new FakeAccessoryFormElement(1, 2, 'accessoryname'));
 		$this->attributes = array(new AttributeFormElement(1, "something"));
 		$this->attachment = new FakeUploadedFile();
@@ -289,11 +288,6 @@ class FakeReservationSavePage implements IReservationSavePage
 		return $this->repeatTerminationDate;
 	}
 
-	public function GetRepeatOptions()
-	{
-		return $this->repeatOptions;
-	}
-	
 	public function SetSaveSuccessfulMessage($succeeded)
 	{
 		$this->saveSuccessful = $succeeded;

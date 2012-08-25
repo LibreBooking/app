@@ -126,8 +126,10 @@ class ReservationUpdatePresenterTests extends TestBase
 			->with($this->equalTo($additionalId2))
 			->will($this->returnValue($additional2));
 
-		$this->page->repeatOptions = new RepeatDaily(1, Date::Now());
-			
+		$this->page->repeatType = RepeatType::Daily;
+		$roFactory = new RepeatOptionsFactory();
+		$repeatOptions = $roFactory->CreateFromComposite($this->page, $this->user->Timezone);
+
 		$expectedDuration = DateRange::Create(
 			$this->page->GetStartDate() . " " . $this->page->GetStartTime(),
 			$this->page->GetEndDate() . " " . $this->page->GetEndTime(),
@@ -147,7 +149,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($this->page->description, $existingSeries->Description());
 		$this->assertEquals($this->page->userId, $existingSeries->UserId());
 		$this->assertEquals($resource, $existingSeries->Resource());
-		$this->assertEquals($this->page->repeatOptions, $existingSeries->RepeatOptions());
+		$this->assertEquals($repeatOptions, $existingSeries->RepeatOptions());
 		$this->assertEquals(array($additional1, $additional2), $existingSeries->AdditionalResources());
 		$this->assertEquals($this->page->participants, $existingSeries->CurrentInstance()->AddedParticipants());
 		$this->assertEquals($this->page->invitees, $existingSeries->CurrentInstance()->AddedInvitees());
