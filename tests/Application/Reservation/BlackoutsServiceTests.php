@@ -92,7 +92,8 @@ class BlackoutsServiceTests extends TestBase
 		$this->blackoutRepository->expects($this->at(2))
 			->method('Add')
 			->with($this->equalTo($blackout3));
-		
+
+		$this->fail('need to finish blackout recurrence');
 		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
 
 		$this->assertTrue($result->WasSuccessful());

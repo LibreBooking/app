@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageReservationsPresenter.php');
 
-interface IManageBlackoutsPage extends IPageable, IActionPage
+interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsComposite
 {
 	/**
 	 * @abstract
@@ -188,7 +188,7 @@ interface IManageBlackoutsPage extends IPageable, IActionPage
 	public function ShowAddResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations, $conflictingBlackouts, $timezone);
 }
 
-class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage, IRepeatOptionsComposite
+class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 {
 	/**
 	 * @var \ManageBlackoutsPresenter

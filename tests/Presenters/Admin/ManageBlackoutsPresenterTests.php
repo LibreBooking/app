@@ -123,11 +123,18 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$title = 'out of service';
 		$conflictAction = ReservationConflictResolution::Delete;
 		$conflictResolution = ReservationConflictResolution::Create($conflictAction);
-//
-//		$roFactory = new RepeatOptionsFactory();
-//		$repeatOptions = $roFactory->CreateFromComposite($this->_page, $userSession->Timezone);
+		$endDateString = '2012-01-01';
+		$repeatType = RepeatType::Daily;
+		$repeatInterval = 1;
+		$repeatDays = array(1, 2);
+		$repeatMonthlyType = RepeatMonthlyType::DayOfMonth;
+
+		$roFactory = new RepeatOptionsFactory();
+		$repeatEndDate = Date::Parse($endDateString, $timezone);
+		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType);
 
 		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
+		$this->ExpectPageToReturnRepeatInfo($repeatType, $repeatInterval, $endDateString, $repeatDays, $repeatMonthlyType);
 
 		$resourceId = 123;
 		$this->page->expects($this->once())
@@ -141,7 +148,11 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$result = $this->getMock('IBlackoutValidationResult');
 		$this->blackoutsService->expects($this->once())
 			->method('Add')
-			->with($this->equalTo($dr), $this->equalTo(array($resourceId)), $this->equalTo($title), $this->equalTo($conflictResolution))
+			->with($this->equalTo($dr),
+				   $this->equalTo(array($resourceId)),
+				   $this->equalTo($title),
+				   $this->equalTo($conflictResolution),
+				$this->equalTo($repeatOptions))
 			->will($this->returnValue($result));
 		
 		$this->presenter->AddBlackout();
@@ -159,7 +170,18 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$conflictAction = ReservationConflictResolution::Delete;
 		$conflictResolution = ReservationConflictResolution::Create($conflictAction);
 
+		$endDateString = '2012-01-01';
+		$repeatType = RepeatType::Daily;
+		$repeatInterval = 1;
+		$repeatDays = array(1, 2);
+		$repeatMonthlyType = RepeatMonthlyType::DayOfMonth;
+
+		$roFactory = new RepeatOptionsFactory();
+		$repeatEndDate = Date::Parse($endDateString, $timezone);
+		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType);
+
 		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
+		$this->ExpectPageToReturnRepeatInfo($repeatType, $repeatInterval, $endDateString, $repeatDays, $repeatMonthlyType);
 
 		$scheduleId = 123;
 		$this->page->expects($this->once())
@@ -179,7 +201,11 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$result = $this->getMock('IBlackoutValidationResult');
 		$this->blackoutsService->expects($this->once())
 			->method('Add')
-			->with($this->equalTo($dr), $this->equalTo(array(1, 2, 3)), $this->equalTo($title), $this->equalTo($conflictResolution))
+			->with($this->equalTo($dr),
+				   $this->equalTo(array(1, 2, 3)),
+				   $this->equalTo($title),
+				   $this->equalTo($conflictResolution),
+				$this->equalTo($repeatOptions))
 			->will($this->returnValue($result));
 
 		$this->presenter->AddBlackout();
@@ -237,6 +263,29 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$this->page->expects($this->once())
 			->method('GetBlackoutConflictAction')
 			->will($this->returnValue($conflictAction));
+	}
+
+	private function ExpectPageToReturnRepeatInfo($repeatType = RepeatType::None, $repeatInterval = null, $endDateString = null, $repeatDays = null, $repeatMonthlyType = null)
+	{
+		$this->page->expects($this->once())
+					->method('GetRepeatType')
+					->will($this->returnValue($repeatType));
+
+		$this->page->expects($this->once())
+					->method('GetRepeatInterval')
+					->will($this->returnValue($repeatInterval));
+
+		$this->page->expects($this->once())
+					->method('GetRepeatMonthlyType')
+					->will($this->returnValue($endDateString));
+
+		$this->page->expects($this->once())
+					->method('GetRepeatWeekdays')
+					->will($this->returnValue($repeatDays));
+
+		$this->page->expects($this->once())
+					->method('GetRepeatMonthlyType')
+					->will($this->returnValue($repeatMonthlyType));
 	}
 }
 

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
@@ -40,14 +40,15 @@ interface IManageBlackoutsService
 	 * @param array|int[] $resourceIds
 	 * @param string $title
 	 * @param IReservationConflictResolution $reservationConflictResolution
+	 * @param IRepeatOptions $repeatOptions
 	 * @return IBlackoutValidationResult
 	 */
-	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution);
+	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution, IRepeatOptions $repeatOptions);
 
-    /**
-     * @param int $blackoutId
-     */
-    public function Delete($blackoutId);
+	/**
+	 * @param int $blackoutId
+	 */
+	public function Delete($blackoutId);
 }
 
 class ManageBlackoutsService implements IManageBlackoutsService
@@ -68,25 +69,25 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		$this->blackoutRepository = $blackoutRepository;
 	}
 
-    /**
-     * @param int $pageNumber
-     * @param int $pageSize
-     * @param BlackoutFilter $filter
-     * @param UserSession $user
-     * @return BlackoutItemView[]|PageableData
-     */
+	/**
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param BlackoutFilter $filter
+	 * @param UserSession $user
+	 * @return BlackoutItemView[]|PageableData
+	 */
 	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
 	{
 		return $this->reservationViewRepository->GetBlackoutList($pageNumber, $pageSize, null, null, $filter->GetFilter());
 	}
 
-	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution)
+	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution, IRepeatOptions $repeatOptions)
 	{
 		if (!$blackoutDate->GetEnd()->GreaterThan($blackoutDate->GetBegin()))
 		{
 			return new BlackoutDateTimeValidationResult();
 		}
-		
+
 		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
 
 		/** @var $blackouts array|Blackout[] */
@@ -105,7 +106,7 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		}
 
 		$blackoutValidationResult = new BlackoutValidationResult($conflictingBlackouts, $conflictingReservations);
-		
+
 		if ($blackoutValidationResult->CanBeSaved())
 		{
 			foreach ($blackouts as $blackout)
@@ -113,7 +114,7 @@ class ManageBlackoutsService implements IManageBlackoutsService
 				$this->blackoutRepository->Add($blackout);
 			}
 		}
-		
+
 		return $blackoutValidationResult;
 	}
 
@@ -169,13 +170,13 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		return $conflictingBlackouts;
 	}
 
-    /**
-     * @param int $blackoutId
-     */
-    public function Delete($blackoutId)
-    {
-        $this->blackoutRepository->Delete($blackoutId);
-    }
+	/**
+	 * @param int $blackoutId
+	 */
+	public function Delete($blackoutId)
+	{
+		$this->blackoutRepository->Delete($blackoutId);
+	}
 }
 
 ?>

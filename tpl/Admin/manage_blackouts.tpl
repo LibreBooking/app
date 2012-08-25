@@ -54,10 +54,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<label for="blackoutReason" class="wideLabel">{translate key=Reason}</label>
 					<input {formname key=SUMMARY} type="text" id="blackoutReason" class="textbox required" size="100" maxlength="85"/>
 				</li>
-				<!--<li>
+				<li>
 					{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
 				</li>
-				-->
 				<li>
 					<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting" name="existingReservations" checked="checked" value="{ReservationConflictResolution::Notify}" />
 					<label for="notifyExisting">{translate key=BlackoutShowMe}</label>
@@ -191,13 +190,18 @@ $(document).ready(function() {
 		repeatWeekdays:[{foreach from=$RepeatWeekdays item=day}{$day},{/foreach}]
 	};
 
-	var recurrence = new Recurrence(recurOpts);
+	var recurElements = {
+		beginDate: $('#formattedAddStartDate'),
+		endDate: $('#formattedAddEndDate'),
+		beginTime: $('#addStartTime'),
+		endTime: $('#addEndTime')
+	};
+
+	var recurrence = new Recurrence(recurOpts, recurElements);
 	recurrence.init();
 
-	
 	var blackoutManagement = new BlackoutManagement(blackoutOpts);
 	blackoutManagement.init();
-
 	
 });
 </script>

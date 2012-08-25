@@ -16,8 +16,8 @@
  You should have received a copy of the GNU General Public License
  along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
-function Recurrence(recurOptions) {
-	var elements = {
+function Recurrence(recurOptions, recurElements) {
+	var e = {
 		repeatOptions:$('#repeatOptions'),
 		repeatDiv:$('#repeatDiv'),
 		repeatInterval:$('#repeatInterval'),
@@ -30,6 +30,8 @@ function Recurrence(recurOptions) {
 	};
 
 	var options = recurOptions;
+
+	var elements = $.extend(e, recurElements);
 
 	var repeatToggled = false;
 	var terminationDateSetManually = false;

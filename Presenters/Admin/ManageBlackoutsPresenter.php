@@ -145,7 +145,10 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$title = $this->page->GetBlackoutTitle();
 		$conflictAction = $this->page->GetBlackoutConflictAction();
 
-		$result = $this->manageBlackoutsService->Add($blackoutDate, $resourceIds, $title, ReservationConflictResolution::Create($conflictAction));
+		$repeatOptionsFactory = new RepeatOptionsFactory();
+		$repeatOptions = $repeatOptionsFactory->CreateFromComposite($this->page, $session->Timezone);
+
+		$result = $this->manageBlackoutsService->Add($blackoutDate, $resourceIds, $title, ReservationConflictResolution::Create($conflictAction), $repeatOptions);
 
 		$this->page->ShowAddResult($result->WasSuccessful(), $result->Message(), $result->ConflictingReservations(), $result->ConflictingBlackouts(), $session->Timezone);
 	}
