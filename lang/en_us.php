@@ -458,6 +458,8 @@ class en_us extends Language
         $strings['ServerSettings'] = 'Server Settings';
         $strings['Dashboard'] = 'Dashboard';
         $strings['Help'] = 'Help';
+        $strings['Administration'] = 'Administration';
+        $strings['About'] = 'About';
         $strings['Bookings'] = 'Bookings';
         $strings['Schedule'] = 'Schedule';
         $strings['Reservations'] = 'Reservations';

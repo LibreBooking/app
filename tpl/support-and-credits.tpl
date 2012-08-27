@@ -16,6 +16,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
+{include file='globalheader.tpl'}
+<h1>About phpScheduleIt</h1>
+
+<div id="help">
+
 <h2>Support</h2>
 
 <p><a href="http://php.brickhost.com/">phpScheduleIt Official Project Home</a></p>
@@ -79,3 +84,5 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>phpScheduleIt free and open source, licenced under the GNU GENERAL PUBLIC LICENSE. Please see the included
 	License file for more details.</p>
+
+{include file='globalfooter.tpl'}

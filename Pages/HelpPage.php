@@ -29,7 +29,20 @@ class HelpPage extends Page
 
 	public function PageLoad()
 	{
-		$this->DisplayLocalized('help.tpl');
+		$helpType = $this->GetQuerystring('ht');
+
+		if ($helpType == 'about')
+		{
+			$this->DisplayLocalized('support-and-credits.tpl');
+		}
+		else if ($helpType == 'admin')
+		{
+			$this->DisplayLocalized('help-admin.tpl');
+		}
+		else
+		{
+			$this->DisplayLocalized('help.tpl');
+		}
 	}
 }
 ?>

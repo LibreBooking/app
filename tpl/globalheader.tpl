@@ -88,18 +88,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
 						<li class="menuitem"><a href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a>
 						<li class="menuitem"><a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a></li>
-
+						<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a></li>
 					</ul>
 				</li>
 				<li class="menubaritem"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Schedule"}</a>
 					<ul>
 						<li class="menuitem"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Bookings"}</a></li>
 						<li class="menuitem"><a href="{$Path}{Pages::MY_CALENDAR}">{translate key="MyCalendar"}</a></li>
-						<li class="menuitem"><a href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a>
-						</li>
+						<li class="menuitem"><a href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>
 						<!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
-						<li class="menuitem"><a
-								href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a></li>
 						<!--<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindAnOpening"}</a></li>-->
 					</ul>
 				</li>
@@ -175,7 +172,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 			{/if}
 			{/if}
-				<li class="menubaritem"><a href="{$Path}help.php">{translate key="Help"}</a></li>
+				<li class="menubaritem"><a href="{$Path}help.php">{translate key=Help}</a><ul>
+					<li><a href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>
+					<li><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
+				</ul></li>
 			</ul>
 			<!-- end #nav -->
 		</div>
