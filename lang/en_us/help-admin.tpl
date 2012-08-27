@@ -204,7 +204,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	are 'name', 'title', or 'none'. Default is 'name'.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
-	This directory will need to be writable. This can be the full directory or relative to the
+	This directory will need to be writable (755 suggested). This can be the full directory or relative to the
 	phpScheduleIt root directory.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL where uploaded
@@ -303,7 +303,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>The full or relative
 	filesystem path (relative to the root of your phpScheduleIt directory) to store reservation attachments. This
-	directory must be writable by PHP. Default is uploads/reservation</p>
+	directory must be writable by PHP (755 suggested). Default is uploads/reservation</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>Comma separated list of
 	safe file extensions. Leaving this blank will allow all file types (not recommended).</p>
