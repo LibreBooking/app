@@ -210,6 +210,7 @@ $(document).ready(function() {
 {control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate"}
 {control type="DatePickerSetupControl" ControlId="addStartDate" AltId="formattedAddStartDate"}
 {control type="DatePickerSetupControl" ControlId="addEndDate" AltId="formattedAddEndDate"}
+{control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat"}
 
 <div id="createDiv" style="display:none;text-align:center; top:15%;position:relative;">
 	<div id="creating">

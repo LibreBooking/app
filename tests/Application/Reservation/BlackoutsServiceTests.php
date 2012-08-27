@@ -55,7 +55,6 @@ class BlackoutsServiceTests extends TestBase
 
 	public function testCreatesBlackoutForEachResourceWhenNoConflicts()
 	{
-		$this->fail('need to update all the existing tests to reflect new logic of iterating over dates and resources');
 		$userId = $this->fakeUser->UserId;
 		$start = Date::Parse('2011-01-01 01:01:01');
 		$end = Date::Parse('2011-02-02 02:02:02');
@@ -66,17 +65,26 @@ class BlackoutsServiceTests extends TestBase
 		$blackoutBefore = new TestBlackoutItemView(1, Date::Parse('2010-01-01'), $start, 3);
 		$blackoutAfter = new TestBlackoutItemView(2, $end,  Date::Parse('2012-01-01'), 1);
 		$blackoutDuring = new TestBlackoutItemView(3, $start,  $end, 4);
-		$this->reservationViewRepository->expects($this->once())
+		$this->reservationViewRepository->expects($this->exactly(3))
 			->method('GetBlackoutsWithin')
 			->with($this->equalTo($date))
 			->will($this->returnValue(array($blackoutBefore, $blackoutAfter, $blackoutDuring)));
 
 		$reservationBefore = new TestReservationItemView(1, Date::Parse('2010-01-01'), $start, 1);
-		$reservationAfter =new TestReservationItemView(2, $end,  Date::Parse('2012-01-01'), 2);
-		$this->reservationViewRepository->expects($this->once())
+		$reservationAfter = new TestReservationItemView(2, $end,  Date::Parse('2012-01-01'), 2);
+
+		$this->reservationViewRepository->expects($this->at(3))
 			->method('GetReservationList')
-			->with($this->equalTo($start), $this->equalTo($end))
-			->will($this->returnValue(array($reservationBefore, $reservationAfter)));
+			->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo(1))
+			->will($this->returnValue(array($reservationBefore)));
+		$this->reservationViewRepository->expects($this->at(4))
+			->method('GetReservationList')
+			->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo(2))
+			->will($this->returnValue(array()));
+		$this->reservationViewRepository->expects($this->at(5))
+			->method('GetReservationList')
+			->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo(3))
+			->will($this->returnValue(array($reservationAfter)));
 		
 		$blackout1 = Blackout::Create($userId, $resourceIds[0], $title, $date);
 		$blackout2 = Blackout::Create($userId, $resourceIds[1], $title, $date);
@@ -108,9 +116,9 @@ class BlackoutsServiceTests extends TestBase
 		$title = 'title';
 
 		$blackoutDuring = new TestBlackoutItemView(1, $start, $end, 3);
-		$this->reservationViewRepository->expects($this->once())
+		$this->reservationViewRepository->expects($this->atLeastOnce())
 			->method('GetBlackoutsWithin')
-			->with($this->equalTo($date))
+			->with($this->anything())
 			->will($this->returnValue(array($blackoutDuring)));
 
 		$this->blackoutRepository->expects($this->never())
@@ -127,7 +135,8 @@ class BlackoutsServiceTests extends TestBase
 		$start = Date::Parse('2011-01-01 01:01:01');
 		$end = Date::Parse('2011-02-02 02:02:02');
 		$date = new DateRange($start, $end);
-		$resourceIds = array(2);
+		$resourceId = 2;
+		$resourceIds = array($resourceId);
 		$title = 'title';
 
 		$this->reservationViewRepository->expects($this->once())
@@ -139,7 +148,7 @@ class BlackoutsServiceTests extends TestBase
 		$reservation2 = new TestReservationItemView(2, $start, $end, 2);
 		$this->reservationViewRepository->expects($this->once())
 			->method('GetReservationList')
-			->with($this->equalTo($start), $this->equalTo($end))
+			->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceId))
 			->will($this->returnValue(array($reservation1, $reservation2)));
 
 		$this->conflictHandler->expects($this->at(0))
@@ -166,7 +175,8 @@ class BlackoutsServiceTests extends TestBase
 		$start = Date::Parse('2011-01-01 01:01:01');
 		$end = Date::Parse('2011-02-02 02:02:02');
 		$date = new DateRange($start, $end);
-		$resourceIds = array(2);
+		$resourceId = 2;
+		$resourceIds = array($resourceId);
 		$title = 'title';
 
 		$this->reservationViewRepository->expects($this->once())
@@ -178,7 +188,7 @@ class BlackoutsServiceTests extends TestBase
 		$reservation2 = new TestReservationItemView(2, $start, $end, 2);
 		$this->reservationViewRepository->expects($this->once())
 			->method('GetReservationList')
-			->with($this->equalTo($start), $this->equalTo($end))
+			->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceId))
 			->will($this->returnValue(array($reservation1, $reservation2)));
 
 		$this->conflictHandler->expects($this->at(0))

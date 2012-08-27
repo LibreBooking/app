@@ -267,23 +267,23 @@ class ManageBlackoutsPresenterTests extends TestBase
 
 	private function ExpectPageToReturnRepeatInfo($repeatType = RepeatType::None, $repeatInterval = null, $endDateString = null, $repeatDays = null, $repeatMonthlyType = null)
 	{
-		$this->page->expects($this->once())
+		$this->page->expects($this->any())
 					->method('GetRepeatType')
 					->will($this->returnValue($repeatType));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->any())
 					->method('GetRepeatInterval')
 					->will($this->returnValue($repeatInterval));
 
-		$this->page->expects($this->once())
-					->method('GetRepeatMonthlyType')
+		$this->page->expects($this->any())
+					->method('GetRepeatTerminationDate')
 					->will($this->returnValue($endDateString));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->any())
 					->method('GetRepeatWeekdays')
 					->will($this->returnValue($repeatDays));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->any())
 					->method('GetRepeatMonthlyType')
 					->will($this->returnValue($repeatMonthlyType));
 	}
