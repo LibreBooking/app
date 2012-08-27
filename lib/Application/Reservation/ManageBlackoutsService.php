@@ -90,19 +90,24 @@ class ManageBlackoutsService implements IManageBlackoutsService
 
 		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
 
+		$dates = array_merge(array($blackoutDate), $repeatOptions->GetDates($blackoutDate));
+
 		/** @var $blackouts array|Blackout[] */
 		$blackouts = array();
 		foreach ($resourceIds as $resourceId)
 		{
-			$blackouts[] = Blackout::Create($userId, $resourceId, $title, $blackoutDate);
+			foreach ($dates as $date)
+			{
+				$blackouts[] = Blackout::Create($userId, $resourceId, $title, $date);
+			}
 		}
 
-		$conflictingBlackouts = $this->GetConflictingBlackouts($blackouts, $blackoutDate);
+		$conflictingBlackouts = $this->GetConflictingBlackouts($blackouts);
 
 		$conflictingReservations = array();
 		if (empty($conflictingBlackouts))
 		{
-			$conflictingReservations = $this->GetConflictingReservations($blackouts, $blackoutDate, $reservationConflictResolution);
+			$conflictingReservations = $this->GetConflictingReservations($blackouts, $reservationConflictResolution);
 		}
 
 		$blackoutValidationResult = new BlackoutValidationResult($conflictingBlackouts, $conflictingReservations);
@@ -120,18 +125,18 @@ class ManageBlackoutsService implements IManageBlackoutsService
 
 	/**
 	 * @param array|Blackout[] $blackouts
-	 * @param DateRange $blackoutDate
 	 * @param IReservationConflictResolution $reservationConflictResolution
 	 * @return array|ReservationItemView[]
 	 */
-	private function GetConflictingReservations($blackouts, $blackoutDate, $reservationConflictResolution)
+	private function GetConflictingReservations($blackouts, $reservationConflictResolution)
 	{
 		$conflictingReservations = array();
-		$existingReservations = $this->reservationViewRepository->GetReservationList($blackoutDate->GetBegin(), $blackoutDate->GetEnd());
 
-		foreach ($existingReservations as $existingReservation)
+		foreach ($blackouts as $blackout)
 		{
-			foreach ($blackouts as $blackout)
+			$existingReservations = $this->reservationViewRepository->GetReservationList($blackout->StartDate(), $blackout->EndDate(), null, null, null, $blackout->ResourceId());
+
+			foreach ($existingReservations as $existingReservation)
 			{
 				if ($existingReservation->ResourceId == $blackout->ResourceId() && $blackout->Date()->Overlaps($existingReservation->Date))
 				{
@@ -148,17 +153,16 @@ class ManageBlackoutsService implements IManageBlackoutsService
 
 	/**
 	 * @param array|Blackout[] $blackouts
-	 * @param DateRange $blackoutDate
 	 * @return array|BlackoutItemView[]
 	 */
-	private function GetConflictingBlackouts($blackouts, $blackoutDate)
+	private function GetConflictingBlackouts($blackouts)
 	{
 		$conflictingBlackouts = array();
-		$existingBlackouts = $this->reservationViewRepository->GetBlackoutsWithin($blackoutDate);
-
-		foreach ($existingBlackouts as $existingBlackout)
+		foreach ($blackouts as $blackout)
 		{
-			foreach ($blackouts as $blackout)
+			$existingBlackouts = $this->reservationViewRepository->GetBlackoutsWithin($blackout->Date());
+
+			foreach ($existingBlackouts as $existingBlackout)
 			{
 				if ($existingBlackout->ResourceId == $blackout->ResourceId() && $blackout->Date()->Overlaps($existingBlackout->Date))
 				{

@@ -55,6 +55,7 @@ class BlackoutsServiceTests extends TestBase
 
 	public function testCreatesBlackoutForEachResourceWhenNoConflicts()
 	{
+		$this->fail('need to update all the existing tests to reflect new logic of iterating over dates and resources');
 		$userId = $this->fakeUser->UserId;
 		$start = Date::Parse('2011-01-01 01:01:01');
 		$end = Date::Parse('2011-02-02 02:02:02');
@@ -93,8 +94,7 @@ class BlackoutsServiceTests extends TestBase
 			->method('Add')
 			->with($this->equalTo($blackout3));
 
-		$this->fail('need to finish blackout recurrence');
-		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
 		$this->assertTrue($result->WasSuccessful());
 	}
@@ -116,7 +116,7 @@ class BlackoutsServiceTests extends TestBase
 		$this->blackoutRepository->expects($this->never())
 			->method('Add');
 		
-		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
 		$this->assertFalse($result->WasSuccessful());
 	}
@@ -156,7 +156,7 @@ class BlackoutsServiceTests extends TestBase
 			->method('Add')
 			->with($this->equalTo(Blackout::Create($userId, 2, $title, $date)));
 		
-		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
 		$this->assertTrue($result->WasSuccessful());
 	}
@@ -194,15 +194,56 @@ class BlackoutsServiceTests extends TestBase
 		$this->blackoutRepository->expects($this->never())
 			->method('Add');
 
-		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler);
+		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
 		$this->assertFalse($result->WasSuccessful());
+	}
+	
+	public function testChecksAndCreatesForEachRecurringDate()
+	{
+		$userId = $this->fakeUser->UserId;
+		$start = Date::Parse('2011-01-01 01:01:01');
+		$end = Date::Parse('2011-01-01 02:02:02');
+		$range = new DateRange($start, $end);
+		$resourceId = 1;
+		$resourceIds = array($resourceId);
+		$title = 'title';
+		$repeatEnd = $start->AddDays(3);
+
+		$repeatDaily = new RepeatDaily(1, $repeatEnd);
+		$repeatDates = $repeatDaily->GetDates($range);
+
+		/** @var $allDates DateRange[] */
+		$allDates = array_merge(array($range), $repeatDates);
+
+		for ($i = 0; $i < count($allDates); $i++)
+		{
+			$date = $allDates[$i];
+			$this->reservationViewRepository->expects($this->at($i))
+				->method('GetBlackoutsWithin')
+				->with($this->equalTo($date))
+				->will($this->returnValue(array()));
+
+			$this->reservationViewRepository->expects($this->at($i+4))	// index is per mock, not per method
+				->method('GetReservationList')
+				->with($this->equalTo($date->GetBegin()), $this->equalTo($date->GetEnd()), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceId))
+				->will($this->returnValue(array()));
+
+			$this->blackoutRepository->expects($this->at($i))
+				->method('Add')
+				->with($this->equalTo(Blackout::Create($userId, $resourceId, $title, $date)));
+		}
+
+		$this->assertEquals(4, $i, 'should create 4 blackouts');
+
+		$result = $this->service->Add($range, $resourceIds, $title, $this->conflictHandler, $repeatDaily);
+		$this->assertTrue($result->WasSuccessful());
 	}
 
 	public function testNothingIsCheckedIfTimesAreInvalid()
 	{
 		$date = DateRange::Create('2011-01-01 00:00:00', '2011-01-01 00:00:00', 'UTC');
-		$result = $this->service->Add($date, array(1), 'title', $this->conflictHandler);
+		$result = $this->service->Add($date, array(1), 'title', $this->conflictHandler, new RepeatNone());
 
 		$this->assertFalse($result->WasSuccessful());
 		$this->assertNotEmpty($result->Message());
