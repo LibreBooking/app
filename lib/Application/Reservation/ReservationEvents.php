@@ -31,6 +31,20 @@ class ReservationEvent
 	const Created = 'created';
 	const Updated = 'updated';
 	const Deleted = 'deleted';
+
+	/**
+	 * @static
+	 * @return array|IDomainEvent[]
+	 */
+	public static function AllEvents()
+	{
+		return array(
+			new ReservationApprovedEvent(),
+			new ReservationCreatedEvent(),
+			new ReservationUpdatedEvent(),
+			new ReservationDeletedEvent(),
+		);
+	}
 }
 
 class ReservationCreatedEvent implements IDomainEvent

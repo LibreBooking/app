@@ -290,6 +290,12 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $user->Id(), CustomAttributeCategory::USER));
 		}
 
+		$addedPreferences = $user->GetAddedEmailPreferences();
+		foreach ($addedPreferences as $event)
+		{
+			$db->Execute(new AddEmailPreferenceCommand($id, $event->EventCategory(), $event->EventType()));
+		}
+
 		return $id;
 	}
 

@@ -20,6 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationEvents.php');
 
 class Registration implements IRegistration
 {
@@ -66,6 +67,14 @@ class Registration implements IRegistration
 		}
 		$user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
 		$user->ChangeCustomAttributes($attributeValues);
+
+		if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_AUTO_SUBSCRIBE_EMAIL, new BooleanConverter()))
+		{
+			foreach (ReservationEvent::AllEvents() as $event)
+			{
+				$user->ChangeEmailPreference($event, true);
+			}
+		}
 
 		$userId = $this->_userRepository->Add($user);
 		$this->AutoAssignPermissions($userId);

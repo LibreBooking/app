@@ -151,14 +151,14 @@ class RegistrationTests extends TestBase
 		$this->fakeConfig->SetKey(ConfigKeys::REGISTRATION_REQUIRE_ACTIVATION, 'true');
 
 		$user = User::Create($this->fname,
-									$this->lname,
-									$this->email,
-									$this->login,
-									$this->language,
-									$this->timezone,
-									$this->fakeEncryption->_Encrypted,
-									$this->fakeEncryption->_Salt,
-									$this->homepageId);
+							 $this->lname,
+							 $this->email,
+							 $this->login,
+							 $this->language,
+							 $this->timezone,
+							 $this->fakeEncryption->_Encrypted,
+							 $this->fakeEncryption->_Salt,
+							 $this->homepageId);
 
 		$user->ChangeAttributes($this->phone, $this->organization, $this->position);
 		$user->ChangeCustomAttributes($this->attributes);
@@ -199,6 +199,35 @@ class RegistrationTests extends TestBase
 		$command = new AutoAssignPermissionsCommand($expectedUserId);
 
 		$this->assertEquals($command, $this->db->_Commands[0]);
+	}
+
+	public function testAutoSubscribesUserToEmails()
+	{
+		$this->fakeConfig->SetKey(ConfigKeys::REGISTRATION_AUTO_SUBSCRIBE_EMAIL, 'true');
+
+		$user = User::Create($this->fname,
+							 $this->lname,
+							 $this->email,
+							 $this->login,
+							 $this->language,
+							 $this->timezone,
+							 $this->fakeEncryption->_Encrypted,
+							 $this->fakeEncryption->_Salt,
+							 $this->homepageId);
+
+		$user->ChangeAttributes($this->phone, $this->organization, $this->position);
+
+		$user->ChangeEmailPreference(new ReservationApprovedEvent(), true);
+		$user->ChangeEmailPreference(new ReservationCreatedEvent(), true);
+		$user->ChangeEmailPreference(new ReservationUpdatedEvent(), true);
+		$user->ChangeEmailPreference(new ReservationDeletedEvent(), true);
+
+		$this->userRepository->expects($this->once())
+				->method('Add')
+				->with($this->equalTo($user));
+
+		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
+
 	}
 
 	public function testSynchronizeUpdatesExistingUser()
@@ -258,7 +287,7 @@ class RegistrationTests extends TestBase
 
 		$this->registration->Synchronize($user);
 	}
-	
+
 	public function testAuthenticatedUserReturnsNullsForAllBlankValues()
 	{
 		$username = 'un';

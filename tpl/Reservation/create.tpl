@@ -60,8 +60,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					{if $ShowAdditionalResources}
 						<a href="#"
-						   onclick="$('#dialogAddResources').dialog('open'); return false;">({translate key=MoreResources}
-							)</a>
+						   onclick="$('#dialogAddResources').dialog('open'); return false;">({translate key=MoreResources})</a>
 					{/if}
 						<div id="additionalResources"></div>
 					</div>

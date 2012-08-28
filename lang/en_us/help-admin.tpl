@@ -220,8 +220,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	false to improve performance and bandwidth usage. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['registration.captcha.enabled']</span>Whether or not captcha image security
-	is enabled during user
-	account registration</p>
+	is enabled during user account registration</p>
+
+<p class="setting"><span>$conf['settings']['registration.require.email.activation']</span>Whether or not a user will be
+	required to activate their account by email before logging in.</p>
+
+<p class="setting"><span>$conf['settings']['registration.auto.subscribe.email']</span>Whether or not users will be
+	automatically subscribed to all emails upon registration.</p>
 
 <p class="setting"><span>$conf['settings']['inactivity.timeout']</span>Number of minutes before the user is
 	automatically logged out. Leave this blank if you do not want users automatically logged out.</p>

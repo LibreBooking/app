@@ -401,6 +401,7 @@ class UserRepositoryTests extends TestBase
 		$user = User::Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt);
 		$user->ChangeAttributes($phone, $organization, $position);
 		$user->ChangeCustomAttributes(array($attr1, $attr2));
+		$user->ChangeEmailPreference(new ReservationApprovedEvent(), true);
 
 		$this->db->_ExpectedInsertId = $expectedId;
 		$repo = new UserRepository();
@@ -411,10 +412,12 @@ class UserRepositoryTests extends TestBase
 
 		$addAttr1Command = new AddAttributeValueCommand($attr1->AttributeId, $attr1->Value, $expectedId, CustomAttributeCategory::USER);
 		$addAttr2Command = new AddAttributeValueCommand($attr2->AttributeId, $attr2->Value, $expectedId, CustomAttributeCategory::USER);
+		$addEmailPreferenceCommand = new AddEmailPreferenceCommand($expectedId, EventCategory::Reservation, ReservationEvent::Approved);
 
 		$this->assertTrue($this->db->ContainsCommand($command));
 		$this->assertTrue($this->db->ContainsCommand($addAttr1Command));
 		$this->assertTrue($this->db->ContainsCommand($addAttr2Command));
+		$this->assertTrue($this->db->ContainsCommand($addEmailPreferenceCommand));
 
 		$this->assertEquals($expectedId, $newId);
 		$this->assertEquals($expectedId, $user->Id());
