@@ -137,25 +137,24 @@ OR<br/>
 </div>
 
 <div>
-	<h4>On a remote host</h4>
+	<h4>On a remote host with no database creation privileges</h4>
 
 	<p>If you are installing phpScheduleIt on a remote host, please follow these steps. These steps assume you are using
-		cPanel.</p>
+		cPanel and have the ability to create databases via the cPanel tool and phpMyAdmin.</p>
 
 	<p>Adding the database and user</p>
 
 	<ul>
 		<li>Select the MySQL Databases tool</li>
-		<li>Add a new user with username and password of your choice. This will be the username and password used in
-			your phpScheduleIt config file.
+		<li>Add a new user with username and password of your choice. This will be the database user and database password set in
+			your phpScheduleIt config file. <b>Please be aware that some hosts will prefix your database user name.</b>
 		</li>
 		<li>Create a new database with whatever name you choose. This will be the name of the database in your
-			phpScheduleIt config file. 'phpScheduleIt2' is the recommended database name.
+			phpScheduleIt config file. 'phpScheduleIt2' is the recommended database name. <b>Please be aware that some hosts will prefix your database name.</b>
 		</li>
 		<li>Associate the new user with the new database, giving the user permission to SELECT, CREATE, UPDATE, INSERT
 			and DELETE. Click the 'Add User to Db' button.
 	</ul>
-
 
 	<p>Creating tables</p>
 
@@ -163,18 +162,18 @@ OR<br/>
 		<li>Open phpMyAdmin.</li>
 		<li>Click on the database name that you just created in the left panel.</li>
 		<li>Click the SQL tab at the top of the page.</li>
-		<li>Import "/database_schema/create-schema.sql" to phpscheduleit2</li>
-		<li>Import "/database_schema/create-data.sql" to phpscheduleit2</li>
+		<li>Import "/database_schema/create-schema.sql" to phpscheduleit2 (or whatever database name was used in the creation process)</li>
+		<li>Import "/database_schema/create-data.sql" to phpscheduleit2 (or whatever database name was used in the creation process)</li>
 	</ul>
 
 </div>
 <div>
-	<h4>If you have access to MySQL</h4>
+	<h4>If you have database creation privileges in MySQL</h4>
 	<ul>
 		<li>Open "/database_schema/full-install.sql" and edit the database name and username/password to match your
-			config.php values
+			config.php database values
 		</li>
-		<li>Run/import "/database_schema/full-install.sql" to mysql db</li>
+		<li>Run or import "/database_schema/full-install.sql"</li>
 		<li>Optionally - run/import "/database_schema/testdata-utf8.sql" to phpscheduleit2 (sample application data will
 			be created with 2 users: admin/password and user/password). These users are available for testing your
 			installation.
@@ -253,12 +252,11 @@ OR<br/>
 	<li>If you imported a sample application data, you now can use admin/password and user/password to login and make
 		changes or addition via the application.
 	</li>
-	<li>If not, you will need to register an account with your configured admin email address. The admin email address
+	<li>If not, <b>you will need to register an account with your configured admin email address</b>. The admin email address
 		can be set in the phpScheduleIt/config/config.php file of setting <span class="setting">$conf['settings']['admin.email']</span>.
 		Other self registration accounts are defaulted to normal users.<br/>
 		After registration you will be logged in automatically. <span STYLE="color:red">Important!</span> At this time,
-		it is recommended to change your password immediately. Notice that an email address is required to register for
-		an account.
+		it is recommended to change your password.
 	</li>
 	<li>For LDAP authentication please login with your LDAP username/password.</li>
 </ul>
