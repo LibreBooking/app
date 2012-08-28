@@ -267,6 +267,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['reservation']['prevent.participation']</span>Whether or not users should be
 	prevented from adding and inviting others to a reservation. Default is false.</p>
 
+<p class="setting"><span>$conf['settings']['reservation']['prevent.recurrence']</span>Whether or not users should be
+	prevented creating recurring reservations. Default is false.</p>
+
 <p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or not to send an
 	email to all resource administrators when a reservation is created. Default is false.</p>
 

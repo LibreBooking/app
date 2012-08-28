@@ -117,7 +117,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<span id="durationHours">0</span> {translate key=hours}
 				</div>
 			</li>
+			{if $HideRecurrence}
+			<li style="display:none">
+			{else}
 			<li>
+			{/if}
 			{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
 			</li>
 			<li class="rsv-req">

@@ -50,6 +50,7 @@ $conf['settings']['privacy']['hide.reservation.details'] = 'false';			// if rese
 $conf['settings']['reservation']['start.time.constraint'] = 'future';		// when reservations can be created or edited. options are future, current, none
 $conf['settings']['reservation']['updates.require.approval'] = 'false';		// if updates to previously approved reservations require approval again
 $conf['settings']['reservation']['prevent.participation'] = 'false';		// if participation and invitation options should be removed
+$conf['settings']['reservation']['prevent.recurrence'] = 'false';			// if recurring reservations are disabled for non-administrators
 $conf['settings']['reservation.notify']['resource.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.delete'] = 'false';

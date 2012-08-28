@@ -134,6 +134,12 @@ interface IReservationComponentInitializer
 	 * @param ErrorMessages|int $errorMessageId
 	 */
 	public function RedirectToError($errorMessageId);
+
+	/**
+	 * @abstract
+	 * @param bool $isHidden
+	 */
+	public function HideRecurrence($isHidden);
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
@@ -390,6 +396,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function RedirectToError($errorMessageId)
 	{
 		$this->basePage->RedirectToError($errorMessageId);
+	}
+
+	public function HideRecurrence($isHidden)
+	{
+		$this->basePage->HideRecurrence($isHidden);
 	}
 }
 

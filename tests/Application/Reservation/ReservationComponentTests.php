@@ -194,8 +194,8 @@ class ReservationComponentTests extends TestBase
 				->will($this->returnValue($resourceList));
 
 		$this->initializer->expects($this->once())
-						->method('RedirectToError')
-						->with($this->equalTo(ErrorMessages::INSUFFICIENT_PERMISSIONS));
+				->method('RedirectToError')
+				->with($this->equalTo(ErrorMessages::INSUFFICIENT_PERMISSIONS));
 
 		$binder = new ReservationResourceBinder($this->resourceService);
 		$binder->Bind($this->initializer);
@@ -249,6 +249,9 @@ class ReservationComponentTests extends TestBase
 				->method('SetDates')
 				->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($periods));
 
+		$this->initializer->expects($this->once())
+						->method('HideRecurrence')
+						->with($this->equalTo(false));
 
 		$binder = new ReservationDateBinder($this->scheduleRepository);
 		$binder->Bind($this->initializer);
