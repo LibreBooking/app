@@ -351,7 +351,7 @@ class Queries
 			'SELECT *
 		FROM blackout_instances bi
 		INNER JOIN blackout_series bs ON bi.blackout_series_id = bs.blackout_series_id
-		INNER JOIN resources r on bs.resource_id = r.resource_id
+		INNER JOIN resources on bs.resource_id = resources.resource_id
 		INNER JOIN users u ON u.user_id = bs.owner_id
 		ORDER BY bi.start_date ASC';
 

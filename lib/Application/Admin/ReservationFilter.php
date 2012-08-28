@@ -66,10 +66,10 @@ class ReservationFilter
 		$filter = new SqlFilterNull();
 
 		if (!empty($this->startDate)) {
-			$filter->_And(new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, $this->startDate->ToDatabase()));
+			$filter->_And(new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, $this->startDate->ToDatabase(), true));
 		}
 		if (!empty($this->endDate)) {
-			$filter->_And(new SqlFilterLessThan(ColumnNames::RESERVATION_END, $this->endDate->ToDatabase()));
+			$filter->_And(new SqlFilterLessThan(ColumnNames::RESERVATION_END, $this->endDate->AddDays(1)->ToDatabase(), true));
 		}
 		if (!empty($this->referenceNumber)) {
 			$filter->_And(new SqlFilterEquals(ColumnNames::REFERENCE_NUMBER, $this->referenceNumber));
