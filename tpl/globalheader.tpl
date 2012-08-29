@@ -140,7 +140,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<li class="menubaritem"><a href="#">{translate key=Responsibilities}</a>
 					<ul>
 						{if $CanViewGroupAdmin}
-
 							<li class="menuitem"><a
 									href="{$Path}admin/manage_group_users.php">{translate key="ManageUsers"}</a></li>
 							<li class="menuitem"><a href="{$Path}admin/manage_group_reservations.php">{translate key=GroupReservations}</a>
@@ -148,14 +147,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 							<li class="menuitem"><a href="{$Path}admin/manage_admin_groups.php">{translate key="ManageGroups"}</a>
 
 						{/if}
+						{if $CanViewResourceAdmin || CanViewScheduleAdmin}
+							<li class="menuitem"><a href="{$Path}admin/manage_admin_resources.php">{translate key="ManageResources"}</a></li>
+						{/if}
 						{if $CanViewResourceAdmin}
-							<li class="menuitem"><a
-									href="{$Path}admin/manage_admin_resources.php">{translate key="ManageResources"}</a></li>
-							<li class="menuitem"><a href="{$Path}admin/manage_resource_reservations.php">{translate key=ResourceReservations}</a>
-							</li>
+							<li class="menuitem"><a href="{$Path}admin/manage_resource_reservations.php">{translate key=ResourceReservations}</a></li>
 						{/if}
 						{if $CanViewScheduleAdmin}
-							<li class="menuitem"><a href="{$Path}admin/manage_admin_resources.php">{translate key="ManageResources"}</a></li>
 							<li class="menuitem"><a href="{$Path}admin/manage_admin_schedules.php">{translate key="ManageSchedules"}</a></li>
 							<li class="menuitem"><a href="{$Path}admin/manage_schedule_reservations.php">{translate key=ScheduleReservations}</a></li>
 						{/if}
