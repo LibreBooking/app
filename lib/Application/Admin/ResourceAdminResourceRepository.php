@@ -44,9 +44,14 @@ class ResourceAdminResourceRepository extends ResourceRepository
      */
     public function GetResourceList()
     {
+		$resources = parent::GetResourceList();
+		if ($this->user->IsAdmin)
+		{
+			return $resources;
+		}
+
 		$user = $this->repo->LoadById($this->user->UserId);
 
-        $resources = parent::GetResourceList();
         $filteredResources = array();
         /** @var $resource BookableResource */
         foreach ($resources as $resource)
@@ -65,12 +70,15 @@ class ResourceAdminResourceRepository extends ResourceRepository
      */
     public function Update(BookableResource $resource)
     {
-		$user = $this->repo->LoadById($this->user->UserId);
-        if (!$user->IsResourceAdminFor($resource))
-        {
-            // if we got to this point, the user does not have the ability to update the resource
-            throw new Exception(sprintf('Resource Update Failed. User %s does not have admin access to resource %s.', $this->user->UserId, $resource->GetId()));
-        }
+		if (!$this->user->IsAdmin)
+		{
+			$user = $this->repo->LoadById($this->user->UserId);
+			if (!$user->IsResourceAdminFor($resource))
+			{
+				// if we got to this point, the user does not have the ability to update the resource
+				throw new Exception(sprintf('Resource Update Failed. User %s does not have admin access to resource %s.', $this->user->UserId, $resource->GetId()));
+			}
+		}
 
         parent::Update($resource);
     }
