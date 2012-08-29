@@ -91,10 +91,10 @@ class AdLdapWrapper implements IActiveDirectory
 
 		/** @var adLDAPUserCollection $entries  */
 		//$entries = $this->ldap->user()->infoCollection($username, $attributes);
-		$entries = $this->ldap->user()->info("username");
+		$entries = $this->ldap->user()->info($username);
 		$exported = var_export($entries, true);
 		Log::Debug('ActiveDirectory - Got entries: %s', $exported);
-		if (count($entries) > 0)
+		if ($entries && count($entries) > 0)
 		{
 			return new ActiveDirectoryUser($entries, $this->options->AttributeMapping());
 		}
