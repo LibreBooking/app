@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . '/lib/Config/namespace.php');
 
@@ -26,13 +26,13 @@ class ActiveDirectoryOptions
 
 	public function __construct()
 	{
-        require_once(dirname(__FILE__) . '/ActiveDirectory.config.php');
+		require_once(dirname(__FILE__) . '/ActiveDirectory.config.php');
 
 		Configuration::Instance()->Register(
-					dirname(__FILE__) . '/ActiveDirectory.config.php',
-					ActiveDirectoryConfig::CONFIG_ID);
+			dirname(__FILE__) . '/ActiveDirectory.config.php',
+			ActiveDirectoryConfig::CONFIG_ID);
 	}
-	
+
 	public function AdLdapOptions()
 	{
 		$hosts = $this->GetHosts();
@@ -47,32 +47,32 @@ class ActiveDirectoryOptions
 
 		return $this->_options;
 	}
-	
+
 	public function RetryAgainstDatabase()
 	{
 		return $this->GetConfig(ActiveDirectoryConfig::RETRY_AGAINST_DATABASE, new BooleanConverter());
 	}
-	
+
 	public function Controllers()
 	{
 		return $this->GetHosts();
 	}
-	
+
 	private function SetOption($key, $value)
 	{
-        if (empty($value))
-        {
-            $value = null;
-        }
+		if (empty($value))
+		{
+			$value = null;
+		}
 
 		$this->_options[$key] = $value;
 	}
-	
+
 	private function GetConfig($keyName, $converter = null)
 	{
 		return Configuration::Instance()->File(ActiveDirectoryConfig::CONFIG_ID)->GetKey($keyName, $converter);
 	}
-	
+
 	private function GetHosts()
 	{
 		$hosts = explode(',', $this->GetConfig(ActiveDirectoryConfig::DOMAIN_CONTROLLERS));
@@ -81,18 +81,24 @@ class ActiveDirectoryOptions
 		{
 			$hosts[$i] = trim($hosts[$i]);
 		}
-		
+
 		return $hosts;
 	}
 
 	public function Attributes()
 	{
-		$attributes = array( 'sn' => 'sn',
-							 'givenname' => 'givenname',
-							 'mail' => 'mail',
-							 'telephonenumber' => 'telephonenumber',
-							 'physicaldeliveryofficename' => 'physicaldeliveryofficename',
-							 'title' => 'title');
+		$attributes = $this->AttributeMapping();
+		return array_values($attributes);
+	}
+
+	public function AttributeMapping()
+	{
+		$attributes = array('sn' => 'sn',
+							'givenname' => 'givenname',
+							'mail' => 'mail',
+							'telephonenumber' => 'telephonenumber',
+							'physicaldeliveryofficename' => 'physicaldeliveryofficename',
+							'title' => 'title');
 		$configValue = $this->GetConfig(ActiveDirectoryConfig::ATTRIBUTE_MAPPING);
 
 		if (!empty($configValue))
@@ -105,7 +111,8 @@ class ActiveDirectoryOptions
 			}
 		}
 
-		return array_values($attributes);
+		return $attributes;
 	}
 }
+
 ?>

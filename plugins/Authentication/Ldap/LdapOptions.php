@@ -16,23 +16,23 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . '/lib/Config/namespace.php');
 
 class LdapOptions
 {
 	private $_options = array();
-	
+
 	public function __construct()
 	{
-        require_once(dirname(__FILE__) . '/Ldap.config.php');
+		require_once(dirname(__FILE__) . '/Ldap.config.php');
 
 		Configuration::Instance()->Register(
-					dirname(__FILE__) . '/Ldap.config.php',
-					LdapConfig::CONFIG_ID);
+			dirname(__FILE__) . '/Ldap.config.php',
+			LdapConfig::CONFIG_ID);
 	}
-	
+
 	public function Ldap2Config()
 	{
 		$hosts = $this->GetHosts();
@@ -45,35 +45,35 @@ class LdapOptions
 		$this->SetOption('basedn', $this->GetConfig(LdapConfig::BASEDN));
 		$this->SetOption('filter', $this->GetConfig(LdapConfig::FILTER));
 		$this->SetOption('scope', $this->GetConfig(LdapConfig::SCOPE));
-		
+
 		return $this->_options;
 	}
-	
+
 	public function RetryAgainstDatabase()
 	{
 		return $this->GetConfig(LdapConfig::RETRY_AGAINST_DATABASE, new BooleanConverter());
 	}
-	
+
 	public function Controllers()
 	{
 		return $this->GetHosts();
 	}
-	
+
 	private function SetOption($key, $value)
 	{
-        if (empty($value))
-        {
-            $value = null;
-        }
+		if (empty($value))
+		{
+			$value = null;
+		}
 
 		$this->_options[$key] = $value;
 	}
-	
+
 	private function GetConfig($keyName, $converter = null)
 	{
 		return Configuration::Instance()->File(LdapConfig::CONFIG_ID)->GetKey($keyName, $converter);
 	}
-	
+
 	private function GetHosts()
 	{
 		$hosts = explode(',', $this->GetConfig(LdapConfig::HOST));
@@ -82,7 +82,7 @@ class LdapOptions
 		{
 			$hosts[$i] = trim($hosts[$i]);
 		}
-		
+
 		return $hosts;
 	}
 
@@ -98,12 +98,18 @@ class LdapOptions
 
 	public function Attributes()
 	{
-		$attributes = array( 'sn' => 'sn',
-							 'givenname' => 'givenname',
-							 'mail' => 'mail',
-							 'telephonenumber' => 'telephonenumber',
-							 'physicaldeliveryofficename' => 'physicaldeliveryofficename',
-							 'title' => 'title');
+		$attributes = $this->AttributeMapping();
+		return array_values($attributes);
+	}
+
+	public function AttributeMapping()
+	{
+		$attributes = array('sn' => 'sn',
+							'givenname' => 'givenname',
+							'mail' => 'mail',
+							'telephonenumber' => 'telephonenumber',
+							'physicaldeliveryofficename' => 'physicaldeliveryofficename',
+							'title' => 'title');
 		$configValue = $this->GetConfig(LdapConfig::ATTRIBUTE_MAPPING);
 
 		if (!empty($configValue))
@@ -116,7 +122,7 @@ class LdapOptions
 			}
 		}
 
-		return array_values($attributes);
+		return $attributes;
 	}
 
 	public function GetUserIdAttribute()
@@ -132,4 +138,5 @@ class LdapOptions
 	}
 
 }
+
 ?>

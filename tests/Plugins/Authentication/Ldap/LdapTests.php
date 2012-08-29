@@ -78,7 +78,7 @@ class LdapTests extends TestBase
 		$ldapEntry->Set('physicaldeliveryofficename', '');
 		$ldapEntry->Set('title', '');
 
-		$this->ldapUser = new LdapUser($ldapEntry);
+		$this->ldapUser = new LdapUser($ldapEntry, array());
 
 		$this->fakeLdap->_ExpectedLdapUser = $this->ldapUser;
 
@@ -246,7 +246,7 @@ class LdapTests extends TestBase
 	{
 		$ldapEntry = new TestLdapEntry();
 		$ldapEntry->Set('sn', array('user', 'user2'));
-		$user = new LdapUser($ldapEntry);
+		$user = new LdapUser($ldapEntry, array());
 
 		$this->assertEquals('user', $user->GetLastName());
 	}
@@ -319,6 +319,26 @@ class LdapTests extends TestBase
 		$options = new LdapOptions();
 
 		$this->assertEquals('uid', $options->GetUserIdAttribute());
+	}
+
+	public function testMapsUserAttributes()
+	{
+		$mapping = array('sn' => 'sn',
+						'givenname' => 'givenname',
+						'mail' => 'fooName',);
+
+		$entry = new TestLdapEntry();
+		$entry->Set('sn', 'sn');
+		$entry->Set('givenname', 'given');
+		$entry->Set('fooName', 'foo');
+		$entry->Set('telephonenumber', 'phone');
+
+		$user = new LdapUser($entry, $mapping);
+
+		$this->assertEquals('sn', $user->GetLastName());
+		$this->assertEquals('given', $user->GetFirstName());
+		$this->assertEquals('foo', $user->GetEmail());
+		$this->assertEquals('phone', $user->GetPhone());
 	}
 }
 

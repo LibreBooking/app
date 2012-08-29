@@ -122,7 +122,7 @@ class Ldap2Wrapper
 		{
 			Log::Debug('Found user %s', $username);
 			/** @var Net_LDAP2_Entry $entry  */
-			$this->user = new LdapUser($currentResult);
+			$this->user = new LdapUser($currentResult, $this->options->AttributeMapping());
 		}
 		else
 		{

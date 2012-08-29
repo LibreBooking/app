@@ -23,6 +23,6 @@ define('ROOT_DIR', '../../');
 require_once(ROOT_DIR . 'Pages/Admin/ManageBlackoutsPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageBlackoutsPresenter.php');
 
-$page =  new AdminPageDecorator(new ManageBlackoutsPage());
+$page = new AdminPageDecorator(new ManageBlackoutsPage());
 $page->PageLoad();
 ?>

@@ -27,18 +27,21 @@ class LdapUser
 	private $institution;
 	private $title;
 	private $dn;
+	private $mapping;
 
 	/**
 	 * @param $entry Net_LDAP2_Entry
+	 * @param $mapping string[]|array
 	 */
-	public function __construct($entry)
+	public function __construct($entry, $mapping)
 	{
-		$this->fname = $this->Get($entry->getValue('givenname'));
-		$this->lname = $this->Get($entry->getValue('sn'));
-		$this->mail = strtolower($this->Get($entry->getValue('mail')));
-		$this->phone = $this->Get($entry->getValue('telephonenumber'));
-		$this->institution = $this->Get($entry->getValue('physicaldeliveryofficename'));
-		$this->title = $this->Get($entry->getValue('title'));
+		$this->mapping = $mapping;
+		$this->fname = $this->Get($entry, 'givenname');
+		$this->lname = $this->Get($entry, 'sn');
+		$this->mail = strtolower($this->Get($entry, 'mail'));
+		$this->phone = $this->Get($entry, 'telephonenumber');
+		$this->institution = $this->Get($entry, 'physicaldeliveryofficename');
+		$this->title = $this->Get($entry, 'title');
 		$this->dn = $entry->dn();
 	}
 
@@ -78,11 +81,19 @@ class LdapUser
 	}
 
 	/**
-	 * @param string|array $value
+	 * @param Net_LDAP2_Entry $entry
+	 * @param string $field
 	 * @return string
 	 */
-	private function Get($value)
+	private function Get($entry, $field)
 	{
+		$actualField = $field;
+		if (array_key_exists($field, $this->mapping))
+		{
+			$actualField = $this->mapping[$field];
+		}
+		$value = $entry->getValue($actualField);
+
 		if (is_array($value))
 		{
 			return $value[0];

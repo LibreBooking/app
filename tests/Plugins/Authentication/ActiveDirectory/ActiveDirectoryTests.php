@@ -78,7 +78,14 @@ class ActiveDirectoryTests extends TestBase
         $ldapEntry->physicaldeliveryofficename = '';
         $ldapEntry->title = '';
 
-		$this->ldapUser = new ActiveDirectoryUser($ldapEntry);
+		$mapping = array('sn' => 'sn',
+						'givenname' => 'givenname',
+						'mail' => 'mail',
+						'telephonenumber' => 'telephonenumber',
+						'physicaldeliveryofficename' => 'physicaldeliveryofficename',
+						'title' => 'title');
+
+		$this->ldapUser = new ActiveDirectoryUser($ldapEntry, $mapping);
 
 		$this->fakeLdap->_ExpectedLdapUser = $this->ldapUser;
 
@@ -291,6 +298,26 @@ class ActiveDirectoryTests extends TestBase
 
 		$expectedAttributes = array( 'sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title');
 		$this->assertEquals($expectedAttributes, $options->Attributes());
+	}
+
+	public function testMapsUserAttributes()
+	{
+		$mapping = array('sn' => 'sn',
+						'givenname' => 'givenname',
+						'mail' => 'fooName',);
+
+		$entry = new TestAdLdapEntry();
+		$entry->sn = 'sn';
+		$entry->givenname = 'given';
+		$entry->fooName = 'foo';
+		$entry->telephonenumber = 'phone';
+
+		$user = new ActiveDirectoryUser($entry, $mapping);
+
+		$this->assertEquals('sn', $user->GetLastName());
+		$this->assertEquals('given', $user->GetFirstName());
+		$this->assertEquals('foo', $user->GetEmail());
+		$this->assertEquals('phone', $user->GetPhone());
 	}
 }
 
