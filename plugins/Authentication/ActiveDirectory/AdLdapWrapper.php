@@ -62,6 +62,10 @@ class AdLdapWrapper implements IActiveDirectory
 				{
 					Log::Debug('ActiveDirectory - Connection succeeded to host %s', $host);
 				}
+				else
+				{
+					Log::Debug('ActiveDirectory - Connection failed to host %s. Reason %s', $host, $this->ldap->getLastError());
+				}
 			}
 			catch (adLDAPException $ex)
 			{
@@ -75,7 +79,7 @@ class AdLdapWrapper implements IActiveDirectory
 
 	public function Authenticate($username, $password)
 	{
-		$authenticated = $this->ldap->authenticate($username, $password);
+		$authenticated = $this->ldap->user()->authenticate($username, $password);
 		if (!$authenticated)
 		{
 			Log::Debug('ActiveDirectory - Authenticate for user %s failed with reason %s', $username, $this->ldap->getLastError());
@@ -86,12 +90,11 @@ class AdLdapWrapper implements IActiveDirectory
 	public function GetLdapUser($username)
 	{
 		$attributes = $this->options->Attributes();
-
 		Log::Debug('ActiveDirectory - Loading user attributes: %s', implode(', ', $attributes));
+		$entries = $this->ldap->user()->infoCollection($username, $attributes);
 
 		/** @var adLDAPUserCollection $entries  */
-		//$entries = $this->ldap->user()->infoCollection($username, $attributes);
-		$entries = $this->ldap->user()->info($username);
+//		$entries = $this->ldap->user()->info($username);
 		$exported = var_export($entries, true);
 		Log::Debug('ActiveDirectory - Got entries: %s', $exported);
 		if ($entries && count($entries) > 0)
