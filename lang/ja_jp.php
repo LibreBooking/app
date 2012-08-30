@@ -459,6 +459,8 @@ class ja_jp extends en_us
         $strings['ServerSettings'] = 'サーバー設定';
         $strings['Dashboard'] = 'ダッシュボード';
         $strings['Help'] = 'ヘルプ';
+        $strings['Administration'] = '設定管理';
+        $strings['About'] = 'このアプリについて';
         $strings['Bookings'] = '予約状況';
         $strings['Schedule'] = 'スケジュール';
         $strings['Reservations'] = '予約';
