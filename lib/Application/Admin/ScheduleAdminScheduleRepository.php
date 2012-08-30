@@ -41,9 +41,15 @@ class ScheduleAdminScheduleRepository extends ScheduleRepository
 
 	public function GetAll()
 	{
+		$schedules = parent::GetAll();
+
+		if ($this->user->IsAdmin)
+		{
+			return $schedules;
+		}
+
 		$user = $this->repo->LoadById($this->user->UserId);
 
-		$schedules = parent::GetAll();
 		$filteredList = array();
 		/** @var $schedule Schedule */
 		foreach ($schedules as $schedule)
@@ -88,5 +94,7 @@ class ScheduleAdminScheduleRepository extends ScheduleRepository
 
 		parent::Add($schedule, $copyLayoutFromScheduleId);
 	}
+
+
 }
 ?>

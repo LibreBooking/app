@@ -348,10 +348,11 @@ class Queries
 		ORDER BY bi.start_date ASC';
 
 	const GET_BLACKOUT_LIST_FULL =
-			'SELECT *
+			'SELECT bi.*, resources.*, u.*, bs.*, schedules.schedule_id
 		FROM blackout_instances bi
 		INNER JOIN blackout_series bs ON bi.blackout_series_id = bs.blackout_series_id
 		INNER JOIN resources on bs.resource_id = resources.resource_id
+		INNER JOIN schedules on resources.schedule_id = schedules.schedule_id
 		INNER JOIN users u ON u.user_id = bs.owner_id
 		ORDER BY bi.start_date ASC';
 
@@ -536,7 +537,7 @@ class Queries
 		INNER JOIN groups g ON ug.group_id = g.group_id
 		LEFT JOIN group_roles gr ON ug.group_id = gr.group_id
 		LEFT JOIN roles r ON gr.role_id = r.role_id
-		WHERE user_id = @userid AND (@role_level is null OR r.role_level = @role_level)';
+		WHERE user_id = @userid AND (@role_null is null OR r.role_level IN (@role_level) )';
 
 	const GET_USER_RESOURCE_PERMISSIONS =
 			'SELECT

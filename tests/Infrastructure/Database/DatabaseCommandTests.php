@@ -250,7 +250,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals('firstname%', $filterCommand->Parameters->Items(0)->Value);
 		$this->assertEquals('last', $filterCommand->Parameters->Items(1)->Value);
 
-		$constraint = $this->stringContains("table WHERE ( blah = @blah and blah2 = @blah2 ) AND (fname LIKE @fname AND lname = @lname) ORDER BY  blah1");
+		$constraint = $this->stringContains("table WHERE ( blah = @blah and blah2 = @blah2 ) AND (fname LIKE @fname AND ( lname = @lname )) ORDER BY  blah1");
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
 		 //("SELECT COUNT(*) as total FROM table WHERE (blah = @blah and blah2 = @blah2) AND (fname = @fname AND lname = @lname) ORDER BY blah1", $filterCommand->GetQuery());
@@ -267,7 +267,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 
 		$filterCommand = new FilterCommand($baseCommand, $filter);
 
-		$constraint = $this->stringContains("WHERE ( (0 = '0' OR status_id = '0')) AND (fname LIKE @fname AND lname = @lname)");
+		$constraint = $this->stringContains("WHERE ( (0 = '0' OR status_id = '0')) AND (fname LIKE @fname AND ( lname = @lname ))");
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
 	}

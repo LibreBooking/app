@@ -45,24 +45,9 @@ class ResourceAdminResourceRepository extends ResourceRepository
     public function GetResourceList()
     {
 		$resources = parent::GetResourceList();
-		if ($this->user->IsAdmin)
-		{
-			return $resources;
-		}
 
-		$user = $this->repo->LoadById($this->user->UserId);
+		return $this->GetFilteredResources($resources);
 
-        $filteredResources = array();
-        /** @var $resource BookableResource */
-        foreach ($resources as $resource)
-        {
-            if ($user->IsResourceAdminFor($resource))
-            {
-                $filteredResources[] = $resource;
-            }
-        }
-
-        return $filteredResources;
     }
 
     /**
@@ -82,6 +67,44 @@ class ResourceAdminResourceRepository extends ResourceRepository
 
         parent::Update($resource);
     }
+
+	/**
+	 * @param int $scheduleId
+	 * @return array|BookableResource[]
+	 */
+	public function GetScheduleResources($scheduleId)
+	{
+		$resources =  parent::GetScheduleResources($scheduleId);
+		return $this->GetFilteredResources($resources);
+	}
+
+	/**
+	 * @param $resources
+	 * @return array|BookableResource[]
+	 */
+	private function GetFilteredResources($resources)
+	{
+		if ($this->user->IsAdmin)
+		{
+			return $resources;
+		}
+
+		$user = $this->repo->LoadById($this->user->UserId);
+
+		$filteredResources = array();
+		/** @var $resource BookableResource */
+		foreach ($resources as $resource)
+		{
+			if ($user->IsResourceAdminFor($resource))
+			{
+				$filteredResources[] = $resource;
+			}
+		}
+
+		return $filteredResources;
+	}
+
+
 }
 
 ?>

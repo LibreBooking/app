@@ -91,6 +91,36 @@ class ResourceAdminResourceRepositoryTests extends TestBase
         }
         $this->assertNotEmpty($actualEx, "should have thrown an exception");
     }
+
+	public function testGetsScheduleResourcesUserHasAdminRightsTo()
+	{
+		$scheduleId = 100;
+		$user = $this->getMock('User');
+		$this->userRepository->expects($this->once())
+						->method('LoadById')
+						->with($this->equalTo($this->fakeUser->UserId))
+						->will($this->returnValue($user));
+
+		$ra = new FakeResourceAccess();
+		$this->db->SetRows($ra->GetRows());
+
+		$user->expects($this->at(0))
+					->method('IsResourceAdminFor')
+					->with($this->equalTo($ra->_Resources[0]))
+					->will($this->returnValue(false));
+
+		$user->expects($this->at(1))
+					->method('IsResourceAdminFor')
+					->with($this->equalTo($ra->_Resources[1]))
+					->will($this->returnValue(true));
+
+		$repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
+		$resources = $repo->GetScheduleResources($scheduleId);
+
+		$this->assertTrue($this->db->ContainsCommand(new GetScheduleResourcesCommand($scheduleId)));
+		$this->assertEquals(1, count($resources));
+		$this->assertEquals(2, $resources[0]->GetId());
+	}
 }
 
 ?>

@@ -109,10 +109,10 @@ interface IUserViewRepository
 	/**
 	 * @abstract
 	 * @param $userId int
-	 * @param $roleLevel int|null
+	 * @param $roleLevels int|null|array|int[]
 	 * @return array|UserGroup[]
 	 */
-	function LoadGroups($userId, $roleLevel = null);
+	function LoadGroups($userId, $roleLevels = null);
 }
 
 interface IAccountActivationRepository
@@ -455,14 +455,19 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		return $allowedResourceIds;
 	}
 
-	public function LoadGroups($userId, $roleLevel = null)
+	public function LoadGroups($userId, $roleLevels = null)
 	{
 		/**
 		 * @var $groups array|UserGroup[]
 		 */
 		$groups = array();
 
-		$command = new GetUserGroupsCommand($userId, $roleLevel);
+		if (!is_null($roleLevels) && !is_array($roleLevels))
+		{
+			$roleLevels = array($roleLevels);
+		}
+
+		$command = new GetUserGroupsCommand($userId, $roleLevels);
 		$reader = ServiceLocator::GetDatabase()->Query($command);
 
 		while ($row = $reader->GetRow())
@@ -564,7 +569,6 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 class UserDto
 {
-
 	private $userId;
 	private $firstName;
 	private $lastName;
@@ -622,7 +626,6 @@ class UserDto
 
 class NullUserDto extends UserDto
 {
-
 	public function __construct()
 	{
 		parent::__construct(0, null, null, null, null, null);
@@ -632,7 +635,6 @@ class NullUserDto extends UserDto
 	{
 		return null;
 	}
-
 }
 
 class UserItemView

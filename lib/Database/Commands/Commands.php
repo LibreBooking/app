@@ -1089,11 +1089,12 @@ class GetUserEmailPreferencesCommand extends SqlCommand
 
 class GetUserGroupsCommand extends SqlCommand
 {
-	public function __construct($userId, $roleLevel)
+	public function __construct($userId, $roleLevels)
 	{
 		parent::__construct(Queries::GET_USER_GROUPS);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
-		$this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, $roleLevel));
+		$this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, $roleLevels));
+		$this->AddParameter(new Parameter('@role_null', empty($roleLevels) ? null : '1'));
 	}
 }
 

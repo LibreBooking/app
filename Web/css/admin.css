@@ -180,3 +180,8 @@ tr.pending {
 .attributeDialog .textBoxOptions {
 	padding-bottom: 10px;
 }
+
+#blackoutTable
+{
+    width: 100%;
+}

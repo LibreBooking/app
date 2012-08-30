@@ -121,13 +121,13 @@ abstract class BaseSqlFilter implements ISqlFilter
 		/** @var $filter ISqlFilter */
 		foreach ($this->_and as $filter)
 		{
-			$sql .= " AND {$filter->Where()}";
+			$sql .= " AND ( {$filter->Where()} )";
 		}
 
 		/** @var $filter ISqlFilter */
 		foreach ($this->_or as $filter)
 		{
-			$sql .= " OR {$filter->Where()}";
+			$sql .= " OR ( {$filter->Where()} )";
 		}
 
 		return $sql;

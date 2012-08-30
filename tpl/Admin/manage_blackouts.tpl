@@ -44,11 +44,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<select {formname key=RESOURCE_ID} class="textbox" id="addResourceId">
 						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 					</select>
+					{if $Schedules|count > 0}
 					|
 					<label for="allResources" style="">{translate key=AllResourcesOn} </label> <input {formname key=BLACKOUT_APPLY_TO_SCHEDULE} type="checkbox" id="allResources" />
 					<select {formname key=SCHEDULE_ID} id="addScheduleId" class="textbox" disabled="disabled">
 						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 					</select>
+					{/if}
 				</li>
 				<li>
 					<label for="blackoutReason" class="wideLabel">{translate key=Reason}</label>
@@ -127,11 +129,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<tr class="{$rowCss} editable">
 		<td class="id">{$blackout->InstanceId}</td>
 		<td>{$blackout->ResourceName}</td>
-		<td>{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
-		<td>{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
+		<td style="width:150px;">{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
+		<td style="width:150px;">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
 		<td>{$blackout->Title}</td>
 		<td>{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
-		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
+		<td align="center" style="width: 65px;"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 	</tr>
 	{/foreach}
 </table>

@@ -524,6 +524,11 @@ class User
 	 */
 	public function IsAdminFor(User $user)
 	{
+		if ($this->isApplicationAdmin)
+		{
+			return true;
+		}
+
 		if (!$this->isGroupAdmin)
 		{
 			return false;
@@ -558,6 +563,11 @@ class User
 	 */
 	public function IsResourceAdminFor(IResource $resource)
 	{
+		if ($this->isApplicationAdmin)
+		{
+			return true;
+		}
+
 		if ($this->isResourceAdmin || $this->isScheduleAdmin)
 		{
 			foreach ($this->groups as $group)
@@ -581,6 +591,11 @@ class User
 	 */
 	public function IsScheduleAdminFor(ISchedule $schedule)
 	{
+		if ($this->isApplicationAdmin)
+		{
+			return true;
+		}
+
 		if (!$this->isScheduleAdmin)
 		{
 			return false;

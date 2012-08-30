@@ -63,10 +63,16 @@ class ManageBlackoutsService implements IManageBlackoutsService
 	 */
 	private $blackoutRepository;
 
-	public function __construct(IReservationViewRepository $reservationViewRepository, IBlackoutRepository $blackoutRepository)
+	/**
+	 * @var IUserRepository
+	 */
+	private $userRepository;
+
+	public function __construct(IReservationViewRepository $reservationViewRepository, IBlackoutRepository $blackoutRepository, IUserRepository $userRepository)
 	{
 		$this->reservationViewRepository = $reservationViewRepository;
 		$this->blackoutRepository = $blackoutRepository;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -78,7 +84,21 @@ class ManageBlackoutsService implements IManageBlackoutsService
 	 */
 	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
 	{
-		return $this->reservationViewRepository->GetBlackoutList($pageNumber, $pageSize, null, null, $filter->GetFilter());
+		$blackoutFilter = $filter->GetFilter();
+		if (!$user->IsAdmin)
+		{
+			$groups = $this->userRepository->LoadGroups($user->UserId, array(RoleLevel::RESOURCE_ADMIN, RoleLevel::SCHEDULE_ADMIN));
+			$groupIds = array();
+			foreach ($groups as $group)
+			{
+				$groupIds[] = $group->GroupId;
+			}
+			$adminFilter = new SqlFilterIn(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_ADMIN_GROUP_ID), $groupIds);
+			$adminFilter->_Or(new SqlFilterIn(new SqlFilterColumn(TableNames::SCHEDULES, ColumnNames::SCHEDULE_ADMIN_GROUP_ID), $groupIds));
+			$blackoutFilter->_And($adminFilter);
+		}
+
+		return $this->reservationViewRepository->GetBlackoutList($pageNumber, $pageSize, null, null, $blackoutFilter);
 	}
 
 	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution, IRepeatOptions $repeatOptions)

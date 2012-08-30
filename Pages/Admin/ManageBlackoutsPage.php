@@ -204,10 +204,13 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 	{
 	    parent::__construct('ManageBlackouts', 1);
 
+		$userRepo = new UserRepository();
+		$userSession =  ServiceLocator::GetServer()->GetUserSession();
+
 		$this->presenter = new ManageBlackoutsPresenter($this,
-			new ManageBlackoutsService(new ReservationViewRepository(), new BlackoutRepository()),
-			new ScheduleRepository(),
-			new ResourceAdminResourceRepository(new UserRepository(), ServiceLocator::GetServer()->GetUserSession()));
+			new ManageBlackoutsService(new ReservationViewRepository(), new BlackoutRepository(), $userRepo),
+			new ScheduleAdminScheduleRepository($userRepo, $userSession),
+			new ResourceAdminResourceRepository($userRepo, $userSession));
 
 		$this->pageablePage = new PageablePage($this);
 	}

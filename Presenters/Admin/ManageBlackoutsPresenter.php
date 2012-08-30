@@ -155,6 +155,7 @@ class ManageBlackoutsPresenter extends ActionPresenter
 
     public function DeleteBlackout()
     {
+		// TODO: Need to check if user can manage blackouts for this resource
         $id = $this->page->GetBlackoutId();
 
         Log::Debug('Deleting blackout with id %s', $id);
