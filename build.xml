@@ -169,6 +169,7 @@
 				<exclude name="**/*.zip"/>
 				<exclude name="**/*.jar"/>
 				<exclude name="**/phing-tasks/**"/>
+				<exclude name="*phing-tasks*"/>
 
 				<exclude name="**/config.php"/>
 				<exclude name="**/*.config.php"/>
