@@ -31,7 +31,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<div style="float:left;max-width:50%;">
 			<input type="hidden" class="id" value="{$id}"/>
 
-			<div style="float:left; text-align:center; width:110px;;">
+			<div style="float:left; text-align:center; width:110px;">
 				{if $resource->HasImage()}
 					<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/><br/>
 					<a class="update imageButton" href="javascript: void(0);">{translate key='Change'}</a> |
@@ -356,7 +356,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="noMinimumDuration">
 							<br/>
 						{capture name="txtMinDuration" assign="txtMinDuration"}
-							<input type='text' id='minDurationDays' size='2' class='days textbox' maxlength='2'/>
+							<input type='text' id='minDurationDays' size='3' class='days textbox' maxlength='3'/>
 							<input type='text' id='minDurationHours' size='2' class='hours textbox' maxlength='2'/>
 							<input type='text' id='minDurationMinutes' size='2' class='minutes textbox' maxlength='2'/>
 							<input type='hidden' id='minDuration' class='interval' {formname key=MIN_DURATION} />
@@ -371,7 +371,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="noMaximumDuration">
 							<br/>
 						{capture name="txtMaxDuration" assign="txtMaxDuration"}
-							<input type='text' id='maxDurationDays' size='2' class='days textbox' maxlength='2'/>
+							<input type='text' id='maxDurationDays' size='3' class='days textbox' maxlength='3'/>
 							<input type='text' id='maxDurationHours' size='2' class='hours textbox' maxlength='2'/>
 							<input type='text' id='maxDurationMinutes' size='2' class='minutes textbox' maxlength='2'/>
 							<input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />
@@ -412,7 +412,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="noStartNotice">
 							<br/>
 						{capture name="txtStartNotice" assign="txtStartNotice"}
-							<input type='text' id='startNoticeDays' size='2' class='days textbox' maxlength='2'/>
+							<input type='text' id='startNoticeDays' size='3' class='days textbox' maxlength='3'/>
 							<input type='text' id='startNoticeHours' size='2' class='hours textbox' maxlength='2'/>
 							<input type='text' id='startNoticeMinutes' size='2' class='minutes textbox' maxlength='2'/>
 							<input type='hidden' id='startNotice' class='interval' {formname key=MIN_NOTICE} />
@@ -427,7 +427,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="noEndNotice">
 							<br/>
 						{capture name="txtEndNotice" assign="txtEndNotice"}
-							<input type='text' id='endNoticeDays' size='2' class='days textbox' maxlength='2'/>
+							<input type='text' id='endNoticeDays' size='3' class='days textbox' maxlength='3'/>
 							<input type='text' id='endNoticeHours' size='2' class='hours textbox' maxlength='2'/>
 							<input type='text' id='endNoticeMinutes' size='2' class='minutes textbox' maxlength='2'/>
 							<input type='hidden' id='endNotice' class='interval' {formname key=MAX_NOTICE} />
