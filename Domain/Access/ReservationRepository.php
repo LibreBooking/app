@@ -528,7 +528,7 @@ class DeleteSeriesEventCommand extends EventCommand
 
 	public function Execute(Database $database)
 	{
-		$database->Execute(new DeleteSeriesCommand($this->series->SeriesId()));
+		$database->Execute(new DeleteSeriesCommand($this->series->SeriesId(), Date::Now()));
 	}
 }
 

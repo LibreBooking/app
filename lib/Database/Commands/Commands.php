@@ -552,10 +552,11 @@ class DeleteScheduleCommand extends SqlCommand
 
 class DeleteSeriesCommand extends SqlCommand
 {
-	public function __construct($seriesId)
+	public function __construct($seriesId, Date $dateModified)
 	{
 		parent::__construct(Queries::DELETE_SERIES);
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $dateModified->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, ReservationStatus::Deleted));
 	}
 }

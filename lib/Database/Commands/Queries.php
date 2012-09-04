@@ -200,7 +200,11 @@ class Queries
 
 	const DELETE_SCHEDULE = 'DELETE FROM schedules WHERE schedule_id = @scheduleid';
 
-	const DELETE_SERIES = 'UPDATE reservation_series SET status_id = @statusid WHERE series_id = @seriesid';
+	const DELETE_SERIES = 
+		'UPDATE reservation_series 
+		    SET status_id = @statusid, 
+			last_modified = @dateModified 
+		  WHERE series_id = @seriesid';
 
 	const DELETE_USER = 'DELETE FROM users	WHERE user_id = @userid';
 
