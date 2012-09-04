@@ -127,15 +127,6 @@ class Mdb2Connection implements IDbConnection
 		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);
 		$result =& $stmt->execute($cmd->GetValues());
 
-		echo "<pre>";
-		print_r($result);
-		echo "</pre>";
-		$e = MDB2::isError($result);
-		echo '<br/>   error   ' . (int)$e;
-		echo ($result->numRows());
-		die();
-		$this->_isError($result, $cmd);
-
 		return new Mdb2Reader($result);
 	}
 

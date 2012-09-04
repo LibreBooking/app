@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/Database/MySQL/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 
 class DatabaseFactory
@@ -37,10 +36,12 @@ class DatabaseFactory
 
 			if (strtolower($databaseType) == 'mysql')
 			{
+				require_once(ROOT_DIR . 'lib/Database/MySQL/namespace.php');
 				self::$_instance = new Database(new MySqlConnection($dbUser, $dbPassword, $hostSpec, $dbName));
 			}
 			else
 			{
+				require_once(ROOT_DIR . 'lib/Database/MDB2/namespace.php');
 				self::$_instance = new Database(new Mdb2Connection($databaseType, $dbUser, $dbPassword, $hostSpec, $dbName));
 			}
 
