@@ -120,6 +120,7 @@ class ScheduleReservationList implements IScheduleReservationList
 				}
 				
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
+
 				$span = ($endingPeriodIndex - $currentIndex) + 1;
 
 				$slots[] = $item->BuildSlot($layoutItem->BeginDate(), $this->_layoutItems[$endingPeriodIndex]->EndDate(), $this->_layoutDateStart, $span);
@@ -253,7 +254,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	 */
 	private function FindClosestLayoutIndexBeforeStartingTime(ReservationListItem $item)
 	{
-		for ($i = 0; $i < count($this->_layoutItems); $i++)
+		for ($i = count($this->_layoutItems)-1; $i >= 0; $i--)
 		{
 			$currentItem = $this->_layoutItems[$i];
 

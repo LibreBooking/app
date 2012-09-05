@@ -417,6 +417,12 @@ class en_us extends Language
 		$strings['Choose'] = 'Choose';
 		$strings['All'] = 'All';
 		$strings['ViewAsChart'] = 'View As Chart';
+		$strings['ReservedResources'] = 'Reserved Resources';
+		$strings['ReservedAccessories'] = 'Reserved Accessories';
+		$strings['ResourceUsageTimeBooked'] = 'Resource Usage - Time Booked';
+		$strings['ResourceUsageReservationCount'] = 'Resource Usage - Reservation Count';
+		$strings['Top20UsersTimeBooked'] = 'Top 20 Users - Time Booked';
+		$strings['Top20UsersReservationCount'] = 'Top 20 Users - Reservation Count';
         // End Strings
 
         // Errors

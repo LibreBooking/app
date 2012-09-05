@@ -22,7 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="report-list">
 	<ul>
 		<li>
-			<span class="report-title">Reserved Resources</span>
+			<span class="report-title">{translate key=ReservedResources}</span>
 			<span class="right">
 				<a href="#" reportId="{CannedReport::RESERVATIONS_TODAY}"
 				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
@@ -33,7 +33,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</span>
 		</li>
 		<li class="alt">
-			<span class="report-title">Reserved Accessories</span>
+			<span class="report-title">{translate key=ReservedAccessories}</span>
 			<span class="right">
 				<a href="#" reportId="{CannedReport::ACCESSORIES_TODAY}"
 				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
@@ -44,7 +44,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</span>
 		</li>
 		<li>
-			<span class="report-title">Resource Usage - Time Booked</span>
+			<span class="report-title">{translate key=ResourceUsageTimeBooked}</span>
 			<span class="right">
 				<a href="#" reportId="{CannedReport::RESOURCE_TIME_ALLTIME}"
 				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
@@ -55,7 +55,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</span>
 		</li>
 		<li class="alt">
-			<span class="report-title">Resource Usage - Reservation Count</span>
+			<span class="report-title">{translate key=ResourceUsageReservationCount}</span>
 			<span class="right">
 				<a href="#" reportId="{CannedReport::RESOURCE_COUNT_ALLTIME}"
 				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
@@ -66,7 +66,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</span>
 		</li>
 		<li>
-			<span class="report-title">Top 20 Users - Time Booked</span>
+			<span class="report-title">{translate key=Top20UsersTimeBooked}</span>
 			<span class="right">
 				<a href="#" reportId="{CannedReport::USER_TIME_ALLTIME}"
 				   class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
@@ -77,7 +77,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</span>
 		</li>
 		<li class="alt">
-			<span class="report-title">Top 20 Users - Reservation Count</span>
+			<span class="report-title">{translate key=Top20UsersReservationCount}</span>
 			<span class="right">
 				<a href="#" reportId="{CannedReport::USER_COUNT_ALLTIME}"
 				   class="report report-action  runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>

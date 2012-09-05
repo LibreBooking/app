@@ -503,20 +503,28 @@ class ScheduleReservationListTests extends TestBase
 		$layout = new ScheduleLayout($tz);
 		$layout->AppendPeriod(Time::Parse('0:00', $tz), Time::Parse('2:00', $tz));
 		$layout->AppendPeriod(Time::Parse('2:00', $tz), Time::Parse('6:00', $tz));
+		$layout->AppendPeriod(Time::Parse('6:00', $tz), Time::Parse('12:00', $tz));
 
-		$item = new TestReservationItemView(
+		$item1 = new TestReservationItemView(
 			1,
 			Date::Parse('2011-02-06 1:00:00', $tz)->ToUtc(),
 			Date::Parse('2011-02-06 5:00:00', $tz)->ToUtc(),
 			1);
-		$r1 = new ReservationListItem($item);
-		
-		$list = new ScheduleReservationList(array($r1), $layout, $listDate);
+		$item2 = new TestReservationItemView(
+			2,
+			Date::Parse('2011-02-06 7:00:00', $tz)->ToUtc(),
+			Date::Parse('2011-02-06 11:00:00', $tz)->ToUtc(),
+			1);
+		$r1 = new ReservationListItem($item1);
+		$r2 = new ReservationListItem($item2);
+
+		$list = new ScheduleReservationList(array($r1, $r2), $layout, $listDate);
 
 		$slots = $list->BuildSlots();
 
-		$this->assertEquals(1, count($slots));
-		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("00:00"), $listDate->SetTimeString("6:00"), $listDate, 2, $item), $slots[0]);
+		$this->assertEquals(2, count($slots));
+		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("00:00"), $listDate->SetTimeString("6:00"), $listDate, 2, $item1), $slots[0]);
+		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("06:00"), $listDate->SetTimeString("12:00"), $listDate, 1, $item2), $slots[1]);
 	}
 
     public function testReservationEndingAtBeginningOfFirstPeriodDoesNotExistOnThatDay()
