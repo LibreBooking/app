@@ -44,7 +44,7 @@
 // |          Daniel Convissor <danielc@php.net>                          |
 // +----------------------------------------------------------------------+
 //
-// $Id: mssql.php,v 1.56 2007/03/28 16:58:54 quipo Exp $
+// $Id: mssql.php 297614 2010-04-07 12:45:39Z davidc $
 //
 
 require_once 'MDB2/Driver/Datatype/Common.php';
@@ -71,7 +71,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function _baseConvertResult($value, $type, $rtrim = true)
     {
-        if (is_null($value)) {
+        if (null === $value) {
             return null;
         }
         switch ($type) {
@@ -90,6 +90,24 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
         }
         return parent::_baseConvertResult($value, $type, $rtrim);
     }
+
+    // }}}
+    // {{{ _getCollationFieldDeclaration()
+
+    /**
+     * Obtain DBMS specific SQL code portion needed to set the COLLATION
+     * of a field declaration to be used in statements like CREATE TABLE.
+     *
+     * @param string $collation name of the collation
+     *
+     * @return string DBMS specific SQL code portion needed to set the COLLATION
+     *                of a field declaration.
+     */
+    function _getCollationFieldDeclaration($collation)
+    {
+        return 'COLLATE '.$collation;
+    }
+
     // }}}
     // {{{ getTypeDeclaration()
 
@@ -118,7 +136,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function getTypeDeclaration($field)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -167,68 +185,6 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
     }
 
     // }}}
-    // {{{ _getDeclaration()
-
-    /**
-     * Obtain DBMS specific SQL code portion needed to declare a generic type
-     * field to be used in statements like CREATE TABLE.
-     *
-     * @param string $name   name the field to be declared.
-     * @param array  $field  associative array with the name of the properties
-     *      of the field being declared as array indexes. Currently, the types
-     *      of supported field properties are as follows:
-     *
-     *      length
-     *          Integer value that determines the maximum length of the text
-     *          field. If this argument is missing the field should be
-     *          declared to have the longest length allowed by the DBMS.
-     *
-     *      default
-     *          Text value to be used as default for this field.
-     *
-     *      notnull
-     *          Boolean flag that indicates whether this field is constrained
-     *          to not be set to null.
-     * @return string  DBMS specific SQL code portion that should be used to
-     *      declare the specified field.
-     * @access protected
-     */
-    function _getDeclarationOptions($field)
-    {
-        $charset = empty($field['charset']) ? '' :
-            ' '.$this->_getCharsetFieldDeclaration($field['charset']);
-
-        $default = '';
-        if (array_key_exists('default', $field)) {
-            if ($field['default'] === '') {
-                $db =& $this->getDBInstance();
-                if (PEAR::isError($db)) {
-                    return $db;
-                }
-                $field['default'] = empty($field['notnull'])
-                    ? null : $this->valid_default_values[$field['type']];
-                if ($field['default'] === ''
-                    && ($db->options['portability'] & MDB2_PORTABILITY_EMPTY_TO_NULL)
-                ) {
-                    $field['default'] = ' ';
-                }
-            }
-            $default = ' DEFAULT '.$this->quote($field['default'], $field['type']);
-        } elseif (empty($field['notnull'])) {
-            $default = ' DEFAULT NULL';
-        }
-
-        $notnull = empty($field['notnull']) ? ' NULL' : ' NOT NULL';
-        if ($default == ' DEFAULT NULL' && $notnull == ' NULL') {
-            $notnull = '';
-        }
-
-        $collation = empty($field['collation']) ? '' :
-            ' '.$this->_getCollationFieldDeclaration($field['collation']);
-        return $charset.$default.$notnull.$collation;
-    }
-
-    // }}}
     // {{{ _getIntegerDeclaration()
 
     /**
@@ -259,32 +215,32 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function _getIntegerDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
 
-        $default = $autoinc = '';;
+        $notnull = empty($field['notnull']) ? ' NULL' : ' NOT NULL';
+        $default = $autoinc = '';
         if (!empty($field['autoincrement'])) {
             $autoinc = ' IDENTITY PRIMARY KEY';
         } elseif (array_key_exists('default', $field)) {
             if ($field['default'] === '') {
-                $field['default'] = empty($field['notnull']) ? null : 0;
+                $field['default'] = 0;
             }
-            $default = ' DEFAULT '.$this->quote($field['default'], 'integer');
-        } elseif (empty($field['notnull'])) {
-            $default = ' DEFAULT NULL';
+            if (null === $field['default']) {
+                $default = ' DEFAULT (null)';
+            } else {
+                $default = ' DEFAULT (' . $this->quote($field['default'], 'integer') . ')';
+            }
         }
 
-        $notnull = empty($field['notnull']) ? ' NULL' : ' NOT NULL';
-        if ($default == ' DEFAULT NULL' && $notnull == ' NULL') {
-            $notnull = '';
-        }
         if (!empty($field['unsigned'])) {
             $db->warnings[] = "unsigned integer field \"$name\" is being declared as signed integer";
         }
+
         $name = $db->quoteIdentifier($name, true);
-        return $name.' '.$this->getTypeDeclaration($field).$default.$notnull.$autoinc;
+        return $name.' '.$this->getTypeDeclaration($field).$notnull.$default.$autoinc;
     }
 
     // }}}
@@ -313,7 +269,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function _getCLOBDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -349,7 +305,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
      */
     function _getBLOBDeclaration($name, $field)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -378,8 +334,67 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
         if (!$quote) {
             return $value;
         }
-        $value = bin2hex("0x".$this->_readFile($value));
+        $value = '0x'.bin2hex($this->_readFile($value));
         return $value;
+    }
+
+    // }}}
+    // {{{ matchPattern()
+
+    /**
+     * build a pattern matching string
+     *
+     * @access public
+     *
+     * @param array $pattern even keys are strings, odd are patterns (% and _)
+     * @param string $operator optional pattern operator (LIKE, ILIKE and maybe others in the future)
+     * @param string $field optional field name that is being matched against
+     *                  (might be required when emulating ILIKE)
+     *
+     * @return string SQL pattern
+     */
+    function matchPattern($pattern, $operator = null, $field = null)
+    {
+        $db = $this->getDBInstance();
+        if (PEAR::isError($db)) {
+            return $db;
+        }
+
+        $match = '';
+        if (null !== $operator) {
+            $field = (null === $field) ? '' : $field.' ';
+            $operator = strtoupper($operator);
+            switch ($operator) {
+            // case insensitive
+            case 'ILIKE':
+                $match = $field.'LIKE ';
+                break;
+            case 'NOT ILIKE':
+                $match = $field.'NOT LIKE ';
+                break;
+            // case sensitive
+            case 'LIKE':
+                $match = $field.'LIKE ';
+                break;
+            case 'NOT LIKE':
+                $match = $field.'NOT LIKE ';
+                break;
+            default:
+                return $db->raiseError(MDB2_ERROR_UNSUPPORTED, null, null,
+                    'not a supported operator type:'. $operator, __FUNCTION__);
+            }
+        }
+        $match.= "'";
+        foreach ($pattern as $key => $value) {
+            if ($key % 2) {
+                $match.= $value;
+            } else {
+                $match.= $db->escapePattern($db->escape($value));
+            }
+        }
+        $match.= "'";
+        $match.= $this->patternEscapeString();
+        return $match;
     }
 
     // }}}
@@ -420,6 +435,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
             $type[0] = 'integer';
             $length = 8;
             break;
+        case 'smalldatetime':
         case 'datetime':
             $type[0] = 'timestamp';
             break;
@@ -434,9 +450,12 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
             $length = $field['numeric_precision'].','.$field['numeric_scale'];
             break;
         case 'text':
+        case 'ntext':
         case 'varchar':
+        case 'nvarchar':
             $fixed = false;
         case 'char':
+        case 'nchar':
             $type[0] = 'text';
             if ($length == '1') {
                 $type[] = 'boolean';
@@ -445,6 +464,7 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
                 }
             } elseif (strstr($db_type, 'text')) {
                 $type[] = 'clob';
+                $type = array_reverse($type);
             }
             if ($fixed !== false) {
                 $fixed = true;
@@ -452,11 +472,12 @@ class MDB2_Driver_Datatype_mssql extends MDB2_Driver_Datatype_Common
             break;
         case 'image':
         case 'varbinary':
+        case 'timestamp':
             $type[] = 'blob';
             $length = null;
             break;
         default:
-            $db =& $this->getDBInstance();
+            $db = $this->getDBInstance();
             if (PEAR::isError($db)) {
                 return $db;
             }

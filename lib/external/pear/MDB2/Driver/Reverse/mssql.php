@@ -3,7 +3,7 @@
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
 // | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
-// | Stig. S. Bakken, Lukas Smith, Frank M. Kromann                       |
+// | Stig. S. Bakken, Lukas Smith, Frank M. Kromann, Lorenzo Alberton     |
 // | All rights reserved.                                                 |
 // +----------------------------------------------------------------------+
 // | MDB2 is a merge of PEAR DB and Metabases that provides a unified DB  |
@@ -43,7 +43,7 @@
 // |          Lorenzo Alberton <l.alberton@quipo.it>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: mssql.php,v 1.42 2007/03/29 18:18:06 quipo Exp $
+// $Id: mssql.php 295587 2010-02-28 17:16:38Z quipo $
 //
 
 require_once 'MDB2/Driver/Reverse/Common.php';
@@ -63,14 +63,14 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
     /**
      * Get the structure of a field into an array
      *
-     * @param string    $table       name of table that should be used in method
-     * @param string    $field_name  name of field that should be used in method
+     * @param string $table_name name of table that should be used in method
+     * @param string $field_name name of field that should be used in method
      * @return mixed data array on success, a MDB2 error on failure
      * @access public
      */
-    function getTableFieldDefinition($table, $field_name)
+    function getTableFieldDefinition($table_name, $field_name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -79,6 +79,9 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
         if (PEAR::isError($result)) {
             return $result;
         }
+
+        list($schema, $table) = $this->splitTableSchema($table_name);
+
         $table = $db->quoteIdentifier($table, true);
         $fldname = $db->quoteIdentifier($field_name, true);
 
@@ -86,8 +89,8 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
                          c.column_name 'name',
                          c.data_type 'type',
                          CASE c.is_nullable WHEN 'YES' THEN 1 ELSE 0 END AS 'is_nullable',
-                		 c.column_default,
-                		 c.character_maximum_length 'length',
+                         c.column_default,
+                         c.character_maximum_length 'length',
                          c.numeric_precision,
                          c.numeric_scale,
                          c.character_set_name,
@@ -96,8 +99,11 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
                          INFORMATION_SCHEMA.COLUMNS c
                    WHERE t.table_name = c.table_name
                      AND t.table_name = '$table'
-                     AND c.column_name = '$fldname'
-                ORDER BY t.table_name";
+                     AND c.column_name = '$fldname'";
+        if (!empty($schema)) {
+            $query .= " AND t.table_schema = '" .$db->quoteIdentifier($schema, true) ."'";
+        }
+        $query .= ' ORDER BY t.table_name';
         $column = $db->queryRow($query, null, MDB2_FETCHMODE_ASSOC);
         if (PEAR::isError($column)) {
             return $column;
@@ -117,7 +123,7 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
             $column = array_change_key_case($column, $db->options['field_case']);
         }
         $mapped_datatype = $db->datatype->mapNativeDatatype($column);
-        if (PEAR::IsError($mapped_datatype)) {
+        if (PEAR::isError($mapped_datatype)) {
             return $mapped_datatype;
         }
         list($types, $length, $unsigned, $fixed) = $mapped_datatype;
@@ -128,7 +134,7 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
         $default = false;
         if (array_key_exists('column_default', $column)) {
             $default = $column['column_default'];
-            if (is_null($default) && $notnull) {
+            if ((null === $default) && $notnull) {
                 $default = '';
             } elseif (strlen($default) > 4
                    && substr($default, 0, 1) == '('
@@ -145,16 +151,16 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
             'notnull' => $notnull,
             'nativetype' => preg_replace('/^([a-z]+)[^a-z].*/i', '\\1', $column['type'])
         );
-        if (!is_null($length)) {
+        if (null !== $length) {
             $definition[0]['length'] = $length;
         }
-        if (!is_null($unsigned)) {
+        if (null !== $unsigned) {
             $definition[0]['unsigned'] = $unsigned;
         }
-        if (!is_null($fixed)) {
+        if (null !== $fixed) {
             $definition[0]['fixed'] = $fixed;
         }
-        if ($default !== false) {
+        if (false !== $default) {
             $definition[0]['default'] = $default;
         }
         foreach ($types as $key => $type) {
@@ -174,17 +180,19 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
     /**
      * Get the structure of an index into an array
      *
-     * @param string    $table      name of table that should be used in method
-     * @param string    $index_name name of index that should be used in method
+     * @param string $table_name name of table that should be used in method
+     * @param string $index_name name of index that should be used in method
      * @return mixed data array on success, a MDB2 error on failure
      * @access public
      */
-    function getTableIndexDefinition($table, $index_name)
+    function getTableIndexDefinition($table_name, $index_name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
+
+        list($schema, $table) = $this->splitTableSchema($table_name);
 
         $table = $db->quoteIdentifier($table, true);
         //$idxname = $db->quoteIdentifier($index_name, true);
@@ -205,12 +213,16 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
                             SELECT *
                               FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE k
                              WHERE k.table_name = OBJECT_NAME(i.id)
-                               AND k.constraint_name = i.name)
-                ORDER BY tablename, indexname, ik.keyno";
+                               AND k.constraint_name = i.name";
+        if (!empty($schema)) {
+            $query .= " AND k.table_schema = '" .$db->quoteIdentifier($schema, true) ."'";
+        }
+        $query .= ')
+                ORDER BY tablename, indexname, ik.keyno';
 
         $index_name_mdb2 = $db->getIndexName($index_name);
         $result = $db->queryRow(sprintf($query, $index_name_mdb2));
-        if (!PEAR::isError($result) && !is_null($result)) {
+        if (!PEAR::isError($result) && (null !== $result)) {
             // apply 'idxname_format' only if the query succeeded, otherwise
             // fallback to the given $index_name, without transformation
             $index_name = $index_name_mdb2;
@@ -252,17 +264,19 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
     /**
      * Get the structure of a constraint into an array
      *
-     * @param string    $table      name of table that should be used in method
-     * @param string    $constraint_name name of constraint that should be used in method
+     * @param string $table_name      name of table that should be used in method
+     * @param string $constraint_name name of constraint that should be used in method
      * @return mixed data array on success, a MDB2 error on failure
      * @access public
      */
-    function getTableConstraintDefinition($table, $constraint_name)
+    function getTableConstraintDefinition($table_name, $constraint_name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
+
+        list($schema, $table) = $this->splitTableSchema($table_name);
 
         $table = $db->quoteIdentifier($table, true);
         $query = "SELECT k.table_name,
@@ -271,21 +285,42 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
                          CASE c.constraint_type WHEN 'UNIQUE' THEN 1 ELSE 0 END 'unique',
                          CASE c.constraint_type WHEN 'FOREIGN KEY' THEN 1 ELSE 0 END 'foreign',
                          CASE c.constraint_type WHEN 'CHECK' THEN 1 ELSE 0 END 'check',
-                         k.ordinal_position
+                         CASE c.is_deferrable WHEN 'NO' THEN 0 ELSE 1 END 'deferrable',
+                         CASE c.initially_deferred WHEN 'NO' THEN 0 ELSE 1 END 'initiallydeferred',
+                         rc.match_option 'match',
+                		 rc.update_rule 'onupdate',
+                         rc.delete_rule 'ondelete',
+                         kcu.table_name 'references_table',
+                         kcu.column_name 'references_field',
+                         k.ordinal_position 'field_position'
                     FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE k
                     LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS c
                       ON k.table_name = c.table_name
-                     AND k.constraint_name = c.constraint_name
                      AND k.table_schema = c.table_schema
+                     AND k.table_catalog = c.table_catalog
+                     AND k.constraint_catalog = c.constraint_catalog
+                     AND k.constraint_name = c.constraint_name
+               LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc
+                      ON rc.constraint_schema = c.constraint_schema
+                     AND rc.constraint_catalog = c.constraint_catalog
+                     AND rc.constraint_name = c.constraint_name
+               LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
+                      ON rc.unique_constraint_schema = kcu.constraint_schema
+                     AND rc.unique_constraint_catalog = kcu.constraint_catalog
+                     AND rc.unique_constraint_name = kcu.constraint_name
+					 AND k.ordinal_position = kcu.ordinal_position
                    WHERE k.constraint_catalog = DB_NAME()
-                    AND k.table_name = '$table'
-                    AND k.constraint_name = '%s'
-               ORDER BY k.constraint_name,
-                        k.ordinal_position";
+                     AND k.table_name = '$table'
+                     AND k.constraint_name = '%s'";
+        if (!empty($schema)) {
+            $query .= " AND k.table_schema = '" .$db->quoteIdentifier($schema, true) ."'";
+        }
+        $query .= ' ORDER BY k.constraint_name,
+                             k.ordinal_position';
 
         $constraint_name_mdb2 = $db->getIndexName($constraint_name);
         $result = $db->queryRow(sprintf($query, $constraint_name_mdb2));
-        if (!PEAR::isError($result) && !is_null($result)) {
+        if (!PEAR::isError($result) && (null !== $result)) {
             // apply 'idxname_format' only if the query succeeded, otherwise
             // fallback to the given $index_name, without transformation
             $constraint_name = $constraint_name_mdb2;
@@ -295,8 +330,11 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
             return $result;
         }
 
-        $definition = array();
+        $definition = array(
+            'fields' => array()
+        );
         while (is_array($row = $result->fetchRow(MDB2_FETCHMODE_ASSOC))) {
+            $row = array_change_key_case($row, CASE_LOWER);
             $column_name = $row['field_name'];
             if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
                 if ($db->options['field_case'] == CASE_LOWER) {
@@ -306,24 +344,48 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
                 }
             }
             $definition['fields'][$column_name] = array(
-                'position' => (int)$row['ordinal_position']
+                'position' => (int)$row['field_position']
             );
+            if ($row['foreign']) {
+                $ref_column_name = $row['references_field'];
+                if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
+                    if ($db->options['field_case'] == CASE_LOWER) {
+                        $ref_column_name = strtolower($ref_column_name);
+                    } else {
+                        $ref_column_name = strtoupper($ref_column_name);
+                    }
+                }
+                $definition['references']['table'] = $row['references_table'];
+                $definition['references']['fields'][$ref_column_name] = array(
+                    'position' => (int)$row['field_position']
+                );
+            }
+            //collation?!?
             /*
             if (!empty($row['collation'])) {
                 $definition['fields'][$column_name]['sorting'] = ($row['collation'] == 'ASC'
                     ? 'ascending' : 'descending');
             }
             */
-            $definition['primary'] = $row['primary'];
-            $definition['unique']  = $row['unique'];
-            $definition['foreign'] = $row['foreign'];
-            $definition['check']   = $row['check'];
+            $lastrow = $row;
+            // otherwise $row is no longer usable on exit from loop
         }
         $result->free();
         if (empty($definition['fields'])) {
             return $db->raiseError(MDB2_ERROR_NOT_FOUND, null, null,
                 $constraint_name . ' is not an existing table constraint', __FUNCTION__);
         }
+
+        $definition['primary'] = (boolean)$lastrow['primary'];
+        $definition['unique']  = (boolean)$lastrow['unique'];
+        $definition['foreign'] = (boolean)$lastrow['foreign'];
+        $definition['check']   = (boolean)$lastrow['check'];
+        $definition['deferrable'] = (boolean)$lastrow['deferrable'];
+        $definition['initiallydeferred'] = (boolean)$lastrow['initiallydeferred'];
+        $definition['onupdate'] = $lastrow['onupdate'];
+        $definition['ondelete'] = $lastrow['ondelete'];
+        $definition['match']    = $lastrow['match'];
+
         return $definition;
     }
 
@@ -344,7 +406,7 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
      */
     function getTriggerDefinition($trigger)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -392,7 +454,7 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
         }
         $trg_body = $db->queryCol('EXEC sp_helptext '. $db->quote($trigger, 'text'), 'text');
         if (!PEAR::isError($trg_body)) {
-            $def['trigger_body'] = implode('', $trg_body);
+            $def['trigger_body'] = implode(' ', $trg_body);
         }
         return $def;
     }
@@ -424,7 +486,7 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
            return parent::tableInfo($result, $mode);
         }
 
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -502,7 +564,7 @@ class MDB2_Driver_Reverse_mssql extends MDB2_Driver_Reverse_Common
      */
     function _mssql_field_flags($table, $column)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }

@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2007 Manuel Lemos, Tomas V.V.Cox,                 |
+// | Copyright (c) 1998-2008 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
 // | All rights reserved.                                                 |
 // +----------------------------------------------------------------------+
@@ -44,7 +44,7 @@
 // |          Lorenzo Alberton <l.alberton@quipo.it>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: mssql.php,v 1.89 2007/03/12 14:31:48 quipo Exp $
+// $Id: mssql.php 295587 2010-02-28 17:16:38Z quipo $
 //
 
 require_once 'MDB2/Driver/Manager/Common.php';
@@ -66,13 +66,15 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
     /**
      * create a new database
      *
-     * @param string $name name of the database that should be created
+     * @param string $name    name of the database that should be created
+     * @param array  $options array with collation info
+     *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
-    function createDatabase($name)
+    function createDatabase($name, $options = array())
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -84,7 +86,43 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
             $query.= $db->options['database_size'] ? '=' .
                      $db->options['database_size'] : '';
         }
+        if (!empty($options['collation'])) {
+            $query .= ' COLLATE ' . $options['collation'];
+        }
         return $db->standaloneQuery($query, null, true);
+    }
+
+    // }}}
+    // {{{ alterDatabase()
+
+    /**
+     * alter an existing database
+     *
+     * @param string $name    name of the database that is intended to be changed
+     * @param array  $options array with name, collation info
+     *
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
+     * @access public
+     */
+    function alterDatabase($name, $options = array())
+    {
+        $db = $this->getDBInstance();
+        if (PEAR::isError($db)) {
+            return $db;
+        }
+
+        $query = '';
+        if (!empty($options['name'])) {
+            $query .= ' MODIFY NAME = ' .$db->quoteIdentifier($options['name'], true);
+        }
+        if (!empty($options['collation'])) {
+            $query .= ' COLLATE ' . $options['collation'];
+        }
+        if (!empty($query)) {
+            $query = 'ALTER DATABASE '. $db->quoteIdentifier($name, true) . $query;
+            return $db->standaloneQuery($query, null, true);
+        }
+        return MDB2_OK;
     }
 
     // }}}
@@ -94,12 +132,13 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      * drop an existing database
      *
      * @param string $name name of the database that should be dropped
+     *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
     function dropDatabase($name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -123,18 +162,42 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
     }
 
     // }}}
+    // {{{ _getAdvancedFKOptions()
+
+    /**
+     * Return the FOREIGN KEY query section dealing with non-standard options
+     * as MATCH, INITIALLY DEFERRED, ON UPDATE, ...
+     *
+     * @param array $definition
+     *
+     * @return string
+     * @access protected
+     */
+    function _getAdvancedFKOptions($definition)
+    {
+        $query = '';
+        if (!empty($definition['onupdate'])) {
+            $query .= ' ON UPDATE '.$definition['onupdate'];
+        }
+        if (!empty($definition['ondelete'])) {
+            $query .= ' ON DELETE '.$definition['ondelete'];
+        }
+        return $query;
+    }
+
+    // }}}
     // {{{ createTable()
 
     /**
      * create a new table
      *
-     * @param string $name     Name of the database that should be created
-     * @param array $fields Associative array that contains the definition of each field of the new table
-     *                        The indexes of the array entries are the names of the fields of the table an
-     *                        the array entry values are associative arrays like those that are meant to be
-     *                         passed with the field definitions to get[Type]Declaration() functions.
+     * @param string $name   Name of the database that should be created
+     * @param array  $fields Associative array that contains the definition of each field of the new table
+     *                       The indexes of the array entries are the names of the fields of the table an
+     *                       the array entry values are associative arrays like those that are meant to be
+     *                       passed with the field definitions to get[Type]Declaration() functions.
      *
-     *                        Example
+     *                      Example
      *                        array(
      *
      *                            'id' => array(
@@ -152,11 +215,12 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      *                                'length' => 12,
      *                            )
      *                        );
-     * @param array $options  An associative array of table options:
+     * @param array $options An associative array of table options:
      *                          array(
      *                              'comment' => 'Foo',
      *                              'temporary' => true|false,
      *                          );
+     *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
@@ -169,15 +233,73 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
     }
 
     // }}}
+    // {{{ truncateTable()
+
+    /**
+     * Truncate an existing table (if the TRUNCATE TABLE syntax is not supported,
+     * it falls back to a DELETE FROM TABLE query)
+     *
+     * @param string $name name of the table that should be truncated
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
+     * @access public
+     */
+    function truncateTable($name)
+    {
+        $db = $this->getDBInstance();
+        if (PEAR::isError($db)) {
+            return $db;
+        }
+
+        $name = $db->quoteIdentifier($name, true);
+        return $db->exec("TRUNCATE TABLE $name");
+    }
+
+    // }}}
+    // {{{ vacuum()
+
+    /**
+     * Optimize (vacuum) all the tables in the db (or only the specified table)
+     * and optionally run ANALYZE.
+     *
+     * @param string $table table name (all the tables if empty)
+     * @param array  $options an array with driver-specific options:
+     *               - timeout [int] (in seconds) [mssql-only]
+     *               - analyze [boolean] [pgsql and mysql]
+     *               - full [boolean] [pgsql-only]
+     *               - freeze [boolean] [pgsql-only]
+     *
+     * NB: you have to run the NSControl Create utility to enable VACUUM
+     *
+     * @return mixed MDB2_OK success, a MDB2 error on failure
+     * @access public
+     */
+    function vacuum($table = null, $options = array())
+    {
+        $db = $this->getDBInstance();
+        if (PEAR::isError($db)) {
+            return $db;
+        }
+        $timeout = isset($options['timeout']) ? (int)$options['timeout'] : 300;
+
+        $query = 'NSControl Create';
+        $result = $db->exec($query);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        return $db->exec('EXEC NSVacuum '.$timeout);
+    }
+
+    // }}}
     // {{{ alterTable()
 
     /**
      * alter an existing table
      *
-     * @param string $name         name of the table that is intended to be changed.
-     * @param array $changes     associative array that contains the details of each type
-     *                             of change that is intended to be performed. The types of
-     *                             changes that are currently supported are defined as follows:
+     * @param string  $name    name of the table that is intended to be changed.
+     * @param array   $changes associative array that contains the details of each type
+     *                         of change that is intended to be performed. The types of
+     *                         changes that are currently supported are defined as follows:
      *
      *                             name
      *
@@ -254,29 +376,29 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      *                                    )
      *                                )
      *
-     * @param boolean $check     indicates whether the function should just check if the DBMS driver
-     *                             can perform the requested table alterations if the value is true or
-     *                             actually perform them otherwise.
-     * @access public
+     * @param boolean $check   indicates whether the function should just check if the DBMS driver
+     *                         can perform the requested table alterations if the value is true or
+     *                         actually perform them otherwise.
      *
-      * @return mixed MDB2_OK on success, a MDB2 error on failure
+     * @return mixed MDB2_OK on success, a MDB2 error on failure
+     * @access public
      */
     function alterTable($name, $changes, $check)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
+        $name_quoted = $db->quoteIdentifier($name, true);
 
         foreach ($changes as $change_name => $change) {
             switch ($change_name) {
-            case 'add':
-                break;
             case 'remove':
-                break;
-            case 'name':
             case 'rename':
+            case 'add':
             case 'change':
+            case 'name':
+                break;
             default:
                 return $db->raiseError(MDB2_ERROR_CANNOT_ALTER, null, null,
                     'change type "'.$change_name.'" not yet supported', __FUNCTION__);
@@ -287,34 +409,257 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
             return MDB2_OK;
         }
 
-        $query = '';
-        if (!empty($changes['add']) && is_array($changes['add'])) {
-            foreach ($changes['add'] as $field_name => $field) {
-                if ($query) {
-                    $query.= ', ';
-                } else {
-                    $query.= 'ADD COLUMN ';
-                }
-                $query.= $db->getDeclaration($field['type'], $field_name, $field);
-            }
-        }
+        $idxname_format = $db->getOption('idxname_format');
+        $db->setOption('idxname_format', '%s');
 
         if (!empty($changes['remove']) && is_array($changes['remove'])) {
+            $result = $this->_dropConflictingIndices($name, array_keys($changes['remove']));
+            if (PEAR::isError($result)) {
+                $db->setOption('idxname_format', $idxname_format);
+                return $result;
+            }
+            $result = $this->_dropConflictingConstraints($name, array_keys($changes['remove']));
+            if (PEAR::isError($result)) {
+                $db->setOption('idxname_format', $idxname_format);
+                return $result;
+            }
+
+            $query = '';
             foreach ($changes['remove'] as $field_name => $field) {
                 if ($query) {
                     $query.= ', ';
                 }
                 $field_name = $db->quoteIdentifier($field_name, true);
-                $query.= 'DROP COLUMN ' . $field_name;
+                $query.= 'COLUMN ' . $field_name;
+            }
+
+            $result = $db->exec("ALTER TABLE $name_quoted DROP $query");
+            if (PEAR::isError($result)) {
+                $db->setOption('idxname_format', $idxname_format);
+                return $result;
             }
         }
 
-        if (!$query) {
-            return MDB2_OK;
+        if (!empty($changes['rename']) && is_array($changes['rename'])) {
+            foreach ($changes['rename'] as $field_name => $field) {
+                $field_name = $db->quoteIdentifier($field_name, true);
+                $result = $db->exec("sp_rename '$name_quoted.$field_name', '".$field['name']."', 'COLUMN'");
+                if (PEAR::isError($result)) {
+                    $db->setOption('idxname_format', $idxname_format);
+                    return $result;
+                }
+            }
         }
 
-        $name = $db->quoteIdentifier($name, true);
-        return $db->exec("ALTER TABLE $name $query");
+        if (!empty($changes['add']) && is_array($changes['add'])) {
+            $query = '';
+            foreach ($changes['add'] as $field_name => $field) {
+                if ($query) {
+                    $query.= ', ';
+                } else {
+                    $query.= 'ADD ';
+                }
+                $query.= $db->getDeclaration($field['type'], $field_name, $field);
+            }
+
+            $result = $db->exec("ALTER TABLE $name_quoted $query");
+            if (PEAR::isError($result)) {
+                $db->setOption('idxname_format', $idxname_format);
+                return $result;
+            }
+        }
+
+        $dropped_indices     = array();
+        $dropped_constraints = array();
+
+        if (!empty($changes['change']) && is_array($changes['change'])) {
+            $dropped = $this->_dropConflictingIndices($name, array_keys($changes['change']));
+            if (PEAR::isError($dropped)) {
+                $db->setOption('idxname_format', $idxname_format);
+                return $dropped;
+            }
+            $dropped_indices = array_merge($dropped_indices, $dropped);
+            $dropped = $this->_dropConflictingConstraints($name, array_keys($changes['change']));
+            if (PEAR::isError($dropped)) {
+                $db->setOption('idxname_format', $idxname_format);
+                return $dropped;
+            }
+            $dropped_constraints = array_merge($dropped_constraints, $dropped);
+
+            foreach ($changes['change'] as $field_name => $field) {
+                //MSSQL doesn't allow multiple ALTER COLUMNs in one query
+                $query = 'ALTER COLUMN ';
+
+                //MSSQL doesn't allow changing the DEFAULT value of a field in altering mode
+                if (array_key_exists('default', $field['definition'])) {
+                    unset($field['definition']['default']);
+                }
+
+                $query .= $db->getDeclaration($field['definition']['type'], $field_name, $field['definition']);
+                $result = $db->exec("ALTER TABLE $name_quoted $query");
+                if (PEAR::isError($result)) {
+                    $db->setOption('idxname_format', $idxname_format);
+                    return $result;
+                }
+            }
+        }
+
+        // restore the dropped conflicting indices and constraints
+        foreach ($dropped_indices as $index_name => $index) {
+            $result = $this->createIndex($name, $index_name, $index);
+            if (PEAR::isError($result)) {
+                $db->setOption('idxname_format', $idxname_format);
+                return $result;
+            }
+        }
+        foreach ($dropped_constraints as $constraint_name => $constraint) {
+            $result = $this->createConstraint($name, $constraint_name, $constraint);
+            if (PEAR::isError($result)) {
+                $db->setOption('idxname_format', $idxname_format);
+                return $result;
+            }
+        }
+
+        $db->setOption('idxname_format', $idxname_format);
+
+        if (!empty($changes['name'])) {
+            $new_name = $db->quoteIdentifier($changes['name'], true);
+            $result = $db->exec("sp_rename '$name_quoted', '$new_name'");
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+
+        return MDB2_OK;
+    }
+
+    // }}}
+    // {{{ _dropConflictingIndices()
+
+    /**
+     * Drop the indices that prevent a successful ALTER TABLE action
+     *
+     * @param string $table  table name
+     * @param array  $fields array of names of the fields affected by the change
+     *
+     * @return array dropped indices definitions
+     */
+    function _dropConflictingIndices($table, $fields)
+    {
+        $db = $this->getDBInstance();
+        if (PEAR::isError($db)) {
+            return $db;
+        }
+
+        $dropped = array();
+        $index_names = $this->listTableIndexes($table);
+        if (PEAR::isError($index_names)) {
+            return $index_names;
+        }
+        $db->loadModule('Reverse');
+        $indexes = array();
+        foreach ($index_names as $index_name) {
+        	$idx_def = $db->reverse->getTableIndexDefinition($table, $index_name);
+            if (!PEAR::isError($idx_def)) {
+                $indexes[$index_name] = $idx_def;
+            }
+        }
+        foreach ($fields as $field_name) {
+            foreach ($indexes as $index_name => $index) {
+                if (!isset($dropped[$index_name]) && array_key_exists($field_name, $index['fields'])) {
+                    $dropped[$index_name] = $index;
+                    $result = $this->dropIndex($table, $index_name);
+                    if (PEAR::isError($result)) {
+                        return $result;
+                    }
+                }
+            }
+        }
+
+        return $dropped;
+    }
+
+    // }}}
+    // {{{ _dropConflictingConstraints()
+
+    /**
+     * Drop the constraints that prevent a successful ALTER TABLE action
+     *
+     * @param string $table  table name
+     * @param array  $fields array of names of the fields affected by the change
+     *
+     * @return array dropped constraints definitions
+     */
+    function _dropConflictingConstraints($table, $fields)
+    {
+        $db = $this->getDBInstance();
+        if (PEAR::isError($db)) {
+            return $db;
+        }
+
+        $dropped = array();
+        $constraint_names = $this->listTableConstraints($table);
+        if (PEAR::isError($constraint_names)) {
+            return $constraint_names;
+        }
+        $db->loadModule('Reverse');
+        $constraints = array();
+        foreach ($constraint_names as $constraint_name) {
+        	$cons_def = $db->reverse->getTableConstraintDefinition($table, $constraint_name);
+            if (!PEAR::isError($cons_def)) {
+                $constraints[$constraint_name] = $cons_def;
+            }
+        }
+        foreach ($fields as $field_name) {
+            foreach ($constraints as $constraint_name => $constraint) {
+                if (!isset($dropped[$constraint_name]) && array_key_exists($field_name, $constraint['fields'])) {
+                    $dropped[$constraint_name] = $constraint;
+                    $result = $this->dropConstraint($table, $constraint_name);
+                    if (PEAR::isError($result)) {
+                        return $result;
+                    }
+                }
+            }
+            // also drop implicit DEFAULT constraints
+            $default = $this->_getTableFieldDefaultConstraint($table, $field_name);
+            if (!PEAR::isError($default) && !empty($default)) {
+                $result = $this->dropConstraint($table, $default);
+                if (PEAR::isError($result)) {
+                    return $result;
+                }
+            }
+        }
+
+        return $dropped;
+    }
+
+    // }}}
+    // {{{ _getTableFieldDefaultConstraint()
+
+    /**
+     * Get the default constraint for a table field
+     *
+     * @param string $table name of table that should be used in method
+     * @param string $field name of field that should be used in method
+     *
+     * @return mixed name of default constraint on success, a MDB2 error on failure
+     * @access private
+     */
+    function _getTableFieldDefaultConstraint($table, $field)
+    {
+        $db = $this->getDBInstance();
+        if (PEAR::isError($db)) {
+            return $db;
+        }
+
+        $table = $db->quoteIdentifier($table, true);
+        $field = $db->quote($field, 'text');
+        $query = "SELECT OBJECT_NAME(syscolumns.cdefault)
+                    FROM syscolumns
+                   WHERE syscolumns.id = object_id('$table')
+                     AND syscolumns.name = $field
+                     AND syscolumns.cdefault <> 0";
+        return $db->queryOne($query);
     }
 
     // }}}
@@ -328,7 +673,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listTables()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
 
         if (PEAR::isError($db)) {
             return $db;
@@ -359,28 +704,29 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      * list all fields in a table in the current database
      *
      * @param string $table name of table that should be used in method
+     *
      * @return mixed array of field names on success, a MDB2 error on failure
      * @access public
      */
     function listTableFields($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
 
-        $table = $db->quoteIdentifier($table, true);
-        $db->setLimit(1);
-        $result2 = $db->query("SELECT * FROM $table");
-        if (PEAR::isError($result2)) {
-            return $result2;
+        $table = $db->quote($table, 'text');
+        $columns = $db->queryCol("SELECT c.name
+                                    FROM syscolumns c
+                               LEFT JOIN sysobjects o ON c.id = o.id
+                                   WHERE o.name = $table");
+        if (PEAR::isError($columns)) {
+            return $columns;
         }
-        $result = $result2->getColumnNames();
-        $result2->free();
-        if (PEAR::isError($result)) {
-            return $result;
+        if ($db->options['portability'] & MDB2_PORTABILITY_FIX_CASE) {
+            $columns = array_map(($db->options['field_case'] == CASE_LOWER ? 'strtolower' : 'strtoupper'), $columns);
         }
-        return array_flip($result);
+        return $columns;
     }
 
     // }}}
@@ -390,12 +736,13 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      * list all indexes in a table
      *
      * @param string $table name of table that should be used in method
+     *
      * @return mixed array of index names on success, a MDB2 error on failure
      * @access public
      */
     function listTableIndexes($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -443,7 +790,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listDatabases()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -469,7 +816,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listUsers()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -495,7 +842,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listFunctions()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -527,6 +874,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      * list all triggers in the database that reference a given table
      *
      * @param string table for which all referenced triggers should be found
+     *
      * @return mixed array of trigger names on success,  otherwise, false which
      *               could be a db error if the db is not instantiated or could
      *               be the results of the error that occured during the
@@ -535,7 +883,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listTableTriggers($table = null)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -545,7 +893,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
                     FROM sysobjects o
                    WHERE xtype = 'TR'
                      AND OBJECTPROPERTY(o.id, 'IsMSShipped') = 0";
-        if (!is_null($table)) {
+        if (null !== $table) {
             $query .= " AND object_name(parent_obj) = $table";
         }
 
@@ -570,19 +918,20 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      * list all views in the current database
      *
      * @param string database, the current is default
+     *
      * @return mixed array of view names on success, a MDB2 error on failure
      * @access public
      */
     function listViews()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
 
         $query = "SELECT name
-                   FROM sysobjects
-                    WHERE xtype = 'V'";
+                    FROM sysobjects
+                   WHERE xtype = 'V'";
         /*
         SELECT *
           FROM sysobjects
@@ -610,14 +959,15 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
     /**
      * drop existing index
      *
-     * @param string    $table         name of table that should be used in method
-     * @param string    $name         name of the index to be dropped
+     * @param string $table name of table that should be used in method
+     * @param string $name  name of the index to be dropped
+     *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
     function dropIndex($table, $name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -634,21 +984,22 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      * list all constraints in a table
      *
      * @param string $table name of table that should be used in method
+     *
      * @return mixed array of constraint names on success, a MDB2 error on failure
      * @access public
      */
     function listTableConstraints($table)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
-        $table = $db->quoteIdentifier($table, true);
-        
+        $table = $db->quote($table, 'text');
+
         $query = "SELECT c.constraint_name
                     FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS c
                    WHERE c.constraint_catalog = DB_NAME()
-                    AND c.table_name = '$table'";
+                     AND c.table_name = $table";
         $constraints = $db->queryCol($query);
         if (PEAR::isError($constraints)) {
             return $constraints;
@@ -674,14 +1025,15 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
     /**
      * create sequence
      *
-     * @param string    $seq_name     name of the sequence to be created
-     * @param string    $start         start value of the sequence; default is 1
+     * @param string $seq_name name of the sequence to be created
+     * @param string $start    start value of the sequence; default is 1
+     *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
     function createSequence($seq_name, $start = 1)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -721,12 +1073,13 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      * This function drops an existing sequence
      *
      * @param string $seq_name name of the sequence to be dropped
+     *
      * @return mixed MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
     function dropSequence($seq_name)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -746,7 +1099,7 @@ class MDB2_Driver_Manager_mssql extends MDB2_Driver_Manager_Common
      */
     function listSequences()
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }

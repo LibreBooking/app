@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------+
 // | PHP versions 4 and 5                                                 |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1998-2006 Manuel Lemos, Tomas V.V.Cox,                 |
+// | Copyright (c) 1998-2008 Manuel Lemos, Tomas V.V.Cox,                 |
 // | Stig. S. Bakken, Lukas Smith                                         |
 // | All rights reserved.                                                 |
 // +----------------------------------------------------------------------+
@@ -42,7 +42,7 @@
 // | Author: Frank M. Kromann <frank@kromann.info>                        |
 // +----------------------------------------------------------------------+
 //
-// $Id: mssql.php,v 1.14 2007/01/12 11:29:12 quipo Exp $
+// $Id: mssql.php 295587 2010-02-28 17:16:38Z quipo $
 //
 
 require_once 'MDB2/Driver/Function/Common.php';
@@ -57,7 +57,6 @@ require_once 'MDB2/Driver/Function/Common.php';
  */
 class MDB2_Driver_Function_mssql extends MDB2_Driver_Function_Common
 {
-     // }}}
     // {{{ executeStoredProc()
 
     /**
@@ -72,9 +71,9 @@ class MDB2_Driver_Function_mssql extends MDB2_Driver_Function_Common
      * @return mixed a result handle or MDB2_OK on success, a MDB2 error on failure
      * @access public
      */
-    function &executeStoredProc($name, $params = null, $types = null, $result_class = true, $result_wrap_class = false)
+    function executeStoredProc($name, $params = null, $types = null, $result_class = true, $result_wrap_class = false)
     {
-        $db =& $this->getDBInstance();
+        $db = $this->getDBInstance();
         if (PEAR::isError($db)) {
             return $db;
         }
@@ -109,6 +108,22 @@ class MDB2_Driver_Function_mssql extends MDB2_Driver_Function_Common
     }
 
     // }}}
+    // {{{ unixtimestamp()
+
+    /**
+     * return string to call a function to get the unix timestamp from a iso timestamp
+     *
+     * @param string $expression
+     *
+     * @return string to call a variable with the timestamp
+     * @access public
+     */
+    function unixtimestamp($expression)
+    {
+        return 'DATEDIFF(second, \'19700101\', '. $expression.') + DATEDIFF(second, GETDATE(), GETUTCDATE())';
+    }
+
+    // }}}
     // {{{ substring()
 
     /**
@@ -119,7 +134,7 @@ class MDB2_Driver_Function_mssql extends MDB2_Driver_Function_Common
      */
     function substring($value, $position = 1, $length = null)
     {
-        if (!is_null($length)) {
+        if (null !== $length) {
             return "SUBSTRING($value, $position, $length)";
         }
         return "SUBSTRING($value, $position, LEN($value) - $position + 1)";
@@ -141,6 +156,21 @@ class MDB2_Driver_Function_mssql extends MDB2_Driver_Function_Common
     {
         $args = func_get_args();
         return "(".implode(' + ', $args).")";
+    }
+
+    // }}}
+    // {{{ length()
+
+    /**
+     * return string to call a function to get the length of a string expression
+     *
+     * @param string $expression
+     * @return return string to get the string expression length
+     * @access public
+     */
+    function length($expression)
+    {
+        return "LEN($expression)";
     }
 
     // }}}
