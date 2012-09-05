@@ -68,7 +68,7 @@ class SmartyPage extends Smarty
 		$this->compile_dir = $base . 'tpl_c';
 		$this->config_dir = $base . 'configs';
 		$this->cache_dir = $base . 'cache';
-		$this->plugins_dir = SMARTY_DIR . '/plugins/';
+		$this->plugins_dir = SMARTY_DIR . 'plugins/';
 		$this->error_reporting = E_ALL & ~E_NOTICE;
 
 		$cacheTemplates = Configuration::Instance()->GetKey(ConfigKeys::CACHE_TEMPLATES, new BooleanConverter());
