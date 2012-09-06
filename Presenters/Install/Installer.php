@@ -250,7 +250,6 @@ class Installer
         if ($row = mysql_fetch_assoc($result))
         {
             $versionNumber = $row['version_number'];
-			echo $versionNumber;
 			if ($versionNumber == 2.1)
 			{
 				// bug in 2.2 upgrade did not insert version number, check for table instead
