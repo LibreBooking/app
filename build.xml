@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="phpScheduleIt" default="package">
-	<property name="version" value="2.3"/>
+	<property name="version" value="2.3.3"/>
 	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="phpScheduleIt-${version}"/>
 	<property name="zipdirectory" value="../phpScheduleIt_archive/zip/${version}"/>
@@ -182,7 +182,7 @@
 		</phingcall>
 
         <append destFile="${stagingdir}/${sql.file.full}">
-            <filelist dir="${stagingdir}/database_schema" files="create-db.sql,create-user.sql,create-schema.sql"/>
+            <filelist dir="${stagingdir}/database_schema" files="create-db.sql,create-user.sql,create-schema.sql,create-data.sql"/>
         </append>
 
 	</target>

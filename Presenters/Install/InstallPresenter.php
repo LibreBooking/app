@@ -133,7 +133,6 @@ class InstallPresenter
 	private function RunUpgrade()
 	{
 		$install = new Installer($this->page->GetInstallUser(), $this->page->GetInstallUserPassword());
-
 		$results = $install->Upgrade();
         $install->ClearCachedTemplates();
 

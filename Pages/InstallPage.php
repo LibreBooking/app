@@ -236,7 +236,7 @@ class InstallPage extends Page implements IInstallPage
 
 	public function GetInstallUserPassword()
 	{
-		return $this->GetForm(FormKeys::INSTALL_DB_PASSWORD);
+		return $this->GetRawForm(FormKeys::INSTALL_DB_PASSWORD);
 	}
 
 	public function GetShouldCreateDatabase()
