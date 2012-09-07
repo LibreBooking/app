@@ -22,8 +22,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<br/>
 	<br/>
 	
-	Börjar: {formatdate date=$StartDate key=reservation_email}<br/>
-	Slutar: {formatdate date=$EndDate key=reservation_email}<br/>
+	Er bokning börjar: {formatdate date=$StartDate key=reservation_email}<br/>
+	Er bokning slutar: {formatdate date=$EndDate key=reservation_email}<br/>
 	Bokning: {$ResourceName}<br/>
 	Rubrik: {$Title}<br/>
 	Beskrivning: {$Description|nl2br}<br/>
@@ -38,6 +38,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{formatdate date=$date}<br/>
 	{/foreach}
 
-	<a href="{$ScriptUrl}">Logga in på Bokning</a>
+	<a href="{$ScriptUrl}">Logga in i Bokningsprogrammet</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

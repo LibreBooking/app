@@ -18,12 +18,8 @@ avec phpScheduleIt. si ce n'est pas le cas consultez <http://www.gnu.org/license
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 	
-Votre mot de passe temporaire phpScheduleIt : {$TemporaryPassword}
+Votre rapport de phpScheduleIt est en piece jointe.<br/>
 
-<br/>
-
-Votre ancien mot de passe ne fonctionne maintenant plus.
-
-SVP : <a href="{$ScriptUrl}">Connexion à phpScheduleIt</a> pour changer au plus vite votre mot de passe.
+<a href="{$ScriptUrl}">Connexion à phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

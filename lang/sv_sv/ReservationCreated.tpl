@@ -51,6 +51,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Visa Bokning</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Lägg till i Outlook</a> |
-	<a href="{$ScriptUrl}">Logga in på Bokning</a>
+	<a href="{$ScriptUrl}">Logga in i Bokningsprogrammet</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

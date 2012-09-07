@@ -1,20 +1,20 @@
 {*
 Copyright 2011-2012 Nick Korbel
 
-This file is part of phpScheduleIt.
+Ce fichier fait parti de phpScheduleIt.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+phpScheduleIt est un logiciel libre : vous pouvez le redistribuer et/ou le
+modifier dans le respect des termes de la license GNU (General Public License)
+telle que publiée par la Free Software Foundation, que ce soit en version 3 
+de cette license ou plus récente (à votre guise).
 
-phpScheduleIt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+phpScheduleIt est distribué dans l'espoir d'être utile mais
+il est fourni SANS AUCUNE GARANTIE; sans même une garantie implicite 
+de COMMERCIABILITE ou DE CONFORMITE A UNE UTILISATION PARTICULIERE.
+Voir la Licence Publique Générale GNU pour plus de détails.
 
-You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+Vous devez avoir reçu une copie de la GNU General Public License
+avec phpScheduleIt. si ce n'est pas le cas consultez <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 	

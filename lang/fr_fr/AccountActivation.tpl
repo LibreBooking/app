@@ -15,15 +15,11 @@ Voir la Licence Publique Générale GNU pour plus de détails.
 
 Vous devez avoir reçu une copie de la GNU General Public License
 avec phpScheduleIt. si ce n'est pas le cas consultez <http://www.gnu.org/licenses/>.
+
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
-Votre mot de passe temporaire phpScheduleIt : {$TemporaryPassword}
 
-<br/>
-
-Votre ancien mot de passe ne fonctionne maintenant plus.
-
-SVP : <a href="{$ScriptUrl}">Connexion à phpScheduleIt</a> pour changer au plus vite votre mot de passe.
+{$FirstName},<br/>
+Merci de votre inscription a phpScheduleIt. Merci de cliquer ici pour <a href="{$ActivationUrl}">activer votre compte</a>.
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

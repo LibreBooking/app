@@ -18,12 +18,40 @@ avec phpScheduleIt. si ce n'est pas le cas consultez <http://www.gnu.org/license
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 	
-Votre mot de passe temporaire phpScheduleIt : {$TemporaryPassword}
+	Details de Reservation :
+	<br/>
+	<br/>
+	
+	Debut: {formatdate date=$StartDate key=reservation_email}<br/>
+	Fin: {formatdate date=$EndDate key=reservation_email}<br/>
+	{if $ResourceNames|count > 1}
+		Ressources:<br/>
+		{foreach from=$ResourceNames item=resourceName}
+			{$resourceName}<br/>
+		{/foreach}
+		{else}
+		Ressource: {$ResourceName}<br/>
+	{/if}
+	Titre: {$Title}<br/>
+	Description: {$Description|nl2br}<br/>
+	
+	{if count($RepeatDates) gt 0}
+		<br/>
+		Les dates suivantes on été effacées:
+		<br/>
+	{/if}
+	
+	{foreach from=$RepeatDates item=date name=dates}
+		{formatdate date=$date}<br/>
+	{/foreach}
 
-<br/>
+	{if $Accessories|count > 0}
+		<br/>Accessoires:<br/>
+		{foreach from=$Accessories item=accessory}
+			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
+		{/foreach}
+	{/if}
 
-Votre ancien mot de passe ne fonctionne maintenant plus.
-
-SVP : <a href="{$ScriptUrl}">Connexion à phpScheduleIt</a> pour changer au plus vite votre mot de passe.
+	<a href="{$ScriptUrl}">Connexion à phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

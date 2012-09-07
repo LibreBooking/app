@@ -23,9 +23,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<br/>
 	
 	Användare: {$UserName}
-	Börjar: {formatdate date=$StartDate key=reservation_email}<br/>
-	Slutar: {formatdate date=$EndDate key=reservation_email}<br/>
-	Bokning: {$ResourceName}<br/>
+	Er bokning startar: {formatdate date=$StartDate key=reservation_email}<br/>
+	Er Bokning slutar: {formatdate date=$EndDate key=reservation_email}<br/>
+	Bokning av: {$ResourceName}<br/>
 	Rubrik: {$Title}<br/>
 	Beskrivning: {$Description}<br/>
 	
@@ -41,10 +41,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Er bokningen behöver godkännas innan den börjar gälla.  Vi ber därför att kontrollera om denna bokning är godkänd eller inte.
+		Er bokningen behöver godkännas innan den börjar gälla.  Vi ber er därför att kontrollera om denna bokning är godkänd eller inte.
 	{/if}
 	
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">Visa Bokning</a> | <a href="{$ScriptUrl}">Logga in på Bokning</a>
+	<a href="{$ScriptUrl}{$ReservationUrl}">Visa Bokning</a> | <a href="{$ScriptUrl}">Logga in i Bokningsprogrammet</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}
