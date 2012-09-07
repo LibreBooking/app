@@ -216,8 +216,15 @@ function UserManagement(opts) {
 		$.each(attributeDiv.find('li[attributeId]'), function(index, value){
 			var id = $(value).attr('attributeId');
 			var attrVal = $(value).find('.attributeValue').text();
-
-			$('#psiattribute\\[' + id + '\\]').val(attrVal);
+			var attributeElement = $('#psiattribute\\[' + id + '\\]');
+			if(attributeElement.is(':checkbox'))
+			{
+				attributeElement.prop('checked', attrVal.toLowerCase == 'true');
+			}
+			else
+			{
+				attributeElement.val(attrVal);
+			}
 		});
 		elements.attributeDialog.dialog('open');
 	};
