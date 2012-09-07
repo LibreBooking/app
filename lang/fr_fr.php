@@ -261,6 +261,7 @@ class fr_fr extends en_us
         $strings['ReservationCreatedPreference'] = 'Quand je crée une réservation ou qu\'on la crée en mon nom';
         $strings['ReservationUpdatedPreference'] = 'Quand je mets à jour une réservation ou que quelqu\'un le fait en mon nom';
         $strings['ReservationApprovalPreference'] = 'Quand ma reservation en attente est approuvée';
+	$strings['ReservationDeletedPreference'] = 'Quand j\'efface une réservation ou qu\'on l\'efface en mon nom';
         $strings['PreferenceSendEmail'] = 'Envoyez moi un email';
         $strings['PreferenceNoEmail'] = 'Ne me prévenez pas';
         $strings['ReservationCreated'] = 'Votre réservation a été créée avec succès!';
@@ -406,12 +407,7 @@ class fr_fr extends en_us
 		$strings['Choose'] = 'Choisir';
 		$strings['All'] = 'Tout';
 		$strings['ViewAsChart'] = 'Voir en Graphique';
-		$strings['ReservedResources'] = 'Ressources Réservées';
-		$strings['ReservedAccessories'] = 'Accessoires Réservés';
-		$strings['ResourceUsageTimeBooked'] = 'Utilisation des Ressources - Temps de réservation';
-		$strings['ResourceUsageReservationCount'] = 'Utilisation des Ressources - Nombre de réservation';
-		$strings['Top20UsersTimeBooked'] = '20 plus gros utilisateurs - Temps de réservation';
-		$strings['Top20UsersReservationCount'] = '20 plus gros utilisateurs - Nombre de réservation';
+
 
 
         // Errors
