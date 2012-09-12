@@ -69,34 +69,53 @@ if (!$link) {
 
 // Get Urls for Schedule calendars
 echo "<H3>URLs for all schedules and resources </H3>";
+echo '<table border="0"><tr><td><b>Schedules, resources</b></td><td><b>contact, email</b></td></tr>';
+
 $schedule = mysql_query('SELECT public_id, name, schedule_id AS id, allow_calendar_subscription FROM '.$database.'.schedules ORDER BY name ');
 while ($srow = mysql_fetch_assoc($schedule)) {
     $sid  = $srow['public_id'];
     $name = $srow['name'];
+    echo '<tr><td><b>';	
     if ($srow['allow_calendar_subscription'] && $sid)
     {
-        echo '<b><a href="',$url,'/export/ical-subscribe.php?uid=&sid=',$sid,'&rid=&icskey=',$icskey,'">',$name.'</a></b><br>';
+        echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=',$sid,'&rid=&icskey=',$icskey,'">',$name,'</a>';
     }
     else
     {
-        echo '<b>',$name.'</b><br>';
+        echo $name;
     }
+    echo '</b></td></tr>';
          
     // Get Urls for resource calendars
-    $result = mysql_query('SELECT public_id, name, allow_calendar_subscription  FROM '.$database.'.resources WHERE schedule_id = '.mysql_real_escape_string($srow['id']).' ORDER BY name ');
+    $result = mysql_query('SELECT public_id, name, contact_info, allow_calendar_subscription  FROM '.$database.'.resources WHERE schedule_id = '.mysql_real_escape_string($srow['id']).' ORDER BY name ');
     while ($rrow = mysql_fetch_assoc($result)) {
-        $rid = $rrow['public_id'];
-        $name= $rrow['name'];
+        $rid     = $rrow['public_id'];
+        $name    = $rrow['name'];
+        $contact = $rrow['contact_info'];
         if ($rrow['allow_calendar_subscription'] && $rid)
         {
-            echo $tab,'<a href="',$url,'/export/ical-subscribe.php?uid=&sid=&rid=',$rid,'&icskey=',$icskey,'">',$name.'</a><br>';
+            echo '<tr><td>',$tab,'<a href="',$url,'/export/ical-subscribe.php?uid=&sid=&rid=',$rid,'&icskey=',$icskey,'">',$name,'</a></td>';
+            if ( preg_match('/^[a-z0-9!#$%&\'*+\/\=?^_\`{|}~-]+(?:\.[a-z0-9!#\$%&\'*+\/\=?^_\`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i',$contact) ) 
+            {
+                /* 
+                    matches valid email addresses according to RFC 2822
+                    see also http://www.regular-expressions.info/email.html
+                 */
+                echo '<td><a href="mailto:',$contact,'">',$contact,'</a></td>';
+            }
+            else
+            {
+                echo '<td>',$contact,'</td>';
+            }
         }
         else
         {
-            echo $tab,$name,'<br>';
+            echo '<tr><td>',$tab,$name,'</td>';
         }
+        echo '</tr>';    
     }
 }
+echo '</table>';
 
 echo "<H3>URLs for accessories </H3>";
 $result = mysql_query('SELECT accessory_name FROM '.$database.'.accessories');
@@ -107,7 +126,7 @@ while ($row = mysql_fetch_assoc($result)) {
 // get Urls for resource calendars
 ### TODO: this is specific to IST Austria, its generic use should be documented somewhere else. 
 echo "<H3>Accessory calendars (combined)</H3>";
-foreach (array("IT%","Announce%","Catering%","Tech%") as $cal) {
+foreach (array("IT__%","Announce%","Catering%","Tech%") as $cal) {
     echo '<a href="',$url,'/export/ical-subscribe.php?uid=&sid=&rid=&aid=',$cal,'&icskey=',$icskey,'">',$cal,'</a><br>';
 }
 
