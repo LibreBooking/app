@@ -227,7 +227,7 @@ class sv_sv extends en_us
         $strings['PasswordChangedSuccessfully'] = 'Ditt lösenord har ändrats';
         $strings['SignedInAs'] = 'Inloggad som';
         $strings['NotSignedIn'] = 'Du är inte inloggad';
-        $strings['ReservationTitle'] = 'Rubrik på bokningen (Obligatoriskt)';
+        $strings['ReservationTitle'] = 'Rubrik på bokningen';
         $strings['ReservationDescription'] = 'Övrig information';
         $strings['ResourceList'] = 'Bokning av rum';
         $strings['Accessories'] = 'Tillbehör';

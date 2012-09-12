@@ -18,17 +18,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 require_once('Language.php');
 require_once('en_us.php');
-
 class pl extends en_us
 {
     public function __construct()
     {
         parent::__construct();
     }
-
+	
+	/**
+     * @return array
+     */	
     protected function _LoadDates()
     {
         $dates = parent::_LoadDates();
@@ -41,10 +42,17 @@ class pl extends en_us
         $dates['dashboard'] = 'l, Y-m-d G:i';
         $dates['period_time'] = "G:i";
 		$dates['general_date_js'] = "dd.mm.yy";
-
-        $this->Dates = $dates;
+		$dates['calendar_time'] = 'h:mmt';
+		$dates['calendar_dates'] = 'M/d';
+        
+		$this->Dates = $dates;
+		
+		return $this->Dates;
     }
 
+	/**
+     * @return array
+     */
     protected function _LoadStrings()
     {
         $strings = parent::_LoadStrings();
@@ -125,7 +133,7 @@ class pl extends en_us
         $strings['AllInstances'] = 'Wszystkie wystąpienia';
         $strings['FutureInstances'] = 'Przyszłe wystąpienia';
         $strings['Print'] = 'Drukuj';
-        $strings['ShowHideNavigation'] = 'Pokaż/Ukryj Nawigację';
+        $strings['ShowHideNavigation'] = 'Pokaż/Ukryj nawigację';
         $strings['ReferenceNumber'] = 'Numer referencyjny';
         $strings['Tomorrow'] = 'Jutro';
         $strings['LaterThisWeek'] = 'Jeszcze w tym tygodniu';
@@ -138,7 +146,7 @@ class pl extends en_us
         $strings['AddImage'] = 'Dodaj obraz';
         $strings['NoImage'] = 'Brak przypisanego obrazu';
         $strings['Move'] = 'Przesuń';
-        $strings['AppearsOn'] = 'Utworzone dnia %s';
+        $strings['AppearsOn'] = 'Występuje w %s';
         $strings['Location'] = 'Lokalizacja';
         $strings['NoLocationLabel'] = '(brak ustawionej lokalizacji)';
         $strings['Contact'] = 'Kontakt';
@@ -174,9 +182,9 @@ class pl extends en_us
         $strings['Capacity'] = 'Pojemność';
         $strings['Access'] = 'Dostęp';
         $strings['Duration'] = 'Czas trwania';
-        $strings['Active'] = 'Aktywuj';
-        $strings['Inactive'] = 'Deaktywuj';
-        $strings['ResetPassword'] = 'Reset Hasła';
+        $strings['Active'] = 'Aktywny';
+        $strings['Inactive'] = 'Nieaktywny';
+        $strings['ResetPassword'] = 'Reset hasła';
         $strings['LastLogin'] = 'Ostatnie logowanie';
         $strings['Search'] = 'Szukaj';
         $strings['ResourcePermissions'] = 'Uprawnienia do zasobów';
@@ -185,7 +193,7 @@ class pl extends en_us
         $strings['ResetPassword'] = 'Reset Hasła';
         $strings['AllUsers'] = 'Wszyscy użytkownicy';
         $strings['AllGroups'] = 'Wszystkie grupy';
-        $strings['AllSchedules'] = 'Wszystkie rezerwacje';
+        $strings['AllSchedules'] = 'Wszystkie harmonogramy';
         $strings['UsernameOrEmail'] = 'Nazwa użytkownika lub adres mailowy';
         $strings['Members'] = 'Członkowie';
         $strings['QuickSlotCreation'] = 'Twórz wpisy co %s minut, pomiędzy %s i %s';
@@ -195,7 +203,7 @@ class pl extends en_us
         $strings['QuotaConfiguration'] = 'Na %s dla %s użytkowników w %s jest limitowana do %s %s przez %s';
         $strings['reservations'] = 'rezerwacje';
         $strings['ChangeCalendar'] = 'Zmień kalendarz';
-        $strings['AddQuota'] = 'Dodaj Quota';
+        $strings['AddQuota'] = 'Dodaj Limit';
         $strings['FindUser'] = 'Znajdź użytkownika';
         $strings['Created'] = 'Stworzony';
         $strings['LastModified'] = 'Ostatnia modyfikacja';
@@ -244,7 +252,7 @@ class pl extends en_us
         $strings['RememberMe'] = 'Zapamiętaj mnie';
         $strings['FirstTimeUser?'] = 'Pierwszy raz tutaj?';
         $strings['CreateAnAccount'] = 'Zarejestruj się';
-        $strings['ViewSchedule'] = 'Podgląd rezerwacji';
+        $strings['ViewSchedule'] = 'Podgląd harmonogramu';
         $strings['ForgotMyPassword'] = 'Zapomniałeś hasła?';
         $strings['YouWillBeEmailedANewPassword'] = 'Zostanie wysłane nowo wygenerowane hasło na twój adres mailowy';
         $strings['Close'] = 'Zamknij';
@@ -261,6 +269,7 @@ class pl extends en_us
         $strings['SecurityCode'] = 'Kod zabezpieczający';
         $strings['ReservationCreatedPreference'] = 'Kiedy tworzę rezerwację lub rezerwacja jest tworzona za mnie';
         $strings['ReservationUpdatedPreference'] = 'Kiedy aktualizuję rezerwację lub rezerwacja jest aktualizowana za mnie';
+        $strings['ReservationDeletedPreference'] = 'Kiedy usuwam rezerwację lub rezerwacja jest usuwana za mnie';
         $strings['ReservationApprovalPreference'] = 'Kiedy moje rezerwacja zostatnie zatwierdzona';
         $strings['PreferenceSendEmail'] = 'Powiadom mnie mailem';
         $strings['PreferenceNoEmail'] = 'Nie powiadamiaj mnie';
@@ -281,7 +290,7 @@ class pl extends en_us
         $strings['QuantityRequested'] = 'Wymagana ilość';
         $strings['CreatingReservation'] = 'Tworzenie rezerwacji';
         $strings['UpdatingReservation'] = 'Aktualizowanie rezerwacji';
-        $strings['DeleteWarning'] = 'Tak akcja jest trwała i bez możliwości powrotu!';
+        $strings['DeleteWarning'] = 'Ta akcja jest trwała i bez możliwości powrotu!';
         $strings['DeleteAccessoryWarning'] = 'Usunięcie tego akcesorium spowoduje usunięcie go ze wszystkich rezerwacji.';
         $strings['AddAccessory'] = 'Dodaj akcesorium';
         $strings['AddBlackout'] = 'Dodaj niedostępność';
@@ -301,13 +310,14 @@ class pl extends en_us
         $strings['DeleteGroupWarning'] = 'Usunięcie tej grupy spowoduje wykasowanie wszystkich uprawnień do zasobów. Użytkownicy z tej grupy, mogą utracić uprawnienia do zasobów.';
         $strings['WhatRolesApplyToThisGroup'] = 'Jakie dodać role dla tej grupy?';
         $strings['WhoCanManageThisGroup'] = 'Kto może zarządzać tą grupą?';
+        $strings['WhoCanManageThisSchedule'] = 'Kto może zarządzać tym harmonogramem?';		
         $strings['AddGroup'] = 'Dodaj grupę';
-        $strings['AllQuotas'] = 'Dodaj Quotas';
-        $strings['QuotaReminder'] = 'Pamiętaj: Quotas są egzekwowane na podstawie strefy czasowej harmonogramu';
+        $strings['AllQuotas'] = 'Wszystkie limity';
+        $strings['QuotaReminder'] = 'Pamiętaj: Limity są egzekwowane na podstawie strefy czasowej harmonogramu';
         $strings['AllReservations'] = 'Wszystkie rezerwacje';
         $strings['PendingReservations'] = 'Oczekujące reserwacje';
         $strings['Approving'] = 'Zatwierdź';
-        $strings['MoveToSchedule'] = 'Przenieś do rezerwacji';
+        $strings['MoveToSchedule'] = 'Przenieś do harmonogramu';
         $strings['DeleteResourceWarning'] = 'Usunięcie tego zasobu spowoduje wykasowanie wszystkich danych, włącznie z';
         $strings['DeleteResourceWarningReservations'] = 'jego wszystkimi przeszłymi, obecnymi i przyszłymi rezerwacjami';
         $strings['DeleteResourceWarningPermissions'] = 'wszystkimi przypisanymi uprawnieniami';
@@ -315,26 +325,26 @@ class pl extends en_us
         $strings['ScheduleLayout'] = 'Wygląd (zawsze %s)';
         $strings['ReservableTimeSlots'] = 'Lista wolnych terminów rezerwacji';
         $strings['BlockedTimeSlots'] = 'Lista zablokowanych terminów rezerwacji';
-        $strings['ThisIsTheDefaultSchedule'] = 'To jest domyślna rezerwacja';
-        $strings['DefaultScheduleCannotBeDeleted'] = 'Domyślna rezerwacja nie może zostać usunięta';
+        $strings['ThisIsTheDefaultSchedule'] = 'To jest domyślny harmonogram';
+        $strings['DefaultScheduleCannotBeDeleted'] = 'Domyślny harmonogram nie może zostać usunięty';
         $strings['MakeDefault'] = 'Zrób domyślną';
         $strings['BringDown'] = 'Opóźnij';
         $strings['ChangeLayout'] = 'Zmiana wyglądu';
-        $strings['AddSchedule'] = 'Dodaj rezerwację';
+        $strings['AddSchedule'] = 'Dodaj harmonogram';
         $strings['StartsOn'] = 'Rozpoczyna się';
         $strings['NumberOfDaysVisible'] = 'Liczba widocznych dni';
         $strings['UseSameLayoutAs'] = 'Użyj tego samego wyglądu jako';
         $strings['Format'] = 'Format';
         $strings['OptionalLabel'] = 'Opcjonalna nazwa';
-        $strings['LayoutInstructions'] = 'Dodawaj jeden wpis w linii.  Wpisy muszą być uzupełnione dla wszystkich 24 godzin od rozpoczęcia dnia aż do północy.';
+        $strings['LayoutInstructions'] = 'Dodawaj jeden wpis w linii. Wpisy muszą być uzupełnione dla wszystkich 24 godzin od rozpoczęcia dnia aż do północy.';
         $strings['AddUser'] = 'Dodaj użytkownika';
         $strings['UserPermissionInfo'] = 'Aktualny dostep do zasobu może być inny w zależności od roli użytkownika, uprawnień grupy lub zewnętrznych ustawień uprawnień';
         $strings['DeleteUserWarning'] = 'Usunięcie tego użytkownika spowoduje usunięcie wszystkich kiedykolwiek utworzonych rezerwacji.';
         $strings['AddAnnouncement'] = 'Dodaj powiadomienie';
         $strings['Announcement'] = 'Powiadomienie';
         $strings['Priority'] = 'Ważność';
-        $strings['Reservable'] = 'Zastrzeżone';
-        $strings['Unreservable'] = 'Niezastrzeżone';
+        $strings['Reservable'] = 'Dostępne';
+        $strings['Unreservable'] = 'Niedostępne';
         $strings['Reserved'] = 'Zarezerwowane';
         $strings['MyReservation'] = 'Moje rezerwacje';
         $strings['Pending'] = 'W oczekiwaniu';
@@ -342,7 +352,79 @@ class pl extends en_us
         $strings['Restricted'] = 'Ograniczone';
         $strings['ViewAll'] = 'Podgląd wszystkich';
         $strings['MoveResourcesAndReservations'] = 'Przenieś zasoby i rezerwacje do';
-
+        $strings['TurnOffSubscription'] = 'Wyłącz subskrypcję kalendarza';
+        $strings['TurnOnSubscription'] = 'Zezwól na subskrypcję tego kalendarza';
+        $strings['SubscribeToCalendar'] = 'Subskrybuj ten kalendarz';
+        $strings['SubscriptionsAreDisabled'] = 'Administrator wyłączył subskrypcje kalendarza';
+        $strings['NoResourceAdministratorLabel'] = '(Brak Administratora Zasobów)';
+        $strings['WhoCanManageThisResource'] = 'Kto może zarządzać tym zasobem?';
+        $strings['ResourceAdministrator'] = 'Administrator Zasobów';
+        $strings['Private'] = 'Prywatny';
+        $strings['Accept'] = 'Akceptuj';
+        $strings['Decline'] = 'Odrzuć';
+        $strings['ShowFullWeek'] = 'Pokaż cały tydzień';
+        $strings['CustomAttributes'] = 'Atrybuty niestandardowe';
+        $strings['AddAttribute'] = 'Dodaj atrybut';
+        $strings['EditAttribute'] = 'Edytuj atrybut';
+        $strings['DisplayLabel'] = 'Wyświetl etykietę';
+        $strings['Type'] = 'Typ';
+        $strings['Required'] = 'Wymagany';
+        $strings['ValidationExpression'] = 'Wyrażenie walidacyjne';
+        $strings['PossibleValues'] = 'Możliwe wartości';
+        $strings['SingleLineTextbox'] = 'Jednoliniowe pole tekstowe';
+        $strings['MultiLineTextbox'] = 'Wieloliniowe pole tekstowe';
+        $strings['Checkbox'] = 'Pole wyboru';
+        $strings['SelectList'] = 'Lista wyboru';
+        $strings['CommaSeparated'] = 'rozdzielane przecinkiem';
+        $strings['Category'] = 'Kategoria';
+        $strings['CategoryReservation'] = 'Rezerwacja';
+        $strings['CategoryGroup'] = 'Grupa';
+        $strings['SortOrder'] = 'Porządek sortowania';
+        $strings['Title'] = 'Tytuł';
+        $strings['AdditionalAttributes'] = 'Atrybuty dodatkowe';
+        $strings['True'] = 'Prawda';
+        $strings['False'] = 'Fałsz';
+		$strings['ForgotPasswordEmailSent'] = 'Na podany adres został wysłany email z instrukcjami zresetowania hasła';
+		$strings['ActivationEmailSent'] = 'Niedługo otrzymasz emaila aktywacyjnego.';
+		$strings['AccountActivationError'] = 'Przepraszamy, nie możemy aktywować Twojego konta.';
+		$strings['Attachments'] = 'Załączniki';
+		$strings['AttachFile'] = 'Załącz plik';
+		$strings['Maximum'] = 'max';
+		$strings['NoScheduleAdministratorLabel'] = 'Brak administratora harmonogramu';
+		$strings['ScheduleAdministrator'] = 'Administrator harmonogramu';
+		$strings['Total'] = 'Razem';
+		$strings['QuantityReserved'] = 'Ilość zarezerwowana';
+		$strings['AllAccessories'] = 'Wszystkie akcesoria';
+		$strings['GetReport'] = 'Generuj raport';
+		$strings['NoResultsFound'] = 'Nie znaleziono pasujących wyników';
+		$strings['SaveThisReport'] = 'Zapisz ten raport';
+		$strings['ReportSaved'] = 'Raport zapisany!';
+		$strings['EmailReport'] = 'Wyślij raport mailem';
+		$strings['ReportSent'] = 'Raport wysłany!';
+		$strings['RunReport'] = 'Uruchom raport';
+		$strings['NoSavedReports'] = 'Nie masz zapisanych raportów.';
+		$strings['CurrentWeek'] = 'Bieżący tydzień';
+		$strings['CurrentMonth'] = 'Bieżący miesiąc';
+		$strings['AllTime'] = 'Cały czas';
+		$strings['FilterBy'] = 'Filtruj po';
+		$strings['Select'] = 'Zaznacz';
+		$strings['List'] = 'Lista';
+		$strings['TotalTime'] = 'Łączny czas';
+		$strings['Count'] = 'Liczba';
+		$strings['Usage'] = 'Użycie';
+		$strings['AggregateBy'] = 'Grupuj po';
+		$strings['Range'] = 'Zakres';
+		$strings['Choose'] = 'Wybierz';
+		$strings['All'] = 'Wszystko';
+		$strings['ViewAsChart'] = 'Zobacz jako wykres';
+		$strings['ReservedResources'] = 'Zarezerwowane zasoby';
+		$strings['ReservedAccessories'] = 'Zarezerwowane akcesoria';
+		$strings['ResourceUsageTimeBooked'] = 'Użycie zasobów - zarezerwowany czas';
+		$strings['ResourceUsageReservationCount'] = 'Użycie zasobów - liczba rezerwacji';
+		$strings['Top20UsersTimeBooked'] = 'Top 20 użytkowników - zarezerwowany czas';
+		$strings['Top20UsersReservationCount'] = 'Top 20 użytkowników - liczba rezerwacji';
+		// End Strings
+		
         // Errors
         $strings['LoginError'] = 'Nie możemy odnaleźć twojej nazwy użytkownika lub hasła';
         $strings['ReservationFailed'] = 'Twoja rezerwacja nie mogła zostać utworzona';
@@ -357,7 +439,13 @@ class pl extends en_us
         $strings['StartIsInPast'] = 'Data rozpoczęcia nie może być datą z przeszłości';
         $strings['EmailDisabled'] = 'Administrator wyłączył powiadomienia mailowe';
         $strings['ValidLayoutRequired'] = 'Wpisy muszą być uzupełnione dla wszystkich 24 godzin od rozpoczęcia dnia aż do północy.';
-
+        $strings['CustomAttributeErrors'] = 'Są problemy z dodatkowymi atrybutami, które podano:';
+        $strings['CustomAttributeRequired'] = '%s jest polem wymaganym';
+        $strings['CustomAttributeInvalid'] = 'Wartość podana dla %s jest nieprawidłowa';
+        $strings['AttachmentLoadingError'] = 'Przepraszamy, ale wystąpił problem podczas ładownia żądanego plik.';
+        $strings['InvalidAttachmentExtension'] = 'Możesz dodawać pliki tylko typu: %s';
+        // End Errors
+		
         // Page Titles
         $strings['CreateReservation'] = 'Tworzenie rezerwacji';
         $strings['EditReservation'] = 'Edycja rezerwacji';
@@ -365,19 +453,21 @@ class pl extends en_us
         $strings['ManageReservations'] = 'Rezerwacje';
         $strings['AwaitingActivation'] = 'W oczekiwaniu na aktywację';
         $strings['PendingApproval'] = 'W oczekiwaniu na zatwierdzenie';
-        $strings['ManageSchedules'] = 'Rezerwacje';
+        $strings['ManageSchedules'] = 'Harmonogramy';
         $strings['ManageResources'] = 'Zasoby';
         $strings['ManageAccessories'] = 'Akcesoria';
         $strings['ManageUsers'] = 'Użytkownicy';
         $strings['ManageGroups'] = 'Grupy';
-        $strings['ManageQuotas'] = 'Quotas';
+        $strings['ManageQuotas'] = 'Limity';
         $strings['ManageBlackouts'] = 'Zarządzanie niedostępnościami';
         $strings['MyDashboard'] = 'Moja strona';
         $strings['ServerSettings'] = 'Ustawienia serwera';
         $strings['Dashboard'] = 'Strona główna';
         $strings['Help'] = 'Pomoc';
+		$strings['Administration'] = 'Administracja';
+		$strings['About'] = 'O...';
         $strings['Bookings'] = 'Terminarze';
-        $strings['Schedule'] = 'Rezerwacja';
+        $strings['Schedule'] = 'Harmonogram';
         $strings['Reservations'] = 'Rezerwacje';
         $strings['Account'] = 'Konto';
         $strings['EditProfile'] = 'Edycja mojego profilu';
@@ -394,7 +484,20 @@ class pl extends en_us
         $strings['ForgotPassword'] = 'Przypomnienie hasła';
         $strings['NotificationPreferences'] = 'Ustawienia powiadomień';
         $strings['ManageAnnouncements'] = 'Ogłoszenia';
-        //
+        $strings['Responsibilities'] = 'Obowiązki';
+        $strings['GroupReservations'] = 'Rezerwacje grupowe';
+        $strings['ResourceReservations'] = 'Rezerwacje zasobów';
+        $strings['Customization'] = 'Dostosowywanie';
+        $strings['Attributes'] = 'Atrybuty';
+		$strings['AccountActivation'] = 'Aktywacja konta';
+		$strings['ScheduleReservations'] = 'Zaplanuj rezerwacje';
+		$strings['Reports'] = 'Raporty';
+		$strings['GenerateReport'] = 'Utwórz nowy raport';
+		$strings['MySavedReports'] = 'Moje zapisane raporty';
+		$strings['CommonReports'] = 'Wspólne raporty';
+		$strings['ViewDay'] = 'Podgląd dnia';
+		$strings['Group'] = 'Grupa';
+        // End Page Titles
 
         // Day representations
         $strings['DaySundaySingle'] = 'N';
@@ -412,22 +515,32 @@ class pl extends en_us
         $strings['DayThursdayAbbr'] = 'Czw';
         $strings['DayFridayAbbr'] = 'Pią';
         $strings['DaySaturdayAbbr'] = 'Sob';
-
+		// End Day representations
+		
         // Email Subjects
         $strings['ReservationApprovedSubject'] = 'Twoja rezerwacja została zatwierdzona';
         $strings['ReservationCreatedSubject'] = 'Twoja rezerwacja została utworzona';
         $strings['ReservationUpdatedSubject'] = 'Twoja rezerwacja została zaktualizowana';
+        $strings['ReservationDeletedSubject'] = 'Twoja rezerwacja została usunięta';
         $strings['ReservationCreatedAdminSubject'] = 'Powiadomienie: rezerwacja została utworzona';
         $strings['ReservationUpdatedAdminSubject'] = 'Powiadomienie: rezerwacja została zaktualizowana';
+        $strings['ReservationDeleteAdminSubject'] = 'Powiadomienie: rezerwacja została usunięta';
         $strings['ParticipantAddedSubject'] = 'Zgłoszenie udziału uczestnictwa';
+        $strings['ParticipantDeletedSubject'] = 'Rezerwacja usunięta';
         $strings['InviteeAddedSubject'] = 'Zaproszenie do uczestnictwa';
         $strings['ResetPassword'] = 'Zmiana hasła';
-        $strings['ForgotPasswordEmailSent'] = 'Wiadomość mailowa została wysłana do odbiorcy z instrukcją zresetowania hasła';
-        //
+        $strings['ActivateYourAccount'] = 'Proszę aktywować Swoje konto';
+		$strings['ReportSubject'] = 'Twój żądany raport (%s)';
+        // End Email Subjects
 
         $this->Strings = $strings;
+		
+		return $this->Strings;
     }
 
+	/**
+     * @return array
+     */
     protected function _LoadDays()
     {
         $days = parent::_LoadDays();
@@ -447,8 +560,13 @@ class pl extends en_us
         $days['letter'] = array('N', 'Pn', 'W', 'Ś', 'Cz', 'Pt', 'S');
 
         $this->Days = $days;
+		
+		return $this->Days;
     }
 
+	/**
+     * @return array
+     */
     protected function _LoadMonths()
     {
         $months = parent::_LoadMonths();
@@ -464,11 +582,18 @@ class pl extends en_us
         $months['abbr'] = array('Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru');
 
         $this->Months = $months;
+		
+		return $this->Months;
     }
 
+	/**
+     * @return array
+     */
     protected function _LoadLetters()
     {
-        $this->Letters = array('A', 'B', 'C', 'Ć', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'Ł', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'Ś', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Ż', 'Ź');
+        $this->Letters = array('A', 'Ą', 'B', 'C', 'Ć', 'D', 'E', 'Ę', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'Ł', 'M', 'N', 'Ń', 'O', 'Ó', 'P', 'Q', 'R', 'S', 'Ś', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Ż', 'Ź');
+		
+		return $this->Letters;
     }
 
     protected function _GetHtmlLangCode()
