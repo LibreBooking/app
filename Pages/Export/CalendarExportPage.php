@@ -84,8 +84,11 @@ class CalendarExportPage extends Page implements ICalendarExportPage
 
 		$this->Set('phpScheduleItVersion', $config->GetKey(ConfigKeys::VERSION));
 		$this->Set('DateStamp', Date::Now());
-		$this->Set('ScriptUrl', $config->GetScriptUrl());
 
+		// ScriptUrl becomes part of the ical UID (RFC2445) which must not contain any colon ":" 
+                $url = $config->GetScriptUrl();
+		$this->Set('ScriptUrl', parse_url ($url, PHP_URL_HOST).parse_url ($url, PHP_URL_PATH) );
+                                
 		if ($this->hideDetails)
 		{
 			$this->Display('Export/ical-private.tpl');

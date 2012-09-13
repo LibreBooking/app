@@ -100,7 +100,10 @@ class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
 
         $this->Set('phpScheduleItVersion', $config->GetKey(ConfigKeys::VERSION));
         $this->Set('DateStamp', Date::Now());
-        $this->Set('ScriptUrl', $config->GetScriptUrl());
+
+        // ScriptUrl becomes part of the ical UID (RFC2445) which must not contain any colon ":" 
+        $url = $config->GetScriptUrl();
+        $this->Set('ScriptUrl', parse_url ($url, PHP_URL_HOST).parse_url ($url, PHP_URL_PATH) );
 
         $this->Display('Export/ical.tpl');
     }
@@ -135,10 +138,7 @@ class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
      */
     public function GetAccessoryIds()
     {
-        ## TODO: selecting group of Accessories 
-        $tmp = $this->GetQuerystring(QueryStringKeys::ACCESSORY_ID);
-        Log::Debug("GetAccessoryIds %s",$tmp);
-        return $tmp; 
+        return $this->GetQuerystring(QueryStringKeys::ACCESSORY_ID);
     }
 }
 
