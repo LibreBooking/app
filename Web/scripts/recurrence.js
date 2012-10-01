@@ -124,7 +124,7 @@ function Recurrence(recurOptions, recurElements) {
 	function InitializeRepeatOptions() {
 		if (options.repeatType) {
 			elements.repeatOptions.val(options.repeatType);
-			$('#repeat_every').val(options.repeatInterval);
+			elements.repeatInterval.val(options.repeatInterval);
 			for (var i = 0; i < options.repeatWeekdays.length; i++) {
 				var id = "#repeatDay" + options.repeatWeekdays[i];
 				$(id).attr('checked', true);
