@@ -579,7 +579,7 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->repository->Delete($series);
 
-		$deleteSeriesCommand = new DeleteSeriesCommand($eventSeries->SeriesId());
+		$deleteSeriesCommand = new DeleteSeriesCommand($eventSeries->SeriesId(), Date::Now());
 
 		$this->assertEquals(1, count($this->db->_Commands));
 		$this->assertTrue(in_array($deleteSeriesCommand, $this->db->_Commands));
