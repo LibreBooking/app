@@ -6,23 +6,24 @@ function Schedule(opts)
 	{
 		this.initReservations();
 
-		$('.reservations').delegate('.clickres:not(.reserved)', 'hover', function ()
+		var reservations = $('.reservations');
+		reservations.delegate('.clickres:not(.reserved)', 'hover', function ()
 		{
 			$(this).toggleClass("hilite");
 			$(this).siblings('.resourcename').toggleClass('hilite');
 		});
 
-		$('.reservations').delegate('.clickres', 'mousedown', function ()
+		reservations.delegate('.clickres', 'mousedown', function ()
 		{
 			$(this).addClass('clicked');
 		});
 
-		$('.reservations').delegate('.clickres', 'mouseup', function ()
+		reservations.delegate('.clickres', 'mouseup', function ()
 		{
 			$(this).removeClass('clicked');
 		});
 
-		$('.reservations').delegate('.reservable', 'click', function ()
+		reservations.delegate('.reservable', 'click', function ()
 		{
 			var start = $('.start', this).val();
 			var end = $('.end', this).val();
