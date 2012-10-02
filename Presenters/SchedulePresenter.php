@@ -108,23 +108,6 @@ class SchedulePresenter implements ISchedulePresenter {
         $this->_builder->BindLayout($this->_page, $dailyLayout, $scheduleDates);
         $this->_builder->BindReservations($this->_page, $resources, $dailyLayout);
     }
-
-    /**
-     * @param Date $startDate
-     * @param int $daysVisible
-     * @return array[int]Date
-     */
-    private function GetDisplayDates($startDate, $daysVisible) {
-        $dates = array();
-        $user = ServiceLocator::GetServer()->GetUserSession();
-        for ($dateCount = 0; $dateCount < $daysVisible; $dateCount++) {
-            $date = $startDate->AddDays($dateCount);
-            $dates[$date->Timestamp()] = $date->ToTimezone($user->Timezone);
-        }
-
-        return $dates;
-    }
-
 }
 
 ?>

@@ -174,8 +174,18 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 
 		$startDate = $adjustedDateRange->GetBegin();
 
-		$adjustment = max($scheduleLength, 7);
-		$prevAdjustment = 7 * floor($adjustment / 7); // ie, if 10, we only want to go back 7 days so there is overlap
+		$startDay = $schedule->GetWeekdayStart();
+
+		if ($startDay == Schedule::Today)
+		{
+			$adjustment = $scheduleLength;
+			$prevAdjustment = $scheduleLength;
+		}
+		else
+		{
+			$adjustment = max($scheduleLength, 7);
+			$prevAdjustment = 7 * floor($adjustment / 7); // ie, if 10, we only want to go back 7 days so there is overlap
+		}
 
 		$page->SetPreviousNextDates($startDate->AddDays(-$prevAdjustment), $startDate->AddDays($adjustment));
 		$page->ShowFullWeekToggle($scheduleLength < 7);
