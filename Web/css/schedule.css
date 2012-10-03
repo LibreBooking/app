@@ -2,7 +2,7 @@ table.reservations {
 	border-collapse: collapse;
 	width: 100%;
 	font-size: 8pt;
-	table-layout: auto;
+	table-layout: fixed;
     border: solid #36648B 1px;
 }
 
