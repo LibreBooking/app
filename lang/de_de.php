@@ -483,7 +483,7 @@ class de_de extends en_us
         $strings['ReservationUpdatedAdminSubject'] = 'Benachrichtigung: Eine Reservierung wurde aktualisiert';
         $strings['ReservationDeleteAdminSubject'] = 'Benachrichtigung: Eine Reservierung wurde gel&ouml;scht';
         $strings['ParticipantAddedSubject'] = 'Reservierung Teilnahme Benachrichtigung';
-        $strings['ParticipantDeletedSubject'] = 'Reservierung gel&ouml;scht';
+        $strings['ParticipantDeletedSubject'] = 'Reservierung gelöscht';
         $strings['InviteeAddedSubject'] = 'Reservierungs Einladung';
         $strings['ResetPassword'] = 'Kennwort zur&uuml;cksetzen Anfrage';
         $strings['ActivateYourAccount'] = 'Bitte aktivieren Sie Ihr Konto';

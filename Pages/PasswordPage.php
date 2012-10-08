@@ -53,17 +53,17 @@ class PasswordPage extends SecurePage implements IPasswordPage
 
 	public function GetCurrentPassword()
 	{
-		return $this->GetForm(FormKeys::CURRENT_PASSWORD);
+		return $this->GetRawForm(FormKeys::CURRENT_PASSWORD);
 	}
 
 	public function GetPassword()
 	{
-		return $this->GetForm(FormKeys::PASSWORD);
+		return $this->GetRawForm(FormKeys::PASSWORD);
 	}
 
 	public function GetPasswordConfirmation()
 	{
-		return $this->GetForm(FormKeys::PASSWORD_CONFIRM);
+		return $this->GetRawForm(FormKeys::PASSWORD_CONFIRM);
 	}
 
 	public function ResettingPassword()

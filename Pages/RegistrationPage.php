@@ -193,9 +193,9 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 	}
 	
 	public function GetOrganization()
-        {
-	 	return $this->GetForm(FormKeys::ORGANIZATION);
-        }
+	{
+		return $this->GetForm(FormKeys::ORGANIZATION);
+	}
 	
 	public function GetPosition()
 	{
@@ -204,12 +204,12 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 	
 	public function GetPassword()
 	{
-		return $this->GetForm(FormKeys::PASSWORD);
+		return $this->GetRawForm(FormKeys::PASSWORD);
 	}
 	
 	public function GetPasswordConfirm()
 	{
-		return $this->GetForm(FormKeys::PASSWORD_CONFIRM);
+		return $this->GetRawForm(FormKeys::PASSWORD_CONFIRM);
 	}
 
     public function SetCaptchaImageUrl($captchaUrl)
