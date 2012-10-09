@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+die('To use this file, please remove this line from source');
 
 require_once('../config/config.php');
 
