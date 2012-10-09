@@ -22,6 +22,7 @@ define('ROOT_DIR', '../../');
 
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
+require_once(ROOT_DIR . 'lib/Database/MySQL/namespace.php');
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
