@@ -130,10 +130,10 @@ $nfactory = new ReservationNotificationFactory();
 $notificationService = $nfactory->Create($updateAction, $user_session);
 
 $result = $series->Delete($user_session);
-
-if ($result) {
+if (1) {
         try 
         {
+
                 $persistenceService->Persist($series);
 
                 header('HTTP/1.1 200 Ok', true, 200);
@@ -161,7 +161,7 @@ else
                 'series_id' => $series->SeriesId(),
                 'reference_number' => $rn,
                 'message' => 'Reservation could not be deleted',
-                'status' => $status
+                'status' => $result
         );
         print json_encode($response);
 }

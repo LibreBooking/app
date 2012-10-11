@@ -57,14 +57,12 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php'
 $params = array(
 	'rn' => null,
         'username' => null,
-
         'starts_at' => null,
         'ends_at' => null,
         'summary' => null,
         'description' => null,
         'contact_info' => null,
 );
-
 $params = array_merge($params, $_REQUEST);
 
 if ( $ikey != NULL
@@ -82,6 +80,7 @@ foreach (array('rn', 'username') AS $key) {
     return;
   }
 }
+$rn = $params['rn'];
 
 $userRepo = new UserRepository();
 $user = $userRepo->LoadByUsername($params['username']);
@@ -138,7 +137,7 @@ if ($params['starts_at'] || $params['ends_at'])
 }
 
 
-if ( $user->Id() === $series->UserId() )
+if ( $user->Id() == $series->UserId() )
 {
         $series->WithOwner($user->Id());
 }
@@ -198,8 +197,9 @@ else
                 'series_id' => $series->SeriesId(),
                 'reference_number' => $rn,
                 'message' => 'Reservation could not be updated',
-                'status' => $status
+                'status' => $result
         );
         print json_encode($response);
 }
 
+?>

@@ -40,7 +40,6 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php'
 ## use parameters in config/config
 $tz       = $conf['settings']['server.timezone'];
 $url      = $conf['settings']['script.url'];
-$icskey   = $conf['settings']['ics']['subscription.key'];
 $ikey     = $conf['settings']['ics']['import.key'];
 $enabled  = $conf['settings']['ics']['import'];
 
@@ -62,7 +61,6 @@ if (!$enabled) {
 	print json_encode(array('message' => "iCal import is not enabled.<br />"));
 	return;
 }
-
 
 $params = array(
 	'username' => null,
@@ -175,15 +173,9 @@ if ($result) {
 		print json_encode(array('message' => "exception in making reservation persistant"));
 		return;
 	}
-
-//	$notificationResult = $notificationService->Notify($series);
-//	var_dump('NotificationService\n',$notificationResult);
-
-//	$page->SetSaveSuccessfulMessage($result);
 }
 else
 {
-	#var_dump($validationResult->GetErrors());
 	header('HTTP/1.1 406 Not Acceptable', true, 406);
 	$response = array(
 		'resource' => array(
@@ -194,10 +186,7 @@ else
 	);
 	print json_encode($response);
 	return;
-/*
-	$page->SetSaveSuccessfulMessage($result);
-	$page->ShowErrors($validationResult->GetErrors());
-*/
+
 }
 
 
