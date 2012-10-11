@@ -86,6 +86,10 @@ class ResourceRepository implements IResourceRepository
 		return $this->_cache->Get($resourceId);
 	}
 
+	public function LoadByContactInfo($contact_info) {
+		return $this->LoadResource(new GetResourceByContactInfoCommand($contact_info));
+	}
+
     /**
      * @param string $publicId
      * @return BookableResource

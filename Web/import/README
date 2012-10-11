@@ -1,0 +1,73 @@
+This directory contains functions for importing iCal events
+
+!!! This is very EXPERIMENTAL, You are WARNED !!!
+
+=== CONFIGURATION ===
+
+You can enable the iCal import by configuring 
+  $conf['settings']['ics']['import'] = 'true'; 
+
+Authentication is not enforced, but need to be ensured somewhere else: 
+Assuming there is some other central authority for authenticating this, 
+a secret import key can be defined to protect the interface. 
+  $conf['settings']['ics']['import.key'] = ;
+
+
+=== USAGE from the shell ===
+
+    The resource is identified through the field contact_info, it must match the content in the database. 
+    Note, there is currently no Web interface to define the contact_info, we have done it through the 
+    mysql database like 	
+	echo "UPDATE resources SET contact_info='test@room' WHERE name='Conference Room 1';" | mysql -p ....
+
+
+Recommendations: define define environment variables:
+
+URL=https://domain.d.d/scheduleIt/Web;	# should match $conf['settings']['script.url']
+IKEY=abcdef12345;			# match $conf['settings']['ics']['import.key']
+RN=50aabbcc112233;      		# reservation number
+USER=`whoami'
+
+
+The http response contains a JSON data structure, containing the return arguments (e.g. the reservation_number after a create), 
+The reservation number is needed for updating and deletion of this event. 
+
+
+= CREATE a new entry (all fields are required) = 
+
+    curl -k -i \
+	-F "username=$USER" \
+	-F "starts_at=2012-10-14 10:00:00" \
+	-F "ends_at=2012-10-14 11:00:00" \
+	-F "summary=Create successful" \
+	-F "description=Really great " \
+	-F "contact_info=test@room" \
+	-F "ikey=$IKEY" \
+	$URL/import/create.php;
+
+
+= DELETE an entry (rn, and username are required) =
+
+    curl -k -i \
+	-F "username=$USER" \
+	-F "rn=$RN" \
+	-F "contact_info=test@room" \
+	-F "ikey=$IKEY" \
+	$URL/import/delete.php
+
+
+= UPDATE (rn and username are required, other fields are optional) = 
+
+    curl -k -i \
+        -F "rn=5075292d1e3a3" \
+        -F "username=$USER" \
+	-F "starts_at=2012-10-17 12:00:00" \
+	-F "ends_at=2012-10-17 14:00:00" \
+        -F "rn=$RN" \
+        -F "summary=update successful" \
+        -F "description=Really great " \
+        -F "contact_info=test@room" \
+	-F "ikey=$IKEY" \
+        $URL/import/update.php
+
+

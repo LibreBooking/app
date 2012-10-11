@@ -996,6 +996,17 @@ class GetReservationSeriesParticipantsCommand extends SqlCommand
 	}
 }
 
+
+## (C) 2012 Alois Schloegl
+class GetResourceByContactInfoCommand extends SqlCommand
+{
+	public function __construct($contact_info)
+	{
+		parent::__construct(Queries::GET_RESOURCE_BY_CONTACT_INFO);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_CONTACT, $contact_info));
+	}
+}
+
 class GetResourceByIdCommand extends SqlCommand
 {
 	public function __construct($resourceId)

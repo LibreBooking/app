@@ -388,6 +388,12 @@ class Queries
 		INNER JOIN group_roles gr ON r.role_id = gr.role_id
 		WHERE gr.group_id = @groupid';
 
+	const GET_RESOURCE_BY_CONTACT_INFO =
+			'SELECT r.*, s.admin_group_id as s_admin_group_id
+			FROM resources r
+			INNER JOIN schedules s ON r.schedule_id = s.schedule_id
+			WHERE r.contact_info = @contact_info';
+
 	const GET_RESOURCE_BY_ID =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id
 			FROM resources r
