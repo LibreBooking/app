@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
 Copyright 2012 Nick Korbel
 
@@ -42,6 +42,8 @@ class AvailableLanguages
 					'pl' => new AvailableLanguage('pl', 'pl.php', 'Polski'),
 					'pt_br' => new AvailableLanguage('pt_br', 'pt_br.php', 'Portugu&ecirc;s Brasileiro'),
 					'sv_sv' => new AvailableLanguage('sv_sv', 'sv_sv.php', 'Swedish'),
+					'zh_cn' => new AvailableLanguage('zh_cn', 'zh_cn.php', '简体中文'),
+					'zh_tw' => new AvailableLanguage('zh_tw', 'zh_tw.php', '繁體中文'),
         		);
     }
 }
