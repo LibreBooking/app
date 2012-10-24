@@ -32,10 +32,10 @@ function Schedule(opts)
 			window.location = link + "&sd=" + start + "&ed=" + end;
 		});
 
-        $('.resourceNameSelector').mouseenter(function()
-        {
-            $(this).bindResourceDetails($(this).attr('resourceId'));
-        });
+        $('.resourceNameSelector').each(function()
+		{
+			$(this).bindResourceDetails($(this).attr('resourceId'));
+		});
 
 		this.initNavigation();
 	};

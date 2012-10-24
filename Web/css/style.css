@@ -1,13 +1,13 @@
 * {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-    font: 11px Helvetica, "Helvetica Neue", "Lucida Grande", Verdana, Arial, sans-serif;
-    background-color: #fefefe;
-    margin: 0px;
-    color: #333333;
+	font: 11px Helvetica, "Helvetica Neue", "Lucida Grande", Verdana, Arial, sans-serif;
+	background-color: #fefefe;
+	margin: 0px;
+	color: #333333;
 }
 
 html, body {
@@ -15,133 +15,132 @@ html, body {
 }
 
 #page-header {
-    background-color: #bbb;
-    border-bottom: #4c5c67 solid 1px;
-    margin-bottom: 0px;
-    width: 100%;
-    border: none;
-    padding: 0;
-    background-image: url(../img/scheduleit-header-gradient.png);
+	background-color: #bbb;
+	border-bottom: #4c5c67 solid 1px;
+	margin-bottom: 0px;
+	width: 100%;
+	border: none;
+	padding: 0;
+	background-image: url(../img/scheduleit-header-gradient.png);
 }
 
 #page-header span.tab {
-    padding: 0px 10px 3px 10px;
-    margin: 2px 3px 1px 3px;
-    vertical-align: middle;
-    border-left: 2px solid #000000;
-    border-right: 2px solid #000000;
-    border-top: 2px solid #000000;
-    border-bottom: 3px solid #000000;
+	padding: 0px 10px 3px 10px;
+	margin: 2px 3px 1px 3px;
+	vertical-align: middle;
+	border-left: 2px solid #000000;
+	border-right: 2px solid #000000;
+	border-top: 2px solid #000000;
+	border-bottom: 3px solid #000000;
 }
 
 #signout {
-    float: right;
-    padding-right: 10px;
-    color: #fff;
-    font-size: 11pt;
-    text-align: right;
-    vertical-align: middle;
+	float: right;
+	padding-right: 10px;
+	color: #fff;
+	font-size: 11pt;
+	text-align: right;
+	vertical-align: middle;
 }
 
 #signout a {
-    color: #fff;
+	color: #fff;
 }
 
 img {
-    border: none;
+	border: none;
 }
 
 h1 {
-    padding-top: 25px;
-    margin-bottom: 10px;
-    color: #666;
-    border-bottom: solid 1px #999;
+	padding-top: 25px;
+	margin-bottom: 10px;
+	color: #666;
+	border-bottom: solid 1px #999;
 }
 
 .textbox {
-    font-size: 12px;
-    color: #36648B;
-    padding: 2px 3px;
-    border: solid 1px #aaaaaa;
+	font-size: 12px;
+	color: #36648B;
+	padding: 2px 3px;
+	border: solid 1px #aaaaaa;
 }
 
 .button {
-    display: inline;
-    margin: 0 7px 0 0;
-    background-color: #f0f0f0;
-    border: 1px solid #bbb;
-    border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
-    font-size: 12px;
-    line-height: 130%;
-    text-decoration: none;
-    font-weight: bold;
-    color: #565656;
-    cursor: pointer;
-    padding: 5px 10px 6px 7px; /* Links */
+	display: inline;
+	margin: 0 7px 0 0;
+	background-color: #f0f0f0;
+	border: 1px solid #bbb;
+	border-top: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+	font-size: 12px;
+	line-height: 130%;
+	text-decoration: none;
+	font-weight: bold;
+	color: #565656;
+	cursor: pointer;
+	padding: 5px 10px 6px 7px; /* Links */
 }
 
 .button:hover {
-    background-color: #e0e0e0;
+	background-color: #e0e0e0;
 }
 
 /*********************************************************/
 div.error, div.success, #loginError {
-    border: 1px solid #ba0026;
-    border-radius: 5px 5px 5px 5px;
+	border: 1px solid #ba0026;
+	border-radius: 5px 5px 5px 5px;
 
 	background: #ffc3c8 url("../img/s_error.png") no-repeat scroll 5px 5px;
 
-    margin: 5px auto 5px auto;
-    padding: 6px 25px;
-    font-size: 14px;
-    font-family: sans-serif;
-    text-align: center;
+	margin: 5px auto 5px auto;
+	padding: 6px 25px;
+	font-size: 14px;
+	font-family: sans-serif;
+	text-align: center;
 }
 
 div.error, div.success {
-    text-align: left;
-    font-size: 13px;
+	text-align: left;
+	font-size: 13px;
 }
 
 div.success {
-    border: solid 1px #8CC739;
-    text-align: center;
-    background: #BCE27F  url("../img/tick-circle.png") no-repeat scroll 5px 5px;
+	border: solid 1px #8CC739;
+	text-align: center;
+	background: #BCE27F url("../img/tick-circle.png") no-repeat scroll 5px 5px;
 }
 
 div.error table {
-    width: 100%;
+	width: 100%;
 }
 
 div.error img {
-    padding: 0px 10px;
+	padding: 0px 10px;
 }
 
 div.error ul {
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 20px;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 20px;
 }
 
 div.error li {
-    font-size: inherit;
+	font-size: inherit;
 }
 
 #content {
-    margin: 0px 15px 15px 15px;
-    padding: 0;
+	margin: 0px 15px 15px 15px;
+	padding: 0;
 }
 
 .asyncValidation {
-    display: none;
-    color: red;
+	display: none;
+	color: red;
 }
 
-.error .asyncValidation
-{
-    color: black;
+.error .asyncValidation {
+	color: black;
 }
 
 #wrapper {
@@ -152,13 +151,13 @@ div.error li {
 }
 
 div.page-footer {
-    color: #fafafa;
-    vertical-align: bottom;
-    width: 100%;
-    text-align: center;
+	color: #fafafa;
+	vertical-align: bottom;
+	width: 100%;
+	text-align: center;
 	height: 38px;
 	background-color: #e3f2ff;
-    background: url(../img/header-top.png) repeat;
+	background: url(../img/header-top.png) repeat;
 	padding-top: 1px;
 	border-top: solid 1px #333333;
 	font-size: 8pt;
@@ -170,403 +169,394 @@ div.push {
 }
 
 .page-footer a, .page-footer a:visited {
-    color: #fafafa;
+	color: #fafafa;
 }
 
 .p-center {
-    text-align: center;
+	text-align: center;
 }
 
 .no-data {
-    font-style: italic;
-    color: #aaa;
+	font-style: italic;
+	color: #aaa;
 }
 
 form.login, form.forgot, form.register, #reservationForm, form.box-form, #activation-body {
-    margin: 0 0 0 8px;
-    padding: 20px 16px 48px 16px;
-    font-weight: normal;
-    -moz-border-radius: 11px;
-    -khtml-border-radius: 11px;
-    -webkit-border-radius: 11px;
-    border-radius: 11px;
-    background: #fff;
-    border: 1px solid #e5e5e5;
-    -moz-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
-    -webkit-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
-    -khtml-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
-    box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
+	margin: 0 0 0 8px;
+	padding: 20px 16px 48px 16px;
+	font-weight: normal;
+	-moz-border-radius: 11px;
+	-khtml-border-radius: 11px;
+	-webkit-border-radius: 11px;
+	border-radius: 11px;
+	background: #fff;
+	border: 1px solid #e5e5e5;
+	-moz-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
+	-webkit-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
+	-khtml-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
+	box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
 }
 
 form.login {
 	padding-bottom: 18px;
 }
 
-div.registrationHeader, div.forgot_pwdHeader, .reservationHeader, div.box-form div.header{
-    padding: 5px 15px;
-    border: none;
-    -moz-border-radius: 13px;
-    -khtml-border-radius: 13px;
-    -webkit-border-radius: 13px;
-    border-radius: 13px;
-    -moz-box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
-    -webkit-box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
-    -khtml-box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
-    box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
-    text-decoration: none;
-    margin: 0 0 20px 0;
-    height: 2em;
-    background: url('../img/button_bg.gif') repeat-x 0 0;
-    color: #fff;
+div.registrationHeader, div.forgot_pwdHeader, .reservationHeader, div.box-form div.header {
+	padding: 5px 15px;
+	border: none;
+	-moz-border-radius: 13px;
+	-khtml-border-radius: 13px;
+	-webkit-border-radius: 13px;
+	border-radius: 13px;
+	-moz-box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
+	-webkit-box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
+	-khtml-box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
+	box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
+	text-decoration: none;
+	margin: 0 0 20px 0;
+	height: 2em;
+	background: url('../img/button_bg.gif') repeat-x 0 0;
+	color: #fff;
 }
 
 .registrationHeader h3, .forgot_pwdHeader h3, .reservationHeader h3, div.box-form h3.header {
-    font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    vertical-align: middle;
+	font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	vertical-align: middle;
 }
 
-
 #registrationbox, #forgotbox, div.box-form {
-    width: 550px;
-    margin: 3em auto 1em;
+	width: 550px;
+	margin: 3em auto 1em;
 }
 
 #notificationPreferences {
-    width: 650px;
+	width: 650px;
 }
 
 #notificationPreferences label {
-	margin-left:0.3em;
+	margin-left: 0.3em;
 }
 
 form.box-form li {
-    list-style: none;
+	list-style: none;
 }
 
 #registrationbox .input, #reservationbox .input {
-    font-size: 18px;
-    width: 97%;
-    padding: 3px;
-    margin: 2px 0 5px 0;
-    border: 1px solid #e0e0e0;
-    background: #fbfbfb;
-    color: #777;
+	font-size: 18px;
+	width: 97%;
+	padding: 3px;
+	margin: 2px 0 5px 0;
+	border: 1px solid #e0e0e0;
+	background: #fbfbfb;
+	color: #777;
 }
 
 #loginbox {
-    width: 450px;
-    margin: 7em auto 5em;
+	width: 450px;
+	margin: 7em auto 5em;
 }
 
 #loginbox .input, #forgotbox .input {
-    font-size: 24px;
-    width: 97%;
-    padding: 3px;
-    margin: 2px 6px 20px 0;
-    border: 1px solid #e0e0e0;
-    background: #fbfbfb;
-    color: #777
+	font-size: 24px;
+	width: 97%;
+	padding: 3px;
+	margin: 2px 6px 20px 0;
+	border: 1px solid #e0e0e0;
+	background: #fbfbfb;
+	color: #777
 }
 
-.input-small
-{
-    font-size: 12px;
-    width: 97%;
-    padding: 3px;
-    margin: 2px 6px 20px 0;
-    border: 1px solid #e0e0e0;
-    background: #fbfbfb;
-    color: #777
+.input-small {
+	font-size: 12px;
+	width: 97%;
+	padding: 3px;
+	margin: 2px 6px 20px 0;
+	border: 1px solid #e0e0e0;
+	background: #fbfbfb;
+	color: #777
 }
 
 form p {
-    margin: 0 3px 12px 3px;
+	margin: 0 3px 12px 3px;
 }
 
 label.login, label.forgot {
-    color: #666;
-    font-size: 18px;
+	color: #666;
+	font-size: 18px;
 }
 
 form .stayloggedin {
-    font-weight: normal;
-    float: left;
-    margin-bottom: 0;
+	font-weight: normal;
+	float: left;
+	margin-bottom: 0;
 }
 
 form .stayloggedin label {
-    font-size: 13px;
-    line-height: 1.5em;
+	font-size: 13px;
+	line-height: 1.5em;
 }
 
 form.res-checkbox input {
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
 p.loginsubmit, p.save, p.reg-adminsubmit, p.reporting-submit, p.resetpassword {
-    float: right;
+	float: right;
 }
 
 #login-links p, #login-links h4 {
-    text-align: center;
-	font-size:12pt;
+	text-align: center;
+	font-size: 12pt;
 }
 
-h4.register
-{
+h4.register {
 	text-align: center;
 	margin-bottom: 0;
 }
 
 p.regsubmit {
-    float: left;
+	float: left;
 }
 
 form li {
-    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    color: #666;
+	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	color: #666;
 }
 
 p.forgot {
-    font: 14px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	font: 14px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
 }
 
 ul.no-style {
-    list-style-type: none;
+	list-style-type: none;
 }
 
 li.res-req, li.reg-req, .rsv-req {
-    color: #a00;
+	color: #a00;
 }
 
 label.res-req, label.reg-req, .rsv-req {
-    font-size: 18px;
-    color: #a00;
+	font-size: 18px;
+	color: #a00;
 }
 
 label.res, label.reg {
-    font-size: 18px;
-    color: #666;
+	font-size: 18px;
+	color: #666;
 }
 
-
 textarea.input-area {
-    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    width: 98%;
-    padding: 3px;
-    margin: 2px 0 5px 0;
-    border: 1px solid #e0e0e0;
-    background: #fbfbfb;
-    color: #777;
-    overflow: hidden;
+	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 98%;
+	padding: 3px;
+	margin: 2px 0 5px 0;
+	border: 1px solid #e0e0e0;
+	background: #fbfbfb;
+	color: #777;
+	overflow: hidden;
 }
 
 td.center {
-    text-align: center;
+	text-align: center;
 }
 
 table.reg-admin {
-    border-collapse: collapse;
+	border-collapse: collapse;
 }
 
 table.reg-admin td {
-    padding: 3px;
+	padding: 3px;
 }
 
 th.admin-radio {
-    vertical-align: middle;
-    color: #777;
-    border-bottom: 2px solid #aaa;
-    padding: 0 0 3px 0;
+	vertical-align: middle;
+	color: #777;
+	border-bottom: 2px solid #aaa;
+	padding: 0 0 3px 0;
 }
 
 th.admin-fieldHeading {
-    font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    width: 400px;
-    text-align: left;
+	font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 400px;
+	text-align: left;
 }
 
 th.admin-radio {
-    font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    width: 100px;
+	font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 100px;
 }
 
 th.reporting {
-    font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    width: 150px;
-    text-align: center;
+	font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 150px;
+	text-align: center;
 }
 
 td.admin-fieldName {
-    font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    color: #777;
+	font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	color: #777;
 }
 
 tr.admin-lastline {
-    border-bottom: 2px solid #aaa;
+	border-bottom: 2px solid #aaa;
 }
 
 .rsv-checkbox h4 {
-    display: inline;
-    padding: 0 20px 0 5px;
+	display: inline;
+	padding: 0 20px 0 5px;
 }
 
 .rsv-checkbox input {
-    margin: 0 0 0 3px;
+	margin: 0 0 0 3px;
 }
 
 .rsv-checkbox {
-    padding: 0 0 10px 0;
+	padding: 0 0 10px 0;
 }
 
 .pulldown {
-    font-weight: bold;
-    margin: 2px 0 5px;
-    padding: 3px;
-    border: 1px solid #e5e5e5;
-    background: #fbfbfb;
-    color: #777;
+	font-weight: bold;
+	margin: 2px 0 5px;
+	padding: 3px;
+	border: 1px solid #e5e5e5;
+	background: #fbfbfb;
+	color: #777;
 }
 
 textarea.input-areashow {
-    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    width: 98%;
-    padding: 3px;
-    margin: 2px 0 5px 0;
-    border: 1px solid #e0e0e0;
-    background: #fbfbfb;
-    color: #777;
+	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 98%;
+	padding: 3px;
+	margin: 2px 0 5px 0;
+	border: 1px solid #e0e0e0;
+	background: #fbfbfb;
+	color: #777;
 }
 
 .inline {
-    display: inline;
+	display: inline;
 }
 
 .dateinput {
-    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    width: 100px;
-    padding: 3px;
-    margin: 2px 0 5px 0;
-    border: 1px solid #e0e0e0;
-    background: #fbfbfb;
-    color: #777;
-    text-align: center;
+	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 100px;
+	padding: 3px;
+	margin: 2px 0 5px 0;
+	border: 1px solid #e0e0e0;
+	background: #fbfbfb;
+	color: #777;
+	text-align: center;
 }
 
 .repeatDiv select {
-    font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-    width: 100px;
-    padding: 3px;
-    margin: 2px 0 5px 0;
-    border: 1px solid #e0e0e0;
-    background: #fbfbfb;
-    color: #777;
+	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	width: 100px;
+	padding: 3px;
+	margin: 2px 0 5px 0;
+	border: 1px solid #e0e0e0;
+	background: #fbfbfb;
+	color: #777;
 }
 
 #dashboardList {
-    list-style: none;
+	list-style: none;
 }
 
 fieldset {
-    border: solid #dedede 1px;
-    padding: 10px;
+	border: solid #dedede 1px;
+	padding: 10px;
 }
 
 legend {
-    font-size: 11px;
-    padding: 0px 5px;
+	font-size: 11px;
+	padding: 0px 5px;
 }
 
 a, a:visited {
-    color: #006295;
+	color: #006295;
 }
 
 a.page, a.page:visited {
-    padding: 1px;
-    font-size: larger;
-    text-decoration: none;
-    border: solid 1px transparent;
+	padding: 1px;
+	font-size: larger;
+	text-decoration: none;
+	border: solid 1px transparent;
 }
 
 a.page:hover, a.page.current {
-    background-color: #fafafa;
-    border-color: #bbbbbb;
+	background-color: #fafafa;
+	border-color: #bbbbbb;
 }
 
 .watermark {
-    color: #ebebeb;
-    font-style: italic;
-    font-weight: normal;
+	color: #ebebeb;
+	font-style: italic;
+	font-weight: normal;
 }
 
 div.clear {
-    clear: both;
-    height: 0px;
+	clear: both;
+	height: 0px;
 }
 
 .dialog {
-    display: none;
+	display: none;
 	max-height: 600px;
 	overflow: auto;
 }
 
 .notification-row {
-    display: table-row;
-    font-size: 12pt;
-    font-weight: normal;
+	display: table-row;
+	font-size: 12pt;
+	font-weight: normal;
 }
 
 .notification-row div {
-    padding: 5px;
+	padding: 5px;
 }
 
 .notification-row.alt {
-    background-color: #ced1c5;
+	background-color: #ced1c5;
 }
 
 div.notification-type {
-    width:50%;
-    display: table-cell;
+	width: 50%;
+	display: table-cell;
 }
 
 div.notification-status {
-    width:50%;
-    display: table-cell;
+	width: 50%;
+	display: table-cell;
 }
 
-#help h3, #help h2
-{
-    /*margin: 10px 0;*/
+#help h3, #help h2 {
+	/*margin: 10px 0;*/
 }
 
-#help h2
-{
-    padding: 2px;
-    background-color: #e8eef2;
-}
-#help h3
-{
-    margin-left: 10px;
-    text-decoration: underline;
+#help h2 {
+	padding: 2px;
+	background-color: #e8eef2;
 }
 
-#help p
-{
-    margin: 10px 20px;
-    font-size: 11pt;
+#help h3 {
+	margin-left: 10px;
+	text-decoration: underline;
 }
 
-#help p.setting span
-{
-    color: green;
-    font-family: Courier;
-    display: block;
+#help p {
+	margin: 10px 20px;
+	font-size: 11pt;
 }
 
-#help ul
-{
-    margin-left: 20px;
-    font-size: 11pt;
+#help p.setting span {
+	color: green;
+	font-family: Courier;
+	display: block;
+}
+
+#help ul {
+	margin-left: 20px;
+	font-size: 11pt;
 }
 
 .note {
@@ -574,10 +564,8 @@ div.notification-status {
 	color: #8D96A8
 }
 
-
-
 .customAttributes {
-	clear:both;
+	clear: both;
 }
 
 .customAttribute {
@@ -623,13 +611,61 @@ select.customAttribute {
 }
 
 .validationSummary {
-    display: none;
+	display: none;
 }
 
 ul.indented li {
-     margin-left: 25px;
+	margin-left: 25px;
 }
 
 .clear {
-    clear: both;
+	clear: both;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+#resourceDetailsPopup {
+	min-width: 300px;
+	max-width: 1000px;
+	width: auto;
+}
+
+#resourceDetailsPopup ul {
+	margin-left: 25px;
+}
+
+#resourceDetailsPopup h4 {
+	border-bottom: solid 1px #000;
+	font-size: 12pt;
+	margin-bottom: 3px;
+}
+
+#resourceDetailsPopup .customAttribute {
+	font-size: inherit;
+}
+
+#resourceDetailsPopup .attributes {
+	border-left: solid 1px #ced1c5;
+}
+
+#resourceDetailsPopup .description, #resourceDetailsPopup .attributes {
+	padding: 10px 5px;
+	float: left;
+	max-width: 400px;
+}
+
+#resourceDetailsPopup .resourceImage {
+	width: 200px;
+	float: left;
+}
+
+#resourceDetailsDiv {
+	display: none;
+	position: absolute;
+	border: solid 2px #212121;
+	background-color: #fafafa;
+	padding: 5px;
+	background-color: #fff;
 }

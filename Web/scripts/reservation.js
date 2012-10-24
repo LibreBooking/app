@@ -38,7 +38,7 @@ function Reservation(opts) {
 	participation.addedUsers = [];
 
 	var changeUser = {};
-	
+
 	Reservation.prototype.init = function(ownerId) {
 		participation.addedUsers.push(ownerId);
 
@@ -84,10 +84,7 @@ function Reservation(opts) {
 			AddResources();
 		});
 
-		$('#resourceNames, #additionalResources').delegate('.resourceDetails', 'mouseover', function() {
-            var resourceId = $(this).siblings(".resourceId").val();
-			$(this).bindResourceDetails(resourceId);
-		});
+		WireUpResourceDetailPopups();
 
 		$('#btnRemoveAttachment').click(function(e){
 			e.preventDefault();
@@ -221,6 +218,7 @@ function Reservation(opts) {
 		}
 
 		$(dialogBoxId).dialog('close');
+		WireUpResourceDetailPopups();
 	};
 
 	var AdjustEndDate = function() {
@@ -304,6 +302,15 @@ function Reservation(opts) {
 		$('.save').click(function() {
 
 			$('#reservationForm').submit();
+		});
+	};
+
+	function WireUpResourceDetailPopups()
+	{
+		$('#resourceNames, #additionalResources').find('.resourceDetails').each(function ()
+		{
+			var resourceId = $(this).siblings(".resourceId").val();
+			$(this).bindResourceDetails(resourceId);
 		});
 	};
 

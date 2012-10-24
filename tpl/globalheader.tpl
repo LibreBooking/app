@@ -25,17 +25,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<title>{if $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset={$Charset}"/>
 {if $ShouldLogout}
-	<meta http-equiv="REFRESH"
-		  content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}">
+	<meta http-equiv="REFRESH" content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}">
 {/if}
 	<link rel="shortcut icon" href="{$Path}favicon.ico"/>
 	<link rel="icon" href="{$Path}favicon.ico"/>
 	{if $UseLocalJquery}
-		<script type="text/javascript" src="{$Path}scripts/js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.8.17.custom.min.js"></script>
+		<script type="text/javascript" src="{$Path}scripts/js/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.9.0.custom.min.js"></script>
 	{else}
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
 	{/if}
 	<script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/menubar.js"></script>
@@ -43,9 +42,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		@import url({$Path}css/nav.css);
 		@import url({$Path}css/style.css);
 		{if $UseLocalJquery}
-			@import url({$Path}scripts/css/smoothness/jquery-ui-1.8.17.custom.css);
+			@import url({$Path}scripts/css/smoothness/jquery-ui-1.9.0.custom.css);
 		{else}
-			@import url(//ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/smoothness/jquery-ui.css);
+			@import url(//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css);
 		{/if}
 		{if $cssFiles neq ''}
 			{assign var='CssFileList' value=','|explode:$cssFiles}

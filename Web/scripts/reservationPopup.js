@@ -1,34 +1,30 @@
-$.fn.attachReservationPopup = function(refNum, detailsUrl)
+$.fn.attachReservationPopup = function (refNum, detailsUrl)
 {
 	if (detailsUrl == null)
 	{
 		detailsUrl = "ajax/respopup.php";
 	}
-	
+
 	$(this).qtip({
-		position:
-		{
-			  my: 'bottom left',
-			  at: 'top left',
-			  target: $(this),
-			  effect: false
+		position:{
+			my:'bottom left',
+			at:'top left',
+			target:$(this),
+			effect:false
 		},
 
-		content:
-		{
-			text: 'Loading...',
-			ajax:
-			{
-				 url: detailsUrl,
-				 type: 'GET',
-				 data: { id: refNum },
-				 dataType: 'html'
+		content:{
+			text:'Loading...',
+			ajax:{
+				url:detailsUrl,
+				type:'GET',
+				data:{ id:refNum },
+				dataType:'html'
 			}
 		},
 
-		show:
-		{
-			delay: 700
+		show:{
+			delay:700
 		}
 	});
 }

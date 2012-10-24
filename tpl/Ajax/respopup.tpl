@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {if $authorized}
-<div class="res_popup_details">
+<div class="res_popup_details" style="margin:0">
 	<div class="user">
 		{if $hideUserInfo}
 			{translate key=Private}
