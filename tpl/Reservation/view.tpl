@@ -53,20 +53,32 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 				<li class="section">
 					<label>{translate key='BeginDate'}</label> {formatdate date=$StartDate}
-				{foreach from=$Periods item=period}
-					{if $period eq $SelectedStart}
-						{$period->Label()} <br/>
-					{/if}
-				{/foreach}
+					<input type="hidden" id="formattedBeginDate" value="{formatdate date=$StartDate key=system}"/>
+					{foreach from=$Periods item=period}
+						{if $period eq $SelectedStart}
+							{$period->Label()} <br/>
+							<input type="hidden" id="BeginPeriod" value="{$period->Begin()}"/>
+						{/if}
+					{/foreach}
 				</li>
 				<li>
 					<label>{translate key='EndDate'}</label> {formatdate date=$EndDate}
-				{foreach from=$Periods item=period}
-					{if $period eq $SelectedEnd}
-						{$period->LabelEnd()} <br/>
-					{/if}
-				{/foreach}
+					<input type="hidden" id="formattedEndDate" value="{formatdate date=$EndDate key=system}" />
+					{foreach from=$Periods item=period}
+						{if $period eq $SelectedEnd}
+							{$period->LabelEnd()} <br/>
+							<input type="hidden" id="EndPeriod" value="{$period->End()}"/>
+						{/if}
+					{/foreach}
 				</li>
+				<li>
+						<label>{translate key=ReservationLength}</label>
+
+						<div class="durationText">
+							<span id="durationDays">0</span> {translate key=days},
+							<span id="durationHours">0</span> {translate key=hours}
+						</div>
+					</li>
 				<li>
 					<label>{translate key='RepeatPrompt'}</label> {translate key=$RepeatOptions[$RepeatType]['key']}
 				{if $IsRecurring}
@@ -226,6 +238,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<script type="text/javascript" src="scripts/participation.js"></script>
 	<script type="text/javascript" src="scripts/approval.js"></script>
 	<script type="text/javascript" src="scripts/js/jquery.form-3.09.min.js"></script>
+	<script type="text/javascript" src="scripts/date-helper.js"></script>
 	<script type="text/javascript" src="scripts/reservation.js"></script>
 	<script type="text/javascript" src="scripts/autocomplete.js"></script>
 	<script type="text/javascript">

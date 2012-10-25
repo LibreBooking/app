@@ -31,6 +31,11 @@ class ReadOnlyReservationPage extends ExistingReservationPage
 		$this->IsApprovable = false;
 	}
 
+	public function PageLoad()
+	{
+		parent::PageLoad();
+	}
+
 	function SetIsEditable($canBeEdited)
 	{
 		// no-op

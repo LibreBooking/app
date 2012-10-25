@@ -194,6 +194,27 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('MaxUploadSize', UploadedFile::GetMaxSize());
 		$this->Set('UploadsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS, new BooleanConverter()));
 		$this->Set('ShowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
+
+		$this->Set('RepeatEveryOptions', range(1, 20));
+		$this->Set('RepeatOptions', array (
+						'none' => array('key' => 'DoesNotRepeat', 'everyKey' => ''),
+						'daily' => array('key' => 'Daily', 'everyKey' => 'days'),
+						'weekly' => array('key' => 'Weekly', 'everyKey' => 'weeks'),
+						'monthly' => array('key' => 'Monthly', 'everyKey' => 'months'),
+						'yearly' => array('key' => 'Yearly', 'everyKey' => 'years'),
+								)
+		);
+		$this->Set('DayNames', array(
+								0 => 'DaySundayAbbr',
+								1 => 'DayMondayAbbr',
+								2 => 'DayTuesdayAbbr',
+								3 => 'DayWednesdayAbbr',
+								4 => 'DayThursdayAbbr',
+								5 => 'DayFridayAbbr',
+								6 => 'DaySaturdayAbbr',
+								)
+		);
+
 		$this->Display($this->GetTemplateName());
 	}
 	
