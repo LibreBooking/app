@@ -146,7 +146,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 							<li class="menuitem"><a href="{$Path}admin/manage_admin_groups.php">{translate key="ManageGroups"}</a>
 
 						{/if}
-						{if $CanViewResourceAdmin || CanViewScheduleAdmin}
+						{if $CanViewResourceAdmin || $CanViewScheduleAdmin}
 							<li class="menuitem"><a href="{$Path}admin/manage_admin_resources.php">{translate key="ManageResources"}</a></li>
 							<li class="menuitem"><a href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a></li>
 						{/if}
