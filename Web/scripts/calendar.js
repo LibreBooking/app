@@ -42,9 +42,9 @@ function Calendar(opts, reservations)
 			}
 		);
 
-		$(".reservation").each(function() {
+		$(".reservation").each(function(index, value) {
 			var refNum = $(this).attr('refNum');
-			$(this).attachReservationPopup(refNum);
+			value.attachReservationPopup(refNum);
 		});
 
 		$('#calendarFilter').change(function() {

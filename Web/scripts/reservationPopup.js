@@ -1,15 +1,17 @@
 $.fn.attachReservationPopup = function (refNum, detailsUrl)
 {
+	var me = $(this);
 	if (detailsUrl == null)
 	{
 		detailsUrl = "ajax/respopup.php";
 	}
 
-	$(this).qtip({
+	me.qtip({
 		position:{
 			my:'bottom left',
 			at:'top left',
-			target:$(this),
+			target:false,
+			viewport: $(window),
 			effect:false
 		},
 
@@ -24,7 +26,8 @@ $.fn.attachReservationPopup = function (refNum, detailsUrl)
 		},
 
 		show:{
-			delay:700
+			delay:700,
+			effect:false
 		}
 	});
 }
