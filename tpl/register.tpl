@@ -33,6 +33,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</ul>
 </div>
 
+<div class="error" id="registrationError" style="display:none;">
+	{translate key=UnknownError}
+</div>
+
 <div id="registrationbox">
 	<form class="register" method="post" ajaxAction="{RegisterActions::Register}" id="frmRegister"
 		  action="{$smarty.server.SCRIPT_NAME}">

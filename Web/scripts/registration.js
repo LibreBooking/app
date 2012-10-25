@@ -22,18 +22,27 @@ function Registration()
 
 	function onValidationFailed(event, data)
 	{
-		refreshCaptcha(data);
+		refreshCaptcha();
 		hideModal();
 	}
 
 	function successHandler(response)
 	{
-		window.location = response.url;
+		if (response && response.url)
+		{
+			window.location = response.url;
+		}
+		else
+		{
+			onValidationFailed();
+			$('#registrationError').show();
+		}
 	}
 
 	function onBeforeAddSubmit(formData, jqForm, opts)
 	{
 		$('#profileUpdatedMessage').hide();
+		$('#registrationError').hide();
 
 		$.colorbox({inline:true, href:"#modalDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
 		$('#modalDiv').show();
@@ -50,7 +59,7 @@ function Registration()
 		$('html, body').animate({scrollTop:top}, 'slow');
 	}
 
-	function refreshCaptcha(response) {
+	function refreshCaptcha() {
 		var src = $('#captchaImg').attr('src') + '?' + Math.random();
 		$('#captchaImg').attr('src', src);
 		$('#captchaValue').val('');
