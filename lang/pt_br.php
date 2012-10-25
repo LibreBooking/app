@@ -26,10 +26,7 @@ class pt_br extends Language
     {
         parent::__construct();
     }
-    
-    /**
-     * @return array
-     */
+
     protected function _LoadDates()
     {
         $dates = array();
@@ -39,19 +36,15 @@ class pt_br extends Language
         $dates['schedule_daily'] = 'l, d/m/Y';
         $dates['reservation_email'] = 'd/m/Y @ H:i (e)';
         $dates['res_popup'] = 'd/m/Y H:i';
-        $dates['dashboard'] = 'l, m/d/Y H:i';
-        $dates['period_time'] = 'H:i';
-	$dates['general_date_js'] = 'dd/mm/yy';
-	$dates['calendar_time'] = 'h:mmt';
-	$dates['calendar_dates'] = 'd/M';
+        $dates['dashboard'] = 'l, d/m/Y H:i';
+        $dates['period_time'] = "H:i";
+				$dates['general_date_js'] = "dd/mm/yy";
+				$dates['calendar_time'] = 'H:mm';
+				$dates['calendar_dates'] = 'd/M';
 
         $this->Dates = $dates;
-        
-        return $this->Dates;
     }
-    /**
-     * @return array
-     */
+
     protected function _LoadStrings()
     {
         $strings = array();
@@ -97,13 +90,13 @@ class pt_br extends Language
         $strings['NoUpcomingReservations'] = 'Você não tem reservas próximas';
         $strings['UpcomingReservations'] = 'Reservas Futuras';
         $strings['ShowHide'] = 'Mostrar/Esconder';
-        $strings['Error'] = 'Erro Desconhecido';
+        $strings['Error'] = 'Erro';
         $strings['ReturnToPreviousPage'] = 'Retornar para a última página que você estava no';
         $strings['UnknownError'] = 'Erro Desconhecido';
         $strings['InsufficientPermissionsError'] = 'Você não tem permissão para acessar este recurso';
         $strings['MissingReservationResourceError'] = 'Um recurso não foi selecionado';
         $strings['MissingReservationScheduleError'] = 'A agenda não foi selecionada';
-        $strings['DoesNotRepeat'] = 'Não Repetir';
+        $strings['DoesNotRepeat'] = 'Não repetir';
         $strings['Daily'] = 'Diário';
         $strings['Weekly'] = 'Semanal';
         $strings['Monthly'] = 'Mensal';
@@ -121,7 +114,7 @@ class pt_br extends Language
         $strings['repeatDayOfMonth'] = 'dia do mês';
         $strings['repeatDayOfWeek'] = 'dia da semana';
         $strings['RepeatUntilPrompt'] = 'Até';
-        $strings['RepeatEveryPrompt'] = 'Todo';
+        $strings['RepeatEveryPrompt'] = 'A Cada';
         $strings['RepeatDaysPrompt'] = 'Em';
         $strings['CreateReservationHeading'] = 'Criar uma nova reserva';
         $strings['EditReservationHeading'] = 'Edição de reserva %s';
@@ -135,7 +128,7 @@ class pt_br extends Language
         $strings['ShowHideNavigation'] = 'Mostrar/Esconder Navegação';
         $strings['ReferenceNumber'] = 'Número de Referência';
         $strings['Tomorrow'] = 'Amanhã';
-        $strings['LaterThisWeek'] = 'Ainda Esta Semana';
+        $strings['LaterThisWeek'] = 'Ainda esta semana';
         $strings['NextWeek'] = 'Próxima Semana';
         $strings['SignOut'] = 'Sair';
         $strings['LayoutDescription'] = 'Inicia em %s, mostrando %s dias de uma só vez';
@@ -143,7 +136,7 @@ class pt_br extends Language
         $strings['TakeOffline'] = 'Colocar Offline';
         $strings['BringOnline'] = 'Colocar Online';
         $strings['AddImage'] = 'Adicionar Imagem';
-        $strings['NoImage'] = 'Nenhuma Imagem';
+        $strings['NoImage'] = 'Nenhuma Imagem Atribuída';
         $strings['Move'] = 'Mover';
         $strings['AppearsOn'] = 'Aparece Em %s';
         $strings['Location'] = 'Local';
@@ -195,7 +188,7 @@ class pt_br extends Language
         $strings['AllSchedules'] = 'Todas as Agendas';
         $strings['UsernameOrEmail'] = 'Usuário ou Email';
         $strings['Members'] = 'Membros';
-        $strings['QuickSlotCreation'] = 'Criar intervalos a cada %s minutos entre %s e %s';
+        $strings['QuickSlotCreation'] = 'Criar faixas a cada %s minutos entre %s e %s';
         $strings['ApplyUpdatesTo'] = 'Aplicar Atualizações Para';
         $strings['CancelParticipation'] = 'Cancelar Participação';
         $strings['Attending'] = 'Atender';
@@ -217,7 +210,7 @@ class pt_br extends Language
         $strings['PasswordChangedSuccessfully'] = 'Sua senha foi alterada com sucesso';
         $strings['SignedInAs'] = 'Logado como';
         $strings['NotSignedIn'] = 'Você não está logado';
-        $strings['ReservationTitle'] = ' Título da reserva';
+        $strings['ReservationTitle'] = 'Título da reserva';
         $strings['ReservationDescription'] = 'Descrição da reserva';
         $strings['ResourceList'] = 'Recursos a serem reservados';
         $strings['Accessories'] = 'Acessórios';
@@ -249,16 +242,16 @@ class pt_br extends Language
         $strings['AddToOutlook'] = 'Adicionar ao Outlook';
         $strings['Done'] = 'Concluído';
         $strings['RememberMe'] = 'Lembrar-se de Mim';
-        $strings['FirstTimeUser?'] = 'Usando pela primeira vez?';
+        $strings['FirstTimeUser?'] = 'Usuário Novo?';
         $strings['CreateAnAccount'] = 'Criar Uma Conta';
         $strings['ViewSchedule'] = 'Ver Agendas';
         $strings['ForgotMyPassword'] = 'Eu Esqueci Minha Senha';
-        $strings['YouWillBeEmailedANewPassword'] = 'Você receberá um email com uma nova senha gerada aleatoriamente';
+        $strings['YouWillBeEmailedANewPassword'] = 'Você receberá um email uma nova senha gerada aleatoriamente';
         $strings['Close'] = 'Fechar';
         $strings['ExportToCSV'] = 'Exportar para CSV';
         $strings['OK'] = 'OK';
         $strings['Working'] = 'Trabalhando';
-        $strings['Login'] = 'Entrar';
+        $strings['Login'] = 'Login';
         $strings['AdditionalInformation'] = 'Informações Adicionais';
         $strings['AllFieldsAreRequired'] = 'todos os campos são obrigatórios';
         $strings['Optional'] = 'opcional';
@@ -268,15 +261,15 @@ class pt_br extends Language
         $strings['SecurityCode'] = 'Código de Segurança';
         $strings['ReservationCreatedPreference'] = 'Quando eu criar uma reserva ou uma reserva é criada em meu nome';
         $strings['ReservationUpdatedPreference'] = 'Quando eu atualizar uma reserva ou uma reserva é atualizada em meu nome';
-	$strings['ReservationDeletedPreference'] = 'Quando eu excluir uma reserva ou uma reserva é excluída em meu nome';
         $strings['ReservationApprovalPreference'] = 'Quando minha reserva pendente é aprovada';
-        $strings['PreferenceSendEmail'] = 'Enviar um e-mail';
+	$strings['ReservationDeletedPreference'] = 'Quando eu deletar uma reserva ou uma reserva é deletada em meu nome';
+        $strings['PreferenceSendEmail'] = 'Envie-me um e-mail';
         $strings['PreferenceNoEmail'] = 'Não me notificar';
         $strings['ReservationCreated'] = 'A sua reserva foi criada com sucesso!';
         $strings['ReservationUpdated'] = 'A sua reserva foi atualizada com sucesso!';
         $strings['ReservationRemoved'] = 'A sua reserva foi removida';
         $strings['YourReferenceNumber'] = 'O seu número de referência é %s';
-        $strings['UpdatingReservation'] = 'Atualizando reserva';
+        $strings['UpdatingReservation'] = 'Atualizando Reserva';
         $strings['ChangeUser'] = 'Alterar Usuário';
         $strings['MoreResources'] = 'Mais Recursos';
         $strings['ReservationLength'] = 'Duração da Reserva';
@@ -293,17 +286,17 @@ class pt_br extends Language
         $strings['DeleteAccessoryWarning'] = 'Excluindo este acessório irá removê-lo de todas as reservas.';
         $strings['AddAccessory'] = 'Adicionar Acessório';
         $strings['AddBlackout'] = 'Adicionar Horário Indisponível';
-        $strings['AllResourcesOn'] = 'Todos Recursos Em';
+        $strings['AllResourcesOn'] = 'Todos os recursos em';
         $strings['Reason'] = 'Razão';
-        $strings['BlackoutShowMe'] = 'Mostrar Reservas Conflitantes';
-        $strings['BlackoutDeleteConflicts'] = 'Excluir Reservas Conflitantes';
+        $strings['BlackoutShowMe'] = 'Mostre-me reservas conflitantes';
+        $strings['BlackoutDeleteConflicts'] = 'Excluir reservas conflitantes';
         $strings['Filter'] = 'Filtro';
         $strings['Between'] = 'Entre';
         $strings['CreatedBy'] = 'Criado Por';
         $strings['BlackoutCreated'] = 'Horário Indisponível Criado!';
-        $strings['BlackoutNotCreated'] = 'Horário indisponível não pôde ser criado!';
-        $strings['BlackoutConflicts'] = 'Existem horários indisponíveis conflitantes';
-        $strings['ReservationConflicts'] = 'Existem horários de reservas conflitantes';
+        $strings['BlackoutNotCreated'] = 'Blackout could not be created!';
+        $strings['BlackoutConflicts'] = 'There are conflicting blackout times';
+        $strings['ReservationConflicts'] = 'There are conflicting reservations times';
         $strings['UsersInGroup'] = 'Usuários neste grupo';
         $strings['Browse'] = 'Navegar';
         $strings['DeleteGroupWarning'] = 'Excluindo este grupo irá remover todas as permissões de recursos associados. Os usuários deste grupo podem perder o acesso aos recursos.';
@@ -321,20 +314,20 @@ class pt_br extends Language
         $strings['DeleteResourceWarningPermissions'] = 'todas as atribuições de permissão';
         $strings['DeleteResourceWarningReassign'] = 'Por favor, reatribuir qualquer coisa que você não queira que seja eliminado antes de prosseguir';
         $strings['ScheduleLayout'] = 'Layout (todos os horários %s)';
-        $strings['ReservableTimeSlots'] = 'Intervalos de Horários Reserváveis';
-        $strings['BlockedTimeSlots'] = 'Intervalos de Horários Bloqueados';
+        $strings['ReservableTimeSlots'] = 'Faixa de Horários Reserváveis';
+        $strings['BlockedTimeSlots'] = 'Faixa de Horários Bloqueados';
         $strings['ThisIsTheDefaultSchedule'] = 'Esta é a agenda padrão';
         $strings['DefaultScheduleCannotBeDeleted'] = 'Agenda padrão não pode ser excluída';
         $strings['MakeDefault'] = 'Tornar Padrão';
         $strings['BringDown'] = 'Mover para Baixo';
         $strings['ChangeLayout'] = 'Mudar Layout';
         $strings['AddSchedule'] = 'Adicionar Agenda';
-        $strings['StartsOn'] = 'Inicia Em';
-        $strings['NumberOfDaysVisible'] = 'Número de Dias Visíveis';
-        $strings['UseSameLayoutAs'] = 'Usar Mesmo Layout Como';
+        $strings['StartsOn'] = 'Inicia em';
+        $strings['NumberOfDaysVisible'] = 'Número de dias visíveis';
+        $strings['UseSameLayoutAs'] = 'Usar mesmo layout como';
         $strings['Format'] = 'Formato';
         $strings['OptionalLabel'] = 'Título Opcional';
-        $strings['LayoutInstructions'] = 'Digite um intervalo por linha. Intervalos devem ser fornecidos para todas as 24 horas do dia começando e terminando às 12:00.';
+        $strings['LayoutInstructions'] = 'Digite uma faixa por linha. Faixas devem ser fornecidas para todas as 24 horas do dia começando e terminando às 12:00.';
         $strings['AddUser'] = 'Adicionar Usuário';
         $strings['UserPermissionInfo'] = 'O acesso efetivo ao recurso pode ser diferente dependendo da função do usuário, permissões de grupo, ou definições de permissões externas';
         $strings['DeleteUserWarning'] = 'Excluir este usuário irá remover todas as suas reservas atuais, futuros e histórico.';
@@ -350,46 +343,47 @@ class pt_br extends Language
         $strings['Restricted'] = 'Restrito';
         $strings['ViewAll'] = 'Ver Todos';
         $strings['MoveResourcesAndReservations'] = 'Mover recursos e reservas para';
-        $strings['TurnOffSubscription'] = 'Desligar Assinaturas de Calendário';
-        $strings['TurnOnSubscription'] = 'Permitir Assinaturas para este Calendário';
-        $strings['SubscribeToCalendar'] = 'Assinar este Calendário';
-        $strings['SubscriptionsAreDisabled'] = 'O administrador desabilitou assinaturas de calendário';
-        $strings['NoResourceAdministratorLabel'] = '(Nenhum Administrador de Recursos)';
-        $strings['WhoCanManageThisResource'] = 'Quem Pode Gerenciar Este Recurso?';
-        $strings['ResourceAdministrator'] = 'Administrador de Recursos';
-        $strings['Private'] = 'Privado';
-        $strings['Accept'] = 'Aceitar';
-        $strings['Decline'] = 'Recusar';
-        $strings['ShowFullWeek'] = 'Mostrar Semana Completa';
-        $strings['CustomAttributes'] = 'Atributos personalizados';
-        $strings['AddAttribute'] = 'Adicionar um atributo';
-        $strings['EditAttribute'] = 'Atualizar um atributo';
-        $strings['DisplayLabel'] = 'Mostrar Rótulo';
-        $strings['Type'] = 'Tipo';
-        $strings['Required'] = 'Obrigatório';
-        $strings['ValidationExpression'] = 'Expressão de Validação';
-        $strings['PossibleValues'] = 'Valores Possíveis';
-        $strings['SingleLineTextbox'] = 'Caixa de texto de linha única';
-        $strings['MultiLineTextbox'] = 'Caixa de texto de várias linhas';
-        $strings['Checkbox'] = 'Caixa de seleção';
-        $strings['SelectList'] = 'Lista de seleção';
-        $strings['CommaSeparated'] = 'separados por vírgula';
-        $strings['Category'] = 'Categoria';
+	$strings['Customization'] = 'Personalização';				
+	$strings['Attributes'] = 'Atributos';
+	$strings['CustomAttributes'] = 'Personalização dos atributos';
+	$strings['AddAttribute'] = 'Adicionar um atributo';
+	$strings['EditAttribute'] = 'Atualizar um atributo';
+	$strings['AdditionalAttributes'] = 'Atributos adicionais';
+	$strings['Category'] = 'categoria';
         $strings['CategoryReservation'] = 'Reservar';
         $strings['CategoryGroup'] = 'Grupo';
-        $strings['SortOrder'] = 'Ordem';
-        $strings['Title'] = 'Título';
-        $strings['AdditionalAttributes'] = 'Atributos Adicionais';
-        $strings['True'] = 'Verdadeiro';
-        $strings['False'] = 'Falso';
-	$strings['ForgotPasswordEmailSent'] = 'Um email foi enviado para o endereço fornecido com instruções para redefinir sua senha';
-	$strings['ActivationEmailSent'] = 'Você receberá um email de ativação em breve.';
-	$strings['AccountActivationError'] = 'Desculpe, não foi possível ativar sua conta.';
-	$strings['Attachments'] = 'Anexos';
-	$strings['AttachFile'] = 'Anexar Arquivo';
-	$strings['Maximum'] = 'máximo';
-        // End Strings
-				
+	$strings['Responsibilities'] = 'Responsabilidades';
+	$strings['GroupReservations'] = 'Reservas por Grupos';
+        $strings['ResourceReservations'] = 'Reservas de Recursos';
+	$strings['Notes'] = 'Notas';
+        $strings['NoNotesLabel'] = '(sem notas)';
+	$strings['ResourceAdministrator'] = 'Administrador do Recurso';
+	$strings['NoResourceAdministratorLabel'] = '(Sem administrador do recurso)';
+	$strings['TurnOnSubscription'] = 'Permitir reservas no calendário';
+	$strings['Title'] = 'Título';
+	$strings['TurnOffSubscription'] = 'Desabilitar reservas no calendário';
+	$strings['ShowFullWeek'] = 'Exibir semana';
+	$strings['DisplayLabel'] = 'Nome de exibição';
+	$strings['Type'] = 'Tipo';
+	$strings['Required'] = 'Necessário';
+	$strings['ValidationExpression'] = 'Expressão de validação';
+	$strings['SortOrder'] = 'Ordem de exibição';
+        $strings['SingleLineTextbox'] = 'Caixa de texto linha única';
+        $strings['MultiLineTextbox'] = 'Caixa de texto linhas múltiplas';
+        $strings['Checkbox'] = 'Caixa de seleção';
+        $strings['SelectList'] = 'Lista de seleção';
+				// New
+				$strings['or'] = 'ou';
+				$strings['of'] = 'de';
+				$strings['Back'] = 'Anterior';
+				$strings['Forward'] = 'Próximo';
+				$strings['ViewWeek'] = 'Ver Semana';
+				$strings['ViewMonth'] = 'Ver Mês';
+				$strings['Choose'] = 'Escolher';
+				$strings['CurrentTime'] = 'Hora Atual';
+				$strings['ImageUploadDirectory'] = 'Diretório para enviar imagem física';
+				$strings['ChangePermissions'] = 'Tente aplicar as permissões corretas';
+
         // Errors
         $strings['LoginError'] = 'Não foi possível encontrar seu usuário ou senha';
         $strings['ReservationFailed'] = 'A sua reserva não pode ser feita';
@@ -403,14 +397,11 @@ class pt_br extends Language
         $strings['StartDateBeforeEndDateRule'] = 'A data de início deve ser anterior à data de término';
         $strings['StartIsInPast'] = 'A data de início não pode ser no passado';
         $strings['EmailDisabled'] = 'O administrador desabilitou notificações de e-mail';
-        $strings['ValidLayoutRequired'] = 'Intervalos devem ser fornecidos para todas as 24 horas do dia começando e terminando às 12:00.';
-        $strings['CustomAttributeErrors'] = 'Há problemas com os atributos adicionais que você forneceu:';
-        $strings['CustomAttributeRequired'] = '%s é um campo obrigatório';
+        $strings['ValidLayoutRequired'] = 'Faixas devem ser fornecidas para todas as 24 horas do dia começando e terminando às 12:00.';
+        $strings['CustomAttributeErrors'] = 'Existem erros com o atributo adicional que você forneceu:';
+	$strings['CustomAttributeRequired'] = '%s é um parâmetro necessário';
         $strings['CustomAttributeInvalid'] = 'O valor fornecido para %s é inválido';
-        $strings['AttachmentLoadingError'] = 'Desculpe, houve um problema ao carregar o arquivo solicitado.';
-        $strings['InvalidAttachmentExtension'] = 'Você só pode fazer upload de arquivos do tipo: %s';
-        // End Errors
-        
+
         // Page Titles
         $strings['CreateReservation'] = 'Criar Reservas';
         $strings['EditReservation'] = 'Editar Reservas';
@@ -443,17 +434,11 @@ class pt_br extends Language
         $strings['ChangePassword'] = 'Alterar Senha';
         $strings['MyAccount'] = 'Minha Conta';
         $strings['Profile'] = 'Perfil';
-        $strings['ApplicationManagement'] = 'Gerenciar Aplicativos';
+        $strings['ApplicationManagement'] = 'Gerenciamento de Aplicativos';
         $strings['ForgotPassword'] = 'Esqueceu a Senha';
         $strings['NotificationPreferences'] = 'Preferências de Notificação';
         $strings['ManageAnnouncements'] = 'Anúncios';
-        $strings['Responsibilities'] = 'Responsabilidades';
-        $strings['GroupReservations'] = 'Reservas para Grupos';
-        $strings['ResourceReservations'] = 'Reservas de Recurso';
-        $strings['Customization'] = 'Personalização';
-        $strings['Attributes'] = 'Atributos';
-	$strings['AccountActivation'] = 'Ativação da Conta';	
-        // End Page Titles
+        //
 
         // Day representations
         $strings['DaySundaySingle'] = 'D';
@@ -470,31 +455,23 @@ class pt_br extends Language
         $strings['DayWednesdayAbbr'] = 'Qua';
         $strings['DayThursdayAbbr'] = 'Qui';
         $strings['DayFridayAbbr'] = 'Sex';
-        $strings['DaySaturdayAbbr'] = 'Sáb';
+        $strings['DaySaturdayAbbr'] = 'Sab';
 
         // Email Subjects
-        $strings['ReservationApprovedSubject'] = 'Sua Reserva Foi Aprovada';
-        $strings['ReservationCreatedSubject'] = 'Sua Reserva Foi Criada';
-        $strings['ReservationUpdatedSubject'] = 'Sua Reserva Foi Atualizada';
-        $strings['ReservationDeletedSubject'] = 'Sua Reserva Foi Removida';
-        $strings['ReservationCreatedAdminSubject'] = 'Notificação: A Reserva Foi Criada';
-        $strings['ReservationUpdatedAdminSubject'] = 'Notificação: A Reserva Foi Atualizada';
-        $strings['ReservationDeleteAdminSubject'] = 'Notificação: A Reserva Foi Removida';
+        $strings['ReservationApprovedSubject'] = 'Sua reserva foi aprovada';
+        $strings['ReservationCreatedSubject'] = 'Sua reserva foi criada';
+        $strings['ReservationUpdatedSubject'] = 'Sua reserva foi atualizada';
+        $strings['ReservationCreatedAdminSubject'] = 'Notificação: A reserva foi criada';
+        $strings['ReservationUpdatedAdminSubject'] = 'Notificação: A reserva foi atualizada';
         $strings['ParticipantAddedSubject'] = 'Notificação de Participação na Reserva';
-        $strings['ParticipantDeletedSubject'] = 'Reserva Removida';
         $strings['InviteeAddedSubject'] = 'Convite de Reserva';
         $strings['ResetPassword'] = 'Pedido de Redefinição de Senha';
-        $strings['ActivateYourAccount'] = 'Por favor Ative Sua Conta';
+        $strings['ForgotPasswordEmailSent'] = 'Um email foi enviado para o endereço fornecido com instruções para redefinir sua senha';
         //
 
         $this->Strings = $strings;
-        
-        return $this->Strings;
     }
-    
-    /**
-     * @return array
-     */
+
     protected function _LoadDays()
     {
         $days = array();
@@ -507,20 +484,15 @@ class pt_br extends Language
         // The full day name
         $days['full'] = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
         // The three letter abbreviation
-        $days['abbr'] = array('Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb');
+        $days['abbr'] = array('Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab');
         // The two letter abbreviation
-        $days['two'] = array('Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sá');
+        $days['two'] = array('Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa');
         // The one letter abbreviation
         $days['letter'] = array('D', 'S', 'T', 'Q', 'Q', 'S', 'S');
 
         $this->Days = $days;
-        
-        return $this->Days;
     }
 
-    /**
-     * @return array
-     */
     protected function _LoadMonths()
     {
         $months = array();
@@ -536,23 +508,16 @@ class pt_br extends Language
         $months['abbr'] = array('Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez');
 
         $this->Months = $months;
-        
-        return $this->Months;
     }
 
-    /**
-     * @return array
-     */
     protected function _LoadLetters()
     {
         $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
-        
-        return $this->Letters;
     }
 
     protected function _GetHtmlLangCode()
     {
-        return 'pt-br';
+        return 'pt_br';
     }
 }
 

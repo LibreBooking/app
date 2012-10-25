@@ -18,20 +18,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 	
-	Detalhes da Reserva: 
+	Reservation Details: 
 	<br/>
 	<br/>
 	
-	Usuário: {$UserName}
-	Iniciando: {formatdate date=$StartDate key=reservation_email}<br/>
-	Terminando: {formatdate date=$EndDate key=reservation_email}<br/>
-	Recurso: {$ResourceName}<br/>
-	Título: {$Title}<br/>
-	Descrição: {$Description}<br/>
+	User: {$UserName}
+	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
+	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
+	Resource: {$ResourceName}<br/>
+	Title: {$Title}<br/>
+	Description: {$Description}<br/>
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		A reserva ocorre nas seguintes datas:
+		The reservation occurs on the following dates:
 		<br/>
 	{/if}
 	
@@ -41,10 +41,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Um ou mais recursos reservados requerem aprovação antes do uso. Certifique-se que este pedido de reserva seja aprovado ou rejeitado.
+		One or more of the resources reserved require approval before usage.  Please ensure that this reservation request is approved or rejected.
 	{/if}
 	
 	<br/>
-	<a href="{$ScriptUrl}{$ReservationUrl}">Ver esta reserva</a> | <a href="{$ScriptUrl}">Entrar no phpScheduleIt</a>
+	<a href="{$ScriptUrl}{$ReservationUrl}">View this reservation</a> | <a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

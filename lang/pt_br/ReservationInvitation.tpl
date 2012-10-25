@@ -17,20 +17,19 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-
-	Detalhes da Reserva:
+	Reservation Details:
 	<br/>
 	<br/>
 	
-	Iniciando: {formatdate date=$StartDate key=reservation_email}<br/>
-	Terminando: {formatdate date=$EndDate key=reservation_email}<br/>
-	Recurso: {$ResourceName}<br/>
-	Título: {$Title}<br/>
-	Descrição: {$Description|nl2br}<br/>
+	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
+	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
+	Resource: {$ResourceName}<br/>
+	Title: {$Title}<br/>
+	Description: {$Description|nl2br}<br/>
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		A reserva ocorre nas seguintes datas:
+		The reservation occurs on the following dates:
 		<br/>
 	{/if}
 	
@@ -40,15 +39,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Um ou mais recursos reservados requerem aprovação antes do uso. Esta reserva será pendente até que seja aprovada.
+		One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
 	{/if}
 	
 	<br/>
-	Atender? <a href="{$ScriptUrl}/{$AcceptUrl}">Sim</a> <a href="{$ScriptUrl}/{$DeclineUrl}">Não</a>
+	Attending? <a href="{$ScriptUrl}/{$AcceptUrl}">Yes</a> <a href="{$ScriptUrl}/{$DeclineUrl}">No</a>
 	<br/>
 
-	<a href="{$ScriptUrl}/{$ReservationUrl}">Ver esta reserva</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Adicionar ao Outlook</a> |
-	<a href="{$ScriptUrl}">Entrar no phpScheduleIt</a>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
+	<a href="{$ScriptUrl}/{$ICalUrl}">Add to Outlook</a> |
+	<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

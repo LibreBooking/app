@@ -30,7 +30,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		The reservation occurs on the following dates:
+		The following dates have been removed:
 		<br/>
 	{/if}
 	
@@ -38,14 +38,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{formatdate date=$date}<br/>
 	{/foreach}
 
-	{if $RequiresApproval}
-		<br/>
-		One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
-	{/if}
-	
-	<br/>
-	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Add to Outlook</a> |
 	<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

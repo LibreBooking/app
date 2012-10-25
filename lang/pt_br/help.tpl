@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>>Ajuda do phpScheduleIt</h1>
+<h1>phpScheduleIt Help</h1>
 
 <div id="help">
 <h2>Registration</h2>
