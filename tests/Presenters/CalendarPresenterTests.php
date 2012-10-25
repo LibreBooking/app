@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Pages/CalendarPage.php');
 require_once(ROOT_DIR . 'Presenters/CalendarPresenter.php');
@@ -49,15 +49,15 @@ class CalendarPresenterTests extends TestBase
 	private $scheduleRepository;
 
 	/**
-	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var IResourceService|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $resourceRepository;
+	private $resourceService;
 
-    /**
-     * @var ICalendarSubscriptionService|PHPUnit_Framework_MockObject_MockObject
-     */
-    private $subscriptionService;
-	
+	/**
+	 * @var ICalendarSubscriptionService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $subscriptionService;
+
 	public function setup()
 	{
 		parent::setup();
@@ -66,21 +66,18 @@ class CalendarPresenterTests extends TestBase
 		$this->repository = $this->getMock('IReservationViewRepository');
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 		$this->calendarFactory = $this->getMock('ICalendarFactory');
-		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->resourceService = $this->getMock('IResourceService');
 		$this->subscriptionService = $this->getMock('ICalendarSubscriptionService');
 
-		$this->presenter = new CalendarPresenter(
-			$this->page,
-			$this->calendarFactory,
-			$this->repository,
-			$this->scheduleRepository,
-			$this->resourceRepository,
-            $this->subscriptionService);
+		$this->presenter = new CalendarPresenter($this->page, $this->calendarFactory, $this->repository, $this->scheduleRepository, $this->resourceService, $this->subscriptionService);
 	}
 
 	public function testBindsDefaultScheduleByMonthWhenNothingSelected()
 	{
-		$userId = 100;
+		$showInaccessible = true;
+		$this->fakeConfig->SetKey(ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, 'true');
+
+		$userId = $this->fakeUser->UserId;
 		$defaultScheduleId = 10;
 		$userTimezone = "America/New_York";
 
@@ -100,89 +97,110 @@ class CalendarPresenterTests extends TestBase
 		$lname = 'lname';
 		$referenceNumber = 'refnum';
 		$resourceName = 'resource name';
-		
+
 		//$res = new ScheduleReservation(1, $startDate, $endDate, null, $summary, $resourceId, $userId, $fname, $lname, $referenceNumber, ReservationStatus::Created);
 		$res = new ReservationItemView($referenceNumber, $startDate, $endDate, 'resource name', $resourceId, 1, null, null, $summary, null, $fname, $lname, $userId);
-		
+
 		$r1 = new FakeBookableResource(1, 'dude1');
 		$r2 = new FakeBookableResource($resourceId, $resourceName);
 
 		$reservations = array($res);
 		$resources = array($r1, $r2);
-		$schedules = array(
-			new Schedule(1, null, false, null, null),
-			new Schedule($defaultScheduleId, null, true, null, null),
-		);
+		$schedules = array(new Schedule(1, null, false, null, null), new Schedule($defaultScheduleId, null, true, null, null),);
 
-		$this->scheduleRepository->expects($this->once())
+		$this->scheduleRepository
+				->expects($this->once())
 				->method('GetAll')
 				->will($this->returnValue($schedules));
 
-		$this->resourceRepository->expects($this->once())
-				->method('GetResourceList')
+		$this->resourceService
+				->expects($this->once())
+				->method('GetAllResources')
+				->with($this->equalTo($showInaccessible), $this->equalTo($this->fakeUser))
 				->will($this->returnValue($resources));
 
-		$this->page->expects($this->once())
+		$this->page
+				->expects($this->once())
 				->method('GetScheduleId')
 				->will($this->returnValue(null));
 
-		$this->page->expects($this->once())
+		$this->page
+				->expects($this->once())
 				->method('GetResourceId')
 				->will($this->returnValue(null));
 
-		$this->repository->expects($this->once())
-			->method('GetReservationList')
-			->with($this->equalTo($month->FirstDay()), $this->equalTo($month->LastDay()), $this->equalTo(null), $this->equalTo(null), $this->equalTo($defaultScheduleId), $this->equalTo(null))
-			->will($this->returnValue($reservations));
+		$this->repository
+				->expects($this->once())
+				->method('GetReservationList')
+				->with($this->equalTo($month->FirstDay()),
+					   $this->equalTo($month->LastDay()), $this->equalTo(null), $this->equalTo(null),
+					   $this->equalTo($defaultScheduleId), $this->equalTo(null))
+				->will($this->returnValue($reservations));
 
-		$this->page->expects($this->once())
+		$this->page
+				->expects($this->once())
 				->method('GetCalendarType')
 				->will($this->returnValue($calendarType));
 
-		$this->page->expects($this->once())
+		$this->page
+				->expects($this->once())
 				->method('GetDay')
 				->will($this->returnValue($requestedDay));
 
-		$this->page->expects($this->once())
+		$this->page
+				->expects($this->once())
 				->method('GetMonth')
 				->will($this->returnValue($requestedMonth));
 
-		$this->page->expects($this->once())
+		$this->page
+				->expects($this->once())
 				->method('GetYear')
 				->will($this->returnValue($requestedYear));
 
-		$this->calendarFactory->expects($this->once())
-			->method('Create')
-			->with($this->equalTo($calendarType), $this->equalTo($requestedYear), $this->equalTo($requestedMonth), $this->equalTo($requestedDay), $this->equalTo($userTimezone))
-			->will($this->returnValue($month));
+		$this->calendarFactory
+				->expects($this->once())
+				->method('Create')
+				->with($this->equalTo($calendarType),
+					   $this->equalTo($requestedYear), $this->equalTo($requestedMonth), $this->equalTo($requestedDay),
+					   $this->equalTo($userTimezone))
+				->will($this->returnValue($month));
 
-		$this->page->expects($this->once())
-			->method('BindCalendar')
-			->with($this->equalTo($month));
+		$this->page->expects($this->once())->method('BindCalendar')->with($this->equalTo($month));
 
-        $details = new CalendarSubscriptionDetails(true);
-        $this->subscriptionService->expects($this->once())
-                        ->method('ForSchedule')
-                        ->with($this->equalTo($defaultScheduleId))
-                        ->will($this->returnValue($details));
+		$details = new CalendarSubscriptionDetails(true);
+		$this->subscriptionService->expects($this->once())->method('ForSchedule')->with($this->equalTo($defaultScheduleId))->will($this->returnValue($details));
 
-        $this->page->expects($this->once())
-                ->method('BindSubscription')
-                ->with($this->equalTo($details));
-
+		$this->page->expects($this->once())->method('BindSubscription')->with($this->equalTo($details));
 
 		$calendarFilters = new CalendarFilters($schedules, $resources, $defaultScheduleId, null);
-		$this->page->expects($this->once())
-				->method('BindFilters')
-				->with($this->equalTo($calendarFilters));
+		$this->page->expects($this->once())->method('BindFilters')->with($this->equalTo($calendarFilters));
 
-		$this->presenter->PageLoad($userId, $userTimezone);
+		$this->presenter->PageLoad($this->fakeUser, $userTimezone);
 
 		$actualReservations = $month->Reservations();
 
-		$expectedReservations = CalendarReservation::FromScheduleReservationList($reservations, $resources, $userTimezone);
+		$expectedReservations = CalendarReservation::FromScheduleReservationList($reservations,
+																				 $resources,
+																				 $userTimezone);
 
 		$this->assertEquals($expectedReservations, $actualReservations);
 	}
+
+	public function testSkipsReservationsForUnknownResources()
+	{
+		$res1 = new TestReservationItemView(1, Date::Now(), Date::Now(), 1);
+		$res2 = new TestReservationItemView(2, Date::Now(), Date::Now(), 2);
+
+		$r1 = new FakeBookableResource(1, 'dude1');
+
+		$reservations = array($res1, $res2);
+		$resources = array($r1);
+
+		$actualReservations = CalendarReservation::FromScheduleReservationList($reservations, $resources, 'UTC');
+
+		$this->assertEquals(1, count($actualReservations));
+
+	}
 }
+
 ?>

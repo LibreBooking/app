@@ -46,9 +46,9 @@ class CalendarPresenter
 	private $scheduleRepository;
 
 	/**
-	 * @var IResourceRepository
+	 * @var IResourceService
 	 */
-	private $resourceRepository;
+	private $resourceService;
 
     /**
      * @var ICalendarSubscriptionService
@@ -59,18 +59,18 @@ class CalendarPresenter
 		ICalendarFactory $calendarFactory,
 		IReservationViewRepository $reservationRepository,
 		IScheduleRepository $scheduleRepository,
-		IResourceRepository $resourceRepository,
+		IResourceService $resourceService,
         ICalendarSubscriptionService $subscriptionService)
 	{
 		$this->page = $page;
 		$this->calendarFactory = $calendarFactory;
 		$this->reservationRepository = $reservationRepository;
 		$this->scheduleRepository = $scheduleRepository;
-		$this->resourceRepository = $resourceRepository;
+		$this->resourceService = $resourceService;
         $this->subscriptionService = $subscriptionService;
 	}
 	
-	public function PageLoad($userId, $timezone)
+	public function PageLoad($userSession, $timezone)
 	{
 		$type = $this->page->GetCalendarType();
 
@@ -94,7 +94,8 @@ class CalendarPresenter
 		}
 
 		$schedules = $this->scheduleRepository->GetAll();
-		$resources = $this->resourceRepository->GetResourceList();
+		$showInaccessible = Configuration::Instance()->GetKey(ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
+		$resources = $this->resourceService->GetAllResources($showInaccessible, $userSession);
 
 		$selectedScheduleId = $this->GetScheduleId($schedules);
 		$selectedResourceId = $this->page->GetResourceId();
@@ -153,13 +154,13 @@ class CalendarFilters
 	const FilterResource = 'resource';
 
 	/**
-	 * @var array|ScheduleFilter[]
+	 * @var array|CalendarFilter[]
 	 */
 	private $filters = array();
 	
 	/**
 	 * @param array|Schedule[] $schedules
-	 * @param array|BookableResource[] $resources
+	 * @param array|ResourceDto[] $resources
 	 * @param int $selectedScheduleId
 	 * @param int $selectedResourceId
 	 */

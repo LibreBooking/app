@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 <project name="phpScheduleIt" default="package">
-	<property name="version" value="2.3.4"/>
+	<property name="version" value="2.3.3"/>
 	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="phpScheduleIt-${version}"/>
-	<property name="zipdirectory" value="../phpScheduleIt_archive/zip/${version}"/>
-	<property name="archive_directory" value="../phpScheduleIt_archive/src/${version}"/>
-	<property name="staging" value="../staging"/>
+	<property name="root.dir" value="../.."/>
+	<property name="zipdirectory" value="${root.dir}/phpScheduleIt_archive/zip/${version}"/>
+	<property name="archive_directory" value="${root.dir}/phpScheduleIt_archive/src/${version}"/>
+	<property name="staging" value="${root.dir}/staging"/>
 	<property name="stagingdir" value="${staging}/phpScheduleIt"/>
-	<property name="demo.dir" value="../phpScheduleIt_archive/src/demo"/>
+	<property name="demo.dir" value="${root.dir}/phpScheduleIt_archive/src/demo"/>
 	<property name="phing.tasks.dir" value="c:/php/pear/phing/tasks/my"/>
 
 	<available file="C:/Program Files/MySQL/MySQL Server 5.1/bin" property="mysql.bin"

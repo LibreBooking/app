@@ -52,4 +52,5 @@ require_once(ROOT_DIR . 'tests/fakes/FakeUploadedFile.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeFileSystem.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReport.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeSavedReport.php');
+require_once(ROOT_DIR . 'tests/fakes/TestReservationItemView.php');
 ?>

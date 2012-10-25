@@ -37,28 +37,50 @@ class ResourceService implements IResourceService
 	}
 
 	/**
-	 * @param $scheduleId
-	 * @param $includeInaccessibleResources
+	 * @param $scheduleId int
+	 * @param $includeInaccessibleResources bool
 	 * @param UserSession $user
 	 * @return array|ResourceDto[]
 	 */
 	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user)
 	{
-		$resourceDtos = array();
 		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
-		
+
+		return $this->Filter($resources, $user, $includeInaccessibleResources);
+	}
+
+	/**
+	 * @param $includeInaccessibleResources
+	 * @param UserSession $user
+	 * @return array|ResourceDto[]
+	 */
+	public function GetAllResources($includeInaccessibleResources, UserSession $user)
+	{
+		$resources = $this->_resourceRepository->GetResourceList();
+
+		return $this->Filter($resources, $user, $includeInaccessibleResources);
+	}
+
+	/**
+	 * @param $resources array|BookableResource[]
+	 * @param $user UserSession
+	 * @param $includeInaccessibleResources bool
+	 * @return array|ResourceDto[]
+	 */
+	private function Filter($resources, $user, $includeInaccessibleResources)
+	{
+		$resourceDtos = array();
 		foreach ($resources as $resource)
 		{
 			$canAccess = $this->_permissionService->CanAccessResource($resource, $user);
-			
+
 			if (!$includeInaccessibleResources && !$canAccess)
 			{
 				continue;
 			}
-			
-			$resourceDtos[] = new ResourceDto($resource->GetResourceId(), $resource->GetName(), $canAccess);
+
+			$resourceDtos[] = new ResourceDto($resource->GetResourceId(), $resource->GetName(), $canAccess, $resource->GetScheduleId());
 		}
-		
 		return $resourceDtos;
 	}
 
@@ -83,6 +105,14 @@ interface IResourceService
 	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user);
 
 	/**
+	 * Gets resource list
+	 * @param bool $includeInaccessibleResources
+	 * @param UserSession $user
+	 * @return array|ResourceDto[]
+	 */
+	public function GetAllResources($includeInaccessibleResources, UserSession $user);
+
+	/**
 	 * @abstract
 	 * @return array|AccessoryDto[]
 	 */
@@ -91,11 +121,12 @@ interface IResourceService
 
 class ResourceDto
 {
-	public function __construct($id, $name, $canAccess = true)
+	public function __construct($id, $name, $canAccess = true, $scheduleId = null)
 	{
 		$this->Id = $id;
 		$this->Name = $name;
 		$this->CanAccess = $canAccess;
+		$this->ScheduleId = $scheduleId;
 	}
 	
 	/**
@@ -112,6 +143,11 @@ class ResourceDto
 	 * @var bool
 	 */
 	public $CanAccess;
+
+	/**
+	 * @var int
+	 */
+	public $ScheduleId;
 
 	/**
 	 * alias of GetId()
@@ -136,6 +172,14 @@ class ResourceDto
 	public function GetName()
 	{
 		return $this->Name;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetScheduleId()
+	{
+		return $this->ScheduleId;
 	}
 }
 ?>

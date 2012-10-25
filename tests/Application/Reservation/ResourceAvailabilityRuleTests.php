@@ -205,28 +205,5 @@ class ResourceAvailabilityRuleTests extends TestBase
 	}
 }
 
-class TestReservationItemView extends ReservationItemView
-{
-	/**
-	 * @param $id
-	 * @param Date $startDate
-	 * @param Date $endDate
-	 * @param int $resourceId
-	 */
-	public function __construct($id, Date $startDate, Date $endDate, $resourceId = 1)
-	{
-		$this->ReservationId = $id;
-		$this->StartDate = $startDate;
-		$this->EndDate = $endDate;
-		$this->ResourceId = $resourceId;
-		$this->Date = new DateRange($startDate, $endDate);
-		$this->RepeatType = RepeatType::None;
-	}
 
-	public function WithSeriesId($seriesId)
-	{
-		$this->SeriesId = $seriesId;
-		return $this;
-	}
-}
 ?>

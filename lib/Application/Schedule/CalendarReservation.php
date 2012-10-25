@@ -130,14 +130,14 @@ class CalendarReservation
     /**
      * @static
      * @param $reservations array|ReservationItemView[]
-     * @param $resources array|BookableResource[]
+     * @param $resources array|ResourceDto[]
      * @param $timezone string
      * @return array|CalendarReservation[]
      */
     public static function FromScheduleReservationList($reservations, $resources, $timezone)
     {
         $resourceMap = array();
-        /** @var $resource BookableResource */
+        /** @var $resource ResourceDto */
         foreach ($resources as $resource)
         {
             $resourceMap[$resource->GetResourceId()] = $resource->GetName();
@@ -146,6 +146,11 @@ class CalendarReservation
         $res = array();
         foreach ($reservations as $reservation)
         {
+			if (!array_key_exists($reservation->ResourceId, $resourceMap))
+			{
+				continue;
+			}
+
             $start = $reservation->StartDate->ToTimezone($timezone);
             $end = $reservation->EndDate->ToTimezone($timezone);
             $referenceNumber = $reservation->ReferenceNumber;

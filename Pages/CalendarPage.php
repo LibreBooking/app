@@ -89,16 +89,17 @@ class CalendarPage extends SecurePage implements ICalendarPage
 	{
 		parent::__construct('ResourceCalendar');
         $resourceRepository = new ResourceRepository();
+		$resourceService = new ResourceService($resourceRepository, PluginManager::Instance()->LoadPermission());
         $scheduleRepository =  new ScheduleRepository();
         $subscriptionService = new CalendarSubscriptionService(new UserRepository(), $resourceRepository, $scheduleRepository);
 
-		$this->_presenter = new CalendarPresenter($this, new CalendarFactory(), new ReservationViewRepository(), $scheduleRepository, $resourceRepository, $subscriptionService);
+		$this->_presenter = new CalendarPresenter($this, new CalendarFactory(), new ReservationViewRepository(), $scheduleRepository, $resourceService, $subscriptionService);
 	}
 	
 	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		$this->_presenter->PageLoad($user->UserId, $user->Timezone);
+		$this->_presenter->PageLoad($user, $user->Timezone);
 
 		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
 		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
