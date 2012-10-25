@@ -198,6 +198,7 @@ http://php.net/manual/en/timezones.php</p>
 <p class="setting"><span>$conf['settings']['admin.email']</span>アプリケーション管理者のメールアドレス</p>
 
 <p class="setting"><span>$conf['settings']['default.page.size']</span>データのリストを表示する際のページあたりの表示数の初期値</p>
+
 <p class="setting"><span>$conf['settings']['enable.email']</span>phpScheduleItがメールを送信するか否か</p>
 
 <p class="setting"><span>$conf['settings']['default.language']</span>ユーザーのデフォルトの言語。phpScheduleItのlangディレクトリにある言語ならどれでも可</p>
@@ -247,6 +248,7 @@ none にすると予約の作成、変更に現在時刻による制限はない
 
 
 <p class="setting"><span>$conf['settings']['reservation']['prevent.participation']</span>ユーザーが別のユーザーを予約の参加者にしたり招待する機能を使えないようにするかどうか。デフォルトは false (なので有効)。</p>
+
 <p class="setting"><span>$conf['settings']['reservation']['prevent.recurrence']</span>繰り返し予約する機能を使えないようにするかどうか。デフォルトは false (なので有効)。</p>
 
 
@@ -272,6 +274,7 @@ none にすると予約の作成、変更に現在時刻による制限はない
 
 <p class="setting"><span>$conf['settings']['css.extension.file']</span>インクルードしたい追加CSSの、完全または相対URL。デフォルトのスタイルを調整する程度から完全なテーマにまで上書きすることができる。phpScheduleItのスタイルを拡張しないなら空文字列にしておく。</p>
 
+<p class="setting"><span>$conf['settings']['css.extension.file']</span>追加でインクルードするCSSファイルの完全または相対URL。これはデフォルトのスタイルを変更するために使うことができ、完全なテーマとして使用することもできる。 phpScheduleItのスタイルを拡張しないなら空白のままにしておく。</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>ユーザーが予約にファイルを添付できるかどうか。デフォルトはfalse 。</p>
 
@@ -346,7 +349,6 @@ LDAPの場合は、/plugins/Authentication/Ldap/Ldap.config.dist を/plugins/Aut
 そしてconfig.php の $conf['settings']['plugins']['Authentication']、$conf['settings']['plugins']['Authorization'] 、$conf['settings']['plugins']['Permission'] のいずれかの値をフォルダの名前に変更します。
 </p>
 
-{include file="support-and-credits.tpl"}
 </div>
 
 {include file='globalfooter.tpl'}

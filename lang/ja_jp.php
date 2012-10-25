@@ -418,6 +418,12 @@ class ja_jp extends en_us
 		$strings['Choose'] = '選択';
 		$strings['All'] = '全て';
 		$strings['ViewAsChart'] = 'グラフで表示';
+		$strings['ReservedResources'] = '予約されているリソース';
+		$strings['ReservedAccessories'] = '予約されている備品';
+		$strings['ResourceUsageTimeBooked'] = 'リソース使用量 - 予約時間';
+		$strings['ResourceUsageReservationCount'] = 'リソース使用量 - 予約回数';
+		$strings['Top20UsersTimeBooked'] = '上位 20 人 - 予約時間';
+		$strings['Top20UsersReservationCount'] = '上位 20 人 - 予約回数';
         // End Strings
 
         // Errors
