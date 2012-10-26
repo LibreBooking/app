@@ -143,7 +143,6 @@ class RegistrationPresenter extends ActionPresenter
 
 	public function Register()
 	{
-		throw new Exception();
 		$additionalFields = array('phone' => $this->page->GetPhone(),
 								  'organization' => $this->page->GetOrganization(),
 								  'position' => $this->page->GetPosition());
