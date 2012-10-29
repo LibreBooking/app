@@ -156,8 +156,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function __construct($title = null)
 	{
 		parent::__construct($title);
-		
-		$this->permissionServiceFactory = new PermissionServiceFactory();
+
+		if (is_null($this->permissionServiceFactory))
+		{
+			$this->permissionServiceFactory = new PermissionServiceFactory();
+		}
 
 		$this->initializationFactory = new ReservationInitializerFactory(
 			new ScheduleRepository(),

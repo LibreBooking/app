@@ -21,11 +21,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
 require_once(ROOT_DIR . 'Pages/ExistingReservationPage.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/ViewSchedulePermissionServiceFactory.php');
 
 class ReadOnlyReservationPage extends ExistingReservationPage
 {
 	public function __construct()
 	{
+		$this->permissionServiceFactory = new ViewSchedulePermissionServiceFactory();
 		parent::__construct();
 		$this->IsEditable = false;
 		$this->IsApprovable = false;
@@ -46,5 +48,6 @@ class ReadOnlyReservationPage extends ExistingReservationPage
 		// no-op
 	}
 }
+
 
 ?>

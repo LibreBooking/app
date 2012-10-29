@@ -20,19 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
-
-class ViewSchedulePermissionService implements IPermissionService
-{
-	/**
-	 * @param IPermissibleResource $resource
-	 * @param UserSession $user
-	 * @return bool
-	 */
-	public function CanAccessResource(IPermissibleResource $resource, UserSession $user)
-	{
-		return true;
-	}
-}
+require_once(ROOT_DIR . 'lib/Application/Authorization/ViewSchedulePermissionServiceFactory.php');
 
 class ViewSchedulePage extends Page implements ISchedulePage
 {
