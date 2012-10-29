@@ -255,7 +255,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{block name="ajaxMessage"}
 		{translate key=CreatingReservation}...<br/>
 	{/block}
-		<img src="{$Path}img/reservation_submitting.gif" alt="Creating reservation"/>
+		{html_image src="reservation_submitting.gif" alt="Creating reservation"}
 	</div>
 	<div id="result" style="display:none;"></div>
 </div>
