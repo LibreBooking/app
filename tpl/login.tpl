@@ -60,7 +60,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<p class="loginsubmit">
 				<button type="submit" name="{Actions::LOGIN}" class="button" tabindex="100" value="submit"><img
 						src="img/door-open-in.png"/> {translate key='LogIn'} </button>
-				<input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl|replace:"&amp;amp;":"&amp;"}"/>
+				<input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}"/>
 			</p>
 		</div>
 		<div style="clear:both;">&nbsp;</div>
