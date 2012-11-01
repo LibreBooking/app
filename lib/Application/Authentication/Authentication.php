@@ -119,7 +119,7 @@ class Authentication implements IAuthentication
 
 	public function Logout(UserSession $userSession)
     {
-
+		// hook for implementing Logout logic
     }
 
     public function AreCredentialsKnown()
@@ -147,6 +147,7 @@ class Authentication implements IAuthentication
         $userSession->HomepageId = $user->Homepage();
 		$userSession->LanguageCode = $user->Language();
 		$userSession->LoginTime = $loginTime;
+		$userSession->PublicId = $user->GetPublicId();
 
 		$userSession->IsAdmin = $this->roleService->IsApplicationAdministrator($user);
 		$userSession->IsGroupAdmin = $this->roleService->IsGroupAdministrator($user);

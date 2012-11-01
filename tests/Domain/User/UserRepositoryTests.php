@@ -402,13 +402,15 @@ class UserRepositoryTests extends TestBase
 		$user->ChangeAttributes($phone, $organization, $position);
 		$user->ChangeCustomAttributes(array($attr1, $attr2));
 		$user->ChangeEmailPreference(new ReservationApprovedEvent(), true);
+		$user->EnablePublicProfile();
+		$publicId = $user->GetPublicId();
 
 		$this->db->_ExpectedInsertId = $expectedId;
 		$repo = new UserRepository();
 		$newId = $repo->Add($user);
 
 		$command = new RegisterUserCommand($userName, $emailAddress, $firstName, $lastName, $password, $passwordSalt,
-			$timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE);
+			$timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE, $publicId);
 
 		$addAttr1Command = new AddAttributeValueCommand($attr1->AttributeId, $attr1->Value, $expectedId, CustomAttributeCategory::USER);
 		$addAttr2Command = new AddAttributeValueCommand($attr2->AttributeId, $attr2->Value, $expectedId, CustomAttributeCategory::USER);

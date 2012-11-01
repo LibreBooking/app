@@ -37,6 +37,7 @@ class AuthenticationTests extends TestBase
 	private $lastLogin;
 	private $homepageId;
 	private $languageCode;
+	private $publicId;
 
 	/**
 	 * @var Authentication
@@ -88,6 +89,7 @@ class AuthenticationTests extends TestBase
 		$this->lastLogin = time();
 		$this->homepageId = 2;
 		$this->languageCode = 'en_us';
+		$this->publicId = 'public_id';
 
 		$this->user = new FakeUser();
 		$this->user->WithId($this->id);
@@ -96,6 +98,7 @@ class AuthenticationTests extends TestBase
 		$this->user->ChangeTimezone($this->timezone);
 		$this->user->ChangeDefaultHomePage($this->homepageId);
 		$this->user->SetLanguage($this->languageCode);
+		$this->user->WithPublicId($this->publicId);
 		$this->user->Activate();
 
 		$this->fakePassword = new FakePassword();
@@ -178,6 +181,7 @@ class AuthenticationTests extends TestBase
 		$user->IsScheduleAdmin = true;
 		$user->LanguageCode = $language;
 		$user->LoginTime = LoginTime::Now();
+		$user->PublicId = $this->publicId;
 
 		// sessions tokens are random. set them to something static so equality works
 		$actualSession->SessionToken = '1';

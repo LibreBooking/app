@@ -601,9 +601,9 @@ class Queries
 
 	const REGISTER_USER =
 			'INSERT INTO
-			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created)
+			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created, public_id)
 		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated)';
+			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid)';
 
 	const REMOVE_ATTRIBUTE_VALUE =
 			'DELETE FROM custom_attribute_values WHERE custom_attribute_id = @custom_attribute_id AND entity_id = @entity_id';

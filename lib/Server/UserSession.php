@@ -33,6 +33,7 @@ class UserSession
 	public $IsScheduleAdmin = false;
 	public $LanguageCode = '';
 	public $LoginTime = '';
+	public $PublicId = '';
 
 	public function __construct($id)
 	{

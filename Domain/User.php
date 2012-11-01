@@ -171,13 +171,18 @@ class User
 		return $this->publicId;
 	}
 
-	public function EnableSubscription()
+	public function EnablePublicProfile()
 	{
-		$this->SetIsCalendarSubscriptionAllowed(true);
 		if (empty($this->publicId))
 		{
 			$this->SetPublicId(uniqid());
 		}
+	}
+
+	public function EnableSubscription()
+	{
+		$this->SetIsCalendarSubscriptionAllowed(true);
+		$this->EnablePublicProfile();
 	}
 
 	public function DisableSubscription()
@@ -325,7 +330,8 @@ class User
 		if ($turnedOn)
 		{
 			$this->emailPreferences->AddPreference($event);
-		} else
+		}
+		else
 		{
 			$this->emailPreferences->RemovePreference($event);
 		}
@@ -339,6 +345,7 @@ class User
 	{
 		$this->lastLogin = $loginTime;
 		$this->language = $language;
+		$this->EnablePublicProfile();
 	}
 
 	/**
@@ -386,7 +393,8 @@ class User
 	 * @static
 	 * @return User
 	 */
-	public static function Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt, $homepageId = Pages::DEFAULT_HOMEPAGE_ID)
+	public static function Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password,
+								  $passwordSalt, $homepageId = Pages::DEFAULT_HOMEPAGE_ID)
 	{
 		$user = new User();
 		$user->firstName = $firstName;
@@ -406,9 +414,11 @@ class User
 	 * @static
 	 * @return User
 	 */
-	public static function CreatePending($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt, $homepageId = Pages::DEFAULT_HOMEPAGE_ID)
+	public static function CreatePending($firstName, $lastName, $emailAddress, $userName, $language, $timezone,
+										 $password, $passwordSalt, $homepageId = Pages::DEFAULT_HOMEPAGE_ID)
 	{
-		$user = self::Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password, $passwordSalt, $homepageId);
+		$user = self::Create($firstName, $lastName, $emailAddress, $userName, $language, $timezone, $password,
+							 $passwordSalt, $homepageId);
 		$user->statusId = AccountStatus::AWAITING_ACTIVATION;
 		return $user;
 	}

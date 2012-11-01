@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 class FakeUser extends User
 {
@@ -25,7 +25,7 @@ class FakeUser extends User
 		$this->timezone = 'America/Chicago';
 		$this->language = 'en_us';
 		$this->emailAddress = 'test@test.com';
-        $this->id = $userId;
+		$this->id = $userId;
 		$this->statusId = AccountStatus::ACTIVE;
 		$this->homepageId = Pages::CALENDAR;
 	}
@@ -34,12 +34,12 @@ class FakeUser extends User
 	{
 		$this->statusId = $statusId;
 	}
-	
+
 	public function SetLanguage($language)
 	{
 		$this->language = $language;
 	}
-	
+
 	public function SetTimezone($timezone)
 	{
 		$this->timezone = $timezone;
@@ -53,5 +53,11 @@ class FakeUser extends User
 	{
 		$this->groups = $groups;
 	}
+
+	public function WithPublicId($publicId)
+	{
+		$this->SetPublicId($publicId);
+	}
 }
+
 ?>

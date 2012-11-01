@@ -24,11 +24,11 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 class AuthenticationWebService
 {
 	/**
-	 * @var IAuthentication
+	 * @var IWebServiceAuthentication
 	 */
 	private $authentication;
 
-	public function __construct(IRestServer $server, IAuthentication $authentication)
+	public function __construct(IRestServer $server, IWebServiceAuthentication $authentication)
 	{
 		$this->server = $server;
 		$this->authentication = $authentication;
@@ -54,7 +54,7 @@ class AuthenticationWebService
 		{
 			Log::Debug('WebService Authenticate, user %s was authenticated', $username);
 
-			$session = $this->authentication->Login($username, new WebServiceLoginContext());
+			$session = $this->authentication->Login($username);
 			$this->server->WriteResponse(AuthenticationResponse::Success($this->server, $session));
 		}
 		else
@@ -72,17 +72,6 @@ class AuthenticationWebService
 //
 //		return new SignOutResponse();
 //	}
-}
-
-class WebServiceLoginContext implements ILoginContext
-{
-	/**
-	 * @return LoginData
-	 */
-	public function GetData()
-	{
-		return new LoginData(false, null);
-	}
 }
 
 class AuthenticationRequest

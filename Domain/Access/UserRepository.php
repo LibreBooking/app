@@ -281,7 +281,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		$id = $db->ExecuteInsert(new RegisterUserCommand($user->Username(), $user->EmailAddress(), $user->FirstName(),
 			$user->LastName(), $user->encryptedPassword, $user->passwordSalt, $user->Timezone(), $user->Language(),
 			$user->Homepage(), $user->GetAttribute(UserAttribute::Phone), $user->GetAttribute(UserAttribute::Organization),
-			$user->GetAttribute(UserAttribute::Position), $user->StatusId()));
+			$user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId()));
 
 		$user->WithId($id);
 

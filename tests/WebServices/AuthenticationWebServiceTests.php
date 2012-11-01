@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'WebServices/AuthenticationWebService.php');
 class AuthenticationWebServiceTests extends TestBase
 {
 	/**
-	 * @var IAuthentication|PHPUnit_Framework_MockObject_MockObject
+	 * @var IWebServiceAuthentication|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $authentication;
 
@@ -41,7 +41,7 @@ class AuthenticationWebServiceTests extends TestBase
 	{
 		parent::setup();
 
-		$this->authentication = $this->getMock('IAuthentication');
+		$this->authentication = $this->getMock('IWebServiceAuthentication');
 		$this->server = new FakeRestServer();
 
 		$this->service = new AuthenticationWebService($this->server, $this->authentication);
@@ -63,10 +63,8 @@ class AuthenticationWebServiceTests extends TestBase
 
 		$this->authentication->expects($this->once())
 				->method('Login')
-				->with($this->equalTo($username), $this->equalTo(new WebServiceLoginContext()))
+				->with($this->equalTo($username))
 				->will($this->returnValue($session));
-
-		// TODO: Store session in database
 
 		$this->service->Authenticate($this->server);
 
@@ -76,29 +74,28 @@ class AuthenticationWebServiceTests extends TestBase
 
 	public function testRestrictsUserIfInvalidCredentials()
 	{
-		$this->markTestIncomplete("Working on this");
 		$username = 'un';
 		$password = 'pw';
 
-		$this->server->SetPost(RestParams::UserName, $username);
-		$this->server->SetPost(RestParams::Password, $password);
+		$request = new AuthenticationRequest($username, $password);
+		$this->server->SetRequest($request);
 
 		$this->authentication->expects($this->once())
 				->method('Validate')
 				->with($this->equalTo($username), $this->equalTo($password))
 				->will($this->returnValue(false));
 
-		$response = $this->service->Authenticate($this->server);
+		 $this->service->Authenticate($this->server);
 
 		$expectedResponse = AuthenticationResponse::Failed();
-		$this->assertEquals($expectedResponse, $response);
+		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
 
 	public function testSignsUserOut()
 	{
 		$this->markTestIncomplete("Working on this");
 		$this->authentication->expects($this->once())
-				->method('LogOut')
+				->method('Logout')
 				->with($this->equalTo($this->fakeUser));
 
 		$response = $this->service->SignOut($this->server);
