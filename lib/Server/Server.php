@@ -133,11 +133,11 @@ class Server
 
     public function GetUrl()
     {
-        $url = htmlspecialchars($_SERVER['PHP_SELF']);
+        $url = $_SERVER['PHP_SELF'];
 
         if (isset($_SERVER['QUERY_STRING']))
         {
-            $url .= '?' . htmlspecialchars($_SERVER['QUERY_STRING']);
+            $url .= '?' . $_SERVER['QUERY_STRING'];
         }
 
         return $url;
