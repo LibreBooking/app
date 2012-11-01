@@ -33,17 +33,22 @@ class FakeAuth implements IAuthentication
 	 */
 	public $_LastLoginContext;
 	public $_LastLoginId;
-	public $_CookieLoginCalled = false;
-	public $_LastLoginCookie;
-	public $_CookieValidateResult = false;
+
 	public $_LoginCalled = false;
-    
+	public $_LogoutCalled = false;
+	public $_HandleLoginFailureCalled = false;
+
 	public $_ValidateResult = false;
 
 	public $_ShowUsernamePrompt = false;
 	public $_ShowPasswordPrompt = false;
 	public $_ShowPersistLoginPrompt = false;
 	public $_ShowForgotPasswordPrompt = false;
+
+	/**
+	 * @var UserSession
+	 */
+	public $_Session;
 
 	public function Validate($username, $password)
 	{
@@ -58,20 +63,12 @@ class FakeAuth implements IAuthentication
         $this->_LoginCalled = true;
 		$this->_LastLogin = $username;
 		$this->_LastLoginContext = $context;
+		return $this->_Session;
 	}
 	
 	public function Logout(UserSession $user)
 	{
-		
-	}
-	
-	public function CookieLogin($cookie, $context)
-	{
-		$this->_CookieLoginCalled = true;
-		$this->_LastLoginCookie = $cookie;
-		$this->_LastLoginContext = $context;
-		
-		return $this->_CookieValidateResult;
+		$this->_LogoutCalled = true;
 	}
 	
 	public function AreCredentialsKnown()
@@ -79,9 +76,9 @@ class FakeAuth implements IAuthentication
 		return true;
 	}
 	
-	public function HandleLoginFailure(ILoginPage $loginPage)
+	public function HandleLoginFailure(IAuthenticationPage $loginPage)
 	{
-		
+		$this->_HandleLoginFailureCalled = true;
 	}
 
 	/**

@@ -16,80 +16,95 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-require_once(ROOT_DIR . 'lib/WebService/RestServerBase.php');
-require_once(ROOT_DIR . 'lib/WebService/IRestService.php');
+require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class AuthenticationWebService extends RestServiceBase implements IRestService
+class AuthenticationWebService
 {
 	/**
 	 * @var IAuthentication
 	 */
 	private $authentication;
-	
-	public function __construct(IAuthentication $authentication)
+
+	public function __construct(IRestServer $server, IAuthentication $authentication)
 	{
+		$this->server = $server;
 		$this->authentication = $authentication;
-		$this->Register(RestAction::SignIn(), array($this, 'Authenticate'));
-		$this->Register(RestAction::SignOut(), array($this, 'SignOut'));
 	}
 
 	/**
-	 * @param IRestServer $server
-	 * @return AuthenticationResponse
+	 * @name Authenticate
+	 * @request AuthenticationRequest
+	 * @response AuthenticationResponse
+	 * @return void
 	 */
-	public function Authenticate(IRestServer $server)
+	public function Authenticate()
 	{
-		$username = $server->GetPost(RestParams::UserName);
-		$password = $server->GetPost(RestParams::Password);
+		/** @var $request AuthenticationRequest */
+		$request = $this->server->GetRequest();
+		$username = $request->username;
+		$password = $request->password;
 
 		Log::Debug('WebService Authenticate for user %s', $username);
-		
+
 		$isValid = $this->authentication->Validate($username, $password);
 		if ($isValid)
 		{
 			Log::Debug('WebService Authenticate, user %s was authenticated', $username);
 
-			$this->authentication->Login($username, false);
-			return AuthenticationResponse::Success($server->GetUserSession());
+			$session = $this->authentication->Login($username, new WebServiceLoginContext());
+			$this->server->WriteResponse(AuthenticationResponse::Success($this->server, $session));
 		}
+		else
+		{
+			Log::Debug('WebService Authenticate, user %s was not authenticated', $username);
 
-		Log::Debug('WebService Authenticate, user %s was not authenticated', $username);
-
-		return AuthenticationResponse::Failed();
+			$this->server->WriteResponse(AuthenticationResponse::Failed());
+		}
 	}
 
 
-	public function SignOut(IRestServer $server)
-	{
-		$this->authentication->Logout($server->GetUserSession());
-
-		return new SignOutResponse();
-	}
-
-//	/**
-//	 * @param IRestServer $server
-//	 * @return RestResponse
-//	 */
-//	public function HandlePost(IRestServer $server)
+//	public function SignOut()
 //	{
-//		if ($server->GetServiceAction() == WebServiceAction::SignOut)
-//		{
-//			return $this->SignOut($server);
-//		}
-//		return $this->Authenticate($server);
-//	}
+//		$this->authentication->Logout($server->GetUserSession());
 //
-//	/**
-//	 * @param IRestServer $server
-//	 * @return RestResponse
-//	 */
-//	public function HandleGet(IRestServer $server)
-//	{
-//		return new NotFoundResponse();
+//		return new SignOutResponse();
 //	}
+}
 
+class WebServiceLoginContext implements ILoginContext
+{
+	/**
+	 * @return LoginData
+	 */
+	public function GetData()
+	{
+		return new LoginData(false, null);
+	}
+}
+
+class AuthenticationRequest
+{
+	/**
+	 * @var string
+	 */
+	public $username;
+	/**
+	 * @var string
+	 */
+	public $password;
+
+	/**
+	 * @param string $username
+	 * @param string $password
+	 */
+	public function __construct($username = null, $password = null)
+	{
+		$this->username = $username;
+		$this->password = $password;
+	}
 }
 
 class AuthenticationResponseBody
@@ -97,8 +112,8 @@ class AuthenticationResponseBody
 	public $sessionToken = '';
 	public $userId = '';
 	public $isAuthenticated = false;
-	
-	public function __construct($sessionToken, $userId)
+
+	public function __construct($sessionToken = null, $userId = null)
 	{
 		$this->sessionToken = $sessionToken;
 		$this->userId = $userId;
@@ -110,30 +125,30 @@ class SignOutResponse extends RestResponse
 {
 	public function __construct()
 	{
-	    $this->Message = 'Sign Out successful';
+		$this->Message = 'Sign Out successful';
 	}
 }
 
 class AuthenticationResponse extends RestResponse
 {
-	public function __construct()
-	{
-		$this->Body = new AuthenticationResponseBody(null, null);
-	}
+	public $token;
+	public $expires;
+	public $userId;
 
 	/**
 	 * @static
+	 * @param $server IRestServer
 	 * @param $userSession UserSession
 	 * @return AuthenticationResponse
 	 */
-	public static function Success($userSession)
+	public static function Success(IRestServer $server, $userSession)
 	{
-		$response = new AuthenticationResponse();
-		$response->Body = new AuthenticationResponseBody($userSession->SessionToken, $userSession->UserId);
-		
-		$response->AddAction(RestAction::AllBookings());
-		$response->AddAction(RestAction::MyBookings());
-		$response->AddAction(RestAction::CreateBooking());
+		$response = new AuthenticationResponse($server);
+		$response->token = new AuthenticationResponseBody($userSession->SessionToken, $userSession->UserId);
+
+		//$response->AddService($server, WebServices::AllBookings);
+//		$response->AddAction(RestAction::MyBookings());
+//		$response->AddAction(RestAction::CreateBooking());
 
 		return $response;
 	}
@@ -145,16 +160,16 @@ class AuthenticationResponse extends RestResponse
 	public static function Failed()
 	{
 		$response = new AuthenticationResponse();
-
+		$response->message = 'Login failed. Invalid username or password.';
 		return $response;
 	}
 }
 
-class EchoResponse extends RestResponse
-{
-	public function __construct(IRestServer $server)
-	{
-	    $this->Body = $_POST;
-	}
-}
+//class EchoResponse extends RestResponse
+//{
+//	public function __construct(IRestServer $server)
+//	{
+//	    $this->Body = $_POST;
+//	}
+//}
 ?>

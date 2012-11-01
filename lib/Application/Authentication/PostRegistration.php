@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 class PostRegistration implements IPostRegistration
 {
 	/**
-	 * @var IAuthentication
+	 * @var IWebAuthentication
 	 */
 	protected $authentication;
 
@@ -32,7 +32,7 @@ class PostRegistration implements IPostRegistration
 	 */
 	protected $activation;
 
-	public function __construct(IAuthentication $authentication, IAccountActivation $activation)
+	public function __construct(IWebAuthentication $authentication, IAccountActivation $activation)
 	{
 		$this->authentication = $authentication;
 		$this->activation = $activation;

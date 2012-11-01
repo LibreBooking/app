@@ -20,11 +20,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class SlimServiceRegistration
 {
-	public function __construct($categoryName, $route, $callback)
+	public function __construct($categoryName, $route, $callback, $routeName)
 	{
-		$this->route = $this->trim($categoryName) . '/' . $this->trim($route);
+		$this->route = '/' . $this->trim($categoryName) . '/' . $this->trim($route);
 		$this->callback = $callback;
 		$this->metadata = new SlimServiceMetadata($callback);
+		$this->routeName = $routeName;
 	}
 
 	private function trim($str)
@@ -59,6 +60,14 @@ class SlimServiceRegistration
 	{
 		return $this->metadata;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function RouteName()
+	{
+		return $this->routeName;
+	}
 }
 
 class SlimServiceMetadata
@@ -79,7 +88,7 @@ class SlimServiceMetadata
 
 		$this->name = isset($doc['name']) ? $doc['name'] : null;
 		$this->description =  isset($doc['description']) ? $doc['description'] : null;
-		$this->return = $doc['return'];
+		$this->return = $doc['response'];
 		$this->request = $doc['request'];
 	}
 
@@ -151,7 +160,7 @@ class SlimServiceMetadata
 	{
 		// Credit: http://gonzalo123.com/2011/04/04/reflection-over-phpdoc-with-php/
 
-		$phpDoc = array('params' => array(), 'return' => null);
+		$phpDoc = array('params' => array(), 'response' => null);
 		$docComment = $reflect->getDocComment();
 		if (trim($docComment) == '')
 		{
@@ -186,16 +195,19 @@ class SlimServiceMetadata
 				if ($matches3[1] != 'param')
 				{
 					$str = strtolower($matches3[1]);
-					if ($str == 'return')
+					if ($str == 'response')
 					{
-						$phpDoc['return'] = array('type' => $matches3[2]);
-					} elseif (strtolower($matches3[1]) == 'request')
+						$phpDoc['response'] = array('type' => $matches3[2]);
+					}
+					elseif (strtolower($matches3[1]) == 'request')
 					{
 						$phpDoc['request'] = array('type' => $matches3[2]);
-					} elseif (strtolower($matches3[1]) == 'name')
+					}
+					elseif (strtolower($matches3[1]) == 'name')
 					{
 						$phpDoc['name'] = $matches3[2];
-					} elseif (strtolower($matches3[1]) == 'description')
+					}
+					elseif (strtolower($matches3[1]) == 'description')
 					{
 						$phpDoc['description'] = str_replace('@description ', '', $matches3[0]);
 					}

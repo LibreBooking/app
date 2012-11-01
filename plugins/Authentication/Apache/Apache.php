@@ -54,7 +54,7 @@ class Apache implements IAuthentication
 		## Get username for apache configuration and if Kerberus is used, the REALM is removed
 		$ru = explode('@', $_SERVER['REMOTE_USER']);
 		$username = $ru[0];
-		$this->authToDecorate->Login($username, $loginContext);
+		return $this->authToDecorate->Login($username, $loginContext);
 	}
 
 	public function Logout(UserSession $user)
@@ -62,19 +62,9 @@ class Apache implements IAuthentication
 		$this->authToDecorate->Logout($user);
 	}
 
-	public function CookieLogin($cookieValue, $loginContext)
-	{
-		$this->authToDecorate->CookieLogin($cookieValue, $loginContext);
-	}
-
 	public function AreCredentialsKnown()
 	{
 		return (bool)$_SERVER['REMOTE_USER'];
-	}
-
-	public function HandleLoginFailure(ILoginPage $loginPage)
-	{
-		$this->authToDecorate->HandleLoginFailure($loginPage);
 	}
 
 	public function ShowUsernamePrompt()

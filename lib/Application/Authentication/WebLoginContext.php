@@ -18,64 +18,17 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface ILoginContext
-{
-	/**
-	 * @abstract
-	 * @return Server
-	 */
-	public function GetServer();
-
-	/**
-	 * @abstract
-	 * @return LoginData
-	 */
-	public function GetData();
-}
-
-class LoginData
-{
-	/**
-	 * @var bool
-	 */
-	public $Persist;
-
-	/**
-	 * @var string
-	 */
-	public $Language;
-
-	public function __construct($persist = false, $language = '')
-	{
-		$this->Persist = $persist;
-		$this->Language = $language;
-	}
-}
 
 class WebLoginContext implements ILoginContext
 {
-	/**
-	 * @var Server
-	 */
-	private $server;
-
 	/**
 	 * @var LoginData
 	 */
 	private $data;
 
-	public function __construct(Server $server, LoginData $data)
+	public function __construct(LoginData $data)
 	{
-		$this->server = $server;
 		$this->data = $data;
-	}
-
-	/**
-	 * @return Server
-	 */
-	public function GetServer()
-	{
-		return $this->server;
 	}
 
 	/**

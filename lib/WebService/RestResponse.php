@@ -16,69 +16,59 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-require_once(ROOT_DIR . 'lib/WebService/RestAction.php');
+//require_once(ROOT_DIR . 'lib/WebService/RestAction.php');
+
+class RestServiceLink
+{
+	public $href;
+	public $title;
+
+	public function __construct($href, $title)
+	{
+		$this->href = $href;
+		$this->title = $title;
+	}
+}
 
 class RestResponse
 {
 	/**
-	 * @var array|RestAction[]
+	 * @var array|RestServiceLink[]
 	 */
-	public $Actions = array();
-
-	/**
-	 * @var int
-	 */
-	public $StatusCode = 200;
-
-	/**
-	 * @var mixed
-	 */
-	public $Body = null;
+	public $links = array();
 
 	/**
 	 * @var string
 	 */
-	public $Message = null;
+	public $message = null;
 
 	/**
-	 * @return mixed
-	 */
-	public function GetBody()
-	{
-		return $this->Body;
-	}
-
-	/**
-	 * @param RestAction $action
+	 * @param IRestServer $server
+	 * @param string $serviceName
+	 * @param array $params
 	 * @return void
 	 */
-	public function AddAction(RestAction $action)
+	public function AddService(IRestServer $server, $serviceName, $params = array())
 	{
-		$this->Actions[] = $action;
+		$this->AddServiceLink(new RestServiceLink($server->GetServiceUrl($serviceName, $params), $serviceName));
 	}
 
 	/**
-	 * @param string $url
+	 * @param string $href
+	 * @param string $title
 	 * @return void
 	 */
-	public function AddActionUrl($url)
+	public function AddLink($href, $title)
 	{
-		$this->AddAction(new RestAction($url));
+		$this->AddServiceLink(new RestServiceLink($href, $title));
 	}
 
-	/**
-	 * @param $serviceResource string|WebServiceResource
-	 * @param $serviceAction string|WebServiceAction|null
-	 * @return void
-	 */
-	public function AddResourceAction($serviceResource, $serviceAction = '')
+	private function AddServiceLink(RestServiceLink $link)
 	{
-		$url = Configuration::Instance()->GetScriptUrl();
-		$this->AddActionUrl(sprintf('%s/Services/%s?action=%s', $url, $serviceResource, $serviceAction));
+		$this->links[] = $link;
 	}
-
 }
 
 class NullRestResponse extends RestResponse
@@ -90,7 +80,8 @@ class NotFoundResponse extends RestResponse
 {
 	public function __construct()
 	{
-	    $this->StatusCode = 404;
+		$this->StatusCode = 404;
 	}
 }
+
 ?>

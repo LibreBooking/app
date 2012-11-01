@@ -48,11 +48,6 @@ class ActiveDirectory extends Authentication implements IAuthentication
 	private $_registration;
 
 	/**
-	 * @var PasswordEncryption
-	 */
-	private $_encryption;
-
-	/**
 	 * @var ActiveDirectoryUser
 	 */
 	private $user = null;
@@ -76,22 +71,6 @@ class ActiveDirectory extends Authentication implements IAuthentication
 
 		return $this->_registration;
 	}
-
-	public function SetEncryption($passwordEncryption)
-	{
-		$this->_encryption = $passwordEncryption;
-	}
-
-	private function GetEncryption()
-	{
-		if ($this->_encryption == null)
-		{
-			$this->_encryption = new PasswordEncryption();
-		}
-
-		return $this->_encryption;
-	}
-
 
 	/**
 	 * @param IAuthentication $authentication Authentication class to decorate
@@ -166,7 +145,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
 			Log::Debug('Skipping ActiveDirectory user synchronization, user not loaded');
 		}
 
-		$this->authToDecorate->Login($username, $loginContext);
+		return $this->authToDecorate->Login($username, $loginContext);
 	}
 
 	public function Logout(UserSession $user)
@@ -174,19 +153,9 @@ class ActiveDirectory extends Authentication implements IAuthentication
 		$this->authToDecorate->Logout($user);
 	}
 
-	public function CookieLogin($cookieValue, $loginContext)
-	{
-		$this->authToDecorate->CookieLogin($cookieValue, $loginContext);
-	}
-
 	public function AreCredentialsKnown()
 	{
 		return false;
-	}
-
-	public function HandleLoginFailure(ILoginPage $loginPage)
-	{
-		$this->authToDecorate->HandleLoginFailure($loginPage);
 	}
 
 	private function LdapUserExists()

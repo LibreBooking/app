@@ -26,7 +26,7 @@ class PostRegistrationTests extends TestBase
 	private $page;
 
 	/**
-	 * @var FakeAuth
+	 * @var FakeWebAuthentication
 	 */
 	private $fakeAuth;
 
@@ -55,13 +55,13 @@ class PostRegistrationTests extends TestBase
 		parent::setup();
 
 		$this->page = new FakeRegistrationPage();
-		$this->fakeAuth = new FakeAuth();
+		$this->fakeAuth = new FakeWebAuthentication();
 
 		$this->activation = new FakeActivation();
 
 		$this->user = new FakeUser();
 		$this->user->ChangeEmailAddress('e@m.com');
-		$this->context = new WebLoginContext($this->fakeServer, new LoginData(false, 'en_us'));
+		$this->context = new WebLoginContext(new LoginData(false, 'en_us'));
 
 		$this->postRegistration = new PostRegistration($this->fakeAuth, $this->activation);
 	}

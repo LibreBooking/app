@@ -38,7 +38,7 @@ class ActivationPresenterTests extends TestBase
 	private $accountActivation;
 
 	/**
-	 * @var FakeAuth
+	 * @var FakeWebAuthentication
 	 */
 	private $auth;
 
@@ -48,7 +48,7 @@ class ActivationPresenterTests extends TestBase
 
 		$this->page = $this->getMock('IActivationPage');
 		$this->accountActivation = new FakeActivation();
-		$this->auth = new FakeAuth();
+		$this->auth = new FakeWebAuthentication();
 
 		$this->presenter = new ActivationPresenter($this->page, $this->accountActivation, $this->auth);
 	}
@@ -74,7 +74,7 @@ class ActivationPresenterTests extends TestBase
 		$this->assertEquals($activationCode, $this->accountActivation->_LastActivationCode);
 		$this->assertTrue($this->auth->_LoginCalled);
 		$this->assertEquals($user->EmailAddress(), $this->auth->_LastLogin);
-		$this->assertEquals(new WebLoginContext($this->fakeServer, new LoginData(false, $user->Language())), $this->auth->_LastLoginContext);
+		$this->assertEquals(new WebLoginContext(new LoginData(false, $user->Language())), $this->auth->_LastLoginContext);
 	}
 
 	public function testWhenAccountCannotBeActivated()

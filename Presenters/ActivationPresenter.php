@@ -33,11 +33,11 @@ class ActivationPresenter
 	private $accountActivation;
 
 	/**
-	 * @var IAuthentication
+	 * @var IWebAuthentication
 	 */
 	private $authentication;
 
-	public function __construct(IActivationPage $page, IAccountActivation $accountActivation, IAuthentication $authentication)
+	public function __construct(IActivationPage $page, IAccountActivation $accountActivation, IWebAuthentication $authentication)
 	{
 		$this->page = $page;
 		$this->accountActivation = $accountActivation;
@@ -58,7 +58,7 @@ class ActivationPresenter
 			if ($activationResult->Activated())
 			{
 				$user = $activationResult->User();
-				$this->authentication->Login($user->EmailAddress(), new WebLoginContext(ServiceLocator::GetServer(), new LoginData(false, $user->Language())));
+				$this->authentication->Login($user->EmailAddress(), new WebLoginContext(new LoginData(false, $user->Language())));
 				$this->page->Redirect(Pages::UrlFromId($user->Homepage()));
 			}
 			else

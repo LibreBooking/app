@@ -20,7 +20,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/Saml/namespace.php');
@@ -60,12 +60,12 @@ class Saml extends Authentication implements IAuthentication
 	 * @var SamlUser
 	 */
 	private $user;
-        
-        /** 
-         * @var string
-         * 
-         */
-        private $username;
+
+	/**
+	 * @var string
+	 *
+	 */
+	private $username;
 
 	/**
 	 * @var string
@@ -127,58 +127,49 @@ class Saml extends Authentication implements IAuthentication
 
 	public function Validate($username, $password)
 	{
-           
-          $this->saml->Connect();   
-          $isValid = $this->saml->Authenticate();
 
-          if ($isValid)
-          {        
-            $this->user = $this->saml->GetSamlUser();
-            $userLoaded = $this->SamlUserExists();
+		$this->saml->Connect();
+		$isValid = $this->saml->Authenticate();
 
-            if (!$userLoaded)
-            {
-                Log::Error('Could not load user details from SinmpleSamlPhpSSO. Check your SSO settings. User: %s', $username);
-            }
-            return $userLoaded;
-          }
+		if ($isValid)
+		{
+			$this->user = $this->saml->GetSamlUser();
+			$userLoaded = $this->SamlUserExists();
 
-          return false;
+			if (!$userLoaded)
+			{
+				Log::Error('Could not load user details from SinmpleSamlPhpSSO. Check your SSO settings. User: %s',
+						   $username);
+			}
+			return $userLoaded;
+		}
+
+		return false;
 	}
 
 	public function Login($username, $loginContext)
 	{
-           $this->username = $username;       		
-           if ($this->username == null)
-	   {
-	     $this->username = $this->user->GetUserName();
-	   }
-	   if ($this->SamlUserExists())
-           {
-	     $this->Synchronize($this->username);
-	   }
+		$this->username = $username;
+		if ($this->username == null)
+		{
+			$this->username = $this->user->GetUserName();
+		}
+		if ($this->SamlUserExists())
+		{
+			$this->Synchronize($this->username);
+		}
 
-	   $this->authToDecorate->Login($this->username, $loginContext);
+		return $this->authToDecorate->Login($this->username, $loginContext);
 	}
 
 	public function Logout(UserSession $user)
 	{
-	   $this->authToDecorate->Logout($user);
-	}
-
-	public function CookieLogin($cookieValue, $loginContext)
-	{
-		$this->authToDecorate->CookieLogin($cookieValue, $loginContext);
+		$this->authToDecorate->Logout($user);
 	}
 
 	public function AreCredentialsKnown()
 	{
 		return false;
-	}
-
-	public function HandleLoginFailure(ILoginPage $loginPage)
-	{
-		$this->authToDecorate->HandleLoginFailure($loginPage);
 	}
 
 	private function SamlUserExists()
@@ -192,15 +183,15 @@ class Saml extends Authentication implements IAuthentication
 
 		$registration->Synchronize(
 			new AuthenticatedUser(
-                $username,
-                $this->user->GetEmail(),
-                $this->user->GetFirstName(),
-                $this->user->GetLastName(),
-                $this->password,
-                Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
+				$username,
+				$this->user->GetEmail(),
+				$this->user->GetFirstName(),
+				$this->user->GetLastName(),
+				$this->password,
+				Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
 				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
 				$this->user->GetPhone(), $this->user->GetInstitution(),
-                $this->user->GetTitle())
+				$this->user->GetTitle())
 		);
 	}
 

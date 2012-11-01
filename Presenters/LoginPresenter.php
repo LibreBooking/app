@@ -28,14 +28,14 @@ class LoginPresenter
     private $_page = null;
 
     /**
-     * @var IAuthentication
+     * @var IWebAuthentication
      */
     private $authentication = null;
 
     /**
      * Construct page type and authentication method
      * @param ILoginPage $page passed by reference
-     * @param IAuthentication $authentication default to null
+     * @param IWebAuthentication $authentication default to null
      */
     public function __construct(ILoginPage &$page, $authentication = null)
     {
@@ -44,13 +44,13 @@ class LoginPresenter
     }
 
     /**
-     * @param IAuthentication $authentication
+     * @param IWebAuthentication $authentication
      */
     private function SetAuthentication($authentication)
     {
         if (is_null($authentication))
         {
-            $this->authentication = PluginManager::Instance()->LoadAuthentication();
+            $this->authentication = new WebAuthentication(PluginManager::Instance()->LoadAuthentication(), ServiceLocator::GetServer());
         } else
         {
             $this->authentication = $authentication;
@@ -71,7 +71,7 @@ class LoginPresenter
 
         if ($this->IsCookieLogin($loginCookie))
         {
-            if ($this->authentication->CookieLogin($loginCookie, new WebLoginContext($server, new LoginData(true))))
+            if ($this->authentication->CookieLogin($loginCookie, new WebLoginContext(new LoginData(true))))
             {
                 $this->_Redirect();
             }
@@ -92,7 +92,7 @@ class LoginPresenter
 
         if ($this->authentication->Validate($id, $this->_page->GetPassword()))
         {
-            $context = new WebLoginContext(ServiceLocator::GetServer(), new LoginData($this->_page->GetPersistLogin(), $this->_page->GetSelectedLanguage()));
+            $context = new WebLoginContext(new LoginData($this->_page->GetPersistLogin(), $this->_page->GetSelectedLanguage()));
             $this->authentication->Login($id, $context);
             $this->_Redirect();
         }

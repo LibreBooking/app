@@ -18,48 +18,35 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class SlimWebServiceRegistryCategory
+require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
+
+class SlimServer implements IRestServer
 {
-	private $gets = array();
-	private $posts = array();
-
-	public function __construct($name)
-	{
-		$this->name = $name;
-	}
-
 	/**
-	 * @return array|SlimServiceRegistration[]
+	 * @var Slim\Slim
 	 */
-	public function Gets()
+	private $slim;
+
+	public function __construct(Slim\Slim $slim)
 	{
-		return $this->gets;
+		$this->slim = $slim;
 	}
 
-	/**
-	 * @return array|SlimServiceRegistration[]
-	 */
-	public function Posts()
+	public function GetRequest()
 	{
-		return $this->posts;
+		return json_decode($this->slim->request()->getBody());
 	}
 
-	public function AddGet($route, $callback, $routeName)
+	public function WriteResponse(RestResponse $restResponse, $statusCode = 200)
 	{
-		$this->gets[] = new SlimServiceRegistration($this->name, $route, $callback, $routeName);
+		$this->slim->response()->header('Content-Type', 'application/json');
+		$this->slim->response()->status($statusCode);
+		$this->slim->response()->write(json_encode($restResponse));
 	}
 
-	public function AddPost($route, $callback, $routeName)
+	public function GetServiceUrl($serviceName, $params = array())
 	{
-		$this->posts[] = new SlimServiceRegistration($this->name, $route, $callback, $routeName);
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function Name()
-	{
-		return $this->name;
+		return $this->slim->urlFor($serviceName, $params = array());
 	}
 }
 

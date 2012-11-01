@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'lib/WebService/Slim/SlimServer.php');
 require_once(ROOT_DIR . 'lib/WebService/Slim/SlimServiceRegistration.php');
 require_once(ROOT_DIR . 'lib/WebService/Slim/SlimWebServiceRegistryCategory.php');
 require_once(ROOT_DIR . 'lib/WebService/Slim/SlimWebServiceRegistry.php');

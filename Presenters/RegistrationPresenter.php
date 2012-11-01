@@ -160,7 +160,7 @@ class RegistrationPresenter extends ActionPresenter
 			$additionalFields,
 			$this->GetAttributeValues());
 
-		$context = new WebLoginContext(ServiceLocator::GetServer(), new LoginData(false, $language));
+		$context = new WebLoginContext(new LoginData(false, $language));
 		$plugin = PluginManager::Instance()->LoadPostRegistration();
 		$plugin->HandleSelfRegistration($user, $this->page, $context);
 	}

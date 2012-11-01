@@ -41,7 +41,7 @@ class ActivationPage extends ActionPage implements IActivationPage
 		parent::__construct('AccountActivation');
 
 		$userRepo = new UserRepository();
-		$this->_presenter = new ActivationPresenter($this, new AccountActivation($userRepo, $userRepo), PluginManager::Instance()->LoadAuthentication());
+		$this->_presenter = new ActivationPresenter($this, new AccountActivation($userRepo, $userRepo), new WebAuthentication(PluginManager::Instance()->LoadAuthentication()));
 	}
 
 	public function ProcessPageLoad()

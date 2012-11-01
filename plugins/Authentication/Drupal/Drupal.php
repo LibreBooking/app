@@ -21,8 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'plugins/Authentication/Drupal/Drupal.config.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-
-class Drupal implements IAuthentication
+class Drupal extends Authentication implements IAuthentication
 {
     /**
 	 * @var IAuthentication
@@ -97,7 +96,7 @@ class Drupal implements IAuthentication
         //MPinnegar - I assume I don't do anything with persist, that's only used by another wrapper?
         
 		// Always call decorated Authentication so proper phpScheduleIt functionality is executed
-		$this->authToDecorate->Login($username, $loginContext);
+		return $this->authToDecorate->Login($username, $loginContext);
 	}
 	
 	/**
@@ -109,30 +108,11 @@ class Drupal implements IAuthentication
 	}
 	
 	/**
-	 * @see IAuthorization::CookieLogin()
-	 */
-	public function CookieLogin($cookieValue, $loginContext)
-	{
-		// Do anything Drupal-specific
-		  //MPinnegar - I don't think we need to do anything specific to Drupal? It shouldn't care about cookies set by phpScheduleIt
-		// Always call decorated Authentication so proper phpScheduleIt functionality is executed
-		$this->authToDecorate->CookieLogin($cookieValue, $loginContext);
-	}
-	
-	/**
 	 * @see IAuthorization::AreCredentialsKnown()
 	 */
 	public function AreCredentialsKnown()
 	{
 		return false;
-	}
-	
-	/**
-	 * @see IAuthorization::HandleLoginFailure()
-	 */
-	public function HandleLoginFailure(ILoginPage $loginPage)
-	{
-		$this->authToDecorate->HandleLoginFailure($loginPage);
 	}
 }
 

@@ -18,6 +18,24 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+interface IAuthenticationPage
+{
+	/**
+	 * @return string
+	 */
+	public function GetEmailAddress();
+
+	/**
+	 * @return string
+	 */
+	public function GetPassword();
+
+	/**
+	 * @return void
+	 */
+	public function SetShowLoginError();
+}
+
 interface IAuthentication extends IAuthenticationPromptOptions
 {
 	/**
@@ -32,7 +50,7 @@ interface IAuthentication extends IAuthenticationPromptOptions
 	 * @abstract
 	 * @param string $username
 	 * @param ILoginContext $loginContext
-	 * @return void
+	 * @return UserSession
 	 */
 	public function Login($username, $loginContext);
 
@@ -43,22 +61,15 @@ interface IAuthentication extends IAuthenticationPromptOptions
 	public function Logout(UserSession $user);
 
 	/**
-	 * @param string $cookieValue phpScheduleIt authentication cookie value
-	 * @param ILoginContext $loginContext
-	 * @return bool If the login was successful
-	 */
-	public function CookieLogin($cookieValue, $loginContext);
-
-	/**
 	 * @return bool
 	 */
 	public function AreCredentialsKnown();
 
 	/**
-	 * @param ILoginPage $loginPage
+	 * @param IAuthenticationPage $loginPage
 	 * @return void
 	 */
-	public function HandleLoginFailure(ILoginPage $loginPage);
+	public function HandleLoginFailure(IAuthenticationPage $loginPage);
 }
 
 interface IAuthenticationPromptOptions

@@ -45,12 +45,12 @@ class SlimWebServiceRegistry
 	{
 		foreach ($category->Gets() as $registration)
 		{
-			$this->slim->get($registration->Route(), $registration->Callback());
+			$this->slim->get($registration->Route(), $registration->Callback())->name($registration->RouteName());
 		}
 
 		foreach ($category->Posts() as $registration)
 		{
-			$this->slim->post($registration->Route(), $registration->Callback());
+			$this->slim->post($registration->Route(), $registration->Callback())->name($registration->RouteName());
 		}
 
 		$this->categories[] = $category;

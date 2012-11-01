@@ -19,7 +19,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
@@ -93,10 +92,6 @@ class Authentication implements IAuthentication
         return $valid;
     }
 
-    /**
-     * @param string $username
-     * @param ILoginContext $loginContext
-     */
     public function Login($username, $loginContext)
     {
         Log::Debug('Logging in with user: %s', $username);
@@ -106,7 +101,6 @@ class Authentication implements IAuthentication
         {
             $loginData = $loginContext->GetData();
             $loginTime = LoginTime::Now();
-            $userid = $user->Id();
             $language = $user->Language();
 
             if (!empty($loginData->Language))
@@ -117,42 +111,15 @@ class Authentication implements IAuthentication
             $user->Login($loginTime, $language);
             $this->userRepository->Update($user);
 
-            $this->SetUserSession($user, $loginContext->GetServer());
-
-            if ($loginContext->GetData()->Persist)
-            {
-                $this->SetLoginCookie($userid, $loginTime, $loginContext->GetServer());
-            }
-        }
-    }
-
-    public function Logout(UserSession $userSession)
-    {
-        Log::Debug('Logout userId: %s', $userSession->UserId);
-
-        $this->DeleteLoginCookie($userSession->UserId);
-        ServiceLocator::GetServer()->EndSession(SessionKeys::USER_SESSION);
-    }
-
-    public function CookieLogin($cookieValue, $loginContext)
-    {
-        $loginCookie = LoginCookie::FromValue($cookieValue);
-        $valid = false;
-
-        if (!is_null($loginCookie))
-        {
-            $validEmail = $this->ValidateCookie($loginCookie);
-            $valid = !is_null($validEmail);
-
-            if ($valid)
-            {
-                $this->Login($validEmail, $loginContext);
-            }
+            return $this->GetUserSession($user, $loginTime);
         }
 
-		Log::Debug('Cookie login. IsValid: %s', $valid);
+		return new NullUserSession();
+    }
 
-        return $valid;
+	public function Logout(UserSession $userSession)
+    {
+
     }
 
     public function AreCredentialsKnown()
@@ -160,16 +127,17 @@ class Authentication implements IAuthentication
         return false;
     }
 
-    public function HandleLoginFailure(ILoginPage $loginPage)
+    public function HandleLoginFailure(IAuthenticationPage $loginPage)
     {
         $loginPage->SetShowLoginError();
     }
 
     /**
      * @param User $user
-     * @param Server $server
+	 * @param string $loginTime
+	 * @return UserSession
      */
-    private function SetUserSession(User $user, $server)
+    private function GetUserSession(User $user, $loginTime)
     {
         $userSession = new UserSession($user->Id());
         $userSession->Email = $user->EmailAddress();
@@ -178,42 +146,14 @@ class Authentication implements IAuthentication
         $userSession->Timezone = $user->Timezone();
         $userSession->HomepageId = $user->Homepage();
 		$userSession->LanguageCode = $user->Language();
+		$userSession->LoginTime = $loginTime;
 
 		$userSession->IsAdmin = $this->roleService->IsApplicationAdministrator($user);
 		$userSession->IsGroupAdmin = $this->roleService->IsGroupAdministrator($user);
 		$userSession->IsResourceAdmin = $this->roleService->IsResourceAdministrator($user);
 		$userSession->IsScheduleAdmin = $this->roleService->IsScheduleAdministrator($user);
 
-        $server->SetUserSession($userSession);
-    }
-
-    /**
-     * @param int $userid
-     * @param string $lastLogin
-     * @param Server $server
-     */
-    private function SetLoginCookie($userid, $lastLogin, $server)
-    {
-        $cookie = new LoginCookie($userid, $lastLogin);
-        $server->SetCookie($cookie);
-    }
-
-    private function DeleteLoginCookie($userid)
-    {
-        ServiceLocator::GetServer()->DeleteCookie(new LoginCookie($userid, null));
-    }
-
-    private function ValidateCookie($loginCookie)
-    {
-        $valid = false;
-        $reader = ServiceLocator::GetDatabase()->Query(new CookieLoginCommand($loginCookie->UserID));
-
-        if ($row = $reader->GetRow())
-        {
-            $valid = $row[ColumnNames::LAST_LOGIN] == $loginCookie->LastLogin;
-        }
-
-        return $valid ? $row[ColumnNames::EMAIL] : null;
+		return $userSession;
     }
 
 	public function ShowUsernamePrompt()

@@ -108,7 +108,7 @@ class AuthenticationTests extends TestBase
 		$this->auth = new Authentication($this->authorization, $this->userRepository);
 		$this->auth->SetMigration($this->fakeMigration);
 
-		$this->loginContext = new WebLoginContext($this->fakeServer, new LoginData());
+		$this->loginContext = new WebLoginContext(new LoginData());
 	}
 
 	function testValidateChecksAgainstDB()
@@ -163,8 +163,8 @@ class AuthenticationTests extends TestBase
 				->with($this->equalTo($this->user))
 				->will($this->returnValue(true));
 
-		$context = new WebLoginContext($this->fakeServer, new LoginData(false, $language));
-		$this->auth->Login($this->username, $context);
+		$context = new WebLoginContext(new LoginData(false, $language));
+		$actualSession = $this->auth->Login($this->username, $context);
 
 		$user = new UserSession($this->id);
 		$user->FirstName = $this->fname;
@@ -172,14 +172,18 @@ class AuthenticationTests extends TestBase
 		$user->Email = $this->email;
 		$user->Timezone = $this->timezone;
 		$user->HomepageId = $this->homepageId;
-		$user->SessionToken = $this->fakeServer->GetUserSession()->SessionToken;
 		$user->IsAdmin = true;
 		$user->IsGroupAdmin = true;
 		$user->IsResourceAdmin = true;
 		$user->IsScheduleAdmin = true;
 		$user->LanguageCode = $language;
+		$user->LoginTime = LoginTime::Now();
 
-		$this->assertEquals($user, $this->fakeServer->GetUserSession());
+		// sessions tokens are random. set them to something static so equality works
+		$actualSession->SessionToken = '1';
+		$user->SessionToken = '1';
+
+		$this->assertEquals($user, $actualSession);
 	}
 
 	function testMigratesPasswordNewPasswordHasNotBeenSet()
@@ -206,86 +210,6 @@ class AuthenticationTests extends TestBase
 		$this->assertTrue($this->fakePassword->_MigrateCalled);
 		$this->assertEquals(null, $this->fakePassword->_LastSalt);
 		$this->assertEquals($id, $this->fakePassword->_LastUserId);
-	}
-
-	function testCanPersistLoginWhenValidLogin()
-	{
-		$now = mktime(10, 11, 12, 1, 2, 2000);
-		LoginTime::$Now = $now;
-
-		$this->userRepository->expects($this->once())
-				->method('LoadByUsername')
-				->with($this->equalTo($this->username))
-				->will($this->returnValue($this->user));
-
-		$hashedValue = sprintf("%s|%s", $this->id, LoginTime::Now());
-
-		$loginContext = new WebLoginContext($this->fakeServer, new LoginData(true));
-		$this->auth->Login($this->username, $loginContext);
-
-		$expectedCookie = new Cookie(CookieKeys::PERSIST_LOGIN, $hashedValue);
-		$this->assertEquals($expectedCookie->Value, $this->fakeServer->GetCookie(CookieKeys::PERSIST_LOGIN));
-	}
-
-	function testCanAutoLoginWithCookie()
-	{
-		$userid = 'userid';
-		$lastLogin = LoginTime::Now();
-		$email = 'email@address.com';
-		$cookie = new LoginCookie($userid, $lastLogin);
-
-		$this->userRepository->expects($this->once())
-				->method('LoadByUsername')
-				->with($this->equalTo($email))
-				->will($this->returnValue($this->user));
-
-		$rows = array(array(
-						  ColumnNames::USER_ID => $userid,
-						  ColumnNames::LAST_LOGIN => $lastLogin,
-						  ColumnNames::EMAIL => $email
-					  ));
-		$this->db->SetRow(0, $rows);
-
-		$valid = $this->auth->CookieLogin($cookie->Value, $this->loginContext);
-
-		$cookieValidateCommand = new CookieLoginCommand($userid);
-
-		$this->assertTrue($valid, 'should be valid if cookie matches');
-		$this->assertEquals($cookieValidateCommand, $this->db->_Commands[0]);
-	}
-
-	function testDoesNotAutoLoginIfCookieNotValid()
-	{
-		$userid = 'userid';
-		$lastLogin = LoginTime::Now();
-		$email = 'email@address.com';
-		$cookie = new LoginCookie($userid, $lastLogin);
-
-		$rows = array(array(
-						  ColumnNames::USER_ID => $userid,
-						  ColumnNames::LAST_LOGIN => 'not the same thing',
-						  ColumnNames::EMAIL => $email
-					  ));
-		$this->db->SetRows($rows);
-
-		$valid = $this->auth->CookieLogin($cookie->Value, $this->loginContext);
-
-		$this->assertFalse($valid, 'should not be valid if cookie does not match');
-		$this->assertEquals(1, count($this->db->_Commands));
-	}
-	
-	public function testLogsUserOut()
-	{
-		$userId = 100;
-		$userSession = new FakeUserSession();
-		$userSession->UserId = $userId;
-
-		$loginCookie = new LoginCookie($userId, null);
-
-		$this->auth->Logout($userSession);
-
-		$this->assertEquals($loginCookie, $this->fakeServer->_DeletedCookie);
-		$this->assertEquals(SessionKeys::USER_SESSION, $this->fakeServer->_EndedSession);
 	}
 }
 

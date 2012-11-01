@@ -18,49 +18,31 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class SlimWebServiceRegistryCategory
+interface ILoginContext
 {
-	private $gets = array();
-	private $posts = array();
-
-	public function __construct($name)
-	{
-		$this->name = $name;
-	}
-
 	/**
-	 * @return array|SlimServiceRegistration[]
+	 * @abstract
+	 * @return LoginData
 	 */
-	public function Gets()
-	{
-		return $this->gets;
-	}
-
-	/**
-	 * @return array|SlimServiceRegistration[]
-	 */
-	public function Posts()
-	{
-		return $this->posts;
-	}
-
-	public function AddGet($route, $callback, $routeName)
-	{
-		$this->gets[] = new SlimServiceRegistration($this->name, $route, $callback, $routeName);
-	}
-
-	public function AddPost($route, $callback, $routeName)
-	{
-		$this->posts[] = new SlimServiceRegistration($this->name, $route, $callback, $routeName);
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function Name()
-	{
-		return $this->name;
-	}
+	public function GetData();
 }
 
+class LoginData
+{
+	/**
+	 * @var bool
+	 */
+	public $Persist;
+
+	/**
+	 * @var string
+	 */
+	public $Language;
+
+	public function __construct($persist = false, $language = '')
+	{
+		$this->Persist = $persist;
+		$this->Language = $language;
+	}
+}
 ?>

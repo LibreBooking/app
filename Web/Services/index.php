@@ -23,31 +23,56 @@ define('ROOT_DIR', '../../');
 require_once(ROOT_DIR . 'lib/external/Slim/Slim.php');
 require_once(ROOT_DIR . 'lib/WebService/Slim/namespace.php');
 
+require_once(ROOT_DIR . 'WebServices/AuthenticationWebService.php');
+
 \Slim\Slim::registerAutoloader();
+
+
 
 $app = new \Slim\Slim();
 
-$requestReader = new SlimRequestReader($app);
-$responseWriter = new SlimResponseWriter($app);
+
+//$requestReader = new SlimRequestReader($app);
+//$responseWriter = new SlimResponseWriter($app);
+$server = new SlimServer($app);
+//
+//$app->hook('slim.before.dispatch', function() use ($app) {
+//
+//	echo $app->request()->getResourceUri();
+//	echo '<br/>';
+//	echo $app->request()->getRootUri();
+//	echo '<br/>';
+//	var_dump($app->environment());
+//});
+
+class WebServices
+{
+	const Login = 'login';
+	const Foo = 'foo';
+}
 
 $registry = new SlimWebServiceRegistry($app);
 
-$auth = new AuthWebService($requestReader, $responseWriter);
+$auth = new AuthenticationWebService($server, PluginManager::Instance()->LoadAuthentication());
 
 $authCategory = new SlimWebServiceRegistryCategory('Authentication');
-$authCategory->AddPost('Login', array($auth, 'Login'));
-
+$authCategory->AddPost('Authenticate', array($auth, 'Authenticate'), WebServices::Login);
+//$authCategory->AddGet('Foo', array($auth, 'Login'), WebServices::Foo);
 $registry->AddCategory($authCategory);
 
-$app->get('/', function () use ($registry)
+//echo ' ------ <br/>';
+//echo $app->urlFor('blah');
+//echo '<br/>';
+
+$app->get('/', function () use ($registry, $app)
 {
 	// Print API documentation
-	ApiHelpPage::Render($registry);
+	ApiHelpPage::Render($registry, $app);
 });
 
 class ApiHelpPage
 {
-	public static function Render(SlimWebServiceRegistry $registry)
+	public static function Render(SlimWebServiceRegistry $registry, Slim\Slim $app)
 	{
 		$head = <<<EOT
 	<!DOCTYPE html>
@@ -104,7 +129,7 @@ EOT;
 
 				$md = $post->Metadata();
 				$request = $md->Request();
-				self::EchoCommon($md, $post);
+				self::EchoCommon($md, $post, $app);
 
 				echo '<h4>Request</h4>';
 				if (is_object($request))
@@ -127,7 +152,7 @@ EOT;
 			{
 				echo '<div class="service">';
 				$md = $post->Metadata();
-				self::EchoCommon($md, $post);
+				self::EchoCommon($md, $post, $app);
 				echo '</div>';
 			}
 		}
@@ -135,12 +160,12 @@ EOT;
 		echo '</body></html>';
 	}
 
-	private static function EchoCommon(SlimServiceMetadata $md, $post)
+	private static function EchoCommon(SlimServiceMetadata $md, $post, Slim\Slim $app)
 	{
 		$response = $md->Response();
 		echo "<h4>Name</h4>" . $md->Name();
 		echo "<h4>Description</h4>" . $md->Description();
-		echo '<h4>Route</h4>' . $post->Route();
+		echo '<h4>Route</h4>' . $app->urlFor($post->RouteName());
 
 		echo '<h4>Response</h4>';
 		if (is_object($response))
@@ -178,7 +203,11 @@ class AuthWebService
 	 */
 	public function Login()
 	{
-
+		die('arg');
+	}
+	public function Foo()
+	{
+		die('foo arg');
 	}
 }
 

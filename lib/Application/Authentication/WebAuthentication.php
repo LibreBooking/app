@@ -1,0 +1,234 @@
+<?php
+/**
+Copyright 2012 Nick Korbel
+
+This file is part of phpScheduleIt.
+
+phpScheduleIt is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+phpScheduleIt is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+
+interface IWebAuthentication extends IAuthenticationPromptOptions
+{
+	/**
+	 * @abstract
+	 * @param string $username
+	 * @param string $password
+	 * @return bool If user is valid
+	 */
+	public function Validate($username, $password);
+
+	/**
+	 * @abstract
+	 * @param string $username
+	 * @param ILoginContext $loginContext
+	 * @return void
+	 */
+	public function Login($username, $loginContext);
+
+	/**
+	 * @param UserSession $user
+	 * @return void
+	 */
+	public function Logout(UserSession $user);
+
+	/**
+	 * @param string $cookieValue phpScheduleIt authentication cookie value
+	 * @param ILoginContext $loginContext
+	 * @return bool If the login was successful
+	 */
+	public function CookieLogin($cookieValue, $loginContext);
+
+	/**
+	 * @param ILoginPage $loginPage
+	 * @return void
+	 */
+	public function HandleLoginFailure(ILoginPage $loginPage);
+
+	/**
+	 * @return bool
+	 */
+	public function AreCredentialsKnown();
+}
+
+class WebAuthentication implements IWebAuthentication
+{
+	/**
+	 * @param IAuthentication $authentication
+	 * @param Server $server
+	 */
+	public function __construct(IAuthentication $authentication, $server = null)
+	{
+		$this->authentication = $authentication;
+		$this->server = $server;
+		if ($this->server == null)
+		{
+			$this->server = ServiceLocator::GetServer();
+		}
+	}
+
+	/**
+	 * @param string $username
+	 * @param string $password
+	 * @return bool If user is valid
+	 */
+	public function Validate($username, $password)
+	{
+		return $this->authentication->Validate($username, $password);
+	}
+
+	/**
+	 * @param string $username
+	 * @param ILoginContext $loginContext
+	 * @return void
+	 */
+	public function Login($username, $loginContext)
+	{
+		$userSession = $this->authentication->Login($username, $loginContext);
+		$this->server->SetUserSession($userSession);
+
+		if ($loginContext->GetData()->Persist)
+		{
+			$this->SetLoginCookie($userSession->UserId, $userSession->LoginTime);
+		}
+	}
+
+	/**
+	 * @param UserSession $userSession
+	 * @return void
+	 */
+	public function Logout(UserSession $userSession)
+	{
+		$this->authentication->Logout($userSession);
+		Log::Debug('Logout userId: %s', $userSession->UserId);
+
+		$this->DeleteLoginCookie($userSession->UserId);
+		ServiceLocator::GetServer()->EndSession(SessionKeys::USER_SESSION);
+	}
+
+	public function CookieLogin($cookieValue, $loginContext)
+	{
+		$loginCookie = LoginCookie::FromValue($cookieValue);
+		$valid = false;
+		$this->server->SetUserSession(new NullUserSession());
+
+		if (!is_null($loginCookie))
+		{
+			$validEmail = $this->ValidateCookie($loginCookie);
+			$valid = !is_null($validEmail);
+
+			if ($valid)
+			{
+				$this->Login($validEmail, $loginContext);
+			}
+		}
+
+		Log::Debug('Cookie login. IsValid: %s', $valid);
+
+		return $valid;
+	}
+
+	/**
+	 * @param int $userid
+	 * @param string $lastLogin
+	 */
+	private function SetLoginCookie($userid, $lastLogin)
+	{
+		$cookie = new LoginCookie($userid, $lastLogin);
+		$this->server->SetCookie($cookie);
+	}
+
+	private function DeleteLoginCookie($userid)
+	{
+		ServiceLocator::GetServer()->DeleteCookie(new LoginCookie($userid, null));
+	}
+
+	private function ValidateCookie($loginCookie)
+	{
+		$valid = false;
+		$reader = ServiceLocator::GetDatabase()->Query(new CookieLoginCommand($loginCookie->UserID));
+
+		if ($row = $reader->GetRow())
+		{
+			$valid = $row[ColumnNames::LAST_LOGIN] == $loginCookie->LastLogin;
+		}
+
+		return $valid ? $row[ColumnNames::EMAIL] : null;
+	}
+
+	public function HandleLoginFailure(ILoginPage $loginPage)
+	{
+		$this->authentication->HandleLoginFailure(new WebAuthenticationPage($loginPage));
+	}
+
+	public function AreCredentialsKnown()
+	{
+		return $this->authentication->AreCredentialsKnown();
+	}
+
+	public function ShowUsernamePrompt()
+	{
+		return $this->authentication->ShowUsernamePrompt();
+	}
+
+	public function ShowPasswordPrompt()
+	{
+		return $this->authentication->ShowPasswordPrompt();
+	}
+
+	public function ShowPersistLoginPrompt()
+	{
+		return $this->authentication->ShowPersistLoginPrompt();
+	}
+
+	public function ShowForgotPasswordPrompt()
+	{
+		return $this->authentication->ShowForgotPasswordPrompt();
+	}
+}
+
+class WebAuthenticationPage implements IAuthenticationPage
+{
+	public function __construct(ILoginPage $page)
+	{
+		$this->page = $page;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetEmailAddress()
+	{
+		return $this->page->GetEmailAddress();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetPassword()
+	{
+		return $this->page->GetPassword();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function SetShowLoginError()
+	{
+		$this->page->SetShowLoginError();
+	}
+}
+
+?>

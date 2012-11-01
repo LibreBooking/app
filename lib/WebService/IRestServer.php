@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -23,57 +23,21 @@ require_once(ROOT_DIR . 'lib/WebService/RestResponse.php');
 interface IRestServer
 {
 	/**
-	 * @abstract
-	 * @return bool
-	 */
-	public function IsPost();
-
-	/**
-	 * @abstract
-	 * @return bool
-	 */
-	public function IsGet();
-
-	/**
-	 * @abstract
-	 * @param RestResponse $response
-	 * @return void
-	 */
-	public function Respond(RestResponse $response);
-
-    /**
-     * @abstract
-     * @param IExactRestResponse $response
-     * @return void
-     */
-    public function RespondExact(IExactRestResponse $response);
-
-	/**
-	 * @abstract
-	 * @param string $variableName
 	 * @return mixed
 	 */
-	public function GetPost($variableName);
+	public function GetRequest();
 
 	/**
-	 * @abstract
-	 * @param string $variableName
+	 * @param RestResponse $restResponse
 	 * @return mixed
 	 */
-	public function GetQueryString($variableName);
+	public function WriteResponse(RestResponse $restResponse);
 
 	/**
-	 * @abstract
-	 * @return UserSession
+	 * @param string $serviceName
+	 * @return string
 	 */
-	public function GetUserSession();
-
-	/**
-	 * @abstract
-	 * @return string|WebServiceAction
-	 */
-	public function GetServiceAction();
-
+	public function GetServiceUrl($serviceName);
 }
 
 ?>
