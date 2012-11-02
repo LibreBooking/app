@@ -116,6 +116,10 @@ class Queries
 			'INSERT INTO user_resource_permissions (user_id, resource_id)
 		VALUES (@userid, @resourceid)';
 
+	const ADD_USER_SESSION =
+			'INSERT INTO user_session (user_id, last_modified, session_token, user_session_value)
+		VALUES (@userid, @dateModified, @session_token, @user_session_value)';
+
 	const AUTO_ASSIGN_PERMISSIONS =
 			'INSERT INTO
           user_resource_permissions (user_id, resource_id)
@@ -212,6 +216,9 @@ class Queries
 
 	const DELETE_USER_RESOURCE_PERMISSION =
 			'DELETE	FROM user_resource_permissions WHERE user_id = @userid AND resource_id = @resourceid';
+
+	const DELETE_USER_SESSION =
+			'DELETE	FROM user_session WHERE session_token = @session_token';
 
 	const LOGIN_USER =
 			'SELECT * FROM users WHERE (username = @username OR email = @username)';
@@ -575,6 +582,10 @@ class Queries
 		WHERE 
 			ur.user_id = @userid';
 
+	const GET_USER_SESSION_BY_SESSION_TOKEN = 'SELECT * FROM user_session WHERE session_token = @session_token';
+
+	const GET_USER_SESSION_BY_USERID = 'SELECT * FROM user_session WHERE user_id = @userid';
+
 	const MIGRATE_PASSWORD =
 			'UPDATE
 			users 
@@ -762,8 +773,7 @@ class Queries
 			user_id = @userid';
 
 	const UPDATE_USER_ATTRIBUTES =
-			'UPDATE
-			users
+			'UPDATE	users
 		SET
 			phone = @phone,
 			position = @position,
@@ -772,8 +782,7 @@ class Queries
 			user_id = @userid';
 
 	const UPDATE_USER_BY_USERNAME =
-			'UPDATE
-			users 
+			'UPDATE users
 		SET 
 			email = COALESCE(@email, email),
 			password = @password,
@@ -785,6 +794,14 @@ class Queries
 			position = COALESCE(@position, position)
 		WHERE 
 			username = @username';
+
+	const UPDATE_USER_SESSION =
+			'UPDATE user_session
+		SET
+			last_modified = @dateModified,
+			session_token = @session_token,
+			user_session_value = @user_session_value
+		WHERE user_id = @userid';
 
 	const VALIDATE_USER =
 			'SELECT user_id, password, salt, legacypassword

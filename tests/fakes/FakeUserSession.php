@@ -31,6 +31,13 @@ class FakeUserSession extends UserSession
 		$this->IsAdmin = $isAdmin;
 		$this->Timezone = $timezone;
 		$this->HomepageId = 1;
+		$this->SessionToken = 'session token';
+		$this->IsGroupAdmin = false;
+		$this->IsResourceAdmin = true;
+		$this->IsScheduleAdmin = false;
+		$this->LanguageCode = 'en_US';
+		$this->LoginTime = '2012-11-02 12:30:19';
+		$this->PublicId = 'public id';
 	}
 }
 ?>

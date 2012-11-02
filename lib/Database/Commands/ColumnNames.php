@@ -189,6 +189,11 @@ class ColumnNames
 	const DATE_CREATED = 'date_created';
 	const REPORT_DETAILS = 'report_details';
 
+	// USER SESSION //
+	const SESSION_TOKEN = 'session_token';
+	const USER_SESSION = 'user_session_value';
+	const SESSION_LAST_MODIFIED = 'last_modified';
+
     // dynamic
     const TOTAL = 'total';
     const TOTAL_TIME = 'totalTime';

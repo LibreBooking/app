@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
+require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class AuthenticationWebService
@@ -36,6 +36,7 @@ class AuthenticationWebService
 
 	/**
 	 * @name Authenticate
+	 * @description Authenticates an existing phpScheduleIt user
 	 * @request AuthenticationRequest
 	 * @response AuthenticationResponse
 	 * @return void
@@ -65,13 +66,34 @@ class AuthenticationWebService
 		}
 	}
 
+	/**
+	 * @name SignOut
+	 * @request SignOutRequest
+	 * @return void
+	 */
+	public function SignOut()
+	{
+		/** @var $request SignOutRequest */
+		$request = $this->server->GetRequest();
+		$userId = $request->userId;
+		$sessionToken = $request->sessionToken;
 
-//	public function SignOut()
-//	{
-//		$this->authentication->Logout($server->GetUserSession());
-//
-//		return new SignOutResponse();
-//	}
+		Log::Debug('WebService SignOut for userId %s and sessionToken %s', $userId, $sessionToken);
+
+		$this->authentication->Logout($userId, $sessionToken);
+	}
+}
+
+class WebServiceExpiration
+{
+	/**
+	 * @param string $loginTime
+	 * @return string
+	 */
+	public static function Parse($loginTime)
+	{
+		return Date::FromDatabase($loginTime)->ToIso();
+	}
 }
 
 class AuthenticationRequest
@@ -96,33 +118,13 @@ class AuthenticationRequest
 	}
 }
 
-class AuthenticationResponseBody
-{
-	public $sessionToken = '';
-	public $userId = '';
-	public $isAuthenticated = false;
-
-	public function __construct($sessionToken = null, $userId = null)
-	{
-		$this->sessionToken = $sessionToken;
-		$this->userId = $userId;
-		$this->isAuthenticated = !empty($sessionToken) && !empty($userId);
-	}
-}
-
-class SignOutResponse extends RestResponse
-{
-	public function __construct()
-	{
-		$this->Message = 'Sign Out successful';
-	}
-}
 
 class AuthenticationResponse extends RestResponse
 {
-	public $token;
-	public $expires;
+	public $sessionToken;
+	public $sessionExpires;
 	public $userId;
+	public $isAuthenticated = false;
 
 	/**
 	 * @static
@@ -133,8 +135,13 @@ class AuthenticationResponse extends RestResponse
 	public static function Success(IRestServer $server, $userSession)
 	{
 		$response = new AuthenticationResponse($server);
-		$response->token = new AuthenticationResponseBody($userSession->SessionToken, $userSession->UserId);
+		$response->sessionToken = $userSession->SessionToken;
+		$response->sessionExpires = WebServiceExpiration::Parse($userSession->LoginTime);
+		$response->isAuthenticated = true;
+		$response->userId = $userSession->PublicId;
 
+		$response->AddService($server, WebServices::Logout);
+		//$response->AddService($server, WebServices::MyBookings, array($userSession->PublicId));
 		//$response->AddService($server, WebServices::AllBookings);
 //		$response->AddAction(RestAction::MyBookings());
 //		$response->AddAction(RestAction::CreateBooking());
@@ -154,11 +161,26 @@ class AuthenticationResponse extends RestResponse
 	}
 }
 
-//class EchoResponse extends RestResponse
-//{
-//	public function __construct(IRestServer $server)
-//	{
-//	    $this->Body = $_POST;
-//	}
-//}
+class SignOutRequest
+{
+	/**
+	 * @var string
+	 */
+	public $userId;
+	/**
+	 * @var string
+	 */
+	public $sessionToken;
+
+	/**
+	 * @param string $userId
+	 * @param string $sessionToken
+	 */
+	public function __construct($userId = null, $sessionToken = null)
+	{
+		$this->userId = $userId;
+		$this->sessionToken = $sessionToken;
+	}
+}
+
 ?>

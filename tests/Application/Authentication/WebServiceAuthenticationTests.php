@@ -99,11 +99,13 @@ class WebServiceAuthenticationTests extends TestBase
 		$this->assertEquals($user, $actualSession);
 	}
 
-	public function testLogsUserOut()
+	public function testLogsUserOutIfUserIdAndSessionTokenMatch()
 	{
+		$publicId = 123;
 		$sessionToken = 'token';
 
-		$userSession = new UserSession(123);
+		$userSession = new UserSession(1);
+		$userSession->PublicId = $publicId;
 
 		$this->userSessionRepository->expects($this->once())
 				->method('LoadBySessionToken')
@@ -114,9 +116,27 @@ class WebServiceAuthenticationTests extends TestBase
 				->method('Delete')
 				->with($this->equalTo($userSession));
 
-		$this->webAuth->Logout($sessionToken);
+		$this->webAuth->Logout($publicId, $sessionToken);
 
 		$this->assertTrue($this->fakeAuth->_LogoutCalled);
+	}
+
+	public function testDoesNotLogUserOutIfUserIdAndSessionTokenMismatch()
+	{
+		$userId = 123;
+		$sessionToken = 'token';
+
+		$userSession = new UserSession(999);
+		$userSession->PublicId = '999';
+
+		$this->userSessionRepository->expects($this->once())
+				->method('LoadBySessionToken')
+				->with($this->equalTo($sessionToken))
+				->will($this->returnValue($userSession));
+
+		$this->webAuth->Logout($userId, $sessionToken);
+
+		$this->assertFalse($this->fakeAuth->_LogoutCalled);
 	}
 
 }

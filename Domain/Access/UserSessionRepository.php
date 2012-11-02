@@ -50,4 +50,64 @@ interface IUserSessionRepository
 	public function Delete(UserSession $session);
 }
 
+class UserSessionRepository implements IUserSessionRepository
+{
+	/**
+	 * @param int $userId
+	 * @return UserSession|null
+	 */
+	public function LoadByUserId($userId)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new GetUserSessionByUserIdCommand($userId));
+		if ($row = $reader->GetRow())
+		{
+			return unserialize($row[ColumnNames::USER_SESSION]);
+		}
+		return null;
+	}
+
+	/**
+	 * @param string $sessionToken
+	 * @return UserSession
+	 */
+	public function LoadBySessionToken($sessionToken)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new GetUserSessionBySessionTokenCommand($sessionToken));
+		if ($row = $reader->GetRow())
+		{
+			return unserialize($row[ColumnNames::USER_SESSION]);
+		}
+		return null;
+	}
+
+	/**
+	 * @param UserSession $session
+	 * @return void
+	 */
+	public function Add(UserSession $session)
+	{
+		$serializedSession = serialize($session);
+		ServiceLocator::GetDatabase()->Execute(new AddUserSessionCommand($session->UserId, $session->SessionToken, Date::Now(), $serializedSession));
+	}
+
+	/**
+	 * @param UserSession $session
+	 * @return void
+	 */
+	public function Update(UserSession $session)
+	{
+		$serializedSession = serialize($session);
+		ServiceLocator::GetDatabase()->Execute(new UpdateUserSessionCommand($session->UserId, $session->SessionToken, Date::Now(), $serializedSession));
+	}
+
+	/**
+	 * @param UserSession $session
+	 * @return void
+	 */
+	public function Delete(UserSession $session)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteUserSessionCommand($session->SessionToken));
+	}
+}
+
 ?>

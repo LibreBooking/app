@@ -159,6 +159,14 @@ class Date
 	}
 
 	/**
+	 * @return string
+	 */
+	public function ToIso()
+	{
+		return $this->Format(DateTime::ISO8601);
+	}
+
+	/**
 	 * Formats the Date into a format that is accepted by the database
 	 *
 	 * @return string
@@ -565,22 +573,21 @@ class NullDate extends Date
 	/**
 	 * @var NullDate
 	 */
-	private static $date;
+	private static $ndate;
 
 	public function __construct()
 	{
 		//parent::__construct();
 	}
 
-
 	public static function Instance()
 	{
-		if (self::$date == null)
+		if (self::$ndate == null)
 		{
-			self::$date = new NullDate();
+			self::$ndate = new NullDate();
 		}
 
-		return self::$date;
+		return self::$ndate;
 	}
 
 	public function Format($format)

@@ -137,6 +137,7 @@ class ParameterNames
     const SCHEDULE_WEEKDAYSTART = '@scheduleWeekdayStart';
     const SCHEDULE_DAYSVISIBLE = '@scheduleDaysVisible';
     const SERIES_ID = '@seriesid';
+	const SESSION_TOKEN = '@session_token';
     const START_DATE = '@startDate';
     const START_TIME = '@startTime';
     const STATUS_ID = '@statusid';
@@ -147,6 +148,7 @@ class ParameterNames
     const USER_ID = '@userid';
     const USER_ROLE_ID = '@user_roleid';
     const USER_STATUS_ID = '@user_statusid';
+    const USER_SESSION = '@user_session_value';
     const USERNAME = '@username';
 
 

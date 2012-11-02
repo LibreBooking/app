@@ -38,6 +38,11 @@ interface IRestServer
 	 * @return string
 	 */
 	public function GetServiceUrl($serviceName);
+
+	/**
+	 * @return string
+	 */
+	public function GetUrl();
 }
 
 ?>

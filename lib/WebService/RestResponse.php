@@ -52,7 +52,8 @@ class RestResponse
 	 */
 	public function AddService(IRestServer $server, $serviceName, $params = array())
 	{
-		$this->AddServiceLink(new RestServiceLink($server->GetServiceUrl($serviceName, $params), $serviceName));
+		$url = $server->GetUrl() . $server->GetServiceUrl($serviceName, $params);
+		$this->AddServiceLink(new RestServiceLink($url, $serviceName));
 	}
 
 	/**

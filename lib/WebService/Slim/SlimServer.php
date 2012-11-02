@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'lib/external/Slim/Slim.php');
 require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
 
 class SlimServer implements IRestServer
@@ -47,6 +48,11 @@ class SlimServer implements IRestServer
 	public function GetServiceUrl($serviceName, $params = array())
 	{
 		return $this->slim->urlFor($serviceName, $params = array());
+	}
+
+	public function GetUrl()
+	{
+		return $this->slim->environment()->offsetGet('slim.url_scheme') . '://' . $this->slim->environment()->offsetGet('HOST');
 	}
 }
 

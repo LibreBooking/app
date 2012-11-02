@@ -39,10 +39,11 @@ interface IWebServiceAuthentication
 	public function Login($username);
 
 	/**
+	 * @param string $publicUserId
 	 * @param string $sessionToken
 	 * @return void
 	 */
-	public function Logout($sessionToken);
+	public function Logout($publicUserId, $sessionToken);
 }
 
 class WebServiceAuthentication implements IWebServiceAuthentication
@@ -92,15 +93,16 @@ class WebServiceAuthentication implements IWebServiceAuthentication
 	}
 
 	/**
+	 * @param string $publicUserId
 	 * @param string $sessionToken
 	 * @return void
 	 */
-	public function Logout($sessionToken)
+	public function Logout($publicUserId, $sessionToken)
 	{
 		Log::Debug('Logout sessionToken: %s', $sessionToken);
 
 		$userSession = $this->userSessionRepository->LoadBySessionToken($sessionToken);
-		if ($userSession != null)
+		if ($userSession != null && $userSession->PublicId == $publicUserId)
 		{
 			$this->userSessionRepository->Delete($userSession);
 			$this->authentication->Logout($userSession);

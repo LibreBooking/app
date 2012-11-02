@@ -346,6 +346,18 @@ class AddUserResourcePermission extends SqlCommand
 	}
 }
 
+class AddUserSessionCommand extends SqlCommand
+{
+	public function __construct($userId, $token, Date $insertTime, $serializedSession)
+	{
+		parent::__construct(Queries::ADD_USER_SESSION);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::SESSION_TOKEN, $token));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $insertTime->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::USER_SESSION, $serializedSession));
+	}
+}
+
 class AuthorizationCommand extends SqlCommand
 {
 	public function __construct($username)
@@ -588,6 +600,15 @@ class DeleteUserResourcePermission extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 	}
+}
+
+class DeleteUserSessionCommand extends SqlCommand
+{
+	public function __construct($sessionToken)
+		{
+			parent::__construct(Queries::DELETE_USER_SESSION);
+			$this->AddParameter(new Parameter(ParameterNames::SESSION_TOKEN, $sessionToken));
+		}
 }
 
 class GetAccessoryByIdCommand extends SqlCommand
@@ -1119,6 +1140,25 @@ class GetUserRoleCommand extends SqlCommand
 	}
 }
 
+
+class GetUserSessionBySessionTokenCommand extends SqlCommand
+{
+	public function __construct($sessionToken)
+	{
+		parent::__construct(Queries::GET_USER_SESSION_BY_SESSION_TOKEN);
+		$this->AddParameter(new Parameter(ParameterNames::SESSION_TOKEN, $sessionToken));
+	}
+}
+
+class GetUserSessionByUserIdCommand extends SqlCommand
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::GET_USER_SESSION_BY_USERID);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
 class LoginCommand extends SqlCommand
 {
 	public function __construct($username)
@@ -1579,6 +1619,18 @@ class UpdateUserFromLdapCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
 		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));
+	}
+}
+
+class UpdateUserSessionCommand extends SqlCommand
+{
+	public function __construct($userId, $token, Date $insertTime, $serializedSession)
+	{
+		parent::__construct(Queries::UPDATE_USER_SESSION);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::SESSION_TOKEN, $token));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $insertTime->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::USER_SESSION, $serializedSession));
 	}
 }
 

@@ -93,14 +93,17 @@ class AuthenticationWebServiceTests extends TestBase
 
 	public function testSignsUserOut()
 	{
-		$this->markTestIncomplete("Working on this");
+		$userId = 'ddddd';
+		$sessionToken = 'sssss';
+
+		$request = new SignOutRequest($userId, $sessionToken);
+		$this->server->SetRequest($request);
+
 		$this->authentication->expects($this->once())
 				->method('Logout')
-				->with($this->equalTo($this->fakeUser));
+				->with($this->equalTo($userId), $this->equalTo($sessionToken));
 
-		$response = $this->service->SignOut($this->server);
-
-		$this->assertEquals(new SignOutResponse(), $response);
+		$this->service->SignOut($this->server);
 	}
 }
 
@@ -118,6 +121,10 @@ class FakeRestServer implements IRestServer
 	 * @var RestResponse
 	 */
 	public $_LastResponse;
+	/**
+	 * @var string
+	 */
+	public $_Url;
 
 	/**
 	 * @return mixed
@@ -152,6 +159,14 @@ class FakeRestServer implements IRestServer
 	public function SetRequest($request)
 	{
 		$this->_Request = $request;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetUrl()
+	{
+		return $this->_Url;
 	}
 }
 
