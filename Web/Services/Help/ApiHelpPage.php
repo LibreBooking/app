@@ -57,6 +57,14 @@ class ApiHelpPage
 					.code {
 						font-family: courier;
 					}
+					#security {
+						background-color: #FFFF99;
+						border: solid 1px #CC9900;
+						padding: 6px;
+					}
+					#security span {
+						font-weight:bold;
+					}
 
 	            </style>
 	        </head>
@@ -64,7 +72,10 @@ class ApiHelpPage
 	            <h1>phpScheduleIt API Documentation</h1>
 EOT;
 
+		$security = sprintf("<div id='security'>Pass the following headers for all secure service calls: <span>%s</span> and <span>%s</span></div>", WebServiceHeaders::SESSION_TOKEN, WebServiceHeaders::USER_ID);
 		echo $head;
+
+		echo $security;
 
 		foreach ($registry->Categories() as $category)
 		{

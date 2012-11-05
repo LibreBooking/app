@@ -18,20 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//require_once(ROOT_DIR . 'lib/WebService/RestAction.php');
-
-class RestServiceLink
-{
-	public $href;
-	public $title;
-
-	public function __construct($href, $title)
-	{
-		$this->href = $href;
-		$this->title = $title;
-	}
-}
-
 class RestResponse
 {
 	/**
@@ -69,19 +55,6 @@ class RestResponse
 	private function AddServiceLink(RestServiceLink $link)
 	{
 		$this->links[] = $link;
-	}
-}
-
-class NullRestResponse extends RestResponse
-{
-
-}
-
-class NotFoundResponse extends RestResponse
-{
-	public function __construct()
-	{
-		$this->StatusCode = 404;
 	}
 }
 

@@ -383,6 +383,15 @@ class Date
 	}
 
 	/**
+	 * @param int $minutes
+	 * @return Date
+	 */
+	public function AddMinutes($minutes)
+	{
+		return new Date($this->Format(self::SHORT_FORMAT) . " +" . $minutes . " minutes", $this->timezone);
+	}
+
+	/**
 	 * @param Time $time
 	 * @param bool $isEndTime
 	 * @return Date

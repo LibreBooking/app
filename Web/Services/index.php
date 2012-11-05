@@ -41,11 +41,12 @@ $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 {
 	if ($registry->IsSecure($app->router()->getCurrentRoute()->getName()))
 	{
-		$wasHandled = WebServiceSecurity::HandleSecureRequest($server);
+		$security = new WebServiceSecurity(new UserSessionRepository());
+		$wasHandled = $security->HandleSecureRequest($server);
 		if (!$wasHandled)
 		{
 			$app->halt(401,
-					   "You must be authenticated in order to access this service.<br/>" . $server->GetFullServiceUrl(WebServices::Login));
+					   'You must be authenticated in order to access this service.<br/>' . $server->GetFullServiceUrl(WebServices::Login));
 		}
 	}
 });
@@ -89,13 +90,16 @@ function RegisterUser(SlimServer $server, SlimWebServiceRegistry $registry)
 
 class BookingsWebService
 {
+	private $server;
+
 	public function __construct(IRestServer $server)
 	{
-
+		$this->server = $server;
 	}
 
 	public function MyBookings()
 	{
+		echo $this->server->word;
 		echo "MyBookings";
 	}
 
@@ -105,12 +109,5 @@ class BookingsWebService
 	}
 }
 
-class WebServiceSecurity
-{
-	public static function HandleSecureRequest(IRestServer $server)
-	{
-		return false;
-	}
-}
 
 ?>

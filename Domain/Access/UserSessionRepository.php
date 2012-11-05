@@ -17,45 +17,44 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+require_once(ROOT_DIR . 'Domain/Values/WebService/WebServiceUserSession.php');
+
 interface IUserSessionRepository
 {
 	/**
 	 * @param int $userId
-	 * @return UserSession|null
+	 * @return WebServiceUserSession|null
 	 */
 	public function LoadByUserId($userId);
 
 	/**
 	 * @param string $sessionToken
-	 * @return UserSession
+	 * @return WebServiceUserSession
 	 */
 	public function LoadBySessionToken($sessionToken);
 
 	/**
-	 * @param UserSession $session
+	 * @param WebServiceUserSession $session
 	 * @return void
 	 */
-	public function Add(UserSession $session);
+	public function Add(WebServiceUserSession $session);
 
 	/**
-	 * @param UserSession $session
+	 * @param WebServiceUserSession $session
 	 * @return void
 	 */
-	public function Update(UserSession $session);
+	public function Update(WebServiceUserSession $session);
 
 	/**
-	 * @param UserSession $session
+	 * @param WebServiceUserSession $session
 	 * @return void
 	 */
-	public function Delete(UserSession $session);
+	public function Delete(WebServiceUserSession $session);
 }
 
 class UserSessionRepository implements IUserSessionRepository
 {
-	/**
-	 * @param int $userId
-	 * @return UserSession|null
-	 */
 	public function LoadByUserId($userId)
 	{
 		$reader = ServiceLocator::GetDatabase()->Query(new GetUserSessionByUserIdCommand($userId));
@@ -66,10 +65,6 @@ class UserSessionRepository implements IUserSessionRepository
 		return null;
 	}
 
-	/**
-	 * @param string $sessionToken
-	 * @return UserSession
-	 */
 	public function LoadBySessionToken($sessionToken)
 	{
 		$reader = ServiceLocator::GetDatabase()->Query(new GetUserSessionBySessionTokenCommand($sessionToken));
@@ -80,31 +75,19 @@ class UserSessionRepository implements IUserSessionRepository
 		return null;
 	}
 
-	/**
-	 * @param UserSession $session
-	 * @return void
-	 */
-	public function Add(UserSession $session)
+	public function Add(WebServiceUserSession $session)
 	{
 		$serializedSession = serialize($session);
 		ServiceLocator::GetDatabase()->Execute(new AddUserSessionCommand($session->UserId, $session->SessionToken, Date::Now(), $serializedSession));
 	}
 
-	/**
-	 * @param UserSession $session
-	 * @return void
-	 */
-	public function Update(UserSession $session)
+	public function Update(WebServiceUserSession $session)
 	{
 		$serializedSession = serialize($session);
 		ServiceLocator::GetDatabase()->Execute(new UpdateUserSessionCommand($session->UserId, $session->SessionToken, Date::Now(), $serializedSession));
 	}
 
-	/**
-	 * @param UserSession $session
-	 * @return void
-	 */
-	public function Delete(UserSession $session)
+	public function Delete(WebServiceUserSession $session)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteUserSessionCommand($session->SessionToken));
 	}

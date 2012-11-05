@@ -17,10 +17,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
-require_once(ROOT_DIR . 'lib/WebService/WebServices.php');
-require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
-require_once(ROOT_DIR . 'lib/WebService/RestServiceLink.php');
-require_once(ROOT_DIR . 'lib/WebService/RestResponse.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceHeaders.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceSecurity.php');
+
+class RestServiceLink
+{
+	public $href;
+	public $title;
+
+	public function __construct($href, $title)
+	{
+		$this->href = $href;
+		$this->title = $title;
+	}
+}
 ?>

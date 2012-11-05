@@ -84,18 +84,6 @@ class AuthenticationWebService
 	}
 }
 
-class WebServiceExpiration
-{
-	/**
-	 * @param string $loginTime
-	 * @return string
-	 */
-	public static function Parse($loginTime)
-	{
-		return Date::FromDatabase($loginTime)->ToIso();
-	}
-}
-
 class AuthenticationRequest
 {
 	/**
@@ -129,14 +117,14 @@ class AuthenticationResponse extends RestResponse
 	/**
 	 * @static
 	 * @param $server IRestServer
-	 * @param $userSession UserSession
+	 * @param $userSession WebServiceUserSession
 	 * @return AuthenticationResponse
 	 */
 	public static function Success(IRestServer $server, $userSession)
 	{
 		$response = new AuthenticationResponse($server);
 		$response->sessionToken = $userSession->SessionToken;
-		$response->sessionExpires = WebServiceExpiration::Parse($userSession->LoginTime);
+		$response->sessionExpires = $userSession->SessionExpiration;
 		$response->isAuthenticated = true;
 		$response->userId = $userSession->PublicId;
 

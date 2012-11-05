@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/WebService/RestResponse.php');
+require_once(ROOT_DIR . 'Domain/Values/WebService/WebServiceUserSession.php');
 
 interface IRestServer
 {
@@ -51,6 +52,23 @@ interface IRestServer
 	 * @return string
 	 */
 	public function GetFullServiceUrl($serviceName, $params = array());
+
+	/**
+	 * @param string $headerName
+	 * @return string|null
+	 */
+	public function GetHeader($headerName);
+
+	/**
+	 * @param WebServiceUserSession $session
+	 * @return void
+	 */
+	public function SetSession(WebServiceUserSession $session);
+
+	/**
+	 * @return WebServiceUserSession|null
+	 */
+	public function GetSession();
 }
 
 ?>

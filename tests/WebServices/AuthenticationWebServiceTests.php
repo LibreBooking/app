@@ -126,28 +126,18 @@ class FakeRestServer implements IRestServer
 	 */
 	public $_Url;
 
-	/**
-	 * @return mixed
-	 */
 	public function GetRequest()
 	{
 		return $this->_Request;
 	}
 
-	/**
-	 * @param RestResponse $restResponse
-	 * @return mixed
-	 */
 	public function WriteResponse(RestResponse $restResponse)
 	{
 		$this->_LastResponse = $restResponse;
 	}
 
-	/**
-	 * @param string $serviceName
-	 * @return string
-	 */
-	public function GetServiceUrl($serviceName)
+
+	public function GetServiceUrl($serviceName, $params = array())
 	{
 		if (isset($this->_ServiceUrls[$serviceName]))
 		{
@@ -161,12 +151,29 @@ class FakeRestServer implements IRestServer
 		$this->_Request = $request;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetUrl()
 	{
 		return $this->_Url;
+	}
+
+	public function GetFullServiceUrl($serviceName, $params = array())
+	{
+		// TODO: Implement GetFullServiceUrl() method.
+	}
+
+	public function GetHeader($headerName)
+	{
+		// TODO: Implement GetHeader() method.
+	}
+
+	public function SetSession(WebServiceUserSession $session)
+	{
+		// TODO: Implement SetSession() method.
+	}
+
+	public function GetSession()
+	{
+		// TODO: Implement GetSession() method.
 	}
 }
 

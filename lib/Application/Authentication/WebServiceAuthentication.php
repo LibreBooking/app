@@ -34,7 +34,7 @@ interface IWebServiceAuthentication
 	/**
 	 * @abstract
 	 * @param string $username
-	 * @return UserSession
+	 * @return WebServiceUserSession
 	 */
 	public function Login($username);
 
@@ -70,7 +70,7 @@ class WebServiceAuthentication implements IWebServiceAuthentication
 
 	/**
 	 * @param string $username
-	 * @return UserSession
+	 * @return WebServiceUserSession
 	 */
 	public function Login($username)
 	{
@@ -78,18 +78,21 @@ class WebServiceAuthentication implements IWebServiceAuthentication
 		$userSession = $this->authentication->Login($username, new WebServiceLoginContext());
 		if ($userSession->IsLoggedIn())
 		{
+			$webSession = WebServiceUserSession::FromSession($userSession);
 			$existingSession = $this->userSessionRepository->LoadByUserId($userSession->UserId);
 			if ($existingSession == null)
 			{
-				$this->userSessionRepository->Add($userSession);
+				$this->userSessionRepository->Add($webSession);
 			}
 			else
 			{
-				$this->userSessionRepository->Update($userSession);
+				$this->userSessionRepository->Update($webSession);
 			}
+
+			return $webSession;
 		}
 
-		return $userSession;
+		return new NullUserSession();
 	}
 
 	/**
@@ -101,11 +104,11 @@ class WebServiceAuthentication implements IWebServiceAuthentication
 	{
 		Log::Debug('Logout sessionToken: %s', $sessionToken);
 
-		$userSession = $this->userSessionRepository->LoadBySessionToken($sessionToken);
-		if ($userSession != null && $userSession->PublicId == $publicUserId)
+		$webSession = $this->userSessionRepository->LoadBySessionToken($sessionToken);
+		if ($webSession != null && $webSession->PublicId == $publicUserId)
 		{
-			$this->userSessionRepository->Delete($userSession);
-			$this->authentication->Logout($userSession);
+			$this->userSessionRepository->Delete($webSession);
+			$this->authentication->Logout($webSession);
 		}
 	}
 }

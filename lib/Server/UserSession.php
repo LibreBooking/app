@@ -26,19 +26,16 @@ class UserSession
 	public $Email = '';
 	public $Timezone = '';
 	public $HomepageId = 1;
-	public $SessionToken = '';
 	public $IsAdmin = false;
 	public $IsGroupAdmin = false;
 	public $IsResourceAdmin = false;
 	public $IsScheduleAdmin = false;
 	public $LanguageCode = '';
-	public $LoginTime = '';
 	public $PublicId = '';
 
 	public function __construct($id)
 	{
 		$this->UserId = $id;
-		$this->SessionToken = uniqid();
 	}
 	
 	public function IsLoggedIn()

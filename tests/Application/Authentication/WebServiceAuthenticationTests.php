@@ -44,6 +44,8 @@ class WebServiceAuthenticationTests extends TestBase
 	{
 		parent::setup();
 
+		WebServiceSessionToken::$_Token = 'hard coded token';
+
 		$this->fakeAuth = new FakeAuth();
 		$this->userSessionRepository = $this->getMock('IUserSessionRepository');
 
@@ -63,21 +65,21 @@ class WebServiceAuthenticationTests extends TestBase
 
 	public function testSuccessfulLoginSetsSessionInDatabase()
 	{
-		$user = new FakeUserSession();
-		$this->fakeAuth->_Session = $user;
+		$session = new FakeUserSession();
+		$this->fakeAuth->_Session = $session;
 
 		$this->userSessionRepository->expects($this->once())
 				->method('LoadByUserId')
-				->with($this->equalTo($user->UserId))
+				->with($this->equalTo($session->UserId))
 				->will($this->returnValue(null));
 
 		$this->userSessionRepository->expects($this->once())
 				->method('Add')
-				->with($this->equalTo($user));
+				->with($this->equalTo(WebServiceUserSession::FromSession($session)));
 
 		$actualSession = $this->webAuth->Login($this->username);
 
-		$this->assertEquals($user, $actualSession);
+		$this->assertEquals($session, $actualSession);
 	}
 
 	public function testUpdateWhenSessionExistsInDatabase()
@@ -88,11 +90,11 @@ class WebServiceAuthenticationTests extends TestBase
 		$this->userSessionRepository->expects($this->once())
 				->method('LoadByUserId')
 				->with($this->equalTo($user->UserId))
-				->will($this->returnValue(new UserSession(123)));
+				->will($this->returnValue(new WebServiceUserSession(123)));
 
 		$this->userSessionRepository->expects($this->once())
 				->method('Update')
-				->with($this->equalTo($user));
+				->with($this->equalTo(WebServiceUserSession::FromSession($user)));
 
 		$actualSession = $this->webAuth->Login($this->username);
 
@@ -104,7 +106,7 @@ class WebServiceAuthenticationTests extends TestBase
 		$publicId = 123;
 		$sessionToken = 'token';
 
-		$userSession = new UserSession(1);
+		$userSession = new WebServiceUserSession(1);
 		$userSession->PublicId = $publicId;
 
 		$this->userSessionRepository->expects($this->once())
@@ -126,7 +128,7 @@ class WebServiceAuthenticationTests extends TestBase
 		$userId = 123;
 		$sessionToken = 'token';
 
-		$userSession = new UserSession(999);
+		$userSession = new WebServiceUserSession(999);
 		$userSession->PublicId = '999';
 
 		$this->userSessionRepository->expects($this->once())

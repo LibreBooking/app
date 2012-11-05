@@ -39,7 +39,7 @@ class UserSessionRepositoryTests extends TestBase
 		$userId = 123;
 		$token = 'my special token';
 
-		$expectedSession = new FakeUserSession($userId);
+		$expectedSession = new WebServiceUserSession($userId);
 		$expectedSession->SessionToken = $token;
 
 		$serializedSession = serialize($expectedSession);
@@ -61,7 +61,7 @@ class UserSessionRepositoryTests extends TestBase
 		$userId = 123;
 		$token = 'my special token';
 
-		$expectedSession = new FakeUserSession();
+		$expectedSession = new WebServiceUserSession($userId);
 		$expectedSession->SessionToken = $token;
 		$expectedSession->UserId = $userId;
 
@@ -78,7 +78,7 @@ class UserSessionRepositoryTests extends TestBase
 		$userId = 123;
 		$token = 'my special token';
 
-		$expectedSession = new FakeUserSession();
+		$expectedSession = new WebServiceUserSession($userId);
 		$expectedSession->SessionToken = $token;
 		$expectedSession->UserId = $userId;
 
@@ -95,7 +95,7 @@ class UserSessionRepositoryTests extends TestBase
 		$userId = 123;
 		$token = 'my special token';
 
-		$expectedSession = new FakeUserSession($userId);
+		$expectedSession = new WebServiceUserSession($userId);
 		$expectedSession->SessionToken = $token;
 
 		$serializedSession = serialize($expectedSession);
@@ -117,7 +117,7 @@ class UserSessionRepositoryTests extends TestBase
 		$userId = 123;
 		$token = 'my special token';
 
-		$expectedSession = new FakeUserSession();
+		$expectedSession = new WebServiceUserSession($userId);
 		$expectedSession->SessionToken = $token;
 		$expectedSession->UserId = $userId;
 

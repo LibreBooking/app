@@ -28,6 +28,11 @@ class SlimServer implements IRestServer
 	 */
 	private $slim;
 
+	/**
+	 * @var WebServiceUserSession
+	 */
+	private $session;
+
 	public function __construct(Slim\Slim $slim)
 	{
 		$this->slim = $slim;
@@ -58,6 +63,21 @@ class SlimServer implements IRestServer
 	public function GetFullServiceUrl($serviceName, $params = array())
 	{
 		return $this->GetUrl() . $this->GetServiceUrl($serviceName, $params);
+	}
+
+	public function GetHeader($headerName)
+	{
+		return $this->slim->request()->headers($headerName);
+	}
+
+	public function SetSession(WebServiceUserSession $session)
+	{
+		$this->session = $session;
+	}
+
+	public function GetSession()
+	{
+		return $this->session;
 	}
 }
 
