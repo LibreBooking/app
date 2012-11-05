@@ -82,7 +82,6 @@ class TestSlim extends Slim\Slim
 }
 
 
-
 class SlimWebServiceRegistryTests extends TestBase
 {
 	public function setup()
@@ -128,6 +127,8 @@ class SlimWebServiceRegistryTests extends TestBase
 		$this->assertEquals('/Something/get/:1', $slim->gets[0]->route);
 		$this->assertEquals($c1p2name, $slim->gets[0]->name());
 		$this->assertEquals($callback, $slim->gets[0]->callback);
+		$this->assertFalse($registry->IsSecure($c1p1name));
+		$this->assertFalse($registry->IsSecure($c1p2name));
 
 		$this->assertEquals('/SomethingElse/post/2', $slim->posts[1]->route);
 		$this->assertEquals($callback, $slim->posts[1]->callback);
@@ -135,8 +136,43 @@ class SlimWebServiceRegistryTests extends TestBase
 		$this->assertEquals($callback, $slim->gets[1]->callback);
 	}
 
+	public function testRegistersSecureRoute()
+	{
+		$callback = array($this, 'cb');
+
+		$slim = new TestSlim();
+
+		$registry = new SlimWebServiceRegistry($slim);
+
+		$c1Name = 'Something';
+
+		$category1 = new SlimWebServiceRegistryCategory($c1Name);
+
+		$c1p1 = '/post/1/';
+		$c1p2 = '/get/:1';
+
+		$c1p1name = 'c1p1name';
+		$c1p2name = 'c1p2name';
+
+		$category1->AddSecurePost($c1p1, $callback, $c1p1name);
+		$category1->AddSecureGet($c1p2, $callback, $c1p2name);
+
+		$registry->AddCategory($category1);
+
+		$this->assertEquals('/Something/post/1', $slim->posts[0]->route);
+		$this->assertEquals($callback, $slim->posts[0]->callback);
+		$this->assertEquals($c1p1name, $slim->posts[0]->name());
+		$this->assertEquals('/Something/get/:1', $slim->gets[0]->route);
+		$this->assertEquals($c1p2name, $slim->gets[0]->name());
+		$this->assertEquals($callback, $slim->gets[0]->callback);
+		$this->assertTrue($registry->IsSecure($c1p1name));
+		$this->assertTrue($registry->IsSecure($c1p2name));
+
+	}
+
 	private function cb()
 	{
+		// callback function for tests
 	}
 }
 

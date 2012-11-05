@@ -54,6 +54,16 @@ class SlimWebServiceRegistryCategory
 		$this->posts[] = new SlimServiceRegistration($this->name, $route, $callback, $routeName);
 	}
 
+	public function AddSecureGet($route, $callback, $routeName)
+	{
+		$this->gets[] = new SlimSecureServiceRegistration($this->name, $route, $callback, $routeName);
+	}
+
+	public function AddSecurePost($route, $callback, $routeName)
+	{
+		$this->posts[] = new SlimSecureServiceRegistration($this->name, $route, $callback, $routeName);
+	}
+
 	/**
 	 * @return mixed
 	 */

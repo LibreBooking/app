@@ -20,6 +20,23 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class SlimServiceRegistration
 {
+	/**
+	 * @var string
+	 */
+	protected $route;
+	/**
+	 * @var mixed
+	 */
+	protected $callback;
+	/**
+	 * @var SlimServiceMetadata
+	 */
+	protected $metadata;
+	/**
+	 * @var string
+	 */
+	protected $routeName;
+
 	public function __construct($categoryName, $route, $callback, $routeName)
 	{
 		$this->route = '/' . $this->trim($categoryName) . '/' . $this->trim($route);
@@ -68,6 +85,22 @@ class SlimServiceRegistration
 	{
 		return $this->routeName;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsSecure()
+	{
+		return false;
+	}
+}
+
+class SlimSecureServiceRegistration extends SlimServiceRegistration
+{
+	public function IsSecure()
+	{
+		return true;
+	}
 }
 
 class SlimServiceMetadata
@@ -87,7 +120,7 @@ class SlimServiceMetadata
 		$doc = $this->processPHPDoc($method);
 
 		$this->name = isset($doc['name']) ? $doc['name'] : null;
-		$this->description =  isset($doc['description']) ? $doc['description'] : null;
+		$this->description = isset($doc['description']) ? $doc['description'] : null;
 		$this->return = $doc['response'];
 		$this->request = $doc['request'];
 	}
@@ -127,7 +160,8 @@ class SlimServiceMetadata
 			if (class_exists($type))
 			{
 				return new $type();
-			} elseif ($type != 'void')
+			}
+			elseif ($type != 'void')
 			{
 				return $type;
 			}
@@ -147,7 +181,8 @@ class SlimServiceMetadata
 			if (class_exists($type))
 			{
 				return new $type();
-			} else
+			}
+			else
 			{
 				return $type;
 			}
@@ -212,7 +247,8 @@ class SlimServiceMetadata
 						$phpDoc['description'] = str_replace('@description ', '', $matches3[0]);
 					}
 
-				} else
+				}
+				else
 				{
 					$phpDoc['params'][] = array('name' => $matches3[3], 'type' => $matches3[2]);
 				}

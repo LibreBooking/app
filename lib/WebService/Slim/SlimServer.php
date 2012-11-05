@@ -54,6 +54,11 @@ class SlimServer implements IRestServer
 	{
 		return $this->slim->environment()->offsetGet('slim.url_scheme') . '://' . $this->slim->environment()->offsetGet('HOST');
 	}
+
+	public function GetFullServiceUrl($serviceName, $params = array())
+	{
+		return $this->GetUrl() . $this->GetServiceUrl($serviceName, $params);
+	}
 }
 
 ?>

@@ -35,14 +35,22 @@ interface IRestServer
 
 	/**
 	 * @param string $serviceName
+	 * @param array $params
 	 * @return string
 	 */
-	public function GetServiceUrl($serviceName);
+	public function GetServiceUrl($serviceName, $params = array());
 
 	/**
 	 * @return string
 	 */
 	public function GetUrl();
+
+	/**
+	 * @param string $serviceName
+	 * @param array $params
+	 * @return string
+	 */
+	public function GetFullServiceUrl($serviceName, $params = array());
 }
 
 ?>

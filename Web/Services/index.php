@@ -31,15 +31,24 @@ require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 $app = new \Slim\Slim();
 $server = new SlimServer($app);
 
-//die($app->environment()->offsetGet('slim.url_scheme'));
-//die($app->environment()->offsetGet('HOST'));
-//var_dump($app);
-//die();
-
 $registry = new SlimWebServiceRegistry($app);
 
 RegisterHelp($registry, $app);
 RegisterAuthentication($server, $registry);
+RegisterUser($server, $registry);
+
+$app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
+{
+	if ($registry->IsSecure($app->router()->getCurrentRoute()->getName()))
+	{
+		$wasHandled = WebServiceSecurity::HandleSecureRequest($server);
+		if (!$wasHandled)
+		{
+			$app->halt(401,
+					   "You must be authenticated in order to access this service.<br/>" . $server->GetFullServiceUrl(WebServices::Login));
+		}
+	}
+});
 
 $app->run();
 
@@ -49,30 +58,59 @@ function RegisterHelp(SlimWebServiceRegistry $registry, \Slim\Slim $app)
 	{
 		// Print API documentation
 		ApiHelpPage::Render($registry, $app);
-	});
+	})->name("Default");
 
 	$app->get('/Help', function () use ($registry, $app)
 	{
 		// Print API documentation
 		ApiHelpPage::Render($registry, $app);
-	});
+	})->name("Help");
 
 }
 
 function RegisterAuthentication(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$auth = new AuthenticationWebService($server, new WebServiceAuthentication(PluginManager::Instance()->LoadAuthentication(), new UserSessionRepository()));
+	$webService = new AuthenticationWebService($server, new WebServiceAuthentication(PluginManager::Instance()->LoadAuthentication(), new UserSessionRepository()));
 
-	$authCategory = new SlimWebServiceRegistryCategory('Authentication');
-	$authCategory->AddPost('SignOut', array($auth, 'SignOut'), WebServices::Logout);
-	$authCategory->AddPost('Authenticate', array($auth, 'Authenticate'), WebServices::Login);
-	$registry->AddCategory($authCategory);
+	$category = new SlimWebServiceRegistryCategory('Authentication');
+	$category->AddPost('SignOut', array($webService, 'SignOut'), WebServices::Logout);
+	$category->AddPost('Authenticate', array($webService, 'Authenticate'), WebServices::Login);
+	$registry->AddCategory($category);
 }
 
 function RegisterUser(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$auth = new AuthenticationWebService($server, new WebServiceAuthentication(PluginManager::Instance()->LoadAuthentication(), new UserSessionRepository()));
-	$authCategory = new SlimWebServiceRegistryCategory('Users');
-	$authCategory->AddGet(':userid/Bookings', array($auth, 'MyBookings'), WebServices::MyBookings);
+	$webService = new BookingsWebService($server);
+	$category = new SlimWebServiceRegistryCategory('Users');
+	$category->AddSecureGet(':userid/Bookings', array($webService, 'MyBookings'), WebServices::MyBookings);
+	$category->AddGet(':userid/Bookings2', array($webService, 'MyBookings2'), "Bookings2");
+	$registry->AddCategory($category);
 }
+
+class BookingsWebService
+{
+	public function __construct(IRestServer $server)
+	{
+
+	}
+
+	public function MyBookings()
+	{
+		echo "MyBookings";
+	}
+
+	public function MyBookings2()
+	{
+		echo "MyBookings2";
+	}
+}
+
+class WebServiceSecurity
+{
+	public static function HandleSecureRequest(IRestServer $server)
+	{
+		return false;
+	}
+}
+
 ?>

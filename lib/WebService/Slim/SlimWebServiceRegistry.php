@@ -33,6 +33,11 @@ class SlimWebServiceRegistry
 	 */
 	private $categories = array();
 
+	/**
+	 * @var array
+	 */
+	private $secureRoutes = array();
+
 	public function __construct(Slim\Slim $slim)
 	{
 		$this->slim = $slim;
@@ -46,11 +51,19 @@ class SlimWebServiceRegistry
 		foreach ($category->Gets() as $registration)
 		{
 			$this->slim->get($registration->Route(), $registration->Callback())->name($registration->RouteName());
+			if ($registration->IsSecure())
+			{
+				$this->secureRoutes[$registration->RouteName()] = true;
+			}
 		}
 
 		foreach ($category->Posts() as $registration)
 		{
 			$this->slim->post($registration->Route(), $registration->Callback())->name($registration->RouteName());
+			if ($registration->IsSecure())
+			{
+				$this->secureRoutes[$registration->RouteName()] = true;
+			}
 		}
 
 		$this->categories[] = $category;
@@ -62,6 +75,15 @@ class SlimWebServiceRegistry
 	public function Categories()
 	{
 		return $this->categories;
+	}
+
+	/**
+	 * @param string $routeName
+	 * @return bool
+	 */
+	public function IsSecure($routeName)
+	{
+		return array_key_exists($routeName, $this->secureRoutes);
 	}
 }
 

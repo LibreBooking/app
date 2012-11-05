@@ -52,6 +52,7 @@ class ApiHelpPage
 						background-color: #ededed;
 						padding: 6px;
 						padding-top:0px;
+						margin-bottom: 4px;
 					}
 					.code {
 						font-family: courier;
