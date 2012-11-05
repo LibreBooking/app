@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class Apache implements IAuthentication
+class Apache extends Authentication implements IAuthentication
 {
 	private $authToDecorate;
 	private $_registration;
