@@ -53,13 +53,30 @@ class BookingsWebService
 		$startDate = $this->GetStartDate();
 		$endDate = $this->GetEndDate();
 		$userId = $this->GetUserId();
-		if (empty($userId))
+		$resourceId = $this->GetResourceId();
+		$scheduleId = $this->GetScheduleId();
+
+		if (!$this->FilterProvided($userId, $resourceId, $scheduleId))
 		{
 			$userId = $this->server->GetSession()->UserId;
 		}
 
-		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId);
+		Log::Debug('GetBookings called. userId=%s, startDate=%s, endDate=%s', $userId, $startDate, $endDate);
+
+		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, null,
+																			 $scheduleId, $resourceId);
 		$this->server->WriteResponse(new BookingsResponse($reservations));
+	}
+
+	/**
+	 * @param int|null $userId
+	 * @param int|null $resourceId
+	 * @param int|null $scheduleId
+	 * @return bool
+	 */
+	public function FilterProvided($userId, $resourceId, $scheduleId)
+	{
+		return !empty($userId) || !empty($resourceId) || !empty($scheduleId);
 	}
 
 	/**
@@ -99,7 +116,7 @@ class BookingsWebService
 	}
 
 	/**
-	 * @return int
+	 * @return int|null
 	 */
 	private function GetUserId()
 	{
@@ -110,6 +127,22 @@ class BookingsWebService
 		}
 
 		return $userIdQueryString;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	private function GetResourceId()
+	{
+		return $this->server->GetQueryString(WebServiceQueryStringKeys::RESOURCE_ID);
+	}
+
+	/**
+	 * @return int|null
+	 */
+	private function GetScheduleId()
+	{
+		return $this->server->GetQueryString(WebServiceQueryStringKeys::SCHEDULE_ID);
 	}
 }
 

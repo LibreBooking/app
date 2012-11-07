@@ -43,9 +43,14 @@ class BookingsWebServiceTests extends TestBase
 	private $userSession;
 
 	/**
-	 * @var IPublicProfileLoader|PHPUnit_Framework_MockObject_MockObject
+	 * @var Date
 	 */
-	private $publicProfileLoader;
+	private $defaultStartDate;
+
+	/**
+	 * @var Date
+	 */
+	private $defaultEndDate;
 
 	public function setup()
 	{
@@ -53,13 +58,15 @@ class BookingsWebServiceTests extends TestBase
 
 		$this->userSession = new WebServiceUserSession(123);
 
+		$this->defaultStartDate = Date::Now();
+		$this->defaultEndDate = Date::Now()->AddDays(14);
+
 		$this->server = new FakeRestServer();
 		$this->server->SetSession($this->userSession);
 
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
-		$this->publicProfileLoader = $this->getMock('IPublicProfileLoader');
 
-		$this->service = new BookingsWebService($this->server, $this->reservationViewRepository, $this->publicProfileLoader);
+		$this->service = new BookingsWebService($this->server, $this->reservationViewRepository);
 	}
 
 	public function testDefaultsToNextTwoWeeksAndCurrentUser()
@@ -68,14 +75,13 @@ class BookingsWebServiceTests extends TestBase
 		$this->server->SetQueryString(WebServiceQueryStringKeys::START_DATE_TIME, null);
 		$this->server->SetQueryString(WebServiceQueryStringKeys::END_DATE_TIME, null);
 
-		$startDate = Date::Now();
-		$endDate = Date::Now()->AddDays(14);
 		$userId = $this->userSession->UserId;
 		$reservations = array();
 
 		$this->reservationViewRepository->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId))
+				->with($this->equalTo($this->defaultStartDate), $this->equalTo($this->defaultEndDate),
+					   $this->equalTo($userId))
 				->will($this->returnValue($reservations));
 
 		$this->service->GetBookings();
@@ -93,14 +99,41 @@ class BookingsWebServiceTests extends TestBase
 
 		$this->server->SetQueryString(WebServiceQueryStringKeys::USER_ID, $userId);
 
-//		$this->publicProfileLoader->expects($this->once())
-//				->method('LoadUser')
-//				->with($this->equalTo($publicId))
-//				->will($this->returnValue($user));
-
 		$this->reservationViewRepository->expects($this->once())
 				->method('GetReservationList')
 				->with($this->anything(), $this->anything(), $this->equalTo($userId))
+				->will($this->returnValue(array()));
+
+		$this->service->GetBookings();
+	}
+
+	public function testWhenResourceIdIsProvided()
+	{
+		$resourceId = 12345;
+
+		$this->server->SetQueryString(WebServiceQueryStringKeys::RESOURCE_ID, $resourceId);
+
+		$this->reservationViewRepository->expects($this->once())
+				->method('GetReservationList')
+				->with($this->equalTo($this->defaultStartDate), $this->equalTo($this->defaultEndDate),
+					   $this->isNull(), $this->isNull(),
+					   $this->isNull(), $this->equalTo($resourceId))
+				->will($this->returnValue(array()));
+
+		$this->service->GetBookings();
+	}
+
+	public function testWhenScheduleIdIsProvided()
+	{
+		$scheduleId = 12346;
+
+		$this->server->SetQueryString(WebServiceQueryStringKeys::SCHEDULE_ID, $scheduleId);
+
+		$this->reservationViewRepository->expects($this->once())
+				->method('GetReservationList')
+				->with($this->equalTo($this->defaultStartDate), $this->equalTo($this->defaultEndDate),
+					   $this->isNull(), $this->isNull(),
+					   $this->equalTo($scheduleId), $this->isNull())
 				->will($this->returnValue(array()));
 
 		$this->service->GetBookings();

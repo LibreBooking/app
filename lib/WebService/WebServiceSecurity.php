@@ -37,8 +37,11 @@ class WebServiceSecurity
 		$sessionToken = $server->GetHeader(WebServiceHeaders::SESSION_TOKEN);
 		$userId = $server->GetHeader(WebServiceHeaders::USER_ID);
 
+		Log::Debug('Handling secure request. url=%s, userId=%s, sessionToken=%s', $_SERVER['REQUEST_URI'], $userId, $sessionToken);
+
 		if (empty($sessionToken) || empty($userId))
 		{
+			Log::Debug('Empty token or userId');
 			return false;
 		}
 
@@ -46,18 +49,22 @@ class WebServiceSecurity
 
 		if ($session != null && $session->IsExpired())
 		{
+			Log::Debug('Session is expired');
 			$this->repository->Delete($session);
 			return false;
 		}
 
 		if ($session == null || $session->UserId != $userId)
 		{
+			Log::Debug('Session token does not match user session token');
 			return false;
 		}
 
 		$session->ExtendSession();
 		$this->repository->Update($session);
 		$server->SetSession($session);
+
+		Log::Debug('Secure request was authenticated');
 
 		return true;
 	}
