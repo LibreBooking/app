@@ -52,8 +52,7 @@ class WebServiceSecurityTests extends TestBase
 
 		$this->security = new WebServiceSecurity($this->userSessionRepository);
 
-		$this->session = new FakeWebServiceUserSession(1);
-		$this->session->PublicId = $this->userId;
+		$this->session = new FakeWebServiceUserSession($this->userId);
 		$this->session->SessionToken = $this->sessionToken;
 		$this->session->SessionExpiration = WebServiceExpiration::Create();
 	}

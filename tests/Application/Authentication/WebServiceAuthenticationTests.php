@@ -67,6 +67,7 @@ class WebServiceAuthenticationTests extends TestBase
 	{
 		$session = new FakeUserSession();
 		$this->fakeAuth->_Session = $session;
+		$expectedSession = WebServiceUserSession::FromSession($session);
 
 		$this->userSessionRepository->expects($this->once())
 				->method('LoadByUserId')
@@ -75,17 +76,18 @@ class WebServiceAuthenticationTests extends TestBase
 
 		$this->userSessionRepository->expects($this->once())
 				->method('Add')
-				->with($this->equalTo(WebServiceUserSession::FromSession($session)));
+				->with($this->equalTo($expectedSession));
 
 		$actualSession = $this->webAuth->Login($this->username);
 
-		$this->assertEquals($session, $actualSession);
+		$this->assertEquals($expectedSession, $actualSession);
 	}
 
 	public function testUpdateWhenSessionExistsInDatabase()
 	{
 		$user = new FakeUserSession();
 		$this->fakeAuth->_Session = $user;
+		$expectedSession = WebServiceUserSession::FromSession($user);
 
 		$this->userSessionRepository->expects($this->once())
 				->method('LoadByUserId')
@@ -94,20 +96,20 @@ class WebServiceAuthenticationTests extends TestBase
 
 		$this->userSessionRepository->expects($this->once())
 				->method('Update')
-				->with($this->equalTo(WebServiceUserSession::FromSession($user)));
+				->with($this->equalTo($expectedSession));
 
 		$actualSession = $this->webAuth->Login($this->username);
 
-		$this->assertEquals($user, $actualSession);
+		$this->assertEquals($expectedSession, $actualSession);
 	}
 
 	public function testLogsUserOutIfUserIdAndSessionTokenMatch()
 	{
-		$publicId = 123;
 		$sessionToken = 'token';
+		$userId = 91919;
 
-		$userSession = new WebServiceUserSession(1);
-		$userSession->PublicId = $publicId;
+		$userSession = new WebServiceUserSession($userId);
+		$userSession->UserId = $userId;
 
 		$this->userSessionRepository->expects($this->once())
 				->method('LoadBySessionToken')
@@ -118,7 +120,7 @@ class WebServiceAuthenticationTests extends TestBase
 				->method('Delete')
 				->with($this->equalTo($userSession));
 
-		$this->webAuth->Logout($publicId, $sessionToken);
+		$this->webAuth->Logout($userId, $sessionToken);
 
 		$this->assertTrue($this->fakeAuth->_LogoutCalled);
 	}
@@ -129,7 +131,6 @@ class WebServiceAuthenticationTests extends TestBase
 		$sessionToken = 'token';
 
 		$userSession = new WebServiceUserSession(999);
-		$userSession->PublicId = '999';
 
 		$this->userSessionRepository->expects($this->once())
 				->method('LoadBySessionToken')

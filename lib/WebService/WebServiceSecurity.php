@@ -35,9 +35,9 @@ class WebServiceSecurity
 	public function HandleSecureRequest(IRestServer $server)
 	{
 		$sessionToken = $server->GetHeader(WebServiceHeaders::SESSION_TOKEN);
-		$publicUserId = $server->GetHeader(WebServiceHeaders::USER_ID);
+		$userId = $server->GetHeader(WebServiceHeaders::USER_ID);
 
-		if (empty($sessionToken) || empty($publicUserId))
+		if (empty($sessionToken) || empty($userId))
 		{
 			return false;
 		}
@@ -50,7 +50,7 @@ class WebServiceSecurity
 			return false;
 		}
 
-		if ($session == null || $session->PublicId != $publicUserId)
+		if ($session == null || $session->UserId != $userId)
 		{
 			return false;
 		}

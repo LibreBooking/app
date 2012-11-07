@@ -1,24 +1,48 @@
 <html>
 <head>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function ()
         {
+            function appendJson(data)
+            {
+                var result = $("#result");
+                result.append('<pre>' + JSON.stringify(data) + '</pre>');
+            }
+
+            function append(str)
+            {
+                var result = $("#result");
+                result.append('<p>' + str + '</p>');
+            }
+
+            function loadBookings(data)
+            {
+                $.ajax({
+                            url:'http://localhost/dev/Services/Bookings/?userId=' + data.userId,
+                            type:'GET',
+                            headers:{
+                                "X-phpScheduleIt-SessionToken":data.sessionToken,
+                                "X-phpScheduleIt-UserId":data.userId}
+                        }
+                ).done(function (data)
+                        {
+
+                            appendJson(data)
+                        });
+            }
+
             $.ajax({
                         url:'http://localhost/dev/Services/Authentication/Authenticate',
                         type:'POST',
-                        data: '{"username":"admin", "password": "password"}'
+                        data:'{"username":"admin", "password": "password"}'
                     }
             ).done(function (data)
                     {
-                        var d = new Date(data.sessionExpires);
-                        var result = $("#result");
-                        result.append('<p>' + data.sessionExpires + '</p>');
-                        result.append('<p>' + d + '</p>');
-                        $.each(data.links, function(i, v){
-                            result.append('<p>'+ v.href + '</p>')
-                        });
+                        appendJson(data)
+                        loadBookings(data);
                     });
         });
 

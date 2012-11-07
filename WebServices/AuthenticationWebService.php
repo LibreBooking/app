@@ -126,7 +126,7 @@ class AuthenticationResponse extends RestResponse
 		$response->sessionToken = $userSession->SessionToken;
 		$response->sessionExpires = $userSession->SessionExpiration;
 		$response->isAuthenticated = true;
-		$response->userId = $userSession->PublicId;
+		$response->userId = $userSession->UserId;
 
 		$response->AddService($server, WebServices::Logout);
 		//$response->AddService($server, WebServices::MyBookings, array($userSession->PublicId));

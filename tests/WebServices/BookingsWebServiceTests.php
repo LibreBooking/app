@@ -52,7 +52,6 @@ class BookingsWebServiceTests extends TestBase
 		parent::setup();
 
 		$this->userSession = new WebServiceUserSession(123);
-		$this->userSession->PublicId = 'publicid';
 
 		$this->server = new FakeRestServer();
 		$this->server->SetSession($this->userSession);
@@ -81,7 +80,9 @@ class BookingsWebServiceTests extends TestBase
 
 		$this->service->GetBookings();
 
-		$this->assertEquals(new BookingsResponse($reservations), $this->server->_LastResponse);
+		$expectedResponse = new BookingsResponse();
+		$expectedResponse->AddReservations($reservations, $this->server);
+		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
 
 	public function testWhenUserIdIsForAnotherUser()
@@ -90,13 +91,12 @@ class BookingsWebServiceTests extends TestBase
 		$user = new User();
 		$user->WithId($userId);
 
-		$publicId = 'something crazy';
-		$this->server->SetQueryString(WebServiceQueryStringKeys::USER_ID, $publicId);
+		$this->server->SetQueryString(WebServiceQueryStringKeys::USER_ID, $userId);
 
-		$this->publicProfileLoader->expects($this->once())
-				->method('LoadUser')
-				->with($this->equalTo($publicId))
-				->will($this->returnValue($user));
+//		$this->publicProfileLoader->expects($this->once())
+//				->method('LoadUser')
+//				->with($this->equalTo($publicId))
+//				->will($this->returnValue($user));
 
 		$this->reservationViewRepository->expects($this->once())
 				->method('GetReservationList')
