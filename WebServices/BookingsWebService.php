@@ -26,15 +26,23 @@ class BookingsWebService
 	 * @var IRestServer
 	 */
 	private $server;
+
 	/**
 	 * @var IReservationViewRepository
 	 */
 	private $reservationViewRepository;
 
-	public function __construct(IRestServer $server, IReservationViewRepository $reservationViewRepository)
+	/**
+	 * @var IPublicProfileLoader
+	 */
+	private $publicProfileLoader;
+
+	public function __construct(IRestServer $server, IReservationViewRepository $reservationViewRepository,
+								IPublicProfileLoader $publicProfileLoader)
 	{
 		$this->server = $server;
 		$this->reservationViewRepository = $reservationViewRepository;
+		$this->publicProfileLoader = $publicProfileLoader;
 	}
 
 	/**
@@ -52,6 +60,10 @@ class BookingsWebService
 		$startDate = $this->GetStartDate();
 		$endDate = $this->GetEndDate();
 		$userId = $this->GetUserId();
+		if (empty($userId))
+		{
+			$userId = $this->server->GetSession()->UserId;
+		}
 
 		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId);
 		$this->server->WriteResponse(new BookingsResponse($reservations));
@@ -101,22 +113,68 @@ class BookingsWebService
 		$userIdQueryString = $this->server->GetQueryString(WebServiceQueryStringKeys::USER_ID);
 		if (empty($userIdQueryString))
 		{
-			return $this->server->GetSession()->UserId;
+			return null;
 		}
 
-		return $userIdQueryString;
+		if ($this->server->GetSession()->PublicId == $userIdQueryString)
+		{
+			return $userIdQueryString;
+		}
+
+		return $this->publicProfileLoader->LoadUser($userIdQueryString)->Id();
 	}
-
-
 }
 
 class BookingsResponse extends RestResponse
 {
 	private $reservations;
 
+	/**
+	 * @var array|ReservationItemResponse[]
+	 */
+	public $Reservations = array();
+
+	/**
+	 * @param array|ReservationItemView[] $reservations
+	 */
 	public function __construct($reservations = array())
 	{
 		$this->reservations = $reservations;
+
+		foreach ($reservations as $reservation)
+		{
+			$this->Reservations[] = new ReservationItemResponse($reservation);
+		}
 	}
 }
+
+class ReservationItemResponse
+{
+	public $ReferenceNumber;
+	public $StartDate;
+	public $EndDate;
+	public $FirstName;
+	public $LastName;
+	public $ResourceName;
+	public $Title;
+	public $Description;
+	public $RequiresApproval;
+	public $IsRecurring;
+
+	public function __construct(ReservationItemView $reservationItemView)
+	{
+		$this->ReferenceNumber = $reservationItemView->ReferenceNumber;
+		$this->StartDate = $reservationItemView->StartDate->ToIso();
+		$this->EndDate = $reservationItemView->EndDate->ToIso();
+		$this->FirstName = $reservationItemView->FirstName;
+		$this->LastName = $reservationItemView->LastName;
+		$this->ResourceName = $reservationItemView->ResourceName;
+		$this->Title = $reservationItemView->Title;
+		$this->Description = $reservationItemView->Description;
+		$this->RequiresApproval = $reservationItemView->RequiresApproval;
+		$this->IsRecurring = $reservationItemView->IsRecurring;
+
+	}
+}
+
 ?>

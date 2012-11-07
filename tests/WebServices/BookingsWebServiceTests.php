@@ -42,18 +42,25 @@ class BookingsWebServiceTests extends TestBase
 	 */
 	private $userSession;
 
+	/**
+	 * @var IPublicProfileLoader|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $publicProfileLoader;
+
 	public function setup()
 	{
 		parent::setup();
 
 		$this->userSession = new WebServiceUserSession(123);
+		$this->userSession->PublicId = 'publicid';
 
 		$this->server = new FakeRestServer();
 		$this->server->SetSession($this->userSession);
 
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
+		$this->publicProfileLoader = $this->getMock('IPublicProfileLoader');
 
-		$this->service = new BookingsWebService($this->server, $this->reservationViewRepository);
+		$this->service = new BookingsWebService($this->server, $this->reservationViewRepository, $this->publicProfileLoader);
 	}
 
 	public function testDefaultsToNextTwoWeeksAndCurrentUser()
@@ -68,13 +75,35 @@ class BookingsWebServiceTests extends TestBase
 		$reservations = array();
 
 		$this->reservationViewRepository->expects($this->once())
-					->method('GetReservationList')
-					->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId))
-					->will($this->returnValue($reservations));
+				->method('GetReservationList')
+				->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId))
+				->will($this->returnValue($reservations));
 
 		$this->service->GetBookings();
 
 		$this->assertEquals(new BookingsResponse($reservations), $this->server->_LastResponse);
+	}
+
+	public function testWhenUserIdIsForAnotherUser()
+	{
+		$userId = 9999;
+		$user = new User();
+		$user->WithId($userId);
+
+		$publicId = 'something crazy';
+		$this->server->SetQueryString(WebServiceQueryStringKeys::USER_ID, $publicId);
+
+		$this->publicProfileLoader->expects($this->once())
+				->method('LoadUser')
+				->with($this->equalTo($publicId))
+				->will($this->returnValue($user));
+
+		$this->reservationViewRepository->expects($this->once())
+				->method('GetReservationList')
+				->with($this->anything(), $this->anything(), $this->equalTo($userId))
+				->will($this->returnValue(array()));
+
+		$this->service->GetBookings();
 	}
 }
 

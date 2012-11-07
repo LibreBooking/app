@@ -82,9 +82,9 @@ function RegisterAuthentication(SlimServer $server, SlimWebServiceRegistry $regi
 
 function RegisterBookings(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new BookingsWebService($server);
+	$webService = new BookingsWebService($server, new ReservationViewRepository(), new PublicProfileLoader());
 	$category = new SlimWebServiceRegistryCategory('Bookings');
-	$category->AddGet('/', array($webService, 'GetBookings'), WebServices::Bookings);
+	$category->AddSecureGet('/', array($webService, 'GetBookings'), WebServices::Bookings);
 	$registry->AddCategory($category);
 }
 

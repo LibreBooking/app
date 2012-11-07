@@ -72,7 +72,8 @@ class ApiHelpPage
 	            <h1>phpScheduleIt API Documentation</h1>
 EOT;
 
-		$security = sprintf("<div id='security'>Pass the following headers for all secure service calls: <span>%s</span> and <span>%s</span></div>", WebServiceHeaders::SESSION_TOKEN, WebServiceHeaders::USER_ID);
+		$security = sprintf("<div id='security'>Pass the following headers for all secure service calls: <span>%s</span> and <span>%s</span></div>",
+							WebServiceHeaders::SESSION_TOKEN, WebServiceHeaders::USER_ID);
 		echo $head;
 
 		echo $security;
@@ -94,10 +95,12 @@ EOT;
 				if (is_object($request))
 				{
 					echo '<div class="code">' . json_encode($request) . '</div>';
-				} elseif (is_null($request))
+				}
+				elseif (is_null($request))
 				{
 					echo 'No request';
-				} else
+				}
+				else
 				{
 					echo 'Unstructured request of type <i>' . $request . '</i>';
 				}
@@ -119,23 +122,34 @@ EOT;
 		echo '</body></html>';
 	}
 
+	/**
+	 * @param SlimServiceMetadata $md
+	 * @param SlimServiceRegistration $post
+	 * @param Slim\Slim $app
+	 */
 	private static function EchoCommon(SlimServiceMetadata $md, $post, Slim\Slim $app)
 	{
 		$response = $md->Response();
 		echo "<h4>Name</h4>" . $md->Name();
-		echo "<h4>Description</h4>" . str_replace("\n","<br/>",$md->Description());
+		echo "<h4>Description</h4>" . str_replace("\n", "<br/>", $md->Description());
 		echo '<h4>Route</h4>' . $app->urlFor($post->RouteName());
 
 		echo '<h4>Response</h4>';
 		if (is_object($response))
 		{
 			echo '<div class="code">' . json_encode($response) . '</div>';
-		} elseif (is_null($response))
+		}
+		elseif (is_null($response))
 		{
 			echo 'No response';
-		} else
+		}
+		else
 		{
 			echo 'Unstructured response of type <i>' . $response . '</i>';
+		}
+		if ($post->IsSecure())
+		{
+			echo '<h4>This service is secure and requires authentication</h4>';
 		}
 	}
 }
