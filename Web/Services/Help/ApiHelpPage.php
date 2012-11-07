@@ -123,7 +123,7 @@ EOT;
 	{
 		$response = $md->Response();
 		echo "<h4>Name</h4>" . $md->Name();
-		echo "<h4>Description</h4>" . $md->Description();
+		echo "<h4>Description</h4>" . str_replace("\n","<br/>",$md->Description());
 		echo '<h4>Route</h4>' . $app->urlFor($post->RouteName());
 
 		echo '<h4>Response</h4>';

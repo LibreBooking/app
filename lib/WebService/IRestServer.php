@@ -69,6 +69,12 @@ interface IRestServer
 	 * @return WebServiceUserSession|null
 	 */
 	public function GetSession();
+
+	/**
+	 * @param string $queryStringKey
+	 * @return string|null
+	 */
+	public function GetQueryString($queryStringKey);
 }
 
 ?>

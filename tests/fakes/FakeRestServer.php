@@ -18,56 +18,64 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/external/Slim/Slim.php');
-require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
+require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
-class SlimServer implements IRestServer
+class FakeRestServer implements IRestServer
 {
 	/**
-	 * @var Slim\Slim
+	 * @var mixed
 	 */
-	private $slim;
-
+	public $_Request;
 	/**
-	 * @var WebServiceUserSession
+	 * @var array|string[]
 	 */
-	private $session;
-
-	public function __construct(Slim\Slim $slim)
-	{
-		$this->slim = $slim;
-	}
+	public $_ServiceUrls = array();
+	/**
+	 * @var RestResponse
+	 */
+	public $_LastResponse;
+	/**
+	 * @var string
+	 */
+	public $_Url;
 
 	public function GetRequest()
 	{
-		return json_decode($this->slim->request()->getBody());
+		return $this->_Request;
 	}
 
-	public function WriteResponse(RestResponse $restResponse, $statusCode = 200)
+	public function WriteResponse(RestResponse $restResponse)
 	{
-		$this->slim->response()->header('Content-Type', 'application/json');
-		$this->slim->response()->status($statusCode);
-		$this->slim->response()->write(json_encode($restResponse));
+		$this->_LastResponse = $restResponse;
 	}
 
 	public function GetServiceUrl($serviceName, $params = array())
 	{
-		return $this->slim->urlFor($serviceName, $params = array());
+		if (isset($this->_ServiceUrls[$serviceName]))
+		{
+			return $this->_ServiceUrls[$serviceName];
+		}
+		return null;
+	}
+
+	public function SetRequest($request)
+	{
+		$this->_Request = $request;
 	}
 
 	public function GetUrl()
 	{
-		return $this->slim->environment()->offsetGet('slim.url_scheme') . '://' . $this->slim->environment()->offsetGet('HOST');
+		return $this->_Url;
 	}
 
 	public function GetFullServiceUrl($serviceName, $params = array())
 	{
-		return $this->GetUrl() . $this->GetServiceUrl($serviceName, $params);
+		// TODO: Implement GetFullServiceUrl() method.
 	}
 
 	public function GetHeader($headerName)
 	{
-		return $this->slim->request()->headers($headerName);
+		// TODO: Implement GetHeader() method.
 	}
 
 	public function SetSession(WebServiceUserSession $session)
@@ -80,14 +88,14 @@ class SlimServer implements IRestServer
 		return $this->session;
 	}
 
-	/**
-	 * @param string $queryStringKey
-	 * @return string|null
-	 */
+	public function SetQueryString($key, $value)
+	{
+		$this->queryStringKeys[$key] = $value;
+	}
+
 	public function GetQueryString($queryStringKey)
 	{
-		return $this->slim->request()->get($queryStringKey);
+		return $this->queryStringKeys[$queryStringKey];
 	}
 }
-
 ?>

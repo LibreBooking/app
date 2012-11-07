@@ -82,6 +82,8 @@ class Date
 
 	/**
 	 * Creates a new Date object from the given string and $timezone
+	 * @param string $dateString
+	 * @param string|null $timezone
 	 * @return Date
 	 */
 	public static function Parse($dateString, $timezone = null)
@@ -91,6 +93,26 @@ class Date
 			return NullDate::Instance();
 		}
 		return new Date($dateString, $timezone);
+	}
+
+	/**
+	 * @param string $dateString
+	 * @return Date
+	 */
+	public static function ParseExact($dateString)
+	{
+		if (empty($dateString))
+		{
+			return NullDate::Instance();
+		}
+
+		$date = new DateTime($dateString);
+		$timeOffsetString = $date->getTimezone()->getName();
+		$offsetParts = explode(':', $timeOffsetString);
+
+		$d = new Date($date->format(Date::SHORT_FORMAT), 'UTC');
+		$offsetMinutes = ($offsetParts[0] * -60) + $offsetParts[1];
+		return $d->AddMinutes($offsetMinutes);
 	}
 
 	/**

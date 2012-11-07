@@ -23,4 +23,5 @@ require_once(ROOT_DIR . 'lib/WebService/RestServiceLink.php');
 require_once(ROOT_DIR . 'lib/WebService/RestResponse.php');
 require_once(ROOT_DIR . 'lib/WebService/WebServiceHeaders.php');
 require_once(ROOT_DIR . 'lib/WebService/WebServiceSecurity.php');
+require_once(ROOT_DIR . 'lib/WebService/WebServiceQueryStringKeys.php');
 ?>

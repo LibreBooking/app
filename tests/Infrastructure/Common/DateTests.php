@@ -523,5 +523,15 @@ class DateTests extends TestBase
 		$this->assertNull($null->ToDatabase());
 		$this->assertEquals($null, $null->ToTimezone('anything'));
 	}
+
+	public function testCanParseExactWithTimezone()
+	{
+		$d = Date::Parse('2012-04-06 01:02:03', 'America/New_York');
+		$iso = $d->ToIso();
+
+		$d2 = Date::ParseExact($iso);
+
+		$this->assertTrue($d->Equals($d2), $d->ToUtc()->ToString() . ' ' . $d2->ToString());
+	}
 }
 ?>

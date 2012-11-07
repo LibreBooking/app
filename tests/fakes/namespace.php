@@ -54,4 +54,5 @@ require_once(ROOT_DIR . 'tests/fakes/FakeReport.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeSavedReport.php');
 require_once(ROOT_DIR . 'tests/fakes/TestReservationItemView.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeWebAuthentication.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeRestServer.php');
 ?>

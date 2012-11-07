@@ -24,6 +24,7 @@ require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'lib/WebService/Slim/namespace.php');
 
 require_once(ROOT_DIR . 'WebServices/AuthenticationWebService.php');
+require_once(ROOT_DIR . 'WebServices/BookingsWebService.php');
 
 require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 
@@ -35,7 +36,7 @@ $registry = new SlimWebServiceRegistry($app);
 
 RegisterHelp($registry, $app);
 RegisterAuthentication($server, $registry);
-RegisterUser($server, $registry);
+RegisterBookings($server, $registry);
 
 $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 {
@@ -79,35 +80,12 @@ function RegisterAuthentication(SlimServer $server, SlimWebServiceRegistry $regi
 	$registry->AddCategory($category);
 }
 
-function RegisterUser(SlimServer $server, SlimWebServiceRegistry $registry)
+function RegisterBookings(SlimServer $server, SlimWebServiceRegistry $registry)
 {
 	$webService = new BookingsWebService($server);
-	$category = new SlimWebServiceRegistryCategory('Users');
-	$category->AddSecureGet(':userid/Bookings', array($webService, 'MyBookings'), WebServices::MyBookings);
-	$category->AddGet(':userid/Bookings2', array($webService, 'MyBookings2'), "Bookings2");
+	$category = new SlimWebServiceRegistryCategory('Bookings');
+	$category->AddGet('/', array($webService, 'GetBookings'), WebServices::Bookings);
 	$registry->AddCategory($category);
 }
-
-class BookingsWebService
-{
-	private $server;
-
-	public function __construct(IRestServer $server)
-	{
-		$this->server = $server;
-	}
-
-	public function MyBookings()
-	{
-		echo $this->server->word;
-		echo "MyBookings";
-	}
-
-	public function MyBookings2()
-	{
-		echo "MyBookings2";
-	}
-}
-
 
 ?>
