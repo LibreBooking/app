@@ -474,7 +474,7 @@ class MigrationPresenter
                 $row['password'],
                 '',
                 Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
-                $row['lang'],
+                empty($row['lang']) ?  Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE) :$row['lang'] ,
                 Pages::DEFAULT_HOMEPAGE_ID,
                 $row['phone'],
                 $row['institution'],
