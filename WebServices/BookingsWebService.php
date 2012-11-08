@@ -65,7 +65,10 @@ class BookingsWebService
 
 		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, null,
 																			 $scheduleId, $resourceId);
-		$this->server->WriteResponse(new BookingsResponse($reservations));
+
+		$response = new BookingsResponse();
+		$response->AddReservations($reservations, $this->server);
+		$this->server->WriteResponse($response);
 	}
 
 	/**
@@ -199,7 +202,7 @@ class ReservationItemResponse extends RestResponse
 		$this->ResourceId = $reservationItemView->ResourceId;
 
 		// add services for resource, user, schedule
-		$this->AddService($server, WebServices::GetResource, array($reservationItemView->ResourceId));
+		$this->AddService($server, WebServices::GetResource, array('resourceId' => $reservationItemView->ResourceId));
 
 	}
 }

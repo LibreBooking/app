@@ -52,7 +52,7 @@ class SlimServer implements IRestServer
 
 	public function GetServiceUrl($serviceName, $params = array())
 	{
-		return $this->slim->urlFor($serviceName, $params = array());
+		return $this->slim->urlFor($serviceName, $params);
 	}
 
 	public function GetUrl()
