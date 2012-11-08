@@ -25,6 +25,7 @@ require_once(ROOT_DIR . 'lib/WebService/Slim/namespace.php');
 
 require_once(ROOT_DIR . 'WebServices/AuthenticationWebService.php');
 require_once(ROOT_DIR . 'WebServices/BookingsWebService.php');
+require_once(ROOT_DIR . 'WebServices/ResourcesWebService.php');
 
 require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 
@@ -37,6 +38,7 @@ $registry = new SlimWebServiceRegistry($app);
 RegisterHelp($registry, $app);
 RegisterAuthentication($server, $registry);
 RegisterBookings($server, $registry);
+RegisterResources($server, $registry);
 
 $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 {
@@ -88,4 +90,12 @@ function RegisterBookings(SlimServer $server, SlimWebServiceRegistry $registry)
 	$registry->AddCategory($category);
 }
 
+function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
+{
+	$webService = new ResourcesWebService($server, new ResourceRepository());
+	$category = new SlimWebServiceRegistryCategory('Resources');
+	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
+	$category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
+	$registry->AddCategory($category);
+}
 ?>

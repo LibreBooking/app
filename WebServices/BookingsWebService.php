@@ -199,7 +199,7 @@ class ReservationItemResponse extends RestResponse
 		$this->ResourceId = $reservationItemView->ResourceId;
 
 		// add services for resource, user, schedule
-//		$this->AddService($server)
+		$this->AddService($server, WebServices::GetResource, array($reservationItemView->ResourceId));
 
 	}
 }
