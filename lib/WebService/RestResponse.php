@@ -20,6 +20,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class RestResponse
 {
+	const NOT_FOUND_CODE = 404;
+
 	/**
 	 * @var array|RestServiceLink[]
 	 */
@@ -56,6 +58,14 @@ class RestResponse
 	{
 		$this->links[] = $link;
 	}
+
+	public static function NotFound()
+	{
+		$response =  new RestResponse();
+		$response->message = 'The requested resource was not found';
+		return $response;
+	}
 }
+
 
 ?>

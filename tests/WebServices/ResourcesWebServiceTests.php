@@ -28,9 +28,14 @@ class ResourcesWebServiceTests extends TestBase
 	private $server;
 
 	/**
-	 * @var IResourceRepository
+	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $repository;
+
+	/**
+	 * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $attributeService;
 
 	/**
 	 * @var ResourcesWebService
@@ -43,23 +48,64 @@ class ResourcesWebServiceTests extends TestBase
 
 		$this->server = new FakeRestServer();
 		$this->repository = $this->getMock('IResourceRepository');
+		$this->attributeService = $this->getMock('IAttributeService');
 
-		$this->service = new ResourcesWebService($this->server, $this->repository);
+		$this->service = new ResourcesWebService($this->server, $this->repository, $this->attributeService);
 	}
 
 	public function testGetsResourceById()
 	{
 		$resourceId = 8282;
 		$resource = new FakeBookableResource($resourceId);
+		$attributes = $this->getMock('IEntityAttributeList');
 
 		$this->repository->expects($this->once())
-					->method('LoadById')
-					->with($this->equalTo($resourceId))
-					->will($this->returnValue($resource));
+				->method('LoadById')
+				->with($this->equalTo($resourceId))
+				->will($this->returnValue($resource));
+
+		$this->attributeService->expects($this->once())
+				->method('GetAttributes')
+				->with($this->equalTo(CustomAttributeCategory::RESOURCE), $this->equalTo(array($resourceId)))
+				->will($this->returnValue($attributes));
 
 		$this->service->GetResource($resourceId);
 
-		$this->assertEquals(new ResourceResponse($this->server, $resource), $this->server->_LastResponse);
+		$this->assertEquals(ResourceResponse::Create($this->server, $resource, $attributes), $this->server->_LastResponse);
+	}
+
+	public function testWhenNotFound()
+	{
+		$resourceId = 8282;
+		$this->repository->expects($this->once())
+				->method('LoadById')
+				->with($this->equalTo($resourceId))
+				->will($this->returnValue(BookableResource::Null()));
+
+		$this->service->GetResource($resourceId);
+
+		$this->assertEquals(RestResponse::NotFound(), $this->server->_LastResponse);
+	}
+
+	public function testGetsResourceList()
+	{
+		$resourceId = 123;
+		$resources[] = new FakeBookableResource($resourceId);
+		$attributes = $this->getMock('IEntityAttributeList');
+
+		$this->repository->expects($this->once())
+				->method('GetResourceList')
+				->will($this->returnValue($resources));
+
+		$this->attributeService->expects($this->once())
+				->method('GetAttributes')
+				->with($this->equalTo(CustomAttributeCategory::RESOURCE), $this->equalTo(array($resourceId)))
+				->will($this->returnValue($attributes));
+
+		$this->service->GetAll();
+
+		$this->assertEquals(ResourcesResponse::Create($this->server, $resources, $attributes), $this->server->_LastResponse);
 	}
 }
+
 ?>

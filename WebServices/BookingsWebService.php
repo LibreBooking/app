@@ -154,7 +154,7 @@ class BookingsResponse extends RestResponse
 	/**
 	 * @var array|ReservationItemResponse[]
 	 */
-	public $Reservations = array();
+	public $reservations = array();
 
 	/**
 	 * @param array|ReservationItemView[] $reservations
@@ -165,41 +165,43 @@ class BookingsResponse extends RestResponse
 	{
 		foreach ($reservations as $reservation)
 		{
-			$this->Reservations[] = new ReservationItemResponse($reservation, $server);
+			$this->reservations[] = new ReservationItemResponse($reservation, $server);
 		}
 	}
 }
 
 class ReservationItemResponse extends RestResponse
 {
-	public $ReferenceNumber;
-	public $StartDate;
-	public $EndDate;
-	public $FirstName;
-	public $LastName;
-	public $ResourceName;
-	public $Title;
-	public $Description;
-	public $RequiresApproval;
-	public $IsRecurring;
-	public $ScheduleId;
+	public $referenceNumber;
+	public $startDate;
+	public $endDate;
+	public $firstName;
+	public $lastName;
+	public $resourceName;
+	public $title;
+	public $description;
+	public $requiresApproval;
+	public $isRecurring;
+	public $scheduleId;
+	public $userId;
+	public $resourceId;
 
 	public function __construct(ReservationItemView $reservationItemView, IRestServer $server)
 	{
-		$this->ReferenceNumber = $reservationItemView->ReferenceNumber;
-		$this->StartDate = $reservationItemView->StartDate->ToIso();
-		$this->EndDate = $reservationItemView->EndDate->ToIso();
-		$this->FirstName = $reservationItemView->FirstName;
-		$this->LastName = $reservationItemView->LastName;
-		$this->ResourceName = $reservationItemView->ResourceName;
-		$this->Title = $reservationItemView->Title;
-		$this->Description = $reservationItemView->Description;
-		$this->RequiresApproval = $reservationItemView->RequiresApproval;
-		$this->IsRecurring = $reservationItemView->IsRecurring;
+		$this->referenceNumber = $reservationItemView->ReferenceNumber;
+		$this->startDate = $reservationItemView->StartDate->ToIso();
+		$this->endDate = $reservationItemView->EndDate->ToIso();
+		$this->firstName = $reservationItemView->FirstName;
+		$this->lastName = $reservationItemView->LastName;
+		$this->resourceName = $reservationItemView->ResourceName;
+		$this->title = $reservationItemView->Title;
+		$this->description = $reservationItemView->Description;
+		$this->requiresApproval = $reservationItemView->RequiresApproval;
+		$this->isRecurring = $reservationItemView->IsRecurring;
 
-		$this->ScheduleId = $reservationItemView->ScheduleId;
-		$this->UserId = $reservationItemView->UserId;
-		$this->ResourceId = $reservationItemView->ResourceId;
+		$this->scheduleId = $reservationItemView->ScheduleId;
+		$this->userId = $reservationItemView->UserId;
+		$this->resourceId = $reservationItemView->ResourceId;
 
 		// add services for resource, user, schedule
 		$this->AddService($server, WebServices::GetResource, array('resourceId' => $reservationItemView->ResourceId));

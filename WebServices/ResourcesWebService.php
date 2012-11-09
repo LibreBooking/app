@@ -19,6 +19,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 class ResourcesWebService
 {
@@ -32,15 +34,35 @@ class ResourcesWebService
 	 */
 	private $resourceRepository;
 
-	public function __construct(IRestServer $server, IResourceRepository $resourceRepository)
+	/**
+	 * @var IAttributeService
+	 */
+	private $attributeService;
+
+	public function __construct(IRestServer $server, IResourceRepository $resourceRepository,
+								IAttributeService $attributeService)
 	{
 		$this->server = $server;
 		$this->resourceRepository = $resourceRepository;
+		$this->attributeService = $attributeService;
 	}
 
+	/**
+	 * @name GetAllResources
+	 * @description Loads all resources
+	 * @response ResourcesResponse
+	 * @return void
+	 */
 	public function GetAll()
 	{
-
+		$resources = $this->resourceRepository->GetResourceList();
+		$resourceIds = array();
+		foreach ($resources as $resource)
+		{
+			$resourceIds[] = $resource->GetId();
+		}
+		$attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, $resourceIds);
+		$this->server->WriteResponse(ResourcesResponse::Create($this->server, $resources, $attributes));
 	}
 
 	/**
@@ -54,20 +76,107 @@ class ResourcesWebService
 	{
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
-		$this->server->WriteResponse(new ResourceResponse($this->server, $resource));
-	}
+		$resourceId = $resource->GetResourceId();
+		if (empty($resourceId))
+		{
+			$this->server->WriteResponse(RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
+		}
+		else
+		{
+			$attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, array($resourceId));
+			$this->server->WriteResponse(ResourceResponse::Create($this->server, $resource, $attributes));
+		}
 
+	}
 }
 
 class ResourceResponse extends RestResponse
 {
+	public $resourceId;
+	public $name;
+	public $location;
+	public $contact;
+	public $notes;
+	public $minLength;
+	public $maxLength;
+	public $requiresApproval;
+	public $allowMultiday;
+	public $maxParticipants;
+	public $minNotice;
+	public $maxNotice;
+	public $description;
+	public $scheduleId;
+	public $customAttributes = array();
+
+	public function __construct()
+	{
+	}
+
 	/**
 	 * @param IRestServer $server
 	 * @param BookableResource $resource
+	 * @param IEntityAttributeList $attributes
+	 * @return ResourceResponse
 	 */
-	public function __construct($server = null, $resource = null)
+	public static function Create($server = null, $resource = null, $attributes = null)
 	{
+		$resourceId = $resource->GetId();
+		$r = new ResourceResponse();
+		$r->resourceId = $resourceId;
+		$r->name = $resource->GetName();
+		$r->location = $resource->GetLocation();
+		$r->contact = $resource->GetContact();
+		$r->notes = $resource->GetNotes();
+		$r->maxLength = $resource->GetMaxLength();
+		$r->minLength = $resource->GetMinLength();
+		$r->maxNotice = $resource->GetMaxNotice();
+		$r->minNotice = $resource->GetMinNotice();
+		$r->requiresApproval = $resource->GetRequiresApproval();
+		$r->allowMultiday = $resource->GetAllowMultiday();
+		$r->maxParticipants = $resource->GetMaxParticipants();
+		$r->description = $resource->GetDescription();
+		$r->scheduleId = $resource->GetScheduleId();
 
+		$labels = $attributes->GetLabels();
+		$values = $attributes->GetValues($resourceId);
+
+		for ($i = 0; $i < count($labels); $i++)
+		{
+			$r->customAttributes = array('label' => $labels[$i], 'value' => $values[$i]);
+		}
+
+		$r->AddService($server, WebServices::GetResource, array('resourceId' => $resourceId));
+
+		return $r;
+	}
+}
+
+class ResourcesResponse extends RestResponse
+{
+	/**
+	 * @var array|ResourceResponse[]
+	 */
+	public $resources;
+
+	public function __construct()
+	{
+	}
+
+	/**
+	 * @param IRestServer $server
+	 * @param array|BookableResource[] $resources
+	 * @param IEntityAttributeList $attributes
+	 * @return ResourcesResponse
+	 */
+	public static function Create($server = null, $resources = null, $attributes = null)
+	{
+		$r = new ResourcesResponse();
+		foreach ($resources as $resource)
+		{
+			$r->resources[] = ResourceResponse::Create($server, $resource, $attributes);
+		}
+
+		return $r;
 	}
 }
 

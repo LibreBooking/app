@@ -19,9 +19,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 class WebServices
 {
-	const AllResources = 'allresources';
-	const GetResource = 'getresource';
-	const Bookings = 'mybookings';
+	const AllResources = 'all_resources';
+	const GetResource = 'resource';
+	const Bookings = 'bookings';
 	const Login = 'login';
 	const Logout = 'logout';
 

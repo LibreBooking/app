@@ -44,7 +44,7 @@ class FakeRestServer implements IRestServer
 		return $this->_Request;
 	}
 
-	public function WriteResponse(RestResponse $restResponse)
+	public function WriteResponse(RestResponse $restResponse, $statusCode = 200)
 	{
 		$this->_LastResponse = $restResponse;
 	}

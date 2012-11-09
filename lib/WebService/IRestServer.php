@@ -30,9 +30,10 @@ interface IRestServer
 
 	/**
 	 * @param RestResponse $restResponse
-	 * @return mixed
+	 * @param int $statusCode
+	 * @return void
 	 */
-	public function WriteResponse(RestResponse $restResponse);
+	public function WriteResponse(RestResponse $restResponse, $statusCode = 200);
 
 	/**
 	 * @param string $serviceName

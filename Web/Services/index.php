@@ -92,7 +92,7 @@ function RegisterBookings(SlimServer $server, SlimWebServiceRegistry $registry)
 
 function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new ResourcesWebService($server, new ResourceRepository());
+	$webService = new ResourcesWebService($server, new ResourceRepository(), new AttributeService(new AttributeRepository()));
 	$category = new SlimWebServiceRegistryCategory('Resources');
 	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
 	$category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
