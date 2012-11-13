@@ -125,7 +125,18 @@ class Mdb2Connection implements IDbConnection
 	{
 		$cmd = new Mdb2CommandAdapter($sqlCommand);
 		$stmt =& $this->_db->prepare($cmd->GetQuery(), true, $prepareType);
+
+		if (MDB2::isError($stmt))
+		{
+			throw new Exception('Error preparing MDB2 command. Query=%s. Error=%s', $sqlCommand->__toString(), $stmt->getMessage());
+		}
+
 		$result =& $stmt->execute($cmd->GetValues());
+
+		if (MDB2::isError($result))
+		{
+			throw new Exception('Error executing MDB2 command. Query=%s. Error=%s', $sqlCommand->__toString(), $stmt->getMessage());
+		}
 
 		return new Mdb2Reader($result);
 	}

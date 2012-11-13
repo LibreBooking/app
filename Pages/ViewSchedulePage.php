@@ -132,5 +132,10 @@ class ViewSchedulePage extends Page implements ISchedulePage
 
 		return !empty($showFullWeek);
 	}
+
+	protected function GetShouldAutoLogout()
+	{
+		return false;
+	}
 }
 ?>
