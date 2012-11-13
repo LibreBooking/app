@@ -18,9 +18,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'WebServices/BookingsWebService.php');
+require_once(ROOT_DIR . 'WebServices/ReservationsWebService.php');
 
-class BookingsWebServiceTests extends TestBase
+class ReservationsWebServiceTests extends TestBase
 {
 	/**
 	 * @var FakeRestServer
@@ -28,7 +28,7 @@ class BookingsWebServiceTests extends TestBase
 	private $server;
 
 	/**
-	 * @var BookingsWebService
+	 * @var ReservationsWebService
 	 */
 	private $service;
 
@@ -66,7 +66,7 @@ class BookingsWebServiceTests extends TestBase
 
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
 
-		$this->service = new BookingsWebService($this->server, $this->reservationViewRepository);
+		$this->service = new ReservationsWebService($this->server, $this->reservationViewRepository);
 	}
 
 	public function testDefaultsToNextTwoWeeksAndCurrentUser()
@@ -84,9 +84,9 @@ class BookingsWebServiceTests extends TestBase
 					   $this->equalTo($userId))
 				->will($this->returnValue($reservations));
 
-		$this->service->GetBookings();
+		$this->service->GetReservations();
 
-		$expectedResponse = new BookingsResponse();
+		$expectedResponse = new ReservationsResponse();
 		$expectedResponse->AddReservations($reservations, $this->server);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
@@ -104,7 +104,7 @@ class BookingsWebServiceTests extends TestBase
 				->with($this->anything(), $this->anything(), $this->equalTo($userId))
 				->will($this->returnValue(array()));
 
-		$this->service->GetBookings();
+		$this->service->GetReservations();
 	}
 
 	public function testWhenResourceIdIsProvided()
@@ -120,7 +120,7 @@ class BookingsWebServiceTests extends TestBase
 					   $this->isNull(), $this->equalTo($resourceId))
 				->will($this->returnValue(array()));
 
-		$this->service->GetBookings();
+		$this->service->GetReservations();
 	}
 
 	public function testWhenScheduleIdIsProvided()
@@ -136,7 +136,7 @@ class BookingsWebServiceTests extends TestBase
 					   $this->equalTo($scheduleId), $this->isNull())
 				->will($this->returnValue(array()));
 
-		$this->service->GetBookings();
+		$this->service->GetReservations();
 	}
 }
 

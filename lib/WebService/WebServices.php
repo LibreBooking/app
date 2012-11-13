@@ -17,11 +17,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class WebServices
 {
 	const AllResources = 'all_resources';
+	const Reservations = 'all_reservations';
+	const GetReservation = 'reservation';
 	const GetResource = 'resource';
-	const Bookings = 'bookings';
 	const Login = 'login';
 	const Logout = 'logout';
 

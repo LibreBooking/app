@@ -37,7 +37,7 @@ $registry = new SlimWebServiceRegistry($app);
 
 RegisterHelp($registry, $app);
 RegisterAuthentication($server, $registry);
-RegisterBookings($server, $registry);
+RegisterReservations($server, $registry);
 RegisterResources($server, $registry);
 
 $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
@@ -82,11 +82,12 @@ function RegisterAuthentication(SlimServer $server, SlimWebServiceRegistry $regi
 	$registry->AddCategory($category);
 }
 
-function RegisterBookings(SlimServer $server, SlimWebServiceRegistry $registry)
+function RegisterReservations(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new BookingsWebService($server, new ReservationViewRepository());
-	$category = new SlimWebServiceRegistryCategory('Bookings');
-	$category->AddSecureGet('/', array($webService, 'GetBookings'), WebServices::Bookings);
+	$webService = new ReservationsWebService($server, new ReservationViewRepository());
+	$category = new SlimWebServiceRegistryCategory('Reservations');
+	$category->AddSecureGet('/', array($webService, 'GetReservations'), WebServices::Reservations);
+	$category->AddSecureGet('/:referenceNumber', array($webService, 'GetReservation'), WebServices::GetReservation);
 	$registry->AddCategory($category);
 }
 

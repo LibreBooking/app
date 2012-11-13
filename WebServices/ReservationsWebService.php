@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
-class BookingsWebService
+class ReservationsWebService
 {
 	/**
 	 * @var IRestServer
@@ -39,16 +39,16 @@ class BookingsWebService
 	}
 
 	/**
-	 * @name GetBookings
-	 * @description Gets a list of bookings for the specified parameters.
+	 * @name GetReservations
+	 * @description Gets a list of reservations for the specified parameters.
 	 * Optional query string parameters: userId, resourceId, scheduleId, startDateTime, endDateTime.
 	 * If no query string parameters are provided, the current user will be used.
 	 * If no dates are provided, reservations for the next two weeks will be returned.
 	 * If dates do not include the timezone offset, the timezone of the authenticated user will be assumed.
-	 * @response BookingsResponse
+	 * @response ReservationsResponse
 	 * @return void
 	 */
-	public function GetBookings()
+	public function GetReservations()
 	{
 		$startDate = $this->GetStartDate();
 		$endDate = $this->GetEndDate();
@@ -66,9 +66,21 @@ class BookingsWebService
 		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, null,
 																			 $scheduleId, $resourceId);
 
-		$response = new BookingsResponse();
+		$response = new ReservationsResponse();
 		$response->AddReservations($reservations, $this->server);
 		$this->server->WriteResponse($response);
+	}
+
+	/**
+	 * @name GetReservation
+	 * @param string $referenceNumber
+	 * @description Loads a specific reservation by reference number
+	 * @response ReservationResponse
+	 * @return void
+	 */
+	public function GetReservation($referenceNumber)
+	{
+
 	}
 
 	/**
@@ -77,7 +89,7 @@ class BookingsWebService
 	 * @param int|null $scheduleId
 	 * @return bool
 	 */
-	public function FilterProvided($userId, $resourceId, $scheduleId)
+	private function FilterProvided($userId, $resourceId, $scheduleId)
 	{
 		return !empty($userId) || !empty($resourceId) || !empty($scheduleId);
 	}
@@ -149,7 +161,7 @@ class BookingsWebService
 	}
 }
 
-class BookingsResponse extends RestResponse
+class ReservationsResponse extends RestResponse
 {
 	/**
 	 * @var array|ReservationItemResponse[]
