@@ -84,7 +84,7 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 			$this->userBinder,
 			$this->dateBinder,
 			$this->resourceBinder,
-			new ReservationDetailsBinder($this->reservationAuthorization, $page, $reservationView),
+			new ReservationDetailsBinder($this->reservationAuthorization, $page, $reservationView, new PrivacyFilter($this->reservationAuthorization)),
 			new ReservationCustomAttributeValueBinder($this->attributeRepository, $reservationView),
 			$reservationView,
 			$this->user);

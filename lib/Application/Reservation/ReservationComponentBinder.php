@@ -225,11 +225,17 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 	 */
 	private $reservationView;
 
-	public function __construct(IReservationAuthorization $reservationAuthorization, IExistingReservationPage $page, ReservationView $reservationView)
+	/**
+	 * @var IPrivacyFilter
+	 */
+	private $privacyFilter;
+
+	public function __construct(IReservationAuthorization $reservationAuthorization, IExistingReservationPage $page, ReservationView $reservationView, IPrivacyFilter $privacyFilter)
 	{
 		$this->reservationAuthorization = $reservationAuthorization;
 		$this->page = $page;
 		$this->reservationView = $reservationView;
+		$this->privacyFilter = $privacyFilter;
 	}
 
 	public function Bind(IReservationComponentInitializer $initializer)
@@ -270,22 +276,16 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 		$this->page->SetAttachments($this->reservationView->Attachments);
 
-		$canViewDetails = true;
-		$shouldHideUser = false;
-		$shouldHideDetails = false;
+		$showUser = false;
+		$showDetails = false;
 
 		if (!$canBeEdited)
 		{
-			$shouldHideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
-			$shouldHideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
-
-			if ($shouldHideUser || $shouldHideDetails)
-			{
-				$canViewDetails = $this->reservationAuthorization->CanViewDetails($this->reservationView, $initializer->CurrentUser());
-			}
+			$showUser = $this->privacyFilter->CanViewUser($initializer->CurrentUser(), $this->reservationView);
+			$showDetails = $this->privacyFilter->CanViewDetails($initializer->CurrentUser(), $this->reservationView);
 		}
-		$initializer->ShowUserDetails(!$shouldHideUser || $canViewDetails);
-		$initializer->ShowReservationDetails(!$shouldHideDetails || $canViewDetails);
+		$initializer->ShowUserDetails($showUser);
+		$initializer->ShowReservationDetails($showDetails);
 	}
 
 	private function IsCurrentUserParticipating($currentUserId)

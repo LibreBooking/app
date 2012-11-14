@@ -20,13 +20,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-require_once(ROOT_DIR . 'Pages/Export/CalendarExportPage.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class CalendarSubscriptionPresenter
 {
 	/**
-	 * @var \ICalendarExportPage
+	 * @var ICalendarExportPage
 	 */
 	private $page;
 
@@ -45,15 +45,22 @@ class CalendarSubscriptionPresenter
 	 */
 	private $subscriptionService;
 
+	/**
+	 * @var IPrivacyFilter
+	 */
+	private $privacyFilter;
+
 	public function __construct(ICalendarSubscriptionPage $page,
 								IReservationViewRepository $reservationViewRepository,
 								ICalendarExportValidator $validator,
-								ICalendarSubscriptionService $subscriptionService)
+								ICalendarSubscriptionService $subscriptionService,
+								IPrivacyFilter $filter)
 	{
 		$this->page = $page;
 		$this->reservationViewRepository = $reservationViewRepository;
 		$this->validator = $validator;
 		$this->subscriptionService = $subscriptionService;
+		$this->privacyFilter = $filter;
 	}
 
 	public function PageLoad()
@@ -110,11 +117,14 @@ class CalendarSubscriptionPresenter
 			$res = $this->reservationViewRepository->GetAccessoryReservationList($weekAgo, $nextYear, $accessoryIds);
 		}
 
-		Log::Debug('Loading calendar subscription for userId %s, scheduleId %s, resourceId %s. Found %s reservations.', $userId, $scheduleId, $resourceId, count($res));
+		Log::Debug('Loading calendar subscription for userId %s, scheduleId %s, resourceId %s. Found %s reservations.',
+				   $userId, $scheduleId, $resourceId, count($res));
 
 		foreach ($res as $r)
 		{
-			$reservations[] = new iCalendarReservationView($r, ServiceLocator::GetServer()->GetUserSession());
+			$reservations[] = new iCalendarReservationView($r,
+														   ServiceLocator::GetServer()->GetUserSession(),
+														   $this->privacyFilter);
 		}
 
 		$this->page->SetReservations($reservations);

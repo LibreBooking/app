@@ -32,9 +32,8 @@ interface ICalendarExportPage
 	/**
 	 * @abstract
 	 * @param array|iCalendarReservationView[] $reservations
-	 * @param bool $hideDetails
 	 */
-	public function SetReservations($reservations, $hideDetails);
+	public function SetReservations($reservations);
 
 	/**
 	 * @abstract
@@ -62,14 +61,13 @@ class CalendarExportPage extends Page implements ICalendarExportPage
 	 */
 	private $presenter;
 
-	/**
-	 * @var bool
-	 */
-	private $hideDetails = false;
-
 	public function __construct()
 	{
-		$this->presenter = new CalendarExportPresenter($this, new ReservationViewRepository(), new NullCalendarExportValidator(), new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
+		$authorization = new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization());
+		$this->presenter = new CalendarExportPresenter($this,
+													   new ReservationViewRepository(),
+													   new NullCalendarExportValidator(),
+													   new PrivacyFilter($authorization));
 		parent::__construct('', 1);
 	}
 
@@ -85,22 +83,15 @@ class CalendarExportPage extends Page implements ICalendarExportPage
 		$this->Set('phpScheduleItVersion', $config->GetKey(ConfigKeys::VERSION));
 		$this->Set('DateStamp', Date::Now());
 
-		/* 
-                   ScriptUrl is used to generate iCal UID's. As a workaround to this bug 
-		   https://bugzilla.mozilla.org/show_bug.cgi?id=465853 
-		   we need to avoid using any slashes "/"
+		/**
+		 * ScriptUrl is used to generate iCal UID's. As a workaround to this bug
+		 * https://bugzilla.mozilla.org/show_bug.cgi?id=465853
+		 * we need to avoid using any slashes "/"
 		 */
-                $url = $config->GetScriptUrl();
-		$this->Set('ScriptUrl', parse_url ($url, PHP_URL_HOST) );
-                                
-		if ($this->hideDetails)
-		{
-			$this->Display('Export/ical-private.tpl');
-		}
-		else
-		{
-			$this->Display('Export/ical.tpl');
-		}
+		$url = $config->GetScriptUrl();
+		$this->Set('ScriptUrl', parse_url($url, PHP_URL_HOST));
+
+		$this->Display('Export/ical.tpl');
 	}
 
 	public function GetReferenceNumber()
@@ -108,10 +99,9 @@ class CalendarExportPage extends Page implements ICalendarExportPage
 		return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
 	}
 
-	public function SetReservations($reservations, $hideDetails)
+	public function SetReservations($reservations)
 	{
 		$this->Set('Reservations', $reservations);
-		$this->hideDetails = $hideDetails;
 	}
 
 	public function GetScheduleId()

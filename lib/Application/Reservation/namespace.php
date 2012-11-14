@@ -36,4 +36,6 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationEvents.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ManageBlackoutsService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationConflictResolution.php');
 
+require_once(ROOT_DIR . 'lib/Application/Reservation/PrivacyFilter.php');
+
 ?>

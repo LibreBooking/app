@@ -34,18 +34,24 @@ class iCalendarReservationView
 	/**
 	 * @param ReservationItemView|ReservationView $res
 	 * @param UserSession $currentUser
+	 * @param IPrivacyFilter $privacyFilter
 	 */
-	public function __construct($res, UserSession $currentUser)
+	public function __construct($res, UserSession $currentUser, IPrivacyFilter $privacyFilter)
 	{
+		$canViewUser = $privacyFilter->CanViewUser($currentUser, $res, $res->OwnerId);
+		$canViewDetails = $privacyFilter->CanViewDetails($currentUser, $res, $res->OwnerId);
+
+		$privateNotice = 'Private';
+
 		$this->DateCreated = $res->DateCreated;
 		$this->DateEnd = $res->EndDate;
 		$this->DateStart = $res->StartDate;
-		$this->Description = $res->Description;
-		$this->Organizer = new FullName($res->OwnerFirstName, $res->OwnerLastName);
-		$this->OrganizerEmail = $res->OwnerEmailAddress;
+		$this->Description = $canViewDetails ? $res->Description : $privateNotice;
+		$this->Organizer = $canViewUser ? new FullName($res->OwnerFirstName, $res->OwnerLastName) : $privateNotice;
+		$this->OrganizerEmail = $canViewUser ? $res->OwnerEmailAddress : $privateNotice;
 		$this->RecurRule = $this->CreateRecurRule($res);
 		$this->ReferenceNumber = $res->ReferenceNumber;
-		$this->Summary = $res->Title;
+		$this->Summary = $canViewDetails ? $res->Title : $privateNotice;
 		$this->ReservationUrl = sprintf("%s/%s?%s=%s", Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $res->ReferenceNumber);
 		$this->Location = $res->ResourceName;
 

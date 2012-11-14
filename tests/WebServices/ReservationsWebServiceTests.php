@@ -38,6 +38,11 @@ class ReservationsWebServiceTests extends TestBase
 	private $reservationViewRepository;
 
 	/**
+	 * @var IPrivacyFilter
+	 */
+	private $privacyFilter;
+
+	/**
 	 * @var WebServiceUserSession
 	 */
 	private $userSession;
@@ -65,8 +70,9 @@ class ReservationsWebServiceTests extends TestBase
 		$this->server->SetSession($this->userSession);
 
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
+		$this->privacyFilter = $this->getMock('IPrivacyFilter');
 
-		$this->service = new ReservationsWebService($this->server, $this->reservationViewRepository);
+		$this->service = new ReservationsWebService($this->server, $this->reservationViewRepository, $this->privacyFilter);
 	}
 
 	public function testDefaultsToNextTwoWeeksAndCurrentUser()
@@ -87,7 +93,7 @@ class ReservationsWebServiceTests extends TestBase
 		$this->service->GetReservations();
 
 		$expectedResponse = new ReservationsResponse();
-		$expectedResponse->AddReservations($reservations, $this->server);
+		$expectedResponse->AddReservations($reservations, $this->server, $this->privacyFilter);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
 

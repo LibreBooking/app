@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 require_once(ROOT_DIR . 'lib/Application/Authorization/PermissionService.php');
 require_once(ROOT_DIR . 'lib/Application/Authorization/PermissionServiceFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Authorization/ResourcePermissionStore.php');

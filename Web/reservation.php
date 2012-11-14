@@ -20,9 +20,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  
 define('ROOT_DIR', '../');
 
-require_once(ROOT_DIR . '/Pages/Ajax/AutoCompletePage.php');
-require_once(ROOT_DIR . '/Pages/NewReservationPage.php');
-require_once(ROOT_DIR . '/Pages/ExistingReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
+require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
+require_once(ROOT_DIR . 'Pages/ExistingReservationPage.php');
 
 $server = ServiceLocator::GetServer();
 

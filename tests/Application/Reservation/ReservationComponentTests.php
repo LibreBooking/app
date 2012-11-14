@@ -261,6 +261,7 @@ class ReservationComponentTests extends TestBase
 	{
 		$page = $this->getMock('IExistingReservationPage');
 		$reservationAuthorization = $this->getMock('IReservationAuthorization');
+		$privacyFilter = $this->getMock('IPrivacyFilter');
 		$initializer = $this->getMock('IReservationComponentInitializer');
 
 		$timezone = 'UTC';
@@ -416,13 +417,16 @@ class ReservationComponentTests extends TestBase
 				->will($this->returnValue($this->fakeUser));
 
 		$canViewDetails = true;
-		$reservationAuthorization->expects($this->once())
+		$canViewUser = true;
+		$privacyFilter->expects($this->once())
 				->method('CanViewDetails')
-				->with($this->equalTo($reservationView), $this->equalTo($this->fakeUser))
+				->with($this->equalTo($this->fakeUser), $this->equalTo($reservationView))
 				->will($this->returnValue($canViewDetails));
 
-		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, 'true');
-		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'true');
+		$privacyFilter->expects($this->once())
+				->method('CanViewUser')
+				->with($this->equalTo($this->fakeUser), $this->equalTo($reservationView))
+				->will($this->returnValue($canViewUser));
 
 		$initializer->expects($this->once())
 				->method('ShowUserDetails')
@@ -432,7 +436,7 @@ class ReservationComponentTests extends TestBase
 				->method('ShowReservationDetails')
 				->with($this->equalTo($canViewDetails));
 
-		$binder = new ReservationDetailsBinder($reservationAuthorization, $page, $reservationView);
+		$binder = new ReservationDetailsBinder($reservationAuthorization, $page, $reservationView, $privacyFilter);
 		$binder->Bind($initializer);
 	}
 

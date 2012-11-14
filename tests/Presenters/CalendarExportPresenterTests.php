@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Pages/Export/CalendarExportPage.php');
 require_once(ROOT_DIR . 'Presenters/CalendarExportPresenter.php');
 
 class CalendarExportPresenterTests extends TestBase
@@ -43,9 +44,9 @@ class CalendarExportPresenterTests extends TestBase
 	private $validator;
 
 	/**
-	 * @var IReservationAuthorization|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakePrivacyFilter
 	 */
-	private $reservationAuth;
+	private $privacyFilter;
 
 	public function setup()
 	{
@@ -54,9 +55,9 @@ class CalendarExportPresenterTests extends TestBase
 		$this->repo = $this->getMock('IReservationViewRepository');
 		$this->page = $this->getMock('ICalendarExportPage');
 		$this->validator = $this->getMock('ICalendarExportValidator');
-		$this->reservationAuth = $this->getMock('IReservationAuthorization');
+		$this->privacyFilter = new FakePrivacyFilter();
 
-		$this->presenter = new CalendarExportPresenter($this->page, $this->repo, $this->validator, $this->reservationAuth);
+		$this->presenter = new CalendarExportPresenter($this->page, $this->repo, $this->validator, $this->privacyFilter);
 	}
 
 	public function testLoadsReservationByReferenceNumber()
@@ -79,15 +80,13 @@ class CalendarExportPresenterTests extends TestBase
 
 		$this->page->expects($this->once())
 				->method('SetReservations')
-				->with($this->arrayHasKey(0), $this->equalTo(false));
+				->with($this->arrayHasKey(0));
 
 		$this->presenter->PageLoad($this->fakeUser);
 	}
 
 	public function testCannotSeeReservationDetailsIfConfiguredOff()
 	{
-		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'true');
-
 		$referenceNumber = 'ref';
 		$reservationResult = new ReservationView();
 
@@ -104,14 +103,9 @@ class CalendarExportPresenterTests extends TestBase
 				->with($this->equalTo($referenceNumber))
 				->will($this->returnValue($reservationResult));
 
-		$this->reservationAuth->expects($this->once())
-						->method('CanViewDetails')
-						->with($this->equalTo($reservationResult), $this->equalTo($this->fakeUser))
-						->will($this->returnValue(false));
-
 		$this->page->expects($this->once())
 				->method('SetReservations')
-				->with($this->arrayHasKey(0), $this->equalTo(true));
+				->with($this->arrayHasKey(0));
 
 		$this->presenter->PageLoad($this->fakeUser);
 	}
@@ -121,12 +115,12 @@ class CalendarExportPresenterTests extends TestBase
 		// this fixes a bug in outlook which prevents you from adding a meeting that you are the organizer of
 		$user = new FakeUserSession();
 		$res = new ReservationView();
-		$res->OwnerId = $user->UserId+1;
+		$res->OwnerId = $user->UserId + 1;
 		$res->OwnerFirstName = "f";
 		$res->OwnerLastName = "l";
 		$res->OwnerEmailAddress = "e@m.com";
 
-		$reservationView = new iCalendarReservationView($res, $user);
+		$reservationView = new iCalendarReservationView($res, $user, $this->privacyFilter);
 		$this->assertEquals($res->OwnerEmailAddress, $reservationView->OrganizerEmail);
 		$this->assertEquals(new FullName($res->OwnerFirstName, $res->OwnerLastName), $reservationView->Organizer);
 	}
@@ -141,9 +135,31 @@ class CalendarExportPresenterTests extends TestBase
 		$res->OwnerLastName = "l";
 		$res->OwnerEmailAddress = "e@m.com";
 
-		$reservationView = new iCalendarReservationView($res, $user);
+		$reservationView = new iCalendarReservationView($res, $user, $this->privacyFilter);
 		$this->assertEquals('e-noreply@m.com', $reservationView->OrganizerEmail);
 		$this->assertEquals(new FullName($res->OwnerFirstName, $res->OwnerLastName), $reservationView->Organizer);
+	}
+
+	public function testViewHidesDetailsWhenNoAccess()
+	{
+		$user = new FakeUserSession();
+		$res = new ReservationView();
+
+		$this->privacyFilter->_CanViewDetails = false;
+		$this->privacyFilter->_CanViewUser = false;
+
+		$reservationView = new iCalendarReservationView($res, $user, $this->privacyFilter);
+
+		$this->assertEquals($user, $this->privacyFilter->_LastViewDetailsUserSession);
+		$this->assertEquals($user, $this->privacyFilter->_LastViewUserUserSession);
+
+		$this->assertEquals($res, $this->privacyFilter->_LastViewDetailsReservation);
+		$this->assertEquals($res, $this->privacyFilter->_LastViewUserReservation);
+
+		$this->assertEquals('Private', $reservationView->Organizer);
+		$this->assertEquals('Private', $reservationView->OrganizerEmail);
+		$this->assertEquals('Private', $reservationView->Summary);
+		$this->assertEquals('Private', $reservationView->Description);
 	}
 }
 

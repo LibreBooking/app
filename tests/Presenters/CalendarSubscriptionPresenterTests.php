@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Pages/Export/CalendarSubscriptionPage.php');
 require_once(ROOT_DIR . 'Presenters/CalendarSubscriptionPresenter.php');
 
 class CalendarSubscriptionPresenterTests extends TestBase
@@ -47,6 +48,11 @@ class CalendarSubscriptionPresenterTests extends TestBase
 	 */
 	private $service;
 
+	/**
+	 * @var FakePrivacyFilter
+	 */
+	private $privacyFilter;
+
 	public function setup()
 	{
 		parent::setup();
@@ -55,12 +61,18 @@ class CalendarSubscriptionPresenterTests extends TestBase
 		$this->page = $this->getMock('ICalendarSubscriptionPage');
 		$this->validator = $this->getMock('ICalendarExportValidator');
 		$this->service = $this->getMock('ICalendarSubscriptionService');
+		$this->privacyFilter = new FakePrivacyFilter();
 
 		$this->validator->expects($this->atLeastOnce())
 				->method('IsValid')
 				->will($this->returnValue(true));
 
-		$this->presenter = new CalendarSubscriptionPresenter($this->page, $this->repo, $this->validator, $this->service);
+		$this->presenter = new CalendarSubscriptionPresenter(
+			$this->page,
+			$this->repo,
+			$this->validator,
+			$this->service,
+			$this->privacyFilter);
 	}
 
 	public function testGetsScheduleReservationsForTheNextYearByScheduleId()
@@ -149,7 +161,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 
 		$this->repo->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $userId, $this->isNull(), $this->isNull(), $this->isNull())
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->equalTo($userId), $this->isNull(), $this->isNull(), $this->isNull())
 				->will($this->returnValue($reservationResult));
 
 		$this->page->expects($this->once())

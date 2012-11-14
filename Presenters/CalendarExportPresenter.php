@@ -19,7 +19,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-require_once(ROOT_DIR . 'Pages/Export/CalendarExportPage.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
@@ -43,17 +42,17 @@ class CalendarExportPresenter
 	/**
 	 * @var IReservationAuthorization
 	 */
-	private $authorization;
+	private $privacyFilter;
 
 	public function __construct(ICalendarExportPage $page,
 								IReservationViewRepository $reservationViewRepository,
 								ICalendarExportValidator $validator,
-								IReservationAuthorization $authorization)
+								IPrivacyFilter $privacyFilter)
 	{
 		$this->page = $page;
 		$this->reservationViewRepository = $reservationViewRepository;
 		$this->validator = $validator;
-		$this->authorization = $authorization;
+		$this->privacyFilter = $privacyFilter;
 	}
 
 	public function PageLoad(UserSession $currentUser)
@@ -63,23 +62,16 @@ class CalendarExportPresenter
 			return;
 		}
 
-		$shouldHideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
-
 		$referenceNumber = $this->page->GetReferenceNumber();
 
 		$reservations = array();
 		if (!empty($referenceNumber))
 		{
 			$res = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
-			$reservations = array(new iCalendarReservationView($res, $currentUser));
-
-			if ($shouldHideDetails)
-			{
-				$shouldHideDetails = !$this->authorization->CanViewDetails($res, $currentUser);
-			}
+			$reservations = array(new iCalendarReservationView($res, $currentUser, $this->privacyFilter));
 		}
 
-		$this->page->SetReservations($reservations, $shouldHideDetails);
+		$this->page->SetReservations($reservations);
 	}
 }
 

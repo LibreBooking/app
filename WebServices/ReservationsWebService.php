@@ -32,10 +32,16 @@ class ReservationsWebService
 	 */
 	private $reservationViewRepository;
 
-	public function __construct(IRestServer $server, IReservationViewRepository $reservationViewRepository)
+	/**
+	 * @var IPrivacyFilter
+	 */
+	private $privacyFilter;
+
+	public function __construct(IRestServer $server, IReservationViewRepository $reservationViewRepository, IPrivacyFilter $privacyFilter)
 	{
 		$this->server = $server;
 		$this->reservationViewRepository = $reservationViewRepository;
+		$this->privacyFilter = $privacyFilter;
 	}
 
 	/**
@@ -67,7 +73,7 @@ class ReservationsWebService
 																			 $scheduleId, $resourceId);
 
 		$response = new ReservationsResponse();
-		$response->AddReservations($reservations, $this->server);
+		$response->AddReservations($reservations, $this->server, $this->privacyFilter);
 		$this->server->WriteResponse($response);
 	}
 
@@ -171,13 +177,18 @@ class ReservationsResponse extends RestResponse
 	/**
 	 * @param array|ReservationItemView[] $reservations
 	 * @param IRestServer $server
+	 * @param IPrivacyFilter $privacyFilter
 	 * @return void
 	 */
-	public function AddReservations($reservations, IRestServer $server)
+	public function AddReservations($reservations, IRestServer $server, IPrivacyFilter $privacyFilter)
 	{
+		$user = $server->GetSession();
 		foreach ($reservations as $reservation)
 		{
-			$this->reservations[] = new ReservationItemResponse($reservation, $server);
+			$showUser = $privacyFilter->CanViewUser($user, null, $reservation->UserId);
+			$showDetails = $privacyFilter->CanViewDetails($user, null, $reservation->UserId);
+
+			$this->reservations[] = new ReservationItemResponse($reservation, $server, $showUser, $showDetails);
 		}
 	}
 }
@@ -198,16 +209,25 @@ class ReservationItemResponse extends RestResponse
 	public $userId;
 	public $resourceId;
 
-	public function __construct(ReservationItemView $reservationItemView, IRestServer $server)
+	public function __construct(ReservationItemView $reservationItemView, IRestServer $server, $showUser, $showDetails)
 	{
 		$this->referenceNumber = $reservationItemView->ReferenceNumber;
 		$this->startDate = $reservationItemView->StartDate->ToIso();
 		$this->endDate = $reservationItemView->EndDate->ToIso();
-		$this->firstName = $reservationItemView->FirstName;
-		$this->lastName = $reservationItemView->LastName;
 		$this->resourceName = $reservationItemView->ResourceName;
-		$this->title = $reservationItemView->Title;
-		$this->description = $reservationItemView->Description;
+
+		if ($showUser)
+		{
+			$this->firstName = $reservationItemView->FirstName;
+			$this->lastName = $reservationItemView->LastName;
+		}
+
+		if ($showDetails)
+		{
+			$this->title = $reservationItemView->Title;
+			$this->description = $reservationItemView->Description;
+		}
+
 		$this->requiresApproval = $reservationItemView->RequiresApproval;
 		$this->isRecurring = $reservationItemView->IsRecurring;
 
