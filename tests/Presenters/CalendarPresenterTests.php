@@ -58,6 +58,11 @@ class CalendarPresenterTests extends TestBase
 	 */
 	private $subscriptionService;
 
+	/**
+	 * @var FakePrivacyFilter
+	 */
+	private $privacyFilter;
+
 	public function setup()
 	{
 		parent::setup();
@@ -68,8 +73,16 @@ class CalendarPresenterTests extends TestBase
 		$this->calendarFactory = $this->getMock('ICalendarFactory');
 		$this->resourceService = $this->getMock('IResourceService');
 		$this->subscriptionService = $this->getMock('ICalendarSubscriptionService');
+		$this->privacyFilter = new FakePrivacyFilter();
 
-		$this->presenter = new CalendarPresenter($this->page, $this->calendarFactory, $this->repository, $this->scheduleRepository, $this->resourceService, $this->subscriptionService);
+		$this->presenter = new CalendarPresenter(
+			$this->page,
+			$this->calendarFactory,
+			$this->repository,
+			$this->scheduleRepository,
+			$this->resourceService,
+			$this->subscriptionService,
+			$this->privacyFilter);
 	}
 
 	public function testBindsDefaultScheduleByMonthWhenNothingSelected()
@@ -181,7 +194,8 @@ class CalendarPresenterTests extends TestBase
 
 		$expectedReservations = CalendarReservation::FromScheduleReservationList($reservations,
 																				 $resources,
-																				 $userTimezone);
+																				 $this->fakeUser,
+																				 $this->privacyFilter);
 
 		$this->assertEquals($expectedReservations, $actualReservations);
 	}
@@ -196,7 +210,10 @@ class CalendarPresenterTests extends TestBase
 		$reservations = array($res1, $res2);
 		$resources = array($r1);
 
-		$actualReservations = CalendarReservation::FromScheduleReservationList($reservations, $resources, 'UTC');
+		$actualReservations = CalendarReservation::FromScheduleReservationList($reservations,
+																			   $resources,
+																			   $this->fakeUser,
+																			   $this->privacyFilter);
 
 		$this->assertEquals(1, count($actualReservations));
 

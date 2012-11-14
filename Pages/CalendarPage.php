@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/CalendarPresenter.php');
@@ -25,8 +25,11 @@ require_once(ROOT_DIR . 'Presenters/CalendarPresenter.php');
 interface ICalendarPage extends IPage
 {
 	public function GetDay();
+
 	public function GetMonth();
+
 	public function GetYear();
+
 	public function GetCalendarType();
 
 	public function BindCalendar(ICalendarSegment $calendar);
@@ -71,11 +74,11 @@ interface ICalendarPage extends IPage
 	 */
 	public function SetResourceId($resourceId);
 
-    /**
-     * @abstract
-     * @param CalendarSubscriptionDetails $subscriptionDetails
-     */
-    public function BindSubscription($subscriptionDetails);
+	/**
+	 * @abstract
+	 * @param CalendarSubscriptionDetails $subscriptionDetails
+	 */
+	public function BindSubscription($subscriptionDetails);
 }
 
 class CalendarPage extends SecurePage implements ICalendarPage
@@ -88,14 +91,20 @@ class CalendarPage extends SecurePage implements ICalendarPage
 	public function __construct()
 	{
 		parent::__construct('ResourceCalendar');
-        $resourceRepository = new ResourceRepository();
+		$resourceRepository = new ResourceRepository();
 		$resourceService = new ResourceService($resourceRepository, PluginManager::Instance()->LoadPermission());
-        $scheduleRepository =  new ScheduleRepository();
-        $subscriptionService = new CalendarSubscriptionService(new UserRepository(), $resourceRepository, $scheduleRepository);
-
-		$this->_presenter = new CalendarPresenter($this, new CalendarFactory(), new ReservationViewRepository(), $scheduleRepository, $resourceService, $subscriptionService);
+		$scheduleRepository = new ScheduleRepository();
+		$subscriptionService = new CalendarSubscriptionService(new UserRepository(), $resourceRepository, $scheduleRepository);
+		$privacyFilter = new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
+		$this->_presenter = new CalendarPresenter($this,
+												  new CalendarFactory(),
+												  new ReservationViewRepository(),
+												  $scheduleRepository,
+												  $resourceService,
+												  $subscriptionService,
+												  $privacyFilter);
 	}
-	
+
 	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
@@ -153,7 +162,7 @@ class CalendarPage extends SecurePage implements ICalendarPage
 		$this->Set('DisplayDate', $displayDate);
 
 		$months = Resources::GetInstance()->GetMonths('full');
-		$this->Set('MonthName', $months[$displayDate->Month()-1]);
+		$this->Set('MonthName', $months[$displayDate->Month() - 1]);
 		$this->Set('MonthNames', $months);
 		$this->Set('MonthNamesShort', Resources::GetInstance()->GetMonths('abbr'));
 
@@ -200,15 +209,15 @@ class CalendarPage extends SecurePage implements ICalendarPage
 		$this->Set('ResourceId', $resourceId);
 	}
 
-    /**
-     * @param CalendarSubscriptionDetails $details
-     */
-    public function BindSubscription($details)
-    {
-        $this->Set('IsSubscriptionAllowed', $details->IsAllowed());
-        $this->Set('IsSubscriptionEnabled', $details->IsEnabled());
-        $this->Set('SubscriptionUrl', $details->Url());
-    }
+	/**
+	 * @param CalendarSubscriptionDetails $details
+	 */
+	public function BindSubscription($details)
+	{
+		$this->Set('IsSubscriptionAllowed', $details->IsAllowed());
+		$this->Set('IsSubscriptionEnabled', $details->IsEnabled());
+		$this->Set('SubscriptionUrl', $details->Url());
+	}
 }
 
 class CalendarUrl
@@ -220,14 +229,14 @@ class CalendarUrl
 		// TODO: figure out how to get these values without coupling to the query string
 		$resourceId = ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 		$scheduleId = ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
-		
+
 		$format = Pages::CALENDAR . '?'
-				  . QueryStringKeys::DAY . '=%d&'
-				  . QueryStringKeys::MONTH . '=%d&'
-				  . QueryStringKeys::YEAR . '=%d&'
-				  . QueryStringKeys::CALENDAR_TYPE . '=%s&'
-				  . QueryStringKeys::RESOURCE_ID . '=%s&'
-				  . QueryStringKeys::SCHEDULE_ID . '=%s';
+				. QueryStringKeys::DAY . '=%d&'
+				. QueryStringKeys::MONTH . '=%d&'
+				. QueryStringKeys::YEAR . '=%d&'
+				. QueryStringKeys::CALENDAR_TYPE . '=%s&'
+				. QueryStringKeys::RESOURCE_ID . '=%s&'
+				. QueryStringKeys::SCHEDULE_ID . '=%s';
 
 		$this->url = sprintf($format, $day, $month, $year, $type, $resourceId, $scheduleId);
 	}
@@ -248,4 +257,5 @@ class CalendarUrl
 		return $this->url;
 	}
 }
+
 ?>

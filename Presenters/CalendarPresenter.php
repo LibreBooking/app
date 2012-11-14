@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class CalendarPresenter
 {
@@ -55,12 +56,18 @@ class CalendarPresenter
      */
     private $subscriptionService;
 
+	/**
+	 * @var IPrivacyFilter
+	 */
+	private $privacyFilter;
+
 	public function __construct(ICalendarPage $page,
 		ICalendarFactory $calendarFactory,
 		IReservationViewRepository $reservationRepository,
 		IScheduleRepository $scheduleRepository,
 		IResourceService $resourceService,
-        ICalendarSubscriptionService $subscriptionService)
+        ICalendarSubscriptionService $subscriptionService,
+		IPrivacyFilter $privacyFilter)
 	{
 		$this->page = $page;
 		$this->calendarFactory = $calendarFactory;
@@ -68,6 +75,7 @@ class CalendarPresenter
 		$this->scheduleRepository = $scheduleRepository;
 		$this->resourceService = $resourceService;
         $this->subscriptionService = $subscriptionService;
+		$this->privacyFilter = $privacyFilter;
 	}
 	
 	public function PageLoad($userSession, $timezone)
@@ -111,7 +119,11 @@ class CalendarPresenter
 
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
 		$reservations = $this->reservationRepository->GetReservationList($calendar->FirstDay(), $calendar->LastDay(), null, null, $selectedScheduleId, $selectedResourceId);
-		$calendar->AddReservations(CalendarReservation::FromScheduleReservationList($reservations, $resources, $timezone));
+		$calendar->AddReservations(CalendarReservation::FromScheduleReservationList(
+									   $reservations,
+									   $resources,
+									   $userSession,
+									   $this->privacyFilter));
 		$this->page->BindCalendar($calendar);
 
 		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId));

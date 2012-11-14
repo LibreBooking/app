@@ -44,7 +44,7 @@ $(document).ready(function() {
 	{foreach from=$Calendar->Reservations() item=reservation}
 		reservations.push({
 			id: '{$reservation->ReferenceNumber}',
-			title: '{fullname first=$reservation->OwnerName last=$reservation->ResourceName} {$reservation->Title|escape:javascript}',
+			title: '{$reservation->DisplayTitle|escape:javascript}',
 			start: '{format_date date=$reservation->StartDate key=fullcalendar}',
 			end: '{format_date date=$reservation->EndDate key=fullcalendar}',
 			url: '{Pages::RESERVATION}?rn={$reservation->ReferenceNumber}',
