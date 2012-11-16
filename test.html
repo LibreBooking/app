@@ -21,7 +21,7 @@
             function loadBookings(data)
             {
                 $.ajax({
-                            url:'http://localhost/dev/Services/Bookings/?userId=' + data.userId,
+                            url:'http://localhost/dev/Services/Reservations/?userId=' + data.userId,
                             type:'GET',
                             headers:{
                                 "X-phpScheduleIt-SessionToken":data.sessionToken,

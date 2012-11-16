@@ -43,6 +43,11 @@ class ReservationsWebServiceTests extends TestBase
 	private $privacyFilter;
 
 	/**
+	 * @var IAttributeService
+	 */
+	private $attributeService;
+
+	/**
 	 * @var WebServiceUserSession
 	 */
 	private $userSession;
@@ -71,8 +76,13 @@ class ReservationsWebServiceTests extends TestBase
 
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
 		$this->privacyFilter = $this->getMock('IPrivacyFilter');
+		$this->attributeService = $this->getMock('IAttributeService');
 
-		$this->service = new ReservationsWebService($this->server, $this->reservationViewRepository, $this->privacyFilter);
+		$this->service = new ReservationsWebService(
+			$this->server,
+			$this->reservationViewRepository,
+			$this->privacyFilter,
+			$this->attributeService);
 	}
 
 	public function testDefaultsToNextTwoWeeksAndCurrentUser()
@@ -143,6 +153,49 @@ class ReservationsWebServiceTests extends TestBase
 				->will($this->returnValue(array()));
 
 		$this->service->GetReservations();
+	}
+
+	public function testLoadsASingleReservation()
+	{
+		$referenceNumber = '12323';
+		$reservation = new ReservationView();
+		$reservation->StartDate = Date::Now();
+		$reservation->EndDate = Date::Now();
+		$reservation->ReferenceNumber = $referenceNumber;
+		$attributes = array(new FakeCustomAttribute());
+
+		$this->reservationViewRepository->expects($this->once())
+				->method('GetReservationForEditing')
+				->with($this->equalTo($referenceNumber))
+				->will($this->returnValue($reservation));
+
+		$this->attributeService->expects($this->once())
+				->method('GetByCategory')
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION))
+				->will($this->returnValue($attributes));
+
+		$this->service->GetReservation($referenceNumber);
+
+		$expectedResponse = ReservationResponse::Create($this->server, $reservation, $this->privacyFilter, $attributes);
+
+		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
+	}
+
+	public function testWhenReservationIsNotFound()
+	{
+		$reservation = NullReservationView::Instance();
+
+		$referenceNumber = '12323';
+
+		$this->reservationViewRepository->expects($this->once())
+				->method('GetReservationForEditing')
+				->with($this->equalTo($referenceNumber))
+				->will($this->returnValue($reservation));
+
+		$this->service->GetReservation($referenceNumber);
+
+		$expectedResponse = RestResponse::NotFound();
+		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
 }
 

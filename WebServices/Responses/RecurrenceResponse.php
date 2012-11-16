@@ -17,12 +17,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
-require_once(ROOT_DIR . 'lib/WebService/WebServices.php');
-require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
-require_once(ROOT_DIR . 'lib/WebService/RestServiceLink.php');
-require_once(ROOT_DIR . 'lib/WebService/RestResponse.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceHeaders.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceSecurity.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceQueryStringKeys.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceParams.php');
+
+require_once(ROOT_DIR . 'lib/WebService/namespace.php');
+
+class RecurrenceResponse
+{
+	public $type;
+	public $interval;
+	public $monthlyType;
+	public $weekdays;
+
+	public function __construct($type, $interval, $monthlyType, $weekdays)
+	{
+		$this->type = $type;
+		$this->interval = $interval;
+		$this->monthlyType = $monthlyType;
+		$this->weekdays = $weekdays;
+	}
+}
 ?>

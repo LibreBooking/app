@@ -24,8 +24,10 @@ require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'lib/WebService/Slim/namespace.php');
 
 require_once(ROOT_DIR . 'WebServices/AuthenticationWebService.php');
-require_once(ROOT_DIR . 'WebServices/BookingsWebService.php');
+require_once(ROOT_DIR . 'WebServices/ReservationsWebService.php');
 require_once(ROOT_DIR . 'WebServices/ResourcesWebService.php');
+require_once(ROOT_DIR . 'WebServices/UsersWebService.php');
+require_once(ROOT_DIR . 'WebServices/SchedulesWebService.php');
 
 require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 
@@ -39,6 +41,8 @@ RegisterHelp($registry, $app);
 RegisterAuthentication($server, $registry);
 RegisterReservations($server, $registry);
 RegisterResources($server, $registry);
+RegisterUsers($server, $registry);
+RegisterSchedules($server, $registry);
 
 $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 {
@@ -84,9 +88,9 @@ function RegisterAuthentication(SlimServer $server, SlimWebServiceRegistry $regi
 
 function RegisterReservations(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new ReservationsWebService($server, new ReservationViewRepository());
+	$webService = new ReservationsWebService($server, new ReservationViewRepository(), new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())));
 	$category = new SlimWebServiceRegistryCategory('Reservations');
-	$category->AddSecureGet('/', array($webService, 'GetReservations'), WebServices::Reservations);
+	$category->AddSecureGet('/', array($webService, 'GetReservations'), WebServices::AllReservations);
 	$category->AddSecureGet('/:referenceNumber', array($webService, 'GetReservation'), WebServices::GetReservation);
 	$registry->AddCategory($category);
 }
@@ -99,4 +103,23 @@ function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
 	$registry->AddCategory($category);
 }
+
+function RegisterUsers(SlimServer $server, SlimWebServiceRegistry $registry)
+{
+	$webService = new UsersWebService($server);
+	$category = new SlimWebServiceRegistryCategory('Users');
+	$category->AddSecureGet('/', array($webService, 'GetUsers'), WebServices::AllUsers);
+	$category->AddSecureGet('/:userId', array($webService, 'GetUser'), WebServices::GetUser);
+	$registry->AddCategory($category);
+}
+
+function RegisterSchedules(SlimServer $server, SlimWebServiceRegistry $registry)
+{
+	$webService = new SchedulesWebService($server);
+	$category = new SlimWebServiceRegistryCategory('Schedules');
+	$category->AddSecureGet('/', array($webService, 'GetSchedules'), WebServices::AllSchedules);
+	$category->AddSecureGet('/:scheduleId', array($webService, 'GetSchedule'), WebServices::GetSchedule);
+	$registry->AddCategory($category);
+}
+
 ?>

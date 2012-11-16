@@ -19,6 +19,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
+require_once(ROOT_DIR . 'WebServices/Responses/ReservationsResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/ReservationResponse.php');
 
 class ReservationsWebService
 {
@@ -37,10 +40,19 @@ class ReservationsWebService
 	 */
 	private $privacyFilter;
 
-	public function __construct(IRestServer $server, IReservationViewRepository $reservationViewRepository, IPrivacyFilter $privacyFilter)
+	/**
+	 * @var IAttributeService
+	 */
+	private $attributeService;
+
+	public function __construct(IRestServer $server,
+								IReservationViewRepository $reservationViewRepository,
+								IPrivacyFilter $privacyFilter,
+								IAttributeService $attributeService)
 	{
 		$this->server = $server;
 		$this->reservationViewRepository = $reservationViewRepository;
+		$this->attributeService = $attributeService;
 		$this->privacyFilter = $privacyFilter;
 	}
 
@@ -67,7 +79,7 @@ class ReservationsWebService
 			$userId = $this->server->GetSession()->UserId;
 		}
 
-		Log::Debug('GetBookings called. userId=%s, startDate=%s, endDate=%s', $userId, $startDate, $endDate);
+		Log::Debug('GetReservations called. userId=%s, startDate=%s, endDate=%s', $userId, $startDate, $endDate);
 
 		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, null,
 																			 $scheduleId, $resourceId);
@@ -86,7 +98,20 @@ class ReservationsWebService
 	 */
 	public function GetReservation($referenceNumber)
 	{
+		Log::Debug('GetReservation called. $referenceNumber=%s', $referenceNumber);
 
+		$reservation = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
+
+		if (!empty($reservation->ReferenceNumber))
+		{
+			$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESERVATION);
+			$response = ReservationResponse::Create($this->server, $reservation, $this->privacyFilter, $attributes);
+			$this->server->WriteResponse($response);
+		}
+		else
+		{
+			$this->server->WriteResponse($response = RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
+		}
 	}
 
 	/**
@@ -164,80 +189,6 @@ class ReservationsWebService
 	private function GetScheduleId()
 	{
 		return $this->server->GetQueryString(WebServiceQueryStringKeys::SCHEDULE_ID);
-	}
-}
-
-class ReservationsResponse extends RestResponse
-{
-	/**
-	 * @var array|ReservationItemResponse[]
-	 */
-	public $reservations = array();
-
-	/**
-	 * @param array|ReservationItemView[] $reservations
-	 * @param IRestServer $server
-	 * @param IPrivacyFilter $privacyFilter
-	 * @return void
-	 */
-	public function AddReservations($reservations, IRestServer $server, IPrivacyFilter $privacyFilter)
-	{
-		$user = $server->GetSession();
-		foreach ($reservations as $reservation)
-		{
-			$showUser = $privacyFilter->CanViewUser($user, null, $reservation->UserId);
-			$showDetails = $privacyFilter->CanViewDetails($user, null, $reservation->UserId);
-
-			$this->reservations[] = new ReservationItemResponse($reservation, $server, $showUser, $showDetails);
-		}
-	}
-}
-
-class ReservationItemResponse extends RestResponse
-{
-	public $referenceNumber;
-	public $startDate;
-	public $endDate;
-	public $firstName;
-	public $lastName;
-	public $resourceName;
-	public $title;
-	public $description;
-	public $requiresApproval;
-	public $isRecurring;
-	public $scheduleId;
-	public $userId;
-	public $resourceId;
-
-	public function __construct(ReservationItemView $reservationItemView, IRestServer $server, $showUser, $showDetails)
-	{
-		$this->referenceNumber = $reservationItemView->ReferenceNumber;
-		$this->startDate = $reservationItemView->StartDate->ToIso();
-		$this->endDate = $reservationItemView->EndDate->ToIso();
-		$this->resourceName = $reservationItemView->ResourceName;
-
-		if ($showUser)
-		{
-			$this->firstName = $reservationItemView->FirstName;
-			$this->lastName = $reservationItemView->LastName;
-		}
-
-		if ($showDetails)
-		{
-			$this->title = $reservationItemView->Title;
-			$this->description = $reservationItemView->Description;
-		}
-
-		$this->requiresApproval = $reservationItemView->RequiresApproval;
-		$this->isRecurring = $reservationItemView->IsRecurring;
-
-		$this->scheduleId = $reservationItemView->ScheduleId;
-		$this->userId = $reservationItemView->UserId;
-		$this->resourceId = $reservationItemView->ResourceId;
-
-		// add services for resource, user, schedule
-		$this->AddService($server, WebServices::GetResource, array('resourceId' => $reservationItemView->ResourceId));
-
 	}
 }
 

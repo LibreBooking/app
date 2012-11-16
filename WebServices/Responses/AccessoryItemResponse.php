@@ -17,12 +17,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
-require_once(ROOT_DIR . 'lib/WebService/WebServices.php');
-require_once(ROOT_DIR . 'lib/WebService/IRestServer.php');
-require_once(ROOT_DIR . 'lib/WebService/RestServiceLink.php');
-require_once(ROOT_DIR . 'lib/WebService/RestResponse.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceHeaders.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceSecurity.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceQueryStringKeys.php');
-require_once(ROOT_DIR . 'lib/WebService/WebServiceParams.php');
+
+require_once(ROOT_DIR . 'lib/WebService/namespace.php');
+
+class AccessoryItemResponse extends RestResponse
+{
+	public function __construct(IRestServer $server, $id, $name, $quantityAvailable)
+	{
+		$this->id = $id;
+		$this->name = $name;
+		$this->quantityAvailable = $quantityAvailable;
+
+		$this->AddService($server, WebServices::GetAccessory, array(WebServiceParams::AccessoryId => $id));
+	}
+}
+
 ?>
