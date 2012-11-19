@@ -42,7 +42,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		@import url({$Path}css/nav.css);
 		@import url({$Path}css/style.css);
 		{if $UseLocalJquery}
-			@import url({$Path}scripts/css/smoothness/jquery-ui-1.9.0.custom.css);
+			@import url({$Path}scripts/css/smoothness/jquery-ui-1.9.0.custom.min.css);
 		{else}
 			@import url(//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css);
 		{/if}
