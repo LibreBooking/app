@@ -85,6 +85,7 @@ $conf['settings']['phpmailer']['smtp.auth'] = 'true';           // options are '
 $conf['settings']['phpmailer']['smtp.username'] = '';
 $conf['settings']['phpmailer']['smtp.password'] = '';
 $conf['settings']['phpmailer']['sendmail.path'] = '/usr/sbin/sendmail';
+$conf['settings']['phpmailer']['smtp.debug'] = 'false';
 /**
  * Plugin configuration.  For more on plugins, see readme_installation.html
  */

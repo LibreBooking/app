@@ -44,6 +44,7 @@ class EmailService implements IEmailService
 			$this->phpMailer->Username = $this->Config('smtp.username');
 			$this->phpMailer->Password = $this->Config('smtp.password');
 			$this->phpMailer->Sendmail = $this->Config('sendmail.path');
+			$this->phpMailer->SMTPDebug = $this->Config('smtp.debug', new BooleanConverter());
 		}
 	}
 	
