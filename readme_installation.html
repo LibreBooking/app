@@ -1,41 +1,41 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-		"http://www.w3.org/TR/html4/loose.dtd">
+        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>phpScheduleIt Installation</title>
-	<style type="text/css">
+    <title>phpScheduleIt Installation</title>
+    <style type="text/css">
 
-		h1.section {
-			border-bottom: solid 1px #666;
+        h1.section {
+            border-bottom: solid 1px #666;
 
-			color: #333;
-			padding: 3px 10px;
-		}
+            color: #333;
+            padding: 3px 10px;
+        }
 
-		h2 {
-			border: solid 1px #666;
-			background-color: #f0f0f0;
-			color: #1a3083;
-			padding: 3px 10px;
-		}
+        h2 {
+            border: solid 1px #666;
+            background-color: #f0f0f0;
+            color: #1a3083;
+            padding: 3px 10px;
+        }
 
-		h3 {
-			border-bottom: solid 1px #999;
-		}
+        h3 {
+            border-bottom: solid 1px #999;
+        }
 
-		h4 {
-			border: solid 1px #666;
-			background-color: #f0f0f0;
-			color: #727E0A;
-			padding: 3px 10px;
-		}
+        h4 {
+            border: solid 1px #666;
+            background-color: #f0f0f0;
+            color: #727E0A;
+            padding: 3px 10px;
+        }
 
-		.setting {
-			font-family: courier;
-			color: #006400;
-			font-size: smaller;
-		}
-	</style>
+        .setting {
+            font-family: courier;
+            color: #006400;
+            font-size: smaller;
+        }
+    </style>
 </head>
 
 <body>
@@ -44,15 +44,15 @@
 <h2><span STYLE="color:#727E0A">Prerequisites</span></h2>
 
 <ul>
-	<li>PHP 5.2 or greater.</li>
-	<li>MySQL 5.0 or greater.</li>
-	<li>Web server (Apache2, IIS).</li>
-	<li>OS - Windows, Mac, *nix</li>
+    <li>PHP 5.2 or greater.</li>
+    <li>MySQL 5.0 or greater.</li>
+    <li>Web server (Apache2, IIS).</li>
+    <li>OS - Windows, Mac, *nix</li>
 </ul>
 <div STYLE="font-style: italic;">
-	Note: for users without web hosting service or existing environment, packages like <a
-		href="http://www.apachefriends.org/en/index.html">XAMMP</a> or <a href="http://www.wampserver.com/en/">WampServer</a>
-	can help you get set up quicky.<br/>
+    Note: for users without web hosting service or existing environment, packages like <a
+        href="http://www.apachefriends.org/en/index.html">XAMMP</a> or <a href="http://www.wampserver.com/en/">WampServer</a>
+    can help you get set up quicky.<br/>
 </div>
 
 <h1 class="section">Fresh Installation</h1>
@@ -60,47 +60,47 @@
 <h2>Application Deployment to Server</h2>
 
 <div>
-	<ul>
-		<li>Unzip the archived distribution to your webserver's document root. Or</li>
-		<li>If you don't have direct access to your document root or use hosting service,
-			then transfer the extracted directory to your web server's document root using FTP or <a
-					href="http://sourceforge.net/projects/winscp/">WinSCP</a>.
-		</li>
-		<li>Copy /config/config.dist.php to /config/config.php and adjust the settings for your environment.</li>
-		<li><span STYLE="color:red">Important!</span> The web server must have write access (0770) to
-			/your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl
-			<a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(want to know why?)</a>
-			<ul>
-				<li>If using an FTP client, check read/write/execute for Owner and Group on /tpl, /tpl_c, and /uploads
-				</li>
-			</ul>
-		</li>
-	</ul>
+    <ul>
+        <li>Unzip the archived distribution to your webserver's document root. Or</li>
+        <li>If you don't have direct access to your document root or use hosting service,
+            then transfer the extracted directory to your web server's document root using FTP or <a
+                    href="http://sourceforge.net/projects/winscp/">WinSCP</a>.
+        </li>
+        <li>Copy /config/config.dist.php to /config/config.php and adjust the settings for your environment.</li>
+        <li><span STYLE="color:red">Important!</span> The web server must have write access (0770) to
+            /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl
+            <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(want to know why?)</a>
+            <ul>
+                <li>If using an FTP client, check read/write/execute for Owner and Group on /tpl, /tpl_c, and /uploads
+                </li>
+            </ul>
+        </li>
+    </ul>
 </div>
 
 <h2>Application Configuration</h2>
 
 <div>
-	You can configure phpScheduleIt to fit your environments and needs, or use the minimal default settings which should
-	be enough for the application to work. We recommend you to change according to your specifics. Additional
-	information on all configuration settings can be found in the application help page.
-	<ul>
-		<li>To configure the application, you can open /config/config.php and alter any settings accordingly.
-			The admin email address can be set in the phpScheduleIt/config/config.php file of setting
-			<span class="setting">$conf['settings']['admin.email']</span>.<br/>
-			When later register an account with admin email address the user will be given admin privilege.
-		</li>
-		<li>In addition, to allow resource image uploads, the web-server must also have read/write
-			access to your configurable uploads directory of <span class="setting">$conf['settings']['image.upload.directory']</span>
-			in the config.php.
-		</li>
-		<li>By default, phpScheduleIt uses standard username/password for user authentication. Alternatively, you can
-			use LDAP authentication.
-			<br/>See the plugins section of the application help page for more details.
-		</li>
-	</ul>
-	Note: If you try to load the application at this time (eg. http://yourhostname/phpScheduleIt/Web/), you will
-	probably get a white page. This is because there is no backend database configured yet. So continue on ...
+    You can configure phpScheduleIt to fit your environments and needs, or use the minimal default settings which should
+    be enough for the application to work. We recommend you to change according to your specifics. Additional
+    information on all configuration settings can be found in the application help page.
+    <ul>
+        <li>To configure the application, you can open /config/config.php and alter any settings accordingly.
+            The admin email address can be set in the phpScheduleIt/config/config.php file of setting
+            <span class="setting">$conf['settings']['admin.email']</span>.<br/>
+            When later register an account with admin email address the user will be given admin privilege.
+        </li>
+        <li>In addition, to allow resource image uploads, the web-server must also have read/write
+            access to your configurable uploads directory of <span class="setting">$conf['settings']['image.upload.directory']</span>
+            in the config.php.
+        </li>
+        <li>By default, phpScheduleIt uses standard username/password for user authentication. Alternatively, you can
+            use LDAP authentication.
+            <br/>See the plugins section of the application help page for more details.
+        </li>
+    </ul>
+    Note: If you try to load the application at this time (eg. http://yourhostname/phpScheduleIt/Web/), you will
+    probably get a white page. This is because there is no backend database configured yet. So continue on ...
 </div>
 
 <h2>Database Setup</h2>
@@ -111,17 +111,17 @@ You have 2 ways to set up your database for the application to work.
 <div>You must have the application configured correctly before running the automated install.</div>
 
 <div>
-	<ul>
-		<li>The automated database setup only supports MySQL at this time. To run the automated database setup, navigate
-			to the
-			/Web/install directory in a web browser and follow the on-screen instructions.
-		</li>
-		<li>Note: Some may see directory permission issues displayed on the page. The web server must have write access
-			to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl.
-			If you cannot provide the required permission. Contact your web server administrator or hosting service to
-			resolve or run the manual install.
-		</li>
-	</ul>
+    <ul>
+        <li>The automated database setup only supports MySQL at this time. To run the automated database setup, navigate
+            to the
+            /Web/install directory in a web browser and follow the on-screen instructions.
+        </li>
+        <li>Note: Some may see directory permission issues displayed on the page. The web server must have write access
+            to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl.
+            If you cannot provide the required permission. Contact your web server administrator or hosting service to
+            resolve or run the manual install.
+        </li>
+    </ul>
 </div>
 
 OR<br/>
@@ -129,61 +129,70 @@ OR<br/>
 <h3>Manually</h3>
 
 <div>
-	The packaged database scripts make assumptions about your desired database configuration and set default values.
-	Please edit them to suit your environment before running. The files are located in
-	phpScheduleIt/database_schema/. <br/> <br/>
-	Import the following sql files in the listed order (we recommend <a
-		href="http://www.phpmyadmin.net/documentation/">phpMyAdmin</a> for this):
+    The packaged database scripts make assumptions about your desired database configuration and set default values.
+    Please edit them to suit your environment before running. The files are located in
+    phpScheduleIt/database_schema/. <br/> <br/>
+    Import the following sql files in the listed order (we recommend <a
+        href="http://www.phpmyadmin.net/documentation/">phpMyAdmin</a> for this):
 </div>
 
 <div>
-	<h4>On a remote host with no database creation privileges</h4>
+    <h4>On a remote host with no database creation privileges</h4>
 
-	<p>If you are installing phpScheduleIt on a remote host, please follow these steps. These steps assume you are using
-		cPanel and have the ability to create databases via the cPanel tool and phpMyAdmin.</p>
+    <p>If you are installing phpScheduleIt on a remote host, please follow these steps. These steps assume you are using
+        cPanel and have the ability to create databases via the cPanel tool and phpMyAdmin.</p>
 
-	<p>Adding the database and user</p>
+    <p>Adding the database and user</p>
 
-	<ul>
-		<li>Select the MySQL Databases tool</li>
-		<li>Add a new user with username and password of your choice. This will be the database user and database password set in
-			your phpScheduleIt config file. <b>Please be aware that some hosts will prefix your database user name.</b>
-		</li>
-		<li>Create a new database with whatever name you choose. This will be the name of the database in your
-			phpScheduleIt config file. 'phpScheduleIt2' is the recommended database name. <b>Please be aware that some hosts will prefix your database name.</b>
-		</li>
-		<li>Associate the new user with the new database, giving the user permission to SELECT, CREATE, UPDATE, INSERT
-			and DELETE. Click the 'Add User to Db' button.
-	</ul>
+    <ul>
+        <li>Select the MySQL Databases tool</li>
+        <li>Add a new user with username and password of your choice. This will be the database user and database
+            password set in
+            your phpScheduleIt config file. <b>Please be aware that some hosts will prefix your database user name.</b>
+        </li>
+        <li>Create a new database with whatever name you choose. This will be the name of the database in your
+            phpScheduleIt config file. 'phpScheduleIt2' is the recommended database name. <b>Please be aware that some
+                hosts will prefix your database name.</b>
+        </li>
+        <li>Associate the new user with the new database, giving the user permission to SELECT, CREATE, UPDATE, INSERT
+            and DELETE. Click the 'Add User to Db' button.
+    </ul>
 
-	<p>Creating tables</p>
+    <p>Creating tables</p>
 
-	<ul>
-		<li>Open phpMyAdmin.</li>
-		<li>Click on the database name that you just created in the left panel.</li>
-		<li>Click the SQL tab at the top of the page.</li>
-		<li>Import "/database_schema/create-schema.sql" to phpscheduleit2 (or whatever database name was used in the creation process)</li>
-		<li>Import "/database_schema/create-data.sql" to phpscheduleit2 (or whatever database name was used in the creation process)</li>
-	</ul>
+    <ul>
+        <li>Open phpMyAdmin.</li>
+        <li>Click on the database name that you just created in the left panel.</li>
+        <li>Click the SQL tab at the top of the page.</li>
+        <li>Import "/database_schema/create-schema.sql" to phpscheduleit2 (or whatever database name was used in the
+            creation process)
+        </li>
+        <li>Import "/database_schema/create-data.sql" to phpscheduleit2 (or whatever database name was used in the
+            creation process)
+        </li>
+    </ul>
 
 </div>
 <div>
-	<h4>If you have database creation privileges in MySQL</h4>
-	<ul>
-		<li>Open "/database_schema/full-install.sql" and edit the database name and username/password to match your
-			config.php database values
-		</li>
-		<li>Run or import "/database_schema/full-install.sql"</li>
-		<li>Optionally - run/import "/database_schema/testdata-utf8.sql" to phpscheduleit2 (sample application data will
-			be created with 2 users: admin/password and user/password). These users are available for testing your
-			installation.
-		</li>
-	</ul>
+    <h4>If you have database creation privileges in MySQL</h4>
+    <ul>
+        <li>Open "/database_schema/full-install.sql" and edit the database name and username/password to match your
+            config.php database values
+        </li>
+        <li>Run or import "/database_schema/full-install.sql"</li>
+        <li>Optionally - run/import "/database_schema/testdata-utf8.sql" to phpscheduleit2 (sample application data will
+            be created with 2 users: admin/password and user/password). These users are available for testing your
+            installation.
+        </li>
+    </ul>
 
-	<span STYLE="color:green;">You are done. Congratulations!</span>
-	Try to load the application at (eg. http://yourhostname/phpScheduleIt/Web/).
+    <span STYLE="color:green;">You are done. Congratulations!</span>
+    Try to load the application at (eg. http://yourhostname/phpScheduleIt/Web/).
 </div>
 
+<h2>Registering the Administrator Account</h2>
+After the database has been set up you will need to register the account for your application administrator. Navigate to
+register.php register an account with email address set in $conf['settings']['admin.email'].
 
 <h1 class="section">Upgrading</h1>
 <a name="upgrading"></a>
@@ -191,55 +200,55 @@ OR<br/>
 <h2>Upgrading from a previous version of phpScheduleIt 2</h2>
 
 <div>
-	The steps for upgrading from a previous version of phpScheduleIt 2 are very similar to the steps described above in
-	Application Deployment to Server.
+    The steps for upgrading from a previous version of phpScheduleIt 2 are very similar to the steps described above in
+    Application Deployment to Server.
 
-	<h3>Recommended</h3>
+    <h3>Recommended</h3>
 
-	<p>The recommended approach is to backup your current phpScheduleIt files, then upload the new files to the
-		that same location. This prevents any old files from interfering with new ones.</p>
+    <p>The recommended approach is to backup your current phpScheduleIt files, then upload the new files to the
+        that same location. This prevents any old files from interfering with new ones.</p>
 
-	<p>After the new files are uploaded, copy your old config/config.php file to the config directory in the new
-		version. Then run /Web/install/configure.php to bring your config file up to date.</p>
+    <p>After the new files are uploaded, copy your old config/config.php file to the config directory in the new
+        version. Then run /Web/install/configure.php to bring your config file up to date.</p>
 
-	<p>If you have any uploaded resource images you will need to copy them from their old location to the new
-		one.</p>
+    <p>If you have any uploaded resource images you will need to copy them from their old location to the new
+        one.</p>
 
-	<h3>Alternative</h3>
+    <h3>Alternative</h3>
 
-	<p>An alternative upgrade approach is to overwrite the current phpScheduleIt files with the new ones. If doing this,
-		you must delete the contents of /tpl_c. This approach will not allow you to roll back and will not clear out any
-		obsolete files.</p>
+    <p>An alternative upgrade approach is to overwrite the current phpScheduleIt files with the new ones. If doing this,
+        you must delete the contents of /tpl_c. This approach will not allow you to roll back and will not clear out any
+        obsolete files.</p>
 
-	<h3>Database</h3>
+    <h3>Database</h3>
 
-	<p>
-		After the application files have been upgraded you will need to upgrade the database.
-	</p>
+    <p>
+        After the application files have been upgraded you will need to upgrade the database.
+    </p>
 
-	<h4>Automatically</h4>
+    <h4>Automatically</h4>
 
-	<p>The automatic database upgrade is exactly the same as the automatic database install. Please follow the
-		instructions in the Automatic Database Setup section above.</p>
+    <p>The automatic database upgrade is exactly the same as the automatic database install. Please follow the
+        instructions in the Automatic Database Setup section above.</p>
 
-	<h4>Manually</h4>
+    <h4>Manually</h4>
 
-	<div>
-		The packaged database scripts make assumptions about your desired database configuration and set default values.
-		Please edit them to suit your environment before running. The files are located in
-		phpScheduleIt/database_schema/upgrades. <br/> <br/>
-		Depending on your current version, import the upgrade.sql file within each subdirectory to get to the current
-		version (we recommend <a
-			href="http://www.phpmyadmin.net/documentation/">phpMyAdmin</a> for this).<br/><br/>
-		For example, if you are running version 2.0 and the current version is 2.2 then you should run
-		phpScheduleIt/database_schema/upgrade/2.1/upgrade.sql then phpScheduleIt/database_schema/upgrade/2.2/upgrade.sql
-	</div>
+    <div>
+        The packaged database scripts make assumptions about your desired database configuration and set default values.
+        Please edit them to suit your environment before running. The files are located in
+        phpScheduleIt/database_schema/upgrades. <br/> <br/>
+        Depending on your current version, import the upgrade.sql file within each subdirectory to get to the current
+        version (we recommend <a
+            href="http://www.phpmyadmin.net/documentation/">phpMyAdmin</a> for this).<br/><br/>
+        For example, if you are running version 2.0 and the current version is 2.2 then you should run
+        phpScheduleIt/database_schema/upgrade/2.1/upgrade.sql then phpScheduleIt/database_schema/upgrade/2.2/upgrade.sql
+    </div>
 </div>
 
 <h2>Migrating from version 1.2</h2>
 
 <div>A migration from 1.2 to 2.0 is supported for MySQL only. This can be run after the 2.0 installation. To run the
-	migration open /Web/install/migrate.php directory in a web browser and follow the on-screen instructions.
+    migration open /Web/install/migrate.php directory in a web browser and follow the on-screen instructions.
 </div>
 
 <h1 class="section">Getting Started</h1>
@@ -249,50 +258,51 @@ OR<br/>
 <div>There are 2 main types of accounts, they are admin and user account.</div>
 
 <ul>
-	<li>If you imported a sample application data, you now can use admin/password and user/password to login and make
-		changes or addition via the application.
-	</li>
-	<li>If not, <b>you will need to register an account with your configured admin email address</b>. The admin email address
-		can be set in the phpScheduleIt/config/config.php file of setting <span class="setting">$conf['settings']['admin.email']</span>.
-		Other self registration accounts are defaulted to normal users.<br/>
-		After registration you will be logged in automatically. <span STYLE="color:red">Important!</span> At this time,
-		it is recommended to change your password.
-	</li>
-	<li>For LDAP authentication please login with your LDAP username/password.</li>
+    <li>If you imported a sample application data, you now can use admin/password and user/password to login and make
+        changes or addition via the application.
+    </li>
+    <li>If not, <b>you will need to register an account with your configured admin email address</b>. The admin email
+        address
+        can be set in the phpScheduleIt/config/config.php file of setting <span class="setting">$conf['settings']['admin.email']</span>.
+        Other self registration accounts are defaulted to normal users.<br/>
+        After registration you will be logged in automatically. <span STYLE="color:red">Important!</span> At this time,
+        it is recommended to change your password.
+    </li>
+    <li>For LDAP authentication please login with your LDAP username/password.</li>
 </ul>
 
 <h2>Log Files</h2>
 phpScheduleIt logs multiple levels of information categorized into either application or database logs. To do this, the
 log4php library is used. By default, logging is turned OFF.
 <ul>
-	<li>First, rename /config/log4php.config.dist.xml to /config/log4php.config.xml</li>
-	<li>To allow application logging, the PHP account requires write access (0755) to your configured log directory.
-	</li>
-	<li>Logging is configured in /config/log4php.config.xml
-		<ul>
-			<li>For Windows, set the path to something similar to &lt;param name=&quot;file&quot; value=&quot;c:/temp/log_%s.log&quot;
-				/&gt;</li>
-			<li>For Unix, set the path to something similar to &lt;param name=&quot;file&quot; value=&quot;/tmp/phpscheduleit/log_%s.log&quot;
-				/&gt;</li>
-		</ul>
-	</li>
-	<li>Logging is controlled by changing the &lt;level&gt; of each &lt;logger&gt;</li>
-	<li>Levels used by phpScheduleIt are OFF, DEBUG, ERROR. For normal operation, ERROR is appropriate. If trace logs
-		are needed, DEBUG is appropriate.
-	</li>
-	<li>To turn on application logging, change the &lt;level value=&quot;OFF&quot; /&gt; to an appropriate level for
-		either the default or sql loggers.
-		For example, &lt;level value=&quot;ERROR&quot; /&gt;</li>
-	<li>For more information on logging configuration, visit <a href="http://logging.apache.org/log4php/">log4php</a>
-	</li>
+    <li>First, rename /config/log4php.config.dist.xml to /config/log4php.config.xml</li>
+    <li>To allow application logging, the PHP account requires write access (0755) to your configured log directory.
+    </li>
+    <li>Logging is configured in /config/log4php.config.xml
+        <ul>
+            <li>For Windows, set the path to something similar to &lt;param name=&quot;file&quot; value=&quot;c:/temp/log_%s.log&quot;
+                /&gt;</li>
+            <li>For Unix, set the path to something similar to &lt;param name=&quot;file&quot; value=&quot;/tmp/phpscheduleit/log_%s.log&quot;
+                /&gt;</li>
+        </ul>
+    </li>
+    <li>Logging is controlled by changing the &lt;level&gt; of each &lt;logger&gt;</li>
+    <li>Levels used by phpScheduleIt are OFF, DEBUG, ERROR. For normal operation, ERROR is appropriate. If trace logs
+        are needed, DEBUG is appropriate.
+    </li>
+    <li>To turn on application logging, change the &lt;level value=&quot;OFF&quot; /&gt; to an appropriate level for
+        either the default or sql loggers.
+        For example, &lt;level value=&quot;ERROR&quot; /&gt;</li>
+    <li>For more information on logging configuration, visit <a href="http://logging.apache.org/log4php/">log4php</a>
+    </li>
 </ul>
 
 <h4>Support</h4>
 
 <div>
-	Please post any questions or issues under the phpScheduleIt 2 section of the forums on
-	<a href="http://php.brickhost.com/forums">http://php.brickhost.com/forums</a>. Here you may also find some answers
-	to your questions previously asked by other people.
+    Please post any questions or issues under the phpScheduleIt 2 section of the forums on
+    <a href="http://php.brickhost.com/forums">http://php.brickhost.com/forums</a>. Here you may also find some answers
+    to your questions previously asked by other people.
 </div>
 
 </body>
