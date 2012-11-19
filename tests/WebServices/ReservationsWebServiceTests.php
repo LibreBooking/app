@@ -102,8 +102,7 @@ class ReservationsWebServiceTests extends TestBase
 
 		$this->service->GetReservations();
 
-		$expectedResponse = new ReservationsResponse();
-		$expectedResponse->AddReservations($reservations, $this->server, $this->privacyFilter);
+		$expectedResponse = new ReservationsResponse($this->server, $reservations, $this->privacyFilter);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
 
@@ -176,7 +175,7 @@ class ReservationsWebServiceTests extends TestBase
 
 		$this->service->GetReservation($referenceNumber);
 
-		$expectedResponse = ReservationResponse::Create($this->server, $reservation, $this->privacyFilter, $attributes);
+		$expectedResponse = new ReservationResponse($this->server, $reservation, $this->privacyFilter, $attributes);
 
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
