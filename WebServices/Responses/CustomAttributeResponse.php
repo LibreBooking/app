@@ -22,11 +22,31 @@ require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
 class CustomAttributeResponse extends RestResponse
 {
-	public static function Create(IRestServer $server, $attributeId, $attributeLabel, $attributeValue)
+	public $id;
+	public $label;
+	public $value;
+
+	public function __construct(IRestServer $server, $attributeId, $attributeLabel, $attributeValue)
 	{
-		$r = new CustomAttributeResponse($attributeId, $attributeLabel, $attributeValue);
-		$r->AddService($server, WebServices::GetCustomAttribute, array(WebServiceParams::AttributeId => $attributeId));
-		return $r;
+		$this->id = $attributeId;
+		$this->label = $attributeLabel;
+		$this->value = $attributeValue;
+		$this->AddService($server, WebServices::GetCustomAttribute, array(WebServiceParams::AttributeId => $attributeId));
+	}
+
+	public static function Example()
+	{
+		return new ExampleCustomAttributeResponse();
+	}
+}
+
+class ExampleCustomAttributeResponse extends CustomAttributeResponse
+{
+	public function __construct()
+	{
+		$this->id = 123;
+		$this->label = 'label';
+		$this->value = 'value';
 	}
 }
 

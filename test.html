@@ -6,6 +6,9 @@
     <script type="text/javascript">
         $(document).ready(function ()
         {
+            var sessionToken;
+            var userId;
+
             function appendJson(data)
             {
                 var result = $("#result");
@@ -18,19 +21,36 @@
                 result.append('<p>' + str + '</p>');
             }
 
+            function loadFirstBooking(data)
+            {
+                $.ajax({
+                                            url:data.reservations[0].links[1].href,
+                                            type:'GET',
+                                            headers:{
+                                                "X-phpScheduleIt-SessionToken":sessionToken,
+                                                "X-phpScheduleIt-UserId":userId}
+                                        }
+                                ).done(function (data)
+                                        {
+
+                                            appendJson(data);
+                                        });
+            }
+
             function loadBookings(data)
             {
                 $.ajax({
                             url:'http://localhost/dev/Services/Reservations/?userId=' + data.userId,
                             type:'GET',
                             headers:{
-                                "X-phpScheduleIt-SessionToken":data.sessionToken,
-                                "X-phpScheduleIt-UserId":data.userId}
+                                "X-phpScheduleIt-SessionToken":sessionToken,
+                                "X-phpScheduleIt-UserId":userId}
                         }
                 ).done(function (data)
                         {
 
-                            appendJson(data)
+                            appendJson(data);
+                            loadFirstBooking(data);
                         });
             }
 
@@ -41,7 +61,9 @@
                     }
             ).done(function (data)
                     {
-                        appendJson(data)
+                        sessionToken = data.sessionToken;
+                        userId = data.userId;
+                        appendJson(data);
                         loadBookings(data);
                     });
         });

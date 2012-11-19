@@ -20,6 +20,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once(ROOT_DIR . 'WebServices/Responses/AuthenticationResponse.php');
+require_once(ROOT_DIR . 'WebServices/Requests/AuthenticationRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/SignOutRequest.php');
 
 class AuthenticationWebService
 {
@@ -81,93 +84,6 @@ class AuthenticationWebService
 		Log::Debug('WebService SignOut for userId %s and sessionToken %s', $userId, $sessionToken);
 
 		$this->authentication->Logout($userId, $sessionToken);
-	}
-}
-
-class AuthenticationRequest
-{
-	/**
-	 * @var string
-	 */
-	public $username;
-	/**
-	 * @var string
-	 */
-	public $password;
-
-	/**
-	 * @param string $username
-	 * @param string $password
-	 */
-	public function __construct($username = null, $password = null)
-	{
-		$this->username = $username;
-		$this->password = $password;
-	}
-}
-
-
-class AuthenticationResponse extends RestResponse
-{
-	public $sessionToken;
-	public $sessionExpires;
-	public $userId;
-	public $isAuthenticated = false;
-
-	/**
-	 * @static
-	 * @param $server IRestServer
-	 * @param $userSession WebServiceUserSession
-	 * @return AuthenticationResponse
-	 */
-	public static function Success(IRestServer $server, $userSession)
-	{
-		$response = new AuthenticationResponse($server);
-		$response->sessionToken = $userSession->SessionToken;
-		$response->sessionExpires = $userSession->SessionExpiration;
-		$response->isAuthenticated = true;
-		$response->userId = $userSession->UserId;
-
-		$response->AddService($server, WebServices::Logout);
-		//$response->AddService($server, WebServices::MyBookings, array($userSession->PublicId));
-		//$response->AddService($server, WebServices::AllBookings);
-//		$response->AddAction(RestAction::MyBookings());
-//		$response->AddAction(RestAction::CreateBooking());
-
-		return $response;
-	}
-
-	/**
-	 * @static
-	 * @return AuthenticationResponse
-	 */
-	public static function Failed()
-	{
-		$response = new AuthenticationResponse();
-		$response->message = 'Login failed. Invalid username or password.';
-		return $response;
-	}
-}
-
-class SignOutRequest
-{
-	/**
-	 * @var string
-	 */
-	public $userId;
-	/**
-	 * @var string
-	 */
-	public $sessionToken;
-
-	/**
-	 * @param string $userId
-	 * @param string $sessionToken
-	 */
-	public function __construct($userId = null, $sessionToken = null)
-	{
-		$this->userId = $userId;
-		$this->sessionToken = $sessionToken;
 	}
 }
 

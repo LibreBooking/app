@@ -88,7 +88,10 @@ function RegisterAuthentication(SlimServer $server, SlimWebServiceRegistry $regi
 
 function RegisterReservations(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new ReservationsWebService($server, new ReservationViewRepository(), new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())));
+	$webService = new ReservationsWebService($server,
+											 new ReservationViewRepository(),
+											 new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())),
+											 new AttributeService(new AttributeRepository()));
 	$category = new SlimWebServiceRegistryCategory('Reservations');
 	$category->AddSecureGet('/', array($webService, 'GetReservations'), WebServices::AllReservations);
 	$category->AddSecureGet('/:referenceNumber', array($webService, 'GetReservation'), WebServices::GetReservation);

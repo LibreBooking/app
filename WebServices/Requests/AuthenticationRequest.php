@@ -18,38 +18,25 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/WebService/namespace.php');
-
-class RecurrenceResponse
+class AuthenticationRequest
 {
-	public $type;
-	public $interval;
-	public $monthlyType;
-	public $weekdays;
+	/**
+	 * @var string
+	 */
+	public $username;
+	/**
+	 * @var string
+	 */
+	public $password;
 
-	public function __construct($type, $interval, $monthlyType, $weekdays)
+	/**
+	 * @param string $username
+	 * @param string $password
+	 */
+	public function __construct($username = null, $password = null)
 	{
-		$this->type = $type;
-		$this->interval = $interval;
-		$this->monthlyType = $monthlyType;
-		$this->weekdays = $weekdays;
-	}
-
-	public static function Example()
-	{
-		return new ExampleRecurrenceResponse();
+		$this->username = $username;
+		$this->password = $password;
 	}
 }
-
-class ExampleRecurrenceResponse extends RecurrenceResponse
-{
-	public function __construct()
-	{
-		$this->type = RepeatType::Weekly;
-		$this->interval = 3;
-		$this->monthlyType = null;
-		$this->weekdays = array(1, 3);
-	}
-}
-
 ?>

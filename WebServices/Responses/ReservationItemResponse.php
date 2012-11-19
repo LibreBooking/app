@@ -62,12 +62,42 @@ class ReservationItemResponse extends RestResponse
 		$this->userId = $reservationItemView->UserId;
 		$this->resourceId = $reservationItemView->ResourceId;
 
-		$this->AddService($server, WebServices::GetResource, array(WebServiceParams::ResourceId => $reservationItemView->ResourceId));
-		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $reservationItemView->ReferenceNumber));
-		$this->AddService($server, WebServices::GetUser, array(WebServiceParams::UserId => $reservationItemView->UserId));
-		$this->AddService($server, WebServices::GetSchedule, array(WebServiceParams::ScheduleId => $reservationItemView->ScheduleId));
+		$this->AddService($server, WebServices::GetResource,
+						  array(WebServiceParams::ResourceId => $reservationItemView->ResourceId));
+		$this->AddService($server, WebServices::GetReservation,
+						  array(WebServiceParams::ReferenceNumber => $reservationItemView->ReferenceNumber));
+		$this->AddService($server, WebServices::GetUser,
+						  array(WebServiceParams::UserId => $reservationItemView->UserId));
+		$this->AddService($server, WebServices::GetSchedule,
+						  array(WebServiceParams::ScheduleId => $reservationItemView->ScheduleId));
 
 	}
 
+	public static function Example()
+	{
+		return new ExampleReservationItemResponse();
+	}
+
 }
+
+class ExampleReservationItemResponse extends ReservationItemResponse
+{
+	public function __construct()
+	{
+		$this->description = 'reservation description';
+		$this->endDate = Date::Now()->ToIso();
+		$this->firstName = 'first';
+		$this->isRecurring = true;
+		$this->lastName = 'last';
+		$this->referenceNumber = 'refnum';
+		$this->requiresApproval = true;
+		$this->resourceId = 123;
+		$this->resourceName = 'resourcename';
+		$this->scheduleId = 22;
+		$this->startDate = Date::Now()->ToIso();
+		$this->title = 'reservation title';
+		$this->userId = 11;
+	}
+}
+
 ?>

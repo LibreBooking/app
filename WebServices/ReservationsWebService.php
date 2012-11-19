@@ -84,8 +84,7 @@ class ReservationsWebService
 		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, null,
 																			 $scheduleId, $resourceId);
 
-		$response = new ReservationsResponse();
-		$response->AddReservations($reservations, $this->server, $this->privacyFilter);
+		$response = new ReservationsResponse($this->server, $reservations, $this->privacyFilter);
 		$this->server->WriteResponse($response);
 	}
 
@@ -105,7 +104,7 @@ class ReservationsWebService
 		if (!empty($reservation->ReferenceNumber))
 		{
 			$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESERVATION);
-			$response = ReservationResponse::Create($this->server, $reservation, $this->privacyFilter, $attributes);
+			$response = new ReservationResponse($this->server, $reservation, $this->privacyFilter, $attributes);
 			$this->server->WriteResponse($response);
 		}
 		else

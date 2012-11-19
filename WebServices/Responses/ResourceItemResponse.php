@@ -31,6 +31,19 @@ class ResourceItemResponse extends RestResponse
 		$this->name = $name;
 		$this->AddService($server, WebServices::GetResource, array(WebServiceParams::ResourceId => $id));
 	}
+
+	public static function Example()
+	{
+		return new ExampleResourceItemResponse();
+	}
 }
 
+class ExampleResourceItemResponse extends ResourceItemResponse
+{
+	public function __construct()
+	{
+		$this->id = 123;
+		$this->name = 'resource name';
+	}
+}
 ?>

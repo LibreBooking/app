@@ -38,46 +38,70 @@ class ResourceResponse extends RestResponse
 	public $scheduleId;
 	public $customAttributes = array();
 
-	public function __construct()
-	{
-	}
-
 	/**
 	 * @param IRestServer $server
 	 * @param BookableResource $resource
 	 * @param IEntityAttributeList $attributes
-	 * @return ResourceResponse
 	 */
-	public static function Create($server = null, $resource = null, $attributes = null)
+	public function __construct(IRestServer $server, $resource, $attributes)
 	{
 		$resourceId = $resource->GetId();
-		$r = new ResourceResponse();
-		$r->resourceId = $resourceId;
-		$r->name = $resource->GetName();
-		$r->location = $resource->GetLocation();
-		$r->contact = $resource->GetContact();
-		$r->notes = $resource->GetNotes();
-		$r->maxLength = $resource->GetMaxLength();
-		$r->minLength = $resource->GetMinLength();
-		$r->maxNotice = $resource->GetMaxNotice();
-		$r->minNotice = $resource->GetMinNotice();
-		$r->requiresApproval = $resource->GetRequiresApproval();
-		$r->allowMultiday = $resource->GetAllowMultiday();
-		$r->maxParticipants = $resource->GetMaxParticipants();
-		$r->description = $resource->GetDescription();
-		$r->scheduleId = $resource->GetScheduleId();
+		$this->resourceId = $resourceId;
+		$this->name = $resource->GetName();
+		$this->location = $resource->GetLocation();
+		$this->contact = $resource->GetContact();
+		$this->notes = $resource->GetNotes();
+		$this->maxLength = $resource->GetMaxLength()->__toString();
+		$this->minLength = $resource->GetMinLength()->__toString();
+		$this->maxNotice = $resource->GetMaxNotice()->__toString();
+		$this->minNotice = $resource->GetMinNotice()->__toString();
+		$this->requiresApproval = $resource->GetRequiresApproval();
+		$this->allowMultiday = $resource->GetAllowMultiday();
+		$this->maxParticipants = $resource->GetMaxParticipants();
+		$this->description = $resource->GetDescription();
+		$this->scheduleId = $resource->GetScheduleId();
 
 		$definitions = $attributes->GetDefinitions();
 		$values = $attributes->GetValues($resourceId);
 
 		for ($i = 0; $i < count($definitions); $i++)
 		{
-			$r->customAttributes[] = new CustomAttributeResponse($definitions[$i]->Id(), $definitions[$i]->Label(), $values[$i]);
+			$this->customAttributes[] = new CustomAttributeResponse($server, $definitions[$i]->Id(), $definitions[$i]->Label(), $values[$i]);
 		}
 
-		$r->AddService($server, WebServices::GetResource, array(WebServiceParams::ResourceId => $resourceId));
+		$this->AddService($server, WebServices::GetResource, array(WebServiceParams::ResourceId => $resourceId));
+	}
 
-		return $r;
+
+	public static function Example()
+	{
+		return new ExampleResourceResponse();
+	}
+}
+
+class ExampleResourceResponse extends ResourceResponse
+{
+	public function __construct()
+	{
+		$interval = new TimeInterval(120);
+		$length = $interval->__toString();
+		$this->resourceId = 123;
+		$this->name = 'resource name';
+		$this->location = 'location';
+		$this->contact = 'contact';
+		$this->notes = 'notes';
+		$this->maxLength = $length;
+		$this->minLength = $length;
+		$this->maxNotice = $length;
+		$this->minNotice = $length;
+		$this->requiresApproval = true;
+		$this->allowMultiday = true;
+		$this->maxParticipants = 10;
+		$this->description = 'resource description';
+		$this->scheduleId = 123;
+
+		$this->customAttributes = array(CustomAttributeResponse::Example());
+
 	}
 }
 

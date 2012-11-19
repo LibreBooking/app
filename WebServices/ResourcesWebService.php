@@ -21,6 +21,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
+require_once(ROOT_DIR . 'WebServices/Responses/ResourceResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/ResourcesResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributeResponse.php');
 
 class ResourcesWebService
@@ -63,7 +65,7 @@ class ResourcesWebService
 			$resourceIds[] = $resource->GetId();
 		}
 		$attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, $resourceIds);
-		$this->server->WriteResponse(ResourcesResponse::Create($this->server, $resources, $attributes));
+		$this->server->WriteResponse(new ResourcesResponse($this->server, $resources, $attributes));
 	}
 
 	/**
@@ -85,7 +87,7 @@ class ResourcesWebService
 		else
 		{
 			$attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, array($resourceId));
-			$this->server->WriteResponse(ResourceResponse::Create($this->server, $resource, $attributes));
+			$this->server->WriteResponse(new ResourceResponse($this->server, $resource, $attributes));
 		}
 
 	}

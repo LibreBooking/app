@@ -22,6 +22,10 @@ require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
 class AccessoryItemResponse extends RestResponse
 {
+	public $id;
+	public $name;
+	public $quantityAvailable;
+
 	public function __construct(IRestServer $server, $id, $name, $quantityAvailable)
 	{
 		$this->id = $id;
@@ -29,6 +33,21 @@ class AccessoryItemResponse extends RestResponse
 		$this->quantityAvailable = $quantityAvailable;
 
 		$this->AddService($server, WebServices::GetAccessory, array(WebServiceParams::AccessoryId => $id));
+	}
+
+	public static function Example()
+	{
+		return new ExampleAccessoryItemResponse();
+	}
+}
+
+class ExampleAccessoryItemResponse extends AccessoryItemResponse
+{
+	public function __construct()
+	{
+		$this->id = 1;
+		$this->name = 'Example';
+		$this->quantityAvailable = 12;
 	}
 }
 

@@ -29,12 +29,11 @@ class ReservationsResponse extends RestResponse
 	public $reservations = array();
 
 	/**
-	 * @param array|ReservationItemView[] $reservations
 	 * @param IRestServer $server
+	 * @param array|ReservationItemView[] $reservations
 	 * @param IPrivacyFilter $privacyFilter
-	 * @return void
 	 */
-	public function AddReservations($reservations, IRestServer $server, IPrivacyFilter $privacyFilter)
+	public function __construct(IRestServer $server, $reservations, IPrivacyFilter $privacyFilter)
 	{
 		$user = $server->GetSession();
 		foreach ($reservations as $reservation)
@@ -44,6 +43,19 @@ class ReservationsResponse extends RestResponse
 
 			$this->reservations[] = new ReservationItemResponse($reservation, $server, $showUser, $showDetails);
 		}
+	}
+
+	public static function Example()
+	{
+		return new ExampleReservationsResponse();
+	}
+}
+
+class ExampleReservationsResponse extends ReservationsResponse
+{
+	public function __construct()
+	{
+		$this->reservations = array(ReservationItemResponse::Example());
 	}
 }
 

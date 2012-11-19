@@ -159,6 +159,10 @@ class SlimServiceMetadata
 			$type = $this->return['type'];
 			if (class_exists($type))
 			{
+				if (method_exists($type, 'Example'))
+				{
+					return $type::Example();
+				}
 				return new $type();
 			}
 			elseif ($type != 'void')
@@ -180,6 +184,10 @@ class SlimServiceMetadata
 			$type = $this->request['type'];
 			if (class_exists($type))
 			{
+				if (method_exists($type, 'Example'))
+				{
+					return $type::Example();
+				}
 				return new $type();
 			}
 			else

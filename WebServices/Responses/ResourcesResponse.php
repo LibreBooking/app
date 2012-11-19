@@ -27,25 +27,30 @@ class ResourcesResponse extends RestResponse
 	 */
 	public $resources;
 
-	public function __construct()
-	{
-	}
-
 	/**
 	 * @param IRestServer $server
 	 * @param array|BookableResource[] $resources
 	 * @param IEntityAttributeList $attributes
-	 * @return ResourcesResponse
 	 */
-	public static function Create($server = null, $resources = null, $attributes = null)
+	public function __construct(IRestServer $server, $resources, $attributes)
 	{
-		$r = new ResourcesResponse();
 		foreach ($resources as $resource)
 		{
-			$r->resources[] = ResourceResponse::Create($server, $resource, $attributes);
+			$this->resources[] = new ResourceResponse($server, $resource, $attributes);
 		}
+	}
 
-		return $r;
+	public static function Example()
+	{
+		return new ExampleResourcesResponse();
+	}
+}
+
+class ExampleResourcesResponse extends ResourcesResponse
+{
+	public function __construct()
+	{
+		$this->resources = array(ResourceResponse::Example());
 	}
 }
 

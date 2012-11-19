@@ -71,7 +71,7 @@ class ResourcesWebServiceTests extends TestBase
 
 		$this->service->GetResource($resourceId);
 
-		$this->assertEquals(ResourceResponse::Create($this->server, $resource, $attributes), $this->server->_LastResponse);
+		$this->assertEquals(new ResourceResponse($this->server, $resource, $attributes), $this->server->_LastResponse);
 	}
 
 	public function testWhenNotFound()
@@ -104,7 +104,7 @@ class ResourcesWebServiceTests extends TestBase
 
 		$this->service->GetAll();
 
-		$this->assertEquals(ResourcesResponse::Create($this->server, $resources, $attributes), $this->server->_LastResponse);
+		$this->assertEquals(new ResourcesResponse($this->server, $resources, $attributes), $this->server->_LastResponse);
 	}
 }
 
