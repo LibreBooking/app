@@ -70,7 +70,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td>{$user->LastLogin}</td>
 		<td>{$user->Timezone}</td>
 		<td>{$user->Language}</td>
-		<td align="center"><a href="#" class="update changeStatus">{translate key=$statusDescriptions[$user->StatusId]}</a></td>
+		<td align="center"><a href="#" class="update changeStatus">{$statusDescriptions[$user->StatusId]}</a></td>
 		<td align="center"><a href="#" class="update changePermissions">{translate key='Edit'}</a></td>
 		<td align="center"><a href="#" class="update viewReservations">{translate key='Search'}</a></td>
 		<td align="center"><a href="#" class="update resetPassword">{translate key='Reset'}</a></td>
