@@ -28,6 +28,8 @@ require_once(ROOT_DIR . 'WebServices/ReservationsWebService.php');
 require_once(ROOT_DIR . 'WebServices/ResourcesWebService.php');
 require_once(ROOT_DIR . 'WebServices/UsersWebService.php');
 require_once(ROOT_DIR . 'WebServices/SchedulesWebService.php');
+require_once(ROOT_DIR . 'WebServices/AttributesWebService.php');
+require_once(ROOT_DIR . 'WebServices/GroupsWebService.php');
 
 require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 
@@ -43,6 +45,8 @@ RegisterReservations($server, $registry);
 RegisterResources($server, $registry);
 RegisterUsers($server, $registry);
 RegisterSchedules($server, $registry);
+RegisterAttributes($server, $registry);
+RegisterGroups($server, $registry);
 
 $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 {
@@ -52,7 +56,7 @@ $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 		$wasHandled = $security->HandleSecureRequest($server);
 		if (!$wasHandled)
 		{
-			$app->halt(401,
+			$app->halt(RestResponse::UNAUTHORIZED_CODE,
 					   'You must be authenticated in order to access this service.<br/>' . $server->GetFullServiceUrl(WebServices::Login));
 		}
 	}
@@ -109,7 +113,7 @@ function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 
 function RegisterUsers(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new UsersWebService($server);
+	$webService = new UsersWebService($server, new UserRepositoryFactory(), new AttributeService(new AttributeRepository()));
 	$category = new SlimWebServiceRegistryCategory('Users');
 	$category->AddSecureGet('/', array($webService, 'GetUsers'), WebServices::AllUsers);
 	$category->AddSecureGet('/:userId', array($webService, 'GetUser'), WebServices::GetUser);
@@ -122,6 +126,23 @@ function RegisterSchedules(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category = new SlimWebServiceRegistryCategory('Schedules');
 	$category->AddSecureGet('/', array($webService, 'GetSchedules'), WebServices::AllSchedules);
 	$category->AddSecureGet('/:scheduleId', array($webService, 'GetSchedule'), WebServices::GetSchedule);
+	$registry->AddCategory($category);
+}
+
+function RegisterAttributes(SlimServer $server, SlimWebServiceRegistry $registry)
+{
+	$webService = new AttributesWebService($server);
+	$category = new SlimWebServiceRegistryCategory('Attributes');
+	$category->AddSecureGet('/', array($webService, 'GetAttributes'), WebServices::AllCustomAttributes);
+	$category->AddSecureGet('/:attributeId', array($webService, 'GetAttribute'), WebServices::GetCustomAttribute);
+	$registry->AddCategory($category);
+}
+
+function RegisterGroups(SlimServer $server, SlimWebServiceRegistry $registry)
+{
+	$webService = new GroupsWebService($server);
+	$category = new SlimWebServiceRegistryCategory('Groups');
+	$category->AddSecureGet('/:groupId', array($webService, 'GetGroup'), WebServices::GetGroup);
 	$registry->AddCategory($category);
 }
 

@@ -74,7 +74,18 @@ class SlimWebServiceRegistry
 	 */
 	public function Categories()
 	{
-		return $this->categories;
+		$categories = $this->categories;
+
+		usort($categories,  function ($a, $b) {
+			/**
+			 * @var $a SlimWebServiceRegistryCategory
+			 * @var $b SlimWebServiceRegistryCategory
+			 */
+
+			return ($a->Name() < $b->Name()) ? -1 : 1;
+		});
+
+		return $categories;
 	}
 
 	/**

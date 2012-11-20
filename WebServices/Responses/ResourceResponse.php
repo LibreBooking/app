@@ -36,6 +36,7 @@ class ResourceResponse extends RestResponse
 	public $maxNotice;
 	public $description;
 	public $scheduleId;
+	public $icsUrl;
 	public $customAttributes = array();
 
 	/**
@@ -69,6 +70,11 @@ class ResourceResponse extends RestResponse
 			$this->customAttributes[] = new CustomAttributeResponse($server, $definitions[$i]->Id(), $definitions[$i]->Label(), $values[$i]);
 		}
 
+		if ($resource->GetIsCalendarSubscriptionAllowed())
+		{
+			$url = new CalendarSubscriptionUrl(null, null, $resource->GetPublicId());
+			$this->icsUrl = $url->__toString();
+		}
 		$this->AddService($server, WebServices::GetResource, array(WebServiceParams::ResourceId => $resourceId));
 	}
 

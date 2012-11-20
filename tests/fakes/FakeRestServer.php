@@ -26,19 +26,34 @@ class FakeRestServer implements IRestServer
 	 * @var mixed
 	 */
 	public $_Request;
+
 	/**
 	 * @var array|string[]
 	 */
 	public $_ServiceUrls = array();
+
 	/**
 	 * @var RestResponse
 	 */
 	public $_LastResponse;
+
+	public $_LastResponseCode;
+
 	/**
 	 * @var string
 	 */
 	public $_Url;
 
+	/**
+	 * @var WebServiceUserSession
+	 */
+	public $session;
+
+	public function __construct()
+	{
+		$this->SetSession(new FakeWebServiceUserSession(123));
+
+	}
 	public function GetRequest()
 	{
 		return $this->_Request;
@@ -47,6 +62,7 @@ class FakeRestServer implements IRestServer
 	public function WriteResponse(RestResponse $restResponse, $statusCode = 200)
 	{
 		$this->_LastResponse = $restResponse;
+		$this->_LastResponseCode = $statusCode;
 	}
 
 	public function GetServiceUrl($serviceName, $params = array())
@@ -83,6 +99,9 @@ class FakeRestServer implements IRestServer
 		$this->session = $session;
 	}
 
+	/**
+	 * @return null|WebServiceUserSession
+	 */
 	public function GetSession()
 	{
 		return $this->session;

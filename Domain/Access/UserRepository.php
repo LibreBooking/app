@@ -645,7 +645,13 @@ class UserItemView
 	public $Last;
 	public $Email;
 	public $Phone;
+	/**
+	 * @var Date
+	 */
 	public $DateCreated;
+	/**
+	 * @var Date
+	 */
 	public $LastLogin;
 	public $StatusId;
 	public $Timezone;

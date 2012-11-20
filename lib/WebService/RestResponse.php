@@ -20,6 +20,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class RestResponse
 {
+	const OK_CODE = 200;
+	const UNAUTHORIZED_CODE = 401;
 	const NOT_FOUND_CODE = 404;
 
 	/**
@@ -61,8 +63,15 @@ class RestResponse
 
 	public static function NotFound()
 	{
-		$response =  new RestResponse();
+		$response = new RestResponse();
 		$response->message = 'The requested resource was not found';
+		return $response;
+	}
+
+	public static function Unauthorized()
+	{
+		$response = new RestResponse();
+		$response->message = 'You do not have access to the requested resource';
 		return $response;
 	}
 }

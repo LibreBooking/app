@@ -20,6 +20,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class FakeUser extends User
 {
+	public $_IsAdminForUser = false;
+
 	public function __construct($userId = null)
 	{
 		$this->timezone = 'America/Chicago';
@@ -57,6 +59,16 @@ class FakeUser extends User
 	public function WithPublicId($publicId)
 	{
 		$this->SetPublicId($publicId);
+	}
+
+	public function _SetIsAdminForUser($isAdminForUser)
+	{
+		$this->_IsAdminForUser = $isAdminForUser;
+	}
+
+	public function IsAdminFor(User $user)
+	{
+		return $this->_IsAdminForUser;
 	}
 }
 

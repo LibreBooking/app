@@ -22,6 +22,7 @@ class WebServiceParams
 {
 	const AccessoryId = 'accessoryId';
 	const AttributeId = 'attributeId';
+	const GroupId = 'groupId';
 	const ReferenceNumber = 'referenceNumber';
 	const ResourceId = 'resourceId';
 	const ScheduleId = 'scheduleId';

@@ -18,21 +18,24 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class WebServices
+require_once(ROOT_DIR . 'lib/WebService/namespace.php');
+
+class AttributesWebService
 {
-	const AllCustomAttributes = 'all_custom_attributes';
-	const AllResources = 'all_resources';
-	const AllReservations = 'all_reservations';
-	const AllSchedules = 'all_schedules';
-	const AllUsers = 'all_users';
-	const Login = 'login';
-	const Logout = 'logout';
-	const GetAccessory = 'accessory';
-	const GetCustomAttribute = 'custom_attribute';
-	const GetGroup = 'group';
-	const GetReservation = 'reservation';
-	const GetResource = 'resource';
-	const GetSchedule = 'schedule';
-	const GetUser = 'user';
+	public function __construct(IRestServer $server)
+	{
+
+	}
+
+	public function GetAttributes()
+	{
+
+	}
+
+	public function GetAttribute($attributeId)
+	{
+
+	}
 }
+
 ?>
