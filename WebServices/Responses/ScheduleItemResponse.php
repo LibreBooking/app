@@ -1,0 +1,61 @@
+<?php
+/**
+Copyright 2012 Nick Korbel
+
+This file is part of phpScheduleIt.
+
+phpScheduleIt is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+phpScheduleIt is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+class ScheduleItemResponse extends RestResponse
+{
+	public $daysVisible;
+	public $id;
+	public $isDefault;
+	public $name;
+	public $timezone;
+	public $weekdayStart;
+
+	public function __construct(IRestServer $server, Schedule $schedule)
+	{
+		$this->daysVisible = $schedule->GetDaysVisible();
+		$this->id = $schedule->GetId();
+		$this->isDefault = $schedule->GetIsDefault();
+		$this->name = $schedule->GetName();
+		$this->timezone = $schedule->GetTimezone();
+		$this->weekdayStart = $schedule->GetWeekdayStart();
+
+		$this->AddService($server, WebServices::GetSchedule, array(WebServiceParams::ScheduleId => $schedule->GetId()));
+	}
+
+	public static function Example()
+	{
+		return new ExampleScheduleItemResponse();
+	}
+}
+
+class ExampleScheduleItemResponse extends ScheduleItemResponse
+{
+	public function __construct()
+	{
+		$this->daysVisible = 5;
+		$this->id = 123;
+		$this->isDefault = true;
+		$this->name = 'schedule name';
+		$this->timezone = 'timezone_name';
+		$this->weekdayStart = 0;
+	}
+}
+
+?>

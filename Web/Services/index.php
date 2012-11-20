@@ -122,7 +122,7 @@ function RegisterUsers(SlimServer $server, SlimWebServiceRegistry $registry)
 
 function RegisterSchedules(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new SchedulesWebService($server);
+	$webService = new SchedulesWebService($server, new ScheduleRepository());
 	$category = new SlimWebServiceRegistryCategory('Schedules');
 	$category->AddSecureGet('/', array($webService, 'GetSchedules'), WebServices::AllSchedules);
 	$category->AddSecureGet('/:scheduleId', array($webService, 'GetSchedule'), WebServices::GetSchedule);

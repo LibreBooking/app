@@ -34,16 +34,16 @@ interface ISchedule
 
 class Schedule implements ISchedule
 {	
-	private $_id;
-	private $_name;
-	private $_isDefault;
-	private $_weekdayStart;
-	private $_daysVisible;
-	private $_timezone;
-	private $_layoutId;
-    private $_isCalendarSubscriptionAllowed = false;
-    private $_publicId;
-	private $_adminGroupId;
+	protected $_id;
+	protected $_name;
+	protected $_isDefault;
+	protected $_weekdayStart;
+	protected $_daysVisible;
+	protected $_timezone;
+	protected $_layoutId;
+	protected $_isCalendarSubscriptionAllowed = false;
+	protected $_publicId;
+	protected $_adminGroupId;
 
 	const Today = 100;
 
