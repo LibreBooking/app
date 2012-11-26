@@ -52,6 +52,10 @@ abstract class OwnerEmailNotification implements IReservationNotification
 			$message = $this->GetMessage($owner, $reservation);
 			ServiceLocator::GetEmailService()->Send($message);
 		}
+		else
+		{
+			Log::Debug('Owner does not want these types of email notifications. Email=%s, ReferenceNumber=%s', $owner->EmailAddress(), $reservation->CurrentInstance()->ReferenceNumber());
+		}
 	}
 	
 	/**
