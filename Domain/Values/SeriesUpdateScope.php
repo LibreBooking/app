@@ -106,7 +106,6 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 	protected function AllInstancesGreaterThan($series, $compareDate)
 	{
 		$instances = array();
-		Log::Debug('foo '. $compareDate);
 		foreach ($series->_Instances() as $instance)
 		{
 			if ($compareDate == null || $instance->StartDate()->Compare($compareDate) >= 0)

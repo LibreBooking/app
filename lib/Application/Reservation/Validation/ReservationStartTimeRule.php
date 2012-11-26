@@ -50,7 +50,7 @@ class ReservationStartTimeRule implements IReservationValidationRule
         $dateThatShouldBeLessThanNow = $currentInstance->StartDate();
         if ($constraint == ReservationStartTimeConstraint::CURRENT)
         {
-            $timezone = $dateThatShouldBeLessThanNow->GetDate()->Timezone();
+            $timezone = $dateThatShouldBeLessThanNow->Timezone();
             /** @var $currentPeriod SchedulePeriod */
 			$currentPeriod = $this->scheduleRepository
 					->GetLayout($reservationSeries->ScheduleId(), new ScheduleLayoutFactory($timezone))
@@ -58,8 +58,9 @@ class ReservationStartTimeRule implements IReservationValidationRule
             $dateThatShouldBeLessThanNow = $currentPeriod->BeginDate();
         }
 		Log::Debug("Start Time Rule: Comparing %s to %s", $dateThatShouldBeLessThanNow, Date::Now());
-		
-		$startIsInFuture = $dateThatShouldBeLessThanNow->Compare(Date::Now()) >= 0;
+
+		$startIsInFuture = Date::Now()->LessThan($dateThatShouldBeLessThanNow);
+//		$startIsInFuture = $dateThatShouldBeLessThanNow->Compare(Date::Now()) >= 0;
 		return new ReservationRuleResult($startIsInFuture, Resources::GetInstance()->GetString('StartIsInPast'));
 	}
 }

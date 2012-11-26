@@ -229,5 +229,26 @@ class ScheduleLayoutTests extends TestBase
 		$this->assertEquals($l[0]->BeginDate(), Date::Parse('2012-06-18', 'America/New_York'));
 		$this->assertEquals($l[count($l)-1]->EndDate(), Date::Parse('2012-06-19', 'America/New_York'));
 	}
+
+
+	public function testWhenFindingPeriodInCSTWithUTCDate()
+	{
+		$layoutTz = 'America/Chicago';
+		$scheduleLayoutFactory = new ScheduleLayoutFactory('UTC');
+		$layout = $scheduleLayoutFactory->CreateLayout();
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("12:00", $layoutTz));
+		$layout->AppendPeriod(Time::Parse("12:00", $layoutTz), Time::Parse("12:30", $layoutTz));
+		$layout->AppendPeriod(Time::Parse("12:30", $layoutTz), Time::Parse("13:00", $layoutTz));
+		$layout->AppendPeriod(Time::Parse("13:00", $layoutTz), Time::Parse("13:30", $layoutTz));
+		$layout->AppendPeriod(Time::Parse("13:30", $layoutTz), Time::Parse("14:00", $layoutTz));
+		$layout->AppendPeriod(Time::Parse("14:00", $layoutTz), Time::Parse("14:30", $layoutTz));
+		$layout->AppendPeriod(Time::Parse("14:30", $layoutTz), Time::Parse("00:00", $layoutTz));
+
+		$date = Date::Parse('2012-11-26 19:30', 'UTC');
+		$period = $layout->GetPeriod($date);
+
+		$this->assertTrue($date->Equals($period->BeginDate()));
+	}
 }
 ?>

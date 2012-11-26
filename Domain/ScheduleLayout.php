@@ -294,13 +294,14 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
      */
     public function GetPeriod(Date $date)
     {
-        $tempDate = $date->ToTimezone($this->_timezone);
+		$timezone = $this->_periods[0]->Start->Timezone();
+        $tempDate = $date->ToTimezone($timezone);
 
         /** @var $period LayoutPeriod */
         foreach ($this->_periods as $period)
         {
-            $start = Date::Create($tempDate->Year(), $tempDate->Month(), $tempDate->Day(), $period->Start->Hour(), $period->Start->Minute(), 0, $this->_timezone);
-            $end = Date::Create($tempDate->Year(), $tempDate->Month(), $tempDate->Day(), $period->End->Hour(), $period->End->Minute(), 0, $this->_timezone);
+            $start = Date::Create($tempDate->Year(), $tempDate->Month(), $tempDate->Day(), $period->Start->Hour(), $period->Start->Minute(), 0, $timezone);
+            $end = Date::Create($tempDate->Year(), $tempDate->Month(), $tempDate->Day(), $period->End->Hour(), $period->End->Minute(), 0, $timezone);
 
             if ($end->LessThan($start))
             {
