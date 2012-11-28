@@ -68,6 +68,11 @@ class SchedulesWebServiceTests extends TestBase
 		$schedule = new FakeSchedule($scheduleId);
 		$layout = $this->getMock('IScheduleLayout');
 
+		$layout->expects($this->any())
+					->method('GetLayout')
+					->with($this->anything())
+					->will($this->returnValue(array()));
+
 		$this->scheduleRepository->expects($this->once())
 				->method('LoadById')
 				->with($this->equalTo($scheduleId))

@@ -43,6 +43,13 @@ interface IAttributeService
 	 * @return array|CustomAttribute[]
 	 */
 	public function GetByCategory($category);
+
+	/**
+	 * @abstract
+	 * @param $attributeId int
+	 * @return CustomAttribute
+	 */
+	public function GetById($attributeId);
 }
 
 class AttributeService implements IAttributeService
@@ -117,13 +124,15 @@ class AttributeService implements IAttributeService
 		return new AttributeServiceValidationResult($isValid, $errors);
 	}
 
-	/**
-	 * @param $category int|CustomAttributeCategory
-	 * @return array|CustomAttribute[]
-	 */
 	public function GetByCategory($category)
 	{
 		return $this->attributeRepository->GetByCategory($category);
+	}
+
+
+	public function GetById($attributeId)
+	{
+		return $this->attributeRepository->LoadById($attributeId);
 	}
 }
 

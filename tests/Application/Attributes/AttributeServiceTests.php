@@ -44,20 +44,20 @@ class AttributeServiceTests extends TestBase
 	public function testGetsAttributeValuesForEntitiesInCategory()
 	{
 		$category = CustomAttributeCategory::RESERVATION;
-		$entityIds = array(1,5,10,15,20);
+		$entityIds = array(1, 5, 10, 15, 20);
 
 		$attributes = array(new TestCustomAttribute(1, 'label1'), new TestCustomAttribute(2, 'label2'));
 		$values = array(new AttributeEntityValue(1, 1, 'value1'), new AttributeEntityValue(2, 1, 'value2'));
 
 		$this->attributeRepository->expects($this->once())
-			->method('GetByCategory')
-			->with($this->equalTo($category))
-			->will($this->returnValue($attributes));
+				->method('GetByCategory')
+				->with($this->equalTo($category))
+				->will($this->returnValue($attributes));
 
 		$this->attributeRepository->expects($this->once())
-			->method('GetEntityValues')
-			->with($this->equalTo($category), $this->equalTo($entityIds))
-			->will($this->returnValue($values));
+				->method('GetEntityValues')
+				->with($this->equalTo($category), $this->equalTo($entityIds))
+				->will($this->returnValue($values));
 
 		$attributeList = $this->attributeService->GetAttributes($category, $entityIds);
 
@@ -73,15 +73,39 @@ class AttributeServiceTests extends TestBase
 		$values = array(new AttributeEntityValue(1, 1, 'value1'), new AttributeEntityValue(2, 1, 'value2'));
 
 		$this->attributeRepository->expects($this->once())
-			->method('GetByCategory')
-			->with($this->equalTo($category))
-			->will($this->returnValue($attributes));
+				->method('GetByCategory')
+				->with($this->equalTo($category))
+				->will($this->returnValue($attributes));
 
 		$result = $this->attributeService->Validate($category, $values);
 
 
 		$this->assertFalse($result->IsValid());
 		$this->assertEquals(2, count($result->Errors()));
+	}
+
+	public function testPassThroughForCategory()
+	{
+		$categoryId = 123;
+
+		$this->attributeRepository->expects($this->once())
+				->method('GetByCategory')
+				->with($this->equalTo($categoryId))
+				->will($this->returnValue(array()));
+
+		$this->attributeService->GetByCategory($categoryId);
+	}
+
+	public function testPassThroughForAttribute()
+	{
+		$attributeId = 123;
+
+		$this->attributeRepository->expects($this->once())
+				->method('LoadById')
+				->with($this->equalTo($attributeId))
+				->will($this->returnValue(new TestCustomAttribute(1, 'l')));
+
+		$this->attributeService->GetById($attributeId);
 	}
 }
 

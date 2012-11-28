@@ -68,7 +68,7 @@ class SchedulesWebService
 		if ($schedule != null)
 		{
 			$layout = $this->scheduleRepository->GetLayout($schedule->GetId(), new ScheduleLayoutFactory('UTC'));
-			$this->server->WriteResponse(new ScheduleResponse($this->server, $schedule, $layout));
+			$this->server->WriteResponse(new ScheduleResponse($schedule, $layout));
 		}
 		else
 		{
