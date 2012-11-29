@@ -45,18 +45,18 @@ class FakePrivacyFilter implements IPrivacyFilter
 	 */
 	public $_LastViewDetailsReservation;
 
-	public function CanViewUser(UserSession $userSession, $reservationView = null, $ownerId = null)
+	public function CanViewUser(UserSession $currentUser, $reservationView = null, $ownerId = null)
 	{
-		$this->_LastViewUserUserSession = $userSession;
+		$this->_LastViewUserUserSession = $currentUser;
 		$this->_LastViewUserReservation = $reservationView;
 
 		return $this->_CanViewUser;
 	}
 
 
-	public function CanViewDetails(UserSession $userSession, $reservationView = null, $ownerId = null)
+	public function CanViewDetails(UserSession $currentUser, $reservationView = null, $ownerId = null)
 	{
-		$this->_LastViewDetailsUserSession = $userSession;
+		$this->_LastViewDetailsUserSession = $currentUser;
 		$this->_LastViewDetailsReservation = $reservationView;
 
 		return $this->_CanViewDetails;

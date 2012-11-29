@@ -23,20 +23,20 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationAuthorization.ph
 interface IPrivacyFilter
 {
 	/**
-	 * @param UserSession $userSession
+	 * @param UserSession $currentUser
 	 * @param ReservationView|null $reservationView
 	 * @param int|null $ownerId
 	 * @return bool
 	 */
-	public function CanViewUser(UserSession $userSession, $reservationView = null, $ownerId = null);
+	public function CanViewUser(UserSession $currentUser, $reservationView = null, $ownerId = null);
 
 	/**
-	 * @param UserSession $userSession
+	 * @param UserSession $currentUser
 	 * @param ReservationView|null $reservationView
 	 * @param int|null $ownerId
 	 * @return bool
 	 */
-	public function CanViewDetails(UserSession $userSession, $reservationView = null, $ownerId = null);
+	public function CanViewDetails(UserSession $currentUser, $reservationView = null, $ownerId = null);
 }
 
 class PrivacyFilter implements IPrivacyFilter
@@ -53,22 +53,22 @@ class PrivacyFilter implements IPrivacyFilter
 		$this->reservationAuthorization = $reservationAuthorization;
 	}
 
-	public function CanViewUser(UserSession $userSession, $reservationView = null, $ownerId = null)
+	public function CanViewUser(UserSession $currentUser, $reservationView = null, $ownerId = null)
 	{
 		$hideUserDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
 																	ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
 																	new BooleanConverter());
 
-		return $this->CanView($hideUserDetails, $userSession, $ownerId, $reservationView);
+		return $this->CanView($hideUserDetails, $currentUser, $ownerId, $reservationView);
 	}
 
-	public function CanViewDetails(UserSession $userSession, $reservationView = null, $ownerId = null)
+	public function CanViewDetails(UserSession $currentUser, $reservationView = null, $ownerId = null)
 	{
 		$hideReservationDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
 																		   ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS,
 																		   new BooleanConverter());
 
-		return $this->CanView($hideReservationDetails, $userSession, $ownerId, $reservationView);
+		return $this->CanView($hideReservationDetails, $currentUser, $ownerId, $reservationView);
 	}
 
 	private function CanView($hideFlagEnabled, $userSession, $ownerId, $reservationView)

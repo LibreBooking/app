@@ -18,13 +18,68 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'WebServices/Responses/GroupResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/GroupsResponse.php');
+
 class GroupsWebService
 {
-	public function __construct(IRestServer $server)
-	{}
+	/**
+	 * @var IRestServer
+	 */
+	private $server;
 
+	/**
+	 * @var IGroupRepository
+	 */
+	private $groupRepository;
+
+	/**
+	 * @var IGroupViewRepository
+	 */
+	private $groupViewRepository;
+
+	public function __construct(IRestServer $server, IGroupRepository $groupRepository,
+								IGroupViewRepository $groupViewRepository)
+	{
+		$this->server = $server;
+		$this->groupRepository = $groupRepository;
+		$this->groupViewRepository = $groupViewRepository;
+	}
+
+	/**
+	 * @name GetAllGroups
+	 * @description Loads all groups
+	 * @response GroupsResponse
+	 * @return void
+	 */
+	public function GetGroups()
+	{
+		$pageable = $this->groupViewRepository->GetList(null, null);
+		$groups = $pageable->Results();
+
+		$this->server->WriteResponse(new GroupsResponse($this->server, $groups));
+	}
+
+	/**
+	 * @name GetGroup
+	 * @description Loads a specific group by id
+	 * @response GroupResponse
+	 * @param int $groupId
+	 * @return void
+	 */
 	public function GetGroup($groupId)
-	{}
+	{
+		$group = $this->groupRepository->LoadById($groupId);
+
+		if ($group != null)
+		{
+			$this->server->WriteResponse(new GroupResponse($this->server, $group));
+		}
+		else
+		{
+			$this->server->WriteResponse(RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
+		}
+	}
 }
 
 ?>

@@ -192,6 +192,14 @@ class Group
 	{
 		return in_array($userId, $this->users);
 	}
+
+	/**
+	 * @return array|int[]
+	 */
+	public function UserIds()
+	{
+		return $this->users;
+	}
 	
 	/**
 	 * @param int $allowedResourceId

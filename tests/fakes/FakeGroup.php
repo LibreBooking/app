@@ -18,22 +18,17 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class WebServices
+class FakeGroup extends Group
 {
-	const AllCustomAttributes = 'all_custom_attributes';
-	const AllGroups = 'all_groups';
-	const AllResources = 'all_resources';
-	const AllReservations = 'all_reservations';
-	const AllSchedules = 'all_schedules';
-	const AllUsers = 'all_users';
-	const Login = 'login';
-	const Logout = 'logout';
-	const GetAccessory = 'accessory';
-	const GetCustomAttribute = 'custom_attribute';
-	const GetGroup = 'group';
-	const GetReservation = 'reservation';
-	const GetResource = 'resource';
-	const GetSchedule = 'schedule';
-	const GetUser = 'user';
+	public function __construct($id = 123, $name = 'group name')
+	{
+		$this->WithId($id);
+		$this->Rename($name);
+		$this->WithGroupAdmin(999);
+		$this->WithUser(1);
+		$this->WithPermission(2);
+		$this->WithRole(RoleLevel::APPLICATION_ADMIN);
+	}
 }
+
 ?>

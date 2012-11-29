@@ -56,4 +56,5 @@ require_once(ROOT_DIR . 'tests/fakes/TestReservationItemView.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeWebAuthentication.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeRestServer.php');
 require_once(ROOT_DIR . 'tests/fakes/FakePrivacyFilter.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeGroup.php');
 ?>

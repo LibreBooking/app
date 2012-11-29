@@ -140,8 +140,10 @@ function RegisterAttributes(SlimServer $server, SlimWebServiceRegistry $registry
 
 function RegisterGroups(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new GroupsWebService($server);
+	$groupRepository = new GroupRepository();
+	$webService = new GroupsWebService($server, $groupRepository, $groupRepository, $privacyFilter);
 	$category = new SlimWebServiceRegistryCategory('Groups');
+	$category->AddSecureGet('/', array($webService, 'GetGroups'), WebServices::AllGroups);
 	$category->AddSecureGet('/:groupId', array($webService, 'GetGroup'), WebServices::GetGroup);
 	$registry->AddCategory($category);
 }

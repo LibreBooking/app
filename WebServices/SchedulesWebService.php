@@ -42,7 +42,7 @@ class SchedulesWebService
 	}
 
 	/**
-	 * @name GetAllSchedule
+	 * @name GetAllSchedules
 	 * @description Loads all schedules
 	 * @response SchedulesResponse
 	 * @return void
