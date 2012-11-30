@@ -348,9 +348,9 @@ class ReservationPresenterFactory implements IReservationPresenterFactory
 		$persistenceFactory = new ReservationPersistenceFactory();
 		$resourceRepository = new ResourceRepository();
 		$reservationAction = ReservationAction::Create;
-		$handler = ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction));
+		$handler = ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction), $userSession);
 
-		return new ReservationSavePresenter($facade, $persistenceFactory->Create($reservationAction), $handler, $resourceRepository);
+		return new ReservationSavePresenter($facade, $persistenceFactory->Create($reservationAction), $handler, $resourceRepository, $userSession);
 	}
 }
 

@@ -66,9 +66,10 @@ class ReservationHandler implements IReservationHandler
 	 * @static
 	 * @param $reservationAction string|ReservationAction
 	 * @param $persistenceService null|IReservationPersistenceService
+	 * @param UserSession $session
 	 * @return IReservationHandler
 	 */
-	public static function Create($reservationAction, $persistenceService)
+	public static function Create($reservationAction, $persistenceService, UserSession $session)
 	{
 		if (!isset($persistenceService))
 		{
@@ -77,10 +78,10 @@ class ReservationHandler implements IReservationHandler
 		}
 
 		$vfactory = new ReservationValidationFactory();
-		$validationService = $vfactory->Create($reservationAction, ServiceLocator::GetServer()->GetUserSession());
+		$validationService = $vfactory->Create($reservationAction, $session);
 
 		$nfactory = new ReservationNotificationFactory();
-		$notificationService = $nfactory->Create($reservationAction, ServiceLocator::GetServer()->GetUserSession());
+		$notificationService = $nfactory->Create($reservationAction, $session);
 
 		return new ReservationHandler($persistenceService, $validationService, $notificationService);
 	}

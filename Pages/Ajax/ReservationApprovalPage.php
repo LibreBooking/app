@@ -37,7 +37,7 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 		$reservationAction = ReservationAction::Approve;
 		$factory = new ReservationPersistenceFactory();
 		$persistenceService = $factory->Create($reservationAction);
-		$handler = ReservationHandler::Create($reservationAction, $persistenceService);
+		$handler = ReservationHandler::Create($reservationAction, $persistenceService, ServiceLocator::GetServer()->GetUserSession());
 
 		$presenter = new ReservationApprovalPresenter($this, $persistenceService, $handler);
 		$presenter->PageLoad();

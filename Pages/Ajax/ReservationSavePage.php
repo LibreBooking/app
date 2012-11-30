@@ -126,12 +126,13 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 
 		$reservationAction = ReservationAction::Create;
 
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		$this->_presenter = new ReservationSavePresenter(
 			$this,
 			$persistenceFactory->Create($reservationAction),
-			ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction)),
+			ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction), $userSession),
 			$resourceRepository,
-			ServiceLocator::GetServer()->GetUserSession()
+			$userSession
 		);
 	}
 

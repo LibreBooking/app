@@ -98,7 +98,7 @@ $resource = $resourceRepository->LoadByContactInfo($params['contact_info']);
 $updateAction = ReservationAction::Update;
 $persistenceFactory = new ReservationPersistenceFactory();
 $persistenceService = $persistenceFactory->Create($updateAction);
-$handler = ReservationHandler::Create($updateAction, $persistenceService);
+$handler = ReservationHandler::Create($updateAction, $persistenceService, ServiceLocator::GetServer()->GetUserSession());
 
 $reservationRepository = new ReservationRepository();
 $series = $reservationRepository->LoadByReferenceNumber($params['rn']);

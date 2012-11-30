@@ -55,7 +55,7 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 
 		$updateAction = ReservationAction::Delete;
 
-		$handler = ReservationHandler::Create($updateAction, $persistenceFactory->Create($updateAction));
+		$handler = ReservationHandler::Create($updateAction, $persistenceFactory->Create($updateAction), ServiceLocator::GetServer()->GetUserSession());
 		$this->presenter = new ReservationDeletePresenter(
 			$this,
 			$persistenceFactory->Create($updateAction),
