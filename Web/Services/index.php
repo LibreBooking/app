@@ -25,6 +25,7 @@ require_once(ROOT_DIR . 'lib/WebService/Slim/namespace.php');
 
 require_once(ROOT_DIR . 'WebServices/AuthenticationWebService.php');
 require_once(ROOT_DIR . 'WebServices/ReservationsWebService.php');
+require_once(ROOT_DIR . 'WebServices/ReservationWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/ResourcesWebService.php');
 require_once(ROOT_DIR . 'WebServices/UsersWebService.php');
 require_once(ROOT_DIR . 'WebServices/SchedulesWebService.php');
@@ -92,14 +93,16 @@ function RegisterAuthentication(SlimServer $server, SlimWebServiceRegistry $regi
 
 function RegisterReservations(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new ReservationsWebService($server,
+	$readService = new ReservationsWebService($server,
 											 new ReservationViewRepository(),
 											 new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())),
 											 new AttributeService(new AttributeRepository()));
+	$writeService = new ReservationWriteWebService($server, new ReservationSaveController(new ReservationPresenterFactory()));
 
 	$category = new SlimWebServiceRegistryCategory('Reservations');
-	$category->AddSecureGet('/', array($webService, 'GetReservations'), WebServices::AllReservations);
-	$category->AddSecureGet('/:referenceNumber', array($webService, 'GetReservation'), WebServices::GetReservation);
+	$category->AddSecureGet('/', array($readService, 'GetReservations'), WebServices::AllReservations);
+	$category->AddSecureGet('/:referenceNumber', array($readService, 'GetReservation'), WebServices::GetReservation);
+	$category->AddSecurePost('/', array($writeService, 'Create'), WebServices::CreateReservation);
 	$registry->AddCategory($category);
 }
 

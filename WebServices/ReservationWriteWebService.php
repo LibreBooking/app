@@ -43,6 +43,13 @@ class ReservationWriteWebService
 		$this->controller = $controller;
 	}
 
+	/**
+	 * @name CreateReservation
+	 * @description Creates a new reservation
+	 * @request ReservationRequest
+	 * @response ReservationCreatedResponse
+	 * @return void
+	 */
 	public function Create()
 	{
 		$request = $this->server->GetRequest();

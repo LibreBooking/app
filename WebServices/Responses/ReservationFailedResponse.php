@@ -20,9 +20,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReservationFailedResponse extends RestResponse
 {
+	public $errors;
+
 	public function __construct(IRestServer $server, $errors)
 	{
-
+		$this->message = 'There were errors creating your reservation';
+		$this->errors = $errors;
 	}
 }
 ?>
