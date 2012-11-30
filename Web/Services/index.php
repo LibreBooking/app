@@ -96,6 +96,7 @@ function RegisterReservations(SlimServer $server, SlimWebServiceRegistry $regist
 											 new ReservationViewRepository(),
 											 new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())),
 											 new AttributeService(new AttributeRepository()));
+
 	$category = new SlimWebServiceRegistryCategory('Reservations');
 	$category->AddSecureGet('/', array($webService, 'GetReservations'), WebServices::AllReservations);
 	$category->AddSecureGet('/:referenceNumber', array($webService, 'GetReservation'), WebServices::GetReservation);

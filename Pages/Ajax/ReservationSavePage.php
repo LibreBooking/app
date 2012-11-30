@@ -35,11 +35,6 @@ interface IReservationSavePage extends IReservationSaveResultsPage, IRepeatOptio
 	public function GetResourceId();
 
 	/**
-	 * @return int
-	 */
-	public function GetScheduleId();
-
-	/**
 	 * @return string
 	 */
 	public function GetTitle();
@@ -135,7 +130,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 			$this,
 			$persistenceFactory->Create($reservationAction),
 			ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction)),
-			$resourceRepository
+			$resourceRepository,
+			ServiceLocator::GetServer()->GetUserSession()
 		);
 	}
 
@@ -191,11 +187,6 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function GetResourceId()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_ID);
-	}
-
-	public function GetScheduleId()
-	{
-		return $this->GetForm(FormKeys::SCHEDULE_ID);
 	}
 
 	public function GetTitle()
@@ -402,6 +393,12 @@ class AccessoryFormElement
 		$this->Id = $id[1];
 		$this->Quantity = $quantity[1];
 		$this->Name = urldecode($name[1]);
+	}
+
+	public static function Create($id, $quantity)
+	{
+		$element = new AccessoryFormElement("accessory-id=$id,quantity=$quantity,name=");
+		return $element;
 	}
 }
 

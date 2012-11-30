@@ -57,7 +57,7 @@ interface IRepeatOptionsComposite
 
 	/**
 	 * @abstract
-	 * @return string|null
+	 * @return int[]|null
 	 */
 	public function GetRepeatWeekdays();
 

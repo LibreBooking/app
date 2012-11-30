@@ -20,7 +20,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
-require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class ResourceMinimumNoticeRuleTests extends TestBase
 {

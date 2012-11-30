@@ -24,8 +24,6 @@ require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmail.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmail.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationDeletedEmail.php');
 
-require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
-
 class OwnerEmailNotificationTests extends TestBase
 {
 	public function setup()

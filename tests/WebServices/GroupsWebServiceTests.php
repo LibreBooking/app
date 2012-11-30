@@ -69,7 +69,7 @@ class GroupsWebServiceTests extends TestBase
 
 		$this->service->GetGroups();
 
-		$expectedResponse = new GroupsResponse($this->server, $groups);
+		$expectedResponse = new GroupsResponse($this->server, $list);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
 

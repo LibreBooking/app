@@ -21,6 +21,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class RestResponse
 {
 	const OK_CODE = 200;
+	const CREATED_CODE = 201;
+	const BAD_REQUEST_CODE = 400;
 	const UNAUTHORIZED_CODE = 401;
 	const NOT_FOUND_CODE = 404;
 

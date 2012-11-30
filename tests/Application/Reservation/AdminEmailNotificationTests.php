@@ -18,13 +18,11 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmailAdmin.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmailAdmin.php');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php');
-require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class AdminEmailNotificationTests extends TestBase
 {

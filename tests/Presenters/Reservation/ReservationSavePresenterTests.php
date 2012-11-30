@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
@@ -38,7 +38,7 @@ class ReservationSavePresenterTests extends TestBase
 	 * @var IReservationSavePage|FakeReservationSavePage
 	 */
 	private $page;
-	
+
 	/**
 	 * @var ReservationSavePresenter
 	 */
@@ -48,7 +48,7 @@ class ReservationSavePresenterTests extends TestBase
 	 * @var IReservationPersistenceService|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $persistenceService;
-	
+
 	/**
 	 * @var IReservationHandler|PHPUnit_Framework_MockObject_MockObject
 	 */
@@ -58,7 +58,7 @@ class ReservationSavePresenterTests extends TestBase
 	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $resourceRepository;
-	
+
 	public function setup()
 	{
 		parent::setup();
@@ -71,12 +71,13 @@ class ReservationSavePresenterTests extends TestBase
 		$this->persistenceService = $this->getMock('IReservationPersistenceService');
 		$this->handler = $this->getMock('IReservationHandler');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
-		
+
 		$this->presenter = new ReservationSavePresenter(
 			$this->page,
 			$this->persistenceService,
 			$this->handler,
-			$this->resourceRepository);
+			$this->resourceRepository,
+			$this->fakeUser);
 	}
 
 	public function teardown()
@@ -87,7 +88,7 @@ class ReservationSavePresenterTests extends TestBase
 	public function testBuildingWhenCreationBuildsReservationFromPageData()
 	{
 		$timezone = $this->user->Timezone;
-		
+
 		$userId = $this->page->GetUserId();
 		$resourceId = $this->page->GetResourceId();
 		$title = $this->page->GetTitle();
@@ -126,24 +127,24 @@ class ReservationSavePresenterTests extends TestBase
 		}
 
 		$this->resourceRepository->expects($this->at(0))
-			->method('LoadById')
-			->with($this->equalTo($resourceId))
-			->will($this->returnValue($resource));
+				->method('LoadById')
+				->with($this->equalTo($resourceId))
+				->will($this->returnValue($resource));
 
 		$this->resourceRepository->expects($this->at(1))
-			->method('LoadById')
-			->with($this->equalTo($additionalResources[0]))
-			->will($this->returnValue($additionalResource1));
+				->method('LoadById')
+				->with($this->equalTo($additionalResources[0]))
+				->will($this->returnValue($additionalResource1));
 
 		$this->resourceRepository->expects($this->at(2))
-			->method('LoadById')
-			->with($this->equalTo($additionalResources[1]))
-			->will($this->returnValue($additionalResource2));
+				->method('LoadById')
+				->with($this->equalTo($additionalResources[1]))
+				->will($this->returnValue($additionalResource2));
 
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 
 		$actualReservation = $this->presenter->BuildReservation();
-		
+
 		$this->assertEquals($userId, $actualReservation->UserId());
 		$this->assertEquals($resourceId, $actualReservation->ResourceId());
 		$this->assertEquals($title, $actualReservation->Title());
@@ -154,7 +155,9 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals($invitees, $actualReservation->CurrentInstance()->AddedInvitees());
 		$this->assertEquals($accessories, $actualReservation->Accessories());
 		$this->assertTrue(in_array($expectedAttributes[0], $actualReservation->AttributeValues()));
-		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), 0);
+		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(),
+															$attachment->Size(), $attachment->Contents(),
+															$attachment->Extension(), 0);
 		$this->assertEquals($expectedAttachment, $actualReservation->AddedAttachment());
 	}
 
@@ -165,12 +168,12 @@ class ReservationSavePresenterTests extends TestBase
 		$series->WithCurrentInstance($instance);
 
 		$this->handler->expects($this->once())
-			->method('Handle')
-			->with($this->equalTo($series), $this->isInstanceOf('FakeReservationSavePage'))
-			->will($this->returnValue(true));
+				->method('Handle')
+				->with($this->equalTo($series), $this->isInstanceOf('FakeReservationSavePage'))
+				->will($this->returnValue(true));
 
 		$this->presenter->HandleReservation($series);
-		
+
 		$this->assertEquals($instance->ReferenceNumber(), $this->page->referenceNumber);
 	}
 }
@@ -212,77 +215,77 @@ class FakeReservationSavePage implements IReservationSavePage
 		$this->attributes = array(new AttributeFormElement(1, "something"));
 		$this->attachment = new FakeUploadedFile();
 	}
-	
+
 	public function GetUserId()
 	{
 		return $this->userId;
 	}
-	
+
 	public function GetResourceId()
 	{
 		return $this->resourceId;
 	}
-	
+
 	public function GetScheduleId()
 	{
 		return $this->scheduleId;
 	}
-	
+
 	public function GetTitle()
 	{
 		return $this->title;
 	}
-	
+
 	public function GetDescription()
 	{
 		return $this->description;
 	}
-	
+
 	public function GetStartDate()
 	{
 		return $this->startDate;
 	}
-	
+
 	public function GetEndDate()
 	{
 		return $this->endDate;
 	}
-	
+
 	public function GetStartTime()
 	{
 		return $this->startTime;
 	}
-	
+
 	public function GetEndTime()
 	{
 		return $this->endTime;
 	}
-	
+
 	public function GetResources()
 	{
 		return $this->resourceIds;
 	}
-	
+
 	public function GetRepeatType()
 	{
 		return $this->repeatType;
 	}
-	
+
 	public function GetRepeatInterval()
 	{
 		return $this->repeatInterval;
 	}
-	
+
 	public function GetRepeatWeekdays()
 	{
 		return $this->repeatWeekdays;
 	}
-	
+
 	public function GetRepeatMonthlyType()
 	{
 		return $this->repeatMonthlyType;
 	}
-	
+
 	public function GetRepeatTerminationDate()
 	{
 		return $this->repeatTerminationDate;
@@ -292,17 +295,17 @@ class FakeReservationSavePage implements IReservationSavePage
 	{
 		$this->saveSuccessful = $succeeded;
 	}
-	
+
 	public function SetReferenceNumber($referenceNumber)
 	{
 		$this->referenceNumber = $referenceNumber;
 	}
-	
+
 	public function ShowErrors($errors)
 	{
 		$this->errors = $errors;
 	}
-	
+
 	public function ShowWarnings($warnings)
 	{
 		$this->warnings = $warnings;

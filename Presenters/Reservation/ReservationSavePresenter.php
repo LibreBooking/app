@@ -20,7 +20,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
 
-class ReservationSavePresenter
+interface IReservationSavePresenter
+{
+	/**
+	 * @return ReservationSeries
+	 */
+	public function BuildReservation();
+
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 */
+	public function HandleReservation($reservationSeries);
+}
+
+class ReservationSavePresenter implements IReservationSavePresenter
 {
 	/**
 	 * @var IReservationSavePage
@@ -46,26 +59,27 @@ class ReservationSavePresenter
 		IReservationSavePage $page, 
 		IReservationPersistenceService $persistenceService,
 		IReservationHandler $handler,
-		IResourceRepository $resourceRepository)
+		IResourceRepository $resourceRepository,
+		UserSession $userSession)
 	{
 		$this->_page = $page;
 		$this->_persistenceService = $persistenceService;
 		$this->_handler = $handler;
 		$this->_resourceRepository = $resourceRepository;
+		$this->userSession = $userSession;
 	}
 	
 	public function BuildReservation()
 	{
-		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		$userId = $this->_page->GetUserId();
 		$resource = $this->_resourceRepository->LoadById($this->_page->GetResourceId());
 		$title = $this->_page->GetTitle();
 		$description = $this->_page->GetDescription();
 		$roFactory = new RepeatOptionsFactory();
-		$repeatOptions = $roFactory->CreateFromComposite($this->_page, $userSession->Timezone);
+		$repeatOptions = $roFactory->CreateFromComposite($this->_page, $this->userSession->Timezone);
 		$duration = $this->GetReservationDuration();
 		
-		$reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, ServiceLocator::GetServer()->GetUserSession());
+		$reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, $this->userSession);
 		
 		$resourceIds = $this->_page->GetResources();
 		foreach ($resourceIds as $resourceId)
@@ -133,7 +147,7 @@ class ReservationSavePresenter
 		$endDate = $this->_page->GetEndDate();
 		$endTime = $this->_page->GetEndTime();
 		
-		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+		$timezone = $this->userSession->Timezone;
 		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 	}
 }

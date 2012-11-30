@@ -152,12 +152,7 @@ class ReservationsWebService
 			return Date::Now();
 		}
 
-		if (StringHelper::Contains($dateQueryString, 'T'))
-		{
-			return Date::ParseExact($dateQueryString);
-		}
-
-		return Date::Parse($dateQueryString, $this->server->GetSession()->Timezone);
+		return WebServiceDate::GetDate($dateQueryString, $this->server->GetSession());
 	}
 
 	/**

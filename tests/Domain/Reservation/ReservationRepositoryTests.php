@@ -22,7 +22,6 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'tests/Domain/Reservation/ExistingReservationSeriesBuilder.php');
-require_once(ROOT_DIR . 'tests/Domain/Reservation/TestReservationSeries.php');
 
 class ReservationRepositoryTests extends TestBase
 {
