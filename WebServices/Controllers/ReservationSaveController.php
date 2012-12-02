@@ -29,10 +29,10 @@ interface IReservationSaveController
 {
 	/**
 	 * @param ReservationRequest $request
-	 * @param UserSession $session
+	 * @param WebServiceUserSession $session
 	 * @return ReservationControllerResult
 	 */
-	public function Create(ReservationRequest $request, UserSession $session);
+	public function Create($request, WebServiceUserSession $session);
 }
 
 
@@ -48,7 +48,7 @@ class ReservationSaveController implements IReservationSaveController
 		$this->factory = $presenterFactory;
 	}
 
-	public function Create(ReservationRequest $request, UserSession $session)
+	public function Create($request, WebServiceUserSession $session)
 	{
 		$facade = new ReservationRequestResponseFacade($request, $session);
 		$presenter = $this->factory->Create($facade, $session);
@@ -132,7 +132,7 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	 */
 	private $session;
 
-	public function __construct(ReservationRequest $request, WebServiceUserSession $session)
+	public function __construct($request, WebServiceUserSession $session)
 	{
 		$this->request = $request;
 		$this->session = $session;
@@ -224,7 +224,7 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		{
 			return intval($this->request->userId);
 		}
-		return null;
+		return $this->session->UserId;
 	}
 
 	public function GetResourceId()

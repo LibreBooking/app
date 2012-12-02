@@ -36,6 +36,7 @@ require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
+
 $server = new SlimServer($app);
 
 $registry = new SlimWebServiceRegistry($app);
@@ -58,9 +59,15 @@ $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 		if (!$wasHandled)
 		{
 			$app->halt(RestResponse::UNAUTHORIZED_CODE,
-					   'You must be authenticated in order to access this service.<br/>' . $server->GetFullServiceUrl(WebServices::Login));
+					'You must be authenticated in order to access this service.<br/>' . $server->GetFullServiceUrl(WebServices::Login));
 		}
 	}
+});
+
+$app->error(function (\Exception $e) use ($app)
+{
+	require_once(ROOT_DIR . 'lib/Common/Logging/Log.php');
+	Log::Error('Slim Exception. %s', $e);
 });
 
 $app->run();
@@ -93,16 +100,14 @@ function RegisterAuthentication(SlimServer $server, SlimWebServiceRegistry $regi
 
 function RegisterReservations(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$readService = new ReservationsWebService($server,
-											 new ReservationViewRepository(),
-											 new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())),
-											 new AttributeService(new AttributeRepository()));
+	$readService = new ReservationsWebService($server, new ReservationViewRepository(), new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())), new AttributeService(new AttributeRepository()));
 	$writeService = new ReservationWriteWebService($server, new ReservationSaveController(new ReservationPresenterFactory()));
 
 	$category = new SlimWebServiceRegistryCategory('Reservations');
+	$category->AddSecurePost('/', array($writeService, 'Create'), WebServices::CreateReservation);
 	$category->AddSecureGet('/', array($readService, 'GetReservations'), WebServices::AllReservations);
 	$category->AddSecureGet('/:referenceNumber', array($readService, 'GetReservation'), WebServices::GetReservation);
-	$category->AddSecurePost('/', array($writeService, 'Create'), WebServices::CreateReservation);
+
 	$registry->AddCategory($category);
 }
 

@@ -36,7 +36,7 @@ class ReservationValidationRuleProcessor implements IReservationValidationServic
 		foreach ($this->_validationRules as $rule)
 		{
 			$result = $rule->Validate($reservationSeries);
-			Log::Debug("Validating rule %s. Passed?: %s", get_class($rule), $result->IsValid());
+			Log::Debug("Validating rule %s. Passed?: %s", get_class($rule), (bool)$result->IsValid());
 
 			if (!$result->IsValid())
 			{
