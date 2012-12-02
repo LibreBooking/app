@@ -444,6 +444,8 @@ class en_us extends Language
         $strings['CustomAttributeInvalid'] = 'The value provided for %s is invalid';
         $strings['AttachmentLoadingError'] = 'Sorry, there was a problem loading the requested file.';
         $strings['InvalidAttachmentExtension'] = 'You can only upload files of type: %s';
+        $strings['InvalidStartSlot'] = 'The start date and time requested is not valid.';
+        $strings['InvalidEndSlot'] = 'The end date and time requested is not valid.';
         // End Errors
 
         // Page Titles

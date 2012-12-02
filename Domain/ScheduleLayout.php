@@ -34,7 +34,7 @@ interface IScheduleLayout extends ILayoutTimezone
     /**
      * @abstract
      * @param Date $date
-     * @return SchedulePeriod period which occurs at this datetime. Includes start time, excludes end time
+     * @return SchedulePeriod|null period which occurs at this datetime. Includes start time, excludes end time. null if no match is found
      */
     public function GetPeriod(Date $date);
 }

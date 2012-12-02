@@ -85,7 +85,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$request->accessories = array(new ReservationAccessoryRequest(1, 1));
 		$request->attributes = array(new AttributeValueRequest(1, 'att1'),new AttributeValueRequest(2, 'att2'));
 		$request->description = 'some description';
-		$request->endDateTime = Date::Parse('2012-12-01 12:30', 'America/Chicago')->ToIso();
+		$request->endDateTime = Date::Parse('2012-12-01 12:31', 'America/Chicago')->ToIso();
 		$request->repeatType = 'none';
 		$request->resourceId = 1;
 		$request->startDateTime = Date::Parse('2012-12-01 12:00', 'America/Chicago')->ToIso();
