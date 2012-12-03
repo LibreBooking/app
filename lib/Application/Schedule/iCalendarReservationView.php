@@ -47,7 +47,8 @@ class iCalendarReservationView
 		$this->DateEnd = $res->EndDate;
 		$this->DateStart = $res->StartDate;
 		$this->Description = $canViewDetails ? $res->Description : $privateNotice;
-		$this->Organizer = $canViewUser ? new FullName($res->OwnerFirstName, $res->OwnerLastName) : $privateNotice;
+		$fullName = new FullName($res->OwnerFirstName, $res->OwnerLastName);
+		$this->Organizer = $canViewUser ? $fullName->__toString() : $privateNotice;
 		$this->OrganizerEmail = $canViewUser ? $res->OwnerEmailAddress : $privateNotice;
 		$this->RecurRule = $this->CreateRecurRule($res);
 		$this->ReferenceNumber = $res->ReferenceNumber;

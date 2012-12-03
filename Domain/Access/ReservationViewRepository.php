@@ -833,6 +833,7 @@ class ReservationItemView implements IReservedItemView
         $userId = null
     )
     {
+
         $this->ReferenceNumber = $referenceNumber;
         $this->StartDate = $startDate;
         $this->EndDate = $endDate;
@@ -843,7 +844,9 @@ class ReservationItemView implements IReservedItemView
         $this->Description = $description;
         $this->ScheduleId = $scheduleId;
         $this->FirstName = $userFirstName;
+        $this->OwnerFirstName = $userFirstName;
         $this->LastName = $userLastName;
+        $this->OwnerLastName = $userLastName;
         $this->UserId = $userId;
 
         if (!is_null($startDate) && !is_null($endDate))
@@ -859,7 +862,7 @@ class ReservationItemView implements IReservedItemView
      */
     public static function Populate($row)
     {
-        $view = new ReservationItemView (
+		$view = new ReservationItemView (
             $row[ColumnNames::REFERENCE_NUMBER],
             Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
             Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
