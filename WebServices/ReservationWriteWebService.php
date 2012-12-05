@@ -52,16 +52,18 @@ class ReservationWriteWebService
 	 */
 	public function Create()
 	{
-		$request = new ReservationRequest();
+		/** @var $request ReservationRequest */
 		$request = $this->server->GetRequest();
 
-		Log::Debug('ReservationWriteWebService.Create() User=%s, Request=%s', $this->server->GetSession()->UserId, json_encode($request));
+		Log::Debug('ReservationWriteWebService.Create() User=%s, Request=%s', $this->server->GetSession()->UserId,
+				   json_encode($request));
 
 		$result = $this->controller->Create($request, $this->server->GetSession());
 
 		if ($result->WasSuccessful())
 		{
-			Log::Debug('ReservationWriteWebService.Create() - Reservation Created. ReferenceNumber=%s', $result->CreatedReferenceNumber());
+			Log::Debug('ReservationWriteWebService.Create() - Reservation Created. ReferenceNumber=%s',
+					   $result->CreatedReferenceNumber());
 
 			$this->server->WriteResponse(new ReservationCreatedResponse($this->server, $result->CreatedReferenceNumber()),
 										 RestResponse::CREATED_CODE);

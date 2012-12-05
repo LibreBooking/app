@@ -127,12 +127,48 @@ class RepeatType
 	const Weekly = 'weekly';
 	const Monthly = 'monthly';
 	const Yearly = 'yearly';
+
+	/**
+	 * @param string $value
+	 * @return bool
+	 */
+	public static function IsDefined($value)
+	{
+		switch ($value)
+		{
+			case self::None:
+			case self::Daily:
+			case self::Weekly:
+			case self::Monthly:
+			case self::Yearly;
+				return true;
+			default:
+				return false;
+
+		}
+	}
 }
 
 class RepeatMonthlyType
 {
 	const DayOfMonth = 'dayOfMonth';
 	const DayOfWeek = 'dayOfWeek';
+
+	/**
+	 * @param string $value
+	 * @return bool
+	 */
+	public static function IsDefined($value)
+	{
+		switch ($value)
+		{
+			case self::DayOfMonth:
+			case self::DayOfWeek:
+				return true;
+			default:
+				return false;
+		}
+	}
 }
 
 class RepeatNone implements IRepeatOptions
@@ -373,7 +409,7 @@ class RepeatDayOfMonth extends RepeatOptionsAbstract
 		}
 
 		return Date::Create($date->Year() + $yearOffset, $month, $date->Day(), $date->Hour(), $date->Minute(),
-			$date->Second(), $date->Timezone());
+							$date->Second(), $date->Timezone());
 	}
 }
 
@@ -504,9 +540,9 @@ class RepeatYearly extends RepeatOptionsAbstract
 			$nextEndYear = $nextEndYear + $this->_interval;
 
 			$startDate = Date::Create($nextStartYear, $begin->Month(), $begin->Day(), $begin->Hour(), $begin->Minute(),
-				$begin->Second(), $timezone);
+									  $begin->Second(), $timezone);
 			$endDate = Date::Create($nextEndYear, $end->Month(), $end->Day(), $end->Hour(), $end->Minute(),
-				$end->Second(), $timezone);
+									$end->Second(), $timezone);
 
 			if ($startDate->DateCompare($this->_terminationDate) <= 0)
 			{

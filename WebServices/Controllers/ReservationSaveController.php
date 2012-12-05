@@ -51,11 +51,96 @@ class ReservationSaveController implements IReservationSaveController
 	public function Create($request, WebServiceUserSession $session)
 	{
 		$facade = new ReservationRequestResponseFacade($request, $session);
+
+		$validationErrors = $this->ValidateRequest($facade);
+
+		if (count($validationErrors) > 0)
+		{
+			return new ReservationControllerResult(null, $validationErrors);
+		}
+
 		$presenter = $this->factory->Create($facade, $session);
 		$reservation = $presenter->BuildReservation();
 		$presenter->HandleReservation($reservation);
 
 		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+	}
+
+	/**
+	 * @param ReservationRequestResponseFacade $request
+	 * @return array|string[]
+	 */
+	private function ValidateRequest($request)
+	{
+		$errors = array();
+
+		try
+		{
+			$resourceId = $request->GetResourceId();
+			if (empty($resourceId))
+			{
+				$errors[] = 'Missing or invalid resourceId';
+			}
+
+			$startDate = $request->GetStartDate();
+			$startTime = $request->GetStartTime();
+			if (empty($startDate) || empty($startTime))
+			{
+				$errors[] = 'Missing or invalid startDateTime';
+			}
+
+			$endDate = $request->GetEndDate();
+			$endTime = $request->GetEndTime();
+			if (empty($endDate) || empty($endTime))
+			{
+				$errors[] = 'Missing or invalid endDateTime';
+			}
+
+			$repeatType = $request->GetRepeatType();
+			if (!empty($repeatType)  && !RepeatType::IsDefined($repeatType))
+			{
+				$errors[] = 'Invalid repeat type';
+			}
+
+			if ($repeatType == RepeatType::Monthly && !RepeatMonthlyType::IsDefined($request->GetRepeatMonthlyType()))
+			{
+				$errors[] = 'Missing or invalid repeatMonthlyType';
+			}
+
+			if (!empty($repeatType) && $repeatType != RepeatType::None)
+			{
+				$repeatInterval = $request->GetRepeatInterval();
+				if (empty($repeatInterval))
+				{
+					$errors[] = 'Missing or invalid repeatInterval';
+				}
+
+				$repeatTerminationDate = $request->GetRepeatTerminationDate();
+				if (empty($repeatTerminationDate))
+				{
+					$errors[] = 'Missing or invalid repeatTerminationDate';
+				}
+			}
+
+			$accessories = $request->GetAccessories();
+			if (!empty($accessories))
+			{
+				/** @var AccessoryFormElement $accessory */
+				foreach ($accessories as $accessory)
+				{
+					if (empty($accessory->Id) || empty($accessory->Quantity) || $accessory->Quantity < 0)
+					{
+						$errors[] = 'Invalid accessory';
+					}
+				}
+			}
+		}
+		catch (Exception $ex)
+		{
+			$errors[] = 'Could not process request.' . $ex;
+		}
+
+		return $errors;
 	}
 }
 
@@ -183,11 +268,18 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 
 	public function GetRepeatWeekdays()
 	{
+		$days = array();
 		if (!empty($this->request->repeatWeekdays) && is_array($this->request->repeatWeekdays))
 		{
-			return $this->request->repeatWeekdays;
+			 foreach ($this->request->repeatWeekdays as $day)
+			 {
+				 if ($day >= 0 && $day <= 6)
+				 {
+					 $days[] = $day;
+				 }
+			 }
 		}
-		return array();
+		return $days;
 	}
 
 	public function GetRepeatMonthlyType()
@@ -208,7 +300,8 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		if (!empty($dateString))
 		{
-			return WebServiceDate::GetDate($dateString, $this->session)->ToTimezone($this->session->Timezone)->Format($format);
+			return WebServiceDate::GetDate($dateString,
+										   $this->session)->ToTimezone($this->session->Timezone)->Format($format);
 		}
 		return null;
 	}
@@ -270,7 +363,7 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		if (!empty($this->request->resources) && is_array($this->request->resources))
 		{
-			return $this->request->resources;
+			return $this->getIntArray($this->request->resources);
 		}
 		return array();
 	}
@@ -279,7 +372,7 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		if (!empty($this->request->participants) && is_array($this->request->participants))
 		{
-			return $this->request->participants;
+			return $this->getIntArray($this->request->participants);
 		}
 		return array();
 	}
@@ -288,7 +381,7 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		if (!empty($this->request->invitees) && is_array($this->request->invitees))
 		{
-			return $this->request->invitees;
+			return $this->getIntArray($this->request->invitees);
 		}
 		return array();
 	}
@@ -329,6 +422,17 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		return null;
 	}
+
+	private function getIntArray($values)
+	{
+		$ints = array();
+		foreach ($values as $value)
+		{
+			$ints[] = intval($value);
+		}
+
+		return $ints;
+	}
 }
 
 interface IReservationPresenterFactory
@@ -348,7 +452,8 @@ class ReservationPresenterFactory implements IReservationPresenterFactory
 		$persistenceFactory = new ReservationPersistenceFactory();
 		$resourceRepository = new ResourceRepository();
 		$reservationAction = ReservationAction::Create;
-		$handler = ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction), $userSession);
+		$handler = ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction),
+											  $userSession);
 
 		return new ReservationSavePresenter($facade, $persistenceFactory->Create($reservationAction), $handler, $resourceRepository, $userSession);
 	}

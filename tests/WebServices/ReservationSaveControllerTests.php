@@ -68,6 +68,24 @@ class ReservationSaveControllerTests extends TestBase
 		$this->assertEquals($expectedResult, $result);
 	}
 
+//	public function testWhenRequestValidationFails()
+//	{
+//		$reservationRequest = new ReservationRequest();
+//		$this->server->SetRequest($reservationRequest);
+//
+//		$errors = array(
+//			'Missing or invalid resourceId',
+//			'Missing or invalid start date',
+//			'Missing or invalid end date',
+//			'Missing or invalid repeat type',
+//		);
+//		$this->service->Create();
+//
+//		$expectedResponse = new ReservationFailedResponse($this->server, $errors);
+//		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
+//		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
+//	}
+
 	public function testFacadeProvidesDataFromRequestAndCollectsResponses()
 	{
 		$session = new FakeWebServiceUserSession(123);

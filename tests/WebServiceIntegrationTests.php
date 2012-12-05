@@ -44,7 +44,7 @@ function includeAll($directory)
 
 class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 {
-	private $url = 'http://localhost/development/Services/index.php';
+	private $url = 'http://localhost/dev/Services';
 
 	/**
 	 * @var HttpClient
@@ -132,7 +132,14 @@ class HttpClient
 
 		curl_close($curl_connection);
 
-		return json_decode($result);
+		$jsonObject = json_decode($result);
+
+		if ($jsonObject == null)
+		{
+			echo $result;
+		}
+
+		return $jsonObject;
 	}
 
 	public function Get($url, $headers = array())

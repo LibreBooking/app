@@ -49,7 +49,7 @@ class ReservationWriteWebServiceTests extends TestBase
 
 	public function testCreatesNewReservation()
 	{
-		$reservationRequest = new ReservationRequest();
+		$reservationRequest = $this->GetReservationRequest();
 		$this->server->SetRequest($reservationRequest);
 
 		$referenceNumber = '12323';
@@ -87,6 +87,49 @@ class ReservationWriteWebServiceTests extends TestBase
 		$expectedResponse = new ReservationFailedResponse($this->server, $errors);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
+	}
+
+	private function GetReservationRequest()
+	{
+		$request = new ReservationRequest();
+		$endDate = Date::Parse('2012-11-20 05:30', 'UTC');
+		$startDate = Date::Parse('2012-11-18 02:30', 'UTC');
+		$repeatTerminationDate = Date::Parse('2012-12-13', 'UTC');
+
+		$accessoryId = 8912;
+		$quantity = 1232;
+		$attributeId = 3393;
+		$attributeValue = '23232';
+		$description = 'reservation description';
+		$invitees = array(9,8);
+		$participants = array(99,88);
+		$repeatInterval = 1;
+		$repeatMonthlyType = null;
+		$repeatType = RepeatType::Weekly;
+		$repeatWeekdays = array(0,4,5);
+		$resourceId = 122;
+		$resources = array(22,23,33);
+		$title = 'reservation title';
+		$userId = 1;
+
+		$request->accessories = array(new ReservationAccessoryRequest($accessoryId, $quantity));
+		$request->attributes = array(new AttributeValueRequest($attributeId, $attributeValue));
+		$request->description = $description;
+		$request->endDateTime = $endDate->ToIso();
+		$request->invitees = $invitees;
+		$request->participants = $participants;
+		$request->repeatInterval = $repeatInterval;
+		$request->repeatMonthlyType = $repeatMonthlyType;
+		$request->repeatType = $repeatType;
+		$request->repeatWeekdays = $repeatWeekdays;
+		$request->repeatTerminationDate = $repeatTerminationDate->ToIso();
+		$request->resourceId = $resourceId;
+		$request->resources = $resources;
+		$request->startDateTime = $startDate->ToIso();
+		$request->title = $title;
+		$request->userId = $userId;
+
+		return $request;
 	}
 }
 
