@@ -44,7 +44,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<div style="float:right;">
 				<ul>
 					<li>
-						<h4>{$resource->GetName()}</h4>
+						<h4>{$resource->GetName()|escape}</h4>
 						<a class="update renameButton" href="javascript:void(0);">{translate key='Rename'}</a> |
 						<a class="update deleteButton" href="javascript:void(0);">{translate key='Delete'}</a>
 					</li>
