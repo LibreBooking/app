@@ -184,7 +184,7 @@ class cz extends en_us
         $strings['Duration'] = 'Trvání';
         $strings['Active'] = 'Aktivní';
         $strings['Inactive'] = 'Vypnuto';
- 		$strings['ResetPassword'] = 'Obnovit heslo';
+ 	$strings['ResetPassword'] = 'Obnovit heslo';
         $strings['LastLogin'] = 'Poslední přihlášení';
         $strings['Search'] = 'Hledání';
         $strings['ResourcePermissions'] = 'Oprávnění zdrojů';
@@ -310,6 +310,7 @@ class cz extends en_us
         $strings['DeleteGroupWarning'] = 'Odstraněním této skupiny budou odstraněny všechny související oprávnění k zdrojům. Uživatelé v této skupině mohou přijít o přístup ke zdrojům.';
         $strings['WhatRolesApplyToThisGroup'] = 'Jaká role se vztahuje k této skupině?';
         $strings['WhoCanManageThisGroup'] = 'Kdo může spravovat tuto skupinu?';
+        $strings['WhoCanManageThisSchedule'] = 'Kdo může spravovat tento kalendář?';
         $strings['AddGroup'] = 'Přidat skupinu';
         $strings['AllQuotas'] = 'Všechny kvóty';
         $strings['QuotaReminder'] = 'Nezapomeňte: Kvóty se uplatňují na základě nastavení časového pásma.';
@@ -330,7 +331,7 @@ class cz extends en_us
         $strings['BringDown'] = 'Snížit';
         $strings['ChangeLayout'] = 'Změnit rozvržení';
         $strings['AddSchedule'] = 'Přidat naplánování'; 
-		$strings['StartsOn'] = 'Začíná od';
+	$strings['StartsOn'] = 'Začíná od';
         $strings['NumberOfDaysVisible'] = 'Viditelné dnů';
         $strings['UseSameLayoutAs'] = 'Použít rozvržení jako';
         $strings['Format'] = 'Formát';
@@ -361,8 +362,8 @@ class cz extends en_us
         $strings['Private'] = 'Soukromé';
         $strings['Accept'] = 'Potvrzeno';
         $strings['Decline'] = 'Zamítnuté';
-		$strings['ShowFullWeek'] = 'Zobrazit celý týden';
-		$strings['CustomAttributes'] = 'Upravit atributy';
+	$strings['ShowFullWeek'] = 'Zobrazit celý týden';
+	$strings['CustomAttributes'] = 'Upravit atributy';
         $strings['AddAttribute'] = 'Přidat atribut';
         $strings['EditAttribute'] = 'Upravit atribut';
         $strings['DisplayLabel'] = 'Zobrazit pole';
@@ -383,9 +384,45 @@ class cz extends en_us
         $strings['AdditionalAttributes'] = 'Další atributy';
         $strings['True'] = 'Správně';
         $strings['False'] = 'Chybně';
-		$strings['ForgotPasswordEmailSent'] = 'Na zadaný email byly odeslány instrukce pro obnovení hesla.';
-		$strings['ActivationEmailSent'] = 'Brzy obdržíte aktivační e-mail.';
-		$strings['AccountActivationError'] = 'Omlouváme se, ale nemohli jsme aktivovat Váš účet.';
+	$strings['ForgotPasswordEmailSent'] = 'Na zadaný email byly odeslány instrukce pro obnovení hesla.';
+	$strings['ActivationEmailSent'] = 'Brzy obdržíte aktivační e-mail.';
+	$strings['AccountActivationError'] = 'Omlouváme se, Váš učet ještě není schválen.';
+	$strings['Attachments'] = 'Přílohy';
+	$strings['AttachFile'] = 'Příloha';
+	$strings['Maximum'] = 'limit';
+	$strings['NoScheduleAdministratorLabel'] = 'Žádný kalendář administrátora';
+	$strings['ScheduleAdministrator'] = 'Kalendář administrátora';
+	$strings['Total'] = 'Celkem';
+	$strings['QuantityReserved'] = 'Rezervované množství';
+	$strings['AllAccessories'] = 'Všechno příslušenství';
+	$strings['GetReport'] = 'Zobrazit zprávu';
+	$strings['NoResultsFound'] = 'Nenalezena žádná shoda';
+	$strings['SaveThisReport'] = 'Uložit zprávu';
+	$strings['ReportSaved'] = 'Zpráva uložena!';
+	$strings['EmailReport'] = 'Zaslat zprávu emailem';
+	$strings['ReportSent'] = 'Zpráva zaslána na email!';
+	$strings['RunReport'] = 'Spustit zprávu';
+	$strings['NoSavedReports'] = 'Nemáte uloženou žádnou zprávu.';
+	$strings['CurrentWeek'] = 'Tento týden';
+	$strings['CurrentMonth'] = 'Tento měsíc';
+	$strings['AllTime'] = 'Vždy';
+	$strings['FilterBy'] = 'Filtrovat podle';
+	$strings['Select'] = 'Výběr';
+	$strings['List'] = 'Seznam';
+	$strings['TotalTime'] = 'Celkový čas';
+	$strings['Count'] = 'Počet';
+	$strings['Usage'] = 'Užití';
+	$strings['AggregateBy'] = 'Agregoval';
+	$strings['Range'] = 'Rozsah';
+	$strings['Choose'] = 'Výběr';
+	$strings['All'] = 'Všechno';
+	$strings['ViewAsChart'] = 'Zobrazit jako tabulku';
+	$strings['ReservedResources'] = 'Rezervované přístroje';
+	$strings['ReservedAccessories'] = 'Rezervované příslušenství';
+	$strings['ResourceUsageTimeBooked'] = 'Použití stroje - výběr času';
+	$strings['ResourceUsageReservationCount'] = 'Použití stroje - počet rezervací';
+	$strings['Top20UsersTimeBooked'] = 'Nejlepších 20 uživatelů - výběr času';
+	$strings['Top20UsersReservationCount'] = 'Nejlepších 20 uživatelů - počet rezervací';
         // End Strings
 
 
@@ -403,9 +440,11 @@ class cz extends en_us
         $strings['StartIsInPast'] = 'Začátek rezervace nemůže být vytvořen v minulosti';
         $strings['EmailDisabled'] = 'Administrátor zakázal posílání emailových upozornění.';
         $strings['ValidLayoutRequired'] = 'Časový úsek musí být vytvořen na celý den - 24hodin';
-	 	$strings['CustomAttributeErrors'] = 'Chybné s dalšími hodnotami:';
+	$strings['CustomAttributeErrors'] = 'Chybné s dalšími hodnotami:';
         $strings['CustomAttributeRequired'] = '%s je povinné pole';
-        $strings['CustomAttributeInvalid'] = 'Zadaná hodnota %s je chybná';
+        $strings['CustomAttributeInvalid'] = 'Hodnota pro %s je chybná';
+        $strings['AttachmentLoadingError'] = 'Omlouváme se, došlo k chybě při načítání požadovaného souboru.';
+        $strings['InvalidAttachmentExtension'] = 'Můžete nahrát pouze soubory těchto typů: %s';
        
         // End Errors
 
@@ -427,6 +466,8 @@ class cz extends en_us
         $strings['ServerSettings'] = 'Informace o serveru';
         $strings['Dashboard'] = 'Hlavní přehled';
         $strings['Help'] = 'Nápověda';
+        $strings['Administration'] = 'Administrace';
+        $strings['About'] = 'O nás';
         $strings['Bookings'] = 'Rezervace';
         $strings['Schedule'] = 'Plánování';
         $strings['Reservations'] = 'Rezervace';
@@ -450,8 +491,15 @@ class cz extends en_us
         $strings['ResourceReservations'] = 'Zdroje rezervací';
         $strings['Customization'] = 'Rozšířitelnost';
         $strings['Attributes'] = 'Atributy';
-		$strings['AccountActivation'] = 'Aktivace účtů';
-        // End Page Titles
+	$strings['AccountActivation'] = 'Aktivace účtů';
+	$strings['ScheduleReservations'] = 'Rezervace kalendářů';
+	$strings['Reports'] = 'Zprávy';
+	$strings['GenerateReport'] = 'Vytvořit novou zprávu';
+	$strings['MySavedReports'] = 'Mé uložené zprávy';
+	$strings['CommonReports'] = 'Společné zprávy';
+	$strings['ViewDay'] = 'Zobrazit denní přehled';
+	$strings['Group'] = 'Skupina';
+       // End Page Titles
 
 
         // Day representations
@@ -484,7 +532,8 @@ class cz extends en_us
         $strings['ParticipantDeletedSubject'] = 'Rezervace zrušena';
         $strings['InviteeAddedSubject'] = 'Pozvánka do rezervace';
         $strings['ResetPassword'] = 'Požadavek na resetování hesla';
-        $strings['ForgotPasswordEmailSent'] = 'Na email Vám byly zaslány instrukce k resetování hesla.';
+        $strings['ActivateYourAccount'] = 'Prosíme, aktivujte svůj účet';
+        $strings['ReportSubject'] = 'Vaše požadované zprávy (%s)';
         // End Email Subjects
 
         $this->Strings = $strings;
