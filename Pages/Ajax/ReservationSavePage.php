@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
-require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 
 interface IReservationSavePage extends IReservationSaveResultsPage, IRepeatOptionsComposite
 {
@@ -121,19 +121,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		parent::__construct();
 
-		$persistenceFactory = new ReservationPersistenceFactory();
-		$resourceRepository = new ResourceRepository();
-
-		$reservationAction = ReservationAction::Create;
-
-		$userSession = ServiceLocator::GetServer()->GetUserSession();
-		$this->_presenter = new ReservationSavePresenter(
-			$this,
-			$persistenceFactory->Create($reservationAction),
-			ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction), $userSession),
-			$resourceRepository,
-			$userSession
-		);
+		$factory = new ReservationPresenterFactory();
+		$this->_presenter = $factory->Create($this, ServiceLocator::GetServer()->GetUserSession());
 	}
 
 	public function PageLoad()
@@ -175,9 +164,9 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		return $this->GetForm(FormKeys::RESERVATION_ACTION);
 	}
 
-	public function GetReservationId()
+	public function GetReferenceNumber()
 	{
-		return $this->GetForm(FormKeys::RESERVATION_ID);
+		return $this->GetForm(FormKeys::REFERENCE_NUMBER);
 	}
 
 	public function GetUserId()

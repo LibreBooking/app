@@ -76,6 +76,41 @@ class ReservationWriteWebService
 										 RestResponse::BAD_REQUEST_CODE);
 		}
 	}
+
+	/**
+	 * @name UpdateReservation
+	 * @description Updates an existing reservation
+	 * @request ReservationRequest
+	 * @response ReservationUpdateResponse
+	 * @param string $referenceNumber
+	 * @return void
+	 */
+	public function Update($referenceNumber)
+	{
+		/** @var $request ReservationRequest */
+		$request = $this->server->GetRequest();
+
+		Log::Debug('ReservationWriteWebService.Update() User=%s, ReferenceNumber=%s, Request=%s', $referenceNumber, $this->server->GetSession()->UserId,
+				   json_encode($request));
+
+		$result = $this->controller->Create($request, $this->server->GetSession());
+
+		if ($result->WasSuccessful())
+		{
+			Log::Debug('ReservationWriteWebService.Update() - Reservation Updated. ReferenceNumber=%s',
+					   $result->CreatedReferenceNumber());
+
+			$this->server->WriteResponse(new ReservationCreatedResponse($this->server, $result->CreatedReferenceNumber()),
+										 RestResponse::OK_CODE);
+		}
+		else
+		{
+			Log::Debug('ReservationWriteWebService.Update() - Reservation Failed.');
+
+			$this->server->WriteResponse(new ReservationFailedResponse($this->server, $result->Errors()),
+										 RestResponse::BAD_REQUEST_CODE);
+		}
+	}
 }
 
 ?>

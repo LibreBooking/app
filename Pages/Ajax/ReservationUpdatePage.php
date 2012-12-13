@@ -19,14 +19,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
  
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
-require_once(ROOT_DIR . 'Presenters/Reservation/ReservationUpdatePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 
 interface IReservationUpdatePage extends IReservationSavePage
 {
 	/**
-	 * @return int
+	 * @return string
 	 */
-	public function GetReservationId();
+	public function GetReferenceNumber();
 
 	/**
 	 * @return SeriesUpdateScope

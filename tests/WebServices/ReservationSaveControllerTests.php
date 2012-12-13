@@ -68,23 +68,35 @@ class ReservationSaveControllerTests extends TestBase
 		$this->assertEquals($expectedResult, $result);
 	}
 
-//	public function testWhenRequestValidationFails()
-//	{
-//		$reservationRequest = new ReservationRequest();
-//		$this->server->SetRequest($reservationRequest);
-//
-//		$errors = array(
-//			'Missing or invalid resourceId',
-//			'Missing or invalid start date',
-//			'Missing or invalid end date',
-//			'Missing or invalid repeat type',
-//		);
-//		$this->service->Create();
-//
-//		$expectedResponse = new ReservationFailedResponse($this->server, $errors);
-//		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
-//		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
-//	}
+	public function testUpdatesExistingReservation()
+	{
+		$reservation = new TestReservation();
+		$presenter = $this->getMock('IReservationSavePresenter');
+		$referenceNumber = '123';
+		$updateScope = SeriesUpdateScope::FullSeries;
+
+		$request = new ReservationRequest();
+		$session = new FakeWebServiceUserSession(123);
+		$facade = new UpdateReservationRequestResponseFacade($request, $session, $referenceNumber, $updateScope);
+
+		$this->presenterFactory->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($facade), $this->equalTo($session))
+				->will($this->returnValue($presenter));
+
+		$presenter->expects($this->once())
+				->method('BuildReservation')
+				->will($this->returnValue($reservation));
+
+		$presenter->expects($this->once())
+				->method('HandleReservation')
+				->with($this->equalTo($reservation));
+
+		$result = $this->controller->Update($request, $session, $referenceNumber, $updateScope);
+
+		$expectedResult = new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+		$this->assertEquals($expectedResult, $result);
+	}
 
 	public function testFacadeProvidesDataFromRequestAndCollectsResponses()
 	{

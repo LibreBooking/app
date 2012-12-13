@@ -74,7 +74,8 @@ class ReservationUpdatePresenterTests extends TestBase
 								$this->page, 
 								$this->persistenceService, 
 								$this->handler,
-								$this->resourceRepository);
+								$this->resourceRepository,
+								$this->fakeUser);
 	}
 	
 	public function teardown()
@@ -102,13 +103,13 @@ class ReservationUpdatePresenterTests extends TestBase
 		$expectedSeries->WithResource(new FakeBookableResource($removedResourceId));
 		$expectedSeries->WithAttribute(new AttributeValue(100, 'to be removed'));
 
-		$reservationId = $this->page->reservationId;
+		$referenceNumber = $this->page->existingReferenceNumber;
 		
 		$timezone = $this->user->Timezone;
 		
 		$this->persistenceService->expects($this->once())
-			->method('LoadByInstanceId')
-			->with($this->equalTo($reservationId))
+			->method('LoadByReferenceNumber')
+			->with($this->equalTo($referenceNumber))
 			->will($this->returnValue($expectedSeries));
 
 		$this->resourceRepository->expects($this->at(0))
@@ -164,7 +165,7 @@ class ReservationUpdatePresenterTests extends TestBase
 
 	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()
 	{
-		$reservationId = $this->page->reservationId;
+		$referenceNumber = $this->page->existingReferenceNumber;
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithPrimaryResource(new FakeBookableResource(100));
 		$expectedSeries = $builder->Build();
@@ -176,8 +177,8 @@ class ReservationUpdatePresenterTests extends TestBase
 		$resource = new FakeBookableResource($additionalId);
 
 		$this->persistenceService->expects($this->once())
-			->method('LoadByInstanceId')
-			->with($this->equalTo($reservationId))
+			->method('LoadByReferenceNumber')
+			->with($this->equalTo($referenceNumber))
 			->will($this->returnValue($expectedSeries));
 		
 		$this->resourceRepository->expects($this->once())
@@ -210,7 +211,7 @@ class ReservationUpdatePresenterTests extends TestBase
 
 class FakeReservationUpdatePage extends FakeReservationSavePage implements IReservationUpdatePage
 {
-	public $reservationId = 100;
+	public $existingReferenceNumber = 100;
 	public $seriesUpdateScope = SeriesUpdateScope::FullSeries;
 	public $removedFileIds = array(1,2,3);
 
@@ -219,9 +220,9 @@ class FakeReservationUpdatePage extends FakeReservationSavePage implements IRese
 	    parent::__construct();
 	}
 	
-	public function GetReservationId()
+	public function GetReferenceNumber()
 	{
-		return $this->reservationId;
+		return $this->existingReferenceNumber;
 	}
 	
 	public function GetSeriesUpdateScope()

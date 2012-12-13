@@ -19,7 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
-require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
 
 require_once(ROOT_DIR . 'WebServices/Requests/ReservationRequest.php');
@@ -34,7 +34,6 @@ interface IReservationSaveController
 	 */
 	public function Create($request, WebServiceUserSession $session);
 }
-
 
 class ReservationSaveController implements IReservationSaveController
 {
@@ -217,6 +216,10 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	 */
 	private $session;
 
+	/**
+	 * @param ReservationRequest $request
+	 * @param WebServiceUserSession $session
+	 */
 	public function __construct($request, WebServiceUserSession $session)
 	{
 		$this->request = $request;
@@ -435,28 +438,49 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	}
 }
 
-interface IReservationPresenterFactory
+class UpdateReservationRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage
 {
 	/**
-	 * @param ReservationRequestResponseFacade $facade
-	 * @param UserSession $userSession
-	 * @return ReservationSavePresenter
+	 * @var string
 	 */
-	public function Create(ReservationRequestResponseFacade $facade, UserSession $userSession);
-}
+	private $referenceNumber;
 
-class ReservationPresenterFactory implements IReservationPresenterFactory
-{
-	public function Create(ReservationRequestResponseFacade $facade, UserSession $userSession)
+	/**
+	 * @var SeriesUpdateScope|string
+	 */
+	private $updateScope;
+
+	/**
+	 * @param ReservationRequest $request
+	 * @param WebServiceUserSession $session
+	 * @param string $referenceNumber
+	 * @param SeriesUpdateScope|string $updateScope
+	 */
+	public function __construct($request, WebServiceUserSession $session, $referenceNumber, $updateScope)
 	{
-		$persistenceFactory = new ReservationPersistenceFactory();
-		$resourceRepository = new ResourceRepository();
-		$reservationAction = ReservationAction::Create;
-		$handler = ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction),
-											  $userSession);
+		parent::__construct($request, $session);
+		$this->referenceNumber = $referenceNumber;
+		$this->updateScope = $updateScope;
+	}
+	/**
+	 * @return string
+	 */
+	public function GetReferenceNumber()
+	{
+		return $this->referenceNumber;
+	}
 
-		return new ReservationSavePresenter($facade, $persistenceFactory->Create($reservationAction), $handler, $resourceRepository, $userSession);
+	/**
+	 * @return SeriesUpdateScope
+	 */
+	public function GetSeriesUpdateScope()
+	{
+		return $this->updateScope;
+	}
+
+	public function GetRemovedAttachmentIds()
+	{
+		return array();
 	}
 }
-
 ?>

@@ -20,7 +20,21 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
 
-class ReservationUpdatePresenter
+interface IReservationUpdatePresenter
+{
+	/**
+	 * @return ExistingReservationSeries
+	 */
+	public function BuildReservation();
+
+	/**
+	 * @param ExistingReservationSeries $reservationSeries
+	 */
+	public function HandleReservation($reservationSeries);
+}
+
+
+class ReservationUpdatePresenter implements IReservationUpdatePresenter
 {
 	/**
 	 * @var IReservationUpdatePage
@@ -46,12 +60,14 @@ class ReservationUpdatePresenter
 		IReservationUpdatePage $page,
 		IUpdateReservationPersistenceService $persistenceService,
 		IReservationHandler $handler,
-		IResourceRepository $resourceRepository)
+		IResourceRepository $resourceRepository,
+		UserSession $userSession)
 	{
 		$this->page = $page;
 		$this->persistenceService = $persistenceService;
 		$this->handler = $handler;
 		$this->resourceRepository = $resourceRepository;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -59,9 +75,8 @@ class ReservationUpdatePresenter
 	 */
 	public function BuildReservation()
 	{
-		$userSession = ServiceLocator::GetServer()->GetUserSession();
-		$instanceId = $this->page->GetReservationId();
-		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
+		$referenceNumber = $this->page->GetReferenceNumber();
+		$existingSeries = $this->persistenceService->LoadByReferenceNumber($referenceNumber);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
 
 		$resourceId = $this->page->GetResourceId();
@@ -79,12 +94,12 @@ class ReservationUpdatePresenter
 			$resource,
 			$this->page->GetTitle(),
 			$this->page->GetDescription(),
-			ServiceLocator::GetServer()->GetUserSession());
+			$this->userSession);
 
 		$existingSeries->UpdateDuration($this->GetReservationDuration());
 		$roFactory = new RepeatOptionsFactory();
 
-		$existingSeries->Repeats($roFactory->CreateFromComposite($this->page, $userSession->Timezone));
+		$existingSeries->Repeats($roFactory->CreateFromComposite($this->page, $this->userSession->Timezone));
 
 		$additionalResources = array();
 		foreach ($additionalResourceIds as $additionalResourceId)
@@ -144,7 +159,7 @@ class ReservationUpdatePresenter
 		$endDate = $this->page->GetEndDate();
 		$endTime = $this->page->GetEndTime();
 
-		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+		$timezone = $this->userSession->Timezone;
 		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 	}
 
