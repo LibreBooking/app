@@ -68,6 +68,29 @@ class ReservationWriteWebServiceTests extends TestBase
 		$this->assertEquals(RestResponse::CREATED_CODE, $this->server->_LastResponseCode);
 	}
 
+	public function testUpdatesExistingReservation()
+	{
+		$reservationRequest = $this->GetReservationRequest();
+		$this->server->SetRequest($reservationRequest);
+		$referenceNumber = '12323';
+		$updateScope = SeriesUpdateScope::FullSeries;
+		$this->server->SetQueryString(WebServiceQueryStringKeys::UPDATE_SCOPE, $updateScope);
+
+		$controllerResult = new ReservationControllerResult($reservationRequest);
+		$controllerResult->SetReferenceNumber($referenceNumber);
+
+		$this->controller->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($reservationRequest), $this->equalTo($this->server->GetSession()), $this->equalTo($referenceNumber), $this->equalTo($updateScope))
+				->will($this->returnValue($controllerResult));
+
+		$this->service->Update($referenceNumber);
+
+		$expectedResponse = new ReservationUpdatedResponse($this->server, $referenceNumber);
+		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
+		$this->assertEquals(RestResponse::OK_CODE, $this->server->_LastResponseCode);
+	}
+
 	public function testWhenCreationValidationFails()
 	{
 		$reservationRequest = new ReservationRequest();
@@ -89,6 +112,28 @@ class ReservationWriteWebServiceTests extends TestBase
 		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
 	}
 
+	public function testWhenUpdateValidationFails()
+	{
+		$referenceNumber = '123';
+		$reservationRequest = new ReservationRequest();
+		$this->server->SetRequest($reservationRequest);
+
+		$errors = array('error');
+		$controllerResult = new ReservationControllerResult($reservationRequest);
+		$controllerResult->SetErrors($errors);
+
+		$this->controller->expects($this->once())
+				->method('Update')
+				->with($this->anything(),$this->anything(),$this->anything(),$this->anything())
+				->will($this->returnValue($controllerResult));
+
+		$this->service->Update($referenceNumber);
+
+		$expectedResponse = new ReservationFailedResponse($this->server, $errors);
+		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
+		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
+	}
+
 	private function GetReservationRequest()
 	{
 		$request = new ReservationRequest();
@@ -101,14 +146,14 @@ class ReservationWriteWebServiceTests extends TestBase
 		$attributeId = 3393;
 		$attributeValue = '23232';
 		$description = 'reservation description';
-		$invitees = array(9,8);
-		$participants = array(99,88);
+		$invitees = array(9, 8);
+		$participants = array(99, 88);
 		$repeatInterval = 1;
 		$repeatMonthlyType = null;
 		$repeatType = RepeatType::Weekly;
-		$repeatWeekdays = array(0,4,5);
+		$repeatWeekdays = array(0, 4, 5);
 		$resourceId = 122;
-		$resources = array(22,23,33);
+		$resources = array(22, 23, 33);
 		$title = 'reservation title';
 		$userId = 1;
 

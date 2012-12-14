@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
 
@@ -33,6 +34,15 @@ interface IReservationSaveController
 	 * @return ReservationControllerResult
 	 */
 	public function Create($request, WebServiceUserSession $session);
+
+	/**
+	 * @param ReservationRequest $request
+	 * @param WebServiceUserSession $session
+	 * @param string $referenceNumber
+	 * @param string $updateScope
+	 * @return ReservationControllerResult
+	 */
+	public function Update($request, $session, $referenceNumber, $updateScope);
 }
 
 class ReservationSaveController implements IReservationSaveController
@@ -59,6 +69,24 @@ class ReservationSaveController implements IReservationSaveController
 		}
 
 		$presenter = $this->factory->Create($facade, $session);
+		$reservation = $presenter->BuildReservation();
+		$presenter->HandleReservation($reservation);
+
+		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+	}
+
+	public function Update($request, $session, $referenceNumber, $updateScope)
+	{
+		$facade = new ReservationUpdateRequestResponseFacade($request, $session, $referenceNumber, $updateScope);
+
+		$validationErrors = $this->ValidateUpdateRequest($facade, $referenceNumber, $updateScope);
+
+		if (count($validationErrors) > 0)
+		{
+			return new ReservationControllerResult(null, $validationErrors);
+		}
+
+		$presenter = $this->factory->Update($facade, $session);
 		$reservation = $presenter->BuildReservation();
 		$presenter->HandleReservation($reservation);
 
@@ -96,7 +124,7 @@ class ReservationSaveController implements IReservationSaveController
 			}
 
 			$repeatType = $request->GetRepeatType();
-			if (!empty($repeatType)  && !RepeatType::IsDefined($repeatType))
+			if (!empty($repeatType) && !RepeatType::IsDefined($repeatType))
 			{
 				$errors[] = 'Invalid repeat type';
 			}
@@ -133,10 +161,31 @@ class ReservationSaveController implements IReservationSaveController
 					}
 				}
 			}
-		}
-		catch (Exception $ex)
+		} catch (Exception $ex)
 		{
 			$errors[] = 'Could not process request.' . $ex;
+		}
+
+		return $errors;
+	}
+
+	/**
+	 * @param ReservationUpdateRequestResponseFacade $request
+	 * @return array|string[]
+	 */
+	private function ValidateUpdateRequest($request)
+	{
+		$errors = $this->ValidateRequest($request);
+		$referenceNumber = $request->ReferenceNumber();
+		if (empty($referenceNumber))
+		{
+			$errors[] = 'Missing or invalid referenceNumber';
+		}
+
+		$updateScope = $request->GetSeriesUpdateScope();
+		if ($updateScope != SeriesUpdateScope::FullSeries && $updateScope != SeriesUpdateScope::ThisInstance && $updateScope != SeriesUpdateScope::FutureInstances)
+		{
+			$errors[] = 'Missing or invalid updateScope';
 		}
 
 		return $errors;
@@ -274,13 +323,13 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		$days = array();
 		if (!empty($this->request->repeatWeekdays) && is_array($this->request->repeatWeekdays))
 		{
-			 foreach ($this->request->repeatWeekdays as $day)
-			 {
-				 if ($day >= 0 && $day <= 6)
-				 {
-					 $days[] = $day;
-				 }
-			 }
+			foreach ($this->request->repeatWeekdays as $day)
+			{
+				if ($day >= 0 && $day <= 6)
+				{
+					$days[] = $day;
+				}
+			}
 		}
 		return $days;
 	}
@@ -438,7 +487,7 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	}
 }
 
-class UpdateReservationRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage
+class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage
 {
 	/**
 	 * @var string
@@ -462,6 +511,7 @@ class UpdateReservationRequestResponseFacade extends ReservationRequestResponseF
 		$this->referenceNumber = $referenceNumber;
 		$this->updateScope = $updateScope;
 	}
+
 	/**
 	 * @return string
 	 */
@@ -475,6 +525,10 @@ class UpdateReservationRequestResponseFacade extends ReservationRequestResponseF
 	 */
 	public function GetSeriesUpdateScope()
 	{
+		if (empty($this->updateScope))
+		{
+			return SeriesUpdateScope::FullSeries;
+		}
 		return $this->updateScope;
 	}
 
@@ -483,4 +537,5 @@ class UpdateReservationRequestResponseFacade extends ReservationRequestResponseF
 		return array();
 	}
 }
+
 ?>

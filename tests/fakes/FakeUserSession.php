@@ -43,6 +43,12 @@ class FakeWebServiceUserSession extends WebServiceUserSession
 	public $_SessionExtended = false;
 	public $_IsExpired = false;
 
+	public function __construct($id)
+	{
+		parent::__construct($id);
+		$this->Timezone = 'America/Chicago';
+	}
+
 	public function ExtendSession()
 	{
 		$this->_SessionExtended = true;

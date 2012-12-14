@@ -79,7 +79,8 @@ class ReservationWriteWebService
 
 	/**
 	 * @name UpdateReservation
-	 * @description Updates an existing reservation
+	 * @description Updates an existing reservation.
+	 * Pass an optional updateScope query string parameter to restrict changes. Possible values for updateScope are this|full|future
 	 * @request ReservationRequest
 	 * @response ReservationUpdateResponse
 	 * @param string $referenceNumber
@@ -93,14 +94,15 @@ class ReservationWriteWebService
 		Log::Debug('ReservationWriteWebService.Update() User=%s, ReferenceNumber=%s, Request=%s', $referenceNumber, $this->server->GetSession()->UserId,
 				   json_encode($request));
 
-		$result = $this->controller->Create($request, $this->server->GetSession());
+		$updateScope = $this->server->GetQueryString(WebServiceQueryStringKeys::UPDATE_SCOPE);
+		$result = $this->controller->Update($request, $this->server->GetSession(), $referenceNumber, $updateScope);
 
 		if ($result->WasSuccessful())
 		{
 			Log::Debug('ReservationWriteWebService.Update() - Reservation Updated. ReferenceNumber=%s',
 					   $result->CreatedReferenceNumber());
 
-			$this->server->WriteResponse(new ReservationCreatedResponse($this->server, $result->CreatedReferenceNumber()),
+			$this->server->WriteResponse(new ReservationUpdatedResponse($this->server, $result->CreatedReferenceNumber()),
 										 RestResponse::OK_CODE);
 		}
 		else

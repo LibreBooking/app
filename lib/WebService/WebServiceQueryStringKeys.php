@@ -25,6 +25,7 @@ class WebServiceQueryStringKeys
 	const END_DATE_TIME = 'endDateTime';
 	const RESOURCE_ID = 'resourceId';
 	const SCHEDULE_ID = 'scheduleId';
+	const UPDATE_SCOPE = 'updateScope';
 }
 
 ?>

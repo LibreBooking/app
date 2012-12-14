@@ -55,16 +55,8 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 	{
 		parent::__construct();
 
-		$persistenceFactory = new ReservationPersistenceFactory();
-		$updateAction = ReservationAction::Update;
-
-		$handler = ReservationHandler::Create($updateAction, $persistenceFactory->Create($updateAction), ServiceLocator::GetServer()->GetUserSession());
-		$this->_presenter = new ReservationUpdatePresenter(
-			$this,
-			$persistenceFactory->Create($updateAction),
-			$handler,
-			new ResourceRepository()
-		);
+		$factory = new ReservationPresenterFactory();
+		$this->_presenter = $factory->Update($this, ServiceLocator::GetServer()->GetUserSession());
 	}
 
 	public function PageLoad()

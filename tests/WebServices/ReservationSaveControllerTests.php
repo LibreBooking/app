@@ -46,6 +46,9 @@ class ReservationSaveControllerTests extends TestBase
 		$presenter = $this->getMock('IReservationSavePresenter');
 
 		$request = new ReservationRequest();
+		$request->resourceId = 1;
+		$request->startDateTime = '2012-04-05 01:01:01';
+		$request->endDateTime = '2012-04-05 01:01:01';
 		$session = new FakeWebServiceUserSession(123);
 		$facade = new ReservationRequestResponseFacade($request, $session);
 
@@ -76,8 +79,11 @@ class ReservationSaveControllerTests extends TestBase
 		$updateScope = SeriesUpdateScope::FullSeries;
 
 		$request = new ReservationRequest();
+		$request->resourceId = 1;
+		$request->startDateTime = '2012-04-05 01:01:01';
+		$request->endDateTime = '2012-04-05 01:01:01';
 		$session = new FakeWebServiceUserSession(123);
-		$facade = new UpdateReservationRequestResponseFacade($request, $session, $referenceNumber, $updateScope);
+		$facade = new ReservationUpdateRequestResponseFacade($request, $session, $referenceNumber, $updateScope);
 
 		$this->presenterFactory->expects($this->once())
 				->method('Update')

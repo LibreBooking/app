@@ -32,6 +32,20 @@ class ReservationCreatedResponse extends RestResponse
 	}
 }
 
+class ReservationUpdatedResponse extends RestResponse
+{
+	public function __construct(IRestServer $server, $referenceNumber)
+	{
+		$this->message = 'Your reservation was updated';
+		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
+	}
+
+	public static function Example()
+	{
+		return new ExampleReservationCreatedResponse();
+	}
+}
+
 class ExampleReservationCreatedResponse extends ReservationCreatedResponse
 {
 	public function __construct()

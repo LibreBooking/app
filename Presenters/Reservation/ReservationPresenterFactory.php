@@ -29,6 +29,13 @@ interface IReservationPresenterFactory
 	 * @return ReservationSavePresenter
 	 */
 	public function Create(IReservationSavePage $savePage, UserSession $userSession);
+
+	/**
+	 * @param IReservationUpdatePage $updatePage
+	 * @param UserSession $userSession
+	 * @return ReservationUpdatePresenter
+	 */
+	public function Update(IReservationUpdatePage $updatePage, UserSession $userSession);
 }
 
 class ReservationPresenterFactory implements IReservationPresenterFactory
@@ -38,10 +45,23 @@ class ReservationPresenterFactory implements IReservationPresenterFactory
 		$persistenceFactory = new ReservationPersistenceFactory();
 		$resourceRepository = new ResourceRepository();
 		$reservationAction = ReservationAction::Create;
-		$handler = ReservationHandler::Create($reservationAction, $persistenceFactory->Create($reservationAction),
+		$handler = ReservationHandler::Create($reservationAction,
+											  $persistenceFactory->Create($reservationAction),
 											  $userSession);
 
 		return new ReservationSavePresenter($savePage, $persistenceFactory->Create($reservationAction), $handler, $resourceRepository, $userSession);
+	}
+
+	public function Update(IReservationUpdatePage $updatePage, UserSession $userSession)
+	{
+		$persistenceFactory = new ReservationPersistenceFactory();
+		$resourceRepository = new ResourceRepository();
+		$reservationAction = ReservationAction::Update;
+		$handler = ReservationHandler::Create($reservationAction,
+											  $persistenceFactory->Create($reservationAction),
+											  $userSession);
+
+		return new ReservationUpdatePresenter($updatePage, $persistenceFactory->Create($reservationAction), $handler, $resourceRepository, $userSession);
 	}
 }
 
