@@ -111,7 +111,6 @@ class ReservationRepository implements IReservationRepository
 		$this->ExecuteEvents($reservationSeries);
 	}
 
-
 	/**
 	 * @param ReservationSeries $reservationSeries
 	 * @return int newly created series_id
@@ -156,7 +155,6 @@ class ReservationRepository implements IReservationRepository
 
 		return $reservationSeriesId;
 	}
-
 
 	public function Delete(ExistingReservationSeries $existingReservationSeries)
 	{
@@ -318,6 +316,7 @@ class ReservationRepository implements IReservationRepository
 		}
 		$reader->Free();
 	}
+
 	private function BuildRepeatOptions($repeatType, $configurationString)
 	{
 		$configuration = RepeatConfiguration::Create($repeatType, $configurationString);
@@ -706,6 +705,7 @@ class AttachmentRemovedCommand extends EventCommand
 		ServiceLocator::GetFileSystem()->RemoveFile(Paths::ReservationAttachments() . $this->event->FileName());
 	}
 }
+
 interface IReservationRepository
 {
 	/**

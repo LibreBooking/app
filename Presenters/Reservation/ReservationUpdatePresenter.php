@@ -104,7 +104,10 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 		$additionalResources = array();
 		foreach ($additionalResourceIds as $additionalResourceId)
 		{
-			$additionalResources[] = $this->resourceRepository->LoadById($additionalResourceId);
+			if ($additionalResourceId != $resourceId)
+			{
+				$additionalResources[] = $this->resourceRepository->LoadById($additionalResourceId);
+			}
 		}
 
 		$existingSeries->ChangeResources($additionalResources);

@@ -303,6 +303,7 @@ class ExistingReservationSeries extends ReservationSeries
 			parent::Repeats($repeatOptions);
 		}
 	}
+
 	/**
 	 * @param $resources array|BookableResource([]
 	 * @return void
@@ -462,8 +463,11 @@ class ExistingReservationSeries extends ReservationSeries
 		/** @var Reservation $instance */
 		foreach ($this->Instances() as $instance)
 		{
-			$instance->ChangeParticipants($participantIds);
-			$this->RaiseInstanceUpdatedEvent($instance);
+			$numberChanged = $instance->ChangeParticipants($participantIds);
+			if ($numberChanged != 0)
+			{
+				$this->RaiseInstanceUpdatedEvent($instance);
+			}
 		}
 	}
 
@@ -476,8 +480,11 @@ class ExistingReservationSeries extends ReservationSeries
 		/** @var Reservation $instance */
 		foreach ($this->Instances() as $instance)
 		{
-			$instance->ChangeInvitees($inviteeIds);
-			$this->RaiseInstanceUpdatedEvent($instance);
+			$numberChanged = $instance->ChangeInvitees($inviteeIds);
+			if ($numberChanged != 0)
+			{
+				$this->RaiseInstanceUpdatedEvent($instance);
+			}
 		}
 	}
 

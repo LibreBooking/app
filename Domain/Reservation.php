@@ -199,7 +199,7 @@ class Reservation
 
 	/**
 	 * @param array|int[] $participantIds
-	 * @return void
+	 * @return int
 	 */
 	public function ChangeParticipants($participantIds)
 	{
@@ -210,6 +210,8 @@ class Reservation
 		$this->unchangedParticipants = $diff->GetUnchangedInArray1();
 
 		$this->_participantIds = $participantIds;
+
+		return count($this->addedParticipants) + count($this->removedParticipants);
 	}
 
 	/**
@@ -262,7 +264,7 @@ class Reservation
 
 	/**
 	 * @param array|int[] $inviteeIds
-	 * @return void
+	 * @return int
 	 */
 	public function ChangeInvitees($inviteeIds)
 	{
@@ -273,6 +275,8 @@ class Reservation
 		$this->unchangedInvitees = $diff->GetUnchangedInArray1();
 
 		$this->_inviteeIds = $inviteeIds;
+
+		return count($this->addedInvitees) + count($this->removedInvitees);
 	}
 
 	/**
