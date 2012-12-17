@@ -109,7 +109,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 
 		/** @var $reservations ReservationsResponse */
 		$reservations = $this->client->Get('Reservations/', $authHeaders);
-		$reservationUrl = $reservations->reservations[0]->links[0];
+		$reservationUrl = 'Reservations/' . $reservations->reservations[0]->referenceNumber;
 		/** @var $reservation ReservationResponse */
 		$reservation = $this->client->Get($reservationUrl, $authHeaders);
 
@@ -144,8 +144,17 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$reservationRequest->title = $reservation->title;
 		$reservationRequest->userId = $reservation->owner->userId;
 
-		$this->client->Post($reservationUrl, $reservationRequest);
+		/** @var $response ReservationUpdatedResponse|ReservationFailedResponse */
+		$response = $this->client->Post($reservationUrl, $reservationRequest, $authHeaders);
 
+		if (isset($response->errors))
+		{
+			foreach ($response->errors as $error)
+			{
+				echo "$error\n";
+			}
+		}
+		$this->assertNotEmpty($response->links[0]);
 	}
 }
 

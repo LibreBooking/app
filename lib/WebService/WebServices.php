@@ -36,5 +36,6 @@ class WebServices
 	const GetResource = 'resource';
 	const GetSchedule = 'schedule';
 	const GetUser = 'user';
+	const UpdateReservation = 'update_reservation';
 }
 ?>
