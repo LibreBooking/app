@@ -181,8 +181,8 @@ class ResourceRepositoryTests extends TestBase
     public function testGetsAccessories()
     {
 		$ar = new ReservationAccessoryRow();
-		$ar->WithAccessory(1, 3, "name")
-				->WithAccessory(2, 23, "slkjdf");
+		$ar->WithAccessory(1, 3, "name", 3)
+				->WithAccessory(2, 23, "slkjdf", 3);
 
         $this->db->SetRows($ar->Rows());
 

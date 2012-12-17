@@ -19,7 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
-require_once(ROOT_DIR . 'WebServices/Responses/RecurrenceResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/RecurrenceRequestResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourceItemResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/AccessoryItemResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributeResponse.php');
@@ -29,24 +29,45 @@ require_once(ROOT_DIR . 'WebServices/Responses/ReservationUserResponse.php');
 class ReservationResponse extends RestResponse
 {
 	public $referenceNumber;
-	public $startDate;
-	public $endDate;
+	public $startDateTime;
+	public $endDateTime;
 	public $title;
 	public $description;
 	public $requiresApproval;
 	public $isRecurring;
 	public $scheduleId;
 	public $resourceId;
+	/**
+	 * @var ReservationUserResponse
+	 */
 	public $owner;
+	/**
+	 * @var array|ReservationUserResponse[]
+	 */
 	public $participants = array();
+	/**
+	 * @var array|ReservationUserResponse[]
+	 */
 	public $invitees = array();
+	/**
+	 * @var array|CustomAttributeResponse[]
+	 */
 	public $customAttributes = array();
+	/**
+	 * @var RecurrenceRequestResponse
+	 */
 	public $recurrenceRule;
+	/**
+	 * @var array|AttachmentResponse[]
+	 */
 	public $attachments = array();
 	/**
 	 * @var array|ResourceItemResponse[]
 	 */
 	public $resources = array();
+	/**
+	 * @var array|AccessoryItemResponse[]
+	 */
 	public $accessories = array();
 
 	/**
@@ -66,11 +87,12 @@ class ReservationResponse extends RestResponse
 		$canViewDetails = $privacyFilter->CanViewDetails($server->GetSession(), $reservation);
 
 		$this->referenceNumber = $reservation->ReferenceNumber;
-		$this->startDate = $reservation->StartDate->ToIso();
-		$this->endDate = $reservation->EndDate->ToIso();
+		$this->startDateTime = $reservation->StartDate->ToIso();
+		$this->endDateTime = $reservation->EndDate->ToIso();
 		$this->requiresApproval = $reservation->RequiresApproval();
 		$this->isRecurring = $reservation->IsRecurring();
-		$this->recurrenceRule = new RecurrenceResponse($reservation->RepeatType, $reservation->RepeatInterval, $reservation->RepeatMonthlyType, $reservation->RepeatWeekdays);
+		$repeatTerminationDate = $reservation->RepeatTerminationDate != null ? $reservation->RepeatTerminationDate->ToIso() : null;
+		$this->recurrenceRule = new RecurrenceRequestResponse($reservation->RepeatType, $reservation->RepeatInterval, $reservation->RepeatMonthlyType, $reservation->RepeatWeekdays, $repeatTerminationDate);
 		$this->resourceId = $reservation->ResourceId;
 		$this->scheduleId = $reservation->ScheduleId;
 		$this->AddService($server, WebServices::GetSchedule,
@@ -83,7 +105,7 @@ class ReservationResponse extends RestResponse
 
 		foreach ($reservation->Accessories as $accessory)
 		{
-			$this->accessories[] = new AccessoryItemResponse($server, $accessory->AccessoryId, $accessory->Name, $accessory->QuantityReserved);
+			$this->accessories[] = new AccessoryItemResponse($server, $accessory->AccessoryId, $accessory->Name, $accessory->QuantityReserved, $accessory->QuantityAvailable);
 		}
 
 		if ($canViewDetails)
@@ -140,18 +162,18 @@ class ExampleReservationResponse extends ReservationResponse
 		$this->attachments = array(AttachmentResponse::Example());
 		$this->customAttributes = array(CustomAttributeResponse::Example());
 		$this->description = 'reservation description';
-		$this->endDate = Date::Now()->ToIso();
+		$this->endDateTime = Date::Now()->ToIso();
 		$this->invitees = array(ReservationUserResponse::Example());
 		$this->isRecurring = true;
 		$this->owner = ReservationUserResponse::Example();
 		$this->participants = array(ReservationUserResponse::Example());
-		$this->recurrenceRule = RecurrenceResponse::Example();
+		$this->recurrenceRule = RecurrenceRequestResponse::Example();
 		$this->referenceNumber = 'refnum';
 		$this->requiresApproval = true;
 		$this->resourceId = 123;
 		$this->resources = array(ResourceItemResponse::Example());
 		$this->scheduleId = 123;
-		$this->startDate = Date::Now()->ToIso();
+		$this->startDateTime = Date::Now()->ToIso();
 		$this->title = 'reservation title';
 	}
 }

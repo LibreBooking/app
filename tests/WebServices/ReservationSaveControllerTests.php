@@ -136,16 +136,13 @@ class ReservationSaveControllerTests extends TestBase
 		$userId = 1;
 
 		$request->accessories = array(new ReservationAccessoryRequest($accessoryId, $quantity));
-		$request->attributes = array(new AttributeValueRequest($attributeId, $attributeValue));
+		$request->customAttributes = array(new AttributeValueRequest($attributeId, $attributeValue));
 		$request->description = $description;
 		$request->endDateTime = $endDate->ToIso();
 		$request->invitees = $invitees;
 		$request->participants = $participants;
-		$request->repeatInterval = $repeatInterval;
-		$request->repeatMonthlyType = $repeatMonthlyType;
-		$request->repeatType = $repeatType;
-		$request->repeatWeekdays = $repeatWeekdays;
-		$request->repeatTerminationDate = $repeatTerminationDate->ToIso();
+		$recurrence = new RecurrenceRequestResponse($repeatType, $repeatInterval, $repeatMonthlyType, $repeatWeekdays, $repeatTerminationDate->ToIso());
+		$request->recurrenceRule = $recurrence;
 		$request->resourceId = $resourceId;
 		$request->resources = $resources;
 		$request->startDateTime = $startDate->ToIso();

@@ -176,7 +176,7 @@ class ReservationSaveController implements IReservationSaveController
 	private function ValidateUpdateRequest($request)
 	{
 		$errors = $this->ValidateRequest($request);
-		$referenceNumber = $request->ReferenceNumber();
+		$referenceNumber = $request->GetReferenceNumber();
 		if (empty($referenceNumber))
 		{
 			$errors[] = 'Missing or invalid referenceNumber';
@@ -264,6 +264,10 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	 * @var WebServiceUserSession
 	 */
 	private $session;
+	/**
+	 * @var RecurrenceRequestResponse
+	 */
+	private $recurrenceRule;
 
 	/**
 	 * @param ReservationRequest $request
@@ -273,6 +277,7 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		$this->request = $request;
 		$this->session = $session;
+		$this->recurrenceRule = empty($request->recurrenceRule)? RecurrenceRequestResponse::Null() : $request->recurrenceRule;
 	}
 
 	public function ReferenceNumber()
@@ -302,18 +307,14 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 
 	public function GetRepeatType()
 	{
-		if (!empty($this->request->repeatType))
-		{
-			return $this->request->repeatType;
-		}
-		return RepeatType::None;
+		return $this->recurrenceRule->type;
 	}
 
 	public function GetRepeatInterval()
 	{
-		if (!empty($this->request->repeatInterval))
+		if (!empty($this->recurrenceRule->interval))
 		{
-			return intval($this->request->repeatInterval);
+			return intval($this->recurrenceRule->interval);
 		}
 		return null;
 	}
@@ -321,9 +322,9 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	public function GetRepeatWeekdays()
 	{
 		$days = array();
-		if (!empty($this->request->repeatWeekdays) && is_array($this->request->repeatWeekdays))
+		if (!empty($this->recurrenceRule->weekdays) && is_array($this->recurrenceRule->weekdays))
 		{
-			foreach ($this->request->repeatWeekdays as $day)
+			foreach ($this->recurrenceRule->weekdays as $day)
 			{
 				if ($day >= 0 && $day <= 6)
 				{
@@ -336,9 +337,9 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 
 	public function GetRepeatMonthlyType()
 	{
-		if (!empty($this->request->repeatMonthlyType))
+		if (!empty($this->recurrenceRule->monthlyType))
 		{
-			return $this->request->repeatMonthlyType;
+			return $this->recurrenceRule->monthlyType;
 		}
 		return null;
 	}
@@ -360,7 +361,7 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 
 	public function GetRepeatTerminationDate()
 	{
-		return $this->GetDate($this->request->repeatTerminationDate, 'Y-m-d');
+		return $this->GetDate($this->recurrenceRule->repeatTerminationDate, 'Y-m-d');
 	}
 
 	public function GetUserId()
@@ -459,10 +460,10 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	public function GetAttributes()
 	{
 		$attributes = array();
-		if (!empty($this->request->attributes) && is_array($this->request->attributes))
+		if (!empty($this->request->customAttributes) && is_array($this->request->customAttributes))
 		{
 
-			foreach ($this->request->attributes as $attribute)
+			foreach ($this->request->customAttributes as $attribute)
 			{
 				$attributes[] = new AttributeFormElement($attribute->attributeId, $attribute->attributeValue);
 			}

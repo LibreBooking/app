@@ -29,8 +29,8 @@ class CustomAttributeValueRow
 	public function With($attributeId, $value, $attributeLabel = null)
 	{
 		$this->rows[] = array(ColumnNames::ATTRIBUTE_ID => $attributeId,
-							  ColumnNames::ATTRIBUTE_VALUE => $value,
-							  ColumnNames::ATTRIBUTE_LABEL => $attributeLabel);
+			ColumnNames::ATTRIBUTE_VALUE => $value,
+			ColumnNames::ATTRIBUTE_LABEL => $attributeLabel);
 
 		return $this;
 	}
@@ -201,8 +201,8 @@ class ReservationUserRow
 	private function AddRow($referenceNumber, $userId, $levelId)
 	{
 		$this->rows[] = array(ColumnNames::REFERENCE_NUMBER => $referenceNumber,
-							  ColumnNames::USER_ID => $userId,
-							  ColumnNames::RESERVATION_USER_LEVEL => $levelId);
+			ColumnNames::USER_ID => $userId,
+			ColumnNames::RESERVATION_USER_LEVEL => $levelId);
 	}
 
 	/**
@@ -244,12 +244,12 @@ class ReservationAccessoryRow
 		return $this->rows;
 	}
 
-	public function WithAccessory($accessoryId, $quantity, $name = null)
+	public function WithAccessory($accessoryId, $quantityReserved, $name = null, $quantityAvailable = 0)
 	{
 		$this->rows[] = array(ColumnNames::ACCESSORY_ID => $accessoryId,
-							  ColumnNames::QUANTITY => $quantity,
-							  ColumnNames::ACCESSORY_QUANTITY => $quantity,
-							  ColumnNames::ACCESSORY_NAME => $name);
+			ColumnNames::QUANTITY => $quantityReserved,
+			ColumnNames::ACCESSORY_QUANTITY => $quantityAvailable,
+			ColumnNames::ACCESSORY_NAME => $name);
 
 		return $this;
 	}
@@ -267,9 +267,9 @@ class ReservationAttachmentItemRow
 	public function With($fileId, $seriesId, $fileName = null, $extension = null)
 	{
 		$this->rows[] = array(ColumnNames::FILE_ID => $fileId,
-							  ColumnNames::SERIES_ID => $seriesId,
-							  ColumnNames::FILE_NAME => $fileName,
-							  ColumnNames::FILE_EXTENSION => $extension);
+			ColumnNames::SERIES_ID => $seriesId,
+			ColumnNames::FILE_NAME => $fileName,
+			ColumnNames::FILE_EXTENSION => $extension);
 
 		return $this;
 	}
@@ -287,10 +287,10 @@ class SavedReportRow
 	public function With($userId, $reportName, $dateCreated = null, $serialized = null, $reportId = 1)
 	{
 		$this->rows[] = array(ColumnNames::USER_ID => $userId,
-							  ColumnNames::REPORT_NAME => $reportName,
-							  ColumnNames::DATE_CREATED => $dateCreated,
-							  ColumnNames::REPORT_DETAILS => $serialized,
-							  ColumnNames::REPORT_ID => $reportId);
+			ColumnNames::REPORT_NAME => $reportName,
+			ColumnNames::DATE_CREATED => $dateCreated,
+			ColumnNames::REPORT_DETAILS => $serialized,
+			ColumnNames::REPORT_ID => $reportId);
 
 		return $this;
 	}
@@ -308,12 +308,13 @@ class GroupItemRow
 	public function With($groupId, $groupName, $groupAdminName = 'group admin')
 	{
 		$this->rows[] = array(
-					ColumnNames::GROUP_ID => $groupId,
-					ColumnNames::GROUP_NAME => $groupName,
-					ColumnNames::GROUP_ADMIN_GROUP_NAME => $groupAdminName
-				);
+			ColumnNames::GROUP_ID => $groupId,
+			ColumnNames::GROUP_NAME => $groupName,
+			ColumnNames::GROUP_ADMIN_GROUP_NAME => $groupAdminName
+		);
 
 		return $this;
 	}
 }
+
 ?>

@@ -20,6 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'WebServices/Requests/ReservationAccessoryRequest.php');
 require_once(ROOT_DIR . 'WebServices/Requests/AttributeValueRequest.php');
+require_once(ROOT_DIR . 'WebServices/Responses/RecurrenceRequestResponse.php');
 
 class ReservationRequest
 {
@@ -30,7 +31,7 @@ class ReservationRequest
 	/**
 	 * @var array|AttributeValueRequest[]
 	 */
-	public $attributes = array();
+	public $customAttributes = array();
 	public $description;
 	public $endDateTime;
 	/**
@@ -41,14 +42,10 @@ class ReservationRequest
 	 * @var array|int[]
 	 */
 	public $participants = array();
-	public $repeatInterval;
-	public $repeatMonthlyType;
-	public $repeatType;
 	/**
-	 * @var array|int[]
+	 * @var RecurrenceRequestResponse
 	 */
-	public $repeatWeekdays = array();
-	public $repeatTerminationDate;
+	public $recurrenceRule;
 	public $resourceId;
 	/**
 	 * @var array|int[]
@@ -63,16 +60,12 @@ class ReservationRequest
 		$date = Date::Now()->ToIso();
 		$request = new ReservationRequest();
 		$request->accessories = array(new ReservationAccessoryRequest(1, 2));
-		$request->attributes = array(new AttributeValueRequest(2, 'some value'));
+		$request->customAttributes = array(new AttributeValueRequest(2, 'some value'));
 		$request->description = 'reservation description';
 		$request->endDateTime = $date;
 		$request->invitees = array(1,2,3);
 		$request->participants = array(1,2);
-		$request->repeatInterval = 1;
-		$request->repeatMonthlyType = RepeatMonthlyType::DayOfMonth . '|' . RepeatMonthlyType::DayOfWeek . '|null';
-		$request->repeatType = RepeatType::Daily . '|' . RepeatType::Monthly . '|' . RepeatType::None . '|' . RepeatType::Weekly . '|' . RepeatType::Yearly;
-		$request->repeatWeekdays = array(0,1,2,3,4,5,6);
-		$request->repeatTerminationDate = $date;
+		$request->recurrenceRule = RecurrenceRequestResponse::Example();
 		$request->resourceId = 1;
 		$request->resources = array(2,3);
 		$request->startDateTime = $date;

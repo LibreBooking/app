@@ -25,30 +25,30 @@ require_once(ROOT_DIR . 'Domain/RepeatOptions.php');
 
 interface IReservationViewRepository
 {
-    /**
-     * @abstract
-     * @var $referenceNumber string
-     * @return ReservationView
-     */
-    public function GetReservationForEditing($referenceNumber);
+	/**
+	 * @abstract
+	 * @var $referenceNumber string
+	 * @return ReservationView
+	 */
+	public function GetReservationForEditing($referenceNumber);
 
-    /**
-     * @abstract
-     * @param Date $startDate
-     * @param Date $endDate
-     * @param int|null $userId
-     * @param int|ReservationUserLevel|null $userLevel
-     * @param int|null $scheduleId
-     * @param int|null $resourceId
-     * @return ReservationItemView[]
-     */
-    public function GetReservationList(
-        Date $startDate,
-        Date $endDate,
-        $userId = ReservationViewRepository::ALL_USERS,
-        $userLevel = ReservationUserLevel::OWNER,
-        $scheduleId = ReservationViewRepository::ALL_SCHEDULES,
-        $resourceId = ReservationViewRepository::ALL_RESOURCES);
+	/**
+	 * @abstract
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param int|null $userId
+	 * @param int|ReservationUserLevel|null $userLevel
+	 * @param int|null $scheduleId
+	 * @param int|null $resourceId
+	 * @return ReservationItemView[]
+	 */
+	public function GetReservationList(
+		Date $startDate,
+		Date $endDate,
+		$userId = ReservationViewRepository::ALL_USERS,
+		$userLevel = ReservationUserLevel::OWNER,
+		$scheduleId = ReservationViewRepository::ALL_SCHEDULES,
+		$resourceId = ReservationViewRepository::ALL_RESOURCES);
 
 	/**
 	 * @abstract
@@ -57,184 +57,185 @@ interface IReservationViewRepository
 	 * @param string $accessoryName
 	 * @return mixed
 	 */
-	public function GetAccessoryReservationList(Date $startDate,Date $endDate, $accessoryName);
+	public function GetAccessoryReservationList(Date $startDate, Date $endDate, $accessoryName);
 
-    /**
-     * @abstract
-     * @param int $pageNumber
-     * @param int $pageSize
-     * @param string $sortField
-     * @param string $sortDirection
-     * @param ISqlFilter $filter
-     * @return PageableData|ReservationItemView[]
-     */
-    public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+	/**
+	 * @abstract
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param string $sortField
+	 * @param string $sortDirection
+	 * @param ISqlFilter $filter
+	 * @return PageableData|ReservationItemView[]
+	 */
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
-    /**
-     * @abstract
-     * @param DateRange $dateRange
-     * @param int|null $scheduleId
-     * @return BlackoutItemView[]
-     */
-    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES);
+	/**
+	 * @abstract
+	 * @param DateRange $dateRange
+	 * @param int|null $scheduleId
+	 * @return BlackoutItemView[]
+	 */
+	public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES);
 
-    /**
-     * @abstract
-     * @param int $pageNumber
-     * @param int $pageSize
-     * @param null|string $sortField
-     * @param null|string $sortDirection
-     * @param null|ISqlFilter $filter
-     * @return PageableData|BlackoutItemView[]
-     */
-    public function GetBlackoutList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+	/**
+	 * @abstract
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param null|string $sortField
+	 * @param null|string $sortDirection
+	 * @param null|ISqlFilter $filter
+	 * @return PageableData|BlackoutItemView[]
+	 */
+	public function GetBlackoutList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
-    /**
-     * @abstract
-     * @param DateRange $dateRange
-     * @return array|AccessoryReservation[]
-     */
-    public function GetAccessoriesWithin(DateRange $dateRange);
+	/**
+	 * @abstract
+	 * @param DateRange $dateRange
+	 * @return array|AccessoryReservation[]
+	 */
+	public function GetAccessoriesWithin(DateRange $dateRange);
 }
 
 class ReservationViewRepository implements IReservationViewRepository
 {
-    const ALL_SCHEDULES = -1;
-    const ALL_RESOURCES = -1;
-    const ALL_USERS = -1;
-    const ALL_ACCESSORIES = -1;
+	const ALL_SCHEDULES = -1;
+	const ALL_RESOURCES = -1;
+	const ALL_USERS = -1;
+	const ALL_ACCESSORIES = -1;
 
-    public function GetReservationForEditing($referenceNumber)
-    {
-        $reservationView = NullReservationView::Instance();
+	public function GetReservationForEditing($referenceNumber)
+	{
+		$reservationView = NullReservationView::Instance();
 
-        $getReservation = new GetReservationForEditingCommand($referenceNumber);
+		$getReservation = new GetReservationForEditingCommand($referenceNumber);
 
-        $result = ServiceLocator::GetDatabase()->Query($getReservation);
+		$result = ServiceLocator::GetDatabase()->Query($getReservation);
 
-        while ($row = $result->GetRow())
-        {
-            $reservationView = new ReservationView();
+		while ($row = $result->GetRow())
+		{
+			$reservationView = new ReservationView();
 
-            $reservationView->Description = $row[ColumnNames::RESERVATION_DESCRIPTION];
-            $reservationView->EndDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
-            $reservationView->OwnerId = $row[ColumnNames::USER_ID];
-            $reservationView->ResourceId = $row[ColumnNames::RESOURCE_ID];
-            $reservationView->ResourceName = $row[ColumnNames::RESOURCE_NAME];
-            $reservationView->ReferenceNumber = $row[ColumnNames::REFERENCE_NUMBER];
-            $reservationView->ReservationId = $row[ColumnNames::RESERVATION_INSTANCE_ID];
-            $reservationView->ScheduleId = $row[ColumnNames::SCHEDULE_ID];
-            $reservationView->StartDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
-            $reservationView->Title = $row[ColumnNames::RESERVATION_TITLE];
-            $reservationView->SeriesId = $row[ColumnNames::SERIES_ID];
-            $reservationView->OwnerFirstName = $row[ColumnNames::FIRST_NAME];
-            $reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];
-            $reservationView->OwnerEmailAddress = $row[ColumnNames::EMAIL];
-            $reservationView->StatusId = $row[ColumnNames::RESERVATION_STATUS];
-            $reservationView->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
+			$reservationView->Description = $row[ColumnNames::RESERVATION_DESCRIPTION];
+			$reservationView->EndDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
+			$reservationView->OwnerId = $row[ColumnNames::USER_ID];
+			$reservationView->ResourceId = $row[ColumnNames::RESOURCE_ID];
+			$reservationView->ResourceName = $row[ColumnNames::RESOURCE_NAME];
+			$reservationView->ReferenceNumber = $row[ColumnNames::REFERENCE_NUMBER];
+			$reservationView->ReservationId = $row[ColumnNames::RESERVATION_INSTANCE_ID];
+			$reservationView->ScheduleId = $row[ColumnNames::SCHEDULE_ID];
+			$reservationView->StartDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
+			$reservationView->Title = $row[ColumnNames::RESERVATION_TITLE];
+			$reservationView->SeriesId = $row[ColumnNames::SERIES_ID];
+			$reservationView->OwnerFirstName = $row[ColumnNames::FIRST_NAME];
+			$reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];
+			$reservationView->OwnerEmailAddress = $row[ColumnNames::EMAIL];
+			$reservationView->StatusId = $row[ColumnNames::RESERVATION_STATUS];
+			$reservationView->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
 
-            $repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
+			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE],
+														$row[ColumnNames::REPEAT_OPTIONS]);
 
-            $reservationView->RepeatType = $repeatConfig->Type;
-            $reservationView->RepeatInterval = $repeatConfig->Interval;
-            $reservationView->RepeatWeekdays = $repeatConfig->Weekdays;
-            $reservationView->RepeatMonthlyType = $repeatConfig->MonthlyType;
-            $reservationView->RepeatTerminationDate = $repeatConfig->TerminationDate;
+			$reservationView->RepeatType = $repeatConfig->Type;
+			$reservationView->RepeatInterval = $repeatConfig->Interval;
+			$reservationView->RepeatWeekdays = $repeatConfig->Weekdays;
+			$reservationView->RepeatMonthlyType = $repeatConfig->MonthlyType;
+			$reservationView->RepeatTerminationDate = $repeatConfig->TerminationDate;
 
-            $this->SetResources($reservationView);
-            $this->SetParticipants($reservationView);
-            $this->SetAccessories($reservationView);
-            $this->SetAttributes($reservationView);
+			$this->SetResources($reservationView);
+			$this->SetParticipants($reservationView);
+			$this->SetAccessories($reservationView);
+			$this->SetAttributes($reservationView);
 			$this->SetAttachments($reservationView);
-        }
+		}
 
-        return $reservationView;
-    }
+		return $reservationView;
+	}
 
-    public function GetReservationList(
-        Date $startDate,
-        Date $endDate,
-        $userId = self::ALL_USERS,
-        $userLevel = ReservationUserLevel::OWNER,
-        $scheduleId = self::ALL_SCHEDULES,
-        $resourceId = self::ALL_RESOURCES)
-    {
-        if (empty($userId))
-        {
-            $userId = self::ALL_USERS;
-        }
-        if (is_null($userLevel))
-        {
-            $userLevel = ReservationUserLevel::OWNER;
-        }
-        if (empty($scheduleId))
-        {
-            $scheduleId = self::ALL_SCHEDULES;
-        }
-        if (empty($resourceId))
-        {
-            $resourceId = self::ALL_RESOURCES;
-        }
+	public function GetReservationList(
+		Date $startDate,
+		Date $endDate,
+		$userId = self::ALL_USERS,
+		$userLevel = ReservationUserLevel::OWNER,
+		$scheduleId = self::ALL_SCHEDULES,
+		$resourceId = self::ALL_RESOURCES)
+	{
+		if (empty($userId))
+		{
+			$userId = self::ALL_USERS;
+		}
+		if (is_null($userLevel))
+		{
+			$userLevel = ReservationUserLevel::OWNER;
+		}
+		if (empty($scheduleId))
+		{
+			$scheduleId = self::ALL_SCHEDULES;
+		}
+		if (empty($resourceId))
+		{
+			$resourceId = self::ALL_RESOURCES;
+		}
 
-        $getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleId, $resourceId);
+		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleId, $resourceId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getReservations);
+		$result = ServiceLocator::GetDatabase()->Query($getReservations);
 
-        $reservations = array();
+		$reservations = array();
 
-        while ($row = $result->GetRow())
-        {
-            $reservations[] = ReservationItemView::Populate($row);
-        }
+		while ($row = $result->GetRow())
+		{
+			$reservations[] = ReservationItemView::Populate($row);
+		}
 
-        $result->Free();
+		$result->Free();
 
-        return $reservations;
-    }
+		return $reservations;
+	}
 
-    public function GetAccessoryReservationList(Date $startDate, Date $endDate, $accessoryName)
-    {
-        $getReservations = new GetReservationsByAccessoryNameCommand($startDate, $endDate, $accessoryName);
+	public function GetAccessoryReservationList(Date $startDate, Date $endDate, $accessoryName)
+	{
+		$getReservations = new GetReservationsByAccessoryNameCommand($startDate, $endDate, $accessoryName);
 
-        $result = ServiceLocator::GetDatabase()->Query($getReservations);
+		$result = ServiceLocator::GetDatabase()->Query($getReservations);
 
-        $reservations = array();
+		$reservations = array();
 
-        while ($row = $result->GetRow())
-        {
-            $reservations[] = ReservationItemView::Populate($row);
-        }
+		while ($row = $result->GetRow())
+		{
+			$reservations[] = ReservationItemView::Populate($row);
+		}
 
-        $result->Free();
+		$result->Free();
 
-        return $reservations;
-    }
+		return $reservations;
+	}
 
-    public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
-    {
-        $command = new GetFullReservationListCommand();
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+	{
+		$command = new GetFullReservationListCommand();
 
-        if ($filter != null)
-        {
-            $command = new FilterCommand($command, $filter);
-        }
+		if ($filter != null)
+		{
+			$command = new FilterCommand($command, $filter);
+		}
 
-        $builder = array('ReservationItemView', 'Populate');
-        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
-    }
+		$builder = array('ReservationItemView', 'Populate');
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+	}
 
-    private function SetResources(ReservationView $reservationView)
-    {
-        $getResources = new GetReservationResourcesCommand($reservationView->SeriesId);
+	private function SetResources(ReservationView $reservationView)
+	{
+		$getResources = new GetReservationResourcesCommand($reservationView->SeriesId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getResources);
+		$result = ServiceLocator::GetDatabase()->Query($getResources);
 
-        while ($row = $result->GetRow())
-        {
-            if ($row[ColumnNames::RESOURCE_LEVEL_ID] == ResourceLevel::Additional)
-            {
-                $reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
-            }
+		while ($row = $result->GetRow())
+		{
+			if ($row[ColumnNames::RESOURCE_LEVEL_ID] == ResourceLevel::Additional)
+			{
+				$reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
+			}
 			$reservationView->Resources[] = new ReservationResourceView(
 				$row[ColumnNames::RESOURCE_ID],
 				$row[ColumnNames::RESOURCE_NAME],
@@ -242,60 +243,60 @@ class ReservationViewRepository implements IReservationViewRepository
 				$row[ColumnNames::SCHEDULE_ID],
 				$row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS]
 			);
-        }
-    }
+		}
+	}
 
-    private function SetParticipants(ReservationView $reservationView)
-    {
-        $getParticipants = new GetReservationParticipantsCommand($reservationView->ReservationId);
+	private function SetParticipants(ReservationView $reservationView)
+	{
+		$getParticipants = new GetReservationParticipantsCommand($reservationView->ReservationId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getParticipants);
+		$result = ServiceLocator::GetDatabase()->Query($getParticipants);
 
-        while ($row = $result->GetRow())
-        {
-            $levelId = $row[ColumnNames::RESERVATION_USER_LEVEL];
-            $reservationUserView = new ReservationUserView(
-                $row[ColumnNames::USER_ID],
-                $row[ColumnNames::FIRST_NAME],
-                $row[ColumnNames::LAST_NAME],
-                $row[ColumnNames::EMAIL],
-                $levelId);
+		while ($row = $result->GetRow())
+		{
+			$levelId = $row[ColumnNames::RESERVATION_USER_LEVEL];
+			$reservationUserView = new ReservationUserView(
+				$row[ColumnNames::USER_ID],
+				$row[ColumnNames::FIRST_NAME],
+				$row[ColumnNames::LAST_NAME],
+				$row[ColumnNames::EMAIL],
+				$levelId);
 
-            if ($levelId == ReservationUserLevel::PARTICIPANT)
-            {
-                $reservationView->Participants[] = $reservationUserView;
-            }
+			if ($levelId == ReservationUserLevel::PARTICIPANT)
+			{
+				$reservationView->Participants[] = $reservationUserView;
+			}
 
-            if ($levelId == ReservationUserLevel::INVITEE)
-            {
-                $reservationView->Invitees[] = $reservationUserView;
-            }
-        }
-    }
+			if ($levelId == ReservationUserLevel::INVITEE)
+			{
+				$reservationView->Invitees[] = $reservationUserView;
+			}
+		}
+	}
 
-    private function SetAccessories(ReservationView $reservationView)
-    {
-        $getAccessories = new GetReservationAccessoriesCommand($reservationView->SeriesId);
+	private function SetAccessories(ReservationView $reservationView)
+	{
+		$getAccessories = new GetReservationAccessoriesCommand($reservationView->SeriesId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getAccessories);
+		$result = ServiceLocator::GetDatabase()->Query($getAccessories);
 
-        while ($row = $result->GetRow())
-        {
-            $reservationView->Accessories[] = new ReservationAccessory($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY], $row[ColumnNames::ACCESSORY_NAME]);
-        }
-    }
+		while ($row = $result->GetRow())
+		{
+			$reservationView->Accessories[] = new ReservationAccessoryView($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
+		}
+	}
 
 	private function SetAttributes(ReservationView $reservationView)
-    {
-        $getAttributes = new GetAttributeValuesCommand($reservationView->SeriesId, CustomAttributeCategory::RESERVATION);
+	{
+		$getAttributes = new GetAttributeValuesCommand($reservationView->SeriesId, CustomAttributeCategory::RESERVATION);
 
-        $result = ServiceLocator::GetDatabase()->Query($getAttributes);
+		$result = ServiceLocator::GetDatabase()->Query($getAttributes);
 
-        while ($row = $result->GetRow())
-        {
-            $reservationView->AddAttribute(new AttributeValue($row[ColumnNames::ATTRIBUTE_ID], $row[ColumnNames::ATTRIBUTE_VALUE], $row[ColumnNames::ATTRIBUTE_LABEL]));
-        }
-    }
+		while ($row = $result->GetRow())
+		{
+			$reservationView->AddAttribute(new AttributeValue($row[ColumnNames::ATTRIBUTE_ID], $row[ColumnNames::ATTRIBUTE_VALUE], $row[ColumnNames::ATTRIBUTE_LABEL]));
+		}
+	}
 
 	private function SetAttachments(ReservationView $reservationView)
 	{
@@ -309,124 +310,124 @@ class ReservationViewRepository implements IReservationViewRepository
 		}
 	}
 
-    public function GetAccessoriesWithin(DateRange $dateRange)
-    {
-        $getAccessoriesCommand = new GetAccessoryListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
+	public function GetAccessoriesWithin(DateRange $dateRange)
+	{
+		$getAccessoriesCommand = new GetAccessoryListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
 
-        $result = ServiceLocator::GetDatabase()->Query($getAccessoriesCommand);
+		$result = ServiceLocator::GetDatabase()->Query($getAccessoriesCommand);
 
-        $accessories = array();
-        while ($row = $result->GetRow())
-        {
-            $accessories[] = new AccessoryReservation(
-                $row[ColumnNames::REFERENCE_NUMBER],
-                Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
-                Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
-                $row[ColumnNames::ACCESSORY_ID],
-                $row[ColumnNames::QUANTITY]);
-        }
+		$accessories = array();
+		while ($row = $result->GetRow())
+		{
+			$accessories[] = new AccessoryReservation(
+				$row[ColumnNames::REFERENCE_NUMBER],
+				Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
+				Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
+				$row[ColumnNames::ACCESSORY_ID],
+				$row[ColumnNames::QUANTITY]);
+		}
 
-        $result->Free();
+		$result->Free();
 
-        return $accessories;
-    }
+		return $accessories;
+	}
 
-    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES)
-    {
-        $getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd(), $scheduleId);
+	public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES)
+	{
+		$getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd(), $scheduleId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getBlackoutsCommand);
+		$result = ServiceLocator::GetDatabase()->Query($getBlackoutsCommand);
 
-        $blackouts = array();
-        while ($row = $result->GetRow())
-        {
-            $blackouts[] = BlackoutItemView::Populate($row);
-        }
+		$blackouts = array();
+		while ($row = $result->GetRow())
+		{
+			$blackouts[] = BlackoutItemView::Populate($row);
+		}
 
-        $result->Free();
+		$result->Free();
 
-        return $blackouts;
-    }
+		return $blackouts;
+	}
 
-    public function GetBlackoutList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
-    {
-        $command = new GetBlackoutListFullCommand();
+	public function GetBlackoutList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+	{
+		$command = new GetBlackoutListFullCommand();
 
-        if ($filter != null)
-        {
-            $command = new FilterCommand($command, $filter);
-        }
+		if ($filter != null)
+		{
+			$command = new FilterCommand($command, $filter);
+		}
 
-        $builder = array('BlackoutItemView', 'Populate');
-        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
-    }
+		$builder = array('BlackoutItemView', 'Populate');
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+	}
 }
 
 class ReservationResourceView implements IResource
 {
-    private $_id;
-    private $_resourceName;
-    private $_adminGroupId;
-    private $_scheduleId;
+	private $_id;
+	private $_resourceName;
+	private $_adminGroupId;
+	private $_scheduleId;
 	private $_scheduleAdminGroupId;
 
 	public function __construct($resourceId, $resourceName, $adminGroupId, $scheduleId, $scheduleAdminGroupId)
-    {
-        $this->_id = $resourceId;
-        $this->_resourceName = $resourceName;
-        $this->_adminGroupId = $adminGroupId;
+	{
+		$this->_id = $resourceId;
+		$this->_resourceName = $resourceName;
+		$this->_adminGroupId = $adminGroupId;
 		$this->_scheduleId = $scheduleId;
 		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
-    }
+	}
 
-    /**
-     * @return int
-     */
-    public function Id()
-    {
-        return $this->_id;
-    }
+	/**
+	 * @return int
+	 */
+	public function Id()
+	{
+		return $this->_id;
+	}
 
-    /**
-     * @return string
-     */
-    public function Name()
-    {
-        return $this->_resourceName;
-    }
+	/**
+	 * @return string
+	 */
+	public function Name()
+	{
+		return $this->_resourceName;
+	}
 
-    /**
-     * @return int|null
-     */
-    public function GetAdminGroupId()
-    {
-        return $this->_adminGroupId;
-    }
+	/**
+	 * @return int|null
+	 */
+	public function GetAdminGroupId()
+	{
+		return $this->_adminGroupId;
+	}
 
-    /**
-     * alias of GetId()
-     * @return int
-     */
-    public function GetResourceId()
-    {
-        return $this->Id();
-    }
+	/**
+	 * alias of GetId()
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->Id();
+	}
 
-    /**
-     * @return int
-     */
-    public function GetId()
-    {
-        return $this->Id();
-    }
+	/**
+	 * @return int
+	 */
+	public function GetId()
+	{
+		return $this->Id();
+	}
 
-    /**
-     * @return string
-     */
-    public function GetName()
-    {
-        return $this->Name();
-    }
+	/**
+	 * @return string
+	 */
+	public function GetName()
+	{
+		return $this->Name();
+	}
 
 	/**
 	 * @return int
@@ -447,132 +448,169 @@ class ReservationResourceView implements IResource
 
 class ReservationUserView
 {
-    public $UserId;
-    public $FirstName;
-    public $LastName;
-    public $Email;
-    public $LevelId;
-    public $FullName;
+	public $UserId;
+	public $FirstName;
+	public $LastName;
+	public $Email;
+	public $LevelId;
+	public $FullName;
 
-    public function __construct($userId, $firstName, $lastName, $email, $levelId)
-    {
-        $this->UserId = $userId;
-        $this->FirstName = $firstName;
-        $this->LastName = $lastName;
-        $this->FullName = $firstName . ' ' . $lastName;
-        $this->Email = $email;
-        $this->LevelId = $levelId;
-    }
+	public function __construct($userId, $firstName, $lastName, $email, $levelId)
+	{
+		$this->UserId = $userId;
+		$this->FirstName = $firstName;
+		$this->LastName = $lastName;
+		$this->FullName = $firstName . ' ' . $lastName;
+		$this->Email = $email;
+		$this->LevelId = $levelId;
+	}
 
-    public function IsOwner()
-    {
-        return $this->LevelId == ReservationUserLevel::OWNER;
-    }
+	public function IsOwner()
+	{
+		return $this->LevelId == ReservationUserLevel::OWNER;
+	}
 
-    public function __toString()
-    {
-        return $this->UserId;
-    }
+	public function __toString()
+	{
+		return $this->UserId;
+	}
 }
 
 class NullReservationView extends ReservationView
 {
-    /**
-     * @var NullReservationView
-     */
-    private static $instance;
+	/**
+	 * @var NullReservationView
+	 */
+	private static $instance;
 
-    private function __construct()
-    {
-    }
+	private function __construct()
+	{
+	}
 
-    public static function Instance()
-    {
-        if (is_null(self::$instance))
-        {
-            self::$instance = new NullReservationView();
-        }
+	public static function Instance()
+	{
+		if (is_null(self::$instance))
+		{
+			self::$instance = new NullReservationView();
+		}
 
-        return self::$instance;
-    }
+		return self::$instance;
+	}
 
-    public function IsDisplayable()
-    {
-        return false;
-    }
+	public function IsDisplayable()
+	{
+		return false;
+	}
+}
+
+class ReservationAccessoryView
+{
+	/**
+	 * @var int
+	 */
+	public $AccessoryId;
+
+	/**
+	 * @var int
+	 */
+	public $QuantityReserved;
+
+	/**
+	 * @var int
+	 */
+	public $QuantityAvailable;
+
+	/**
+	 * @var null|string
+	 */
+	public $Name;
+
+	/**
+	 * @param int $accessoryId
+	 * @param int $quantityReserved
+	 * @param string $accessoryName
+	 * @param int $quantityAvailable
+	 */
+	public function __construct($accessoryId, $quantityReserved, $accessoryName, $quantityAvailable)
+	{
+		$this->AccessoryId = $accessoryId;
+		$this->QuantityReserved = $quantityReserved;
+		$this->Name = $accessoryName;
+		$this->QuantityAvailable = $quantityAvailable;
+	}
 }
 
 class ReservationView
 {
-    public $ReservationId;
-    public $SeriesId;
-    public $ReferenceNumber;
-    public $ResourceId;
-    public $ResourceName;
-    public $ScheduleId;
-    public $StatusId;
-    /**
-     * @var Date
-     */
-    public $StartDate;
-    /**
-     * @var Date
-     */
-    public $EndDate;
-    /**
-     * @var Date
-     */
-    public $DateCreated;
-    public $OwnerId;
-    public $OwnerEmailAddress;
-    public $OwnerFirstName;
-    public $OwnerLastName;
-    public $Title;
-    public $Description;
-    /**
-     * @var string|RepeatType
-     */
-    public $RepeatType;
-    /**
-     * @var int
-     */
-    public $RepeatInterval;
-    /**
-     * @var array
-     */
-    public $RepeatWeekdays;
-    /**
-     * @var string|RepeatMonthlyType
-     */
-    public $RepeatMonthlyType;
-    /**
-     * @var Date
-     */
-    public $RepeatTerminationDate;
-    /**
-     * @var int[]
-     */
-    public $AdditionalResourceIds = array();
+	public $ReservationId;
+	public $SeriesId;
+	public $ReferenceNumber;
+	public $ResourceId;
+	public $ResourceName;
+	public $ScheduleId;
+	public $StatusId;
+	/**
+	 * @var Date
+	 */
+	public $StartDate;
+	/**
+	 * @var Date
+	 */
+	public $EndDate;
+	/**
+	 * @var Date
+	 */
+	public $DateCreated;
+	public $OwnerId;
+	public $OwnerEmailAddress;
+	public $OwnerFirstName;
+	public $OwnerLastName;
+	public $Title;
+	public $Description;
+	/**
+	 * @var string|RepeatType
+	 */
+	public $RepeatType;
+	/**
+	 * @var int
+	 */
+	public $RepeatInterval;
+	/**
+	 * @var array
+	 */
+	public $RepeatWeekdays;
+	/**
+	 * @var string|RepeatMonthlyType
+	 */
+	public $RepeatMonthlyType;
+	/**
+	 * @var Date
+	 */
+	public $RepeatTerminationDate;
+	/**
+	 * @var int[]
+	 */
+	public $AdditionalResourceIds = array();
 
-    /**
-     * @var ReservationResourceView[]
-     */
-    public $Resources = array();
+	/**
+	 * @var ReservationResourceView[]
+	 */
+	public $Resources = array();
 
-    /**
-     * @var ReservationUserView[]
-     */
-    public $Participants = array();
+	/**
+	 * @var ReservationUserView[]
+	 */
+	public $Participants = array();
 
-    /**
-     * @var ReservationUserView[]
-     */
-    public $Invitees = array();
+	/**
+	 * @var ReservationUserView[]
+	 */
+	public $Invitees = array();
 
-    /**
-     * @var array|ReservationAccessory[]
-     */
-    public $Accessories = array();
+	/**
+	 * @var array|ReservationAccessoryView[]
+	 */
+	public $Accessories = array();
 
 	/**
 	 * @var array|AttributeValue[]
@@ -606,29 +644,29 @@ class ReservationView
 		return null;
 	}
 
-    /**
-     * @return bool
-     */
-    public function IsRecurring()
-    {
-        return $this->RepeatType != RepeatType::None;
-    }
+	/**
+	 * @return bool
+	 */
+	public function IsRecurring()
+	{
+		return $this->RepeatType != RepeatType::None;
+	}
 
-    /**
-     * @return bool
-     */
-    public function IsDisplayable()
-    {
-        return true; // some qualification should probably be made
-    }
+	/**
+	 * @return bool
+	 */
+	public function IsDisplayable()
+	{
+		return true; // some qualification should probably be made
+	}
 
-    /**
-     * @return bool
-     */
-    public function RequiresApproval()
-    {
-        return $this->StatusId == ReservationStatus::Pending;
-    }
+	/**
+	 * @return bool
+	 */
+	public function RequiresApproval()
+	{
+		return $this->StatusId == ReservationStatus::Pending;
+	}
 
 	/**
 	 * @param ReservationAttachmentView $attachment
@@ -641,130 +679,130 @@ class ReservationView
 
 interface IReservedItemView
 {
-    /**
-     * @abstract
-     * @return Date
-     */
-    public function GetStartDate();
+	/**
+	 * @abstract
+	 * @return Date
+	 */
+	public function GetStartDate();
 
-    /**
-     * @abstract
-     * @return Date
-     */
-    public function GetEndDate();
+	/**
+	 * @abstract
+	 * @return Date
+	 */
+	public function GetEndDate();
 
-    /**
-     * @abstract
-     * @return int
-     */
-    public function GetResourceId();
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetResourceId();
 
-    /**
-     * @abstract
-     * @return int
-     */
-    public function GetId();
+	/**
+	 * @abstract
+	 * @return int
+	 */
+	public function GetId();
 
-    /**
-     * @abstract
-     * @param Date $date
-     * @return bool
-     */
-    public function OccursOn(Date $date);
+	/**
+	 * @abstract
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function OccursOn(Date $date);
 }
 
 class ReservationItemView implements IReservedItemView
 {
-    /**
-     * @var string
-     */
-    public $ReferenceNumber;
+	/**
+	 * @var string
+	 */
+	public $ReferenceNumber;
 
-    /**
-     * @var Date
-     */
-    public $StartDate;
+	/**
+	 * @var Date
+	 */
+	public $StartDate;
 
-    /**
-     * @var Date
-     */
-    public $EndDate;
+	/**
+	 * @var Date
+	 */
+	public $EndDate;
 
-    /**
-     * @var DateRange
-     */
-    public $Date;
+	/**
+	 * @var DateRange
+	 */
+	public $Date;
 
-    /**
-     * @var string
-     */
-    public $ResourceName;
+	/**
+	 * @var string
+	 */
+	public $ResourceName;
 
-    /**
-     * @var int
-     */
-    public $ReservationId;
+	/**
+	 * @var int
+	 */
+	public $ReservationId;
 
-    /**
-     * @var int|ReservationUserLevel
-     */
-    public $UserLevelId;
+	/**
+	 * @var int|ReservationUserLevel
+	 */
+	public $UserLevelId;
 
-    /**
-     * @var string
-     */
-    public $Title;
+	/**
+	 * @var string
+	 */
+	public $Title;
 
-    /**
-     * @var string
-     */
-    public $Description;
+	/**
+	 * @var string
+	 */
+	public $Description;
 
-    /**
-     * @var int
-     */
-    public $ScheduleId;
+	/**
+	 * @var int
+	 */
+	public $ScheduleId;
 
-    /**
-     * @var null|string
-     */
-    public $FirstName;
+	/**
+	 * @var null|string
+	 */
+	public $FirstName;
 
-    /**
-     * @var null|string
-     */
-    public $LastName;
+	/**
+	 * @var null|string
+	 */
+	public $LastName;
 
-    /**
-     * @var null|int
-     */
-    public $UserId;
+	/**
+	 * @var null|int
+	 */
+	public $UserId;
 
-    /**
-     * @var null|Date
-     */
-    public $CreatedDate;
+	/**
+	 * @var null|Date
+	 */
+	public $CreatedDate;
 
-    /**
-     * alias of $CreatedDate
-     * @var null|Date
-     */
-    public $DateCreated;
+	/**
+	 * alias of $CreatedDate
+	 * @var null|Date
+	 */
+	public $DateCreated;
 
-    /**
-     * @var null|Date
-     */
-    public $ModifiedDate;
+	/**
+	 * @var null|Date
+	 */
+	public $ModifiedDate;
 
-    /**
-     * @var null|bool
-     */
-    public $IsRecurring;
+	/**
+	 * @var null|bool
+	 */
+	public $IsRecurring;
 
-    /**
-     * @var null|bool
-     */
-    public $RequiresApproval;
+	/**
+	 * @var null|bool
+	 */
+	public $RequiresApproval;
 
 	/**
 	 * @var string|RepeatType
@@ -803,95 +841,96 @@ class ReservationItemView implements IReservedItemView
 	public $SeriesId;
 
 	/**
-     * @param $referenceNumber string
-     * @param $startDate Date
-     * @param $endDate Date
-     * @param $resourceName string
-     * @param $resourceId int
-     * @param $reservationId int
-     * @param $userLevelId int|ReservationUserLevel
-     * @param $title string
-     * @param $description string
-     * @param $scheduleId int
-     * @param $userFirstName string
-     * @param $userLastName string
-     * @param $userId int
-     */
-    public function __construct(
-        $referenceNumber = null,
-        $startDate = null,
-        $endDate = null,
-        $resourceName = null,
-        $resourceId = null,
-        $reservationId = null,
-        $userLevelId = null,
-        $title = null,
-        $description = null,
-        $scheduleId = null,
-        $userFirstName = null,
-        $userLastName = null,
-        $userId = null
-    )
-    {
+	 * @param $referenceNumber string
+	 * @param $startDate Date
+	 * @param $endDate Date
+	 * @param $resourceName string
+	 * @param $resourceId int
+	 * @param $reservationId int
+	 * @param $userLevelId int|ReservationUserLevel
+	 * @param $title string
+	 * @param $description string
+	 * @param $scheduleId int
+	 * @param $userFirstName string
+	 * @param $userLastName string
+	 * @param $userId int
+	 */
+	public function __construct(
+		$referenceNumber = null,
+		$startDate = null,
+		$endDate = null,
+		$resourceName = null,
+		$resourceId = null,
+		$reservationId = null,
+		$userLevelId = null,
+		$title = null,
+		$description = null,
+		$scheduleId = null,
+		$userFirstName = null,
+		$userLastName = null,
+		$userId = null
+	)
+	{
 
-        $this->ReferenceNumber = $referenceNumber;
-        $this->StartDate = $startDate;
-        $this->EndDate = $endDate;
-        $this->ResourceName = $resourceName;
-        $this->ResourceId = $resourceId;
-        $this->ReservationId = $reservationId;
-        $this->Title = $title;
-        $this->Description = $description;
-        $this->ScheduleId = $scheduleId;
-        $this->FirstName = $userFirstName;
-        $this->OwnerFirstName = $userFirstName;
-        $this->LastName = $userLastName;
-        $this->OwnerLastName = $userLastName;
-        $this->UserId = $userId;
+		$this->ReferenceNumber = $referenceNumber;
+		$this->StartDate = $startDate;
+		$this->EndDate = $endDate;
+		$this->ResourceName = $resourceName;
+		$this->ResourceId = $resourceId;
+		$this->ReservationId = $reservationId;
+		$this->Title = $title;
+		$this->Description = $description;
+		$this->ScheduleId = $scheduleId;
+		$this->FirstName = $userFirstName;
+		$this->OwnerFirstName = $userFirstName;
+		$this->LastName = $userLastName;
+		$this->OwnerLastName = $userLastName;
+		$this->UserId = $userId;
 
-        if (!is_null($startDate) && !is_null($endDate))
-        {
-            $this->Date = new DateRange($startDate, $endDate);
-        }
-    }
+		if (!is_null($startDate) && !is_null($endDate))
+		{
+			$this->Date = new DateRange($startDate, $endDate);
+		}
+	}
 
-    /**
-     * @static
-     * @param $row array
-     * @return ReservationItemView
-     */
-    public static function Populate($row)
-    {
+	/**
+	 * @static
+	 * @param $row array
+	 * @return ReservationItemView
+	 */
+	public static function Populate($row)
+	{
 		$view = new ReservationItemView (
-            $row[ColumnNames::REFERENCE_NUMBER],
-            Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
-            Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
-            $row[ColumnNames::RESOURCE_NAME],
-            $row[ColumnNames::RESOURCE_ID],
-            $row[ColumnNames::RESERVATION_INSTANCE_ID],
-            $row[ColumnNames::RESERVATION_USER_LEVEL],
-            $row[ColumnNames::RESERVATION_TITLE],
-            $row[ColumnNames::RESERVATION_DESCRIPTION],
-            $row[ColumnNames::SCHEDULE_ID],
-            $row[ColumnNames::OWNER_FIRST_NAME],
-            $row[ColumnNames::OWNER_LAST_NAME],
-            $row[ColumnNames::OWNER_USER_ID]
-        );
+			$row[ColumnNames::REFERENCE_NUMBER],
+			Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
+			Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
+			$row[ColumnNames::RESOURCE_NAME],
+			$row[ColumnNames::RESOURCE_ID],
+			$row[ColumnNames::RESERVATION_INSTANCE_ID],
+			$row[ColumnNames::RESERVATION_USER_LEVEL],
+			$row[ColumnNames::RESERVATION_TITLE],
+			$row[ColumnNames::RESERVATION_DESCRIPTION],
+			$row[ColumnNames::SCHEDULE_ID],
+			$row[ColumnNames::OWNER_FIRST_NAME],
+			$row[ColumnNames::OWNER_LAST_NAME],
+			$row[ColumnNames::OWNER_USER_ID]
+		);
 
-        if (isset($row[ColumnNames::RESERVATION_CREATED]))
-        {
-            $view->CreatedDate = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
-            $view->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
-        }
+		if (isset($row[ColumnNames::RESERVATION_CREATED]))
+		{
+			$view->CreatedDate = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
+			$view->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
+		}
 
-        if (isset($row[ColumnNames::RESERVATION_MODIFIED]))
-        {
-            $view->ModifiedDate = Date::FromDatabase($row[ColumnNames::RESERVATION_MODIFIED]);
-        }
+		if (isset($row[ColumnNames::RESERVATION_MODIFIED]))
+		{
+			$view->ModifiedDate = Date::FromDatabase($row[ColumnNames::RESERVATION_MODIFIED]);
+		}
 
-        if (isset($row[ColumnNames::REPEAT_TYPE]))
-        {
-			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
+		if (isset($row[ColumnNames::REPEAT_TYPE]))
+		{
+			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE],
+														$row[ColumnNames::REPEAT_OPTIONS]);
 
 			$view->RepeatType = $repeatConfig->Type;
 			$view->RepeatInterval = $repeatConfig->Interval;
@@ -899,13 +938,13 @@ class ReservationItemView implements IReservedItemView
 			$view->RepeatMonthlyType = $repeatConfig->MonthlyType;
 			$view->RepeatTerminationDate = $repeatConfig->TerminationDate;
 
-            $view->IsRecurring = $row[ColumnNames::REPEAT_TYPE] != RepeatType::None;
-        }
+			$view->IsRecurring = $row[ColumnNames::REPEAT_TYPE] != RepeatType::None;
+		}
 
-        if (isset($row[ColumnNames::RESERVATION_STATUS]))
-        {
-            $view->RequiresApproval = $row[ColumnNames::RESERVATION_STATUS] == ReservationStatus::Pending;
-        }
+		if (isset($row[ColumnNames::RESERVATION_STATUS]))
+		{
+			$view->RequiresApproval = $row[ColumnNames::RESERVATION_STATUS] == ReservationStatus::Pending;
+		}
 
 		if (isset($row[ColumnNames::EMAIL]))
 		{
@@ -917,62 +956,62 @@ class ReservationItemView implements IReservedItemView
 			$view->SeriesId = $row[ColumnNames::SERIES_ID];
 		}
 
-        return $view;
-    }
+		return $view;
+	}
 
-    /**
-     * @param Date $date
-     * @return bool
-     */
-    public function OccursOn(Date $date)
-    {
-        return $this->Date->OccursOn($date);
-    }
+	/**
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function OccursOn(Date $date)
+	{
+		return $this->Date->OccursOn($date);
+	}
 
-    /**
-     * @return Date
-     */
-    public function GetStartDate()
-    {
-        return $this->StartDate;
-    }
+	/**
+	 * @return Date
+	 */
+	public function GetStartDate()
+	{
+		return $this->StartDate;
+	}
 
-    /**
-     * @return Date
-     */
-    public function GetEndDate()
-    {
-        return $this->EndDate;
-    }
+	/**
+	 * @return Date
+	 */
+	public function GetEndDate()
+	{
+		return $this->EndDate;
+	}
 
-    /**
-     * @return int
-     */
-    public function GetReservationId()
-    {
-        return $this->ReservationId;
-    }
+	/**
+	 * @return int
+	 */
+	public function GetReservationId()
+	{
+		return $this->ReservationId;
+	}
 
-    /**
-     * @return int
-     */
-    public function GetResourceId()
-    {
-        return $this->ResourceId;
-    }
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->ResourceId;
+	}
 
-    /**
-     * @return string
-     */
-    public function GetReferenceNumber()
-    {
-        return $this->ReferenceNumber;
-    }
+	/**
+	 * @return string
+	 */
+	public function GetReferenceNumber()
+	{
+		return $this->ReferenceNumber;
+	}
 
-    public function GetId()
-    {
-        return $this->GetReservationId();
-    }
+	public function GetId()
+	{
+		return $this->GetReservationId();
+	}
 
 	/**
 	 * @return DateDiff
@@ -985,259 +1024,259 @@ class ReservationItemView implements IReservedItemView
 
 class BlackoutItemView implements IReservedItemView
 {
-    /**
-     * @var Date
-     */
-    public $StartDate;
+	/**
+	 * @var Date
+	 */
+	public $StartDate;
 
-    /**
-     * @var Date
-     */
-    public $EndDate;
+	/**
+	 * @var Date
+	 */
+	public $EndDate;
 
-    /**
-     * @var DateRange
-     */
-    public $Date;
+	/**
+	 * @var DateRange
+	 */
+	public $Date;
 
-    /**
-     * @var int
-     */
-    public $ResourceId;
+	/**
+	 * @var int
+	 */
+	public $ResourceId;
 
-    /**
-     * @var string
-     */
-    public $ResourceName;
+	/**
+	 * @var string
+	 */
+	public $ResourceName;
 
-    /**
-     * @var int
-     */
-    public $InstanceId;
+	/**
+	 * @var int
+	 */
+	public $InstanceId;
 
-    /**
-     * @var int
-     */
-    public $SeriesId;
+	/**
+	 * @var int
+	 */
+	public $SeriesId;
 
-    /**
-     * @var string
-     */
-    public $Title;
+	/**
+	 * @var string
+	 */
+	public $Title;
 
-    /**
-     * @var string
-     */
-    public $Description;
+	/**
+	 * @var string
+	 */
+	public $Description;
 
-    /**
-     * @var int
-     */
-    public $ScheduleId;
+	/**
+	 * @var int
+	 */
+	public $ScheduleId;
 
-    /**
-     * @var null|string
-     */
-    public $FirstName;
+	/**
+	 * @var null|string
+	 */
+	public $FirstName;
 
-    /**
-     * @var null|string
-     */
-    public $LastName;
+	/**
+	 * @var null|string
+	 */
+	public $LastName;
 
-    /**
-     * @var null|int
-     */
-    public $OwnerId;
+	/**
+	 * @var null|int
+	 */
+	public $OwnerId;
 
-    /**
-     * @param int $instanceId
-     * @param Date $startDate
-     * @param Date $endDate
-     * @param int $resourceId
-     * @param int $ownerId
-     * @param int $scheduleId
-     * @param string $title
-     * @param string $description
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $resourceName
-     * @param int $seriesId
-     */
-    public function __construct(
-        $instanceId,
-        Date $startDate,
-        Date $endDate,
-        $resourceId,
-        $ownerId,
-        $scheduleId,
-        $title,
-        $description,
-        $firstName,
-        $lastName,
-        $resourceName,
-        $seriesId)
-    {
-        $this->InstanceId = $instanceId;
-        $this->StartDate = $startDate;
-        $this->EndDate = $endDate;
-        $this->ResourceId = $resourceId;
-        $this->OwnerId = $ownerId;
-        $this->ScheduleId = $scheduleId;
-        $this->Title = $title;
-        $this->Description = $description;
-        $this->FirstName = $firstName;
-        $this->LastName = $lastName;
-        $this->ResourceName = $resourceName;
-        $this->SeriesId = $seriesId;
-        $this->Date = new DateRange($startDate, $endDate);
-    }
+	/**
+	 * @param int $instanceId
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param int $resourceId
+	 * @param int $ownerId
+	 * @param int $scheduleId
+	 * @param string $title
+	 * @param string $description
+	 * @param string $firstName
+	 * @param string $lastName
+	 * @param string $resourceName
+	 * @param int $seriesId
+	 */
+	public function __construct(
+		$instanceId,
+		Date $startDate,
+		Date $endDate,
+		$resourceId,
+		$ownerId,
+		$scheduleId,
+		$title,
+		$description,
+		$firstName,
+		$lastName,
+		$resourceName,
+		$seriesId)
+	{
+		$this->InstanceId = $instanceId;
+		$this->StartDate = $startDate;
+		$this->EndDate = $endDate;
+		$this->ResourceId = $resourceId;
+		$this->OwnerId = $ownerId;
+		$this->ScheduleId = $scheduleId;
+		$this->Title = $title;
+		$this->Description = $description;
+		$this->FirstName = $firstName;
+		$this->LastName = $lastName;
+		$this->ResourceName = $resourceName;
+		$this->SeriesId = $seriesId;
+		$this->Date = new DateRange($startDate, $endDate);
+	}
 
-    /**
-     * @static
-     * @param $row
-     * @return BlackoutItemView
-     */
-    public static function Populate($row)
-    {
-        return new BlackoutItemView($row[ColumnNames::BLACKOUT_INSTANCE_ID],
-            Date::FromDatabase($row[ColumnNames::BLACKOUT_START]),
-            Date::FromDatabase($row[ColumnNames::BLACKOUT_END]),
-            $row[ColumnNames::RESOURCE_ID],
-            $row[ColumnNames::USER_ID],
-            $row[ColumnNames::SCHEDULE_ID],
-            $row[ColumnNames::BLACKOUT_TITLE],
-            $row[ColumnNames::BLACKOUT_DESCRIPTION],
-            $row[ColumnNames::FIRST_NAME],
-            $row[ColumnNames::LAST_NAME],
-            $row[ColumnNames::RESOURCE_NAME],
-            $row[ColumnNames::BLACKOUT_SERIES_ID]);
-    }
+	/**
+	 * @static
+	 * @param $row
+	 * @return BlackoutItemView
+	 */
+	public static function Populate($row)
+	{
+		return new BlackoutItemView($row[ColumnNames::BLACKOUT_INSTANCE_ID],
+									Date::FromDatabase($row[ColumnNames::BLACKOUT_START]),
+									Date::FromDatabase($row[ColumnNames::BLACKOUT_END]),
+									$row[ColumnNames::RESOURCE_ID],
+									$row[ColumnNames::USER_ID],
+									$row[ColumnNames::SCHEDULE_ID],
+									$row[ColumnNames::BLACKOUT_TITLE],
+									$row[ColumnNames::BLACKOUT_DESCRIPTION],
+									$row[ColumnNames::FIRST_NAME],
+									$row[ColumnNames::LAST_NAME],
+									$row[ColumnNames::RESOURCE_NAME],
+									$row[ColumnNames::BLACKOUT_SERIES_ID]);
+	}
 
-    /**
-     * @return Date
-     */
-    public function GetStartDate()
-    {
-        return $this->StartDate;
-    }
+	/**
+	 * @return Date
+	 */
+	public function GetStartDate()
+	{
+		return $this->StartDate;
+	}
 
-    /**
-     * @return Date
-     */
-    public function GetEndDate()
-    {
-        return $this->EndDate;
-    }
+	/**
+	 * @return Date
+	 */
+	public function GetEndDate()
+	{
+		return $this->EndDate;
+	}
 
-    /**
-     * @return int
-     */
-    public function GetResourceId()
-    {
-        return $this->ResourceId;
-    }
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->ResourceId;
+	}
 
-    /**
-     * @return int
-     */
-    public function GetId()
-    {
-        return $this->InstanceId;
-    }
+	/**
+	 * @return int
+	 */
+	public function GetId()
+	{
+		return $this->InstanceId;
+	}
 
-    /**
-     * @param Date $date
-     * @return bool
-     */
-    public function OccursOn(Date $date)
-    {
-        return $this->Date->OccursOn($date);
-    }
+	/**
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function OccursOn(Date $date)
+	{
+		return $this->Date->OccursOn($date);
+	}
 }
 
 class AccessoryReservation
 {
-    /**
-     * @var string
-     */
-    private $referenceNumber;
+	/**
+	 * @var string
+	 */
+	private $referenceNumber;
 
-    /**
-     * @var int
-     */
-    private $accessoryId;
+	/**
+	 * @var int
+	 */
+	private $accessoryId;
 
-    /**
-     * @var \Date
-     */
-    private $startDate;
+	/**
+	 * @var \Date
+	 */
+	private $startDate;
 
-    /**
-     * @var \Date
-     */
-    private $endDate;
+	/**
+	 * @var \Date
+	 */
+	private $endDate;
 
-    /**
-     * @var int
-     */
-    private $quantityReserved;
+	/**
+	 * @var int
+	 */
+	private $quantityReserved;
 
-    /**
-     * @param string $referenceNumber
-     * @param Date $startDate
-     * @param Date $endDate
-     * @param int $accessoryId
-     * @param int $quantityReserved
-     */
-    public function __construct($referenceNumber, $startDate, $endDate, $accessoryId, $quantityReserved)
-    {
-        $this->referenceNumber = $referenceNumber;
-        $this->accessoryId = $accessoryId;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->quantityReserved = $quantityReserved;
-    }
+	/**
+	 * @param string $referenceNumber
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param int $accessoryId
+	 * @param int $quantityReserved
+	 */
+	public function __construct($referenceNumber, $startDate, $endDate, $accessoryId, $quantityReserved)
+	{
+		$this->referenceNumber = $referenceNumber;
+		$this->accessoryId = $accessoryId;
+		$this->startDate = $startDate;
+		$this->endDate = $endDate;
+		$this->quantityReserved = $quantityReserved;
+	}
 
-    /**
-     * @return string
-     */
-    public function GetReferenceNumber()
-    {
-        return $this->referenceNumber;
-    }
+	/**
+	 * @return string
+	 */
+	public function GetReferenceNumber()
+	{
+		return $this->referenceNumber;
+	}
 
-    /**
-     * @return Date
-     */
-    public function GetStartDate()
-    {
-        return $this->startDate;
-    }
+	/**
+	 * @return Date
+	 */
+	public function GetStartDate()
+	{
+		return $this->startDate;
+	}
 
-    /**
-     * @return Date
-     */
-    public function GetEndDate()
-    {
-        return $this->endDate;
-    }
+	/**
+	 * @return Date
+	 */
+	public function GetEndDate()
+	{
+		return $this->endDate;
+	}
 
-    /**
-     * @return int
-     */
-    public function GetAccessoryId()
-    {
-        return $this->accessoryId;
-    }
+	/**
+	 * @return int
+	 */
+	public function GetAccessoryId()
+	{
+		return $this->accessoryId;
+	}
 
-    /**
-     * @return int
-     */
-    public function QuantityReserved()
-    {
-        return $this->quantityReserved;
-    }
+	/**
+	 * @return int
+	 */
+	public function QuantityReserved()
+	{
+		return $this->quantityReserved;
+	}
 }
 
 class ReservationAttachmentView
@@ -1278,4 +1317,5 @@ class ReservationAttachmentView
 		return $this->seriesId;
 	}
 }
+
 ?>

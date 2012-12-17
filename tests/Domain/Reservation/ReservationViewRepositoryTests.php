@@ -131,6 +131,8 @@ class ReservationViewRepositoryTests extends TestBase
         $quantity2 = 1232;
         $accessoryName1 = 'a1';
         $accessoryName2 = 'a2';
+		$accessoryQuantity1 = 111;
+		$accessoryQuantity2 = 222;
 
 		$attributeId1 = 9292;
 		$attributeId2 = 884;
@@ -140,8 +142,8 @@ class ReservationViewRepositoryTests extends TestBase
 		$attributeLabel2 = 'al2';
 
         $accessoryRows = new ReservationAccessoryRow();
-        $accessoryRows->WithAccessory($accessory1, $quantity1, $accessoryName1)
-                ->WithAccessory($accessory2, $quantity2, $accessoryName2);
+        $accessoryRows->WithAccessory($accessory1, $quantity1, $accessoryName1, $accessoryQuantity1)
+                ->WithAccessory($accessory2, $quantity2, $accessoryName2, $accessoryQuantity2);
 
 		$attributeRows = new CustomAttributeValueRow();
 		$attributeRows->With($attributeId1, $attributeValue1, $attributeLabel1)
@@ -210,8 +212,8 @@ class ReservationViewRepositoryTests extends TestBase
         );
 
         $expectedView->Accessories = array(
-            new ReservationAccessory($accessory1, $quantity1, $accessoryName1),
-            new ReservationAccessory($accessory2, $quantity2, $accessoryName2),
+            new ReservationAccessoryView($accessory1, $quantity1, $accessoryName1, $accessoryQuantity1),
+            new ReservationAccessoryView($accessory2, $quantity2, $accessoryName2, $accessoryQuantity2),
         );
 
 		$expectedView->AddAttribute(new AttributeValue($attributeId1, $attributeValue1, $attributeLabel1));

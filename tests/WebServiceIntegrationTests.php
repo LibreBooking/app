@@ -83,10 +83,9 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 
 		$request = new ReservationRequest();
 		$request->accessories = array(new ReservationAccessoryRequest(1, 1));
-		$request->attributes = array(new AttributeValueRequest(1, 'att1'),new AttributeValueRequest(2, 'att2'));
+		$request->customAttributes = array(new AttributeValueRequest(1, 'att1'), new AttributeValueRequest(2, 'att2'));
 		$request->description = 'some description';
 		$request->endDateTime = Date::Parse('2012-12-01 12:31', 'America/Chicago')->ToIso();
-		$request->repeatType = 'none';
 		$request->resourceId = 1;
 		$request->startDateTime = Date::Parse('2012-12-01 12:00', 'America/Chicago')->ToIso();
 		$request->title = 'some title';
@@ -102,6 +101,51 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 			}
 		}
 		$this->assertNotEmpty($response->links[0]);
+	}
+
+	public function testUpdateReservation()
+	{
+		$authHeaders = $this->LogIn();
+
+		/** @var $reservations ReservationsResponse */
+		$reservations = $this->client->Get('Reservations/', $authHeaders);
+		$reservationUrl = $reservations->reservations[0]->links[0];
+		/** @var $reservation ReservationResponse */
+		$reservation = $this->client->Get($reservationUrl, $authHeaders);
+
+		$reservationRequest = new ReservationRequest();
+		foreach ($reservation->accessories as $accessory)
+		{
+			$reservationRequest->accessories[] = new ReservationAccessoryRequest($accessory->id, $accessory->quantityReserved);
+		}
+		foreach ($reservation->customAttributes as $attribute)
+		{
+			$reservationRequest->customAttributes[] = new AttributeValueRequest($attribute->id, $attribute->value);
+		}
+
+		$reservationRequest->description = $reservation->description;
+		$reservationRequest->endDateTime = $reservation->endDateTime;
+		foreach ($reservation->invitees as $invitee)
+		{
+			$reservationRequest->invitees[] = $invitee->userId;
+		}
+		foreach ($reservation->participants as $participant)
+		{
+			$reservationRequest->participants[] = $participant->userId;
+		}
+
+		$reservationRequest->recurrenceRule = $reservation->recurrenceRule;
+		$reservationRequest->resourceId = $reservation->resourceId;
+		foreach ($reservation->resources as $resource)
+		{
+			$reservationRequest->resources[] = $resource->id;
+		}
+		$reservationRequest->startDateTime = $reservation->startDateTime;
+		$reservationRequest->title = $reservation->title;
+		$reservationRequest->userId = $reservation->owner->userId;
+
+		$this->client->Post($reservationUrl, $reservationRequest);
+
 	}
 }
 
@@ -144,7 +188,22 @@ class HttpClient
 
 	public function Get($url, $headers = array())
 	{
+		$fullUrl = $this->GetUrl($url);
+		$curl_connection = curl_init($fullUrl);
+		curl_setopt($curl_connection, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl_connection, CURLOPT_HTTPHEADER, $headers);
+		$result = curl_exec($curl_connection);
 
+		curl_close($curl_connection);
+
+		$jsonObject = json_decode($result);
+
+		if ($jsonObject == null)
+		{
+			echo $result;
+		}
+
+		return $jsonObject;
 	}
 
 	private function GetUrl($url)

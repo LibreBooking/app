@@ -122,7 +122,8 @@ class CalendarExportPresenterTests extends TestBase
 
 		$reservationView = new iCalendarReservationView($res, $user, $this->privacyFilter);
 		$this->assertEquals($res->OwnerEmailAddress, $reservationView->OrganizerEmail);
-		$this->assertEquals(new FullName($res->OwnerFirstName, $res->OwnerLastName), $reservationView->Organizer);
+		$fullName = new FullName($res->OwnerFirstName, $res->OwnerLastName);
+		$this->assertEquals($fullName->__toString(), $reservationView->Organizer);
 	}
 
 	public function testOrganizerIsDefaultedIfCurrentUserIsOrganizer()
@@ -137,7 +138,8 @@ class CalendarExportPresenterTests extends TestBase
 
 		$reservationView = new iCalendarReservationView($res, $user, $this->privacyFilter);
 		$this->assertEquals('e-noreply@m.com', $reservationView->OrganizerEmail);
-		$this->assertEquals(new FullName($res->OwnerFirstName, $res->OwnerLastName), $reservationView->Organizer);
+		$fullName = new FullName($res->OwnerFirstName, $res->OwnerLastName);
+		$this->assertEquals($fullName->__toString(), $reservationView->Organizer);
 	}
 
 	public function testViewHidesDetailsWhenNoAccess()

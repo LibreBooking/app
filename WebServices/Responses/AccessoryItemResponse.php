@@ -25,11 +25,13 @@ class AccessoryItemResponse extends RestResponse
 	public $id;
 	public $name;
 	public $quantityAvailable;
+	public $quantityReserved;
 
-	public function __construct(IRestServer $server, $id, $name, $quantityAvailable)
+	public function __construct(IRestServer $server, $id, $name, $quantityReserved, $quantityAvailable)
 	{
 		$this->id = $id;
 		$this->name = $name;
+		$this->quantityReserved = $quantityReserved;
 		$this->quantityAvailable = $quantityAvailable;
 
 		$this->AddService($server, WebServices::GetAccessory, array(WebServiceParams::AccessoryId => $id));
@@ -48,6 +50,7 @@ class ExampleAccessoryItemResponse extends AccessoryItemResponse
 		$this->id = 1;
 		$this->name = 'Example';
 		$this->quantityAvailable = 12;
+		$this->quantityReserved = 3;
 	}
 }
 
