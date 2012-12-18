@@ -20,7 +20,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
 
-class ReservationDeletePresenter
+interface IReservationDeletePresenter
+{
+	/**
+	 * @return ExistingReservationSeries
+	 */
+	public function BuildReservation();
+
+	/**
+	 * @param ExistingReservationSeries $reservationSeries
+	 */
+	public function HandleReservation($reservationSeries);
+}
+
+class ReservationDeletePresenter implements IReservationDeletePresenter
 {
 	/**
 	 * @var IReservationDeletePage
@@ -36,15 +49,22 @@ class ReservationDeletePresenter
 	 * @var IReservationHandler
 	 */
 	private $handler;
+
+	/**
+	 * @var UserSession
+	 */
+	private $userSession;
 	
 	public function __construct(
 		IReservationDeletePage $page, 
 		IDeleteReservationPersistenceService $persistenceService,
-		IReservationHandler $handler)
+		IReservationHandler $handler,
+		UserSession $userSession)
 	{
 		$this->page = $page;
 		$this->persistenceService = $persistenceService;
 		$this->handler = $handler;
+		$this->userSession = $userSession;
 	}
 	
 	/**
@@ -52,11 +72,11 @@ class ReservationDeletePresenter
 	 */
 	public function BuildReservation()
 	{
-		$instanceId = $this->page->GetReservationId();
-		$existingSeries = $this->persistenceService->LoadByInstanceId($instanceId);
+		$referenceNumber = $this->page->GetReferenceNumber();
+		$existingSeries = $this->persistenceService->LoadByReferenceNumber($referenceNumber);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
 		
-		$existingSeries->Delete(ServiceLocator::GetServer()->GetUserSession());
+		$existingSeries->Delete($this->userSession);
 		
 		return $existingSeries;
 	}

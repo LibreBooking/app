@@ -20,14 +20,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
-require_once(ROOT_DIR . 'Presenters/Reservation/ReservationDeletePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 
 interface IReservationDeletePage extends IReservationSaveResultsPage
 {
 	/**
-	 * @return int
+	 * @return string
 	 */
-	public function GetReservationId();
+	public function GetReferenceNumber();
 
 	/**
 	 * @return SeriesUpdateScope|string
@@ -51,16 +51,8 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 	{
 		parent::__construct();
 
-		$persistenceFactory = new ReservationPersistenceFactory();
-
-		$updateAction = ReservationAction::Delete;
-
-		$handler = ReservationHandler::Create($updateAction, $persistenceFactory->Create($updateAction), ServiceLocator::GetServer()->GetUserSession());
-		$this->presenter = new ReservationDeletePresenter(
-			$this,
-			$persistenceFactory->Create($updateAction),
-			$handler
-		);
+		$factory = new ReservationPresenterFactory();
+		$this->presenter = $factory->Delete($this, ServiceLocator::GetServer()->GetUserSession());
 	}
 
 	public function PageLoad()
@@ -93,9 +85,9 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 		// set warnings variable
 	}
 
-	public function GetReservationId()
+	public function GetReferenceNumber()
 	{
-		return $this->GetForm(FormKeys::RESERVATION_ID);
+		return $this->GetForm(FormKeys::REFERENCE_NUMBER);
 	}
 
 	public function GetSeriesUpdateScope()

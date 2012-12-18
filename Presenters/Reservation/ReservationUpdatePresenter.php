@@ -33,7 +33,6 @@ interface IReservationUpdatePresenter
 	public function HandleReservation($reservationSeries);
 }
 
-
 class ReservationUpdatePresenter implements IReservationUpdatePresenter
 {
 	/**

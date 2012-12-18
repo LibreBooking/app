@@ -82,7 +82,7 @@ class ReservationWriteWebService
 	 * @description Updates an existing reservation.
 	 * Pass an optional updateScope query string parameter to restrict changes. Possible values for updateScope are this|full|future
 	 * @request ReservationRequest
-	 * @response ReservationUpdateResponse
+	 * @response ReservationUpdatedResponse
 	 * @param string $referenceNumber
 	 * @return void
 	 */
@@ -108,6 +108,38 @@ class ReservationWriteWebService
 		else
 		{
 			Log::Debug('ReservationWriteWebService.Update() - Reservation Failed.');
+
+			$this->server->WriteResponse(new ReservationFailedResponse($this->server, $result->Errors()),
+										 RestResponse::BAD_REQUEST_CODE);
+		}
+	}
+
+	/**
+	 * @name DeleteReservation
+	 * @description Deletes an existing reservation.
+	 * Pass an optional updateScope query string parameter to restrict changes. Possible values for updateScope are this|full|future
+	 * @response ReservationDeletedResponse
+	 * @param string $referenceNumber
+	 * @return void
+	 */
+	public function Delete($referenceNumber)
+	{
+		Log::Debug('ReservationWriteWebService.Delete() User=%s, ReferenceNumber=%s, Request=%s', $referenceNumber, $this->server->GetSession()->UserId);
+
+		$updateScope = $this->server->GetQueryString(WebServiceQueryStringKeys::UPDATE_SCOPE);
+		$result = $this->controller->Delete($this->server->GetSession(), $referenceNumber, $updateScope);
+
+		if ($result->WasSuccessful())
+		{
+			Log::Debug('ReservationWriteWebService.Delete() - Reservation Deleted. ReferenceNumber=%s',
+					   $result->CreatedReferenceNumber());
+
+			$this->server->WriteResponse(new ReservationDeletedResponse($this->server, $result->CreatedReferenceNumber()),
+										 RestResponse::OK_CODE);
+		}
+		else
+		{
+			Log::Debug('ReservationWriteWebService.Delete() - Reservation Failed.');
 
 			$this->server->WriteResponse(new ReservationFailedResponse($this->server, $result->Errors()),
 										 RestResponse::BAD_REQUEST_CODE);

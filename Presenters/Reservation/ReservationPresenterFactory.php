@@ -20,6 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationUpdatePresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationDeletePresenter.php');
 
 interface IReservationPresenterFactory
 {
@@ -36,6 +37,13 @@ interface IReservationPresenterFactory
 	 * @return ReservationUpdatePresenter
 	 */
 	public function Update(IReservationUpdatePage $updatePage, UserSession $userSession);
+
+	/**
+	 * @param IReservationDeletePage $deletePage
+	 * @param UserSession $userSession
+	 * @return ReservationDeletePresenter
+	 */
+	public function Delete(IReservationDeletePage $deletePage, UserSession $userSession);
 }
 
 class ReservationPresenterFactory implements IReservationPresenterFactory
@@ -62,6 +70,21 @@ class ReservationPresenterFactory implements IReservationPresenterFactory
 											  $userSession);
 
 		return new ReservationUpdatePresenter($updatePage, $persistenceFactory->Create($reservationAction), $handler, $resourceRepository, $userSession);
+	}
+
+	public function Delete(IReservationDeletePage $deletePage, UserSession $userSession)
+	{
+		$persistenceFactory = new ReservationPersistenceFactory();
+
+		$deleteAction = ReservationAction::Delete;
+
+		$handler = ReservationHandler::Create($deleteAction, $persistenceFactory->Create($deleteAction), $userSession);
+		return new ReservationDeletePresenter(
+			$deletePage,
+			$persistenceFactory->Create($deleteAction),
+			$handler,
+			$userSession
+		);
 	}
 }
 

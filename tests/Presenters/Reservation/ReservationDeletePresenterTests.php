@@ -66,7 +66,8 @@ class ReservationDeletePresenterTests extends TestBase
 		$this->presenter = new ReservationDeletePresenter(
 								$this->page, 
 								$this->persistenceService, 
-								$this->handler);
+								$this->handler,
+								$this->user);
 	}
 	
 	public function teardown()
@@ -76,22 +77,22 @@ class ReservationDeletePresenterTests extends TestBase
 	
 	public function testLoadsExistingReservationAndDeletesIt()
 	{
-		$reservationId = 109809;
+		$referenceNumber = '109809';
 		$seriesUpdateScope = SeriesUpdateScope::ThisInstance;
 		
 		$expectedSeries = $this->getMock('ExistingReservationSeries');	
 
 		$this->page->expects($this->once())
-			->method('GetReservationId')
-			->will($this->returnValue($reservationId));
+			->method('GetReferenceNumber')
+			->will($this->returnValue($referenceNumber));
 		
 		$this->page->expects($this->once())
 			->method('GetSeriesUpdateScope')
 			->will($this->returnValue($seriesUpdateScope));
 		
 		$this->persistenceService->expects($this->once())
-			->method('LoadByInstanceId')
-			->with($this->equalTo($reservationId))
+			->method('LoadByReferenceNumber')
+			->with($this->equalTo($referenceNumber))
 			->will($this->returnValue($expectedSeries));	
 			
 		$expectedSeries->expects($this->once())

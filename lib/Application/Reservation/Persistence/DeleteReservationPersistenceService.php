@@ -18,16 +18,15 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/IReservationPersistenceService.php');
 
 interface IDeleteReservationPersistenceService extends IReservationPersistenceService
 {
 	/**
-	 * @param int $reservationInstanceId
+	 * @param string $referenceNumber
 	 * @return ExistingReservationSeries
 	 */
-	function LoadByInstanceId($reservationInstanceId);
+	public function LoadByReferenceNumber($referenceNumber);
 }
 
 class DeleteReservationPersistenceService implements IDeleteReservationPersistenceService
@@ -42,14 +41,14 @@ class DeleteReservationPersistenceService implements IDeleteReservationPersisten
 		$this->_repository = $repository;
 	}
 	
-	public function LoadByInstanceId($reservationInstanceId)
+	public function LoadByReferenceNumber($referenceNumber)
 	{
-		return $this->_repository->LoadById($reservationInstanceId);
+		return $this->_repository->LoadByReferenceNumber($referenceNumber);
 	}
 	
 	public function Persist($existingReservationSeries)
 	{
-		return $this->_repository->Delete($existingReservationSeries);
+		$this->_repository->Delete($existingReservationSeries);
 	}
 }
 

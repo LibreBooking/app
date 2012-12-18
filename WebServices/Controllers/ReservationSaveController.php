@@ -20,6 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/ReservationDeletePage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
 
@@ -43,6 +44,14 @@ interface IReservationSaveController
 	 * @return ReservationControllerResult
 	 */
 	public function Update($request, $session, $referenceNumber, $updateScope);
+
+	/**
+	 * @param WebServiceUserSession $session
+	 * @param string $referenceNumber
+	 * @param string $updateScope
+	 * @return ReservationControllerResult
+	 */
+	public function Delete($session, $referenceNumber, $updateScope);
 }
 
 class ReservationSaveController implements IReservationSaveController
@@ -87,6 +96,24 @@ class ReservationSaveController implements IReservationSaveController
 		}
 
 		$presenter = $this->factory->Update($facade, $session);
+		$reservation = $presenter->BuildReservation();
+		$presenter->HandleReservation($reservation);
+
+		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+	}
+
+	public function Delete($session, $referenceNumber, $updateScope)
+	{
+		$facade = new ReservationDeleteRequestResponseFacade($referenceNumber, $updateScope);
+
+		$validationErrors = $this->ValidateDeleteRequest($referenceNumber, $updateScope);
+
+		if (count($validationErrors) > 0)
+		{
+			return new ReservationControllerResult(null, $validationErrors);
+		}
+
+		$presenter = $this->factory->Delete($facade, $session);
 		$reservation = $presenter->BuildReservation();
 		$presenter->HandleReservation($reservation);
 
@@ -175,15 +202,35 @@ class ReservationSaveController implements IReservationSaveController
 	 */
 	private function ValidateUpdateRequest($request)
 	{
-		$errors = $this->ValidateRequest($request);
-		$referenceNumber = $request->GetReferenceNumber();
+		return array_merge($this->ValidateRequest($request),
+						   $this->ValidateParams($request->GetReferenceNumber(), $request->GetSeriesUpdateScope()));
+	}
+
+	/**
+	 * @param string $referenceNumber
+	 * @param string $updateScope
+	 * @return array|string[]
+	 */
+	private function ValidateDeleteRequest($referenceNumber, $updateScope)
+	{
+		return $this->ValidateParams($referenceNumber, $updateScope);
+	}
+
+	/**
+	 * @param string $referenceNumber
+	 * @param string $updateScope
+	 * @return array|string[]
+	 */
+	private function ValidateParams($referenceNumber, $updateScope)
+	{
+		$errors = array();
+
 		if (empty($referenceNumber))
 		{
 			$errors[] = 'Missing or invalid referenceNumber';
 		}
 
-		$updateScope = $request->GetSeriesUpdateScope();
-		if ($updateScope != SeriesUpdateScope::FullSeries && $updateScope != SeriesUpdateScope::ThisInstance && $updateScope != SeriesUpdateScope::FutureInstances)
+		if (!SeriesUpdateScope::IsValid($updateScope))
 		{
 			$errors[] = 'Missing or invalid updateScope';
 		}
@@ -277,7 +324,7 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		$this->request = $request;
 		$this->session = $session;
-		$this->recurrenceRule = empty($request->recurrenceRule)? RecurrenceRequestResponse::Null() : $request->recurrenceRule;
+		$this->recurrenceRule = empty($request->recurrenceRule) ? RecurrenceRequestResponse::Null() : $request->recurrenceRule;
 	}
 
 	public function ReferenceNumber()
@@ -536,6 +583,79 @@ class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseF
 	public function GetRemovedAttachmentIds()
 	{
 		return array();
+	}
+}
+
+class ReservationDeleteRequestResponseFacade implements IReservationDeletePage
+{
+	private $referenceNumber;
+	private $updateScope;
+	private $errors = array();
+
+	public function __construct($referenceNumber, $updateScope)
+	{
+		$this->referenceNumber = $referenceNumber;
+		$this->updateScope = $updateScope;
+	}
+
+	/**
+	 * @param bool $succeeded
+	 */
+	public function SetSaveSuccessfulMessage($succeeded)
+	{
+		// no-op
+	}
+
+	/**
+	 * @param array|string[] $errors
+	 */
+	public function ShowErrors($errors)
+	{
+		$this->errors = $errors;
+	}
+
+	/**
+	 * @param array|string[] $warnings
+	 */
+	public function ShowWarnings($warnings)
+	{
+		// no-op
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetReferenceNumber()
+	{
+		return $this->referenceNumber;
+	}
+
+	/**
+	 * @return SeriesUpdateScope|string
+	 */
+	public function GetSeriesUpdateScope()
+	{
+		if (empty($this->updateScope))
+		{
+			return SeriesUpdateScope::FullSeries;
+		}
+		return $this->updateScope;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function ReferenceNumber()
+	{
+		return $this->referenceNumber;
+	}
+
+	/**
+	 * @return array|string[]
+	 */
+	public function Errors()
+	{
+		return $this->errors;
 	}
 }
 

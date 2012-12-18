@@ -16,19 +16,20 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/Values/ReservationStartTimeConstraint.php');
 
 class SeriesUpdateScope
 {
 	private function __construct()
-	{}
-	
+	{
+	}
+
 	const ThisInstance = 'this';
 	const FullSeries = 'full';
 	const FutureInstances = 'future';
-	
+
 	public static function CreateStrategy($seriesUpdateScope)
 	{
 		switch ($seriesUpdateScope)
@@ -46,6 +47,17 @@ class SeriesUpdateScope
 				throw new Exception('Unknown seriesUpdateScope requested');
 		}
 	}
+
+	/**
+	 * @param string $updateScope
+	 * @return bool
+	 */
+	public static function IsValid($updateScope)
+	{
+		return $updateScope == SeriesUpdateScope::FullSeries ||
+				$updateScope == SeriesUpdateScope::ThisInstance ||
+				$updateScope == SeriesUpdateScope::FutureInstances;
+	}
 }
 
 interface ISeriesUpdateScope
@@ -55,30 +67,30 @@ interface ISeriesUpdateScope
 	 * @return Reservation[]
 	 */
 	function Instances($series);
-	
+
 	/**
 	 * @return bool
 	 */
 	function RequiresNewSeries();
-	
+
 	/**
 	 * @return string
 	 */
 	function GetScope();
-	
+
 	/**
 	 * @param ExistingReservationSeries $series
 	 * @return IRepeatOptions
 	 */
 	function GetRepeatOptions($series);
-	
+
 	/**
 	 * @param ExistingReservationSeries $series
 	 * @param IRepeatOptions $repeatOptions
 	 * @return bool
 	 */
 	function CanChangeRepeatTo($series, $repeatOptions);
-	
+
 	/**
 	 * @param ExistingReservationSeries $series
 	 * @param Reservation $instance
@@ -113,12 +125,12 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 				$instances[] = $instance;
 			}
 		}
-		
+
 		return $instances;
 	}
-	
+
 	protected abstract function EarliestDateToKeep($series);
-	
+
 	public function GetRepeatOptions($series)
 	{
 		return $series->RepeatOptions();
@@ -133,7 +145,7 @@ abstract class SeriesUpdateScopeBase implements ISeriesUpdateScope
 	{
 		return !$targetRepeatOptions->Equals($series->RepeatOptions());
 	}
-	
+
 	public function ShouldInstanceBeRemoved($series, $instance)
 	{
 		return $instance->StartDate()->GreaterThan($this->EarliestDateToKeep($series));
@@ -146,37 +158,37 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 	{
 		parent::__construct();
 	}
-	
+
 	public function GetScope()
 	{
 		return SeriesUpdateScope::ThisInstance;
 	}
-	
+
 	public function Instances($series)
 	{
 		return array($series->CurrentInstance());
 	}
-	
+
 	public function RequiresNewSeries()
 	{
 		return true;
 	}
-	
+
 	public function EarliestDateToKeep($series)
 	{
 		return $series->CurrentInstance()->StartDate();
 	}
-	
+
 	public function GetRepeatOptions($series)
 	{
 		return new RepeatNone();
 	}
-	
+
 	public function CanChangeRepeatTo($series, $targetRepeatOptions)
 	{
 		return $targetRepeatOptions->Equals(new RepeatNone());
 	}
-	
+
 	public function ShouldInstanceBeRemoved($series, $instance)
 	{
 		return false;
@@ -186,12 +198,12 @@ class SeriesUpdateScope_Instance extends SeriesUpdateScopeBase
 class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 {
 	private $hasSameConfiguration = false;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-	} 
-	
+	}
+
 	public function GetScope()
 	{
 		return SeriesUpdateScope::FullSeries;
@@ -206,9 +218,9 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 		$bookedBy = $series->BookedBy();
 		if (!is_null($bookedBy) && $bookedBy->IsAdmin)
 		{
-            return $series->_Instances();
+			return $series->_Instances();
 		}
-		
+
 		return $this->AllInstancesGreaterThan($series, $this->EarliestDateToKeep($series));
 	}
 
@@ -218,7 +230,8 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 	 */
 	public function EarliestDateToKeep($series)
 	{
-		$startTimeConstraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
+		$startTimeConstraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
+																		ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
 
 		if (ReservationStartTimeConstraint::IsCurrent($startTimeConstraint))
 		{
@@ -241,15 +254,15 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 	public function CanChangeRepeatTo($series, $targetRepeatOptions)
 	{
 		$this->hasSameConfiguration = $targetRepeatOptions->HasSameConfigurationAs($series->RepeatOptions());
-		
+
 		return parent::CanChangeRepeatTo($series, $targetRepeatOptions);
 	}
-	
+
 	public function RequiresNewSeries()
 	{
 		return false;
 	}
-	
+
 	public function ShouldInstanceBeRemoved($series, $instance)
 	{
 		if ($this->hasSameConfiguration)
@@ -258,7 +271,7 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 			// remove all instances past the new end date
 			return $instance->StartDate()->GreaterThan($newEndDate);
 		}
-		
+
 		// remove all current instances, which now have an incompatible configuration
 		return $instance->StartDate()->GreaterThan($this->EarliestDateToKeep($series));
 	}
@@ -269,8 +282,8 @@ class SeriesUpdateScope_Future extends SeriesUpdateScopeBase
 	public function __construct()
 	{
 		parent::__construct();
-	} 
-	
+	}
+
 	public function GetScope()
 	{
 		return SeriesUpdateScope::FutureInstances;
@@ -280,15 +293,16 @@ class SeriesUpdateScope_Future extends SeriesUpdateScopeBase
 	{
 		return $this->AllInstancesGreaterThan($series, $this->EarliestDateToKeep($series));
 	}
-	
+
 	public function EarliestDateToKeep($series)
 	{
 		return $series->CurrentInstance()->StartDate();
 	}
-	
+
 	public function RequiresNewSeries()
 	{
 		return true;
 	}
 }
+
 ?>

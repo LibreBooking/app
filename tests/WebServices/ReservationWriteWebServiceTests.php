@@ -53,8 +53,7 @@ class ReservationWriteWebServiceTests extends TestBase
 		$this->server->SetRequest($reservationRequest);
 
 		$referenceNumber = '12323';
-		$controllerResult = new ReservationControllerResult($reservationRequest);
-		$controllerResult->SetReferenceNumber($referenceNumber);
+		$controllerResult = new ReservationControllerResult($referenceNumber);
 
 		$this->controller->expects($this->once())
 				->method('Create')
@@ -76,17 +75,39 @@ class ReservationWriteWebServiceTests extends TestBase
 		$updateScope = SeriesUpdateScope::FullSeries;
 		$this->server->SetQueryString(WebServiceQueryStringKeys::UPDATE_SCOPE, $updateScope);
 
-		$controllerResult = new ReservationControllerResult($reservationRequest);
-		$controllerResult->SetReferenceNumber($referenceNumber);
+		$controllerResult = new ReservationControllerResult($referenceNumber);
 
 		$this->controller->expects($this->once())
 				->method('Update')
-				->with($this->equalTo($reservationRequest), $this->equalTo($this->server->GetSession()), $this->equalTo($referenceNumber), $this->equalTo($updateScope))
+				->with($this->equalTo($reservationRequest), $this->equalTo($this->server->GetSession()),
+					   $this->equalTo($referenceNumber), $this->equalTo($updateScope))
 				->will($this->returnValue($controllerResult));
 
 		$this->service->Update($referenceNumber);
 
 		$expectedResponse = new ReservationUpdatedResponse($this->server, $referenceNumber);
+		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
+		$this->assertEquals(RestResponse::OK_CODE, $this->server->_LastResponseCode);
+	}
+
+	public function testDeletesExistingReservation()
+	{
+		$referenceNumber = '12323';
+		$updateScope = SeriesUpdateScope::FullSeries;
+		$this->server->SetQueryString(WebServiceQueryStringKeys::UPDATE_SCOPE, $updateScope);
+
+		$controllerResult = new ReservationControllerResult($referenceNumber);
+
+		$this->controller->expects($this->once())
+				->method('Delete')
+				->with($this->equalTo($this->server->GetSession()),
+					   $this->equalTo($referenceNumber),
+					   $this->equalTo($updateScope))
+				->will($this->returnValue($controllerResult));
+
+		$this->service->Delete($referenceNumber);
+
+		$expectedResponse = new ReservationDeletedResponse($this->server, $referenceNumber);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 		$this->assertEquals(RestResponse::OK_CODE, $this->server->_LastResponseCode);
 	}
@@ -124,10 +145,29 @@ class ReservationWriteWebServiceTests extends TestBase
 
 		$this->controller->expects($this->once())
 				->method('Update')
-				->with($this->anything(),$this->anything(),$this->anything(),$this->anything())
+				->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
 				->will($this->returnValue($controllerResult));
 
 		$this->service->Update($referenceNumber);
+
+		$expectedResponse = new ReservationFailedResponse($this->server, $errors);
+		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
+		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
+	}
+
+	public function testWhenDeleteValidationFails()
+	{
+		$referenceNumber = '123';
+
+		$errors = array('error');
+		$controllerResult = new ReservationControllerResult($referenceNumber, $errors);
+
+		$this->controller->expects($this->once())
+				->method('Delete')
+				->with($this->anything(), $this->anything(), $this->anything())
+				->will($this->returnValue($controllerResult));
+
+		$this->service->Delete($referenceNumber);
 
 		$expectedResponse = new ReservationFailedResponse($this->server, $errors);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);

@@ -104,6 +104,37 @@ class ReservationSaveControllerTests extends TestBase
 		$this->assertEquals($expectedResult, $result);
 	}
 
+	public function testDeletesReservation()
+	{
+		$referenceNumber = '123';
+		$updateScope = SeriesUpdateScope::FullSeries;
+		$session = new FakeWebServiceUserSession(123);
+
+		$facade = new ReservationDeleteRequestResponseFacade($referenceNumber, $updateScope);
+
+		$presenter = $this->getMock('IReservationDeletePresenter');
+
+		$reservation = new TestReservation();
+
+		$this->presenterFactory->expects($this->once())
+				->method('Delete')
+				->with($this->equalTo($facade), $this->equalTo($session))
+				->will($this->returnValue($presenter));
+
+		$presenter->expects($this->once())
+				->method('BuildReservation')
+				->will($this->returnValue($reservation));
+
+		$presenter->expects($this->once())
+				->method('HandleReservation')
+				->with($this->equalTo($reservation));
+
+		$result = $this->controller->Delete($session, $referenceNumber, $updateScope);
+
+		$expectedResult = new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+		$this->assertEquals($expectedResult, $result);
+	}
+
 	public function testFacadeProvidesDataFromRequestAndCollectsResponses()
 	{
 		$session = new FakeWebServiceUserSession(123);
@@ -124,14 +155,14 @@ class ReservationSaveControllerTests extends TestBase
 		$attributeId = 3393;
 		$attributeValue = '23232';
 		$description = 'reservation description';
-		$invitees = array(9,8);
-		$participants = array(99,88);
+		$invitees = array(9, 8);
+		$participants = array(99, 88);
 		$repeatInterval = 1;
 		$repeatMonthlyType = null;
 		$repeatType = RepeatType::Weekly;
-		$repeatWeekdays = array(0,4,5);
+		$repeatWeekdays = array(0, 4, 5);
 		$resourceId = 122;
-		$resources = array(22,23,33);
+		$resources = array(22, 23, 33);
 		$title = 'reservation title';
 		$userId = 1;
 
