@@ -103,7 +103,7 @@ class SchedulePeriodRuleTests extends TestBase
 				->expects($this->at(1))
 				->method('GetPeriod')
 				->with($this->equalTo($series->CurrentInstance()->EndDate()))
-				->will($this->returnValue(new SchedulePeriod($date, $date->AddMinutes(1))));
+				->will($this->returnValue(new SchedulePeriod($date->AddMinutes(1), $date)));
 
 		$result = $this->rule->Validate($series);
 

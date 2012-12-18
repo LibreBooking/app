@@ -72,7 +72,8 @@ class ReservationSavePresenter implements IReservationSavePresenter
 	public function BuildReservation()
 	{
 		$userId = $this->_page->GetUserId();
-		$resource = $this->_resourceRepository->LoadById($this->_page->GetResourceId());
+		$primaryResourceId = $this->_page->GetResourceId();
+		$resource = $this->_resourceRepository->LoadById($primaryResourceId);
 		$title = $this->_page->GetTitle();
 		$description = $this->_page->GetDescription();
 		$roFactory = new RepeatOptionsFactory();
@@ -84,7 +85,10 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$resourceIds = $this->_page->GetResources();
 		foreach ($resourceIds as $resourceId)
 		{
-			$reservationSeries->AddResource($this->_resourceRepository->LoadById($resourceId));
+			if ($primaryResourceId != $resourceId)
+			{
+				$reservationSeries->AddResource($this->_resourceRepository->LoadById($resourceId));
+			}
 		}
 
 		$accessories = $this->_page->GetAccessories();

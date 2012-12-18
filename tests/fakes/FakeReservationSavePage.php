@@ -31,7 +31,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $endDate = '2010-01-02';
 	public $startTime = '05:30';
 	public $endTime = '04:00';
-	public $resourceIds = array(11, 22);
+	public $resourceIds = array(11, 22, 120);
 	public $repeatType = RepeatType::Daily;
 	public $repeatInterval = 2;
 	public $repeatWeekdays = array(0, 1, 2);
