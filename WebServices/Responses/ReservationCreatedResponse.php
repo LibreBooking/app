@@ -48,14 +48,14 @@ class ReservationUpdatedResponse extends RestResponse
 
 class ReservationDeletedResponse extends RestResponse
 {
-	public function __construct(IRestServer $server, $referenceNumber)
+	public function __construct()
 	{
 		$this->message = 'The reservation was deleted';
 	}
 
 	public static function Example()
 	{
-		return new ExampleReservationCreatedResponse();
+		return new ReservationDeletedResponse();
 	}
 }
 

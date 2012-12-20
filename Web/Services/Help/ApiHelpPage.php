@@ -83,13 +83,13 @@ EOT;
 			echo '<h2>' . $category->Name() . '</h2>';
 			echo '<h3>POST Services</h3>';
 
-			foreach ($category->Posts() as $post)
+			foreach ($category->Posts() as $service)
 			{
 				echo '<div class="service">';
 
-				$md = $post->Metadata();
+				$md = $service->Metadata();
 				$request = $md->Request();
-				self::EchoCommon($md, $post, $app);
+				self::EchoCommon($md, $service, $app);
 
 				echo '<h4>Request</h4>';
 				if (is_object($request))
@@ -110,11 +110,21 @@ EOT;
 
 			echo '<h3>GET Services</h3>';
 
-			foreach ($category->Gets() as $post)
+			foreach ($category->Gets() as $service)
 			{
 				echo '<div class="service">';
-				$md = $post->Metadata();
-				self::EchoCommon($md, $post, $app);
+				$md = $service->Metadata();
+				self::EchoCommon($md, $service, $app);
+				echo '</div>';
+			}
+
+			echo '<h3>DELETE Services</h3>';
+
+			foreach ($category->Deletes() as $service)
+			{
+				echo '<div class="service">';
+				$md = $service->Metadata();
+				self::EchoCommon($md, $service, $app);
 				echo '</div>';
 			}
 		}

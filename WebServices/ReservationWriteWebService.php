@@ -134,8 +134,7 @@ class ReservationWriteWebService
 			Log::Debug('ReservationWriteWebService.Delete() - Reservation Deleted. ReferenceNumber=%s',
 					   $result->CreatedReferenceNumber());
 
-			$this->server->WriteResponse(new ReservationDeletedResponse($this->server, $result->CreatedReferenceNumber()),
-										 RestResponse::OK_CODE);
+			$this->server->WriteResponse(new ReservationDeletedResponse(),  RestResponse::OK_CODE);
 		}
 		else
 		{

@@ -22,6 +22,7 @@ class SlimWebServiceRegistryCategory
 {
 	private $gets = array();
 	private $posts = array();
+	private $deletes = array();
 
 	public function __construct($name)
 	{
@@ -44,6 +45,14 @@ class SlimWebServiceRegistryCategory
 		return $this->posts;
 	}
 
+	/**
+	 * @return array|SlimServiceRegistration[]
+	 */
+	public function Deletes()
+	{
+		return $this->deletes;
+	}
+
 	public function AddGet($route, $callback, $routeName)
 	{
 		$this->gets[] = new SlimServiceRegistration($this->name, $route, $callback, $routeName);
@@ -54,6 +63,11 @@ class SlimWebServiceRegistryCategory
 		$this->posts[] = new SlimServiceRegistration($this->name, $route, $callback, $routeName);
 	}
 
+	public function AddDelete($route, $callback, $routeName)
+	{
+		$this->deletes[] = new SlimServiceRegistration($this->name, $route, $callback, $routeName);
+	}
+
 	public function AddSecureGet($route, $callback, $routeName)
 	{
 		$this->gets[] = new SlimSecureServiceRegistration($this->name, $route, $callback, $routeName);
@@ -62,6 +76,11 @@ class SlimWebServiceRegistryCategory
 	public function AddSecurePost($route, $callback, $routeName)
 	{
 		$this->posts[] = new SlimSecureServiceRegistration($this->name, $route, $callback, $routeName);
+	}
+
+	public function AddSecureDelete($route, $callback, $routeName)
+	{
+		$this->deletes[] = new SlimSecureServiceRegistration($this->name, $route, $callback, $routeName);
 	}
 
 	/**

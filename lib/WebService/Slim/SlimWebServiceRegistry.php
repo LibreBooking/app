@@ -66,6 +66,15 @@ class SlimWebServiceRegistry
 			}
 		}
 
+		foreach ($category->Deletes() as $registration)
+		{
+			$this->slim->delete($registration->Route(), $registration->Callback())->name($registration->RouteName());
+			if ($registration->IsSecure())
+			{
+				$this->secureRoutes[$registration->RouteName()] = true;
+			}
+		}
+
 		$this->categories[] = $category;
 	}
 
