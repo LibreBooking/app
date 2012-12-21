@@ -31,6 +31,7 @@ require_once(ROOT_DIR . 'WebServices/UsersWebService.php');
 require_once(ROOT_DIR . 'WebServices/SchedulesWebService.php');
 require_once(ROOT_DIR . 'WebServices/AttributesWebService.php');
 require_once(ROOT_DIR . 'WebServices/GroupsWebService.php');
+require_once(ROOT_DIR . 'WebServices/AccessoriesWebService.php');
 
 require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 
@@ -49,6 +50,7 @@ RegisterUsers($server, $registry);
 RegisterSchedules($server, $registry);
 RegisterAttributes($server, $registry);
 RegisterGroups($server, $registry);
+RegisterAccessories($server, $registry);
 
 $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 {
@@ -119,6 +121,15 @@ function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category = new SlimWebServiceRegistryCategory('Resources');
 	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
 	$category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
+	$registry->AddCategory($category);
+}
+
+function RegisterAccessories(SlimServer $server, SlimWebServiceRegistry $registry)
+{
+	$webService = new AccessoriesWebService($server, new ResourceRepository(), new AccessoryRepository());
+	$category = new SlimWebServiceRegistryCategory('Accessories');
+	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllAccessories);
+	$category->AddSecureGet('/:accessoryId', array($webService, 'GetResource'), WebServices::GetAccessory);
 	$registry->AddCategory($category);
 }
 

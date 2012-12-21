@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Responses/RecurrenceRequestResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourceItemResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/AccessoryItemResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/ReservationAccessoryResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributeResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/AttachmentResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ReservationUserResponse.php');
@@ -66,7 +66,7 @@ class ReservationResponse extends RestResponse
 	 */
 	public $resources = array();
 	/**
-	 * @var array|AccessoryItemResponse[]
+	 * @var array|ReservationAccessoryResponse[]
 	 */
 	public $accessories = array();
 
@@ -105,7 +105,7 @@ class ReservationResponse extends RestResponse
 
 		foreach ($reservation->Accessories as $accessory)
 		{
-			$this->accessories[] = new AccessoryItemResponse($server, $accessory->AccessoryId, $accessory->Name, $accessory->QuantityReserved, $accessory->QuantityAvailable);
+			$this->accessories[] = new ReservationAccessoryResponse($server, $accessory->AccessoryId, $accessory->Name, $accessory->QuantityReserved, $accessory->QuantityAvailable);
 		}
 
 		if ($canViewDetails)
@@ -158,7 +158,7 @@ class ExampleReservationResponse extends ReservationResponse
 {
 	public function __construct()
 	{
-		$this->accessories = array(AccessoryItemResponse::Example());
+		$this->accessories = array(ReservationAccessoryResponse::Example());
 		$this->attachments = array(AttachmentResponse::Example());
 		$this->customAttributes = array(CustomAttributeResponse::Example());
 		$this->description = 'reservation description';

@@ -20,6 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class WebServices
 {
+	const AllAccessories = 'all_accessories';
 	const AllCustomAttributes = 'all_custom_attributes';
 	const AllGroups = 'all_groups';
 	const AllResources = 'all_resources';

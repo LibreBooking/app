@@ -18,23 +18,47 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/WebService/namespace.php');
+class AccessoriesResponse extends RestResponse
+{
+	/**
+	 * @param IRestServer $server
+	 * @param array|AccessoryDto[] $accessories
+	 */
+	public function __construct(IRestServer $server, $accessories)
+	{
+		/** @var $accessory AccessoryDto */
+		foreach ($accessories as $accessory)
+		{
+			$this->accessories[] = new AccessoryItemResponse($server, $accessory);
+		}
+	}
+
+	public static function Example()
+	{
+		return new ExampleAccessoriesResponse();
+	}
+}
+
+class ExampleAccessoriesResponse extends AccessoriesResponse
+{
+	public function __construct()
+	{
+		$this->accessories = array(AccessoryItemResponse::Example());
+	}
+}
 
 class AccessoryItemResponse extends RestResponse
 {
 	public $id;
 	public $name;
 	public $quantityAvailable;
-	public $quantityReserved;
 
-	public function __construct(IRestServer $server, $id, $name, $quantityReserved, $quantityAvailable)
+	public function __construct(IRestServer $server, AccessoryDto $accessory)
 	{
-		$this->id = $id;
-		$this->name = $name;
-		$this->quantityReserved = $quantityReserved;
-		$this->quantityAvailable = $quantityAvailable;
-
-		$this->AddService($server, WebServices::GetAccessory, array(WebServiceParams::AccessoryId => $id));
+		$this->id = $accessory->Id;
+		$this->name = $accessory->Name;
+		$this->quantityAvailable = $accessory->QuantityAvailable;
+		$this->AddService($server, WebServices::GetAccessory, array(WebServiceParams::AccessoryId => $this->id));
 	}
 
 	public static function Example()
@@ -48,9 +72,8 @@ class ExampleAccessoryItemResponse extends AccessoryItemResponse
 	public function __construct()
 	{
 		$this->id = 1;
-		$this->name = 'Example';
-		$this->quantityAvailable = 12;
-		$this->quantityReserved = 3;
+		$this->name = 'accessoryName';
+		$this->quantityAvailable = 3;
 	}
 }
 

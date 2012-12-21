@@ -20,9 +20,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReservationCreatedResponse extends RestResponse
 {
+	public $referenceNumber;
+
 	public function __construct(IRestServer $server, $referenceNumber)
 	{
 		$this->message = 'The reservation was created';
+		$this->referenceNumber = $referenceNumber;
 		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
 	}
 
@@ -34,9 +37,12 @@ class ReservationCreatedResponse extends RestResponse
 
 class ReservationUpdatedResponse extends RestResponse
 {
+	public $referenceNumber;
+
 	public function __construct(IRestServer $server, $referenceNumber)
 	{
 		$this->message = 'The reservation was updated';
+		$this->referenceNumber = $referenceNumber;
 		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
 	}
 
@@ -63,6 +69,7 @@ class ExampleReservationCreatedResponse extends ReservationCreatedResponse
 {
 	public function __construct()
 	{
+		$this->referenceNumber = 'referenceNumber';
 		$this->AddLink('http://url/to/reservation', WebServices::GetReservation);
 	}
 }

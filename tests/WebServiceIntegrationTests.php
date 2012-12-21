@@ -44,7 +44,8 @@ function includeAll($directory)
 
 class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 {
-	private $url = 'http://localhost/dev/Services';
+//	private $url = 'http://localhost/dev/Services';
+	private $url = 'http://localhost/development/Services/index.php';
 
 	/**
 	 * @var HttpClient
@@ -77,17 +78,24 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$this->assertNotEmpty($response->sessionToken);
 	}
 
-	public function testCreateReservation()
+	public function testReservationLifecycle()
 	{
 		$authHeaders = $this->LogIn();
+		$referenceNumber = $this->CreateReservation($authHeaders);
+		$this->UpdateReservation($authHeaders, $referenceNumber);
+		$this->RemoveReservation($authHeaders, $referenceNumber);
+	}
 
+	private function CreateReservation($authHeaders)
+	{
 		$request = new ReservationRequest();
 		$request->accessories = array(new ReservationAccessoryRequest(1, 1));
 		$request->customAttributes = array(new AttributeValueRequest(1, 'att1'), new AttributeValueRequest(2, 'att2'));
 		$request->description = 'some description';
-		$request->endDateTime = Date::Parse('2012-12-01 12:31', 'America/Chicago')->ToIso();
+		$today = Date::Now()->Format('Y-m-d');
+		$request->endDateTime = Date::Parse("$today 12:30", 'America/Chicago')->ToIso();
 		$request->resourceId = 1;
-		$request->startDateTime = Date::Parse('2012-12-01 12:00', 'America/Chicago')->ToIso();
+		$request->startDateTime = Date::Parse("$today 12:00", 'America/Chicago')->ToIso();
 		$request->title = 'some title';
 
 		/** @var $response ReservationCreatedResponse|ReservationFailedResponse */
@@ -101,15 +109,13 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 			}
 		}
 		$this->assertNotEmpty($response->links[0]);
+
+		return $response->referenceNumber;
 	}
 
-	public function testUpdateReservation()
+	private function UpdateReservation($authHeaders, $referenceNumber)
 	{
-		$authHeaders = $this->LogIn();
-
-		/** @var $reservations ReservationsResponse */
-		$reservations = $this->client->Get('Reservations/', $authHeaders);
-		$reservationUrl = 'Reservations/' . $reservations->reservations[0]->referenceNumber;
+		$reservationUrl = 'Reservations/' . $referenceNumber;
 		/** @var $reservation ReservationResponse */
 		$reservation = $this->client->Get($reservationUrl, $authHeaders);
 
@@ -155,6 +161,13 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 			}
 		}
 		$this->assertNotEmpty($response->links[0]);
+	}
+
+	private function RemoveReservation($authHeaders, $referenceNumber)
+	{
+		$reservationUrl = 'Reservations/' . $referenceNumber;
+		/** @var $response ReservationDeletedResponse */
+		$this->client->Delete($reservationUrl, $authHeaders);
 	}
 }
 
@@ -213,6 +226,18 @@ class HttpClient
 		}
 
 		return $jsonObject;
+	}
+
+	public function Delete($url, $headers = array())
+	{
+		$fullUrl = $this->GetUrl($url);
+		$curl_connection = curl_init($fullUrl);
+		curl_setopt($curl_connection, CURLOPT_CUSTOMREQUEST, 'DELETE');
+		curl_setopt($curl_connection, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl_connection, CURLOPT_HTTPHEADER, $headers);
+		curl_exec($curl_connection);
+
+		curl_close($curl_connection);
 	}
 
 	private function GetUrl($url)
