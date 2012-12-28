@@ -166,8 +166,17 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 	private function RemoveReservation($authHeaders, $referenceNumber)
 	{
 		$reservationUrl = 'Reservations/' . $referenceNumber;
-		/** @var $response ReservationDeletedResponse */
-		$this->client->Delete($reservationUrl, $authHeaders);
+		/** @var $response ReservationDeletedResponse|ReservationFailedResponse */
+		$response = $this->client->Delete($reservationUrl, $authHeaders);
+
+		if (isset($response->errors))
+		{
+			foreach ($response->errors as $error)
+			{
+				echo "$error\n";
+			}
+			$this->fail('Errors deleting');
+		}
 	}
 }
 
@@ -235,9 +244,18 @@ class HttpClient
 		curl_setopt($curl_connection, CURLOPT_CUSTOMREQUEST, 'DELETE');
 		curl_setopt($curl_connection, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl_connection, CURLOPT_HTTPHEADER, $headers);
-		curl_exec($curl_connection);
+		$result = curl_exec($curl_connection);
 
 		curl_close($curl_connection);
+
+		$jsonObject = json_decode($result);
+
+		if ($jsonObject == null)
+		{
+			echo $result;
+		}
+
+		return $jsonObject;
 	}
 
 	private function GetUrl($url)

@@ -138,7 +138,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} value="{SeriesUpdateScope::ThisInstance}" />
-		<input type="hidden" class="reservationId" {formname key=RESERVATION_ID} value="" />
+		<input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber" />
 	</form>
 </div>
 
@@ -165,7 +165,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{translate key='Cancel'}
 		</button>
 		<input type="hidden" id="hdnSeriesUpdateScope" {formname key=SERIES_UPDATE_SCOPE} />
-		<input type="hidden" class="reservationId" {formname key=RESERVATION_ID} value="" />
+		<input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber" />
 	</form>
 </div>
 

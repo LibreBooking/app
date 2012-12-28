@@ -19,7 +19,7 @@ function BlackoutManagement(opts)
         deleteForm: $('#deleteForm'),
 		addBlackoutForm: $('#addBlackoutForm'),
 
-		reservationIdList: $(':hidden.reservationId')
+		referenceNumberList: $(':hidden.reservationId')
 	};
 
 	var blackouts = new Object();

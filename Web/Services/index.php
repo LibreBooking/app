@@ -129,7 +129,7 @@ function RegisterAccessories(SlimServer $server, SlimWebServiceRegistry $registr
 	$webService = new AccessoriesWebService($server, new ResourceRepository(), new AccessoryRepository());
 	$category = new SlimWebServiceRegistryCategory('Accessories');
 	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllAccessories);
-	$category->AddSecureGet('/:accessoryId', array($webService, 'GetResource'), WebServices::GetAccessory);
+	$category->AddSecureGet('/:accessoryId', array($webService, 'GetAccessory'), WebServices::GetAccessory);
 	$registry->AddCategory($category);
 }
 

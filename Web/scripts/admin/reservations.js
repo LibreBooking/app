@@ -20,7 +20,7 @@ function ReservationManagement(opts, approval)
 		deleteInstanceForm: $('#deleteInstanceForm'),
 		deleteSeriesForm: $('#deleteSeriesForm'),
 
-		reservationIdList: $(':hidden.reservationId')
+		referenceNumberList: $(':hidden.referenceNumber')
 	};
 
 	var reservations = new Object();
@@ -56,7 +56,7 @@ function ReservationManagement(opts, approval)
 			var reservationId = tr.find('.id').text();
 			setActiveReferenceNumber(referenceNumber);
 			setActiveReservationId(reservationId);
-			elements.reservationIdList.val(reservationId);
+			elements.referenceNumberList.val(referenceNumber);
 		});
 		
 		elements.reservationTable.delegate('.editable', 'click', function() {

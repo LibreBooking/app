@@ -106,7 +106,7 @@ class ReservationSaveController implements IReservationSaveController
 	{
 		$facade = new ReservationDeleteRequestResponseFacade($referenceNumber, $updateScope);
 
-		$validationErrors = $this->ValidateDeleteRequest($referenceNumber, $updateScope);
+		$validationErrors = $this->ValidateDeleteRequest($facade->GetReferenceNumber(), $facade->GetSeriesUpdateScope());
 
 		if (count($validationErrors) > 0)
 		{
@@ -117,7 +117,7 @@ class ReservationSaveController implements IReservationSaveController
 		$reservation = $presenter->BuildReservation();
 		$presenter->HandleReservation($reservation);
 
-		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+		return new ReservationControllerResult($referenceNumber, $facade->Errors());
 	}
 
 	/**
@@ -227,12 +227,12 @@ class ReservationSaveController implements IReservationSaveController
 
 		if (empty($referenceNumber))
 		{
-			$errors[] = 'Missing or invalid referenceNumber';
+			$errors[] = "Missing or invalid referenceNumber: $referenceNumber";
 		}
 
 		if (!SeriesUpdateScope::IsValid($updateScope))
 		{
-			$errors[] = 'Missing or invalid updateScope';
+			$errors[] = "Missing or invalid updateScope: $updateScope";
 		}
 
 		return $errors;
