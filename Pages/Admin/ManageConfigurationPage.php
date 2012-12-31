@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'lib/Config/Configurator.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageConfigurationPresenter.php');
@@ -92,6 +93,9 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	{
 		$this->presenter->PageLoad();
 		$this->Set('Settings', $this->settings);
+		$this->Set('SectionSettings', $this->sectionSettings);
+		$this->PopulateTimezones();
+		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
 		$this->Display('Admin/Configuration/manage_configuration.tpl');
 	}
 
@@ -122,6 +126,21 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	public function AddSectionSetting(ConfigSetting $configSetting)
 	{
 		$this->sectionSettings[$configSetting->Section][] = $configSetting;
+	}
+
+	private function PopulateTimezones()
+	{
+		$timezoneValues = array();
+		$timezoneOutput = array();
+
+		foreach ($GLOBALS['APP_TIMEZONES'] as $timezone)
+		{
+			$timezoneValues[] = $timezone;
+			$timezoneOutput[] = $timezone;
+		}
+
+		$this->Set('TimezoneValues', $timezoneValues);
+		$this->Set('TimezoneOutput', $timezoneOutput);
 	}
 }
 

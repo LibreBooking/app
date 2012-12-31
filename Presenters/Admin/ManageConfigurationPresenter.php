@@ -74,7 +74,7 @@ class ManageConfigurationPresenter
 				$section = $key;
 				foreach ($value as $sectionkey => $sectionvalue)
 				{
-					if (!$this->ShouldBeSkipped($sectionkey))
+					if (!$this->ShouldBeSkipped($sectionkey, $section))
 					{
 						$type = strtolower($sectionvalue) == 'true' || strtolower($sectionvalue) == 'false' ? ConfigSettingType::Boolean : ConfigSettingType::String;
 						$this->page->AddSectionSetting(new ConfigSetting($sectionkey, $section, $sectionvalue, $type));
@@ -93,17 +93,16 @@ class ManageConfigurationPresenter
 
 	}
 
-	private function ShouldBeSkipped($key)
+	private function ShouldBeSkipped($key, $section = null)
 	{
+		if ($section == ConfigSection::DATABASE)
+		{
+			return true;
+		}
 		switch ($key)
 		{
-			case ConfigKeys::DATABASE_HOSTSPEC:
-			case ConfigKeys::DATABASE_NAME:
-			case ConfigKeys::DATABASE_PASSWORD:
-			case ConfigKeys::DATABASE_TYPE:
-			case ConfigKeys::DATABASE_USER:
 			case ConfigKeys::INSTALLATION_PASSWORD:
-			case ConfigKeys::PAGES_ENABLE_CONFIGURATION:
+			case ConfigKeys::PAGES_ENABLE_CONFIGURATION && $section == ConfigSection::PAGES:
 				return true;
 			default:
 				return false;
