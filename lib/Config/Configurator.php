@@ -20,6 +20,34 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/external/pear/Config.php');
 
+interface IConfigurationSettings
+{
+	/**
+	 * @param string $file
+	 * @return array
+	 */
+	public function GetSettings($file);
+
+	/**
+	 * @param array $currentSettings
+	 * @param array $newSettings
+	 * @return array
+	 */
+	public function BuildConfig($currentSettings, $newSettings);
+
+	/**
+	 * @param string $configFilePath
+	 * @param array $mergedSettings
+	 */
+	public function WriteSettings($configFilePath, $mergedSettings);
+
+	/**
+	 * @param string $configFilePath
+	 * @return bool
+	 */
+	public function CanOverwriteFile($configFilePath);
+}
+
 class Configurator
 {
 	/**
@@ -30,11 +58,16 @@ class Configurator
 	{
 		$mergedSettings = $this->GetMerged($configPhp, $distPhp);
 
+		$this->WriteSettings($configPhp, $mergedSettings);
+	}
+
+	public function WriteSettings($configFilePath, $mergedSettings)
+	{
 		$config = new Config();
 		$config->parseConfig($mergedSettings, 'PHPArray');
-		$config->writeConfig($configPhp, 'PHPArray', $mergedSettings);
+		$config->writeConfig($configFilePath, 'PHPArray', $mergedSettings);
 
-		$this->AddErrorReporting($configPhp);
+		$this->AddErrorReporting($configFilePath);
 	}
 
 	/**
@@ -60,7 +93,7 @@ class Configurator
 		return $parsed->toString('PHPArray');
 	}
 
-	private function GetSettings($file)
+	public function GetSettings($file)
 	{
 		$config = new Config();
 		/** @var $current Config_Container */
@@ -76,7 +109,7 @@ class Configurator
 		return $currentValues[Configuration::SETTINGS];
 	}
 
-	private function BuildConfig($currentSettings, $newSettings)
+	public function BuildConfig($currentSettings, $newSettings)
 	{
 		foreach ($currentSettings as $key => $value)
 		{
@@ -102,6 +135,16 @@ class Configurator
 		$new = str_replace("<?php", "<?php\r\nerror_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);\r\n", $contents);
 
 		file_put_contents($file, $new);
+	}
+
+	public function CanOverwriteFile($configFile)
+	{
+		if (!is_writable($configFile))
+		{
+			return chmod($configFile, 0770);
+		}
+
+		return true;
 	}
 }
 

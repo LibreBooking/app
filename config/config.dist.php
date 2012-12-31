@@ -29,9 +29,9 @@ $conf['settings']['default.page.size'] = '50';                  // number of rec
 $conf['settings']['enable.email'] = 'true';                     // global configuration to enable if any emails will be sent
 $conf['settings']['default.language'] = 'en_US';                // find your language in phpScheduleIt/lang directory
 $conf['settings']['script.url'] = 'http://localhost/Web';   	// public URL to the Web directory of this phpScheduleIt instance. this is the URL that appears when you are logging in
-$conf['settings']['password.pattern'] = '/^[^\s]{6,}$/i';           // regular expression to enforce password complexity
+$conf['settings']['password.pattern'] = '/^[^\s]{6,}$/i';           	// regular expression to enforce password complexity
 $conf['settings']['schedule']['show.inaccessible.resources'] = 'true';  // whether or not resources that are inaccessible to the user are visible
-$conf['settings']['schedule']['reservation.label'] = 'user';    // what to display on the reservation slot label. Options are: user, title, none
+$conf['settings']['schedule']['reservation.label'] = 'user';    		// what to display on the reservation slot label. Options are: user, title, none
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // full or relative path to where images will be stored
 $conf['settings']['image.upload.url'] = 'uploads/images';       // full or relative path to show uploaded images from
 $conf['settings']['cache.templates'] = 'true';                  // true recommended, caching template files helps web pages render faster
@@ -41,18 +41,31 @@ $conf['settings']['registration.require.email.activation'] = 'false';		// requir
 $conf['settings']['registration.auto.subscribe.email'] = 'false';			// requires enable.email = true
 $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out
 $conf['settings']['name.format'] = '{first} {last}';     		// display format when showing user names
+$conf['settings']['css.extension.file'] = ''; 			      	// full or relative url to an additional css file to include. this can be used to override the default style
+/**
+ * ical integration configuration
+ */
 $conf['settings']['ics']['require.login'] = 'true';             // recommended, if the user must be logged in to access ics files
 $conf['settings']['ics']['subscription.key'] = '';              // must be set to allow webcal subscriptions
-$conf['settings']['ics']['import'] = 'false';			// enable iCal import 
-$conf['settings']['ics']['import.key'] = '';			// it's recommended  to set this key when iCal import is enabled
-$conf['settings']['privacy']['view.schedules'] = 'false';       // if unauthenticated users can view schedules
-$conf['settings']['privacy']['view.reservations'] = 'false';    // if unauthenticated users can view reservations
-$conf['settings']['privacy']['hide.user.details'] = 'false';    // if personal user details should be displayed to non-administrators
+$conf['settings']['ics']['import'] = 'false';					// enable iCal import
+$conf['settings']['ics']['import.key'] = '';					// it's recommended  to set this key when iCal import is enabled
+/**
+ * Privacy configuration
+ */
+$conf['settings']['privacy']['view.schedules'] = 'false';       			// if unauthenticated users can view schedules
+$conf['settings']['privacy']['view.reservations'] = 'false';    			// if unauthenticated users can view reservations
+$conf['settings']['privacy']['hide.user.details'] = 'false';    			// if personal user details should be displayed to non-administrators
 $conf['settings']['privacy']['hide.reservation.details'] = 'false';			// if reservation details should be displayed to non-administrators
+/**
+ * Reservation specific configuration
+ */
 $conf['settings']['reservation']['start.time.constraint'] = 'future';		// when reservations can be created or edited. options are future, current, none
 $conf['settings']['reservation']['updates.require.approval'] = 'false';		// if updates to previously approved reservations require approval again
 $conf['settings']['reservation']['prevent.participation'] = 'false';		// if participation and invitation options should be removed
 $conf['settings']['reservation']['prevent.recurrence'] = 'false';			// if recurring reservations are disabled for non-administrators
+/**
+ * Email notification configuration
+ */
 $conf['settings']['reservation.notify']['resource.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.delete'] = 'false';
@@ -62,7 +75,9 @@ $conf['settings']['reservation.notify']['application.admin.delete'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.delete'] = 'false';
-$conf['settings']['css.extension.file'] = ''; 			      	// full or relative url to an additional css file to include. this can be used to override the default style
+/**
+ * File upload configuration
+ */
 $conf['settings']['uploads']['enable.reservation.attachments'] = 'false'; 	// if reservation attachments can be uploaded
 $conf['settings']['uploads']['reservation.attachment.path'] = 'uploads/reservation'; 	// full or relative (to the root of your phpScheduleIt directory) filesystem path to store reservation attachments
 $conf['settings']['uploads']['reservation.attachment.extensions'] = 'txt,jpg,gif,png,doc,docx,pdf,xls,xlsx,ppt,pptx,csv'; 	// comma separated list of file extensions that users are allowed to attach. leave empty to allow all extensions
@@ -99,4 +114,8 @@ $conf['settings']['plugins']['PostReservation'] = '';
  * Installation settings
  */
 $conf['settings']['install.password'] = '';
+/**
+ * Pages
+ */
+$conf['settings']['pages']['enable.configuration'] = 'false';
 ?>

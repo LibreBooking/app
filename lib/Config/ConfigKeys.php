@@ -89,12 +89,15 @@ class ConfigKeys
 	const UPLOAD_ENABLE_RESERVATION_ATTACHMENTS = 'enable.reservation.attachments';
 	const UPLOAD_RESERVATION_ATTACHMENTS = 'reservation.attachment.path';
 	const UPLOAD_RESERVATION_EXTENSIONS = 'reservation.attachment.extensions';
+
+	const PAGES_ENABLE_CONFIGURATION = 'enable.configuration';
 }
 
 class ConfigSection
 {
     const DATABASE = 'database';
     const ICS = 'ics';
+	const PAGES = 'pages';
     const PLUGINS = 'plugins';
     const PRIVACY = 'privacy';
     const RESERVATION = 'reservation';

@@ -22,7 +22,17 @@ require_once(ROOT_DIR . 'lib/external/pear/Config.php');
 
 interface IConfiguration extends IConfigurationFile
 {
-	public function Register($configFile, $configId);
+	/**
+	 * @param string $configFile
+	 * @param string $configId
+	 * @param bool $overwrite
+	 */
+	public function Register($configFile, $configId, $overwrite = false);
+
+	/**
+    * @param string $configId
+    * @return Configuration
+    */
 	public function File($configId);
 }
 
@@ -68,7 +78,7 @@ class Configuration implements IConfiguration
 	const DEFAULT_CONFIG_ID = 'phpscheduleit';
 	const DEFAULT_CONFIG_FILE_PATH = 'config/config.php';
 
-    const VERSION = '2.3.4';
+    const VERSION = '2.4.0';
 
 	protected function __construct()
 	{
@@ -114,10 +124,6 @@ class Configuration implements IConfiguration
 		$this->AddConfig($configId, $container, $overwrite);
 	}
 
-    /**
-     * @param $configId
-     * @return Configuration
-     */
 	public function File($configId)
 	{
 		return $this->_configs[$configId];

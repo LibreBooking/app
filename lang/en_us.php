@@ -499,6 +499,7 @@ class en_us extends Language
 		$strings['CommonReports'] = 'Common Reports';
 		$strings['ViewDay'] = 'View Day';
 		$strings['Group'] = 'Group';
+		$strings['ManageConfiguration'] = 'Application Configuration';
         // End Page Titles
 
         // Day representations

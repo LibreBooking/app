@@ -19,7 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Presenters/Install/InstallSecurityGuard.php');
-require_once(ROOT_DIR . 'Presenters/Install/Configurator.php');
+require_once(ROOT_DIR . 'lib/Config/Configurator.php');
 
 class ConfigurePresenter
 {
@@ -96,7 +96,7 @@ class ConfigurePresenter
 
 		$configurator = new Configurator();
 
-		if ($this->CanOverwriteConfig($configFile))
+		if ($configurator->CanOverwriteConfig($configFile))
 		{
 			$configurator->Merge($configFile, $configDistFile);
 			$this->page->ShowConfigUpdateSuccess();
@@ -106,16 +106,6 @@ class ConfigurePresenter
 			$manualConfig = $configurator->GetMergedString($configFile, $configDistFile);
 			$this->page->ShowManualConfig($manualConfig);
 		}
-	}
-
-	private function CanOverwriteConfig($configFile)
-	{
-		if (!is_writable($configFile))
-		{
-			return chmod($configFile, 0770);
-		}
-
-		return true;
 	}
 }
 ?>

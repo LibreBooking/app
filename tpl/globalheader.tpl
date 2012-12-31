@@ -93,7 +93,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyAccount"}</a>
 					<ul>
 						<li class="menuitem"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
-						<li class="menuitem"><a href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a>
+						<li class="menuitem"><a href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a></li>
 						<li class="menuitem"><a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a></li>
 						<li class="menuitem"><a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a></li>
 					</ul>
@@ -114,7 +114,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 								href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
 							<ul>
 								<li class="menuitem"><a
-										href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>
+										href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a></li>
 							</ul>
 						</li>
 						<li class="menuitem"><a
@@ -123,23 +123,23 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 								href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a>
 							<ul>
 								<li class="menuitem"><a
-										href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a>
+										href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a></li>
 							</ul>
 						</li>
-						<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>
-						</li>
-						<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
-						<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
-						<li class="menuitem"><a
-								href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
+						<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a></li>
+						<li class="menuitem"><a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a></li>
+						<li class="menuitem"><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a></li>
+						<li class="menuitem"><a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a></li>
 						<li class="menuitem"><a href="#">{translate key="Customization"}</a>
 								<ul>
 									<li class="menuitem"><a
-											href="{$Path}admin/manage_attributes.php">{translate key="Attributes"}</a>
+											href="{$Path}admin/manage_attributes.php">{translate key="Attributes"}</a></li>
+									{if $EnableConfigurationPage}<li class="menuitem"><a
+											href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a></li>
+									{/if}
 								</ul>
 							</li>
-						<li class="menuitem"><a
-								href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
+						<li class="menuitem"><a href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a></li>
 					</ul>
 				</li>
 			{/if}
