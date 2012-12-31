@@ -19,12 +19,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {extends file="schedule.tpl"}
 
 {block name="header"}
-{include file='globalheader.tpl' cssFiles='css/schedule.css,css/view-schedule.css'}
+{include file='globalheader.tpl' cssFiles='css/schedule.css,css/view-schedule.css,css/jquery.qtip.min.css'}
 {/block}
 
 {block name="scripts"}
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="scripts/schedule.js"></script>
+<script type="text/javascript" src="scripts/resourcePopup.js"></script>
 
 <script type="text/javascript">
 
