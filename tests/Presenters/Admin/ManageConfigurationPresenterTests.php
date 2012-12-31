@@ -92,15 +92,50 @@ class ManageConfigurationPresenterTests extends TestBase
 
 		$this->presenter->PageLoad();
 
-		$this->assertContains(new ConfigSetting('key', 'section', 'type'), $this->page->_Settings);
-		$this->assertNotContains(new ConfigSetting('installkey', 'section', 'type'), $this->page->_Settings);
-		$this->assertNotContains(new ConfigSetting('database keys', 'section', 'type'), $this->page->_Settings);
+		$this->assertSettingExists($configValues, ConfigKeys::ADMIN_EMAIL, ConfigSettingType::String);
+		$this->assertSectionSettingExists($configValues, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS,
+										  ConfigSection::PRIVACY,
+										  ConfigSettingType::Boolean);
+
+		$this->assertSettingMissing(ConfigKeys::INSTALLATION_PASSWORD);
+		$this->assertSettingMissing(ConfigKeys::PAGES_ENABLE_CONFIGURATION);
+		$this->assertSettingMissing(ConfigKeys::DATABASE_PASSWORD, ConfigSection::DATABASE);
+		$this->assertSettingMissing(ConfigKeys::DATABASE_USER, ConfigSection::DATABASE);
+		$this->assertSettingMissing(ConfigKeys::DATABASE_HOSTSPEC, ConfigSection::DATABASE);
+		$this->assertSettingMissing(ConfigKeys::DATABASE_NAME, ConfigSection::DATABASE);
+		$this->assertSettingMissing(ConfigKeys::DATABASE_TYPE, ConfigSection::DATABASE);
 	}
 
 	private function getDefaultConfigValues()
 	{
-		global $conf;
-		return $conf[Configuration::SETTINGS];
+		$config = new Config();
+		$current = $config->parseConfig(ROOT_DIR . 'config/config.dist.php', 'PHPArray');
+		$currentValues = $current->getItem("section", Configuration::SETTINGS)->toArray();
+		return $currentValues[Configuration::SETTINGS];
+	}
+
+	private function assertSettingExists($configValues, $key, $type = ConfigSettingType::String)
+	{
+		$expectedValue = $configValues[$key];
+		$this->assertTrue(in_array(new ConfigSetting($key, null, $expectedValue, $type), $this->page->_Settings), "Missing $key");
+	}
+
+	private function assertSectionSettingExists($configValues, $key, $section, $type = ConfigSettingType::String)
+	{
+		$expectedValue = $configValues[$section][$key];
+		$this->assertTrue(in_array(new ConfigSetting($key, $section, $expectedValue, $type),
+								   $this->page->_SectionSettings[$section]));
+	}
+
+	private function assertSettingMissing($key, $section = null)
+	{
+		foreach ($this->page->_Settings as $setting)
+		{
+			if ($setting->Key == $key && $setting->Section == $section)
+			{
+				$this->fail("Config Settings should not contain key: $key and section: $section");
+			}
+		}
 	}
 }
 
@@ -116,6 +151,16 @@ class FakeManageConfigurationPage implements IManageConfigurationPage
 	 */
 	public $_ConfigFileWritable;
 
+	/**
+	 * @var array|ConfigSetting[]
+	 */
+	public $_Settings = array();
+
+	/**
+	 * @var array|ConfigSetting[]
+	 */
+	public $_SectionSettings = array();
+
 	public function SetIsPageEnabled($isPageEnabled)
 	{
 		$this->_PageEnabled = $isPageEnabled;
@@ -127,6 +172,22 @@ class FakeManageConfigurationPage implements IManageConfigurationPage
 	public function SetIsConfigFileWritable($isFileWritable)
 	{
 		$this->_ConfigFileWritable = $isFileWritable;
+	}
+
+	/**
+	 * @param ConfigSetting $configSetting
+	 */
+	public function AddSectionSetting(ConfigSetting $configSetting)
+	{
+		$this->_SectionSettings[$configSetting->Section][] = $configSetting;
+	}
+
+	/**
+	 * @param ConfigSetting $configSetting
+	 */
+	public function AddSetting(ConfigSetting $configSetting)
+	{
+		$this->_Settings[] = $configSetting;
 	}
 }
 

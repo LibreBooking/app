@@ -33,6 +33,16 @@ interface IManageConfigurationPage
 	 * @param bool $isFileWritable
 	 */
 	public function SetIsConfigFileWritable($isFileWritable);
+
+	/**
+	 * @param ConfigSetting $configSetting
+	 */
+	public function AddSetting(ConfigSetting $configSetting);
+
+	/**
+	 * @param ConfigSetting $configSetting
+	 */
+	public function AddSectionSetting(ConfigSetting $configSetting);
 }
 
 class ManageConfigurationPage extends ActionPage implements IManageConfigurationPage
@@ -41,6 +51,16 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	 * @var ManageConfigurationPresenter
 	 */
 	private $presenter;
+
+	/**
+	 * @var array|ConfigSetting[]
+	 */
+	private $settings;
+
+	/**
+	 * @var array|ConfigSetting[]
+	 */
+	private $sectionSettings;
 
 	public function __construct()
 	{
@@ -71,7 +91,8 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
-		$this->Display('Admin/Configuration/manage_config_setup.tpl');
+		$this->Set('Settings', $this->settings);
+		$this->Display('Admin/Configuration/manage_configuration.tpl');
 	}
 
 	public function SetIsPageEnabled($isPageEnabled)
@@ -85,6 +106,22 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	public function SetIsConfigFileWritable($isFileWritable)
 	{
 		$this->Set('IsConfigFileWritable', $isFileWritable);
+	}
+
+	/**
+	 * @param ConfigSetting $configSetting
+	 */
+	public function AddSetting(ConfigSetting $configSetting)
+	{
+		$this->settings[] = $configSetting;
+	}
+
+	/**
+	 * @param ConfigSetting $configSetting
+	 */
+	public function AddSectionSetting(ConfigSetting $configSetting)
+	{
+		$this->sectionSettings[$configSetting->Section][] = $configSetting;
 	}
 }
 

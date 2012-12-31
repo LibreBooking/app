@@ -48,7 +48,7 @@ interface IConfigurationSettings
 	public function CanOverwriteFile($configFilePath);
 }
 
-class Configurator
+class Configurator implements IConfigurationSettings
 {
 	/**
 	 * @param string $configPhp

@@ -41,12 +41,15 @@ class ManageConfigurationPresenter
 	{
 		$this->page = $page;
 		$this->configSettings = $settings;
-		$this->configFilePath = ROOT_DIR . 'config/config.php';;
+		$this->configFilePath = ROOT_DIR . 'config/config.php';
+		;
 	}
 
 	public function PageLoad()
 	{
-		$shouldShowConfig = Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter());
+		$shouldShowConfig = Configuration::Instance()->GetSectionKey(ConfigSection::PAGES,
+																	 ConfigKeys::PAGES_ENABLE_CONFIGURATION,
+																	 new BooleanConverter());
 		$this->page->SetIsPageEnabled($shouldShowConfig);
 
 		if (!$shouldShowConfig)
@@ -62,7 +65,77 @@ class ManageConfigurationPresenter
 			return;
 		}
 
+		$settings = $this->configSettings->GetSettings($this->configFilePath);
+
+		foreach ($settings as $key => $value)
+		{
+			if (is_array($value))
+			{
+				$section = $key;
+				foreach ($value as $sectionkey => $sectionvalue)
+				{
+					if (!$this->ShouldBeSkipped($sectionkey))
+					{
+						$type = strtolower($sectionvalue) == 'true' || strtolower($sectionvalue) == 'false' ? ConfigSettingType::Boolean : ConfigSettingType::String;
+						$this->page->AddSectionSetting(new ConfigSetting($sectionkey, $section, $sectionvalue, $type));
+					}
+				}
+			}
+			else
+			{
+				if (!$this->ShouldBeSkipped($key))
+				{
+					$type = strtolower($value) == 'true' || strtolower($value) == 'false' ? ConfigSettingType::Boolean : ConfigSettingType::String;
+					$this->page->AddSetting(new ConfigSetting($key, null, $value, $type));
+				}
+			}
+		}
+
 	}
+
+	private function ShouldBeSkipped($key)
+	{
+		switch ($key)
+		{
+			case ConfigKeys::DATABASE_HOSTSPEC:
+			case ConfigKeys::DATABASE_NAME:
+			case ConfigKeys::DATABASE_PASSWORD:
+			case ConfigKeys::DATABASE_TYPE:
+			case ConfigKeys::DATABASE_USER:
+			case ConfigKeys::INSTALLATION_PASSWORD:
+			case ConfigKeys::PAGES_ENABLE_CONFIGURATION:
+				return true;
+			default:
+				return false;
+		}
+	}
+}
+
+class ConfigSetting
+{
+	public $Key;
+	public $Section;
+	public $Value;
+	public $Type;
+
+	public function __construct($key, $section, $value, $type)
+	{
+		$this->Key = $key;
+		$this->Section = $section;
+		$this->Value = $value;
+		$this->Type = $type;
+
+		if ($type == ConfigSettingType::Boolean)
+		{
+			$this->Value = strtolower($this->Value);
+		}
+	}
+}
+
+class ConfigSettingType
+{
+	const String = 'string';
+	const Boolean = 'boolean';
 }
 
 ?>
