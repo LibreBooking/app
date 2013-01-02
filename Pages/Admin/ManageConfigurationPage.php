@@ -103,7 +103,7 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	public function ProcessPageLoad()
 	{
 		$this->Set('IsConfigFileWritable', true);
-		
+
 		$this->presenter->PageLoad();
 		$this->Set('Settings', $this->settings);
 		$this->Set('SectionSettings', $this->sectionSettings);

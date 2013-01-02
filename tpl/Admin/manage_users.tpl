@@ -177,7 +177,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="permissionsDialog" class="dialog" style="display:none;" title="{translate key=Permissions}">
 	<form id="permissionsForm" method="post">
-		<div class="error">{translate key=UserPermissionInfo}</div>
+		<div class="warning">{translate key=UserPermissionInfo}</div>
 	{foreach from=$resources item=resource}
 		<label><input {formname key=RESOURCE_ID  multi=true} class="resourceId" type="checkbox"
 															 value="{$resource->GetResourceId()}"> {$resource->GetName()}
