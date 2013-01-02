@@ -31,9 +31,10 @@ interface IConfigurationSettings
 	/**
 	 * @param array $currentSettings
 	 * @param array $newSettings
+	 * @param bool $removeMissingKeys
 	 * @return array
 	 */
-	public function BuildConfig($currentSettings, $newSettings);
+	public function BuildConfig($currentSettings, $newSettings, $removeMissingKeys = false);
 
 	/**
 	 * @param string $configFilePath
@@ -63,6 +64,11 @@ class Configurator implements IConfigurationSettings
 
 	public function WriteSettings($configFilePath, $mergedSettings)
 	{
+		$this->CreateBackup($configFilePath);
+		if (!array_key_exists(Configuration::SETTINGS, $mergedSettings))
+		{
+			$mergedSettings = array(Configuration::SETTINGS => $mergedSettings);
+		}
 		$config = new Config();
 		$config->parseConfig($mergedSettings, 'PHPArray');
 		$config->writeConfig($configFilePath, 'PHPArray', $mergedSettings);
@@ -81,7 +87,7 @@ class Configurator implements IConfigurationSettings
 		$newSettings = $this->GetSettings($distPhp);
 
 		$settings = $this->BuildConfig($currentSettings, $newSettings);
-		return array('settings' => $settings);
+		return array(Configuration::SETTINGS => $settings);
 	}
 
 	public function GetMergedString($configPhp, $distPhp)
@@ -109,7 +115,7 @@ class Configurator implements IConfigurationSettings
 		return $currentValues[Configuration::SETTINGS];
 	}
 
-	public function BuildConfig($currentSettings, $newSettings)
+	public function BuildConfig($currentSettings, $newSettings, $keepMissingKeys = false)
 	{
 		foreach ($currentSettings as $key => $value)
 		{
@@ -120,6 +126,14 @@ class Configurator implements IConfigurationSettings
 					$newSettings[$key] = array_merge($newSettings[$key], $value);
 				}
 				else
+				{
+					$newSettings[$key] = $value;
+				}
+			}
+			else
+			{
+				Log::Debug("$key not found");
+				if ($keepMissingKeys)
 				{
 					$newSettings[$key] = $value;
 				}
@@ -145,6 +159,12 @@ class Configurator implements IConfigurationSettings
 		}
 
 		return true;
+	}
+
+	private function CreateBackup($configFilePath)
+	{
+		$backupPath = str_replace('.php', time() . '.php', $configFilePath);
+		copy($configFilePath, $backupPath);
 	}
 }
 

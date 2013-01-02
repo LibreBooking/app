@@ -43,6 +43,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h1>{translate key=ManageConfiguration}</h1>
 
+{if !$IsPageEnabled}
+<div class="warning">
+This page cannot be accessed because $conf['settings']['pages']['enable.configuration'] is set to 'false' or missing.
+</div>
+{/if}
+
+{if !$IsConfigFileWritable}
+<div class="warning">
+The config file is not writable. Please check the permissions of this file and try again.
+</div>
+{/if}
+
+{if $IsPageEnabled && $IsConfigFileWritable}
+
 <h3>Refer to the Configuration section of the <a target="_blank" href="{$Path}help.php?ht=admin">Help File</a> for documentation on these settings.</h3>
 
 <input type="button" value="{translate key=Update}" class='button save'/>
@@ -58,6 +72,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </ul>
 {/foreach}
 
+<input type="hidden" name="setting_names" value="{$SettingNames}" />
 </form>
 <input type="button" value="{translate key=Update}" class='button save'/>
 
@@ -79,5 +94,7 @@ $(document).ready(function () {
 	<h3>{translate key=Working}...</h3>
 	{html_image src="reservation_submitting.gif"}
 </div>
+
+{/if}
 
 {include file='globalfooter.tpl'}

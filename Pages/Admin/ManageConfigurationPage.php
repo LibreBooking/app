@@ -44,6 +44,11 @@ interface IManageConfigurationPage extends IActionPage
 	 * @param ConfigSetting $configSetting
 	 */
 	public function AddSectionSetting(ConfigSetting $configSetting);
+
+	/**
+	 * @return array|ConfigSetting[]
+	 */
+	public function GetSubmittedSettings();
 }
 
 class ManageConfigurationPage extends ActionPage implements IManageConfigurationPage
@@ -63,10 +68,16 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	 */
 	private $sectionSettings;
 
+	/**
+	 * @var StringBuilder
+	 */
+	private $settingNames;
+
 	public function __construct()
 	{
 		parent::__construct('ManageConfiguration', 1);
 		$this->presenter = new ManageConfigurationPresenter($this, new Configurator());
+		$this->settingNames = new StringBuilder();
 	}
 
 	/**
@@ -91,11 +102,14 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	 */
 	public function ProcessPageLoad()
 	{
+		$this->Set('IsConfigFileWritable', true);
+		
 		$this->presenter->PageLoad();
 		$this->Set('Settings', $this->settings);
 		$this->Set('SectionSettings', $this->sectionSettings);
 		$this->PopulateTimezones();
 		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
+		$this->Set('SettingNames', $this->settingNames->ToString());
 		$this->Display('Admin/Configuration/manage_configuration.tpl');
 	}
 
@@ -118,6 +132,7 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	public function AddSetting(ConfigSetting $configSetting)
 	{
 		$this->settings[] = $configSetting;
+		$this->settingNames->Append($configSetting->Name . ',');
 	}
 
 	/**
@@ -126,6 +141,7 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	public function AddSectionSetting(ConfigSetting $configSetting)
 	{
 		$this->sectionSettings[$configSetting->Section][] = $configSetting;
+		$this->settingNames->Append($configSetting->Name . ',');
 	}
 
 	private function PopulateTimezones()
@@ -141,6 +157,27 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 
 		$this->Set('TimezoneValues', $timezoneValues);
 		$this->Set('TimezoneOutput', $timezoneOutput);
+	}
+
+	/**
+	 * @return array|ConfigSetting[]
+	 */
+	public function GetSubmittedSettings()
+	{
+		$settingNames = $this->GetForm('setting_names');
+		$settings = explode(',', $settingNames);
+		$submittedSettings = array();
+		foreach ($settings as $setting)
+		{
+			$setting = trim($setting);
+			if (!empty($setting))
+			{
+//				Log::Debug("%s=%s", $setting, $this->GetForm($setting));
+				$submittedSettings[] = ConfigSetting::ParseForm($setting, $this->GetForm($setting));
+			}
+		}
+
+		return $submittedSettings;
 	}
 }
 

@@ -75,7 +75,8 @@ class ManageConfigurationPresenter extends ActionPresenter
 			return;
 		}
 
-		Log::Debug('Loading and displaying config file for editing by %s', ServiceLocator::GetServer()->GetUserSession()->Email);
+		Log::Debug('Loading and displaying config file for editing by %s',
+				   ServiceLocator::GetServer()->GetUserSession()->Email);
 
 		$settings = $this->configSettings->GetSettings($this->configFilePath);
 
@@ -88,8 +89,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 				{
 					if (!$this->ShouldBeSkipped($sectionkey, $section))
 					{
-						$type = strtolower($sectionvalue) == 'true' || strtolower($sectionvalue) == 'false' ? ConfigSettingType::Boolean : ConfigSettingType::String;
-						$this->page->AddSectionSetting(new ConfigSetting($sectionkey, $section, $sectionvalue, $type));
+						$this->page->AddSectionSetting(new ConfigSetting($sectionkey, $section, $sectionvalue));
 					}
 				}
 			}
@@ -97,8 +97,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 			{
 				if (!$this->ShouldBeSkipped($key))
 				{
-					$type = strtolower($value) == 'true' || strtolower($value) == 'false' ? ConfigSettingType::Boolean : ConfigSettingType::String;
-					$this->page->AddSetting(new ConfigSetting($key, null, $value, $type));
+					$this->page->AddSetting(new ConfigSetting($key, null, $value));
 				}
 			}
 		}
@@ -117,6 +116,28 @@ class ManageConfigurationPresenter extends ActionPresenter
 			return;
 		}
 
+		$configSettings = $this->page->GetSubmittedSettings();
+
+		$newSettings = array();
+
+		foreach ($configSettings as $setting)
+		{
+			if (!empty($setting->Section))
+			{
+				$newSettings[$setting->Section][$setting->Key] = $setting->Value;
+			}
+			else
+			{
+				$newSettings[$setting->Key] = $setting->Value;
+			}
+		}
+
+		$existingSettings = $this->configSettings->GetSettings($this->configFilePath);
+		$mergedSettings = array_merge($existingSettings, $newSettings);
+
+		Log::Debug("Saving %s settings", count($configSettings));
+//		Log::Debug(var_export($mergedSettings, true));
+		$this->configSettings->WriteSettings($this->configFilePath, $mergedSettings);
 		Log::Debug('Config file saved by %s', ServiceLocator::GetServer()->GetUserSession()->Email);
 	}
 
@@ -145,18 +166,42 @@ class ConfigSetting
 	public $Type;
 	public $Name;
 
-	public function __construct($key, $section, $value, $type)
+	public function __construct($key, $section, $value)
 	{
-		$this->Name = "$key|$section";
+		$key = trim($key);
+		$section = trim($section);
+		$value = trim($value);
+
+		$this->Name = $this->encode($key) . '|' . $this->encode($section);
 		$this->Key = $key;
 		$this->Section = $section;
-		$this->Value = $value;
+		$this->Value = $value . '';
+
+		$type = strtolower($value) == 'true' || strtolower($value) == 'false' ? ConfigSettingType::Boolean : ConfigSettingType::String;
+
 		$this->Type = $type;
 
 		if ($type == ConfigSettingType::Boolean)
 		{
 			$this->Value = strtolower($this->Value);
 		}
+	}
+
+	public static function ParseForm($key, $value)
+	{
+		$k = self::decode($key);
+		$keyAndSection = explode('|', $k);
+		return new ConfigSetting($keyAndSection[0], $keyAndSection[1], $value);
+	}
+
+	private static function encode($value)
+	{
+		return str_replace('.', '__', $value);
+	}
+
+	private static function decode($value)
+	{
+		return str_replace('__', '.', $value);
 	}
 }
 

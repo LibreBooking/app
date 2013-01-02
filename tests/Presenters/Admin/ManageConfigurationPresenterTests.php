@@ -106,6 +106,39 @@ class ManageConfigurationPresenterTests extends TestBase
 		$this->assertSettingMissing(ConfigKeys::DATABASE_TYPE, ConfigSection::DATABASE);
 	}
 
+	public function testUpdatesConfigFileWithSettings()
+	{
+		$setting1 = ConfigSetting::ParseForm('key1|', 'true');
+		$setting2 = ConfigSetting::ParseForm('key2|section1', '10');
+		$setting3 = ConfigSetting::ParseForm('key3|section1', 'some string');
+
+		$expectedSettings['key1'] = 'true';
+		$expectedSettings['section1']['key2'] = '10';
+		$expectedSettings['section1']['key3'] = 'some string';
+
+		$existingValues['oldKey1'] = 'old1';
+		$existingValues['section2']['oldKey2'] = 'old2';
+
+		$newSettings['key1'] = 'true';
+		$newSettings['section1']['key2'] = '10';
+		$newSettings['section1']['key3'] = 'some string';
+		$newSettings['oldKey1'] = 'old1';
+		$newSettings['section2']['oldKey2'] = 'old2';
+
+		$this->page->_SubmittedSettings = array($setting1, $setting2, $setting3);
+
+		$this->configSettings->expects($this->once())
+				->method('GetSettings')
+				->with($this->equalTo($this->configFilePath))
+				->will($this->returnValue($existingValues));
+
+		$this->configSettings->expects($this->once())
+				->method('WriteSettings')
+				->with($this->equalTo($this->configFilePath), $this->equalTo($newSettings));
+
+		$this->presenter->Update();
+	}
+
 	private function getDefaultConfigValues()
 	{
 		$config = new Config();
@@ -117,13 +150,14 @@ class ManageConfigurationPresenterTests extends TestBase
 	private function assertSettingExists($configValues, $key, $type = ConfigSettingType::String)
 	{
 		$expectedValue = $configValues[$key];
-		$this->assertTrue(in_array(new ConfigSetting($key, null, $expectedValue, $type), $this->page->_Settings), "Missing $key");
+		$this->assertTrue(in_array(new ConfigSetting($key, null, $expectedValue, $type), $this->page->_Settings),
+						  "Missing $key");
 	}
 
-	private function assertSectionSettingExists($configValues, $key, $section, $type = ConfigSettingType::String)
+	private function assertSectionSettingExists($configValues, $key, $section)
 	{
 		$expectedValue = $configValues[$section][$key];
-		$this->assertTrue(in_array(new ConfigSetting($key, $section, $expectedValue, $type),
+		$this->assertTrue(in_array(new ConfigSetting($key, $section, $expectedValue),
 								   $this->page->_SectionSettings[$section]));
 	}
 
@@ -139,7 +173,7 @@ class ManageConfigurationPresenterTests extends TestBase
 	}
 }
 
-class FakeManageConfigurationPage implements IManageConfigurationPage
+class FakeManageConfigurationPage extends FakeActionPageBase implements IManageConfigurationPage
 {
 	/**
 	 * @var bool
@@ -160,6 +194,11 @@ class FakeManageConfigurationPage implements IManageConfigurationPage
 	 * @var array|ConfigSetting[]
 	 */
 	public $_SectionSettings = array();
+
+	/**
+	 * @var array|ConfigSetting[]
+	 */
+	public $_SubmittedSettings = array();
 
 	public function SetIsPageEnabled($isPageEnabled)
 	{
@@ -188,6 +227,14 @@ class FakeManageConfigurationPage implements IManageConfigurationPage
 	public function AddSetting(ConfigSetting $configSetting)
 	{
 		$this->_Settings[] = $configSetting;
+	}
+
+	/**
+	 * @return array|ConfigSetting[]
+	 */
+	public function GetSubmittedSettings()
+	{
+		return $this->_SubmittedSettings;
 	}
 }
 

@@ -87,7 +87,7 @@ h1 {
 }
 
 /*********************************************************/
-div.error, div.success, #loginError {
+div.error, div.warning, div.success, #loginError {
 	border: 1px solid #ba0026;
 	border-radius: 5px 5px 5px 5px;
 
@@ -110,6 +110,13 @@ div.success {
 	text-align: center;
 	background: #BCE27F url("../img/tick-circle.png") no-repeat scroll 5px 5px;
 }
+
+div.warning {
+	border: solid 1px #c77600;
+	text-align: center;
+	background: #f6c500;/* url("../img/tick-.png") no-repeat scroll 5px 5px;*/
+}
+
 
 div.error table {
 	width: 100%;
