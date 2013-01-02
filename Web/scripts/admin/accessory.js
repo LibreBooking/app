@@ -16,7 +16,7 @@ function AccessoryManagement(opts) {
 		deleteDialog: $('#deleteDialog'),
 
 		addForm: $('#addForm'),
-		profileForm: $('#editForm'),
+		form: $('#editForm'),
 		deleteForm: $('#deleteForm')
 	};
 
@@ -49,7 +49,7 @@ function AccessoryManagement(opts) {
 
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add));
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAccessory));
-		ConfigureAdminForm(elements.profileForm, getSubmitCallback(options.actions.edit));
+		ConfigureAdminForm(elements.form, getSubmitCallback(options.actions.edit));
 
 		WireUpUnlimited(elements.addUnlimited, elements.addQuantity);
 		WireUpUnlimited(elements.editUnlimited, elements.editQuantity);

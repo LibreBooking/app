@@ -1,14 +1,13 @@
-function Registration()
-{
+function Configuration() {
 	var elements = {
-		form: $('#frmRegister')
+		form: $('form')
 	};
 
-	Registration.prototype.init = function () {
+	Configuration.prototype.init = function () {
 
-		$("#btnUpdate").click(function (e) {
+		$(".save").click(function (e) {
 			e.preventDefault();
-			$('#frmRegister').submit();
+			elements.form.submit();
 		});
 
 		elements.form.bind('onValidationFailed', onValidationFailed);
@@ -22,27 +21,18 @@ function Registration()
 
 	function onValidationFailed(event, data)
 	{
-		refreshCaptcha();
 		hideModal();
 	}
 
 	function successHandler(response)
 	{
-		if (response && response.url)
-		{
-			window.location = response.url;
-		}
-		else
-		{
-			onValidationFailed();
-			$('#registrationError').show();
-		}
+		hideModal();
+		$('#profileUpdatedMessage').show();
 	}
 
 	function onBeforeAddSubmit(formData, jqForm, opts)
 	{
 		$('#profileUpdatedMessage').hide();
-		$('#registrationError').hide();
 
 		$.colorbox({inline:true, href:"#modalDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
 		$('#modalDiv').show();
@@ -55,14 +45,8 @@ function Registration()
 		$('#modalDiv').hide();
 		$.colorbox.close();
 
-		var top = $("#registrationbox").scrollTop();
+		var top = $("form").scrollTop();
 		$('html, body').animate({scrollTop:top}, 'slow');
-	}
-
-	function refreshCaptcha() {
-		var src = $('#captchaImg').attr('src') + '?' + Math.random();
-		$('#captchaImg').attr('src', src);
-		$('#captchaValue').val('');
 	}
 
 }

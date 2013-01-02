@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'lib/Config/Configurator.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageConfigurationPresenter.php');
 
-interface IManageConfigurationPage
+interface IManageConfigurationPage extends IActionPage
 {
 	/**
 	 * @param bool $isPageEnabled
@@ -74,7 +74,7 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	 */
 	public function ProcessAction()
 	{
-		// no-op
+		$this->presenter->ProcessAction();
 	}
 
 	/**

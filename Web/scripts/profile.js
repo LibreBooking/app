@@ -1,6 +1,6 @@
 function Profile() {
 	var elements = {
-		profileForm: $('#frmRegister')
+		form: $('#frmRegister')
 	};
 
 	Profile.prototype.init = function () {
@@ -10,9 +10,9 @@ function Profile() {
 			$('#frmRegister').submit();
 		});
 
-		elements.profileForm.bind('onValidationFailed', onValidationFailed);
+		elements.form.bind('onValidationFailed', onValidationFailed);
 
-		ConfigureAdminForm(elements.profileForm, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
+		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
 	};
 
 	var defaultSubmitCallback = function (form) {

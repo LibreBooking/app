@@ -19,8 +19,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Admin/ManageConfigurationPage.php');
+require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
-class ManageConfigurationPresenter
+class ConfigActions
+{
+	const Update = 'update';
+}
+
+class ManageConfigurationPresenter extends ActionPresenter
 {
 	/**
 	 * @var IManageConfigurationPage
@@ -39,10 +45,12 @@ class ManageConfigurationPresenter
 
 	public function __construct(IManageConfigurationPage $page, IConfigurationSettings $settings)
 	{
+		parent::__construct($page);
 		$this->page = $page;
 		$this->configSettings = $settings;
 		$this->configFilePath = ROOT_DIR . 'config/config.php';
-		;
+
+		$this->AddAction(ConfigActions::Update, 'Update');
 	}
 
 	public function PageLoad()
@@ -54,6 +62,7 @@ class ManageConfigurationPresenter
 
 		if (!$shouldShowConfig)
 		{
+			Log::Debug('Show configuration UI is turned off. Not displaying the config values');
 			return;
 		}
 
@@ -62,8 +71,11 @@ class ManageConfigurationPresenter
 
 		if (!$isFileWritable)
 		{
+			Log::Debug('Config file is not writable');
 			return;
 		}
+
+		Log::Debug('Loading and displaying config file for editing by %s', ServiceLocator::GetServer()->GetUserSession()->Email);
 
 		$settings = $this->configSettings->GetSettings($this->configFilePath);
 
@@ -93,6 +105,21 @@ class ManageConfigurationPresenter
 
 	}
 
+	public function Update()
+	{
+		$shouldShowConfig = Configuration::Instance()->GetSectionKey(ConfigSection::PAGES,
+																	 ConfigKeys::PAGES_ENABLE_CONFIGURATION,
+																	 new BooleanConverter());
+
+		if (!$shouldShowConfig)
+		{
+			Log::Debug('Show configuration UI is turned off. No updates are allowed');
+			return;
+		}
+
+		Log::Debug('Config file saved by %s', ServiceLocator::GetServer()->GetUserSession()->Email);
+	}
+
 	private function ShouldBeSkipped($key, $section = null)
 	{
 		if ($section == ConfigSection::DATABASE)
@@ -116,9 +143,11 @@ class ConfigSetting
 	public $Section;
 	public $Value;
 	public $Type;
+	public $Name;
 
 	public function __construct($key, $section, $value, $type)
 	{
+		$this->Name = "$key|$section";
 		$this->Key = $key;
 		$this->Section = $section;
 		$this->Value = $value;
