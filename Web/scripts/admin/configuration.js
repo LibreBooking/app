@@ -27,12 +27,12 @@ function Configuration() {
 	function successHandler(response)
 	{
 		hideModal();
-		$('#profileUpdatedMessage').show();
+		$('#updatedMessage').show().delay('3000').fadeOut('slow');
 	}
 
 	function onBeforeAddSubmit(formData, jqForm, opts)
 	{
-		$('#profileUpdatedMessage').hide();
+		$('#updatedMessage').hide();
 
 		$.colorbox({inline:true, href:"#modalDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
 		$('#modalDiv').show();
@@ -45,7 +45,7 @@ function Configuration() {
 		$('#modalDiv').hide();
 		$.colorbox.close();
 
-		var top = $("form").scrollTop();
+		var top = $("#updatedMessage").scrollTop();
 		$('html, body').animate({scrollTop:top}, 'slow');
 	}
 

@@ -423,6 +423,11 @@ class en_us extends Language
 		$strings['ResourceUsageReservationCount'] = 'Resource Usage - Reservation Count';
 		$strings['Top20UsersTimeBooked'] = 'Top 20 Users - Time Booked';
 		$strings['Top20UsersReservationCount'] = 'Top 20 Users - Reservation Count';
+		$strings['ConfigurationUpdated'] = 'The configuration file was updated';
+		$strings['ConfigurationUiNotEnabled'] = 'This page cannot be accessed because $conf[\'settings\'][\'pages\'][\'enable.configuration\'] is set to false or missing.';
+		$strings['ConfigurationFileNotWritable'] = 'The config file is not writable. Please check the permissions of this file and try again.';
+		$strings['ConfigurationUpdateHelp'] = 'Refer to the Configuration section of the <a target=_blank href=%s>Help File</a> for documentation on these settings.';
+		$strings['GeneralConfigSettings'] = 'settings';
         // End Strings
 
         // Errors
