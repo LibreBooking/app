@@ -206,3 +206,11 @@ tr.pending {
 	min-width: 200px;
 	display: inline-block;
 }
+
+#staticSlots {
+	height: 375px;
+}
+
+#dailySlots, #tabs {
+	height: 425px;
+}
