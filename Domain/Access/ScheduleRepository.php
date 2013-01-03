@@ -272,7 +272,7 @@ class ScheduleRepository implements IScheduleRepository
 
         $slots = $layout->GetSlots();
 
-        /* @var slot LayoutPeriod */
+        /* @var $slot LayoutPeriod */
         foreach ($slots as $slot)
         {
             $db->Execute(new AddLayoutTimeCommand($layoutId, $slot->Start, $slot->End, $slot->PeriodType, $slot->Label));

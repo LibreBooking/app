@@ -197,8 +197,6 @@ class ManageScheduleService
 		$schedule->SetAdminGroupId($adminGroupId);
 		$this->scheduleRepository->Update($schedule);
 	}
-
-
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
@@ -246,7 +244,7 @@ class ManageSchedulesPresenter extends ActionPresenter
         foreach ($schedules as $schedule)
         {
             $layout = $this->manageSchedulesService->GetLayout($schedule);
-            $layouts[$schedule->GetId()] = $layout->GetLayout(Date::Now());
+            $layouts[$schedule->GetId()] = $layout;
         }
 
 		$this->page->BindGroups($this->groupViewRepository->GetGroupsByRole(RoleLevel::SCHEDULE_ADMIN));

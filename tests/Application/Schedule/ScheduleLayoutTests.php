@@ -143,6 +143,11 @@ class ScheduleLayoutTests extends TestBase
 		$this->assertEquals($period1, $periods[0], $period1 . ' ' . $periods[0]);
 		$this->assertEquals($period2, $periods[1], $period2 . ' ' . $periods[1]);
 		$this->assertEquals($period3, $periods[2]);
+
+		$dailyPeriods = $layout->GetDailyLayout(null);
+		$this->assertEquals(3, count($dailyPeriods));
+		$this->assertEquals(new LayoutPeriod($time1, $time2), $dailyPeriods[0]);
+		$this->assertEquals(new LayoutPeriod($time2, $time3, PeriodTypes::RESERVABLE, 'Period 1'), $dailyPeriods[1]);
 	}
 	
 	public function testCreatesScheduleLayoutForSpecifiedTimezone()
@@ -265,17 +270,18 @@ class ScheduleLayoutTests extends TestBase
 
 		$layout = new ScheduleLayout($utc);
 
-		$layout->AppendPeriod($midnight, $time1, null, DayOfWeek::SUNDAY);
 		$layout->AppendBlockedPeriod($time1, $time2, null, DayOfWeek::SUNDAY);
+		$layout->AppendPeriod($midnight, $time1, null, DayOfWeek::SUNDAY);
 		$layout->AppendPeriod($time2, $time3, 'Period 1', DayOfWeek::SUNDAY);
 		$layout->AppendPeriod($time3, $time4, null, DayOfWeek::SUNDAY);
 		$layout->AppendPeriod($time4, $midnight, 'Period 2', DayOfWeek::SUNDAY);
 
-		$layout->AppendPeriod($midnight, $midnight, null, DayOfWeek::MONDAY);
+		$layout->AppendBlockedPeriod($midnight, $midnight, 'Monday Period', DayOfWeek::MONDAY);
 
 		$sundayPeriods = $layout->GetLayout($sunday);
 		$mondayPeriods = $layout->GetLayout($monday);
 
+		$this->assertTrue($layout->UsesDailyLayouts());
 		$this->assertEquals(5, count($sundayPeriods));
 		$period1 = new SchedulePeriod($utcDate->SetTime($midnight), $utcDate->SetTime($time1));
 		$period2 = new NonSchedulePeriod($utcDate->SetTime($time1), $utcDate->SetTime($time2));
@@ -291,8 +297,16 @@ class ScheduleLayoutTests extends TestBase
 
 		$this->assertEquals(1, count($mondayPeriods));
 		$utcDate = $monday->ToUtc();
-		$period1 = new SchedulePeriod($utcDate->SetTime($midnight), $utcDate->SetTime($midnight, true));
+		$period1 = new NonSchedulePeriod($utcDate->SetTime($midnight), $utcDate->SetTime($midnight, true), 'Monday Period');
 		$this->assertEquals($period1, $mondayPeriods[0], 'Expected ' . $period1 . ' Actual ' . $mondayPeriods[0]);
+
+		$sundayDailyPeriods = $layout->GetDailyLayout(DayOfWeek::SUNDAY);
+		$mondayDailyPeriods = $layout->GetDailyLayout(DayOfWeek::MONDAY);
+
+		$this->assertEquals(5, count($sundayDailyPeriods));
+		$this->assertEquals(new LayoutPeriod($midnight, $time1, PeriodTypes::RESERVABLE, null), $sundayDailyPeriods[0]);
+		$this->assertEquals(1, count($mondayDailyPeriods));
+		$this->assertEquals(new LayoutPeriod($midnight, $midnight, PeriodTypes::NONRESERVABLE, 'Monday Period'), $mondayDailyPeriods[0]);
 	}
 
 	public function testFullDayPeriod()

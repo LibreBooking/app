@@ -98,7 +98,7 @@ class Time
 	 * @param Date $comparisonDate date to be used for time comparison
 	 * @return int comparison result
 	 */
-	public function Compare(Time $time, Date $comparisonDate)
+	public function Compare(Time $time, $comparisonDate = null)
 	{
 		if ($comparisonDate != null)
 		{

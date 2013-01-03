@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -55,11 +55,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
 			{translate key=ReservableTimeSlots}
 			<div class="reservableSlots">
-				{foreach from=$Layouts[$id] item=period}
+				{foreach from=$Layouts[$id]->GetDailyLayout() item=period}
 					{if $period->IsReservable()}
-						{formatdate format="H:i" date=$period->Begin()} - {formatdate format="H:i" date=$period->End()}
+						{$period->Start->Format("H:i")} - {$period->End->Format("H:i")}
 						{if $period->IsLabelled()}
-							{$period->Label()}
+							{$period->Label}
 						{/if}
 						,
 					{/if}
@@ -69,11 +69,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			{translate key=BlockedTimeSlots}
 			<div class="blockedSlots">
-				{foreach from=$Layouts[$id] item=period}
+				{foreach from=$Layouts[$id]->GetDailyLayout() item=period}
 					{if !$period->IsReservable()}
-						{formatdate format="H:i" date=$period->Begin()} - {formatdate format="H:i" date=$period->End()}
+						{$period->Start->Format("H:i")} - {$period->End->Format("H:i")}
 						{if $period->IsLabelled()}
-							{$period->Label()}
+							{$period->Label}
 						{/if}
 						,
 					{/if}

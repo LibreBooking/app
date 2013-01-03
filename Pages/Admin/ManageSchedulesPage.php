@@ -74,7 +74,7 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
 {
 	/**
 	 * @param Schedule[] $schedules 
-	 * @param array $layouts
+	 * @param array|IScheduleLayout[] $layouts
 	 * @param Schedule[] $sourceSchedules
 	 */
 	public function BindSchedules($schedules, $layouts, $sourceSchedules);
