@@ -231,7 +231,10 @@ class ScheduleRepository implements IScheduleRepository
 
     public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
     {
-        $layout = $layoutFactory->CreateLayout();
+		/**
+		 * @var $layout ScheduleLayout
+		 */
+		$layout = $layoutFactory->CreateLayout();
 
         $reader = ServiceLocator::GetDatabase()->Query(new GetLayoutCommand($scheduleId));
 

@@ -230,7 +230,6 @@ class ScheduleLayoutTests extends TestBase
 		$this->assertEquals($l[count($l)-1]->EndDate(), Date::Parse('2012-06-19', 'America/New_York'));
 	}
 
-
 	public function testWhenFindingPeriodInCSTWithUTCDate()
 	{
 		$layoutTz = 'America/Chicago';
@@ -249,6 +248,68 @@ class ScheduleLayoutTests extends TestBase
 		$period = $layout->GetPeriod($date);
 
 		$this->assertTrue($date->Equals($period->BeginDate()));
+	}
+
+	public function testGetsLayoutForEachDayOfWeek()
+	{
+		$utc = 'UTC';
+		$sunday = Date::Parse('2013-01-06 00:00', 'America/Chicago');
+		$monday = Date::Parse('2013-01-06 20:00', 'America/Chicago');
+		$utcDate = $sunday->ToUtc();
+
+		$midnight = Time::Parse('00:00', $utc);
+		$time1 = Time::Parse('07:00', $utc);
+		$time2 = Time::Parse('07:45', $utc);
+		$time3 = Time::Parse('08:30', $utc);
+		$time4 = Time::Parse('13:00', $utc);
+
+		$layout = new ScheduleLayout($utc);
+
+		$layout->AppendPeriod($midnight, $time1, null, DayOfWeek::SUNDAY);
+		$layout->AppendBlockedPeriod($time1, $time2, null, DayOfWeek::SUNDAY);
+		$layout->AppendPeriod($time2, $time3, 'Period 1', DayOfWeek::SUNDAY);
+		$layout->AppendPeriod($time3, $time4, null, DayOfWeek::SUNDAY);
+		$layout->AppendPeriod($time4, $midnight, 'Period 2', DayOfWeek::SUNDAY);
+
+		$layout->AppendPeriod($midnight, $midnight, null, DayOfWeek::MONDAY);
+
+		$sundayPeriods = $layout->GetLayout($sunday);
+		$mondayPeriods = $layout->GetLayout($monday);
+
+		$this->assertEquals(5, count($sundayPeriods));
+		$period1 = new SchedulePeriod($utcDate->SetTime($midnight), $utcDate->SetTime($time1));
+		$period2 = new NonSchedulePeriod($utcDate->SetTime($time1), $utcDate->SetTime($time2));
+		$period3 = new SchedulePeriod($utcDate->SetTime($time2), $utcDate->SetTime($time3), 'Period 1');
+		$period4 = new SchedulePeriod($utcDate->SetTime($time3), $utcDate->SetTime($time4));
+		$period5 = new SchedulePeriod($utcDate->SetTime($time4), $utcDate->SetTime($midnight, true), 'Period 2');
+
+		$this->assertEquals($period1, $sundayPeriods[0], $period1 . ' ' . $sundayPeriods[0]);
+		$this->assertEquals($period2, $sundayPeriods[1], $period2 . ' ' . $sundayPeriods[1]);
+		$this->assertEquals($period3, $sundayPeriods[2]);
+		$this->assertEquals($period4, $sundayPeriods[3]);
+		$this->assertEquals($period5, $sundayPeriods[4]);
+
+		$this->assertEquals(1, count($mondayPeriods));
+		$utcDate = $monday->ToUtc();
+		$period1 = new SchedulePeriod($utcDate->SetTime($midnight), $utcDate->SetTime($midnight, true));
+		$this->assertEquals($period1, $mondayPeriods[0], 'Expected ' . $period1 . ' Actual ' . $mondayPeriods[0]);
+	}
+
+	public function testFullDayPeriod()
+	{
+		$utc = 'UTC';
+		$sunday = Date::Parse('2013-01-06 00:00', 'America/Chicago');
+		$utcDate = $sunday->ToUtc();
+		$midnight = Time::Parse('00:00', $utc);
+
+		$layout = new ScheduleLayout($utc);
+		$layout->AppendPeriod($midnight, $midnight);
+
+		$periods = $layout->GetLayout($sunday);
+
+		$this->assertEquals(1, count($periods));
+		$period1 = new SchedulePeriod($utcDate->SetTime($midnight), $utcDate->SetTime($midnight, true));
+		$this->assertEquals($period1, $periods[0], 'Expected ' . $period1 . ' Actual ' . $periods[0]);
 	}
 }
 ?>

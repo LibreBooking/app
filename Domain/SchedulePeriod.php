@@ -135,7 +135,7 @@ class SchedulePeriod
 	
 	public function __toString()
 	{
-		return sprintf("Begin: %s End: %s Label: %s", $this->Begin(), $this->End(), $this->Label());
+		return sprintf("Begin: %s End: %s Label: %s", $this->_begin, $this->_end, $this->Label());
 	}
 	
 	/**

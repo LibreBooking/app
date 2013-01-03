@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -17,6 +17,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+require_once(ROOT_DIR . 'Domain/Values/DayOfWeek.php');
 
 interface ILayoutTimezone
 {
@@ -41,9 +43,9 @@ interface IScheduleLayout extends ILayoutTimezone
 
 interface ILayoutCreation extends ILayoutTimezone
 {
-    function AppendPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null);
+    function AppendPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null);
 
-    function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null);
+    function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null);
 
     /**
      * @return LayoutPeriod[] array of LayoutPeriod
@@ -69,6 +71,11 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
     private $cached = false;
 
     private $cachedPeriods = array();
+
+	/**
+	 * @var bool
+	 */
+	private $usingDailyLayouts = false;
 
     /**
      * @param string $timezone target timezone of layout
@@ -96,29 +103,39 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
      * @param Time $startTime starting time of the schedule in specified timezone
      * @param Time $endTime ending time of the schedule in specified timezone
      * @param string $label optional label for the period
-     * @param string $labelEnd optional end label for the period
+	 * @param DayOfWeek|int|null $dayOfWeek
      */
-    public function AppendPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null)
+    public function AppendPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null)
     {
-        $this->AppendGenericPeriod($startTime, $endTime, PeriodTypes::RESERVABLE, $label, $labelEnd);
+        $this->AppendGenericPeriod($startTime, $endTime, PeriodTypes::RESERVABLE, $label, $dayOfWeek);
     }
 
-    /**
-     * Appends a period that is not reservable to the schedule layout
-     *
-     * @param Time $startTime starting time of the schedule in specified timezone
-     * @param Time $endTime ending time of the schedule in specified timezone
-     * @param string $label optional label for the period
-     * @param string $labelEnd optional end label for the period
-     */
-    public function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $labelEnd = null)
+	/**
+	 * Appends a period that is not reservable to the schedule layout
+	 *
+	 * @param Time $startTime starting time of the schedule in specified timezone
+	 * @param Time $endTime ending time of the schedule in specified timezone
+	 * @param string $label optional label for the period
+	 * @param DayOfWeek|int|null $dayOfWeek
+	 * @return void
+	 */
+    public function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null)
     {
-        $this->AppendGenericPeriod($startTime, $endTime, PeriodTypes::NONRESERVABLE, $label, $labelEnd);
+        $this->AppendGenericPeriod($startTime, $endTime, PeriodTypes::NONRESERVABLE, $label, $dayOfWeek);
     }
 
-    protected function AppendGenericPeriod(Time $startTime, Time $endTime, $periodType, $label = null, $labelEnd = null)
+    protected function AppendGenericPeriod(Time $startTime, Time $endTime, $periodType, $label = null, $dayOfWeek = null)
     {
-        $this->_periods[] = new LayoutPeriod($startTime, $endTime, $periodType, $label);
+		$layoutPeriod = new LayoutPeriod($startTime, $endTime, $periodType, $label);
+		if (!is_null($dayOfWeek))
+		{
+			$this->usingDailyLayouts = true;
+			$this->_periods[$dayOfWeek][] = $layoutPeriod;
+		}
+		else
+		{
+			$this->_periods[] = $layoutPeriod;
+		}
     }
 
     /**
@@ -146,15 +163,24 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
             return $cachedValues;
         }
 
-        $layoutTimezone = $this->_periods[0]->Start->Timezone();
-
-        $workingDate = Date::Create($layoutDate->Year(), $layoutDate->Month(), $layoutDate->Day(), 0, 0, 0, $layoutTimezone);
-        $midnight = $layoutDate->GetDate();
-
         $list = new PeriodList();
 
+		if ($this->usingDailyLayouts)
+		{
+			$dayOfWeek = $layoutDate->Weekday();
+			$periods = $this->_periods[$dayOfWeek];
+		}
+		else
+		{
+			$periods = $this->_periods;
+		}
+
+		$layoutTimezone = $periods[0]->Start->Timezone();
+		$workingDate = Date::Create($layoutDate->Year(), $layoutDate->Month(), $layoutDate->Day(), 0, 0, 0, $layoutTimezone);
+        $midnight = $layoutDate->GetDate();
+
         /* @var $period LayoutPeriod */
-        foreach ($this->_periods as $period)
+        foreach ($periods as $period)
         {
             $start = $period->Start;
             $end = $period->End;
@@ -164,7 +190,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
             // convert to target timezone
             $periodStart = $workingDate->SetTime($start)->ToTimezone($targetTimezone);
-            $periodEnd = $workingDate->SetTime($end)->ToTimezone($targetTimezone);
+            $periodEnd = $workingDate->SetTime($end, true)->ToTimezone($targetTimezone);
 
             if ($periodEnd->LessThan($periodStart))
             {
@@ -177,7 +203,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
             if ($this->BothDatesAreOff($periodStart, $periodEnd, $layoutDate))
             {
                 $periodStart = $layoutDate->SetTime($startTime);
-                $periodEnd = $layoutDate->SetTime($endTime);
+                $periodEnd = $layoutDate->SetTime($endTime, true);
             }
 
             if ($this->SpansMidnight($periodStart, $periodEnd, $layoutDate))
@@ -193,12 +219,12 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
                 {
                     // add compensating period at start
                     $start = $periodStart->AddDays(-1);
-                    $end = $layoutDate->SetTime($endTime);
+                    $end = $layoutDate->SetTime($endTime, true);
                     $list->Add($this->BuildPeriod($periodType, $start, $end, $label, $labelEnd));
                 }
             }
 
-			if ($periodStart->LessThan($layoutDate) && $periodEnd->DateEquals($layoutDate) && $periodEnd->IsMidnight())
+			if (!$periodStart->IsMidnight() && $periodStart->LessThan($layoutDate) && $periodEnd->DateEquals($layoutDate) && $periodEnd->IsMidnight())
 			{
 				$periodStart = $periodStart->AddDays(1);
 				$periodEnd = $periodEnd->AddDays(1);

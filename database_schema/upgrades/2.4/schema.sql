@@ -12,3 +12,5 @@ CREATE TABLE `user_session` (
 	REFERENCES users(`user_id`)
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+ALTER TABLE `time_blocks` ADD COLUMN `day_of_week` SMALLINT(5) unsigned;

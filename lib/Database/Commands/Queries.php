@@ -503,6 +503,7 @@ class Queries
 			tb.start_time, 
 			tb.end_time, 
 			tb.availability_code,
+			tb.day_of_week,
 			l.timezone
 		FROM 
 			time_blocks tb, 
