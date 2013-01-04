@@ -366,6 +366,26 @@ class ScheduleLayoutTests extends TestBase
 		$period1 = new SchedulePeriod($utcDate->SetTime($midnight), $utcDate->SetTime($midnight, true));
 		$this->assertEquals($period1, $periods[0], 'Expected ' . $period1 . ' Actual ' . $periods[0]);
 	}
+
+	public function testWhenFindingPeriodWithDailyLayout()
+	{
+		$layoutTz = 'America/Chicago';
+		$scheduleLayoutFactory = new ScheduleLayoutFactory('UTC');
+		$layout = $scheduleLayoutFactory->CreateLayout();
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("12:00", $layoutTz), DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("12:00", $layoutTz), Time::Parse("12:30", $layoutTz), DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("12:30", $layoutTz), Time::Parse("13:00", $layoutTz), DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("13:00", $layoutTz), Time::Parse("13:30", $layoutTz), DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("13:30", $layoutTz), Time::Parse("14:00", $layoutTz), DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("14:00", $layoutTz), Time::Parse("14:30", $layoutTz), DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("14:30", $layoutTz), Time::Parse("00:00", $layoutTz), DayOfWeek::MONDAY);
+
+		$date = Date::Parse('2012-11-25 19:30', 'UTC');
+		$period = $layout->GetPeriod($date);
+
+		$this->assertTrue($date->Equals($period->BeginDate()));
+	}
 }
 
 ?>

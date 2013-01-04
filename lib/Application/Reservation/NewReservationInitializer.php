@@ -52,10 +52,10 @@ class NewReservationInitializer extends ReservationInitializerBase
 	{
 		parent::Initialize();
 	}
-	
-	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
+
+	protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
 	{
-		parent::SetSelectedDates($startDate, $endDate, $schedulePeriods);
+		parent::SetSelectedDates($startDate, $endDate, $startPeriods, $endPeriods);
 		$this->basePage->SetRepeatTerminationDate($endDate);
 	}
 	

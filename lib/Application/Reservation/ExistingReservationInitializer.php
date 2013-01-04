@@ -79,13 +79,13 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 		$this->reservationBinder->Bind($this, $this->page, $this->reservationView);
 	}
 
-	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
+	protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
 	{
 		$timezone = $this->GetTimezone();		
 		$startDate = $this->reservationView->StartDate->ToTimezone($timezone);
 		$endDate = $this->reservationView->EndDate->ToTimezone($timezone);
 
-		parent::SetSelectedDates($startDate, $endDate, $schedulePeriods);
+		parent::SetSelectedDates($startDate, $endDate, $startPeriods, $endPeriods);
 	}
 	
 	public function GetOwnerId()

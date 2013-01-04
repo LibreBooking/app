@@ -120,7 +120,7 @@ class ReservationInitializationTests extends TestBase
 				->with($this->equalTo($endDate));
 
 		$initializer = new NewReservationInitializer($page, $binder, $binder, $binder, $binder, $this->fakeUser);
-		$initializer->SetDates($startDate, $endDate, $periods);
+		$initializer->SetDates($startDate, $endDate, $periods, $periods);
 	}
 }
 

@@ -232,7 +232,8 @@ class ReservationComponentTests extends TestBase
 				->method('GetScheduleId')
 				->will($this->returnValue($scheduleId));
 
-		$periods = array();
+		$startPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
+		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1),Date::Now()->AddDays(1)));
 		$layout = $this->getMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
@@ -240,18 +241,23 @@ class ReservationComponentTests extends TestBase
 				->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
 				->will($this->returnValue($layout));
 
-		$layout->expects($this->once())
+		$layout->expects($this->at(0))
 				->method('GetLayout')
-				->with($this->equalTo($dateInUserTimezone))
-				->will($this->returnValue($periods));
+				->with($this->equalTo($startDate))
+				->will($this->returnValue($startPeriods));
+
+		$layout->expects($this->at(1))
+				->method('GetLayout')
+				->with($this->equalTo($endDate))
+				->will($this->returnValue($endPeriods));
 
 		$this->initializer->expects($this->once())
 				->method('SetDates')
-				->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($periods));
+				->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($startPeriods), $this->equalTo($endPeriods));
 
 		$this->initializer->expects($this->once())
-						->method('HideRecurrence')
-						->with($this->equalTo(false));
+				->method('HideRecurrence')
+				->with($this->equalTo(false));
 
 		$binder = new ReservationDateBinder($this->scheduleRepository);
 		$binder->Bind($this->initializer);
@@ -445,8 +451,10 @@ class ReservationComponentTests extends TestBase
 		$binder = new ReservationCustomAttributeBinder($this->attributeRepository);
 
 		$attributes = array(
-			CustomAttribute::Create('1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 1),
-			CustomAttribute::Create('2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 2),
+			CustomAttribute::Create('1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
+									CustomAttributeCategory::RESERVATION, '', false, '', 1),
+			CustomAttribute::Create('2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
+									CustomAttributeCategory::RESERVATION, '', false, '', 2),
 		);
 
 		$this->attributeRepository->expects($this->once())

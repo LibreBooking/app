@@ -72,9 +72,10 @@ interface IReservationComponentInitializer
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate
-	 * @param $schedulePeriods array|SchedulePeriod[]
+	 * @param $startPeriods array|SchedulePeriod[]
+	 * @param $endPeriods array|SchedulePeriod[]
 	 */
-	public function SetDates(Date $startDate, Date $endDate, $schedulePeriods);
+	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods);
 
 	/**
 	 * @return UserSession
@@ -242,10 +243,10 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->basePage->SetCustomAttributes($this->customAttributes);
 	}
 
-	protected function SetSelectedDates(Date $startDate, Date $endDate, $schedulePeriods)
+	protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
 	{
-		$startPeriod = $this->GetStartSlotClosestTo($schedulePeriods, $startDate);
-		$endPeriod = $this->GetEndSlotClosestTo($schedulePeriods, $endDate);
+		$startPeriod = $this->GetStartSlotClosestTo($startPeriods, $startDate);
+		$endPeriod = $this->GetEndSlotClosestTo($endPeriods, $endDate);
 
 		$this->basePage->SetSelectedStart($startPeriod, $startDate);
 		$this->basePage->SetSelectedEnd($endPeriod, $endDate);
@@ -301,15 +302,10 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		return $periods[$lastIndex];
 	}
 
-	/**
-	 * @param Date $startDate
-	 * @param Date $endDate
-	 * @param $schedulePeriods array|SchedulePeriod[]
-	 */
-	public function SetDates(Date $startDate, Date $endDate, $schedulePeriods)
+	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
 	{
-		$this->basePage->BindPeriods($schedulePeriods);
-		$this->SetSelectedDates($startDate, $endDate, $schedulePeriods);
+		$this->basePage->BindPeriods($startPeriods, $endPeriods);
+		$this->SetSelectedDates($startDate, $endDate, $startPeriods, $endPeriods);
 	}
 
 	/**

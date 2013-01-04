@@ -212,17 +212,9 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
 		$list = new PeriodList();
 
-		if ($this->usingDailyLayouts)
-		{
-			$dayOfWeek = $layoutDate->Weekday();
-			$periods = $this->_periods[$dayOfWeek];
-		}
-		else
-		{
-			$periods = $this->_periods;
-		}
+		$periods = $this->getPeriods($layoutDate);
 
-		$layoutTimezone = $periods[0]->Start->Timezone();
+		$layoutTimezone = $periods[0]->Timezone();
 		$workingDate = Date::Create($layoutDate->Year(), $layoutDate->Month(), $layoutDate->Day(), 0, 0, 0,
 									$layoutTimezone);
 		$midnight = $layoutDate->GetDate();
@@ -393,11 +385,12 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 */
 	public function GetPeriod(Date $date)
 	{
-		$timezone = $this->_periods[0]->Start->Timezone();
+		$periods = $this->getPeriods($date);
+		$timezone = $periods[0]->Timezone();
 		$tempDate = $date->ToTimezone($timezone);
 
 		/** @var $period LayoutPeriod */
-		foreach ($this->_periods as $period)
+		foreach ($periods as $period)
 		{
 			$start = Date::Create($tempDate->Year(), $tempDate->Month(), $tempDate->Day(), $period->Start->Hour(),
 								  $period->Start->Minute(), 0, $timezone);
@@ -424,6 +417,19 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	public function UsesDailyLayouts()
 	{
 		return $this->usingDailyLayouts;
+	}
+
+	private function getPeriods(Date $layoutDate)
+	{
+		if ($this->usingDailyLayouts)
+		{
+			$dayOfWeek = $layoutDate->Weekday();
+			return $this->_periods[$dayOfWeek];
+		}
+		else
+		{
+			return $this->_periods;
+		}
 	}
 }
 
@@ -544,6 +550,14 @@ class LayoutPeriod
 	public function IsLabelled()
 	{
 		return !empty($this->Label);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Timezone()
+	{
+		return $this->Start->Timezone();
 	}
 
 	public function __construct(Time $start, Time $end, $periodType = PeriodTypes::RESERVABLE, $label = null)

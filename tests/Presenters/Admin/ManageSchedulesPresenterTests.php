@@ -127,7 +127,7 @@ class ManageSchedulesPresenterTests extends TestBase
 
 		$this->page->expects($this->once())
 				->method('GetUsingSingleLayout')
-				->will($this->returnValue(true));
+				->will($this->returnValue(false));
 
 		$this->page->expects($this->once())
 				->method('GetDailyReservableSlots')

@@ -25,9 +25,10 @@ interface IReservationPage extends IPage
 {
 	/**
 	 * Set the schedule period items to be used when presenting reservations
-	 * @param $periods array|ISchedulePeriod[]
+	 * @param $startPeriods array|SchedulePeriod[]
+	 * @param $endPeriods array|SchedulePeriod[]
 	 */
-	function BindPeriods($periods);
+	function BindPeriods($startPeriods, $endPeriods);
 	
 	/**
 	 * Set the resources that can be reserved by this user
@@ -221,9 +222,10 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Display($this->GetTemplateName());
 	}
 	
-	public function BindPeriods($periods)
+	public function BindPeriods($startPeriods, $endPeriods)
 	{
-		$this->Set('Periods', $periods);
+		$this->Set('StartPeriods', $startPeriods);
+		$this->Set('EndPeriods', $endPeriods);
 	}
 	
 	public function BindAvailableResources($resources)

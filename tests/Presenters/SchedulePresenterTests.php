@@ -114,10 +114,6 @@ class SchedulePresenterTests extends TestBase
 			->with($this->equalTo($bindingDates), $this->equalTo($this->scheduleId), $this->equalTo($user->Timezone))
 			->will($this->returnValue($reservations));
 		
-		$pageBuilder->expects($this->once())
-			->method('BindLayout')
-			->with($this->equalTo($page), $this->equalTo($dailyLayout));
-		
 		$dailyLayoutFactory->expects($this->once())
 			->method('Create')
 			->with($this->equalTo($reservations), $this->equalTo($layout))
@@ -563,30 +559,6 @@ class SchedulePresenterTests extends TestBase
 			
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindDisplayDates($page, $displayRange, $user, $schedule);
-	}
-	
-	public function testBindLayoutSetsLayoutOnPage()
-	{
-		$start = Date::Now();
-		$end = Date::Now()->AddDays(10);
-		$displayRange = new DateRange($start, $end);
-		
-		$page = $this->getMock('ISchedulePage');
-		$layout = $this->getMock('IDailyLayout');
-		
-		$periods = array();
-		
-		$layout->expects($this->once())
-			->method('GetLabels')
-			->with($start)
-			->will($this->returnValue($periods));
-			
-		$page->expects($this->once())
-			->method('SetLayout')
-			->with($this->equalTo($periods));
-		
-		$pageBuilder = new SchedulePageBuilder();
-		$pageBuilder->BindLayout($page, $layout, $displayRange);
 	}
 	
 	public function testPreviousAndNextLinksWhenStartingOnMondayShowingFiveDays()

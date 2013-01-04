@@ -81,7 +81,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
 					   value="{formatdate date=$StartDate key=system}"/>
 				<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown" style="width:150px">
-				{foreach from=$Periods item=period}
+				{foreach from=$StartPeriods item=period}
 					{if $period->IsReservable()}
 						{assign var='selected' value=''}
 						{if $period eq $SelectedStart}
@@ -98,7 +98,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<input type="hidden" id="formattedEndDate" {formname key=END_DATE}
 					   value="{formatdate date=$EndDate key=system}"/>
 				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
-				{foreach from=$Periods item=period}
+				{foreach from=$EndPeriods item=period}
 					{if $period->IsReservable()}
 						{assign var='selected' value=''}
 						{if $period eq $SelectedEnd}

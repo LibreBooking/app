@@ -144,7 +144,7 @@ class ExistingReservationInitializerTests extends TestBase
 			$binder,
 			$reservationView,
 			$this->fakeUser);
-		$initializer->SetDates($anything, $anything, $periods);
+		$initializer->SetDates($anything, $anything, $periods, $periods);
 	}
 }
 
