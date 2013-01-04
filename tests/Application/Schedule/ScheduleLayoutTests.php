@@ -369,6 +369,9 @@ class ScheduleLayoutTests extends TestBase
 
 	public function testWhenFindingPeriodWithDailyLayout()
 	{
+		$this->fail('something isnt right when adjusting for tz');
+		// full day EST
+		// book for slot CST fails
 		$layoutTz = 'America/Chicago';
 		$scheduleLayoutFactory = new ScheduleLayoutFactory('UTC');
 		$layout = $scheduleLayoutFactory->CreateLayout();
