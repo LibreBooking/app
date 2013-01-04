@@ -25,7 +25,15 @@ interface ILayoutTimezone
 	public function Timezone();
 }
 
-interface IScheduleLayout extends ILayoutTimezone
+interface IDailyScheduleLayout
+{
+	/**
+	 * @return bool
+	 */
+	public function UsesDailyLayouts();
+}
+
+interface IScheduleLayout extends ILayoutTimezone, IDailyScheduleLayout
 {
 	/**
 	 * @param Date $layoutDate
@@ -39,20 +47,9 @@ interface IScheduleLayout extends ILayoutTimezone
 	 * @return SchedulePeriod|null period which occurs at this datetime. Includes start time, excludes end time. null if no match is found
 	 */
 	public function GetPeriod(Date $date);
-
-	/**
-	 * @return bool
-	 */
-	public function UsesDailyLayouts();
-
-	/**
-	 * @param DayOfWeek|int|null $dayOfWeek
-	 * @return SchedulePeriod[]|array of SchedulePeriod objects
-	 */
-	public function GetDailyLayout($dayOfWeek = null);
 }
 
-interface ILayoutCreation extends ILayoutTimezone
+interface ILayoutCreation extends ILayoutTimezone, IDailyScheduleLayout
 {
 	/**
 	 * Appends a period to the schedule layout
@@ -76,9 +73,11 @@ interface ILayoutCreation extends ILayoutTimezone
 	function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null);
 
 	/**
+	 *
+	 * @param DayOfWeek|int|null $dayOfWeek
 	 * @return LayoutPeriod[] array of LayoutPeriod
 	 */
-	function GetSlots();
+	function GetSlots($dayOfWeek = null);
 }
 
 class ScheduleLayout implements IScheduleLayout, ILayoutCreation
@@ -118,11 +117,30 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	}
 
 	/**
-	 * @return array|LayoutPeriod[]
+	 * @param DayOfWeek|int|null $dayOfWeek
+	 * @throws Exception
+	 * @return LayoutPeriod[]|array
 	 */
-	public function GetSlots()
+	public function GetSlots($dayOfWeek = null)
 	{
-		return $this->_periods;
+		if (is_null($dayOfWeek))
+		{
+			if ($this->usingDailyLayouts)
+			{
+				throw new Exception('ScheduleLayout->GetSlots() $dayOfWeek required when using daily layouts');
+			}
+			$periods = $this->_periods;
+		}
+		else
+		{
+			if (!$this->usingDailyLayouts)
+			{
+				throw new Exception('ScheduleLayout->GetSlots() $dayOfWeek cannot be provided when using single layout');
+			}
+			$periods = $this->_periods[$dayOfWeek];
+		}
+		$this->SortItems($periods);
+		return $periods;
 	}
 
 	/**
@@ -271,24 +289,6 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	}
 
 	/**
-	 * @param DayOfWeek|int|null $dayOfWeek
-	 * @return LayoutPeriod[]|array
-	 */
-	public function GetDailyLayout($dayOfWeek = null)
-	{
-		if (is_null($dayOfWeek))
-		{
-			$periods = $this->_periods;
-		}
-		else
-		{
-			$periods = $this->_periods[$dayOfWeek];
-		}
-		$this->SortItems($periods);
-		return $periods;
-	}
-
-	/**
 	 * @param array|SchedulePeriod[] $layout
 	 * @param Date $date
 	 */
@@ -363,6 +363,31 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	}
 
 	/**
+	 * @param string $timezone
+	 * @param string[]|array $reservableSlots
+	 * @param string[]|array $blockedSlots
+	 * @throws Exception
+	 * @return ScheduleLayout
+	 */
+	public static function ParseDaily($timezone, $reservableSlots, $blockedSlots)
+	{
+		if (count($reservableSlots) != DayOfWeek::NumberOfDays || count($blockedSlots) != DayOfWeek::NumberOfDays)
+		{
+			throw new Exception(sprintf('LayoutParser ParseDaily missing slots. $reservableSlots=%s, $blockedSlots=%s',
+										count($reservableSlots), count($blockedSlots)));
+		}
+		$parser = new LayoutParser($timezone);
+
+		foreach (DayOfWeek::Days() as $day)
+		{
+			$parser->AddReservable($reservableSlots[$day], $day);
+			$parser->AddBlocked($blockedSlots[$day], $day);
+		}
+
+		return $parser->GetLayout();
+	}
+
+	/**
 	 * @param Date $date
 	 * @return SchedulePeriod period which occurs at this datetime. Includes start time, excludes end time
 	 */
@@ -413,17 +438,17 @@ class LayoutParser
 		$this->timezone = $timezone;
 	}
 
-	public function AddReservable($reservableSlots)
+	public function AddReservable($reservableSlots, $dayOfWeek = null)
 	{
 		$cb = array($this, 'appendPeriod');
-		$this->ParseSlots($reservableSlots, $cb);
+		$this->ParseSlots($reservableSlots, $dayOfWeek, $cb);
 	}
 
-	public function AddBlocked($blockedSlots)
+	public function AddBlocked($blockedSlots, $dayOfWeek = null)
 	{
 		$cb = array($this, 'appendBlocked');
 
-		$this->ParseSlots($blockedSlots, $cb);
+		$this->ParseSlots($blockedSlots, $dayOfWeek, $cb);
 	}
 
 	public function GetLayout()
@@ -431,18 +456,23 @@ class LayoutParser
 		return $this->layout;
 	}
 
-	private function appendPeriod($start, $end, $label)
+	private function appendPeriod($start, $end, $label, $dayOfWeek = null)
 	{
-		$this->layout->AppendPeriod(Time::Parse($start, $this->timezone), Time::Parse($end, $this->timezone), $label);
+		$this->layout->AppendPeriod(Time::Parse($start, $this->timezone),
+									Time::Parse($end, $this->timezone),
+									$label,
+									$dayOfWeek);
 	}
 
-	private function appendBlocked($start, $end, $label)
+	private function appendBlocked($start, $end, $label, $dayOfWeek = null)
 	{
-		$this->layout->AppendBlockedPeriod(Time::Parse($start, $this->timezone), Time::Parse($end, $this->timezone),
-										   $label);
+		$this->layout->AppendBlockedPeriod(Time::Parse($start, $this->timezone),
+										   Time::Parse($end, $this->timezone),
+										   $label,
+										   $dayOfWeek);
 	}
 
-	private function ParseSlots($allSlots, $callback)
+	private function ParseSlots($allSlots, $dayOfWeek, $callback)
 	{
 		$lines = preg_split("/[\n]/", $allSlots, -1, PREG_SPLIT_NO_EMPTY);
 
@@ -460,7 +490,7 @@ class LayoutParser
 				$label = trim($parts[1]);
 			}
 
-			call_user_func($callback, $start, $end, $label);
+			call_user_func($callback, $start, $end, $label, $dayOfWeek);
 		}
 	}
 }

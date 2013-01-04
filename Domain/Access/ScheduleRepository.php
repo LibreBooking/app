@@ -270,17 +270,25 @@ class ScheduleRepository implements IScheduleRepository
         $addLayoutCommand = new AddLayoutCommand($timezone);
         $layoutId = $db->ExecuteInsert($addLayoutCommand);
 
-        $slots = $layout->GetSlots();
+		$days = array(null);
+		if ($layout->UsesDailyLayouts())
+		{
+			$days = DayOfWeek::Days();
+		}
 
-        /* @var $slot LayoutPeriod */
-        foreach ($slots as $slot)
-        {
-            $db->Execute(new AddLayoutTimeCommand($layoutId, $slot->Start, $slot->End, $slot->PeriodType, $slot->Label));
-        }
+		foreach ($days as $day)
+		{
+			$slots = $layout->GetSlots($day);
 
+			/* @var $slot LayoutPeriod */
+			foreach ($slots as $slot)
+			{
+				$db->Execute(new AddLayoutTimeCommand($layoutId, $slot->Start, $slot->End, $slot->PeriodType, $slot->Label, $day));
+			}
+		}
         $db->Execute(new UpdateScheduleLayoutCommand($scheduleId, $layoutId));
 
-        //TODO: Delete old layout?
+        $db->Execute(new DeleteOrphanLayoutsCommand());
     }
 }
 

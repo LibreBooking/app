@@ -22,8 +22,6 @@ function ScheduleManagement(opts)
 
 		reservableEdit:$('#reservableEdit'),
 		blockedEdit:$('#blockedEdit'),
-		allReservableEdit:$('.reservableEdit'),
-		allBlockedEdit:$('.blockedEdit'),
 		layoutTimezone:$('#layoutTimezone'),
 		quickLayoutConfig:$('#quickLayoutConfig'),
 		quickLayoutStart:$('#quickLayoutStart'),
@@ -40,7 +38,7 @@ function ScheduleManagement(opts)
 	{
 		ConfigureAdminDialog(elements.renameDialog, 300, 125);
 		ConfigureAdminDialog(elements.changeSettingsDialog, 300, 140);
-		ConfigureAdminDialog(elements.layoutDialog, 775, 620);
+		ConfigureAdminDialog(elements.layoutDialog, 725, 'auto');
 		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
 		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
 
@@ -265,6 +263,7 @@ function ScheduleManagement(opts)
 		elements.blockedEdit.val(blocked);
 		elements.layoutTimezone.val(timezone.val());
 		elements.usesSingleLayout.removeAttr('checked');
+
 		if (usesSingleLayout)
 		{
 			elements.usesSingleLayout.attr('checked', 'checked');

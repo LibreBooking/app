@@ -56,7 +56,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         <div class="layout">
 
 			{function name="display_periods"}
-				{foreach from=$Layouts[$id]->GetDailyLayout() item=period}
+				{foreach from=$Layouts[$id]->GetSlots() item=period}
 					{if $period->IsReservable() == $showReservable}
 						{$period->Start->Format("H:i")} - {$period->End->Format("H:i")}
 						{if $period->IsLabelled()}
@@ -72,7 +72,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{translate key=ScheduleLayout args=$schedule->GetTimezone()}:<br/>
             <input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
 
-
 			{if !$Layouts[$id]->UsesDailyLayouts()}
                 <input type="hidden" class="usesDailyLayouts" value="false"/>
 				{translate key=ReservableTimeSlots}
@@ -85,7 +84,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
 				{else}
                 <input type="hidden" class="usesDailyLayouts" value="true"/>
-                DAILY LAYOUTS ARE BEING USED
+                DAILY LAYOUTS ARE BEING USED - need to populate source elements
 			{/if}
         </div>
         <div class="actions">
@@ -218,11 +217,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             <div style="float:left;">
                 <h5>{translate key=ReservableTimeSlots}</h5>
                 <textarea class="reservableEdit"
-                          id="reservableEdit{$suffix}" {formname key=SLOTS_RESERVABLE}></textarea>
+                          id="reservableEdit{$suffix}" name="{FormKeys::SLOTS_RESERVABLE}{$suffix}"></textarea>
             </div>
             <div style="float:right;">
                 <h5>{translate key=BlockedTimeSlots}</h5>
-                <textarea class="blockedEdit" id="blockedEdit{$suffix}" {formname key=SLOTS_BLOCKED}></textarea>
+                <textarea class="blockedEdit" id="blockedEdit{$suffix}" name="{FormKeys::SLOTS_BLOCKED}{$suffix}"></textarea>
             </div>
         </div>
 	{/function}
@@ -272,7 +271,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 </select>
             </h5>
         </div>
-        <div>
+        <div style="margin-top:2px;">
             <h5>
 			{capture name="layoutConfig" assign="layoutConfig"}
                 <input type='text' value='30' id='quickLayoutConfig' size=5' />

@@ -212,5 +212,6 @@ tr.pending {
 }
 
 #dailySlots, #tabs {
-	height: 425px;
+	height: 450px;
+	margin-bottom:4px;
 }

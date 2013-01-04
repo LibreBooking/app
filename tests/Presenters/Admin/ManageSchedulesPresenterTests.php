@@ -23,162 +23,209 @@ require_once(ROOT_DIR . 'Pages/Admin/ManageSchedulesPage.php');
 
 class ManageSchedulesPresenterTests extends TestBase
 {
-    /**
-     * @var IUpdateSchedulePage|PHPUnit_Framework_MockObject_MockObject
-     */
-    private $page;
+	/**
+	 * @var IUpdateSchedulePage|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $page;
 
-    /**
-     * @var IScheduleRepository|PHPUnit_Framework_MockObject_MockObject
-     */
-    private $scheduleRepo;
+	/**
+	 * @var IScheduleRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $scheduleRepo;
 
-    /**
-     * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
-     */
-    private $resourceRepo;
+	/**
+	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $resourceRepo;
 
 	/**
 	 * @var IGroupViewRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
-    private $groupRepo;
+	private $groupRepo;
 
-    /**
-     * @var ManageScheduleService
-     */
-    private $service;
+	/**
+	 * @var ManageScheduleService
+	 */
+	private $service;
 
-    public function setup()
-    {
-        parent::setup();
+	public function setup()
+	{
+		parent::setup();
 
-        $this->page = $this->getMock('IManageSchedulesPage');
-        $this->scheduleRepo = $this->getMock('IScheduleRepository');
-        $this->resourceRepo = $this->getMock('IResourceRepository');
-        $this->groupRepo = $this->getMock('IGroupViewRepository');
+		$this->page = $this->getMock('IManageSchedulesPage');
+		$this->scheduleRepo = $this->getMock('IScheduleRepository');
+		$this->resourceRepo = $this->getMock('IResourceRepository');
+		$this->groupRepo = $this->getMock('IGroupViewRepository');
 
-        $this->service = new ManageScheduleService($this->scheduleRepo, $this->resourceRepo);
-    }
+		$this->service = new ManageScheduleService($this->scheduleRepo, $this->resourceRepo);
+	}
 
-    public function teardown()
-    {
-        parent::teardown();
-    }
+	public function teardown()
+	{
+		parent::teardown();
+	}
 
-    public function testLayoutIsParsedFromPage()
-    {
-        $scheduleId = 98;
-        $timezone = 'America/Chicago';
-        $reservableSlots = '00:00 - 01:00 Label 1 A\n1:00- 2:00\r\n02:00 -3:30\n03:30-12:00\r\n';
-        $blockedSlots = '00:00 - 01:00 Label 1 A\n1:00- 2:00\r\n02:00 -3:30\n03:30-12:00\r\n';
+	public function testLayoutIsParsedFromPage()
+	{
+		$scheduleId = 98;
+		$timezone = 'America/Chicago';
+		$reservableSlots = '00:00 - 01:00 Label 1 A\n1:00- 2:00\r\n02:00 -3:30\n03:30-12:00\r\n';
+		$blockedSlots = '00:00 - 01:00 Label 1 A\n1:00- 2:00\r\n02:00 -3:30\n03:30-12:00\r\n';
 
-        $expectedLayout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
+		$expectedLayout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
 
-        $this->page->expects($this->once())
-                ->method('GetScheduleId')
-                ->will($this->returnValue($scheduleId));
+		$this->page->expects($this->once())
+				->method('GetScheduleId')
+				->will($this->returnValue($scheduleId));
 
-        $this->page->expects($this->once())
-                ->method('GetLayoutTimezone')
-                ->will($this->returnValue($timezone));
+		$this->page->expects($this->once())
+				->method('GetLayoutTimezone')
+				->will($this->returnValue($timezone));
 
-        $this->page->expects($this->once())
-                ->method('GetReservableSlots')
-                ->will($this->returnValue($reservableSlots));
+		$this->page->expects($this->once())
+				->method('GetUsingSingleLayout')
+				->will($this->returnValue(true));
 
-        $this->page->expects($this->once())
-                ->method('GetBlockedSlots')
-                ->will($this->returnValue($blockedSlots));
+		$this->page->expects($this->once())
+				->method('GetReservableSlots')
+				->will($this->returnValue($reservableSlots));
 
-        $this->scheduleRepo->expects($this->once())
-                ->method('AddScheduleLayout')
-                ->with($this->equalTo($scheduleId), $this->equalTo($expectedLayout));
+		$this->page->expects($this->once())
+				->method('GetBlockedSlots')
+				->will($this->returnValue($blockedSlots));
 
-        $presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
-        $presenter->ChangeLayout();
-    }
+		$this->scheduleRepo->expects($this->once())
+				->method('AddScheduleLayout')
+				->with($this->equalTo($scheduleId), $this->equalTo($expectedLayout));
 
-    public function testNewScheduleIsAdded()
-    {
-        $sourceScheduleId = 198;
-        $name = 'new name';
-        $startDay = '3';
-        $daysVisible = '7';
+		$presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
+		$presenter->ChangeLayout();
+	}
 
-        $expectedSchedule = new Schedule(null, $name, false, $startDay, $daysVisible);
+	public function testDailyLayoutIsParsedFromPage()
+	{
+		$scheduleId = 98;
+		$timezone = 'America/Chicago';
+		$reservableSlots = array();
+		$blockedSlots = array();
 
-        $this->page->expects($this->once())
-                ->method('GetSourceScheduleId')
-                ->will($this->returnValue($sourceScheduleId));
+		for ($i = 0; $i < 7; $i++)
+		{
+			$reservableSlots[$i] = '00:00 - 01:00 Label 1 A\n1:00- 2:00\r\n02:00 -3:30\n03:30-12:00\r\n';
+			$blockedSlots[$i] = '00:00 - 01:00 Label 1 A\n1:00- 2:00\r\n02:00 -3:30\n03:30-12:00\r\n';
+		}
 
-        $this->page->expects($this->once())
-                ->method('GetScheduleName')
-                ->will($this->returnValue($name));
+		$expectedLayout = ScheduleLayout::ParseDaily($timezone, $reservableSlots, $blockedSlots);
 
-        $this->page->expects($this->once())
-                ->method('GetStartDay')
-                ->will($this->returnValue($startDay));
+		$this->page->expects($this->once())
+				->method('GetScheduleId')
+				->will($this->returnValue($scheduleId));
 
-        $this->page->expects($this->once())
-                ->method('GetDaysVisible')
-                ->will($this->returnValue($daysVisible));
+		$this->page->expects($this->once())
+				->method('GetLayoutTimezone')
+				->will($this->returnValue($timezone));
 
-        $this->scheduleRepo->expects($this->once())
-                ->method('Add')
-                ->with($this->equalTo($expectedSchedule), $this->equalTo($sourceScheduleId));
+		$this->page->expects($this->once())
+				->method('GetUsingSingleLayout')
+				->will($this->returnValue(true));
 
-        $presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
-        $presenter->Add();
-    }
+		$this->page->expects($this->once())
+				->method('GetDailyReservableSlots')
+				->will($this->returnValue($reservableSlots));
 
-    public function testDeletesSchedule()
-    {
-        $scheduleId = 1;
-        $targetId = 2;
+		$this->page->expects($this->once())
+				->method('GetDailyBlockedSlots')
+				->will($this->returnValue($blockedSlots));
 
-        $schedule = new Schedule(null, 'name', false, 0, 4);
+		$this->scheduleRepo->expects($this->once())
+				->method('AddScheduleLayout')
+				->with($this->equalTo($scheduleId), $this->equalTo($expectedLayout));
 
-        $resource1 = new FakeBookableResource(1, 'name1');
-        $resource2 = new FakeBookableResource(2, 'name2');
-        $resource1->SetScheduleId($targetId);
-        $resource2->SetScheduleId($targetId);
+		$presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
+		$presenter->ChangeLayout();
+	}
 
-        $resources = array($resource1, $resource2);
+	public function testNewScheduleIsAdded()
+	{
+		$sourceScheduleId = 198;
+		$name = 'new name';
+		$startDay = '3';
+		$daysVisible = '7';
 
-        $this->page->expects($this->once())
-                ->method('GetScheduleId')
-                ->will($this->returnValue($scheduleId));
+		$expectedSchedule = new Schedule(null, $name, false, $startDay, $daysVisible);
 
-        $this->page->expects($this->once())
-                ->method('GetTargetScheduleId')
-                ->will($this->returnValue($targetId));
+		$this->page->expects($this->once())
+				->method('GetSourceScheduleId')
+				->will($this->returnValue($sourceScheduleId));
 
-        $this->scheduleRepo->expects($this->once())
-                ->method('LoadById')
-                ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue($schedule));
+		$this->page->expects($this->once())
+				->method('GetScheduleName')
+				->will($this->returnValue($name));
 
-        $this->scheduleRepo->expects($this->once())
-                ->method('Delete')
-                ->with($this->equalTo($schedule));
+		$this->page->expects($this->once())
+				->method('GetStartDay')
+				->will($this->returnValue($startDay));
 
-        $this->resourceRepo->expects($this->once())
-                ->method('GetScheduleResources')
-                ->with($this->equalTo($scheduleId))
-                ->will($this->returnValue($resources));
+		$this->page->expects($this->once())
+				->method('GetDaysVisible')
+				->will($this->returnValue($daysVisible));
 
-        $this->resourceRepo->expects($this->at(1))
-                        ->method('Update')
-                        ->with($this->equalTo($resource1));
+		$this->scheduleRepo->expects($this->once())
+				->method('Add')
+				->with($this->equalTo($expectedSchedule), $this->equalTo($sourceScheduleId));
 
-        $this->resourceRepo->expects($this->at(2))
-                        ->method('Update')
-                        ->with($this->equalTo($resource2));
+		$presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
+		$presenter->Add();
+	}
 
-        $presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
+	public function testDeletesSchedule()
+	{
+		$scheduleId = 1;
+		$targetId = 2;
 
-        $presenter->Delete();
-    }
+		$schedule = new Schedule(null, 'name', false, 0, 4);
+
+		$resource1 = new FakeBookableResource(1, 'name1');
+		$resource2 = new FakeBookableResource(2, 'name2');
+		$resource1->SetScheduleId($targetId);
+		$resource2->SetScheduleId($targetId);
+
+		$resources = array($resource1, $resource2);
+
+		$this->page->expects($this->once())
+				->method('GetScheduleId')
+				->will($this->returnValue($scheduleId));
+
+		$this->page->expects($this->once())
+				->method('GetTargetScheduleId')
+				->will($this->returnValue($targetId));
+
+		$this->scheduleRepo->expects($this->once())
+				->method('LoadById')
+				->with($this->equalTo($scheduleId))
+				->will($this->returnValue($schedule));
+
+		$this->scheduleRepo->expects($this->once())
+				->method('Delete')
+				->with($this->equalTo($schedule));
+
+		$this->resourceRepo->expects($this->once())
+				->method('GetScheduleResources')
+				->with($this->equalTo($scheduleId))
+				->will($this->returnValue($resources));
+
+		$this->resourceRepo->expects($this->at(1))
+				->method('Update')
+				->with($this->equalTo($resource1));
+
+		$this->resourceRepo->expects($this->at(2))
+				->method('Update')
+				->with($this->equalTo($resource2));
+
+		$presenter = new ManageSchedulesPresenter($this->page, $this->service, $this->groupRepo);
+
+		$presenter->Delete();
+	}
 }
 
 ?>

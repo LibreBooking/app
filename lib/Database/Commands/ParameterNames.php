@@ -84,6 +84,7 @@ class ParameterNames
 
     const PASSWORD = '@password';
     const PERIOD_AVAILABILITY_TYPE = '@periodType';
+	const PERIOD_DAY_OF_WEEK = '@day_of_week';
     const PERIOD_LABEL = '@label';
     const PHONE = '@phone';
     const POSITION = '@position';

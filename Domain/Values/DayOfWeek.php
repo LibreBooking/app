@@ -27,6 +27,16 @@ class DayOfWeek
 	const THURSDAY = 4;
 	const FRIDAY = 5;
 	const SATURDAY = 6;
+
+	const NumberOfDays = 7;
+
+	/**
+	 * @return array|int[]|DayOfWeek
+	 */
+	public static function Days()
+	{
+		return range(self::SUNDAY, self::SATURDAY);
+	}
 }
 
 ?>

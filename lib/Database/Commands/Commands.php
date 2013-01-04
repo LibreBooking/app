@@ -154,7 +154,7 @@ class AddLayoutCommand extends SqlCommand
 
 class AddLayoutTimeCommand extends SqlCommand
 {
-	public function __construct($layoutId, Time $start, Time $end, $periodType, $label)
+	public function __construct($layoutId, Time $start, Time $end, $periodType, $label = null, $dayOfWeek = null)
 	{
 		parent::__construct(Queries::ADD_LAYOUT_TIME);
 		$this->AddParameter(new Parameter(ParameterNames::LAYOUT_ID, $layoutId));
@@ -162,6 +162,7 @@ class AddLayoutTimeCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::END_TIME, $end->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::PERIOD_AVAILABILITY_TYPE, $periodType));
 		$this->AddParameter(new Parameter(ParameterNames::PERIOD_LABEL, $label));
+		$this->AddParameter(new Parameter(ParameterNames::PERIOD_DAY_OF_WEEK, $dayOfWeek));
 	}
 }
 
@@ -513,6 +514,14 @@ class DeleteGroupRoleCommand extends SqlCommand
 		parent::__construct(Queries::DELETE_GROUP_ROLE);
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
 		$this->AddParameter(new Parameter(ParameterNames::ROLE_ID, $roleId));
+	}
+}
+
+class DeleteOrphanLayoutsCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::DELETE_ORPHAN_LAYOUTS);
 	}
 }
 

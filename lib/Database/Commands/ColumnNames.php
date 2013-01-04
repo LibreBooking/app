@@ -66,6 +66,7 @@ class ColumnNames
     const GROUP_ADMIN_GROUP_NAME = 'admin_group_name';
 
     // TIME BLOCKS //
+	const BLOCK_DAY_OF_WEEK = 'day_of_week';
     const BLOCK_LABEL = 'label';
     const BLOCK_LABEL_END = 'end_label';
     const BLOCK_CODE = 'availability_code';

@@ -158,23 +158,17 @@ class Queries
 		FROM users 
 		WHERE user_id = @userid';
 
-	const DELETE_ACCESSORY =
-			'DELETE FROM accessories WHERE accessory_id = @accessoryid';
+	const DELETE_ACCESSORY = 'DELETE FROM accessories WHERE accessory_id = @accessoryid';
 
-	const DELETE_ATTRIBUTE =
-			'DELETE FROM custom_attributes WHERE custom_attribute_id = @custom_attribute_id';
+	const DELETE_ATTRIBUTE = 'DELETE FROM custom_attributes WHERE custom_attribute_id = @custom_attribute_id';
 
-	const DELETE_ATTRIBUTE_VALUES =
-			'DELETE FROM custom_attribute_values WHERE custom_attribute_id = @custom_attribute_id';
+	const DELETE_ATTRIBUTE_VALUES = 'DELETE FROM custom_attribute_values WHERE custom_attribute_id = @custom_attribute_id';
 
-	const DELETE_ACCOUNT_ACTIVATION =
-			'DELETE FROM account_activation WHERE activation_code = @activation_code';
+	const DELETE_ACCOUNT_ACTIVATION = 'DELETE FROM account_activation WHERE activation_code = @activation_code';
 
-	const DELETE_ANNOUNCEMENT =
-			'DELETE FROM announcements WHERE announcementid = @announcementid';
+	const DELETE_ANNOUNCEMENT = 'DELETE FROM announcements WHERE announcementid = @announcementid';
 
-	const DELETE_BLACKOUT_SERIES =
-			'DELETE FROM blackout_series WHERE blackout_series_id = @seriesid';
+	const DELETE_BLACKOUT_SERIES = 'DELETE FROM blackout_series WHERE blackout_series_id = @seriesid';
 
 	const DELETE_EMAIL_PREFERENCE =
 			'DELETE FROM user_email_preferences WHERE user_id = @userid AND event_category = @event_category AND event_type = @event_type';
@@ -185,14 +179,13 @@ class Queries
 	const DELETE_GROUP_RESOURCE_PERMISSION =
 			'DELETE	FROM group_resource_permissions WHERE group_id = @groupid AND resource_id = @resourceid';
 
-	const DELETE_GROUP_ROLE =
-			'DELETE FROM group_roles WHERE group_id = @groupid AND role_id = @roleid';
+	const DELETE_GROUP_ROLE = 'DELETE FROM group_roles WHERE group_id = @groupid AND role_id = @roleid';
 
-	const DELETE_QUOTA =
-			'DELETE	FROM quotas	WHERE quota_id = @quotaid';
+	const DELETE_ORPHAN_LAYOUTS = 'DELETE l.* FROM layouts l LEFT JOIN schedules s ON l.layout_id = s.layout_id WHERE s.layout_id IS NULL';
 
-	const DELETE_RESOURCE_COMMAND =
-			'DELETE FROM resources WHERE resource_id = @resourceid';
+	const DELETE_QUOTA = 'DELETE	FROM quotas	WHERE quota_id = @quotaid';
+
+	const DELETE_RESOURCE_COMMAND = 'DELETE FROM resources WHERE resource_id = @resourceid';
 
 	const DELETE_RESOURCE_RESERVATIONS_COMMAND =
 			'DELETE s.*
