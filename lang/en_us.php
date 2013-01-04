@@ -451,6 +451,7 @@ class en_us extends Language
         $strings['InvalidAttachmentExtension'] = 'You can only upload files of type: %s';
         $strings['InvalidStartSlot'] = 'The start date and time requested is not valid.';
         $strings['InvalidEndSlot'] = 'The end date and time requested is not valid.';
+        $strings['UseSameLayoutForAllDays'] = 'Use the same layout for all days';
         // End Errors
 
         // Page Titles

@@ -244,16 +244,16 @@ class ScheduleRepository implements IScheduleRepository
             $start = Time::Parse($row[ColumnNames::BLOCK_START], $timezone);
             $end = Time::Parse($row[ColumnNames::BLOCK_END], $timezone);
             $label = $row[ColumnNames::BLOCK_LABEL];
-            //$labelEnd = $row[ColumnNames::BLOCK_LABEL_END];
             $periodType = $row[ColumnNames::BLOCK_CODE];
+			$dayOfWeek = $row[ColumnNames::BLOCK_DAY_OF_WEEK];
 
             if ($periodType == PeriodTypes::RESERVABLE)
             {
-                $layout->AppendPeriod($start, $end, $label);
+                $layout->AppendPeriod($start, $end, $label, $dayOfWeek);
             }
             else
             {
-                $layout->AppendBlockedPeriod($start, $end, $label);
+                $layout->AppendBlockedPeriod($start, $end, $label, $dayOfWeek);
             }
         }
 

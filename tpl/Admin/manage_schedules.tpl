@@ -205,7 +205,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         </div>
 
         <div class="clear" style="height:20px;">
-            <label>Use the same layout for all days <input type="checkbox" id="usesSingleLayout"></label>
+            <label>{translate key=UseSameLayoutForAllDays} <input type="checkbox" id="usesSingleLayout" {formname key=USING_SINGLE_LAYOUT}></label>
         </div>
 
 	{function name=display_slot_inputs}
@@ -228,13 +228,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         <div class="clear" id="dailySlots">
             <div class="clear" id="tabs">
                 <ul>
-                    <li><a href="#tabs-0">Sunday</a></li>
-                    <li><a href="#tabs-1">Monday</a></li>
-                    <li><a href="#tabs-2">Tuesday</a></li>
-                    <li><a href="#tabs-3">Wednesday</a></li>
-                    <li><a href="#tabs-4">Thursday</a></li>
-                    <li><a href="#tabs-5">Friday</a></li>
-                    <li><a href="#tabs-6">Saturday</a></li>
+                    <li><a href="#tabs-0">{$DayNames[0]}</a></li>
+                    <li><a href="#tabs-1">{$DayNames[1]}</a></li>
+                    <li><a href="#tabs-2">{$DayNames[2]}</a></li>
+                    <li><a href="#tabs-3">{$DayNames[3]}</a></li>
+                    <li><a href="#tabs-4">{$DayNames[4]}</a></li>
+                    <li><a href="#tabs-5">{$DayNames[5]}</a></li>
+                    <li><a href="#tabs-6">{$DayNames[6]}</a></li>
                 </ul>
                 <div id="tabs-0">
 				{display_slot_inputs day='0'}

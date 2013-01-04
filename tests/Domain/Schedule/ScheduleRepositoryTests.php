@@ -186,7 +186,7 @@ class ScheduleRepositoryTests extends TestBase
 
 		$sunday = Date::Parse("2013-01-06", $timezone);
 		$periods = $layout->GetLayout($sunday);
-		$this->assertEquals(3, count($periods));
+		$this->assertEquals(2, count($periods));
 
 		$start = $sunday->SetTime(new Time(2, 0, 0));
 		$end = $sunday->SetTime(new Time(3, 0, 0));

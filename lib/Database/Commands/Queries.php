@@ -68,8 +68,8 @@ class Queries
 			'INSERT INTO layouts (timezone) VALUES (@timezone)';
 
 	const ADD_LAYOUT_TIME =
-			'INSERT INTO time_blocks (layout_id, start_time, end_time, availability_code, label)
-		VALUES (@layoutid, @startTime, @endTime, @periodType, @label)';
+			'INSERT INTO time_blocks (layout_id, start_time, end_time, availability_code, label, day_of_week)
+		VALUES (@layoutid, @startTime, @endTime, @periodType, @label, @day_of_week)';
 
 	const ADD_QUOTA =
 			'INSERT INTO quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id)

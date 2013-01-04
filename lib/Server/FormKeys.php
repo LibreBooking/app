@@ -155,6 +155,7 @@ class FormKeys
 	const UNIT_COST = 'unitCost';
 	const USER_ID = 'userId';
 	const USERNAME = 'username';
+	const USING_SINGLE_LAYOUT = 'USING_SINGLE_LAYOUT';
 
 	public static function Evaluate($formKey)
 	{

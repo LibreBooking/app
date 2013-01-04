@@ -16,64 +16,79 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
- 
+ */
+
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageSchedulesPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ScheduleRepository.php');
 
 interface IUpdateSchedulePage
-{	
+{
 	/**
 	 * @return int
 	 */
 	function GetScheduleId();
-	
+
 	/**
 	 * @return string
 	 */
 	function GetScheduleName();
-	
+
 	/**
 	 * @return string
 	 */
 	function GetStartDay();
-	
+
 	/**
 	 * @return string
 	 */
 	function GetDaysVisible();
-	
+
 	/**
 	 * @return string
 	 */
 	function GetReservableSlots();
-	
+
 	/**
 	 * @return string
 	 */
 	function GetBlockedSlots();
-	
+
+	/**
+	 * @return string[]
+	 */
+	function GetDailyReservableSlots();
+
+	/**
+	 * @return string[]
+	 */
+	function GetDailyBlockedSlots();
+
 	/**
 	 * @return string
 	 */
 	function GetLayoutTimezone();
-	
+
+	/**
+	 * @return bool
+	 */
+	function GetUsingSingleLayout();
+
 	/**
 	 * @return int
 	 */
 	function GetSourceScheduleId();
 
-    /**
-     * @return int
-     */
-    function GetTargetScheduleId();
+	/**
+	 * @return int
+	 */
+	function GetTargetScheduleId();
 }
 
 interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
 {
 	/**
-	 * @param Schedule[] $schedules 
+	 * @param Schedule[] $schedules
 	 * @param array|IScheduleLayout[] $layouts
 	 * @param Schedule[] $sourceSchedules
 	 */
@@ -84,7 +99,7 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
 	 * @param GroupItemView[] $groups
 	 */
 	public function BindGroups($groups);
-	
+
 	public function SetTimezones($timezoneValues, $timezoneOutput);
 
 	/**
@@ -106,14 +121,14 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 		parent::__construct('ManageSchedules', 1);
 		$this->_presenter = new ManageSchedulesPresenter($this, new ManageScheduleService(new ScheduleRepository(), new ResourceRepository()), new GroupRepository());
 	}
-	
+
 	public function ProcessPageLoad()
 	{
 		$this->_presenter->PageLoad();
 
 		$daynames = Resources::GetInstance()->GetDays('full');
 		$this->Set('DayNames', $daynames);
-		$this->Set('Today',  Resources::GetInstance()->GetString('Today'));
+		$this->Set('Today', Resources::GetInstance()->GetString('Today'));
 		$this->Display('Admin/manage_schedules.tpl');
 	}
 
@@ -165,6 +180,33 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 		return $this->server->GetForm(FormKeys::SLOTS_BLOCKED);
 	}
 
+	public function GetDailyReservableSlots()
+	{
+		$slots = array();
+		foreach (DayOfWeek::Days() as $day)
+		{
+			$slots[$day] = $this->server->GetForm(FormKeys::SLOTS_RESERVABLE . "_$day");
+		}
+		return $slots;
+	}
+
+	public function GetDailyBlockedSlots()
+	{
+		$slots = array();
+		foreach (DayOfWeek::Days() as $day)
+		{
+			$slots[$day] = $this->server->GetForm(FormKeys::SLOTS_BLOCKED . "_$day");
+		}
+		return $slots;
+	}
+
+	public function GetUsingSingleLayout()
+	{
+		$singleLayout = $this->server->GetForm(FormKeys::USING_SINGLE_LAYOUT);
+
+		return !empty($singleLayout);
+	}
+
 	public function GetLayoutTimezone()
 	{
 		return $this->server->GetForm(FormKeys::TIMEZONE);
@@ -175,10 +217,10 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 		return $this->server->GetForm(FormKeys::SCHEDULE_ID);
 	}
 
-    public function GetTargetScheduleId()
-    {
-        return $this->server->GetForm(FormKeys::SCHEDULE_ID);
-    }
+	public function GetTargetScheduleId()
+	{
+		return $this->server->GetForm(FormKeys::SCHEDULE_ID);
+	}
 
 	public function ProcessDataRequest($dataRequest)
 	{
