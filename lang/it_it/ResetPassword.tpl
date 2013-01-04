@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 	
-Questa è la tua password temporanea di phpScheduleIt : {$TemporaryPassword}
+Questa ï¿½ la tua password temporanea di phpScheduleIt : {$TemporaryPassword}
 
 <br/>
 

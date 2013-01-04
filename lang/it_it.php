@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -62,7 +62,7 @@ class it_it extends en_us
         $strings['Name'] = 'Nome';
         $strings['Yes'] = 'Si';
         $strings['No'] = 'No';
-        $strings['FirstNameRequired'] = 'Nome è obbligatorio.';
+        $strings['FirstNameRequired'] = 'Nome ï¿½ obbligatorio.';
         $strings['LastNameRequired'] = 'Cognome &egrave obbligatorio.';
         $strings['PwMustMatch'] = 'Conferma Password deve corrispondere a Password.';
         $strings['PwComplexity'] = 'La Password deve essere minimo 6 caratteri con una combinazione di lettere, numeri e simboli.';

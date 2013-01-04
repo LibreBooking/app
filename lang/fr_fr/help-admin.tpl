@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2013 Nick Korbel
 
 Ce fichier fait parti de phpScheduleIt.
 

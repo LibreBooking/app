@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -22,7 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div><!-- close wrapper-->
 
     	<div class="page-footer">
-			&copy; 2012 phpScheduleIt <br/><a href="http://phpscheduleit.sourceforge.net">phpScheduleIt v{$Version}</a>
+			&copy; 2013 phpScheduleIt <br/><a href="http://phpscheduleit.sourceforge.net">phpScheduleIt v{$Version}</a>
     	</div>
 	</body>
 </html>

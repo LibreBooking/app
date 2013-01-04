@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -40,7 +40,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Eine oder mehrere Ressourcen ben«Ótigen eine Genehmigung.  Diese Reservierung wird zur&uuml;ckgehalten, bis sie genehmigt ist.
+		Eine oder mehrere Ressourcen benï¿½ï¿½ï¿½tigen eine Genehmigung.  Diese Reservierung wird zur&uuml;ckgehalten, bis sie genehmigt ist.
 	{/if}
 		
 	<br/>
