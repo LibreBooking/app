@@ -127,7 +127,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<tr>
 	{/if}
 		<td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
-		{foreach from=$Periods item=period}
+		{foreach from=$DailyLayout->GetLabels($date) item=period}
 			<td class="reslabel">{$period}</td>
 		{/foreach}
 	</tr>
