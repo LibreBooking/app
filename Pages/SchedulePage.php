@@ -100,11 +100,6 @@ class SchedulePage extends SecurePage implements ISchedulePage
 		$this->Set('DailyLayout', $dailyLayout);
 	}
 	
-	public function SetLayout($schedulePeriods)
-	{
-		$this->Set('Periods', $schedulePeriods);
-	}
-	
 	/**
 	 * @see ISchedulePage:SetDisplayDates()
 	 */
@@ -216,12 +211,6 @@ interface ISchedulePage
 	 * @param IDailyLayout $dailyLayout
 	 */
 	public function SetDailyLayout($dailyLayout);
-	
-	/**
-	 * Set the schedule period items to be used when presenting reservations
-	 * @param $schedulePeriods array|ISchedulePeriod[]
-	 */
-	public function SetLayout($schedulePeriods);
 	
 	/**
 	 * Returns the currently selected scheduleId

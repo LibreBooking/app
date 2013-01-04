@@ -90,11 +90,6 @@ class ViewSchedulePage extends Page implements ISchedulePage
 		$this->Set('DailyLayout', $dailyLayout);
 	}
 	
-	public function SetLayout($schedulePeriods)
-	{
-		$this->Set('Periods', $schedulePeriods);
-	}
-	
 	public function SetDisplayDates($dateRange)
 	{
 		$this->Set('DisplayDates', $dateRange);

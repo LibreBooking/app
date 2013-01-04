@@ -105,7 +105,6 @@ class SchedulePresenter implements ISchedulePresenter {
         $dailyLayout = $this->_dailyLayoutFactory->Create($reservationListing, $layout);
         $resources = $this->_resourceService->GetScheduleResources($activeScheduleId, $showInaccessibleResources, $user);
 
-        $this->_builder->BindLayout($this->_page, $dailyLayout, $scheduleDates);
         $this->_builder->BindReservations($this->_page, $resources, $dailyLayout);
     }
 }

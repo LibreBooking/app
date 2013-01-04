@@ -59,12 +59,6 @@ interface ISchedulePageBuilder
 	 * @param IDailyLayout $dailyLayout
 	 */
 	public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout);
-
-	/**
-	 * @param ISchedulePage $page
-	 * @param IDailyLayout $layout
-	 */
-	public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
@@ -198,14 +192,6 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	{
 		$page->SetResources($resources);
 		$page->SetDailyLayout($dailyLayout);
-	}
-
-	/**
-	 * @see ISchedulePageBuilder::BindLayout()
-	 */
-	public function BindLayout(ISchedulePage $page, IDailyLayout $layout, DateRange $dateRange)
-	{
-		$page->SetLayout($layout->GetLabels($dateRange->GetBegin()));
 	}
 
 	/**
