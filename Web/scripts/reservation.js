@@ -332,6 +332,7 @@ function Reservation(opts) {
 	}
 	
 	function InitializeDateElements() {
+		alert('need to reload periods when date changes');
         elements.beginDate.data['previousVal'] = elements.beginDate.val();
 
 		elements.beginDate.change(function() {
