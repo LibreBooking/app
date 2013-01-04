@@ -16,29 +16,35 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 
 class LayoutValidator extends ValidatorBase implements IValidator
 {
 	/**
-	 * @var string
+	 * @var string|string[]
 	 */
 	private $reservableSlots;
 
 	/**
-	 * @var string
+	 * @var string|string[]
 	 */
 	private $blockedSlots;
 
 	/**
-	 * @param string $reservableSlots
-	 * @param string $blockedSlots
+	 * @var bool
 	 */
-	public function __construct($reservableSlots, $blockedSlots)
+	private $validateSingle;
+
+	/**
+	 * @param string|string[] $reservableSlots
+	 * @param string|string[] $blockedSlots
+	 * @param bool $validateSingle
+	 */
+	public function __construct($reservableSlots, $blockedSlots, $validateSingle = true)
 	{
 		$this->reservableSlots = $reservableSlots;
 		$this->blockedSlots = $blockedSlots;
+		$this->validateSingle = $validateSingle;
 	}
 
 	/**
@@ -50,30 +56,57 @@ class LayoutValidator extends ValidatorBase implements IValidator
 		{
 			$this->isValid = true;
 
-			$layout = ScheduleLayout::Parse('UTC', $this->reservableSlots, $this->blockedSlots);
-			$slots = $layout->GetLayout(Date::Now()->ToUtc());
+			$days = array(null);
 
-			/** @var $firstDate Date */
-			$firstDate = $slots[0]->BeginDate();
-			/** @var $lastDate Date */
-			$lastDate = $slots[count($slots) - 1]->EndDate();
-			if (!$firstDate->IsMidnight() || !$lastDate->IsMidnight())
+			if (!$this->validateSingle)
 			{
-				$this->isValid = false;
+				Log::Debug('Validating daily layout');
+				Log::Debug(var_export($this->reservableSlots, true));
+				if (count($this->reservableSlots) != DayOfWeek::NumberOfDays || count($this->blockedSlots) != DayOfWeek::NumberOfDays)
+				{
+					$this->isValid = false;
+					return;
+				}
+				$layout = ScheduleLayout::ParseDaily('UTC', $this->reservableSlots, $this->blockedSlots);
+				$days = DayOfWeek::Days();
+			}
+			else
+			{
+				Log::Debug('Validating single layout');
+				$layout = ScheduleLayout::Parse('UTC', $this->reservableSlots, $this->blockedSlots);
 			}
 
-			for ($i = 0; $i < count($slots) - 1; $i++)
+			foreach ($days as $day)
 			{
-				if (!$slots[$i]->EndDate()->Equals($slots[$i + 1]->BeginDate()))
+				if (is_null($day))
+				{
+					$day = 0;
+				}
+				$slots = $layout->GetLayout(Date::Now()->AddDays($day)->ToUtc());
+
+				/** @var $firstDate Date */
+				$firstDate = $slots[0]->BeginDate();
+				/** @var $lastDate Date */
+				$lastDate = $slots[count($slots) - 1]->EndDate();
+				if (!$firstDate->IsMidnight() || !$lastDate->IsMidnight())
 				{
 					$this->isValid = false;
 				}
+
+				for ($i = 0; $i < count($slots) - 1; $i++)
+				{
+					if (!$slots[$i]->EndDate()->Equals($slots[$i + 1]->BeginDate()))
+					{
+						$this->isValid = false;
+					}
+				}
 			}
-		}
-		catch (Exception $ex)
+		} catch (Exception $ex)
 		{
+			Log::Error('Error during LayoutValidator', $ex);
 			$this->isValid = false;
 		}
+
 	}
 
 }

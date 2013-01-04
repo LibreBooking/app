@@ -56,7 +56,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         <div class="layout">
 
 			{function name="display_periods"}
-				{foreach from=$Layouts[$id]->GetSlots() item=period}
+				{foreach from=$Layouts[$id]->GetSlots($day) item=period}
 					{if $period->IsReservable() == $showReservable}
 						{$period->Start->Format("H:i")} - {$period->End->Format("H:i")}
 						{if $period->IsLabelled()}
@@ -75,16 +75,27 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{if !$Layouts[$id]->UsesDailyLayouts()}
                 <input type="hidden" class="usesDailyLayouts" value="false"/>
 				{translate key=ReservableTimeSlots}
-                <div class="reservableSlots">
-					{display_periods showReservable=true}
+                <div class="reservableSlots" id="reservableSlots" ref="reservableEdit">
+					{display_periods showReservable=true day=null}
                 </div>
 				{translate key=BlockedTimeSlots}
-                <div class="blockedSlots">
-					{display_periods showReservable=false}
+                <div class="blockedSlots" id="blockedSlots" ref="blockedEdit">
+					{display_periods showReservable=false day=null}
                 </div>
-				{else}
+			{else}
                 <input type="hidden" class="usesDailyLayouts" value="true"/>
-                DAILY LAYOUTS ARE BEING USED - need to populate source elements
+				{translate key=LayoutVariesByDay} - <a href="#" class="showAllDailyLayouts">{translate key=ShowHide}</a>
+                <div class="allDailyLayouts">
+				{foreach from=DayOfWeek::Days() item=day}
+					{$DayNames[$day]}
+					<div class="reservableSlots" id="reservableSlots_{$day}" ref="reservableEdit_{$day}">
+						{display_periods showReservable=true day=$day}
+					</div>
+					<div class="blockedSlots" id="blockedSlots_{$day}" ref="blockedEdit_{$day}">
+						{display_periods showReservable=false day=$day}
+					</div>
+                {/foreach}
+				</div>
 			{/if}
         </div>
         <div class="actions">
@@ -260,7 +271,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </div>
 
-	{display_slot_inputs id="staticSlots"}
+	{display_slot_inputs id="staticSlots" day=null}
 
         <div style="clear:both;height:0;">&nbsp</div>
         <div style="margin-top:5px;">

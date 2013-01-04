@@ -103,6 +103,12 @@ function ScheduleManagement(opts)
 				showScheduleAdmin(e, $(this).attr('adminId'));
 				return false;
 			});
+
+			$(this).find('.showAllDailyLayouts').click(function(e)
+			{
+				e.preventDefault();
+				$(this).next('.allDailyLayouts').toggle();
+			});
 		});
 
 		$(".save").click(function ()
@@ -141,18 +147,9 @@ function ScheduleManagement(opts)
 			toggleLayoutChange($(this).is(':checked'));
 		});
 
-		var handleLayoutUpdate = function (response)
-		{
-			$('.asyncValidation').hide();
-			$.each(response.ErrorIds, function (index, errorId)
-			{
-				$('#' + errorId).show();
-			});
-		};
-
 		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.renameAction));
 		ConfigureAdminForm(elements.settingsForm, getSubmitCallback(options.changeSettingsAction));
-		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction), null, handleLayoutUpdate);
+		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction));
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
 		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.adminAction));
@@ -256,19 +253,24 @@ function ScheduleManagement(opts)
 
 	var showChangeLayout = function (e, reservableDiv, blockedDiv, timezone, usesSingleLayout)
 	{
-		var reservable = reformatTimeSlots(reservableDiv);
-		var blocked = reformatTimeSlots(blockedDiv);
+		$.each(reservableDiv, function(index, val){
+			var slots = reformatTimeSlots($(val));
+			$('#' + $(val).attr('ref')).val(slots);
+		});
 
-		elements.reservableEdit.val(reservable);
-		elements.blockedEdit.val(blocked);
+		$.each(blockedDiv, function(index, val){
+			var slots = reformatTimeSlots($(val));
+			$('#' + $(val).attr('ref')).val(slots);
+		});
+
 		elements.layoutTimezone.val(timezone.val());
 		elements.usesSingleLayout.removeAttr('checked');
 
 		if (usesSingleLayout)
 		{
 			elements.usesSingleLayout.attr('checked', 'checked');
-			elements.usesSingleLayout.trigger('change');
 		}
+		elements.usesSingleLayout.trigger('change');
 
 		elements.layoutDialog.dialog("open");
 	};

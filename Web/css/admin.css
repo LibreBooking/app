@@ -215,3 +215,7 @@ tr.pending {
 	height: 450px;
 	margin-bottom:4px;
 }
+
+.allDailyLayouts {
+	display:none;
+}

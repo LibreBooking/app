@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 
 if (!defined('SMARTY_DIR'))
@@ -42,14 +42,14 @@ class SmartyPage extends Smarty
 	 */
 	protected $Resources = null;
 
-    /**
-     * @var null|string
-     */
+	/**
+	 * @var null|string
+	 */
 	protected $RootPath = null;
 
-    /**
-     * @var bool
-     */
+	/**
+	 * @var bool
+	 */
 	private $IsValid = true;
 
 	/**
@@ -59,7 +59,7 @@ class SmartyPage extends Smarty
 	 */
 	public function __construct(Resources &$resources = null, $rootPath = null)
 	{
-        parent::__construct();
+		parent::__construct();
 
 		$base = dirname(__FILE__) . '/../../';
 
@@ -68,7 +68,7 @@ class SmartyPage extends Smarty
 		$this->compile_dir = $base . 'tpl_c';
 		$this->config_dir = $base . 'configs';
 		$this->cache_dir = $base . 'cache';
-		$this->plugins_dir =  $base . 'lib/external/Smarty/plugins';
+		$this->plugins_dir = $base . 'lib/external/Smarty/plugins';
 		$this->error_reporting = E_ALL & ~E_NOTICE;
 
 		$cacheTemplates = Configuration::Instance()->GetKey(ConfigKeys::CACHE_TEMPLATES, new BooleanConverter());
@@ -82,7 +82,7 @@ class SmartyPage extends Smarty
 			$resources = Resources::GetInstance();
 		}
 
-		$this->Resources = &$resources;
+		$this->Resources = & $resources;
 		$this->RootPath = $rootPath;
 
 		$this->AddTemplateDirectory($base . 'lang/' . $this->Resources->CurrentLanguage);
@@ -177,10 +177,17 @@ class SmartyPage extends Smarty
 
 	public function IsValid()
 	{
-		$this->Validate();
-		$this->IsValid = $this->Validators->AreAllValid();
-
-		return $this->IsValid;
+		try
+		{
+			$this->Validate();
+			$this->IsValid = $this->Validators->AreAllValid();
+			return $this->IsValid;
+		}
+		catch (Exception $ex)
+		{
+			Log::Error('Error during page validation', $ex);
+			return false;
+		}
 	}
 
 	public function Validate()
@@ -221,7 +228,8 @@ class SmartyPage extends Smarty
 		if (!isset($params['title']))
 		{
 			$title = $string;
-		} else
+		}
+		else
 		{
 			$title = $this->Resources->GetString($params['title']);
 		}
@@ -229,7 +237,8 @@ class SmartyPage extends Smarty
 		if (StringHelper::StartsWith($params['href'], '/'))
 		{
 			$href = $params['href'];
-		} else
+		}
+		else
 		{
 			$href = $this->RootPath . $params['href'];
 		}
@@ -415,11 +424,11 @@ class SmartyPage extends Smarty
 			$type = strtolower($params['type']);
 		}
 
-        $id = null;
-        if (isset($params['id']))
-        {
-            $id = $params['id'];
-        }
+		$id = null;
+		if (isset($params['id']))
+		{
+			$id = $params['id'];
+		}
 
 		$knownAttributes = array('value', 'type', 'name');
 		$attributes = $this->AppendAttributes($params, $knownAttributes);
@@ -448,7 +457,8 @@ class SmartyPage extends Smarty
 		foreach ($options as $option)
 		{
 			$isselected = ($option->$key() == $selected) ? 'selected="selected"' : '';
-			$builder->Append(sprintf('<option label="%s" value="%s"%s>%s</option>', $option->$label(), $option->$key(), $isselected, $option->$label()));
+			$builder->Append(sprintf('<option label="%s" value="%s"%s>%s</option>', $option->$label(), $option->$key(),
+									 $isselected, $option->$label()));
 		}
 
 		return $builder->ToString();
@@ -474,8 +484,10 @@ class SmartyPage extends Smarty
 	public function CreateUrl($var)
 	{
 		$string = preg_replace("/([^\w\/])(www\.[a-z0-9\-]+\.[a-z0-9\-]+)/i", "$1http://$2", $var);
-		$string = preg_replace("/([\w]+:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/i", "<a target=\"_blank\" href=\"$1\">$1</A>", $string);
-		$string = preg_replace("/([\w-?&;#~=\.\/]+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?))/i", "<A HREF=\"mailto:$1\">$1</A>", $string);
+		$string = preg_replace("/([\w]+:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/i", "<a target=\"_blank\" href=\"$1\">$1</A>",
+							   $string);
+		$string = preg_replace("/([\w-?&;#~=\.\/]+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?))/i",
+							   "<A HREF=\"mailto:$1\">$1</A>", $string);
 
 		return $string;
 	}
@@ -508,7 +520,8 @@ class SmartyPage extends Smarty
 		{
 			$isCurrent = ($i == $currentPage);
 
-			$sb->Append($this->CreatePageLink(array('page' => $i, 'size' => $size, 'iscurrent' => $isCurrent), $smarty));
+			$sb->Append($this->CreatePageLink(array('page' => $i, 'size' => $size, 'iscurrent' => $isCurrent),
+											  $smarty));
 			$sb->Append(" ");
 		}
 		$sb->Append('</p>');
@@ -541,11 +554,13 @@ class SmartyPage extends Smarty
 			if (strpos($url, '?') === false)
 			{ // and does not have any query string
 				$newUrl = sprintf('%s?%s=%s', $url, $key, $value);
-			} else
+			}
+			else
 			{
 				$newUrl = sprintf('%s&%s=%s', $url, $key, $value); // and has existing query string
 			}
-		} else
+		}
+		else
 		{
 			$pattern = '/(\?|&)(' . $key . '=.*)/';
 			$replace = '${1}' . $key . '=' . $value;
@@ -565,24 +580,26 @@ class SmartyPage extends Smarty
 		return "[\"$string\"]";
 	}
 
-    public function DisplayFullName($params, &$smarty)
-    {
-        $config = Configuration::Instance();
+	public function DisplayFullName($params, &$smarty)
+	{
+		$config = Configuration::Instance();
 		$ignorePrivacy = false;
 		if (isset($params['ignorePrivacy']) && strtolower($params['ignorePrivacy'] == 'true'))
 		{
 			$ignorePrivacy = true;
 		}
 
-        if (!$ignorePrivacy && $config->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter()) && !ServiceLocator::GetServer()->GetUserSession()->IsAdmin)
-        {
-            return $this->Resources->GetString('Private');
-        }
+		if (!$ignorePrivacy && $config->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
+													  new BooleanConverter()) && !ServiceLocator::GetServer()->GetUserSession()->IsAdmin
+		)
+		{
+			return $this->Resources->GetString('Private');
+		}
 
-        $fullName = new FullName($params['first'], $params['last']);
+		$fullName = new FullName($params['first'], $params['last']);
 
-        return htmlspecialchars($fullName->__toString());
-    }
+		return htmlspecialchars($fullName->__toString());
+	}
 
 	public function AddQueryString($params, &$smarty)
 	{

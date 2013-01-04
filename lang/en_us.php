@@ -428,6 +428,8 @@ class en_us extends Language
 		$strings['ConfigurationFileNotWritable'] = 'The config file is not writable. Please check the permissions of this file and try again.';
 		$strings['ConfigurationUpdateHelp'] = 'Refer to the Configuration section of the <a target=_blank href=%s>Help File</a> for documentation on these settings.';
 		$strings['GeneralConfigSettings'] = 'settings';
+		$strings['UseSameLayoutForAllDays'] = 'Use the same layout for all days';
+		$strings['LayoutVariesByDay'] = 'Layout varies by day';
         // End Strings
 
         // Errors
@@ -451,7 +453,7 @@ class en_us extends Language
         $strings['InvalidAttachmentExtension'] = 'You can only upload files of type: %s';
         $strings['InvalidStartSlot'] = 'The start date and time requested is not valid.';
         $strings['InvalidEndSlot'] = 'The end date and time requested is not valid.';
-        $strings['UseSameLayoutForAllDays'] = 'Use the same layout for all days';
+
         // End Errors
 
         // Page Titles

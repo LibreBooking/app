@@ -323,7 +323,8 @@ class ManageSchedulesPresenter extends ActionPresenter
 		$timezone = $this->page->GetLayoutTimezone();
 		$usingSingleLayout = $this->page->GetUsingSingleLayout();
 
-		Log::Debug('Changing layout for scheduleId=%s. timezone=%s, usingSingleLayout=%s', $scheduleId, $timezone, $usingSingleLayout);
+		Log::Debug('Changing layout for scheduleId=%s. timezone=%s, usingSingleLayout=%s', $scheduleId, $timezone,
+				   $usingSingleLayout);
 		if ($usingSingleLayout)
 		{
 			$reservableSlots = $this->page->GetReservableSlots();
@@ -376,9 +377,19 @@ class ManageSchedulesPresenter extends ActionPresenter
 	{
 		if ($action == ManageSchedules::ActionChangeLayout)
 		{
-			$reservableSlots = $this->page->GetReservableSlots();
-			$blockedSlots = $this->page->GetBlockedSlots();
-			$this->page->RegisterValidator('layoutValidator', new LayoutValidator($reservableSlots, $blockedSlots));
+			$validateSingle = $this->page->GetUsingSingleLayout();
+			if ($validateSingle)
+			{
+				$reservableSlots = $this->page->GetReservableSlots();
+				$blockedSlots = $this->page->GetBlockedSlots();
+			}
+			else
+			{
+				$reservableSlots = $this->page->GetDailyReservableSlots();
+				$blockedSlots = $this->page->GetDailyBlockedSlots();
+			}
+			$this->page->RegisterValidator('layoutValidator',
+										   new LayoutValidator($reservableSlots, $blockedSlots, $validateSingle));
 		}
 	}
 }
