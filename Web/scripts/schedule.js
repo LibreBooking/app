@@ -118,7 +118,11 @@ function Schedule(opts)
 					event:'mouseenter'
 				},
 				style:{
-				}
+				},
+				hide:{
+					fixed:true
+				},
+				overwrite:false
 			});
 		});
 	};
