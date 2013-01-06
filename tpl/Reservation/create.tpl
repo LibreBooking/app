@@ -98,8 +98,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<input type="hidden" id="formattedEndDate" {formname key=END_DATE}
 					   value="{formatdate date=$EndDate key=system}"/>
 				<select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
-				{foreach from=$EndPeriods item=period}
-					{if $period->IsReservable()}
+				{foreach from=$EndPeriods item=period name=endPeriods}
+					{if $period->IsReservable() || $smarty.foreach.endPeriods.first}
 						{assign var='selected' value=''}
 						{if $period eq $SelectedEnd}
 							{assign var='selected' value=' selected="selected"'}
