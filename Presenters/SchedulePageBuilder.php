@@ -83,10 +83,12 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	 */
 	public function GetCurrentSchedule(ISchedulePage $page, $schedules)
 	{
-		if ($page->IsPostBack())
+		$requestedScheduleId = $page->GetScheduleId();
+		if (!empty($requestedScheduleId))
 		{
 			$schedule = $this->GetSchedule($schedules, $page->GetScheduleId());
-		} else
+		}
+		else
 		{
 			$schedule = $this->GetDefaultSchedule($schedules);
 		}

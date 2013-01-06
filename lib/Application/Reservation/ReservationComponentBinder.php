@@ -32,7 +32,7 @@ class ReservationDateBinder implements IReservationComponentBinder
 
 	public function __construct(IScheduleRepository $scheduleRepository)
 	{
-	    $this->scheduleRepository = $scheduleRepository;
+		$this->scheduleRepository = $scheduleRepository;
 	}
 
 	public function Bind(IReservationComponentInitializer $initializer)
@@ -53,7 +53,9 @@ class ReservationDateBinder implements IReservationComponentBinder
 		$endPeriods = $layout->GetLayout($endDate);
 		$initializer->SetDates($startDate, $endDate, $startPeriods, $endPeriods);
 
-		$hideRecurrence = !$initializer->CurrentUser()->IsAdmin && Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_RECURRENCE, new BooleanConverter());
+		$hideRecurrence = !$initializer->CurrentUser()->IsAdmin && Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
+																											ConfigKeys::RESERVATION_PREVENT_RECURRENCE,
+																											new BooleanConverter());
 		$initializer->HideRecurrence($hideRecurrence);
 	}
 }
@@ -90,7 +92,9 @@ class ReservationUserBinder implements IReservationComponentBinder
 		$reservationUser = $this->userRepository->GetById($userId);
 		$initializer->SetReservationUser($reservationUser);
 
-		$hideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
+		$hideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
+															 ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
+															 new BooleanConverter());
 
 		$initializer->ShowUserDetails(!$hideUser || $initializer->CurrentUser()->IsAdmin);
 	}
@@ -112,7 +116,8 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	{
 		$requestedScheduleId = $initializer->GetScheduleId();
 		$requestedResourceId = $initializer->GetResourceId();
-		$resources = $this->resourceService->GetScheduleResources($requestedScheduleId, true, $initializer->CurrentUser());
+		$resources = $this->resourceService->GetScheduleResources($requestedScheduleId, true,
+																  $initializer->CurrentUser());
 
 		if (empty($requestedResourceId) && count($resources) > 0)
 		{
@@ -231,7 +236,8 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 	 */
 	private $privacyFilter;
 
-	public function __construct(IReservationAuthorization $reservationAuthorization, IExistingReservationPage $page, ReservationView $reservationView, IPrivacyFilter $privacyFilter)
+	public function __construct(IReservationAuthorization $reservationAuthorization, IExistingReservationPage $page,
+								ReservationView $reservationView, IPrivacyFilter $privacyFilter)
 	{
 		$this->reservationAuthorization = $reservationAuthorization;
 		$this->page = $page;
@@ -277,14 +283,9 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 		$this->page->SetAttachments($this->reservationView->Attachments);
 
-		$showUser = false;
-		$showDetails = false;
+		$showUser = $this->privacyFilter->CanViewUser($initializer->CurrentUser(), $this->reservationView);
+		$showDetails = $this->privacyFilter->CanViewDetails($initializer->CurrentUser(), $this->reservationView);
 
-		if (!$canBeEdited)
-		{
-			$showUser = $this->privacyFilter->CanViewUser($initializer->CurrentUser(), $this->reservationView);
-			$showDetails = $this->privacyFilter->CanViewDetails($initializer->CurrentUser(), $this->reservationView);
-		}
 		$initializer->ShowUserDetails($showUser);
 		$initializer->ShowReservationDetails($showDetails);
 	}
@@ -315,4 +316,5 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		return false;
 	}
 }
+
 ?>

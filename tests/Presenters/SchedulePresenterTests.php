@@ -184,12 +184,8 @@ class SchedulePresenterTests extends TestBase
 		$schedules = array($s1, $s2);
 				
 		$page = $this->getMock('ISchedulePage');
-		
-		$page->expects($this->once())
-			->method('IsPostBack')
-			->will($this->returnValue(true));
-			
-		$page->expects($this->once())
+
+		$page->expects($this->atLeastOnce())
 			->method('GetScheduleId')
 			->will($this->returnValue(10));
 		
@@ -215,11 +211,7 @@ class SchedulePresenterTests extends TestBase
 		$schedules = array($s1, $s2);
 		
 		$page = $this->getMock('ISchedulePage');
-		
-		$page->expects($this->once())
-			->method('IsPostBack')
-			->will($this->returnValue(false));
-		
+
 		$pageBuilder = new SchedulePageBuilder();
 		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules);
 		
