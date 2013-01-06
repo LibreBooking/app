@@ -217,6 +217,11 @@ class ReservationPopupPresenter
 		
 		$reservation = $this->_reservationRepository->GetReservationForEditing($this->_page->GetReservationId());
 
+		if (!$reservation->IsDisplayable())
+		{
+			return;
+		}
+
 		if ($hideReservationDetails || $hideUserInfo)
 		{
 			$canViewDetails = $this->_reservationAuthorization->CanViewDetails($reservation, ServiceLocator::GetServer()->GetUserSession());
