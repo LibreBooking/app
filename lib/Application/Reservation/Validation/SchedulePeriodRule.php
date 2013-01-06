@@ -50,14 +50,13 @@ class SchedulePeriodRule implements IReservationValidationRule
 		$endPeriod = $layout->GetPeriod($endDate);
 
 		$errors = new StringBuilder();
-		if ($startPeriod == null || !$startPeriod->BeginDate()->Equals($startDate))
+		if ($startPeriod == null || !$startPeriod->IsReservable() || !$startPeriod->BeginDate()->Equals($startDate))
 		{
 			$errors->AppendLine(Resources::GetInstance()->GetString('InvalidStartSlot'));
 		}
 
 		if ($endPeriod == null || !$endPeriod->BeginDate()->Equals($endDate))
 		{
-			Log::Debug("End period");
 			$errors->AppendLine(Resources::GetInstance()->GetString('InvalidEndSlot'));
 		}
 

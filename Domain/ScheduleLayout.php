@@ -90,7 +90,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	/**
 	 * @var string
 	 */
-	private $_timezone;
+	private $targetTimezone;
 
 	/**
 	 * @var bool
@@ -105,14 +105,19 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	private $usingDailyLayouts = false;
 
 	/**
-	 * @param string $timezone target timezone of layout
+	 * @var string
 	 */
-	public function __construct($timezone = null)
+	private $layoutTimezone;
+
+	/**
+	 * @param string $targetTimezone target timezone of layout
+	 */
+	public function __construct($targetTimezone = null)
 	{
-		$this->_timezone = $timezone;
-		if ($timezone == null)
+		$this->targetTimezone = $targetTimezone;
+		if ($targetTimezone == null)
 		{
-			$this->_timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+			$this->targetTimezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
 		}
 	}
 
@@ -173,6 +178,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	protected function AppendGenericPeriod(Time $startTime, Time $endTime, $periodType, $label = null,
 										   $dayOfWeek = null)
 	{
+		$this->layoutTimezone = $startTime->Timezone();
 		$layoutPeriod = new LayoutPeriod($startTime, $endTime, $periodType, $label);
 		if (!is_null($dayOfWeek))
 		{
@@ -201,7 +207,11 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 */
 	public function GetLayout(Date $layoutDate)
 	{
-		$targetTimezone = $this->_timezone;
+		if ($this->usingDailyLayouts)
+		{
+			return $this->GetLayoutDaily($layoutDate);
+		}
+		$targetTimezone = $this->targetTimezone;
 		$layoutDate = $layoutDate->ToTimezone($targetTimezone);
 
 		$cachedValues = $this->GetCachedValuesForDate($layoutDate);
@@ -280,6 +290,80 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		return $layout;
 	}
 
+	private function GetLayoutDaily(Date $requestedDate)
+	{
+		if ($requestedDate->Timezone() != $this->targetTimezone)
+		{
+			throw new Exception('Target timezone and requested timezone do not match');
+		}
+
+		$cachedValues = $this->GetCachedValuesForDate($requestedDate);
+		if (!empty($cachedValues))
+		{
+			return $cachedValues;
+		}
+
+		// check cache
+		$baseDateInLayoutTz = Date::Create($requestedDate->Year(), $requestedDate->Month(), $requestedDate->Day(),
+										   0, 0, 0, $this->layoutTimezone);
+
+
+		$list = new PeriodList();
+		$this->AddDailyPeriods($requestedDate->Weekday(), $baseDateInLayoutTz, $requestedDate, $list);
+
+		if ($this->layoutTimezone != $this->targetTimezone)
+		{
+			$requestedDateInTargetTz = $requestedDate->ToTimezone($this->layoutTimezone);
+
+			$adjustment = 0;
+			if ($requestedDateInTargetTz->Format('YmdH') < $requestedDate->Format('YmdH'))
+			{
+				$adjustment = -1;
+			}
+			else
+			{
+				if ($requestedDateInTargetTz->Format('YmdH') > $requestedDate->Format('YmdH'))
+				{
+					$adjustment = 1;
+				}
+			}
+
+			if ($adjustment != 0)
+			{
+				$adjustedDate = $requestedDate->AddDays($adjustment);
+				$baseDateInLayoutTz = $baseDateInLayoutTz->AddDays($adjustment);
+				$this->AddDailyPeriods($adjustedDate->Weekday(), $baseDateInLayoutTz, $requestedDate, $list);
+			}
+		}
+		$layout = $list->GetItems();
+		$this->SortItems($layout);
+		$this->AddCached($layout, $requestedDate);
+		return $layout;
+	}
+
+	/**
+	 * @param int $day
+	 * @param Date $baseDateInLayoutTz
+	 * @param Date $requestedDate
+	 * @param PeriodList $list
+	 */
+	private function AddDailyPeriods($day, $baseDateInLayoutTz, $requestedDate, $list)
+	{
+		$periods = $this->_periods[$day];
+		/** @var $period LayoutPeriod */
+		foreach ($periods as $period)
+		{
+			$begin = $baseDateInLayoutTz->SetTime($period->Start)->ToTimezone($this->targetTimezone);
+			$end = $baseDateInLayoutTz->SetTime($period->End, true)->ToTimezone($this->targetTimezone);
+			// only add this period if it occurs on the requested date
+			if ($begin->DateEquals($requestedDate) || ($end->DateEquals($requestedDate) && !$end->IsMidnight()))
+			{
+				$built = $this->BuildPeriod($period->PeriodTypeClass(), $begin, $end, $period->Label);
+				$list->Add($built);
+			}
+		}
+	}
+
 	/**
 	 * @param array|SchedulePeriod[] $layout
 	 * @param Date $date
@@ -321,7 +405,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
 	public function Timezone()
 	{
-		return $this->_timezone;
+		return $this->targetTimezone;
 	}
 
 	protected function AddPeriod(SchedulePeriod $period)
@@ -385,9 +469,9 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 */
 	public function GetPeriod(Date $date)
 	{
-		$periods = $this->getPeriods($date);
-		$timezone = $periods[0]->Timezone();
+		$timezone = $this->layoutTimezone;
 		$tempDate = $date->ToTimezone($timezone);
+		$periods = $this->getPeriods($tempDate);
 
 		/** @var $period LayoutPeriod */
 		foreach ($periods as $period)
@@ -397,7 +481,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 			$end = Date::Create($tempDate->Year(), $tempDate->Month(), $tempDate->Day(), $period->End->Hour(),
 								$period->End->Minute(), 0, $timezone);
 
-			if ($end->LessThan($start))
+			if ($end->LessThan($start) || $end->IsMidnight())
 			{
 				$end = $end->AddDays(1);
 			}

@@ -234,7 +234,8 @@ class ScheduleLayoutTests extends TestBase
 			$end4 = Time::Parse("15:00", $timezone);
 
 			$this->assertEquals(new LayoutPeriod($start1, $end1, PeriodTypes::RESERVABLE, "Label $day A"), $slots[0]);
-			$this->assertEquals(new LayoutPeriod($start4, $end4, PeriodTypes::NONRESERVABLE, "Blocked $day A"), $slots[4]);
+			$this->assertEquals(new LayoutPeriod($start4, $end4, PeriodTypes::NONRESERVABLE, "Blocked $day A"),
+								$slots[4]);
 		}
 	}
 
@@ -297,8 +298,8 @@ class ScheduleLayoutTests extends TestBase
 	public function testGetsLayoutForEachDayOfWeek()
 	{
 		$utc = 'UTC';
-		$sunday = Date::Parse('2013-01-06 00:00', 'America/Chicago');
-		$monday = Date::Parse('2013-01-06 20:00', 'America/Chicago');
+		$sunday = Date::Parse('2013-01-06 00:00', $utc);
+		$monday = Date::Parse('2013-01-07 20:00', $utc);
 		$utcDate = $sunday->ToUtc();
 
 		$midnight = Time::Parse('00:00', $utc);
@@ -367,27 +368,305 @@ class ScheduleLayoutTests extends TestBase
 		$this->assertEquals($period1, $periods[0], 'Expected ' . $period1 . ' Actual ' . $periods[0]);
 	}
 
-	public function testWhenFindingPeriodWithDailyLayout()
+	public function testWhenFindingPeriodWithDailyLayoutAcrossTimezone()
 	{
-		$this->fail('something isnt right when adjusting for tz');
-		// full day EST
-		// book for slot CST fails
-		$layoutTz = 'America/Chicago';
-		$scheduleLayoutFactory = new ScheduleLayoutFactory('UTC');
+		$layoutTz = 'America/New_York';
+		$targetTimezone = 'America/Chicago';
+		$scheduleLayoutFactory = new ScheduleLayoutFactory($targetTimezone);
 		$layout = $scheduleLayoutFactory->CreateLayout();
 
-		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("12:00", $layoutTz), DayOfWeek::MONDAY);
-		$layout->AppendPeriod(Time::Parse("12:00", $layoutTz), Time::Parse("12:30", $layoutTz), DayOfWeek::MONDAY);
-		$layout->AppendPeriod(Time::Parse("12:30", $layoutTz), Time::Parse("13:00", $layoutTz), DayOfWeek::MONDAY);
-		$layout->AppendPeriod(Time::Parse("13:00", $layoutTz), Time::Parse("13:30", $layoutTz), DayOfWeek::MONDAY);
-		$layout->AppendPeriod(Time::Parse("13:30", $layoutTz), Time::Parse("14:00", $layoutTz), DayOfWeek::MONDAY);
-		$layout->AppendPeriod(Time::Parse("14:00", $layoutTz), Time::Parse("14:30", $layoutTz), DayOfWeek::MONDAY);
-		$layout->AppendPeriod(Time::Parse("14:30", $layoutTz), Time::Parse("00:00", $layoutTz), DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null, DayOfWeek::SUNDAY);
+		$layout->AppendBlockedPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("01:00", $layoutTz), null, DayOfWeek::MONDAY);
+		$layout->AppendBlockedPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("08:00", $layoutTz), null, DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("08:00", $layoutTz), Time::Parse("00:00", $layoutTz), null, DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null, DayOfWeek::TUESDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null, DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null, DayOfWeek::THURSDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null, DayOfWeek::FRIDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null, DayOfWeek::SATURDAY);
 
-		$date = Date::Parse('2012-11-25 19:30', 'UTC');
-		$period = $layout->GetPeriod($date);
+		$sunPeriod = $layout->GetPeriod(Date::Parse('2012-12-30 22:00', $targetTimezone));
+		$monPeriod = $layout->GetPeriod(Date::Parse('2012-12-30 23:00', $targetTimezone));
+		$monPeriod2 = $layout->GetPeriod(Date::Parse('2012-12-31 00:00', $targetTimezone));
+		$monPeriod3 = $layout->GetPeriod(Date::Parse('2012-12-31 07:00', $targetTimezone));
+		$tuePeriod = $layout->GetPeriod(Date::Parse('2013-01-01 12:00', $targetTimezone));
 
-		$this->assertTrue($date->Equals($period->BeginDate()));
+		$this->assertTrue($sunPeriod->BeginDate()->Equals(Date::Parse('2012-12-30 00:00', $layoutTz)));
+		$this->assertTrue($monPeriod->BeginDate()->Equals(Date::Parse('2012-12-31 00:00', $layoutTz)));
+		$this->assertTrue($monPeriod2->BeginDate()->Equals(Date::Parse('2012-12-31 01:00', $layoutTz)));
+		$this->assertTrue($monPeriod3->BeginDate()->Equals(Date::Parse('2012-12-31 08:00', $layoutTz)));
+		$this->assertTrue($monPeriod3->IsReservable());
+		$this->assertTrue($tuePeriod->BeginDate()->Equals(Date::Parse('2013-01-01 00:00', $layoutTz)));
+	}
+
+	public function testDailyLayoutWithEarlierRequestedTimezone()
+	{
+		$layoutTz = 'America/New_York';
+		$targetTimezone = 'America/Chicago';
+
+		$scheduleLayoutFactory = new ScheduleLayoutFactory($targetTimezone);
+		$layout = $scheduleLayoutFactory->CreateLayout();
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::SUNDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("01:00", $layoutTz), null,
+							  DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::MONDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("23:00", $layoutTz), null,
+							  DayOfWeek::TUESDAY);
+		$layout->AppendPeriod(Time::Parse("23:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::TUESDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:30", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("00:30", $layoutTz), Time::Parse("01:00", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("02:30", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("02:30", $layoutTz), Time::Parse("22:30", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("22:30", $layoutTz), Time::Parse("23:00", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("23:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("22:00", $layoutTz), null,
+							  DayOfWeek::THURSDAY);
+		$layout->AppendPeriod(Time::Parse("22:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::THURSDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::FRIDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::SATURDAY);
+
+		$sun = Date::Parse('2013-01-06 23:30', $targetTimezone);
+		$mon = Date::Parse('2013-01-07 00:00', $targetTimezone);
+		$tue = Date::Parse('2013-01-08 01:00', $targetTimezone);
+		$wed = Date::Parse('2013-01-09 00:30', $targetTimezone);
+		$thu = Date::Parse('2013-01-10 23:00', $targetTimezone);
+		$fri = Date::Parse('2013-01-11 02:30', $targetTimezone);
+		$sat = Date::Parse('2013-01-12 03:30', $targetTimezone);
+
+		$sunPeriods = $layout->GetLayout($sun);
+		$monPeriods = $layout->GetLayout($mon);
+		$tuePeriods = $layout->GetLayout($tue);
+		$wedPeriods = $layout->GetLayout($wed);
+		$thuPeriods = $layout->GetLayout($thu);
+		$friPeriods = $layout->GetLayout($fri);
+		$satPeriods = $layout->GetLayout($sat);
+
+		$this->assertEquals(2, count($sunPeriods));
+		$this->assertEquals(Date::Parse('2013-01-05 23:00', $targetTimezone), $sunPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-06 23:00', $targetTimezone), $sunPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-06 23:00', $targetTimezone), $sunPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-07 00:00', $targetTimezone), $sunPeriods[1]->EndDate());
+
+		$this->assertEquals(2, count($monPeriods));
+		$this->assertEquals(Date::Parse('2013-01-07 00:00', $targetTimezone), $monPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-07 23:00', $targetTimezone), $monPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-07 23:00', $targetTimezone), $monPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-08 22:00', $targetTimezone), $monPeriods[1]->EndDate());
+
+		$this->assertEquals(4, count($tuePeriods));
+		$this->assertEquals(Date::Parse('2013-01-07 23:00', $targetTimezone), $tuePeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-08 22:00', $targetTimezone), $tuePeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-08 22:00', $targetTimezone), $tuePeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-08 23:00', $targetTimezone), $tuePeriods[1]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-08 23:00', $targetTimezone), $tuePeriods[2]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-08 23:30', $targetTimezone), $tuePeriods[2]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-08 23:30', $targetTimezone), $tuePeriods[3]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 00:00', $targetTimezone), $tuePeriods[3]->EndDate());
+
+		$this->assertEquals(5, count($wedPeriods));
+		$this->assertEquals(Date::Parse('2013-01-09 00:00', $targetTimezone), $wedPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 01:30', $targetTimezone), $wedPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-09 01:30', $targetTimezone), $wedPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 21:30', $targetTimezone), $wedPeriods[1]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-09 21:30', $targetTimezone), $wedPeriods[2]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 22:00', $targetTimezone), $wedPeriods[2]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-09 22:00', $targetTimezone), $wedPeriods[3]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 23:00', $targetTimezone), $wedPeriods[3]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-09 23:00', $targetTimezone), $wedPeriods[4]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-10 21:00', $targetTimezone), $wedPeriods[4]->EndDate());
+
+		$this->assertEquals(3, count($thuPeriods));
+		$this->assertEquals(Date::Parse('2013-01-09 23:00', $targetTimezone), $thuPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-10 21:00', $targetTimezone), $thuPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-10 21:00', $targetTimezone), $thuPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-10 23:00', $targetTimezone), $thuPeriods[1]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-10 23:00', $targetTimezone), $thuPeriods[2]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-11 23:00', $targetTimezone), $thuPeriods[2]->EndDate());
+
+		$this->assertEquals(2, count($friPeriods));
+		$this->assertEquals(Date::Parse('2013-01-10 23:00', $targetTimezone), $friPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-11 23:00', $targetTimezone), $friPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-11 23:00', $targetTimezone), $friPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-12 23:00', $targetTimezone), $friPeriods[1]->EndDate());
+
+		$this->assertEquals(2, count($satPeriods));
+		$this->assertEquals(Date::Parse('2013-01-11 23:00', $targetTimezone), $satPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-12 23:00', $targetTimezone), $satPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-12 23:00', $targetTimezone), $satPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-13 23:00', $targetTimezone), $satPeriods[1]->EndDate());
+	}
+
+	public function testDailyLayoutWithEarlierLaterRequestedTimezone()
+	{
+		$layoutTz = 'America/Chicago';
+		$targetTimezone = 'America/New_York';
+
+		$scheduleLayoutFactory = new ScheduleLayoutFactory($targetTimezone);
+		$layout = $scheduleLayoutFactory->CreateLayout();
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::SUNDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("01:00", $layoutTz), null,
+							  DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::MONDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("23:00", $layoutTz), null,
+							  DayOfWeek::TUESDAY);
+		$layout->AppendPeriod(Time::Parse("23:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::TUESDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:30", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("00:30", $layoutTz), Time::Parse("01:00", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("01:00", $layoutTz), Time::Parse("02:30", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("02:30", $layoutTz), Time::Parse("22:30", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("22:30", $layoutTz), Time::Parse("23:00", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("23:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::WEDNESDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("22:00", $layoutTz), null,
+							  DayOfWeek::THURSDAY);
+		$layout->AppendPeriod(Time::Parse("22:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::THURSDAY);
+
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::FRIDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $layoutTz), Time::Parse("00:00", $layoutTz), null,
+							  DayOfWeek::SATURDAY);
+
+		$sun = Date::Parse('2013-01-06 23:30', $targetTimezone);
+		$mon = Date::Parse('2013-01-07 00:00', $targetTimezone);
+		$tue = Date::Parse('2013-01-08 01:00', $targetTimezone);
+		$wed = Date::Parse('2013-01-09 00:30', $targetTimezone);
+		$thu = Date::Parse('2013-01-10 23:00', $targetTimezone);
+		$fri = Date::Parse('2013-01-11 02:30', $targetTimezone);
+		$sat = Date::Parse('2013-01-12 03:30', $targetTimezone);
+
+		$sunPeriods = $layout->GetLayout($sun);
+		$monPeriods = $layout->GetLayout($mon);
+		$tuePeriods = $layout->GetLayout($tue);
+		$wedPeriods = $layout->GetLayout($wed);
+		$thuPeriods = $layout->GetLayout($thu);
+		$friPeriods = $layout->GetLayout($fri);
+		$satPeriods = $layout->GetLayout($sat);
+
+		$this->assertEquals(2, count($sunPeriods));
+		$this->assertEquals(Date::Parse('2013-01-05 01:00', $targetTimezone), $sunPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-06 01:00', $targetTimezone), $sunPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-06 01:00', $targetTimezone), $sunPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-07 01:00', $targetTimezone), $sunPeriods[1]->EndDate());
+
+		$this->assertEquals(3, count($monPeriods));
+		$this->assertEquals(Date::Parse('2013-01-06 01:00', $targetTimezone), $monPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-07 01:00', $targetTimezone), $monPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-07 01:00', $targetTimezone), $monPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-07 02:00', $targetTimezone), $monPeriods[1]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-07 02:00', $targetTimezone), $monPeriods[2]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-08 01:00', $targetTimezone), $monPeriods[2]->EndDate());
+
+		$this->assertEquals(2, count($tuePeriods));
+		$this->assertEquals(Date::Parse('2013-01-07 02:00', $targetTimezone), $tuePeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-08 01:00', $targetTimezone), $tuePeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-08 01:00', $targetTimezone), $tuePeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 00:00', $targetTimezone), $tuePeriods[1]->EndDate());
+
+		$this->assertEquals(6, count($wedPeriods));
+		$this->assertEquals(Date::Parse('2013-01-09 00:00', $targetTimezone), $wedPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 01:00', $targetTimezone), $wedPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-09 01:00', $targetTimezone), $wedPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 01:30', $targetTimezone), $wedPeriods[1]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-09 01:30', $targetTimezone), $wedPeriods[2]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 02:00', $targetTimezone), $wedPeriods[2]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-09 02:00', $targetTimezone), $wedPeriods[3]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 03:30', $targetTimezone), $wedPeriods[3]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-09 03:30', $targetTimezone), $wedPeriods[4]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-09 23:30', $targetTimezone), $wedPeriods[4]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-09 23:30', $targetTimezone), $wedPeriods[5]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-10 00:00', $targetTimezone), $wedPeriods[5]->EndDate());
+
+		$this->assertEquals(3, count($thuPeriods));
+		$this->assertEquals(Date::Parse('2013-01-10 00:00', $targetTimezone), $thuPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-10 01:00', $targetTimezone), $thuPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-10 01:00', $targetTimezone), $thuPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-10 23:00', $targetTimezone), $thuPeriods[1]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-10 23:00', $targetTimezone), $thuPeriods[2]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-11 01:00', $targetTimezone), $thuPeriods[2]->EndDate());
+
+		$this->assertEquals(2, count($friPeriods));
+		$this->assertEquals(Date::Parse('2013-01-10 23:00', $targetTimezone), $friPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-11 01:00', $targetTimezone), $friPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-11 01:00', $targetTimezone), $friPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-12 01:00', $targetTimezone), $friPeriods[1]->EndDate());
+
+		$this->assertEquals(2, count($satPeriods));
+		$this->assertEquals(Date::Parse('2013-01-11 01:00', $targetTimezone), $satPeriods[0]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-12 01:00', $targetTimezone), $satPeriods[0]->EndDate());
+		$this->assertEquals(Date::Parse('2013-01-12 01:00', $targetTimezone), $satPeriods[1]->BeginDate());
+		$this->assertEquals(Date::Parse('2013-01-13 01:00', $targetTimezone), $satPeriods[1]->EndDate());
+	}
+
+	public function testDailyLayoutWithSameTimezone()
+	{
+		$tz = 'America/New_York';
+
+		$scheduleLayoutFactory = new ScheduleLayoutFactory($tz);
+		$layout = $scheduleLayoutFactory->CreateLayout();
+
+		$layout->AppendPeriod(Time::Parse("00:00", $tz), Time::Parse("00:00", $tz), null, DayOfWeek::SUNDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $tz), Time::Parse("00:00", $tz), null, DayOfWeek::MONDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $tz), Time::Parse("00:00", $tz), null, DayOfWeek::TUESDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $tz), Time::Parse("00:00", $tz), null, DayOfWeek::WEDNESDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $tz), Time::Parse("00:00", $tz), null, DayOfWeek::THURSDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $tz), Time::Parse("00:00", $tz), null, DayOfWeek::FRIDAY);
+		$layout->AppendPeriod(Time::Parse("00:00", $tz), Time::Parse("00:00", $tz), null, DayOfWeek::SATURDAY);
+
+		$sun = Date::Parse('2013-01-06 23:30', $tz);
+		$mon = Date::Parse('2013-01-07 00:00', $tz);
+		$tue = Date::Parse('2013-01-08 01:00', $tz);
+		$wed = Date::Parse('2013-01-09 00:30', $tz);
+		$thu = Date::Parse('2013-01-10 23:00', $tz);
+		$fri = Date::Parse('2013-01-11 02:30', $tz);
+		$sat = Date::Parse('2013-01-12 03:30', $tz);
+
+		$sunPeriods = $layout->GetLayout($sun);
+		$monPeriods = $layout->GetLayout($mon);
+		$tuePeriods = $layout->GetLayout($tue);
+		$wedPeriods = $layout->GetLayout($wed);
+		$thuPeriods = $layout->GetLayout($thu);
+		$friPeriods = $layout->GetLayout($fri);
+		$satPeriods = $layout->GetLayout($sat);
+
+		$this->assertEquals(1, count($sunPeriods));
+		$this->assertEquals(1, count($monPeriods));
+		$this->assertEquals(1, count($tuePeriods));
+		$this->assertEquals(1, count($wedPeriods));
+		$this->assertEquals(1, count($thuPeriods));
+		$this->assertEquals(1, count($friPeriods));
+		$this->assertEquals(1, count($satPeriods));
 	}
 }
 
