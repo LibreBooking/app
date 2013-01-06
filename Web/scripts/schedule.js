@@ -6,19 +6,20 @@ function Schedule(opts)
 	{
 		this.initReservations();
 
-		var reservations = $('.reservations');
+		var reservations = $('#reservations');
 		reservations.delegate('.clickres:not(.reserved)', 'hover', function ()
 		{
-			$(this).toggleClass("hilite");
 			$(this).siblings('.resourcename').toggleClass('hilite');
+			var ref = $(this).attr('ref');
+			reservations.find('td[ref="' + ref + '"]').toggleClass('hilite');
 		});
 
-		reservations.delegate('.clickres', 'mousedown', function ()
+		reservations.delegate('td.clickres', 'mousedown', function ()
 		{
 			$(this).addClass('clicked');
 		});
 
-		reservations.delegate('.clickres', 'mouseup', function ()
+		reservations.delegate('td.clickres', 'mouseup', function ()
 		{
 			$(this).removeClass('clicked');
 		});
@@ -32,7 +33,7 @@ function Schedule(opts)
 			window.location = link + "&sd=" + start + "&ed=" + end;
 		});
 
-        $('.resourceNameSelector').each(function()
+		$('.resourceNameSelector').each(function ()
 		{
 			$(this).bindResourceDetails($(this).attr('resourceId'));
 		});
@@ -73,20 +74,21 @@ function Schedule(opts)
 
 	this.initReservations = function ()
 	{
-		$('td.reserved').each(function ()
+		var reservations = $('#reservations');
+		$('td.reserved', reservations).each(function ()
 		{
 			var resid = $(this).attr('resid');
 			var pattern = 'td[resid="' + resid + '"]';
 
 			$(this).hover(
-				function ()
-				{
-					$(pattern).addClass('hilite');
-				},
-				function ()
-				{
-					$(pattern).removeClass('hilite');
-				}
+					function ()
+					{
+						$(pattern, reservations).addClass('hilite');
+					},
+					function ()
+					{
+						$(pattern, reservations).removeClass('hilite');
+					}
 			);
 
 			$(this).click(function ()
@@ -97,23 +99,23 @@ function Schedule(opts)
 
 			$(this).qtip({
 				position:{
-					my: 'bottom left',
-					at: 'top left',
-					viewport: $(window),
-					effect: false
+					my:'bottom left',
+					at:'top left',
+					viewport:$(window),
+					effect:false
 				},
 				content:{
-					text: 'Loading...',
+					text:'Loading...',
 					ajax:{
-						url: options.summaryPopupUrl,
-						type: 'GET',
-						data: { id:resid },
-						dataType: 'html'
+						url:options.summaryPopupUrl,
+						type:'GET',
+						data:{ id:resid },
+						dataType:'html'
 					}
 				},
 				show:{
 					delay:700,
-					event: 'mouseenter'
+					event:'mouseenter'
 				},
 				style:{
 				}

@@ -27,11 +27,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayPastTime}
-    <td colspan="{$Slot->PeriodSpan()}" class="pasttime slot">&nbsp;</td>
+    <td colspan="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="pasttime slot">&nbsp;</td>
 {/function}
 
 {function name=displayReservable}
-    <td colspan="{$Slot->PeriodSpan()}" class="reservable clickres slot">
+    <td colspan="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot">
         &nbsp;
         <input type="hidden" class="href" value="{$Href}" />
         <input type="hidden" class="start" value="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}" />
@@ -55,7 +55,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displaySlot}
-    {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href}
+    {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href SlotRef=$SlotRef}
 {/function}
 
 {* End slot display formatting *}
@@ -119,6 +119,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {block name="reservations"}
 
 {assign var=TodaysDate value=Date::Now()}
+<div id="reservations">
 {foreach from=$BoundDates item=date}
 <table class="reservations" border="1" cellpadding="0" width="100%">
 	{if $TodaysDate->DateEquals($date) eq true}
@@ -144,12 +145,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 			</td>
 			{foreach from=$slots item=slot}
-                {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess}
+				{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
+                {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef}
 			{/foreach}
 		</tr>
 	{/foreach}
 </table>
 {/foreach}
+</div>
 
 {/block}
 
