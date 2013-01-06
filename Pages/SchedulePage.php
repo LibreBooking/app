@@ -56,12 +56,6 @@ class SchedulePage extends SecurePage implements ISchedulePage
 		Log::Debug('Schedule took %s sec to load, %s sec to render', $load, $display);
 	}
 	
-	public function IsPostBack()
-	{
-		// TODO: Is this method needed?
-		return !is_null($this->GetScheduleId());
-	}
-	
 	public function GetScheduleId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
@@ -245,11 +239,6 @@ interface ISchedulePage
 	 * @param Date $nextDate
 	 */
 	public function SetPreviousNextDates($previousDate, $nextDate);
-	
-	/**
-	 * @return bool
-	 */
-	public function IsPostBack();
 	
 	/**
 	 * @return string
