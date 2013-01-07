@@ -26,13 +26,14 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePageBuilder.php');
+require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 
 interface ISchedulePresenter {
 
     public function PageLoad(UserSession $user);
 }
 
-class SchedulePresenter implements ISchedulePresenter {
+class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
     /**
      * @var ISchedulePage
@@ -76,6 +77,7 @@ class SchedulePresenter implements ISchedulePresenter {
         IDailyLayoutFactory $dailyLayoutFactory
     )
     {
+		parent::__construct($page);
         $this->_page = $page;
         $this->_scheduleRepository = $scheduleRepository;
         $this->_resourceService = $resourceService;
@@ -106,6 +108,20 @@ class SchedulePresenter implements ISchedulePresenter {
 
         $this->_builder->BindReservations($this->_page, $resources, $dailyLayout);
     }
+
+	public function GetLayout(UserSession $user)
+	{
+		$scheduleId = $this->_page->GetScheduleId();
+		$layoutDate = $this->_page->GetLayoutDate();
+
+		$requestedDate = Date::Parse($layoutDate, $user->Timezone);
+
+		$layout = $this->_scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($user->Timezone));
+		$periods = $layout->GetLayout($requestedDate);
+
+		Log::Debug('Getting layout for scheduleId=%s, layoutDate=%s, periods=%s', $scheduleId, $layoutDate,var_export($periods, true));
+		$this->_page->SetLayoutResponse(new ScheduleLayoutSerializable($periods));
+	}
 }
 
 ?>

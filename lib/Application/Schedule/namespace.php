@@ -40,4 +40,5 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/iCalendarReservationView.php')
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionService.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionValidator.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarFactory.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/ScheduleLayoutSerializable.php');
 ?>

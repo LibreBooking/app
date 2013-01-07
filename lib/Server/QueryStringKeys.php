@@ -43,6 +43,7 @@ class QueryStringKeys
 	const GROUP_ID = 'gid';
 	const INVITATION_ACTION = 'ia';
 	const LANGUAGE = 'lang';
+	const LAYOUT_DATE = 'ld';
 	const MESSAGE_ID = 'mid';
 	const MONTH = 'm';
     const PAGE = 'page';
