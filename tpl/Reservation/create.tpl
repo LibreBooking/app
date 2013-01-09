@@ -56,7 +56,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						<div id="resourceNames" style="display:inline">
 							<a href="#" class="resourceDetails">{$ResourceName}</a>
 							<input class="resourceId" type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
-							<input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+							<input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
 						</div>
 					{if $ShowAdditionalResources}
 						<a href="#"

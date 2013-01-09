@@ -39,6 +39,10 @@ function Reservation(opts) {
 
 	var changeUser = {};
 
+	var oneDay = 86400000;
+
+	var scheduleId;
+
 	Reservation.prototype.init = function(ownerId) {
 		participation.addedUsers.push(ownerId);
 
@@ -55,6 +59,8 @@ function Reservation(opts) {
 				return true;
 			}
 		});
+
+		scheduleId = $('#scheduleId').val();
 
 		elements.accessoriesDialog.dialog({ width: 450 });
 		elements.accessoriesPrompt.click(function() {
@@ -231,6 +237,7 @@ function Reservation(opts) {
 		currentEndDate.setDate(currentEndDate.getDate() + diffDays);
 
 		elements.endDateTextbox.datepicker("setDate", currentEndDate);
+		elements.endDate.trigger('change');
 	};
 
 	var CancelAdd = function(dialogBoxId, displayDivId) {
@@ -312,7 +319,7 @@ function Reservation(opts) {
 			var resourceId = $(this).siblings(".resourceId").val();
 			$(this).bindResourceDetails(resourceId);
 		});
-	};
+	}
 
 	function InitializeCheckboxes(dialogBoxId, displayDivId) {
 		var selectedItems = [];
@@ -332,17 +339,24 @@ function Reservation(opts) {
 	}
 	
 	function InitializeDateElements() {
-		alert('need to reload periods when date changes');
+		var periodsCache = [];
+
         elements.beginDate.data['previousVal'] = elements.beginDate.val();
+		elements.endDate.data['previousVal'] = elements.endDate.val();
 
 		elements.beginDate.change(function() {
+			PopulatePeriodDropDown(elements.beginDate, elements.beginTime);
 			AdjustEndDate();
-			elements.beginDate.data['previousVal'] = elements.beginDate.val();
 			DisplayDuration();
+
+			elements.beginDate.data['previousVal'] = elements.beginDate.val();
 		});
 
 		elements.endDate.change(function() {
+			PopulatePeriodDropDown(elements.endDate, elements.endTime);
 			DisplayDuration();
+
+			elements.endDate.data['previousVal'] = elements.endDate.val();
 		});
 
 		elements.beginTime.change(function() {
@@ -352,6 +366,47 @@ function Reservation(opts) {
 		elements.endTime.change(function() {
 			DisplayDuration();
 		});
+
+		var PopulatePeriodDropDown = function(dateElement, periodElement)
+			{
+				var prevDate = new Date(dateElement.data['previousVal']);
+				var currDate = new Date(dateElement.val());
+				if (prevDate.getTime() == currDate.getTime())
+				{
+					return;
+				}
+
+				var selectedPeriod = periodElement.val();
+
+				var weekday = currDate.getDay();
+
+				if (periodsCache[weekday] != null)
+				{
+					periodElement.empty();
+					periodElement.html(periodsCache[weekday])
+					periodElement.val(selectedPeriod);
+					return;
+				}
+				$.ajax({
+					url:'schedule.php',
+					dataType:'json',
+					data:{dr:'layout', 'sid':scheduleId, 'ld':dateElement.val()},
+					success:function (data)
+					{
+						var items = [];
+						periodElement.empty();
+						$.map(data.periods, function (item)
+						{
+							items.push('<option value="' + item.begin + '">'+ item.label + '</option>')
+						});
+						var html = items.join('');
+						periodsCache[weekday] = html;
+						periodElement.html(html);
+						periodElement.val(selectedPeriod);
+					},
+					async:false
+				});
+			};
 	}
 
 	function InitializeParticipationElements() {
