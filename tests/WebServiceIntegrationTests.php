@@ -44,8 +44,8 @@ function includeAll($directory)
 
 class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 {
-//	private $url = 'http://localhost/dev/Services';
-	private $url = 'http://localhost/development/Services/index.php';
+	private $url = 'http://localhost/dev/Services';
+//	private $url = 'http://localhost/development/Services/index.php';
 
 	/**
 	 * @var HttpClient
@@ -85,6 +85,18 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$this->UpdateReservation($authHeaders, $referenceNumber);
 		$this->RemoveReservation($authHeaders, $referenceNumber);
 	}
+
+	public function testGetsSchedules()
+	{
+		$authHeaders = $this->LogIn();
+
+		/** @var $schedulesResponse SchedulesResponse */
+		$schedulesResponse = $this->client->Get('Schedules/', $authHeaders);
+
+		/** @var $scheduleResponse ScheduleResponse */
+		$scheduleResponse = $this->client->GetUrl($schedulesResponse->schedules[0]->links[0]->href, $authHeaders);
+	}
+
 
 	private function CreateReservation($authHeaders)
 	{
@@ -196,7 +208,7 @@ class HttpClient
 			$data = json_encode($data);
 		}
 
-		$fullUrl = $this->GetUrl($url);
+		$fullUrl = $this->GetFullUrl($url);
 		$curl_connection = curl_init($fullUrl);
 		curl_setopt($curl_connection, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($curl_connection, CURLOPT_RETURNTRANSFER, true);
@@ -217,9 +229,8 @@ class HttpClient
 		return $jsonObject;
 	}
 
-	public function Get($url, $headers = array())
+	public function GetUrl($fullUrl, $headers)
 	{
-		$fullUrl = $this->GetUrl($url);
 		$curl_connection = curl_init($fullUrl);
 		curl_setopt($curl_connection, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl_connection, CURLOPT_HTTPHEADER, $headers);
@@ -237,9 +248,15 @@ class HttpClient
 		return $jsonObject;
 	}
 
+	public function Get($url, $headers = array())
+	{
+		$fullUrl = $this->GetFullUrl($url);
+		return $this->GetUrl($fullUrl, $headers);
+	}
+
 	public function Delete($url, $headers = array())
 	{
-		$fullUrl = $this->GetUrl($url);
+		$fullUrl = $this->GetFullUrl($url);
 		$curl_connection = curl_init($fullUrl);
 		curl_setopt($curl_connection, CURLOPT_CUSTOMREQUEST, 'DELETE');
 		curl_setopt($curl_connection, CURLOPT_RETURNTRANSFER, true);
@@ -258,7 +275,7 @@ class HttpClient
 		return $jsonObject;
 	}
 
-	private function GetUrl($url)
+	private function GetFullUrl($url)
 	{
 		return $this->baseUrl . '/' . $url;
 	}

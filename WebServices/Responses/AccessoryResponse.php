@@ -29,7 +29,17 @@ class AccessoryResponse extends RestResponse
 
 	public static function Example()
 	{
-		return new AccessoryResponse(null, new Accessory(1, 'accessoryName', 10));
+		return new ExampleAccessoryResponse(null, new Accessory(1, 'accessoryName', 10));
+	}
+}
+
+class ExampleAccessoryResponse extends AccessoryResponse
+{
+	public function __construct()
+	{
+		$this->id = 1;
+		$this->name = 'accessoryName';
+		$this->quantityAvailable = 10;
 	}
 }
 
