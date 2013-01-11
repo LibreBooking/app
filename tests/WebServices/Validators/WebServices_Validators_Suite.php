@@ -16,36 +16,20 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
+ 
+require_once(ROOT_DIR . 'tests/AllTests.php');
 
-class UniqueUserNameValidator extends ValidatorBase implements IValidator
+class WebServices_Validators_Suite
 {
-	private $_username;
-	private $_userid;
-	private $userRepository;
-
-	public function __construct(IUserViewRepository $userRepository, $username, $userid = null)
-	{
-		$this->_username = $username;
-		$this->_userid = $userid;
-		$this->userRepository = $userRepository;
-	}
-
-	public function Validate()
-	{
-		$this->isValid = true;
-		$userId = $this->userRepository->UserExists(null, $this->_username);
-
-		if (!empty($userId))
-		{
-			$this->isValid = $userId == $this->_userid;
-		}
-
-		if (!$this->isValid)
-		{
-			$this->AddMessageKey('UniqueUsernameRequired');
-		}
-	}
+	public static function suite()
+    {
+    	return TestHelper::GetSuite('tests/WebServices/Validators', array(__CLASS__, "IsIgnored"));
+    }
+    
+    public static function IsIgnored($fileName)
+    {
+    	return false;
+    }
 }
-
 ?>

@@ -18,11 +18,30 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class UserCreatedResponse extends RestResponse
+require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
+
+class RequestRequiredValueValidator extends RequiredValidator
 {
-	public function __construct(IRestServer $server, $userId)
+	private $attributeName;
+
+	/**
+	 * @param $value mixed
+	 * @param $attributeName string
+	 */
+	public function __construct($value, $attributeName)
 	{
-		$this->AddService($server, WebServices::GetUser, array(WebServiceParams::UserId, $userId));
+		$this->attributeName = $attributeName;
+		parent::__construct($value);
+	}
+
+	public function Validate()
+	{
+		parent::Validate();
+
+		if (!$this->IsValid())
+		{
+			$this->AddMessage($this->attributeName . ' is missing or empty');
+		}
 	}
 }
 

@@ -16,30 +16,37 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-
-class UniqueEmailValidator extends ValidatorBase implements IValidator 
+class UniqueEmailValidator extends ValidatorBase implements IValidator
 {
 	private $_email;
 	private $_userid;
-	
-	public function __construct($email, $userid = null)
+	private $userRepository;
+
+	public function __construct(IUserViewRepository $userRepository, $email, $userid = null)
 	{
 		$this->_email = $email;
 		$this->_userid = $userid;
+		$this->userRepository = $userRepository;
 	}
-	
+
 	public function Validate()
 	{
 		$this->isValid = true;
 
-		$results = ServiceLocator::GetDatabase()->Query(new CheckEmailCommand($this->_email));
+		$userId = $this->userRepository->UserExists($this->_email, null);
 
-		if ($row = $results->GetRow())
+		if (!empty($userId))
 		{
-			$this->isValid = ($row[ColumnNames::USER_ID] == $this->_userid);
+			$this->isValid = $userId == $this->_userid;
+		}
+
+		if (!$this->isValid)
+		{
+			$this->AddMessageKey('UniqueEmailRequired');
 		}
 	}
 }
+
 ?>

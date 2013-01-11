@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 class RequiredValidator extends ValidatorBase implements IValidator 
 {
 	private $value;
@@ -30,7 +29,8 @@ class RequiredValidator extends ValidatorBase implements IValidator
 	
 	public function Validate()
 	{
-		$this->isValid = !empty($this->value);
+		$trimmed = trim($this->value);
+		$this->isValid = !empty($trimmed);
 	}
 }
 ?>

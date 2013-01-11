@@ -92,15 +92,9 @@ class Registration implements IRegistration
 
 	public function UserExists($loginName, $emailAddress)
 	{
-		$exists = false;
-		$reader = ServiceLocator::GetDatabase()->Query(new CheckUserExistanceCommand($loginName, $emailAddress));
+		$userId = $this->_userRepository->UserExists($emailAddress, $loginName);
 
-		if ($row = $reader->GetRow())
-		{
-			$exists = true;
-		}
-
-		return $exists;
+		return !empty($userId);
 	}
 
 	public function Synchronize(AuthenticatedUser $user)

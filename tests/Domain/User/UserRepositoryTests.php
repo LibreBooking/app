@@ -545,6 +545,20 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals($command, $this->db->_LastCommand);
 	}
 
+	public function testChecksIfUserExists()
+	{
+		$email = 'em';
+		$userName = 'un';
+		$expectedId = 123;
+
+		$this->db->SetRows(array(array(ColumnNames::USER_ID => $expectedId)));
+
+		$repo = new UserRepository();
+		$actualId = $repo->UserExists($email, $userName);
+
+		$this->assertEquals($expectedId, $actualId);
+	}
+
 	private function GetUserRow($userId = 1, $first = 'first', $last = 'last', $email = 'e@mail.com', $userName = 'username', $lastLogin = null, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
 	{
 		$row =

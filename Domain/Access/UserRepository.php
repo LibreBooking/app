@@ -87,7 +87,8 @@ interface IUserViewRepository
 	 * @param AccountStatus|int $accountStatus
 	 * @return PageableData|UserItemView[]
 	 */
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null, $accountStatus = AccountStatus::ALL);
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null,
+							$accountStatus = AccountStatus::ALL);
 
 	/**
 	 * @param int $resourceId
@@ -107,12 +108,18 @@ interface IUserViewRepository
 	function GetGroupAdmins($userId);
 
 	/**
-	 * @abstract
 	 * @param $userId int
 	 * @param $roleLevels int|null|array|int[]
 	 * @return array|UserGroup[]
 	 */
 	function LoadGroups($userId, $roleLevels = null);
+
+	/**
+	 * @param string $emailAddress
+	 * @param string $userName
+	 * @return int|null
+	 */
+	public function UserExists($emailAddress, $userName);
 }
 
 interface IAccountActivationRepository
@@ -185,7 +192,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		return null;
 	}
 
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null, $accountStatus = AccountStatus::ALL)
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null,
+							$accountStatus = AccountStatus::ALL)
 	{
 		$command = new GetAllUsersByStatusCommand($accountStatus);
 
@@ -228,7 +236,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$this->_cache->Add($userId, $user);
 
 			return $user;
-		} else
+		}
+		else
 		{
 			return User::Null();
 		}
@@ -279,9 +288,9 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 	{
 		$db = ServiceLocator::GetDatabase();
 		$id = $db->ExecuteInsert(new RegisterUserCommand($user->Username(), $user->EmailAddress(), $user->FirstName(),
-			$user->LastName(), $user->encryptedPassword, $user->passwordSalt, $user->Timezone(), $user->Language(),
-			$user->Homepage(), $user->GetAttribute(UserAttribute::Phone), $user->GetAttribute(UserAttribute::Organization),
-			$user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId()));
+														 $user->LastName(), $user->encryptedPassword, $user->passwordSalt, $user->Timezone(), $user->Language(),
+														 $user->Homepage(), $user->GetAttribute(UserAttribute::Phone), $user->GetAttribute(UserAttribute::Organization),
+														 $user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId()));
 
 		$user->WithId($id);
 
@@ -309,19 +318,19 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 		$db = ServiceLocator::GetDatabase();
 		$updateUserCommand = new UpdateUserCommand($user->Id(),
-			$user->StatusId(),
-			$user->encryptedPassword,
-			$user->passwordSalt,
-			$user->FirstName(),
-			$user->LastName(),
-			$user->EmailAddress(),
-			$user->Username(),
-			$user->Homepage(),
-			$user->Timezone(),
-			$user->LastLogin(),
-			$user->GetIsCalendarSubscriptionAllowed(),
-			$user->GetPublicId(),
-			$user->Language());
+												   $user->StatusId(),
+												   $user->encryptedPassword,
+												   $user->passwordSalt,
+												   $user->FirstName(),
+												   $user->LastName(),
+												   $user->EmailAddress(),
+												   $user->Username(),
+												   $user->Homepage(),
+												   $user->Timezone(),
+												   $user->LastLogin(),
+												   $user->GetIsCalendarSubscriptionAllowed(),
+												   $user->GetPublicId(),
+												   $user->Language());
 		$db->Execute($updateUserCommand);
 
 		$removedPermissions = $user->GetRemovedPermissions();
@@ -478,7 +487,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 				// a group can have many roles which are all returned at once
 				$group = new UserGroup($groupId, $row[ColumnNames::GROUP_NAME], $row[ColumnNames::GROUP_ADMIN_GROUP_ID], $row[ColumnNames::ROLE_LEVEL]);
 				$groups[$groupId] = $group;
-			} else
+			}
+			else
 			{
 				$groups[$groupId]->AddRole($row[ColumnNames::ROLE_LEVEL]);
 			}
@@ -565,6 +575,18 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 		return $groups;
 	}
+
+	public function UserExists($emailAddress, $userName)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new CheckUserExistanceCommand($userName, $emailAddress));
+
+		if ($row = $reader->GetRow())
+		{
+			return $row[ColumnNames::USER_ID];
+		}
+
+		return null;
+	}
 }
 
 class UserDto
@@ -604,7 +626,7 @@ class UserDto
 	public function FullName()
 	{
 		$name = new FullName($this->FirstName(), $this->LastName());
-		return $name->__toString(). " ({$this->emailAddress})";
+		return $name->__toString() . " ({$this->emailAddress})";
 	}
 
 	public function EmailAddress()

@@ -239,8 +239,8 @@ class RegistrationPresenter extends ActionPresenter
 		$this->page->RegisterValidator('passwordmatch', new EqualValidator($this->page->GetPassword(), $this->page->GetPasswordConfirm()));
 		$this->page->RegisterValidator('passwordcomplexity', new RegexValidator($this->page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
 		$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
-		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
-		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetLoginName()));
+		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator(new UserRepository(), $this->page->GetEmail()));
+		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator(new UserRepository(), $this->page->GetLoginName()));
 		$this->page->RegisterValidator('captcha', new CaptchaValidator($this->page->GetCaptcha(), $this->captchaService));
 		$this->page->RegisterValidator('additionalattributes', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
 	}

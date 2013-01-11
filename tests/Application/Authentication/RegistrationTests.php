@@ -194,7 +194,8 @@ class RegistrationTests extends TestBase
 				->with($this->anything())
 				->will($this->returnValue($expectedUserId));
 
-		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
+		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password,
+									  $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
 
 		$command = new AutoAssignPermissionsCommand($expectedUserId);
 
@@ -226,13 +227,14 @@ class RegistrationTests extends TestBase
 				->method('Add')
 				->with($this->equalTo($user));
 
-		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password, $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
+		$this->registration->Register($this->login, $this->email, $this->fname, $this->lname, $this->password,
+									  $this->timezone, $this->language, $this->homepageId, $this->additionalFields);
 
 	}
 
 	public function testSynchronizeUpdatesExistingUser()
 	{
-		$this->db->SetRows(array(true));
+		$userId = 111;
 
 		$username = 'un';
 		$email = 'em';
@@ -244,6 +246,10 @@ class RegistrationTests extends TestBase
 		$encryptedPassword = $this->fakeEncryption->_Encrypted;
 		$salt = $this->fakeEncryption->_Salt;
 
+		$this->userRepository->expects($this->once())
+				->method('UserExists')
+				->with($this->equalTo($email), $this->equalTo($username))
+				->will($this->returnValue($userId));
 		$user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title);
 		$expectedCommand = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $encryptedPassword, $salt, $phone, $inst, $title);
 
@@ -280,6 +286,11 @@ class RegistrationTests extends TestBase
 									 Pages::DEFAULT_HOMEPAGE_ID);
 
 		$expectedUser->ChangeAttributes($phone, $inst, $title);
+
+		$this->userRepository->expects($this->once())
+					->method('UserExists')
+					->with($this->equalTo($email), $this->equalTo($username))
+					->will($this->returnValue(null));
 
 		$this->userRepository->expects($this->once())
 				->method('Add')

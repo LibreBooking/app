@@ -51,17 +51,7 @@ class UsersWriteWebServiceTests extends TestBase
 	{
 		$userId = '1';
 
-//		$this->GetCreateUserRequest();
 		$userRequest = new CreateUserRequest();
-//		$userRequest->firstName = 'first';
-//		$userRequest->lastName = 'last';
-//		$userRequest->emailAddress = 'email';
-//		$userRequest->userName = 'username';
-//		$userRequest->timezone = 'tz';
-//		$userRequest->language = 'lang';
-//		$userRequest->password = 'password';
-//		$userRequest->customAttributes = array(new AttributeValueRequest(99, 'attval'));
-
 		$this->server->SetRequest($userRequest);
 
 		$controllerResult = new UserControllerResult($userId);

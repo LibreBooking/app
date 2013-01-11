@@ -123,8 +123,8 @@ class ProfilePresenter extends ActionPresenter
 		$this->page->RegisterValidator('username', new RequiredValidator($this->page->GetLoginName()));
 		$this->page->RegisterValidator('lname', new RequiredValidator($this->page->GetLastName()));
 		$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
-		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->page->GetEmail(), $userId));
-		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->page->GetLoginName(), $userId));
+		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $userId));
+		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->userRepository, $this->page->GetLoginName(), $userId));
 		$this->page->RegisterValidator('additionalattributes', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
 	}
 

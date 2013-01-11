@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'WebServices/Requests/AttributeValueRequest.php');
+
 class CreateUserRequest
 {
 	public $firstName;
@@ -32,6 +34,14 @@ class CreateUserRequest
 	public $position;
 	/** @var array|AttributeValueRequest[] */
 	public $customAttributes = array();
+
+	/**
+	 * @return ExampleCreateUserRequest
+	 */
+	public static function Example()
+	{
+		return new ExampleCreateUserRequest();
+	}
 }
 
 class ExampleCreateUserRequest extends CreateUserRequest

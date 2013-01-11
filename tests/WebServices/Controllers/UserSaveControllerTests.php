@@ -37,48 +37,74 @@ class UserSaveControllerTests extends TestBase
 	 */
 	private $manageUsersService;
 
+	/**
+	 * @var IUserRequestValidator
+	 */
+	private $requestValidator;
+
 	public function setup()
 	{
 		parent::setup();
 
 		$this->manageUserServiceFactory = $this->getMock('IManageUsersServiceFactory');
-		$this->controller = new UserSaveController($this->manageUserServiceFactory);
+		$this->manageUsersService = $this->getMock('IManageUsersService');
+		$this->requestValidator = $this->getMock('IUserRequestValidator');
+
+		$this->controller = new UserSaveController($this->manageUserServiceFactory, $this->requestValidator);
 	}
 
 	public function testCreatesNewUser()
 	{
-		/** @var $presenter IManageUsersService */
-		$manageUsersService = $this->getMock('IManageUsersService');
-
-		$request = $this->GetCreateUserRequest();
+		$createdUserId = 123;
+		$request = CreateUserRequest::Example();
 		$session = new FakeWebServiceUserSession(123);
+
+		$this->requestValidator->expects($this->once())
+					->method('ValidateCreateRequest')
+					->with($this->equalTo($request))
+					->will($this->returnValue(null));
 
 		$this->manageUserServiceFactory->expects($this->once())
 				->method('CreateAdmin')
 				->will($this->returnValue($this->manageUsersService));
 
 		$this->manageUsersService->expects($this->once())
-						->method('AddUser')
-						->with($this->equalTo($request->userName),
-							   $this->equalTo($email),
-							   $this->equalTo($fname),
-							   $this->equalTo($lname),
-							   $this->equalTo($password),
-							   $this->equalTo($timezone),
-							   $this->equalTo($lang),
-							   $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
-							   $this->equalTo(array()),
-							   $this->equalTo(array(new AttributeValue($attributeId, $attributeValue))));
+				->method('AddUser')
+				->with($this->equalTo($request->userName),
+					   $this->equalTo($request->emailAddress),
+					   $this->equalTo($request->firstName),
+					   $this->equalTo($request->lastName),
+					   $this->equalTo($request->password),
+					   $this->equalTo($request->timezone),
+					   $this->equalTo($request->language),
+					   $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
+					   $this->equalTo(array(UserAttribute::Phone => $request->phone, UserAttribute::Organization => $request->organization, UserAttribute::Position => $request->position)),
+					   $this->equalTo(array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue))))
+				->will($this->returnValue($createdUserId));
 
 		$result = $this->controller->Create($request, $session);
 
-//		$expectedResult = new UserControllerResult($createdUserId)
-//		$this->assertEquals($expectedResult, $result);
+		$expectedResult = new UserControllerResult($createdUserId);
+		$this->assertEquals($expectedResult, $result);
+		$this->assertTrue($result->WasSuccessful());
 	}
 
 	public function testValidatesRequest()
 	{
-		$this->markTestIncomplete('next');
+		$request = $this->GetCreateUserRequest();
+		$session = new FakeWebServiceUserSession(123);
+
+		$errors = array('error');
+
+		$this->requestValidator->expects($this->once())
+							->method('ValidateCreateRequest')
+							->with($this->equalTo($request))
+							->will($this->returnValue($errors));
+
+		$result = $this->controller->Create($request, $session);
+
+		$this->assertFalse($result->WasSuccessful());
+		$this->assertEquals($errors, $result->Errors());
 	}
 
 	/**

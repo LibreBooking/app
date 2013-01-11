@@ -220,8 +220,8 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($v['passwordmatch'], new EqualValidator($this->password, $this->confirm));
 		$this->assertEquals($v['passwordcomplexity'], new RegexValidator($this->password, $pattern));
 		$this->assertEquals($v['emailformat'], new EmailValidator($this->email));
-		$this->assertEquals($v['uniqueemail'], new UniqueEmailValidator($this->email));
-		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator($this->login));
+		$this->assertEquals($v['uniqueemail'], new UniqueEmailValidator(new UserRepository(), $this->email));
+		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator(new UserRepository(), $this->login));
 		$this->assertEquals($v['additionalattributes'], new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $expectedAttributeValues));
 	}
     

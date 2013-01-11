@@ -16,14 +16,14 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/external/is_email/is_email.php');
 
-class EmailValidator extends ValidatorBase implements IValidator 
+class EmailValidator extends ValidatorBase implements IValidator
 {
 	private $email;
-	
+
 	public function __construct($email)
 	{
 		$this->email = $email;
@@ -31,8 +31,12 @@ class EmailValidator extends ValidatorBase implements IValidator
 
 	public function Validate()
 	{
-	//	$this->isValid = preg_match("/^[_\.0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $this->email);
-     	$this->isValid = is_email($this->email);
+		$this->isValid = is_email($this->email);
+
+		if (!$this->isValid)
+		{
+			$this->AddMessageKey('ValidEmailRequired');
+		}
 	}
 }
 

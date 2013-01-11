@@ -254,7 +254,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 			$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
 			$this->page->RegisterValidator('uniqueemail',
-										   new UniqueEmailValidator($this->page->GetEmail(), $this->page->GetUserId()));
+										   new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $this->page->GetUserId()));
 			$this->page->RegisterValidator('uniqueusername',
 										   new UniqueUserNameValidator($this->page->GetUserName(), $this->page->GetUserId()));
 		}
@@ -264,8 +264,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			Log::Debug('Loading validators for %s', $action);
 
 			$this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
-			$this->page->RegisterValidator('addUserUniqueemail', new UniqueEmailValidator($this->page->GetEmail()));
-			$this->page->RegisterValidator('addUserUsername', new UniqueUserNameValidator($this->page->GetUserName()));
+			$this->page->RegisterValidator('addUserUniqueemail', new UniqueEmailValidator($this->userRepository, $this->page->GetEmail()));
+			$this->page->RegisterValidator('addUserUsername', new UniqueUserNameValidator($this->userRepository, $this->page->GetUserName()));
 			$this->page->RegisterValidator('addAttributeValidator',
 										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
 		}

@@ -151,7 +151,7 @@ class Queries
 	const CHECK_USER_EXISTANCE =
 			'SELECT *
 		FROM users
-		WHERE (username = @username OR email = @email)';
+		WHERE ( (username IS NOT NULL AND username = @username) OR (email IS NOT NULL AND email = @email) )';
 
 	const COOKIE_LOGIN =
 			'SELECT user_id, lastlogin, email
