@@ -78,6 +78,11 @@ class SlimWebServiceRegistryCategory
 		$this->posts[] = new SlimSecureServiceRegistration($this->name, $route, $callback, $routeName);
 	}
 
+//	public function AddAdminPost($route, $callback, $routeName)
+//	{
+//		$this->posts[] = new SlimSecureServiceRegistration($this->name, $route, $callback, $routeName);
+//	}
+
 	public function AddSecureDelete($route, $callback, $routeName)
 	{
 		$this->deletes[] = new SlimSecureServiceRegistration($this->name, $route, $callback, $routeName);

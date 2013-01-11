@@ -61,7 +61,7 @@ $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 		if (!$wasHandled)
 		{
 			$app->halt(RestResponse::UNAUTHORIZED_CODE,
-					'You must be authenticated in order to access this service.<br/>' . $server->GetFullServiceUrl(WebServices::Login));
+					   'You must be authenticated in order to access this service.<br/>' . $server->GetFullServiceUrl(WebServices::Login));
 		}
 	}
 });
@@ -135,10 +135,14 @@ function RegisterAccessories(SlimServer $server, SlimWebServiceRegistry $registr
 
 function RegisterUsers(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new UsersWebService($server, new UserRepositoryFactory(), new AttributeService(new AttributeRepository()));
+	$attributeService = new AttributeService(new AttributeRepository());
+	$webService = new UsersWebService($server, new UserRepositoryFactory(), $attributeService);
+	$writeWebService = new UsersWriteWebService($server,
+												new UserSaveController(new ManageUsersServiceFactory(), new UserRequestValidator($attributeService, new UserRepository())));
 	$category = new SlimWebServiceRegistryCategory('Users');
 	$category->AddSecureGet('/', array($webService, 'GetUsers'), WebServices::AllUsers);
 	$category->AddSecureGet('/:userId', array($webService, 'GetUser'), WebServices::GetUser);
+	$category->AddAdminPost('/:userId', array($writeWebService, 'Create'), WebServices::CreateUser);
 	$registry->AddCategory($category);
 }
 

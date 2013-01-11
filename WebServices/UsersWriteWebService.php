@@ -41,6 +41,13 @@ class UsersWriteWebService
 		$this->controller = $controller;
 	}
 
+	/**
+	 * @name CreateUser
+	 * @description Creates a new user
+	 * @request CreateUserRequest
+	 * @response UserCreatedResponse
+	 * @return void
+	 */
 	public function Create()
 	{
 		/** @var $request CreateUserRequest */

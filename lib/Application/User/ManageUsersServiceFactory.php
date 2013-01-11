@@ -29,7 +29,7 @@ interface IManageUsersServiceFactory
 	public function CreateAdmin();
 }
 
-class ManageUsersServiceFactory
+class ManageUsersServiceFactory implements IManageUsersServiceFactory
 {
 	public function CreateAdmin()
 	{

@@ -55,6 +55,7 @@ class UserRequestValidatorTests extends TestBase
 
 	public function testRequiredFields()
 	{
+		$this->expectsAttributeValidator();
 		$request = CreateUserRequest::Example();
 		$request->firstName = null;
 		$request->lastName = '';
@@ -69,6 +70,7 @@ class UserRequestValidatorTests extends TestBase
 
 	public function testValidatesEmailFormat()
 	{
+		$this->expectsAttributeValidator();
 		$request = CreateUserRequest::Example();
 		$request->emailAddress = 'aaaaaa.com';
 		$errors = $this->validator->ValidateCreateRequest($request);
@@ -77,6 +79,7 @@ class UserRequestValidatorTests extends TestBase
 
 	public function testValidatesExistingEmail()
 	{
+		$this->expectsAttributeValidator();
 		$request = CreateUserRequest::Example();
 
 		$this->userRepository->expects($this->at(0))
@@ -90,6 +93,7 @@ class UserRequestValidatorTests extends TestBase
 
 	public function testValidatesExistingUsername()
 	{
+		$this->expectsAttributeValidator();
 		$request = CreateUserRequest::Example();
 
 		$this->userRepository->expects($this->at(1))
@@ -113,6 +117,14 @@ class UserRequestValidatorTests extends TestBase
 
 		$errors = $this->validator->ValidateCreateRequest($request);
 		$this->assertTrue(count($errors) == 1);
+	}
+
+	private function expectsAttributeValidator()
+	{
+		$this->attributeService->expects($this->any())
+				->method('Validate')
+				->with($this->anything(), $this->anything())
+				->will($this->returnValue(new AttributeServiceValidationResult(true, null)));
 	}
 }
 
