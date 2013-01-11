@@ -153,13 +153,15 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 
 	public function __construct()
 	{
+		$serviceFactory = new ManageUsersServiceFactory();
+
 		parent::__construct('ManageUsers', 1);
 		$this->_presenter = new ManageUsersPresenter(
 			$this,
 			new UserRepository(),
 			new ResourceRepository(),
 			new PasswordEncryption(),
-            new AdminRegistration(),
+			$serviceFactory->CreateAdmin(),
 			new AttributeService(new AttributeRepository()));
 
 		$this->pageable = new PageablePage($this);

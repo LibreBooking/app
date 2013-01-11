@@ -18,7 +18,21 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/Application/User/ManageUsersService.php');
-require_once(ROOT_DIR . 'lib/Application/User/ManageUsersServiceFactory.php');
-require_once(ROOT_DIR . 'lib/Application/User/UserRepositoryFactory.php');
+class FailedResponse extends RestResponse
+{
+	/**
+	 * @var array|string[]
+	 */
+	public $errors;
+
+	/**
+	 * @param IRestServer $server
+	 * @param array|string[] $errors
+	 */
+	public function __construct(IRestServer $server, $errors)
+	{
+		$this->message = 'There were errors processing your request';
+		$this->errors = $errors;
+	}
+}
 ?>

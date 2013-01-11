@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012 Nick Korbel
+Copyright 2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -18,7 +18,31 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/Application/User/ManageUsersService.php');
-require_once(ROOT_DIR . 'lib/Application/User/ManageUsersServiceFactory.php');
-require_once(ROOT_DIR . 'lib/Application/User/UserRepositoryFactory.php');
+require_once(ROOT_DIR . 'WebServices/Requests/CreateUserRequest.php');
+
+interface IUserSaveController
+{
+	/**
+	 * @param CreateUserRequest $request
+	 * @param WebServiceUserSession $session
+	 * @return UserControllerResult
+	 */
+	public function Create($request, $session);
+}
+
+class UserSaveController implements IUserSaveController
+{
+	/**
+	 * @param CreateUserRequest $request
+	 * @param WebServiceUserSession $session
+	 * @return UserControllerResult
+	 */
+	public function Create($request, $session)
+	{
+		// TODO: Implement Create() method.
+	}
+}
+
+
+
 ?>

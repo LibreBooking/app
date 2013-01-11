@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012 Nick Korbel
+Copyright 2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -18,21 +18,12 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ReservationFailedResponse extends RestResponse
+class UserCreatedResponse extends RestResponse
 {
-	/**
-	 * @var array|string[]
-	 */
-	public $errors;
-
-	/**
-	 * @param IRestServer $server
-	 * @param array|string[] $errors
-	 */
-	public function __construct(IRestServer $server, $errors)
+	public function __construct(IRestServer $server, $userId)
 	{
-		$this->message = 'There were errors creating your reservation';
-		$this->errors = $errors;
+
 	}
 }
+
 ?>

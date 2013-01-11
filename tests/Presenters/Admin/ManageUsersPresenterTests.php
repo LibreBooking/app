@@ -39,9 +39,9 @@ class ManageUsersPresenterTests extends TestBase
 	public $resourceRepo;
 
 	/**
-	 * @var IRegistration|PHPUnit_Framework_MockObject_MockObject
+	 * @var IManageUsersService|PHPUnit_Framework_MockObject_MockObject
 	 */
-	public $registration;
+	public $manageUsersService;
 
 	/**
 	 * @var ManageUsersPresenter
@@ -66,10 +66,10 @@ class ManageUsersPresenterTests extends TestBase
 		$this->userRepo = $this->getMock('UserRepository');
 		$this->resourceRepo = $this->getMock('IResourceRepository');
 		$this->encryption = $this->getMock('PasswordEncryption');
-		$this->registration = $this->getMock('IRegistration');
+		$this->manageUsersService = $this->getMock('IManageUsersService');
 		$this->attributeService = $this->getMock('IAttributeService');
 
-		$this->presenter = new ManageUsersPresenter($this->page, $this->userRepo, $this->resourceRepo, $this->encryption, $this->registration, $this->attributeService);
+		$this->presenter = new ManageUsersPresenter($this->page, $this->userRepo, $this->resourceRepo, $this->encryption, $this->manageUsersService, $this->attributeService);
 	}
 
 	public function teardown()
@@ -110,7 +110,8 @@ class ManageUsersPresenterTests extends TestBase
 		$this->userRepo
 				->expects($this->once())
 				->method('GetList')
-				->with($this->equalTo($pageNumber), $this->equalTo($pageSize), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo(AccountStatus::ALL))
+				->with($this->equalTo($pageNumber), $this->equalTo($pageSize), $this->isNull(), $this->isNull(),
+					   $this->isNull(), $this->equalTo(AccountStatus::ALL))
 				->will($this->returnValue($userList));
 
 		$this->page
@@ -220,7 +221,6 @@ class ManageUsersPresenterTests extends TestBase
 
 	public function testCanUpdateUser()
 	{
-		$user = new User();
 		$userId = 1029380;
 		$fname = 'f';
 		$lname = 'l';
@@ -267,38 +267,33 @@ class ManageUsersPresenterTests extends TestBase
 				->method('GetPosition')
 				->will($this->returnValue($position));
 
+		$extraAttributes = array(
+					UserAttribute::Organization => $organization,
+					UserAttribute::Phone => $phone,
+					UserAttribute::Position => $position);
 
-		$this->userRepo->expects($this->once())
-				->method('LoadById')
-				->with($this->equalTo($userId))
-				->will($this->returnValue($user));
-
-		$this->userRepo->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($user));
+		$this->manageUsersService->expects($this->once())
+				->method('UpdateUser')
+				->with($this->equalTo($userId),
+					   $this->equalTo($username),
+					   $this->equalTo($email),
+					   $this->equalTo($fname),
+					   $this->equalTo($lname),
+					   $this->equalTo($timezone),
+					   $this->equalTo($extraAttributes));
 
 		$this->presenter->UpdateUser();
-
-		$this->assertEquals($fname, $user->FirstName());
-		$this->assertEquals($lname, $user->LastName());
-		$this->assertEquals($timezone, $user->Timezone());
-
-		$this->assertEquals($username, $user->Username());
-		$this->assertEquals($email, $user->EmailAddress());
-		$this->assertEquals($phone, $user->GetAttribute(UserAttribute::Phone));
-		$this->assertEquals($organization, $user->GetAttribute(UserAttribute::Organization));
-		$this->assertEquals($position, $user->GetAttribute(UserAttribute::Position));
 	}
 
-	public function testDeleteDelegatesToRepository()
+	public function testDeletesUser()
 	{
 		$userId = 809;
 		$this->page->expects($this->once())
 				->method('GetUserId')
 				->will($this->returnValue($userId));
 
-		$this->userRepo->expects($this->once())
-				->method('DeleteById')
+		$this->manageUsersService->expects($this->once())
+				->method('DeleteUser')
 				->with($this->equalTo($userId));
 
 		$this->presenter->DeleteUser();
@@ -311,8 +306,6 @@ class ManageUsersPresenterTests extends TestBase
 		$userId = 111;
 		$attributeFormElements = array(new AttributeFormElement($attributeId, $attributeValue));
 
-		$user = new FakeUser($userId);
-
 		$this->page
 				->expects($this->once())
 				->method('GetAttributes')
@@ -323,21 +316,12 @@ class ManageUsersPresenterTests extends TestBase
 				->method('GetUserId')
 				->will($this->returnValue($userId));
 
-		$this->userRepo
-				->expects($this->once())
-				->method('LoadById')
-				->with($this->equalTo($userId))
-				->will($this->returnValue($user));
-
-		$this->userRepo
-				->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($user));
+		$this->manageUsersService->expects($this->once())
+				->method('ChangeAttributes')
+				->with($this->equalTo($userId),
+					   $this->equalTo(array(new AttributeValue($attributeId, $attributeValue))));
 
 		$this->presenter->ChangeAttributes();
-
-		$this->assertEquals(1, count($user->GetAddedAttributes()));
-		$this->assertEquals($attributeValue, $user->GetAttributeValue($attributeId));
 	}
 
 	public function testAddsUser()
@@ -385,8 +369,8 @@ class ManageUsersPresenterTests extends TestBase
 				->method('GetAttributes')
 				->will($this->returnValue($attributeFormElements));
 
-		$this->registration->expects($this->once())
-				->method('Register')
+		$this->manageUsersService->expects($this->once())
+				->method('AddUser')
 				->with($this->equalTo($username),
 					   $this->equalTo($email),
 					   $this->equalTo($fname),

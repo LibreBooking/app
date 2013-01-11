@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'WebServices/Controllers/ReservationSaveController.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ReservationCreatedResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/ReservationFailedResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/FailedResponse.php');
 require_once(ROOT_DIR . 'WebServices/Requests/ReservationRequest.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
@@ -72,7 +72,7 @@ class ReservationWriteWebService
 		{
 			Log::Debug('ReservationWriteWebService.Create() - Reservation Failed.');
 
-			$this->server->WriteResponse(new ReservationFailedResponse($this->server, $result->Errors()),
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
 										 RestResponse::BAD_REQUEST_CODE);
 		}
 	}
@@ -109,7 +109,7 @@ class ReservationWriteWebService
 		{
 			Log::Debug('ReservationWriteWebService.Update() - Reservation Failed.');
 
-			$this->server->WriteResponse(new ReservationFailedResponse($this->server, $result->Errors()),
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
 										 RestResponse::BAD_REQUEST_CODE);
 		}
 	}
@@ -140,7 +140,7 @@ class ReservationWriteWebService
 		{
 			Log::Debug('ReservationWriteWebService.Delete() - Reservation Failed.');
 
-			$this->server->WriteResponse(new ReservationFailedResponse($this->server, $result->Errors()),
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
 										 RestResponse::BAD_REQUEST_CODE);
 		}
 	}

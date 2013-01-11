@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012 Nick Korbel
+Copyright 2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -18,7 +18,22 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/Application/User/ManageUsersService.php');
-require_once(ROOT_DIR . 'lib/Application/User/ManageUsersServiceFactory.php');
-require_once(ROOT_DIR . 'lib/Application/User/UserRepositoryFactory.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
+
+interface IManageUsersServiceFactory
+{
+	/**
+	 * @return IManageUsersService
+	 */
+	public function CreateAdmin();
+}
+
+class ManageUsersServiceFactory
+{
+	public function CreateAdmin()
+	{
+		return new ManageUsersService(new AdminRegistration(), new UserRepository());
+	}
+}
 ?>

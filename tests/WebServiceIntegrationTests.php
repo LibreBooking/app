@@ -110,7 +110,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$request->startDateTime = Date::Parse("$today 12:00", 'America/Chicago')->ToIso();
 		$request->title = 'some title';
 
-		/** @var $response ReservationCreatedResponse|ReservationFailedResponse */
+		/** @var $response ReservationCreatedResponse|FailedResponse */
 		$response = $this->client->Post('Reservations/', $request, $authHeaders);
 
 		if (isset($response->errors))
@@ -162,7 +162,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$reservationRequest->title = $reservation->title;
 		$reservationRequest->userId = $reservation->owner->userId;
 
-		/** @var $response ReservationUpdatedResponse|ReservationFailedResponse */
+		/** @var $response ReservationUpdatedResponse|FailedResponse */
 		$response = $this->client->Post($reservationUrl, $reservationRequest, $authHeaders);
 
 		if (isset($response->errors))
@@ -178,7 +178,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 	private function RemoveReservation($authHeaders, $referenceNumber)
 	{
 		$reservationUrl = 'Reservations/' . $referenceNumber;
-		/** @var $response ReservationDeletedResponse|ReservationFailedResponse */
+		/** @var $response ReservationDeletedResponse|FailedResponse */
 		$response = $this->client->Delete($reservationUrl, $authHeaders);
 
 		if (isset($response->errors))
