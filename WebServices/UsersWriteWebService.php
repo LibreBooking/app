@@ -20,7 +20,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'WebServices/Controllers/UserSaveController.php');
 require_once(ROOT_DIR . 'WebServices/Requests/CreateUserRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/UpdateUserRequest.php');
 require_once(ROOT_DIR . 'WebServices/Responses/UserCreatedResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/UserUpdatedResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/FailedResponse.php');
 
 class UsersWriteWebService
@@ -53,8 +55,7 @@ class UsersWriteWebService
 		/** @var $request CreateUserRequest */
 		$request = $this->server->GetRequest();
 
-		Log::Debug('UsersWriteWebService.Create() User=%s, Request=%s', $this->server->GetSession()->UserId,
-				   json_encode($request));
+		Log::Debug('UsersWriteWebService.Create() User=%s', $this->server->GetSession()->UserId);
 
 		$result = $this->controller->Create($request, $this->server->GetSession());
 
@@ -69,6 +70,40 @@ class UsersWriteWebService
 		else
 		{
 			Log::Debug('UsersWriteWebService.Create() - User Create Failed.');
+
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
+										 RestResponse::BAD_REQUEST_CODE);
+		}
+	}
+
+	/**
+	 * @name UpdateUser
+	 * @description Updates an existing user
+	 * @request UpdateUserRequest
+	 * @response UserUpdatedResponse
+	 * @param $userId
+	 * @return void
+	 */
+	public function Update($userId)
+	{
+		/** @var $request UpdateUserRequest */
+		$request = $this->server->GetRequest();
+
+		Log::Debug('UsersWriteWebService.Update() User=%s', $this->server->GetSession()->UserId);
+
+		$result = $this->controller->Update($userId, $request, $this->server->GetSession());
+
+		if ($result->WasSuccessful())
+		{
+			Log::Debug('UsersWriteWebService.Update() - User Updated. UserId=%s',
+					   $result->UserId());
+
+			$this->server->WriteResponse(new UserUpdatedResponse($this->server, $result->UserId()),
+										 RestResponse::OK_CODE);
+		}
+		else
+		{
+			Log::Debug('UsersWriteWebService.Create() - User Update Failed.');
 
 			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
 										 RestResponse::BAD_REQUEST_CODE);

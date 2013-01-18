@@ -97,10 +97,15 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$scheduleResponse = $this->client->GetUrl($schedulesResponse->schedules[0]->links[0]->href, $authHeaders);
 	}
 
-	public function testAddsUser()
+	public function testUserLifecycle()
 	{
 		$authHeaders = $this->LogIn();
-
+		$userId = $this->AddUser($authHeaders);
+		$this->UpdateUser($authHeaders, $userId);
+	}
+	
+	private function AddUser($authHeaders)
+	{
 		$request = new CreateUserRequest();
 		$request->emailAddress = time() . '@test.com';
 		$request->userName = time();
@@ -113,6 +118,32 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 
 		/** @var $response UserCreatedResponse */
 		$response = $this->client->Post('Users/', $request, $authHeaders);
+
+		if (isset($response->errors))
+		{
+			foreach ($response->errors as $error)
+			{
+				echo "$error\n";
+			}
+		}
+
+		$this->assertNotEmpty($response->userId);
+
+		return $response->userId;
+	}
+	
+	private function UpdateUser($authHeaders, $userId)
+	{
+		$request = new UpdateUserRequest();
+		$request->emailAddress = time() . '@test.com';
+		$request->userName = time();
+		$request->firstName = 'first2';
+		$request->lastName = 'last2';
+		$request->timezone = 'America/New_York';
+		$request->customAttributes[] = new AttributeValueRequest(5, 'value');
+
+		/** @var $response UserCreatedResponse */
+		$response = $this->client->Post("Users/$userId", $request, $authHeaders);
 
 		if (isset($response->errors))
 		{

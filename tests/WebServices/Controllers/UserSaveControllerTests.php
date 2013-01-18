@@ -60,9 +60,9 @@ class UserSaveControllerTests extends TestBase
 		$session = new FakeWebServiceUserSession(123);
 
 		$this->requestValidator->expects($this->once())
-					->method('ValidateCreateRequest')
-					->with($this->equalTo($request))
-					->will($this->returnValue(null));
+				->method('ValidateCreateRequest')
+				->with($this->equalTo($request))
+				->will($this->returnValue(null));
 
 		$this->manageUserServiceFactory->expects($this->once())
 				->method('CreateAdmin')
@@ -89,7 +89,7 @@ class UserSaveControllerTests extends TestBase
 		$this->assertTrue($result->WasSuccessful());
 	}
 
-	public function testValidatesRequest()
+	public function testValidatesCreateRequest()
 	{
 		$request = $this->GetCreateUserRequest();
 		$session = new FakeWebServiceUserSession(123);
@@ -97,9 +97,9 @@ class UserSaveControllerTests extends TestBase
 		$errors = array('error');
 
 		$this->requestValidator->expects($this->once())
-							->method('ValidateCreateRequest')
-							->with($this->equalTo($request))
-							->will($this->returnValue($errors));
+				->method('ValidateCreateRequest')
+				->with($this->equalTo($request))
+				->will($this->returnValue($errors));
 
 		$result = $this->controller->Create($request, $session);
 
@@ -107,22 +107,60 @@ class UserSaveControllerTests extends TestBase
 		$this->assertEquals($errors, $result->Errors());
 	}
 
-	/**
-	 * @return CreateUserRequest
-	 */
-	private function GetCreateUserRequest()
+	public function testUpdatesUser()
 	{
-		$userRequest = new CreateUserRequest();
-		$userRequest->firstName = 'first';
-		$userRequest->lastName = 'last';
-		$userRequest->emailAddress = 'email';
-		$userRequest->userName = 'username';
-		$userRequest->timezone = 'tz';
-		$userRequest->language = 'lang';
-		$userRequest->password = 'password';
-		$userRequest->customAttributes = array(new AttributeValueRequest(99, 'attval'));
+		$userId = 123;
+		$request = UpdateUserRequest::Example();
+		$session = new FakeWebServiceUserSession(123);
 
-		return $userRequest;
+		$this->requestValidator->expects($this->once())
+				->method('ValidateUpdateRequest')
+				->with($this->equalTo($userId), $this->equalTo($request))
+				->will($this->returnValue(null));
+
+		$this->manageUserServiceFactory->expects($this->once())
+				->method('CreateAdmin')
+				->will($this->returnValue($this->manageUsersService));
+
+		$this->manageUsersService->expects($this->once())
+				->method('UpdateUser')
+				->with($this->equalTo($userId),
+					   $this->equalTo($request->userName),
+					   $this->equalTo($request->emailAddress),
+					   $this->equalTo($request->firstName),
+					   $this->equalTo($request->lastName),
+					   $this->equalTo($request->timezone),
+					   $this->equalTo(array(UserAttribute::Phone => $request->phone, UserAttribute::Organization => $request->organization, UserAttribute::Position => $request->position)))
+				->will($this->returnValue($userId));
+
+		$this->manageUsersService->expects($this->once())
+				->method('ChangeAttributes')
+				->with($this->equalTo($userId),
+					   $this->equalTo(array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue))));
+
+		$result = $this->controller->Update($userId, $request, $session);
+
+		$expectedResult = new UserControllerResult($userId);
+		$this->assertEquals($expectedResult, $result);
+		$this->assertTrue($result->WasSuccessful());
+	}
+
+	public function testValidatesUpdateRequest()
+	{
+		$request = UpdateUserRequest::Example();
+		$session = new FakeWebServiceUserSession(123);
+
+		$errors = array('error');
+
+		$this->requestValidator->expects($this->once())
+				->method('ValidateUpdateRequest')
+				->with($this->equalTo(1), $this->equalTo($request))
+				->will($this->returnValue($errors));
+
+		$result = $this->controller->Update(1, $request, $session);
+
+		$this->assertFalse($result->WasSuccessful());
+		$this->assertEquals($errors, $result->Errors());
 	}
 }
 

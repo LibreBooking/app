@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'WebServices/Requests/CreateUserRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/UpdateUserRequest.php');
 require_once(ROOT_DIR . 'WebServices/Validators/UserRequestValidator.php');
 require_once(ROOT_DIR . 'lib/Application/User/namespace.php');
 
@@ -30,6 +31,14 @@ interface IUserSaveController
 	 * @return UserControllerResult
 	 */
 	public function Create($request, $session);
+
+	/**
+	 * @param $userId
+	 * @param UpdateUserRequest $request
+	 * @param WebServiceUserSession $session
+	 * @return UserControllerResult
+	 */
+	public function Update($userId, $request, $session);
 }
 
 class UserSaveController implements IUserSaveController
@@ -76,6 +85,38 @@ class UserSaveController implements IUserSaveController
 		$userId = $userService->AddUser($request->userName, $request->emailAddress, $request->firstName,
 										$request->lastName, $request->password, $request->timezone, $request->language,
 										Pages::DEFAULT_HOMEPAGE_ID, $extraAttributes, $customAttributes);
+
+		return new UserControllerResult($userId);
+	}
+
+	/**
+	 * @param int $userId
+	 * @param UpdateUserRequest $request
+	 * @param WebServiceUserSession $session
+	 * @return UserControllerResult
+	 */
+	public function Update($userId, $request, $session)
+	{
+		$errors = $this->requestValidator->ValidateUpdateRequest($userId, $request);
+
+		if (!empty($errors))
+		{
+			return new UserControllerResult(null, $errors);
+		}
+
+		$userService = $this->serviceFactory->CreateAdmin();
+
+		$extraAttributes = array(UserAttribute::Phone => $request->phone, UserAttribute::Organization => $request->organization, UserAttribute::Position => $request->position);
+		$customAttributes = array();
+		foreach ($request->customAttributes as $attribute)
+		{
+			$customAttributes[] = new AttributeValue($attribute->attributeId, $attribute->attributeValue);
+		}
+
+		$userService->UpdateUser($userId, $request->userName, $request->emailAddress, $request->firstName,
+										   $request->lastName, $request->timezone, $extraAttributes);
+
+		$userService->ChangeAttributes($userId, $customAttributes);
 
 		return new UserControllerResult($userId);
 	}

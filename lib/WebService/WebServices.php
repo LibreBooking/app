@@ -32,13 +32,14 @@ class WebServices
 	const DeleteReservation = 'delete_reservation';
 	const Login = 'login';
 	const Logout = 'logout';
-	const GetAccessory = 'accessory';
-	const GetCustomAttribute = 'custom_attribute';
-	const GetGroup = 'group';
-	const GetReservation = 'reservation';
-	const GetResource = 'resource';
-	const GetSchedule = 'schedule';
-	const GetUser = 'user';
+	const GetAccessory = 'get_accessory';
+	const GetCustomAttribute = 'get_custom_attribute';
+	const GetGroup = 'get_group';
+	const GetReservation = 'get_reservation';
+	const GetResource = 'get_resource';
+	const GetSchedule = 'get_schedule';
+	const GetUser = 'get_user';
 	const UpdateReservation = 'update_reservation';
+	const UpdateUser = 'update_user';
 }
 ?>

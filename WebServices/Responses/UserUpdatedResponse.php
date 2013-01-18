@@ -18,28 +18,31 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'WebServices/Requests/UserRequestBase.php');
+require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
-class CreateUserRequest extends UserRequestBase
+class UserUpdatedResponse extends RestResponse
 {
-	public $password;
-	public $language;
+	public $userId;
+
+	public function __construct(IRestServer $server, $userId)
+	{
+		$this->userId = $userId;
+		$this->AddService($server, WebServices::GetUser, array(WebServiceParams::UserId, $userId));
+		$this->AddService($server, WebServices::UpdateUser, array(WebServiceParams::UserId, $userId));
+	}
 
 	public static function Example()
 	{
-		$request = new CreateUserRequest();
-		$request->firstName = 'first';
-		$request->lastName = 'last';
-		$request->emailAddress = 'email@address.com';
-		$request->userName = 'username';
-		$request->timezone = 'America/Chicago';
-		$request->language = 'en_us';
-		$request->password = 'unencrypted password';
-		$request->phone = '123-456-7989';
-		$request->organization = 'organization';
-		$request->position = 'position';
-		$request->customAttributes = array(new AttributeValueRequest(99, 'attribute value'));
-		return $request;
+		return new ExampleUserUpdatedResponse();
+	}
+}
+
+class ExampleUserUpdatedResponse extends UserCreatedResponse
+{
+	public function __construct()
+	{
+		$this->AddLink('http://url/to/user', WebServices::GetUser);
+		$this->AddLink('http://url/to/update/user', WebServices::UpdateUser);
 	}
 }
 

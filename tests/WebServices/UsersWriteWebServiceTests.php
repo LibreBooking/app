@@ -87,7 +87,43 @@ class UsersWriteWebServiceTests extends TestBase
 
 	public function testCanUpdateUser()
 	{
+		$userId = '1';
 
+		$userRequest = new UpdateUserRequest();
+		$this->server->SetRequest($userRequest);
+
+		$controllerResult = new UserControllerResult($userId);
+
+		$this->controller->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($userId), $this->equalTo($userRequest),
+					   $this->equalTo($this->server->GetSession()))
+				->will($this->returnValue($controllerResult));
+
+		$this->service->Update($userId);
+
+		$this->assertEquals(new UserUpdatedResponse($this->server, $userId), $this->server->_LastResponse);
+	}
+
+	public function testFailedUpdate()
+	{
+		$userId = 123;
+		$userRequest = new UpdateUserRequest();
+		$this->server->SetRequest($userRequest);
+
+		$errors = array('error');
+		$controllerResult = new UserControllerResult(null, $errors);
+
+		$this->controller->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($userId), $this->equalTo($userRequest),
+					   $this->equalTo($this->server->GetSession()))
+				->will($this->returnValue($controllerResult));
+
+		$this->service->Update($userId);
+
+		$this->assertEquals(new FailedResponse($this->server, $errors), $this->server->_LastResponse);
+		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
 	}
 
 	public function testCanDeleteUser()
