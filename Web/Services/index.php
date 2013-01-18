@@ -28,6 +28,7 @@ require_once(ROOT_DIR . 'WebServices/ReservationsWebService.php');
 require_once(ROOT_DIR . 'WebServices/ReservationWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/ResourcesWebService.php');
 require_once(ROOT_DIR . 'WebServices/UsersWebService.php');
+require_once(ROOT_DIR . 'WebServices/UsersWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/SchedulesWebService.php');
 require_once(ROOT_DIR . 'WebServices/AttributesWebService.php');
 require_once(ROOT_DIR . 'WebServices/GroupsWebService.php');
@@ -54,10 +55,11 @@ RegisterAccessories($server, $registry);
 
 $app->hook('slim.before.dispatch', function () use ($app, $server, $registry)
 {
-	if ($registry->IsSecure($app->router()->getCurrentRoute()->getName()))
+	$routeName = $app->router()->getCurrentRoute()->getName();
+	if ($registry->IsSecure($routeName))
 	{
 		$security = new WebServiceSecurity(new UserSessionRepository());
-		$wasHandled = $security->HandleSecureRequest($server);
+		$wasHandled = $security->HandleSecureRequest($server, $registry->IsLimitedToAdmin($routeName));
 		if (!$wasHandled)
 		{
 			$app->halt(RestResponse::UNAUTHORIZED_CODE,
@@ -142,7 +144,7 @@ function RegisterUsers(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category = new SlimWebServiceRegistryCategory('Users');
 	$category->AddSecureGet('/', array($webService, 'GetUsers'), WebServices::AllUsers);
 	$category->AddSecureGet('/:userId', array($webService, 'GetUser'), WebServices::GetUser);
-	$category->AddAdminPost('/:userId', array($writeWebService, 'Create'), WebServices::CreateUser);
+	$category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateUser);
 	$registry->AddCategory($category);
 }
 
@@ -167,7 +169,7 @@ function RegisterAttributes(SlimServer $server, SlimWebServiceRegistry $registry
 function RegisterGroups(SlimServer $server, SlimWebServiceRegistry $registry)
 {
 	$groupRepository = new GroupRepository();
-	$webService = new GroupsWebService($server, $groupRepository, $groupRepository, $privacyFilter);
+	$webService = new GroupsWebService($server, $groupRepository, $groupRepository);
 	$category = new SlimWebServiceRegistryCategory('Groups');
 	$category->AddSecureGet('/', array($webService, 'GetGroups'), WebServices::AllGroups);
 	$category->AddSecureGet('/:groupId', array($webService, 'GetGroup'), WebServices::GetGroup);

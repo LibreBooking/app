@@ -62,10 +62,10 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		return array("X-phpScheduleIt-SessionToken:$token", "X-phpScheduleIt-UserId:$userId");
 	}
 
-	private function LogIn()
+	private function LogIn($username = 'admin', $password = 'password')
 	{
 		/** @var $response AuthenticationResponse */
-		$response = $this->client->Post('Authentication/Authenticate', new AuthenticationRequest('admin', 'password'));
+		$response = $this->client->Post('Authentication/Authenticate', new AuthenticationRequest($username, $password));
 
 		return $this->authHeaders($response->sessionToken, $response->userId);
 	}
@@ -97,6 +97,33 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$scheduleResponse = $this->client->GetUrl($schedulesResponse->schedules[0]->links[0]->href, $authHeaders);
 	}
 
+	public function testAddsUser()
+	{
+		$authHeaders = $this->LogIn();
+
+		$request = new CreateUserRequest();
+		$request->emailAddress = time() . '@test.com';
+		$request->userName = time();
+		$request->firstName = 'first';
+		$request->lastName = 'last';
+		$request->language = 'en_us';
+		$request->password = 'password';
+		$request->timezone = 'America/Chicago';
+		$request->customAttributes[] = new AttributeValueRequest(5, 'value');
+
+		/** @var $response UserCreatedResponse */
+		$response = $this->client->Post('Users/', $request, $authHeaders);
+
+		if (isset($response->errors))
+		{
+			foreach ($response->errors as $error)
+			{
+				echo "$error\n";
+			}
+		}
+
+		$this->assertNotEmpty($response->userId);
+	}
 
 	private function CreateReservation($authHeaders)
 	{

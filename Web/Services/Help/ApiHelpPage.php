@@ -134,15 +134,24 @@ EOT;
 
 	/**
 	 * @param SlimServiceMetadata $md
-	 * @param SlimServiceRegistration $post
+	 * @param SlimServiceRegistration $endpoint
 	 * @param Slim\Slim $app
 	 */
-	private static function EchoCommon(SlimServiceMetadata $md, $post, Slim\Slim $app)
+	private static function EchoCommon(SlimServiceMetadata $md, $endpoint, Slim\Slim $app)
 	{
 		$response = $md->Response();
 		echo "<h4>Name</h4>" . $md->Name();
 		echo "<h4>Description</h4>" . str_replace("\n", "<br/>", $md->Description());
-		echo '<h4>Route</h4>' . $app->urlFor($post->RouteName());
+		echo '<h4>Route</h4>' . $app->urlFor($endpoint->RouteName());
+
+		if ($endpoint->IsSecure())
+		{
+			echo '<h4>This service is secure and requires authentication</h4>';
+		}
+		if ($endpoint->IsLimitedToAdmin())
+		{
+			echo '<h4>This service is only available to application administrators</h4>';
+		}
 
 		echo '<h4>Response</h4>';
 		if (is_object($response))
@@ -157,10 +166,7 @@ EOT;
 		{
 			echo 'Unstructured response of type <i>' . $response . '</i>';
 		}
-		if ($post->IsSecure())
-		{
-			echo '<h4>This service is secure and requires authentication</h4>';
-		}
+
 	}
 }
 

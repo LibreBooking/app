@@ -32,7 +32,7 @@ class WebServiceSecurity
 		$this->repository = $repository;
 	}
 
-	public function HandleSecureRequest(IRestServer $server)
+	public function HandleSecureRequest(IRestServer $server, $requireAdminRole = false)
 	{
 		$sessionToken = $server->GetHeader(WebServiceHeaders::SESSION_TOKEN);
 		$userId = $server->GetHeader(WebServiceHeaders::USER_ID);
@@ -57,6 +57,12 @@ class WebServiceSecurity
 		if ($session == null || $session->UserId != $userId)
 		{
 			Log::Debug('Session token does not match user session token');
+			return false;
+		}
+
+		if ($requireAdminRole && !$session->IsAdmin)
+		{
+			Log::Debug('Route is limited to application administrators and this user is not an admin');
 			return false;
 		}
 

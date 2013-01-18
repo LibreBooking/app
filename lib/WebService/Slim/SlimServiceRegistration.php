@@ -93,11 +93,27 @@ class SlimServiceRegistration
 	{
 		return false;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsLimitedToAdmin()
+	{
+		return false;
+	}
 }
 
 class SlimSecureServiceRegistration extends SlimServiceRegistration
 {
 	public function IsSecure()
+	{
+		return true;
+	}
+}
+
+class SlimAdminServiceRegistration extends SlimSecureServiceRegistration
+{
+	public function IsLimitedToAdmin()
 	{
 		return true;
 	}

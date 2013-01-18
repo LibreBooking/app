@@ -38,6 +38,11 @@ class SlimWebServiceRegistry
 	 */
 	private $secureRoutes = array();
 
+	/**
+	 * @var array
+	 */
+	private $adminRoutes = array();
+
 	public function __construct(Slim\Slim $slim)
 	{
 		$this->slim = $slim;
@@ -51,28 +56,19 @@ class SlimWebServiceRegistry
 		foreach ($category->Gets() as $registration)
 		{
 			$this->slim->get($registration->Route(), $registration->Callback())->name($registration->RouteName());
-			if ($registration->IsSecure())
-			{
-				$this->secureRoutes[$registration->RouteName()] = true;
-			}
+			$this->SecureRegistration($registration);
 		}
 
 		foreach ($category->Posts() as $registration)
 		{
 			$this->slim->post($registration->Route(), $registration->Callback())->name($registration->RouteName());
-			if ($registration->IsSecure())
-			{
-				$this->secureRoutes[$registration->RouteName()] = true;
-			}
+			$this->SecureRegistration($registration);
 		}
 
 		foreach ($category->Deletes() as $registration)
 		{
 			$this->slim->delete($registration->Route(), $registration->Callback())->name($registration->RouteName());
-			if ($registration->IsSecure())
-			{
-				$this->secureRoutes[$registration->RouteName()] = true;
-			}
+			$this->SecureRegistration($registration);
 		}
 
 		$this->categories[] = $category;
@@ -85,7 +81,8 @@ class SlimWebServiceRegistry
 	{
 		$categories = $this->categories;
 
-		usort($categories,  function ($a, $b) {
+		usort($categories, function ($a, $b)
+		{
 			/**
 			 * @var $a SlimWebServiceRegistryCategory
 			 * @var $b SlimWebServiceRegistryCategory
@@ -104,6 +101,28 @@ class SlimWebServiceRegistry
 	public function IsSecure($routeName)
 	{
 		return array_key_exists($routeName, $this->secureRoutes);
+	}
+
+	/**
+	 * @param string $routeName
+	 * @return bool
+	 */
+	public function IsLimitedToAdmin($routeName)
+	{
+		return array_key_exists($routeName, $this->adminRoutes);
+	}
+
+	private function SecureRegistration(SlimServiceRegistration $registration)
+	{
+		if ($registration->IsSecure())
+		{
+			$this->secureRoutes[$registration->RouteName()] = true;
+		}
+
+		if ($registration->IsLimitedToAdmin())
+		{
+			$this->adminRoutes[$registration->RouteName()] = true;
+		}
 	}
 }
 

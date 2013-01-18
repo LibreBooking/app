@@ -160,6 +160,62 @@ class WebServiceSecurityTests extends TestBase
 
 		$this->assertFalse($wasHandled);
 	}
+
+	public function testHandlesAdminRequest()
+	{
+		$this->session->IsAdmin = true;
+		$this->server->expects($this->at(0))
+				->method('GetHeader')
+				->with($this->equalTo(WebServiceHeaders::SESSION_TOKEN))
+				->will($this->returnValue($this->sessionToken));
+
+		$this->server->expects($this->at(1))
+				->method('GetHeader')
+				->with($this->equalTo(WebServiceHeaders::USER_ID))
+				->will($this->returnValue($this->userId));
+
+		$this->userSessionRepository->expects($this->once())
+				->method('LoadBySessionToken')
+				->with($this->equalTo($this->sessionToken))
+				->will($this->returnValue($this->session));
+
+		$this->userSessionRepository->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($this->session));
+
+		$this->server->expects($this->once())
+				->method('SetSession')
+				->with($this->equalTo($this->session));
+
+		$wasHandled = $this->security->HandleSecureRequest($this->server, true);
+
+		$this->assertTrue($wasHandled);
+		$this->assertTrue($this->session->_SessionExtended);
+	}
+
+	public function testHandlesWhenUserIsNotAdmin()
+	{
+		$this->session->IsAdmin = false;
+		$this->server->expects($this->at(0))
+				->method('GetHeader')
+				->with($this->equalTo(WebServiceHeaders::SESSION_TOKEN))
+				->will($this->returnValue($this->sessionToken));
+
+		$this->server->expects($this->at(1))
+				->method('GetHeader')
+				->with($this->equalTo(WebServiceHeaders::USER_ID))
+				->will($this->returnValue($this->userId));
+
+		$this->userSessionRepository->expects($this->once())
+				->method('LoadBySessionToken')
+				->with($this->equalTo($this->sessionToken))
+				->will($this->returnValue($this->session));
+
+		$wasHandled = $this->security->HandleSecureRequest($this->server, true);
+
+		$this->assertFalse($wasHandled);
+		$this->assertFalse($this->session->_SessionExtended);
+	}
 }
 
 ?>

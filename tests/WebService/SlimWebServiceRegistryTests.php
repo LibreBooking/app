@@ -158,7 +158,6 @@ class SlimWebServiceRegistryTests extends TestBase
 		$this->assertEquals($callback, $slim->gets[1]->callback);
 		$this->assertEquals('/SomethingElse/delete/:2', $slim->deletes[1]->route);
 		$this->assertEquals($callback, $slim->deletes[1]->callback);
-
 	}
 
 	public function testRegistersSecureRoute()
@@ -202,6 +201,54 @@ class SlimWebServiceRegistryTests extends TestBase
 		$this->assertTrue($registry->IsSecure($c1p1name));
 		$this->assertTrue($registry->IsSecure($c1p2name));
 		$this->assertTrue($registry->IsSecure($c1p3name));
+
+	}
+
+	public function testRegistersAdminRoute()
+	{
+		$callback = array($this, 'cb');
+
+		$slim = new TestSlim();
+
+		$registry = new SlimWebServiceRegistry($slim);
+
+		$c1Name = 'Something';
+
+		$category1 = new SlimWebServiceRegistryCategory($c1Name);
+
+		$c1p1 = '/post/1/';
+		$c1p2 = '/get/:1';
+		$c1p3 = '/delete/:1';
+
+		$c1p1name = 'c1p1name';
+		$c1p2name = 'c1p2name';
+		$c1p3name = 'c1p3name';
+
+		$category1->AddAdminPost($c1p1, $callback, $c1p1name);
+		$category1->AddAdminGet($c1p2, $callback, $c1p2name);
+		$category1->AddAdminDelete($c1p3, $callback, $c1p3name);
+
+		$registry->AddCategory($category1);
+
+		$this->assertEquals('/Something/post/1', $slim->posts[0]->route);
+		$this->assertEquals($callback, $slim->posts[0]->callback);
+		$this->assertEquals($c1p1name, $slim->posts[0]->name());
+
+		$this->assertEquals('/Something/get/:1', $slim->gets[0]->route);
+		$this->assertEquals($c1p2name, $slim->gets[0]->name());
+		$this->assertEquals($callback, $slim->gets[0]->callback);
+
+		$this->assertEquals('/Something/delete/:1', $slim->deletes[0]->route);
+		$this->assertEquals($c1p3name, $slim->deletes[0]->name());
+		$this->assertEquals($callback, $slim->deletes[0]->callback);
+
+		$this->assertTrue($registry->IsSecure($c1p1name));
+		$this->assertTrue($registry->IsSecure($c1p2name));
+		$this->assertTrue($registry->IsSecure($c1p3name));
+
+		$this->assertTrue($registry->IsLimitedToAdmin($c1p1name));
+		$this->assertTrue($registry->IsLimitedToAdmin($c1p2name));
+		$this->assertTrue($registry->IsLimitedToAdmin($c1p3name));
 
 	}
 
