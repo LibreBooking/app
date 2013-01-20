@@ -162,6 +162,24 @@ class UserSaveControllerTests extends TestBase
 		$this->assertFalse($result->WasSuccessful());
 		$this->assertEquals($errors, $result->Errors());
 	}
+
+	public function testDeletesUser()
+	{
+		$userId = 99;
+		$session = new FakeWebServiceUserSession(123);
+
+		$this->manageUserServiceFactory->expects($this->once())
+				->method('CreateAdmin')
+				->will($this->returnValue($this->manageUsersService));
+
+		$this->manageUsersService->expects($this->once())
+				->method('DeleteUser')
+				->with($this->equalTo($userId));
+
+		$result = $this->controller->Delete($userId, $session);
+
+		$this->assertTrue($result->WasSuccessful());
+	}
 }
 
 ?>

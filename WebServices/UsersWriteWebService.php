@@ -18,12 +18,12 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Controllers/UserSaveController.php');
 require_once(ROOT_DIR . 'WebServices/Requests/CreateUserRequest.php');
 require_once(ROOT_DIR . 'WebServices/Requests/UpdateUserRequest.php');
 require_once(ROOT_DIR . 'WebServices/Responses/UserCreatedResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/UserUpdatedResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/FailedResponse.php');
 
 class UsersWriteWebService
 {
@@ -104,6 +104,35 @@ class UsersWriteWebService
 		else
 		{
 			Log::Debug('UsersWriteWebService.Create() - User Update Failed.');
+
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
+										 RestResponse::BAD_REQUEST_CODE);
+		}
+	}
+
+	/**
+	 * @name DeleteUser
+	 * @description Deletes an existing user
+	 * @response DeletedResponse
+	 * @param int $userId
+	 * @return void
+	 */
+	public function Delete($userId)
+	{
+		Log::Debug('UsersWriteWebService.Delete() User=%s', $this->server->GetSession()->UserId);
+
+		$result = $this->controller->Delete($userId, $this->server->GetSession());
+
+		if ($result->WasSuccessful())
+		{
+			Log::Debug('UsersWriteWebService.Delete() - User Deleted. UserId=%s',
+					   $result->UserId());
+
+			$this->server->WriteResponse(new DeletedResponse(), RestResponse::OK_CODE);
+		}
+		else
+		{
+			Log::Debug('UsersWriteWebService.Delete() - User Delete Failed.');
 
 			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
 										 RestResponse::BAD_REQUEST_CODE);

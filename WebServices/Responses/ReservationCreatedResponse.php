@@ -52,19 +52,6 @@ class ReservationUpdatedResponse extends RestResponse
 	}
 }
 
-class ReservationDeletedResponse extends RestResponse
-{
-	public function __construct()
-	{
-		$this->message = 'The reservation was deleted';
-	}
-
-	public static function Example()
-	{
-		return new ReservationDeletedResponse();
-	}
-}
-
 class ExampleReservationCreatedResponse extends ReservationCreatedResponse
 {
 	public function __construct()

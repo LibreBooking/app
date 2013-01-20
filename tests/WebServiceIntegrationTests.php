@@ -44,8 +44,8 @@ function includeAll($directory)
 
 class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 {
-	private $url = 'http://localhost/dev/Services';
-//	private $url = 'http://localhost/development/Services/index.php';
+//	private $url = 'http://localhost/dev/Services';
+	private $url = 'http://localhost/development/Services/index.php';
 
 	/**
 	 * @var HttpClient
@@ -102,6 +102,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$authHeaders = $this->LogIn();
 		$userId = $this->AddUser($authHeaders);
 		$this->UpdateUser($authHeaders, $userId);
+		$this->DeleteUser($authHeaders, $userId);
 	}
 	
 	private function AddUser($authHeaders)
@@ -154,6 +155,20 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		}
 
 		$this->assertNotEmpty($response->userId);
+	}
+
+	private function DeleteUser($authHeaders, $userId)
+	{
+		/** @var $response DeletedResponse */
+		$response = $this->client->Delete("Users/$userId", $authHeaders);
+
+		if (isset($response->errors))
+		{
+			foreach ($response->errors as $error)
+			{
+				echo "$error\n";
+			}
+		}
 	}
 
 	private function CreateReservation($authHeaders)
@@ -236,7 +251,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 	private function RemoveReservation($authHeaders, $referenceNumber)
 	{
 		$reservationUrl = 'Reservations/' . $referenceNumber;
-		/** @var $response ReservationDeletedResponse|FailedResponse */
+		/** @var $response DeletedResponse|FailedResponse */
 		$response = $this->client->Delete($reservationUrl, $authHeaders);
 
 		if (isset($response->errors))

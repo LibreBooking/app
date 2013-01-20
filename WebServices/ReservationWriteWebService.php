@@ -18,9 +18,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Controllers/ReservationSaveController.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ReservationCreatedResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/FailedResponse.php');
 require_once(ROOT_DIR . 'WebServices/Requests/ReservationRequest.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
@@ -118,7 +118,7 @@ class ReservationWriteWebService
 	 * @name DeleteReservation
 	 * @description Deletes an existing reservation.
 	 * Pass an optional updateScope query string parameter to restrict changes. Possible values for updateScope are this|full|future
-	 * @response ReservationDeletedResponse
+	 * @response DeletedResponse
 	 * @param string $referenceNumber
 	 * @return void
 	 */
@@ -134,7 +134,7 @@ class ReservationWriteWebService
 			Log::Debug('ReservationWriteWebService.Delete() - Reservation Deleted. ReferenceNumber=%s',
 					   $result->CreatedReferenceNumber());
 
-			$this->server->WriteResponse(new ReservationDeletedResponse(),  RestResponse::OK_CODE);
+			$this->server->WriteResponse(new DeletedResponse(), RestResponse::OK_CODE);
 		}
 		else
 		{

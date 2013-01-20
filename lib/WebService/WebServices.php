@@ -30,6 +30,7 @@ class WebServices
 	const CreateReservation = 'create_reservation';
 	const CreateUser = 'create_user';
 	const DeleteReservation = 'delete_reservation';
+	const DeleteUser = 'delete_user';
 	const Login = 'login';
 	const Logout = 'logout';
 	const GetAccessory = 'get_accessory';

@@ -128,10 +128,37 @@ class UsersWriteWebServiceTests extends TestBase
 
 	public function testCanDeleteUser()
 	{
+		$userId = '1';
 
+		$controllerResult = new UserControllerResult($userId);
+
+		$this->controller->expects($this->once())
+				->method('Delete')
+				->with($this->equalTo($userId), $this->equalTo($this->server->GetSession()))
+				->will($this->returnValue($controllerResult));
+
+		$this->service->Delete($userId);
+
+		$this->assertEquals(new DeletedResponse(), $this->server->_LastResponse);
 	}
 
+	public function testFailedDelete()
+	{
+		$userId = 123;
 
+		$errors = array('error');
+		$controllerResult = new UserControllerResult(null, $errors);
+
+		$this->controller->expects($this->once())
+				->method('Delete')
+				->with($this->equalTo($userId), $this->equalTo($this->server->GetSession()))
+				->will($this->returnValue($controllerResult));
+
+		$this->service->Delete($userId);
+
+		$this->assertEquals(new FailedResponse($this->server, $errors), $this->server->_LastResponse);
+		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
+	}
 }
 
 ?>

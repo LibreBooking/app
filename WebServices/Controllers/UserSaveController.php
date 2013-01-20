@@ -39,6 +39,13 @@ interface IUserSaveController
 	 * @return UserControllerResult
 	 */
 	public function Update($userId, $request, $session);
+
+	/**
+	 * @param $userId
+	 * @param WebServiceUserSession $session
+	 * @return UserControllerResult
+	 */
+	public function Delete($userId, $session);
 }
 
 class UserSaveController implements IUserSaveController
@@ -114,9 +121,22 @@ class UserSaveController implements IUserSaveController
 		}
 
 		$userService->UpdateUser($userId, $request->userName, $request->emailAddress, $request->firstName,
-										   $request->lastName, $request->timezone, $extraAttributes);
+								 $request->lastName, $request->timezone, $extraAttributes);
 
 		$userService->ChangeAttributes($userId, $customAttributes);
+
+		return new UserControllerResult($userId);
+	}
+
+	/**
+	 * @param $userId
+	 * @param WebServiceUserSession $session
+	 * @return UserControllerResult
+	 */
+	public function Delete($userId, $session)
+	{
+		$userService = $this->serviceFactory->CreateAdmin();
+		$userService->DeleteUser($userId);
 
 		return new UserControllerResult($userId);
 	}
