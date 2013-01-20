@@ -118,4 +118,8 @@ $conf['settings']['install.password'] = '';
  * Pages
  */
 $conf['settings']['pages']['enable.configuration'] = 'false';
+/**
+ * API
+ */
+$conf['settings']['api']['enabled'] = 'false';
 ?>

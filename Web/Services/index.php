@@ -36,6 +36,11 @@ require_once(ROOT_DIR . 'WebServices/AccessoriesWebService.php');
 
 require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 
+if (!Configuration::Instance()->GetSectionKey(ConfigSection::API, ConfigKeys::API_ENABLED, new BooleanConverter()))
+{
+	die("phpScheduleIt API has been configured as disabled.<br/><br/>Set \$conf['settings']['api']['enabled'] = 'true' to enable.");
+}
+
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
 

@@ -91,10 +91,13 @@ class ConfigKeys
 	const UPLOAD_RESERVATION_EXTENSIONS = 'reservation.attachment.extensions';
 
 	const PAGES_ENABLE_CONFIGURATION = 'enable.configuration';
+
+	const API_ENABLED = 'enabled';
 }
 
 class ConfigSection
 {
+    const API = 'api';
     const DATABASE = 'database';
     const ICS = 'ics';
 	const PAGES = 'pages';

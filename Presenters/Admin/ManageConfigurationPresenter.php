@@ -143,7 +143,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 
 	private function ShouldBeSkipped($key, $section = null)
 	{
-		if ($section == ConfigSection::DATABASE)
+		if ($section == ConfigSection::DATABASE || $section == ConfigSection::API)
 		{
 			return true;
 		}
