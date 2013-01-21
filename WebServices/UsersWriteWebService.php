@@ -61,7 +61,7 @@ class UsersWriteWebService
 
 		if ($result->WasSuccessful())
 		{
-			Log::Debug('UsersWriteWebService.Create() - User Created. UserId=%s',
+			Log::Debug('UsersWriteWebService.Create() - User Created. Created UserId=%s',
 					   $result->UserId());
 
 			$this->server->WriteResponse(new UserCreatedResponse($this->server, $result->UserId()),

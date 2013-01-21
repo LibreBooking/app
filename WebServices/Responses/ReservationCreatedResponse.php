@@ -27,6 +27,7 @@ class ReservationCreatedResponse extends RestResponse
 		$this->message = 'The reservation was created';
 		$this->referenceNumber = $referenceNumber;
 		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
+		$this->AddService($server, WebServices::UpdateReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
 	}
 
 	public static function Example()
@@ -58,6 +59,7 @@ class ExampleReservationCreatedResponse extends ReservationCreatedResponse
 	{
 		$this->referenceNumber = 'referenceNumber';
 		$this->AddLink('http://url/to/reservation', WebServices::GetReservation);
+		$this->AddLink('http://url/to/update/reservation', WebServices::UpdateReservation);
 	}
 }
 ?>
