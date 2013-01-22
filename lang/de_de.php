@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
+Copyright 2011-2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -247,8 +247,8 @@ class de_de extends en_us
         $strings['FindGroup'] = 'Gruppe finden';
         $strings['Manage'] = 'Verwalten';
         $strings['None'] = 'Nichts';
-        $strings['AddToOutlook'] = 'Zu Outlook hinzuf&uuml;gen';
-        $strings['Done'] = 'Erledigt';
+        $strings['AddToOutlook'] = 'Zum Kalender hinzuf&uuml;gen';
+        $strings['Done'] = 'Fertig';
         $strings['RememberMe'] = 'Angemeldet bleiben';
         $strings['FirstTimeUser?'] = 'Neuer Benutzer?';
         $strings['CreateAnAccount'] = 'Konto hinzuf&uuml;gen';
@@ -310,6 +310,7 @@ class de_de extends en_us
         $strings['DeleteGroupWarning'] = 'Beim l&ouml;schen dieser Gruppe werden alle verkn&uuml;pften Berechtigungen gel&ouml;scht.  Benutzer in dieser Gruppe werden die Berechtigungen zu den Ressourcen verlieren.';
         $strings['WhatRolesApplyToThisGroup'] = 'Welche Rollen sollen der Gruppe zugewiesen werden?';
         $strings['WhoCanManageThisGroup'] = 'Wer darf diese Gruppe verwalten?';
+        $strings['WhoCanManageThisSchedule'] = 'Wer darf diesen Termin verwalten?';
         $strings['AddGroup'] = 'Gruppe hinzuf&uuml;gen';
         $strings['AllQuotas'] = 'Alle Zeitkontingente';
         $strings['QuotaReminder'] = 'Beachte: Zeitkontingente werden basierend auf der Zeitzone des Terminplans erzwungen';
@@ -389,6 +390,39 @@ class de_de extends en_us
 		$strings['Attachments'] = 'Anhänge';
 		$strings['AttachFile'] = 'Datei hinzufügen';
 		$strings['Maximum'] = 'max';
+		$strings['NoScheduleAdministratorLabel'] = 'Kein Termin Administrator';
+		$strings['ScheduleAdministrator'] = 'Termin Administrator';
+		$strings['Total'] = 'Total';
+		$strings['QuantityReserved'] = 'Reservierte Menge';
+		$strings['AllAccessories'] = 'Alle Zubeh&ouml;rteile';
+		$strings['GetReport'] = 'Bericht anfordern';
+		$strings['NoResultsFound'] = 'Keine passenden Ergebnisse gefunden';
+		$strings['SaveThisReport'] = 'Diesen Bericht speichern';
+		$strings['ReportSaved'] = 'Bericht gespeichert!';
+		$strings['EmailReport'] = 'Email den Bericht';
+		$strings['ReportSent'] = 'Bericht gesendet!';
+		$strings['RunReport'] = 'Bericht ausführen';
+		$strings['NoSavedReports'] = 'Sie haben keine Berichte gespeichert.';
+		$strings['CurrentWeek'] = 'Diese Woche';
+		$strings['CurrentMonth'] = 'Dieser Monat';
+		$strings['AllTime'] = 'Alle Zeitr&auml;ume';
+		$strings['FilterBy'] = 'Filtern von';
+		$strings['Select'] = 'Auswahl';
+		$strings['List'] = 'Liste';
+		$strings['TotalTime'] = 'Gesamtzeit';
+		$strings['Count'] = 'Anzahl';
+		$strings['Usage'] = 'Benutzung';
+		$strings['AggregateBy'] = 'Summieren von';
+		$strings['Range'] = 'Bereich';
+		$strings['Choose'] = 'Auswahl';
+		$strings['All'] = 'Alle';
+		$strings['ViewAsChart'] = 'Darstellung als Diagramm';
+		$strings['ReservedResources'] = 'Reservierte Ressourcen';
+		$strings['ReservedAccessories'] = 'Reserviertes Zubeh&ouml;r';
+		$strings['ResourceUsageTimeBooked'] = 'Ressourcen Verwendung - Gebuchte Zeit';
+		$strings['ResourceUsageReservationCount'] = 'Ressourcen Verwendung - Reservierungsz&auml;hler';
+		$strings['Top20UsersTimeBooked'] = 'Top 20 Benutzer - Gebuchte Zeit';
+		$strings['Top20UsersReservationCount'] = 'Top 20 Benutzer - Reservierungsz&auml;hler';
         // End Strings
 
         // Errors
@@ -430,6 +464,8 @@ class de_de extends en_us
         $strings['ServerSettings'] = 'Server Einstellungen';
         $strings['Dashboard'] = '&Uuml;bersicht';
         $strings['Help'] = 'Hilfe';
+        $strings['Administration'] = 'Administration';
+        $strings['About'] = 'Über';
         $strings['Bookings'] = 'Buchungen';
         $strings['Schedule'] = 'Terminplan';
         $strings['Reservations'] = 'Reservierungen';
@@ -454,6 +490,13 @@ class de_de extends en_us
         $strings['Customization'] = 'Anpassungen';
         $strings['Attributes'] = 'Attribute';
 		$strings['AccountActivation'] = 'Konto Aktivierung';
+		$strings['ScheduleReservations'] = 'Reservierungsplanung';
+		$strings['Reports'] = 'Berichte';
+		$strings['GenerateReport'] = 'Neuen Bericht erstellen';
+		$strings['MySavedReports'] = 'Meine gespeicherten Berichte';
+		$strings['CommonReports'] = 'Standard Berichte';
+		$strings['ViewDay'] = 'Zeige Tag';
+		$strings['Group'] = 'Gruppe';
         // End Page Titles
 
         // Day representations
@@ -478,15 +521,16 @@ class de_de extends en_us
         $strings['ReservationApprovedSubject'] = 'Ihre Reservierung wurde genehmigt';
         $strings['ReservationCreatedSubject'] = 'Ihre Reservierung wurde angelegt';
         $strings['ReservationUpdatedSubject'] = 'Ihre Reservierung wurde aktualisiert';
-        $strings['ReservationDeletedSubject'] = 'Ihre Reservierung wurde gel&ouml;scht';
+        $strings['ReservationDeletedSubject'] = 'Ihre Reservierung wurde gelöscht';
         $strings['ReservationCreatedAdminSubject'] = 'Benachrichtigung: Eine Reservierung wurde angelegt';
         $strings['ReservationUpdatedAdminSubject'] = 'Benachrichtigung: Eine Reservierung wurde aktualisiert';
-        $strings['ReservationDeleteAdminSubject'] = 'Benachrichtigung: Eine Reservierung wurde gel&ouml;scht';
+        $strings['ReservationDeleteAdminSubject'] = 'Benachrichtigung: Eine Reservierung wurde gelöscht';
         $strings['ParticipantAddedSubject'] = 'Reservierung Teilnahme Benachrichtigung';
         $strings['ParticipantDeletedSubject'] = 'Reservierung gelöscht';
         $strings['InviteeAddedSubject'] = 'Reservierungs Einladung';
-        $strings['ResetPassword'] = 'Kennwort zur&uuml;cksetzen Anfrage';
+        $strings['ResetPassword'] = 'Kennwort zurücksetzen Anfrage';
         $strings['ActivateYourAccount'] = 'Bitte aktivieren Sie Ihr Konto';
+        $strings['ReportSubject'] = 'Ihr angeforderter Bericht (%s)';
         // End Email Subjects
 
         $this->Strings = $strings;

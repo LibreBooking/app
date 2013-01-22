@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2013 Nick Korbel
+Copyright 2011-2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -47,7 +47,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<br/>
 
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Reservierung ansehen</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Zu Outlook hinzufügen</a> |
+	<a href="{$ScriptUrl}/{$ICalUrl}">Zum Kalender hinzufügen</a> |
 	<a href="{$ScriptUrl}">Anmelden bei phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}
