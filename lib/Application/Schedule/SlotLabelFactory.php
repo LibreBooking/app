@@ -29,6 +29,10 @@ class SlotLabelFactory
     {
         $property = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_RESERVATION_LABEL);
 
+        if ( ($property == 'titleORuser') && strlen($reservation->Title))
+        {
+            return $reservation->Title;
+        }
         if ($property == 'title')
         {
             return $reservation->Title;
