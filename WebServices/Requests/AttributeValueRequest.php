@@ -28,6 +28,11 @@ class AttributeValueRequest
 		$this->attributeId = $attributeId;
 		$this->attributeValue = $attributeValue;
 	}
+
+	public static function Example()
+	{
+		return new AttributeValueRequest(1, 'attribute value');
+	}
 }
 
 ?>

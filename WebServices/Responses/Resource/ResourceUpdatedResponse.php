@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
-class ResourceCreatedResponse extends RestResponse
+class ResourceUpdatedResponse extends RestResponse
 {
 	public $resourceId;
 
@@ -37,7 +37,7 @@ class ResourceCreatedResponse extends RestResponse
 	}
 }
 
-class ExampleResourceCreatedResponse extends ResourceCreatedResponse
+class ExampleResourceUpdatedResponse extends ResourceUpdatedResponse
 {
 	public function __construct()
 	{

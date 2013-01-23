@@ -84,7 +84,7 @@ class UserSaveController implements IUserSaveController
 
 		$extraAttributes = array(UserAttribute::Phone => $request->phone, UserAttribute::Organization => $request->organization, UserAttribute::Position => $request->position);
 		$customAttributes = array();
-		foreach ($request->customAttributes as $attribute)
+		foreach ($request->GetCustomAttributes() as $attribute)
 		{
 			$customAttributes[] = new AttributeValue($attribute->attributeId, $attribute->attributeValue);
 		}
@@ -115,7 +115,7 @@ class UserSaveController implements IUserSaveController
 
 		$extraAttributes = array(UserAttribute::Phone => $request->phone, UserAttribute::Organization => $request->organization, UserAttribute::Position => $request->position);
 		$customAttributes = array();
-		foreach ($request->customAttributes as $attribute)
+		foreach ($request->GetCustomAttributes() as $attribute)
 		{
 			$customAttributes[] = new AttributeValue($attribute->attributeId, $attribute->attributeValue);
 		}

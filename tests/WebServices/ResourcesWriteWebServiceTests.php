@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'WebServices/UsersWriteWebService.php');
+require_once(ROOT_DIR . 'WebServices/ResourcesWriteWebService.php');
 
 class ResourcesWriteWebServiceTests extends TestBase
 {
@@ -33,7 +33,7 @@ class ResourcesWriteWebServiceTests extends TestBase
 	private $server;
 
 	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject|IResourcesSaveController
+	 * @var PHPUnit_Framework_MockObject_MockObject|IResourceSaveController
 	 */
 	private $controller;
 
@@ -42,7 +42,7 @@ class ResourcesWriteWebServiceTests extends TestBase
 		parent::setup();
 
 		$this->server = new FakeRestServer();
-		$this->controller = $this->getMock('IResourcesSaveController');
+		$this->controller = $this->getMock('IResourceSaveController');
 
 		$this->service = new ResourcesWriteWebService($this->server, $this->controller);
 	}
@@ -51,7 +51,7 @@ class ResourcesWriteWebServiceTests extends TestBase
 	{
 		$resourceId = '1';
 
-		$request = new CreateResourceRequest();
+		$request = new ResourceRequest();
 		$this->server->SetRequest($request);
 
 		$controllerResult = new ResourceControllerResult($resourceId);
@@ -68,11 +68,11 @@ class ResourcesWriteWebServiceTests extends TestBase
 
 	public function testFailedCreate()
 	{
-		$request = new CreateResourceRequest();
+		$request = new ResourceRequest();
 		$this->server->SetRequest($request);
 
 		$errors = array('error');
-		$controllerResult = new UserControllerResult(null, $errors);
+		$controllerResult = new ResourceControllerResult(null, $errors);
 
 		$this->controller->expects($this->once())
 				->method('Create')
@@ -89,7 +89,7 @@ class ResourcesWriteWebServiceTests extends TestBase
 	{
 		$resourceId = '1';
 
-		$request = new UpdateResourceRequest();
+		$request = new ResourceRequest();
 		$this->server->SetRequest($request);
 
 		$controllerResult = new ResourceControllerResult($resourceId);
@@ -108,7 +108,7 @@ class ResourcesWriteWebServiceTests extends TestBase
 	public function testFailedUpdate()
 	{
 		$resourceId = 123;
-		$request = new UpdateResourceRequest();
+		$request = new ResourceRequest();
 		$this->server->SetRequest($request);
 
 		$errors = array('error');
@@ -159,7 +159,6 @@ class ResourcesWriteWebServiceTests extends TestBase
 		$this->assertEquals(new FailedResponse($this->server, $errors), $this->server->_LastResponse);
 		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
 	}
-
 }
 
 ?>

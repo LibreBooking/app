@@ -91,7 +91,7 @@ class UserSaveControllerTests extends TestBase
 
 	public function testValidatesCreateRequest()
 	{
-		$request = $this->GetCreateUserRequest();
+		$request = CreateUserRequest::Example();
 		$session = new FakeWebServiceUserSession(123);
 
 		$errors = array('error');

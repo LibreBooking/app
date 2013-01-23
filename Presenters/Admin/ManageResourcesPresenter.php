@@ -171,7 +171,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$maxNotice = $this->page->GetEndNoticeMinutes();
 		$maxParticipants = $this->page->GetMaxParticipants();
 
-		Log::Debug('Updating resource id %s. MaxNotice: %s', $resourceId, $maxNotice);
+		Log::Debug('Updating resource id %s', $resourceId);
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 

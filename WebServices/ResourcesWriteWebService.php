@@ -20,10 +20,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Controllers/ResourceSaveController.php');
-require_once(ROOT_DIR . 'WebServices/Requests/CreateResourceRequest.php');
-require_once(ROOT_DIR . 'WebServices/Requests/UpdateResourceRequest.php');
-require_once(ROOT_DIR . 'WebServices/Responses/ResourceCreatedResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/ResourceUpdatedResponse.php');
+require_once(ROOT_DIR . 'WebServices/Requests/Resource/ResourceRequest.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceCreatedResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceUpdatedResponse.php');
 
 class ResourcesWriteWebService
 {
@@ -46,13 +45,13 @@ class ResourcesWriteWebService
 	/**
 	 * @name CreateResource
 	 * @description Creates a new resource
-	 * @request CreateResourceRequest
+	 * @request ResourceRequest
 	 * @response ResourceCreatedResponse
 	 * @return void
 	 */
 	public function Create()
 	{
-		/** @var $request CreateResourceRequest */
+		/** @var $request ResourceRequest */
 		$request = $this->server->GetRequest();
 
 		Log::Debug('ResourcesWriteWebService.Create() User=%s, Request=%s', $this->server->GetSession()->UserId,
@@ -74,69 +73,71 @@ class ResourcesWriteWebService
 										 RestResponse::BAD_REQUEST_CODE);
 		}
 	}
-//
-//	/**
-//	 * @name UpdateUser
-//	 * @description Updates an existing user
-//	 * @request UpdateUserRequest
-//	 * @response UserUpdatedResponse
-//	 * @param $userId
-//	 * @return void
-//	 */
-//	public function Update($userId)
-//	{
-//		/** @var $request UpdateUserRequest */
-//		$request = $this->server->GetRequest();
-//
-//		Log::Debug('ResourcesWriteWebService.Update() User=%s', $this->server->GetSession()->UserId);
-//
-//		$result = $this->controller->Update($userId, $request, $this->server->GetSession());
-//
-//		if ($result->WasSuccessful())
-//		{
-//			Log::Debug('ResourcesWriteWebService.Update() - User Updated. UserId=%s',
-//					   $result->UserId());
-//
-//			$this->server->WriteResponse(new UserUpdatedResponse($this->server, $result->UserId()),
-//										 RestResponse::OK_CODE);
-//		}
-//		else
-//		{
-//			Log::Debug('ResourcesWriteWebService.Create() - User Update Failed.');
-//
-//			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
-//										 RestResponse::BAD_REQUEST_CODE);
-//		}
-//	}
-//
-//	/**
-//	 * @name DeleteUser
-//	 * @description Deletes an existing user
-//	 * @response DeletedResponse
-//	 * @param int $userId
-//	 * @return void
-//	 */
-//	public function Delete($userId)
-//	{
-//		Log::Debug('ResourcesWriteWebService.Delete() User=%s', $this->server->GetSession()->UserId);
-//
-//		$result = $this->controller->Delete($userId, $this->server->GetSession());
-//
-//		if ($result->WasSuccessful())
-//		{
-//			Log::Debug('ResourcesWriteWebService.Delete() - User Deleted. UserId=%s',
-//					   $result->UserId());
-//
-//			$this->server->WriteResponse(new DeletedResponse(), RestResponse::OK_CODE);
-//		}
-//		else
-//		{
-//			Log::Debug('ResourcesWriteWebService.Delete() - User Delete Failed.');
-//
-//			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
-//										 RestResponse::BAD_REQUEST_CODE);
-//		}
-//	}
+
+
+	/**
+	 * @name UpdateResource
+	 * @description Updates an existing resource
+	 * @request ResourceRequest
+	 * @response ResourceUpdatedResponse
+	 * @param $resourceId
+	 * @return void
+	 */
+	public function Update($resourceId)
+	{
+		/** @var $request ResourceRequest */
+		$request = $this->server->GetRequest();
+
+		Log::Debug('ResourcesWriteWebService.Create() User=%s, Request=%s', $this->server->GetSession()->UserId,
+								   json_encode($request));
+
+		$result = $this->controller->Update($resourceId, $request, $this->server->GetSession());
+
+		if ($result->WasSuccessful())
+		{
+			Log::Debug('ResourcesWriteWebService.Update() - Resource Updated. ResourceId=%s',
+					   $result->ResourceId());
+
+			$this->server->WriteResponse(new ResourceUpdatedResponse($this->server, $result->ResourceId()),
+										 RestResponse::OK_CODE);
+		}
+		else
+		{
+			Log::Debug('ResourcesWriteWebService.Create() - Resource Update Failed.');
+
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
+										 RestResponse::BAD_REQUEST_CODE);
+		}
+	}
+
+	/**
+	 * @name DeleteResource
+	 * @description Deletes an existing resource
+	 * @response DeletedResponse
+	 * @param int $resourceId
+	 * @return void
+	 */
+	public function Delete($resourceId)
+	{
+		Log::Debug('ResourcesWriteWebService.Delete() Resource=%s', $this->server->GetSession()->UserId);
+
+		$result = $this->controller->Delete($resourceId, $this->server->GetSession());
+
+		if ($result->WasSuccessful())
+		{
+			Log::Debug('ResourcesWriteWebService.Delete() - Resource Deleted. ResourceId=%s',
+					   $result->ResourceId());
+
+			$this->server->WriteResponse(new DeletedResponse(), RestResponse::OK_CODE);
+		}
+		else
+		{
+			Log::Debug('ResourcesWriteWebService.Delete() - Resource Delete Failed.');
+
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
+										 RestResponse::BAD_REQUEST_CODE);
+		}
+	}
 }
 
 ?>

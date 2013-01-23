@@ -32,6 +32,18 @@ abstract class UserRequestBase
 	public $position;
 	/** @var array|AttributeValueRequest[] */
 	public $customAttributes = array();
+
+	/**
+	 * @return array|AttributeValueRequest[]
+	 */
+	public function GetCustomAttributes()
+	{
+		if (!empty($this->customAttributes))
+		{
+			return $this->customAttributes;
+		}
+		return array();
+	}
 }
 
 
