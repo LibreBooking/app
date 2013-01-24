@@ -41,8 +41,9 @@ class ExampleResourceUpdatedResponse extends ResourceUpdatedResponse
 {
 	public function __construct()
 	{
-		$this->AddLink('http://url/to/user', WebServices::GetResource);
-		$this->AddLink('http://url/to/update/user', WebServices::UpdateResource);
+		$this->resourceId = 1;
+		$this->AddLink('http://url/to/resource', WebServices::GetResource);
+		$this->AddLink('http://url/to/update/resource', WebServices::UpdateResource);
 	}
 }
 
