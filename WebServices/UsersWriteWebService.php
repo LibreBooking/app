@@ -53,7 +53,7 @@ class UsersWriteWebService
 	public function Create()
 	{
 		/** @var $request CreateUserRequest */
-		$request = $this->server->GetRequest();
+		$request = new CreateUserRequest($this->server->GetRequest());
 
 		Log::Debug('UsersWriteWebService.Create() User=%s', $this->server->GetSession()->UserId);
 
@@ -87,7 +87,7 @@ class UsersWriteWebService
 	public function Update($userId)
 	{
 		/** @var $request UpdateUserRequest */
-		$request = $this->server->GetRequest();
+		$request = new UpdateUserRequest($this->server->GetRequest());
 
 		Log::Debug('UsersWriteWebService.Update() User=%s', $this->server->GetSession()->UserId);
 

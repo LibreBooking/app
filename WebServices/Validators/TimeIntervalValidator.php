@@ -18,34 +18,36 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/WebService/JsonRequest.php');
-require_once(ROOT_DIR . 'WebServices/Requests/AttributeValueRequest.php');
+require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
 
-abstract class UserRequestBase extends JsonRequest
+class TimeIntervalValidator extends ValidatorBase
 {
-	public $firstName;
-	public $lastName;
-	public $emailAddress;
-	public $userName;
-	public $timezone;
-	public $phone;
-	public $organization;
-	public $position;
-	/** @var array|AttributeValueRequest[] */
-	public $customAttributes = array();
+	private $value;
+	private $attributeName;
+
+	public function __construct($value, $attributeName)
+	{
+		$this->value = $value;
+		$this->attributeName = $attributeName;
+		$this->isValid = true;
+	}
 
 	/**
-	 * @return array|AttributeValueRequest[]
+	 * @return void
 	 */
-	public function GetCustomAttributes()
+	public function Validate()
 	{
-		if (!empty($this->customAttributes))
+		try
 		{
-			return $this->customAttributes;
+			TimeInterval::Parse($this->value);
 		}
-		return array();
+		catch(Exception $ex)
+		{
+			$this->isValid = false;
+			$this->AddMessage("Invalid time specified for {$this->attributeName}");
+		}
 	}
-}
 
+}
 
 ?>

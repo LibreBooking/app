@@ -18,9 +18,10 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'lib/WebService/JsonRequest.php');
 require_once(ROOT_DIR . 'WebServices/Requests/AttributeValueRequest.php');
 
-class ResourceRequest
+class ResourceRequest extends JsonRequest
 {
 	/**
 	 * @var string
@@ -86,6 +87,10 @@ class ResourceRequest
 	 * @var int
 	 */
 	public $sortOrder;
+	/**
+	 * @var bool
+	 */
+	public $isOnline;
 
 	/**
 	 * @return ExampleResourceRequest
@@ -128,6 +133,7 @@ class ExampleResourceRequest extends ResourceRequest
 		$this->autoAssignPermissions = true;
 		$this->customAttributes = array(AttributeValueRequest::Example());
 		$this->sortOrder = 1;
+		$this->isOnline = true;
 	}
 }
 

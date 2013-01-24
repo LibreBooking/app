@@ -78,6 +78,7 @@ class ResourceSaveControllerTests extends TestBase
 													   $request->scheduleId);
 
 		$expectedUpdateResource->SetSortOrder($request->sortOrder);
+		$expectedUpdateResource->BringOnline();
 		$attributes = array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue));
 		$expectedUpdateResource->ChangeAttributes($attributes);
 
@@ -140,6 +141,7 @@ class ResourceSaveControllerTests extends TestBase
 													   $request->scheduleId);
 
 		$expectedUpdateResource->SetSortOrder($request->sortOrder);
+		$expectedUpdateResource->BringOnline();
 		$attributes = array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue));
 		$expectedUpdateResource->ChangeAttributes($attributes);
 
@@ -182,6 +184,11 @@ class ResourceSaveControllerTests extends TestBase
 		$resourceId = 998;
 		$resource = new FakeBookableResource($resourceId);
 
+		$this->validator->expects($this->once())
+				->method('ValidateUpdateRequest')
+				->with($this->equalTo($resourceId))
+				->will($this->returnValue(array()));
+
 		$this->repository->expects($this->once())
 				->method('LoadById')
 				->with($this->equalTo($resourceId))
@@ -196,6 +203,23 @@ class ResourceSaveControllerTests extends TestBase
 		$this->assertTrue($response->WasSuccessful());
 		$this->assertEquals($resourceId, $response->ResourceId());
 		$this->assertEmpty($response->Errors());
+	}
+
+	public function testWhenDeleteFails()
+	{
+		$resourceId = 998;
+		$errors = array('error');
+
+		$this->validator->expects($this->once())
+				->method('ValidateDeleteRequest')
+				->with($this->equalTo($resourceId))
+				->will($this->returnValue($errors));
+
+		$response = $this->controller->Delete($resourceId, $this->session);
+
+		$this->assertFalse($response->WasSuccessful());
+		$this->assertEquals($errors, $response->Errors());
+		$this->assertEmpty($response->ResourceId());
 	}
 }
 

@@ -27,6 +27,7 @@ require_once(ROOT_DIR . 'WebServices/AuthenticationWebService.php');
 require_once(ROOT_DIR . 'WebServices/ReservationsWebService.php');
 require_once(ROOT_DIR . 'WebServices/ReservationWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/ResourcesWebService.php');
+require_once(ROOT_DIR . 'WebServices/ResourcesWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/UsersWebService.php');
 require_once(ROOT_DIR . 'WebServices/UsersWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/SchedulesWebService.php');
@@ -124,10 +125,16 @@ function RegisterReservations(SlimServer $server, SlimWebServiceRegistry $regist
 
 function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 {
-	$webService = new ResourcesWebService($server, new ResourceRepository(), new AttributeService(new AttributeRepository()));
+	$resourceRepository = new ResourceRepository();
+	$attributeService = new AttributeService(new AttributeRepository());
+	$webService = new ResourcesWebService($server, $resourceRepository, $attributeService);
+	$writeWebService = new ResourcesWriteWebService($server, new ResourceSaveController($resourceRepository, new ResourceRequestValidator($attributeService)));
 	$category = new SlimWebServiceRegistryCategory('Resources');
 	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
 	$category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
+	$category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateResource);
+	$category->AddAdminPost('/:resourceId', array($writeWebService, 'Update'), WebServices::UpdateResource);
+	$category->AddAdminDelete('/:resourceId', array($writeWebService, 'Delete'), WebServices::DeleteResource);
 	$registry->AddCategory($category);
 }
 

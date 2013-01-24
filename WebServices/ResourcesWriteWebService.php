@@ -52,7 +52,7 @@ class ResourcesWriteWebService
 	public function Create()
 	{
 		/** @var $request ResourceRequest */
-		$request = $this->server->GetRequest();
+		$request = new ResourceRequest($this->server->GetRequest());
 
 		Log::Debug('ResourcesWriteWebService.Create() User=%s, Request=%s', $this->server->GetSession()->UserId,
 						   json_encode($request));
@@ -86,7 +86,7 @@ class ResourcesWriteWebService
 	public function Update($resourceId)
 	{
 		/** @var $request ResourceRequest */
-		$request = $this->server->GetRequest();
+		$request = new ResourceRequest($this->server->GetRequest());
 
 		Log::Debug('ResourcesWriteWebService.Create() User=%s, Request=%s', $this->server->GetSession()->UserId,
 								   json_encode($request));

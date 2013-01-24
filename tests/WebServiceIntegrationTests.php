@@ -28,24 +28,32 @@ includeAll(ROOT_DIR . 'WebServices/Responses');
 
 function includeAll($directory)
 {
-	if ($handle = opendir($directory))
+	foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $filename)
 	{
-		while (false !== ($entry = readdir($handle)))
-		{
-			if ($entry != '.' && $entry != '..')
-			{
-				require_once($directory . '/' . $entry);
-			}
-		}
-
-		closedir($handle);
+	        require_once($filename);
 	}
+//	if ($handle = opendir($directory))
+//	{
+//		while (false !== ($entry = readdir($handle)))
+//		{
+//			if ($entry != '.' && $entry != '..' && is_dir($entry))
+//			{
+//				return includeAll($entry);
+//			}
+//			if ($entry != '.' && $entry != '..' && !is_dir($entry))
+//			{
+//				require_once($directory . '/' . $entry);
+//			}
+//		}
+//
+//		closedir($handle);
+//	}
 }
 
 class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 {
-//	private $url = 'http://localhost/dev/Services';
-	private $url = 'http://localhost/development/Services/index.php';
+	private $url = 'http://localhost/dev/Services';
+//	private $url = 'http://localhost/development/Services/index.php';
 
 	/**
 	 * @var HttpClient
@@ -104,7 +112,15 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$this->UpdateUser($authHeaders, $userId);
 		$this->DeleteUser($authHeaders, $userId);
 	}
-	
+
+	public function testResourceLifecycle()
+	{
+		$authHeaders = $this->LogIn();
+		$resourceId = $this->AddResource($authHeaders);
+		$this->UpdateResource($authHeaders, $resourceId);
+		$this->DeleteResource($authHeaders, $resourceId);
+	}
+
 	private function AddUser($authHeaders)
 	{
 		$request = new CreateUserRequest();
@@ -132,7 +148,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 
 		return $response->userId;
 	}
-	
+
 	private function UpdateUser($authHeaders, $userId)
 	{
 		$request = new UpdateUserRequest();
@@ -261,6 +277,73 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 				echo "$error\n";
 			}
 			$this->fail('Errors deleting');
+		}
+	}
+
+	private function AddResource($authHeaders)
+	{
+		$request = new ResourceRequest();
+		$request->name = time() . ' resource';
+		$request->scheduleId = 1;
+		$request->description = 'description';
+		$request->notes = 'notes';
+		$request->allowMultiday = 'false';
+		$request->customAttributes[] = new AttributeValueRequest(3, 'value3');
+		$request->customAttributes[] = new AttributeValueRequest(4, 'value4');
+
+		/** @var $response ResourceCreatedResponse */
+		$response = $this->client->Post('Resources/', $request, $authHeaders);
+
+		if (isset($response->errors))
+		{
+			foreach ($response->errors as $error)
+			{
+				echo "$error\n";
+			}
+		}
+
+		$this->assertNotEmpty($response->resourceId);
+
+		return $response->resourceId;
+	}
+
+	private function UpdateResource($authHeaders, $resourceId)
+	{
+		$request = new ResourceRequest();
+		$request->name = time() . ' resource';
+		$request->scheduleId = 1;
+		$request->description = 'description';
+		$request->notes = 'notes';
+		$request->allowMultiday = 'false';
+		$request->customAttributes[] = new AttributeValueRequest(3, 'value3');
+		$request->customAttributes[] = new AttributeValueRequest(4, 'value4');
+		$request->isOnline = true;
+
+		/** @var $response ResourceUpdatedResponse */
+		$response = $this->client->Post("Resources/$resourceId", $request, $authHeaders);
+
+		if (isset($response->errors))
+		{
+			foreach ($response->errors as $error)
+			{
+				echo "$error\n";
+			}
+		}
+
+		$this->assertNotEmpty($response->resourceId);
+	}
+
+	private function DeleteResource($authHeaders, $resourceId)
+	{
+		/** @var $response DeletedResponse */
+		$response = $this->client->Delete("Resources/$resourceId", $authHeaders);
+
+		if (isset($response->errors))
+		{
+			foreach ($response->errors as $error)
+			{
+				echo "$error\n";
+			}
 		}
 	}
 }

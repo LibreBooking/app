@@ -104,6 +104,11 @@ class ResourceSaveController implements IResourceSaveController
 	 */
 	public function Delete($resourceId, $session)
 	{
+		$errors = $this->validator->ValidateDeleteRequest($resourceId);
+		if (!empty($errors))
+		{
+			return new ResourceControllerResult(null, $errors);
+		}
 		$resource = $this->repository->LoadById($resourceId);
 		$this->repository->Delete($resource);
 
@@ -141,6 +146,14 @@ class ResourceSaveController implements IResourceSaveController
 		}
 		$resource->ChangeAttributes($attributes);
 
+		if ($request->isOnline)
+		{
+			$resource->BringOnline();
+		}
+		else
+		{
+			$resource->TakeOffline();
+		}
 		return $resource;
 	}
 }

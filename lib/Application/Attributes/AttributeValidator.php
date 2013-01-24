@@ -59,6 +59,12 @@ class AttributeValidator extends ValidatorBase
 	 */
 	public function Validate()
 	{
+		if (empty($this->attributes))
+		{
+			$this->isValid = true;
+			return;
+		}
+
 		$result = $this->service->Validate($this->category, $this->attributes);
 		$this->isValid = $result->IsValid();
 		$this->messages = $result->Errors();

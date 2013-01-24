@@ -110,7 +110,7 @@ class UserRequestValidator implements IUserRequestValidator
 		$validators[] = new EmailValidator($request->emailAddress);
 
 		$attributes = array();
-		foreach ($request->customAttributes as $attribute)
+		foreach ($request->GetCustomAttributes() as $attribute)
 		{
 			$attributes[] = new AttributeValue($attribute->attributeId, $attribute->attributeValue);
 		}
