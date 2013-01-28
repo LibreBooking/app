@@ -106,7 +106,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 {if $InstallCompletedSuccessfully}
                     Summary: <br/> Installation completed successfully! <br/>
                     1) <a href="{$Path}{Pages::LOGIN}">Login</a> with admin/password for admin user Or user/password for basic user. This is sample data chosen to installed in previous page. Or <br/>
-                    2) <a href="{$Path}{Pages::REGISTRATION}">Register</a> your admin user. This is required if you did not install the sample data.
+                    2) <a href="{$Path}{Pages::REGISTRATION}">Register</a> your admin user. This is required if you did not install the sample data. Ensure that $conf['settings']['allow.self.registration'] = 'true' in your config/conf.php file
 				{/if}
 				{if $UpgradeCompletedSuccessfully}
 					You are now running version {$TargetVersion} of phpScheduleIt
