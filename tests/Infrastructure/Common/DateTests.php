@@ -533,5 +533,13 @@ class DateTests extends TestBase
 
 		$this->assertTrue($d->Equals($d2), $d->ToUtc()->ToString() . ' ' . $d2->ToString());
 	}
+
+	public function testJan31Bug()
+	{
+		$d = new Date('2013-01-31', 'America/Chicago');
+		$this->assertEquals(31, $d->Day());
+		$this->assertEquals(1, $d->Month());
+		$this->assertEquals(2013, $d->Year());
+	}
 }
 ?>
