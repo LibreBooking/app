@@ -20,5 +20,4 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 $conf['settings']['wp_includes.directory'] = '/home/user/www/wordpress/wp-includes'; // full path to your wp-includes directory
 $conf['settings']['database.auth.when.wp.user.not.found'] = 'false';		// if wordpress auth fails, authenticate against phpScheduleIt database
-//$conf['settings']['attribute.mapping'] = 'sn=sn,givenname=givenname,mail=mail,telephonenumber=telephonenumber,physicaldeliveryofficename=physicaldeliveryofficename,title=title';	// mapping of required attributes to attribute names in your directory
 ?>

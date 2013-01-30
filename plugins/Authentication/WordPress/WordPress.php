@@ -75,6 +75,11 @@ class WordPress extends Authentication implements IAuthentication
 		$this->options = new WordPressOptions();
 
 		require_once($this->options->GetPath() . 'pluggable.php');
+
+		if (!function_exists('wp_authenticate'))
+		{
+			throw new Exception('Could not load WordPress authentication hook. Please verify wp_includes.directory config setting');
+		}
 	}
 
 	public function Validate($username, $password)
@@ -87,7 +92,7 @@ class WordPress extends Authentication implements IAuthentication
         {
 			Log::Debug('WordPress authentication successful. User=%s', $username);
             $this->user = $user;
-
+			$this->password = $password;
             return true;
         }
         else
@@ -106,15 +111,15 @@ class WordPress extends Authentication implements IAuthentication
 	public function Login($username, $loginContext)
 	{
 		$username = $this->CleanUsername($username);
-		Log::Debug('ActiveDirectory - Login() in with username: %s', $username);
-		if ($this->LdapUserExists())
+		Log::Debug('WordPress - Login() in with username: %s', $username);
+		if ($this->UserExists())
 		{
-			Log::Debug('Running ActiveDirectory user synchronization for username: %s, Attributes: %s', $username, $this->user->__toString());
-			$this->Synchronize($username);
+			Log::Debug('Running WordPress user synchronization for username: %s, Attributes: %s', $username, $this->user->__toString());
+			$this->Synchronize();
 		}
 		else
 		{
-			Log::Debug('Skipping ActiveDirectory user synchronization, user not loaded');
+			Log::Debug('Skipping WordPress user synchronization, user not loaded');
 		}
 
 		return $this->authToDecorate->Login($username, $loginContext);
@@ -130,45 +135,25 @@ class WordPress extends Authentication implements IAuthentication
 		return false;
 	}
 
-	private function LdapUserExists()
+	private function UserExists()
 	{
-		return $this->user != null;
+		return $this->user != null && $this->user->exists();
 	}
 
-	private function Synchronize($username)
+	private function Synchronize()
 	{
 		$registration = $this->GetRegistration();
-
 		$registration->Synchronize(
 			new AuthenticatedUser(
-                $username,
-                $this->user->GetEmail(),
-                $this->user->GetFirstName(),
-                $this->user->GetLastName(),
+                $this->user->user_login,
+                $this->user->user_email(),
+                $this->user->user_firstname(),
+                $this->user->user_lastname(),
                 $this->password,
                 Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
 				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
-				$this->user->GetPhone(), $this->user->GetInstitution(),
-                $this->user->GetTitle())
+				null, null, null)
 		);
-	}
-
-	private function CleanUsername($username)
-	{
-		if (StringHelper::Contains($username, '@'))
-		{
-			Log::Debug('ActiveDirectory - Username %s appears to be an email address. Cleaning...', $username);
-			$parts = explode('@', $username);
-			$username = $parts[0];
-		}
-		if (StringHelper::Contains($username, '\\'))
-		{
-			Log::Debug('ActiveDirectory - Username %s appears contain a domain. Cleaning...', $username);
-			$parts = explode('\\', $username);
-			$username = $parts[1];
-		}
-
-		return $username;
 	}
 }
 
