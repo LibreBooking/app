@@ -57,35 +57,6 @@ class WordPressOptions
 	{
 		return Configuration::Instance()->File(self::CONFIG_ID)->GetKey($keyName, $converter);
 	}
-
-//	public function Attributes()
-//	{
-//		$attributes = $this->AttributeMapping();
-//		return array_values($attributes);
-//	}
-//
-//	public function AttributeMapping()
-//	{
-//		$attributes = array('sn' => 'sn',
-//							'givenname' => 'givenname',
-//							'mail' => 'mail',
-//							'telephonenumber' => 'telephonenumber',
-//							'physicaldeliveryofficename' => 'physicaldeliveryofficename',
-//							'title' => 'title');
-//		$configValue = $this->GetConfig(ActiveDirectoryConfig::ATTRIBUTE_MAPPING);
-//
-//		if (!empty($configValue))
-//		{
-//			$attributePairs = explode(',', $configValue);
-//			foreach ($attributePairs as $attributePair)
-//			{
-//				$pair = explode('=', trim($attributePair));
-//				$attributes[trim($pair[0])] = trim($pair[1]);
-//			}
-//		}
-//
-//		return $attributes;
-//	}
 }
 
 ?>
