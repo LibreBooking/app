@@ -180,7 +180,7 @@ if (!defined('ISEMAIL_VALID')) {
  * 					$errorlevel = 0
  * @param array		$parsedata	If passed, returns the parsed address components
  */
-/*.mixed.*/ function is_email($email, $checkDNS = false, $errorlevel = false, &$parsedata = array()) {
+/*.mixed.*/ function psi_is_email($email, $checkDNS = false, $errorlevel = false, &$parsedata = array()) {
 	// Check that $email is a valid address. Read the following RFCs to understand the constraints:
 	// 	(http://tools.ietf.org/html/rfc5321)
 	// 	(http://tools.ietf.org/html/rfc5322)

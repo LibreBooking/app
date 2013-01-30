@@ -31,7 +31,7 @@ class EmailValidator extends ValidatorBase implements IValidator
 
 	public function Validate()
 	{
-		$this->isValid = is_email($this->email);
+		$this->isValid = psi_is_email($this->email);
 
 		if (!$this->isValid)
 		{

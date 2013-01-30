@@ -18,6 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$conf['settings']['wp_includes.directory'] = '/home/user/www/wordpress/wp-includes'; // full path to your wp-includes directory
+$conf['settings']['wp_includes.directory'] = '/home/user/public_html/wordpress/wp-includes'; // full path to your wp-includes directory or path relative to phpScheduleIt root
 $conf['settings']['database.auth.when.wp.user.not.found'] = 'false';		// if wordpress auth fails, authenticate against phpScheduleIt database
 ?>

@@ -74,6 +74,7 @@ class WordPress extends Authentication implements IAuthentication
 
 		$this->options = new WordPressOptions();
 
+		require_once($this->options->GetPath() . '../wp-load.php');
 		require_once($this->options->GetPath() . 'pluggable.php');
 
 		if (!function_exists('wp_authenticate'))
@@ -87,6 +88,12 @@ class WordPress extends Authentication implements IAuthentication
 		Log::Debug('Attempting to authenticate user against WordPress. User=%s', $username);
 
 		$user = wp_authenticate($username, $password);
+
+		if (is_wp_error($user))
+		{
+			Log::Error('WordPress authentication error: %s', $user->get_error_message());
+			return false;
+		}
 
         if ($user->exists())
         {
@@ -110,11 +117,10 @@ class WordPress extends Authentication implements IAuthentication
 
 	public function Login($username, $loginContext)
 	{
-		$username = $this->CleanUsername($username);
 		Log::Debug('WordPress - Login() in with username: %s', $username);
 		if ($this->UserExists())
 		{
-			Log::Debug('Running WordPress user synchronization for username: %s, Attributes: %s', $username, $this->user->__toString());
+			Log::Debug('Running WordPress user synchronization for username: %s', $username);
 			$this->Synchronize();
 		}
 		else
@@ -146,9 +152,9 @@ class WordPress extends Authentication implements IAuthentication
 		$registration->Synchronize(
 			new AuthenticatedUser(
                 $this->user->user_login,
-                $this->user->user_email(),
-                $this->user->user_firstname(),
-                $this->user->user_lastname(),
+                $this->user->user_email,
+                $this->user->user_firstname,
+                $this->user->user_lastname,
                 $this->password,
                 Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
 				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
