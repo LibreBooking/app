@@ -122,4 +122,10 @@ $conf['settings']['pages']['enable.configuration'] = 'false';
  * API
  */
 $conf['settings']['api']['enabled'] = 'false';
+/**
+ * ReCaptcha
+ */
+$conf['settings']['recaptcha']['enabled'] = 'false';
+$conf['settings']['recaptcha']['public.key'] = '';
+$conf['settings']['recaptcha']['private.key'] = '';
 ?>

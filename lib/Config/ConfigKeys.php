@@ -93,6 +93,9 @@ class ConfigKeys
 	const PAGES_ENABLE_CONFIGURATION = 'enable.configuration';
 
 	const API_ENABLED = 'enabled';
+	const RECAPTCHA_ENABLED = 'enabled';
+	const RECAPTCHA_PUBLIC_KEY = 'public.key';
+	const RECAPTCHA_PRIVATE_KEY = 'private.key';
 }
 
 class ConfigSection
@@ -107,6 +110,7 @@ class ConfigSection
     const RESERVATION_NOTIFY = 'reservation.notify';
     const SCHEDULE = 'schedule';
 	const UPLOADS = 'uploads';
+	const RECAPTCHA = 'recaptcha';
 }
 
 ?>

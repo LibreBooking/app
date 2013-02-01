@@ -134,9 +134,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{if $EnableCaptcha}
 		<div class="registrationHeader"><h3>{translate key=SecurityCode}</h3></div>
 		<p>
-			<img src="{$CaptchaImageUrl}" alt='captcha' id="captchaImg"/><br/>
-			<label class="reg">{translate key="SecurityCode"}<br/>
-				<input type="text" class="input" {formname key=CAPTCHA} size="20" id="captchaValue"/>
+			{control type="CaptchaControl"}
 		</p>
 		{else}
 		<input type="hidden" {formname key=CAPTCHA} value=""/>
