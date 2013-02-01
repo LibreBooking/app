@@ -123,7 +123,7 @@ class ReCaptchaService implements ICaptchaService
 		Log::Debug('Checking ReCaptcha. Value entered=%s', $server->GetForm('recaptcha_response_field'));
 
 		require_once(ROOT_DIR . 'lib/external/recaptcha/recaptchalib.php');
-		$privatekey = Configuration::Instance()->GetKey(ConfigSection::RECAPTCHA, ConfigKeys::RECAPTCHA_PRIVATE_KEY);
+		$privatekey = Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA, ConfigKeys::RECAPTCHA_PRIVATE_KEY);
 
 		$resp = recaptcha_check_answer($privatekey,
 									 $server->GetRemoteAddress(),
