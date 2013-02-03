@@ -1,22 +1,25 @@
 function Registration()
 {
 	var elements = {
-		form: $('#frmRegister')
+		form:$('#frmRegister')
 	};
 
-	Registration.prototype.init = function () {
+	Registration.prototype.init = function ()
+	{
 
-		$("#btnUpdate").click(function (e) {
+		$("#btnUpdate").click(function (e)
+		{
 			e.preventDefault();
 			$('#frmRegister').submit();
 		});
 
 		elements.form.bind('onValidationFailed', onValidationFailed);
 
-		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
+		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit:onBeforeAddSubmit});
 	};
 
-	var defaultSubmitCallback = function (form) {
+	var defaultSubmitCallback = function (form)
+	{
 		return form.attr('action') + "?action=" + form.attr('ajaxAction');
 	};
 
@@ -44,7 +47,7 @@ function Registration()
 		$('#profileUpdatedMessage').hide();
 		$('#registrationError').hide();
 
-		$.colorbox({inline:true, href:"#modalDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
+		$.colorbox({inline:true, href:"#modalDiv", transition:"none", width:"75%", height:"75%", overlayClose:false});
 		$('#modalDiv').show();
 
 		return true;
@@ -59,10 +62,19 @@ function Registration()
 		$('html, body').animate({scrollTop:top}, 'slow');
 	}
 
-	function refreshCaptcha() {
-		var src = $('#captchaImg').attr('src') + '?' + Math.random();
-		$('#captchaImg').attr('src', src);
-		$('#captchaValue').val('');
+	function refreshCaptcha()
+	{
+		var captchaImg = $('#captchaImg');
+		if (captchaImg)
+		{
+			var src = captchaImg.attr('src') + '?' + Math.random();
+			captchaImg.attr('src', src);
+			$('#captchaValue').val('');
+		}
+		else
+		{
+			Recaptcha.reload();
+		}
 	}
 
 }
