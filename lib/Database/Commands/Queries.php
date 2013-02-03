@@ -75,6 +75,10 @@ class Queries
 			'INSERT INTO quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id)
 		VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid)';
 
+	const ADD_REMINDER =
+				'INSERT INTO reminders (user_id, address, message, sendtime, refnumber)
+			VALUES (@user_id, @address, @message, @sendtime, @refnumber)';
+
 	const ADD_RESERVATION =
 			'INSERT INTO reservation_instances (start_date, end_date, reference_number, series_id)
 		VALUES (@startDate, @endDate, @referenceNumber, @seriesid)';
@@ -292,6 +296,8 @@ class Queries
 		LEFT JOIN groups g ON g.group_id = q.group_id
 		LEFT JOIN schedules s ON s.schedule_id = q.schedule_id';
 
+	const GET_ALL_REMINDERS = 'SELECT * FROM reminders';
+
 	const GET_ALL_RESOURCES =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id
 		FROM resources r
@@ -387,6 +393,10 @@ class Queries
 		FROM roles r
 		INNER JOIN group_roles gr ON r.role_id = gr.role_id
 		WHERE gr.group_id = @groupid';
+
+	const GET_REMINDERS_BY_USER = 'SELECT * FROM reminders WHERE user_id = @user_id';
+
+   	const GET_REMINDERS_BY_REFNUMBER = 'SELECT * FROM reminders WHERE refnumber = @refnumber';
 
 	const GET_RESOURCE_BY_CONTACT_INFO =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id
@@ -612,6 +622,12 @@ class Queries
 
 	const REMOVE_ATTRIBUTE_VALUE =
 			'DELETE FROM custom_attribute_values WHERE custom_attribute_id = @custom_attribute_id AND entity_id = @entity_id';
+
+	const DELETE_REMINDER = 'DELETE FROM reminders WHERE reminder_id = @reminder_id';
+
+	const DELETE_REMINDER_BY_USER = 'DELETE FROM reminders WHERE user_id = @user_id';
+
+	const DELETE_REMINDER_BY_REFNUMBER = 'DELETE FROM reminders WHERE refnumber = @refnumber';
 
 	const REMOVE_RESERVATION_ACCESSORY =
 			'DELETE FROM reservation_accessories WHERE accessory_id = @accessoryid AND series_id = @seriesid';

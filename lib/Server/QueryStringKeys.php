@@ -52,6 +52,7 @@ class QueryStringKeys
 	const QUOTA_ID = 'qid';
 	const REDIRECT = 'redirect';
 	const REFERENCE_NUMBER = 'rn';
+	const REMINDER_ID = 'aid';
 	const REPORT_ID = 'rid';
 	const RESERVATION_DATE = 'rd';
 	const RESERVATION_STATUS_ID = 'rsid';

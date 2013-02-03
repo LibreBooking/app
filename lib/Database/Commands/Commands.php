@@ -534,6 +534,33 @@ class DeleteQuotaCommand extends SqlCommand
 	}
 }
 
+class DeleteReminderCommand extends SqlCommand
+{
+    public function __construct($reminder_id)
+    {
+        parent::__construct(Queries::DELETE_REMINDER);
+        $this->AddParameter(new Parameter(ParameterNames::REMINDER_ID, $reminder_id));
+    }
+}
+
+class DeleteReminderByUserCommand extends SqlCommand
+{
+    public function __construct($user_id)
+    {
+        parent::__construct(Queries::DELETE_REMINDER_BY_USER);
+        $this->AddParameter(new Parameter(ParameterNames::REMINDER_USER_ID, $user_id));
+    }
+}
+
+class DeleteReminderByRefNumberCommand extends SqlCommand
+{
+    public function __construct($refnumber)
+    {
+        parent::__construct(Queries::DELETE_REMINDER_BY_REFNUMBER);
+        $this->AddParameter(new Parameter(ParameterNames::REMINDER_REFNUMBER, $refnumber));
+    }
+}
+
 class DeleteResourceCommand extends SqlCommand
 {
 	public function __construct($resourceId)
@@ -779,6 +806,14 @@ class GetAllQuotasCommand extends SqlCommand
 	}
 }
 
+class GetAllRemindersCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_ALL_REMINDERS);
+	}
+}
+
 class GetAllResourcesCommand extends SqlCommand
 {
 	public function __construct()
@@ -880,6 +915,24 @@ class GetLayoutCommand extends SqlCommand
 		parent::__construct(Queries::GET_SCHEDULE_TIME_BLOCK_GROUPS);
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
+}
+
+class GetReminderByUserCommand extends SqlCommand
+{
+	public function __construct($user_id)
+	{
+		parent::__construct(Queries::GET_REMINDERS_BY_USER);
+		$this->AddParameter(new Parameter(ParameterNames::REMINDER_USER_ID, $user_id));
+	}
+}
+
+class GetReminderByRefNumberCommand extends SqlCommand
+{
+    public function __construct($refnumber)
+    {
+        parent::__construct(Queries::GET_REMINDERS_BY_REFNUMBER);
+        $this->AddParameter(new Parameter(ParameterNames::REMINDER_REFNUMBER, $refnumber));
+    }
 }
 
 class GetReservationForEditingCommand extends SqlCommand

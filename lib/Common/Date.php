@@ -16,7 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE . See {the
 }
 GNU General Public License for more details .
 
-		You should {have
+You should {have
 } received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -77,7 +77,8 @@ class Date
 			$month = $month - ($yearOffset * 12);
 		}
 
-		return new Date(sprintf('%04d-%02d-%02d %02d:%02d:%02d', $year, $month, $day, $hour, $minute, $second), $timezone);
+		return new Date(sprintf('%04d-%02d-%02d %02d:%02d:%02d', $year, $month, $day, $hour, $minute,
+								$second), $timezone);
 	}
 
 	/**
@@ -414,13 +415,23 @@ class Date
 	}
 
 	/**
+	 * @param int $minutes
+	 * @return Date
+	 */
+	public function RemoveMinutes($minutes)
+	{
+		return new Date($this->Format(self::SHORT_FORMAT) . " -" . $minutes . " minutes", $this->timezone);
+	}
+
+	/**
 	 * @param Time $time
 	 * @param bool $isEndTime
 	 * @return Date
 	 */
 	public function SetTime(Time $time, $isEndTime = false)
 	{
-		$date = Date::Create($this->Year(), $this->Month(), $this->Day(), $time->Hour(), $time->Minute(), $time->Second(), $this->Timezone());
+		$date = Date::Create($this->Year(), $this->Month(), $this->Day(), $time->Hour(), $time->Minute(),
+							 $time->Second(), $this->Timezone());
 
 		if ($isEndTime)
 		{
@@ -589,6 +600,7 @@ class Date
 	{
 		return Date::Parse('0001-01-01', 'UTC');
 	}
+
 	/**
 	 * @static
 	 * @return Date
@@ -712,7 +724,9 @@ class DateDiff
 	 */
 	public static function FromTimeString($timeString)
 	{
-		if (strpos($timeString, 'd') === false && strpos($timeString, 'h') === false && strpos($timeString, 'm') === false)
+		if (strpos($timeString, 'd') === false && strpos($timeString, 'h') === false && strpos($timeString,
+																							   'm') === false
+		)
 		{
 			throw new Exception('Time format must contain at least a day, hour or minute. For example: 12d1h22m');
 		}

@@ -14,3 +14,18 @@ CREATE TABLE `user_session` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 ALTER TABLE `time_blocks` ADD COLUMN `day_of_week` SMALLINT(5) unsigned;
+
+DROP TABLE IF EXISTS `reminders`;
+CREATE TABLE `reminders` (
+ `reminder_id` int(11) unsigned NOT NULL auto_increment,
+ `user_id` mediumint(8) unsigned NOT NULL,
+ `address` text NOT NULL,
+ `message` text NOT NULL,
+ `sendtime` datetime NOT NULL,
+ `refnumber` text NOT NULL,
+ PRIMARY KEY (`reminder_id`),
+ INDEX `reminders_user_id` (`user_id`),
+ FOREIGN KEY (`user_id`)
+ 	REFERENCES users(`user_id`)
+ 	ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
