@@ -265,7 +265,23 @@ function ResourceManagement(opts) {
 			var id = $(value).attr('attributeId');
 			var attrVal = $(value).find('.attributeValue').text();
 
-			$('#psiattribute\\[' + id + '\\]').val(attrVal);
+			var attribute = $('#psiattribute\\[' + id + '\\]');
+
+			if (attribute.is(':checkbox'))
+			{
+				if (attrVal.toLowerCase() == 'true')
+				{
+					attribute.attr('checked', 'checked');
+				}
+				else
+				{
+					attribute.removeAttr('checked');
+				}
+			}
+			else
+			{
+				attribute.val(attrVal);
+			}
 		});
 		elements.attributeDialog.dialog('open');
 	};
