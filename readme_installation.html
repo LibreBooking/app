@@ -297,7 +297,39 @@ log4php library is used. By default, logging is turned OFF.
     </li>
 </ul>
 
-<h4>Support</h4>
+<h1 class="section">Enabling phpScheduleIt API</h1>
+phpScheduleIt has the option to expose a RESTful JSON API. This API can be leveraged for third party integration,
+automation or to develop client applications.
+
+<h2>Prerequisites</h2>
+<ul>
+    <li>PHP 5.3 or greater</li>
+    <li>To use 'friendly' URLs, mod_rewrite must be enabled</li>
+</ul>
+
+<h2>Configuration</h2>
+
+<ul>
+    <li>Set $conf['settings']['api']['enabled'] = 'true'; in your config file.</li>
+    <li>If using mod_rewrite, ensure /Web/Services/.htaccess is set properly. If an Apache alias is being used for
+        phpScheduleIt, RewriteBase must be set to that alias root.
+    </li>
+</ul>
+
+<h2>API Documentation</h2>
+Auto-generated documentation for API usage can be found by browsing http://your_phpscheduleit_url/Web/Services. This
+documentation describes each available service, indicates whether or not the service is available to unauthenticated
+users/administrators, and provides example requests/responses.
+
+<h2>Consuming the API</h2>
+
+If mod_rewrite is being used, all services will be available from http://your_phpscheduleit_url/Web/Services<br/>
+If not using mod_rewrite, all services will be available from
+http://your_phpscheduleit_url/Web/Services/index.php<br/><br/>
+Certain services are only available to authenticated users or administrators. Secure services will require a session
+token and userid, which can be obtained from the Authentication service.
+
+<h1 class="section">Support</h1>
 
 <div>
     Please post any questions or issues under the phpScheduleIt 2 section of the forums on
