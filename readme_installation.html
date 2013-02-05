@@ -311,8 +311,11 @@ automation or to develop client applications.
 
 <ul>
     <li>Set $conf['settings']['api']['enabled'] = 'true'; in your config file.</li>
-    <li>If using mod_rewrite, ensure /Web/Services/.htaccess is set properly. If an Apache alias is being used for
-        phpScheduleIt, RewriteBase must be set to that alias root.
+    <li>If you want pretty URL paths, mod_rewrite or URL rewriting must be enabled. Note, this is not required in order
+        to use the API.
+    </li>
+    <li>If using mod_rewrite and an Apache alias, ensure RewriteBase in /Web/Services/.htaccess is set to that alias
+        root.
     </li>
 </ul>
 
@@ -323,8 +326,8 @@ users/administrators, and provides example requests/responses.
 
 <h2>Consuming the API</h2>
 
-If mod_rewrite is being used, all services will be available from http://your_phpscheduleit_url/Web/Services<br/>
-If not using mod_rewrite, all services will be available from
+If URL rewriting is being used, all services will be available from http://your_phpscheduleit_url/Web/Services<br/>
+If not using URL rewriting, all services will be available from
 http://your_phpscheduleit_url/Web/Services/index.php<br/><br/>
 Certain services are only available to authenticated users or administrators. Secure services will require a session
 token and userid, which can be obtained from the Authentication service.

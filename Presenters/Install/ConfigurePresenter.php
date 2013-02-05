@@ -96,7 +96,7 @@ class ConfigurePresenter
 
 		$configurator = new Configurator();
 
-		if ($configurator->CanOverwriteConfig($configFile))
+		if ($configurator->CanOverwriteFile($configFile))
 		{
 			$configurator->Merge($configFile, $configDistFile);
 			$this->page->ShowConfigUpdateSuccess();
