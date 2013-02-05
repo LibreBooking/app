@@ -466,7 +466,7 @@ class en_us extends Language
 		$strings['InvalidAttachmentExtension'] = 'You can only upload files of type: %s';
 		$strings['InvalidStartSlot'] = 'The start date and time requested is not valid.';
 		$strings['InvalidEndSlot'] = 'The end date and time requested is not valid.';
-
+		$strings['MaxParticipantsError'] = '%s can only support %s participants.';
 		// End Errors
 
 		// Page Titles

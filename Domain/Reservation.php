@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'Domain/Values/FullName.php');
@@ -27,7 +27,7 @@ class Reservation
 	 * @var string
 	 */
 	protected $referenceNumber;
-	
+
 	/**
 	 * @return string
 	 */
@@ -35,12 +35,12 @@ class Reservation
 	{
 		return $this->referenceNumber;
 	}
-	
+
 	/**
 	 * @var Date
 	 */
 	protected $startDate;
-	
+
 	/**
 	 * @return Date
 	 */
@@ -48,12 +48,12 @@ class Reservation
 	{
 		return $this->startDate;
 	}
-	
+
 	/**
 	 * @var Date
 	 */
 	protected $endDate;
-	
+
 	/**
 	 * @return Date
 	 */
@@ -61,7 +61,7 @@ class Reservation
 	{
 		return $this->endDate;
 	}
-	
+
 	/**
 	 * @return DateRange
 	 */
@@ -69,9 +69,9 @@ class Reservation
 	{
 		return new DateRange($this->StartDate(), $this->EndDate());
 	}
-	
+
 	protected $reservationId;
-	
+
 	public function ReservationId()
 	{
 		return $this->reservationId;
@@ -82,7 +82,7 @@ class Reservation
 	 */
 	private $_participantIds = array();
 
-		/**
+	/**
 	 * @var array|int[]
 	 */
 	protected $addedParticipants = array();
@@ -117,40 +117,41 @@ class Reservation
 	 */
 	protected $unchangedInvitees = array();
 
-	
+
 	/**
 	 * @var ReservationSeries
 	 */
 	public $series;
-	
-	public function __construct(ReservationSeries $reservationSeries, DateRange $reservationDate, $reservationId = null, $referenceNumber = null)
+
+	public function __construct(ReservationSeries $reservationSeries, DateRange $reservationDate, $reservationId = null,
+								$referenceNumber = null)
 	{
 		$this->series = $reservationSeries;
-		
+
 		$this->SetReservationDate($reservationDate);
 		$this->SetReferenceNumber($referenceNumber);
-		
+
 		if (!empty($reservationId))
 		{
 			$this->SetReservationId($reservationId);
 		}
-		
+
 		if (empty($referenceNumber))
 		{
 			$this->SetReferenceNumber(uniqid());
 		}
 	}
-	
+
 	public function SetReservationId($reservationId)
 	{
 		$this->reservationId = $reservationId;
 	}
-	
+
 	public function SetReferenceNumber($referenceNumber)
 	{
 		$this->referenceNumber = $referenceNumber;
 	}
-	
+
 	public function SetReservationDate(DateRange $reservationDate)
 	{
 		$this->startDate = $reservationDate->GetBegin();
@@ -165,16 +166,16 @@ class Reservation
 	public function WithParticipants($participantIds)
 	{
 		$this->_participantIds = $participantIds;
-        $this->unchangedParticipants = $participantIds;
+		$this->unchangedParticipants = $participantIds;
 	}
 
-    /**
-     * @param int $participantId
-     */
+	/**
+	 * @param int $participantId
+	 */
 	public function WithParticipant($participantId)
 	{
 		$this->_participantIds[] = $participantId;
-        $this->unchangedParticipants[] = $participantId;
+		$this->unchangedParticipants[] = $participantId;
 	}
 
 	/**
@@ -185,16 +186,16 @@ class Reservation
 	public function WithInvitees($inviteeIds)
 	{
 		$this->_inviteeIds = $inviteeIds;
-        $this->unchangedInvitees = $inviteeIds;
+		$this->unchangedInvitees = $inviteeIds;
 	}
 
-    /**
-     * @param int $inviteeId
-     */
+	/**
+	 * @param int $inviteeId
+	 */
 	public function WithInvitee($inviteeId)
 	{
 		$this->_inviteeIds[] = $inviteeId;
-        $this->unchangedInvitees[] = $inviteeId;
+		$this->unchangedInvitees[] = $inviteeId;
 	}
 
 	/**
@@ -212,6 +213,14 @@ class Reservation
 		$this->_participantIds = $participantIds;
 
 		return count($this->addedParticipants) + count($this->removedParticipants);
+	}
+
+	/**
+	 * @return array|int[]
+	 */
+	public function Participants()
+	{
+		return $this->_participantIds;
 	}
 
 	/**
@@ -335,9 +344,9 @@ class Reservation
 	}
 
 	static function Compare(Reservation $res1, Reservation $res2)
-    {
-        return $res1->StartDate()->Compare($res2->StartDate());
-    }
+	{
+		return $res1->StartDate()->Compare($res2->StartDate());
+	}
 }
 
 ?>

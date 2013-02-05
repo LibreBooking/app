@@ -47,6 +47,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/CustomAttributeV
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationAttachmentRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/RequiresApprovalRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/SchedulePeriodRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceParticipationRule.php');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AddReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/UpdateReservationValidationService.php');
