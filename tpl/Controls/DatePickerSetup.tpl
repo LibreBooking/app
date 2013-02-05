@@ -44,7 +44,7 @@ $(function(){
 		}
 		else{
 			var dateVal = $("#{$ControlId}").datepicker('getDate');
-			var dateString = dateVal.getFullYear() + '/' + (dateVal.getMonth()+1) + '/' + dateVal.getDate();
+			var dateString = dateVal.getFullYear() + '-' + ('0' + (dateVal.getMonth()+1)).slice(-2) + '-' + ('0' + dateVal.getDate()).slice(-2);
 			$("#{$AltId}").val(dateString);
 		}
   	});

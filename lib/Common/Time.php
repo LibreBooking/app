@@ -113,7 +113,7 @@ class Time
 	
 	public function ToString()
 	{
-		return sprintf("%d:%02d:%02d", $this->_hour, $this->_minute, $this->_second);
+		return sprintf("%02d:%02d:%02d", $this->_hour, $this->_minute, $this->_second);
 	}
 	
 	public function __toString() 

@@ -31,7 +31,7 @@ var dateHelper = {
 	},
 
 	GetDate:function (dateElement, timeElement) {
-		return new Date(dateElement.val() + ' ' + timeElement.val());
+		return new Date(dateElement.val() + 'T' + timeElement.val());
 	},
 
 	GetDateDifference:function (beginDateElement, beginTimeElement, endDateElement, endTimeElement) {
