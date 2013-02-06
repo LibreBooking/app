@@ -57,6 +57,7 @@ class ConfigKeys
     const RESERVATION_UPDATES_REQUIRE_APPROVAL = 'updates.require.approval';
     const RESERVATION_PREVENT_PARTICIPATION = 'prevent.participation';
     const RESERVATION_PREVENT_RECURRENCE = 'prevent.recurrence';
+    const RESERVATION_REMINDERS_ENABLED = 'enable.reminders';
 
     const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
     const IMAGE_UPLOAD_URL = 'image.upload.url';

@@ -443,6 +443,12 @@ class en_us extends Language
 		$strings['DeleteReminderWarning'] = 'You sure about this?';
 		$strings['NoReminders'] = 'You have no upcoming reminders.';
 		$strings['Reminders'] = 'Reminders';
+		$strings['SendReminder'] = 'Send Reminder';
+		$strings['minutes'] = 'minutes';
+		$strings['hours'] = 'hours';
+		$strings['days'] = 'days';
+		$strings['ReminderBeforeStart'] = 'before the start time';
+		$strings['ReminderBeforeEnd'] = 'before the end time';
 		// End Strings
 
 		// Errors

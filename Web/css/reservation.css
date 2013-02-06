@@ -105,16 +105,21 @@
 
 .res-attachments {
 
-    padding-top: 10px;
-    margin-top: 10px;
-    border-top: 1px solid #dedede;
+	padding-top: 10px;
+	margin-top: 10px;
+	border-top: 1px solid #dedede;
 }
 
 .res-attachments .heading {
-    font-size: 10pt;
-    font-weight: bold;
+	font-size: 10pt;
+	font-weight: bold;
 }
 
 #reservationbox .res-attachments a {
-    font-size: 9pt;
+	font-size: 9pt;
+}
+
+#reminderOptionsStart {
+	float: left;
+	padding-right: 50px;
 }

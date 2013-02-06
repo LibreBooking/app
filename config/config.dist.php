@@ -63,6 +63,7 @@ $conf['settings']['reservation']['start.time.constraint'] = 'future';		// when r
 $conf['settings']['reservation']['updates.require.approval'] = 'false';		// if updates to previously approved reservations require approval again
 $conf['settings']['reservation']['prevent.participation'] = 'false';		// if participation and invitation options should be removed
 $conf['settings']['reservation']['prevent.recurrence'] = 'false';			// if recurring reservations are disabled for non-administrators
+$conf['settings']['reservation']['enable.reminders'] = 'false';				// if reminders are enabled. this requires email to be enabled and the reminder job to be configured
 /**
  * Email notification configuration
  */
