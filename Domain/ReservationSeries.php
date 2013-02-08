@@ -16,12 +16,13 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'Domain/BookableResource.php');
 require_once(ROOT_DIR . 'Domain/Reservation.php');
 require_once(ROOT_DIR . 'Domain/Values/ReservationAccessory.php');
+require_once(ROOT_DIR . 'Domain/Values/ReservationReminder.php');
 require_once(ROOT_DIR . 'Domain/ReservationAttachment.php');
 
 class ReservationSeries
@@ -30,7 +31,7 @@ class ReservationSeries
 	 * @var int
 	 */
 	protected $seriesId;
-	
+
 	/**
 	 * @return int
 	 */
@@ -46,7 +47,7 @@ class ReservationSeries
 	{
 		$this->seriesId = $seriesId;
 	}
-	
+
 	/**
 	 * @var int
 	 */
@@ -76,7 +77,7 @@ class ReservationSeries
 	/**
 	 * @var BookableResource
 	 */
-	 protected $_resource;
+	protected $_resource;
 
 	/**
 	 * @return int
@@ -93,7 +94,7 @@ class ReservationSeries
 	{
 		return $this->_resource;
 	}
-	
+
 	/**
 	 * @return int
 	 */
@@ -132,7 +133,7 @@ class ReservationSeries
 	 * @var IRepeatOptions
 	 */
 	protected $_repeatOptions;
-	
+
 	/**
 	 * @return IRepeatOptions
 	 */
@@ -145,7 +146,7 @@ class ReservationSeries
 	 * @var array|BookableResource[]
 	 */
 	protected $_additionalResources = array();
-	
+
 	/**
 	 * @return array|BookableResource[]
 	 */
@@ -158,7 +159,7 @@ class ReservationSeries
 	 * @var ReservationAttachment|null
 	 */
 	protected $addedAttachment;
-	
+
 	/**
 	 * @return int[]
 	 */
@@ -184,7 +185,7 @@ class ReservationSeries
 	 * @var array|Reservation[]
 	 */
 	protected $instances = array();
-	
+
 	/**
 	 * @return Reservation[]
 	 */
@@ -218,7 +219,7 @@ class ReservationSeries
 	{
 		return $this->_attributeValues;
 	}
-	
+
 	/**
 	 * @var Date
 	 */
@@ -229,11 +230,21 @@ class ReservationSeries
 	 */
 	protected $statusId = ReservationStatus::Created;
 
+	/**
+	 * @var ReservationReminder
+	 */
+	protected $startReminder;
+
+	/**
+	 * @var ReservationReminder
+	 */
+	protected $endReminder;
+
 	protected function __construct()
 	{
 		$this->_repeatOptions = new RepeatNone();
 	}
-	
+
 	/**
 	 * @param int $userId
 	 * @param BookableResource $resource
@@ -245,15 +256,15 @@ class ReservationSeries
 	 * @return ReservationSeries
 	 */
 	public static function Create(
-								$userId, 
-								BookableResource $resource,
-								$title, 
-								$description, 
-								$reservationDate, 
-								$repeatOptions,
-								UserSession $bookedBy)
+		$userId,
+		BookableResource $resource,
+		$title,
+		$description,
+		$reservationDate,
+		$repeatOptions,
+		UserSession $bookedBy)
 	{
-		
+
 		$series = new ReservationSeries();
 		$series->_userId = $userId;
 		$series->_resource = $resource;
@@ -262,7 +273,7 @@ class ReservationSeries
 		$series->_bookedBy = $bookedBy;
 		$series->UpdateDuration($reservationDate);
 		$series->Repeats($repeatOptions);
-		
+
 		return $series;
 	}
 
@@ -273,21 +284,21 @@ class ReservationSeries
 	{
 		$this->AddNewCurrentInstance($reservationDate);
 	}
-	
+
 	/**
 	 * @param IRepeatOptions $repeatOptions
 	 */
 	protected function Repeats(IRepeatOptions $repeatOptions)
 	{
 		$this->_repeatOptions = $repeatOptions;
-		
+
 		$dates = $repeatOptions->GetDates($this->CurrentInstance()->Duration());
-		
+
 		if (empty($dates))
 		{
 			return;
 		}
-		
+
 		foreach ($dates as $date)
 		{
 			$this->AddNewInstance($date);
@@ -310,7 +321,7 @@ class ReservationSeries
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @param DateRange $reservationDate
 	 * @return Reservation newly created instance
@@ -319,33 +330,33 @@ class ReservationSeries
 	{
 		$newInstance = new Reservation($this, $reservationDate);
 		$this->AddInstance($newInstance);
-		
+
 		return $newInstance;
 	}
-	
+
 	protected function AddNewCurrentInstance(DateRange $reservationDate)
 	{
 		$currentInstance = new Reservation($this, $reservationDate);
 		$this->AddInstance($currentInstance);
 		$this->SetCurrentInstance($currentInstance);
 	}
-	
+
 	protected function AddInstance(Reservation $reservation)
 	{
 		$key = $this->CreateInstanceKey($reservation);
 		$this->instances[$key] = $reservation;
 	}
-	
+
 	protected function CreateInstanceKey(Reservation $reservation)
 	{
 		return $this->GetNewKey($reservation);
 	}
-	
+
 	protected function GetNewKey(Reservation $reservation)
 	{
 		return $reservation->ReferenceNumber();
 	}
-	
+
 	/**
 	 * @param BookableResource $resource
 	 */
@@ -353,7 +364,7 @@ class ReservationSeries
 	{
 		$this->_additionalResources[] = $resource;
 	}
-	
+
 	/**
 	 * @return bool
 	 */
@@ -382,7 +393,7 @@ class ReservationSeries
 	{
 		return $this->StatusId() == ReservationStatus::Pending;
 	}
-	
+
 	/**
 	 * @param string $referenceNumber
 	 * @return Reservation
@@ -391,12 +402,12 @@ class ReservationSeries
 	{
 		return $this->instances[$referenceNumber];
 	}
-	
+
 	/**
 	 * @return Reservation
 	 */
 	public function CurrentInstance()
-	{ 
+	{
 		$instance = $this->GetInstance($this->GetCurrentKey());
 		if (!isset($instance))
 		{
@@ -439,7 +450,7 @@ class ReservationSeries
 	{
 		$this->currentInstanceKey = $this->GetNewKey($current);
 	}
-	
+
 	/**
 	 * @return Date
 	 */
@@ -532,5 +543,31 @@ class ReservationSeries
 		}
 	}
 
+	/**
+	 * @return ReservationReminder
+	 */
+	public function GetStartReminder()
+	{
+		return $this->startReminder;
+	}
+
+	/**
+	 * @return ReservationReminder
+	 */
+	public function GetEndReminder()
+	{
+		return $this->endReminder;
+	}
+
+	public function AddStartReminder(ReservationReminder $reminder)
+	{
+		$this->startReminder = $reminder;
+	}
+
+	public function AddEndReminder(ReservationReminder $reminder)
+	{
+		$this->endReminder = $reminder;
+	}
 }
+
 ?>

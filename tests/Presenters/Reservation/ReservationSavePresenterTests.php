@@ -85,7 +85,7 @@ class ReservationSavePresenterTests extends TestBase
 		parent::teardown();
 	}
 
-	public function testBuildingWhenCreationBuildsReservationFromPageData()
+	public function testCreationBuildsReservationFromPageData()
 	{
 		$timezone = $this->user->Timezone;
 
@@ -126,6 +126,9 @@ class ReservationSavePresenterTests extends TestBase
 			$expectedAttributes[] = new AttributeValue($attr->Id, $attr->Value);
 		}
 
+		$startReminder = new ReservationReminder($this->page->GetStartReminderValue(), $this->page->GetStartReminderInterval());
+		$endReminder = new ReservationReminder($this->page->GetEndReminderValue(), $this->page->GetEndReminderInterval());
+
 		$this->resourceRepository->expects($this->at(0))
 				->method('LoadById')
 				->with($this->equalTo($resourceId))
@@ -159,6 +162,8 @@ class ReservationSavePresenterTests extends TestBase
 															$attachment->Size(), $attachment->Contents(),
 															$attachment->Extension(), 0);
 		$this->assertEquals($expectedAttachment, $actualReservation->AddedAttachment());
+		$this->assertEquals($startReminder, $actualReservation->GetStartReminder());
+		$this->assertEquals($endReminder, $actualReservation->GetEndReminder());
 	}
 
 	public function testHandlingReservationCreationDelegatesToHandler()

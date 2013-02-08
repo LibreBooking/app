@@ -16,8 +16,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
- 
+ */
+
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
@@ -103,6 +103,36 @@ interface IReservationSavePage extends IReservationSaveResultsPage, IRepeatOptio
 	 * @return UploadedFile
 	 */
 	public function GetAttachment();
+
+	/**
+	 * @return bool
+	 */
+	public function HasStartReminder();
+
+	/**
+	 * @return string
+	 */
+	public function GetStartReminderValue();
+
+	/**
+	 * @return string
+	 */
+	public function GetStartReminderInterval();
+
+	/**
+	 * @return bool
+	 */
+	public function HasEndReminder();
+
+	/**
+	 * @return string
+	 */
+	public function GetEndReminderValue();
+
+	/**
+	 * @return string
+	 */
+	public function GetEndReminderInterval();
 }
 
 class ReservationSavePage extends SecurePage implements IReservationSavePage
@@ -130,7 +160,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		$reservation = $this->_presenter->BuildReservation();
 		$this->_presenter->HandleReservation($reservation);
 
-		if ($this->_reservationSavedSuccessfully) {
+		if ($this->_reservationSavedSuccessfully)
+		{
 			$this->Display('Ajax/reservation/save_successful.tpl');
 		}
 		else
@@ -212,11 +243,13 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function GetResources()
 	{
 		$resources = $this->GetForm(FormKeys::ADDITIONAL_RESOURCES);
-		if (is_null($resources)) {
+		if (is_null($resources))
+		{
 			return array();
 		}
 
-		if (!is_array($resources)) {
+		if (!is_array($resources))
+		{
 			return array($resources);
 		}
 
@@ -243,37 +276,44 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		$days = array();
 
 		$sun = $this->GetForm(FormKeys::REPEAT_SUNDAY);
-		if (!empty($sun)) {
+		if (!empty($sun))
+		{
 			$days[] = 0;
 		}
 
 		$mon = $this->GetForm(FormKeys::REPEAT_MONDAY);
-		if (!empty($mon)) {
+		if (!empty($mon))
+		{
 			$days[] = 1;
 		}
 
 		$tue = $this->GetForm(FormKeys::REPEAT_TUESDAY);
-		if (!empty($tue)) {
+		if (!empty($tue))
+		{
 			$days[] = 2;
 		}
 
 		$wed = $this->GetForm(FormKeys::REPEAT_WEDNESDAY);
-		if (!empty($wed)) {
+		if (!empty($wed))
+		{
 			$days[] = 3;
 		}
 
 		$thu = $this->GetForm(FormKeys::REPEAT_THURSDAY);
-		if (!empty($thu)) {
+		if (!empty($thu))
+		{
 			$days[] = 4;
 		}
 
 		$fri = $this->GetForm(FormKeys::REPEAT_FRIDAY);
-		if (!empty($fri)) {
+		if (!empty($fri))
+		{
 			$days[] = 5;
 		}
 
 		$sat = $this->GetForm(FormKeys::REPEAT_SATURDAY);
-		if (!empty($sat)) {
+		if (!empty($sat))
+		{
 			$days[] = 6;
 		}
 
@@ -301,7 +341,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function GetParticipants()
 	{
 		$participants = $this->GetForm(FormKeys::PARTICIPANT_LIST);
-		if (is_array($participants)) {
+		if (is_array($participants))
+		{
 			return $participants;
 		}
 
@@ -314,7 +355,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function GetInvitees()
 	{
 		$invitees = $this->GetForm(FormKeys::INVITATION_LIST);
-		if (is_array($invitees)) {
+		if (is_array($invitees))
+		{
 			return $invitees;
 		}
 
@@ -327,7 +369,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function GetAccessories()
 	{
 		$accessories = $this->GetForm(FormKeys::ACCESSORY_LIST);
-		if (is_array($accessories)) {
+		if (is_array($accessories))
+		{
 			$af = array();
 
 			foreach ($accessories as $a)
@@ -362,7 +405,57 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 
 	private function AttachmentsEnabled()
 	{
-		return Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS, new BooleanConverter());
+		return Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS,
+														ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS,
+														new BooleanConverter());
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasStartReminder()
+	{
+		// TODO: Implement HasStartReminder() method.
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetStartReminderValue()
+	{
+		// TODO: Implement GetStartReminderValue() method.
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetStartReminderInterval()
+	{
+		// TODO: Implement GetStartReminderInterval() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasEndReminder()
+	{
+		// TODO: Implement HasEndReminder() method.
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetEndReminderValue()
+	{
+		// TODO: Implement GetEndReminderValue() method.
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetEndReminderInterval()
+	{
+		// TODO: Implement GetEndReminderInterval() method.
 	}
 }
 

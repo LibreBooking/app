@@ -123,6 +123,16 @@ class ReservationSavePresenter implements IReservationSavePresenter
 			}
 		}
 
+		if ($this->_page->HasStartReminder())
+		{
+			$reservationSeries->AddStartReminder(new ReservationReminder($this->_page->GetStartReminderValue(), $this->_page->GetStartReminderInterval()));
+		}
+
+		if ($this->_page->HasEndReminder())
+		{
+			$reservationSeries->AddEndReminder(new ReservationReminder($this->_page->GetEndReminderValue(), $this->_page->GetEndReminderInterval()));
+		}
+
 		return $reservationSeries;
 	}
 	

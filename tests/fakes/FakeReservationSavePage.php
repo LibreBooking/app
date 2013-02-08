@@ -46,6 +46,10 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $accessories = array();
 	public $attributes = array();
 	public $attachment;
+	public $startReminderValue = "15";
+	public $startReminderInterval = ReminderInterval::Minutes;
+	public $endReminderValue = "1";
+	public $endReminderInterval = ReminderInterval::Hours;
 
 	public function __construct()
 	{
@@ -182,6 +186,36 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetAttributes()
 	{
 		return $this->attributes;
+	}
+
+	public function GetStartReminderValue()
+	{
+		return $this->startReminderValue;
+	}
+
+	public function GetStartReminderInterval()
+	{
+		return $this->startReminderInterval;
+	}
+
+	public function GetEndReminderValue()
+	{
+		return $this->endReminderValue;
+	}
+
+	public function GetEndReminderInterval()
+	{
+		return $this->endReminderInterval;
+	}
+
+	public function HasStartReminder()
+	{
+		return true;
+	}
+
+	public function HasEndReminder()
+	{
+		return true;
 	}
 }
 

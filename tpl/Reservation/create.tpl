@@ -155,9 +155,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 <input type="checkbox" class="reminderEnabled"/>
                 <input type="text" size="3" value="15" class="reminderTime"/>
                 <select class="reminderInterval">
-                    <option value="minutes">{translate key=minutes}</option>
-                    <option value="hours">{translate key=hours}</option>
-                    <option value="days">{translate key=days}</option>
+                    <option value="{ReminderInterval::Minutes}">{translate key=minutes}</option>
+                    <option value="{ReminderInterval::Hours}">{translate key=hours}</option>
+                    <option value="{ReminderInterval::Days}">{translate key=days}</option>
                 </select>
                 <span>{translate key=ReminderBeforeStart}</span>
             </div>
@@ -165,9 +165,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 <input type="checkbox" class="reminderEnabled"/>
                 <input type="text" size="3" value="15" class="reminderTime"/>
                 <select class="reminderInterval">
-                    <option value="minutes">{translate key=minutes}</option>
-                    <option value="hours">{translate key=hours}</option>
-                    <option value="days">{translate key=days}</option>
+					<option value="{ReminderInterval::Minutes}">{translate key=minutes}</option>
+					<option value="{ReminderInterval::Hours}">{translate key=hours}</option>
+					<option value="{ReminderInterval::Days}">{translate key=days}</option>
                 </select>
                 <span>{translate key=ReminderBeforeEnd}</span>
             </div>
