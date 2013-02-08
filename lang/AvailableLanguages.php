@@ -28,9 +28,11 @@ class AvailableLanguages
     public static function GetAvailableLanguages()
     {
         return array(
+					'bg_bg' => new AvailableLanguage('bg_bg', 'bg_bg.php', 'Bulgarian'),
         			'ca' => new AvailableLanguage('ca', 'ca.php', 'Catalan'),
         			'cz' => new AvailableLanguage('cz', 'cz.php', 'Czech'),
         			'de_de' => new AvailableLanguage('de_de', 'de_de.php', 'Deutsch'),
+        			'du_be' => new AvailableLanguage('du_be', 'du_be.php', 'Flemisch'),
         			'du_nl' => new AvailableLanguage('du_nl', 'du_nl.php', 'Dutch'),
         			'en_us' => new AvailableLanguage('en_us', 'en_us.php', 'English US'),
         			'en_gb' => new AvailableLanguage('en_gb', 'en_gb.php', 'English GB'),

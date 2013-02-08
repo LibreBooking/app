@@ -56,6 +56,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p>Jakub Baláš (Czech)</p>
 <p>Maik Standtke (German)</p>
 <p>Stephen Höglund (Swedish)</p>
+<p>Vladislav Zhivkov (Bulgarian)</p>
+<p>Bart Verheyde (Flemisch)</p>
 
 <h3>Thank you to the following projects and libraries</h3>
 
