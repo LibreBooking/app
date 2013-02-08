@@ -91,6 +91,10 @@ class Queries
 			'INSERT INTO reservation_files (series_id, file_name, file_type, file_size, file_extension)
 		VALUES (@seriesid, @file_name, @file_type, @file_size, @file_extension)';
 
+	const ADD_RESERVATION_REMINDER =
+			'INSERT INTO reservation_reminders (series_id, minutes_prior, reminder_type)
+			VALUES (@seriesid, @minutes_prior, @reminder_type)';
+
 	const ADD_RESERVATION_RESOURCE =
 			'INSERT INTO reservation_resources (series_id, resource_id, resource_level_id)
 		VALUES (@seriesid, @resourceid, @resourceLevelId)';

@@ -473,6 +473,7 @@ class en_us extends Language
 		$strings['InvalidStartSlot'] = 'The start date and time requested is not valid.';
 		$strings['InvalidEndSlot'] = 'The end date and time requested is not valid.';
 		$strings['MaxParticipantsError'] = '%s can only support %s participants.';
+		$strings['ReservationCriticalError'] = 'There was a critical error saving your reservation. If this continues, contact your system administrator.';
 		// End Errors
 
 		// Page Titles

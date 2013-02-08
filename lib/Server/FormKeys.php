@@ -16,12 +16,13 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 class FormKeys
 {
 	private function __construct()
-	{}
+	{
+	}
 
 	const ACCESSORY_LIST = 'accessoryList';
 	const ACCESSORY_NAME = 'accessoryName';
@@ -30,10 +31,10 @@ class FormKeys
 	const ADDITIONAL_RESOURCES = 'additionalResources';
 	const ADDRESS = 'address';
 	const ALLOW_MULTIDAY = 'allowMultiday';
-    const ANNOUNCEMENT_TEXT = 'announcementText';
-    const ANNOUNCEMENT_START = 'announcementStart';
-    const ANNOUNCEMENT_END = 'announcementEnd';
-    const ANNOUNCEMENT_PRIORITY = 'announcementPriority';
+	const ANNOUNCEMENT_TEXT = 'announcementText';
+	const ANNOUNCEMENT_START = 'announcementStart';
+	const ANNOUNCEMENT_END = 'announcementEnd';
+	const ANNOUNCEMENT_PRIORITY = 'announcementPriority';
 	const ATTRIBUTE_LABEL = 'attributeLabel';
 	const ATTRIBUTE_TYPE = 'attributeType';
 	const ATTRIBUTE_CATEGORY = 'attributeScope';
@@ -49,7 +50,7 @@ class FormKeys
 	const BEGIN_TIME = 'beginTime';
 	const BLACKOUT_APPLY_TO_SCHEDULE = 'applyToSchedule';
 
-    const CAPTCHA = 'captcha';
+	const CAPTCHA = 'captcha';
 	const CONFLICT_ACTION = 'conflictAction';
 	const CONTACT_INFO = 'contactInfo';
 	const CURRENT_PASSWORD = 'currentPassword';
@@ -61,6 +62,9 @@ class FormKeys
 	const EMAIL = 'email';
 	const END_DATE = 'endDate';
 	const END_PERIOD = 'endPeriod';
+	const END_REMINDER_ENABLED = 'END_REMINDER_ENABLED';
+	const END_REMINDER_TIME = 'END_REMINDER_TIME';
+	const END_REMINDER_INTERVAL = 'END_REMINDER_INTERVAL';
 	const END_REPEAT_DATE = 'endRepeatDate';
 	const END_TIME = 'endTime';
 
@@ -144,6 +148,9 @@ class FormKeys
 	const SCHEDULE_WEEKDAY_START = 'scheduleWeekdayStart';
 	const SCHEDULE_DAYS_VISIBLE = 'scheduleDaysVisible';
 	const SERIES_UPDATE_SCOPE = 'seriesUpdateScope';
+	const START_REMINDER_ENABLED = 'START_REMINDER_ENABLED';
+	const START_REMINDER_TIME = 'START_REMINDER_TIME';
+	const START_REMINDER_INTERVAL = 'START_REMINDER_INTERVAL';
 	const SLOTS_BLOCKED = 'blockedSlots';
 	const SLOTS_RESERVABLE = 'reservableSlots';
 	const SUMMARY = 'summary';
@@ -165,4 +172,5 @@ class FormKeys
 
 
 }
+
 ?>

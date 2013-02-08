@@ -231,6 +231,18 @@ class AddReservationAttachmentCommand extends SqlCommand
 	}
 }
 
+class AddReservationReminderCommand extends SqlCommand
+{
+	public function __construct($seriesId, $minutesPrior, $reminderType)
+		{
+			parent::__construct(Queries::ADD_RESERVATION_REMINDER);
+
+			$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+			$this->AddParameter(new Parameter(ParameterNames::REMINDER_MINUTES_PRIOR, $minutesPrior));
+			$this->AddParameter(new Parameter(ParameterNames::REMINDER_TYPE, $reminderType));
+		}
+}
+
 class AddReservationResourceCommand extends SqlCommand
 {
 	public function __construct($seriesId, $resourceId, $resourceLevelId)

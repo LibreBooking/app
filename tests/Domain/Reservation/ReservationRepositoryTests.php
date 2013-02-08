@@ -223,6 +223,28 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue(in_array($insertResource1, $this->db->_Commands));
 		$this->assertTrue(in_array($insertResource2, $this->db->_Commands));
 	}
+	
+	public function testAddsReservationReminders()
+	{
+		$seriesId = 999;
+		$reservation = new TestReservationSeries();
+		$reservation->WithResource(new FakeBookableResource(837));
+		$reservation->AddStartReminder(new ReservationReminder(15, ReservationReminderInterval::Hours));
+		$reservation->AddEndReminder(new ReservationReminder(400, ReservationReminderInterval::Minutes));
+
+		$minutesPriorStart = 60*15;
+		$minutesPriorEnd = 400;
+
+		$this->db->_ExpectedInsertId = $seriesId;
+
+		$this->repository->Add($reservation);
+
+		$insertStartReminder = new AddReservationReminderCommand($seriesId, $minutesPriorStart, ReservationReminderType::Start);
+		$insertEndReminder = new AddReservationReminderCommand($seriesId, $minutesPriorEnd, ReservationReminderType::End);
+
+		$this->assertTrue($this->db->ContainsCommand($insertStartReminder));
+		$this->assertTrue($this->db->ContainsCommand($insertEndReminder));
+	}
 
 	public function testLoadByIdFullyHydratesReservationSeriesObject()
 	{

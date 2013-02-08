@@ -20,18 +20,74 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReservationReminder
 {
+	private $value;
+	private $interval;
+	private $minutesPrior;
+
 	public function __construct($value, $interval)
 	{
 		$this->value = $value;
 		$this->interval = $interval;
+
+		if ($interval == ReservationReminderInterval::Days)
+		{
+			$this->minutesPrior = $value * 60 * 24;
+		}
+		elseif ($interval == ReservationReminderInterval::Hours)
+		{
+			$this->minutesPrior = $value * 60;
+		}
+		else
+		{
+			$this->minutesPrior = $value;
+		}
+	}
+
+	public static function None()
+	{
+		return new NullReservationReminder();
+	}
+
+	public function Enabled()
+	{
+		return true;
+	}
+
+	public function MinutesPrior()
+	{
+		return $this->minutesPrior;
 	}
 }
 
-class ReminderInterval
+class NullReservationReminder extends ReservationReminder
+{
+	public function __construct()
+	{
+		parent::__construct(0, null);
+	}
+
+	public function Enabled()
+	{
+		return false;
+	}
+
+	public function MinutesPrior()
+	{
+		return 0;
+	}
+}
+
+class ReservationReminderInterval
 {
 	const Minutes = 'minutes';
 	const Hours = 'hours';
 	const Days = 'days';
+}
+
+class ReservationReminderType
+{
+	const Start = 0;
+	const End = 1;
 }
 
 ?>

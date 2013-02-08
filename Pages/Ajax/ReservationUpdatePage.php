@@ -16,8 +16,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
- 
+ */
+
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 
@@ -61,15 +61,23 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 
 	public function PageLoad()
 	{
-		$reservation = $this->_presenter->BuildReservation();
-		$this->_presenter->HandleReservation($reservation);
-
-		if ($this->_reservationSavedSuccessfully) {
-			$this->Display('Ajax/reservation/update_successful.tpl');
-		}
-		else
+		try
 		{
-			$this->Display('Ajax/reservation/save_failed.tpl');
+			$reservation = $this->_presenter->BuildReservation();
+			$this->_presenter->HandleReservation($reservation);
+
+			if ($this->_reservationSavedSuccessfully)
+			{
+				$this->Display('Ajax/reservation/update_successful.tpl');
+			}
+			else
+			{
+				$this->Display('Ajax/reservation/save_failed.tpl');
+			}
+		} catch (Exception $ex)
+		{
+			Log::Error('ReservationUpdatePage - Critical error saving reservation: %s', $ex);
+			$this->Display('Ajax/reservation/reservation_error.tpl');
 		}
 	}
 

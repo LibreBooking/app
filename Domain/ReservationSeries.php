@@ -243,6 +243,8 @@ class ReservationSeries
 	protected function __construct()
 	{
 		$this->_repeatOptions = new RepeatNone();
+		$this->startReminder = ReservationReminder::None();
+		$this->endReminder = ReservationReminder::None();
 	}
 
 	/**

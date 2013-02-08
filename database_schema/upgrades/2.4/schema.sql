@@ -29,3 +29,15 @@ CREATE TABLE `reminders` (
  	REFERENCES users(`user_id`)
  	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `reservation_reminders`;
+CREATE TABLE `reservation_reminders` (
+ `reminder_id` int(11) unsigned NOT NULL auto_increment,
+ `series_id` int unsigned NOT NULL,
+ `minutes_prior` int unsigned NOT NULL,
+ `reminder_type` tinyint(2) unsigned NOT NULL,
+ PRIMARY KEY (`reminder_id`),
+ FOREIGN KEY (`series_id`)
+  	REFERENCES reservation_series(`series_id`)
+  	ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;

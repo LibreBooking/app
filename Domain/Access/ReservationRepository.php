@@ -153,6 +153,20 @@ class ReservationRepository implements IReservationRepository
 			$this->AddReservationAttachment($reservationSeries->AddedAttachment());
 		}
 
+		if ($reservationSeries->GetStartReminder()->Enabled())
+		{
+			$reminder = $reservationSeries->GetStartReminder();
+			$insertAccessory = new AddReservationReminderCommand($reservationSeriesId, $reminder->MinutesPrior(), ReservationReminderType::Start);
+			$database->Execute($insertAccessory);
+		}
+
+		if ($reservationSeries->GetEndReminder()->Enabled())
+		{
+			$reminder = $reservationSeries->GetEndReminder();
+			$insertAccessory = new AddReservationReminderCommand($reservationSeriesId, $reminder->MinutesPrior(), ReservationReminderType::End);
+			$database->Execute($insertAccessory);
+		}
+
 		return $reservationSeriesId;
 	}
 
@@ -366,7 +380,8 @@ class ReservationRepository implements IReservationRepository
 		$extension = $attachmentFile->FileExtension();
 		$attachmentFile->WithFileId($id);
 
-		ServiceLocator::GetFileSystem()->Add(Paths::ReservationAttachments(), "$id.$extension", $attachmentFile->FileContents());
+		ServiceLocator::GetFileSystem()->Add(Paths::ReservationAttachments(), "$id.$extension",
+											 $attachmentFile->FileContents());
 
 		return $id;
 	}

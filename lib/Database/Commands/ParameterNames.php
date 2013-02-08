@@ -101,6 +101,8 @@ class ParameterNames
 	const REMINDER_MESSAGE = '@message';
 	const REMINDER_ADDRESS = '@address';
 	const REMINDER_REFNUMBER = '@refnumber';
+	const REMINDER_MINUTES_PRIOR = '@minutes_prior';
+	const REMINDER_TYPE = '@reminder_type';
 
 	const REFERENCE_NUMBER = '@referenceNumber';
 

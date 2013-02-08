@@ -16,8 +16,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
- 
+ */
+
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
@@ -57,16 +57,23 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 
 	public function PageLoad()
 	{
-		$reservation = $this->presenter->BuildReservation();
-		$this->presenter->HandleReservation($reservation);
+		try
+		{
+			$reservation = $this->presenter->BuildReservation();
+			$this->presenter->HandleReservation($reservation);
 
-		if ($this->reservationSavedSuccessfully)
+			if ($this->reservationSavedSuccessfully)
+			{
+				$this->Display('Ajax/reservation/delete_successful.tpl');
+			}
+			else
+			{
+				$this->Display('Ajax/reservation/delete_failed.tpl');
+			}
+		} catch (Exception $ex)
 		{
-			$this->Display('Ajax/reservation/delete_successful.tpl');
-		}
-		else
-		{
-			$this->Display('Ajax/reservation/delete_failed.tpl');
+			Log::Error('ReservationDeletePage - Critical error saving reservation: %s', $ex);
+			$this->Display('Ajax/reservation/reservation_error.tpl');
 		}
 	}
 
@@ -133,4 +140,5 @@ class ReservationDeleteJsonPage extends ReservationDeletePage implements IReserv
 		// nothing to do
 	}
 }
+
 ?>

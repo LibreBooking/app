@@ -47,9 +47,9 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $attributes = array();
 	public $attachment;
 	public $startReminderValue = "15";
-	public $startReminderInterval = ReminderInterval::Minutes;
+	public $startReminderInterval = ReservationReminderInterval::Minutes;
 	public $endReminderValue = "1";
-	public $endReminderInterval = ReminderInterval::Hours;
+	public $endReminderInterval = ReservationReminderInterval::Hours;
 
 	public function __construct()
 	{

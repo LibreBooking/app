@@ -157,16 +157,23 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 
 	public function PageLoad()
 	{
-		$reservation = $this->_presenter->BuildReservation();
-		$this->_presenter->HandleReservation($reservation);
+		try
+		{
+			$reservation = $this->_presenter->BuildReservation();
+			$this->_presenter->HandleReservation($reservation);
 
-		if ($this->_reservationSavedSuccessfully)
+			if ($this->_reservationSavedSuccessfully)
+			{
+				$this->Display('Ajax/reservation/save_successful.tpl');
+			}
+			else
+			{
+				$this->Display('Ajax/reservation/save_failed.tpl');
+			}
+		} catch (Exception $ex)
 		{
-			$this->Display('Ajax/reservation/save_successful.tpl');
-		}
-		else
-		{
-			$this->Display('Ajax/reservation/save_failed.tpl');
+			Log::Error('ReservationSavePage - Critical error saving reservation: %s', $ex);
+			$this->Display('Ajax/reservation/reservation_error.tpl');
 		}
 	}
 
@@ -415,7 +422,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	 */
 	public function HasStartReminder()
 	{
-		// TODO: Implement HasStartReminder() method.
+		$val = $this->server->GetForm(FormKeys::START_REMINDER_ENABLED);
+		return !empty($val);
 	}
 
 	/**
@@ -423,7 +431,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	 */
 	public function GetStartReminderValue()
 	{
-		// TODO: Implement GetStartReminderValue() method.
+		return $this->server->GetForm(FormKeys::START_REMINDER_TIME);
 	}
 
 	/**
@@ -431,7 +439,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	 */
 	public function GetStartReminderInterval()
 	{
-		// TODO: Implement GetStartReminderInterval() method.
+		return $this->server->GetForm(FormKeys::START_REMINDER_INTERVAL);
 	}
 
 	/**
@@ -439,7 +447,8 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	 */
 	public function HasEndReminder()
 	{
-		// TODO: Implement HasEndReminder() method.
+		$val = $this->server->GetForm(FormKeys::END_REMINDER_ENABLED);
+		return !empty($val);
 	}
 
 	/**
@@ -447,7 +456,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	 */
 	public function GetEndReminderValue()
 	{
-		// TODO: Implement GetEndReminderValue() method.
+		return $this->server->GetForm(FormKeys::END_REMINDER_TIME);
 	}
 
 	/**
@@ -455,7 +464,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	 */
 	public function GetEndReminderInterval()
 	{
-		// TODO: Implement GetEndReminderInterval() method.
+		return $this->server->GetForm(FormKeys::END_REMINDER_INTERVAL);
 	}
 }
 

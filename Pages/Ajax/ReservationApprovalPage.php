@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
@@ -30,17 +30,26 @@ interface IReservationApprovalPage extends IReservationSaveResultsPage
 	 */
 	public function GetReferenceNumber();
 }
+
 class ReservationApprovalPage extends SecurePage implements IReservationApprovalPage
 {
 	public function PageLoad()
 	{
-		$reservationAction = ReservationAction::Approve;
-		$factory = new ReservationPersistenceFactory();
-		$persistenceService = $factory->Create($reservationAction);
-		$handler = ReservationHandler::Create($reservationAction, $persistenceService, ServiceLocator::GetServer()->GetUserSession());
+		try
+		{
+			$reservationAction = ReservationAction::Approve;
+			$factory = new ReservationPersistenceFactory();
+			$persistenceService = $factory->Create($reservationAction);
+			$handler = ReservationHandler::Create($reservationAction, $persistenceService,
+												  ServiceLocator::GetServer()->GetUserSession());
 
-		$presenter = new ReservationApprovalPresenter($this, $persistenceService, $handler);
-		$presenter->PageLoad();
+			$presenter = new ReservationApprovalPresenter($this, $persistenceService, $handler);
+			$presenter->PageLoad();
+		} catch (Exception $ex)
+		{
+			Log::Error('ReservationApprovalPage - Critical error saving reservation: %s', $ex);
+			$this->Display('Ajax/reservation/reservation_error.tpl');
+		}
 	}
 
 	/**
@@ -50,7 +59,7 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	{
 		return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
 	}
-	
+
 	/**
 	 * @param bool $succeeded
 	 */
@@ -69,10 +78,11 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 			$this->SetJson(array('approved' => (string)false), $errors);
 		}
 	}
-	
+
 	public function ShowWarnings($warnings)
 	{
 		// nothing to do
 	}
 }
+
 ?>
