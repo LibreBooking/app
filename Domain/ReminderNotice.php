@@ -33,7 +33,6 @@ class ReminderNotice
 	private $lastName;
 	private $timezone;
 	private $reminder_minutes;
-	private $reminderDate;
 
 	public function Description()
 	{
@@ -63,11 +62,6 @@ class ReminderNotice
 	public function ReferenceNumber()
 	{
 		return $this->referenceNumber;
-	}
-
-	public function ReminderDate()
-	{
-		return $this->reminderDate;
 	}
 
 	public function ReminderMinutes()
@@ -119,11 +113,10 @@ class ReminderNotice
 	 * @param string $lastName
 	 * @param string $timezone
 	 * @param int $reminder_minutes
-	 * @param Date $reminderDate
 	 */
 	public function __construct($seriesId, $reservationId, $referenceNumber, Date $startDate, Date $endDate, $title,
 								$description, $resourceName, $emailAddress, $firstName, $lastName, $timezone,
-								$reminder_minutes, Date $reminderDate)
+								$reminder_minutes)
 	{
 		$this->seriesId = $seriesId;
 		$this->reservationId = $reservationId;
@@ -138,7 +131,6 @@ class ReminderNotice
 		$this->lastName = $lastName;
 		$this->timezone = $timezone;
 		$this->reminder_minutes = $reminder_minutes;
-		$this->reminderDate = $reminderDate;
 	}
 
 	/**
@@ -160,13 +152,11 @@ class ReminderNotice
 		$lastName = $row[ColumnNames::LAST_NAME];
 		$timezone = $row[ColumnNames::TIMEZONE_NAME];
 		$reminder_minutes = $row[ColumnNames::REMINDER_MINUTES_PRIOR];
-		$reminderDate = Date::FromDatabase($row[ColumnNames::REMINDER_DATE]);
 
 		return new ReminderNotice($seriesId, $reservationId, $referenceNumber,
 								  $startDate, $endDate, $title, $description,
 								  $resourceName, $emailAddress, $firstName,
-								  $lastName, $timezone, $reminder_minutes,
-								  $reminderDate);
+								  $lastName, $timezone, $reminder_minutes);
 	}
 }
 

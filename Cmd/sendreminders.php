@@ -16,20 +16,30 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 define('ROOT_DIR', '../');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Domain/Reminder.php');
 
-$rep = new ReminderRepository();
-$head = $rep->GetAll();
-$user = ServiceLocator::GetServer()->GetUserSession();
-foreach($head as $remind){
-    $time1 = Date::FromDatabase($remind->SendTime());
-    $time2 = $time1->Format('Y:m:d H:i');
-    $current = Date::Now()->Format('Y:m:d H:i');
-    if($time2 <= $current){
-        Reminder::SendItOut($remind);
-    }
-};
+Log::Debug('Running sendreminders.php');
+
+try
+{
+	$repository = new ReminderRepository();
+	$startNotices = $repository->GetReminderNotices(Date::Now(), ReservationReminderType::Start);
+	Log::Debug('Found %s start reminders', count($startNotices));
+	foreach ($startNotices as $notice)
+	{
+		var_dump($notice);
+	}
+	$endNotices = $repository->GetReminderNotices(Date::Now(), ReservationReminderType::End);
+	Log::Debug('Found %s end reminders', count($endNotices));
+	foreach ($endNotices as $notice)
+	{
+		var_dump($notice);
+	}
+} catch (Exception $ex)
+{
+	Log::Error('Error running sendreminders.php: %s', $ex);
+}

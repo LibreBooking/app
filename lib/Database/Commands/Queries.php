@@ -403,15 +403,14 @@ class Queries
 		ri.reservation_instance_id,
 		ri.series_id,
 		u.user_id, u.fname, u.lname, u.email,
-		r.name as resource_name,
-		IF (@reminder_type = 0, date_sub(start_date,INTERVAL rr.minutes_prior MINUTE), date_sub(end_date,INTERVAL rr.minutes_prior MINUTE)) AS reminder_date
+		r.name as resource_name
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
 		INNER JOIN reservation_reminders rr on ri.series_id = rr.series_id INNER JOIN reservation_users ru on ru.reservation_instance_id = ri.reservation_instance_id
 		INNER JOIN users u on ru.user_id = u.user_id
 		INNER JOIN reservation_resources ON reservation_resources.series_id = ri.series_id AND resource_level_id = 1
 		INNER JOIN resources r on reservation_resources.resource_id = r.resource_id
-		WHERE reminder_date = @current_date';
+		WHERE (@reminder_type=0 AND date_sub(start_date,INTERVAL rr.minutes_prior MINUTE) = @current_date) OR (@reminder_type=1 AND date_sub(end_date,INTERVAL rr.minutes_prior MINUTE) = @current_date)';
 
 	const GET_REMINDERS_BY_USER = 'SELECT * FROM reminders WHERE user_id = @user_id';
 

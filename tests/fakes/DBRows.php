@@ -48,8 +48,7 @@ class ReminderNoticeRow
 	public function __construct($seriesId = 1, $reservationId = 1, $referenceNumber = 'referencenumber',
 								$startDate = null, $endDate = null, $title = 'title', $description = 'description',
 								$resourceName = 'resourcename', $emailAddress = 'email@address.com', $fname = 'fname',
-								$lname = 'lname', $timezone = 'UTC', $reminder_minutes = 100,
-								$reminderDate = null)
+								$lname = 'lname', $timezone = 'UTC', $reminder_minutes = 100)
 	{
 		if (empty($startDate))
 		{
@@ -58,10 +57,6 @@ class ReminderNoticeRow
 		if (empty($endDate))
 		{
 			$endDate = Date::Now()->ToDatabase();
-		}
-		if (empty($reminderDate))
-		{
-			$reminderDate = Date::Now()->ToDatabase();
 		}
 		$this->row = array(
 			ColumnNames::SERIES_ID => $seriesId,
@@ -77,7 +72,6 @@ class ReminderNoticeRow
 			ColumnNames::LAST_NAME => $lname,
 			ColumnNames::TIMEZONE_NAME => $timezone,
 			ColumnNames::REMINDER_MINUTES_PRIOR => $reminder_minutes,
-			ColumnNames::REMINDER_DATE => $reminderDate,
 		);
 	}
 }

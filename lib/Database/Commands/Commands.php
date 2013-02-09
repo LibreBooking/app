@@ -1015,7 +1015,7 @@ class GetReminderNoticesCommand extends SqlCommand
 	public function __construct(Date $currentDate, $type)
 		{
 			parent::__construct(Queries::GET_REMINDER_NOTICES);
-			$this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate));
+			$this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate->ToDatabase()));
 			$this->AddParameter(new Parameter(ParameterNames::REMINDER_TYPE, $type));
 		}
 }

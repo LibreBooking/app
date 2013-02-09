@@ -214,7 +214,6 @@ class ColumnNames
 	const GROUP_NAME_ALIAS = 'group_name';
 	const RESOURCE_NAME_ALIAS = 'resource_name';
 	const SCHEDULE_NAME_ALIAS = 'schedule_name';
-	const REMINDER_DATE = 'reminder_date';
 
 	// shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

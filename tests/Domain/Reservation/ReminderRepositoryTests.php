@@ -33,7 +33,7 @@ class ReminderRepositoryTests extends TestBase
 		$this->repository = new ReminderRepository();
 	}
 
-	public function testGetsAllReservationsWithStartRemindersRightNow()
+	public function testGetsAllReservationsWithReminderDateOfThisMinute()
 	{
 		$seriesId = 123;
 		$instanceId = 456;
@@ -48,9 +48,7 @@ class ReminderRepositoryTests extends TestBase
 		$lname = 'last';
 		$timezone = 'America/Chicago';
 		$reminder_minutes = 100;
-		$reminderDate = Date::FromDatabase($startDate)->RemoveMinutes(15);
-
-		$now = $reminderDate;
+		$now = Date::Now();
 
 		$row1 = new ReminderNoticeRow($seriesId, $instanceId, $referenceNumber, $startDate, $endDate, $title, $description, $resourceName, $emailAddress, $fname, $lname, $timezone, $reminder_minutes, $reminderDate);
 		$row2 = new ReminderNoticeRow();
