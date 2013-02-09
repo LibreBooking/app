@@ -609,6 +609,15 @@ class Date
 	{
 		return Date::Parse('9999-01-01', 'UTC');
 	}
+
+	/**
+	 * @return Date
+	 */
+	public function ToTheMinute()
+	{
+		$time = $this->GetTime();
+		return $this->SetTime(new Time($time->Hour(), $time->Minute(), 0, $this->Timezone()));
+	}
 }
 
 class NullDate extends Date

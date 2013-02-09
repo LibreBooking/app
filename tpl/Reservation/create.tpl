@@ -153,23 +153,23 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
             <div id="reminderOptionsStart">
                 <input type="checkbox" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-                <input type="text" size="3" value="15" class="reminderTime" {formname key=START_REMINDER_TIME}/>
-                <select class="reminderInterval" {formname key=START_REMINDER_INTERVAL}>
+                <input type="text" size="3" value="15" class="reminderTime textbox" {formname key=START_REMINDER_TIME}/>
+                <select class="reminderInterval textbox" {formname key=START_REMINDER_INTERVAL}>
                     <option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
                     <option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
                     <option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
                 </select>
-                <span>{translate key=ReminderBeforeStart}</span>
+                <span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
             </div>
             <div id="reminderOptionsEnd">
                 <input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-                <input type="text" size="3" value="15" class="reminderTime" {formname key=END_REMINDER_TIME}/>
-                <select class="reminderInterval" {formname key=END_REMINDER_INTERVAL}>
+                <input type="text" size="3" value="15" class="reminderTime textbox" {formname key=END_REMINDER_TIME}/>
+                <select class="reminderInterval textbox" {formname key=END_REMINDER_INTERVAL}>
 					<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
 					<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
 					<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
                 </select>
-                <span>{translate key=ReminderBeforeEnd}</span>
+                <span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
             </div>
         </li>
 	{/if}

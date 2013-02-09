@@ -202,6 +202,7 @@ class ColumnNames
 	const REMINDER_USER_ID = 'user_id';
 	const REMINDER_ADDRESS = 'address';
 	const REMINDER_REFNUMBER = 'refnumber';
+	const REMINDER_MINUTES_PRIOR = 'minutes_prior';
 
 	// dynamic
 	const TOTAL = 'total';
@@ -213,6 +214,7 @@ class ColumnNames
 	const GROUP_NAME_ALIAS = 'group_name';
 	const RESOURCE_NAME_ALIAS = 'resource_name';
 	const SCHEDULE_NAME_ALIAS = 'schedule_name';
+	const REMINDER_DATE = 'reminder_date';
 
 	// shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

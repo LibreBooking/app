@@ -38,4 +38,5 @@ require_once(ROOT_DIR . 'Domain/Access/AnnouncementRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/AttributeRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/ReportingRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/UserSessionRepository.php');
+require_once(ROOT_DIR . 'Domain/Access/ReminderRepository.php');
 ?>

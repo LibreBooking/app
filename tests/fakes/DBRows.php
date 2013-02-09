@@ -36,6 +36,52 @@ class CustomAttributeValueRow
 	}
 }
 
+class ReminderNoticeRow
+{
+	private $row = array();
+
+	public function Rows()
+	{
+		return array($this->row);
+	}
+
+	public function __construct($seriesId = 1, $reservationId = 1, $referenceNumber = 'referencenumber',
+								$startDate = null, $endDate = null, $title = 'title', $description = 'description',
+								$resourceName = 'resourcename', $emailAddress = 'email@address.com', $fname = 'fname',
+								$lname = 'lname', $timezone = 'UTC', $reminder_minutes = 100,
+								$reminderDate = null)
+	{
+		if (empty($startDate))
+		{
+			$startDate = Date::Now()->ToDatabase();
+		}
+		if (empty($endDate))
+		{
+			$endDate = Date::Now()->ToDatabase();
+		}
+		if (empty($reminderDate))
+		{
+			$reminderDate = Date::Now()->ToDatabase();
+		}
+		$this->row = array(
+			ColumnNames::SERIES_ID => $seriesId,
+			ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
+			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
+			ColumnNames::RESERVATION_START => $startDate,
+			ColumnNames::RESERVATION_END => $endDate,
+			ColumnNames::RESERVATION_TITLE => $title,
+			ColumnNames::RESERVATION_DESCRIPTION => $description,
+			ColumnNames::RESOURCE_NAME_ALIAS => $resourceName,
+			ColumnNames::EMAIL => $emailAddress,
+			ColumnNames::FIRST_NAME => $fname,
+			ColumnNames::LAST_NAME => $lname,
+			ColumnNames::TIMEZONE_NAME => $timezone,
+			ColumnNames::REMINDER_MINUTES_PRIOR => $reminder_minutes,
+			ColumnNames::REMINDER_DATE => $reminderDate,
+		);
+	}
+}
+
 class ReservationRow
 {
 	private $row = array();

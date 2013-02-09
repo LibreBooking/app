@@ -398,6 +398,21 @@ class Queries
 		INNER JOIN group_roles gr ON r.role_id = gr.role_id
 		WHERE gr.group_id = @groupid';
 
+	const GET_REMINDER_NOTICES = 'SELECT
+		rs.*,
+		ri.reservation_instance_id,
+		ri.series_id,
+		u.user_id, u.fname, u.lname, u.email,
+		r.name as resource_name,
+		IF (@reminder_type = 0, date_sub(start_date,INTERVAL rr.minutes_prior MINUTE), date_sub(end_date,INTERVAL rr.minutes_prior MINUTE)) AS reminder_date
+		FROM reservation_instances ri
+		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
+		INNER JOIN reservation_reminders rr on ri.series_id = rr.series_id INNER JOIN reservation_users ru on ru.reservation_instance_id = ri.reservation_instance_id
+		INNER JOIN users u on ru.user_id = u.user_id
+		INNER JOIN reservation_resources ON reservation_resources.series_id = ri.series_id AND resource_level_id = 1
+		INNER JOIN resources r on reservation_resources.resource_id = r.resource_id
+		WHERE reminder_date = @current_date';
+
 	const GET_REMINDERS_BY_USER = 'SELECT * FROM reminders WHERE user_id = @user_id';
 
    	const GET_REMINDERS_BY_REFNUMBER = 'SELECT * FROM reminders WHERE refnumber = @refnumber';

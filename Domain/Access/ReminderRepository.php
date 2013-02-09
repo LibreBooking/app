@@ -1,15 +1,32 @@
 <?php
 /**
-Part of phpScheduleIt
-written by Stephen Oliver
-add this file to /Domain/Access
- */
+Copyright 2013 Stephen Oliver, Nick Korbel
+
+This file is part of phpScheduleIt.
+
+phpScheduleIt is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+phpScheduleIt is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 require_once (ROOT_DIR . 'Domain/Reminder.php');
+require_once (ROOT_DIR . 'Domain/ReminderNotice.php');
 
 class ReminderRepository implements IReminderRepository
 {
-    public function GetAll()
+
+	// select date_sub(start_date,INTERVAL rr.minutes_prior MINUTE) as reminder_date from reservation_instances ri INNER JOIN reservation_reminders rr on ri.series_id = rr.series_id
+
+	public function GetAll()
     {
         $reminders = array();
 
@@ -89,6 +106,24 @@ class ReminderRepository implements IReminderRepository
         ServiceLocator::GetDatabase()->Query(new DeleteReminderByRefNumberCommand($refnumber));
     }
 
+	/**
+	 * @param Date $now
+	 * @param ReservationReminderType $reminderType
+	 * @return ReminderNotice[]|array
+	 */
+	public function GetReminderNotices(Date $now, $reminderType)
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new GetReminderNoticesCommand($now->ToTheMinute(), $reminderType));
+
+		$notices = array();
+		while ($row = $reader->GetRow())
+		{
+			$notices[] = ReminderNotice::FromRow($row);
+		}
+
+		$reader->Free();
+		return $notices;
+	}
 }
 
 interface IReminderRepository

@@ -52,13 +52,15 @@
 #reservationDetails {
 	float: left;
 	width: 50%;
+	border-right: solid 1px #ccc;
+	padding-right: 25px;
 }
 
 #reservationParticipation {
 	float: right;
 	width: 45%;
-	border-left: solid 1px #ccc;
-	padding-left: 25px;
+
+
 	height: 100%;
 }
 
@@ -121,5 +123,9 @@
 
 #reminderOptionsStart {
 	float: left;
-	padding-right: 50px;
+	padding-right: 30px;
+}
+
+.reminderLabel {
+	font-size:10pt;
 }

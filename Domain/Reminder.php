@@ -7,7 +7,7 @@ add the 'GoogleVoice' folder to /Domain
  */
 
 
-require_once(ROOT_DIR . 'Domain/GoogleVoice/class.googlevoice.php');
+//require_once(ROOT_DIR . 'Domain/GoogleVoice/class.googlevoice.php');
 
 
 class Reminder
