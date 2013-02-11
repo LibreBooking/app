@@ -504,6 +504,12 @@ class ReservationComponentTests extends TestBase
 
 		$binder->Bind($this->initializer);
 	}
+
+	public function testBindsReminders()
+	{
+		$this->fail('need to implement');
+		$binder->Bind($this->initializer);
+	}
 }
 
 ?>

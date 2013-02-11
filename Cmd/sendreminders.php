@@ -27,12 +27,15 @@ Log::Debug('Running sendreminders.php');
 try
 {
 	$repository = new ReminderRepository();
-	$startNotices = $repository->GetReminderNotices(Date::Now(), ReservationReminderType::Start);
+	$now = Date::Now();
+
+	$startNotices = $repository->GetReminderNotices($now, ReservationReminderType::Start);
 	Log::Debug('Found %s start reminders', count($startNotices));
 	foreach ($startNotices as $notice)
 	{
 		var_dump($notice);
 	}
+
 	$endNotices = $repository->GetReminderNotices(Date::Now(), ReservationReminderType::End);
 	Log::Debug('Found %s end reminders', count($endNotices));
 	foreach ($endNotices as $notice)
@@ -43,3 +46,6 @@ try
 {
 	Log::Error('Error running sendreminders.php: %s', $ex);
 }
+
+Log::Debug('Finished running sendreminders.php');
+?>

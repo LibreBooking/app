@@ -182,6 +182,7 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 
 	public function __construct()
 	{
+		parent::__construct();
 	    $this->WithPrimaryResource(new FakeBookableResource(2));
 		$this->WithResource(new FakeBookableResource(3));
 		$this->WithBookedBy(new FakeUserSession());

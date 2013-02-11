@@ -45,6 +45,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 	 * @param IReservationComponentBinder $resourceBinder
 	 * @param IReservationComponentBinder $reservationBinder
 	 * @param IReservationComponentBinder $attributeBinder
+	 * @param IReservationComponentBinder $reminderBinder
 	 * @param ReservationView $reservationView
 	 * @param UserSession $userSession
 	 */
@@ -55,6 +56,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 		IReservationComponentBinder $resourceBinder,
 		IReservationComponentBinder $reservationBinder,
 		IReservationComponentBinder $attributeBinder,
+		IReservationComponentBinder $reminderBinder,
 		ReservationView $reservationView,
 		UserSession $userSession
 		)
@@ -62,6 +64,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 		$this->page = $page;
 		$this->reservationView = $reservationView;
 		$this->reservationBinder = $reservationBinder;
+		$this->reminderBinder = $reminderBinder;
 
 		parent::__construct(
 						$page, 
@@ -77,6 +80,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 		parent::Initialize();
 
 		$this->reservationBinder->Bind($this, $this->page, $this->reservationView);
+		$this->reminderBinder->Bind($this, $this->page, $this->reservationView);
 	}
 
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)

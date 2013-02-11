@@ -165,6 +165,10 @@ class ReservationSaveControllerTests extends TestBase
 		$resources = array(22, 23, 33);
 		$title = 'reservation title';
 		$userId = 1;
+		$startReminderValue = 15;
+		$startReminderInterval = ReservationReminderInterval::Minutes;
+		$endReminderValue = 2;
+		$endReminderInterval = ReservationReminderInterval::Hours;
 
 		$request->accessories = array(new ReservationAccessoryRequest($accessoryId, $quantity));
 		$request->customAttributes = array(new AttributeValueRequest($attributeId, $attributeValue));
@@ -179,6 +183,8 @@ class ReservationSaveControllerTests extends TestBase
 		$request->startDateTime = $startDate->ToIso();
 		$request->title = $title;
 		$request->userId = $userId;
+		$request->startReminder = new ReminderRequestResponse($startReminderValue, $startReminderInterval);
+		$request->endReminder = new ReminderRequestResponse($endReminderValue, $endReminderInterval);
 
 		$facade = new ReservationRequestResponseFacade($request, $session);
 
@@ -210,6 +216,12 @@ class ReservationSaveControllerTests extends TestBase
 		$this->assertEquals($startDateUserTz->Format('H:i'), $facade->GetStartTime());
 		$this->assertEquals($title, $facade->GetTitle());
 		$this->assertEquals($userId, $facade->GetUserId());
+		$this->assertTrue($facade->HasStartReminder());
+		$this->assertTrue($facade->HasEndReminder());
+		$this->assertEquals($startReminderValue, $facade->GetStartReminderValue());
+		$this->assertEquals($startReminderInterval, $facade->GetStartReminderInterval());
+		$this->assertEquals($endReminderValue, $facade->GetEndReminderValue());
+		$this->assertEquals($endReminderInterval, $facade->GetEndReminderInterval());
 
 		$this->assertEquals($referenceNumber, $facade->ReferenceNumber());
 		$this->assertEquals($errors, $facade->Errors());

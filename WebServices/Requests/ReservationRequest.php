@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'WebServices/Requests/ReservationAccessoryRequest.php');
 require_once(ROOT_DIR . 'WebServices/Requests/AttributeValueRequest.php');
 require_once(ROOT_DIR . 'WebServices/Responses/RecurrenceRequestResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/ReminderRequestResponse.php');
 
 class ReservationRequest
 {
@@ -54,6 +55,14 @@ class ReservationRequest
 	public $startDateTime;
 	public $title;
 	public $userId;
+	/**
+	 * @var ReminderRequestResponse
+	 */
+	public $startReminder;
+	/**
+	 * @var ReminderRequestResponse
+	 */
+	public $endReminder;
 
 	public static function Example()
 	{
@@ -63,14 +72,15 @@ class ReservationRequest
 		$request->customAttributes = array(new AttributeValueRequest(2, 'some value'));
 		$request->description = 'reservation description';
 		$request->endDateTime = $date;
-		$request->invitees = array(1,2,3);
-		$request->participants = array(1,2);
+		$request->invitees = array(1, 2, 3);
+		$request->participants = array(1, 2);
 		$request->recurrenceRule = RecurrenceRequestResponse::Example();
 		$request->resourceId = 1;
-		$request->resources = array(2,3);
+		$request->resources = array(2, 3);
 		$request->startDateTime = $date;
 		$request->title = 'reservation title';
 		$request->userId = 1;
+		$request->startReminder = new ReminderRequestRespones();
 
 		return $request;
 	}

@@ -25,6 +25,7 @@ require_once(ROOT_DIR . 'WebServices/Responses/ReservationAccessoryResponse.php'
 require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributeResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/AttachmentResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ReservationUserResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/ReminderRequestResponse.php');
 
 class ReservationResponse extends RestResponse
 {
@@ -69,6 +70,14 @@ class ReservationResponse extends RestResponse
 	 * @var array|ReservationAccessoryResponse[]
 	 */
 	public $accessories = array();
+	/**
+	 * @var ReminderRequestResponse
+	 */
+	public $startReminder;
+	/**
+	 * @var ReminderRequestResponse
+	 */
+	public $endReminder;
 
 	/**
 	 * @param IRestServer $server
@@ -142,6 +151,15 @@ class ReservationResponse extends RestResponse
 																$invitee->Email);
 			}
 		}
+
+		if ($reservation->StartReminder != null)
+		{
+			$this->startReminder = new ReminderRequestResponse($reservation->StartReminder->GetValue(), $reservation->StartReminder->GetInterval());
+		}
+		if ($reservation->EndReminder != null)
+		{
+			$this->endReminder = new ReminderRequestResponse($reservation->EndReminder->GetValue(), $reservation->EndReminder->GetInterval());
+		}
 	}
 
 
@@ -175,6 +193,8 @@ class ExampleReservationResponse extends ReservationResponse
 		$this->scheduleId = 123;
 		$this->startDateTime = Date::Now()->ToIso();
 		$this->title = 'reservation title';
+		$this->startReminder = ReminderRequestResponse::Example();
+		$this->endReminder = ReminderRequestResponse::Example();
 	}
 }
 

@@ -533,6 +533,54 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 
 		return $ints;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasStartReminder()
+	{
+		return !empty($this->request->startReminder);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetStartReminderValue()
+	{
+		return $this->request->startReminder->value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetStartReminderInterval()
+	{
+		return $this->request->startReminder->interval;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasEndReminder()
+	{
+		return !empty($this->request->endReminder);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetEndReminderValue()
+	{
+		return $this->request->endReminder->value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetEndReminderInterval()
+	{
+		return $this->request->endReminder->interval;
+	}
 }
 
 class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage

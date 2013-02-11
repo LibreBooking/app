@@ -315,6 +315,27 @@ class ReservationAttachmentItemRow
 	}
 }
 
+class ReservationReminderRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($reminderId, $seriesId, $minutesPrior = 15, $type = ReservationReminderType::Start)
+	{
+		$this->rows[] = array(
+			ColumnNames::REMINDER_ID => $reminderId,
+			ColumnNames::SERIES_ID => $seriesId,
+			ColumnNames::REMINDER_MINUTES_PRIOR => $minutesPrior,
+			ColumnNames::REMINDER_TYPE => $type);
+
+		return $this;
+	}
+}
+
 class SavedReportRow
 {
 	private $rows = array();

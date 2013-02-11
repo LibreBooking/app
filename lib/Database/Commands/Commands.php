@@ -234,13 +234,13 @@ class AddReservationAttachmentCommand extends SqlCommand
 class AddReservationReminderCommand extends SqlCommand
 {
 	public function __construct($seriesId, $minutesPrior, $reminderType)
-		{
-			parent::__construct(Queries::ADD_RESERVATION_REMINDER);
+	{
+		parent::__construct(Queries::ADD_RESERVATION_REMINDER);
 
-			$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
-			$this->AddParameter(new Parameter(ParameterNames::REMINDER_MINUTES_PRIOR, $minutesPrior));
-			$this->AddParameter(new Parameter(ParameterNames::REMINDER_TYPE, $reminderType));
-		}
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+		$this->AddParameter(new Parameter(ParameterNames::REMINDER_MINUTES_PRIOR, $minutesPrior));
+		$this->AddParameter(new Parameter(ParameterNames::REMINDER_TYPE, $reminderType));
+	}
 }
 
 class AddReservationResourceCommand extends SqlCommand
@@ -548,29 +548,29 @@ class DeleteQuotaCommand extends SqlCommand
 
 class DeleteReminderCommand extends SqlCommand
 {
-    public function __construct($reminder_id)
-    {
-        parent::__construct(Queries::DELETE_REMINDER);
-        $this->AddParameter(new Parameter(ParameterNames::REMINDER_ID, $reminder_id));
-    }
+	public function __construct($reminder_id)
+	{
+		parent::__construct(Queries::DELETE_REMINDER);
+		$this->AddParameter(new Parameter(ParameterNames::REMINDER_ID, $reminder_id));
+	}
 }
 
 class DeleteReminderByUserCommand extends SqlCommand
 {
-    public function __construct($user_id)
-    {
-        parent::__construct(Queries::DELETE_REMINDER_BY_USER);
-        $this->AddParameter(new Parameter(ParameterNames::REMINDER_USER_ID, $user_id));
-    }
+	public function __construct($user_id)
+	{
+		parent::__construct(Queries::DELETE_REMINDER_BY_USER);
+		$this->AddParameter(new Parameter(ParameterNames::REMINDER_USER_ID, $user_id));
+	}
 }
 
 class DeleteReminderByRefNumberCommand extends SqlCommand
 {
-    public function __construct($refnumber)
-    {
-        parent::__construct(Queries::DELETE_REMINDER_BY_REFNUMBER);
-        $this->AddParameter(new Parameter(ParameterNames::REMINDER_REFNUMBER, $refnumber));
-    }
+	public function __construct($refnumber)
+	{
+		parent::__construct(Queries::DELETE_REMINDER_BY_REFNUMBER);
+		$this->AddParameter(new Parameter(ParameterNames::REMINDER_REFNUMBER, $refnumber));
+	}
 }
 
 class DeleteResourceCommand extends SqlCommand
@@ -653,10 +653,10 @@ class DeleteUserResourcePermission extends SqlCommand
 class DeleteUserSessionCommand extends SqlCommand
 {
 	public function __construct($sessionToken)
-		{
-			parent::__construct(Queries::DELETE_USER_SESSION);
-			$this->AddParameter(new Parameter(ParameterNames::SESSION_TOKEN, $sessionToken));
-		}
+	{
+		parent::__construct(Queries::DELETE_USER_SESSION);
+		$this->AddParameter(new Parameter(ParameterNames::SESSION_TOKEN, $sessionToken));
+	}
 }
 
 class GetAccessoryByIdCommand extends SqlCommand
@@ -940,11 +940,11 @@ class GetReminderByUserCommand extends SqlCommand
 
 class GetReminderByRefNumberCommand extends SqlCommand
 {
-    public function __construct($refnumber)
-    {
-        parent::__construct(Queries::GET_REMINDERS_BY_REFNUMBER);
-        $this->AddParameter(new Parameter(ParameterNames::REMINDER_REFNUMBER, $refnumber));
-    }
+	public function __construct($refnumber)
+	{
+		parent::__construct(Queries::GET_REMINDERS_BY_REFNUMBER);
+		$this->AddParameter(new Parameter(ParameterNames::REMINDER_REFNUMBER, $refnumber));
+	}
 }
 
 class GetReservationForEditingCommand extends SqlCommand
@@ -990,7 +990,9 @@ class GetFullGroupReservationListCommand extends GetFullReservationListCommand
 	{
 		$query = parent::GetQuery();
 
-		$newQuery = preg_replace('/WHERE/', 'WHERE owner_id IN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) AND ', $query, 1);
+		$newQuery = preg_replace('/WHERE/',
+								 'WHERE owner_id IN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) AND ',
+								 $query, 1);
 
 		return $newQuery;
 	}
@@ -1013,11 +1015,11 @@ class GetReservationListCommand extends SqlCommand
 class GetReminderNoticesCommand extends SqlCommand
 {
 	public function __construct(Date $currentDate, $type)
-		{
-			parent::__construct(Queries::GET_REMINDER_NOTICES);
-			$this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate->ToDatabase()));
-			$this->AddParameter(new Parameter(ParameterNames::REMINDER_TYPE, $type));
-		}
+	{
+		parent::__construct(Queries::GET_REMINDER_NOTICES);
+		$this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::REMINDER_TYPE, $type));
+	}
 }
 
 class GetReservationAccessoriesCommand extends SqlCommand
@@ -1053,6 +1055,15 @@ class GetReservationParticipantsCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_RESERVATION_PARTICIPANTS);
 		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $instanceId));
+	}
+}
+
+class GetReservationReminders extends SqlCommand
+{
+	public function __construct($seriesId)
+	{
+		parent::__construct(Queries::GET_RESERVATION_REMINDERS);
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
 	}
 }
 
@@ -1265,7 +1276,8 @@ class MigratePasswordCommand extends SqlCommand
 
 class RegisterFormSettingsCommand extends SqlCommand
 {
-	public function __construct($firstName, $lastName, $username, $email, $password, $organization, $group, $position, $address, $phone, $homepage, $timezone)
+	public function __construct($firstName, $lastName, $username, $email, $password, $organization, $group, $position,
+								$address, $phone, $homepage, $timezone)
 	{
 		parent::__construct(Queries::REGISTER_FORM_SETTINGS);
 
@@ -1286,7 +1298,8 @@ class RegisterFormSettingsCommand extends SqlCommand
 
 class RegisterMiniUserCommand extends SqlCommand
 {
-	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $userStatusId, $userRoleId, $language)
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $userStatusId,
+								$userRoleId, $language)
 	{
 		parent::__construct(Queries::REGISTER_MINI_USER);
 
@@ -1305,7 +1318,8 @@ class RegisterMiniUserCommand extends SqlCommand
 
 class RegisterUserCommand extends SqlCommand
 {
-	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId, $phone, $organization, $position, $userStatusId, $publicId)
+	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId,
+								$phone, $organization, $position, $userStatusId, $publicId)
 	{
 		parent::__construct(Queries::REGISTER_USER);
 

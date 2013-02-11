@@ -53,6 +53,7 @@ class ReservationRepository implements IReservationRepository
 		$this->PopulateAccessories($series);
 		$this->PopulateAttributeValues($series);
 		$this->PopulateAttachmentIds($series);
+		$this->PopulateReminders($series);
 
 		return $series;
 	}
@@ -327,6 +328,25 @@ class ReservationRepository implements IReservationRepository
 		while ($row = $reader->GetRow())
 		{
 			$series->WithAttachment($row[ColumnNames::FILE_ID], $row[ColumnNames::FILE_EXTENSION]);
+		}
+		$reader->Free();
+	}
+
+	private function PopulateReminders(ExistingReservationSeries $series)
+	{
+		$getReminders = new GetReservationReminders($series->SeriesId());
+		$reader = ServiceLocator::GetDatabase()->Query($getReminders);
+		while ($row = $reader->GetRow())
+		{
+			$reminder = ReservationReminder::FromMinutes($row[ColumnNames::REMINDER_MINUTES_PRIOR]);
+			if ($row[ColumnNames::REMINDER_TYPE] == ReservationReminderType::Start)
+			{
+				$series->AddStartReminder($reminder);
+			}
+			else
+			{
+				$series->AddEndReminder($reminder);
+			}
 		}
 		$reader->Free();
 	}

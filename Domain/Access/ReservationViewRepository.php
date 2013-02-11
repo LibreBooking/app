@@ -147,6 +147,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$this->SetAccessories($reservationView);
 			$this->SetAttributes($reservationView);
 			$this->SetAttachments($reservationView);
+			$this->SetReminders($reservationView);
 		}
 
 		return $reservationView;
@@ -307,6 +308,23 @@ class ReservationViewRepository implements IReservationViewRepository
 		while ($row = $result->GetRow())
 		{
 			$reservationView->AddAttachment(new ReservationAttachmentView($row[ColumnNames::FILE_ID], $row[ColumnNames::SERIES_ID], $row[ColumnNames::FILE_NAME]));
+		}
+	}
+
+	private function SetReminders(ReservationView $reservationView)
+	{
+		$getReminders = new GetReservationReminders($reservationView->SeriesId);
+		$result = ServiceLocator::GetDatabase()->Query($getReminders);
+		while ($row = $result->GetRow())
+		{
+			if ($row[ColumnNames::REMINDER_TYPE] == ReservationReminderType::Start)
+			{
+				$reservationView->StartReminder = new ReservationReminderView($row[ColumnNames::REMINDER_MINUTES_PRIOR]);
+			}
+			else
+			{
+				$reservationView->EndReminder = new ReservationReminderView($row[ColumnNames::REMINDER_MINUTES_PRIOR]);
+			}
 		}
 	}
 
@@ -621,6 +639,16 @@ class ReservationView
 	 * @var array|ReservationAttachmentView[]
 	 */
 	public $Attachments = array();
+
+	/**
+	 * @var ReservationReminderView|null
+	 */
+	public $StartReminder;
+
+	/**
+	 * @var ReservationReminderView|null
+	 */
+	public $EndReminder;
 
 	/**
 	 * @param AttributeValue $attribute
@@ -1315,6 +1343,48 @@ class ReservationAttachmentView
 	public function SeriesId()
 	{
 		return $this->seriesId;
+	}
+}
+
+class ReservationReminderView
+{
+	/**
+	 * @var int
+	 */
+	private $value;
+
+	/**
+	 * @var ReservationReminderInterval|string
+	 */
+	private $interval;
+
+	public function GetValue()
+	{
+		return $this->value;
+	}
+
+	public function GetInterval()
+	{
+		return $this->interval;
+	}
+
+	public function __construct($minutes)
+	{
+		if ($minutes % 1440 == 0)
+		{
+			$this->value = $minutes / 1440;
+			$this->interval = ReservationReminderInterval::Days;
+		}
+		elseif ($minutes % 60 == 0)
+		{
+			$this->value = $minutes / 60;
+			$this->interval = ReservationReminderInterval::Hours;
+		}
+		else
+		{
+			$this->value = $minutes;
+			$this->interval = ReservationReminderInterval::Minutes;
+		}
 	}
 }
 
