@@ -185,7 +185,7 @@ class ResourceSaveControllerTests extends TestBase
 		$resource = new FakeBookableResource($resourceId);
 
 		$this->validator->expects($this->once())
-				->method('ValidateUpdateRequest')
+				->method('ValidateDeleteRequest')
 				->with($this->equalTo($resourceId))
 				->will($this->returnValue(array()));
 

@@ -24,10 +24,9 @@ class AttributeValidatorTests extends TestBase
 {
 	public function testChecksAttributesAgainstService()
 	{
-
 		$service = $this->getMock('IAttributeService');
 		$category = CustomAttributeCategory::RESOURCE;
-		$attributes = array();
+		$attributes = array('abc');
 
 		$errors = array('error1', 'error2');
 

@@ -71,7 +71,7 @@ class ResourceRequestValidatorTests extends TestBase
 		$request = ResourceRequest::Example();
 
 		$result = new AttributeServiceValidationResult(false, array('error'));
-		$this->attributeService->expects($this->once())
+		$this->attributeService->expects($this->atLeastOnce())
 				->method('Validate')
 				->with($this->equalTo(CustomAttributeCategory::RESOURCE),
 					   $this->equalTo(array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue))))

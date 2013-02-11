@@ -212,7 +212,7 @@ class ColumnNames
 	const OWNER_LAST_NAME = 'owner_lname';
 	const OWNER_FULL_NAME_ALIAS = 'owner_name';
 	const OWNER_USER_ID = 'owner_id';
-	const OWNER_PHONE = 'owner_id';
+	const OWNER_PHONE = 'owner_phone';
 	const OWNER_ORGANIZATION = 'owner_organization';
 	const OWNER_POSITION = 'owner_position';
 	const GROUP_NAME_ALIAS = 'group_name';

@@ -244,7 +244,6 @@ class ReservationViewRepositoryTests extends TestBase
 	{
 		$startDate = Date::Parse('2011-01-01');
 		$endDate = Date::Parse('2011-01-01');
-		$userId = 988;
 
 		$referenceNumber1 = "ref1";
 		$resource1 = "resource1";
@@ -259,10 +258,13 @@ class ReservationViewRepositoryTests extends TestBase
 		$fname = 'fn';
 		$lname = 'ln';
 		$userId = 111;
+		$phone = 'phone';
+		$organization = 'organization';
+		$position = 'position';
 
 		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId,
 											   $userLevelId, $title, $description, $scheduleId, $fname, $lname,
-											   $userId);
+											   $userId, $phone, $organization, $position);
 		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null, 1, null,
 											   null, null, null);
 
@@ -278,7 +280,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals($expectedCommand, $actualCommand);
 
 		$this->assertEquals(count($rows), count($reservations));
-		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname, $userId);
+		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname, $userId, $phone, $organization, $position);
 		$this->assertEquals($expectedItem1, $reservations[0]);
 	}
 
@@ -380,7 +382,7 @@ class ReservationViewRepositoryTests extends TestBase
 
 	private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate, $resourceId,
 										   $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname,
-										   $userId)
+										   $userId, $phone = 'phone', $organization = 'organization', $position = 'position')
 	{
 		return array(
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
@@ -399,6 +401,9 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::OWNER_FIRST_NAME => $fname,
 			ColumnNames::OWNER_LAST_NAME => $lname,
 			ColumnNames::OWNER_USER_ID => $userId,
+			ColumnNames::OWNER_PHONE => $phone,
+			ColumnNames::OWNER_ORGANIZATION => $organization,
+			ColumnNames::OWNER_POSITION => $position,
 		);
 	}
 
