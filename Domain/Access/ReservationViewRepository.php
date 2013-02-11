@@ -862,6 +862,18 @@ class ReservationItemView implements IReservedItemView
 	 * @var string
 	 */
 	public $OwnerEmailAddress;
+	/**
+	 * @var string
+	 */
+	public $OwnerPhone;
+	/**
+	 * @var string
+	 */
+	public $OwnerOrganization;
+	/**
+	 * @var string
+	 */
+	public $OwnerPosition;
 
 	/**
 	 * @var int
@@ -882,6 +894,9 @@ class ReservationItemView implements IReservedItemView
 	 * @param $userFirstName string
 	 * @param $userLastName string
 	 * @param $userId int
+	 * @param null $userPhone
+	 * @param null $userPosition
+	 * @param null $userOrganization
 	 */
 	public function __construct(
 		$referenceNumber = null,
@@ -896,7 +911,10 @@ class ReservationItemView implements IReservedItemView
 		$scheduleId = null,
 		$userFirstName = null,
 		$userLastName = null,
-		$userId = null
+		$userId = null,
+		$userPhone = null,
+		$userOrganization = null,
+		$userPosition = null
 	)
 	{
 
@@ -913,6 +931,9 @@ class ReservationItemView implements IReservedItemView
 		$this->OwnerFirstName = $userFirstName;
 		$this->LastName = $userLastName;
 		$this->OwnerLastName = $userLastName;
+		$this->OwnerPhone = $userPhone;
+		$this->OwnerOrganization = $userOrganization;
+		$this->OwnerPosition = $userPosition;
 		$this->UserId = $userId;
 
 		if (!is_null($startDate) && !is_null($endDate))
@@ -941,7 +962,11 @@ class ReservationItemView implements IReservedItemView
 			$row[ColumnNames::SCHEDULE_ID],
 			$row[ColumnNames::OWNER_FIRST_NAME],
 			$row[ColumnNames::OWNER_LAST_NAME],
-			$row[ColumnNames::OWNER_USER_ID]
+			$row[ColumnNames::OWNER_USER_ID],
+			$row[ColumnNames::OWNER_PHONE],
+			$row[ColumnNames::OWNER_ORGANIZATION],
+			$row[ColumnNames::OWNER_POSITION]
+
 		);
 
 		if (isset($row[ColumnNames::RESERVATION_CREATED]))

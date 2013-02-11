@@ -27,7 +27,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayPastTime}
-    <td colspan="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="pasttime slot">&nbsp;</td>
+    <td colspan="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="pasttime slot">{$Slot->Label()}</td>
 {/function}
 
 {function name=displayReservable}
