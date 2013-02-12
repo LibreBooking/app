@@ -198,6 +198,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$request->resourceId = 1;
 		$request->startDateTime = Date::Parse("$today 12:00", 'America/Chicago')->ToIso();
 		$request->title = 'some title';
+		$request->startReminder = new ReminderRequestResponse(15, 'minutes');
 
 		/** @var $response ReservationCreatedResponse|FailedResponse */
 		$response = $this->client->Post('Reservations/', $request, $authHeaders);
@@ -250,6 +251,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 		$reservationRequest->startDateTime = $reservation->startDateTime;
 		$reservationRequest->title = $reservation->title;
 		$reservationRequest->userId = $reservation->owner->userId;
+		$reservationRequest->endReminder = new ReminderRequestResponse(15, 'days');
 
 		/** @var $response ReservationUpdatedResponse|FailedResponse */
 		$response = $this->client->Post($reservationUrl, $reservationRequest, $authHeaders);
