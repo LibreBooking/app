@@ -1383,6 +1383,11 @@ class ReservationReminderView
 	 */
 	private $interval;
 
+	/**
+	 * @var int
+	 */
+	private $minutes;
+
 	public function GetValue()
 	{
 		return $this->value;
@@ -1395,6 +1400,7 @@ class ReservationReminderView
 
 	public function __construct($minutes)
 	{
+		$this->minutes = $minutes;
 		if ($minutes % 1440 == 0)
 		{
 			$this->value = $minutes / 1440;
@@ -1410,6 +1416,14 @@ class ReservationReminderView
 			$this->value = $minutes;
 			$this->interval = ReservationReminderInterval::Minutes;
 		}
+	}
+
+	/**
+	 * @return int
+	 */
+	public function MinutesPrior()
+	{
+		return $this->minutes;
 	}
 }
 

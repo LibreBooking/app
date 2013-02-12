@@ -30,6 +30,8 @@ class iCalendarReservationView
 	public $Summary;
 	public $ReservationUrl;
 	public $Location;
+	public $StartReminder;
+	public $EndReminder;
 
 	/**
 	 * @param ReservationItemView|ReservationView $res
@@ -55,6 +57,8 @@ class iCalendarReservationView
 		$this->Summary = $canViewDetails ? $res->Title : $privateNotice;
 		$this->ReservationUrl = sprintf("%s/%s?%s=%s", Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $res->ReferenceNumber);
 		$this->Location = $res->ResourceName;
+		$this->StartReminder = $res->StartReminder;
+		$this->EndReminder = $res->EndReminder;
 
 		if ($res->OwnerId == $currentUser->UserId)
 		{
