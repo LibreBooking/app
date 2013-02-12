@@ -376,5 +376,23 @@ class RepeatOptionsTests extends TestBase
 		$this->assertTrue(Date::Parse('2012-09-11')->Equals($secondRepeatedTue), $secondRepeatedTue->__toString());
 		$this->assertTrue(Date::Parse('2012-09-12')->Equals($secondRepeatedWed), $secondRepeatedWed->__toString());
 	}
+
+	public function testRepeatingAcrossEuropeanDaylightSavings()
+	{
+		$firstWednesday = DateRange::Create('2013-02-06 09:00', '2013-02-06 10:00', 'Europe/London');
+		$firstWednesdayRepeat = new RepeatWeekDayOfMonth(1, Date::Parse('2013-10-01', 'Europe/London'));
+
+		/** @var $dates DateRange[] */
+		$dates = $firstWednesdayRepeat->GetDates($firstWednesday);
+
+		foreach ($dates as $date)
+		{
+			$date = $date->ToTimezone('Europe/London');
+			$this->assertEquals(9, $date->GetBegin()->Hour(), $date->__toString());
+			$this->assertEquals(10, $date->GetEnd()->Hour());
+			$this->assertEquals(3, $date->GetBegin()->Weekday());
+		}
+
+	}
 }
 ?>

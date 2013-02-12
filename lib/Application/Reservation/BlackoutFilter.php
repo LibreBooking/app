@@ -53,7 +53,7 @@ class BlackoutFilter
 		}
 		if (!empty($this->scheduleId))
 		{
-			$filter->_And(new SqlFilterEquals(ColumnNames::SCHEDULE_ID, $this->scheduleId));
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::SCHEDULES, ColumnNames::SCHEDULE_ID), $this->scheduleId));
 		}
 		if (!empty($this->resourceId))
 		{
