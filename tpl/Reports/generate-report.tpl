@@ -77,8 +77,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<label for="today" style="width:auto;">{translate key=Today}</label>
 				<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::DATE_RANGE}" id="range_within"/>
 				<label for="range_within" style="width:auto;">{translate key=Between}</label>
-				<input type="input" {formname key=REPORT_START} class="textbox dateinput" id="startDate"/> -
-				<input type="input" {formname key=REPORT_END} class="textbox dateinput" id="endDate"/>
+				<input type="input" class="textbox dateinput" id="startDate"/> -
+				<input type="hidden" id="formattedBeginDate" {formname key=REPORT_START}/>
+				<input type="input" class="textbox dateinput" id="endDate"/>
+				<input type="hidden" id="formattedEndDate" {formname key=REPORT_END} />
 			</div>
 			<div class="input-set">
 				<span class="label">{translate key=FilterBy}</span>
