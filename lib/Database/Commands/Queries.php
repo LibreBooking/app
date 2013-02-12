@@ -400,9 +400,8 @@ class Queries
 
 	const GET_REMINDER_NOTICES = 'SELECT
 		rs.*,
-		ri.reservation_instance_id,
-		ri.series_id,
-		u.user_id, u.fname, u.lname, u.email,
+		ri.*,
+		u.*,
 		r.name as resource_name
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id

@@ -49,8 +49,9 @@ class ReminderRepositoryTests extends TestBase
 		$timezone = 'America/Chicago';
 		$reminder_minutes = 100;
 		$now = Date::Now();
+		$language = 'en_us';
 
-		$row1 = new ReminderNoticeRow($seriesId, $instanceId, $referenceNumber, $startDate, $endDate, $title, $description, $resourceName, $emailAddress, $fname, $lname, $timezone, $reminder_minutes, $reminderDate);
+		$row1 = new ReminderNoticeRow($seriesId, $instanceId, $referenceNumber, $startDate, $endDate, $title, $description, $resourceName, $emailAddress, $fname, $lname, $timezone, $reminder_minutes, $language);
 		$row2 = new ReminderNoticeRow();
 		$this->db->SetRows(array(
 							   $row1->Rows(),

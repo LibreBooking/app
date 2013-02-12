@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 define('ROOT_DIR', '../');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Domain/Reminder.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReminderEmail.php');
 
 Log::Debug('Running sendreminders.php');
 
@@ -33,14 +34,14 @@ try
 	Log::Debug('Found %s start reminders', count($startNotices));
 	foreach ($startNotices as $notice)
 	{
-		var_dump($notice);
+		ServiceLocator::GetEmailService()->Send(new ReminderStartEmail($notice));
 	}
 
 	$endNotices = $repository->GetReminderNotices(Date::Now(), ReservationReminderType::End);
 	Log::Debug('Found %s end reminders', count($endNotices));
 	foreach ($endNotices as $notice)
 	{
-		var_dump($notice);
+		ServiceLocator::GetEmailService()->Send(new ReminderEndEmail($notice));
 	}
 } catch (Exception $ex)
 {

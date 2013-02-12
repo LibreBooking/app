@@ -33,6 +33,7 @@ class ReminderNotice
 	private $lastName;
 	private $timezone;
 	private $reminder_minutes;
+	private $language;
 
 	public function Description()
 	{
@@ -99,6 +100,11 @@ class ReminderNotice
 		return $this->title;
 	}
 
+	public function Language()
+	{
+		return $this->language;
+	}
+
 	/**
 	 * @param int $seriesId
 	 * @param int $reservationId
@@ -113,10 +119,11 @@ class ReminderNotice
 	 * @param string $lastName
 	 * @param string $timezone
 	 * @param int $reminder_minutes
+	 * @param string $language
 	 */
 	public function __construct($seriesId, $reservationId, $referenceNumber, Date $startDate, Date $endDate, $title,
 								$description, $resourceName, $emailAddress, $firstName, $lastName, $timezone,
-								$reminder_minutes)
+								$reminder_minutes, $language)
 	{
 		$this->seriesId = $seriesId;
 		$this->reservationId = $reservationId;
@@ -131,6 +138,7 @@ class ReminderNotice
 		$this->lastName = $lastName;
 		$this->timezone = $timezone;
 		$this->reminder_minutes = $reminder_minutes;
+		$this->language = $language;
 	}
 
 	/**
@@ -152,11 +160,12 @@ class ReminderNotice
 		$lastName = $row[ColumnNames::LAST_NAME];
 		$timezone = $row[ColumnNames::TIMEZONE_NAME];
 		$reminder_minutes = $row[ColumnNames::REMINDER_MINUTES_PRIOR];
+		$language = $row[ColumnNames::LANGUAGE_CODE];
 
 		return new ReminderNotice($seriesId, $reservationId, $referenceNumber,
 								  $startDate, $endDate, $title, $description,
 								  $resourceName, $emailAddress, $firstName,
-								  $lastName, $timezone, $reminder_minutes);
+								  $lastName, $timezone, $reminder_minutes, $language);
 	}
 }
 

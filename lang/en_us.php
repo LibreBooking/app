@@ -564,6 +564,8 @@ class en_us extends Language
 		$strings['ResetPassword'] = 'Password Reset Request';
 		$strings['ActivateYourAccount'] = 'Please Activate Your Account';
 		$strings['ReportSubject'] = 'Your Requested Report (%s)';
+		$strings['ReservationStartingSoonSubject'] = 'Reservation for %s is starting soon';
+		$strings['ReservationEndingSoonSubject'] = 'Reservation for %s is ending soon';
 		// End Email Subjects
 
 		$this->Strings = $strings;
