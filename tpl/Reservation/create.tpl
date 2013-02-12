@@ -153,7 +153,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
             <div id="reminderOptionsStart">
                 <input type="checkbox" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-                <input type="text" size="3" value="15" class="reminderTime textbox" {formname key=START_REMINDER_TIME}/>
+                <input type="text" size="3" maxlength="3" value="15" class="reminderTime textbox" {formname key=START_REMINDER_TIME}/>
                 <select class="reminderInterval textbox" {formname key=START_REMINDER_INTERVAL}>
                     <option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
                     <option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
@@ -163,7 +163,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             </div>
             <div id="reminderOptionsEnd">
                 <input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-                <input type="text" size="3" value="15" class="reminderTime textbox" {formname key=END_REMINDER_TIME}/>
+                <input type="text" size="3" maxlength="3" value="15" class="reminderTime textbox" {formname key=END_REMINDER_TIME}/>
                 <select class="reminderInterval textbox" {formname key=END_REMINDER_INTERVAL}>
 					<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
 					<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
@@ -304,6 +304,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript" src="scripts/recurrence.js"></script>
 <script type="text/javascript" src="scripts/reservation.js"></script>
 <script type="text/javascript" src="scripts/autocomplete.js"></script>
+<script type="text/javascript" src="scripts/force-numeric.js"></script>
 <script type="text/javascript" src="scripts/reservation-reminder.js"></script>
 
 <script type="text/javascript">

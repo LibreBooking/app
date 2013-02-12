@@ -28,6 +28,8 @@ function Reminder(opts)
 
 	Reminder.prototype.init = function ()
 	{
+		$('.reminderTime').forceNumeric();
+
 		var enable = function (div)
 		{
 			div.find('.reminderEnabled').attr('checked', 'checked');

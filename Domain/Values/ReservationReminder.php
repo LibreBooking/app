@@ -39,6 +39,7 @@ class ReservationReminder
 		}
 		else
 		{
+			$this->interval = ReservationReminderInterval::Minutes;
 			$this->minutesPrior = $value;
 		}
 	}
