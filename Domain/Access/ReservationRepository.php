@@ -341,11 +341,11 @@ class ReservationRepository implements IReservationRepository
 			$reminder = ReservationReminder::FromMinutes($row[ColumnNames::REMINDER_MINUTES_PRIOR]);
 			if ($row[ColumnNames::REMINDER_TYPE] == ReservationReminderType::Start)
 			{
-				$series->AddStartReminder($reminder);
+				$series->WithStartReminder($reminder);
 			}
 			else
 			{
-				$series->AddEndReminder($reminder);
+				$series->WithEndReminder($reminder);
 			}
 		}
 		$reader->Free();
@@ -431,6 +431,9 @@ class ReservationEventMapper
 		$this->buildMethods['AttributeRemovedEvent'] = 'BuildRemoveAttributeCommand';
 
 		$this->buildMethods['AttachmentRemovedEvent'] = 'BuildAttachmentRemovedEvent';
+
+		$this->buildMethods['ReminderAddedEvent'] = 'BuildReminderAddedEvent';
+		$this->buildMethods['ReminderRemovedEvent'] = 'BuildReminderRemovedEvent';
 	}
 
 	/**
@@ -523,6 +526,16 @@ class ReservationEventMapper
 	private function BuildAttachmentRemovedEvent(AttachmentRemovedEvent $event, ExistingReservationSeries $series)
 	{
 		return new AttachmentRemovedCommand($event);
+	}
+
+	private function BuildReminderAddedEvent(ReminderAddedEvent $event, ExistingReservationSeries $series)
+	{
+		return new ReminderAddedCommand($event);
+	}
+
+	private function BuildReminderRemovedEvent(ReminderRemovedEvent $event, ExistingReservationSeries $series)
+	{
+		return new EventCommand(new RemoveReservationReminderCommand($series->SeriesId(), $event->ReminderType()), $series);
 	}
 }
 
@@ -738,6 +751,25 @@ class AttachmentRemovedCommand extends EventCommand
 	{
 		$database->Execute(new RemoveReservationAttachmentCommand($this->event->FileId()));
 		ServiceLocator::GetFileSystem()->RemoveFile(Paths::ReservationAttachments() . $this->event->FileName());
+	}
+}
+
+class ReminderAddedCommand extends EventCommand
+{
+	/**
+	 * @var ReminderAddedEvent
+	 */
+	private $event;
+
+	public function __construct(ReminderAddedEvent $event)
+	{
+		$this->event = $event;
+	}
+
+	public function Execute(Database $database)
+	{
+		$database->Execute(new RemoveReservationReminderCommand($this->event->SeriesId(), $this->event->ReminderType()));
+		$database->Execute(new AddReservationReminderCommand($this->event->SeriesId(), $this->event->MinutesPrior(), $this->event->ReminderType()));
 	}
 }
 

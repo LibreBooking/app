@@ -233,7 +233,7 @@ class ReservationComponentTests extends TestBase
 				->will($this->returnValue($scheduleId));
 
 		$startPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
-		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1),Date::Now()->AddDays(1)));
+		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1)));
 		$layout = $this->getMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
@@ -253,7 +253,8 @@ class ReservationComponentTests extends TestBase
 
 		$this->initializer->expects($this->once())
 				->method('SetDates')
-				->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($startPeriods), $this->equalTo($endPeriods));
+				->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($startPeriods),
+					   $this->equalTo($endPeriods));
 
 		$this->initializer->expects($this->once())
 				->method('HideRecurrence')
@@ -311,6 +312,9 @@ class ReservationComponentTests extends TestBase
 		$expectedStartDate = Date::Parse($startDateUtc, 'UTC');
 		$expectedEndDate = Date::Parse($endDateUtc, 'UTC');
 
+		$startReminderValue = 15;
+		$startReminderInterval = ReservationReminderInterval::Minutes;
+
 		$reservationView = new ReservationView();
 		$reservationView->ReservationId = $reservationId;
 		$reservationView->ReferenceNumber = $referenceNumber;
@@ -334,6 +338,8 @@ class ReservationComponentTests extends TestBase
 		$reservationView->StatusId = ReservationStatus::Pending;
 		$reservationView->Accessories = $accessories;
 		$reservationView->Attachments = $attachments;
+		$reservationView->StartReminder = new ReservationReminderView($startReminderValue);
+		$reservationView->EndReminder = null;
 
 		$page->expects($this->once())
 				->method('SetAdditionalResources')
@@ -408,6 +414,13 @@ class ReservationComponentTests extends TestBase
 		$page->expects($this->once())
 				->method('SetCurrentUserParticipating')
 				->with($this->equalTo($isParticipating));
+
+		$page->expects($this->once())
+				->method('SetStartReminder')
+				->with($this->equalTo($startReminderValue), $this->equalTo($startReminderInterval));
+
+		$page->expects($this->never())
+				->method('SetEndReminder');
 
 		$isInvited = true;
 		$page->expects($this->once())
@@ -502,12 +515,6 @@ class ReservationComponentTests extends TestBase
 				->method('AddAttribute')
 				->with($this->equalTo($attributes[1]), $this->equalTo($val2));
 
-		$binder->Bind($this->initializer);
-	}
-
-	public function testBindsReminders()
-	{
-		$this->fail('need to implement');
 		$binder->Bind($this->initializer);
 	}
 }

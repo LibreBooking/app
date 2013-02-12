@@ -341,7 +341,7 @@ class ReservationRepositoryTests extends TestBase
 		$expected->WithCurrentInstance($expectedInstance);
 
 		$expected->AddStartReminder(new ReservationReminder($startReminderMinutes, ReservationReminderInterval::Minutes));
-		$expected->AddEndReminder(new ReservationReminder($endReminderMinutes/60, ReservationReminderInterval::Hours));
+		$expected->AddEndReminder(new ReservationReminder($endReminderMinutes / 60, ReservationReminderInterval::Hours));
 
 		$reservationRow = new ReservationRow(
 			$reservationId,
@@ -946,6 +946,54 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertEquals(2, count($this->fileSystem->_RemovedFiles));
 		$this->assertTrue(in_array(Paths::ReservationAttachments() . "$fileId2.$fileExt2",
 								   $this->fileSystem->_RemovedFiles));
+	}
+
+	public function testReplacesReminder()
+	{
+		$seriesId = 99;
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->WithId($seriesId)->Build();
+
+		$series->WithStartReminder(new ReservationReminder(100, ReservationReminderInterval::Days));
+		$series->WithEndReminder(new ReservationReminder(15, ReservationReminderInterval::Minutes));
+
+		$start = new ReservationReminder(1, ReservationReminderInterval::Minutes);
+		$end = new ReservationReminder(1, ReservationReminderInterval::Days);
+		$series->AddStartReminder($start);
+		$series->AddEndReminder($end);
+
+		$this->repository->Update($series);
+
+		$command1 = new RemoveReservationReminderCommand($seriesId, ReservationReminderType::Start);
+		$command2 = new AddReservationReminderCommand($seriesId, $start->MinutesPrior(), ReservationReminderType::Start);
+		$command3 = new RemoveReservationReminderCommand($seriesId, ReservationReminderType::End);
+		$command4 = new AddReservationReminderCommand($seriesId, $end->MinutesPrior(), ReservationReminderType::End);
+
+		$this->assertTrue($this->db->ContainsCommand($command1));
+		$this->assertTrue($this->db->ContainsCommand($command2));
+		$this->assertTrue($this->db->ContainsCommand($command3));
+		$this->assertTrue($this->db->ContainsCommand($command4));
+	}
+
+	public function testRemovesReminders()
+	{
+		$seriesId = 99;
+		$builder = new ExistingReservationSeriesBuilder();
+		$series = $builder->WithId($seriesId)->Build();
+
+		$series->WithStartReminder(new ReservationReminder(100, ReservationReminderInterval::Days));
+		$series->WithEndReminder(new ReservationReminder(15, ReservationReminderInterval::Minutes));
+
+		$series->RemoveStartReminder();
+		$series->RemoveEndReminder();
+
+		$this->repository->Update($series);
+
+		$command1 = new RemoveReservationReminderCommand($seriesId, ReservationReminderType::Start);
+		$command2 = new RemoveReservationReminderCommand($seriesId, ReservationReminderType::End);
+
+		$this->assertTrue($this->db->ContainsCommand($command1));
+		$this->assertTrue($this->db->ContainsCommand($command2));
 	}
 
 	private function GetUpdateReservationCommand($expectedSeriesId, Reservation $expectedInstance)

@@ -139,6 +139,8 @@ class ReservationUpdatePresenterTests extends TestBase
 		$attachment = new FakeUploadedFile();
 		$this->page->attachment = $attachment;
 
+		$this->page->hasEndReminder = false;
+
 		$existingSeries = $this->presenter->BuildReservation();
 
 		$expectedAccessories = array(new ReservationAccessory(1, 2, 'accessoryname'));
@@ -161,6 +163,8 @@ class ReservationUpdatePresenterTests extends TestBase
 		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), $seriesId);
 		$this->assertEquals($expectedAttachment, $expectedSeries->AddedAttachment());
 		$this->assertEquals($this->page->removedFileIds, $existingSeries->RemovedAttachmentIds());
+		$this->assertEquals(new ReservationReminder($this->page->GetStartReminderValue(), $this->page->GetStartReminderInterval()), $existingSeries->GetStartReminder());
+		$this->assertEquals(ReservationReminder::None(), $existingSeries->GetEndReminder());
 	}
 
 	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()

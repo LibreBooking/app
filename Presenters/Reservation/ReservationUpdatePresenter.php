@@ -125,7 +125,9 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 			else
 			{
 				Log::Debug('Attaching file %s to series %s', $attachment->OriginalName(), $existingSeries->SeriesId());
-				$att = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), $existingSeries->SeriesId());
+				$att = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(),
+													 $attachment->Size(), $attachment->Contents(),
+													 $attachment->Extension(), $existingSeries->SeriesId());
 				$existingSeries->AddAttachment($att);
 			}
 		}
@@ -133,6 +135,24 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 		foreach ($this->page->GetRemovedAttachmentIds() as $fileId)
 		{
 			$existingSeries->RemoveAttachment($fileId);
+		}
+
+		if ($this->page->HasStartReminder())
+		{
+			$existingSeries->AddStartReminder(new ReservationReminder($this->page->GetStartReminderValue(), $this->page->GetStartReminderInterval()));
+		}
+		else
+		{
+			$existingSeries->RemoveStartReminder();
+		}
+
+		if ($this->page->HasEndReminder())
+		{
+			$existingSeries->AddEndReminder(new ReservationReminder($this->page->GetEndReminderValue(), $this->page->GetEndReminderInterval()));
+		}
+		else
+		{
+			$existingSeries->RemoveEndReminder();
 		}
 
 		return $existingSeries;

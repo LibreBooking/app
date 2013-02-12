@@ -50,6 +50,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $startReminderInterval = ReservationReminderInterval::Minutes;
 	public $endReminderValue = "1";
 	public $endReminderInterval = ReservationReminderInterval::Hours;
+	public $hasEndReminder = true;
 
 	public function __construct()
 	{
@@ -215,7 +216,7 @@ class FakeReservationSavePage implements IReservationSavePage
 
 	public function HasEndReminder()
 	{
-		return true;
+		return $this->hasEndReminder;
 	}
 }
 

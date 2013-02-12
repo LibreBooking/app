@@ -288,6 +288,17 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 		$initializer->ShowUserDetails($showUser);
 		$initializer->ShowReservationDetails($showDetails);
+
+		if (!empty($this->reservationView->StartReminder))
+		{
+			$this->page->SetStartReminder($this->reservationView->StartReminder->GetValue(),
+										  $this->reservationView->StartReminder->GetInterval());
+		}
+		if (!empty($this->reservationView->EndReminder))
+		{
+			$this->page->SetEndReminder($this->reservationView->EndReminder->GetValue(),
+										$this->reservationView->EndReminder->GetInterval());
+		}
 	}
 
 	private function IsCurrentUserParticipating($currentUserId)

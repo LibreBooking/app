@@ -56,7 +56,6 @@ class ExistingReservationInitializerTests extends TestBase
 		$resourceBinder = $this->getMock('IReservationComponentBinder');
 		$reservationBinder = $this->getMock('IReservationComponentBinder');
 		$attributeBinder = $this->getMock('IReservationComponentBinder');
-		$reminderBinder = $this->getMock('IReservationComponentBinder');
 		$page = $this->getMock('IExistingReservationPage');
 
 		$reservationView = new ReservationView();
@@ -68,7 +67,6 @@ class ExistingReservationInitializerTests extends TestBase
 			$resourceBinder,
 			$reservationBinder,
 			$attributeBinder,
-			$reminderBinder,
 			$reservationView,
 			$this->fakeUser);
 
@@ -87,10 +85,6 @@ class ExistingReservationInitializerTests extends TestBase
 				->with($this->equalTo($initializer));
 
 		$resourceBinder->expects($this->once())
-				->method('Bind')
-				->with($this->equalTo($initializer));
-
-		$reminderBinder->expects($this->once())
 				->method('Bind')
 				->with($this->equalTo($initializer));
 
@@ -143,7 +137,6 @@ class ExistingReservationInitializerTests extends TestBase
 
 		$initializer = new ExistingReservationInitializer(
 			$page,
-			$binder,
 			$binder,
 			$binder,
 			$binder,

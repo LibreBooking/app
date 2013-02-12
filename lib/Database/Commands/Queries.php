@@ -658,6 +658,9 @@ class Queries
 	const REMOVE_RESERVATION_INSTANCE =
 			'DELETE FROM reservation_instances WHERE reference_number = @referenceNumber';
 
+	const REMOVE_RESERVATION_REMINDER =
+			'DELETE FROM reservation_reminders WHERE series_id = @seriesid AND reminder_type = @reminder_type';
+
 	const REMOVE_RESERVATION_RESOURCE =
 			'DELETE FROM reservation_resources WHERE series_id = @seriesid AND resource_id = @resourceid';
 

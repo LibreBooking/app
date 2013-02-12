@@ -1384,6 +1384,17 @@ class RemoveReservationCommand extends SqlCommand
 	}
 }
 
+class RemoveReservationReminderCommand extends SqlCommand
+{
+	public function __construct($seriesId, $reminderType)
+	{
+		parent::__construct(Queries::REMOVE_RESERVATION_REMINDER);
+
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+		$this->AddParameter(new Parameter(ParameterNames::REMINDER_TYPE, $reminderType));
+	}
+}
+
 class RemoveReservationResourceCommand extends SqlCommand
 {
 	public function __construct($seriesId, $resourceId)
@@ -1392,7 +1403,6 @@ class RemoveReservationResourceCommand extends SqlCommand
 
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
-
 	}
 }
 
