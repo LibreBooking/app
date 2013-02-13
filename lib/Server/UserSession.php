@@ -33,6 +33,7 @@ class UserSession
 	public $LanguageCode = '';
 	public $PublicId = '';
 	public $LoginTime = '';
+	public $ScheduleId = '';
 
 	public function __construct($id)
 	{

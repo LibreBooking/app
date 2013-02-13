@@ -32,22 +32,6 @@ function includeAll($directory)
 	{
 	        require_once($filename);
 	}
-//	if ($handle = opendir($directory))
-//	{
-//		while (false !== ($entry = readdir($handle)))
-//		{
-//			if ($entry != '.' && $entry != '..' && is_dir($entry))
-//			{
-//				return includeAll($entry);
-//			}
-//			if ($entry != '.' && $entry != '..' && !is_dir($entry))
-//			{
-//				require_once($directory . '/' . $entry);
-//			}
-//		}
-//
-//		closedir($handle);
-//	}
 }
 
 class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase

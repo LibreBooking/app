@@ -381,6 +381,7 @@ class User
 		$user->lastLogin = $row[ColumnNames::LAST_LOGIN];
 		$user->isCalendarSubscriptionAllowed = $row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION];
 		$user->publicId = $row[ColumnNames::PUBLIC_ID];
+		$user->defaultScheduleId = $row[ColumnNames::DEFAULT_SCHEDULE_ID];
 
 		$user->attributes[UserAttribute::Phone] = $row[ColumnNames::PHONE_NUMBER];
 		$user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
@@ -752,6 +753,35 @@ class User
 		}
 
 		return null;
+	}
+
+	/**
+	 * @var int|null
+	 */
+	protected $defaultScheduleId;
+
+	/**
+	 * @return int|null
+	 */
+	public function GetDefaultScheduleId()
+	{
+		return $this->defaultScheduleId;
+	}
+
+	/**
+	 * @param int $scheduleId
+	 */
+	public function ChangeDefaultSchedule($scheduleId)
+	{
+		$this->defaultScheduleId = $scheduleId;
+	}
+
+	/**
+	 * @param int $scheduleId
+	 */
+	public function WithDefaultSchedule($scheduleId)
+	{
+		$this->defaultScheduleId = $scheduleId;
 	}
 
 }

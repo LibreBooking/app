@@ -31,10 +31,11 @@ interface ISchedulePageBuilder
 
 	/**
 	 * @param ISchedulePage $page
-	 * @param array[int]ISchedule $schedules
-	 * @return ISchedule
+	 * @param ISchedule[] $schedules
+	 * @param UserSession $user
+	 * @return Schedule
 	 */
-	public function GetCurrentSchedule(ISchedulePage $page, $schedules);
+	public function GetCurrentSchedule(ISchedulePage $page, $schedules, UserSession $user);
 
 	/**
 	 * Returns range of dates to bind in UTC
@@ -78,15 +79,24 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 
 	/**
 	 * @param ISchedulePage $page
-	 * @param $schedules
+	 * @param ISchedule[] $schedules
+	 * @param UserSession $user
 	 * @return Schedule
 	 */
-	public function GetCurrentSchedule(ISchedulePage $page, $schedules)
+	public function GetCurrentSchedule(ISchedulePage $page, $schedules, UserSession $user)
 	{
 		$requestedScheduleId = $page->GetScheduleId();
 		if (!empty($requestedScheduleId))
 		{
 			$schedule = $this->GetSchedule($schedules, $page->GetScheduleId());
+		}
+		elseif (!empty($user->ScheduleId))
+		{
+			$schedule = $this->GetSchedule($schedules,$user->ScheduleId);
+			if ($schedule->GetId() != $user->ScheduleId)
+			{
+				$schedule = $this->GetDefaultSchedule($schedules);
+			}
 		}
 		else
 		{
@@ -209,6 +219,8 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 				return $schedule;
 			}
 		}
+
+		return $schedules[0];
 	}
 
 	/**
@@ -226,6 +238,8 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 				return $schedule;
 			}
 		}
+
+		return $schedules[0];
 	}
 
 }

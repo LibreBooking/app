@@ -1319,7 +1319,7 @@ class RegisterMiniUserCommand extends SqlCommand
 class RegisterUserCommand extends SqlCommand
 {
 	public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId,
-								$phone, $organization, $position, $userStatusId, $publicId)
+								$phone, $organization, $position, $userStatusId, $publicId, $scheduleId)
 	{
 		parent::__construct(Queries::REGISTER_USER);
 
@@ -1338,6 +1338,7 @@ class RegisterUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
 		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
 }
 
@@ -1674,7 +1675,8 @@ class UpdateUserCommand extends SqlCommand
 		$lastLogin,
 		$allowCalendarSubscription,
 		$publicId,
-		$language)
+		$language,
+		$scheduleId)
 	{
 		parent::__construct(Queries::UPDATE_USER);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -1692,6 +1694,7 @@ class UpdateUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$allowCalendarSubscription));
 		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
 		$this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
 }
 

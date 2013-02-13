@@ -28,6 +28,7 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 class ProfileActions
 {
 	const Update = 'update';
+	const ChangeDefaultSchedule = 'changeDefaultSchedule';
 }
 
 class ProfilePresenter extends ActionPresenter
@@ -47,7 +48,8 @@ class ProfilePresenter extends ActionPresenter
 	 */
 	private $attributeService;
 
-	public function __construct(IProfilePage $page, IUserRepository $userRepository, IAttributeService $attributeService)
+	public function __construct(IProfilePage $page, IUserRepository $userRepository,
+								IAttributeService $attributeService)
 	{
 		parent::__construct($page);
 
@@ -56,6 +58,7 @@ class ProfilePresenter extends ActionPresenter
 		$this->attributeService = $attributeService;
 
 		$this->AddAction(ProfileActions::Update, 'UpdateProfile');
+		$this->AddAction(ProfileActions::ChangeDefaultSchedule, 'ChangeDefaultSchedule');
 	}
 
 	public function PageLoad()
@@ -113,19 +116,41 @@ class ProfilePresenter extends ActionPresenter
 
 		$this->userRepository->Update($user);
 		ServiceLocator::GetServer()->SetUserSession($userSession);
+	}
 
+	public function ChangeDefaultSchedule()
+	{
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
+		$scheduleId = $this->page->GetDefaultSchedule();
+
+		Log::Debug('ProfilePresenter updating default schedule to %s for user %s', $scheduleId, $userSession->UserId);
+
+		$user = $this->userRepository->LoadById($userSession->UserId);
+		$user->ChangeDefaultSchedule($scheduleId);
+
+		$this->userRepository->Update($user);
+
+		$userSession->ScheduleId = $this->page->GetDefaultSchedule();
+		ServiceLocator::GetServer()->SetUserSession($userSession);
 	}
 
 	protected function LoadValidators($action)
 	{
+		if ($action != ProfileActions::Update)
+		{
+			return;
+		}
 		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
 		$this->page->RegisterValidator('fname', new RequiredValidator($this->page->GetFirstName()));
 		$this->page->RegisterValidator('username', new RequiredValidator($this->page->GetLoginName()));
 		$this->page->RegisterValidator('lname', new RequiredValidator($this->page->GetLastName()));
 		$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
-		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $userId));
-		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator($this->userRepository, $this->page->GetLoginName(), $userId));
-		$this->page->RegisterValidator('additionalattributes', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
+		$this->page->RegisterValidator('uniqueemail',
+									   new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $userId));
+		$this->page->RegisterValidator('uniqueusername',
+									   new UniqueUserNameValidator($this->userRepository, $this->page->GetLoginName(), $userId));
+		$this->page->RegisterValidator('additionalattributes',
+									   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
 	}
 
 	/**
@@ -140,7 +165,6 @@ class ProfilePresenter extends ActionPresenter
 		}
 		return $attributes;
 	}
-
 
 	private function PopulateTimezones()
 	{

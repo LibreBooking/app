@@ -232,6 +232,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 				$ownedGroups = $this->LoadOwnedGroups($userId);
 				$user->WithOwnedGroups($ownedGroups);
 			}
+			$user->WithDefaultSchedule($row[ColumnNames::DEFAULT_SCHEDULE_ID]);
 
 			$this->_cache->Add($userId, $user);
 
@@ -290,7 +291,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		$id = $db->ExecuteInsert(new RegisterUserCommand($user->Username(), $user->EmailAddress(), $user->FirstName(),
 														 $user->LastName(), $user->encryptedPassword, $user->passwordSalt, $user->Timezone(), $user->Language(),
 														 $user->Homepage(), $user->GetAttribute(UserAttribute::Phone), $user->GetAttribute(UserAttribute::Organization),
-														 $user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId()));
+														 $user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId(), $user->GetDefaultScheduleId()));
 
 		$user->WithId($id);
 
@@ -330,7 +331,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 												   $user->LastLogin(),
 												   $user->GetIsCalendarSubscriptionAllowed(),
 												   $user->GetPublicId(),
-												   $user->Language());
+												   $user->Language(),
+												   $user->GetDefaultScheduleId());
 		$db->Execute($updateUserCommand);
 
 		$removedPermissions = $user->GetRemovedPermissions();

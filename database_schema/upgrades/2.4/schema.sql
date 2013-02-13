@@ -41,3 +41,5 @@ CREATE TABLE `reservation_reminders` (
   	REFERENCES reservation_series(`series_id`)
   	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+ALTER TABLE `users` ADD COLUMN `default_schedule_id` smallint(5) unsigned;

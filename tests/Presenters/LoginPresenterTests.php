@@ -205,6 +205,7 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 	public $_ShowPasswordPrompt = false;
 	public $_ShowPersistLoginPrompt = false;
 	public $_ShowForgotPasswordPrompt = false;
+	public $_ShowScheduleLink = false;
 
 	public function PageLoad()
 	{
@@ -306,12 +307,9 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 		$this->_ShowForgotPasswordPrompt = $shouldShow;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function GetKrb5UserName()
+	public function SetShowScheduleLink($shouldShow)
 	{
-		// TODO: Implement GetKrb5UserName() method.
+		$this->_ShowScheduleLink = $shouldShow;
 	}
 }
 

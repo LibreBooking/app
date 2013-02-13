@@ -676,3 +676,7 @@ ul.indented li {
 	padding: 5px;
 	background-color: #fff;
 }
+
+.hidden {
+	display:none;
+}

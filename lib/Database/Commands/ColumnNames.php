@@ -43,6 +43,7 @@ class ColumnNames
 	const PHONE_NUMBER = 'phone';
 	const ORGANIZATION = 'organization';
 	const POSITION = 'position';
+	const DEFAULT_SCHEDULE_ID = 'default_schedule_id';
 
 	// USER_ADDRESSES //
 	const ADDRESS_ID = 'address_id';

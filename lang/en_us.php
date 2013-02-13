@@ -451,6 +451,8 @@ class en_us extends Language
 		$strings['Logo'] = 'Logo';
 		$strings['CssFile'] = 'CSS File';
 		$strings['ThemeUploadSuccess'] = 'Your changes have been saved. Refresh the page for changes to take effect.';
+		$strings['MakeDefaultSchedule'] = 'Make this my default schedule';
+		$strings['DefaultScheduleSet'] = 'This is now your default schedule';
 		// End Strings
 
 		// Errors

@@ -630,14 +630,13 @@ class Queries
 			'INSERT INTO
 			users (email, password, fname, lname, username, salt, timezone, status_id, role_id)
 		VALUES
-			(@email, @password, @fname, @lname, @username, @salt, @timezone, @user_statusid, @user_roleid)
-		';
+			(@email, @password, @fname, @lname, @username, @salt, @timezone, @user_statusid, @user_roleid)';
 
 	const REGISTER_USER =
 			'INSERT INTO
-			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created, public_id)
+			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created, public_id, default_schedule_id)
 		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid)';
+			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid)';
 
 	const REMOVE_ATTRIBUTE_VALUE =
 			'DELETE FROM custom_attribute_values WHERE custom_attribute_id = @custom_attribute_id AND entity_id = @entity_id';
@@ -800,7 +799,8 @@ class Queries
 			allow_calendar_subscription = @allow_calendar_subscription,
 			public_id = @publicid,
 			language = @language,
-			lastlogin = @lastlogin
+			lastlogin = @lastlogin,
+			default_schedule_id = @scheduleid
 		WHERE
 			user_id = @userid';
 

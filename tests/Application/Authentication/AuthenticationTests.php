@@ -38,6 +38,7 @@ class AuthenticationTests extends TestBase
 	private $homepageId;
 	private $languageCode;
 	private $publicId;
+	private $scheduleId;
 
 	/**
 	 * @var Authentication
@@ -90,6 +91,7 @@ class AuthenticationTests extends TestBase
 		$this->homepageId = 2;
 		$this->languageCode = 'en_us';
 		$this->publicId = 'public_id';
+		$this->scheduleId = 111;
 
 		$this->user = new FakeUser();
 		$this->user->WithId($this->id);
@@ -100,6 +102,7 @@ class AuthenticationTests extends TestBase
 		$this->user->SetLanguage($this->languageCode);
 		$this->user->WithPublicId($this->publicId);
 		$this->user->Activate();
+		$this->user->WithDefaultSchedule($this->scheduleId);
 
 		$this->fakePassword = new FakePassword();
 		$this->fakeMigration = new FakeMigration();
@@ -182,10 +185,7 @@ class AuthenticationTests extends TestBase
 		$user->LanguageCode = $language;
 		$user->LoginTime = LoginTime::Now();
 		$user->PublicId = $this->publicId;
-
-		// sessions tokens are random. set them to something static so equality works
-		$actualSession->SessionToken = '1';
-		$user->SessionToken = '1';
+		$user->ScheduleId = $this->scheduleId;
 
 		$this->assertEquals($user, $actualSession);
 	}

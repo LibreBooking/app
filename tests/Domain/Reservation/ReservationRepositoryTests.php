@@ -340,8 +340,8 @@ class ReservationRepositoryTests extends TestBase
 		$expectedInstance->SetReservationId($reservationId);
 		$expected->WithCurrentInstance($expectedInstance);
 
-		$expected->AddStartReminder(new ReservationReminder($startReminderMinutes, ReservationReminderInterval::Minutes));
-		$expected->AddEndReminder(new ReservationReminder($endReminderMinutes / 60, ReservationReminderInterval::Hours));
+		$expected->WithStartReminder(new ReservationReminder($startReminderMinutes, ReservationReminderInterval::Minutes));
+		$expected->WithEndReminder(new ReservationReminder($endReminderMinutes / 60, ReservationReminderInterval::Hours));
 
 		$reservationRow = new ReservationRow(
 			$reservationId,

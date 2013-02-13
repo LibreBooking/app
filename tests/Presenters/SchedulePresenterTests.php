@@ -48,7 +48,7 @@ class SchedulePresenterTests extends TestBase
 		parent::teardown();
 	}
 
-	public function testPageLoadBindsAllSchedulesAndProperResourcesWhenNotPostingBack2()
+	public function testPageLoadBindsAllSchedulesAndProperResourcesWhenNotPostingBack()
 	{
 		$user = $this->fakeServer->GetUserSession();
 		$resources = array();
@@ -185,32 +185,41 @@ class SchedulePresenterTests extends TestBase
 				->will($this->returnValue(10));
 
 		$pageBuilder = new SchedulePageBuilder();
-		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules);
+		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules, $this->fakeUser);
 
 		$this->assertEquals($s2, $actual);
 	}
 
 	public function testScheduleBuilderGetCurrentScheduleReturnsDefaultScheduleWhenInitialLoad()
 	{
-		$s1 = $this->getMock('ISchedule');
-		$s2 = $this->getMock('ISchedule');
-
-		$s1->expects($this->once())
-				->method('GetIsDefault')
-				->will($this->returnValue(false));
-
-		$s2->expects($this->once())
-				->method('GetIsDefault')
-				->will($this->returnValue(true));
+		$s1 = new FakeSchedule(1, '', false);
+		$s2 = new FakeSchedule(2, '', true);
 
 		$schedules = array($s1, $s2);
 
 		$page = $this->getMock('ISchedulePage');
 
 		$pageBuilder = new SchedulePageBuilder();
-		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules);
+		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules, $this->fakeUser);
 
 		$this->assertEquals($s2, $actual);
+	}
+
+	public function testSetsDefaultScheduleWhenSetForUserProfile()
+	{
+		$session = $this->fakeUser;
+		$s1 = new FakeSchedule(1, '1', false);
+		$s2 = new FakeSchedule(2, '2', true);
+		$s3 = new FakeSchedule($session->ScheduleId, 'should be default', false);
+
+		$schedules = array($s1, $s2, $s3);
+
+		$page = $this->getMock('ISchedulePage');
+
+		$pageBuilder = new SchedulePageBuilder();
+		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules, $session);
+
+		$this->assertEquals($s3, $actual);
 	}
 
 	public function testStartsOnCurrentDateIfShowingLessThanAWeekOfData()

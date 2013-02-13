@@ -35,6 +35,7 @@ class FakeUserSession extends UserSession
 		$this->IsScheduleAdmin = false;
 		$this->LanguageCode = 'en_US';
 		$this->PublicId = 'public id';
+		$this->ScheduleId = 19;
 	}
 }
 

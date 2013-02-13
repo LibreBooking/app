@@ -250,6 +250,7 @@ class UserRepositoryTests extends TestBase
 		$email = 'e';
 		$username = 'u';
 		$timezone = 'America/New_York';
+		$scheduleId = 99;
 
 		$user->ChangePassword($password, $salt);
 		$user->ChangeName($fname, $lname);
@@ -259,9 +260,10 @@ class UserRepositoryTests extends TestBase
 		$user->ChangeTimezone($timezone);
 		$user->EnableSubscription();
 		$user->Login($loginTime, $language);
+		$user->ChangeDefaultSchedule($scheduleId);
 		$publicId = $user->GetPublicId();
 
-		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime, true, $publicId, $language);
+		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime, true, $publicId, $language, $scheduleId);
 
 		$repo = new UserRepository();
 		$repo->Update($user);
@@ -394,6 +396,7 @@ class UserRepositoryTests extends TestBase
 		$phone = 'ph';
 		$organization = 'o';
 		$position = 'po';
+		$scheduleId = 123232;
 
 		$attr1 = new AttributeValue(3, 'value');
 		$attr2 = new AttributeValue(4, 'value');
@@ -403,6 +406,7 @@ class UserRepositoryTests extends TestBase
 		$user->ChangeCustomAttributes(array($attr1, $attr2));
 		$user->ChangeEmailPreference(new ReservationApprovedEvent(), true);
 		$user->EnablePublicProfile();
+		$user->ChangeDefaultSchedule($scheduleId);
 		$publicId = $user->GetPublicId();
 
 		$this->db->_ExpectedInsertId = $expectedId;
@@ -410,7 +414,8 @@ class UserRepositoryTests extends TestBase
 		$newId = $repo->Add($user);
 
 		$command = new RegisterUserCommand($userName, $emailAddress, $firstName, $lastName, $password, $passwordSalt,
-			$timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE, $publicId);
+			$timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE,
+			$publicId, $scheduleId);
 
 		$addAttr1Command = new AddAttributeValueCommand($attr1->AttributeId, $attr1->Value, $expectedId, CustomAttributeCategory::USER);
 		$addAttr2Command = new AddAttributeValueCommand($attr2->AttributeId, $attr2->Value, $expectedId, CustomAttributeCategory::USER);
@@ -559,7 +564,15 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals($expectedId, $actualId);
 	}
 
-	private function GetUserRow($userId = 1, $first = 'first', $last = 'last', $email = 'e@mail.com', $userName = 'username', $lastLogin = null, $timezone = 'UTC', $statusId = AccountStatus::ACTIVE)
+	private function GetUserRow($userId = 1,
+								$first = 'first',
+								$last = 'last',
+								$email = 'e@mail.com',
+								$userName = 'username',
+								$lastLogin = null,
+								$timezone = 'UTC',
+								$statusId = AccountStatus::ACTIVE,
+								$scheduleId = 123)
 	{
 		$row =
 				array(
@@ -581,6 +594,7 @@ class UserRepositoryTests extends TestBase
 					ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
 					ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
 					ColumnNames::PUBLIC_ID => uniqid(),
+					ColumnNames::DEFAULT_SCHEDULE_ID => $scheduleId,
 				);
 
 		return $row;

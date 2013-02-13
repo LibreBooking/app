@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/ProfilePresenter.php');
@@ -28,7 +28,7 @@ interface IProfilePage extends IPage, IActionPage
 	public function SetLastName($lastName);
 
 	public function SetEmail($email);
-	
+
 	public function SetUsername($username);
 
 	public function SetTimezone($timezoneName);
@@ -65,6 +65,8 @@ interface IProfilePage extends IPage, IActionPage
 
 	public function SetAttributes($attributes);
 
+	public function GetDefaultSchedule();
+
 	/**
 	 * @abstract
 	 * @return AttributeFormElement[]
@@ -78,11 +80,14 @@ class ProfilePage extends ActionPage implements IProfilePage
 	 * @var \ProfilePresenter
 	 */
 	private $presenter;
-	
+
 	public function __construct()
 	{
-	    parent::__construct('EditProfile');
-		$this->presenter = new ProfilePresenter($this, new UserRepository(), new AttributeService(new AttributeRepository()));
+		parent::__construct('EditProfile');
+		$this->presenter = new ProfilePresenter($this,
+												new UserRepository(),
+												new AttributeService(new AttributeRepository()),
+												new ScheduleRepository());
 	}
 
 	public function ProcessPageLoad()
@@ -213,7 +218,12 @@ class ProfilePage extends ActionPage implements IProfilePage
 
 	public function ProcessDataRequest($dataRequest)
 	{
-		// TODO: Implement ProcessDataRequest() method.
+		// no-op
+	}
+
+	public function GetDefaultSchedule()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 	}
 }
 

@@ -4,6 +4,8 @@ function Schedule(opts)
 
 	this.init = function ()
 	{
+		this.initUserDefaultSchedule();
+
 		this.initReservations();
 
 		var reservations = $('#reservations');
@@ -69,6 +71,28 @@ function Schedule(opts)
 			{
 				$(this).find("img").first().attr("src", "img/calendar-minus.png");
 			}
+		});
+	};
+
+	this.initUserDefaultSchedule = function ()
+	{
+		var makeDefaultButton = $('#make_default');
+		makeDefaultButton.show();
+
+		var defaultSetMessage = $('#defaultSetMessage');
+		makeDefaultButton.click(function (e)
+		{
+			e.preventDefault();
+			var scheduleId = $('#scheduleId').val();
+			var changeDefaultUrl = options.setDefaultScheduleUrl.replace("[scheduleId]", scheduleId);
+			$.ajax({
+				url:changeDefaultUrl,
+				success:function (data)
+				{
+					defaultSetMessage.show().delay(5000).fadeOut();
+				}
+			});
+
 		});
 	};
 
