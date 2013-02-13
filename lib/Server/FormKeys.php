@@ -53,6 +53,7 @@ class FormKeys
 	const CAPTCHA = 'captcha';
 	const CONFLICT_ACTION = 'conflictAction';
 	const CONTACT_INFO = 'contactInfo';
+	const CSS_FILE = 'CSS_FILE';
 	const CURRENT_PASSWORD = 'currentPassword';
 
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';
@@ -86,6 +87,7 @@ class FormKeys
 	const LIMIT = 'limit';
 	const LOCATION = 'location';
 	const LOGIN = 'login';
+	const LOGO_FILE = 'LOGO_FILE';
 
 	const MIN_DURATION = 'minDuration';
 	const MIN_INCREMENT = 'minIncrement';

@@ -83,6 +83,26 @@ abstract class Page implements IPage
         $this->smarty->assign('CssExtensionFile', Configuration::Instance()->GetKey(ConfigKeys::CSS_EXTENSION_FILE));
         $this->smarty->assign('UseLocalJquery', Configuration::Instance()->GetKey(ConfigKeys::USE_LOCAL_JQUERY, new BooleanConverter()));
         $this->smarty->assign('EnableConfigurationPage', Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter()));
+
+		$this->smarty->assign('LogoUrl', 'logo4.1.png');
+		if (file_exists($this->path . 'img/custom-logo.png'))
+		{
+			$this->smarty->assign('LogoUrl','custom-logo.png');
+		}
+		if (file_exists($this->path . 'img/custom-logo.gif'))
+		{
+			$this->smarty->assign('LogoUrl','custom-logo.gif');
+		}
+		if (file_exists($this->path . 'img/custom-logo.jpg'))
+		{
+			$this->smarty->assign('LogoUrl','custom-logo.jpg');
+		}
+
+		$this->smarty->assign('CssUrl', 'null-style.css');
+		if (file_exists($this->path . 'css/custom-style.css'))
+		{
+			$this->smarty->assign('CssUrl','custom-style.css');
+		}
 	}
 
 	protected function SetTitle($title)

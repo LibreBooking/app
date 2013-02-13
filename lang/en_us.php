@@ -197,7 +197,7 @@ class en_us extends Language
 		$strings['UsernameOrEmail'] = 'Username or Email';
 		$strings['Members'] = 'Members';
 		$strings['QuickSlotCreation'] = 'Create slots every %s minutes between %s and %s';
-		$strings['ApplyUpdatesTo'] = 'ApplyUpdatesTo';
+		$strings['ApplyUpdatesTo'] = 'Apply Updates To';
 		$strings['CancelParticipation'] = 'Cancel Participation';
 		$strings['Attending'] = 'Attending';
 		$strings['QuotaConfiguration'] = 'On %s for %s users in %s are limited to %s %s per %s';
@@ -222,7 +222,6 @@ class en_us extends Language
 		$strings['ReservationDescription'] = 'Description of reservation';
 		$strings['ResourceList'] = 'Resources to be reserved';
 		$strings['Accessories'] = 'Accessories';
-		$strings['Add'] = 'Add';
 		$strings['ParticipantList'] = 'Participants';
 		$strings['InvitationList'] = 'Invitees';
 		$strings['AccessoryName'] = 'Accessory Name';
@@ -449,6 +448,9 @@ class en_us extends Language
 		$strings['days'] = 'days';
 		$strings['ReminderBeforeStart'] = 'before the start time';
 		$strings['ReminderBeforeEnd'] = 'before the end time';
+		$strings['Logo'] = 'Logo';
+		$strings['CssFile'] = 'CSS File';
+		$strings['ThemeUploadSuccess'] = 'Your changes have been saved. Refresh the page for changes to take effect.';
 		// End Strings
 
 		// Errors
@@ -530,6 +532,7 @@ class en_us extends Language
 		$strings['ViewDay'] = 'View Day';
 		$strings['Group'] = 'Group';
 		$strings['ManageConfiguration'] = 'Application Configuration';
+		$strings['LookAndFeel'] = 'Look and Feel';
 		// End Page Titles
 
 		// Day representations

@@ -53,6 +53,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			@import url({$Path}{$cssFile});
 			{/foreach}
 		{/if}
+		@import url('{$Path}css/{$CssUrl}');
 		{if $CssExtensionFile neq ''}
 			@import url('{$CssExtensionFile}');
 		{/if}
@@ -74,7 +75,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <body>
 <div id="wrapper">
 	<div id="doc">
-		<div id="logo">{html_image src="logo4.1.png"}</div>
+		<div id="logo">{html_image src="$LogoUrl"}</div>
 		<div id="header">
 			<div id="header-top">
 				<div id="signout">
@@ -137,6 +138,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 									{if $EnableConfigurationPage}<li class="menuitem"><a
 											href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a></li>
 									{/if}
+									<li class="menuitem"><a href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a></li>
 								</ul>
 							</li>
 						<li class="menuitem"><a href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a></li>
