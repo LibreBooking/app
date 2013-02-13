@@ -46,6 +46,8 @@ interface ILoginPage extends IPage
 
 	public function SetShowRegisterLink($value);
 
+	public function SetShowScheduleLink($value);
+
 	/**
 	 * @abstract
 	 * @return string
@@ -239,6 +241,11 @@ class LoginPage extends Page implements ILoginPage
 	public function ShowForgotPasswordPrompt($shouldShow)
 	{
 		$this->Set('ShowForgotPasswordPrompt', $shouldShow);
+	}
+
+	public function SetShowScheduleLink($shouldShow)
+	{
+		$this->Set('ShowScheduleLink', $shouldShow);
 	}
 }
 

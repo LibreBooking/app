@@ -78,7 +78,9 @@ class LoginPresenter
         }
 
         $allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
+		$allowAnonymousSchedule = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_SCHEDULES, new BooleanConverter());
         $this->_page->SetShowRegisterLink($allowRegistration);
+        $this->_page->SetShowScheduleLink($allowAnonymousSchedule);
 
 		$this->_page->ShowForgotPasswordPrompt($this->authentication->ShowForgotPasswordPrompt());
 		$this->_page->ShowPasswordPrompt($this->authentication->ShowPasswordPrompt());

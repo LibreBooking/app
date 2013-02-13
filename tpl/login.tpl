@@ -75,9 +75,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="login-links">
 	<p>
+		{if $ShowScheduleLink}
 		<a href="view-schedule.php">{translate key='ViewSchedule'}</a>
+		{/if}
+		{if $ShowScheduleLink && $ShowForgotPasswordPrompt}|{/if}
 		{if $ShowForgotPasswordPrompt}
-		|
 		<a href="forgot.php">{translate key='ForgotMyPassword'}</a>
 		{/if}
 	</p>

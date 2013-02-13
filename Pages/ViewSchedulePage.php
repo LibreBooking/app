@@ -132,5 +132,41 @@ class ViewSchedulePage extends Page implements ISchedulePage
 	{
 		return false;
 	}
+
+	public function TakingAction()
+	{
+		// TODO: Implement TakingAction() method.
+	}
+
+	public function GetAction()
+	{
+		// TODO: Implement GetAction() method.
+	}
+
+	public function RequestingData()
+	{
+		// TODO: Implement RequestingData() method.
+	}
+
+	public function GetDataRequest()
+	{
+		// TODO: Implement GetDataRequest() method.
+	}
+
+	/**
+	 * @param ScheduleLayoutSerializable $layoutResponse
+	 */
+	public function SetLayoutResponse($layoutResponse)
+	{
+		// TODO: Implement SetLayoutResponse() method.
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetLayoutDate()
+	{
+		// TODO: Implement GetLayoutDate() method.
+	}
 }
 ?>
