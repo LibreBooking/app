@@ -138,6 +138,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Display('schedule.tpl');
+//		$this->Display('schedule-flipped.tpl');
 
 		$endDisplay = microtime(true);
 

@@ -17,118 +17,11 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{* All of the slot display formatting *}
-
-{function name=displayMyReserved}
-	{if $Slot->IsPending()}
-		{assign var=class value='pending'}
-	{/if}
-<td rowspan="{$Slot->PeriodSpan()}" class="reserved {$class} mine clickres slot" resid="{$Slot->Id()}"
-    id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label()}</td>
-{/function}
-
-{function name=displayPastTime}
-<td rowspan="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="pasttime slot">{$Slot->Label()}</td>
-{/function}
-
-{function name=displayReservable}
-<td rowspan="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot">&nbsp;<input type="hidden"
-                                                                                                   class="href"
-                                                                                                   value="{$Href}"/><input
-        type="hidden" class="start" value="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"/><input type="hidden"
-                                                                                                           class="end"
-                                                                                                           value="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"/>
-</td>{/function}
-
-{function name=displayReserved}
-	{if $Slot->IsPending()}
-		{assign var=class value='pending'}
-	{/if}
-<td rowspan="{$Slot->PeriodSpan()}" class="reserved {$class} clickres slot" resid="{$Slot->Id()}"
-    id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label()}</td>
-{/function}
-
-{function name=displayRestricted}
-<td rowspan="{$Slot->PeriodSpan()}" class="restricted slot">&nbsp;</td>
-{/function}
-
-{function name=displayUnreservable}
-<td rowspan="{$Slot->PeriodSpan()}" class="unreservable slot">{$Slot->Label()}</td>
-{/function}
-
-{function name=displaySlot}
-	{call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href SlotRef=$SlotRef}
-{/function}
-
-{* End slot display formatting *}
-
-{block name="header"}
-{include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.min.css'}
-{/block}
-
-<div id="defaultSetMessage" class="success hidden">
-{translate key=DefaultScheduleSet}
-</div>
-{block name="schedule_control"}
-<div>
-    <div class="schedule_title">
-        <span>{$ScheduleName}</span>
-		{if $Schedules|@count gt 0}
-            <ul class="schedule_drop">
-                <li id="show_schedule">{html_image src="down_sm_blue.png" alt="Change Schedule"}</li>
-                <ul style="display:none;" id="schedule_list">
-					{foreach from=$Schedules item=schedule}
-                        <li><a href="#"
-                               onclick="ChangeSchedule({$schedule->GetId()}); return false;">{$schedule->GetName()}</a>
-                        </li>
-					{/foreach}
-                </ul>
-            </ul>
-		{/if}
-        <a href="#" id="calendar_toggle">{html_image src="calendar.png" altKey="ShowHideNavigation"}</a>
-        <a href="#" id="make_default"
-           style="display:none;">{html_image src="tick-white.png" altKey="MakeDefaultSchedule"}</a>
-    </div>
-
-	{capture name="date_navigation"}
-        <div class="schedule_dates">
-			{assign var=FirstDate value=$DisplayDates->GetBegin()}
-			{assign var=LastDate value=$DisplayDates->GetEnd()}
-            <a href="#" onclick="ChangeDate({formatdate date=$PreviousDate format="Y, m, d"}); return false;"><img
-                    src="img/arrow_large_left.png" alt="Back"/></a>
-			{formatdate date=$FirstDate} - {formatdate date=$LastDate}
-            <a href="#" onclick="ChangeDate({formatdate date=$NextDate format="Y, m, d"}); return false;"><img
-                    src="img/arrow_large_right.png" alt="Forward"/></a>
-
-			{if $ShowFullWeekLink}
-                <a href="{add_querystring key=SHOW_FULL_WEEK value=1}" id="showFullWeek">({translate key=ShowFullWeek}
-                    )</a>
-			{/if}
-        </div>
-	{/capture}
-
-	{$smarty.capture.date_navigation}
-</div>
-
-<div type="text" id="datepicker" style="display:none;"></div>
-
-{/block}
-
-<div style="text-align: center; margin: auto;">
-    <div class="legend reservable">{translate key=Reservable}</div>
-    <div class="legend unreservable">{translate key=Unreservable}</div>
-    <div class="legend reserved">{translate key=Reserved}</div>
-    <div class="legend reserved mine">{translate key=MyReservation}</div>
-    <div class="legend reserved pending">{translate key=Pending}</div>
-    <div class="legend pasttime">{translate key=Past}</div>
-    <div class="legend restricted">{translate key=Restricted}</div>
-</div>
-
-<div style="height:10px">&nbsp;</div>
+{extends file="schedule.tpl"}
 
 {block name="reservations"}
 
-	{assign var=TodaysDate value=Date::Now()}
+{assign var=TodaysDate value=Date::Now()}
 <div id="reservations">
     <table class="reservations" border="1" cellpadding="0" width="100%">
         <tr>
@@ -167,8 +60,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {/block}
 
-{$smarty.capture.date_navigation}
-
 {block name="scripts"}
 
 <script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
@@ -197,7 +88,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     var tr = $('#' +{$slot->BeginDate()->Timestamp()});
                     var td = tr.find('td:last');
 					{capture assign="slotContent"}
-						{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef}
+						{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef spantype='row'}
 					{/capture}
                     td.after('{$slotContent|trim|regex_replace:"/[\r\t\n]/":" "}');
 				{/foreach}
@@ -210,13 +101,3 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </script>
 
 {/block}
-
-{control type="DatePickerSetupControl"
-ControlId='datepicker'
-DefaultDate=$FirstDate
-NumberOfMonths='3'
-ShowButtonPanel='true'
-OnSelect='dpDateChanged'
-FirstDay=$FirstWeekday}
-
-{include file='globalfooter.tpl'}

@@ -23,16 +23,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Slot->IsPending()}
 		{assign var=class value='pending'}
 	{/if}
-<td colspan="{$Slot->PeriodSpan()}" class="reserved {$class} mine clickres slot" resid="{$Slot->Id()}"
+<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} mine clickres slot" resid="{$Slot->Id()}"
     id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label()}</td>
 {/function}
 
 {function name=displayPastTime}
-<td colspan="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="pasttime slot">{$Slot->Label()}</td>
+<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="pasttime slot">{$Slot->Label()}</td>
 {/function}
 
 {function name=displayReservable}
-<td colspan="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot">
+<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot">
     &nbsp;
     <input type="hidden" class="href" value="{$Href}"/>
     <input type="hidden" class="start" value="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"/>
@@ -44,16 +44,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Slot->IsPending()}
 		{assign var=class value='pending'}
 	{/if}
-<td colspan="{$Slot->PeriodSpan()}" class="reserved {$class} clickres slot" resid="{$Slot->Id()}"
+<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} clickres slot" resid="{$Slot->Id()}"
     id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label()}</td>
 {/function}
 
 {function name=displayRestricted}
-<td colspan="{$Slot->PeriodSpan()}" class="restricted slot">&nbsp;</td>
+<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="restricted slot">&nbsp;</td>
 {/function}
 
 {function name=displayUnreservable}
-<td colspan="{$Slot->PeriodSpan()}" class="unreservable slot">{$Slot->Label()}</td>
+<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="unreservable slot">{$Slot->Label()}</td>
 {/function}
 
 {function name=displaySlot}
