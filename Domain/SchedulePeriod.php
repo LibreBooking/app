@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 class PeriodTypes
 {
@@ -30,21 +30,23 @@ class SchedulePeriod
 	 * @var Date
 	 */
 	protected $_begin;
-	
+
 	/**
 	 * @var Date
 	 */
 	protected $_end;
-	
+
 	protected $_label;
-	
+
+	protected $_id;
+
 	public function __construct(Date $begin, Date $end, $label = null)
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
 		$this->_label = $label;
 	}
-	
+
 	/**
 	 * @return Time beginning time for this period
 	 */
@@ -52,7 +54,7 @@ class SchedulePeriod
 	{
 		return $this->_begin->GetTime();
 	}
-	
+
 	/**
 	 * @return Time ending time for this period
 	 */
@@ -60,7 +62,7 @@ class SchedulePeriod
 	{
 		return $this->_end->GetTime();
 	}
-	
+
 	/**
 	 * @return Date
 	 */
@@ -68,7 +70,7 @@ class SchedulePeriod
 	{
 		return $this->_begin;
 	}
-	
+
 	/**
 	 * @return Date
 	 */
@@ -76,7 +78,7 @@ class SchedulePeriod
 	{
 		return $this->_end;
 	}
-	
+
 	/**
 	 * @param Date $dateOverride
 	 * @return string
@@ -86,8 +88,8 @@ class SchedulePeriod
 		if (empty($this->_label))
 		{
 			$format = Resources::GetInstance()->GetDateFormat('period_time');
-			
-			if (isset($dateOverride))
+
+			if (isset($dateOverride) && !$this->_begin->DateEquals($dateOverride))
 			{
 				return $dateOverride->Format($format);
 			}
@@ -95,7 +97,7 @@ class SchedulePeriod
 		}
 		return $this->_label;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -104,12 +106,12 @@ class SchedulePeriod
 		if (empty($this->_label))
 		{
 			$format = Resources::GetInstance()->GetDateFormat('period_time');
-			
+
 			return $this->_end->Format($format);
 		}
 		return '(' . $this->_label . ')';
 	}
-	
+
 	/**
 	 * @return bool
 	 */
@@ -117,27 +119,27 @@ class SchedulePeriod
 	{
 		return true;
 	}
-	
+
 	public function IsLabelled()
 	{
 		return !empty($this->_label);
 	}
-	
+
 	public function ToUtc()
 	{
-		return new SchedulePeriod($this->_begin->ToUtc(), $this->_end->ToUtc(), $this->_label);	
+		return new SchedulePeriod($this->_begin->ToUtc(), $this->_end->ToUtc(), $this->_label);
 	}
-	
+
 	public function ToTimezone($timezone)
 	{
-		return new SchedulePeriod($this->_begin->ToTimezone($timezone), $this->_end->ToTimezone($timezone), $this->_label);	
+		return new SchedulePeriod($this->_begin->ToTimezone($timezone), $this->_end->ToTimezone($timezone), $this->_label);
 	}
-	
+
 	public function __toString()
 	{
 		return sprintf("Begin: %s End: %s Label: %s", $this->_begin, $this->_end, $this->Label());
 	}
-	
+
 	/**
 	 * Compares the starting datetimes
 	 */
@@ -145,10 +147,22 @@ class SchedulePeriod
 	{
 		return $this->_begin->Compare($other->_begin);
 	}
-	
+
 	public function BeginsBefore(Date $date)
 	{
 		return $this->_begin->DateCompare($date) < 0;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Id()
+	{
+		if (empty($this->_id))
+		{
+			$this->_id = uniqid();
+		}
+		return $this->_id;
 	}
 }
 
@@ -158,15 +172,16 @@ class NonSchedulePeriod extends SchedulePeriod
 	{
 		return false;
 	}
-	
+
 	public function ToUtc()
 	{
 		return new NonSchedulePeriod($this->_begin->ToUtc(), $this->_end->ToUtc(), $this->_label);
 	}
-	
+
 	public function ToTimezone($timezone)
 	{
 		return new NonSchedulePeriod($this->_begin->ToTimezone($timezone), $this->_end->ToTimezone($timezone), $this->_label);
 	}
 }
+
 ?>

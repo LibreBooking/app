@@ -19,6 +19,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {extends file="schedule.tpl"}
 
+{$Timezone}
+
 {block name="reservations"}
 
 	{assign var=TodaysDate value=Date::Now()}
@@ -51,8 +53,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{$smarty.capture.resources}
             <td class="resdate" colspan="{$Resources|@count+1}">{formatdate date=$date key="schedule_daily"}</td></tr>
 			{foreach from=$DailyLayout->GetPeriods($date) item=period name=period_loop}
-                <tr class="slots" id="{$period->BeginDate()->Timestamp()}">
-                    <td class="reslabel">{$period->Label()}</td>
+                <tr class="slots" id="{$period->Id()}">
+                    <td class="reslabel">{$period->Label($date)}</td>
                 </tr>
 			{/foreach}
 		{/foreach}
@@ -90,12 +92,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 				{foreach from=$slots item=slot name=slot_loop}
 					{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                    var tr = $('#' +{$slot->BeginDate()->Timestamp()});
+                    var tr = $('#' +{$slot->BeginDate()->Format('YmdHis')});
                     var td = tr.find('td:last');
 					{capture assign="slotContent"}
 						{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef spantype='row'}
 					{/capture}
-                    td.after('{$slotContent|trim|regex_replace:"/[\r\t\n]/":" "}');
+                    //td.after('{$slotContent|trim|regex_replace:"/[\r\t\n]/":" "}');
 				{/foreach}
 			{/foreach}
 		{/foreach}

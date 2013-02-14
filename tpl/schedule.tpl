@@ -23,7 +23,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Slot->IsPending()}
 		{assign var=class value='pending'}
 	{/if}
-<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} mine clickres slot" resid="{$Slot->Id()}"
+<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} mine clickres slot"
+    resid="{$Slot->Id()}"
     id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label()}</td>
 {/function}
 
@@ -68,13 +69,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="actions"}
 <div>
-<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
-<a href="#" id="rotate_schedule">{html_image src="arrow-turn.png" altKey="MakeDefaultSchedule"}</a>
+	{*translate key=Actions*}
+    <a href="#" id="make_default"
+       style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
+    <a href="#" id="rotate_schedule">{html_image src="arrow-turn.png" altKey="FlipSchedule"}</a>
 </div>
 {/block}
 
 <div id="defaultSetMessage" class="success hidden">
-	{translate key=DefaultScheduleSet}
+{translate key=DefaultScheduleSet}
 </div>
 
 {block name="schedule_control"}
@@ -190,9 +193,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         var scheduleOpts = {
             reservationUrlTemplate:"{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
             summaryPopupUrl:"{$Path}ajax/respopup.php",
-			setDefaultScheduleUrl:"{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
-			cookieName: "{$CookieName}",
-			cookieValue: "{$CookieValue}"
+            setDefaultScheduleUrl:"{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
+            cookieName:"{$CookieName}",
+            cookieValue:"{$CookieValue}"
         };
 
         var schedule = new Schedule(scheduleOpts);
