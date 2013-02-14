@@ -40,6 +40,12 @@ interface IDailyLayout
 	 * @return string[]
 	 */
 	function GetLabels(Date $displayDate);
+
+	/**
+	 * @param Date $displayDate
+	 * @return mixed
+	 */
+	function GetPeriods(Date $displayDate);
 }
 
 class DailyLayout implements IDailyLayout
@@ -113,6 +119,11 @@ class DailyLayout implements IDailyLayout
 		}
 		
 		return $labels;
+	}
+
+	public function GetPeriods(Date $displayDate)
+	{
+		return $this->_scheduleLayout->GetLayout($displayDate);
 	}
 }
 
