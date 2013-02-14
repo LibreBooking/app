@@ -109,10 +109,34 @@ interface ISchedulePage extends IActionPage
 	 * @return string
 	 */
 	public function GetLayoutDate();
+
+	/**
+	 * @param int $scheduleId
+	 * @return string|ScheduleDirection
+	 */
+	public function GetScheduleDirection($scheduleId);
+
+	/**
+	 * @param string|ScheduleDirection Direction
+	 */
+	public function SetScheduleDirection($direction);
+}
+
+class ScheduleDirection
+{
+	const vertical = 'vertical';
+	const horizontal = 'horizontal';
 }
 
 class SchedulePage extends ActionPage implements ISchedulePage
 {
+	protected $scheduleDirection = ScheduleDirection::horizontal;
+
+	/**
+	 * @var SchedulePresenter
+	 */
+	protected $_presenter;
+
 	public function __construct()
 	{
 		parent::__construct('Schedule');
@@ -137,8 +161,14 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$endLoad = microtime(true);
 
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
-		$this->Display('schedule.tpl');
-//		$this->Display('schedule-flipped.tpl');
+		if ($this->scheduleDirection == ScheduleDirection::horizontal)
+		{
+			$this->Display('schedule.tpl');
+		}
+		else
+		{
+			$this->Display('schedule-flipped.tpl');
+		}
 
 		$endDisplay = microtime(true);
 
@@ -147,10 +177,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		Log::Debug('Schedule took %s sec to load, %s sec to render', $load, $display);
 	}
 
-	/**
-	 * @param $dataRequest string
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
 		$this->_presenter->GetLayout(ServiceLocator::GetServer()->GetUserSession());
@@ -176,10 +202,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('Schedules', $schedules);
 	}
 
-	/**
-	 * @see ISchedulePage:SetFirstWeekday()
-	 */
-	function SetFirstWeekday($firstWeekday)
+	public function SetFirstWeekday($firstWeekday)
 	{
 		$this->Set('FirstWeekday', $firstWeekday);
 	}
@@ -194,9 +217,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('DailyLayout', $dailyLayout);
 	}
 
-	/**
-	 * @see ISchedulePage:SetDisplayDates()
-	 */
 	public function SetDisplayDates($dateRange)
 	{
 		$this->Set('DisplayDates', $dateRange);
@@ -222,9 +242,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
 														new BooleanConverter());
 	}
 
-	/**
-	 * @param bool $showShowFullWeekToggle
-	 */
 	public function ShowFullWeekToggle($showShowFullWeekToggle)
 	{
 		$this->Set('ShowFullWeekLink', $showShowFullWeekToggle);
@@ -237,28 +254,37 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		return !empty($showFullWeek);
 	}
 
-	/**
-	 * @return void
-	 */
 	public function ProcessAction()
 	{
 		// no-op
 	}
 
-	/**
-	 * @param ScheduleLayoutSerializable $layoutResponse
-	 */
 	public function SetLayoutResponse($layoutResponse)
 	{
 		$this->SetJson($layoutResponse);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetLayoutDate()
 	{
 		return $this->GetQuerystring(QueryStringKeys::LAYOUT_DATE);
+	}
+
+	public function GetScheduleDirection($scheduleId)
+	{
+		$cookie = $this->server->GetCookie("schedule-direction-$scheduleId");
+		if ($cookie != null)
+		{
+			return $cookie;
+		}
+
+		return ScheduleDirection::horizontal;
+	}
+
+	public function SetScheduleDirection($direction)
+	{
+		$this->scheduleDirection = $direction;
+		$this->Set('CookieName', 'schedule-direction-' . $this->GetVar('ScheduleId'));
+		$this->Set('CookieValue', $direction == ScheduleDirection::vertical ? ScheduleDirection::horizontal : ScheduleDirection::vertical);
 	}
 }
 

@@ -22,12 +22,11 @@ require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Authorization/ViewSchedulePermissionServiceFactory.php');
 
-class ViewSchedulePage extends Page implements ISchedulePage
+class ViewSchedulePage extends SchedulePage
 {
 	public function __construct()
 	{
-		parent::__construct('Schedule');
-
+		parent::__construct();
 		$scheduleRepository = new ScheduleRepository();
 		$resourceService = new ResourceService(new ResourceRepository(), new ViewSchedulePermissionService());
 		$pageBuilder = new SchedulePageBuilder();
@@ -49,124 +48,15 @@ class ViewSchedulePage extends Page implements ISchedulePage
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Display('view-schedule.tpl');
 	}
-	
-	public function IsPostBack()
-	{
-		return !is_null($this->GetScheduleId());
-	}
-	
-	public function GetScheduleId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
-	}
-	
-	public function SetScheduleId($scheduleId)
-	{
-		$this->Set('ScheduleId', $scheduleId);
-	}
-	
-	public function SetScheduleName($scheduleName)
-	{
-		$this->Set('ScheduleName', $scheduleName);
-	}
-	
-	public function SetSchedules($schedules)
-	{
-		$this->Set('Schedules', $schedules);
-	}
-	
-	function SetFirstWeekday($firstWeekday)
-	{
-		$this->Set('FirstWeekday', $firstWeekday);
-	}
-	
-	public function SetResources($resources)
-	{
-		$this->Set('Resources', $resources);
-	}
-	
-	public function SetDailyLayout($dailyLayout)
-	{
-		$this->Set('DailyLayout', $dailyLayout);
-	}
-	
-	public function SetDisplayDates($dateRange)
-	{
-		$this->Set('DisplayDates', $dateRange);
-		$this->Set('BoundDates', $dateRange->Dates());
-	}
-	
-	public function SetPreviousNextDates($previousDate, $nextDate)
-	{
-		$this->Set('PreviousDate', $previousDate);
-		$this->Set('NextDate', $nextDate);
-	}
-	
-	public function GetSelectedDate()
-	{
-		// TODO: Clean date
-		return $this->server->GetQuerystring(QueryStringKeys::START_DATE);
-	}
 
     public function ShowInaccessibleResources()
     {
         return true;
     }
 
-	/**
-	 * @param bool $showShowFullWeekToggle
-	 */
-	public function ShowFullWeekToggle($showShowFullWeekToggle)
-	{
-		$this->Set('ShowFullWeekLink', $showShowFullWeekToggle);
-	}
-
-	public function GetShowFullWeek()
-	{
-		$showFullWeek = $this->GetQuerystring(QueryStringKeys::SHOW_FULL_WEEK);
-
-		return !empty($showFullWeek);
-	}
-
 	protected function GetShouldAutoLogout()
 	{
 		return false;
-	}
-
-	public function TakingAction()
-	{
-		// TODO: Implement TakingAction() method.
-	}
-
-	public function GetAction()
-	{
-		// TODO: Implement GetAction() method.
-	}
-
-	public function RequestingData()
-	{
-		// TODO: Implement RequestingData() method.
-	}
-
-	public function GetDataRequest()
-	{
-		// TODO: Implement GetDataRequest() method.
-	}
-
-	/**
-	 * @param ScheduleLayoutSerializable $layoutResponse
-	 */
-	public function SetLayoutResponse($layoutResponse)
-	{
-		// TODO: Implement SetLayoutResponse() method.
-	}
-
-	/**
-	 * @return string
-	 */
-	public function GetLayoutDate()
-	{
-		// TODO: Implement GetLayoutDate() method.
 	}
 }
 ?>

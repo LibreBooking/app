@@ -159,6 +159,15 @@ class SchedulePresenterTests extends TestBase
 				->method('SetFirstWeekday')
 				->with($this->equalTo($weekdayStart));
 
+		$page->expects($this->once())
+				->method('GetScheduleDirection')
+				->with($this->equalTo($activeId))
+				->will($this->returnValue(ScheduleDirection::vertical));
+
+		$page->expects($this->once())
+				->method('SetScheduleDirection')
+				->with($this->equalTo(ScheduleDirection::vertical));
+
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindSchedules($page, $this->schedules, $schedule);
 	}

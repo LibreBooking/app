@@ -66,9 +66,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.min.css'}
 {/block}
 
+{block name="actions"}
+<div>
+<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
+<a href="#" id="rotate_schedule">{html_image src="arrow-turn.png" altKey="MakeDefaultSchedule"}</a>
+</div>
+{/block}
+
 <div id="defaultSetMessage" class="success hidden">
 	{translate key=DefaultScheduleSet}
 </div>
+
 {block name="schedule_control"}
 <div>
     <div class="schedule_title">
@@ -86,7 +94,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             </ul>
 		{/if}
         <a href="#" id="calendar_toggle">{html_image src="calendar.png" altKey="ShowHideNavigation"}</a>
-        <a href="#" id="make_default" style="display:none;">{html_image src="tick-white.png" altKey="MakeDefaultSchedule"}</a>
     </div>
 
 	{capture name="date_navigation"}
@@ -183,7 +190,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         var scheduleOpts = {
             reservationUrlTemplate:"{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
             summaryPopupUrl:"{$Path}ajax/respopup.php",
-			setDefaultScheduleUrl:"{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]"
+			setDefaultScheduleUrl:"{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
+			cookieName: "{$CookieName}",
+			cookieValue: "{$CookieValue}"
         };
 
         var schedule = new Schedule(scheduleOpts);

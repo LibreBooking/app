@@ -21,31 +21,34 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="reservations"}
 
-{assign var=TodaysDate value=Date::Now()}
+	{assign var=TodaysDate value=Date::Now()}
 <div id="reservations">
     <table class="reservations" border="1" cellpadding="0" width="100%">
-        <tr>
-            <td>&nbsp</td>
-			{foreach from=$Resources item=resource name=resource_loop}
-				{assign var=resourceId value=$resource->Id}
-				{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}"}
+		{capture name="resources"}
+            <tr>
+                <td>&nbsp</td>
+				{foreach from=$Resources item=resource name=resource_loop}
+					{assign var=resourceId value=$resource->Id}
+					{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}"}
 
-                <td class="resourcename" resourceId="{$resource->Id}">
-					{if $resource->CanAccess}
-                        <a href="{$href}" resourceId="{$resource->Id}"
-                           class="resourceNameSelector">{$resource->Name}</a>
-						{else}
-						{$resource->Name}
-					{/if}
-                </td>
-			{/foreach}
-        </tr>
+                    <td class="resourcename" resourceId="{$resource->Id}">
+						{if $resource->CanAccess}
+                            <a href="{$href}" resourceId="{$resource->Id}"
+                               class="resourceNameSelector">{$resource->Name}</a>
+							{else}
+							{$resource->Name}
+						{/if}
+                    </td>
+				{/foreach}
+            </tr>
+		{/capture}
 
 		{foreach from=$BoundDates item=date}
 			{if $TodaysDate->DateEquals($date)}
                 <tr class="today">{else}
             <tr>{/if}
 
+			{$smarty.capture.resources}
             <td class="resdate" colspan="{$Resources|@count+1}">{formatdate date=$date key="schedule_daily"}</td></tr>
 			{foreach from=$DailyLayout->GetPeriods($date) item=period name=period_loop}
                 <tr class="slots" id="{$period->BeginDate()->Timestamp()}">
@@ -73,7 +76,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         var scheduleOpts = {
             reservationUrlTemplate:"{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
             summaryPopupUrl:"{$Path}ajax/respopup.php",
-            setDefaultScheduleUrl:"{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]"
+            setDefaultScheduleUrl:"{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
+            cookieName:"{$CookieName}",
+            cookieValue:"{$CookieValue}"
         };
 
         var table = $('#reservations table');

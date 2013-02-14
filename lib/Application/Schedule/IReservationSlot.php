@@ -87,7 +87,7 @@ interface IReservationSlot
 	/**
 	 * @abstract
 	 * @param UserSession $session
-	 * @return void
+	 * @return bool
 	 */
 	public function IsOwnedBy(UserSession $session);
 }

@@ -5,7 +5,7 @@ function Schedule(opts)
 	this.init = function ()
 	{
 		this.initUserDefaultSchedule();
-
+		this.initRotateSchedule();
 		this.initReservations();
 
 		var reservations = $('#reservations');
@@ -93,6 +93,16 @@ function Schedule(opts)
 				}
 			});
 
+		});
+	};
+
+	this.initRotateSchedule = function ()
+	{
+		$('#rotate_schedule').click(function (e)
+		{
+			e.preventDefault();
+			createCookie(opts.cookieName, opts.cookieValue, 30);
+			window.location.reload();
 		});
 	};
 

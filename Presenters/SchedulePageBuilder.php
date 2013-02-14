@@ -71,10 +71,13 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	 */
 	public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule)
 	{
+		$scheduleId = $currentSchedule->GetId();
 		$page->SetSchedules($schedules);
-		$page->SetScheduleId($currentSchedule->GetId());
+		$page->SetScheduleId($scheduleId);
 		$page->SetScheduleName($currentSchedule->GetName());
 		$page->SetFirstWeekday($currentSchedule->GetWeekdayStart());
+		$direction = $page->GetScheduleDirection($scheduleId);
+		$page->SetScheduleDirection($direction);
 	}
 
 	/**
