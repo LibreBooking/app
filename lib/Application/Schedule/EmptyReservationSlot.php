@@ -50,7 +50,7 @@ class EmptyReservationSlot implements IReservationSlot
 	protected $_beginDisplayTime;
 	protected $_endDisplayTime;
 	
-	public function __construct(Date $begin, Date $end, Date $displayDate, $isReservable)
+	public function __construct(Date $begin, Date $end, Date $displayDate, $isReservable, $beginSlotId=null, $endSlotId=null)
 	{
 		$this->_begin = $begin;
 		$this->_end = $end;
@@ -68,6 +68,9 @@ class EmptyReservationSlot implements IReservationSlot
 		{
 			$this->_endDisplayTime = $displayDate->GetDate()->GetTime();
 		}
+
+		$this->BeginSlotId = $beginSlotId;
+		$this->EndSlotId = $endSlotId;
 	}
 	
 	/**
