@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/SlotLabelFactory.php');
 
@@ -48,22 +48,33 @@ class ReservationSlot implements IReservationSlot
 	private $_reservation;
 
 	/**
-	 * @param Date $begin
-	 * @param Date $end
+	 * @var string
+	 */
+	protected $_beginSlotId;
+
+	/**
+	 * @var string
+	 */
+	protected $_endSlotId;
+
+	/**
+	 * @param SchedulePeriod $begin
+	 * @param SchedulePeriod $end
 	 * @param Date $displayDate
 	 * @param int $periodSpan
 	 * @param ReservationItemView $reservation
 	 */
-	public function __construct(Date $begin, Date $end, Date $displayDate, $periodSpan, ReservationItemView $reservation, $beginSlotId=null, $endSlotId=null)
+	public function __construct(SchedulePeriod $begin, SchedulePeriod $end, Date $displayDate, $periodSpan,
+								ReservationItemView $reservation)
 	{
 		$this->_reservation = $reservation;
-		$this->_begin = $begin;
+		$this->_begin = $begin->BeginDate();
 		$this->_displayDate = $displayDate;
-		$this->_end = $end;
+		$this->_end = $end->EndDate();
 		$this->_periodSpan = $periodSpan;
 
-		$this->BeginSlotId = $beginSlotId;
-				$this->EndSlotId = $endSlotId;
+		$this->_beginSlotId = $begin->Id();
+		$this->_endSlotId = $end->Id();
 	}
 
 	/**
@@ -116,7 +127,7 @@ class ReservationSlot implements IReservationSlot
 
 	public function Label()
 	{
-        return SlotLabelFactory::Create($this->_reservation);
+		return SlotLabelFactory::Create($this->_reservation);
 	}
 
 	public function IsReservable()
@@ -141,7 +152,7 @@ class ReservationSlot implements IReservationSlot
 
 	public function ToTimezone($timezone)
 	{
-		return new ReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->EndDate()->ToTimezone($timezone), $this->Date(),  $this->PeriodSpan(), $this->_reservation);
+		return new ReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->EndDate()->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->_reservation);
 	}
 
 	public function Id()
@@ -157,7 +168,23 @@ class ReservationSlot implements IReservationSlot
 	public function __toString()
 	{
 		return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());
-  	}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function BeginSlotId()
+	{
+		return $this->_beginSlotId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function EndSlotId()
+	{
+		return $this->_beginSlotId;
+	}
 }
 
 ?>

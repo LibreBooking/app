@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 interface IReservationSlot
 {
 	/**
@@ -85,11 +84,20 @@ interface IReservationSlot
 	public function ToTimezone($timezone);
 
 	/**
-	 * @abstract
 	 * @param UserSession $session
 	 * @return bool
 	 */
 	public function IsOwnedBy(UserSession $session);
+
+	/**
+	 * @return string
+	 */
+	public function BeginSlotId();
+
+	/**
+	 * @return string
+	 */
+	public function EndSlotId();
 }
 
 ?>

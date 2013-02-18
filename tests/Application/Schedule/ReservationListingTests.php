@@ -108,11 +108,12 @@ class ReservationListingTests extends TestBase
 
 		$start = Date::Parse('2011-12-01');
 		$end = Date::Parse('2011-12-02');
+		$period = new SchedulePeriod($start, $end);
 		$display = Date::Parse('2011-12-03');
 		$span = 3;
 		
-		$expectedSlot = new ReservationSlot($start, $end, $display, $span, $view);
-		$actualSlot = $item->BuildSlot($start, $end, $display, $span);
+		$expectedSlot = new ReservationSlot($period, $period, $display, $span, $view);
+		$actualSlot = $item->BuildSlot($period, $period, $display, $span);
 		$this->assertEquals($expectedSlot, $actualSlot);
 	}
 
@@ -127,11 +128,12 @@ class ReservationListingTests extends TestBase
 
 		$start = Date::Parse('2011-12-01');
 		$end = Date::Parse('2011-12-02');
+		$period = new SchedulePeriod($start, $end);
 		$display = Date::Parse('2011-12-03');
 		$span = 3;
 
-		$expectedSlot = new BlackoutSlot($start, $end, $display, $span, $view);
-		$actualSlot = $item->BuildSlot($start, $end, $display, $span);
+		$expectedSlot = new BlackoutSlot($period, $period, $display, $span, $view);
+		$actualSlot = $item->BuildSlot($period, $period, $display, $span);
 		$this->assertEquals($expectedSlot, $actualSlot);
 	}
 

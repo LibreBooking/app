@@ -92,7 +92,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 				{foreach from=$slots item=slot name=slot_loop}
 					{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                    var tr = $('#{$slot->BeginSlotId}');
+                    var tr = $('#{$slot->BeginSlotId()}');
                     var td = tr.find('td:last');
 					{capture assign="slotContent"}
 						{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef spantype='row'}

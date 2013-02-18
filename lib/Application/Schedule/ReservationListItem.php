@@ -60,7 +60,7 @@ class ReservationListItem
 	 */
 	public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
 	{
-		return new ReservationSlot($start->BeginDate(), $end->EndDate(), $displayDate, $span, $this->item, $start->Id(), $end->Id());
+		return new ReservationSlot($start, $end, $displayDate, $span, $this->item);
 	}
 
 	/**
@@ -83,13 +83,13 @@ class ReservationListItem
 class BlackoutListItem extends ReservationListItem
 {
 	/**
-	 * @param Date $start
-	 * @param Date $end
+	 * @param SchedulePeriod $start
+	 * @param SchedulePeriod $end
 	 * @param Date $displayDate
 	 * @param int $span
 	 * @return IReservationSlot
 	 */
-	public function BuildSlot(Date $start, Date $end, Date $displayDate, $span)
+	public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
 	{
 		return new BlackoutSlot($start, $end, $displayDate, $span, $this->item);
 	}

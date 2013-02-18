@@ -129,7 +129,7 @@ class ScheduleReservationList implements IScheduleReservationList
 			}
 			else
 			{
-				$slots[] = new EmptyReservationSlot($layoutItem->BeginDate(), $layoutItem->EndDate(), $this->_layoutDateStart, $layoutItem->IsReservable(), $layoutItem->Id());
+				$slots[] = new EmptyReservationSlot($layoutItem, $layoutItem, $this->_layoutDateStart, $layoutItem->IsReservable());
 			}
 		}
 	

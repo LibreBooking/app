@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 class BlackoutSlot implements IReservationSlot
 {
 	/**
@@ -47,19 +46,31 @@ class BlackoutSlot implements IReservationSlot
 	private $blackout;
 
 	/**
-	 * @param Date $begin
-	 * @param Date $end
+	 * @var string
+	 */
+	protected $beginSlotId;
+
+	/**
+	 * @var string
+	 */
+	protected $endSlotId;
+
+	/**
+	 * @param SchedulePeriod $begin
+	 * @param SchedulePeriod $end
 	 * @param Date $displayDate
 	 * @param int $periodSpan
 	 * @param BlackoutItemView $blackout
 	 */
-	public function __construct(Date $begin, Date $end, Date $displayDate, $periodSpan, BlackoutItemView $blackout)
+	public function __construct(SchedulePeriod $begin, SchedulePeriod $end, Date $displayDate, $periodSpan, BlackoutItemView $blackout)
 	{
 		$this->blackout = $blackout;
-		$this->begin = $begin;
+		$this->begin = $begin->BeginDate();
 		$this->displayDate = $displayDate;
-		$this->end = $end;
+		$this->end = $end->EndDate();
 		$this->periodSpan = $periodSpan;
+		$this->beginSlotId = $begin->Id();
+		$this->endSlotId = $end->Id();
 	}
 	
 	/**
@@ -155,6 +166,22 @@ class BlackoutSlot implements IReservationSlot
 	public function IsOwnedBy(UserSession $session)
 	{
 		return false;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function BeginSlotId()
+	{
+		return $this->beginSlotId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function EndSlotId()
+	{
+		return $this->endSlotId;
 	}
 }
 ?>

@@ -49,11 +49,14 @@ class EmptyReservationSlot implements IReservationSlot
 	
 	protected $_beginDisplayTime;
 	protected $_endDisplayTime;
+
+	protected $_beginSlotId;
+	protected $_endSlotId;
 	
-	public function __construct(Date $begin, Date $end, Date $displayDate, $isReservable, $beginSlotId=null, $endSlotId=null)
+	public function __construct(SchedulePeriod $begin, SchedulePeriod $end, Date $displayDate, $isReservable)
 	{
-		$this->_begin = $begin;
-		$this->_end = $end;
+		$this->_begin = $begin->BeginDate();
+		$this->_end = $end->EndDate();
 		$this->_date = $displayDate;
 		$this->_isReservable = $isReservable;
 		
@@ -69,8 +72,8 @@ class EmptyReservationSlot implements IReservationSlot
 			$this->_endDisplayTime = $displayDate->GetDate()->GetTime();
 		}
 
-		$this->BeginSlotId = $beginSlotId;
-		$this->EndSlotId = $endSlotId;
+		$this->_beginSlotId = $begin->Id();
+		$this->_endSlotId = $end->Id();
 	}
 	
 	/**
@@ -171,6 +174,22 @@ class EmptyReservationSlot implements IReservationSlot
 	public function IsOwnedBy(UserSession $session)
 	{
 		return false;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function BeginSlotId()
+	{
+		return $this->_beginSlotId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function EndSlotId()
+	{
+		return $this->_endSlotId;
 	}
 }
 

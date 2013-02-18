@@ -84,10 +84,11 @@ class ScheduleReservationListTests extends TestBase
 
 		$item = new ReservationItemView(1, $s2->ToUtc(), $e2->ToUtc());
 		$r1 = new ReservationListItem($item);
-		$layoutPeriods[] = new NonSchedulePeriod($s1, $e1);
-		$layoutPeriods[] = new SchedulePeriod($s2, $e2);
-		$layoutPeriods[] = new SchedulePeriod($s3, $e3);
-		
+		$p1 = new NonSchedulePeriod($s1, $e1);
+		$p2 = new SchedulePeriod($s2, $e2);
+		$p3 = new SchedulePeriod($s3, $e3);
+		$layoutPeriods = array($p1, $p2, $p3);
+
 		$layout = $this->getMock('IScheduleLayout');
 		$layout->expects($this->once())
 			->method('Timezone')
@@ -101,9 +102,9 @@ class ScheduleReservationListTests extends TestBase
 		$scheduleList = new ScheduleReservationList(array($r1), $layout, $date);
 		$slots = $scheduleList->BuildSlots();
 	
-		$slot1 = new EmptyReservationSlot($s1, $e1, $date, false);
-		$slot2 = new ReservationSlot($s2, $e2, $date, 1, $item);
-		$slot3 = new EmptyReservationSlot($s3, $e3, $date, true);
+		$slot1 = new EmptyReservationSlot($p1, $p1, $date, false);
+		$slot2 = new ReservationSlot($p2, $p2, $date, 1, $item);
+		$slot3 = new EmptyReservationSlot($p3, $p3, $date, true);
 
 		$this->assertEquals(3, count($slots));
 		$this->assertEquals($slot1, $slots[0]);
@@ -143,25 +144,25 @@ class ScheduleReservationListTests extends TestBase
 		$slotDate = $this->date;
 		$expectedSlots = $this->testDbLayout->GetLayout($this->date);
 		
-		$slot1 = new EmptyReservationSlot($expectedSlots[0]->BeginDate(), $expectedSlots[0]->EndDate(), $slotDate, $expectedSlots[0]->IsReservable());
-		$slot2 = new EmptyReservationSlot($expectedSlots[1]->BeginDate(), $expectedSlots[1]->EndDate(), $slotDate, $expectedSlots[1]->IsReservable());
-		$slot3 = new EmptyReservationSlot($expectedSlots[2]->BeginDate(), $expectedSlots[2]->EndDate(), $slotDate, $expectedSlots[2]->IsReservable());
-		$slot4 = new ReservationSlot($expectedSlots[3]->BeginDate(), $expectedSlots[5]->EndDate(), $slotDate, 3, $item1);
-		$slot5 = new EmptyReservationSlot($expectedSlots[6]->BeginDate(), $expectedSlots[6]->EndDate(), $slotDate, $expectedSlots[6]->IsReservable());
-		$slot6 = new ReservationSlot($expectedSlots[7]->BeginDate(), $expectedSlots[7]->EndDate(), $slotDate, 1, $item2);
-		$slot7 = new EmptyReservationSlot($expectedSlots[8]->BeginDate(), $expectedSlots[8]->EndDate(), $slotDate, $expectedSlots[8]->IsReservable());
-		$slot8 = new EmptyReservationSlot($expectedSlots[9]->BeginDate(), $expectedSlots[9]->EndDate(), $slotDate, $expectedSlots[9]->IsReservable());
-		$slot9 = new EmptyReservationSlot($expectedSlots[10]->BeginDate(), $expectedSlots[10]->EndDate(), $slotDate, $expectedSlots[10]->IsReservable());
-		$slot10 = new EmptyReservationSlot($expectedSlots[11]->BeginDate(), $expectedSlots[11]->EndDate(), $slotDate, $expectedSlots[11]->IsReservable());
-		$slot11 = new EmptyReservationSlot($expectedSlots[12]->BeginDate(), $expectedSlots[12]->EndDate(), $slotDate, $expectedSlots[12]->IsReservable());
-		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $expectedSlots[20]->EndDate(), $slotDate, 8, $item3);
-		$slot13 = new EmptyReservationSlot($expectedSlots[21]->BeginDate(), $expectedSlots[21]->EndDate(), $slotDate, $expectedSlots[21]->IsReservable());
-		$slot14 = new EmptyReservationSlot($expectedSlots[22]->BeginDate(), $expectedSlots[22]->EndDate(), $slotDate, $expectedSlots[22]->IsReservable());
-		$slot15 = new EmptyReservationSlot($expectedSlots[23]->BeginDate(), $expectedSlots[23]->EndDate(), $slotDate, $expectedSlots[23]->IsReservable());
-		$slot16 = new EmptyReservationSlot($expectedSlots[24]->BeginDate(), $expectedSlots[24]->EndDate(), $slotDate, $expectedSlots[24]->IsReservable());
-		$slot17 = new EmptyReservationSlot($expectedSlots[25]->BeginDate(), $expectedSlots[25]->EndDate(), $slotDate, $expectedSlots[25]->IsReservable());
-		$slot18 = new EmptyReservationSlot($expectedSlots[26]->BeginDate(), $expectedSlots[26]->EndDate(), $slotDate, $expectedSlots[26]->IsReservable());
-		$slot19 = new EmptyReservationSlot($expectedSlots[27]->BeginDate(), $expectedSlots[27]->EndDate(), $slotDate, $expectedSlots[27]->IsReservable());
+		$slot1 = new EmptyReservationSlot($expectedSlots[0], $expectedSlots[0], $slotDate, $expectedSlots[0]->IsReservable());
+		$slot2 = new EmptyReservationSlot($expectedSlots[1], $expectedSlots[1], $slotDate, $expectedSlots[1]->IsReservable());
+		$slot3 = new EmptyReservationSlot($expectedSlots[2], $expectedSlots[2], $slotDate, $expectedSlots[2]->IsReservable());
+		$slot4 = new ReservationSlot($expectedSlots[3], $expectedSlots[5], $slotDate, 3, $item1);
+		$slot5 = new EmptyReservationSlot($expectedSlots[6], $expectedSlots[6], $slotDate, $expectedSlots[6]->IsReservable());
+		$slot6 = new ReservationSlot($expectedSlots[7], $expectedSlots[7], $slotDate, 1, $item2);
+		$slot7 = new EmptyReservationSlot($expectedSlots[8], $expectedSlots[8], $slotDate, $expectedSlots[8]->IsReservable());
+		$slot8 = new EmptyReservationSlot($expectedSlots[9], $expectedSlots[9], $slotDate, $expectedSlots[9]->IsReservable());
+		$slot9 = new EmptyReservationSlot($expectedSlots[10], $expectedSlots[10], $slotDate, $expectedSlots[10]->IsReservable());
+		$slot10 = new EmptyReservationSlot($expectedSlots[11], $expectedSlots[11], $slotDate, $expectedSlots[11]->IsReservable());
+		$slot11 = new EmptyReservationSlot($expectedSlots[12], $expectedSlots[12], $slotDate, $expectedSlots[12]->IsReservable());
+		$slot12 = new ReservationSlot($expectedSlots[13], $expectedSlots[20], $slotDate, 8, $item3);
+		$slot13 = new EmptyReservationSlot($expectedSlots[21], $expectedSlots[21], $slotDate, $expectedSlots[21]->IsReservable());
+		$slot14 = new EmptyReservationSlot($expectedSlots[22], $expectedSlots[22], $slotDate, $expectedSlots[22]->IsReservable());
+		$slot15 = new EmptyReservationSlot($expectedSlots[23], $expectedSlots[23], $slotDate, $expectedSlots[23]->IsReservable());
+		$slot16 = new EmptyReservationSlot($expectedSlots[24], $expectedSlots[24], $slotDate, $expectedSlots[24]->IsReservable());
+		$slot17 = new EmptyReservationSlot($expectedSlots[25], $expectedSlots[25], $slotDate, $expectedSlots[25]->IsReservable());
+		$slot18 = new EmptyReservationSlot($expectedSlots[26], $expectedSlots[26], $slotDate, $expectedSlots[26]->IsReservable());
+		$slot19 = new EmptyReservationSlot($expectedSlots[27], $expectedSlots[27], $slotDate, $expectedSlots[27]->IsReservable());
 
 		$expectedNumberOfSlots = 19;	
 		
@@ -216,25 +217,25 @@ class ScheduleReservationListTests extends TestBase
 		$slotDate = $date;
 		$expectedSlots = $this->testDbLayout->GetLayout($date);
 		
-		$slot1 = new EmptyReservationSlot($expectedSlots[0]->BeginDate(), $expectedSlots[0]->EndDate(), $slotDate, $expectedSlots[0]->IsReservable());
-		$slot2 = new EmptyReservationSlot($expectedSlots[1]->BeginDate(), $expectedSlots[1]->EndDate(), $slotDate, $expectedSlots[1]->IsReservable());
-		$slot3 = new EmptyReservationSlot($expectedSlots[2]->BeginDate(), $expectedSlots[2]->EndDate(), $slotDate, $expectedSlots[2]->IsReservable());
-		$slot4 = new ReservationSlot($expectedSlots[3]->BeginDate(), $expectedSlots[5]->EndDate(), $slotDate, 3, $item1);
-		$slot5 = new EmptyReservationSlot($expectedSlots[6]->BeginDate(), $expectedSlots[6]->EndDate(), $slotDate, $expectedSlots[6]->IsReservable());
-		$slot6 = new ReservationSlot($expectedSlots[7]->BeginDate(), $expectedSlots[7]->EndDate(), $slotDate, 1, $item2);
-		$slot7 = new EmptyReservationSlot($expectedSlots[8]->BeginDate(), $expectedSlots[8]->EndDate(), $slotDate, $expectedSlots[8]->IsReservable());
-		$slot8 = new EmptyReservationSlot($expectedSlots[9]->BeginDate(), $expectedSlots[9]->EndDate(), $slotDate, $expectedSlots[9]->IsReservable());
-		$slot9 = new EmptyReservationSlot($expectedSlots[10]->BeginDate(), $expectedSlots[10]->EndDate(), $slotDate, $expectedSlots[10]->IsReservable());
-		$slot10 = new EmptyReservationSlot($expectedSlots[11]->BeginDate(), $expectedSlots[11]->EndDate(), $slotDate, $expectedSlots[11]->IsReservable());
-		$slot11 = new EmptyReservationSlot($expectedSlots[12]->BeginDate(), $expectedSlots[12]->EndDate(), $slotDate, $expectedSlots[12]->IsReservable());
-		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $expectedSlots[20]->EndDate(), $slotDate, 8, $item3);
-		$slot13 = new EmptyReservationSlot($expectedSlots[21]->BeginDate(), $expectedSlots[21]->EndDate(), $slotDate, $expectedSlots[21]->IsReservable());
-		$slot14 = new EmptyReservationSlot($expectedSlots[22]->BeginDate(), $expectedSlots[22]->EndDate(), $slotDate, $expectedSlots[22]->IsReservable());
-		$slot15 = new EmptyReservationSlot($expectedSlots[23]->BeginDate(), $expectedSlots[23]->EndDate(), $slotDate, $expectedSlots[23]->IsReservable());
-		$slot16 = new EmptyReservationSlot($expectedSlots[24]->BeginDate(), $expectedSlots[24]->EndDate(), $slotDate, $expectedSlots[24]->IsReservable());
-		$slot17 = new EmptyReservationSlot($expectedSlots[25]->BeginDate(), $expectedSlots[25]->EndDate(), $slotDate, $expectedSlots[25]->IsReservable());
-		$slot18 = new EmptyReservationSlot($expectedSlots[26]->BeginDate(), $expectedSlots[26]->EndDate(), $slotDate, $expectedSlots[26]->IsReservable());
-		$slot19 = new EmptyReservationSlot($expectedSlots[27]->BeginDate(), $expectedSlots[27]->EndDate(), $slotDate, $expectedSlots[27]->IsReservable());
+		$slot1 = new EmptyReservationSlot($expectedSlots[0], $expectedSlots[0], $slotDate, $expectedSlots[0]->IsReservable());
+		$slot2 = new EmptyReservationSlot($expectedSlots[1], $expectedSlots[1], $slotDate, $expectedSlots[1]->IsReservable());
+		$slot3 = new EmptyReservationSlot($expectedSlots[2], $expectedSlots[2], $slotDate, $expectedSlots[2]->IsReservable());
+		$slot4 = new ReservationSlot($expectedSlots[3], $expectedSlots[5], $slotDate, 3, $item1);
+		$slot5 = new EmptyReservationSlot($expectedSlots[6], $expectedSlots[6], $slotDate, $expectedSlots[6]->IsReservable());
+		$slot6 = new ReservationSlot($expectedSlots[7], $expectedSlots[7], $slotDate, 1, $item2);
+		$slot7 = new EmptyReservationSlot($expectedSlots[8], $expectedSlots[8], $slotDate, $expectedSlots[8]->IsReservable());
+		$slot8 = new EmptyReservationSlot($expectedSlots[9], $expectedSlots[9], $slotDate, $expectedSlots[9]->IsReservable());
+		$slot9 = new EmptyReservationSlot($expectedSlots[10], $expectedSlots[10], $slotDate, $expectedSlots[10]->IsReservable());
+		$slot10 = new EmptyReservationSlot($expectedSlots[11], $expectedSlots[11], $slotDate, $expectedSlots[11]->IsReservable());
+		$slot11 = new EmptyReservationSlot($expectedSlots[12], $expectedSlots[12], $slotDate, $expectedSlots[12]->IsReservable());
+		$slot12 = new ReservationSlot($expectedSlots[13], $expectedSlots[20], $slotDate, 8, $item3);
+		$slot13 = new EmptyReservationSlot($expectedSlots[21], $expectedSlots[21], $slotDate, $expectedSlots[21]->IsReservable());
+		$slot14 = new EmptyReservationSlot($expectedSlots[22], $expectedSlots[22], $slotDate, $expectedSlots[22]->IsReservable());
+		$slot15 = new EmptyReservationSlot($expectedSlots[23], $expectedSlots[23], $slotDate, $expectedSlots[23]->IsReservable());
+		$slot16 = new EmptyReservationSlot($expectedSlots[24], $expectedSlots[24], $slotDate, $expectedSlots[24]->IsReservable());
+		$slot17 = new EmptyReservationSlot($expectedSlots[25], $expectedSlots[25], $slotDate, $expectedSlots[25]->IsReservable());
+		$slot18 = new EmptyReservationSlot($expectedSlots[26], $expectedSlots[26], $slotDate, $expectedSlots[26]->IsReservable());
+		$slot19 = new EmptyReservationSlot($expectedSlots[27], $expectedSlots[27], $slotDate, $expectedSlots[27]->IsReservable());
 		
 		$expectedNumberOfSlots = 19;	
 		
@@ -289,18 +290,18 @@ class ScheduleReservationListTests extends TestBase
 		
 		$slotDate = $date;
 		
-		$slot1 = new EmptyReservationSlot($expectedSlots[0]->BeginDate(), $expectedSlots[0]->EndDate(), $slotDate, $expectedSlots[0]->IsReservable());
-		$slot2 = new EmptyReservationSlot($expectedSlots[1]->BeginDate(), $expectedSlots[1]->EndDate(), $slotDate, $expectedSlots[1]->IsReservable());
-		$slot3 = new EmptyReservationSlot($expectedSlots[2]->BeginDate(), $expectedSlots[2]->EndDate(), $slotDate, $expectedSlots[2]->IsReservable());
-		$slot4 = new ReservationSlot($expectedSlots[3]->BeginDate(), $expectedSlots[5]->EndDate(), $slotDate, 3, $item1);
-		$slot5 = new EmptyReservationSlot($expectedSlots[6]->BeginDate(), $expectedSlots[6]->EndDate(), $slotDate, $expectedSlots[6]->IsReservable());
-		$slot6 = new ReservationSlot($expectedSlots[7]->BeginDate(), $expectedSlots[7]->EndDate(), $slotDate, 1, $item2);
-		$slot7 = new EmptyReservationSlot($expectedSlots[8]->BeginDate(), $expectedSlots[8]->EndDate(), $slotDate, $expectedSlots[8]->IsReservable());
-		$slot8 = new EmptyReservationSlot($expectedSlots[9]->BeginDate(), $expectedSlots[9]->EndDate(), $slotDate, $expectedSlots[9]->IsReservable());
-		$slot9 = new EmptyReservationSlot($expectedSlots[10]->BeginDate(), $expectedSlots[10]->EndDate(), $slotDate, $expectedSlots[10]->IsReservable());
-		$slot10 = new EmptyReservationSlot($expectedSlots[11]->BeginDate(), $expectedSlots[11]->EndDate(), $slotDate, $expectedSlots[11]->IsReservable());
-		$slot11 = new EmptyReservationSlot($expectedSlots[12]->BeginDate(), $expectedSlots[12]->EndDate(), $slotDate, $expectedSlots[12]->IsReservable());
-		$slot12 = new ReservationSlot($expectedSlots[13]->BeginDate(), $date->AddDays(1), $slotDate, 15, $item3);
+		$slot1 = new EmptyReservationSlot($expectedSlots[0], $expectedSlots[0], $slotDate, $expectedSlots[0]->IsReservable());
+		$slot2 = new EmptyReservationSlot($expectedSlots[1], $expectedSlots[1], $slotDate, $expectedSlots[1]->IsReservable());
+		$slot3 = new EmptyReservationSlot($expectedSlots[2], $expectedSlots[2], $slotDate, $expectedSlots[2]->IsReservable());
+		$slot4 = new ReservationSlot($expectedSlots[3], $expectedSlots[5], $slotDate, 3, $item1);
+		$slot5 = new EmptyReservationSlot($expectedSlots[6], $expectedSlots[6], $slotDate, $expectedSlots[6]->IsReservable());
+		$slot6 = new ReservationSlot($expectedSlots[7], $expectedSlots[7], $slotDate, 1, $item2);
+		$slot7 = new EmptyReservationSlot($expectedSlots[8], $expectedSlots[8], $slotDate, $expectedSlots[8]->IsReservable());
+		$slot8 = new EmptyReservationSlot($expectedSlots[9], $expectedSlots[9], $slotDate, $expectedSlots[9]->IsReservable());
+		$slot9 = new EmptyReservationSlot($expectedSlots[10], $expectedSlots[10], $slotDate, $expectedSlots[10]->IsReservable());
+		$slot10 = new EmptyReservationSlot($expectedSlots[11], $expectedSlots[11], $slotDate, $expectedSlots[11]->IsReservable());
+		$slot11 = new EmptyReservationSlot($expectedSlots[12], $expectedSlots[12], $slotDate, $expectedSlots[12]->IsReservable());
+		$slot12 = new ReservationSlot($expectedSlots[13], $expectedSlots[count($expectedSlots)-1], $slotDate, 15, $item3);
 		
 		$this->assertEquals(12, count($slots));
 		
@@ -333,7 +334,7 @@ class ScheduleReservationListTests extends TestBase
 		$expectedSlots = $this->testDbLayout->GetLayout($date);
 		
 		$totalSlotsInDay = count($expectedSlots);
-		$slot1 = new ReservationSlot($expectedSlots[0]->BeginDate(), $expectedSlots[$totalSlotsInDay-1]->EndDate(), $date, $totalSlotsInDay, $item);
+		$slot1 = new ReservationSlot($expectedSlots[0], $expectedSlots[$totalSlotsInDay-1], $date, $totalSlotsInDay, $item);
 		
 		$this->assertEquals(1, count($slots));
 		
@@ -353,20 +354,16 @@ class ScheduleReservationListTests extends TestBase
 		$layout->AppendPeriod(new Time(12,0,0, $layoutTz), new Time(18,0,0, $layoutTz));
 		$layout->AppendPeriod(new Time(18,0,0, $layoutTz), new Time(0,0,0, $layoutTz));
 
+		$periods = $layout->GetLayout($date);
+
 		$item = new TestReservationItemView(1, $date->AddDays(-1)->ToUtc(), Date::Parse('2008-11-12 6:0:0', $layoutTz)->ToUtc());
 		$r1 = new ReservationListItem($item);
 		
 		$list = new ScheduleReservationList(array($r1), $layout, $date);
 		$slots = $list->BuildSlots();
 		
-		$s1Begin = Date::Parse('2008-11-12 0:0:0', $layoutTz)->ToTimezone($userTz);
-		$s1End = Date::Parse('2008-11-12 6:0:0', $layoutTz)->ToTimezone($userTz);
-		
-		$s6Begin = Date::Parse('2008-11-13 0:0:0', $layoutTz)->ToTimezone($userTz);
-		$s6End = Date::Parse('2008-11-13 6:0:0', $layoutTz)->ToTimezone($userTz);
-		
-		$slot1 = new ReservationSlot($s1Begin, $s1End, $date, 1, $item);
-		$slot6 = new EmptyReservationSlot($s6Begin, $s6End, $date, true);
+		$slot1 = new ReservationSlot($periods[0], $periods[0], $date, 1, $item);
+		$slot6 = new EmptyReservationSlot($periods[5], $periods[5], $date, true);
 		
 		$this->assertEquals($slot1, $slots[0]);
 		$this->assertEquals($slot6, $slots[5]);
@@ -479,6 +476,7 @@ class ScheduleReservationListTests extends TestBase
 		$layout->AppendPeriod(Time::Parse('6:00', $tz), Time::Parse('12:00', $tz));
 		$layout->AppendPeriod(Time::Parse('12:00', $tz), Time::Parse('18:00', $tz));
 		$layout->AppendPeriod(Time::Parse('18:00', $tz), Time::Parse('0:00', $tz));
+		$periods = $layout->GetLayout($listDate);
 
 		$item = new TestReservationItemView(
 			1,
@@ -492,7 +490,7 @@ class ScheduleReservationListTests extends TestBase
 		$slots = $list->BuildSlots();
 		
 		$this->assertEquals(5, count($slots));
-		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("12:00"), $listDate->SetTimeString("18:00"), $listDate, 1, $item), $slots[3]);
+		$this->assertEquals(new ReservationSlot($periods[3], $periods[3], $listDate, 1, $item), $slots[3]);
 	}
 
 	public function testReservationStartingOffPeriodBoundaryAdjusts()
@@ -504,6 +502,8 @@ class ScheduleReservationListTests extends TestBase
 		$layout->AppendPeriod(Time::Parse('0:00', $tz), Time::Parse('2:00', $tz));
 		$layout->AppendPeriod(Time::Parse('2:00', $tz), Time::Parse('6:00', $tz));
 		$layout->AppendPeriod(Time::Parse('6:00', $tz), Time::Parse('12:00', $tz));
+
+		$periods = $layout->GetLayout($listDate);
 
 		$item1 = new TestReservationItemView(
 			1,
@@ -523,8 +523,8 @@ class ScheduleReservationListTests extends TestBase
 		$slots = $list->BuildSlots();
 
 		$this->assertEquals(2, count($slots));
-		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("00:00"), $listDate->SetTimeString("6:00"), $listDate, 2, $item1), $slots[0]);
-		$this->assertEquals(new ReservationSlot($listDate->SetTimeString("06:00"), $listDate->SetTimeString("12:00"), $listDate, 1, $item2), $slots[1]);
+		$this->assertEquals(new ReservationSlot($periods[0], $periods[1], $listDate, 2, $item1), $slots[0]);
+		$this->assertEquals(new ReservationSlot($periods[2], $periods[2], $listDate, 1, $item2), $slots[1]);
 	}
 
     public function testReservationEndingAtBeginningOfFirstPeriodDoesNotExistOnThatDay()
@@ -536,6 +536,7 @@ class ScheduleReservationListTests extends TestBase
         $layout->AppendPeriod(Time::Parse('0:00', $tz), Time::Parse('2:00', $tz));
         $layout->AppendPeriod(Time::Parse('2:00', $tz), Time::Parse('6:00', $tz));
         $layout->AppendPeriod(Time::Parse('6:00', $tz), Time::Parse('0:00', $tz));
+		$periods = $layout->GetLayout($listDate);
 
         $item = new TestReservationItemView(
             1,
@@ -548,7 +549,7 @@ class ScheduleReservationListTests extends TestBase
 
         $slots = $list->BuildSlots();
 
-        $this->assertEquals(new EmptyReservationSlot($listDate->SetTimeString("00:00"), $listDate->SetTimeString("2:00"), $listDate, true), $slots[0]);
+        $this->assertEquals(new EmptyReservationSlot($periods[0], $periods[0], $listDate, true), $slots[0]);
     }
 
 }

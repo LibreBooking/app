@@ -22,8 +22,11 @@ define('ROOT_DIR', '../');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Domain/Reminder.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReminderEmail.php');
+require_once(ROOT_DIR . 'Jobs/JobCop.php');
 
 Log::Debug('Running sendreminders.php');
+
+JobCop::EnsureCommandLine();
 
 try
 {
