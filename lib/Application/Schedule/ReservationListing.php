@@ -158,7 +158,7 @@ class ReservationListing implements IMutableReservationListing
 			return array();
 		}
 
-		return $this->_reservationsByDateAndResource[$key];;
+		return $this->_reservationsByDateAndResource[$key];
 	}
 }
 
