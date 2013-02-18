@@ -84,7 +84,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             cookieValue:"{$CookieValue}"
         };
 
-        var table = $('#reservations table');
+        var table = $('#reservations').find('table');
+		var rows = new Object();
 		{foreach from=$Resources item=resource name=resource_loop}
 			{foreach from=$BoundDates item=date}
 				{assign var=resourceId value=$resource->Id}
@@ -93,15 +94,22 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 				{foreach from=$slots item=slot name=slot_loop}
 					{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                    var tr = $('#{$slot->BeginSlotId()}');
-                    var td = tr.find('td:last');
 					{capture assign="slotContent"}
 						{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef spantype='row'}
 					{/capture}
-                    td.after('{$slotContent|trim|regex_replace:"/[\r\t\n]/":" "}');
+					if (!rows['#{$slot->BeginSlotId()}'])
+					{
+						rows['#{$slot->BeginSlotId()}'] = [];
+                    }
+					rows['#{$slot->BeginSlotId()}'].push('{$slotContent|trim|regex_replace:"/[\r\t\n]/":" "}');
 				{/foreach}
 			{/foreach}
 		{/foreach}
+
+		$.each(rows, function(index, item)
+		{
+			$(index).find('td:last').after(item.join(''));
+        });
 
         var schedule = new Schedule(scheduleOpts);
         schedule.init();

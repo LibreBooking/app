@@ -63,6 +63,8 @@ class ScheduleReservationListTests extends TestBase
 		$layout->AppendBlockedPeriod(new Time(15, 0, 0, $userTz), new Time(0, 0, 0, $userTz));
 		
 		$this->testDbLayout = $layout;
+
+		LayoutIndexCache::Clear();
 	}
 	
 	public function teardown()
