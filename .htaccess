@@ -1,5 +1,8 @@
 RewriteEngine On
 # Set RewriteBase if your physical path is different from the URL. For example, if using an alias
-#RewriteBase /dev/Services
+#RewriteBase /test
+
+RewriteRule ^Web - [L,NC]
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [QSA,L]
+RewriteRule ^(.*)$ Web/$1 [QSA,L]
