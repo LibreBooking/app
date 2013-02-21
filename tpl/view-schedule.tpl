@@ -39,6 +39,7 @@ $(document).ready(function() {
 	var schedule = new Schedule(scheduleOptions);
 	schedule.initNavigation();
 	schedule.initReservations();
+	schedule.initResources();
 });
 </script>
 

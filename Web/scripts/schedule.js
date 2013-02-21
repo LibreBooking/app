@@ -35,12 +35,16 @@ function Schedule(opts)
 			window.location = link + "&sd=" + start + "&ed=" + end;
 		});
 
-		$('.resourceNameSelector').each(function ()
-		{
-			$(this).bindResourceDetails($(this).attr('resourceId'));
-		});
-
+		this.initResources();
 		this.initNavigation();
+	};
+
+	this.initResources = function()
+	{
+		$('.resourceNameSelector').each(function ()
+			{
+				$(this).bindResourceDetails($(this).attr('resourceId'));
+			});
 	};
 
 	this.initNavigation = function ()
