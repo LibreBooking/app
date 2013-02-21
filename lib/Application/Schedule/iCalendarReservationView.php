@@ -72,7 +72,11 @@ class iCalendarReservationView
 	 */
 	private function CreateRecurRule($res)
 	{
-		return null;
+		if (is_a($res, 'ReservationItemView'))
+		{
+			// don't populate the recurrance rule when a list of reservation is being exported
+			return null;
+		}
 		### !!!  THIS DOES NOT WORK BECAUSE EXCEPTIONS TO RECURRENCE RULES ARE NOT PROPERLY HANDLED !!!
 		### see bug report http://php.brickhost.com/forums/index.php?topic=11450.0
 
