@@ -42,10 +42,12 @@ class ViewSchedulePage extends SchedulePage
 			$dailyLayoutFactory);
 	}
 	
-	public function PageLoad()
+	public function ProcessPageLoad()
 	{
 		$this->_presenter->PageLoad(new NullUserSession());
+		$viewReservations = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter());
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
+		$this->Set('SlotLabelFactory', $viewReservations ? new SlotLabelFactory() : new NullSlotLabelFactory());
 		$this->Display('view-schedule.tpl');
 	}
 

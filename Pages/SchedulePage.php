@@ -160,6 +160,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		$endLoad = microtime(true);
 
+		$this->Set('SlotLabelFactory', $user->IsAdmin ? new AdminSlotLabelFactory() : new SlotLabelFactory());
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		if ($this->scheduleDirection == ScheduleDirection::horizontal)
 		{

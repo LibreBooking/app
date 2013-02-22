@@ -98,7 +98,13 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 		
 		$this->_presenter = new ReservationPopupPresenter($this, new ReservationViewRepository(), new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
 	}
-	
+
+	public function IsAuthenticated()
+	{
+		return Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter()) ||
+						parent::IsAuthenticated();
+	}
+
 	public function PageLoad()
 	{
 		if (!$this->IsAuthenticated())

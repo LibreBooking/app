@@ -22,7 +22,7 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
-class ResourceDetailsPage extends SecurePage implements IResourceDetailsPage
+class ResourceDetailsPage extends Page implements IResourceDetailsPage
 {
     /**
      * @var \ResourceDetailsPresenter
