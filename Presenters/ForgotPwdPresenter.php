@@ -25,6 +25,9 @@ require_once(ROOT_DIR . 'lib/Email/Messages/ForgotPasswordEmail.php');
 
 class ForgotPwdPresenter
 {
+	/**
+	 * @var IForgotPwdPage
+	 */
 	private $_page = null;
 		
 	public function __construct(IForgotPwdPage $page)
@@ -33,7 +36,13 @@ class ForgotPwdPresenter
 	}
 		
 	public function PageLoad()
-	{			
+	{
+		if (Configuration::Instance()->GetKey(ConfigKeys::DISABLE_PASSWORD_RESET,  new BooleanConverter()) || !PluginManager::Instance()->LoadAuthentication()->ShowForgotPasswordPrompt())
+		{
+			$this->_page->SetEnabled(false);
+			return;
+		}
+
 		if ($this->_page->ResetClicked())
 		{
 			$this->SendRandomPassword();

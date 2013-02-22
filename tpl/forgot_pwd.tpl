@@ -18,6 +18,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
 
+{if $Enabled}
+
 	{if $ShowResetEmailSent}
 		<div class="success">
 			{translate key=ForgotPasswordEmailSent}<br/>
@@ -43,6 +45,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-{setfocus key='EMAIL'} 
+{setfocus key='EMAIL'}
+{else}
+<div class="error">Disabled</div>
+{/if}
 
 {include file='globalfooter.tpl'}

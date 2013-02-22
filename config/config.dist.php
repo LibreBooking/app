@@ -42,6 +42,7 @@ $conf['settings']['registration.auto.subscribe.email'] = 'false';			// requires 
 $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out
 $conf['settings']['name.format'] = '{first} {last}';     		// display format when showing user names
 $conf['settings']['css.extension.file'] = ''; 			      	// full or relative url to an additional css file to include. this can be used to override the default style
+$conf['settings']['disable.password.reset'] = 'false'; 	      	// if the password reset functionality should be disabled
 /**
  * ical integration configuration
  */

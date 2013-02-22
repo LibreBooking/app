@@ -199,8 +199,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     are displayed in the schedule</p>
 
 <p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
-    reservation slot on the Bookings page. Available tokens are {name}, {title}, {description}, {email}, {phone}
-    , {organization}, {position}. Leave it blank for no label. Any combination of tokens can be used.</p>
+    reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
+    {phone}
+    , {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
     This directory will need to be writable (755 suggested). This can be the full directory or relative to the
@@ -232,6 +233,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['name.format']</span>Display format for first name and last name. Default
     is {literal}'{first} {last}'{/literal}.</p>
+
+<p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
+    include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
+    are not extending the style of phpScheduleIt.</p>
+
+<p class="setting"><span>$conf['settings']['disable.password.reset']</span>If the password reset functionality should be
+    disabled. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['ics']['require.login']</span>If users should be required to log in to add a
     reservation to
@@ -300,10 +308,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.delete']</span>Whether or not to send an
     email to all group administrators when a reservation is deleted. Default is false.</p>
-
-<p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
-    include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
-    are not extending the style of phpScheduleIt.</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>If users are allowed to
     attach files to reservations. Default is false.</p>

@@ -27,6 +27,7 @@ interface IForgotPwdPage extends IPage
 	public function ShowResetEmailSent($showResetEmailSent);
 
 	public function GetEmailAddress();
+	public function SetEnabled($enabled);
 }
 
 class ForgotPwdPage extends Page implements IForgotPwdPage
@@ -61,6 +62,11 @@ class ForgotPwdPage extends Page implements IForgotPwdPage
 	public function ShowResetEmailSent($showResetEmailSent)
 	{
 		$this->Set('ShowResetEmailSent', $showResetEmailSent);
+	}
+
+	public function SetEnabled($enabled)
+	{
+		$this->Set('Enabled', $enabled);
 	}
 }
 ?>
