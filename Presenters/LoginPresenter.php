@@ -123,9 +123,12 @@ class LoginPresenter
 
 	public function Logout()
 	{
-		$url = htmlspecialchars_decode($this->_page->GetResumeUrl());
-
-		$url = sprintf('%s?%s=%s', Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($url));
+		$url = Configuration::Instance()->GetKey(ConfigKeys::LOGOUT_URL);
+		if (empty($url))
+		{
+			$url = htmlspecialchars_decode($this->_page->GetResumeUrl());
+			$url = sprintf('%s?%s=%s', Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($url));
+		}
 		$this->authentication->Logout(ServiceLocator::GetServer()->GetUserSession());
 		$this->_page->Redirect($url);
 	}
@@ -169,7 +172,8 @@ class LoginPresenter
 		{
 			$languageCode = $languageCookie;
 		}
-		else {
+		else
+		{
 			if ($resources->IsLanguageSupported($languageHeader))
 			{
 				$languageCode = $languageHeader;

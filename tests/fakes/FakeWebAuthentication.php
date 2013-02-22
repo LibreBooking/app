@@ -41,6 +41,7 @@ class FakeWebAuthentication implements IWebAuthentication
 	public $_ShowPasswordPrompt = false;
 	public $_ShowPersistLoginPrompt = false;
 	public $_ShowForgotPasswordPrompt = false;
+	public $_LogoutCalled = false;
 
 	public function Validate($username, $password)
 	{
@@ -59,7 +60,7 @@ class FakeWebAuthentication implements IWebAuthentication
 
 	public function Logout(UserSession $user)
 	{
-
+		$this->_LogoutCalled = true;
 	}
 
 	public function CookieLogin($cookie, $context)

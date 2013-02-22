@@ -27,8 +27,10 @@ class ConfigKeys
     const DEFAULT_PAGE_SIZE = 'default.page.size';
     const DISABLE_PASSWORD_RESET = 'disable.password.reset';
     const ENABLE_EMAIL = 'enable.email';
+	const HOME_URL = 'home.url';
 	const INACTIVITY_TIMEOUT = 'inactivity.timeout';
     const LANGUAGE = 'default.language';
+	const LOGOUT_URL = 'logout.url';
     const NAME_FORMAT = 'name.format';
     const PASSWORD_PATTERN = 'password.pattern';
     const SCRIPT_URL = 'script.url';

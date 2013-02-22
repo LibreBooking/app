@@ -75,7 +75,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <body>
 <div id="wrapper">
 	<div id="doc">
-		<div id="logo">{html_image src="$LogoUrl"}</div>
+		<div id="logo"><a href="{$HomeUrl}">{html_image src="$LogoUrl"}</a></div>
 		<div id="header">
 			<div id="header-top">
 				<div id="signout">

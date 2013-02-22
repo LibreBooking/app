@@ -103,6 +103,13 @@ abstract class Page implements IPage
 		{
 			$this->smarty->assign('CssUrl','custom-style.css');
 		}
+
+		$logoUrl = Configuration::Instance()->GetKey(ConfigKeys::HOME_URL);
+		if (empty($logoUrl))
+		{
+			$logoUrl = $this->path . Pages::UrlFromId($userSession->HomepageId);
+		}
+		$this->smarty->assign('HomeUrl', $logoUrl);
 	}
 
 	protected function SetTitle($title)

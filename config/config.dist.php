@@ -43,6 +43,9 @@ $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the use
 $conf['settings']['name.format'] = '{first} {last}';     		// display format when showing user names
 $conf['settings']['css.extension.file'] = ''; 			      	// full or relative url to an additional css file to include. this can be used to override the default style
 $conf['settings']['disable.password.reset'] = 'false'; 	      	// if the password reset functionality should be disabled
+$conf['settings']['home.url'] = ''; 	      					// the url to open when the logo is clicked
+$conf['settings']['logout.url'] = ''; 	      					// the url to be directed to after logging out
+
 /**
  * ical integration configuration
  */

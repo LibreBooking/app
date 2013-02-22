@@ -241,6 +241,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['disable.password.reset']</span>If the password reset functionality should be
     disabled. Default is false.</p>
 
+<p class="setting"><span>$conf['settings']['home.url']</span>Where the user will be redirected when the logo is clicked.
+    Default is the user's homepage.</p>
+
+<p class="setting"><span>$conf['settings']['logout.url']</span>Where the user will be redirected after being logged out.
+    Default is the login page.</p>
+
 <p class="setting"><span>$conf['settings']['ics']['require.login']</span>If users should be required to log in to add a
     reservation to
     Outlook.</p>

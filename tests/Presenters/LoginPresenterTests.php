@@ -184,6 +184,18 @@ class LoginPresenterTests extends TestBase
 		$this->assertEquals('en_gb', $cookie);
 		$this->assertEquals('en_gb', $this->page->_selectedLanguage);
 	}
+	
+	public function testLogsOut()
+	{
+		$this->page->_ResumeUrl = 'something';
+		$logoutUrl = 'some url';
+		$this->fakeConfig->SetKey(ConfigKeys::LOGOUT_URL, $logoutUrl);
+
+		$this->presenter->Logout();
+
+		$this->assertEquals($logoutUrl, $this->page->_LastRedirect);
+		$this->assertTrue($this->auth->_LogoutCalled);
+	}
 }
 
 class FakeLoginPage extends FakePageBase implements ILoginPage
