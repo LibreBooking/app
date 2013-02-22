@@ -28,6 +28,7 @@ class SlotLabelFactory
     public static function Create(ReservationItemView $reservation)
     {
         $property = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_RESERVATION_LABEL);
+		$name = new FullName($reservation->FirstName, $reservation->LastName);
 
         if ( ($property == 'titleORuser') && strlen($reservation->Title))
         {
@@ -37,13 +38,25 @@ class SlotLabelFactory
         {
             return $reservation->Title;
         }
-        if ($property == 'none')
+        if ($property == 'none' || empty($property))
         {
             return '';
         }
+		if ($property == 'name')
+		{
+			return $name->__toString();
+		}
 
-        $name = new FullName($reservation->FirstName, $reservation->LastName);
-        return $name->__toString();
+		$label = $property;
+		$label = str_replace('{name}', $name, $label);
+		$label = str_replace('{title}', $reservation->Title, $label);
+		$label = str_replace('{description}', $reservation->Description, $label);
+		$label = str_replace('{email}', $reservation->OwnerEmailAddress, $label);
+		$label = str_replace('{organization}', $reservation->OwnerOrganization, $label);
+		$label = str_replace('{phone}', $reservation->OwnerPhone, $label);
+		$label = str_replace('{position}', $reservation->OwnerPosition, $label);
+
+		return $label;
     }
 }
 

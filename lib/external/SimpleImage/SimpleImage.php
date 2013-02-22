@@ -136,7 +136,7 @@ class SimpleImage
 	  }
 	  imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
 
-	  $this->image = $new_image;   
+	  $this->image = $new_image;
 	}
 }
 

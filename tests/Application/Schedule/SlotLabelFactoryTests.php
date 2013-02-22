@@ -64,13 +64,28 @@ class SlotLabelFactoryTests extends TestBase
         $this->assertEquals('', $value);
     }
 
-    public function testDefaultsToName()
+    public function testWhenUselessValueIsProvided()
     {
         $this->SetConfig('foo');
 
         $value = SlotLabelFactory::Create($this->reservation);
 
-        $this->assertEquals('first last', $value);
+        $this->assertEquals('foo', $value);
+    }
+
+	public function testUsesFormatIfAvailable()
+	{
+		$this->reservation->Title = 'mytitle';
+		$this->reservation->Description = 'mydescription';
+		$this->reservation->OwnerEmailAddress = 'myemail';
+		$this->reservation->OwnerOrganization = 'myorg';
+		$this->reservation->OwnerPhone = 'myphone';
+		$this->reservation->OwnerPosition = 'myposition';
+
+		$this->SetConfig('{name} + {title} - {description} {email} {phone} {organization} {position}');
+		$value = SlotLabelFactory::Create($this->reservation);
+
+        $this->assertEquals('first last + mytitle - mydescription myemail myphone myorg myposition', $value);
     }
 
     private function SetConfig($value)

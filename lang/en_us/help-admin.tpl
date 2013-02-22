@@ -198,10 +198,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     accessible to the user
     are displayed in the schedule</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The value to display for the
-    reservation on the
-    Bookings page. Options
-    are 'name', 'title', or 'none'. Default is 'name'.</p>
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
+    reservation slot on the Bookings page. Available tokens are {name}, {title}, {description}, {email}, {phone}
+    , {organization}, {position}. Leave it blank for no label. Any combination of tokens can be used.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
     This directory will need to be writable (755 suggested). This can be the full directory or relative to the
