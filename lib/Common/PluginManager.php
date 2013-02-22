@@ -31,6 +31,8 @@ class PluginManager
 	 */
 	private static $_instance = null;
 
+	private $cache = array();
+
 	private function __construct()
 	{
 	}
@@ -199,16 +201,45 @@ class PluginManager
 	 */
 	private function LoadPlugin($configKey, $pluginSubDirectory, $baseImplementation)
 	{
-		$plugin = Configuration::Instance()->GetSectionKey(ConfigSection::PLUGINS, $configKey);
-		$pluginFile = ROOT_DIR . "plugins/$pluginSubDirectory/$plugin/$plugin.php";
-
-		if (!empty($plugin) && file_exists($pluginFile))
+		if (!$this->Cached($configKey))
 		{
-			require_once($pluginFile);
-			return new $plugin($baseImplementation);
-		}
+			$plugin = Configuration::Instance()->GetSectionKey(ConfigSection::PLUGINS, $configKey);
+			$pluginFile = ROOT_DIR . "plugins/$pluginSubDirectory/$plugin/$plugin.php";
 
-		return null;
+			if (!empty($plugin) && file_exists($pluginFile))
+			{
+				try
+				{
+					Log::Debug('Loading plugin. Type=%s, Plugin=%s', $configKey, $plugin);
+					require_once($pluginFile);
+					$this->Cache($configKey, new $plugin($baseImplementation));
+				} catch (Exception $ex)
+				{
+					Log::Error('Error loading plugin. Type=%s, Plugin=%s', $configKey, $plugin);
+				}
+			}
+			else
+			{
+				$this->Cache($configKey, null);
+			}
+		}
+		return $this->GetCached($configKey);
+
+	}
+
+	private function Cached($cacheKey)
+	{
+		return array_key_exists($cacheKey, $this->cache);
+	}
+
+	private function Cache($cacheKey, $object)
+	{
+		$this->cache[$cacheKey] = $object;
+	}
+
+	private function GetCached($cacheKey)
+	{
+		return $this->cache[$cacheKey];
 	}
 
 }

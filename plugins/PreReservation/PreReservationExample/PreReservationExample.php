@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(dirname(__FILE__) . '/PreReservationExampleValidation.php');
 
-class PreReservationExample extends PreReservationFactory
+class PreReservationExample implements IPreReservationFactory
 {
 	/**
      * @var PreReservationFactory
