@@ -172,6 +172,9 @@ class InstallPage extends Page implements IInstallPage
 	 */
 	public function PageLoad()
 	{
+		$this->Set('SuggestedInstallPassword', uniqid());
+		$this->Set('ConfigSetting', '$conf[\'settings\'][\'install.password\']');
+		$this->Set('ConfigPath', '/config/config.php');
 		$this->presenter->PageLoad();
 		$this->Display('Install/install.tpl');
 	}

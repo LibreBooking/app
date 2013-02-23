@@ -18,68 +18,67 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
 
-<h1>Install backend database phpScheduleIt (MySQL only)</h1>
+<h1>{translate key=InstallApplication}</h1>
 
 <div>
     <form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
 
         {if $ShowInvalidPassword}
-            <div class="error">Sorry, that password was incorrect.</div>
+            <div class="error">{translate key=IncorrectInstallPassword}</div>
         {/if}
 
         {if $InstallPasswordMissing}
             <div class='error'>
-                <p>You must set an install password before the installation can be run.</p>
-                <p>In /config/config.php please set $conf['settings']['install.password'] to a password which is random and difficult to guess, then return to this page.</p>
+                <p>{translate key=SetInstallPassword}</p>
+                <p>{translate key=InstallPasswordInstructions args="$ConfigPath,$ConfigSetting,$SuggestedInstallPassword"}</p>
             </div>
         {/if}
 
 		{if $ShowUpToDateMessage}
 			<div class="error" style="margin-bottom: 10px;">
-				<h3>There is no upgrade needed. Running the installation process will delete all existing data and install a new copy of phpScheduleIt!
-					<br/><br/>If you are upgrading from a previous version you can now log in and begin using phpScheduleIt.</h3>
+				<h3>{translate key=NoUpgradeNeeded}</h3>
 			</div>
 		{/if}
 
         {if $ShowPasswordPrompt}
             <ul class="no-style">
-                <li>Please provide your installation password.</li>
-                <li>This can be found at $conf['settings']['install.password'] in /config/config.php.</li>
+                <li>{translate key=ProvideInstallPassword}</li>
+                <li>{translate key=InstallPasswordLocation args="$ConfigPath,$ConfigSetting"}</li>
                 <li>{textbox type="password" name="INSTALL_PASSWORD" class="textbox" size="20"}
-                    <button type="submit" name="" class="button" value="submit">Next {html_image src="arrow_large_right.png"}</button>
+                    <button type="submit" name="" class="button" value="submit">{translate key=Next} {html_image src="arrow_large_right.png"}</button>
                 </li>
             </ul>
         {/if}
 
         {if $ShowDatabasePrompt}
             <ul class="no-style">
-                <li>1) Verify the following default settings before continuing. Or you can change them in /config/config.php.
+                <li>1) {translate key=VerifyInstallSettings args=$ConfigPath}
                     <ul class="no-style" style="margin-left: 20px;">
-                        <li><b>Database Name:</b> {$dbname}</li>
-                        <li><b>Database User:</b> {$dbuser} (this is not any application user, but the user for your database: {$dbname})</li>
-                        <li><b>Database Host:</b> {$dbhost} (or localhost)</li>
+                        <li><b>{translate key=DatabaseName}:</b> {$dbname}</li>
+                        <li><b>{translate key=DatabaseUser}:</b> {$dbuser}</li>
+                        <li><b>{translate key=DatabaseHost}:</b> {$dbhost}</li>
                     </ul>
                 </li>
                 <li>&nbsp;</li>
-                <li>2) You MUST provide credentials of a MySQL user who has privileges to create databases. If you do not know, contact your database admin. In many cases, root will work.</li>
-                <li>MySQL User</li>
+                <li>2) {translate key=DatabaseCredentials}</li>
+                <li>{translate key=MySQLUser}</li>
                 <li>{textbox name="INSTALL_DB_USER" class="textbox" size="20"}</li>
-                <li>Password</li>
+                <li>{translate key=Password}</li>
                 <li>{textbox type="password" name="INSTALL_DB_PASSWORD" class="textbox" size="20"}</li>
                 <li>&nbsp;</li>
 				{if $ShowInstallOptions}
-					<li>3)<i>The following options will probably not work in a hosted environment.  Please set up the database and user through your provider's database tools.</i></li>
-					<li><input type="checkbox" name="create_database" /> Create the database based on configuration /config/config.php ({$dbname}) <span style="color:Red;">Warning: This will delete all existing data</span></li>
-					<li><input type="checkbox" name="create_user" /> Create the database user based on configuration /config/config.php ({$dbuser})</li>
-					<li><input type="checkbox" name="create_sample_data" /> Create sample data admin/password for admin and user/password for user</li>
+					<li>3)<i>{translate key=InstallOptionsWarning}</i></li>
+					<li><input type="checkbox" name="create_database" /> {translate key=CreateDatabase} ({$dbname}) <span style="color:Red;">{translate key=DataWipeWarning}</span></li>
+					<li><input type="checkbox" name="create_user" /> {translate key=CreateDatabaseUser} ({$dbuser})</li>
+					<li><input type="checkbox" name="create_sample_data" /> {translate key=PopulateExampleData}</li>
 					<li>
-						<br/><button type="submit" name="run_install" class="button" value="submit">Run Installation {html_image src="arrow_large_right.png"}<br/>
+						<br/><button type="submit" name="run_install" class="button" value="submit">{translate key=RunInstallation} {html_image src="arrow_large_right.png"}<br/>
 					</li>
 				{/if}
 				{if $ShowUpgradeOptions}
-					<li>3) You are upgrading from version <b>{$CurrentVersion}</b> to version <b>{$TargetVersion}</b></li>
+					<li>3) {translate key=UpgradeNotice args="$CurrentVersion,$TargetVersion"}</li>
 					<li>
-						<br/><button type="submit" name="run_upgrade" class="button" value="submit">Run Upgrade {html_image src="arrow_large_right.png"}<br/>
+						<br/><button type="submit" name="run_upgrade" class="button" value="submit">{translate key=RunUpgrade} {html_image src="arrow_large_right.png"}<br/>
 					</li>
 				{/if}
             </ul>
@@ -87,16 +86,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
         <ul class="no-style">
             {foreach from=$installresults item=result}
-                <li>Executing: {$result->taskName}</li>
+                <li>{translate key=Executing}: {$result->taskName}</li>
                 {if $result->WasSuccessful()}
-                    <li style="background-color: #9acd32">Succeeded!</li>
+                    <li style="background-color: #9acd32">{translate key=Success}</li>
                 {else}
                     <li style="border: solid red 5px;padding:10px;">
-                        Failed!  Details...
+                        {translate key=StatementFailed}
                         <ul class='no-style'>
-                            <li>SQL Statement: <pre>{$result->sqlText}</pre></li>
-                            <li>Error Code: <pre>{$result->sqlErrorCode}</pre></li>
-                            <li>Error Text: <pre>{$result->sqlErrorText}</pre></li>
+                            <li>{translate key=SQLStatement} <pre>{$result->sqlText}</pre></li>
+                            <li>{translate key=ErrorCode} <pre>{$result->sqlErrorCode}</pre></li>
+                            <li>{translate key=ErrorText} <pre>{$result->sqlErrorText}</pre></li>
                         </ul>
                     </li>
                 {/if}
@@ -104,16 +103,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<li>&nbsp;</li>
             <li>
                 {if $InstallCompletedSuccessfully}
-                    Summary: <br/> Installation completed successfully! <br/>
-                    1) <a href="{$Path}{Pages::LOGIN}">Login</a> with admin/password for admin user Or user/password for basic user. This is sample data chosen to installed in previous page. Or <br/>
-                    2) <a href="{$Path}{Pages::REGISTRATION}">Register</a> your admin user. This is required if you did not install the sample data. Ensure that $conf['settings']['allow.self.registration'] = 'true' in your config/conf.php file
+                    {translate key=InstallationSuccess}<br/>
+                    <a href="{$Path}{Pages::REGISTRATION}">{translate key=Register}</a> {translate key=RegisterAdminUser args="$ConfigPath"}<br/><br/>
+					<a href="{$Path}{Pages::LOGIN}">{translate key=Login}</a> {translate key=LoginWithSampleAccounts}
 				{/if}
 				{if $UpgradeCompletedSuccessfully}
-					You are now running version {$TargetVersion} of phpScheduleIt
-					<h3>It is recommended to <a href="configure.php">upgrade your config file</a></h3>
+					{translate key=InstalledVersion args=$TargetVersion}
+					<h3><a href="configure.php">{translate key=InstallUpgradeConfig}</a></h3>
 				{/if}
                 {if $InstallFailed}
-                    Summary: <br/> There were problems with the installation.  Please correct them and retry the installation.
+                    {translate key=InstallationFailure}
                 {/if}
             </li>
         </ul>

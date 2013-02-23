@@ -56,6 +56,9 @@ class CombineDbFilesTask extends Task
     public function main()
     {
         $upgradeDir = "{$this->schemaDir}/upgrades";
+
+		print("Searching $upgradeDir for upgrade directories\n");
+
         $upgrades = scandir($upgradeDir);
 
         usort($upgrades, array($this, 'SortDirectories'));

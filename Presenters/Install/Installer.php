@@ -239,7 +239,7 @@ class Installer
             return false;
         }
 
-        $getVersion = 'SELECT * FROM `dbversion` order by version_date desc limit 0,1';
+        $getVersion = 'SELECT * FROM `dbversion` order by version_number desc limit 0,1';
         $result = mysql_query($getVersion);
 
         if (!$result)
