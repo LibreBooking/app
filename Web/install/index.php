@@ -41,7 +41,7 @@ else
 /**
  * Determine the permission of given directory
  * @param string $smartyTemplateCacheDir location of tpl_c directory
- * @return bool|string bool when writabe, and string otherwise
+ * @return bool|string bool when writable, and string otherwise
  */
 function SmartyPermissionsAreOk($smartyTemplateCacheDir)
 {

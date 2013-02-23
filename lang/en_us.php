@@ -491,6 +491,9 @@ class en_us extends Language
 		$strings['InstalledVersion'] = 'You are now running version %s of phpScheduleIt';
 		$strings['InstallUpgradeConfig'] = 'It is recommended to upgrade your config file';
 		$strings['InstallationFailure'] = 'There were problems with the installation.  Please correct them and retry the installation.';
+		$strings['ConfigureApplication'] = 'Configure phpScheduleIt';
+		$strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
+		$strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
 		// End Install
 
 		// Errors

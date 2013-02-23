@@ -18,38 +18,38 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
 
-<h1>Configure phpScheduleIt</h1>
+<h1>{translate key=ConfigureApplication}</h1>
 
 <div>
     <form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
 
         {if $ShowInvalidPassword}
-            <div class="error">Sorry, that password was incorrect.</div>
+            <div class="error">{translate key=IncorrectInstallPassword}</div>
         {/if}
 
         {if $InstallPasswordMissing}
             <div class='error'>
-                <p>You must set an install password before the installation can be run.</p>
-                <p>In /config/config.php please set $conf['settings']['install.password'] to a password which is random and difficult to guess, then return to this page.</p>
+				<p>{translate key=SetInstallPassword}</p>
+			    <p>{translate key=InstallPasswordInstructions args="$ConfigPath,$ConfigSetting,$SuggestedInstallPassword"}</p>
             </div>
         {/if}
 
         {if $ShowPasswordPrompt}
             <ul class="no-style">
-                <li>Please provide your installation password.</li>
-                <li>This can be found at $conf['settings']['install.password'] in /config/config.php.</li>
+				<li>{translate key=ProvideInstallPassword}</li>
+			    <li>{translate key=InstallPasswordLocation args="$ConfigPath,$ConfigSetting"}</li>
                 <li>{textbox type="password" name="INSTALL_PASSWORD" class="textbox" size="20"}
-                    <button type="submit" name="" class="button" value="submit">Next {html_image src="arrow_large_right.png"}</button>
+                    <button type="submit" name="" class="button" value="submit">{translate key=Next} {html_image src="arrow_large_right.png"}</button>
                 </li>
             </ul>
         {/if}
 
 		{if $ShowConfigSuccess}
-			<h3>Your config file is now up to date!</h3>
+			<h3>{translate key=ConfigUpdateSuccess}</h3>
 		{/if}
 
 		{if $ShowManualConfig}
-			We could not automatically update your config file. Please overwrite the contents of config.php with the following:
+			{translate key=ConfigUpdateFailure}
 
 			<div style="font-family: courier; border: solid 1px #666;padding: 10px;margin-top: 20px;background-color: #eee">
 				&lt;?php<br/>
