@@ -515,6 +515,15 @@ class MigrationPresenter
             ru.memberid
             FROM reservations r INNER JOIN reservation_users ru ON r.resid = ru.resid AND owner = 1');
 
+		$getExisting = new AdHocCommand('select legacyid from reservation_series');
+		$reader = $currentDatabase->Query($getExisting);
+
+		$knownIds = array();
+		while ($row = $reader->GetRow())
+		{
+			$knownIds[] = $row['legacyid'];
+		}
+
 		$getLegacyReservationAccessories = new AdHocCommand('SELECT resid, resourceid from reservation_resources');
 		$getLegacyReservationParticipants = new AdHocCommand('SELECT resid, memberid, owner, invited  FROM reservation_users WHERE (owner is null or owner = 0)');
 
@@ -573,14 +582,19 @@ class MigrationPresenter
 		$legacyReservationReader = $legacyDatabase->Query($getLegacyReservations);
 		while ($row = $legacyReservationReader->GetRow())
 		{
+			$legacyId = $row['resid'];
+
+			if (in_array($legacyId, $knownIds))
+			{
+				continue;
+			}
+
 			$reservationsMigrated++;
 
 			$date = $this->BuildDateRange($row['start_date'], $row['starttime'], $row['end_date'], $row['endtime']);
 
 			$mappedUserId = $userMapping[$row['memberid']];
 			$mappedResourceId = $resourceMapping[$row['machid']];
-
-			$legacyId = $row['resid'];
 
 			if ($row['is_blackout'] == 1)
 			{
