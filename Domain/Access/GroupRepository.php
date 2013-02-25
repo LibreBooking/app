@@ -16,8 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ */
 
 interface IGroupRepository
 {
@@ -34,7 +33,7 @@ interface IGroupRepository
 	 * @return int newly inserted group id
 	 */
 	public function Add(Group $group);
-	
+
 	/**
 	 * @abstract
 	 * @param Group $group
@@ -60,7 +59,8 @@ interface IGroupViewRepository
 	 * @param ISqlFilter $filter
 	 * @return PageableData|GroupItemView[]
 	 */
-	public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null, $filter = null);
+	public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null,
+							$filter = null);
 
 	/**
 	 * @abstract
@@ -71,7 +71,8 @@ interface IGroupViewRepository
 	 * @param AccountStatus|int $accountStatus
 	 * @return PageableData|GroupUserView[]
 	 */
-	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ALL);
+	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null,
+									$accountStatus = AccountStatus::ALL);
 
 	/**
 	 * @abstract
@@ -87,12 +88,12 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	 * @var DomainCache
 	 */
 	private $_cache;
-	
+
 	public function __construct()
 	{
 		$this->_cache = new DomainCache();
 	}
-	
+
 	/**
 	 * @param int $pageNumber
 	 * @param int $pageSize
@@ -101,7 +102,8 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	 * @param ISqlFilter $filter
 	 * @return PageableData|GroupItemView[]
 	 */
-	public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null, $filter = null)
+	public function GetList($pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null,
+							$filter = null)
 	{
 		$command = new GetAllGroupsCommand();
 
@@ -122,7 +124,8 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	 * @param AccountStatus|int $accountStatus
 	 * @return PageableData|UserItemView[]
 	 */
-	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ACTIVE)
+	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null,
+									$accountStatus = AccountStatus::ACTIVE)
 	{
 		$command = new GetAllGroupUsersCommand($groupIds, $accountStatus);
 
@@ -141,7 +144,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		{
 			return $this->_cache->Get($groupId);
 		}
-		
+
 		$group = null;
 		$db = ServiceLocator::GetDatabase();
 
@@ -229,7 +232,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		$groupId = ServiceLocator::GetDatabase()->ExecuteInsert(new AddGroupCommand($group->Name()));
 		$group->WithId($groupId);
 
-        return $groupId;
+		return $groupId;
 	}
 
 	/**
@@ -288,15 +291,31 @@ class GroupItemView
 	public $Id;
 
 	/**
+	 * @return int
+	 */
+	public function Id()
+	{
+		return $this->Id;
+	}
+
+	/**
 	 * @var string
 	 */
 	public $Name;
 
 	/**
+	 * @return string
+	 */
+	public function Name()
+	{
+		return $this->Name;
+	}
+
+	/**
 	 * @var string
 	 */
 	public $AdminGroupName;
-	
+
 	public function __construct($groupId, $groupName, $adminGroupName = null)
 	{
 		$this->Id = $groupId;
@@ -329,7 +348,7 @@ class RoleDto
 	 */
 	public function __construct($id, $name, $level)
 	{
-	    $this->Id = $id;
+		$this->Id = $id;
 		$this->Name = $name;
 		$this->Level = $level;
 	}

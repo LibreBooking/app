@@ -58,6 +58,16 @@ class ManageUsersPresenterTests extends TestBase
 	 */
 	public $encryption;
 
+	/**
+	 * @var IGroupRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	public $groupRepository;
+
+	/**
+	 * @var IGroupViewRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	public $groupViewRepository;
+
 	public function setup()
 	{
 		parent::setup();
@@ -68,8 +78,17 @@ class ManageUsersPresenterTests extends TestBase
 		$this->encryption = $this->getMock('PasswordEncryption');
 		$this->manageUsersService = $this->getMock('IManageUsersService');
 		$this->attributeService = $this->getMock('IAttributeService');
+		$this->groupRepository = $this->getMock('IGroupRepository');
+		$this->groupViewRepository = $this->getMock('IGroupViewRepository');
 
-		$this->presenter = new ManageUsersPresenter($this->page, $this->userRepo, $this->resourceRepo, $this->encryption, $this->manageUsersService, $this->attributeService);
+		$this->presenter = new ManageUsersPresenter($this->page,
+													$this->userRepo,
+													$this->resourceRepo,
+													$this->encryption,
+													$this->manageUsersService,
+													$this->attributeService,
+													$this->groupRepository,
+													$this->groupViewRepository);
 	}
 
 	public function teardown()
@@ -77,7 +96,7 @@ class ManageUsersPresenterTests extends TestBase
 		parent::teardown();
 	}
 
-	public function testBindsUsersAndAttributes()
+	public function testBindsUsersAndAttributesAndGroups()
 	{
 		$userId = 123;
 		$pageNumber = 1;
@@ -145,6 +164,17 @@ class ManageUsersPresenterTests extends TestBase
 				->expects($this->once())
 				->method('BindAttributeList')
 				->with($this->equalTo($attributeList));
+
+		$groups = array(new GroupItemView(1, 'gn'));
+		$groupList = new PageableData($groups);
+		$this->groupViewRepository
+				->expects($this->once())
+				->method('GetList')
+				->will($this->returnValue($groupList));
+
+		$this->page->expects($this->once())
+					->method('BindGroups')
+					->with($this->equalTo($groups));
 
 		$this->presenter->PageLoad();
 	}
@@ -268,9 +298,9 @@ class ManageUsersPresenterTests extends TestBase
 				->will($this->returnValue($position));
 
 		$extraAttributes = array(
-					UserAttribute::Organization => $organization,
-					UserAttribute::Phone => $phone,
-					UserAttribute::Position => $position);
+			UserAttribute::Organization => $organization,
+			UserAttribute::Phone => $phone,
+			UserAttribute::Position => $position);
 
 		$this->manageUsersService->expects($this->once())
 				->method('UpdateUser')
@@ -338,6 +368,12 @@ class ManageUsersPresenterTests extends TestBase
 		$attributeValue = 'value';
 		$attributeFormElements = array(new AttributeFormElement($attributeId, $attributeValue));
 
+		$userId = 1090;
+		$groupId = 111;
+
+		$group = new Group($groupId, 'name');
+		$group->AddUser($userId);
+
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
 
 		$this->page->expects($this->once())
@@ -369,6 +405,11 @@ class ManageUsersPresenterTests extends TestBase
 				->method('GetAttributes')
 				->will($this->returnValue($attributeFormElements));
 
+		$this->page
+				->expects($this->once())
+				->method('GetUserGroup')
+				->will($this->returnValue($groupId));
+
 		$this->manageUsersService->expects($this->once())
 				->method('AddUser')
 				->with($this->equalTo($username),
@@ -380,7 +421,17 @@ class ManageUsersPresenterTests extends TestBase
 					   $this->equalTo($lang),
 					   $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
 					   $this->equalTo(array()),
-					   $this->equalTo(array(new AttributeValue($attributeId, $attributeValue))));
+					   $this->equalTo(array(new AttributeValue($attributeId, $attributeValue))))
+				->will($this->returnValue($userId));
+
+		$this->groupRepository->expects($this->once())
+				->method('LoadById')
+				->with($this->equalTo($groupId))
+				->will($this->returnValue($group));
+
+		$this->groupRepository->expects($this->once())
+				->method('Update')
+				->with($this->equalTo($group));
 
 		$this->presenter->AddUser();
 	}

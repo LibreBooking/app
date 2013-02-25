@@ -307,7 +307,7 @@ class en_us extends Language
 		$strings['UsersInGroup'] = 'Users in this group';
 		$strings['Browse'] = 'Browse';
 		$strings['DeleteGroupWarning'] = 'Deleting this group will remove all associated resource permissions.  Users in this group may lose access to resources.';
-		$strings['WhatRolesApplyToThisGroup'] = 'What roles apply to this group?';
+		$strings['WhatRolesApplyToThisGroup'] = 'Which roles apply to this group?';
 		$strings['WhoCanManageThisGroup'] = 'Who can manage this group?';
 		$strings['WhoCanManageThisSchedule'] = 'Who can manage this schedule?';
 		$strings['AddGroup'] = 'Add Group';

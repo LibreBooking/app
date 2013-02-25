@@ -75,19 +75,81 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	private $attributeService;
 
 	/**
+	 * @var IGroupRepository
+	 */
+	private $groupRepository;
+
+	/**
+	 * @var IGroupViewRepository
+	 */
+	private $groupViewRepository;
+
+	/**
+	 * @param \IGroupRepository $groupRepository
+	 */
+	public function SetGroupRepository($groupRepository)
+	{
+		$this->groupRepository = $groupRepository;
+	}
+
+	/**
+	 * @param \IGroupViewRepository $groupViewRepository
+	 */
+	public function SetGroupViewRepository($groupViewRepository)
+	{
+		$this->groupViewRepository = $groupViewRepository;
+	}
+
+	/**
+	 * @param \IAttributeService $attributeService
+	 */
+	public function SetAttributeService($attributeService)
+	{
+		$this->attributeService = $attributeService;
+	}
+
+	/**
+	 * @param \IManageUsersService $manageUsersService
+	 */
+	public function SetManageUsersService($manageUsersService)
+	{
+		$this->manageUsersService = $manageUsersService;
+	}
+
+	/**
+	 * @param \ResourceRepository $resourceRepository
+	 */
+	public function SetResourceRepository($resourceRepository)
+	{
+		$this->resourceRepository = $resourceRepository;
+	}
+
+	/**
+	 * @param \UserRepository $userRepository
+	 */
+	public function SetUserRepository($userRepository)
+	{
+		$this->userRepository = $userRepository;
+	}
+
+	/**
 	 * @param IManageUsersPage $page
 	 * @param UserRepository $userRepository
 	 * @param IResourceRepository $resourceRepository
 	 * @param PasswordEncryption $passwordEncryption
 	 * @param IManageUsersService $manageUsersService
 	 * @param IAttributeService $attributeService
+	 * @param IGroupRepository $groupRepository
+	 * @param IGroupViewRepository $groupViewRepository
 	 */
 	public function __construct(IManageUsersPage $page,
 								UserRepository $userRepository,
 								IResourceRepository $resourceRepository,
 								PasswordEncryption $passwordEncryption,
 								IManageUsersService $manageUsersService,
-								IAttributeService $attributeService)
+								IAttributeService $attributeService,
+								IGroupRepository $groupRepository,
+								IGroupViewRepository $groupViewRepository)
 	{
 		parent::__construct($page);
 
@@ -97,6 +159,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->passwordEncryption = $passwordEncryption;
 		$this->manageUsersService = $manageUsersService;
 		$this->attributeService = $attributeService;
+		$this->groupRepository = $groupRepository;
+		$this->groupViewRepository = $groupViewRepository;
 
 		$this->AddAction(ManageUsersActions::Activate, 'Activate');
 		$this->AddAction(ManageUsersActions::AddUser, 'AddUser');
@@ -123,6 +187,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 		$this->page->BindUsers($userList->Results());
 		$this->page->BindPageInfo($userList->PageInfo());
+
+		$groups = $this->groupViewRepository->GetList();
+		$this->page->BindGroups($groups->Results());
 
 		$this->page->BindResources($this->resourceRepository->GetResourceList());
 
@@ -152,7 +219,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 	public function AddUser()
 	{
-		$this->manageUsersService->AddUser(
+		$userId = $this->manageUsersService->AddUser(
 			$this->page->GetUserName(),
 			$this->page->GetEmail(),
 			$this->page->GetFirstName(),
@@ -163,6 +230,15 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			Pages::DEFAULT_HOMEPAGE_ID,
 			array(),
 			$this->GetAttributeValues());
+
+		$groupId = $this->page->GetUserGroup();
+
+		if (!empty($groupId))
+		{
+			$group = $this->groupRepository->LoadById($groupId);
+			$group->AddUser($userId);
+			$this->groupRepository->Update($group);
+		}
 	}
 
 	public function UpdateUser()
@@ -264,8 +340,10 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			Log::Debug('Loading validators for %s', $action);
 
 			$this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
-			$this->page->RegisterValidator('addUserUniqueemail', new UniqueEmailValidator($this->userRepository, $this->page->GetEmail()));
-			$this->page->RegisterValidator('addUserUsername', new UniqueUserNameValidator($this->userRepository, $this->page->GetUserName()));
+			$this->page->RegisterValidator('addUserUniqueemail',
+										   new UniqueEmailValidator($this->userRepository, $this->page->GetEmail()));
+			$this->page->RegisterValidator('addUserUsername',
+										   new UniqueUserNameValidator($this->userRepository, $this->page->GetUserName()));
 			$this->page->RegisterValidator('addAttributeValidator',
 										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
 		}

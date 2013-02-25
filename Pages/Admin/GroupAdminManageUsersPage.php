@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012 Nick Korbel
+Copyright 2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -21,22 +21,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/Admin/ManageUsersPage.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
-
 class GroupAdminManageUsersPage extends ManageUsersPage
 {
 	public function __construct()
 	{
 		parent::__construct();
-
-		$this->_presenter = new ManageUsersPresenter(
-					$this,
-					new GroupAdminUserRepository(new GroupRepository(), ServiceLocator::GetServer()->GetUserSession()),
-					new ResourceRepository(),
-					new PasswordEncryption(),
-		            new AdminRegistration(),
-					new AttributeService(new AttributeRepository()));
+		$this->_presenter->SetUserRepository(new GroupAdminUserRepository(new GroupRepository(), ServiceLocator::GetServer()->GetUserSession()));
+		$groupRepository = new GroupAdminGroupRepository(new UserRepository(), ServiceLocator::GetServer()->GetUserSession());
+		$this->_presenter->SetGroupRepository($groupRepository);
+		$this->_presenter->SetGroupViewRepository($groupRepository);
 	}
-
 
     protected function RenderTemplate()
     {

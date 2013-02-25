@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'Pages/IPageable.php');
@@ -132,10 +132,19 @@ interface IManageUsersPage extends IPageable, IActionPage
 	public function GetAttributes();
 
 	/**
-	 * @abstract
 	 * @return AccountStatus|int
 	 */
 	public function GetFilterStatusId();
+
+	/**
+	 * @return int
+	 */
+	public function GetUserGroup();
+
+	/**
+	 * @param GroupItemView[] $groups
+	 */
+	public function BindGroups($groups);
 }
 
 
@@ -156,37 +165,41 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$serviceFactory = new ManageUsersServiceFactory();
 
 		parent::__construct('ManageUsers', 1);
+		$groupRepository = new GroupRepository();
 		$this->_presenter = new ManageUsersPresenter(
 			$this,
 			new UserRepository(),
 			new ResourceRepository(),
 			new PasswordEncryption(),
 			$serviceFactory->CreateAdmin(),
-			new AttributeService(new AttributeRepository()));
+			new AttributeService(new AttributeRepository()),
+			$groupRepository,
+			$groupRepository);
 
 		$this->pageable = new PageablePage($this);
 	}
-	
+
 	public function ProcessPageLoad()
 	{
 		$this->_presenter->PageLoad();
 
 		$resources = Resources::GetInstance();
-		$this->Set('statusDescriptions', array(AccountStatus::ALL => $resources->GetString('All'), AccountStatus::ACTIVE => $resources->GetString('Active'), AccountStatus::AWAITING_ACTIVATION => $resources->GetString('Pending'), AccountStatus::INACTIVE => $resources->GetString('Inactive')));
+		$this->Set('statusDescriptions',
+				   array(AccountStatus::ALL => $resources->GetString('All'), AccountStatus::ACTIVE => $resources->GetString('Active'), AccountStatus::AWAITING_ACTIVATION => $resources->GetString('Pending'), AccountStatus::INACTIVE => $resources->GetString('Inactive')));
 
 		$this->Set('Timezone', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
-        $this->Set('ManageReservationsUrl', Pages::MANAGE_RESERVATIONS);
+		$this->Set('ManageReservationsUrl', Pages::MANAGE_RESERVATIONS);
 		$this->Set('FilterStatusId', $this->GetFilterStatusId());
 
-        $this->RenderTemplate();
+		$this->RenderTemplate();
 	}
 
-    protected function RenderTemplate()
-    {
-        $this->Display('Admin/manage_users.tpl');
-    }
+	protected function RenderTemplate()
+	{
+		$this->Display('Admin/manage_users.tpl');
+	}
 
 	public function BindPageInfo(PageInfo $pageInfo)
 	{
@@ -202,12 +215,12 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	{
 		return $this->pageable->GetPageSize();
 	}
-	
+
 	public function BindUsers($users)
 	{
 		$this->Set('users', $users);
 	}
-	
+
 	public function ProcessAction()
 	{
 		$this->_presenter->ProcessAction();
@@ -267,7 +280,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	{
 		return $this->GetForm(FormKeys::EMAIL);
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -314,7 +327,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	public function BindAttributeList($attributeList)
 	{
 		$defList = array();
-		foreach ($attributeList->GetDefinitions() as $def )
+		foreach ($attributeList->GetDefinitions() as $def)
 		{
 			$defList[] = new Attribute($def);
 		}
@@ -335,5 +348,22 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$statusId = $this->GetQuerystring(QueryStringKeys::ACCOUNT_STATUS);
 		return empty($statusId) ? AccountStatus::ALL : $statusId;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function GetUserGroup()
+	{
+		return $this->server->GetForm(FormKeys::GROUP_ID);
+	}
+
+	/**
+	 * @param GroupItemView[] $groups
+	 */
+	public function BindGroups($groups)
+	{
+		$this->Set('Groups', $groups);
+	}
 }
+
 ?>
