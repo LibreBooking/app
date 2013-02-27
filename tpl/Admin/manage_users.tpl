@@ -290,7 +290,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="groupsDialog" class="dialog" title="{translate key=Groups}">
     <div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
-    <h4><span id="totalGroups"></span> {translate key=Groups}</h4>
 
 	<div id="groupList" class="hidden">
 		{foreach from=$Groups item=group}

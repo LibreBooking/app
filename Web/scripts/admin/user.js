@@ -224,7 +224,6 @@ function UserManagement(opts)
 		var data = {dr:'groups', uid:user.id};
 		$.get(opts.groupsUrl, data, function (groupIds)
 		{
-			$('#totalGroups').text(groupIds.length);
 			$.each(groupIds, function (index, value)
 			{
 				var groupLine = elements.removedGroups.find('div[groupId=' + value + ']');

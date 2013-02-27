@@ -46,7 +46,7 @@ class GroupAdminUserRepository extends UserRepository
 			$accountStatus = AccountStatus::ALL;
 		}
 
-        $user = $this->LoadById($this->userSession->UserId);
+        $user = parent::LoadById($this->userSession->UserId);
 
         $groupIds = array();
 
@@ -66,7 +66,7 @@ class GroupAdminUserRepository extends UserRepository
 	{
 		$user = parent::LoadById($userId);
 
-		$me = $this->LoadById($this->userSession->UserId);
+		$me = parent::LoadById($this->userSession->UserId);
 		if ($me->IsAdminFor($user))
 		{
 			return $user;
