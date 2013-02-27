@@ -60,6 +60,18 @@ class GroupAdminGroupRepository extends GroupRepository
 		}
 		return parent::GetList($pageNumber, $pageSize, $sortField, $sortDirection, $filter);
     }
+
+	public function LoadById($groupId)
+	{
+		$user = $this->userRepository->LoadById($this->userSession->UserId);
+
+		if ($user->IsGroupAdminFor($groupId))
+		{
+			return parent::LoadById($groupId);
+		}
+
+		return Group::Null();
+	}
 }
 
 ?>

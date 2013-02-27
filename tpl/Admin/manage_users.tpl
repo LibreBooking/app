@@ -52,6 +52,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         <th>{translate key='Language'}</th>
         <th>{translate key='Status'}</th>
         <th>{translate key='Permissions'}</th>
+        <th>{translate key='Groups'}</th>
         <th>{translate key='Reservations'}</th>
         <th>{translate key='Password'}</th>
         <th>{translate key='Delete'}</th>
@@ -72,6 +73,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         <td>{$user->Language}</td>
         <td align="center"><a href="#" class="update changeStatus">{$statusDescriptions[$user->StatusId]}</a></td>
         <td align="center"><a href="#" class="update changePermissions">{translate key='Edit'}</a></td>
+        <td align="center"><a href="#" class="update changeGroups">{translate key='Edit'}</a></td>
         <td align="center"><a href="#" class="update viewReservations">{translate key='Search'}</a></td>
         <td align="center"><a href="#" class="update resetPassword">{translate key='Reset'}</a></td>
         <td align="center"><a href="#" class="update delete">{html_image src="cross-button.png"}</a></td>
@@ -160,11 +162,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     <ul>
                         <li>{translate key="Group"}</li>
                         <li>
-							<select {formname key='GROUP_ID'} class="textbox">
-								<option value="">{translate key=None}</option>
+                            <select {formname key='GROUP_ID'} class="textbox">
+                                <option value="">{translate key=None}</option>
 							{object_html_options options=$Groups label=Name key=Id}
-							</select>
-						</li>
+                            </select>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -286,6 +288,23 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     </div>
 </div>
 
+<div id="groupsDialog" class="dialog" title="{translate key=Groups}">
+    <div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
+    <h4><span id="totalGroups"></span> {translate key=Groups}</h4>
+
+	<div id="groupList" class="hidden">
+		{foreach from=$Groups item=group}
+			<div class="group-item" groupId="{$group->Id}"><a href="#">&nbsp;</a> <span>{$group->Name}</span></div>
+		{/foreach}
+	</div>
+
+	<div id="addedGroups">
+	</div>
+
+	<div id="removedGroups">
+	</div>
+</div>
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
@@ -296,7 +315,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript">
     $(document).ready(function ()
     {
-
         var actions = {
             activate:'{ManageUsersActions::Activate}',
             deactivate:'{ManageUsersActions::Deactivate}',
@@ -310,7 +328,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
         var userOptions = {
             userAutocompleteUrl:"../ajax/autocomplete.php?type={AutoCompleteType::MyUsers}",
-            groupsUrl:"{$Path}admin/manage_groups.php",
+            groupsUrl:'{$smarty.server.SCRIPT_NAME}',
+			groupManagementUrl:'{$ManageGroupsUrl}',
             permissionsUrl:'{$smarty.server.SCRIPT_NAME}',
             submitUrl:'{$smarty.server.SCRIPT_NAME}',
             saveRedirect:'{$smarty.server.SCRIPT_NAME}',

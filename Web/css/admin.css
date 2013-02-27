@@ -219,3 +219,23 @@ tr.pending {
 .allDailyLayouts {
 	display:none;
 }
+
+#removedGroups {
+	margin-top: 5px;
+	border-top: solid 1px #777777;
+}
+
+#addedGroups a, #removedGroups a {
+	width:30px;
+	display:block;
+	float: left;;
+	text-decoration: none;
+}
+
+#addedGroups a {
+	background: url('../img/minus-gray.png') no-repeat;
+}
+
+#removedGroups a {
+	background: url('../img/plus-button.png') no-repeat;
+}

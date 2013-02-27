@@ -103,7 +103,6 @@ class ManageGroupsPresenter extends ActionPresenter
 		$this->page->BindAdminGroups($this->groupRepository->GetGroupsByRole(RoleLevel::GROUP_ADMIN));
 	}
 
-
 	public function ChangePermissions()
 	{
 		$group = $this->groupRepository->LoadById($this->page->GetGroupId());
@@ -166,7 +165,7 @@ class ManageGroupsPresenter extends ActionPresenter
 		$groupId = $this->page->GetGroupId();
 		$userId = $this->page->GetUserId();
 
-		Log::Debug("Adding userId: %s from groupId: %s", $userId, $groupId);
+		Log::Debug("Adding userId: %s to groupId: %s", $userId, $groupId);
 
 		$group = $this->groupRepository->LoadById($groupId);
 		$group->AddUser($userId);

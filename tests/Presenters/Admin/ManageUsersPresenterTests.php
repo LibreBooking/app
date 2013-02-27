@@ -435,6 +435,27 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->presenter->AddUser();
 	}
+	
+	public function testGetsUserGroups()
+	{
+		$userId = 12;
+		$user = new User($userId);
+		$user->WithGroups(array(new UserGroup(1, 'g1'), new UserGroup(2, 'g2'), new UserGroup(4, 'g4')));
+		$groups = array(1, 2, 4);
+
+		$this->userRepo->expects($this->once())
+					->method('LoadById')
+					->with($this->equalTo($userId))
+					->will($this->returnValue($user));
+
+		$this->page->expects($this->once())
+					->method('GetUserId')
+					->will($this->returnValue($userId));
+		
+		$actualGroups = $this->presenter->GetUserGroups();
+
+		$this->assertEquals($groups, $actualGroups);
+	}
 }
 
 ?>

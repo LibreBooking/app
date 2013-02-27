@@ -34,6 +34,7 @@ class GroupAdminManageUsersPage extends ManageUsersPage
 
     protected function RenderTemplate()
     {
+		$this->Set('ManageGroupsUrl', Pages::MANAGE_GROUPS_ADMIN);
         $this->Set('ManageReservationsUrl', Pages::MANAGE_GROUP_RESERVATIONS);
         parent::RenderTemplate();
     }

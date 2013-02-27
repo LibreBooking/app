@@ -295,9 +295,18 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->manageUsersService->ChangeAttributes($this->page->GetUserId(), $this->GetAttributeValues());
 	}
 
-	public function ProcessDataRequest()
+	public function ProcessDataRequest($dataRequest)
 	{
-		$this->page->SetJsonResponse($this->GetUserResourcePermissions());
+		if ($dataRequest == 'permissions')
+		{
+			$this->page->SetJsonResponse($this->GetUserResourcePermissions());
+		}
+		else {
+			if ($dataRequest == 'groups')
+			{
+				$this->page->SetJsonResponse($this->GetUserGroups());
+			}
+		}
 	}
 
 	/**
@@ -355,6 +364,24 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			$this->page->RegisterValidator('attributeValidator',
 										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
 		}
+	}
+
+	/***
+	 * @return array|int[]
+	 */
+	public function GetUserGroups()
+	{
+		$userId = $this->page->GetUserId();
+
+		$user = $this->userRepository->LoadById($userId);
+
+		$groups = array();
+		foreach ($user->Groups() as $group)
+		{
+			$groups[] = $group->GroupId;
+		}
+
+		return $groups;
 	}
 }
 

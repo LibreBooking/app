@@ -21,13 +21,18 @@ function UserManagement(opts)
 		userDialog:$('#userDialog'),
 		userForm:$('#userForm'),
 
+		groupsDialog:$('#groupsDialog'),
+		addedGroups : $('#addedGroups'),
+		removedGroups : $('#removedGroups'),
+		groupList : $('#groupList'),
+
 		addUserForm:$('#addUserForm'),
 
 		deleteDialog:$('#deleteDialog'),
 		deleteUserForm:$('#deleteUserForm')
 	};
 
-	var users = new Object();
+	var users = {};
 
 	UserManagement.prototype.init = function ()
 	{
@@ -37,6 +42,7 @@ function UserManagement(opts)
 		ConfigureAdminDialog(elements.userDialog, 350, 560);
 		ConfigureAdminDialog(elements.deleteDialog, 600, 200);
 		ConfigureAdminDialog(elements.attributeDialog, 300, 300);
+		ConfigureAdminDialog(elements.groupsDialog, 300, 300);
 
 		elements.userList.delegate('a.update', 'click', function (e)
 		{
@@ -101,8 +107,19 @@ function UserManagement(opts)
 		elements.filterStatusId.change(function ()
 		{
 			var statusid = $(this).val();
-			var url = options.filterUrl + statusid;
-			window.location.href = url;
+			window.location.href = options.filterUrl + statusid;
+		});
+
+		elements.addedGroups.delegate('div', 'click', function(e){
+			e.preventDefault();
+			changeGroup('removeUser', $(this).attr('groupId'));
+			$(this).appendTo(elements.removedGroups);
+		});
+
+		elements.removedGroups.delegate('div', 'click', function(e){
+			e.preventDefault();
+			changeGroup('addUser', $(this).attr('groupId'));
+			$(this).appendTo(elements.addedGroups);
 		});
 
 		$(".save").click(function ()
@@ -198,12 +215,32 @@ function UserManagement(opts)
 
 	var changeGroups = function ()
 	{
+		elements.addedGroups.find('.group-item').remove();
+		elements.removedGroups.find('.group-item').remove();
+
+		elements.groupList.find('.group-item').clone().appendTo(elements.removedGroups);
+
 		var user = getActiveUser();
-		var data = {dr:'groups', id:user.id};
-		$.get(opts.groupsUrl, data, function (response)
+		var data = {dr:'groups', uid:user.id};
+		$.get(opts.groupsUrl, data, function (groupIds)
 		{
-			//$('#privilegesDialog').html(response).show();
+			$('#totalGroups').text(groupIds.length);
+			$.each(groupIds, function (index, value)
+			{
+				var groupLine = elements.removedGroups.find('div[groupId=' + value + ']');
+				groupLine.appendTo(elements.addedGroups);
+			});
 		});
+
+		elements.groupsDialog.dialog('open');
+	};
+
+	var changeGroup = function(action, groupId)
+	{
+		var url = opts.groupManagementUrl + '?action=' + action + '&gid='+groupId;
+
+		var data = {userId:getActiveUserId()};
+		$.post(url, data);
 	};
 
 	var changePermissions = function ()

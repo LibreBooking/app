@@ -205,4 +205,17 @@ class UserTests extends TestBase
         $this->assertEquals(2, count($adminGroups));
         $this->assertContains($adminGroup2, $adminGroups);
     }
+	
+	public function testIsGroupAdminForGroup()
+	{
+		$user = new User();
+		$user->WithOwnedGroups(array(new UserGroup(1, 'g1'), new UserGroup(2, 'g2')));
+		$user->WithGroups(array(new UserGroup(4, 'g4'), new UserGroup(5, 'g5')));
+
+		$this->assertTrue($user->IsGroupAdminFor(1));
+		$this->assertTrue($user->IsGroupAdminFor(2));
+		$this->assertFalse($user->IsGroupAdminFor(4));
+		$this->assertFalse($user->IsGroupAdminFor(5));
+	}
 }
+?>

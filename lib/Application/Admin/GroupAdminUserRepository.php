@@ -57,6 +57,23 @@ class GroupAdminUserRepository extends UserRepository
 
         return $this->groupRepository->GetUsersInGroup($groupIds, $pageNumber, $pageSize, $filter, $accountStatus);
     }
+
+	/**
+	 * @param int $userId
+	 * @return User|void
+	 */
+	public function LoadById($userId)
+	{
+		$user = parent::LoadById($userId);
+
+		$me = $this->LoadById($this->userSession->UserId);
+		if ($me->IsAdminFor($user))
+		{
+			return $user;
+		}
+
+		return User::Null();
+	}
 }
 
 ?>

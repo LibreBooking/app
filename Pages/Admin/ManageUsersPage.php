@@ -190,6 +190,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$this->Set('Timezone', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
+		$this->Set('ManageGroupsUrl', Pages::MANAGE_GROUPS);
 		$this->Set('ManageReservationsUrl', Pages::MANAGE_RESERVATIONS);
 		$this->Set('FilterStatusId', $this->GetFilterStatusId());
 
@@ -228,7 +229,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 
 	public function ProcessDataRequest($dataRequest)
 	{
-		$this->_presenter->ProcessDataRequest();
+		$this->_presenter->ProcessDataRequest($dataRequest);
 	}
 
 	/**

@@ -784,6 +784,19 @@ class User
 		$this->defaultScheduleId = $scheduleId;
 	}
 
+	public function IsGroupAdminFor($groupId)
+	{
+		foreach ($this->groupsICanAdminister as $group)
+		{
+			if ($group->GroupId == $groupId)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }
 
 class NullUser extends User
