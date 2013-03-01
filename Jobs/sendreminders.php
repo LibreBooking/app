@@ -18,6 +18,17 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//////////////////
+/* Cron Example //
+//////////////////
+
+This script must be executed every minute for to enable Reservation Reminders functionality
+
+* * * * * php /home/mydomain/public_html/phpScheduleIt/Jobs/sendreminders.php
+* * * * * /path/to/php /home/mydomain/public_html/phpScheduleIt/Jobs/sendreminders.php
+
+*/
+
 define('ROOT_DIR', '../');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Domain/Reminder.php');
