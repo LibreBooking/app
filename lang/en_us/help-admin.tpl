@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>phpScheduleIt Administration</h1>
+<h1 xmlns="http://www.w3.org/1999/html">phpScheduleIt Administration</h1>
 
 <div id="help">
 <h2>Administration</h2>
@@ -189,9 +189,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p>Some of phpScheduleIt's functionality can only be controlled by editing the config file.</p>
 
 <p class="setting"><span>$conf['settings']['server.timezone']</span>This must reflect the timezone of the server that
-    phpScheduleIt is hosted
-    on. You can view the current timezone from the Server Settings menu item. Possible values are located here:
-    http://php.net/manual/en/timezones.php</p>
+    phpScheduleIt is hosted on. This server is currently set to <em>{$ServerTimezone}</em>. Possible values are located here:
+    <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a></p>
 
 <p class="setting"><span>$conf['settings']['allow.self.registration']</span>If users are allowed to register new
     accounts.</p>

@@ -30,6 +30,7 @@ class HelpPage extends Page
 	public function PageLoad()
 	{
 		$this->Set('RemindersPath', realpath(ROOT_DIR . 'Jobs/sendreminders.php'));
+		$this->Set('ServerTimezone', date_default_timezone_get());
 
 		$helpType = $this->GetQuerystring('ht');
 
