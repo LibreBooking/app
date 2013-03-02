@@ -45,7 +45,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         {/if}
 
 		{if $ShowConfigSuccess}
-			<h3>{translate key=ConfigUpdateSuccess}</h3>
+			<h3>{translate key=ConfigUpdateSuccess} <a href="{$Path}{Pages::LOGIN}">{translate key=Login}</a></h3>
 		{/if}
 
 		{if $ShowManualConfig}
