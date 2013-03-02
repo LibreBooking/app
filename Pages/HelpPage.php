@@ -29,6 +29,8 @@ class HelpPage extends Page
 
 	public function PageLoad()
 	{
+		$this->Set('RemindersPath', realpath(ROOT_DIR . 'Jobs/sendreminders.php'));
+
 		$helpType = $this->GetQuerystring('ht');
 
 		if ($helpType == 'about')

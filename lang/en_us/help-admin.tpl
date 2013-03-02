@@ -141,8 +141,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h3>Reservation Approval</h3>
 
-<p>From the Reservations admin tool you will be able to view and approve pending reservations. Pending reservations will
-    be highlighted.</p>
+<p>Setting $conf['settings']['reservation']['updates.require.approval'] to true will put all reservation requests into a
+    pending state. The reservation becomes active only after an administrator approves it. From the Reservations admin
+    tool an administrator will be able to view and approve pending reservations. Pending reservations will be
+    highlighted.</p>
 
 <h3>Viewing and Managing Users</h3>
 
@@ -158,6 +160,29 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     reports can be created from the Create New Report menu item. This also allows listing, charting, exporting and
     printing. In addition, custom reports can be saved and accessed again at a later time from the My Saved Reports menu
     item. Saved reports also have the ability to be emailed.</p>
+
+<h3>Reservation Reminders</h3>
+
+<p>Users can request that reminder emails are send prior to the beginning or end of a reservation. In order for this
+    feature to function, $conf['settings']['enable.email'] and $conf['settings']['reservation']['enable.reminders'] must
+    both be set to true. Also, a scheduled task must be configured on your server to execute
+    /phpScheduleIt/Jobs/sendreminders.php</p>
+
+<p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the full path to
+    phpScheduleIt/Jobs/sendreminders.php. The full path to sendreminders.php on this server is <span
+            class="note">{$RemindersPath}</span>
+</p>
+
+<p>An example cron configuration might look like: <span class="note">* * * * * php {$RemindersPath}</span></p>
+
+<p>If you have access to cPanel through a hosting provider, <a
+        href="http://docs.cpanel.net/twiki/bin/view/AllDocumentation/CpanelDocs/CronJobs" target="_blank">setting up a
+    cron job in cPanel</a> is straightforward. Either select the Every Minute option from the Common Settings menu, or
+    enter * for minute, hour, day, month and weekday.</p>
+
+<p>On Windows, <a href="http://windows.microsoft.com/en-au/windows7/schedule-a-task" target="_blank">a scheduled task
+    can be used</a>. The task must be configured to run every minute. The task to execute is php followed by the full
+    path to phpScheduleIt/Jobs/sendreminders.php</p>
 
 <h2>Configuration</h2>
 
