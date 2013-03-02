@@ -161,7 +161,6 @@
 				<exclude name="**/tests/**"/>
 				<exclude name="**/docs/**"/>
 				<exclude name="tpl_c/*.php"/>
-				<exclude name=".*"/>
 				<exclude name=".*/**"/>
 				<exclude name=".idea/**"/>
 				<exclude name=".settings/**"/>
