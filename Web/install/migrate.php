@@ -471,7 +471,7 @@ class MigrationPresenter
 				$row['email'],
 				$row['fname'],
 				$row['lname'],
-				$row['password'],
+				'',
 				'',
 				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
 				empty($row['lang']) ? Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE) : $row['lang'],
@@ -482,8 +482,8 @@ class MigrationPresenter
 				AccountStatus::ACTIVE);
 
 			$newId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);
-
-			$currentDatabase->Execute(new AdHocCommand("update users set legacyid = \"$legacyId\" where user_id = $newId"));
+			$legacypassword = $row['password'];
+			$currentDatabase->Execute(new AdHocCommand("update users set legacyid = \"$legacyId\", legacypassword=\"$legacypassword\" where user_id = $newId"));
 
 			// migrate group assignments
 			if (array_key_exists($legacyId, $userGroups))
