@@ -126,7 +126,7 @@ class EmptyReservationSlot implements IReservationSlot
 	
 	public function Label()
 	{
-		return '&nbsp;';
+		return '';
 	}
 	
 	public function IsReservable()
