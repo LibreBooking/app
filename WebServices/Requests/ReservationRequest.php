@@ -80,7 +80,7 @@ class ReservationRequest
 		$request->startDateTime = $date;
 		$request->title = 'reservation title';
 		$request->userId = 1;
-		$request->startReminder = new ReminderRequestRespones();
+		$request->startReminder = ReminderRequestResponse::Example();
 
 		return $request;
 	}
