@@ -54,7 +54,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<li class="section">
 					<label>{translate key='BeginDate'}</label> {formatdate date=$StartDate}
 					<input type="hidden" id="formattedBeginDate" value="{formatdate date=$StartDate key=system}"/>
-					{foreach from=$Periods item=period}
+					{foreach from=$StartPeriods item=period}
 						{if $period eq $SelectedStart}
 							{$period->Label()} <br/>
 							<input type="hidden" id="BeginPeriod" value="{$period->Begin()}"/>
@@ -64,7 +64,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<li>
 					<label>{translate key='EndDate'}</label> {formatdate date=$EndDate}
 					<input type="hidden" id="formattedEndDate" value="{formatdate date=$EndDate key=system}" />
-					{foreach from=$Periods item=period}
+					{foreach from=$EndPeriods item=period}
 						{if $period eq $SelectedEnd}
 							{$period->LabelEnd()} <br/>
 							<input type="hidden" id="EndPeriod" value="{$period->End()}"/>

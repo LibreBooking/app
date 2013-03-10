@@ -654,10 +654,17 @@ class MigrationPresenter
 				$reservation->ChangeParticipants($mappedParticipantIds);
 				$reservation->ChangeInvitees($mappedInviteeIds);
 
-				$reservationRepository->Add($reservation);
+				try
+				{
+					$reservationRepository->Add($reservation);
 
-				$newId = $reservation->SeriesId();
-				$currentDatabase->Execute(new AdHocCommand("update reservation_series set legacyid = \"$legacyId\" where series_id = $newId"));
+					$newId = $reservation->SeriesId();
+					$currentDatabase->Execute(new AdHocCommand("update reservation_series set legacyid = \"$legacyId\" where series_id = $newId"));
+				}
+				catch (Exception $ex)
+				{
+					Log::Error('Error migrating reservation %s. Exception: %s', $legacyId, $ex);
+				}
 			}
 		}
 

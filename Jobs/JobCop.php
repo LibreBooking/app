@@ -20,12 +20,18 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class JobCop
 {
-	public static function EnsureCommandLine() {
-
-		$method = $_SERVER['REQUEST_METHOD'];
-		if (!empty($method))
+	public static function EnsureCommandLine()
+	{
+		try
 		{
-			die('This can only be accessed via the command line');
+			$method = $_SERVER['REQUEST_METHOD'];
+			if (!empty($method))
+			{
+				die('This can only be accessed via the command line');
+			}
+		}
+		catch(Exception $ex){
+			Log::Error('Error in JobCop->EnsureCommandLine: %s', $ex);
 		}
 	}
 }

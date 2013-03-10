@@ -37,7 +37,8 @@ class ForgotPwdPresenter
 		
 	public function PageLoad()
 	{
-		if (Configuration::Instance()->GetKey(ConfigKeys::DISABLE_PASSWORD_RESET,  new BooleanConverter()) || !PluginManager::Instance()->LoadAuthentication()->ShowForgotPasswordPrompt())
+		if (Configuration::Instance()->GetKey(ConfigKeys::DISABLE_PASSWORD_RESET, new BooleanConverter())
+				|| !PluginManager::Instance()->LoadAuthentication()->ShowForgotPasswordPrompt())
 		{
 			$this->_page->SetEnabled(false);
 			return;

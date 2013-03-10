@@ -27,9 +27,15 @@ class GroupAdminManageGroupsPage extends ManageGroupsPage
 	{
 		parent::__construct();
 
+		$this->CanChangeRoles = false;
 		$this->presenter = new ManageGroupsPresenter($this,
 					new GroupAdminGroupRepository(new UserRepository(), ServiceLocator::GetServer()->GetUserSession()),
 					new ResourceRepository());
+	}
+
+	public function ProcessPageLoad()
+	{
+		parent::ProcessPageLoad();
 	}
 }
 

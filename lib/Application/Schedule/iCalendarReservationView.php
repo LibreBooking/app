@@ -89,7 +89,7 @@ class iCalendarReservationView
 		$freq = $freqMapping[$res->RepeatType];
 		$interval = $res->RepeatInterval;
 		$format = Resources::GetInstance()->GetDateFormat('ical');
-		$end = $res->RepeatTerminationDate->Format($format);
+		$end = $res->RepeatTerminationDate->SetTime($res->EndDate->GetTime())->Format($format);
 		$rrule = sprintf('FREQ=%s;INTERVAL=%s;UNTIL=%s', $freq, $interval, $end);
 
 		if ($res->RepeatType == RepeatType::Monthly)

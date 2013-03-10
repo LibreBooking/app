@@ -31,7 +31,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key='Actions'}</th>
 		<th>{translate key='GroupMembers'}</th>
 		<th>{translate key='Permissions'}</th>
+		{if $CanChangeRoles}
 		<th>{translate key='GroupRoles'}</th>
+		{/if}
 		<th>{translate key='GroupAdmin'}</th>
 	</tr>
 {foreach from=$groups item=group}
@@ -42,7 +44,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td align="center"><a href="#" class="update rename">{translate key='Rename'}</a> | <a href="#" class="update delete">{translate key='Delete'}</a></td>
 		<td align="center"><a href="#" class="update members">{translate key='Manage'}</a></td>
 		<td align="center"><a href="#" class="update permissions">{translate key='Change'}</a></td>
+		{if $CanChangeRoles}
 		<td align="center"><a href="#" class="update roles">{translate key='Change'}</a></td>
+		{/if}
 		<td align="center"><a href="#" class="update groupAdmin">{$group->AdminGroupName|default:$chooseText}</a></td>
 	</tr>
 {/foreach}
@@ -96,6 +100,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
+{if $CanChangeRoles}
 <div id="rolesDialog" class="dialog" title="{translate key=WhatRolesApplyToThisGroup}">
 	<form id="rolesForm" method="post">
 		<ul>
@@ -108,6 +113,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
+{/if}
 
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisGroup}">
 	<form method="post" id="groupAdminForm">

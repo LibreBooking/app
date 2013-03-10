@@ -43,6 +43,7 @@ class ForgotPwdPage extends Page implements IForgotPwdPage
 
 	public function PageLoad()
 	{
+		$this->SetEnabled(true);
 		$this->_presenter->PageLoad();
 
 		$this->Display('forgot_pwd.tpl');
