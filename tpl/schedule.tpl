@@ -25,11 +25,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} mine clickres slot"
     resid="{$Slot->Id()}"
-    id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label($SlotLabelFactory)|escape}</td>
+    id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
 {/function}
 
 {function name=displayPastTime}
-<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="pasttime slot">{$Slot->Label($SlotLabelFactory)|escape}</td>
+<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="pasttime slot">{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
 {/function}
 
 {function name=displayReservable}
@@ -46,7 +46,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{assign var=class value='pending'}
 	{/if}
 <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} clickres slot" resid="{$Slot->Id()}"
-    id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label($SlotLabelFactory)|escape}</td>
+    id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
 {/function}
 
 {function name=displayRestricted}
@@ -147,8 +147,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             <tr>
 			{/if}
             <td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
-			{foreach from=$DailyLayout->GetLabels($date) item=period}
-                <td class="reslabel">{$period}</td>
+			{foreach from=$DailyLayout->GetPeriods($date, true) item=period}
+                <td class="reslabel" colspan="{$period->Span()}">{$period->Label($date)}</td>
 			{/foreach}
         </tr>
 			{foreach from=$Resources item=resource name=resource_loop}

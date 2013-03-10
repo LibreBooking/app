@@ -168,6 +168,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'fullname', array($this, 'DisplayFullName'));
 		$this->registerPlugin('function', 'add_querystring', array($this, 'AddQueryString'));
 		$this->registerPlugin('function', 'resource_image', array($this, 'GetResourceImage'));
+		$this->registerPlugin('modifier', 'escapequotes', array($this, 'EscapeQuotes'));
 
 		/**
 		 * PageValidators
@@ -620,6 +621,12 @@ class SmartyPage extends Smarty
 		}
 
 		return "$imageUrl/{$params['image']}";
+	}
+
+	public function EscapeQuotes($var)
+	{
+		$str = str_replace('\'', '&#39;', $var);
+		return str_replace('"', '&quot;', $str);
 	}
 }
 

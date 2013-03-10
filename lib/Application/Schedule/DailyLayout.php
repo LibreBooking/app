@@ -16,9 +16,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Common/Helpers/StopWatch.php');
+require_once(ROOT_DIR . 'Domain/ScheduleLayout.php');
+require_once(ROOT_DIR . 'Domain/SchedulePeriod.php');
 
 interface IDailyLayout
 {
@@ -28,13 +30,13 @@ interface IDailyLayout
 	 * @return array|IReservationSlot[]
 	 */
 	function GetLayout(Date $date, $resourceId);
-	
+
 	/**
 	 * @param Date $date
 	 * @return bool
 	 */
 	function IsDateReservable(Date $date);
-	
+
 	/**
 	 * @param Date $displayDate
 	 * @return string[]
@@ -58,7 +60,7 @@ class DailyLayout implements IDailyLayout
 	 * @var IScheduleLayout
 	 */
 	private $_scheduleLayout;
-	
+
 	/**
 	 * @param IReservationListing $listing
 	 * @param IScheduleLayout $layout
@@ -68,7 +70,7 @@ class DailyLayout implements IDailyLayout
 		$this->_reservationListing = $listing;
 		$this->_scheduleLayout = $layout;
 	}
-	
+
 	public function GetLayout(Date $date, $resourceId)
 	{
 		$sw = new StopWatch();
@@ -92,18 +94,18 @@ class DailyLayout implements IDailyLayout
 
 		return $slots;
 	}
-	
+
 	public function IsDateReservable(Date $date)
 	{
 		return !$date->GetDate()->LessThan(Date::Now()->GetDate());
 	}
-	
+
 	public function GetLabels(Date $displayDate)
 	{
 		$labels = array();
-		
+
 		$periods = $this->_scheduleLayout->GetLayout($displayDate);
-		
+
 		if ($periods[0]->BeginsBefore($displayDate))
 		{
 			$labels[] = $periods[0]->Label($displayDate->GetDate());
@@ -112,18 +114,53 @@ class DailyLayout implements IDailyLayout
 		{
 			$labels[] = $periods[0]->Label();
 		}
-		
+
 		for ($i = 1; $i < count($periods); $i++)
 		{
 			$labels[] = $periods[$i]->Label();
 		}
-		
+
 		return $labels;
 	}
 
-	public function GetPeriods(Date $displayDate)
+	public function GetPeriods(Date $displayDate, $fitToHours = false)
 	{
-		return $this->_scheduleLayout->GetLayout($displayDate);
+		$periods = $this->_scheduleLayout->GetLayout($displayDate);
+
+		if (!$fitToHours)
+		{
+			return $periods;
+		}
+
+		/** @var $periodsToReturn SpanablePeriod[] */
+		$periodsToReturn = array();
+
+		for ($i = 0; $i < count($periods); $i++)
+		{
+			$span = 1;
+			$currentPeriod = $periods[$i];
+			$periodStart = $currentPeriod->BeginDate();
+			$periodLength = $periodStart->GetDifference($currentPeriod->EndDate())->Hours();
+
+			if ($periodStart->Minute() == 0 && $periodLength < 1)
+			{
+				$span = 0;
+				$nextPeriodTime = $periodStart->AddMinutes(60);
+				$tempPeriod = $currentPeriod;
+				while ($tempPeriod->BeginDate()->LessThan($nextPeriodTime))
+				{
+					$span++;
+					$i++;
+					$tempPeriod = $periods[$i];
+				}
+				$i--;
+
+			}
+			$periodsToReturn[] = new SpanablePeriod($currentPeriod, $span);
+
+		}
+
+		return $periodsToReturn;
 	}
 }
 
@@ -134,7 +171,7 @@ interface IDailyLayoutFactory
 	 * @param IScheduleLayout $layout
 	 * @return IDailyLayout
 	 */
-	function Create(IReservationListing $listing, IScheduleLayout $layout);	
+	function Create(IReservationListing $listing, IScheduleLayout $layout);
 }
 
 class DailyLayoutFactory implements IDailyLayoutFactory
@@ -144,4 +181,26 @@ class DailyLayoutFactory implements IDailyLayoutFactory
 		return new DailyLayout($listing, $layout);
 	}
 }
+
+class SpanablePeriod extends SchedulePeriod
+{
+	private $span = 1;
+
+	public function __construct(SchedulePeriod $period, $span = 1)
+	{
+		$this->span = $span;
+		parent::__construct($period->BeginDate(), $period->EndDate(), $period->_label);
+	}
+
+	public function Span()
+	{
+		return $this->span;
+	}
+
+	public function SetSpan($span)
+	{
+		$this->span = $span;
+	}
+}
+
 ?>
