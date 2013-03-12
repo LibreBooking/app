@@ -42,9 +42,16 @@ class SlotLabelFactory
 
 		$name = $this->GetFullName($reservation);
 
-		if (($property == 'titleORuser') && strlen($reservation->Title))
+		if ($property == 'titleORuser')
 		{
-			return $reservation->Title;
+			if (strlen($reservation->Title))
+			{
+				return $reservation->Title;
+			}
+			else
+			{
+				return $name;
+			}
 		}
 		if ($property == 'title')
 		{
