@@ -41,17 +41,11 @@ abstract class Page implements IPage
 	protected function __construct($titleKey = '', $pageDepth = 0)
 	{
 		$this->path = str_repeat('../', $pageDepth);
-		/**
-		 * Get Server object
-		 */
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
 
 		ExceptionHandler::SetExceptionHandler(new WebExceptionHandler(array($this, 'RedirectToError')));
 
-		/**
-		 * SmartyPage is an extension of external Smarty class
-		 */
 		$this->smarty = new SmartyPage($resources, $this->path);
 
 		$userSession = ServiceLocator::GetServer()->GetUserSession();
@@ -59,8 +53,10 @@ abstract class Page implements IPage
 		$this->smarty->assign('Charset', $resources->Charset);
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);
 		$this->smarty->assign('HtmlLang', $resources->HtmlLang);
+		$this->smarty->assign('HtmlTextDirection', $resources->TextDirection);
 		$this->smarty->assign('Title', 'phpScheduleIt - ' . $resources->GetString($titleKey));
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
+
 		$this->smarty->assign('LoggedIn', $userSession->IsLoggedIn());
 		$this->smarty->assign('Version', Configuration::VERSION);
 		$this->smarty->assign('Path', $this->path);

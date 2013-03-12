@@ -73,6 +73,11 @@ class Resources implements IResourceLocalization
 	 */
 	public $HtmlLang;
 
+	/**
+	 * @var string
+	 */
+	public $TextDirection = 'ltr';
+
 	protected $LanguageDirectory;
 
 	private static $_instance;
@@ -83,6 +88,7 @@ class Resources implements IResourceLocalization
 	 * @var Language
 	 */
 	private $_lang;
+
 
 	public function __construct()
 	{
@@ -260,6 +266,7 @@ class Resources implements IResourceLocalization
 			$this->CurrentLanguage = $languageCode;
 			$this->Charset = $this->_lang->Charset;
 			$this->HtmlLang = $this->_lang->HtmlLang;
+			$this->TextDirection = $this->_lang->TextDirection;
 
 			return true;
 		}
