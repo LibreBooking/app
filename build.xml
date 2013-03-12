@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <project name="phpScheduleIt" default="package">
 	<property name="version" value="2.4"/>
-	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="phpScheduleIt-${version}"/>
 	<property name="root.dir" value="../.."/>
 	<property name="zipdirectory" value="${root.dir}/phpScheduleIt_archive/zip/${version}"/>
@@ -97,15 +96,15 @@
 	</target>
 
 	<target name="package" description="packages all required files" depends="stage.files">
+	
 		<delete dir="${zipdirectory}" failonerror="false"/>
 		<mkdir dir="${zipdirectory}"/>
 
 		<tstamp/>
 
 		<property name="zip.file.name" value="${zipdirectory}/${packagename}.zip"/>
-        <echo message="Is pre-release: ${is.pre.release}" />
 		<if>
-			<equals arg1="${is.pre.release}" arg2="1"/>
+			<contains string="${project.basedir}" substring="development" />
 			<then>
                 <echo message="Packaging pre-release version" />
 				<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip" override="true"/>
@@ -145,7 +144,7 @@
     		</append>
     	</target>
 
-	<target name="stage.files" >
+	<target name="stage.files">
 		<delete dir="${staging}" failonerror="false"/>
 		<mkdir dir="${staging}"/>
 		<mkdir dir="${stagingdir}"/>
