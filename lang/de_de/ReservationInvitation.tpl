@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -23,7 +23,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	
 	Beginn: {formatdate date=$StartDate key=reservation_email}<br/>
 	Ende: {formatdate date=$EndDate key=reservation_email}<br/>
-	Ressource: {$ResourceName}<br/>
+	{if $ResourceNames|count > 1}
+		Ressourcen:<br/>
+		{foreach from=$ResourceNames item=resourceName}
+			{$resourceName}<br/>
+		{/foreach}
+		{else}
+		Ressource: {$ResourceName}<br/>
+	{/if}
 	Titel: {$Title}<br/>
 	Beschreibung: {$Description|nl2br}<br/>
 	
@@ -36,6 +43,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{foreach from=$RepeatDates item=date name=dates}
 		{formatdate date=$date}<br/>
 	{/foreach}
+
+	{if $Accessories|count > 0}
+		<br/>Zubehör:<br/>
+		{foreach from=$Accessories item=accessory}
+			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
+		{/foreach}
+	{/if}
 
 	{if $RequiresApproval}
 		<br/>

@@ -27,6 +27,7 @@ abstract class Language
 	public $Months = array();
 	public $Letters = array();
 	public $HtmlLang;
+	public $TextDirection = 'ltr';
 
 	public function __construct()
 	{

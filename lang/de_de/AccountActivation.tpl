@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -17,13 +17,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
-Hier ist Ihr vorl&auml;ufiges Passwort: {$TemporaryPassword}
 
-<br/>
-
-Ihr altes Passwort wurde zur&uuml;ckgesetzt und wird nicht mehr funktionieren.
-
-Bitte einmal <a href="{$ScriptUrl}"> anmelden </a> und das Passwort &auml;ndern.
+{$FirstName},<br/>
+Vielen Dank f&uuml;r Ihre Registrierung. Bitte <a href="{$ActivationUrl}">aktivieren Sie Ihr Konto</a>.
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

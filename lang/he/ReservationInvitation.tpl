@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2013 Nick Korbel
+Copyright 2011-2012 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -17,28 +17,26 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
-	Reservierungsdetails:
+	פרטי ההזמנה:
 	<br/>
 	<br/>
 	
-	Beginn: {formatdate date=$StartDate key=reservation_email}<br/>
-	Ende: {formatdate date=$EndDate key=reservation_email}<br/>
+	התחלה: {formatdate date=$StartDate key=reservation_email}<br/>
+	סיום: {formatdate date=$EndDate key=reservation_email}<br/>
 	{if $ResourceNames|count > 1}
-		Ressourcen:<br/>
+		משאבים:<br/>
 		{foreach from=$ResourceNames item=resourceName}
 			{$resourceName}<br/>
 		{/foreach}
 		{else}
-		Ressource: {$ResourceName}<br/>
+		משאב: {$ResourceName}<br/>
 	{/if}
-
-	Titel: {$Title}<br/>
-	Beschreibung: {$Description|nl2br}<br/>
+	כותר: {$Title}<br/>
+	תאור: {$Description|nl2br}<br/>
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		Diese Reservierung gilt für den/die folgenden Tag(e):
+		ההזמנה מתקיימת בתאריכים הבאים:
 		<br/>
 	{/if}
 	
@@ -47,7 +45,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/foreach}
 
 	{if $Accessories|count > 0}
-		<br/>Zubehör:<br/>
+		<br/>משאבים:<br/>
 		{foreach from=$Accessories item=accessory}
 			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
 		{/foreach}
@@ -55,12 +53,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Eine oder mehrere Ressourcen benötigen eine Genehmigung.  Diese Reservierung wird zurückgehalten, bis sie genehmigt ist.
+                אחד או יותר מהמשאבים המבוקשים דורש אישור. ההזמנה במצב המתנה עד שתאושר.
 	{/if}
 	
 	<br/>
-	<a href="{$ScriptUrl}/{$ReservationUrl}">Reservierung ansehen</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Zum Kalender hinzufügen</a> |
-	<a href="{$ScriptUrl}">Anmelden bei phpScheduleIt</a>
+	משתתף? <a href="{$ScriptUrl}/{$AcceptUrl}">כן</a> <a href="{$ScriptUrl}/{$DeclineUrl}">לא</a>
+	<br/>
+
+	<a href="{$ScriptUrl}/{$ReservationUrl}">לצפות בהזמנה זו</a> |
+	<a href="{$ScriptUrl}/{$ICalUrl}">להוסיף ללוח אישי בדואר אלקרוני</a> |
+	<a href="{$ScriptUrl}">להתחבר ל-phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

@@ -17,13 +17,9 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
-Hier ist Ihr vorl&auml;ufiges Passwort: {$TemporaryPassword}
 
-<br/>
-
-Ihr altes Passwort wurde zur&uuml;ckgesetzt und wird nicht mehr funktionieren.
-
-Bitte einmal <a href="{$ScriptUrl}"> anmelden </a> und das Passwort &auml;ndern.
+{$FirstName},<br/>
+תודה שנרשמת עם phpScheduleIt. נא <a href="{$ActivationUrl}">להפעיל את החשבון
+שלך</a>.
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}
