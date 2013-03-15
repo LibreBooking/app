@@ -147,7 +147,7 @@ class DailyLayout implements IDailyLayout
 				$span = 0;
 				$nextPeriodTime = $periodStart->AddMinutes(60);
 				$tempPeriod = $currentPeriod;
-				while ($tempPeriod->BeginDate()->LessThan($nextPeriodTime))
+				while ($tempPeriod != null && $tempPeriod->BeginDate()->LessThan($nextPeriodTime))
 				{
 					$span++;
 					$i++;

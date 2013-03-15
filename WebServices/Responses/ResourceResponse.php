@@ -65,9 +65,11 @@ class ResourceResponse extends RestResponse
 		$definitions = $attributes->GetDefinitions();
 		$values = $attributes->GetValues($resourceId);
 
-		for ($i = 0; $i < count($definitions); $i++)
+		$i=0;
+		foreach($definitions as $definition)
 		{
-			$this->customAttributes[] = new CustomAttributeResponse($server, $definitions[$i]->Id(), $definitions[$i]->Label(), $values[$i]);
+			$this->customAttributes[] = new CustomAttributeResponse($server, $definition->Id(), $definition->Label(), $values[$i]);
+			$i++;
 		}
 
 		if ($resource->GetIsCalendarSubscriptionAllowed())

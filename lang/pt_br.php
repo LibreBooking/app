@@ -420,6 +420,8 @@ class pt_br extends Language
         $strings['ServerSettings'] = 'Configurações do Servidor';
         $strings['Dashboard'] = 'Painel de Controle';
         $strings['Help'] = 'Ajuda';
+		$strings['Administration'] = 'Administração';
+		$strings['About'] = 'Sobre';
         $strings['Bookings'] = 'Reservas';
         $strings['Schedule'] = 'Agenda';
         $strings['Reservations'] = 'Reservas';
@@ -438,6 +440,45 @@ class pt_br extends Language
         $strings['ForgotPassword'] = 'Esqueceu a Senha';
         $strings['NotificationPreferences'] = 'Preferências de Notificação';
         $strings['ManageAnnouncements'] = 'Anúncios';
+		$strings['AccountActivation'] = 'Ativação de Conta';
+		$strings['ScheduleReservations'] = 'Reservas na Agenda';
+		$strings['Reports'] = 'Relatórios';
+		$strings['GenerateReport'] = 'Criar Novo Relatório';
+		$strings['MySavedReports'] = 'Meus Relatórios Salvos';
+		$strings['CommonReports'] = 'Relatórios Gerais';
+		$strings['ViewDay'] = 'Visualizar dia';
+		$strings['Group'] = 'Grupo';
+		$strings['ManageConfiguration'] = 'Configurar Aplicação';
+		$strings['LookAndFeel'] = 'Temas';
+		$strings['SubscriptionsAreDisabled'] = 'O calendário foi desabilitado pelo administrador';
+		$strings['ConfigurationUpdateHelp'] = 'Consulte a seção de configuração do <a target=_blank href=%s>Arquivo de Ajuda</a> para documentação sobre essas configurações.';
+		$strings['GeneralConfigSettings'] = 'configurações';
+		$strings['NoScheduleAdministratorLabel'] = 'Nenhum Administrador Nesta Agenda';
+		$strings['ScheduleAdministrator'] = 'Administrador da Agenda';
+		$strings['All'] = 'Todos';
+		$strings['True'] = 'Verdadeiro';
+		$strings['False'] = 'Falso';
+		$strings['Logo'] = 'Logo';
+		$strings['CssFile'] = 'Arquivo CSS';
+		$strings['Select'] = 'Seleção';
+		$strings['Usage'] = 'Uso';
+		$strings['Range'] = 'Período';
+		$strings['FilterBy'] = 'Filtrar Por';
+		$strings['List'] = 'Listar';
+		$strings['TotalTime'] = 'Tempo Total';
+		$strings['Count'] = 'Contar';
+		$strings['AllTime'] = 'Qualquer Período';
+		$strings['CurrentMonth'] = 'Mês Atual';
+		$strings['CurrentWeek'] = 'Semana Atual';
+		$strings['AllAccessories'] = 'Todos os Acessórios';
+		$strings['GetReport'] = 'Gerar Relatório';
+		$strings['NoSavedReports'] = 'Você não tem relatórios salvos.';
+		$strings['ReservedResources'] = 'Recursos Reservados';
+		$strings['ReservedAccessories'] = 'Acessórios Reservados';
+		$strings['ResourceUsageTimeBooked'] = 'Uso de Recursos - Tempo Reservado';
+		$strings['ResourceUsageReservationCount'] = 'Uso de Recursos - Contagem de Reservas';
+		$strings['Top20UsersTimeBooked'] = 'Top 20 Usuários - Tempo Reservado';
+		$strings['Top20UsersReservationCount'] = 'Top 20 Usuários - Contagem de Reservas';
         //
 
         // Day representations
@@ -461,12 +502,19 @@ class pt_br extends Language
         $strings['ReservationApprovedSubject'] = 'Sua reserva foi aprovada';
         $strings['ReservationCreatedSubject'] = 'Sua reserva foi criada';
         $strings['ReservationUpdatedSubject'] = 'Sua reserva foi atualizada';
+		$strings['ReservationDeletedSubject'] = 'Sua reserva foi removida';
         $strings['ReservationCreatedAdminSubject'] = 'Notificação: A reserva foi criada';
         $strings['ReservationUpdatedAdminSubject'] = 'Notificação: A reserva foi atualizada';
+		$strings['ReservationDeleteAdminSubject'] = 'Notificação: A reserva foi removida';
         $strings['ParticipantAddedSubject'] = 'Notificação de Participação na Reserva';
+		$strings['ParticipantDeletedSubject'] = 'Reserva removida';
         $strings['InviteeAddedSubject'] = 'Convite de Reserva';
         $strings['ResetPassword'] = 'Pedido de Redefinição de Senha';
         $strings['ForgotPasswordEmailSent'] = 'Um email foi enviado para o endereço fornecido com instruções para redefinir sua senha';
+		$strings['ActivateYourAccount'] = 'Por favor, ative a sua conta';
+		$strings['ReportSubject'] = 'Seu relatório requisitado (%s)';
+		$strings['ReservationStartingSoonSubject'] = 'A reserva para %s está chegando';
+		$strings['ReservationEndingSoonSubject'] = 'A reserva para %s está chegando ao fim';
         //
 
         $this->Strings = $strings;
