@@ -69,10 +69,9 @@ $params = array(
 	'summary' => null,
 	'contact_info' => null,
 );
-$params = array_merge($params, $_REQUEST);
 
 foreach ($params AS $key => $val) {
-	if (!$val) {
+	if (!$_REQUEST[$key]) {
 		header('HTTP/1.1 406 Not Acceptable', true, 406);
 		print json_encode(array('message' => "$key has to be set<br />"));
 		return;
@@ -80,20 +79,26 @@ foreach ($params AS $key => $val) {
 }
 
 if ( $ikey != NULL 
-  && $ikey != $params['ikey'] )
+  && $ikey != $_REQUEST['ikey'] )
 {
         header('HTTP/1.1 401 Unauthorized', true, 401);
         print json_encode(array('message' => "your iKey is invalid"));
         return;
 }
 
-$username     = $params['username'];
-$starts_at    = $params['starts_at'];
-$ends_at      = $params['ends_at'];
-#$recurrence   = $params['recurrence'];
-$title        = $params['summary'];
-$description  = $params['description'];
-$contact_info = $params['contact_info'];
+$username     = $_REQUEST['username'];
+$starts_at    = $_REQUEST['starts_at'];
+$ends_at      = $_REQUEST['ends_at'];
+#$recurrence   = $_REQUEST['recurrence'];
+$title        = $_REQUEST['summary'];
+$description  = $_REQUEST['description'];
+$contact_info = trim($_REQUEST['contact_info']);
+
+##$regexp_email = firstname.lastname@aaa.bbb.com;
+$regexp_email = "/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,4}$/";
+if (preg_match($regexp_email, $contact_info)) {
+	$contact_info = strtolower($contact_info);
+}
 
 /*************************************************
  	user information 
