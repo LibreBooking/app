@@ -84,15 +84,16 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @param array|ReservationListItem[] $items
 	 * @param IScheduleLayout $layout
 	 * @param Date $layoutDate
+	 * @param bool $hideBlockedPeriods
 	 */
-	public function __construct($items, IScheduleLayout $layout, Date $layoutDate)
+	public function __construct($items, IScheduleLayout $layout, Date $layoutDate, $hideBlockedPeriods = false)
 	{
 		$this->_items = $items;
 		$this->_layout = $layout;
 		$this->_destinationTimezone = $this->_layout->Timezone();
 		$this->_layoutDateStart = $layoutDate->ToTimezone($this->_destinationTimezone)->GetDate();
 		$this->_layoutDateEnd = $this->_layoutDateStart->AddDays(1);
-		$this->_layoutItems = $this->_layout->GetLayout($layoutDate);
+		$this->_layoutItems = $this->_layout->GetLayout($layoutDate, $hideBlockedPeriods);
 		$this->_midnight = new Time(0, 0, 0, $this->_destinationTimezone);
 
 		$this->IndexLayout();
@@ -156,7 +157,10 @@ class ScheduleReservationList implements IScheduleReservationList
 			elseif ($this->ItemIsNotOnLayoutBoundary($item))
 			{
 				$layoutItem = $this->FindClosestLayoutIndexBeforeStartingTime($item);
-				$start = $layoutItem->BeginDate()->ToTimezone($this->_destinationTimezone);
+				if (!empty($layoutItem))
+				{
+					$start = $layoutItem->BeginDate()->ToTimezone($this->_destinationTimezone);
+				}
 			}
 
 			$this->_itemsByStartTime[$start->Timestamp()] = $item;
@@ -253,7 +257,9 @@ class ScheduleReservationList implements IScheduleReservationList
 			}
 		}
 
-		throw new Exception('Could not find a fitting starting slot');
+		Log::Error('Could not find a fitting starting slot for reservation. Id %s, ResourceId: %s, Start: %s, End: %s',
+				   $item->Id(), $item->ResourceId(), $item->StartDate()->ToString(), $item->EndDate()->ToString());
+		return null;
 	}
 
 	/**

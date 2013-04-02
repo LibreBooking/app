@@ -73,13 +73,14 @@ class DailyLayout implements IDailyLayout
 
 	public function GetLayout(Date $date, $resourceId)
 	{
+		$hideBlocked = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_HIDE_BLOCKED_PERIODS, new BooleanConverter());
 		$sw = new StopWatch();
 		$sw->Start();
 
 		$items = $this->_reservationListing->OnDateForResource($date, $resourceId);
 		$sw->Record('listing');
 
-		$list = new ScheduleReservationList($items, $this->_scheduleLayout, $date);
+		$list = new ScheduleReservationList($items, $this->_scheduleLayout, $date, $hideBlocked);
 		$slots = $list->BuildSlots();
 		$sw->Record('slots');
 		$sw->Stop();
@@ -102,9 +103,11 @@ class DailyLayout implements IDailyLayout
 
 	public function GetLabels(Date $displayDate)
 	{
+		$hideBlocked = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_HIDE_BLOCKED_PERIODS, new BooleanConverter());
+
 		$labels = array();
 
-		$periods = $this->_scheduleLayout->GetLayout($displayDate);
+		$periods = $this->_scheduleLayout->GetLayout($displayDate, $hideBlocked);
 
 		if ($periods[0]->BeginsBefore($displayDate))
 		{
@@ -125,7 +128,9 @@ class DailyLayout implements IDailyLayout
 
 	public function GetPeriods(Date $displayDate, $fitToHours = false)
 	{
-		$periods = $this->_scheduleLayout->GetLayout($displayDate);
+		$hideBlocked = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_HIDE_BLOCKED_PERIODS, new BooleanConverter());
+
+		$periods = $this->_scheduleLayout->GetLayout($displayDate, $hideBlocked);
 
 		if (!$fitToHours)
 		{
@@ -142,7 +147,7 @@ class DailyLayout implements IDailyLayout
 			$periodStart = $currentPeriod->BeginDate();
 			$periodLength = $periodStart->GetDifference($currentPeriod->EndDate())->Hours();
 
-			if ($periodStart->Minute() == 0 && $periodLength < 1)
+			if (!$periods[$i]->IsLabelled() && ($periodStart->Minute() == 0 && $periodLength < 1))
 			{
 				$span = 0;
 				$nextPeriodTime = $periodStart->AddMinutes(60);
@@ -185,11 +190,14 @@ class DailyLayoutFactory implements IDailyLayoutFactory
 class SpanablePeriod extends SchedulePeriod
 {
 	private $span = 1;
+	private $period;
 
 	public function __construct(SchedulePeriod $period, $span = 1)
 	{
 		$this->span = $span;
+		$this->period = $period;
 		parent::__construct($period->BeginDate(), $period->EndDate(), $period->_label);
+
 	}
 
 	public function Span()
@@ -200,6 +208,11 @@ class SpanablePeriod extends SchedulePeriod
 	public function SetSpan($span)
 	{
 		$this->span = $span;
+	}
+
+	public function IsReservable()
+	{
+		return $this->period->IsReservable();
 	}
 }
 

@@ -237,6 +237,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{phone}
 	, {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
 
+<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>If blocked periods should be
+	hidden on the bookings page. Default is false.</p>
+
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
 	This directory will need to be writable (755 suggested). This can be the full directory or relative to the
 	phpScheduleIt root directory.</p>

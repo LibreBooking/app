@@ -31,7 +31,6 @@ class UpcomingReservations extends DashboardItem implements IUpcomingReservation
 	
 	public function __construct(SmartyPage $smarty)
 	{
-		// should this be a Page instead?
 		parent::__construct($smarty);
 		$this->presenter = new UpcomingReservationsPresenter($this, new ReservationViewRepository());
 	}
@@ -51,6 +50,11 @@ class UpcomingReservations extends DashboardItem implements IUpcomingReservation
 	public function SetTotal($total)
 	{
 		$this->Set('Total', $total);
+	}
+
+	public function SetUserId($userId)
+	{
+		$this->Set('UserId', $userId);
 	}
 	
 	public function BindToday($reservations)
@@ -78,7 +82,8 @@ interface IUpcomingReservationsControl
 {
 	function SetTimezone($timezone);
 	function SetTotal($total);
-	
+	function SetUserId($userId);
+
 	function BindToday($reservations);
 	function BindTomorrow($reservations);
 	function BindThisWeek($reservations);

@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once('Language.php');
 
-class en_us extends Language
+class bg_bg extends Language
 {
     public function __construct()
     {

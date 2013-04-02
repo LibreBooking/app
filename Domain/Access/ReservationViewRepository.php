@@ -881,6 +881,16 @@ class ReservationItemView implements IReservedItemView
 	public $SeriesId;
 
 	/**
+	 * @var array|int[]
+	 */
+	public $ParticipantIds = array();
+
+	/**
+	 * @var array|int[]
+	 */
+	public $InviteeIds = array();
+
+	/**
 	 * @param $referenceNumber string
 	 * @param $startDate Date
 	 * @param $endDate Date
@@ -894,9 +904,11 @@ class ReservationItemView implements IReservedItemView
 	 * @param $userFirstName string
 	 * @param $userLastName string
 	 * @param $userId int
-	 * @param null $userPhone
-	 * @param null $userPosition
-	 * @param null $userOrganization
+	 * @param $userPhone string
+	 * @param $userPosition string
+	 * @param $userOrganization string
+	 * @param $participant_list string
+	 * @param $invitee_list string
 	 */
 	public function __construct(
 		$referenceNumber = null,
@@ -914,7 +926,9 @@ class ReservationItemView implements IReservedItemView
 		$userId = null,
 		$userPhone = null,
 		$userOrganization = null,
-		$userPosition = null
+		$userPosition = null,
+		$participant_list = null,
+		$invitee_list = null
 	)
 	{
 
@@ -935,10 +949,21 @@ class ReservationItemView implements IReservedItemView
 		$this->OwnerOrganization = $userOrganization;
 		$this->OwnerPosition = $userPosition;
 		$this->UserId = $userId;
+		$this->UserLevelId = $userLevelId;
 
-		if (!is_null($startDate) && !is_null($endDate))
+		if (!empty($startDate) && !empty($endDate))
 		{
 			$this->Date = new DateRange($startDate, $endDate);
+		}
+
+		if (!empty($participant_list))
+		{
+			$this->ParticipantIds = explode(',', $participant_list);
+		}
+
+		if (!empty($invitee_list))
+		{
+			$this->InviteeIds = explode(',', $invitee_list);
 		}
 	}
 
@@ -965,8 +990,9 @@ class ReservationItemView implements IReservedItemView
 			$row[ColumnNames::OWNER_USER_ID],
 			$row[ColumnNames::OWNER_PHONE],
 			$row[ColumnNames::OWNER_ORGANIZATION],
-			$row[ColumnNames::OWNER_POSITION]
-
+			$row[ColumnNames::OWNER_POSITION],
+			$row[ColumnNames::PARTICIPANT_LIST],
+			$row[ColumnNames::INVITEE_LIST]
 		);
 
 		if (isset($row[ColumnNames::RESERVATION_CREATED]))
@@ -1072,6 +1098,29 @@ class ReservationItemView implements IReservedItemView
 	public function GetDuration()
 	{
 		return $this->StartDate->GetDifference($this->EndDate);
+	}
+
+	public function IsUserOwner($userId)
+	{
+		return $this->UserId == $userId && $this->UserLevelId == ReservationUserLevel::OWNER;
+	}
+
+	/**
+	 * @param $userId int
+	 * @return bool
+	 */
+	public function IsUserParticipating($userId)
+	{
+		return in_array($userId, $this->ParticipantIds);
+	}
+
+	/**
+	 * @param $userId int
+	 * @return bool
+	 */
+	public function IsUserInvited($userId)
+	{
+		return in_array($userId, $this->InviteeIds);
 	}
 }
 

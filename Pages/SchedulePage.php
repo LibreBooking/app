@@ -300,8 +300,11 @@ class DisplaySlotFactory
 			{
 				return 'displayMyReserved';
 			}
-			else
+			elseif ($this->AmIParticipating($slot))
 			{
+				return 'displayMyParticipating';
+			}
+			else{
 				return 'displayReserved';
 			}
 		}
@@ -343,6 +346,12 @@ class DisplaySlotFactory
 	{
 		$mySession = ServiceLocator::GetServer()->GetUserSession();
 		return $slot->IsOwnedBy($mySession);
+	}
+
+	private function AmIParticipating(IReservationSlot $slot)
+	{
+		$mySession = ServiceLocator::GetServer()->GetUserSession();
+		return $slot->IsParticipating($mySession);
 	}
 }
 

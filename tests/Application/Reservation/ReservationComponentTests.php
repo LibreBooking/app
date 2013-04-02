@@ -264,6 +264,60 @@ class ReservationComponentTests extends TestBase
 		$binder->Bind($this->initializer);
 	}
 
+	public function testMovesFirstPeriodToEndIfTimeIsLaterInTheDay()
+	{
+		$timezone = 'UTC';
+		$scheduleId = 1;
+		$dateString = Date::Now()->AddDays(1)->SetTimeString('02:55:22')->Format('Y-m-d H:i:s');
+		$dateInUserTimezone = Date::Parse($dateString, $timezone);
+
+		$requestedDate = Date::Parse($dateString, $timezone);
+
+		$this->initializer->expects($this->any())
+				->method('GetTimezone')
+				->will($this->returnValue($timezone));
+
+		$this->initializer->expects($this->any())
+				->method('GetReservationDate')
+				->will($this->returnValue($dateInUserTimezone));
+
+		$this->initializer->expects($this->any())
+				->method('GetStartDate')
+				->will($this->returnValue($requestedDate));
+
+		$this->initializer->expects($this->any())
+				->method('GetEndDate')
+				->will($this->returnValue($requestedDate));
+
+		$this->initializer->expects($this->any())
+				->method('GetScheduleId')
+				->will($this->returnValue($scheduleId));
+
+		$periods = array(
+			new SchedulePeriod(Date::Parse('2012-01-22 22:00', $timezone), Date::Parse('2012-01-22 10:00', $timezone)),
+			new SchedulePeriod(Date::Parse('2012-01-22 10:00', $timezone), Date::Parse('2012-01-23 22:00', $timezone)),
+		);
+		$startPeriods = array($periods[1], $periods[0]);
+		$layout = $this->getMock('IScheduleLayout');
+
+		$this->scheduleRepository->expects($this->once())
+				->method('GetLayout')
+				->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
+				->will($this->returnValue($layout));
+
+		$layout->expects($this->any())
+				->method('GetLayout')
+				->with($this->equalTo($requestedDate))
+				->will($this->returnValue($periods));
+
+		$this->initializer->expects($this->once())
+				->method('SetDates')
+				->with($this->equalTo($requestedDate), $this->equalTo($requestedDate), $this->equalTo($startPeriods), $this->equalTo($periods));
+
+		$binder = new ReservationDateBinder($this->scheduleRepository);
+		$binder->Bind($this->initializer);
+	}
+
 	public function testBindsReservationDetails()
 	{
 		$page = $this->getMock('IExistingReservationPage');

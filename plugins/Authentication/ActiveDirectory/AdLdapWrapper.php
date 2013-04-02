@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'plugins/Authentication/ActiveDirectory/adLDAP.php');
 
@@ -64,13 +64,13 @@ class AdLdapWrapper implements IActiveDirectory
 				}
 				else
 				{
-					Log::Debug('ActiveDirectory - Connection failed to host %s. Reason %s', $host, $this->ldap->getLastError());
+					Log::Debug('ActiveDirectory - Connection failed to host %s. Reason %s', $host,
+							   $this->ldap->getLastError());
 				}
-			}
-			catch (adLDAPException $ex)
+			} catch (adLDAPException $ex)
 			{
 				Log::Error($ex);
-                throw($ex);
+				throw($ex);
 			}
 		}
 
@@ -82,7 +82,8 @@ class AdLdapWrapper implements IActiveDirectory
 		$authenticated = $this->ldap->user()->authenticate($username, $password);
 		if (!$authenticated)
 		{
-			Log::Debug('ActiveDirectory - Authenticate for user %s failed with reason %s', $username, $this->ldap->getLastError());
+			Log::Debug('ActiveDirectory - Authenticate for user %s failed with reason %s', $username,
+					   $this->ldap->getLastError());
 		}
 		return $authenticated;
 	}
@@ -93,18 +94,27 @@ class AdLdapWrapper implements IActiveDirectory
 		Log::Debug('ActiveDirectory - Loading user attributes: %s', implode(', ', $attributes));
 		$entries = $this->ldap->user()->infoCollection($username, $attributes);
 
-		/** @var adLDAPUserCollection $entries  */
-		Log::Debug('ActiveDirectory - Got entries: %s', $entries);
+		/** @var adLDAPUserCollection $entries */
+		try
+		{
+			Log::Debug('ActiveDirectory - Got entries: %s', var_export($entries, true));
+		}
+		catch (Exception $ex)
+		{
+			// ignore this since we're only logging
+		}
 		if ($entries && count($entries) > 0)
 		{
 			return new ActiveDirectoryUser($entries, $this->options->AttributeMapping());
 		}
 		else
 		{
-			Log::Debug('ActiveDirectory - Could not load user details for user %s. Reason %s', $username, $this->ldap->getLastError());
+			Log::Debug('ActiveDirectory - Could not load user details for user %s. Reason %s', $username,
+					   $this->ldap->getLastError());
 		}
 
 		return null;
 	}
 }
+
 ?>

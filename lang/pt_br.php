@@ -356,9 +356,9 @@ class pt_br extends Language
 	$strings['GroupReservations'] = 'Reservas por Grupos';
         $strings['ResourceReservations'] = 'Reservas de Recursos';
 	$strings['Notes'] = 'Notas';
-        $strings['NoNotesLabel'] = '(sem notas)';
+        $strings['NoNotesLabel'] = '(nenhuma nota)';
 	$strings['ResourceAdministrator'] = 'Administrador do Recurso';
-	$strings['NoResourceAdministratorLabel'] = '(Sem administrador do recurso)';
+	$strings['NoResourceAdministratorLabel'] = '(nenhum administrador do recurso)';
 	$strings['TurnOnSubscription'] = 'Permitir reservas no calendário';
 	$strings['Title'] = 'Título';
 	$strings['TurnOffSubscription'] = 'Desabilitar reservas no calendário';
@@ -479,6 +479,21 @@ class pt_br extends Language
 		$strings['ResourceUsageReservationCount'] = 'Uso de Recursos - Contagem de Reservas';
 		$strings['Top20UsersTimeBooked'] = 'Top 20 Usuários - Tempo Reservado';
 		$strings['Top20UsersReservationCount'] = 'Top 20 Usuários - Contagem de Reservas';
+		$strings['ViewAsChart'] = 'Visualizar Gráfico';
+		$strings['NoResultsFound'] = 'Nenhum resultado encontrado';
+		$strings['AggregateBy'] = 'Agregar Por';
+		$strings['Total'] = 'Total';
+		$strings['SaveThisReport'] = 'Salvar Este Relatório';
+		$strings['ReportSaved'] = 'Relatório Salvo!';
+		$strings['RunReport'] = 'Executar Relatório';
+		$strings['EmailReport'] = 'Enviar Relatório';
+		$strings['MakeDefaultSchedule'] = 'Fazer desta minha agenda padrão';
+		$strings['FlipSchedule'] = 'Inverter o layout da agenda';
+		$strings['Accept'] = 'Aceitar';
+		$strings['Decline'] = 'Recusar';
+		$strings['ConfigurationUpdated'] = 'O arquivo de configuração foi atualizado';
+		$strings['ThemeUploadSuccess'] = 'As suas mudanças foram salvas. Recarregue a página para as mudanças terem efeito.';
+		$strings['PossibleValues'] = 'Valores possíveis';
         //
 
         // Day representations

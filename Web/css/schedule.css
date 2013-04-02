@@ -92,6 +92,14 @@ td.reserved.mine.hilite {
 	color: #ffffff;
 }
 
+td.reserved.participating, div.reserved.participating {
+	background-color: #875cae;
+}
+
+td.reserved.participating.hilite {
+	background-color: #a979d1;
+}
+
 td.reserved.pending, div.reserved.pending {
 	background-color: #ffb540;
 	color: #ffffff;
@@ -101,7 +109,7 @@ td.reserved.pending.hilite {
 	background-color: #ffc973;
 }
 
-td.reservable.hilite {
+td.reservable.hilite, #reservations .ui-selecting {
 	background-color: #23BF35;
 }
 
@@ -109,7 +117,7 @@ td.hilite {
 	cursor: pointer;
 }
 
-td.reservable.clicked {
+td.reservable.clicked, #reservations .ui-selected {
 	background-color: #259433;
 }
 

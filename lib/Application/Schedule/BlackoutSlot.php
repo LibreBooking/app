@@ -128,26 +128,17 @@ class BlackoutSlot implements IReservationSlot
 	{
 		return $this->blackout->Title;
 	}
-	
-	/**
-	 * @return bool
-	 */
+
 	public function IsReservable()
 	{
 		return false;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function IsReserved()
 	{
 		return false;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function IsPending()
 	{
 		return false;
@@ -168,17 +159,16 @@ class BlackoutSlot implements IReservationSlot
 		return false;
 	}
 
-	/**
-	 * @return string
-	 */
+	public function IsParticipating(UserSession $session)
+	{
+		return false;
+	}
+
 	public function BeginSlotId()
 	{
 		return $this->beginSlotId;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function EndSlotId()
 	{
 		return $this->endSlotId;

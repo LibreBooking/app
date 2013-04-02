@@ -261,10 +261,12 @@ class ReservationViewRepositoryTests extends TestBase
 		$phone = 'phone';
 		$organization = 'organization';
 		$position = 'position';
+		$participant_list = '100,200,500';
+		$invitee_list = '700,800';
 
 		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId,
 											   $userLevelId, $title, $description, $scheduleId, $fname, $lname,
-											   $userId, $phone, $organization, $position);
+											   $userId, $phone, $organization, $position, $participant_list, $invitee_list);
 		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null, 1, null,
 											   null, null, null);
 
@@ -280,7 +282,9 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals($expectedCommand, $actualCommand);
 
 		$this->assertEquals(count($rows), count($reservations));
-		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname, $userId, $phone, $organization, $position);
+		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId,
+												 $userLevelId, $title, $description, $scheduleId, $fname, $lname, $userId,
+												 $phone, $organization, $position, $participant_list, $invitee_list);
 		$this->assertEquals($expectedItem1, $reservations[0]);
 	}
 
@@ -353,6 +357,22 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals($b, $blackouts[0]);
 	}
 
+	public function testKnowsIfParticipatingOrInvited()
+	{
+		$participant_list = '2,3';
+		$invitee_list = '4,5';
+		$reservationView = new ReservationItemView('ref', Date::Now(),Date::Now(), 'resource', 1, 1, ReservationUserLevel::OWNER, 'title', 'desc', 1, 'f', 'l', 1, null, null, null, $participant_list, $invitee_list);
+		$this->assertTrue($reservationView->IsUserParticipating(2));
+		$this->assertTrue($reservationView->IsUserParticipating(3));
+		$this->assertFalse($reservationView->IsUserParticipating(4));
+		$this->assertFalse($reservationView->IsUserParticipating(5));
+
+		$this->assertFalse($reservationView->IsUserInvited(2));
+		$this->assertFalse($reservationView->IsUserInvited(3));
+		$this->assertTrue($reservationView->IsUserInvited(4));
+		$this->assertTrue($reservationView->IsUserInvited(5));
+	}
+
 	private function GetParticipantRow($reservationId, $userId, $fname, $lname, $email, $levelId)
 	{
 		return array(
@@ -382,7 +402,9 @@ class ReservationViewRepositoryTests extends TestBase
 
 	private function GetReservationListRow($referenceNumber, $resourceName, Date $startDate, Date $endDate, $resourceId,
 										   $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname,
-										   $userId, $phone = 'phone', $organization = 'organization', $position = 'position')
+										   $userId, $phone = 'phone', $organization = 'organization',
+										   $position = 'position',
+										   $participant_list = '', $invitee_list = null)
 	{
 		return array(
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
@@ -404,6 +426,8 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::OWNER_PHONE => $phone,
 			ColumnNames::OWNER_ORGANIZATION => $organization,
 			ColumnNames::OWNER_POSITION => $position,
+			ColumnNames::PARTICIPANT_LIST => $participant_list,
+			ColumnNames::INVITEE_LIST => $invitee_list
 		);
 	}
 

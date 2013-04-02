@@ -37,9 +37,10 @@ interface IScheduleLayout extends ILayoutTimezone, IDailyScheduleLayout
 {
 	/**
 	 * @param Date $layoutDate
+	 * @param bool $hideBlockedPeriods
 	 * @return SchedulePeriod[]|array of SchedulePeriod objects
 	 */
-	public function GetLayout(Date $layoutDate);
+	public function GetLayout(Date $layoutDate, $hideBlockedPeriods = false);
 
 	/**
 	 * @abstract
@@ -203,13 +204,14 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
 	/**
 	 * @param Date $layoutDate
+	 * @param bool $hideBlockedPeriods
 	 * @return array|SchedulePeriod[]
 	 */
-	public function GetLayout(Date $layoutDate)
+	public function GetLayout(Date $layoutDate, $hideBlockedPeriods = false)
 	{
 		if ($this->usingDailyLayouts)
 		{
-			return $this->GetLayoutDaily($layoutDate);
+			return $this->GetLayoutDaily($layoutDate, $hideBlockedPeriods);
 		}
 		$targetTimezone = $this->targetTimezone;
 		$layoutDate = $layoutDate->ToTimezone($targetTimezone);
@@ -232,6 +234,10 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		/* @var $period LayoutPeriod */
 		foreach ($periods as $period)
 		{
+			if ($hideBlockedPeriods && !$period->IsReservable())
+			{
+				continue;
+			}
 			$start = $period->Start;
 			$end = $period->End;
 			$periodType = $period->PeriodTypeClass();
@@ -290,7 +296,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		return $layout;
 	}
 
-	private function GetLayoutDaily(Date $requestedDate)
+	private function GetLayoutDaily(Date $requestedDate, $hideBlockedPeriods = false)
 	{
 		if ($requestedDate->Timezone() != $this->targetTimezone)
 		{
@@ -309,7 +315,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
 
 		$list = new PeriodList();
-		$this->AddDailyPeriods($requestedDate->Weekday(), $baseDateInLayoutTz, $requestedDate, $list);
+		$this->AddDailyPeriods($requestedDate->Weekday(), $baseDateInLayoutTz, $requestedDate, $list, $hideBlockedPeriods);
 
 		if ($this->layoutTimezone != $this->targetTimezone)
 		{
@@ -346,13 +352,18 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 * @param Date $baseDateInLayoutTz
 	 * @param Date $requestedDate
 	 * @param PeriodList $list
+	 * @param bool $hideBlockedPeriods
 	 */
-	private function AddDailyPeriods($day, $baseDateInLayoutTz, $requestedDate, $list)
+	private function AddDailyPeriods($day, $baseDateInLayoutTz, $requestedDate, $list, $hideBlockedPeriods = false)
 	{
 		$periods = $this->_periods[$day];
 		/** @var $period LayoutPeriod */
 		foreach ($periods as $period)
 		{
+			if ($hideBlockedPeriods && !$period->IsReservable())
+			{
+				continue;
+			}
 			$begin = $baseDateInLayoutTz->SetTime($period->Start)->ToTimezone($this->targetTimezone);
 			$end = $baseDateInLayoutTz->SetTime($period->End, true)->ToTimezone($this->targetTimezone);
 			// only add this period if it occurs on the requested date

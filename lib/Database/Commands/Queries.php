@@ -471,9 +471,13 @@ class Queries
 			INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
 			INNER JOIN resources ON rr.resource_id = resources.resource_id
 			INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
+			LEFT JOIN reservation_users participants ON participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2
+			LEFT JOIN reservation_users invitees ON invitees.reservation_instance_id = ri.reservation_instance_id AND invitees.reservation_user_level = 3
+			LEFT JOIN custom_attribute_values cav ON cav.entity_id = ri.series_id AND cav.attribute_category = 1
 			[JOIN_TOKEN]
 			WHERE rs.status_id <> 2
 			[AND_TOKEN]
+			GROUP BY ri.reservation_instance_id, rr.resource_id, ri.series_id
 			ORDER BY ri.start_date ASC';
 
 	const GET_RESERVATION_ACCESSORIES =
@@ -847,9 +851,10 @@ class QueryBuilder
 					(ri.end_date >= @startDate AND ri.end_date <= @endDate) OR
 					(ri.start_date <= @startDate AND ri.end_date >= @endDate))';
 
-	public static $SELECT_LIST_FRAGMENT = '*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description,
+	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description,
 					rs.status_id as status_id, owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization,
-					resources.name, resources.resource_id, resources.schedule_id, rs.title, ru.reservation_user_level';
+					resources.name, resources.resource_id, resources.schedule_id, rs.title, ru.reservation_user_level,
+					GROUP_CONCAT(DISTINCT participants.user_id) as participant_list, GROUP_CONCAT(DISTINCT invitees.user_id) as invitee_list, GROUP_CONCAT(DISTINCT CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value)) as attributes';
 
 	private static function Build($selectValue, $joinValue, $andValue)
 	{

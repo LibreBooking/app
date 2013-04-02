@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Database/ISqlCommand.php');
 require_once(ROOT_DIR . 'lib/Database/SqlFilter.php');
@@ -24,57 +24,57 @@ require_once(ROOT_DIR . 'lib/Database/SqlFilter.php');
 class SqlCommand implements ISqlCommand
 {
 	public $Parameters = null;
-		
+
 	private $_paramNames = array();
 	private $_values = array();
 	private $_query = null;
-	
-	public function __construct($query = null) 
+
+	public function __construct($query = null)
 	{
 		$this->_query = $query;
 		$this->Parameters = new Parameters();
 	}
-	
-	public function SetParameters(Parameters &$parameters) 
+
+	public function SetParameters(Parameters &$parameters)
 	{
-		$this->_paramNames = array();	// Clean out contents
+		$this->_paramNames = array(); // Clean out contents
 		$this->_values = array();
-		
-		$this->Parameters = &$parameters;
-		
-		for ($i = 0; $i < $this->Parameters->Count(); $i++) 
+
+		$this->Parameters = & $parameters;
+
+		for ($i = 0; $i < $this->Parameters->Count(); $i++)
 		{
 			$p = $this->Parameters->Items($i);
 			$this->_paramNames[] = $p->Name;
 			$this->_values[] = $p->Value;
 		}
 	}
-	
-	public function AddParameter(Parameter &$parameter) 
+
+	public function AddParameter(Parameter &$parameter)
 	{
 		$this->Parameters->Add($parameter);
 	}
 
-	public function GetQuery() 
+	public function GetQuery()
 	{
 		return $this->_query;
 	}
-	
+
 	public function ToString()
 	{
 		$builder = new StringBuilder();
 		$builder->append("Command: {$this->_query}\n");
 		$builder->append("Parameters ({$this->Parameters->Count()}): \n");
-		
-		for($i = 0; $i < $this->Parameters->Count(); $i++)
+
+		for ($i = 0; $i < $this->Parameters->Count(); $i++)
 		{
 			$parameter = $this->Parameters->Items($i);
-			$builder->append("{$parameter->Name} = {$parameter->Value}");	
+			$builder->append("{$parameter->Name} = {$parameter->Value}");
 		}
-		
+
 		return $builder->toString();
 	}
-	
+
 	public function __toString()
 	{
 		return $this->ToString();
@@ -139,43 +139,54 @@ class FilterCommand extends SqlCommand
 	public function GetQuery()
 	{
 		$baseQuery = $this->baseCommand->GetQuery();
-		$query = $baseQuery;
 		$hasWhere = (stripos($baseQuery, 'WHERE') !== false);
 		$hasOrderBy = (stripos($baseQuery, 'ORDER BY') !== false);
+		$hasGroupBy = (stripos($baseQuery, 'GROUP BY') !== false);
 		$newWhere = $this->filter->Where();
 
-		//Log::Debug("Applying filter to base query: $baseQuery");
 		if ($hasWhere)
 		{
 			// get between where and order by, replace with match plus new stuff
 			$baseQuery = preg_replace('/WHERE/ims', 'WHERE (', $baseQuery, 1);
 
-			//Log::Debug("HAS WHERE, adding filter $newWhere");
-			$split = preg_split("/ORDER BY/ims", $baseQuery);
+			$groupBySplit = preg_split("/GROUP BY/ims", $baseQuery);
+			$orderBySplit = preg_split("/ORDER BY/ims", $baseQuery);
 
-			if (count($split) > 1)
+			if (count($groupBySplit) > 1)
 			{
-				$query = "{$split[0]}) AND ($newWhere) ORDER BY {$split[1]}";
+				$queryFragment = trim($groupBySplit[0]);
+				$groupBy = trim($groupBySplit[1]);
+				$query = "$queryFragment ) AND ($newWhere) GROUP BY $groupBy";
+			}
+			elseif (count($orderBySplit) > 1)
+			{
+				$queryFragment = trim($orderBySplit[0]);
+				$orderBy = trim($orderBySplit[1]);
+				$query = "$queryFragment ) AND ($newWhere) ORDER BY $orderBy";
 			}
 			else
 			{
 				$query = "$baseQuery) AND ($newWhere)";
 			}
 		}
-		else if (!$hasWhere && $hasOrderBy)
-		{
-			//Log::Debug("ORDER BY, adding filter $newWhere");
-			// replace order by, prefixing where
-			$query = str_ireplace('order by', " WHERE $newWhere ORDER BY", $baseQuery);
+		else {
+			if ($hasGroupBy)
+			{
+				$query = str_ireplace('group by', " WHERE $newWhere GROUP BY", $baseQuery);
+			}
+			elseif ($hasOrderBy)
+			{
+				$query = str_ireplace('order by', " WHERE $newWhere ORDER BY", $baseQuery);
+			}
+			else
+			{
+				// no where, no order by, just append new where clause
+				$query = "$baseQuery WHERE $newWhere";
+			}
 		}
-		else
-		{
-			//Log::Debug("NO WHERE, adding filter $newWhere");
-			// no where, no order by, just append new where clause
-			$query = "$baseQuery WHERE $newWhere";
-		}
-	
+
 		return $query;
 	}
 }
+
 ?>

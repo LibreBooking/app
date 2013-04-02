@@ -219,6 +219,9 @@ class ColumnNames
 	const GROUP_NAME_ALIAS = 'group_name';
 	const RESOURCE_NAME_ALIAS = 'resource_name';
 	const SCHEDULE_NAME_ALIAS = 'schedule_name';
+	const PARTICIPANT_LIST = 'participant_list';
+	const INVITEE_LIST = 'invitee_list';
+	const ATTRIBUTE_LIST = 'attribute_list';
 
 	// shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

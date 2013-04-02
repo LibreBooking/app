@@ -90,6 +90,12 @@ interface IReservationSlot
 	public function IsOwnedBy(UserSession $session);
 
 	/**
+	 * @param UserSession $session
+	 * @return bool
+	 */
+	public function IsParticipating(UserSession $session);
+
+	/**
 	 * @return string
 	 */
 	public function BeginSlotId();

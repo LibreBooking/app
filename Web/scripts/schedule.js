@@ -31,7 +31,6 @@ function Schedule(opts)
 			var start = $('.start', this).val();
 			var end = $('.end', this).val();
 			var link = $('.href', this).val();
-			// this assumes the start date is the last parameter
 			window.location = link + "&sd=" + start + "&ed=" + end;
 		});
 
@@ -39,12 +38,12 @@ function Schedule(opts)
 		this.initNavigation();
 	};
 
-	this.initResources = function()
+	this.initResources = function ()
 	{
 		$('.resourceNameSelector').each(function ()
-			{
-				$(this).bindResourceDetails($(this).attr('resourceId'));
-			});
+		{
+			$(this).bindResourceDetails($(this).attr('resourceId'));
+		});
 	};
 
 	this.initNavigation = function ()
@@ -90,8 +89,8 @@ function Schedule(opts)
 			var scheduleId = $('#scheduleId').val();
 			var changeDefaultUrl = options.setDefaultScheduleUrl.replace("[scheduleId]", scheduleId);
 			$.ajax({
-				url:changeDefaultUrl,
-				success:function (data)
+				url: changeDefaultUrl,
+				success: function (data)
 				{
 					defaultSetMessage.show().delay(5000).fadeOut();
 				}
@@ -113,6 +112,9 @@ function Schedule(opts)
 	this.initReservations = function ()
 	{
 		var reservations = $('#reservations');
+
+		this.makeSlotsSelectable(reservations);
+
 		$('td.reserved', reservations).each(function ()
 		{
 			var resid = $(this).attr('resid');
@@ -136,34 +138,85 @@ function Schedule(opts)
 			});
 
 			$(this).qtip({
-				position:{
-					my:'bottom left',
-					at:'top left',
-					viewport:$(window),
-					effect:false
+				position: {
+					my: 'bottom left',
+					at: 'top left',
+					viewport: $(window),
+					effect: false
 				},
-				content:{
-					text:'Loading...',
-					ajax:{
-						url:options.summaryPopupUrl,
-						type:'GET',
-						data:{ id:resid },
-						dataType:'html'
+				content: {
+					text: 'Loading...',
+					ajax: {
+						url: options.summaryPopupUrl,
+						type: 'GET',
+						data: { id: resid },
+						dataType: 'html'
 					}
 				},
-				show:{
-					delay:700,
-					event:'mouseenter'
+				show: {
+					delay: 700,
+					event: 'mouseenter'
 				},
-				style:{
+				style: {
 				},
-				hide:{
-					fixed:true
+				hide: {
+					fixed: true
 				},
-				overwrite:false
+				overwrite: false
 			});
 		});
 	};
+
+	this.makeSlotsSelectable = function (reservationsElement)
+	{
+		var startHref = '';
+		var startDate = '';
+		var endDate = '';
+		var href = '';
+		var select = function (element)
+		{
+			href = element.find('.href').val();
+			if (startHref == '')
+			{
+				startDate = element.find('.start').val();
+				startHref = href;
+			}
+			console.log('Selecting ' + href);
+			if (href != startHref)
+			{
+				element.removeClass('ui-selecting');
+			}
+			else
+			{
+				endDate = element.find('.end').val();
+			}
+		};
+
+		reservationsElement.selectable({
+			filter: 'td.reservable',
+			distance: 20,
+			start: function (event, ui)
+			{
+				startHref = '';
+			},
+			selecting: function (event, ui)
+			{
+				select($(ui.selecting));
+			},
+			unselecting: function (event, ui)
+			{
+				select($(ui.unselecting));
+			},
+			stop: function (event, ui)
+			{
+				if (href != '' && startDate != '' && endDate != '')
+				{
+					window.location = href + "&sd=" + startDate + "&ed=" + endDate;
+					console.log('Start:' + startDate + ' end:' + endDate);
+				}
+			}
+		});
+	}
 }
 
 function dpDateChanged(dateText, inst)

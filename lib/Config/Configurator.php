@@ -86,7 +86,7 @@ class Configurator implements IConfigurationSettings
 		$currentSettings = $this->GetSettings($configPhp);
 		$newSettings = $this->GetSettings($distPhp);
 
-		$settings = $this->BuildConfig($currentSettings, $newSettings);
+		$settings = $this->BuildConfig($currentSettings, $newSettings, true);
 		return array(Configuration::SETTINGS => $settings);
 	}
 

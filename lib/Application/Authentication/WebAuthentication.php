@@ -86,6 +86,10 @@ class WebAuthentication implements IWebAuthentication
 	 */
 	public function Validate($username, $password)
 	{
+		if (empty($username) || empty($password))
+		{
+			return false;
+		}
 		return $this->authentication->Validate($username, $password);
 	}
 

@@ -164,7 +164,7 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 	 */
 	public function GetSubmittedSettings()
 	{
-		$settingNames = $this->GetForm('setting_names');
+		$settingNames = $this->GetRawForm('setting_names');
 		$settings = explode(',', $settingNames);
 		$submittedSettings = array();
 		foreach ($settings as $setting)

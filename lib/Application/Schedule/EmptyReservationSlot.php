@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/Values/ReservationStartTimeConstraint.php');
 
@@ -26,46 +26,46 @@ class EmptyReservationSlot implements IReservationSlot
 	 * @var Date
 	 */
 	protected $_begin;
-	
+
 	/**
 	 * @var Date
 	 */
 	protected $_end;
-	
+
 	/**
 	 * @var Date
 	 */
 	protected $_date;
-	
+
 	/**
 	 * @var $_isReservable
 	 */
 	protected $_isReservable;
-	
+
 	/**
 	 * @var int
 	 */
 	protected $_periodSpan;
-	
+
 	protected $_beginDisplayTime;
 	protected $_endDisplayTime;
 
 	protected $_beginSlotId;
 	protected $_endSlotId;
-	
+
 	public function __construct(SchedulePeriod $begin, SchedulePeriod $end, Date $displayDate, $isReservable)
 	{
 		$this->_begin = $begin->BeginDate();
 		$this->_end = $end->EndDate();
 		$this->_date = $displayDate;
 		$this->_isReservable = $isReservable;
-		
+
 		$this->_beginDisplayTime = $this->_begin->GetTime();
 		if (!$this->_begin->DateEquals($displayDate))
 		{
 			$this->_beginDisplayTime = $displayDate->GetDate()->GetTime();
 		}
-		
+
 		$this->_endDisplayTime = $this->_end->GetTime();
 		if (!$this->_end->DateEquals($displayDate))
 		{
@@ -75,7 +75,7 @@ class EmptyReservationSlot implements IReservationSlot
 		$this->_beginSlotId = $begin->Id();
 		$this->_endSlotId = $end->Id();
 	}
-	
+
 	/**
 	 * @return Time
 	 */
@@ -83,7 +83,7 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return $this->_beginDisplayTime;
 	}
-	
+
 	/**
 	 * @return Date
 	 */
@@ -91,15 +91,15 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return $this->_begin;
 	}
-	
+
 	/**
 	 * @return Time
 	 */
 	public function End()
 	{
-		return $this->_endDisplayTime;	
+		return $this->_endDisplayTime;
 	}
-	
+
 	/**
 	 * @return Date
 	 */
@@ -107,15 +107,15 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return $this->_end;
 	}
-	
+
 	/**
 	 * @return Date
 	 */
 	public function Date()
 	{
-		return $this->_date;	
+		return $this->_date;
 	}
-	
+
 	/**
 	 * @return int
 	 */
@@ -123,17 +123,17 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return 1;
 	}
-	
+
 	public function Label()
 	{
 		return '';
 	}
-	
+
 	public function IsReservable()
 	{
 		return $this->_isReservable;
 	}
-	
+
 	public function IsReserved()
 	{
 		return false;
@@ -143,29 +143,30 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return false;
 	}
-	
+
 	public function IsPastDate(Date $date)
 	{
-        $constraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
+		$constraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
+															   ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
 
-        if (empty($constraint))
-        {
-            $constraint = ReservationStartTimeConstraint::_DEFAULT;
-        }
+		if (empty($constraint))
+		{
+			$constraint = ReservationStartTimeConstraint::_DEFAULT;
+		}
 
-        if ($constraint == ReservationStartTimeConstraint::NONE)
-        {
-            return false;
-        }
+		if ($constraint == ReservationStartTimeConstraint::NONE)
+		{
+			return false;
+		}
 
-        if ($constraint == ReservationStartTimeConstraint::CURRENT)
-        {
-		    return $this->_date->SetTime($this->End(), true)->LessThan($date);
-        }
+		if ($constraint == ReservationStartTimeConstraint::CURRENT)
+		{
+			return $this->_date->SetTime($this->End(), true)->LessThan($date);
+		}
 
-        return $this->_date->SetTime($this->Begin())->LessThan($date);
+		return $this->_date->SetTime($this->Begin())->LessThan($date);
 	}
-	
+
 	public function ToTimezone($timezone)
 	{
 		return new EmptyReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->End()->ToTimezone($timezone), $this->Date(), $this->_isReservable);
@@ -176,17 +177,16 @@ class EmptyReservationSlot implements IReservationSlot
 		return false;
 	}
 
-	/**
-	 * @return string
-	 */
+	public function IsParticipating(UserSession $session)
+	{
+		return false;
+	}
+
 	public function BeginSlotId()
 	{
 		return $this->_beginSlotId;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function EndSlotId()
 	{
 		return $this->_endSlotId;

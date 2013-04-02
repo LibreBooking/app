@@ -239,7 +239,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 	public function testFilterCommandWrapsAppendsToWhere()
 	{
 		$baseCommand = new AdHocCommand("SeLEcT F.*,    lbl,
-											abc.* fROM table wHere blah = @blah and blah2 = @blah2 ORDER BY blah1");
+											abc.* fROM table wHere blah = @blah and blah2 = @blah2 GROUP BY 1, 2 ORDER BY blah1");
 
 		$filter = new SqlFilterLike("fname", 'firstname');
 		$filter->_And(new SqlFilterEquals("lname", 'last'));
@@ -250,10 +250,9 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals('firstname%', $filterCommand->Parameters->Items(0)->Value);
 		$this->assertEquals('last', $filterCommand->Parameters->Items(1)->Value);
 
-		$constraint = $this->stringContains("table WHERE ( blah = @blah and blah2 = @blah2 ) AND (fname LIKE @fname AND ( lname = @lname )) ORDER BY  blah1");
+		$constraint = $this->stringContains("table WHERE ( blah = @blah and blah2 = @blah2 ) AND (fname LIKE @fname AND ( lname = @lname )) GROUP BY 1, 2 ORDER BY blah1");
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
-		 //("SELECT COUNT(*) as total FROM table WHERE (blah = @blah and blah2 = @blah2) AND (fname = @fname AND lname = @lname) ORDER BY blah1", $filterCommand->GetQuery());
 	}
 
 	public function testFiltersWithoutOrderBy()
@@ -271,7 +270,23 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$query = $filterCommand->GetQuery();
 		$this->assertThat($query, $constraint, $query);
 	}
-	
+
+	public function testFiltersWithoutWhere()
+	{
+		$baseCommand = new AdHocCommand("SELECT *
+						FROM users
+						GROUP BY 1, 2 ORDER BY 3, 4");
+
+		$filter = new SqlFilterLike("fname", 'firstname');
+		$filter->_And(new SqlFilterEquals("lname", 'last'));
+
+		$filterCommand = new FilterCommand($baseCommand, $filter);
+
+		$constraint = $this->stringContains("WHERE fname LIKE @fname AND ( lname = @lname ) GROUP BY 1, 2 ORDER BY 3, 4");
+		$query = $filterCommand->GetQuery();
+		$this->assertThat($query, $constraint, $query);
+	}
+
 	public function testFiltersWithInClause()
 	{
 		$baseCommand = new AdHocCommand("SELECT * FROM users WHERE (0 = '0' OR status_id = '0')");

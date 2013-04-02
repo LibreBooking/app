@@ -272,6 +272,20 @@ abstract class Page implements IPage
 	}
 
 	/**
+	 * @param string $objectToSerialize
+	 * @return void
+	 */
+	protected function SetJsonError($objectToSerialize)
+	{
+		header('Content-type: application/json');
+		header('HTTP/1.1 500 Internal Server Error');
+
+		$this->Set('data', json_encode($objectToSerialize));
+
+		$this->smarty->display('json_data.tpl');
+	}
+
+	/**
 	 * A template file to be displayed
 	 * @param string $templateName
 	 */

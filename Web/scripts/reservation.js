@@ -228,12 +228,12 @@ function Reservation(opts) {
 	};
 
 	var AdjustEndDate = function() {
-		var firstDate = new Date(elements.beginDate.data['previousVal']);
-		var secondDate = new Date(elements.beginDate.val());
+		var firstDate = new Date(elements.beginDate.data['previousVal'] + 'T' + elements.beginTime.val());
+		var secondDate = new Date(elements.beginDate.val()+ 'T' + elements.beginTime.val());
 
 		var diffDays = (secondDate.getTime() - firstDate.getTime()) / (oneDay);
 
-		var currentEndDate = new Date(elements.endDate.val());
+		var currentEndDate = new Date(elements.endDate.val() + 'T' + elements.endTime.val());
 		currentEndDate.setDate(currentEndDate.getDate() + diffDays);
 
 		elements.endDateTextbox.datepicker("setDate", currentEndDate);

@@ -74,6 +74,7 @@ class AutoCompletePage extends SecurePage
 	{
 		$filter = new SqlFilterLike(ColumnNames::FIRST_NAME, $term);
 		$filter->_Or(new SqlFilterLike(ColumnNames::LAST_NAME, $term));
+		$filter->_Or(new SqlFilterLike(ColumnNames::EMAIL, $term));
 
 		$users = array();
 

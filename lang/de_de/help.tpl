@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
 {include file='globalheader.tpl'}
-<h1>phpScheduleIt Hilfe   (Übersetzung ist noch nicht komplett)</h1>
+<h1>phpScheduleIt Hilfe</h1>
 
 <div id="help">
 <h2>Registrierung / Konto hinzufügen</h2>
@@ -179,92 +179,56 @@ Hinzufügen einer Reservierung zum eigenen Kalender (Outlook®, iCal, Mozilla, L
 </h2>
 
 <p>
-Beim Betrachten oder Aktualisieren einer Reservierung finden Sie eine Taste,
-um Outlook-Add. Wenn Outlook auf Ihrem Computer installiert ist, dann
-sollten Sie gebeten, die Sitzung hinzuzufügen. Wenn es nicht installiert
-ist, werden Sie aufgefordert, eine. Ics-Datei herunterladen. Dies ist ein
-Standard-Kalender-Format. Sie können diese Datei verwenden, um die
-Reservierung für jede Anwendung, die das iCalendar-Format unterstützt
-hinzuzufügen.
+Beim betrachten oder aktualisieren einer Reservierung finden Sie einen Kalender-Import Link.
+Wenn z.B. Outlook auf Ihrem Computer installiert ist, werden Sie gefragt ob Sie den Kalendereintrag importieren möchten.
+Wenn kein Kalenderprogramm installiert ist, werden Sie aufgefordert, eine ICS-Datei herunterzuladen. 
+Dies ist ein Standard-Kalender-Format. Sie können diese Datei verwenden, um die Reservierung in jede Anwendung zu importieren,
+die das iCalendar-Format unterstützt.</p>
 
-When viewing or updating a reservation you will see a button to Add to Outlook. If Outlook is installed on your
-	computer then you should be asked to add the meeting. If it is not installed you will be prompted to download an
-	.ics file. This is a standard calendar format. You can use this file to add the reservation to any application
-	that supports the iCalendar file format.</p>
-
-<h2>Abonnieren von Kalendern
-
-Subscribing to Calendars</h2>
+<h2>Abonnieren von Kalendern</h2>
 
 <p>
-Kalender für Termine, Ressourcen und Benutzer veröffentlicht werden. Damit
-diese Funktion funktioniert, muss der Administrator einen
-Subscription-Schlüssel in der Konfigurationsdatei konfiguriert haben. Um
-Scheudle and Resource Ebene Kalender-Abonnements aktivieren, drehen Sie
-einfach Abonnements bei der Verwaltung des Zeitplans oder Ressource. Auf
-persönlichen Kalender Mitgliederbeiträge drehen, offene Termine -> Mein
-Kalender. Auf der rechten Seite der Seite finden Sie einen Link auf Zulassen
-oder Ausschalten Kalender Abonnements.
-
-Calendars can be published for Schedules, Resources and Users. For this feature to work, the administrator must have
-	configured a subscription key in the config file. To enable Scheudle and Resource level calendar
-	subscriptions, simply turn subscriptions on when managing the Schedule or Resource. To turn on personal calendar
-	subcriptions, open Schedule -> My Calendar. On the right side of the page you will find a link to Allow or Turn Off
-	calendar subscriptions.
+Terminkalender für Ressourcen und Benutzer können bei Bedarf veröffentlicht und abonniert werden. 
+Damit dies funktioniert, muss der Administrator einen Subscription-Schlüssel in der Konfigurationsdatei konfiguriert haben. 
+Um Termin- und Ressourcen-Kalender-Abonnements zu aktivieren, schalten Sie einfach Abonnements bei der Verwaltung des Terminplans oder der Ressource ein.
+Um den persönlichen Kalender für Abonnements freizugeben, öffnen Sie unter Terminplan -> Mein Kalender.
+Auf der rechten Seite oberhalb des Kalenders finden Sie einen Link zum Zulassen oder Ausschalten Ihres persönlichen Kalender Abonnements.
 </p>
 
 <p>
-Um einen Zeitplan Kalender, offene Schedule abonnieren -> Resource Kalender
-und wählen Sie den gewünschten Zeitplan. Auf der rechten Seite der Seite
-finden Sie einen Link auf die aktuelle Kalender abonnieren. Anmeldung die
-eine Ressource Kalender folgt den gleichen Schritten. Um Ihren persönlichen
-Kalender, offene Scheudle abonnieren -> Mein Kalender. Auf der rechten Seite
-der Seite finden Sie einen Link auf die aktuelle Kalender abonnieren.
-Kalender-Client (Outlook ®, iCal, Mozilla Lightning, Evolution)
+Um einen Terminplan zu abonnieren, öffnen Sie Terminplan -> Ressourcen Kalender und wählen Sie den gewünschten Termin- oder Ressourcenkalender aus. 
+Auf der rechten Seite oberhalb des Kalenders finden Sie den Link "Kalender abonnieren".
+</p>
 
- To subscribe to a Schedule calendar, open Schedule -> Resource Calendar and select the schedule you want. On the
-	right side of the page, you will find a link to subscribe to the current calendar. Subscribing the a Resource
-	calendar follows the same steps. To subscribe to your personal calendar, open Scheudle -> My Calendar. On the
-	right side of the page, you will find a link to subscribe to the current calendar.</p>
+<p>Um Ihren persönlichen Kalender zu abonnieren, öffnen Sie Terminplan -> Mein Kalender. 
+Auf der rechten Seite oberhalb des Kalenders finden Sie den Link "Kalender abonnieren".
+</p>
 
-<h3>Calendar client (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
+<h3>Kalender Programme (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
 
 <p>
-In den meisten Fällen wird einfach auf das zu diesem Kalender Link
-abonnieren und automatisch die Abonnements in Ihrem Kalender-Client. Für
-Outlook, falls es nicht automatisch, öffnen Sie die Kalenderansicht, dann
-rechts auf Meine Kalender und wählen Sie Hinzufügen Kalender -> Aus dem
-Internet. Fügen Sie in der URL, unter der dieser Kalender Link Abonnieren in
-phpScheduleIt gedruckt.
-Google ® Kalender
+In den meisten Fällen genügt ein Klick auf "Kalender abonnieren", um automatisch ein Abonnement in Ihrem Kalender-Programm einzurichten. 
+Falls Outlook es nicht automatisch hinzufügt, öffnen Sie die Kalenderansicht, dann rechts auf Meine Kalender und wählen Sie Hinzufügen Kalender -> Aus dem Internet. 
+Fügen Sie die URL ein, die Sie unter "Kalender Abonnieren" in phpScheduleIt gedruckt finden.
+</p>
 
-In most cases, simply clicking the Subscribe to this Calendar link will automatically set up the subscription in
-	your calendar Client. For Outlook, if it does not automatically add, open the Calendar view, then right click My
-	Calendars and choose
-	Add Calendar -> From Internet. Paste in the URL printed under the Subscribe to this Calendar link in
-	phpScheduleIt.</p>
-
-<h3>Google&reg; Calendar</h3>
+<h3>Google&reg; Kalender</h3>
 
 <p>
-Öffnen Sie Google Kalender Einstellungen. Klicken Sie auf die Registerkarte
-Kalender. Klicken Sie auf Durchsuchen interessanten Kalender. Klicken Sie
-auf Hinzufügen von URL. Fügen Sie in der URL, unter der dieser Kalender Link
-Abonnieren in phpScheduleIt gedruckt.
+Öffnen Sie die Google "Kalender-Einstellungen". 
+Klicken Sie auf die Registerkarte "Kalender". 
+Klicken Sie auf "In interessanten Kalendern suchen".
+Klicken Sie auf "Über URL hinzufügen".
+Fügen Sie die URL ein, die Sie unter "Kalender Abonnieren" in phpScheduleIt gedruckt finden.
+</p>
 
-Open Google Calendar settings. Click the Calendars tab. Click Browse interesting calendars. Click add by URL. Paste
-	in the URL printed under the Subscribe to this Calendar link in phpScheduleIt.</p>
-
-<h2>Quotas</h2>
+<h2>Quotenregelungen</h2>
 
 <p>
-Administratoren haben die Möglichkeit, Quotenregelungen auf einer Vielzahl
-von Kriterien zu konfigurieren. Wenn Sie Ihre Reservierung geartetes
-Quotensystem verstoßen würde, werden Sie benachrichtigt und die Reservierung
+Administratoren haben die Möglichkeit, Quotenregelungen für eine Vielzahl von Kriterien zu konfigurieren. 
+Wenn Sie bei Ihrer Reservierung gegen ein Quotensystem verstoßen, werden Sie benachrichtigt und die Reservierung
 wird verweigert. 
-
-Administrators have the ability to configure quota rules based on a variety of criteria. If your reservation
-	would violate any quota, you will be notified and the reservation will be denied.</p>
+</p>
 
 </div>
 

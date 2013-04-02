@@ -74,6 +74,7 @@ class ScheduleReservationListTests extends TestBase
 	
 	function testLayoutIsConvertedToUserTimezoneBeforeSlotsAreCreated()
 	{
+		$hideBlocked = true;
 		$userTz = 'America/Chicago';
 		$date = Date::Parse('2010-01-02', $userTz);
 
@@ -98,10 +99,10 @@ class ScheduleReservationListTests extends TestBase
 			
 		$layout->expects($this->once())
 			->method('GetLayout')
-			->with($this->equalTo($date))
+			->with($this->equalTo($date), $this->equalTo($hideBlocked))
 			->will($this->returnValue($layoutPeriods));
 		
-		$scheduleList = new ScheduleReservationList(array($r1), $layout, $date);
+		$scheduleList = new ScheduleReservationList(array($r1), $layout, $date, $hideBlocked);
 		$slots = $scheduleList->BuildSlots();
 	
 		$slot1 = new EmptyReservationSlot($p1, $p1, $date, false);

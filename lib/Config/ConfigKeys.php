@@ -42,6 +42,7 @@ class ConfigKeys
 
     const SCHEDULE_SHOW_INACCESSIBLE_RESOURCES = 'show.inaccessible.resources';
     const SCHEDULE_RESERVATION_LABEL = 'reservation.label';
+    const SCHEDULE_HIDE_BLOCKED_PERIODS = 'hide.blocked.periods';
 
     const DATABASE_TYPE = 'type';
     const DATABASE_USER = 'user';

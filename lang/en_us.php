@@ -456,6 +456,7 @@ class en_us extends Language
 		$strings['FlipSchedule'] = 'Flip the schedule layout';
 		$strings['Next'] = 'Next';
 		$strings['Success'] = 'Success';
+		$strings['Participant'] = 'Participant';
 		// End Strings
 
 		// Install

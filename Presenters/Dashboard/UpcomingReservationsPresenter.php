@@ -84,6 +84,7 @@ class UpcomingReservationsPresenter
 		
 		$this->control->SetTotal(count($reservations));
 		$this->control->SetTimezone($timezone);
+		$this->control->SetUserId($user->UserId);
 		
 		$this->control->BindToday($todays);
 		$this->control->BindTomorrow($tomorrows);

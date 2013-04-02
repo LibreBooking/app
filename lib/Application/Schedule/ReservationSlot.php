@@ -169,6 +169,11 @@ class ReservationSlot implements IReservationSlot
 		return $this->_reservation->UserId == $user->UserId;
 	}
 
+	public function IsParticipating(UserSession $session)
+	{
+		return $this->_reservation->IsUserParticipating($session->UserId) || $this->_reservation->IsUserInvited($session->UserId);
+	}
+
 	public function __toString()
 	{
 		return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());

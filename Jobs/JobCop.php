@@ -24,8 +24,7 @@ class JobCop
 	{
 		try
 		{
-			$method = $_SERVER['REQUEST_METHOD'];
-			if (!empty($method))
+			if (array_key_exists('REQUEST_METHOD', $_SERVER))
 			{
 				die('This can only be accessed via the command line');
 			}
