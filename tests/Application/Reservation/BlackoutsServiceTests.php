@@ -314,23 +314,4 @@ class BlackoutsServiceTests extends TestBase
 	}
 }
 
-class TestBlackoutItemView extends BlackoutItemView
-{
-	public function __construct(
-		$instanceId,
-		Date $startDate,
-		Date $endDate,
-		$resourceId)
-	{
-		parent::__construct($instanceId, $startDate, $endDate, $resourceId, null, null, null, null, null, null, null, null);
-	}
-
-	public function WithScheduleId($scheduleId)
-	{
-		$this->ScheduleId = $scheduleId;
-		return $this;
-	}
-
-}
-
 ?>

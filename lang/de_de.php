@@ -122,10 +122,10 @@ class de_de extends en_us
         $strings['month'] = 'Monat';
         $strings['year'] = 'Jahr';
         $strings['repeatDayOfMonth'] = 'Tag im Monat';
-        $strings['repeatDayOfWeek'] = 'Tag in Woche';
-        $strings['RepeatUntilPrompt'] = 'Bis';
-        $strings['RepeatEveryPrompt'] = 'Jeden';
-        $strings['RepeatDaysPrompt'] = 'Ja';
+        $strings['repeatDayOfWeek'] = 'Tag in der Woche';
+        $strings['RepeatUntilPrompt'] = 'bis zum';
+        $strings['RepeatEveryPrompt'] = 'Alle';
+        $strings['RepeatDaysPrompt'] = 'Am';
         $strings['CreateReservationHeading'] = 'Neue Reservierung';
         $strings['EditReservationHeading'] = 'Reservierung %s bearbeiten';
         $strings['ViewReservationHeading'] = 'Reservierung %s anzeigen';
@@ -256,7 +256,7 @@ class de_de extends en_us
         $strings['ViewSchedule'] = 'Terminplan ansehen';
         $strings['ForgotMyPassword'] = 'Passwort vergessen';
         $strings['YouWillBeEmailedANewPassword'] = 'Sie bekommen ein neues, zufälliges Passwort zugeschickt';
-        $strings['Close'] = 'Schliessen';
+        $strings['Close'] = 'Schließen';
         $strings['ExportToCSV'] = 'Export als CSV';
         $strings['OK'] = 'OK';
         $strings['Working'] = 'Arbeite';
@@ -356,7 +356,7 @@ class de_de extends en_us
         $strings['TurnOffSubscription'] = 'Kalender Abonnement abschalten';
         $strings['TurnOnSubscription'] = 'Kalender Abonnement erlauben';
         $strings['SubscribeToCalendar'] = 'Kalender abonnieren';
-        $strings['SubscriptionsAreDisabled'] = 'Das abonnieren des Kalenders wurde vom Administrator deaktiviert';
+        $strings['SubscriptionsAreDisabled'] = 'Das Abonnieren des Kalenders wurde vom Administrator deaktiviert';
         $strings['NoResourceAdministratorLabel'] = '(Kein Ressourcen Administrator)';
         $strings['WhoCanManageThisResource'] = 'Wer darf diese Ressource verwalten?';
         $strings['ResourceAdministrator'] = 'Ressourcen Administrator';
@@ -427,7 +427,7 @@ class de_de extends en_us
         $strings['ConfigurationUpdated'] = 'Konfigurationsdatei wurde upgedated';
         $strings['ConfigurationUiNotEnabled'] = 'Auf diese Seite kann nicht zugegriffen werden, da $conf[\'settings\'][\'pages\'][\'enable.configuration\'] auf false gesetzt wurde oder fehlt.';
         $strings['ConfigurationFileNotWritable'] = 'Die Konfigurationsdatei ist nicht beschreibbar. Bitte überprüfen Sie die Berechtigungen dieser Datei und versuchen Sie es erneut.';
-        $strings['ConfigurationUpdateHelp'] = 'Siehe den Abschnitt Konfiguration der <a target=_blank href=%s> Hilfe-Datei </ a> für die Dokumentation zu diesen Einstellungen.';
+        $strings['ConfigurationUpdateHelp'] = 'Siehe den Abschnitt Konfiguration der <a target=_blank href=%s>Hilfe-Datei</a> für die Dokumentation zu diesen Einstellungen.';
         $strings['GeneralConfigSettings'] = 'Einstellungen';
 	$strings['UseSameLayoutForAllDays'] = 'Verwende gleiches Layout für alle Tage';
 	$strings['LayoutVariesByDay'] = 'Layout variiert jeden Tag';
@@ -458,6 +458,7 @@ class de_de extends en_us
         $strings['FlipSchedule'] = 'Terminplan Layout umstellen';
         $strings['Next'] = 'Nächste';
 	$strings['Success'] = 'Erfolgreich';
+	$strings['Participant'] = 'Teilnehmer';
         // End Strings
 
 	// Install
@@ -466,8 +467,8 @@ class de_de extends en_us
 	$strings['SetInstallPassword'] = 'Sie müssen ein Installationspasswort setzen, bevor die Installation ausgeführt werden kann.';
 	$strings['InstallPasswordInstructions'] = 'In %s bitte ein %s Passwort setzen, das zufällig und schwer zu erraten ist, dann auf diese Seite zurück. <br/> Sie können %s verwenden.';
 	$strings['NoUpgradeNeeded'] = 'Es ist kein Upgrade erforderlich. Ausführen der Installation löscht alle vorhandenen Daten und installiert eine neue Kopie von phpScheduleIt!';
-	$strings['ProvideInstallPassword'] = 'Bitte geben Sie Ihr INstallationspasswort ein.';
-	$strings['InstallPasswordLocation'] = 'Dies finde Sie in %s in %s.';
+	$strings['ProvideInstallPassword'] = 'Bitte geben Sie Ihr Installationspasswort ein.';
+	$strings['InstallPasswordLocation'] = 'Dies finden Sie in %s in %s.';
 	$strings['VerifyInstallSettings'] = 'Überprüfen Sie die folgenden Standardeinstellungen, bevor Sie fortfahren. Oder Sie können sie in %s ändern.';
 	$strings['DatabaseName'] = 'Datenbank Name';
 	$strings['DatabaseUser'] = 'Datenbank Benutzer';
@@ -516,11 +517,11 @@ class de_de extends en_us
         $strings['CustomAttributeRequired'] = '%s ist ein Pflichtfeld';
         $strings['CustomAttributeInvalid'] = 'Der Wert für %s ist ungültig';
         $strings['AttachmentLoadingError'] = 'Sorry, es gab ein Problem beim Laden der angeforderten Datei.';
-        $strings['InvalidAttachmentExtension'] = 'Sie können nur Dateien diese Typs hochladen: %s';
+        $strings['InvalidAttachmentExtension'] = 'Sie können nur Dateien dieses Typs hochladen: %s';
 	$strings['InvalidStartSlot'] = 'Die angeforderte Startzeit ist nicht gültig.';
 	$strings['InvalidEndSlot'] = 'Die angeforderte Endzeit ist nicht gültig.';
 	$strings['MaxParticipantsError'] = '%s ist für maximal %s Teilnehmer.';
-	$strings['ReservationCriticalError'] = 'Es kam ein kritischer Fehler beim Speichern Ihrer Reservierung. Wenn das so weitergeht, wenden Sie sich an Ihren Systemadministrator.';
+	$strings['ReservationCriticalError'] = 'Es kam zu einem kritischer Fehler beim Speichern Ihrer Reservierung. Wenn das Problem weiterhin besteht, wenden Sie sich an Ihren Systemadministrator.';
 	$strings['InvalidStartReminderTime'] = 'Ungültige Start-Erinnerungszeit.';
 	$strings['InvalidEndReminderTime'] = 'Ungültige End-Erinnerungszeit.';
         // End Errors
@@ -563,7 +564,7 @@ class de_de extends en_us
         $strings['ForgotPassword'] = 'Passwort vergessen';
         $strings['NotificationPreferences'] = 'Benachrichtigungseinstellungen';
         $strings['ManageAnnouncements'] = 'Ankündigungen';
-        $strings['Responsibilities'] = 'Verantwortlichkeiten';
+        $strings['Responsibilities'] = 'Anwendungsverwaltung';
         $strings['GroupReservations'] = 'Gruppenreservierungen';
         $strings['ResourceReservations'] = 'Ressourcen Reservierungen';
         $strings['Customization'] = 'Anpassungen';
@@ -578,7 +579,6 @@ class de_de extends en_us
 	$strings['Group'] = 'Gruppe';
 	$strings['ManageConfiguration'] = 'Programm Konfiguration';
 	$strings['LookAndFeel'] = 'Logo und CSS Änderung';
-
         // End Page Titles
 
         // Day representations

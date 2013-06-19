@@ -119,7 +119,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	accessoryManagement.init();
 
 	{foreach from=$accessories item=accessory}
-		accessoryManagement.addAccessory('{$accessory->Id}', '{$accessory->Name}', '{$accessory->QuantityAvailable}');
+		accessoryManagement.addAccessory('{$accessory->Id}', '{$accessory->Name|escape:javascript}', '{$accessory->QuantityAvailable}');
 	{/foreach}
 	
 	});

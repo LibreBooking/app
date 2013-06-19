@@ -43,11 +43,6 @@ abstract class ReminderEmail extends EmailMessage
 		return new EmailAddress($this->reminder->EmailAddress(), $name->__toString());
 	}
 
-	public function From()
-	{
-		return $this->To();
-	}
-
 	/**
 	 * @return string
 	 */

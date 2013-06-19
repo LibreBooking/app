@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 define('LOG4PHP_ROOT', ROOT_DIR . 'lib/external/log4php/Logger.php');
 require_once(LOG4PHP_ROOT);
@@ -32,7 +32,7 @@ class Log
 	 * @var Logger
 	 */
 	private $logger;
-	
+
 	/**
 	 * @var Logger
 	 */
@@ -40,10 +40,11 @@ class Log
 
 	private function __construct()
 	{
-        $this->logger = new NullLog4php();
-        $this->sqlLogger = new NullLog4php();
+		$this->logger = new NullLog4php();
+		$this->sqlLogger = new NullLog4php();
 
-		if (file_exists(ROOT_DIR . 'config/log4php.config.xml')) {
+		if (file_exists(ROOT_DIR . 'config/log4php.config.xml'))
+		{
 			Logger::configure(ROOT_DIR . 'config/log4php.config.xml');
 			$this->logger = Logger::getLogger('default');
 			$this->sqlLogger = Logger::getLogger('sql');
@@ -55,7 +56,8 @@ class Log
 	 */
 	private static function &GetInstance()
 	{
-		if (is_null(self::$_instance)) {
+		if (is_null(self::$_instance))
+		{
 			self::$_instance = new Log();
 		}
 
@@ -68,14 +70,30 @@ class Log
 	 */
 	public static function Debug($message, $args = array())
 	{
+		if (!self::GetInstance()->logger->isDebugEnabled())
+		{
+			return;
+		}
+
 		try
 		{
+			$debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+			if (is_array($debug))
+			{
+				$debugInfo = $debug[0];
+			}
+			else
+			{
+				$debugInfo = array('file' => null, 'line' => null);
+			}
+
 			$args = func_get_args();
 			$log = vsprintf(array_shift($args), array_values($args));
+			$log .= sprintf(' [File=%s,Line=%s]', $debugInfo['file'], $debugInfo['line']);
 			self::GetInstance()->logger->debug($log);
-		}
-		catch (Exception $ex)
+		} catch (Exception $ex)
 		{
+			echo $ex;
 		}
 	}
 
@@ -85,13 +103,28 @@ class Log
 	 */
 	public static function Error($message, $args = array())
 	{
+		if (!self::GetInstance()->logger->isEnabledFor(LoggerLevel::getLevelError()))
+		{
+			return;
+		}
+
 		try
 		{
+			$debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+			if (is_array($debug))
+			{
+				$debugInfo = $debug[0];
+			}
+			else
+			{
+				$debugInfo = array('file' => null, 'line' => null);
+			}
+
 			$args = func_get_args();
 			$log = vsprintf(array_shift($args), array_values($args));
+			$log .= sprintf(' [File=%s,Line=%s]', $debugInfo['file'], $debugInfo['line']);
 			self::GetInstance()->logger->error($log);
-		}
-		catch (Exception $ex)
+		} catch (Exception $ex)
 		{
 		}
 	}
@@ -109,8 +142,7 @@ class Log
 			$args = func_get_args();
 			$log = vsprintf(array_shift($args), array_values($args));
 			self::GetInstance()->sqlLogger->debug($log);
-		}
-		catch (Exception $ex)
+		} catch (Exception $ex)
 		{
 		}
 	}
@@ -118,14 +150,25 @@ class Log
 
 class NullLog4php
 {
-    public function error($log)
-    {
+	public function error($log)
+	{
 
-    }
-    public function debug($log)
-    {
+	}
 
-    }
+	public function debug($log)
+	{
+
+	}
+
+	public function isDebugEnabled()
+	{
+		return false;
+	}
+
+	public function isEnabledFor($anything)
+	{
+		return false;
+	}
 }
 
 ?>

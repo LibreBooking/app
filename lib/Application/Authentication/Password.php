@@ -46,11 +46,11 @@ class PasswordMigration
 	 */
 	public function Create($plaintext, $oldpassword, $newpassword)
 	{		
-		if (!empty($oldpassword))
+		if (!empty($newpassword))
 		{
-			return new OldPassword($plaintext, $oldpassword, new RetiredPasswordEncryption());
+			return new Password($plaintext, $newpassword);
 		}
-		return new Password($plaintext, $newpassword);		
+		return new OldPassword($plaintext, $oldpassword, new RetiredPasswordEncryption());
 	}
 }
 

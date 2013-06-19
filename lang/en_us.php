@@ -495,6 +495,7 @@ class en_us extends Language
 		$strings['ConfigureApplication'] = 'Configure phpScheduleIt';
 		$strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
 		$strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
+		$strings['SelectUser'] = 'Select User';
 		// End Install
 
 		// Errors
@@ -505,15 +506,15 @@ class en_us extends Language
 		$strings['MinDurationError'] = 'This reservation must last at least %s.';
 		$strings['MaxDurationError'] = 'This reservation cannot last longer than %s.';
 		$strings['ConflictingAccessoryDates'] = 'There are not enough of the following accessories:';
-		$strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources';
+		$strings['NoResourcePermission'] = 'You do not have permission to access one or more of the requested resources.';
 		$strings['ConflictingReservationDates'] = 'There are conflicting reservations on the following dates:';
-		$strings['StartDateBeforeEndDateRule'] = 'The start date and time must be before the end date and time';
-		$strings['StartIsInPast'] = 'The start date and time cannot be in the past';
-		$strings['EmailDisabled'] = 'The administrator has disabled email notifications';
+		$strings['StartDateBeforeEndDateRule'] = 'The start date and time must be before the end date and time.';
+		$strings['StartIsInPast'] = 'The start date and time cannot be in the past.';
+		$strings['EmailDisabled'] = 'The administrator has disabled email notifications.';
 		$strings['ValidLayoutRequired'] = 'Slots must be provided for all 24 hours of the day beginning and ending at 12:00 AM.';
 		$strings['CustomAttributeErrors'] = 'There are problems with the additional attributes you provided:';
-		$strings['CustomAttributeRequired'] = '%s is a required field';
-		$strings['CustomAttributeInvalid'] = 'The value provided for %s is invalid';
+		$strings['CustomAttributeRequired'] = '%s is a required field.';
+		$strings['CustomAttributeInvalid'] = 'The value provided for %s is invalid.';
 		$strings['AttachmentLoadingError'] = 'Sorry, there was a problem loading the requested file.';
 		$strings['InvalidAttachmentExtension'] = 'You can only upload files of type: %s';
 		$strings['InvalidStartSlot'] = 'The start date and time requested is not valid.';
@@ -522,6 +523,7 @@ class en_us extends Language
 		$strings['ReservationCriticalError'] = 'There was a critical error saving your reservation. If this continues, contact your system administrator.';
 		$strings['InvalidStartReminderTime'] = 'The start reminder time is not valid.';
 		$strings['InvalidEndReminderTime'] = 'The end reminder time is not valid.';
+		$strings['QuotaExceeded'] = 'Quota limit exceeded.';
 		// End Errors
 
 		// Page Titles

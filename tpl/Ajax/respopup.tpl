@@ -60,7 +60,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{if !$hideDetails}
-	<div class="summary">{if $summary neq ''}{$summary|truncate:300:"..."|nl2br}{else}{translate key=NoDescriptionLabel}{/if}</div>
+		<div class="summary">{if $summary neq ''}{$summary|truncate:300:"..."|nl2br}{else}{translate key=NoDescriptionLabel}{/if}</div>
+		{if $attributes|count > 0}
+			<br/>
+			{foreach from=$attributes item=attribute}
+				<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+			{/foreach}
+		{/if}
 	{/if}
 	<!-- {$ReservationId} -->
 </div>

@@ -18,12 +18,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 	
-Hier ist Ihr vorl&auml;ufiges Passwort: {$TemporaryPassword}
+Hier ist Ihr vorläufiges Passwort: {$TemporaryPassword}
 
 <br/>
 
-Ihr altes Passwort wurde zur&uuml;ckgesetzt und wird nicht mehr funktionieren.
-
-Bitte einmal <a href="{$ScriptUrl}"> anmelden </a> und das Passwort &auml;ndern.
+Ihr altes Passwort wurde zurückgesetzt und wird nicht mehr funktionieren.
+<br/>
+Bitte einmal <a href="{$ScriptUrl}"> anmelden </a> und das Passwort ändern.
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

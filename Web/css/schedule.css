@@ -213,6 +213,10 @@ select.schedule_list {
 .res_popup_details .dates {
 }
 
+.res_popup_details .customAttribute {
+	font-size:8pt;
+}
+
 td.resourcename.hilite {
 	background-color: #fbffc2;
 }

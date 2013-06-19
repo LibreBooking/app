@@ -57,7 +57,7 @@ class ResourcesWebServiceTests extends TestBase
 	{
 		$resourceId = 8282;
 		$resource = new FakeBookableResource($resourceId);
-		$attributes = $this->getMock('IEntityAttributeList');
+		$attributes = new AttributeList();
 
 		$this->repository->expects($this->once())
 				->method('LoadById')
@@ -91,7 +91,7 @@ class ResourcesWebServiceTests extends TestBase
 	{
 		$resourceId = 123;
 		$resources[] = new FakeBookableResource($resourceId);
-		$attributes = $this->getMock('IEntityAttributeList');
+		$attributes = new AttributeList();
 
 		$this->repository->expects($this->once())
 				->method('GetResourceList')

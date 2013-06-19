@@ -24,7 +24,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				or
 				<button id="promptForParticipants" type="button" class="button" style="display:inline">
 					<img src="img/user-plus.png"/>
-				{translate key='AllUsers'}
+				{translate key='SelectUser'}
 				</button>
 			</label>
 
@@ -39,7 +39,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				or
 				<button id="promptForInvitees" type="button" class="button" style="display:inline">
 					{html_image src="user-plus.png"}
-				{translate key='AllUsers'}
+				{translate key='SelectUser'}
 				</button>
 			</label>
 

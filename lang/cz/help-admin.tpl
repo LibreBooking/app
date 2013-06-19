@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>phpScheduleIt Administration</h1>
+<h1 xmlns="http://www.w3.org/1999/html">phpScheduleIt Administration</h1>
 
 <div id="help">
 <h2>Administration</h2>
@@ -125,12 +125,18 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Roles give a group of users the authorization to perform certain actions.</p>
 
-<p>Users that belong to a group that is given the Application Administrator role are open to full administrative
-	privileges. This role has nearly zero restrictions on what resources can be booked. It can manage all aspects of the
-	application.</p>
+<p>Application Administrator: Users that belong to a group that is given the Application Administrator role are open to
+	full administrative privileges. This role has nearly zero restrictions on what resources can be booked. It can
+	manage all aspects of the application.</p>
 
-<p>Users that belong to a group that is given the Group Administrator role are able to reserve on behalf of and manage
-	users within that group.</p>
+<p>Group Administrator: Users that belong to a group that is given the Group Administrator role are able to manage
+	their groups and reserve on behalf of and manage users within that group.</p>
+
+<p>Resource Administrator: Users that belong to a group that is given the Resource Administrator role are able to manage
+	their resources and approve reservations for their resources.</p>
+
+<p>Schedule Administrator: Users that belong to a group that is given the Schedule Administrator role are able to manage
+	their schedules and resources belonging to their schedules and approve reservations on their schedules.</p>
 
 <h3>Viewing and Managing Reservations</h3>
 
@@ -141,8 +147,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h3>Reservation Approval</h3>
 
-<p>From the Reservations admin tool you will be able to view and approve pending reservations. Pending reservations will
-	be highlighted.</p>
+<p>Setting $conf['settings']['reservation']['updates.require.approval'] to true will put all reservation requests into a
+	pending state. The reservation becomes active only after an administrator approves it. From the Reservations admin
+	tool an administrator will be able to view and approve pending reservations. Pending reservations will be
+	highlighted.</p>
 
 <h3>Viewing and Managing Users</h3>
 
@@ -159,14 +167,40 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	printing. In addition, custom reports can be saved and accessed again at a later time from the My Saved Reports menu
 	item. Saved reports also have the ability to be emailed.</p>
 
+<h3>Reservation Reminders</h3>
+
+<p>Users can request that reminder emails are send prior to the beginning or end of a reservation. In order for this
+	feature to function, $conf['settings']['enable.email'] and $conf['settings']['reservation']['enable.reminders'] must
+	both be set to true. Also, a scheduled task must be configured on your server to execute
+	/phpScheduleIt/Jobs/sendreminders.php</p>
+
+<p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the full path to
+	phpScheduleIt/Jobs/sendreminders.php. The full path to sendreminders.php on this server is <span
+			class="note">{$RemindersPath}</span>
+</p>
+
+<p>An example cron configuration might look like: <span class="note">* * * * * php {$RemindersPath}</span></p>
+
+<p>If you have access to cPanel through a hosting provider, <a
+			href="http://docs.cpanel.net/twiki/bin/view/AllDocumentation/CpanelDocs/CronJobs" target="_blank">setting up
+		a
+		cron job in cPanel</a> is straightforward. Either select the Every Minute option from the Common Settings menu,
+	or
+	enter * for minute, hour, day, month and weekday.</p>
+
+<p>On Windows, <a href="http://windows.microsoft.com/en-au/windows7/schedule-a-task" target="_blank">a scheduled task
+		can be used</a>. The task must be configured to run every minute. The task to execute is php followed by the
+	full
+	path to phpScheduleIt/Jobs/sendreminders.php</p>
+
 <h2>Configuration</h2>
 
 <p>Some of phpScheduleIt's functionality can only be controlled by editing the config file.</p>
 
 <p class="setting"><span>$conf['settings']['server.timezone']</span>This must reflect the timezone of the server that
-	phpScheduleIt is hosted
-	on. You can view the current timezone from the Server Settings menu item. Possible values are located here:
-	http://php.net/manual/en/timezones.php</p>
+	phpScheduleIt is hosted on. This server is currently set to <em>{$ServerTimezone}</em>. Possible values are located
+	here:
+	<a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a></p>
 
 <p class="setting"><span>$conf['settings']['allow.self.registration']</span>If users are allowed to register new
 	accounts.</p>
@@ -198,10 +232,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	accessible to the user
 	are displayed in the schedule</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The value to display for the
-	reservation on the
-	Bookings page. Options
-	are 'name', 'title', or 'none'. Default is 'name'.</p>
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
+	reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
+	{phone}
+	, {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>If blocked periods should be
+	hidden on the bookings page. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
 	This directory will need to be writable (755 suggested). This can be the full directory or relative to the
@@ -233,6 +270,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['name.format']</span>Display format for first name and last name. Default
 	is {literal}'{first} {last}'{/literal}.</p>
+
+<p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
+	include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
+	are not extending the style of phpScheduleIt.</p>
+
+<p class="setting"><span>$conf['settings']['disable.password.reset']</span>If the password reset functionality should be
+	disabled. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['home.url']</span>Where the user will be redirected when the logo is clicked.
+	Default is the user's homepage.</p>
+
+<p class="setting"><span>$conf['settings']['logout.url']</span>Where the user will be redirected after being logged out.
+	Default is the login page.</p>
 
 <p class="setting"><span>$conf['settings']['ics']['require.login']</span>If users should be required to log in to add a
 	reservation to
@@ -302,10 +352,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.delete']</span>Whether or not to send an
 	email to all group administrators when a reservation is deleted. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
-	include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
-	are not extending the style of phpScheduleIt.</p>
-
 <p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>If users are allowed to
 	attach files to reservations. Default is false.</p>
 
@@ -338,8 +384,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	'', ssl or tls</p>
 
 <p class="setting"><span>$conf['settings']['phpmailer']['smtp.auth']</span>SMTP requies authentication, if using smtp.
-	Options are true
-	or false</p>
+	Options are true or false</p>
 
 <p class="setting"><span>$conf['settings']['phpmailer']['smtp.username']</span>SMTP username, if using smtp</p>
 
@@ -348,28 +393,37 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['phpmailer']['sendmail.path']</span>Path to sendmail, if using sendmail</p>
 
 <p class="setting"><span>$conf['settings']['plugins']['Authentication']</span>Name of authentication plugin to use. For
-	more on plugins,
-	see Plugins below</p>
+	more on plugins, see Plugins below</p>
 
 <p class="setting"><span>$conf['settings']['plugins']['Authorization']</span>Name of authorization plugin to use. For
-	more on plugins,
-	see Plugins below</p>
+	more on plugins, see Plugins below</p>
 
 <p class="setting"><span>$conf['settings']['plugins']['Permission']</span>Name of permission plugin to use. For more on
-	plugins, see
-	Plugins below</p>
-
-<p class="setting"><span>$conf['settings']['plugins']['PreReservation']</span>Name of prereservation plugin to use. For
-	more on plugins,
-	see Plugins below</p>
-
-<p class="setting"><span>$conf['settings']['plugins']['PostReservation']</span>Name of postreservation plugin to use.
-	For more on
 	plugins, see Plugins below</p>
 
+<p class="setting"><span>$conf['settings']['plugins']['PreReservation']</span>Name of prereservation plugin to use. For
+	more on plugins, see Plugins below</p>
+
+<p class="setting"><span>$conf['settings']['plugins']['PostReservation']</span>Name of postreservation plugin to use.
+	For more on plugins, see Plugins below</p>
+
 <p class="setting"><span>$conf['settings']['install.password']</span>If you are running an installation or upgrade, you
-	will be required to
-	provide a value here</p>
+	will be required to provide a value here. Set this to any random value.</p>
+
+<p class="setting"><span>$conf['settings']['pages']['enable.configuration']</span>If the configuration management page
+	should be available to application administrators. Options are true or false.</p>
+
+<p class="setting"><span>$conf['settings']['api']['enabled']</span>If the phpScheduleIt's RESTful API should be enabled.
+	See more about prerequisites for using the API in the readme_installation.html file. Options are true or false.</p>
+
+<p class="setting"><span>$conf['settings']['recaptcha']['enabled']</span>If reCAPTCHA should be used instead of the
+	built in captcha. Options are true or false.</p>
+
+<p class="setting"><span>$conf['settings']['recaptcha']['public.key']</span>Your reCAPTCHA public key. Visit
+	www.google.com/recaptcha to sign up.</p>
+
+<p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>Your reCAPTCHA private key. Visit
+	www.google.com/recaptcha to sign up.</p>
 
 <h2>Plugins</h2>
 

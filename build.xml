@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <project name="phpScheduleIt" default="package">
-	<property name="version" value="2.4"/>
+	<property name="version" value="2.4.3"/>
+	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="phpScheduleIt-${version}"/>
 	<property name="root.dir" value="../.."/>
 	<property name="zipdirectory" value="${root.dir}/phpScheduleIt_archive/zip/${version}"/>
@@ -161,6 +162,7 @@
 				<exclude name="**/docs/**"/>
 				<exclude name="tpl_c/*.php"/>
 				<exclude name=".*/**"/>
+				<exclude name=".idea"/>
 				<exclude name=".idea/**"/>
 				<exclude name=".settings/**"/>
 				<exclude name="_excludes.txt"/>

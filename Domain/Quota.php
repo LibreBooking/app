@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 interface IQuota
 {
 	/**
@@ -29,6 +28,8 @@ interface IQuota
 	 * @return bool
 	 */
 	public function ExceedsQuota($reservationSeries, $user, $schedule, IReservationViewRepository $reservationViewRepository);
+
+	public function ToString();
 }
 
 class Quota implements IQuota
@@ -203,9 +204,15 @@ class Quota implements IQuota
 		return false;
 	}
 
+	public function ToString()
+	{
+		return $this->__toString();
+	}
+
 	public function __toString()
 	{
-		return $this->quotaId . '';
+		return sprintf('Quota Id=%s, ResourceId=%s, ScheduleId=%s, GroupId=%s, Limit=%s, Duration=%s', $this->quotaId,
+					   $this->ResourceId(), $this->ScheduleId(), $this->GroupId(), $this->GetLimit(), $this->GetDuration());
 	}
 
 	/**
@@ -320,9 +327,18 @@ class Quota implements IQuota
 		/** @var $reservation ReservationItemView */
 		foreach ($reservationsWithinRange as $reservation)
 		{
-			if (($series->ContainsResource($reservation->ResourceId) || $series->ScheduleId() == $reservation->ScheduleId) &&
-					!array_key_exists($reservation->ReferenceNumber, $toBeSkipped) &&
-					!$this->willBeDeleted($series, $reservation->ReservationId)
+			if (!empty($this->resourceId))
+			{
+				$applies = ($this->AppliesToResource($reservation->ResourceId) && $series->ContainsResource($reservation->ResourceId));
+			}
+			else
+			{
+				$applies = $series->ContainsResource($reservation->ResourceId) || ($series->ScheduleId() == $reservation->ScheduleId);
+			}
+
+			if ( $applies &&
+				 !array_key_exists($reservation->ReferenceNumber, $toBeSkipped) &&
+				 !$this->willBeDeleted($series, $reservation->ReservationId )
 			)
 			{
 				$this->AddExisting($reservation, $timezone);
@@ -441,7 +457,32 @@ class QuotaSearchDates
 	}
 }
 
-class QuotaDurationDay extends QuotaDuration implements IQuotaDuration
+abstract class QuotaDuration implements IQuotaDuration
+{
+	const Day = 'day';
+	const Week = 'week';
+	const Month = 'month';
+
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 * @return array|Date[]
+	 */
+	protected function GetFirstAndLastReservationDates(ReservationSeries $reservationSeries)
+	{
+		/** @var $instances Reservation[] */
+		$instances = $reservationSeries->Instances();
+		usort($instances, array('Reservation', 'Compare'));
+
+		return array($instances[0]->StartDate(), $instances[count($instances) - 1]->EndDate());
+	}
+
+	public function __toString()
+	{
+		return sprintf('QuotaDuration Name=%s', $this->Name());
+	}
+}
+
+class QuotaDurationDay extends QuotaDuration
 {
 	/**
 	 * @param ReservationSeries $reservationSeries
@@ -506,27 +547,7 @@ class QuotaDurationDay extends QuotaDuration implements IQuotaDuration
 	}
 }
 
-abstract class QuotaDuration
-{
-	const Day = 'day';
-	const Week = 'week';
-	const Month = 'month';
-
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @return array|Date[]
-	 */
-	protected function GetFirstAndLastReservationDates(ReservationSeries $reservationSeries)
-	{
-		/** @var $instances Reservation[] */
-		$instances = $reservationSeries->Instances();
-		usort($instances, array('Reservation', 'Compare'));
-
-		return array($instances[0]->StartDate(), $instances[count($instances) - 1]->EndDate());
-	}
-}
-
-class QuotaDurationWeek extends QuotaDuration implements IQuotaDuration
+class QuotaDurationWeek extends QuotaDuration
 {
 	/**
 	 * @param ReservationSeries $reservationSeries
@@ -550,7 +571,7 @@ class QuotaDurationWeek extends QuotaDuration implements IQuotaDuration
 
 	/**
 	 * @param Date $date
-	 * @return void
+	 * @return string
 	 */
 	public function GetDurationKey(Date $date)
 	{
@@ -626,9 +647,8 @@ class QuotaDurationWeek extends QuotaDuration implements IQuotaDuration
 	}
 }
 
-class QuotaDurationMonth extends QuotaDuration implements IQuotaDuration
+class QuotaDurationMonth extends QuotaDuration
 {
-
 	/**
 	 * @param ReservationSeries $reservationSeries
 	 * @param string $timezone
@@ -801,6 +821,11 @@ class QuotaLimitCount implements IQuotaLimit
 	{
 		return QuotaUnit::Reservations;
 	}
+
+	public function __toString()
+	{
+		return sprintf('QuotaLimitCount Name=%s, Amount=%s', $this->Name(), $this->Amount());
+	}
 }
 
 class QuotaLimitHours implements IQuotaLimit
@@ -869,6 +894,11 @@ class QuotaLimitHours implements IQuotaLimit
 	public function Name()
 	{
 		return QuotaUnit::Hours;
+	}
+
+	public function __toString()
+	{
+		return sprintf('QuotaLimitHours Name=%s Amount=%s', $this->Name(), $this->Amount());
 	}
 }
 

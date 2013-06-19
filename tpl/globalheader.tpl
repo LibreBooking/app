@@ -40,6 +40,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/menubar.js"></script>
 	<style type="text/css">
+		@import url({$Path}css/normalize.css);
 		@import url({$Path}css/nav.css);
 		@import url({$Path}css/style.css);
 		{if $UseLocalJquery}

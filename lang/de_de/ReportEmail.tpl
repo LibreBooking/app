@@ -20,6 +20,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	
 Ihren Reservierungsbericht finde Sie im Anhang.<br/>
 
-<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
+<a href="{$ScriptUrl}">Anmelden bei phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

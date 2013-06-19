@@ -260,27 +260,34 @@ class MigrationPresenter
 
 	public function PageLoad()
 	{
-		$legacyDatabase = new Database($this->GetLegacyConnection());
-		$currentDatabase = ServiceLocator::GetDatabase();
-		$runTarget = $this->page->GetRunTarget();
-		if (!empty($runTarget))
+		try
 		{
-			$this->Migrate($runTarget, $legacyDatabase, $currentDatabase);
-		}
-		elseif ($this->page->IsLoggingIn())
-		{
-			if ($this->TestInstallPassword() && $this->TestLegacyConnection())
+			$legacyDatabase = new Database($this->GetLegacyConnection());
+			$currentDatabase = ServiceLocator::GetDatabase();
+			$runTarget = $this->page->GetRunTarget();
+			if (!empty($runTarget))
 			{
-				$this->page->StartMigration();
+				$this->Migrate($runTarget, $legacyDatabase, $currentDatabase);
+			}
+			elseif ($this->page->IsLoggingIn())
+			{
+				if ($this->TestInstallPassword() && $this->TestLegacyConnection())
+				{
+					$this->page->StartMigration();
+				}
+				else
+				{
+					$this->page->DisplayMigrationPrompt();
+				}
 			}
 			else
 			{
 				$this->page->DisplayMigrationPrompt();
 			}
-		}
-		else
+		} catch (Exception $ex)
 		{
-			$this->page->DisplayMigrationPrompt();
+			Log::Error('General migration exception. %s', $ex);
+			throw $ex;
 		}
 	}
 
@@ -322,6 +329,7 @@ class MigrationPresenter
 			}
 		} catch (Exception $ex)
 		{
+			Log::Error('Migration exception. %s', $ex);
 			$this->page->SetError($ex);
 		}
 	}
@@ -400,7 +408,7 @@ class MigrationPresenter
 
 		$getLegacySchedules = new AdHocCommand("select scheduleid, scheduletitle, daystart, dayend, timespan,
                 timeformat, weekdaystart, viewdays, usepermissions, ishidden, showsummary, adminemail, isdefault
-                from schedules order by scheduleid limit $schedulesMigrated, 1000");
+                from schedules order by scheduleid limit $schedulesMigrated, 500");
 
 		$getExistingSchedules = new AdHocCommand('select legacyid from schedules');
 		$reader = $currentDatabase->Query($getExistingSchedules);
@@ -466,7 +474,7 @@ class MigrationPresenter
 
 		$getResources = new AdHocCommand("select machid, scheduleid, name, location, rphone, notes, status, minres, maxres, autoassign, approval,
                         allow_multi, max_participants, min_notice_time, max_notice_time
-                        from resources order by machid limit $resourcesMigrated, 1000");
+                        from resources order by machid limit $resourcesMigrated, 500");
 
 		$reader = $legacyDatabase->Query($getResources);
 
@@ -540,7 +548,7 @@ class MigrationPresenter
 		}
 
 		$getAccessories = new AdHocCommand("select resourceid, name, number_available from additional_resources
-		 order by resourceid limit $accessoriesMigrated, 1000");
+		 order by resourceid limit $accessoriesMigrated, 500");
 
 		$reader = $legacyDatabase->Query($getAccessories);
 
@@ -584,7 +592,7 @@ class MigrationPresenter
 			$knownIds[] = $row['legacyid'];
 		}
 
-		$getGroups = new AdHocCommand("select groupid, group_name from groups order by groupid limit $groupsMigrated, 1000");
+		$getGroups = new AdHocCommand("select groupid, group_name from groups order by groupid limit $groupsMigrated, 500");
 
 		$reader = $legacyDatabase->Query($getGroups);
 

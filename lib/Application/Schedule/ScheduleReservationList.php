@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 interface IScheduleReservationList
 {
 	/**
-	 * @return array[int]IReservationSlot
+	 * @return array|IReservationSlot[]
 	 */
 	function BuildSlots();
 }
@@ -79,6 +79,11 @@ class ScheduleReservationList implements IScheduleReservationList
 	 * @var Date
 	 */
 	private $_firstLayoutTime;
+
+	/**
+	 * @var Date
+	 */
+	private $_lastLayoutTime;
 
 	/**
 	 * @param array|ReservationListItem[] $items
@@ -142,8 +147,9 @@ class ScheduleReservationList implements IScheduleReservationList
 	{
 		foreach ($this->_items as $item)
 		{
-			if ($item->EndDate()->ToTimezone($this->_destinationTimezone)->Equals($this->_firstLayoutTime))
+			if ( ($item->StartDate()->Compare($this->_lastLayoutTime) >= 0) || ($item->EndDate()->Compare($this->_firstLayoutTime) <= 0))
 			{
+				// skip the item if it starts after this layout or ends before it
 				continue;
 			}
 
@@ -170,7 +176,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	private function ItemStartsOnPastDate(ReservationListItem $item)
 	{
 		//Log::Debug("PAST");
-		return $item->StartDate()->LessThan($this->_layoutDateStart);
+		return $item->StartDate()->Compare($this->_layoutDateStart) <= 0;
 	}
 
 	private function ItemEndsOnFutureDate(ReservationListItem $item)
@@ -188,6 +194,7 @@ class ScheduleReservationList implements IScheduleReservationList
 		}
 		$cachedIndex = LayoutIndexCache::Get($this->_layoutDateStart);
 		$this->_firstLayoutTime = $cachedIndex->GetFirstLayoutTime();
+		$this->_lastLayoutTime = $cachedIndex->GetLastLayoutTime();
 		$this->_layoutByStartTime = $cachedIndex->LayoutByStartTime();
 		$this->_layoutIndexByEndTime = $cachedIndex->LayoutIndexByEndTime();
 	}
@@ -311,6 +318,7 @@ class LayoutIndexCache
 class CachedLayoutIndex
 {
 	private $_firstLayoutTime;
+	private $_lastLayoutTime;
 	private $_layoutByStartTime = array();
 	private $_layoutIndexByEndTime = array();
 
@@ -322,14 +330,20 @@ class CachedLayoutIndex
 	public function __construct($schedulePeriods, Date $startDate, Date $endDate)
 	{
 		$this->_firstLayoutTime = $endDate;
+		$this->_lastLayoutTime = $startDate;
 
 		for ($i = 0; $i < count($schedulePeriods); $i++)
 		{
 			/** @var Date $itemBegin */
 			$itemBegin = $schedulePeriods[$i]->BeginDate();
+			$itemEnd = $schedulePeriods[$i]->EndDate();
 			if ($itemBegin->LessThan($this->_firstLayoutTime))
 			{
-				$this->_firstLayoutTime = $schedulePeriods[$i]->BeginDate();
+				$this->_firstLayoutTime = $itemBegin;
+			}
+			if ($itemEnd->GreaterThan($this->_lastLayoutTime))
+			{
+				$this->_lastLayoutTime = $itemEnd;
 			}
 
 			/** @var Date $endTime */
@@ -345,6 +359,8 @@ class CachedLayoutIndex
 	}
 
 	public function GetFirstLayoutTime() { return $this->_firstLayoutTime; }
+
+	public function GetLastLayoutTime() { return $this->_lastLayoutTime; }
 
 	public function LayoutByStartTime() { return $this->_layoutByStartTime; }
 

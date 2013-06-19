@@ -191,7 +191,18 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$groups = $this->groupViewRepository->GetList();
 		$this->page->BindGroups($groups->Results());
 
-		$this->page->BindResources($this->resourceRepository->GetResourceList());
+		$resources = array();
+		
+		$user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
+		$allResources = $this->resourceRepository->GetResourceList();
+		foreach ($allResources as $resource)
+		{
+			if ($user->IsResourceAdminFor($resource))
+			{
+				$resources[] = $resource;
+			}
+		}
+		$this->page->BindResources($resources);
 
 		$userIds = array();
 		/** @var $user UserItemView */

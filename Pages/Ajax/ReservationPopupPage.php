@@ -16,8 +16,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
- 
+ */
+
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -52,7 +52,7 @@ interface IReservationPopupPage
 	 */
 	function SetSummary($summary);
 
-    /**
+	/**
 	 * @param $title string
 	 */
 	function SetTitle($title);
@@ -83,6 +83,11 @@ interface IReservationPopupPage
 	 * @return void
 	 */
 	public function SetHideUser($hideUserInfo);
+
+	/**
+	 * @param Attribute[] $attributes
+	 */
+	public function BindAttributes($attributes);
 }
 
 class ReservationPopupPage extends Page implements IReservationPopupPage
@@ -91,18 +96,22 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	 * @var ReservationPopupPresenter
 	 */
 	private $_presenter;
-	
+
 	public function __construct()
 	{
 		parent::__construct();
-		
-		$this->_presenter = new ReservationPopupPresenter($this, new ReservationViewRepository(), new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
+
+		$this->_presenter = new ReservationPopupPresenter($this,
+														  new ReservationViewRepository(),
+														  new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()),
+														  new AttributeRepository());
 	}
 
 	public function IsAuthenticated()
 	{
-		return Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter()) ||
-						parent::IsAuthenticated();
+		return Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS,
+														new BooleanConverter()) ||
+				parent::IsAuthenticated();
 	}
 
 	public function PageLoad()
@@ -116,12 +125,12 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 			$this->Set('authorized', true);
 			$this->_presenter->PageLoad();
 		}
-		
+
 		$this->Set('ReservationId', $this->GetReservationId());
-		
+
 		$this->Display('Ajax/respopup.tpl');
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -129,32 +138,32 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		return $this->GetQuerystring('id');
 	}
-	
+
 	function SetName($first, $last)
 	{
 		$this->Set('fullName', new FullName($first, $last));
 	}
-	
+
 	function SetResources($resources)
 	{
 		$this->Set('resources', $resources);
 	}
-	
+
 	function SetParticipants($users)
 	{
 		$this->Set('participants', $users);
 	}
-	
+
 	function SetSummary($summary)
 	{
 		$this->Set('summary', $summary);
 	}
 
-    function SetTitle($title)
-    {
-        $this->Set('title', $title);
-    }
-	
+	function SetTitle($title)
+	{
+		$this->Set('title', $title);
+	}
+
 	function SetDates($startDate, $endDate)
 	{
 		$this->Set('startDate', $startDate);
@@ -187,6 +196,14 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		$this->Set('hideUserInfo', $hideUserInfo);
 	}
+
+	/**
+	 * @param Attribute[] $attributes
+	 */
+	public function BindAttributes($attributes)
+	{
+		$this->Set('attributes', $attributes);
+	}
 }
 
 
@@ -196,7 +213,7 @@ class ReservationPopupPresenter
 	 * @var IReservationPopupPage
 	 */
 	private $_page;
-	
+
 	/*
 	 * @var IReservationViewRepository
 	 */
@@ -206,21 +223,34 @@ class ReservationPopupPresenter
 	 * @var IReservationAuthorization
 	 */
 	private $_reservationAuthorization;
-	 
-	public function __construct(IReservationPopupPage $page, IReservationViewRepository $reservationRepository, IReservationAuthorization $reservationAuthorization)
+
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $_attributeRepository;
+
+	public function __construct(IReservationPopupPage $page,
+								IReservationViewRepository $reservationRepository,
+								IReservationAuthorization $reservationAuthorization,
+								IAttributeRepository $attributeRepository)
 	{
 		$this->_page = $page;
 		$this->_reservationRepository = $reservationRepository;
 		$this->_reservationAuthorization = $reservationAuthorization;
+		$this->_attributeRepository = $attributeRepository;
 	}
-	
+
 	public function PageLoad()
 	{
-		$hideUserInfo = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
-		$hideReservationDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
+		$hideUserInfo = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
+																 ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
+																 new BooleanConverter());
+		$hideReservationDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
+																		   ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS,
+																		   new BooleanConverter());
 
 		$tz = ServiceLocator::GetServer()->GetUserSession()->Timezone;
-		
+
 		$reservation = $this->_reservationRepository->GetReservationForEditing($this->_page->GetReservationId());
 
 		if (!$reservation->IsDisplayable())
@@ -230,7 +260,8 @@ class ReservationPopupPresenter
 
 		if ($hideReservationDetails || $hideUserInfo)
 		{
-			$canViewDetails = $this->_reservationAuthorization->CanViewDetails($reservation, ServiceLocator::GetServer()->GetUserSession());
+			$canViewDetails = $this->_reservationAuthorization->CanViewDetails($reservation,
+																			   ServiceLocator::GetServer()->GetUserSession());
 
 			$hideReservationDetails = !$canViewDetails && $hideReservationDetails;
 			$hideUserInfo = !$canViewDetails && $hideUserInfo;
@@ -249,6 +280,16 @@ class ReservationPopupPresenter
 		$this->_page->SetAccessories($reservation->Accessories);
 
 		$this->_page->SetDates($startDate, $endDate);
+
+		$attributes = $this->_attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
+		$attributeValues = array();
+		foreach ($attributes as $attribute)
+		{
+			$attributeValues[] = new Attribute($attribute, $reservation->GetAttributeValue($attribute->Id()));
+		}
+
+		$this->_page->BindAttributes($attributeValues);
 	}
 }
+
 ?>

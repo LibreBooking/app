@@ -1,5 +1,5 @@
 {*
-Copyright 2012 Nick Korbel
+Copyright 2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -16,12 +16,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}:</label>
-{if $align=='vertical'}
+{include file='..\..\tpl\Email\emailheader.tpl'}
+Nezmeškejte rezervovaný termín.<br/>
+Detaily rezervace:
+	<br/>
+	<br/>
+	Začátek: {formatdate date=$StartDate key=reservation_email}<br/>
+	Konec: {formatdate date=$EndDate key=reservation_email}<br/>
+	Zdroj: {$ResourceName}<br/>
+	Název: {$Title}<br/>
+	Popis: {$Description|nl2br}<br/>
 <br/>
-{/if}
-{if $readonly}
-<span class="attributeValue">{$attribute->Value()|escape}</span>
-{else}
-<input type="text" id="{$attributeName}" name="{$attributeName}" value="{$attribute->Value()|escape}" class="customAttribute textbox" />
-{/if}
+<a href="{$ScriptUrl}/{$ReservationUrl}">Zobrazit tuto rezrvaci v systému</a> |
+	<a href="{$ScriptUrl}/{$ICalUrl}">Přidat do Outlook</a> |
+	<a href="{$ScriptUrl}">Přihlásit se do rezervačního systému</a>{include file='..\..\tpl\Email\emailfooter.tpl'}

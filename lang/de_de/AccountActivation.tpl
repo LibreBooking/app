@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 Hallo {$FirstName},<br/>
 <br />
-Vielen Dank f&uuml;r Ihre Registrierung. 
-Durch einen Klick auf diesen Link <a href="{$ActivationUrl}">aktivieren Sie Ihr Konto</a>.
+Vielen Dank für Ihre Registrierung. 
+Durch einen Klick auf diesen <h3>Link <a href="{$ActivationUrl}"></h3>aktivieren Sie Ihr Konto</a>.
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

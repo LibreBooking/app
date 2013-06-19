@@ -124,7 +124,7 @@ class ReservationWriteWebService
 	 */
 	public function Delete($referenceNumber)
 	{
-		Log::Debug('ReservationWriteWebService.Delete() User=%s, ReferenceNumber=%s, Request=%s', $referenceNumber, $this->server->GetSession()->UserId);
+		Log::Debug('ReservationWriteWebService.Delete() User=%s, ReferenceNumber=%s', $this->server->GetSession()->UserId, $referenceNumber);
 
 		$updateScope = $this->server->GetQueryString(WebServiceQueryStringKeys::UPDATE_SCOPE);
 		$result = $this->controller->Delete($this->server->GetSession(), $referenceNumber, $updateScope);

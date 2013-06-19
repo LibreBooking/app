@@ -135,6 +135,23 @@ class User
 		return $this->groups;
 	}
 
+	/**
+	 * @param int $groupId
+	 * @return bool
+	 */
+	public function IsInGroup($groupId)
+	{
+		foreach($this->groups as $group)
+		{
+			if ($group->GroupId == $groupId)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private $isCalendarSubscriptionAllowed = false;
 
 	/**

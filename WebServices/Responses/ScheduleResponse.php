@@ -30,7 +30,7 @@ class ScheduleResponse extends RestResponse
 	/**
 	 * @var array|SchedulePeriodResponse[]
 	 */
-	public $periods = array();
+	public $periods = array(0 => array(), 1 => array(), 2 => array(), 3 => array(), 4 => array(), 5 => array(), 6 => array());
 
 	public function __construct(IRestServer $server, Schedule $schedule, IScheduleLayout $layout)
 	{

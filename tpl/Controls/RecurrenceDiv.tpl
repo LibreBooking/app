@@ -38,25 +38,25 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<label>{translate key="RepeatDaysPrompt"}</label>
 		<input type="checkbox"
 			   id="repeatDay0" {formname key=repeat_sunday} /><label
-			for="repeatDay0">{translate key="DaySundaySingle"}</label>
+			for="repeatDay0">{translate key="DaySundayAbbr"}</label>
 		<input type="checkbox"
 			   id="repeatDay1" {formname key=repeat_monday} /><label
-			for="repeatDay1">{translate key="DayMondaySingle"}</label>
+			for="repeatDay1">{translate key="DayMondayAbbr"}</label>
 		<input type="checkbox"
 			   id="repeatDay2" {formname key=repeat_tuesday} /><label
-			for="repeatDay2">{translate key="DayTuesdaySingle"}</label>
+			for="repeatDay2">{translate key="DayTuesdayAbbr"}</label>
 		<input type="checkbox"
 			   id="repeatDay3" {formname key=repeat_wednesday} /><label
-			for="repeatDay3">{translate key="DayWednesdaySingle"}</label>
+			for="repeatDay3">{translate key="DayWednesdayAbbr"}</label>
 		<input type="checkbox"
 			   id="repeatDay4" {formname key=repeat_thursday} /><label
-			for="repeatDay4">{translate key="DayThursdaySingle"}</label>
+			for="repeatDay4">{translate key="DayThursdayAbbr"}</label>
 		<input type="checkbox"
 			   id="repeatDay5" {formname key=repeat_friday} /><label
-			for="repeatDay5">{translate key="DayFridaySingle"}</label>
+			for="repeatDay5">{translate key="DayFridayAbbr"}</label>
 		<input type="checkbox"
 			   id="repeatDay6" {formname key=repeat_saturday} /><label
-			for="repeatDay6">{translate key="DaySaturdaySingle"}</label>
+			for="repeatDay6">{translate key="DaySaturdayAbbr"}</label>
 	</div>
 	<div id="repeatOnMonthlyDiv" style="display:none;" class="months">
 		<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfMonth}"

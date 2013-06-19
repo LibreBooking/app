@@ -55,7 +55,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Eine oder mehrere Ressourcen ben���tigen eine Genehmigung.  Diese Reservierung wird zur&uuml;ckgehalten, bis sie genehmigt ist.
+		Eine oder mehrere Ressourcen benötigen eine Genehmigung.  
+		Diese Reservierung wird zurückgehalten, bis sie genehmigt ist.
 	{/if}
 	
 	<br/>

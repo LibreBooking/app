@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
@@ -46,7 +46,7 @@ class QuotaRuleTests extends TestBase
 	public function setup()
 	{
 		parent::setup();
-		
+
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
 		$this->quotaRepository = $this->getMock('IQuotaRepository');
 		$this->userRepository = $this->getMock('IUserRepository');
@@ -62,39 +62,40 @@ class QuotaRuleTests extends TestBase
 	{
 		$scheduleId = 971243;
 		$timezone = 'America/New_York';
-		
+
 		$userId = 10;
 		$groupId1 = 8287;
 		$groupId2 = 102;
-		
+
 		$user = new FakeUser();
 		$user->SetGroups(array($groupId1, $groupId2));
 
 		$schedule = new Schedule(1, null, null, null, null, $timezone);
 		$resource = new FakeBookableResource(20);
 		$resource->SetScheduleId($scheduleId);
-		$series = ReservationSeries::Create($userId, $resource, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession());
+		$series = ReservationSeries::Create($userId, $resource, null, null, new TestDateRange(), new RepeatNone(),
+											new FakeUserSession());
 		$series->AddResource(new FakeBookableResource(22));
 
-		$quota1 = $this->GetMock('IQuota');
-		$quota2 = $this->GetMock('IQuota');
-		$quota3 = $this->GetMock('IQuota');
-		
+		$quota1 = $this->mockQuota('IQuota');
+		$quota2 = $this->mockQuota('IQuota');
+		$quota3 = $this->mockQuota('IQuota');
+
 		$quotas = array($quota1, $quota2, $quota3);
 
 		$this->quotaRepository->expects($this->once())
-			->method('LoadAll')
-			->will($this->returnValue($quotas));
+				->method('LoadAll')
+				->will($this->returnValue($quotas));
 
 		$this->userRepository->expects($this->once())
-			->method('LoadById')
-			->with($this->equalTo($userId))
-			->will($this->returnValue($user));
+				->method('LoadById')
+				->with($this->equalTo($userId))
+				->will($this->returnValue($user));
 
 		$this->scheduleRepository->expects($this->once())
-			->method('LoadById')
-			->with($this->equalTo($scheduleId))
-			->will($this->returnValue($schedule));
+				->method('LoadById')
+				->with($this->equalTo($scheduleId))
+				->will($this->returnValue($schedule));
 
 		$this->ChecksAgainstQuota($quota1, $series, $this->reservationViewRepository, $schedule, $user);
 		$this->ChecksAgainstQuota($quota2, $series, $this->reservationViewRepository, $schedule, $user);
@@ -104,7 +105,7 @@ class QuotaRuleTests extends TestBase
 		$result = $rule->Validate($series);
 
 		$this->assertTrue($result->IsValid(), 'no quotas were exceeded');
-		
+
 	}
 
 	public function testFirstQuotaExceeded()
@@ -122,32 +123,33 @@ class QuotaRuleTests extends TestBase
 		$schedule = new Schedule(1, null, null, null, null, $timezone);
 		$resource = new FakeBookableResource(20);
 		$resource->SetScheduleId($scheduleId);
-		$series = ReservationSeries::Create($userId, $resource, null, null, new TestDateRange(), new RepeatNone(), new FakeUserSession());
+		$series = ReservationSeries::Create($userId, $resource, null, null, new TestDateRange(), new RepeatNone(),
+											new FakeUserSession());
 		$series->AddResource(new FakeBookableResource(22));
 
-		$quota1 = $this->GetMock('IQuota');
-		$quota2 = $this->GetMock('IQuota');
+		$quota1 = $this->mockQuota('IQuota');
+		$quota2 = $this->mockQuota('IQuota');
 
 		$quotas = array($quota1, $quota2);
 
 		$this->quotaRepository->expects($this->once())
-			->method('LoadAll')
-			->will($this->returnValue($quotas));
+				->method('LoadAll')
+				->will($this->returnValue($quotas));
 
 		$this->userRepository->expects($this->once())
-			->method('LoadById')
-			->with($this->equalTo($userId))
-			->will($this->returnValue($user));
+				->method('LoadById')
+				->with($this->equalTo($userId))
+				->will($this->returnValue($user));
 
 		$this->scheduleRepository->expects($this->once())
-			->method('LoadById')
-			->with($this->equalTo($scheduleId))
-			->will($this->returnValue($schedule));
+				->method('LoadById')
+				->with($this->equalTo($scheduleId))
+				->will($this->returnValue($schedule));
 
 		$this->ChecksAgainstQuota($quota1, $series, $this->reservationViewRepository, $schedule, $user, true);
 
 		$quota2->expects($this->never())
-			->method('ExceedsQuota');
+				->method('ExceedsQuota');
 
 		$rule = new QuotaRule($this->quotaRepository, $this->reservationViewRepository, $this->userRepository, $this->scheduleRepository);
 		$result = $rule->Validate($series);
@@ -155,13 +157,23 @@ class QuotaRuleTests extends TestBase
 		$this->assertFalse($result->IsValid(), 'first quotas was exceeded');
 	}
 
-
 	private function ChecksAgainstQuota($quota, $series, $repo, $schedule, $user, $exceeds = false)
 	{
 		$quota->expects($this->once())
-			->method('ExceedsQuota')
-			->with($this->equalTo($series), $this->equalTo($user), $this->equalTo($schedule), $this->equalTo($repo))
-			->will($this->returnValue($exceeds));
+				->method('ExceedsQuota')
+				->with($this->equalTo($series), $this->equalTo($user), $this->equalTo($schedule), $this->equalTo($repo))
+				->will($this->returnValue($exceeds));
+	}
+
+	private function mockQuota()
+	{
+		$mock = $this->getMock('IQuota');
+		$mock->expects($this->any())
+				->method('ToString')
+				->will($this->returnValue(''));
+
+		return $mock;
 	}
 }
+
 ?>
