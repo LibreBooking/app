@@ -70,7 +70,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {* End slot display formatting *}
 
 {block name="header"}
-	{include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.min.css'}
+	{include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.min.css,scripts/css/jqtree.css'}
 {/block}
 
 {block name="actions"}
@@ -126,6 +126,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{$smarty.capture.date_navigation}
 	</div>
 	<div type="text" id="datepicker" style="display:none;"></div>
+
+	<div id="resourceGroups"></div>
 {/block}
 
 <div style="text-align: center; margin: auto;">
@@ -188,6 +190,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/schedule.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/resourcePopup.js"></script>
+	<script type="text/javascript" src="{$Path}scripts/js/tree.jquery.js"></script>
+	<script type="text/javascript" src="{$Path}scripts/js/jquery.cookie.js"></script>
 	<script type="text/javascript">
 
 		$(document).ready(function ()
@@ -202,6 +206,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 			var schedule = new Schedule(scheduleOpts);
 			schedule.init();
+
+			var resourceGroups = {$ResourceGroupsAsJson};
+
+			$(function() {
+			    $('#resourceGroups').tree({
+			        data: resourceGroups,
+					saveState: true
+			    });
+			});
 		});
 	</script>
 {/block}

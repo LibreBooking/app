@@ -16,11 +16,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 define('ROOT_DIR', '../');
 
 require_once(ROOT_DIR . '/Pages/SchedulePage.php');
+
+
+//$tree = build_tree($_groups);
+//echo '<pre>';
+//var_export($tree);
+//echo '</pre>';
 
 $page = new SecurePageDecorator(new SchedulePage());
 $page->PageLoad();

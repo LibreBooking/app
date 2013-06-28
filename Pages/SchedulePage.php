@@ -128,6 +128,33 @@ class ScheduleDirection
 	const horizontal = 'horizontal';
 }
 
+class ResourceGroup
+{
+	public $id;
+	public $name;
+	public $label;
+	public $parent;
+	public $parent_id;
+	public $children = array();
+
+	public function __construct($id, $name, $parentId)
+	{
+		$this->id = $id;
+		$this->name = $name;
+		$this->label = $name;
+		$this->parent_id = $parentId;
+	}
+
+	/**
+	 * @param $resourceGroup ResourceGroup
+	 */
+	public function addChild(&$resourceGroup)
+	{
+		$resourceGroup->parent = $this;
+		$this->children[] = $resourceGroup;
+	}
+}
+
 class SchedulePage extends ActionPage implements ISchedulePage
 {
 	protected $scheduleDirection = ScheduleDirection::horizontal;
@@ -152,6 +179,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function ProcessPageLoad()
 	{
+		$this->showTree();
+
 		$start = microtime(true);
 
 		$user = ServiceLocator::GetServer()->GetUserSession();
@@ -176,6 +205,52 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$load = $endLoad - $start;
 		$display = $endDisplay - $endLoad;
 		Log::Debug('Schedule took %s sec to load, %s sec to render', $load, $display);
+	}
+
+	private function showTree()
+	{
+		$groups = ServiceLocator::GetDatabase()->Query(new AdHocCommand('select * from resource_groups'));
+		$_groups = array();
+
+		while ($row = $groups->GetRow())
+		{
+			$_groups[] = new ResourceGroup($row['resource_group_id'], $row['resource_group_name'], $row['parent_id']);
+		}
+
+		$tree = $this->build_tree($_groups);
+
+		$this->Set('ResourceGroupsAsJson', json_encode($tree));
+	}
+	/**
+	 * @param $groups ResourceGroup[]
+	 * @return ResourceGroup
+	 */
+	private function build_tree($groups)
+	{
+		$tree = array();
+		/**
+		 * @var $references ResourceGroup[]
+		 */
+		$references = array();
+		foreach ($groups as $g)
+		{
+			// Add the node to our associative array using it's ID as key
+			$references[$g->id] = $g;
+
+			// It it's a root node, we add it directly to the tree
+			$parent_id = $g->parent_id;
+			if (empty($parent_id))
+			{
+				$tree[] = $g;
+			}
+			else
+			{
+				// It was not a root node, add this node as a reference in the parent.
+				$references[$parent_id]->addChild($g);
+			}
+		}
+
+		return $tree;
 	}
 
 	public function ProcessDataRequest($dataRequest)
