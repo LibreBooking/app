@@ -212,7 +212,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			$(function() {
 			    $('#resourceGroups').tree({
 			        data: resourceGroups,
-					saveState: true
+					saveState: true,
+
+					onCreateLi: function(node, $li) {
+						// Add 'icon' span before title
+						$li.find('.jqtree-title').before('<span class="icon"></span>');
+					}
 			    });
 			});
 		});
