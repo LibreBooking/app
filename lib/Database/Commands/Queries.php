@@ -308,6 +308,13 @@ class Queries
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		ORDER BY COALESCE(r.sort_order,0), r.name';
 
+	const GET_ALL_RESOURCE_GROUPS = 'SELECT * FROM resource_groups';
+
+	const GET_ALL_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT r.name, r.resource_id, a.resource_group_id
+		FROM resource_group_assignment a
+		INNER JOIN resources r ON r.resource_id = a.resource_id
+		WHERE (-1 = @scheduleid OR r.schedule_id = @scheduleid)';
+
 	const GET_ALL_RESOURCE_ADMINS =
 			'SELECT *
         FROM users

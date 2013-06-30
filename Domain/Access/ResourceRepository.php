@@ -16,9 +16,10 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'Domain/BookableResource.php');
+require_once(ROOT_DIR . 'Domain/ResourceGroup.php');
 require_once(ROOT_DIR . 'Domain/Access/IResourceRepository.php');
 
 class ResourceRepository implements IResourceRepository
@@ -27,8 +28,10 @@ class ResourceRepository implements IResourceRepository
 	 * @var DomainCache
 	 */
 	private $_cache;
-	
-	public function __construct() 
+
+	const ALL_SCHEDULES = -1;
+
+	public function __construct()
 	{
 		$this->_cache = new DomainCache();
 	}
@@ -40,64 +43,67 @@ class ResourceRepository implements IResourceRepository
 	public function GetScheduleResources($scheduleId)
 	{
 		$command = new GetScheduleResourcesCommand($scheduleId);
-		
+
 		$resources = array();
-		
-		$reader = ServiceLocator::GetDatabase()->Query($command);
-		
+
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query($command);
+
 		while ($row = $reader->GetRow())
 		{
 			$resources[] = BookableResource::Create($row);
 		}
-		
+
 		$reader->Free();
-		
+
 		return $resources;
 	}
-	
+
 	public function GetResourceList()
 	{
 		$resources = array();
-		$reader = ServiceLocator::GetDatabase()->Query(new GetAllResourcesCommand());
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query(new GetAllResourcesCommand());
 
 		while ($row = $reader->GetRow())
 		{
 			$resources[] = BookableResource::Create($row);
 		}
-		
+
 		$reader->Free();
 
 		return $resources;
 	}
-	
-    /**
-     * @param int $resourceId
-     * @return BookableResource
-     */
+
+	/**
+	 * @param int $resourceId
+	 * @return BookableResource
+	 */
 	public function LoadById($resourceId)
 	{
 		if (!$this->_cache->Exists($resourceId))
 		{
 			$resource = $this->LoadResource(new GetResourceByIdCommand($resourceId));
-			
+
 			$this->_cache->Add($resourceId, $resource);
 		}
-		
+
 		return $this->_cache->Get($resourceId);
 	}
 
-	public function LoadByContactInfo($contact_info) {
+	public function LoadByContactInfo($contact_info)
+	{
 		return $this->LoadResource(new GetResourceByContactInfoCommand($contact_info));
 	}
 
-    /**
-     * @param string $publicId
-     * @return BookableResource
-     */
-    public function LoadByPublicId($publicId)
-    {
+	/**
+	 * @param string $publicId
+	 * @return BookableResource
+	 */
+	public function LoadByPublicId($publicId)
+	{
 		return $this->LoadResource(new GetResourceByPublicIdCommand($publicId));
-    }
+	}
 
 	/**
 	 * @param $command SqlCommand
@@ -105,7 +111,8 @@ class ResourceRepository implements IResourceRepository
 	 */
 	private function LoadResource($command)
 	{
-		$reader = ServiceLocator::GetDatabase()->Query($command);
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query($command);
 
 		$resource = BookableResource::Null();
 		if ($row = $reader->GetRow())
@@ -113,7 +120,8 @@ class ResourceRepository implements IResourceRepository
 			$resource = BookableResource::Create($row);
 
 			$getAttributes = new GetAttributeValuesCommand($resource->GetId(), CustomAttributeCategory::RESOURCE);
-			$attributeReader = ServiceLocator::GetDatabase()->Query($getAttributes);
+			$attributeReader = ServiceLocator::GetDatabase()
+							   ->Query($getAttributes);
 
 			while ($attributeRow = $attributeReader->GetRow())
 			{
@@ -132,49 +140,49 @@ class ResourceRepository implements IResourceRepository
 	{
 		$db = ServiceLocator::GetDatabase();
 		$addResourceCommand = new AddResourceCommand(
-            $resource->GetName(),
-            $resource->GetScheduleId(),
-            $resource->GetAutoAssign(),
-            $resource->GetAdminGroupId());
-		
+			$resource->GetName(),
+			$resource->GetScheduleId(),
+			$resource->GetAutoAssign(),
+			$resource->GetAdminGroupId());
+
 		$resourceId = $db->ExecuteInsert($addResourceCommand);
-        if ($resource->GetAutoAssign())
-        {
-            $db->Execute(new AutoAssignResourcePermissionsCommand($resourceId));
-        }
+		if ($resource->GetAutoAssign())
+		{
+			$db->Execute(new AutoAssignResourcePermissionsCommand($resourceId));
+		}
 
 		$resource->SetResourceId($resourceId);
-        return $resourceId;
+		return $resourceId;
 	}
-	
+
 	public function Update(BookableResource $resource)
 	{
 		$db = ServiceLocator::GetDatabase();
-		
+
 		$updateResourceCommand = new UpdateResourceCommand(
-								$resource->GetResourceId(), 
-								$resource->GetName(), 
-								$resource->GetLocation(), 
-								$resource->GetContact(), 
-								$resource->GetNotes(), 
-								$resource->GetMinLength(), 
-								$resource->GetMaxLength(), 
-								$resource->GetAutoAssign(), 
-								$resource->GetRequiresApproval(), 
-								$resource->GetAllowMultiday(),
-								$resource->GetMaxParticipants(),
-								$resource->GetMinNotice(),
-								$resource->GetMaxNotice(),
-								$resource->GetDescription(),
-								$resource->GetImage(),
-								$resource->IsOnline(),
-								$resource->GetScheduleId(),
-								$resource->GetAdminGroupId(),
-                                $resource->GetIsCalendarSubscriptionAllowed(),
-                                $resource->GetPublicId(),
-								$resource->GetSortOrder()
+			$resource->GetResourceId(),
+			$resource->GetName(),
+			$resource->GetLocation(),
+			$resource->GetContact(),
+			$resource->GetNotes(),
+			$resource->GetMinLength(),
+			$resource->GetMaxLength(),
+			$resource->GetAutoAssign(),
+			$resource->GetRequiresApproval(),
+			$resource->GetAllowMultiday(),
+			$resource->GetMaxParticipants(),
+			$resource->GetMinNotice(),
+			$resource->GetMaxNotice(),
+			$resource->GetDescription(),
+			$resource->GetImage(),
+			$resource->IsOnline(),
+			$resource->GetScheduleId(),
+			$resource->GetAdminGroupId(),
+			$resource->GetIsCalendarSubscriptionAllowed(),
+			$resource->GetPublicId(),
+			$resource->GetSortOrder()
 		);
-								
+
 		$db->Execute($updateResourceCommand);
 
 
@@ -188,13 +196,13 @@ class ResourceRepository implements IResourceRepository
 			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $resource->GetId(), CustomAttributeCategory::RESOURCE));
 		}
 	}
-	
+
 	public function Delete(BookableResource $resource)
 	{
 		Log::Debug("Deleting resource %s (%s)", $resource->GetResourceId(), $resource->GetName());
-		
+
 		$resourceId = $resource->GetResourceId();
-		
+
 		$db = ServiceLocator::GetDatabase();
 		$db->Execute(new DeleteResourceReservationsCommand($resourceId));
 		$db->Execute(new DeleteResourceCommand($resourceId));
@@ -205,7 +213,8 @@ class ResourceRepository implements IResourceRepository
 		$command = new GetAllAccessoriesCommand();
 		$accessories = array();
 
-		$reader = ServiceLocator::GetDatabase()->Query($command);
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query($command);
 
 		while ($row = $reader->GetRow())
 		{
@@ -215,6 +224,49 @@ class ResourceRepository implements IResourceRepository
 		$reader->Free();
 
 		return $accessories;
+	}
+
+	public function GetResourceGroups($scheduleId = ResourceRepository::ALL_SCHEDULES)
+	{
+		$groups = ServiceLocator::GetDatabase()->Query(new GetAllResourceGroupsCommand());
+		$resources = ServiceLocator::GetDatabase()->Query(new GetAllResourceGroupAssignmentsCommand($scheduleId));
+
+		$_groups = array();
+		$_assignments = array();
+
+		while ($row = $groups->GetRow())
+		{
+			$_groups[] = new ResourceGroup($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_GROUP_NAME], $row[ColumnNames::RESOURCE_GROUP_PARENT_ID]);
+		}
+
+		while ($row = $resources->GetRow())
+		{
+			$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_NAME], $row[ColumnNames::RESOURCE_ID]);
+		}
+
+		return $this->BuildResourceGroupTree($_groups, $_assignments);
+	}
+
+	/**
+	 * @param $groups ResourceGroup[]
+	 * @param $assignments ResourceGroupAssignment[]
+	 * @return ResourceGroupTree
+	 */
+	private function BuildResourceGroupTree($groups, $assignments)
+	{
+		$tree = new ResourceGroupTree();
+
+		foreach ($groups as $g)
+		{
+			$tree->AddGroup($g);
+		}
+
+		foreach ($assignments as $assignment)
+		{
+			$tree->AddAssignment($assignment);
+		}
+
+		return $tree;
 	}
 }
 

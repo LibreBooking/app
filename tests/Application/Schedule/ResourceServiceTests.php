@@ -229,6 +229,51 @@ class ResourceServiceTests extends TestBase
 		$this->assertEquals(1, count($resources));
 		$this->assertEquals(4, $resources[0]->GetId());
 	}
+
+	public function testFiltersByGroupId()
+	{
+		$scheduleId = 122;
+		$groupId = 10;
+		$resourceId = 4;
+
+		$groups = $this->getMock('ResourceGroupTree');
+
+		$resource1 = new FakeBookableResource(1, 'resource1');
+		$resource2 = new FakeBookableResource(2, 'resource2');
+		$resource3 = new FakeBookableResource(3, 'resource3');
+		$resource4 = new FakeBookableResource(4, 'resource4');
+		$resources = array($resource1, $resource2, $resource3, $resource4);
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('GetScheduleResources')
+		->with($this->equalTo($scheduleId))
+		->will($this->returnValue($resources));
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('GetResourceGroups')
+		->with($this->equalTo($scheduleId))
+		->will($this->returnValue($groups));
+
+		$this->permissionService
+				->expects($this->any())
+		->method('CanAccessResource')
+		->with($this->anything(), $this->anything())
+		->will($this->returnValue(true));
+
+		$groups
+		->expects($this->once())
+		->method('GetResourceIds')
+		->with($this->equalTo($groupId))
+		->will($this->returnValue(array($resourceId)));
+
+		$resources = $this->resourceService->GetScheduleResources($scheduleId, true, $this->fakeUser, $groupId,
+																  null);
+
+		$this->assertEquals(1, count($resources));
+		$this->assertEquals(4, $resources[0]->GetId());
+	}
 }
 
 ?>

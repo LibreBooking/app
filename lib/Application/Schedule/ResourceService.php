@@ -68,10 +68,15 @@ class ResourceService implements IResourceService
 	{
 		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
 
-		$resourceIds = array();
+		$resourceIds = null;
 		if (empty($groupId) && !empty($resourceId))
 		{
 			$resourceIds = array($resourceId);
+		}
+		else if (!empty($groupId))
+		{
+			$groups = $this->_resourceRepository->GetResourceGroups($scheduleId);
+			$resourceIds = $groups->GetResourceIds($groupId);
 		}
 
 		return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);
@@ -91,12 +96,12 @@ class ResourceService implements IResourceService
 	 * @param int[] $resourceIds
 	 * @return array|ResourceDto[]
 	 */
-	private function Filter($resources, $user, $includeInaccessibleResources, $resourceIds = array())
+	private function Filter($resources, $user, $includeInaccessibleResources, $resourceIds = null)
 	{
 		$resourceDtos = array();
 		foreach ($resources as $resource)
 		{
-			if (!empty($resourceIds) && !in_array($resource->GetId(), $resourceIds))
+			if (is_array($resourceIds) && !in_array($resource->GetId(), $resourceIds))
 			{
 				continue;
 			}

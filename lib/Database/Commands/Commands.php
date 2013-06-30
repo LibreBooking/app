@@ -834,6 +834,23 @@ class GetAllResourcesCommand extends SqlCommand
 	}
 }
 
+class GetAllResourceGroupsCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_ALL_RESOURCE_GROUPS);
+	}
+}
+
+class GetAllResourceGroupAssignmentsCommand extends SqlCommand
+{
+	public function __construct($scheduleId)
+	{
+		parent::__construct(Queries::GET_ALL_RESOURCE_GROUP_ASSIGNMENTS);
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+	}
+}
+
 class GetAllResourceAdminsCommand extends SqlCommand
 {
 	public function __construct($resourceId)

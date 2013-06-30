@@ -378,4 +378,46 @@ class GroupItemRow
 	}
 }
 
+class ResourceGroupRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($groupId, $groupName, $groupParentId = null)
+	{
+		$this->rows[] = array(
+			ColumnNames::RESOURCE_GROUP_ID => $groupId,
+			ColumnNames::RESOURCE_GROUP_NAME => $groupName,
+			ColumnNames::RESOURCE_GROUP_PARENT_ID => $groupParentId
+		);
+
+		return $this;
+	}
+}
+
+class ResourceGroupAssignmentRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($resourceId, $resourceName, $groupId)
+	{
+		$this->rows[] = array(
+			ColumnNames::RESOURCE_GROUP_ID => $groupId,
+			ColumnNames::RESOURCE_NAME => $resourceName,
+			ColumnNames::RESOURCE_ID => $resourceId
+		);
+
+		return $this;
+	}
+}
+
 ?>

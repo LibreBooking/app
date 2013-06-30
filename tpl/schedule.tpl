@@ -224,7 +224,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 				onCreateLi: function (node, $li)
 				{
-					// Add 'icon' span before title
 					if (node.type == 'resource')
 					{
 						$li.addClass('group-resource')
@@ -238,21 +237,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					{
 						if (event.node)
 						{
-							// node was selected
 							var node = event.node;
 							if (node.type == 'resource')
 							{
-								ChangeResource(node.id);
+								ChangeResource(node.resource_id);
 							}
 							else
 							{
 								ChangeGroup(node.id);
 							}
-						}
-						else
-						{
-							// event.node is null
-							// a node was deselected
 						}
 					});
 		});

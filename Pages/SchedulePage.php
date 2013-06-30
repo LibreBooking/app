@@ -138,58 +138,6 @@ class ScheduleDirection
 	const horizontal = 'horizontal';
 }
 
-class ResourceGroup
-{
-	public $id;
-	public $name;
-	public $label;
-	public $parent;
-	public $parent_id;
-	public $children = array();
-	public $type = 'group';
-
-	public function __construct($id, $name, $parentId)
-	{
-		$this->id = $id;
-		$this->name = $name;
-		$this->label = $name;
-		$this->parent_id = $parentId;
-	}
-
-	/**
-	 * @param $resourceGroup ResourceGroup
-	 */
-	public function addChild(&$resourceGroup)
-	{
-		$resourceGroup->parent_id = $this->id;
-		$this->children[] = $resourceGroup;
-	}
-
-	public function addResource(&$assignment)
-	{
-		$this->children[] = $assignment;
-	}
-}
-
-class ResourceGroupAssignment
-{
-	public $type = 'resource';
-	public $group_id;
-	public $resource_name;
-	public $id;
-	public $label;
-	public $resource_id;
-
-	public function __construct($group_id, $resource_name, $resource_id)
-	{
-		$this->group_id = $group_id;
-		$this->resource_name = $resource_name;
-		$this->id = "{$this->type}-{$group_id}-{$resource_id}";
-		$this->label = $resource_name;
-		$this->resource_id = $resource_id;
-	}
-}
-
 class SchedulePage extends ActionPage implements ISchedulePage
 {
 	protected $scheduleDirection = ScheduleDirection::horizontal;
@@ -244,66 +192,10 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	private function showTree()
 	{
-		$groups = ServiceLocator::GetDatabase()->Query(new AdHocCommand('select * from resource_groups'));
-		$resources = ServiceLocator::GetDatabase()->Query(new AdHocCommand('select r.name, r.resource_id, rga.resource_group_id from resource_group_assignment rga inner join resources r on r.resource_id = rga.resource_id'));
-
-		$_groups = array();
-		$_assignments = array();
-
-		while ($row = $groups->GetRow())
-		{
-			$_groups[] = new ResourceGroup($row['resource_group_id'], $row['resource_group_name'], $row['parent_id']);
-		}
-
-		while ($row = $resources->GetRow())
-		{
-			$_assignments[] = new ResourceGroupAssignment($row['resource_group_id'], $row['name'], $row['resource_id']);
-		}
-
-		$tree = $this->build_tree($_groups, $_assignments);
+		$repo = new ResourceRepository();
+		$tree = $repo->GetResourceGroups()->GetGroups();
 
 		$this->Set('ResourceGroupsAsJson', json_encode($tree));
-	}
-
-	/**
-	 * @param $groups ResourceGroup[]
-	 * @param $assignments ResourceGroupAssignment[]
-	 * @return ResourceGroup
-	 */
-	private function build_tree($groups, $assignments)
-	{
-		$tree = array();
-		/**
-		 * @var $references ResourceGroup[]
-		 */
-		$references = array();
-		foreach ($groups as $g)
-		{
-			// Add the node to our associative array using it's ID as key
-			$references[$g->id] = $g;
-
-			// It it's a root node, we add it directly to the tree
-			$parent_id = $g->parent_id;
-			if (empty($parent_id))
-			{
-				$tree[] = $g;
-			}
-			else
-			{
-				// It was not a root node, add this node as a reference in the parent.
-				$references[$parent_id]->addChild($g);
-			}
-		}
-
-		foreach ($assignments as $assignment)
-		{
-			if (array_key_exists($assignment->group_id, $references))
-			{
-				$references[$assignment->group_id]->addResource($assignment);
-			}
-		}
-
-		return $tree;
 	}
 
 	public function ProcessDataRequest($dataRequest)

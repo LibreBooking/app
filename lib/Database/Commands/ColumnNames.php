@@ -66,6 +66,11 @@ class ColumnNames
 	const GROUP_ADMIN_GROUP_ID = 'admin_group_id';
 	const GROUP_ADMIN_GROUP_NAME = 'admin_group_name';
 
+	// RESOURCE_GROUPS //
+	const RESOURCE_GROUP_ID = 'resource_group_id';
+	const RESOURCE_GROUP_NAME = 'resource_group_name';
+	const RESOURCE_GROUP_PARENT_ID = 'parent_id';
+
 	// TIME BLOCKS //
 	const BLOCK_DAY_OF_WEEK = 'day_of_week';
 	const BLOCK_LABEL = 'label';

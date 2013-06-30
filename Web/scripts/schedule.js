@@ -255,12 +255,12 @@ function ChangeSchedule(scheduleId)
 
 function RemoveResourceId(url)
 {
-	return url.replace(/&+rid=\d+/i, "");
+	return url.replace(/&*rid=\d+/i, "");
 }
 
 function RemoveGroupId(url)
 {
-	return url.replace(/&+gid=\d+/i, "");
+	return url.replace(/&*gid=\d+/i, "");
 }
 function ChangeGroup(groupId)
 {
@@ -269,9 +269,7 @@ function ChangeGroup(groupId)
 
 function ChangeResource(resourceId)
 {
-	var idparts = resourceId.split('-');
-
-	RedirectToSelf('rid', /rid=\d+/i, "rid=" + idparts[2], RemoveGroupId);
+	RedirectToSelf('rid', /rid=\d+/i, "rid=" + resourceId, RemoveGroupId);
 }
 
 function RedirectToSelf(queryStringParam, regexMatch, substitution, preProcess)

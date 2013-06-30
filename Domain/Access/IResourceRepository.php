@@ -66,5 +66,11 @@ interface IResourceRepository
 	 * @return array|AccessoryDto[] all accessories
 	 */
 	public function GetAccessoryList();
+
+	/**
+	 * @param int|null $scheduleId
+	 * @return ResourceGroupTree
+	 */
+	public function GetResourceGroups($scheduleId = null);
 }
 ?>
