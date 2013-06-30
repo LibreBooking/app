@@ -7,6 +7,7 @@ function Schedule(opts)
 		this.initUserDefaultSchedule();
 		this.initRotateSchedule();
 		this.initReservations();
+		this.initResourceGroups();
 
 		var reservations = $('#reservations');
 		reservations.delegate('.clickres:not(.reserved)', 'hover', function ()
@@ -217,6 +218,24 @@ function Schedule(opts)
 			}
 		});
 	}
+
+	this.initResourceGroups = function()
+	{
+		$('#show_all_resources').click(function(e)
+		{
+			e.preventDefault();
+			ShowAllResources();
+		});
+	};
+
+	function ShowAllResources()
+	{
+		RedirectToSelf("", "", "", function (url)
+		{
+			var x = RemoveGroupId(url);
+			return RemoveResourceId(x);
+		})
+	}
 }
 
 function dpDateChanged(dateText, inst)
@@ -234,22 +253,48 @@ function ChangeSchedule(scheduleId)
 	RedirectToSelf("sid", /sid=\d+/i, "sid=" + scheduleId);
 }
 
-function RedirectToSelf(queryStringParam, regexMatch, substitution)
+function RemoveResourceId(url)
+{
+	return url.replace(/&+rid=\d+/i, "");
+}
+
+function RemoveGroupId(url)
+{
+	return url.replace(/&+gid=\d+/i, "");
+}
+function ChangeGroup(groupId)
+{
+	RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
+}
+
+function ChangeResource(resourceId)
+{
+	var idparts = resourceId.split('-');
+
+	RedirectToSelf('rid', /rid=\d+/i, "rid=" + idparts[2], RemoveGroupId);
+}
+
+function RedirectToSelf(queryStringParam, regexMatch, substitution, preProcess)
 {
 	var url = window.location.href;
 	var newUrl = window.location.href;
 
-	if (url.indexOf(queryStringParam + "=") != -1)
+	if (preProcess)
 	{
-		newUrl = url.replace(regexMatch, substitution);
+		newUrl = preProcess(url);
 	}
-	else if (url.indexOf("?") != -1)
+
+	if (newUrl.indexOf(queryStringParam + "=") != -1)
 	{
-		newUrl = url + "&" + substitution;
+		newUrl = newUrl.replace(regexMatch, substitution);
+	}
+	else if (newUrl.indexOf("?") != -1)
+	{
+		newUrl = newUrl + "&" + substitution;
 	}
 	else
 	{
-		newUrl = url + "?" + substitution;
+		newUrl = newUrl + "?" + substitution;
 	}
 
 	newUrl = newUrl.replace("#", "");

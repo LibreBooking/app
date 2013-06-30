@@ -189,7 +189,7 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 		$this->WithStatus(ReservationStatus::Created);
 	}
 
-	public function AddEvent($event)
+	public function AddEvent(SeriesEvent $event)
 	{
 		parent::AddEvent($event);
 	}

@@ -56,6 +56,9 @@ class SchedulePresenterTests extends TestBase
 		$layout = $this->getMock('IScheduleLayout');
 		$bindingDates = new DateRange(Date::Now(), Date::Now());
 
+		$groupId = 10101;
+		$resourceId = 92928;
+
 		$page = $this->getMock('ISchedulePage');
 		$scheduleRepository = $this->getMock('IScheduleRepository');
 		$resourceService = $this->getMock('IResourceService');
@@ -65,6 +68,18 @@ class SchedulePresenterTests extends TestBase
 		$dailyLayout = $this->getMock('IDailyLayout');
 
 		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
+
+		$page->expects($this->once())
+				->method('ShowInaccessibleResources')
+				->will($this->returnValue($this->showInaccessibleResources));
+
+		$page->expects($this->once())
+				->method('GetGroupId')
+				->will($this->returnValue($groupId));
+
+		$page->expects($this->once())
+				->method('GetResourceId')
+				->will($this->returnValue($resourceId));
 
 		$page->expects($this->once())
 				->method('ShowInaccessibleResources')
@@ -90,8 +105,11 @@ class SchedulePresenterTests extends TestBase
 
 		$resourceService->expects($this->once())
 				->method('GetScheduleResources')
-				->with($this->equalTo($this->scheduleId), $this->equalTo((bool)$this->showInaccessibleResources),
-					   $this->equalTo($user))
+				->with($this->equalTo($this->scheduleId),
+					   $this->equalTo((bool)$this->showInaccessibleResources),
+					   $this->equalTo($user),
+						$this->equalTo($groupId),
+						$this->equalTo($resourceId))
 				->will($this->returnValue($resources));
 
 		$pageBuilder->expects($this->once())

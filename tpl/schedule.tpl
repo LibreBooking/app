@@ -145,7 +145,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="reservations-left-header">Resource Filter</div>
 
 	<div class="reservations-left-content">
-		<div class="center"><a href="#">{translate key=AllResources}</a></div>
+		<div class="center"><a id="show_all_resources" href="#">{translate key=AllResources}</a></div>
 		<div id="resourceGroups"></div>
 	</div>
 </div>
@@ -218,20 +218,43 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 			var resourceGroups = {$ResourceGroupsAsJson};
 
-			$(function() {
-			    $('#resourceGroups').tree({
-			        data: resourceGroups,
-					saveState: true,
+			$('#resourceGroups').tree({
+				data: resourceGroups,
+				saveState: true,
 
-					onCreateLi: function(node, $li) {
-						// Add 'icon' span before title
-						if (node.type=='resource')
-						{
-							$li.addClass('group-resource')
-						}
+				onCreateLi: function (node, $li)
+				{
+					// Add 'icon' span before title
+					if (node.type == 'resource')
+					{
+						$li.addClass('group-resource')
 					}
-			    });
+				}
 			});
+
+			$('#resourceGroups').bind(
+					'tree.select',
+					function (event)
+					{
+						if (event.node)
+						{
+							// node was selected
+							var node = event.node;
+							if (node.type == 'resource')
+							{
+								ChangeResource(node.id);
+							}
+							else
+							{
+								ChangeGroup(node.id);
+							}
+						}
+						else
+						{
+							// event.node is null
+							// a node was deselected
+						}
+					});
 		});
 	</script>
 {/block}

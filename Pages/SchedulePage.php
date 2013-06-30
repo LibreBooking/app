@@ -120,6 +120,16 @@ interface ISchedulePage extends IActionPage
 	 * @param string|ScheduleDirection Direction
 	 */
 	public function SetScheduleDirection($direction);
+
+	/**
+	 * @return int
+	 */
+	public function GetGroupId();
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId();
 }
 
 class ScheduleDirection
@@ -405,6 +415,22 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('CookieName', 'schedule-direction-' . $this->GetVar('ScheduleId'));
 		$this->Set('CookieValue',
 				   $direction == ScheduleDirection::vertical ? ScheduleDirection::horizontal : ScheduleDirection::vertical);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetGroupId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
 }
 

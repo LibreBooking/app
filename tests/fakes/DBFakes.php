@@ -64,7 +64,7 @@ class FakeDatabase extends Database
 		return $reader;
 	}
 
-	public function &LimitQuery(ISqlCommand $command, $limit, $offset)
+	public function &LimitQuery(ISqlCommand $command, $limit, $offset = null)
 	{
 		$this->_Limit = $limit;
 		$this->_Offset = $offset;
@@ -72,7 +72,7 @@ class FakeDatabase extends Database
 		return $this->Query($command);
 	}
 
-	public function Execute(ISqlCommand &$command) 
+	public function Execute(ISqlCommand $command)
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);

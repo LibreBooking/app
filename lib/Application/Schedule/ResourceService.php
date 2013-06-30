@@ -18,6 +18,34 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+interface IResourceService
+{
+	/**
+	 * Gets resource list for a schedule
+	 * @param int $scheduleId
+	 * @param bool $includeInaccessibleResources
+	 * @param UserSession $user
+	 * @param int $groupId
+	 * @param int $resourceId
+	 * @return array|ResourceDto[]
+	 */
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $groupId = null, $resourceId = null);
+
+	/**
+	 * Gets resource list
+	 * @param bool $includeInaccessibleResources
+	 * @param UserSession $user
+	 * @return array|ResourceDto[]
+	 */
+	public function GetAllResources($includeInaccessibleResources, UserSession $user);
+
+	/**
+	 * @abstract
+	 * @return array|AccessoryDto[]
+	 */
+	public function GetAccessories();
+}
+
 class ResourceService implements IResourceService
 {
 	/**
@@ -36,24 +64,19 @@ class ResourceService implements IResourceService
 		$this->_permissionService = $permissionService;
 	}
 
-	/**
-	 * @param $scheduleId int
-	 * @param $includeInaccessibleResources bool
-	 * @param UserSession $user
-	 * @return array|ResourceDto[]
-	 */
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user)
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $groupId = null, $resourceId = null)
 	{
 		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
 
-		return $this->Filter($resources, $user, $includeInaccessibleResources);
+		$resourceIds = array();
+		if (empty($groupId) && !empty($resourceId))
+		{
+			$resourceIds = array($resourceId);
+		}
+
+		return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);
 	}
 
-	/**
-	 * @param $includeInaccessibleResources
-	 * @param UserSession $user
-	 * @return array|ResourceDto[]
-	 */
 	public function GetAllResources($includeInaccessibleResources, UserSession $user)
 	{
 		$resources = $this->_resourceRepository->GetResourceList();
@@ -65,13 +88,19 @@ class ResourceService implements IResourceService
 	 * @param $resources array|BookableResource[]
 	 * @param $user UserSession
 	 * @param $includeInaccessibleResources bool
+	 * @param int[] $resourceIds
 	 * @return array|ResourceDto[]
 	 */
-	private function Filter($resources, $user, $includeInaccessibleResources)
+	private function Filter($resources, $user, $includeInaccessibleResources, $resourceIds = array())
 	{
 		$resourceDtos = array();
 		foreach ($resources as $resource)
 		{
+			if (!empty($resourceIds) && !in_array($resource->GetId(), $resourceIds))
+			{
+				continue;
+			}
+
 			$canAccess = $this->_permissionService->CanAccessResource($resource, $user);
 
 			if (!$includeInaccessibleResources && !$canAccess)
@@ -84,40 +113,12 @@ class ResourceService implements IResourceService
 		return $resourceDtos;
 	}
 
-	/**
-	 * @return array|AccessoryDto[]
-	 */
 	public function GetAccessories()
 	{
 		return $this->_resourceRepository->GetAccessoryList();
 	}
 }
 
-interface IResourceService
-{
-	/**
-	 * Gets resource list for a schedule
-	 * @param int $scheduleId
-	 * @param bool $includeInaccessibleResources
-	 * @param UserSession $user
-	 * @return array|ResourceDto[]
-	 */
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user);
-
-	/**
-	 * Gets resource list
-	 * @param bool $includeInaccessibleResources
-	 * @param UserSession $user
-	 * @return array|ResourceDto[]
-	 */
-	public function GetAllResources($includeInaccessibleResources, UserSession $user);
-
-	/**
-	 * @abstract
-	 * @return array|AccessoryDto[]
-	 */
-	public function GetAccessories();
-}
 
 class ResourceDto
 {
