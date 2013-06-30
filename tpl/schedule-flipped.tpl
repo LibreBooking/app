@@ -68,22 +68,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="scripts"}
 
-<script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/schedule.js"></script>
-<script type="text/javascript" src="{$Path}scripts/resourcePopup.js"></script>
-
 <script type="text/javascript">
 
     $(document).ready(function ()
     {
-        var scheduleOpts = {
-            reservationUrlTemplate:"{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
-            summaryPopupUrl:"{$Path}ajax/respopup.php",
-            setDefaultScheduleUrl:"{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
-            cookieName:"{$CookieName}",
-            cookieValue:"{$CookieValue}"
-        };
-
         var table = $('#reservations').find('table');
 		var rows = new Object();
 		{foreach from=$Resources item=resource name=resource_loop}
@@ -110,9 +98,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{
 			$(index).find('td:last').after(item.join(''));
         });
-
-        var schedule = new Schedule(scheduleOpts);
-        schedule.init();
 
 		$('html, body').animate({
 	         scrollTop: $("tr.today").offset().top-50

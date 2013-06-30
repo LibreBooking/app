@@ -680,3 +680,7 @@ ul.indented li {
 .hidden {
 	display:none;
 }
+
+.center {
+	text-align: center;
+}

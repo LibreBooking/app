@@ -136,6 +136,7 @@ class ResourceGroup
 	public $parent;
 	public $parent_id;
 	public $children = array();
+	public $type = 'group';
 
 	public function __construct($id, $name, $parentId)
 	{
@@ -152,6 +153,30 @@ class ResourceGroup
 	{
 		$resourceGroup->parent_id = $this->id;
 		$this->children[] = $resourceGroup;
+	}
+
+	public function addResource(&$assignment)
+	{
+		$this->children[] = $assignment;
+	}
+}
+
+class ResourceGroupAssignment
+{
+	public $type = 'resource';
+	public $group_id;
+	public $resource_name;
+	public $id;
+	public $label;
+	public $resource_id;
+
+	public function __construct($group_id, $resource_name, $resource_id)
+	{
+		$this->group_id = $group_id;
+		$this->resource_name = $resource_name;
+		$this->id = "{$this->type}-{$group_id}-{$resource_id}";
+		$this->label = $resource_name;
+		$this->resource_id = $resource_id;
 	}
 }
 
@@ -210,22 +235,32 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	private function showTree()
 	{
 		$groups = ServiceLocator::GetDatabase()->Query(new AdHocCommand('select * from resource_groups'));
+		$resources = ServiceLocator::GetDatabase()->Query(new AdHocCommand('select r.name, r.resource_id, rga.resource_group_id from resource_group_assignment rga inner join resources r on r.resource_id = rga.resource_id'));
+
 		$_groups = array();
+		$_assignments = array();
 
 		while ($row = $groups->GetRow())
 		{
 			$_groups[] = new ResourceGroup($row['resource_group_id'], $row['resource_group_name'], $row['parent_id']);
 		}
 
-		$tree = $this->build_tree($_groups);
+		while ($row = $resources->GetRow())
+		{
+			$_assignments[] = new ResourceGroupAssignment($row['resource_group_id'], $row['name'], $row['resource_id']);
+		}
+
+		$tree = $this->build_tree($_groups, $_assignments);
 
 		$this->Set('ResourceGroupsAsJson', json_encode($tree));
 	}
+
 	/**
 	 * @param $groups ResourceGroup[]
+	 * @param $assignments ResourceGroupAssignment[]
 	 * @return ResourceGroup
 	 */
-	private function build_tree($groups)
+	private function build_tree($groups, $assignments)
 	{
 		$tree = array();
 		/**
@@ -247,6 +282,14 @@ class SchedulePage extends ActionPage implements ISchedulePage
 			{
 				// It was not a root node, add this node as a reference in the parent.
 				$references[$parent_id]->addChild($g);
+			}
+		}
+
+		foreach ($assignments as $assignment)
+		{
+			if (array_key_exists($assignment->group_id, $references))
+			{
+				$references[$assignment->group_id]->addResource($assignment);
 			}
 		}
 
@@ -360,7 +403,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	{
 		$this->scheduleDirection = $direction;
 		$this->Set('CookieName', 'schedule-direction-' . $this->GetVar('ScheduleId'));
-		$this->Set('CookieValue', $direction == ScheduleDirection::vertical ? ScheduleDirection::horizontal : ScheduleDirection::vertical);
+		$this->Set('CookieValue',
+				   $direction == ScheduleDirection::vertical ? ScheduleDirection::horizontal : ScheduleDirection::vertical);
 	}
 }
 
@@ -379,7 +423,8 @@ class DisplaySlotFactory
 			{
 				return 'displayMyParticipating';
 			}
-			else{
+			else
+			{
 				return 'displayReserved';
 			}
 		}

@@ -24,7 +24,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="actions"}{/block}
 
-{block name="scripts"}
+{block name="scripts-common"}
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="scripts/schedule.js"></script>
 <script type="text/javascript" src="scripts/resourcePopup.js"></script>

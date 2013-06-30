@@ -232,23 +232,41 @@ div.legend {
 }
 
 #reservations {
-	float:right;
-	width:88%;
+	width:auto;
+	margin-left:160px;
 }
 
 #reservations-left {
 	float:left;
-	width:10%;
-	background-color:#ebe7e4;
-	border: solid 1px #dedede;
-	padding:10px;
+	width: 150px;
+	background-color:#F4F5ED;
+	border: solid 1px #C7C9BE;
+
 	min-height:400px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -khtml-border-radius: 10px;
-    border-radius: 10px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -khtml-border-radius: 8px;
+    border-radius: 8px;
 	margin-right: 2px;
 }
+
+.reservations-left-header {
+	border-bottom: solid 1px #C7C9BE;
+	font-weight: bold;
+	font-size: 9pt;
+	text-align: center;
+	padding: 3px 0;
+}
+
+.reservations-left-content {
+	padding:10px;
+}
+
+ul.jqtree-tree .group-resource .jqtree-title {
+	color:#111111;
+}
+
+#reservations-left > h4 { text-align: center;}
 
 ul.jqtree-tree li.jqtree-selected > .jqtree-element,
 ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover  { background:none; font-weight: bold;}

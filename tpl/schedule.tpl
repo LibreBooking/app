@@ -142,8 +142,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div style="height:10px">&nbsp;</div>
 
 <div id="reservations-left">
-	<h4>Resource Filter</h4>
-<div id="resourceGroups"></div>
+	<div class="reservations-left-header">Resource Filter</div>
+
+	<div class="reservations-left-content">
+		<div class="center"><a href="#">{translate key=AllResources}</a></div>
+		<div id="resourceGroups"></div>
+	</div>
 </div>
 
 {block name="reservations"}
@@ -191,7 +195,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {$smarty.capture.date_navigation}
 
-{block name="scripts"}
+{block name="scripts-common"}
 	<script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/schedule.js"></script>
 	<script type="text/javascript" src="{$Path}scripts/resourcePopup.js"></script>
@@ -221,12 +225,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 					onCreateLi: function(node, $li) {
 						// Add 'icon' span before title
-						$li.find('.jqtree-title').before('<span class="icon"></span>');
+						if (node.type=='resource')
+						{
+							$li.addClass('group-resource')
+						}
 					}
 			    });
 			});
 		});
 	</script>
+{/block}
+
+{block name="scripts"}
+
 {/block}
 
 {control type="DatePickerSetupControl"
