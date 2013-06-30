@@ -142,7 +142,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div style="height:10px">&nbsp;</div>
 
 <div id="reservations-left">
-	<div class="reservations-left-header">Resource Filter</div>
+	<div class="reservations-left-header">{translate key=ResourceFilter}</div>
 
 	<div class="reservations-left-content">
 		<div class="center"><a id="show_all_resources" href="#">{translate key=AllResources}</a></div>

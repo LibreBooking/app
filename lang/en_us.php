@@ -457,6 +457,7 @@ class en_us extends Language
 		$strings['Next'] = 'Next';
 		$strings['Success'] = 'Success';
 		$strings['Participant'] = 'Participant';
+		$strings['ResourceFilter'] = 'Resource Filter';
 		// End Strings
 
 		// Install
