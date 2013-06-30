@@ -230,3 +230,25 @@ div.legend {
     *display: inline;
     margin: 0px 2px;
 }
+
+#reservations {
+	float:right;
+	width:88%;
+}
+
+#reservations-left {
+	float:left;
+	width:10%;
+	background-color:#ebe7e4;
+	border: solid 1px #dedede;
+	padding:10px;
+	min-height:400px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
+	margin-right: 2px;
+}
+
+ul.jqtree-tree li.jqtree-selected > .jqtree-element,
+ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover  { background:none; font-weight: bold;}

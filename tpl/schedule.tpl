@@ -70,7 +70,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {* End slot display formatting *}
 
 {block name="header"}
-	{include file='globalheader.tpl' cssFiles='css/schedule.css,css/jquery.qtip.min.css,scripts/css/jqtree.css'}
+	{include file='globalheader.tpl' cssFiles='css/jquery.qtip.min.css,scripts/css/jqtree.css,css/schedule.css'}
 {/block}
 
 {block name="actions"}
@@ -126,8 +126,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{$smarty.capture.date_navigation}
 	</div>
 	<div type="text" id="datepicker" style="display:none;"></div>
-
-	<div id="resourceGroups"></div>
 {/block}
 
 <div style="text-align: center; margin: auto;">
@@ -142,6 +140,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div style="height:10px">&nbsp;</div>
+
+<div id="reservations-left">
+	<h4>Resource Filter</h4>
+<div id="resourceGroups"></div>
+</div>
 
 {block name="reservations"}
 
@@ -183,6 +186,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 	<input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 {/block}
+
+<div class="clear">&nbsp;</div>
 
 {$smarty.capture.date_navigation}
 

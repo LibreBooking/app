@@ -150,7 +150,7 @@ class ResourceGroup
 	 */
 	public function addChild(&$resourceGroup)
 	{
-		$resourceGroup->parent = $this;
+		$resourceGroup->parent_id = $this->id;
 		$this->children[] = $resourceGroup;
 	}
 }

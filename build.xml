@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="phpScheduleIt" default="package">
-	<property name="version" value="2.4.3"/>
+	<property name="version" value="2.5.0"/>
 	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="phpScheduleIt-${version}"/>
 	<property name="root.dir" value="../.."/>
@@ -13,10 +13,10 @@
 
 	<available file="C:/Program Files/MySQL/MySQL Server 5.1/bin" property="mysql.bin"
 			   value="C:/Program Files/MySQL/MySQL Server 5.1/bin"/>
-	<available file="C:/wamp/bin/mysql/mysql5.5.20/bin" property="mysql.bin" value="C:/wamp/bin/mysql/mysql5.5.20/bin"/>
+	<available file="C:\wamp\bin\mysql\mysql5.5.24" property="mysql.bin" value="C:\wamp\bin\mysql\mysql5.5.24"/>
 	<property name="mysql.bin.64bit" value="C:/Program Files (x86)/MySQL/MySQL Server 5.1/bin"/>
 	<property name="mysql.username" value="root"/>
-	<property name="mysql.password" value=""/>
+	<property name="mysql.password" value="password"/>
 	<property name="mysql.server" value="127.0.0.1"/>
 	<property name="mysql.database" value="phpScheduleIt2"/>
 	<property name="sql.file.create.db" value="database_schema/create-db.sql"/>

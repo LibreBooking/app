@@ -239,6 +239,13 @@ class Installer
             return false;
         }
 
+		$hasTables= mysql_query('SELECT * FROM `reservations` order by version_number desc limit 0,1');
+
+		if (!$hasTables)
+		{
+			return false;
+		}
+
         $getVersion = 'SELECT * FROM `dbversion` order by version_number desc limit 0,1';
         $result = mysql_query($getVersion);
 
