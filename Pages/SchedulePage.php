@@ -130,6 +130,8 @@ interface ISchedulePage extends IActionPage
 	 * @return int
 	 */
 	public function GetResourceId();
+
+	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree);
 }
 
 class ScheduleDirection
@@ -162,8 +164,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function ProcessPageLoad()
 	{
-		$this->showTree();
-
 		$start = microtime(true);
 
 		$user = ServiceLocator::GetServer()->GetUserSession();
@@ -188,14 +188,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$load = $endLoad - $start;
 		$display = $endDisplay - $endLoad;
 		Log::Debug('Schedule took %s sec to load, %s sec to render', $load, $display);
-	}
-
-	private function showTree()
-	{
-		$repo = new ResourceRepository();
-		$tree = $repo->GetResourceGroups()->GetGroups();
-
-		$this->Set('ResourceGroupsAsJson', json_encode($tree));
 	}
 
 	public function ProcessDataRequest($dataRequest)
@@ -323,6 +315,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	public function GetResourceId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+
+	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
+	{
+		$this->Set('ResourceGroupsAsJson', json_encode($resourceGroupTree->GetGroups()));
 	}
 }
 

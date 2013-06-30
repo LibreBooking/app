@@ -44,6 +44,12 @@ interface IResourceService
 	 * @return array|AccessoryDto[]
 	 */
 	public function GetAccessories();
+
+	/**
+	 * @param $scheduleId
+	 * @return ResourceGroupTree
+	 */
+	public function GetResourceGroups($scheduleId);
 }
 
 class ResourceService implements IResourceService
@@ -121,6 +127,15 @@ class ResourceService implements IResourceService
 	public function GetAccessories()
 	{
 		return $this->_resourceRepository->GetAccessoryList();
+	}
+
+	/**
+	 * @param $scheduleId
+	 * @return ResourceGroupTree
+	 */
+	public function GetResourceGroups($scheduleId)
+	{
+		return $this->_resourceRepository->GetResourceGroups($scheduleId);
 	}
 }
 

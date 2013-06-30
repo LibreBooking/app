@@ -60,6 +60,8 @@ interface ISchedulePageBuilder
 	 * @param IDailyLayout $dailyLayout
 	 */
 	public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout);
+
+	public function BindResourceGroups(ISchedulePage $page, ResourceGroupTree $resourceGroupTree);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
@@ -245,6 +247,10 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return $schedules[0];
 	}
 
+	public function BindResourceGroups(ISchedulePage $page, ResourceGroupTree $resourceGroupTree)
+	{
+		$page->SetResourceGroupTree($resourceGroupTree);
+	}
 }
 
 ?>

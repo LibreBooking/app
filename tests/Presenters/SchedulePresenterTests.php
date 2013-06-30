@@ -55,6 +55,7 @@ class SchedulePresenterTests extends TestBase
 		$reservations = $this->getMock('IReservationListing');
 		$layout = $this->getMock('IScheduleLayout');
 		$bindingDates = new DateRange(Date::Now(), Date::Now());
+		$groups = new ResourceGroupTree();
 
 		$groupId = 10101;
 		$resourceId = 92928;
@@ -69,75 +70,99 @@ class SchedulePresenterTests extends TestBase
 
 		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
 
-		$page->expects($this->once())
-				->method('ShowInaccessibleResources')
-				->will($this->returnValue($this->showInaccessibleResources));
+		$page
+		->expects($this->once())
+		->method('ShowInaccessibleResources')
+		->will($this->returnValue($this->showInaccessibleResources));
 
-		$page->expects($this->once())
-				->method('GetGroupId')
-				->will($this->returnValue($groupId));
+		$page
+		->expects($this->any())
+		->method('GetGroupId')
+		->will($this->returnValue($groupId));
 
-		$page->expects($this->once())
-				->method('GetResourceId')
-				->will($this->returnValue($resourceId));
+		$page
+		->expects($this->any())
+		->method('GetResourceId')
+		->will($this->returnValue($resourceId));
 
-		$page->expects($this->once())
-				->method('ShowInaccessibleResources')
-				->will($this->returnValue($this->showInaccessibleResources));
+		$page
+		->expects($this->once())
+		->method('ShowInaccessibleResources')
+		->will($this->returnValue($this->showInaccessibleResources));
 
-		$scheduleRepository->expects($this->once())
-				->method('GetAll')
-				->will($this->returnValue($this->schedules));
+		$scheduleRepository
+		->expects($this->once())
+		->method('GetAll')
+		->will($this->returnValue($this->schedules));
 
-		$scheduleRepository->expects($this->once())
-				->method('GetLayout')
-				->with($this->equalTo($this->scheduleId), $this->equalTo(new ScheduleLayoutFactory($user->Timezone)))
-				->will($this->returnValue($layout));
+		$scheduleRepository
+		->expects($this->once())
+		->method('GetLayout')
+		->with($this->equalTo($this->scheduleId), $this->equalTo(new ScheduleLayoutFactory($user->Timezone)))
+		->will($this->returnValue($layout));
 
-		$pageBuilder->expects($this->once())
-				->method('GetCurrentSchedule')
-				->with($this->equalTo($page), $this->equalTo($this->schedules))
-				->will($this->returnValue($this->currentSchedule));
+		$pageBuilder
+		->expects($this->once())
+		->method('GetCurrentSchedule')
+		->with($this->equalTo($page), $this->equalTo($this->schedules))
+		->will($this->returnValue($this->currentSchedule));
 
-		$pageBuilder->expects($this->once())
-				->method('BindSchedules')
-				->with($this->equalTo($page), $this->equalTo($this->schedules), $this->equalTo($this->currentSchedule));
+		$pageBuilder
+		->expects($this->once())
+		->method('BindSchedules')
+		->with($this->equalTo($page), $this->equalTo($this->schedules), $this->equalTo($this->currentSchedule));
 
-		$resourceService->expects($this->once())
-				->method('GetScheduleResources')
-				->with($this->equalTo($this->scheduleId),
-					   $this->equalTo((bool)$this->showInaccessibleResources),
-					   $this->equalTo($user),
-						$this->equalTo($groupId),
-						$this->equalTo($resourceId))
-				->will($this->returnValue($resources));
+		$resourceService
+		->expects($this->once())
+		->method('GetScheduleResources')
+		->with($this->equalTo($this->scheduleId),
+			   $this->equalTo($this->showInaccessibleResources),
+			   $this->equalTo($user),
+			   $this->equalTo($groupId),
+			   $this->equalTo($resourceId))
+		->will($this->returnValue($resources));
 
-		$pageBuilder->expects($this->once())
-				->method('GetScheduleDates')
-				->with($this->equalTo($user), $this->equalTo($this->currentSchedule), $this->equalTo($page))
-				->will($this->returnValue($bindingDates));
+		$resourceService
+		->expects($this->once())
+		->method('GetResourceGroups')
+		->with($this->equalTo($this->scheduleId))
+		->will($this->returnValue($groups));
 
-		$pageBuilder->expects($this->once())
-				->method('BindDisplayDates')
-				->with($this->equalTo($page), $this->equalTo($bindingDates), $this->equalTo($user));
+		$pageBuilder
+		->expects($this->once())
+		->method('BindResourceGroups')
+		->with($this->equalTo($page), $this->equalTo($groups));
 
-		$reservationService->expects($this->once())
-				->method('GetReservations')
-				->with($this->equalTo($bindingDates), $this->equalTo($this->scheduleId),
-					   $this->equalTo($user->Timezone))
-				->will($this->returnValue($reservations));
+		$pageBuilder
+		->expects($this->once())
+		->method('GetScheduleDates')
+		->with($this->equalTo($user), $this->equalTo($this->currentSchedule), $this->equalTo($page))
+		->will($this->returnValue($bindingDates));
 
-		$dailyLayoutFactory->expects($this->once())
-				->method('Create')
-				->with($this->equalTo($reservations), $this->equalTo($layout))
-				->will($this->returnValue($dailyLayout));
+		$pageBuilder
+		->expects($this->once())
+		->method('BindDisplayDates')
+		->with($this->equalTo($page), $this->equalTo($bindingDates), $this->equalTo($user));
 
-		$pageBuilder->expects($this->once())
-				->method('BindReservations')
-				->with($this->equalTo($page), $this->equalTo($resources), $this->equalTo($dailyLayout));
+		$reservationService
+		->expects($this->once())
+		->method('GetReservations')
+		->with($this->equalTo($bindingDates), $this->equalTo($this->scheduleId),
+			   $this->equalTo($user->Timezone))
+		->will($this->returnValue($reservations));
+
+		$dailyLayoutFactory
+		->expects($this->once())
+		->method('Create')
+		->with($this->equalTo($reservations), $this->equalTo($layout))
+		->will($this->returnValue($dailyLayout));
+
+		$pageBuilder
+		->expects($this->once())
+		->method('BindReservations')
+		->with($this->equalTo($page), $this->equalTo($resources), $this->equalTo($dailyLayout));
 
 		$presenter->PageLoad($this->fakeUser);
-
 	}
 
 	public function testScheduleBuilderBindsAllSchedulesAndSetsActive()
@@ -149,42 +174,51 @@ class SchedulePresenterTests extends TestBase
 		$schedule = $this->getMock('ISchedule');
 		$page = $this->getMock('ISchedulePage');
 
-		$schedule->expects($this->once())
-				->method('GetId')
-				->will($this->returnValue($activeId));
+		$schedule
+		->expects($this->once())
+		->method('GetId')
+		->will($this->returnValue($activeId));
 
-		$schedule->expects($this->once())
-				->method('GetName')
-				->will($this->returnValue($activeName));
+		$schedule
+		->expects($this->once())
+		->method('GetName')
+		->will($this->returnValue($activeName));
 
-		$schedule->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($weekdayStart));
+		$schedule
+		->expects($this->once())
+		->method('GetWeekdayStart')
+		->will($this->returnValue($weekdayStart));
 
-		$page->expects($this->once())
-				->method('SetSchedules')
-				->with($this->equalTo($this->schedules));
+		$page
+		->expects($this->once())
+		->method('SetSchedules')
+		->with($this->equalTo($this->schedules));
 
-		$page->expects($this->once())
-				->method('SetScheduleId')
-				->with($this->equalTo($activeId));
+		$page
+		->expects($this->once())
+		->method('SetScheduleId')
+		->with($this->equalTo($activeId));
 
-		$page->expects($this->once())
-				->method('SetScheduleName')
-				->with($this->equalTo($activeName));
+		$page
+		->expects($this->once())
+		->method('SetScheduleName')
+		->with($this->equalTo($activeName));
 
-		$page->expects($this->once())
-				->method('SetFirstWeekday')
-				->with($this->equalTo($weekdayStart));
+		$page
+		->expects($this->once())
+		->method('SetFirstWeekday')
+		->with($this->equalTo($weekdayStart));
 
-		$page->expects($this->once())
-				->method('GetScheduleDirection')
-				->with($this->equalTo($activeId))
-				->will($this->returnValue(ScheduleDirection::vertical));
+		$page
+		->expects($this->once())
+		->method('GetScheduleDirection')
+		->with($this->equalTo($activeId))
+		->will($this->returnValue(ScheduleDirection::vertical));
 
-		$page->expects($this->once())
-				->method('SetScheduleDirection')
-				->with($this->equalTo(ScheduleDirection::vertical));
+		$page
+		->expects($this->once())
+		->method('SetScheduleDirection')
+		->with($this->equalTo(ScheduleDirection::vertical));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindSchedules($page, $this->schedules, $schedule);
@@ -195,21 +229,24 @@ class SchedulePresenterTests extends TestBase
 		$s1 = $this->getMock('ISchedule');
 		$s2 = $this->getMock('ISchedule');
 
-		$s1->expects($this->once())
-				->method('GetId')
-				->will($this->returnValue(11));
+		$s1
+		->expects($this->once())
+		->method('GetId')
+		->will($this->returnValue(11));
 
-		$s2->expects($this->once())
-				->method('GetId')
-				->will($this->returnValue(10));
+		$s2
+		->expects($this->once())
+		->method('GetId')
+		->will($this->returnValue(10));
 
 		$schedules = array($s1, $s2);
 
 		$page = $this->getMock('ISchedulePage');
 
-		$page->expects($this->atLeastOnce())
-				->method('GetScheduleId')
-				->will($this->returnValue(10));
+		$page
+		->expects($this->atLeastOnce())
+		->method('GetScheduleId')
+		->will($this->returnValue(10));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$actual = $pageBuilder->GetCurrentSchedule($page, $schedules, $this->fakeUser);
@@ -272,17 +309,20 @@ class SchedulePresenterTests extends TestBase
 		$schedule = $this->getMock('ISchedule');
 		$schedulePage = $this->getMock('ISchedulePage');
 
-		$schedulePage->expects($this->once())
-				->method('GetSelectedDate')
-				->will($this->returnValue(null));
+		$schedulePage
+		->expects($this->once())
+		->method('GetSelectedDate')
+		->will($this->returnValue(null));
 
-		$schedule->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($startDay));
+		$schedule
+		->expects($this->once())
+		->method('GetWeekdayStart')
+		->will($this->returnValue($startDay));
 
-		$schedule->expects($this->once())
-				->method('GetDaysVisible')
-				->will($this->returnValue($daysVisible));
+		$schedule
+		->expects($this->once())
+		->method('GetDaysVisible')
+		->will($this->returnValue($daysVisible));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
@@ -311,17 +351,20 @@ class SchedulePresenterTests extends TestBase
 		$schedule = $this->getMock('ISchedule');
 		$schedulePage = $this->getMock('ISchedulePage');
 
-		$schedulePage->expects($this->once())
-				->method('GetSelectedDate')
-				->will($this->returnValue(null));
+		$schedulePage
+		->expects($this->once())
+		->method('GetSelectedDate')
+		->will($this->returnValue(null));
 
-		$schedule->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($startDay));
+		$schedule
+		->expects($this->once())
+		->method('GetWeekdayStart')
+		->will($this->returnValue($startDay));
 
-		$schedule->expects($this->once())
-				->method('GetDaysVisible')
-				->will($this->returnValue($daysVisible));
+		$schedule
+		->expects($this->once())
+		->method('GetDaysVisible')
+		->will($this->returnValue($daysVisible));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
@@ -352,17 +395,20 @@ class SchedulePresenterTests extends TestBase
 		$schedule = $this->getMock('ISchedule');
 		$schedulePage = $this->getMock('ISchedulePage');
 
-		$schedulePage->expects($this->once())
-				->method('GetSelectedDate')
-				->will($this->returnValue(null));
+		$schedulePage
+		->expects($this->once())
+		->method('GetSelectedDate')
+		->will($this->returnValue(null));
 
-		$schedule->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($startDay));
+		$schedule
+		->expects($this->once())
+		->method('GetWeekdayStart')
+		->will($this->returnValue($startDay));
 
-		$schedule->expects($this->once())
-				->method('GetDaysVisible')
-				->will($this->returnValue($daysVisible));
+		$schedule
+		->expects($this->once())
+		->method('GetDaysVisible')
+		->will($this->returnValue($daysVisible));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
@@ -392,17 +438,20 @@ class SchedulePresenterTests extends TestBase
 		$schedule = $this->getMock('ISchedule');
 		$schedulePage = $this->getMock('ISchedulePage');
 
-		$schedulePage->expects($this->once())
-				->method('GetSelectedDate')
-				->will($this->returnValue(null));
+		$schedulePage
+		->expects($this->once())
+		->method('GetSelectedDate')
+		->will($this->returnValue(null));
 
-		$schedule->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($startDay));
+		$schedule
+		->expects($this->once())
+		->method('GetWeekdayStart')
+		->will($this->returnValue($startDay));
 
-		$schedule->expects($this->once())
-				->method('GetDaysVisible')
-				->will($this->returnValue($daysVisible));
+		$schedule
+		->expects($this->once())
+		->method('GetDaysVisible')
+		->will($this->returnValue($daysVisible));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
@@ -435,17 +484,20 @@ class SchedulePresenterTests extends TestBase
 		$schedule = $this->getMock('ISchedule');
 		$schedulePage = $this->getMock('ISchedulePage');
 
-		$schedulePage->expects($this->once())
-				->method('GetSelectedDate')
-				->will($this->returnValue(null));
+		$schedulePage
+		->expects($this->once())
+		->method('GetSelectedDate')
+		->will($this->returnValue(null));
 
-		$schedule->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($startDay));
+		$schedule
+		->expects($this->once())
+		->method('GetWeekdayStart')
+		->will($this->returnValue($startDay));
 
-		$schedule->expects($this->once())
-				->method('GetDaysVisible')
-				->will($this->returnValue($daysVisible));
+		$schedule
+		->expects($this->once())
+		->method('GetDaysVisible')
+		->will($this->returnValue($daysVisible));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
@@ -478,17 +530,20 @@ class SchedulePresenterTests extends TestBase
 		$schedule = $this->getMock('ISchedule');
 		$schedulePage = $this->getMock('ISchedulePage');
 
-		$schedulePage->expects($this->once())
-				->method('GetSelectedDate')
-				->will($this->returnValue(null));
+		$schedulePage
+		->expects($this->once())
+		->method('GetSelectedDate')
+		->will($this->returnValue(null));
 
-		$schedule->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($startDay));
+		$schedule
+		->expects($this->once())
+		->method('GetWeekdayStart')
+		->will($this->returnValue($startDay));
 
-		$schedule->expects($this->once())
-				->method('GetDaysVisible')
-				->will($this->returnValue($daysVisible));
+		$schedule
+		->expects($this->once())
+		->method('GetDaysVisible')
+		->will($this->returnValue($daysVisible));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
@@ -517,17 +572,20 @@ class SchedulePresenterTests extends TestBase
 		$schedule = $this->getMock('ISchedule');
 		$schedulePage = $this->getMock('ISchedulePage');
 
-		$schedulePage->expects($this->once())
-				->method('GetSelectedDate')
-				->will($this->returnValue($selectedDate->Format("Y-m-d")));
+		$schedulePage
+		->expects($this->once())
+		->method('GetSelectedDate')
+		->will($this->returnValue($selectedDate->Format("Y-m-d")));
 
-		$schedule->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($startDay));
+		$schedule
+		->expects($this->once())
+		->method('GetWeekdayStart')
+		->will($this->returnValue($startDay));
 
-		$schedule->expects($this->once())
-				->method('GetDaysVisible')
-				->will($this->returnValue($daysVisible));
+		$schedule
+		->expects($this->once())
+		->method('GetDaysVisible')
+		->will($this->returnValue($daysVisible));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
@@ -544,13 +602,15 @@ class SchedulePresenterTests extends TestBase
 		$dailyLayout = $this->getMock('IDailyLayout');
 		$resources = array();
 
-		$page->expects($this->once())
-				->method('SetResources')
-				->with($this->equalTo($resources));
+		$page
+		->expects($this->once())
+		->method('SetResources')
+		->with($this->equalTo($resources));
 
-		$page->expects($this->once())
-				->method('SetDailyLayout')
-				->with($this->equalTo($dailyLayout));
+		$page
+		->expects($this->once())
+		->method('SetDailyLayout')
+		->with($this->equalTo($dailyLayout));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindReservations($page, $resources, $dailyLayout);
@@ -565,20 +625,29 @@ class SchedulePresenterTests extends TestBase
 		$page = $this->getMock('ISchedulePage');
 
 		$start = Date::Now();
-		$end = Date::Now()->AddDays(10);
+		$end = Date::Now()
+			   ->AddDays(10);
 		$displayRange = new DateRange($start, $end);
-		$expectedRange = new DateRange($start->ToTimezone('EST'), $end->AddDays(-1)->ToTimezone('EST'));
+		$expectedRange = new DateRange($start->ToTimezone('EST'), $end
+																  ->AddDays(-1)
+																  ->ToTimezone('EST'));
 
-		$expectedPrev = $expectedRange->GetBegin()->AddDays(-$daysVisible);
-		$expectedNext = $expectedRange->GetBegin()->AddDays($daysVisible);
+		$expectedPrev = $expectedRange
+						->GetBegin()
+						->AddDays(-$daysVisible);
+		$expectedNext = $expectedRange
+						->GetBegin()
+						->AddDays($daysVisible);
 
-		$page->expects($this->once())
-				->method('SetDisplayDates')
-				->with($this->equalTo($expectedRange));
+		$page
+		->expects($this->once())
+		->method('SetDisplayDates')
+		->with($this->equalTo($expectedRange));
 
-		$page->expects($this->once())
-				->method('SetPreviousNextDates')
-				->with($this->equalTo($expectedPrev), $this->equalTo($expectedNext));
+		$page
+		->expects($this->once())
+		->method('SetPreviousNextDates')
+		->with($this->equalTo($expectedPrev), $this->equalTo($expectedNext));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindDisplayDates($page, $displayRange, $user, $schedule);
@@ -599,13 +668,15 @@ class SchedulePresenterTests extends TestBase
 		$expectedNext = Date::Parse('2011-04-11', $tz);
 
 		$page = $this->getMock('ISchedulePage');
-		$page->expects($this->once())
-				->method('SetPreviousNextDates')
-				->with($this->equalTo($expectedPrevious), $this->equalTo($expectedNext));
+		$page
+		->expects($this->once())
+		->method('SetPreviousNextDates')
+		->with($this->equalTo($expectedPrevious), $this->equalTo($expectedNext));
 
-		$page->expects($this->once())
-				->method('ShowFullWeekToggle')
-				->with($this->equalTo(true));
+		$page
+		->expects($this->once())
+		->method('ShowFullWeekToggle')
+		->with($this->equalTo(true));
 
 		$builder = new SchedulePageBuilder();
 		$builder->BindDisplayDates($page, new DateRange($start, $end), $session, $schedule);
@@ -626,9 +697,10 @@ class SchedulePresenterTests extends TestBase
 		$expectedNext = Date::Parse('2011-04-14', $tz);
 
 		$page = $this->getMock('ISchedulePage');
-		$page->expects($this->once())
-				->method('SetPreviousNextDates')
-				->with($this->equalTo($expectedPrevious), $this->equalTo($expectedNext));
+		$page
+		->expects($this->once())
+		->method('SetPreviousNextDates')
+		->with($this->equalTo($expectedPrevious), $this->equalTo($expectedNext));
 
 		$builder = new SchedulePageBuilder();
 		$builder->BindDisplayDates($page, new DateRange($start, $end), $session, $schedule);
@@ -655,21 +727,25 @@ class SchedulePresenterTests extends TestBase
 		$schedule = $this->getMock('ISchedule');
 		$schedulePage = $this->getMock('ISchedulePage');
 
-		$schedulePage->expects($this->once())
-				->method('GetSelectedDate')
-				->will($this->returnValue($selectedDate->Format("Y-m-d")));
+		$schedulePage
+		->expects($this->once())
+		->method('GetSelectedDate')
+		->will($this->returnValue($selectedDate->Format("Y-m-d")));
 
-		$schedulePage->expects($this->once())
-				->method('GetShowFullWeek')
-				->will($this->returnValue(true));
+		$schedulePage
+		->expects($this->once())
+		->method('GetShowFullWeek')
+		->will($this->returnValue(true));
 
-		$schedule->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($startDay));
+		$schedule
+		->expects($this->once())
+		->method('GetWeekdayStart')
+		->will($this->returnValue($startDay));
 
-		$schedule->expects($this->once())
-				->method('GetDaysVisible')
-				->will($this->returnValue($daysVisible));
+		$schedule
+		->expects($this->once())
+		->method('GetDaysVisible')
+		->will($this->returnValue($daysVisible));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$dates = $pageBuilder->GetScheduleDates($user, $schedule, $schedulePage);
@@ -697,27 +773,32 @@ class SchedulePresenterTests extends TestBase
 
 		$expectedLayoutResponse = new ScheduleLayoutSerializable($periods);
 
-		$page->expects($this->once())
-				->method('GetScheduleId')
-				->will($this->returnValue($scheduleId));
+		$page
+		->expects($this->once())
+		->method('GetScheduleId')
+		->will($this->returnValue($scheduleId));
 
-		$page->expects($this->once())
-				->method('GetLayoutDate')
-				->will($this->returnValue($dateString));
+		$page
+		->expects($this->once())
+		->method('GetLayoutDate')
+		->will($this->returnValue($dateString));
 
-		$scheduleRepository->expects($this->once())
-				->method('GetLayout')
-				->with($this->equalTo($scheduleId), $this->equalTo(new ScheduleLayoutFactory($user->Timezone)))
-				->will($this->returnValue($layout));
+		$scheduleRepository
+		->expects($this->once())
+		->method('GetLayout')
+		->with($this->equalTo($scheduleId), $this->equalTo(new ScheduleLayoutFactory($user->Timezone)))
+		->will($this->returnValue($layout));
 
-		$layout->expects($this->once())
-				->method('GetLayout')
-				->with($this->equalTo($date))
-				->will($this->returnValue($periods));
+		$layout
+		->expects($this->once())
+		->method('GetLayout')
+		->with($this->equalTo($date))
+		->will($this->returnValue($periods));
 
-		$page->expects($this->once())
-				->method('SetLayoutResponse')
-				->with($this->equalTo($expectedLayoutResponse));
+		$page
+		->expects($this->once())
+		->method('SetLayoutResponse')
+		->with($this->equalTo($expectedLayoutResponse));
 
 		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
 
