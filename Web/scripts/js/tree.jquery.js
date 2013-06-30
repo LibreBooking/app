@@ -886,7 +886,7 @@ limitations under the License.
       };
       if (!node) {
         this._deselectCurrentNode();
-        saveState;
+        saveState();
         return;
       }
       if (!canSelect()) {
@@ -1779,16 +1779,23 @@ limitations under the License.
     }
 
     SaveStateHandler.prototype.saveState = function() {
-      if (this.tree_widget.options.onSetStateFromStorage) {
-        return this.tree_widget.options.onSetStateFromStorage(this.getState());
-      } else if (typeof localStorage !== "undefined" && localStorage !== null) {
-        return localStorage.setItem(this.getCookieName(), this.getState());
-      } else if ($.cookie) {
-        $.cookie.raw = true;
-        return $.cookie(this.getCookieName(), this.getState(), {
-          path: '/'
-        });
-      }
+//      if (this.tree_widget.options.onSetStateFromStorage) {
+//        return this.tree_widget.options.onSetStateFromStorage(this.getState());
+//      } else if (typeof localStorage !== "undefined" && localStorage !== null) {
+//        return localStorage.setItem(this.getCookieName(), this.getState());
+//      } else if ($.cookie) {
+//        $.cookie.raw = true;
+//        return $.cookie(this.getCookieName(), this.getState(), {
+//          path: '/'
+//        });
+//      }
+		if ($.cookie)
+		{
+			$.cookie.raw = true;
+			return $.cookie(this.getCookieName(), this.getState(), {
+				path: '/'
+			});
+		}
     };
 
     SaveStateHandler.prototype.restoreState = function() {

@@ -1,6 +1,7 @@
 function Schedule(opts, resourceGroups)
 {
 	var options = opts;
+	var groupDiv = $('#resourceGroups');
 
 	this.init = function ()
 	{
@@ -224,10 +225,12 @@ function Schedule(opts, resourceGroups)
 		$('#show_all_resources').click(function (e)
 		{
 			e.preventDefault();
+
+			groupDiv.tree('selectNode', null);
+
 			ShowAllResources();
 		});
 
-		var groupDiv = $('#resourceGroups');
 		groupDiv.tree({
 			data: resourceGroups,
 			saveState: true,
@@ -265,7 +268,8 @@ function Schedule(opts, resourceGroups)
 		RedirectToSelf("", "", "", function (url)
 		{
 			var x = RemoveGroupId(url);
-			return RemoveResourceId(x);
+			x = RemoveResourceId(x)
+			return x.replace(/&{2,}/i,"");
 		})
 	}
 
