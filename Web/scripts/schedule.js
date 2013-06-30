@@ -1,4 +1,4 @@
-function Schedule(opts)
+function Schedule(opts, resourceGroups)
 {
 	var options = opts;
 
@@ -217,15 +217,47 @@ function Schedule(opts)
 				}
 			}
 		});
-	}
+	};
 
-	this.initResourceGroups = function()
+	this.initResourceGroups = function ()
 	{
-		$('#show_all_resources').click(function(e)
+		$('#show_all_resources').click(function (e)
 		{
 			e.preventDefault();
 			ShowAllResources();
 		});
+
+		var groupDiv = $('#resourceGroups');
+		groupDiv.tree({
+			data: resourceGroups,
+			saveState: true,
+
+			onCreateLi: function (node, $li)
+			{
+				if (node.type == 'resource')
+				{
+					$li.addClass('group-resource')
+				}
+			}
+		});
+
+		groupDiv.bind(
+				'tree.select',
+				function (event)
+				{
+					if (event.node)
+					{
+						var node = event.node;
+						if (node.type == 'resource')
+						{
+							ChangeResource(node.resource_id);
+						}
+						else
+						{
+							ChangeGroup(node.id);
+						}
+					}
+				});
 	};
 
 	function ShowAllResources()
@@ -235,6 +267,26 @@ function Schedule(opts)
 			var x = RemoveGroupId(url);
 			return RemoveResourceId(x);
 		})
+	}
+
+	function RemoveResourceId(url)
+	{
+		return url.replace(/&*rid=\d+/i, "");
+	}
+
+	function RemoveGroupId(url)
+	{
+		return url.replace(/&*gid=\d+/i, "");
+	}
+
+	function ChangeGroup(groupId)
+	{
+		RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
+	}
+
+	function ChangeResource(resourceId)
+	{
+		RedirectToSelf('rid', /rid=\d+/i, "rid=" + resourceId, RemoveGroupId);
 	}
 }
 
@@ -251,25 +303,6 @@ function ChangeDate(year, month, day)
 function ChangeSchedule(scheduleId)
 {
 	RedirectToSelf("sid", /sid=\d+/i, "sid=" + scheduleId);
-}
-
-function RemoveResourceId(url)
-{
-	return url.replace(/&*rid=\d+/i, "");
-}
-
-function RemoveGroupId(url)
-{
-	return url.replace(/&*gid=\d+/i, "");
-}
-function ChangeGroup(groupId)
-{
-	RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
-}
-
-function ChangeResource(resourceId)
-{
-	RedirectToSelf('rid', /rid=\d+/i, "rid=" + resourceId, RemoveGroupId);
 }
 
 function RedirectToSelf(queryStringParam, regexMatch, substitution, preProcess)

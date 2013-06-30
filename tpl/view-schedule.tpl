@@ -36,7 +36,7 @@ $(document).ready(function() {
 		reservationUrlTemplate: "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
 		summaryPopupUrl: "ajax/respopup.php"
 	};
-	var schedule = new Schedule(scheduleOptions);
+	var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
 	schedule.initNavigation();
 	schedule.initReservations();
 	schedule.initResources();

@@ -213,41 +213,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				cookieValue: "{$CookieValue}"
 			};
 
-			var schedule = new Schedule(scheduleOpts);
+			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
 			schedule.init();
-
-			var resourceGroups = {$ResourceGroupsAsJson};
-
-			$('#resourceGroups').tree({
-				data: resourceGroups,
-				saveState: true,
-
-				onCreateLi: function (node, $li)
-				{
-					if (node.type == 'resource')
-					{
-						$li.addClass('group-resource')
-					}
-				}
-			});
-
-			$('#resourceGroups').bind(
-					'tree.select',
-					function (event)
-					{
-						if (event.node)
-						{
-							var node = event.node;
-							if (node.type == 'resource')
-							{
-								ChangeResource(node.resource_id);
-							}
-							else
-							{
-								ChangeGroup(node.id);
-							}
-						}
-					});
 		});
 	</script>
 {/block}
