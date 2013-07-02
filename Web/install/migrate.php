@@ -453,7 +453,8 @@ class MigrationPresenter
 		$progressCounts = $this->GetProgressCounts($getLegacyCount, $getMigratedCount);
 
 		$this->page->SetProgress($progressCounts);
-		$this->page->SetSchedulesMigrated($schedulesMigrated);
+		$this->page->SetSchedulesMigrated($progressCounts->MigratedCount);
+		MigrationSession::SetLastScheduleRow($progressCounts->MigratedCount);
 	}
 
 	private function MigrateResources(Database $legacyDatabase, Database $currentDatabase)
@@ -528,7 +529,8 @@ class MigrationPresenter
 
 		$this->page->SetProgress($progressCounts);
 
-		$this->page->SetResourcesMigrated($resourcesMigrated);
+		$this->page->SetResourcesMigrated($progressCounts->MigratedCount);
+		MigrationSession::SetLastResourceRow($progressCounts->MigratedCount);
 	}
 
 	private function MigrateAccessories(Database $legacyDatabase, Database $currentDatabase)
@@ -573,7 +575,8 @@ class MigrationPresenter
 		$progressCounts = $this->GetProgressCounts($getLegacyCount, $getMigratedCount);
 
 		$this->page->SetProgress($progressCounts);
-		$this->page->SetAccessoriesMigrated($accessoriesMigrated);
+		$this->page->SetAccessoriesMigrated($progressCounts->MigratedCount);
+		MigrationSession::SetLastAccessoryRow($progressCounts->MigratedCount);
 	}
 
 	private function MigrateGroups(Database $legacyDatabase, Database $currentDatabase)
@@ -619,7 +622,8 @@ class MigrationPresenter
 		$progressCounts = $this->GetProgressCounts($getLegacyCount, $getMigratedCount);
 		$this->page->SetProgress($progressCounts);
 
-		$this->page->SetGroupsMigrated($groupsMigrated);
+		$this->page->SetGroupsMigrated($progressCounts->MigratedCount);
+		MigrationSession::SetLastGroupRow($progressCounts->MigratedCount);
 	}
 
 	private function MigrateUsers(Database $legacyDatabase, Database $currentDatabase)
@@ -713,7 +717,8 @@ class MigrationPresenter
 		$progressCounts = $this->GetProgressCounts($getLegacyCount, $getMigratedCount);
 		$this->page->SetProgress($progressCounts);
 
-		$this->page->SetUsersMigrated($usersMigrated);
+		$this->page->SetUsersMigrated($progressCounts->MigratedCount);
+		MigrationSession::SetLastUserRow($progressCounts->MigratedCount);
 	}
 
 	private function MigrateReservations(Database $legacyDatabase, Database $currentDatabase)
@@ -893,7 +898,10 @@ class MigrationPresenter
 		$progressCounts = $this->GetProgressCounts($getLegacyCount, $getMigratedCount);
 		$this->page->SetProgress($progressCounts);
 
-		$this->page->SetReservationsMigrated($reservationsMigrated);
+		Log::Debug('There are %s total legacy reservations and %s already migrated. Progress is %s', $progressCounts->LegacyCount, $progressCounts->MigratedCount, $progressCounts->PercentComplete);
+
+		$this->page->SetReservationsMigrated($progressCounts->MigratedCount);
+		MigrationSession::SetLastReservationRow($progressCounts->MigratedCount);
 	}
 
 	private function CreateAvailableTimeSlots($start, $end, $interval)
