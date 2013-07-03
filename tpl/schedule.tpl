@@ -210,7 +210,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				summaryPopupUrl: "{$Path}ajax/respopup.php",
 				setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
 				cookieName: "{$CookieName}",
-				cookieValue: "{$CookieValue}"
+				cookieValue: "{$CookieValue}",
+				scheduleId:"{$ScheduleId}"
 			};
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});

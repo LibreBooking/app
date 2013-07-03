@@ -1811,16 +1811,23 @@ limitations under the License.
     };
 
     SaveStateHandler.prototype.getStateFromStorage = function() {
-      if (this.tree_widget.options.onGetStateFromStorage) {
-        return this.tree_widget.options.onGetStateFromStorage();
-      } else if (typeof localStorage !== "undefined" && localStorage !== null) {
-        return localStorage.getItem(this.getCookieName());
-      } else if ($.cookie) {
-        $.cookie.raw = true;
-        return $.cookie(this.getCookieName());
-      } else {
-        return null;
-      }
+//      if (this.tree_widget.options.onGetStateFromStorage) {
+//        return this.tree_widget.options.onGetStateFromStorage();
+//      } else if (typeof localStorage !== "undefined" && localStorage !== null) {
+//        return localStorage.getItem(this.getCookieName());
+//      } else if ($.cookie) {
+//        $.cookie.raw = true;
+//        return $.cookie(this.getCookieName());
+//      } else {
+//        return null;
+//      }
+
+		if ($.cookie) {
+		$.cookie.raw = true;
+		return $.cookie(this.getCookieName());
+	  } else {
+		return null;
+	  }
     };
 
     SaveStateHandler.prototype.getState = function() {

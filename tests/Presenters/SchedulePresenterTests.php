@@ -75,12 +75,12 @@ class SchedulePresenterTests extends TestBase
 		->method('ShowInaccessibleResources')
 		->will($this->returnValue($this->showInaccessibleResources));
 
-		$page
+		$pageBuilder
 		->expects($this->any())
 		->method('GetGroupId')
 		->will($this->returnValue($groupId));
 
-		$page
+		$pageBuilder
 		->expects($this->any())
 		->method('GetResourceId')
 		->will($this->returnValue($resourceId));

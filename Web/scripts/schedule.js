@@ -233,7 +233,7 @@ function Schedule(opts, resourceGroups)
 
 		groupDiv.tree({
 			data: resourceGroups,
-			saveState: true,
+			saveState: 'tree' + options.scheduleId,
 
 			onCreateLi: function (node, $li)
 			{

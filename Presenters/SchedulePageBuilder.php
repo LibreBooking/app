@@ -62,6 +62,10 @@ interface ISchedulePageBuilder
 	public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout);
 
 	public function BindResourceGroups(ISchedulePage $page, ResourceGroupTree $resourceGroupTree);
+
+	public function GetGroupId($scheduleId, ISchedulePage $page);
+
+	public function GetResourceId($scheduleId, ISchedulePage $page);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
@@ -97,7 +101,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		}
 		elseif (!empty($user->ScheduleId))
 		{
-			$schedule = $this->GetSchedule($schedules,$user->ScheduleId);
+			$schedule = $this->GetSchedule($schedules, $user->ScheduleId);
 			if ($schedule->GetId() != $user->ScheduleId)
 			{
 				$schedule = $this->GetDefaultSchedule($schedules);
@@ -119,7 +123,9 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		$userTimezone = $user->Timezone;
 		$providedDate = $page->GetSelectedDate();
 		$date = empty($providedDate) ? Date::Now() : new Date($providedDate, $userTimezone);
-		$selectedDate = $date->ToTimezone($userTimezone)->GetDate();
+		$selectedDate = $date
+						->ToTimezone($userTimezone)
+						->GetDate();
 		$selectedWeekday = $selectedDate->Weekday();
 
 		$scheduleLength = $schedule->GetDaysVisible();
@@ -179,7 +185,12 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		}
 
 		// we don't want to display the last date in the range (it will be midnight of the last day)
-		$adjustedDateRange = new DateRange($dateRange->GetBegin()->ToTimezone($userSession->Timezone), $dateRange->GetEnd()->ToTimezone($userSession->Timezone)->AddDays(-1));
+		$adjustedDateRange = new DateRange($dateRange
+										   ->GetBegin()
+										   ->ToTimezone($userSession->Timezone), $dateRange
+																				 ->GetEnd()
+																				 ->ToTimezone($userSession->Timezone)
+																				 ->AddDays(-1));
 
 		$page->SetDisplayDates($adjustedDateRange);
 
@@ -212,7 +223,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	}
 
 	/**
-	 * @param array[int]Schedule $schedules
+	 * @param array|Schedule[] $schedules
 	 * @return Schedule
 	 */
 	private function GetDefaultSchedule($schedules)
@@ -229,7 +240,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	}
 
 	/**
-	 * @param array[int]Schedule $schedules
+	 * @param array|Schedule[] $schedules
 	 * @param int $scheduleId
 	 * @return Schedule
 	 */
@@ -250,6 +261,63 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	public function BindResourceGroups(ISchedulePage $page, ResourceGroupTree $resourceGroupTree)
 	{
 		$page->SetResourceGroupTree($resourceGroupTree);
+	}
+
+	public function GetGroupId($scheduleId, ISchedulePage $page)
+	{
+		$groupId = $page->GetGroupId();
+		if (!empty($groupId))
+		{
+			return $groupId;
+		}
+
+		$cookie = $this->getTreeCookie($scheduleId);
+
+		if (!empty($cookie))
+		{
+			if (strpos($cookie, '-') === false)
+			{
+				return $groupId;
+			}
+		}
+
+		return null;
+	}
+
+	public function GetResourceId($scheduleId, ISchedulePage $page)
+	{
+		$resourceId = $page->GetResourceId();
+
+		if (!empty($resourceId))
+		{
+			return $resourceId;
+		}
+
+		$cookie = $this->getTreeCookie($scheduleId);
+
+		if (!empty($cookie))
+		{
+			if (strpos($cookie, '-') !== false)
+			{
+				$parts = explode('-', $cookie);
+				return $parts[2];
+			}
+		}
+
+		return null;
+	}
+
+	private function getTreeCookie($scheduleId)
+	{
+		$cookie = ServiceLocator::GetServer()
+				  ->GetCookie('tree' . $scheduleId);
+		if (!empty($cookie))
+		{
+			$val = json_decode($cookie, true);
+			return $val['selected_node'];
+		}
+
+		return null;
 	}
 }
 
