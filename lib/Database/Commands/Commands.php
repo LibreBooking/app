@@ -313,6 +313,17 @@ class AddResourceCommand extends SqlCommand
 	}
 }
 
+class AddResourceToGroupCommand extends SqlCommand
+{
+	public function __construct($resourceId, $groupId)
+		{
+			parent::__construct(Queries::ADD_RESOURCE_TO_GROUP);
+
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_ID, $groupId));
+		}
+}
+
 class AddSavedReportCommand extends SqlCommand
 {
 	public function __construct($reportName, $userId, Date $dateCreated, $serializedCriteria)

@@ -18,12 +18,25 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='scripts/css/jqtree.css,css/admin.css'}
 
-<h1>{translate key='ManageResources'}</h1>
+<h1>{translate key='ManageResourceGroups'}</h1>
 
 <div id="globalError" class="error" style="display:none"></div>
 <div class="admin">
 	<div class="title">
-	{translate key='AllResources'}
+		{translate key='ResourceGroups'}
+	</div>
+
+	<div>
+		<div id="group-tree"></div>
+		<div id="resource-list">
+			<ul>
+				{foreach from=$Resources item=resource}
+					<li class="resource-draggable" resource-name="{$resource->GetName()|escape:javascript}"
+						resource-id="{$resource->GetId()}">{$resource->GetName()}</li>
+				{/foreach}
+			</ul>
+		</div>
+		<div class="clear">&nbsp;</div>
 	</div>
 </div>
 
@@ -31,8 +44,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="renameDialog" class="dialog" style="display:none;" title="{translate key=Rename}">
 	<form id="renameForm" method="post">
-	{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
-								   style="width:250px" {formname key=RESOURCE_NAME} />
+		{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
+									   style="width:250px" {formname key=RESOURCE_NAME} />
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
@@ -49,7 +62,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<li>{translate key=DeleteResourceWarningPermissions}</li>
 			</ul>
 			<br/>
-		{translate key=DeleteResourceWarningReassign}
+			{translate key=DeleteResourceWarningReassign}
 		</div>
 
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
@@ -60,13 +73,26 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
+<script type="text/javascript" src="{$Path}scripts/admin/resource-groups.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/tree.jquery.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.cookie.js"></script>
 
 <script type="text/javascript">
 
-	$(document).ready(function() {
+	$(document).ready(function ()
+	{
+		var actions = {
+			addResource: '{ManageResourceGroupsActions::AddResource}'
+		};
+
+		var groupOptions = {
+			submitUrl: '{$smarty.server.SCRIPT_NAME}',
+			actions: actions
+		};
+
+		var groupManagement = new ResourceGroupManagement(groupOptions);
+		groupManagement.init({$ResourceGroups});
 	});
 
 </script>

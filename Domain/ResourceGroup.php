@@ -26,7 +26,7 @@ class ResourceGroupTree
 	private $references = array();
 
 	/**
-	 * @var array ResourceGroup[]
+	 * @var array|ResourceGroup[]
 	 */
 	private $groups = array();
 

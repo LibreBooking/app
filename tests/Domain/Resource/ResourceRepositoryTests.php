@@ -307,7 +307,9 @@ class ResourceRepositoryTests extends TestBase
 		$this->db->SetRow(1, $assignmentRows->Rows());
 
 		$resourceRepository = new ResourceRepository();
-		$groups = $resourceRepository->GetResourceGroups($scheduleId)->GetGroups();
+		$groups = $resourceRepository
+				  ->GetResourceGroups($scheduleId)
+				  ->GetGroups();
 
 		$getResourceGroupsCommand = new GetAllResourceGroupsCommand();
 		$getResourceGroupAssignments = new GetAllResourceGroupAssignmentsCommand($scheduleId);
@@ -328,6 +330,18 @@ class ResourceRepositoryTests extends TestBase
 
 		$this->assertEquals($getResourceGroupsCommand, $this->db->_Commands[0]);
 		$this->assertEquals($getResourceGroupAssignments, $this->db->_Commands[1]);
+	}
+
+	public function testAddsResourceToGroup()
+	{
+		$resourceId = 189282;
+		$groupId = 100;
+
+		$resourceRepository = new ResourceRepository();
+		$resourceRepository->AddResourceToGroup($resourceId, $groupId);
+
+		$addResourceToGroup = new AddResourceToGroupCommand($resourceId, $groupId);
+		$this->assertEquals($addResourceToGroup, $this->db->_LastCommand);
 	}
 }
 

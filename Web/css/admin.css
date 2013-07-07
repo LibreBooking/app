@@ -240,3 +240,30 @@ tr.pending {
 #removedGroups a {
 	background: url('../img/plus-button.png') no-repeat;
 }
+
+#group-tree {
+	width:auto;
+	float:left;
+}
+
+#resource-list
+{
+	width:auto;
+	float:right;
+}
+
+#resource-list, #group-tree {
+	font-size:12pt;
+}
+
+.resource-draggable {
+	cursor: pointer;
+}
+
+.drop-resource {
+	background-color: #fffcd3;
+}
+
+ul.jqtree-tree .group-resource .jqtree-title {
+	color:#111111;
+}

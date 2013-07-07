@@ -22,7 +22,27 @@ require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 interface IManageResourceGroupsPage extends IActionPage
-{}
+{
+	/**
+	 * @param ResourceGroupTree $resourceGroups
+	 */
+	public function BindResourceGroups(ResourceGroupTree $resourceGroups);
+
+	/**
+	 * @param BookableResource[] $resources
+	 */
+	public function BindResources($resources);
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId();
+
+	/**
+	 * @return int
+	 */
+	public function GetGroupId();
+}
 
 class ManageResourceGroupsPage extends ActionPage implements IManageResourceGroupsPage
 {
@@ -34,7 +54,7 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 	public function __construct()
 	{
 		parent::__construct('ManageGroups', 1);
-		$this->_presenter = new ManageResourceGroupsPresenter($this, new ResourceRepository());
+		$this->_presenter = new ManageResourceGroupsPresenter($this, ServiceLocator::GetServer()->GetUserSession(), new ResourceRepository());
 	}
 
 	public function ProcessPageLoad()
@@ -49,7 +69,7 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 	 */
 	public function ProcessAction()
 	{
-		// TODO: Implement ProcessAction() method.
+		$this->_presenter->ProcessAction();
 	}
 
 	/**
@@ -59,6 +79,35 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 	public function ProcessDataRequest($dataRequest)
 	{
 		// TODO: Implement ProcessDataRequest() method.
+	}
+
+	public function BindResourceGroups(ResourceGroupTree $resourceGroups)
+	{
+		$this->Set('ResourceGroups', json_encode($resourceGroups->GetGroups()));
+	}
+
+	/**
+	 * @param BookableResource[] $resources
+	 */
+	public function BindResources($resources)
+	{
+		$this->Set('Resources', $resources);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetGroupId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
 	}
 }
 

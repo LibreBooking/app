@@ -686,6 +686,10 @@ class Queries
 			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiday_reservations,
 		     @max_participants, @min_notice_time, @max_notice_time, @scheduleid, @admin_group_id)';
 
+	const ADD_RESOURCE_TO_GROUP = 'INSERT INTO
+			resource_group_assignment (resource_group_id, resource_id)
+			VALUES (@resourcegroupid, @resourceid)';
+
 	const SET_DEFAULT_SCHEDULE =
 			'UPDATE schedules
 		SET isdefault = 0

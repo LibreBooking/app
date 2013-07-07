@@ -268,6 +268,11 @@ class ResourceRepository implements IResourceRepository
 
 		return $tree;
 	}
+
+	public function AddResourceToGroup($resourceId, $groupId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new AddResourceToGroupCommand($resourceId, $groupId));
+	}
 }
 
 class AccessoryDto

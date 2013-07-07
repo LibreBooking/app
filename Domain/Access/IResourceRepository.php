@@ -72,5 +72,7 @@ interface IResourceRepository
 	 * @return ResourceGroupTree
 	 */
 	public function GetResourceGroups($scheduleId = null);
+
+	public function AddResourceToGroup($resourceId, $groupId);
 }
 ?>

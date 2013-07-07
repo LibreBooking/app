@@ -21,6 +21,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
+require_once(ROOT_DIR . 'Pages/Admin/ManageResourceGroupsPage.php');
+
+class ManageResourceGroupsActions
+{
+	const AddResource = 'AddResource';
+}
 
 class ManageResourceGroupsPresenter extends ActionPresenter
 {
@@ -36,6 +42,7 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 
 	public function __construct(
 		IManageResourceGroupsPage $page,
+		UserSession $user,
 		IResourceRepository $resourceRepository)
 	{
 		parent::__construct($page);
@@ -43,26 +50,33 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 		$this->page = $page;
 		$this->resourceRepository = $resourceRepository;
 
-//		$this->AddAction(ManageResourcesActions::ActionAdd, 'Add');
+		$this->AddAction(ManageResourceGroupsActions::AddResource, 'AddResource');
 
 	}
 
 	public function PageLoad()
 	{
-
+		$this->page->BindResourceGroups($this->resourceRepository->GetResourceGroups());
+		$this->page->BindResources($this->resourceRepository->GetResourceList());
 	}
 
 	/**
 	 * @internal should only be used for testing
 	 */
-	public function Add()
+	public function AddResource()
 	{
+		$resourceId = $this->page->GetResourceId();
+		$groupId = $this->page->GetGroupId();
+
+		Log::Debug('Adding resource to group. ResourceId=%s, GroupId=%s', $resourceId, $groupId);
+
+		$this->resourceRepository->AddResourceToGroup($resourceId, $groupId);
 	}
 
 	/**
 	 * @internal should only be used for testing
 	 */
-	public function Delete()
+	public function DeleteResource()
 	{
 
 	}

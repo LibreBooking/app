@@ -458,6 +458,7 @@ class en_us extends Language
 		$strings['Success'] = 'Success';
 		$strings['Participant'] = 'Participant';
 		$strings['ResourceFilter'] = 'Resource Filter';
+		$strings['ResourceGroups'] = 'Resource Groups';
 		// End Strings
 
 		// Install
@@ -580,6 +581,7 @@ class en_us extends Language
 		$strings['Group'] = 'Group';
 		$strings['ManageConfiguration'] = 'Application Configuration';
 		$strings['LookAndFeel'] = 'Look and Feel';
+		$strings['ManageResourceGroups'] = 'Resource Groups';
 		// End Page Titles
 
 		// Day representations
