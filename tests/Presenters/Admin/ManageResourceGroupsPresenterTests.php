@@ -98,6 +98,29 @@ class ManageResourceGroupsPresenterTests extends TestBase
 
 		$this->presenter->AddResource();
 	}
+
+	public function testRemovesResourceFromGroup()
+	{
+		$resourceId = 1;
+		$groupId = 2;
+
+		$this->page
+				->expects($this->atLeastOnce())
+		->method('GetResourceId')
+		->will($this->returnValue($resourceId));
+
+		$this->page
+				->expects($this->atLeastOnce())
+		->method('GetGroupId')
+		->will($this->returnValue($groupId));
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('RemoveResourceFromGroup')
+		->with($this->equalTo($resourceId), $this->equalTo($groupId));
+
+		$this->presenter->RemoveResource();
+	}
 }
 
 ?>

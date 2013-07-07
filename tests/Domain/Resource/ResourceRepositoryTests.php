@@ -340,8 +340,20 @@ class ResourceRepositoryTests extends TestBase
 		$resourceRepository = new ResourceRepository();
 		$resourceRepository->AddResourceToGroup($resourceId, $groupId);
 
-		$addResourceToGroup = new AddResourceToGroupCommand($resourceId, $groupId);
-		$this->assertEquals($addResourceToGroup, $this->db->_LastCommand);
+		$expectedCommand = new AddResourceToGroupCommand($resourceId, $groupId);
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
+
+	public function testRemovesResourceFromGroup()
+	{
+		$resourceId = 189282;
+		$groupId = 100;
+
+		$resourceRepository = new ResourceRepository();
+		$resourceRepository->RemoveResourceFromGroup($resourceId, $groupId);
+
+		$expectedCommand = new RemoveResourceFromGroupCommand($resourceId, $groupId);
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
 	}
 }
 

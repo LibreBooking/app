@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 interface IResourceRepository
 {
@@ -34,15 +34,15 @@ interface IResourceRepository
 	 */
 	public function LoadById($resourceId);
 
-    /**
-     * @param string $publicId
-     * @return BookableResource
-     */
-    public function LoadByPublicId($publicId);
+	/**
+	 * @param string $publicId
+	 * @return BookableResource
+	 */
+	public function LoadByPublicId($publicId);
 
 	/**
 	 * @param BookableResource $resource
-     * @return int ID of created resource
+	 * @return int ID of created resource
 	 */
 	public function Add(BookableResource $resource);
 
@@ -73,6 +73,17 @@ interface IResourceRepository
 	 */
 	public function GetResourceGroups($scheduleId = null);
 
+	/**
+	 * @param int $resourceId
+	 * @param int $groupId
+	 */
 	public function AddResourceToGroup($resourceId, $groupId);
+
+	/**
+	 * @param int $resourceId
+	 * @param int $groupId
+	 */
+	public function RemoveResourceFromGroup($resourceId, $groupId);
 }
+
 ?>

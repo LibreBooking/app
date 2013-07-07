@@ -1445,6 +1445,16 @@ class RemoveReservationUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 	}
 }
+class RemoveResourceFromGroupCommand extends SqlCommand
+{
+	public function __construct($resourceId, $groupId)
+	{
+		parent::__construct(Queries::REMOVE_RESOURCE_FROM_GROUP);
+
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_ID, $groupId));
+	}
+}
 
 class ReportingCommand extends SqlCommand
 {

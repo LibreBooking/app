@@ -83,7 +83,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	$(document).ready(function ()
 	{
 		var actions = {
-			addResource: '{ManageResourceGroupsActions::AddResource}'
+			addResource: '{ManageResourceGroupsActions::AddResource}',
+			removeResource: '{ManageResourceGroupsActions::RemoveResource}'
 		};
 
 		var groupOptions = {

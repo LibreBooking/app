@@ -267,3 +267,10 @@ tr.pending {
 ul.jqtree-tree .group-resource .jqtree-title {
 	color:#111111;
 }
+
+.remove-resource {
+	display:inline;
+	width:16px;
+	margin-left:10px;
+	background: url(../img/minus-circle.png) no-repeat 50%;
+}

@@ -26,6 +26,7 @@ require_once(ROOT_DIR . 'Pages/Admin/ManageResourceGroupsPage.php');
 class ManageResourceGroupsActions
 {
 	const AddResource = 'AddResource';
+	const RemoveResource = 'RemoveResource';
 }
 
 class ManageResourceGroupsPresenter extends ActionPresenter
@@ -51,6 +52,7 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 		$this->resourceRepository = $resourceRepository;
 
 		$this->AddAction(ManageResourceGroupsActions::AddResource, 'AddResource');
+		$this->AddAction(ManageResourceGroupsActions::RemoveResource, 'RemoveResource');
 
 	}
 
@@ -71,6 +73,19 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 		Log::Debug('Adding resource to group. ResourceId=%s, GroupId=%s', $resourceId, $groupId);
 
 		$this->resourceRepository->AddResourceToGroup($resourceId, $groupId);
+	}
+
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function RemoveResource()
+	{
+		$resourceId = $this->page->GetResourceId();
+		$groupId = $this->page->GetGroupId();
+
+		Log::Debug('Removing resource from group. ResourceId=%s, GroupId=%s', $resourceId, $groupId);
+
+		$this->resourceRepository->RemoveResourceFromGroup($resourceId, $groupId);
 	}
 
 	/**

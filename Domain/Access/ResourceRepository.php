@@ -228,8 +228,10 @@ class ResourceRepository implements IResourceRepository
 
 	public function GetResourceGroups($scheduleId = ResourceRepository::ALL_SCHEDULES)
 	{
-		$groups = ServiceLocator::GetDatabase()->Query(new GetAllResourceGroupsCommand());
-		$resources = ServiceLocator::GetDatabase()->Query(new GetAllResourceGroupAssignmentsCommand($scheduleId));
+		$groups = ServiceLocator::GetDatabase()
+				  ->Query(new GetAllResourceGroupsCommand());
+		$resources = ServiceLocator::GetDatabase()
+					 ->Query(new GetAllResourceGroupAssignmentsCommand($scheduleId));
 
 		$_groups = array();
 		$_assignments = array();
@@ -271,7 +273,14 @@ class ResourceRepository implements IResourceRepository
 
 	public function AddResourceToGroup($resourceId, $groupId)
 	{
-		ServiceLocator::GetDatabase()->Execute(new AddResourceToGroupCommand($resourceId, $groupId));
+		ServiceLocator::GetDatabase()
+		->Execute(new AddResourceToGroupCommand($resourceId, $groupId));
+	}
+
+	public function RemoveResourceFromGroup($resourceId, $groupId)
+	{
+		ServiceLocator::GetDatabase()
+		->Execute(new RemoveResourceFromGroupCommand($resourceId, $groupId));
 	}
 }
 

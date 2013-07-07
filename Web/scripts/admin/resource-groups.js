@@ -3,7 +3,8 @@ function ResourceGroupManagement(opts)
 	var options = opts;
 
 	var elements = {
-		groupDiv: $('#group-tree')
+		groupDiv: $('#group-tree'),
+		deleteResource: $('.remove-resource')
 	};
 
 	ResourceGroupManagement.prototype.init = function (groups)
@@ -18,12 +19,14 @@ function ResourceGroupManagement(opts)
 			saveState: false,
 			dragAndDrop: true,
 			selectable: false,
+			autoOpen: true,
 
 			onCreateLi: function (node, $li)
 			{
 				if (node.type == 'resource')
 				{
-					$li.addClass('group-resource')
+					$li.addClass('group-resource');
+					$li.find('.jqtree-title').after('<div class="remove-resource" node-id="' + node.id +'">&nbsp;</div>');
 				}
 				else
 				{
@@ -75,6 +78,13 @@ function ResourceGroupManagement(opts)
 					console.log('previous_parent', event.move_info.previous_parent);
 				});
 
+		elements.groupDiv.delegate('.remove-resource', 'click', function (e)
+		{
+			var nodeId = $(this).attr('node-id');
+			var resourceNode = elements.groupDiv.tree('getNodeById', nodeId);
+			removeResource(resourceNode);
+		});
+
 		$('.resource-draggable').draggable({ revert: true });
 
 	};
@@ -84,7 +94,7 @@ function ResourceGroupManagement(opts)
 		var resourceId = resourceElement.attr('resource-id');
 		if (canAddResource(targetNode, resourceId))
 		{
-			PerformAsyncPost(getAddResourceUrl(targetNode.id, resourceId), {done:function(data){}});
+			PerformAsyncPost(getResourceActionUrl(targetNode.id, resourceId, opts.actions.addResource), {done:function(data){}});
 
 			elements.groupDiv.tree(
 					'appendNode',
@@ -96,6 +106,14 @@ function ResourceGroupManagement(opts)
 					},
 					targetNode);
 		}
+	}
+
+	function removeResource(resourceNode)
+	{
+		var resourceId = resourceNode.resource_id;
+		PerformAsyncPost(getResourceActionUrl(resourceNode.group_id, resourceId, opts.actions.removeResource), {done:function(data){}});
+
+		elements.groupDiv.tree('removeNode', resourceNode);
 	}
 
 	function canAddResource(targetNode, resourceId)
@@ -111,17 +129,9 @@ function ResourceGroupManagement(opts)
 		return canAdd;
 	}
 
-	var getAddResourceUrl = function (targetGroupId, resourceId)
+	var getResourceActionUrl = function (targetGroupId, resourceId, action)
 	{
-		return options.submitUrl + "?gid=" + targetGroupId + "&rid=" +resourceId + "&action=" + opts.actions.addResource;
-	};
-
-	var getSubmitCallback = function (action)
-	{
-		return function ()
-		{
-			return options.submitUrl + "?rid=" + getActiveResourceId() + "&action=" + action;
-		};
+		return options.submitUrl + "?gid=" + targetGroupId + "&rid=" +resourceId + "&action=" + action;
 	};
 
 	var handleAddError = function (result)
