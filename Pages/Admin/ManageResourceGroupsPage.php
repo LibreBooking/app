@@ -42,6 +42,21 @@ interface IManageResourceGroupsPage extends IActionPage
 	 * @return int
 	 */
 	public function GetGroupId();
+
+	/**
+	 * @return string
+	 */
+	public function GetGroupName();
+
+	/**
+	 * @return int
+	 */
+	public function GetParentId();
+
+	/**
+	 * @param ResourceGroup $newGroup
+	 */
+	public function BindNewGroup(ResourceGroup $newGroup);
 }
 
 class ManageResourceGroupsPage extends ActionPage implements IManageResourceGroupsPage
@@ -54,7 +69,8 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 	public function __construct()
 	{
 		parent::__construct('ManageGroups', 1);
-		$this->_presenter = new ManageResourceGroupsPresenter($this, ServiceLocator::GetServer()->GetUserSession(), new ResourceRepository());
+		$this->_presenter = new ManageResourceGroupsPresenter($this, ServiceLocator::GetServer()
+																	 ->GetUserSession(), new ResourceRepository());
 	}
 
 	public function ProcessPageLoad()
@@ -108,6 +124,27 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 	public function GetGroupId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetGroupName()
+	{
+		return $this->GetForm(FormKeys::GROUP_NAME);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetParentId()
+	{
+		return $this->GetForm(FormKeys::PARENT_ID);
+	}
+
+	public function BindNewGroup(ResourceGroup $newGroup)
+	{
+		$this->SetJson(json_encode($newGroup));
 	}
 }
 

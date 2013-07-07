@@ -37,7 +37,8 @@ class AddAccountActivationCommand extends SqlCommand
 		parent::__construct(Queries::ADD_ACCOUNT_ACTIVATION);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::ACTIVATION_CODE, $activationCode));
-		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()
+																		->ToDatabase()));
 	}
 }
 
@@ -85,7 +86,8 @@ class AddBlackoutCommand extends SqlCommand
 	public function __construct($userId, $resourceId, $title)
 	{
 		parent::__construct(Queries::ADD_BLACKOUT_SERIES);
-		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()
+																		->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));
@@ -313,15 +315,26 @@ class AddResourceCommand extends SqlCommand
 	}
 }
 
+class AddResourceGroupCommand extends SqlCommand
+{
+	public function __construct($groupName, $parentId = null)
+	{
+		parent::__construct(Queries::ADD_RESOURCE_GROUP);
+
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_ID, empty($parentId) ? null : $parentId));
+	}
+}
+
 class AddResourceToGroupCommand extends SqlCommand
 {
 	public function __construct($resourceId, $groupId)
-		{
-			parent::__construct(Queries::ADD_RESOURCE_TO_GROUP);
+	{
+		parent::__construct(Queries::ADD_RESOURCE_TO_GROUP);
 
-			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
-			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_ID, $groupId));
-		}
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_ID, $groupId));
+	}
 }
 
 class AddSavedReportCommand extends SqlCommand
@@ -1364,7 +1377,8 @@ class RegisterUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
-		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()
+																		->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
@@ -1445,6 +1459,7 @@ class RemoveReservationUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 	}
 }
+
 class RemoveResourceFromGroupCommand extends SqlCommand
 {
 	public function __construct($resourceId, $groupId)
@@ -1727,7 +1742,8 @@ class UpdateUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));
 		$this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId));
 		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezoneName));
-		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, Date::Now()->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, Date::Now()
+																		 ->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastLogin));
 		$this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$allowCalendarSubscription));
 		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));

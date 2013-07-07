@@ -355,6 +355,26 @@ class ResourceRepositoryTests extends TestBase
 		$expectedCommand = new RemoveResourceFromGroupCommand($resourceId, $groupId);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
 	}
+
+	public function testAddsResourceGroup()
+	{
+		$name = 'gn';
+		$parentId = 123;
+
+		$group = ResourceGroup::Create($name, $parentId);
+
+		$id = 99292;
+
+		$this->db->_ExpectedInsertId = $id;
+
+		$resourceRepository = new ResourceRepository();
+		$addedGroup = $resourceRepository->AddResourceGroup($group);
+
+		$expectedCommand = new AddResourceGroupCommand($name, $parentId);
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+
+		$this->assertEquals($id, $addedGroup->id);
+	}
 }
 
 ?>

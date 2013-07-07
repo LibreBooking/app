@@ -84,6 +84,12 @@ interface IResourceRepository
 	 * @param int $groupId
 	 */
 	public function RemoveResourceFromGroup($resourceId, $groupId);
+
+	/**
+	 * @param ResourceGroup $group
+	 * @return ResourceGroup
+	 */
+	public function AddResourceGroup(ResourceGroup $group);
 }
 
 ?>

@@ -4,15 +4,14 @@ function ResourceGroupManagement(opts)
 
 	var elements = {
 		groupDiv: $('#group-tree'),
-		deleteResource: $('.remove-resource')
+		deleteResource: $('.remove-resource'),
+		addGroupButton: $('#btnAddGroup'),
+		addGroupForm: $('#addGroupForm')
 	};
 
 	ResourceGroupManagement.prototype.init = function (groups)
 	{
-//		$(".days").watermark('days');
-//		$(".hours").watermark('hrs');
-//		$(".minutes").watermark('mins');
-
+		$(".new-group").watermark(opts.newGroupText);
 
 		elements.groupDiv.tree({
 			data: groups,
@@ -87,6 +86,12 @@ function ResourceGroupManagement(opts)
 
 		$('.resource-draggable').draggable({ revert: true });
 
+		elements.addGroupButton.click(function(e){
+			e.preventDefault();
+			elements.addGroupForm.submit();
+		});
+
+		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit:onBeforeAddGroup});
 	};
 
 	function addResource(targetNode, resourceElement)
@@ -129,9 +134,37 @@ function ResourceGroupManagement(opts)
 		return canAdd;
 	}
 
+	function onGroupAdded(data)
+	{
+		var parentNode = null;
+
+		if (data.parent_id && data.parent_id != null && data.parent_id != '')
+		{
+			parentNode = elements.groupDiv.tree('getNodeById', data.parent_id);
+		}
+		elements.groupDiv.tree('appendNode', JSON.parse(data), parentNode);
+	}
+
+	function onBeforeAddGroup(arr, $form, options)
+	{
+		var newGroup = $form.find('.new-group').first();
+		var groupName = $.trim(newGroup.val());
+
+		if(groupName != ''){
+			$form.find('.new-group').val('');
+			return true;
+		}
+
+		return false;
+	}
+
 	var getResourceActionUrl = function (targetGroupId, resourceId, action)
 	{
 		return options.submitUrl + "?gid=" + targetGroupId + "&rid=" +resourceId + "&action=" + action;
+	};
+
+	var defaultSubmitCallback = function (form) {
+		return function() {return options.submitUrl + "?action=" + form.attr('ajaxAction');};
 	};
 
 	var handleAddError = function (result)

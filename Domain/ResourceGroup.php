@@ -43,7 +43,7 @@ class ResourceGroupTree
 		else
 		{
 			// It was not a root node, add this node as a reference in the parent.
-			$this->references[$parent_id]->addChild($group);
+			$this->references[$parent_id]->AddChild($group);
 		}
 	}
 
@@ -51,7 +51,7 @@ class ResourceGroupTree
 	{
 		if (array_key_exists($assignment->group_id, $this->references))
 		{
-			$this->references[$assignment->group_id]->addResource($assignment);
+			$this->references[$assignment->group_id]->AddResource($assignment);
 		}
 	}
 
@@ -103,7 +103,7 @@ class ResourceGroup
 
 	public function __construct($id, $name, $parentId = null)
 	{
-		$this->id = $id;
+		$this->WithId($id);
 		$this->name = $name;
 		$this->label = $name;
 		$this->parent_id = $parentId;
@@ -112,7 +112,7 @@ class ResourceGroup
 	/**
 	 * @param $resourceGroup ResourceGroup
 	 */
-	public function addChild(ResourceGroup &$resourceGroup)
+	public function AddChild(ResourceGroup &$resourceGroup)
 	{
 		$resourceGroup->parent_id = $this->id;
 		$this->children[] = $resourceGroup;
@@ -121,9 +121,27 @@ class ResourceGroup
 	/**
 	 * @param $assignment ResourceGroupAssignment
 	 */
-	public function addResource(ResourceGroupAssignment &$assignment)
+	public function AddResource(ResourceGroupAssignment &$assignment)
 	{
 		$this->children[] = $assignment;
+	}
+
+	/**
+	 * @param string $groupName
+	 * @param int $parentId
+	 * @return ResourceGroup
+	 */
+	public static function Create($groupName, $parentId = null)
+	{
+		return new ResourceGroup(null, $groupName, $parentId);
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function WithId($id)
+	{
+		$this->id = $id;
 	}
 }
 

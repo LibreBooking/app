@@ -684,3 +684,7 @@ ul.indented li {
 .center {
 	text-align: center;
 }
+
+.image-button {
+	cursor: pointer;
+}

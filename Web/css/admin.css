@@ -252,7 +252,7 @@ tr.pending {
 	float:right;
 }
 
-#resource-list, #group-tree {
+#resource-list, #group-tree, #new-group {
 	font-size:12pt;
 }
 

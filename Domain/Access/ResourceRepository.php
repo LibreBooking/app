@@ -282,6 +282,16 @@ class ResourceRepository implements IResourceRepository
 		ServiceLocator::GetDatabase()
 		->Execute(new RemoveResourceFromGroupCommand($resourceId, $groupId));
 	}
+
+	public function AddResourceGroup(ResourceGroup $group) {
+
+		$id = ServiceLocator::GetDatabase()
+				->ExecuteInsert(new AddResourceGroupCommand($group->name, $group->parent_id));
+
+		$group->WithId($id);
+
+		return $group;
+	}
 }
 
 class AccessoryDto

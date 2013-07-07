@@ -25,6 +25,7 @@ require_once(ROOT_DIR . 'Pages/Admin/ManageResourceGroupsPage.php');
 
 class ManageResourceGroupsActions
 {
+	const AddGroup = 'AddGroup';
 	const AddResource = 'AddResource';
 	const RemoveResource = 'RemoveResource';
 }
@@ -53,6 +54,7 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 
 		$this->AddAction(ManageResourceGroupsActions::AddResource, 'AddResource');
 		$this->AddAction(ManageResourceGroupsActions::RemoveResource, 'RemoveResource');
+		$this->AddAction(ManageResourceGroupsActions::AddGroup, 'AddGroup');
 
 	}
 
@@ -91,9 +93,13 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 	/**
 	 * @internal should only be used for testing
 	 */
-	public function DeleteResource()
+	public function AddGroup()
 	{
-
+		$groupName = $this->page->GetGroupName();
+		$parentId = $this->page->GetParentId();
+		Log::Debug('Adding new group. GroupName=%s, ParentId=%s', $groupName, $parentId);
+		$addedGroup = $this->resourceRepository->AddResourceGroup(ResourceGroup::Create($groupName,$parentId));
+		$this->page->BindNewGroup($addedGroup);
 	}
 
 	/**

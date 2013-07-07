@@ -459,6 +459,7 @@ class en_us extends Language
 		$strings['Participant'] = 'Participant';
 		$strings['ResourceFilter'] = 'Resource Filter';
 		$strings['ResourceGroups'] = 'Resource Groups';
+		$strings['AddNewGroup'] = 'Add a new group';
 		// End Strings
 
 		// Install

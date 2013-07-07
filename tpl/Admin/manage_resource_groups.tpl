@@ -27,6 +27,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div>
+		<div id="new-group">
+			<form method="post" id="addGroupForm" ajaxAction="{ManageResourceGroupsActions::AddGroup}">
+				<input type="text" name="{FormKeys::GROUP_NAME}" class="textbox new-group" size="30"/>
+				<input type="hidden" name="{FormKeys::PARENT_ID}" />
+				{html_image src="plus-circle.png" class="image-button" id="btnAddGroup"}
+			</form>
+		</div>
 		<div id="group-tree"></div>
 		<div id="resource-list">
 			<ul>
@@ -89,7 +96,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		var groupOptions = {
 			submitUrl: '{$smarty.server.SCRIPT_NAME}',
-			actions: actions
+			actions: actions,
+			newGroupText: '{translate key=AddNewGroup}'
 		};
 
 		var groupManagement = new ResourceGroupManagement(groupOptions);

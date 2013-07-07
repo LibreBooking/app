@@ -16,7 +16,6 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 
 	formElement.submit(function ()
 	{
-
 		var submitOptions = {
 			url: urlCallback(formElement),
 			beforeSubmit: opts.onBeforeSubmit,
@@ -25,7 +24,6 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 			target: opts.target,
 			success: function (responseText, statusText, xhr, form)
 			{
-
 				formElement.find('.indicator').hide();
 				formElement.find('button').show();
 
