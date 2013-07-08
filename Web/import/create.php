@@ -2,6 +2,7 @@
 /**
 Copyright 2012 Alois Schloegl, IST Austria
 Copyright 2012 Moritz Schepp, IST Austria
+Copyright 2013 Patrick Meidl, IST Austria
 
 This file is part of phpScheduleIt.
 
@@ -58,7 +59,7 @@ CREATE
 
 if (!$enabled) {
 	header('HTTP/1.1 406 Not Acceptable', true, 406);
-	print json_encode(array('message' => "iCal import is not enabled.<br />"));
+	print json_encode(array('message' => "iCal import is not enabled"));
 	return;
 }
 
@@ -67,13 +68,12 @@ $params = array(
 	'starts_at' => null,
 	'ends_at' => null,
 	'summary' => null,
-	'contact_info' => null,
 );
 
 foreach ($params AS $key => $val) {
 	if (!$_REQUEST[$key]) {
 		header('HTTP/1.1 406 Not Acceptable', true, 406);
-		print json_encode(array('message' => "$key has to be set<br />"));
+		print json_encode(array('message' => "$key has to be set"));
 		return;
 	}
 }
@@ -93,6 +93,7 @@ $ends_at      = $_REQUEST['ends_at'];
 $title        = $_REQUEST['summary'];
 $description  = $_REQUEST['description'];
 $contact_info = trim($_REQUEST['contact_info']);
+$rid          = trim($_REQUEST['rid']);
 
 ##$regexp_email = firstname.lastname@aaa.bbb.com;
 $regexp_email = "/^[^0-9][A-z0-9_]+([.][A-z0-9_]+)*[@][A-z0-9_]+([.][A-z0-9_]+)*[.][A-z]{2,4}$/";
@@ -118,7 +119,20 @@ $user_session->Timezone = 'UTC';
  	resources
  *************************************************/
 $resourceRepository = new ResourceRepository();
-$resource = $resourceRepository->LoadByContactInfo($contact_info);
+if ($contact_info && $rid) {
+        header('HTTP/1.1 406 Not Acceptable', true, 406);
+        print json_encode(array('message' => "You must not set both contact_info and rid"));
+        return;
+}
+if ($contact_info) {
+	$resource = $resourceRepository->LoadByContactInfo($contact_info);
+} elseif ($rid) {
+	$resource = $resourceRepository->LoadByPublicId($rid);
+} else {
+        header('HTTP/1.1 406 Not Acceptable', true, 406);
+        print json_encode(array('message' => "contact_info or rid has to be set"));
+        return;
+}
 
 
 /*************************************************

@@ -2,6 +2,7 @@
 /*
 Copyright 2012 Alois Schloegl, IST Austria
 Copyright 2012 Moritz Schepp, IST Austria
+Copyright 2013 Patrick Meidl, IST Austria
 
 This file is part of phpScheduleIt.
 
@@ -30,7 +31,7 @@ $enabled  = $conf['settings']['ics']['import'];
 
 if (!$enabled) {
         header('HTTP/1.1 406 Not Acceptable', true, 406);
-        print json_encode(array('message' => "iCal import is not enabled.<br />"));
+        print json_encode(array('message' => "iCal import is not enabled"));
         return;
 }
 
@@ -61,7 +62,6 @@ $params = array(
         'ends_at' => null,
         'summary' => null,
         'description' => null,
-        'contact_info' => null,
 );
 $params = array_merge($params, $_REQUEST);
 
@@ -76,7 +76,7 @@ if ( $ikey != NULL
 foreach (array('rn', 'username') AS $key) {
   if (!$params[$key]) {
     header('HTTP/1.1 406 Not Acceptable', true, 406);
-    print json_encode(array('message' => "$key has to be set<br />"));
+    print json_encode(array('message' => "$key has to be set"));
     return;
   }
 }
@@ -92,8 +92,20 @@ if ($user instanceof NullUser) {
 
 $user_session = new UserSession($user->Id());
 
+// load resource by contact_info or rid
 $resourceRepository = new ResourceRepository();
-$resource = $resourceRepository->LoadByContactInfo($params['contact_info']);
+$contact_info = trim($_REQUEST['contact_info']);
+$rid = trim($_REQUEST['rid']);
+if ($contact_info && $rid) {
+        header('HTTP/1.1 406 Not Acceptable', true, 406);
+        print json_encode(array('message' => "You must not set both contact_info and rid"));
+        return;
+}
+if ($contact_info) {
+	$resource = $resourceRepository->LoadByContactInfo($contact_info);
+} elseif ($rid) {
+	$resource = $resourceRepository->LoadByPublicId($rid);
+}
 
 $updateAction = ReservationAction::Update;
 $persistenceFactory = new ReservationPersistenceFactory();
@@ -115,11 +127,6 @@ if (!$series) {
 
 
 $series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-
-if ($params['contact_info'])
-{
-        $resource = $resourceRepository->LoadByContactInfo($params['contact_info']);
-}
 
 if ($params['starts_at'] || $params['ends_at'])
 {

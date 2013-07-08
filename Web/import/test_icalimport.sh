@@ -32,7 +32,7 @@ done;
 
 
 # internal key to protect communication
-$URL="https://intranet.ist.local/scheduleit3/Web"
+URL="https://intranet.ist.local/scheduleit3/Web"
 IKEY=
 USER=`whoami`
 
@@ -43,8 +43,8 @@ if [ $# -eq 0 ]; then
 elif [ $1 = 'create' ]; then 
     curl -k -i \
 	-F "username=$USER" \
-	-F "starts_at=2012-10-14 10:00:00" \
-	-F "ends_at=2012-10-14 11:00:00" \
+	-F "starts_at=2013-03-14 10:00:00" \
+	-F "ends_at=2013-03-14 11:00:00" \
 	-F "summary=Create successful" \
 	-F "description=Really great " \
 	-F "contact_info=test@room.ist.ac.at" \
@@ -64,14 +64,23 @@ elif [ $1 = 'update' ]; then
     curl -k -i \
         -F "rn=5075292d1e3a3" \
         -F "username=$USER" \
-	-F "starts_at=2012-10-17 12:00:00" \
-	-F "ends_at=2012-10-17 14:00:00" \
+	-F "starts_at=2013-03-17 12:00:00" \
+	-F "ends_at=2013-03-17 14:00:00" \
         -F "rn=$RN" \
         -F "summary=update successful" \
         -F "description=Really great " \
         -F "contact_info=test@room.ist.ac.at" \
 	-F "ikey=$IKEY" \
         $URL/import/update.php
+
+elif [ $1 = 'import' ]; then 
+    ssh -t root@lserv01 /root/backup_scheduleit.sh /root/backup_scheduleit.sh
+    curl -k -i \
+    	-f "filename=MyCal.ics"
+        -F "username=$USER" \
+        -F "contact_info=test@room.ist.ac.at" \
+	-F "ikey=$IKEY" \
+        $URL/import/icsimport.php
 else
     echo $@;
 

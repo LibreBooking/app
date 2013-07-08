@@ -47,7 +47,7 @@ $enabled  = $conf['settings']['ics']['import'];
 //header("delete ical event into phpScheduleIt");
 if (!$enabled) {
         header('HTTP/1.1 406 Not Acceptable', true, 406);
-        print json_encode(array('message' => "iCal import is not enabled.<br />"));
+        print json_encode(array('message' => "iCal import is not enabled"));
         return;
 }
 
@@ -67,7 +67,7 @@ $rn           = $params['rn'];
 foreach ($params AS $key => $val) {
         if (!$val) {
                 header('HTTP/1.1 406 Not Acceptable', true, 406);
-                print json_encode(array('message' => "$key has to be set<br />"));
+                print json_encode(array('message' => "$key has to be set"));
                 return;
         }
 }

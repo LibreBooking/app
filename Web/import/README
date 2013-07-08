@@ -2,6 +2,7 @@ This directory contains functions for importing iCal events
 
 !!! This is very EXPERIMENTAL, You are WARNED !!!
 
+
 === CONFIGURATION ===
 
 You can enable the iCal import by configuring 
@@ -15,13 +16,15 @@ a secret import key can be defined to protect the interface.
 
 === USAGE from the shell ===
 
-    The resource is identified through the field contact_info, it must match the content in the database. 
+    A resource is either identified by resource.public_id (parameter 'rid')
+    or resource.contact_info (parameter 'contact_info').
+
     Note, there is currently no Web interface to define the contact_info, we have done it through the 
     mysql database like 	
 	echo "UPDATE resources SET contact_info='test@room' WHERE name='Conference Room 1';" | mysql -p ....
 
 
-Recommendations: define define environment variables:
+Recommendations: define environment variables:
 
 URL=https://domain.d.d/scheduleIt/Web;	# should match $conf['settings']['script.url']
 IKEY=abcdef12345;			# match $conf['settings']['ics']['import.key']
@@ -41,6 +44,18 @@ The reservation number is needed for updating and deletion of this event.
 	-F "ends_at=2012-10-14 11:00:00" \
 	-F "summary=Create successful" \
 	-F "description=Really great " \
+	-F "rid=66068633b6695" \
+	-F "ikey=$IKEY" \
+	$URL/import/create.php;
+
+  or
+
+    curl -k -i \
+	-F "username=$USER" \
+	-F "starts_at=2012-10-14 10:00:00" \
+	-F "ends_at=2012-10-14 11:00:00" \
+	-F "summary=Create successful" \
+	-F "description=Really great " \
 	-F "contact_info=test@room" \
 	-F "ikey=$IKEY" \
 	$URL/import/create.php;
@@ -51,7 +66,6 @@ The reservation number is needed for updating and deletion of this event.
     curl -k -i \
 	-F "username=$USER" \
 	-F "rn=$RN" \
-	-F "contact_info=test@room" \
 	-F "ikey=$IKEY" \
 	$URL/import/delete.php
 
@@ -66,8 +80,25 @@ The reservation number is needed for updating and deletion of this event.
         -F "rn=$RN" \
         -F "summary=update successful" \
         -F "description=Really great " \
+	-F "rid=66068633b6695" \
+	-F "ikey=$IKEY" \
+        $URL/import/update.php
+
+  or
+
+    curl -k -i \
+        -F "rn=5075292d1e3a3" \
+        -F "username=$USER" \
+	-F "starts_at=2012-10-17 12:00:00" \
+	-F "ends_at=2012-10-17 14:00:00" \
+        -F "rn=$RN" \
+        -F "summary=update successful" \
+        -F "description=Really great " \
         -F "contact_info=test@room" \
 	-F "ikey=$IKEY" \
         $URL/import/update.php
 
 
+=== KNOWN ISSUE === 
+
+- any user kann delete any event (not only their own). 
