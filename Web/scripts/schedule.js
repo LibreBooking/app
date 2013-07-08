@@ -213,7 +213,18 @@ function Schedule(opts, resourceGroups)
 			{
 				if (href != '' && startDate != '' && endDate != '')
 				{
-					window.location = href + "&sd=" + startDate + "&ed=" + endDate;
+					var start = moment(decodeURIComponent(startDate));
+					var end = moment(decodeURIComponent(endDate));
+
+					// the user dragged right to left
+					if (end < start)
+					{
+						window.location = href + "&sd=" + endDate + "&ed=" + startDate;
+					}
+					else
+					{
+						window.location = href + "&sd=" + startDate + "&ed=" + endDate;
+					}
 					console.log('Start:' + startDate + ' end:' + endDate);
 				}
 			}
