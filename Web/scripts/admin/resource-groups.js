@@ -13,6 +13,38 @@ function ResourceGroupManagement(opts)
 	{
 		$(".new-group").watermark(opts.newGroupText);
 
+		$('#group-tree').contextMenu({
+					selector: '.ui-droppable',
+					callback: function(key, options) {
+					            var m = "clicked: " + key;
+					            window.console && console.log(m) || alert(m);
+					        },
+					items: {
+						"edit": {name: "Rename", icon: "edit", callback: function (key, options)
+						{
+							var m = "edit was clicked";
+							window.console && console.log(m) || alert(m);
+						}},
+						"delete": {name: "Delete", icon: "delete", callback: function (key, options)
+						{
+							var m = "edit was clicked";
+							window.console && console.log(m) || alert(m);
+						}},
+						"addChild": {
+							name: "Add Child",
+							type: 'text',
+							value: "",
+							callback: function (key, options)
+							{
+								var m = "edit was clicked";
+								window.console && console.log(m) || alert(m);
+							}
+						},
+						"sep1": "---------",
+						"quit": {name: "Quit", icon: "quit"}
+					}}
+		);
+
 		elements.groupDiv.tree({
 			data: groups,
 			saveState: false,
@@ -69,6 +101,33 @@ function ResourceGroupManagement(opts)
 				{
 					// The clicked node is 'event.node'
 					var node = event.node;
+
+//					$(node.element).contextMenu(
+//							{
+//								selector: 'div',
+//								items: {
+//									"edit": {name: "Edit", icon: "edit", callback: function(key, options) {
+//									                    var m = "edit was clicked";
+//									                    window.console && console.log(m) || alert(m);
+//									                }},
+//									"delete": {name: "Delete", icon: "delete", callback: function(key, options) {
+//									                    var m = "edit was clicked";
+//									                    window.console && console.log(m) || alert(m);
+//									                }}
+////									addChild : {
+////									                name: "Add Child",
+////									                type: 'text',
+////									                value: "",
+////										callback: function(key, options) {
+////										                    var m = "edit was clicked";
+////										                    window.console && console.log(m) || alert(m);
+////										                }
+////									            },
+////									"sep1": "---------",
+////									"quit": {name: "Quit", icon: "quit"}
+//								}});
+
+//					$(node.element).child('div').contextMenu();
 				}
 		);
 
@@ -77,10 +136,6 @@ function ResourceGroupManagement(opts)
 				function (event)
 				{
 					moveNode(event.move_info.moved_node, event.move_info.target_node, event.move_info.previous_parent, event.move_info.position);
-//					console.log('moved_node', event.move_info.moved_node);
-//					console.log('target_node', event.move_info.target_node);
-//					console.log('position', event.move_info.position);
-//					console.log('previous_parent', event.move_info.previous_parent);
 				});
 
 		elements.groupDiv.delegate('.remove-resource', 'click', function (e)

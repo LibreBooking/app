@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='scripts/css/jqtree.css,css/admin.css'}
+{include file='globalheader.tpl' cssFiles='scripts/css/jquery.contextMenu.css,scripts/css/jqtree.css,css/admin.css'}
 
 <h1>{translate key='ManageResourceGroups'}</h1>
 
@@ -84,6 +84,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/tree.jquery.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/jquery.contextMenu.js"></script>
 
 <script type="text/javascript">
 
