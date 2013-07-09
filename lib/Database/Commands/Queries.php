@@ -308,7 +308,7 @@ class Queries
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		ORDER BY COALESCE(r.sort_order,0), r.name';
 
-	const GET_ALL_RESOURCE_GROUPS = 'SELECT * FROM resource_groups';
+	const GET_ALL_RESOURCE_GROUPS = 'SELECT * FROM resource_groups ORDER BY parent_id, resource_group_name';
 
 	const GET_ALL_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT r.name, r.resource_id, a.resource_group_id
 		FROM resource_group_assignment a
@@ -439,6 +439,8 @@ class Queries
 			FROM resources r
 			INNER JOIN  schedules s ON r.schedule_id = s.schedule_id
 			WHERE r.public_id = @publicid';
+
+	const GET_RESOURCE_GROUP_BY_ID = 'SELECT * FROM resource_groups WHERE resource_group_id = @resourcegroupid';
 
 	const GET_RESERVATION_BY_ID =
 			'SELECT *
@@ -781,6 +783,8 @@ class Queries
 			sort_order = @sort_order
 		WHERE
 			resource_id = @resourceid';
+
+	const UPDATE_RESOURCE_GROUP = 'UPDATE resource_groups SET resource_group_name = @resourcegroupname, parent_id = @parentid WHERE resource_group_id = @resourcegroupid';
 
 	const UPDATE_SCHEDULE =
 			'UPDATE schedules

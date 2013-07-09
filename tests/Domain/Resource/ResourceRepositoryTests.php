@@ -375,6 +375,22 @@ class ResourceRepositoryTests extends TestBase
 
 		$this->assertEquals($id, $addedGroup->id);
 	}
+	
+	public function testUpdatesResourceGroup()
+	{
+		$id = 123;
+		$parentId = 999;
+		$newParentId = 988;
+
+		$group = new ResourceGroup($id, 'name', $parentId);
+		$group->MoveTo($newParentId);
+
+		$resourceRepository = new ResourceRepository();
+		$resourceRepository->UpdateResourceGroup($group);
+
+		$expectedCommand = new UpdateResourceGroupCommand($id, 'name', $newParentId);
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
 }
 
 ?>

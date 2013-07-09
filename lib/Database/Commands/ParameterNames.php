@@ -138,6 +138,8 @@ class ParameterNames
 	const RESOURCE_SORT_ORDER = '@sort_order';
 
 	const RESOURCE_GROUP_ID = '@resourcegroupid';
+	const RESOURCE_GROUP_NAME = '@resourcegroupname';
+	const RESOURCE_GROUP_PARENT_ID = '@parentid';
 
 	const ROLE_ID = '@roleid';
 	const ROLE_LEVEL = '@role_level';

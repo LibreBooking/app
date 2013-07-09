@@ -46,9 +46,11 @@ class QueryStringKeys
 	const LAYOUT_DATE = 'ld';
 	const MESSAGE_ID = 'mid';
 	const MONTH = 'm';
+	const NODE_ID = 'nid';
     const PAGE = 'page';
 	const PAGE_SIZE = 'pageSize';
 	const PERIOD_ID = 'pid';
+	const PREVIOUS_ID = 'pid';
 	const QUOTA_ID = 'qid';
 	const REDIRECT = 'redirect';
 	const REFERENCE_NUMBER = 'rn';
@@ -62,6 +64,7 @@ class QueryStringKeys
 	const SHOW_FULL_WEEK = 'sfw';
 	const START_DATE = 'sd';
     const SUBSCRIPTION_KEY = 'icskey';
+    const TYPE = 'type';
 	const USER_ID = 'uid';
 	const USER_NAME = 'un';
     const WEB_SERVICE_ACTION = 'action';

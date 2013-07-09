@@ -25,7 +25,7 @@ function ResourceGroupManagement(opts)
 				if (node.type == 'resource')
 				{
 					$li.addClass('group-resource');
-					$li.find('.jqtree-title').after('<div class="remove-resource" node-id="' + node.id +'">&nbsp;</div>');
+					$li.find('.jqtree-title').after('<div class="remove-resource" node-id="' + node.id + '">&nbsp;</div>');
 				}
 				else
 				{
@@ -45,6 +45,11 @@ function ResourceGroupManagement(opts)
 						}
 					});
 				}
+			},
+
+			onCanMove: function (node)
+			{
+				return !node.resource_id
 			},
 
 			onCanMoveTo: function (moved_node, target_node, position)
@@ -71,10 +76,11 @@ function ResourceGroupManagement(opts)
 				'tree.move',
 				function (event)
 				{
-					console.log('moved_node', event.move_info.moved_node);
-					console.log('target_node', event.move_info.target_node);
-					console.log('position', event.move_info.position);
-					console.log('previous_parent', event.move_info.previous_parent);
+					moveNode(event.move_info.moved_node, event.move_info.target_node, event.move_info.previous_parent, event.move_info.position);
+//					console.log('moved_node', event.move_info.moved_node);
+//					console.log('target_node', event.move_info.target_node);
+//					console.log('position', event.move_info.position);
+//					console.log('previous_parent', event.move_info.previous_parent);
 				});
 
 		elements.groupDiv.delegate('.remove-resource', 'click', function (e)
@@ -86,12 +92,13 @@ function ResourceGroupManagement(opts)
 
 		$('.resource-draggable').draggable({ revert: true });
 
-		elements.addGroupButton.click(function(e){
+		elements.addGroupButton.click(function (e)
+		{
 			e.preventDefault();
 			elements.addGroupForm.submit();
 		});
 
-		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit:onBeforeAddGroup});
+		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
 	};
 
 	function addResource(targetNode, resourceElement)
@@ -99,7 +106,9 @@ function ResourceGroupManagement(opts)
 		var resourceId = resourceElement.attr('resource-id');
 		if (canAddResource(targetNode, resourceId))
 		{
-			PerformAsyncPost(getResourceActionUrl(targetNode.id, resourceId, opts.actions.addResource), {done:function(data){}});
+			PerformAsyncPost(getResourceActionUrl(targetNode.id, resourceId, opts.actions.addResource), {done: function (data)
+			{
+			}});
 
 			elements.groupDiv.tree(
 					'appendNode',
@@ -116,7 +125,9 @@ function ResourceGroupManagement(opts)
 	function removeResource(resourceNode)
 	{
 		var resourceId = resourceNode.resource_id;
-		PerformAsyncPost(getResourceActionUrl(resourceNode.group_id, resourceId, opts.actions.removeResource), {done:function(data){}});
+		PerformAsyncPost(getResourceActionUrl(resourceNode.group_id, resourceId, opts.actions.removeResource), {done: function (data)
+		{
+		}});
 
 		elements.groupDiv.tree('removeNode', resourceNode);
 	}
@@ -150,7 +161,8 @@ function ResourceGroupManagement(opts)
 		var newGroup = $form.find('.new-group').first();
 		var groupName = $.trim(newGroup.val());
 
-		if(groupName != ''){
+		if (groupName != '')
+		{
 			$form.find('.new-group').val('');
 			return true;
 		}
@@ -158,13 +170,44 @@ function ResourceGroupManagement(opts)
 		return false;
 	}
 
+	function getMoveNodeUrl(targetNodeId, movedNodeId, previousId, type, action)
+	{
+		return options.submitUrl + "?gid=" + targetNodeId + "&nid=" + movedNodeId + "&type=" + type + "&pid=" + previousId + "&action=" + action;
+	}
+
+	function moveNode(movedNode, targetNode, previousNode, newPosition)
+	{
+		var movedId = movedNode.id;
+		var targetNodeId = targetNode.id;
+		if (movedNode.type == 'resource')
+		{
+			movedId = movedNode.resource_id;
+		}
+		if (newPosition == 'before')
+		{
+			targetNodeId = null;
+		}
+		if (newPosition == 'after')
+		{
+			targetNodeId = targetNode.parent.id;
+		}
+		var previousId = previousNode.id;
+		PerformAsyncPost(getMoveNodeUrl(targetNodeId, movedId, previousId, movedNode.type, opts.actions.moveNode), {done: function (data)
+		{
+		}});
+	}
+
 	var getResourceActionUrl = function (targetGroupId, resourceId, action)
 	{
-		return options.submitUrl + "?gid=" + targetGroupId + "&rid=" +resourceId + "&action=" + action;
+		return options.submitUrl + "?gid=" + targetGroupId + "&rid=" + resourceId + "&action=" + action;
 	};
 
-	var defaultSubmitCallback = function (form) {
-		return function() {return options.submitUrl + "?action=" + form.attr('ajaxAction');};
+	var defaultSubmitCallback = function (form)
+	{
+		return function ()
+		{
+			return options.submitUrl + "?action=" + form.attr('ajaxAction');
+		};
 	};
 
 	var handleAddError = function (result)

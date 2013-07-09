@@ -292,6 +292,31 @@ class ResourceRepository implements IResourceRepository
 
 		return $group;
 	}
+
+	/**
+	 * @param int $groupId
+	 * @return ResourceGroup
+	 */
+	public function LoadResourceGroup($groupId)
+	{
+		$rows = ServiceLocator::GetDatabase()
+						  ->Query(new GetResourceGroupCommand($groupId));
+
+		if ($row = $rows->GetRow())
+		{
+			return new ResourceGroup($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_GROUP_NAME], $row[ColumnNames::RESOURCE_GROUP_PARENT_ID]);
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param ResourceGroup $group
+	 */
+	public function UpdateResourceGroup(ResourceGroup $group)
+	{
+		ServiceLocator::GetDatabase()->Execute(new UpdateResourceGroupCommand($group->id, $group->name, $group->parent_id));
+	}
 }
 
 class AccessoryDto

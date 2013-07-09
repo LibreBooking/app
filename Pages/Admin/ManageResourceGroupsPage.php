@@ -57,6 +57,26 @@ interface IManageResourceGroupsPage extends IActionPage
 	 * @param ResourceGroup $newGroup
 	 */
 	public function BindNewGroup(ResourceGroup $newGroup);
+
+	/**
+	 * @return int
+	 */
+	public function GetNodeId();
+
+	/**
+	 * @return string
+	 */
+	public function GetNodeType();
+
+	/**
+	 * @return int
+	 */
+	public function GetTargetNodeId();
+
+	/**
+	 * @return int
+	 */
+	public function GetPreviousNodeId();
 }
 
 class ManageResourceGroupsPage extends ActionPage implements IManageResourceGroupsPage
@@ -145,6 +165,44 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 	public function BindNewGroup(ResourceGroup $newGroup)
 	{
 		$this->SetJson(json_encode($newGroup));
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetNodeId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::NODE_ID);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetNodeType()
+	{
+		return $this->GetQuerystring(QueryStringKeys::TYPE);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetTargetNodeId()
+	{
+		$groupId = $this->GetQuerystring(QueryStringKeys::GROUP_ID);
+
+		if (empty($groupId) || strtolower($groupId) == 'null')
+		{
+			return null;
+		}
+		return $groupId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetPreviousNodeId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::PREVIOUS_ID);
 	}
 }
 

@@ -143,6 +143,14 @@ class ResourceGroup
 	{
 		$this->id = $id;
 	}
+
+	/**
+	 * @param int $targetId
+	 */
+	public function MoveTo($targetId)
+	{
+		$this->parent_id = $targetId;
+	}
 }
 
 class ResourceGroupAssignment

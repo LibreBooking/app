@@ -121,6 +121,50 @@ class ManageResourceGroupsPresenterTests extends TestBase
 
 		$this->presenter->RemoveResource();
 	}
+
+	public function testMovesGroupNode()
+	{
+		$nodeId = 1;
+		$targetId = 2;
+		$nodeType = ResourceGroup::GROUP_TYPE;
+		$previousNodeId = 3;
+
+		$group = new ResourceGroup($nodeId, 'name', $previousNodeId);
+		$group->MoveTo($targetId);
+
+		$this->page
+				->expects($this->atLeastOnce())
+		->method('GetNodeId')
+		->will($this->returnValue($nodeId));
+
+		$this->page
+				->expects($this->atLeastOnce())
+		->method('GetTargetNodeId')
+		->will($this->returnValue($targetId));
+
+		$this->page
+				->expects($this->atLeastOnce())
+		->method('GetNodeType')
+		->will($this->returnValue($nodeType));
+
+		$this->page
+				->expects($this->atLeastOnce())
+		->method('GetPreviousNodeId')
+		->will($this->returnValue($previousNodeId));
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('LoadResourceGroup')
+		->with($this->equalTo($nodeId))
+		->will($this->returnValue($group));
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('UpdateResourceGroup')
+		->with($group);
+
+		$this->presenter->MoveNode();
+	}
 }
 
 ?>

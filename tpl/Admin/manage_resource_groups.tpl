@@ -91,7 +91,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{
 		var actions = {
 			addResource: '{ManageResourceGroupsActions::AddResource}',
-			removeResource: '{ManageResourceGroupsActions::RemoveResource}'
+			removeResource: '{ManageResourceGroupsActions::RemoveResource}',
+			moveNode: '{ManageResourceGroupsActions::MoveNode}'
 		};
 
 		var groupOptions = {

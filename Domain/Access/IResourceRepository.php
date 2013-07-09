@@ -90,6 +90,17 @@ interface IResourceRepository
 	 * @return ResourceGroup
 	 */
 	public function AddResourceGroup(ResourceGroup $group);
+
+	/**
+	 * @param int $groupId
+	 * @return ResourceGroup
+	 */
+	public function LoadResourceGroup($groupId);
+
+	/**
+	 * @param ResourceGroup $group
+	 */
+	public function UpdateResourceGroup(ResourceGroup $group);
 }
 
 ?>

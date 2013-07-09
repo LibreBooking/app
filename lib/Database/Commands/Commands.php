@@ -1182,6 +1182,15 @@ class GetResourceByPublicIdCommand extends SqlCommand
 	}
 }
 
+class GetResourceGroupCommand extends SqlCommand
+{
+	public function __construct($groupId)
+	{
+		parent::__construct(Queries::GET_RESOURCE_GROUP_BY_ID);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_ID, $groupId));
+	}
+}
+
 class GetSavedReportForUserCommand extends SqlCommand
 {
 	public function __construct($reportId, $userId)
@@ -1674,6 +1683,17 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$allowCalendarSubscription));
 		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_SORT_ORDER, $sortOrder));
+	}
+}
+
+class UpdateResourceGroupCommand extends SqlCommand
+{
+	public function __construct($groupId, $name, $parentId)
+	{
+		parent::__construct(Queries::UPDATE_RESOURCE_GROUP);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_ID, $groupId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_NAME, $name));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_PARENT_ID, empty($parentId) ? null : $parentId));
 	}
 }
 

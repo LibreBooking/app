@@ -27,6 +27,7 @@ class ManageResourceGroupsActions
 {
 	const AddGroup = 'AddGroup';
 	const AddResource = 'AddResource';
+	const MoveNode = 'MoveNode';
 	const RemoveResource = 'RemoveResource';
 }
 
@@ -55,6 +56,7 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageResourceGroupsActions::AddResource, 'AddResource');
 		$this->AddAction(ManageResourceGroupsActions::RemoveResource, 'RemoveResource');
 		$this->AddAction(ManageResourceGroupsActions::AddGroup, 'AddGroup');
+		$this->AddAction(ManageResourceGroupsActions::MoveNode, 'MoveNode');
 
 	}
 
@@ -97,9 +99,24 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 	{
 		$groupName = $this->page->GetGroupName();
 		$parentId = $this->page->GetParentId();
-		Log::Debug('Adding new group. GroupName=%s, ParentId=%s', $groupName, $parentId);
+
+		Log::Debug('Adding new resource group. GroupName=%s, ParentId=%s', $groupName, $parentId);
 		$addedGroup = $this->resourceRepository->AddResourceGroup(ResourceGroup::Create($groupName,$parentId));
 		$this->page->BindNewGroup($addedGroup);
+	}
+
+	public function MoveNode()
+	{
+		$nodeId = $this->page->GetNodeId();
+		$nodeType = $this->page->GetNodeType();
+		$targetNodeId = $this->page->GetTargetNodeId();
+		$previousId = $this->page->GetPreviousNodeId();
+
+		Log::Debug('Moving resource group node. NodeId=%s, NodeType=%s, TargetNodeId=%s, PreviousNodeId=%s', $nodeId, $nodeType, $targetNodeId, $previousId);
+
+		$group = $this->resourceRepository->LoadResourceGroup($nodeId);
+		$group->MoveTo($targetNodeId);
+		$this->resourceRepository->UpdateResourceGroup($group);
 	}
 
 	/**
