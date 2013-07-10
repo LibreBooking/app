@@ -9,41 +9,12 @@ function ResourceGroupManagement(opts)
 		addGroupForm: $('#addGroupForm')
 	};
 
+	var selectedNode = null;
+
+
 	ResourceGroupManagement.prototype.init = function (groups)
 	{
 		$(".new-group").watermark(opts.newGroupText);
-
-		$('#group-tree').contextMenu({
-					selector: '.ui-droppable',
-					callback: function(key, options) {
-					            var m = "clicked: " + key;
-					            window.console && console.log(m) || alert(m);
-					        },
-					items: {
-						"edit": {name: "Rename", icon: "edit", callback: function (key, options)
-						{
-							var m = "edit was clicked";
-							window.console && console.log(m) || alert(m);
-						}},
-						"delete": {name: "Delete", icon: "delete", callback: function (key, options)
-						{
-							var m = "edit was clicked";
-							window.console && console.log(m) || alert(m);
-						}},
-						"addChild": {
-							name: "Add Child",
-							type: 'text',
-							value: "",
-							callback: function (key, options)
-							{
-								var m = "edit was clicked";
-								window.console && console.log(m) || alert(m);
-							}
-						},
-						"sep1": "---------",
-						"quit": {name: "Quit", icon: "quit"}
-					}}
-		);
 
 		elements.groupDiv.tree({
 			data: groups,
@@ -101,7 +72,7 @@ function ResourceGroupManagement(opts)
 				{
 					// The clicked node is 'event.node'
 					var node = event.node;
-
+					selectedNode = event.node;
 //					$(node.element).contextMenu(
 //							{
 //								selector: 'div',
@@ -153,8 +124,78 @@ function ResourceGroupManagement(opts)
 			elements.addGroupForm.submit();
 		});
 
+		wireUpContextMenu();
+
 		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
 	};
+
+	function wireUpContextMenu()
+	{
+		$.contextMenu.types.myType = function (item, opt, root)
+		{
+			$('<span><input /></span>').appendTo(this);
+			this.on('contextmenu:focus',function (e)
+			{
+				e.preventDefault();
+			}).on('contextmenu:blur', function (e)
+					{
+						// tear down whatever you did
+					}).on('keydown',function (e)
+					{
+						var x = item;
+						var y = opt;
+						var z = root;
+					}).on('mouseup.contextMenu', function (e)
+					{
+						e.preventDefault();
+						e.stopPropagation();
+					});
+		};
+
+		elements.groupDiv.contextMenu({
+					selector: '.ui-droppable',
+					callback: function (key, options)
+					{
+						var m = "clicked: " + key;
+						window.console && console.log(m) || alert(m);
+					},
+					items: {
+						"edit": {name: "Rename", icon: "edit", callback: function (key, options)
+						{
+							var m = "edit was clicked";
+							window.console && console.log(m) || alert(m);
+						}},
+						"delete": {name: "Delete", icon: "delete", callback: function (key, options)
+						{
+							var m = "delete was clicked";
+							window.console && console.log(m) || alert(m);
+						}},
+						"addChild": {
+							name: "Add Child",
+							type: 'myType',
+							value: "",
+							events: {
+								keyup: function (e)
+								{
+									if (e.keyCode != 13)
+									{
+										return;
+									}
+									// add some fancy key handling here?
+									window.console && console.log($(this).val() + ' for node ');
+								}
+							},
+							callback: function (key, options)
+							{
+								var m = "clicked: " + key;
+								window.console && console.log(m) || alert(m);
+							}
+						},
+						"sep1": "---------",
+						"quit": {name: "Quit", icon: "quit"}
+					}}
+		);
+	}
 
 	function addResource(targetNode, resourceElement)
 	{
