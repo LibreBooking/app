@@ -49,9 +49,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <input type="hidden" id="activeId" value=""/>
 
-<div id="renameDialog" class="dialog" style="display:none;" title="{translate key=Rename}">
+<div id="renameDialog" class="dialog" title="{translate key=Rename}" ajaxAction="{ManageResourceGroupsActions::RenameGroup}">
 	<form id="renameForm" method="post">
-		{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
+		{translate key='Name'}: <input id="editName" type="text" class="textbox required triggerSubmit" maxlength="85"
 									   style="width:250px" {formname key=RESOURCE_NAME} />
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
@@ -59,7 +59,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
+<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
 	<form id="deleteForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
@@ -73,6 +73,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
+<div id="addChildDialog" class="dialog" title="{translate key=AddChild}">
+	<form id="addChildForm" method="post">
+	{translate key='Name'}: <input id="childName" type="text" class="textbox required" maxlength="85"
+								   style="width:250px" {formname key=RESOURCE_NAME} />
+		<br/><br/>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>

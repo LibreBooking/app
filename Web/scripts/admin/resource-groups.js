@@ -6,16 +6,47 @@ function ResourceGroupManagement(opts)
 		groupDiv: $('#group-tree'),
 		deleteResource: $('.remove-resource'),
 		addGroupButton: $('#btnAddGroup'),
-		addGroupForm: $('#addGroupForm')
+		addGroupForm: $('#addGroupForm'),
+		renameForm: $('#renameForm'),
+
+		renameDialog: $('#renameDialog')
 	};
-
-	var selectedNode = null;
-
 
 	ResourceGroupManagement.prototype.init = function (groups)
 	{
+		ConfigureAdminDialog(elements.renameDialog, 300, 135);
+
+		$(".save").click(function ()
+		{
+			$(this).closest('form').submit();
+		});
+
+		$(".triggerSubmit").keyup(function (e)
+		{
+			if (e.keyCode == 13)
+			{
+				$(this).closest('form').submit();
+			}
+		});
+
 		$(".new-group").watermark(opts.newGroupText);
 
+		wireUpTree(groups);
+		wireUpContextMenu();
+
+		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
+		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), hideDialogs);
+	};
+
+	function showRename(node)
+	{
+		elements.renameDialog.dialog("open");
+
+		$('#editName').val(node.name);
+	}
+
+	function wireUpTree(groups)
+	{
 		elements.groupDiv.tree({
 			data: groups,
 			saveState: false,
@@ -25,6 +56,8 @@ function ResourceGroupManagement(opts)
 
 			onCreateLi: function (node, $li)
 			{
+				$li.attr('node-id', node.id);
+
 				if (node.type == 'resource')
 				{
 					$li.addClass('group-resource');
@@ -67,42 +100,6 @@ function ResourceGroupManagement(opts)
 		});
 
 		elements.groupDiv.bind(
-				'tree.contextmenu',
-				function (event)
-				{
-					// The clicked node is 'event.node'
-					var node = event.node;
-					selectedNode = event.node;
-//					$(node.element).contextMenu(
-//							{
-//								selector: 'div',
-//								items: {
-//									"edit": {name: "Edit", icon: "edit", callback: function(key, options) {
-//									                    var m = "edit was clicked";
-//									                    window.console && console.log(m) || alert(m);
-//									                }},
-//									"delete": {name: "Delete", icon: "delete", callback: function(key, options) {
-//									                    var m = "edit was clicked";
-//									                    window.console && console.log(m) || alert(m);
-//									                }}
-////									addChild : {
-////									                name: "Add Child",
-////									                type: 'text',
-////									                value: "",
-////										callback: function(key, options) {
-////										                    var m = "edit was clicked";
-////										                    window.console && console.log(m) || alert(m);
-////										                }
-////									            },
-////									"sep1": "---------",
-////									"quit": {name: "Quit", icon: "quit"}
-//								}});
-
-//					$(node.element).child('div').contextMenu();
-				}
-		);
-
-		elements.groupDiv.bind(
 				'tree.move',
 				function (event)
 				{
@@ -123,34 +120,15 @@ function ResourceGroupManagement(opts)
 			e.preventDefault();
 			elements.addGroupForm.submit();
 		});
-
-		wireUpContextMenu();
-
-		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
-	};
+	}
 
 	function wireUpContextMenu()
 	{
-		$.contextMenu.types.myType = function (item, opt, root)
+		function getNode(options)
 		{
-			$('<span><input /></span>').appendTo(this);
-			this.on('contextmenu:focus',function (e)
-			{
-				e.preventDefault();
-			}).on('contextmenu:blur', function (e)
-					{
-						// tear down whatever you did
-					}).on('keydown',function (e)
-					{
-						var x = item;
-						var y = opt;
-						var z = root;
-					}).on('mouseup.contextMenu', function (e)
-					{
-						e.preventDefault();
-						e.stopPropagation();
-					});
-		};
+			var id = options.$trigger.parent().attr("node-id");
+			return elements.groupDiv.tree('getNodeById', id);
+		}
 
 		elements.groupDiv.contextMenu({
 					selector: '.ui-droppable',
@@ -160,37 +138,19 @@ function ResourceGroupManagement(opts)
 						window.console && console.log(m) || alert(m);
 					},
 					items: {
-						"edit": {name: "Rename", icon: "edit", callback: function (key, options)
+						"rename": {name: "Rename", icon: "edit", callback: function (key, options)
 						{
-							var m = "edit was clicked";
-							window.console && console.log(m) || alert(m);
+							var node = getNode(options);
+							showRename(node);
 						}},
 						"delete": {name: "Delete", icon: "delete", callback: function (key, options)
 						{
-							var m = "delete was clicked";
-							window.console && console.log(m) || alert(m);
+							var node = getNode(options);
 						}},
-						"addChild": {
-							name: "Add Child",
-							type: 'myType',
-							value: "",
-							events: {
-								keyup: function (e)
-								{
-									if (e.keyCode != 13)
-									{
-										return;
-									}
-									// add some fancy key handling here?
-									window.console && console.log($(this).val() + ' for node ');
-								}
-							},
-							callback: function (key, options)
-							{
-								var m = "clicked: " + key;
-								window.console && console.log(m) || alert(m);
-							}
-						},
+						"addChild": {name: "Add Child", icon: "add", callback: function (key, options)
+						{
+							var node = getNode(options);
+						}},
 						"sep1": "---------",
 						"quit": {name: "Quit", icon: "quit"}
 					}}
@@ -264,6 +224,17 @@ function ResourceGroupManagement(opts)
 		}
 
 		return false;
+	}
+
+	function hideDialogs(data)
+	{
+		$.each($('div.dialog'), function (index, element)
+		{
+			if ($(element).is(':visible'))
+			{
+				$(element).dialog('close');
+			}
+		});
 	}
 
 	function getMoveNodeUrl(targetNodeId, movedNodeId, previousId, type, action)

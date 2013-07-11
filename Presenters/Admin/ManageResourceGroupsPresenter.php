@@ -29,6 +29,7 @@ class ManageResourceGroupsActions
 	const AddResource = 'AddResource';
 	const MoveNode = 'MoveNode';
 	const RemoveResource = 'RemoveResource';
+	const RenameGroup = 'RenameGroup';
 }
 
 class ManageResourceGroupsPresenter extends ActionPresenter
@@ -57,6 +58,7 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageResourceGroupsActions::RemoveResource, 'RemoveResource');
 		$this->AddAction(ManageResourceGroupsActions::AddGroup, 'AddGroup');
 		$this->AddAction(ManageResourceGroupsActions::MoveNode, 'MoveNode');
+		$this->AddAction(ManageResourceGroupsActions::RenameGroup, 'RenameGroup');
 
 	}
 
@@ -116,6 +118,18 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 
 		$group = $this->resourceRepository->LoadResourceGroup($nodeId);
 		$group->MoveTo($targetNodeId);
+		$this->resourceRepository->UpdateResourceGroup($group);
+	}
+
+	public function RenameGroup()
+	{
+		$nodeId = $this->page->GetNodeId();
+		$newName = $this->page->GetGroupName();
+
+		Log::Debug('Renaming resource group. NodeId=%s, NewName=%s', $nodeId, $newName);
+
+		$group = $this->resourceRepository->LoadResourceGroup($nodeId);
+//		$group->MoveTo($targetNodeId);
 		$this->resourceRepository->UpdateResourceGroup($group);
 	}
 
