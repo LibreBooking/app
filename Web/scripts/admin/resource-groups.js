@@ -5,20 +5,24 @@ function ResourceGroupManagement(opts)
 	var elements = {
 		groupDiv: $('#group-tree'),
 		deleteResource: $('.remove-resource'),
+
 		addGroupButton: $('#btnAddGroup'),
+		addGroupForm: $('#addGroupForm'),
 
 		activeId: $('#activeId'),
 
-		addGroupForm: $('#addGroupForm'),
 		renameForm: $('#renameForm'),
+		renameDialog: $('#renameDialog'),
 		newName: $('#editName'),
 
-		renameDialog: $('#renameDialog')
+		deleteForm: $('#deleteForm'),
+		deleteDialog: $('#deleteDialog')
 	};
 
 	ResourceGroupManagement.prototype.init = function (groups)
 	{
 		ConfigureAdminDialog(elements.renameDialog, 300, 135);
+		ConfigureAdminDialog(elements.deleteDialog, 300, 200);
 
 		$(".save").click(function ()
 		{
@@ -31,7 +35,8 @@ function ResourceGroupManagement(opts)
 		wireUpContextMenu();
 
 		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
-		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), hideDialogs, null, {onBeforeSubmit:onBeforeRename});
+		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), hideDialogs, null, {onBeforeSubmit: onBeforeRename});
+		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm), hideDialogs, null, {onBeforeSubmit: onBeforeDelete});
 	};
 
 	function wireUpTree(groups)
@@ -121,11 +126,6 @@ function ResourceGroupManagement(opts)
 
 		elements.groupDiv.contextMenu({
 					selector: '.ui-droppable',
-					callback: function (key, options)
-					{
-						var m = "clicked: " + key;
-						window.console && console.log(m) || alert(m);
-					},
 					items: {
 						"rename": {name: "Rename", icon: "edit", callback: function (key, options)
 						{
@@ -135,6 +135,7 @@ function ResourceGroupManagement(opts)
 						"delete": {name: "Delete", icon: "delete", callback: function (key, options)
 						{
 							var node = getNode(options);
+							showDelete(node);
 						}},
 						"addChild": {name: "Add Child", icon: "add", callback: function (key, options)
 						{
@@ -154,6 +155,12 @@ function ResourceGroupManagement(opts)
 		elements.newName.val(node.name);
 	}
 
+	function showDelete(node)
+	{
+		elements.activeId.val(node.id);
+		elements.deleteDialog.dialog("open");
+	}
+
 	function onBeforeRename(arr, $form, options)
 	{
 		var id = elements.activeId.val();
@@ -162,6 +169,15 @@ function ResourceGroupManagement(opts)
 
 		elements.groupDiv.tree('updateNode', node, newName);
 	}
+
+	function onBeforeDelete(arr, $form, options)
+	{
+		var id = elements.activeId.val();
+		var node = elements.groupDiv.tree('getNodeById', id);
+
+		elements.groupDiv.tree('removeNode', node);
+	}
+
 	function addResource(targetNode, resourceElement)
 	{
 		var resourceId = resourceElement.attr('resource-id');

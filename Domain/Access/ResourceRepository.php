@@ -310,12 +310,14 @@ class ResourceRepository implements IResourceRepository
 		return null;
 	}
 
-	/**
-	 * @param ResourceGroup $group
-	 */
 	public function UpdateResourceGroup(ResourceGroup $group)
 	{
 		ServiceLocator::GetDatabase()->Execute(new UpdateResourceGroupCommand($group->id, $group->name, $group->parent_id));
+	}
+
+	public function DeleteResourceGroup($groupId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteResourceGroupCommand($groupId));
 	}
 }
 

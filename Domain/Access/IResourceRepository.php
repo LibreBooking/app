@@ -101,6 +101,11 @@ interface IResourceRepository
 	 * @param ResourceGroup $group
 	 */
 	public function UpdateResourceGroup(ResourceGroup $group);
+
+	/**
+	 * @param $groupId
+	 */
+	public function DeleteResourceGroup($groupId);
 }
 
 ?>

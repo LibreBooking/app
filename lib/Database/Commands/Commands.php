@@ -606,6 +606,15 @@ class DeleteResourceCommand extends SqlCommand
 	}
 }
 
+class DeleteResourceGroupCommand extends SqlCommand
+{
+	public function __construct($groupId)
+	{
+		parent::__construct(Queries::DELETE_RESOURCE_GROUP_COMMAND);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_GROUP_ID, $groupId));
+	}
+}
+
 class DeleteResourceReservationsCommand extends SqlCommand
 {
 	public function __construct($resourceId)

@@ -60,16 +60,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="deleteDialog" class="dialog" title="{translate key=Delete}">
-	<form id="deleteForm" method="post">
+	<form id="deleteForm" method="post" ajaxAction="{ManageResourceGroupsActions::DeleteGroup}">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
-			<br/>{translate key=DeleteResourceWarning}:
-			<ul>
-				<li>{translate key=DeleteResourceWarningReservations}</li>
-				<li>{translate key=DeleteResourceWarningPermissions}</li>
-			</ul>
-			<br/>
-			{translate key=DeleteResourceWarningReassign}
 		</div>
 
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>

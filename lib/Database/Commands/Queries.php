@@ -195,6 +195,8 @@ class Queries
 
 	const DELETE_RESOURCE_COMMAND = 'DELETE FROM resources WHERE resource_id = @resourceid';
 
+	const DELETE_RESOURCE_GROUP_COMMAND = 'DELETE FROM resource_groups WHERE resource_group_id = @resourcegroupid';
+
 	const DELETE_RESOURCE_RESERVATIONS_COMMAND =
 			'DELETE s.*
 		FROM reservation_series s 

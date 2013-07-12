@@ -375,7 +375,7 @@ class ResourceRepositoryTests extends TestBase
 
 		$this->assertEquals($id, $addedGroup->id);
 	}
-	
+
 	public function testUpdatesResourceGroup()
 	{
 		$id = 123;
@@ -389,6 +389,16 @@ class ResourceRepositoryTests extends TestBase
 		$resourceRepository->UpdateResourceGroup($group);
 
 		$expectedCommand = new UpdateResourceGroupCommand($id, 'name', $newParentId);
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
+
+	public function testDeletesResourceGroup()
+	{
+		$id = 123;
+		$resourceRepository = new ResourceRepository();
+		$resourceRepository->DeleteResourceGroup($id);
+
+		$expectedCommand = new DeleteResourceGroupCommand($id);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
 	}
 }
