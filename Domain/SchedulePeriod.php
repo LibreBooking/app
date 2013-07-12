@@ -137,7 +137,7 @@ class SchedulePeriod
 
 	public function __toString()
 	{
-		return sprintf("Begin: %s End: %s Label: %s", $this->_begin, $this->_end, $this->Label());
+		return sprintf("Begin: %s End: %s Label: %s Id: %s", $this->_begin, $this->_end, $this->Label(), $this->Id());
 	}
 
 	/**
@@ -160,7 +160,7 @@ class SchedulePeriod
 	{
 		if (empty($this->_id))
 		{
-			$this->_id = uniqid();
+			$this->_id = uniqid($this->_begin->Timestamp());
 		}
 		return $this->_id;
 	}
