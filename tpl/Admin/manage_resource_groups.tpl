@@ -103,7 +103,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		var groupOptions = {
 			submitUrl: '{$smarty.server.SCRIPT_NAME}',
 			actions: actions,
-			newGroupText: '{translate key=AddNewGroup}'
+			newGroupText: '{translate key=AddNewGroup}',
+			renameText: '{translate key=Rename}',
+			addChildText: '{translate key=AddGroup}',
+			deleteText: '{translate key=Delete}',
+			exitText: '{translate key=Quit}'
 		};
 
 		var groupManagement = new ResourceGroupManagement(groupOptions);

@@ -136,24 +136,25 @@ function ResourceGroupManagement(opts)
 
 		elements.groupDiv.contextMenu({
 					selector: '.ui-droppable',
+					callback: function (key, options){},
 					items: {
-						"rename": {name: "Rename", icon: "edit", callback: function (key, options)
+						"rename": {name: options.renameText, icon: "edit", callback: function (key, options)
 						{
 							var node = getNode(options);
 							showRename(node);
 						}},
-						"delete": {name: "Delete", icon: "delete", callback: function (key, options)
+						"delete": {name: options.deleteText, icon: "delete", callback: function (key, options)
 						{
 							var node = getNode(options);
 							showDelete(node);
 						}},
-						"addChild": {name: "Add Child", icon: "add", callback: function (key, options)
+						"addChild": {name: options.addChildText, icon: "add", callback: function (key, options)
 						{
 							var node = getNode(options);
 							showAddChild(node);
 						}},
 						"sep1": "---------",
-						"quit": {name: "Quit", icon: "quit"}
+						"quit": {name: options.exitText, icon: "quit"}
 					}}
 		);
 	}

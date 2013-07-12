@@ -460,6 +460,8 @@ class en_us extends Language
 		$strings['ResourceFilter'] = 'Resource Filter';
 		$strings['ResourceGroups'] = 'Resource Groups';
 		$strings['AddNewGroup'] = 'Add a new group';
+		$strings['Quit'] = 'Quit';
+		$strings['AddGroup'] = 'Add Group';
 		// End Strings
 
 		// Install
