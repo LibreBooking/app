@@ -61,7 +61,6 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 		$this->AddAction(ManageResourceGroupsActions::MoveNode, 'MoveNode');
 		$this->AddAction(ManageResourceGroupsActions::RenameGroup, 'RenameGroup');
 		$this->AddAction(ManageResourceGroupsActions::DeleteGroup, 'DeleteGroup');
-
 	}
 
 	public function PageLoad()

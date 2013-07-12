@@ -70,13 +70,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="addChildDialog" class="dialog" title="{translate key=AddChild}">
-	<form id="addChildForm" method="post">
-	{translate key='Name'}: <input id="childName" type="text" class="textbox required" maxlength="85"
-								   style="width:250px" {formname key=RESOURCE_NAME} />
+<div id="addChildDialog" class="dialog" title="{translate key=AddNewGroup}">
+	<form id="addChildForm" method="post" ajaxAction="{ManageResourceGroupsActions::AddGroup}">
+	{translate key='Name'}: <input id="childName" type="text" class="textbox required new-group" maxlength="85"
+								   style="width:250px" {formname key=GROUP_NAME} />
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Add'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<input type="hidden" id="groupParentId" name="{FormKeys::PARENT_ID}" />
 	</form>
 </div>
 

@@ -16,17 +16,26 @@ function ResourceGroupManagement(opts)
 		newName: $('#editName'),
 
 		deleteForm: $('#deleteForm'),
-		deleteDialog: $('#deleteDialog')
+		deleteDialog: $('#deleteDialog'),
+
+		addChildForm: $('#addChildForm'),
+		addChildDialog: $('#addChildDialog')
 	};
 
 	ResourceGroupManagement.prototype.init = function (groups)
 	{
 		ConfigureAdminDialog(elements.renameDialog, 300, 135);
 		ConfigureAdminDialog(elements.deleteDialog, 300, 200);
+		ConfigureAdminDialog(elements.addChildDialog, 300, 135);
 
 		$(".save").click(function ()
 		{
 			$(this).closest('form').submit();
+		});
+
+		$(".cancel").click(function ()
+		{
+			$(this).closest('.dialog').dialog("close");
 		});
 
 		$(".new-group").watermark(opts.newGroupText);
@@ -37,6 +46,7 @@ function ResourceGroupManagement(opts)
 		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
 		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), hideDialogs, null, {onBeforeSubmit: onBeforeRename});
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm), hideDialogs, null, {onBeforeSubmit: onBeforeDelete});
+		ConfigureAdminForm(elements.addChildForm, defaultSubmitCallback(elements.addChildForm), onChildGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
 	};
 
 	function wireUpTree(groups)
@@ -140,6 +150,7 @@ function ResourceGroupManagement(opts)
 						"addChild": {name: "Add Child", icon: "add", callback: function (key, options)
 						{
 							var node = getNode(options);
+							showAddChild(node);
 						}},
 						"sep1": "---------",
 						"quit": {name: "Quit", icon: "quit"}
@@ -159,6 +170,14 @@ function ResourceGroupManagement(opts)
 	{
 		elements.activeId.val(node.id);
 		elements.deleteDialog.dialog("open");
+	}
+
+	function showAddChild(node)
+	{
+		elements.activeId.val(node.id);
+		$('#groupParentId').val(node.id);
+		$('#childName').val('');
+		elements.addChildDialog.dialog("open");
 	}
 
 	function onBeforeRename(arr, $form, options)
@@ -226,11 +245,19 @@ function ResourceGroupManagement(opts)
 	{
 		var parentNode = null;
 
+		data = JSON.parse(data);
 		if (data.parent_id && data.parent_id != null && data.parent_id != '')
 		{
 			parentNode = elements.groupDiv.tree('getNodeById', data.parent_id);
 		}
-		elements.groupDiv.tree('appendNode', JSON.parse(data), parentNode);
+		elements.groupDiv.tree('appendNode', data, parentNode);
+	}
+
+	function onChildGroupAdded(data)
+	{
+		onGroupAdded(data);
+
+		hideDialogs(data);
 	}
 
 	function onBeforeAddGroup(arr, $form, options)
