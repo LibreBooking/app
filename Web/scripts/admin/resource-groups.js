@@ -6,8 +6,12 @@ function ResourceGroupManagement(opts)
 		groupDiv: $('#group-tree'),
 		deleteResource: $('.remove-resource'),
 		addGroupButton: $('#btnAddGroup'),
+
+		activeId: $('#activeId'),
+
 		addGroupForm: $('#addGroupForm'),
 		renameForm: $('#renameForm'),
+		newName: $('#editName'),
 
 		renameDialog: $('#renameDialog')
 	};
@@ -21,29 +25,14 @@ function ResourceGroupManagement(opts)
 			$(this).closest('form').submit();
 		});
 
-		$(".triggerSubmit").keyup(function (e)
-		{
-			if (e.keyCode == 13)
-			{
-				$(this).closest('form').submit();
-			}
-		});
-
 		$(".new-group").watermark(opts.newGroupText);
 
 		wireUpTree(groups);
 		wireUpContextMenu();
 
 		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
-		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), hideDialogs);
+		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), hideDialogs, null, {onBeforeSubmit:onBeforeRename});
 	};
-
-	function showRename(node)
-	{
-		elements.renameDialog.dialog("open");
-
-		$('#editName').val(node.name);
-	}
 
 	function wireUpTree(groups)
 	{
@@ -157,6 +146,22 @@ function ResourceGroupManagement(opts)
 		);
 	}
 
+	function showRename(node)
+	{
+		elements.activeId.val(node.id);
+		elements.renameDialog.dialog("open");
+
+		elements.newName.val(node.name);
+	}
+
+	function onBeforeRename(arr, $form, options)
+	{
+		var id = elements.activeId.val();
+		var node = elements.groupDiv.tree('getNodeById', id);
+		var newName = elements.newName.val();
+
+		elements.groupDiv.tree('updateNode', node, newName);
+	}
 	function addResource(targetNode, resourceElement)
 	{
 		var resourceId = resourceElement.attr('resource-id');
@@ -273,7 +278,7 @@ function ResourceGroupManagement(opts)
 	{
 		return function ()
 		{
-			return options.submitUrl + "?action=" + form.attr('ajaxAction');
+			return options.submitUrl + "?action=" + form.attr('ajaxAction') + '&nid=' + elements.activeId.val();
 		};
 	};
 

@@ -104,8 +104,7 @@ class ResourceGroup
 	public function __construct($id, $name, $parentId = null)
 	{
 		$this->WithId($id);
-		$this->name = $name;
-		$this->label = $name;
+		$this->SetName($name);
 		$this->parent_id = $parentId;
 	}
 
@@ -144,12 +143,22 @@ class ResourceGroup
 		$this->id = $id;
 	}
 
+	public function SetName($name)
+	{
+		$this->name = $name;
+		$this->label = $name;
+	}
+
 	/**
 	 * @param int $targetId
 	 */
 	public function MoveTo($targetId)
 	{
 		$this->parent_id = $targetId;
+	}
+
+	public function Rename($newName) {
+	$this->SetName($newName);
 	}
 }
 

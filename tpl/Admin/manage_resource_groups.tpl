@@ -49,10 +49,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <input type="hidden" id="activeId" value=""/>
 
-<div id="renameDialog" class="dialog" title="{translate key=Rename}" ajaxAction="{ManageResourceGroupsActions::RenameGroup}">
-	<form id="renameForm" method="post">
+<div id="renameDialog" class="dialog" title="{translate key=Rename}">
+	<form id="renameForm" method="post" ajaxAction="{ManageResourceGroupsActions::RenameGroup}">
 		{translate key='Name'}: <input id="editName" type="text" class="textbox required triggerSubmit" maxlength="85"
-									   style="width:250px" {formname key=RESOURCE_NAME} />
+									   style="width:250px" {formname key=GROUP_NAME} />
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>

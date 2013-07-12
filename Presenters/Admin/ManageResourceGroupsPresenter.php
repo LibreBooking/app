@@ -129,7 +129,7 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 		Log::Debug('Renaming resource group. NodeId=%s, NewName=%s', $nodeId, $newName);
 
 		$group = $this->resourceRepository->LoadResourceGroup($nodeId);
-//		$group->MoveTo($targetNodeId);
+		$group->Rename($newName);
 		$this->resourceRepository->UpdateResourceGroup($group);
 	}
 
