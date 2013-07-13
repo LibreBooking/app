@@ -33,7 +33,7 @@ td.resdate {
 	color: #F0F0F0;
 }
 
-tr.today td.resdate {
+tr.today td.resdate, td.today {
 	font-weight: bold;
 	color: #FFFFFF;
 	background-color: #5199d1

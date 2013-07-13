@@ -48,7 +48,7 @@ class ViewSchedulePage extends SchedulePage
 		$viewReservations = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter());
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Set('SlotLabelFactory', $viewReservations ? new SlotLabelFactory() : new NullSlotLabelFactory());
-		$this->Display('view-schedule.tpl');
+		$this->Display('Schedule/view-schedule.tpl');
 	}
 
     public function ShowInaccessibleResources()

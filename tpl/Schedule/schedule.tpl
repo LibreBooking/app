@@ -188,10 +188,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</table>
 		{/foreach}
 	</div>
-	<input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 {/block}
 
 <div class="clear">&nbsp;</div>
+<input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 
 {$smarty.capture.date_navigation}
 

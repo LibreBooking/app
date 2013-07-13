@@ -17,9 +17,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{extends file="schedule.tpl"}
-
-{$Timezone}
+{extends file="Schedule/schedule.tpl"}
 
 {block name="reservations"}
 
@@ -61,8 +59,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
     </table>
 </div>
-
-<input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 
 {/block}
 

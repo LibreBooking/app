@@ -176,11 +176,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		if ($this->scheduleDirection == ScheduleDirection::horizontal)
 		{
-			$this->Display('schedule.tpl');
+			$this->Display('Schedule/schedule.tpl');
 		}
 		else
 		{
-			$this->Display('schedule-flipped.tpl');
+			$this->Display('Schedule/schedule-flipped.tpl');
 		}
 
 		$endDisplay = microtime(true);
