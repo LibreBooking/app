@@ -75,9 +75,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="actions"}
 	<div>
-		{*translate key=Actions*}
 		<a href="#" id="make_default"
 		   style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
+		<a href="#" id="rotate_schedule">{html_image src="monitor.png" altKey="FlipSchedule"}</a>
+	</div>
+	<div id="schedule_display_options">
 		<a href="#" id="rotate_schedule">{html_image src="arrow-turn.png" altKey="FlipSchedule"}</a>
 	</div>
 {/block}
