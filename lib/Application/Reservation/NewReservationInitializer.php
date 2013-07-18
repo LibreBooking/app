@@ -93,6 +93,11 @@ class NewReservationInitializer extends ReservationInitializerBase
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
 	}
+
+	public function IsNew()
+	{
+		return true;
+	}
 }
 
 class BindableResourceData

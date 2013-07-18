@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 class TimeInterval
 {
@@ -24,14 +24,14 @@ class TimeInterval
 	 * @var DateDiff
 	 */
 	private $interval = null;
-	
+
 	/**
 	 * @param int $seconds
 	 */
 	public function __construct($seconds)
 	{
 		$this->interval = null;
-		
+
 		if (!empty($seconds))
 		{
 			$this->interval = new DateDiff($seconds);
@@ -63,6 +63,33 @@ class TimeInterval
 	}
 
 	/**
+	 * @param $minutes
+	 * @return TimeInterval
+	 */
+	public static function FromMinutes($minutes)
+	{
+		return TimeInterval::Parse($minutes * 60);
+	}
+
+	/**
+	 * @param $hours
+	 * @return TimeInterval
+	 */
+	public static function FromHours($hours)
+	{
+		return TimeInterval::Parse($hours * 60 * 60);
+	}
+
+	/**
+	 * @param $days
+	 * @return TimeInterval
+	 */
+	public static function FromDays($days)
+	{
+		return TimeInterval::Parse($days * 60 * 60 * 24);
+	}
+
+	/**
 	 * @return int
 	 */
 	public function Days()
@@ -85,7 +112,7 @@ class TimeInterval
 	{
 		return $this->Interval()->Minutes();
 	}
-	
+
 	/**
 	 * @return DateDiff
 	 */
@@ -129,8 +156,9 @@ class TimeInterval
 		{
 			return $this->interval->__toString();
 		}
-		
+
 		return '';
 	}
 }
+
 ?>

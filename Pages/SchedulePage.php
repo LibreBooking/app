@@ -177,7 +177,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		if ($this->scheduleDirection == ScheduleDirection::Wide)
 		{
-			$this->Display('Schedule/schedule-days-horizontal.tpl');
+			$this->Display('Schedule/schedule.tpl');
 		}
 		elseif ($this->scheduleDirection == ScheduleDirection::Tall)
 		{

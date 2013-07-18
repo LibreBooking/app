@@ -48,6 +48,16 @@ class ReservationDateBinder implements IReservationComponentBinder
 		$startDate = ($requestedStartDate == null) ? $requestedDate : $requestedStartDate->ToTimezone($timezone);
 		$endDate = ($requestedEndDate == null) ? $requestedDate : $requestedEndDate->ToTimezone($timezone);
 
+		if ($initializer->IsNew())
+		{
+			$resource = $initializer->PrimaryResource();
+
+			if ($resource->GetMinimumLength() != null && !$resource->GetMinimumLength()->Interval()->IsNull())
+			{
+				$endDate = $startDate->ApplyDifference($resource->GetMinimumLength()->Interval());
+			}
+		}
+
 		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
 		$startPeriods = $layout->GetLayout($startDate);
 		if (count($startPeriods) > 1 && $startPeriods[0]->Begin()->Compare($startPeriods[1]->Begin()) > 0)

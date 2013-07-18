@@ -415,6 +415,15 @@ class Date
 	}
 
 	/**
+	 * @param int $hours
+	 * @return Date
+	 */
+	public function AddHours($hours)
+	{
+		return new Date($this->Format(self::SHORT_FORMAT) . " +" . $hours . " hours", $this->timezone);
+	}
+
+	/**
 	 * @param int $minutes
 	 * @return Date
 	 */

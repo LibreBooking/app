@@ -83,6 +83,11 @@ interface IReservationComponentInitializer
 	public function CurrentUser();
 
 	/**
+	 * @return ResourceDto
+	 */
+	public function PrimaryResource();
+
+	/**
 	 * @param $canChangeUser bool
 	 */
 	public function SetCanChangeUser($canChangeUser);
@@ -141,10 +146,20 @@ interface IReservationComponentInitializer
 	 * @param bool $isHidden
 	 */
 	public function HideRecurrence($isHidden);
+
+	/**
+	 * @return bool
+	 */
+	public function IsNew();
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
 {
+	/**
+	 * @var ResourceDto
+	 */
+	protected $primaryResource;
+
 	/**
 	 * @var IReservationPage
 	 */
@@ -216,8 +231,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$requestedScheduleId = $this->GetScheduleId();
 		$this->basePage->SetScheduleId($requestedScheduleId);
 
-		$this->BindDates();
 		$this->BindResourceAndAccessories();
+		$this->BindDates();
 		$this->BindUser();
 		$this->BindAttributes();
 	}
@@ -318,6 +333,14 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	}
 
 	/**
+	 * @return ResourceDto
+	 */
+	public function PrimaryResource()
+	{
+		return $this->primaryResource;
+	}
+
+	/**
 	 * @param $canChangeUser bool
 	 */
 	public function SetCanChangeUser($canChangeUser)
@@ -378,6 +401,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	 */
 	public function SetReservationResource($resource)
 	{
+		$this->primaryResource = $resource;
 		$this->basePage->SetReservationResource($resource);
 	}
 
@@ -398,6 +422,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function HideRecurrence($isHidden)
 	{
 		$this->basePage->HideRecurrence($isHidden);
+	}
+
+	public function IsNew()
+	{
+		return true;
 	}
 }
 

@@ -119,7 +119,7 @@ class ResourceService implements IResourceService
 				continue;
 			}
 
-			$resourceDtos[] = new ResourceDto($resource->GetResourceId(), $resource->GetName(), $canAccess, $resource->GetScheduleId());
+			$resourceDtos[] = new ResourceDto($resource->GetResourceId(), $resource->GetName(), $canAccess, $resource->GetScheduleId(), $resource->GetMinLength());
 		}
 		return $resourceDtos;
 	}
@@ -142,12 +142,20 @@ class ResourceService implements IResourceService
 
 class ResourceDto
 {
-	public function __construct($id, $name, $canAccess = true, $scheduleId = null)
+	/**
+	 * @param int $id
+	 * @param string $name
+	 * @param bool $canAccess
+	 * @param null|int $scheduleId
+	 * @param null|TimeInterval $minLength
+	 */
+	public function __construct($id, $name, $canAccess = true, $scheduleId = null, $minLength = null)
 	{
 		$this->Id = $id;
 		$this->Name = $name;
 		$this->CanAccess = $canAccess;
 		$this->ScheduleId = $scheduleId;
+		$this->MinimumLength = $minLength;
 	}
 	
 	/**
@@ -166,9 +174,14 @@ class ResourceDto
 	public $CanAccess;
 
 	/**
-	 * @var int
+	 * @var null|int
 	 */
 	public $ScheduleId;
+
+	/**
+	 * @var null|TimeInterval
+	 */
+	public $MinimumLength;
 
 	/**
 	 * alias of GetId()
@@ -201,6 +214,14 @@ class ResourceDto
 	public function GetScheduleId()
 	{
 		return $this->ScheduleId;
+	}
+
+	/**
+	 * @return null|TimeInterval
+	 */
+	public function GetMinimumLength()
+	{
+		return $this->MinimumLength;
 	}
 }
 ?>
