@@ -462,6 +462,9 @@ class en_us extends Language
 		$strings['AddNewGroup'] = 'Add a new group';
 		$strings['Quit'] = 'Quit';
 		$strings['AddGroup'] = 'Add Group';
+		$strings['StandardScheduleDisplay'] = 'Use the standard schedule display';
+		$strings['TallScheduleDisplay'] = 'Use the tall schedule display';
+		$strings['WideScheduleDisplay'] = 'Use the wide schedule display';
 		// End Strings
 
 		// Install

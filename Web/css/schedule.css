@@ -271,3 +271,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
 ul.jqtree-tree li.jqtree-selected > .jqtree-element,
 ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover  { background:none; font-weight: bold;}
 ul.jqtree-tree .jqtree-toggler { top: 10%; }
+
+#make_default
+{
+	padding-right:10px;
+}

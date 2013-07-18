@@ -94,10 +94,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{
 			$(index).find('td:last').after(item.join(''));
         });
-
-		$('html, body').animate({
-	         scrollTop: $("tr.today").offset().top-50
-	     }, 500);
     })
 </script>
 

@@ -136,13 +136,14 @@ interface ISchedulePage extends IActionPage
 
 class ScheduleDirection
 {
-	const vertical = 'vertical';
-	const horizontal = 'horizontal';
+	const Wide = 'Wide';
+	const Tall = 'Tall';
+	const Standard = 'Standard';
 }
 
 class SchedulePage extends ActionPage implements ISchedulePage
 {
-	protected $scheduleDirection = ScheduleDirection::horizontal;
+	protected $scheduleDirection = ScheduleDirection::Standard;
 
 	/**
 	 * @var SchedulePresenter
@@ -174,13 +175,17 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		$this->Set('SlotLabelFactory', $user->IsAdmin ? new AdminSlotLabelFactory() : new SlotLabelFactory());
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
-		if ($this->scheduleDirection == ScheduleDirection::horizontal)
+		if ($this->scheduleDirection == ScheduleDirection::Wide)
 		{
-			$this->Display('Schedule/schedule.tpl');
+			$this->Display('Schedule/schedule-days-horizontal.tpl');
+		}
+		elseif ($this->scheduleDirection == ScheduleDirection::Tall)
+		{
+			$this->Display('Schedule/schedule-flipped.tpl');
 		}
 		else
 		{
-			$this->Display('Schedule/schedule-flipped.tpl');
+			$this->Display('Schedule/schedule.tpl');
 		}
 
 		$endDisplay = microtime(true);
@@ -290,15 +295,14 @@ class SchedulePage extends ActionPage implements ISchedulePage
 			return $cookie;
 		}
 
-		return ScheduleDirection::horizontal;
+		return ScheduleDirection::Standard;
 	}
 
 	public function SetScheduleDirection($direction)
 	{
 		$this->scheduleDirection = $direction;
 		$this->Set('CookieName', 'schedule-direction-' . $this->GetVar('ScheduleId'));
-		$this->Set('CookieValue',
-				   $direction == ScheduleDirection::vertical ? ScheduleDirection::horizontal : ScheduleDirection::vertical);
+		$this->Set('CookieValue', $direction);
 	}
 
 	/**

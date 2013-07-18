@@ -75,12 +75,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="actions"}
 	<div>
-		<a href="#" id="make_default"
-		   style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
-		<a href="#" id="rotate_schedule">{html_image src="monitor.png" altKey="FlipSchedule"}</a>
-	</div>
-	<div id="schedule_display_options">
-		<a href="#" id="rotate_schedule">{html_image src="arrow-turn.png" altKey="FlipSchedule"}</a>
+		<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
+		<a href="#" id="schedule_standard" schedule-display="{ScheduleDirection::Standard}">{html_image src="layer-resize-actual.png" altKey="StandardScheduleDisplay"}</a>
+		<a href="#" id="schedule_tall" schedule-display="{ScheduleDirection::Tall}">{html_image src="layer-resize-replicate-vertical.png" altKey="TallScheduleDisplay"}</a>
+		<a href="#" id="schedule_wide" schedule-display="{ScheduleDirection::Wide}">{html_image src="layer-resize-replicate.png" altKey="WideScheduleDisplay"}</a>
 	</div>
 {/block}
 
@@ -213,7 +211,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				summaryPopupUrl: "{$Path}ajax/respopup.php",
 				setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
 				cookieName: "{$CookieName}",
-				cookieValue: "{$CookieValue}",
 				scheduleId:"{$ScheduleId}"
 			};
 

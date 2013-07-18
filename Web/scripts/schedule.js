@@ -38,6 +38,10 @@ function Schedule(opts, resourceGroups)
 
 		this.initResources();
 		this.initNavigation();
+
+		$('html, body').animate({
+			         scrollTop: $("tr.today").offset().top-50
+			     }, 500);
 	};
 
 	this.initResources = function ()
@@ -103,10 +107,10 @@ function Schedule(opts, resourceGroups)
 
 	this.initRotateSchedule = function ()
 	{
-		$('#rotate_schedule').click(function (e)
+		$('#schedule_tall, #schedule_wide, #schedule_standard').click(function (e)
 		{
 			e.preventDefault();
-			createCookie(opts.cookieName, opts.cookieValue, 30);
+			createCookie(opts.cookieName, $(this).attr('schedule-display'), 30);
 			window.location.reload();
 		});
 	};
