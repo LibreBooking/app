@@ -183,15 +183,7 @@ function Schedule(opts, resourceGroups)
 				startDate = element.find('.start').val();
 				startHref = href;
 			}
-			console.log('Selecting ' + href);
-			if (href != startHref)
-			{
-				element.removeClass('ui-selecting');
-			}
-			else
-			{
-				endDate = element.find('.end').val();
-			}
+			endDate = element.find('.end').val();
 		};
 
 		reservationsElement.selectable({
@@ -225,7 +217,6 @@ function Schedule(opts, resourceGroups)
 					{
 						window.location = href + "&sd=" + startDate + "&ed=" + endDate;
 					}
-					console.log('Start:' + startDate + ' end:' + endDate);
 				}
 			}
 		});
