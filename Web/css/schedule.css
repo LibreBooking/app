@@ -241,13 +241,15 @@ div.legend {
 	width: 150px;
 	background-color:#F4F5ED;
 	border: solid 1px #C7C9BE;
-
 	min-height:400px;
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
     -khtml-border-radius: 8px;
     border-radius: 8px;
 	margin-right: 2px;
+	-moz-box-shadow: 0px 0px 3px 0px #ccc;
+	-webkit-box-shadow: 0px 0px 3px 0px #ccc;
+	box-shadow: 0px 0px 3px 0px #ccc;
 }
 
 .reservations-left-header {
