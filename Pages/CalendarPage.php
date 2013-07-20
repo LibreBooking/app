@@ -35,50 +35,48 @@ interface ICalendarPage extends IPage
 	public function BindCalendar(ICalendarSegment $calendar);
 
 	/**
-	 * @abstract
 	 * @param CalendarFilters $filters
 	 * @return void
 	 */
 	public function BindFilters($filters);
 
 	/**
-	 * @abstract
 	 * @param Date $displayDate
 	 * @return void
 	 */
 	public function SetDisplayDate($displayDate);
 
 	/**
-	 * @abstract
 	 * @return null|int
 	 */
 	public function GetScheduleId();
 
 	/**
-	 * @abstract
 	 * @return null|int
 	 */
 	public function GetResourceId();
 
 	/**
-	 * @abstract
 	 * @param $scheduleId null|int
 	 * @return void
 	 */
 	public function SetScheduleId($scheduleId);
 
 	/**
-	 * @abstract
 	 * @param $resourceId null|int
 	 * @return void
 	 */
 	public function SetResourceId($resourceId);
 
 	/**
-	 * @abstract
 	 * @param CalendarSubscriptionDetails $subscriptionDetails
 	 */
 	public function BindSubscription($subscriptionDetails);
+
+	/**
+	 * @param int $firstDay
+	 */
+	public function SetFirstDay($firstDay);
 }
 
 class CalendarPage extends SecurePage implements ICalendarPage
@@ -217,6 +215,14 @@ class CalendarPage extends SecurePage implements ICalendarPage
 		$this->Set('IsSubscriptionAllowed', $details->IsAllowed());
 		$this->Set('IsSubscriptionEnabled', $details->IsEnabled());
 		$this->Set('SubscriptionUrl', $details->Url());
+	}
+
+	/**
+	 * @param int $firstDay
+	 */
+	public function SetFirstDay($firstDay)
+	{
+		$this->Set('FirstDay', $firstDay == Schedule::Today ? 0 : $firstDay);
 	}
 }
 

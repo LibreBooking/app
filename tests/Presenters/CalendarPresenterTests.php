@@ -119,7 +119,8 @@ class CalendarPresenterTests extends TestBase
 
 		$reservations = array($res);
 		$resources = array($r1, $r2);
-		$schedules = array(new Schedule(1, null, false, null, null), new Schedule($defaultScheduleId, null, true, null, null),);
+		/** @var Schedule[] $schedules */
+		$schedules = array(new Schedule(1, null, false, 2, null), new Schedule($defaultScheduleId, null, true, 3, null),);
 
 		$this->scheduleRepository
 				->expects($this->once())
@@ -169,6 +170,11 @@ class CalendarPresenterTests extends TestBase
 				->expects($this->once())
 				->method('GetYear')
 				->will($this->returnValue($requestedYear));
+
+		$this->page
+				->expects($this->once())
+				->method('SetFirstDay')
+				->with($this->equalTo($schedules[1]->GetWeekdayStart()));
 
 		$this->calendarFactory
 				->expects($this->once())
