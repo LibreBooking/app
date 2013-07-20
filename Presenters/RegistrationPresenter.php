@@ -182,7 +182,7 @@ class RegistrationPresenter extends ActionPresenter
 	{
 		if (!Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter()))
 		{
-			$this->page->Redirect(Pages::LOGIN);
+			$this->page->RedirectPage(Pages::LOGIN);
 		}
 	}
 

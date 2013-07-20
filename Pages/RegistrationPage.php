@@ -66,6 +66,8 @@ interface IRegistrationPage extends IPage, IActionPage
 	 * @return AttributeFormElement[]
 	 */
 	public function GetAttributes();
+
+	public function RedirectPage($url);
 }
 
 class RegistrationPage extends ActionPage implements IRegistrationPage
@@ -240,6 +242,11 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 	public function Redirect($url)
 	{
 		$this->SetJson(array('url' => $url));
+	}
+
+	public function RedirectPage($url)
+	{
+		parent::Redirect($url);
 	}
 
 	public function GetAttributes()

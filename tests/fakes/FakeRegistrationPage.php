@@ -234,5 +234,11 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	{
 		return $this->_AttributeValues;
 	}
+
+	public function RedirectPage($url)
+	{
+		$this->_RedirectDestination = $url;
+	}
+
 }
 ?>

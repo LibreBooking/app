@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class FakeUser extends User
 {
 	public $_IsAdminForUser = false;
+	public $_IsResourceAdmin = true;
 
 	public function __construct($userId = null)
 	{
@@ -69,6 +70,11 @@ class FakeUser extends User
 	public function IsAdminFor(User $user)
 	{
 		return $this->_IsAdminForUser;
+	}
+
+	public function IsResourceAdminFor($resource)
+	{
+		return $this->_IsResourceAdmin;
 	}
 }
 

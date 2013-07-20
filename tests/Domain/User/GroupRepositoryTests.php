@@ -62,7 +62,7 @@ class GroupRepositoryTests extends TestBase
 		$results = $list->Results();
 		$this->assertEquals(GroupItemView::Create($rows[0]), $results[0]);
 		$this->assertEquals(GroupItemView::Create($rows[1]), $results[1]);
-		$this->assertEquals($this->db->ContainsCommand($expected), "missing select group command");
+		$this->assertTrue($this->db->ContainsCommand($expected), "missing select group command");
 
 		$pageInfo = $list->PageInfo();
 		$this->assertEquals($count, $pageInfo->Total);
@@ -283,7 +283,7 @@ class GroupRepositoryTests extends TestBase
 		$this->assertEquals(GroupItemView::Create($rows[0]), $groups[0]);
 		$this->assertEquals(GroupItemView::Create($rows[1]), $groups[1]);
 
-		$this->assertEquals($this->db->ContainsCommand($getGroupsCommand), "missing select group command");
+		$this->assertTrue($this->db->ContainsCommand($getGroupsCommand), "missing select group command");
 	}
 
 	private function GetGroupUserRow($userId, $firstName, $lastName)

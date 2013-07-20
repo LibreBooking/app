@@ -133,6 +133,14 @@ class ManageUsersPresenterTests extends TestBase
 					   $this->isNull(), $this->equalTo(AccountStatus::ALL))
 				->will($this->returnValue($userList));
 
+		$user = new FakeUser();
+
+		$this->userRepo
+				->expects($this->once())
+				->method('LoadById')
+				->with($this->fakeUser->UserId)
+				->will($this->returnValue($user));
+
 		$this->page
 				->expects($this->once())
 				->method('BindUsers')
