@@ -708,31 +708,31 @@ class ReservationView
 interface IReservedItemView
 {
 	/**
-	 * @abstract
 	 * @return Date
 	 */
 	public function GetStartDate();
 
 	/**
-	 * @abstract
 	 * @return Date
 	 */
 	public function GetEndDate();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetResourceId();
 
 	/**
-	 * @abstract
+	 * @return mixed
+	 */
+	public function GetResourceName();
+
+	/**
 	 * @return int
 	 */
 	public function GetId();
 
 	/**
-	 * @abstract
 	 * @param Date $date
 	 * @return bool
 	 */
@@ -1122,6 +1122,11 @@ class ReservationItemView implements IReservedItemView
 	{
 		return in_array($userId, $this->InviteeIds);
 	}
+
+	public function GetResourceName()
+	{
+		return $this->ResourceName;
+	}
 }
 
 class BlackoutItemView implements IReservedItemView
@@ -1294,6 +1299,11 @@ class BlackoutItemView implements IReservedItemView
 	public function OccursOn(Date $date)
 	{
 		return $this->Date->OccursOn($date);
+	}
+
+	public function GetResourceName()
+	{
+		return $this->ResourceName;
 	}
 }
 

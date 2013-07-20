@@ -80,6 +80,9 @@ h1 {
 	color: #565656;
 	cursor: pointer;
 	padding: 5px 10px 6px 7px; /* Links */
+	-moz-box-shadow: 0px 0px 3px 0px #ccc;
+	-webkit-box-shadow: 0px 0px 3px 0px #ccc;
+	box-shadow: 0px 0px 3px 0px #ccc;
 }
 
 .button:hover {

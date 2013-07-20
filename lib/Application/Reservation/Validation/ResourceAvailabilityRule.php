@@ -150,7 +150,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		/** @var IReservedItemView $conflict */
 		foreach($conflicts as $conflict)
 		{
-			$dates[] = $conflict->GetStartDate()->ToTimezone($this->timezone)->Format($format);
+			$dates[] = sprintf('%s - %s', $conflict->GetStartDate()->ToTimezone($this->timezone)->Format($format), $conflict->GetResourceName());
 		}
 		
 		$uniqueDates = array_unique($dates);
