@@ -425,6 +425,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>Your reCAPTCHA private key. Visit
 	www.google.com/recaptcha to sign up.</p>
 
+<p class="setting"><span>$config['settings']['email']['default.from.address']</span>The email address to use as the
+	'from' address when sending emails. If emails are bouncing or being marked as spam, set this to an email address
+	with your domain name. For example, noreply@yourdomain.com. This will not change the 'from' name or the reply-to
+	address.</p>
+
 <h2>Plugins</h2>
 
 <p>The following components are currently pluggable:</p>

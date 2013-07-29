@@ -134,4 +134,8 @@ $conf['settings']['api']['enabled'] = 'false';
 $conf['settings']['recaptcha']['enabled'] = 'false';
 $conf['settings']['recaptcha']['public.key'] = '';
 $conf['settings']['recaptcha']['private.key'] = '';
+/**
+ * Email
+ */
+$config['settings']['email']['default.from.address'] = '';
 ?>
