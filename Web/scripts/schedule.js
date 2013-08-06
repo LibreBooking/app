@@ -39,9 +39,12 @@ function Schedule(opts, resourceGroups)
 		this.initResources();
 		this.initNavigation();
 
-		$('html, body').animate({
+		if ($('tr.today').length > 0)
+		{
+			$('html, body').animate({
 			         scrollTop: $("tr.today").offset().top-50
 			     }, 500);
+		}
 	};
 
 	this.initResources = function ()
