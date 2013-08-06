@@ -85,13 +85,14 @@ class DailyLayout implements IDailyLayout
 		$sw->Record('slots');
 		$sw->Stop();
 
-//		Log::Debug("DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations",
-//			$resourceId,
-//			$date->ToString(),
-//			$sw->GetRecordSeconds('listing'),
-//			$sw->TimeBetween('slots', 'listing'),
-//			$sw->GetTotalSeconds(),
-//			count($items));
+		Log::Debug('DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations. Memory consumed=%sMB',
+			$resourceId,
+			$date->ToString(),
+			$sw->GetRecordSeconds('listing'),
+			$sw->TimeBetween('slots', 'listing'),
+			$sw->GetTotalSeconds(),
+			count($items),
+			round(memory_get_usage()/1048576,2));
 
 		return $slots;
 	}
