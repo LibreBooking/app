@@ -39,6 +39,7 @@ class AuthenticationTests extends TestBase
 	private $languageCode;
 	private $publicId;
 	private $scheduleId;
+	private $groups;
 
 	/**
 	 * @var Authentication
@@ -92,6 +93,7 @@ class AuthenticationTests extends TestBase
 		$this->languageCode = 'en_us';
 		$this->publicId = 'public_id';
 		$this->scheduleId = 111;
+		$this->groups = array(new FakeGroup(999), new FakeGroup(888));
 
 		$this->user = new FakeUser();
 		$this->user->WithId($this->id);
@@ -103,6 +105,7 @@ class AuthenticationTests extends TestBase
 		$this->user->WithPublicId($this->publicId);
 		$this->user->Activate();
 		$this->user->WithDefaultSchedule($this->scheduleId);
+		$this->user->WithGroups($this->groups);
 
 		$this->fakePassword = new FakePassword();
 		$this->fakeMigration = new FakeMigration();
@@ -186,7 +189,10 @@ class AuthenticationTests extends TestBase
 		$user->LoginTime = LoginTime::Now();
 		$user->PublicId = $this->publicId;
 		$user->ScheduleId = $this->scheduleId;
-
+		foreach ($this->groups as $group)
+		{
+			$user->Groups[] = $group->GroupId;
+		}
 		$this->assertEquals($user, $actualSession);
 	}
 

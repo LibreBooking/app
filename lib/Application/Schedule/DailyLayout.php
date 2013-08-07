@@ -73,17 +73,17 @@ class DailyLayout implements IDailyLayout
 
 	public function GetLayout(Date $date, $resourceId)
 	{
-		$hideBlocked = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_HIDE_BLOCKED_PERIODS, new BooleanConverter());
-		$sw = new StopWatch();
-		$sw->Start();
+		try
+		{
+			$hideBlocked = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_HIDE_BLOCKED_PERIODS, new BooleanConverter());
+			$sw = new StopWatch();
+			$sw->Start();
 
-		$items = $this->_reservationListing->OnDateForResource($date, $resourceId);
-		$sw->Record('listing');
+			$items = $this->_reservationListing->OnDateForResource($date, $resourceId);
+			$sw->Record('listing');
 
-		$list = new ScheduleReservationList($items, $this->_scheduleLayout, $date, $hideBlocked);
-		$slots = $list->BuildSlots();
-		$sw->Record('slots');
-		$sw->Stop();
+			$list = new ScheduleReservationList($items, $this->_scheduleLayout, $date, $hideBlocked);
+			$slots = $list->BuildSlots();
 
 		Log::Debug('DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations. Memory consumed=%sMB',
 			$resourceId,
@@ -94,7 +94,21 @@ class DailyLayout implements IDailyLayout
 			count($items),
 			round(memory_get_usage()/1048576,2));
 
-		return $slots;
+	//		Log::Debug("DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations",
+	//			$resourceId,
+	//			$date->ToString(),
+	//			$sw->GetRecordSeconds('listing'),
+	//			$sw->TimeBetween('slots', 'listing'),
+	//			$sw->GetTotalSeconds(),
+	//			count($items));
+
+			return $slots;
+		}
+		catch(Exception $ex)
+		{
+			Log::Error('Error getting layout on date %s for resourceId %s. Exception=%s', $date->ToString(), $resourceId, $ex);
+			throw($ex);
+		}
 	}
 
 	public function IsDateReservable(Date $date)

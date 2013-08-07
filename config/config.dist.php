@@ -19,6 +19,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+//ini_set('display_errors', 1);
+
 /**
  * Application configuration
  */

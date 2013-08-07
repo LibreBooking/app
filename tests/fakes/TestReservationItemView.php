@@ -20,12 +20,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class TestReservationItemView extends ReservationItemView
 {
 	/**
-	 * @param $id
+	 * @param null|string $id
 	 * @param Date $startDate
 	 * @param Date $endDate
 	 * @param int $resourceId
+	 * @param int $setUpTime
+	 * @param int $tearDownTime
 	 */
-	public function __construct($id, Date $startDate, Date $endDate, $resourceId = 1)
+	public function __construct($id, Date $startDate, Date $endDate, $resourceId = 1, $setUpTime = 0, $tearDownTime = 0)
 	{
 		$this->ReservationId = $id;
 		$this->StartDate = $startDate;
@@ -33,6 +35,8 @@ class TestReservationItemView extends ReservationItemView
 		$this->ResourceId = $resourceId;
 		$this->Date = new DateRange($startDate, $endDate);
 		$this->RepeatType = RepeatType::None;
+		$this->SetupTime = $setUpTime;
+		$this->TeardownTime = $tearDownTime;
 	}
 
 	public function WithSeriesId($seriesId)

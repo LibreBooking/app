@@ -155,6 +155,11 @@ class Authentication implements IAuthentication
 		$userSession->IsResourceAdmin = $this->roleService->IsResourceAdministrator($user);
 		$userSession->IsScheduleAdmin = $this->roleService->IsScheduleAdministrator($user);
 
+		foreach ($user->Groups() as $group)
+		{
+			$userSession->Groups[] = $group->GroupId;
+		}
+
 		return $userSession;
     }
 

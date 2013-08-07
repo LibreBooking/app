@@ -737,6 +737,16 @@ interface IReservedItemView
 	 * @return bool
 	 */
 	public function OccursOn(Date $date);
+
+	/**
+	 * @return int
+	 */
+	public function GetSetupTime();
+
+	/**
+	 * @return int
+	 */
+	public function GetTeardownTime();
 }
 
 class ReservationItemView implements IReservedItemView
@@ -889,6 +899,16 @@ class ReservationItemView implements IReservedItemView
 	 * @var array|int[]
 	 */
 	public $InviteeIds = array();
+
+	/**
+	 * @var int
+	 */
+	public $SetupTime = 0;
+
+	/**
+	 * @var int
+	 */
+	public $TeardownTime = 0;
 
 	/**
 	 * @param $referenceNumber string
@@ -1127,6 +1147,22 @@ class ReservationItemView implements IReservedItemView
 	{
 		return $this->ResourceName;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function GetSetupTime()
+	{
+		return $this->SetupTime;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetTeardownTime()
+	{
+		return $this->TeardownTime;
+	}
 }
 
 class BlackoutItemView implements IReservedItemView
@@ -1304,6 +1340,22 @@ class BlackoutItemView implements IReservedItemView
 	public function GetResourceName()
 	{
 		return $this->ResourceName;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetSetupTime()
+	{
+		return 0;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetTeardownTime()
+	{
+		return 0;
 	}
 }
 

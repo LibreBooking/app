@@ -638,6 +638,43 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertEquals(new EmptyReservationSlot($expectedPeriod, $expectedPeriod, $listDate, true), $slots[0]);
 	}
 
+	public function testAddsSetupAndTearDownItemsIfTheReservationHasThem()
+	{
+		$tz = 'America/Chicago';
+		$listDate = Date::Parse('2011-02-08', $tz);
+
+		$layout = new ScheduleLayout($tz);
+		$layout->AppendBlockedPeriod(Time::Parse('0:00', $tz), Time::Parse('2:00', $tz));
+		$layout->AppendPeriod(Time::Parse('2:00', $tz), Time::Parse('6:00', $tz));
+		$layout->AppendBlockedPeriod(Time::Parse('6:00', $tz), Time::Parse('0:00', $tz));
+
+		$item = new TestReservationItemView(
+			1,
+			Date::Parse('2011-02-08 2:00', $tz)->ToUtc(),
+			Date::Parse('2011-02-08 6:00', $tz)->ToUtc(),
+			1,
+			30,
+			60
+		);
+		$r1 = new ReservationListItem($item);
+
+		$list = new ScheduleReservationList(array($r1), $layout, $listDate, true);
+
+		/** @var IReservationSlot[] $slots */
+		$slots = $list->BuildSlots();
+
+		$periods = $layout->GetLayout($listDate, true);
+		$this->assertEquals(5, count($periods));
+		$this->assertEquals(new Time('2:00', $tz), $slots[1]->Begin());
+		$this->assertEquals(new Time('2:30', $tz), $slots[1]->EndDate());
+
+		$this->assertEquals(new Time('2:30', $tz), $slots[2]->Begin());
+		$this->assertEquals(new Time('5:00', $tz), $slots[2]->EndDate());
+
+		$this->assertEquals(new Time('5:00', $tz), $slots[3]->Begin());
+		$this->assertEquals(new Time('6:00', $tz), $slots[3]->EndDate());
+	}
+
 }
 
 class ReservationItemViewBuilder
