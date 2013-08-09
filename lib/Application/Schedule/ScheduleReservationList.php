@@ -288,11 +288,13 @@ class ScheduleReservationList implements IScheduleReservationList
 		}
 		elseif ($this->ItemIsNotOnLayoutBoundary($item))
 		{
-			$layoutItem = $this->FindClosestLayoutIndexBeforeStartingTime($item);
-			if (!empty($layoutItem))
-			{
-				$start = $layoutItem->BeginDate()->ToTimezone($this->_destinationTimezone);
-			}
+			$this->_itemsByStartTime[$start->Timestamp()] = $item;
+			$this->_layoutItems[] = new SchedulePeriod($item->StartDate(), $item->EndDate());
+//			$layoutItem = $this->FindClosestLayoutIndexBeforeStartingTime($item);
+//			if (!empty($layoutItem))
+//			{
+//				$start = $layoutItem->BeginDate()->ToTimezone($this->_destinationTimezone);
+//			}
 		}
 
 		$this->_itemsByStartTime[$start->Timestamp()] = $item;

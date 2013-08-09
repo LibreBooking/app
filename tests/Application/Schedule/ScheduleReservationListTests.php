@@ -658,21 +658,23 @@ class ScheduleReservationListTests extends TestBase
 		);
 		$r1 = new ReservationListItem($item);
 
-		$list = new ScheduleReservationList(array($r1), $layout, $listDate, true);
+		$list = new ScheduleReservationList(array($r1), $layout, $listDate, false);
 
 		/** @var IReservationSlot[] $slots */
 		$slots = $list->BuildSlots();
 
-		$periods = $layout->GetLayout($listDate, true);
+		$periods = $layout->GetLayout($listDate, false);
 		$this->assertEquals(5, count($periods));
 		$this->assertEquals(new Time('2:00', $tz), $slots[1]->Begin());
 		$this->assertEquals(new Time('2:30', $tz), $slots[1]->EndDate());
+		$this->assertInstanceOf('SetUpSlot', $slots[1]);
 
 		$this->assertEquals(new Time('2:30', $tz), $slots[2]->Begin());
 		$this->assertEquals(new Time('5:00', $tz), $slots[2]->EndDate());
 
 		$this->assertEquals(new Time('5:00', $tz), $slots[3]->Begin());
 		$this->assertEquals(new Time('6:00', $tz), $slots[3]->EndDate());
+		$this->assertInstanceOf('TearDownSlot', $slots[3]);
 	}
 
 }

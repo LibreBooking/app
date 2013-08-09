@@ -32,11 +32,19 @@ class ReservationListItem
 
 	public function StartDate()
 	{
+		if ($this->SetupTime() > 0)
+		{
+			return $this->item->GetStartDate()->AddMinutes($this->SetupTime());
+		}
 		return $this->item->GetStartDate();
 	}
 
 	public function EndDate()
 	{
+		if ($this->TeardownTime() > 0)
+		{
+			return $this->item->GetEndDate()->AddMinutes(-$this->TeardownTime());
+		}
 		return $this->item->GetEndDate();
 	}
 
@@ -97,7 +105,7 @@ class SetUpItem extends ReservationListItem
 
 	public function EndDate()
 	{
-		return $this->listItem->StartDate();
+		return $this->listItem->StartDate()->AddMinutes($this->listItem->SetupTime());
 	}
 
 	public function OccursOn(Date $date)
@@ -141,7 +149,7 @@ class TearDownItem extends ReservationListItem
 
 	public function StartDate()
 	{
-		return $this->listItem->EndDate();
+		return $this->listItem->EndDate()->AddMinutes(-$this->listItem->TeardownTime());
 	}
 
 	public function EndDate()
