@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012 Bart Verheyde
+Copyright 2013 Bart Verheyde, Nick Korbel
 bart.verheyde@ugent.be
 
 This file is not part of phpScheduleIt.
@@ -19,24 +19,20 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class CASConfig{
-    //placeholder const with defaultlt values for values in CAS.config
-
+class CASConfig
+{
     const CONFIG_ID = 'CAS';
 
-    const CAS_VERSION = 'cas_version';
-    const CAS_URL_SERVER = 'cas_url_server';
-    const CAS_PORT = 'cas_port';
-    const CAS_URI_SERVER = 'cas_uri_server';
-    const CAS_CHANGESESSIONID = 'cas_changeSessionID';
-    const CAS_COMMUNICATIONPROTOCOL = 'cas_communicationprotocol';
-    const CAS_LOGOUT_SERVERS = 'cas_logout_servers';
-    const CAS_CERTIFICATES = 'cas_certificates';
-
-    const ATTRIBUTE_MAPPING = 'attribute_mapping';
-    const USER_ID_ATTRIBUTE = 'user_id_attribute';
-
-
+    const CAS_VERSION = 'cas.version';
+    const CAS_SERVER_HOSTNAME = 'cas.server.hostname';
+    const CAS_PORT = 'cas.port';
+    const CAS_SERVER_URI = 'cas.server.uri';
+    const CAS_CHANGESESSIONID = 'cas.change.session.id';
+    const CAS_LOGOUT_SERVERS = 'cas.logout.servers';
+    const CAS_CERTIFICATE = 'cas.certificate';
+    const CAS_DEBUG_ENABLED = 'cas.debug.enabled';
+    const EMAIL_SUFFIX = 'email.suffix';
+    const DEBUG_FILE = 'cas.debug.file';
 }
 
 ?>

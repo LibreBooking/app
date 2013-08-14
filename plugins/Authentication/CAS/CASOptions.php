@@ -23,46 +23,11 @@ require_once(ROOT_DIR . '/lib/Config/namespace.php');
 
 class CASOptions
 {
-	private $_options = array();
-
 	public function __construct()
 	{
-
-//  this gave error cannot redeclair CASConfig 
 		require_once(dirname(__FILE__) . '/CASConfig.php');
 
-
-		Configuration::Instance()->Register(dirname(__FILE__) . '/CASConfig.php',CASConfig2::CONFIG_ID);
-
-	}
-
-	public function CAS2Config()
-	{
-		$this->SetOption('cas_version', $this->GetConfig(CASConfig::CAS_VERSION));
-		$this->SetOption('cas_url_server', $this->GetConfig(CASConfig::CAS_URL_SERVER));
-		$this->SetOption('cas_port', $this->GetConfig(CASConfig::CAS_PORT, new IntConverter()));
-		$this->SetOption('cas_uri_server', $this->GetConfig(CASConfig::CAS_URI_SERVER));
-		$this->SetOption('cas_changeSessionID', $this->GetConfig(CASConfig::CAS_CHANGESESSIONID, new BooleanConverter()));
-		$this->SetOption('cas_communicationprotocol', $this->GetConfig(CASConfig::CAS_COMMUNICATIONPROTOCOL));
-		$this->SetOption('cas_certificates', $this->GetConfig(CASConfig::CAS_CERTIFICATES));
-
-		$logout_servers = $this->GetLogoutServers();
-		$this->SetOption('cas_logout_servers', $logout_servers);
-
-		$this->SetOption('user_id_attribute', $this->GetConfig(CASConfig::USER_ID_ATTRIBUTE));
-
-		return $this->_options;
-	}
-
-
-	private function SetOption($key, $value)
-	{
-		if (empty($value))
-		{
-			$value = null;
-		}
-
-		$this->_options[$key] = $value;
+		Configuration::Instance()->Register(dirname(__FILE__) . '/CAS.config.php', CASConfig::CONFIG_ID);
 	}
 
 	private function GetConfig($keyName, $converter = null)
@@ -70,9 +35,68 @@ class CASOptions
 		return Configuration::Instance()->File(CASConfig::CONFIG_ID)->GetKey($keyName, $converter);
 	}
 
-	private function GetLogoutServers()
+	public function IsCasDebugOn()
 	{
-		$servers = explode(',', $this->GetConfig(CASConfig::CAS_LOGOUT_SERVERS));
+		return $this->GetConfig(CASConfig::CAS_DEBUG_ENABLED, new BooleanConverter());
+	}
+
+	public function HasCertificate()
+	{
+		$cert = $this->Certificate();
+		return !empty($cert);
+	}
+
+	public function Certificate()
+	{
+		return $this->GetConfig(CASConfig::CAS_CERTIFICATE);
+	}
+
+	public function CasVersion()
+	{
+		return $this->GetConfig(CASConfig::CAS_VERSION);
+	}
+
+	public function HostName()
+	{
+		return $this->GetConfig(CASConfig::CAS_SERVER_HOSTNAME);
+	}
+
+	public function Port()
+	{
+		return $this->GetConfig(CASConfig::CAS_PORT, new IntConverter());
+	}
+
+	public function ServerUri()
+	{
+		return $this->GetConfig(CASConfig::CAS_SERVER_URI);
+	}
+
+	public function DebugFile()
+	{
+		return $this->GetConfig(CASConfig::DEBUG_FILE);
+	}
+
+	public function ChangeSessionId()
+	{
+		return $this->GetConfig(CASConfig::CAS_CHANGESESSIONID, new BooleanConverter());
+	}
+
+	public function CasHandlesLogouts()
+	{
+		$servers = $this->LogoutServers();
+		return !empty($servers);
+	}
+
+	public function LogoutServers()
+	{
+		$servers = $this->GetConfig(CASConfig::CAS_LOGOUT_SERVERS);
+
+		if (empty($servers))
+		{
+			return array();
+		}
+
+		$servers = explode(',', $servers);
 
 		for ($i = 0; $i < count($servers); $i++)
 		{
@@ -82,51 +106,11 @@ class CASOptions
 		return $servers;
 	}
 
-	public function IsCASpDebugOn()
+	public function EmailSuffix()
 	{
-		return $this->GetConfig('cas_debug', new BooleanConverter());
+		return $this->GetConfig(CASConfig::EMAIL_SUFFIX);
 	}
 
-	public function Attributes()
-	{
-		$attributes = $this->AttributeMapping();
-		return array_values($attributes);
-	}
-
-	public function AttributeMapping()
-	{
-		$attributes = array('sn' => 'sn',
-							'givenname' => 'givenname',
-							'mail' => 'mail',
-							'telephonenumber' => 'telephonenumber',
-							'physicaldeliveryofficename' => 'physicaldeliveryofficename',
-							'title' => 'title');
-		$configValue = $this->GetConfig(CASConfig::ATTRIBUTE_MAPPING);
-
-		if (!empty($configValue))
-		{
-			$attributePairs = explode(',', $configValue);
-			foreach ($attributePairs as $attributePair)
-			{
-				$pair = explode('=', trim($attributePair));
-				$attributes[trim($pair[0])] = trim($pair[1]);
-			}
-		}
-
-		return $attributes;
-	}
-
-	public function GetUserIdAttribute()
-	{
-		$attribute = $this->GetConfig(CASConfig::USER_ID_ATTRIBUTE);
-
-		if (empty($attribute))
-		{
-			return 'uid';
-		}
-
-		return $attribute;
-	}
 
 }
 

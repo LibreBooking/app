@@ -1,7 +1,8 @@
 <?php
 /**
-Copyright 2011-2012 Nick Korbel
-Copyright 2012 Alois Schloegl 
+Copyright 2011-2013 Nick Korbel
+Copyright 2013 Bart Verheyde
+Copyright 2013 Bryan Green
 
 This file is part of phpScheduleIt.
 
@@ -20,50 +21,56 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
-include_once('CAS-1.3.1/CAS.php');
+require_once(ROOT_DIR . 'plugins/Authentication/CAS/namespace.php');
 
 class CAS implements IAuthentication
 {
 	private $authToDecorate;
-	private $_registration;
+	private $registration;
 
+	/**
+	 * @var CASOptions
+	 */
+	private $options;
+
+	/**
+	 * @return Registration
+	 */
 	private function GetRegistration()
 	{
-		if ($this->_registration == null)
+		if ($this->registration == null)
 		{
-			$this->_registration = new Registration();
+			$this->registration = new Registration();
 		}
 
-		return $this->_registration;
+		return $this->registration;
 	}
 
 	public function __construct(Authentication $authentication)
 	{
-		$this->setCASSettings(); //initialise cas settings
+		$this->options = new CASOptions();
+		$this->setCASSettings();
 		$this->authToDecorate = $authentication;
 	}
 
-	/*
-	* CAS default settings move to settings file when ok
-	*/
 	private function setCASSettings()
 	{
-		$CAS_HOSTNAME = 'your.server.com';
-		$CAS_PORT = '8443';
-		$CAS_URL = '/path-to-cas';
-		$CAS_CERT_DIR = '/etc/ssl/certs/ca-certificates.crt';
-		phpCAS::setDebug();
+		if ($this->options->IsCasDebugOn())
+		{
+			phpCAS::setDebug($this->options->DebugFile());
+		}
+		phpCAS::client($this->options->CasVersion(), $this->options->HostName(), $this->options->Port(),
+					   $this->options->ServerUri(), $this->options->ChangeSessionId());
+		if ($this->options->CasHandlesLogouts())
+		{
+			phpCAS::handleLogoutRequests(true, $this->options->LogoutServers());
+		}
 
-		phpCAS::client(CAS_VERSION_2_0, $CAS_HOSTNAME, $CAS_PORT, $CAS_URL, false);
-
-//		phpCAS::handleLogoutRequests(true, array('servers'));
-
-		phpCAS::setExtraCurlOption(CURLOPT_SSLVERSION, 3);
-
-		phpCAS::setCasServerCACert($CAS_CERT_DIR);
-
-//		phpCAS::setFixedServiceURL($redirect_to);
-
+		if ($this->options->HasCertificate())
+		{
+			phpCAS::setCasServerCACert($this->options->Certificate());
+		}
+		phpCAS::setNoCasServerValidation();
 	}
 
 	public function Validate($username, $password)
@@ -82,16 +89,25 @@ class CAS implements IAuthentication
 
 	public function Login($username, $loginContext)
 	{
+		Log::Debug('Attempting CAS login for username: %s', $username);
+
 		$isAuth = phpCAS::isAuthenticated();
 		Log::Debug('CAS is auth ok: %s', $isAuth);
 		$username = phpCAS::getUser();
 		$this->Synchronize($username);
-		$this->authToDecorate->Login($username, $loginContext);
+
+		return $this->authToDecorate->Login($username, $loginContext);
 	}
 
 	public function Logout(UserSession $user)
 	{
+		Log::Debug('Attempting CAS logout for email: %s', $user->Email);
 		$this->authToDecorate->Logout($user);
+
+		if ($this->options->CasHandlesLogouts())
+		{
+			phpCAS::logout();
+		}
 	}
 
 	public function AreCredentialsKnown()
@@ -131,15 +147,15 @@ class CAS implements IAuthentication
 		$registration->Synchronize(
 			new AuthenticatedUser(
 				$username,
-				$username . '@test.com',
+				$username . $this->options->EmailSuffix(),
 				$username,
 				$username,
-				$username,
+				uniqid(),
 				Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
 				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
 				null,
 				null,
-				null)
+				null), true
 		);
 	}
 }
