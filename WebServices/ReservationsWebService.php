@@ -137,7 +137,7 @@ class ReservationsWebService
 	 */
 	private function GetEndDate()
 	{
-		return $this->GetBaseDate(WebServiceQueryStringKeys::END_DATE_TIME)->AddDays(14);
+		return $this->GetBaseDate(WebServiceQueryStringKeys::END_DATE_TIME);
 	}
 
 	/**
@@ -149,7 +149,7 @@ class ReservationsWebService
 		$dateQueryString = $this->server->GetQueryString($queryStringKey);
 		if (empty($dateQueryString))
 		{
-			return Date::Now();
+			return Date::Now()->AddDays(14);
 		}
 
 		return WebServiceDate::GetDate($dateQueryString, $this->server->GetSession());
