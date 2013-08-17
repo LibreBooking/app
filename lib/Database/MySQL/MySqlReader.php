@@ -29,17 +29,17 @@ class MySqlReader implements IReader
 	
 	public function GetRow() 
 	{
-		return mysql_fetch_assoc($this->_result);
+		return mysqli_fetch_assoc($this->_result);
 	}
 	
 	public function NumRows() 
 	{
-		return mysql_num_rows($this->_result);
+		return mysqli_num_rows($this->_result);
 	}
 	
 	public function Free()
 	{
-		mysql_free_result($this->_result);
+		mysqli_free_result($this->_result);
 	}
 }
 ?>

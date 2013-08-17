@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 class MySqlConnection implements IDbConnection
 {
 	private $_dbUser = '';
@@ -50,8 +49,8 @@ class MySqlConnection implements IDbConnection
 			return;
 		}
 
-		$this->_db = mysql_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword );
-		$selected = mysql_select_db($this->_dbName, $this->_db);
+		$this->_db = mysqli_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword,$this->_dbName);
+		$selected = mysqli_select_db($this->_db, $this->_dbName);
 		
 		if (!$this->_db || !$selected)
 		{
@@ -64,18 +63,18 @@ class MySqlConnection implements IDbConnection
 	
 	public function Disconnect() 
 	{
-		mysql_close($this->_db); 
+		mysqli_close($this->_db);
 		$this->_db = null;		
 		$this->_connected = false;
 	}
 	
 	public function Query(ISqlCommand $sqlCommand) 
 	{
-		$mysqlCommand = new MySqlCommandAdapter($sqlCommand);
+		$mysqlCommand = new MySqlCommandAdapter($sqlCommand, $this->_db);
 
 		Log::Sql('MySql Query: ' . str_replace('%', '%%', $mysqlCommand->GetQuery()));
 
-		$result = mysql_query($mysqlCommand->GetQuery());
+		$result = mysqli_query($this->_db, $mysqlCommand->GetQuery());
 		
 		$this->_handleError($result);
 		
@@ -89,18 +88,18 @@ class MySqlConnection implements IDbConnection
 	
 	public function Execute(ISqlCommand $sqlCommand) 
 	{
-		$mysqlCommand = new MySqlCommandAdapter($sqlCommand);
+		$mysqlCommand = new MySqlCommandAdapter($sqlCommand, $this->_db);
 
 		Log::Sql('MySql Execute: ' . str_replace('%', '%%', $mysqlCommand->GetQuery()));
 
-		$result = mysql_query($mysqlCommand->GetQuery());
+		$result = mysqli_query($this->_db, $mysqlCommand->GetQuery());
 		
 		$this->_handleError($result);
 	}
 	
 	public function GetLastInsertId()
 	{
-		return mysql_insert_id($this->_db);
+		return mysqli_insert_id($this->_db);
 	}
 	
 	private function _handleError($result, $sqlCommand = null) 

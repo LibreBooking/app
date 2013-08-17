@@ -22,11 +22,13 @@ class MySqlCommandAdapter
 {
 	private $_values = null;
 	private $_query = null;
+	private $_db = null;
 	
-	public function __construct(ISqlCommand &$command) 
+	public function __construct(ISqlCommand &$command, $db)
 	{
 		$this->_values = array();
 		$this->_query = null;
+		$this->_db = $db;
 		
 		$this->Convert($command);
 	}
@@ -58,7 +60,7 @@ class MySqlCommandAdapter
 				$escapedValues = array();
 				foreach ($curParam->Value as $value)
 				{
-					$escapedValues[] = mysql_real_escape_string($value);
+					$escapedValues[] = mysqli_real_escape_string($this->_db, $value);
 				}
 				$values = implode("','", $escapedValues);
 				$inClause = "'$values'";
@@ -66,7 +68,7 @@ class MySqlCommandAdapter
 			}
 			else
 			{
-				$escapedValue = mysql_real_escape_string($curParam->Value);
+				$escapedValue = mysqli_real_escape_string($this->_db, $curParam->Value);
 				$query = str_replace($curParam->Name, "'$escapedValue'", $query);
 			}
 		}
