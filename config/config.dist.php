@@ -140,4 +140,8 @@ $conf['settings']['recaptcha']['private.key'] = '';
  * Email
  */
 $config['settings']['email']['default.from.address'] = '';
+/**
+ * Reports
+ */
+$config['settings']['reports']['allow.all.users'] = 'false';
 ?>

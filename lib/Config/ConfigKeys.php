@@ -102,6 +102,8 @@ class ConfigKeys
 	const RECAPTCHA_PUBLIC_KEY = 'public.key';
 	const RECAPTCHA_PRIVATE_KEY = 'private.key';
 	const DEFAULT_FROM_ADDRESS = 'default.from.address';
+
+	const REPORTS_ALLOW_ALL = 'allow.all.users';
 }
 
 class ConfigSection
@@ -113,6 +115,7 @@ class ConfigSection
 	const PAGES = 'pages';
     const PLUGINS = 'plugins';
     const PRIVACY = 'privacy';
+	const REPORTS = 'reports';
     const RESERVATION = 'reservation';
     const RESERVATION_NOTIFY = 'reservation.notify';
     const SCHEDULE = 'schedule';
