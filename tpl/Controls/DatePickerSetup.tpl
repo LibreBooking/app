@@ -26,7 +26,9 @@ $(function(){
 		 dayNamesShort: {$DayNamesShort},
 		 dayNamesMin: {$DayNamesMin},
 		 dateFormat: '{$DateFormat}',
-		 firstDay: {$FirstDay},
+		 {if $FirstDay >=0 && $FirstDay <= 6}
+	  		firstDay: {$FirstDay},
+		 {/if}
 		 monthNames: {$MonthNames},
 		 monthNamesShort: {$MonthNamesShort},
 		 currentText: "{translate key='Today'}"
