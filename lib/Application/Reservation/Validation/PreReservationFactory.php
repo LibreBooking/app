@@ -125,7 +125,6 @@ class PreReservationFactory implements IPreReservationFactory
 		$rules[] = new AdminExcludedRule(new ResourceMinimumNoticeRule(), $userSession);
 		$rules[] = new AdminExcludedRule(new ResourceMaximumNoticeRule(), $userSession);
 		$rules[] = new AdminExcludedRule(new ResourceParticipationRule(), $userSession);
-		$rules[] = new CustomAttributeValidationRule(new AttributeRepository());
 		$rules[] = new ReservationAttachmentRule();
 
 		return new ReservationValidationRuleProcessor($rules);
@@ -142,7 +141,7 @@ class PreReservationFactory implements IPreReservationFactory
 		$ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMaximumDurationRule($this->resourceRepository), $userSession));
 		$ruleProcessor->AddRule(new AdminExcludedRule(new QuotaRule(new QuotaRepository(), $this->reservationRepository, $this->userRepository, $this->scheduleRepository), $userSession));
 		$ruleProcessor->AddRule(new SchedulePeriodRule($this->scheduleRepository, $userSession));
-
+		$ruleProcessor->AddRule(new CustomAttributeValidationRule(new AttributeRepository()));
 		return $ruleProcessor;
 	}
 }

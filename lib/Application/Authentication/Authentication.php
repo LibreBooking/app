@@ -68,6 +68,11 @@ class Authentication implements IAuthentication
 
     public function Validate($username, $password)
     {
+		if (empty($username) || empty($password))
+		{
+			return false;
+		}
+
         Log::Debug('Trying to log in as: %s', $username);
 
         $command = new AuthorizationCommand($username);
