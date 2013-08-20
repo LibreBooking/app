@@ -97,10 +97,15 @@ class Registration implements IRegistration
 		return !empty($userId);
 	}
 
-	public function Synchronize(AuthenticatedUser $user)
+	public function Synchronize(AuthenticatedUser $user, $insertOnly = false)
 	{
 		if ($this->UserExists($user->UserName(), $user->Email()))
 		{
+			if ($insertOnly)
+			{
+				return;
+			}
+
 			$encryptedPassword = $this->_passwordEncryption->EncryptPassword($user->Password());
 			$command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $user->Phone(), $user->Organization(), $user->Title());
 

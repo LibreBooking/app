@@ -89,6 +89,16 @@ class ReservationListItem
 	{
 		return $this->item->GetTeardownTime();
 	}
+
+	public function IsReservation()
+	{
+		return true;
+	}
+
+	public function ReferenceNumber()
+	{
+		return $this->item->GetReferenceNumber();
+	}
 }
 
 class SetUpItem extends ReservationListItem
@@ -138,6 +148,11 @@ class SetUpItem extends ReservationListItem
 	public function SetupTime() { return 0; }
 
 	public function TeardownTime() { return 0; }
+
+	public function IsReservation()
+	{
+		return false;
+	}
 }
 
 class TearDownItem extends ReservationListItem
@@ -187,6 +202,11 @@ class TearDownItem extends ReservationListItem
 	public function SetupTime() { return 0; }
 
 	public function TeardownTime() { return 0; }
+
+	public function IsReservation()
+	{
+		return false;
+	}
 }
 
 class SetUpSlot extends ReservationSlot
@@ -215,6 +235,11 @@ class BlackoutListItem extends ReservationListItem
 	public function SetupTime() { return 0; }
 
 	public function TeardownTime() { return 0; }
+
+	public function IsReservation()
+	{
+		return false;
+	}
 }
 
 ?>

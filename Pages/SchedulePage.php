@@ -112,14 +112,14 @@ interface ISchedulePage extends IActionPage
 
 	/**
 	 * @param int $scheduleId
-	 * @return string|ScheduleDirection
+	 * @return string|ScheduleStyle
 	 */
-	public function GetScheduleDirection($scheduleId);
+	public function GetScheduleStyle($scheduleId);
 
 	/**
-	 * @param string|ScheduleDirection Direction
+	 * @param string|ScheduleStyle Direction
 	 */
-	public function SetScheduleDirection($direction);
+	public function SetScheduleStyle($direction);
 
 	/**
 	 * @return int
@@ -134,21 +134,28 @@ interface ISchedulePage extends IActionPage
 	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree);
 }
 
-class ScheduleDirection
+class ScheduleStyle
 {
 	const Wide = 'Wide';
 	const Tall = 'Tall';
 	const Standard = 'Standard';
+	const CondensedWeek = 'CondensedWeek';
 }
 
 class SchedulePage extends ActionPage implements ISchedulePage
 {
-	protected $scheduleDirection = ScheduleDirection::Standard;
+	protected $ScheduleStyle = ScheduleStyle::Standard;
 
 	/**
 	 * @var SchedulePresenter
 	 */
 	protected $_presenter;
+
+	private $_styles = array(
+		ScheduleStyle::Wide => 'Schedule/schedule-days-horizontal.tpl',
+		ScheduleStyle::Tall => 'Schedule/schedule-flipped.tpl',
+		ScheduleStyle::CondensedWeek => 'Schedule/schedule-week-condensed.tpl',
+	);
 
 	public function __construct()
 	{
@@ -175,13 +182,10 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		$this->Set('SlotLabelFactory', $user->IsAdmin ? new AdminSlotLabelFactory() : new SlotLabelFactory());
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
-		if ($this->scheduleDirection == ScheduleDirection::Wide)
+
+		if (array_key_exists($this->ScheduleStyle, $this->_styles))
 		{
-			$this->Display('Schedule/schedule.tpl');
-		}
-		elseif ($this->scheduleDirection == ScheduleDirection::Tall)
-		{
-			$this->Display('Schedule/schedule-flipped.tpl');
+			$this->Display($this->_styles[$this->ScheduleStyle]);
 		}
 		else
 		{
@@ -287,7 +291,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		return $this->GetQuerystring(QueryStringKeys::LAYOUT_DATE);
 	}
 
-	public function GetScheduleDirection($scheduleId)
+	public function GetScheduleStyle($scheduleId)
 	{
 		$cookie = $this->server->GetCookie("schedule-direction-$scheduleId");
 		if ($cookie != null)
@@ -295,12 +299,12 @@ class SchedulePage extends ActionPage implements ISchedulePage
 			return $cookie;
 		}
 
-		return ScheduleDirection::Standard;
+		return ScheduleStyle::Standard;
 	}
 
-	public function SetScheduleDirection($direction)
+	public function SetScheduleStyle($direction)
 	{
-		$this->scheduleDirection = $direction;
+		$this->ScheduleStyle = $direction;
 		$this->Set('CookieName', 'schedule-direction-' . $this->GetVar('ScheduleId'));
 		$this->Set('CookieValue', $direction);
 	}

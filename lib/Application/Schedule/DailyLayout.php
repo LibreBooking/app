@@ -48,6 +48,13 @@ interface IDailyLayout
 	 * @return mixed
 	 */
 	function GetPeriods(Date $displayDate);
+
+	/**
+	 * @param Date $date
+	 * @param int $resourceId
+	 * @return DailyReservationSummary
+	 */
+	function GetSummary(Date $date, $resourceId);
 }
 
 class DailyLayout implements IDailyLayout
@@ -109,6 +116,25 @@ class DailyLayout implements IDailyLayout
 			Log::Error('Error getting layout on date %s for resourceId %s. Exception=%s', $date->ToString(), $resourceId, $ex);
 			throw($ex);
 		}
+	}
+
+	public function GetSummary(Date $date, $resourceId)
+	{
+		$summary = new DailyReservationSummary();
+
+		$items = $this->_reservationListing->OnDateForResource($date, $resourceId);
+		if (count($items) > 0)
+		{
+			foreach ($items as $item)
+			{
+				if ($item->IsReservation())
+				{
+					$summary->AddReservation($item);
+				}
+			}
+		}
+
+		return $summary;
 	}
 
 	public function IsDateReservable(Date $date)

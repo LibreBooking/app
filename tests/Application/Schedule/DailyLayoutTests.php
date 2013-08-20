@@ -36,7 +36,7 @@ class DailyLayoutTests extends TestBase
 	{
 		$date = Date::Parse('2009-09-02', 'UTC');
 		$resourceId = 1;
-		$targetTimezone = 'CST';
+		$targetTimezone = 'America/Chicago';
 
 		$scheduleLayout = new ScheduleLayout($targetTimezone);
 		$scheduleLayout->AppendPeriod(new Time(5, 0, 0, $targetTimezone), new Time(6, 0, 0, $targetTimezone));
@@ -49,9 +49,9 @@ class DailyLayoutTests extends TestBase
 		$reservations = array($reservation);
 
 		$listing->expects($this->once())
-				->method('OnDateForResource')
-				->with($this->equalTo($date), $this->equalTo($resourceId))
-				->will($this->returnValue($reservations));
+		->method('OnDateForResource')
+		->with($this->equalTo($date), $this->equalTo($resourceId))
+		->will($this->returnValue($reservations));
 
 		$layout = new DailyLayout($listing, $scheduleLayout);
 		$layoutSlots = $layout->GetLayout($date, $resourceId);
@@ -73,9 +73,9 @@ class DailyLayoutTests extends TestBase
 
 		$scheduleLayout = $this->getMock('IScheduleLayout');
 		$scheduleLayout->expects($this->once())
-				->method('GetLayout')
-				->with($this->equalTo($displayDate))
-				->will($this->returnValue($periods));
+		->method('GetLayout')
+		->with($this->equalTo($displayDate))
+		->will($this->returnValue($periods));
 
 		$layout = new DailyLayout(new ReservationListing("America/Chicago"), $scheduleLayout);
 		$labels = $layout->GetLabels($displayDate);
@@ -107,14 +107,14 @@ class DailyLayoutTests extends TestBase
 
 		$scheduleLayout = $this->getMock('IScheduleLayout');
 		$scheduleLayout->expects($this->once())
-				->method('GetLayout')
-				->with($this->equalTo($displayDate))
-				->will($this->returnValue($periods));
+		->method('GetLayout')
+		->with($this->equalTo($displayDate))
+		->will($this->returnValue($periods));
 
 		$layout = new DailyLayout(new ReservationListing("America/Chicago"), $scheduleLayout);
 		$labels = $layout->GetPeriods($displayDate, true);
 
-		$i=0;
+		$i = 0;
 		$this->assertEquals('12:00', $labels[$i]->Label($displayDate));
 		$this->assertEquals(1, $labels[$i]->Span());
 		$i++;
@@ -142,6 +142,38 @@ class DailyLayoutTests extends TestBase
 		$this->assertEquals('05:30', $labels[$i]->Label($displayDate));
 		$this->assertEquals(1, $labels[$i]->Span());
 	}
+
+	public function testGetsDailySummaryForResource()
+	{
+		$date = Date::Parse('2009-09-02', 'UTC');
+		$resourceId = 1;
+		$targetTimezone = 'America/Chicago';
+
+		$scheduleLayout = new ScheduleLayout($targetTimezone);
+		$scheduleLayout->AppendPeriod(new Time(5, 0, 0, $targetTimezone), new Time(6, 0, 0, $targetTimezone));
+
+		$listing = $this->getMock('IReservationListing');
+
+		$firstReservation = new TestReservationListItem($date, $date, $resourceId);
+		$reservations = array(
+			$firstReservation,
+			new TestReservationListItem($date, $date, $resourceId),
+			new TestReservationListItem($date, $date, 2),
+			new TestBlackoutListItem($date, $date, $resourceId),
+			new TestBlackoutListItem($date, $date, 2),
+		);
+
+		$listing->expects($this->once())
+			->method('OnDateForResource')
+			->with($this->equalTo($date), $this->equalTo($resourceId))
+			->will($this->returnValue($reservations));
+
+		$layout = new DailyLayout($listing, $scheduleLayout);
+		$summary = $layout->GetSummary($date, $resourceId);
+		
+		$this->assertEquals(2, $summary->NumberOfReservations());
+		$this->assertEquals($firstReservation, $summary->FirstReservation());
+	}
 }
 
 class TestReservationListItem extends ReservationListItem
@@ -168,6 +200,48 @@ class TestReservationListItem extends ReservationListItem
 		$this->resourceId = $resourceId;
 
 		parent::__construct(new TestReservationItemView(1, $start, $end, $resourceId));
+	}
+
+	public function StartDate()
+	{
+		return $this->start;
+	}
+
+	public function EndDate()
+	{
+		return $this->end;
+	}
+
+	public function ResourceId()
+	{
+		return $this->resourceId;
+	}
+}
+
+class TestBlackoutListItem extends BlackoutListItem
+{
+	/**
+	 * @var \Date
+	 */
+	private $start;
+
+	/**
+	 * @var \Date
+	 */
+	private $end;
+
+	/**
+	 * @var int
+	 */
+	private $resourceId;
+
+	public function __construct(Date $start, Date $end, $resourceId)
+	{
+		$this->start = $start;
+		$this->end = $end;
+		$this->resourceId = $resourceId;
+
+		parent::__construct(new TestBlackoutItemView(1, $start, $end, $resourceId));
 	}
 
 	public function StartDate()

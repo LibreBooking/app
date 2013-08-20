@@ -82,8 +82,8 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		$page->SetScheduleId($scheduleId);
 		$page->SetScheduleName($currentSchedule->GetName());
 		$page->SetFirstWeekday($currentSchedule->GetWeekdayStart());
-		$direction = $page->GetScheduleDirection($scheduleId);
-		$page->SetScheduleDirection($direction);
+		$style = $page->GetScheduleStyle($scheduleId);
+		$page->SetScheduleStyle($style);
 	}
 
 	/**

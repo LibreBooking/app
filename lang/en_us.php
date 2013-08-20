@@ -202,6 +202,7 @@ class en_us extends Language
 		$strings['Attending'] = 'Attending';
 		$strings['QuotaConfiguration'] = 'On %s for %s users in %s are limited to %s %s per %s';
 		$strings['reservations'] = 'reservations';
+		$strings['reservation'] = 'reservation';
 		$strings['ChangeCalendar'] = 'Change Calendar';
 		$strings['AddQuota'] = 'Add Quota';
 		$strings['FindUser'] = 'Find User';
@@ -465,6 +466,7 @@ class en_us extends Language
 		$strings['StandardScheduleDisplay'] = 'Use the standard schedule display';
 		$strings['TallScheduleDisplay'] = 'Use the tall schedule display';
 		$strings['WideScheduleDisplay'] = 'Use the wide schedule display';
+		$strings['CondensedWeekScheduleDisplay'] = 'Use condensed week schedule display';
 		// End Strings
 
 		// Install

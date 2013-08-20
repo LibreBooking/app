@@ -45,8 +45,9 @@ interface IRegistration
 	/**
 	 * Add or update a user who has already been authenticated
 	 * @param AuthenticatedUser $user
+	 * @param bool $insertOnly
 	 * @return void
 	 */
-	public function Synchronize(AuthenticatedUser $user);
+	public function Synchronize(AuthenticatedUser $user, $insertOnly = false);
 }
 ?>

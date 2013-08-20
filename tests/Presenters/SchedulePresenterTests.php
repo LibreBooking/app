@@ -211,14 +211,14 @@ class SchedulePresenterTests extends TestBase
 
 		$page
 		->expects($this->once())
-		->method('GetScheduleDirection')
+		->method('GetScheduleStyle')
 		->with($this->equalTo($activeId))
-		->will($this->returnValue(ScheduleDirection::Tall));
+		->will($this->returnValue(ScheduleStyle::Tall));
 
 		$page
 		->expects($this->once())
-		->method('SetScheduleDirection')
-		->with($this->equalTo(ScheduleDirection::Tall));
+		->method('SetScheduleStyle')
+		->with($this->equalTo(ScheduleStyle::Tall));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindSchedules($page, $this->schedules, $schedule);

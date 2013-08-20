@@ -30,10 +30,22 @@ function Schedule(opts, resourceGroups)
 
 		reservations.delegate('.reservable', 'click', function ()
 		{
-			var start = $('.start', this).val();
-			var end = $('.end', this).val();
+			var sd = '';
+			var ed = '';
+
+			var start = $('.start', this);
+			if (start.length > 0)
+			{
+				sd = start.val();
+			}
+			var end = $('.end', this);
+			if (end.length > 0)
+			{
+				ed = end.val();
+			}
+
 			var link = $('.href', this).val();
-			window.location = link + "&sd=" + start + "&ed=" + end;
+			window.location = link + "&sd=" + sd + "&ed=" + ed;
 		});
 
 		this.initResources();
@@ -110,7 +122,7 @@ function Schedule(opts, resourceGroups)
 
 	this.initRotateSchedule = function ()
 	{
-		$('#schedule_tall, #schedule_wide, #schedule_standard').click(function (e)
+		$('#schedule-actions .schedule-style').click(function (e)
 		{
 			e.preventDefault();
 			createCookie(opts.cookieName, $(this).attr('schedule-display'), 30);

@@ -747,6 +747,8 @@ interface IReservedItemView
 	 * @return int
 	 */
 	public function GetTeardownTime();
+
+	public function GetReferenceNumber();
 }
 
 class ReservationItemView implements IReservedItemView
@@ -1356,6 +1358,11 @@ class BlackoutItemView implements IReservedItemView
 	public function GetTeardownTime()
 	{
 		return 0;
+	}
+
+	public function GetReferenceNumber()
+	{
+		return '';
 	}
 }
 

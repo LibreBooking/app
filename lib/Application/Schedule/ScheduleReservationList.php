@@ -131,7 +131,6 @@ class ScheduleReservationList implements IScheduleReservationList
 
 				$slots[] = $item->BuildSlot($layoutItem, $this->_layoutItems[$endingPeriodIndex],
 											$this->_layoutDateStart, $span);
-				echo ' after ';
 				$currentIndex = $endingPeriodIndex;
 			}
 			else

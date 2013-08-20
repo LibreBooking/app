@@ -74,11 +74,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name="actions"}
-	<div>
+	<div id="schedule-actions">
 		<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
-		<a href="#" id="schedule_standard" schedule-display="{ScheduleDirection::Standard}">{html_image src="layer-resize-actual.png" altKey="StandardScheduleDisplay"}</a>
-		<a href="#" id="schedule_tall" schedule-display="{ScheduleDirection::Tall}">{html_image src="layer-resize-replicate-vertical.png" altKey="TallScheduleDisplay"}</a>
-		<a href="#" id="schedule_wide" schedule-display="{ScheduleDirection::Wide}">{html_image src="layer-resize-replicate.png" altKey="WideScheduleDisplay"}</a>
+		<a href="#" class="schedule-style" id="schedule_standard" schedule-display="{ScheduleStyle::Standard}">{html_image src="table.png" altKey="StandardScheduleDisplay"}</a>
+		<a href="#" class="schedule-style" id="schedule_tall" schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>
+		<a href="#" class="schedule-style" id="schedule_wide" schedule-display="{ScheduleStyle::Wide}">{html_image src="table-wide.png" altKey="WideScheduleDisplay"}</a>
+		<a href="#" class="schedule-style" id="schedule_week" schedule-display="{ScheduleStyle::CondensedWeek}">{html_image src="table-week.png" altKey="CondensedWeekScheduleDisplay"}</a>
 	</div>
 {/block}
 
@@ -128,6 +129,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<div type="text" id="datepicker" style="display:none;"></div>
 {/block}
 
+{block name="legend"}
 <div style="text-align: center; margin: auto;">
 	<div class="legend reservable">{translate key=Reservable}</div>
 	<div class="legend unreservable">{translate key=Unreservable}</div>
@@ -140,6 +142,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div style="height:10px">&nbsp;</div>
+{/block}
 
 <div id="reservations-left">
 	<div class="reservations-left-header">{translate key=ResourceFilter}</div>
@@ -216,6 +219,52 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
 			schedule.init();
+
+			var divs = [];
+
+//			$.each($('#reservations').find('tr.slots'), function(i, v)
+//			{
+//				var div = $('<div style="position:absolute;z-index:3;background-color:black;">&nbsp;</div>').css($(v).offset());
+//				div.width($(v).width());
+//				$('body').append(div);
+//			});
+				function addReservations()
+				{
+					var start = $('#reservations').find('td[ref="201308150800002"]');
+					var end = $('#reservations').find('td[ref="201308150930002"]');
+
+					var startRect = start[0].getBoundingClientRect();
+					var endRect = end[0].getBoundingClientRect();
+
+//					var tdLeftPosition = start.offset().left;
+//					var tdTopPosition = start.offset().top;
+//					var width = end.offset().left - tdLeftPosition;
+//					var height = start.height()+1;
+
+					var tdLeftPosition = startRect.left;
+					var tdTopPosition = startRect.top;
+					var width = endRect.left - tdLeftPosition;
+					var height = start.height()+1;
+
+					var div = $('<div class="dyn-res" style="z-index:10;background-color:#ccc;position:absolute;width:'+ width +'px;height:' + height + 'px;">hi</div>');
+					div.position({
+						my: 'top left',
+						at: 'top left',
+						of: start,
+						collision: 'none'
+					});
+//
+// divs.push(new resDiv(div, start, end));
+					$('body').append(div);
+				}
+
+//				addReservations();
+
+//				$(window).resize(function() {
+//					$.each(divs, function(idx, val){
+//						val.resize();
+//					});
+//				});
 		});
 	</script>
 {/block}
