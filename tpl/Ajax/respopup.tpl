@@ -32,30 +32,30 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 
 	<div class="resources">
-	{translate key="Resources"} ({$resources|@count})
+	{translate key="Resources"} ({$resources|@count}):
 	{foreach from=$resources item=resource name=resource_loop}
 		{$resource->Name()}
-		{if !$smarty.foreach.resource_loop.last},{/if}
+		{if !$smarty.foreach.resource_loop.last}, {/if}
 	{/foreach}
 	</div>
 
 	{if !$hideUserInfo}
 	<div class="users">
-	{translate key="Participants"} ({$participants|@count})
+	{translate key="Participants"} ({$participants|@count}):
 	{foreach from=$participants item=user name=participant_loop}
 		{if !$user->IsOwner()}
 			{fullname first=$user->FirstName last=$user->LastName}
 		{/if}
-		{if !$smarty.foreach.participant_loop.last},{/if}
+		{if !$smarty.foreach.participant_loop.last}, {/if}
 	{/foreach}
 	</div>
 	{/if}
 
 	<div class="accessories">
-	{translate key="Accessories"} ({$accessories|@count})
+	{translate key="Accessories"} ({$accessories|@count}):
 	{foreach from=$accessories item=accessory name=accessory_loop}
 		{$accessory->Name} ({$accessory->QuantityReserved})
-		{if !$smarty.foreach.accessory_loop.last},{/if}
+		{if !$smarty.foreach.accessory_loop.last}, {/if}
 	{/foreach}
 	</div>
 
