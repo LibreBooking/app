@@ -22,7 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<br/>
 	<br/>
 
-	User: {$UserName}
+	User: {$UserName}<br/>
 	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
 	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
 	{if $ResourceNames|count > 1}
