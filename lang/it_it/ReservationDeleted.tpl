@@ -17,10 +17,12 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
+	
 	Dettagli prenotazione:
 	<br/>
 	<br/>
-	
+
+	Utente: {$UserName}<br/>
 	Inizio: {formatdate date=$StartDate key=reservation_email}<br/>
 	Fine: {formatdate date=$EndDate key=reservation_email}<br/>
 	{if $ResourceNames|count > 1}
@@ -36,7 +38,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	
 	{if count($RepeatDates) gt 0}
 		<br/>
-		La prenotazione si ripete nelle seguenti date:
+		Le seguenti date sono state rimosse:
 		<br/>
 	{/if}
 	
@@ -51,18 +53,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 	{/if}
 
-	{if $RequiresApproval}
-		<br/>
-		Una o più risorse in cui è stata inserita la prenotazione richiedono un'approvazione prima dell'utilizzo. Questa prenotazione rimarrà in sospeso fino all'approvazione.
-	{/if}
-	
-	<br/>
-	Vuoi partecipare? <a href="{$ScriptUrl}/{$AcceptUrl}">Sì</a> <a href="{$ScriptUrl}/{$DeclineUrl}">No</a>
 	<br/>
 	<br/>
-
-	<a href="{$ScriptUrl}/{$ReservationUrl}">Vedi questa prenotazione</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Aggiungi al calendario</a> |
 	<a href="{$ScriptUrl}">Accedi a phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

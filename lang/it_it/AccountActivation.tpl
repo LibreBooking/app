@@ -17,15 +17,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
-Here is your temporary phpScheduleIt password: {$TemporaryPassword}
 
-<br/>
-
-Your old password will no longer work.
-<br/>
-<br />
-
-Please <a href="{$ScriptUrl}">Log in to phpScheduleIt</a> and change your password as soon as possible.
+{$FirstName},<br/>
+grazie per esserti registrato in phpScheduleIt. Attiva il tuo account facendo clic <a href="{$ActivationUrl}">qui</a>.
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}
