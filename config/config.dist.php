@@ -27,6 +27,7 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 $conf['settings']['server.timezone'] = 'America/Chicago';       // look up here http://php.net/manual/en/timezones.php
 $conf['settings']['allow.self.registration'] = 'true';         // if users can register themselves
 $conf['settings']['admin.email'] = 'admin@example.com';         // email address of admin user
+$conf['settings']['admin.email.name'] = 'phpScheduleIt Administrator';	// name to be used in From: field when sending automatic emails
 $conf['settings']['default.page.size'] = '50';                  // number of records per page
 $conf['settings']['enable.email'] = 'true';                     // global configuration to enable if any emails will be sent
 $conf['settings']['default.language'] = 'en_us';                // find your language in phpScheduleIt/lang directory

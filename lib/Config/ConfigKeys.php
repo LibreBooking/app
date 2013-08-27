@@ -22,6 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class ConfigKeys
 {
     const ADMIN_EMAIL = 'admin.email';
+    const ADMIN_EMAIL_NAME = 'admin.email.name';
     const ALLOW_REGISTRATION = 'allow.self.registration';
 	const CSS_EXTENSION_FILE = 'css.extension.file';
     const DEFAULT_PAGE_SIZE = 'default.page.size';

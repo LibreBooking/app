@@ -71,7 +71,7 @@ abstract class EmailMessage implements IEmailMessage
 
 	public function From()
 	{
-		return new EmailAddress(Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL));
+		return new EmailAddress(Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL), Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL_NAME));
 	}
 
 	public function CC()
