@@ -59,6 +59,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<br/>
 	Attending? <a href="{$ScriptUrl}/{$AcceptUrl}">Yes</a> <a href="{$ScriptUrl}/{$DeclineUrl}">No</a>
 	<br/>
+	<br/>
 
 	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a> |

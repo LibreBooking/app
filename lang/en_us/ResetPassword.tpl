@@ -24,6 +24,7 @@ Here is your temporary phpScheduleIt password: {$TemporaryPassword}
 
 Your old password will no longer work.
 <br/>
+<br/>
 
 Please <a href="{$ScriptUrl}">Log in to phpScheduleIt</a> and change your password as soon as possible.
 	

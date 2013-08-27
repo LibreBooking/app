@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 	
-Your report from phpScheduleIt is attached.<br/>
+Your report from phpScheduleIt is attached.<br/><br/>
 
 <a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
 	

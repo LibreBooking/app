@@ -52,7 +52,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
 		{/foreach}
 	{/if}
-
+	<br/>
 	<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

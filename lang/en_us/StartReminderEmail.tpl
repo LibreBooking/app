@@ -27,6 +27,7 @@ Reservation Details:
 	Title: {$Title}<br/>
 	Description: {$Description|nl2br}<br/>
 <br/>
+<br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
 <a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a> |
 <a href="{$ScriptUrl}">Log in to phpScheduleIt</a>

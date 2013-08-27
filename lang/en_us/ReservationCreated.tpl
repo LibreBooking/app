@@ -59,6 +59,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	
 	<br/>
+	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a> |
 	<a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
