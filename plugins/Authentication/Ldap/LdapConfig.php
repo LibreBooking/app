@@ -33,6 +33,7 @@ class LdapConfig
     const RETRY_AGAINST_DATABASE = 'database.auth.when.ldap.user.not.found';
 	const ATTRIBUTE_MAPPING = 'attribute.mapping';
 	const USER_ID_ATTRIBUTE = 'user.id.attribute';
+	const REQUIRED_GROUP = 'required.group';
 }
 
 ?>

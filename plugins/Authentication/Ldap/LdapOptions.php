@@ -137,6 +137,11 @@ class LdapOptions
 		return $attribute;
 	}
 
+	public function GetRequiredGroup()
+	{
+		return $this->GetConfig(LdapConfig::REQUIRED_GROUP);
+	}
+
 }
 
 ?>

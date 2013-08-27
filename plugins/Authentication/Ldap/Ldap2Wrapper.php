@@ -101,6 +101,8 @@ class Ldap2Wrapper
 	{
 		$uidAttribute = $this->options->GetUserIdAttribute();
 		Log::Debug('LDAP - uid attribute: %s', $uidAttribute);
+		$RequiredGroup = $this->options->GetRequiredGroup();
+
 		$filter = Net_LDAP2_Filter::create($uidAttribute, 'equals', $username);
 
 		$attributes = $this->options->Attributes();
@@ -121,8 +123,30 @@ class Ldap2Wrapper
 		if ($searchResult->count() == 1 && $currentResult !== false)
 		{
 			Log::Debug('Found user %s', $username);
-			/** @var Net_LDAP2_Entry $entry  */
-			$this->user = new LdapUser($currentResult, $this->options->AttributeMapping());
+
+			if (!empty($RequiredGroup))
+			{
+				Log::Debug('LDAP - Required Group: %s', $RequiredGroup);
+				$group_filter = Net_LDAP2_Filter::create('uniquemember', 'equals', $currentResult->dn());
+				$group_searchResult = $this->ldap->search($RequiredGroup, $group_filter, null);
+				if (Net_LDAP2::isError($group_searchResult) && !empty($RequiredGroup))
+				{
+					$message = 'Could not match Required Group %s: ' . $group_searchResult->getMessage();
+					Log::Error($message, $username);
+				}
+			
+				if ($group_searchResult->count() == 1 && $group_searchResult !== false)
+				{
+					Log::Debug('Matched Required Group %s', $RequiredGroup);
+					/** @var Net_LDAP2_Entry $entry  */
+					$this->user = new LdapUser($currentResult, $this->options->AttributeMapping());
+				}
+			}
+			else
+			{
+				/** @var Net_LDAP2_Entry $entry  */
+				$this->user = new LdapUser($currentResult, $this->options->AttributeMapping());
+			}
 		}
 		else
 		{
