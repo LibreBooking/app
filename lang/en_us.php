@@ -467,6 +467,9 @@ class en_us extends Language
 		$strings['TallScheduleDisplay'] = 'Use the tall schedule display';
 		$strings['WideScheduleDisplay'] = 'Use the wide schedule display';
 		$strings['CondensedWeekScheduleDisplay'] = 'Use condensed week schedule display';
+		$strings['ResourceGroupHelp1'] = 'Drag and drop resource groups to reorganize.';
+		$strings['ResourceGroupHelp2'] = 'Right click a resource group name for additional actions.';
+		$strings['ResourceGroupHelp3'] = 'Drag and drop resources to add them to groups.';
 		// End Strings
 
 		// Install

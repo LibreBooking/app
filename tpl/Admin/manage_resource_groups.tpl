@@ -24,9 +24,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div class="admin">
 	<div class="title">
 		{translate key='ResourceGroups'}
+		<div id="help-button" class="help" help-ref="help">&nbsp;</div>
 	</div>
 
-	<div>
+	<div id="manage-resource-groups-container">
 		<div id="new-group">
 			<form method="post" id="addGroupForm" ajaxAction="{ManageResourceGroupsActions::AddGroup}">
 				<input type="text" name="{FormKeys::GROUP_NAME}" class="textbox new-group" size="30"/>
@@ -36,6 +37,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div id="group-tree"></div>
 		<div id="resource-list">
+			<h4>{translate key=Resources}</h4>
 			<ul>
 				{foreach from=$Resources item=resource}
 					<li class="resource-draggable" resource-name="{$resource->GetName()|escape:javascript}"
@@ -81,6 +83,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
+<div id="help" class="dialog" title="{translate key=Help}">
+	<ul>
+		<li>{translate key=ResourceGroupHelp1}</li>
+		<li>{translate key=ResourceGroupHelp2}</li>
+		<li>{translate key=ResourceGroupHelp3}</li>
+	</ul>
+</div>
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
@@ -112,6 +122,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		var groupManagement = new ResourceGroupManagement(groupOptions);
 		groupManagement.init({$ResourceGroups});
+
+		$('#help-button').click(function(e){
+			$('#' + $(this).attr('help-ref')).dialog();
+		});
 	});
 
 </script>

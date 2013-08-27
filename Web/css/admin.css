@@ -13,6 +13,7 @@
 	color: #596171;
 	padding: 5px;
 	border-bottom: solid 1px #CECFCE;
+	position: relative;
 }
 
 .admin {
@@ -257,7 +258,14 @@ tr.pending {
 }
 
 .resource-draggable {
-	cursor: pointer;
+	cursor: move;
+	border: solid 1px transparent;
+	padding:3px;
+}
+
+.resource-draggable:hover
+{
+	border: dotted 1px #666;
 }
 
 .drop-resource {
@@ -273,4 +281,25 @@ ul.jqtree-tree .group-resource .jqtree-title {
 	width:16px;
 	margin-left:10px;
 	background: url(../img/minus-circle.png) no-repeat 50%;
+}
+
+#resource-list h4
+{
+	font-size:13pt;
+	padding-left:4px;
+}
+
+#manage-resource-groups-container
+{
+	max-width: 700px;
+}
+
+.title .help {
+	background: url(../img/question-button.png) no-repeat 50% 50%;
+	width:16px;
+	cursor: pointer;
+	position: absolute;
+	right:0;
+	top:0;
+	margin:0;
 }
