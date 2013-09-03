@@ -470,6 +470,7 @@ class en_us extends Language
 		$strings['ResourceGroupHelp1'] = 'Drag and drop resource groups to reorganize.';
 		$strings['ResourceGroupHelp2'] = 'Right click a resource group name for additional actions.';
 		$strings['ResourceGroupHelp3'] = 'Drag and drop resources to add them to groups.';
+		$strings['ResourceType'] = 'Resource Type';
 		// End Strings
 
 		// Install
@@ -537,6 +538,7 @@ class en_us extends Language
 		$strings['InvalidStartReminderTime'] = 'The start reminder time is not valid.';
 		$strings['InvalidEndReminderTime'] = 'The end reminder time is not valid.';
 		$strings['QuotaExceeded'] = 'Quota limit exceeded.';
+		$strings['MultiDayRule'] = '%s does not allow reservations across days.';
 		// End Errors
 
 		// Page Titles

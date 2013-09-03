@@ -55,8 +55,8 @@ class ReservationItemResponse extends RestResponse
 			$this->description = $reservationItemView->Description;
 		}
 
-		$this->requiresApproval = $reservationItemView->RequiresApproval;
-		$this->isRecurring = $reservationItemView->IsRecurring;
+		$this->requiresApproval = (bool)$reservationItemView->RequiresApproval;
+		$this->isRecurring = (bool)$reservationItemView->IsRecurring;
 
 		$this->scheduleId = $reservationItemView->ScheduleId;
 		$this->userId = $reservationItemView->UserId;

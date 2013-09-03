@@ -32,6 +32,7 @@ class CustomAttributeCategory
 	const USER = 2;
 	//const GROUP = 3;
 	const RESOURCE = 4;
+	const RESOURCE_TYPE = 5;
 }
 
 class CustomAttribute

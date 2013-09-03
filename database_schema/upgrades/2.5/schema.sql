@@ -24,3 +24,11 @@ CREATE TABLE `resource_group_assignment` (
 		REFERENCES resources(`resource_id`)
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `resource_types`;
+CREATE TABLE `resource_types` (
+ `resource_type_id` mediumint(8) unsigned NOT NULL,
+ `resource_type_name` VARCHAR(75),
+  PRIMARY KEY (`resource_type_id`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+

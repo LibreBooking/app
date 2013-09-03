@@ -49,6 +49,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/RequiresApproval
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/SchedulePeriodRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceParticipationRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReminderValidationRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceCrossDayRule.php');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AddReservationValidationService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/UpdateReservationValidationService.php');

@@ -46,11 +46,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayReservable}
-	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot">
+	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot"><div style="position:relative;width:100%;height:100%;">
 		&nbsp;
 		<input type="hidden" class="href" value="{$Href}"/>
 		<input type="hidden" class="start" value="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"/>
 		<input type="hidden" class="end" value="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"/>
+		</div>
 	</td>
 {/function}
 
@@ -158,6 +159,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{assign var=TodaysDate value=Date::Now()}
 	<div id="reservations">
 		{foreach from=$BoundDates item=date}
+			<div class="foo" style="position:relative;">
 			<table class="reservations" border="1" cellpadding="0" width="100%">
 				{if $TodaysDate->DateEquals($date) eq true}
 				<tr class="today">
@@ -189,6 +191,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					</tr>
 				{/foreach}
 			</table>
+			</div>
 		{/foreach}
 	</div>
 {/block}
@@ -230,35 +233,43 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 //			});
 				function addReservations()
 				{
-					var start = $('#reservations').find('td[ref="201308150800002"]');
-					var end = $('#reservations').find('td[ref="201308150930002"]');
+					var start = $('#reservations').find('td[ref="201308260800002"] div');
+					var end = $('#reservations').find('td[ref="201308260930002"] div');
 
-					var startRect = start[0].getBoundingClientRect();
-					var endRect = end[0].getBoundingClientRect();
+					var td = start.parent('td');
+					var table = start.closest('table');
+					var border = td.css('border-top-width');
+//					var startRect = start[0].getBoundingClientRect();
+//					var endRect = end[0].getBoundingClientRect();
 
-//					var tdLeftPosition = start.offset().left;
-//					var tdTopPosition = start.offset().top;
-//					var width = end.offset().left - tdLeftPosition;
+
+					// ie 9/10 .5 border
+					// ie 8 1 border
+					// ff 1/0 border
+					// ch 1 border
+					console.log('offsettop: ' + start[0].offsetTop + ' positiontop: ' + start.position().top);
+					console.log('td border' + td.css('border-width') + ' top:' + td.css('border-top-width') + ' right:'+ td.css('border-right-width') +
+							' bottom:' + td.css('border-bottom-width') + ' left:' + td.css('border-left-width'));
+					console.log('table border - :' + table.css('border-width') + ' top:' + table.css('border-top-width') + ' right:'+ table.css('border-right-width') +
+							' bottom:' + table.css('border-bottom-width') + ' left:' + table.css('border-left-width'));
+
+					var tdLeftPosition = start[0].closest;
+					var tdTopPosition = start.position().top -1 + parseInt(table.css('border-top-width'));//[0].offsetTop -1;
+					var width = end[0].offsetLeft - tdLeftPosition -1;
+					var height = td.outerHeight()-1;
+
+//					var tdLeftPosition = startRect.left;
+//					var tdTopPosition = startRect.top;
+//					var width = endRect.left - tdLeftPosition;
 //					var height = start.height()+1;
 
-					var tdLeftPosition = startRect.left;
-					var tdTopPosition = startRect.top;
-					var width = endRect.left - tdLeftPosition;
-					var height = start.height()+1;
-
-					var div = $('<div class="dyn-res" style="z-index:10;background-color:#ccc;position:absolute;width:'+ width +'px;height:' + height + 'px;">hi</div>');
-					div.position({
-						my: 'top left',
-						at: 'top left',
-						of: start,
-						collision: 'none'
-					});
-//
+					var div = $('<div class="dyn-res" style="z-index:10;background-color:#ccc;position:absolute;top:' + tdTopPosition + 'px;left:' + tdLeftPosition + 'px;width:' + width + 'px;height:' + height + 'px;">'
+					+ 'top' + tdTopPosition + ' height' + height + 'border' + border + '</div>');
 // divs.push(new resDiv(div, start, end));
-					$('body').append(div);
+					start.closest('div.foo').append(div);
 				}
 
-//				addReservations();
+				addReservations();
 
 //				$(window).resize(function() {
 //					$.each(divs, function(idx, val){

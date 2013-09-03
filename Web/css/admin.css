@@ -303,3 +303,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
 	top:0;
 	margin:0;
 }
+
+#customAttributeHeader {
+	font-size: 13pt;
+	margin-bottom: 10px;
+}

@@ -20,16 +20,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h1>{translate key=CustomAttributes}</h1>
 
+<div id="customAttributeHeader">
+
 <label>{translate key=Category}:
 	<select id="attributeCategory">
 		<option value="{CustomAttributeCategory::RESERVATION}">{translate key=CategoryReservation}</option>
 		<option value="{CustomAttributeCategory::USER}">{translate key=User}</option>
 
 		<option value="{CustomAttributeCategory::RESOURCE}">{translate key=Resource}</option>
+		<option value="{CustomAttributeCategory::RESOURCE_TYPE}">{translate key=ResourceType}</option>
 	</select>
 </label>
 
 <a href="#" id="addAttributeButton">{html_image src='plus-circle-frame.png'} {translate key=AddAttribute}</a>
+</div>
 
 <div id="addAttributeDialog" class="dialog attributeDialog" title="{translate key=AddAttribute}">
 

@@ -409,6 +409,21 @@ class RepeatOptionsTests extends TestBase
 			$this->assertEquals(14, $date->GetEnd()->Hour());
 			$this->assertEquals(3, $date->GetBegin()->Weekday());
 		}
+	}
+
+
+	public function testEuropeanDST()
+	{
+		$tz = 'Europe/Brussels';
+		$d = new Date('2013-09-04 11:00', $tz);
+
+		$firstWednesdayRepeat = new RepeatWeekDayOfMonth(1, Date::Parse('2014-01-22', 'Europe/London'));
+		$dates = $firstWednesdayRepeat->GetDates($d);
+
+		foreach($dates as $date)
+		{
+			echo $date->ToString();
+		}
 
 	}
 }
