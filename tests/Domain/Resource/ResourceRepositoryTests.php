@@ -301,14 +301,15 @@ class ResourceRepositoryTests extends TestBase
 		->With(1, 'resource1', 3)
 		->With(2, 'resource2', 3)
 		->With(3, 'resource3', 4)
-		->With(4, 'resource4', 5);
+		->With(4, 'resource4', 5)
+		->With(5, 'resource5', 5);
 
 		$this->db->SetRow(0, $groupRows->Rows());
 		$this->db->SetRow(1, $assignmentRows->Rows());
 
 		$resourceRepository = new ResourceRepository();
 		$groups = $resourceRepository
-				  ->GetResourceGroups($scheduleId)
+				  ->GetResourceGroups($scheduleId, new SkipResource5Filter())
 				  ->GetGroups();
 
 		$getResourceGroupsCommand = new GetAllResourceGroupsCommand();
@@ -400,6 +401,18 @@ class ResourceRepositoryTests extends TestBase
 
 		$expectedCommand = new DeleteResourceGroupCommand($id);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
+}
+
+class SkipResource5Filter implements IResourceFilter
+{
+	/**
+	 * @param int $resourceId
+	 * @return bool
+	 */
+	function ShouldInclude($resourceId)
+	{
+		return $resourceId != 5;
 	}
 }
 

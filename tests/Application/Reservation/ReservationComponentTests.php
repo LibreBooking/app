@@ -139,7 +139,7 @@ class ReservationComponentTests extends TestBase
 		$resourceList = array($otherResource, $bookedResource, $otherResource2);
 
 		$this->resourceService->expects($this->once())
-		->method('GetScheduleResources')
+		->method('GetResourceGroups')
 		->with($this->equalTo($requestedScheduleId), $this->equalTo(true), $this->equalTo($this->fakeUser))
 		->will($this->returnValue($resourceList));
 

@@ -226,7 +226,7 @@ class ResourceRepository implements IResourceRepository
 		return $accessories;
 	}
 
-	public function GetResourceGroups($scheduleId = ResourceRepository::ALL_SCHEDULES)
+	public function GetResourceGroups($scheduleId = ResourceRepository::ALL_SCHEDULES, $resourceFilter = null)
 	{
 		$groups = ServiceLocator::GetDatabase()
 				  ->Query(new GetAllResourceGroupsCommand());
@@ -246,15 +246,16 @@ class ResourceRepository implements IResourceRepository
 			$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_NAME], $row[ColumnNames::RESOURCE_ID]);
 		}
 
-		return $this->BuildResourceGroupTree($_groups, $_assignments);
+		return $this->BuildResourceGroupTree($_groups, $_assignments, $resourceFilter);
 	}
 
 	/**
 	 * @param $groups ResourceGroup[]
 	 * @param $assignments ResourceGroupAssignment[]
+	 * @param $resourceFilter IResourceFilter|null
 	 * @return ResourceGroupTree
 	 */
-	private function BuildResourceGroupTree($groups, $assignments)
+	private function BuildResourceGroupTree($groups, $assignments, $resourceFilter)
 	{
 		$tree = new ResourceGroupTree();
 
@@ -265,7 +266,10 @@ class ResourceRepository implements IResourceRepository
 
 		foreach ($assignments as $assignment)
 		{
-			$tree->AddAssignment($assignment);
+			if ($resourceFilter == null || $resourceFilter->ShouldInclude($assignment->resource_id))
+			{
+				$tree->AddAssignment($assignment);
+			}
 		}
 
 		return $tree;
@@ -349,6 +353,16 @@ class AccessoryDto
 	{
 		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
 	}
+}
+
+
+interface IResourceFilter
+{
+	/**
+	 * @param int $resourceId
+	 * @return bool
+	 */
+	function ShouldInclude($resourceId);
 }
 
 ?>

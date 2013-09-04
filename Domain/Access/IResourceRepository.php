@@ -69,9 +69,10 @@ interface IResourceRepository
 
 	/**
 	 * @param int|null $scheduleId
+	 * @param IResourceFilter|null $resourceFilter
 	 * @return ResourceGroupTree
 	 */
-	public function GetResourceGroups($scheduleId = null);
+	public function GetResourceGroups($scheduleId = null, $resourceFilter = null);
 
 	/**
 	 * @param int $resourceId

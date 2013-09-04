@@ -253,7 +253,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					console.log('table border - :' + table.css('border-width') + ' top:' + table.css('border-top-width') + ' right:'+ table.css('border-right-width') +
 							' bottom:' + table.css('border-bottom-width') + ' left:' + table.css('border-left-width'));
 
-					var tdLeftPosition = start[0].closest;
+					var tdLeftPosition = start[0].offsetLeft;
 					var tdTopPosition = start.position().top -1 + parseInt(table.css('border-top-width'));//[0].offsetTop -1;
 					var width = end[0].offsetLeft - tdLeftPosition -1;
 					var height = td.outerHeight()-1;
