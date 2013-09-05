@@ -107,6 +107,11 @@ class ResourceCrossDayRuleTests extends TestBase
 		$reservation->WithResource($resource);
 		$reservation->AddResource($resource2);
 
+		$this->scheduleRepository->expects($this->once())
+		->method('LoadById')
+		->with($this->equalTo($reservation->ScheduleId()))
+		->will($this->returnValue($this->schedule));
+
 		$rule = new ResourceCrossDayRule($this->scheduleRepository);
 		$result = $rule->Validate($reservation);
 

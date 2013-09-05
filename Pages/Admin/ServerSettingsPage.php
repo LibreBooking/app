@@ -70,13 +70,13 @@ class ServerSettingsPage extends AdminPage
 		/** @var $path SplFileInfo  */
 		foreach($dit as $path)
 		{
-			if ($path->IsDir() )
+			if ($path->isDir() && basename($path->getPathname()) != '.' && basename($path->getPathname()) != '..')
 			{
 				$plugins[basename($path->getPathname())] = array();
 				/** @var $plugin SplFileInfo  */
 				foreach (new RecursiveDirectoryIterator($path) as $plugin)
 				{
-					if ($plugin->isDir())
+					if ($plugin->isDir() && basename($plugin->getPathname()) != '.' && basename($plugin->getPathname()) != '..')
 					{
 						$plugins[basename($path->getPathname())][] = basename($plugin->getPathname());
 					}
