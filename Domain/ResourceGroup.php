@@ -30,6 +30,11 @@ class ResourceGroupTree
 	 */
 	private $groups = array();
 
+	/**
+	 * @var array|ResourceDto[]
+	 */
+	private $resources = array();
+
 	public function AddGroup(ResourceGroup $group)
 	{
 		$this->references[$group->id] = $group;
@@ -51,15 +56,24 @@ class ResourceGroupTree
 	{
 		if (array_key_exists($assignment->group_id, $this->references))
 		{
+			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id, $assignment->resource_name);
 			$this->references[$assignment->group_id]->AddResource($assignment);
 		}
 	}
 
+	/**
+	 * @return array|ResourceGroup[]
+	 */
 	public function GetGroups()
 	{
 		return $this->groups;
 	}
 
+	/**
+	 * @param int $groupId
+	 * @param int[] $resourceIds
+	 * @return int[]
+	 */
 	public function GetResourceIds($groupId, &$resourceIds = array())
 	{
 		$group = $this->references[$groupId];
@@ -82,6 +96,14 @@ class ResourceGroupTree
 		}
 
 		return $resourceIds;
+	}
+
+	/**
+	 * @return ResourceDto[] array of resources keyed by their ids
+	 */
+	public function GetAllResources()
+	{
+		return $this->resources;
 	}
 }
 

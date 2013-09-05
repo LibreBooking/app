@@ -195,16 +195,16 @@ form.login, form.forgot, form.register, #reservationForm, form.box-form, #activa
 	margin: 0 0 0 8px;
 	padding: 20px 16px 48px 16px;
 	font-weight: normal;
-	-moz-border-radius: 11px;
-	-khtml-border-radius: 11px;
-	-webkit-border-radius: 11px;
-	border-radius: 11px;
+	-moz-border-radius: 2px;
+	-khtml-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
 	background: #fff;
 	border: 1px solid #e5e5e5;
-	-moz-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
-	-webkit-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
-	-khtml-box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
-	box-shadow: rgba(200, 200, 200, 1) 0 4px 18px;
+	-moz-box-shadow: rgba(200, 200, 200, 1) 0 4px 5px;
+	-webkit-box-shadow: rgba(200, 200, 200, 1) 0 4px 5px;
+	-khtml-box-shadow: rgba(200, 200, 200, 1) 0 4px 5px;
+	box-shadow: rgba(200, 200, 200, 1) 0 4px 5px;
 }
 
 form.login {
@@ -213,19 +213,18 @@ form.login {
 
 div.registrationHeader, div.forgot_pwdHeader, .reservationHeader, div.box-form div.header {
 	padding: 5px 15px;
-	border: none;
-	-moz-border-radius: 13px;
-	-khtml-border-radius: 13px;
-	-webkit-border-radius: 13px;
-	border-radius: 13px;
-	-moz-box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
-	-webkit-box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
-	-khtml-box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
-	box-shadow: rgba(200, 200, 200, 1) 3px 3px 10px;
+	-moz-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: rgba(200, 200, 200, 1) 3px 3px 8px;
+	-webkit-box-shadow: rgba(200, 200, 200, 1) 3px 3px 8px;
+	-khtml-box-shadow: rgba(200, 200, 200, 1) 3px 3px 8px;
+	box-shadow: rgba(200, 200, 200, 1) 3px 3px 8px;
 	text-decoration: none;
 	margin: 0 0 20px 0;
 	height: 2em;
-	background: url('../img/button_bg.gif') repeat-x 0 0;
+	background-color: rgba(18, 52, 86, 0.72);
 	color: #fff;
 }
 

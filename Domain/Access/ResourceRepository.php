@@ -243,6 +243,7 @@ class ResourceRepository implements IResourceRepository
 
 		while ($row = $resources->GetRow())
 		{
+
 			$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_NAME], $row[ColumnNames::RESOURCE_ID]);
 		}
 
