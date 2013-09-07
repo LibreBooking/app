@@ -29,7 +29,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div style="float:right;">
-		<a href="{CalendarUrl::Create($Today, CalendarTypes::Today)}" alt="Today" title="Today">{translate key=Today} {html_image src="calendar-day.png"}</a>
+		<a href="{CalendarUrl::Create($Today, CalendarTypes::Day)}" alt="Today" title="Today">{translate key=Today} {html_image src="calendar-day.png"}</a>
 		<a href="{CalendarUrl::Create($Today, CalendarTypes::Week)}" alt="Week" title="Week">{translate key=Week} {html_image src="calendar-select-week.png"}</a>
 	</div>
 
