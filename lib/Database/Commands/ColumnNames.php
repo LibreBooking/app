@@ -181,8 +181,8 @@ class ColumnNames
 	const ATTRIBUTE_POSSIBLE_VALUES = 'possible_values';
 	const ATTRIBUTE_VALUE = 'attribute_value';
 	const ATTRIBUTE_ENTITY_ID = 'entity_id';
+	const ATTRIBUTE_ENTITY_DESCRIPTION = 'entity_description';
 	const ATTRIBUTE_SORT_ORDER = 'sort_order';
-	const ATTRIBUTE_UNIQUE_PER_ENTITY = 'unique_per_entity';
 
 	// RESERVATION FILES //
 	const FILE_ID = 'file_id';

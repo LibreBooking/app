@@ -44,6 +44,7 @@ class FormKeys
 	const ATTRIBUTE_POSSIBLE_VALUES = 'ATTRIBUTE_POSSIBLE_VALUES';
 	const ATTRIBUTE_PREFIX = 'psiattribute';
 	const ATTRIBUTE_SORT_ORDER = 'attributeOrder';
+	const ATTRIBUTE_ENTITY = 'ATTRIBUTE_ENTITY';
 	const AUTO_ASSIGN = 'autoAssign';
 
 	const BEGIN_DATE = 'beginDate';

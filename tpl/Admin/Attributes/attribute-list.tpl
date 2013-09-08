@@ -26,7 +26,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key=DisplayLabel}</th>
 		<th>{translate key=Type}</th>
 		<th>{translate key=Required}</th>
-		<th>{translate key=UniquePerInstance}</th>
+		<th>{translate key=AppliesTo}</th>
 		<th>{translate key=ValidationExpression}</th>
 		<th>{translate key=PossibleValues}</th>
 		<th>{translate key=Delete}</th>
@@ -44,9 +44,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{translate key=No}
 			{/if}</td>
 			<td>{if $attribute->UniquePerEntity()}
-				{translate key=Yes}
+				{$attribute->EntityDescription()}
 				{else}
-				{translate key=No}
+				{translate key=All}
 			{/if}</td>
 			<td>{$attribute->Regex()}</td>
 			<td>{$attribute->PossibleValues()}</td>
@@ -64,11 +64,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						id: {$attribute->Id()},
 						label: "{$attribute->Label()|escape:'javascript'}",
 						required: {$attribute->Required()},
-						unique: {$attribute->UniquePerEntity()},
 						regex: "{$attribute->Regex()|escape:'javascript'}",
 						possibleValues: "{$attribute->PossibleValues()|escape:'javascript'}",
 						type: "{$attribute->Type()}",
-						sortOrder: "{$attribute->SortOrder()}"
+						sortOrder: "{$attribute->SortOrder()}",
+						entityId: "{$attribute->EntityId()}",
+						entityDescription: "{$attribute->EntityDescription()|escape:'javascript'}"
 					};
 	{/foreach}
 

@@ -312,3 +312,19 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .textBoxOptions div {
 	margin: 1px 0;
 }
+
+#entityChoices {
+	display: none;
+	min-width:150px;
+	border: solid 1px #e2e2e2;
+	padding: 10px;
+	max-height: 400px;
+	overflow-x: auto;
+	overflow-y: visible;
+	position: absolute;
+	z-index: 100;
+	background-color: #f5f5f5;
+	-moz-box-shadow: 0px 0px 3px 0px #ccc;
+	-webkit-box-shadow: 0px 0px 3px 0px #ccc;
+	box-shadow: 0px 0px 3px 0px #ccc;
+}

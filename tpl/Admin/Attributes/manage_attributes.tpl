@@ -56,8 +56,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} />
 			</div>
 			<div class="attributeUnique">
-				<span class="wideLabel">{translate key=UniquePer} <span class="uniquePerLabel">&nbsp;</span></span>
-				<input type="checkbox" {formname key=ATTRIBUTE_IS_UNIQUE} />
+				<span class="wideLabel">{translate key=AppliesTo}:</span>
+				<a href="#" class="appliesTo">{translate key=All}</a>
+				<input type="hidden" {formname key=ATTRIBUTE_ENTITY} id="addAttributeEntityId" />
 			</div>
 			<div class="attributeValidationExpression">
 				<span class="wideLabel">{translate key=ValidationExpression}:</span>
@@ -113,8 +114,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} id='editAttributeRequired'/>
 			</div>
 			<div class="attributeUnique">
-				<span class="wideLabel">{translate key=UniquePer} <span class="uniquePerLabel">&nbsp;</span></span>
-				<input type="checkbox" {formname key=ATTRIBUTE_IS_UNIQUE} id='editAttributeUnique' />
+				<span class="wideLabel">{translate key=AppliesTo}:</span>
+				<a href="#" class="appliesTo">{translate key=All}</a>
+				<input type="hidden" {formname key=ATTRIBUTE_ENTITY} id='editAttributeEntityId' />
 			</div>
 			<div class="attributeValidationExpression">
 				<span class="wideLabel">{translate key=ValidationExpression}:</span>
@@ -140,6 +142,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="attributeList">
 </div>
 
+<div id="entityChoices">
+<a href="#">choice 1</a><br/>
+<a href="#">choice 2</a>
+</div>
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <input type="hidden" id="activeId" value=""/>
@@ -152,12 +159,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	$(document).ready(function () {
 	var attributeOptions = {
-	submitUrl: '{$smarty.server.SCRIPT_NAME}',
-	changeCategoryUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::DATA_REQUEST}=attributes&{QueryStringKeys::ATTRIBUTE_CATEGORY}=',
-	singleLine: '{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}',
-	multiLine: '{CustomAttributeTypes::MULTI_LINE_TEXTBOX}',
-	selectList: '{CustomAttributeTypes::SELECT_LIST}',
-	checkbox: '{CustomAttributeTypes::CHECKBOX}'
+		submitUrl: '{$smarty.server.SCRIPT_NAME}',
+		changeCategoryUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::DATA_REQUEST}=attributes&{QueryStringKeys::ATTRIBUTE_CATEGORY}=',
+		singleLine: '{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}',
+		multiLine: '{CustomAttributeTypes::MULTI_LINE_TEXTBOX}',
+		selectList: '{CustomAttributeTypes::SELECT_LIST}',
+		checkbox: '{CustomAttributeTypes::CHECKBOX}',
+		allText: "{translate key=All|escape:'javascript'}",
+		categories: {
+			reservation: {CustomAttributeCategory::RESERVATION},
+			resource: {CustomAttributeCategory::RESOURCE},
+			user: {CustomAttributeCategory::USER},
+			resource_type: {CustomAttributeCategory::RESOURCE_TYPE}
+		}
 	};
 
 	var attributeManagement = new AttributeManagement(attributeOptions);

@@ -1,83 +1,94 @@
-function AttributeManagement(opts) {
+function AttributeManagement(opts)
+{
 	var options = opts;
 
 	var elements = {
-		activeId:$('#activeId'),
-		attributeList:$('#attributeList'),
+		activeId: $('#activeId'),
+		attributeList: $('#attributeList'),
 
-		attributeCategory:$('#attributeCategory'),
-		addCategory:$('#addCategory'),
-		attributeType:$('#attributeType'),
-		uniquePerLabel:$('.uniquePerLabel'),
+		attributeCategory: $('#attributeCategory'),
+		addCategory: $('#addCategory'),
+		attributeType: $('#attributeType'),
+		appliesTo: $('.appliesTo'),
+		entityChoices: $('#entityChoices'),
 
-		editName:$('#editName'),
-		editUnlimited:$('#chkUnlimitedEdit'),
-		editQuantity:$('#editQuantity'),
+		editName: $('#editName'),
+		editUnlimited: $('#chkUnlimitedEdit'),
+		editQuantity: $('#editQuantity'),
 
-		addDialog:$('#addAttributeDialog'),
-		editDialog:$('#editAttributeDialog'),
-		deleteDialog:$('#deleteDialog'),
+		addDialog: $('#addAttributeDialog'),
+		editDialog: $('#editAttributeDialog'),
+		deleteDialog: $('#deleteDialog'),
 
-		addForm:$('#addAttributeForm'),
-		form:$('#editAttributeForm'),
-		deleteForm:$('#deleteForm')
+		addForm: $('#addAttributeForm'),
+		form: $('#editAttributeForm'),
+		deleteForm: $('#deleteForm')
 	};
 
-	function RefreshAttributeList() {
+	function RefreshAttributeList()
+	{
 		var categoryId = elements.attributeCategory.val();
 
 		$.ajax({
-			url:opts.changeCategoryUrl + categoryId,
-			cache:false,
-			beforeSend:function () {
+			url: opts.changeCategoryUrl + categoryId,
+			cache: false,
+			beforeSend: function ()
+			{
 				$('.indicator').show().insertBefore(elements.attributeList);
 				$(elements.attributeList).html('');
 			}
-		}).done(function (data) {
+		}).done(function (data)
+				{
 					$('.indicator').hide();
 					$(elements.attributeList).html(data)
 				});
-
-		elements.uniquePerLabel.text($.trim(elements.attributeCategory.find('option[value="' + categoryId + '"]').text() + ':'));
 	}
 
-	AttributeManagement.prototype.init = function () {
-
+	AttributeManagement.prototype.init = function ()
+	{
 		ConfigureAdminDialog(elements.addDialog, 480, 200);
 		ConfigureAdminDialog(elements.editDialog, 500, 200);
 		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
 
-		$(".save").click(function () {
+		$(".save").click(function ()
+		{
 			$(this).closest('form').submit();
 		});
 
-		$(".cancel").click(function () {
+		$(".cancel").click(function ()
+		{
 			$(this).closest('.dialog').dialog("close");
 		});
 
 		RefreshAttributeList();
 
-		elements.attributeCategory.change(function () {
+		elements.attributeCategory.change(function ()
+		{
 			RefreshAttributeList();
 		});
 
-		elements.attributeList.delegate('a.update', 'click', function(e) {
+		elements.attributeList.delegate('a.update', 'click', function (e)
+		{
 			e.preventDefault();
 			e.stopPropagation();
 		});
 
-		$('#addAttributeButton').click(function (e) {
+		$('#addAttributeButton').click(function (e)
+		{
 			e.preventDefault();
 			$('span.error', elements.addDialog).remove();
 			elements.addCategory.val(elements.attributeCategory.val());
+			toggleAppliesTo();
 			elements.addDialog.dialog('open');
 		});
 
-		elements.attributeType.change(function () {
+		elements.attributeType.change(function ()
+		{
 			showRelevantAttributeOptions($(this).val(), elements.addDialog);
 		});
 
-		elements.attributeList.delegate('.editable', 'click', function (e) {
+		elements.attributeList.delegate('.editable', 'click', function (e)
+		{
 			e.preventDefault();
 			var attributeId = $(this).attr('attributeId');
 			var dataList = elements.attributeList.data('list');
@@ -86,11 +97,35 @@ function AttributeManagement(opts) {
 			showEditDialog(selectedAttribute);
 		});
 
-		elements.attributeList.delegate('.delete', 'click', function (e) {
+		elements.attributeList.delegate('.delete', 'click', function (e)
+		{
 			e.preventDefault();
 			var attributeId = $(this).attr('attributeId');
 
 			showDeleteDialog(attributeId);
+		});
+
+		elements.appliesTo.click(function (e)
+		{
+			e.preventDefault();
+			showEntities($(this));
+		});
+
+		$(document).mouseup(function (e)
+		{
+			var container = elements.entityChoices;
+
+			if (!container.is(e.target) && container.has(e.target).length === 0)
+			{
+				container.hide();
+			}
+		});
+
+		elements.entityChoices.delegate('a', 'click', function(e){
+			e.preventDefault();
+			elements.entityChoices.hide();
+			elements.entityChoices.siblings('hidden').val('foo');
+			elements.entityChoices.siblings('a').text($(this).text());
 		});
 
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
@@ -99,42 +134,51 @@ function AttributeManagement(opts) {
 
 	};
 
-	var showRelevantAttributeOptions = function (selectedType, optionsDiv) {
+	var showRelevantAttributeOptions = function (selectedType, optionsDiv)
+	{
 		//var selectedType = typeElement.val();
 		$('.textBoxOptions', optionsDiv).find('div').show();
 
-		if (selectedType != opts.selectList) {
+		if (selectedType != opts.selectList)
+		{
 			$('.attributePossibleValues').hide();
 		}
 
-		if (selectedType == opts.selectList) {
+		if (selectedType == opts.selectList)
+		{
 			$('.attributeValidationExpression').hide();
 		}
 
-		if (selectedType == opts.checkbox) {
+		if (selectedType == opts.checkbox)
+		{
 			$('div', ".textBoxOptions").hide();
 			$('.attributeLabel').show();
 		}
 	};
 
-	var addAttributeHandler = function () {
+	var addAttributeHandler = function ()
+	{
 		elements.addForm.resetForm();
 		elements.addDialog.dialog('close');
 		RefreshAttributeList();
 	};
 
-	var editAttributeHandler = function () {
+	var editAttributeHandler = function ()
+	{
 		elements.form.resetForm();
 		elements.editDialog.dialog('close');
 		RefreshAttributeList();
 	};
 
-	var deleteAttributeHandler = function() {
+	var deleteAttributeHandler = function ()
+	{
 		elements.deleteDialog.dialog('close');
 		RefreshAttributeList();
 	};
 
-	var showEditDialog = function (selectedAttribute) {
+	var showEditDialog = function (selectedAttribute)
+	{
+		toggleAppliesTo();
 		showRelevantAttributeOptions(selectedAttribute.type, elements.editDialog);
 
 		$('.editAttributeType', elements.editDialog).hide();
@@ -142,36 +186,90 @@ function AttributeManagement(opts) {
 
 		$('#editAttributeLabel').val(selectedAttribute.label);
 		$('#editAttributeRequired').removeAttr('checked');
-		if (selectedAttribute.required) {
+		if (selectedAttribute.required)
+		{
 			$('#editAttributeRequired').attr('checked', 'checked');
 		}
 		$('#editAttributeUnique').removeAttr('checked');
-		if (selectedAttribute.unique) {
+		if (selectedAttribute.unique)
+		{
 			$('#editAttributeUnique').attr('checked', 'checked');
 		}
 		$('#editAttributeRegex').val(selectedAttribute.regex);
 		$('#editAttributePossibleValues').val(selectedAttribute.possibleValues);
 		$('#editAttributeSortOrder').val(selectedAttribute.sortOrder);
+		$('#editAttributeEntityId').val(selectedAttribute.entityId);
+
+		if (selectedAttribute.entityDescription == '')
+		{
+			elements.appliesTo.text(options.allText);
+		}
+		else
+		{
+			elements.appliesTo.text(selectedAttribute.entityDescription);
+		}
 		setActiveId(selectedAttribute.id);
 
 		elements.editDialog.dialog('open');
 	};
 
-	var showDeleteDialog = function(selectedAttributeId) {
+	var showDeleteDialog = function (selectedAttributeId)
+	{
 		setActiveId(selectedAttributeId);
 		elements.deleteDialog.dialog('open');
 	};
 
-	var defaultSubmitCallback = function (form) {
+	var defaultSubmitCallback = function (form)
+	{
 		return options.submitUrl + "?aid=" + getActiveId() + "&action=" + form.attr('ajaxAction');
 	};
 
-	function setActiveId(id) {
+	function setActiveId(id)
+	{
 		elements.activeId.val(id);
 	}
 
-	function getActiveId() {
+	function getActiveId()
+	{
 		return elements.activeId.val();
 	}
 
+	var toggleAppliesTo = function ()
+	{
+		if (elements.attributeCategory.val() == options.categories.reservation)
+		{
+			$('.attributeUnique').hide();
+		}
+		else
+		{
+			$('.attributeUnique').show();
+		}
+	};
+
+	var showEntities = function (element)
+	{
+		var categoryId = elements.attributeCategory.val();
+		if (categoryId == options.categories.resource)
+		{
+			showResources();
+		}
+
+		if (categoryId == options.categories.user)
+		{
+			alert('user');
+		}
+
+		if (categoryId == options.categories.resource_type)
+		{
+			alert('resource_type');
+		}
+		elements.entityChoices.insertAfter(element);
+		elements.entityChoices.css({left:element.position().left});
+		elements.entityChoices.show();
+	};
+
+	var showResources = function ()
+	{
+
+	}
 }

@@ -471,7 +471,7 @@ class en_us extends Language
 		$strings['ResourceGroupHelp2'] = 'Right click a resource group name for additional actions.';
 		$strings['ResourceGroupHelp3'] = 'Drag and drop resources to add them to groups.';
 		$strings['ResourceType'] = 'Resource Type';
-		$strings['UniquePer'] = 'Unique Per';
+		$strings['AppliesTo'] = 'Applies To';
 		$strings['UniquePerInstance'] = 'Unique Per Instance';
 		// End Strings
 

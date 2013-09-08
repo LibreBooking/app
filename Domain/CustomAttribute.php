@@ -37,6 +37,7 @@ class CustomAttributeCategory
 
 class CustomAttribute
 {
+
 	/**
 	 * @var int
 	 */
@@ -68,9 +69,14 @@ class CustomAttribute
 	protected $required;
 
 	/**
-	 * @var bool
+	 * @var int
 	 */
-	protected $uniquePerEntity;
+	protected $entityId;
+
+	/**
+	 * @var string|null
+	 */
+	protected $entityDescription;
 
 	/**
 	 * @var string
@@ -135,7 +141,23 @@ class CustomAttribute
 	 */
 	public function UniquePerEntity()
 	{
-		return $this->uniquePerEntity;
+		return !empty($this->entityId);
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function EntityId()
+	{
+		return $this->entityId;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function EntityDescription()
+	{
+		return $this->entityDescription;
 	}
 
 	/**
@@ -171,10 +193,11 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
-	 * @param bool $uniquePerEntity
+	 * @param int|null $entityId
 	 * @return CustomAttribute
 	 */
-	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $uniquePerEntity)
+	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
+								$entityId)
 	{
 		$this->id = $id;
 		$this->label = $label;
@@ -182,7 +205,7 @@ class CustomAttribute
 		$this->category = $category;
 		$this->regex = $regex;
 		$this->required = $required;
-		$this->uniquePerEntity = $uniquePerEntity;
+		$this->entityId = $entityId;
 		$this->SetSortOrder($sortOrder);
 		$this->SetPossibleValues($possibleValues);
 	}
@@ -196,12 +219,12 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
-	 * @param bool $uniquePerEntity
+	 * @param int $entityId
 	 * @return CustomAttribute
 	 */
-	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $uniquePerEntity = false)
+	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId)
 	{
-		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $uniquePerEntity);
+		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId);
 	}
 
 	/**
@@ -211,7 +234,7 @@ class CustomAttribute
 	 */
 	public static function FromRow($row)
 	{
-		return new CustomAttribute(
+		$attribute = new CustomAttribute(
 			$row[ColumnNames::ATTRIBUTE_ID],
 			$row[ColumnNames::ATTRIBUTE_LABEL],
 			$row[ColumnNames::ATTRIBUTE_TYPE],
@@ -220,8 +243,13 @@ class CustomAttribute
 			$row[ColumnNames::ATTRIBUTE_REQUIRED],
 			$row[ColumnNames::ATTRIBUTE_POSSIBLE_VALUES],
 			$row[ColumnNames::ATTRIBUTE_SORT_ORDER],
-			$row[ColumnNames::ATTRIBUTE_UNIQUE_PER_ENTITY]
+			$row[ColumnNames::ATTRIBUTE_ENTITY_ID],
+			$row[ColumnNames::ATTRIBUTE_ENTITY_ID]
 		);
+
+		$attribute->WithEntityDescription($row[ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTION]);
+
+		return $attribute;
 	}
 
 	/**
@@ -277,7 +305,7 @@ class CustomAttribute
 		$this->label = $label;
 		$this->regex = $regex;
 		$this->required = $required;
-		$this->uniquePerEntity = $uniquePerEntity;
+		$this->entityId = $uniquePerEntity;
 		$this->SetPossibleValues($possibleValues);
 		$this->SetSortOrder($sortOrder);
 	}
@@ -299,6 +327,14 @@ class CustomAttribute
 	private function SetSortOrder($sortOrder)
 	{
 		$this->sortOrder = intval($sortOrder);
+	}
+
+	/**
+	 * @param string $entityDescription
+	 */
+	public function WithEntityDescription($entityDescription)
+	{
+		$this->entityDescription = $entityDescription;
 	}
 }
 

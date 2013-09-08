@@ -32,6 +32,5 @@ CREATE TABLE `resource_types` (
   PRIMARY KEY (`resource_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-ALTER TABLE `custom_attributes` ADD COLUMN `unique_per_entity` tinyint(1) unsigned NOT NULL DEFAULT 0;
 ALTER TABLE `custom_attributes` ADD COLUMN `entity_id` mediumint(8) unsigned;
 

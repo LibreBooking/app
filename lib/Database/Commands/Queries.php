@@ -38,8 +38,8 @@ class Queries
 		VALUES (@text, @priority, @startDate, @endDate)';
 
 	const ADD_ATTRIBUTE =
-			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order, @unique_per_entity)
-		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order, @unique_per_entity)';
+			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order, @entity_id)
+		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order, @entity_id)';
 
 	const ADD_ATTRIBUTE_VALUE =
 			'INSERT INTO custom_attribute_values (custom_attribute_id, attribute_category, attribute_value, entity_id)
@@ -340,8 +340,18 @@ class Queries
 
 	const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
 
-	const GET_ATTRIBUTES_BY_CATEGORY = 'SELECT * FROM custom_attributes
-		WHERE attribute_category = @attribute_category ORDER BY sort_order, display_label';
+	const GET_ATTRIBUTES_BY_CATEGORY = 'SELECT a.*,
+			CASE
+			WHEN a.attribute_category = 2 THEN CONCAT(u.fname, " ", u.lname)
+			WHEN a.attribute_category = 4 THEN r.name
+			WHEN a.attribute_category = 4 THEN rt.resource_type_name
+			ELSE null
+			END as entity_description
+			FROM custom_attributes a
+			LEFT JOIN users u ON u.user_id = a.entity_id AND a.attribute_category = 2
+			LEFT JOIN resources r ON r.resource_id = a.entity_id AND a.attribute_category = 4
+			LEFT JOIN resource_types rt ON rt.resource_type_id = a.entity_id AND a.attribute_category = 5
+		WHERE a.attribute_category = @attribute_category ORDER BY a.sort_order, a.display_label';
 
 	const GET_ATTRIBUTE_BY_ID = 'SELECT * FROM custom_attributes WHERE custom_attribute_id = @custom_attribute_id';
 
