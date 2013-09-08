@@ -121,7 +121,7 @@ class CalendarMonth implements ICalendarSegment
 			}
 		}
 
-		return intval($week);
+		return min(1, intval($week));
 	}
 
 

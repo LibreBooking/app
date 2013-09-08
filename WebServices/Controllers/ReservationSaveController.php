@@ -509,7 +509,6 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		$attributes = array();
 		if (!empty($this->request->customAttributes) && is_array($this->request->customAttributes))
 		{
-
 			foreach ($this->request->customAttributes as $attribute)
 			{
 				$attributes[] = new AttributeFormElement($attribute->attributeId, $attribute->attributeValue);

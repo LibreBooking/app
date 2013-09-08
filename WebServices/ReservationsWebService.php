@@ -84,7 +84,7 @@ class ReservationsWebService
 		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, null,
 																			 $scheduleId, $resourceId);
 
-		$response = new ReservationsResponse($this->server, $reservations, $this->privacyFilter);
+		$response = new ReservationsResponse($this->server, $reservations, $this->privacyFilter, $startDate, $endDate);
 		$this->server->WriteResponse($response);
 	}
 

@@ -27,13 +27,17 @@ class ReservationsResponse extends RestResponse
 	 * @var array|ReservationItemResponse[]
 	 */
 	public $reservations = array();
+	public $startDateTime;
+	public $endDateTime;
 
 	/**
 	 * @param IRestServer $server
 	 * @param array|ReservationItemView[] $reservations
 	 * @param IPrivacyFilter $privacyFilter
+	 * @param Date $minDate
+	 * @param Date $maxDate
 	 */
-	public function __construct(IRestServer $server, $reservations, IPrivacyFilter $privacyFilter)
+	public function __construct(IRestServer $server, $reservations, IPrivacyFilter $privacyFilter, Date $minDate, Date $maxDate)
 	{
 		$user = $server->GetSession();
 		foreach ($reservations as $reservation)
@@ -42,6 +46,8 @@ class ReservationsResponse extends RestResponse
 			$showDetails = $privacyFilter->CanViewDetails($user, null, $reservation->UserId);
 
 			$this->reservations[] = new ReservationItemResponse($reservation, $server, $showUser, $showDetails);
+			$this->startDateTime = $minDate->ToIso();
+			$this->endDateTime = $maxDate->ToIso();
 		}
 	}
 

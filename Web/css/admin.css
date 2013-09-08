@@ -172,8 +172,8 @@ tr.pending {
     /*width: 300px;*/
 /*}*/
 
-.attributeDialog span {
-    min-width: 150px;
+.attributeDialog .wideLabel {
+    min-width: 160px;
     text-align: right;
     padding-right: 4px;
 }
@@ -307,4 +307,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
 #customAttributeHeader {
 	font-size: 13pt;
 	margin-bottom: 10px;
+}
+
+.textBoxOptions div {
+	margin: 1px 0;
 }

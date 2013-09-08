@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
 {include file='globalheader.tpl' cssFiles='css/admin.css'}
 
 <h1>{translate key=CustomAttributes}</h1>
@@ -26,7 +27,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<select id="attributeCategory">
 		<option value="{CustomAttributeCategory::RESERVATION}">{translate key=CategoryReservation}</option>
 		<option value="{CustomAttributeCategory::USER}">{translate key=User}</option>
-
 		<option value="{CustomAttributeCategory::RESOURCE}">{translate key=Resource}</option>
 		<option value="{CustomAttributeCategory::RESOURCE_TYPE}">{translate key=ResourceType}</option>
 	</select>
@@ -54,6 +54,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="attributeRequired">
 				<span class="wideLabel">{translate key=Required}:</span>
 				<input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} />
+			</div>
+			<div class="attributeUnique">
+				<span class="wideLabel">{translate key=UniquePer} <span class="uniquePerLabel">&nbsp;</span></span>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_UNIQUE} />
 			</div>
 			<div class="attributeValidationExpression">
 				<span class="wideLabel">{translate key=ValidationExpression}:</span>
@@ -107,6 +111,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="attributeRequired">
 				<span class="wideLabel">{translate key=Required}:</span>
 				<input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} id='editAttributeRequired'/>
+			</div>
+			<div class="attributeUnique">
+				<span class="wideLabel">{translate key=UniquePer} <span class="uniquePerLabel">&nbsp;</span></span>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_UNIQUE} id='editAttributeUnique' />
 			</div>
 			<div class="attributeValidationExpression">
 				<span class="wideLabel">{translate key=ValidationExpression}:</span>

@@ -7,6 +7,8 @@ function AttributeManagement(opts) {
 
 		attributeCategory:$('#attributeCategory'),
 		addCategory:$('#addCategory'),
+		attributeType:$('#attributeType'),
+		uniquePerLabel:$('.uniquePerLabel'),
 
 		editName:$('#editName'),
 		editUnlimited:$('#chkUnlimitedEdit'),
@@ -21,22 +23,22 @@ function AttributeManagement(opts) {
 		deleteForm:$('#deleteForm')
 	};
 
-	var attributes = new Object();
-
 	function RefreshAttributeList() {
-		var categoryId = $('#attributeCategory').val();
+		var categoryId = elements.attributeCategory.val();
 
 		$.ajax({
 			url:opts.changeCategoryUrl + categoryId,
 			cache:false,
 			beforeSend:function () {
-				$('.indicator').show().insertBefore($('#attributeList'));
-				$('#attributeList').html('');
+				$('.indicator').show().insertBefore(elements.attributeList);
+				$(elements.attributeList).html('');
 			}
 		}).done(function (data) {
 					$('.indicator').hide();
-					$('#attributeList').html(data)
+					$(elements.attributeList).html(data)
 				});
+
+		elements.uniquePerLabel.text($.trim(elements.attributeCategory.find('option[value="' + categoryId + '"]').text() + ':'));
 	}
 
 	AttributeManagement.prototype.init = function () {
@@ -71,7 +73,7 @@ function AttributeManagement(opts) {
 			elements.addDialog.dialog('open');
 		});
 
-		$('#attributeType').change(function () {
+		elements.attributeType.change(function () {
 			showRelevantAttributeOptions($(this).val(), elements.addDialog);
 		});
 
@@ -142,6 +144,10 @@ function AttributeManagement(opts) {
 		$('#editAttributeRequired').removeAttr('checked');
 		if (selectedAttribute.required) {
 			$('#editAttributeRequired').attr('checked', 'checked');
+		}
+		$('#editAttributeUnique').removeAttr('checked');
+		if (selectedAttribute.unique) {
+			$('#editAttributeUnique').attr('checked', 'checked');
 		}
 		$('#editAttributeRegex').val(selectedAttribute.regex);
 		$('#editAttributePossibleValues').val(selectedAttribute.possibleValues);

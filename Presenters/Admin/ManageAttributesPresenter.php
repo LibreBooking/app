@@ -65,10 +65,11 @@ class ManageAttributesPresenter extends ActionPresenter
 		$required = $this->page->GetIsRequired();
 		$possibleValues = $this->page->GetPossibleValues();
 		$sortOrder = $this->page->GetSortOrder();
+		$unique = $this->page->GetIsUnique();
 
         Log::Debug('Adding new attribute named: %s', $attributeName);
 
-        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder);
+        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $unique);
 		$this->attributeRepository->Add($attribute);
     }
 
@@ -87,11 +88,12 @@ class ManageAttributesPresenter extends ActionPresenter
 		$required = $this->page->GetIsRequired();
 		$possibleValues = $this->page->GetPossibleValues();
 		$sortOrder = $this->page->GetSortOrder();
+		$unique = $this->page->GetIsUnique();
 
 		Log::Debug('Updating attribute with id: %s', $attributeId);
 
 		$attribute = $this->attributeRepository->LoadById($attributeId);
-		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder);
+		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder, $unique);
 
 		$this->attributeRepository->Update($attribute);
 	}
@@ -107,7 +109,5 @@ class ManageAttributesPresenter extends ActionPresenter
 
 		$this->page->BindAttributes($this->attributeRepository->GetByCategory($categoryId));
 	}
-
-
 }
 ?>

@@ -68,6 +68,11 @@ class CustomAttribute
 	protected $required;
 
 	/**
+	 * @var bool
+	 */
+	protected $uniquePerEntity;
+
+	/**
 	 * @var string
 	 */
 	protected $possibleValues;
@@ -118,11 +123,19 @@ class CustomAttribute
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function Required()
 	{
 		return $this->required;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function UniquePerEntity()
+	{
+		return $this->uniquePerEntity;
 	}
 
 	/**
@@ -158,9 +171,10 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
+	 * @param bool $uniquePerEntity
 	 * @return CustomAttribute
 	 */
-	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder)
+	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $uniquePerEntity)
 	{
 		$this->id = $id;
 		$this->label = $label;
@@ -168,6 +182,7 @@ class CustomAttribute
 		$this->category = $category;
 		$this->regex = $regex;
 		$this->required = $required;
+		$this->uniquePerEntity = $uniquePerEntity;
 		$this->SetSortOrder($sortOrder);
 		$this->SetPossibleValues($possibleValues);
 	}
@@ -181,11 +196,12 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
+	 * @param bool $uniquePerEntity
 	 * @return CustomAttribute
 	 */
-	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder)
+	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $uniquePerEntity = false)
 	{
-		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder);
+		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $uniquePerEntity);
 	}
 
 	/**
@@ -203,7 +219,8 @@ class CustomAttribute
 			$row[ColumnNames::ATTRIBUTE_CONSTRAINT],
 			$row[ColumnNames::ATTRIBUTE_REQUIRED],
 			$row[ColumnNames::ATTRIBUTE_POSSIBLE_VALUES],
-			$row[ColumnNames::ATTRIBUTE_SORT_ORDER]
+			$row[ColumnNames::ATTRIBUTE_SORT_ORDER],
+			$row[ColumnNames::ATTRIBUTE_UNIQUE_PER_ENTITY]
 		);
 	}
 
@@ -253,12 +270,14 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
+	 * @param bool $uniquePerEntity
 	 */
-	public function Update($label, $regex, $required, $possibleValues, $sortOrder)
+	public function Update($label, $regex, $required, $possibleValues, $sortOrder, $uniquePerEntity)
 	{
 		$this->label = $label;
 		$this->regex = $regex;
 		$this->required = $required;
+		$this->uniquePerEntity = $uniquePerEntity;
 		$this->SetPossibleValues($possibleValues);
 		$this->SetSortOrder($sortOrder);
 	}

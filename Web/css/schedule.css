@@ -279,3 +279,9 @@ ul.jqtree-tree .jqtree-toggler { top: 10%; }
 {
 	padding-right:10px;
 }
+
+.table-cell-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}

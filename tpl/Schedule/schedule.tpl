@@ -269,7 +269,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					start.closest('div.foo').append(div);
 				}
 
-				addReservations();
+				//addReservations();
 
 //				$(window).resize(function() {
 //					$.each(divs, function(idx, val){

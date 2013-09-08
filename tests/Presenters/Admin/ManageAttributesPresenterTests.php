@@ -74,6 +74,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$regex = '/$\d^/';
 		$possibleValues = '1,2,3';
 		$sortOrder = "5";
+		$unique = true;
 
 		$this->page->_label = $label;
 		$this->page->_type = $type;
@@ -82,8 +83,9 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_regex = $regex;
 		$this->page->_possibleValues = $possibleValues;
 		$this->page->_sortOrder = $sortOrder;
+		$this->page->_unique = $unique;
 
-		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder);
+		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $unique);
 
 		$this->attributeRepository->expects($this->once())
 				->method('Add')
@@ -101,6 +103,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$regex = '/$\d^/';
 		$possibleValues = '1,2,3';
 		$sortOrder = "5";
+		$unique = true;
 
 		$this->page->_label = $label;
 		$this->page->_required = $required;
@@ -108,8 +111,9 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_possibleValues = $possibleValues;
 		$this->page->_attributeId = $attributeId;
 		$this->page->_sortOrder = $sortOrder;
+		$this->page->_unique = $unique;
 
-		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder);
+		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder, $unique);
 
 		$this->attributeRepository->expects($this->once())
 				->method('LoadById')
@@ -127,6 +131,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->assertEquals($required, $expectedAttribute->Required());
 		$this->assertEquals($possibleValues, $expectedAttribute->PossibleValues());
 		$this->assertEquals($sortOrder, $expectedAttribute->SortOrder());
+		$this->assertEquals($unique, $expectedAttribute->UniquePerEntity());
 	}
 	
 	public function testDeletesAttributeById()
@@ -155,6 +160,7 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public $_boundAttributes;
 	public $_attributeId;
 	public $_sortOrder;
+	public $_unique;
 
 	public function GetLabel()
 	{
@@ -179,6 +185,11 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public function GetIsRequired()
 	{
 		return $this->_required;
+	}
+
+	public function GetIsUnique()
+	{
+		return $this->_unique;
 	}
 
 	public function GetPossibleValues()

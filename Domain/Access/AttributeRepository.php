@@ -70,8 +70,10 @@ class AttributeRepository implements IAttributeRepository
 {
 	public function Add(CustomAttribute $attribute)
 	{
-		return ServiceLocator::GetDatabase()->ExecuteInsert(
-			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder()));
+		return ServiceLocator::GetDatabase()
+			   ->ExecuteInsert(
+			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(),
+									$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(), $attribute->UniquePerEntity()));
 	}
 
 	/**
@@ -80,7 +82,8 @@ class AttributeRepository implements IAttributeRepository
 	 */
 	public function GetByCategory($category)
 	{
-		$reader = ServiceLocator::GetDatabase()->Query(new GetAttributesByCategoryCommand($category));
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query(new GetAttributesByCategoryCommand($category));
 
 		$attributes = array();
 		while ($row = $reader->GetRow())
@@ -97,7 +100,8 @@ class AttributeRepository implements IAttributeRepository
 	 */
 	public function LoadById($attributeId)
 	{
-		$reader = ServiceLocator::GetDatabase()->Query(new GetAttributeByIdCommand($attributeId));
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query(new GetAttributeByIdCommand($attributeId));
 
 		$attribute = null;
 		if ($row = $reader->GetRow())
@@ -113,9 +117,11 @@ class AttributeRepository implements IAttributeRepository
 	 */
 	public function Update(CustomAttribute $attribute)
 	{
-		ServiceLocator::GetDatabase()->Execute(
+		ServiceLocator::GetDatabase()
+		->Execute(
 			new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
-				$attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder()));
+									   $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(),
+									   $attribute->UniquePerEntity()));
 	}
 
 	/**
@@ -132,7 +138,8 @@ class AttributeRepository implements IAttributeRepository
 			$entityIds = array($entityIds);
 		}
 
-		$reader = ServiceLocator::GetDatabase()->Query(new GetAttributeMultipleValuesCommand($category, $entityIds));
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query(new GetAttributeMultipleValuesCommand($category, $entityIds));
 
 		$attribute = null;
 		while ($row = $reader->GetRow())
@@ -152,8 +159,10 @@ class AttributeRepository implements IAttributeRepository
 	 */
 	public function DeleteById($attributeId)
 	{
-		ServiceLocator::GetDatabase()->Execute(new DeleteAttributeCommand($attributeId));
-		ServiceLocator::GetDatabase()->Execute(new DeleteAttributeValuesCommand($attributeId));
+		ServiceLocator::GetDatabase()
+		->Execute(new DeleteAttributeCommand($attributeId));
+		ServiceLocator::GetDatabase()
+		->Execute(new DeleteAttributeValuesCommand($attributeId));
 	}
 }
 

@@ -59,6 +59,7 @@ class AuthenticationWebService
 			Log::Debug('WebService Authenticate, user %s was authenticated', $username);
 
 			$session = $this->authentication->Login($username);
+			Log::Debug('SessionToken=%s', $session->SessionToken);
 			$this->server->WriteResponse(AuthenticationResponse::Success($this->server, $session));
 		}
 		else

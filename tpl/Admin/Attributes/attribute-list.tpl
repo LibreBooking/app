@@ -1,5 +1,5 @@
 {*
-Copyright 2012 Nick Korbel
+Copyright 2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -26,6 +26,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key=DisplayLabel}</th>
 		<th>{translate key=Type}</th>
 		<th>{translate key=Required}</th>
+		<th>{translate key=UniquePerInstance}</th>
 		<th>{translate key=ValidationExpression}</th>
 		<th>{translate key=PossibleValues}</th>
 		<th>{translate key=Delete}</th>
@@ -42,6 +43,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{else}
 				{translate key=No}
 			{/if}</td>
+			<td>{if $attribute->UniquePerEntity()}
+				{translate key=Yes}
+				{else}
+				{translate key=No}
+			{/if}</td>
 			<td>{$attribute->Regex()}</td>
 			<td>{$attribute->PossibleValues()}</td>
 			<td align="center"><a href="#" class="update delete" attributeId="{$attribute->Id()}">{html_image src='cross-button.png'}</a></td>
@@ -49,7 +55,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/foreach}
 </table>
 {/if}
-
 
 <script type="text/javascript">
 	var attributeList = new Object();
@@ -59,6 +64,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 						id: {$attribute->Id()},
 						label: "{$attribute->Label()|escape:'javascript'}",
 						required: {$attribute->Required()},
+						unique: {$attribute->UniquePerEntity()},
 						regex: "{$attribute->Regex()|escape:'javascript'}",
 						possibleValues: "{$attribute->PossibleValues()|escape:'javascript'}",
 						type: "{$attribute->Type()}",

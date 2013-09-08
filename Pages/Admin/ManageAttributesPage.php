@@ -36,49 +36,46 @@ interface IManageAttributesPage extends IActionPage
 	public function GetType();
 
 	/**
-	 * @abstract
 	 * return int|CustomAttributeCategory
 	 */
 	public function GetCategory();
 
 	/**
-	 * @abstract
 	 * return string
 	 */
 	public function GetValidationExpression();
 
 	/**
-	 * @abstract
 	 * return bool
 	 */
 	public function GetIsRequired();
 
 	/**
-	 * @abstract
+	 * @return bool
+	 */
+	public function GetIsUnique();
+
+	/**
 	 * return string
 	 */
 	public function GetPossibleValues();
 
 	/**
-	 * @abstract
 	 * return int|CustomAttributeCategory
 	 */
 	public function GetRequestedCategory();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetSortOrder();
 
 	/**
-	 * @abstract
 	 * @param $attributes CustomAttribute[]|array
 	 */
 	public function BindAttributes($attributes);
 
 	/**
-	 * @abstract
 	 * @param $categoryId int|CustomAttributeCategory
 	 */
 	public function SetCategory($categoryId);
@@ -148,6 +145,12 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 	{
 		$required = $this->GetForm(FormKeys::ATTRIBUTE_IS_REQUIRED);
 		return !empty($required);
+	}
+
+	public function GetIsUnique()
+	{
+		$unique = $this->GetForm(FormKeys::ATTRIBUTE_IS_UNIQUE);
+		return !empty($unique);
 	}
 
 	public function GetPossibleValues()

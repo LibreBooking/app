@@ -47,6 +47,7 @@ class ParameterNames
 	const ATTRIBUTE_VALUE = '@attribute_value';
 	const ATTRIBUTE_ENTITY_ID = '@entity_id';
 	const ATTRIBUTE_ENTITY_IDS = '@entity_ids';
+	const ATTRIBUTE_UNIQUE_PER_ENTITY = '@unique_per_entity';
 
 	const CURRENT_DATE = '@current_date';
 	const CURRENT_SERIES_ID = '@currentSeriesId';

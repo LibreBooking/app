@@ -48,11 +48,12 @@ class AttributeRepositoryTests extends TestBase
 		$required = false;
 		$possibleValues = '';
 		$sortOrder = '4';
+		$unique = true;
 
-		$attribute = CustomAttribute::Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder);
+		$attribute = CustomAttribute::Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique);
 
 		$this->repository->Add($attribute);
-		$this->assertEquals(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder), $this->db->_LastCommand);
+		$this->assertEquals(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique), $this->db->_LastCommand);
 	}
 
 	public function testLoadsAttributeById()
@@ -65,14 +66,15 @@ class AttributeRepositoryTests extends TestBase
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
+		$unique = true;
 
-		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder);
+		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique);
 
 		$this->db->SetRows(array($row1));
 
 		$attribute = $this->repository->LoadById($id);
 
-		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder);
+		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique);
 
 		$this->assertEquals($expectedFirstAttribute, $attribute);
 		$this->assertEquals(new GetAttributeByIdCommand($id), $this->db->_LastCommand);
@@ -88,12 +90,13 @@ class AttributeRepositoryTests extends TestBase
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
+		$unique = true;
 
-		$attribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder);
+		$attribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique);
 
 		$this->repository->Update($attribute);
 
-		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder), $this->db->_LastCommand);
+		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique), $this->db->_LastCommand);
 	}
 
 	public function testDeletesAttributeById()
@@ -115,15 +118,16 @@ class AttributeRepositoryTests extends TestBase
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
+		$unique = true;
 
-		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder);
+		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique);
 		$row2 = $this->GetAttributeRow(2);
 		
 		$this->db->SetRows(array($row1, $row2));
 
 		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
 
-		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder);
+		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique);
 
 		$this->assertEquals(2, count($attributes));
 		$this->assertEquals($expectedFirstAttribute, $attributes[0]);
@@ -164,7 +168,9 @@ class AttributeRepositoryTests extends TestBase
 									 $regex = null,
 									 $required = true,
 									 $possibleValues = null,
-									 $sortOrder = null)
+									 $sortOrder = null,
+									 $unique = false
+)
 	{
 		return array(
 			ColumnNames::ATTRIBUTE_ID => $id,
@@ -174,7 +180,8 @@ class AttributeRepositoryTests extends TestBase
 			ColumnNames::ATTRIBUTE_CONSTRAINT => $regex,
 			ColumnNames::ATTRIBUTE_REQUIRED => $required,
 			ColumnNames::ATTRIBUTE_POSSIBLE_VALUES => $possibleValues,
-			ColumnNames::ATTRIBUTE_SORT_ORDER => $sortOrder);
+			ColumnNames::ATTRIBUTE_SORT_ORDER => $sortOrder,
+			ColumnNames::ATTRIBUTE_UNIQUE_PER_ENTITY => $unique);
 	}
 
 	private function GetAttributeValueRow($attributeid, $entityId, $value)
