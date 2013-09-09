@@ -26,91 +26,77 @@ require_once(ROOT_DIR . 'Presenters/Admin/ManageReservationsPresenter.php');
 interface IManageReservationsPage extends IPageable, IActionPage
 {
 	/**
-	 * @abstract
 	 * @param array|ReservationItemView[] $reservations
 	 * @return void
 	 */
 	public function BindReservations($reservations);
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetStartDate();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetEndDate();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetUserId();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetUserName();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetScheduleId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetResourceId();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetReferenceNumber();
 
 	/**
-	 * @abstract
 	 * @param Date $date|null
 	 * @return void
 	 */
 	public function SetStartDate($date);
 
 	/**
-	 * @abstract
 	 * @param Date $date|null
 	 * @return void
 	 */
 	public function SetEndDate($date);
 
 	/**
-	 * @abstract
 	 * @param int $userId
 	 * @return void
 	 */
 	public function SetUserId($userId);
 
 	/**
-	 * @abstract
 	 * @param string $userName
 	 * @return void
 	 */
 	public function SetUserName($userName);
 
 	/**
-	 * @abstract
 	 * @param int $scheduleId
 	 * @return void
 	 */
 	public function SetScheduleId($scheduleId);
 
 	/**
-	 * @abstract
 	 * @param int $resourceId
 	 * @return void
 	 */
@@ -118,80 +104,73 @@ interface IManageReservationsPage extends IPageable, IActionPage
 
 
 	/**
-	 * @abstract
 	 * @param string $referenceNumber
 	 * @return void
 	 */
 	public function SetReferenceNumber($referenceNumber);
 
 	/**
-	 * @abstract
 	 * @param array|Schedule[] $schedules
 	 * @return void
 	 */
 	public function BindSchedules($schedules);
 
 	/**
-	 * @abstract
 	 * @param array|BookableResource[] $resources
 	 * @return void
 	 */
 	public function BindResources($resources);
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetDeleteReferenceNumber();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetDeleteScope();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetReservationStatusId();
 
 	/**
-	 * @abstract
 	 * @param $reservationStatusId int
 	 * @return void
 	 */
 	public function SetReservationStatusId($reservationStatusId);
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetApproveReferenceNumber();
 
 	/**
-	 * @abstract
 	 * @return void
 	 */
 	public function ShowPage();
 
 	/**
-	 * @abstract
 	 * @return void
 	 */
 	public function ShowCsv();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetFormat();
 
 	/**
-	 * @abstract
 	 * @param $attributeList AttributeList
 	 */
 	public function SetAttributes($attributeList);
+
+	/**
+	 * @param $resources AdminResourceJson[]
+	 */
+	public function SetResourcesJson($resources);
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -451,9 +430,6 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 		return $this->GetQuerystring(QueryStringKeys::FORMAT);
 	}
 
-	/**
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op

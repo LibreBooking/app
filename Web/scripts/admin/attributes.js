@@ -34,12 +34,12 @@ function AttributeManagement(opts)
 			cache: false,
 			beforeSend: function ()
 			{
-				$('.indicator').show().insertBefore(elements.attributeList);
+				$('#indicator').show().insertBefore(elements.attributeList);
 				$(elements.attributeList).html('');
 			}
 		}).done(function (data)
 				{
-					$('.indicator').hide();
+					$('#indicator').hide();
 					$(elements.attributeList).html(data)
 				});
 	}
@@ -121,11 +121,12 @@ function AttributeManagement(opts)
 			}
 		});
 
-		elements.entityChoices.delegate('a', 'click', function(e){
+		elements.entityChoices.delegate('a', 'click', function (e)
+		{
 			e.preventDefault();
 			elements.entityChoices.hide();
-			elements.entityChoices.siblings('hidden').val('foo');
-			elements.entityChoices.siblings('a').text($(this).text());
+			$('.appliesToId').val($(this).attr('entity-id'));
+			elements.appliesTo.text($(this).text());
 		});
 
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
@@ -208,6 +209,7 @@ function AttributeManagement(opts)
 		{
 			elements.appliesTo.text(selectedAttribute.entityDescription);
 		}
+		$('.appliesToId').val('');
 		setActiveId(selectedAttribute.id);
 
 		elements.editDialog.dialog('open');
@@ -248,10 +250,18 @@ function AttributeManagement(opts)
 
 	var showEntities = function (element)
 	{
+		elements.entityChoices.empty();
+		elements.entityChoices.css({left: element.offset().left, top: element.offset().top + element.height()});
+		elements.entityChoices.show();
+
+		$('<div class="ajax-indicator">&nbsp;</div>"').appendTo(elements.entityChoices).show();
 		var categoryId = elements.attributeCategory.val();
+
+		var data = [];
+
 		if (categoryId == options.categories.resource)
 		{
-			showResources();
+			data = getResources();
 		}
 
 		if (categoryId == options.categories.user)
@@ -263,13 +273,30 @@ function AttributeManagement(opts)
 		{
 			alert('resource_type');
 		}
-		elements.entityChoices.insertAfter(element);
-		elements.entityChoices.css({left:element.position().left});
-		elements.entityChoices.show();
+
+		var items = [];
+		$.map(data, function (item)
+		{
+			items.push('<li><a href="#" entity-id="' + item.Id + '">' + item.Name + '</a></li>');
+		});
+
+		elements.entityChoices.empty();
+
+		$('<ul/>', {'class': '', html: items.join('')}).appendTo(elements.entityChoices);
 	};
 
-	var showResources = function ()
+	var getResources = function ()
 	{
+		var items = [];
+		$.ajax({
+					url: options.resourcesUrl,
+					async: false
+				}
+		).done(function (data)
+				{
+					items = data;
+				});
 
+		return items;
 	}
 }

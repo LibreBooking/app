@@ -155,12 +155,12 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	/**
 	 * @var ManageResourcesPresenter
 	 */
-	protected $_presenter;
+	protected $presenter;
 
 	public function __construct()
 	{
 		parent::__construct('ManageResources', 1);
-		$this->_presenter = new ManageResourcesPresenter(
+		$this->presenter = new ManageResourcesPresenter(
 			$this,
 			new ResourceRepository(),
 			new ScheduleRepository(),
@@ -172,7 +172,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 
 	public function ProcessPageLoad()
 	{
-		$this->_presenter->PageLoad();
+		$this->presenter->PageLoad();
 
 		$this->Display('Admin/manage_resources.tpl');
 	}
@@ -189,7 +189,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 
 	public function ProcessAction()
 	{
-		$this->_presenter->ProcessAction();
+		$this->presenter->ProcessAction();
 	}
 
 	public function GetResourceId()
@@ -321,7 +321,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 
 	public function ProcessDataRequest($dataRequest)
 	{
-		// no-op
+		$this->presenter->ProcessDataRequest($dataRequest);
 	}
 
 	/**
@@ -353,6 +353,14 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetSortOrder()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_SORT_ORDER);
+	}
+
+	/**
+	 * @param $resources AdminResourceJson[]
+	 */
+	public function SetResourcesJson($resources)
+	{
+		$this->SetJson($resources);
 	}
 }
 

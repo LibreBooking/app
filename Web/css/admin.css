@@ -322,9 +322,22 @@ ul.jqtree-tree .group-resource .jqtree-title {
 	overflow-x: auto;
 	overflow-y: visible;
 	position: absolute;
-	z-index: 100;
+	z-index: 10000;
 	background-color: #f5f5f5;
 	-moz-box-shadow: 0px 0px 3px 0px #ccc;
 	-webkit-box-shadow: 0px 0px 3px 0px #ccc;
 	box-shadow: 0px 0px 3px 0px #ccc;
+}
+
+#entityChoices li
+{
+	list-style: none;
+	font-size:10pt;
+}
+
+.ajax-indicator {
+	display:none;
+	background-image: url(../img/admin-ajax-indicator.gif);
+	width: 35px;
+	height:35px;
 }

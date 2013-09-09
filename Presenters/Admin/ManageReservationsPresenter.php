@@ -140,7 +140,6 @@ class ManageReservationsPresenter extends ActionPresenter
 
 		return $date;
 	}
-
 }
 
 ?>

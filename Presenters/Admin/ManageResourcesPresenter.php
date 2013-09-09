@@ -411,6 +411,31 @@ class ManageResourcesPresenter extends ActionPresenter
 			$this->page->RegisterValidator('attributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes));
 		}
 	}
+
+	public function ProcessDataRequest($dataRequest)
+	{
+		if ($dataRequest == 'all')
+		{
+			$this->page->SetResourcesJson(array_map(array('AdminResourceJson', 'FromBookable'), $this->resourceRepository->GetResourceList()));
+		}
+	}
+}
+
+class AdminResourceJson
+{
+	public $Id;
+	public $Name;
+
+	public function __construct($id, $name)
+	{
+		$this->Id = $id;
+		$this->Name = $name;
+	}
+
+	public static function FromBookable(BookableResource $resource)
+	{
+		return new AdminResourceJson($resource->GetId(), $resource->GetName());
+	}
 }
 
 ?>

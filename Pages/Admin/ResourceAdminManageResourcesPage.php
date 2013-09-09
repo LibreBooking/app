@@ -28,7 +28,7 @@ class ResourceAdminManageResourcesPage extends ManageResourcesPage
 	public function __construct()
 	{
 		parent::__construct();
-		$this->_presenter = new ManageResourcesPresenter(
+		$this->presenter = new ManageResourcesPresenter(
 										$this,
 										new ResourceAdminResourceRepository(new UserRepository(), ServiceLocator::GetServer()->GetUserSession()),
 										new ScheduleRepository(),

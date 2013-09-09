@@ -116,7 +116,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="attributeUnique">
 				<span class="wideLabel">{translate key=AppliesTo}:</span>
 				<a href="#" class="appliesTo">{translate key=All}</a>
-				<input type="hidden" {formname key=ATTRIBUTE_ENTITY} id='editAttributeEntityId' />
+				<input type="hidden" class="appliesToId" {formname key=ATTRIBUTE_ENTITY} id='editAttributeEntityId' />
 			</div>
 			<div class="attributeValidationExpression">
 				<span class="wideLabel">{translate key=ValidationExpression}:</span>
@@ -143,11 +143,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="entityChoices">
-<a href="#">choice 1</a><br/>
-<a href="#">choice 2</a>
 </div>
 
-{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+{html_image src="admin-ajax-indicator.gif" class="indicator" id="indicator" style="display:none;"}
 
 <input type="hidden" id="activeId" value=""/>
 
@@ -171,7 +169,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			resource: {CustomAttributeCategory::RESOURCE},
 			user: {CustomAttributeCategory::USER},
 			resource_type: {CustomAttributeCategory::RESOURCE_TYPE}
-		}
+		},
+		resourcesUrl: 'manage_resources.php?{QueryStringKeys::DATA_REQUEST}=all'
 	};
 
 	var attributeManagement = new AttributeManagement(attributeOptions);
