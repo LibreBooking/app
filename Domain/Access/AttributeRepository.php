@@ -121,7 +121,7 @@ class AttributeRepository implements IAttributeRepository
 		->Execute(
 			new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
 									   $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(),
-									   $attribute->UniquePerEntity()));
+									   $attribute->EntityId()));
 	}
 
 	/**

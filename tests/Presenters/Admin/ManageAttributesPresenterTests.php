@@ -53,7 +53,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$categoryId = CustomAttributeCategory::RESERVATION;
 		$this->page->_requestedCategoryId = $categoryId;
 
-		$attributes = array(CustomAttribute::Create('abc', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, null, false, null, null));
+		$attributes = array(CustomAttribute::Create('abc', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, null, false, null, null, null));
 
 		$this->attributeRepository->expects($this->once())
 				->method('GetByCategory')
@@ -74,7 +74,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$regex = '/$\d^/';
 		$possibleValues = '1,2,3';
 		$sortOrder = "5";
-		$unique = true;
+		$entityId = 10;
 
 		$this->page->_label = $label;
 		$this->page->_type = $type;
@@ -83,9 +83,9 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_regex = $regex;
 		$this->page->_possibleValues = $possibleValues;
 		$this->page->_sortOrder = $sortOrder;
-		$this->page->_unique = $unique;
+		$this->page->_entityId = $entityId;
 
-		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $unique);
+		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityId);
 
 		$this->attributeRepository->expects($this->once())
 				->method('Add')
@@ -103,7 +103,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$regex = '/$\d^/';
 		$possibleValues = '1,2,3';
 		$sortOrder = "5";
-		$unique = true;
+		$entityId = true;
 
 		$this->page->_label = $label;
 		$this->page->_required = $required;
@@ -111,9 +111,9 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_possibleValues = $possibleValues;
 		$this->page->_attributeId = $attributeId;
 		$this->page->_sortOrder = $sortOrder;
-		$this->page->_unique = $unique;
+		$this->page->_entityId = $entityId;
 
-		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder, $unique);
+		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder, $entityId);
 
 		$this->attributeRepository->expects($this->once())
 				->method('LoadById')
@@ -131,7 +131,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->assertEquals($required, $expectedAttribute->Required());
 		$this->assertEquals($possibleValues, $expectedAttribute->PossibleValues());
 		$this->assertEquals($sortOrder, $expectedAttribute->SortOrder());
-		$this->assertEquals($unique, $expectedAttribute->UniquePerEntity());
+		$this->assertEquals($entityId, $expectedAttribute->EntityId());
 	}
 	
 	public function testDeletesAttributeById()
@@ -160,7 +160,7 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public $_boundAttributes;
 	public $_attributeId;
 	public $_sortOrder;
-	public $_unique;
+	public $_entityId;
 
 	public function GetLabel()
 	{
@@ -187,9 +187,9 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 		return $this->_required;
 	}
 
-	public function GetIsUnique()
+	public function GetEntityId()
 	{
-		return $this->_unique;
+		return $this->_entityId;
 	}
 
 	public function GetPossibleValues()

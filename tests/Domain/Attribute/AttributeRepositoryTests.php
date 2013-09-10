@@ -69,7 +69,6 @@ class AttributeRepositoryTests extends TestBase
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
 		$entityId = 12;
-		$entityDescription = 'some description';
 
 		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
 									   $entityId, null);
@@ -94,13 +93,13 @@ class AttributeRepositoryTests extends TestBase
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
-		$unique = true;
+		$entityId = 10;
 
-		$attribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique);
+		$attribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId);
 
 		$this->repository->Update($attribute);
 
-		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $unique),
+		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, 10),
 							$this->db->_LastCommand);
 	}
 

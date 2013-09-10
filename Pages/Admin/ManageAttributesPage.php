@@ -51,9 +51,9 @@ interface IManageAttributesPage extends IActionPage
 	public function GetIsRequired();
 
 	/**
-	 * @return bool
+	 * @return int|null
 	 */
-	public function GetIsUnique();
+	public function GetEntityId();
 
 	/**
 	 * return string
@@ -147,10 +147,9 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 		return !empty($required);
 	}
 
-	public function GetIsUnique()
+	public function GetEntityId()
 	{
-		$unique = $this->GetForm(FormKeys::ATTRIBUTE_IS_UNIQUE);
-		return !empty($unique);
+		return $this->GetForm(FormKeys::ATTRIBUTE_ENTITY);
 	}
 
 	public function GetPossibleValues()

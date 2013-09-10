@@ -298,14 +298,14 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
-	 * @param bool $uniquePerEntity
+	 * @param int|null $entityId
 	 */
-	public function Update($label, $regex, $required, $possibleValues, $sortOrder, $uniquePerEntity)
+	public function Update($label, $regex, $required, $possibleValues, $sortOrder, $entityId)
 	{
 		$this->label = $label;
 		$this->regex = $regex;
 		$this->required = $required;
-		$this->entityId = $uniquePerEntity;
+		$this->entityId = $entityId;
 		$this->SetPossibleValues($possibleValues);
 		$this->SetSortOrder($sortOrder);
 	}

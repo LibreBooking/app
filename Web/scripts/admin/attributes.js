@@ -274,7 +274,7 @@ function AttributeManagement(opts)
 			alert('resource_type');
 		}
 
-		var items = [];
+		var items = ['<li><a href="#" entity-id="">' + options.allText + '</a></li>'];
 		$.map(data, function (item)
 		{
 			items.push('<li><a href="#" entity-id="' + item.Id + '">' + item.Name + '</a></li>');

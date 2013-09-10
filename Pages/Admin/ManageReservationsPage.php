@@ -166,11 +166,6 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @param $attributeList AttributeList
 	 */
 	public function SetAttributes($attributeList);
-
-	/**
-	 * @param $resources AdminResourceJson[]
-	 */
-	public function SetResourcesJson($resources);
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage

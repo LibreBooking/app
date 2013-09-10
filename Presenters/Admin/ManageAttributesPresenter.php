@@ -65,7 +65,7 @@ class ManageAttributesPresenter extends ActionPresenter
 		$required = $this->page->GetIsRequired();
 		$possibleValues = $this->page->GetPossibleValues();
 		$sortOrder = $this->page->GetSortOrder();
-		$unique = $this->page->GetIsUnique();
+		$unique = $this->page->GetEntityId();
 
         Log::Debug('Adding new attribute named: %s', $attributeName);
 
@@ -88,12 +88,12 @@ class ManageAttributesPresenter extends ActionPresenter
 		$required = $this->page->GetIsRequired();
 		$possibleValues = $this->page->GetPossibleValues();
 		$sortOrder = $this->page->GetSortOrder();
-		$unique = $this->page->GetIsUnique();
+		$entityId = $this->page->GetEntityId();
 
 		Log::Debug('Updating attribute with id: %s', $attributeId);
 
 		$attribute = $this->attributeRepository->LoadById($attributeId);
-		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder, $unique);
+		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder, $entityId);
 
 		$this->attributeRepository->Update($attribute);
 	}

@@ -148,6 +148,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage
 	 * @return AttributeFormElement[]|array
 	 */
 	public function GetAttributes();
+
+	/**
+	 * @param $resources AdminResourceJson[]
+	 */
+	public function SetResourcesJson($resources);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage

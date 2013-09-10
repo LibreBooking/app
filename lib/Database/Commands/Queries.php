@@ -726,7 +726,7 @@ class Queries
 	const UPDATE_ATTRIBUTE =
 			'UPDATE custom_attributes
 				SET display_label = @display_label, display_type = @display_type, attribute_category = @attribute_category,
-				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values, sort_order = @sort_order, unique_per_entity = @unique_per_entity
+				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values, sort_order = @sort_order, entity_id = @entity_id
 			WHERE custom_attribute_id = @custom_attribute_id';
 
 	const UPDATE_GROUP =
