@@ -69,10 +69,11 @@ class FakeCustomAttribute extends CustomAttribute
 
 class TestCustomAttribute extends CustomAttribute
 {
-	public function __construct($id, $label)
+	public function __construct($id, $label, $entityId = null)
 	{
 		$this->id = $id;
 		$this->label = $label;
+		$this->entityId = $entityId;
 	}
 }
 

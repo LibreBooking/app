@@ -74,11 +74,30 @@ class AttributeList implements IEntityAttributeList
 	 */
 	private $definitions = array();
 
+	/**
+	 * @var array|CustomAttribute[]
+	 */
+	private $entityDefinitions = array();
+
+	/**
+	 * @var array|int[]
+	 */
+	private $entityAttributes = array();
+
 	public function AddDefinition(CustomAttribute $attribute)
 	{
 		$this->labels[] = $attribute->Label();
-		$this->definitions[$attribute->Id()] = $attribute;
-		$this->attributeOrder[$attribute->Id()] = count($this->attributeOrder);
+		if ($attribute->UniquePerEntity())
+		{
+			$this->entityDefinitions[$attribute->EntityId()][$attribute->Id()] = $attribute;
+			$this->attributeOrder[$attribute->Id()] = count($this->attributeOrder);
+			$this->entityAttributes[$attribute->Id()] = 1;
+		}
+		else
+		{
+			$this->definitions[$attribute->Id()] = $attribute;
+			$this->attributeOrder[$attribute->Id()] = count($this->attributeOrder);
+		}
 	}
 
 	/**
@@ -105,16 +124,21 @@ class AttributeList implements IEntityAttributeList
 		$entityId = $attributeEntityValue->EntityId;
 		$attributeId = $attributeEntityValue->AttributeId;
 
-		if (!array_key_exists($entityId, $this->values))
+		if (!array_key_exists($entityId, $this->values) && ($this->AttributeExists($attributeId) || $this->EntityAttributeExists($attributeId, $entityId) ))
 		{
-			$this->values[$entityId] = $this->GetInitialValues();
-			$this->entityValues[$entityId] = $this->GetInitialAttributes();
+			$this->values[$entityId] = $this->GetInitialValues($entityId);
+			$this->entityValues[$entityId] = $this->GetInitialAttributes($entityId);
 		}
 
 		if ($this->AttributeExists($attributeId))
 		{
 			$this->values[$entityId][$this->GetAttributeIndex($attributeId)] = $attributeEntityValue->Value;
 			$this->entityValues[$entityId][$this->GetAttributeIndex($attributeId)] = new Attribute($this->definitions[$attributeId], $attributeEntityValue->Value);
+		}
+		elseif ($this->EntityAttributeExists($attributeId, $entityId))
+		{
+			$this->values[$entityId][$this->GetAttributeIndex($attributeId)] = $attributeEntityValue->Value;
+			$this->entityValues[$entityId][$this->GetAttributeIndex($attributeId)] = new Attribute($this->entityDefinitions[$entityId][$attributeId], $attributeEntityValue->Value);
 		}
 	}
 
@@ -129,7 +153,7 @@ class AttributeList implements IEntityAttributeList
 			return $this->values[$entityId];
 		}
 
-		return $this->GetInitialValues();
+		return $this->GetInitialValues($entityId);
 	}
 
 	/**
@@ -143,19 +167,22 @@ class AttributeList implements IEntityAttributeList
 			return $this->entityValues[$entityId];
 		}
 
-		return $this->GetInitialAttributes();
+		return $this->GetInitialAttributes($entityId);
 	}
 
 	/**
 	 * @return array|string[]
 	 */
-	private function GetInitialValues()
+	private function GetInitialValues($entityId)
 	{
 		if (empty($this->initialValues))
 		{
 			foreach ($this->attributeOrder as $id => $i)
 			{
-				$this->initialValues[$i] = null;
+				if (!$this->IsEntityAttribute($id) || $this->EntityAttributeExists($id, $entityId))
+				{
+					$this->initialValues[$i] = null;
+				}
 			}
 		}
 
@@ -163,19 +190,27 @@ class AttributeList implements IEntityAttributeList
 	}
 
 	/**
+	 * @param int $entityId
 	 * @return array|Attribute[]
 	 */
-	private function GetInitialAttributes()
+	private function GetInitialAttributes($entityId)
 	{
 		if (empty($this->initialAttributes))
+		{
+			foreach ($this->attributeOrder as $id => $i)
 			{
-				foreach ($this->attributeOrder as $id => $i)
+				if ($this->AttributeExists($id))
 				{
 					$this->initialAttributes[$i] = new Attribute($this->definitions[$id]);
 				}
+				elseif ($this->EntityAttributeExists($id, $entityId))
+				{
+					$this->initialAttributes[$i] = new Attribute($this->entityDefinitions[$entityId][$id]);
+				}
 			}
+		}
 
-			return $this->initialAttributes;
+		return $this->initialAttributes;
 	}
 
 	/**
@@ -184,7 +219,17 @@ class AttributeList implements IEntityAttributeList
 	 */
 	private function AttributeExists($attributeId)
 	{
-		return array_key_exists($attributeId, $this->attributeOrder);
+		return array_key_exists($attributeId, $this->definitions) && !$this->IsEntityAttribute($attributeId);
+	}
+
+	/**
+	 * @param $attributeId int
+	 * @param $entityId int
+	 * @return bool
+	 */
+	private function EntityAttributeExists($attributeId, $entityId)
+	{
+		return $this->IsEntityAttribute($attributeId) && array_key_exists($entityId,$this->entityDefinitions) && array_key_exists($attributeId, $this->entityDefinitions[$entityId]);
 	}
 
 	/**
@@ -194,6 +239,15 @@ class AttributeList implements IEntityAttributeList
 	private function GetAttributeIndex($attributeId)
 	{
 		return $this->attributeOrder[$attributeId];
+	}
+
+	/**
+	 * @param $attributeId int
+	 * @return bool
+	 */
+	private function IsEntityAttribute($attributeId)
+	{
+		return array_key_exists($attributeId, $this->entityAttributes);
 	}
 }
 

@@ -46,8 +46,20 @@ class AttributeServiceTests extends TestBase
 		$category = CustomAttributeCategory::RESERVATION;
 		$entityIds = array(1, 5, 10, 15, 20);
 
-		$attributes = array(new TestCustomAttribute(1, 'label1'), new TestCustomAttribute(2, 'label2'));
-		$values = array(new AttributeEntityValue(1, 1, 'value1'), new AttributeEntityValue(2, 1, 'value2'));
+		$attributes = array(
+			new TestCustomAttribute(1, 'label1'),
+			new TestCustomAttribute(2, 'label2'),
+			new TestCustomAttribute(3, 'label3', 1),
+			new TestCustomAttribute(4, 'label4', 20),
+			new TestCustomAttribute(5, 'label5', 99),
+		);
+
+		$values = array(
+			new AttributeEntityValue(1, 1, 'value1'),
+			new AttributeEntityValue(2, 1, 'value2'),
+			new AttributeEntityValue(3, 1, 'value3'),
+			new AttributeEntityValue(4, 20, 'value20'),
+		);
 
 		$this->attributeRepository->expects($this->once())
 				->method('GetByCategory')
@@ -61,7 +73,8 @@ class AttributeServiceTests extends TestBase
 
 		$attributeList = $this->attributeService->GetAttributes($category, $entityIds);
 
-		$this->assertEquals(array('value1', 'value2'), $attributeList->GetValues(1));
+		$this->assertEquals(array('value1', 'value2', 'value3'), $attributeList->GetValues(1));
+		$this->assertEquals(array('value1', 'value2', 'value20'), $attributeList->GetValues(20));
 		$this->assertEquals(array('label1', 'label2'), $attributeList->GetLabels());
 	}
 
