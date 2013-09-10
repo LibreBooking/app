@@ -228,7 +228,7 @@ function Reservation(opts) {
 	};
 
 	var AdjustEndDate = function() {
-		var firstDate = new Date(elements.beginDate.data['previousVal'] + 'T' + elements.beginTime.val());
+		var firstDate = new Date(elements.beginDate.data['beginPreviousVal'] + 'T' + elements.beginTime.val());
 		var secondDate = new Date(elements.beginDate.val()+ 'T' + elements.beginTime.val());
 
 		var diffDays = (secondDate.getTime() - firstDate.getTime()) / (oneDay);
@@ -341,22 +341,22 @@ function Reservation(opts) {
 	function InitializeDateElements() {
 		var periodsCache = [];
 
-        elements.beginDate.data['previousVal'] = elements.beginDate.val();
-		elements.endDate.data['previousVal'] = elements.endDate.val();
+        elements.beginDate.data['beginPreviousVal'] = elements.beginDate.val();
+		elements.endDate.data['endPreviousVal'] = elements.endDate.val();
 
 		elements.beginDate.change(function() {
 			PopulatePeriodDropDown(elements.beginDate, elements.beginTime);
 			AdjustEndDate();
 			DisplayDuration();
 
-			elements.beginDate.data['previousVal'] = elements.beginDate.val();
+			elements.beginDate.data['beginPreviousVal'] = elements.beginDate.val();
 		});
 
 		elements.endDate.change(function() {
 			PopulatePeriodDropDown(elements.endDate, elements.endTime);
 			DisplayDuration();
 
-			elements.endDate.data['previousVal'] = elements.endDate.val();
+			elements.endDate.data['endPreviousVal'] = elements.endDate.val();
 		});
 
 		elements.beginTime.change(function() {

@@ -25,20 +25,20 @@ var dateHelper = {
 		var begin = this.GetDate(beginDateElement, beginTimeElement);
 		var end = this.GetDate(endDateElement, endTimeElement);
 
-		var timeBetweenDates = end.getTime() - begin.getTime();
+		var timeBetweenDates = end.toDate().getTime() - begin.toDate().getTime();
 
 		return timeBetweenDates > this.oneDay;
 	},
 
 	GetDate:function (dateElement, timeElement) {
-		return moment(dateElement.val() + 'T' + timeElement.val());
+		return moment(dateElement.val() + 'T' + timeElement.val(), 'YYYY-MM-DDTHH:mm:ss');
 	},
 
 	GetDateDifference:function (beginDateElement, beginTimeElement, endDateElement, endTimeElement) {
 		var begin = this.GetDate(beginDateElement, beginTimeElement);
 		var end = this.GetDate(endDateElement, endTimeElement);
 
-		var difference = end - begin;
+		var difference = end.toDate().getTime() - begin.toDate().getTime();
 		var days = difference / this.oneDay;
 		var hours = (days % 1) * 24;
 
