@@ -33,7 +33,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                                                                      type="hidden" {formname key=USER_ID}
                                                                      value="{$UserId}"/>
 		{if $CanChangeUser}
-            <a href="#" id="showChangeUsers">({translate key=Change})</a>
+            <a href="#" id="showChangeUsers" class="small-action">{translate key=Change}{html_image src="user-small.png"}</a>
 
             <div id="changeUserDialog" title="{translate key=ChangeUser}" class="dialog"></div>
 		{/if}
@@ -60,15 +60,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
 				{if $ShowAdditionalResources}
                     <a href="#"
-                       onclick="$('#dialogAddResources').dialog('open'); return false;">({translate key=MoreResources}
-                        )</a>
+                       onclick="$('#dialogAddResources').dialog('open'); return false;" class="small-action">{translate key=MoreResources}{html_image src="plus-small-white.png"}</a>
 				{/if}
                     <div id="additionalResources"></div>
                 </div>
                 <div style="float:right;">
 				{if $AvailableAccessories|count > 0}
                     <label>{translate key="Accessories"}</label>
-                    <a href="#" id="addAccessoriesPrompt">({translate key='Add'})</a>
+                    <a href="#" id="addAccessoriesPrompt" class="small-action">{translate key='Add'}{html_image src="plus-small-white.png"}</a>
 
                     <div id="accessories"></div>
 				{/if}
@@ -248,8 +247,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 {/foreach}
     <br/>
-    <button id="btnConfirmAddResources" class="button">{translate key='Done'}</button>
-    <button id="btnClearAddResources" class="button">{translate key='Cancel'}</button>
+    <button id="btnConfirmAddResources" class="button">{html_image src="tick-circle.png"} {translate key='Done'}</button>
+    <button id="btnClearAddResources" class="button">{html_image src="slash.png"} {translate key='Cancel'}</button>
 </div>
 
 <div id="dialogAddAccessories" class="dialog" title="{translate key=AddAccessories}" style="display:none;">
@@ -276,8 +275,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/foreach}
     </table>
     <br/>
-    <button id="btnConfirmAddAccessories" class="button">{translate key='Done'}</button>
-    <button id="btnCancelAddAccessories" class="button">{translate key='Cancel'}</button>
+    <button id="btnConfirmAddAccessories" class="button">{html_image src="tick-circle.png"} {translate key='Done'}</button>
+    <button id="btnCancelAddAccessories" class="button">{html_image src="slash.png"} {translate key='Cancel'}</button>
 </div>
 
 <div id="dialogSave" style="display:none;">

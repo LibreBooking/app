@@ -129,3 +129,8 @@
 .reminderLabel {
 	font-size:10pt;
 }
+
+#reservationbox a.small-action {
+	font-size: 9pt;
+	color: #3d5b74;
+}
