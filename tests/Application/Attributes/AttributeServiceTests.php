@@ -52,6 +52,7 @@ class AttributeServiceTests extends TestBase
 			new TestCustomAttribute(3, 'label3', 1),
 			new TestCustomAttribute(4, 'label4', 20),
 			new TestCustomAttribute(5, 'label5', 99),
+			new TestCustomAttribute(6, 'label6', 1),
 		);
 
 		$values = array(
@@ -73,9 +74,14 @@ class AttributeServiceTests extends TestBase
 
 		$attributeList = $this->attributeService->GetAttributes($category, $entityIds);
 
-		$this->assertEquals(array('value1', 'value2', 'value3'), $attributeList->GetValues(1));
-		$this->assertEquals(array('value1', 'value2', 'value20'), $attributeList->GetValues(20));
-		$this->assertEquals(array('label1', 'label2'), $attributeList->GetLabels());
+		$this->assertEquals(array(
+								new Attribute($attributes[0], 'value1'),
+								new Attribute($attributes[1], 'value2'),
+								new Attribute($attributes[2], 'value3'),
+								new Attribute($attributes[5], null),
+							), $attributeList->GetAttributes(1));
+		$this->assertEquals(array(new Attribute($attributes[0], null), new Attribute($attributes[1], null), new Attribute($attributes[3], 'value20')), $attributeList->GetAttributes(20));
+		$this->assertEquals(array('label1', 'label2', 'label3', 'label4', 'label5', 'label6'), $attributeList->GetLabels());
 	}
 
 	public function testValidatesValuesAgainstDefinitions()
@@ -91,7 +97,6 @@ class AttributeServiceTests extends TestBase
 				->will($this->returnValue($attributes));
 
 		$result = $this->attributeService->Validate($category, $values);
-
 
 		$this->assertFalse($result->IsValid());
 		$this->assertEquals(2, count($result->Errors()));

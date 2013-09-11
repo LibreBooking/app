@@ -198,13 +198,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</ul>
 			</div>
 		</div>
-		{if $Definitions|count > 0}
+		{assign var=attributes value=$AttributeList->GetAttributes($id)}
+		{if $attributes|count > 0}
 			<div class="customAttributes">
 				<h3>{translate key=AdditionalAttributes} <a href="#"
 															class="update changeAttributes">{translate key=Edit}</a>
 				</h3>
 				<ul>
-					{foreach from=$AttributeList->GetAttributeValues($id) item=attribute}
+					{foreach from=$attributes item=attribute}
 						<li class="customAttribute" attributeId="{$attribute->Id()}">
 							{control type="AttributeControl" attribute=$attribute readonly=true}
 						</li>

@@ -83,6 +83,14 @@ class Attribute
 	{
 		return $this->attributeDefinition->Required();
 	}
+
+	/**
+	 * @return int
+	 */
+	public function SortOrder()
+	{
+		return $this->attributeDefinition->SortOrder();
+	}
 }
 
 ?>

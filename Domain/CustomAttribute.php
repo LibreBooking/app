@@ -149,7 +149,7 @@ class CustomAttribute
 	 */
 	public function EntityId()
 	{
-		return $this->entityId;
+		return empty($this->entityId) ? null : $this->entityId;
 	}
 
 	/**

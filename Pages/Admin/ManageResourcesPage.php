@@ -335,12 +335,12 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function BindAttributeList($attributeList)
 	{
 		// should bind labels and values per entity
-		$defList = array();
-		foreach ($attributeList->GetDefinitions() as $def)
-		{
-			$defList[] = new Attribute($def);
-		}
-		$this->Set('Definitions', $defList);
+//		$defList = array();
+//		foreach ($attributeList->GetDefinitions() as $def)
+//		{
+//			$defList[] = new Attribute($def);
+//		}
+//		$this->Set('Definitions', $defList);
 		$this->Set('AttributeList', $attributeList);
 	}
 
