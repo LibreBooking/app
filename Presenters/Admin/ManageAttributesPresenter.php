@@ -65,11 +65,11 @@ class ManageAttributesPresenter extends ActionPresenter
 		$required = $this->page->GetIsRequired();
 		$possibleValues = $this->page->GetPossibleValues();
 		$sortOrder = $this->page->GetSortOrder();
-		$unique = $this->page->GetEntityId();
+		$entityId = $this->page->GetEntityId();
 
         Log::Debug('Adding new attribute named: %s', $attributeName);
 
-        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $unique);
+        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityId);
 		$this->attributeRepository->Add($attribute);
     }
 

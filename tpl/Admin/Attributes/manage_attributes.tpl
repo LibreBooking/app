@@ -58,7 +58,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="attributeUnique">
 				<span class="wideLabel">{translate key=AppliesTo}:</span>
 				<a href="#" class="appliesTo">{translate key=All}</a>
-				<input type="hidden" {formname key=ATTRIBUTE_ENTITY} id="addAttributeEntityId" />
+				<input type="hidden" class="appliesToId" {formname key=ATTRIBUTE_ENTITY} id="addAttributeEntityId" />
 			</div>
 			<div class="attributeValidationExpression">
 				<span class="wideLabel">{translate key=ValidationExpression}:</span>

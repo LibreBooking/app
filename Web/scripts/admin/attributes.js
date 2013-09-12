@@ -10,6 +10,7 @@ function AttributeManagement(opts)
 		addCategory: $('#addCategory'),
 		attributeType: $('#attributeType'),
 		appliesTo: $('.appliesTo'),
+		appliesToId: $('.appliesToId'),
 		entityChoices: $('#entityChoices'),
 
 		editName: $('#editName'),
@@ -79,6 +80,8 @@ function AttributeManagement(opts)
 			$('span.error', elements.addDialog).remove();
 			elements.addCategory.val(elements.attributeCategory.val());
 			toggleAppliesTo();
+			elements.appliesTo.text(options.allText);
+			elements.appliesToId.val('');
 			elements.addDialog.dialog('open');
 		});
 
@@ -125,7 +128,7 @@ function AttributeManagement(opts)
 		{
 			e.preventDefault();
 			elements.entityChoices.hide();
-			$('.appliesToId').val($(this).attr('entity-id'));
+			elements.appliesToId.val($(this).attr('entity-id'));
 			elements.appliesTo.text($(this).text());
 		});
 
@@ -204,12 +207,14 @@ function AttributeManagement(opts)
 		if (selectedAttribute.entityDescription == '')
 		{
 			elements.appliesTo.text(options.allText);
+			elements.appliesToId.val('');
 		}
 		else
 		{
 			elements.appliesTo.text(selectedAttribute.entityDescription);
+			elements.appliesToId.val(selectedAttribute.entityId);
 		}
-		$('.appliesToId').val('');
+
 		setActiveId(selectedAttribute.id);
 
 		elements.editDialog.dialog('open');

@@ -73,7 +73,7 @@ class AttributeRepository implements IAttributeRepository
 		return ServiceLocator::GetDatabase()
 			   ->ExecuteInsert(
 			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(),
-									$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(), $attribute->UniquePerEntity()));
+									$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(), $attribute->EntityId()));
 	}
 
 	/**
