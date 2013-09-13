@@ -623,6 +623,10 @@ select.customAttribute {
 	display: none;
 }
 
+.validationSummary li {
+	font-size:10pt;
+}
+
 ul.indented li {
 	margin-left: 25px;
 }

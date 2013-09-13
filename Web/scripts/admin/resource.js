@@ -25,7 +25,7 @@ function ResourceManagement(opts) {
 		deleteForm:$('#deleteForm'),
 		configurationForm:$('#configurationForm'),
 		groupAdminForm:$('#groupAdminForm'),
-		attributeForm:$('#attributesForm'),
+		attributeForm:$('.attributesForm'),
 		sortOrderForm:$('#sortOrderForm'),
 
 		addForm:$('#addResourceForm')
@@ -115,8 +115,11 @@ function ResourceManagement(opts) {
 				showConfigurationPrompt(e);
 			});
 
-			$(this).find('.changeAttributes').click(function (e) {
-				showAttributesPrompt(e);
+			$(this).find('.changeAttributes, .customAttributes .cancel').click(function (e) {
+				var container = $(this).parents('.customAttributes');
+				container.find('.attribute-readwrite').toggle();
+				container.find('.attribute-readonly').toggle();
+				container.find('.validationSummary').hide();
 			});
 
 			$(this).find('.changeSortOrder').click(function (e) {

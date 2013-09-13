@@ -21,9 +21,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <br/>
 {/if}
 {if $readonly}
-<span class="attributeValue">{$attribute->Value()|escape}</span>
+<span class="attributeValue {$class}">{$attribute->Value()|escape}</span>
 {else}
-<select id="{$attributeName}" name="{$attributeName}" class="customAttribute textbox">
+<select id="{$attributeName}" name="{$attributeName}" class="customAttribute textbox {$class}">
 	{if !$attribute->Required()}
 	<option value="">--</option>
 	{/if}

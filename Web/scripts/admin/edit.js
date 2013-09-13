@@ -47,7 +47,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 						var errorElement = $('#' + errorId);
 						if (responseText.Messages[errorId].length > 0)
 						{
-							errorElement.text("" + responseText.Messages[errorId]);
+							errorElement.text("" + responseText.Messages[errorId].join(' '));
 						}
 						errorElement.show();
 					});
