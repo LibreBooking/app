@@ -86,20 +86,30 @@ class AttributeServiceTests extends TestBase
 
 	public function testValidatesValuesAgainstDefinitions()
 	{
+		$entityId = 4;
 		$category = CustomAttributeCategory::RESERVATION;
 
-		$attributes = array(new FakeCustomAttribute(1, true, false), new FakeCustomAttribute(2, false, true));
-		$values = array(new AttributeEntityValue(1, 1, 'value1'), new AttributeEntityValue(2, 1, 'value2'));
+		$attributes = array(
+			new FakeCustomAttribute(1, true, false),
+			new FakeCustomAttribute(2, false, true),
+			new FakeCustomAttribute(3, true, false, $entityId),
+			new FakeCustomAttribute(4, false, false, 5));
+
+		$values = array(
+			new AttributeValue(1, 'value1'),
+			new AttributeValue(2, 'value2'),
+			new AttributeValue(3, 'value2'),
+		);
 
 		$this->attributeRepository->expects($this->once())
 				->method('GetByCategory')
 				->with($this->equalTo($category))
 				->will($this->returnValue($attributes));
 
-		$result = $this->attributeService->Validate($category, $values);
+		$result = $this->attributeService->Validate($category, $values, $entityId);
 
 		$this->assertFalse($result->IsValid());
-		$this->assertEquals(2, count($result->Errors()));
+		$this->assertEquals(3, count($result->Errors()));
 	}
 
 	public function testPassThroughForCategory()

@@ -625,6 +625,7 @@ select.customAttribute {
 
 .validationSummary li {
 	font-size:10pt;
+	color: red;
 }
 
 ul.indented li {

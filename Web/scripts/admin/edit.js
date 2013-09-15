@@ -11,7 +11,8 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 				dataType: null,
 				onBeforeSubmit: BeforeFormSubmit,
 				onBeforeSerialize: null,
-				target: null
+				target: null,
+				validationSummary:$('.validationSummary')
 			}, options);
 
 	formElement.submit(function ()
@@ -27,8 +28,8 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 				formElement.find('.indicator').hide();
 				formElement.find('button').show();
 
-				var validationSummary = $('.validationSummary');
-				var hasValidationSummary = validationSummary.length > 0;
+				var validationSummary = opts.validationSummary;
+				var hasValidationSummary = validationSummary && validationSummary.length > 0;
 				var hasResponseText = HasResponseText(responseText);
 
 				if (hasValidationSummary)

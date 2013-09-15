@@ -46,12 +46,14 @@ class AttributeValidator extends ValidatorBase
 	 * @param IAttributeService $service
 	 * @param $category int|CustomAttributeCategory
 	 * @param $attributes array|AttributeValue[]
+	 * @param $entityId int
 	 */
-	public function __construct(IAttributeService $service, $category, $attributes)
+	public function __construct(IAttributeService $service, $category, $attributes, $entityId = null)
 	{
 		$this->service = $service;
 		$this->category = $category;
 		$this->attributes = $attributes;
+		$this->entityId = $entityId;
 	}
 
 	/**
@@ -65,7 +67,7 @@ class AttributeValidator extends ValidatorBase
 			return;
 		}
 
-		$result = $this->service->Validate($this->category, $this->attributes);
+		$result = $this->service->Validate($this->category, $this->attributes, $this->entityId);
 		$this->isValid = $result->IsValid();
 		$this->messages = $result->Errors();
 	}

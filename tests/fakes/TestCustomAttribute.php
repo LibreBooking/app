@@ -44,11 +44,13 @@ class FakeCustomAttribute extends CustomAttribute
 	 * @param int $id
 	 * @param bool $isRequiredOk
 	 * @param bool $isRegexOk
+	 * @param int $entityId
 	 */
-	public function __construct($id = 1, $isRequiredOk = true, $isRegexOk = true)
+	public function __construct($id = 1, $isRequiredOk = true, $isRegexOk = true, $entityId = null)
 	{
 		$this->id = $id;
 		$this->label = "fakeCustomAttribute$id";
+		$this->entityId = $entityId;
 
 		$this->_IsRequiredSatisfied = $isRequiredOk;
 		$this->_IsConstraintSatisfied = $isRegexOk;

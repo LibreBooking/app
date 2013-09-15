@@ -51,10 +51,11 @@ function Schedule(opts, resourceGroups)
 		this.initResources();
 		this.initNavigation();
 
-		if ($('tr.today').length > 0)
+		var today = $("tr.today");
+		if (today && today.length > 0)
 		{
 			$('html, body').animate({
-			         scrollTop: $("tr.today").offset().top-50
+			         scrollTop: today.offset().top-50
 			     }, 500);
 		}
 	};

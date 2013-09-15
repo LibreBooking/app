@@ -33,9 +33,10 @@ interface IAttributeService
 	/**
 	 * @param $category int|CustomAttributeCategory
 	 * @param $attributeValues AttributeValue[]|array
+	 * @param $entityId int|null
 	 * @return AttributeServiceValidationResult
 	 */
-	public function Validate($category, $attributeValues);
+	public function Validate($category, $attributeValues, $entityId=null);
 
 	/**
 	 * @abstract
@@ -89,7 +90,7 @@ class AttributeService implements IAttributeService
 		return $attributeList;
 	}
 
-	public function Validate($category, $attributeValues)
+	public function Validate($category, $attributeValues, $entityId=null)
 	{
 		$isValid = true;
 		$errors = array();
@@ -105,6 +106,11 @@ class AttributeService implements IAttributeService
 		$attributes = $this->attributeRepository->GetByCategory($category);
 		foreach ($attributes as $attribute)
 		{
+			if ($attribute->UniquePerEntity() && $entityId != $attribute->EntityId())
+			{
+				continue;
+			}
+
 			$value = $values[$attribute->Id()];
 			$label = $attribute->Label();
 

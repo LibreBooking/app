@@ -211,7 +211,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					</h3>
 
 					<div class="validationSummary">
-						<ul>{async_validator id="attributeValidator" key=""}
+						<ul>
 						</ul>
 						<div class="clear">&nbsp;</div>
 					</div>

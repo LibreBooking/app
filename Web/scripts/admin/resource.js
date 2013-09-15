@@ -47,7 +47,6 @@ function ResourceManagement(opts) {
 		ConfigureAdminDialog(elements.deleteDialog, 500, 300);
 		ConfigureAdminDialog(elements.configurationDialog, 500, 500);
 		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
-		ConfigureAdminDialog(elements.attributeDialog, 300, 300);
 		ConfigureAdminDialog(elements.sortOrderDialog, 300, 125);
 
 		$('.resourceDetails').each(function () {
@@ -116,6 +115,9 @@ function ResourceManagement(opts) {
 			});
 
 			$(this).find('.changeAttributes, .customAttributes .cancel').click(function (e) {
+				var otherResources = $(".resourceDetails[resourceid!='" + id + "']");
+				otherResources.find('.attribute-readwrite, .validationSummary').hide();
+				otherResources.find('.attribute-readonly').show();
 				var container = $(this).parents('.customAttributes');
 				container.find('.attribute-readwrite').toggle();
 				container.find('.attribute-readonly').toggle();
@@ -152,6 +154,18 @@ function ResourceManagement(opts) {
 			});
 		};
 
+		var attributesHandler = function(responseText, form)
+		{
+			if (responseText.ErrorIds && responseText.Messages.attributeValidator)
+			{
+				var messages =  responseText.Messages.attributeValidator.join('</li><li>');
+				var messages = '<li>' + messages + '</li>';
+				var validationSummary = $(form).find('.validationSummary');
+				validationSummary.find('ul').empty().append(messages);
+				validationSummary.show();
+			}
+		};
+
 		var errorHandler = function (result) {
 			$("#globalError").html(result).show();
 		};
@@ -165,7 +179,10 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource));
 		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, errorHandler, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.actions.changeAdmin));
-		ConfigureAdminForm(elements.attributeForm, getSubmitCallback(options.actions.changeAttributes));
+		$.each(elements.attributeForm, function(i,form){
+			ConfigureAdminForm($(form), getSubmitCallback(options.actions.changeAttributes), null, attributesHandler, {validationSummary:null});
+		});
+
 		ConfigureAdminForm(elements.sortOrderForm, getSubmitCallback(options.actions.changeSortOrder));
 	};
 

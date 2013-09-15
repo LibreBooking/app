@@ -408,7 +408,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		if ($action == ManageResourcesActions::ActionChangeAttributes)
 		{
 			$attributes = $this->GetAttributeValues();
-			$this->page->RegisterValidator('attributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes));
+			$this->page->RegisterValidator('attributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes, $this->page->GetResourceId()));
 		}
 	}
 

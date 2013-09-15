@@ -27,6 +27,7 @@ class AttributeValidatorTests extends TestBase
 		$service = $this->getMock('IAttributeService');
 		$category = CustomAttributeCategory::RESOURCE;
 		$attributes = array('abc');
+		$entityId = 123;
 
 		$errors = array('error1', 'error2');
 
@@ -34,10 +35,10 @@ class AttributeValidatorTests extends TestBase
 
 		$service->expects($this->once())
 				->method('Validate')
-				->with($this->equalTo($category), $this->equalTo($attributes))
+				->with($this->equalTo($category), $this->equalTo($attributes), $this->equalTo($entityId))
 				->will($this->returnValue($serviceResult));
 
-		$validator = new AttributeValidator($service, $category, $attributes);
+		$validator = new AttributeValidator($service, $category, $attributes, $entityId);
 		$validator->Validate();
 
 		$this->assertFalse($validator->IsValid());
