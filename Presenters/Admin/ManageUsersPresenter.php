@@ -192,7 +192,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->page->BindGroups($groups->Results());
 
 		$resources = array();
-		
+
 		$user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
 		$allResources = $this->resourceRepository->GetResourceList();
 		foreach ($allResources as $resource)
@@ -312,11 +312,14 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		{
 			$this->page->SetJsonResponse($this->GetUserResourcePermissions());
 		}
-		else {
-			if ($dataRequest == 'groups')
-			{
-				$this->page->SetJsonResponse($this->GetUserGroups());
-			}
+		elseif ($dataRequest == 'groups')
+		{
+			$this->page->SetJsonResponse($this->GetUserGroups());
+		}
+		elseif ($dataRequest == 'all')
+		{
+			$users = $this->userRepository->GetAll();
+			$this->page->SetJsonResponse($users);
 		}
 	}
 

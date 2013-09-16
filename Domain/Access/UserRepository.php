@@ -593,57 +593,59 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 class UserDto
 {
-	private $userId;
-	private $firstName;
-	private $lastName;
-	private $emailAddress;
-	private $timezone;
-	private $languageCode;
+	public $UserId;
+	public $FirstName;
+	public $LastName;
+	public $FullName;
+	public $EmailAddress;
+	public $Timezone;
+	public $LanguageCode;
 
 	public function __construct($userId, $firstName, $lastName, $emailAddress, $timezone = null, $languageCode = null)
 	{
-		$this->userId = $userId;
-		$this->firstName = $firstName;
-		$this->lastName = $lastName;
-		$this->emailAddress = $emailAddress;
-		$this->timezone = $timezone;
-		$this->languageCode = $languageCode;
+		$this->UserId = $userId;
+		$this->FirstName = $firstName;
+		$this->LastName = $lastName;
+		$this->EmailAddress = $emailAddress;
+		$this->Timezone = $timezone;
+		$this->LanguageCode = $languageCode;
+		$name = new FullName($this->FirstName(), $this->LastName());
+		$this->FullName =  $name->__toString() . " ({$this->EmailAddress})";
 	}
 
 	public function Id()
 	{
-		return $this->userId;
+		return $this->UserId;
 	}
 
 	public function FirstName()
 	{
-		return $this->firstName;
+		return $this->FirstName;
 	}
 
 	public function LastName()
 	{
-		return $this->lastName;
+		return $this->LastName;
 	}
 
 	public function FullName()
 	{
-		$name = new FullName($this->FirstName(), $this->LastName());
-		return $name->__toString() . " ({$this->emailAddress})";
+		return $this->FullName;
 	}
 
 	public function EmailAddress()
 	{
-		return $this->emailAddress;
+		return $this->EmailAddress;
 	}
 
 	public function Timezone()
 	{
-		return $this->timezone;
+		return $this->Timezone;
 	}
 
 	public function Language()
 	{
-		return $this->languageCode;
+		return $this->LanguageCode;
 	}
 
 }

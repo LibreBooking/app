@@ -170,7 +170,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			user: {CustomAttributeCategory::USER},
 			resource_type: {CustomAttributeCategory::RESOURCE_TYPE}
 		},
-		resourcesUrl: 'manage_resources.php?{QueryStringKeys::DATA_REQUEST}=all'
+		resourcesUrl: 'manage_resources.php?{QueryStringKeys::DATA_REQUEST}=all',
+		usersUrl: 'manage_users.php?{QueryStringKeys::DATA_REQUEST}=all'
 	};
 
 	var attributeManagement = new AttributeManagement(attributeOptions);

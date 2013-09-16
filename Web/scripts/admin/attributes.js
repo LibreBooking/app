@@ -140,7 +140,6 @@ function AttributeManagement(opts)
 
 	var showRelevantAttributeOptions = function (selectedType, optionsDiv)
 	{
-		//var selectedType = typeElement.val();
 		$('.textBoxOptions', optionsDiv).find('div').show();
 
 		if (selectedType != opts.selectList)
@@ -271,7 +270,7 @@ function AttributeManagement(opts)
 
 		if (categoryId == options.categories.user)
 		{
-			alert('user');
+			data = getUsers();
 		}
 
 		if (categoryId == options.categories.resource_type)
@@ -280,7 +279,7 @@ function AttributeManagement(opts)
 		}
 
 		var items = ['<li><a href="#" entity-id="">' + options.allText + '</a></li>'];
-		$.map(data, function (item)
+		$.each(data, function (index, item)
 		{
 			items.push('<li><a href="#" entity-id="' + item.Id + '">' + item.Name + '</a></li>');
 		});
@@ -300,6 +299,23 @@ function AttributeManagement(opts)
 		).done(function (data)
 				{
 					items = data;
+				});
+
+		return items;
+	};
+
+	var getUsers = function ()
+	{
+		var items = [];
+		$.ajax({
+					url: options.usersUrl,
+					async: false
+				}
+		).done(function (data)
+				{
+					items = $.map(data, function(item, index) {
+						return {Id : item.UserId, Name : item.FullName};
+					});
 				});
 
 		return items;

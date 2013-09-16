@@ -327,12 +327,6 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 
 	public function BindAttributeList($attributeList)
 	{
-		$defList = array();
-		foreach ($attributeList->GetDefinitions() as $def)
-		{
-			$defList[] = new Attribute($def);
-		}
-		$this->Set('Definitions', $defList);
 		$this->Set('AttributeList', $attributeList);
 	}
 

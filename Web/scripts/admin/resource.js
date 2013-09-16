@@ -31,7 +31,7 @@ function ResourceManagement(opts) {
 		addForm:$('#addResourceForm')
 	};
 
-	var resources = new Object();
+	var resources = {};
 
 	ResourceManagement.prototype.init = function () {
 		$(".days").watermark('days');
