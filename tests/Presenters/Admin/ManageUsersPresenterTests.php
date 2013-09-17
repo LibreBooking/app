@@ -444,7 +444,7 @@ class ManageUsersPresenterTests extends TestBase
 		$this->presenter->AddUser();
 	}
 	
-	public function testGetsUserGroups()
+	public function testGetsAllUsers()
 	{
 		$users = array(new UserDto(1, 'f', 'l', 'e'));
 
@@ -457,11 +457,6 @@ class ManageUsersPresenterTests extends TestBase
 					->with($this->equalTo($users));
 		
 		$this->presenter->ProcessDataRequest('all');
-	}
-
-	public function testGetsAllUsers()
-	{
-
 	}
 }
 

@@ -31,7 +31,7 @@ class PasswordEncryptionTests extends PHPUnit_Framework_TestCase
 		$actualEncryptedPassword = $encryption->Encrypt($password, $salt);
 
 		$expectedEncryptedPassword = sha1($password . $salt);
-		
+
 		$this->assertEquals($expectedEncryptedPassword, $actualEncryptedPassword, "Password was not encrypted correctly");
 	}
 }

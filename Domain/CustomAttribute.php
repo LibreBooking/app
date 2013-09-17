@@ -37,7 +37,6 @@ class CustomAttributeCategory
 
 class CustomAttribute
 {
-
 	/**
 	 * @var int
 	 */

@@ -82,35 +82,37 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{assign var=attributes value=$AttributeList->GetAttributes($id)}
 		{if $attributes|count > 0}
 			<tr>
-				<td class="id"><input type="hidden" class="id" value="{$user->Id}"/></td>
-				<td colspan="15" class="{$rowCss} customAttributes" userId="{$user->Id}">
+				<td class="id"><input type="hidden" class="id" value="{$id}"/></td>
+				<td colspan="16" class="{$rowCss} customAttributes" userId="{$id}">
+						<form method="post" class="attributesForm">
+							<h3>{translate key=AdditionalAttributes} <a href="#"
+																		class="update changeAttributes">{translate key=Edit}</a>
+							</h3>
 
-					<form method="post" class="attributesForm">
-						<h3>{translate key=AdditionalAttributes} <a href="#"
-																	class="update changeAttributes">{translate key=Edit}</a>
-						</h3>
+							<div class="validationSummary">
+								<ul>
+								</ul>
+								<div class="clear">&nbsp;</div>
+							</div>
 
-						<div class="validationSummary">
-							<ul>
-							</ul>
-							<div class="clear">&nbsp;</div>
-						</div>
-						<ul>
-							{foreach from=$attributes item=attribute}
-								<li class="customAttribute" attributeId="{$attribute->Id()}">
-									<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>
-									<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}
-								</li>
-							{/foreach}
-						</ul>
-						<div class="attribute-readwrite hidden clear">
-							<button type="button"
-									class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-							<button type="button"
-									class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-						</div>
-					</form>
+							<div>
+								<ul>
+									{foreach from=$attributes item=attribute}
+										<li class="customAttribute" attributeId="{$attribute->Id()}">
+											<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+											<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}
+										</li>
+									{/foreach}
+								</ul>
+							</div>
 
+							<div class="attribute-readwrite hidden clear" style="height:auto;">
+								<button type="button"
+										class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+								<button type="button"
+										class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+							</div>
+						</form>
 				</td>
 			</tr>
 		{/if}
@@ -189,7 +191,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="customAttributes">
 				<ul>
-					{foreach from=$Definitions item=attribute}
+					{assign var=attributes value=$AttributeList->GetAttributes()}
+					{foreach from=$attributes item=attribute}
 						<li class="customAttribute">
 							{control type="AttributeControl" attribute=$attribute algin=vertical}
 						</li>
@@ -280,30 +283,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
-
-{*<div id="attributeDialog" class="dialog" title="{translate key=AdditionalAttributes}">*}
-{*<div class="validationSummary">*}
-{*<ul>{async_validator id="attributeValidator" key=""}*}
-{*</ul>*}
-{*</div>*}
-
-{*<div class="customAttributes">*}
-{*<form method="post" id="attributesForm">*}
-{*<ul>*}
-{*{foreach from=$Definitions item=attribute}*}
-{*<li class="customAttribute">*}
-{*{control type="AttributeControl" attribute=$attribute}*}
-{*</li>*}
-{*{/foreach}*}
-{*</ul>*}
-{*<div style="clear:both;"></div>*}
-{*<br/>*}
-{*<button type="button"*}
-{*class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>*}
-{*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
-{*</form>*}
-{*</div>*}
-{*</div>*}
 
 <div id="groupsDialog" class="dialog" title="{translate key=Groups}">
 	<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>

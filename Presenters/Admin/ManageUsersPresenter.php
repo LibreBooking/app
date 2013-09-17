@@ -376,7 +376,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			Log::Debug('Loading validators for %s', $action);
 
 			$this->page->RegisterValidator('attributeValidator',
-										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
+										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues(), $this->page->GetUserId()));
 		}
 	}
 

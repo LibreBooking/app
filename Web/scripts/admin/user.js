@@ -12,8 +12,7 @@ function UserManagement(opts)
 		permissionsDialog:$('#permissionsDialog'),
 		passwordDialog:$('#passwordDialog'),
 
-		attributeForm:$('#attributesForm'),
-		attributeDialog:$('#attributeDialog'),
+		attributeForm:$('.attributesForm'),
 
 		permissionsForm:$('#permissionsForm'),
 		passwordForm:$('#passwordForm'),
@@ -36,12 +35,10 @@ function UserManagement(opts)
 
 	UserManagement.prototype.init = function ()
 	{
-
 		ConfigureAdminDialog(elements.permissionsDialog, 430, 500);
 		ConfigureAdminDialog(elements.passwordDialog, 400, 150);
 		ConfigureAdminDialog(elements.userDialog, 350, 560);
 		ConfigureAdminDialog(elements.deleteDialog, 600, 200);
-		ConfigureAdminDialog(elements.attributeDialog, 300, 300);
 		ConfigureAdminDialog(elements.groupsDialog, 300, 300);
 
 		elements.userList.delegate('a.update', 'click', function (e)
@@ -92,12 +89,6 @@ function UserManagement(opts)
 			window.location.href = url;
 		});
 
-		elements.userList.delegate('.changeAttributes', 'click', function (e)
-		{
-			showAttributesPrompt(e);
-			return false;
-		});
-
 		elements.userAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui)
 		{
 			elements.userAutocomplete.val(ui.item.label);
@@ -120,6 +111,17 @@ function UserManagement(opts)
 			e.preventDefault();
 			changeGroup('addUser', $(this).attr('groupId'));
 			$(this).appendTo(elements.addedGroups);
+		});
+
+		elements.userList.delegate('.changeAttributes, .customAttributes .cancel', 'click', function (e) {
+			var user = getActiveUser();
+			var otherUsers = $(".customAttributes[userId!='" + user.id + "']");
+			otherUsers.find('.attribute-readwrite, .validationSummary').hide();
+			otherUsers.find('.attribute-readonly').show();
+			var container = $(this).closest('.customAttributes');
+			container.find('.attribute-readwrite').toggle();
+			container.find('.attribute-readonly').toggle();
+			container.find('.validationSummary').hide();
 		});
 
 		$(".save").click(function ()
@@ -157,12 +159,26 @@ function UserManagement(opts)
 			alert(errorText);
 		};
 
+		var attributesHandler = function(responseText, form)
+		{
+			if (responseText.ErrorIds && responseText.Messages.attributeValidator)
+			{
+				var messages =  responseText.Messages.attributeValidator.join('</li><li>');
+				messages = '<li>' + messages + '</li>';
+				var validationSummary = $(form).find('.validationSummary');
+				validationSummary.find('ul').empty().append(messages);
+				validationSummary.show();
+			}
+		};
+
 		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
 		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
 		ConfigureAdminForm(elements.userForm, getSubmitCallback(options.actions.updateUser), hideDialog(elements.userDialog));
 		ConfigureAdminForm(elements.deleteUserForm, getSubmitCallback(options.actions.deleteUser), hideDialog(elements.deleteDialog), error);
 		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser));
-		ConfigureAdminForm(elements.attributeForm, getSubmitCallback(options.actions.changeAttributes));
+		$.each(elements.attributeForm, function(i,form){
+			ConfigureAdminForm($(form), getSubmitCallback(options.actions.changeAttributes), null, attributesHandler, {validationSummary:null});
+		});
 	};
 
 	UserManagement.prototype.addUser = function (user)
@@ -280,35 +296,5 @@ function UserManagement(opts)
 	var deleteUser = function ()
 	{
 		elements.deleteDialog.dialog('open');
-	};
-
-	var showAttributesPrompt = function (e)
-	{
-		var userId = getActiveUserId();
-
-		var attributeDiv = $('[userId="' + userId + '"]').find('div.customAttributes');
-
-		$.each(attributeDiv.find('li[attributeId]'), function (index, value)
-		{
-			var id = $(value).attr('attributeId');
-			var attrVal = $(value).find('.attributeValue').text();
-			var attributeElement = $('#psiattribute\\[' + id + '\\]');
-			if (attributeElement.is(':checkbox'))
-			{
-				if (attrVal.toLowerCase() == 'true')
-				{
-					attributeElement.attr('checked', 'checked');
-				}
-				else
-				{
-					attributeElement.removeAttr('checked');
-				}
-			}
-			else
-			{
-				attributeElement.val(attrVal);
-			}
-		});
-		elements.attributeDialog.dialog('open');
 	};
 }

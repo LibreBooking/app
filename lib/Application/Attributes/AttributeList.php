@@ -32,10 +32,10 @@ interface IEntityAttributeList
 	public function GetDefinitions($entityId = null);
 
 	/**
-	 * @param $entityId int
+	 * @param $entityId int|null
 	 * @return array|Attribute[]
 	 */
-	public function GetAttributes($entityId);
+	public function GetAttributes($entityId = null);
 }
 
 class AttributeList implements IEntityAttributeList
@@ -162,7 +162,7 @@ class AttributeList implements IEntityAttributeList
 //		}
 	}
 
-	public function GetAttributes($entityId)
+	public function GetAttributes($entityId = null)
 	{
 		$attributes = array();
 		foreach ($this->attribute_order as $attributeId => $placeholder)
@@ -173,7 +173,7 @@ class AttributeList implements IEntityAttributeList
 
 				$definition = $this->definitions[$attributeId];
 			}
-			elseif ($this->EntityAttributeExists($attributeId, $entityId))
+			elseif (!empty($entityId) && $this->EntityAttributeExists($attributeId, $entityId))
 			{
 
 				$definition = $this->entityDefinitions[$entityId][$attributeId];
@@ -181,7 +181,7 @@ class AttributeList implements IEntityAttributeList
 
 			if ($definition != null)
 			{
-				if (!array_key_exists($entityId, $this->values) || !array_key_exists($attributeId,
+				if (empty($entityId) || !array_key_exists($entityId, $this->values) || !array_key_exists($attributeId,
 																					 $this->values[$entityId])
 				)
 				{

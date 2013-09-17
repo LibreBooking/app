@@ -13,7 +13,6 @@ function ResourceManagement(opts) {
 		deleteDialog:$('#deleteDialog'),
 		configurationDialog:$('#configurationDialog'),
 		groupAdminDialog:$('#groupAdminDialog'),
-		attributeDialog:$('#attributeDialog'),
 		sortOrderDialog:$('#sortOrderDialog'),
 
 		renameForm:$('#renameForm'),
@@ -118,7 +117,7 @@ function ResourceManagement(opts) {
 				var otherResources = $(".resourceDetails[resourceid!='" + id + "']");
 				otherResources.find('.attribute-readwrite, .validationSummary').hide();
 				otherResources.find('.attribute-readonly').show();
-				var container = $(this).parents('.customAttributes');
+				var container = $(this).closest('.customAttributes');
 				container.find('.attribute-readwrite').toggle();
 				container.find('.attribute-readonly').toggle();
 				container.find('.validationSummary').hide();
@@ -159,7 +158,7 @@ function ResourceManagement(opts) {
 			if (responseText.ErrorIds && responseText.Messages.attributeValidator)
 			{
 				var messages =  responseText.Messages.attributeValidator.join('</li><li>');
-				var messages = '<li>' + messages + '</li>';
+				messages = '<li>' + messages + '</li>';
 				var validationSummary = $(form).find('.validationSummary');
 				validationSummary.find('ul').empty().append(messages);
 				validationSummary.show();
