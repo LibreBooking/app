@@ -80,14 +80,9 @@ class ProfilePresenter extends ActionPresenter
 		$this->page->SetOrganization($user->GetAttribute(UserAttribute::Organization));
 		$this->page->SetPosition($user->GetAttribute(UserAttribute::Position));
 
-		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
-		$attributeValues = array();
-		foreach ($attributes as $attribute)
-		{
-			$attributeValues[] = new Attribute($attribute, $user->GetAttributeValue($attribute->Id()));
-		}
-
-		$this->page->SetAttributes($attributeValues);
+		$userId = $userSession->UserId;
+		$attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::USER, $userId);
+		$this->page->SetAttributes($attributes->GetAttributes($userId));
 
 		$this->PopulateTimezones();
 		$this->PopulateHomepages();
@@ -150,7 +145,7 @@ class ProfilePresenter extends ActionPresenter
 		$this->page->RegisterValidator('uniqueusername',
 									   new UniqueUserNameValidator($this->userRepository, $this->page->GetLoginName(), $userId));
 		$this->page->RegisterValidator('additionalattributes',
-									   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
+									   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues(), $userId));
 	}
 
 	/**

@@ -28,7 +28,7 @@ interface IAttributeService
 	 * @param $entityIds array|int[]
 	 * @return IEntityAttributeList
 	 */
-	public function GetAttributes($category, $entityIds);
+	public function GetAttributes($category, $entityIds = array());
 
 	/**
 	 * @param $category int|CustomAttributeCategory
@@ -65,8 +65,13 @@ class AttributeService implements IAttributeService
 		$this->attributeRepository = $attributeRepository;
 	}
 
-	public function GetAttributes($category, $entityIds)
+	public function GetAttributes($category, $entityIds = array())
 	{
+		if (!is_array($entityIds))
+		{
+			$entityIds = array($entityIds);
+		}
+
 		$attributeList = new AttributeList();
 		$attributes = $this->attributeRepository->GetByCategory($category);
 

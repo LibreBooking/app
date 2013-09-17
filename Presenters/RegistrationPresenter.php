@@ -127,14 +127,8 @@ class RegistrationPresenter extends ActionPresenter
 	{
 		$this->BounceIfNotAllowingRegistration();
 
-		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
-		$attributeValues = array();
-		foreach ($attributes as $attribute)
-		{
-			$attributeValues[] = new Attribute($attribute, null);
-		}
-
-		$this->page->SetAttributes($attributeValues);
+		$attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::USER);
+		$this->page->SetAttributes($attributes->GetAttributes());
 
 		$this->page->SetCaptchaImageUrl($this->captchaService->GetImageUrl());
 		$this->PopulateTimezones();
