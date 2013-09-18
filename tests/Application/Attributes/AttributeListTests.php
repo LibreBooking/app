@@ -39,31 +39,6 @@ class AttributeListTests extends TestBase
 		$this->assertEquals(array(1 => $attribute1, 2 => $attribute2, 3 => $attribute3), $list->GetDefinitions());
 	}
 
-	public function testGetsValuesForEntity()
-	{
-		$entityId = 400;
-		$attribute1 = new TestCustomAttribute(1, 'a1');
-		$attribute2 = new TestCustomAttribute(2, 'a2');
-		$attribute3 = new TestCustomAttribute(3, 'a3');
-
-		$value1 = new AttributeEntityValue(1, $entityId, 'att1');
-		$value3 = new AttributeEntityValue(3, $entityId, 'att3');
-		$value4 = new AttributeEntityValue(4, $entityId, 'att2');
-
-		$list = new AttributeList();
-		$list->AddDefinition($attribute1);
-		$list->AddDefinition($attribute2);
-		$list->AddDefinition($attribute3);
-		$list->AddValue($value1);
-		$list->AddValue($value3);
-		$list->AddValue($value4);
-
-
-		$values = $list->GetValues($entityId);
-
-		$this->assertEquals(array('att1', null, 'att3'), $values);
-	}
-
 	public function testGetsAttributeValuesForEntity()
 	{
 		$entityId = 400;
@@ -83,7 +58,7 @@ class AttributeListTests extends TestBase
 		$list->AddValue($value3);
 		$list->AddValue($value4);
 
-		$values = $list->GetAttributeValues($entityId);
+		$values = $list->GetAttributes($entityId);
 
 		$this->assertEquals(array(new Attribute($attribute1, 'att1'), new Attribute($attribute2, null), new Attribute($attribute3, 'att3')), $values);
 	}

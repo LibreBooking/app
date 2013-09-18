@@ -55,12 +55,13 @@ class UserItemResponse extends RestResponse
 		$this->timezone = $user->Timezone;
 		$this->username = $user->Username;
 
-		$definitions = $attributes->GetDefinitions();
-		$values = $attributes->GetValues($userId);
+		$attributeValues = $attributes->GetAttributes($userId);
 
-		for ($i = 0; $i < count($definitions); $i++)
+		$i=0;
+		foreach($attributeValues as $av)
 		{
-			$this->customAttributes[] = new CustomAttributeResponse($server, $definitions[$i]->Id(), $definitions[$i]->Label(), $values[$i]);
+			$this->customAttributes[] = new CustomAttributeResponse($server, $av->Id(), $av->Label(), $av->Value());
+			$i++;
 		}
 
 		$this->AddService($server, WebServices::GetUser, array(WebServiceParams::UserId => $userId));

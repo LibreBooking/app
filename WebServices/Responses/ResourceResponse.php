@@ -62,13 +62,12 @@ class ResourceResponse extends RestResponse
 		$this->description = $resource->GetDescription();
 		$this->scheduleId = $resource->GetScheduleId();
 
-		$definitions = $attributes->GetDefinitions();
-		$values = $attributes->GetValues($resourceId);
+		$attributeValues = $attributes->GetAttributes($resourceId);
 
 		$i=0;
-		foreach($definitions as $definition)
+		foreach($attributeValues as $av)
 		{
-			$this->customAttributes[] = new CustomAttributeResponse($server, $definition->Id(), $definition->Label(), $values[$i]);
+			$this->customAttributes[] = new CustomAttributeResponse($server, $av->Id(), $av->Label(), $av->Value());
 			$i++;
 		}
 

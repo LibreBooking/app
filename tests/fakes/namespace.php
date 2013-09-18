@@ -60,4 +60,5 @@ require_once(ROOT_DIR . 'tests/fakes/FakePrivacyFilter.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeGroup.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationSavePage.php');
 require_once(ROOT_DIR . 'tests/fakes/ExistingReservationSeriesBuilder.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeAttributeList.php');
 ?>

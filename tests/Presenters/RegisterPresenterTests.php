@@ -265,21 +265,22 @@ class RegisterPresenterTests extends TestBase
 	public function testLoadsCustomAttributes()
 	{
 		$attributes = array(new FakeCustomAttribute(1), new FakeCustomAttribute(2));
+		$expectedAttributes = array(new Attribute($attributes[0]), new Attribute($attributes[1]));
 
-		$this->ExpectAttributeServiceCalled($attributes);
+		$this->ExpectAttributeServiceCalled($expectedAttributes);
 
 		$this->presenter->PageLoad();
 
-		$expectedAttributes = array(new Attribute($attributes[0]), new Attribute($attributes[1]));
 		$this->assertEquals($expectedAttributes, $this->page->_Attributes);
 	}
 
 	private function ExpectAttributeServiceCalled($attributes = array())
 	{
+		$list = new FakeAttributeList($attributes);
 		$this->attributeService->expects($this->once())
-				->method('GetByCategory')
+				->method('GetAttributes')
 				->with($this->equalTo(CustomAttributeCategory::USER))
-				->will($this->returnValue($attributes));
+				->will($this->returnValue($list));
 	}
 
 	private function LoadPageValues()
