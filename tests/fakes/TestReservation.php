@@ -34,7 +34,7 @@ class TestReservation extends Reservation
 		}
 		else
 		{
-			$this->SetReferenceNumber(uniqid());
+			$this->SetReferenceNumber(uniqid('', true));
 		}
 		
 		if ($reservationDate != null)

@@ -195,8 +195,7 @@ class CustomAttribute
 	 * @param int|null $entityId
 	 * @return CustomAttribute
 	 */
-	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
-								$entityId)
+	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,$entityId = null)
 	{
 		$this->id = $id;
 		$this->label = $label;
@@ -218,10 +217,10 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
-	 * @param int $entityId
+	 * @param int|null $entityId
 	 * @return CustomAttribute
 	 */
-	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId)
+	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId = null)
 	{
 		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId);
 	}

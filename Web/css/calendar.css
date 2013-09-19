@@ -97,3 +97,7 @@ option.resource
     text-align: right;
     padding: 10px 0px;
 }
+
+#calendar a, #calendar a:visited {
+	color: #fff;
+}

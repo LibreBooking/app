@@ -57,11 +57,12 @@ class UserItemResponse extends RestResponse
 
 		$attributeValues = $attributes->GetAttributes($userId);
 
-		$i=0;
-		foreach($attributeValues as $av)
+		if (!empty($attributeValues))
 		{
-			$this->customAttributes[] = new CustomAttributeResponse($server, $av->Id(), $av->Label(), $av->Value());
-			$i++;
+			foreach($attributeValues as $av)
+			{
+				$this->customAttributes[] = new CustomAttributeResponse($server, $av->Id(), $av->Label(), $av->Value());
+			}
 		}
 
 		$this->AddService($server, WebServices::GetUser, array(WebServiceParams::UserId => $userId));

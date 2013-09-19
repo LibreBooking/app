@@ -102,7 +102,7 @@ class ReservationsWebServiceTests extends TestBase
 
 		$this->service->GetReservations();
 
-		$expectedResponse = new ReservationsResponse($this->server, $reservations, $this->privacyFilter);
+		$expectedResponse = new ReservationsResponse($this->server, $reservations, $this->privacyFilter, $this->defaultStartDate, $this->defaultEndDate);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
 

@@ -145,22 +145,22 @@ class DailyLayoutTests extends TestBase
 
 	public function testGetsDailySummaryForResource()
 	{
-		$date = Date::Parse('2009-09-02', 'UTC');
-		$resourceId = 1;
 		$targetTimezone = 'America/Chicago';
+		$date = Date::Parse('2009-09-02', $targetTimezone);
+		$start = $date->SetTime(Time::Parse('04:00'));
+		$end = $date->SetTime(Time::Parse('05:00'));
+		$resourceId = 1;
 
 		$scheduleLayout = new ScheduleLayout($targetTimezone);
-		$scheduleLayout->AppendPeriod(new Time(5, 0, 0, $targetTimezone), new Time(6, 0, 0, $targetTimezone));
+		$scheduleLayout->AppendPeriod(new Time(4, 0, 0, $targetTimezone), new Time(5, 0, 0, $targetTimezone));
 
 		$listing = $this->getMock('IReservationListing');
 
-		$firstReservation = new TestReservationListItem($date, $date, $resourceId);
+		$firstReservation = new TestReservationListItem($start, $end, $resourceId);
 		$reservations = array(
 			$firstReservation,
-			new TestReservationListItem($date, $date, $resourceId),
-			new TestReservationListItem($date, $date, 2),
-			new TestBlackoutListItem($date, $date, $resourceId),
-			new TestBlackoutListItem($date, $date, 2),
+			new TestReservationListItem($start, $end, $resourceId),
+			new TestBlackoutListItem($start, $end, $resourceId),
 		);
 
 		$listing->expects($this->once())

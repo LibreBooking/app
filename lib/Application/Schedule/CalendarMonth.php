@@ -61,7 +61,6 @@ class CalendarMonth implements ICalendarSegment
 			$currentWeek = $this->GetWeekNumber($currentDay);
 			$calendarDay = new CalendarDay($currentDay);
 
-			echo $currentDay->Format('Ymd') . ' w=' .$currentWeek . ' ';
 			$this->weeks[$currentWeek]->AddDay($calendarDay);
 		}
 	}
@@ -113,6 +112,11 @@ class CalendarMonth implements ICalendarSegment
 		if ($day->Day()%7==0)
 		{
 			$week = ($day->Day()-1)/7;
+
+			if ($day->Day() <= 7)
+			{
+				$week++;
+			}
 		}
 		else
 		{
