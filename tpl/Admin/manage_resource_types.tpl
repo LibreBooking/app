@@ -21,98 +21,106 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h1>{translate key='ManageResourceTypes'}</h1>
 
 <div id="globalError" class="error" style="display:none"></div>
-<div class="admin">
-<div class="title">
-	{translate key='AllResources'}
-</div>
-{foreach from=$Resources item=resource}
-	{assign var=id value=$resource->GetResourceId()}
-	<div class="resourceDetails" resourceId="{$id}">
 
-
+<table class="list">
+	<tr>
+		<th>{translate key='Name'}</th>
+		<th>{translate key='Description'}</th>
+		<th>{translate key='Actions'}</th>
+	</tr>
+	{foreach from=$ResourceTypes item=type}
+		{cycle values='row0,row1' assign=rowCss}
+		{assign var=id value=$type->Id}
+		<tr class="{$rowCss}">
+			<td>{$type->Name()}</td>
+			<td>{$type->Description()}</td>
+			<td align="center"><a href="#" class="update edit">{translate key='Edit'}</a> | <a href="#"
+																							   class="update delete">{translate key='Delete'}</a>
+			</td>
+		</tr>
 		{assign var=attributes value=$AttributeList->GetAttributes($id)}
 		{if $attributes|count > 0}
-			<div class="customAttributes">
-				<form method="post" class="attributesForm">
-					<h3>{translate key=AdditionalAttributes} <a href="#"
-																class="update changeAttributes">{translate key=Edit}</a>
-					</h3>
+			<tr>
+				<td colspan="4" class="{$rowCss} customAttributes">
+					<form method="post" class="attributesForm">
+						<h3>{translate key=AdditionalAttributes} <a href="#"
+																	class="update changeAttributes">{translate key=Edit}</a>
+						</h3>
 
-					<div class="validationSummary">
-						<ul>
-						</ul>
-						<div class="clear">&nbsp;</div>
-					</div>
-					<ul>
-						{foreach from=$attributes item=attribute}
-							<li class="customAttribute" attributeId="{$attribute->Id()}">
-								<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>
-								<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}
-							</li>
-						{/foreach}
-					</ul>
-					<div class="attribute-readwrite hidden clear">
-						<button type="button"
-								class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-						<button type="button"
-								class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-					</div>
-				</form>
-			</div>
-			{/if}
-{/foreach}
-</div>
+						<div class="validationSummary">
+							<ul>
+							</ul>
+							<div class="clear">&nbsp;</div>
+						</div>
 
-	<div class="admin" style="margin-top:30px">
-		<div class="title">
-			{translate key='AddNewResourceType'}
-		</div>
-		<div>
-			<div id="addResourceResults" class="error" style="display:none;"></div>
-			<form id="addResourceForm" method="post">
-				<table>
-					<tr>
-						<th>{translate key='Name'}</th>
-						<th>{translate key='Description'}</th>
-						<th>&nbsp;</th>
-					</tr>
-					<tr>
-						<td><input type="text" class="textbox required" maxlength="85"
-								   style="width:250px" {formname key=RESOURCE_TYPE_NAME} />
-						</td>
-						<td>
-							<textarea class="textbox" {formname key=RESOURCE_TYPE_DESCRIPTION}></textarea>
-						</td>
-						<td>
+						<div>
+							<ul>
+								{foreach from=$attributes item=attribute}
+									<li class="customAttribute" attributeId="{$attribute->Id()}">
+										<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+										<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}
+									</li>
+								{/foreach}
+							</ul>
+						</div>
+
+						<div class="attribute-readwrite hidden clear" style="height:auto;">
 							<button type="button"
-									class="button save">{html_image src="plus-button.png"} {translate key='AddResource'}</button>
-						</td>
-					</tr>
-				</table>
-			</form>
-		</div>
+									class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+							<button type="button"
+									class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+						</div>
+					</form>
+				</td>
+			</tr>
+		{/if}
+	{/foreach}
+</table>
+
+<div class="admin" style="margin-top:30px">
+	<div class="title">
+		{translate key='AddResourceType'}
 	</div>
+	<div>
+		<div id="addResults" class="error" style="display:none;"></div>
+		<form id="addForm" method="post">
+			<table>
+				<tr>
+					<th>{translate key='Name'}</th>
+					<th>{translate key='Description'}</th>
+					<th>&nbsp;</th>
+				</tr>
+				<tr>
+					<td style="vertical-align: top;"><input type="text" class="textbox required" maxlength="85"
+							   style="width:250px" {formname key=RESOURCE_TYPE_NAME} />
+					</td>
+					<td>
+						<textarea class="textbox" {formname key=RESOURCE_TYPE_DESCRIPTION}></textarea>
+					</td>
+				</tr>
+			</table>
+
+			<button type="button" class="button save">{html_image src="plus-button.png"} {translate key='AddResourceType'}</button>
+		</form>
+	</div>
+</div>
 
 
 <input type="hidden" id="activeId" value=""/>
 
-<div id="renameDialog" class="dialog" style="display:none;" title="{translate key=Rename}">
-	<form id="renameForm" method="post">
+<div id="editDialog" class="dialog" style="display:none;" title="{translate key=Rename}">
+	<form id="editForm" method="post">
 		{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
 									   style="width:250px" {formname key=RESOURCE_NAME} />
 		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-	</form>
-</div>
 
-<div id="descriptionDialog" class="dialog" style="display:none;" title="{translate key=Description}">
-	<form id="descriptionForm" method="post">
 		{translate key=Description}:<br/>
-		<textarea id="editDescription" class="textbox"
-				  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+				<textarea id="editDescription" class="textbox"
+						  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
+				<br/><br/>
+
+		<button type="button"
+				class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
@@ -121,16 +129,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<form id="deleteForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
-			<br/>{translate key=DeleteResourceWarning}:
-			<ul>
-				<li>{translate key=DeleteResourceWarningReservations}</li>
-				<li>{translate key=DeleteResourceWarningPermissions}</li>
-			</ul>
-			<br/>
-			{translate key=DeleteResourceWarningReassign}
 		</div>
 
-		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+		<button type="button"
+				class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
@@ -138,9 +140,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/resource.js"></script>
+<script type="text/javascript" src="{$Path}scripts/admin/resource-types.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/ajaxfileupload.js"></script>
 
 <script type="text/javascript">
 

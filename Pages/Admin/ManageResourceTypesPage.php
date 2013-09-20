@@ -23,7 +23,10 @@ require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 interface IManageResourceTypesPage extends IActionPage
 {
-
+	/**
+	 * @param ResourceTypes[]|array $types
+	 */
+	public function BindResourceTypes($types);
 }
 
 class ManageResourceTypesPage extends ActionPage implements IManageResourceTypesPage
@@ -63,6 +66,14 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	public function ProcessDataRequest($dataRequest)
 	{
 		// TODO: Implement ProcessDataRequest() method.
+	}
+
+	/**
+	 * @param ResourceTypes[]|array $types
+	 */
+	public function BindResourceTypes($types)
+	{
+		$this->Set('ResourceTypes', $types);
 	}
 }
 

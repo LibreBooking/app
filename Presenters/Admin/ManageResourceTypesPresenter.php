@@ -55,7 +55,9 @@ class ManageResourceTypesPresenter extends ActionPresenter
 
 	public function PageLoad()
 	{
+		$types = $this->resourceRepository->GetResourceTypes();
 
+		$this->page->BindResourceTypes($types);
 	}
 }
 

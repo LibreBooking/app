@@ -20,6 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Domain/BookableResource.php');
 require_once(ROOT_DIR . 'Domain/ResourceGroup.php');
+require_once(ROOT_DIR . 'Domain/ResourceType.php');
 require_once(ROOT_DIR . 'Domain/Access/IResourceRepository.php');
 
 class ResourceRepository implements IResourceRepository
@@ -323,6 +324,37 @@ class ResourceRepository implements IResourceRepository
 	public function DeleteResourceGroup($groupId)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteResourceGroupCommand($groupId));
+	}
+
+	public function GetResourceTypes()
+	{
+		$types = array();
+
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAllResourceTypesCommand());
+
+		while ($row = $reader->GetRow())
+		{
+			$types[] = new ResourceType($row[ColumnNames::RESOURCE_TYPE_ID], $row[ColumnNames::RESOURCE_TYPE_NAME], $row[ColumnNames::RESOURCE_TYPE_DESCRIPTION]);
+		}
+
+		$reader->Free();
+
+		return $types;
+	}
+
+	public function AddResourceType(ResourceType $type)
+	{
+		return ServiceLocator::GetDatabase()->ExecuteInsert(new AddResourceTypeCommand($type->Name(), $type->Description()));
+	}
+
+	public function UpdateResourceType(ResourceType $type)
+	{
+		ServiceLocator::GetDatabase()->Execute(new UpdateResourceTypeCommand($type->Id(), $type->Name(), $type->Description()));
+	}
+
+	public function RemoveResourceType($id)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteResourceTypeCommand($id));
 	}
 }
 

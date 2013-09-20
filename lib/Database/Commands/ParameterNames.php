@@ -142,6 +142,10 @@ class ParameterNames
 	const RESOURCE_GROUP_NAME = '@resourcegroupname';
 	const RESOURCE_GROUP_PARENT_ID = '@parentid';
 
+	const RESOURCE_TYPE_ID = '@resource_type_id';
+	const RESOURCE_TYPE_NAME = '@resource_type_name';
+	const RESOURCE_TYPE_DESCRIPTION = '@resource_type_description';
+
 	const ROLE_ID = '@roleid';
 	const ROLE_LEVEL = '@role_level';
 

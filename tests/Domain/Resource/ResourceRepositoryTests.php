@@ -25,8 +25,14 @@ require_once(ROOT_DIR . 'tests/fakes/namespace.php');
 
 class ResourceRepositoryTests extends TestBase
 {
+	/**
+	 * @var ResourceRepository
+	 */
+	private $repository;
+
 	public function setup()
 	{
+		$this->repository = new ResourceRepository();
 		parent::setup();
 	}
 
@@ -103,8 +109,7 @@ class ResourceRepositoryTests extends TestBase
 
 		$publicId = $resource->GetPublicId();
 
-		$resourceRepository = new ResourceRepository();
-		$resourceRepository->Update($resource);
+		$this->repository->Update($resource);
 
 		$expectedUpdateResourceCommand = new UpdateResourceCommand(
 			$id,
@@ -147,8 +152,7 @@ class ResourceRepositoryTests extends TestBase
 
 		$this->db->_ExpectedInsertId = $resourceId;
 
-		$resourceRepository = new ResourceRepository();
-		$resourceRepository->Add($resource);
+		$this->repository->Add($resource);
 
 		$expectedAddCommand = new AddResourceCommand($name, $scheduleId, $autoAssign, $groupId);
 		$assignResourcePermissions = new AutoAssignResourcePermissionsCommand($resourceId);
@@ -165,8 +169,7 @@ class ResourceRepositoryTests extends TestBase
 		$resource = BookableResource::CreateNew('name', 1);
 		$resource->SetResourceId($resourceId);
 
-		$resourceRepository = new ResourceRepository();
-		$resourceRepository->Delete($resource);
+		$this->repository->Delete($resource);
 
 		$deleteReservations = new DeleteResourceReservationsCommand($resourceId);
 		$deleteResources = new DeleteResourceCommand($resourceId);
@@ -189,9 +192,8 @@ class ResourceRepositoryTests extends TestBase
 
 		$getAccessoriesCommand = new GetAllAccessoriesCommand();
 
-		$resourceRepository = new ResourceRepository();
 		/** @var $accessories AccessoryDto[] */
-		$accessories = $resourceRepository->GetAccessoryList();
+		$accessories = $this->repository->GetAccessoryList();
 
 		$this->assertEquals($getAccessoriesCommand, $this->db->_LastCommand);
 		$this->assertEquals(2, count($accessories));
@@ -216,8 +218,7 @@ class ResourceRepositoryTests extends TestBase
 		$loadResourceCommand = new GetResourceByPublicIdCommand($publicId);
 		$attributes = new GetAttributeValuesCommand(1, CustomAttributeCategory::RESOURCE);
 
-		$resourceRepository = new ResourceRepository();
-		$resource = $resourceRepository->LoadByPublicId($publicId);
+		$resource = $this->repository->LoadByPublicId($publicId);
 
 		$this->assertTrue($this->db->ContainsCommand($loadResourceCommand));
 		$this->assertTrue($this->db->ContainsCommand($attributes));
@@ -242,8 +243,7 @@ class ResourceRepositoryTests extends TestBase
 		$loadResourceCommand = new GetResourceByIdCommand($id);
 		$attributes = new GetAttributeValuesCommand(1, CustomAttributeCategory::RESOURCE);
 
-		$resourceRepository = new ResourceRepository();
-		$resource = $resourceRepository->LoadById($id);
+		$resource = $this->repository->LoadById($id);
 
 		$this->assertTrue($this->db->ContainsCommand($loadResourceCommand));
 		$this->assertTrue($this->db->ContainsCommand($attributes));
@@ -267,8 +267,7 @@ class ResourceRepositoryTests extends TestBase
 		$attributes = array($unchanged, $toChange, $toAdd);
 		$resource->ChangeAttributes($attributes);
 
-		$resourceRepository = new ResourceRepository();
-		$resourceRepository->Update($resource);
+		$this->repository->Update($resource);
 
 		$addNewCommand = new AddAttributeValueCommand($toAdd->AttributeId, $toAdd->Value, $id, CustomAttributeCategory::RESOURCE);
 		$removeOldCommand = new RemoveAttributeValueCommand(100, $id);
@@ -307,9 +306,8 @@ class ResourceRepositoryTests extends TestBase
 		$this->db->SetRow(0, $groupRows->Rows());
 		$this->db->SetRow(1, $assignmentRows->Rows());
 
-		$resourceRepository = new ResourceRepository();
-		$groups = $resourceRepository
-				  ->GetResourceGroups($scheduleId, new SkipResource5Filter())
+		$groups = $this->repository
+						  ->GetResourceGroups($scheduleId, new SkipResource5Filter())
 				  ->GetGroups();
 
 		$getResourceGroupsCommand = new GetAllResourceGroupsCommand();
@@ -338,8 +336,7 @@ class ResourceRepositoryTests extends TestBase
 		$resourceId = 189282;
 		$groupId = 100;
 
-		$resourceRepository = new ResourceRepository();
-		$resourceRepository->AddResourceToGroup($resourceId, $groupId);
+		$this->repository->AddResourceToGroup($resourceId, $groupId);
 
 		$expectedCommand = new AddResourceToGroupCommand($resourceId, $groupId);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
@@ -350,8 +347,7 @@ class ResourceRepositoryTests extends TestBase
 		$resourceId = 189282;
 		$groupId = 100;
 
-		$resourceRepository = new ResourceRepository();
-		$resourceRepository->RemoveResourceFromGroup($resourceId, $groupId);
+		$this->repository->RemoveResourceFromGroup($resourceId, $groupId);
 
 		$expectedCommand = new RemoveResourceFromGroupCommand($resourceId, $groupId);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
@@ -368,8 +364,7 @@ class ResourceRepositoryTests extends TestBase
 
 		$this->db->_ExpectedInsertId = $id;
 
-		$resourceRepository = new ResourceRepository();
-		$addedGroup = $resourceRepository->AddResourceGroup($group);
+		$addedGroup = $this->repository->AddResourceGroup($group);
 
 		$expectedCommand = new AddResourceGroupCommand($name, $parentId);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
@@ -386,8 +381,7 @@ class ResourceRepositoryTests extends TestBase
 		$group = new ResourceGroup($id, 'name', $parentId);
 		$group->MoveTo($newParentId);
 
-		$resourceRepository = new ResourceRepository();
-		$resourceRepository->UpdateResourceGroup($group);
+		$this->repository->UpdateResourceGroup($group);
 
 		$expectedCommand = new UpdateResourceGroupCommand($id, 'name', $newParentId);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
@@ -396,10 +390,61 @@ class ResourceRepositoryTests extends TestBase
 	public function testDeletesResourceGroup()
 	{
 		$id = 123;
-		$resourceRepository = new ResourceRepository();
-		$resourceRepository->DeleteResourceGroup($id);
+		$this->repository->DeleteResourceGroup($id);
 
 		$expectedCommand = new DeleteResourceGroupCommand($id);
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
+
+	public function testGetsAllResourceTypes()
+	{
+		$rows = new ResourceTypeRow();
+		$rows
+		->With(1, 'resourcetype1', 'description')
+		->With(2, 'resourcetype2', null)
+		->With(3, 'resourcetype3', '');
+
+		$this->db->SetRows($rows->Rows());
+
+		$types = $this->repository->GetResourceTypes();
+
+		$this->assertEquals(3, count($types));
+		$this->assertEquals(1, $types[0]->Id());
+		$this->assertEquals('resourcetype1', $types[0]->Name());
+		$this->assertEquals('description', $types[0]->Description());
+
+		$expectedCommand = new GetAllResourceTypesCommand();
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
+
+	public function testAddsNewResourceType()
+	{
+		$name = 'name';
+		$description = 'description';
+
+		$type = ResourceType::CreateNew($name, $description);
+
+		$this->repository->AddResourceType($type);
+
+		$expectedCommand = new AddResourceTypeCommand($name, $description);
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
+
+	public function testUpdatesResourceType()
+	{
+		$type = new ResourceType(1, 'name', 'desc');
+
+		$this->repository->UpdateResourceType($type);
+
+		$expectedCommand = new UpdateResourceTypeCommand($type->Id(), $type->Name(), $type->Description());
+		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
+
+	public function testRemovesResourceType()
+	{
+		$this->repository->RemoveResourceType(123);
+
+		$expectedCommand = new DeleteResourceTypeCommand(123);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
 	}
 }

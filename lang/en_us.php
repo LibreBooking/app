@@ -473,6 +473,7 @@ class en_us extends Language
 		$strings['ResourceType'] = 'Resource Type';
 		$strings['AppliesTo'] = 'Applies To';
 		$strings['UniquePerInstance'] = 'Unique Per Instance';
+		$strings['AddResourceType'] = 'Add Resource Type';
 		// End Strings
 
 		// Install

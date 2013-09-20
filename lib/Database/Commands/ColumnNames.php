@@ -212,6 +212,11 @@ class ColumnNames
 	const REMINDER_MINUTES_PRIOR = 'minutes_prior';
 	const REMINDER_TYPE = 'reminder_type';
 
+	// RESOURCE TYPE //
+	const RESOURCE_TYPE_ID = 'resource_type_id';
+	const RESOURCE_TYPE_NAME = 'resource_type_name';
+	const RESOURCE_TYPE_DESCRIPTION = 'resource_type_description';
+
 	// dynamic
 	const TOTAL = 'total';
 	const TOTAL_TIME = 'totalTime';

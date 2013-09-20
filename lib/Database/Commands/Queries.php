@@ -203,6 +203,8 @@ class Queries
 		INNER JOIN reservation_resources rs ON s.series_id = rs.series_id 
 		WHERE rs.resource_id = @resourceid';
 
+	const DELETE_RESOURCE_TYPE_COMMAND = 'DELETE FROM resource_types WHERE resource_type_id = @resource_type_id';
+
 	const DELETE_SAVED_REPORT = 'DELETE FROM saved_reports WHERE saved_report_id = @report_id AND user_id = @userid';
 
 	const DELETE_SCHEDULE = 'DELETE FROM schedules WHERE schedule_id = @scheduleid';
@@ -330,6 +332,8 @@ class Queries
             INNER JOIN resources r ON g.group_id = r.admin_group_id
             WHERE r.resource_id = @resourceid
           )';
+
+	const GET_ALL_RESOURCE_TYPES = 'SELECT * FROM resource_types';
 
 	const GET_ALL_SAVED_REPORTS = 'SELECT * FROM saved_reports WHERE user_id = @userid ORDER BY report_name, date_created';
 
@@ -708,6 +712,8 @@ class Queries
 			resource_group_assignment (resource_group_id, resource_id)
 			VALUES (@resourcegroupid, @resourceid)';
 
+	const ADD_RESOURCE_TYPE = 'INSERT INTO resource_types (resource_type_name, resource_type_description) VALUES (@resource_type_name, @resource_type_description)';
+
 	const SET_DEFAULT_SCHEDULE =
 			'UPDATE schedules
 		SET isdefault = 0
@@ -797,6 +803,8 @@ class Queries
 			resource_id = @resourceid';
 
 	const UPDATE_RESOURCE_GROUP = 'UPDATE resource_groups SET resource_group_name = @resourcegroupname, parent_id = @parentid WHERE resource_group_id = @resourcegroupid';
+
+	const UPDATE_RESOURCE_TYPE = 'UPDATE resource_types SET resource_type_name = @resource_type_name, resource_type_description = @resource_type_description WHERE resource_type_id = @resource_type_id';
 
 	const UPDATE_SCHEDULE =
 			'UPDATE schedules

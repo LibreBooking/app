@@ -420,4 +420,25 @@ class ResourceGroupAssignmentRow
 	}
 }
 
+class ResourceTypeRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($typeId, $name, $description = null)
+	{
+		$this->rows[] = array(
+			ColumnNames::RESOURCE_TYPE_ID => $typeId,
+			ColumnNames::RESOURCE_TYPE_NAME => $name,
+			ColumnNames::RESOURCE_TYPE_DESCRIPTION => $description
+		);
+
+		return $this;
+	}
+}
+
 ?>

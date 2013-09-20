@@ -29,6 +29,7 @@ DROP TABLE IF EXISTS `resource_types`;
 CREATE TABLE `resource_types` (
  `resource_type_id` mediumint(8) unsigned NOT NULL,
  `resource_type_name` VARCHAR(75),
+ `resource_type_description` TEXT,
   PRIMARY KEY (`resource_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 

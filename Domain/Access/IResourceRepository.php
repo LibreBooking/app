@@ -107,6 +107,27 @@ interface IResourceRepository
 	 * @param $groupId
 	 */
 	public function DeleteResourceGroup($groupId);
+
+	/**
+	 * @return ResourceType[]|array
+	 */
+	public function GetResourceTypes();
+
+	/**
+	 * @param ResourceType $type
+	 * @return int
+	 */
+	public function AddResourceType(ResourceType $type);
+
+	/**
+	 * @param ResourceType $type
+	 */
+	public function UpdateResourceType(ResourceType $type);
+
+	/**
+	 * @param int $id
+	 */
+	public function RemoveResourceType($id);
 }
 
 ?>
