@@ -128,6 +128,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 										href="{$Path}admin/manage_resource_groups.php">{translate key="ManageGroups"}</a></li>
 								<li class="menuitem"><a
 										href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a></li>
+								<li class="menuitem"><a
+										href="{$Path}admin/manage_resource_types.php">{translate key="ManageResourceTypes"}</a></li>
 							</ul>
 						</li>
 						<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a></li>
