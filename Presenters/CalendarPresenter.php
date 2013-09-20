@@ -104,7 +104,7 @@ class CalendarPresenter
 
 		$schedules = $this->scheduleRepository->GetAll();
 		$showInaccessible = Configuration::Instance()
-							->GetKey(ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
+							->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
 		$resources = $this->resourceService->GetAllResources($showInaccessible, $userSession);
 
 		$selectedSchedule = $this->GetSchedule($schedules);
