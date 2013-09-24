@@ -1229,6 +1229,15 @@ class GetResourceGroupCommand extends SqlCommand
 	}
 }
 
+class GetResourceTypeCommand extends SqlCommand
+{
+	public function __construct($resourceTypeId)
+		{
+			parent::__construct(Queries::GET_RESOURCE_TYPE_BY_ID);
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $resourceTypeId));
+		}
+}
+
 class GetSavedReportForUserCommand extends SqlCommand
 {
 	public function __construct($reportId, $userId)

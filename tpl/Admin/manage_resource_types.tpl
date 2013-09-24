@@ -22,7 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="globalError" class="error" style="display:none"></div>
 
-<table class="list">
+<table class="list" id="resourceTypes" style="min-width: 600px;">
 	<tr>
 		<th>{translate key='Name'}</th>
 		<th>{translate key='Description'}</th>
@@ -30,21 +30,23 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</tr>
 	{foreach from=$ResourceTypes item=type}
 		{cycle values='row0,row1' assign=rowCss}
-		{assign var=id value=$type->Id}
+		{assign var=id value=$type->Id()}
 		<tr class="{$rowCss}">
 			<td>{$type->Name()}</td>
-			<td>{$type->Description()}</td>
-			<td align="center"><a href="#" class="update edit">{translate key='Edit'}</a> | <a href="#"
-																							   class="update delete">{translate key='Delete'}</a>
+			<td>{$type->Description()|nl2br}</td>
+			<td align="center" style="width:100px;">
+				<a href="#" class="update edit">{translate key='Edit'}</a> |
+				<a href="#" class="update delete">{translate key='Delete'}</a>
+				<input type="hidden" class="id" value="{$id}" />
 			</td>
 		</tr>
 		{assign var=attributes value=$AttributeList->GetAttributes($id)}
 		{if $attributes|count > 0}
 			<tr>
-				<td colspan="4" class="{$rowCss} customAttributes">
-					<form method="post" class="attributesForm">
+				<td colspan="4" class="{$rowCss} customAttributes" resourceTypeId="{$id}">
+					<form method="post" class="attributesForm" ajaxAction="{ManageResourceTypesActions::ChangeAttributes}">
 						<h3>{translate key=AdditionalAttributes} <a href="#"
-																	class="update changeAttributes">{translate key=Edit}</a>
+																	class="changeAttributes" resourceTypeId="{$id}">{translate key=Edit}</a>
 						</h3>
 
 						<div class="validationSummary">
@@ -83,7 +85,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 	<div>
 		<div id="addResults" class="error" style="display:none;"></div>
-		<form id="addForm" method="post">
+		<form id="addForm" method="post" ajaxAction="{ManageResourceTypesActions::Add}">
 			<table>
 				<tr>
 					<th>{translate key='Name'}</th>
@@ -91,11 +93,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
-					<td style="vertical-align: top;"><input type="text" class="textbox required" maxlength="85"
-							   style="width:250px" {formname key=RESOURCE_TYPE_NAME} />
+					<td style="vertical-align: top;">
+						<input type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=RESOURCE_TYPE_NAME} />
 					</td>
 					<td>
-						<textarea class="textbox" {formname key=RESOURCE_TYPE_DESCRIPTION}></textarea>
+						<textarea class="textbox" style="width:400px" {formname key=RESOURCE_TYPE_DESCRIPTION}></textarea>
 					</td>
 				</tr>
 			</table>
@@ -108,25 +110,23 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <input type="hidden" id="activeId" value=""/>
 
-<div id="editDialog" class="dialog" style="display:none;" title="{translate key=Rename}">
-	<form id="editForm" method="post">
+<div id="editDialog" class="dialog" style="display:none;" title="{translate key=Update}">
+	<form id="editForm" method="post" ajaxAction="{ManageResourceTypesActions::Update}">
 		{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
-									   style="width:250px" {formname key=RESOURCE_NAME} />
+									   style="width:250px" {formname key=RESOURCE_TYPE_NAME} />
 		<br/><br/>
 
 		{translate key=Description}:<br/>
-				<textarea id="editDescription" class="textbox"
-						  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
-				<br/><br/>
+		<textarea id="editDescription" class="textbox" style="width:460px;height:150px;" {formname key=RESOURCE_TYPE_DESCRIPTION}></textarea>
+		<br/><br/>
 
-		<button type="button"
-				class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
 <div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
-	<form id="deleteForm" method="post">
+	<form id="deleteForm" method="post" ajaxAction="{ManageResourceTypesActions::Delete}">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
 		</div>
@@ -138,7 +138,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
-<script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/resource-types.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
@@ -147,19 +146,21 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	$(document).ready(function ()
 	{
-		var actions = {
-
-		};
-
 		var opts = {
 			submitUrl: '{$smarty.server.SCRIPT_NAME}',
-			saveRedirect: '{$smarty.server.SCRIPT_NAME}',
-			actions: actions
+			saveRedirect: '{$smarty.server.SCRIPT_NAME}'
 		};
 
+		var resourceTypes = new ResourceTypeManagement(opts);
+		resourceTypes.init();
 
-		{foreach from=$Resources item=resource}
-
+		{foreach from=$ResourceTypes item=type}
+		resourceTypes.add(
+				{
+					id:{$type->Id()},
+					name:"{$type->Name()|escape:'javascript'}",
+					description:"{$type->Description()|escape:'javascript'}"
+				});
 		{/foreach}
 	})
 

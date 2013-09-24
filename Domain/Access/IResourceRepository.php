@@ -114,6 +114,12 @@ interface IResourceRepository
 	public function GetResourceTypes();
 
 	/**
+	 * @param int $resourceTypeId
+	 * @return ResourceType
+	 */
+	public function LoadResourceType($resourceTypeId);
+
+	/**
 	 * @param ResourceType $type
 	 * @return int
 	 */

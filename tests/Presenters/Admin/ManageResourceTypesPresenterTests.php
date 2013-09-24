@@ -37,6 +37,10 @@ class ManageResourceTypesPresenterTests extends TestBase
 	 */
 	private $resourceRepository;
 
+	/**
+	 * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $attributeService;
 
 	public function setup()
 	{
@@ -44,23 +48,153 @@ class ManageResourceTypesPresenterTests extends TestBase
 
 		$this->page = $this->getMock('IManageResourceTypesPage');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->attributeService = $this->getMock('IAttributeService');
 
-		$this->presenter = new ManageResourceTypesPresenter($this->page, $this->fakeUser, $this->resourceRepository);
+		$this->presenter = new ManageResourceTypesPresenter($this->page, $this->fakeUser, $this->resourceRepository, $this->attributeService);
 	}
 
 	public function testBindsResourceTypes()
 	{
-		$types = array(new ResourceType(1,'name', 'desc'));
+		$types = array(new ResourceType(1, 'name', 'desc'));
+		$ids = array(1);
 
-		$this->resourceRepository->expects($this->once())
-					->method('GetResourceTypes')
-					->will($this->returnValue($types));
+		$attributes = $this->getMock('IEntityAttributeList');
 
-		$this->page->expects($this->once())
-					->method('BindResourceTypes')
-					->with($this->equalTo($types));
+		$this->resourceRepository
+				->expects($this->once())
+		->method('GetResourceTypes')
+		->will($this->returnValue($types));
+
+		$this->attributeService
+				->expects($this->once())
+		->method('GetAttributes')
+		->with($this->equalTo(CustomAttributeCategory::RESOURCE_TYPE), $this->equalTo($ids))
+		->will($this->returnValue($attributes));
+
+		$this->page
+				->expects($this->once())
+		->method('BindResourceTypes')
+		->with($this->equalTo($types));
+
+		$this->page
+				->expects($this->once())
+		->method('BindAttributeList')
+		->with($this->equalTo($attributes));
 
 		$this->presenter->PageLoad();
+	}
+
+	public function testAddsNewResourceType()
+	{
+		$name = 'name';
+		$description = 'description';
+		$this->page
+				->expects($this->once())
+		->method('GetName')
+		->will($this->returnValue($name));
+
+		$this->page
+				->expects($this->once())
+		->method('GetDescription')
+		->will($this->returnValue($description));
+
+		$type = ResourceType::CreateNew($name, $description);
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('AddResourceType')
+		->with($this->equalTo($type));
+
+		$this->presenter->Add();
+	}
+
+	public function testUpdatesResourceType()
+	{
+		$id = 1232;
+		$name = 'name';
+		$description = 'description';
+
+		$resourceType = new ResourceType($id, $name, $description);
+
+		$this->page
+				->expects($this->once())
+		->method('GetId')
+		->will($this->returnValue($id));
+
+		$this->page
+				->expects($this->once())
+		->method('GetName')
+		->will($this->returnValue($id));
+
+		$this->page
+				->expects($this->once())
+		->method('GetDescription')
+		->will($this->returnValue($id));
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('LoadResourceType')
+		->with($this->equalTo($id))
+		->will($this->returnValue($resourceType));
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('UpdateResourceType')
+		->with($this->equalTo($resourceType));
+
+		$this->presenter->Update();
+	}
+
+	public function testChangesAttributes()
+	{
+		$id = 1232;
+		$name = 'name';
+		$description = 'description';
+
+		$resourceType = new ResourceType($id, $name, $description);
+		$resourceType->ChangeAttributes(array(new AttributeValue(1, 'val')));
+
+		$attributeVals = array(new AttributeValue(1, 'val'));
+
+		$this->page
+				->expects($this->once())
+		->method('GetId')
+		->will($this->returnValue($id));
+
+		$this->page
+				->expects($this->once())
+		->method('GetAttributes')
+		->will($this->returnValue($attributeVals));
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('LoadResourceType')
+		->with($this->equalTo($id))
+		->will($this->returnValue($resourceType));
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('UpdateResourceType')
+		->with($this->equalTo($resourceType));
+
+		$this->presenter->ChangeAttributes();
+	}
+
+	public function testDeletesResourceType()
+	{
+		$id = 9919;
+
+		$this->page
+				->expects($this->once())
+		->method('GetId')
+		->will($this->returnValue($id));
+
+		$this->resourceRepository
+						->expects($this->once())
+				->method('RemoveResourceType')
+				->with($this->equalTo($id));
+
+		$this->presenter->Delete();
 	}
 }
 

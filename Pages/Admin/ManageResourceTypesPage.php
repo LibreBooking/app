@@ -24,9 +24,34 @@ require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 interface IManageResourceTypesPage extends IActionPage
 {
 	/**
-	 * @param ResourceTypes[]|array $types
+	 * @param ResourceType[]|array $types
 	 */
 	public function BindResourceTypes($types);
+
+	/**
+	 * @return int
+	 */
+	public function GetId();
+
+	/**
+	 * @return string
+	 */
+	public function GetName();
+
+	/**
+	 * @return string
+	 */
+	public function GetDescription();
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetAttributes();
+
+	/**
+	 * @param IEntityAttributeList $attributeList
+	 */
+	public function BindAttributeList($attributeList);
 }
 
 class ManageResourceTypesPage extends ActionPage implements IManageResourceTypesPage
@@ -40,8 +65,10 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	{
 		parent::__construct('ManageResourceTypes', 1);
 		$this->_presenter = new ManageResourceTypesPresenter($this,
-															 ServiceLocator::GetServer()->GetUserSession(),
-															 new ResourceRepository());
+															 ServiceLocator::GetServer()
+															 ->GetUserSession(),
+															 new ResourceRepository(),
+															 new AttributeService(new AttributeRepository()));
 	}
 
 	public function ProcessPageLoad()
@@ -69,11 +96,51 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	}
 
 	/**
-	 * @param ResourceTypes[]|array $types
+	 * @param ResourceType[]|array $types
 	 */
 	public function BindResourceTypes($types)
 	{
 		$this->Set('ResourceTypes', $types);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetName()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_TYPE_NAME);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetDescription()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_TYPE_DESCRIPTION);
+	}
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetAttributes()
+	{
+		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+	}
+
+	/**
+	 * @param IEntityAttributeList $attributeList
+	 */
+	public function BindAttributeList($attributeList)
+	{
+		$this->Set('AttributeList', $attributeList);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_TYPE_ID);
 	}
 }
 

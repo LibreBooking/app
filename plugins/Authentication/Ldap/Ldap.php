@@ -166,6 +166,12 @@ class Ldap extends Authentication implements IAuthentication
 			$this->Synchronize($username);
 		}
 
+		$repo = new UserRepository();
+		$user = $repo->LoadByUsername($username);
+		$user->Deactivate();
+		$user->Activate();
+		$repo->Update($user);
+
 		return $this->authToDecorate->Login($username, $loginContext);
 	}
 

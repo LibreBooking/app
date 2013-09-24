@@ -289,24 +289,20 @@ class ResourceRepository implements IResourceRepository
 		->Execute(new RemoveResourceFromGroupCommand($resourceId, $groupId));
 	}
 
-	public function AddResourceGroup(ResourceGroup $group) {
-
+	public function AddResourceGroup(ResourceGroup $group)
+	{
 		$id = ServiceLocator::GetDatabase()
-				->ExecuteInsert(new AddResourceGroupCommand($group->name, $group->parent_id));
+			  ->ExecuteInsert(new AddResourceGroupCommand($group->name, $group->parent_id));
 
 		$group->WithId($id);
 
 		return $group;
 	}
 
-	/**
-	 * @param int $groupId
-	 * @return ResourceGroup
-	 */
 	public function LoadResourceGroup($groupId)
 	{
 		$rows = ServiceLocator::GetDatabase()
-						  ->Query(new GetResourceGroupCommand($groupId));
+				->Query(new GetResourceGroupCommand($groupId));
 
 		if ($row = $rows->GetRow())
 		{
@@ -318,19 +314,22 @@ class ResourceRepository implements IResourceRepository
 
 	public function UpdateResourceGroup(ResourceGroup $group)
 	{
-		ServiceLocator::GetDatabase()->Execute(new UpdateResourceGroupCommand($group->id, $group->name, $group->parent_id));
+		ServiceLocator::GetDatabase()
+		->Execute(new UpdateResourceGroupCommand($group->id, $group->name, $group->parent_id));
 	}
 
 	public function DeleteResourceGroup($groupId)
 	{
-		ServiceLocator::GetDatabase()->Execute(new DeleteResourceGroupCommand($groupId));
+		ServiceLocator::GetDatabase()
+		->Execute(new DeleteResourceGroupCommand($groupId));
 	}
 
 	public function GetResourceTypes()
 	{
 		$types = array();
 
-		$reader = ServiceLocator::GetDatabase()->Query(new GetAllResourceTypesCommand());
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query(new GetAllResourceTypesCommand());
 
 		while ($row = $reader->GetRow())
 		{
@@ -342,19 +341,57 @@ class ResourceRepository implements IResourceRepository
 		return $types;
 	}
 
+	public function LoadResourceType($resourceTypeId)
+	{
+		$resourceType = null;
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query(new GetResourceTypeCommand($resourceTypeId));
+		if ($row = $reader->GetRow())
+		{
+			$resourceType = new ResourceType($row[ColumnNames::RESOURCE_TYPE_ID], $row[ColumnNames::RESOURCE_TYPE_NAME], $row[ColumnNames::RESOURCE_TYPE_DESCRIPTION]);
+
+			$getAttributes = new GetAttributeValuesCommand($resourceTypeId, CustomAttributeCategory::RESOURCE_TYPE);
+			$attributeReader = ServiceLocator::GetDatabase()
+							   ->Query($getAttributes);
+
+			while ($attributeRow = $attributeReader->GetRow())
+			{
+				$resourceType->WithAttribute(new AttributeValue($attributeRow[ColumnNames::ATTRIBUTE_ID], $attributeRow[ColumnNames::ATTRIBUTE_VALUE]));
+			}
+
+			$attributeReader->Free();
+		}
+
+		$reader->Free();
+		return $resourceType;
+	}
+
 	public function AddResourceType(ResourceType $type)
 	{
-		return ServiceLocator::GetDatabase()->ExecuteInsert(new AddResourceTypeCommand($type->Name(), $type->Description()));
+		return ServiceLocator::GetDatabase()
+			   ->ExecuteInsert(new AddResourceTypeCommand($type->Name(), $type->Description()));
 	}
 
 	public function UpdateResourceType(ResourceType $type)
 	{
-		ServiceLocator::GetDatabase()->Execute(new UpdateResourceTypeCommand($type->Id(), $type->Name(), $type->Description()));
+		$db = ServiceLocator::GetDatabase();
+		$db->Execute(new UpdateResourceTypeCommand($type->Id(), $type->Name(), $type->Description()));
+
+		foreach ($type->GetRemovedAttributes() as $removed)
+		{
+			$db->Execute(new RemoveAttributeValueCommand($removed->AttributeId, $type->Id()));
+		}
+
+		foreach ($type->GetAddedAttributes() as $added)
+		{
+			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $type->Id(), CustomAttributeCategory::RESOURCE_TYPE));
+		}
 	}
 
 	public function RemoveResourceType($id)
 	{
-		ServiceLocator::GetDatabase()->Execute(new DeleteResourceTypeCommand($id));
+		ServiceLocator::GetDatabase()
+		->Execute(new DeleteResourceTypeCommand($id));
 	}
 }
 

@@ -35,6 +35,11 @@ class ResourceType
 	 */
 	private $description;
 
+	/**
+	 * @var array|AttributeValue[]
+	 */
+	private $attributeValues = array();
+
 	public function __construct($id, $name, $description)
 	{
 		$this->id = $id;
@@ -75,6 +80,105 @@ class ResourceType
 	{
 		return $this->description;
 	}
+
+	/**
+	 * @param $name string
+	 */
+	public function SetName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @param $description string
+	 */
+	public function SetDescription($description)
+	{
+		$this->description = $description;
+	}
+
+	public function WithAttribute(AttributeValue $attribute)
+	{
+		$this->attributeValues[$attribute->AttributeId] = $attribute;
+	}
+
+	/**
+	 * @var array|AttributeValue[]
+	 */
+	private $addedAttributeValues = array();
+
+	/**
+	 * @var array|AttributeValue[]
+	 */
+	private $removedAttributeValues = array();
+
+	/**
+	 * @param $attributes AttributeValue[]|array
+	 */
+	public function ChangeAttributes($attributes)
+	{
+		$diff = new ArrayDiff($this->attributeValues, $attributes);
+
+		$added = $diff->GetAddedToArray1();
+		$removed = $diff->GetRemovedFromArray1();
+
+		/** @var $attribute AttributeValue */
+		foreach ($added as $attribute)
+		{
+			$this->addedAttributeValues[] = $attribute;
+		}
+
+		/** @var $accessory AttributeValue */
+		foreach ($removed as $attribute)
+		{
+			$this->removedAttributeValues[] = $attribute;
+		}
+
+		foreach ($attributes as $attribute)
+		{
+			$this->AddAttributeValue($attribute);
+		}
+	}
+
+	/**
+	 * @param $attributeValue AttributeValue
+	 */
+	public function AddAttributeValue($attributeValue)
+	{
+		$this->attributeValues[$attributeValue->AttributeId] = $attributeValue;
+	}
+
+	/**
+	 * @return array|AttributeValue[]
+	 */
+	public function GetAddedAttributes()
+	{
+		return $this->addedAttributeValues;
+	}
+
+	/**
+	 * @return array|AttributeValue[]
+	 */
+	public function GetRemovedAttributes()
+	{
+		return $this->removedAttributeValues;
+	}
+
+	/**
+	 * @param $customAttributeId
+	 * @return mixed
+	 */
+	public function GetAttributeValue($customAttributeId)
+	{
+		if (array_key_exists($customAttributeId, $this->attributeValues))
+		{
+			return $this->attributeValues[$customAttributeId]->Value;
+		}
+
+		return null;
+	}
+
+
 }
 
 ?>

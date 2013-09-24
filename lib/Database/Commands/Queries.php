@@ -458,6 +458,8 @@ class Queries
 
 	const GET_RESOURCE_GROUP_BY_ID = 'SELECT * FROM resource_groups WHERE resource_group_id = @resourcegroupid';
 
+	const GET_RESOURCE_TYPE_BY_ID = 'SELECT * FROM resource_types WHERE resource_type_id = @resource_type_id';
+
 	const GET_RESERVATION_BY_ID =
 			'SELECT *
 		FROM reservation_instances r

@@ -432,12 +432,34 @@ class ResourceRepositoryTests extends TestBase
 
 	public function testUpdatesResourceType()
 	{
-		$type = new ResourceType(1, 'name', 'desc');
+		$unchanged = new AttributeValue(1, 'value');
+		$toChange = new AttributeValue(2, 'value');
+		$toAdd = new AttributeValue(3, 'value');
+
+		$id = 11;
+		$type = new ResourceType($id, 'name', 'desc');
+
+		$type->WithAttribute($unchanged);
+		$type->WithAttribute(new AttributeValue(100, 'should be removed'));
+		$type->WithAttribute(new AttributeValue(2, 'new value'));
+
+		$attributes = array($unchanged, $toChange, $toAdd);
+
+		$type->ChangeAttributes($attributes);
 
 		$this->repository->UpdateResourceType($type);
 
+		$addNewCommand = new AddAttributeValueCommand($toAdd->AttributeId, $toAdd->Value, $id, CustomAttributeCategory::RESOURCE_TYPE);
+		$removeOldCommand = new RemoveAttributeValueCommand(100, $id);
+		$removeUpdated = new RemoveAttributeValueCommand($toChange->AttributeId, $id);
+		$addUpdated = new AddAttributeValueCommand($toChange->AttributeId, $toChange->Value, $id, CustomAttributeCategory::RESOURCE_TYPE);
 		$expectedCommand = new UpdateResourceTypeCommand($type->Id(), $type->Name(), $type->Description());
-		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+
+		$this->assertEquals($expectedCommand, $this->db->_Commands[0]);
+		$this->assertEquals($removeOldCommand, $this->db->_Commands[1]);
+		$this->assertEquals($removeUpdated, $this->db->_Commands[2], "need to remove before adding to make sure changed values are not immediately deleted");
+		$this->assertEquals($addUpdated, $this->db->_Commands[3]);
+		$this->assertEquals($addNewCommand, $this->db->_Commands[4]);
 	}
 
 	public function testRemovesResourceType()
@@ -446,6 +468,29 @@ class ResourceRepositoryTests extends TestBase
 
 		$expectedCommand = new DeleteResourceTypeCommand(123);
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
+	}
+
+	public function testLoadsResourceType()
+	{
+		$rows = new ResourceTypeRow();
+		$rows->With(1, 'resourcetype1', 'description');
+
+		$car = new CustomAttributeValueRow();
+		$car
+		->With(1, 'value')
+		->With(2, 'value2');
+		$this->db->SetRow(0, $rows->Rows());
+		$this->db->SetRow(1, $car->Rows());
+
+		$resourceType = $this->repository->LoadResourceType(123);
+
+		$this->assertEquals(1, $resourceType->Id());
+		$this->assertEquals('resourcetype1', $resourceType->Name());
+
+		$this->assertTrue($this->db->ContainsCommand(new GetResourceTypeCommand(123)));
+		$this->assertTrue($this->db->ContainsCommand(new GetAttributeValuesCommand(123, CustomAttributeCategory::RESOURCE_TYPE)));
+		$this->assertEquals('value', $resourceType->GetAttributeValue(1));
+		$this->assertEquals('value2', $resourceType->GetAttributeValue(2));
 	}
 }
 

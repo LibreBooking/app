@@ -1,7 +1,7 @@
 // javascript for enabling drop down sub menus in main navigation
 
 var timeout = 500;
-var closetimer = 0;
+var closetimer = 500;
 var submenuitem = 0;
 
 // open hidden layer
