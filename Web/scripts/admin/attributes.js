@@ -275,7 +275,7 @@ function AttributeManagement(opts)
 
 		if (categoryId == options.categories.resource_type)
 		{
-			alert('resource_type');
+			data = getResourceTypes();
 		}
 
 		var items = ['<li><a href="#" entity-id="">' + options.allText + '</a></li>'];
@@ -315,6 +315,23 @@ function AttributeManagement(opts)
 				{
 					items = $.map(data, function(item, index) {
 						return {Id : item.UserId, Name : item.FullName};
+					});
+				});
+
+		return items;
+	};
+
+	var getResourceTypes = function ()
+	{
+		var items = [];
+		$.ajax({
+					url: options.resourceTypesUrl,
+					async: false
+				}
+		).done(function (data)
+				{
+					items = $.map(data, function(item, index) {
+						return {Id : item.Id, Name : item.Name};
 					});
 				});
 

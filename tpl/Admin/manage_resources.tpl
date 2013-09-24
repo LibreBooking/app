@@ -28,212 +28,221 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {foreach from=$Resources item=resource}
 	{assign var=id value=$resource->GetResourceId()}
 	<div class="resourceDetails" resourceId="{$id}">
-		<div style="float:left;max-width:50%;">
-			<input type="hidden" class="id" value="{$id}"/>
+	<div style="float:left;max-width:50%;">
+		<input type="hidden" class="id" value="{$id}"/>
 
-			<div style="float:left; text-align:center; width:110px;">
-				{if $resource->HasImage()}
-					<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/>
-					<br/>
-					<a class="update imageButton" href="javascript: void(0);">{translate key='Change'}</a>
-					|
-					<a class="update removeImageButton" href="javascript: void(0);">{translate key='Remove'}</a>
-				{else}
-					<div class="noImage">{translate key='NoImage'}</div>
-					<a class="update imageButton" href="javascript: void(0);">{translate key='AddImage'}</a>
-				{/if}
-			</div>
-			<div style="float:right;">
-				<ul>
-					<li>
-						<h4>{$resource->GetName()|escape}</h4>
-						<a class="update renameButton" href="javascript:void(0);">{translate key='Rename'}</a> |
-						<a class="update deleteButton" href="javascript:void(0);">{translate key='Delete'}</a>
-					</li>
-					<li>
-						{translate key='Status'}
-						{if $resource->IsOnline()}
-							{html_image src="status.png"}
-							<a class="update takeOfflineButton"
-							   href="javascript: void(0);">{translate key='TakeOffline'}</a>
-						{else}
-							{html_image src="status-busy.png"}
-							<a class="update bringOnlineButton"
-							   href="javascript: void(0);">{translate key='BringOnline'}</a>
-						{/if}
-
-					</li>
-
-					<li>
-						{translate key='AppearsOn' args=$Schedules[$resource->GetScheduleId()]} {translate key='Schedule'}
-						<a class="update changeScheduleButton" href="javascript: void(0);">{translate key='Move'}</a>
-					</li>
-					<li>
-						{translate key=SortOrder}
-						{$resource->GetSortOrder()|default:"-"}
-						<a class="update changeSortOrder" href="javascript: void(0);">{translate key='Edit'}</a>
-					</li>
-					<li>
-						{translate key='Location'}
-						{if $resource->HasLocation()}
-							{$resource->GetLocation()}
-						{else}
-							<span class="note">{translate key='NoLocationLabel'}</span>
-						{/if}
-						<a class="update changeLocationButton" href="javascript: void(0);">{translate key='Edit'}</a>
-					</li>
-					<li>
-						{translate key='Contact'}
-						{if $resource->HasContact()}
-							{$resource->GetContact()}
-						{else}
-							<span class="note">{translate key='NoContactLabel'}</span>
-						{/if}
-					</li>
-					<li>
-						{translate key='Description'}
-						{if $resource->HasDescription()}
-							{$resource->GetDescription()|truncate:500:"..."}
-						{else}
-							<span class="note">{translate key='NoDescriptionLabel'}</span>
-						{/if}
-						<a class="update descriptionButton" href="javascript: void(0);">{translate key='Edit'}</a>
-					</li>
-					<li>
-						{translate key='Notes'}
-						{if $resource->HasNotes()}
-							{$resource->GetNotes()|truncate:500:"..."}
-						{else}
-							<span class="note">{translate key='NoNotesLabel'}</span>
-						{/if}
-						<a class="update notesButton" href="javascript: void(0);">{translate key='Edit'}</a>
-					</li>
-					<li>
-						{translate key='ResourceAdministrator'}
-						{if $resource->HasAdminGroup()}
-							{$GroupLookup[$resource->GetAdminGroupId()]->Name}
-						{else}
-							<span class="note">{translate key='NoResourceAdministratorLabel'}</span>
-						{/if}
-						{if $AdminGroups|count > 0}
-							<a class="update adminButton" href="javascript: void(0);">{translate key='Edit'}</a>
-						{/if}
-					</li>
-					<li>
-						{if $resource->GetIsCalendarSubscriptionAllowed()}
-							<a class="update disableSubscription"
-							   href="javascript: void(0);">{translate key=TurnOffSubscription}</a>
-						{else}
-							<a class="update enableSubscription"
-							   href="javascript: void(0);">{translate key=TurnOnSubscription}</a>
-						{/if}
-					</li>
-				</ul>
-			</div>
+		<div style="float:left; text-align:center; width:110px;">
+			{if $resource->HasImage()}
+				<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/>
+				<br/>
+				<a class="update imageButton" href="javascript: void(0);">{translate key='Change'}</a>
+				|
+				<a class="update removeImageButton" href="javascript: void(0);">{translate key='Remove'}</a>
+			{else}
+				<div class="noImage">{translate key='NoImage'}</div>
+				<a class="update imageButton" href="javascript: void(0);">{translate key='AddImage'}</a>
+			{/if}
 		</div>
-		<div style="float:right">
-			<div>
-				<h5>{translate key='UsageConfiguration'}</h5> <a class="update changeConfigurationButton"
-																 href="javascript: void(0);">{translate key='ChangeConfiguration'}</a>
-			</div>
-			<div style="float:left;width:300px;">
-				<ul>
-					<li>
-						{if $resource->HasMinLength()}
-							{translate key='ResourceMinLength' args=$resource->GetMinLength()}
-						{else}
-							{translate key='ResourceMinLengthNone'}
-						{/if}
-					</li>
-					<li>
-						{if $resource->HasMaxLength()}
-							{translate key='ResourceMaxLength' args=$resource->GetMaxLength()}
-						{else}
-							{translate key='ResourceMaxLengthNone'}
-						{/if}
-					</li>
-					<li>
-						{if $resource->GetRequiresApproval()}
-							{translate key='ResourceRequiresApproval'}
-						{else}
-							{translate key='ResourceRequiresApprovalNone'}
-						{/if}
-					</li>
-					<li>
-						{if $resource->GetAutoAssign()}
-							{translate key='ResourcePermissionAutoGranted'}
-						{else}
-							{translate key='ResourcePermissionNotAutoGranted'}
-						{/if}
-					</li>
-				</ul>
-			</div>
+		<div style="float:right;">
+			<ul>
+				<li>
+					<h4>{$resource->GetName()|escape}</h4>
+					<a class="update renameButton" href="javascript:void(0);">{translate key='Rename'}</a> |
+					<a class="update deleteButton" href="javascript:void(0);">{translate key='Delete'}</a>
+				</li>
+				<li>
+					{translate key='Status'}
+					{if $resource->IsOnline()}
+						{html_image src="status.png"}
+						<a class="update takeOfflineButton"
+						   href="javascript: void(0);">{translate key='TakeOffline'}</a>
+					{else}
+						{html_image src="status-busy.png"}
+						<a class="update bringOnlineButton"
+						   href="javascript: void(0);">{translate key='BringOnline'}</a>
+					{/if}
 
-			<div style="float:right;width:300px;">
-				<ul>
-					<li>
-						{if $resource->HasMinNotice()}
-							{translate key='ResourceMinNotice' args=$resource->GetMinNotice()}
-						{else}
-							{translate key='ResourceMinNoticeNone'}
-						{/if}
-					</li>
-					<li>
-						{if $resource->HasMaxNotice()}
-							{translate key='ResourceMaxNotice' args=$resource->GetMaxNotice()}
-						{else}
-							{translate key='ResourceMaxNoticeNone'}
-						{/if}
-					</li>
-					<li>
-						{if $resource->GetAllowMultiday()}
-							{translate key='ResourceAllowMultiDay'}
-						{else}
-							{translate key='ResourceNotAllowMultiDay'}
-						{/if}
-					</li>
-					<li>
-						{if $resource->HasMaxParticipants()}
-							{translate key='ResourceCapacity' args=$resource->GetMaxParticipants()}
-						{else}
-							{translate key='ResourceCapacityNone'}
-						{/if}
-					</li>
-				</ul>
-			</div>
+				</li>
+
+				<li>
+					{translate key='Schedule'} <span class="resourceValue">{$Schedules[$resource->GetScheduleId()]}</span>
+					<a class="update changeScheduleButton" href="javascript: void(0);">{translate key='Move'}</a>
+				</li>
+				<li>
+					{translate key='ResourceType'}
+					{if $resource->HasResourceType()}
+						<span class="resourceValue">{$ResourceTypes[$resource->GetResourceTypeId()]}</span>
+					{else}
+						<span class="note">{translate key='NoResourceTypeLabel'}</span>
+					{/if}
+					<a class="update changeResourceType" href="javascript: void(0);">{translate key='Edit'}</a>
+				</li>
+				<li>
+					{translate key=SortOrder}
+					<span class="resourceValue">{$resource->GetSortOrder()|default:"-"}</span>
+					<a class="update changeSortOrder" href="javascript: void(0);">{translate key='Edit'}</a>
+				</li>
+				<li>
+					{translate key='Location'}
+					{if $resource->HasLocation()}
+						<span class="resourceValue">{$resource->GetLocation()}</span>
+					{else}
+						<span class="note">{translate key='NoLocationLabel'}</span>
+					{/if}
+					<a class="update changeLocationButton" href="javascript: void(0);">{translate key='Edit'}</a>
+				</li>
+				<li>
+					{translate key='Contact'}
+					{if $resource->HasContact()}
+						<span class="resourceValue">{$resource->GetContact()}</span>
+					{else}
+						<span class="note">{translate key='NoContactLabel'}</span>
+					{/if}
+				</li>
+				<li>
+					{translate key='Description'}
+					{if $resource->HasDescription()}
+						<span class="resourceValue">{$resource->GetDescription()|truncate:500:"..."}</span>
+					{else}
+						<span class="note">{translate key='NoDescriptionLabel'}</span>
+					{/if}
+					<a class="update descriptionButton" href="javascript: void(0);">{translate key='Edit'}</a>
+				</li>
+				<li>
+					{translate key='Notes'}
+					{if $resource->HasNotes()}
+						<span class="resourceValue">{$resource->GetNotes()|truncate:500:"..."}</span>
+					{else}
+						<span class="note">{translate key='NoNotesLabel'}</span>
+					{/if}
+					<a class="update notesButton" href="javascript: void(0);">{translate key='Edit'}</a>
+				</li>
+				<li>
+					{translate key='ResourceAdministrator'}
+					{if $resource->HasAdminGroup()}
+						<span class="resourceValue">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>
+					{else}
+						<span class="note">{translate key='NoResourceAdministratorLabel'}</span>
+					{/if}
+					{if $AdminGroups|count > 0}
+						<a class="update adminButton" href="javascript: void(0);">{translate key='Edit'}</a>
+					{/if}
+				</li>
+				<li>
+					{if $resource->GetIsCalendarSubscriptionAllowed()}
+						<a class="update disableSubscription"
+						   href="javascript: void(0);">{translate key=TurnOffSubscription}</a>
+					{else}
+						<a class="update enableSubscription"
+						   href="javascript: void(0);">{translate key=TurnOnSubscription}</a>
+					{/if}
+				</li>
+			</ul>
 		</div>
-		{assign var=attributes value=$AttributeList->GetAttributes($id)}
-		{if $attributes|count > 0}
-			<div class="customAttributes">
-				<form method="post" class="attributesForm">
-					<h3>{translate key=AdditionalAttributes} <a href="#"
-																class="update changeAttributes">{translate key=Edit}</a>
-					</h3>
+	</div>
+	<div style="float:right">
+		<div>
+			<h5>{translate key='UsageConfiguration'}</h5> <a class="update changeConfigurationButton"
+															 href="javascript: void(0);">{translate key='ChangeConfiguration'}</a>
+		</div>
+		<div style="float:left;width:300px;">
+			<ul>
+				<li>
+					{if $resource->HasMinLength()}
+						{translate key='ResourceMinLength' args=$resource->GetMinLength()}
+					{else}
+						{translate key='ResourceMinLengthNone'}
+					{/if}
+				</li>
+				<li>
+					{if $resource->HasMaxLength()}
+						{translate key='ResourceMaxLength' args=$resource->GetMaxLength()}
+					{else}
+						{translate key='ResourceMaxLengthNone'}
+					{/if}
+				</li>
+				<li>
+					{if $resource->GetRequiresApproval()}
+						{translate key='ResourceRequiresApproval'}
+					{else}
+						{translate key='ResourceRequiresApprovalNone'}
+					{/if}
+				</li>
+				<li>
+					{if $resource->GetAutoAssign()}
+						{translate key='ResourcePermissionAutoGranted'}
+					{else}
+						{translate key='ResourcePermissionNotAutoGranted'}
+					{/if}
+				</li>
+			</ul>
+		</div>
 
-					<div class="validationSummary">
-						<ul>
-						</ul>
-						<div class="clear">&nbsp;</div>
-					</div>
+		<div style="float:right;width:300px;">
+			<ul>
+				<li>
+					{if $resource->HasMinNotice()}
+						{translate key='ResourceMinNotice' args=$resource->GetMinNotice()}
+					{else}
+						{translate key='ResourceMinNoticeNone'}
+					{/if}
+				</li>
+				<li>
+					{if $resource->HasMaxNotice()}
+						{translate key='ResourceMaxNotice' args=$resource->GetMaxNotice()}
+					{else}
+						{translate key='ResourceMaxNoticeNone'}
+					{/if}
+				</li>
+				<li>
+					{if $resource->GetAllowMultiday()}
+						{translate key='ResourceAllowMultiDay'}
+					{else}
+						{translate key='ResourceNotAllowMultiDay'}
+					{/if}
+				</li>
+				<li>
+					{if $resource->HasMaxParticipants()}
+						{translate key='ResourceCapacity' args=$resource->GetMaxParticipants()}
+					{else}
+						{translate key='ResourceCapacityNone'}
+					{/if}
+				</li>
+			</ul>
+		</div>
+	</div>
+	{assign var=attributes value=$AttributeList->GetAttributes($id)}
+	{if $attributes|count > 0}
+		<div class="customAttributes">
+			<form method="post" class="attributesForm">
+				<h3>{translate key=AdditionalAttributes} <a href="#"
+															class="update changeAttributes">{translate key=Edit}</a>
+				</h3>
+
+				<div class="validationSummary">
 					<ul>
-						{foreach from=$attributes item=attribute}
-							<li class="customAttribute" attributeId="{$attribute->Id()}">
-								<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>
-								<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}
-							</li>
-						{/foreach}
 					</ul>
-					<div class="attribute-readwrite hidden clear">
-						<button type="button"
-								class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-						<button type="button"
-								class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-					</div>
-				</form>
-			</div>
-			<div class="clear">&nbsp;</div>
-		{/if}
-		<div class="actions">&nbsp;</div>
+					<div class="clear">&nbsp;</div>
+				</div>
+				<ul>
+					{foreach from=$attributes item=attribute}
+						<li class="customAttribute" attributeId="{$attribute->Id()}">
+							<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+							<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}
+						</li>
+					{/foreach}
+				</ul>
+				<div class="attribute-readwrite hidden clear">
+					<button type="button"
+							class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+					<button type="button"
+							class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+				</div>
+			</form>
+		</div>
+		<div class="clear">&nbsp;</div>
+	{/if}
+	<div class="actions">&nbsp;</div>
 	</div>
 {/foreach}
 </div>
@@ -319,6 +328,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<select id="editSchedule" class="textbox" {formname key=SCHEDULE_ID}>
 			{foreach from=$Schedules item=scheduleName key=scheduleId}
 				<option value="{$scheduleId}">{$scheduleName}</option>
+			{/foreach}
+		</select>
+		<br/><br/>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
+<div id="resourceTypeDialog" class="dialog" style="display:none;" title="{translate key=ResourceType}">
+	<form id="resourceTypeForm" method="post">
+		{translate key=ResourceType}:
+		<select id="editResourceType" class="textbox" {formname key=RESOURCE_TYPE_ID}>
+			{foreach from=$ResourceTypes item=resourceType key=id}
+				<option value="{$id}">{$resourceType->Name()}</option>
 			{/foreach}
 		</select>
 		<br/><br/>

@@ -92,6 +92,8 @@ class BookableResource implements IResource
 	protected $_publicId;
 	protected $_scheduleAdminGroupId;
 	protected $_sortOrder;
+	protected $_resourceTypeId;
+
 	/**
 	 * @var array|AttributeValue[]
 	 */
@@ -143,20 +145,20 @@ class BookableResource implements IResource
 	public static function CreateNew($resourceName, $scheduleId, $autoAssign = false, $order = 0)
 	{
 		return new BookableResource(null,
-			$resourceName,
-			null,
-			null,
-			null,
-			null,
-			null,
-			$autoAssign,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			$scheduleId);
+									$resourceName,
+									null,
+									null,
+									null,
+									null,
+									null,
+									$autoAssign,
+									null,
+									null,
+									null,
+									null,
+									null,
+									null,
+									$scheduleId);
 	}
 
 	/**
@@ -166,20 +168,20 @@ class BookableResource implements IResource
 	public static function Create($row)
 	{
 		$resource = new BookableResource($row[ColumnNames::RESOURCE_ID],
-			$row[ColumnNames::RESOURCE_NAME],
-			$row[ColumnNames::RESOURCE_LOCATION],
-			$row[ColumnNames::RESOURCE_CONTACT],
-			$row[ColumnNames::RESOURCE_NOTES],
-			$row[ColumnNames::RESOURCE_MINDURATION],
-			$row[ColumnNames::RESOURCE_MAXDURATION],
-			$row[ColumnNames::RESOURCE_AUTOASSIGN],
-			$row[ColumnNames::RESOURCE_REQUIRES_APPROVAL],
-			$row[ColumnNames::RESOURCE_ALLOW_MULTIDAY],
-			$row[ColumnNames::RESOURCE_MAX_PARTICIPANTS],
-			$row[ColumnNames::RESOURCE_MINNOTICE],
-			$row[ColumnNames::RESOURCE_MAXNOTICE],
-			$row[ColumnNames::RESOURCE_DESCRIPTION],
-			$row[ColumnNames::SCHEDULE_ID]);
+										 $row[ColumnNames::RESOURCE_NAME],
+										 $row[ColumnNames::RESOURCE_LOCATION],
+										 $row[ColumnNames::RESOURCE_CONTACT],
+										 $row[ColumnNames::RESOURCE_NOTES],
+										 $row[ColumnNames::RESOURCE_MINDURATION],
+										 $row[ColumnNames::RESOURCE_MAXDURATION],
+										 $row[ColumnNames::RESOURCE_AUTOASSIGN],
+										 $row[ColumnNames::RESOURCE_REQUIRES_APPROVAL],
+										 $row[ColumnNames::RESOURCE_ALLOW_MULTIDAY],
+										 $row[ColumnNames::RESOURCE_MAX_PARTICIPANTS],
+										 $row[ColumnNames::RESOURCE_MINNOTICE],
+										 $row[ColumnNames::RESOURCE_MAXNOTICE],
+										 $row[ColumnNames::RESOURCE_DESCRIPTION],
+										 $row[ColumnNames::SCHEDULE_ID]);
 
 		$resource->SetImage($row[ColumnNames::RESOURCE_IMAGE_NAME]);
 		$resource->SetAdminGroupId($row[ColumnNames::RESOURCE_ADMIN_GROUP_ID]);
@@ -194,6 +196,7 @@ class BookableResource implements IResource
 		$resource->WithPublicId($row[ColumnNames::PUBLIC_ID]);
 		$resource->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
 		$resource->WithScheduleAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS]);
+		$resource->SetResourceTypeId($row[ColumnNames::RESOURCE_TYPE_ID]);
 
 		return $resource;
 	}
@@ -734,6 +737,31 @@ class BookableResource implements IResource
 	{
 		return $this->_sortOrder;
 	}
+
+	/**
+	 * @param int $resourceTypeId
+	 */
+	public function SetResourceTypeId($resourceTypeId)
+	{
+		$this->_resourceTypeId = $resourceTypeId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceTypeId()
+	{
+		return $this->_resourceTypeId;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasResourceType()
+	{
+		return !empty($this->_resourceTypeId);
+	}
+
 }
 
 ?>

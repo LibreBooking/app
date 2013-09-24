@@ -474,6 +474,7 @@ class en_us extends Language
 		$strings['AppliesTo'] = 'Applies To';
 		$strings['UniquePerInstance'] = 'Unique Per Instance';
 		$strings['AddResourceType'] = 'Add Resource Type';
+		$strings['NoResourceTypeLabel'] = '(no resource type set)';
 		// End Strings
 
 		// Install

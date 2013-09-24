@@ -127,6 +127,16 @@ class ManageResourcesPresenter extends ActionPresenter
 		}
 		$this->page->BindSchedules($scheduleList);
 
+		$resourceTypes = $this->resourceRepository->GetResourceTypes();
+		$resourceTypeList = array();
+
+		/* @var $resourceType ResourceType */
+		foreach ($resourceTypes as $resourceType)
+		{
+			$resourceTypeList[$resourceType->Id()] = $resourceType;
+		}
+		$this->page->BindResourceTypes($resourceTypeList);
+
 		$groups = $this->groupRepository->GetGroupsByRole(RoleLevel::RESOURCE_ADMIN);
 		$this->page->BindAdminGroups($groups);
 

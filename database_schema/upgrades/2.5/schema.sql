@@ -35,3 +35,6 @@ CREATE TABLE `resource_types` (
 
 ALTER TABLE `custom_attributes` ADD COLUMN `entity_id` mediumint(8) unsigned;
 
+ALTER TABLE `resources` ADD COLUMN `resource_type_id` mediumint(8) unsigned;
+ALTER TABLE `resources` ADD FOREIGN KEY (`resource_type_id`) REFERENCES resource_types(`resource_type_id`) ON DELETE CASCADE;
+

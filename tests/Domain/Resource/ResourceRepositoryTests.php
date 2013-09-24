@@ -85,6 +85,7 @@ class ResourceRepositoryTests extends TestBase
 		$adminGroupId = 232;
 		$allowSubscription = true;
 		$sortOrder = 3;
+		$resourceTypeId = 111;
 
 		$resource = new BookableResource($id,
 										 $name,
@@ -106,6 +107,7 @@ class ResourceRepositoryTests extends TestBase
 		$resource->SetAdminGroupId($adminGroupId);
 		$resource->EnableSubscription();
 		$resource->SetSortOrder($sortOrder);
+		$resource->SetResourceTypeId($resourceTypeId);
 
 		$publicId = $resource->GetPublicId();
 
@@ -132,7 +134,8 @@ class ResourceRepositoryTests extends TestBase
 			$adminGroupId,
 			$allowSubscription,
 			$publicId,
-			$sortOrder);
+			$sortOrder,
+			$resourceTypeId);
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
 

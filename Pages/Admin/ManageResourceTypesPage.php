@@ -52,19 +52,24 @@ interface IManageResourceTypesPage extends IActionPage
 	 * @param IEntityAttributeList $attributeList
 	 */
 	public function BindAttributeList($attributeList);
+
+	/**
+	 * @param ResourceTypeJson[] $resourceTypes
+	 */
+	public function SetResourceTypesJson($resourceTypes);
 }
 
 class ManageResourceTypesPage extends ActionPage implements IManageResourceTypesPage
 {
 	/**
-	 * @var ManageResourcesPresenter
+	 * @var ManageResourceTypesPresenter
 	 */
-	protected $_presenter;
+	protected $presenter;
 
 	public function __construct()
 	{
 		parent::__construct('ManageResourceTypes', 1);
-		$this->_presenter = new ManageResourceTypesPresenter($this,
+		$this->presenter = new ManageResourceTypesPresenter($this,
 															 ServiceLocator::GetServer()
 															 ->GetUserSession(),
 															 new ResourceRepository(),
@@ -73,7 +78,7 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 
 	public function ProcessPageLoad()
 	{
-		$this->_presenter->PageLoad();
+		$this->presenter->PageLoad();
 
 		$this->Display('Admin/manage_resource_types.tpl');
 	}
@@ -83,7 +88,7 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	 */
 	public function ProcessAction()
 	{
-		$this->_presenter->ProcessAction();
+		$this->presenter->ProcessAction();
 	}
 
 	/**
@@ -92,7 +97,7 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	 */
 	public function ProcessDataRequest($dataRequest)
 	{
-		// TODO: Implement ProcessDataRequest() method.
+		$this->presenter->ProcessDataRequest($dataRequest);
 	}
 
 	/**
@@ -141,6 +146,14 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	public function GetId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_TYPE_ID);
+	}
+
+	/**
+	 * @param ResourceTypeJson[] $resourceTypes
+	 */
+	public function SetResourceTypesJson($resourceTypes)
+	{
+		$this->SetJson($resourceTypes);
 	}
 }
 

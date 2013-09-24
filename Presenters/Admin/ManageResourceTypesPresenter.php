@@ -140,6 +140,15 @@ class ManageResourceTypesPresenter extends ActionPresenter
 		return $attributes;
 	}
 
+	public function ProcessDataRequest($dataRequest)
+	{
+		if ($dataRequest == 'all')
+		{
+			$this->page->SetResourceTypesJson(array_map(array('ResourceTypeJson', 'FromResourceType'),
+													$this->resourceRepository->GetResourceTypes()));
+		}
+	}
+
 	protected function LoadValidators($action)
 	{
 		if ($action == ManageResourceTypesActions::ChangeAttributes)
@@ -148,6 +157,27 @@ class ManageResourceTypesPresenter extends ActionPresenter
 			$this->page->RegisterValidator('attributeValidator',
 										   new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE_TYPE, $attributes, $this->page->GetId()));
 		}
+	}
+}
+
+class ResourceTypeJson
+{
+	public $Id;
+	public $Name;
+
+	public function __construct($id, $name)
+	{
+		$this->Id = $id;
+		$this->Name = $name;
+	}
+
+	/**
+	 * @param ResourceType $resourceType
+	 * @return ResourceTypeJson
+	 */
+	public static function FromResourceType($resourceType)
+	{
+		return new ResourceTypeJson($resourceType->Id(), $resourceType->Name());
 	}
 }
 

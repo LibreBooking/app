@@ -18,6 +18,7 @@
 
 .admin {
 	border: solid 1px #CECFCE;
+	font-size:12px;
 }
 
 .admin div {
@@ -340,4 +341,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
 	background-image: url(../img/admin-ajax-indicator.gif);
 	width: 35px;
 	height:35px;
+}
+
+.resourceValue {
+	font-weight: bold;
 }

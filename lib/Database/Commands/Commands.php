@@ -1706,7 +1706,8 @@ class UpdateResourceCommand extends SqlCommand
 								$adminGroupId,
 								$allowCalendarSubscription,
 								$publicId,
-								$sortOrder)
+								$sortOrder,
+								$resourceTypeId)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -1731,6 +1732,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$allowCalendarSubscription));
 		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_SORT_ORDER, $sortOrder));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $resourceTypeId));
 	}
 }
 

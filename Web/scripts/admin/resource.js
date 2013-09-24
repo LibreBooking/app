@@ -14,6 +14,7 @@ function ResourceManagement(opts) {
 		configurationDialog:$('#configurationDialog'),
 		groupAdminDialog:$('#groupAdminDialog'),
 		sortOrderDialog:$('#sortOrderDialog'),
+		resourceTypeDialog:$('#resourceTypeDialog'),
 
 		renameForm:$('#renameForm'),
 		imageForm:$('#imageForm'),
@@ -26,6 +27,7 @@ function ResourceManagement(opts) {
 		groupAdminForm:$('#groupAdminForm'),
 		attributeForm:$('.attributesForm'),
 		sortOrderForm:$('#sortOrderForm'),
+		resourceTypeForm:$('#resourceTypeForm'),
 
 		addForm:$('#addResourceForm')
 	};
@@ -47,6 +49,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminDialog(elements.configurationDialog, 500, 500);
 		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
 		ConfigureAdminDialog(elements.sortOrderDialog, 300, 125);
+		ConfigureAdminDialog(elements.resourceTypeDialog, 300, 125);
 
 		$('.resourceDetails').each(function () {
 			var id = $(this).find(':hidden.id').val();
@@ -87,6 +90,10 @@ function ResourceManagement(opts) {
 
 			$(this).find('.changeScheduleButton').click(function (e) {
 				showScheduleMove(e);
+			});
+
+			$(this).find('.changeResourceType').click(function (e) {
+				showResourceType(e);
 			});
 
 			$(this).find('.changeLocationButton').click(function (e) {
@@ -219,6 +226,11 @@ function ResourceManagement(opts) {
 	var showScheduleMove = function (e) {
 		$('#editSchedule').val(getActiveResource().scheduleId);
 		elements.scheduleDialog.dialog("open");
+	};
+
+	var showResourceType = function (e) {
+		//$('#editSchedule').val(getActiveResource().scheduleId);
+		elements.resourceTypeDialog.dialog("open");
 	};
 
 	var showChangeLocation = function (e) {

@@ -297,9 +297,18 @@ abstract class Page implements IPage
 
 	protected function DisplayCsv($templateName, $fileName)
 	{
-		header("Content-Type: text/csv");
-		header("Content-Disposition: inline; filename=$fileName");
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Cache-Control: private", false);
+		header("Content-Type: application/octet-stream");
+		header("Content-Disposition: attachment; filename=$fileName;");
+		header("Content-Transfer-Encoding: binary");
 		echo chr(239) . chr(187) . chr(191);
+
+//		header("Content-Type: text/csv");
+//		header("Content-Disposition: inline; filename=$fileName");
+//		echo chr(239) . chr(187) . chr(191);
 		$this->Display($templateName);
 	}
 

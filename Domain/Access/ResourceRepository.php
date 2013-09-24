@@ -181,7 +181,8 @@ class ResourceRepository implements IResourceRepository
 			$resource->GetAdminGroupId(),
 			$resource->GetIsCalendarSubscriptionAllowed(),
 			$resource->GetPublicId(),
-			$resource->GetSortOrder()
+			$resource->GetSortOrder(),
+			$resource->GetResourceTypeId()
 		);
 
 		$db->Execute($updateResourceCommand);

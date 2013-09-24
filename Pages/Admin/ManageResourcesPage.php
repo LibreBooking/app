@@ -153,6 +153,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage
 	 * @param $resources AdminResourceJson[]
 	 */
 	public function SetResourcesJson($resources);
+
+	/**
+	 * @param $resourceTypes ResourceType[]
+	 */
+	public function BindResourceTypes($resourceTypes);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -359,6 +364,14 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function SetResourcesJson($resources)
 	{
 		$this->SetJson($resources);
+	}
+
+	/**
+	 * @param $resourceTypes ResourceType[]
+	 */
+	public function BindResourceTypes($resourceTypes)
+	{
+		$this->Set('ResourceTypes', $resourceTypes);
 	}
 }
 

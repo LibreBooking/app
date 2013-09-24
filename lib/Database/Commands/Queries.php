@@ -800,7 +800,8 @@ class Queries
 			admin_group_id = @admin_group_id,
 			allow_calendar_subscription = @allow_calendar_subscription,
 			public_id = @publicid,
-			sort_order = @sort_order
+			sort_order = @sort_order,
+			resource_type_id = @resource_type_id
 		WHERE
 			resource_id = @resourceid';
 
