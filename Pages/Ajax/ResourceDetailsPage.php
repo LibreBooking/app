@@ -32,7 +32,7 @@ class ResourceDetailsPage extends Page implements IResourceDetailsPage
     public function __construct()
     {
         parent::__construct('', 1);
-        $this->presenter = new ResourceDetailsPresenter($this, new ResourceRepository(), new AttributeRepository());
+        $this->presenter = new ResourceDetailsPresenter($this, new ResourceRepository(), new AttributeService(new AttributeRepository()));
     }
 
     public function PageLoad()
@@ -74,12 +74,39 @@ class ResourceDetailsPage extends Page implements IResourceDetailsPage
     {
         return ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::RESOURCE_ID);
     }
+
+	/**
+	 * @param ResourceType $resourceType
+	 * @param Attribute[] $attributes
+	 */
+	public function BindResourceType(ResourceType $resourceType, $attributes)
+	{
+		$this->Set('resourceType', $resourceType->Name());
+		$this->Set('ResourceTypeAttributes', $attributes);
+	}
 }
 
 interface IResourceDetailsPage
 {
+	/**
+	 * @param BookableResource $resource
+	 */
 	public function BindResource(BookableResource $resource);
+
+	/**
+	 * @param Attribute[] $attributes
+	 */
 	public function BindAttributes($attributes);
+
+	/**
+	 * @param ResourceType $resourceType
+	 * @param Attribute[] $attributes
+	 */
+	public function BindResourceType(ResourceType $resourceType, $attributes);
+
+	/**
+	 * @return int
+	 */
 	public function GetResourceId();
 }
 
@@ -96,36 +123,38 @@ class ResourceDetailsPresenter
     private $page;
 
 	/**
-	 * @var IAttributeRepository
+	 * @var IAttributeService
 	 */
     private $attributeService;
 
     /**
      * @param IResourceDetailsPage $page
      * @param IResourceRepository $resourceRepository
-	 * @param IAttributeRepository $attributeRepository
+	 * @param IAttributeService $attributeService
      */
-    public function __construct(IResourceDetailsPage $page, IResourceRepository $resourceRepository, IAttributeRepository $attributeRepository)
+    public function __construct(IResourceDetailsPage $page, IResourceRepository $resourceRepository, IAttributeService $attributeService)
     {
         $this->page = $page;
         $this->resourceRepository = $resourceRepository;
-		$this->attributeService = $attributeRepository;
+		$this->attributeService = $attributeService;
     }
 
     public function PageLoad()
     {
-		$attributeValues = array();
         $resourceId = $this->page->GetResourceId();
         $resource = $this->resourceRepository->LoadById($resourceId);
         $this->page->BindResource($resource);
 
-		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
-		foreach ($attributes as $attribute)
-		{
-			$attributeValues[] = new Attribute($attribute, $resource->GetAttributeValue($attribute->Id()));
-		}
+		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, $resourceId);
+		$this->page->BindAttributes($attributeList->GetAttributes($resourceId));
 
-		$this->page->BindAttributes($attributeValues);
+		if ($resource->HasResourceType())
+		{
+			$resourceType = $this->resourceRepository->LoadResourceType($resource->GetResourceTypeId());
+			$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE_TYPE, $resource->GetResourceTypeId());
+
+			$this->page->BindResourceType($resourceType, $attributeList->GetAttributes($resource->GetResourceTypeId()));
+		}
     }
 }
 

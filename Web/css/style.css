@@ -117,9 +117,8 @@ div.success {
 div.warning {
 	border: solid 1px #c77600;
 	text-align: center;
-	background: #f6c500;/* url("../img/tick-.png") no-repeat scroll 5px 5px;*/
+	background: #f6c500; /* url("../img/tick-.png") no-repeat scroll 5px 5px;*/
 }
-
 
 div.error table {
 	width: 100%;
@@ -624,7 +623,7 @@ select.customAttribute {
 }
 
 .validationSummary li {
-	font-size:10pt;
+	font-size: 10pt;
 	color: red;
 }
 
@@ -679,13 +678,15 @@ ul.indented li {
 	display: none;
 	position: absolute;
 	border: solid 2px #212121;
-	background-color: #fafafa;
-	padding: 5px;
 	background-color: #fff;
+	padding: 5px;
+	-moz-box-shadow: 0px 0px 3px 0px #212121;
+	-webkit-box-shadow: 0px 0px 3px 0px #212121;
+	box-shadow: 0px 0px 3px 0px #212121;
 }
 
 .hidden {
-	display:none;
+	display: none;
 }
 
 .center {

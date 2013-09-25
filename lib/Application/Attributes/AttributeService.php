@@ -25,7 +25,7 @@ interface IAttributeService
 	/**
 	 * @abstract
 	 * @param $category CustomAttributeCategory|int
-	 * @param $entityIds array|int[]
+	 * @param $entityIds array|int[]|int
 	 * @return IEntityAttributeList
 	 */
 	public function GetAttributes($category, $entityIds = array());
