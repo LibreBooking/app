@@ -106,16 +106,19 @@ interface IUpdateResourcePage
 	public function GetMaxParticipants();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetAdminGroupId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetSortOrder();
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceTypeId();
 }
 
 interface IManageResourcesPage extends IUpdateResourcePage, IActionPage
@@ -372,6 +375,14 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function BindResourceTypes($resourceTypes)
 	{
 		$this->Set('ResourceTypes', $resourceTypes);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceTypeId()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_TYPE_ID);
 	}
 }
 

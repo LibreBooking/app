@@ -185,6 +185,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource));
 		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, errorHandler, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.actions.changeAdmin));
+		ConfigureAdminForm(elements.resourceTypeForm, getSubmitCallback(options.actions.changeResourceType));
 		$.each(elements.attributeForm, function(i,form){
 			ConfigureAdminForm($(form), getSubmitCallback(options.actions.changeAttributes), null, attributesHandler, {validationSummary:null});
 		});
@@ -229,7 +230,7 @@ function ResourceManagement(opts) {
 	};
 
 	var showResourceType = function (e) {
-		//$('#editSchedule').val(getActiveResource().scheduleId);
+		$('#editResourceType').val(getActiveResource().resourceTypeId);
 		elements.resourceTypeDialog.dialog("open");
 	};
 

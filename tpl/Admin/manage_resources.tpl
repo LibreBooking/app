@@ -71,7 +71,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				<li>
 					{translate key='ResourceType'}
 					{if $resource->HasResourceType()}
-						<span class="resourceValue">{$ResourceTypes[$resource->GetResourceTypeId()]}</span>
+						<span class="resourceValue">{$ResourceTypes[$resource->GetResourceTypeId()]->Name()}</span>
 					{else}
 						<span class="note">{translate key='NoResourceTypeLabel'}</span>
 					{/if}
@@ -340,6 +340,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<form id="resourceTypeForm" method="post">
 		{translate key=ResourceType}:
 		<select id="editResourceType" class="textbox" {formname key=RESOURCE_TYPE_ID}>
+			<option value="">-- {translate key=None} --</option>
 			{foreach from=$ResourceTypes item=resourceType key=id}
 				<option value="{$id}">{$resourceType->Name()}</option>
 			{/foreach}
@@ -540,30 +541,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="attributeDialog" class="dialog" title="{translate key=AdditionalAttributes}">
-	<div class="validationSummary">
-		<ul>{async_validator id="attributeValidator" key=""}
-		</ul>
-	</div>
-
-	<div class="customAttributes">
-		<form method="post" id="attributesForm">
-			<ul>
-				{foreach from=$Definitions item=attribute}
-					<li class="customAttribute">
-						{control type="AttributeControl" attribute=$attribute}
-					</li>
-				{/foreach}
-			</ul>
-			<div style="clear:both;"></div>
-			<br/>
-			<button type="button"
-					class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		</form>
-	</div>
-</div>
-
 <div id="sortOrderDialog" class="dialog" style="display:none;" title="{translate key=SortOrder}">
 	<form id="sortOrderForm" method="post">
 		{translate key=SortOrder}:
@@ -574,7 +551,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
-
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 <script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
@@ -605,7 +581,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
 			disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}',
 			changeAttributes: '{ManageResourcesActions::ActionChangeAttributes}',
-			changeSortOrder: '{ManageResourcesActions::ActionChangeSort}'
+			changeSortOrder: '{ManageResourcesActions::ActionChangeSort}',
+			changeResourceType: '{ManageResourcesActions::ActionChangeResourceType}'
 		};
 
 		var opts = {
@@ -635,7 +612,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			startNotice: {},
 			endNotice: {},
 			adminGroupId: '{$resource->GetAdminGroupId()}',
-			sortOrder: '{$resource->GetSortOrder()}'
+			sortOrder: '{$resource->GetSortOrder()}',
+			resourceTypeId : '{$resource->GetResourceTypeId()}'
 		};
 
 		{if $resource->HasMinLength()}

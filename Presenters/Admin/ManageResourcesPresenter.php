@@ -42,6 +42,7 @@ class ManageResourcesActions
 	const ActionDisableSubscription = 'disableSubscription';
 	const ActionChangeAttributes = 'changeAttributes';
 	const ActionChangeSort = 'changeSort';
+	const ActionChangeResourceType = 'changeResourceType';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -110,6 +111,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionDisableSubscription, 'DisableSubscription');
 		$this->AddAction(ManageResourcesActions::ActionChangeAttributes, 'ChangeAttributes');
 		$this->AddAction(ManageResourcesActions::ActionChangeSort, 'ChangeSortOrder');
+		$this->AddAction(ManageResourcesActions::ActionChangeResourceType, 'ChangeResourceType');
 	}
 
 	public function PageLoad()
@@ -391,6 +393,17 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 		$resource->SetSortOrder($sortOrder);
+		$this->resourceRepository->Update($resource);
+	}
+
+	public function ChangeResourceType()
+	{
+		$resourceId = $this->page->GetResourceId();
+		$resourceTypeId = $this->page->GetResourceTypeId();
+		Log::Debug('Changing resource type for resource %s', $resourceId);
+
+		$resource = $this->resourceRepository->LoadById($resourceId);
+		$resource->SetResourceTypeId($resourceTypeId);
 		$this->resourceRepository->Update($resource);
 	}
 
