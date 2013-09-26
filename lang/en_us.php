@@ -475,6 +475,8 @@ class en_us extends Language
 		$strings['UniquePerInstance'] = 'Unique Per Instance';
 		$strings['AddResourceType'] = 'Add Resource Type';
 		$strings['NoResourceTypeLabel'] = '(no resource type set)';
+		$strings['ClearFilter'] = 'Clear Filter';
+		$strings['MinimumCapacity'] = 'Minimum Capacity';
 		// End Strings
 
 		// Install

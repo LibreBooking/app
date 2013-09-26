@@ -33,7 +33,7 @@ interface ISchedulePage extends IActionPage
 	/**
 	 * Bind resources to the page
 	 *
-	 * @param arrayResourceDto[] $resources
+	 * @param array|ResourceDto[] $resources
 	 */
 	public function SetResources($resources);
 
@@ -131,7 +131,25 @@ interface ISchedulePage extends IActionPage
 	 */
 	public function GetResourceId();
 
+	/**
+	 * @param ResourceGroupTree $resourceGroupTree
+	 */
 	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree);
+
+	/**
+	 * @param ResourceType[] $resourceTypes
+	 */
+	public function SetResourceTypes($resourceTypes);
+
+	/**
+	 * @param Attribute[] $attributes
+	 */
+	public function SetResourceCustomAttributes($attributes);
+
+	/**
+	 * @param Attribute[] $attributes
+	 */
+	public function SetResourceTypeCustomAttributes($attributes);
 }
 
 class ScheduleStyle
@@ -328,6 +346,27 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
 	{
 		$this->Set('ResourceGroupsAsJson', json_encode($resourceGroupTree->GetGroups()));
+	}
+
+	public function SetResourceTypes($resourceTypes)
+	{
+		$this->Set('ResourceTypes', $resourceTypes);
+	}
+
+	/**
+	 * @param Attribute[] $attributes
+	 */
+	public function SetResourceCustomAttributes($attributes)
+	{
+		$this->Set('ResourceAttributes', $attributes);
+	}
+
+	/**
+	 * @param Attribute[] $attributes
+	 */
+	public function SetResourceTypeCustomAttributes($attributes)
+	{
+		$this->Set('ResourceTypeAttributes', $attributes);
 	}
 }
 

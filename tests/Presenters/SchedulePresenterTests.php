@@ -56,6 +56,9 @@ class SchedulePresenterTests extends TestBase
 		$layout = $this->getMock('IScheduleLayout');
 		$bindingDates = new DateRange(Date::Now(), Date::Now());
 		$groups = new ResourceGroupTree();
+		$resourceTypes = array(new ResourceType(1, 'n', 'd'));
+		$resourceAttributes = array(new FakeCustomAttribute());
+		$resourceTypeAttributes = array(new FakeCustomAttribute());
 
 		$groupId = 10101;
 		$resourceId = 92928;
@@ -161,6 +164,31 @@ class SchedulePresenterTests extends TestBase
 		->expects($this->once())
 		->method('BindReservations')
 		->with($this->equalTo($page), $this->equalTo($resources), $this->equalTo($dailyLayout));
+
+		$resourceService
+		->expects($this->once())
+		->method('GetResourceTypes')
+		->will($this->returnValue($resourceTypes));
+
+		$pageBuilder
+		->expects($this->once())
+		->method('BindResourceTypes')
+		->with($this->equalTo($page), $this->equalTo($resourceTypes));
+
+		$resourceService
+		->expects($this->once())
+		->method('GetResourceAttributes')
+		->will($this->returnValue($resourceAttributes));
+
+		$resourceService
+		->expects($this->once())
+		->method('GetResourceTypeAttributes')
+		->will($this->returnValue($resourceTypeAttributes));
+
+		$pageBuilder
+		->expects($this->once())
+		->method('BindCustomAttributes')
+		->with($this->equalTo($page), $this->equalTo($resourceAttributes), $this->equalTo($resourceTypeAttributes));
 
 		$presenter->PageLoad($this->fakeUser);
 	}

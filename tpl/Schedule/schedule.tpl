@@ -149,8 +149,37 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="reservations-left-header">{translate key=ResourceFilter}</div>
 
 	<div class="reservations-left-content">
-		<div class="center"><a id="show_all_resources" href="#">{translate key=AllResources}</a></div>
+		<div class="center"><a id="show_all_resources" href="#">{translate key=ClearFilter}</a></div>
+
+		{translate key=Resource}
+		<select {formname key=RESOURCE_ID}>
+			<option value="">- {translate key=All} -</option>
+			{foreach from=$Resources item=resource}
+			<option value="{$resource->Id}">{$resource->Name}</option>
+			{/foreach}
+		</select>
+
+		{translate key=Group}
 		<div id="resourceGroups"></div>
+
+		{translate key=MinimumCapacity}
+		<input type='text' id='maxCapactiy' size='5' maxlength='5' {formname key=MAX_PARTICIPANTS} />
+
+		{translate key=ResourceType}
+		<select {formname key=RESOURCE_TYPE_ID}>
+			<option value="">- {translate key=All} -</option>
+			{foreach from=$ResourceTypes item=rt}
+			<option value="{$rt->Id()}">{$rt->Name()}</option>
+			{/foreach}
+		</select>
+
+		{foreach from=$ResourceAttributes item=attribute}
+			{control type="AttributeControl" attribute=$attribute}
+		{/foreach}
+
+		{foreach from=$ResourceTypeAttributes item=attribute}
+			{control type="AttributeControl" attribute=$attribute}
+		{/foreach}
 	</div>
 </div>
 

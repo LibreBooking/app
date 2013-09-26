@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'lib\Application\Attributes\namespace.php');
+
 interface IResourceService
 {
 	/**
@@ -50,6 +52,21 @@ interface IResourceService
 	 * @return ResourceGroupTree
 	 */
 	public function GetResourceGroups($scheduleId);
+
+	/**
+	 * @return ResourceType[]
+	 */
+	public function GetResourceTypes();
+
+	/**
+	 * @return Attribute[]
+	 */
+	public function GetResourceAttributes();
+
+	/**
+	 * @return Attribute[]
+	 */
+	public function GetResourceTypeAttributes();
 }
 
 class ResourceService implements IResourceService
@@ -129,13 +146,30 @@ class ResourceService implements IResourceService
 		return $this->_resourceRepository->GetAccessoryList();
 	}
 
-	/**
-	 * @param $scheduleId
-	 * @return ResourceGroupTree
-	 */
 	public function GetResourceGroups($scheduleId)
 	{
 		return $this->_resourceRepository->GetResourceGroups($scheduleId);
+	}
+
+	public function GetResourceTypes()
+	{
+		return $this->_resourceRepository->GetResourceTypes();
+	}
+
+	/**
+	 * @return Attribute[]
+	 */
+	public function GetResourceAttributes()
+	{
+		return array(new Attribute(new CustomAttribute(1, 'something1', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESOURCE, null, true, null, 0)));
+	}
+
+	/**
+	 * @return Attribute[]
+	 */
+	public function GetResourceTypeAttributes()
+	{
+		return array(new Attribute(new CustomAttribute(2, 'something2', CustomAttributeTypes::SELECT_LIST, CustomAttributeCategory::RESOURCE_TYPE, null, true, 'val1,val2,val3', 0)));
 	}
 }
 

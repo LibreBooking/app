@@ -21,7 +21,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 interface ISchedulePageBuilder
 {
-
 	/**
 	 * @param ISchedulePage $page
 	 * @param array[int]ISchedule $schedules
@@ -49,10 +48,10 @@ interface ISchedulePageBuilder
 	/**
 	 * @param ISchedulePage $page
 	 * @param DateRange $dateRange display dates
-	 * @param UserSession $user
+	 * @param UserSession $userSession
+	 * @param ISchedule $schedule
 	 */
-	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession,
-									 ISchedule $schedule);
+	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession, ISchedule $schedule);
 
 	/**
 	 * @param ISchedulePage $page
@@ -61,7 +60,24 @@ interface ISchedulePageBuilder
 	 */
 	public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout);
 
+	/**
+	 * @param ISchedulePage $page
+	 * @param ResourceGroupTree $resourceGroupTree
+	 */
 	public function BindResourceGroups(ISchedulePage $page, ResourceGroupTree $resourceGroupTree);
+
+	/**
+	 * @param ISchedulePage $page
+	 * @param ResourceType[] $resourceTypes
+	 */
+	public function BindResourceTypes(ISchedulePage $page,  $resourceTypes);
+
+	/**
+	 * @param ISchedulePage $page
+	 * @param Attribute[] $resourceCustomAttributes
+	 * @param Attribute[] $resourceTypeCustomAttributes
+	 */
+	public function BindCustomAttributes(ISchedulePage $page, $resourceCustomAttributes, $resourceTypeCustomAttributes);
 
 	public function GetGroupId($scheduleId, ISchedulePage $page);
 
@@ -318,6 +334,17 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		}
 
 		return null;
+	}
+
+	public function BindResourceTypes(ISchedulePage $page, $resourceTypes)
+	{
+		$page->SetResourceTypes($resourceTypes);
+	}
+
+	public function BindCustomAttributes(ISchedulePage $page, $resourceCustomAttributes, $resourceTypeCustomAttributes)
+	{
+		$page->SetResourceCustomAttributes($resourceCustomAttributes);
+		$page->SetResourceTypeCustomAttributes($resourceTypeCustomAttributes);
 	}
 }
 
