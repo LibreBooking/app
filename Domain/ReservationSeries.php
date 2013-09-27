@@ -303,7 +303,6 @@ class ReservationSeries
 
 		foreach ($dates as $date)
 		{
-			Log::Debug('ADDING NEW RECURRING INSTANCE %s', $date);
 			$this->AddNewInstance($date);
 		}
 	}
