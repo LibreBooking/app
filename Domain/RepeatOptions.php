@@ -393,7 +393,8 @@ class RepeatDayOfMonth extends RepeatOptionsAbstract
 	}
 
 	/**
-	 * @var Date $date
+	 * @param Date $date
+	 * @param int $monthsFromStart
 	 * @return Date
 	 */
 	private function GetNextMonth($date, $monthsFromStart)

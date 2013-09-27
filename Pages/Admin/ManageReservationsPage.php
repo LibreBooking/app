@@ -163,7 +163,7 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	public function GetFormat();
 
 	/**
-	 * @param $attributeList AttributeList
+	 * @param $attributeList IEntityAttributeList
 	 */
 	public function SetAttributes($attributeList);
 }
@@ -431,7 +431,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	}
 
 	/**
-	 * @param $attributeList AttributeList
+	 * @param $attributeList IEntityAttributeList
 	 */
 	public function SetAttributes($attributeList)
 	{

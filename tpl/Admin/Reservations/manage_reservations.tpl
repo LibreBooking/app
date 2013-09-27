@@ -112,8 +112,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
 		<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
 		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-		{foreach from=$AttributeList->GetAttributes($reservation->SeriesId) item=value}
-		<td>{$value}</td>
+		{foreach from=$AttributeList->GetAttributes($reservation->SeriesId) item=attribute}
+		<td>{$attribute->Value()}</td>
 		{/foreach}
 		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 		<td align="center">

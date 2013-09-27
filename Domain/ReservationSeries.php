@@ -294,7 +294,7 @@ class ReservationSeries
 	{
 		$this->_repeatOptions = $repeatOptions;
 
-		$dates = $repeatOptions->GetDates($this->CurrentInstance()->Duration());
+		$dates = $repeatOptions->GetDates($this->CurrentInstance()->Duration()->ToTimezone($this->_bookedBy->Timezone));
 
 		if (empty($dates))
 		{
@@ -303,6 +303,7 @@ class ReservationSeries
 
 		foreach ($dates as $date)
 		{
+			Log::Debug('ADDING NEW RECURRING INSTANCE %s', $date);
 			$this->AddNewInstance($date);
 		}
 	}
