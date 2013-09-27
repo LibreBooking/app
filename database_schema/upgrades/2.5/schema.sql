@@ -1,3 +1,11 @@
+
+ALTER TABLE `custom_attributes` ADD COLUMN `entity_id` mediumint(8) unsigned;
+
+ALTER TABLE `resources` ADD COLUMN `resource_type_id` mediumint(8) unsigned;
+
+DROP TABLE IF EXISTS `resource_group_assignment`;
+
+
 DROP TABLE IF EXISTS `resource_groups`;
 CREATE TABLE `resource_groups` (
  `resource_group_id` mediumint(8) unsigned NOT NULL auto_increment,
@@ -10,7 +18,18 @@ CREATE TABLE `resource_groups` (
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-DROP TABLE IF EXISTS `resource_group_assignment`;
+DROP TABLE IF EXISTS `resource_types`;
+CREATE TABLE `resource_types` (
+ `resource_type_id` mediumint(8) unsigned NOT NULL auto_increment,
+ `resource_type_name` VARCHAR(75),
+ `resource_type_description` TEXT,
+  PRIMARY KEY (`resource_type_id`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+
+ALTER TABLE `resources` ADD FOREIGN KEY (`resource_type_id`) REFERENCES resource_types(`resource_type_id`) ON DELETE CASCADE;
+
+
 CREATE TABLE `resource_group_assignment` (
  `resource_group_id` mediumint(8) unsigned NOT NULL,
  `resource_id` smallint(5) unsigned NOT NULL,
@@ -24,17 +43,4 @@ CREATE TABLE `resource_group_assignment` (
 		REFERENCES resources(`resource_id`)
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
-DROP TABLE IF EXISTS `resource_types`;
-CREATE TABLE `resource_types` (
- `resource_type_id` mediumint(8) unsigned NOT NULL auto_increment,
- `resource_type_name` VARCHAR(75),
- `resource_type_description` TEXT,
-  PRIMARY KEY (`resource_type_id`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
-
-ALTER TABLE `custom_attributes` ADD COLUMN `entity_id` mediumint(8) unsigned;
-
-ALTER TABLE `resources` ADD COLUMN `resource_type_id` mediumint(8) unsigned;
-ALTER TABLE `resources` ADD FOREIGN KEY (`resource_type_id`) REFERENCES resource_types(`resource_type_id`) ON DELETE CASCADE;
 
